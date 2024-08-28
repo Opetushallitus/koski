@@ -1,6 +1,13 @@
-import { Locator, Page, expect } from '@playwright/test'
-import { Dropdown } from './components/Dropdown'
-import { RadioButton } from './components/RadioButton'
+import { expect, Locator, Page } from '@playwright/test'
+import { KoskiOppijaPageV2 } from './KoskiOppijaPageV2'
+import { BuiltIdNode } from './uiV2builder/builder'
+import { Button } from './uiV2builder/Button'
+import { Checkbox } from './uiV2builder/Checkbox'
+import { Input } from './uiV2builder/Input'
+import { Select } from './uiV2builder/Select'
+import { formatFinnishDate } from '../../../../app/date/date'
+import { RadioButtons } from './uiV2builder/RadioButtons'
+import { DateInput } from './uiV2builder/DateInput'
 
 interface BaseOppija {
   etunimet: string
@@ -14,7 +21,7 @@ interface BaseOppija {
   opintokokonaisuus?: string
   osaamismerkki?: string
   oppimäärä?: string
-  opintojenMaksuttomuus?: string
+  opintojenMaksuttomuus?: 'eiOvlPiirissä' | 'maksuton' | 'maksullinen'
   peruste?: string
   rahoitus?: string
   suoritustyyppi?: string
@@ -32,66 +39,19 @@ type ESHOppija =
 
 type Oppija = ESHOppija
 
-export class KoskiUusiOppijaPage {
+export class KoskiUusiOppijaPage extends KoskiOppijaPageV2<
+  typeof UusiOpiskeluoikeusFormTestIds
+> {
   readonly page: Page
-  readonly etunimet: Locator
-  readonly sukunimi: Locator
   readonly lisaaOppijaButton: Locator
-  readonly opintokokonaisuus: Dropdown
-  readonly osaamismerkki: Dropdown
-  readonly opiskeluoikeudenTila: Dropdown
-  readonly opintojenRahoitus: Dropdown
-  readonly opiskeluoikeus: Dropdown
-  readonly oppimäärä: Dropdown
-  readonly peruste: Dropdown
-  readonly maksuttomuus: RadioButton
-  readonly submitBtn: Locator
-  readonly oppilaitosTextInput: Locator
-  readonly oppilaitosHakuInput: Locator
-  readonly suoritustyyppi: Dropdown
-  readonly taiteenala: Dropdown
-  readonly jotpaAsianumero: Dropdown
+  readonly controls: BuiltIdNode<typeof UusiOpiskeluoikeusFormControls>
 
   constructor(page: Page) {
+    super(page, UusiOpiskeluoikeusFormTestIds)
+
     this.page = page
+    this.controls = this.$.uusiOpiskeluoikeus.modal
     this.lisaaOppijaButton = page.getByLabel('Tunnus')
-    this.oppilaitosTextInput = page.getByTestId('organisaatio-text-input')
-    this.oppilaitosHakuInput = page.getByTestId('organisaatio-haku-input')
-    this.opintokokonaisuus = Dropdown.fromTestId(
-      page,
-      'Opintokokonaisuus-koodisto-dropdown'
-    )
-    this.osaamismerkki = Dropdown.fromTestId(
-      page,
-      'Osaamismerkki-koodisto-dropdown'
-    )
-    this.opiskeluoikeudenTila = Dropdown.fromTestId(
-      page,
-      'Opiskeluoikeuden tila-koodisto-dropdown'
-    )
-    this.opintojenRahoitus = Dropdown.fromTestId(
-      page,
-      'Opintojen rahoitus-koodisto-dropdown'
-    )
-    this.opiskeluoikeus = Dropdown.fromTestId(
-      page,
-      'Opiskeluoikeus-koodisto-dropdown'
-    )
-    this.maksuttomuus = RadioButton.fromTestId(
-      page,
-      'maksuttomuus-radio-buttons'
-    )
-    this.oppimäärä = Dropdown.fromTestId(page, 'Oppimäärä-koodisto-dropdown')
-    this.peruste = Dropdown.fromTestId(page, 'peruste-dropdown')
-    this.submitBtn = page.getByRole('button', { name: 'Lisää opiskelija' })
-    this.etunimet = page.getByRole('textbox', { name: 'Etunimet' })
-    this.sukunimi = page.getByRole('textbox', { name: 'Sukunimi' })
-    this.suoritustyyppi = Dropdown.fromTestId(
-      page,
-      'Suoritustyyppi-koodisto-dropdown'
-    )
-    this.taiteenala = Dropdown.fromTestId(page, 'Taiteenala-koodisto-dropdown')
-    this.jotpaAsianumero = Dropdown.fromTestId(page, 'JOTPA asianumero-koodisto-dropdown')
   }
 
   async goTo(hetu: Oppija['hetu']) {
@@ -109,74 +69,113 @@ export class KoskiUusiOppijaPage {
    * Testaa ensin luoda käyttöliittymän kautta opiskeluoikeus ja tarkista, mitkä kentät käyttöliittymässä näkyvät.
    * @param oppija Oppijan tiedot
    */
-  async fill(oppija: Partial<BaseOppija>) {
+  async fill(
+    oppija: Partial<BaseOppija> & { hankintakoulutus?: 'tpo' },
+    pääkäyttäjä: boolean = false
+  ) {
+    const $ = this.$.uusiOpiskeluoikeus.modal
+
+    if (oppija.hankintakoulutus === 'tpo') {
+      await $.hankintakoulutus.tpo.click()
+    }
     if (oppija.etunimet) {
-      await this.etunimet.fill(oppija.etunimet)
+      await this.$.uusiOpiskeluoikeus.oppija.etunimet.set(oppija.etunimet)
     }
     if (oppija.sukunimi) {
-      await this.sukunimi.fill(oppija.sukunimi)
+      await this.$.uusiOpiskeluoikeus.oppija.sukunimi.set(oppija.sukunimi)
     }
+
     if (oppija.oppilaitos) {
-      await this.oppilaitosTextInput.click()
-
-      await this.oppilaitosHakuInput.fill(oppija.oppilaitos)
-
-      await this.page
-        .getByTestId(`organisaatio-list-item-${oppija.oppilaitos}`)
-        .click()
-
-      // Odota oppilaitoksen asettamisen jälkeen että sallitut opiskeluoikeudet ja muut kentät ehtii latautua
-      await this.page.waitForTimeout(500)
+      if (oppija.hankintakoulutus || pääkäyttäjä) {
+        await $.oppilaitos.type(oppija.oppilaitos)
+        await $.oppilaitos.selectFirstOption()
+      } else {
+        await $.oppilaitos.setByLabel(oppija.oppilaitos)
+      }
     }
     if (oppija.opiskeluoikeus) {
-      await this.opiskeluoikeus.selectOptionByClick(oppija.opiskeluoikeus)
+      await $.opiskeluoikeus.setByLabel(oppija.opiskeluoikeus)
     }
-    // TODO: Suorituskieli
-    // if (oppija.suorituskieli) {
-    //  ...
-    // }
+    if (oppija.suorituskieli) {
+      await $.suorituskieli.setByLabel(oppija.suorituskieli)
+    }
     if (oppija.opintokokonaisuus) {
-      await this.opintokokonaisuus.search(oppija.opintokokonaisuus)
+      await $.opintokokonaisuus.setByLabel(oppija.opintokokonaisuus)
     }
-    // TODO: Aloituspäivä
-    // if (oppija.aloituspäivä) {
-    //  ...
-    // }
+    if (oppija.aloituspäivä) {
+      await $.aloituspäivä.set(formatFinnishDate(oppija.aloituspäivä)!)
+    }
     if (oppija.oppimäärä) {
-      await this.oppimäärä.selectOptionByClick(oppija.oppimäärä)
+      await $.oppimäärä.setByLabel(oppija.oppimäärä)
     }
     if (oppija.peruste) {
-      await this.peruste.selectOptionByClick(oppija.peruste)
+      await $.peruste.setByLabel(oppija.peruste)
     }
     if (oppija.rahoitus) {
-      await this.opintojenRahoitus.selectOptionByClick(oppija.rahoitus)
+      await $.opintojenRahoitus.setByLabel(oppija.rahoitus)
     }
     if (oppija.opintojenMaksuttomuus) {
-      await this.maksuttomuus.selectOptionByLabel(oppija.opintojenMaksuttomuus)
+      await $.maksuton.set(oppija.opintojenMaksuttomuus)
     }
     if (oppija.suoritustyyppi) {
-      await this.suoritustyyppi.selectOptionByClick(oppija.suoritustyyppi)
+      await $.suoritustyyppi.setByLabel(oppija.suoritustyyppi)
     }
     if (oppija.taiteenala) {
-      await this.taiteenala.selectOptionByClick(oppija.taiteenala)
+      console.log('oppija.taiteenala', oppija.taiteenala)
+      await $.taiteenala.setByLabel(oppija.taiteenala)
     }
     if (oppija.osaamismerkki) {
-      await this.osaamismerkki.search(oppija.osaamismerkki)
+      await $.osaamismerkki.setByLabel(oppija.osaamismerkki)
     }
     if (oppija.opiskeluoikeudenTila) {
-      await this.opiskeluoikeudenTila.selectOptionByClick(
-        oppija.opiskeluoikeudenTila
-      )
+      await $.tila.setByLabel(oppija.opiskeluoikeudenTila)
     }
     if (oppija.jotpaAsianumero) {
-      await this.jotpaAsianumero.selectOptionByClick(oppija.jotpaAsianumero)
+      await $.jotpaAsianumero.setByLabel(oppija.jotpaAsianumero)
     }
   }
 
   async submitAndExpectSuccess() {
-    await expect(this.submitBtn).toBeEnabled()
-    await this.submitBtn.click()
+    const submitBtn = this.$.uusiOpiskeluoikeus.modal.submit.button
+    await expect(submitBtn).toBeEnabled()
+    await submitBtn.click()
     await expect(this.page.getByTestId('error')).not.toBeVisible()
     await expect(this.page).toHaveURL(/\/koski\/oppija\/1.2.246.562.24.\d+.*/)
+  }
+}
+
+const HankintakoulutusControls = {
+  esiopetus: Checkbox,
+  tpo: Checkbox
+}
+
+const UusiOpiskeluoikeusFormControls = {
+  hankintakoulutus: HankintakoulutusControls,
+  oppilaitos: Select,
+  opiskeluoikeus: Select,
+  oppimäärä: Select,
+  suoritustyyppi: Select,
+  peruste: Select,
+  taiteenala: Select,
+  opintokokonaisuus: Select,
+  osaamismerkki: Select,
+  suorituskieli: Select,
+  tila: Select,
+  opintojenRahoitus: Select,
+  jotpaAsianumero: Select,
+  aloituspäivä: DateInput,
+  maksuton: RadioButtons('eiOvlPiirissä', 'maksuton', 'maksullinen'),
+  submit: Button
+}
+
+const UusiOppijaFormControls = {
+  etunimet: Input,
+  sukunimi: Input
+}
+
+const UusiOpiskeluoikeusFormTestIds = {
+  uusiOpiskeluoikeus: {
+    oppija: UusiOppijaFormControls,
+    modal: UusiOpiskeluoikeusFormControls
   }
 }

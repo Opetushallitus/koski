@@ -6,6 +6,7 @@ export const Select = createControl((self, child) => {
   }
 
   return {
+    input: child('input'),
     set: async (key: string) => {
       await showOptions()
       try {
@@ -24,6 +25,17 @@ export const Select = createControl((self, child) => {
       }
       await child('options').waitFor({ state: 'hidden' })
       // await new Promise((resolve) => setTimeout(resolve, 1000)) // Todella rumaa flakyn korjailua
+    },
+    setByLabel: async (text: string) => {
+      await showOptions()
+      await child('options').getByText(text).click()
+    },
+    type: async (text: string) => {
+      await child('input').fill(text)
+    },
+    selectFirstOption: async () => {
+      await showOptions()
+      await child('options').first().click()
     },
     value: async () => {
       return await child('input').inputValue()

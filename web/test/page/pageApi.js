@@ -98,6 +98,7 @@ function Page(mainElement) {
           case 'NUMBER':
           case 'PASSWORD':
           case 'TEXTAREA':
+          case 'SEARCH':
             if (window.callPhantom) {
               input.val(value)
             } else {

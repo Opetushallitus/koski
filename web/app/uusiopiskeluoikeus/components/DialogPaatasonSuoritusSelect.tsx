@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react'
 import { koodistokoodiviiteId } from '../../util/koodisto'
-import { usePäätasonSuoritustyypit } from '../state/hooks'
+import { usePäätasonSuoritustyypit } from '../state/päätasonSuoritustyypit'
 import { UusiOpiskeluoikeusDialogState } from '../state/state'
 import { DialogSelect } from './DialogSelect'
 import { SelectOption } from '../../components-v2/controls/Select'

@@ -1,7 +1,8 @@
 import * as A from 'fp-ts/Array'
 import * as NEA from 'fp-ts/NonEmptyArray'
 import * as Ord from 'fp-ts/Ord'
-import { flow, pipe } from 'fp-ts/lib/function'
+import * as string from 'fp-ts/string'
+import { pipe } from 'fp-ts/lib/function'
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import {
   KoodistokoodiviiteKoodistonNimellä,
@@ -96,8 +97,12 @@ export const Select = <T,>(props: SelectProps<T>) => {
   }, [autoselect, initialValue, onChange, options, value])
 
   return (
-    <TestIdLayer id={props.testId}>
-      <div {...common(props, ['Select'])} {...select.containerEventListeners}>
+    <TestIdLayer id={props.testId} wrap="div">
+      <div
+        // input-container -luokka on vanhan testiframeworkin kanssa yhteensopivuuden lisäämiseksi (kts. pageApi.js -> Input)
+        {...common(props, ['Select', 'input-container'])}
+        {...select.containerEventListeners}
+      >
         <input
           className="Select__input"
           placeholder={t(props.placeholder || 'Valitse...')}
@@ -401,18 +406,21 @@ const useSelectState = <T,>(props: SelectProps<T>) => {
 
 export const groupKoodistoToOptions = <T extends string>(
   koodit: KoodistokoodiviiteKoodistonNimellä<T>[],
-  ords?: Array<Ord.Ord<KoodistokoodiviiteKoodistonNimellä>>
+  ords?: Array<Ord.Ord<KoodistokoodiviiteKoodistonNimellä>>,
+  format?: (koodi: KoodistokoodiviiteKoodistonNimellä) => string
 ): Array<SelectOption<Koodistokoodiviite<T>>> =>
   pipe(koodit, NEA.groupBy(pluck('koodistoNimi')), (grouped) =>
-    Object.entries(grouped).map(([groupName, koodit]) => ({
+    Object.entries(grouped).map(([groupName, groupKoodit]) => ({
       key: groupName,
       label: groupName,
       isGroup: true,
       children: A.sortBy(ords || [KoodistokoodiviiteKoodistonNimelläOrd])(
-        koodit
+        groupKoodit
       ).map((k) => ({
         key: k.id,
-        label: t(k.koodiviite.nimi) || k.koodiviite.koodiarvo,
+        label: format
+          ? format(k)
+          : t(k.koodiviite.nimi) || k.koodiviite.koodiarvo,
         value: k.koodiviite
       }))
     }))
@@ -431,6 +439,13 @@ export const perusteToOption = (peruste: Peruste): SelectOption<Peruste> => ({
   value: peruste,
   label: [peruste.koodiarvo, t(peruste.nimi)].filter(nonNull).join(' ')
 })
+
+export const SelectOptionOrd = Ord.contramap((o: SelectOption<any>) => o.label)(
+  string.Ord
+)
+
+export const sortOptions = <T,>(options: Array<SelectOption<T>>) =>
+  A.sort(SelectOptionOrd)(options)
 
 // Internal utils
 

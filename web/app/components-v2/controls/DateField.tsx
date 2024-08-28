@@ -59,8 +59,9 @@ export const DateEdit: React.FC<DateEditProps> = (props) => {
     onChange,
     inputKey
   } = useDateEditState(props)
-  const inputId = useTestId('date.edit.input')
-  const buttonId = useTestId('date.edit.calendarButton')
+  const testId = props.testId || 'date'
+  const inputId = useTestId(`${testId}.edit.input`)
+  const buttonId = useTestId(`${testId}.edit.calendarButton`)
 
   return (
     <label {...common(props, ['DateEdit'])}>

@@ -1,6 +1,7 @@
 import { createControl } from './controls'
 
 export const Button = createControl((self) => ({
+  button: self,
   click: () => self.click(),
   value: () => self.innerText(),
   isVisible: () => self.isVisible(),

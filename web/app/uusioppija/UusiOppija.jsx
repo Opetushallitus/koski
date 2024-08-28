@@ -4,9 +4,10 @@ import Atom from 'bacon.atom'
 import Http from '../util/http'
 import { navigateToOppija, showError } from '../util/location'
 import { searchStringAtom } from '../virkailija/OppijaHaku'
-import UusiOpiskeluoikeus from './UusiOpiskeluoikeus'
+import { UusiOpiskeluoikeusForm } from '../uusiopiskeluoikeus/UusiOpiskeluoikeusForm'
 import UusiHenkilö from './UusiHenkilo'
 import Text from '../i18n/Text'
+import { TestIdRoot } from '../appstate/useTestId'
 
 export const UusiOppija = ({ hetu, oid }) => {
   const opiskeluoikeusAtom = Atom()
@@ -49,12 +50,17 @@ export const UusiOppija = ({ hetu, oid }) => {
         </h2>
         <UusiHenkilö {...{ hetu, oid, henkilöAtom, henkilöValidAtom }} />
         <hr />
-        <UusiOpiskeluoikeus opiskeluoikeusAtom={opiskeluoikeusAtom} />
+        <TestIdRoot id="uusiOpiskeluoikeus.modal">
+          <UusiOpiskeluoikeusForm
+            onResult={(oo) => opiskeluoikeusAtom.set(oo)}
+          />
+        </TestIdRoot>
         <button
           type="button"
           className="koski-button"
           disabled={submitEnabledP.not()}
           onClick={() => submitBus.push()}
+          data-testid="uusiOpiskeluoikeus.modal.submit"
         >
           {buttonTextP}
         </button>

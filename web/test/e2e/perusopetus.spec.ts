@@ -133,8 +133,7 @@ test.describe('Perusopetus', () => {
           'OPH-1280-2017 Aikuisten perusopetuksen opetussuunnitelman perusteet',
         aloituspäivä: new Date(2018, 1, 1),
         rahoitus: 'Valtionosuusrahoitteinen koulutus',
-        opintojenMaksuttomuus:
-          'Henkilö on syntynyt vuonna 2004 tai aiemmin ja ei ole laajennetun oppivelvollisuuden piirissä'
+        opintojenMaksuttomuus: 'eiOvlPiirissä'
       })
       await uusiOppijaPage.submitAndExpectSuccess()
       await page.close()
@@ -151,8 +150,7 @@ test.describe('Perusopetus', () => {
         )
       })
     })
-    // TODO: Skipattu, koska todella flakyt testit ilmeisesti prefill-apin hitauden ja palauttaman ison datan takia
-    test.describe.skip('Päättövaiheen opinnot', async () => {
+    test.describe('Päättövaiheen opinnot', async () => {
       test.beforeEach(async ({ perusopetusOppijaPage, page }) => {
         await perusopetusOppijaPage.avaaMuokkausnäkymä()
         await page.waitForLoadState('networkidle')

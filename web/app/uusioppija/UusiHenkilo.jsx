@@ -64,6 +64,7 @@ export default ({ hetu, oid, henkilöAtom, henkilöValidAtom }) => {
                   role="textbox"
                   existing={existing}
                   atom={etunimetAtom}
+                  data-testid="uusiOpiskeluoikeus.oppija.etunimet.input"
                 />
               </label>
               <label className="kutsumanimi">
@@ -83,6 +84,7 @@ export default ({ hetu, oid, henkilöAtom, henkilöValidAtom }) => {
                   role="textbox"
                   existing={existing}
                   atom={sukunimiAtom}
+                  data-testid="uusiOpiskeluoikeus.oppija.sukunimi.input"
                 />
               </label>
             </div>
