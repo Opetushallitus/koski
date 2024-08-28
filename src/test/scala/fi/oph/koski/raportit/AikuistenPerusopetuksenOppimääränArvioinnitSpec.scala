@@ -65,8 +65,8 @@ class AikuistenPerusopetuksenOppimääränArvioinnitSpec
                   alkuvaiheenKurssinSuoritus("AÄI3").copy(arviointi = Some(List(
                     PerusopetuksenOppiaineenArviointi(5, Some(aikaisintaan.plusWeeks(1))), // ei hyväksytyn eikä hylätyn korotus
                     PerusopetuksenOppiaineenArviointi(4, Some(aikaisintaan.plusWeeks(2))), // hyväksytyn korotus
-                    PerusopetuksenOppiaineenArviointi("H", None, Some(aikaisintaan.plusWeeks(3))), // hylätyn korotus
-                    PerusopetuksenOppiaineenArviointi(5, Some(aikaisintaan.plusWeeks(4))), // hylätyn korotus
+                    PerusopetuksenOppiaineenArviointi("H", None, Some(aikaisintaan.plusWeeks(3))), // hyväksytyn korotus
+                    PerusopetuksenOppiaineenArviointi(5, Some(aikaisintaan.plusWeeks(4))), // hyväksytyn korotus
                     PerusopetuksenOppiaineenArviointi(5, Some(aikaisintaan.plusWeeks(5))), // hyväksytyn korotus
                   ))),
                   alkuvaiheenKurssinSuoritus("AÄI4").copy(arviointi = Some(List(
@@ -170,12 +170,12 @@ class AikuistenPerusopetuksenOppimääränArvioinnitSpec
       secondRow.hyvaksytynKorotus should be (Some(true))
 
       val thirdRow = arviointiRivit.apply(2)
-      thirdRow.hylatynKorotus should be (Some(true))
-      thirdRow.hyvaksytynKorotus should be (Some(false))
+      thirdRow.hylatynKorotus should be (Some(false))
+      thirdRow.hyvaksytynKorotus should be (Some(true))
 
       val fourthRow = arviointiRivit.apply(3)
-      fourthRow.hylatynKorotus should be (Some(true))
-      fourthRow.hyvaksytynKorotus should be (Some(false))
+      fourthRow.hylatynKorotus should be (Some(false))
+      fourthRow.hyvaksytynKorotus should be (Some(true))
 
       val lastRow = arviointiRivit.last
       lastRow.hylatynKorotus should be (Some(false))

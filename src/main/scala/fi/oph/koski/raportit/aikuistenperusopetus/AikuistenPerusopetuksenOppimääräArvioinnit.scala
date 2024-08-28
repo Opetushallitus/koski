@@ -64,30 +64,36 @@ case class AikuistenPerusopetuksenOppimääräArvioinnit(db: DB) extends QueryMe
         ae.arviointi_arvosana,
         (ae.arviointi_pvm)::date = os.ensimmainen_arviointi_paiva AS ensimmainen_arviointi,
         CASE
-          WHEN EXISTS (
-            SELECT 1
-            FROM (
-              SELECT elem -> 'arvosana' ->> 'koodiarvo' AS arvosana
-              FROM jsonb_array_elements(os.data->'arviointi') AS elem
-              WHERE (elem ->> 'päivä')::date < (ae.arviointi_pvm)::date
-              ORDER BY (elem ->> 'päivä')::date DESC
-              LIMIT 1
-            ) subquery
-            WHERE arvosana in ('4', 'H')
+          WHEN (
+            -- Tarkista että aiemmat arvosanat ovat hylättyjä
+            NOT EXISTS (
+                SELECT 1
+                FROM jsonb_array_elements(os.data->'arviointi') AS elem
+                WHERE (elem ->> 'päivä')::date < (ae.arviointi_pvm)::date
+                AND (elem -> 'arvosana' ->> 'koodiarvo') NOT IN ('4', 'H')
+            )
+            -- ja että aiempia arvosanoja on ainakin 1
+            AND (
+                SELECT COUNT(1)
+                FROM jsonb_array_elements(os.data->'arviointi') AS elem
+                WHERE (elem ->> 'päivä')::date < (ae.arviointi_pvm)::date
+            ) > 0
           ) THEN true
           ELSE false
         END AS hylatyn_korotus,
         CASE
-          WHEN EXISTS (
-            SELECT 1
-            FROM (
-              SELECT elem -> 'arvosana' ->> 'koodiarvo' AS arvosana
-              FROM jsonb_array_elements(os.data->'arviointi') AS elem
-              WHERE (elem ->> 'päivä')::date < (ae.arviointi_pvm)::date
-              ORDER BY (elem ->> 'päivä')::date DESC
-              LIMIT 1
-            ) subquery
-            WHERE arvosana not in ('4', 'H')
+          WHEN (
+            EXISTS (
+                SELECT 1
+                FROM jsonb_array_elements(os.data->'arviointi') AS elem
+                WHERE (elem ->> 'päivä')::date < (ae.arviointi_pvm)::date
+                AND (elem -> 'arvosana' ->> 'koodiarvo') NOT IN ('4', 'H')
+            )
+            AND (
+                SELECT COUNT(1)
+                FROM jsonb_array_elements(os.data->'arviointi') AS elem
+                WHERE (elem ->> 'päivä')::date < (ae.arviointi_pvm)::date
+            ) > 0
           ) THEN true
           ELSE false
         END AS hyvaksytyn_korotus
