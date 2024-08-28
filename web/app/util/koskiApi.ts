@@ -281,6 +281,13 @@ export const fetchSuoritusPrefill = (
     )
   )
 
+export const fetchTutkinnonPerusteenSuoritustavat = (diaarinumero: string) =>
+  handleExpiredSession(
+    apiGet<Koodistokoodiviite<'ammatillisentutkinnonsuoritustapa'>[]>(
+      apiUrl(`tutkinnonperusteet/suoritustavat/${diaarinumero}`)
+    )
+  )
+
 // Virhetilanteiden hallinta
 
 const handleExpiredSession = tapLeftP((failure: ApiFailure) => {

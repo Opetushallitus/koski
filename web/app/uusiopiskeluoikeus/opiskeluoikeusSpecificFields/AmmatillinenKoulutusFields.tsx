@@ -1,6 +1,8 @@
 import React, { useCallback, useMemo, useState } from 'react'
+import { SuoritusFieldsProps } from '.'
 import { isSuccess, useApiWithParams } from '../../api-fetch'
 import { useKoodisto } from '../../appstate/koodisto'
+import { TestIdLayer } from '../../appstate/useTestId'
 import {
   SelectOption,
   groupKoodistoToOptions
@@ -12,7 +14,6 @@ import { Koodistokoodiviite } from '../../types/fi/oph/koski/schema/Koodistokood
 import { TutkintoPeruste } from '../../types/fi/oph/koski/tutkinto/TutkintoPeruste'
 import { koodistokoodiviiteId } from '../../util/koodisto'
 import { fetchOppilaitoksenPerusteet } from '../../util/koskiApi'
-import { DialogKoodistoSelect } from '../components/DialogKoodistoSelect'
 import { DialogPäätasonSuoritusSelect } from '../components/DialogPaatasonSuoritusSelect'
 import { DialogPerusteSelect } from '../components/DialogPerusteSelect'
 import { DialogSelect } from '../components/DialogSelect'
@@ -21,12 +22,12 @@ import {
   createPaikallinenMuuAmmatillinenKoulutus,
   createTutkinnonOsaaPienemmistäKokonaisuuksistaKoostuvaKoulutus
 } from '../opiskeluoikeusCreator/ammatillinenTutkinto'
+import { useAmmatillisenTutkinnonSuoritustapa } from '../state/ammatillisenTutkinnonSuoritustapa'
 import { UusiOpiskeluoikeusDialogState } from '../state/state'
-import { SuoritusFieldsProps } from '.'
-import { TestIdLayer } from '../../appstate/useTestId'
 
 export const AmmatillinenKoulutusFields = (props: SuoritusFieldsProps) => {
   const tutkinnot = useTutkinnot(props.state)
+  const suoritustavat = useAmmatillisenTutkinnonSuoritustapa(props.state)
 
   const onTOPKS = useCallback(
     (koulutus?: PaikallinenKoulutus) =>
@@ -51,21 +52,6 @@ export const AmmatillinenKoulutusFields = (props: SuoritusFieldsProps) => {
         />
       </label>
 
-      {props.state.suoritustapa.visible && (
-        <label>
-          {t('Suoritustapa')}
-          <DialogKoodistoSelect
-            state={props.state.suoritustapa}
-            koodistoUri="ammatillisentutkinnonsuoritustapa"
-            testId="suoritustapa"
-          />
-        </label>
-      )}
-
-      {props.state.muuAmmatillinenKoulutus.visible && (
-        <MuuAmmatillinenKoulutusFields {...props} />
-      )}
-
       {props.state.tutkinto.visible && (
         <label>
           {t('Tutkinto')}
@@ -80,6 +66,25 @@ export const AmmatillinenKoulutusFields = (props: SuoritusFieldsProps) => {
             testId="tutkinto"
           />
         </label>
+      )}
+
+      {props.state.suoritustapa.visible && (
+        <label>
+          {t('Suoritustapa')}
+          <DialogSelect
+            options={suoritustavat}
+            value={
+              props.state.suoritustapa.value &&
+              koodistokoodiviiteId(props.state.suoritustapa.value)
+            }
+            onChange={(opt) => props.state.suoritustapa.set(opt?.value)}
+            testId="suoritustapa"
+          />
+        </label>
+      )}
+
+      {props.state.muuAmmatillinenKoulutus.visible && (
+        <MuuAmmatillinenKoulutusFields {...props} />
       )}
 
       {props.state.tutkinnonOsaaPienemmistäKokonaisuuksistaKoostuvaKoulutus

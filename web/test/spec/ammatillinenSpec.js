@@ -331,8 +331,8 @@ describe('Ammatillinen koulutus', function () {
               addOppija.enterHenkilötiedot(),
               addOppija.selectOpiskeluoikeudenTyyppi('Ammatillinen koulutus'),
               addOppija.selectSuoritustyyppi('Ammatillinen tutkinto'),
-              addOppija.selectSuoritustapa('Ammatillinen perustutkinto'),
               addOppija.selectTutkinto('auto'),
+              addOppija.selectSuoritustapa('Ammatillinen perustutkinto'),
               addOppija.selectAloituspäivä('1.1.2018'),
               addOppija.selectMaksuttomuus(0)
             )
@@ -388,8 +388,8 @@ describe('Ammatillinen koulutus', function () {
           describe('Tutkinnon valinnan jälkeen', function () {
             before(
               addOppija.selectSuoritustyyppi('Ammatillinen tutkinto'),
-              addOppija.selectSuoritustapa('Ammatillinen perustutkinto'),
               addOppija.selectTutkinto('auto'),
+              addOppija.selectSuoritustapa('Ammatillinen perustutkinto'),
               addOppija.selectMaksuttomuus(0)
             )
             it('Lisää-nappi on enabloitu', function () {
@@ -698,7 +698,6 @@ describe('Ammatillinen koulutus', function () {
           addOppija.selectOppilaitos('Stadin'),
           addOppija.selectOpiskeluoikeudenTyyppi('Ammatillinen koulutus'),
           addOppija.selectSuoritustyyppi('Ammatillinen tutkinto'),
-          addOppija.selectSuoritustapa('Reformin mukainen näyttö'),
           addOppija.selectTutkinto(
             'Autoalan perustutkinto, Koulutusvientikokeilu'
           ),
@@ -1073,8 +1072,8 @@ describe('Ammatillinen koulutus', function () {
         addOppija.selectOppilaitos('Stadin'),
         addOppija.selectOpiskeluoikeudenTyyppi('Ammatillinen koulutus'),
         addOppija.selectSuoritustyyppi('Ammatillisen tutkinnon osa/osia'),
-        addOppija.selectSuoritustapa('Ammatillinen perustutkinto'),
         addOppija.selectTutkinto('Autoalan perust'),
+        addOppija.selectSuoritustapa('Ammatillinen perustutkinto'),
         addOppija.selectOpintojenRahoitus('Valtionosuusrahoitteinen koulutus'),
         addOppija.selectMaksuttomuus(0),
         addOppija.submitAndExpectSuccess('Tyhjä, Tero (230872-7258)')
@@ -2482,7 +2481,6 @@ describe('Ammatillinen koulutus', function () {
           addOppija.selectOppilaitos('Stadin'),
           addOppija.selectOpiskeluoikeudenTyyppi('Ammatillinen koulutus'),
           addOppija.selectSuoritustyyppi('Ammatillinen tutkinto'),
-          addOppija.selectSuoritustapa('Reformin mukainen näyttö'),
           addOppija.selectTutkinto('Autoalan perustutkinto', 2),
           addOppija.selectAloituspäivä('1.1.2018'),
           addOppija.selectOpintojenRahoitus(
@@ -3452,8 +3450,8 @@ describe('Ammatillinen koulutus', function () {
           addOppija.selectOppilaitos('Omnia'),
           addOppija.selectOpiskeluoikeudenTyyppi('Ammatillinen koulutus'),
           addOppija.selectSuoritustyyppi('Ammatillinen tutkinto'),
-          addOppija.selectSuoritustapa('Ammatillinen perustutkinto'),
           addOppija.selectTutkinto('Autoalan perustutkinto'),
+          addOppija.selectSuoritustapa('Ammatillinen perustutkinto'),
           addOppija.selectAloituspäivä('1.1.2018'),
           addOppija.selectOpintojenRahoitus(
             'Valtionosuusrahoitteinen koulutus'
