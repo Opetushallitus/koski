@@ -43,14 +43,14 @@ object OpintopolkuHenkilöFacade {
 object RemoteOpintopolkuHenkilöFacade {
   def apply(config: Config, perustiedotRepository: => OpiskeluoikeudenPerustiedotRepository, perustiedotIndexer: => OpiskeluoikeudenPerustiedotIndexer): RemoteOpintopolkuHenkilöFacade = {
     if (config.hasPath("authentication-service.mockOid") && config.getBoolean("authentication-service.mockOid")) {
-      new RemoteOpintopolkuHenkilöFacadeWithMockOids(OppijanumeroRekisteriClient(config), perustiedotRepository, perustiedotIndexer)
+      new RemoteOpintopolkuHenkilöFacadeWithMockOids(OppijanumeroRekisteriClient(config), perustiedotRepository, perustiedotIndexer, config)
     } else {
-      new RemoteOpintopolkuHenkilöFacade(OppijanumeroRekisteriClient(config))
+      new RemoteOpintopolkuHenkilöFacade(OppijanumeroRekisteriClient(config), config)
     }
   }
 }
 
-class RemoteOpintopolkuHenkilöFacade(oppijanumeroRekisteriClient: OppijanumeroRekisteriClient)
+class RemoteOpintopolkuHenkilöFacade(oppijanumeroRekisteriClient: OppijanumeroRekisteriClient, config: Config)
   extends OpintopolkuHenkilöFacade
     with Timing {
 
@@ -84,14 +84,25 @@ class RemoteOpintopolkuHenkilöFacade(oppijanumeroRekisteriClient: OppijanumeroR
 
   def findSlaveOids(masterOid: String): List[Oid] = runIO(oppijanumeroRekisteriClient.findSlaveOids(masterOid))
 
-  def findKuntahistoriat(oids: Seq[String], turvakielto: Boolean): Seq[OppijanumerorekisteriKotikuntahistoriaRow] = Seq.empty // TODO TOR-2031: Toteutus
+  def findKuntahistoriat(oids: Seq[String], turvakielto: Boolean): Seq[OppijanumerorekisteriKotikuntahistoriaRow] =
+    if (kotikuntahistoriaEnabled) {
+      runIO(oppijanumeroRekisteriClient.findKotikuntahistoria(oids, turvakielto))
+    } else {
+      Seq.empty
+    }
+
+  private def kotikuntahistoriaEnabled: Boolean = {
+    val path = "kotikuntahistoria.enabled"
+    config.hasPath(path) && config.getBoolean(path)
+  }
 }
 
 class RemoteOpintopolkuHenkilöFacadeWithMockOids(
   oppijanumeroRekisteriClient: OppijanumeroRekisteriClient,
   perustiedotRepository: OpiskeluoikeudenPerustiedotRepository,
-  perustiedotIndexer: OpiskeluoikeudenPerustiedotIndexer
-) extends RemoteOpintopolkuHenkilöFacade(oppijanumeroRekisteriClient) {
+  perustiedotIndexer: OpiskeluoikeudenPerustiedotIndexer,
+  config: Config,
+) extends RemoteOpintopolkuHenkilöFacade(oppijanumeroRekisteriClient, config) {
   override def findOppijatNoSlaveOids(oids: Seq[String]): Seq[OppijaHenkilö] = {
     val found = super.findOppijatNoSlaveOids(oids).map(henkilö => (henkilö.oid, henkilö)).toMap
     oids.map { oid =>
