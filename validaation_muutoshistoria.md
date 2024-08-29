@@ -1,5 +1,9 @@
 # Koskeen tallennettavien tietojen validaatiosäännöt
 
+## xx.9.2024
+
+- Ulkomailta tai Ahvenanmaalta Suomeen muuttaneen oppijan maksuttomuustietojen siirtojen pakollisuuden validoinnissa otetaan huomioon, onko oppija muuttanut alaikäisenä
+
 ## 11.7.2024
 
 - Lisätty Vapaan Sivistystön Kotoutumis- ja Lukutaitokoulutuksille 53op:n yhteislaajuusvalidaatio
