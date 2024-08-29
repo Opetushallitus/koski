@@ -14,7 +14,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "fp-ts": "^2.16.6",
+    "fp-ts": "^2.16.9",
     "tail": "^2.2.6",
     "ts-node": "^10.9.2"
   },
