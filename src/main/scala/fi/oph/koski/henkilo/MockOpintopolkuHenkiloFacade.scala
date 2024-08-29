@@ -137,12 +137,13 @@ class MockOpintopolkuHenkilöFacade(val hetu: Hetu, fixtures: => FixtureCreator)
     hetus.flatMap(findOppijaByHetu)
   }
 
-  def findKuntahistoriat(oids: Seq[String]): Seq[OppijanumerorekisteriKotikuntahistoriaRow] =
+  def findKuntahistoriat(oids: Seq[String], turvakielto: Boolean): Seq[OppijanumerorekisteriKotikuntahistoriaRow] =
     (fixtures.getCurrentFixtureStateName() match {
-      case KoskiSpecificFixtureState.name => Some(koskiKotikuntahistoriaData)
-      case ValpasOpiskeluoikeusFixtureState.name => Some(valpasKotikuntahistoriaData)
-      case _ => None
-    }).toList.flatten.filter(row => oids.contains(row.oid))
+      case KoskiSpecificFixtureState.name if turvakielto => koskiKotikuntahistoriaTurvakieltoData
+      case KoskiSpecificFixtureState.name if !turvakielto => koskiKotikuntahistoriaData
+      case ValpasOpiskeluoikeusFixtureState.name => valpasKotikuntahistoriaData
+      case _ => Seq.empty
+    }).filter(row => oids.contains(row.oid))
 
   override def findSlaveOids(masterOid: String): List[Oid] =
     alkuperäisetOppijat.filter(_.master.exists(_.oid == masterOid)).map(_.henkilö.oid)
@@ -177,14 +178,22 @@ class MockOpintopolkuHenkilöFacade(val hetu: Hetu, fixtures: => FixtureCreator)
   private lazy val koskiKotikuntahistoriaData: Seq[OppijanumerorekisteriKotikuntahistoriaRow] =
     loadKotikuntahistoria("koski-kotikuntahistoria.json")
 
+  private lazy val koskiKotikuntahistoriaTurvakieltoData: Seq[OppijanumerorekisteriKotikuntahistoriaRow] =
+    loadKotikuntahistoria("koski-kotikuntahistoria-turvakielto.json")
+
   private lazy val valpasKotikuntahistoriaData: Seq[OppijanumerorekisteriKotikuntahistoriaRow] =
     loadKotikuntahistoria("valpas-kotikuntahistoria.json")
 
   def loadKotikuntahistoria(resourceName: String): Seq[OppijanumerorekisteriKotikuntahistoriaRow] =
     Using.Manager { use =>
+      println(s"************************************* loadKotikuntahistoria $resourceName")
       val source = use(Source.fromResource(s"mockdata/oppijanumerorekisteri/$resourceName"))
+      println(s"************************************* source loaded")
       val json = JsonMethods.parse(source.mkString)
-      JsonSerializer.extract[List[OppijanumerorekisteriKotikuntahistoriaRow]](json)
+      println(s"************************************* json parsed")
+      val x = JsonSerializer.extract[List[OppijanumerorekisteriKotikuntahistoriaRow]](json)
+      println(s"************************************* value extracted")
+      x
     }.fold({ e =>
       logger.error(e)("Loading mockdata failed")
       List.empty

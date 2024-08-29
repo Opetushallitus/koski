@@ -190,10 +190,10 @@ object MaksuttomuusValidation {
     def onMannerSuomenKunta(kuntakoodi: String): Boolean =
       !Oppivelvollisuustiedot.oppivelvollisuudenUlkopuolisetKunnat.contains(kuntakoodi)
 
-    oppijanumerorekisteri
-      .findKuntahistoriat(Seq(oppijaOid))
+    Seq(false, true)
+      .flatMap(t => oppijanumerorekisteri.findKuntahistoriat(Seq(oppijaOid), turvakiellolliset = t))
       .filter(_.kuntaanMuuttopv.isBefore(täysiIkäinenAlkaen))
-      .map(_.kotikuntaKoodiarvo)
+      .map(_.kotikunta)
       .exists(onMannerSuomenKunta)
   }
 

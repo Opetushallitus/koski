@@ -1,25 +1,25 @@
 [
   {
     "oid": "1.2.246.562.24.00000000181",
-    "kotikunta": 200,
+    "kotikunta": "200",
     "kuntaanMuuttopv": "2006-01-01",
     "kunnastaPoisMuuttopv": "2016-01-01"
   },
   {
     "oid": "1.2.246.562.24.00000000181",
-    "kotikunta": 91,
+    "kotikunta": "091",
     "kuntaanMuuttopv": "2014-01-01",
     "kunnastaPoisMuuttopv": "2015-01-01"
   },
   {
     "oid": "1.2.246.562.24.00000000181",
-    "kotikunta": 200,
+    "kotikunta": "200",
     "kuntaanMuuttopv": "2015-01-01",
     "kunnastaPoisMuuttopv": "2016-01-01"
   },
   {
     "oid": "1.2.246.562.24.00000000181",
-    "kotikunta": 91,
+    "kotikunta": "091",
     "kuntaanMuuttopv": "2016-01-01",
     "kunnastaPoisMuuttopv": null
   }

@@ -389,8 +389,8 @@ class ValpasOppijaLaajatTiedotService(
       localKuntahistoria
     } else {
       application.opintopolkuHenkilöFacade
-        .findKuntahistoriat(oppijaOid)
-        .map(_.toDbRow)
+        .findKuntahistoriat(oppijaOid, turvakiellolliset = false)
+        .map(_.toDbRow(turvakielto = false))
     }
     oppija.withKotikuntahistoria(kuntahistoria)
   }

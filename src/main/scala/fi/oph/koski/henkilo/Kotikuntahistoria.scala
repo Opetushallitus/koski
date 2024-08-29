@@ -18,19 +18,16 @@ object Kotikuntahistoria {
 
 case class OppijanumerorekisteriKotikuntahistoriaRow(
   oid: String,
-  kotikunta: Long,
+  kotikunta: String,
   kuntaanMuuttopv: LocalDate,
   kunnastaPoisMuuttopv: Option[LocalDate],
-  turvakielto: Option[Boolean], // TODO TOR-2031: Tästä ei ole vielä sovittu
 ) {
-  def toDbRow: RKotikuntahistoriaRow =
+  def toDbRow(turvakielto: Boolean): RKotikuntahistoriaRow =
     RKotikuntahistoriaRow(
       masterOppijaOid = oid,
-      kotikunta = kotikuntaKoodiarvo,
+      kotikunta = kotikunta,
       muuttoPvm = Date.valueOf(kuntaanMuuttopv),
       poismuuttoPvm = kunnastaPoisMuuttopv.map(pvm => Date.valueOf(pvm)),
-      turvakielto = turvakielto.contains(true),
+      turvakielto = turvakielto,
     )
-
-  def kotikuntaKoodiarvo: String = "%03d".format(kotikunta)
 }
