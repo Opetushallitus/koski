@@ -192,7 +192,7 @@ object MaksuttomuusValidation {
 
     Seq(false, true)
       .flatMap(t => oppijanumerorekisteri.findKuntahistoriat(Seq(oppijaOid), turvakiellolliset = t))
-      .filter(_.kuntaanMuuttopv.isBefore(täysiIkäinenAlkaen))
+      .filter(t => t.kuntaanMuuttopv.exists(_.isBefore(täysiIkäinenAlkaen)) || t.kunnastaPoisMuuttopv.exists(_.isBefore(täysiIkäinenAlkaen)))
       .map(_.kotikunta)
       .exists(onMannerSuomenKunta)
   }

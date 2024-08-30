@@ -19,14 +19,14 @@ object Kotikuntahistoria {
 case class OppijanumerorekisteriKotikuntahistoriaRow(
   oid: String,
   kotikunta: String,
-  kuntaanMuuttopv: LocalDate,
+  kuntaanMuuttopv: Option[LocalDate],
   kunnastaPoisMuuttopv: Option[LocalDate],
 ) {
   def toDbRow(turvakielto: Boolean): RKotikuntahistoriaRow =
     RKotikuntahistoriaRow(
       masterOppijaOid = oid,
       kotikunta = kotikunta,
-      muuttoPvm = Date.valueOf(kuntaanMuuttopv),
+      muuttoPvm = kuntaanMuuttopv.map(pvm => Date.valueOf(pvm)),
       poismuuttoPvm = kunnastaPoisMuuttopv.map(pvm => Date.valueOf(pvm)),
       turvakielto = turvakielto,
     )

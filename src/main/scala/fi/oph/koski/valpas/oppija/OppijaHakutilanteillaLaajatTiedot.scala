@@ -25,6 +25,7 @@ case class OppijaHakutilanteillaLaajatTiedot(
   onOikeusMitätöidäOppivelvollisuudestaVapautus: Option[Boolean],
   lisätiedot: Seq[OpiskeluoikeusLisätiedot],
   muuttanutSuomeen: Option[LocalDate],
+  muuttanutSuomeenEiTiedossa: Option[Boolean], // Some(true) silloin kun tiedetään henkilön muuttaneen suomeen, mutta päivämäärä ei ole tiedossa
 ) {
   def validate(koodistoviitepalvelu: KoodistoViitePalvelu): OppijaHakutilanteillaLaajatTiedot =
     this.copy(hakutilanteet = hakutilanteet.map(_.validate(koodistoviitepalvelu)))
@@ -53,23 +54,29 @@ case class OppijaHakutilanteillaLaajatTiedot(
     muuttanutSuomeen = None,
   )
 
-  def withKotikuntahistoria(kotikuntahistoria: Seq[RKotikuntahistoriaRow]): OppijaHakutilanteillaLaajatTiedot =
-    copy(muuttanutSuomeen = if (kotikuntahistoria.nonEmpty) {
-      // Konvertoidaan kotikuntahistorian rivit tupleiksi: muuttopäivä, kunta ulkomailla
-      val muuttopäivät = kotikuntahistoria
-        .map(r => (
-          r.muuttoPvm.toLocalDate,
-          Oppivelvollisuustiedot.oppivelvollisuudenUlkopuolisetKunnat.contains(r.kotikunta),
-        ))
-        .sortBy(_._1)
+  def withKotikuntahistoria(kotikuntahistoria: Seq[RKotikuntahistoriaRow]): OppijaHakutilanteillaLaajatTiedot = {
+    val muuttopäivät = kotikuntahistoria
+      .map(r => (
+        r.muuttoPvm.map(_.toLocalDate),
+        Oppivelvollisuustiedot.oppivelvollisuudenUlkopuolisetKunnat.contains(r.kotikunta),
+      ))
+      .sortBy(_._1)
 
+    val muuttopvm = if (muuttopäivät.nonEmpty) {
       muuttopäivät.init
         .zip(muuttopäivät.tail)
         .find(muutto => muutto._1._2 && !muutto._2._2)
         .map(_._2._1)
     } else {
       None
-    })
+    }
+
+    muuttopvm match {
+      case Some(None) => copy(muuttanutSuomeenEiTiedossa = Some(true))
+      case Some(pvm) => copy(muuttanutSuomeen = pvm)
+      case _ => this
+    }
+  }
 }
 
 object OppijaHakutilanteillaLaajatTiedot {
@@ -90,6 +97,7 @@ object OppijaHakutilanteillaLaajatTiedot {
       onOikeusMitätöidäOppivelvollisuudestaVapautus = None,
       lisätiedot = Seq.empty,
       muuttanutSuomeen = None,
+      muuttanutSuomeenEiTiedossa = None,
     )
   }
 
@@ -108,6 +116,7 @@ object OppijaHakutilanteillaLaajatTiedot {
       onOikeusMitätöidäOppivelvollisuudestaVapautus = None,
       lisätiedot = Seq.empty,
       muuttanutSuomeen = None,
+      muuttanutSuomeenEiTiedossa = None,
     )
   }
 
@@ -123,6 +132,7 @@ object OppijaHakutilanteillaLaajatTiedot {
       onOikeusMitätöidäOppivelvollisuudestaVapautus = None,
       lisätiedot = Seq.empty,
       muuttanutSuomeen = None,
+      muuttanutSuomeenEiTiedossa = None,
     )
   }
 
