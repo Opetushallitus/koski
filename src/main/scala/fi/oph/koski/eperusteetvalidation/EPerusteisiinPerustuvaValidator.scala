@@ -19,21 +19,25 @@ class EPerusteisiinPerustuvaValidator(
 ) extends EPerusteetValidationUtils(tutkintoRepository, koodistoViitePalvelu) with Logging {
   private val tutkintorakenneValidator: TutkintoRakenneValidator = TutkintoRakenneValidator(tutkintoRepository, koodistoViitePalvelu, config)
 
-  def validateTutkintorakenne(opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus): HttpStatus = HttpStatus.fold(
-    opiskeluoikeus.suoritukset.map(
-      validateTutkintorakenne(
-        _,
-        opiskeluoikeus.tila.opiskeluoikeusjaksot.find(_.tila.koodiarvo == "lasna").map(_.alku),
-        opiskeluoikeus.getVaadittuPerusteenVoimassaolopäivä
+  def validateTutkintorakenne(opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus): HttpStatus = {
+    HttpStatus.fold(
+      opiskeluoikeus.suoritukset.map(
+        validateTutkintorakenne(
+          _,
+          opiskeluoikeus.tila.opiskeluoikeusjaksot.find(_.tila.koodiarvo == "lasna").map(_.alku),
+          opiskeluoikeus.getVaadittuPerusteenVoimassaolopäivä,
+          opiskeluoikeus
+        )
       )
     )
-  )
+  }
 
   private def validateTutkintorakenne(
     suoritus: PäätasonSuoritus,
     alkamispäiväLäsnä: Option[LocalDate],
-    vaadittuPerusteenVoimassaolopäivä: LocalDate
-  ): HttpStatus = tutkintorakenneValidator.validate(suoritus, alkamispäiväLäsnä, vaadittuPerusteenVoimassaolopäivä)
+    vaadittuPerusteenVoimassaolopäivä: LocalDate,
+    oo: KoskeenTallennettavaOpiskeluoikeus
+  ): HttpStatus = tutkintorakenneValidator.validate(suoritus, alkamispäiväLäsnä, vaadittuPerusteenVoimassaolopäivä, oo)
 
   def validateKoulutustyypinLöytyminenAmmatillisissa(oo: KoskeenTallennettavaOpiskeluoikeus): Either[HttpStatus, KoskeenTallennettavaOpiskeluoikeus] = {
     tutkintorakenneValidator.validateKoulutustyypinLöytyminenAmmatillisissa(oo)
