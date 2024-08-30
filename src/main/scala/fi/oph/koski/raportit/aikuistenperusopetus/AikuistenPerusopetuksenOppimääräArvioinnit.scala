@@ -115,6 +115,7 @@ case class AikuistenPerusopetuksenOppimääräArvioinnit(db: DB) extends QueryMe
       WHERE (oppilaitos_oid = ANY($oppilaitosOidit) OR koulutustoimija_oid = ANY($oppilaitosOidit))
         AND (ps.suorituksen_tyyppi = 'aikuistenperusopetuksenoppimaara'
           OR ps.suorituksen_tyyppi = 'aikuistenperusopetuksenoppimaaranalkuvaihe')
+        AND (os.suorituksen_tyyppi = 'aikuistenperusopetuksenkurssi' OR os.suorituksen_tyyppi = 'aikuistenperusopetuksenalkuvaiheenkurssi')
         AND (ae.arviointi_pvm)::date BETWEEN $aikaisintaan AND $viimeistaan;
   """
   }
