@@ -154,7 +154,7 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
                 ), tutkinnonSuoritustapaOps)(
                   verifyResponseStatus(400,
                     KoskiErrorCategory.badRequest.validation.laajuudet.suorituksenLaajuusEiVastaaRakennetta
-                    ("Arvioidun suorituksen 'Viestintä- ja vuorovaikutusosaaminen' laajuus oltava perusteen mukaan vähintään 11")))
+                    ("Arvioidun suorituksen 'Viestintä- ja vuorovaikutusosaaminen' laajuus oltava perusteen mukaan vähintään 11 (oli 10.0)")))
                 )
             }
 
@@ -239,10 +239,10 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
                   verifyResponseStatus(400, List(
                     ErrorMatcher.exact(
                       KoskiErrorCategory.badRequest.validation.laajuudet.suorituksenLaajuusEiVastaaRakennetta,
-                      "Osa-alueen 'Viestintä ja vuorovaikutus äidinkielellä, englanti' (VVAI22) pakollisen osan laajuus oltava perusteen mukaan 4"),
+                      "Osa-alueen 'Viestintä ja vuorovaikutus äidinkielellä, englanti' (VVAI22) pakollisen osan laajuus oltava perusteen mukaan 4 (oli 3.0)"),
                     ErrorMatcher.exact(
                       KoskiErrorCategory.badRequest.validation.laajuudet.suorituksenLaajuusEiVastaaRakennetta,
-                      "Osa-alueen 'Viestintä ja vuorovaikutus äidinkielellä, englanti' (VVAI22) valinnaisen osan laajuus oltava perusteen mukaan 3")
+                      "Osa-alueen 'Viestintä ja vuorovaikutus äidinkielellä, englanti' (VVAI22) valinnaisen osan laajuus oltava perusteen mukaan 3 (oli 2.0)")
                   ))
                 })
             }
@@ -262,7 +262,7 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
                 setupOppijaWithOpiskeluoikeus(henkilö = KoskiSpecificMockOppijat.tyhjä, opiskeluoikeus = defaultOpiskeluoikeus.copy(suoritukset = List(suoritus))) {
                   verifyResponseStatus(400,
                     KoskiErrorCategory.badRequest.validation.laajuudet.suorituksenLaajuusEiVastaaRakennetta(
-                      "Osa-alueen 'Matematiikka ja matematiikan soveltaminen' (MLMA) pakollisen osan laajuus oltava perusteen mukaan 4")
+                      "Osa-alueen 'Matematiikka ja matematiikan soveltaminen' (MLMA) pakollisen osan laajuus oltava perusteen mukaan 4 (oli 5.0)")
                   )
                 })
             }
