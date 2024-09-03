@@ -146,7 +146,7 @@ listaaminen tarvittaessa esimerkiksi KOSKI-palvelun käyttöliittymässä on yks
 
 ### (I.1) Tehdään OAuth 2.0 -palvelintoteutus itse, ei käytetä valmiita komponentteja
 
-KOSKI-backendiin ei ole tarjolla valmista hyvin olemassoleviin HTTP-palvelin toteutuksiin soveltuvaa ja aktiivisessa ylläpidossa olevaa Scala-kirjastoa.
+KOSKI-backendiin ei ole tarjolla valmista hyvin olemassoleviin HTTP-palvelintoteutuksiin soveltuvaa ja aktiivisessa ylläpidossa olevaa Scala-kirjastoa.
 Tämä aiheuttaa vähän lisätyötä, kun OAuth 2.0:n headerformaatit yms. pitää selvittää ja toteuttaa itse detaljitasolla, mutta toisaalta
 meidän ei tarvitse toteuttaa kuin authorization code -flow, joten eri viestinvaihtoja on kuitenkin melko rajallinen määrä.
 
@@ -155,8 +155,7 @@ Java-kirjasto, jonka voisimme ottaa käyttöön.
 
 ### (J) Vaaditaan clienteilta PKCE:n toteuttaminen authorization code:n luomisessa
 
-PKCE estää tietyt tietoturvahyökkäykset, ja mahdollistaa helpomman laajennatavuuden mahdollisesti jatkossa stand-alone mobiili- tai web-clienteille.
-
+PKCE estää tietyt tietoturvahyökkäykset, ja mahdollistaa helpomman laajennettavuuden mahdollisesti jatkossa stand-alone mobiili- tai web-clienteille.
 
 ### (K) Ei yritetä yhdistää toteutusta OPH Yleiskäyttöisten palveluiden suunnittelemaan machine-to-machine OAuth 2.0 -autentikointiuudistukseen
 
