@@ -4,6 +4,7 @@
   grid-template-areas: 'select';
   align-items: center;
   margin-bottom: 0.5 * @baseline;
+  position: relative;
 
   .Select__input {
     appearance: none;
@@ -94,5 +95,16 @@
       max-height: none;
       box-shadow: none;
     }
+  }
+}
+
+.Select__spinner {
+  position: absolute;
+  top: 5px;
+  right: 30px;
+
+  .spinner-circle {
+    width: 20px;
+    height: 20px;
   }
 }
