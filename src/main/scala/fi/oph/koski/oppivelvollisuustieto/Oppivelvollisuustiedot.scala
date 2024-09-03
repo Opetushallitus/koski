@@ -151,7 +151,7 @@ object Oppivelvollisuustiedot {
             select
               distinct master_oid,
               first_value(opiskeluoikeus.alkamispaiva) over (partition by master_oid order by opiskeluoikeus.alkamispaiva asc nulls last) ammattitutkinnon_alkamispaiva,
-              first_value(opiskeluoikeus.paattymispaiva) over (partition by master_oid order by opiskeluoikeus.paattymispaiva asc nulls last) ammattitutkinnon_paattymispaiva,
+              first_value(opiskeluoikeus.paattymispaiva) over (partition by master_oid order by opiskeluoikeus.paattymispaiva desc nulls last) ammattitutkinnon_paattymispaiva,
               first_value(vahvistus_paiva) over (partition by master_oid order by vahvistus_paiva asc nulls last) ammattitutkinnon_vahvistus_paiva,
               true suorittaa_ammattitutkintoa
             from
@@ -167,7 +167,7 @@ object Oppivelvollisuustiedot {
             select
               distinct master_oid,
               first_value(opiskeluoikeus.alkamispaiva) over (partition by master_oid order by opiskeluoikeus.alkamispaiva asc nulls last) lukion_oppimaaraan_alkamispaiva,
-              first_value(opiskeluoikeus.paattymispaiva) over (partition by master_oid order by opiskeluoikeus.paattymispaiva asc nulls last) lukion_oppimaaraan_paattymispaiva,
+              first_value(opiskeluoikeus.paattymispaiva) over (partition by master_oid order by opiskeluoikeus.paattymispaiva desc nulls last) lukion_oppimaaraan_paattymispaiva,
               first_value(vahvistus_paiva) over (partition by master_oid order by vahvistus_paiva asc nulls last) lukion_oppimaaraan_vahvistus_paiva,
               true suorittaa_lukionoppimaaraa
             from
@@ -183,7 +183,7 @@ object Oppivelvollisuustiedot {
             select
               distinct master_oid,
               first_value(opiskeluoikeus.alkamispaiva) over (partition by master_oid order by opiskeluoikeus.alkamispaiva asc nulls last) lukion_aineopintojen_alkamispaiva,
-              first_value(opiskeluoikeus.paattymispaiva) over (partition by master_oid order by opiskeluoikeus.paattymispaiva asc nulls last) lukion_aineopintojen_paattymispaiva,
+              first_value(opiskeluoikeus.paattymispaiva) over (partition by master_oid order by opiskeluoikeus.paattymispaiva desc nulls last) lukion_aineopintojen_paattymispaiva,
               first_value(vahvistus_paiva) over (partition by master_oid order by vahvistus_paiva asc nulls last) lukion_aineopintojen_vahvistus_paiva,
               true suorittaa_lukionaineopintoja
             from
@@ -217,8 +217,9 @@ object Oppivelvollisuustiedot {
             left join lukionoppimaara on ammattitutkinto.master_oid = lukionoppimaara.master_oid
             left join lukionaineopinnot on ammattitutkinto.master_oid = lukionaineopinnot.master_oid
           where
-            (ammattitutkinnon_alkamispaiva, coalesce(ammattitutkinnon_paattymispaiva, now())) overlaps (lukion_oppimaaraan_alkamispaiva, coalesce(lukion_oppimaaraan_paattymispaiva, now()))
-            or (ammattitutkinnon_alkamispaiva, coalesce(ammattitutkinnon_paattymispaiva, now())) overlaps (lukion_aineopintojen_alkamispaiva, coalesce(lukion_aineopintojen_paattymispaiva, now()))
+            (ammattitutkinnon_alkamispaiva is not null and (lukion_oppimaaraan_alkamispaiva is not null or lukion_aineopintojen_alkamispaiva is not null))
+            and ((ammattitutkinnon_alkamispaiva, coalesce(ammattitutkinnon_paattymispaiva, now())) overlaps (lukion_oppimaaraan_alkamispaiva, coalesce(lukion_oppimaaraan_paattymispaiva, now()))
+            or (ammattitutkinnon_alkamispaiva, coalesce(ammattitutkinnon_paattymispaiva, now())) overlaps (lukion_aineopintojen_alkamispaiva, coalesce(lukion_aineopintojen_paattymispaiva, now())))
 
         ),
 
