@@ -36,6 +36,7 @@ export const DialogKoodistoSelect = <U extends string>(
       initialValue={props.default && `${props.koodistoUri}_${props.default}`}
       value={props.state.value && koodistokoodiviiteId(props.state.value)}
       onChange={(opt) => props.state.set(opt?.value)}
+      maxOptions={50}
       testId={props.testId}
     />
   )
