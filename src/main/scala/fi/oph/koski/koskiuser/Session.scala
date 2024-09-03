@@ -74,6 +74,7 @@ class KoskiSpecificSession(
 
   def hasWriteAccess(organisaatio: Organisaatio.Oid, koulutustoimija: Option[Organisaatio.Oid]) = hasAccess(organisaatio, koulutustoimija, AccessType.write) && hasRole(LUOTTAMUKSELLINEN_KAIKKI_TIEDOT)
   def hasTiedonsiirronMitätöintiAccess(organisaatio: Organisaatio.Oid, koulutustoimija: Option[Organisaatio.Oid]) = hasAccess(organisaatio, koulutustoimija, AccessType.tiedonsiirronMitätöinti)
+  def hasKäyttöliittymäsiirronMitätöintiAccess(organisaatio: Organisaatio.Oid, koulutustoimija: Option[Organisaatio.Oid]) = hasAccess(organisaatio, koulutustoimija, AccessType.käyttöliittymäsiirronMitätöinti)
 
   // HUOM!
   // Kun lisäät uuden luovutuspalvelukäyttöoikeuden alle, muista lisätä se myös
@@ -137,7 +138,7 @@ class KoskiSpecificSession(
   def hasAnyWriteAccess = (globalAccess.contains(AccessType.write) || organisationOids(AccessType.write).nonEmpty) && hasRole(LUOTTAMUKSELLINEN_KAIKKI_TIEDOT)
   def hasLocalizationWriteAccess = globalKäyttöoikeudet.find(_.globalPalveluroolit.contains(Palvelurooli("LOKALISOINTI", "CRUD"))).isDefined
   def hasAnyReadAccess = hasGlobalReadAccess || orgKäyttöoikeudet.exists(_.organisaatioAccessType.contains(AccessType.read)) || hasGlobalKoulutusmuotoReadAccess
-  def hasAnyTiedonsiirronMitätöintiAccess = globalAccess.contains(AccessType.tiedonsiirronMitätöinti) || organisationOids(AccessType.tiedonsiirronMitätöinti).nonEmpty
+  def hasAnyMitätöintiAccess = globalAccess.contains(AccessType.tiedonsiirronMitätöinti) || globalAccess.contains(AccessType.käyttöliittymäsiirronMitätöinti) || organisationOids(AccessType.tiedonsiirronMitätöinti).nonEmpty || organisationOids(AccessType.käyttöliittymäsiirronMitätöinti).nonEmpty
   def hasRaportitAccess = hasAnyReadAccess && hasRole(LUOTTAMUKSELLINEN_KAIKKI_TIEDOT) && !hasGlobalKoulutusmuotoReadAccess
   def sensitiveDataAllowed(requiredRoles: Set[Role]) = requiredRoles.exists(hasRole)
 

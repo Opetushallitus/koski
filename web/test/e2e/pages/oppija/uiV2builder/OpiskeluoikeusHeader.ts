@@ -17,6 +17,6 @@ export const OpiskeluoikeusHeader = () => ({
   tila: OpiskeluoikeudenTila(),
   lisätiedotButton: Button,
   lisätiedot: {
-    maksuttomuudet: arrayOf({remove: Button})
+    maksuttomuudet: arrayOf({ remove: Button })
   }
 })

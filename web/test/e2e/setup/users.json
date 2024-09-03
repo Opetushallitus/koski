@@ -101,6 +101,11 @@
       "type": "virkailija"
     },
     {
+      "username": "varsinaissuomi-oppilaitos-pää",
+      "password": "varsinaissuomi-oppilaitos-pää",
+      "type": "virkailija"
+    },
+    {
       "username": "hki-tallentaja",
       "password": "hki-tallentaja",
       "type": "virkailija"

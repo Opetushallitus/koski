@@ -1259,7 +1259,9 @@ test.describe('Vapaa sivistystyö', () => {
     test.describe('VST maksuttomuus', () => {
       test.beforeEach(openOppijaPage(vstMaksuttomuus, false))
       test('Lisätiedot nappi näkyvissä', async ({ page }) => {
-        await expect(page.getByTestId("opiskeluoikeus.lisätiedotButton")).toBeVisible()
+        await expect(
+          page.getByTestId('opiskeluoikeus.lisätiedotButton')
+        ).toBeVisible()
       })
     })
   })
@@ -1960,7 +1962,9 @@ test.describe('Vapaa sivistystyö', () => {
           '1.1.2023'
         )
 
-        await vstOppijaPage.tallennaVirheellisenä('Vahvistetuksi merkatun vapaan sivistyöstyön koulutuksen laajuuden tulee olla 53')
+        await vstOppijaPage.tallennaVirheellisenä(
+          'Vahvistetuksi merkatun vapaan sivistyöstyön koulutuksen laajuuden tulee olla 53'
+        )
       })
     })
 
@@ -2130,9 +2134,13 @@ test.describe('Vapaa sivistystyö', () => {
       test('Maksuttomuuden poistaminen', async ({ page, vstOppijaPage }) => {
         vstOppijaPage.$.opiskeluoikeus.lisätiedotButton.click()
 
-        vstOppijaPage.$.opiskeluoikeus.lisätiedot.maksuttomuudet(0).remove.click()
+        vstOppijaPage.$.opiskeluoikeus.lisätiedot
+          .maksuttomuudet(0)
+          .remove.click()
         await vstOppijaPage.saveBtn.click()
-        await expect(page.getByTestId("opiskeluoikeus.lisätiedotButton")).not.toBeVisible()
+        await expect(
+          page.getByTestId('opiskeluoikeus.lisätiedotButton')
+        ).not.toBeVisible()
       })
     })
   })
@@ -2152,11 +2160,40 @@ test.describe('Vapaa sivistystyö', () => {
       })
     })
 
+    test.describe('Oppilaitoksen pääkäyttäjä', () => {
+      test.use({ storageState: virkailija('varsinaissuomi-oppilaitos-pää') })
+      test.beforeEach(openOppijaPage(jotpaKoulutusTiedonsiirto, false))
+
+      test('Muokkaus on estetty, mutta mitätöinti onnistuu', async ({
+        vstOppijaPage
+      }) => {
+        expect(
+          await vstOppijaPage.$.opiskeluoikeus.edit.isVisible()
+        ).toBeFalsy()
+      })
+    })
+
     test.describe('Käyttäjä jolla on yleinen mitätöintioikeus', () => {
       test.use({ storageState: virkailija('pää') })
       test.beforeEach(openOppijaPage(jotpaKoulutusTiedonsiirto, false))
 
-      test('Muokkaus on estetty, mutta mitätöinti on onnistuu', async ({
+      test('Muokkaus on estetty, mutta mitätöinti onnistuu', async ({
+        vstOppijaPage
+      }) => {
+        expect(
+          await vstOppijaPage.$.opiskeluoikeus.edit.isVisible()
+        ).toBeFalsy()
+        await vstOppijaPage.mitätöi()
+      })
+    })
+  })
+
+  test.describe('Käyttöliittymässä luotu opiskeluoikeus', () => {
+    test.describe('Oppilaitoksen pääkäyttäjä', () => {
+      test.use({ storageState: virkailija('varsinaissuomi-oppilaitos-pää') })
+      test.beforeEach(openOppijaPage(vapaatavoitteinenKoulutus, false))
+
+      test('Muokkaus on estetty, mutta mitätöinti onnistuu', async ({
         vstOppijaPage
       }) => {
         expect(
