@@ -37,6 +37,7 @@ export type SelectProps<T> = CommonProps<{
   disabled?: boolean
   autoselect?: boolean
   inlineOptions?: boolean
+  maxOptions?: number
   testId: string | number
 }>
 
@@ -125,6 +126,7 @@ export const Select = <T,>(props: SelectProps<T>) => {
                 hoveredOption={select.hoveredOption}
                 onRemove={props.onRemove}
                 inlineOptions={props.inlineOptions}
+                maxOptions={props.maxOptions}
                 {...select.dropdownEventListeners}
               />
             </TestIdLayer>
@@ -143,6 +145,7 @@ type OptionListProps<T> = CommonProps<{
   onMouseOver: (o: SelectOption<T>, event: React.MouseEvent) => void
   onRemove?: (o: SelectOption<T>) => void
   inlineOptions?: boolean
+  maxOptions?: number
 }>
 
 const OptionList = <T,>(props: OptionListProps<T>): React.ReactElement => {
@@ -155,6 +158,11 @@ const OptionList = <T,>(props: OptionListProps<T>): React.ReactElement => {
   }
 
   const { options, onRemove, ...rest } = props
+
+  const truncatedOptions = useMemo(
+    () => (props.maxOptions ? A.takeLeft(props.maxOptions)(options) : options),
+    [options, props.maxOptions]
+  )
 
   const [maxHeight, setMaxHeight] = useState(
     props.inlineOptions ? undefined : 300
@@ -186,7 +194,7 @@ const OptionList = <T,>(props: OptionListProps<T>): React.ReactElement => {
       ])}
       style={{ maxHeight }}
     >
-      {options.map((opt) => (
+      {truncatedOptions.map((opt) => (
         <TestIdLayer key={opt.key} id={opt.key}>
           <li
             className="Select__option"
@@ -217,6 +225,9 @@ const OptionList = <T,>(props: OptionListProps<T>): React.ReactElement => {
           </li>
         </TestIdLayer>
       ))}
+      {options.length !== truncatedOptions.length && (
+        <li>{t('Osa tuloksista piilotettu. Rajaa tuloksia hakusanalla.')}</li>
+      )}
     </ul>
   )
 }
