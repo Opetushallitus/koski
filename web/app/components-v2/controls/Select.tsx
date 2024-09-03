@@ -483,7 +483,7 @@ const filterOptions = <T,>(
     }
     const children = option.children?.filter(matchesQuery)
     return (children && A.isNonEmpty(children)) || isMatch(option.label)
-      ? option
+      ? { ...option, children }
       : null
   }
 
