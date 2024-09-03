@@ -21,6 +21,7 @@ object HenkilöLoader extends Logging {
     def fetchKotikuntahistoria(batchRows: Seq[RHenkilöRow], turvakielto: Boolean) =
       opintopolkuHenkilöFacade
         .findKuntahistoriat(oids = batchRows.map(_.masterOid), turvakiellolliset = turvakielto)
+        .getOrElse(Seq.empty)
         .map(_.toDbRow(turvakielto = turvakielto))
 
     logger.info("Ladataan henkilö-OIDeja opiskeluoikeuksista...")

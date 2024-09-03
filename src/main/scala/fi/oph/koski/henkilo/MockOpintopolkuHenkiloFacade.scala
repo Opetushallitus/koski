@@ -1,11 +1,8 @@
 package fi.oph.koski.henkilo
 
-import java.time.LocalDate
-import java.time.LocalDate.{of => date}
-import fi.oph.koski.db.DB
-import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.db.KoskiTables.KoskiOpiskeluOikeudetWithAccessCheck
-import fi.oph.koski.db.{PostgresDriverWithJsonSupport, QueryMethods}
+import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
+import fi.oph.koski.db.{DB, PostgresDriverWithJsonSupport, QueryMethods}
 import fi.oph.koski.fixture.{FixtureCreator, KoskiSpecificFixtureState}
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.json.JsonSerializer
@@ -13,10 +10,10 @@ import fi.oph.koski.koskiuser.KoskiSpecificSession.systemUser
 import fi.oph.koski.log.Logging
 import fi.oph.koski.schema.Henkilö.Oid
 import fi.oph.koski.schema.Koodistokoodiviite
-import fi.oph.koski.validation.ValidatingAndResolvingExtractor
 import fi.oph.koski.valpas.opiskeluoikeusfixture.ValpasOpiskeluoikeusFixtureState
 import org.json4s.jackson.JsonMethods
 
+import java.time.LocalDate
 import scala.io.Source
 import scala.util.Using
 
@@ -137,13 +134,13 @@ class MockOpintopolkuHenkilöFacade(val hetu: Hetu, fixtures: => FixtureCreator)
     hetus.flatMap(findOppijaByHetu)
   }
 
-  def findKuntahistoriat(oids: Seq[String], turvakielto: Boolean): Seq[OppijanumerorekisteriKotikuntahistoriaRow] =
-    (fixtures.getCurrentFixtureStateName() match {
+  def findKuntahistoriat(oids: Seq[String], turvakielto: Boolean): Either[HttpStatus, Seq[OppijanumerorekisteriKotikuntahistoriaRow]] =
+    Right((fixtures.getCurrentFixtureStateName() match {
       case KoskiSpecificFixtureState.name if turvakielto => koskiKotikuntahistoriaTurvakieltoData
       case KoskiSpecificFixtureState.name if !turvakielto => koskiKotikuntahistoriaData
       case ValpasOpiskeluoikeusFixtureState.name => valpasKotikuntahistoriaData
       case _ => Seq.empty
-    }).filter(row => oids.contains(row.oid))
+    }).filter(row => oids.contains(row.oid)))
 
   override def findSlaveOids(masterOid: String): List[Oid] =
     alkuperäisetOppijat.filter(_.master.exists(_.oid == masterOid)).map(_.henkilö.oid)
@@ -186,14 +183,9 @@ class MockOpintopolkuHenkilöFacade(val hetu: Hetu, fixtures: => FixtureCreator)
 
   def loadKotikuntahistoria(resourceName: String): Seq[OppijanumerorekisteriKotikuntahistoriaRow] =
     Using.Manager { use =>
-      println(s"************************************* loadKotikuntahistoria $resourceName")
       val source = use(Source.fromResource(s"mockdata/oppijanumerorekisteri/$resourceName"))
-      println(s"************************************* source loaded")
       val json = JsonMethods.parse(source.mkString)
-      println(s"************************************* json parsed")
-      val x = JsonSerializer.extract[List[OppijanumerorekisteriKotikuntahistoriaRow]](json)
-      println(s"************************************* value extracted")
-      x
+      JsonSerializer.extract[List[OppijanumerorekisteriKotikuntahistoriaRow]](json)
     }.fold({ e =>
       logger.error(e)("Loading mockdata failed")
       List.empty

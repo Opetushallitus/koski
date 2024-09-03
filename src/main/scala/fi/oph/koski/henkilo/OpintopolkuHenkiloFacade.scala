@@ -4,7 +4,7 @@ import com.typesafe.config.Config
 import fi.oph.koski.db.DB
 import fi.oph.koski.fixture.FixtureCreator
 import fi.oph.koski.http.Http._
-import fi.oph.koski.http.HttpStatus
+import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.perustiedot.{OpiskeluoikeudenPerustiedotIndexer, OpiskeluoikeudenPerustiedotRepository}
 import fi.oph.koski.schema.Henkilö.Oid
 import fi.oph.koski.schema.TäydellisetHenkilötiedot
@@ -23,7 +23,7 @@ trait OpintopolkuHenkilöFacade {
   def findOrCreate(createUserInfo: UusiOppijaHenkilö): Either[HttpStatus, OppijaHenkilö]
   def findOppijatByHetusNoSlaveOids(hetus: Seq[String]): Seq[OppijaHenkilö]
   def findSlaveOids(masterOid: String): List[Oid]
-  def findKuntahistoriat(oids: Seq[String], turvakiellolliset: Boolean): Seq[OppijanumerorekisteriKotikuntahistoriaRow]
+  def findKuntahistoriat(oids: Seq[String], turvakiellolliset: Boolean): Either[HttpStatus, Seq[OppijanumerorekisteriKotikuntahistoriaRow]]
 }
 
 object OpintopolkuHenkilöFacade {
@@ -84,11 +84,14 @@ class RemoteOpintopolkuHenkilöFacade(oppijanumeroRekisteriClient: OppijanumeroR
 
   def findSlaveOids(masterOid: String): List[Oid] = runIO(oppijanumeroRekisteriClient.findSlaveOids(masterOid))
 
-  def findKuntahistoriat(oids: Seq[String], turvakielto: Boolean): Seq[OppijanumerorekisteriKotikuntahistoriaRow] =
+  def findKuntahistoriat(oids: Seq[String], turvakielto: Boolean): Either[HttpStatus, Seq[OppijanumerorekisteriKotikuntahistoriaRow]] =
     if (kotikuntahistoriaEnabled) {
-      runIO(oppijanumeroRekisteriClient.findKotikuntahistoria(oids, turvakielto))
+      tryIO(oppijanumeroRekisteriClient.findKotikuntahistoria(oids, turvakielto)) { error =>
+        logger.error(s"Kotikuntahistorian haku epäonnistui: $error")
+        KoskiErrorCategory.internalError("Kotikuntahistorian haku epäonnistui")
+      }
     } else {
-      Seq.empty
+      Left(KoskiErrorCategory.unavailable("Kotikuntahistorian haku ei ole päällä"))
     }
 
   private def kotikuntahistoriaEnabled: Boolean = {

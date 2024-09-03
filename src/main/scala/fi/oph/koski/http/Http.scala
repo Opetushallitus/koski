@@ -150,6 +150,7 @@ object Http extends Logging {
   }
 
   def runIO[A](io: IO[A]): A = io.unsafeRunSync()
+  def tryIO[E, A](io: IO[A])(onError: Throwable => E): Either[E, A] = Try(io.unsafeRunSync()).toEither.left.map(onError)
 
   type Decode[ResultType] = (Int, String, Request[IO]) => ResultType
 

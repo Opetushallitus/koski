@@ -191,7 +191,7 @@ object MaksuttomuusValidation {
       !Oppivelvollisuustiedot.oppivelvollisuudenUlkopuolisetKunnat.contains(kuntakoodi)
 
     Seq(false, true)
-      .flatMap(t => oppijanumerorekisteri.findKuntahistoriat(Seq(oppijaOid), turvakiellolliset = t))
+      .flatMap(t => oppijanumerorekisteri.findKuntahistoriat(Seq(oppijaOid), turvakiellolliset = t).getOrElse(Seq.empty))
       .filter(t => t.kuntaanMuuttopv.exists(_.isBefore(täysiIkäinenAlkaen)) || t.kunnastaPoisMuuttopv.exists(_.isBefore(täysiIkäinenAlkaen)))
       .map(_.kotikunta)
       .exists(onMannerSuomenKunta)
