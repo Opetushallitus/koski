@@ -637,9 +637,11 @@ function AddOppijaPage() {
       return click(button)()
     },
     submitModal: function () {
-      if (!api.isModalButtonEnabled()) {
-        throw new Error('Button not enabled')
-      }
+      eventually(() => {
+        if (!api.isModalButtonEnabled()) {
+          throw new Error('Button not enabled')
+        }
+      })
       return click(modalButton)()
     },
     submitAndExpectSuccess: function (oppija, tutkinto) {
