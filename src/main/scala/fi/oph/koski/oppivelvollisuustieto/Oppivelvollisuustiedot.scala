@@ -216,10 +216,11 @@ object Oppivelvollisuustiedot {
             ammattitutkinto
             left join lukionoppimaara on ammattitutkinto.master_oid = lukionoppimaara.master_oid
             left join lukionaineopinnot on ammattitutkinto.master_oid = lukionaineopinnot.master_oid
+            left join ylioppilastutkinto on ammattitutkinto.master_oid = ylioppilastutkinto.master_oid
           where
             (ammattitutkinnon_alkamispaiva is not null and (lukion_oppimaaraan_alkamispaiva is not null or lukion_aineopintojen_alkamispaiva is not null))
-            and ((ammattitutkinnon_alkamispaiva, coalesce(ammattitutkinnon_paattymispaiva, now())) overlaps (lukion_oppimaaraan_alkamispaiva, coalesce(lukion_oppimaaraan_paattymispaiva, now()))
-            or (ammattitutkinnon_alkamispaiva, coalesce(ammattitutkinnon_paattymispaiva, now())) overlaps (lukion_aineopintojen_alkamispaiva, coalesce(lukion_aineopintojen_paattymispaiva, now())))
+            and ((ammattitutkinnon_alkamispaiva, least(ammattitutkinnon_paattymispaiva, ammattitutkinnon_vahvistus_paiva, 'infinity') + interval '1 day') overlaps (lukion_oppimaaraan_alkamispaiva, least(lukion_oppimaaraan_paattymispaiva, ylioppilastutkinnon_vahvistus_paiva, 'infinity') + interval '1 day')
+            or (ammattitutkinnon_alkamispaiva, least(ammattitutkinnon_paattymispaiva, ammattitutkinnon_vahvistus_paiva, 'infinity') + interval '1 day') overlaps (lukion_aineopintojen_alkamispaiva, least(lukion_aineopintojen_paattymispaiva, ylioppilastutkinnon_vahvistus_paiva, 'infinity') + interval '1 day'))
 
         ),
 
