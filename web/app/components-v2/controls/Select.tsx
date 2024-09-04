@@ -24,6 +24,7 @@ import { clamp, sum } from '../../util/numbers'
 import { textSearch } from '../../util/strings'
 import { CommonProps, common, cx } from '../CommonProps'
 import { Removable } from './Removable'
+import { Spinner } from '../texts/Spinner'
 
 export type SelectProps<T> = CommonProps<{
   initialValue?: OptionKey
@@ -62,6 +63,8 @@ export type FlatOption<T> = {
   removable?: boolean
 }
 
+export const LoadingOptions: OptionList<any> = []
+
 export type SelectOption<T> = FlatOption<T> & {
   // Vaihtoehdolle/ryhmälle näytettävät alivaihtoehdot
   children?: OptionList<T>
@@ -97,6 +100,8 @@ export const Select = <T,>(props: SelectProps<T>) => {
     }
   }, [autoselect, initialValue, onChange, options, value])
 
+  const isLoading = props.options === LoadingOptions
+
   return (
     <TestIdLayer id={props.testId} wrap="div">
       <div
@@ -111,12 +116,15 @@ export const Select = <T,>(props: SelectProps<T>) => {
           type="search"
           autoComplete="off"
           disabled={
-            props.disabled || (!props.onSearch && props.options.length === 0)
+            isLoading ||
+            props.disabled ||
+            (!props.onSearch && props.options.length === 0)
           }
           {...select.inputEventListeners}
           data-testid={inputTestId}
           ref={input}
         />
+        {isLoading && <Spinner className="Select__spinner" />}
         {select.dropdownVisible && (
           <div className="Select__optionListContainer">
             <TestIdLayer wrap="div" id="options">

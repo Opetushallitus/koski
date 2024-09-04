@@ -3,7 +3,10 @@ import {
   KoodistokoodiviiteKoodistonNimellä,
   useKoodisto
 } from '../../appstate/koodisto'
-import { groupKoodistoToOptions } from '../../components-v2/controls/Select'
+import {
+  groupKoodistoToOptions,
+  LoadingOptions
+} from '../../components-v2/controls/Select'
 import { Koodistokoodiviite } from '../../types/fi/oph/koski/schema/Koodistokoodiviite'
 import { koodistokoodiviiteId } from '../../util/koodisto'
 import { DialogField } from '../state/state'
@@ -26,7 +29,7 @@ export const DialogKoodistoSelect = <U extends string>(
     () =>
       koodisto
         ? groupKoodistoToOptions(koodisto, undefined, props.formatLabel)
-        : [],
+        : LoadingOptions,
     [koodisto, props.formatLabel]
   )
 

@@ -12,16 +12,24 @@ export const Modal: React.FC<ModalProps> = (props) => {
   const ref = useRef<HTMLFormElement>(null)
   const { isActive, props: modalProps } = useModalState()
 
-  const { onClose } = props
+  const onClose = useCallback(
+    (event: React.MouseEvent<HTMLFormElement, MouseEvent>) => {
+      event.preventDefault()
+      event.stopPropagation()
+      props.onClose?.()
+    },
+    [props]
+  )
+
   const onKeyDown: React.KeyboardEventHandler = useCallback(
     (event) => {
       if (event.key === 'Enter') {
         event.preventDefault()
       } else if (event.key === 'Escape') {
-        onClose?.()
+        props.onClose?.()
       }
     },
-    [onClose]
+    [props]
   )
 
   useEffect(() => {
@@ -39,7 +47,7 @@ export const Modal: React.FC<ModalProps> = (props) => {
         {...modalProps}
         onSubmit={stopPropagation}
         onKeyDown={onKeyDown}
-        onClick={props.onClose}
+        onClick={onClose}
         role="dialog"
         ref={ref}
       >

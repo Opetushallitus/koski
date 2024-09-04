@@ -4,6 +4,7 @@ import * as Eq from 'fp-ts/Eq'
 import * as string from 'fp-ts/string'
 import { useKoodisto } from '../../appstate/koodisto'
 import {
+  LoadingOptions,
   SelectOption,
   koodiviiteToOption
 } from '../../components-v2/controls/Select'
@@ -22,12 +23,13 @@ export const usePäätasonSuoritustyypit = (
       ooTyyppi !== undefined && ooMapping
         ? ooMapping.find((c) => c.tyyppi === ooTyyppi.koodiarvo)
         : undefined
-    const koodit = ooClassInfo
-      ? ooClassInfo.suoritukset.flatMap((s) => {
-          const viite = koodisto?.find((k) => k.koodiarvo === s.tyyppi)
-          return viite ? [viite] : []
-        })
-      : []
+    if (!ooClassInfo) {
+      return LoadingOptions
+    }
+    const koodit = ooClassInfo.suoritukset.flatMap((s) => {
+      const viite = koodisto?.find((k) => k.koodiarvo === s.tyyppi)
+      return viite ? [viite] : []
+    })
     return distinctKeys(koodit.map(koodiviiteToOption))
   }, [koodisto, ooMapping, ooTyyppi])
 }
