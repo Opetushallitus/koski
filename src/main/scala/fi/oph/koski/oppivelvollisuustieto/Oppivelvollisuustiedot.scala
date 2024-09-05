@@ -72,7 +72,7 @@ object Oppivelvollisuustiedot {
       """.as[OptionalOppivelvollisuustieto]
     )
 
-  def createPrecomputedTable(s: Schema, confidentalSchema: Schema, valpasRajapäivätService: ValpasRajapäivätService)= {
+  def createPrecomputedTable(s: Schema, confidentalSchema: Schema, valpasRajapäivätService: ValpasRajapäivätService) = {
     val tarkastelupäivä = valpasRajapäivätService.tarkastelupäivä
     val valpasLakiVoimassaVanhinSyntymäaika = valpasRajapäivätService.lakiVoimassaVanhinSyntymäaika
     val valpasLakiVoimassaPeruskoulustaValmistuneilla = valpasRajapäivätService.lakiVoimassaPeruskoulustaValmistuneillaAlku
@@ -131,19 +131,16 @@ object Oppivelvollisuustiedot {
                                   and koulutusmoduuli_koodiarvo = 'S4'
                                   and vahvistus_paiva < '#$valpasLakiVoimassaPeruskoulustaValmistuneilla'::date)
                 )
-                and (
-                  --- Joko: Ei Opintopolkuun tallennettua kotikuntahistoriaa alaikäisyyden ajalta
-                  (select count(*) from #${confidentalSchema.name}.r_kotikuntahistoria
-                    where r_kotikuntahistoria.master_oid = henkilo.master_oid
-                    and r_kotikuntahistoria.muutto_pvm < henkilo.syntymaaika + interval '18 years') = 0
 
-                  --- ...tai on asunut Suomessa alaikäisenä
-                  or (select count(*) from #${confidentalSchema.name}.r_kotikuntahistoria
-                        where r_kotikuntahistoria.master_oid = henkilo.master_oid
-                        and r_kotikuntahistoria.muutto_pvm < henkilo.syntymaaika + interval '18 years'
-                        and not r_kotikuntahistoria.kotikunta = any(#$ulkopuolisetKunnat)) > 0
-               )
+        ),
 
+        kotikunta_suomessa_alkaen as (
+          select
+            master_oid,
+		        min(coalesce(muutto_pvm, poismuutto_pvm)) pvm
+          from #${confidentialSchema.name}.r_kotikuntahistoria
+          where not kotikunta = any(#$ulkopuolisetKunnat)
+          group by master_oid
         ),
 
         ammattitutkinto as (
@@ -325,7 +322,9 @@ object Oppivelvollisuustiedot {
                 ammattitutkinnon_vahvistus_paiva,
                 #${s.name}.vuodenViimeinenPaivamaara(syntymaaika + interval '#$maksuttomuusLoppuuIka year'))
             end::date
-          ) as oikeusKoulutuksenMaksuttomuuteenVoimassaAsti
+          ) as oikeusKoulutuksenMaksuttomuuteenVoimassaAsti,
+
+          kotikunta_suomessa_alkaen.pvm as kotikuntaSuomessaAlkaen
 
         from
           oppivelvolliset_henkilot
@@ -338,6 +337,9 @@ object Oppivelvollisuustiedot {
           left join ylioppilastutkinto on oppivelvolliset_henkilot.master_oid = ylioppilastutkinto.master_oid
           left join maksuttomuuden_pidennysjakso on oppivelvolliset_henkilot.master_oid = maksuttomuuden_pidennysjakso.master_oid
           left join amis_ja_lukio_samanaikaisuus on oppivelvolliset_henkilot.master_oid = amis_ja_lukio_samanaikaisuus.master_oid
+          left join kotikunta_suomessa_alkaen on oppivelvolliset_henkilot.master_oid = kotikunta_suomessa_alkaen.master_oid
+        where
+          (kotikunta_suomessa_alkaen.pvm is null or kotikunta_suomessa_alkaen.pvm < oppivelvolliset_henkilot.syntymaaika + interval '18 years')
       """
   }
 
