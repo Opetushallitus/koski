@@ -4,17 +4,20 @@ package fi.oph.koski.validation
 import com.typesafe.config.Config
 import fi.oph.koski.henkilo.{KotikuntahistoriaConfig, LaajatOppijaHenkilöTiedot, OpintopolkuHenkilöFacade}
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
+import fi.oph.koski.log.Logging
 import fi.oph.koski.opiskeluoikeus.{CompositeOpiskeluoikeusRepository, Päivämääräväli}
 import fi.oph.koski.oppivelvollisuustieto.Oppivelvollisuustiedot
 import fi.oph.koski.schema._
 import fi.oph.koski.util.ChainingSyntax.localDateOps
+import fi.oph.koski.util.DateOrdering.localDateOrdering
+import fi.oph.koski.util.Optional.coalesce
 import fi.oph.koski.util.{DateOrdering, FinnishDateFormat}
 import fi.oph.koski.valpas.opiskeluoikeusrepository.ValpasRajapäivätService
 
 import java.time.LocalDate
 import java.time.LocalDate.{of => date}
 
-object MaksuttomuusValidation {
+object MaksuttomuusValidation extends Logging {
 
   def checkOpiskeluoikeudenMaksuttomuus(opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus,
                                         oppijanHenkilötiedot: Option[LaajatOppijaHenkilöTiedot],
@@ -205,11 +208,19 @@ object MaksuttomuusValidation {
     def onMannerSuomenKunta(kuntakoodi: String): Boolean =
       !Oppivelvollisuustiedot.oppivelvollisuudenUlkopuolisetKunnat.contains(kuntakoodi)
 
-    Seq(false, true)
+    val kotikuntaSuomessaAlkaen = Seq(false, true)
       .flatMap(t => oppijanumerorekisteri.findKuntahistoriat(Seq(oppijaOid), turvakiellolliset = t).getOrElse(Seq.empty))
-      .filter(t => t.kuntaanMuuttopv.exists(_.isBefore(täysiIkäinenAlkaen)) || t.kunnastaPoisMuuttopv.exists(_.isBefore(täysiIkäinenAlkaen)))
-      .map(_.kotikunta)
-      .exists(onMannerSuomenKunta)
+      .filter(k => onMannerSuomenKunta(k.kotikunta))
+      .sortBy(_.pvm)
+      .headOption
+
+    val result = kotikuntaSuomessaAlkaen.exists {
+      _.pvm.exists(_.isBefore(täysiIkäinenAlkaen))
+    }
+
+    logger.info(s"oppivelvollinenKotikuntahistorianPerusteella: syntymäpäivä=$syntymäpäivä, kotikuntaAlkaen=${kotikuntaSuomessaAlkaen.map(_.pvm).getOrElse("")}, tulos=$result")
+
+    result
   }
 
   def validateAndFillJaksot(opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus): Either[HttpStatus, KoskeenTallennettavaOpiskeluoikeus] = {

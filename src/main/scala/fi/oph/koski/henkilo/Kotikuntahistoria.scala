@@ -3,6 +3,7 @@ package fi.oph.koski.henkilo
 import com.typesafe.config.Config
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api.actionBasedSQLInterpolation
 import fi.oph.koski.raportointikanta.{RKotikuntahistoriaRow, Schema}
+import fi.oph.koski.util.Optional.coalesce
 import slick.dbio.{DBIO, DBIOAction, Effect, NoStream}
 
 import java.sql.Date
@@ -31,6 +32,8 @@ case class OppijanumerorekisteriKotikuntahistoriaRow(
       poismuuttoPvm = kunnastaPoisMuuttopv.map(pvm => Date.valueOf(pvm)),
       turvakielto = turvakielto,
     )
+
+  lazy val pvm: Option[LocalDate] = coalesce(kuntaanMuuttopv, kunnastaPoisMuuttopv)
 }
 
 case class KotikuntahistoriaConfig(config: Config) {
