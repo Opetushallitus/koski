@@ -85,19 +85,10 @@ class RemoteOpintopolkuHenkilöFacade(oppijanumeroRekisteriClient: OppijanumeroR
   def findSlaveOids(masterOid: String): List[Oid] = runIO(oppijanumeroRekisteriClient.findSlaveOids(masterOid))
 
   def findKuntahistoriat(oids: Seq[String], turvakielto: Boolean): Either[HttpStatus, Seq[OppijanumerorekisteriKotikuntahistoriaRow]] =
-    if (kotikuntahistoriaEnabled) {
-      tryIO(oppijanumeroRekisteriClient.findKotikuntahistoria(oids, turvakielto)) { error =>
-        logger.error(s"Kotikuntahistorian haku epäonnistui: $error")
-        KoskiErrorCategory.internalError("Kotikuntahistorian haku epäonnistui")
-      }
-    } else {
-      Left(KoskiErrorCategory.unavailable("Kotikuntahistorian haku ei ole päällä"))
+    tryIO(oppijanumeroRekisteriClient.findKotikuntahistoria(oids, turvakielto)) { error =>
+      logger.error(s"Kotikuntahistorian haku epäonnistui: $error")
+      KoskiErrorCategory.internalError("Kotikuntahistorian haku epäonnistui")
     }
-
-  private def kotikuntahistoriaEnabled: Boolean = {
-    val path = "kotikuntahistoria.enabled"
-    config.hasPath(path) && config.getBoolean(path)
-  }
 }
 
 class RemoteOpintopolkuHenkilöFacadeWithMockOids(
