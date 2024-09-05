@@ -53,6 +53,7 @@ class KoskiGlobaaliValidator(
               opiskeluoikeusRepository,
               rajapäivät,
               oppijanumerorekisteri,
+              config,
             )
           },
           timed(s"${timedBlockname} Lukio2015Validation.validateAlkamispäivä") {

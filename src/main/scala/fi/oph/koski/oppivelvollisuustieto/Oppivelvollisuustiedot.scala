@@ -1,6 +1,8 @@
 package fi.oph.koski.oppivelvollisuustieto
 
+import com.typesafe.config.Config
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.plainAPI._
+import fi.oph.koski.henkilo.KotikuntahistoriaConfig
 import fi.oph.koski.raportit.AhvenanmaanKunnat.ahvenanmaanKunnat
 import fi.oph.koski.raportointikanta.{RaportointiDatabase, Schema}
 import fi.oph.koski.valpas.opiskeluoikeusrepository.ValpasRajapäivätService
@@ -72,7 +74,7 @@ object Oppivelvollisuustiedot {
       """.as[OptionalOppivelvollisuustieto]
     )
 
-  def createPrecomputedTable(s: Schema, confidentalSchema: Schema, valpasRajapäivätService: ValpasRajapäivätService) = {
+  def createPrecomputedTable(s: Schema, confidentialSchema: Schema, valpasRajapäivätService: ValpasRajapäivätService, config: Config) = {
     val tarkastelupäivä = valpasRajapäivätService.tarkastelupäivä
     val valpasLakiVoimassaVanhinSyntymäaika = valpasRajapäivätService.lakiVoimassaVanhinSyntymäaika
     val valpasLakiVoimassaPeruskoulustaValmistuneilla = valpasRajapäivätService.lakiVoimassaPeruskoulustaValmistuneillaAlku
@@ -84,6 +86,8 @@ object Oppivelvollisuustiedot {
 
     val ulkopuolisetKunnatTaiKuntaVirheellinen = validatedUnboundCodeList(oppivelvollisuudenUlkopuolisetKunnatTaiKuntaVirheellinen)
     val ulkopuolisetKunnat = validatedUnboundCodeList(oppivelvollisuudenUlkopuolisetKunnat)
+
+    val kotikuntahistoriaConfig = KotikuntahistoriaConfig(config)
 
     sqlu"""
       create table #${s.name}.oppivelvollisuustiedot as
@@ -339,7 +343,11 @@ object Oppivelvollisuustiedot {
           left join amis_ja_lukio_samanaikaisuus on oppivelvolliset_henkilot.master_oid = amis_ja_lukio_samanaikaisuus.master_oid
           left join kotikunta_suomessa_alkaen on oppivelvolliset_henkilot.master_oid = kotikunta_suomessa_alkaen.master_oid
         where
-          (kotikunta_suomessa_alkaen.pvm is null or kotikunta_suomessa_alkaen.pvm < oppivelvolliset_henkilot.syntymaaika + interval '18 years')
+          (
+            (not ${kotikuntahistoriaConfig.käytäOppivelvollisuudenPäättelyyn})
+            or (kotikunta_suomessa_alkaen.pvm is null)
+            or (kotikunta_suomessa_alkaen.pvm < oppivelvolliset_henkilot.syntymaaika + interval '18 years')
+          )
       """
   }
 

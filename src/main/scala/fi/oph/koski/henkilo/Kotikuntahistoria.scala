@@ -1,5 +1,6 @@
 package fi.oph.koski.henkilo
 
+import com.typesafe.config.Config
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api.actionBasedSQLInterpolation
 import fi.oph.koski.raportointikanta.{RKotikuntahistoriaRow, Schema}
 import slick.dbio.{DBIO, DBIOAction, Effect, NoStream}
@@ -30,4 +31,12 @@ case class OppijanumerorekisteriKotikuntahistoriaRow(
       poismuuttoPvm = kunnastaPoisMuuttopv.map(pvm => Date.valueOf(pvm)),
       turvakielto = turvakielto,
     )
+}
+
+case class KotikuntahistoriaConfig(config: Config) {
+  def käytäOppivelvollisuudenPäättelyyn: Boolean = getBoolean("kotikuntahistoria.oppivelvollisuustiedotFiltering")
+  def käytäMaksuttomuustietojenValidointiin: Boolean = getBoolean("kotikuntahistoria.maksuttomuusValidation")
+
+  private def getBoolean(path: String): Boolean =
+    if (config.hasPath(path)) config.getBoolean(path) else false
 }
