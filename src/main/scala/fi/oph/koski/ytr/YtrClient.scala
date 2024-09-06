@@ -13,9 +13,10 @@ import fi.oph.koski.schema.KoskiSchema.lenientDeserializationWithoutValidation
 import fi.oph.koski.util.{ClasspathResource, Resource}
 import fi.oph.koski.ytr.download.{YtrLaajaOppija, YtrSsnData, YtrSsnDataWithPreviousSsns}
 import fi.oph.scalaschema.{ExtractionContext, SchemaValidatingExtractor}
-import org.json4s.JValue
+import org.json4s.{JArray, JField, JObject, JString, JValue}
 
 import java.time.{LocalDate, ZonedDateTime}
+import scala.collection.mutable
 
 trait YtrClient {
   def oppijaByHetu(ssn: YtrSsnWithPreviousSsns): Option[YtrOppija] = {
@@ -93,41 +94,27 @@ object MockYtrClient extends YtrClient {
   private var timeoutHetu: Option[String] = None
 
 
-  private val mockYoHetus = List(
-    "010280-952L",
-    "010342-8411",
-    "020401-368M",
-    "020401-746U",
-    "050122A673D",
-    "060807A7787",
+  private val mockOphRegistrydataHetus = List(
     "080380-2432",
-    "080640-881R",
-    "080698-703Y",
-    "080845-471D",
-    "100800A057R",
-    "101000A3582",
-    "101097-6107",
-    "120674-064R",
-    "120872-781Y",
     "140380-336X",
-    "140940-558L",
-    "151031-620R",
-    "190580-678T",
-    "200695-889X",
-    "210244-374K",
     "220680-7850",
     "240680-087S",
-    "240775-720P",
-    "250493-602S",
-    "270900A2635",
-    "280100A855E",
-    "280171-2730",
-    "300805A756F"
+    "101097-6107",
+    "300805A756F",
+    "300805A847D",
+    "060807A7787",
+    "050122A673D",
   )
 
   var latestOppijaJsonByHetu: Option[YtrSsnWithPreviousSsns] = None
   var latestOppijatJsonByHetut: Option[YtrSsnDataWithPreviousSsns] = None
   var latestCertificateRequest: Option[YoTodistusHetuRequest] = None
+
+  private val oppijaVersions = new mutable.HashMap[String,Int]()
+
+  def incrementOppijaVersion(hetu: String) = {
+    oppijaVersions.put(hetu, oppijaVersions.getOrElse(hetu, 0) + 1)
+  }
 
   override def oppijaJsonByHetu(ssn: YtrSsnWithPreviousSsns): Option[JValue] = {
     latestOppijaJsonByHetu = Some(ssn)
@@ -142,27 +129,39 @@ object MockYtrClient extends YtrClient {
     }
   }
   def filename(hetu: String): String = "src/main/resources" + resourcename(hetu)
-  private def resourcename(hetu: String) = "/mockdata/ytr/" + hetu + ".json"
+  private def resourcename(hetu: String) = "/mockdata/ytr/oph-koski/" + hetu + ".json"
 
-  override protected def getJsonHetutBySyntymäaika(birthmonthStart: String, birthmonthEnd: String): Option[JValue] =
-    JsonResources.readResourceIfExists(hetutResourceName(birthmonthStart, birthmonthEnd))
-  private def hetutResourceName(birthmonthStart: String, birthmonthEnd: String) =
-    s"/mockdata/ytr/ssns_${birthmonthStart}_${birthmonthEnd}.json"
+  override protected def getJsonHetutBySyntymäaika(birthmonthStart: String, birthmonthEnd: String): Option[JValue] = {
+    Some(
+      JObject(JField("ssns",
+        JArray(
+          mockOphRegistrydataHetus.filter(hetu => {
+            val startDate = LocalDate.parse(birthmonthStart + "-01")
+            val endDate = LocalDate.parse(birthmonthEnd + "-01")
+            Hetu.toBirthday(hetu).exists(date => date.isAfter(startDate.minusDays(1)) && date.isBefore(endDate))
+          }).map(JString)))))
+  }
+
+  private def ophRegistryHetuResorceName(hetu: String) = {
+    val versionedHetu = oppijaVersions.get(hetu) match {
+      case Some(ver) => hetu + "_" + ver
+      case None => hetu
+    }
+    s"/mockdata/ytr/oph-registrydata/${versionedHetu}.json"
+  }
 
   override protected def getJsonHetutByModifiedSince(modifiedSince: LocalDate): Option[JValue] =
     JsonResources.readResourceIfExists(hetutResourceName(modifiedSince.toString))
 
   private def hetutResourceName(modifiedSince: String) =
-    s"/mockdata/ytr/ssns_${modifiedSince}.json"
+    s"/mockdata/ytr/modifiedSince/ssns_${modifiedSince}.json"
 
   override protected def oppijatJsonByHetut(ssnData: YtrSsnDataWithPreviousSsns): Option[JValue] = {
     latestOppijatJsonByHetut = Some(ssnData)
-    JsonResources.readResourceIfExists(
-      resourcenameLaaja(ssnData.ssns.getOrElse(List.empty).map(_.ssn).sorted.mkString("_"))
-    )
+    Some(JArray(
+      ssnData.ssns.getOrElse(List.empty).map(_.ssn).sorted.flatMap(hetu => JsonResources.readResourceIfExists(ophRegistryHetuResorceName(hetu)))
+    ))
   }
-
-  private def resourcenameLaaja(hetut: String) = "/mockdata/ytr/laaja_" + hetut + ".json"
 
   override def getCertificateStatus(req: YoTodistusHetuRequest): Either[HttpStatus, YtrCertificateResponse] = {
     latestCertificateRequest = Some(req)
@@ -207,6 +206,7 @@ object MockYtrClient extends YtrClient {
     yoTodistusRequestTimes.clear()
     failureHetu = None
     timeoutHetu = None
+    oppijaVersions.clear()
   }
 
   def setFailureHetu(hetu: String): Unit = {
