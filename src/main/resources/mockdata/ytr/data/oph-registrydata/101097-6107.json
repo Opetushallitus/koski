@@ -1,0 +1,1456 @@
+{
+  "oid": null,
+  "ssn": "101097-6107",
+  "firstNames": "Master",
+  "lastName": "of Puppets",
+  "graduationDate": "2012-11-30",
+  "certificateDate": "2012-11-30",
+  "examinations": [
+    {
+      "language": "fi",
+      "examinationType": "candidate",
+      "examinationState": "graduated",
+      "examinationPeriods": [
+        {
+          "examinationPeriod": "2011S",
+          "schoolOid": "1.2.246.562.10.96398657237",
+          "schoolName": null,
+          "totalFee": null,
+          "education": 3,
+          "studentNumber": "278",
+          "exams": [
+            {
+              "examId": "EA",
+              "grade": "A",
+              "gradePoints": 2,
+              "aborted": false,
+              "examFee": null,
+              "freeOfCharge": false,
+              "totalScore": null,
+              "examItems": [
+                {
+                  "itemNumber": "1",
+                  "finalAssesmentScore": 0
+                },
+                {
+                  "itemNumber": "2",
+                  "finalAssesmentScore": 2
+                },
+                {
+                  "itemNumber": "3",
+                  "finalAssesmentScore": 2
+                },
+                {
+                  "itemNumber": "4",
+                  "finalAssesmentScore": 2
+                },
+                {
+                  "itemNumber": "5",
+                  "finalAssesmentScore": 0
+                },
+                {
+                  "itemNumber": "6",
+                  "finalAssesmentScore": 2
+                },
+                {
+                  "itemNumber": "7",
+                  "finalAssesmentScore": 0
+                },
+                {
+                  "itemNumber": "8",
+                  "finalAssesmentScore": 2
+                },
+                {
+                  "itemNumber": "9",
+                  "finalAssesmentScore": 0
+                },
+                {
+                  "itemNumber": "10",
+                  "finalAssesmentScore": 0
+                },
+                {
+                  "itemNumber": "11",
+                  "finalAssesmentScore": 0
+                },
+                {
+                  "itemNumber": "12",
+                  "finalAssesmentScore": 0
+                },
+                {
+                  "itemNumber": "13",
+                  "finalAssesmentScore": 2
+                },
+                {
+                  "itemNumber": "14",
+                  "finalAssesmentScore": 2
+                },
+                {
+                  "itemNumber": "15",
+                  "finalAssesmentScore": 0
+                },
+                {
+                  "itemNumber": "16",
+                  "finalAssesmentScore": 0
+                },
+                {
+                  "itemNumber": "17",
+                  "finalAssesmentScore": 0
+                },
+                {
+                  "itemNumber": "18",
+                  "finalAssesmentScore": 3
+                },
+                {
+                  "itemNumber": "19",
+                  "finalAssesmentScore": 0
+                },
+                {
+                  "itemNumber": "20",
+                  "finalAssesmentScore": 0
+                },
+                {
+                  "itemNumber": "21",
+                  "finalAssesmentScore": 3
+                },
+                {
+                  "itemNumber": "22",
+                  "finalAssesmentScore": 3
+                },
+                {
+                  "itemNumber": "23",
+                  "finalAssesmentScore": 3
+                },
+                {
+                  "itemNumber": "24",
+                  "finalAssesmentScore": 3
+                },
+                {
+                  "itemNumber": "25",
+                  "finalAssesmentScore": 3
+                },
+                {
+                  "itemNumber": "1",
+                  "finalAssesmentScore": 12
+                },
+                {
+                  "itemNumber": "1",
+                  "finalAssesmentScore": 0
+                },
+                {
+                  "itemNumber": "2",
+                  "finalAssesmentScore": 0
+                },
+                {
+                  "itemNumber": "3",
+                  "finalAssesmentScore": 2
+                },
+                {
+                  "itemNumber": "4",
+                  "finalAssesmentScore": 2
+                },
+                {
+                  "itemNumber": "5",
+                  "finalAssesmentScore": 2
+                },
+                {
+                  "itemNumber": "6",
+                  "finalAssesmentScore": 0
+                },
+                {
+                  "itemNumber": "7",
+                  "finalAssesmentScore": 0
+                },
+                {
+                  "itemNumber": "8",
+                  "finalAssesmentScore": 0
+                },
+                {
+                  "itemNumber": "9",
+                  "finalAssesmentScore": 2
+                },
+                {
+                  "itemNumber": "10",
+                  "finalAssesmentScore": 0
+                },
+                {
+                  "itemNumber": "11",
+                  "finalAssesmentScore": 2
+                },
+                {
+                  "itemNumber": "12",
+                  "finalAssesmentScore": 0
+                },
+                {
+                  "itemNumber": "13",
+                  "finalAssesmentScore": 2
+                },
+                {
+                  "itemNumber": "14",
+                  "finalAssesmentScore": 2
+                },
+                {
+                  "itemNumber": "15",
+                  "finalAssesmentScore": 0
+                },
+                {
+                  "itemNumber": "16",
+                  "finalAssesmentScore": 2
+                },
+                {
+                  "itemNumber": "17",
+                  "finalAssesmentScore": 2
+                },
+                {
+                  "itemNumber": "18",
+                  "finalAssesmentScore": 2
+                },
+                {
+                  "itemNumber": "19",
+                  "finalAssesmentScore": 0
+                },
+                {
+                  "itemNumber": "20",
+                  "finalAssesmentScore": 2
+                },
+                {
+                  "itemNumber": "21",
+                  "finalAssesmentScore": 2
+                },
+                {
+                  "itemNumber": "22",
+                  "finalAssesmentScore": 2
+                },
+                {
+                  "itemNumber": "23",
+                  "finalAssesmentScore": 2
+                },
+                {
+                  "itemNumber": "24",
+                  "finalAssesmentScore": 2
+                },
+                {
+                  "itemNumber": "25",
+                  "finalAssesmentScore": 0
+                },
+                {
+                  "itemNumber": "1",
+                  "finalAssesmentScore": 10
+                },
+                {
+                  "itemNumber": "26",
+                  "finalAssesmentScore": 1
+                },
+                {
+                  "itemNumber": "27",
+                  "finalAssesmentScore": 0
+                },
+                {
+                  "itemNumber": "28",
+                  "finalAssesmentScore": 0
+                },
+                {
+                  "itemNumber": "29",
+                  "finalAssesmentScore": 1
+                },
+                {
+                  "itemNumber": "30",
+                  "finalAssesmentScore": 0
+                },
+                {
+                  "itemNumber": "31",
+                  "finalAssesmentScore": 1
+                },
+                {
+                  "itemNumber": "32",
+                  "finalAssesmentScore": 0
+                },
+                {
+                  "itemNumber": "33",
+                  "finalAssesmentScore": 1
+                },
+                {
+                  "itemNumber": "34",
+                  "finalAssesmentScore": 1
+                },
+                {
+                  "itemNumber": "35",
+                  "finalAssesmentScore": 1
+                },
+                {
+                  "itemNumber": "36",
+                  "finalAssesmentScore": 0
+                },
+                {
+                  "itemNumber": "37",
+                  "finalAssesmentScore": 1
+                },
+                {
+                  "itemNumber": "38",
+                  "finalAssesmentScore": 0
+                },
+                {
+                  "itemNumber": "39",
+                  "finalAssesmentScore": 0
+                },
+                {
+                  "itemNumber": "40",
+                  "finalAssesmentScore": 1
+                },
+                {
+                  "itemNumber": "41",
+                  "finalAssesmentScore": 0
+                },
+                {
+                  "itemNumber": "42",
+                  "finalAssesmentScore": 0
+                },
+                {
+                  "itemNumber": "43",
+                  "finalAssesmentScore": 0
+                },
+                {
+                  "itemNumber": "44",
+                  "finalAssesmentScore": 1
+                },
+                {
+                  "itemNumber": "45",
+                  "finalAssesmentScore": 1
+                },
+                {
+                  "itemNumber": "46",
+                  "finalAssesmentScore": 0
+                },
+                {
+                  "itemNumber": "47",
+                  "finalAssesmentScore": 0
+                },
+                {
+                  "itemNumber": "48",
+                  "finalAssesmentScore": 0
+                },
+                {
+                  "itemNumber": "49",
+                  "finalAssesmentScore": 0
+                },
+                {
+                  "itemNumber": "50",
+                  "finalAssesmentScore": 1
+                },
+                {
+                  "itemNumber": "1",
+                  "finalAssesmentScore": 3
+                },
+                {
+                  "itemNumber": "1",
+                  "finalAssesmentScore": 58
+                }
+              ]
+            },
+            {
+              "examId": "EA",
+              "grade": "A",
+              "gradePoints": 2,
+              "aborted": false,
+              "examFee": null,
+              "freeOfCharge": false,
+              "totalScore": null,
+              "examItems": [
+                {
+                  "itemNumber": "1",
+                  "finalAssesmentScore": 0
+                },
+                {
+                  "itemNumber": "2",
+                  "finalAssesmentScore": 2
+                },
+                {
+                  "itemNumber": "3",
+                  "finalAssesmentScore": 2
+                },
+                {
+                  "itemNumber": "4",
+                  "finalAssesmentScore": 2
+                },
+                {
+                  "itemNumber": "5",
+                  "finalAssesmentScore": 0
+                },
+                {
+                  "itemNumber": "6",
+                  "finalAssesmentScore": 2
+                },
+                {
+                  "itemNumber": "7",
+                  "finalAssesmentScore": 0
+                },
+                {
+                  "itemNumber": "8",
+                  "finalAssesmentScore": 2
+                },
+                {
+                  "itemNumber": "9",
+                  "finalAssesmentScore": 0
+                },
+                {
+                  "itemNumber": "10",
+                  "finalAssesmentScore": 0
+                },
+                {
+                  "itemNumber": "11",
+                  "finalAssesmentScore": 0
+                },
+                {
+                  "itemNumber": "12",
+                  "finalAssesmentScore": 0
+                },
+                {
+                  "itemNumber": "13",
+                  "finalAssesmentScore": 2
+                },
+                {
+                  "itemNumber": "14",
+                  "finalAssesmentScore": 2
+                },
+                {
+                  "itemNumber": "15",
+                  "finalAssesmentScore": 0
+                },
+                {
+                  "itemNumber": "16",
+                  "finalAssesmentScore": 0
+                },
+                {
+                  "itemNumber": "17",
+                  "finalAssesmentScore": 0
+                },
+                {
+                  "itemNumber": "18",
+                  "finalAssesmentScore": 3
+                },
+                {
+                  "itemNumber": "19",
+                  "finalAssesmentScore": 0
+                },
+                {
+                  "itemNumber": "20",
+                  "finalAssesmentScore": 0
+                },
+                {
+                  "itemNumber": "21",
+                  "finalAssesmentScore": 3
+                },
+                {
+                  "itemNumber": "22",
+                  "finalAssesmentScore": 3
+                },
+                {
+                  "itemNumber": "23",
+                  "finalAssesmentScore": 3
+                },
+                {
+                  "itemNumber": "24",
+                  "finalAssesmentScore": 3
+                },
+                {
+                  "itemNumber": "25",
+                  "finalAssesmentScore": 3
+                },
+                {
+                  "itemNumber": "1",
+                  "finalAssesmentScore": 12
+                },
+                {
+                  "itemNumber": "1",
+                  "finalAssesmentScore": 0
+                },
+                {
+                  "itemNumber": "2",
+                  "finalAssesmentScore": 0
+                },
+                {
+                  "itemNumber": "3",
+                  "finalAssesmentScore": 2
+                },
+                {
+                  "itemNumber": "4",
+                  "finalAssesmentScore": 2
+                },
+                {
+                  "itemNumber": "5",
+                  "finalAssesmentScore": 2
+                },
+                {
+                  "itemNumber": "6",
+                  "finalAssesmentScore": 0
+                },
+                {
+                  "itemNumber": "7",
+                  "finalAssesmentScore": 0
+                },
+                {
+                  "itemNumber": "8",
+                  "finalAssesmentScore": 0
+                },
+                {
+                  "itemNumber": "9",
+                  "finalAssesmentScore": 2
+                },
+                {
+                  "itemNumber": "10",
+                  "finalAssesmentScore": 0
+                },
+                {
+                  "itemNumber": "11",
+                  "finalAssesmentScore": 2
+                },
+                {
+                  "itemNumber": "12",
+                  "finalAssesmentScore": 0
+                },
+                {
+                  "itemNumber": "13",
+                  "finalAssesmentScore": 2
+                },
+                {
+                  "itemNumber": "14",
+                  "finalAssesmentScore": 2
+                },
+                {
+                  "itemNumber": "15",
+                  "finalAssesmentScore": 0
+                },
+                {
+                  "itemNumber": "16",
+                  "finalAssesmentScore": 2
+                },
+                {
+                  "itemNumber": "17",
+                  "finalAssesmentScore": 2
+                },
+                {
+                  "itemNumber": "18",
+                  "finalAssesmentScore": 2
+                },
+                {
+                  "itemNumber": "19",
+                  "finalAssesmentScore": 0
+                },
+                {
+                  "itemNumber": "20",
+                  "finalAssesmentScore": 2
+                },
+                {
+                  "itemNumber": "21",
+                  "finalAssesmentScore": 2
+                },
+                {
+                  "itemNumber": "22",
+                  "finalAssesmentScore": 2
+                },
+                {
+                  "itemNumber": "23",
+                  "finalAssesmentScore": 2
+                },
+                {
+                  "itemNumber": "24",
+                  "finalAssesmentScore": 2
+                },
+                {
+                  "itemNumber": "25",
+                  "finalAssesmentScore": 0
+                },
+                {
+                  "itemNumber": "1",
+                  "finalAssesmentScore": 10
+                },
+                {
+                  "itemNumber": "26",
+                  "finalAssesmentScore": 1
+                },
+                {
+                  "itemNumber": "27",
+                  "finalAssesmentScore": 0
+                },
+                {
+                  "itemNumber": "28",
+                  "finalAssesmentScore": 0
+                },
+                {
+                  "itemNumber": "29",
+                  "finalAssesmentScore": 1
+                },
+                {
+                  "itemNumber": "30",
+                  "finalAssesmentScore": 0
+                },
+                {
+                  "itemNumber": "31",
+                  "finalAssesmentScore": 1
+                },
+                {
+                  "itemNumber": "32",
+                  "finalAssesmentScore": 0
+                },
+                {
+                  "itemNumber": "33",
+                  "finalAssesmentScore": 1
+                },
+                {
+                  "itemNumber": "34",
+                  "finalAssesmentScore": 1
+                },
+                {
+                  "itemNumber": "35",
+                  "finalAssesmentScore": 1
+                },
+                {
+                  "itemNumber": "36",
+                  "finalAssesmentScore": 0
+                },
+                {
+                  "itemNumber": "37",
+                  "finalAssesmentScore": 1
+                },
+                {
+                  "itemNumber": "38",
+                  "finalAssesmentScore": 0
+                },
+                {
+                  "itemNumber": "39",
+                  "finalAssesmentScore": 0
+                },
+                {
+                  "itemNumber": "40",
+                  "finalAssesmentScore": 1
+                },
+                {
+                  "itemNumber": "41",
+                  "finalAssesmentScore": 0
+                },
+                {
+                  "itemNumber": "42",
+                  "finalAssesmentScore": 0
+                },
+                {
+                  "itemNumber": "43",
+                  "finalAssesmentScore": 0
+                },
+                {
+                  "itemNumber": "44",
+                  "finalAssesmentScore": 1
+                },
+                {
+                  "itemNumber": "45",
+                  "finalAssesmentScore": 1
+                },
+                {
+                  "itemNumber": "46",
+                  "finalAssesmentScore": 0
+                },
+                {
+                  "itemNumber": "47",
+                  "finalAssesmentScore": 0
+                },
+                {
+                  "itemNumber": "48",
+                  "finalAssesmentScore": 0
+                },
+                {
+                  "itemNumber": "49",
+                  "finalAssesmentScore": 0
+                },
+                {
+                  "itemNumber": "50",
+                  "finalAssesmentScore": 1
+                },
+                {
+                  "itemNumber": "1",
+                  "finalAssesmentScore": 3
+                },
+                {
+                  "itemNumber": "1",
+                  "finalAssesmentScore": 58
+                }
+              ]
+            },
+            {
+              "examId": "EA",
+              "grade": "A",
+              "gradePoints": 2,
+              "aborted": false,
+              "examFee": null,
+              "freeOfCharge": false,
+              "totalScore": null,
+              "examItems": [
+                {
+                  "itemNumber": "1",
+                  "finalAssesmentScore": 0
+                },
+                {
+                  "itemNumber": "2",
+                  "finalAssesmentScore": 2
+                },
+                {
+                  "itemNumber": "3",
+                  "finalAssesmentScore": 2
+                },
+                {
+                  "itemNumber": "4",
+                  "finalAssesmentScore": 2
+                },
+                {
+                  "itemNumber": "5",
+                  "finalAssesmentScore": 0
+                },
+                {
+                  "itemNumber": "6",
+                  "finalAssesmentScore": 2
+                },
+                {
+                  "itemNumber": "7",
+                  "finalAssesmentScore": 0
+                },
+                {
+                  "itemNumber": "8",
+                  "finalAssesmentScore": 2
+                },
+                {
+                  "itemNumber": "9",
+                  "finalAssesmentScore": 0
+                },
+                {
+                  "itemNumber": "10",
+                  "finalAssesmentScore": 0
+                },
+                {
+                  "itemNumber": "11",
+                  "finalAssesmentScore": 0
+                },
+                {
+                  "itemNumber": "12",
+                  "finalAssesmentScore": 0
+                },
+                {
+                  "itemNumber": "13",
+                  "finalAssesmentScore": 2
+                },
+                {
+                  "itemNumber": "14",
+                  "finalAssesmentScore": 2
+                },
+                {
+                  "itemNumber": "15",
+                  "finalAssesmentScore": 0
+                },
+                {
+                  "itemNumber": "16",
+                  "finalAssesmentScore": 0
+                },
+                {
+                  "itemNumber": "17",
+                  "finalAssesmentScore": 0
+                },
+                {
+                  "itemNumber": "18",
+                  "finalAssesmentScore": 3
+                },
+                {
+                  "itemNumber": "19",
+                  "finalAssesmentScore": 0
+                },
+                {
+                  "itemNumber": "20",
+                  "finalAssesmentScore": 0
+                },
+                {
+                  "itemNumber": "21",
+                  "finalAssesmentScore": 3
+                },
+                {
+                  "itemNumber": "22",
+                  "finalAssesmentScore": 3
+                },
+                {
+                  "itemNumber": "23",
+                  "finalAssesmentScore": 3
+                },
+                {
+                  "itemNumber": "24",
+                  "finalAssesmentScore": 3
+                },
+                {
+                  "itemNumber": "25",
+                  "finalAssesmentScore": 3
+                },
+                {
+                  "itemNumber": "1",
+                  "finalAssesmentScore": 12
+                },
+                {
+                  "itemNumber": "1",
+                  "finalAssesmentScore": 0
+                },
+                {
+                  "itemNumber": "2",
+                  "finalAssesmentScore": 0
+                },
+                {
+                  "itemNumber": "3",
+                  "finalAssesmentScore": 2
+                },
+                {
+                  "itemNumber": "4",
+                  "finalAssesmentScore": 2
+                },
+                {
+                  "itemNumber": "5",
+                  "finalAssesmentScore": 2
+                },
+                {
+                  "itemNumber": "6",
+                  "finalAssesmentScore": 0
+                },
+                {
+                  "itemNumber": "7",
+                  "finalAssesmentScore": 0
+                },
+                {
+                  "itemNumber": "8",
+                  "finalAssesmentScore": 0
+                },
+                {
+                  "itemNumber": "9",
+                  "finalAssesmentScore": 2
+                },
+                {
+                  "itemNumber": "10",
+                  "finalAssesmentScore": 0
+                },
+                {
+                  "itemNumber": "11",
+                  "finalAssesmentScore": 2
+                },
+                {
+                  "itemNumber": "12",
+                  "finalAssesmentScore": 0
+                },
+                {
+                  "itemNumber": "13",
+                  "finalAssesmentScore": 2
+                },
+                {
+                  "itemNumber": "14",
+                  "finalAssesmentScore": 2
+                },
+                {
+                  "itemNumber": "15",
+                  "finalAssesmentScore": 0
+                },
+                {
+                  "itemNumber": "16",
+                  "finalAssesmentScore": 2
+                },
+                {
+                  "itemNumber": "17",
+                  "finalAssesmentScore": 2
+                },
+                {
+                  "itemNumber": "18",
+                  "finalAssesmentScore": 2
+                },
+                {
+                  "itemNumber": "19",
+                  "finalAssesmentScore": 0
+                },
+                {
+                  "itemNumber": "20",
+                  "finalAssesmentScore": 2
+                },
+                {
+                  "itemNumber": "21",
+                  "finalAssesmentScore": 2
+                },
+                {
+                  "itemNumber": "22",
+                  "finalAssesmentScore": 2
+                },
+                {
+                  "itemNumber": "23",
+                  "finalAssesmentScore": 2
+                },
+                {
+                  "itemNumber": "24",
+                  "finalAssesmentScore": 2
+                },
+                {
+                  "itemNumber": "25",
+                  "finalAssesmentScore": 0
+                },
+                {
+                  "itemNumber": "1",
+                  "finalAssesmentScore": 10
+                },
+                {
+                  "itemNumber": "26",
+                  "finalAssesmentScore": 1
+                },
+                {
+                  "itemNumber": "27",
+                  "finalAssesmentScore": 0
+                },
+                {
+                  "itemNumber": "28",
+                  "finalAssesmentScore": 0
+                },
+                {
+                  "itemNumber": "29",
+                  "finalAssesmentScore": 1
+                },
+                {
+                  "itemNumber": "30",
+                  "finalAssesmentScore": 0
+                },
+                {
+                  "itemNumber": "31",
+                  "finalAssesmentScore": 1
+                },
+                {
+                  "itemNumber": "32",
+                  "finalAssesmentScore": 0
+                },
+                {
+                  "itemNumber": "33",
+                  "finalAssesmentScore": 1
+                },
+                {
+                  "itemNumber": "34",
+                  "finalAssesmentScore": 1
+                },
+                {
+                  "itemNumber": "35",
+                  "finalAssesmentScore": 1
+                },
+                {
+                  "itemNumber": "36",
+                  "finalAssesmentScore": 0
+                },
+                {
+                  "itemNumber": "37",
+                  "finalAssesmentScore": 1
+                },
+                {
+                  "itemNumber": "38",
+                  "finalAssesmentScore": 0
+                },
+                {
+                  "itemNumber": "39",
+                  "finalAssesmentScore": 0
+                },
+                {
+                  "itemNumber": "40",
+                  "finalAssesmentScore": 1
+                },
+                {
+                  "itemNumber": "41",
+                  "finalAssesmentScore": 0
+                },
+                {
+                  "itemNumber": "42",
+                  "finalAssesmentScore": 0
+                },
+                {
+                  "itemNumber": "43",
+                  "finalAssesmentScore": 0
+                },
+                {
+                  "itemNumber": "44",
+                  "finalAssesmentScore": 1
+                },
+                {
+                  "itemNumber": "45",
+                  "finalAssesmentScore": 1
+                },
+                {
+                  "itemNumber": "46",
+                  "finalAssesmentScore": 0
+                },
+                {
+                  "itemNumber": "47",
+                  "finalAssesmentScore": 0
+                },
+                {
+                  "itemNumber": "48",
+                  "finalAssesmentScore": 0
+                },
+                {
+                  "itemNumber": "49",
+                  "finalAssesmentScore": 0
+                },
+                {
+                  "itemNumber": "50",
+                  "finalAssesmentScore": 1
+                },
+                {
+                  "itemNumber": "1",
+                  "finalAssesmentScore": 3
+                },
+                {
+                  "itemNumber": "1",
+                  "finalAssesmentScore": 58
+                }
+              ]
+            },
+            {
+              "examId": "YH",
+              "grade": "C",
+              "gradePoints": 4,
+              "aborted": false,
+              "examFee": null,
+              "freeOfCharge": false,
+              "totalScore": null,
+              "examItems": [
+                {
+                  "itemNumber": "1"
+                },
+                {
+                  "itemNumber": "2",
+                  "finalAssesmentScore": 3
+                },
+                {
+                  "itemNumber": "3",
+                  "finalAssesmentScore": 3
+                },
+                {
+                  "itemNumber": "4",
+                  "finalAssesmentScore": 3
+                },
+                {
+                  "itemNumber": "5",
+                  "finalAssesmentScore": 3
+                },
+                {
+                  "itemNumber": "6"
+                },
+                {
+                  "itemNumber": "7"
+                },
+                {
+                  "itemNumber": "8"
+                },
+                {
+                  "itemNumber": "9",
+                  "finalAssesmentScore": 3
+                },
+                {
+                  "itemNumber": "10",
+                  "finalAssesmentScore": 6
+                }
+              ]
+            },
+            {
+              "examId": "YH",
+              "grade": "C",
+              "gradePoints": 4,
+              "aborted": false,
+              "examFee": null,
+              "freeOfCharge": false,
+              "totalScore": null,
+              "examItems": [
+                {
+                  "itemNumber": "1"
+                },
+                {
+                  "itemNumber": "2",
+                  "finalAssesmentScore": 3
+                },
+                {
+                  "itemNumber": "3",
+                  "finalAssesmentScore": 3
+                },
+                {
+                  "itemNumber": "4",
+                  "finalAssesmentScore": 3
+                },
+                {
+                  "itemNumber": "5",
+                  "finalAssesmentScore": 3
+                },
+                {
+                  "itemNumber": "6"
+                },
+                {
+                  "itemNumber": "7"
+                },
+                {
+                  "itemNumber": "8"
+                },
+                {
+                  "itemNumber": "9",
+                  "finalAssesmentScore": 3
+                },
+                {
+                  "itemNumber": "10",
+                  "finalAssesmentScore": 6
+                }
+              ]
+            },
+            {
+              "examId": "YH",
+              "grade": "C",
+              "gradePoints": 4,
+              "aborted": false,
+              "examFee": null,
+              "freeOfCharge": false,
+              "totalScore": null,
+              "examItems": [
+                {
+                  "itemNumber": "1"
+                },
+                {
+                  "itemNumber": "2",
+                  "finalAssesmentScore": 3
+                },
+                {
+                  "itemNumber": "3",
+                  "finalAssesmentScore": 3
+                },
+                {
+                  "itemNumber": "4",
+                  "finalAssesmentScore": 3
+                },
+                {
+                  "itemNumber": "5",
+                  "finalAssesmentScore": 3
+                },
+                {
+                  "itemNumber": "6"
+                },
+                {
+                  "itemNumber": "7"
+                },
+                {
+                  "itemNumber": "8"
+                },
+                {
+                  "itemNumber": "9",
+                  "finalAssesmentScore": 3
+                },
+                {
+                  "itemNumber": "10",
+                  "finalAssesmentScore": 6
+                }
+              ]
+            },
+            {
+              "examId": "N",
+              "grade": "M",
+              "gradePoints": 5,
+              "aborted": false,
+              "examFee": null,
+              "freeOfCharge": false,
+              "totalScore": null,
+              "examItems": [
+                {
+                  "itemNumber": "1",
+                  "finalAssesmentScore": 6
+                },
+                {
+                  "itemNumber": "2",
+                  "finalAssesmentScore": 6
+                },
+                {
+                  "itemNumber": "3",
+                  "finalAssesmentScore": 0
+                },
+                {
+                  "itemNumber": "4",
+                  "finalAssesmentScore": 4
+                },
+                {
+                  "itemNumber": "5"
+                },
+                {
+                  "itemNumber": "6",
+                  "finalAssesmentScore": 6
+                },
+                {
+                  "itemNumber": "7",
+                  "finalAssesmentScore": 6
+                },
+                {
+                  "itemNumber": "8"
+                },
+                {
+                  "itemNumber": "9"
+                },
+                {
+                  "itemNumber": "10",
+                  "finalAssesmentScore": 3
+                },
+                {
+                  "itemNumber": "11",
+                  "finalAssesmentScore": 6
+                },
+                {
+                  "itemNumber": "12",
+                  "finalAssesmentScore": 1
+                },
+                {
+                  "itemNumber": "13",
+                  "finalAssesmentScore": 6
+                },
+                {
+                  "itemNumber": "14"
+                },
+                {
+                  "itemNumber": "15"
+                }
+              ]
+            },
+            {
+              "examId": "N",
+              "grade": "M",
+              "gradePoints": 5,
+              "aborted": false,
+              "examFee": null,
+              "freeOfCharge": false,
+              "totalScore": null,
+              "examItems": [
+                {
+                  "itemNumber": "1",
+                  "finalAssesmentScore": 6
+                },
+                {
+                  "itemNumber": "2",
+                  "finalAssesmentScore": 6
+                },
+                {
+                  "itemNumber": "3",
+                  "finalAssesmentScore": 0
+                },
+                {
+                  "itemNumber": "4",
+                  "finalAssesmentScore": 4
+                },
+                {
+                  "itemNumber": "5"
+                },
+                {
+                  "itemNumber": "6",
+                  "finalAssesmentScore": 6
+                },
+                {
+                  "itemNumber": "7",
+                  "finalAssesmentScore": 6
+                },
+                {
+                  "itemNumber": "8"
+                },
+                {
+                  "itemNumber": "9"
+                },
+                {
+                  "itemNumber": "10",
+                  "finalAssesmentScore": 3
+                },
+                {
+                  "itemNumber": "11",
+                  "finalAssesmentScore": 6
+                },
+                {
+                  "itemNumber": "12",
+                  "finalAssesmentScore": 1
+                },
+                {
+                  "itemNumber": "13",
+                  "finalAssesmentScore": 6
+                },
+                {
+                  "itemNumber": "14"
+                },
+                {
+                  "itemNumber": "15"
+                }
+              ]
+            },
+            {
+              "examId": "N",
+              "grade": "M",
+              "gradePoints": 5,
+              "aborted": false,
+              "examFee": null,
+              "freeOfCharge": false,
+              "totalScore": null,
+              "examItems": [
+                {
+                  "itemNumber": "1",
+                  "finalAssesmentScore": 6
+                },
+                {
+                  "itemNumber": "2",
+                  "finalAssesmentScore": 6
+                },
+                {
+                  "itemNumber": "3",
+                  "finalAssesmentScore": 0
+                },
+                {
+                  "itemNumber": "4",
+                  "finalAssesmentScore": 4
+                },
+                {
+                  "itemNumber": "5"
+                },
+                {
+                  "itemNumber": "6",
+                  "finalAssesmentScore": 6
+                },
+                {
+                  "itemNumber": "7",
+                  "finalAssesmentScore": 6
+                },
+                {
+                  "itemNumber": "8"
+                },
+                {
+                  "itemNumber": "9"
+                },
+                {
+                  "itemNumber": "10",
+                  "finalAssesmentScore": 3
+                },
+                {
+                  "itemNumber": "11",
+                  "finalAssesmentScore": 6
+                },
+                {
+                  "itemNumber": "12",
+                  "finalAssesmentScore": 1
+                },
+                {
+                  "itemNumber": "13",
+                  "finalAssesmentScore": 6
+                },
+                {
+                  "itemNumber": "14"
+                },
+                {
+                  "itemNumber": "15"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "examinationPeriod": "2012K",
+          "schoolOid": "1.2.246.562.10.36724902717",
+          "schoolName": null,
+          "totalFee": null,
+          "education": 3,
+          "studentNumber": "027",
+          "exams": [
+            {
+              "examId": "A",
+              "grade": "C",
+              "gradePoints": 4,
+              "aborted": false,
+              "examFee": null,
+              "freeOfCharge": false,
+              "totalScore": null,
+              "examItems": [
+                {
+                  "itemNumber": "1",
+                  "finalAssesmentScore": 25
+                },
+                {
+                  "itemNumber": "1"
+                },
+                {
+                  "itemNumber": "2",
+                  "finalAssesmentScore": 6
+                },
+                {
+                  "itemNumber": "3"
+                },
+                {
+                  "itemNumber": "4",
+                  "finalAssesmentScore": 9
+                },
+                {
+                  "itemNumber": "5",
+                  "finalAssesmentScore": 9
+                }
+              ]
+            },
+            {
+              "examId": "A",
+              "grade": "C",
+              "gradePoints": 4,
+              "aborted": false,
+              "examFee": null,
+              "freeOfCharge": false,
+              "totalScore": null,
+              "examItems": [
+                {
+                  "itemNumber": "1",
+                  "finalAssesmentScore": 25
+                },
+                {
+                  "itemNumber": "1"
+                },
+                {
+                  "itemNumber": "2",
+                  "finalAssesmentScore": 6
+                },
+                {
+                  "itemNumber": "3"
+                },
+                {
+                  "itemNumber": "4",
+                  "finalAssesmentScore": 9
+                },
+                {
+                  "itemNumber": "5",
+                  "finalAssesmentScore": 9
+                }
+              ]
+            },
+            {
+              "examId": "A",
+              "grade": "C",
+              "gradePoints": 4,
+              "aborted": false,
+              "examFee": null,
+              "freeOfCharge": false,
+              "totalScore": null,
+              "examItems": [
+                {
+                  "itemNumber": "1",
+                  "finalAssesmentScore": 25
+                },
+                {
+                  "itemNumber": "1"
+                },
+                {
+                  "itemNumber": "2",
+                  "finalAssesmentScore": 6
+                },
+                {
+                  "itemNumber": "3"
+                },
+                {
+                  "itemNumber": "4",
+                  "finalAssesmentScore": 9
+                },
+                {
+                  "itemNumber": "5",
+                  "finalAssesmentScore": 9
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

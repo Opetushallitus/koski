@@ -92,6 +92,39 @@ object MockYtrClient extends YtrClient {
   private var failureHetu: Option[String] = None
   private var timeoutHetu: Option[String] = None
 
+
+  private val mockYoHetus = List(
+    "010280-952L",
+    "010342-8411",
+    "020401-368M",
+    "020401-746U",
+    "050122A673D",
+    "060807A7787",
+    "080380-2432",
+    "080640-881R",
+    "080698-703Y",
+    "080845-471D",
+    "100800A057R",
+    "101000A3582",
+    "101097-6107",
+    "120674-064R",
+    "120872-781Y",
+    "140380-336X",
+    "140940-558L",
+    "151031-620R",
+    "190580-678T",
+    "200695-889X",
+    "210244-374K",
+    "220680-7850",
+    "240680-087S",
+    "240775-720P",
+    "250493-602S",
+    "270900A2635",
+    "280100A855E",
+    "280171-2730",
+    "300805A756F"
+  )
+
   var latestOppijaJsonByHetu: Option[YtrSsnWithPreviousSsns] = None
   var latestOppijatJsonByHetut: Option[YtrSsnDataWithPreviousSsns] = None
   var latestCertificateRequest: Option[YoTodistusHetuRequest] = None
