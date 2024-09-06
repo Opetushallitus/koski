@@ -385,7 +385,7 @@ describe("Suorittamisen valvonta -näkymä", () => {
     )
     await urlIsEventually(pathToUrl(stadinAmmattiopistoSuorittaminenPath))
 
-    await textEventuallyEquals(".card__header", "Oppivelvolliset (7)")
+    await textEventuallyEquals(".card__header", "Oppivelvolliset (6)")
     await dataTableEventuallyEquals(
       ".suorittaminen",
       stadinAmmattiopistoSuorittaminen20230531TableContent,
@@ -403,7 +403,7 @@ describe("Suorittamisen valvonta -näkymä", () => {
     )
     await urlIsEventually(pathToUrl(stadinAmmattiopistoSuorittaminenPath))
 
-    await textEventuallyEquals(".card__header", "Oppivelvolliset (7)")
+    await textEventuallyEquals(".card__header", "Oppivelvolliset (6)")
     await dataTableEventuallyEquals(
       ".suorittaminen",
       stadinAmmattiopistoSuorittaminen20230531TableContent,
