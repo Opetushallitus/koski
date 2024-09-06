@@ -1,10 +1,11 @@
 import React from 'react'
+import { SuoritusFieldsProps } from '.'
+import { KoodistokoodiviiteKoodistonNimellä } from '../../appstate/koodisto'
 import { t } from '../../i18n/i18n'
 import { DialogKoodistoSelect } from '../components/DialogKoodistoSelect'
 import { DialogPäätasonSuoritusSelect } from '../components/DialogPaatasonSuoritusSelect'
 import { DialogPerusteSelect } from '../components/DialogPerusteSelect'
-import { SuoritusFieldsProps } from '.'
-import { KoodistokoodiviiteKoodistonNimellä } from '../../appstate/koodisto'
+import { OpintokokonaisuusSelect } from '../components/OpintokokonaisuusSelect'
 
 export const VapaaSivistystyöFields = (props: SuoritusFieldsProps) => (
   <>
@@ -50,10 +51,8 @@ const VstJotpaFields = (props: SuoritusFieldsProps) => {
   return (
     <label>
       {t('Opintokokonaisuus')}
-      <DialogKoodistoSelect
-        state={props.state.opintokokonaisuus}
-        koodistoUri="opintokokonaisuudet"
-        testId="opintokokonaisuus"
+      <OpintokokonaisuusSelect
+        opintokokonaisuudet={props.state.opintokokonaisuus}
       />
     </label>
   )
@@ -85,10 +84,8 @@ const VstVapaatavoitteinenFields = (props: SuoritusFieldsProps) => {
   return (
     <label>
       {t('Opintokokonaisuus')}
-      <DialogKoodistoSelect
-        state={props.state.opintokokonaisuus}
-        koodistoUri="opintokokonaisuudet"
-        testId="opintokokonaisuus"
+      <OpintokokonaisuusSelect
+        opintokokonaisuudet={props.state.opintokokonaisuus}
       />
     </label>
   )
