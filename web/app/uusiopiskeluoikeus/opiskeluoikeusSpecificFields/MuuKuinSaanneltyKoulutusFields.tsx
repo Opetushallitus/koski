@@ -1,9 +1,9 @@
 import React, { useEffect } from 'react'
-import { t } from '../../i18n/i18n'
-import { Koodistokoodiviite } from '../../types/fi/oph/koski/schema/Koodistokoodiviite'
-import { DialogKoodistoSelect } from '../components/DialogKoodistoSelect'
 import { SuoritusFieldsProps } from '.'
 import { KoodistokoodiviiteKoodistonNimellä } from '../../appstate/koodisto'
+import { t } from '../../i18n/i18n'
+import { Koodistokoodiviite } from '../../types/fi/oph/koski/schema/Koodistokoodiviite'
+import { OpintokokonaisuusSelect } from '../components/OpintokokonaisuusSelect'
 
 const päätasonSuoritus = Koodistokoodiviite({
   koodiarvo: 'muukuinsaanneltykoulutus',
@@ -17,11 +17,8 @@ export const MuuKuinSäänneltyKoulutusFields = (props: SuoritusFieldsProps) => 
   return props.state.opintokokonaisuus.visible ? (
     <label>
       {t('Opintokokonaisuus')}
-      <DialogKoodistoSelect
-        state={props.state.opintokokonaisuus}
-        koodistoUri="opintokokonaisuudet"
-        formatLabel={formatOpintokokonaisuusName}
-        testId="opintokokonaisuus"
+      <OpintokokonaisuusSelect
+        opintokokonaisuudet={props.state.opintokokonaisuus}
       />
     </label>
   ) : null
