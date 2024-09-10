@@ -21,34 +21,36 @@ for RAKENNE in $RAKENTEET_PATH; do
 
     if [ "$DIAARINUMERO" != "null" ]; then
         ID=$(jq -r .id < "$RAKENNE")
-        ALKUPERAINEN=$(validaatio "$RAKENNE")
-
-        DATA=$(curl -s "https://eperusteet.opintopolku.fi/eperusteet-service/api/external/peruste/$ID" | jq .)
-        KOODI=$(echo "$DATA" | jq -r .koodi)
-        if [ "$KOODI" != "null" ]; then
-        echo "Skip $BASENAME: Tunnisteella $ID ei löytynyt rakennetta"
+        if [ "$ID" == "-1" ]; then
+            echo "Skip $BASENAME: Rakenne merkitty tunnisteella -1 skipattavaksi"
         else
-        echo "OK   $BASENAME: $DIAARINUMERO (id: $ID)"
-        PATCH="$RAKENNE.patch"
-        if [ -f "$PATCH" ]; then
-            echo "     Tallennetaan muutoksien $(basename "$PATCH") kanssa"
-            echo "$DATA" | jq "$(cat "$PATCH")" > "$RAKENNE"
-        else
-            echo "$DATA" > "$RAKENNE"
+            ALKUPERAINEN=$(validaatio "$RAKENNE")
+
+            DATA=$(curl -s "https://eperusteet.opintopolku.fi/eperusteet-service/api/external/peruste/$ID" | jq .)
+            KOODI=$(echo "$DATA" | jq -r .koodi)
+            if [ "$KOODI" == "404 NOT_FOUND" ]; then
+                echo "Skip $BASENAME: Tunnisteella $ID ei löytynyt rakennetta"
+            else
+                echo "OK   $BASENAME: $DIAARINUMERO (id: $ID)"
+                PATCH="$RAKENNE.patch"
+                if [ -f "$PATCH" ]; then
+                    echo "     Tallennetaan mukaan tiedostosta $(basename "$PATCH") mukaan testidatan tarvitsemat puukotukset"
+                    echo "$DATA" | jq "$(cat "$PATCH")" > "$RAKENNE"
+                else
+                    echo "$DATA" > "$RAKENNE"
+                fi
+
+                UUSI=$(validaatio "$RAKENNE")
+                
+                if [ "$ALKUPERAINEN" != "$UUSI" ]; then
+                    echo "     VAROITUS: Testien kannalta mahdollisesti oleellisia kenttiä muuttui:"
+                    echo ""
+                    echo "     Alkuperäinen: $ALKUPERAINEN"
+                    echo "     Uusi: $UUSI"
+                    echo ""
+                fi
+            fi
         fi
-
-        UUSI=$(validaatio "$RAKENNE")
-        
-        if [ "$ALKUPERAINEN" != "$UUSI" ]; then
-            echo "     VAROITUS: Testien kannalta mahdollisesti oleellisia kenttiä muuttui:"
-            echo ""
-            echo "     Alkuperäinen: $ALKUPERAINEN"
-            echo "     Uusi: $UUSI"
-            echo ""
-        fi
-
-    fi
-
     else
       echo "Skip $BASENAME: Ei diaarinumeroa"
     fi
