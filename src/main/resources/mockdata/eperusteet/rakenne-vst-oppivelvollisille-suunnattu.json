@@ -13,8 +13,8 @@
   "toteutus": "vapaasivistystyo",
   "koulutukset": [],
   "kielet": [
-    "fi",
-    "sv"
+    "sv",
+    "fi"
   ],
   "kuvaus": {
     "_id": "7512279",
@@ -39,33 +39,6 @@
   "tyotehtavatJoissaVoiToimia": null,
   "suorittaneenOsaaminen": null,
   "perusteenAikataulut": [
-    {
-      "id": 7512420,
-      "peruste": {
-        "id": 7512390,
-        "nimi": {
-          "_id": "7526380",
-          "_tunniste": "1406f8a1-6ec8-4de3-82c6-fe37b1871e37",
-          "fi": "Kansanopistojen oppivelvollisille suunnatun vapaan sivistystyön koulutuksen opetussuunnitelman perusteet 2021",
-          "sv": "Grunderna för läroplanen för folkhögskolornas utbildning inom det fria bildningsarbetet som riktar sig till läropliktiga 2021"
-        },
-        "tila": "valmis",
-        "tyyppi": "normaali",
-        "koulutustyyppi": "koulutustyyppi_10",
-        "esikatseltavissa": false,
-        "voimassaoloAlkaa": 1627765200000,
-        "voimassaoloLoppuu": null,
-        "_perusteprojekti": null
-      },
-      "tavoite": {
-        "_id": "7512430",
-        "_tunniste": "98e215b2-99eb-42b1-a679-28ad3e233ff3",
-        "fi": "Peruste astuu voimaan"
-      },
-      "tapahtuma": "tavoite",
-      "tapahtumapaiva": 1609452000000,
-      "julkinen": false
-    },
     {
       "id": 7512421,
       "peruste": {
@@ -119,10 +92,39 @@
       "tapahtuma": "julkaisu",
       "tapahtumapaiva": 1609452000000,
       "julkinen": false
+    },
+    {
+      "id": 7512420,
+      "peruste": {
+        "id": 7512390,
+        "nimi": {
+          "_id": "7526380",
+          "_tunniste": "1406f8a1-6ec8-4de3-82c6-fe37b1871e37",
+          "fi": "Kansanopistojen oppivelvollisille suunnatun vapaan sivistystyön koulutuksen opetussuunnitelman perusteet 2021",
+          "sv": "Grunderna för läroplanen för folkhögskolornas utbildning inom det fria bildningsarbetet som riktar sig till läropliktiga 2021"
+        },
+        "tila": "valmis",
+        "tyyppi": "normaali",
+        "koulutustyyppi": "koulutustyyppi_10",
+        "esikatseltavissa": false,
+        "voimassaoloAlkaa": 1627765200000,
+        "voimassaoloLoppuu": null,
+        "_perusteprojekti": null
+      },
+      "tavoite": {
+        "_id": "7512430",
+        "_tunniste": "98e215b2-99eb-42b1-a679-28ad3e233ff3",
+        "fi": "Peruste astuu voimaan"
+      },
+      "tapahtuma": "tavoite",
+      "tapahtumapaiva": 1609452000000,
+      "julkinen": false
     }
   ],
   "poikkeamismaaraysTarkennus": null,
   "poikkeamismaaraysTyyppi": null,
+  "opasTyyppi": null,
+  "tietoapalvelustaKuvaus": null,
   "vapaasivistystyo": {
     "id": 7512400,
     "sisalto": {

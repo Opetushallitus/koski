@@ -23,8 +23,8 @@
     }
   ],
   "kielet": [
-    "fi",
-    "sv"
+    "sv",
+    "fi"
   ],
   "kuvaus": {
     "_id": "1887450",
@@ -57,6 +57,8 @@
   "perusteenAikataulut": [],
   "poikkeamismaaraysTarkennus": null,
   "poikkeamismaaraysTyyppi": null,
+  "opasTyyppi": null,
+  "tietoapalvelustaKuvaus": null,
   "esiopetus": {
     "sisalto": {
       "id": 718920,

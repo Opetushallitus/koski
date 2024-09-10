@@ -24,8 +24,8 @@
     }
   ],
   "kielet": [
-    "fi",
-    "sv"
+    "sv",
+    "fi"
   ],
   "kuvaus": {
     "_id": "4386241",
@@ -93,6 +93,8 @@
   "perusteenAikataulut": [],
   "poikkeamismaaraysTarkennus": null,
   "poikkeamismaaraysTyyppi": null,
+  "opasTyyppi": null,
+  "tietoapalvelustaKuvaus": null,
   "suoritustavat": [
     {
       "suoritustapakoodi": "naytto",

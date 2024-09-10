@@ -646,5 +646,33 @@
     "koodiUri": "europeanschoolofhelsinkimuuoppiaine_soc",
     "versio": 1,
     "koodiArvo": "SOC"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "Science Technology Society ",
+        "kuvaus": "Science Technology Society ",
+        "lyhytNimi": "Science Technology Society ",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Science Technology Society ",
+        "kuvaus": "Science Technology Society ",
+        "lyhytNimi": "Science Technology Society ",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Science Technology Society ",
+        "kuvaus": "Science Technology Society ",
+        "lyhytNimi": "Science Technology Society ",
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "europeanschoolofhelsinkimuuoppiaine_sts",
+    "versio": 1,
+    "koodiArvo": "STS"
   }
 ]

@@ -54,6 +54,8 @@
   "perusteenAikataulut": [],
   "poikkeamismaaraysTarkennus": null,
   "poikkeamismaaraysTyyppi": null,
+  "opasTyyppi": null,
+  "tietoapalvelustaKuvaus": null,
   "suoritustavat": [
     {
       "suoritustapakoodi": "naytto",
