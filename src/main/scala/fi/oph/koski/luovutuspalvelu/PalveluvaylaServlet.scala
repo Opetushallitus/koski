@@ -28,7 +28,7 @@ class PalveluvaylaServlet(implicit val application: KoskiApplication) extends So
   }
 
   post("/hsl") {
-    requireHslUser
+    if (Environment.isMockEnvironment(application.config) || Environment.isProdEnvironment(application.config)) requireHslUser
     val soapResp = (for {
       xml <- xmlBody
       hetu <- extractHetuHsl(xml)
