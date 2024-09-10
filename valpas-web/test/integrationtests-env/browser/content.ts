@@ -3,6 +3,7 @@ import { $ } from "./core"
 import { driver } from "./driver"
 import { defaultTimeout } from "./timeouts"
 import { eventually } from "./utils"
+import "jest-expect-message"
 
 export const textEventuallyEquals = (
   selector: string,
