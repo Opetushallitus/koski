@@ -222,9 +222,11 @@ class ValpasKuntailmoitusRepository(
   def queryOpiskeluoikeudetWithIlmoitus(opiskeluoikeudet: Seq[String]): Seq[String] = {
     runDbSync(
       IlmoitusOpiskeluoikeusKonteksti
-        .filter(_.opiskeluoikeusOid inSetBind opiskeluoikeudet)
+        .join(Ilmoitukset).on(_.ilmoitusUuid === _.uuid)
+        .filter(_._2.mitätöity.isEmpty)
+        .filter(_._1.opiskeluoikeusOid inSetBind opiskeluoikeudet)
         .result)
-      .map(_.opiskeluoikeusOid)
+      .map(_._1.opiskeluoikeusOid)
   }
 
   private def withUudempiIlmoitusToiseenKuntaan(ilmoitukset: Seq[ValpasKuntailmoitusLaajatTiedot]): Seq[ValpasKuntailmoitusLaajatTiedot] = {
