@@ -88,7 +88,7 @@ class YtrDownloadService(
 
   def loadFixturesAndWaitUntilComplete(force: Boolean = false): Unit = {
     val fixtureMonthStart = Some("1980-01")
-    val fixtureMonthEnd = Some("1981-10")
+    val fixtureMonthEnd = Some("2022-02")
     if (Environment.isUnitTestEnvironment(application.config) || Environment.isLocalDevelopmentEnvironment(application.config)) {
       download(birthmonthStart = fixtureMonthStart, birthmonthEnd = fixtureMonthEnd, force = force)
       Wait.until { status.latestIsComplete }
@@ -191,7 +191,8 @@ class YtrDownloadService(
 
     status.setLoading(statusId, 0, 0, modifiedSinceParam = Some(modifiedSince))
 
-    val ssnDataObservable = Observable.from(application.ytrClient.getHetutByModifiedSince(modifiedSince))
+    val ssns = application.ytrClient.getHetutByModifiedSince(modifiedSince)
+    val ssnDataObservable = Observable.from(ssns)
 
     startDownloadingAndUpdateToKoskiDatabase(
       createOppijatObservable(ssnDataObservable),

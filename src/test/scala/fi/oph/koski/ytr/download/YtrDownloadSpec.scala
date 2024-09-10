@@ -23,10 +23,11 @@ class YtrDownloadSpec
 
   override protected def beforeEach() {
     super.beforeEach()
+    MockYtrClient.reset()
   }
 
   val birthmonthStart = "1980-03"
-  val birthmonthEnd = "1981-10"
+  val birthmonthEnd = "2007-09"
 
   val modifiedSince = LocalDate.of(2023, 1, 1)
 
@@ -102,20 +103,21 @@ class YtrDownloadSpec
     clearYtrData()
 
     downloadYtrData(birthmonthStart, birthmonthEnd, force = true)
+    MockYtrClient.incrementOppijaVersion("140380-336X")
     downloadYtrData(modifiedSince, force = true)
 
     verifyOppijat(
       expectedOppijat(
-        expectedOsasuorituksetLkm = Seq(13, 3, 12, 24, 12),
+        expectedOsasuorituksetLkm = Seq(13, 5, 12, 24, 12),
         expectedVersionumerot = Seq(1, 2, 1, 1, 1)
       )
     )
 
     val edellinenVersio = getYtrOppijaVersionumerolla(oppijaOidEnnestäänKoskessa2, 1, MockUsers.paakayttaja)
-    edellinenVersio.opiskeluoikeudet(0).suoritukset(0).osasuoritukset.get should have length(5)
+    edellinenVersio.opiskeluoikeudet(0).suoritukset(0).osasuoritukset.get should have length(3)
 
     val uusiVersio = getYtrOppijaVersionumerolla(oppijaOidEnnestäänKoskessa2, 2, MockUsers.paakayttaja)
-    uusiVersio.opiskeluoikeudet(0).suoritukset(0).osasuoritukset.get should have length(3)
+    uusiVersio.opiskeluoikeudet(0).suoritukset(0).osasuoritukset.get should have length(5)
   }
 
   "YTR download modified since" in {
@@ -173,7 +175,7 @@ class YtrDownloadSpec
 
   private def expectedOppijat(
     hetut: Seq[String] = oppijahetut,
-    expectedOsasuorituksetLkm: Seq[Int] = Seq(13, 5, 12, 24, 12),
+    expectedOsasuorituksetLkm: Seq[Int] = Seq(13, 3, 12, 24, 12),
     expectedVersionumerot: Seq[Int] = Seq.fill(5)(1),
   ): Seq[ExpectedOppijaData] = {
     hetut.zipWithIndex.map {
@@ -192,8 +194,9 @@ class YtrDownloadSpec
     expected.foreach(verifyOppija)
 
   private def verifyOppija(expected: ExpectedOppijaData): Unit = {
+    val oid = KoskiApplicationForTests.opintopolkuHenkilöFacade.findOppijaByHetu(expected.hetu).get.oid
     val oppija = getYtrOppija(
-      KoskiApplicationForTests.opintopolkuHenkilöFacade.findOppijaByHetu(expected.hetu).get.oid,
+      oid,
       MockUsers.paakayttaja
     )
     oppija.opiskeluoikeudet should have length (1)

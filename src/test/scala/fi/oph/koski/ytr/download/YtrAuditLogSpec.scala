@@ -5,6 +5,7 @@ import fi.oph.koski.{KoskiApplicationForTests, KoskiHttpSpec}
 import fi.oph.koski.koskiuser.{MockUsers, UserWithPassword}
 import fi.oph.koski.log.{AuditLogTester, KoskiAuditLogMessageField, KoskiOperation}
 import fi.oph.koski.schema.Oppija
+import fi.oph.koski.ytr.MockYtrClient
 import org.scalatest.BeforeAndAfterEach
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.should.Matchers
@@ -23,6 +24,7 @@ class YtrAuditLogSpec
   override protected def beforeEach() {
     super.beforeEach()
     clearYtrData()
+    MockYtrClient.reset()
     AuditLogTester.clearMessages
   }
 
@@ -40,7 +42,7 @@ class YtrAuditLogSpec
     downloadYtrData(birthmonthStart, birthmonthEnd, force = true)
 
     verifyAuditLogs(
-      List.fill(7)(
+      List.fill(4)(
         Map(
           "operation" -> KoskiOperation.YTR_OPISKELUOIKEUS_LISAYS.toString,
           "user" -> Map(
@@ -57,7 +59,7 @@ class YtrAuditLogSpec
   "Muutos" in {
     downloadYtrData(birthmonthStart, birthmonthEnd, force = true)
     AuditLogTester.clearMessages
-
+    MockYtrClient.incrementOppijaVersion(hetu)
     downloadYtrData(modifiedSince, force = true)
 
     verifyAuditLogs(
@@ -77,6 +79,7 @@ class YtrAuditLogSpec
 
   "Katsominen" in {
     downloadYtrData(birthmonthStart, birthmonthEnd, force = true)
+    MockYtrClient.incrementOppijaVersion(hetu)
     downloadYtrData(modifiedSince, force = true)
     AuditLogTester.clearMessages
 
@@ -100,6 +103,7 @@ class YtrAuditLogSpec
 
   "Katsominen versionumerolla" in {
     downloadYtrData(birthmonthStart, birthmonthEnd, force = true)
+    MockYtrClient.incrementOppijaVersion(hetu)
     downloadYtrData(modifiedSince, force = true)
     AuditLogTester.clearMessages
 
@@ -123,6 +127,7 @@ class YtrAuditLogSpec
 
   "Tallennetun originaalin katsominen" in {
     downloadYtrData(birthmonthStart, birthmonthEnd, force = true)
+    MockYtrClient.incrementOppijaVersion(hetu)
     downloadYtrData(modifiedSince, force = true)
     AuditLogTester.clearMessages
 
@@ -145,6 +150,7 @@ class YtrAuditLogSpec
 
   "Ajantasaisen originaalin katsominen" in {
     downloadYtrData(birthmonthStart, birthmonthEnd, force = true)
+    MockYtrClient.incrementOppijaVersion(hetu)
     downloadYtrData(modifiedSince, force = true)
     AuditLogTester.clearMessages
 
