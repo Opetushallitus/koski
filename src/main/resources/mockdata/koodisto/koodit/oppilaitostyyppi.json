@@ -356,6 +356,41 @@
         "passive": false
       },
       {
+        "codeElementUri": "oppilaitosnumero_03902",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitosnumero_03903",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitosnumero_03904",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitosnumero_03905",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitosnumero_03906",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitosnumero_03907",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitosnumero_03908",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
         "codeElementUri": "oppilaitosnumero_03097",
         "codeElementVersion": 1,
         "passive": false
@@ -3016,6 +3051,11 @@
         "passive": false
       },
       {
+        "codeElementUri": "oppilaitosnumero_03909",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
         "codeElementUri": "oppilaitosnumero_03696",
         "codeElementVersion": 1,
         "passive": false
@@ -3152,6 +3192,11 @@
       },
       {
         "codeElementUri": "oppilaitosnumero_06337",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitosnumero_03910",
         "codeElementVersion": 1,
         "passive": false
       },
@@ -3947,6 +3992,11 @@
       },
       {
         "codeElementUri": "oppilaitosnumero_05909",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitosnumero_03911",
         "codeElementVersion": 1,
         "passive": false
       },
@@ -13781,6 +13831,11 @@
         "passive": false
       },
       {
+        "codeElementUri": "oppilaitosnumero_03693",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
         "codeElementUri": "oppilaitostyyppifasetti_12",
         "codeElementVersion": 1,
         "passive": false
@@ -22707,11 +22762,6 @@
         "passive": false
       },
       {
-        "codeElementUri": "oppilaitosnumero_03693",
-        "codeElementVersion": 1,
-        "passive": false
-      },
-      {
         "codeElementUri": "oppilaitosnumero_03710",
         "codeElementVersion": 1,
         "passive": false
@@ -24103,6 +24153,11 @@
         "passive": false
       },
       {
+        "codeElementUri": "oppilaitosnumero_00627",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
         "codeElementUri": "oppilaitosnumero_00550",
         "codeElementVersion": 1,
         "passive": false
@@ -24144,6 +24199,11 @@
       },
       {
         "codeElementUri": "haunkohdejoukko_21",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitosnumero_00628",
         "codeElementVersion": 1,
         "passive": false
       },
@@ -38573,6 +38633,11 @@
       }
     ],
     "withinCodeElements": [
+      {
+        "codeElementUri": "oppilaitosnumero_30049",
+        "codeElementVersion": 1,
+        "passive": false
+      },
       {
         "codeElementUri": "oppilaitosnumero_00000",
         "codeElementVersion": 1,

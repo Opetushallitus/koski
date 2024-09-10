@@ -179,7 +179,7 @@
         "kieli": "SV"
       },
       {
-        "nimi": null,
+        "nimi": "approbatur",
         "kuvaus": null,
         "kieli": "EN"
       }
@@ -245,7 +245,7 @@
         "kieli": "SV"
       },
       {
-        "nimi": null,
+        "nimi": "lubenter approbatur",
         "kuvaus": null,
         "kieli": "EN"
       }
@@ -278,7 +278,7 @@
         "kieli": "SV"
       },
       {
-        "nimi": null,
+        "nimi": "cum laude approbatur",
         "kuvaus": null,
         "kieli": "EN"
       }
@@ -311,7 +311,7 @@
         "kieli": "SV"
       },
       {
-        "nimi": null,
+        "nimi": "eximia cum laude approbatur",
         "kuvaus": null,
         "kieli": "EN"
       }
@@ -344,7 +344,7 @@
         "kieli": "SV"
       },
       {
-        "nimi": null,
+        "nimi": "good",
         "kuvaus": null,
         "kieli": "EN"
       }
@@ -377,7 +377,7 @@
         "kieli": "SV"
       },
       {
-        "nimi": null,
+        "nimi": "pass/accepted",
         "kuvaus": null,
         "kieli": "EN"
       }
@@ -420,7 +420,7 @@
         "kieli": "SV"
       },
       {
-        "nimi": null,
+        "nimi": "pass with honours",
         "kuvaus": null,
         "kieli": "EN"
       }
@@ -453,7 +453,7 @@
         "kieli": "SV"
       },
       {
-        "nimi": null,
+        "nimi": "laudatur",
         "kuvaus": null,
         "kieli": "EN"
       }
@@ -486,7 +486,7 @@
         "kieli": "SV"
       },
       {
-        "nimi": null,
+        "nimi": "magna cum laude approbatur",
         "kuvaus": null,
         "kieli": "EN"
       }
@@ -519,7 +519,7 @@
         "kieli": "SV"
       },
       {
-        "nimi": null,
+        "nimi": "non sine laude approbatur",
         "kuvaus": null,
         "kieli": "EN"
       }
@@ -552,7 +552,7 @@
         "kieli": "SV"
       },
       {
-        "nimi": null,
+        "nimi": "satisfactory",
         "kuvaus": null,
         "kieli": "EN"
       }

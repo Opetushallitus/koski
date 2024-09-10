@@ -456,16 +456,16 @@
     "metadata": [
       {
         "nimi": "Suomen kieli, äidinkielenomainen suomi",
-        "kuvaus": null,
+        "kuvaus": "Virheellinen koodi, ei käytössä",
         "kieli": "FI"
       },
       {
         "nimi": "Finska, modersmålsinriktad finska",
-        "kuvaus": null,
+        "kuvaus": "Felaktig kod, inte i bruk",
         "kieli": "SV"
       },
       {
-        "nimi": null,
+        "nimi": "Suomen kieli, äidinkielenomainen suomi",
         "kuvaus": null,
         "kieli": "EN"
       }

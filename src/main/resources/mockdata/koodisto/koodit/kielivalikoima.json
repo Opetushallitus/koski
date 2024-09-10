@@ -250,6 +250,34 @@
   {
     "metadata": [
       {
+        "nimi": "mandariinikiina",
+        "kuvaus": "mandariinikiina",
+        "lyhytNimi": "mandariinikiina",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "mandarin",
+        "kuvaus": "mandarin",
+        "lyhytNimi": "mandarin",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Mandarin Chinese",
+        "kuvaus": "Mandarin Chinese",
+        "lyhytNimi": "Mandarin Chinese",
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "kielivalikoima_cmn",
+    "versio": 1,
+    "koodiArvo": "CMN"
+  },
+  {
+    "metadata": [
+      {
         "nimi": "tšekki",
         "kuvaus": null,
         "lyhytNimi": "tšekki",
@@ -1124,6 +1152,34 @@
     "koodiUri": "kielivalikoima_id",
     "versio": 1,
     "koodiArvo": "ID"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "igbo",
+        "kuvaus": "igbo",
+        "lyhytNimi": "igbo",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "ibo",
+        "kuvaus": "ibo",
+        "lyhytNimi": "ibo",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Igbo",
+        "kuvaus": "Igbo",
+        "lyhytNimi": "Igbo",
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "kielivalikoima_ig",
+    "versio": 1,
+    "koodiArvo": "IG"
   },
   {
     "metadata": [
@@ -2191,6 +2247,34 @@
   {
     "metadata": [
       {
+        "nimi": "ruanda",
+        "kuvaus": "ruanda, aiemmin myös: kinjaruanda, njaruanda",
+        "lyhytNimi": "ruanda",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "kinyarwanda",
+        "kuvaus": "kinyarwanda",
+        "lyhytNimi": "kinyarwanda",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Kinyarwanda, Rwanda",
+        "kuvaus": "Kinyarwanda, Rwanda",
+        "lyhytNimi": "Kinyarwanda, Rwanda",
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "kielivalikoima_rw",
+    "versio": 1,
+    "koodiArvo": "RW"
+  },
+  {
+    "metadata": [
+      {
         "nimi": "saame, lappi",
         "kuvaus": "saame, lappi",
         "lyhytNimi": "saame, lappi",
@@ -2316,6 +2400,62 @@
     "koodiUri": "kielivalikoima_se",
     "versio": 1,
     "koodiArvo": "SE"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "serbokroatia",
+        "kuvaus": "serbokroatia",
+        "lyhytNimi": "serbokroatia",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "serbokroatiska",
+        "kuvaus": "serbokroatiska",
+        "lyhytNimi": "serbokroatiska",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Serbo-Croatian",
+        "kuvaus": "Serbo-Croatian",
+        "lyhytNimi": "Serbo-Croatian",
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "kielivalikoima_sh",
+    "versio": 1,
+    "koodiArvo": "SH"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "sinhala",
+        "kuvaus": "sinhala",
+        "lyhytNimi": "sinhala",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "singalesiska",
+        "kuvaus": "singalesiska",
+        "lyhytNimi": "singalesiska",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Sinhala; Sinhalese; Singhalese",
+        "kuvaus": "Sinhala; Sinhalese; Singhalese",
+        "lyhytNimi": "Sinhala; Sinhalese; Singhalese",
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "kielivalikoima_si",
+    "versio": 1,
+    "koodiArvo": "SI"
   },
   {
     "metadata": [
@@ -2693,6 +2833,34 @@
   {
     "metadata": [
       {
+        "nimi": "tamili",
+        "kuvaus": "tamili",
+        "lyhytNimi": "tamili",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "tamili",
+        "kuvaus": "tamili",
+        "lyhytNimi": "tamili",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Tamil",
+        "kuvaus": "Tamil",
+        "lyhytNimi": "Tamil",
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "kielivalikoima_ta",
+    "versio": 1,
+    "koodiArvo": "TA"
+  },
+  {
+    "metadata": [
+      {
         "nimi": "thai",
         "kuvaus": null,
         "kieli": "FI"
@@ -2714,6 +2882,62 @@
     "koodiUri": "kielivalikoima_th",
     "versio": 1,
     "koodiArvo": "TH"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "tigrinja",
+        "kuvaus": null,
+        "lyhytNimi": "tigrinja",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "tigrinja",
+        "kuvaus": null,
+        "lyhytNimi": "tigrinja",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Tigrinya",
+        "kuvaus": null,
+        "lyhytNimi": "Tigrinya",
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "kielivalikoima_ti",
+    "versio": 1,
+    "koodiArvo": "TI"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "tagalog",
+        "kuvaus": "tagalog",
+        "lyhytNimi": "tagalog",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "tagalog",
+        "kuvaus": "tagalog",
+        "lyhytNimi": "tagalog",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Tagalog",
+        "kuvaus": "Tagalog",
+        "lyhytNimi": "Tagalog",
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "kielivalikoima_tl",
+    "versio": 1,
+    "koodiArvo": "TL"
   },
   {
     "metadata": [
@@ -2770,6 +2994,34 @@
     "koodiUri": "kielivalikoima_tt",
     "versio": 1,
     "koodiArvo": "TT"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "uiguuri",
+        "kuvaus": "uiguuri",
+        "lyhytNimi": "uiguuri",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "uiguriska",
+        "kuvaus": "uiguriska",
+        "lyhytNimi": "uiguriska",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Uighur",
+        "kuvaus": "Uighur",
+        "lyhytNimi": "Uighur",
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "kielivalikoima_ug",
+    "versio": 1,
+    "koodiArvo": "UG"
   },
   {
     "metadata": [
@@ -3123,6 +3375,62 @@
     "koodiUri": "kielivalikoima_xx",
     "versio": 1,
     "koodiArvo": "XX"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "joruba",
+        "kuvaus": "joruba",
+        "lyhytNimi": "joruba",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "joruba",
+        "kuvaus": "joruba",
+        "lyhytNimi": "joruba",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Yoruba",
+        "kuvaus": "Yoruba",
+        "lyhytNimi": "Yoruba",
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "kielivalikoima_yo",
+    "versio": 1,
+    "koodiArvo": "YO"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "kantoninkiina",
+        "kuvaus": "kantoninkiina",
+        "lyhytNimi": "kantoninkiina",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "kantonesiska",
+        "kuvaus": "kantonesiska",
+        "lyhytNimi": "kantonesiska",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Yue Chinese",
+        "kuvaus": "Yue Chinese",
+        "lyhytNimi": "Yue Chinese",
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "kielivalikoima_yue",
+    "versio": 1,
+    "koodiArvo": "YUE"
   },
   {
     "metadata": [

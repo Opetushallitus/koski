@@ -1014,6 +1014,11 @@
         "passive": false
       },
       {
+        "codeElementUri": "oppilaitosnumero_03911",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
         "codeElementUri": "aluehallintovirasto_1",
         "codeElementVersion": 2,
         "passive": false
@@ -1216,11 +1221,6 @@
       },
       {
         "codeElementUri": "oppilaitosnumero_07255",
-        "codeElementVersion": 1,
-        "passive": false
-      },
-      {
-        "codeElementUri": "oppilaitosnumero_00009",
         "codeElementVersion": 1,
         "passive": false
       },
@@ -5703,6 +5703,11 @@
     ],
     "withinCodeElements": [
       {
+        "codeElementUri": "oppilaitosnumero_00627",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
         "codeElementUri": "oppilaitosnumero_09014",
         "codeElementVersion": 1,
         "passive": false
@@ -6068,22 +6073,12 @@
         "passive": false
       },
       {
-        "codeElementUri": "oppilaitosnumero_03005",
-        "codeElementVersion": 1,
-        "passive": false
-      },
-      {
         "codeElementUri": "oppilaitosnumero_00017",
         "codeElementVersion": 1,
         "passive": false
       },
       {
         "codeElementUri": "oppilaitosnumero_30016",
-        "codeElementVersion": 1,
-        "passive": false
-      },
-      {
-        "codeElementUri": "oppilaitosnumero_00082",
         "codeElementVersion": 1,
         "passive": false
       },
@@ -16829,11 +16824,6 @@
         "codeElementUri": "koulutustoimija_02088501",
         "codeElementVersion": 1,
         "passive": false
-      },
-      {
-        "codeElementUri": "oppilaitosnumero_00269",
-        "codeElementVersion": 1,
-        "passive": false
       }
     ],
     "includesCodeElements": [
@@ -16948,6 +16938,16 @@
       }
     ],
     "withinCodeElements": [
+      {
+        "codeElementUri": "oppilaitosnumero_03909",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitosnumero_03910",
+        "codeElementVersion": 1,
+        "passive": false
+      },
       {
         "codeElementUri": "aluehallintovirasto_1",
         "codeElementVersion": 2,
@@ -25858,6 +25858,41 @@
     ],
     "withinCodeElements": [
       {
+        "codeElementUri": "oppilaitosnumero_03902",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitosnumero_03903",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitosnumero_03904",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitosnumero_03905",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitosnumero_03906",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitosnumero_03907",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitosnumero_03908",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
         "codeElementUri": "aluehallintovirasto_4",
         "codeElementVersion": 2,
         "passive": false
@@ -26466,6 +26501,11 @@
       }
     ],
     "withinCodeElements": [
+      {
+        "codeElementUri": "oppilaitosnumero_00628",
+        "codeElementVersion": 1,
+        "passive": false
+      },
       {
         "codeElementUri": "oppilaitosnumero_09085",
         "codeElementVersion": 1,
