@@ -1,5 +1,5 @@
 {
-  "files": ["node_modules/jest-expect-message/types/index.d.ts"],
+  "files": ["node_modules/jest-expect-message/types/index.d.ts", "src/window.ts"],
   "compilerOptions": {
     /* Visit https://aka.ms/tsconfig.json to read more about this file */
 

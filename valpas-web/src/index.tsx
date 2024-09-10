@@ -6,19 +6,9 @@ import "regenerator-runtime/runtime"
 import { fetchAppConfiguration } from "./api/api"
 import { withRetries } from "./api/apiUtils"
 import { getLanguage } from "./i18n/i18n"
-import { AppConfiguration } from "./state/apitypes/appConfiguration"
-import { enableFeature, Feature } from "./state/featureFlags"
-import { OppijaRaamitService } from "./state/oppijaRaamitService"
+import { enableFeature } from "./state/featureFlags"
 import "./style/index.less"
 import { ValpasApp } from "./views/ValpasApp"
-
-declare global {
-  interface Window extends AppConfiguration {
-    virkailija_raamit_set_to_load?: boolean
-    enableFeature?: (feature: Feature) => void
-    Service?: OppijaRaamitService
-  }
-}
 
 const loadWindowProperties = async (): Promise<void> =>
   pipe(
