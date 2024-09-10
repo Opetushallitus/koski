@@ -1,4 +1,4 @@
-FROM adoptopenjdk/openjdk11:alpine-slim@sha256:7882f971d03f637ffb4d39efca2a46c7c60af253327b17fd968961a4abb69857
+FROM adoptopenjdk/openjdk11:jdk-11.0.24_8-alpine-slim@sha256:ad9fc1d77b75716067e23574a6a2f50596a4cdeec8bd363a8e9d7cffd2977583
 
 ARG KOSKI_VERSION
 ARG PROMETHEUS_JMX_EXPORTER_VERSION="1.0.1"
