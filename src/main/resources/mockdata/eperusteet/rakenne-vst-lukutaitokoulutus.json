@@ -35,8 +35,8 @@
     }
   ],
   "kielet": [
-    "fi",
-    "sv"
+    "sv",
+    "fi"
   ],
   "kuvaus": null,
   "maarayskirje": null,
@@ -87,6 +87,8 @@
   ],
   "poikkeamismaaraysTarkennus": null,
   "poikkeamismaaraysTyyppi": null,
+  "opasTyyppi": null,
+  "tietoapalvelustaKuvaus": null,
   "vapaasivistystyo": {
     "id": 7675680,
     "sisalto": {

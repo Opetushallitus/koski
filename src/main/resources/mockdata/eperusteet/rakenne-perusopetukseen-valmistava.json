@@ -12,8 +12,8 @@
   "toteutus": "yksinkertainen",
   "koulutukset": [],
   "kielet": [
-    "fi",
-    "sv"
+    "sv",
+    "fi"
   ],
   "kuvaus": null,
   "maarayskirje": {
@@ -43,6 +43,8 @@
   "perusteenAikataulut": [],
   "poikkeamismaaraysTarkennus": null,
   "poikkeamismaaraysTyyppi": null,
+  "opasTyyppi": null,
+  "tietoapalvelustaKuvaus": null,
   "esiopetus": {
     "sisalto": {
       "id": 1541482,

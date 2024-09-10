@@ -62,6 +62,8 @@
   ],
   "poikkeamismaaraysTarkennus": null,
   "poikkeamismaaraysTyyppi": null,
+  "opasTyyppi": null,
+  "tietoapalvelustaKuvaus": null,
   "vapaasivistystyo": {
     "id": 7675681,
     "sisalto": {

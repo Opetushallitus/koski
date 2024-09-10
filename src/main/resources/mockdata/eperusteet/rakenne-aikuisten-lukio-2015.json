@@ -12,8 +12,8 @@
   "toteutus": "lops",
   "koulutukset": [],
   "kielet": [
-    "fi",
-    "sv"
+    "sv",
+    "fi"
   ],
   "kuvaus": null,
   "maarayskirje": {
@@ -69,6 +69,8 @@
   "perusteenAikataulut": [],
   "poikkeamismaaraysTarkennus": null,
   "poikkeamismaaraysTyyppi": null,
+  "opasTyyppi": null,
+  "tietoapalvelustaKuvaus": null,
   "suoritustavat": [
     {
       "suoritustapakoodi": "lukiokoulutus",
