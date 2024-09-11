@@ -1,3 +1,4 @@
+import { afterAll, afterEach, beforeAll, beforeEach } from "@jest/globals"
 import "chromedriver"
 import { Builder, WebDriver } from "selenium-webdriver"
 import chrome from "selenium-webdriver/chrome"
@@ -49,6 +50,6 @@ const buildChromeDriver = async (): Promise<WebDriver> => {
   }
 
   const builder = new Builder().forBrowser("chrome")
-  builder.setChromeOptions(options)
+  builder.setChromeOptions(options as any)
   return builder.build()
 }

@@ -9,6 +9,7 @@ import { getLanguage } from "./i18n/i18n"
 import { enableFeature } from "./state/featureFlags"
 import "./style/index.less"
 import { ValpasApp } from "./views/ValpasApp"
+import "./window.ts"
 
 const loadWindowProperties = async (): Promise<void> =>
   pipe(
