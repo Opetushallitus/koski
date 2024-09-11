@@ -82,7 +82,7 @@ class HslSpec extends AnyFreeSpec with KoskiHttpSpec with OpiskeluoikeusTestMeth
 
         opiskeluoikeudet should not be empty
 
-        val tila = opiskeluoikeudet.head \ "tila" \ "opiskeluoikeusJaksot"
+        val tila = opiskeluoikeudet.head \ "tila" \ "opiskeluoikeusjaksot"
 
         (tila(0) \ "tila" \ "koodiarvo").extract[String] should equal("lasna")
         (tila(0) \ "alku").extract[String] should equal("2019-05-30")
