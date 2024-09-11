@@ -50,13 +50,12 @@ case class HslOpiskeluoikeudenTila(
 )
 
 object HslOpiskeluoikeudenTila {
-  def apply(t: OpiskeluoikeudenTila): HslOpiskeluoikeudenTila = HslOpiskeluoikeudenTila(Some(t.opiskeluoikeusjaksot.map(j => HslOpiskeluoikeusJakso(j.tila, j.alku, j.opiskeluoikeusPäättynyt))))
+  def apply(t: OpiskeluoikeudenTila): HslOpiskeluoikeudenTila = HslOpiskeluoikeudenTila(Some(t.opiskeluoikeusjaksot.map(j => HslOpiskeluoikeusJakso(j.tila, j.alku))))
 }
 
 case class HslOpiskeluoikeusJakso(
   tila: Koodistokoodiviite,
-  alku: LocalDate,
-  opiskeluoikeusPäättynyt: Boolean
+  alku: LocalDate
 )
 
 trait HslPäätasonSuoritus {
