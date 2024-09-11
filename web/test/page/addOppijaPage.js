@@ -776,7 +776,7 @@ function Select(testId, base) {
   const baseElem = () => base()[0]
   const input = () => Page(findByTestId(testId, baseElem())).getInput('input')
   const findByTestId = (id, baseE) => {
-    const elem = $(baseE.querySelector(`[data-testid="${id}"]`))
+    const elem = baseE && $(baseE.querySelector(`[data-testid="${id}"]`))
     if (!elem) {
       throw new Error(`Test id "${id}" does not exist on dom`)
     }
