@@ -46,7 +46,7 @@ object HslOpiskeluoikeus {
 }
 
 case class HslOpiskeluoikeudenTila(
-  opiskeluoikeusJaksot: Option[List[HslOpiskeluoikeusJakso]]
+  opiskeluoikeusjaksot: Option[List[HslOpiskeluoikeusJakso]]
 )
 
 object HslOpiskeluoikeudenTila {
