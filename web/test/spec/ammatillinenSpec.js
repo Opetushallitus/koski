@@ -1359,6 +1359,64 @@ describe('Ammatillinen koulutus', function () {
     })
   })
 
+  describe('Käyttöliittymän kautta luodun opiskeluoikeuden mitätöinti oppilaitoksen pääkäyttäjänä', function () {
+    before(
+      resetFixtures,
+      Authentication().logout,
+      Authentication().login('stadin-pää'),
+      page.openPage
+    )
+    describe('Mitätöintilinkki', function () {
+      before(page.oppijaHaku.searchAndSelect('010101-123N'), editor.edit)
+      it('Näytetään', function () {
+        expect(opinnot.invalidateOpiskeluoikeusIsShown()).to.equal(true)
+      })
+
+      describe('Painettaessa', function () {
+        before(opinnot.invalidateOpiskeluoikeus)
+        it('Pyydetään vahvistus', function () {
+          expect(opinnot.confirmInvalidateOpiskeluoikeusIsShown()).to.equal(
+            true
+          )
+        })
+
+        describe('Painettaessa uudestaan', function () {
+          before(
+            opinnot.confirmInvalidateOpiskeluoikeus,
+            wait.until(page.oppijataulukko.isReady)
+          )
+          it('Opiskeluoikeus mitätöidään', function () {
+            expect(page.isOpiskeluoikeusInvalidatedMessageShown()).to.equal(
+              true
+            )
+          })
+
+          describe('Mitätöityä opiskeluoikeutta', function () {
+            before(
+              syncPerustiedot,
+              page.oppijataulukko.filterBy('nimi', 'Esimerkki')
+            )
+            it('Ei näytetä', function () {
+              expect(page.oppijataulukko.names()).to.deep.equal([])
+            })
+          })
+
+          describe('Vahvistusviestin', function () {
+            before(
+              opinnot.hideInvalidateMessage,
+              wait.untilFalse(page.isOpiskeluoikeusInvalidatedMessageShown)
+            )
+            it('Voi piilottaa', function () {
+              expect(page.isOpiskeluoikeusInvalidatedMessageShown()).to.equal(
+                false
+              )
+            })
+          })
+        })
+      })
+    })
+  })
+
   describe('Tietojen muuttaminen', function () {
     before(addOppija.addNewOppija('kalle', '280608-6619'))
 

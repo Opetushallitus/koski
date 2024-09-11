@@ -15,7 +15,7 @@ class UserServlet(implicit val application: UserAuthenticationContext) extends K
           hasGlobalReadAccess = session.hasGlobalReadAccess,
           hasAnyReadAccess = session.hasAnyReadAccess,
           hasHenkiloUiWriteAccess = session.hasHenkiloUiWriteAccess,
-          hasAnyInvalidateAccess = session.hasAnyTiedonsiirronMitätöintiAccess,
+          hasAnyInvalidateAccess = session.hasAnyMitätöintiAccess,
           isViranomainen = session.hasGlobalKoulutusmuotoReadAccess,
           hasRaportitAccess = session.hasRaportitAccess,
           hasKelaUiAccess = session.hasKelaAccess,

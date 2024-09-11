@@ -10,13 +10,17 @@ object OpiskeluoikeusAccessChecker {
         false
       case _ =>
         val orgWriteAccess = opiskeluoikeus.omistajaOrganisaatio.exists(o => hasWriteAccess(session, opiskeluoikeus, o))
+        val orgKäyttöliittymäsiirronMitätöintiAccess = opiskeluoikeus match {
+          case t: TaiteenPerusopetuksenOpiskeluoikeus => opiskeluoikeus.omistajaOrganisaatio.exists(o => session.hasTaiteenPerusopetusAccess(o.oid, t.koulutustoimija.map(_.oid), AccessType.käyttöliittymäsiirronMitätöinti))
+          case _ => opiskeluoikeus.omistajaOrganisaatio.exists(o => session.hasKäyttöliittymäsiirronMitätöintiAccess(o.oid, opiskeluoikeus.koulutustoimija.map(_.oid)))
+        }
         val orgTiedonsiirronMitätöintiAccess = opiskeluoikeus match {
           case t: TaiteenPerusopetuksenOpiskeluoikeus => opiskeluoikeus.omistajaOrganisaatio.exists(o => session.hasTaiteenPerusopetusAccess(o.oid, t.koulutustoimija.map(_.oid), AccessType.tiedonsiirronMitätöinti))
           case _ => opiskeluoikeus.omistajaOrganisaatio.exists(o => session.hasTiedonsiirronMitätöintiAccess(o.oid, opiskeluoikeus.koulutustoimija.map(_.oid)))
         }
         val lähdejärjestelmällinen = opiskeluoikeus.lähdejärjestelmänId.nonEmpty
         val koskeenTallennettava = opiskeluoikeus.isInstanceOf[KoskeenTallennettavaOpiskeluoikeus]
-        koskeenTallennettava && ((!lähdejärjestelmällinen && orgWriteAccess) || (lähdejärjestelmällinen && orgTiedonsiirronMitätöintiAccess))
+        koskeenTallennettava && ((!lähdejärjestelmällinen && (orgWriteAccess || orgKäyttöliittymäsiirronMitätöintiAccess)) || (lähdejärjestelmällinen && orgTiedonsiirronMitätöintiAccess))
     }
   }
 

@@ -2587,11 +2587,37 @@ describe('Perusopetus', function () {
 
         after(resetFixtures)
       })
+
+      describe('Käyttöliittymäsiirron mitätöinti oppilaitoksen pääkäyttäjänä', function () {
+        before(
+          Authentication().logout,
+          Authentication().login('stadin-pää'),
+          page.openPage,
+          page.oppijaHaku.searchAndSelect('180497-112F')
+        )
+
+        describe('Mitätöintilinkki', function () {
+          it('Näytetään opiskeluoikeudelle', function () {
+            expect(opinnot.invalidateOpiskeluoikeusIsShown()).to.equal(true)
+          })
+
+          it('Näytetään päätason suoritukselle', function () {
+            expect(opinnot.deletePäätasonSuoritusIsShown()).to.equal(true)
+          })
+        })
+      })
     })
 
     describe('Navigointi pois sivulta', function () {
       describe('Kun ei ole tallentamattomia muutoksia', function () {
-        before(editor.edit, page.oppijaHaku.searchAndSelect('280618-402H'))
+        before(
+          Authentication().logout,
+          Authentication().login(),
+          page.openPage,
+          page.oppijaHaku.searchAndSelect('280598-2415'),
+          editor.edit,
+          page.oppijaHaku.searchAndSelect('280618-402H')
+        )
 
         it('Onnistuu normaalisti', function () {})
 

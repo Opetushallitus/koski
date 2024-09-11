@@ -9,6 +9,7 @@ object Rooli {
   val READ_UPDATE = "READ_UPDATE"
   val READ_UPDATE_ESIOPETUS = "READ_UPDATE_ESIOPETUS"
   val TIEDONSIIRRON_MITATOINTI = "TIEDONSIIRRON_MITATOINTI"
+  val KAYTTOLIITTYMASIIRRON_MITATOINTI = "KAYTTOLIITTYMASIIRRON_MITATOINTI"
   val OPHKATSELIJA = "OPHKATSELIJA"
   val OPHPAAKAYTTAJA = "OPHPAAKAYTTAJA"
   val YLLAPITAJA = "YLLAPITAJA"
@@ -154,7 +155,7 @@ trait Käyttöoikeus {
 case class KäyttöoikeusGlobal(globalPalveluroolit: List[Palvelurooli]) extends Käyttöoikeus {
   def globalAccessType: List[AccessType.Value] = globalPalveluroolit flatMap {
     case Palvelurooli("KOSKI", "OPHKATSELIJA") => List(AccessType.read)
-    case Palvelurooli("KOSKI", "OPHPAAKAYTTAJA") => List(AccessType.read, AccessType.write, AccessType.tiedonsiirronMitätöinti)
+    case Palvelurooli("KOSKI", "OPHPAAKAYTTAJA") => List(AccessType.read, AccessType.write, AccessType.tiedonsiirronMitätöinti, AccessType.käyttöliittymäsiirronMitätöinti)
     case _ => Nil
   }
 
@@ -167,6 +168,7 @@ trait OrgKäyttöoikeus extends Käyttöoikeus {
     case Palvelurooli("KOSKI", "READ") => List(AccessType.read)
     case Palvelurooli("KOSKI", "READ_UPDATE") => List(AccessType.read, AccessType.write)
     case Palvelurooli("KOSKI", "TIEDONSIIRRON_MITATOINTI") => List(AccessType.tiedonsiirronMitätöinti)
+    case Palvelurooli("KOSKI", "KAYTTOLIITTYMASIIRRON_MITATOINTI") => List(AccessType.käyttöliittymäsiirronMitätöinti)
     case Palvelurooli("KOSKI", "READ_UPDATE_ESIOPETUS") => List(AccessType.read, AccessType.write)
     case Palvelurooli("KOSKI", "LUKU_ESIOPETUS") => List(AccessType.read)
     case Palvelurooli("KOSKI", "TAITEENPERUSOPETUS_HANKINTAKOULUTUS") => List(AccessType.read, AccessType.editOnly)
