@@ -80,6 +80,7 @@ class KoskiSpecificSession(
   // Kun lisäät uuden luovutuspalvelukäyttöoikeuden alle, muista lisätä se myös
   // KoskiSpecificAuthenticationSupport.requireVirkailijaOrPalvelukäyttäjä -metodiin
   def hasHSLAccess: Boolean = globalViranomaisKäyttöoikeudet.flatMap(_.globalPalveluroolit).contains(Palvelurooli("KOSKI", HSL))
+  def hasSomeOmaDataOAuth2Access: Boolean = globalViranomaisKäyttöoikeudet.flatMap(_.globalPalveluroolit).exists(p => p.palveluName == "KOSKI" && p.rooli.startsWith("OMADATAOAUTH2_"))
   def hasSuomiFiAccess: Boolean = globalViranomaisKäyttöoikeudet.flatMap(_.globalPalveluroolit).contains(Palvelurooli("KOSKI", SUOMIFI))
   def hasTilastokeskusAccess: Boolean = globalViranomaisKäyttöoikeudet.flatMap(_.globalPalveluroolit).contains(Palvelurooli("KOSKI", TILASTOKESKUS))
   def hasMitätöidytOpiskeluoikeudetAccess: Boolean = hasTilastokeskusAccess || hasYtlAccess || globalKäyttöoikeudet.exists(_.globalPalveluroolit.exists(_.rooli == MITATOIDYT_OPISKELUOIKEUDET))

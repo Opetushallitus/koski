@@ -35,6 +35,11 @@ object Rooli {
   val MITATOIDYT_OPISKELUOIKEUDET = "MITATOIDYT_OPISKELUOIKEUDET" // Ei käyttöoikeus-palvelussa
   val POISTETUT_OPISKELUOIKEUDET = "POISTETUT_OPISKELUOIKEUDET" // Ei käyttöoikeus-palvelussa
 
+  // Suostumusperustaisen (OAuth2) -rajapinnan scopeissa käytetyt käyttöoikeudet. "OMADATAOAUTH2_"-jälkeinen osuus on sellaisenaan
+  // tuettuna merkkijonona myös scopessa, joten näiden muuttamista ei voi tehdä vapaasti.
+  val OMADATAOAUTH2_OPISKELUOIKEUDET_SUORITETUT_TUTKINNOT = "OMADATAOAUTH2_OPISKELUOIKEUDET_SUORITETUT_TUTKINNOT"
+  val OMADATAOAUTH2_HENKILOTIEDOT_NIMI_JA_SYNTYMAAIKA = "OMADATAOAUTH2_HENKILOTIEDOT_NIMI_JA_SYNTYMAAIKA"
+
   // Ei käyttöoikeus-palvelussa. Ilman tätä ei pääse käsiksi Kosken tietokantaan tallennettuihin YO-opiskeluoikeuksiin
   val TALLENNETUT_YLIOPPILASTUTKINNON_OPISKELUOIKEUDET = "TALLENNETUT_YLIOPPILASTUTKINNON_OPISKELUOIKEUDET"
 
