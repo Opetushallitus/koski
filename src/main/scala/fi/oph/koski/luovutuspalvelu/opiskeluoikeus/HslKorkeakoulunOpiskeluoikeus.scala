@@ -4,7 +4,7 @@ import fi.oph.koski.schema.annotation.KoodistoUri
 import fi.oph.koski.schema._
 import fi.oph.scalaschema.annotation.Title
 
-import java.time.LocalDate
+import java.time.{LocalDate, LocalDateTime}
 
 @Title("Korkeakoulun opiskeluoikeus")
 case class HslKorkeakoulunOpiskeluoikeus(
@@ -14,7 +14,11 @@ case class HslKorkeakoulunOpiskeluoikeus(
   tila: HslOpiskeluoikeudenTila,
   suoritukset: List[HslDefaultPäätasonSuoritus],
   lisätiedot: Option[HslKorkeakouluOpiskeluoikeudenLisätiedot],
-  arvioituPäättymispäivä: Option[LocalDate]
+  arvioituPäättymispäivä: Option[LocalDate],
+  aikaleima: Option[LocalDateTime],
+  alkamispäivä: Option[LocalDate],
+  versionumero: Option[Int],
+  päättymispäivä: Option[LocalDate],
 ) extends HslOpiskeluoikeus
 
 object HslKorkeakoulunOpiskeluoikeus {
@@ -26,7 +30,11 @@ object HslKorkeakoulunOpiskeluoikeus {
       tila = HslOpiskeluoikeudenTila.apply(oo.tila),
       suoritukset = oo.suoritukset.map(HslDefaultPäätasonSuoritus.apply),
       lisätiedot = oo.lisätiedot.map(HslKorkeakouluOpiskeluoikeudenLisätiedot.apply),
-      arvioituPäättymispäivä = oo.arvioituPäättymispäivä
+      arvioituPäättymispäivä = oo.arvioituPäättymispäivä,
+      aikaleima = None,
+      alkamispäivä = oo.alkamispäivä,
+      versionumero = oo.versionumero,
+      päättymispäivä = oo.päättymispäivä,
     )
 }
 

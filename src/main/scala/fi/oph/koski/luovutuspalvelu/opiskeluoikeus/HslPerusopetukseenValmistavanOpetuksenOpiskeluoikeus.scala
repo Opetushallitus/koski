@@ -3,7 +3,7 @@ package fi.oph.koski.luovutuspalvelu.opiskeluoikeus
 import fi.oph.koski.schema.{Koodistokoodiviite, Oppilaitos, PerusopetukseenValmistavanOpetuksenOpiskeluoikeus}
 import fi.oph.scalaschema.annotation.Title
 
-import java.time.LocalDate
+import java.time.{LocalDate, LocalDateTime}
 
 @Title("Perusopetukseen valmistavan opetuksen opiskeluoikeus")
 case class HslPerusopetukseenValmistavanOpetuksenOpiskeluoikeus(
@@ -13,7 +13,11 @@ case class HslPerusopetukseenValmistavanOpetuksenOpiskeluoikeus(
   tila: HslOpiskeluoikeudenTila,
   suoritukset: List[HslDefaultPäätasonSuoritus],
   lisätiedot: Option[HslDefaultOpiskeluoikeudenLisätiedot] = None,
-  arvioituPäättymispäivä: Option[LocalDate]
+  arvioituPäättymispäivä: Option[LocalDate],
+  aikaleima: Option[LocalDateTime],
+  alkamispäivä: Option[LocalDate],
+  versionumero: Option[Int],
+  päättymispäivä: Option[LocalDate],
 ) extends HslOpiskeluoikeus
 
 object HslPerusopetukseenValmistavanOpetuksenOpiskeluoikeus {
@@ -24,6 +28,10 @@ object HslPerusopetukseenValmistavanOpetuksenOpiskeluoikeus {
     tila = HslOpiskeluoikeudenTila.apply(oo.tila),
     suoritukset = oo.suoritukset.map(HslDefaultPäätasonSuoritus.apply),
     lisätiedot = None,
-    arvioituPäättymispäivä = oo.arvioituPäättymispäivä
+    arvioituPäättymispäivä = oo.arvioituPäättymispäivä,
+    aikaleima = oo.aikaleima,
+    alkamispäivä = oo.alkamispäivä,
+    versionumero = oo.versionumero,
+    päättymispäivä = oo.päättymispäivä,
   )
 }

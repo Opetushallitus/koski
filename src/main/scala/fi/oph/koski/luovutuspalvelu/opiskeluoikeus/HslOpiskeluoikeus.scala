@@ -3,7 +3,7 @@ package fi.oph.koski.luovutuspalvelu.opiskeluoikeus
 import fi.oph.koski.schema._
 import fi.oph.scalaschema.annotation.Title
 
-import java.time.LocalDate
+import java.time.{LocalDate, LocalDateTime}
 
 trait HslOpiskeluoikeus {
   def tyyppi: Koodistokoodiviite
@@ -19,6 +19,11 @@ trait HslOpiskeluoikeus {
   def lisätiedot: Option[HslOpiskeluoikeudenLisätiedot]
 
   def arvioituPäättymispäivä: Option[LocalDate]
+
+  def alkamispäivä: Option[LocalDate]
+  def versionumero: Option[Int]
+  def aikaleima: Option[LocalDateTime]
+  def päättymispäivä: Option[LocalDate]
 }
 
 object HslOpiskeluoikeus {
