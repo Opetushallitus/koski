@@ -8,6 +8,7 @@ import fi.oph.koski.log.AuditLogTester
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.schema.{Finnish, Koodistokoodiviite}
 import fi.oph.koski.valpas.ValpasTestBase
+import fi.oph.koski.valpas.kuntailmoitus.ValpasKuntailmoitusApiServletSpec.teeMinimiKuntailmoitusInput
 import fi.oph.koski.valpas.log.{ValpasAuditLogMessageField, ValpasOperation}
 import fi.oph.koski.valpas.opiskeluoikeusfixture.{FixtureUtil, ValpasMockOppijat}
 import fi.oph.koski.valpas.opiskeluoikeusrepository.{MockValpasRajapäivätService, ValpasHenkilö, ValpasOpiskeluoikeus, ValpasOppilaitos}
@@ -797,28 +798,6 @@ class ValpasKuntailmoitusApiServletSpec extends ValpasTestBase with BeforeAndAft
       .right.get.kuntailmoitukset.exists(_.id.get == kuntailmoitus.id.get) should equal(true)
   }
 
-
-  private def teeMinimiKuntailmoitusInput(
-    oppijaOid: String = ValpasMockOppijat.oppivelvollinenYsiluokkaKeskenKeväällä2021.oid,
-    tekijäOid: String = MockOrganisaatiot.jyväskylänNormaalikoulu,
-    kuntaOid: String = MockOrganisaatiot.helsinginKaupunki
-  ): String =
-    s"""
-       |{
-       |  "oppijaOid": "${oppijaOid}",
-       |  "tekijä" : {
-       |    "organisaatio" : {
-       |      "oid" : "${tekijäOid}"
-       |    }
-       |  },
-       |  "kunta" : {
-       |    "oid" : "${kuntaOid}"
-       |  },
-       |  "oppijanYhteystiedot" : {},
-       |  "hakenutMuualle" : false
-       |}
-       |""".stripMargin
-
   private def teeKuntailmoitusInputTekijänYhteystiedoilla(
     oppijaOid: String = ValpasMockOppijat.oppivelvollinenYsiluokkaKeskenKeväällä2021.oid,
     tekijäOid: String = MockOrganisaatiot.jyväskylänNormaalikoulu,
@@ -926,4 +905,29 @@ class ValpasKuntailmoitusApiServletSpec extends ValpasTestBase with BeforeAndAft
 
     kuntailmoitusRepository.queryOpiskeluoikeusKontekstiByIlmoitus(UUID.fromString(ilmoitusUuid)).map(_.toSet)
   }
+}
+
+object ValpasKuntailmoitusApiServletSpec {
+
+  def teeMinimiKuntailmoitusInput(
+    oppijaOid: String = ValpasMockOppijat.oppivelvollinenYsiluokkaKeskenKeväällä2021.oid,
+    tekijäOid: String = MockOrganisaatiot.jyväskylänNormaalikoulu,
+    kuntaOid: String = MockOrganisaatiot.helsinginKaupunki
+  ): String =
+    s"""
+       |{
+       |  "oppijaOid": "${oppijaOid}",
+       |  "tekijä" : {
+       |    "organisaatio" : {
+       |      "oid" : "${tekijäOid}"
+       |    }
+       |  },
+       |  "kunta" : {
+       |    "oid" : "${kuntaOid}"
+       |  },
+       |  "oppijanYhteystiedot" : {},
+       |  "hakenutMuualle" : false
+       |}
+       |""".stripMargin
+
 }

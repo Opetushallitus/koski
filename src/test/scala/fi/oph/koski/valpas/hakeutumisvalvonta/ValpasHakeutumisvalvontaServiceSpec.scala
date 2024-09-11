@@ -1,11 +1,14 @@
 package fi.oph.koski.valpas.hakeutumisvalvonta
 
 import fi.oph.koski.KoskiApplicationForTests
+import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.valpas.opiskeluoikeusfixture.ValpasMockOppijat
 import fi.oph.koski.valpas.opiskeluoikeusrepository.{HakeutumisvalvontaTieto, MockValpasRajapäivätService}
 import fi.oph.koski.valpas.oppija.ValpasOppijaTestData.{hakeutumisvelvolliset, hakeutumisvelvollisetRajapäivänJälkeen}
 import fi.oph.koski.valpas.oppija.ValpasOppijaTestBase
 import fi.oph.koski.valpas.valpasuser.ValpasMockUsers
+import fi.oph.koski.valpas.kuntailmoitus.ValpasKuntailmoitusApiServletSpec
+import fi.oph.koski.valpas.valpasrepository.ValpasKuntailmoitusLaajatTiedot
 
 import java.time.LocalDate.{of => date}
 
@@ -68,6 +71,28 @@ class ValpasHakeutumisvalvontaServiceSpec extends ValpasOppijaTestBase {
 
       oppijat.map(_.henkilö.oid) should contain(ValpasMockOppijat.valmistunutTuvalainen.oid)
 
+    }
+
+    "ei palauta oppijaa, jolle on tehty kuntailmoitus" in {
+      val ilmoitus = ValpasKuntailmoitusApiServletSpec.teeMinimiKuntailmoitusInput(ValpasMockOppijat.oppivelvollinenYsiluokkaKeskenKeväällä2021.oid)
+      post("/valpas/api/kuntailmoitus", body = ilmoitus, headers = authHeaders() ++ jsonContent) {
+        verifyResponseStatusOk()
+      }
+      val oppijat = hakeutumisvalvontaService.getOppijatSuppeatTiedot(oppilaitos, HakeutumisvalvontaTieto.Perusopetus)(defaultSession)
+      oppijat.toOption.get.length shouldBe (hakeutumisvelvolliset.length - 1)
+    }
+
+    "palauttaa taas oppijan, jonka opiskeluoikeuteen liittyy mitätöity kuntailmoitus" in {
+      val ilmoitus = ValpasKuntailmoitusApiServletSpec.teeMinimiKuntailmoitusInput(ValpasMockOppijat.oppivelvollinenYsiluokkaKeskenKeväällä2021.oid)
+      val id = post("/valpas/api/kuntailmoitus", body = ilmoitus, headers = authHeaders() ++ jsonContent) {
+        verifyResponseStatusOk()
+        JsonSerializer.parse[ValpasKuntailmoitusLaajatTiedot](response.body).id.get
+      }
+      delete(s"/valpas/api/kuntailmoitus/${id}", headers = authHeaders()) {
+        verifyResponseStatus(204)
+      }
+      val oppijat = hakeutumisvalvontaService.getOppijatSuppeatTiedot(oppilaitos, HakeutumisvalvontaTieto.Perusopetus)(defaultSession)
+      oppijat.toOption.get.length shouldBe (hakeutumisvelvolliset.length)
     }
   }
 }
