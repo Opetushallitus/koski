@@ -120,7 +120,15 @@ class RaportointikantaService(application: KoskiApplication) extends Logging {
   def loadOppivelvollisuudestaVapautukset(db: RaportointiDatabase = raportointiDatabase): Int =
     OppivelvollisuudenVapautusLoader.loadOppivelvollisuudestaVapautukset(application.valpasOppivelvollisuudestaVapautusService, db)
 
-  def isLoading: Boolean = loadDatabase.status.isLoading
+  def isLoading: Boolean =
+    loadDatabase.status.isLoading && {
+      application.ecsMetadata.taskARN.exists { thisTask =>
+        val loaderTasks = application.ecsMetadata.currentlyRunningRaportointikantaLoaderInstances
+        val otherLoaderTasks = loaderTasks.filterNot(_.taskArn == thisTask)
+        otherLoaderTasks.nonEmpty
+      }
+    }
+
 
   def isAvailable: Boolean = raportointiDatabase.status.isComplete
   def isLoadComplete: Boolean = !isLoading && isAvailable
