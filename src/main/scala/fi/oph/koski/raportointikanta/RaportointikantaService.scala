@@ -125,7 +125,11 @@ class RaportointikantaService(application: KoskiApplication) extends Logging {
       application.ecsMetadata.taskARN.exists { thisTask =>
         val loaderTasks = application.ecsMetadata.currentlyRunningRaportointikantaLoaderInstances
         val otherLoaderTasks = loaderTasks.filterNot(_.taskArn == thisTask)
-        otherLoaderTasks.nonEmpty
+        val loading = otherLoaderTasks.nonEmpty
+        if (!loading) {
+          logger.warn("Raportointikannan generointi oli tietokannan mukaan käynnissä, mutta yhtäkään hengissä olevaa instanssia ei löytynyt. Tämä viittaa siihen että edellinen generointi on kaatunut tai pysäytetty kesken.")
+        }
+        loading
       }
     }
 
