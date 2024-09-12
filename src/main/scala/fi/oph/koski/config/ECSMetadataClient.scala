@@ -4,7 +4,7 @@ import cats.effect.IO
 import cats.effect.unsafe.implicits.global
 import com.typesafe.config.Config
 import fi.oph.koski.cache.GlobalCacheManager._
-import fi.oph.koski.cache.{RefreshingCache, SingleValueCache}
+import fi.oph.koski.cache.{ExpiringCache, SingleValueCache}
 import fi.oph.koski.executors.Pools
 import fi.oph.koski.log.Logging
 import fi.oph.koski.util.TryWithLogging
@@ -19,7 +19,6 @@ import scala.collection.JavaConverters._
 import scala.concurrent.ExecutionContext
 import scala.concurrent.duration.DurationInt
 import scala.language.postfixOps
-import scala.util.Try
 
 class ECSMetadataClient(config: Config) {
 
@@ -62,12 +61,12 @@ class ECSMetadataClient(config: Config) {
   private lazy val ecs = EcsService(config)
 
   private val koskiInstances = SingleValueCache[Seq[KoskiInstance]](
-    RefreshingCache(name = "ECSMetadataClient.koskiInstances", duration = 5.seconds),
+    ExpiringCache(name = "ECSMetadataClient.koskiInstances", duration = 5.seconds, maxSize = 2),
     () => ecs.describeKoskiTasks(ecs.getKoskiTaskArns)
   )
 
   private val RaportointikantaLoaderInstances = SingleValueCache[Seq[KoskiInstance]](
-    RefreshingCache(name = "ECSMetadataClient.RaportointikantaLoaderInstances", duration = 5.seconds),
+    ExpiringCache(name = "ECSMetadataClient.RaportointikantaLoaderInstances", duration = 5.seconds, maxSize = 2),
     () => ecs.getRaportointikantaLoaderTasks
   )
 }
