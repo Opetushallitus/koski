@@ -4,7 +4,7 @@ import cats.effect.IO
 import cats.effect.unsafe.implicits.global
 import com.typesafe.config.Config
 import fi.oph.koski.cache.GlobalCacheManager._
-import fi.oph.koski.cache.{RefreshingCache, SingleValueCache}
+import fi.oph.koski.cache.{ExpiringCache, SingleValueCache}
 import fi.oph.koski.executors.Pools
 import fi.oph.koski.log.Logging
 import fi.oph.koski.util.TryWithLogging
@@ -19,7 +19,6 @@ import scala.collection.JavaConverters._
 import scala.concurrent.ExecutionContext
 import scala.concurrent.duration.DurationInt
 import scala.language.postfixOps
-import scala.util.Try
 
 class ECSMetadataClient(config: Config) {
 
@@ -27,6 +26,7 @@ class ECSMetadataClient(config: Config) {
   lazy val taskARN: Option[String] = getString("TaskARN")
 
   def currentlyRunningKoskiInstances: Seq[KoskiInstance] = koskiInstances.apply
+  def currentlyRunningRaportointikantaLoaderInstances: Seq[KoskiInstance] = RaportointikantaLoaderInstances.apply
 
   // https://docs.aws.amazon.com/AmazonECS/latest/developerguide/task-metadata-endpoint-v4-fargate-response.html
   private lazy val taskMetadata =
@@ -61,13 +61,19 @@ class ECSMetadataClient(config: Config) {
   private lazy val ecs = EcsService(config)
 
   private val koskiInstances = SingleValueCache[Seq[KoskiInstance]](
-    RefreshingCache(name = "ECSMetadataClient.koskiInstances", duration = 5.seconds),
+    ExpiringCache(name = "ECSMetadataClient.koskiInstances", duration = 5.seconds, maxSize = 2),
     () => ecs.describeKoskiTasks(ecs.getKoskiTaskArns)
+  )
+
+  private val RaportointikantaLoaderInstances = SingleValueCache[Seq[KoskiInstance]](
+    ExpiringCache(name = "ECSMetadataClient.RaportointikantaLoaderInstances", duration = 5.seconds, maxSize = 2),
+    () => ecs.getRaportointikantaLoaderTasks
   )
 }
 
 trait EcsService {
   def getKoskiTaskArns: Seq[String]
+  def getRaportointikantaLoaderTasks: Seq[KoskiInstance]
   def describeKoskiTasks(taskArns: Seq[String]): Seq[KoskiInstance]
 }
 
@@ -83,20 +89,30 @@ object EcsService {
 class MockEcsService extends EcsService {
   val createdAt: Instant = Instant.now()
   def getKoskiTaskArns: Seq[String] = Seq("local")
-  def describeKoskiTasks(taskArns: Seq[String]): Seq[KoskiInstance] = taskArns.map(KoskiInstance(_, createdAt))
+  def getRaportointikantaLoaderTasks: Seq[KoskiInstance] = Seq.empty
+  def describeKoskiTasks(taskArns: Seq[String]): Seq[KoskiInstance] = taskArns.map(KoskiInstance(_, createdAt, "service:koski"))
 }
 
 class RemoteEcsService(config: Config) extends EcsService with Logging {
   val client: EcsClient = EcsClient.create()
   val cluster: String = config.getString("kyselyt.ecs.cluster")
-  val serviceName: String = config.getString("kyselyt.ecs.service")
+  val koskiServiceName: String = config.getString("kyselyt.ecs.service")
 
   def getKoskiTaskArns: Seq[String] = TryWithLogging(logger, {
     val request = ListTasksRequest.builder()
       .cluster(cluster)
-      .serviceName(serviceName)
+      .serviceName(koskiServiceName)
       .build()
     client.listTasks(request).taskArns().asScala
+  }).getOrElse(Seq.empty)
+
+  def getRaportointikantaLoaderTasks: Seq[KoskiInstance] = TryWithLogging(logger, {
+    val listAllTasksReq = ListTasksRequest.builder()
+      .cluster(cluster)
+      .build()
+    val taskArns = client.listTasks(listAllTasksReq).taskArns().asScala
+    describeKoskiTasks(taskArns)
+      .filter(_.group.contains("RaportointikantaLoader"))
   }).getOrElse(Seq.empty)
 
   def describeKoskiTasks(taskArns: Seq[String]): Seq[KoskiInstance] = TryWithLogging(logger, {
@@ -112,12 +128,14 @@ class RemoteEcsService(config: Config) extends EcsService with Logging {
 
 case class KoskiInstance(
   taskArn: String,
-  createdAt: Instant
+  createdAt: Instant,
+  group: String
 )
 
 object KoskiInstance {
   def apply(task: Task): KoskiInstance = KoskiInstance(
     taskArn = task.taskArn(),
     createdAt = task.createdAt(),
+    group = task.group(),
   )
 }
