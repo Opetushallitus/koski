@@ -28,7 +28,7 @@ class PalveluvaylaServlet(implicit val application: KoskiApplication) extends So
   }
 
   post("/hsl") {
-    if (Environment.isMockEnvironment(application.config) || Environment.isProdEnvironment(application.config)) requireHslUser
+    requireHslAccess
     val soapResp = (for {
       xml <- xmlBody
       hetu <- extractHetuHsl(xml)
@@ -46,8 +46,8 @@ class PalveluvaylaServlet(implicit val application: KoskiApplication) extends So
       haltWithStatus(KoskiErrorCategory.forbidden.kiellettyKäyttöoikeus())
     }
 
-  private def requireHslUser =
-    if (koskiSession.oid != application.config.getString("hsl-user-oid")) {
+  private def requireHslAccess =
+    if (!koskiSessionOption.exists(_.hasHSLAccess)) {
       haltWithStatus(KoskiErrorCategory.forbidden.kiellettyKäyttöoikeus())
     }
 
