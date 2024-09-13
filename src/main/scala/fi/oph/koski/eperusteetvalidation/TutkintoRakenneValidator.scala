@@ -11,6 +11,7 @@ import fi.oph.koski.tutkinto.Koulutustyyppi._
 import fi.oph.koski.tutkinto.{Koulutustyyppi, _}
 
 import java.time.LocalDate
+import scala.collection.mutable.ArrayBuffer
 
 case class TutkintoRakenneValidator(tutkintoRepository: TutkintoRepository, koodistoViitePalvelu: KoodistoViitePalvelu, config: Config)
   extends EPerusteetValidationUtils(tutkintoRepository, koodistoViitePalvelu) with Logging {
@@ -329,25 +330,36 @@ case class TutkintoRakenneValidator(tutkintoRepository: TutkintoRepository, kood
 
   private def findTutkintonimike(rakenne: TutkintoRakenne, tutkintonimikeKoodi: String) = rakenne.tutkintonimikkeet.find(_.koodiarvo == tutkintonimikeKoodi)
 
-  private def validateLaajuusJaOsaAlueet(suoritus: AmmatillisenTutkinnonOsanSuoritus, tutkinnonOsa: TutkinnonOsa, oo: KoskeenTallennettavaOpiskeluoikeus, ps: PäätasonSuoritus):
+  private def validateLaajuusJaOsaAlueet(suoritus: AmmatillisenTutkinnonOsanSuoritus, perusteenTutkinnonOsa: TutkinnonOsa, oo: KoskeenTallennettavaOpiskeluoikeus, ps: PäätasonSuoritus):
   HttpStatus = {
+    val laajuusValidaatioPäällä = config.getBoolean("validaatiot.ammatillinenEPerusteOsaAlueLaajuusValidaatio")
+    val koodiValidaatioAlkaa = LocalDate.parse(config.getString("validaatiot.ammatillinenEPerusteOsaAlueKoodiValidaatioAlkaa"))
+    val koodiValidaatioPällä = LocalDate.now().isAfter(koodiValidaatioAlkaa.minusDays(1))
 
-    val osaStatus = tutkinnonOsa.laajuus match {
+    val logOnlyErrors = new ArrayBuffer[HttpStatus]()
+
+    val osaStatus = perusteenTutkinnonOsa.laajuus match {
       case Some(perusteenLaajuus) if suoritus.arvioitu && suoritus.koulutusmoduuli.laajuus.exists(_.arvo < perusteenLaajuus) =>
-        KoskiErrorCategory.badRequest.validation.laajuudet.suorituksenLaajuusEiVastaaRakennetta(
+        val laajuusError = KoskiErrorCategory.badRequest.validation.laajuudet.suorituksenLaajuusEiVastaaRakennetta(
           s"Arvioidun suorituksen '${suoritus.koulutusmoduuli.nimi.get("fi")}' laajuus oltava perusteen mukaan vähintään ${perusteenLaajuus}${suoritus.koulutusmoduuli.getLaajuus.map(l => s" (oli ${l.arvo})").getOrElse("")}"
         )
+        if (laajuusValidaatioPäällä) {
+          laajuusError
+        } else {
+          logOnlyErrors += laajuusError
+          HttpStatus.ok
+        }
       case _ => HttpStatus.ok
     }
 
-    val osaAlueStatuses = suoritus.osasuoritusLista.map(osaAlueSuoritus => tutkinnonOsa.osaAlueet.find(perusteOsaAlue =>
+    val osaAlueStatuses = suoritus.osasuoritusLista.map(osaAlueSuoritus => perusteenTutkinnonOsa.osaAlueet.find(perusteOsaAlue =>
         osaAlueSuoritus.koulutusmoduuli.tunniste.koodiarvo == perusteOsaAlue.koodiarvo)
       .map(perusteOsaAlue => {
         val kieliStr = osaAlueSuoritus.koulutusmoduuli match {
           case k: Kieliaine => k.kieli.nimi.map(_.get("fi")).map(str => s", $str").getOrElse("")
           case _ => ""
         }
-        osaAlueSuoritus.koulutusmoduuli match {
+        val laajuusError = osaAlueSuoritus.koulutusmoduuli match {
           case mod: Valinnaisuus => mod.pakollinen match {
             case true if perusteOsaAlue.pakollisenOsanLaajuus.isDefined && mod.getLaajuus.map(_.arvo) != perusteOsaAlue.pakollisenOsanLaajuus =>
               KoskiErrorCategory.badRequest.validation.laajuudet.suorituksenLaajuusEiVastaaRakennetta(
@@ -361,31 +373,42 @@ case class TutkintoRakenneValidator(tutkintoRepository: TutkintoRepository, kood
           }
           case _ => HttpStatus.ok
         }
+        if (laajuusValidaatioPäällä) {
+          laajuusError
+        } else {
+          logOnlyErrors += laajuusError
+          HttpStatus.ok
+        }
       }).getOrElse(
-        osaAlueSuoritus.koulutusmoduuli.tunniste match {
-          case _ if tutkinnonOsa.osaAlueet.isEmpty => HttpStatus.ok // Jos osa-alueita ei ole parsittu vanhan mallisesta perusteesta niin skipataan tämä validaatio.
-          case t: Koodistokoodiviite if t.koodistoUri == "ammatillisenoppiaineet" => KoskiErrorCategory.badRequest.validation.rakenne(s"Osa-alue '${osaAlueSuoritus.koulutusmoduuli.nimi.get("fi")}' (${osaAlueSuoritus.koulutusmoduuli.tunniste.koodiarvo}) ei kuulu perusteen mukaan tutkinnon osaan '${tutkinnonOsa.nimi.get("fi")}'")
-          case _ => HttpStatus.ok // mm. paikalliset tutkinnon osat
+        {
+          val koodiError = osaAlueSuoritus.koulutusmoduuli.tunniste match {
+            case _ if perusteenTutkinnonOsa.osaAlueet.isEmpty => HttpStatus.ok // Jos osa-alueita ei ole parsittu vanhan mallisesta perusteesta niin skipataan tämä validaatio.
+            case t: Koodistokoodiviite if t.koodistoUri == "ammatillisenoppiaineet" => KoskiErrorCategory.badRequest.validation.rakenne(s"Osa-alue '${osaAlueSuoritus.koulutusmoduuli.nimi.get("fi")}' (${osaAlueSuoritus.koulutusmoduuli.tunniste.koodiarvo}) ei kuulu perusteen mukaan tutkinnon osaan '${perusteenTutkinnonOsa.nimi.get("fi")}'")
+            case _ => HttpStatus.ok // mm. paikalliset tutkinnon osat
+          }
+          if (koodiValidaatioPällä) {
+            koodiError
+          } else {
+            logOnlyErrors += koodiError
+            HttpStatus.ok
+          }
         }
       ))
-    val result = HttpStatus.fold(List(osaStatus) ++ osaAlueStatuses)
 
-    val validaatioPäällä = config.getBoolean("validaatiot.ammatillinenEPerusteValidaatio")
-    if (validaatioPäällä) {
-      result
-    } else {
-      if (result.isError) {
+    logOnlyErrors.foreach(error => {
+      if (error.isError) {
         val diaari = ps.koulutusmoduuli match {
           case d: Diaarinumerollinen => d.perusteenDiaarinumero.getOrElse("")
           case _ => ""
         }
-        logger.warn(s"Ammatillisen suoritusken E-peruste validaatio poissa päältä mutta epäonnistuisi virheillä: '${result.errorString.getOrElse("")}' " +
+        logger.warn(s"Ammatillisen suoritusken E-peruste validaatio poissa päältä mutta epäonnistuisi virheillä: '${error.errorString.getOrElse("")}' " +
           s"opiskeluoikeus_oid: ${oo.oid.getOrElse("")} koulutustoimija_oid: ${oo.koulutustoimija.map(_.oid).getOrElse("")} oppilaitos_oid: ${oo.oppilaitos.map(_.oid).getOrElse("")} " +
           s"tutkinnon_diaarinumero: ${diaari} tutkinnon_nimi: '${ps.koulutusmoduuli.nimi.get("fi")}' tunnustettu: ${if (suoritus.tunnustettu.isDefined) "kyllä" else "ei"}"
         )
       }
-      HttpStatus.ok
-    }
+    })
+
+    HttpStatus.fold(List(osaStatus) ++ osaAlueStatuses)
   }
 
   private def validateLukio2019Diaarinumero(s: LukionPäätasonSuoritus2019) = {
