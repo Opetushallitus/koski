@@ -18,6 +18,7 @@ case class HslLukionOpiskeluoikeus(
   alkamispäivä: Option[LocalDate],
   versionumero: Option[Int],
   päättymispäivä: Option[LocalDate],
+  oppimääräSuoritettu: Option[Boolean] = None
 ) extends HslOpiskeluoikeus
 
 object HslLukionOpiskeluoikeus {
@@ -33,5 +34,6 @@ object HslLukionOpiskeluoikeus {
     alkamispäivä = oo.alkamispäivä,
     versionumero = oo.versionumero,
     päättymispäivä = oo.päättymispäivä,
+    oppimääräSuoritettu = oo.oppimääräSuoritettu
   )
 }

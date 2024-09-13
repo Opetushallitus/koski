@@ -19,6 +19,7 @@ case class HslKorkeakoulunOpiskeluoikeus(
   alkamispäivä: Option[LocalDate],
   versionumero: Option[Int],
   päättymispäivä: Option[LocalDate],
+  synteettinen: Boolean = false
 ) extends HslOpiskeluoikeus
 
 object HslKorkeakoulunOpiskeluoikeus {
@@ -27,7 +28,7 @@ object HslKorkeakoulunOpiskeluoikeus {
       tyyppi = oo.tyyppi,
       oid = oo.oid.getOrElse(""),
       oppilaitos = oo.oppilaitos,
-      tila = HslOpiskeluoikeudenTila.apply(oo.tila),
+      tila = HslOpiskeluoikeudenTila(Some(oo.tila.opiskeluoikeusjaksot.map(j => HslOpiskeluoikeusJakso(j.tila, j.alku, j.nimi)))),
       suoritukset = oo.suoritukset.map(HslDefaultPäätasonSuoritus.apply),
       lisätiedot = oo.lisätiedot.map(HslKorkeakouluOpiskeluoikeudenLisätiedot.apply),
       arvioituPäättymispäivä = oo.arvioituPäättymispäivä,
@@ -35,6 +36,7 @@ object HslKorkeakoulunOpiskeluoikeus {
       alkamispäivä = oo.alkamispäivä,
       versionumero = oo.versionumero,
       päättymispäivä = oo.päättymispäivä,
+      synteettinen = oo.synteettinen
     )
 }
 
