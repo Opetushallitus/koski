@@ -68,6 +68,12 @@ object HslAmmatillinenPäätasonSuoritus {
       osaamisenHankkimistavat = None,
       järjestämismuodot = x.järjestämismuodot.map(y => y.map(HslJärjestämismuotojakso.apply))
     )
+    case _ => HslAmmatillinenPäätasonSuoritus(
+      tyyppi = s.tyyppi,
+      koulutussopimukset = s.koulutussopimukset.map(y => y.map(HslKoulutussopimusjakso.apply)),
+      osaamisenHankkimistavat = None,
+      järjestämismuodot = None
+    )
   }
 }
 
