@@ -89,6 +89,11 @@ case class OppijanumeroRekisteriClient(config: Config) {
   def findSlaveOids(masterOid: String): IO[List[String]] =
     oidServiceHttp.get(uri"/oppijanumerorekisteri-service/henkilo/$masterOid/slaves")(Http.parseJson[List[OppijaNumerorekisteriSlave]]).map(_.map(_.oidHenkilo))
 
+  def findKotikuntahistoria(masterOids: Seq[String], turvakiellolliset: Boolean): IO[List[OppijanumerorekisteriKotikuntahistoriaRow]] = {
+    val url = if (turvakiellolliset) uri"/oppijanumerorekisteri-service/s2s/henkilo/kotikuntahistoria/turvakielto" else uri"/oppijanumerorekisteri-service/s2s/henkilo/kotikuntahistoria"
+    oidServiceHttp.post(url, masterOids)(json4sEncoderOf[Seq[String]])(Http.parseJson[List[OppijanumerorekisteriKotikuntahistoriaRow]])
+  }
+
   private def findOnrOppijatByOids(oids: Seq[Oid]): IO[List[OppijaNumerorekisteriPerustiedot]] =
     postRetryingOidServiceHttp.post(uri"/oppijanumerorekisteri-service/henkilo/henkiloPerustietosByHenkiloOidList", oids)(json4sEncoderOf[Seq[String]])(Http.parseJson[List[OppijaNumerorekisteriPerustiedot]])
 

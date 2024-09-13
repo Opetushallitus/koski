@@ -1,11 +1,8 @@
 package fi.oph.koski.henkilo
 
-import java.time.LocalDate
-import java.time.LocalDate.{of => date}
-import fi.oph.koski.db.DB
-import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.db.KoskiTables.KoskiOpiskeluOikeudetWithAccessCheck
-import fi.oph.koski.db.{PostgresDriverWithJsonSupport, QueryMethods}
+import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
+import fi.oph.koski.db.{DB, PostgresDriverWithJsonSupport, QueryMethods}
 import fi.oph.koski.fixture.{FixtureCreator, KoskiSpecificFixtureState}
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.json.JsonSerializer
@@ -13,10 +10,10 @@ import fi.oph.koski.koskiuser.KoskiSpecificSession.systemUser
 import fi.oph.koski.log.Logging
 import fi.oph.koski.schema.Henkilö.Oid
 import fi.oph.koski.schema.Koodistokoodiviite
-import fi.oph.koski.validation.ValidatingAndResolvingExtractor
 import fi.oph.koski.valpas.opiskeluoikeusfixture.ValpasOpiskeluoikeusFixtureState
 import org.json4s.jackson.JsonMethods
 
+import java.time.LocalDate
 import scala.io.Source
 import scala.util.Using
 
@@ -137,12 +134,13 @@ class MockOpintopolkuHenkilöFacade(val hetu: Hetu, fixtures: => FixtureCreator)
     hetus.flatMap(findOppijaByHetu)
   }
 
-  def findKuntahistoriat(oids: Seq[String]): Seq[OppijanumerorekisteriKotikuntahistoriaRow] =
-    (fixtures.getCurrentFixtureStateName() match {
-      case KoskiSpecificFixtureState.name => Some(koskiKotikuntahistoriaData)
-      case ValpasOpiskeluoikeusFixtureState.name => Some(valpasKotikuntahistoriaData)
-      case _ => None
-    }).toList.flatten.filter(row => oids.contains(row.oid))
+  def findKuntahistoriat(oids: Seq[String], turvakielto: Boolean): Either[HttpStatus, Seq[OppijanumerorekisteriKotikuntahistoriaRow]] =
+    Right((fixtures.getCurrentFixtureStateName() match {
+      case KoskiSpecificFixtureState.name if turvakielto => koskiKotikuntahistoriaTurvakieltoData
+      case KoskiSpecificFixtureState.name if !turvakielto => koskiKotikuntahistoriaData
+      case ValpasOpiskeluoikeusFixtureState.name => valpasKotikuntahistoriaData
+      case _ => Seq.empty
+    }).filter(row => oids.contains(row.oid)))
 
   override def findSlaveOids(masterOid: String): List[Oid] =
     alkuperäisetOppijat.filter(_.master.exists(_.oid == masterOid)).map(_.henkilö.oid)
@@ -176,6 +174,9 @@ class MockOpintopolkuHenkilöFacade(val hetu: Hetu, fixtures: => FixtureCreator)
 
   private lazy val koskiKotikuntahistoriaData: Seq[OppijanumerorekisteriKotikuntahistoriaRow] =
     loadKotikuntahistoria("koski-kotikuntahistoria.json")
+
+  private lazy val koskiKotikuntahistoriaTurvakieltoData: Seq[OppijanumerorekisteriKotikuntahistoriaRow] =
+    loadKotikuntahistoria("koski-kotikuntahistoria-turvakielto.json")
 
   private lazy val valpasKotikuntahistoriaData: Seq[OppijanumerorekisteriKotikuntahistoriaRow] =
     loadKotikuntahistoria("valpas-kotikuntahistoria.json")

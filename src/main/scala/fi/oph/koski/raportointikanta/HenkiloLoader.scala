@@ -18,6 +18,12 @@ object HenkilöLoader extends Logging {
                    db: RaportointiDatabase,
                    koodistoPalvelu: KoodistoPalvelu,
                    opiskeluoikeusRepository: CompositeOpiskeluoikeusRepository): Int = {
+    def fetchKotikuntahistoria(batchRows: Seq[RHenkilöRow], turvakielto: Boolean) =
+      opintopolkuHenkilöFacade
+        .findKuntahistoriat(oids = batchRows.map(_.masterOid), turvakiellolliset = turvakielto)
+        .getOrElse(Seq.empty)
+        .map(_.toDbRow(turvakielto = turvakielto))
+
     logger.info("Ladataan henkilö-OIDeja opiskeluoikeuksista...")
     // note: this list has 1-2M oids in production.
     val oids = db.oppijaOidsFromOpiskeluoikeudet
@@ -33,9 +39,11 @@ object HenkilöLoader extends Logging {
       db.setLastUpdate(name)
       batchRows.foreach(masterOids += _.masterOid)
 
-      val kotikuntahistoria = opintopolkuHenkilöFacade.findKuntahistoriat(batchRows.map(_.masterOid)).map(_.toDbRow)
+      val kotikuntahistoria = fetchKotikuntahistoria(batchRows, turvakielto = false)
       db.loadKotikuntahistoria(kotikuntahistoria)
-      db.confidential.foreach(_.loadKotikuntahistoria(kotikuntahistoria))
+
+      val kotikuntahistoriaTurvakielto = fetchKotikuntahistoria(batchRows, turvakielto = true)
+      db.confidential.foreach(_.loadKotikuntahistoria(kotikuntahistoria ++ kotikuntahistoriaTurvakielto))
 
       batchRows.size
     }).sum

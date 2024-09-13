@@ -1,7 +1,9 @@
 package fi.oph.koski.henkilo
 
+import com.typesafe.config.Config
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api.actionBasedSQLInterpolation
 import fi.oph.koski.raportointikanta.{RKotikuntahistoriaRow, Schema}
+import fi.oph.koski.util.Optional.coalesce
 import slick.dbio.{DBIO, DBIOAction, Effect, NoStream}
 
 import java.sql.Date
@@ -18,19 +20,26 @@ object Kotikuntahistoria {
 
 case class OppijanumerorekisteriKotikuntahistoriaRow(
   oid: String,
-  kotikunta: Long,
-  kuntaanMuuttopv: LocalDate,
+  kotikunta: String,
+  kuntaanMuuttopv: Option[LocalDate],
   kunnastaPoisMuuttopv: Option[LocalDate],
-  turvakielto: Option[Boolean], // TODO TOR-2031: Tästä ei ole vielä sovittu
 ) {
-  def toDbRow: RKotikuntahistoriaRow =
+  def toDbRow(turvakielto: Boolean): RKotikuntahistoriaRow =
     RKotikuntahistoriaRow(
       masterOppijaOid = oid,
-      kotikunta = kotikuntaKoodiarvo,
-      muuttoPvm = Date.valueOf(kuntaanMuuttopv),
+      kotikunta = kotikunta,
+      muuttoPvm = kuntaanMuuttopv.map(pvm => Date.valueOf(pvm)),
       poismuuttoPvm = kunnastaPoisMuuttopv.map(pvm => Date.valueOf(pvm)),
-      turvakielto = turvakielto.contains(true),
+      turvakielto = turvakielto,
     )
 
-  def kotikuntaKoodiarvo: String = "%03d".format(kotikunta)
+  lazy val pvm: Option[LocalDate] = coalesce(kuntaanMuuttopv, kunnastaPoisMuuttopv)
+}
+
+case class KotikuntahistoriaConfig(config: Config) {
+  def käytäOppivelvollisuudenPäättelyyn: Boolean = getBoolean("kotikuntahistoria.oppivelvollisuustiedotFiltering")
+  def käytäMaksuttomuustietojenValidointiin: Boolean = getBoolean("kotikuntahistoria.maksuttomuusValidation")
+
+  private def getBoolean(path: String): Boolean =
+    if (config.hasPath(path)) config.getBoolean(path) else false
 }

@@ -4,7 +4,7 @@ import com.typesafe.config.Config
 import fi.oph.koski.db.DB
 import fi.oph.koski.fixture.FixtureCreator
 import fi.oph.koski.http.Http._
-import fi.oph.koski.http.HttpStatus
+import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.perustiedot.{OpiskeluoikeudenPerustiedotIndexer, OpiskeluoikeudenPerustiedotRepository}
 import fi.oph.koski.schema.Henkilö.Oid
 import fi.oph.koski.schema.TäydellisetHenkilötiedot
@@ -23,7 +23,7 @@ trait OpintopolkuHenkilöFacade {
   def findOrCreate(createUserInfo: UusiOppijaHenkilö): Either[HttpStatus, OppijaHenkilö]
   def findOppijatByHetusNoSlaveOids(hetus: Seq[String]): Seq[OppijaHenkilö]
   def findSlaveOids(masterOid: String): List[Oid]
-  def findKuntahistoriat(oids: Seq[String]): Seq[OppijanumerorekisteriKotikuntahistoriaRow]
+  def findKuntahistoriat(oids: Seq[String], turvakiellolliset: Boolean): Either[HttpStatus, Seq[OppijanumerorekisteriKotikuntahistoriaRow]]
 }
 
 object OpintopolkuHenkilöFacade {
@@ -43,14 +43,14 @@ object OpintopolkuHenkilöFacade {
 object RemoteOpintopolkuHenkilöFacade {
   def apply(config: Config, perustiedotRepository: => OpiskeluoikeudenPerustiedotRepository, perustiedotIndexer: => OpiskeluoikeudenPerustiedotIndexer): RemoteOpintopolkuHenkilöFacade = {
     if (config.hasPath("authentication-service.mockOid") && config.getBoolean("authentication-service.mockOid")) {
-      new RemoteOpintopolkuHenkilöFacadeWithMockOids(OppijanumeroRekisteriClient(config), perustiedotRepository, perustiedotIndexer)
+      new RemoteOpintopolkuHenkilöFacadeWithMockOids(OppijanumeroRekisteriClient(config), perustiedotRepository, perustiedotIndexer, config)
     } else {
-      new RemoteOpintopolkuHenkilöFacade(OppijanumeroRekisteriClient(config))
+      new RemoteOpintopolkuHenkilöFacade(OppijanumeroRekisteriClient(config), config)
     }
   }
 }
 
-class RemoteOpintopolkuHenkilöFacade(oppijanumeroRekisteriClient: OppijanumeroRekisteriClient)
+class RemoteOpintopolkuHenkilöFacade(oppijanumeroRekisteriClient: OppijanumeroRekisteriClient, config: Config)
   extends OpintopolkuHenkilöFacade
     with Timing {
 
@@ -84,14 +84,19 @@ class RemoteOpintopolkuHenkilöFacade(oppijanumeroRekisteriClient: OppijanumeroR
 
   def findSlaveOids(masterOid: String): List[Oid] = runIO(oppijanumeroRekisteriClient.findSlaveOids(masterOid))
 
-  def findKuntahistoriat(oids: Seq[String]): Seq[OppijanumerorekisteriKotikuntahistoriaRow] = Seq.empty // TODO TOR-2031: Toteutus
+  def findKuntahistoriat(oids: Seq[String], turvakielto: Boolean): Either[HttpStatus, Seq[OppijanumerorekisteriKotikuntahistoriaRow]] =
+    tryIO(oppijanumeroRekisteriClient.findKotikuntahistoria(oids, turvakielto)) { error =>
+      logger.error(s"Kotikuntahistorian haku epäonnistui: $error")
+      KoskiErrorCategory.internalError("Kotikuntahistorian haku epäonnistui")
+    }
 }
 
 class RemoteOpintopolkuHenkilöFacadeWithMockOids(
   oppijanumeroRekisteriClient: OppijanumeroRekisteriClient,
   perustiedotRepository: OpiskeluoikeudenPerustiedotRepository,
-  perustiedotIndexer: OpiskeluoikeudenPerustiedotIndexer
-) extends RemoteOpintopolkuHenkilöFacade(oppijanumeroRekisteriClient) {
+  perustiedotIndexer: OpiskeluoikeudenPerustiedotIndexer,
+  config: Config,
+) extends RemoteOpintopolkuHenkilöFacade(oppijanumeroRekisteriClient, config) {
   override def findOppijatNoSlaveOids(oids: Seq[String]): Seq[OppijaHenkilö] = {
     val found = super.findOppijatNoSlaveOids(oids).map(henkilö => (henkilö.oid, henkilö)).toMap
     oids.map { oid =>

@@ -1,19 +1,23 @@
 package fi.oph.koski.validation
 
 
-import fi.oph.koski.henkilo.{LaajatOppijaHenkilöTiedot, OpintopolkuHenkilöFacade}
+import com.typesafe.config.Config
+import fi.oph.koski.henkilo.{KotikuntahistoriaConfig, LaajatOppijaHenkilöTiedot, OpintopolkuHenkilöFacade}
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
+import fi.oph.koski.log.Logging
 import fi.oph.koski.opiskeluoikeus.{CompositeOpiskeluoikeusRepository, Päivämääräväli}
 import fi.oph.koski.oppivelvollisuustieto.Oppivelvollisuustiedot
 import fi.oph.koski.schema._
 import fi.oph.koski.util.ChainingSyntax.localDateOps
+import fi.oph.koski.util.DateOrdering.localDateOrdering
+import fi.oph.koski.util.Optional.coalesce
 import fi.oph.koski.util.{DateOrdering, FinnishDateFormat}
 import fi.oph.koski.valpas.opiskeluoikeusrepository.ValpasRajapäivätService
 
 import java.time.LocalDate
 import java.time.LocalDate.{of => date}
 
-object MaksuttomuusValidation {
+object MaksuttomuusValidation extends Logging {
 
   def checkOpiskeluoikeudenMaksuttomuus(opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus,
                                         oppijanHenkilötiedot: Option[LaajatOppijaHenkilöTiedot],
@@ -21,6 +25,7 @@ object MaksuttomuusValidation {
                                         opiskeluoikeusRepository: CompositeOpiskeluoikeusRepository,
                                         rajapäivät: ValpasRajapäivätService,
                                         oppijanumerorekisteri: OpintopolkuHenkilöFacade,
+                                        config: Config,
                                        ): HttpStatus = {
     val oppijanSyntymäpäivä = oppijanHenkilötiedot.flatMap(_.syntymäaika)
     val perusopetuksenAikavälit = opiskeluoikeusRepository.getPerusopetuksenAikavälitIlmanKäyttöoikeustarkistusta(oppijanOid)
@@ -62,7 +67,14 @@ object MaksuttomuusValidation {
     val eiLaajennettuOppivelvollinenSyyt =
       eiOppivelvollisuudenLaajentamislainPiirissäSyyt(oppijanSyntymäpäivä, perusopetuksenAikavälit, rajapäivät)
 
-    val maksuttomuustietoVaaditaan = maksuttomuustiedotVaaditaan(opiskeluoikeus, oppijanHenkilötiedot, perusopetuksenAikavälit, rajapäivät, oppijanumerorekisteri)
+    val maksuttomuustietoVaaditaan = maksuttomuustiedotVaaditaan(
+      opiskeluoikeus,
+      oppijanHenkilötiedot,
+      perusopetuksenAikavälit,
+      rajapäivät,
+      oppijanumerorekisteri,
+      config,
+    )
 
     val maksuttomuustietoEiSallittuSyyt =
       eiLaajennettuOppivelvollinenSyyt ++ validationTexts(
@@ -146,6 +158,7 @@ object MaksuttomuusValidation {
     perusopetuksenAikavälit: Seq[Päivämääräväli],
     rajapäivät: ValpasRajapäivätService,
     oppijanumerorekisteri: OpintopolkuHenkilöFacade,
+    config: Config,
   ): Boolean = {
     val oppijanSyntymäpäivä = oppijanHenkilötiedot.flatMap(_.syntymäaika)
     val oppijaOid = oppijanHenkilötiedot.map(_.oid)
@@ -174,7 +187,12 @@ object MaksuttomuusValidation {
     // 5. oppija on kotikuntahistorian perusteella lain piirissä
     lazy val oppijaOnKotikuntahistorianPerusteellaLainPiirissä =
       (oppijaOid, oppijanSyntymäpäivä) match {
-        case (Some(oid), Some(syntymäpäivä)) => oppivelvollinenKotikuntahistorianPerusteella(oid, syntymäpäivä, oppijanumerorekisteri)
+        case (Some(oid), Some(syntymäpäivä)) =>
+          if (KotikuntahistoriaConfig(config).käytäMaksuttomuustietojenValidointiin) {
+            oppivelvollinenKotikuntahistorianPerusteella(oid, syntymäpäivä, oppijanumerorekisteri)
+          } else {
+            true
+          }
         case _ => false
       }
 
@@ -190,11 +208,19 @@ object MaksuttomuusValidation {
     def onMannerSuomenKunta(kuntakoodi: String): Boolean =
       !Oppivelvollisuustiedot.oppivelvollisuudenUlkopuolisetKunnat.contains(kuntakoodi)
 
-    oppijanumerorekisteri
-      .findKuntahistoriat(Seq(oppijaOid))
-      .filter(_.kuntaanMuuttopv.isBefore(täysiIkäinenAlkaen))
-      .map(_.kotikuntaKoodiarvo)
-      .exists(onMannerSuomenKunta)
+    val kotikuntaSuomessaAlkaen = Seq(false, true)
+      .flatMap(t => oppijanumerorekisteri.findKuntahistoriat(Seq(oppijaOid), turvakiellolliset = t).getOrElse(Seq.empty))
+      .filter(k => onMannerSuomenKunta(k.kotikunta))
+      .sortBy(_.pvm)
+      .headOption
+
+    val result = kotikuntaSuomessaAlkaen.exists {
+      _.pvm.exists(_.isBefore(täysiIkäinenAlkaen))
+    }
+
+    logger.info(s"oppivelvollinenKotikuntahistorianPerusteella: syntymäpäivä=$syntymäpäivä, kotikuntaAlkaen=${kotikuntaSuomessaAlkaen.map(_.pvm).getOrElse("")}, tulos=$result")
+
+    result
   }
 
   def validateAndFillJaksot(opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus): Either[HttpStatus, KoskeenTallennettavaOpiskeluoikeus] = {
