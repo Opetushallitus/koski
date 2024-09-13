@@ -55,7 +55,8 @@ object HslOpiskeluoikeudenTila {
 
 case class HslOpiskeluoikeusJakso(
   tila: Koodistokoodiviite,
-  alku: LocalDate
+  alku: LocalDate,
+  nimi: Option[LocalizedString] = None,
 )
 
 trait HslPäätasonSuoritus {
