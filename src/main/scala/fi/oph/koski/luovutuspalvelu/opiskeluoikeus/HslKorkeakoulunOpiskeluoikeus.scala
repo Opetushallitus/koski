@@ -20,7 +20,8 @@ case class HslKorkeakoulunOpiskeluoikeus(
   versionumero: Option[Int],
   päättymispäivä: Option[LocalDate],
   synteettinen: Boolean = false,
-  luokittelu: Option[List[Koodistokoodiviite]]
+  luokittelu: Option[List[Koodistokoodiviite]],
+  organisaatiohistoria: Option[List[OpiskeluoikeudenOrganisaatiohistoria]]
 ) extends HslOpiskeluoikeus
 
 object HslKorkeakoulunOpiskeluoikeus {
@@ -38,7 +39,8 @@ object HslKorkeakoulunOpiskeluoikeus {
       versionumero = oo.versionumero,
       päättymispäivä = oo.päättymispäivä,
       synteettinen = oo.synteettinen,
-      luokittelu = oo.luokittelu
+      luokittelu = oo.luokittelu,
+      organisaatiohistoria = None
     )
 }
 

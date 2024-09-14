@@ -19,6 +19,7 @@ case class HslAmmatillinenOpiskeluoikeus(
   versionumero: Option[Int],
   ostettu: Boolean,
   päättymispäivä: Option[LocalDate],
+  organisaatiohistoria: Option[List[OpiskeluoikeudenOrganisaatiohistoria]]
 ) extends HslOpiskeluoikeus
 
 object HslAmmatillinenOpiskeluoikeus {
@@ -36,6 +37,7 @@ object HslAmmatillinenOpiskeluoikeus {
       versionumero = oo.versionumero,
       ostettu = oo.ostettu,
       päättymispäivä = oo.päättymispäivä,
+      organisaatiohistoria = oo.organisaatiohistoria
     )
 }
 
