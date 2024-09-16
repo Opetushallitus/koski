@@ -18,7 +18,7 @@ case class HslIBOpiskeluoikeus(
   alkamispäivä: Option[LocalDate],
   versionumero: Option[Int],
   päättymispäivä: Option[LocalDate],
-  organisaatiohistoria: Option[List[OpiskeluoikeudenOrganisaatiohistoria]]
+  organisaatiohistoria: Option[List[HslOpiskeluoikeudenOrganisaatiohistoria]]
 ) extends HslOpiskeluoikeus
 
 object HslIBOpiskeluoikeus {
@@ -35,6 +35,6 @@ object HslIBOpiskeluoikeus {
       alkamispäivä = oo.alkamispäivä,
       versionumero = oo.versionumero,
       päättymispäivä = oo.päättymispäivä,
-      organisaatiohistoria = oo.organisaatiohistoria
+      organisaatiohistoria = oo.organisaatiohistoria.map(x => x.map(HslOpiskeluoikeudenOrganisaatiohistoria.apply))
     )
 }
