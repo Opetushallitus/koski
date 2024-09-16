@@ -1,6 +1,6 @@
 package fi.oph.koski.luovutuspalvelu.opiskeluoikeus
 
-import fi.oph.koski.schema.{IBOpiskeluoikeus, Koodistokoodiviite, OpiskeluoikeudenOrganisaatiohistoria, Oppilaitos}
+import fi.oph.koski.schema.{IBOpiskeluoikeus, Koodistokoodiviite, OpiskeluoikeudenOrganisaatiohistoria, Oppilaitos, SisältäväOpiskeluoikeus}
 import fi.oph.scalaschema.annotation.Title
 
 import java.time.{LocalDate, LocalDateTime}
@@ -18,7 +18,8 @@ case class HslIBOpiskeluoikeus(
   alkamispäivä: Option[LocalDate],
   versionumero: Option[Int],
   päättymispäivä: Option[LocalDate],
-  organisaatiohistoria: Option[List[HslOpiskeluoikeudenOrganisaatiohistoria]]
+  organisaatiohistoria: Option[List[HslOpiskeluoikeudenOrganisaatiohistoria]],
+  sisältyyOpiskeluoikeuteen: Option[SisältäväOpiskeluoikeus]
 ) extends HslOpiskeluoikeus
 
 object HslIBOpiskeluoikeus {
@@ -35,6 +36,7 @@ object HslIBOpiskeluoikeus {
       alkamispäivä = oo.alkamispäivä,
       versionumero = oo.versionumero,
       päättymispäivä = oo.päättymispäivä,
-      organisaatiohistoria = oo.organisaatiohistoria.map(x => x.map(HslOpiskeluoikeudenOrganisaatiohistoria.apply))
+      organisaatiohistoria = oo.organisaatiohistoria.map(x => x.map(HslOpiskeluoikeudenOrganisaatiohistoria.apply)),
+      sisältyyOpiskeluoikeuteen = oo.sisältyyOpiskeluoikeuteen
     )
 }
