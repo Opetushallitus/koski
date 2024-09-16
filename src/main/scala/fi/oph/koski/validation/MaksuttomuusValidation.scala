@@ -191,7 +191,7 @@ object MaksuttomuusValidation extends Logging {
           if (KotikuntahistoriaConfig(config).käytäMaksuttomuustietojenValidointiin) {
             oppivelvollinenKotikuntahistorianPerusteella(oid, syntymäpäivä, oppijanumerorekisteri)
           } else {
-            true
+            false
           }
         case _ => false
       }
