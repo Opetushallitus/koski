@@ -24,7 +24,7 @@ trait HslOpiskeluoikeus {
   def versionumero: Option[Int]
   def aikaleima: Option[LocalDateTime]
   def päättymispäivä: Option[LocalDate]
-  def organisaatiohistoria: Option[List[OpiskeluoikeudenOrganisaatiohistoria]]
+  def organisaatiohistoria: Option[List[HslOpiskeluoikeudenOrganisaatiohistoria]]
 }
 
 object HslOpiskeluoikeus {
@@ -44,6 +44,18 @@ object HslOpiskeluoikeus {
       case o: YlioppilastutkinnonOpiskeluoikeus => Some(HslYlioppilastutkinnonOpiskeluoikeus(o))
       case _ => None
     })
+}
+
+case class HslOpiskeluoikeudenOrganisaatiohistoria (
+  muutospäivä: LocalDate,
+  oppilaitos: Option[Oppilaitos],
+)
+
+object HslOpiskeluoikeudenOrganisaatiohistoria {
+  def apply(oh: OpiskeluoikeudenOrganisaatiohistoria): HslOpiskeluoikeudenOrganisaatiohistoria = HslOpiskeluoikeudenOrganisaatiohistoria(
+    muutospäivä = oh.muutospäivä,
+    oppilaitos = oh.oppilaitos
+  )
 }
 
 case class HslOpiskeluoikeudenTila(
