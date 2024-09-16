@@ -24,6 +24,7 @@ trait HslOpiskeluoikeus {
   def versionumero: Option[Int]
   def aikaleima: Option[LocalDateTime]
   def päättymispäivä: Option[LocalDate]
+  def organisaatiohistoria: Option[List[OpiskeluoikeudenOrganisaatiohistoria]]
 }
 
 object HslOpiskeluoikeus {
