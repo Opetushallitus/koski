@@ -50,6 +50,9 @@ trait SoapServlet extends KoskiSpecificApiServlet {
   override def renderStatus(status: HttpStatus): Unit = {
     response.setStatus(500)
     writeXml(soapError(status))
-    logger.error({status.errors.head.key} + " \n" + {status.errorString.getOrElse("")})
+    val unexpectedErrors = status.errors.filterNot(_.key == "forbidden.vainSallittuKumppani")
+    if (unexpectedErrors.nonEmpty) {
+      logger.error(unexpectedErrors.head.key + " \n" + status.errorString.getOrElse(""))
+    }
   }
 }
