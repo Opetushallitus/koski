@@ -50,9 +50,19 @@ trait SoapServlet extends KoskiSpecificApiServlet {
   override def renderStatus(status: HttpStatus): Unit = {
     response.setStatus(500)
     writeXml(soapError(status))
-    val unexpectedErrors = status.errors.filterNot(_.key == "forbidden.vainSallittuKumppani")
+
+    val (expectedErrors, unexpectedErrors) = status.errors.partition(e =>
+      List("forbidden.vainSallittuKumppani", "notFound.oppijaaEiLöydyTaiEiOikeuksia").contains(e.key)
+    )
+
+    if (expectedErrors.nonEmpty) {
+      val expectedErrorMessages = expectedErrors.map(e => s"${e.key}: ${e.message}").mkString("\n")
+      logger.info(s"Expected errors: \n$expectedErrorMessages \nStatus error string: ${status.errorString.getOrElse("")}")
+    }
+
     if (unexpectedErrors.nonEmpty) {
-      logger.error(unexpectedErrors.head.key + " \n" + status.errorString.getOrElse(""))
+      val unexpectedErrorMessages = unexpectedErrors.map(e => s"${e.key}: ${e.message}").mkString("\n")
+      logger.error(s"Unexpected errors: \n$unexpectedErrorMessages \nStatus error string: ${status.errorString.getOrElse("")}")
     }
   }
 }
