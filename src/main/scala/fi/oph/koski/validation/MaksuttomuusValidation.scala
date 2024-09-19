@@ -188,11 +188,8 @@ object MaksuttomuusValidation extends Logging {
     lazy val oppijaOnKotikuntahistorianPerusteellaLainPiirissä =
       (oppijaOid, oppijanSyntymäpäivä) match {
         case (Some(oid), Some(syntymäpäivä)) =>
-          if (KotikuntahistoriaConfig(config).käytäMaksuttomuustietojenValidointiin) {
-            oppivelvollinenKotikuntahistorianPerusteella(oid, syntymäpäivä, oppijanumerorekisteri)
-          } else {
-            false
-          }
+          val result = oppivelvollinenKotikuntahistorianPerusteella(oid, syntymäpäivä, oppijanumerorekisteri)
+          result && KotikuntahistoriaConfig(config).käytäMaksuttomuustietojenValidointiin
         case _ => false
       }
 
