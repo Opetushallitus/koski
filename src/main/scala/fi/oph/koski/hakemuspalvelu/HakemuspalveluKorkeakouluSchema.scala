@@ -1,6 +1,7 @@
 package fi.oph.koski.hakemuspalvelu
 
 import fi.oph.koski.schema
+import fi.oph.koski.schema.KorkeakoulunOpintojaksonSuoritus
 import fi.oph.koski.schema.annotation.KoodistoKoodiarvo
 import fi.oph.scalaschema.annotation.Title
 
@@ -71,7 +72,8 @@ object HakemuspalveluKorkeakoulunOpiskeluoikeus {
               s.toimipiste.nimi,
               s.toimipiste.kotipaikka.map(HakemuspalveluKoodistokoodiviite.fromKoskiSchema)
             )),
-            tyyppi = s.tyyppi
+            tyyppi = s.tyyppi,
+            osasuoritukset = s.osasuoritukset
           )
       },
     tyyppi = kk.tyyppi,
@@ -105,6 +107,7 @@ case class HakemuspalveluKorkeakoulututkinnonSuoritus(
   tyyppi: schema.Koodistokoodiviite,
   vahvistus: Option[HakemuspalveluVahvistus],
   toimipiste: Option[HakemuspalveluToimipiste],
+  osasuoritukset: Option[List[KorkeakoulunOpintojaksonSuoritus]]
 ) extends HakemuspalveluSuoritus
 
 case class HakemuspalveluKorkeakoulunOpiskeluoikeudenLisätiedot(
