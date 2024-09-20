@@ -64,9 +64,16 @@ export const $ = async (selector: string, timeout = shortTimeout) => {
   }
 }
 
-export const $$ = async (selector: string, timeout = shortTimeout) => {
+export const $$ = async (
+  selector: string,
+  timeout = shortTimeout,
+): Promise<WebElement[]> => {
   try {
-    return await driver.wait(until.elementsLocated(By.css(selector)), timeout)
+    const result = await driver.wait(
+      until.elementsLocated(By.css(selector)),
+      timeout,
+    )
+    return result as any as WebElement[] // elementsLocated palauttaa väärän tyypin
   } catch (_err) {
     throw new Error(`Could not find elements by "${selector}"`)
   }
