@@ -570,9 +570,10 @@ class KoskiOppijaFacade(
       case _ => true
     })
 
-    def poistaOsasuoritukset = (suoritukset: List[PäätasonSuoritus]) => suoritukset.map(s =>
-      shapeless.lens[PäätasonSuoritus].field[Option[List[Suoritus]]]("osasuoritukset").set(s)(None)
-    )
+    def poistaOsasuoritukset = (suoritukset: List[PäätasonSuoritus]) => suoritukset.map {
+      case s: AikuistenPerusopetuksenOppimääränSuoritus => s
+      case s => shapeless.lens[PäätasonSuoritus].field[Option[List[Suoritus]]]("osasuoritukset").set(s)(None)
+    }
 
     shapeless.lens[Oppija].field[Seq[Opiskeluoikeus]]("opiskeluoikeudet").modify(oppija)(_.map(oo => {
       val isKeskeneräinenPäättötodistusAinoaSuoritus = oo.suoritukset match {
