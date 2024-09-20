@@ -1374,7 +1374,12 @@ function Opiskeluoikeudet() {
         }
       }
     },
-    lisääOpiskeluoikeus: click(findSingle('.add-opiskeluoikeus a')),
+    lisääOpiskeluoikeus: async function () {
+      await eventually(async () => {
+        await click(findSingle('.add-opiskeluoikeus a'))()
+        await wait.untilVisible(S('.UusiOpiskeluoikeusDialog'))()
+      })()
+    },
     lisääOpiskeluoikeusEnabled: function () {
       return S('.add-opiskeluoikeus').is(':visible')
     },
