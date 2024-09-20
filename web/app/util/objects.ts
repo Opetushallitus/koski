@@ -1,3 +1,5 @@
+export type EmptyObject = { _?: never }
+
 export const withoutNullValues = <T extends object>(obj: T): Partial<T> =>
   Object.fromEntries(
     Object.entries(obj).filter(
@@ -5,7 +7,7 @@ export const withoutNullValues = <T extends object>(obj: T): Partial<T> =>
     )
   ) as Partial<T>
 
-export const isEmptyModelObject = (obj: any): Boolean => {
+export const isEmptyModelObject = (obj: any): boolean => {
   if (obj === undefined || obj === null) {
     return true
   }

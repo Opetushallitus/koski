@@ -18,6 +18,7 @@ import {
 } from '../../../components-v2/opiskeluoikeus/OsasuoritusProperty'
 import { todayISODate } from '../../../date/date'
 import { VSTKotoutumiskoulutuksenKieliJaViestintäosaamisenArviointi } from '../../../types/fi/oph/koski/schema/VSTKotoutumiskoulutuksenKieliJaViestintaosaamisenArviointi'
+import { EmptyObject } from '../../../util/objects'
 import { VSTPropertyFieldProps } from '../../common/propertyFields'
 import { VSTSuoritusArvioinnilla } from '../../common/types'
 
@@ -47,7 +48,7 @@ export const VSTKoto2022KielitaitotasoProperty = <
 export type VSTKoto2022KielitaitotasoViewProps = CommonProps<
   FieldViewerProps<
     VSTKotoutumiskoulutuksenKieliJaViestintäosaamisenArviointi,
-    {}
+    EmptyObject
   >
 >
 

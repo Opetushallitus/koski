@@ -1,8 +1,10 @@
 import * as $ from 'optics-ts'
 import React from 'react'
+import { TestIdLayer, useTestId } from '../../appstate/useTestId'
 import { t } from '../../i18n/i18n'
 import { SelitettyOsaamisenTunnustaminen } from '../../types/fi/oph/koski/schema/SelitettyOsaamisenTunnustaminen'
 import { VapaanSivistystyönOpintojenSuorituksenOsaamisenTunnustaminen } from '../../types/fi/oph/koski/schema/VapaanSivistystyonOpintojenSuorituksenOsaamisenTunnustaminen'
+import { EmptyObject } from '../../util/objects'
 import { allLanguages } from '../../util/optics'
 import { CommonProps, common } from '../CommonProps'
 import { FlatButton } from '../controls/FlatButton'
@@ -10,11 +12,9 @@ import { Removable } from '../controls/Removable'
 import { MultilineTextEdit } from '../controls/TextField'
 import { FieldErrors } from '../forms/FieldErrors'
 import { FieldEditorProps, FieldViewerProps } from '../forms/FormField'
-import { TestIdLayer, useTestId } from '../../appstate/useTestId'
 
 export type TunnustusViewProps<T extends SelitettyOsaamisenTunnustaminen> =
-  // eslint-disable-next-line @typescript-eslint/ban-types
-  CommonProps<FieldViewerProps<T, {}>>
+  CommonProps<FieldViewerProps<T, EmptyObject>>
 
 export const TunnustusView = <T extends SelitettyOsaamisenTunnustaminen>(
   props: TunnustusViewProps<T>

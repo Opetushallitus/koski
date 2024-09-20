@@ -19,6 +19,7 @@ import {
 } from '../util/koskiApi'
 import { tap } from '../util/fp/either'
 import { NonEmptyArray } from 'fp-ts/lib/NonEmptyArray'
+import { PropsWithOnlyChildren } from '../util/react'
 
 type OrganisaatioOid = string
 type PreferenceType = string
@@ -311,7 +312,7 @@ const initialContextValue: PreferencesContext = {
 
 const PreferencesContext = React.createContext(initialContextValue)
 
-export const PreferencesProvider: React.FC<React.PropsWithChildren<{}>> = (
+export const PreferencesProvider: React.FC<PropsWithOnlyChildren> = (
   props
 ) => {
   const [preferences, setPreferences] = useState<

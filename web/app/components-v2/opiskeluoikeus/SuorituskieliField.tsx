@@ -1,8 +1,10 @@
 import React, { useCallback, useMemo } from 'react'
 import { useKoodisto } from '../../appstate/koodisto'
+import { TestIdText } from '../../appstate/useTestId'
 import { t } from '../../i18n/i18n'
 import { Koodistokoodiviite } from '../../types/fi/oph/koski/schema/Koodistokoodiviite'
 import { koodiviiteId } from '../../util/koodisto'
+import { EmptyObject } from '../../util/objects'
 import { common, CommonProps } from '../CommonProps'
 import {
   groupKoodistoToOptions,
@@ -10,12 +12,11 @@ import {
   SelectOption
 } from '../controls/Select'
 import { FieldEditorProps, FieldViewerProps } from '../forms/FormField'
-import { TestIdText } from '../../appstate/useTestId'
 
 export type Suorituskielikoodiviite = Koodistokoodiviite<'kieli'>
 
 export type SuorituskieliViewProps = CommonProps<
-  FieldViewerProps<Suorituskielikoodiviite, {}>
+  FieldViewerProps<Suorituskielikoodiviite, EmptyObject>
 >
 
 export const SuorituskieliView: React.FC<SuorituskieliViewProps> = (props) => (
@@ -25,7 +26,7 @@ export const SuorituskieliView: React.FC<SuorituskieliViewProps> = (props) => (
 )
 
 export type SuorituskieliEditProps = CommonProps<
-  FieldEditorProps<Suorituskielikoodiviite, {}>
+  FieldEditorProps<Suorituskielikoodiviite, EmptyObject>
 >
 
 export const SuorituskieliEdit: React.FC<SuorituskieliEditProps> = (props) => {

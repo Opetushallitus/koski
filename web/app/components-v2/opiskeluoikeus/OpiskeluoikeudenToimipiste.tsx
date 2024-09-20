@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useMemo, useState } from 'react'
 // @ts-expect-error
 import { debounce } from 'lodash'
 import { useOrganisaatioHierarkia } from '../../appstate/organisaatioHierarkia'
-import { TestIdLayer, TestIdText, useTestId } from '../../appstate/useTestId'
+import { TestIdLayer, TestIdText } from '../../appstate/useTestId'
 import { t } from '../../i18n/i18n'
 import { OrganisaatioHierarkia } from '../../types/fi/oph/koski/organisaatio/OrganisaatioHierarkia'
 import { Koodistokoodiviite } from '../../types/fi/oph/koski/schema/Koodistokoodiviite'
@@ -11,6 +11,7 @@ import { OidOrganisaatio } from '../../types/fi/oph/koski/schema/OidOrganisaatio
 import { Opiskeluoikeus } from '../../types/fi/oph/koski/schema/Opiskeluoikeus'
 import { Oppilaitos } from '../../types/fi/oph/koski/schema/Oppilaitos'
 import { Toimipiste } from '../../types/fi/oph/koski/schema/Toimipiste'
+import { EmptyObject } from '../../util/objects'
 import { assertNever } from '../../util/selfcare'
 import { CommonProps } from '../CommonProps'
 import { useDialog } from '../containers/Dialog'
@@ -21,7 +22,7 @@ export type Suorituskielikoodiviite = Koodistokoodiviite<'kieli'>
 export type KoskiToimipiste =
   Opiskeluoikeus['suoritukset'][number]['toimipiste']
 export type ToimipisteViewProps = CommonProps<
-  FieldViewerProps<KoskiToimipiste, {}>
+  FieldViewerProps<KoskiToimipiste, EmptyObject>
 >
 
 export const ToimipisteView: React.FC<ToimipisteViewProps> = (props) => {

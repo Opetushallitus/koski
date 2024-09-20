@@ -15,6 +15,7 @@ import {
   SelectOption,
   perusteToOption
 } from '../components-v2/controls/Select'
+import { PropsWithOnlyChildren } from '../util/react'
 
 export type Peruste = Omit<
   Koodistokoodiviite<string, string>,
@@ -88,7 +89,7 @@ const PerusteContext = React.createContext<PerusteContextValue>({
   loadPerusteet: () => {}
 })
 
-export type PerusteProviderProps = React.PropsWithChildren<{}>
+export type PerusteProviderProps = PropsWithOnlyChildren
 
 export type PerusteRecord = Record<string, Peruste[] | typeof Loading>
 

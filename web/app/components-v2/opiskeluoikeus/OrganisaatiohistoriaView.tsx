@@ -1,14 +1,15 @@
 import React from 'react'
+import { useTestId } from '../../appstate/useTestId'
 import { t } from '../../i18n/i18n'
 import { OpiskeluoikeudenOrganisaatiohistoria } from '../../types/fi/oph/koski/schema/OpiskeluoikeudenOrganisaatiohistoria'
+import { EmptyObject } from '../../util/objects'
 import { CommonProps } from '../CommonProps'
-import { KeyValueTable, KeyValueRow } from '../containers/KeyValueTable'
+import { KeyValueRow, KeyValueTable } from '../containers/KeyValueTable'
 import { FieldEditorProps } from '../forms/FormField'
 import { Spacer } from '../layout/Spacer'
-import { useTestId } from '../../appstate/useTestId'
 
 export type OrganisaatiohistoriaViewProps = CommonProps<
-  FieldEditorProps<OpiskeluoikeudenOrganisaatiohistoria[], {}>
+  FieldEditorProps<OpiskeluoikeudenOrganisaatiohistoria[], EmptyObject>
 >
 
 export const OrganisaatiohistoriaView: React.FC<

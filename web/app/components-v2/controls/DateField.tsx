@@ -1,5 +1,6 @@
-import React, { useEffect, useCallback, useMemo, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import DayPickerInput, { DateUtils } from 'react-day-picker'
+import { useTestId } from '../../appstate/useTestId'
 import {
   formatFinnishDate,
   formatISODate,
@@ -7,6 +8,7 @@ import {
   parseFinnishDate
 } from '../../date/date'
 import { t } from '../../i18n/i18n'
+import { EmptyObject } from '../../util/objects'
 import { common, CommonProps, cx } from '../CommonProps'
 import {
   PositionalPopup,
@@ -15,11 +17,10 @@ import {
 import { FieldErrors } from '../forms/FieldErrors'
 import { FieldEditorProps, FieldViewerProps } from '../forms/FormField'
 import { IconButton } from './IconButton'
-import { useTestId } from '../../appstate/useTestId'
 
 // Date viewer
 
-export type DateViewProps = CommonProps<FieldViewerProps<string, {}>>
+export type DateViewProps = CommonProps<FieldViewerProps<string, EmptyObject>>
 
 export const DateView: React.FC<DateViewProps> = (props) => {
   const testId = useTestId('date.value')

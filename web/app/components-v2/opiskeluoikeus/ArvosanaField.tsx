@@ -1,13 +1,15 @@
 import React, { useMemo } from 'react'
 import { useSchema } from '../../appstate/constraints'
 import { useKoodistoOfConstraint } from '../../appstate/koodisto'
+import { TestIdText } from '../../appstate/useTestId'
 import { t } from '../../i18n/i18n'
 import { Arviointi } from '../../types/fi/oph/koski/schema/Arviointi'
 import { parasArviointi, parasArviointiIndex } from '../../util/arvioinnit'
 import * as C from '../../util/constraints'
 import { koodiviiteId } from '../../util/koodisto'
+import { EmptyObject } from '../../util/objects'
 import { schemaClassName } from '../../util/types'
-import { CommonProps, common } from '../CommonProps'
+import { CommonProps } from '../CommonProps'
 import {
   OptionList,
   Select,
@@ -15,12 +17,11 @@ import {
   groupKoodistoToOptions
 } from '../controls/Select'
 import { FieldEditorProps, FieldViewerProps } from '../forms/FormField'
-import { TestIdLayer, TestIdText } from '../../appstate/useTestId'
 
 type ArvosanaOf<T extends Arviointi> = T['arvosana']
 
 export type ArvosanaViewProps<T extends Arviointi> = CommonProps<
-  FieldViewerProps<T | undefined, {}>
+  FieldViewerProps<T | undefined, EmptyObject>
 >
 
 export const ArvosanaView = <T extends Arviointi>(
@@ -34,7 +35,7 @@ export const ArvosanaView = <T extends Arviointi>(
 }
 
 export type ParasArvosanaViewProps<T extends Arviointi> = CommonProps<
-  FieldViewerProps<T[] | undefined, {}>
+  FieldViewerProps<T[] | undefined, EmptyObject>
 >
 
 export const ParasArvosanaView = <T extends Arviointi>(
@@ -45,7 +46,7 @@ export const ParasArvosanaView = <T extends Arviointi>(
 }
 
 export type ArvosanaEditProps<T extends Arviointi> = CommonProps<
-  FieldEditorProps<T | undefined, {}>
+  FieldEditorProps<T | undefined, EmptyObject>
 > & {
   createArviointi: (arvosana: ArvosanaOf<T>) => T
   disabled?: boolean
@@ -93,7 +94,7 @@ export const ArvosanaEdit = <T extends Arviointi>(
 }
 
 export type ParasArvosanaEditProps<T extends Arviointi> = CommonProps<
-  FieldEditorProps<T[] | undefined, {}>
+  FieldEditorProps<T[] | undefined, EmptyObject>
 > & {
   createArviointi: (arvosana: ArvosanaOf<T>) => T
 }

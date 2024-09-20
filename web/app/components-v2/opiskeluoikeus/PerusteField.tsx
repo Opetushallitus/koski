@@ -1,10 +1,4 @@
 import React from 'react'
-import { usePeruste } from '../../appstate/peruste'
-import { t } from '../../i18n/i18n'
-import { CommonProps } from '../CommonProps'
-import { OptionList, Select } from '../controls/Select'
-import { FieldEditorProps, FieldViewerProps } from '../forms/FormField'
-import { TestIdText } from '../../appstate/useTestId'
 import {
   mapError,
   mapInitial,
@@ -12,11 +6,18 @@ import {
   mapSuccess,
   useApiWithParams
 } from '../../api-fetch'
-import { fetchPerustelinkki, Perustelinkki } from '../../util/koskiApi'
-import { Trans } from '../texts/Trans'
+import { usePeruste } from '../../appstate/peruste'
 import { useTree } from '../../appstate/tree'
+import { TestIdText } from '../../appstate/useTestId'
+import { t } from '../../i18n/i18n'
+import { fetchPerustelinkki, Perustelinkki } from '../../util/koskiApi'
+import { EmptyObject } from '../../util/objects'
+import { CommonProps } from '../CommonProps'
+import { OptionList, Select } from '../controls/Select'
+import { FieldEditorProps, FieldViewerProps } from '../forms/FormField'
+import { Trans } from '../texts/Trans'
 
-type PerusteViewProps = CommonProps<FieldViewerProps<string | undefined, {}>>
+type PerusteViewProps = CommonProps<FieldViewerProps<string | undefined, EmptyObject>>
 
 export const PerusteView: React.FC<PerusteViewProps> = (props) => {
   const { TreeNode, ...tree } = useTree()

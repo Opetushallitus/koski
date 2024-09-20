@@ -3,8 +3,9 @@ import { useBaconProperty } from '../util/hooks'
 import { userP } from '../util/user'
 import { GlobalErrorProvider } from './globalErrors'
 import { UserProvider } from './user'
+import { PropsWithOnlyChildren } from '../util/react'
 
-export type OmatTiedotAppStateProviderProps = React.PropsWithChildren<{}>
+export type OmatTiedotAppStateProviderProps = PropsWithOnlyChildren
 
 export const OmatTiedotAppStateProvider: React.FC<
   OmatTiedotAppStateProviderProps

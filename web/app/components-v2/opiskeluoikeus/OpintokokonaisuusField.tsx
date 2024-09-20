@@ -1,17 +1,18 @@
 import React from 'react'
 import {
-  useKoodisto,
-  KoodistokoodiviiteKoodistonNimellä
+  KoodistokoodiviiteKoodistonNimellä,
+  useKoodisto
 } from '../../appstate/koodisto'
+import { useTestId } from '../../appstate/useTestId'
 import { t } from '../../i18n/i18n'
 import { Koodistokoodiviite } from '../../types/fi/oph/koski/schema/Koodistokoodiviite'
+import { EmptyObject } from '../../util/objects'
 import { CommonProps } from '../CommonProps'
 import { OptionList, Select } from '../controls/Select'
-import { FieldViewerProps, FieldEditorProps } from '../forms/FormField'
-import { useTestId } from '../../appstate/useTestId'
+import { FieldEditorProps, FieldViewerProps } from '../forms/FormField'
 
 type OpintokokonaisuusViewProps = CommonProps<
-  FieldViewerProps<Koodistokoodiviite<'opintokokonaisuudet', string>, {}>
+  FieldViewerProps<Koodistokoodiviite<'opintokokonaisuudet', string>, EmptyObject>
 >
 
 export const OpintokokonaisuusView: React.FC<OpintokokonaisuusViewProps> = (
@@ -34,7 +35,7 @@ export const OpintokokonaisuusView: React.FC<OpintokokonaisuusViewProps> = (
 }
 
 type OpintokokonaisuusEditProps = CommonProps<
-  FieldEditorProps<Koodistokoodiviite<'opintokokonaisuudet', string>, {}>
+  FieldEditorProps<Koodistokoodiviite<'opintokokonaisuudet', string>, EmptyObject>
 >
 
 export const OpintokokonaisuusEdit: React.FC<OpintokokonaisuusEditProps> = (

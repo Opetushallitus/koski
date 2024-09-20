@@ -20,6 +20,7 @@ import { Opiskeluoikeusjakso } from '../../types/fi/oph/koski/schema/Opiskeluoik
 import { isTutkintokoulutukseenValmentavanOpiskeluoikeusjakso } from '../../types/fi/oph/koski/schema/TutkintokoulutukseenValmentavanOpiskeluoikeusjakso'
 import { isVapaanSivistystyönJotpaKoulutuksenOpiskeluoikeusjakso } from '../../types/fi/oph/koski/schema/VapaanSivistystyonJotpaKoulutuksenOpiskeluoikeusjakso'
 import { isVapaanSivistystyönOpiskeluoikeusjakso } from '../../types/fi/oph/koski/schema/VapaanSivistystyonOpiskeluoikeusjakso'
+import { EmptyObject } from '../../util/objects'
 import { isTerminaalitila } from '../../util/opiskeluoikeus'
 import {
   OpiskeluoikeusjaksoOf,
@@ -66,7 +67,7 @@ function isRahoituksellinenOpiskeluoikeusjakso(
 // Opiskeluoikeuden tila viewer
 
 export type OpiskeluoikeudenTilaViewProps<T extends OpiskeluoikeudenTila> =
-  CommonProps<FieldViewerProps<T, {}>>
+  CommonProps<FieldViewerProps<T, EmptyObject>>
 
 export const OpiskeluoikeudenTilaView = <T extends OpiskeluoikeudenTila>(
   props: OpiskeluoikeudenTilaViewProps<T>

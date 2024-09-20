@@ -1,4 +1,5 @@
 import React, { useCallback, useMemo, useState } from 'react'
+import { PropsWithOnlyChildren } from '../util/react'
 
 export type GlobalErrorContext = {
   // Lista virheistä
@@ -30,7 +31,7 @@ const GlobalErrorContext = React.createContext<GlobalErrorContext>({
   clearAll: () => {}
 })
 
-export const GlobalErrorProvider: React.FC<React.PropsWithChildren<{}>> = (
+export const GlobalErrorProvider: React.FC<PropsWithOnlyChildren> = (
   props
 ) => {
   const [errors, setErrors] = useState<GlobalError[]>([])
