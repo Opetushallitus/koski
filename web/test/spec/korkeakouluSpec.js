@@ -74,6 +74,14 @@ describe('Korkeakoulutus', function () {
     })
   })
 
+  describe('Passivoitu-tila', function () {
+    before(page.openPage, page.oppijaHaku.searchAndSelect('250668-293Y'))
+    it('ei tulkita keskeneräiseksi suoritukseksi', function () {
+      const lastOo = S('.opiskeluoikeus').last()
+      expect(lastOo.find('.suoritukset .tila-vahvistus').length).to.equal(0)
+    })
+  })
+
   describe('AMK, keskeyttänyt', function () {
     before(page.openPage, page.oppijaHaku.searchAndSelect('170691-3962'))
     describe('Oppilaitos ja tutkinto', function () {
