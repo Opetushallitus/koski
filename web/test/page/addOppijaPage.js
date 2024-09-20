@@ -636,13 +636,13 @@ function AddOppijaPage() {
       }
       return click(button)()
     },
-    submitModal: function () {
-      eventually(() => {
+    submitModal: async function () {
+      await eventually(() => {
         if (!api.isModalButtonEnabled()) {
           throw new Error('Button not enabled')
         }
-      })
-      return click(modalButton)()
+      })()
+      await click(modalButton)()
     },
     submitAndExpectSuccess: function (oppija, tutkinto) {
       tutkinto = tutkinto || 'Autoalan perustutkinto'
@@ -776,7 +776,10 @@ function Select(testId, base) {
   const baseElem = () => base()[0]
   const input = () => Page(findByTestId(testId, baseElem())).getInput('input')
   const findByTestId = (id, baseE) => {
-    const elem = baseE && $(baseE.querySelector(`[data-testid="${id}"]`))
+    if (!baseE) {
+      throw new Error('Base element does not exist on dom')
+    }
+    const elem = $(baseE.querySelector(`[data-testid="${id}"]`))
     if (!elem) {
       throw new Error(`Test id "${id}" does not exist on dom`)
     }
