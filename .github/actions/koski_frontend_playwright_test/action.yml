@@ -21,7 +21,7 @@ runs:
         PLAYWRIGHT_SHARD_INDEX: ${{inputs.shardIndex}}
         PLAYWRIGHT_SHARD_TOTAL: ${{inputs.shardTotal}}
         PLAYWRIGHT_HTML_REPORT: koski-playwright-report-${{inputs.shardIndex}}-of-${{inputs.shardTotal}}
-      uses: nick-fields/retry@v2
+      uses: nick-fields/retry@v3
       with:
         max_attempts: 2
         timeout_minutes: 45

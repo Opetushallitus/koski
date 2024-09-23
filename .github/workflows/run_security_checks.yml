@@ -48,7 +48,7 @@ jobs:
 
       - name: Run owasp
         id: owasp
-        uses: nick-fields/retry@v2
+        uses: nick-fields/retry@v3
         with:
           max_attempts: 5
           # max_attempts: 5

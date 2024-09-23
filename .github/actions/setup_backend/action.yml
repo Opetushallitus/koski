@@ -42,7 +42,7 @@ runs:
       shell: bash
 
     - name: Compile tests
-      uses: nick-fields/retry@v2
+      uses: nick-fields/retry@v3
       with:
         max_attempts: 1
         timeout_minutes: 20

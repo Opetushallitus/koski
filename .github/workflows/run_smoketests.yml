@@ -17,7 +17,7 @@ jobs:
           node-version: "18.20.4"
 
       - name: Install dependencies
-        uses: nick-fields/retry@v2
+        uses: nick-fields/retry@v3
         with:
           max_attempts: 5
           timeout_minutes: 5
