@@ -4,7 +4,7 @@
   "description": "Valpas",
   "license": "EUPL-1.1",
   "engines": {
-    "node": "18.20.4",
+    "node": "20.17.0",
     "npm": "9||10"
   },
   "scripts": {
