@@ -18,7 +18,7 @@
     "baret": "^1.2.0",
     "classnames": "^2.5.1",
     "codemirror": "^5.65.17",
-    "core-js": "^3.37.1",
+    "core-js": "^3.38.0",
     "downloadjs": "^1.4.7",
     "element-closest": "^3.0.2",
     "es6-promise": "^4.2.8",
