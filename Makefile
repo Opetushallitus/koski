@@ -42,7 +42,7 @@ build-snapshot-image: build
 
 .PHONY: front
 front: logdir
-	cd web && npm ci && npm run build:prod
+	cd web && npm ci --only=dev && npm ci --only=prod && npm run build:prod
 
 .PHONY: watch
 watch:

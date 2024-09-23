@@ -417,13 +417,23 @@
             </configuration>
           </execution>
           <execution>
-            <id>koski - npm ci</id>
+            <id>koski - npm ci (dev dependencies)</id>
             <goals>
               <goal>npm</goal>
             </goals>
             <configuration>
               <workingDirectory>web</workingDirectory>
-              <arguments>ci</arguments>
+              <arguments>ci --only=dev</arguments>
+            </configuration>
+          </execution>
+          <execution>
+            <id>koski - npm ci (prod dependencies)</id>
+            <goals>
+              <goal>npm</goal>
+            </goals>
+            <configuration>
+              <workingDirectory>web</workingDirectory>
+              <arguments>ci --only=prod</arguments>
             </configuration>
           </execution>
           <execution>
