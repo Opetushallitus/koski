@@ -1,11 +1,11 @@
-import React, { useEffect, useCallback, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
+import { useTestId } from '../../appstate/useTestId'
+import { EmptyObject } from '../../types/EditorModels'
 import { common, CommonProps, cx } from '../CommonProps'
 import { FieldErrors } from '../forms/FieldErrors'
 import { FieldEditorProps, FieldViewerProps } from '../forms/FormField'
-import { useTestId } from '../../appstate/useTestId'
 
-// eslint-disable-next-line @typescript-eslint/ban-types
-export type TextViewProps = CommonProps<FieldViewerProps<string, {}>>
+export type TextViewProps = CommonProps<FieldViewerProps<string, EmptyObject>>
 
 export const TextView: React.FC<TextViewProps> = (props) => (
   <div {...common(props, ['TextView'])}>{props.value}</div>

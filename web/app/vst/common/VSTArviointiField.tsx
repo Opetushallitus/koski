@@ -13,9 +13,10 @@ import { OsasuoritusSubproperty } from '../../components-v2/opiskeluoikeus/Osasu
 import { ArvosanaOf } from '../../util/schema'
 import { isVSTArviointiPäivällä, isVSTSuoritusArvioinnilla } from './arviointi'
 import { VSTArviointi, VSTSuoritusArvioinnilla } from './types'
+import { EmptyObject } from '../../util/objects'
 
 export type VSTArviointiViewProps = CommonProps<
-  FieldViewerProps<VSTArviointi, {}>
+  FieldViewerProps<VSTArviointi, EmptyObject>
 >
 
 export const VSTArviointiView = (props: VSTArviointiViewProps) => {

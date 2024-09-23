@@ -12,6 +12,7 @@ import { FieldErrors } from '../forms/FieldErrors'
 import { FieldEditorProps, FieldViewerProps } from '../forms/FormField'
 import { nonNull } from '../../util/fp/arrays'
 import { TestIdLayer, TestIdText, useTestId } from '../../appstate/useTestId'
+import { EmptyObject } from '../../util/objects'
 
 /* ---------------------------------------------------------------------
  *
@@ -20,7 +21,7 @@ import { TestIdLayer, TestIdText, useTestId } from '../../appstate/useTestId'
  * ---------------------------------------------------------------------
  */
 
-export type LaajuusViewProps = CommonProps<FieldViewerProps<Laajuus, {}>>
+export type LaajuusViewProps = CommonProps<FieldViewerProps<Laajuus, EmptyObject>>
 
 export const LaajuusView = (props: LaajuusViewProps) => {
   return (
@@ -86,7 +87,7 @@ export const LaajuusEdit = <T extends Laajuus>(props: LaajuusEditProps<T>) => {
  */
 
 export type DefaultLaajuusEditProps<T extends Laajuus> = CommonProps<
-  FieldEditorProps<T, {}>
+  FieldEditorProps<T, EmptyObject>
 >
 
 export const LaajuusOpintopisteissäEdit: React.FC<

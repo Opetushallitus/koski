@@ -1,4 +1,5 @@
 import React, { useCallback, useMemo, useState } from 'react'
+import { TestIdLayer, TestIdText } from '../../appstate/useTestId'
 import { ISO2FinnishDate } from '../../date/date'
 import { t } from '../../i18n/i18n'
 import { HenkilövahvistusValinnaisellaTittelilläJaValinnaisellaPaikkakunnalla } from '../../types/fi/oph/koski/schema/HenkilovahvistusValinnaisellaTittelillaJaValinnaisellaPaikkakunnalla'
@@ -7,6 +8,7 @@ import { Opiskeluoikeus } from '../../types/fi/oph/koski/schema/Opiskeluoikeus'
 import { Oppilaitos } from '../../types/fi/oph/koski/schema/Oppilaitos'
 import { Organisaatio } from '../../types/fi/oph/koski/schema/Organisaatio'
 import { Vahvistus } from '../../types/fi/oph/koski/schema/Vahvistus'
+import { EmptyObject } from '../../util/objects'
 import {
   PäätasonSuoritusOf,
   isValmistuvaTerminaalitila
@@ -27,7 +29,6 @@ import {
 import { FormModel, FormOptic } from '../forms/FormModel'
 import { Trans } from '../texts/Trans'
 import { SuorituksenVahvistusModal } from './SuorituksenVahvistusModal'
-import { TestIdLayer, TestIdText } from '../../appstate/useTestId'
 
 // Suorituksen vahvitus field
 
@@ -73,7 +74,7 @@ export const SuorituksenVahvistusField = <
 // Suorituksen vahvitus viewer
 
 export type SuorituksenVahvistusViewProps<T extends Vahvistus> = CommonProps<
-  FieldViewerProps<T | undefined, {}>
+  FieldViewerProps<T | undefined, EmptyObject>
 >
 
 export const SuorituksenVahvistusView = <T extends Vahvistus>({

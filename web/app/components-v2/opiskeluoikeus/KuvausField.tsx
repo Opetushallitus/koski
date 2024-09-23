@@ -9,6 +9,7 @@ import { StorablePreference } from '../../types/fi/oph/koski/schema/StorablePref
 import { CommonProps, common } from '../CommonProps'
 import { FieldErrors } from '../forms/FieldErrors'
 import { FieldEditorProps } from '../forms/FormField'
+import { EmptyObject } from '../../util/objects'
 
 export type KuvailtuPaikallinenKoulutusmoduuli = Extract<
   PaikallinenKoulutusmoduuli,
@@ -16,7 +17,7 @@ export type KuvailtuPaikallinenKoulutusmoduuli = Extract<
 >
 
 export type KuvausViewProps<T extends KuvailtuPaikallinenKoulutusmoduuli> =
-  CommonProps<FieldEditorProps<T, {}>>
+  CommonProps<FieldEditorProps<T, EmptyObject>>
 
 export const KuvausView = <T extends KuvailtuPaikallinenKoulutusmoduuli>(
   props: KuvausViewProps<T>
@@ -27,7 +28,7 @@ export const KuvausView = <T extends KuvailtuPaikallinenKoulutusmoduuli>(
 )
 
 export type KuvausEditProps<T extends KuvailtuPaikallinenKoulutusmoduuli> =
-  CommonProps<FieldEditorProps<T, {}>>
+  CommonProps<FieldEditorProps<T, EmptyObject>>
 
 export const KuvausEdit = <T extends KuvailtuPaikallinenKoulutusmoduuli>({
   onChange,

@@ -11,6 +11,7 @@ import {
 } from '../util/koskiApi'
 import { useDebounce } from '../util/useDebounce'
 import { nonNull } from '../util/fp/arrays'
+import { PropsWithOnlyChildren } from '../util/react'
 
 /**
  * Palauttaa käyttäjälle organisaatiohierarkian.
@@ -148,9 +149,9 @@ const OrganisaatioHierarkiaContext =
     searchQueries: {}
   })
 
-export const OrganisaatioHierarkiaProvider: React.FC<
-  React.PropsWithChildren<{}>
-> = (props) => {
+export const OrganisaatioHierarkiaProvider: React.FC<PropsWithOnlyChildren> = (
+  props
+) => {
   const [queries, setQueries] = useState<
     Record<string, OrganisaatioHierarkia[]>
   >({})

@@ -4,6 +4,7 @@ import { TestIdText } from '../../appstate/useTestId'
 import { t } from '../../i18n/i18n'
 import { VSTKehittyvänKielenTaitotasonArviointi } from '../../types/fi/oph/koski/schema/VSTKehittyvanKielenTaitotasonArviointi'
 import { koodiviiteId, KoodiviiteWithOptionalUri } from '../../util/koodisto'
+import { EmptyObject } from '../../util/objects'
 import { CommonProps } from '../CommonProps'
 import {
   groupKoodistoToOptions,
@@ -20,7 +21,7 @@ type TaitotasoOf<T extends VSTKehittyvänKielenTaitotasonArviointi> = Exclude<
 
 export type KehittyvänKielenTaitotasoViewProps<
   T extends VSTKehittyvänKielenTaitotasonArviointi
-> = CommonProps<FieldViewerProps<T | undefined, {}>>
+> = CommonProps<FieldViewerProps<T | undefined, EmptyObject>>
 
 export const KehittyvänKielenTaitotasoView = <
   T extends VSTKehittyvänKielenTaitotasonArviointi
@@ -36,7 +37,7 @@ export const KehittyvänKielenTaitotasoView = <
 
 export type KehittyvänKielenTaitotasoEditProps<
   T extends VSTKehittyvänKielenTaitotasonArviointi
-> = CommonProps<FieldEditorProps<T | undefined, {}>>
+> = CommonProps<FieldEditorProps<T | undefined, EmptyObject>>
 
 export const KehittyvänKielenTaitotasoEdit = <
   T extends VSTKehittyvänKielenTaitotasonArviointi

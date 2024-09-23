@@ -1,12 +1,13 @@
-import React, { useCallback, useState } from 'react'
+import React, { useCallback } from 'react'
+import { TestIdText, useTestId } from '../../appstate/useTestId'
 import { Finnish, isFinnish } from '../../types/fi/oph/koski/schema/Finnish'
 import { LocalizedString } from '../../types/fi/oph/koski/schema/LocalizedString'
+import { EmptyObject } from '../../util/objects'
 import { common, CommonProps } from '../CommonProps'
 import { FieldEditorProps } from '../forms/FormField'
-import { TestIdText, useTestId } from '../../appstate/useTestId'
 
 export type TodistuksellaNäkyvätLisätiedotViewProps = CommonProps<
-  FieldEditorProps<LocalizedString, {}>
+  FieldEditorProps<LocalizedString, EmptyObject>
 >
 
 export const TodistuksellaNäkyvätLisätiedotView: React.FC<
@@ -20,7 +21,7 @@ export const TodistuksellaNäkyvätLisätiedotView: React.FC<
 }
 
 export type TodistuksellaNäkyvätLisätiedotEditProps = CommonProps<
-  FieldEditorProps<LocalizedString, {}>
+  FieldEditorProps<LocalizedString, EmptyObject>
 >
 
 export const TodistuksellaNäkyvätLisätiedotEdit: React.FC<

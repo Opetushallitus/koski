@@ -11,6 +11,7 @@ import React, {
 import { Constraint } from '../types/fi/oph/koski/typemodel/Constraint'
 import { fetchConstraint } from '../util/koskiApi'
 import { ClassOf, ObjWithClass, schemaClassName } from '../util/types'
+import { PropsWithOnlyChildren } from '../util/react'
 
 /*
  * CONSTRAINTS
@@ -193,7 +194,7 @@ const ConstraintsContext = React.createContext<ConstraintsContextValue>({
   loadConstraint: () => {}
 })
 
-export type ConstraintsProviderProps = React.PropsWithChildren<{}>
+export type ConstraintsProviderProps = PropsWithOnlyChildren
 
 class ConstraintsLoader {
   constraints: ConstraintsRecord = {}

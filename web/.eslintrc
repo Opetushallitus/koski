@@ -43,7 +43,9 @@
     "react/display-name": "off", // default exportit komponenteissa
     "react/jsx-key": "off", // Bacon.js React VDOM, TODO: Vaihda --> "warn"
     "react/no-string-refs": "off", // TODO: Vaihda --> "warn"
-    "prettier/prettier": ["warn"],
+    "prettier/prettier": [
+      "warn"
+    ],
     "array-callback-return": "off", // Bacon.js flatmap
     "react/no-render-return-value": "off", // Bacon.js React VDOM
     "prefer-regex-literals": "off", // Heitetään varoitus, TODO: Vaihda --> "warn"
@@ -56,11 +58,15 @@
     "@typescript-eslint/ban-ts-comment": "off", // TODO: Poista sääntö
     "@typescript-eslint/no-empty-function": "off",
     "@typescript-eslint/no-unnecessary-type-constraint": "warn", // TODO: Poista sääntö
-    "@typescript-eslint/ban-types": "off" // TODO: Poista sääntö,
+    "@typescript-eslint/ban-types": "off", // TODO: Poista sääntö,
+    "@typescript-eslint/no-unused-expressions": "off"
   },
   "overrides": [
     {
-      "files": ["*.ts", "*.tsx"],
+      "files": [
+        "*.ts",
+        "*.tsx"
+      ],
       "rules": {
         "no-undef": "off" // Tätä ei tarvita ts-filuille, koska Typescript pitää näistä huolen paremmin
       }
@@ -78,5 +84,10 @@
     "plugin:@typescript-eslint/recommended",
     "prettier"
   ],
-  "plugins": ["react", "prettier", "mocha", "@typescript-eslint"]
+  "plugins": [
+    "react",
+    "prettier",
+    "mocha",
+    "@typescript-eslint"
+  ]
 }

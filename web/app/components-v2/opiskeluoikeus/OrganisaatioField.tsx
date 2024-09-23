@@ -3,18 +3,19 @@ import {
   useHasOwnOrganisaatiot,
   useOrganisaatioHierarkia
 } from '../../appstate/organisaatioHierarkia'
+import { TestIdText } from '../../appstate/useTestId'
 import { localize, t } from '../../i18n/i18n'
 import { OrganisaatioHierarkia } from '../../types/fi/oph/koski/organisaatio/OrganisaatioHierarkia'
 import { isKoulutustoimija } from '../../types/fi/oph/koski/schema/Koulutustoimija'
 import { Organisaatio } from '../../types/fi/oph/koski/schema/Organisaatio'
+import { EmptyObject } from '../../util/objects'
 import { getOrganisaatioId, toOrganisaatio } from '../../util/organisaatiot'
 import { common, CommonProps } from '../CommonProps'
 import { OptionList, Select, SelectOption } from '../controls/Select'
 import { FieldEditorProps, FieldViewerProps } from '../forms/FormField'
-import { TestIdText } from '../../appstate/useTestId'
 
 export type OrganisaatioViewProps<T extends Organisaatio> = CommonProps<
-  FieldViewerProps<T, {}>
+  FieldViewerProps<T, EmptyObject>
 >
 
 export const OrganisaatioView = <T extends Organisaatio>(

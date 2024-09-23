@@ -33,7 +33,7 @@ jobs:
       - name: Setup Node 16
         uses: actions/setup-node@v3
         with:
-          node-version: "18.18.0"
+          node-version: "18.20.4"
 
       - name: Cache Maven packages
         uses: actions/cache@v3
@@ -85,7 +85,7 @@ jobs:
       - name: Setup Node 16
         uses: actions/setup-node@v3
         with:
-          node-version: "18.18.0"
+          node-version: "18.20.4"
 
       - name: Cache Maven packages
         uses: actions/cache@v3
@@ -137,7 +137,7 @@ jobs:
       - name: Setup Node 16
         uses: actions/setup-node@v3
         with:
-          node-version: "18.18.0"
+          node-version: "18.20.4"
 
       - name: Cache Maven packages
         uses: actions/cache@v3
@@ -189,7 +189,7 @@ jobs:
       - name: Setup Node 16
         uses: actions/setup-node@v3
         with:
-          node-version: "18.18.0"
+          node-version: "18.20.4"
 
       - name: Cache Maven packages
         uses: actions/cache@v3
@@ -245,7 +245,7 @@ jobs:
       - name: Setup Node 16
         uses: actions/setup-node@v3
         with:
-          node-version: "18.18.0"
+          node-version: "18.20.4"
 
       - name: Cache Maven packages
         uses: actions/cache@v3

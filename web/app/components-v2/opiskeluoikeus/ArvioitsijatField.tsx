@@ -12,9 +12,10 @@ import { FieldEditorProps, FieldViewerProps } from '../forms/FormField'
 import { narrowErrorsToLeaf } from '../forms/validator'
 import { TestIdLayer, useTestId } from '../../appstate/useTestId'
 import { t } from '../../i18n/i18n'
+import { EmptyObject } from '../../util/objects'
 
 export type ArvioitsijatViewProps = CommonProps<
-  FieldViewerProps<Arvioitsija[] | undefined, {}>
+  FieldViewerProps<Arvioitsija[] | undefined, EmptyObject>
 >
 
 export const ArvioitsijatView: React.FC<ArvioitsijatViewProps> = (props) => {
@@ -33,7 +34,7 @@ export const ArvioitsijatView: React.FC<ArvioitsijatViewProps> = (props) => {
 }
 
 export type ArvioitsijatEditProps = CommonProps<
-  FieldEditorProps<Arvioitsija[] | undefined, {}>
+  FieldEditorProps<Arvioitsija[] | undefined, EmptyObject>
 >
 
 export const ArvioitsijatEdit: React.FC<ArvioitsijatEditProps> = (props) => {

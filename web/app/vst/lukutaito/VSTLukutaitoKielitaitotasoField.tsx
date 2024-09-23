@@ -19,6 +19,7 @@ import { LukutaitokoulutuksenArviointi } from '../../types/fi/oph/koski/schema/L
 import { VapaanSivistystyönLukutaitokoulutuksenKokonaisuudenSuoritus } from '../../types/fi/oph/koski/schema/VapaanSivistystyonLukutaitokoulutuksenKokonaisuudenSuoritus'
 import { VSTPropertyFieldProps } from '../common/propertyFields'
 import { VSTOsasuoritus } from '../common/types'
+import { EmptyObject } from '../../util/objects'
 
 export const VSTLukutaitoKielitaitotasoProperty = (
   props: VSTPropertyFieldProps<VapaanSivistystyönLukutaitokoulutuksenKokonaisuudenSuoritus>
@@ -42,7 +43,7 @@ export const VSTLukutaitoKielitaitotasoProperty = (
 }
 
 export type VSTLukutaitoKielitaitotasoViewProps = CommonProps<
-  FieldViewerProps<LukutaitokoulutuksenArviointi, {}>
+  FieldViewerProps<LukutaitokoulutuksenArviointi, EmptyObject>
 >
 
 export const VSTLukutaitoKielitaitotasoView = (

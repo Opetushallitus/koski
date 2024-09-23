@@ -22,6 +22,7 @@ import { fetchKoodistot } from '../util/koskiApi'
 import * as Ord from 'fp-ts/Ord'
 import { t } from '../i18n/i18n'
 import { unbox } from '../util/constraints'
+import { PropsWithOnlyChildren } from '../util/react'
 
 /**
  * Palauttaa annetun koodiston koodiarvot. Jos koodiarvot-argumentti on annettu,
@@ -158,7 +159,7 @@ const KoodistoContext = React.createContext<KoodistoContextValue>({
   loadKoodistot: () => {}
 })
 
-export type KoodistoProviderProps = React.PropsWithChildren<{}>
+export type KoodistoProviderProps = PropsWithOnlyChildren
 
 export type KoodistoRecord = {
   [URI in string]: KoodistokoodiviiteKoodistonNimellä<URI>[] | typeof Loading

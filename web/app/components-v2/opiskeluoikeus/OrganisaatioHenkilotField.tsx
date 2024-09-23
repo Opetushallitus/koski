@@ -3,6 +3,7 @@ import * as A from 'fp-ts/Array'
 import { pipe } from 'fp-ts/lib/function'
 import * as O from 'fp-ts/Option'
 import React, { useCallback, useMemo, useState } from 'react'
+import { TestIdLayer, TestIdText, useTestId } from '../../appstate/useTestId'
 import { localize, t } from '../../i18n/i18n'
 import { Organisaatio } from '../../types/fi/oph/koski/schema/Organisaatio'
 import { OrganisaatiohenkilöValinnaisellaTittelillä } from '../../types/fi/oph/koski/schema/OrganisaatiohenkiloValinnaisellaTittelilla'
@@ -11,6 +12,7 @@ import {
   castOrganisaatiohenkilö,
   OrganisaatiohenkilöEq
 } from '../../util/henkilo'
+import { EmptyObject } from '../../util/objects'
 import { ClassOf } from '../../util/types'
 import { common, CommonProps } from '../CommonProps'
 import { MultiField } from '../containers/MultiField'
@@ -20,12 +22,11 @@ import { TextEdit } from '../controls/TextField'
 import { FieldEditorProps, FieldViewerProps } from '../forms/FormField'
 import { narrowErrorsToLeaf } from '../forms/validator'
 import { CHARCODE_ADD, IconLabel } from '../texts/Icon'
-import { TestIdLayer, TestIdText, useTestId } from '../../appstate/useTestId'
 
 // Organisaatiohenkilö viewer
 
 export type OrganisaatioHenkilötViewProps<T extends AnyOrganisaatiohenkilö> =
-  CommonProps<FieldViewerProps<T[] | undefined, {}>>
+  CommonProps<FieldViewerProps<T[] | undefined, EmptyObject>>
 
 export const OrganisaatioHenkilötView = <T extends AnyOrganisaatiohenkilö>(
   props: OrganisaatioHenkilötViewProps<T>

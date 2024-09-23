@@ -1,8 +1,10 @@
 import React, { useCallback, useMemo } from 'react'
 import { useKoodisto } from '../../appstate/koodisto'
+import { TestIdText } from '../../appstate/useTestId'
 import { t } from '../../i18n/i18n'
 import { Koodistokoodiviite } from '../../types/fi/oph/koski/schema/Koodistokoodiviite'
 import { koodiviiteId } from '../../util/koodisto'
+import { EmptyObject } from '../../util/objects'
 import { common, CommonProps } from '../CommonProps'
 import {
   groupKoodistoToOptions,
@@ -10,11 +12,10 @@ import {
   SelectOption
 } from '../controls/Select'
 import { FieldEditorProps, FieldViewerProps } from '../forms/FormField'
-import { TestIdText } from '../../appstate/useTestId'
 
 export type Kuntakoodiviite = Koodistokoodiviite<'kunta'>
 
-export type KuntaViewProps = CommonProps<FieldViewerProps<Kuntakoodiviite, {}>>
+export type KuntaViewProps = CommonProps<FieldViewerProps<Kuntakoodiviite, EmptyObject>>
 
 export const KuntaView: React.FC<KuntaViewProps> = (props) => (
   <TestIdText {...common(props, ['KuntaView'])} id="kunta.value">
@@ -22,7 +23,7 @@ export const KuntaView: React.FC<KuntaViewProps> = (props) => (
   </TestIdText>
 )
 
-export type KuntaEditProps = CommonProps<FieldEditorProps<Kuntakoodiviite, {}>>
+export type KuntaEditProps = CommonProps<FieldEditorProps<Kuntakoodiviite, EmptyObject>>
 
 export const KuntaEdit: React.FC<KuntaEditProps> = (props) => {
   const kunnat = useKoodisto('kunta')

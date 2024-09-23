@@ -1,14 +1,13 @@
 import React, { useCallback, useContext } from 'react'
+import { OpiskeluoikeusContext } from '../../appstate/opiskeluoikeus'
+import { classPreferenceName, usePreferences } from '../../appstate/preferences'
+import { Laajuus } from '../../types/fi/oph/koski/schema/Laajuus'
 import { PaikallinenKoulutusmoduuli } from '../../types/fi/oph/koski/schema/PaikallinenKoulutusmoduuli'
+import { StorablePreference } from '../../types/fi/oph/koski/schema/StorablePreference'
+import { EmptyObject } from '../../util/objects'
 import { CommonProps } from '../CommonProps'
 import { FieldEditorProps, FieldViewerProps } from '../forms/FormField'
 import { LaajuusEdit, LaajuusView } from './LaajuusField'
-import { Laajuus } from '../../types/fi/oph/koski/schema/Laajuus'
-import { OpiskeluoikeusContext } from '../../appstate/opiskeluoikeus'
-import { classPreferenceName, usePreferences } from '../../appstate/preferences'
-import { StorablePreference } from '../../types/fi/oph/koski/schema/StorablePreference'
-import { ClassOf } from '../../util/types'
-import { nonNullable } from '../../vst/common/types'
 
 export type PaikallinenKoulutusmoduuliLaajuudella = Extract<
   PaikallinenKoulutusmoduuli,
@@ -17,7 +16,7 @@ export type PaikallinenKoulutusmoduuliLaajuudella = Extract<
 
 export type PaikallisenKoulutusmoduulinLaajuusViewProps<
   T extends PaikallinenKoulutusmoduuliLaajuudella
-> = CommonProps<FieldViewerProps<T, {}>>
+> = CommonProps<FieldViewerProps<T, EmptyObject>>
 
 export const PaikallisenKoulutusmoduulinLaajuusView = <
   T extends PaikallinenKoulutusmoduuliLaajuudella
