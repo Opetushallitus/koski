@@ -45,7 +45,8 @@
       <artifactId>scala-schema</artifactId>
       <groupId>com.github.Opetushallitus</groupId>
       <version>2.35.0_2.12</version>
-      <!-- Käytä tätä versiota, jos haluat linkittää mukaan paikallisesti käännetyn scala-scheman (mvn install) -->
+      <!-- Käytä tätä versiota, jos haluat linkittää mukaan paikallisesti käännetyn scala-scheman
+      (mvn install) -->
       <!--<groupId>fi.vm.sade</groupId>-->
       <!--<version>0.1.0-SNAPSHOT</version>-->
     </dependency>
@@ -402,7 +403,7 @@
             </goals>
             <configuration>
               <workingDirectory>web</workingDirectory>
-              <nodeVersion>v18.18.0</nodeVersion>
+              <nodeVersion>v18.20.4</nodeVersion>
             </configuration>
           </execution>
           <execution>
@@ -442,7 +443,7 @@
             </goals>
             <configuration>
               <workingDirectory>valpas-web</workingDirectory>
-              <nodeVersion>v18.18.0</nodeVersion>
+              <nodeVersion>v18.20.4</nodeVersion>
             </configuration>
           </execution>
           <execution>
@@ -629,7 +630,8 @@
             <groupId>org.scalatest</groupId>
             <artifactId>scalatest-maven-plugin</artifactId>
             <configuration>
-              <tagsToExclude>koskidev,browserstack,localization,mocha,parallelmocha,valpasfront,casintegration</tagsToExclude>
+              <tagsToExclude>
+                koskidev,browserstack,localization,mocha,parallelmocha,valpasfront,casintegration</tagsToExclude>
             </configuration>
           </plugin>
         </plugins>
