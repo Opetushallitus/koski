@@ -20,6 +20,7 @@ import fi.oph.koski.log.Logging
 import fi.oph.koski.luovutuspalvelu.{PalveluvaylaServlet, TilastokeskusServlet}
 import fi.oph.koski.migri.MigriServlet
 import fi.oph.koski.mydata.{ApiProxyServlet, MyDataReactServlet, MyDataServlet}
+import fi.oph.koski.omadataoauth2.{OmaDataOAuth2AuthorizationServerServlet, OmaDataOAuth2ResourceServerServlet}
 import fi.oph.koski.omaopintopolkuloki.OmaOpintoPolkuLokiServlet
 import fi.oph.koski.omattiedot.{OmatTiedotHtmlServlet, OmatTiedotServlet, OmatTiedotServletV2}
 import fi.oph.koski.opiskeluoikeus.{OpiskeluoikeusServlet, OpiskeluoikeusValidationServlet}
@@ -135,6 +136,10 @@ class ScalatraBootstrap extends LifeCycle with Logging with Timing with GlobalEx
     mount("/koski/api/luovutuspalvelu/haku", new TilastokeskusServlet)
     mount("/koski/api/omadata/oppija", new ApiProxyServlet)
     mount("/koski/api/omadata", new MyDataServlet)
+    mount("/koski/api/omadata-oauth2/authorization-server", new OmaDataOAuth2AuthorizationServerServlet)
+    mount("/koski/api/omadata-oauth2/resource-server", new OmaDataOAuth2ResourceServerServlet)
+//    mount("/koski/api/omadata-oauth2/resource-owner", new OmaDataOAuth2ResourceOwnerServlet) // TODO: Routet valtuutuksen myöntämiselle yms liittyvälle
+//    mount("/koski/omadata-oauth2", new OmaDataOAuth2ReactServlet) // TODO: Routet valtuututksen myöntö frontille
     mount("/koski/api/omaopintopolkuloki", new OmaOpintoPolkuLokiServlet)
     mount("/koski/api/ytrkoesuoritukset", new YtrKoesuoritusApiServlet)
     mount("/koski/api/massaluovutus", new MassaluovutusServlet)
