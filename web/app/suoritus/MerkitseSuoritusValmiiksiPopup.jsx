@@ -63,17 +63,20 @@ export const MerkitseSuoritusValmiiksiPopup = ({
     )
   })
 
-  const kotipaikkaE = modelP
-    .map((m) => modelData(m, 'vahvistus.myöntäjäOrganisaatio').oid)
-    .skipDuplicates()
-    .flatMapLatest(getKotipaikka)
-    .filter(R.identity)
+  const paikkakuntaModel = modelLookup(suoritus, 'vahvistus.paikkakunta')
+  if (paikkakuntaModel) {
+    const kotipaikkaE = modelP
+      .map((m) => modelData(m, 'vahvistus.myöntäjäOrganisaatio').oid)
+      .skipDuplicates()
+      .flatMapLatest(getKotipaikka)
+      .filter(R.identity)
 
-  modelP
-    .sampledBy(kotipaikkaE, (model, kotipaikka) => [model, kotipaikka])
-    .onValue(([model, kotipaikka]) => {
-      pushModel(modelSetValue(model, kotipaikka, 'vahvistus.paikkakunta'))
-    })
+    modelP
+      .sampledBy(kotipaikkaE, (model, kotipaikka) => [model, kotipaikka])
+      .onValue(([model, kotipaikka]) => {
+        pushModel(modelSetValue(model, kotipaikka, 'vahvistus.paikkakunta'))
+      })
+  }
 
   return (
     <ModalDialog
