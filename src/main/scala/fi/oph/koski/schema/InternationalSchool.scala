@@ -343,6 +343,7 @@ case class MYPOppiaineMuu(
   @KoodistoKoodiarvo("VA")
   @KoodistoKoodiarvo("INS")
   @KoodistoKoodiarvo("MF")
+  @KoodistoKoodiarvo("ART")
   tunniste: Koodistokoodiviite
 ) extends MYPOppiaine
 

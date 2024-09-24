@@ -1,4 +1,9 @@
+## 24.9.2024
+
+- Lisätty ART International Schoolin MYP-oppiaineisiin
+
 ## 8.7.2024
+
 - Päätason suoritusten oppilaitosten nimet haetaan erikseen vahvistuspäivän mukaan
 
 ## 30.5.2024
@@ -6,7 +11,8 @@
 - JOTPA-rahoitettujen opiskeluoikeuksien lisätietoihin lisätty JOTPA-asianumero kenttä.
 
 ## 16.5.2024
-- Lisättu Tunti validiksi Perusopetukseen valmistavaan opetuksen kokonaislaajuuden yksiköksi.
+
+- Lisätty Tunti validiksi Perusopetukseen valmistavaan opetuksen kokonaislaajuuden yksiköksi.
 
 ## 22.4.2024
 - Deprekoitu ESH-opiskeluoikeuden maksuttomuuteen liittyvät kentät.
