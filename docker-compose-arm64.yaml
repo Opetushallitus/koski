@@ -2,7 +2,7 @@ version: "3"
 services:
 
   postgres:
-    image: "postgres:15.2@sha256:4434eed0bfecb39db77c47e0b026242d97ce453df3b70254c381fe0bcb83497d"
+    image: "postgres:15.2@sha256:78a275d4c891f7b3a33d3f1a78eda9f1d744954d9e20122bfdc97cdda25cddaf"
     command: "postgres -c max_connections=200 -c log_statement=all -c log_destination=stderr"
     environment:
       - "POSTGRES_USER=oph"
