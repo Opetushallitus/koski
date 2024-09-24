@@ -132,6 +132,9 @@ run:
 docker-dbs:
 	${DOCKER_COMPOSE} up ${DOCKER_COMPOSE_OPTS}
 
+docker-dbs-arm64:
+	${DOCKER_COMPOSE} -f docker-compose-arm64.yaml up ${DOCKER_COMPOSE_OPTS}
+
 db-docs:
 	cd scripts/db-schema-docs && ./generate.sh
 
