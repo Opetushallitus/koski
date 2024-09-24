@@ -1,5 +1,6 @@
 import express, {Request, Response, Application, NextFunction} from 'express'
-import path from "node:path";
+import path from "node:path"
+import helmet from "helmet"
 
 interface AccessTokenData {
   access_token: string,
@@ -20,8 +21,11 @@ const password = process.env.PASSWORD || 'oauth2client'
 const authorizationServerUrl = process.env.AUTHORIZATION_SERVER_URL || 'http://localhost:7021/koski/api/omadata-oauth2/authorization-server'
 const resourceServerUrl = process.env.RESOURCE_SERVER_URL || 'http://localhost:7021/koski/api/omadata-oauth2/resource-server'
 
+app.use(helmet())
+
+
 const staticFilesPath = path.resolve(__dirname, '../../client/build')
-app.use(express.static(staticFilesPath));
+app.use(express.static(staticFilesPath))
 
 app.get('/api', async (req: Request, res: Response, next: NextFunction) => {
   try {
@@ -36,11 +40,11 @@ app.get('/api', async (req: Request, res: Response, next: NextFunction) => {
 })
 
 app.get('*', (req: Request, res: Response) => {
-  res.sendFile(path.resolve(__dirname, './client/build', 'index.html'));
-});
+  res.sendFile(path.resolve(__dirname, './client/build', 'index.html'))
+})
 
 app.listen(port, () => {
-  console.log(`Running at http://localhost:${port}`);
+  console.log(`Running at http://localhost:${port}`)
 })
 
 async function fetchAccessToken(url: string): Promise<AccessTokenData> {
