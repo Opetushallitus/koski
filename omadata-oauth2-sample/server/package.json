@@ -19,6 +19,7 @@
   "license": "EUPL-1.1",
   "dependencies": {
     "express": "^4.21.0",
+    "express-rate-limit": "^7.4.0",
     "helmet": "^7.1.0"
   },
   "devDependencies": {

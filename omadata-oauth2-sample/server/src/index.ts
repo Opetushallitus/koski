@@ -1,6 +1,7 @@
 import express, {Request, Response, Application, NextFunction} from 'express'
 import path from "node:path"
 import helmet from "helmet"
+import RateLimit from 'express-rate-limit'
 
 interface AccessTokenData {
   access_token: string,
@@ -21,8 +22,16 @@ const password = process.env.PASSWORD || 'oauth2client'
 const authorizationServerUrl = process.env.AUTHORIZATION_SERVER_URL || 'http://localhost:7021/koski/api/omadata-oauth2/authorization-server'
 const resourceServerUrl = process.env.RESOURCE_SERVER_URL || 'http://localhost:7021/koski/api/omadata-oauth2/resource-server'
 
-app.use(helmet())
+const limiter = RateLimit({
+  windowMs: 1 * 60 * 1000,
+  limit: 1000,
+  standardHeaders: 'draft-7',
+  legacyHeaders: false
+});
 
+app.use(limiter)
+
+app.use(helmet())
 
 const staticFilesPath = path.resolve(__dirname, '../../client/build')
 app.use(express.static(staticFilesPath))
