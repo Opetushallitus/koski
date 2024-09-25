@@ -67,18 +67,26 @@ describe('Korkeakoulutus', function () {
     })
   })
 
-  describe('Päättynyt-tila', function () {
+  describe('Päättynyt-tila, korkeakoulututkinto', function () {
     before(page.openPage, page.oppijaHaku.searchAndSelect('010190-4473'))
-    it('ei tulkita keskeneräiseksi suoritukseksi', function () {
-      expect(S('.suoritukset .tila-vahvistus').length).to.equal(0)
+    it('tulkitaan keskeneräiseksi suoritukseksi', function () {
+      expect(S('.suoritukset .tila-vahvistus').length).to.equal(1)
     })
   })
 
-  describe('Passivoitu-tila', function () {
-    before(page.openPage, page.oppijaHaku.searchAndSelect('250668-293Y'))
+  describe('Luopunut-tila, muu korkeakoulun suoritus', function () {
+    before(page.openPage, page.oppijaHaku.searchAndSelect('260308-361W'))
     it('ei tulkita keskeneräiseksi suoritukseksi', function () {
-      const lastOo = S('.opiskeluoikeus').last()
-      expect(lastOo.find('.suoritukset .tila-vahvistus').length).to.equal(0)
+      const luopunutOo = S('div.opiskeluoikeus').eq(2)
+      expect(luopunutOo.find('.suoritukset .tila-vahvistus').length).to.equal(0)
+    })
+  })
+
+  describe('Luopunut-tila, korkeakoulututkinto', function () {
+    before(page.openPage, page.oppijaHaku.searchAndSelect('260308-361W'))
+    it('tulkitaan keskeneräiseksi suoritukseksi', function () {
+      const luopunutOo = S('div.opiskeluoikeus').eq(4)
+      expect(luopunutOo.find('.suoritukset .tila-vahvistus').length).to.equal(1)
     })
   })
 
