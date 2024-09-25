@@ -215,7 +215,7 @@ object MaksuttomuusValidation extends Logging {
       _.pvm.exists(_.isBefore(täysiIkäinenAlkaen))
     }
 
-    logger.info(s"oppivelvollinenKotikuntahistorianPerusteella: syntymäpäivä=$syntymäpäivä, kotikuntaAlkaen=${kotikuntaSuomessaAlkaen.map(_.pvm).getOrElse("")}, tulos=$result")
+    logger.info(s"oppivelvollinenKotikuntahistorianPerusteella: syntymäpäivä=$syntymäpäivä, kotikuntaAlkaen=${kotikuntaSuomessaAlkaen.flatMap(_.pvm.map(_.toString)).getOrElse("")}, tulos=$result")
 
     result
   }
