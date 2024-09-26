@@ -29,16 +29,10 @@ object MockUsers {
     "oauth2client",
     "oauth2client",
     "1.2.246.562.24.99999984728",
-    Seq(OrganisaatioJaKäyttöoikeudet(MockOrganisaatiot.hsl, List(
+    Seq(OrganisaatioJaKäyttöoikeudet(MockOrganisaatiot.dvv, List(
       PalveluJaOikeus("KOSKI", Rooli.OMADATAOAUTH2_OPISKELUOIKEUDET_SUORITETUT_TUTKINNOT),
-      PalveluJaOikeus("KOSKI", Rooli.OMADATAOAUTH2_HENKILOTIEDOT_NIMI_JA_SYNTYMAAIKA),
-      // TODO: Nykyinen käyttöoikeustoteutus olettaa, että kaikilla käytetään näitä globaaleja lukurooleja. Poista tästä ja tarkistuksesta, jos ei ole
-      // tarkoitus käyttää enää uudessa API:ssa, jossa käyttöoikeudet tulee OAuth2-scopeista?
-      PalveluJaOikeus("KOSKI", Rooli.GLOBAALI_LUKU_PERUSOPETUS),
-      PalveluJaOikeus("KOSKI", Rooli.GLOBAALI_LUKU_TOINEN_ASTE),
-      PalveluJaOikeus("KOSKI", Rooli.GLOBAALI_LUKU_KORKEAKOULU),
-      PalveluJaOikeus("KOSKI", Rooli.GLOBAALI_LUKU_MUU_KUIN_SAANNELTY),
-      PalveluJaOikeus("KOSKI", Rooli.GLOBAALI_LUKU_TAITEENPERUSOPETUS),
+      PalveluJaOikeus("KOSKI", Rooli.OMADATAOAUTH2_HENKILOTIEDOT_NIMI),
+      PalveluJaOikeus("KOSKI", Rooli.OMADATAOAUTH2_HENKILOTIEDOT_SYNTYMAAIKA),
     )))
   )
 

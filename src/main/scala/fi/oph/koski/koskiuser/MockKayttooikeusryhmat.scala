@@ -40,10 +40,6 @@ object MockKäyttöoikeusryhmät {
   val localizationAdmin: OrganisaatioJaKäyttöoikeudet =
     organisaatioKäyttäjä(Opetushallitus.organisaatioOid, List("CRUD"), "LOKALISOINTI")
 
-  def omadataOAuth2Käyttäjä(organisaatioOid: String = Opetushallitus.organisaatioOid): OrganisaatioJaKäyttöoikeudet = {
-    organisaatioKäyttäjä(organisaatioOid, List(Rooli.OMADATAOAUTH2_HENKILOTIEDOT_NIMI_JA_SYNTYMAAIKA, Rooli.OMADATAOAUTH2_OPISKELUOIKEUDET_SUORITETUT_TUTKINNOT))
-  }
-
   def ilmanLuottamuksellisiaTietoja(orgOid: String): OrganisaatioJaKäyttöoikeudet = {
     oppilaitosTallentaja(orgOid).copy(
       kayttooikeudet = oppilaitosTallentaja(orgOid).kayttooikeudet.filterNot(_.oikeus == Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))

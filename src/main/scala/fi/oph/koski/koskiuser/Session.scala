@@ -80,7 +80,6 @@ class KoskiSpecificSession(
   // Kun lisäät uuden luovutuspalvelukäyttöoikeuden alle, muista lisätä se myös
   // KoskiSpecificAuthenticationSupport.requireVirkailijaOrPalvelukäyttäjä -metodiin
   def hasHSLAccess: Boolean = globalViranomaisKäyttöoikeudet.flatMap(_.globalPalveluroolit).contains(Palvelurooli("KOSKI", HSL))
-  def hasSomeOmaDataOAuth2Access: Boolean = globalViranomaisKäyttöoikeudet.flatMap(_.globalPalveluroolit).exists(p => p.palveluName == "KOSKI" && p.rooli.startsWith("OMADATAOAUTH2_"))
   def hasSuomiFiAccess: Boolean = globalViranomaisKäyttöoikeudet.flatMap(_.globalPalveluroolit).contains(Palvelurooli("KOSKI", SUOMIFI))
   def hasTilastokeskusAccess: Boolean = globalViranomaisKäyttöoikeudet.flatMap(_.globalPalveluroolit).contains(Palvelurooli("KOSKI", TILASTOKESKUS))
   def hasMitätöidytOpiskeluoikeudetAccess: Boolean = hasTilastokeskusAccess || hasYtlAccess || globalKäyttöoikeudet.exists(_.globalPalveluroolit.exists(_.rooli == MITATOIDYT_OPISKELUOIKEUDET))
@@ -89,6 +88,11 @@ class KoskiSpecificSession(
   def hasMigriAccess: Boolean = globalViranomaisKäyttöoikeudet.flatMap(_.globalPalveluroolit).contains(Palvelurooli("KOSKI", MIGRI))
   def hasKelaAccess: Boolean = !globalViranomaisKäyttöoikeudet.flatMap(_.globalPalveluroolit).intersect(Set(Palvelurooli("KOSKI", LUOTTAMUKSELLINEN_KELA_LAAJA), Palvelurooli("KOSKI", LUOTTAMUKSELLINEN_KELA_SUPPEA))).isEmpty
   def hasYtlAccess: Boolean = globalViranomaisKäyttöoikeudet.flatMap(_.globalPalveluroolit).contains(Palvelurooli("KOSKI", YTL))
+
+  def hasSomeOmaDataOAuth2Access: Boolean = {
+    // OAuth2-käyttäjillä on organisaatiokohtaiset oikeudet tiettyihin OAuth2-scopeihin, siksi käsittely poikkeaa muista luovutuspalvelukäyttäjistä, jotka ovat viranomaisia.
+    orgKäyttöoikeudet.flatMap(_.organisaatiokohtaisetPalveluroolit).exists(p => p.palveluName == "KOSKI" && p.rooli.startsWith("OMADATAOAUTH2_"))
+  }
   // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
   // HUOM!
   // Kun lisäät uuden luovutuspalvelukäyttöoikeuden ylle, muista lisätä se myös
