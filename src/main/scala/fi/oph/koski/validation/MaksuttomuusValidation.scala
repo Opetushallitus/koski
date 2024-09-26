@@ -162,7 +162,7 @@ object MaksuttomuusValidation extends Logging {
       def validaatiotulos(maksuttomuustietoVaaditaan: Boolean): String =
         (maksuttomuustietoVaaditaan, maksuttomuustietoEiSallittuSyyt.nonEmpty) match {
           case (true, true) => "Logiikkabugi"
-          case (false, false) => "Ei merkitystä"
+          case (false, false) => "OK (ihan sama onko maksuttomuustietoja)"
           case (true, false) => if (maksuttomuustietoSiirretty) "OK" else "Hylätty"
           case (false, true) => if (maksuttomuustietoSiirretty) "Hylätty" else "OK"
           case _ => "???"
@@ -219,12 +219,13 @@ object MaksuttomuusValidation extends Logging {
         case _ => false
       }
 
-    val originalResult = oppijaOnSyntymäajanPerusteellaLainPiirissä &&
+    val originalResult = false
+
+    val newResult = oppijaOnSyntymäajanPerusteellaLainPiirissä &&
       eiOleValmistunutPeruskoulustaEnnenOppivelvollisuuslainVoimaanAstumista &&
       opinnotAlkaneetEnnenKuinMaksuttomuudenYläikärajaOnTäyttynyt &&
-      koulutusKelpaaOppivelvollisuudenSuorittamiseen
-
-    val newResult = originalResult && oppijaOnKotikuntahistorianPerusteellaLainPiirissä
+      koulutusKelpaaOppivelvollisuudenSuorittamiseen &&
+      oppijaOnKotikuntahistorianPerusteellaLainPiirissä
 
     val logData = MaksuttomuustiedotVaaditaanLogData(originalResult, newResult)
 
