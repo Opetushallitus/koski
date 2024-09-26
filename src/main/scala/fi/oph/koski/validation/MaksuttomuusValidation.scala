@@ -67,7 +67,7 @@ object MaksuttomuusValidation extends Logging {
     val eiLaajennettuOppivelvollinenSyyt =
       eiOppivelvollisuudenLaajentamislainPiirissäSyyt(oppijanSyntymäpäivä, perusopetuksenAikavälit, rajapäivät)
 
-    val maksuttomuustietoVaaditaan = maksuttomuustiedotVaaditaan(
+    val (maksuttomuustietoVaaditaan, maksuttomuustietoVaaditaanLog) = maksuttomuustiedotVaaditaan(
       opiskeluoikeus,
       oppijanHenkilötiedot,
       perusopetuksenAikavälit,
@@ -97,6 +97,8 @@ object MaksuttomuusValidation extends Logging {
       )
 
     val maksuttomuustietojaSiirretty = maksuttomuustietoSiirretty || maksuttomuudenPidennysSiirretty
+
+    logger.info(s"maksuttomuusValidaatio: ${maksuttomuustietoVaaditaanLog.message(oppijanOid, maksuttomuustietojaSiirretty, maksuttomuustietoEiSallittuSyyt)}")
 
     HttpStatus.fold(
       validateLiianVarhaisetMaksuttomuudenPidennykset(opiskeluoikeus, oppijanHenkilötiedot, rajapäivät),
@@ -152,6 +154,32 @@ object MaksuttomuusValidation extends Logging {
     )
   }
 
+  case class MaksuttomuustiedotVaaditaanLogData(
+    vanha: Boolean,
+    uusi: Boolean,
+  ) {
+    def message(oppijaOid: String, maksuttomuustietoSiirretty: Boolean, maksuttomuustietoEiSallittuSyyt: Seq[String]): String = {
+      def validaatiotulos(maksuttomuustietoVaaditaan: Boolean): String =
+        (maksuttomuustietoVaaditaan, maksuttomuustietoEiSallittuSyyt.nonEmpty) match {
+          case (true, true) => "Logiikkabugi"
+          case (false, false) => "Ei merkitystä"
+          case (true, false) => if (maksuttomuustietoSiirretty) "OK" else "Hylätty"
+          case (false, true) => if (maksuttomuustietoSiirretty) "Hylätty" else "OK"
+          case _ => "???"
+        }
+
+      List(
+        "oppijaOid" -> oppijaOid,
+        "maksuttomuustietoVaaditaanVanha" -> vanha,
+        "maksuttomuustietoVaaditaanUusi" -> uusi,
+        "maksuttomuustietoEiSallittuSyyt" -> maksuttomuustietoEiSallittuSyyt.mkString(" "),
+        "maksuttomuustietoSiirretty" -> maksuttomuustietoSiirretty,
+        "vanhaValidaatio" -> validaatiotulos(vanha),
+        "uusiValidaatio" -> validaatiotulos(uusi),
+      ).map { case (k, v) => s"$k=$v" }.mkString(" | ")
+    }
+  }
+
   def maksuttomuustiedotVaaditaan(
     opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus,
     oppijanHenkilötiedot: Option[LaajatOppijaHenkilöTiedot],
@@ -159,7 +187,7 @@ object MaksuttomuusValidation extends Logging {
     rajapäivät: ValpasRajapäivätService,
     oppijanumerorekisteri: OpintopolkuHenkilöFacade,
     config: Config,
-  ): Boolean = {
+  ): (Boolean, MaksuttomuustiedotVaaditaanLogData) = {
     val oppijanSyntymäpäivä = oppijanHenkilötiedot.flatMap(_.syntymäaika)
     val oppijaOid = oppijanHenkilötiedot.map(_.oid)
 
@@ -187,17 +215,23 @@ object MaksuttomuusValidation extends Logging {
     // 5. oppija on kotikuntahistorian perusteella lain piirissä
     lazy val oppijaOnKotikuntahistorianPerusteellaLainPiirissä =
       (oppijaOid, oppijanSyntymäpäivä) match {
-        case (Some(oid), Some(syntymäpäivä)) =>
-          val result = oppivelvollinenKotikuntahistorianPerusteella(oid, syntymäpäivä, oppijanumerorekisteri)
-          result && KotikuntahistoriaConfig(config).käytäMaksuttomuustietojenValidointiin
+        case (Some(oid), Some(syntymäpäivä)) => oppivelvollinenKotikuntahistorianPerusteella(oid, syntymäpäivä, oppijanumerorekisteri)
         case _ => false
       }
 
-    oppijaOnSyntymäajanPerusteellaLainPiirissä &&
+    val originalResult = oppijaOnSyntymäajanPerusteellaLainPiirissä &&
       eiOleValmistunutPeruskoulustaEnnenOppivelvollisuuslainVoimaanAstumista &&
       opinnotAlkaneetEnnenKuinMaksuttomuudenYläikärajaOnTäyttynyt &&
-      koulutusKelpaaOppivelvollisuudenSuorittamiseen &&
-      oppijaOnKotikuntahistorianPerusteellaLainPiirissä
+      koulutusKelpaaOppivelvollisuudenSuorittamiseen
+
+    val newResult = originalResult && oppijaOnKotikuntahistorianPerusteellaLainPiirissä
+
+    val logData = MaksuttomuustiedotVaaditaanLogData(originalResult, newResult)
+
+    (
+      if (KotikuntahistoriaConfig(config).käytäMaksuttomuustietojenValidointiin) newResult else originalResult,
+      logData,
+    )
   }
 
   def oppivelvollinenKotikuntahistorianPerusteella(oppijaOid: String, syntymäpäivä: LocalDate, oppijanumerorekisteri: OpintopolkuHenkilöFacade): Boolean = {
@@ -211,13 +245,9 @@ object MaksuttomuusValidation extends Logging {
       .sortBy(_.pvm)
       .headOption
 
-    val result = kotikuntaSuomessaAlkaen.exists {
+    kotikuntaSuomessaAlkaen.exists {
       _.pvm.exists(_.isBefore(täysiIkäinenAlkaen))
     }
-
-    logger.info(s"oppivelvollinenKotikuntahistorianPerusteella: syntymäpäivä=$syntymäpäivä, kotikuntaAlkaen=${kotikuntaSuomessaAlkaen.flatMap(_.pvm.map(_.toString)).getOrElse("")}, tulos=$result")
-
-    result
   }
 
   def validateAndFillJaksot(opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus): Either[HttpStatus, KoskeenTallennettavaOpiskeluoikeus] = {
