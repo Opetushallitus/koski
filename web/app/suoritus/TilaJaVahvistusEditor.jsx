@@ -45,7 +45,9 @@ export const TilaJaVahvistusEditor = ({ model }) => {
   if (ytr.pakollisetKokeetSuoritettuEnnen1990(model)) return null
   if (isLukionOppiaineidenOppimaarienSuoritus2019(model)) return null
   if (
-    suorituksenTyyppi(model) === 'korkeakoulututkinto' &&
+    ['korkeakoulunopintojakso', 'muukorkeakoulunsuoritus'].includes(
+      suorituksenTyyppi(model)
+    ) &&
     muussaKuinAktiivinenTaiValmistunutTilassa(model) &&
     !suoritusValmis(model)
   )
