@@ -180,6 +180,11 @@ const calculateModelId = (m: EditorModel) => {
   ) {
     id = hashAdd(id, hashCode(m.value.data))
   }
+  // hack to fix broken OrganisaatioPicker
+  if (isObjectModel(m) && typeof (m as any).value?.data === 'object') {
+    id = 1
+    id = hashAdd(id, hashCode((m as any).value.data))
+  }
   return id
 }
 
