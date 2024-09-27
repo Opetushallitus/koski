@@ -1,26 +1,43 @@
-import express, {Request, Response, Application, NextFunction} from 'express'
-import path from "node:path"
-import helmet from "helmet"
+import express, { Request, Response, Application, NextFunction } from 'express'
+import path from 'node:path'
+import helmet from 'helmet'
 import RateLimit from 'express-rate-limit'
 
 import {
   SecretsManagerClient,
-  GetSecretValueCommand,
-} from "@aws-sdk/client-secrets-manager"
-import * as https from "https";
+  GetSecretValueCommand
+} from '@aws-sdk/client-secrets-manager'
+import * as https from 'https'
 
+import { Response as FetchResponse } from 'node-fetch'
 // Noden built-in fetch ei tue client certin TLS-headerien lisäämistä
 // Se ei myöskään toimi importin kanssa suoraan jostain syystä, minkä debuggaamisen jätin kesken.
 // eslint-disable-next-line no-new-func
-const importDynamic = new Function('modulePath', 'return import(modulePath)');
-const fetch = async (...args:any[]) => {
-  const module = await importDynamic('node-fetch');
-  return module.default(...args);
-};
+const importDynamic = new Function('modulePath', 'return import(modulePath)')
+const fetch = async (...args: any[]): Promise<FetchResponse> => {
+  const module = await importDynamic('node-fetch')
+  return module.default(...args)
+}
+
+const memoize = <A extends any[], T>(
+  fn: (...a: A) => T,
+  getKey: (...a: A) => string
+) => {
+  const cache: Record<string, T> = {}
+  return (...args: A): T => {
+    const key = getKey(...args)
+    if (cache[key]) {
+      return cache[key]
+    }
+    const result = fn(...args)
+    cache[key] = result
+    return result
+  }
+}
 
 interface AccessTokenData {
-  access_token: string,
-  token_type: string,
+  access_token: string
+  token_type: string
   expires_in: number
 }
 
@@ -36,12 +53,19 @@ interface ClientCert {
 const app: Application = express()
 const port = process.env.PORT || 7051
 
-const authorizationServerUrl = process.env.AUTHORIZATION_SERVER_URL || 'http://localhost:7021/koski/api/luovutuspalvelu/omadata-oauth2/authorization-server'
-const resourceServerUrl = process.env.RESOURCE_SERVER_URL || 'http://localhost:7021/koski/api/luovutuspalvelu/omadata-oauth2/resource-server'
+const authorizationServerUrl =
+  process.env.AUTHORIZATION_SERVER_URL ||
+  'http://localhost:7021/koski/api/luovutuspalvelu/omadata-oauth2/authorization-server'
+const resourceServerUrl =
+  process.env.RESOURCE_SERVER_URL ||
+  'http://localhost:7021/koski/api/luovutuspalvelu/omadata-oauth2/resource-server'
 
 // Käytössä, jos mTLS on päällä:
-const clientCertSecretName = process.env.CLIENT_CERT_SECRET_NAME || "omadataoauth2sample-client-cert"
-const enableMTLS = process.env.ENABLE_MTLS ? process.env.ENABLE_MTLS !== 'false' : true
+const clientCertSecretName =
+  process.env.CLIENT_CERT_SECRET_NAME || 'omadataoauth2sample-client-cert'
+const enableMTLS = process.env.ENABLE_MTLS
+  ? process.env.ENABLE_MTLS !== 'false'
+  : true
 
 // Käytössä, jos mTLS on disabloitu:
 const username = process.env.USERNAME || 'oauth2client'
@@ -52,7 +76,7 @@ const limiter = RateLimit({
   limit: 1000,
   standardHeaders: 'draft-7',
   legacyHeaders: false
-});
+})
 
 app.use(limiter)
 
@@ -60,12 +84,12 @@ app.use(helmet())
 
 const staticFilesPath = path.resolve(__dirname, '../../client/build')
 
-async function getClientCertSecret() : Promise<ClientCert> {
-  const fullchainSecretName = clientCertSecretName+"-fullchain"
-  const privkeySecretName = clientCertSecretName+"-privkey"
+async function getClientCertSecret(): Promise<ClientCert> {
+  const fullchainSecretName = `${clientCertSecretName}-fullchain`
+  const privkeySecretName = `${clientCertSecretName}-privkey`
 
   console.log(`Getting client cert fullchain from \`${fullchainSecretName}`)
-  const cert= await getSecret(fullchainSecretName)
+  const cert = await getSecret(fullchainSecretName)
 
   console.log(`Getting client cert privkey from \`${privkeySecretName}`)
   const privkey = await getSecret(privkeySecretName)
@@ -76,16 +100,25 @@ async function getClientCertSecret() : Promise<ClientCert> {
   }
 }
 
+const getSecretsManagerClient = memoize(
+  (): SecretsManagerClient => {
+    if (enableMTLS) {
+      return new SecretsManagerClient({
+        region: 'eu-west-1'
+      })
+    } else {
+      throw Error('Not implemented')
+    }
+  },
+  () => 'secretsManager'
+)
+
 async function getSecret(secretName: string): Promise<string> {
   try {
-    const client = new SecretsManagerClient({
-      region: "eu-west-1",
-    });
-
-    const response = await client.send(
+    const response = await getSecretsManagerClient().send(
       new GetSecretValueCommand({
         SecretId: secretName,
-        VersionStage: "AWSCURRENT",
+        VersionStage: 'AWSCURRENT'
       })
     )
     if (response.SecretString) {
@@ -110,8 +143,8 @@ app.get('/api', async (req: Request, res: Response, next: NextFunction) => {
     // const data = await fetchData(accessTokenData.access_token, resourceServerUrl)
     // res.json({...accessTokenData, ...data})
 
-    res.json({...accessTokenData})
-  } catch (err){
+    res.json({ ...accessTokenData })
+  } catch (err) {
     next(err)
   }
 })
@@ -125,36 +158,55 @@ app.listen(port, () => {
 })
 
 async function fetchAccessToken(url: string): Promise<AccessTokenData> {
-  const response = enableMTLS ? await fetchAccessTokenMTLS(url) : await fetchAccessTokenBasicAuth(url)
+  const response = await handleAccessTokenRequest(url)
 
   // TODO: Poista/karsi, ettei vahingossakaan salaisuuksia lokitu
-  console.log(JSON.stringify({
-    'response.ok': response.ok,
-    'response.status': response.status,
-    'response.statusText': response.statusText,
-    'response.headers.raw()': response.headers.raw(),
-    'response.headers.get(\'content-type\')': response.headers.get('content-type')
-  }, null, 2))
+  console.log(
+    JSON.stringify(
+      {
+        'response.ok': response.ok,
+        'response.status': response.status,
+        'response.statusText': response.statusText,
+        'response.headers.raw()': response.headers.raw(),
+        "response.headers.get('content-type')":
+          response.headers.get('content-type')
+      },
+      null,
+      2
+    )
+  )
 
   if (!response.ok) {
     // TODO: Poista/karsi, ettei vahingossakaan salaisuuksia lokitu
-    console.log(JSON.stringify({'response.text()': await response.text()}, null, 2))
+    console.log(
+      JSON.stringify({ 'response.text()': await response.text() }, null, 2)
+    )
     throw new Error(response.statusText)
   }
-  const jsonData: AccessTokenData = <AccessTokenData>await response.json()
+  // TODO: parempi parsinta eikä vain typecastia, jos tämä koodi jää elämään.
+  const jsonData: AccessTokenData = (await response.json()) as AccessTokenData
 
   // TODO: Poista/karsi, ettei vahingossakaan salaisuuksia lokitu
-  console.log(JSON.stringify({'response.json()': jsonData}, null, 2))
+  console.log(JSON.stringify({ 'response.json()': jsonData }, null, 2))
 
   return jsonData
 }
 
-async function fetchAccessTokenMTLS(url: string) {
+async function handleAccessTokenRequest(url: string): Promise<FetchResponse> {
+  if (enableMTLS) {
+    return await handleAccessTokenRequestMTLS(url)
+  } else {
+    return await handleAccessTokenRequestBasicAuth(url)
+  }
+}
+async function handleAccessTokenRequestMTLS(
+  url: string
+): Promise<FetchResponse> {
   const certs = await getClientCertSecret()
 
   const options = {
-    cert: certs["fullchain.pem"],
-    key: certs["privkey.pem"]
+    cert: certs['fullchain.pem'],
+    key: certs['privkey.pem']
   }
 
   const myHeaders: HeadersInit = {
@@ -163,41 +215,55 @@ async function fetchAccessTokenMTLS(url: string) {
 
   const mtlsAgent = new https.Agent(options)
 
-  const body = new URLSearchParams({grant_type: 'authorization_code', code: 'foobar'}).toString()
+  const body = new URLSearchParams({
+    grant_type: 'authorization_code',
+    code: 'foobar'
+  }).toString()
 
   // TODO: poista authorization coden debuggaus
   console.log(`POST to ${url} with body ${body}`)
 
   const response = await fetch(url, {
-    method: "POST",
+    method: 'POST',
     headers: myHeaders,
     body: body,
     agent: mtlsAgent
   })
-  return response;
+  return response
 }
 
-async function fetchAccessTokenBasicAuth(url: string) {
+async function handleAccessTokenRequestBasicAuth(
+  url: string
+): Promise<FetchResponse> {
+  const base64Auth = Buffer.from(`${username}:${password}`).toString('base64')
+
   const myHeaders: HeadersInit = {
-    'Authorization': 'Basic ' + Buffer.from(username + ":" + password).toString('base64'),
+    Authorization: `Basic ${base64Auth}`,
     'content-type': 'application/x-www-form-urlencoded'
   }
 
-  const response = await fetch(url, {
-    method: "POST",
+  const response: FetchResponse = await fetch(url, {
+    method: 'POST',
     headers: myHeaders,
-    body: new URLSearchParams({grant_type: 'authorization_code', code: 'foobar'}).toString(),
+    body: new URLSearchParams({
+      grant_type: 'authorization_code',
+      code: 'foobar'
+    }).toString()
   })
-  return response;
+  return response
 }
 
 // TODO: mTLS-autentikointi (vaatii sitten myös Authorization => X-Auth -headermuutoksen toteuttamisen luovutuspalvelun nginx:ään.
-async function fetchData(accessToken: string, url: string): Promise<DummyResourceResponse> {
+async function fetchData(
+  accessToken: string,
+  url: string
+): Promise<DummyResourceResponse> {
   const response = await fetch(url, {
-    method: "POST",
+    method: 'POST',
     // TODO: Autentikointi mTLS:llä ympäristöissä, Bearer tokenin välitys silloin Authorization-headerissä
     headers: {
-      'Authorization': 'Basic ' + Buffer.from(username + ":" + password).toString('base64'),
+      Authorization:
+        'Basic ' + Buffer.from(username + ':' + password).toString('base64'),
       'X-Auth': 'Bearer ' + accessToken
     }
   })
@@ -206,5 +272,6 @@ async function fetchData(accessToken: string, url: string): Promise<DummyResourc
     throw new Error(response.statusText)
   }
 
-  return await response.json()
+  // TODO: parempi parsinta eikä vain typecastia, jos tämä koodi jää elämään.
+  return (await response.json()) as DummyResourceResponse
 }
