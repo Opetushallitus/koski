@@ -54,6 +54,14 @@ trait BaseServlet extends ScalatraServlet with Logging {
     }
   }
 
+  def getLocalDateParamOption(param: String): Option[LocalDate] = {
+    try {
+      Some(LocalDate.parse(getStringParam(param)))
+    } catch {
+      case _: Any => None
+    }
+  }
+
   error {
     case e: BadMessageException =>
       haltWithStatus(KoskiErrorCategory.badRequest(e.getReason))

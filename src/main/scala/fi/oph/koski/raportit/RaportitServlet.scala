@@ -166,6 +166,7 @@ class RaportitServlet(implicit val application: KoskiApplication) extends KoskiS
   get("/esiopetus") {
     requireOpiskeluoikeudenKayttooikeudet(OpiskeluoikeudenTyyppi.esiopetus)
     val date = getLocalDateParam("paiva")
+    val kotikuntaPäivänä = getLocalDateParamOption("kotikuntaPäivä")
     val password = getStringParam("password")
     val token = params.get("downloadToken")
     val lang = getStringParam("lang")
@@ -173,9 +174,9 @@ class RaportitServlet(implicit val application: KoskiApplication) extends KoskiS
 
     val resp = getStringParam("oppilaitosOid") match {
       case organisaatioService.ostopalveluRootOid =>
-        esiopetusService.buildOstopalveluRaportti(date, password, token, t)
+        esiopetusService.buildOstopalveluRaportti(date, kotikuntaPäivänä, password, token, t)
       case oid =>
-        esiopetusService.buildOrganisaatioRaportti(validateOrganisaatioOid(oid), date, password, token, t)
+        esiopetusService.buildOrganisaatioRaportti(validateOrganisaatioOid(oid), date, kotikuntaPäivänä, password, token, t)
     }
 
     writeExcel(resp, t)

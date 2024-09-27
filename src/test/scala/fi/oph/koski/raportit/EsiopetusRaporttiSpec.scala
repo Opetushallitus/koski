@@ -21,7 +21,7 @@ class EsiopetusRaporttiSpec extends AnyFreeSpec with Matchers with Raportointika
   private val raporttiBuilder = EsiopetusRaportti(application.raportointiDatabase.db, application.organisaatioService)
   private val t = new LocalizationReader(KoskiApplicationForTests.koskiLocalizationRepository, "fi")
   private lazy val raportti =
-    raporttiBuilder.build(List(jyväskylänNormaalikoulu), localDate(2015, 1, 1), t)(session(defaultUser)).rows.map(_.asInstanceOf[EsiopetusRaporttiRow])
+    raporttiBuilder.build(List(jyväskylänNormaalikoulu), localDate(2015, 1, 1), None, t)(session(defaultUser)).rows.map(_.asInstanceOf[EsiopetusRaporttiRow])
 
   override protected def beforeAll(): Unit = {
     super.beforeAll()
@@ -127,7 +127,7 @@ class EsiopetusRaporttiSpec extends AnyFreeSpec with Matchers with Raportointika
     raporttiService.buildOstopalveluRaportti(localDate(2014, 8, 13), "", None, t)(session(user))
 
   private def buildOrganisaatioRaportti(user: KoskiMockUser, organisaatio: Oid) =
-    raporttiService.buildOrganisaatioRaportti(organisaatio, localDate(2014, 8, 13), "", None, t)(session(user))
+    raporttiService.buildOrganisaatioRaportti(organisaatio, localDate(2014, 8, 13), None, "", None, t)(session(user))
 
   private def getOppilaitokset(raportti: OppilaitosRaporttiResponse) = {
     getRows(raportti).flatMap(_.oppilaitosNimi).sorted
