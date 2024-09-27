@@ -22,7 +22,7 @@ class EsiopetusRaporttiService(application: KoskiApplication) {
     t: LocalizationReader
   )(implicit session: KoskiSpecificSession): OppilaitosRaporttiResponse = {
     val ostopalveluOrganisaatiot = omatOstopalveluOrganisaatioOidit
-    auditLog(date, session, ostopalveluOrganisaatiot.mkString(","), t.language)
+    auditLog(date, kotikuntaPäivänä, session, ostopalveluOrganisaatiot.mkString(","), t.language)
     buildRaportti(
       date,
       kotikuntaPäivänä,
@@ -46,7 +46,7 @@ class EsiopetusRaporttiService(application: KoskiApplication) {
     downloadToken: Option[String],
     t: LocalizationReader
   )(implicit session: KoskiSpecificSession): OppilaitosRaporttiResponse = {
-    auditLog(date, session, organisaatioOid, t.language)
+    auditLog(date, kotikuntaPäivänä, session, organisaatioOid, t.language)
     buildRaportti(
       date,
       kotikuntaPäivänä,
@@ -58,8 +58,8 @@ class EsiopetusRaporttiService(application: KoskiApplication) {
     )
   }
 
-  private def auditLog(date: LocalDate, session: KoskiSpecificSession, organisaatio: String, lang: String) = {
-    AuditLog.log(KoskiAuditLogMessage(OPISKELUOIKEUS_RAPORTTI, session, Map(hakuEhto -> s"raportti=esiopetus&oppilaitosOid=$organisaatio&paiva=$date&lang=$lang")))
+  private def auditLog(date: LocalDate, kotikuntaDate: Option[LocalDate], session: KoskiSpecificSession, organisaatio: String, lang: String): Unit = {
+    AuditLog.log(KoskiAuditLogMessage(OPISKELUOIKEUS_RAPORTTI, session, Map(hakuEhto -> s"raportti=esiopetus&oppilaitosOid=$organisaatio&paiva=$date&lang=$lang${kotikuntaDate.fold("")(p => s"&kotikuntaPvm=$p")}")))
   }
 
   private def buildRaportti(

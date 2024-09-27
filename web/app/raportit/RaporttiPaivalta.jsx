@@ -11,7 +11,8 @@ import {
   RaportinLataus,
   Vinkit
 } from './raporttiComponents'
-import { selectFromState, today } from './raporttiUtils'
+import { isEqualDate, selectFromState, today } from './raporttiUtils'
+import { t } from '../i18n/i18n'
 
 export const RaporttiPaivalta = ({
   stateP,
@@ -19,9 +20,12 @@ export const RaporttiPaivalta = ({
   shortDescription,
   dateInputHelp,
   example,
-  lang
+  lang,
+  showKotikuntaPvmInput,
+  kotikuntaPvmInputHelp
 }) => {
   const paivaAtom = Atom(today())
+  const kotikuntaPvmAtom = Atom(today())
   const submitBus = Bacon.Bus()
   const { selectedOrganisaatioP, dbUpdatedP } = selectFromState(stateP)
 
@@ -30,11 +34,13 @@ export const RaporttiPaivalta = ({
   const downloadExcelP = Bacon.combineWith(
     selectedOrganisaatioP,
     paivaAtom,
-    (o, p) =>
+    kotikuntaPvmAtom,
+    (o, p, kkp) =>
       o &&
       p && {
         oppilaitosOid: o.oid,
         paiva: formatISODate(p),
+        kotikuntaPvm: showKotikuntaPvmInput && !isEqualDate(today(), kkp) ? formatISODate(kkp) : undefined,
         lang,
         password,
         baseUrl: `/koski/api/raportit${apiEndpoint}`
@@ -56,6 +62,10 @@ export const RaporttiPaivalta = ({
       <LyhytKuvaus>{shortDescription}</LyhytKuvaus>
 
       <PaivaValinta paivaAtom={paivaAtom} ohje={dateInputHelp} />
+
+      {showKotikuntaPvmInput && (
+        <PaivaValinta paivaAtom={kotikuntaPvmAtom} label={t("select-kotikunta-date")} ohje={kotikuntaPvmInputHelp} />
+      )}
 
       <RaportinLataus
         password={password}

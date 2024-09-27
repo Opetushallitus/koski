@@ -347,7 +347,7 @@ describe('Raporttien luominen', function () {
 
     it('Oletuksena tämä päivä', function () {
       const todayStr = moment().format('D.M.YYYY')
-      expect(page.valitutPäivät()).to.deep.equal([todayStr])
+      expect(page.valitutPäivät()).to.deep.equal([todayStr, todayStr])
     })
 
     it('Latausnappi oletuksena aktiivisena', function () {

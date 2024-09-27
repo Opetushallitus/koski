@@ -798,6 +798,7 @@ function EsiopetusRaportti({ stateP }) {
     <Text name="esiopetusraportti-short-description" />
   )
   const dateInputHelpText = <Text name="esiopetusraportti-date-input-help" />
+  const kotikuntaPvmInputHelp = <Text name="esiopetusraportti-kotikunta-date-input-help" />
   const exampleText = <Paragraphs name="esiopetusraportti-example" />
 
   return (
@@ -807,6 +808,8 @@ function EsiopetusRaportti({ stateP }) {
       title={titleText}
       shortDescription={shortDescriptionText}
       dateInputHelp={dateInputHelpText}
+      showKotikuntaPvmInput
+      kotikuntaPvmInputHelp={kotikuntaPvmInputHelp}
       example={exampleText}
       lang={lang}
     />

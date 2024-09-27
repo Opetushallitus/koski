@@ -10,10 +10,10 @@ import { t } from '../i18n/i18n'
 export const LyhytKuvaus = ({ children }) =>
   children ? <p className="lyhyt-kuvaus">{children}</p> : null
 
-export const PaivaValinta = ({ paivaAtom, ohje }) => (
+export const PaivaValinta = ({ paivaAtom, ohje, label }) => (
   <div className="parametri">
     <label>
-      <Text name="select-date" />
+      {label || <Text name="select-date" />}
     </label>
     <DateInput
       value={paivaAtom.get()}
