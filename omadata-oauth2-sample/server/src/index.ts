@@ -128,18 +128,23 @@ async function fetchAccessToken(url: string): Promise<AccessTokenData> {
   const response = enableMTLS ? await fetchAccessTokenMTLS(url) : await fetchAccessTokenBasicAuth(url)
 
   // TODO: Poista/karsi, ettei vahingossakaan salaisuuksia lokitu
-  console.log('response.ok', response.ok)
-  console.log('response.status', response.status)
-  console.log('response.statusText', response.statusText)
-  console.log('response.headers.raw()', response.headers.raw())
-  console.log('response.headers.get(\'content-type\')', response.headers.get('content-type'))
+  console.log(JSON.stringify({
+    'response.ok': response.ok,
+    'response.status': response.status,
+    'response.statusText': response.statusText,
+    'response.headers.raw()': response.headers.raw(),
+    'response.headers.get(\'content-type\')': response.headers.get('content-type')
+  }, null, 2))
 
   if (!response.ok) {
-    console.log('response.text()', await response.text())
+    // TODO: Poista/karsi, ettei vahingossakaan salaisuuksia lokitu
+    console.log(JSON.stringify({'response.text()': await response.text()}, null, 2))
     throw new Error(response.statusText)
   }
   const jsonData: AccessTokenData = <AccessTokenData>await response.json()
-  console.log('response.json()', jsonData)
+
+  // TODO: Poista/karsi, ettei vahingossakaan salaisuuksia lokitu
+  console.log(JSON.stringify({'response.json()': jsonData}, null, 2))
 
   return jsonData
 }
