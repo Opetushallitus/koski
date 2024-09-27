@@ -1,12 +1,13 @@
 package fi.oph.koski.raportit.esiopetus
 
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.plainAPI._
-import fi.oph.koski.db.{DB, QueryMethods}
+import fi.oph.koski.db.{DB, QueryMethods, SQLHelpers}
 import fi.oph.koski.koskiuser.{AccessType, KoskiSpecificSession}
 import fi.oph.koski.localization.LocalizationReader
 import fi.oph.koski.organisaatio.OrganisaatioService
 import fi.oph.koski.raportit.{Column, DataSheet}
 import fi.oph.koski.schema.Organisaatio.isValidOrganisaatioOid
+import fi.oph.koski.util.FinnishDateFormat
 import slick.jdbc.GetResult
 
 import java.time.LocalDate
@@ -50,8 +51,8 @@ case class EsiopetusRaportti(db: DB, organisaatioService: OrganisaatioService) e
     )
   )
 
-  def build(oppilaitosOids: List[String], päivä: LocalDate, t: LocalizationReader)(implicit u: KoskiSpecificSession): DataSheet = {
-    val raporttiQuery = query(validateOids(oppilaitosOids), päivä, t.language).as[EsiopetusRaporttiRow]
+  def build(oppilaitosOids: List[String], päivä: LocalDate, kotikuntaPäivänä: Option[LocalDate], t: LocalizationReader)(implicit u: KoskiSpecificSession): DataSheet = {
+    val raporttiQuery = query(validateOids(oppilaitosOids), päivä, kotikuntaPäivänä, t).as[EsiopetusRaporttiRow]
     DataSheet(
       title = t.get("raportti-excel-suoritukset-sheet-name"),
       rows = runDbSync(raporttiQuery, timeout = 5.minutes),
@@ -59,66 +60,89 @@ case class EsiopetusRaportti(db: DB, organisaatioService: OrganisaatioService) e
     )
   }
 
-  private def query(oppilaitosOidit: List[String], päivä: LocalDate, lang: String)(implicit u: KoskiSpecificSession) = {
-    val koulutustoimijaNimiSarake = if(lang == "sv") "koulutustoimija_nimi_sv" else "koulutustoimija_nimi"
-    val oppilaitosNimiSarake = if(lang == "sv") "oppilaitos_nimi_sv" else "oppilaitos_nimi"
-    val toimipisteNimiSarake = if(lang == "sv") "toimipiste_nimi_sv" else "toimipiste_nimi"
-    val kotikuntaSarake = if(lang == "sv") "kotikunta_nimi_sv" else "kotikunta_nimi_fi"
+  private def query(oppilaitosOidit: List[String], päivä: LocalDate, kotikuntaPäivänä: Option[LocalDate], t: LocalizationReader)(implicit u: KoskiSpecificSession) = {
+    val lang = t.language
+    val koulutustoimijaNimiSarake = if (lang == "sv") "koulutustoimija_nimi_sv" else "koulutustoimija_nimi"
+    val oppilaitosNimiSarake = if (lang == "sv") "oppilaitos_nimi_sv" else "oppilaitos_nimi"
+    val toimipisteNimiSarake = if (lang == "sv") "toimipiste_nimi_sv" else "toimipiste_nimi"
+    val kotikuntaSarake = {
+      //val table = if (kotikuntaPäivänä.isDefined) "r_kotikuntahistoria" else "r_henkilo"
+      val fiOrSv = if (lang == "sv") "sv" else "fi"
+      s"kotikunta_nimi_$fiOrSv"
+    }
     val koodistoSarake = if(lang == "sv") "nimi_sv" else "nimi"
-    sql"""
-    select
-      r_opiskeluoikeus.opiskeluoikeus_oid,
-      lahdejarjestelma_koodiarvo,
-      lahdejarjestelma_id,
-      aikaleima,
-      #$koulutustoimijaNimiSarake as koulutustoimija_nimi,
-      #$oppilaitosNimiSarake as oppilaitos_nimi,
-      #$toimipisteNimiSarake toimipiste_nimi,
-      r_opiskeluoikeus.alkamispaiva,
-      r_opiskeluoikeus.paattymispaiva,
-      viimeisin_tila,
-      aikajakso.tila,
-      r_paatason_suoritus.koulutusmoduuli_koodiarvo,
-      COALESCE(r_paatason_suoritus.data -> 'koulutusmoduuli' -> 'tunniste' -> 'nimi' ->> $lang, r_paatason_suoritus.koulutusmoduuli_nimi) as koulutusmoduuli_nimi,
-      r_paatason_suoritus.data -> 'koulutusmoduuli' ->> 'perusteenDiaarinumero',
-      kielikoodi.#$koodistoSarake,
-      r_paatason_suoritus.vahvistus_paiva,
-      yksiloity,
-      r_opiskeluoikeus.oppija_oid,
-      hetu,
-      etunimet,
-      sukunimi,
-      #$kotikuntaSarake as kotikunta_nimi,
-      pidennetty_oppivelvollisuus,
-      tukimuodot,
-      erityisen_tuen_paatos,
-      vammainen,
-      vaikeasti_vammainen,
-      majoitusetu,
-      kuljetusetu,
-      sisaoppilaitosmainen_majoitus,
-      koulukoti,
-      r_opiskeluoikeus.data -> 'järjestämismuoto' ->> 'koodiarvo'
-    from r_opiskeluoikeus
-    join r_henkilo on r_henkilo.oppija_oid = r_opiskeluoikeus.oppija_oid
-    join esiopetus_opiskeluoik_aikajakso aikajakso on aikajakso.opiskeluoikeus_oid = r_opiskeluoikeus.opiskeluoikeus_oid
-    left join r_paatason_suoritus on r_paatason_suoritus.opiskeluoikeus_oid = r_opiskeluoikeus.opiskeluoikeus_oid
-    join r_koodisto_koodi as kielikoodi
-      on kielikoodi.koodisto_uri = 'kieli'
-      and kielikoodi.koodiarvo = r_paatason_suoritus.suorituskieli_koodiarvo
-    where (r_opiskeluoikeus.oppilaitos_oid = any($oppilaitosOidit) or r_opiskeluoikeus.koulutustoimija_oid = any($oppilaitosOidit))
-      and r_opiskeluoikeus.koulutusmuoto = 'esiopetus'
-      and aikajakso.alku <= $päivä
-      and aikajakso.loppu >= $päivä
-      -- access check
-      and (
-        #${(if (u.hasGlobalReadAccess) "true" else "false")}
-        or
-        r_opiskeluoikeus.oppilaitos_oid = any($käyttäjänOrganisaatioOidit)
-        or
-        (r_opiskeluoikeus.koulutustoimija_oid = any($käyttäjänKoulutustoimijaOidit) and r_opiskeluoikeus.oppilaitos_oid = any($käyttäjänOstopalveluOidit))
-      )
-  """
+    val eiTiedossaText = t.get("Ei tiedossa")
+    val nykyinenKotikuntaText = t.get("nykyinen kotikunta on")
+
+    SQLHelpers.concatMany(Some(sql"""
+      select
+        r_opiskeluoikeus.opiskeluoikeus_oid,
+        lahdejarjestelma_koodiarvo,
+        lahdejarjestelma_id,
+        aikaleima,
+        #$koulutustoimijaNimiSarake as koulutustoimija_nimi,
+        #$oppilaitosNimiSarake as oppilaitos_nimi,
+        #$toimipisteNimiSarake toimipiste_nimi,
+        r_opiskeluoikeus.alkamispaiva,
+        r_opiskeluoikeus.paattymispaiva,
+        viimeisin_tila,
+        aikajakso.tila,
+        r_paatason_suoritus.koulutusmoduuli_koodiarvo,
+        COALESCE(r_paatason_suoritus.data -> 'koulutusmoduuli' -> 'tunniste' -> 'nimi' ->> $lang, r_paatason_suoritus.koulutusmoduuli_nimi) as koulutusmoduuli_nimi,
+        r_paatason_suoritus.data -> 'koulutusmoduuli' ->> 'perusteenDiaarinumero',
+        kielikoodi.#$koodistoSarake,
+        r_paatason_suoritus.vahvistus_paiva,
+        yksiloity,
+        r_opiskeluoikeus.oppija_oid,
+        hetu,
+        etunimet,
+        sukunimi,
+      """),
+      Some(kotikuntaPäivänä.fold
+        ({ sql"r_henkilo.#$kotikuntaSarake as kotikunta_nimi," })
+        ({ pvm =>
+          val pvmText = pvm.format(FinnishDateFormat.finnishDateFormat)
+          sql"coalesce(r_kotikuntahistoria.#$kotikuntaSarake, '#$eiTiedossaText #$pvmText (#$nykyinenKotikuntaText ' || r_henkilo.#$kotikuntaSarake || ')') as kotikunta_nimi,"
+        })
+      ),
+      Some(sql"""
+        pidennetty_oppivelvollisuus,
+        tukimuodot,
+        erityisen_tuen_paatos,
+        vammainen,
+        vaikeasti_vammainen,
+        majoitusetu,
+        kuljetusetu,
+        sisaoppilaitosmainen_majoitus,
+        koulukoti,
+        r_opiskeluoikeus.data -> 'järjestämismuoto' ->> 'koodiarvo'
+      from r_opiskeluoikeus
+      join r_henkilo on r_henkilo.oppija_oid = r_opiskeluoikeus.oppija_oid
+      join esiopetus_opiskeluoik_aikajakso aikajakso on aikajakso.opiskeluoikeus_oid = r_opiskeluoikeus.opiskeluoikeus_oid
+      left join r_paatason_suoritus on r_paatason_suoritus.opiskeluoikeus_oid = r_opiskeluoikeus.opiskeluoikeus_oid
+      join r_koodisto_koodi as kielikoodi
+        on kielikoodi.koodisto_uri = 'kieli'
+        and kielikoodi.koodiarvo = r_paatason_suoritus.suorituskieli_koodiarvo
+    """),
+    kotikuntaPäivänä.map(pvm => sql"""
+      left join r_kotikuntahistoria on
+        r_kotikuntahistoria.master_oid = r_henkilo.master_oid
+        and $pvm between coalesce(r_kotikuntahistoria.muutto_pvm, '1900-01-01'::date) and coalesce(r_kotikuntahistoria.poismuutto_pvm, current_date)
+    """),
+    Some(sql"""
+      where (r_opiskeluoikeus.oppilaitos_oid = any($oppilaitosOidit) or r_opiskeluoikeus.koulutustoimija_oid = any($oppilaitosOidit))
+        and r_opiskeluoikeus.koulutusmuoto = 'esiopetus'
+        and aikajakso.alku <= $päivä
+        and aikajakso.loppu >= $päivä
+        -- access check
+        and (
+          #${(if (u.hasGlobalReadAccess) "true" else "false")}
+          or
+          r_opiskeluoikeus.oppilaitos_oid = any($käyttäjänOrganisaatioOidit)
+          or
+          (r_opiskeluoikeus.koulutustoimija_oid = any($käyttäjänKoulutustoimijaOidit) and r_opiskeluoikeus.oppilaitos_oid = any($käyttäjänOstopalveluOidit))
+        )
+    """))
   }
 
   private def käyttäjänOrganisaatioOidit(implicit u: KoskiSpecificSession) = u.organisationOids(AccessType.read).toSeq

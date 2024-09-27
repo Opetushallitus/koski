@@ -16,6 +16,7 @@ class EsiopetusRaporttiService(application: KoskiApplication) {
 
   def buildOstopalveluRaportti(
     date: LocalDate,
+    kotikuntaPäivänä: Option[LocalDate],
     password: String,
     downloadToken: Option[String],
     t: LocalizationReader
@@ -24,6 +25,7 @@ class EsiopetusRaporttiService(application: KoskiApplication) {
     auditLog(date, session, ostopalveluOrganisaatiot.mkString(","), t.language)
     buildRaportti(
       date,
+      kotikuntaPäivänä,
       password,
       downloadToken,
       ostopalveluOrganisaatiot,
@@ -39,6 +41,7 @@ class EsiopetusRaporttiService(application: KoskiApplication) {
   def buildOrganisaatioRaportti(
     organisaatioOid: Oid,
     date: LocalDate,
+    kotikuntaPäivänä: Option[LocalDate],
     password: String,
     downloadToken: Option[String],
     t: LocalizationReader
@@ -46,6 +49,7 @@ class EsiopetusRaporttiService(application: KoskiApplication) {
     auditLog(date, session, organisaatioOid, t.language)
     buildRaportti(
       date,
+      kotikuntaPäivänä,
       password,
       downloadToken,
       List(organisaatioOid),
@@ -60,6 +64,7 @@ class EsiopetusRaporttiService(application: KoskiApplication) {
 
   private def buildRaportti(
     date: LocalDate,
+    kotikuntaPäivänä: Option[LocalDate],
     password: String,
     downloadToken: Option[String],
     oppilaitokset: List[Oid],
@@ -67,7 +72,7 @@ class EsiopetusRaporttiService(application: KoskiApplication) {
     t: LocalizationReader
   )(implicit session: KoskiSpecificSession): OppilaitosRaporttiResponse =
     OppilaitosRaporttiResponse(
-      sheets = buildRaportti(date, oppilaitokset, t),
+      sheets = buildRaportti(date, kotikuntaPäivänä, oppilaitokset, t),
       workbookSettings = WorkbookSettings(t.get("raportti-excel-esiopetus-title"), Some(password)),
       filename = filename,
       downloadToken = downloadToken
@@ -75,10 +80,11 @@ class EsiopetusRaporttiService(application: KoskiApplication) {
 
   private def buildRaportti(
     date: LocalDate,
+    kotikuntaPäivänä: Option[LocalDate],
     oppilaitokset: List[Oid],
     t: LocalizationReader
   )(implicit session: KoskiSpecificSession): Seq[DataSheet] = {
-    Seq(esiopetusRaportti.build(oppilaitokset, date, t))
+    Seq(esiopetusRaportti.build(oppilaitokset, date, kotikuntaPäivänä, t))
   }
 
   private def filename(etuliite: String, oppilaitos: String, date: LocalDate): String = {
