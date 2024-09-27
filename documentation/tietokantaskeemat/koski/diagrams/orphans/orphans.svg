@@ -777,12 +777,12 @@
 <text text-anchor="start" x="83" y="-3236.1" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">data</text>
 <polygon fill="none" stroke="#000000" points="211,-3229 211,-3251 310,-3251 310,-3229 211,-3229"/>
 <text text-anchor="start" x="213.7258" y="-3236.7" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">jsonb[2147483647]</text>
-<polygon fill="#ffffff" stroke="transparent" points="63,-3210 63,-3229 141,-3229 141,-3210 63,-3210"/>
-<polygon fill="none" stroke="#000000" points="63,-3210 63,-3229 141,-3229 141,-3210 63,-3210"/>
+<polygon fill="#ffffff" stroke="transparent" points="63,-3210 63,-3229 128,-3229 128,-3210 63,-3210"/>
+<polygon fill="none" stroke="#000000" points="63,-3210 63,-3229 128,-3229 128,-3210 63,-3210"/>
 <text text-anchor="start" x="66" y="-3216.1" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">&lt; 0</text>
-<polygon fill="#ffffff" stroke="transparent" points="141,-3210 141,-3229 211,-3229 211,-3210 141,-3210"/>
-<polygon fill="none" stroke="#000000" points="141,-3210 141,-3229 211,-3229 211,-3210 141,-3210"/>
-<text text-anchor="start" x="201.8862" y="-3216.1" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000"> &#160;</text>
+<polygon fill="#ffffff" stroke="transparent" points="128,-3210 128,-3229 211,-3229 211,-3210 128,-3210"/>
+<polygon fill="none" stroke="#000000" points="128,-3210 128,-3229 211,-3229 211,-3210 128,-3210"/>
+<text text-anchor="start" x="175.6105" y="-3216.1" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">8 rows</text>
 <polygon fill="#ffffff" stroke="transparent" points="211,-3210 211,-3229 310,-3229 310,-3210 211,-3210"/>
 <polygon fill="none" stroke="#000000" points="211,-3210 211,-3229 310,-3229 310,-3210 211,-3210"/>
 <text text-anchor="start" x="291.4053" y="-3216.1" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">0 &gt;</text>
@@ -824,12 +824,12 @@
 <text text-anchor="start" x="81" y="-3369.1" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">data</text>
 <polygon fill="none" stroke="#000000" points="212,-3362 212,-3384 311,-3384 311,-3362 212,-3362"/>
 <text text-anchor="start" x="214.7258" y="-3369.7" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">jsonb[2147483647]</text>
-<polygon fill="#ffffff" stroke="transparent" points="61,-3343 61,-3362 141,-3362 141,-3343 61,-3343"/>
-<polygon fill="none" stroke="#000000" points="61,-3343 61,-3362 141,-3362 141,-3343 61,-3343"/>
+<polygon fill="#ffffff" stroke="transparent" points="61,-3343 61,-3362 125,-3362 125,-3343 61,-3343"/>
+<polygon fill="none" stroke="#000000" points="61,-3343 61,-3362 125,-3362 125,-3343 61,-3343"/>
 <text text-anchor="start" x="64" y="-3349.1" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">&lt; 0</text>
-<polygon fill="#ffffff" stroke="transparent" points="141,-3343 141,-3362 212,-3362 212,-3343 141,-3343"/>
-<polygon fill="none" stroke="#000000" points="141,-3343 141,-3362 212,-3362 212,-3343 141,-3343"/>
-<text text-anchor="start" x="202.8862" y="-3349.1" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000"> &#160;</text>
+<polygon fill="#ffffff" stroke="transparent" points="125,-3343 125,-3362 212,-3362 212,-3343 125,-3343"/>
+<polygon fill="none" stroke="#000000" points="125,-3343 125,-3362 212,-3362 212,-3343 125,-3343"/>
+<text text-anchor="start" x="170.4956" y="-3349.1" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">12 rows</text>
 <polygon fill="#ffffff" stroke="transparent" points="212,-3343 212,-3362 311,-3362 311,-3343 212,-3343"/>
 <polygon fill="none" stroke="#000000" points="212,-3343 212,-3362 311,-3362 311,-3343 212,-3343"/>
 <text text-anchor="start" x="292.4053" y="-3349.1" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">0 &gt;</text>

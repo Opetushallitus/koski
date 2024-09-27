@@ -37,7 +37,7 @@ class MigrationSpec extends AnyFreeSpec with Matchers with RaportointikantaTestM
       val dir = "./src/main/scala/fi/oph/koski/raportointikanta"
       val expectedChecksums = Map(
         "AikajaksoRowBuilder.scala"                                 -> "581190491d31f3b0d4a40c2e62579ffa",
-        "HenkiloLoader.scala"                                       -> "98edd6c3b1bf3c493c585b26ff872713",
+        "HenkiloLoader.scala"                                       -> "8049aded633fe037c308b510de8374",
         "KoodistoLoader.scala"                                      -> "86c90ec069d1c5ec5ee9faa65fb1399e",
         "KoskiEventBridgeClient.scala"                              -> "f8a09d358ebb3fe2ed4d8875ccccef12",
         "LoaderUtils.scala"                                         -> "38d31b4d1cfa5e3892083bb39f7f0047",
@@ -48,10 +48,10 @@ class MigrationSpec extends AnyFreeSpec with Matchers with RaportointikantaTestM
         "OrganisaatioHistoriaRowBuilder.scala"                      -> "7e586d9e273a5a4ee7beae257f22c7f4",
         "OrganisaatioLoader.scala"                                  -> "4f7ce51cb922dbc11e694ebe85ab3472",
         "PäivitettyOpiskeluoikeusLoader.scala"                      -> "500545bbe7ef47dedcfdc49580b536d2",
-        "RaportointiDatabase.scala"                                 -> "d0857b973da85ca250c812faf32c08df",
+        "RaportointiDatabase.scala"                                 -> "fc0398cdef955357e22019a706141d41",
         "RaportointiDatabaseCustomFunctions.scala"                  -> "956f101d1219c49ac9134b72a30caf3a",
-        "RaportointiDatabaseSchema.scala"                           -> "7c95e730f735c95df3d71dad9ecf9e67",
-        "RaportointikantaService.scala"                             -> "5b9fb17cf7759c509d0a7e3e4d4d2a8c",
+        "RaportointiDatabaseSchema.scala"                           -> "c5ad373521dbbefe85fc46ca6a36b98d",
+        "RaportointikantaService.scala"                             -> "287d3c81aae78ab9347c98680287994a",
         "RaportointikantaStatusServlet.scala"                       -> "9fd6f796adfb2034cce0151b7330cd1a",
         "RaportointikantaTestServlet.scala"                         -> "d457be86e60dd84545378ae415236d26",
         "RaportointikantaTableQueries.scala"                        -> "b97f971fa7a5896ec3c4d69882ca705d",

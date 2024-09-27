@@ -163,11 +163,12 @@
          <column autoUpdated="false" defaultValue="null" digits="0" id="4" name="koulutusmoduuli_laajuus_yksikko" nullable="true" remarks="" size="2147483647" type="varchar" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="5" name="arviointi_hyvaksytty" nullable="false" remarks="" size="1" type="bool" typeCode="-7"/>
       </table>
-      <table name="oppivelvollisuustiedot" numRows="12" remarks="" schema="public" type="TABLE">
+      <table name="oppivelvollisuustiedot" numRows="13" remarks="" schema="public" type="TABLE">
          <column autoUpdated="false" defaultValue="null" digits="0" id="0" name="oppija_oid" nullable="true" remarks="" size="2147483647" type="varchar" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="oppivelvollisuusvoimassaalkaen" nullable="true" remarks="" size="13" type="date" typeCode="91"/>
          <column autoUpdated="false" defaultValue="null" digits="6" id="2" name="oppivelvollisuusvoimassaasti" nullable="true" remarks="" size="29" type="timestamp" typeCode="93"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="3" name="oikeuskoulutuksenmaksuttomuuteenvoimassaasti" nullable="true" remarks="" size="13" type="date" typeCode="91"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="4" name="kotikuntasuomessaalkaen" nullable="true" remarks="" size="13" type="date" typeCode="91"/>
          <index name="oppivelvollisuustiedot_oppija_oid_oppivelvollisuusvoimassaa_idx" unique="false">
             <column ascending="true" name="oppija_oid"/>
             <column ascending="true" name="oppivelvollisuusvoimassaasti"/>
@@ -212,7 +213,7 @@
             <column ascending="true" name="opiskeluoikeus_oid"/>
          </index>
       </table>
-      <table name="r_henkilo" numRows="146" remarks="" schema="public" type="TABLE">
+      <table name="r_henkilo" numRows="147" remarks="" schema="public" type="TABLE">
          <column autoUpdated="false" defaultValue="null" digits="0" id="0" name="oppija_oid" nullable="false" remarks="" size="2147483647" type="varchar" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="master_oid" nullable="false" remarks="" size="2147483647" type="varchar" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="linkitetyt_oidit" nullable="false" remarks="" size="2147483647" type="_text" typeCode="2003"/>
@@ -246,7 +247,7 @@
             <column ascending="true" name="aidinkieli"/>
          </index>
       </table>
-      <table name="r_henkilo_vipunen" numRows="146" remarks="" schema="public" type="TABLE">
+      <table name="r_henkilo_vipunen" numRows="147" remarks="" schema="public" type="TABLE">
          <column autoUpdated="false" defaultValue="null" digits="0" id="0" name="oppija_oid" nullable="true" remarks="" size="2147483647" type="varchar" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="master_oid" nullable="true" remarks="" size="2147483647" type="varchar" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="linkitetyt_oidit" nullable="true" remarks="" size="2147483647" type="_text" typeCode="2003"/>
@@ -273,9 +274,11 @@
       <table name="r_kotikuntahistoria" numRows="16" remarks="" schema="public" type="TABLE">
          <column autoUpdated="false" defaultValue="null" digits="0" id="0" name="master_oid" nullable="false" remarks="" size="2147483647" type="varchar" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="kotikunta" nullable="false" remarks="" size="2147483647" type="varchar" typeCode="12"/>
-         <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="muutto_pvm" nullable="true" remarks="" size="13" type="date" typeCode="91"/>
-         <column autoUpdated="false" defaultValue="null" digits="0" id="3" name="poismuutto_pvm" nullable="true" remarks="" size="13" type="date" typeCode="91"/>
-         <column autoUpdated="false" defaultValue="null" digits="0" id="4" name="turvakielto" nullable="false" remarks="" size="1" type="bool" typeCode="-7"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="kotikunta_nimi_fi" nullable="false" remarks="" size="2147483647" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="3" name="kotikunta_nimi_sv" nullable="false" remarks="" size="2147483647" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="4" name="muutto_pvm" nullable="true" remarks="" size="13" type="date" typeCode="91"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="5" name="poismuutto_pvm" nullable="true" remarks="" size="13" type="date" typeCode="91"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="6" name="turvakielto" nullable="false" remarks="" size="1" type="bool" typeCode="-7"/>
          <index name="r_kotikuntahistoria_master_oid_muutto_pvm_idx" unique="false">
             <column ascending="true" name="master_oid"/>
             <column ascending="true" name="muutto_pvm"/>
@@ -307,7 +310,7 @@
             <column ascending="true" name="opiskeluoikeus_oid"/>
          </index>
       </table>
-      <table name="r_opiskeluoikeus" numRows="176" remarks="" schema="public" type="TABLE">
+      <table name="r_opiskeluoikeus" numRows="178" remarks="" schema="public" type="TABLE">
          <column autoUpdated="false" defaultValue="null" digits="0" id="0" name="opiskeluoikeus_oid" nullable="false" remarks="" size="2147483647" type="varchar" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="versionumero" nullable="false" remarks="" size="10" type="int4" typeCode="4"/>
          <column autoUpdated="false" defaultValue="null" digits="6" id="2" name="aikaleima" nullable="false" remarks="" size="35" type="timestamptz" typeCode="93"/>
@@ -521,7 +524,7 @@
             <column ascending="true" name="ylempi_osasuoritus_id"/>
          </index>
       </table>
-      <table name="r_paatason_suoritus" numRows="284" remarks="" schema="public" type="TABLE">
+      <table name="r_paatason_suoritus" numRows="286" remarks="" schema="public" type="TABLE">
          <column autoUpdated="false" defaultValue="null" digits="0" id="0" name="paatason_suoritus_id" nullable="false" remarks="" size="19" type="int8" typeCode="-5"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="opiskeluoikeus_oid" nullable="false" remarks="" size="2147483647" type="varchar" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="suorituksen_tyyppi" nullable="false" remarks="" size="2147483647" type="varchar" typeCode="12"/>
@@ -564,7 +567,7 @@
             <column ascending="true" name="vahvistus_paiva"/>
          </index>
       </table>
-      <table name="r_ytr_kokeen_suoritus" numRows="78" remarks="" schema="public" type="TABLE">
+      <table name="r_ytr_kokeen_suoritus" numRows="100" remarks="" schema="public" type="TABLE">
          <column autoUpdated="false" defaultValue="null" digits="0" id="0" name="ytr_kokeen_suoritus_id" nullable="false" remarks="" size="19" type="int8" typeCode="-5"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="ytr_tutkintokerran_suoritus_id" nullable="false" remarks="" size="19" type="int8" typeCode="-5"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="ytr_tutkintokokonaisuuden_suoritus_id" nullable="false" remarks="" size="19" type="int8" typeCode="-5"/>
@@ -598,7 +601,7 @@
             <column ascending="true" name="ytr_tutkintokokonaisuuden_suoritus_id"/>
          </index>
       </table>
-      <table name="r_ytr_tutkintokerran_suoritus" numRows="16" remarks="" schema="public" type="TABLE">
+      <table name="r_ytr_tutkintokerran_suoritus" numRows="18" remarks="" schema="public" type="TABLE">
          <column autoUpdated="false" defaultValue="null" digits="0" id="0" name="ytr_tutkintokerran_suoritus_id" nullable="false" remarks="" size="19" type="int8" typeCode="-5"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="ytr_tutkintokokonaisuuden_suoritus_id" nullable="false" remarks="" size="19" type="int8" typeCode="-5"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="paatason_suoritus_id" nullable="false" remarks="" size="19" type="int8" typeCode="-5"/>
@@ -627,7 +630,7 @@
             <column ascending="true" name="ytr_tutkintokokonaisuuden_suoritus_id"/>
          </index>
       </table>
-      <table name="r_ytr_tutkintokokonaisuuden_kokeen_suoritus" numRows="80" remarks="" schema="public" type="TABLE">
+      <table name="r_ytr_tutkintokokonaisuuden_kokeen_suoritus" numRows="101" remarks="" schema="public" type="TABLE">
          <column autoUpdated="false" defaultValue="null" digits="0" id="0" name="ytr_tutkintokokonaisuuden_suoritus_id" nullable="false" remarks="" size="19" type="int8" typeCode="-5"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="ytr_kokeen_suoritus_id" nullable="false" remarks="" size="19" type="int8" typeCode="-5"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="ytr_tutkintokerran_suoritus_id" nullable="false" remarks="" size="19" type="int8" typeCode="-5"/>
@@ -648,7 +651,7 @@
             <column ascending="true" name="ytr_kokeen_suoritus_id"/>
          </index>
       </table>
-      <table name="r_ytr_tutkintokokonaisuuden_suoritus" numRows="8" remarks="" schema="public" type="TABLE">
+      <table name="r_ytr_tutkintokokonaisuuden_suoritus" numRows="9" remarks="" schema="public" type="TABLE">
          <column autoUpdated="false" defaultValue="null" digits="0" id="0" name="ytr_tutkintokokonaisuuden_suoritus_id" nullable="false" remarks="" size="19" type="int8" typeCode="-5"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="paatason_suoritus_id" nullable="false" remarks="" size="19" type="int8" typeCode="-5"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="opiskeluoikeus_oid" nullable="false" remarks="" size="2147483647" type="varchar" typeCode="12"/>

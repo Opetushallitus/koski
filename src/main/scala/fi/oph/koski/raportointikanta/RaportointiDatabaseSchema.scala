@@ -565,6 +565,8 @@ object RaportointiDatabaseSchema {
   class RKotikuntahistoriaTable(tag: Tag, schema: Schema = Public) extends Table[RKotikuntahistoriaRow](tag, schema.nameOpt, "r_kotikuntahistoria") {
     val masterOppijaOid = column[String]("master_oid")
     val kotikunta = column[String]("kotikunta")
+    val kotikunnanNimiFi = column[String]("kotikunta_nimi_fi")
+    val kotikunnanNimiSv = column[String]("kotikunta_nimi_sv")
     val muuttoPvm = column[Option[Date]]("muutto_pvm")
     val poismuuttoPvm = column[Option[Date]]("poismuutto_pvm")
     val turvakielto = column[Boolean]("turvakielto")
@@ -572,6 +574,8 @@ object RaportointiDatabaseSchema {
     def * = (
       masterOppijaOid,
       kotikunta,
+      kotikunnanNimiFi,
+      kotikunnanNimiSv,
       muuttoPvm,
       poismuuttoPvm,
       turvakielto,
@@ -992,6 +996,8 @@ case class RYtrTutkintokokonaisuudenKokeenSuoritusRow(
 case class RKotikuntahistoriaRow(
   masterOppijaOid: String,
   kotikunta: String,
+  kotikunnanNimiFi: String,
+  kotikunnanNimiSv: String,
   muuttoPvm: Option[Date],
   poismuuttoPvm: Option[Date],
   turvakielto: Boolean,

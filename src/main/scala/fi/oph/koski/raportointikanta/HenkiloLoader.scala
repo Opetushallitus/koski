@@ -2,11 +2,11 @@ package fi.oph.koski.raportointikanta
 
 import fi.oph.koski.henkilo.{Hetu, OpintopolkuHenkilöFacade}
 import fi.oph.koski.henkilo.LaajatOppijaHenkilöTiedot
-import fi.oph.koski.koodisto.{KoodistoPalvelu, Kunta}
+import fi.oph.koski.koodisto.{KoodistoKoodi, KoodistoPalvelu, Kunta}
 import fi.oph.koski.koskiuser.KoskiSpecificSession
 import fi.oph.koski.log.Logging
 import fi.oph.koski.opiskeluoikeus.CompositeOpiskeluoikeusRepository
-import fi.oph.koski.schema.{MaksuttomuusTieto, OikeuttaMaksuttomuuteenPidennetty}
+import fi.oph.koski.schema.{Koodistokoodiviite, MaksuttomuusTieto, OikeuttaMaksuttomuuteenPidennetty}
 
 import java.sql.Date
 
@@ -17,12 +17,16 @@ object HenkilöLoader extends Logging {
   def loadHenkilöt(opintopolkuHenkilöFacade: OpintopolkuHenkilöFacade,
                    db: RaportointiDatabase,
                    koodistoPalvelu: KoodistoPalvelu,
-                   opiskeluoikeusRepository: CompositeOpiskeluoikeusRepository): Int = {
+                   opiskeluoikeusRepository: CompositeOpiskeluoikeusRepository,
+                   kuntakoodit: Seq[KoodistoKoodi]): Int = {
     def fetchKotikuntahistoria(batchRows: Seq[RHenkilöRow], turvakielto: Boolean) =
       opintopolkuHenkilöFacade
         .findKuntahistoriat(oids = batchRows.map(_.masterOid), turvakiellolliset = turvakielto)
         .getOrElse(Seq.empty)
-        .map(_.toDbRow(turvakielto = turvakielto))
+        .map(r => r.toDbRow(
+          turvakielto = turvakielto,
+          kuntakoodi = kuntakoodit.find(_.koodiArvo == r.kotikunta),
+        ))
 
     logger.info("Ladataan henkilö-OIDeja opiskeluoikeuksista...")
     // note: this list has 1-2M oids in production.
