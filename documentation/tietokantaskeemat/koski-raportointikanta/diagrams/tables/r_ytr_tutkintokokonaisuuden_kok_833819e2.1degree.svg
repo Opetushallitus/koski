@@ -38,12 +38,12 @@
 <text text-anchor="start" x="30" y="-66.3" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">sisallytetty</text>
 <polygon fill="none" stroke="#000000" points="298,-59.2 298,-81.2 340,-81.2 340,-59.2 298,-59.2"/>
 <text text-anchor="start" x="301" y="-66.9" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">bool[1]</text>
-<polygon fill="#ffffff" stroke="transparent" points="10,-40.2 10,-59.2 142,-59.2 142,-40.2 10,-40.2"/>
-<polygon fill="none" stroke="#000000" points="10,-40.2 10,-59.2 142,-59.2 142,-40.2 10,-40.2"/>
+<polygon fill="#ffffff" stroke="transparent" points="10,-40.2 10,-59.2 139,-59.2 139,-40.2 10,-40.2"/>
+<polygon fill="none" stroke="#000000" points="10,-40.2 10,-59.2 139,-59.2 139,-40.2 10,-40.2"/>
 <text text-anchor="start" x="13" y="-46.3" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">&lt; 0</text>
-<polygon fill="#ffffff" stroke="transparent" points="142,-40.2 142,-59.2 298,-59.2 298,-40.2 142,-40.2"/>
-<polygon fill="none" stroke="#000000" points="142,-40.2 142,-59.2 298,-59.2 298,-40.2 142,-40.2"/>
-<text text-anchor="start" x="256.4956" y="-46.3" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">80 rows</text>
+<polygon fill="#ffffff" stroke="transparent" points="139,-40.2 139,-59.2 298,-59.2 298,-40.2 139,-40.2"/>
+<polygon fill="none" stroke="#000000" points="139,-40.2 139,-59.2 298,-59.2 298,-40.2 139,-40.2"/>
+<text text-anchor="start" x="250.3807" y="-46.3" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">101 rows</text>
 <polygon fill="#ffffff" stroke="transparent" points="298,-40.2 298,-59.2 340,-59.2 340,-40.2 298,-40.2"/>
 <polygon fill="none" stroke="#000000" points="298,-40.2 298,-59.2 340,-59.2 340,-40.2 298,-40.2"/>
 <text text-anchor="start" x="321.4053" y="-46.3" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">0 &gt;</text>
