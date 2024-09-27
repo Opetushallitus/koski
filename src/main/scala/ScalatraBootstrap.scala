@@ -136,10 +136,6 @@ class ScalatraBootstrap extends LifeCycle with Logging with Timing with GlobalEx
     mount("/koski/api/luovutuspalvelu/haku", new TilastokeskusServlet)
     mount("/koski/api/omadata/oppija", new ApiProxyServlet)
     mount("/koski/api/omadata", new MyDataServlet)
-    mount("/koski/api/omadata-oauth2/authorization-server", new OmaDataOAuth2AuthorizationServerServlet)
-    mount("/koski/api/omadata-oauth2/resource-server", new OmaDataOAuth2ResourceServerServlet)
-//    mount("/koski/api/omadata-oauth2/resource-owner", new OmaDataOAuth2ResourceOwnerServlet) // TODO: Routet valtuutuksen myöntämiselle yms liittyvälle
-//    mount("/koski/omadata-oauth2", new OmaDataOAuth2ReactServlet) // TODO: Routet valtuututksen myöntö frontille
     mount("/koski/api/omaopintopolkuloki", new OmaOpintoPolkuLokiServlet)
     mount("/koski/api/ytrkoesuoritukset", new YtrKoesuoritusApiServlet)
     mount("/koski/api/massaluovutus", new MassaluovutusServlet)
@@ -179,6 +175,13 @@ class ScalatraBootstrap extends LifeCycle with Logging with Timing with GlobalEx
 
     if (FrontendValvontaMode(application.config.getString("frontend-valvonta.mode")) != FrontendValvontaMode.DISABLED) {
       mount("/koski/api/frontendvalvonta", new FrontendValvontaRaportointiServlet)
+    }
+
+    if (!Environment.isProdEnvironment(application.config)) {
+      mount("/koski/api/luovutuspalvelu/omadata-oauth2/authorization-server", new OmaDataOAuth2AuthorizationServerServlet)
+      mount("/koski/api/luovutuspalvelu/omadata-oauth2/resource-server", new OmaDataOAuth2ResourceServerServlet)
+      //    mount("/koski/api/omadata-oauth2/resource-owner", new OmaDataOAuth2ResourceOwnerServlet) // TODO: Routet valtuutuksen myöntämiselle yms liittyvälle
+      //    mount("/koski/omadata-oauth2", new OmaDataOAuth2ReactServlet) // TODO: Routet valtuutuksen myöntö frontille
     }
 
     if (Environment.isLocalDevelopmentEnvironment(application.config)) {

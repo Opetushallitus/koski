@@ -1,5 +1,5 @@
 {
-  "numHits": 962,
+  "numHits": 99999,
   "organisaatiot": [
     {
       "oid": "1.2.246.562.10.53642770753",
@@ -3697,6 +3697,35 @@
       "virastoTunnus": "600101",
       "organisaatiotyypit": ["organisaatiotyyppi_01", "organisaatiotyyppi_05"],
       "status": "AKTIIVINEN"
+    },
+    {
+      "alkuPvm": 284076000000,
+      "children": [],
+      "kieletUris": [
+        "oppilaitoksenopetuskieli_1#1"
+      ],
+      "kotipaikkaUri": "kunta_091",
+      "lyhytNimi": {
+        "fi": "Digi- ja väestötietovirasto",
+        "sv": "Digi- ja väestötietovirasto",
+        "en": "Digi- ja väestötietovirasto"
+      },
+      "match": true,
+      "nimi": {
+        "fi": "Digi- ja väestötietovirasto",
+        "sv": "Digi- ja väestötietovirasto",
+        "en": "Digi- ja väestötietovirasto"
+      },
+      "oid": "1.2.246.562.10.69847666265",
+      "organisaatiotyypit": [
+        "organisaatiotyyppi_05"
+      ],
+      "parentOid": "1.2.246.562.10.00000000001",
+      "status": "AKTIIVINEN",
+      "toimipistekoodi": "",
+      "tyypit": [
+        "organisaatiotyyppi_05"
+      ]
     },
     {
       "oid": "1.2.246.562.10.77055527103",

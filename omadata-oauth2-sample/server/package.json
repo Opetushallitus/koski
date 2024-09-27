@@ -8,9 +8,15 @@
   },
   "scripts": {
     "build": "npx tsc",
-    "start": "ts-node-dev --respawn --transpile-only src/index.ts",
+    "start": "ENABLE_MTLS=false ts-node-dev --respawn --transpile-only src/index.ts",
     "start:prod": "node dist/index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "npm run lint:types && npm run lint:problems",
+    "lint:types": "tsc --noEmit",
+    "lint:types:watch": "tsc --noEmit --watch --preserveWatchOutput",
+    "lint:problems": "eslint \"{src,test}/**/*.{js,jsx,ts,tsx}\"",
+    "fix": "npm run fix:format",
+    "fix:format": "eslint \"{src,test}/**/*.{js,jsx,ts,tsx}\" --fix"
   },
   "repository": {
     "type": "git",
@@ -18,12 +24,20 @@
   },
   "license": "EUPL-1.1",
   "dependencies": {
+    "@aws-sdk/client-secrets-manager": "^3.658.0",
     "express": "^4.21.0",
     "express-rate-limit": "^7.4.0",
-    "helmet": "^7.1.0"
+    "helmet": "^7.1.0",
+    "node-fetch": "^3.3.2"
   },
   "devDependencies": {
+    "@aws-sdk/types": "^3.654.0",
     "@types/express": "^4.17.21",
+    "@typescript-eslint/eslint-plugin": "^8.7.0",
+    "@typescript-eslint/parser": "^8.7.0",
+    "eslint": "^8.57.1",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-prettier": "^5.2.1",
     "ts-node-dev": "^2.0.0",
     "typescript": "^5.6.2"
   }

@@ -64,6 +64,7 @@ object MockOrganisaatiot {
   val suomifi = "1.2.246.562.10.31453145314"
   val kuopionAikuislukio = "1.2.246.562.10.42923230215"
   val kallavedenLukio = "1.2.246.562.10.63813695861"
+  val dvv = "1.2.246.562.10.69847666265"
   object EuropeanSchoolOfHelsinki {
     val koulutustoimija = "1.2.246.562.10.962346066210"
     val oppilaitos = "1.2.246.562.10.13349113236"
