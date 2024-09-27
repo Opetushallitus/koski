@@ -309,6 +309,7 @@ object KoskiErrorCategory {
     val vainVirkailija = subcategory("vainVirkailija", "Sallittu vain virkailija-käyttäjille")
     val vainKansalainen = subcategory("vainKansalainen", "Sallittu vain kansalainen-käyttäjille")
     val vainHSL = subcategory("vainHSL", "Sallittu vain HSL:lle")
+    val vainOmaDataOAuth2 = subcategory("vainOmaDataOAuth2", "Sallittu vain Oma Data OAuth2 -rajapinnan käyttäjille")
     val vainPalveluvayla = subcategory("vainPalveluvayla", "Sallittu vain palveluväylän kautta")
     val vainTilastokeskus = subcategory("vainTilastokeskus", "Sallittu vain tilastokeskuskäyttäjälle")
     val kiellettyKäyttöoikeus = subcategory("kiellettyKäyttöoikeus", "Ei sallittu näillä käyttöoikeuksilla")

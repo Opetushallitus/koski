@@ -87,6 +87,11 @@
       <version>${scalatra.version}</version>
     </dependency>
     <dependency>
+      <groupId>org.scalatra</groupId>
+      <artifactId>scalatra-forms_2.12</artifactId>
+      <version>${scalatra.version}</version>
+    </dependency>
+    <dependency>
       <groupId>org.json4s</groupId>
       <artifactId>json4s-jackson_2.12</artifactId>
       <version>${json4s.version}</version>
