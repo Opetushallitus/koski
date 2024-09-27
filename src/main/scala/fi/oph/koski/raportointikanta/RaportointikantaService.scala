@@ -2,10 +2,9 @@ package fi.oph.koski.raportointikanta
 
 import fi.oph.koski.cloudwatch.CloudWatchMetricsService
 import fi.oph.koski.config.{Environment, KoskiApplication}
-import fi.oph.koski.db.{KoskiOpiskeluoikeusRow, OpiskeluoikeusRow, RaportointiGenerointiDatabaseConfig}
+import fi.oph.koski.db.{OpiskeluoikeusRow, RaportointiGenerointiDatabaseConfig}
 import fi.oph.koski.koskiuser.KoskiSpecificSession
 import fi.oph.koski.log.Logging
-import fi.oph.koski.opiskeluoikeus.PäivitetytOpiskeluoikeudetJonoService
 import rx.lang.scala.schedulers.NewThreadScheduler
 import rx.lang.scala.{Observable, Scheduler}
 
@@ -108,8 +107,12 @@ class RaportointikantaService(application: KoskiApplication) extends Logging {
     loader.loadOpiskeluoikeudet()
   }
 
-  def loadHenkilöt(db: RaportointiDatabase = raportointiDatabase): Int =
-    HenkilöLoader.loadHenkilöt(application.opintopolkuHenkilöFacade, db, application.koodistoPalvelu, application.opiskeluoikeusRepository)
+  def loadHenkilöt(db: RaportointiDatabase = raportointiDatabase): Int = {
+    val kuntakoodit = application.koodistoPalvelu.getLatestVersionOptional("kunta")
+      .map(application.koodistoPalvelu.getKoodistoKoodit)
+      .getOrElse(List.empty)
+    HenkilöLoader.loadHenkilöt(application.opintopolkuHenkilöFacade, db, application.koodistoPalvelu, application.opiskeluoikeusRepository, kuntakoodit)
+  }
 
   def loadOrganisaatiot(db: RaportointiDatabase = raportointiDatabase): Int =
     OrganisaatioLoader.loadOrganisaatiot(application.organisaatioRepository, db)
