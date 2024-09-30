@@ -139,11 +139,11 @@ app.get('/api', async (req: Request, res: Response, next: NextFunction) => {
   try {
     const accessTokenData = await fetchAccessToken(authorizationServerUrl)
 
-    // TODO: Kun reitti valmis
-    // const data = await fetchData(accessTokenData.access_token, resourceServerUrl)
-    // res.json({...accessTokenData, ...data})
-
-    res.json({ ...accessTokenData })
+    const data = await fetchData(
+      accessTokenData.access_token,
+      resourceServerUrl
+    )
+    res.json({ ...accessTokenData, ...data })
   } catch (err) {
     next(err)
   }
@@ -164,6 +164,7 @@ async function fetchAccessToken(url: string): Promise<AccessTokenData> {
   console.log(
     JSON.stringify(
       {
+        operation: 'fetchAccessToken',
         'response.ok': response.ok,
         'response.status': response.status,
         'response.statusText': response.statusText,
@@ -179,7 +180,11 @@ async function fetchAccessToken(url: string): Promise<AccessTokenData> {
   if (!response.ok) {
     // TODO: Poista/karsi, ettei vahingossakaan salaisuuksia lokitu
     console.log(
-      JSON.stringify({ 'response.text()': await response.text() }, null, 2)
+      JSON.stringify(
+        { 'fetchAccessToken response.text()': await response.text() },
+        null,
+        2
+      )
     )
     throw new Error(response.statusText)
   }
@@ -187,7 +192,9 @@ async function fetchAccessToken(url: string): Promise<AccessTokenData> {
   const jsonData: AccessTokenData = (await response.json()) as AccessTokenData
 
   // TODO: Poista/karsi, ettei vahingossakaan salaisuuksia lokitu
-  console.log(JSON.stringify({ 'response.json()': jsonData }, null, 2))
+  console.log(
+    JSON.stringify({ 'fetchAccessToken response.json()': jsonData }, null, 2)
+  )
 
   return jsonData
 }
@@ -253,25 +260,104 @@ async function handleAccessTokenRequestBasicAuth(
   return response
 }
 
-// TODO: mTLS-autentikointi (vaatii sitten myös Authorization => X-Auth -headermuutoksen toteuttamisen luovutuspalvelun nginx:ään.
 async function fetchData(
   accessToken: string,
   url: string
 ): Promise<DummyResourceResponse> {
-  const response = await fetch(url, {
-    method: 'POST',
-    // TODO: Autentikointi mTLS:llä ympäristöissä, Bearer tokenin välitys silloin Authorization-headerissä
-    headers: {
-      Authorization:
-        'Basic ' + Buffer.from(username + ':' + password).toString('base64'),
-      'X-Auth': 'Bearer ' + accessToken
-    }
-  })
+  const response = await handleDataRequest(accessToken, url)
+
+  // TODO: Poista/karsi, ettei vahingossakaan salaisuuksia lokitu
+  console.log(
+    JSON.stringify(
+      {
+        operation: 'fetchData',
+        'response.ok': response.ok,
+        'response.status': response.status,
+        'response.statusText': response.statusText,
+        'response.headers.raw()': response.headers.raw(),
+        "response.headers.get('content-type')":
+          response.headers.get('content-type')
+      },
+      null,
+      2
+    )
+  )
 
   if (!response.ok) {
+    // TODO: Poista/karsi, ettei vahingossakaan salaisuuksia lokitu
+    console.log(
+      JSON.stringify(
+        { 'fetchData response.text()': await response.text() },
+        null,
+        2
+      )
+    )
     throw new Error(response.statusText)
   }
-
   // TODO: parempi parsinta eikä vain typecastia, jos tämä koodi jää elämään.
-  return (await response.json()) as DummyResourceResponse
+  const jsonData: DummyResourceResponse =
+    (await response.json()) as DummyResourceResponse
+
+  // TODO: Poista/karsi, ettei vahingossakaan salaisuuksia lokitu
+  console.log(
+    JSON.stringify({ 'fetchData response.json()': jsonData }, null, 2)
+  )
+
+  return jsonData
+}
+
+async function handleDataRequest(
+  accessToken: string,
+  url: string
+): Promise<FetchResponse> {
+  if (enableMTLS) {
+    return await handleDataRequestMTLS(accessToken, url)
+  } else {
+    return await handleDataRequestBasicAuth(accessToken, url)
+  }
+}
+async function handleDataRequestMTLS(
+  accessToken: string,
+  url: string
+): Promise<FetchResponse> {
+  const certs = await getClientCertSecret()
+
+  const options = {
+    cert: certs['fullchain.pem'],
+    key: certs['privkey.pem']
+  }
+
+  const myHeaders: HeadersInit = {
+    Authorization: 'Bearer ' + accessToken
+  }
+
+  const mtlsAgent = new https.Agent(options)
+
+  // TODO: poista authorization coden debuggaus
+  console.log(`POST to ${url}`)
+
+  const response = await fetch(url, {
+    method: 'POST',
+    headers: myHeaders,
+    agent: mtlsAgent
+  })
+  return response
+}
+
+async function handleDataRequestBasicAuth(
+  accessToken: string,
+  url: string
+): Promise<FetchResponse> {
+  const base64Auth = Buffer.from(`${username}:${password}`).toString('base64')
+
+  const myHeaders: HeadersInit = {
+    Authorization: `Basic ${base64Auth}`,
+    'X-Auth': 'Bearer ' + accessToken
+  }
+
+  const response: FetchResponse = await fetch(url, {
+    method: 'POST',
+    headers: myHeaders
+  })
+  return response
 }
