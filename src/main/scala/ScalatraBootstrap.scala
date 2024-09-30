@@ -178,8 +178,8 @@ class ScalatraBootstrap extends LifeCycle with Logging with Timing with GlobalEx
     }
 
     if (!Environment.isProdEnvironment(application.config)) {
-      mount("/koski/api/luovutuspalvelu/omadata-oauth2/authorization-server", new OmaDataOAuth2AuthorizationServerServlet)
-      mount("/koski/api/luovutuspalvelu/omadata-oauth2/resource-server", new OmaDataOAuth2ResourceServerServlet)
+      mount("/koski/api/omadata-oauth2/authorization-server", new OmaDataOAuth2AuthorizationServerServlet)
+      mount("/koski/api/omadata-oauth2/resource-server", new OmaDataOAuth2ResourceServerServlet)
       //    mount("/koski/api/omadata-oauth2/resource-owner", new OmaDataOAuth2ResourceOwnerServlet) // TODO: Routet valtuutuksen myöntämiselle yms liittyvälle
       //    mount("/koski/omadata-oauth2", new OmaDataOAuth2ReactServlet) // TODO: Routet valtuutuksen myöntö frontille
     }
