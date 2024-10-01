@@ -171,7 +171,8 @@ jobs:
             fi.oph.koski.opiskeluoikeus, \
             fi.oph.koski.oppilaitos, \
             fi.oph.koski.organisaatio \
-            fi.oph.koski.typemodel
+            fi.oph.koski.typemodel \
+            fi.oph.koski.omadataoauth2
 
   run_backend_tests_other_2:
     name: Backend (other 2/4)
