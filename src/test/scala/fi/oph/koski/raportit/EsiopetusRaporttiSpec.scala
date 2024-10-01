@@ -15,6 +15,8 @@ import org.scalatest.BeforeAndAfterAll
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.should.Matchers
 
+import java.time.LocalDate
+
 class EsiopetusRaporttiSpec extends AnyFreeSpec with Matchers with RaportointikantaTestMethods with BeforeAndAfterAll {
   private val application = KoskiApplicationForTests
   private val raporttiService = new EsiopetusRaporttiService(application)
@@ -83,6 +85,24 @@ class EsiopetusRaporttiSpec extends AnyFreeSpec with Matchers with Raportointika
         r.koulukoti should equal(true)
         r.ostopalveluTaiPalveluseteli should equal(None)
       }
+    }
+
+    "Kotikunnan hakeminen kotikuntahistoriasta" - {
+      def getKotikuntahistoriaaKäyttäväRaportti(kotikuntaPvm: LocalDate) =
+        raporttiBuilder.build(List(jyväskylänNormaalikoulu), localDate(2024, 10, 1), Some(kotikuntaPvm), t)(session(defaultUser)).rows.map(_.asInstanceOf[EsiopetusRaporttiRow])
+
+      "Kotikunta löytyy historiasta" in {
+        val raporttiRows = getKotikuntahistoriaaKäyttäväRaportti(localDate(2024, 1, 1))
+        val row = findSingle(raporttiRows, KoskiSpecificMockOppijat.eskari)
+        row.kotikunta should equal(Some("Juva"))
+      }
+
+      "Kotikunta ei löydy historiasta" in {
+        val raporttiRows = getKotikuntahistoriaaKäyttäväRaportti(localDate(2024, 6, 2))
+        val row = findSingle(raporttiRows, KoskiSpecificMockOppijat.eskari)
+        row.kotikunta should equal(Some("Ei tiedossa 2.6.2024 (nykyinen kotikunta on Jyväskylä)"))
+      }
+
     }
 
     "Varhaiskasvatuksen järjestäjä" - {
