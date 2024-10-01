@@ -1,0 +1,49 @@
+name: OmaDataOAuth2Sample
+on:
+  push:
+env:
+  ECR_REPOSITORY: omadataoauth2sample
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+    environment: dev
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.ECR_ROLE }}
+          role-duration-seconds: 3600
+          role-session-name: KoskiOmaDataOAuth2SampleDeploymentEcr-${{ github.event.inputs.environment }}-${{ github.event.inputs.commithash }}
+          aws-region: eu-west-1
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+        with:
+          registries: ${{ secrets.ECR_ACCOUNT_ID }}
+          mask-password: "true"
+
+      - name: Check if container image already exists in ECR
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          IMAGE_TAG: ${{ github.sha  }}
+        id: check-image
+        run: |
+          echo "image-exists=$(docker manifest inspect $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG > /dev/null 2>&1 ; echo $?)" >> $GITHUB_OUTPUT
+
+      - name: Build, tag, and push image to Amazon ECR
+        if: steps.check-image.outputs.image-exists != '0'
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          IMAGE_TAG: ${{ github.sha }}
+        run: |
+          docker build -f omadata-oauth2-sample/Dockerfile -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG --build-arg KOSKI_VERSION=$IMAGE_TAG omadata-oauth2-sample
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+  
