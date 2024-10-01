@@ -1058,6 +1058,25 @@ describe('Ammatillinen koulutus', function () {
             })
           })
         })
+
+        describe('Organisaatiovalitsin', function () {
+          before(
+            editor.edit,
+            editor
+              .property('toimipiste')
+              .organisaatioValitsin()
+              .select('Aalto-yliopisto'),
+            editor
+              .property('toimipiste')
+              .organisaatioValitsin()
+              .select('Helsingin yliopisto')
+          )
+          it('Organisaation voi vaihtaa monta kertaa', function () {
+            expect(editor.property('toimipiste').getValue()).to.equal(
+              'Helsingin yliopisto'
+            )
+          })
+        })
       })
     })
 
