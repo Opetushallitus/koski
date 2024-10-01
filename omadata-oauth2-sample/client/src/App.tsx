@@ -1,29 +1,28 @@
-import React from 'react';
-import './App.css';
+import React from "react"
+import "./App.css"
 
 function App() {
-  const [data, setData] = React.useState<object | null>(null);
-  const [error, setError] = React.useState<string | null>(null);
+  const [data, setData] = React.useState<object | null>(null)
+  const [error, setError] = React.useState<string | null>(null)
 
   React.useEffect(() => {
-
     fetch("/api")
       .then((res) => {
         if (!res.ok) {
           throw new Error(`API result: ${res.status}:${res.statusText}`)
         }
-        setError('SUCCESS')
+        setError("SUCCESS")
         return res.json()
       })
       .then((data) => {
         setData(data)
       })
-      .catch(error => {
+      .catch((error) => {
         console.error(error)
-        setData({result: "ERROR"})
+        setData({ result: "ERROR" })
         setError(error.message)
       })
-  }, []);
+  }, [])
 
   return (
     <div className="App">
@@ -32,7 +31,7 @@ function App() {
         <p>{!error ? "Checking errors..." : error}</p>
       </header>
     </div>
-  );
+  )
 }
 
-export default App;
+export default App
