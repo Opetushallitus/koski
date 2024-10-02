@@ -3,6 +3,8 @@ on:
   push:
 env:
   ECR_REPOSITORY: omadataoauth2sample
+  TASK_FAMILY: omadataoauth2sample
+  CLUSTER: koski-cluster
 jobs:
   build:
     name: Build
@@ -45,4 +47,51 @@ jobs:
         run: |
           docker build -f omadata-oauth2-sample/Dockerfile -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG --build-arg KOSKI_VERSION=$IMAGE_TAG omadata-oauth2-sample
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
-  
+    outputs:
+      ecr-registry: ${{ steps.login-ecr.outputs.registry }}
+
+  deploy:
+    name: Deploy
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+    needs: [build]
+    env:
+      ECR_REGISTRY: ${{ needs.build.outputs.ecr-registry }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ vars.OMADATAOAUTH2SAMPLE_DEPLOY_ROLE }}
+          role-duration-seconds: 3600
+          role-session-name: KoskiOmaDataOAuth2SampleDeployment-${{ github.event.inputs.environment }}-${{ github.event.inputs.commithash }}
+          aws-region: eu-west-1
+
+      - name: Get task definition skeleton
+        id: get-task-def
+        run: |
+          TASK_DEFINITION_ARN=$(aws ecs describe-task-definition --task-definition "${{ env.TASK_FAMILY }}" --region eu-west-1 | jq -r .taskDefinition.taskDefinitionArn )
+          aws ecs describe-task-definition --task-definition $TASK_DEFINITION_ARN --query 'taskDefinition' \
+          | jq 'del(.registeredBy, .registeredAt, .status, .revision, .requiresAttributes, .taskDefinitionArn, .compatibilities)' \
+          > task-definition.json
+          echo "TASK_DEFINITION_ARN=$TASK_DEFINITION_ARN" >> "$GITHUB_OUTPUT"
+
+      - name: Render Amazon ECS task definition
+        id: render-task-def
+        uses: aws-actions/amazon-ecs-render-task-definition@v1
+        with:
+          task-definition: task-definition.json
+          container-name: ${{ env.ECR_REPOSITORY }}
+          image: ${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:${{ github.sha }}
+
+      - name: Deploy to Amazon ECS service
+        uses: aws-actions/amazon-ecs-deploy-task-definition@v1
+        with:
+          task-definition: ${{ steps.render-task-def.outputs.task-definition }}
+          service: ${{ env.TASK_FAMILY }}
+          cluster: ${{ env.CLUSTER }}
+          wait-for-service-stability: true
