@@ -11,9 +11,11 @@ import {
   Listavalinta,
   LyhytKuvaus,
   RaportinLataus,
-  Vinkit
+  Vinkit,
+  PaivaValinta
 } from './raporttiComponents'
-import { selectFromState } from './raporttiUtils'
+import { selectFromState, today } from './raporttiUtils'
+import { t } from '../i18n/i18n'
 
 export const osasuoritusTypes = {
   TUTKINNON_OSA: 'tutkinnon osat',
@@ -59,12 +61,15 @@ export const AikajaksoRaporttiAikarajauksella = ({
   stateP,
   apiEndpoint,
   shortDescription,
+  showKotikuntaPvmInput,
+  kotikuntaPvmInputHelp,
   example,
   osasuoritusType = osasuoritusTypes.TUTKINNON_OSA,
   lang
 }) => {
   const alkuAtom = Atom()
   const loppuAtom = Atom()
+  const kotikuntaPvmAtom = Atom(today())
   const osasuoritustenAikarajausAtom = Atom(false)
   const submitBus = Bacon.Bus()
   const { selectedOrganisaatioP, dbUpdatedP } = selectFromState(stateP)
@@ -76,14 +81,17 @@ export const AikajaksoRaporttiAikarajauksella = ({
     alkuAtom,
     loppuAtom,
     osasuoritustenAikarajausAtom,
-    (o, a, l, r) =>
+    kotikuntaPvmAtom,
+    (o, a, l, r, kkp) =>
       o &&
       a &&
       l &&
-      l.valueOf() >= a.valueOf() && {
+      l.valueOf() >= a.valueOf() && 
+      (!showKotikuntaPvmInput || kkp) && {
         oppilaitosOid: o.oid,
         alku: formatISODate(a),
         loppu: formatISODate(l),
+        kotikuntaPvm: formatISODate(kkp),
         osasuoritustenAikarajaus: r,
         lang,
         password,
@@ -122,6 +130,8 @@ export const AikajaksoRaporttiAikarajauksella = ({
           }
         ]}
       />
+
+      {showKotikuntaPvmInput && <PaivaValinta label={t('select-kotikunta-date')} paivaAtom={kotikuntaPvmAtom} ohje={kotikuntaPvmInputHelp} />}
 
       <RaportinLataus
         password={password}

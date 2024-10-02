@@ -37,13 +37,13 @@ export const VuosiluokkaRaporttiPaivalta = ({
   const downloadExcelP = Bacon.combineWith(
     selectedOrganisaatioP,
     paivaAtom,
-    vuosiluokkaAtom,
     kotikuntaPvmAtom,
+    vuosiluokkaAtom,
     (o, p, kkp, v) =>
       o &&
       p &&
       v && 
-      (!showKotikuntaPvmInput || kkp) && {
+      kkp && {
         oppilaitosOid: o.oid,
         paiva: formatISODate(p),
         kotikuntaPvm: showKotikuntaPvmInput ? formatISODate(kkp) : undefined,
@@ -53,6 +53,7 @@ export const VuosiluokkaRaporttiPaivalta = ({
         baseUrl: `/koski/api/raportit${apiEndpoint}`
       }
   )
+
   const downloadExcelE = submitBus
     .map(downloadExcelP)
     .flatMapLatest(downloadExcel)

@@ -1,22 +1,24 @@
 .tabs-container {
   display: flex;
+  width:100%;
   font-weight: 400;
+  font-size: 85%;
   color: @color-link-blue;
   border-bottom: solid 2px @color-link-blue;
 
   .tabs-item-text {
-    padding: 15px 10px;
+    padding: 7.5px 5px;
   }
 
   @media screen and (min-width: 900px) {
     .tabs-item-text {
-      padding: 20px 20px;
+      padding: 10px 10px;
     }
   }
 
   @media screen and (min-width: 1300px) {
     .tabs-item-text {
-      padding: 20px 30px;
+      padding: 10px 10px;
     }
   }
 }
@@ -27,10 +29,16 @@
   justify-content: center;
 
   position: relative;
-  border: solid 2px @color-link-blue;
+  border: solid 1px @color-link-blue;
   border-bottom: none;
-  margin-right: 5px;
+  border-top-right-radius: 3px;
+  border-top-left-radius: 3px;
+  margin-right: 0px;
   cursor: pointer;
+
+  &:hover {
+    background: rgba(21, 158, 203, 0.1);
+  }
 
   .tabs-item-text {
     display: block;
@@ -44,6 +52,9 @@
 
 .tabs-item-selected {
   background: @color-link-blue;
+  &:hover {
+    background: @color-link-blue;    
+  }
   color: white;
 
   .tabs-item-caret {
