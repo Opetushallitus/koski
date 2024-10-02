@@ -347,7 +347,8 @@ class RaportitServlet(implicit val application: KoskiApplication) extends KoskiS
       password = getStringParam("password"),
       paiva = getLocalDateParam("paiva"),
       vuosiluokka = getStringParam("vuosiluokka"),
-      lang = getStringParam("lang")
+      lang = getStringParam("lang"),
+      kotikuntaPvm = getLocalDateParamOption("kotikuntaPvm"),
     )
   }
 

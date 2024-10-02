@@ -11,6 +11,7 @@ import fi.oph.koski.util.FinnishDateFormat.finnishDateFormat
 import org.json4s.jackson.JsonMethods
 import slick.jdbc.GetResult
 
+import java.sql.Date
 import java.time.LocalDate
 import scala.concurrent.duration.DurationInt
 
@@ -24,6 +25,7 @@ case class PerusopetuksenRaportitRepository(db: DB) extends QueryMethods with Ra
   def perusopetuksenvuosiluokka(
     organisaatioOidit: Seq[Organisaatio.Oid],
     päivä: LocalDate,
+    kotikuntaPvm: Option[LocalDate],
     vuosiluokka: String,
     t: LocalizationReader
   ): Seq[PerusopetuksenRaporttiRows] = {
@@ -33,12 +35,13 @@ case class PerusopetuksenRaportitRepository(db: DB) extends QueryMethods with Ra
     val paatasonSuoritusIds = tunnisteet.flatMap(_._2)
     val aikajaksoIds = tunnisteet.flatMap(_._3)
 
-    suoritustiedot(päivä, opiskeluoikeusOids, paatasonSuoritusIds, aikajaksoIds, vuosiluokka, t)
+    suoritustiedot(päivä, opiskeluoikeusOids, paatasonSuoritusIds, aikajaksoIds, vuosiluokka, kotikuntaPvm, t)
   }
 
   def peruskoulunPaattavatJaLuokalleJääneet(
     organisaatioOidit: Seq[Organisaatio.Oid],
     päivä: LocalDate,
+    kotikuntaPvm: Option[LocalDate],
     vuosiluokka: String,
     t: LocalizationReader
   ): Seq[PerusopetuksenRaporttiRows] = {
@@ -49,7 +52,7 @@ case class PerusopetuksenRaportitRepository(db: DB) extends QueryMethods with Ra
     val paatasonSuoritusIds = luokalleJäävienTunnisteet.flatMap(_._2).union(peruskoulunPäättävienTunnisteet.flatMap(_._2))
     val aikajaksoIds = luokalleJäävienTunnisteet.flatMap(_._3).union(peruskoulunPäättävienTunnisteet.flatMap(_._3))
 
-    suoritustiedot(päivä, opiskeluoikeusOids, paatasonSuoritusIds, aikajaksoIds, vuosiluokka, t)
+    suoritustiedot(päivä, opiskeluoikeusOids, paatasonSuoritusIds, aikajaksoIds, vuosiluokka, kotikuntaPvm, t)
   }
 
   private def suoritustiedot(
@@ -58,6 +61,7 @@ case class PerusopetuksenRaportitRepository(db: DB) extends QueryMethods with Ra
     paatasonSuoritusIds: Seq[PäätasonSuoritusId],
     aikajaksoIds: Seq[AikajaksoId],
     vuosiluokka: String,
+    kotikuntaPvm: Option[LocalDate],
     t: LocalizationReader
   ) = {
     val opiskeluoikeudet = runDbSync(ROpiskeluoikeudet.filter(_.opiskeluoikeusOid inSet opiskeluoikeusOids).result, timeout = 5.minutes)
@@ -65,6 +69,16 @@ case class PerusopetuksenRaportitRepository(db: DB) extends QueryMethods with Ra
     val paatasonSuoritukset = runDbSync(RPäätasonSuoritukset.filter(_.päätasonSuoritusId inSet paatasonSuoritusIds).result, timeout = 5.minutes).groupBy(_.opiskeluoikeusOid)
     val osasuoritukset = runDbSync(ROsasuoritukset.filter(_.päätasonSuoritusId inSet paatasonSuoritusIds).result).groupBy(_.päätasonSuoritusId)
     val henkilot = runDbSync(RHenkilöt.filter(_.oppijaOid inSet opiskeluoikeudet.map(_.oppijaOid).distinct).result).groupBy(_.oppijaOid).mapValues(_.head)
+    val kotikuntahistoriat = kotikuntaPvm.toSeq.flatMap { pvm =>
+      val pvmDateBegin = Date.valueOf(LocalDate.of(1900, 1, 1))
+      val pvmDateEnd = Date.valueOf(LocalDate.now())
+      val pvmDate = Date.valueOf(pvm)
+      runDbSync(RKotikuntahistoria
+        .filter(_.masterOppijaOid inSet opiskeluoikeudet.map(_.oppijaOid).distinct)
+        .filter(r => r.muuttoPvm.getOrElse(pvmDateBegin) <= pvmDate && r.poismuuttoPvm.getOrElse(pvmDateEnd) >= pvmDate)
+        .result
+      )
+    }
     val voimassaOlevatVuosiluokat = runDbSync(voimassaOlevatVuosiluokatQuery(opiskeluoikeusOids).result, timeout = 5.minutes).groupBy(_._1).mapValues(_.map(_._2).toSeq)
     val luokat = runDbSync(luokkatiedotVuosiluokalleQuery(opiskeluoikeusOids, vuosiluokka).result, timeout = 5.minutes).groupBy(_._1).mapValues(_.map(_._2).distinct.sorted.mkString(","))
     val organisaatiohistoriat = fetchOrganisaatiohistoriat(päivä, opiskeluoikeusOids, t.language).groupBy(_.opiskeluoikeusOid)
@@ -79,7 +93,8 @@ case class PerusopetuksenRaportitRepository(db: DB) extends QueryMethods with Ra
           osasuoritukset = osasuoritukset.getOrElse(päätasonSuoritus.päätasonSuoritusId, Nil),
           voimassaolevatVuosiluokat = voimassaOlevatVuosiluokat.getOrElse(oo.opiskeluoikeusOid, Nil),
           luokka = luokat.get(oo.opiskeluoikeusOid),
-          organisaatiohistoriaResult = organisaatiohistoriat.getOrElse(oo.opiskeluoikeusOid, Nil)
+          organisaatiohistoriaResult = organisaatiohistoriat.getOrElse(oo.opiskeluoikeusOid, Nil),
+          kotikuntaHistoriassa = kotikuntahistoriat.find(_.masterOppijaOid == oo.oppijaOid),
         )
       }
     }
@@ -333,5 +348,6 @@ case class PerusopetuksenRaporttiRows(
   osasuoritukset: Seq[ROsasuoritusRow],
   voimassaolevatVuosiluokat: Seq[String],
   luokka: Option[String],
-  organisaatiohistoriaResult: Seq[OrganisaatiohistoriaResult]
+  organisaatiohistoriaResult: Seq[OrganisaatiohistoriaResult],
+  kotikuntaHistoriassa: Option[RKotikuntahistoriaRow],
 )

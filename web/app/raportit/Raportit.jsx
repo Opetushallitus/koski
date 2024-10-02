@@ -649,6 +649,7 @@ function PerusopetuksenVuosiluokka({ stateP }) {
   const dateInputHelpText = (
     <Text name="PerusopetuksenVuosiluokka-date-input-help" />
   )
+  const kotikuntaPvmInputHelp = <Text name="PerusopetuksenVuosiluokka-kotikunta-date-input-help" />
   const exampleText = <Paragraphs name="PerusopetuksenVuosiluokka-example" />
 
   return (
@@ -658,6 +659,8 @@ function PerusopetuksenVuosiluokka({ stateP }) {
       title={titleText}
       shortDescription={shortDescriptionText}
       dateInputHelp={dateInputHelpText}
+      showKotikuntaPvmInput
+      kotikuntaPvmInputHelp={kotikuntaPvmInputHelp}
       example={exampleText}
       lang={lang}
     />

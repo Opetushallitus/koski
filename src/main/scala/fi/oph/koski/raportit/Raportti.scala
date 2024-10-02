@@ -35,7 +35,7 @@ trait VuosiluokkaRaporttiPaivalta extends Raportti {
 
   def filename(etuliite: String, oppilaitosOid: String, paiva: LocalDate, vuosiluokka: String): String
 
-  def buildRaportti(raportointiDatabase: PerusopetuksenRaportitRepository, oppilaitosOid: Seq[Organisaatio.Oid], paiva: LocalDate, vuosiluokka: String, t: LocalizationReader): Seq[Product]
+  def buildRaportti(raportointiDatabase: PerusopetuksenRaportitRepository, oppilaitosOid: Seq[Organisaatio.Oid], paiva: LocalDate, kotikuntaPvm: Option[LocalDate], vuosiluokka: String, t: LocalizationReader): Seq[Product]
 }
 
 trait RaporttiRequest {
@@ -66,7 +66,8 @@ case class PerusopetuksenVuosiluokkaRequest
   password: String,
   paiva: LocalDate,
   vuosiluokka: String,
-  lang: String
+  lang: String,
+  kotikuntaPvm: Option[LocalDate],
 ) extends RaporttiRequest
 
 case class OppilaitosRaporttiResponse(
