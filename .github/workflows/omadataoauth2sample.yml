@@ -47,8 +47,6 @@ jobs:
         run: |
           docker build -f omadata-oauth2-sample/Dockerfile -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG --build-arg KOSKI_VERSION=$IMAGE_TAG omadata-oauth2-sample
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
-    outputs:
-      ecr-registry: ${{ steps.login-ecr.outputs.registry }}
 
   deploy:
     name: Deploy
@@ -57,8 +55,7 @@ jobs:
       id-token: write
       contents: read
     needs: [build]
-    env:
-      ECR_REGISTRY: ${{ needs.build.outputs.ecr-registry }}
+    environment: dev
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -70,6 +67,13 @@ jobs:
           role-duration-seconds: 3600
           role-session-name: KoskiOmaDataOAuth2SampleDeployment-${{ github.event.inputs.environment }}-${{ github.event.inputs.commithash }}
           aws-region: eu-west-1
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+        with:
+          registries: ${{ secrets.ECR_ACCOUNT_ID }}
+          mask-password: "true"
 
       - name: Get task definition skeleton
         id: get-task-def
@@ -86,7 +90,7 @@ jobs:
         with:
           task-definition: task-definition.json
           container-name: ${{ env.ECR_REPOSITORY }}
-          image: ${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:${{ github.sha }}
+          image: ${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}:${{ github.sha }}
 
       - name: Deploy to Amazon ECS service
         uses: aws-actions/amazon-ecs-deploy-task-definition@v1
