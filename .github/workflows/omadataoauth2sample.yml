@@ -10,7 +10,6 @@ jobs:
     permissions:
       id-token: write
       contents: read
-    environment: dev
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -18,7 +17,7 @@ jobs:
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          role-to-assume: ${{ secrets.ECR_ROLE }}
+          role-to-assume: ${{ vars.OMADATAOAUTH2SAMPLE_ECR_ROLE }}
           role-duration-seconds: 3600
           role-session-name: KoskiOmaDataOAuth2SampleDeploymentEcr-${{ github.event.inputs.environment }}-${{ github.event.inputs.commithash }}
           aws-region: eu-west-1
