@@ -20,7 +20,7 @@ import fi.oph.koski.log.Logging
 import fi.oph.koski.luovutuspalvelu.{PalveluvaylaServlet, TilastokeskusServlet}
 import fi.oph.koski.migri.MigriServlet
 import fi.oph.koski.mydata.{ApiProxyServlet, MyDataReactServlet, MyDataServlet}
-import fi.oph.koski.omadataoauth2.{OmaDataOAuth2AuthorizationServerServlet, OmaDataOAuth2ResourceServerServlet}
+import fi.oph.koski.omadataoauth2.{OmaDataOAuth2AuthorizationServerServlet, OmaDataOAuth2CASWorkaroundServlet, OmaDataOAuth2LogoutPostResponseServlet, OmaDataOAuth2PostResponseDebugServlet, OmaDataOAuth2ResourceOwnerReactServlet, OmaDataOAuth2ResourceOwnerServlet, OmaDataOAuth2ResourceServerServlet}
 import fi.oph.koski.omaopintopolkuloki.OmaOpintoPolkuLokiServlet
 import fi.oph.koski.omattiedot.{OmatTiedotHtmlServlet, OmatTiedotServlet, OmatTiedotServletV2}
 import fi.oph.koski.opiskeluoikeus.{OpiskeluoikeusServlet, OpiskeluoikeusValidationServlet}
@@ -180,8 +180,13 @@ class ScalatraBootstrap extends LifeCycle with Logging with Timing with GlobalEx
     if (!Environment.isProdEnvironment(application.config)) {
       mount("/koski/api/omadata-oauth2/authorization-server", new OmaDataOAuth2AuthorizationServerServlet)
       mount("/koski/api/omadata-oauth2/resource-server", new OmaDataOAuth2ResourceServerServlet)
-      //    mount("/koski/api/omadata-oauth2/resource-owner", new OmaDataOAuth2ResourceOwnerServlet) // TODO: Routet valtuutuksen myöntämiselle yms liittyvälle
-      //    mount("/koski/omadata-oauth2", new OmaDataOAuth2ReactServlet) // TODO: Routet valtuutuksen myöntö frontille
+      mount("/koski/api/omadata-oauth2/resource-owner", new OmaDataOAuth2ResourceOwnerServlet)
+      mount("/koski/omadata-oauth2/post-response", new OmaDataOAuth2LogoutPostResponseServlet)
+      mount("/koski/omadata-oauth2", new OmaDataOAuth2ResourceOwnerReactServlet)
+      mount("/koski/omadata-oauth2/cas-workaround", new OmaDataOAuth2CASWorkaroundServlet)
+
+      // TODO: TOR-2210: Poista debug-servlet kokonaan!
+      mount("/koski/omadata-oauth2/debug-post-response", new OmaDataOAuth2PostResponseDebugServlet)
     }
 
     if (Environment.isLocalDevelopmentEnvironment(application.config)) {
