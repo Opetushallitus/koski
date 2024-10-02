@@ -15,13 +15,15 @@ import org.scalatest.BeforeAndAfterAll
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.should.Matchers
 
+import java.time.LocalDate
+
 class EsiopetusRaporttiSpec extends AnyFreeSpec with Matchers with RaportointikantaTestMethods with BeforeAndAfterAll {
   private val application = KoskiApplicationForTests
   private val raporttiService = new EsiopetusRaporttiService(application)
   private val raporttiBuilder = EsiopetusRaportti(application.raportointiDatabase.db, application.organisaatioService)
   private val t = new LocalizationReader(KoskiApplicationForTests.koskiLocalizationRepository, "fi")
   private lazy val raportti =
-    raporttiBuilder.build(List(jyväskylänNormaalikoulu), localDate(2015, 1, 1), t)(session(defaultUser)).rows.map(_.asInstanceOf[EsiopetusRaporttiRow])
+    raporttiBuilder.build(List(jyväskylänNormaalikoulu), localDate(2015, 1, 1), None, t)(session(defaultUser)).rows.map(_.asInstanceOf[EsiopetusRaporttiRow])
 
   override protected def beforeAll(): Unit = {
     super.beforeAll()
@@ -85,6 +87,24 @@ class EsiopetusRaporttiSpec extends AnyFreeSpec with Matchers with Raportointika
       }
     }
 
+    "Kotikunnan hakeminen kotikuntahistoriasta" - {
+      def getKotikuntahistoriaaKäyttäväRaportti(kotikuntaPvm: LocalDate) =
+        raporttiBuilder.build(List(jyväskylänNormaalikoulu), localDate(2024, 10, 1), Some(kotikuntaPvm), t)(session(defaultUser)).rows.map(_.asInstanceOf[EsiopetusRaporttiRow])
+
+      "Kotikunta löytyy historiasta" in {
+        val raporttiRows = getKotikuntahistoriaaKäyttäväRaportti(localDate(2024, 1, 1))
+        val row = findSingle(raporttiRows, KoskiSpecificMockOppijat.eskari)
+        row.kotikunta should equal(Some("Juva"))
+      }
+
+      "Kotikunta ei löydy historiasta" in {
+        val raporttiRows = getKotikuntahistoriaaKäyttäväRaportti(localDate(2024, 6, 2))
+        val row = findSingle(raporttiRows, KoskiSpecificMockOppijat.eskari)
+        row.kotikunta should equal(Some("Ei tiedossa 2.6.2024 (nykyinen kotikunta on Jyväskylä)"))
+      }
+
+    }
+
     "Varhaiskasvatuksen järjestäjä" - {
       "näkee vain omat opiskeluoikeutensa" in {
         val tornionTekemäRaportti = buildOrganisaatioRaportti(tornioTallentaja, päiväkotiTouhula)
@@ -124,10 +144,10 @@ class EsiopetusRaporttiSpec extends AnyFreeSpec with Matchers with Raportointika
   }
 
   private def buildOstopalveluRaportti(user: KoskiMockUser) =
-    raporttiService.buildOstopalveluRaportti(localDate(2014, 8, 13), "", None, t)(session(user))
+    raporttiService.buildOstopalveluRaportti(localDate(2014, 8, 13), None, "", None, t)(session(user))
 
   private def buildOrganisaatioRaportti(user: KoskiMockUser, organisaatio: Oid) =
-    raporttiService.buildOrganisaatioRaportti(organisaatio, localDate(2014, 8, 13), "", None, t)(session(user))
+    raporttiService.buildOrganisaatioRaportti(organisaatio, localDate(2014, 8, 13), None, "", None, t)(session(user))
 
   private def getOppilaitokset(raportti: OppilaitosRaporttiResponse) = {
     getRows(raportti).flatMap(_.oppilaitosNimi).sorted

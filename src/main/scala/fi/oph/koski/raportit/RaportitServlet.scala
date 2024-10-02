@@ -173,9 +173,9 @@ class RaportitServlet(implicit val application: KoskiApplication) extends KoskiS
 
     val resp = getStringParam("oppilaitosOid") match {
       case organisaatioService.ostopalveluRootOid =>
-        esiopetusService.buildOstopalveluRaportti(date, password, token, t)
+        esiopetusService.buildOstopalveluRaportti(date, kotikuntaDate, password, token, t)
       case oid =>
-        esiopetusService.buildOrganisaatioRaportti(validateOrganisaatioOid(oid), date, password, token, t)
+        esiopetusService.buildOrganisaatioRaportti(validateOrganisaatioOid(oid), date, kotikuntaDate, password, token, t)
     }
 
     writeExcel(resp, t)
@@ -370,5 +370,10 @@ class RaportitServlet(implicit val application: KoskiApplication) extends KoskiS
     }
     (alku, loppu)
   }
+
+  private def kotikuntaDate: Option[LocalDate] =
+    getLocalDateParamOption("kotikuntaPvm").flatMap {
+      pvm => if (pvm.isEqual(LocalDate.now())) None else Some(pvm)
+    }
 }
 
