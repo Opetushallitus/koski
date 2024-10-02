@@ -19,18 +19,19 @@ object PerusopetuksenVuosiluokkaRaportti extends VuosiluokkaRaporttiPaivalta wit
     repository: PerusopetuksenRaportitRepository,
     oppilaitosOids: Seq[Oid],
     paiva: LocalDate,
+    kotikuntaPvm: Option[LocalDate],
     vuosiluokka: String,
     t: LocalizationReader
   ): Seq[PerusopetusRow] = {
     val rows = if (vuosiluokka == "9") {
-      repository.peruskoulunPaattavatJaLuokalleJääneet(oppilaitosOids, paiva, vuosiluokka, t)
+      repository.peruskoulunPaattavatJaLuokalleJääneet(oppilaitosOids, paiva, kotikuntaPvm: Option[LocalDate], vuosiluokka, t)
     } else {
-      repository.perusopetuksenvuosiluokka(oppilaitosOids, paiva, vuosiluokka, t)
+      repository.perusopetuksenvuosiluokka(oppilaitosOids, paiva, kotikuntaPvm: Option[LocalDate], vuosiluokka, t)
     }
-    rows.map(buildRow(_, paiva, t))
+    rows.map(buildRow(_, paiva, kotikuntaPvm, t))
   }
 
-  private def buildRow(row: PerusopetuksenRaporttiRows, hakupaiva: LocalDate, t: LocalizationReader) = {
+  private def buildRow(row: PerusopetuksenRaporttiRows, hakupaiva: LocalDate, kotikuntaPvm: Option[LocalDate], t: LocalizationReader) = {
     val opiskeluoikeudenLisätiedot = JsonSerializer.extract[Option[PerusopetuksenOpiskeluoikeudenLisätiedot]](row.opiskeluoikeus.data \ "lisätiedot")
     val lähdejärjestelmänId = JsonSerializer.extract[Option[LähdejärjestelmäId]](row.opiskeluoikeus.data \ "lähdejärjestelmänId")
     val (toimintaalueOsasuoritukset, muutOsasuoritukset) = row.osasuoritukset.partition(_.suorituksenTyyppi == "perusopetuksentoimintaalue")
@@ -40,6 +41,7 @@ object PerusopetuksenVuosiluokkaRaportti extends VuosiluokkaRaporttiPaivalta wit
     val kaikkiValinnaiset = valinnaisetPaikalliset.union(valinnaisetValtakunnalliset)
     val voimassaOlevatErityisenTuenPäätökset = opiskeluoikeudenLisätiedot.map(lt => combineErityisenTuenPäätökset(lt.erityisenTuenPäätös, lt.erityisenTuenPäätökset).filter(erityisentuenPäätösvoimassaPaivalla(_, hakupaiva))).getOrElse(List.empty)
     val päätasonVahvistusPäivä = row.päätasonSuoritus.vahvistusPäivä
+    val kotikunta = if (t.language == "sv") row.henkilo.kotikuntaNimiSv else row.henkilo.kotikuntaNimiFi
 
     PerusopetusRow(
       opiskeluoikeusOid = row.opiskeluoikeus.opiskeluoikeusOid,
@@ -53,7 +55,12 @@ object PerusopetuksenVuosiluokkaRaportti extends VuosiluokkaRaporttiPaivalta wit
       sukunimi = row.henkilo.sukunimi,
       etunimet = row.henkilo.etunimet,
       sukupuoli = row.henkilo.sukupuoli,
-      kotikunta = if(t.language == "sv") row.henkilo.kotikuntaNimiSv else row.henkilo.kotikuntaNimiFi,
+      kotikunta = kotikuntaPvm match {
+        case Some(pvm) => row.kotikuntaHistoriassa
+          .map(r => Some(if (t.language == "sv") r.kotikunnanNimiSv else r.kotikunnanNimiFi))
+          .getOrElse(formatKotikuntaEiTiedossa(kotikunta, pvm, t))
+        case None => kotikunta
+      },
       opiskeluoikeudenAlkamispäivä = row.opiskeluoikeus.alkamispäivä.map(_.toLocalDate),
       viimeisinTila = row.opiskeluoikeus.viimeisinTila.getOrElse(""),
       tilaHakupaivalla = row.aikajaksot.last.tila,
@@ -259,6 +266,11 @@ object PerusopetuksenVuosiluokkaRaportti extends VuosiluokkaRaporttiPaivalta wit
   }
 
   private def compactLisätiedotColumn(title: String, t: LocalizationReader) = CompactColumn(title, comment = Some(t.get("raportti-excel-kolumni-compactLisätiedotColumn-comment")))
+
+  private def formatKotikuntaEiTiedossa(kotikunta: Option[String], pvm: LocalDate, t: LocalizationReader): Option[String] =
+    kotikunta.map { kk =>
+      s"${t.get("Ei tiedossa")} ${pvm.format(finnishDateFormat)} (${t.get("nykyinen kotikunta on")} $kk)"
+    }
 
   def columnSettings(t: LocalizationReader): Seq[(String, Column)] = Seq(
     "opiskeluoikeusOid" -> Column(t.get("raportti-excel-kolumni-opiskeluoikeusOid")),

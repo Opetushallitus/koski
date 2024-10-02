@@ -24,7 +24,7 @@ object KoskiSpecificMockOppijat {
   val luokallejäänyt = koskiSpecificOppijat.oppija("Luokallejäänyt", "Lasse", "170186-6520")
   val ysiluokkalainen = koskiSpecificOppijat.oppija("Ysiluokkalainen", "Ylermi", "160932-311V", kotikunta = Some("179"))
   val vuosiluokkalainen = koskiSpecificOppijat.oppija("Vuosiluokkalainen", "Ville", "010100-325X")
-  val monessaKoulussaOllut = koskiSpecificOppijat.oppija("Monikoululainen", "Miia", "180497-112F")
+  val monessaKoulussaOllut = koskiSpecificOppijat.oppija("Monikoululainen", "Miia", "180497-112F", kotikunta = Some("091"))
   val lukiolainen = koskiSpecificOppijat.oppija("Lukiolainen", "Liisa", "020655-2479", kotikunta = Some("179"))
   val lukioKesken = koskiSpecificOppijat.oppija("Lukiokesken", "Leila", "190363-279X")
   val uusiLukio = koskiSpecificOppijat.oppija("Uusilukio", "Ulla", "250605A518Y")
