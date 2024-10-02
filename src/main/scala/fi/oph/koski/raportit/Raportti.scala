@@ -84,6 +84,7 @@ case class AikajaksoRaporttiAikarajauksellaRequest(
   alku: LocalDate,
   loppu: LocalDate,
   osasuoritustenAikarajaus: Boolean,
+  kotikuntaPvm: Option[LocalDate],
   lang: String
 ) extends RaporttiAikajaksoltaRequest
 

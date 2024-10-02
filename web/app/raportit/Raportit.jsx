@@ -671,6 +671,7 @@ function Lukioraportti({ stateP }) {
   const titleText = <Text name="Lukioraportti-title" />
   const shortDescriptionText = <Text name="Lukioraportti-short-description" />
   const exampleText = <Paragraphs name="Lukioraportti-example" />
+  const kotikuntaPvmInputHelp = <Text name="Lukioraportti-kotikunta-date-input-help" />
 
   return (
     <AikajaksoRaporttiAikarajauksella
@@ -678,6 +679,8 @@ function Lukioraportti({ stateP }) {
       apiEndpoint={'/lukionsuoritustietojentarkistus'}
       title={titleText}
       shortDescription={shortDescriptionText}
+      showKotikuntaPvmInput
+      kotikuntaPvmInputHelp={kotikuntaPvmInputHelp}
       example={exampleText}
       osasuoritusType={osasuoritusTypes.KURSSI}
       lang={lang}

@@ -174,7 +174,7 @@ object KoskiSpecificMockOppijat {
   val ylioppilasLukiolainenMaksamatonSuoritus = koskiSpecificOppijat.oppija("Maksamaa-Toikkarinen", "Matti", "101000A3582")
   val ylioppilasLukiolainenVanhaSuoritus = koskiSpecificOppijat.oppija("Vanhanen-Toikkarinen", "Vanja", "190580-678T")
   val ylioppilasLukiolainenTimeouttaava = koskiSpecificOppijat.oppija("Outinen-Toikkarinen", "Taimi", "270900A2635")
-  val ylioppilasLukiolainenRikki = koskiSpecificOppijat.oppija("Rikko-Toikkarinen", "Risto", "280100A855E")
+  val ylioppilasLukiolainenRikki = koskiSpecificOppijat.oppija("Rikko-Toikkarinen", "Risto", "280100A855E", kotikunta = Some("091"))
   val amisKoulutusvienti = koskiSpecificOppijat.oppija("Koulutusvientiläinen", "Amis", "020605A3368")
   val opiskeleeAmmatillisessaErityisoppilaitoksessa2 = koskiSpecificOppijat.oppija("Erityisoppilaitoksessa", "Emppu", "211005A867V", syntymäaika = Some(LocalDate.of(2005, 2, 21)), kotikunta = Some("091"))
   val vanhanMallinenIBOppija = koskiSpecificOppijat.oppija("Ibe", "Vanhanen", "101000A684K")

@@ -391,7 +391,8 @@ class AmmatillinenTutkintoRaporttiSpec
     osasuoritustenAikarajaus = false,
     downloadToken = None,
     password = "",
-    lang = "fi"
+    lang = "fi",
+    kotikuntaPvm = None,
   )
 
   private def testiHenkilöRaporttiRows(request: AikajaksoRaporttiAikarajauksellaRequest, hetu: String = defaultHetu): Seq[SuoritustiedotTarkistusRow] =

@@ -297,9 +297,10 @@ class RaportitServlet(implicit val application: KoskiApplication) extends KoskiS
     val password = getStringParam("password")
     val downloadToken = params.get("downloadToken")
     val osasuoritustenAikarajaus = getOptionalBooleanParam("osasuoritustenAikarajaus").getOrElse(false)
+    val kotikuntaPvm = getLocalDateParamOption("kotikuntaPvm")
     val lang = getStringParam("lang")
 
-    AikajaksoRaporttiAikarajauksellaRequest(oppilaitosOid, downloadToken, password, alku, loppu, osasuoritustenAikarajaus, lang)
+    AikajaksoRaporttiAikarajauksellaRequest(oppilaitosOid, downloadToken, password, alku, loppu, osasuoritustenAikarajaus, kotikuntaPvm, lang)
   }
 
   private def parseIBSuoritusRaporttiRequest: IBSuoritustiedotRaporttiRequest = {
