@@ -1962,9 +1962,7 @@ test.describe('Vapaa sivistystyö', () => {
           '1.1.2023'
         )
 
-        await vstOppijaPage.tallennaVirheellisenä(
-          'Vahvistetuksi merkatun vapaan sivistyöstyön koulutuksen laajuuden tulee olla 53'
-        )
+        await vstOppijaPage.tallenna()
       })
     })
 

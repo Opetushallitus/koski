@@ -16,12 +16,7 @@ object VSTKotoutumiskoulutus2022Validation {
     }
 
   def validate(suoritus: Suoritus): HttpStatus = {
-    suoritus match {
-      case päätasonSuoritus: OppivelvollisilleSuunnattuMaahanmuuttajienKotoutumiskoulutuksenSuoritus2022
-        if päätasonSuoritus.vahvistettu && päätasonSuoritus.koulutusmoduuli.laajuusArvo(0.0) < 53.0 =>
-        KoskiErrorCategory.badRequest.validation.tila.vapaanSivistystyönVahvistetunPäätasonSuorituksenLaajuus()
-      case _ => HttpStatus.ok
-    }
+    HttpStatus.ok
   }
 
   def validateAlkamispäivä(opiskeluoikeus: VapaanSivistystyönOpiskeluoikeus): HttpStatus = {
