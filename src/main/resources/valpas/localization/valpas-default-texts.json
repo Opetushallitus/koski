@@ -12,7 +12,7 @@
   "apivirhe__virheellinen_pyyntö": "Virhe: Pyyntöä ei voitu suorittaa siinä olleen virheen takia ({{virhe}})",
   "ilmoituksentekijälomake__puhelinnumero": "Ilmoittajan puhelinnumero",
   "apivirhe__tuntematon": "Virhe: Pyyntö epäonnistui tuntemattomasta syystä",
-  "oppija__muuttanut_suomeen": "Muuttanut Suomeen",
+  "oppija__muuttanut_suomeen": "Kotikunta Suomessa alkaen",
   "rouhinta_kuntahaku_ohje": "Asuinkunnan valvoja voi tällä työkalulla hakea oppivelvollisuuden valvontaa varten oppijat, joiden kotikunta on Digi- ja väestötietoviraston mukaan kyseinen kunta ja joilla ei ole tällä hetkellä aktiivista oppivelvollisuuden suorittamiseen kelpaavaa opiskeluoikeutta KOSKI-tietovarannossa.\nHUOM! Oppijan asuinkunta voi olla eri kuin oppijan virallinen kotikunta. Listalla eivät näy henkilöt, joilla on turvakielto, tai henkilöt, joista ei ole mitään tietoja tallennettuna Opintopolun palveluihin.\nTietojen lataaminen voi kestää 1-2 minuuttia. Voit hakea tiedot näytettäväksi joko selaimessa tai ladata ne tietokoneellesi erillisenä tiedostona. Erillisen tiedoston avaamiseen tarvitset lataamisen yhteydessä annettavan salasanan.",
   "rouhinta_ohjesivu_url": "https://wiki.eduuni.fi/display/OPHPALV/Useamman+oppivelvollisen+tietojen+tarkastelu",
   "kuntailmoitus__mitätöinti_varmistus": "Haluatko varmasti mitätöidä ilmoituksen?",
