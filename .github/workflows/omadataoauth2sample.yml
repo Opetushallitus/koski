@@ -31,7 +31,7 @@ jobs:
         with:
           role-to-assume: ${{ vars.OMADATAOAUTH2SAMPLE_ECR_ROLE }}
           role-duration-seconds: 3600
-          role-session-name: KoskiOmaDataOAuth2SampleDeploymentEcr-${{ github.event.inputs.environment }}-${{ github.event.inputs.commithash }}
+          role-session-name: KoskiOmaDataOAuth2SampleDeploymentEcr-${{ github.event.inputs.environment }}
           aws-region: eu-west-1
 
       - name: Login to Amazon ECR
@@ -78,7 +78,7 @@ jobs:
         with:
           role-to-assume: ${{ vars.OMADATAOAUTH2SAMPLE_DEPLOY_ROLE }}
           role-duration-seconds: 3600
-          role-session-name: KoskiOmaDataOAuth2SampleDeployment-${{ github.event.inputs.environment }}-${{ github.event.inputs.commithash }}
+          role-session-name: KoskiOmaDataOAuth2SampleDeployment-${{ github.event.inputs.environment }}
           aws-region: eu-west-1
 
       - name: Login to Amazon ECR
