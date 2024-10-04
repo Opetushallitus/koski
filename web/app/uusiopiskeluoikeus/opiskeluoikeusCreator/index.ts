@@ -204,7 +204,8 @@ export const createOpiskeluoikeus = (
         suoritustapa,
         tutkinto,
         peruste,
-        tutkinnonOsaaPienemmistäKokonaisuuksistaKoostuvaKoulutus
+        tutkinnonOsaaPienemmistäKokonaisuuksistaKoostuvaKoulutus,
+        jotpaAsianumero
       )
 
     case 'europeanschoolofhelsinki':
