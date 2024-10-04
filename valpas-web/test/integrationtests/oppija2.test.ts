@@ -889,7 +889,7 @@ describe("Oppijakohtainen näkymä 2/2", () => {
           opiskelutilanne: "Ei",
           oppivelvollisuus: "31.12.2023 asti",
           maksuttomuusoikeus: "31.12.2026 asti",
-          muuttanutSuomeen: "1.1.2014",
+          kotikuntaSuomessaAlkaen: "1.1.2014",
           oppivelvollisuudenKeskeytysBtn: true,
           merkitseVapautusBtn: true,
         }),
