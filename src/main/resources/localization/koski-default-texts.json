@@ -2716,5 +2716,7 @@
   "Raportille valitaan vain sellaiset kurssisuoritukset, joiden arviointipäivä osuu yllä määritellylle aikajaksolle": "Raportille valitaan vain sellaiset osasuoritukset, joiden arviointipäivä osuu yllä määritellylle aikajaksolle",
   "Paikalliset opintokokonaisuudet": "Paikalliset opintokokonaisuudet",
   "Ei tiedossa": "Ei tiedossa",
-  "nykyinen kotikunta on": "nykyinen kotikunta on"
+  "nykyinen kotikunta on": "nykyinen kotikunta on",
+  "Koulutuskunta" : "Koulutuskunta",
+  "Koulutuskunnat" : "Koulutuskunnat"
 }
