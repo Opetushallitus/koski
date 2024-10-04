@@ -1,4 +1,5 @@
 import { Peruste } from '../../appstate/peruste'
+import { isJotpaRahoituksenKoodistoviite } from '../../jotpa/jotpa'
 import { OrganisaatioHierarkia } from '../../types/fi/oph/koski/organisaatio/OrganisaatioHierarkia'
 import { AmmatillinenOpiskeluoikeudenTila } from '../../types/fi/oph/koski/schema/AmmatillinenOpiskeluoikeudenTila'
 import { AmmatillinenOpiskeluoikeus } from '../../types/fi/oph/koski/schema/AmmatillinenOpiskeluoikeus'
@@ -11,6 +12,7 @@ import { AmmatillisenTutkinnonOsittainenSuoritus } from '../../types/fi/oph/kosk
 import { AmmatillisenTutkinnonSuoritus } from '../../types/fi/oph/koski/schema/AmmatillisenTutkinnonSuoritus'
 import { Finnish } from '../../types/fi/oph/koski/schema/Finnish'
 import { Koodistokoodiviite } from '../../types/fi/oph/koski/schema/Koodistokoodiviite'
+import { Maksuttomuus } from '../../types/fi/oph/koski/schema/Maksuttomuus'
 import { MuuAmmatillinenKoulutus } from '../../types/fi/oph/koski/schema/MuuAmmatillinenKoulutus'
 import { MuunAmmatillisenKoulutuksenSuoritus } from '../../types/fi/oph/koski/schema/MuunAmmatillisenKoulutuksenSuoritus'
 import { NäyttötutkintoonValmistavanKoulutuksenSuoritus } from '../../types/fi/oph/koski/schema/NayttotutkintoonValmistavanKoulutuksenSuoritus'
@@ -37,9 +39,14 @@ export const createAmmatillinenOpiskeluoikeus = (
   suoritustapa?: Koodistokoodiviite<'ammatillisentutkinnonsuoritustapa'>,
   tutkinto?: TutkintoPeruste,
   peruste?: Peruste,
-  tutkinnonOsaaPienemmistäKokonaisuuksistaKoostuvaKoulutus?: TutkinnonOsaaPienemmistäKokonaisuuksistaKoostuvaKoulutus
+  tutkinnonOsaaPienemmistäKokonaisuuksistaKoostuvaKoulutus?: TutkinnonOsaaPienemmistäKokonaisuuksistaKoostuvaKoulutus,
+  jotpaAsianumero?: Koodistokoodiviite<'jotpaasianumero'>
 ) => {
   if (!suorituskieli || !opintojenRahoitus || maksuton === undefined) {
+    return undefined
+  }
+
+  if (isJotpaRahoituksenKoodistoviite(opintojenRahoitus) && !jotpaAsianumero) {
     return undefined
   }
 
@@ -67,14 +74,24 @@ export const createAmmatillinenOpiskeluoikeus = (
           })
         ]
       }),
-      lisätiedot: maksuttomuuslisätiedot(
-        alku,
-        maksuton,
-        AmmatillisenOpiskeluoikeudenLisätiedot
-      ),
+      lisätiedot: createAmmatillisenOpiskeluoikeudenLisätiedot(alku, maksuton, opintojenRahoitus, jotpaAsianumero),
       suoritukset: [suoritus]
     })
   )
+}
+
+const createAmmatillisenOpiskeluoikeudenLisätiedot = (
+  alku: string,
+  maksuton: boolean | null,
+  opintojenRahoitus: Koodistokoodiviite<'opintojenrahoitus'>,
+  jotpaAsianumero?: Koodistokoodiviite<'jotpaasianumero'>): AmmatillisenOpiskeluoikeudenLisätiedot | undefined => {
+  if (maksuton === null && !jotpaAsianumero) {
+    return undefined
+  }
+  return AmmatillisenOpiskeluoikeudenLisätiedot({
+    ...(maksuton === null ? {} : { maksuttomuus: [Maksuttomuus({ alku, maksuton })] }),
+    ...(jotpaAsianumero && isJotpaRahoituksenKoodistoviite(opintojenRahoitus) ? { jotpaAsianumero } : {})
+  })
 }
 
 const createAmmatillinenPäätasonSuoritus = (
