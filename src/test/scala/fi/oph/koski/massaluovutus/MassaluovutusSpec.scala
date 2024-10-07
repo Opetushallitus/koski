@@ -36,6 +36,7 @@ class MassaluovutusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers wit
 
   override protected def afterEach(): Unit = {
     Wait.until { !app.massaluovutusService.hasWork }
+    app.massaluovutusService.truncate()
   }
 
   "Kyselyiden skedulointi" - {
@@ -89,6 +90,47 @@ class MassaluovutusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers wit
 
         val query = app.massaluovutusService.get(UUID.fromString(runningQuery.queryId))
         query.map(_.state) should equal(Right(QueryState.running))
+      }
+    }
+  }
+
+  "Lisätiedot virhetilanteista" - {
+    def createFailedQuery = FailedQuery(
+        queryId = UUID.randomUUID().toString,
+        userOid = MockUsers.tornioTallentaja.oid,
+        query = MassaluovutusQueryOrganisaationOpiskeluoikeudetCsv(
+          alkanutAikaisintaan = LocalDate.of(2000, 1, 1),
+        ),
+        createdAt = LocalDateTime.now(),
+        startedAt = LocalDateTime.now(),
+        finishedAt = LocalDateTime.now(),
+        worker = "ignore",
+        resultFiles = List(),
+        error = "Your proposed upload exceeds the maximum allowed size (Service: S3, Status Code: 400, Request ID: XYZ, Extended Request ID: xyz)",
+        session = JObject(),
+        meta = Some(QueryMeta(restarts = Some(List("1", "2", "3")))),
+      )
+
+    "Liian iso tulostiedosto palauttaa käyttäjälle vihjeen, mutta ei alkuperäistä virheilmoitusta" in {
+      withoutRunningQueryScheduler {
+        val failedQuery = createFailedQuery
+        KoskiApplicationForTests.massaluovutusService.addRaw(failedQuery)
+        getQuerySuccessfully(failedQuery.queryId, MockUsers.tornioTallentaja) { response =>
+          val failResponse = response.asInstanceOf[FailedQueryResponse]
+          failResponse.hint should equal(Some("Kyselystä syntyneen tulostiedoston koko kasvoi liian suureksi. Pienennä tulosjoukon kokoa esimerkiksi rajaamalla kysely lyhyemmälle aikavälille."))
+          failResponse.error should equal(None)
+        }
+      }
+    }
+
+    "Pääkäyttäjä näkee epäonnistuneen kyselyn alkuperäisen virheilmoituksen" in {
+      withoutRunningQueryScheduler {
+        val failedQuery = createFailedQuery
+        KoskiApplicationForTests.massaluovutusService.addRaw(failedQuery)
+        getQuerySuccessfully(failedQuery.queryId, MockUsers.paakayttaja) { response =>
+          val failResponse = response.asInstanceOf[FailedQueryResponse]
+          failResponse.error should equal(Some(failedQuery.error))
+        }
       }
     }
   }
@@ -544,34 +586,6 @@ class MassaluovutusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers wit
     }
   }
 
-  "Vihjeet käyttäjälle virhetilanteiden korjaamiseen" - {
-    "Liian iso tulostiedosto" in {
-      val queryId = UUID.randomUUID().toString
-      val failedQuery = FailedQuery(
-        queryId = queryId,
-        userOid = MockUsers.helsinkiKatselija.oid,
-        query = MassaluovutusQueryOrganisaationOpiskeluoikeudetCsv(
-          alkanutAikaisintaan = LocalDate.of(2000, 1, 1),
-        ),
-        createdAt = LocalDateTime.now(),
-        startedAt = LocalDateTime.now(),
-        finishedAt = LocalDateTime.now(),
-        worker = "dummy-1",
-        resultFiles = List(),
-        error = "Your proposed upload exceeds the maximum allowed size (Service: S3, Status Code: 400, Request ID: XYZ, Extended Request ID: xyz)",
-        session = JObject(),
-        meta = None,
-      )
-
-      KoskiApplicationForTests.massaluovutusService.addRaw(failedQuery)
-
-      getQuerySuccessfully(queryId, MockUsers.helsinkiKatselija) { response =>
-        val failResponse = response.asInstanceOf[FailedQueryResponse]
-        failResponse.hint should equal(Some("Kyselystä syntyneen tulostiedoston koko kasvoi liian suureksi. Pienennä tulosjoukon kokoa esimerkiksi rajaamalla kysely lyhyemmälle aikavälille."))
-      }
-    }
-  }
-
   def addQuery[T](query: MassaluovutusQueryParameters, user: UserWithPassword)(f: => T): T =
     post("api/massaluovutus", JsonSerializer.writeWithRoot(query), headers = authHeaders(user) ++ jsonContent)(f)
 
@@ -641,7 +655,7 @@ class MassaluovutusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers wit
       app.massaluovutusScheduler.pause(Duration.ofDays(1))
       f
     } finally {
-      app.massaluovutusService.cancelAllTasks("cancelled")
+      app.massaluovutusService.truncate
       app.massaluovutusScheduler.resume()
     }
 }

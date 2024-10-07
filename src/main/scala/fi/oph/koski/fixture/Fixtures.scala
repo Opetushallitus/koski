@@ -44,6 +44,7 @@ class FixtureCreator(application: KoskiApplication) extends Logging with QueryMe
       application.tiedonsiirtoService.index.deleteAll()
       application.päivitetytOpiskeluoikeudetJono.poistaKaikki()
       opiskeluoikeushistoriaErrorRepository.truncate
+      application.massaluovutusService.truncate()
       yoTodistusService.reset()
 
       if (reloadYtrData || fixtureNameHasChanged) {

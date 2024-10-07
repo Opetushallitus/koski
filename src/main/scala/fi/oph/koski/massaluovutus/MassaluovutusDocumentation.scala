@@ -284,6 +284,7 @@ object QueryExamples {
       finishedAt = finishedAt,
       files = files.map(MassaluovutusServletUrls.file(rootUrl, queryId, _)),
       hint = None,
+      error = None,
     )
 
   private def resultsUrl(application: KoskiApplication, queryId: String): String =
