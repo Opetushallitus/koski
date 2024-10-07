@@ -17,7 +17,7 @@ import fi.oph.koski.util.Wait
 import fi.oph.koski.{KoskiApplicationForTests, KoskiHttpSpec}
 import fi.oph.scalaschema.Serializer.format
 import org.json4s.jackson.JsonMethods
-import org.json4s.{JArray, JInt, JNothing, JValue}
+import org.json4s.{JArray, JInt, JNothing, JObject, JValue}
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.{BeforeAndAfterAll, BeforeAndAfterEach}
@@ -541,6 +541,34 @@ class MassaluovutusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers wit
           "valmistunut"
         ))
      }
+    }
+  }
+
+  "Vihjeet käyttäjälle virhetilanteiden korjaamiseen" - {
+    "Liian iso tulostiedosto" in {
+      val queryId = UUID.randomUUID().toString
+      val failedQuery = FailedQuery(
+        queryId = queryId,
+        userOid = MockUsers.helsinkiKatselija.oid,
+        query = MassaluovutusQueryOrganisaationOpiskeluoikeudetCsv(
+          alkanutAikaisintaan = LocalDate.of(2000, 1, 1),
+        ),
+        createdAt = LocalDateTime.now(),
+        startedAt = LocalDateTime.now(),
+        finishedAt = LocalDateTime.now(),
+        worker = "dummy-1",
+        resultFiles = List(),
+        error = "Your proposed upload exceeds the maximum allowed size (Service: S3, Status Code: 400, Request ID: XYZ, Extended Request ID: xyz)",
+        session = JObject(),
+        meta = None,
+      )
+
+      KoskiApplicationForTests.massaluovutusService.addRaw(failedQuery)
+
+      getQuerySuccessfully(queryId, MockUsers.helsinkiKatselija) { response =>
+        val failResponse = response.asInstanceOf[FailedQueryResponse]
+        failResponse.hint should equal(Some("Kyselystä syntyneen tulostiedoston koko kasvoi liian suureksi. Pienennä tulosjoukon kokoa esimerkiksi rajaamalla kysely lyhyemmälle aikavälille."))
+      }
     }
   }
 

@@ -123,6 +123,8 @@ case class FailedQueryResponse(
   files: List[String],
   @EnumValues(Set(QueryState.failed))
   status: String = QueryState.failed,
+  @Description("Mahdollinen vihje, miten epäonnistuneen kyselyn voisi yrittää korjata kyselyä muuttamalla.")
+  hint: Option[String],
 ) extends QueryResponse
 
 case class CompleteQueryResponse(
@@ -171,6 +173,7 @@ object QueryResponse {
       startedAt = q.startedAt,
       finishedAt = q.finishedAt,
       files = q.filesToExternal(rootUrl),
+      hint = failedQueryHint(q),
     )
     case q: CompleteQuery => CompleteQueryResponse(
       queryId = q.queryId,
@@ -190,4 +193,11 @@ object QueryResponse {
 
   implicit def toOffsetDateTime(dt: Option[LocalDateTime]): Option[OffsetDateTime] =
     dt.map(toOffsetDateTime)
+
+  def failedQueryHint(q: FailedQuery): Option[String] =
+    if (q.error.contains("Your proposed upload exceeds the maximum allowed size")) {
+      Some("Kyselystä syntyneen tulostiedoston koko kasvoi liian suureksi. Pienennä tulosjoukon kokoa esimerkiksi rajaamalla kysely lyhyemmälle aikavälille.")
+    } else {
+      None
+    }
 }
