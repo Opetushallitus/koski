@@ -1,5 +1,7 @@
 package fi.oph.koski.massaluovutus
 
+import com.typesafe.config.Config
+import fi.oph.koski.config.Environment
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.koskiuser.KoskiSpecificSession
 import fi.oph.koski.localization.LocalizationReader
@@ -14,6 +16,16 @@ import java.util.UUID
 import scala.collection.mutable
 import scala.reflect.runtime.universe.TypeTag
 import scala.util.Using
+
+object QueryResultWriter {
+  def defaultPartitionSize(config: Config): Long = {
+    if (Environment.isServerEnvironment(config)) {
+      1000000000L
+    } else {
+      50000L // Pieni partitiokoko testeille
+    }
+  }
+}
 
 case class QueryResultWriter(
   queryId: UUID,
@@ -45,13 +57,13 @@ case class QueryResultWriter(
   def putJson[T: TypeTag](name: String, obj: T)(implicit user: KoskiSpecificSession): Unit =
     putJson(name, JsonSerializer.write(obj))
 
-  def createCsv[T <: Product](name: String)(implicit manager: Using.Manager): CsvStream[T] =
-    manager(new CsvStream[T](s"$queryId-$name", { file =>
+  def createCsv[T <: Product](name: String, partitionSize: Option[Long])(implicit manager: Using.Manager): CsvStream[T] =
+    manager(new CsvStream[T](s"$queryId-$name", partitionSize, { (file, partition) =>
       results.putFile(
         queryId = queryId,
-        name = newObjectKey(s"$name.csv"),
+        name = partition.fold(newObjectKey(s"$name.csv"))(i => newObjectKey(s"$name.csv.${"%02d".format(i + 1)}")),
         file = file,
-        contentType = QueryFormat.csv,
+        contentType = partition.fold(QueryFormat.csv)(_ => QueryFormat.csvPartition),
       )
       updateProgress()
     }))
@@ -78,7 +90,7 @@ case class QueryResultWriter(
             } else {
               report.filename.replace(".xlsx", "")
             }
-            val csv = createCsv[Product](name)
+            val csv = createCsv[Product](name, None)
             manager.acquire(csv)
             csv.put(sheet.rows)
             csv.save()
@@ -119,11 +131,13 @@ case class QueryResultWriter(
   }
 }
 
-class CsvStream[T <: Product](name: String, upload: (Path) => Unit) extends AutoCloseable {
-  val temporaryFile: Path = Files.createTempFile(s"$name-", ".csv")
-  private val fileStream: FileOutputStream = new FileOutputStream(temporaryFile.toFile)
-  private val outputStream: BufferedOutputStream = new BufferedOutputStream(fileStream)
+class CsvStream[T <: Product](name: String, partitionSize: Option[Long], upload: (Path, Option[Int]) => Unit) extends AutoCloseable {
+  var temporaryFile: Path = Files.createTempFile(s"$name-", ".csv")
+  private var fileStream: FileOutputStream = new FileOutputStream(temporaryFile.toFile)
+  private var outputStream: BufferedOutputStream = new BufferedOutputStream(fileStream)
   private var headerWritten: Boolean = false
+  private var partitionBytesWritten: Long = 0
+  private var partition: Int = 0
 
   def put(data: T): Unit = {
     synchronized {
@@ -157,7 +171,7 @@ class CsvStream[T <: Product](name: String, upload: (Path) => Unit) extends Auto
     synchronized {
       closeIntermediateStreams()
       if (headerWritten) {
-        upload(temporaryFile)
+        upload(temporaryFile, partitionSize.map { _ => partition })
       }
       deleteTemporaryFile()
     }
@@ -176,8 +190,27 @@ class CsvStream[T <: Product](name: String, upload: (Path) => Unit) extends Auto
     }
   }
 
-  private def write(data: String): Unit =
-    outputStream.write(data.getBytes("UTF-8"))
+  private def write(data: String): Unit = {
+    val bytes = data.getBytes("UTF-8")
+
+    partitionSize.foreach { maxSize =>
+      if (partitionBytesWritten + bytes.length > maxSize) {
+        createNewPartition()
+      }
+    }
+
+    outputStream.write(bytes)
+    partitionBytesWritten += bytes.length
+  }
+
+  private def createNewPartition(): Unit = {
+    save()
+    temporaryFile = Files.createTempFile(s"$name-", ".csv")
+    fileStream = new FileOutputStream(temporaryFile.toFile)
+    outputStream = new BufferedOutputStream(fileStream)
+    partition += 1
+    partitionBytesWritten = 0
+  }
 
   private def recordOf(data: T): String =
     CsvFormatter.formatRecord(data.productIterator.to)
