@@ -1,3 +1,6 @@
+## 7.10.2024
+- Lisätty koulutuskuntatiedot korkeakouluopiskeluoikeuksien lisätietoihin
+
 ## 8.7.2024
 - Päätason suoritusten oppilaitosten nimet haetaan erikseen vahvistuspäivän mukaan
 

@@ -13,6 +13,7 @@ import fi.oph.koski.organisaatio.OrganisaatioRepository
 import fi.oph.koski.schema.LocalizedString.{finnish, sanitize}
 import fi.oph.koski.schema._
 import fi.oph.koski.util.DateOrdering
+import fi.oph.koski.util.DateOrdering.localDateOrdering
 import fi.oph.koski.util.OptionalLists.optionalList
 import fi.oph.koski.virta.VirtaXMLConverterUtils._
 
@@ -74,7 +75,8 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
           virtaOpiskeluoikeudenTyyppi = Some(opiskeluoikeudenTyyppi(opiskeluoikeusNode)),
           lukukausiIlmoittautuminen = lukukausiIlmoittautuminen(oppilaitos, opiskeluoikeudenTila, avain(opiskeluoikeusNode), virtaXml),
           järjestäväOrganisaatio = järjestäväOrganisaatio(opiskeluoikeusNode, oppilaitoksenNimiPäivä),
-          maksettavatLukuvuosimaksut = Some(lukuvuosimaksut)
+          maksettavatLukuvuosimaksut = Some(lukuvuosimaksut),
+          koulutuskuntaJaksot = koulutuskuntajaksot(opiskeluoikeusNode)
         )),
         virtaVirheet = virheet.toList,
         luokittelu = noneIfEmpty(opiskeluoikeudenLuokittelu(opiskeluoikeusNode))
@@ -544,6 +546,16 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
       .groupBy(identity)
       .collect { case (avain, xs) if xs.length > 1 => avain }
       .toList
+
+
+  private def koulutuskuntajaksot(opiskeluoikeusNode: Node): List[KoulutuskuntaJakso] = {
+    val jaksot = opiskeluoikeusNode \ "Jakso"
+    jaksot.map(jakso => KoulutuskuntaJakso(
+      alku = alkuPvm(jakso)
+      , loppu = loppuPvm(jakso)
+      , koulutuskunta = requiredKoodi("kunta", (jakso \ "Koulutuskunta").text))).toList.sortBy(_.alku)
+  }
+
 }
 
 case class Ilmoittautuminen(oppilaitos: Option[Oppilaitos], tila: KorkeakoulunOpiskeluoikeudenTila, ooAvain: OpiskeluoikeusAvain, virtaXml: Node) {

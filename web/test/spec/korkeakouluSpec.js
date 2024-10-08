@@ -280,4 +280,17 @@ describe('Korkeakoulutus', function () {
       })
     })
   })
+
+  describe('Koulutuskunta', function () {
+    before(
+      page.openPage,
+      page.oppijaHaku.searchAndSelect('080795-884U'),
+      opinnot.expandAll
+    )
+    it('Näytetään', function () {
+      expect(extractAsText(S('.lisätiedot'))).to.include(
+        'Koulutuskunnat 1.8.2010 — 10.10.2010' + '\nKoulutuskunta Kuopio'
+      )
+    })
+  })
 })

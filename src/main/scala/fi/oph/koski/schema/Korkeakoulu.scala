@@ -60,10 +60,19 @@ case class KorkeakoulunOpiskeluoikeudenLisätiedot(
   @Title("Maksettavat lukuvuosimaksut")
   maksettavatLukuvuosimaksut: Option[Seq[KorkeakoulunOpiskeluoikeudenLukuvuosimaksu]] = None,
   lukukausiIlmoittautuminen: Option[Lukukausi_Ilmoittautuminen] = None,
-  järjestäväOrganisaatio: Option[Oppilaitos] = None
+  järjestäväOrganisaatio: Option[Oppilaitos] = None,
+  @Title("Koulutuskunnat")
+  koulutuskuntaJaksot: List[KoulutuskuntaJakso] = Nil
 ) extends OpiskeluoikeudenLisätiedot {
   def ensisijaisuusVoimassa(d: LocalDate): Boolean = ensisijaisuus.exists(_.exists((j: Aikajakso) => j.contains(d)))
 }
+
+case class KoulutuskuntaJakso(
+  alku: LocalDate,
+  loppu: Option[LocalDate],
+  @KoodistoUri("kunta")
+  koulutuskunta: Koodistokoodiviite
+) extends Jakso
 
 @Description("Korkeakoulun opiskeluoikeuden lukuvuosimaksut")
 case class KorkeakoulunOpiskeluoikeudenLukuvuosimaksu(
