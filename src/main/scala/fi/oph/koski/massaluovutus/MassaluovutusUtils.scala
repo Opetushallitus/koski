@@ -51,8 +51,9 @@ object MassaluovutusUtils {
   }
 }
 
-object QueryFormat {
+object  QueryFormat {
   val json = "application/json"
   val csv = "text/csv"
+  val csvPartition = "text/x-csv-partition"
   val xlsx = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
 }

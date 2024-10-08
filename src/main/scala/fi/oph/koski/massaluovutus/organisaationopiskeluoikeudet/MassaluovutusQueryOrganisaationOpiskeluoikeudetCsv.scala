@@ -21,10 +21,14 @@ import scala.util.Using
 @Description("Tiedostojen skeema vastaa KOSKI-raportointikannan skeemaa, joten integraatiossa on hyvä huomioida sen mahdollinen muuttuminen.")
 @Description("Skeema erittäin harvoin muuttuu niin, että kenttiä poistetaan tai niiden muoto muuttuu, mutta uusia kenttiä voi tulla mukaan.")
 @Description("Huom! Taulujen väliset relaatiot eivät ole stabiileja kyselyiden välillä, vaan id-kentät ovat kyselykohtaisia.")
+@Description("Jos kyselyn tuloksena syntyvä tulostiedosto on liian iso (n. 5 gigatavua), kysely epäonnistuu.")
+@Description("Tällaisessa tilanteessa tee kysely lyhyemmälle aikavälille tai käytä formaattinen text/x-csv-partition,")
+@Description("jolloin tiedostot jaetaan useampaan palaseen ja tiedostonimissä on mukana palasen numero.")
+@Description("Käyttäjän vastuulle jää tiedostojen yhdistäminen.")
 @Description(QueryOrganisaationOpiskeluoikeudetCsvDocumentation.fileDescriptionsAsHtml)
 case class MassaluovutusQueryOrganisaationOpiskeluoikeudetCsv(
   `type`: String = "organisaationOpiskeluoikeudet",
-  @EnumValues(Set(QueryFormat.csv))
+  @EnumValues(Set(QueryFormat.csv, QueryFormat.csvPartition))
   format: String = QueryFormat.csv,
   organisaatioOid: Option[Organisaatio.Oid] = None,
   alkanutAikaisintaan: LocalDate,
@@ -50,12 +54,13 @@ case class MassaluovutusQueryOrganisaationOpiskeluoikeudetCsv(
     val filters = defaultBaseFilter(oppilaitosOids)
     val oppijaOids = getOppijaOids(db, filters)
 
-    val opiskeluoikeusCsv = CsvResultFile.opiskeluoikeudet.create(writer)
-    val päätasonSuoritusCsv = CsvResultFile.päätasonSuoritukset.create(writer)
-    val osasuoritusCsv = CsvResultFile.osasuoritukset.create(writer)
-    val opiskeluoikeudenAikajaksoCsv = CsvResultFile.opiskeluoikeudenAikajaksot.create(writer)
-    val esiopetuksenAikajaksoCsv = CsvResultFile.esiopetuksenOpiskeluoikeudenAikajaksot.create(writer)
-    val mitätöityOpiskeluoikeusCsv = CsvResultFile.mitätöidytOpiskeluoikeudet.create(writer)
+    val partitionSize = if (format == QueryFormat.csvPartition) Some(QueryResultWriter.defaultPartitionSize(application.config)) else None
+    val opiskeluoikeusCsv = CsvResultFile.opiskeluoikeudet.create(writer, partitionSize)
+    val päätasonSuoritusCsv = CsvResultFile.päätasonSuoritukset.create(writer, partitionSize)
+    val osasuoritusCsv = CsvResultFile.osasuoritukset.create(writer, partitionSize)
+    val opiskeluoikeudenAikajaksoCsv = CsvResultFile.opiskeluoikeudenAikajaksot.create(writer, partitionSize)
+    val esiopetuksenAikajaksoCsv = CsvResultFile.esiopetuksenOpiskeluoikeudenAikajaksot.create(writer, partitionSize)
+    val mitätöityOpiskeluoikeusCsv = CsvResultFile.mitätöidytOpiskeluoikeudet.create(writer, partitionSize)
 
     forEachOpiskeluoikeus(application, filters, oppijaOids) { row =>
       if (row.mitätöity) {
@@ -92,7 +97,8 @@ object CsvResultFile extends Enumeration {
     schemaUrl: String,
   ) extends super.Val {
     def fullName: String = s"$name.csv"
-    def create(writer: QueryResultWriter)(implicit manager: Using.Manager): CsvStream[T] = writer.createCsv[T](name)
+    def create(writer: QueryResultWriter, partitionSize: Option[Long] = None)(implicit manager: Using.Manager): CsvStream[T] =
+      writer.createCsv[T](name, partitionSize)
   }
 
   implicit def valueToFileDescription(x: Value): FileDescription[_] = x.asInstanceOf[FileDescription[_]]

@@ -199,7 +199,7 @@ object QueryResponse {
 
   def failedQueryHint(q: FailedQuery): Option[String] =
     if (q.error.contains("Your proposed upload exceeds the maximum allowed size")) {
-      Some("Kyselystä syntyneen tulostiedoston koko kasvoi liian suureksi. Pienennä tulosjoukon kokoa esimerkiksi rajaamalla kysely lyhyemmälle aikavälille.")
+      Some("Kyselystä syntyneen tulostiedoston koko kasvoi liian suureksi. Pienennä tulosjoukon kokoa esimerkiksi rajaamalla kysely lyhyemmälle aikavälille tai käytä ositettuja tulostiedostoja, jos kysely tukee sitä.")
     } else {
       None
     }
