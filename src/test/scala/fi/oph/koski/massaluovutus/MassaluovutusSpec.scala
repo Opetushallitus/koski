@@ -26,6 +26,7 @@ import java.net.URL
 import java.sql.Timestamp
 import java.time.{Duration, LocalDate, LocalDateTime}
 import java.util.UUID
+import scala.util.matching.Regex
 
 class MassaluovutusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers with BeforeAndAfterAll with BeforeAndAfterEach {
   val app = KoskiApplicationForTests
@@ -259,7 +260,6 @@ class MassaluovutusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers wit
       }
 
       "Partitioitu kysely palauttaa oikean määrän tiedostoja" in {
-        AuditLogTester.clearMessages()
         val user = MockUsers.helsinkiKatselija
         val partitionedQuery = query.copy(format = QueryFormat.csvPartition)
         val queryId = addQuerySuccessfully(partitionedQuery, user) { response =>
@@ -271,6 +271,34 @@ class MassaluovutusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers wit
 
         complete.files should have length 18
         complete.files.foreach(verifyResult(_, user))
+      }
+
+      "Osasuorituksia ei palauteta, jos niistä ollaan opt-outattu" in {
+        val user = MockUsers.helsinkiKatselija
+        val eiOsasuorituksiaQuery = query.copy(eiOsasuorituksia = Some(true))
+        val queryId = addQuerySuccessfully(eiOsasuorituksiaQuery, user) { response =>
+          response.status should equal(QueryState.pending)
+          response.query.asInstanceOf[MassaluovutusQueryOrganisaationOpiskeluoikeudet].organisaatioOid should contain(MockOrganisaatiot.helsinginKaupunki)
+          response.queryId
+        }
+        val complete = waitForCompletion(queryId, user)
+
+        complete.files.filter(_.contains("osasuoritus")) should equal(List.empty)
+        complete.files.filter(_.contains("aikajakso")) should have length 2
+      }
+
+      "Aikajaksoja ei palauteta, jos niistä ollaan opt-outattu" in {
+        val user = MockUsers.helsinkiKatselija
+        val eiAikajaksojaQuery = query.copy(eiAikajaksoja = Some(true))
+        val queryId = addQuerySuccessfully(eiAikajaksojaQuery, user) { response =>
+          response.status should equal(QueryState.pending)
+          response.query.asInstanceOf[MassaluovutusQueryOrganisaationOpiskeluoikeudet].organisaatioOid should contain(MockOrganisaatiot.helsinginKaupunki)
+          response.queryId
+        }
+        val complete = waitForCompletion(queryId, user)
+
+        complete.files.filter(_.contains("aikajakso")) should equal(List.empty)
+        complete.files.filter(_.contains("osasuoritus")) should have length 1
       }
     }
   }
