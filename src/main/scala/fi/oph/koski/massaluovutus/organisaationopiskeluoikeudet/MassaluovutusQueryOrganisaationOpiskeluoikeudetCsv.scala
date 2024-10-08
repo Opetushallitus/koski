@@ -39,6 +39,10 @@ case class MassaluovutusQueryOrganisaationOpiskeluoikeudetCsv(
   muuttunutJälkeen: Option[LocalDateTime] = None,
   koulutusmuoto: Option[String] = None,
   mitätöidyt: Option[Boolean] = None,
+  @Description("Jos true, ei kyselyllä luoda osasuoritustiedostoja")
+  eiOsasuorituksia: Option[Boolean] = None,
+  @Description("Jos true, ei kyselyllä luoda opiskeluoikeuden aikajaksotiedostoja")
+  eiAikajaksoja: Option[Boolean] = None,
 ) extends MassaluovutusQueryOrganisaationOpiskeluoikeudet {
 
   def withOrganisaatioOid(organisaatioOid: Oid): MassaluovutusQueryOrganisaationOpiskeluoikeudetCsv = copy(organisaatioOid = Some(organisaatioOid))
@@ -62,6 +66,9 @@ case class MassaluovutusQueryOrganisaationOpiskeluoikeudetCsv(
     val esiopetuksenAikajaksoCsv = CsvResultFile.esiopetuksenOpiskeluoikeudenAikajaksot.create(writer, partitionSize)
     val mitätöityOpiskeluoikeusCsv = CsvResultFile.mitätöidytOpiskeluoikeudet.create(writer, partitionSize)
 
+    val includeAikajaksot = !eiAikajaksoja.contains(true)
+    val includeOsasuoritukset = !eiOsasuorituksia.contains(true)
+
     forEachOpiskeluoikeus(application, filters, oppijaOids) { row =>
       if (row.mitätöity) {
         OpiskeluoikeusLoaderRowBuilder
@@ -69,13 +76,17 @@ case class MassaluovutusQueryOrganisaationOpiskeluoikeudetCsv(
           .foreach(mitätöityOpiskeluoikeusCsv.put)
       } else {
         OpiskeluoikeusLoaderRowBuilder
-          .buildKoskiRow(row)
+          .buildKoskiRow(row, includeAikajaksot, includeOsasuoritukset)
           .foreach { rows =>
             opiskeluoikeusCsv.put(rows.rOpiskeluoikeusRow)
             rows.rPäätasonSuoritusRows.foreach(row => päätasonSuoritusCsv.put(new CsvPäätasonSuoritus(row)))
-            rows.rOsasuoritusRows.foreach(row => osasuoritusCsv.put(new CsvOsauoritus(row)))
-            opiskeluoikeudenAikajaksoCsv.put(rows.rOpiskeluoikeusAikajaksoRows)
-            esiopetuksenAikajaksoCsv.put(rows.esiopetusOpiskeluoikeusAikajaksoRows)
+            if (includeOsasuoritukset) {
+              rows.rOsasuoritusRows.foreach(row => osasuoritusCsv.put(new CsvOsauoritus(row)))
+            }
+            if (includeAikajaksot) {
+              opiskeluoikeudenAikajaksoCsv.put(rows.rOpiskeluoikeusAikajaksoRows)
+              esiopetuksenAikajaksoCsv.put(rows.esiopetusOpiskeluoikeusAikajaksoRows)
+            }
           }
       }
     }
