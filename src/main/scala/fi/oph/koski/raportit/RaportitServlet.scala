@@ -173,9 +173,9 @@ class RaportitServlet(implicit val application: KoskiApplication) extends KoskiS
 
     val resp = getStringParam("oppilaitosOid") match {
       case organisaatioService.ostopalveluRootOid =>
-        esiopetusService.buildOstopalveluRaportti(date, kotikuntaDate, password, token, t)
+        esiopetusService.buildOstopalveluRaportti(date, getKotikuntaDate, password, token, t)
       case oid =>
-        esiopetusService.buildOrganisaatioRaportti(validateOrganisaatioOid(oid), date, kotikuntaDate, password, token, t)
+        esiopetusService.buildOrganisaatioRaportti(validateOrganisaatioOid(oid), date, getKotikuntaDate, password, token, t)
     }
 
     writeExcel(resp, t)
@@ -297,7 +297,7 @@ class RaportitServlet(implicit val application: KoskiApplication) extends KoskiS
     val password = getStringParam("password")
     val downloadToken = params.get("downloadToken")
     val osasuoritustenAikarajaus = getOptionalBooleanParam("osasuoritustenAikarajaus").getOrElse(false)
-    val kotikuntaPvm = getLocalDateParamOption("kotikuntaPvm")
+    val kotikuntaPvm = getKotikuntaDate
     val lang = getStringParam("lang")
 
     AikajaksoRaporttiAikarajauksellaRequest(oppilaitosOid, downloadToken, password, alku, loppu, osasuoritustenAikarajaus, kotikuntaPvm, lang)
@@ -349,7 +349,7 @@ class RaportitServlet(implicit val application: KoskiApplication) extends KoskiS
       paiva = getLocalDateParam("paiva"),
       vuosiluokka = getStringParam("vuosiluokka"),
       lang = getStringParam("lang"),
-      kotikuntaPvm = getLocalDateParamOption("kotikuntaPvm"),
+      kotikuntaPvm = getKotikuntaDate,
     )
   }
 
@@ -373,8 +373,9 @@ class RaportitServlet(implicit val application: KoskiApplication) extends KoskiS
     (alku, loppu)
   }
 
-  private def kotikuntaDate: Option[LocalDate] =
+  private def getKotikuntaDate: Option[LocalDate] =
     getLocalDateParamOption("kotikuntaPvm").flatMap {
+      // Jos päivä on nykyinen päivä, palautetaan None, jolloin ei tehdä turhaan hakuja kotikuntahistoriaan
       pvm => if (pvm.isEqual(LocalDate.now())) None else Some(pvm)
     }
 }

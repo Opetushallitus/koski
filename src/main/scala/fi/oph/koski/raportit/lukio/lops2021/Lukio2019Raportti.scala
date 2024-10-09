@@ -7,6 +7,7 @@ import fi.oph.koski.raportit.YleissivistäväUtils._
 import fi.oph.koski.raportit._
 import fi.oph.koski.raportointikanta._
 import fi.oph.koski.schema._
+import fi.oph.koski.util.FinnishDateFormat.finnishDateFormat
 import fi.oph.koski.util.Futures
 
 import java.time.LocalDate
@@ -27,13 +28,14 @@ case class Lukio2019Raportti(repository: Lukio2019RaportitRepository, t: Localiz
     oppilaitosOid: Organisaatio.Oid,
     alku: LocalDate,
     loppu: LocalDate,
-    osasuoritustenAikarajaus: Boolean
+    osasuoritustenAikarajaus: Boolean,
+    kotikuntaPvm: Option[LocalDate],
   ): Seq[DynamicDataSheet] = {
-    val rows = repository.suoritustiedot(oppilaitosOid, alku, loppu, osasuoritustenAikarajaus)
+    val rows = repository.suoritustiedot(oppilaitosOid, alku, loppu, osasuoritustenAikarajaus, kotikuntaPvm)
     val oppiaineetJaOsasuoritukset = opetettavatOppiaineetJaNiidenKurssit(isOppiaineenOppimäärä, repository.isOppiaine, rows, t)
 
-    val oppiaineJaLisätiedotFuture = oppiaineJaLisätiedotSheet(rows, oppiaineetJaOsasuoritukset, alku, loppu)
-    val osasuorituksetFuture = oppiaineKohtaisetSheetit(rows, oppiaineetJaOsasuoritukset)
+    val oppiaineJaLisätiedotFuture = oppiaineJaLisätiedotSheet(rows, oppiaineetJaOsasuoritukset, alku, loppu, kotikuntaPvm)
+    val osasuorituksetFuture = oppiaineKohtaisetSheetit(rows, oppiaineetJaOsasuoritukset, kotikuntaPvm)
 
     val future = for {
       oppiaineJaLisätiedot <- oppiaineJaLisätiedotFuture
@@ -47,12 +49,13 @@ case class Lukio2019Raportti(repository: Lukio2019RaportitRepository, t: Localiz
     opiskeluoikeusData: Seq[Lukio2019RaporttiRows],
     oppiaineetJaOsasuoritukset: Seq[YleissivistäväRaporttiOppiaineJaKurssit],
     alku: LocalDate,
-    loppu: LocalDate
+    loppu: LocalDate,
+    kotikuntaPvm: Option[LocalDate],
   ): Future[DynamicDataSheet] = {
     Future {
       DynamicDataSheet(
         title = t.get("raportti-excel-oppiaineet-sheet-name"),
-        rows = opiskeluoikeusData.map(kaikkiOppiaineetVälilehtiRow(_, oppiaineetJaOsasuoritukset, alku, loppu)).map(_.toSeq),
+        rows = opiskeluoikeusData.map(kaikkiOppiaineetVälilehtiRow(_, oppiaineetJaOsasuoritukset, alku, loppu, kotikuntaPvm)).map(_.toSeq),
         columnSettings = oppiaineJaLisätiedotColumnSettings(oppiaineetJaOsasuoritukset)
       )
     }
@@ -60,16 +63,18 @@ case class Lukio2019Raportti(repository: Lukio2019RaportitRepository, t: Localiz
 
   private def oppiaineKohtaisetSheetit(
     rows: Seq[Lukio2019RaporttiRows],
-    oppiaineetJaOsasuoritukset: Seq[YleissivistäväRaporttiOppiaineJaKurssit]
+    oppiaineetJaOsasuoritukset: Seq[YleissivistäväRaporttiOppiaineJaKurssit],
+    kotikuntaPvm: Option[LocalDate],
   ): Future[Seq[DynamicDataSheet]] = {
     Future {
-      oppiaineetJaOsasuoritukset.map(oppiaineKohtainenSheet(_, rows))
+      oppiaineetJaOsasuoritukset.map(oppiaineKohtainenSheet(_, rows, kotikuntaPvm))
     }
   }
 
   private def oppiaineKohtainenSheet(
     oppiaineJaOsasuoritukset: YleissivistäväRaporttiOppiaineJaKurssit,
-    data: Seq[Lukio2019RaporttiRows]
+    data: Seq[Lukio2019RaporttiRows],
+    kotikuntaPvm: Option[LocalDate],
   ): DynamicDataSheet = {
     val oppiaine = oppiaineJaOsasuoritukset.oppiaine
     val osasuoritukset = oppiaineJaOsasuoritukset.oppijoidenRivitJärjestettyKursseittain
@@ -77,7 +82,7 @@ case class Lukio2019Raportti(repository: Lukio2019RaportitRepository, t: Localiz
 
     DynamicDataSheet(
       title = oppiaine.toSheetTitle(t),
-      rows = filtered.map(oppiainekohtaisetOsasuorituksetiedot(_, osasuoritukset)).map(_.toSeq),
+      rows = filtered.map(oppiainekohtaisetOsasuorituksetiedot(_, osasuoritukset, kotikuntaPvm)).map(_.toSeq),
       columnSettings = oppiaineKohtaisetColumnSettings(osasuoritukset)
     )
   }
@@ -90,7 +95,8 @@ case class Lukio2019Raportti(repository: Lukio2019RaportitRepository, t: Localiz
     row: Lukio2019RaporttiRows,
     oppiaineet: Seq[YleissivistäväRaporttiOppiaineJaKurssit],
     alku: LocalDate,
-    loppu: LocalDate
+    loppu: LocalDate,
+    kotikuntaPvm: Option[LocalDate],
   ): Lukio2019RaporttiKaikkiOppiaineetVälilehtiRow = {
     val lähdejärjestelmänId = JsonSerializer.extract[Option[LähdejärjestelmäId]](row.opiskeluoikeus.data \ "lähdejärjestelmänId")
     val lisätiedot = JsonSerializer.extract[Option[LukionOpiskeluoikeudenLisätiedot]](row.opiskeluoikeus.data \ "lisätiedot")
@@ -111,6 +117,7 @@ case class Lukio2019Raportti(repository: Lukio2019RaportitRepository, t: Localiz
        hetu = row.henkilo.hetu,
        sukunimi = row.henkilo.sukunimi,
        etunimet = row.henkilo.etunimet,
+       kotikunta = getKotikunta(row, kotikuntaPvm),
        opiskeluoikeuden_alkamispäivä = row.opiskeluoikeus.alkamispäivä.map(_.toLocalDate),
        opiskeluoikeuden_viimeisin_tila = row.opiskeluoikeus.viimeisinTila,
        opiskeluoikeuden_tilat_aikajakson_aikana = removeContinuousSameTila(row.aikajaksot).map(_.tila).mkString(","),
@@ -151,16 +158,28 @@ case class Lukio2019Raportti(repository: Lukio2019RaportitRepository, t: Localiz
     )
   }
 
+  private def getKotikunta(row: Lukio2019RaporttiRows, kotikuntaPvm: Option[LocalDate]): Option[String] = {
+    val kotikunta = if (t.language == "sv") row.henkilo.kotikuntaNimiSv else row.henkilo.kotikuntaNimiFi
+    kotikuntaPvm match {
+      case Some(pvm) => row.kotikuntaHistoriassa
+        .map(r => Some(if (t.language == "sv") r.kotikunnanNimiSv else r.kotikunnanNimiFi))
+        .getOrElse(formatKotikuntaEiTiedossa(kotikunta, pvm, t))
+      case None => kotikunta
+    }
+  }
+
   private def oppiainekohtaisetOsasuorituksetiedot(
     oppijanRivit: Lukio2019RaporttiRows,
-    oppijoidenRivitJärjestettyKursseittain: Seq[Seq[YleissivistäväRaporttiKurssi]]
+    oppijoidenRivitJärjestettyKursseittain: Seq[Seq[YleissivistäväRaporttiKurssi]],
+    kotikuntaPvm: Option[LocalDate],
   ): Lukio2019RaportinOppiaineenOsasuorituksetRow = {
     Lukio2019RaportinOppiaineenOsasuorituksetRow(
       stattisetKolumnit = Lukio2019OppiaineenKurssienVälilehtiStaattisetKolumnit(
         oppijanOid = oppijanRivit.opiskeluoikeus.oppijaOid,
         hetu = oppijanRivit.henkilo.hetu,
-        sukinimi = oppijanRivit.henkilo.sukunimi,
+        sukunimi = oppijanRivit.henkilo.sukunimi,
         etunimet = oppijanRivit.henkilo.etunimet,
+        kotikunta = getKotikunta(oppijanRivit, kotikuntaPvm),
         toimipiste = if (t.language == "sv") oppijanRivit.päätasonSuoritus.toimipisteNimiSv else oppijanRivit.päätasonSuoritus.toimipisteNimi,
         opetussuunnitelma = opetussuunnitelma(oppijanRivit.päätasonSuoritus),
         suorituksenTyyppi = oppijanRivit.päätasonSuoritus.suorituksenTyyppi
@@ -193,6 +212,11 @@ case class Lukio2019Raportti(repository: Lukio2019RaportitRepository, t: Localiz
     }
   }
 
+  private def formatKotikuntaEiTiedossa(kotikunta: Option[String], pvm: LocalDate, t: LocalizationReader): Option[String] =
+    kotikunta.map { kk =>
+      s"${t.get("Ei tiedossa")} ${pvm.format(finnishDateFormat)} (${t.get("nykyinen kotikunta on")} $kk)"
+    }
+
   private def opetussuunnitelma(suoritus: RPäätasonSuoritusRow) = {
     if (isOppiaineenOppimäärä(suoritus)) {
       JsonSerializer.extract[Option[String]](suoritus.data \ "koulutusmoduuli" \ "perusteenDiaarinumero").map {
@@ -219,6 +243,7 @@ case class Lukio2019Raportti(repository: Lukio2019RaportitRepository, t: Localiz
       Column(t.get("raportti-excel-kolumni-hetu")),
       Column(t.get("raportti-excel-kolumni-sukunimi")),
       Column(t.get("raportti-excel-kolumni-etunimet")),
+      Column(t.get("raportti-excel-kolumni-kotikunta")),
       CompactColumn(t.get("raportti-excel-kolumni-opiskeluoikeudenAlkamispäivä")),
       CompactColumn(t.get("raportti-excel-kolumni-viimeisinTila"), comment = Some(t.get("raportti-excel-kolumni-viimeisinTila-comment"))),
       CompactColumn(t.get("raportti-excel-kolumni-kaikkiTilat"), comment = Some(t.get("raportti-excel-kolumni-kaikkiTilat-comment"))),
@@ -257,6 +282,7 @@ case class Lukio2019Raportti(repository: Lukio2019RaportitRepository, t: Localiz
       Column(t.get("raportti-excel-kolumni-hetu")),
       Column(t.get("raportti-excel-kolumni-sukunimi")),
       Column(t.get("raportti-excel-kolumni-etunimet")),
+      Column(t.get("raportti-excel-kolumni-kotikunta")),
       CompactColumn(t.get("raportti-excel-kolumni-toimipisteNimi")),
       CompactColumn(t.get("raportti-excel-kolumni-opetussuunnitelma"), comment = Some(t.get("raportti-excel-kolumni-opetussuunnitelma-lukio-comment"))),
       CompactColumn(t.get("raportti-excel-kolumni-suorituksenTyyppi"), comment = Some(t.get("raportti-excel-kolumni-suorituksenTyyppi-lukio-comment")))
@@ -277,6 +303,7 @@ case class Lukio2019RaporttiOppiaineetVälilehtiMuut(
   hetu: Option[String],
   sukunimi: String,
   etunimet: String,
+  kotikunta: Option[String],
   opiskeluoikeuden_alkamispäivä: Option[LocalDate],
   opiskeluoikeuden_viimeisin_tila: Option[String],
   opiskeluoikeuden_tilat_aikajakson_aikana: String,
@@ -313,8 +340,9 @@ case class Lukio2019RaporttiKaikkiOppiaineetVälilehtiRow(muut: Lukio2019Raportt
 case class Lukio2019OppiaineenKurssienVälilehtiStaattisetKolumnit(
   oppijanOid: String,
   hetu: Option[String],
-  sukinimi: String,
+  sukunimi: String,
   etunimet: String,
+  kotikunta: Option[String],
   toimipiste: String,
   opetussuunnitelma: Option[String],
   suorituksenTyyppi: String

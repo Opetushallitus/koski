@@ -16,7 +16,7 @@ object KoskiSpecificMockOppijat {
   val eero = koskiSpecificOppijat.oppija("Esimerkki", "Eero", "010101-123N")
   val eerola = koskiSpecificOppijat.oppija("Çelik-Eerola", "Jouni", "081165-793C")
   val markkanen = koskiSpecificOppijat.oppija("Markkanen-Fagerström", "Eéro Jorma-Petteri", "080154-770R", syntymäaika = Some(LocalDate.of(1954, 1, 8)))
-  val teija = koskiSpecificOppijat.oppija("Tekijä", "Teija", "251019-039B")
+  val teija = koskiSpecificOppijat.oppija("Tekijä", "Teija", "251019-039B", kotikunta = Some("091"))
   val tero = koskiSpecificOppijat.oppija("Tunkkila-Fagerlund", "Tero Petteri Gustaf", "280608-6619")
   val presidentti = koskiSpecificOppijat.oppija("Presidentti", "Tasavallan", "")
   val koululainen = koskiSpecificOppijat.oppija("Koululainen", "Kaisa", "220109-784L")

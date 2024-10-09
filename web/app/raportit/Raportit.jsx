@@ -692,6 +692,7 @@ function Lukio2019raportti({ stateP }) {
   const titleText = <Text name="Lukioraportti-title" />
   const shortDescriptionText = <Text name="Lukioraportti-short-description" />
   const exampleText = <Paragraphs name="Lukioraportti-example" />
+  const kotikuntaPvmInputHelp = <Text name="Lukioraportti-kotikunta-date-input-help" />
 
   return (
     <AikajaksoRaporttiAikarajauksella
@@ -699,6 +700,8 @@ function Lukio2019raportti({ stateP }) {
       apiEndpoint={'/lukio2019suoritustietojentarkistus'}
       title={titleText}
       shortDescription={shortDescriptionText}
+      showKotikuntaPvmInput
+      kotikuntaPvmInputHelp={kotikuntaPvmInputHelp}
       example={exampleText}
       osasuoritusType={osasuoritusTypes.KURSSI}
       lang={lang}

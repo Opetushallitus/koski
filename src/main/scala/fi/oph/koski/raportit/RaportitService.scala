@@ -152,7 +152,7 @@ class RaportitService(application: KoskiApplication) {
   def lukioraportti2019(request: AikajaksoRaporttiAikarajauksellaRequest, t: LocalizationReader) = {
     OppilaitosRaporttiResponse(
       sheets = Lukio2019Raportti(lukio2019Repository, t)
-        .buildRaportti(request.oppilaitosOid, request.alku, request.loppu, request.osasuoritustenAikarajaus),
+        .buildRaportti(request.oppilaitosOid, request.alku, request.loppu, request.osasuoritustenAikarajaus, request.kotikuntaPvm),
       workbookSettings = WorkbookSettings(
         s"${t.get("raportti-excel-lukio-opiskeluoikeus-title")}_${request.oppilaitosOid}", Some(request.password)
       ),
