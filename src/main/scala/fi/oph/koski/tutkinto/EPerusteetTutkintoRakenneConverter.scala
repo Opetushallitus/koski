@@ -39,7 +39,8 @@ object EPerusteetTutkintoRakenneConverter extends Logging {
       suoritustavat,
       osaamisalat,
       tutkintonimikkeet,
-      koulutukset
+      koulutukset,
+      rakenne.voimassaoloAlkaaLocalDate
     )
   }
 

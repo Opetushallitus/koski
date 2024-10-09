@@ -10,6 +10,7 @@ export type TutkintoRakenne = {
   $class: 'fi.oph.koski.tutkinto.TutkintoRakenne'
   tutkintonimikkeet: Array<Koodistokoodiviite>
   koulutukset: Array<Koodistokoodiviite>
+  voimassaoloAlkaa?: string
   diaarinumero: string
   id: number
   suoritustavat: Array<SuoritustapaJaRakenne>
@@ -20,6 +21,7 @@ export type TutkintoRakenne = {
 export const TutkintoRakenne = (o: {
   tutkintonimikkeet?: Array<Koodistokoodiviite>
   koulutukset?: Array<Koodistokoodiviite>
+  voimassaoloAlkaa?: string
   diaarinumero: string
   id: number
   suoritustavat?: Array<SuoritustapaJaRakenne>

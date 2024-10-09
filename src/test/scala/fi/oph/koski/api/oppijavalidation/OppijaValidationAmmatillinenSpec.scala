@@ -178,6 +178,25 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
                 })
             }
 
+            "Osa-alue ei kuulu osaan, skipataan validaatio jos peruste tulee voimaan ennen 1.8.2022" - {
+              val suoritus = puuteollisuudenPerustutkinnonSuoritus().copy(
+                alkamispäivä = Some(LocalDate.of(2018,8,1)),
+                suoritustapa = suoritustapaReformi,
+                osasuoritukset = Some(List(
+                  yhteisenTutkinnonOsanSuoritus("400012", "Viestintä- ja vuorovaikutusosaaminen", k3, 3).copy(
+                    osasuoritukset = Some(List(
+                      YhteisenTutkinnonOsanOsaAlueenSuoritus(koulutusmoduuli = ValtakunnallinenAmmatillisenTutkinnonOsanOsaAlue(Koodistokoodiviite("MLMA", "ammatillisenoppiaineet"), pakollinen = true, Some(LaajuusOsaamispisteissä(4)))),
+                    )),
+                    arviointi = None,
+                    vahvistus = None,
+                  )))
+              )
+              "Palautetaan HTTP 200" in (
+                setupOppijaWithOpiskeluoikeus(henkilö = KoskiSpecificMockOppijat.tyhjä, opiskeluoikeus = makeOpiskeluoikeus(LocalDate.of(2018,8,1)).copy(suoritukset = List(suoritus))) {
+                  verifyResponseStatusOk()
+                })
+            }
+
             "Sallitaan paikallinen osa-alue" - {
               val suoritus = ajoneuvoalanPerustutkinnonSuoritus().copy(
                 osasuoritukset = Some(List(
