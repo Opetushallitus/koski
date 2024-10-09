@@ -59,6 +59,7 @@ class Lukio2019RaporttiSpec extends AnyFreeSpec with Matchers with Raportointika
     "hetu",
     "Sukunimi",
     "Etunimet",
+    "Kotikunta",
     "Opiskeluoikeuden alkamispäivä",
     "Viimeisin opiskeluoikeuden tila",
     "Opiskeluoikeuden tilat aikajakson aikana",
@@ -112,6 +113,7 @@ class Lukio2019RaporttiSpec extends AnyFreeSpec with Matchers with Raportointika
           "hetu",
           "Sukunimi",
           "Etunimet",
+          "Kotikunta",
           "Toimipisteen nimi",
           "Opetussuunnitelma",
           "Suorituksen tyyppi",
@@ -166,11 +168,41 @@ class Lukio2019RaporttiSpec extends AnyFreeSpec with Matchers with Raportointika
           sheetsRajauksella.head.columnSettings.map(_.title) should equal(expectedHeadings)
         }
       }
+
+      "Kotikunnan hakeminen kotikuntahistoriasta" - {
+        val oppijaOidCol = 8
+        val kotikuntaCol = 12
+
+        def getKotikunnat(kotikuntaPvm: LocalDate) = {
+          val raportti = Lukio2019Raportti(repository, t)
+            .buildRaportti(jyväskylänNormaalikoulu, date(2012, 1, 1), date(2016, 1, 1), osasuoritustenAikarajaus = false, Some(kotikuntaPvm))
+
+          val rivi = raportti.head.rows.find(_(oppijaOidCol) == "1.2.246.562.24.00000000004").get
+          val kotikuntaOppiaineJaLisätiedot = rivi(kotikuntaCol)
+
+          val oppiaineKohtaisetKotikunnat = raportti.tail.flatMap { sheet =>
+            val rivi = sheet.rows.find(_.head == "1.2.246.562.24.00000000004")
+            rivi.map(_(4))
+          }
+
+          Seq(kotikuntaOppiaineJaLisätiedot) ++ oppiaineKohtaisetKotikunnat
+        }
+
+        "Kotikunta löytyy historiasta" in {
+          val kotikunnat = getKotikunnat(LocalDate.of(2024, 1, 1))
+          kotikunnat.foreach(k => k should equal(Some("Juva")))
+        }
+
+        "Kotikunta ei löydy historiasta" in {
+          val kotikunnat = getKotikunnat(LocalDate.of(2024, 6, 2))
+          kotikunnat.foreach(k => k should equal(Some("Ei tiedossa 2.6.2024 (nykyinen kotikunta on Helsinki)")))
+        }
+      }
     }
   }
 
   private def buildLukio2019raportti(organisaatioOid: Organisaatio.Oid, alku: LocalDate, loppu: LocalDate, osasuoritustenAikarajaus: Boolean) = {
-    lukioRaportti.buildRaportti(organisaatioOid, alku, loppu, osasuoritustenAikarajaus)
+    lukioRaportti.buildRaportti(organisaatioOid, alku, loppu, osasuoritustenAikarajaus, None)
   }
 
   private def zipRowsWithColumTitles(sheet: DynamicDataSheet) = {
@@ -228,6 +260,7 @@ class Lukio2019RaporttiSpec extends AnyFreeSpec with Matchers with Raportointika
     "hetu" -> KoskiSpecificMockOppijat.teija.hetu,
     "Sukunimi" -> KoskiSpecificMockOppijat.teija.sukunimi,
     "Etunimet" -> KoskiSpecificMockOppijat.teija.etunimet,
+    "Kotikunta" -> Some("Helsinki"),
     "AI Suomen kieli ja kirjallisuus valtakunnallinen" -> "Arvosana 9, 6.0 opintopistettä",
     "MS Muut suoritukset valtakunnallinen" -> "",
     "ITT Tanssi ja liike paikallinen" -> "Arvosana 8, 2.0 opintopistettä",
@@ -243,6 +276,7 @@ class Lukio2019RaporttiSpec extends AnyFreeSpec with Matchers with Raportointika
     "hetu" -> Some("251019-039B"),
     "Sukunimi" -> "Tekijä",
     "Etunimet" -> "Teija",
+    "Kotikunta" -> Some("Helsinki"),
     "Toimipisteen nimi" -> "Jyväskylän normaalikoulu",
     "Opetussuunnitelma" -> Some("Lukio suoritetaan nuorten opetussuunnitelman mukaan"),
     "Suorituksen tyyppi" -> "lukionoppimaara",
@@ -256,6 +290,7 @@ class Lukio2019RaporttiSpec extends AnyFreeSpec with Matchers with Raportointika
     "hetu" -> Some("251019-039B"),
     "Sukunimi" -> "Tekijä",
     "Etunimet" -> "Teija",
+    "Kotikunta" -> Some("Helsinki"),
     "Toimipisteen nimi" -> "Jyväskylän normaalikoulu",
     "Opetussuunnitelma" -> Some("Lukio suoritetaan nuorten opetussuunnitelman mukaan"),
     "Suorituksen tyyppi" -> "lukionoppimaara",

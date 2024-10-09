@@ -649,6 +649,7 @@ function PerusopetuksenVuosiluokka({ stateP }) {
   const dateInputHelpText = (
     <Text name="PerusopetuksenVuosiluokka-date-input-help" />
   )
+  const kotikuntaPvmInputHelp = <Text name="PerusopetuksenVuosiluokka-kotikunta-date-input-help" />
   const exampleText = <Paragraphs name="PerusopetuksenVuosiluokka-example" />
 
   return (
@@ -658,6 +659,8 @@ function PerusopetuksenVuosiluokka({ stateP }) {
       title={titleText}
       shortDescription={shortDescriptionText}
       dateInputHelp={dateInputHelpText}
+      showKotikuntaPvmInput
+      kotikuntaPvmInputHelp={kotikuntaPvmInputHelp}
       example={exampleText}
       lang={lang}
     />
@@ -668,6 +671,7 @@ function Lukioraportti({ stateP }) {
   const titleText = <Text name="Lukioraportti-title" />
   const shortDescriptionText = <Text name="Lukioraportti-short-description" />
   const exampleText = <Paragraphs name="Lukioraportti-example" />
+  const kotikuntaPvmInputHelp = <Text name="Lukioraportti-kotikunta-date-input-help" />
 
   return (
     <AikajaksoRaporttiAikarajauksella
@@ -675,6 +679,8 @@ function Lukioraportti({ stateP }) {
       apiEndpoint={'/lukionsuoritustietojentarkistus'}
       title={titleText}
       shortDescription={shortDescriptionText}
+      showKotikuntaPvmInput
+      kotikuntaPvmInputHelp={kotikuntaPvmInputHelp}
       example={exampleText}
       osasuoritusType={osasuoritusTypes.KURSSI}
       lang={lang}
@@ -686,6 +692,7 @@ function Lukio2019raportti({ stateP }) {
   const titleText = <Text name="Lukioraportti-title" />
   const shortDescriptionText = <Text name="Lukioraportti-short-description" />
   const exampleText = <Paragraphs name="Lukioraportti-example" />
+  const kotikuntaPvmInputHelp = <Text name="Lukioraportti-kotikunta-date-input-help" />
 
   return (
     <AikajaksoRaporttiAikarajauksella
@@ -693,6 +700,8 @@ function Lukio2019raportti({ stateP }) {
       apiEndpoint={'/lukio2019suoritustietojentarkistus'}
       title={titleText}
       shortDescription={shortDescriptionText}
+      showKotikuntaPvmInput
+      kotikuntaPvmInputHelp={kotikuntaPvmInputHelp}
       example={exampleText}
       osasuoritusType={osasuoritusTypes.KURSSI}
       lang={lang}

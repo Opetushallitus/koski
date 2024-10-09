@@ -140,7 +140,7 @@ class RaportitService(application: KoskiApplication) {
   def lukioraportti(request: AikajaksoRaporttiAikarajauksellaRequest, t: LocalizationReader) = {
     OppilaitosRaporttiResponse(
       sheets = LukioRaportti(lukioRepository, t)
-        .buildRaportti(request.oppilaitosOid, request.alku, request.loppu, request.osasuoritustenAikarajaus),
+        .buildRaportti(request.oppilaitosOid, request.alku, request.loppu, request.osasuoritustenAikarajaus, request.kotikuntaPvm),
       workbookSettings = WorkbookSettings(
         s"${t.get("raportti-excel-lukio-opiskeluoikeus-title")}_${request.oppilaitosOid}", Some(request.password)
       ),
@@ -152,7 +152,7 @@ class RaportitService(application: KoskiApplication) {
   def lukioraportti2019(request: AikajaksoRaporttiAikarajauksellaRequest, t: LocalizationReader) = {
     OppilaitosRaporttiResponse(
       sheets = Lukio2019Raportti(lukio2019Repository, t)
-        .buildRaportti(request.oppilaitosOid, request.alku, request.loppu, request.osasuoritustenAikarajaus),
+        .buildRaportti(request.oppilaitosOid, request.alku, request.loppu, request.osasuoritustenAikarajaus, request.kotikuntaPvm),
       workbookSettings = WorkbookSettings(
         s"${t.get("raportti-excel-lukio-opiskeluoikeus-title")}_${request.oppilaitosOid}", Some(request.password)
       ),
@@ -425,7 +425,7 @@ class RaportitService(application: KoskiApplication) {
 
   private def perusopetuksenVuosiluokka(request: PerusopetuksenVuosiluokkaRequest, raporttiBuilder: VuosiluokkaRaporttiPaivalta, t: LocalizationReader) = {
     val oppilaitosOids = accessResolver.kyselyOiditOrganisaatiolle(request.oppilaitosOid, "perusopetus")
-    val rows = raporttiBuilder.buildRaportti(perusopetusRepository, oppilaitosOids, request.paiva, request.vuosiluokka, t)
+    val rows = raporttiBuilder.buildRaportti(perusopetusRepository, oppilaitosOids, request.paiva, request.kotikuntaPvm, request.vuosiluokka, t)
     val documentation = DocumentationSheet(t.get("raportti-excel-ohjeet-sheet-name"), raporttiBuilder.documentation(t))
     val data = DataSheet(t.get("raportti-excel-opiskeluoikeudet-sheet-name"), rows, raporttiBuilder.columnSettings(t))
 

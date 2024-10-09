@@ -14,6 +14,7 @@ import {
   Vinkit
 } from './raporttiComponents'
 import { selectFromState, today } from './raporttiUtils'
+import { t } from '../i18n/i18n'
 
 export const VuosiluokkaRaporttiPaivalta = ({
   stateP,
@@ -21,9 +22,12 @@ export const VuosiluokkaRaporttiPaivalta = ({
   shortDescription,
   dateInputHelp,
   example,
-  lang
+  lang,
+  showKotikuntaPvmInput,
+  kotikuntaPvmInputHelp
 }) => {
   const paivaAtom = Atom(today())
+  const kotikuntaPvmAtom = Atom(today())
   const vuosiluokkaAtom = Atom('1')
   const submitBus = Bacon.Bus()
   const { selectedOrganisaatioP, dbUpdatedP } = selectFromState(stateP)
@@ -33,19 +37,23 @@ export const VuosiluokkaRaporttiPaivalta = ({
   const downloadExcelP = Bacon.combineWith(
     selectedOrganisaatioP,
     paivaAtom,
+    kotikuntaPvmAtom,
     vuosiluokkaAtom,
-    (o, p, v) =>
+    (o, p, kkp, v) =>
       o &&
       p &&
-      v && {
+      v && 
+      kkp && {
         oppilaitosOid: o.oid,
         paiva: formatISODate(p),
+        kotikuntaPvm: showKotikuntaPvmInput ? formatISODate(kkp) : undefined,
         vuosiluokka: v,
         lang,
         password,
         baseUrl: `/koski/api/raportit${apiEndpoint}`
       }
   )
+
   const downloadExcelE = submitBus
     .map(downloadExcelP)
     .flatMapLatest(downloadExcel)
@@ -63,6 +71,7 @@ export const VuosiluokkaRaporttiPaivalta = ({
       <LyhytKuvaus>{shortDescription}</LyhytKuvaus>
 
       <PaivaValinta paivaAtom={paivaAtom} ohje={dateInputHelp} />
+      {showKotikuntaPvmInput && <PaivaValinta label={t('select-kotikunta-date')} paivaAtom={kotikuntaPvmAtom} ohje={kotikuntaPvmInputHelp} />}
 
       <div className="dropdown-selection parametri vuosiluokka">
         <label>

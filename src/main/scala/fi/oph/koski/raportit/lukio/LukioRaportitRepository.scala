@@ -2,7 +2,7 @@ package fi.oph.koski.raportit.lukio
 
 import fi.oph.koski.db.QueryMethods
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
-import fi.oph.koski.db.{DB}
+import fi.oph.koski.db.DB
 import fi.oph.koski.raportit.RaporttiUtils.arvioituAikavälillä
 import fi.oph.koski.raportit.YleissivistäväRaporttiRows
 import fi.oph.koski.raportointikanta._
@@ -10,6 +10,7 @@ import fi.oph.koski.schema.Organisaatio
 import fi.oph.koski.util.DateOrdering.sqlDateOrdering
 import slick.jdbc.GetResult
 
+import java.sql.Date
 import java.time.LocalDate
 import scala.concurrent.duration.DurationInt
 
@@ -28,7 +29,8 @@ case class LukioRaportitRepository(db: DB) extends QueryMethods with Raportointi
     oppilaitosOid: Organisaatio.Oid,
     alku: LocalDate,
     loppu: LocalDate,
-    osasuoritustenAikarajaus: Boolean
+    osasuoritustenAikarajaus: Boolean,
+    kotikuntaPvm: Option[LocalDate],
   ): Seq[LukioRaporttiRows] = {
     val opiskeluoikeusAikajaksotPaatasonsuorituksetTunnisteet = opiskeluoikeusAikajaksotPaatasonSuorituksetResult(oppilaitosOid, alku, loppu)
 
@@ -46,8 +48,19 @@ case class LukioRaportitRepository(db: DB) extends QueryMethods with Raportointi
 
     val henkilot = runDbSync(RHenkilöt.filter(_.oppijaOid inSet opiskeluoikeudet.map(_.oppijaOid).distinct).result, timeout = defaultTimeout).groupBy(_.oppijaOid).mapValues(_.head)
 
+    val kotikuntahistoriat = kotikuntaPvm.toSeq.flatMap { pvm =>
+      val pvmDateBegin = Date.valueOf(LocalDate.of(1900, 1, 1))
+      val pvmDateEnd = Date.valueOf(LocalDate.now())
+      val pvmDate = Date.valueOf(pvm)
+      runDbSync(RKotikuntahistoria
+        .filter(_.masterOppijaOid inSet opiskeluoikeudet.map(_.oppijaOid).distinct)
+        .filter(r => r.muuttoPvm.getOrElse(pvmDateBegin) <= pvmDate && r.poismuuttoPvm.getOrElse(pvmDateEnd) >= pvmDate)
+        .result
+      )
+    }
+
     opiskeluoikeudet.foldLeft[Seq[LukioRaporttiRows]](Seq.empty) {
-      combineOpiskeluoikeusWith(_, _, aikajaksot, paatasonSuoritukset, osasuoritukset, henkilot)
+      combineOpiskeluoikeusWith(_, _, aikajaksot, paatasonSuoritukset, osasuoritukset, henkilot, kotikuntahistoriat)
     }
   }
 
@@ -57,7 +70,8 @@ case class LukioRaportitRepository(db: DB) extends QueryMethods with Raportointi
     aikajaksot: Map[OpiskeluoikeusOid, Seq[ROpiskeluoikeusAikajaksoRow]],
     paatasonSuoritukset: Map[OpiskeluoikeusOid, Seq[RPäätasonSuoritusRow]],
     osasuoritukset: Map[PäätasonSuoritusId, Seq[ROsasuoritusRow]],
-    henkilot: Map[OppijaOid, RHenkilöRow]
+    henkilot: Map[OppijaOid, RHenkilöRow],
+    kotikuntahistoria: Seq[RKotikuntahistoriaRow],
   ) = {
     paatasonSuoritukset.getOrElse(opiskeluoikeus.opiskeluoikeusOid, Nil).map(paatasonsuoritus =>
       LukioRaporttiRows(
@@ -65,7 +79,8 @@ case class LukioRaportitRepository(db: DB) extends QueryMethods with Raportointi
         henkilot(opiskeluoikeus.oppijaOid),
         aikajaksot.getOrElse(opiskeluoikeus.opiskeluoikeusOid, Nil).sortBy(_.alku)(sqlDateOrdering),
         paatasonsuoritus,
-        osasuoritukset.getOrElse(paatasonsuoritus.päätasonSuoritusId, Nil)
+        osasuoritukset.getOrElse(paatasonsuoritus.päätasonSuoritusId, Nil),
+        kotikuntahistoria.find(_.masterOppijaOid == opiskeluoikeus.oppijaOid),
       )
     ) ++ acc
   }
@@ -102,5 +117,6 @@ case class LukioRaporttiRows(
   henkilo: RHenkilöRow,
   aikajaksot: Seq[ROpiskeluoikeusAikajaksoRow],
   päätasonSuoritus: RPäätasonSuoritusRow,
-  osasuoritukset: Seq[ROsasuoritusRow]
+  osasuoritukset: Seq[ROsasuoritusRow],
+  kotikuntaHistoriassa: Option[RKotikuntahistoriaRow],
 ) extends YleissivistäväRaporttiRows
