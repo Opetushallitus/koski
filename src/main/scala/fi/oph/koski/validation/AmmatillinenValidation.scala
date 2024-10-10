@@ -22,7 +22,8 @@ object AmmatillinenValidation {
           validateKeskeneräiselläSuorituksellaEiSaaOllaKeskiarvoa(ammatillinen),
           validateKeskiarvoOlemassaJosSuoritusOnValmis(ammatillinen, isKuoriopiskeluoikeus),
           validateAmmatillisenKorotus(ammatillinen),
-          validateKorotuksenAlkuperäinenOpiskeluoikeus(ammatillinen, henkilö, koskiOpiskeluoikeudet)
+          validateKorotuksenAlkuperäinenOpiskeluoikeus(ammatillinen, henkilö, koskiOpiskeluoikeudet),
+          validateOpiskeluoikeudenArvionnit(ammatillinen),
         )
       case _ => HttpStatus.ok
     }
@@ -376,4 +377,32 @@ object AmmatillinenValidation {
             .count(s => s.koulutusmoduuli.tunniste.koodiarvo == tutkinnonOsa) >= osasuoritukset.size
       }
   )(KoskiErrorCategory.badRequest.validation.ammatillinen.liikaaSamojaTutkinnonOsia())
+
+  private def validateOpiskeluoikeudenArvionnit(oo: AmmatillinenOpiskeluoikeus): HttpStatus =
+    HttpStatus.fold(oo.suoritukset.map(validatePäätasonSuorituksenArvioinnit))
+
+  private def validatePäätasonSuorituksenArvioinnit(päätasonSuoritus: AmmatillinenPäätasonSuoritus): HttpStatus =
+    HttpStatus.fold(päätasonSuoritus.osasuoritukset.toList.flatten.map(validateSuorituksenArviointi))
+
+  private def validateSuorituksenArviointi(suoritus: Suoritus): HttpStatus =
+    suoritus match {
+      case os: MuunAmmatillisenTutkinnonOsanSuoritus => validateArviointi(os.arviointi)
+      case os: YhteisenAmmatillisenTutkinnonOsanSuoritus => validateArviointi(os.arviointi)
+      case _ => HttpStatus.ok
+    }
+
+  private def validateArviointi(arvioinnit: Option[List[AmmatillinenArviointi]]): HttpStatus =
+    HttpStatus.fold(arvioinnit.toList.flatten.map { arviointi =>
+      if (hylätytArvosanat.contains(arviointi.arvosana)) {
+        KoskiErrorCategory.badRequest.validation.arviointi.epäsopivaArvosana("Arvosana ei voi olla hylätty")
+      } else {
+        HttpStatus.ok
+      }
+    })
+
+  private val hylätytArvosanat = List(
+    Koodistokoodiviite("Hylätty", "arviointiasteikkoammatillinenhyvaksyttyhylatty"),
+    Koodistokoodiviite("0", "arviointiasteikkoammatillinent1k3"),
+    Koodistokoodiviite("Hylätty", "arviointiasteikkoammatillinen15"),
+  )
 }
