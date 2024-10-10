@@ -47,7 +47,7 @@ class MassaluovutusService(application: KoskiApplication) extends Logging {
 
   def get(id: UUID)(implicit user: KoskiSpecificSession): Either[HttpStatus, Query] =
     queries.get(id)
-      .filter(_.userOid == user.oid)
+      .filter(_.userOid == user.oid || user.hasGlobalReadAccess)
       .toRight(KoskiErrorCategory.notFound())
 
   def numberOfRunningQueries: Int = queries.numberOfRunningQueries
@@ -113,6 +113,8 @@ class MassaluovutusService(application: KoskiApplication) extends Logging {
     (application.replicaDatabase.replayLag.toSeconds > maxAllowedDatabaseReplayLag.getSeconds) || databaseLoadLimiter.checkOverloading
 
   def cancelAllTasks(reason: String): Boolean = queries.setRunningTasksFailed(reason)
+
+  def truncate(): Int = queries.truncate
 
   private def logStart(query: RunningQuery): Unit = {
     logger.info(s"Starting new ${query.name} (priority ${query.priority})  as user ${query.userOid}")

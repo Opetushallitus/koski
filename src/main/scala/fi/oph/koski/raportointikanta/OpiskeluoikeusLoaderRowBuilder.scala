@@ -38,14 +38,14 @@ object OpiskeluoikeusLoaderRowBuilder extends Logging {
     sisältyvätKokeet: List[YlioppilastutkinnonSisältyväKoe]
   )
 
-  def buildKoskiRow(inputRow: OpiskeluoikeusRow): Either[LoadErrorResult, KoskiOutputRows] = {
+  def buildKoskiRow(inputRow: OpiskeluoikeusRow, includeAikajaksot: Boolean = true, includeOsasuoritukset: Boolean = true): Either[LoadErrorResult, KoskiOutputRows] = {
     Try {
       val toOpiskeluoikeusUnsafeStartTime = System.nanoTime()
       val oo = inputRow.toOpiskeluoikeusUnsafe(KoskiSpecificSession.systemUser)
       val toOpiskeluoikeusUnsafeDuration = System.nanoTime() - toOpiskeluoikeusUnsafeStartTime
       val ooRow = buildROpiskeluoikeusRow(inputRow.oppijaOid, inputRow.aikaleima, oo, inputRow.data)
 
-      val aikajaksoRows: AikajaksoRows = buildAikajaksoRows(inputRow.oid, oo)
+      val aikajaksoRows: AikajaksoRows = if (includeAikajaksot) buildAikajaksoRows(inputRow.oid, oo) else (Nil, Nil)
       val suoritusRows: KoskiSuoritusRows = oo.suoritukset.zipWithIndex.map {
         case (ps, i) => OpiskeluoikeusLoaderRowBuilder.buildKoskiSuoritusRows(
           inputRow.oid,
@@ -53,7 +53,8 @@ object OpiskeluoikeusLoaderRowBuilder extends Logging {
           oo.getOppilaitos,
           ps,
           (inputRow.data \ "suoritukset") (i),
-          suoritusIds.incrementAndGet
+          suoritusIds.incrementAndGet,
+          includeOsasuoritukset
         )
       }
       KoskiOutputRows(
@@ -200,7 +201,8 @@ object OpiskeluoikeusLoaderRowBuilder extends Logging {
     oppilaitos: OrganisaatioWithOid,
     ps: PäätasonSuoritus,
     data: JValue,
-    idGenerator: => Long
+    idGenerator: => Long,
+    includeOsasuoritukset: Boolean = true
   ): (
        RPäätasonSuoritusRow,
        List[ROsasuoritusRow],
@@ -210,15 +212,17 @@ object OpiskeluoikeusLoaderRowBuilder extends Logging {
   {
     val päätasonSuoritusId: Long = idGenerator
     val päätaso = buildRPäätasonSuoritusRow(opiskeluoikeusOid, sisältyyOpiskeluoikeuteenOid, oppilaitos, ps, data, päätasonSuoritusId)
-    val osat = ps.osasuoritukset.getOrElse(List.empty).zipWithIndex.flatMap {
-      case (os, i) => buildROsasuoritusRow(päätasonSuoritusId, None, opiskeluoikeusOid, sisältyyOpiskeluoikeuteenOid, os, (data \ "osasuoritukset")(i), idGenerator)
-    }
+    val osat = if (includeOsasuoritukset) {
+      ps.osasuoritukset.getOrElse(List.empty).zipWithIndex.flatMap {
+        case (os, i) => buildROsasuoritusRow(päätasonSuoritusId, None, opiskeluoikeusOid, sisältyyOpiskeluoikeuteenOid, os, (data \ "osasuoritukset")(i), idGenerator)
+      }
+    } else { Nil }
     val muuAmmatillinenRaportointi = ps match {
-      case s: MuunAmmatillisenKoulutuksenSuoritus => s.rekursiivisetOsasuoritukset.map(MuuAmmatillinenRaporttiRowBuilder.build(opiskeluoikeusOid, päätasonSuoritusId, _))
+      case s: MuunAmmatillisenKoulutuksenSuoritus if includeOsasuoritukset => s.rekursiivisetOsasuoritukset.map(MuuAmmatillinenRaporttiRowBuilder.build(opiskeluoikeusOid, päätasonSuoritusId, _))
       case _ => Nil
     }
     val topksAmmatillinenRaportointi = ps match {
-      case s: TutkinnonOsaaPienemmistäKokonaisuuksistaKoostuvaSuoritus => s.rekursiivisetOsasuoritukset.map(TOPKSAmmatillinenRaporttiRowBuilder.build(opiskeluoikeusOid, päätasonSuoritusId, _))
+      case s: TutkinnonOsaaPienemmistäKokonaisuuksistaKoostuvaSuoritus if includeOsasuoritukset => s.rekursiivisetOsasuoritukset.map(TOPKSAmmatillinenRaporttiRowBuilder.build(opiskeluoikeusOid, päätasonSuoritusId, _))
       case _ => Nil
     }
     (päätaso, osat, muuAmmatillinenRaportointi, topksAmmatillinenRaportointi)

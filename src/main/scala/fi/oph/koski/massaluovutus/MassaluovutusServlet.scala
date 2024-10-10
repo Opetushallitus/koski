@@ -2,7 +2,7 @@ package fi.oph.koski.massaluovutus
 
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
-import fi.oph.koski.koskiuser.RequiresVirkailijaOrPalvelukäyttäjä
+import fi.oph.koski.koskiuser.{KoskiSpecificSession, RequiresVirkailijaOrPalvelukäyttäjä}
 import fi.oph.koski.schema.KoskiSchema.strictDeserialization
 import fi.oph.koski.schema.annotation.EnumValues
 import fi.oph.koski.servlet.{KoskiSpecificApiServlet, NoCache}
@@ -33,7 +33,7 @@ class MassaluovutusServlet(implicit val application: KoskiApplication)
           .validatingAndResolvingExtractor
           .extract[MassaluovutusQueryParameters](strictDeserialization)(body)
           .flatMap(massaluovutukset.add)
-          .map(q => QueryResponse(rootUrl, q))
+          .map(q => QueryResponse(rootUrl, q, session))
       }
     } (parseErrorHandler = jsonErrorHandler)
   }
@@ -43,7 +43,7 @@ class MassaluovutusServlet(implicit val application: KoskiApplication)
       UuidUtils.optionFromString(getStringParam("id"))
         .toRight(KoskiErrorCategory.badRequest.queryParam("Epävalidi tunniste"))
         .flatMap(massaluovutukset.get)
-        .map(q => QueryResponse(rootUrl, q))
+        .map(q => QueryResponse(rootUrl, q, session))
     }
   }
 
@@ -123,6 +123,10 @@ case class FailedQueryResponse(
   files: List[String],
   @EnumValues(Set(QueryState.failed))
   status: String = QueryState.failed,
+  @Description("Mahdollinen vihje, miten epäonnistuneen kyselyn voisi yrittää korjata kyselyä muuttamalla.")
+  hint: Option[String],
+  @Description("Alkuperäinen virheviesti. Nähtävissä vain pääkäyttäjän oikeuksilla.")
+  error: Option[String],
 ) extends QueryResponse
 
 case class CompleteQueryResponse(
@@ -145,7 +149,7 @@ case class CompleteQueryResponse(
 ) extends QueryResponse
 
 object QueryResponse {
-  def apply(rootUrl: String, query: Query): QueryResponse = query match {
+  def apply(rootUrl: String, query: Query, session: KoskiSpecificSession): QueryResponse = query match {
     case q: PendingQuery => PendingQueryResponse(
       queryId = q.queryId,
       requestedBy = q.userOid,
@@ -171,6 +175,8 @@ object QueryResponse {
       startedAt = q.startedAt,
       finishedAt = q.finishedAt,
       files = q.filesToExternal(rootUrl),
+      hint = failedQueryHint(q),
+      error = if (session.hasGlobalReadAccess) Some(q.error) else None,
     )
     case q: CompleteQuery => CompleteQueryResponse(
       queryId = q.queryId,
@@ -190,4 +196,11 @@ object QueryResponse {
 
   implicit def toOffsetDateTime(dt: Option[LocalDateTime]): Option[OffsetDateTime] =
     dt.map(toOffsetDateTime)
+
+  def failedQueryHint(q: FailedQuery): Option[String] =
+    if (q.error.contains("Your proposed upload exceeds the maximum allowed size")) {
+      Some("Kyselystä syntyneen tulostiedoston koko kasvoi liian suureksi. Pienennä tulosjoukon kokoa esimerkiksi rajaamalla kysely lyhyemmälle aikavälille tai käytä ositettuja tulostiedostoja, jos kysely tukee sitä.")
+    } else {
+      None
+    }
 }
