@@ -1,8 +1,12 @@
 # Koskeen tallennettavien tietojen validaatiosäännöt
 
+## 15.10.2024
+
+- Estetään ammatilliselle opiskeluoikeuden ammatilliselle tutkinnon osalle tai yhteisen tutkinnon osan osa-alueelle arvioinnit, joiden arvosana on "Hylätty".
+
 ## 3.10.2024
 
-- Poistesttu Vapaan Sivistystön Kotoutumis- ja Lukutaitokoulutuksille 53op:n yhteislaajuusvalidaatio 
+- Poistettu vapaan sivistystön kotoutumis- ja lukutaitokoulutuksille 53 op:n yhteislaajuusvalidaatio
 
 ## xx.9.2024
 
