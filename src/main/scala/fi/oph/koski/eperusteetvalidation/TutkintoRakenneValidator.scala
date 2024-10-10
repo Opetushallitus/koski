@@ -9,6 +9,7 @@ import fi.oph.koski.schema._
 import fi.oph.koski.schema
 import fi.oph.koski.tutkinto.Koulutustyyppi._
 import fi.oph.koski.tutkinto.{Koulutustyyppi, _}
+import fi.oph.koski.util.ChainingSyntax._
 
 import java.time.LocalDate
 import scala.collection.mutable.ArrayBuffer
@@ -308,7 +309,7 @@ case class TutkintoRakenneValidator(tutkintoRepository: TutkintoRepository, kood
                 KoskiErrorCategory.badRequest.validation.rakenne.tuntematonTutkinnonOsa(
                   s"Tutkinnon osa ${osa.tunniste} ei löydy tutkintorakenteesta opiskeluoikeuden voimassaoloaikana voimassaolleelle perusteelle ${rakenne.diaarinumero} (${rakenne.id}) - suoritustapa ${suoritustapaJaRakenne.suoritustapa.koodiarvo}")
               case Some(tutkinnonOsa) =>
-                validateLaajuusJaOsaAlueet(suoritus, tutkinnonOsa, oo, ps)
+                validateLaajuusJaOsaAlueet(suoritus, tutkinnonOsa, oo, ps, rakenne)
             }
         }
       case None =>
@@ -330,7 +331,7 @@ case class TutkintoRakenneValidator(tutkintoRepository: TutkintoRepository, kood
 
   private def findTutkintonimike(rakenne: TutkintoRakenne, tutkintonimikeKoodi: String) = rakenne.tutkintonimikkeet.find(_.koodiarvo == tutkintonimikeKoodi)
 
-  private def validateLaajuusJaOsaAlueet(suoritus: AmmatillisenTutkinnonOsanSuoritus, perusteenTutkinnonOsa: TutkinnonOsa, oo: KoskeenTallennettavaOpiskeluoikeus, ps: PäätasonSuoritus):
+  private def validateLaajuusJaOsaAlueet(suoritus: AmmatillisenTutkinnonOsanSuoritus, perusteenTutkinnonOsa: TutkinnonOsa, oo: KoskeenTallennettavaOpiskeluoikeus, ps: PäätasonSuoritus, rakenne: TutkintoRakenne):
   HttpStatus = {
     val laajuusValidaatioPäällä = config.getBoolean("validaatiot.ammatillinenEPerusteOsaAlueLaajuusValidaatio")
     val koodiValidaatioAlkaa = LocalDate.parse(config.getString("validaatiot.ammatillinenEPerusteOsaAlueKoodiValidaatioAlkaa"))
@@ -383,7 +384,7 @@ case class TutkintoRakenneValidator(tutkintoRepository: TutkintoRepository, kood
         {
           val koodiError = osaAlueSuoritus.koulutusmoduuli.tunniste match {
             case _ if perusteenTutkinnonOsa.osaAlueet.isEmpty => HttpStatus.ok // Jos osa-alueita ei ole parsittu vanhan mallisesta perusteesta niin skipataan tämä validaatio.
-            case t: Koodistokoodiviite if t.koodistoUri == "ammatillisenoppiaineet" => KoskiErrorCategory.badRequest.validation.rakenne(s"Osa-alue '${osaAlueSuoritus.koulutusmoduuli.nimi.get("fi")}' (${osaAlueSuoritus.koulutusmoduuli.tunniste.koodiarvo}) ei kuulu perusteen mukaan tutkinnon osaan '${perusteenTutkinnonOsa.nimi.get("fi")}'")
+            case t: Koodistokoodiviite if t.koodistoUri == "ammatillisenoppiaineet" && rakenne.voimassaoloAlkaa.exists(_.isEqualOrAfter(LocalDate.of(2022, 8, 1))) => KoskiErrorCategory.badRequest.validation.rakenne(s"Osa-alue '${osaAlueSuoritus.koulutusmoduuli.nimi.get("fi")}' (${osaAlueSuoritus.koulutusmoduuli.tunniste.koodiarvo}) ei kuulu perusteen mukaan tutkinnon osaan '${perusteenTutkinnonOsa.nimi.get("fi")}'")
             case _ => HttpStatus.ok // mm. paikalliset tutkinnon osat
           }
           if (koodiValidaatioPällä) {
