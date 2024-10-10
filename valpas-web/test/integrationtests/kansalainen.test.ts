@@ -315,6 +315,7 @@ const expectHuollettavaTurvakieltoPerustiedot = async () => {
       opiskelutilanne: "Kyllä",
       oppivelvollisuus: "28.9.2022 asti",
       maksuttomuusoikeus: "31.12.2024 asti",
+      kotikuntaSuomessaAlkaen: "Henkilöllä on turvakielto",
     }),
   )
 

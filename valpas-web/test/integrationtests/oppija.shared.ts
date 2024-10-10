@@ -66,7 +66,10 @@ export const oppivelvollisuustiedot = (p: {
         .join("\n"),
     ),
     ...rivi("Oikeus opintojen maksuttomuuteen", p.maksuttomuusoikeus),
-    ...rivi("Kotikunta Suomessa alkaen", p.kotikuntaSuomessaAlkaen),
+    ...rivi(
+      "Kotikunta Suomessa alkaen",
+      p.kotikuntaSuomessaAlkaen || "Tieto puuttuu",
+    ),
     ...(p.oppivelvollisuudenKeskeytysBtn ? ["Keskeytä oppivelvollisuus"] : []),
     ...(p.kuntailmoitusBtn
       ? ["Tee ilmoitus valvontavastuusta", "info_outline"]
