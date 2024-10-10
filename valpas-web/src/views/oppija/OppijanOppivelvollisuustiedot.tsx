@@ -112,12 +112,13 @@ export const OppijanOppivelvollisuustiedot = (
             })}
           />
         )}
-        {props.muuttanutSuomeen && (
-          <InfoTableRow
-            label={t("oppija__muuttanut_suomeen")}
-            value={formatDate(props.muuttanutSuomeen)}
-          />
-        )}
+        <InfoTableRow
+          label={t("oppija__muuttanut_suomeen")}
+          value={oppijaMuuttanutSuomeen(
+            props.henkilö.turvakielto,
+            props.muuttanutSuomeen,
+          )}
+        />
         {!onOppivelvollisuudestaVapautettu(
           props.oppivelvollisuudestaVapautus,
         ) && (
@@ -317,6 +318,13 @@ const oppivelvollisuusValue = (
     rows[0]
   )
 }
+
+const oppijaMuuttanutSuomeen = (turvakielto: boolean, pvm?: ISODate): string =>
+  pvm
+    ? formatDate(pvm)
+    : turvakielto
+      ? t("oppija__henkilöllä_turvakielto")
+      : t("tieto_puuttuu")
 
 type EditButtonProps = {
   onClick: () => void
