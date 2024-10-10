@@ -279,7 +279,7 @@ object AmmatillinenValidation {
     )
   }
 
-  def validateKorotettujaVastaavatOsasuoritukset(
+  private def validateKorotettujaVastaavatOsasuoritukset(
     korotetutOsasuoritukset: List[OsittaisenAmmatillisenTutkinnonOsanSuoritus],
     alkuperäinenSuoritus: AmmatillisenTutkinnonSuoritus
   ): HttpStatus = {
@@ -352,7 +352,7 @@ object AmmatillinenValidation {
     )(KoskiErrorCategory.badRequest.validation.ammatillinen.alkuperäinenOsasuoritusEiVastaava())
   }
 
-  def validateKorotettujenOsasuoritustenLaajuus(
+  private def validateKorotettujenOsasuoritustenLaajuus(
     korotetutOsasuoritukset: List[OsittaisenAmmatillisenTutkinnonOsanSuoritus]
   ): HttpStatus = HttpStatus.validate(
     korotetutOsasuoritukset.forall(os =>
@@ -363,7 +363,7 @@ object AmmatillinenValidation {
     )
   )(KoskiErrorCategory.badRequest.validation.ammatillinen.korotuksenLaajuus())
 
-  def validateKorotettujenSamojenTutkinnonOsienMäärä(
+  private def validateKorotettujenSamojenTutkinnonOsienMäärä(
     korotetutOsasuoritukset: List[OsittaisenAmmatillisenTutkinnonOsanSuoritus],
     alkuperäinenSuoritus: AmmatillisenTutkinnonSuoritus
   ): HttpStatus = HttpStatus.validate(
