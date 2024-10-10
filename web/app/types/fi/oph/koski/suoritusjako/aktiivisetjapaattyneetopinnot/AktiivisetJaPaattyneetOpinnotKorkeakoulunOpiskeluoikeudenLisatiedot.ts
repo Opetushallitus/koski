@@ -1,5 +1,6 @@
 import { AktiivisetJaPäättyneetOpinnotKoodistokoodiviite } from './AktiivisetJaPaattyneetOpinnotKoodistokoodiviite'
 import { AktiivisetJaPäättyneetOpinnotLukukausi_Ilmoittautuminen } from './AktiivisetJaPaattyneetOpinnotLukukausiIlmoittautuminen'
+import { AktiivisetJaPäättyneetOpinnotKoulutuskuntaJakso } from './AktiivisetJaPaattyneetOpinnotKoulutuskuntaJakso'
 
 /**
  * AktiivisetJaPäättyneetOpinnotKorkeakoulunOpiskeluoikeudenLisätiedot
@@ -11,6 +12,7 @@ export type AktiivisetJaPäättyneetOpinnotKorkeakoulunOpiskeluoikeudenLisätied
     $class: 'fi.oph.koski.suoritusjako.aktiivisetjapaattyneetopinnot.AktiivisetJaPäättyneetOpinnotKorkeakoulunOpiskeluoikeudenLisätiedot'
     virtaOpiskeluoikeudenTyyppi?: AktiivisetJaPäättyneetOpinnotKoodistokoodiviite
     lukukausiIlmoittautuminen?: AktiivisetJaPäättyneetOpinnotLukukausi_Ilmoittautuminen
+    koulutuskuntaJaksot: Array<AktiivisetJaPäättyneetOpinnotKoulutuskuntaJakso>
   }
 
 export const AktiivisetJaPäättyneetOpinnotKorkeakoulunOpiskeluoikeudenLisätiedot =
@@ -18,10 +20,12 @@ export const AktiivisetJaPäättyneetOpinnotKorkeakoulunOpiskeluoikeudenLisätie
     o: {
       virtaOpiskeluoikeudenTyyppi?: AktiivisetJaPäättyneetOpinnotKoodistokoodiviite
       lukukausiIlmoittautuminen?: AktiivisetJaPäättyneetOpinnotLukukausi_Ilmoittautuminen
+      koulutuskuntaJaksot?: Array<AktiivisetJaPäättyneetOpinnotKoulutuskuntaJakso>
     } = {}
   ): AktiivisetJaPäättyneetOpinnotKorkeakoulunOpiskeluoikeudenLisätiedot => ({
     $class:
       'fi.oph.koski.suoritusjako.aktiivisetjapaattyneetopinnot.AktiivisetJaPäättyneetOpinnotKorkeakoulunOpiskeluoikeudenLisätiedot',
+    koulutuskuntaJaksot: [],
     ...o
   })
 

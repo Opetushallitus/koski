@@ -1,7 +1,7 @@
 package fi.oph.koski.suoritusjako.aktiivisetjapaattyneetopinnot
 
 import fi.oph.koski.schema
-import fi.oph.koski.schema.annotation.KoodistoKoodiarvo
+import fi.oph.koski.schema.annotation.{KoodistoKoodiarvo, KoodistoUri}
 import fi.oph.scalaschema.annotation.Title
 
 import java.time.LocalDate
@@ -54,7 +54,8 @@ object AktiivisetJaPäättyneetOpinnotKorkeakoulunOpiskeluoikeus {
             )
           )
         )
-      )
+      ),
+      koulutuskuntaJaksot = lisätiedot.koulutuskuntaJaksot.map(j => AktiivisetJaPäättyneetOpinnotKoulutuskuntaJakso(j.alku, j.loppu, j.koulutuskunta))
     )),
     suoritukset = kk.suoritukset
       .map {
@@ -162,6 +163,7 @@ case class AktiivisetJaPäättyneetOpinnotMuuKorkeakoulunSuoritus(
 case class AktiivisetJaPäättyneetOpinnotKorkeakoulunOpiskeluoikeudenLisätiedot(
   virtaOpiskeluoikeudenTyyppi: Option[AktiivisetJaPäättyneetOpinnotKoodistokoodiviite],
   lukukausiIlmoittautuminen: Option[AktiivisetJaPäättyneetOpinnotLukukausi_Ilmoittautuminen],
+  koulutuskuntaJaksot: List[AktiivisetJaPäättyneetOpinnotKoulutuskuntaJakso]
 ) extends AktiivisetJaPäättyneetOpinnotOpiskeluoikeudenLisätiedot
 
 @Title("Lukukausi-ilmoittautuminen")
@@ -203,3 +205,11 @@ case class AktiivisetJaPäättyneetOpinnotKorkeakoulunOpintojakso(
   tunniste: AktiivisetJaPäättyneetOpinnotPaikallinenKoodi,
   nimi: schema.LocalizedString,
 ) extends SuorituksenKoulutusmoduuli
+
+@Title("Koulutuskuntajakso")
+case class AktiivisetJaPäättyneetOpinnotKoulutuskuntaJakso(
+  alku: LocalDate,
+  loppu: Option[LocalDate],
+  @KoodistoUri("kunta")
+  koulutuskunta: schema.Koodistokoodiviite
+)
