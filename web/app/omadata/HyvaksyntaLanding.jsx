@@ -48,7 +48,6 @@ class HyvaksyntaLanding extends React.Component {
       this.setState({ loading: false })
     }
   }
-
   authorizeMember() {
     Http.post(
       `/koski/api/omadata/valtuutus/${this.state.memberCode}`,
@@ -81,7 +80,6 @@ class HyvaksyntaLanding extends React.Component {
       }
     })
   }
-
   getLogoutURL() {
     return `/koski/user/logout?target=${
       window.location.origin

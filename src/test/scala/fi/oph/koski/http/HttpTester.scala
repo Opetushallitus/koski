@@ -12,6 +12,8 @@ trait HttpTester extends HttpComponentsClient {
 
   val multipartContent = Map("Content-type" -> "multipart/form-data")
 
+  val formContent = Map("Content-type" -> "application/x-www-form-urlencoded")
+
   def defaultUser: UserWithPassword
 
   def basicAuthHeader(user: String, password: String): (String, String) = {
