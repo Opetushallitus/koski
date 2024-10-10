@@ -1160,6 +1160,9 @@ class AktiivisetJaPäättyneetOpinnotServiceSpec
     actualOo.lisätiedot.map(_.lukukausiIlmoittautuminen.map(_.ilmoittautumisjaksot.map(_.maksetutLukuvuosimaksut.map(_.summa)))) should equal(expectedOoData.lisätiedot.map(_.lukukausiIlmoittautuminen.map(_.ilmoittautumisjaksot.map(_.maksetutLukuvuosimaksut.map(_.summa)))))
     actualOo.lisätiedot.map(_.lukukausiIlmoittautuminen.map(_.ilmoittautumisjaksot.map(_.maksetutLukuvuosimaksut.map(_.apuraha)))) should equal(expectedOoData.lisätiedot.map(_.lukukausiIlmoittautuminen.map(_.ilmoittautumisjaksot.map(_.maksetutLukuvuosimaksut.map(_.apuraha)))))
     actualOo.lisätiedot.map(_.lukukausiIlmoittautuminen.map(_.ilmoittautumisjaksot.map(_.ylioppilaskunnanJäsen))) should equal(expectedOoData.lisätiedot.map(_.lukukausiIlmoittautuminen.map(_.ilmoittautumisjaksot.map(_.ylioppilaskunnanJäsen))))
+    actualOo.lisätiedot.map(_.koulutuskuntaJaksot.map(_.alku)) should equal(expectedOoData.lisätiedot.map(_.koulutuskuntaJaksot.map(_.alku)))
+    actualOo.lisätiedot.map(_.koulutuskuntaJaksot.map(_.loppu)) should equal(expectedOoData.lisätiedot.map(_.koulutuskuntaJaksot.map(_.loppu)))
+    actualOo.lisätiedot.map(_.koulutuskuntaJaksot.map(_.koulutuskunta)) should equal(expectedOoData.lisätiedot.map(_.koulutuskuntaJaksot.map(_.koulutuskunta)))
   }
 
   private def verifyKoskiOpiskeluoikeudenKentät(
