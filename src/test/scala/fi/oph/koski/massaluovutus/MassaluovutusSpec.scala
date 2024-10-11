@@ -17,7 +17,7 @@ import fi.oph.koski.util.Wait
 import fi.oph.koski.{KoskiApplicationForTests, KoskiHttpSpec}
 import fi.oph.scalaschema.Serializer.format
 import org.json4s.jackson.JsonMethods
-import org.json4s.{JArray, JInt, JNothing, JValue}
+import org.json4s.{JArray, JInt, JNothing, JObject, JValue}
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.{BeforeAndAfterAll, BeforeAndAfterEach}
@@ -26,6 +26,7 @@ import java.net.URL
 import java.sql.Timestamp
 import java.time.{Duration, LocalDate, LocalDateTime}
 import java.util.UUID
+import scala.util.matching.Regex
 
 class MassaluovutusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers with BeforeAndAfterAll with BeforeAndAfterEach {
   val app = KoskiApplicationForTests
@@ -36,6 +37,7 @@ class MassaluovutusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers wit
 
   override protected def afterEach(): Unit = {
     Wait.until { !app.massaluovutusService.hasWork }
+    app.massaluovutusService.truncate()
   }
 
   "Kyselyiden skedulointi" - {
@@ -89,6 +91,47 @@ class MassaluovutusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers wit
 
         val query = app.massaluovutusService.get(UUID.fromString(runningQuery.queryId))
         query.map(_.state) should equal(Right(QueryState.running))
+      }
+    }
+  }
+
+  "Lisätiedot virhetilanteista" - {
+    def createFailedQuery = FailedQuery(
+        queryId = UUID.randomUUID().toString,
+        userOid = MockUsers.tornioTallentaja.oid,
+        query = MassaluovutusQueryOrganisaationOpiskeluoikeudetCsv(
+          alkanutAikaisintaan = LocalDate.of(2000, 1, 1),
+        ),
+        createdAt = LocalDateTime.now(),
+        startedAt = LocalDateTime.now(),
+        finishedAt = LocalDateTime.now(),
+        worker = "ignore",
+        resultFiles = List(),
+        error = "Your proposed upload exceeds the maximum allowed size (Service: S3, Status Code: 400, Request ID: XYZ, Extended Request ID: xyz)",
+        session = JObject(),
+        meta = Some(QueryMeta(restarts = Some(List("1", "2", "3")))),
+      )
+
+    "Liian iso tulostiedosto palauttaa käyttäjälle vihjeen, mutta ei alkuperäistä virheilmoitusta" in {
+      withoutRunningQueryScheduler {
+        val failedQuery = createFailedQuery
+        KoskiApplicationForTests.massaluovutusService.addRaw(failedQuery)
+        getQuerySuccessfully(failedQuery.queryId, MockUsers.tornioTallentaja) { response =>
+          val failResponse = response.asInstanceOf[FailedQueryResponse]
+          failResponse.hint should equal(Some("Kyselystä syntyneen tulostiedoston koko kasvoi liian suureksi. Pienennä tulosjoukon kokoa esimerkiksi rajaamalla kysely lyhyemmälle aikavälille tai käytä ositettuja tulostiedostoja, jos kysely tukee sitä."))
+          failResponse.error should equal(None)
+        }
+      }
+    }
+
+    "Pääkäyttäjä näkee epäonnistuneen kyselyn alkuperäisen virheilmoituksen" in {
+      withoutRunningQueryScheduler {
+        val failedQuery = createFailedQuery
+        KoskiApplicationForTests.massaluovutusService.addRaw(failedQuery)
+        getQuerySuccessfully(failedQuery.queryId, MockUsers.paakayttaja) { response =>
+          val failResponse = response.asInstanceOf[FailedQueryResponse]
+          failResponse.error should equal(Some(failedQuery.error))
+        }
       }
     }
   }
@@ -214,6 +257,48 @@ class MassaluovutusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers wit
 
         complete.files should have length 3
         complete.files.foreach(verifyResult(_, user))
+      }
+
+      "Partitioitu kysely palauttaa oikean määrän tiedostoja" in {
+        val user = MockUsers.helsinkiKatselija
+        val partitionedQuery = query.copy(format = QueryFormat.csvPartition)
+        val queryId = addQuerySuccessfully(partitionedQuery, user) { response =>
+          response.status should equal(QueryState.pending)
+          response.query.asInstanceOf[MassaluovutusQueryOrganisaationOpiskeluoikeudet].organisaatioOid should contain(MockOrganisaatiot.helsinginKaupunki)
+          response.queryId
+        }
+        val complete = waitForCompletion(queryId, user)
+
+        complete.files should have length 18
+        complete.files.foreach(verifyResult(_, user))
+      }
+
+      "Osasuorituksia ei palauteta, jos niistä ollaan opt-outattu" in {
+        val user = MockUsers.helsinkiKatselija
+        val eiOsasuorituksiaQuery = query.copy(eiOsasuorituksia = Some(true))
+        val queryId = addQuerySuccessfully(eiOsasuorituksiaQuery, user) { response =>
+          response.status should equal(QueryState.pending)
+          response.query.asInstanceOf[MassaluovutusQueryOrganisaationOpiskeluoikeudet].organisaatioOid should contain(MockOrganisaatiot.helsinginKaupunki)
+          response.queryId
+        }
+        val complete = waitForCompletion(queryId, user)
+
+        complete.files.filter(_.contains("osasuoritus")) should equal(List.empty)
+        complete.files.filter(_.contains("aikajakso")) should have length 2
+      }
+
+      "Aikajaksoja ei palauteta, jos niistä ollaan opt-outattu" in {
+        val user = MockUsers.helsinkiKatselija
+        val eiAikajaksojaQuery = query.copy(eiAikajaksoja = Some(true))
+        val queryId = addQuerySuccessfully(eiAikajaksojaQuery, user) { response =>
+          response.status should equal(QueryState.pending)
+          response.query.asInstanceOf[MassaluovutusQueryOrganisaationOpiskeluoikeudet].organisaatioOid should contain(MockOrganisaatiot.helsinginKaupunki)
+          response.queryId
+        }
+        val complete = waitForCompletion(queryId, user)
+
+        complete.files.filter(_.contains("aikajakso")) should equal(List.empty)
+        complete.files.filter(_.contains("osasuoritus")) should have length 1
       }
     }
   }
@@ -613,7 +698,7 @@ class MassaluovutusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers wit
       app.massaluovutusScheduler.pause(Duration.ofDays(1))
       f
     } finally {
-      app.massaluovutusService.cancelAllTasks("cancelled")
+      app.massaluovutusService.truncate
       app.massaluovutusScheduler.resume()
     }
 }

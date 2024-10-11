@@ -29,7 +29,7 @@ class QueryRepository(
       SELECT *
       FROM massaluovutus
       WHERE id = ${id.toString}::uuid
-        AND user_oid = ${user.oid}
+        AND (user_oid = ${user.oid} OR ${user.hasGlobalReadAccess})
       """.as[Query]
     ).headOption
 
@@ -37,7 +37,7 @@ class QueryRepository(
     runDbSync(sql"""
       SELECT *
       FROM massaluovutus
-      WHERE user_oid = ${user.oid}
+      WHERE (user_oid = ${user.oid} OR ${user.hasGlobalReadAccess})
         AND query = ${query.asJson}
         AND state IN (${QueryState.pending}, ${QueryState.running})
      """.as[Query]
@@ -196,6 +196,8 @@ class QueryRepository(
       WHERE worker = $workerId
         AND state = ${QueryState.running}
       """.asUpdate) != 0
+
+  def truncate: Int = runDbSync(sql"TRUNCATE TABLE massaluovutus".asUpdate)
 
   def setLongRunningQueriesFailed(timeout: Duration, error: String): Seq[FailedQuery] = {
     val timeoutTime = Timestamp.valueOf(LocalDateTime.now().minus(timeout))
