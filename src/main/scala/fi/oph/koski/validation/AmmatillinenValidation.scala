@@ -395,7 +395,7 @@ object AmmatillinenValidation {
 
     HttpStatus.fold(validateArviointi(arviointi), validateOsasuoritustenArvioinnit(osasuoritukset))
   }
-  
+
   private def validateArviointi(arvioinnit: Option[List[AmmatillinenArviointi]]): HttpStatus =
     HttpStatus.fold(arvioinnit.toList.flatten.map { arviointi =>
       HttpStatus.validate(arviointi.hyväksytty) {

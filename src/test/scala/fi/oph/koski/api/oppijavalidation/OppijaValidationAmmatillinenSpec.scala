@@ -22,6 +22,7 @@ import fi.oph.koski.{KoskiApplicationForTests, KoskiHttpSpec}
 
 import java.time.LocalDate
 import java.time.LocalDate.{of => date}
+import scala.collection.immutable.List
 
 class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[AmmatillinenOpiskeluoikeus] with KoskiHttpSpec with OpiskeluoikeusTestMethodsAmmatillinen {
   "Ammatillisen koulutuksen opiskeluoikeuden lisääminen" - {
@@ -589,6 +590,92 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
               "palautetaan HTTP 400" in (setupOsasuoritukset(List(copySuoritus(arviointiHyvä(arvosana = arvosanaViisi), None), suoritusOsienOsat)) (
                 verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.arviointi.useitaArviointiasteikoita("Suoritus käyttää useampaa kuin yhtä numeerista arviointiasteikkoa: arviointiasteikkoammatillinen15, arviointiasteikkoammatillinent1k3"))
               ))
+            }
+
+            "'Hylätty' -arvosanat" - {
+              val epäsopivaArvosanaError = KoskiErrorCategory.badRequest.validation.arviointi.epäsopivaArvosana("Arvosana ei voi olla hylätty")
+              def toArviointi(arvosana: Koodistokoodiviite) = Some(List(AmmatillinenArviointi(arvosana, date(2015, 5, 1))))
+
+              "Yhteisten opintojen suoritus" - {
+                def testOsasuoritus(arvosana: Koodistokoodiviite) =
+                  setupTutkinnonOsaSuoritus(yhtTutkinnonOsanSuoritus.copy(
+                    arviointi = toArviointi(arvosana),
+                    osasuoritukset = Some(List()),
+                  ), tutkinnonSuoritustapaOps) {
+                    verifyResponseStatus(400, epäsopivaArvosanaError)
+                  }
+
+                "Ei sallita: Hylätty / arviointiasteikkoammatillinenhyvaksyttyhylatty" in {
+                  testOsasuoritus(Koodistokoodiviite("Hylätty", "arviointiasteikkoammatillinenhyvaksyttyhylatty"))
+                }
+                "Ei sallita: 0 / arviointiasteikkoammatillinent1k3" in {
+                  testOsasuoritus(Koodistokoodiviite("0", "arviointiasteikkoammatillinent1k3"))
+                }
+                "Ei sallita: Hylätty / arviointiasteikkoammatillinen15" in {
+                  testOsasuoritus(Koodistokoodiviite("Hylätty", "arviointiasteikkoammatillinen15"))
+                }
+              }
+
+              "Yhteisten opintojen suorituksen osasuoritukset" - {
+                def testOsasuoritus(arvosana: Koodistokoodiviite) =
+                  setupTutkinnonOsaSuoritus(yhteisenTutkinnonOsanSuoritus("101053", "Viestintä- ja vuorovaikutusosaaminen", k3, 11).copy(
+                    osasuoritukset = Some(List(
+                      YhteisenTutkinnonOsanOsaAlueenSuoritus(koulutusmoduuli = AmmatillisenTutkinnonÄidinkieli(Koodistokoodiviite("AI", "ammatillisenoppiaineet"), pakollinen = true, kieli = Koodistokoodiviite("AI1", "oppiaineaidinkielijakirjallisuus"), laajuus = Some(LaajuusOsaamispisteissä(5))), arviointi = toArviointi(arvosana)),
+                      YhteisenTutkinnonOsanOsaAlueenSuoritus(koulutusmoduuli = AmmatillisenTutkinnonÄidinkieli(Koodistokoodiviite("AI", "ammatillisenoppiaineet"), pakollinen = false, kieli = Koodistokoodiviite("AI1", "oppiaineaidinkielijakirjallisuus"), laajuus = Some(LaajuusOsaamispisteissä(6))), arviointi = Some(List(arviointiKiitettävä))),
+                    )),
+                  ), tutkinnonSuoritustapaOps) {
+                    verifyResponseStatus(400, epäsopivaArvosanaError)
+                  }
+
+                "Ei sallita: Hylätty / arviointiasteikkoammatillinenhyvaksyttyhylatty" in {
+                  testOsasuoritus(Koodistokoodiviite("Hylätty", "arviointiasteikkoammatillinenhyvaksyttyhylatty"))
+                }
+                "Ei sallita: 0 / arviointiasteikkoammatillinent1k3" in {
+                  testOsasuoritus(Koodistokoodiviite("0", "arviointiasteikkoammatillinent1k3"))
+                }
+                "Ei sallita: Hylätty / arviointiasteikkoammatillinen15" in {
+                  testOsasuoritus(Koodistokoodiviite("Hylätty", "arviointiasteikkoammatillinen15"))
+                }
+              }
+
+              "Muun ammatillisten opintojen suoritus" - {
+                def testOsasuoritus(arvosana: Koodistokoodiviite) =
+                  setupTutkinnonOsaSuoritus(tutkinnonOsaSuoritus.copy(
+                    arviointi = toArviointi(arvosana),
+                    osasuoritukset = Some(List()),
+                  ), tutkinnonSuoritustapaOps) {
+                    verifyResponseStatus(400, epäsopivaArvosanaError)
+                  }
+
+                "Ei sallita: Hylätty / arviointiasteikkoammatillinenhyvaksyttyhylatty" in {
+                  testOsasuoritus(Koodistokoodiviite("Hylätty", "arviointiasteikkoammatillinenhyvaksyttyhylatty"))
+                }
+                "Ei sallita: 0 / arviointiasteikkoammatillinent1k3" in {
+                  testOsasuoritus(Koodistokoodiviite("0", "arviointiasteikkoammatillinent1k3"))
+                }
+                "Ei sallita: Hylätty / arviointiasteikkoammatillinen15" in {
+                  testOsasuoritus(Koodistokoodiviite("Hylätty", "arviointiasteikkoammatillinen15"))
+                }
+              }
+
+              "Muun ammatillisen opintojen suorituksen osasuoritukset" - {
+                def testOsasuoritus(arvosana: Koodistokoodiviite) =
+                  setupTutkinnonOsaSuoritus(
+                    tutkinnonOsaSuoritus.copy(osasuoritukset = Some(List(osanOsa.copy(arviointi = toArviointi(arvosana))))),
+                    tutkinnonSuoritustapaOps) {
+                    verifyResponseStatus(400, epäsopivaArvosanaError)
+                  }
+
+                "Ei sallita: Hylätty / arviointiasteikkoammatillinenhyvaksyttyhylatty" in {
+                  testOsasuoritus(Koodistokoodiviite("Hylätty", "arviointiasteikkoammatillinenhyvaksyttyhylatty"))
+                }
+                "Ei sallita: 0 / arviointiasteikkoammatillinent1k3" in {
+                  testOsasuoritus(Koodistokoodiviite("0", "arviointiasteikkoammatillinent1k3"))
+                }
+                "Ei sallita: Hylätty / arviointiasteikkoammatillinen15" in {
+                  testOsasuoritus(Koodistokoodiviite("Hylätty", "arviointiasteikkoammatillinen15"))
+                }
+              }
             }
           }
 
