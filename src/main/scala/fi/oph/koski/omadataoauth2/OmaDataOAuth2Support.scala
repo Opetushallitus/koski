@@ -147,7 +147,7 @@ case class ClientInfo(
   redirectUri: String,
   state: Option[String]
 ) {
-  def getPostResponseServletParams = Seq(("redirect_uri", redirectUri)) ++ state.toSeq.map(v => ("state", v))
+  def getPostResponseServletParams = Seq(("client_id", clientId), ("redirect_uri", redirectUri)) ++ state.toSeq.map(v => ("state", v))
 }
 
 case class ParamInfo(
