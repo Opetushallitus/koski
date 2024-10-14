@@ -8,6 +8,10 @@ import Header from './Header'
 import Http from '../util/http'
 import { currentLocation, parseQuery } from '../util/location'
 import { Error as ErrorDisplay, logError } from '../util/Error'
+import { Text } from '../i18n/Text'
+import { t, tTemplate } from '../i18n/i18n'
+
+
 import OmaDataOAuth2UusiHyvaksynta from "./OmaDataOAuth2UusiHyvaksynta"
 __webpack_nonce__ = window.nonce
 
@@ -20,7 +24,8 @@ class OmaDataOAuth2HyvaksyntaLanding extends React.Component {
       loading: true,
       client_id: this.parseClientId(),
       scope: this.parseScope(),
-      error: undefined,
+      error: this.parseError(),
+      error_id: this.parseErrorId(),
       clientName: undefined
     }
 
@@ -37,6 +42,14 @@ class OmaDataOAuth2HyvaksyntaLanding extends React.Component {
 
   parseScope() {
     return parseQuery(currentLocation().queryString).scope
+  }
+
+  parseError() {
+    return parseQuery(currentLocation().queryString).error
+  }
+
+  parseErrorId() {
+    return parseQuery(currentLocation().queryString).error_id
   }
 
   componentDidMount() {
@@ -76,16 +89,21 @@ class OmaDataOAuth2HyvaksyntaLanding extends React.Component {
   }
 
   render() {
+
     const error = this.state.error ? (
       <ErrorDisplay error={{ text: this.state.error }} />
     ) : null
+
+    const errorPage = this.state.error === "invalid_client_data" ? <ErrorPage text={tTemplate('omadataoauth2_error', { error: this.state.error, error_id: this.state.error_id })} /> : null
 
     return (
       <div>
         <Header />
         {error}
 
-        {this.state.clientName ? (
+        {errorPage ? (
+          errorPage
+        ) : this.state.clientName ? (
           <OmaDataOAuth2UusiHyvaksynta
             clientName={this.state.clientName}
             scope={this.state.scope}
