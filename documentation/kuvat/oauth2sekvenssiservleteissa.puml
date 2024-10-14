@@ -1,0 +1,120 @@
+@startuml
+title OAuth2 -happy path -sekvenssi Koski-servleteissä
+
+actor user
+
+participant client [
+  Hyödyntäjä-backend
+  Client
+]
+
+participant user_agent [
+  Web-selain
+  User agent
+]
+
+' /koski/omadata-oauth2/authorize:
+participant OmaDataOAuth2ResourceOwnerReactServlet [
+  KOSKI
+  OmaDataOAuth2ResourceOwnerReactServlet
+]
+
+' https://untuvaopintopolku.fi/cas-oppija/login/fi/?service=...
+participant cas_oppija [
+  Opintopolku
+  CAS Oppija
+]
+
+' /koski/cas/oppija=onSuccess=...:
+participant CasServlet [
+  KOSKI
+  CasServlet
+]
+
+' /koski/omadata-oauth2/cas-workaround/authorize/:base64urlencodedparams
+participant OmaDataOAuth2CASWorkaroundServlet [
+  KOSKI
+  OmaDataOAuth2CASWorkaroundServlet
+]
+
+' /koski/api/omadata-oauth2/authorize:
+participant OmaDataOAuth2ResourceOwnerServlet [
+  KOSKI
+  OmaDataOAuth2ResourceOwnerServlet
+]
+
+' /koski/user/logout?target=
+participant KoskiSpecificLogoutServlet [
+ KOSKI
+ KoskiSpecificLogoutServlet
+]
+
+participant OmaDataOAuth2LogoutPostResponseServlet [
+  KOSKI
+  OmaDataOAuth2LogoutPostResponseServlet
+]
+
+client -> user_agent : OPEN /koski/omadata-oauth2/authorize/PARAMS
+
+user_agent -> OmaDataOAuth2ResourceOwnerReactServlet : GET /koski/omadata-oauth2/authorize/PARAMS
+
+OmaDataOAuth2ResourceOwnerReactServlet -> cas_oppija : REDIRECT https://opintopolku.fi/cas-oppija/login/fi/?\n  service=/koski/cas/oppija?\n    onSuccess=/koski/omadata-oauth2/cas-workaround\n      /authorize/BASE64URLENCODED_PARAMS
+
+cas_oppija -> user_agent : Login-sivu
+
+user -> user_agent : Suomi.fi-login
+
+user_agent -> cas_oppija : Suomi.fi-login
+
+cas_oppija -> CasServlet : REDIRECT /koski/cas/oppija?\n    onSuccess=/koski/omadata-oauth2/cas-workaround\n      /authorize/BASE64URLENCODED_PARAMS
+
+CasServlet -> OmaDataOAuth2CASWorkaroundServlet : REDIRECT /koski/omadata-oauth2/cas-workaround\n      /authorize/BASE64URLENCODED_PARAMS
+
+OmaDataOAuth2CASWorkaroundServlet -> OmaDataOAuth2ResourceOwnerReactServlet : REDIRECT /koski/omadata-oauth2/authorize/PARAMS
+
+OmaDataOAuth2ResourceOwnerReactServlet -> user_agent : Hyväksyntä-sivu
+
+user -> user_agent : Hyväksy valtuutus
+
+user_agent -> OmaDataOAuth2ResourceOwnerServlet : GET /koski/api/omadata-oauth2/authorize/?PARAMS
+
+OmaDataOAuth2ResourceOwnerServlet -> KoskiSpecificLogoutServlet : REDIRECT /koski/user/logout?\n  target=/koski/omadata-oauth2/cas-workaround\n      /post-response/BASE64URLENCODED_RESPONSE_PARAMS
+
+KoskiSpecificLogoutServlet -> cas_oppija : REDIRECT /cas-oppija/logout?\n  service=/koski/omadata-oauth2/cas-workaround\n      /post-response/BASE64URLENCODED_RESPONSE_PARAMS
+
+cas_oppija -> OmaDataOAuth2CASWorkaroundServlet : REDIRECT /koski/omadata-oauth2/cas-workaround\n      /post-response/BASE64URLENCODED_RESPONSE_PARAMS
+
+OmaDataOAuth2CASWorkaroundServlet -> OmaDataOAuth2LogoutPostResponseServlet : REDIRECT /koski/omadata-oauth2/cas-workaround\n      /post-response/RESPONSE_PARAMS
+
+OmaDataOAuth2LogoutPostResponseServlet -> user_agent : Auto-submit web form, jossa RESPONSE inputteina
+
+user_agent -> client : POST redirect_uri\nbody=CODE_RESPONSE
+
+participant luovutuspalvelu [
+  KOSKI-luovutuspalvelu
+  nginx
+]
+
+participant OmaDataOAuth2AuthorizationServerServlet [
+  KOSKI
+  OmaDataOAuth2AuthorizationServerServlet
+]
+
+participant OmaDataOAuth2ResourceServerServlet [
+  KOSKI
+  OmaDataOAuth2ResourceServerServlet
+]
+
+client -> luovutuspalvelu : mutual-TLS POST /koski/api/omadata-oauth2/authorization-server/\n  body=CODE_PARAMS
+
+luovutuspalvelu -> OmaDataOAuth2AuthorizationServerServlet : PROXY POST /koski/api/omadata-oauth2/authorization-server/\n  Authorization=BasicAuth&  body=CODE_PARAMS
+
+OmaDataOAuth2AuthorizationServerServlet -> client : TOKEN_RESPONSE
+
+client -> luovutuspalvelu : mutual-TLS GET /koski/api/omadata-oauth2/resource-server\n  Authorization=Bearer TOKEN
+
+luovutuspalvelu -> OmaDataOAuth2ResourceServerServlet : PROXY POST /koski/api/omadata-oauth2/resource-server\n  Authorization=BasicAuth\n  X-Auth=Bearer TOKEN
+
+OmaDataOAuth2ResourceServerServlet -> client : DATA
+
+@enduml
