@@ -2719,5 +2719,6 @@
   "Ei tiedossa": "Ei tiedossa",
   "nykyinen kotikunta on": "nykyinen kotikunta on",
   "Koulutuskunta" : "Koulutuskunta",
-  "Koulutuskunnat" : "Koulutuskunnat"
+  "Koulutuskunnat" : "Koulutuskunnat",
+  "omadataoauth2_error": "Tapahtui virhe: {{error}}. Jos tämä toistuu, ota yhteyttä palveluntarjoajaan. Voit kertoa heille asian selvittämistä helpottaaksesi virhekoodin {{error_id}}."
 }

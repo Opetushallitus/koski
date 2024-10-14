@@ -20,6 +20,7 @@ class OmaDataOAuth2ResourceOwnerServlet(implicit val application: KoskiApplicati
     if (multiParams("error").length > 0) {
       validateQueryClientParams() match {
         case Left(validationError) =>
+
           // sisäinen virhe, tänne ei pitäisi päätyä, koska client-parametrit olisi pitänyt jo validoida aiemmin
           // TODO: TOR-2210: tässä voisi kuitenkin palata fronttiin sisäisen virheilmoituksen kera? koska clientillekaan ei mitään tiedoteta
           logger.error(s"Internal error: ${validationError.errorDescription}")
