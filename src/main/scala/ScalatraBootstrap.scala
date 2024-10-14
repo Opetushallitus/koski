@@ -178,12 +178,12 @@ class ScalatraBootstrap extends LifeCycle with Logging with Timing with GlobalEx
     }
 
     if (!Environment.isProdEnvironment(application.config)) {
+      mount("/koski/omadata-oauth2", new OmaDataOAuth2ResourceOwnerReactServlet)
+      mount("/koski/api/omadata-oauth2/resource-owner", new OmaDataOAuth2ResourceOwnerServlet)
+      mount("/koski/omadata-oauth2/cas-workaround", new OmaDataOAuth2CASWorkaroundServlet)
+      mount("/koski/omadata-oauth2/post-response", new OmaDataOAuth2LogoutPostResponseServlet)
       mount("/koski/api/omadata-oauth2/authorization-server", new OmaDataOAuth2AuthorizationServerServlet)
       mount("/koski/api/omadata-oauth2/resource-server", new OmaDataOAuth2ResourceServerServlet)
-      mount("/koski/api/omadata-oauth2/resource-owner", new OmaDataOAuth2ResourceOwnerServlet)
-      mount("/koski/omadata-oauth2/post-response", new OmaDataOAuth2LogoutPostResponseServlet)
-      mount("/koski/omadata-oauth2", new OmaDataOAuth2ResourceOwnerReactServlet)
-      mount("/koski/omadata-oauth2/cas-workaround", new OmaDataOAuth2CASWorkaroundServlet)
 
       // TODO: TOR-2210: Poista debug-servlet kokonaan!
       mount("/koski/omadata-oauth2/debug-post-response", new OmaDataOAuth2PostResponseDebugServlet)
