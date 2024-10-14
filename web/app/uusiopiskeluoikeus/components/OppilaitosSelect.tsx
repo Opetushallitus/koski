@@ -42,7 +42,9 @@ export const OppilaitosSelect = (props: OppilaitosSelectProps) => {
 const useOrganisaatioOptions = (
   orgTypes?: OrgType[]
 ): Array<SelectOption<OrganisaatioHierarkia>> => {
-  const organisaatiot = useOrganisaatioHierarkia()
+  const organisaatiot = useOrganisaatioHierarkia().filter(
+    (o) => !['HANKINTAKOULUTUS', 'OSTOPALVELUTAIPALVELUSETELI'].includes(o.oid)
+  )
   return useMemo(() => {
     const filtered = orgTypes
       ? filterOrgsByType(organisaatiot, orgTypes)
