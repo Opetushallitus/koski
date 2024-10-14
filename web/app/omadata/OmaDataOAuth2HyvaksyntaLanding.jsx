@@ -11,10 +11,9 @@ import { Error as ErrorDisplay, logError } from '../util/Error'
 import { Text } from '../i18n/Text'
 import { t, tTemplate } from '../i18n/i18n'
 
-
-import OmaDataOAuth2UusiHyvaksynta from "./OmaDataOAuth2UusiHyvaksynta"
+import OmaDataOAuth2UusiHyvaksynta from './OmaDataOAuth2UusiHyvaksynta'
+import { KoodistoProvider } from '../appstate/koodisto'
 __webpack_nonce__ = window.nonce
-
 
 class OmaDataOAuth2HyvaksyntaLanding extends React.Component {
   constructor(props) {
@@ -54,12 +53,15 @@ class OmaDataOAuth2HyvaksyntaLanding extends React.Component {
 
   componentDidMount() {
     try {
-      Http.cachedGet(`/koski/api/omadata-oauth2/resource-owner/client-details/${this.state.client_id}`, {
-        errorHandler: (e) => {
-          logError(e)
-          this.setState({ loading: false })
+      Http.cachedGet(
+        `/koski/api/omadata-oauth2/resource-owner/client-details/${this.state.client_id}`,
+        {
+          errorHandler: (e) => {
+            logError(e)
+            this.setState({ loading: false })
+          }
         }
-      }).onValue((client) =>
+      ).onValue((client) =>
         this.setState({
           clientName: client.name,
           loading: false
@@ -89,35 +91,44 @@ class OmaDataOAuth2HyvaksyntaLanding extends React.Component {
   }
 
   render() {
-
     const error = this.state.error ? (
       <ErrorDisplay error={{ text: this.state.error }} />
     ) : null
 
-    const errorPage = this.state.error === "invalid_client_data" ? <ErrorPage text={tTemplate('omadataoauth2_error', { error: this.state.error, error_id: this.state.error_id })} /> : null
+    const errorPage =
+      this.state.error === 'invalid_client_data' ? (
+        <ErrorPage
+          text={tTemplate('omadataoauth2_error', {
+            error: this.state.error,
+            error_id: this.state.error_id
+          })}
+        />
+      ) : null
 
     return (
-      <div>
-        <Header />
-        {error}
+      <KoodistoProvider>
+        <div>
+          <Header />
+          {error}
 
-        {errorPage ? (
-          errorPage
-        ) : this.state.clientName ? (
-          <OmaDataOAuth2UusiHyvaksynta
-            clientName={this.state.clientName}
-            scope={this.state.scope}
-            onAuthorization={this.authorizeClient}
-            onDecline={this.declineClient}
-          />
-        ) : this.state.loading ? (
-          <Spinner />
-        ) : (
-          <ErrorPage />
-        )}
+          {errorPage ? (
+            errorPage
+          ) : this.state.clientName ? (
+            <OmaDataOAuth2UusiHyvaksynta
+              clientName={this.state.clientName}
+              scope={this.state.scope}
+              onAuthorization={this.authorizeClient}
+              onDecline={this.declineClient}
+            />
+          ) : this.state.loading ? (
+            <Spinner />
+          ) : (
+            <ErrorPage />
+          )}
 
-        <Footer />
-      </div>
+          <Footer />
+        </div>
+      </KoodistoProvider>
     )
   }
 }
