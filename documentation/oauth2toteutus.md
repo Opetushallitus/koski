@@ -10,7 +10,7 @@ Ks. myös [oauth2.md](oauth2.md)
 [svg/oauth2sekvenssiservleteissa.svg](kuvat/svg/oauth2sekvenssiservleteissa.svg)
 
     PARAMS:
-    client_id             =dvvdigilompakkopk
+    client_id             Esim. dvvdigilompakkopk
     redirect_uri          <DVV:n kertoma ja Koskeen rekisteröity callback-URI>
     state
     scope                 Esim. HENKILOTIEDOT_SYNTYMAAIKA HENKILOTIEDOT_NIMI OPISKELUOIKEUDET_SUORITETUT_TUTKINNOT
