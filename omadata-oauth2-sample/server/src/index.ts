@@ -224,7 +224,8 @@ async function handleAccessTokenRequestMTLS(
 
   const body = new URLSearchParams({
     grant_type: 'authorization_code',
-    code: 'foobar'
+    code: 'foobar',
+    code_verifier: 'barfoobar'
   }).toString()
 
   // TODO: poista authorization coden debuggaus
@@ -254,7 +255,8 @@ async function handleAccessTokenRequestBasicAuth(
     headers: myHeaders,
     body: new URLSearchParams({
       grant_type: 'authorization_code',
-      code: 'foobar'
+      code: 'foobar',
+      code_verifier: 'barfoobar'
     }).toString()
   })
   return response
