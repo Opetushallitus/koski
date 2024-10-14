@@ -7,7 +7,7 @@ COPY ./client/tsconfig.json ./
 COPY ./client/src ./src
 COPY ./client/public ./public
 
-RUN npm install # TODO: npm ci?
+RUN npm install --legacy-peer-deps # TODO: npm ci?
 RUN npm run build
 
 # Server build
