@@ -2,7 +2,7 @@ import React from 'baret'
 import Text from '../i18n/Text'
 import(/* webpackChunkName: "styles" */ '../style/main.less')
 
-export default ({ memberName, onAcceptClick, onDeclineClick }) => (
+export default ({ clientName, onAcceptClick, onDeclineClick }) => (
   <div>
     <div className="acceptance-box">
       <div className="acceptance-title">
@@ -10,7 +10,7 @@ export default ({ memberName, onAcceptClick, onDeclineClick }) => (
         <Text name="Antamalla suostumuksesi sallit, että Opetushallitus luovuttaa sinua koskevia henkilötietoja seuraavalle palveluntarjoajalle" />
       </div>
       <div className="acceptance-member-name">
-        <Text name={memberName} />
+        <Text name={clientName} />
       </div>
       <div className="acceptance-share-info">
         <Text name="Palveluntarjoajalle luovutetaan seuraavat henkilötiedot" />
