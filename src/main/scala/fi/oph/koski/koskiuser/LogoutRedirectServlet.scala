@@ -9,9 +9,8 @@ class LogoutRedirectServlet(implicit val koskiApplication: KoskiApplication) ext
   /**
    * Simple servlet for redirecting to whatever URL is passed as a parameter.
    * Required for CAS-oppija logout when redirecting to addresses that do not
-   * start with the HTTP(S) protocol declaration.
-   * For example, HSL wants to redirect back to their mobile app, for which
-   * the url starts with "hslapp://" protocol declaration.
+   * match the regular expression matcher within the CAS-oppija implementation, e.g.
+   * HSL's "hslapp://" protocol declaration.
    */
 
   private val mydataconfig: MyDataConfig = new MyDataConfig {

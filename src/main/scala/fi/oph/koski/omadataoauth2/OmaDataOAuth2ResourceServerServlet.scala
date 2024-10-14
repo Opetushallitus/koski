@@ -15,14 +15,15 @@ class OmaDataOAuth2ResourceServerServlet(implicit val application: KoskiApplicat
   // out: data, jos käyttäjällä oikeudet kyseiseen access tokeniin.
   //      TAI OAuth2-protokollan mukainen virheilmoitus (joka luotetaan nginx:n välittävän sellaisenaan, jos pyyntö on tänne asti tullut?)
   post("/") {
-    // TODO: pitäisikö tarkistaa muita headereitä kuin Bearer?
+    // TODO: TOR-2210 pitäisikö tarkistaa muita headereitä kuin Bearer?
     //
     val result = request.header("X-Auth").map(_.split(" ")) match {
       case Some(Array("Bearer", token)) if token == "dummy-access-token" =>
-        // TODO: oikea toteutus + testit
+        // TODO:  oikea toteutus + testit
         Right(DummyResourceResponse("todo"))
       case _ =>
-        // TODO: pitäisikö virheestä kertoa detaljeita, esim. oliko vaan expired token tms.?
+        // TODO: TOR-2210 pitäisikö virheestä kertoa detaljeita, esim. oliko vaan expired token tms.?
+        // TODO: TOR-2210 Speksin mukainen virhesisältö, jos sellainen on resource serverille määritelty
         Left(KoskiErrorCategory.badRequest())
     }
     renderEither(result)
