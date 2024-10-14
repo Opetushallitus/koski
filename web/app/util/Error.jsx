@@ -31,15 +31,14 @@ export const errorP = (stateP, routeErrorP) => {
 }
 
 export const handleError = (error) => {
-  if (requiresLogin(error)) {
+  if (
+    !error.preventLogout &&
+    (error.httpStatus === 401 || error.httpStatus === 403)
+  ) {
     logout()
   } else {
     logError(error)
   }
-}
-
-export function requiresLogin(e) {
-  return e.httpStatus === 401 || e.httpStatus === 403
 }
 
 const extractValidationErrorText = (error) => {
