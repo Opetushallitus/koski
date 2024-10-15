@@ -16,7 +16,7 @@ class IndexServlet(implicit val application: KoskiApplication) extends ScalatraS
     FrontendValvontaMode(application.config.getString("frontend-valvonta.mode"))
 
   before("/.+".r) {
-    if (!isAuthenticated) {
+    if (!isAuthenticated && !request.pathInfo.endsWith(".js.map")) {
       redirectToVirkailijaLogin
     }
   }
