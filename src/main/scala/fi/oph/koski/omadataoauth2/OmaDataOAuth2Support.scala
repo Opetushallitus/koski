@@ -98,7 +98,7 @@ trait OmaDataOAuth2Support extends ScalatraServlet with OmaDataOAuth2Config {
     if (hasRedirectUri(clientId, redirectUri)) {
       Right(Unit)
     } else {
-      Left(ValidationError(ValidationErrorType.invalid_client_data, s"unregeistered redirection URI ${redirectUri} for ${clientId}"))
+      Left(ValidationError(ValidationErrorType.invalid_client_data, s"unregistered redirection URI ${redirectUri} for ${clientId}"))
     }
   }
 
