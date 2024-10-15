@@ -46,8 +46,8 @@ object FrontendValvontaHeaders {
 
   private val connectSrc = "connect-src 'self'"
 
-  private def formAction(sourceExpressionList: String = "'self'") = {
-    s"form-action ${sourceExpressionList}"
+  private def formAction(sourceExpressionList: Option[String] = Some("'self'")) = {
+    sourceExpressionList.map(s => s"form-action ${s}").getOrElse("")
   }
 
   private val childSrc = "child-src 'none'"
@@ -81,7 +81,7 @@ object FrontendValvontaHeaders {
     unsafeAllowInlineStyles: Boolean,
     unsafeAllowBaseUri: Boolean,
     nonce: String,
-    formActionSources: String = "'self'"
+    formActionSources: Option[String] = Some("'self'")
   ): Map[String, String] = {
     if (mode != FrontendValvontaMode.DISABLED) {
       val key = mode match {
@@ -103,7 +103,7 @@ object FrontendValvontaHeaders {
     unsafeAllowInlineStyles: Boolean,
     unsafeAllowBaseUri: Boolean,
     nonce: String,
-    formActionSources: String,
+    formActionSources: Option[String],
   ): String =
     List(
       defaultSrc,

@@ -24,4 +24,11 @@ trait OmaDataOAuth2Config extends Logging  {
     conf.getConfigList("clients").asScala.find(member => member.getString("client_id") == client_id)
   }
 
+  def useFormActionCspHeader(client_id: String): Boolean = {
+    getConfigOption(client_id) match {
+      case Some(clientConfig) =>
+        clientConfig.getBoolean("security.use_form_action_csp_header")
+      case _ => true
+    }
+  }
 }
