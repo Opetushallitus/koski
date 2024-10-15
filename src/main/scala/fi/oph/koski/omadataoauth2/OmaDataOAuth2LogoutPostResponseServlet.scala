@@ -15,16 +15,19 @@ class OmaDataOAuth2LogoutPostResponseServlet(implicit val application: KoskiAppl
   val frontendValvontaMode: FrontendValvontaMode.FrontendValvontaMode =
     FrontendValvontaMode(application.config.getString("frontend-valvonta.mode"))
 
-  // Aseta form-action:ille sallituksi parametreissa tullut redirect_uri
-  override def formActionSources: String = {
-    val redirectUriFromParams = multiParams("redirect_uri").headOption.getOrElse("")
+  override def formActionSources: Option[String] = {
+    if (useFormActionCspHeader(multiParams("client_id").headOption.getOrElse(""))) {
+      val redirectUriFromParams = multiParams("redirect_uri").headOption.getOrElse("")
 
-    Uri.fromString(redirectUriFromParams).map(fullUri => Uri(fullUri.scheme, fullUri.authority, fullUri.path)) match {
-      case Right(result) if result.host.isDefined =>
-        val formActionUri = result.toString
-        formActionUri
-      case Left(failure) =>
-        "'self'"
+      Uri.fromString(redirectUriFromParams).map(fullUri => Uri(fullUri.scheme, fullUri.authority, fullUri.path)) match {
+        case Right(result) if result.host.isDefined =>
+          val formActionUri = result.toString
+          Some(formActionUri)
+        case _ =>
+          super.formActionSources
+      }
+    } else {
+      None
     }
   }
 
