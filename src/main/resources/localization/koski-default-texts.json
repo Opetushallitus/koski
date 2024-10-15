@@ -784,6 +784,7 @@
   "Aika": "Aika",
   "Kaikki opiskeluoikeudet validoitu.": "Kaikki opiskeluoikeudet validoitu.",
   "Opiskeluoikeutta ei voida lisätä, koska oppijalla on jo vastaava opiskeluoikeus.": "Opiskeluoikeutta ei voida lisätä, koska oppijalla on jo vastaava opiskeluoikeus.",
+  "Opiskeluoikeutta ei voida lisätä, koska käyttäjällä ei ole oikeutta lisätä sitä valittuun organisaatioon.": "Opiskeluoikeutta ei voida lisätä, koska käyttäjällä ei ole oikeutta lisätä sitä valittuun organisaatioon.",
   "Tallennetaan...": "Tallennetaan...",
   "Hetu": "Hetu",
   "Ulkomainen vaihto-opiskelija": "Ulkomainen vaihto-opiskelija",
@@ -2718,7 +2719,7 @@
   "Paikalliset opintokokonaisuudet": "Paikalliset opintokokonaisuudet",
   "Ei tiedossa": "Ei tiedossa",
   "nykyinen kotikunta on": "nykyinen kotikunta on",
-  "Koulutuskunta" : "Koulutuskunta",
-  "Koulutuskunnat" : "Koulutuskunnat",
+  "Koulutuskunta": "Koulutuskunta",
+  "Koulutuskunnat": "Koulutuskunnat",
   "omadataoauth2_error": "Tapahtui virhe: {{error}}. Jos tämä toistuu, ota yhteyttä palveluntarjoajaan. Voit kertoa heille asian selvittämistä helpottaaksesi virhekoodin {{error_id}}."
 }

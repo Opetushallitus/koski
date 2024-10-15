@@ -106,11 +106,15 @@ export const Select = <T,>(props: SelectProps<T>) => {
     <TestIdLayer id={props.testId} wrap="div">
       <div
         // input-container -luokka on vanhan testiframeworkin kanssa yhteensopivuuden lisäämiseksi (kts. pageApi.js -> Input)
-        {...common(props, ['Select', 'input-container'])}
+        {...common(props, [
+          'Select',
+          'input-container',
+          props.onSearch && select.options.length === 0 && 'search'
+        ])}
         {...select.containerEventListeners}
       >
         <input
-          className="Select__input"
+          className={`Select__input`}
           placeholder={t(props.placeholder || 'Valitse...')}
           value={select.filter === null ? select.displayValue : select.filter}
           type="search"
