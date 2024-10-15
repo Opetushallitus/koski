@@ -22,9 +22,6 @@ class OmaDataOAuth2LogoutPostResponseServlet(implicit val application: KoskiAppl
         logger.error(s"Internal error: ${validationError.errorDescription}")
         halt(500)
       case Right(ClientInfo(clientId, redirectUri, state)) =>
-        val paramNames = Seq("redirect_uri", "code", "state", "error", "error_description", "error_uri")
-        paramNames.foreach(n => logger.info(s"${n}: ${multiParams(n)}"))
-
         val inputParams = Seq(
           "state",
           "code",
