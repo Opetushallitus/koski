@@ -56,6 +56,8 @@ Ks. myös [oauth2.md](oauth2.md)
 
 localhost testi-uri
 - toimiva: http://localhost:7021/koski/omadata-oauth2/authorize?client_id=oauth2client&response_type=code&response_mode=form_post&redirect_uri=%2Fkoski%2Fomadata-oauth2%2Fdebug-post-response&code_challenge=NjIyMGQ4NDAxZGM0ZDI5NTdlMWRlNDI2YWNhNjA1NGRiMjQyZTE0NTg0YzRmOGMwMmU3MzFkYjlhNTRlZTlmZA&code_challenge_method=S256&state=internal+state&scope=HENKILOTIEDOT_SYNTYMAAIKA+HENKILOTIEDOT_NIMI+OPISKELUOIKEUDET_SUORITETUT_TUTKINNOT
+- toimiva täydellä localhost uri:lla redirect_urissa: http://localhost:7021/koski/omadata-oauth2/authorize?client_id=oauth2client&response_type=code&response_mode=form_post&redirect_uri=http%3A%2F%2Flocalhost%3A7021%2Fkoski%2Fomadata-oauth2%2Fdebug-post-response&code_challenge=NjIyMGQ4NDAxZGM0ZDI5NTdlMWRlNDI2YWNhNjA1NGRiMjQyZTE0NTg0YzRmOGMwMmU3MzFkYjlhNTRlZTlmZA&code_challenge_method=S256&state=internal+state&scope=HENKILOTIEDOT_SYNTYMAAIKA+HENKILOTIEDOT_NIMI+OPISKELUOIKEUDET_SUORITETUT_TUTKINNOT
+
 - rikkinäinen client_id : http://localhost:7021/koski/omadata-oauth2/authorize?client_id=eirek_client&response_type=code&response_mode=form_post&redirect_uri=%2Fkoski%2Fomadata-oauth2%2Fdebug-post-response&code_challenge=NjIyMGQ4NDAxZGM0ZDI5NTdlMWRlNDI2YWNhNjA1NGRiMjQyZTE0NTg0YzRmOGMwMmU3MzFkYjlhNTRlZTlmZA&code_challenge_method=S256&state=internal+state&scope=HENKILOTIEDOT_SYNTYMAAIKA+HENKILOTIEDOT_NIMI+OPISKELUOIKEUDET_SUORITETUT_TUTKINNOT
 
 

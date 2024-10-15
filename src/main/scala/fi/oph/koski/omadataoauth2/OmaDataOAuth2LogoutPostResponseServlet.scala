@@ -5,6 +5,7 @@ import fi.oph.koski.frontendvalvonta.FrontendValvontaMode
 import fi.oph.koski.servlet.{NoCache, OppijaHtmlServlet}
 import org.scalatra.ScalatraServlet
 import fi.oph.koski.util.JsStringInterpolation._
+import org.http4s.Uri
 
 import scala.xml.NodeSeq
 
@@ -16,15 +17,25 @@ class OmaDataOAuth2LogoutPostResponseServlet(implicit val application: KoskiAppl
   val frontendValvontaMode: FrontendValvontaMode.FrontendValvontaMode =
     FrontendValvontaMode(application.config.getString("frontend-valvonta.mode"))
 
+  // Aseta form-action:ille sallituksi parametreissa tullut redirect_uri
+  override def formActionSources: String = {
+    val redirectUriFromParams = multiParams("redirect_uri").headOption.getOrElse("")
+
+    Uri.fromString(redirectUriFromParams).map(fullUri => Uri(fullUri.scheme, fullUri.authority, fullUri.path)) match {
+      case Right(result) if result.host.isDefined =>
+        val formActionUri = result.toString
+        formActionUri
+      case Left(failure) =>
+        "'none'"
+    }
+  }
+
   get("/")(nonce => {
     validateQueryClientParams() match {
       case Left(validationError) =>
         logger.error(s"Internal error: ${validationError.errorDescription}")
         halt(500)
       case Right(ClientInfo(clientId, redirectUri, state)) =>
-        val paramNames = Seq("redirect_uri", "code", "state", "error", "error_description", "error_uri")
-        paramNames.foreach(n => logger.info(s"${n}: ${multiParams(n)}"))
-
         val inputParams = Seq(
           "state",
           "code",

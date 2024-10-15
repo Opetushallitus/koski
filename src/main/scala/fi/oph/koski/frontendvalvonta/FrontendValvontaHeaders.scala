@@ -46,7 +46,9 @@ object FrontendValvontaHeaders {
 
   private val connectSrc = "connect-src 'self'"
 
-  private val formAction = "form-action 'self'"
+  private def formAction(sourceExpressionList: String = "'none'") = {
+    s"form-action ${sourceExpressionList}"
+  }
 
   private val childSrc = "child-src 'none'"
 
@@ -72,14 +74,22 @@ object FrontendValvontaHeaders {
   // Käyttöönotto vaatisi myös muutoksia fronttikoodiin.
   private val requireTrustedTypesFor = "require-trusted-types-for 'script'"
 
-  def headers(allowFrameAncestors: Boolean, allowFrameSrcSelf: Boolean, mode: FrontendValvontaMode, unsafeAllowInlineStyles: Boolean, unsafeAllowBaseUri: Boolean, nonce: String): Map[String, String] = {
+  def headers(
+    allowFrameAncestors: Boolean,
+    allowFrameSrcSelf: Boolean,
+    mode: FrontendValvontaMode,
+    unsafeAllowInlineStyles: Boolean,
+    unsafeAllowBaseUri: Boolean,
+    nonce: String,
+    formActionSources: String = "'none'"
+  ): Map[String, String] = {
     if (mode != FrontendValvontaMode.DISABLED) {
       val key = mode match {
         case FrontendValvontaMode.REPORT_ONLY => s"Content-Security-Policy-Report-Only"
         case FrontendValvontaMode.ENABLED => s"Content-Security-Policy"
       }
       Map(
-        key -> createString(allowFrameAncestors, allowFrameSrcSelf, unsafeAllowInlineStyles, unsafeAllowBaseUri, nonce),
+        key -> createString(allowFrameAncestors, allowFrameSrcSelf, unsafeAllowInlineStyles, unsafeAllowBaseUri, nonce, formActionSources),
         "Report-To" -> s"""{ "group": "${cspEndPointGroup}", "max_age": 10886400, "endpoints": [ { "url": "${uriForReportTo}" } ] }"""
       )
     } else {
@@ -87,7 +97,14 @@ object FrontendValvontaHeaders {
     }
   }
 
-  private def createString(allowRunningInFrame: Boolean, allowFrameSrcSelf: Boolean, unsafeAllowInlineStyles: Boolean, unsafeAllowBaseUri: Boolean, nonce: String): String =
+  private def createString(
+    allowRunningInFrame: Boolean,
+    allowFrameSrcSelf: Boolean,
+    unsafeAllowInlineStyles: Boolean,
+    unsafeAllowBaseUri: Boolean,
+    nonce: String,
+    formActionSources: String,
+  ): String =
     List(
       defaultSrc,
       scriptSrc(nonce),
@@ -97,7 +114,7 @@ object FrontendValvontaHeaders {
       fontSrc,
       imgSrc,
       connectSrc,
-      formAction,
+      formAction(formActionSources),
       childSrc,
       frameAncestors(allowRunningInFrame),
       frameSrc(allowFrameSrcSelf),
