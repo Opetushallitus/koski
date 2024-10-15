@@ -89,6 +89,6 @@
     "react": "^17.0.1",
     "react-date-picker": "^8.3.6",
     "react-dom": "^17.0.1",
-    "react-router-dom": "^5.2.0"
+    "react-router-dom": "^6.0.0"
   }
 }
