@@ -1,0 +1,58 @@
+[
+  {
+    "metadata": [
+      {
+        "nimi": "OAuth2 sample client (fi)",
+        "kuvaus": "",
+        "lyhytNimi": "",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "OAuth2 sample client (sv)",
+        "kuvaus": "",
+        "lyhytNimi": "",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "OAuth2 sample client (en)",
+        "kuvaus": "",
+        "lyhytNimi": "",
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "omadataoauth2client_oauth2sample",
+    "versio": 1,
+    "koodiArvo": "oauth2sample"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "OAuth2 debug client (fi)",
+        "kuvaus": "",
+        "lyhytNimi": "",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "OAuth2 debug client (sv)",
+        "kuvaus": "",
+        "lyhytNimi": "",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "OAuth2 debug client (en)",
+        "kuvaus": "",
+        "lyhytNimi": "",
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "omadataoauth2client_oauth2client",
+    "versio": 1,
+    "koodiArvo": "oauth2client"
+  }
+]

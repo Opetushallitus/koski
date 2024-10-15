@@ -1,8 +1,10 @@
 package fi.oph.koski.omadataoauth2
 
 import fi.oph.koski.config.KoskiApplication
+import fi.oph.koski.koodisto.KoodistoViite
 import fi.oph.koski.koskiuser.{KoskiSpecificAuthenticationSupport, RequiresKansalainen}
 import fi.oph.koski.log.Logging
+import fi.oph.koski.schema.LocalizedString
 import fi.oph.koski.servlet.{KoskiSpecificApiServlet, LanguageSupport, NoCache}
 import org.scalatra.ContentEncodingSupport
 
@@ -11,8 +13,13 @@ class OmaDataOAuth2ResourceOwnerServlet(implicit val application: KoskiApplicati
   extends KoskiSpecificApiServlet with KoskiSpecificAuthenticationSupport with Logging with ContentEncodingSupport with NoCache with LanguageSupport with OmaDataOAuth2Support with RequiresKansalainen {
 
   get("/client-details/:client_id") {
-    // TODO: TOR-2210: oikea toteutus
-    renderObject(ClientDetails(params("client_id"), "Clientin selväkielinen nimi (TODO)"))
+    val clientId = params("client_id")
+    renderObject(ClientDetails(clientId,
+      application.koodistoPalvelu.getKoodistoKoodit(application.koodistoPalvelu.getLatestVersionRequired("omadataoauth2client"))
+        .find(_.koodiArvo == clientId)
+        .flatMap(_.nimi)
+        .getOrElse(LocalizedString.unlocalized(clientId))
+    ))
   }
 
   get("/authorize") {
@@ -85,5 +92,5 @@ class OmaDataOAuth2ResourceOwnerServlet(implicit val application: KoskiApplicati
 
 case class ClientDetails(
   id: String,
-  name: String // TODO: TOR-2210 lokalisoitu merkkijono, josta frontti päättää minkä kielen rendaa?
+  name: LocalizedString
 )
