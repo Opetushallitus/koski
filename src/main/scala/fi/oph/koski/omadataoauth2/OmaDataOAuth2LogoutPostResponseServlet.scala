@@ -9,8 +9,6 @@ import org.http4s.Uri
 
 import scala.xml.NodeSeq
 
-// Julkinen servlet, joka tarvitaan, että CAS-oppija logoutin jälkeen voidaan ohjata käyttäjä URLeihin, joita CAS-oppijan
-// nykyiset redirect-regexpit eivät salli.
 class OmaDataOAuth2LogoutPostResponseServlet(implicit val application: KoskiApplication) extends ScalatraServlet with OppijaHtmlServlet with NoCache with OmaDataOAuth2Support {
 
   val allowFrameAncestors: Boolean = !Environment.isServerEnvironment(application.config)
