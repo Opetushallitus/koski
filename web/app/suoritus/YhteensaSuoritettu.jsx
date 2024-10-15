@@ -11,6 +11,7 @@ import {
   isJatkoOpintovalmiuksiaTukevienOpintojenSuoritus,
   isKorkeakouluOpintosuoritus
 } from '../ammatillinen/TutkinnonOsa'
+import { viimeisinArviointi } from '../util/arviointi'
 
 export const fetchLaajuudet = (suoritus, groupIds) => {
   const diaarinumero = modelData(
@@ -62,13 +63,14 @@ export const YhteensäSuoritettu = ({
   const käytetäänLaajuudessa = flatMapArray(suoritukset, (s) =>
     lasketaanOsasuorituksista(s) ? osasuoritukset(s) : s
   )
-  const arvioidutSuoritukset = käytetäänLaajuudessa.filter(
-    (s) => !!modelData(s, 'arviointi')
-  )
+  const hyväksytystiArvioidutSuoritukset = käytetäänLaajuudessa.filter((s) => {
+    const arviointi = viimeisinArviointi(s)
+    return !!arviointi && arviointi.hyväksytty
+  })
   const laajuudetYhteensä = R.sum(
     R.map(
       (item) => modelData(item, 'koulutusmoduuli.laajuus.arvo') || 0,
-      arvioidutSuoritukset
+      hyväksytystiArvioidutSuoritukset
     )
   )
 
