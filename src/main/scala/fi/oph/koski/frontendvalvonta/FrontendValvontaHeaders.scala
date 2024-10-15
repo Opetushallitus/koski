@@ -46,7 +46,7 @@ object FrontendValvontaHeaders {
 
   private val connectSrc = "connect-src 'self'"
 
-  private def formAction(sourceExpressionList: String = "'none'") = {
+  private def formAction(sourceExpressionList: String = "'self'") = {
     s"form-action ${sourceExpressionList}"
   }
 
@@ -81,7 +81,7 @@ object FrontendValvontaHeaders {
     unsafeAllowInlineStyles: Boolean,
     unsafeAllowBaseUri: Boolean,
     nonce: String,
-    formActionSources: String = "'none'"
+    formActionSources: String = "'self'"
   ): Map[String, String] = {
     if (mode != FrontendValvontaMode.DISABLED) {
       val key = mode match {

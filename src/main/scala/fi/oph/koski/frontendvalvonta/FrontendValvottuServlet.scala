@@ -11,7 +11,7 @@ trait FrontendValvottuServlet extends ScalatraBase {
   def frontendValvontaMode: FrontendValvontaMode
   def unsafeAllowInlineStyles: Boolean = false
   def unsafeAllowBaseUri: Boolean = false
-  def formActionSources: String = "'none'"
+  def formActionSources: String = "'self'"
 
   def get(transformers: org.scalatra.RouteTransformer*)(action: String => scala.Any): org.scalatra.Route = {
     super.get(transformers: _*) {

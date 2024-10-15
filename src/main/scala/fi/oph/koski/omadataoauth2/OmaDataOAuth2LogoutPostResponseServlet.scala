@@ -26,7 +26,7 @@ class OmaDataOAuth2LogoutPostResponseServlet(implicit val application: KoskiAppl
         val formActionUri = result.toString
         formActionUri
       case Left(failure) =>
-        "'none'"
+        "'self'"
     }
   }
 
