@@ -9,6 +9,7 @@ import fi.oph.koski.log.Logging
 
 class HuoltajaServiceVtj(config: Config, henkilöRepository: HenkilöRepository) extends Logging {
   private val huollettavatRepository = HuollettavatRepository(config)
+  private val huollettavatRepositoryVtj = HuollettavatVtjRepository(config)
 
   def getHuollettavat(hetu: String): HuollettavatSearchResult = try {
     huollettavatRepository.getHuollettavat(hetu).map(_.flatMap(oiditHuollettaville)) match {
