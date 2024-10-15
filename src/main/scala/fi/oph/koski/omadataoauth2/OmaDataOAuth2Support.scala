@@ -113,6 +113,21 @@ trait OmaDataOAuth2Support extends ScalatraServlet with OmaDataOAuth2Config {
 
     redirect(logoutUri)
   }
+
+  protected def logoutAndRedirectWithErrorsToResourceOwnerFrontend(parameters: String) = {
+    val parametersEncoded = base64UrlEncode(parameters)
+    val logoutRedirect = s"/koski/omadata-oauth2/cas-workaround/authorize/${parametersEncoded}"
+    val logoutUri = s"/koski/user/logout?target=${logoutRedirect}"
+
+    redirect(logoutUri)
+  }
+
+  protected def redirectWithErrorsToResourceOwnerFrontend(parameters: String) = {
+    val parametersEncoded = base64UrlEncode(parameters)
+    val frontendRedirect = s"/koski/omadata-oauth2/cas-workaround/authorize/${parametersEncoded}"
+
+    redirect(frontendRedirect)
+  }
 }
 
 object ValidationError {

@@ -20,28 +20,27 @@ class OmaDataOAuth2ResourceOwnerServlet(implicit val application: KoskiApplicati
     if (multiParams("error").length > 0) {
       validateQueryClientParams() match {
         case Left(validationError) =>
+          // .error toistaiseksi, koska tätä virhettä ei yleisesti pitäisi tapahtua, jos clientin fronttikoodissa ei ole bugeja
+          logger.error(s"${validationError.getLoggedErrorMessage}: original error: ${multiParams("error").headOption.getOrElse("")}")
 
-          // sisäinen virhe, tänne ei pitäisi päätyä, koska client-parametrit olisi pitänyt jo validoida aiemmin
-          // TODO: TOR-2210: tässä voisi kuitenkin palata fronttiin sisäisen virheilmoituksen kera? koska clientillekaan ei mitään tiedoteta
-          logger.error(s"Internal error: ${validationError.errorDescription}")
-          halt(500)
+          logoutAndRedirectWithErrorsToResourceOwnerFrontend(validationError.getClientErrorParams)
         case Right(clientInfo) =>
           logoutAndSendErrorsToClient(clientInfo)
       }
     } else {
       validateQueryClientParams() match {
         case Left(validationError) =>
-          // TODO: TOR-2210 Parametreissa havaittiin käyttäjälle rendattavia virheitä => redirectaa takaisin fronttiin virhetietojen kera
-          // näin ei pitäisi käydä, jos fronttikoodissa ei ole bugeja parametrien välityksessä
-          logger.error(s"Internal error: ${validationError.errorDescription}")
-          halt(500)
+          // .error toistaiseksi, koska tätä virhettä ei yleisesti pitäisi tapahtua, jos clientin fronttikoodissa ei ole bugeja
+          logger.error(validationError.getLoggedErrorMessage)
+
+          logoutAndRedirectWithErrorsToResourceOwnerFrontend(validationError.getClientErrorParams)
         case Right(clientInfo) =>
           validateQueryOtherParams() match {
             case Left(validationError) =>
-              // TODO: TOR-2210 Parametreissa havaittiin virheitä, jotka kuuluu raportoida redirect_uri:n kautta clientille asti, redirectaa virhetietojen kanssa samaan osoitteeseen
-              // näin ei pitäisi käydä, jos fronttikoodissa ei ole bugeja parametrien välityksessä
-              logger.error(s"Internal error: ${validationError.errorDescription}")
-              halt(500)
+              // .error toistaiseksi, koska tätä virhettä ei yleisesti pitäisi tapahtua, jos clientin fronttikoodissa ei ole bugeja
+              logger.error(validationError.getLoggedErrorMessage)
+
+              logoutAndRedirectWithErrorsToResourceOwnerFrontend(validationError.getClientErrorParams)
             case _ =>
               generateCodeAndSendViaLogoutToClient(clientInfo)
           }

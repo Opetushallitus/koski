@@ -34,8 +34,10 @@ class OmaDataOAuth2LogoutPostResponseServlet(implicit val application: KoskiAppl
   get("/")(nonce => {
     validateQueryClientParams() match {
       case Left(validationError) =>
-        logger.error(s"Internal error: ${validationError.errorDescription}")
-        halt(500)
+        // .error toistaiseksi, koska tätä virhettä ei yleisesti pitäisi tapahtua, jos clientin fronttikoodissa ei ole bugeja
+        logger.error(validationError.getLoggedErrorMessage)
+
+        redirectWithErrorsToResourceOwnerFrontend(validationError.getClientErrorParams)
       case Right(ClientInfo(clientId, redirectUri, state)) =>
         val inputParams = Seq(
           "state",
