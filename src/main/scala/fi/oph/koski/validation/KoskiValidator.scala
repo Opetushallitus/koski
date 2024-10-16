@@ -164,6 +164,7 @@ class KoskiValidator(
           EuropeanSchoolOfHelsinkiValidation.validateOpiskeluoikeus(config)(henkilöRepository, koskiOpiskeluoikeudet, henkilö, opiskeluoikeus),
           TaiteenPerusopetusValidation.validateOpiskeluoikeus(config)(opiskeluoikeus, suostumuksenPeruutusService),
           IBValidation.validateIbOpiskeluoikeus(config)(opiskeluoikeus),
+          ToimintaAlueetValidation.validateToimintaAlueellinenOpiskeluoikeus(opiskeluoikeus),
         )
       } match {
         case HttpStatus.ok => Right(opiskeluoikeus)

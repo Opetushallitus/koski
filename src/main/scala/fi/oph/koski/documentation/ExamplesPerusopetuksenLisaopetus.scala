@@ -64,7 +64,10 @@ object ExamplesPerusopetuksenLisaopetus {
 
   private def toimintaAlueenSuoritus(alue: String) = {
     PerusopetuksenLisäopetuksenToiminta_AlueenSuoritus(
-      koulutusmoduuli = new PerusopetuksenToiminta_Alue(Koodistokoodiviite(alue, "perusopetuksentoimintaalue")),
+      koulutusmoduuli = PerusopetuksenToiminta_Alue(
+        tunniste = Koodistokoodiviite(alue, "perusopetuksentoimintaalue"),
+        laajuus = Some(LaajuusVuosiviikkotunneissa(5.0)),
+      ),
       arviointi = arviointi("S", kuvaus = None)
     )
   }

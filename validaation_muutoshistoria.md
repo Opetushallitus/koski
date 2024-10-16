@@ -1,5 +1,9 @@
 # Koskeen tallennettavien tietojen validaatiosäännöt
 
+## x.10.2024
+
+- Nuorten perusopetuksen ja perusopetuksen lisäopetuksen suorituksille toiminta-alueittain vaaditaan laajuudet.
+
 ## 15.10.2024
 
 - Estetään ammatilliselle opiskeluoikeuden ammatilliselle tutkinnon osalle tai yhteisen tutkinnon osan osa-alueelle arvioinnit, joiden arvosana on "Hylätty".

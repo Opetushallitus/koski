@@ -146,7 +146,12 @@ object ExamplesPerusopetus {
   )
 
   def toimintaAlueenSuoritus(toimintaAlue: String): PerusopetuksenToiminta_AlueenSuoritus = {
-    PerusopetuksenToiminta_AlueenSuoritus(koulutusmoduuli = new PerusopetuksenToiminta_Alue(Koodistokoodiviite(toimintaAlue, "perusopetuksentoimintaalue")))
+    PerusopetuksenToiminta_AlueenSuoritus(
+      koulutusmoduuli = new PerusopetuksenToiminta_Alue(
+        tunniste = Koodistokoodiviite(toimintaAlue, "perusopetuksentoimintaalue"),
+        laajuus = Some(LaajuusVuosiviikkotunneissa(5.0)),
+      )
+    )
   }
 
   val examples = List(
