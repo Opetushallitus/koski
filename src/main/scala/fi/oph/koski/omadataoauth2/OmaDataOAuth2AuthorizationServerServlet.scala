@@ -50,29 +50,20 @@ class OmaDataOAuth2AuthorizationServerServlet(implicit val application: KoskiApp
     renderObject(result)
   }
 
-  protected def validateAccessTokenRequest(request: AccessTokenRequest): Either[ValidationError, Unit] = {
+  private def validateAccessTokenRequest(request: AccessTokenRequest): Either[ValidationError, Unit] = {
     for {
       _ <- validateClientId(request.client_id)
     } yield ()
   }
 
-  protected def validateClientId(clientIdParam: Option[String]): Either[ValidationError, String] = {
-    clientIdParam match {
-      case Some(clientId) =>
-        // clientId annettu parametrina, tarkista, että vastaa mtls:n kautta saatua
-        for {
-          clientId <- validateClientIdRekisteröity(clientId)
-          _ <- validateClientIdSamaKuinKäyttäjätunnus(clientId)
-        } yield clientId
-      case _ =>
-        // käytä mtls:n kautta saatua client_id:tä
-        for {
-          clientId <- validateClientIdRekisteröity(koskiSession.user.username)
-        } yield clientId
-    }
+  private def validateClientId(clientIdParam: String): Either[ValidationError, String] = {
+    for {
+      clientId <- validateClientIdRekisteröity(clientIdParam)
+      _ <- validateClientIdSamaKuinKäyttäjätunnus(clientId)
+    } yield clientId
   }
 
-  protected def validateClientIdSamaKuinKäyttäjätunnus(clientId: String): Either[ValidationError, String] = {
+  private def validateClientIdSamaKuinKäyttäjätunnus(clientId: String): Either[ValidationError, String] = {
     if (koskiSession.user.username == clientId) {
       Right(clientId)
     } else {
@@ -86,7 +77,7 @@ object AccessTokenRequest {
     "code" -> label("code", text(required, oneOf(Seq("foobar")))), // TODO: TOR-2210 Oikea koodi-patternin validointi?
     "code_verifier" -> label("code_verifier", text(required)),
     "redirect_uri" -> label("redirect_uri", optional(text())), // TODO: TOR-2210 Vertaa, että tämän sisältö on täsmälleen sama kuin alkuperäisessä pyynnössä, jos siellä on redirect_uri annettu
-    "client_id" -> label("client_id", optional(text()))
+    "client_id" -> label("client_id", text(required))
   )(AccessTokenRequest.apply)
 }
 
@@ -95,7 +86,7 @@ case class AccessTokenRequest(
   code: String,
   code_verifier: String,
   redirect_uri: Option[String],
-  client_id: Option[String]
+  client_id: String
 )
 
 trait AccessTokenResponse {

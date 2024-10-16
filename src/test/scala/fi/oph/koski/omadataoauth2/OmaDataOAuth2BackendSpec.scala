@@ -48,6 +48,38 @@ class OmaDataOAuth2BackendSpec extends OmaDataOAuth2TestBase {
       }
     }
 
+    "client_id" - {
+      "puuttuminen aiheuttaa virheen" in {
+        postAuthorizationServer(MockUsers.omadataOAuth2Palvelukäyttäjä, clientId = None) {
+          verifyResponseStatus(400)
+          // TODO: TOR-2210: oikeat error-koodit ja sisällöt, https://www.rfc-editor.org/rfc/rfc6749#section-5.2
+
+        }
+      }
+      "voi kutsua, kun client on rekisteröity" in {
+        val user = MockUsers.omadataOAuth2Palvelukäyttäjä
+        postAuthorizationServer(user, clientId = Some(user.username)) {
+          verifyResponseStatusOk()
+        }
+      }
+      "ei voi kutsua, kun clientia ei ole rekisteröity" in {
+        val user = MockUsers.rekisteröimätönOmadataOAuth2Palvelukäyttäjä
+        postAuthorizationServer(user, clientId = Some(user.username)) {
+          // TODO: TOR-2210: oikeat error-koodit ja sisällöt, https://www.rfc-editor.org/rfc/rfc6749#section-5.2
+          verifyResponseStatus(400)
+        }
+      }
+
+      "ei voi kutsua, jos rekisteröity client_id ei vastaa käyttäjätunnusta" in {
+        val user = MockUsers.omadataOAuth2Palvelukäyttäjä
+        val vääräUser = MockUsers.rekisteröimätönOmadataOAuth2Palvelukäyttäjä
+        postAuthorizationServer(user, clientId = Some(vääräUser.username)) {
+          // TODO: TOR-2210: oikeat error-koodit ja sisällöt, https://www.rfc-editor.org/rfc/rfc6749#section-5.2
+          verifyResponseStatus(400)
+        }
+      }
+    }
+
     "code" - {
       "puuttuminen aiheuttaa virheen" in {
         postAuthorizationServer(MockUsers.omadataOAuth2Palvelukäyttäjä, code = None) {
@@ -71,31 +103,6 @@ class OmaDataOAuth2BackendSpec extends OmaDataOAuth2TestBase {
 
       "tarkistetaan" in {
         // TODO: TOR-2210
-      }
-    }
-
-    "kun optionaalinen client_id on annettu" - {
-      "voi kutsua, kun client on rekisteröity" in {
-        val user = MockUsers.omadataOAuth2Palvelukäyttäjä
-        postAuthorizationServer(user, clientId = Some(user.username)) {
-          verifyResponseStatusOk()
-        }
-      }
-      "ei voi kutsua, kun clientia ei ole rekisteröity" in {
-        val user = MockUsers.rekisteröimätönOmadataOAuth2Palvelukäyttäjä
-        postAuthorizationServer(user, clientId = Some(user.username)) {
-          // TODO: TOR-2210: oikeat error-koodit ja sisällöt, https://www.rfc-editor.org/rfc/rfc6749#section-5.2
-          verifyResponseStatus(400)
-        }
-      }
-
-      "ei voi kutsua, jos rekisteröity client_id ei vastaa käyttäjätunnusta" in {
-        val user = MockUsers.omadataOAuth2Palvelukäyttäjä
-        val vääräUser = MockUsers.rekisteröimätönOmadataOAuth2Palvelukäyttäjä
-        postAuthorizationServer(user, clientId = Some(vääräUser.username)) {
-          // TODO: TOR-2210: oikeat error-koodit ja sisällöt, https://www.rfc-editor.org/rfc/rfc6749#section-5.2
-          verifyResponseStatus(400)
-        }
       }
     }
   }
