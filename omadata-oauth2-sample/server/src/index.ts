@@ -67,6 +67,8 @@ const enableMTLS = process.env.ENABLE_MTLS
   ? process.env.ENABLE_MTLS !== 'false'
   : true
 
+const clientId = process.env.CLIENT_ID || 'oauth2client'
+
 // Käytössä, jos mTLS on disabloitu:
 const username = process.env.USERNAME || 'oauth2client'
 const password = process.env.PASSWORD || 'oauth2client'
@@ -225,7 +227,8 @@ async function handleAccessTokenRequestMTLS(
   const body = new URLSearchParams({
     grant_type: 'authorization_code',
     code: 'foobar',
-    code_verifier: 'barfoobar'
+    code_verifier: 'barfoobar',
+    client_id: clientId
   }).toString()
 
   // TODO: poista authorization coden debuggaus
@@ -256,7 +259,8 @@ async function handleAccessTokenRequestBasicAuth(
     body: new URLSearchParams({
       grant_type: 'authorization_code',
       code: 'foobar',
-      code_verifier: 'barfoobar'
+      code_verifier: 'barfoobar',
+      client_id: clientId
     }).toString()
   })
   return response
