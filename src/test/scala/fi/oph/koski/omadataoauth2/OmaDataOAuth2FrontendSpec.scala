@@ -471,18 +471,19 @@ class OmaDataOAuth2FrontendSpec extends OmaDataOAuth2TestBase {
     }
 
     Seq("client_id", "redirect_uri").foreach(paramName => {
-      s"palauttaa 500 kun ${paramName} puuttuu" in {
+      s"redirectaa logoutin kautta resource owner frontendiin kun ${paramName} puuttuu" in {
         val väärälläParametrilla = createParamsString(validParams.filterNot(_._1 == paramName))
         val serverUri = s"${baseUri}?${väärälläParametrilla}"
         get(
           uri = serverUri,
           headers = kansalainenLoginHeaders(hetu)
         ) {
-          verifyResponseStatus(500)
+          verifyResponseStatus(302)
+          response.header("Location") should include(s"/koski/user/logout?target=/koski/omadata-oauth2/cas-workaround/authorize/")
         }
       }
 
-      s"palauttaa 500 kun ${paramName} annettu enemmän kuin kerran" in {
+      s"redirectaa logoutin kautta resource owner frontendiin kun ${paramName} annettu enemmän kuin kerran" in {
         val validValue = validParams.toMap.get(paramName).get
         val väärälläParametrilla = createParamsString(validParams :+ (paramName, validValue))
 
@@ -491,12 +492,13 @@ class OmaDataOAuth2FrontendSpec extends OmaDataOAuth2TestBase {
           uri = serverUri,
           headers = kansalainenLoginHeaders(hetu)
         ) {
-          verifyResponseStatus(500)
+          verifyResponseStatus(302)
+          response.header("Location") should include(s"/koski/user/logout?target=/koski/omadata-oauth2/cas-workaround/authorize/")
         }
       }
     })
 
-    "palauttaa 500, jos kutsutaan epävalidilla client_id:llä" in {
+    "redirectaa logoutin kautta resource owner frontendiin, jos kutsutaan epävalidilla client_id:llä" in {
       val väärälläParametrilla = createParamsString((validParams.toMap + ("client_id" -> tuntematonClientId)).toSeq)
 
       val serverUri = s"${baseUri}?${väärälläParametrilla}"
@@ -505,11 +507,12 @@ class OmaDataOAuth2FrontendSpec extends OmaDataOAuth2TestBase {
         uri = serverUri,
         headers = kansalainenLoginHeaders(hetu)
       ) {
-        verifyResponseStatus(500)
+        verifyResponseStatus(302)
+        response.header("Location") should include(s"/koski/user/logout?target=/koski/omadata-oauth2/cas-workaround/authorize/")
       }
     }
 
-    "palauttaa 500, jos kutsutaan epävalidilla redirect_uri:lla" in {
+    "redirectaa logoutin kautta resource owner frontendiin, jos kutsutaan epävalidilla redirect_uri:lla" in {
       val väärälläParametrilla = createParamsString((validParams.toMap + ("redirect_uri" -> vääräRedirectUri)).toSeq)
 
       val serverUri = s"${baseUri}?${väärälläParametrilla}"
@@ -518,7 +521,8 @@ class OmaDataOAuth2FrontendSpec extends OmaDataOAuth2TestBase {
         uri = serverUri,
         headers = kansalainenLoginHeaders(hetu)
       ) {
-        verifyResponseStatus(500)
+        verifyResponseStatus(302)
+        response.header("Location") should include(s"/koski/user/logout?target=/koski/omadata-oauth2/cas-workaround/authorize/")
       }
     }
 
@@ -528,18 +532,19 @@ class OmaDataOAuth2FrontendSpec extends OmaDataOAuth2TestBase {
           Seq(("error", "access_denied"))
 
       Seq("client_id", "redirect_uri").foreach(paramName => {
-        s"palauttaa 500 kun ${paramName} puuttuu" in {
+        s"redirectaa logoutin kautta resource owner frontendiin kun ${paramName} puuttuu" in {
           val väärälläParametrilla = createParamsString(validParamsWithError.filterNot(_._1 == paramName))
           val serverUri = s"${baseUri}?${väärälläParametrilla}"
           get(
             uri = serverUri,
             headers = kansalainenLoginHeaders(hetu)
           ) {
-            verifyResponseStatus(500)
+            verifyResponseStatus(302)
+            response.header("Location") should include(s"/koski/user/logout?target=/koski/omadata-oauth2/cas-workaround/authorize/")
           }
         }
 
-        s"palauttaa 500 kun ${paramName} annettu enemmän kuin kerran" in {
+        s"redirectaa logoutin kautta resource owner frontendiin kun ${paramName} annettu enemmän kuin kerran" in {
           val validValue = validParams.toMap.get(paramName).get
           val väärälläParametrilla = createParamsString(validParamsWithError :+ (paramName, validValue))
 
@@ -548,12 +553,13 @@ class OmaDataOAuth2FrontendSpec extends OmaDataOAuth2TestBase {
             uri = serverUri,
             headers = kansalainenLoginHeaders(hetu)
           ) {
-            verifyResponseStatus(500)
+            verifyResponseStatus(302)
+            response.header("Location") should include(s"/koski/user/logout?target=/koski/omadata-oauth2/cas-workaround/authorize/")
           }
         }
       })
 
-      "palauttaa 500, jos kutsutaan epävalidilla client_id:llä" in {
+      "redirectaa logoutin kautta resource owner frontendiin, jos kutsutaan epävalidilla client_id:llä" in {
         val väärälläParametrilla = createParamsString((validParamsWithError.toMap + ("client_id" -> tuntematonClientId)).toSeq)
 
         val serverUri = s"${baseUri}?${väärälläParametrilla}"
@@ -562,11 +568,12 @@ class OmaDataOAuth2FrontendSpec extends OmaDataOAuth2TestBase {
           uri = serverUri,
           headers = kansalainenLoginHeaders(hetu)
         ) {
-          verifyResponseStatus(500)
+          verifyResponseStatus(302)
+          response.header("Location") should include(s"/koski/user/logout?target=/koski/omadata-oauth2/cas-workaround/authorize/")
         }
       }
 
-      "palauttaa 500, jos kutsutaan epävalidilla redirect_uri:lla" in {
+      "redirectaa logoutin kautta resource owner frontendiin, jos kutsutaan epävalidilla redirect_uri:lla" in {
         val väärälläParametrilla = createParamsString((validParamsWithError.toMap + ("redirect_uri" -> vääräRedirectUri)).toSeq)
 
         val serverUri = s"${baseUri}?${väärälläParametrilla}"
@@ -575,7 +582,8 @@ class OmaDataOAuth2FrontendSpec extends OmaDataOAuth2TestBase {
           uri = serverUri,
           headers = kansalainenLoginHeaders(hetu)
         ) {
-          verifyResponseStatus(500)
+          verifyResponseStatus(302)
+          response.header("Location") should include(s"/koski/user/logout?target=/koski/omadata-oauth2/cas-workaround/authorize/")
         }
       }
 
@@ -620,19 +628,20 @@ class OmaDataOAuth2FrontendSpec extends OmaDataOAuth2TestBase {
     )
 
     Seq("client_id", "redirect_uri").foreach(paramName => {
-      s"palauttaa 500 kun ${paramName} puuttuu" in {
+      s"redirectaa resource owner frontendiin, kun ${paramName} puuttuu" in {
         val väärälläParametrilla = createParamsString(validPostResponseParams.filterNot(_._1 == paramName))
         val serverUri = s"${baseUri}?${väärälläParametrilla}"
         get(
           uri = serverUri
         ) {
-          verifyResponseStatus(500)
+          verifyResponseStatus(302)
+          response.header("Location") should include(s"/koski/omadata-oauth2/cas-workaround/authorize/")
         }
       }
     })
 
     Seq("client_id", "redirect_uri", "state").foreach(paramName => {
-      s"palauttaa 500 kun ${paramName} annettu enemmän kuin kerran" in {
+      s"redirectaa resource owner frontendiin, kun ${paramName} annettu enemmän kuin kerran" in {
         val validValue = validParams.toMap.get(paramName).get
         val väärälläParametrilla = createParamsString(validPostResponseParams :+ (paramName, validValue))
 
@@ -640,13 +649,14 @@ class OmaDataOAuth2FrontendSpec extends OmaDataOAuth2TestBase {
         get(
           uri = serverUri
         ) {
-          verifyResponseStatus(500)
+          verifyResponseStatus(302)
+          response.header("Location") should include(s"/koski/omadata-oauth2/cas-workaround/authorize/")
         }
       }
     })
 
 
-    "palauttaa 500, jos kutsutaan epävalidilla client_id:llä" in {
+    "redirectaa resource owner frontendiin, jos kutsutaan epävalidilla client_id:llä" in {
       val väärälläParametrilla = createParamsString((validPostResponseParams.toMap + ("client_id" -> tuntematonClientId)).toSeq)
 
       val serverUri = s"${baseUri}?${väärälläParametrilla}"
@@ -654,11 +664,12 @@ class OmaDataOAuth2FrontendSpec extends OmaDataOAuth2TestBase {
       get(
         uri = serverUri
       ) {
-        verifyResponseStatus(500)
+        verifyResponseStatus(302)
+        response.header("Location") should include(s"/koski/omadata-oauth2/cas-workaround/authorize/")
       }
     }
 
-    "palauttaa 500, jos kutsutaan epävalidilla redirect_uri:lla" in {
+    "redirectaa resource owner frontendiin, kun kutsutaan epävalidilla redirect_uri:lla" in {
       val väärälläParametrilla = createParamsString((validPostResponseParams.toMap + ("redirect_uri" -> vääräRedirectUri)).toSeq)
 
       val serverUri = s"${baseUri}?${väärälläParametrilla}"
@@ -666,7 +677,8 @@ class OmaDataOAuth2FrontendSpec extends OmaDataOAuth2TestBase {
       get(
         uri = serverUri
       ) {
-        verifyResponseStatus(500)
+        verifyResponseStatus(302)
+        response.header("Location") should include(s"/koski/omadata-oauth2/cas-workaround/authorize/")
       }
     }
 
