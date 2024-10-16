@@ -1,0 +1,170 @@
+[
+  {
+    "metadata": [
+      {
+        "nimi": "Nimi",
+        "kuvaus": "",
+        "lyhytNimi": "",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Namn",
+        "kuvaus": "",
+        "lyhytNimi": "",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Name",
+        "kuvaus": "",
+        "lyhytNimi": "",
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "omadataoauth2scope_henkilotiedotnimi",
+    "versio": 1,
+    "koodiArvo": "henkilotiedotnimi"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "Syntymäaika",
+        "kuvaus": "",
+        "lyhytNimi": "",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Födelsedatum",
+        "kuvaus": "",
+        "lyhytNimi": "",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Date of birth",
+        "kuvaus": "",
+        "lyhytNimi": "",
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "omadataoauth2scope_henkilotiedotsyntymaaika",
+    "versio": 1,
+    "koodiArvo": "henkilotiedotsyntymaaika"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "Henkilötunnus",
+        "kuvaus": "",
+        "lyhytNimi": "",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Personbeteckning",
+        "kuvaus": "",
+        "lyhytNimi": "",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Personal identity code (henkilötunnus)",
+        "kuvaus": "",
+        "lyhytNimi": "",
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "omadataoauth2scope_henkilotiedothetu",
+    "versio": 1,
+    "koodiArvo": "henkilotiedothetu"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "Suoritetut tutkinnot",
+        "kuvaus": "",
+        "lyhytNimi": "",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Avlagda examina",
+        "kuvaus": "",
+        "lyhytNimi": "",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Completed degrees",
+        "kuvaus": "",
+        "lyhytNimi": "",
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "omadataoauth2scope_opiskeluoikeudetsuoritetuttutkinnot",
+    "versio": 1,
+    "koodiArvo": "opiskeluoikeudetsuoritetuttutkinnot"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "Aktiiviset ja päättyneet opinnot",
+        "kuvaus": "",
+        "lyhytNimi": "",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Aktiva och avslutade studier",
+        "kuvaus": "",
+        "lyhytNimi": "",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Active and finished studies",
+        "kuvaus": "",
+        "lyhytNimi": "",
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "omadataoauth2scope_opiskeluoikeudetaktiivisetjapaattyneetopinnot",
+    "versio": 1,
+    "koodiArvo": "opiskeluoikeudetaktiivisetjapaattyneetopinnot"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "Kaikki tiedot",
+        "kuvaus": "",
+        "lyhytNimi": "",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "All information",
+        "kuvaus": "",
+        "lyhytNimi": "",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "All information",
+        "kuvaus": "",
+        "lyhytNimi": "",
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "omadataoauth2scope_opiskeluoikeudetkaikkitiedot",
+    "versio": 1,
+    "koodiArvo": "opiskeluoikeudetkaikkitiedot"
+  }
+]
