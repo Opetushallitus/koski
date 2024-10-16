@@ -120,6 +120,7 @@ object Koodistot {
     KoodistoAsetus("ytrtutkintokokonaisuudentyyppi"),
     KoodistoAsetus("ammatillisensuorituksenkorotus"),
     KoodistoAsetus("omadataoauth2scope"),
+    KoodistoAsetus("omadataoauth2client"),
   )
   val koskiKoodistot = koskiKoodistoAsetukset.map(_.toString)
 

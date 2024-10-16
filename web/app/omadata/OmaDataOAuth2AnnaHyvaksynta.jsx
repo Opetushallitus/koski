@@ -32,7 +32,7 @@ export default ({ clientName, onAcceptClick, onDeclineClick, scope }) => {
           <Text name="Antamalla suostumuksesi sallit, että Opetushallitus luovuttaa sinua koskevia henkilötietoja seuraavalle palveluntarjoajalle" />
         </div>
         <div className="acceptance-member-name">
-          <Text name={clientName} />
+          <Text name={t(clientName)} />
         </div>
         <div className="acceptance-share-info">
           <Text name="Palveluntarjoajalle luovutetaan seuraavat henkilötiedot" />
