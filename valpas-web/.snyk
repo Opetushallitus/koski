@@ -1,4 +1,10 @@
 # Snyk (https://snyk.io) policy file, patches or ignores known vulnerabilities.
-version: v1.22.0
-ignore: {}
+version: v1.25.0
+# ignores vulnerabilities until expiry date; change duration by modifying expiry date
+ignore:
+  SNYK-JS-PATHTOREGEXP-7925106:
+    - '*':
+        reason: Should upgrade react-router-dom from v5 to v6
+        expires: 2024-11-14T12:26:49.406Z
+        created: 2024-10-15T12:26:49.411Z
 patch: {}
