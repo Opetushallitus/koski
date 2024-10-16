@@ -340,20 +340,35 @@ describe('Perusopetus', function () {
               )
             })
 
-            describe('Lisääminen', function () {
+            describe('Lisääminen ilman laajuutta', function () {
               before(
                 editor.edit,
                 uusiOppiaine.selectValue('sosiaaliset taidot'),
                 sosiaalisetTaidot
                   .propertyBySelector('.arvosana')
                   .selectValue('8'),
-                editor.saveChanges,
-                wait.until(page.isSavedLabelShown)
+                editor.saveChangesAndExpectError,
+                wait.until(page.isErrorShown)
               )
-              it('toimii', function () {
-                expect(extractAsText(S('.oppiaineet'))).to.contain(
-                  'sosiaaliset taidot 8'
+
+              it('näyttää virheilmoituksen laajuudesta', function () {
+                expect(extractAsText(S('.error-text'))).to.equal('Oppiaineen sosiaaliset taidot laajuus puuttuu')
+              })
+
+              describe('laajuudella', function () {
+                before(
+                  sosiaalisetTaidot
+                    .propertyBySelector('.property.laajuus')
+                    .setValue(5),
+                  editor.saveChanges,
+                  wait.until(page.isSavedLabelShown)
                 )
+
+                it('toimii', function () {
+                  expect(extractAsText(S('.oppiaineet'))).to.contain(
+                    'sosiaaliset taidot 8'
+                  )
+                })
               })
             })
           })
@@ -4683,13 +4698,28 @@ describe('Perusopetus', function () {
             kognitiivisetTaidot
               .propertyBySelector('.arvosana')
               .selectValue('8'),
-            editor.saveChanges
+            editor.saveChangesAndExpectError,
+            wait.until(page.isErrorShown)
           )
 
-          it('Toimii', function () {
-            expect(
-              kognitiivisetTaidot.propertyBySelector('.arvosana').getValue()
-            ).to.equal('8')
+          it('näyttää virheilmoituksen laajuudesta', function () {
+            expect(extractAsText(S('.error-text'))).to.equal('Oppiaineen kognitiiviset taidot laajuus puuttuu')
+          })
+
+          describe('laajuudella', function () {
+            before(
+              kognitiivisetTaidot
+                .propertyBySelector('.property.laajuus')
+                .setValue(5),
+              editor.saveChanges,
+              wait.until(page.isSavedLabelShown)
+            )
+
+            it('toimii', function () {
+              expect(
+                kognitiivisetTaidot.propertyBySelector('.arvosana').getValue()
+              ).to.equal('8')
+            })
           })
         })
       })
