@@ -27,8 +27,8 @@ describe('Perusopetus', function () {
     it('näyttää opiskeluoikeuden tiedot', function () {
       expect(extractAsText(S('.opiskeluoikeuden-tiedot'))).to.equal(
         'Opiskeluoikeuden voimassaoloaika : 15.8.2008 — 4.6.2016\n' +
-          'Tila 4.6.2016 Valmistunut\n' +
-          '15.8.2008 Läsnä'
+        'Tila 4.6.2016 Valmistunut\n' +
+        '15.8.2008 Läsnä'
       )
 
       expect(
@@ -46,48 +46,48 @@ describe('Perusopetus', function () {
             )
           ).to.equal(
             'Koulutus Perusopetus 201101 104/011/2014\n' +
-              'Oppilaitos / toimipiste Jyväskylän normaalikoulu\n' +
-              'Suoritustapa Koulutus\n' +
-              'Suorituskieli suomi\n' +
-              'Koulusivistyskieli suomi\n' +
-              'Suoritus valmis Vahvistus : 4.6.2016 Jyväskylä Reijo Reksi , rehtori'
+            'Oppilaitos / toimipiste Jyväskylän normaalikoulu\n' +
+            'Suoritustapa Koulutus\n' +
+            'Suorituskieli suomi\n' +
+            'Koulusivistyskieli suomi\n' +
+            'Suoritus valmis Vahvistus : 4.6.2016 Jyväskylä Reijo Reksi , rehtori'
           )
         })
         it('näyttää oppiaineiden arvosanat', function () {
           expect(extractAsText(S('.oppiaineet'))).to.equal(
             'Arviointiasteikko\n' +
-              'Arvostelu 4-10, S (suoritettu) tai H (hylätty)\n' +
-              'Yhteiset oppiaineet\n' +
-              'Oppiaine Arvosana\n' +
-              'Äidinkieli ja kirjallisuus, Suomen kieli ja kirjallisuus 9\n' +
-              'Suoritustapa Erityinen tutkinto\n' +
-              'B1-kieli, ruotsi 8\n' +
-              'A1-kieli, englanti 8\n' +
-              'Äidinkielenomainen kieli A-oppimäärä, suomi 8\n' +
-              'Uskonto/Elämänkatsomustieto 10\n' +
-              'Uskonnon oppimäärä Ortodoksinen uskonto\n' +
-              'Historia 8\n' +
-              'Yhteiskuntaoppi 10\n' +
-              'Matematiikka 9\n' +
-              'Kemia 7\n' +
-              'Fysiikka 9\n' +
-              'Biologia 9 *\n' +
-              'Maantieto 9\n' +
-              'Musiikki 7\n' +
-              'Kuvataide 8\n' +
-              'Kotitalous 8\n' +
-              'Terveystieto 8\n' +
-              'Käsityö 9\n' +
-              'Liikunta 9 **\n' +
-              'Valinnaiset aineet\n' +
-              'Oppiaine Arvosana Laajuus\n' +
-              'B1-kieli, ruotsi S 1 vuosiviikkotuntia\n' +
-              'Kotitalous S 1 vuosiviikkotuntia\n' +
-              'Liikunta S 0,5 vuosiviikkotuntia\n' +
-              'B2-kieli, saksa 9 4 vuosiviikkotuntia\n' +
-              'Tietokoneen hyötykäyttö 9\n' +
-              'Kuvaus Kurssilla tarjotaan yksityiskohtaisempaa tietokoneen, oheislaitteiden sekä käyttöjärjestelmän ja ohjelmien tuntemusta.\n' +
-              '* = yksilöllistetty oppimäärä, ** = painotettu opetus'
+            'Arvostelu 4-10, S (suoritettu) tai H (hylätty)\n' +
+            'Yhteiset oppiaineet\n' +
+            'Oppiaine Arvosana\n' +
+            'Äidinkieli ja kirjallisuus, Suomen kieli ja kirjallisuus 9\n' +
+            'Suoritustapa Erityinen tutkinto\n' +
+            'B1-kieli, ruotsi 8\n' +
+            'A1-kieli, englanti 8\n' +
+            'Äidinkielenomainen kieli A-oppimäärä, suomi 8\n' +
+            'Uskonto/Elämänkatsomustieto 10\n' +
+            'Uskonnon oppimäärä Ortodoksinen uskonto\n' +
+            'Historia 8\n' +
+            'Yhteiskuntaoppi 10\n' +
+            'Matematiikka 9\n' +
+            'Kemia 7\n' +
+            'Fysiikka 9\n' +
+            'Biologia 9 *\n' +
+            'Maantieto 9\n' +
+            'Musiikki 7\n' +
+            'Kuvataide 8\n' +
+            'Kotitalous 8\n' +
+            'Terveystieto 8\n' +
+            'Käsityö 9\n' +
+            'Liikunta 9 **\n' +
+            'Valinnaiset aineet\n' +
+            'Oppiaine Arvosana Laajuus\n' +
+            'B1-kieli, ruotsi S 1 vuosiviikkotuntia\n' +
+            'Kotitalous S 1 vuosiviikkotuntia\n' +
+            'Liikunta S 0,5 vuosiviikkotuntia\n' +
+            'B2-kieli, saksa 9 4 vuosiviikkotuntia\n' +
+            'Tietokoneen hyötykäyttö 9\n' +
+            'Kuvaus Kurssilla tarjotaan yksityiskohtaisempaa tietokoneen, oheislaitteiden sekä käyttöjärjestelmän ja ohjelmien tuntemusta.\n' +
+            '* = yksilöllistetty oppimäärä, ** = painotettu opetus'
           )
         })
 
@@ -144,55 +144,55 @@ describe('Perusopetus', function () {
             )
           ).to.equal(
             'Luokka-aste 8. vuosiluokka 8 104/011/2014\n' +
-              'Luokka 8C\n' +
-              'Oppilaitos / toimipiste Jyväskylän normaalikoulu\n' +
-              'Alkamispäivä 15.8.2014\n' +
-              'Suoritustapa Koulutus\n' +
-              'Suorituskieli suomi\n' +
-              'Muut suorituskielet sloveeni\n' +
-              'Kielikylpykieli ruotsi\n' +
-              'Suoritus valmis Vahvistus : 30.5.2015 Jyväskylä Reijo Reksi , rehtori\n' +
-              'Siirretään seuraavalle luokalle'
+            'Luokka 8C\n' +
+            'Oppilaitos / toimipiste Jyväskylän normaalikoulu\n' +
+            'Alkamispäivä 15.8.2014\n' +
+            'Suoritustapa Koulutus\n' +
+            'Suorituskieli suomi\n' +
+            'Muut suorituskielet sloveeni\n' +
+            'Kielikylpykieli ruotsi\n' +
+            'Suoritus valmis Vahvistus : 30.5.2015 Jyväskylä Reijo Reksi , rehtori\n' +
+            'Siirretään seuraavalle luokalle'
           )
         })
         it('näyttää oppiaineiden arvosanat', function () {
           expect(extractAsText(S('.oppiaineet'))).to.equal(
             'Arviointiasteikko\n' +
-              'Arvostelu 4-10, S (suoritettu) tai H (hylätty)\n' +
-              'Yhteiset oppiaineet\n' +
-              'Oppiaine Arvosana\n' +
-              'Äidinkieli ja kirjallisuus, Suomen kieli ja kirjallisuus 9\n' +
-              'Suoritustapa Erityinen tutkinto\n' +
-              'B1-kieli, ruotsi 8\n' +
-              'A1-kieli, englanti 8\n' +
-              'Äidinkielenomainen kieli A-oppimäärä, suomi 8\n' +
-              'Uskonto/Elämänkatsomustieto 10\n' +
-              'Uskonnon oppimäärä Ortodoksinen uskonto\n' +
-              'Historia 8\n' +
-              'Yhteiskuntaoppi 10\n' +
-              'Matematiikka 9\n' +
-              'Kemia 7\n' +
-              'Fysiikka 9\n' +
-              'Biologia 9 *\n' +
-              'Maantieto 9\n' +
-              'Musiikki 7\n' +
-              'Kuvataide 8\n' +
-              'Kotitalous 8\n' +
-              'Terveystieto 8\n' +
-              'Käsityö 9\n' +
-              'Liikunta 9 **\n' +
-              'Valinnaiset aineet\n' +
-              'Oppiaine Arvosana Laajuus\n' +
-              'B1-kieli, ruotsi S 1 vuosiviikkotuntia\n' +
-              'Kotitalous S 1 vuosiviikkotuntia\n' +
-              'Liikunta S 0,5 vuosiviikkotuntia\n' +
-              'B2-kieli, saksa 9 4 vuosiviikkotuntia\n' +
-              'Tietokoneen hyötykäyttö 9\n' +
-              'Kuvaus Kurssilla tarjotaan yksityiskohtaisempaa tietokoneen, oheislaitteiden sekä käyttöjärjestelmän ja ohjelmien tuntemusta.\n' +
-              'Käyttäytymisen arviointi\n' +
-              'Arvosana S\n' +
-              'Sanallinen arviointi Esimerkillistä käyttäytymistä koko vuoden ajan\n' +
-              '* = yksilöllistetty oppimäärä, ** = painotettu opetus'
+            'Arvostelu 4-10, S (suoritettu) tai H (hylätty)\n' +
+            'Yhteiset oppiaineet\n' +
+            'Oppiaine Arvosana\n' +
+            'Äidinkieli ja kirjallisuus, Suomen kieli ja kirjallisuus 9\n' +
+            'Suoritustapa Erityinen tutkinto\n' +
+            'B1-kieli, ruotsi 8\n' +
+            'A1-kieli, englanti 8\n' +
+            'Äidinkielenomainen kieli A-oppimäärä, suomi 8\n' +
+            'Uskonto/Elämänkatsomustieto 10\n' +
+            'Uskonnon oppimäärä Ortodoksinen uskonto\n' +
+            'Historia 8\n' +
+            'Yhteiskuntaoppi 10\n' +
+            'Matematiikka 9\n' +
+            'Kemia 7\n' +
+            'Fysiikka 9\n' +
+            'Biologia 9 *\n' +
+            'Maantieto 9\n' +
+            'Musiikki 7\n' +
+            'Kuvataide 8\n' +
+            'Kotitalous 8\n' +
+            'Terveystieto 8\n' +
+            'Käsityö 9\n' +
+            'Liikunta 9 **\n' +
+            'Valinnaiset aineet\n' +
+            'Oppiaine Arvosana Laajuus\n' +
+            'B1-kieli, ruotsi S 1 vuosiviikkotuntia\n' +
+            'Kotitalous S 1 vuosiviikkotuntia\n' +
+            'Liikunta S 0,5 vuosiviikkotuntia\n' +
+            'B2-kieli, saksa 9 4 vuosiviikkotuntia\n' +
+            'Tietokoneen hyötykäyttö 9\n' +
+            'Kuvaus Kurssilla tarjotaan yksityiskohtaisempaa tietokoneen, oheislaitteiden sekä käyttöjärjestelmän ja ohjelmien tuntemusta.\n' +
+            'Käyttäytymisen arviointi\n' +
+            'Arvosana S\n' +
+            'Sanallinen arviointi Esimerkillistä käyttäytymistä koko vuoden ajan\n' +
+            '* = yksilöllistetty oppimäärä, ** = painotettu opetus'
           )
         })
       })
@@ -212,11 +212,11 @@ describe('Perusopetus', function () {
             )
           ).to.equal(
             'Luokka-aste 9. vuosiluokka 9 104/011/2014\n' +
-              'Luokka 9C\n' +
-              'Oppilaitos / toimipiste Jyväskylän normaalikoulu\n' +
-              'Alkamispäivä 15.8.2015\n' +
-              'Suorituskieli suomi\n' +
-              'Suoritus valmis Vahvistus : 30.5.2016 Jyväskylä Reijo Reksi , rehtori'
+            'Luokka 9C\n' +
+            'Oppilaitos / toimipiste Jyväskylän normaalikoulu\n' +
+            'Alkamispäivä 15.8.2015\n' +
+            'Suorituskieli suomi\n' +
+            'Suoritus valmis Vahvistus : 30.5.2016 Jyväskylä Reijo Reksi , rehtori'
           )
         })
       })
@@ -241,12 +241,12 @@ describe('Perusopetus', function () {
             )
           ).to.equal(
             'Luokka-aste 7. vuosiluokka 7 104/011/2014\n' +
-              'Luokka 7C\n' +
-              'Oppilaitos / toimipiste Jyväskylän normaalikoulu\n' +
-              'Alkamispäivä 16.8.2013\n' +
-              'Suorituskieli suomi\n' +
-              'Suoritus valmis Vahvistus : 30.5.2014 Jyväskylä Reijo Reksi , rehtori\n' +
-              'Ei siirretä seuraavalle luokalle'
+            'Luokka 7C\n' +
+            'Oppilaitos / toimipiste Jyväskylän normaalikoulu\n' +
+            'Alkamispäivä 16.8.2013\n' +
+            'Suorituskieli suomi\n' +
+            'Suoritus valmis Vahvistus : 30.5.2014 Jyväskylä Reijo Reksi , rehtori\n' +
+            'Ei siirretä seuraavalle luokalle'
           )
         })
       })
@@ -265,28 +265,28 @@ describe('Perusopetus', function () {
         it('näyttää opiskeluoikeuden tiedot', function () {
           expect(extractAsText(S('.opiskeluoikeuden-tiedot'))).to.equal(
             'Opiskeluoikeuden voimassaoloaika : 15.8.2008 — 4.6.2016\n' +
-              'Tila 4.6.2016 Valmistunut\n' +
-              '15.8.2008 Läsnä\n' +
-              'Lisätiedot\n' +
-              'Pidennetty oppivelvollisuus 15.8.2010 — 4.6.2016\n' +
-              'Erityisen tuen jaksot 15.8.2008 — 4.6.2016\n' +
-              'Opiskelee toiminta-alueittain kyllä\n' +
-              'Opiskelee erityisryhmässä kyllä\n' +
-              'Erityisen tuen jaksot 15.8.2008 — 4.6.2016\n' +
-              'Opiskelee toiminta-alueittain kyllä\n' +
-              'Opiskelee erityisryhmässä kyllä\n' +
-              'Joustava perusopetus 15.8.2008 — 4.6.2016\n' +
-              'Kotiopetusjaksot 15.8.2008 — 4.6.2016\n' +
-              '14.7.2017 — 18.10.2017\n' +
-              'Ulkomaanjaksot 15.8.2008 — 4.6.2016\n' +
-              '16.9.2018 — 2.10.2019\n' +
-              'Vuosiluokkiin sitomaton opetus kyllä\n' +
-              'Oppilas on muiden kuin vaikeimmin kehitysvammaisten opetuksessa 15.8.2010 — 1.9.2010\n' +
-              'Vaikeimmin kehitysvammainen 2.9.2010 — 4.6.2016\n' +
-              'Majoitusetu 15.8.2008 — 4.6.2016\n' +
-              'Kuljetusetu 15.8.2008 — 4.6.2016\n' +
-              'Sisäoppilaitosmainen majoitus 1.9.2012 — 1.9.2013\n' +
-              'Koulukoti 1.9.2013 — 1.9.2014'
+            'Tila 4.6.2016 Valmistunut\n' +
+            '15.8.2008 Läsnä\n' +
+            'Lisätiedot\n' +
+            'Pidennetty oppivelvollisuus 15.8.2010 — 4.6.2016\n' +
+            'Erityisen tuen jaksot 15.8.2008 — 4.6.2016\n' +
+            'Opiskelee toiminta-alueittain kyllä\n' +
+            'Opiskelee erityisryhmässä kyllä\n' +
+            'Erityisen tuen jaksot 15.8.2008 — 4.6.2016\n' +
+            'Opiskelee toiminta-alueittain kyllä\n' +
+            'Opiskelee erityisryhmässä kyllä\n' +
+            'Joustava perusopetus 15.8.2008 — 4.6.2016\n' +
+            'Kotiopetusjaksot 15.8.2008 — 4.6.2016\n' +
+            '14.7.2017 — 18.10.2017\n' +
+            'Ulkomaanjaksot 15.8.2008 — 4.6.2016\n' +
+            '16.9.2018 — 2.10.2019\n' +
+            'Vuosiluokkiin sitomaton opetus kyllä\n' +
+            'Oppilas on muiden kuin vaikeimmin kehitysvammaisten opetuksessa 15.8.2010 — 1.9.2010\n' +
+            'Vaikeimmin kehitysvammainen 2.9.2010 — 4.6.2016\n' +
+            'Majoitusetu 15.8.2008 — 4.6.2016\n' +
+            'Kuljetusetu 15.8.2008 — 4.6.2016\n' +
+            'Sisäoppilaitosmainen majoitus 1.9.2012 — 1.9.2013\n' +
+            'Koulukoti 1.9.2013 — 1.9.2014'
           )
         })
 
@@ -297,23 +297,23 @@ describe('Perusopetus', function () {
             )
           ).to.equal(
             'Koulutus Perusopetus 201101 104/011/2014\n' +
-              'Oppilaitos / toimipiste Jyväskylän normaalikoulu\n' +
-              'Suoritustapa Erityinen tutkinto\n' +
-              'Suorituskieli suomi\n' +
-              'Suoritus valmis Vahvistus : 4.6.2016 Jyväskylä Reijo Reksi , rehtori'
+            'Oppilaitos / toimipiste Jyväskylän normaalikoulu\n' +
+            'Suoritustapa Erityinen tutkinto\n' +
+            'Suorituskieli suomi\n' +
+            'Suoritus valmis Vahvistus : 4.6.2016 Jyväskylä Reijo Reksi , rehtori'
           )
         })
         it('näyttää oppiaineiden arvosanat', function () {
           expect(extractAsText(S('.oppiaineet'))).to.equal(
             'Toiminta-alueiden arvosanat\n' +
-              'Arvostelu 4-10, S (suoritettu) tai H (hylätty)\n' +
-              'Toiminta-alue Arvosana\n' +
-              'motoriset taidot S\n' +
-              'Sanallinen arviointi Motoriset taidot kehittyneet hyvin perusopetuksen aikana\n' +
-              'kieli ja kommunikaatio S\n' +
-              'sosiaaliset taidot S\n' +
-              'päivittäisten toimintojen taidot S\n' +
-              'kognitiiviset taidot S'
+            'Arvostelu 4-10, S (suoritettu) tai H (hylätty)\n' +
+            'Toiminta-alue Arvosana\n' +
+            'motoriset taidot S\n' +
+            'Sanallinen arviointi Motoriset taidot kehittyneet hyvin perusopetuksen aikana\n' +
+            'kieli ja kommunikaatio S\n' +
+            'sosiaaliset taidot S\n' +
+            'päivittäisten toimintojen taidot S\n' +
+            'kognitiiviset taidot S'
           )
         })
       })
@@ -431,10 +431,10 @@ describe('Perusopetus', function () {
             )
           ).to.equal(
             'Koulutus Perusopetus 201101 104/011/2014\n' +
-              'Oppilaitos / toimipiste Jyväskylän normaalikoulu\n' +
-              'Suoritustapa Erityinen tutkinto\n' +
-              'Suorituskieli suomi\n' +
-              'Suoritus valmis Vahvistus : 4.6.2016 Jyväskylä Reijo Reksi , rehtori'
+            'Oppilaitos / toimipiste Jyväskylän normaalikoulu\n' +
+            'Suoritustapa Erityinen tutkinto\n' +
+            'Suorituskieli suomi\n' +
+            'Suoritus valmis Vahvistus : 4.6.2016 Jyväskylä Reijo Reksi , rehtori'
           )
         })
       })
@@ -458,7 +458,7 @@ describe('Perusopetus', function () {
           page.openPage,
           openPage('/koski/1010101010', page.is404)
         )
-        it('Näytetään 404-sivu', function () {})
+        it('Näytetään 404-sivu', function () { })
       })
     })
   })
@@ -469,8 +469,8 @@ describe('Perusopetus', function () {
     it('näyttää opiskeluoikeuden tiedot', function () {
       expect(extractAsText(S('.opiskeluoikeuden-tiedot'))).to.equal(
         'Opiskeluoikeuden voimassaoloaika : 15.8.2008 — 4.6.2018\n' +
-          'Tila 4.6.2018 Valmistunut (valtionosuusrahoitteinen koulutus)\n' +
-          '15.8.2008 Läsnä (valtionosuusrahoitteinen koulutus)'
+        'Tila 4.6.2018 Valmistunut (valtionosuusrahoitteinen koulutus)\n' +
+        '15.8.2008 Läsnä (valtionosuusrahoitteinen koulutus)'
       )
     })
 
@@ -483,8 +483,8 @@ describe('Perusopetus', function () {
       it('hakee opiskeluoikeuden tiedot', function () {
         expect(extractAsText(S('.opiskeluoikeuden-tiedot'))).to.equal(
           'Opiskeluoikeuden voimassaoloaika : 15.8.2008 — 4.6.2018\n' +
-            'Tila 4.6.2018 Valmistunut (valtionosuusrahoitteinen koulutus)\n' +
-            '15.8.2008 Läsnä (valtionosuusrahoitteinen koulutus)'
+          'Tila 4.6.2018 Valmistunut (valtionosuusrahoitteinen koulutus)\n' +
+          '15.8.2008 Läsnä (valtionosuusrahoitteinen koulutus)'
         )
       })
     })
@@ -498,47 +498,47 @@ describe('Perusopetus', function () {
           )
         ).to.equal(
           'Koulutus Aikuisten perusopetuksen oppimäärä 201101 OPH-1280-2017\n' +
-            'Oppilaitos / toimipiste Jyväskylän normaalikoulu\n' +
-            'Suoritustapa Erityinen tutkinto\n' +
-            'Suorituskieli suomi\n' +
-            'Täydentävät oman äidinkielen opinnot Arvosana 8\n' +
-            'Kieli saame, lappi\n' +
-            'Laajuus 1 kurssia\n' +
-            'Suoritus valmis Vahvistus : 4.6.2016 Jyväskylä Reijo Reksi , rehtori'
+          'Oppilaitos / toimipiste Jyväskylän normaalikoulu\n' +
+          'Suoritustapa Erityinen tutkinto\n' +
+          'Suorituskieli suomi\n' +
+          'Täydentävät oman äidinkielen opinnot Arvosana 8\n' +
+          'Kieli saame, lappi\n' +
+          'Laajuus 1 kurssia\n' +
+          'Suoritus valmis Vahvistus : 4.6.2016 Jyväskylä Reijo Reksi , rehtori'
         )
       })
       it('näyttää oppiaineiden arvosanat', function () {
         expect(extractAsText(S('.oppiaineet'))).to.equal(
           'Arviointiasteikko\n' +
-            'Arvostelu 4-10, S (suoritettu) tai H (hylätty)\n' +
-            'Yhteiset oppiaineet\n' +
-            'Oppiaine Arvosana\n' +
-            'Äidinkieli ja kirjallisuus, Suomen kieli ja kirjallisuus 9\nÄI1\n9 ÄI2\n9 ÄI3\n9 ÄI4\n4 ÄI10\n9\n' +
-            'B1-kieli, ruotsi 8\n' +
-            'A1-kieli, englanti 8\n' +
-            'Uskonto/Elämänkatsomustieto 10\n' +
-            'Uskonnon oppimäärä Ortodoksinen uskonto\n' +
-            'Historia 8\n' +
-            'Yhteiskuntaoppi 10\n' +
-            'Matematiikka 9\n' +
-            'Kemia 7\n' +
-            'Fysiikka 9\n' +
-            'Biologia 9\n' +
-            'Maantieto 9\n' +
-            'Musiikki 7\n' +
-            'Kuvataide 8\n' +
-            'Kotitalous 8\n' +
-            'Terveystieto 8\n' +
-            'Käsityö 9\n' +
-            'Liikunta 9\n' +
-            'Valinnaiset aineet\n' +
-            'Oppiaine Arvosana Laajuus\n' +
-            'B1-kieli, ruotsi S 1 vuosiviikkotuntia\n' +
-            'Kotitalous S 1 vuosiviikkotuntia\n' +
-            'Liikunta S 0,5 vuosiviikkotuntia\n' +
-            'B2-kieli, saksa 9 4 vuosiviikkotuntia\n' +
-            'Tietokoneen hyötykäyttö 9\n' +
-            'Kuvaus Kurssilla tarjotaan yksityiskohtaisempaa tietokoneen, oheislaitteiden sekä käyttöjärjestelmän ja ohjelmien tuntemusta.'
+          'Arvostelu 4-10, S (suoritettu) tai H (hylätty)\n' +
+          'Yhteiset oppiaineet\n' +
+          'Oppiaine Arvosana\n' +
+          'Äidinkieli ja kirjallisuus, Suomen kieli ja kirjallisuus 9\nÄI1\n9 ÄI2\n9 ÄI3\n9 ÄI4\n4 ÄI10\n9\n' +
+          'B1-kieli, ruotsi 8\n' +
+          'A1-kieli, englanti 8\n' +
+          'Uskonto/Elämänkatsomustieto 10\n' +
+          'Uskonnon oppimäärä Ortodoksinen uskonto\n' +
+          'Historia 8\n' +
+          'Yhteiskuntaoppi 10\n' +
+          'Matematiikka 9\n' +
+          'Kemia 7\n' +
+          'Fysiikka 9\n' +
+          'Biologia 9\n' +
+          'Maantieto 9\n' +
+          'Musiikki 7\n' +
+          'Kuvataide 8\n' +
+          'Kotitalous 8\n' +
+          'Terveystieto 8\n' +
+          'Käsityö 9\n' +
+          'Liikunta 9\n' +
+          'Valinnaiset aineet\n' +
+          'Oppiaine Arvosana Laajuus\n' +
+          'B1-kieli, ruotsi S 1 vuosiviikkotuntia\n' +
+          'Kotitalous S 1 vuosiviikkotuntia\n' +
+          'Liikunta S 0,5 vuosiviikkotuntia\n' +
+          'B2-kieli, saksa 9 4 vuosiviikkotuntia\n' +
+          'Tietokoneen hyötykäyttö 9\n' +
+          'Kuvaus Kurssilla tarjotaan yksityiskohtaisempaa tietokoneen, oheislaitteiden sekä käyttöjärjestelmän ja ohjelmien tuntemusta.'
         )
       })
 
@@ -740,7 +740,7 @@ describe('Perusopetus', function () {
               äidinkieli.kurssi('ÄIX1').arvosana.setValue('10'),
               editor.saveChanges
             )
-            it('Toimii', function () {})
+            it('Toimii', function () { })
           })
         })
       })
@@ -775,26 +775,26 @@ describe('Perusopetus', function () {
           )
         ).to.equal(
           'Koulutus Aikuisten perusopetuksen oppimäärän alkuvaihe aikuistenperusopetuksenoppimaaranalkuvaihe OPH-1280-2017\n' +
-            'Oppilaitos / toimipiste Jyväskylän normaalikoulu\n' +
-            'Suoritustapa Erityinen tutkinto\n' +
-            'Suorituskieli suomi\n' +
-            'Täydentävät oman äidinkielen opinnot Arvosana 8\n' +
-            'Kieli saame, lappi\n' +
-            'Laajuus 1 kurssia\n' +
-            'Suoritus valmis Vahvistus : 4.6.2016 Jyväskylä Reijo Reksi , rehtori'
+          'Oppilaitos / toimipiste Jyväskylän normaalikoulu\n' +
+          'Suoritustapa Erityinen tutkinto\n' +
+          'Suorituskieli suomi\n' +
+          'Täydentävät oman äidinkielen opinnot Arvosana 8\n' +
+          'Kieli saame, lappi\n' +
+          'Laajuus 1 kurssia\n' +
+          'Suoritus valmis Vahvistus : 4.6.2016 Jyväskylä Reijo Reksi , rehtori'
         )
       })
       it('näyttää oppiaineiden arvosanat', function () {
         expect(extractAsText(S('.oppiaineet'))).to.equal(
           'Arviointiasteikko\nArvostelu 4-10, S (suoritettu) tai H (hylätty)\n' +
-            'Oppiaine Arvosana\n' +
-            'Äidinkieli ja kirjallisuus, Suomen kieli ja kirjallisuus 9\nLÄI1\n9 LÄI2\n9 LÄI3\n9 LÄI4\n9 LÄI5\n9 LÄI6\n9 LÄI7\nO LÄI8\n9 LÄI9\n9 AÄI1\n9 AÄI2\n9 AÄI3\n9 AÄI4\n9 AÄI5\n9 AÄI6\n9\n' +
-            'Vieras kieli, englanti 7\nAENA1\n9 AENA2\n9 AENA3\n9 AENA4\n9\n' +
-            'Matematiikka 10\nLMA1\n9 LMA2\n9 LMA3\n9\n' +
-            'Yhteiskuntatietous ja kulttuurintuntemus 8\nLYK1\n9 LYK2\n9 LYKX\n9 LYKY\n9\n' +
-            'Ympäristö- ja luonnontieto 8\nLYL1\n9\n' +
-            'Terveystieto 10\nATE1\n9\n' +
-            'Opinto-ohjaus ja työelämän taidot S'
+          'Oppiaine Arvosana\n' +
+          'Äidinkieli ja kirjallisuus, Suomen kieli ja kirjallisuus 9\nLÄI1\n9 LÄI2\n9 LÄI3\n9 LÄI4\n9 LÄI5\n9 LÄI6\n9 LÄI7\nO LÄI8\n9 LÄI9\n9 AÄI1\n9 AÄI2\n9 AÄI3\n9 AÄI4\n9 AÄI5\n9 AÄI6\n9\n' +
+          'Vieras kieli, englanti 7\nAENA1\n9 AENA2\n9 AENA3\n9 AENA4\n9\n' +
+          'Matematiikka 10\nLMA1\n9 LMA2\n9 LMA3\n9\n' +
+          'Yhteiskuntatietous ja kulttuurintuntemus 8\nLYK1\n9 LYK2\n9 LYKX\n9 LYKY\n9\n' +
+          'Ympäristö- ja luonnontieto 8\nLYL1\n9\n' +
+          'Terveystieto 10\nATE1\n9\n' +
+          'Opinto-ohjaus ja työelämän taidot S'
         )
       })
 
@@ -810,7 +810,7 @@ describe('Perusopetus', function () {
             wait.until(page.isSavedLabelShown)
           )
 
-          it('Ei ole pakollinen', function () {})
+          it('Ei ole pakollinen', function () { })
         })
 
         describe('Kurssin lisääminen', function () {
@@ -859,7 +859,7 @@ describe('Perusopetus', function () {
               äidinkieli.kurssi('ÄIX1').arvosana.setValue('10'),
               editor.saveChanges
             )
-            it('Toimii', function () {})
+            it('Toimii', function () { })
           })
         })
       })
@@ -949,7 +949,7 @@ describe('Perusopetus', function () {
     it('näyttää opiskeluoikeuden tiedot', function () {
       expect(extractAsText(S('.opiskeluoikeuden-tiedot'))).to.equal(
         'Opiskeluoikeuden voimassaoloaika : 15.8.2008 —\n' +
-          'Tila 15.8.2008 Läsnä'
+        'Tila 15.8.2008 Läsnä'
       )
     })
   })
@@ -1674,7 +1674,7 @@ describe('Perusopetus', function () {
 
           describe('Tallennus', function () {
             before(editor.saveChanges, wait.until(page.isSavedLabelShown))
-            it('Onnistuu', function () {})
+            it('Onnistuu', function () { })
           })
         })
       })
@@ -2490,7 +2490,7 @@ describe('Perusopetus', function () {
                 wait.until(page.isPäätasonSuoritusDeletedMessageShown)
               )
 
-              it('Päätason suoritus poistetaan', function () {})
+              it('Päätason suoritus poistetaan', function () { })
 
               describe('Poistettua päätason suoritusta', function () {
                 before(
@@ -2619,7 +2619,7 @@ describe('Perusopetus', function () {
           page.oppijaHaku.searchAndSelect('280618-402H')
         )
 
-        it('Onnistuu normaalisti', function () {})
+        it('Onnistuu normaalisti', function () { })
 
         after(
           page.oppijaHaku.searchAndSelect('220109-784L'),
@@ -2756,35 +2756,35 @@ describe('Perusopetus', function () {
         it('Näytetään oppiaineiden arvosanat', function () {
           expect(extractAsText(S('.oppiaineet'))).to.equal(
             'Arviointiasteikko\n' +
-              'Arvostelu 4-10, S (suoritettu) tai H (hylätty)\n' +
-              'Yhteiset oppiaineet\n' +
-              'Oppiaine Arvosana\n' +
-              'Äidinkieli ja kirjallisuus, Suomen kieli ja kirjallisuus 9\n' +
-              'B1-kieli, ruotsi 8\n' +
-              'A1-kieli, englanti 8\n' +
-              'Äidinkielenomainen kieli A-oppimäärä, suomi 8\n' +
-              'Uskonto/Elämänkatsomustieto 10\n' +
-              'Historia 8\n' +
-              'Yhteiskuntaoppi 10\n' +
-              'Matematiikka 9\n' +
-              'Kemia 7\n' +
-              'Fysiikka 9\n' +
-              'Biologia 9 *\n' +
-              'Maantieto 9\n' +
-              'Musiikki 7\n' +
-              'Kuvataide 8\n' +
-              'Kotitalous 8\n' +
-              'Terveystieto 8\n' +
-              'Käsityö 9\n' +
-              'Liikunta 9 **\n' +
-              'Valinnaiset aineet\n' +
-              'Oppiaine Arvosana Laajuus\n' +
-              'B1-kieli, ruotsi S 1 vuosiviikkotuntia\n' +
-              'Kotitalous S 1 vuosiviikkotuntia\n' +
-              'Liikunta S 0,5 vuosiviikkotuntia\n' +
-              'B2-kieli, saksa 9 4 vuosiviikkotuntia\n' +
-              'Tietokoneen hyötykäyttö 9\n' +
-              '* = yksilöllistetty oppimäärä, ** = painotettu opetus'
+            'Arvostelu 4-10, S (suoritettu) tai H (hylätty)\n' +
+            'Yhteiset oppiaineet\n' +
+            'Oppiaine Arvosana\n' +
+            'Äidinkieli ja kirjallisuus, Suomen kieli ja kirjallisuus 9\n' +
+            'B1-kieli, ruotsi 8\n' +
+            'A1-kieli, englanti 8\n' +
+            'Äidinkielenomainen kieli A-oppimäärä, suomi 8\n' +
+            'Uskonto/Elämänkatsomustieto 10\n' +
+            'Historia 8\n' +
+            'Yhteiskuntaoppi 10\n' +
+            'Matematiikka 9\n' +
+            'Kemia 7\n' +
+            'Fysiikka 9\n' +
+            'Biologia 9 *\n' +
+            'Maantieto 9\n' +
+            'Musiikki 7\n' +
+            'Kuvataide 8\n' +
+            'Kotitalous 8\n' +
+            'Terveystieto 8\n' +
+            'Käsityö 9\n' +
+            'Liikunta 9 **\n' +
+            'Valinnaiset aineet\n' +
+            'Oppiaine Arvosana Laajuus\n' +
+            'B1-kieli, ruotsi S 1 vuosiviikkotuntia\n' +
+            'Kotitalous S 1 vuosiviikkotuntia\n' +
+            'Liikunta S 0,5 vuosiviikkotuntia\n' +
+            'B2-kieli, saksa 9 4 vuosiviikkotuntia\n' +
+            'Tietokoneen hyötykäyttö 9\n' +
+            '* = yksilöllistetty oppimäärä, ** = painotettu opetus'
           )
         })
       })
@@ -2908,7 +2908,7 @@ describe('Perusopetus', function () {
             'Opinto-ohjaus'
           ]
 
-          it('lisätty oppija näytetään', function () {})
+          it('lisätty oppija näytetään', function () { })
 
           describe('Käyttöliittymän tila', function () {
             it('Lisätty opiskeluoikeus näytetään', function () {
@@ -3084,7 +3084,7 @@ describe('Perusopetus', function () {
                 'Autoalan perustutkinto'
               )
             )
-            it('Onnistuu ja uusi ammatillinen opiskeluoikeus tulee valituksi', function () {})
+            it('Onnistuu ja uusi ammatillinen opiskeluoikeus tulee valituksi', function () { })
 
             describe('Kolmannen opiskeluoikeuden lisääminen (oppiaineen oppimäärä)', function () {
               this.timeout(30000)
@@ -3108,7 +3108,7 @@ describe('Perusopetus', function () {
                 )
               )
               after(timeout.resetDefaultWaitTime())
-              it('toimii', function () {})
+              it('toimii', function () { })
             })
           })
         })
@@ -3765,8 +3765,8 @@ describe('Perusopetus', function () {
                         it('Tila on "valmis" ja vahvistus näytetään', function () {
                           expect(tilaJaVahvistus.text()).to.equal(
                             'Suoritus valmis Vahvistus : ' +
-                              currentDateStr +
-                              ' Jyväskylä mlk Reijo Reksi , rehtori\nSiirretään seuraavalle luokalle'
+                            currentDateStr +
+                            ' Jyväskylä mlk Reijo Reksi , rehtori\nSiirretään seuraavalle luokalle'
                           )
                         })
 
@@ -3811,8 +3811,8 @@ describe('Perusopetus', function () {
                         it('Tila on "valmis" ja vahvistus näytetään', function () {
                           expect(tilaJaVahvistus.text()).to.equal(
                             'Suoritus valmis Vahvistus : ' +
-                              currentDateStr +
-                              ' Jyväskylä mlk Reijo Reksi , rehtori\nSiirretään seuraavalle luokalle'
+                            currentDateStr +
+                            ' Jyväskylä mlk Reijo Reksi , rehtori\nSiirretään seuraavalle luokalle'
                           )
                         })
                       })
@@ -3905,8 +3905,8 @@ describe('Perusopetus', function () {
                                   opintojenTilaJaVahvistus.text()
                                 ).to.equal(
                                   'Suoritus valmis Vahvistus : ' +
-                                    date2018Str +
-                                    ' Jyväskylä mlk Reijo Reksi , rehtori\nEi siirretä seuraavalle luokalle'
+                                  date2018Str +
+                                  ' Jyväskylä mlk Reijo Reksi , rehtori\nEi siirretä seuraavalle luokalle'
                                 )
                               })
 
@@ -4232,7 +4232,7 @@ describe('Perusopetus', function () {
               editor.saveChanges,
               wait.until(page.isSavedLabelShown)
             )
-            it('Tallennus onnistuu', function () {})
+            it('Tallennus onnistuu', function () { })
 
             describe('Kun poistetaan luokalleen jäänti ja merkitään jälleen keskeneräiseksi', function () {
               before(
@@ -4241,7 +4241,7 @@ describe('Perusopetus', function () {
                 tilaJaVahvistus.merkitseKeskeneräiseksi,
                 editor.saveChanges
               )
-              it('Tallennus onnistuu', function () {})
+              it('Tallennus onnistuu', function () { })
             })
           })
         })
@@ -4337,8 +4337,8 @@ describe('Perusopetus', function () {
         ])
         expect(extractAsText(S('.opiskeluoikeuden-tiedot'))).to.equal(
           'Opiskeluoikeuden voimassaoloaika : 15.8.2008 — 4.6.2018\n' +
-            'Tila 4.6.2018 Valmistunut (valtionosuusrahoitteinen koulutus)\n' +
-            '15.8.2008 Läsnä (valtionosuusrahoitteinen koulutus)'
+          'Tila 4.6.2018 Valmistunut (valtionosuusrahoitteinen koulutus)\n' +
+          '15.8.2008 Läsnä (valtionosuusrahoitteinen koulutus)'
         )
       })
 
@@ -4349,13 +4349,13 @@ describe('Perusopetus', function () {
           )
         ).to.equal(
           'Oppiaine Äidinkieli ja kirjallisuus\n' +
-            'Kieli Suomen kieli ja kirjallisuus\n' +
-            'Peruste 19/011/2015\n' +
-            'Oppilaitos / toimipiste Jyväskylän normaalikoulu\n' +
-            'Arvosana 9\n' +
-            'Suoritustapa Erityinen tutkinto\n' +
-            'Suorituskieli suomi\n' +
-            'Suoritus valmis Vahvistus : 4.6.2016 Jyväskylä Reijo Reksi , rehtori'
+          'Kieli Suomen kieli ja kirjallisuus\n' +
+          'Peruste 19/011/2015\n' +
+          'Oppilaitos / toimipiste Jyväskylän normaalikoulu\n' +
+          'Arvosana 9\n' +
+          'Suoritustapa Erityinen tutkinto\n' +
+          'Suorituskieli suomi\n' +
+          'Suoritus valmis Vahvistus : 4.6.2016 Jyväskylä Reijo Reksi , rehtori'
         )
       })
     })
@@ -4410,7 +4410,7 @@ describe('Perusopetus', function () {
               editor.saveChanges
             )
 
-            it('Valmiiksi merkintä on mahdollista', function () {})
+            it('Valmiiksi merkintä on mahdollista', function () { })
           })
         })
       })
@@ -4443,7 +4443,7 @@ describe('Perusopetus', function () {
                 editor.saveChanges
               )
 
-              it('toimii', function () {})
+              it('toimii', function () { })
             })
           })
         })
@@ -4472,7 +4472,7 @@ describe('Perusopetus', function () {
                 editor.saveChanges
               )
 
-              it('toimii', function () {})
+              it('toimii', function () { })
             })
           })
         })
@@ -4554,14 +4554,14 @@ describe('Perusopetus', function () {
       it('näyttää opiskeluoikeuden tiedot', function () {
         expect(extractAsText(S('.opiskeluoikeuden-tiedot'))).to.equal(
           'Opiskeluoikeuden voimassaoloaika : 15.8.2008 — 4.6.2016\n' +
-            'Tila 4.6.2016 Valmistunut\n' +
-            '15.8.2008 Läsnä\n' +
-            'Lisätiedot\n' +
-            'Pidennetty oppivelvollisuus 15.8.2008 — 4.6.2016\n' +
-            'Erityisen tuen jaksot 15.8.2008 — 4.6.2016\n' +
-            'Opiskelee toiminta-alueittain ei\n' +
-            'Opiskelee erityisryhmässä ei\n' +
-            'Oppilas on muiden kuin vaikeimmin kehitysvammaisten opetuksessa 15.8.2008 — 4.6.2016'
+          'Tila 4.6.2016 Valmistunut\n' +
+          '15.8.2008 Läsnä\n' +
+          'Lisätiedot\n' +
+          'Pidennetty oppivelvollisuus 15.8.2008 — 4.6.2016\n' +
+          'Erityisen tuen jaksot 15.8.2008 — 4.6.2016\n' +
+          'Opiskelee toiminta-alueittain ei\n' +
+          'Opiskelee erityisryhmässä ei\n' +
+          'Oppilas on muiden kuin vaikeimmin kehitysvammaisten opetuksessa 15.8.2008 — 4.6.2016'
         )
       })
 
@@ -4572,36 +4572,36 @@ describe('Perusopetus', function () {
           )
         ).to.equal(
           'Koulutus Perusopetuksen lisäopetus 020075 105/011/2014\n' +
-            'Luokka 10A\n' +
-            'Oppilaitos / toimipiste Jyväskylän normaalikoulu\n' +
-            'Suorituskieli suomi\n' +
-            'Suoritus valmis Vahvistus : 4.6.2016 Jyväskylä Reijo Reksi , rehtori'
+          'Luokka 10A\n' +
+          'Oppilaitos / toimipiste Jyväskylän normaalikoulu\n' +
+          'Suorituskieli suomi\n' +
+          'Suoritus valmis Vahvistus : 4.6.2016 Jyväskylä Reijo Reksi , rehtori'
         )
       })
       it('näyttää oppiaineiden arvosanat', function () {
         expect(extractAsText(S('.oppiaineet'))).to.equal(
           'Arviointiasteikko\n' +
-            'Arvostelu 4-10, S (suoritettu) tai H (hylätty)\n' +
-            'Yhteiset oppiaineet\n' +
-            'Oppiaine Arvosana\n' +
-            'Äidinkieli ja kirjallisuus, Suomen kieli ja kirjallisuus 7 †\n' +
-            'A1-kieli, englanti 10 †\n' +
-            'B1-kieli, ruotsi 6 †\n' +
-            'Matematiikka 6 †\n' +
-            'Biologia 10 †\n' +
-            'Maantieto 9 †\n' +
-            'Fysiikka 8 †\n' +
-            'Kemia 9 †\n' +
-            'Terveystieto 8 †\n' +
-            'Historia 7\n' +
-            'Yhteiskuntaoppi 8 †\n' +
-            'Kuvataide 8\n' +
-            'Liikunta 7 * †\n' +
-            'Valinnaiset aineet\n' +
-            'Oppiaine Arvosana\n' +
-            'Monialainen oppimiskokonaisuus S\n' +
-            'Kuvaus Tehtiin ryhmätyönä webbisivusto, jossa kerrotaan tupakoinnin haitoista\n' +
-            '* = yksilöllistetty oppimäärä, † = perusopetuksen päättötodistuksen arvosanan korotus'
+          'Arvostelu 4-10, S (suoritettu) tai H (hylätty)\n' +
+          'Yhteiset oppiaineet\n' +
+          'Oppiaine Arvosana\n' +
+          'Äidinkieli ja kirjallisuus, Suomen kieli ja kirjallisuus 7 †\n' +
+          'A1-kieli, englanti 10 †\n' +
+          'B1-kieli, ruotsi 6 †\n' +
+          'Matematiikka 6 †\n' +
+          'Biologia 10 †\n' +
+          'Maantieto 9 †\n' +
+          'Fysiikka 8 †\n' +
+          'Kemia 9 †\n' +
+          'Terveystieto 8 †\n' +
+          'Historia 7\n' +
+          'Yhteiskuntaoppi 8 †\n' +
+          'Kuvataide 8\n' +
+          'Liikunta 7 * †\n' +
+          'Valinnaiset aineet\n' +
+          'Oppiaine Arvosana\n' +
+          'Monialainen oppimiskokonaisuus S\n' +
+          'Kuvaus Tehtiin ryhmätyönä webbisivusto, jossa kerrotaan tupakoinnin haitoista\n' +
+          '* = yksilöllistetty oppimäärä, † = perusopetuksen päättötodistuksen arvosanan korotus'
         )
       })
     })
@@ -4733,10 +4733,10 @@ describe('Perusopetus', function () {
       it('näyttää opiskeluoikeuden tiedot', function () {
         expect(extractAsText(S('.opiskeluoikeuden-tiedot'))).to.equal(
           'Opiskeluoikeuden voimassaoloaika : 15.8.2017 — 1.6.2018\n' +
-            'Tila 1.6.2018 Valmistunut\n' +
-            '6.1.2018 Läsnä\n' +
-            '20.12.2017 Loma\n' +
-            '15.8.2017 Läsnä'
+          'Tila 1.6.2018 Valmistunut\n' +
+          '6.1.2018 Läsnä\n' +
+          '20.12.2017 Loma\n' +
+          '15.8.2017 Läsnä'
         )
       })
       it('näyttää suorituksen tiedot', function () {
@@ -4746,24 +4746,24 @@ describe('Perusopetus', function () {
           )
         ).to.equal(
           'Koulutus Perusopetukseen valmistava opetus 999905 57/011/2015\n' +
-            'Oppilaitos / toimipiste Jyväskylän normaalikoulu\n' +
-            'Suorituskieli suomi\n' +
-            'Kokonaislaajuus 11 tuntia\n' +
-            'Suoritus valmis Vahvistus : 1.6.2018 Jyväskylä Reijo Reksi , rehtori'
+          'Oppilaitos / toimipiste Jyväskylän normaalikoulu\n' +
+          'Suorituskieli suomi\n' +
+          'Kokonaislaajuus 11 tuntia\n' +
+          'Suoritus valmis Vahvistus : 1.6.2018 Jyväskylä Reijo Reksi , rehtori'
         )
       })
       it('näyttää oppiaineiden arvosanat', function () {
         expect(extractAsText(S('.oppiaineet'))).to.equal(
           'Arviointiasteikko\n' +
-            'Arvostelu 4-10, S (suoritettu) tai H (hylätty)\n' +
-            'Perusopetukseen valmistavan opetuksen opinnot Oppiaine Arvosana Laajuus\n' +
-            'Äidinkieli S 10 vuosiviikkotuntia\n' +
-            'Sanallinen arviointi Keskustelee sujuvasti suomeksi\n' +
-            'Opetuksen sisältö Suullinen ilmaisu ja kuullun ymmärtäminen Perusopetuksen oppimäärään sisältyvät opinnot Oppiaine Arvosana Laajuus\n' +
-            'Fysiikka 9 1 vuosiviikkotuntia\n' +
-            'Suorituskieli suomi\n' +
-            'Luokka-aste 7. vuosiluokka\n' +
-            'Suoritustapa Erityinen tutkinto'
+          'Arvostelu 4-10, S (suoritettu) tai H (hylätty)\n' +
+          'Perusopetukseen valmistavan opetuksen opinnot Oppiaine Arvosana Laajuus\n' +
+          'Äidinkieli S 10 vuosiviikkotuntia\n' +
+          'Sanallinen arviointi Keskustelee sujuvasti suomeksi\n' +
+          'Opetuksen sisältö Suullinen ilmaisu ja kuullun ymmärtäminen Perusopetuksen oppimäärään sisältyvät opinnot Oppiaine Arvosana Laajuus\n' +
+          'Fysiikka 9 1 vuosiviikkotuntia\n' +
+          'Suorituskieli suomi\n' +
+          'Luokka-aste 7. vuosiluokka\n' +
+          'Suoritustapa Erityinen tutkinto'
         )
       })
     })
@@ -4873,7 +4873,7 @@ describe('Perusopetus', function () {
           describe('Nuorten perusopetuksen oppiaineen tallentaminen', function () {
             before(editor.saveChanges)
 
-            it('toimii', function () {})
+            it('toimii', function () { })
           })
         })
       })
