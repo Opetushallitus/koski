@@ -22,7 +22,7 @@ object OpiskeluoikeudenPerustiedotIndexer {
       "filter" -> Map(
         "finnish_folding" -> Map(
           "type" -> "icu_folding",
-          "unicodeSetFilter" -> "[^åäöÅÄÖ]"
+          "unicode_set_filter" -> "[^åäöÅÄÖ]"
         )
       ),
       "analyzer" -> Map(
@@ -88,7 +88,7 @@ class OpiskeluoikeudenPerustiedotIndexer(
   val index = new OpenSearchIndex(
     openSearch = openSearch,
     name = "perustiedot",
-    mappingVersion = 3,
+    mappingVersion = 4,
     mapping = OpiskeluoikeudenPerustiedotIndexer.mapping,
     settings = OpiskeluoikeudenPerustiedotIndexer.settings,
     initialLoader = this.indexAllDocuments
