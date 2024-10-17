@@ -930,14 +930,14 @@
           },
           "arviointi" : [ {
             "arvosana" : {
-              "koodiarvo" : "0",
+              "koodiarvo" : "3",
               "nimi" : {
-                "fi" : "H"
+                "fi" : "K3"
               },
               "koodistoUri" : "arviointiasteikkoammatillinent1k3"
             },
             "päivä" : "2014-10-20",
-            "hyväksytty" : false
+            "hyväksytty" : true
           } ],
           "tyyppi" : {
             "koodiarvo" : "ammatillisentutkinnonosanosaalue",
