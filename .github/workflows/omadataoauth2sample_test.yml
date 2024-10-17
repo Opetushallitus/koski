@@ -1,0 +1,36 @@
+name: Test OmaDataOAuth2Sample
+on:
+  push:
+jobs:
+  test-client:
+    name: Test client
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: 'omadata-oauth2-sample/.nvmrc'
+          cache: 'npm'
+          cache-dependency-path: 'omadata-oauth2-sample/client/package-lock.json'
+      - run: cd omadata-oauth2-sample/client && npm ci
+      - run: cd omadata-oauth2-sample/client && npm run lint
+      - run: cd omadata-oauth2-sample/client && npm run build
+        # TODO add test step when there are tests
+  test-server:
+    name: Test server
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: 'omadata-oauth2-sample/.nvmrc'
+          cache: 'npm'
+          cache-dependency-path: 'omadata-oauth2-sample/server/package-lock.json'
+      - run: cd omadata-oauth2-sample/server && npm ci
+      - run: cd omadata-oauth2-sample/server && npm run lint
+      - run: cd omadata-oauth2-sample/server && npm run build
+      # TODO add test step when there are tests
