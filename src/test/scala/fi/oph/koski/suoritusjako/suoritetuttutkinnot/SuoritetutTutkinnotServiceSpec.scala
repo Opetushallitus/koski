@@ -21,6 +21,8 @@ import org.scalatest.{BeforeAndAfterAll, BeforeAndAfterEach}
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.should.Matchers
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
+import fi.oph.koski.documentation.AmmatillinenExampleData
+import fi.oph.koski.fixture.AmmatillinenOpiskeluoikeusTestData
 
 import java.net.InetAddress
 import java.time.LocalDate
@@ -165,6 +167,10 @@ class SuoritetutTutkinnotServiceSpec
     }
 
     "Korotussuoritusta ei palauteta" in {
+      setupOppijaWithOpiskeluoikeus(AmmatillinenExampleData.perustutkintoOpiskeluoikeusValmis(), KoskiSpecificMockOppijat.amiksenKorottaja) {
+        verifyResponseStatusOk()
+      }
+
       val oppija = KoskiSpecificMockOppijat.amiksenKorottaja
 
       lisääKorotettuSuoritus(oppija)
@@ -430,6 +436,10 @@ class SuoritetutTutkinnotServiceSpec
   "Älä palauta kuori-opiskeluoikeuksia, ainoastaan sisältyvät" in {
     val oppija = KoskiSpecificMockOppijat.eero
 
+    setupOppijaWithOpiskeluoikeus(AmmatillinenOpiskeluoikeusTestData.opiskeluoikeus(MockOrganisaatiot.stadinAmmattiopisto, versio = Some(11)), KoskiSpecificMockOppijat.eero) {
+      verifyResponseStatusOk()
+    }
+
     val kuori: AmmatillinenOpiskeluoikeus = createOpiskeluoikeus(oppija, defaultOpiskeluoikeus, user = stadinAmmattiopistoJaOppisopimuskeskusTallentaja)
 
     val sisältyväInput: AmmatillinenOpiskeluoikeus = defaultOpiskeluoikeus.copy(
@@ -473,19 +483,28 @@ class SuoritetutTutkinnotServiceSpec
     )
     val defaultOsanOsaAlueenSuoritukset = List(
       schema.YhteisenTutkinnonOsanOsaAlueenSuoritus(
-        koulutusmoduuli = schema.ValtakunnallinenAmmatillisenTutkinnonOsanOsaAlue(schema.Koodistokoodiviite("FK", "ammatillisenoppiaineet"), pakollinen = true, Some(schema.LaajuusOsaamispisteissä(3))),
+        koulutusmoduuli = schema.PaikallinenAmmatillisenTutkinnonOsanOsaAlue(schema.PaikallinenKoodi("MA", "Matematiikka"), "Matematiikan opinnot", pakollinen = false, Some(schema.LaajuusOsaamispisteissä(3))),
         arviointi = Some(List(arviointiKiitettävä)),
         tunnustettu = Some(tunnustettu)
       ),
       schema.YhteisenTutkinnonOsanOsaAlueenSuoritus(
-        koulutusmoduuli = schema.ValtakunnallinenAmmatillisenTutkinnonOsanOsaAlue(schema.Koodistokoodiviite("TVT", "ammatillisenoppiaineet"), pakollinen = true, Some(schema.LaajuusOsaamispisteissä(3))),
+        koulutusmoduuli = schema.ValtakunnallinenAmmatillisenTutkinnonOsanOsaAlue(schema.Koodistokoodiviite("FK", "ammatillisenoppiaineet"), pakollinen = true, Some(schema.LaajuusOsaamispisteissä(2))),
+        arviointi = Some(List(arviointiKiitettävä)),
+        tunnustettu = Some(tunnustettu)
+      ),
+      schema.YhteisenTutkinnonOsanOsaAlueenSuoritus(koulutusmoduuli = schema.ValtakunnallinenAmmatillisenTutkinnonOsanOsaAlue(schema.Koodistokoodiviite("FK", "ammatillisenoppiaineet"), pakollinen = false, Some(schema.LaajuusOsaamispisteissä(3))),
+        arviointi = Some(List(arviointiKiitettävä)),
+        tunnustettu = Some(tunnustettu)
+      ),
+      schema.YhteisenTutkinnonOsanOsaAlueenSuoritus(
+        koulutusmoduuli = schema.ValtakunnallinenAmmatillisenTutkinnonOsanOsaAlue(schema.Koodistokoodiviite("TVT", "ammatillisenoppiaineet"), pakollinen = true, Some(schema.LaajuusOsaamispisteissä(1))),
         arviointi = Some(List(arviointiKiitettävä.copy(päivä = date(2015, 1, 1)))),
         alkamispäivä = Some(date(2014, 1, 1)),
         tunnustettu = Some(tunnustettu),
         lisätiedot = Some(List(lisätietoOsaamistavoitteet))
       )
     )
-    lazy val korotettuYhteisenTutkinnonOsanSuoritus = yhteisenOsittaisenTutkinnonTutkinnonOsansuoritus(k3, yhteisetTutkinnonOsat, "101054", "Matemaattis-luonnontieteellinen osaaminen", 9).copy(
+    lazy val korotettuYhteisenTutkinnonOsanSuoritus = yhteisenOsittaisenTutkinnonTutkinnonOsansuoritus(k3, yhteisetTutkinnonOsat, "101054", "Matemaattis-luonnontieteellinen osaaminen", 12).copy(
       osasuoritukset = Some(List(
         korotettuYhteisenOsanOsaAlueenSuoritus,
       ) ++ defaultOsanOsaAlueenSuoritukset)

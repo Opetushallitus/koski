@@ -167,11 +167,11 @@ jobs:
             fi.oph.koski.migri, \
             fi.oph.koski.mocha, \
             fi.oph.koski.mydata, \
-            fi.oph.koski.omaopintopolkuloki \
+            fi.oph.koski.omaopintopolkuloki, \
             fi.oph.koski.opiskeluoikeus, \
             fi.oph.koski.oppilaitos, \
-            fi.oph.koski.organisaatio \
-            fi.oph.koski.typemodel \
+            fi.oph.koski.organisaatio, \
+            fi.oph.koski.typemodel, \
             fi.oph.koski.omadataoauth2
 
   run_backend_tests_other_2:
@@ -225,8 +225,8 @@ jobs:
             fi.oph.koski.ytl, \
             fi.oph.koski.meta, \
             fi.oph.koski.frontendvalvonta, \
-            fi.oph.koski.tiedonsiirto \
-            fi.oph.koski.suoritusjako \
+            fi.oph.koski.tiedonsiirto, \
+            fi.oph.koski.suoritusjako, \
             fi.oph.koski.suoritusjako.suoritetuttutkinnot
 
   run_frontend_tests:
