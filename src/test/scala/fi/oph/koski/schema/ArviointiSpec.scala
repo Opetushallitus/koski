@@ -1,7 +1,7 @@
 package fi.oph.koski.schema
 
 import fi.oph.koski.{KoskiApplicationForTests, TestEnvironment}
-import fi.oph.koski.documentation.AmmatillinenExampleData.{hylätty, hyväksytty}
+import fi.oph.koski.documentation.AmmatillinenExampleData.hyväksytty
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.schema.KoskiSchema.strictDeserialization
 import org.json4s.jackson.JsonMethods.parse
@@ -125,5 +125,4 @@ class ArviointiSpec extends AnyFreeSpec with TestEnvironment with Matchers {
   }
 
   def hyväksyttyArviointi(päivä: LocalDate = LocalDate.of(2016, 6, 4)) = AmmatillinenArviointi(arvosana = hyväksytty, päivä)
-  def hylättyArviointi(päivä: LocalDate = LocalDate.of(2016, 6, 4)) = AmmatillinenArviointi(arvosana = hylätty, päivä)
 }
