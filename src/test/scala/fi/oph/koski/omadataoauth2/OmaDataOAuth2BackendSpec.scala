@@ -8,12 +8,12 @@ import java.nio.charset.StandardCharsets
 class OmaDataOAuth2BackendSpec extends OmaDataOAuth2TestBase {
   "authorization-server rajapinta" - {
     "voi kutsua, kun on käyttöoikeudet" in {
-      postAuthorizationServer(MockUsers.omadataOAuth2Palvelukäyttäjä) {
+      postAuthorizationServerClientIdFromUsername(MockUsers.omadataOAuth2Palvelukäyttäjä) {
         verifyResponseStatusOk()
       }
     }
     "ei voi kutsua ilman käyttöoikeuksia" in {
-      postAuthorizationServer(MockUsers.kalle) {
+      postAuthorizationServerClientIdFromUsername(MockUsers.kalle) {
         verifyResponseStatus(403, KoskiErrorCategory.forbidden.vainOmaDataOAuth2())
       }
     }
@@ -34,14 +34,14 @@ class OmaDataOAuth2BackendSpec extends OmaDataOAuth2TestBase {
 
     "grant_type" - {
       "puuttuminen aiheuttaa virheen" in {
-        postAuthorizationServer(MockUsers.omadataOAuth2Palvelukäyttäjä, grantType = None) {
+        postAuthorizationServerClientIdFromUsername(MockUsers.omadataOAuth2Palvelukäyttäjä, grantType = None) {
           verifyResponseStatus(400)
           // TODO: TOR-2210: oikeat error-koodit ja sisällöt, https://www.rfc-editor.org/rfc/rfc6749#section-5.2
 
         }
       }
       "muu arvo kuin authorization_code aiheuttaa virheen" in {
-        postAuthorizationServer(MockUsers.omadataOAuth2Palvelukäyttäjä, grantType = Some("ei_tuettu")) {
+        postAuthorizationServerClientIdFromUsername(MockUsers.omadataOAuth2Palvelukäyttäjä, grantType = Some("ei_tuettu")) {
           verifyResponseStatus(400)
           // TODO: TOR-2210: oikeat error-koodit ja sisällöt, https://www.rfc-editor.org/rfc/rfc6749#section-5.2
         }
@@ -82,7 +82,7 @@ class OmaDataOAuth2BackendSpec extends OmaDataOAuth2TestBase {
 
     "code" - {
       "puuttuminen aiheuttaa virheen" in {
-        postAuthorizationServer(MockUsers.omadataOAuth2Palvelukäyttäjä, code = None) {
+        postAuthorizationServerClientIdFromUsername(MockUsers.omadataOAuth2Palvelukäyttäjä, code = None) {
           verifyResponseStatus(400)
           // TODO: TOR-2210: oikeat error-koodit ja sisällöt, https://www.rfc-editor.org/rfc/rfc6749#section-5.2
         }
@@ -95,7 +95,7 @@ class OmaDataOAuth2BackendSpec extends OmaDataOAuth2TestBase {
 
     "code_verifier" - {
       "puuttuminen aiheuttaa virheen" in {
-        postAuthorizationServer(MockUsers.omadataOAuth2Palvelukäyttäjä, codeVerifier = None) {
+        postAuthorizationServerClientIdFromUsername(MockUsers.omadataOAuth2Palvelukäyttäjä, codeVerifier = None) {
           verifyResponseStatus(400)
           // TODO: TOR-2210: oikeat error-koodit ja sisällöt, https://www.rfc-editor.org/rfc/rfc6749#section-5.2
         }
@@ -121,12 +121,23 @@ class OmaDataOAuth2BackendSpec extends OmaDataOAuth2TestBase {
     }
   }
 
-  private def postAuthorizationServer[T](
+  private def postAuthorizationServerClientIdFromUsername[T](
     user: KoskiMockUser,
     grantType: Option[String] = Some("authorization_code"),
     code: Option[String] = Some(validDummyCode),
     codeVerifier: Option[String] = Some(validDummyCodeVerifier),
-    clientId: Option[String] = None,
+    redirectUri: Option[String] = None)(f: => T): T =
+  {
+    val clientId = Some(user.username)
+    postAuthorizationServer(user, clientId, grantType, code, codeVerifier, redirectUri)(f)
+  }
+
+  private def postAuthorizationServer[T](
+    user: KoskiMockUser,
+    clientId: Option[String],
+    grantType: Option[String] = Some("authorization_code"),
+    code: Option[String] = Some(validDummyCode),
+    codeVerifier: Option[String] = Some(validDummyCodeVerifier),
     redirectUri: Option[String] = None)(f: => T): T =
   {
     post(uri = "api/omadata-oauth2/authorization-server",
@@ -139,7 +150,7 @@ class OmaDataOAuth2BackendSpec extends OmaDataOAuth2TestBase {
       grantType.toSeq.map(v => ("grant_type", v)) ++
       code.toSeq.map(v => ("code", v)) ++
       codeVerifier.toSeq.map(v => ("code_verifier", v)) ++
-      clientId.toSeq.map(v => ("client_id", v))
+      clientId.toSeq.map(v => ("client_id", v)) ++
       redirectUri.toSeq.map(v => ("redirect_uri", v))
 
     createParamsString(params).getBytes(StandardCharsets.UTF_8)

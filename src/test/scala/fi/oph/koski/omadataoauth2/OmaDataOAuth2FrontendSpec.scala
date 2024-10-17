@@ -228,7 +228,7 @@ class OmaDataOAuth2FrontendSpec extends OmaDataOAuth2TestBase {
                 response.header("Location") should not include(s"logout")
                 response.header("Location") should include(s"/koski/omadata-oauth2/post-response/")
                 response.header("Location") should include(s"error=invalid_request")
-                response.header("Location") should include(urlEncode(s"required parameter ${paramName} missing"))
+                response.header("Location") should include(queryStringUrlEncode(s"required parameter ${paramName} missing"))
                 response.header("Location") should include regex("omadataoauth2-error-[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}".r)
               }
             }
@@ -247,7 +247,7 @@ class OmaDataOAuth2FrontendSpec extends OmaDataOAuth2TestBase {
                 response.header("Location") should not include(s"logout")
                 response.header("Location") should include(s"/koski/omadata-oauth2/post-response/")
                 response.header("Location") should include(s"error=invalid_request")
-                response.header("Location") should include(urlEncode(s"parameter ${paramName} is repeated"))
+                response.header("Location") should include(queryStringUrlEncode(s"parameter ${paramName} is repeated"))
                 response.header("Location") should include regex("omadataoauth2-error-[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}".r)
               }
             }
@@ -269,7 +269,7 @@ class OmaDataOAuth2FrontendSpec extends OmaDataOAuth2TestBase {
               response.header("Location") should not include(s"logout")
               response.header("Location") should include(s"/koski/omadata-oauth2/post-response/")
               response.header("Location") should include(s"error=invalid_request")
-              response.header("Location") should include(urlEncode(s"${parametriNimi}=${tuntematonArvo} not supported. Supported values: ${tuetutArvot}"))
+              response.header("Location") should include(queryStringUrlEncode(s"${parametriNimi}=${tuntematonArvo} not supported. Supported values: ${tuetutArvot}"))
               response.header("Location") should include regex("omadataoauth2-error-[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}".r)
             }
           }
@@ -289,7 +289,7 @@ class OmaDataOAuth2FrontendSpec extends OmaDataOAuth2TestBase {
               response.header("Location") should not include(s"logout")
               response.header("Location") should include(s"/koski/omadata-oauth2/post-response/")
               response.header("Location") should include(s"error=invalid_request")
-              response.header("Location") should include(urlEncode(s"${parametriNimi}=${tuntematonArvo} not supported. Supported values: ${tuetutArvot}"))
+              response.header("Location") should include(queryStringUrlEncode(s"${parametriNimi}=${tuntematonArvo} not supported. Supported values: ${tuetutArvot}"))
               response.header("Location") should include regex("omadataoauth2-error-[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}".r)
             }
           }
@@ -309,7 +309,7 @@ class OmaDataOAuth2FrontendSpec extends OmaDataOAuth2TestBase {
               response.header("Location") should not include(s"logout")
               response.header("Location") should include(s"/koski/omadata-oauth2/post-response/")
               response.header("Location") should include(s"error=invalid_request")
-              response.header("Location") should include(urlEncode(s"${parametriNimi}=${tuntematonArvo} not supported. Supported values: ${tuetutArvot}"))
+              response.header("Location") should include(queryStringUrlEncode(s"${parametriNimi}=${tuntematonArvo} not supported. Supported values: ${tuetutArvot}"))
               response.header("Location") should include regex("omadataoauth2-error-[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}".r)
             }
           }

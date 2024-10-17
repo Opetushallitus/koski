@@ -40,7 +40,7 @@ class OmaDataOAuth2AuthorizationServerServlet(implicit val application: KoskiApp
             AccessTokenSuccessResponse(
               access_token = "dummy-access-token",
               token_type = "Bearer",
-              expires_in = 86400
+              expires_in = 600
             )
         }
       }

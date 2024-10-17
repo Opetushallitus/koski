@@ -25,7 +25,8 @@ class OmaDataOAuth2HyvaksyntaLanding extends React.Component {
       scope: this.parseScope(),
       error: this.parseError(),
       error_id: this.parseErrorId(),
-      clientName: undefined
+      clientName: undefined,
+      durationInMin: 10 // TODO: TOR-2210: muuta tämä tulemaan bäkkäristä
     }
 
     this.authorizeClient = this.authorizeClient.bind(this)
@@ -115,10 +116,12 @@ class OmaDataOAuth2HyvaksyntaLanding extends React.Component {
             errorPage
           ) : this.state.clientName ? (
             <OmaDataOAuth2UusiHyvaksynta
+              clientId={this.state.client_id}
               clientName={this.state.clientName}
               scope={this.state.scope}
               onAuthorization={this.authorizeClient}
               onDecline={this.declineClient}
+              durationInMin={this.state.durationInMin}
             />
           ) : this.state.loading ? (
             <Spinner />

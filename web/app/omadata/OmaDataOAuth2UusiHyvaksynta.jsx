@@ -19,6 +19,8 @@ const getBirthDate = (editorResponse) => {
 }
 
 export default ({
+  durationInMin,
+  clientId,
   clientName,
   scope,
   onAuthorization,
@@ -39,10 +41,12 @@ export default ({
     </div>
 
     <OmaDataOAuth2AnnaHyvaksynta
+      clientId={clientId}
       clientName={clientName}
       scope={scope}
       onAcceptClick={() => onAuthorization()}
       onDeclineClick={() => onDecline()}
+      durationInMin={durationInMin}
     />
   </div>
 )

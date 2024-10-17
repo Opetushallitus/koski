@@ -2,7 +2,32 @@
 
 Ks. myös [oauth2.md](oauth2.md)
 
-# Sekvenssikaavio toteutuksen toiminnasta
+## Uusien palveluntarjoajien lisääminen
+
+Nykytoteutuksessa ei ole mitään pääkäyttäjä-käyttöliittymä tms., minkä kautta kaiken konfiguraation voisi tehdä.
+Siksi uusia OAuth2-rajapinnan käyttäjiä lisättäessä tietoja pitää konfiguroida moneen eri paikkaan:
+
+1. Päätä, mikä on uuden palveluntarjoajan käyttäjätunnus, joka on samalla OAuth2 client_id. Esimerkin vuoksi tässä käytetään merkkijonoa <CLIENT_ID>. DVV:n digilompakolle tämä on "dvvdigilompakkopk".
+2. Lisää uusi palvelukäyttäjä, jolla on tämä käyttäjätunnus.
+3. Lisää palvelukäyttäjälle halutut "OmaData OAuth2 scope" -alkuiset Koski-käyttöoikeudet. Tämä voi vaatia uuden käyttöoikeusryhmän luomisen.
+4. Lisää <CLIENT_ID> omadataoauth2client-koodistoon, selväkielisine suomi/ruotsi/englanti-nimineen. Näitä nimiä näytetään kansalaiselle.
+5. Lisää tarvittavat omadataoauth2-käyttöliittymätekstit lokalisaatiopalveluun
+
+
+    omadataoauth2_linkki_<CLIENT_ID>                                    Linkki sivustolle, josta kansalainen saa suostumusdialogilta lisää tietoa palveluntarjoajasta
+    omadataoauth2_linkkiteksti_<CLIENT_ID>                              Teksti, jolla linkki näytetään suostumuskäyttöliittymässä
+    omadataoauth2_tekstikappale_<CLIENT_ID>_1                           Ensimmäinen tekstikappale suostumuskäyttöliittymässä
+    omadataoauth2_tekstikappale_<CLIENT_ID>_2                           Toinen tekstikappale suostumuskäyttöliittymässä
+    omadataoauth2_tekstikappale_<CLIENT_ID>_...                         ..., tekstikappaleita voi määrittää haluamansa määrän
+
+Kehittäjät tekevät:
+6. Selvitä tarvittavat paluuosoitteet, ja konfiguroi ne <CLIENT_ID>:lle Koski-palvelun AppConfigiin (ks. reference.conf omadataoauth2-osuus)
+7. Selvitä luovutuspalveluun tarvittava mutual-TLS client certin subject distinguished name ja palveluntarjoajan IP-osoitteet, ja konfiguroi ne parameter storeen
+8. Konfiguroi luovutuspalveluun palvelukäyttäjän <CLIENT_ID> salasana
+9. Käynnistä KOSKI ja luovutuspalvelu uudestaan konfiguraatioiden lataamiseksi
+10. Testaa fronttia (ks. testi-URI-esimerkkejä tämän ohjeen lopusta)
+
+## Sekvenssikaavio toteutuksen toiminnasta
 
 ![OAuth 2.0 servletit Koskessa](kuvat/png/oauth2sekvenssiservleteissa.png)
 [oauth2sekvenssiservleteissa.puml](kuvat/oauth2sekvenssiservleteissa.puml)

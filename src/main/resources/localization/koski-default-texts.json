@@ -2721,5 +2721,15 @@
   "nykyinen kotikunta on": "nykyinen kotikunta on",
   "Koulutuskunta": "Koulutuskunta",
   "Koulutuskunnat": "Koulutuskunnat",
-  "omadataoauth2_error": "Tapahtui virhe: {{error}}. Jos tämä toistuu, ota yhteyttä palveluntarjoajaan. Voit kertoa heille asian selvittämistä helpottaaksesi virhekoodin {{error_id}}."
+  "omadataoauth2_error": "Tapahtui virhe: {{error}}. Jos tämä toistuu, ota yhteyttä palveluntarjoajaan. Voit kertoa heille asian selvittämistä helpottaaksesi virhekoodin {{error_id}}.",
+  "omadataoauth2_suostumuksesi_paattymisajankohta": "Suostumuksesi päättymisajankohta",
+  "omadataoauth2_suostumuksesi_paattymisajankohta_min": "Suostumuksen voimassaoloaika on {{duration_in_minutes}} minuuttia ellet peru suostumustasi aiemmin",
+  "omadataoauth2_lisatietoja_palveluntarjoajalta_saat": "Lisätietoja palveluntarjoajan suorittamasta tietojen käsittelystä saat verkkosivulta",
+  "omadataoauth2_linkki_oauth2client": "https://opintopolku.fi/",
+  "omadataoauth2_linkkiteksti_oauth2client": "OPH Oma opintopolku",
+  "omadataoauth2_tekstikappale_oauth2client_1": "Palveluntarjoaja käyttää tietojasi palvelun testaamiseen.",
+  "omadataoauth2_linkki_dvvdigilompakkopk": "https://dvv.fi/TODO",
+  "omadataoauth2_linkkiteksti_dvvdigilompakkopk": "Eurooppalainen identiteettilompakko, Digi- ja väestötietovirasto",
+  "omadataoauth2_tekstikappale_dvvdigilompakkopk_1": "Palveluntarjoaja käyttää tietojasi opintotietojesi tallentamiseen eurooppalaiseen identiteettilompakkoon.",
+  "omadataoauth2_tekstikappale_dvvdigilompakkopk_2": "Kun suostumuksen voimassaolo on päättynyt tai peruutettu, Opetushallitus ei enää luovuta henkilötietojasi palveluntarjoajalle. Palveluntarjoajalla voi kuitenkin olla lainmukainen peruste käsitellä ja säilyttää tietojasi myös suostumuksen peruuttamisen jälkeen."
 }
