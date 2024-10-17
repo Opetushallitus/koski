@@ -1,7 +1,6 @@
 package fi.oph.koski.documentation
 
 import java.time.LocalDate.{of => date}
-
 import fi.oph.koski.documentation.ExampleData._
 import fi.oph.koski.documentation.PerusopetusExampleData._
 import fi.oph.koski.documentation.YleissivistavakoulutusExampleData._
@@ -9,6 +8,8 @@ import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.henkilo.MockOppijat.asUusiOppija
 import fi.oph.koski.localization.LocalizedStringImplicits._
 import fi.oph.koski.schema.{Finnish, _}
+
+import java.time.LocalDate
 
 object ExamplesPerusopetus {
   val ysiluokkalainen = Oppija(
@@ -109,7 +110,7 @@ object ExamplesPerusopetus {
           koulutusmoduuli = perusopetus,
           suorituskieli = suomenKieli,
           toimipiste = jyväskylänNormaalikoulu,
-          vahvistus = vahvistusPaikkakunnalla(),
+          vahvistus = vahvistusPaikkakunnalla(LocalDate.of(2024, 10, 18)),
           suoritustapa = suoritustapaErityinenTutkinto,
           osasuoritukset = Some(List(
             toimintaAlueenSuoritus("1").copy(arviointi = arviointi("S", Some(Finnish("Motoriset taidot kehittyneet hyvin perusopetuksen aikana")))),
@@ -121,35 +122,45 @@ object ExamplesPerusopetus {
         )),
       tila = NuortenPerusopetuksenOpiskeluoikeudenTila(
         List(
-          NuortenPerusopetuksenOpiskeluoikeusjakso(date(2008, 8, 15), opiskeluoikeusLäsnä),
-          NuortenPerusopetuksenOpiskeluoikeusjakso(date(2016, 6, 4), opiskeluoikeusValmistunut)
+          NuortenPerusopetuksenOpiskeluoikeusjakso(date(2017, 8, 15), opiskeluoikeusLäsnä),
+          NuortenPerusopetuksenOpiskeluoikeusjakso(date(2024, 10, 18), opiskeluoikeusValmistunut)
         )
       ),
       lisätiedot = Some(PerusopetuksenOpiskeluoikeudenLisätiedot(
-        erityisenTuenPäätös = Some(erityisenTuenPäätös),
-        erityisenTuenPäätökset = Some(List(erityisenTuenPäätös)),
+        erityisenTuenPäätös = Some(ErityisenTuenPäätös(
+          alku = Some(date(2017, 8, 15)),
+          loppu = Some(date(2024, 10, 18)),
+          opiskeleeToimintaAlueittain = true,
+          erityisryhmässä = Some(true)
+        )),
+        erityisenTuenPäätökset = Some(List(ErityisenTuenPäätös(
+          alku = Some(date(2017, 8, 15)),
+          loppu = Some(date(2024, 10, 18)),
+          opiskeleeToimintaAlueittain = true,
+          erityisryhmässä = Some(true)
+        ))),
         perusopetuksenAloittamistaLykätty = None,
         aloittanutEnnenOppivelvollisuutta = false,
-        pidennettyOppivelvollisuus = Some(Aikajakso(date(2010, 8, 15), Some(date(2016, 6, 4)))),
-        joustavaPerusopetus = Some(Aikajakso(date(2008, 8, 15), Some(date(2016, 6, 4)))),
-        kotiopetusjaksot = Some(List(Aikajakso(date(2008, 8, 15), Some(date(2016, 6, 4))), Aikajakso(date(2017, 7, 14), Some(date(2017, 10, 18))))),
-        ulkomaanjaksot = Some(List(Aikajakso(date(2008, 8, 15), Some(date(2016, 6, 4))), Aikajakso(date(2018, 9, 16), Some(date(2019, 10, 2))))),
+        pidennettyOppivelvollisuus = Some(Aikajakso(date(2019, 8, 15), Some(date(2024, 10, 18)))),
+        joustavaPerusopetus = Some(Aikajakso(date(2017, 8, 15), Some(date(2024, 10, 18)))),
+        kotiopetusjaksot = Some(List(Aikajakso(date(2017, 8, 15), Some(date(2024, 10, 18))), Aikajakso(date(2026, 7, 14), Some(date(2026, 10, 18))))),
+        ulkomaanjaksot = Some(List(Aikajakso(date(2017, 8, 15), Some(date(2024, 10, 18))), Aikajakso(date(2027, 9, 16), Some(date(2028, 10, 2))))),
         vuosiluokkiinSitoutumatonOpetus = true,
-        vammainen = Some(List(Aikajakso(date(2010, 8, 15), Some(date(2010, 9, 1))))),
-        vaikeastiVammainen = Some(List(Aikajakso(date(2010, 9, 2), Some(date(2016, 6, 4))))),
-        majoitusetu = Some(Aikajakso(date(2008, 8, 15), Some(date(2016, 6, 4)))),
-        kuljetusetu = Some(Aikajakso(date(2008, 8, 15), Some(date(2016, 6, 4)))),
-        sisäoppilaitosmainenMajoitus = Some(List(Aikajakso(date(2012, 9, 1), Some(date(2013, 9, 1))))),
-        koulukoti = Some(List(Aikajakso(date(2013, 9, 1), Some(date(2014, 9, 1)))))
+        vammainen = Some(List(Aikajakso(date(2019, 8, 15), Some(date(2019, 9, 1))))),
+        vaikeastiVammainen = Some(List(Aikajakso(date(2019, 9, 2), Some(date(2024, 10, 18))))),
+        majoitusetu = Some(Aikajakso(date(2017, 8, 15), Some(date(2024, 10, 18)))),
+        kuljetusetu = Some(Aikajakso(date(2017, 8, 15), Some(date(2024, 10, 18)))),
+        sisäoppilaitosmainenMajoitus = Some(List(Aikajakso(date(2021, 9, 1), Some(date(2022, 9, 1))))),
+        koulukoti = Some(List(Aikajakso(date(2022, 9, 1), Some(date(2023, 9, 1)))))
       ))
     ))
   )
 
-  def toimintaAlueenSuoritus(toimintaAlue: String): PerusopetuksenToiminta_AlueenSuoritus = {
+  def toimintaAlueenSuoritus(toimintaAlue: String, laajuus: Option[Double] = Some(5.0)): PerusopetuksenToiminta_AlueenSuoritus = {
     PerusopetuksenToiminta_AlueenSuoritus(
       koulutusmoduuli = new PerusopetuksenToiminta_Alue(
         tunniste = Koodistokoodiviite(toimintaAlue, "perusopetuksentoimintaalue"),
-        laajuus = Some(LaajuusVuosiviikkotunneissa(5.0)),
+        laajuus = laajuus.map(n => LaajuusVuosiviikkotunneissa(n)),
       )
     )
   }

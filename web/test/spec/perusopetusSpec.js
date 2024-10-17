@@ -264,29 +264,29 @@ describe('Perusopetus', function () {
 
         it('näyttää opiskeluoikeuden tiedot', function () {
           expect(extractAsText(S('.opiskeluoikeuden-tiedot'))).to.equal(
-            'Opiskeluoikeuden voimassaoloaika : 15.8.2008 — 4.6.2016\n' +
-            'Tila 4.6.2016 Valmistunut\n' +
-            '15.8.2008 Läsnä\n' +
+            'Opiskeluoikeuden voimassaoloaika : 15.8.2017 — 18.10.2024\n' +
+            'Tila 18.10.2024 Valmistunut\n' +
+            '15.8.2017 Läsnä\n' +
             'Lisätiedot\n' +
-            'Pidennetty oppivelvollisuus 15.8.2010 — 4.6.2016\n' +
-            'Erityisen tuen jaksot 15.8.2008 — 4.6.2016\n' +
+            'Pidennetty oppivelvollisuus 15.8.2019 — 18.10.2024\n' +
+            'Erityisen tuen jaksot 15.8.2017 — 18.10.2024\n' +
             'Opiskelee toiminta-alueittain kyllä\n' +
             'Opiskelee erityisryhmässä kyllä\n' +
-            'Erityisen tuen jaksot 15.8.2008 — 4.6.2016\n' +
+            'Erityisen tuen jaksot 15.8.2017 — 18.10.2024\n' +
             'Opiskelee toiminta-alueittain kyllä\n' +
             'Opiskelee erityisryhmässä kyllä\n' +
-            'Joustava perusopetus 15.8.2008 — 4.6.2016\n' +
-            'Kotiopetusjaksot 15.8.2008 — 4.6.2016\n' +
-            '14.7.2017 — 18.10.2017\n' +
-            'Ulkomaanjaksot 15.8.2008 — 4.6.2016\n' +
-            '16.9.2018 — 2.10.2019\n' +
+            'Joustava perusopetus 15.8.2017 — 18.10.2024\n' +
+            'Kotiopetusjaksot 15.8.2017 — 18.10.2024\n' +
+            '14.7.2026 — 18.10.2026\n' +
+            'Ulkomaanjaksot 15.8.2017 — 18.10.2024\n' +
+            '16.9.2027 — 2.10.2028\n' +
             'Vuosiluokkiin sitomaton opetus kyllä\n' +
-            'Oppilas on muiden kuin vaikeimmin kehitysvammaisten opetuksessa 15.8.2010 — 1.9.2010\n' +
-            'Vaikeimmin kehitysvammainen 2.9.2010 — 4.6.2016\n' +
-            'Majoitusetu 15.8.2008 — 4.6.2016\n' +
-            'Kuljetusetu 15.8.2008 — 4.6.2016\n' +
-            'Sisäoppilaitosmainen majoitus 1.9.2012 — 1.9.2013\n' +
-            'Koulukoti 1.9.2013 — 1.9.2014'
+            'Oppilas on muiden kuin vaikeimmin kehitysvammaisten opetuksessa 15.8.2019 — 1.9.2019\n' +
+            'Vaikeimmin kehitysvammainen 2.9.2019 — 18.10.2024\n' +
+            'Majoitusetu 15.8.2017 — 18.10.2024\n' +
+            'Kuljetusetu 15.8.2017 — 18.10.2024\n' +
+            'Sisäoppilaitosmainen majoitus 1.9.2021 — 1.9.2022\n' +
+            'Koulukoti 1.9.2022 — 1.9.2023'
           )
         })
 
@@ -300,20 +300,19 @@ describe('Perusopetus', function () {
             'Oppilaitos / toimipiste Jyväskylän normaalikoulu\n' +
             'Suoritustapa Erityinen tutkinto\n' +
             'Suorituskieli suomi\n' +
-            'Suoritus valmis Vahvistus : 4.6.2016 Jyväskylä Reijo Reksi , rehtori'
+            'Suoritus valmis Vahvistus : 18.10.2024 Jyväskylä Reijo Reksi , rehtori'
           )
         })
         it('näyttää oppiaineiden arvosanat', function () {
           expect(extractAsText(S('.oppiaineet'))).to.equal(
             'Toiminta-alueiden arvosanat\n' +
             'Arvostelu 4-10, S (suoritettu) tai H (hylätty)\n' +
-            'Toiminta-alue Arvosana\n' +
-            'motoriset taidot S\n' +
+            'Toiminta-alue Arvosana Laajuus\n' +
+            'motoriset taidot S 5 vuosiviikkotuntia\n' +
             'Sanallinen arviointi Motoriset taidot kehittyneet hyvin perusopetuksen aikana\n' +
-            'kieli ja kommunikaatio S\n' +
-            'sosiaaliset taidot S\n' +
-            'päivittäisten toimintojen taidot S\n' +
-            'kognitiiviset taidot S'
+            'kieli ja kommunikaatio S 5 vuosiviikkotuntia\nsosiaaliset taidot S 5 vuosiviikkotuntia\n' +
+            'päivittäisten toimintojen taidot S 5 vuosiviikkotuntia\n' +
+            'kognitiiviset taidot S 5 vuosiviikkotuntia'
           )
         })
       })
@@ -449,7 +448,7 @@ describe('Perusopetus', function () {
             'Oppilaitos / toimipiste Jyväskylän normaalikoulu\n' +
             'Suoritustapa Erityinen tutkinto\n' +
             'Suorituskieli suomi\n' +
-            'Suoritus valmis Vahvistus : 4.6.2016 Jyväskylä Reijo Reksi , rehtori'
+            'Suoritus valmis Vahvistus : 18.10.2024 Jyväskylä Reijo Reksi , rehtori'
           )
         })
       })
