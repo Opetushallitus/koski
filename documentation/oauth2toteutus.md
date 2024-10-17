@@ -20,6 +20,7 @@ Siksi uusia OAuth2-rajapinnan käyttäjiä lisättäessä tietoja pitää konfig
     omadataoauth2_tekstikappale_<CLIENT_ID>_2                           Toinen tekstikappale suostumuskäyttöliittymässä
     omadataoauth2_tekstikappale_<CLIENT_ID>_...                         ..., tekstikappaleita voi määrittää haluamansa määrän
 
+
 Kehittäjät tekevät:
 6. Selvitä tarvittavat paluuosoitteet, ja konfiguroi ne <CLIENT_ID>:lle Koski-palvelun AppConfigiin (ks. reference.conf omadataoauth2-osuus)
 7. Selvitä luovutuspalveluun tarvittava mutual-TLS client certin subject distinguished name ja palveluntarjoajan IP-osoitteet, ja konfiguroi ne parameter storeen
