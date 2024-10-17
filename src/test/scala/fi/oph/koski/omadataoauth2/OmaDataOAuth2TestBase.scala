@@ -15,7 +15,7 @@ class OmaDataOAuth2TestBase extends AnyFreeSpec with KoskiHttpSpec with Matchers
   val validDummyCodeVerifier = "dBjftJeZ4CVP-mB92K27uhbUJU1p1r_wW1gFWFOEjXk"
   val validDummyCodeChallenge = "E9Melhoa2OwvFrEMTJguCHaoeK1t8URWbuGJSstw-cM"
 
-  protected def urlEncode(str: String): String = URLEncoder.encode(str, "UTF-8")
+  protected def urlEncode(str: String): String = URLEncoder.encode(str, "UTF-8").replace("+", "%20")
   protected def base64UrlEncode(str: String): String = Base64.getUrlEncoder().encodeToString(str.getBytes("UTF-8"))
   protected def base64UrlDecode(str: String): String = new String(Base64.getUrlDecoder().decode(str), "UTF-8")
 
