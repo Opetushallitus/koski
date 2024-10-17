@@ -1,11 +1,42 @@
 import React from 'baret'
 import Text from '../i18n/Text'
 import { useKoodisto } from '../appstate/koodisto'
-import { t } from '../i18n/i18n'
+import {t, tExists } from '../i18n/i18n'
+import TextTemplate from "../i18n/TextTemplate";
 
 import(/* webpackChunkName: "styles" */ '../style/main.less')
 
-export default ({ clientName, onAcceptClick, onDeclineClick, scope }) => {
+export default ({clientId, clientName, onAcceptClick, onDeclineClick, scope, durationInMin}) => {
+  return (
+    <div>
+      <div className="acceptance-box">
+        <AcceptanceTitle clientName={clientName}/>
+
+        <ScopeList scope={scope}/>
+
+        <AcceptanceParagraphs durationInMin={durationInMin} clientId={clientId}/>
+      </div>
+
+      <AcceptanceButtons onAcceptClick={onAcceptClick} onDeclineClick={onDeclineClick}/>
+    </div>
+  )
+}
+
+const AcceptanceTitle = ({clientName}) => {
+  return (<>
+    <div className="acceptance-title">
+      <Text
+        name="Antamalla suostumuksesi sallit, että Opetushallitus luovuttaa sinua koskevia henkilötietoja seuraavalle palveluntarjoajalle"/>
+    </div>
+    <div className="acceptance-member-name">
+      <span aria-label={t(clientName)}>
+        {t(clientName)}
+      </span>
+    </div>
+  </>)
+}
+
+const ScopeList = ({scope}) => {
   const scopesKoodisto = useKoodisto('omadataoauth2scope')
 
   const localizedScope = (koodi) => {
@@ -20,96 +51,103 @@ export default ({ clientName, onAcceptClick, onDeclineClick, scope }) => {
 
   const scopes = scope.split(' ')
 
-  return (
-    <div>
-      <div className="acceptance-box">
-        <div className="acceptance-title">
-          <Text
-            name={
-              'TODO: TOR-2210 OmaDataOAuth2 -spesifit lakitekstit ja scope:n purku tälle sivulle'
-            }
-          />
-          <Text name="Antamalla suostumuksesi sallit, että Opetushallitus luovuttaa sinua koskevia henkilötietoja seuraavalle palveluntarjoajalle" />
-        </div>
-        <div className="acceptance-member-name">
-          <Text name={t(clientName)} />
-        </div>
-        <div className="acceptance-share-info">
-          <Text name="Palveluntarjoajalle luovutetaan seuraavat henkilötiedot" />
-          {':'}
-          <ul>
-            {scopes.map((s) => (
-              <li>{localizedScope(s)}</li>
-            ))}
-            <li>
-              <Text name="Suostumuksesi päättymisajankohta (suostumuksen voimassaoloaika on 12 kk ellet peru suostumustasi aiemmin)" />
-            </li>
-          </ul>
-        </div>
-        <div className="acceptance-paragraphs">
-          <p>
-            <Text name="Tarkemmat tiedot luovutettavista henkilötiedoista löydät KOSKI-palvelun Wiki -sivustolta" />
-          </p>
-          <p>
-            <a href="https://wiki.eduuni.fi/display/OPHPALV/TODO">
-              <Text name="TODO: TOR-2210 Tietoa KOSKI-palvelun luovuttamista henkilötiedoista" />
-            </a>
-          </p>
-          <p>
-            <Text name="Suostumuksesi päättymisajankohta (suostumuksen voimassaoloaika on 12 kk ellet peru suostumustasi aiemmin)" />
-          </p>
-          <p>
-            <Text name="Omat opiskeluoikeustietosi voit tarkistaa Oma Opintopolku-sivustolla" />
-          </p>
-          <p>
-            <a href="https://opintopolku.fi/koski/omattiedot">
-              <Text name="Oma Opintopolussa olevat omat opintosuorituksesi" />
-            </a>
-          </p>
-          <p>
-            <Text name="TODO: TOR-2210: Palveluntarjoaja käyttää tietojasi ..." />
-          </p>
-          <p>
-            <Text name="Palveluntarjoaja ei antamasi suostumuksen perusteella luovuta henkilötietojasi eteenpäin muille tahoille" />
-          </p>
-          <p>
-            <Text name="Suostumuksesi on voimassa 12 kuukautta, jonka jälkeen voit uusia sen. Voit perua suostumuksesi milloin tahansa Oma Opintopolku -palvelussa tai palveluntarjoajan verkkopalvelun kautta" />
-          </p>
-          <p>
-            <Text name="Kun suostumuksen voimassaolo on päättynyt tai peruutettu, Opetushallitus ei enää luovuta henkilötietojasi palveluntarjoajalle..." />
-          </p>
-          <p>
-            <Text name="TODO: TOR-2210 Lisätietoja palveluntarjoajan suorittamasta tietojen käsittelystä saat verkkosivulta..." />
-          </p>
-          <p>
-            <a href="https://todo">
-              <Text name="TODO" />
-            </a>
-          </p>
-          <p>
-            <Text name="Lisätietoja Opetushallituksen suorittamasta tietojen käsittelystä saat Opintopolku-palvelusta" />
-          </p>
-          <p>
-            <a href="https://opintopolku.fi/wp/tietosuojaseloste/koski-palvelun-tietosuojaseloste/">
-              <Text name="KOSKI-palvelun tietosuojaseloste Opintopolku-sivustolla" />
-            </a>
-          </p>
-        </div>
-      </div>
-      <div className="acceptance-button-container">
-        <button
-          className="acceptance-button koski-button"
-          onClick={onAcceptClick}
-        >
-          <Text name="Hyväksy" />
-        </button>
-        <button
-          className="decline-button koski-button"
-          onClick={onDeclineClick}
-        >
-          <Text name="Peruuta ja palaa" />
-        </button>
-      </div>
+  return (<div className="acceptance-share-info">
+      <Text name="Palveluntarjoajalle luovutetaan seuraavat henkilötiedot"/>
+      {':'}
+      <ul>
+        {scopes.map((s) => (
+          <li key={s}>{localizedScope(s)}</li>
+        ))}
+        <li>
+          {t("omadataoauth2_suostumuksesi_paattymisajankohta")}
+        </li>
+      </ul>
     </div>
   )
+}
+
+const AcceptanceParagraphs = ({durationInMin, clientId}) => {
+  return (<div className="acceptance-paragraphs">
+    <Paattymisajankohta durationInMin={durationInMin}/>
+    <p>
+      <Text name="Omat opiskeluoikeustietosi voit tarkistaa Oma Opintopolku-sivustolla"/>
+    </p>
+    <p>
+      <a href="https://opintopolku.fi/koski/omattiedot">
+        <Text name="Oma Opintopolussa olevat omat opintosuorituksesi"/>
+      </a>
+    </p>
+
+    <PalveluntarjoajakohtainenTeksti clientId={clientId}/>
+    <LinkkiPalveluntarjoajaan clientId={clientId}/>
+
+    <p>
+      <Text name="Lisätietoja Opetushallituksen suorittamasta tietojen käsittelystä saat Opintopolku-palvelusta"/>
+    </p>
+    <p>
+      <a href="https://opintopolku.fi/wp/tietosuojaseloste/koski-palvelun-tietosuojaseloste/">
+        <Text name="KOSKI-palvelun tietosuojaseloste Opintopolku-sivustolla"/>
+      </a>
+    </p>
+  </div>)
+}
+
+const Paattymisajankohta = ({ durationInMin }) => {
+  return (
+    <p>
+      <TextTemplate templateName="omadataoauth2_suostumuksesi_paattymisajankohta_min" duration_in_minutes={durationInMin}/>
+    </p>
+  )
+}
+
+const PalveluntarjoajakohtainenTeksti = ({clientId}) => {
+  return Array.from({length: 9}, (x, i) => {
+    const paragraphId = `omadataoauth2_tekstikappale_${clientId}_${i + 1}`
+
+    if (tExists(paragraphId)) {
+      return (
+        <p key={paragraphId}>
+          <Text name={paragraphId}/>
+        </p>
+      )
+    } else {
+      return null
+    }
+  })
+}
+
+const LinkkiPalveluntarjoajaan = ({clientId}) => {
+  const linkkiId = `omadataoauth2_linkki_${clientId}`
+  const linkkitekstiId = `omadataoauth2_linkkiteksti_${clientId}`
+
+  return (tExists(linkkiId) && tExists(linkkitekstiId)) ? (
+    <>
+      <p>
+        <Text
+          name="omadataoauth2_lisatietoja_palveluntarjoajalta_saat"/>
+      </p>
+      <p>
+        <a href={t(linkkiId)}>
+          <Text name={linkkitekstiId}/>
+        </a>
+      </p>
+    </>
+  ) : null
+}
+
+const AcceptanceButtons = ({onAcceptClick, onDeclineClick}) => {
+  return (<div className="acceptance-button-container">
+    <button
+      className="acceptance-button koski-button"
+      onClick={onAcceptClick}
+    >
+      <Text name="Hyväksy"/>
+    </button>
+    <button
+      className="decline-button koski-button"
+      onClick={onDeclineClick}
+    >
+      <Text name="Peruuta ja palaa"/>
+    </button>
+  </div>)
 }
