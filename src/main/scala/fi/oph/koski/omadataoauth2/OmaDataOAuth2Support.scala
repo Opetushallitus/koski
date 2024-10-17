@@ -6,7 +6,7 @@ import java.net.URLEncoder
 import java.util.{Base64, UUID}
 
 trait OmaDataOAuth2Support extends ScalatraServlet with OmaDataOAuth2Config {
-  def urlEncode(str: String): String = URLEncoder.encode(str, "UTF-8").replace("+", "%20")
+  def queryStringUrlEncode(str: String): String = URLEncoder.encode(str, "UTF-8").replace("+", "%20")
 
   def base64UrlEncode(str: String): String = Base64.getUrlEncoder().encodeToString(str.getBytes("UTF-8"))
   def base64UrlDecode(str: String): String = new String(Base64.getUrlDecoder().decode(str), "UTF-8")
@@ -90,7 +90,7 @@ trait OmaDataOAuth2Support extends ScalatraServlet with OmaDataOAuth2Config {
   }
 
   protected def createParamsString(params: Seq[(String, String)]): String = params.map {
-    case (name, value) => s"${name}=${urlEncode(value)}"
+    case (name, value) => s"${name}=${queryStringUrlEncode(value)}"
   }.mkString("&")
 
 

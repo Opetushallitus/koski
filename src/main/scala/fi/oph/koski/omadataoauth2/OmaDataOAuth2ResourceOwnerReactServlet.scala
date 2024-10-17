@@ -115,7 +115,7 @@ class OmaDataOAuth2ResourceOwnerReactServlet(implicit val application: KoskiAppl
     val security = application.config.getString("login.security")
 
     if(security == "mock") {
-      s"&redirect=${urlEncode(target)}"
+      s"&redirect=${queryStringUrlEncode(target)}"
     } else {
       ""
     }
