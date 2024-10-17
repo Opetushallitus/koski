@@ -393,7 +393,8 @@ object AmmatillinenValidation {
   private def validateArviointi(suoritus: Suoritus): HttpStatus =
     HttpStatus.fold(suoritus.arviointi.toList.flatten.map { arviointi =>
       HttpStatus.validate(arviointi.hyväksytty) {
-        KoskiErrorCategory.badRequest.validation.arviointi.epäsopivaArvosana("Arvosana ei voi olla hylätty")
+        val suorituksenNimi = suoritus.koulutusmoduuli.tunniste.getNimi.map(_.get("fi")).getOrElse(suoritus.koulutusmoduuli.tunniste.koodiarvo)
+        KoskiErrorCategory.badRequest.validation.arviointi.epäsopivaArvosana(s"""Suorituksen "$suorituksenNimi" arvosana ei voi olla hylätty""")
       }
     })
 }
