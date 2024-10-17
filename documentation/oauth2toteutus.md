@@ -13,6 +13,7 @@ Siksi uusia OAuth2-rajapinnan käyttäjiä lisättäessä tietoja pitää konfig
 4. Lisää <CLIENT_ID> omadataoauth2client-koodistoon, selväkielisine suomi/ruotsi/englanti-nimineen. Näitä nimiä näytetään kansalaiselle.
 5. Lisää tarvittavat omadataoauth2-käyttöliittymätekstit lokalisaatiopalveluun
 
+Avaimet:
 
     omadataoauth2_linkki_<CLIENT_ID>                                    Linkki sivustolle, josta kansalainen saa suostumusdialogilta lisää tietoa palveluntarjoajasta
     omadataoauth2_linkkiteksti_<CLIENT_ID>                              Teksti, jolla linkki näytetään suostumuskäyttöliittymässä
