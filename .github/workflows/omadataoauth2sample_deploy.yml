@@ -1,4 +1,4 @@
-name: OmaDataOAuth2Sample
+name: Deploy OmaDataOAuth2Sample
 on:
   workflow_dispatch:
     inputs:
