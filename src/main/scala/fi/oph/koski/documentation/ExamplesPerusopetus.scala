@@ -145,11 +145,11 @@ object ExamplesPerusopetus {
     ))
   )
 
-  def toimintaAlueenSuoritus(toimintaAlue: String): PerusopetuksenToiminta_AlueenSuoritus = {
+  def toimintaAlueenSuoritus(toimintaAlue: String, laajuus: Option[Double] = Some(5.0)): PerusopetuksenToiminta_AlueenSuoritus = {
     PerusopetuksenToiminta_AlueenSuoritus(
       koulutusmoduuli = new PerusopetuksenToiminta_Alue(
         tunniste = Koodistokoodiviite(toimintaAlue, "perusopetuksentoimintaalue"),
-        laajuus = Some(LaajuusVuosiviikkotunneissa(5.0)),
+        laajuus = laajuus.map(n => LaajuusVuosiviikkotunneissa(n)),
       )
     )
   }
