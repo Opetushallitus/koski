@@ -384,22 +384,17 @@ object AmmatillinenValidation {
   private def validateOsasuoritustenArvioinnit(osasuoritukset: Option[List[Suoritus]]): HttpStatus =
     HttpStatus.fold(osasuoritukset.toList.flatten.map(validateSuorituksenArvioinnit))
 
-  private def validateSuorituksenArvioinnit(suoritus: Suoritus): HttpStatus = {
-    val (arviointi, osasuoritukset) = suoritus match {
-      case os: MuunAmmatillisenTutkinnonOsanSuoritus => (os.arviointi, os.osasuoritukset)
-      case os: YhteisenAmmatillisenTutkinnonOsanSuoritus => (os.arviointi, os.osasuoritukset)
-      case os: AmmatillisenTutkinnonOsaaPienemmänKokonaisuudenSuoritus => (os.arviointi, os.osasuoritukset)
-      case os: YhteisenTutkinnonOsanOsaAlueenSuoritus => (os.arviointi, os.osasuoritukset)
-      case _ => (None, None)
-    }
+  private def validateSuorituksenArvioinnit(suoritus: Suoritus): HttpStatus =
+    HttpStatus.fold(
+      validateArviointi(suoritus),
+      validateOsasuoritustenArvioinnit(suoritus.osasuoritukset),
+    )
 
-    HttpStatus.fold(validateArviointi(arviointi), validateOsasuoritustenArvioinnit(osasuoritukset))
-  }
-
-  private def validateArviointi(arvioinnit: Option[List[AmmatillinenArviointi]]): HttpStatus =
-    HttpStatus.fold(arvioinnit.toList.flatten.map { arviointi =>
+  private def validateArviointi(suoritus: Suoritus): HttpStatus =
+    HttpStatus.fold(suoritus.arviointi.toList.flatten.map { arviointi =>
       HttpStatus.validate(arviointi.hyväksytty) {
-        KoskiErrorCategory.badRequest.validation.arviointi.epäsopivaArvosana("Arvosana ei voi olla hylätty")
+        val suorituksenNimi = suoritus.koulutusmoduuli.tunniste.getNimi.map(_.get("fi")).getOrElse(suoritus.koulutusmoduuli.tunniste.koodiarvo)
+        KoskiErrorCategory.badRequest.validation.arviointi.epäsopivaArvosana(s"""Suorituksen "$suorituksenNimi" arvosana ei voi olla hylätty""")
       }
     })
 }
