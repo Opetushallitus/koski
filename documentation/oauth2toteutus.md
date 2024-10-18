@@ -84,7 +84,18 @@ Siksi uusia OAuth2-rajapinnan käyttäjiä lisättäessä tietoja pitää konfig
     token_type        =Bearer
     expires_in
 
-# Testi-osoitteita
+## Integraatiotestit
+
+Integraatiotestejä varten pitää Koski-backendin olla pystyssä (oletuksena `localhost:7021`) tai testit pitää käynnistää ajamalla `OmaDataOAuth2E2ESpec.scala`.
+
+Jos backend on valmiiksi ajossa, voi testit ajaa komennolla
+
+    cd omadata-oauth2-sample/client
+    npm run playwright:test
+
+Testit ajetaan headless-selaimessa. Jos haluat selainikkunan näkyviin, aja testit komennolla `npm run playwright:test:debug`
+
+## Testi-osoitteita
 
 localhost testi-uri
 - toimiva: http://localhost:7021/koski/omadata-oauth2/authorize?client_id=oauth2client&response_type=code&response_mode=form_post&redirect_uri=%2Fkoski%2Fomadata-oauth2%2Fdebug-post-response&code_challenge=NjIyMGQ4NDAxZGM0ZDI5NTdlMWRlNDI2YWNhNjA1NGRiMjQyZTE0NTg0YzRmOGMwMmU3MzFkYjlhNTRlZTlmZA&code_challenge_method=S256&state=internal%20state&scope=HENKILOTIEDOT_SYNTYMAAIKA%20HENKILOTIEDOT_NIMI%20OPISKELUOIKEUDET_SUORITETUT_TUTKINNOT

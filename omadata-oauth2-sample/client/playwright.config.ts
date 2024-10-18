@@ -81,7 +81,7 @@ export default defineConfig({
 
   /* Run your local dev server before starting the tests */
   webServer: {
-    command: "npm-run-all --parallel start-server start",
+    command: `KOSKI_BACKEND_HOST=${process.env.KOSKI_BACKEND_HOST} npm-run-all --parallel start-server start`,
     url: "http://localhost:7050",
     reuseExistingServer: !process.env.CI,
   },
