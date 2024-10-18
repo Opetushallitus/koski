@@ -11,6 +11,7 @@ class GithubActionsSpec extends AnyFreeSpec with Matchers {
   lazy val testPackages =
     new File("./src/test/scala/fi/oph/koski/").listFiles.filter(_.isDirectory).map("fi.oph.koski." + _.getName)
       .filterNot(_.contains("fi.oph.koski.e2e")) // Playwright-testit
+      .filterNot(_.contains("fi.oph.koski.omadataoauth2.e2e")) // Playwright-testit
 
   "Github Actions" - {
     "Tarkistetaan, että tiedostossa all_tests.yml on mainittu kaikki testipaketit" in {

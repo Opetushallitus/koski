@@ -1,0 +1,35 @@
+runs:
+  using: composite
+  steps:
+    - name: Install project dependencies server
+      working-directory: omadata-oauth2-sample/server
+      run: npm ci
+      shell: bash
+    - name: Install project dependencies client
+      working-directory: omadata-oauth2-sample/client
+      run: npm ci
+      shell: bash
+    - name: Get playwright version
+      working-directory: omadata-oauth2-sample/client
+      id: playwright-version
+      run: echo "version=$(npm ls @playwright/test | grep @playwright | sed 's/.*@//')" >> $GITHUB_OUTPUT
+      shell: bash
+    - name: Cache Playwright Browsers
+      uses: actions/cache@v3
+      id: playwright-cache
+      with:
+        path: |
+          ~/.cache/ms-playwright
+        key: ${{ runner.os }}-playwright-${{ steps.playwright-version.outputs.version }}
+        restore-keys: |
+            ${{ runner.os }}-playwright-
+    - name: Install Playwright with dependencies
+      if: steps.playwright-cache.outputs.cache-hit != 'true'
+      working-directory: omadata-oauth2-sample/client
+      run: npx playwright install --with-deps
+      shell: bash
+    - name: Install Playwright's dependencies
+      if: steps.playwright-cache.outputs.cache-hit == 'true'
+      working-directory: omadata-oauth2-sample/client
+      run: npx playwright install-deps
+      shell: bash

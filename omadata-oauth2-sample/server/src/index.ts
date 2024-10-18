@@ -54,12 +54,15 @@ const app: Application = express()
 app.set('trust proxy', 1)
 const port = process.env.PORT || 7051
 
+const koskiBackendHost =
+  process.env.KOSKI_BACKEND_HOST || 'http://localhost:7021'
+
 const authorizationServerUrl =
   process.env.AUTHORIZATION_SERVER_URL ||
-  'http://localhost:7021/koski/api/omadata-oauth2/authorization-server'
+  `${koskiBackendHost}/koski/api/omadata-oauth2/authorization-server`
 const resourceServerUrl =
   process.env.RESOURCE_SERVER_URL ||
-  'http://localhost:7021/koski/api/omadata-oauth2/resource-server'
+  `${koskiBackendHost}/koski/api/omadata-oauth2/resource-server`
 
 // Käytössä, jos mTLS on päällä:
 const clientCertSecretName =
