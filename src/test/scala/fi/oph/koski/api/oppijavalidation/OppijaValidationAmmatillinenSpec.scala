@@ -593,10 +593,12 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
             }
 
             "'Hylätty' -arvosanat" - {
-              val epäsopivaArvosanaError = KoskiErrorCategory.badRequest.validation.arviointi.epäsopivaArvosana("Arvosana ei voi olla hylätty")
+              def getEpäsopivaArvosanaError(suorituksenNimi: String) = KoskiErrorCategory.badRequest.validation.arviointi.epäsopivaArvosana(s"""Suorituksen "$suorituksenNimi" arvosana ei voi olla hylätty""")
               def toArviointi(arvosana: Koodistokoodiviite) = Some(List(AmmatillinenArviointi(arvosana, date(2015, 5, 1))))
 
               "Yhteisten opintojen suoritus" - {
+                val epäsopivaArvosanaError = getEpäsopivaArvosanaError("Viestintä- ja vuorovaikutusosaaminen")
+
                 def testOsasuoritus(arvosana: Koodistokoodiviite) =
                   setupTutkinnonOsaSuoritus(yhtTutkinnonOsanSuoritus.copy(
                     arviointi = toArviointi(arvosana),
@@ -617,6 +619,8 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
               }
 
               "Yhteisten opintojen suorituksen osasuoritukset" - {
+                val epäsopivaArvosanaError = getEpäsopivaArvosanaError("Äidinkieli")
+
                 def testOsasuoritus(arvosana: Koodistokoodiviite) =
                   setupTutkinnonOsaSuoritus(yhteisenTutkinnonOsanSuoritus("101053", "Viestintä- ja vuorovaikutusosaaminen", k3, 11).copy(
                     osasuoritukset = Some(List(
@@ -639,6 +643,8 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
               }
 
               "Muun ammatillisten opintojen suoritus" - {
+                val epäsopivaArvosanaError = getEpäsopivaArvosanaError("Markkinointi ja asiakaspalvelu")
+
                 def testOsasuoritus(arvosana: Koodistokoodiviite) =
                   setupTutkinnonOsaSuoritus(tutkinnonOsaSuoritus.copy(
                     arviointi = toArviointi(arvosana),
@@ -659,6 +665,8 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
               }
 
               "Muun ammatillisen opintojen suorituksen osasuoritukset" - {
+                val epäsopivaArvosanaError = getEpäsopivaArvosanaError("Hoitotarpeen määrittäminen")
+
                 def testOsasuoritus(arvosana: Koodistokoodiviite) =
                   setupTutkinnonOsaSuoritus(
                     tutkinnonOsaSuoritus.copy(osasuoritukset = Some(List(osanOsa.copy(arviointi = toArviointi(arvosana))))),

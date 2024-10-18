@@ -70,7 +70,7 @@ class AmmatillinenOsittainenRaporttiSpec
       }
       "Tutkinnon osiat jotka arvioitu jälkeen aikavälin, ei oteta mukaan raportille" in {
         val rows = testiHenkilöRaporttiRows(alku = date(2014, 1, 1), loppu = date(2014, 12, 31), osasuoritustenAikarajaus = true)
-        rows.map(_.suoritettujenOpintojenYhteislaajuus) should equal(List("91.0"))
+        rows.map(_.suoritettujenOpintojenYhteislaajuus) should equal(List("92.0"))
       }
     }
 
@@ -120,7 +120,7 @@ class AmmatillinenOsittainenRaporttiSpec
     viimeisinOpiskeluoikeudenTila = Some("valmistunut"),
     viimeisinOpiskeluoikeudenTilaAikajaksonLopussa = "lasna",
     opintojenRahoitukset = "1",
-    suoritettujenOpintojenYhteislaajuus = "111.0",
+    suoritettujenOpintojenYhteislaajuus = "112.0",
     valmiitAmmatillisetTutkinnonOsatLkm = "3",
     näyttöjäAmmatillisessaValmiistaTutkinnonOsistaLkm = "1",
     tunnustettujaAmmatillisessaValmiistaTutkinnonOsistaLkm = "2",
@@ -136,7 +136,7 @@ class AmmatillinenOsittainenRaporttiSpec
     rahoituksenPiirissäTunnustetuistaYhteisenTutkinnonOsistaLkm = "1",
     suoritettujenYhteistenTutkinnonOsienYhteislaajuus = "23.0",
     tunnustettujaYhteistenTutkinnonOsienValmiistaOsistaYhteislaajuus = "9.0",
-    suoritettujenYhteistenTutkinnonOsienOsaalueidenYhteislaajuus = "22.0",
+    suoritettujenYhteistenTutkinnonOsienOsaalueidenYhteislaajuus = "23.0",
     pakollistenYhteistenTutkinnonOsienOsaalueidenYhteislaajuus = "20.0",
     valinnaistenYhteistenTutkinnonOsienOsaalueidenYhteisLaajuus = "3.0",
     valmiitVapaaValintaisetTutkinnonOsatLkm = "0",
