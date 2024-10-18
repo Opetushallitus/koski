@@ -51,6 +51,7 @@ interface ClientCert {
 }
 
 const app: Application = express()
+app.set('trust proxy', 1)
 const port = process.env.PORT || 7051
 
 const authorizationServerUrl =
