@@ -12,10 +12,10 @@
     "@types/react-dom": "^18.3.0",
     "@typescript-eslint/eslint-plugin": "^8.8.0",
     "@typescript-eslint/parser": "^8.8.0",
-    "eslint": "^8.57.1",
+    "eslint": "^9.0.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-prettier": "^5.2.1",
-    "eslint-plugin-react-hooks": "^4.6.2",
+    "eslint-plugin-react-hooks": "^5.0.0",
     "prettier": "^3.3.3",
     "prettier-plugin-organize-imports": "^4.1.0",
     "react": "^18.3.1",
@@ -33,9 +33,9 @@
     "lint": "npm run lint:types && npm run lint:problems",
     "lint:types": "tsc --noEmit",
     "lint:types:watch": "tsc --noEmit --watch --preserveWatchOutput",
-    "lint:problems": "eslint \"{src,test}/**/*.{js,jsx,ts,tsx}\"",
+    "lint:problems": "eslint",
     "fix": "npm run fix:format",
-    "fix:format": "eslint \"{src,test}/**/*.{js,jsx,ts,tsx}\" --fix"
+    "fix:format": "eslint --fix"
   },
   "eslintConfig": {
     "extends": [
@@ -57,5 +57,10 @@
   },
   "engines": {
     "node": ">=22"
+  },
+  "devDependencies": {
+    "@eslint/compat": "^1.2.0",
+    "@eslint/eslintrc": "^3.1.0",
+    "@eslint/js": "^9.12.0"
   }
 }
