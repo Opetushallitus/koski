@@ -1,4 +1,4 @@
-package fi.oph.koski.omadataoauth2
+package fi.oph.koski.omadataoauth2.unit
 
 import fi.oph.koski.KoskiHttpSpec
 import org.scalatest.freespec.AnyFreeSpec

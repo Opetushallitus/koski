@@ -1,0 +1,34 @@
+name: OmaDataOAuth2 Playwright E2E tests
+
+inputs:
+  shardIndex:
+    required: true
+    type: string
+  shardTotal:
+    required: true
+    type: string
+
+runs:
+  using: "composite"
+  steps:
+    - name: "🔨 Setup backend and databases"
+      uses: ./.github/actions/setup_backend
+    - name: "🌍 Setup Playwright"
+      uses: ./.github/actions/omadataoauth2_setup_playwright
+
+    - name: Run Playwright tests
+      env:
+        PLAYWRIGHT_SHARD_INDEX: ${{inputs.shardIndex}}
+        PLAYWRIGHT_SHARD_TOTAL: ${{inputs.shardTotal}}
+        PLAYWRIGHT_HTML_REPORT: omadataoauth2-e2e-report-${{inputs.shardIndex}}-of-${{inputs.shardTotal}}
+      uses: nick-fields/retry@v3
+      with:
+        max_attempts: 2
+        timeout_minutes: 45
+        command: mvn scalatest:test -Pomadataoauth2e2e -Dsuites="fi.oph.koski.omadataoauth2.e2e.OmaDataOAuth2E2ESpec" --batch-mode
+    - uses: actions/upload-artifact@v3
+      if: always()
+      with:
+        name: omadataoauth2-e2e-report-${{inputs.shardIndex}}-of-${{inputs.shardTotal}}
+        path: omadata-oauth2-sample/client/omadataoauth2-e2e-report-${{inputs.shardIndex}}-of-${{inputs.shardTotal}}/
+        retention-days: 3

@@ -1,7 +1,7 @@
-package fi.oph.koski.omadataoauth2
+package fi.oph.koski.omadataoauth2.unit
 
+import fi.oph.koski.KoskiApplicationForTests
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
-import fi.oph.koski.{KoskiApplicationForTests}
 
 class OmaDataOAuth2FrontendSpec extends OmaDataOAuth2TestBase {
   val app = KoskiApplicationForTests

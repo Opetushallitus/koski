@@ -12,6 +12,9 @@ jobs:
   tests:
     name: "👀 Tests"
     uses: ./.github/workflows/all_tests.yml
+  tests-oauth2:
+    name: "👀OAuth2"
+    uses: ./.github/workflows/omadataoauth2sample_test.yml
 
   build:
     name: Build and upload artifacts
