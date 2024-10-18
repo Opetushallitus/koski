@@ -27,6 +27,7 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
+        <p>OmaDataOAuth2 Sample app</p>
         <p>{!data ? "Loading..." : JSON.stringify(data)}</p>
         <p>{!error ? "Checking errors..." : error}</p>
       </header>
