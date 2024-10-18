@@ -17,7 +17,6 @@ object ToimintaAlueetValidation extends Logging {
         case s: PerusopetuksenVuosiluokanSuoritus => validatePäätasonSuoritus(rajapäivä, s)
         case s: NuortenPerusopetuksenOppimääränSuoritus => validatePäätasonSuoritus(rajapäivä, s)
       }
-      case o: PerusopetuksenLisäopetuksenOpiskeluoikeus => o.suoritukset.map(validatePäätasonSuoritus(rajapäivä, _))
       case _ => List.empty
     })
   }

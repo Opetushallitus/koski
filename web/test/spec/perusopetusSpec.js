@@ -4697,28 +4697,13 @@ describe('Perusopetus', function () {
             kognitiivisetTaidot
               .propertyBySelector('.arvosana')
               .selectValue('8'),
-            editor.saveChangesAndExpectError,
-            wait.until(page.isErrorShown)
+            editor.saveChanges,
           )
 
-          it('näyttää virheilmoituksen laajuudesta', function () {
-            expect(extractAsText(S('.error-text'))).to.equal('Oppiaineen kognitiiviset taidot laajuus puuttuu')
-          })
-
-          describe('laajuudella', function () {
-            before(
-              kognitiivisetTaidot
-                .propertyBySelector('.property.laajuus')
-                .setValue(5),
-              editor.saveChanges,
-              wait.until(page.isSavedLabelShown)
-            )
-
-            it('toimii', function () {
-              expect(
-                kognitiivisetTaidot.propertyBySelector('.arvosana').getValue()
-              ).to.equal('8')
-            })
+          it('toimii', function () {
+            expect(
+              kognitiivisetTaidot.propertyBySelector('.arvosana').getValue()
+            ).to.equal('8')
           })
         })
       })
