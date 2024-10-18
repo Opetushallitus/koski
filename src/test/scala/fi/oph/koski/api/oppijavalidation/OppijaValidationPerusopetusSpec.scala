@@ -5,6 +5,7 @@ import fi.oph.koski.api.misc.OpiskeluoikeusTestMethodsPerusopetus
 import fi.oph.koski.documentation.AmmatillinenExampleData.primusLähdejärjestelmäId
 import fi.oph.koski.documentation.ExampleData._
 import fi.oph.koski.documentation.ExamplesEsiopetus.osaAikainenErityisopetus
+import fi.oph.koski.documentation.ExamplesPerusopetus.toimintaAlueenSuoritus
 import fi.oph.koski.documentation.OsaAikainenErityisopetusExampleData._
 import fi.oph.koski.documentation.PerusopetusExampleData._
 import fi.oph.koski.documentation.YleissivistavakoulutusExampleData.{helsinginMedialukio, jyväskylänNormaalikoulu, kulosaarenAlaAste, ressunLukio}
@@ -491,12 +492,29 @@ class OppijaValidationPerusopetusSpec extends TutkinnonPerusteetTest[Perusopetuk
         }
       }
       "Toiminta-alueittain opiskeltu" - {
-        "Laajuutta ei vaadita osasuorituksilta" in {
-          setupOppijaWithOpiskeluoikeus(
-            defaultOpiskeluoikeus.copy(
-              suoritukset = List(yhdeksännenLuokanSuoritus, päättötodistusToimintaAlueilla.copy(vahvistus = vahvistusPaikkakunnalla(LocalDate.of(2020, 8, 1))))
-            )) {
+        def makeOpiskeluoikeus(vahvistusPvm: LocalDate) =
+          defaultOpiskeluoikeus.copy(suoritukset = List(
+            yhdeksännenLuokanSuoritus,
+            päättötodistusToimintaAlueilla.copy(
+              vahvistus = vahvistusPaikkakunnalla(vahvistusPvm),
+              osasuoritukset = Some(List(
+                toimintaAlueenSuoritus("1", laajuus = None).copy(
+                  arviointi = arviointi("S", Some(Finnish("Motoriset taidot kehittyneet hyvin perusopetuksen aikana"))),
+                )
+              ))
+            ),
+          ))
+
+        "Laajuutta ei vaadita vanhoilta osasuorituksilta" in {
+          setupOppijaWithOpiskeluoikeus(makeOpiskeluoikeus(LocalDate.of(2024, 7, 1))) {
             verifyResponseStatusOk()
+          }
+        }
+        "Laajuus vaaditaan uusilta osasuorituksilta" in {
+          setupOppijaWithOpiskeluoikeus(makeOpiskeluoikeus(LocalDate.of(2024, 8, 1))) {
+            verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.laajuudet.oppiaineenLaajuusPuuttuu(
+              "Oppiaineen motoriset taidot laajuus puuttuu"
+            ))
           }
         }
       }
