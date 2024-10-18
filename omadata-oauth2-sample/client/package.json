@@ -39,7 +39,11 @@
     "lint:types:watch": "tsc --noEmit --watch --preserveWatchOutput",
     "lint:problems": "eslint \"{src,test}/**/*.{js,jsx,ts,tsx}\"",
     "fix": "npm run fix:format",
-    "fix:format": "eslint \"{src,test}/**/*.{js,jsx,ts,tsx}\" --fix"
+    "fix:format": "eslint \"{src,test}/**/*.{js,jsx,ts,tsx}\" --fix",
+    "playwright:test": "npx playwright test",
+    "playwright:test:debug": "npx playwright test --headed",
+    "playwright:test:trace": "npx playwright test --trace on && npx playwright show-report",
+    "playwright:codegen": "npx playwright codegen"
   },
   "eslintConfig": {
     "extends": [
