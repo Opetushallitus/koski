@@ -22,11 +22,15 @@
     "react-dom": "^18.3.1",
     "react-scripts": "5.0.1",
     "typescript": "^4.9.5",
-    "web-vitals": "^2.1.4"
+    "web-vitals": "^2.1.4",
+    "@playwright/test": "^1.48.1",
+    "npm-run-all": "^4.1.5"
   },
   "proxy": "http://localhost:7051",
   "scripts": {
     "start": "react-scripts start",
+    "start-server": "npm run --prefix ../server start",
+    "start-with-server": "npm-run-all --parallel start-server start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
@@ -35,7 +39,11 @@
     "lint:types:watch": "tsc --noEmit --watch --preserveWatchOutput",
     "lint:problems": "eslint \"{src,test}/**/*.{js,jsx,ts,tsx}\"",
     "fix": "npm run fix:format",
-    "fix:format": "eslint \"{src,test}/**/*.{js,jsx,ts,tsx}\" --fix"
+    "fix:format": "eslint \"{src,test}/**/*.{js,jsx,ts,tsx}\" --fix",
+    "playwright:test": "npx playwright test",
+    "playwright:test:debug": "npx playwright test --headed",
+    "playwright:test:trace": "npx playwright test --trace on && npx playwright show-report",
+    "playwright:codegen": "npx playwright codegen"
   },
   "eslintConfig": {
     "extends": [

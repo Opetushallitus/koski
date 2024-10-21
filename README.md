@@ -303,6 +303,10 @@ Jos backend on valmiiksi ajossa, voi testit ajaa komennolla `npm run playwright:
 
 Testit ajetaan headless-selaimessa. Jos haluat selainikkunan näkyviin, aja testit komennolla `npm run playwright:test:debug`
 
+### Integraatiotestit OmaDataOAuth2
+
+Ks. [documentation/oauth2toteutus.md#integraatiotestit](documentation/oauth2toteutus.md#integraatiotestit)
+
 ## CI-palvelin
 
 Koskessa on käytössä [Github Actions](https://github.com/Opetushallitus/koski/actions), joka on konfiguroitu [.github hakemistossa](.github).

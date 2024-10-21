@@ -1,4 +1,4 @@
-package fi.oph.koski.omadataoauth2
+package fi.oph.koski.omadataoauth2.unit
 
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.koskiuser.{KoskiMockUser, MockUsers}

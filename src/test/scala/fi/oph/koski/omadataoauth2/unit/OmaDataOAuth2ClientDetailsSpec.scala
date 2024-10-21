@@ -1,15 +1,9 @@
-package fi.oph.koski.omadataoauth2
+package fi.oph.koski.omadataoauth2.unit
 
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
-import fi.oph.koski.http.KoskiErrorCategory
-import fi.oph.koski.koskiuser.{KoskiMockUser, MockUsers}
 import fi.oph.koski.{KoskiApplicationForTests, KoskiHttpSpec}
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.should.Matchers
-
-import java.net.URLEncoder
-import java.nio.charset.StandardCharsets
-import java.util.Base64
 
 class OmaDataOAuth2ClientDetailsSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers {
   val app = KoskiApplicationForTests

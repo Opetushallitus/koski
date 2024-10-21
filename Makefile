@@ -102,7 +102,7 @@ backtest:
 	fi.oph.koski.ytl,fi.oph.koski.ytr,fi.oph.koski.ytl,fi.oph.koski.meta,\
 	fi.oph.koski.ytl,fi.oph.koski.api,fi.oph.koski.frontendvalvonta,fi.oph.koski.tiedonsiirto\
 	fi.oph.koski.typemodel,fi.oph.koski.suoritusjako,fi.oph.koski.suoritusjako.suoritetuttutkinnot,\
-	fi.oph.koski.massaluovutus,fi.oph.koski.omadataoauth2"
+	fi.oph.koski.massaluovutus,fi.oph.koski.omadataoauth2.unit,fi.oph.koski.omadataoauth2.e2e"
 
 .PHONY: backtestnonmock
 backtestnonmock:
@@ -115,6 +115,10 @@ fronttest:
 .PHONY: integrationtest
 integrationtest:
 		mvn $(mvn_opts) -DargLine="$(mvn_argline)" test -Pintegrationtest -Dsuites="fi.oph.koski.e2e.KoskiFrontSpec"
+
+.PHONY: omadataoauth2e2e
+omadataoauth2e2e:
+		mvn $(mvn_opts) -DargLine="$(mvn_argline)" test -Pomadataoauth2e2e -Dsuites="fi.oph.koski.omadataoauth2.e2e.OmaDataOAuth2E2ESpec"
 
 .PHONY: screenshot
 screenshot:
