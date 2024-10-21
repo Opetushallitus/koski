@@ -15,6 +15,8 @@ import { TaiteenPerusopetuksenOpiskeluoikeudenTila } from '../../types/fi/oph/ko
 import { TaiteenPerusopetuksenOpiskeluoikeus } from '../../types/fi/oph/koski/schema/TaiteenPerusopetuksenOpiskeluoikeus'
 import { TaiteenPerusopetuksenOpiskeluoikeusjakso } from '../../types/fi/oph/koski/schema/TaiteenPerusopetuksenOpiskeluoikeusjakso'
 import { TaiteenPerusopetuksenPäätasonSuoritus } from '../../types/fi/oph/koski/schema/TaiteenPerusopetuksenPaatasonSuoritus'
+import { TaiteenPerusopetuksenYleisenOppimääränTeemaopintojenSuoritus } from '../../types/fi/oph/koski/schema/TaiteenPerusopetuksenYleisenOppimaaranTeemaopintojenSuoritus'
+import { TaiteenPerusopetuksenYleisenOppimääränYhteistenOpintojenSuoritus } from '../../types/fi/oph/koski/schema/TaiteenPerusopetuksenYleisenOppimaaranYhteistenOpintojenSuoritus'
 import { TanssinOpintotaso } from '../../types/fi/oph/koski/schema/TanssinOpintotaso'
 import { TeatteritaiteenOpintotaso } from '../../types/fi/oph/koski/schema/TeatteritaiteenOpintotaso'
 import { toOppilaitos, toToimipiste } from './utils'
@@ -66,9 +68,9 @@ export const createTaiteenPerusopetuksenPäätasonSuoritus = (
     taiteenperusopetuksenlaajanoppimaaransyventavatopinnot:
       TaiteenPerusopetuksenLaajanOppimääränSyventävienOpintojenSuoritus,
     taiteenperusopetuksenyleisenoppimaaranteemaopinnot:
-      TaiteenPerusopetuksenLaajanOppimääränPerusopintojenSuoritus,
+      TaiteenPerusopetuksenYleisenOppimääränTeemaopintojenSuoritus,
     taiteenperusopetuksenyleisenoppimaaranyhteisetopinnot:
-      TaiteenPerusopetuksenLaajanOppimääränPerusopintojenSuoritus
+      TaiteenPerusopetuksenYleisenOppimääränYhteistenOpintojenSuoritus
   }
 
   const createOpintotaso =
