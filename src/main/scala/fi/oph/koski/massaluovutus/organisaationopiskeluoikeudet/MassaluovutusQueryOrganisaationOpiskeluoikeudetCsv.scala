@@ -4,7 +4,7 @@ import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.koskiuser.KoskiSpecificSession
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.massaluovutus.MassaluovutusUtils.QueryResourceManager
-import fi.oph.koski.massaluovutus.{CsvStream, QueryFormat, QueryResultWriter}
+import fi.oph.koski.massaluovutus.{CsvStream, PartitionSupport, QueryFormat, QueryResultWriter}
 import fi.oph.koski.raportointikanta._
 import fi.oph.koski.schema.Organisaatio
 import fi.oph.koski.schema.Organisaatio.Oid
@@ -43,7 +43,8 @@ case class MassaluovutusQueryOrganisaationOpiskeluoikeudetCsv(
   eiOsasuorituksia: Option[Boolean] = None,
   @Description("Jos true, ei kyselyllä luoda opiskeluoikeuden aikajaksotiedostoja")
   eiAikajaksoja: Option[Boolean] = None,
-) extends MassaluovutusQueryOrganisaationOpiskeluoikeudet {
+) extends MassaluovutusQueryOrganisaationOpiskeluoikeudet with PartitionSupport {
+  def partitionFormats: Seq[String] = Seq(QueryFormat.csvPartition)
 
   def withOrganisaatioOid(organisaatioOid: Oid): MassaluovutusQueryOrganisaationOpiskeluoikeudetCsv = copy(organisaatioOid = Some(organisaatioOid))
 
