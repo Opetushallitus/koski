@@ -118,7 +118,7 @@ class MassaluovutusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers wit
         KoskiApplicationForTests.massaluovutusService.addRaw(failedQuery)
         getQuerySuccessfully(failedQuery.queryId, MockUsers.tornioTallentaja) { response =>
           val failResponse = response.asInstanceOf[FailedQueryResponse]
-          failResponse.hint should equal(Some("Kyselystä syntyneen tulostiedoston koko kasvoi liian suureksi. Pienennä tulosjoukon kokoa esimerkiksi rajaamalla kysely lyhyemmälle aikavälille tai käytä ositettuja tulostiedostoja, jos kysely tukee sitä."))
+          failResponse.hint should equal(Some("Kyselystä syntyneen tulostiedoston koko kasvoi liian suureksi. Ehdotuksia kyselyn korjaamiseksi: rajaa kysely lyhyemmälle aikavälille; käytä tulostiedostojen ositusta asettalla format-kenttään text/x-csv-partition (kts. tarkemmat ohjeet http://localhost:7021/koski/dokumentaatio/rajapinnat/massaluovutus/koulutuksenjarjestajat)"))
           failResponse.error should equal(None)
         }
       }

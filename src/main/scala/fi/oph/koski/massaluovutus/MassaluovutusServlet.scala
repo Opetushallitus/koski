@@ -175,7 +175,7 @@ object QueryResponse {
       startedAt = q.startedAt,
       finishedAt = q.finishedAt,
       files = q.filesToExternal(rootUrl),
-      hint = failedQueryHint(q),
+      hint = failedQueryHint(q, rootUrl),
       error = if (session.hasGlobalReadAccess) Some(q.error) else None,
     )
     case q: CompleteQuery => CompleteQueryResponse(
@@ -197,9 +197,19 @@ object QueryResponse {
   implicit def toOffsetDateTime(dt: Option[LocalDateTime]): Option[OffsetDateTime] =
     dt.map(toOffsetDateTime)
 
-  def failedQueryHint(q: FailedQuery): Option[String] =
+  def failedQueryHint(q: FailedQuery, rootUrl: String): Option[String] =
     if (q.error.contains("Your proposed upload exceeds the maximum allowed size")) {
-      Some("Kyselystä syntyneen tulostiedoston koko kasvoi liian suureksi. Pienennä tulosjoukon kokoa esimerkiksi rajaamalla kysely lyhyemmälle aikavälille tai käytä ositettuja tulostiedostoja, jos kysely tukee sitä.")
+      val suggestions = (
+        List("rajaa kysely lyhyemmälle aikavälille") ++
+        (q.query match {
+          case p: PartitionSupport =>
+            val formats = p.partitionFormats.mkString(" tai ")
+            val helpUrl = s"$rootUrl/dokumentaatio/rajapinnat/massaluovutus/koulutuksenjarjestajat"
+            List(s"käytä tulostiedostojen ositusta asettalla format-kenttään $formats (kts. tarkemmat ohjeet $helpUrl)")
+          case _ => List()
+        })
+      ).mkString("; ")
+      Some(s"Kyselystä syntyneen tulostiedoston koko kasvoi liian suureksi. Ehdotuksia kyselyn korjaamiseksi: $suggestions")
     } else {
       None
     }

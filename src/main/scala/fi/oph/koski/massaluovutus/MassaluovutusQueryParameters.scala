@@ -29,6 +29,10 @@ trait MassaluovutusQueryParameters {
   def priority: Int = MassaluovutusQueryPriority.normal
 }
 
+trait PartitionSupport {
+  def partitionFormats: Seq[String]
+}
+
 object MassaluovutusQueryPriority {
   val highest = 1
   val high = 3
