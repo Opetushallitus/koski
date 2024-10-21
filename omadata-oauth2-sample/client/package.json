@@ -28,7 +28,8 @@
   },
   "proxy": "http://localhost:7051",
   "scripts": {
-    "start": "react-scripts start",
+    "start": "FORCE_COLOR=true npm run start-react-scripts | cat",
+    "start-react-scripts": "react-scripts start",
     "start-server": "npm run --prefix ../server start",
     "start-with-server": "npm-run-all --parallel start-server start",
     "build": "react-scripts build",
