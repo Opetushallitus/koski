@@ -6,3 +6,4 @@ TOR-2040 - validaation refaktorointi, ei toiminnallisia muutoksia
 TOR-XXX - korjattu väärin deserialisoituva deprekoituva kenttä
 TOR-2131 - ei muutoksia skeemaan, muutos @EnumValues-annotaation näkymiseen dokumentaatiossa.
 TOR-XXX - vaihdettu dokumentaatioon termi oppilashallinto --> opintohallinto
+TOR-2238 - lisätty Arvioinniton-kantaluokka, mutta itse skeeman rakenne ei ole muuttunut

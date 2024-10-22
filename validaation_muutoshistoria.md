@@ -1,5 +1,11 @@
 # Koskeen tallennettavien tietojen validaatiosäännöt
 
+## 22.10.2024
+
+- Taiteen perusopetuksen virhetunnisteet ja -viestit ovat muuttuneet seuraavien validatioiden kohdalla:
+  - Jos osasuoritukselta puuttuu arviointi: vahvistusIlmanArviointia -> keskeneräinenOsasuoritus
+  - Jos osasuorituksia ei ole: vahvistusIlmanArviointia -> osasuoritusPuuttuu
+
 ## 18.10.2024
 
 - Nuorten perusopetuksen ja perusopetuksen lisäopetuksen suorituksille toiminta-alueittain vaaditaan laajuudet.
