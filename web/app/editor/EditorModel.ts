@@ -47,6 +47,7 @@ import {
 } from '../types/EditorModels'
 import { flatMapArray, notUndefined } from '../util/util'
 import { hashAdd, hashCode } from './hashcode'
+import { filterObjByKey } from '../util/fp/objects'
 
 export type EditorElement = JSX.Element & {
   isEmpty?: (model: EditorModel) => boolean
@@ -704,28 +705,58 @@ const modelErrors = <T extends ValidationContext>(
 }
 
 export const applyChangesAndValidate = <
-  M extends EditorModel & Contextualized<EditorMappingContext>
+  M extends EditorModel & Contextualized<EditorMappingContext & ValidationContext>
 >(
   modelBeforeChange: M,
   changes: ChangeBusAction[]
 ) => {
+  type AppliedChanges = { model: M, scopes: string[] }
+
   const basePath = toPath(modelBeforeChange.path)
   const withAppliedChanges = changes.reduce(
-    (acc: M, change: ChangeBusAction) => {
-      // console.log('apply', change, 'to', acc)
+    (acc: AppliedChanges, change: ChangeBusAction) => {
+      //console.log('apply', change, 'to', acc)
 
       const subPath = removeCommonPath(
         toPath(getPathFromChange(change)),
         basePath
       )
       const actualLens = modelLens(subPath)
+      const scope = getValidationScope(subPath)
 
-      return L.set(actualLens, getModelFromChange(change), acc) as M
+      return {
+        model: L.set(actualLens, getModelFromChange(change), acc.model) as M,
+        scopes: R.uniq([...acc.scopes, scope])
+      }
     },
-    modelBeforeChange
+    { model: modelBeforeChange, scopes: [] } satisfies AppliedChanges
   )
 
-  return validateModel(withAppliedChanges)
+  return applyValidationScopes(validateModel(withAppliedChanges.model), withAppliedChanges.scopes)
+}
+
+const getValidationScope = (path: string[]): string => {
+  switch (path[0]) {
+    case 'opiskeluoikeudet':
+      return path.slice(0, 2).join('.') // Esim. 'opiskeluoikeudet.0'
+    default:
+      return ''
+  }
+}
+
+const applyValidationScopes = <
+  M extends EditorModel & Contextualized<ValidationContext>
+>(model: M, scopes: string[]) => {
+  const validationScope = R.uniq([...(model.context.validationScope || []), ...scopes])
+
+  const errors = model.context.validationResult
+  if (errors) {
+    const inValidationScope = (path: string) => !!validationScope.find(s => path.startsWith(s))
+    const validationResult = filterObjByKey<typeof errors>(inValidationScope)(errors)
+    return addContext(model, { validationResult, validationScope })
+  }
+
+  return model
 }
 
 // adds validationResult to model.context
