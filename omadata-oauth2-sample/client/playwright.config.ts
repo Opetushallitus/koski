@@ -80,9 +80,31 @@ export default defineConfig({
   ],
 
   /* Run your local dev server before starting the tests */
-  webServer: {
-    command: `KOSKI_BACKEND_HOST=${process.env.KOSKI_BACKEND_HOST} npm-run-all --parallel start-server start`,
-    url: "http://localhost:7050",
-    reuseExistingServer: !process.env.CI,
-  },
+  webServer: [
+    {
+      command: `npm run clean-luovutuspalvelu-container && npm run build-luovutuspalvelu && npm run start-luovutuspalvelu`,
+      url: "https://localhost:7022/koski-luovutuspalvelu/healthcheck/proxy",
+      reuseExistingServer: !process.env.CI,
+      stdout: "pipe",
+      stderr: "pipe",
+      timeout: 10 * 60 * 1000,
+      ignoreHTTPSErrors: true,
+    },
+    {
+      command: `npm run start-server`,
+      url: "http://localhost:7051/healthcheck",
+      reuseExistingServer: !process.env.CI,
+      stdout: "pipe",
+      stderr: "pipe",
+      timeout: 2 * 60 * 1000,
+    },
+    {
+      command: `npm run start`,
+      url: "http://localhost:7050",
+      reuseExistingServer: !process.env.CI,
+      stdout: "pipe",
+      stderr: "pipe",
+      timeout: 2 * 60 * 1000,
+    },
+  ],
 })

@@ -32,6 +32,10 @@
     "start-react-scripts": "react-scripts start",
     "start-server": "npm run --prefix ../server start",
     "start-with-server": "npm-run-all --parallel start-server start",
+    "start-with-server-and-luovutuspalvelu": "npm-run-all --parallel start-luovutuspalvelu start-server start",
+    "build-luovutuspalvelu": "cd ../../koski-luovutuspalvelu/proxy && mkdir -p ./target && npm run buildversion && npm run testca && node ./scripts/create-local-config.js > ./target/koski-luovutuspalvelu-proxy-config-ci.json && docker build --rm --pull --platform=linux/amd64 --tag koski-luovutuspalvelu-proxy:latest . && sleep 5",
+    "start-luovutuspalvelu": "echo 'Starting koski-luovutuspalvelu-proxy' && docker ps -a && docker run --name koski-luovutuspalvelu-proxy -p 7022:443 -v \"$PWD/../../koski-luovutuspalvelu/proxy/target/koski-luovutuspalvelu-proxy-config-ci.json:/etc/nginx/koski-luovutuspalvelu-proxy-config.json:ro\" -m 256m --rm koski-luovutuspalvelu-proxy:latest",
+    "clean-luovutuspalvelu-container": "docker ps -a && echo 'Killing koski-luovutuspalvelu-proxy' && docker stop koski-luovutuspalvelu-proxy || true && docker rm koski-luovutuspalvelu-proxy || true && echo 'Killed koski-luovutuspalvelu-proxy' && docker ps -a",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
@@ -41,9 +45,9 @@
     "lint:problems": "eslint \"{src,test}/**/*.{js,jsx,ts,tsx}\"",
     "fix": "npm run fix:format",
     "fix:format": "eslint \"{src,test}/**/*.{js,jsx,ts,tsx}\" --fix",
-    "playwright:test": "npx playwright test",
-    "playwright:test:debug": "npx playwright test --headed",
-    "playwright:test:trace": "npx playwright test --trace on && npx playwright show-report",
+    "playwright:test": "DEBUG='pw:webserver' npx playwright test",
+    "playwright:test:debug": "DEBUG=pw:webserver npx playwright test --headed",
+    "playwright:test:trace": "DEBUG=pw:webserver npx playwright test --trace on && npx playwright show-report",
     "playwright:codegen": "npx playwright codegen"
   },
   "eslintConfig": {
