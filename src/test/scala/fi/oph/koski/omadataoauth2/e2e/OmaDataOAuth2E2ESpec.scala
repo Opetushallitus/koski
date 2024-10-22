@@ -5,6 +5,9 @@ import fi.oph.koski.{KoskiApplicationForTests, SharedJetty}
 import org.scalatest.Tag
 import org.scalatest.freespec.AnyFreeSpec
 
+import java.io.{BufferedReader, InputStreamReader}
+import java.net.URL
+
 class OmaDataOAuth2E2ESpec extends AnyFreeSpec with KoskiCommandLineSpec {
   // Oletuksena vain yksi shardi, jotta kaikki testit menevät kerralla ajoon
   def shardIndex: String = scala.util.Properties.envOrElse("PLAYWRIGHT_SHARD_INDEX", "1")
@@ -15,11 +18,21 @@ class OmaDataOAuth2E2ESpec extends AnyFreeSpec with KoskiCommandLineSpec {
     sharedJetty.start()
     runTestCommand("omadata-oauth2-e2e-tests", Seq(
       "scripts/omadata-oauth2-e2e-test.sh",
-      sharedJetty.hostUrl,
+      s"http://${myIP()}:${sharedJetty.port}",
       shardIndex,
       shardTotal
     ))
   }
+
+  private def myIP(): String = {
+    val whatismyip = new URL("http://checkip.amazonaws.com")
+    val in:BufferedReader = new BufferedReader(new InputStreamReader(
+      whatismyip.openStream()
+    ))
+    in.readLine()
+  }
 }
+
+
 
 object OmaDataOAuth2E2ETag extends Tag("omadataoauth2e2e")
