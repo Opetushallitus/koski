@@ -10,7 +10,7 @@ class OmaDataOAuth2E2ESpec extends AnyFreeSpec with KoskiCommandLineSpec {
   def shardIndex: String = scala.util.Properties.envOrElse("PLAYWRIGHT_SHARD_INDEX", "1")
   def shardTotal: String = scala.util.Properties.envOrElse("PLAYWRIGHT_SHARD_TOTAL", "1")
 
-  "OmaDataOAuth2 integration tests" in {
+  "OmaDataOAuth2 integration tests" taggedAs(OmaDataOAuth2E2ETag) in {
     val sharedJetty = new SharedJetty(KoskiApplicationForTests)
     sharedJetty.start()
     runTestCommand("omadata-oauth2-e2e-tests", Seq(
@@ -21,3 +21,5 @@ class OmaDataOAuth2E2ESpec extends AnyFreeSpec with KoskiCommandLineSpec {
     ))
   }
 }
+
+object OmaDataOAuth2E2ETag extends Tag("omadataoauth2e2e")

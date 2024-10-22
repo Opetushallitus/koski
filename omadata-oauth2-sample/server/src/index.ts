@@ -71,6 +71,10 @@ const enableMTLS = process.env.ENABLE_MTLS
   ? process.env.ENABLE_MTLS !== 'false'
   : true
 
+const enableLocalMTLS = process.env.ENABLE_LOCAL_MTLS
+  ? process.env.ENABLE_LOCAL_MTLS !== 'false'
+  : false
+
 const clientId = process.env.CLIENT_ID || 'oauth2client'
 
 // Käytössä, jos mTLS on disabloitu:
@@ -141,6 +145,13 @@ async function getSecret(secretName: string): Promise<string> {
 
 app.use(express.static(staticFilesPath))
 
+app.get(
+  '/healthcheck',
+  async (req: Request, res: Response, next: NextFunction) => {
+    res.status(200).send('Ok')
+  }
+)
+
 app.get('/api', async (req: Request, res: Response, next: NextFunction) => {
   try {
     const accessTokenData = await fetchAccessToken(authorizationServerUrl)
@@ -207,6 +218,9 @@ async function fetchAccessToken(url: string): Promise<AccessTokenData> {
 
 async function handleAccessTokenRequest(url: string): Promise<FetchResponse> {
   if (enableMTLS) {
+    return await handleAccessTokenRequestMTLS(url)
+  } else if (enableLocalMTLS) {
+    // TODO: TOR-2210: käytä paikallista konffia, avaimet luovutuspalvelun testi-certeistä
     return await handleAccessTokenRequestMTLS(url)
   } else {
     return await handleAccessTokenRequestBasicAuth(url)
@@ -321,6 +335,9 @@ async function handleDataRequest(
   url: string
 ): Promise<FetchResponse> {
   if (enableMTLS) {
+    return await handleDataRequestMTLS(accessToken, url)
+  } else if (enableLocalMTLS) {
+    // TODO: TOR-2210: käytä paikallista konffia, avaimet luovutuspalvelun testi-certeistä
     return await handleDataRequestMTLS(accessToken, url)
   } else {
     return await handleDataRequestBasicAuth(accessToken, url)

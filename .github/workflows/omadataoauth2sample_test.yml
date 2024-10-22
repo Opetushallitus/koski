@@ -54,7 +54,15 @@ jobs:
         shardTotal: [1]
     if: ${{ !contains(github.event.head_commit.message, '[skip-tests]') }}
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Checkout luovutuspalvelu for e2e tests
+        uses: actions/checkout@v4
+        with:
+          repository: Opetushallitus/koski-luovutuspalvelu
+          path: koski-luovutuspalvelu
+
       - uses: ./.github/actions/omadataoauth2_e2e_test
         with:
           shardIndex: ${{ matrix.shardIndex }}
