@@ -636,7 +636,7 @@
             <artifactId>scalatest-maven-plugin</artifactId>
             <configuration>
               <tagsToExclude>
-                koskidev,browserstack,localization,mocha,parallelmocha,valpasfront,casintegration</tagsToExclude>
+                koskidev,browserstack,localization,mocha,parallelmocha,valpasfront,casintegration,integrationtest,omadataoauth2e2e</tagsToExclude>
             </configuration>
           </plugin>
         </plugins>

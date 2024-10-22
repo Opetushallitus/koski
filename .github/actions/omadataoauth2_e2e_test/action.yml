@@ -21,11 +21,8 @@ runs:
         PLAYWRIGHT_SHARD_INDEX: ${{inputs.shardIndex}}
         PLAYWRIGHT_SHARD_TOTAL: ${{inputs.shardTotal}}
         PLAYWRIGHT_HTML_REPORT: omadataoauth2-e2e-report-${{inputs.shardIndex}}-of-${{inputs.shardTotal}}
-      uses: nick-fields/retry@v3
-      with:
-        max_attempts: 2
-        timeout_minutes: 45
-        command: mvn scalatest:test -Pomadataoauth2e2e -Dsuites="fi.oph.koski.omadataoauth2.e2e.OmaDataOAuth2E2ESpec" --batch-mode
+      run: mvn scalatest:test -Pomadataoauth2e2e --batch-mode
+      shell: bash
     - uses: actions/upload-artifact@v3
       if: always()
       with:
