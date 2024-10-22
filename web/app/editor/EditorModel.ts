@@ -801,8 +801,7 @@ export const validateModel = <
   const validationResult = isEditableModel(mainModel)
     ? validateInner(mainModel, {})
     : {}
-  // TODO: Onko tämä typo?
-  const x = addContext(mainModel, { validationResult })
+
   return addContext(mainModel, { validationResult })
 }
 
