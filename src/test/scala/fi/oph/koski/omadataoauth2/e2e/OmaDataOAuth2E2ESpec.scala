@@ -24,6 +24,7 @@ class OmaDataOAuth2E2ESpec extends AnyFreeSpec with KoskiCommandLineSpec {
     ))
   }
 
+  // TODO: TOR-2210: Löytyisiköhän tähän joku siistimpi keino esim. Github actionsin sisällä hakea julkinen IP?
   private def myIP(): String = {
     val whatismyip = new URL("http://checkip.amazonaws.com")
     val in:BufferedReader = new BufferedReader(new InputStreamReader(
