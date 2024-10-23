@@ -1,4 +1,5 @@
 import { defineConfig, devices } from "@playwright/test"
+import * as os from "os"
 
 /**
  * Read environment variables from file.
@@ -82,7 +83,7 @@ export default defineConfig({
   /* Run your local dev server before starting the tests */
   webServer: [
     {
-      command: `npm run clean-luovutuspalvelu-container && npm run build-luovutuspalvelu && npm run start-luovutuspalvelu`,
+      command: `KOSKI_BACKEND_HOST=${process.env.KOSKI_BACKEND_HOST || process.env.CI ? `http://172.17.0.1:${process.env.KOSKI_BACKEND_PORT || "7021"}` : `http://${getMyIp()}:${process.env.KOSKI_BACKEND_PORT || "7021"}`} npm run build-and-start-luovutuspalvelu`,
       url: "https://localhost:7022/koski-luovutuspalvelu/healthcheck/proxy",
       reuseExistingServer: !process.env.CI,
       stdout: "pipe",
@@ -108,3 +109,10 @@ export default defineConfig({
     },
   ],
 })
+
+function getMyIp() {
+  const addresses = Object.values(os.networkInterfaces()).reduce((acc, v) =>
+    acc.concat(v),
+  )
+  return addresses.find((a) => a.family === "IPv4" && !a.internal).address
+}

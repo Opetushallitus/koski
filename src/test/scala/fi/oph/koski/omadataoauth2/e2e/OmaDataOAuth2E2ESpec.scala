@@ -15,7 +15,7 @@ class OmaDataOAuth2E2ESpec extends AnyFreeSpec with KoskiCommandLineSpec {
     sharedJetty.start()
     runTestCommand("omadata-oauth2-e2e-tests", Seq(
       "scripts/omadata-oauth2-e2e-test.sh",
-      sharedJetty.hostUrl,
+      s"${sharedJetty.port}",
       shardIndex,
       shardTotal
     ))
