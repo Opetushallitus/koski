@@ -1,7 +1,6 @@
 package fi.oph.koski.henkilo
 
 import java.time.LocalDate
-
 import cats.effect.IO
 import com.typesafe.config.Config
 import fi.oph.koski.http.Http._
@@ -10,11 +9,17 @@ import fi.oph.koski.json.Json4sHttp4s.json4sEncoderOf
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.schema.Henkilö.Oid
 import fi.oph.koski.schema.Koodistokoodiviite
-
 import cats.syntax.parallel._
-import scala.concurrent.duration.DurationInt
+import fi.oph.koski.log.Logging
+import org.http4s.blaze.client.BlazeClientBuilder
+import org.http4s.client.middleware.RetryPolicy
 
-case class OppijanumeroRekisteriClient(config: Config) {
+import scala.concurrent.duration.{DurationInt, FiniteDuration}
+
+case class OppijanumeroRekisteriClient(
+  config: Config,
+  retryStrategy: OppijanumeroRekisteriClientRetryStrategy = OppijanumeroRekisteriClientRetryStrategy.Default,
+) {
   def findOrCreate(createUserInfo: UusiOppijaHenkilö): IO[Either[HttpStatus, SuppeatOppijaHenkilöTiedot]] =
     oidServiceHttp.post(uri"/oppijanumerorekisteri-service/s2s/findOrCreateHenkiloPerustieto", createUserInfo)(json4sEncoderOf[UusiOppijaHenkilö]) {
       case (x, data, _) if x <= 201 => Right(JsonSerializer.parse[OppijaNumerorekisteriPerustiedot](data, ignoreExtras = true))
@@ -25,8 +30,10 @@ case class OppijanumeroRekisteriClient(config: Config) {
       case Left(status) => IO.pure(status).map(Left(_))
     }
 
+  def withRetryStrategy(strategy: OppijanumeroRekisteriClientRetryStrategy): OppijanumeroRekisteriClient =
+    this.copy(retryStrategy = strategy)
+
   private val baseUrl = "/oppijanumerorekisteri-service"
-  private val totalTimeout = 1.minutes
 
   private val oidServiceHttp = VirkailijaHttpClient(makeServiceConfig(config), baseUrl, true)
 
@@ -34,18 +41,13 @@ case class OppijanumeroRekisteriClient(config: Config) {
     // Osa POST-metodilla ONR:ään tehtävistä kyselyistä on oikeasti idempotentteja,
     // joten niiden uudelleenyrittäminen on ok: siksi unsafeRetryingClient. Tällä saadaan
     // esim. raportointoinkannan generointi jatkamaan, vaikka onr-yhteys hetken pätkisikin.
-    val client = unsafeRetryingClient(
-      baseUrl, clientBuilder => clientBuilder
-        .withConnectTimeout(totalTimeout / 3)
-        .withResponseHeaderTimeout(totalTimeout / 3 + 1.second)
-        .withRequestTimeout(totalTimeout)
-    )
+    val client = unsafeRetryingClient(baseUrl, retryStrategy.applyConfig, retryStrategy.backoffPolicy)
 
     VirkailijaHttpClient(
       makeServiceConfig(config),
       baseUrl,
       client,
-      true
+      preferGettingCredentialsFromSecretsManager = true
     )
   }
 
@@ -102,6 +104,38 @@ case class OppijanumeroRekisteriClient(config: Config) {
 
   private def complementWithSlaveOids(onrOppija: OppijaNumerorekisteriOppija): IO[LaajatOppijaHenkilöTiedot] =
     findSlaveOids(onrOppija.oidHenkilo).map(onrOppija.toOppijaHenkilö)
+}
+
+case class OppijanumeroRekisteriClientRetryStrategy(
+  maxRetries: Int,
+  maxWaitBetweenRetries: FiniteDuration,
+  retryTimeout: FiniteDuration,
+) extends Logging {
+  val maxTotalWaitTimeBetweenRetries: FiniteDuration = maxWaitBetweenRetries * (maxRetries - 1)
+  val totalTimeout: FiniteDuration = maxTotalWaitTimeBetweenRetries + retryTimeout * maxRetries
+
+  logger.info(s"Oppijanumerorekisteri retry strategy created: max retries = $maxRetries, max wait between retries = $maxWaitBetweenRetries, retry timeout = $retryTimeout, total timeout = $totalTimeout")
+
+  def applyConfig(builder: BlazeClientBuilder[IO]): BlazeClientBuilder[IO] = {
+    builder
+      .withConnectTimeout(retryTimeout - 1.seconds)
+      .withResponseHeaderTimeout(retryTimeout)
+      .withRequestTimeout(totalTimeout)
+  }
+
+  def backoffPolicy: Int => Option[FiniteDuration] = RetryPolicy.exponentialBackoff(
+    maxWait = maxWaitBetweenRetries,
+    maxRetry = maxRetries
+  )
+}
+
+object OppijanumeroRekisteriClientRetryStrategy {
+  val Default: OppijanumeroRekisteriClientRetryStrategy =
+    OppijanumeroRekisteriClientRetryStrategy(
+      maxRetries = 5,
+      maxWaitBetweenRetries = 2.seconds,
+      retryTimeout = 10.seconds,
+    )
 }
 
 case class KäyttäjäHenkilö(oidHenkilo: String, sukunimi: String, etunimet: String, asiointiKieli: Option[Kieli])
