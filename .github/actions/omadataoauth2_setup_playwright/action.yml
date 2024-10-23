@@ -13,10 +13,6 @@ runs:
       working-directory: koski-luovutuspalvelu/proxy
       run: npm ci
       shell: bash
-    - name: Clean possible luovutuspalvelu existing container
-      working-directory: omadata-oauth2-sample/client
-      run: npm run clean-luovutuspalvelu-container
-      shell: bash
 
     - name: Get playwright version
       working-directory: omadata-oauth2-sample/client

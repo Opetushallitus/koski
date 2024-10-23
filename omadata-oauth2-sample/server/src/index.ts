@@ -10,6 +10,7 @@ import {
 import * as https from 'https'
 
 import { Response as FetchResponse } from 'node-fetch'
+import { promises as fs } from 'fs'
 // Noden built-in fetch ei tue client certin TLS-headerien lisäämistä
 // Se ei myöskään toimi importin kanssa suoraan jostain syystä, minkä debuggaamisen jätin kesken.
 // eslint-disable-next-line no-new-func
@@ -64,9 +65,8 @@ const resourceServerUrl =
   process.env.RESOURCE_SERVER_URL ||
   `${koskiBackendHost}/koski/api/omadata-oauth2/resource-server`
 
-// Käytössä, jos mTLS on päällä:
-const clientCertSecretName =
-  process.env.CLIENT_CERT_SECRET_NAME || 'omadataoauth2sample-client-cert'
+const clientId = process.env.CLIENT_ID || 'oauth2client'
+
 const enableMTLS = process.env.ENABLE_MTLS
   ? process.env.ENABLE_MTLS !== 'false'
   : true
@@ -75,7 +75,19 @@ const enableLocalMTLS = process.env.ENABLE_LOCAL_MTLS
   ? process.env.ENABLE_LOCAL_MTLS !== 'false'
   : false
 
-const clientId = process.env.CLIENT_ID || 'oauth2client'
+// Käytössä, jos mTLS on päällä. Tämän perusteella client-side varmenne haetaan
+// AWS secrets managerista.
+const clientCertSecretName =
+  process.env.CLIENT_CERT_SECRET_NAME || 'omadataoauth2sample-client-cert'
+
+// Käytössä, jos LocalMTLS on päällä. Tämän perusteella client-side varmenne haetaan
+// lokaalista tiedostosta
+const localClientCertSecretFullchainFilename =
+  process.env.CLIENT_CERT_SECRET_FULLCHAIN_FILENAME ||
+  '../../koski-luovutuspalvelu/proxy/test/testca/certs/client.crt'
+const localClientCertSecretPrivKeyFilename =
+  process.env.CLIENT_CERT_SECRET_PRIVKEY_FILENAME ||
+  '../../koski-luovutuspalvelu/proxy/test/testca/private/client.key'
 
 // Käytössä, jos mTLS on disabloitu:
 const username = process.env.USERNAME || 'oauth2client'
@@ -95,18 +107,30 @@ app.use(helmet())
 const staticFilesPath = path.resolve(__dirname, '../../client/build')
 
 async function getClientCertSecret(): Promise<ClientCert> {
-  const fullchainSecretName = `${clientCertSecretName}-fullchain`
-  const privkeySecretName = `${clientCertSecretName}-privkey`
+  if (enableMTLS) {
+    const fullchainSecretName = `${clientCertSecretName}-fullchain`
+    const privkeySecretName = `${clientCertSecretName}-privkey`
 
-  console.log(`Getting client cert fullchain from \`${fullchainSecretName}`)
-  const cert = await getSecret(fullchainSecretName)
+    console.log(`Getting client cert fullchain from \`${fullchainSecretName}`)
+    const cert = await getSecret(fullchainSecretName)
 
-  console.log(`Getting client cert privkey from \`${privkeySecretName}`)
-  const privkey = await getSecret(privkeySecretName)
+    console.log(`Getting client cert privkey from \`${privkeySecretName}`)
+    const privkey = await getSecret(privkeySecretName)
 
-  return {
-    'fullchain.pem': cert,
-    'privkey.pem': privkey
+    return {
+      'fullchain.pem': cert,
+      'privkey.pem': privkey
+    }
+  } else if (enableLocalMTLS) {
+    const cert = await getLocalMTLSFullchain()
+    const privkey = await getLocalMTLSPrivkey()
+
+    return {
+      'fullchain.pem': cert,
+      'privkey.pem': privkey
+    }
+  } else {
+    throw Error('Not implemented')
   }
 }
 
@@ -121,6 +145,34 @@ const getSecretsManagerClient = memoize(
     }
   },
   () => 'secretsManager'
+)
+
+const getLocalMTLSFullchain = memoize(
+  async (): Promise<string> => {
+    console.log(
+      `Reading client cert fullchain from \`${localClientCertSecretFullchainFilename}`
+    )
+    const cert = await fs.readFile(
+      localClientCertSecretFullchainFilename,
+      'utf8'
+    )
+    return cert
+  },
+  () => localClientCertSecretFullchainFilename
+)
+
+const getLocalMTLSPrivkey = memoize(
+  async (): Promise<string> => {
+    console.log(
+      `Reading client cert privkey from \`${localClientCertSecretPrivKeyFilename}`
+    )
+    const privkey = await fs.readFile(
+      localClientCertSecretPrivKeyFilename,
+      'utf8'
+    )
+    return privkey
+  },
+  () => localClientCertSecretPrivKeyFilename
 )
 
 async function getSecret(secretName: string): Promise<string> {
@@ -217,10 +269,7 @@ async function fetchAccessToken(url: string): Promise<AccessTokenData> {
 }
 
 async function handleAccessTokenRequest(url: string): Promise<FetchResponse> {
-  if (enableMTLS) {
-    return await handleAccessTokenRequestMTLS(url)
-  } else if (enableLocalMTLS) {
-    // TODO: TOR-2210: käytä paikallista konffia, avaimet luovutuspalvelun testi-certeistä
+  if (enableMTLS || enableLocalMTLS) {
     return await handleAccessTokenRequestMTLS(url)
   } else {
     return await handleAccessTokenRequestBasicAuth(url)
@@ -334,10 +383,7 @@ async function handleDataRequest(
   accessToken: string,
   url: string
 ): Promise<FetchResponse> {
-  if (enableMTLS) {
-    return await handleDataRequestMTLS(accessToken, url)
-  } else if (enableLocalMTLS) {
-    // TODO: TOR-2210: käytä paikallista konffia, avaimet luovutuspalvelun testi-certeistä
+  if (enableMTLS || enableLocalMTLS) {
     return await handleDataRequestMTLS(accessToken, url)
   } else {
     return await handleDataRequestBasicAuth(accessToken, url)
