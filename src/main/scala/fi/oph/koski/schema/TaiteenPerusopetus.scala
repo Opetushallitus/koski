@@ -64,10 +64,10 @@ case class TaiteenPerusopetuksenOpiskeluoikeusjakso(
  *****************************************************************************/
 
 trait TaiteenPerusopetuksenPäätasonSuoritus
-  extends KoskeenTallennettavaPäätasonSuoritus with SuostumusPeruttavissaOpiskeluoikeudelta {
+  extends KoskeenTallennettavaPäätasonSuoritus
+    with SuostumusPeruttavissaOpiskeluoikeudelta
+    with ArvioituOsasuoritustenPerusteella {
   def koulutusmoduuli: TaiteenPerusopetuksenOpintotaso
-  def arviointi: Option[List[Arviointi]] = None
-  override def arvioitu: Boolean = osasuoritusLista.nonEmpty && osasuoritusLista.forall(_.arvioitu)
 }
 
 @Title("Yleisen oppimäärän yhteisten opintojen suoritus")
