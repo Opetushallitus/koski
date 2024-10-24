@@ -5,6 +5,7 @@ import com.google.common.util.concurrent.UncheckedExecutionException
 import fi.oph.koski.log.Logging
 import fi.oph.koski.util.Invocation
 
+import java.util.UUID
 import scala.concurrent.duration.Duration
 
 object ExpiringCache {
@@ -14,10 +15,10 @@ object ExpiringCache {
 }
 
 class ExpiringCache(val name: String, val params: ExpiringCache.Params)(implicit manager: CacheManager) extends Cache with Logging {
-  private val debugCaching = false // don't enable in production, invocation parameters can contain hetus and other secrets
+  private val debugCaching = true
 
   if (debugCaching) {
-    logger.debug("Create expiring cache " + name)
+    logger.info("Create expiring cache " + name)
   }
   manager.registerCache(this)
   /**
@@ -27,9 +28,13 @@ class ExpiringCache(val name: String, val params: ExpiringCache.Params)(implicit
 
   def apply(invocation: Invocation): AnyRef = {
     try {
+      val uuid = UUID.randomUUID()
+      if (debugCaching) {
+        logger.info(s"$name.$uuid stores a new value")
+      }
       val newValue = cache.get(invocation)
       if (debugCaching) {
-        logger.debug(s"$name.$invocation stored value $newValue")
+        logger.info(s"$name.$uuid stored")
       }
       newValue
     } catch {
@@ -37,7 +42,7 @@ class ExpiringCache(val name: String, val params: ExpiringCache.Params)(implicit
       case DoNotStoreException(value) => value
       case e: Throwable =>
         if (debugCaching) {
-          logger.warn(e)(s"$name.$invocation fetch failed")
+          logger.warn(e)(s"$name fetch failed: ${e.getMessage}")
         }
         throw e
     }
@@ -48,16 +53,13 @@ class ExpiringCache(val name: String, val params: ExpiringCache.Params)(implicit
   override def invalidateCache() = {
     cache.invalidateAll
     if (debugCaching) {
-      logger.debug(s"$name invalidate (cache size ${cache.size})")
+      logger.info(s"$name invalidate (cache size ${cache.size})")
     }
   }
 
   private val cache: LoadingCache[Invocation, AnyRef] = {
     val cacheLoader: CacheLoader[Invocation, AnyRef] = new CacheLoader[Invocation, AnyRef] {
       override def load(invocation:  Invocation): AnyRef = {
-        if (debugCaching) {
-          logger.debug("->loading")
-        }
         val value = invocation.invoke
         if (!params.storeValuePredicate(invocation, value)) {
           throw new DoNotStoreException(value)
