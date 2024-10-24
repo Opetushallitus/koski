@@ -42,11 +42,17 @@ trait OmaDataOAuth2Support extends ScalatraServlet with OmaDataOAuth2Config {
     } yield(responseType)
   }
 
-  private def validateResponseMode() = {
-    for {
-      _ <- validateParamExistsOnce("response_mode", ValidationErrorType.invalid_request)
-      responseMode <- validateParamIs("response_mode", Seq("form_post"), ValidationErrorType.invalid_request)
-    } yield(responseMode)
+  private def validateResponseMode(): Either[ValidationError, String] = {
+    val defaultValue = "form_post"
+    // Hyväksy ilman response_mode:a, koska openid_client -node -kirjaston uusin versio ei sitä toistaiseksi lähetä.
+//    if(multiParams("response_mode").length > 0) {
+      for {
+        _ <- validateParamExistsOnce("response_mode", ValidationErrorType.invalid_request)
+        responseMode <- validateParamIs("response_mode", Seq("form_post"), ValidationErrorType.invalid_request)
+      } yield(responseMode)
+ //   } else {
+ //     Right(defaultValue)
+ //   }
   }
 
   private def validateCodeChallengeMethod() = {

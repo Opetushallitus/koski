@@ -2,6 +2,8 @@ import express, { Request, Response, Application, NextFunction } from 'express'
 import path from 'node:path'
 import helmet from 'helmet'
 import RateLimit from 'express-rate-limit'
+import * as client from 'openid-client'
+import { URLSearchParams } from 'url'
 
 import {
   SecretsManagerClient,
@@ -218,6 +220,123 @@ app.get('/api', async (req: Request, res: Response, next: NextFunction) => {
   }
 })
 
+const serverMetadata: client.ServerMetadata = {
+  issuer: 'KOSKI',
+  authorization_endpoint: `${koskiBackendHost}/koski/omadata-oauth2/authorize`,
+  token_endpoint: authorizationServerUrl,
+  jwks_uri: undefined,
+  registration_endpoint: undefined,
+  scopes_supported: [
+    'HENKILOTIEDOT_NIMI',
+    'HENKILOTIEDOT_SYNTYMAAIKA',
+    'HENKILOTIEDOT_HETU',
+    'HENKILOTIEDOT_KAIKKI_TIEDOT',
+    'OPISKELUOIKEUDET_SUORITETUT_TUTKINNOT',
+    'OPISKELUOIKEUDET_AKTIIVISET_JA_PAATTYNEET_OPINNOT',
+    'OPISKELUOIKEUDET_KAIKKI_TIEDOT'
+  ],
+  response_types_supported: ['code'],
+  response_modes_supported: ['form_post'],
+  grant_types_supported: ['authorization_code'],
+  token_endpoint_auth_methods_supported: ['tls_client_auth'],
+  tls_client_certificate_bound_access_tokens: false,
+  token_endpoint_auth_signing_alg_values_supported: undefined,
+  service_documentation:
+    'https://github.com/Opetushallitus/koski/blob/master/documentation/oauth2toteutus.md',
+  code_challenge_methods_supported: ['S256'],
+  mtls_endpoint_aliases: undefined
+}
+
+const clientMetadata: client.ClientMetadata = {
+  client_id: clientId,
+  use_mtls_endpoint_aliases: false
+}
+
+let config = new client.Configuration(
+  serverMetadata,
+  clientId,
+  clientMetadata,
+  client.TlsClientAuth()
+)
+client.allowInsecureRequests(config)
+
+const code_verifier: string = client.randomPKCECodeVerifier()
+const state = 'state-placeholder'
+
+const redirect_uri: string = 'http://localhost:7051/form-post-response-cb'
+const scope: string =
+  'HENKILOTIEDOT_NIMI HENKILOTIEDOT_SYNTYMAAIKA HENKILOTIEDOT_HETU OPISKELUOIKEUDET_SUORITETUT_TUTKINNOT'
+
+app.get(
+  '/openid-api-test',
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const code_challenge: string =
+        await client.calculatePKCECodeChallenge(code_verifier)
+
+      let parameters: Record<string, string> = {
+        redirect_uri,
+        scope,
+        code_challenge,
+        code_challenge_method: 'S256',
+        state,
+        response_mode: 'form_post'
+      }
+
+      let redirectTo: URL = client.buildAuthorizationUrl(config, parameters)
+
+      // now redirect the user to redirectTo.href
+      console.log('redirecting to', redirectTo.href)
+
+      res.redirect(redirectTo.href)
+    } catch (err) {
+      next(err)
+    }
+  }
+)
+
+app.use(require('body-parser').urlencoded({ extended: false }))
+app.post(
+  '/form-post-response-cb',
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      console.log('req body', req.body)
+
+      var reqUrl = new URL(
+        `${req.protocol}://${req.get('host')}${req.originalUrl}`
+      )
+      reqUrl.search = new URLSearchParams(req.body).toString()
+
+      console.log('reqUrl.searchParams', reqUrl.searchParams)
+
+      console.log('Token Endpoint Request URL', reqUrl.toString())
+
+      const tokens: client.TokenEndpointResponse =
+        await client.authorizationCodeGrant(config, reqUrl, {
+          pkceCodeVerifier: code_verifier,
+          expectedState: state
+        })
+
+      console.log('Token Endpoint Response', tokens)
+
+      let protectedResourceResponse = await client.fetchProtectedResource(
+        config,
+        tokens.access_token,
+        new URL(resourceServerUrl),
+        'GET'
+      )
+
+      console.log(
+        'Protected Resource Response',
+        await protectedResourceResponse.json()
+      )
+
+      res.redirect('http://localhost:7050/')
+    } catch (err) {
+      next(err)
+    }
+  }
+)
 app.get('*', (req: Request, res: Response) => {
   res.sendFile(path.resolve(__dirname, './client/build', 'index.html'))
 })
