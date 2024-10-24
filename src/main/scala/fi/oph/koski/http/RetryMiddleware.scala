@@ -13,7 +13,7 @@ object RetryMiddleware {
 
   def retryNonIdempotentRequests[F[_]]: RetriableFilter[F] = (_req, result) => RetryPolicy.recklesslyRetriable(result)
 
-  private val DefaultBackoffPolicy = RetryPolicy.exponentialBackoff(
+  val DefaultBackoffPolicy: Int => Option[FiniteDuration] = RetryPolicy.exponentialBackoff(
     maxWait = 2.seconds,
     maxRetry = 5
   )
@@ -51,7 +51,11 @@ object RetryMiddleware {
     withLoggedRetry(client, RetryPolicy.defaultRetriable)
   }
 
-  def withLoggedRetry[F[_]](client: Client[F], retriableFilter: RetriableFilter[F])(implicit F: Temporal[F]): Client[F] = {
-    Retry[F](loggingRetryPolicy(DefaultBackoffPolicy, retriableFilter))(client)
+  def withLoggedRetry[F[_]](
+    client: Client[F],
+    retriableFilter: RetriableFilter[F],
+    backoffPolicy: Int => Option[FiniteDuration] = DefaultBackoffPolicy,
+  )(implicit F: Temporal[F]): Client[F] = {
+    Retry[F](loggingRetryPolicy(backoffPolicy, retriableFilter))(client)
   }
 }
