@@ -28,13 +28,9 @@ class ExpiringCache(val name: String, val params: ExpiringCache.Params)(implicit
 
   def apply(invocation: Invocation): AnyRef = {
     try {
-      val uuid = UUID.randomUUID()
-      if (debugCaching) {
-        logger.info(s"$name.$uuid stores a new value")
-      }
       val newValue = cache.get(invocation)
       if (debugCaching) {
-        logger.info(s"$name.$uuid stored")
+        logger.info(s"$name stored, cache size ${cache.stats()}")
       }
       newValue
     } catch {
