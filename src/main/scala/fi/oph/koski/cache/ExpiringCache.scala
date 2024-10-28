@@ -15,7 +15,7 @@ object ExpiringCache {
 }
 
 class ExpiringCache(val name: String, val params: ExpiringCache.Params)(implicit manager: CacheManager) extends Cache with Logging {
-  private val debugCaching = true
+  private val debugCaching = false
 
   if (debugCaching) {
     logger.info("Create expiring cache " + name)
