@@ -631,48 +631,6 @@
       </activation>
     </profile>
     <profile>
-      <id>koskidev</id>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.scalatest</groupId>
-            <artifactId>scalatest-maven-plugin</artifactId>
-            <configuration>
-              <wildcardSuites>fi.oph.koski.integrationtest</wildcardSuites>
-            </configuration>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-    <profile>
-      <id>localization</id>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.scalatest</groupId>
-            <artifactId>scalatest-maven-plugin</artifactId>
-            <configuration>
-              <wildcardSuites>fi.oph.koski.localization</wildcardSuites>
-            </configuration>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-    <profile>
-      <id>casintegration</id>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.scalatest</groupId>
-            <artifactId>scalatest-maven-plugin</artifactId>
-            <configuration>
-              <wildcardSuites>fi.oph.koski.casintegration</wildcardSuites>
-            </configuration>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-    <profile>
       <id>browserstack</id>
       <build>
         <plugins>
@@ -681,60 +639,6 @@
             <artifactId>scalatest-maven-plugin</artifactId>
             <configuration>
               <wildcardSuites>fi.oph.koski.browserstack</wildcardSuites>
-            </configuration>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-    <profile>
-      <id>mocharunner</id>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.scalatest</groupId>
-            <artifactId>scalatest-maven-plugin</artifactId>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-    <profile>
-      <id>fronttest</id>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.scalatest</groupId>
-            <artifactId>scalatest-maven-plugin</artifactId>
-            <configuration>
-              <wildcardSuites>fi.oph.koski.mocha</wildcardSuites>
-              <tagsToExclude>parallelmocha,valpasfront</tagsToExclude>
-            </configuration>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-    <profile>
-      <id>integrationtest</id>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.scalatest</groupId>
-            <artifactId>scalatest-maven-plugin</artifactId>
-            <configuration>
-              <wildcardSuites>fi.oph.koski.e2e</wildcardSuites>
-            </configuration>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-    <profile>
-      <id>omadataoauth2e2e</id>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.scalatest</groupId>
-            <artifactId>scalatest-maven-plugin</artifactId>
-            <configuration>
-              <wildcardSuites>fi.oph.koski.omadataoauth2.e2e</wildcardSuites>
             </configuration>
           </plugin>
         </plugins>
@@ -818,17 +722,6 @@
                 </goals>
               </execution>
             </executions>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-    <profile>
-      <id>valpasfronttest</id>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.scalatest</groupId>
-            <artifactId>scalatest-maven-plugin</artifactId>
           </plugin>
         </plugins>
       </build>

@@ -70,7 +70,7 @@ browserstack:
 
 .PHONY: localizationtest
 localizationtest:
-	mvn $(mvn_opts) -DargLine="$(mvn_argline)" test -Plocalization
+	mvn $(mvn_opts) -DargLine="$(mvn_argline)" test -DmembersOnlySuites="fi.oph.koski.localization"
 
 .PHONY: testresults
 testresults:
@@ -110,15 +110,15 @@ backtestnonmock:
 
 .PHONY: fronttest
 fronttest:
-	mvn $(mvn_opts) -DargLine="$(mvn_argline)" test -Pfronttest
+	mvn $(mvn_opts) -DargLine="$(mvn_argline)" test -DmembersOnlySuites="fi.oph.koski.mocha" -DtagsToExlude="parallelmocha"
 
 .PHONY: integrationtest
 integrationtest:
-		mvn $(mvn_opts) -DargLine="$(mvn_argline)" test -Pintegrationtest -Dsuites="fi.oph.koski.e2e.KoskiFrontSpec"
+		mvn $(mvn_opts) -DargLine="$(mvn_argline)" test -Dsuites="fi.oph.koski.e2e.KoskiFrontSpec"
 
 .PHONY: omadataoauth2e2e
 omadataoauth2e2e:
-		mvn $(mvn_opts) -DargLine="$(mvn_argline)" test -Pomadataoauth2e2e -Dsuites="fi.oph.koski.omadataoauth2.e2e.OmaDataOAuth2E2ESpec"
+		mvn $(mvn_opts) -DargLine="$(mvn_argline)" test -Dsuites="fi.oph.koski.omadataoauth2.e2e.OmaDataOAuth2E2ESpec"
 
 .PHONY: screenshot
 screenshot:
