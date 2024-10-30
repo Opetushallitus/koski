@@ -163,7 +163,6 @@ jobs:
             fi.oph.koski.luovutuspalvelu, \
             fi.oph.koski.migration, \
             fi.oph.koski.migri, \
-            fi.oph.koski.mocha, \
             fi.oph.koski.mydata, \
             fi.oph.koski.omaopintopolkuloki, \
             fi.oph.koski.opiskeluoikeus, \
