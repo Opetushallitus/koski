@@ -36,6 +36,18 @@ object MockUsers {
     )))
   )
 
+  val omadataOAuth2SampleAppPalvelukäyttäjä = KoskiMockUser(
+    "omadataoauth2sample",
+    "omadataoauth2sample",
+    "1.2.246.562.24.99999984735",
+    Seq(OrganisaatioJaKäyttöoikeudet(MockOrganisaatiot.dvv, List(
+      PalveluJaOikeus("KOSKI", Rooli.OMADATAOAUTH2_OPISKELUOIKEUDET_SUORITETUT_TUTKINNOT),
+      PalveluJaOikeus("KOSKI", Rooli.OMADATAOAUTH2_HENKILOTIEDOT_NIMI),
+      PalveluJaOikeus("KOSKI", Rooli.OMADATAOAUTH2_HENKILOTIEDOT_SYNTYMAAIKA),
+      PalveluJaOikeus("KOSKI", Rooli.OMADATAOAUTH2_HENKILOTIEDOT_HETU),
+    )))
+  )
+
   val rekisteröimätönOmadataOAuth2Palvelukäyttäjä = KoskiMockUser(
     "oauth2clienteirek",
     "oauth2clienteirek",
@@ -620,7 +632,8 @@ object MockUsers {
     muuKuinSäänneltyKoulutusYritys,
     pohjoiskalotinKoulutussäätiöKäyttäjä,
     omadataOAuth2Palvelukäyttäjä,
-    rekisteröimätönOmadataOAuth2Palvelukäyttäjä
+    rekisteröimätönOmadataOAuth2Palvelukäyttäjä,
+    omadataOAuth2SampleAppPalvelukäyttäjä
   )
 }
 

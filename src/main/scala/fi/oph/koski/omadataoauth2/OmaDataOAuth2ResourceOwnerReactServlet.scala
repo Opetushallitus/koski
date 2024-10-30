@@ -31,9 +31,9 @@ class OmaDataOAuth2ResourceOwnerReactServlet(implicit val application: KoskiAppl
               logoutAndSendErrorsToClient(clientInfo, validationError)
             case Left(validationError) =>
               sendErrorsToClient(clientInfo, validationError)
-            case _ if !isAuthenticated =>
+            case Right(paramInfo) if !isAuthenticated =>
               loginAndRedirectToSelf(lang)
-            case _ if isAuthenticated =>
+            case Right(paramInfo) if isAuthenticated =>
               landerHtml(nonce)
           }
       }
@@ -76,7 +76,7 @@ class OmaDataOAuth2ResourceOwnerReactServlet(implicit val application: KoskiAppl
   }
 
   private def getParamsWithError(validationError: ValidationError): String = {
-    getCurrentURLParams match {
+    getCurrentURLParamsWithEnforcedPercentEncoding match {
       case Some(existingParams) =>
         existingParams + s"&${validationError.getClientErrorParams}"
       case _ =>
@@ -85,7 +85,7 @@ class OmaDataOAuth2ResourceOwnerReactServlet(implicit val application: KoskiAppl
   }
 
   private def getCasLoginURL(lang: String): String = {
-    val targetUrl = (request.getRequestURI, getCurrentURLParams) match {
+    val targetUrl = (request.getRequestURI, getCurrentURLParamsWithEnforcedPercentEncoding) match {
       case (_, Some(requestParamsNoEncoding)) =>
         // Käytä base64url-enkoodaus-workaroundia, koska URL sisälsi query-parametreja
         val noQueryParamsWorkaroundTarget = s"/koski/omadata-oauth2/cas-workaround/authorize/${base64UrlEncode(requestParamsNoEncoding)}"
@@ -121,11 +121,12 @@ class OmaDataOAuth2ResourceOwnerReactServlet(implicit val application: KoskiAppl
     }
   }
 
-  private def getCurrentURLParams: Option[String] = {
+  // + -enkoodatut query-stringit rikkoutuvat redirecteissä, mutta esim. openid-client -OAuth2-kirjasto lähettää scopet +-enkoodattuina
+  private def getCurrentURLParamsWithEnforcedPercentEncoding: Option[String] = {
     if (request.queryString.isEmpty) {
       None
     } else {
-      Some(request.queryString)
+      Some(request.queryString.replace("+", "%20"))
     }
   }
 }

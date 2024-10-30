@@ -23,7 +23,7 @@ trait OmaDataOAuth2Support extends ScalatraServlet with OmaDataOAuth2Config {
   }
 
   // validoi parametrit, joissa olevista virheistä raportoidaan clientille redirectin kautta
-  protected def validateQueryOtherParams(): Either[ValidationError, Unit] = {
+  protected def validateQueryOtherParams(): Either[ValidationError, ParamInfo] = {
     // TODO: TOR-2210: tee muiden parametrien validoinnit, joiden virheistä voi/kuuluu raportoida redirect_uri:n kautta
     // clientille asti. Esim. onko S256 code challenge annettu jne.
     for {
