@@ -21,7 +21,7 @@ export default defineConfig({
      * Maximum time expect() should wait for the condition to be met.
      * For example in `await expect(locator).toHaveText();`
      */
-    timeout: 5000,
+    timeout: 5 * 1000,
   },
   /* Run tests in files in parallel */
   fullyParallel: true,
@@ -92,15 +92,15 @@ export default defineConfig({
       ignoreHTTPSErrors: true,
     },
     {
-      command: `npm run start-server`,
-      url: "http://localhost:7051/healthcheck",
+      command: `KOSKI_BACKEND_HOST=${process.env.KOSKI_BACKEND_HOST || process.env.CI ? `http://172.17.0.1:${process.env.KOSKI_BACKEND_PORT || "7021"}` : `http://${getMyIp()}:${process.env.KOSKI_BACKEND_PORT || "7021"}`} npm run start-server`,
+      url: "http://localhost:7051/api/healthcheck",
       reuseExistingServer: !process.env.CI,
       stdout: "pipe",
       stderr: "pipe",
       timeout: 2 * 60 * 1000,
     },
     {
-      command: `npm run start`,
+      command: `KOSKI_BACKEND_HOST=${process.env.KOSKI_BACKEND_HOST || process.env.CI ? `http://172.17.0.1:${process.env.KOSKI_BACKEND_PORT || "7021"}` : `http://${getMyIp()}:${process.env.KOSKI_BACKEND_PORT || "7021"}`} npm run start`,
       url: "http://localhost:7050",
       reuseExistingServer: !process.env.CI,
       stdout: "pipe",

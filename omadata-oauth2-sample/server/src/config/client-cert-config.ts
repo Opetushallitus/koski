@@ -1,0 +1,100 @@
+import {
+  GetSecretValueCommand,
+  SecretsManagerClient
+} from '@aws-sdk/client-secrets-manager'
+import { memoize } from '../util/memoize.js'
+import { promises as fs } from 'fs'
+
+interface ClientCertConfig {
+  'fullchain.pem': string
+  'privkey.pem': string
+}
+
+const enableLocalMTLS = process.env.ENABLE_LOCAL_MTLS
+  ? process.env.ENABLE_LOCAL_MTLS !== 'false'
+  : false
+// Käytössä, jos localMTLS ei ole päällä. Tämän perusteella client-side varmenne haetaan
+// AWS secrets managerista.
+const clientCertSecretName =
+  process.env.CLIENT_CERT_SECRET_NAME || 'omadataoauth2sample-client-cert'
+// Käytössä, jos LocalMTLS on päällä. Tämän perusteella client-side varmenne haetaan
+// lokaalista tiedostosta
+const localClientCertSecretFullchainFilename =
+  process.env.CLIENT_CERT_SECRET_FULLCHAIN_FILENAME ||
+  '../../koski-luovutuspalvelu/proxy/test/testca/certs/client.crt'
+const localClientCertSecretPrivKeyFilename =
+  process.env.CLIENT_CERT_SECRET_PRIVKEY_FILENAME ||
+  '../../koski-luovutuspalvelu/proxy/test/testca/private/client.key'
+
+export async function getClientCertSecret(): Promise<ClientCertConfig> {
+  if (!enableLocalMTLS) {
+    const fullchainSecretName = `${clientCertSecretName}-fullchain`
+    const privkeySecretName = `${clientCertSecretName}-privkey`
+
+    const cert = await getSecret(fullchainSecretName)
+
+    const privkey = await getSecret(privkeySecretName)
+
+    return {
+      'fullchain.pem': cert,
+      'privkey.pem': privkey
+    }
+  } else {
+    const cert = await getLocalMTLSFullchain()
+    const privkey = await getLocalMTLSPrivkey()
+
+    return {
+      'fullchain.pem': cert,
+      'privkey.pem': privkey
+    }
+  }
+}
+
+const getSecretsManagerClient = memoize(
+  (): SecretsManagerClient => {
+    return new SecretsManagerClient({
+      region: 'eu-west-1'
+    })
+  },
+  () => 'secretsManager'
+)
+const getLocalMTLSFullchain = memoize(
+  async (): Promise<string> => {
+    const cert = await fs.readFile(
+      localClientCertSecretFullchainFilename,
+      'utf8'
+    )
+    return cert
+  },
+  () => localClientCertSecretFullchainFilename
+)
+const getLocalMTLSPrivkey = memoize(
+  async (): Promise<string> => {
+    const privkey = await fs.readFile(
+      localClientCertSecretPrivKeyFilename,
+      'utf8'
+    )
+    return privkey
+  },
+  () => localClientCertSecretPrivKeyFilename
+)
+
+async function getSecret(secretName: string): Promise<string> {
+  try {
+    const response = await getSecretsManagerClient().send(
+      new GetSecretValueCommand({
+        SecretId: secretName,
+        VersionStage: 'AWSCURRENT'
+      })
+    )
+    if (response.SecretString) {
+      return response.SecretString
+    } else {
+      throw new Error(`No data found in secret ${secretName}`)
+    }
+  } catch (error) {
+    // For a list of exceptions thrown, see
+    // https://docs.aws.amazon.com/secretsmanager/latest/apireference/API_GetSecretValue.html
+    throw error
+  }
+}

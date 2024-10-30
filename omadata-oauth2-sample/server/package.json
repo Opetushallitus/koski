@@ -29,7 +29,8 @@
     "express": "^4.21.1",
     "express-rate-limit": "^7.4.0",
     "helmet": "^7.1.0",
-    "node-fetch": "^3.3.2"
+    "openid-client": "^6.1.1",
+    "undici": "^6.20.1"
   },
   "devDependencies": {
     "@aws-sdk/types": "^3.654.0",

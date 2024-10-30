@@ -6,7 +6,7 @@ function App() {
   const [error, setError] = React.useState<string | null>(null)
 
   React.useEffect(() => {
-    fetch("/api")
+    fetch("/api/front-page-dummy")
       .then((res) => {
         if (!res.ok) {
           throw new Error(`API result: ${res.status}:${res.statusText}`)
