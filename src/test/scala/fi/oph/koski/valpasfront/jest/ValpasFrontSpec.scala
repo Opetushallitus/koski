@@ -1,7 +1,7 @@
-package fi.oph.koski.valpas.jest
+package fi.oph.koski.valpasfront.jest
 
-import fi.oph.koski.{KoskiApplicationForTests, SharedJetty}
 import fi.oph.koski.mocha.KoskiCommandLineSpec
+import fi.oph.koski.{KoskiApplicationForTests, SharedJetty}
 import org.scalatest.Tag
 import org.scalatest.freespec.AnyFreeSpec
 
