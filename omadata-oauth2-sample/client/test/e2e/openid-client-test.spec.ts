@@ -31,6 +31,53 @@ test("OAuth2 data access from KOSKI using openid-client works", async ({
   await page.getByRole("button", { name: "Hyväksy" }).click()
 
   // Check that oppija data containing ssn is displayed
-  await expect(page.locator("pre")).toContainText("210281-9988")
   await page.waitForURL("**/api/openid-api-test/form-post-response-cb**")
+  await expect(page.locator("html")).toContainText("210281-9988")
+})
+
+test("Standard error from server is displayed when user declines", async ({
+  page,
+}) => {
+  await page.goto("http://localhost:7051/api/openid-api-test")
+
+  // Korhopankki login
+  await page.waitForURL("**/koski/login/oppija/**")
+  await page.getByTestId("hetu").fill("280618-402H")
+  await expect(
+    page.getByRole("button", { name: "Kirjaudu sisään" }),
+  ).toBeEnabled()
+  await page.getByRole("button", { name: "Kirjaudu sisään" }).click()
+
+  // Auth page
+  await page.waitForURL("**/koski/omadata-oauth2/authorize**")
+
+  // Decline authorization
+  await expect(
+    page.getByRole("button", { name: "Peruuta ja palaa" }),
+  ).toBeVisible()
+  await page.getByRole("button", { name: "Peruuta ja palaa" }).click()
+
+  // Check that error data is displayed
+  await page.waitForURL("**/api/openid-api-test/form-post-response-cb**")
+  await expect(page.locator("html")).toContainText(
+    '{"state":"state-placeholder","error":"access_denied"}',
+  )
+})
+
+test("Error page displayed in browser when using invalid redirect_uri", async ({
+  page,
+}) => {
+  await page.goto(
+    "http://localhost:7051/api/openid-api-test/invalid-redirect-uri",
+  )
+  await expect(page.getByTestId("error")).toBeVisible()
+  await expect(page.locator("#error")).toContainText("invalid_client_data")
+  await expect(page.getByLabel("Tapahtui virhe:")).toContainText(
+    "omadataoauth2-error-",
+  )
+  await expect(page.getByLabel("Tapahtui virhe:")).toContainText(
+    "invalid_client_data",
+  )
+  await page.getByText("✕").click()
+  await expect(page.getByTestId("error")).toBeHidden()
 })

@@ -8,15 +8,18 @@ import { redirectUri } from '../apiroutes/openid-api-test.js'
 export async function buildAuthorizationUrl(
   code_verifier: string,
   state: string,
-  scope: string
+  scope: string,
+  redirectUriOverride: string | undefined = undefined,
+  codeChallengeOverride: string | undefined = undefined
 ) {
   const config = await getOAuthClientConfig()
 
   const code_challenge: string =
-    await client.calculatePKCECodeChallenge(code_verifier)
+    codeChallengeOverride ||
+    (await client.calculatePKCECodeChallenge(code_verifier))
 
   let parameters: Record<string, string> = {
-    redirect_uri: redirectUri,
+    redirect_uri: redirectUriOverride || redirectUri,
     scope,
     code_challenge,
     code_challenge_method: 'S256',
