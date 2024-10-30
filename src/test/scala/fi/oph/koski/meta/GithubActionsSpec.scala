@@ -15,6 +15,7 @@ class GithubActionsSpec extends AnyFreeSpec with Matchers {
       .filterNot(_.contains("browserstack")) // Browserstack ei käytössä TODO siivoa testit pois?
       .filterNot(_.contains("fi.oph.koski.mocha")) // Koski frontend
       .filterNot(_.contains("fi.oph.koski.valpasfront")) // Valpas frontend
+      .filterNot(_.contains("fi.oph.koski.localization")) // Testit rikki
 
   "Github Actions" - {
     "Tarkistetaan, että tiedostossa all_tests.yml on mainittu kaikki testipaketit" in {

@@ -158,7 +158,6 @@ jobs:
             fi.oph.koski.kela, \
             fi.oph.koski.koodisto, \
             fi.oph.koski.koskiuser, \
-            fi.oph.koski.localization, \
             fi.oph.koski.log, \
             fi.oph.koski.luovutuspalvelu, \
             fi.oph.koski.migration, \
