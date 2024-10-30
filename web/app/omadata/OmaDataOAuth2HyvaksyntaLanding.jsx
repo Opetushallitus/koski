@@ -6,10 +6,9 @@ import Spinner from './Spinner'
 import Footer from './Footer'
 import Header from './Header'
 import Http from '../util/http'
-import { currentLocation, parseQuery } from '../util/location'
+import { currentLocation } from '../util/location'
 import { Error as ErrorDisplay, logError } from '../util/Error'
-import { Text } from '../i18n/Text'
-import { t, tTemplate } from '../i18n/i18n'
+import { tTemplate } from '../i18n/i18n'
 
 import OmaDataOAuth2UusiHyvaksynta from './OmaDataOAuth2UusiHyvaksynta'
 import { KoodistoProvider } from '../appstate/koodisto'
@@ -34,22 +33,26 @@ class OmaDataOAuth2HyvaksyntaLanding extends React.Component {
   }
 
   parseClientId() {
-    const clientId = parseQuery(currentLocation().queryString).client_id
+    const urlParams = new URLSearchParams(currentLocation().queryString)
+    const clientId = urlParams.get('client_id')
 
     // TODO TOR-2210: Tarkista, että client_id on jokin olemassaoleva? Tämän voinee tehdä tässä jo ennen valtuutusta, vai tehdäänkö bäkkärissä, ja tässä vaan luotetaan?
     return clientId
   }
 
   parseScope() {
-    return parseQuery(currentLocation().queryString).scope
+    const urlParams= new URLSearchParams(currentLocation().queryString)
+    return urlParams.get('scope')
   }
 
   parseError() {
-    return parseQuery(currentLocation().queryString).error
+    const urlParams= new URLSearchParams(currentLocation().queryString)
+    return urlParams.get('error')
   }
 
   parseErrorId() {
-    return parseQuery(currentLocation().queryString).error_id
+    const urlParams= new URLSearchParams(currentLocation().queryString)
+    return urlParams.get('error_id')
   }
 
   componentDidMount() {
