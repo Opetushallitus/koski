@@ -16,8 +16,16 @@
 
 ## E2E-testit
 
-Testit olettavat, että Koski-backend on käynnissä ja että koski-luovutuspalvelu -repositoryn sisältö on koski-hakemiston juuressa
-alihakemistossa /koski-luovutuspalvelu.
+Testit olettavat, että Koski-backend on käynnissä (ja Koski-frontti buildattuna) ja että
+koski-luovutuspalvelu -repositoryn sisältö on koski-hakemiston juuressa alihakemistossa
+
+    /koski-luovutuspalvelu
+
+Lisäksi pitää olla ajettuna:
+
+    /omadata-oauth2-sample/server % npm install
+    /omadata-oauth2-sample/client % npm install
+    /omadata-oauth2-sample/client % npx playwright install
 
 Testien käynnistys:
 
