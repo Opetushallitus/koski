@@ -100,7 +100,7 @@ backtest:
 	fi.oph.koski.userdirectory,fi.oph.koski.util,fi.oph.koski.valpas,\
 	fi.oph.koski.valvira,fi.oph.koski.versioning,fi.oph.koski.virta,fi.oph.koski.vkt,\
 	fi.oph.koski.ytl,fi.oph.koski.ytr,fi.oph.koski.ytl,fi.oph.koski.meta,\
-	fi.oph.koski.ytl,fi.oph.koski.api,fi.oph.koski.frontendvalvonta,fi.oph.koski.tiedonsiirto\
+	fi.oph.koski.ytl,fi.oph.koski.api,fi.oph.koski.frontendvalvonta,fi.oph.koski.tiedonsiirto,\
 	fi.oph.koski.typemodel,fi.oph.koski.suoritusjako,fi.oph.koski.suoritusjako.suoritetuttutkinnot,\
 	fi.oph.koski.massaluovutus,fi.oph.koski.omadataoauth2.unit,fi.oph.koski.omadataoauth2.e2e"
 
