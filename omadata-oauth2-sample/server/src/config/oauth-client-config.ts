@@ -1,7 +1,7 @@
 import * as client from 'openid-client'
 import { Configuration } from 'openid-client'
 import { memoize } from '../util/memoize.js'
-import { getClientCertSecret } from './client-cert-config.js'
+import { enableLocalMTLS, getClientCertSecret } from './client-cert-config.js'
 import * as undici from 'undici'
 import { koskiBackendHost } from './koski-backend-config.js'
 
@@ -62,7 +62,9 @@ export const getOAuthClientConfig = memoize(
       // @ts-expect-error
       undici.fetch(args[0], { ...args[1], dispatcher: agent })
 
-    client.allowInsecureRequests(config)
+    if (enableLocalMTLS) {
+      client.allowInsecureRequests(config)
+    }
 
     return config
   },
