@@ -31,9 +31,9 @@ class OmaDataOAuth2ResourceOwnerReactServlet(implicit val application: KoskiAppl
               logoutAndSendErrorsToClient(clientInfo, validationError)
             case Left(validationError) =>
               sendErrorsToClient(clientInfo, validationError)
-            case _ if !isAuthenticated =>
+            case Right(paramInfo) if !isAuthenticated =>
               loginAndRedirectToSelf(lang)
-            case _ if isAuthenticated =>
+            case Right(paramInfo) if isAuthenticated =>
               landerHtml(nonce)
           }
       }
