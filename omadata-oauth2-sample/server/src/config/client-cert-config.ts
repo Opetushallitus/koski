@@ -10,24 +10,20 @@ interface ClientCertConfig {
   'privkey.pem': string
 }
 
-const enableLocalMTLS = process.env.ENABLE_LOCAL_MTLS
+export const enableLocalMTLS = process.env.ENABLE_LOCAL_MTLS
   ? process.env.ENABLE_LOCAL_MTLS !== 'false'
   : false
-// Käytössä, jos localMTLS ei ole päällä. Tämän perusteella client-side varmenne haetaan
-// AWS secrets managerista.
-const clientCertSecretName =
-  process.env.CLIENT_CERT_SECRET_NAME || 'omadataoauth2sample-client-cert'
-// Käytössä, jos LocalMTLS on päällä. Tämän perusteella client-side varmenne haetaan
-// lokaalista tiedostosta
-const localClientCertSecretFullchainFilename =
-  process.env.CLIENT_CERT_SECRET_FULLCHAIN_FILENAME ||
-  '../../koski-luovutuspalvelu/proxy/test/testca/certs/client.crt'
-const localClientCertSecretPrivKeyFilename =
-  process.env.CLIENT_CERT_SECRET_PRIVKEY_FILENAME ||
-  '../../koski-luovutuspalvelu/proxy/test/testca/private/client.key'
 
 export async function getClientCertSecret(): Promise<ClientCertConfig> {
-  if (!enableLocalMTLS) {
+  if (enableLocalMTLS) {
+    const cert = await getLocalMTLSFullchain()
+    const privkey = await getLocalMTLSPrivkey()
+
+    return {
+      'fullchain.pem': cert,
+      'privkey.pem': privkey
+    }
+  } else {
     const fullchainSecretName = `${clientCertSecretName}-fullchain`
     const privkeySecretName = `${clientCertSecretName}-privkey`
 
@@ -39,25 +35,19 @@ export async function getClientCertSecret(): Promise<ClientCertConfig> {
       'fullchain.pem': cert,
       'privkey.pem': privkey
     }
-  } else {
-    const cert = await getLocalMTLSFullchain()
-    const privkey = await getLocalMTLSPrivkey()
-
-    return {
-      'fullchain.pem': cert,
-      'privkey.pem': privkey
-    }
   }
 }
 
-const getSecretsManagerClient = memoize(
-  (): SecretsManagerClient => {
-    return new SecretsManagerClient({
-      region: 'eu-west-1'
-    })
-  },
-  () => 'secretsManager'
-)
+///////////////////////////////////////////////////////////////////
+// Fetch certiticate content from local files
+
+const localClientCertSecretFullchainFilename =
+  process.env.CLIENT_CERT_SECRET_FULLCHAIN_FILENAME ||
+  '../../koski-luovutuspalvelu/proxy/test/testca/certs/client.crt'
+const localClientCertSecretPrivKeyFilename =
+  process.env.CLIENT_CERT_SECRET_PRIVKEY_FILENAME ||
+  '../../koski-luovutuspalvelu/proxy/test/testca/private/client.key'
+
 const getLocalMTLSFullchain = memoize(
   async (): Promise<string> => {
     const cert = await fs.readFile(
@@ -79,6 +69,20 @@ const getLocalMTLSPrivkey = memoize(
   () => localClientCertSecretPrivKeyFilename
 )
 
+///////////////////////////////////////////////////////////////////
+// Fetch certificate content from AWS secrets manager
+
+const clientCertSecretName =
+  process.env.CLIENT_CERT_SECRET_NAME || 'omadataoauth2sample-client-cert'
+
+const getSecretsManagerClient = memoize(
+  (): SecretsManagerClient => {
+    return new SecretsManagerClient({
+      region: 'eu-west-1'
+    })
+  },
+  () => 'secretsManager'
+)
 async function getSecret(secretName: string): Promise<string> {
   try {
     const response = await getSecretsManagerClient().send(
