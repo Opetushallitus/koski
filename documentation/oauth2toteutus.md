@@ -86,16 +86,7 @@ Siksi uusia OAuth2-rajapinnan käyttäjiä lisättäessä tietoja pitää konfig
 
 ## Integraatiotestit
 
-Integraatiotestejä varten pitää Koski-backendin olla pystyssä (oletuksena `localhost:7021`) tai testit pitää käynnistää ajamalla `OmaDataOAuth2E2ESpec.scala`.
-
-Jos backend on valmiiksi ajossa, voi testit ajaa komennolla
-
-    cd omadata-oauth2-sample/client
-    npm run playwright:test
-
-Testit ajetaan headless-selaimessa. Jos haluat selainikkunan näkyviin, aja testit komennolla `npm run playwright:test:debug`
-
-Lisää yksityiskohtia testeistä ja testiapplikaatiosta, ks. erillinen [README.md](../omadata-oauth2-sample/README.md)
+Ks. [README.md#e2e-testit](../omadata-oauth2-sample/README.md#e2e-testit)
 
 ## Infran ylläpito
 
