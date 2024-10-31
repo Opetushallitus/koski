@@ -1,4 +1,4 @@
-import { getOAuthClientConfig } from '../config/oauth-client-config.js'
+import { getOAuthClientConfig } from '../config/oauth2-client-config.js'
 import * as client from 'openid-client'
 import { resourceEndpointUrl } from '../config/koski-backend-config.js'
 import { Request } from 'express'
