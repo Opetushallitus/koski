@@ -28,9 +28,18 @@ function App() {
     <div className="App">
       <header className="App-header">
         <p>OmaDataOAuth2 Sample app</p>
-        <p>{!data ? "Loading..." : JSON.stringify(data)}</p>
-        <p>{!error ? "Checking errors..." : error}</p>
       </header>
+      <p>
+        <a href={"/api/openid-api-test"}>Test whole authorization code flow</a>
+      </p>
+      <p>
+        <a href={"/api/openid-api-test/invalid-redirect-uri"}>
+          Test authorization code flow with invalid redirect_uri
+        </a>
+      </p>
+      <h2>Fetch resource using access token result:</h2>
+      <p>{!data ? "Loading..." : JSON.stringify(data)}</p>
+      <p>{!error ? "Checking errors..." : error}</p>
     </div>
   )
 }
