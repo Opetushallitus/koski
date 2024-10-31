@@ -12,6 +12,7 @@ import fi.oph.koski.massaluovutus.suoritusrekisteri.SureResponse
 import fi.oph.koski.massaluovutus.valintalaskenta.ValintalaskentaResult
 import fi.oph.koski.migri.MigriSchema
 import fi.oph.koski.massaluovutus.{QueryDocumentation, QueryResponse}
+import fi.oph.koski.omadataoauth2.OmaDataOAuth2Documentation
 import fi.oph.koski.schema.KoskiSchema
 import fi.oph.koski.servlet.{KoskiSpecificApiServlet, NoCache}
 import fi.oph.koski.suoritusjako.aktiivisetjapaattyneetopinnot.AktiivisetJaPäättyneetOpinnotSchema
@@ -39,7 +40,7 @@ class DocumentationApiServlet(application: KoskiApplication) extends KoskiSpecif
   }
 
   get("/sections.html") {
-    KoskiTiedonSiirtoHtml.htmlTextSections ++ QueryDocumentation.htmlTextSections(application)
+    KoskiTiedonSiirtoHtml.htmlTextSections ++ QueryDocumentation.htmlTextSections(application) ++ OmaDataOAuth2Documentation.htmlTextSections(application)
   }
 
   get("/apiOperations.json") {

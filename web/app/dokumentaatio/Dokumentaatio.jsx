@@ -114,6 +114,15 @@ const dokumentaatioContentP = (location, contentP) =>
             ''
           )}
 
+{/* TODO: TOR-2210: Poista kommenttimerkit lisätäksesi navigointiin, kun dokumentaatio on julkaisuvalmis
+          {naviLink(
+            '/koski/dokumentaatio/rajapinnat/oauth2/omadata',
+            'OAuth2-standardin mukaiset Omadata-rajapinnat',
+            location,
+            ''
+          )}
+*/}
+
           {naviLink(
             '/koski/dokumentaatio/rajapinnat/massaluovutus/koulutuksenjarjestajat',
             'Massaluovutusrajapinnat koulutuksenjärjestäjille',
@@ -300,6 +309,34 @@ export const dokumentaatioKyselytP = (path) => {
   const sections = {
     koulutuksenjarjestajat: 'massaluovutus_koulutuksenjarjestajat',
     oph: 'massaluovutus_oph'
+  }
+  const match = Object.keys(sections).find((key) =>
+    path.includes(`${basePath}/${key}`)
+  )
+  if (match) {
+    return dokumentaatioContentP(
+      `${basePath}/${match}`,
+      htmlSectionsP().map((htmlSections) => ({
+        content: (
+          <div>
+            <div
+              className="markdown-content"
+              dangerouslySetInnerHTML={{
+                __html: htmlSections[sections[match]]
+              }}
+            ></div>
+          </div>
+        ),
+        title: 'Dokumentaatio - Rajapinnat'
+      }))
+    )
+  }
+}
+
+export const dokumentaatioOmadataOAuth2P = (path) => {
+  const basePath = '/koski/dokumentaatio/rajapinnat/oauth2'
+  const sections = {
+    omadata: 'oauth2_omadata'
   }
   const match = Object.keys(sections).find((key) =>
     path.includes(`${basePath}/${key}`)

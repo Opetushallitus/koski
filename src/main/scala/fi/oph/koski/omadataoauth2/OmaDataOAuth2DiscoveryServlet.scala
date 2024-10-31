@@ -35,7 +35,7 @@ class OmaDataOAuth2DiscoveryServlet(implicit val application: KoskiApplication) 
       authorization_endpoint = opintopolkuBaseUrl + "/koski/omadata-oauth2/authorize",
       scopes_supported = findKoodisto("omadataoauth2scope").map(_.koodiArvo.toUpperCase()).sorted,
       token_endpoint = luovutuspalveluBaseUrl + "/koski/api/omadata-oauth2/authorization-server",
-      service_documentation = opintopolkuBaseUrl + "/koski/dokumentaatio/rajapinnat/omadata-oauth2"
+      service_documentation = opintopolkuBaseUrl + "/koski/dokumentaatio/rajapinnat/oauth2/omadata"
     )
 
     render(metadata)
