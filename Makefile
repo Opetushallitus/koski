@@ -63,11 +63,6 @@ prettier-format-mock-data:
 
 ### Running tests
 
-
-.PHONY: browserstack
-browserstack:
-	mvn $(mvn_opts) -DargLine="$(mvn_argline)" test -Pbrowserstack
-
 .PHONY: localizationtest
 localizationtest:
 	mvn $(mvn_opts) -DargLine="$(mvn_argline)" test -DmembersOnlySuites="fi.oph.koski.localization"
@@ -86,7 +81,7 @@ js-unit-test-watch:
 
 .PHONY: backtest
 backtest:
-	mvn $(mvn_opts) -DargLine="$(mvn_argline)" test -DmembersOnlySuites="fi.oph.koski.browserstack,\
+	mvn $(mvn_opts) -DargLine="$(mvn_argline)" test -DmembersOnlySuites="\
 	fi.oph.koski.cache,fi.oph.koski.editor,fi.oph.koski.environment,\
 	fi.oph.koski.etk,fi.oph.koski.hakemuspalvelu,fi.oph.koski.henkilo,fi.oph.koski.http,\
 	fi.oph.koski.integrationtest,fi.oph.koski.json,fi.oph.koski.kela,fi.oph.koski.koodisto,\

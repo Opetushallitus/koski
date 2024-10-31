@@ -37,7 +37,7 @@ describe('Perusopetus', function () {
     })
 
     describe('Perusopetuksen oppimäärä', function () {
-      describe('Kaikki tiedot näkyvissä BrowserStack', function () {
+      describe('Kaikki tiedot näkyvissä', function () {
         before(opinnot.expandAll)
         it('näyttää suorituksen tiedot', function () {
           expect(

@@ -12,7 +12,6 @@ class GithubActionsSpec extends AnyFreeSpec with Matchers {
     new File("./src/test/scala/fi/oph/koski/").listFiles.filter(_.isDirectory).map("fi.oph.koski." + _.getName)
       .filterNot(_.contains("fi.oph.koski.e2e")) // Playwright-testit
       .filterNot(_.contains("fi.oph.koski.omadataoauth2.e2e")) // Playwright-testit
-      .filterNot(_.contains("browserstack")) // Browserstack ei käytössä TODO siivoa testit pois?
       .filterNot(_.contains("fi.oph.koski.mocha")) // Koski frontend
       .filterNot(_.contains("fi.oph.koski.valpasfront")) // Valpas frontend
       .filterNot(_.contains("fi.oph.koski.localization")) // Testit rikki
