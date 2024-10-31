@@ -95,6 +95,12 @@ Jos backend on valmiiksi ajossa, voi testit ajaa komennolla
 
 Testit ajetaan headless-selaimessa. Jos haluat selainikkunan näkyviin, aja testit komennolla `npm run playwright:test:debug`
 
+Lisää yksityiskohtia testeistä ja testiapplikaatiosta, ks. erillinen [README.md](../omadata-oauth2-sample/README.md)
+
+## Infran ylläpito
+
+Ks. [https://github.com/Opetushallitus/koski-aws-infra/blob/master/documentation/oauth2.md](https://github.com/Opetushallitus/koski-aws-infra/blob/master/documentation/oauth2.md).
+
 ## Testi-osoitteita
 
 ### Localhost
