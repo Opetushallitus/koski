@@ -20,7 +20,7 @@ import fi.oph.koski.log.Logging
 import fi.oph.koski.luovutuspalvelu.{PalveluvaylaServlet, TilastokeskusServlet}
 import fi.oph.koski.migri.MigriServlet
 import fi.oph.koski.mydata.{ApiProxyServlet, MyDataReactServlet, MyDataServlet}
-import fi.oph.koski.omadataoauth2.{OmaDataOAuth2AuthorizationServerServlet, OmaDataOAuth2CASWorkaroundServlet, OmaDataOAuth2LogoutPostResponseServlet, OmaDataOAuth2PostResponseDebugServlet, OmaDataOAuth2ResourceOwnerReactServlet, OmaDataOAuth2ResourceOwnerServlet, OmaDataOAuth2ResourceServerServlet}
+import fi.oph.koski.omadataoauth2.{OmaDataOAuth2AuthorizationServerServlet, OmaDataOAuth2CASWorkaroundServlet, OmaDataOAuth2DiscoveryServlet, OmaDataOAuth2LogoutPostResponseServlet, OmaDataOAuth2PostResponseDebugServlet, OmaDataOAuth2ResourceOwnerReactServlet, OmaDataOAuth2ResourceOwnerServlet, OmaDataOAuth2ResourceServerServlet}
 import fi.oph.koski.omaopintopolkuloki.OmaOpintoPolkuLokiServlet
 import fi.oph.koski.omattiedot.{OmatTiedotHtmlServlet, OmatTiedotServlet, OmatTiedotServletV2}
 import fi.oph.koski.opiskeluoikeus.{OpiskeluoikeusServlet, OpiskeluoikeusValidationServlet}
@@ -184,6 +184,12 @@ class ScalatraBootstrap extends LifeCycle with Logging with Timing with GlobalEx
       mount("/koski/omadata-oauth2/post-response", new OmaDataOAuth2LogoutPostResponseServlet)
       mount("/koski/api/omadata-oauth2/authorization-server", new OmaDataOAuth2AuthorizationServerServlet)
       mount("/koski/api/omadata-oauth2/resource-server", new OmaDataOAuth2ResourceServerServlet)
+
+      // TODO: TOR-2210: Speksin https://www.rfc-editor.org/rfc/rfc8414 mukaan tämä pitäisi oikeasti olla routessa
+      // https://opintopolku.fi/.well-known/oauth-authorization-server/koski/omadata-oauth2 , mutta se vaatisi
+      // OPH:n nginx:äänkin uusia routeja. Siksi toistaiseksi väärin muodostetussa polussa
+      // https://opintopolku.fi/koski/omadata-oauth2/.well-known/oauth-authorization-server .
+      mount("/koski/omadata-oauth2/.well-known/oauth-authorization-server", new OmaDataOAuth2DiscoveryServlet)
 
       // TODO: TOR-2210: Poista debug-servlet kokonaan!
       mount("/koski/omadata-oauth2/debug-post-response", new OmaDataOAuth2PostResponseDebugServlet)
