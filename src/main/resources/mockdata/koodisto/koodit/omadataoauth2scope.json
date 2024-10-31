@@ -25,7 +25,7 @@
     "levelsWithCodeElements": [],
     "koodiUri": "omadataoauth2scope_henkilotiedotnimi",
     "versio": 1,
-    "koodiArvo": "henkilotiedotnimi"
+    "koodiArvo": "henkilotiedot_nimi"
   },
   {
     "metadata": [
@@ -53,7 +53,7 @@
     "levelsWithCodeElements": [],
     "koodiUri": "omadataoauth2scope_henkilotiedotsyntymaaika",
     "versio": 1,
-    "koodiArvo": "henkilotiedotsyntymaaika"
+    "koodiArvo": "henkilotiedot_syntymaaika"
   },
   {
     "metadata": [
@@ -81,7 +81,7 @@
     "levelsWithCodeElements": [],
     "koodiUri": "omadataoauth2scope_henkilotiedothetu",
     "versio": 1,
-    "koodiArvo": "henkilotiedothetu"
+    "koodiArvo": "henkilotiedot_hetu"
   },
   {
     "metadata": [
@@ -109,7 +109,7 @@
     "levelsWithCodeElements": [],
     "koodiUri": "omadataoauth2scope_opiskeluoikeudetsuoritetuttutkinnot",
     "versio": 1,
-    "koodiArvo": "opiskeluoikeudetsuoritetuttutkinnot"
+    "koodiArvo": "opiskeluoikeudet_suoritetut_tutkinnot"
   },
   {
     "metadata": [
@@ -137,12 +137,12 @@
     "levelsWithCodeElements": [],
     "koodiUri": "omadataoauth2scope_opiskeluoikeudetaktiivisetjapaattyneetopinnot",
     "versio": 1,
-    "koodiArvo": "opiskeluoikeudetaktiivisetjapaattyneetopinnot"
+    "koodiArvo": "opiskeluoikeudet_aktiiviset_ja_paattyneet_opinnot"
   },
   {
     "metadata": [
       {
-        "nimi": "Kaikki tiedot",
+        "nimi": "Kaikki opiskeluoikeustiedot",
         "kuvaus": "",
         "lyhytNimi": "",
         "kieli": "FI"
@@ -165,6 +165,6 @@
     "levelsWithCodeElements": [],
     "koodiUri": "omadataoauth2scope_opiskeluoikeudetkaikkitiedot",
     "versio": 1,
-    "koodiArvo": "opiskeluoikeudetkaikkitiedot"
+    "koodiArvo": "opiskeluoikeudet_kaikki_tiedot"
   }
 ]

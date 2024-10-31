@@ -44,7 +44,7 @@ const ScopeList = ({scope}) => {
       return koodi
     }
     const koodistoRecord = scopesKoodisto.find(
-      (k) => k.koodiviite.koodiarvo === koodi.toLowerCase().replaceAll('_', '')
+      (k) => k.koodiviite.koodiarvo === koodi.toLowerCase()
     )
     return koodistoRecord ? t(koodistoRecord.koodiviite.nimi) : koodi
   }
