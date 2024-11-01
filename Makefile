@@ -65,7 +65,7 @@ prettier-format-mock-data:
 
 .PHONY: localizationtest
 localizationtest:
-	mvn $(mvn_opts) -DargLine="$(mvn_argline)" test -DmembersOnlySuites="fi.oph.koski.localization"
+	mvn $(mvn_opts) -DargLine="$(mvn_argline)" test -DwildcardSuites="fi.oph.koski.localization"
 
 .PHONY: testresults
 testresults:
@@ -81,7 +81,7 @@ js-unit-test-watch:
 
 .PHONY: backtest
 backtest:
-	mvn $(mvn_opts) -DargLine="$(mvn_argline)" test -DmembersOnlySuites="\
+	mvn $(mvn_opts) -DargLine="$(mvn_argline)" test -DwildcardSuites="\
 	fi.oph.koski.cache,fi.oph.koski.editor,fi.oph.koski.environment,\
 	fi.oph.koski.etk,fi.oph.koski.hakemuspalvelu,fi.oph.koski.henkilo,fi.oph.koski.http,\
 	fi.oph.koski.integrationtest,fi.oph.koski.json,fi.oph.koski.kela,fi.oph.koski.koodisto,\
@@ -101,11 +101,11 @@ backtest:
 
 .PHONY: backtestnonmock
 backtestnonmock:
-	mvn $(mvn_opts) -DargLine="$(mvn_argline)" test -DmembersOnlySuites="fi.oph.koski.nonmockloginsecurity"
+	mvn $(mvn_opts) -DargLine="$(mvn_argline)" test -DwildcardSuites="fi.oph.koski.nonmockloginsecurity"
 
 .PHONY: fronttest
 fronttest:
-	mvn $(mvn_opts) -DargLine="$(mvn_argline)" test -DmembersOnlySuites="fi.oph.koski.mocha" -DtagsToExlude="parallelmocha"
+	mvn $(mvn_opts) -DargLine="$(mvn_argline)" test -DwildcardSuites="fi.oph.koski.mocha" -DtagsToExlude="parallelmocha"
 
 .PHONY: integrationtest
 integrationtest:
