@@ -3,7 +3,7 @@
 Tällä sivulla kuvataan rajapinnat, joilla kolmannet osapuolet (kumppanit) voivat pyytää
 kansalaiselta käyttölupaa kansalaisen tietoihin ja hakea tietoja OAuth2-standardirajapinnan kautta.
 
-Kumppanien tulee olla Opetushallituksen hyväksymä, ja kumppanin tekniset tunnisteet pitää olla
+Kumppanin tulee olla Opetushallituksen hyväksymä, ja kumppanin tekniset tunnisteet pitää olla
 lisättyinä KOSKI-järjestelmään. Lisäämistä varten OPH:ssa tarvittavat tiedot on listattu seuraavassa
 kappaleessa.
 
@@ -14,35 +14,43 @@ kappaleessa.
   <dd>
     Suomeksi, ruotsiksi ja englanniksi. Tällä nimellä palvelu esitetään OPH:n käyttöliittymissä kansalaiselle suostumusta häneltä kysyttäessä.
   </dd>
-  <dt>(2) Kansalaiselta tarvittavat tiedot, Lista OAuth2 scopeja</dt>
+  <dt>(2) Kansalaiselta tarvittavat tiedot, lista OAuth2-scopeja</dt>
   <dd>
     Tieto siitä, mitä henkilö- ja opiskeluoikeustietoja kumppanille pitäisi sallia. Ks. myöhempi Scopet-kappale.
   </dd>
-  <dt>(3) Paluuosoitteet, OAuth2 redirect_urit</dt>
+  <dt>(3) Paluuosoitteet, OAuth2-redirect_urit</dt>
   <dd>
-    Nämä voivat olla eri testiympäristössä ja tuotannossa. Osoitteita voi olla monia, ja testiympäristössä voidaan sallia myös localhost-osoitteita kehityksen helpottamiseksi.
+    Osoitteita voi olla monia, ja testiympäristössä voidaan sallia myös localhost-osoitteita kehityksen helpottamiseksi.
+    <br/>Nämä voivat olla eri testiympäristössä ja tuotannossa.
   </dd>
   <dt>(4) Mahdolliset ketjutetut paluuosoitteet</dt>
   <dd>
     Jos redirect_uriin KOSKI-palvelusta tuleva pyyntö aiheuttaa uusia uudelleenohjauksia kumppanin palvelun sisällä, täytyy nekin osoitteet ottaa huomioon KOSKI-palvelun CSP:ssä (Content Security Policy)
+    <br/>Nämä voivat olla eri testiympäristössä ja tuotannossa.
   </dd>
-  <dt>(5) mTLS-client-sertifikaatin tunnistetieto</dt>
+  <dt>(5) Mutual TLS (mTLS) -client-sertifikaatin tunnistetieto</dt>
   <dd>
-    Subject distinguished name, subject dn. Sertifikaatin tulee olla yleisesti tunnetun CA:n tai DVV:n CA:n allekirjoittama. Tämä voi olla eri testiympäristössä ja tuotannossa. KOSKI-palvelu tarvitsee vain subject-nimen, mutta kätevintä voi olla toimittaa
-    fullchain.pem-tiedosto. Sertifikaatin uusimisprosessi kannattaa rakentaa niin, että subject-nimi ei siinä muutu, jolloin KOSKI-palvelulle ei tarvitse toimittaa uutta nimeä sertifikaatin uusimisen jälkeen.
+    Subject distinguished name, subject dn. Sertifikaatin tulee olla yleisesti tunnetun CA:n tai DVV:n CA:n allekirjoittama. KOSKI-palvelu tarvitsee vain subject-nimen, mutta kätevintä voi olla toimittaa
+    fullchain.pem-tiedosto, mistä KOSKI-palvelun kehittäjät saavat tunnistetiedon varmasti oikeassa muodossa.
+    <br/>Sertifikaatin uusimisprosessi kannattaa rakentaa niin, että subject-nimi ei siinä muutu, jolloin KOSKI-palvelulle ei tarvitse toimittaa uutta nimeä sertifikaatin uusimisen jälkeen.
+    <br/>Tämä voi olla eri testiympäristössä ja tuotannossa.
   </dd>
   <dt>(6) Kumppanin palvelun ip-osoitteet</dt>
   <dd>
-    IP-osoitteet, joista liikenne sallitaan. Nämä voivat olla eri testiympäristössä ja tuotannossa.
+    IP-osoitteet, joista liikenne sallitaan.
+    <br/>Nämä voivat olla eri testiympäristössä ja tuotannossa.
   </dd>
 </dl>
 
 ## Tiedot rajapinnasta
 
+Rajapinnan kutsumista varten kumppanin toteuttama palvelu tarvitsee seuraavat tiedot:
+
 <dl>
   <dt>OAuth2-palvelun osoitteet ja muut metatiedot</dt>
   <dd>
-    Ks. sisältö linkistä <a href="{{var:baseUrl}}/omadata-oauth2/.well-known/oauth-authorization-server">{{var:baseUrl}}/omadata-oauth2/.well-known/oauth-authorization-server</a>
+    Nämä julkaistaan standardimuotoisina metatietoina.
+    <br/>Ks. sisältö linkistä <a href="{{var:baseUrl}}/omadata-oauth2/.well-known/oauth-authorization-server">{{var:baseUrl}}/omadata-oauth2/.well-known/oauth-authorization-server</a>
   </dd>
 
   <dt>Resource endpoint</dt>
@@ -53,7 +61,7 @@ kappaleessa.
 
   <dt>client_id</dt>
   <dd>
-    Saat KOSKI-tiimiltä viimeistään OPH:n hyväksynnän ja edellisen kappaleen teknisten tietojen toimittamisen jälkeen.
+    Saat client_id:n KOSKI-palvelun ylläpitäjiltä viimeistään OPH:n hyväksynnän ja edellisen kappaleen teknisten tietojen toimittamisen jälkeen.
   </dd>
 </dl>
 
@@ -148,8 +156,8 @@ Esimerkki palautettavan datan rakenteesta:
 
 ## Huomioita datan käsittelystä
 
-Kumppanin vastuulla on tarkistaa palautettujen henkilötietojen perusteella, että se sai odottamansa henkilön tiedot. Mitään teknistä estettä ei ole sille, etteikö kansalainen voisi pyytää
-esim. ystäväänsä tekemään vahvaa tunnistautumista puolestaan, jolloin KOSKI-järjestelmä palauttaa kumppanille kyseisen ystävän tiedot.
+Kumppanin vastuulla on tarkistaa palautettujen henkilötietojen perusteella, että se sai oikean ja odottamansa henkilön tiedot. Tämä johtuu siitä, että mitään teknistä estettä ei ole sille, että kansalainen pyytää
+esim. ystäväänsä tekemään vahvan tunnistautumisen ja suostumuksen myöntämisen puolestaan. Tällöin KOSKI-järjestelmä palauttaa kumppanille kyseisen ystävän tiedot.
 
 ## Esimerkkiapplikaatio
 
