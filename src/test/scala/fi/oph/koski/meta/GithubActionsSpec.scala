@@ -14,7 +14,6 @@ class GithubActionsSpec extends AnyFreeSpec with Matchers {
       .filterNot(_.contains("fi.oph.koski.mocha")) // Koski frontend
       .filterNot(_.contains("fi.oph.koski.valpasfront")) // Valpas frontend
       .filterNot(_.contains("fi.oph.koski.inenvironmentlocalization")) // Lokalisaatiotestit ympäristöä vastaan, rikki
-      .filterNot(_.contains("fi.oph.koski.casintegration")) // Testit rikki, vaatii setuppia?
       .filterNot(_.contains("fi.oph.koski.integrationtest")) // Testit rikki, vaatii setuppia?
 
   "Github Actions" - {
