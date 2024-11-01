@@ -7,7 +7,7 @@ COPY ./client/tsconfig.json ./
 COPY ./client/src ./src
 COPY ./client/public ./public
 
-RUN npm install --legacy-peer-deps # TODO: npm ci?
+RUN npm ci
 RUN npm run build
 
 # Server build
@@ -19,7 +19,7 @@ COPY ./server/package*.json ./
 COPY ./server/tsconfig.json ./
 COPY ./server/src ./src
 
-RUN npm install # TODO: npm ci?
+RUN npm ci
 RUN npm run build
 
 # Server run
@@ -35,7 +35,7 @@ COPY --from=server-builder /app/package*.json ./server/
 
 WORKDIR /app/server
 
-RUN npm install
+RUN npm ci
 
 WORKDIR /app/server/dist
 
