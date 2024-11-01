@@ -1,5 +1,6 @@
 import express, { NextFunction, Request, Response, Router } from 'express'
 import * as client from 'openid-client'
+import { v4 as uuidv4 } from 'uuid'
 import {
   buildAuthorizationUrl,
   fetchAccessToken,
@@ -10,18 +11,23 @@ import {
   ClientError,
   ResponseBodyError
 } from 'openid-client'
+import { URLSearchParams } from 'url'
 
 const router: Router = express.Router()
 
-const code_verifier: string = client.randomPKCECodeVerifier()
-const state = 'state-placeholder'
+// TODO: TOR-2210: Toistaiseksi vain muistinvarainen map
+let verifiers: Map<string, string> = new Map()
 
 const scope: string =
   'HENKILOTIEDOT_NIMI HENKILOTIEDOT_SYNTYMAAIKA HENKILOTIEDOT_HETU OPISKELUOIKEUDET_SUORITETUT_TUTKINNOT'
 
 router.get('/', async (req: Request, res: Response, next: NextFunction) => {
   try {
-    let redirectTo = await buildAuthorizationUrl(code_verifier, state, scope)
+    const state = uuidv4()
+    const code_verifier = client.randomPKCECodeVerifier()
+    verifiers.set(state, code_verifier)
+
+    const redirectTo = await buildAuthorizationUrl(code_verifier, state, scope)
 
     res.redirect(redirectTo.href)
   } catch (err) {
@@ -33,7 +39,10 @@ router.get(
   '/invalid-redirect-uri',
   async (req: Request, res: Response, next: NextFunction) => {
     try {
-      let redirectTo = await buildAuthorizationUrl(
+      const state = uuidv4()
+      const code_verifier = client.randomPKCECodeVerifier()
+
+      const redirectTo = await buildAuthorizationUrl(
         code_verifier,
         state,
         scope,
@@ -56,6 +65,14 @@ router.post(
   '/form-post-response-cb',
   async (req: Request, res: Response, next: NextFunction) => {
     try {
+      const params = new URLSearchParams(req.body)
+      const state = params.get('state') || ''
+      const code_verifier = (state && verifiers.get(state)) || ''
+
+      if (state) {
+        verifiers.delete(state)
+      }
+
       const token = await fetchAccessToken(req, code_verifier, state)
 
       const protectedResource = await fetchData(token)
