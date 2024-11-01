@@ -1,6 +1,5 @@
 package fi.oph.koski.migration
 
-import org.json4s.jackson.JsonMethods
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.should.Matchers
 
@@ -14,7 +13,7 @@ class GithubActionsSpec extends AnyFreeSpec with Matchers {
       .filterNot(_.contains("fi.oph.koski.omadataoauth2.e2e")) // Playwright-testit
       .filterNot(_.contains("fi.oph.koski.mocha")) // Koski frontend
       .filterNot(_.contains("fi.oph.koski.valpasfront")) // Valpas frontend
-      .filterNot(_.contains("fi.oph.koski.localization")) // Testit rikki
+      .filterNot(_.contains("fi.oph.koski.inenvironmentlocalization")) // Lokalisaatiotestit ympäristöä vastaan, rikki
       .filterNot(_.contains("fi.oph.koski.casintegration")) // Testit rikki, vaatii setuppia?
       .filterNot(_.contains("fi.oph.koski.integrationtest")) // Testit rikki, vaatii setuppia?
 

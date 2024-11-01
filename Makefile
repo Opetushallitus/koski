@@ -65,7 +65,7 @@ prettier-format-mock-data:
 
 .PHONY: localizationtest
 localizationtest:
-	mvn $(mvn_opts) -DargLine="$(mvn_argline)" test -DwildcardSuites="fi.oph.koski.localization"
+	mvn $(mvn_opts) -DargLine="$(mvn_argline)" test -DwildcardSuites="fi.oph.koski.inenvironmentlocalization"
 
 .PHONY: testresults
 testresults:

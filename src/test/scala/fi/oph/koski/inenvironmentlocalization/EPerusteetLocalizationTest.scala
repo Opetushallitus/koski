@@ -1,11 +1,11 @@
-package fi.oph.koski.localization
+package fi.oph.koski.inenvironmentlocalization
 
 import fi.oph.koski.TestEnvironment
 import fi.oph.koski.eperusteet.ETutkinnonOsa
-import org.json4s.DefaultFormats
-import fi.oph.koski.http.Http._
 import fi.oph.koski.http.Http
+import fi.oph.koski.http.Http._
 import fi.oph.koski.koodisto.RemoteKoodistoPalvelu
+import org.json4s.DefaultFormats
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.should.Matchers
 
@@ -34,7 +34,7 @@ class EPerusteetLocalizationTest extends AnyFreeSpec with TestEnvironment with M
   private def kanoninenNimi(s: String) =
     s.stripSuffix("*").stripSuffix("(*)").replace('\u00a0', ' ').replaceAll("\\s+", " ").trim
 
-  "Tutkinnon osien kielistetyt koodiarvot koodisto vs. ePerusteet" taggedAs(LocalizationTestTag) in {
+  "Tutkinnon osien kielistetyt koodiarvot koodisto vs. ePerusteet" in {
 
     println("Ladataan listaa perusteista...")
     val perusteidenInfot = haePerusteidenInfot()
@@ -94,7 +94,7 @@ class EPerusteetLocalizationTest extends AnyFreeSpec with TestEnvironment with M
       .foreach { case (arvo, nimetE) => println(s"$arvo ${nimetE.mkString("\n" + " " * (arvo.length + 1))}") }
   }
 
-  "Osaamisalojen kielistetyt koodiarvo" taggedAs(LocalizationTestTag) in {
+  "Osaamisalojen kielistetyt koodiarvo" in {
     val koodit = koodistoPalvelu.getKoodistoKoodit(koodistoPalvelu.getLatestVersionRequired("osaamisala"))
     println("\nOsaamisalan ruotsinkielinen nimi puuttuu koodistosta:")
     koodit
@@ -103,7 +103,7 @@ class EPerusteetLocalizationTest extends AnyFreeSpec with TestEnvironment with M
       .foreach { k => println(s"${k.koodiArvo} ${k.nimi.get.get("fi")}") }
   }
 
-  "Tutkintonimikkeiden kielistetyt koodiarvo" taggedAs(LocalizationTestTag) in {
+  "Tutkintonimikkeiden kielistetyt koodiarvo" in {
     val koodit = koodistoPalvelu.getKoodistoKoodit(koodistoPalvelu.getLatestVersionRequired("tutkintonimikkeet"))
     println("\nTutkintonimikkeen ruotsinkielinen nimi puuttuu koodistosta:")
     koodit

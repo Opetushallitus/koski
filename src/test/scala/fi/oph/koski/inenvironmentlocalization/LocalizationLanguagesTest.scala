@@ -1,7 +1,8 @@
-package fi.oph.koski.localization
+package fi.oph.koski.inenvironmentlocalization
 
 import fi.oph.koski.TestEnvironment
 import fi.oph.koski.cache.GlobalCacheManager
+import fi.oph.koski.localization.{KoskiLocalizationConfig, MockLocalizationRepository, ReadOnlyRemoteLocalizationRepository}
 import fi.oph.koski.valpas.localization.ValpasLocalizationConfig
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.should.Matchers
@@ -21,13 +22,13 @@ class LocalizationLanguagesTest extends AnyFreeSpec with TestEnvironment with Ma
     lazy val remoteLocalizations = new ReadOnlyRemoteLocalizationRepository(root, localizationConfig).localizations
     lazy val localLocalizations = new MockLocalizationRepository(localizationConfig).localizations
 
-    s"Suomenkieliset tekstit" taggedAs(LocalizationTestTag) in {
+    s"Suomenkieliset tekstit" in {
       val missingKeys = localLocalizations.keySet -- remoteLocalizations.keySet
 
       missingKeys.toList.sorted shouldBe(empty)
     }
 
-    s"Ruotsinkieliset tekstit" taggedAs(LocalizationTestTag) in {
+    s"Ruotsinkieliset tekstit" in {
       val ignoredKey = (key: String) => key.startsWith("description:") || eiTarvitseRuotsinkielistäKäännöstä.contains(key)
 
       val missingKeys = localLocalizations.keySet.filterNot(ignoredKey) -- remoteLocalizations.filter(_._2.hasLanguage("sv")).keySet
