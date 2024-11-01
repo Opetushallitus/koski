@@ -198,27 +198,27 @@ install-and-verify-valpas-jest-deps:
 
 .PHONY: valpas-fronttest-1
 valpas-fronttest-1:
-	mvn $(mvn_opts) -DargLine="$(mvn_argline)" scalatest:test -Dsuites="fi.oph.koski.valpasfront.jest.ValpasFrontSpec1" --batch-mode
+	mvn $(mvn_opts) -DargLine="$(mvn_argline)" scalatest:test -Dsuites="fi.oph.koski.frontendvalpas.jest.ValpasFrontSpec1" --batch-mode
 
 .PHONY: valpas-fronttest-2
 valpas-fronttest-2:
-	mvn $(mvn_opts) -DargLine="$(mvn_argline)" scalatest:test -Dsuites="fi.oph.koski.valpasfront.jest.ValpasFrontSpec2" --batch-mode
+	mvn $(mvn_opts) -DargLine="$(mvn_argline)" scalatest:test -Dsuites="fi.oph.koski.frontendvalpas.jest.ValpasFrontSpec2" --batch-mode
 
 .PHONY: valpas-fronttest-3
 valpas-fronttest-3:
-	mvn $(mvn_opts) -DargLine="$(mvn_argline)" scalatest:test -Dsuites="fi.oph.koski.valpasfront.jest.ValpasFrontSpec3" --batch-mode
+	mvn $(mvn_opts) -DargLine="$(mvn_argline)" scalatest:test -Dsuites="fi.oph.koski.frontendvalpas.jest.ValpasFrontSpec3" --batch-mode
 
 .PHONY: valpas-fronttest-4
 valpas-fronttest-4:
-	mvn $(mvn_opts) -DargLine="$(mvn_argline)" scalatest:test -Dsuites="fi.oph.koski.valpasfront.jest.ValpasFrontSpec4" --batch-mode
+	mvn $(mvn_opts) -DargLine="$(mvn_argline)" scalatest:test -Dsuites="fi.oph.koski.frontendvalpas.jest.ValpasFrontSpec4" --batch-mode
 
 .PHONY: valpas-fronttest-5
 valpas-fronttest-5:
-	mvn $(mvn_opts) -DargLine="$(mvn_argline)" scalatest:test -Dsuites="fi.oph.koski.valpasfront.jest.ValpasFrontSpec5" --batch-mode
+	mvn $(mvn_opts) -DargLine="$(mvn_argline)" scalatest:test -Dsuites="fi.oph.koski.frontendvalpas.jest.ValpasFrontSpec5" --batch-mode
 
 .PHONY: valpas-fronttest-6
 valpas-fronttest-6:
-	mvn $(mvn_opts) -DargLine="$(mvn_argline)" scalatest:test -Dsuites="fi.oph.koski.valpasfront.jest.ValpasFrontSpec6" --batch-mode
+	mvn $(mvn_opts) -DargLine="$(mvn_argline)" scalatest:test -Dsuites="fi.oph.koski.frontendvalpas.jest.ValpasFrontSpec6" --batch-mode
 
 
 ### Dist

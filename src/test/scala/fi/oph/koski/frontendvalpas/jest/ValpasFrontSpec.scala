@@ -1,4 +1,4 @@
-package fi.oph.koski.valpasfront.jest
+package fi.oph.koski.frontendvalpas.jest
 
 import fi.oph.koski.mocha.KoskiCommandLineSpec
 import fi.oph.koski.{KoskiApplicationForTests, SharedJetty}
