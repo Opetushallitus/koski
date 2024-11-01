@@ -108,6 +108,8 @@ koko putken esimerkkiapplikaatiosta käynnistävä smoke-testi: http://localhost
 
 toimiva https://untuvaopintopolku.fi/koski/omadata-oauth2/authorize?client_id=koskioauth2sampledevpk&response_type=code&response_mode=form_post&redirect_uri=%2Fkoski%2Fomadata-oauth2%2Fdebug-post-response&code_challenge=NjIyMGQ4NDAxZGM0ZDI5NTdlMWRlNDI2YWNhNjA1NGRiMjQyZTE0NTg0YzRmOGMwMmU3MzFkYjlhNTRlZTlmZA&code_challenge_method=S256&state=internal%20state&scope=HENKILOTIEDOT_SYNTYMAAIKA%20HENKILOTIEDOT_NIMI%20OPISKELUOIKEUDET_SUORITETUT_TUTKINNOT
 
+dokumentaatio-draft: https://untuvaopintopolku.fi/koski/dokumentaatio/rajapinnat/oauth2/omadata
+
 koko putken esimerkkiapplikaatiosta käynnistävä smoke-testi: https://oph-koski-omadataoauth2sample-dev.testiopintopolku.fi/api/openid-api-test
 
 ### Untuva, DVV:n client:id:llä
