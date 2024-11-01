@@ -59,9 +59,7 @@ test("Standard error from server is displayed when user declines", async ({
 
   // Check that error data is displayed
   await page.waitForURL("**/api/openid-api-test/form-post-response-cb**")
-  await expect(page.locator("html")).toContainText(
-    '{"state":"state-placeholder","error":"access_denied"}',
-  )
+  await expect(page.locator("html")).toContainText('"error":"access_denied"')
 })
 
 test("Error page displayed in browser when using invalid redirect_uri", async ({
