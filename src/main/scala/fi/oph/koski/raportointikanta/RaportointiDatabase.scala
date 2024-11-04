@@ -303,7 +303,9 @@ class RaportointiDatabase(config: RaportointiDatabaseConfigBase) extends Logging
   }
 
   def oppijaOidsFromOpiskeluoikeudet: Seq[String] = {
-    runDbSync(ROpiskeluoikeudet.map(_.oppijaOid).distinct.result, timeout = 15.minutes)
+    val oids = runDbSync(ROpiskeluoikeudet.map(_.oppijaOid).distinct.result, timeout = 15.minutes)
+    val mitätöidytOids = runDbSync(RMitätöidytOpiskeluoikeudet.map(_.oppijaOid).distinct.result, timeout = 15.minutes)
+    (oids ++ mitätöidytOids).distinct
   }
 
   def loadOrganisaatioHistoria(organisaatioHistoriat: Seq[ROrganisaatioHistoriaRow]): Unit =
