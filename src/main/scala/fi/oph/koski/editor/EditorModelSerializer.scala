@@ -3,7 +3,7 @@ package fi.oph.koski.editor
 import fi.oph.koski.json.{JsonSerializer, LegacyJsonSerialization}
 import fi.oph.koski.log.Logging
 import fi.oph.koski.schema.KoskiSchema
-import fi.oph.koski.schema.annotation.{Example, InfoDescription, InfoLinkTitle, InfoLinkUrl, MultiLineString, Scale, UnitOfMeasure}
+import fi.oph.koski.schema.annotation.{Example, HiddenWhen, InfoDescription, InfoLinkTitle, InfoLinkUrl, MultiLineString, Scale, UnitOfMeasure}
 import fi.oph.scalaschema.annotation._
 import fi.oph.scalaschema.{Metadata, SerializationContext, Serializer}
 import org.json4s.JsonAST.{JObject, JString, JValue}
@@ -12,6 +12,7 @@ import org.json4s.{Extraction, _}
 object EditorModelSerializer extends Serializer[EditorModel] with Logging {
   def serializeOnlyWhen(o: OnlyWhen) = Serializer.serialize(o.serializableForm, SerializationContext(KoskiSchema.schemaFactory))
   def serializeNotWhen(o: NotWhen) = Serializer.serialize(o.serializableForm, SerializationContext(KoskiSchema.schemaFactory))
+  def serializeHiddenWhen(o: HiddenWhen) = Serializer.serialize(o.serializableForm, SerializationContext(KoskiSchema.schemaFactory))
   def serializeModel(model: EditorModel) = serialize(LegacyJsonSerialization.jsonFormats)(model)
   def serializeEnum(enum: EnumValue) = serializeEnumValue(enum)(LegacyJsonSerialization.jsonFormats)
 
@@ -101,6 +102,13 @@ object EditorModelSerializer extends Serializer[EditorModel] with Logging {
       case conditions => List(JField("notWhen", JArray(conditions)))
     }
 
+    val hiddenWhen = metadata.collect {
+      case o: HiddenWhen => serializeHiddenWhen(o)
+    } match {
+      case Nil => Nil
+      case conditions => List(JField("hiddenWhen", JArray(conditions)))
+    }
+
     metadata.collect {
       case MinItems(x) => JField("minItems", JInt(x))
       case MaxItems(x) => JField("maxItems", JInt(x))
@@ -116,7 +124,7 @@ object EditorModelSerializer extends Serializer[EditorModel] with Logging {
       case InfoLinkTitle(x) => JField("infoLinkTitle", JString(x))
       case RegularExpression(x) => JField("regularExpression", JString(x))
       case Example(x) => JField("example", JString(x))
-    } ++ onlyWhen ++ notWhen
+    } ++ onlyWhen ++ notWhen ++ hiddenWhen
   }
 
   private def metadataToObject(metadata: List[Metadata]) = JObject(metadataToFields(metadata))
