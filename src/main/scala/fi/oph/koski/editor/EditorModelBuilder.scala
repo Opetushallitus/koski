@@ -279,7 +279,8 @@ case class ObjectModelBuilder(schema: ClassSchema)(implicit context: ModelBuilde
 
   def createModelProperty(property: Property, propertyModel: EditorModel): EditorProperty = {
     val readOnly: Boolean = property.metadata.exists(_.isInstanceOf[ReadOnly])
-    val onlyWhen = property.metadata.collect{case o:OnlyWhen => EditorModelSerializer.serializeOnlyWhen(o)}
+    val onlyWhen = property.metadata.collect { case o: OnlyWhen => EditorModelSerializer.serializeOnlyWhen(o) }
+    val hiddenWhen = property.metadata.collect { case o: HiddenWhen => EditorModelSerializer.serializeHiddenWhen(o) }
     var props  = Map.empty[String, JValue]
     if (property.metadata.contains(Hidden())) props += ("hidden" -> JBool(true))
     if (property.metadata.contains(Representative())) props += ("representative" -> JBool(true))
@@ -288,7 +289,8 @@ case class ObjectModelBuilder(schema: ClassSchema)(implicit context: ModelBuilde
     if (property.metadata.contains(Tabular())) props += ("tabular" -> JBool(true))
     if (readOnly) props += ("readOnly" -> JBool(true))
     if (SensitiveAndRedundantDataFilter(context.user).shouldHideField(property.metadata)) props += ("sensitiveHidden" -> JBool(true))
-    if (!onlyWhen.isEmpty) props +=("onlyWhen" -> JArray(onlyWhen))
+    if (onlyWhen.nonEmpty) props += ("onlyWhen" -> JArray(onlyWhen))
+    if (hiddenWhen.nonEmpty) props += ("hiddenWhen" -> JArray(hiddenWhen))
     KoskiSpecificSchemaLocalization.deprecated(property)
       .map { case (key, _) => context.localizationRepository.get(key).get(context.user.lang) }
       .foreach { d => props += ("deprecated" -> JString(d)) }
