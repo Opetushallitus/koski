@@ -63,14 +63,9 @@ prettier-format-mock-data:
 
 ### Running tests
 
-
-.PHONY: browserstack
-browserstack:
-	mvn $(mvn_opts) -DargLine="$(mvn_argline)" test -Pbrowserstack
-
 .PHONY: localizationtest
 localizationtest:
-	mvn $(mvn_opts) -DargLine="$(mvn_argline)" test -Plocalization
+	mvn $(mvn_opts) -DargLine="$(mvn_argline)" test -DwildcardSuites="fi.oph.koski.inenvironmentlocalization"
 
 .PHONY: testresults
 testresults:
@@ -86,11 +81,11 @@ js-unit-test-watch:
 
 .PHONY: backtest
 backtest:
-	mvn $(mvn_opts) -DargLine="$(mvn_argline)" test -DmembersOnlySuites="fi.oph.koski.browserstack,\
+	mvn $(mvn_opts) -DargLine="$(mvn_argline)" test -DwildcardSuites="\
 	fi.oph.koski.cache,fi.oph.koski.editor,fi.oph.koski.environment,\
 	fi.oph.koski.etk,fi.oph.koski.hakemuspalvelu,fi.oph.koski.henkilo,fi.oph.koski.http,\
 	fi.oph.koski.integrationtest,fi.oph.koski.json,fi.oph.koski.kela,fi.oph.koski.koodisto,\
-	fi.oph.koski.koskiuser,fi.oph.koski.localization,fi.oph.koski.cas,fi.oph.koski.casintegration,fi.oph.koski.log,\
+	fi.oph.koski.koskiuser,fi.oph.koski.localization,fi.oph.koski.cas,fi.oph.koski.log,\
 	fi.oph.koski.luovutuspalvelu,fi.oph.koski.migration,fi.oph.koski.migri,\
 	fi.oph.koski.mocha,fi.oph.koski.mydata,fi.oph.koski.omaopintopolkuloki,\
 	fi.oph.koski.opiskeluoikeus,fi.oph.koski.oppilaitos,fi.oph.koski.oppivelvollisuustieto,\
@@ -100,25 +95,25 @@ backtest:
 	fi.oph.koski.userdirectory,fi.oph.koski.util,fi.oph.koski.valpas,\
 	fi.oph.koski.valvira,fi.oph.koski.versioning,fi.oph.koski.virta,fi.oph.koski.vkt,\
 	fi.oph.koski.ytl,fi.oph.koski.ytr,fi.oph.koski.ytl,fi.oph.koski.meta,\
-	fi.oph.koski.ytl,fi.oph.koski.api,fi.oph.koski.frontendvalvonta,fi.oph.koski.tiedonsiirto\
+	fi.oph.koski.ytl,fi.oph.koski.api,fi.oph.koski.frontendvalvonta,fi.oph.koski.tiedonsiirto,\
 	fi.oph.koski.typemodel,fi.oph.koski.suoritusjako,fi.oph.koski.suoritusjako.suoritetuttutkinnot,\
 	fi.oph.koski.massaluovutus,fi.oph.koski.omadataoauth2.unit,fi.oph.koski.omadataoauth2.e2e"
 
 .PHONY: backtestnonmock
 backtestnonmock:
-	mvn $(mvn_opts) -DargLine="$(mvn_argline)" test -DmembersOnlySuites="fi.oph.koski.nonmockloginsecurity"
+	mvn $(mvn_opts) -DargLine="$(mvn_argline)" test -DwildcardSuites="fi.oph.koski.nonmockloginsecurity"
 
 .PHONY: fronttest
 fronttest:
-	mvn $(mvn_opts) -DargLine="$(mvn_argline)" test -Pfronttest
+	mvn $(mvn_opts) -DargLine="$(mvn_argline)" test -DwildcardSuites="fi.oph.koski.mocha" -DtagsToExlude="parallelmocha"
 
 .PHONY: integrationtest
 integrationtest:
-		mvn $(mvn_opts) -DargLine="$(mvn_argline)" test -Pintegrationtest -Dsuites="fi.oph.koski.e2e.KoskiFrontSpec"
+		mvn $(mvn_opts) -DargLine="$(mvn_argline)" test -Dsuites="fi.oph.koski.e2e.KoskiFrontSpec"
 
 .PHONY: omadataoauth2e2e
 omadataoauth2e2e:
-		mvn $(mvn_opts) -DargLine="$(mvn_argline)" test -Pomadataoauth2e2e -Dsuites="fi.oph.koski.omadataoauth2.e2e.OmaDataOAuth2E2ESpec"
+		mvn $(mvn_opts) -DargLine="$(mvn_argline)" test -Dsuites="fi.oph.koski.omadataoauth2.e2e.OmaDataOAuth2E2ESpec"
 
 .PHONY: screenshot
 screenshot:
@@ -203,27 +198,27 @@ install-and-verify-valpas-jest-deps:
 
 .PHONY: valpas-fronttest-1
 valpas-fronttest-1:
-	mvn $(mvn_opts) -DargLine="$(mvn_argline)" scalatest:test -Pvalpasfronttest -Dsuites="fi.oph.koski.valpas.jest.ValpasFrontSpec1" --batch-mode
+	mvn $(mvn_opts) -DargLine="$(mvn_argline)" scalatest:test -Dsuites="fi.oph.koski.frontendvalpas.jest.ValpasFrontSpec1" --batch-mode
 
 .PHONY: valpas-fronttest-2
 valpas-fronttest-2:
-	mvn $(mvn_opts) -DargLine="$(mvn_argline)" scalatest:test -Pvalpasfronttest -Dsuites="fi.oph.koski.valpas.jest.ValpasFrontSpec2" --batch-mode
+	mvn $(mvn_opts) -DargLine="$(mvn_argline)" scalatest:test -Dsuites="fi.oph.koski.frontendvalpas.jest.ValpasFrontSpec2" --batch-mode
 
 .PHONY: valpas-fronttest-3
 valpas-fronttest-3:
-	mvn $(mvn_opts) -DargLine="$(mvn_argline)" scalatest:test -Pvalpasfronttest -Dsuites="fi.oph.koski.valpas.jest.ValpasFrontSpec3" --batch-mode
+	mvn $(mvn_opts) -DargLine="$(mvn_argline)" scalatest:test -Dsuites="fi.oph.koski.frontendvalpas.jest.ValpasFrontSpec3" --batch-mode
 
 .PHONY: valpas-fronttest-4
 valpas-fronttest-4:
-	mvn $(mvn_opts) -DargLine="$(mvn_argline)" scalatest:test -Pvalpasfronttest -Dsuites="fi.oph.koski.valpas.jest.ValpasFrontSpec4" --batch-mode
+	mvn $(mvn_opts) -DargLine="$(mvn_argline)" scalatest:test -Dsuites="fi.oph.koski.frontendvalpas.jest.ValpasFrontSpec4" --batch-mode
 
 .PHONY: valpas-fronttest-5
 valpas-fronttest-5:
-	mvn $(mvn_opts) -DargLine="$(mvn_argline)" scalatest:test -Pvalpasfronttest -Dsuites="fi.oph.koski.valpas.jest.ValpasFrontSpec5" --batch-mode
+	mvn $(mvn_opts) -DargLine="$(mvn_argline)" scalatest:test -Dsuites="fi.oph.koski.frontendvalpas.jest.ValpasFrontSpec5" --batch-mode
 
 .PHONY: valpas-fronttest-6
 valpas-fronttest-6:
-	mvn $(mvn_opts) -DargLine="$(mvn_argline)" scalatest:test -Pvalpasfronttest -Dsuites="fi.oph.koski.valpas.jest.ValpasFrontSpec6" --batch-mode
+	mvn $(mvn_opts) -DargLine="$(mvn_argline)" scalatest:test -Dsuites="fi.oph.koski.frontendvalpas.jest.ValpasFrontSpec6" --batch-mode
 
 
 ### Dist

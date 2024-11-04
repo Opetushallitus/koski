@@ -1,4 +1,4 @@
-package fi.oph.koski.localization
+package fi.oph.koski.inenvironmentlocalization
 
 import fi.oph.koski.TestEnvironment
 import fi.oph.koski.koodisto.{KoodistoKoodi, Koodistot, RemoteKoodistoPalvelu}
@@ -16,7 +16,7 @@ class KoodistotLocalizationTest extends AnyFreeSpec with TestEnvironment with Ma
     lazy val koodistoPalvelu = new RemoteKoodistoPalvelu(root)
 
     Koodistot.koodistoAsetukset.filter(_.koodistoVersio.isEmpty).foreach { koodistoAsetus =>
-      s"${koodistoAsetus.koodisto}" taggedAs (LocalizationTestTag) in {
+      s"${koodistoAsetus.koodisto}" in {
         val koodistoViite = koodistoPalvelu.getLatestVersionRequired(koodistoAsetus.koodisto)
         val koodit = koodistoPalvelu.getKoodistoKoodit(koodistoViite)
         koodit should not be empty

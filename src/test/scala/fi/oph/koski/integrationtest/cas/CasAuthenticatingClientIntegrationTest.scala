@@ -1,4 +1,4 @@
-package fi.oph.koski.casintegration
+package fi.oph.koski.integrationtest.cas
 
 import cats.effect.IO
 import cats.effect.unsafe.IORuntime

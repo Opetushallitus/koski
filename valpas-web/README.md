@@ -25,7 +25,6 @@ npm install
 - `npm test` ajaa kaikki testit
   - `npm run test:unit` ajaa vain
   - `npm run test:integration` ajaa vain integraatiotestit (polun `test/integrationtests` alla olevat testit, jotka vaativan backendin)
-  - `npm run test:integration:browserstack` ajaa integraatiotestit Browserstackia vasten
   - `npm run test:integration:debug -- -t "Näyttää listan oppijoista European School of Helsingille"` ajaa vain hakuehtoon sopivat testit
   - `env SHOW_BROWSER=true npx jest --config jest.integrationtests.config.js test/integrationtests/kansalainen.test.ts` ajaa yhden testitiedoston avoimessa selaimessa
 - `npm run build:local` kääntää lähdekoodit kansioon `./dist-nonce` asetuksilla, joissa backend löytyy localhostista, ja kopioi
@@ -62,19 +61,6 @@ Integraatiotestejä varten pitää Koski-backendin olla pystyssä (oletuksena `l
 Jos backend on valmiiksi ajossa, voi testit ajaa komennolla `npm run test:integration`.
 
 Testit ajetaan headless-selaimessa. Jos haluat selainikkunan näkyviin, aja testit komennolla `npm run test:integration:debug`
-
-### BrowserStack-testien ajaminen
-
-Voit ajaa integraatiotestit BrowserStackissa komennolla `npm run test:integration:browserstack`
-
-Testin ajamista voi ohjata seuraavilla ympäristömuuttujilla. Tunnukset löydät sivulta https://www.browserstack.com/accounts/settings otsikon _Automate_ alta.
-
-```
-BROWSERSTACK_USERNAME         Käyttäjänimi
-BROWSERSTACK_ACCESS_KEY       Access key
-BROWSERSTACK_BROWSER          Selain (ja versio), esim. "firefox 80.0"
-BROWSERSTACK_OS               Käyttöjärjestelmä (ja versio), esim. "windows 10"
-```
 
 ## Käyttäjätunnukset
 

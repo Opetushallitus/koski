@@ -10,14 +10,10 @@ import {
 import { clearLocalStorage, clearSessionStorage } from "./reset"
 import { longTimeout } from "./timeouts"
 
-declare namespace global {
-  let __driver__: undefined | (() => Promise<WebDriver>)
-}
-
 export let driver: WebDriver
 
 beforeAll(async () => {
-  driver = (await buildBrowserStackDriver()) || (await buildChromeDriver())
+  driver = await buildChromeDriver()
 }, longTimeout)
 
 beforeEach(() => {
@@ -33,11 +29,6 @@ afterEach(async () => {
   await clearLocalStorage()
   await clearSessionStorage()
 })
-
-const buildBrowserStackDriver = async (): Promise<WebDriver | undefined> =>
-  // Browserstack webdriver is provided by jest-environment-browserstack
-  // See jest.integrationtests.browserstack.config.js
-  global.__driver__ && global.__driver__()
 
 const buildChromeDriver = async (): Promise<WebDriver> => {
   const options = new chrome.Options()
