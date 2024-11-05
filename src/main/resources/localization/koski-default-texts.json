@@ -2731,5 +2731,6 @@
   "omadataoauth2_linkki_dvvdigilompakkopk": "https://dvv.fi/TODO",
   "omadataoauth2_linkkiteksti_dvvdigilompakkopk": "Eurooppalainen identiteettilompakko, Digi- ja väestötietovirasto",
   "omadataoauth2_tekstikappale_dvvdigilompakkopk_1": "Palveluntarjoaja käyttää tietojasi opintotietojesi tallentamiseen eurooppalaiseen identiteettilompakkoon.",
-  "omadataoauth2_tekstikappale_dvvdigilompakkopk_2": "Kun suostumuksen voimassaolo on päättynyt tai peruutettu, Opetushallitus ei enää luovuta henkilötietojasi palveluntarjoajalle. Palveluntarjoajalla voi kuitenkin olla lainmukainen peruste käsitellä ja säilyttää tietojasi myös suostumuksen peruuttamisen jälkeen."
+  "omadataoauth2_tekstikappale_dvvdigilompakkopk_2": "Kun suostumuksen voimassaolo on päättynyt tai peruutettu, Opetushallitus ei enää luovuta henkilötietojasi palveluntarjoajalle. Palveluntarjoajalla voi kuitenkin olla lainmukainen peruste käsitellä ja säilyttää tietojasi myös suostumuksen peruuttamisen jälkeen.",
+  "deprecated:Tätä tietoa ei saa tallentaa..." : "Tätä tietoa ei saa tallentaa KOSKI-palveluun."
 }
