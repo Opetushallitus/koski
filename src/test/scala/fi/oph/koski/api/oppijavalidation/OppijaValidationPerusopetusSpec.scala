@@ -126,7 +126,6 @@ class OppijaValidationPerusopetusSpec extends TutkinnonPerusteetTest[Perusopetuk
     "Kaksi samaksi katsottua ET ja KT oppiainetta" - {
       def testisuoritus(oppiaineenKoodiarvo: String, pakollinen: Boolean) =
         suoritus(uskonto(
-          uskonto = None,
           pakollinen = pakollinen,
           laajuus = vuosiviikkotuntia(3),
           oppiaineenKoodiarvo = oppiaineenKoodiarvo

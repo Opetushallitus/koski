@@ -37,9 +37,6 @@ class SensitiveAndRedundantDataFilterSpec extends AnyFreeSpec with TestEnvironme
     roundtrip[PerusopetuksenKäyttäytymisenArviointi](perusopetuksenKäyttäytymisenArviointi).kuvaus should equal(None)
     roundtrip[PerusopetuksenLisäopetuksenOppiaineenSuoritus](perusopetuksenLisäopetuksenOppiaineenSuoritus).yksilöllistettyOppimäärä should equal(false)
     roundtrip[NuortenPerusopetuksenOppiaineenSuoritus](nuortenPerusopetuksenOppiaineenSuoritus).yksilöllistettyOppimäärä should equal(false)
-    roundtrip[NuortenPerusopetuksenUskonto](nuortenUskonto).uskonnonOppimäärä should equal(None)
-    roundtrip[AikuistenPerusopetuksenUskonto](aikuistenUskonto).uskonnonOppimäärä should equal(None)
-    roundtrip[LukionUskonto2015](lukionUskonto).uskonnonOppimäärä should equal(None)
 
     val ammatillinenJossaVoisiOllaMukautettujaArvosanoja = lastOpiskeluoikeus(KoskiSpecificMockOppijat.ammatillisenOsittainenRapsa.oid, MockUsers.viranomainenGlobaaliKatselija)
     existsLisätietoMukautetustaArvioinnista(ammatillinenJossaVoisiOllaMukautettujaArvosanoja) should equal (false)
@@ -71,9 +68,6 @@ class SensitiveAndRedundantDataFilterSpec extends AnyFreeSpec with TestEnvironme
     roundtrip[PerusopetuksenKäyttäytymisenArviointi](perusopetuksenKäyttäytymisenArviointi) should equal(perusopetuksenKäyttäytymisenArviointi)
     roundtrip[PerusopetuksenLisäopetuksenOppiaineenSuoritus](perusopetuksenLisäopetuksenOppiaineenSuoritus) should equal(perusopetuksenLisäopetuksenOppiaineenSuoritus)
     roundtrip[NuortenPerusopetuksenOppiaineenSuoritus](nuortenPerusopetuksenOppiaineenSuoritus) should equal(nuortenPerusopetuksenOppiaineenSuoritus)
-    roundtrip[NuortenPerusopetuksenUskonto](nuortenUskonto) should equal(nuortenUskonto)
-    roundtrip[AikuistenPerusopetuksenUskonto](aikuistenUskonto) should equal(aikuistenUskonto)
-    roundtrip[LukionUskonto2015](lukionUskonto) should equal(lukionUskonto)
 
     val ammatillinenJossaVoisiOllaMukautettujaArvosanoja = lastOpiskeluoikeus(KoskiSpecificMockOppijat.ammatillisenOsittainenRapsa.oid, MockUsers.paakayttaja)
     existsLisätietoMukautetustaArvioinnista(ammatillinenJossaVoisiOllaMukautettujaArvosanoja) should equal (true)
@@ -99,9 +93,6 @@ class SensitiveAndRedundantDataFilterSpec extends AnyFreeSpec with TestEnvironme
     roundtrip[PerusopetuksenKäyttäytymisenArviointi](perusopetuksenKäyttäytymisenArviointi) should equal(perusopetuksenKäyttäytymisenArviointi)
     roundtrip[PerusopetuksenLisäopetuksenOppiaineenSuoritus](perusopetuksenLisäopetuksenOppiaineenSuoritus) should equal(perusopetuksenLisäopetuksenOppiaineenSuoritus)
     roundtrip[NuortenPerusopetuksenOppiaineenSuoritus](nuortenPerusopetuksenOppiaineenSuoritus) should equal(nuortenPerusopetuksenOppiaineenSuoritus)
-    roundtrip[NuortenPerusopetuksenUskonto](nuortenUskonto) should equal(nuortenUskonto)
-    roundtrip[AikuistenPerusopetuksenUskonto](aikuistenUskonto) should equal(aikuistenUskonto)
-    roundtrip[LukionUskonto2015](lukionUskonto) should equal(lukionUskonto)
   }
 
   private val pvm = LocalDate.of(2001, 1, 1)
@@ -226,9 +217,6 @@ class SensitiveAndRedundantDataFilterSpec extends AnyFreeSpec with TestEnvironme
 
   private val perusopetuksenLisäopetuksenOppiaineenSuoritus = ExamplesPerusopetuksenLisaopetus.suoritus(PerusopetusExampleData.oppiaine("HI")).copy(yksilöllistettyOppimäärä = true)
   private val nuortenPerusopetuksenOppiaineenSuoritus = suoritus(oppiaine("MA")).copy(yksilöllistettyOppimäärä = true)
-  private val nuortenUskonto = PerusopetusExampleData.uskonto(Some("EV"))
-  private val aikuistenUskonto = ExamplesAikuistenPerusopetus.aikuistenUskonto(Some("OR"))
-  private val lukionUskonto: LukionUskonto2015 = LukioExampleData.lukionUskonto(uskonto = Some("IS"), diaarinumero = None)
 
   private def roundtrip[T: TypeTag](input: T)(implicit user: SensitiveDataAllowed): T =
     JsonSerializer.extract[T](JsonSerializer.serialize(input))

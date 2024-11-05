@@ -65,7 +65,6 @@ describe('Perusopetus', function () {
             'A1-kieli, englanti 8\n' +
             'Äidinkielenomainen kieli A-oppimäärä, suomi 8\n' +
             'Uskonto/Elämänkatsomustieto 10\n' +
-            'Uskonnon oppimäärä Ortodoksinen uskonto\n' +
             'Historia 8\n' +
             'Yhteiskuntaoppi 10\n' +
             'Matematiikka 9\n' +
@@ -167,7 +166,6 @@ describe('Perusopetus', function () {
             'A1-kieli, englanti 8\n' +
             'Äidinkielenomainen kieli A-oppimäärä, suomi 8\n' +
             'Uskonto/Elämänkatsomustieto 10\n' +
-            'Uskonnon oppimäärä Ortodoksinen uskonto\n' +
             'Historia 8\n' +
             'Yhteiskuntaoppi 10\n' +
             'Matematiikka 9\n' +
@@ -531,7 +529,6 @@ describe('Perusopetus', function () {
           'B1-kieli, ruotsi 8\n' +
           'A1-kieli, englanti 8\n' +
           'Uskonto/Elämänkatsomustieto 10\n' +
-          'Uskonnon oppimäärä Ortodoksinen uskonto\n' +
           'Historia 8\n' +
           'Yhteiskuntaoppi 10\n' +
           'Matematiikka 9\n' +
@@ -1887,21 +1884,6 @@ describe('Perusopetus', function () {
       })
 
       describe('Uskonto', function () {
-        describe('oppimäärän muuttaminen', function () {
-          var uskonto = opinnot.oppiaineet.oppiaine('pakollinen.KT')
-          var oppimäärä = uskonto.propertyBySelector('.uskonnonOppimäärä')
-          before(
-            editor.edit,
-            uskonto.expand,
-            oppimäärä.selectValue('Islam'),
-            editor.saveChanges,
-            uskonto.expand
-          )
-          it('muutettu kielivalinta näytetään', function () {
-            expect(oppimäärä.getValue()).to.equal('Islam')
-          })
-        })
-
         describe('Virkailijalle jolla ei ole luottamuksellisten tietojen katseluoikeutta', function () {
           before(
             Authentication().logout,

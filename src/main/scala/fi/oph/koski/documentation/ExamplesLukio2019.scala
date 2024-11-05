@@ -218,7 +218,7 @@ object Lukio2019ExampleData {
       moduulinSuoritusOppiaineissa(muuModuuliOppiaineissa("OP1")).copy(arviointi = sanallinenArviointi("H")),
       moduulinSuoritusOppiaineissa(muuModuuliOppiaineissa("OP2")).copy(arviointi = sanallinenArviointi("S"))
     ))),
-    oppiaineenSuoritus(Lukio2019ExampleData.lukionUskonto(Some("MU"))).copy(arviointi = numeerinenLukionOppiaineenArviointi(4)).copy(osasuoritukset = Some(List(
+    oppiaineenSuoritus(Lukio2019ExampleData.lukionUskonto()).copy(arviointi = numeerinenLukionOppiaineenArviointi(4)).copy(osasuoritukset = Some(List(
       moduulinSuoritusOppiaineissa(muuModuuliOppiaineissa("UE1").copy(laajuus = laajuus(1.5))).copy(arviointi = numeerinenArviointi(4))
     ))),
     oppiaineenSuoritus(lukionKieli2019("AOM", "SV")).copy(arviointi = numeerinenLukionOppiaineenArviointi(9)).copy(osasuoritukset = Some(List(
@@ -284,17 +284,17 @@ object Lukio2019ExampleData {
   def matematiikka(matematiikka: String) =
     LukionMatematiikka2019(oppimäärä = Koodistokoodiviite(koodiarvo = matematiikka, koodistoUri = "oppiainematematiikka"))
 
-  def lukionUskonto(uskonto: Option[String], laajuus: LaajuusOpintopisteissä): LukionUskonto2019 =
+  def lukionUskonto(laajuus: LaajuusOpintopisteissä): LukionUskonto2019 =
     LukionUskonto2019(
       tunniste = Koodistokoodiviite(koodistoUri = "koskioppiaineetyleissivistava", koodiarvo = "KT"),
-      uskonnonOppimäärä = uskonto.map(u => Koodistokoodiviite(koodistoUri = "uskonnonoppimaara", koodiarvo = u)),
+      uskonnonOppimäärä = None,
       laajuus = Some(laajuus)
     )
 
-  def lukionUskonto(uskonto: Option[String]): LukionUskonto2019 =
+  def lukionUskonto(): LukionUskonto2019 =
     LukionUskonto2019(
       tunniste = Koodistokoodiviite(koodistoUri = "koskioppiaineetyleissivistava", koodiarvo = "KT"),
-      uskonnonOppimäärä = uskonto.map(u => Koodistokoodiviite(koodistoUri = "uskonnonoppimaara", koodiarvo = u))
+      uskonnonOppimäärä = None,
     )
 
   def lukionÄidinkieli(kieli: String, laajuus: LaajuusOpintopisteissä, pakollinen: Boolean) =
