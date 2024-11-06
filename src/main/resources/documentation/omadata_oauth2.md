@@ -60,6 +60,9 @@ Rajapinnan kutsumista varten kumppanin toteuttama palvelu tarvitsee seuraavat ti
     <br/>Ks. sisältö linkistä <a href="{{var:oppijaBaseUrl}}/omadata-oauth2/.well-known/oauth-authorization-server">{{var:oppijaBaseUrl}}/omadata-oauth2/.well-known/oauth-authorization-server</a>
   </dd>
 
+  <dt>Token type</dt>
+  <dd>Access token endpoint palauttaa aina Bearer-tokeneita.</dd>
+
   <dt>Resource endpoint</dt>
   <dd>
     <a href="{{var:luovutuspalveluBaseUrl}}/koski/api/omadata-oauth2/resource-server">{{var:luovutuspalveluBaseUrl}}/koski/api/omadata-oauth2/resource-server</a>
@@ -185,9 +188,10 @@ OPH:n testiympäristöissä esimerkkiapplikaatio pyörii osoitteissa:
 
 [RFC8414 OAuth 2.0 Authorization Server Metadata](https://www.rfc-editor.org/rfc/rfc8414)
 
+[RFC6819 OAuth 2.0 Threat Model and Security Considerations](https://www.rfc-editor.org/rfc/rfc6819.txt)
+
+[RFC6750 The OAuth 2.0 Authorization Framework: Bearer Token Usage](https://www.rfc-editor.org/rfc/rfc6750)
+
 [OAuth 2.0 Form Post Response Mode](https://openid.net/specs/oauth-v2-form-post-response-mode-1_0.html)
 
-[OAuth 2.0 Threat Model and Security Considerations](https://www.rfc-editor.org/rfc/rfc6819.txt)
-
 [OAuth 2.0 Security Best Current Practice](https://www.ietf.org/archive/id/draft-ietf-oauth-security-topics-25.html)
-
