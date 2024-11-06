@@ -47,6 +47,12 @@ OAuth2-rajapinnassa on käytössä:
     IP-osoitteet, joista liikenne sallitaan.
     <br/>Nämä voivat olla eri testiympäristössä ja tuotannossa.
   </dd>
+  <dt>(7) Toive suostumuksen voimassaoloajasta</dt>
+  <dd>
+    Aika sekunteina.
+    <br/>Tämä riippuu kumppanin käyttötapauksesta: esim. tarvitaanko kansalaisen tiedot vain yhden kerran, jolloin lyhyt voimassaoloaika riittää, vai tarvitseeko tietoihin päästä käsiksi pidemmän aikaa ilman, 
+    että kansalaiselta tarvitsee pyytää suostumusta uudestaan.
+  </dd>
 </dl>
 
 ## Tiedot rajapinnasta
@@ -62,6 +68,11 @@ Rajapinnan kutsumista varten kumppanin toteuttama palvelu tarvitsee seuraavat ti
 
   <dt>Token type</dt>
   <dd>Access token endpoint palauttaa aina Bearer-tokeneita.</dd>
+
+  <dt>Authorization code:n ja access token:in voimassaoloaika</dt>
+  <dd>Näiden käsittely ja määrittely on vielä työn alla. 
+    <br/>Todennäköisimmin ensimmäisessä versiossa authorization code:sta tehdään lyhytaikainen ja kertakäyttöinen ja access tokenista pidempiaikainen, minkä ajan voi määritellä kullekin clientille erikseen, eikä erillisiä refresh token:eita aluksi tueta.
+  </dd>
 
   <dt>Resource endpoint</dt>
   <dd>
