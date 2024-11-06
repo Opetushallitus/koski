@@ -37,6 +37,7 @@ object Rooli {
 
   // Suostumusperustaisen (OAuth2) -rajapinnan scopeissa käytetyt käyttöoikeudet. "OMADATAOAUTH2_"-jälkeinen osuus on sellaisenaan
   // tuettuna merkkijonona myös scopessa, joten näiden muuttamista ei voi tehdä vapaasti.
+  val omadataOAuth2Prefix = "OMADATAOAUTH2_"
   val OMADATAOAUTH2_HENKILOTIEDOT_NIMI = "OMADATAOAUTH2_HENKILOTIEDOT_NIMI"
   val OMADATAOAUTH2_HENKILOTIEDOT_SYNTYMAAIKA = "OMADATAOAUTH2_HENKILOTIEDOT_SYNTYMAAIKA"
   val OMADATAOAUTH2_HENKILOTIEDOT_HETU = "OMADATAOAUTH2_HENKILOTIEDOT_HETU"

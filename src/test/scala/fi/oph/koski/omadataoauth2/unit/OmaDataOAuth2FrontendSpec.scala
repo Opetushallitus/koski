@@ -60,6 +60,48 @@ class OmaDataOAuth2FrontendSpec extends OmaDataOAuth2TestBase {
       }
     }
 
+    "scopella, joka ei annetulle clientille sallittu vaikka muuten validi" - {
+      "kirjautumattomalla käyttäjällä" - {
+        "redirectaa login-sivulle" in {
+          // Tämä testi vain varmistaa, että palvelukäyttäjätunnukseen(=client_id) sidottu tarkka sallittu scope ei paljastu ulos tässä vaiheessa
+          val parametriNimi = "scope"
+          val eiSallittuArvo = "HENKILOTIEDOT_NIMI OPISKELUOIKEUDET_AKTIIVISET_JA_PAATTYNEET_OPINNOT"
+
+          val eiSallitullaScopella = createParamsString(validParamsVaihdetullaArvolla(parametriNimi, eiSallittuArvo))
+
+          val serverUri = s"${baseUri}?${eiSallitullaScopella}"
+
+          val expectedLoginUri = s"/koski/login/oppija?service=/koski/user/login?onSuccess=/koski/omadata-oauth2/cas-workaround/authorize/${base64UrlEncode(eiSallitullaScopella)}"
+
+          get(
+            uri = serverUri
+          ) {
+            verifyResponseStatus(302)
+
+            response.header("Location") should include(expectedLoginUri)
+          }
+        }
+      }
+      "kirjautuneella käyttäjällä" - {
+        "palauttaa suostumuksen myöntämis -sivun" in {
+          // Tämä testi vain varmistaa, että palvelukäyttäjätunnukseen(=client_id) sidottu tarkka sallittu scope ei paljastu ulos tässä vaiheessa
+          val parametriNimi = "scope"
+          val eiSallittuArvo = "HENKILOTIEDOT_NIMI OPISKELUOIKEUDET_AKTIIVISET_JA_PAATTYNEET_OPINNOT"
+
+          val eiSallitullaScopella = createParamsString(validParamsVaihdetullaArvolla(parametriNimi, eiSallittuArvo))
+
+          val serverUri = s"${baseUri}?${eiSallitullaScopella}"
+
+          get(
+            uri = serverUri,
+            headers = kansalainenLoginHeaders(hetu)
+          ) {
+            verifyResponseStatusOk()
+            body should include("/koski/js/koski-omadataoauth2.js")          }
+        }
+      }
+    }
+
     "Suostumuksen myöntämis- ja datan haku-operaatiot audit-lokitetaan" in {
       // TODO: TOR-2210
     }
@@ -315,10 +357,80 @@ class OmaDataOAuth2FrontendSpec extends OmaDataOAuth2TestBase {
           }
 
           "kun scope on epävalidi" in {
-            // TODO: TOR-2210
+            val parametriNimi = "scope"
+            val eiSallittuArvo = "HENKILOTIEDOT_NIMI HENKILOTIEDOT_VIRHEELLINEN OPISKELUOIKEUDET_SUORITETUT_TUTKINNOT"
+
+            val eiSallitullaScopella = createParamsString(validParamsVaihdetullaArvolla(parametriNimi, eiSallittuArvo))
+
+            val serverUri = s"${baseUri}?${eiSallitullaScopella}"
+
+            get(
+              uri = serverUri
+            ) {
+              verifyResponseStatus(302)
+              response.header("Location") should not include(s"logout")
+              response.header("Location") should include(s"/koski/omadata-oauth2/post-response/")
+              response.header("Location") should include(s"error=invalid_scope")
+              response.header("Location") should include(queryStringUrlEncode(s"${parametriNimi}=${eiSallittuArvo} contains unknown scopes (HENKILOTIEDOT_VIRHEELLINEN)"))
+              response.header("Location") should include regex("omadataoauth2-error-[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}".r)
+            }
           }
-          "kun scope ei ole annetulle clientille sallittu" in {
-            // TODO: TOR-2210
+          "kun scopessa on toistensa kanssa epäyhteensopivia arvoja" in {
+            val parametriNimi = "scope"
+            val eiSallittuArvo = "HENKILOTIEDOT_NIMI OPISKELUOIKEUDET_SUORITETUT_TUTKINNOT OPISKELUOIKEUDET_KAIKKI_TIEDOT"
+
+            val eiSallitullaScopella = createParamsString(validParamsVaihdetullaArvolla(parametriNimi, eiSallittuArvo))
+
+            val serverUri = s"${baseUri}?${eiSallitullaScopella}"
+
+            get(
+              uri = serverUri
+            ) {
+              verifyResponseStatus(302)
+              response.header("Location") should not include(s"logout")
+              response.header("Location") should include(s"/koski/omadata-oauth2/post-response/")
+              response.header("Location") should include(s"error=invalid_scope")
+              response.header("Location") should include(queryStringUrlEncode(s"${parametriNimi}=${eiSallittuArvo} contains an invalid combination of scopes (OPISKELUOIKEUDET_KAIKKI_TIEDOT, OPISKELUOIKEUDET_SUORITETUT_TUTKINNOT)"))
+              response.header("Location") should include regex("omadataoauth2-error-[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}".r)
+            }
+          }
+          "kun scopesta puuttuu opiskeluoikeudet-scope kokonaan" in {
+            val parametriNimi = "scope"
+            val eiSallittuArvo = "HENKILOTIEDOT_NIMI HENKILOTIEDOT_HETU"
+
+            val eiSallitullaScopella = createParamsString(validParamsVaihdetullaArvolla(parametriNimi, eiSallittuArvo))
+
+            val serverUri = s"${baseUri}?${eiSallitullaScopella}"
+
+            get(
+              uri = serverUri
+            ) {
+              verifyResponseStatus(302)
+              response.header("Location") should not include(s"logout")
+              response.header("Location") should include(s"/koski/omadata-oauth2/post-response/")
+              response.header("Location") should include(s"error=invalid_scope")
+              response.header("Location") should include(queryStringUrlEncode(s"${parametriNimi}=${eiSallittuArvo} is missing a required OPISKELUOIKEUDET_ scope"))
+              response.header("Location") should include regex("omadataoauth2-error-[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}".r)
+            }
+          }
+          "kun scopesta puuttuu henkilötiedot-scope kokonaan" in {
+            val parametriNimi = "scope"
+            val eiSallittuArvo = "OPISKELUOIKEUDET_KAIKKI_TIEDOT"
+
+            val eiSallitullaScopella = createParamsString(validParamsVaihdetullaArvolla(parametriNimi, eiSallittuArvo))
+
+            val serverUri = s"${baseUri}?${eiSallitullaScopella}"
+
+            get(
+              uri = serverUri
+            ) {
+              verifyResponseStatus(302)
+              response.header("Location") should not include(s"logout")
+              response.header("Location") should include(s"/koski/omadata-oauth2/post-response/")
+              response.header("Location") should include(s"error=invalid_scope")
+              response.header("Location") should include(queryStringUrlEncode(s"${parametriNimi}=${eiSallittuArvo} is missing a required HENKILOTIEDOT_ scope"))
+              response.header("Location") should include regex("omadataoauth2-error-[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}".r)
+            }
           }
           "kun code_challenge ei ole validimuotoinen challenge" in {
             // TODO: TOR-2210
@@ -420,10 +532,75 @@ class OmaDataOAuth2FrontendSpec extends OmaDataOAuth2TestBase {
           }
 
           "kun scope on epävalidi" in {
-            // TODO: TOR-2210
+            val parametriNimi = "scope"
+            val eiSallittuArvo = "HENKILOTIEDOT_NIMI HENKILOTIEDOT_VIRHEELLINEN OPISKELUOIKEUDET_SUORITETUT_TUTKINNOT"
+
+            val eiSallitullaScopella = createParamsString(validParamsVaihdetullaArvolla(parametriNimi, eiSallittuArvo))
+
+            val serverUri = s"${baseUri}?${eiSallitullaScopella}"
+
+            get(
+              uri = serverUri,
+              headers = kansalainenLoginHeaders(hetu)
+
+            ) {
+              verifyResponseStatus(302)
+              response.header("Location") should include(s"/koski/user/logout?target=/koski/omadata-oauth2/cas-workaround/post-response/")
+              // TODO: TOR-2210: Base64url-enkoodattu osa Location-URLista pitäisi dekoodata ja tarkistaa sisältö
+            }
           }
-          "kun scope ei ole annetulle clientille sallittu" in {
-            // TODO: TOR-2210
+          "kun scopessa on toistensa kanssa epäyhteensopivia arvoja" in {
+            val parametriNimi = "scope"
+            val eiSallittuArvo = "HENKILOTIEDOT_NIMI OPISKELUOIKEUDET_SUORITETUT_TUTKINNOT OPISKELUOIKEUDET_KAIKKI_TIEDOT"
+
+            val eiSallitullaScopella = createParamsString(validParamsVaihdetullaArvolla(parametriNimi, eiSallittuArvo))
+
+            val serverUri = s"${baseUri}?${eiSallitullaScopella}"
+
+            get(
+              uri = serverUri,
+              headers = kansalainenLoginHeaders(hetu)
+
+            ) {
+              verifyResponseStatus(302)
+              response.header("Location") should include(s"/koski/user/logout?target=/koski/omadata-oauth2/cas-workaround/post-response/")
+              // TODO: TOR-2210: Base64url-enkoodattu osa Location-URLista pitäisi dekoodata ja tarkistaa sisältö
+            }
+          }
+          "kun scopesta puuttuu opiskeluoikeudet-scope kokonaan" in {
+            val parametriNimi = "scope"
+            val eiSallittuArvo = "HENKILOTIEDOT_NIMI HENKILOTIEDOT_HETU"
+
+            val eiSallitullaScopella = createParamsString(validParamsVaihdetullaArvolla(parametriNimi, eiSallittuArvo))
+
+            val serverUri = s"${baseUri}?${eiSallitullaScopella}"
+
+            get(
+              uri = serverUri,
+              headers = kansalainenLoginHeaders(hetu)
+
+            ) {
+              verifyResponseStatus(302)
+              response.header("Location") should include(s"/koski/user/logout?target=/koski/omadata-oauth2/cas-workaround/post-response/")
+              // TODO: TOR-2210: Base64url-enkoodattu osa Location-URLista pitäisi dekoodata ja tarkistaa sisältö
+            }
+          }
+          "kun scopesta puuttuu henkilötiedot-scope kokonaan" in {
+            val parametriNimi = "scope"
+            val eiSallittuArvo = "OPISKELUOIKEUDET_KAIKKI_TIEDOT"
+
+            val eiSallitullaScopella = createParamsString(validParamsVaihdetullaArvolla(parametriNimi, eiSallittuArvo))
+
+            val serverUri = s"${baseUri}?${eiSallitullaScopella}"
+
+            get(
+              uri = serverUri,
+              headers = kansalainenLoginHeaders(hetu)
+            ) {
+              verifyResponseStatus(302)
+              response.header("Location") should include(s"/koski/user/logout?target=/koski/omadata-oauth2/cas-workaround/post-response/")
+              // TODO: TOR-2210: Base64url-enkoodattu osa Location-URLista pitäisi dekoodata ja tarkistaa sisältö
+            }
           }
           "kun code_challenge ei ole validimuotoinen challenge" in {
             // TODO: TOR-2210

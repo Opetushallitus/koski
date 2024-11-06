@@ -49,7 +49,7 @@ class OmaDataOAuth2ResourceOwnerServlet(implicit val application: KoskiApplicati
 
           logoutAndRedirectWithErrorsToResourceOwnerFrontend(validationError.getClientErrorParams)
         case Right(clientInfo) =>
-          validateQueryOtherParams() match {
+          validateQueryOtherParams(clientInfo) match {
             case Left(validationError) =>
               // .error toistaiseksi, koska tätä virhettä ei yleisesti pitäisi tapahtua, jos clientin fronttikoodissa ei ole bugeja
               logger.error(validationError.getLoggedErrorMessage)

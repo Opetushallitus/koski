@@ -9,7 +9,7 @@ import fi.oph.koski.servlet.{KoskiSpecificApiServlet, NoCache}
 import org.scalatra.{ContentEncodingSupport}
 
 class OmaDataOAuth2DiscoveryServlet(implicit val application: KoskiApplication) extends KoskiSpecificApiServlet
-  with Logging with ContentEncodingSupport with NoCache with Unauthenticated {
+  with OmaDataOAuth2Support with Logging with ContentEncodingSupport with NoCache with Unauthenticated {
 
   val allowFrameAncestors: Boolean = !Environment.isServerEnvironment(application.config)
   val frontendValvontaMode: FrontendValvontaMode.FrontendValvontaMode =
@@ -33,24 +33,12 @@ class OmaDataOAuth2DiscoveryServlet(implicit val application: KoskiApplication) 
     val metadata = OAuth2ProviderMetadata(
       issuer = opintopolkuBaseUrl + "/koski/omadata-oauth2",
       authorization_endpoint = opintopolkuBaseUrl + "/koski/omadata-oauth2/authorize",
-      scopes_supported = findKoodisto("omadataoauth2scope").map(_.koodiArvo.toUpperCase()).sorted,
+      scopes_supported = validScopes.toSeq.sorted,
       token_endpoint = luovutuspalveluBaseUrl + "/koski/api/omadata-oauth2/authorization-server",
       service_documentation = opintopolkuBaseUrl + "/koski/dokumentaatio/rajapinnat/oauth2/omadata"
     )
 
     render(metadata)
-  }
-
-  def findKoodisto(koodistoUri: String, versioNumero: Option[String] = None): Seq[KoodistoKoodi] = {
-    val versio: Option[KoodistoViite] = versioNumero match {
-      case Some("latest") =>
-        application.koodistoPalvelu.getLatestVersionOptional(koodistoUri)
-      case Some(versio) =>
-        Some(KoodistoViite(koodistoUri, versio.toInt))
-      case _ =>
-        application.koodistoPalvelu.getLatestVersionOptional(koodistoUri)
-    }
-    versio.toSeq.flatMap { koodisto => (application.koodistoPalvelu.getKoodistoKoodit(koodisto)) }
   }
 }
 
