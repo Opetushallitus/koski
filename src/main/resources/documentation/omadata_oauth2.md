@@ -7,6 +7,13 @@ Kumppanin tulee olla Opetushallituksen hyväksymä, ja kumppanin tekniset tunnis
 lisättyinä KOSKI-järjestelmään. Lisäämistä varten OPH:ssa tarvittavat tiedot on listattu seuraavassa
 kappaleessa.
 
+OAuth2-rajapinnassa on käytössä:
+
+* Authorization code flow
+* POST response mode
+* Mutual-TLS Client Authentication (ilman certificate-bound access tokeneita)
+* PKCE 
+
 ## Kumppanilta tarvittavat tekniset tiedot
 
 <dl>
@@ -16,7 +23,7 @@ kappaleessa.
   </dd>
   <dt>(2) Kansalaiselta tarvittavat tiedot, lista OAuth2-scopeja</dt>
   <dd>
-    Tieto siitä, mitä henkilö- ja opiskeluoikeustietoja kumppanille pitäisi sallia. Ks. myöhempi Scopet-kappale.
+    Tieto siitä, mitä henkilö- ja opiskeluoikeustietoja kumppanille pitäisi sallia, ks. myöhempi Scopet-kappale.
   </dd>
   <dt>(3) Paluuosoitteet, OAuth2-redirect_urit</dt>
   <dd>
