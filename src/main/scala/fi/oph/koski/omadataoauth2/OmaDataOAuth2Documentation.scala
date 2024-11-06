@@ -32,8 +32,17 @@ object OmaDataOAuth2Documentation extends Logging {
       .toString()
 
   def addVariableTexts(application: KoskiApplication, markdown: String): String = {
-    val rootUrl = new URL(application.config.getString("koski.root.url"))
-    val baseUrl = rootUrl.toString
+    val virkailijaBaseUrl = new URL(
+      application.config.getString("opintopolku.virkailija.url") match {
+        case "mock" => "http://localhost:7021/koski"
+        case url => s"${url}/koski"
+    }).toString
+
+    val oppijaBaseUrl = new URL(
+      application.config.getString("opintopolku.oppija.url") match {
+        case "mock" => "http://localhost:7021/koski"
+        case url => s"${url}/koski"
+      }).toString
 
     val luovutuspalveluRootUrl = application.config.getString("omadataoauth2.luovutuspalveluBaseUrl") match {
       case "mock" => new URL("https://localhost:7022")
@@ -42,7 +51,8 @@ object OmaDataOAuth2Documentation extends Logging {
     val luovutuspalveluBaseUrl = luovutuspalveluRootUrl.toString
 
     val vars = Map(
-      "baseUrl" -> baseUrl,
+      "virkailijaBaseUrl" -> virkailijaBaseUrl,
+      "oppijaBaseUrl" -> oppijaBaseUrl,
       "luovutuspalveluBaseUrl" -> luovutuspalveluBaseUrl
     )
 

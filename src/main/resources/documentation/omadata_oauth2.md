@@ -12,7 +12,7 @@ OAuth2-rajapinnassa on käytössä:
 * Authorization code flow
 * POST response mode
 * Mutual-TLS Client Authentication (ilman certificate-bound access tokeneita)
-* PKCE 
+* PKCE
 
 ## Kumppanilta tarvittavat tekniset tiedot
 
@@ -57,7 +57,7 @@ Rajapinnan kutsumista varten kumppanin toteuttama palvelu tarvitsee seuraavat ti
   <dt>OAuth2-palvelun osoitteet ja muut metatiedot</dt>
   <dd>
     Nämä julkaistaan standardimuotoisina metatietoina.
-    <br/>Ks. sisältö linkistä <a href="{{var:baseUrl}}/omadata-oauth2/.well-known/oauth-authorization-server">{{var:baseUrl}}/omadata-oauth2/.well-known/oauth-authorization-server</a>
+    <br/>Ks. sisältö linkistä <a href="{{var:oppijaBaseUrl}}/omadata-oauth2/.well-known/oauth-authorization-server">{{var:oppijaBaseUrl}}/omadata-oauth2/.well-known/oauth-authorization-server</a>
   </dd>
 
   <dt>Resource endpoint</dt>
@@ -81,17 +81,17 @@ Toistaiseksi **OPISKELUOIKEUDET_**-scopeja ei voi käyttää kuin yhtä kerralla
 <dl>
   <dt>OPISKELUOIKEUDET_SUORITETUT_TUTKINNOT</dt>
   <dd>
-    opiskeluoikeudet-taulukossa palautetaan oppijan suoritetut tutkinnot. Skeema: <a href="{{var:baseUrl}}/json-schema-viewer/?schema=suoritetut-tutkinnot-oppija-schema.json">{{var:baseUrl}}/json-schema-viewer/?schema=suoritetut-tutkinnot-oppija-schema.json</a>
+    opiskeluoikeudet-taulukossa palautetaan oppijan suoritetut tutkinnot. Skeema: <a href="{{var:virkailijaBaseUrl}}/json-schema-viewer/?schema=suoritetut-tutkinnot-oppija-schema.json">{{var:virkailijaBaseUrl}}/json-schema-viewer/?schema=suoritetut-tutkinnot-oppija-schema.json</a>
     Lisätietoja, ks. <a href="https://wiki.eduuni.fi/pages/viewpage.action?pageId=371305841">https://wiki.eduuni.fi/pages/viewpage.action?pageId=371305841</a>.
   </dd>
   <dt>OPISKELUOIKEUDET_AKTIIVISET_JA_PAATTYNEET_OPINNOT</dt>
   <dd>
-    opiskeluoikeudet-taulukossa palautetaan oppijan aktiiviset ja päättyneet opinnot. Skeema: <a href="{{var:baseUrl}}/json-schema-viewer/?schema=aktiiviset-ja-paattyneet-opinnot-oppija-schema.json">{{var:baseUrl}}/json-schema-viewer/?schema=aktiiviset-ja-paattyneet-opinnot-oppija-schema.json</a>
+    opiskeluoikeudet-taulukossa palautetaan oppijan aktiiviset ja päättyneet opinnot. Skeema: <a href="{{var:virkailijaBaseUrl}}/json-schema-viewer/?schema=aktiiviset-ja-paattyneet-opinnot-oppija-schema.json">{{var:virkailijaBaseUrl}}/json-schema-viewer/?schema=aktiiviset-ja-paattyneet-opinnot-oppija-schema.json</a>
     Lisätietoja, ks. <a href="https://wiki.eduuni.fi/pages/viewpage.action?pageId=371305841">https://wiki.eduuni.fi/pages/viewpage.action?pageId=371305841</a>.
   </dd>
   <dt>OPISKELUOIKEUDET_KAIKKI_TIEDOT</dt>
   <dd>
-    opiskeluoikeudet-taulukossa palautetaan kaikki oppijan opiskeluoikeustiedot, skeema: <a href="{{var:baseUrl}}/json-schema-viewer#koski-oppija-schema.json">{{var:baseUrl}}/json-schema-viewer#koski-oppija-schema.json</a>
+    opiskeluoikeudet-taulukossa palautetaan kaikki oppijan opiskeluoikeustiedot, skeema: <a href="{{var:virkailijaBaseUrl}}/json-schema-viewer#koski-oppija-schema.json">{{var:virkailijaBaseUrl}}/json-schema-viewer#koski-oppija-schema.json</a>
   </dd>
   <dt>HENKILOTIEDOT_HETU</dt>
   <dd>
