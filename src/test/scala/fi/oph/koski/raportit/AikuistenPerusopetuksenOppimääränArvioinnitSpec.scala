@@ -92,6 +92,7 @@ class AikuistenPerusopetuksenOppimääränArvioinnitSpec
     "Raportin kolumnit" in {
       raportti.columnSettings.map(_._1) should equal(List(
         "opiskeluoikeusOid",
+        "oppijaOid",
         "alkamispaiva",
         "paattymispaiva",
         "viimeisinTila",
