@@ -1937,7 +1937,7 @@ class OppijaValidationLukio2019Spec extends AnyFreeSpec with PutOpiskeluoikeusTe
           List(LukionOpiskeluoikeusjakso(alku = date(2019, 8, 1), tila = opiskeluoikeusAktiivinen, opintojenRahoitus = Some(ExampleData.valtionosuusRahoitteinen)))
         ),
         suoritukset = List(oppiaineidenOppimäärienSuoritus.copy(
-          osasuoritukset = Some(List(oppiaineenSuoritus(Lukio2019ExampleData.lukionUskonto(None)).copy(osasuoritukset = Some(
+          osasuoritukset = Some(List(oppiaineenSuoritus(Lukio2019ExampleData.lukionUskonto()).copy(osasuoritukset = Some(
             moduulit.map(m => moduulinSuoritusOppiaineissa(muuModuuliOppiaineissa(m).copy(pakollinen = pakollinen))),
           )))
         ))),

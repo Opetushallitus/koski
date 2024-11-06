@@ -1,7 +1,14 @@
+## 6.11.2024
+
+- Uskonnon oppimäärä (\*.osasuoritukset[].koulutusmoduuli.uskonnonOppimäärä) on deprekoitu kaikilta lukion ja perusopetuksen opiskeluoikeuksilta,
+  eikä sitä enää tallenneta tai palauteta.
+
 ## 7.10.2024
+
 - Lisätty koulutuskuntatiedot korkeakouluopiskeluoikeuksien lisätietoihin
 
 ## 8.7.2024
+
 - Päätason suoritusten oppilaitosten nimet haetaan erikseen vahvistuspäivän mukaan
 
 ## 30.5.2024
@@ -9,9 +16,11 @@
 - JOTPA-rahoitettujen opiskeluoikeuksien lisätietoihin lisätty JOTPA-asianumero kenttä.
 
 ## 16.5.2024
+
 - Lisättu Tunti validiksi Perusopetukseen valmistavaan opetuksen kokonaislaajuuden yksiköksi.
 
 ## 22.4.2024
+
 - Deprekoitu ESH-opiskeluoikeuden maksuttomuuteen liittyvät kentät.
 
 ## 12.3.2024

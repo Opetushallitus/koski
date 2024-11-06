@@ -584,6 +584,8 @@ trait Uskonto {
   @Description("Mikä uskonto on kyseessä")
   @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))
   @KoodistoUri("uskonnonoppimaara")
+  @Deprecated("Tätä tietoa ei saa tallentaa KOSKI-palveluun.")
+  @RedundantData // Siivoaa uskonnon oppimäärän pois muunnosten yhteydessä
   def uskonnonOppimäärä: Option[Koodistokoodiviite]
 }
 

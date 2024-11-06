@@ -162,7 +162,7 @@ object ExamplesLukio {
               kurssisuoritus(syventäväKurssi("KE8", "Kemia 8", "Kemia 8"))
                 .copy(arviointi = sanallinenArviointi("S"))
             ))),
-            suoritus(lukionUskonto(uskonto = Some("IS"), diaarinumero = None)).copy(arviointi = arviointi("8")).copy(osasuoritukset = Some(List(
+            suoritus(lukionUskonto(diaarinumero = None)).copy(arviointi = arviointi("8")).copy(osasuoritukset = Some(List(
               kurssisuoritus(valtakunnallinenKurssi("UE1")).copy(arviointi = numeerinenArviointi(8)),
               kurssisuoritus(valtakunnallinenKurssi("UE2")).copy(arviointi = numeerinenArviointi(7)),
               kurssisuoritus(valtakunnallinenKurssi("UE3")).copy(arviointi = numeerinenArviointi(8))
@@ -491,10 +491,10 @@ object LukioExampleData {
       laajuus = Some(laajuus)
     )
 
-  def lukionUskonto(uskonto: Option[String], diaarinumero: Option[String]): LukionUskonto2015 =
+  def lukionUskonto(diaarinumero: Option[String]): LukionUskonto2015 =
     LukionUskonto2015(
       tunniste = Koodistokoodiviite(koodistoUri = "koskioppiaineetyleissivistava", koodiarvo = "KT"),
-      uskonnonOppimäärä = uskonto.map(u => Koodistokoodiviite(koodistoUri = "uskonnonoppimaara", koodiarvo = u)),
+      uskonnonOppimäärä = None,
       perusteenDiaarinumero = diaarinumero
     )
 
