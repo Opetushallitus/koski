@@ -6,6 +6,7 @@ import { Koulutustoimija } from './Koulutustoimija'
 import { InternationalSchoolOpiskeluoikeudenLisätiedot } from './InternationalSchoolOpiskeluoikeudenLisatiedot'
 import { InternationalSchoolVuosiluokanSuoritus } from './InternationalSchoolVuosiluokanSuoritus'
 import { LähdejärjestelmäId } from './LahdejarjestelmaId'
+import { LähdejärjestelmäkytkennänPurkaminen } from './LahdejarjestelmakytkennanPurkaminen'
 import { Oppilaitos } from './Oppilaitos'
 
 /**
@@ -28,6 +29,7 @@ export type InternationalSchoolOpiskeluoikeus = {
   päättymispäivä?: string
   lähdejärjestelmänId?: LähdejärjestelmäId
   arvioituPäättymispäivä?: string
+  lähdejärjestelmäkytkentäPurettu?: LähdejärjestelmäkytkennänPurkaminen
   oppilaitos?: Oppilaitos
 }
 
@@ -46,6 +48,7 @@ export const InternationalSchoolOpiskeluoikeus = (
     päättymispäivä?: string
     lähdejärjestelmänId?: LähdejärjestelmäId
     arvioituPäättymispäivä?: string
+    lähdejärjestelmäkytkentäPurettu?: LähdejärjestelmäkytkennänPurkaminen
     oppilaitos?: Oppilaitos
   } = {}
 ): InternationalSchoolOpiskeluoikeus => ({

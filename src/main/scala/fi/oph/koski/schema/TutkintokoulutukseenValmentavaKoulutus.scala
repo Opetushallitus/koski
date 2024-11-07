@@ -25,7 +25,8 @@ case class TutkintokoulutukseenValmentavanOpiskeluoikeus(
   organisaatiohistoria: Option[List[OpiskeluoikeudenOrganisaatiohistoria]] = None,
   @KoodistoUri("tuvajarjestamislupa")
   @ReadOnly("")
-  järjestämislupa: Koodistokoodiviite
+  järjestämislupa: Koodistokoodiviite,
+  lähdejärjestelmäkytkentäPurettu: Option[LähdejärjestelmäkytkennänPurkaminen] = None,
 ) extends KoskeenTallennettavaOpiskeluoikeus {
   override def withKoulutustoimija(koulutustoimija: Koulutustoimija): KoskeenTallennettavaOpiskeluoikeus = this.copy(koulutustoimija = Some(koulutustoimija))
 

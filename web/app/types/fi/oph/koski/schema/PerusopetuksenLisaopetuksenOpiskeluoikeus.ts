@@ -7,6 +7,7 @@ import { Koulutustoimija } from './Koulutustoimija'
 import { PerusopetuksenLisäopetuksenOpiskeluoikeudenLisätiedot } from './PerusopetuksenLisaopetuksenOpiskeluoikeudenLisatiedot'
 import { PerusopetuksenLisäopetuksenSuoritus } from './PerusopetuksenLisaopetuksenSuoritus'
 import { LähdejärjestelmäId } from './LahdejarjestelmaId'
+import { LähdejärjestelmäkytkennänPurkaminen } from './LahdejarjestelmakytkennanPurkaminen'
 import { Oppilaitos } from './Oppilaitos'
 
 /**
@@ -32,6 +33,7 @@ export type PerusopetuksenLisäopetuksenOpiskeluoikeus = {
   aikaleima?: string
   päättymispäivä?: string
   lähdejärjestelmänId?: LähdejärjestelmäId
+  lähdejärjestelmäkytkentäPurettu?: LähdejärjestelmäkytkennänPurkaminen
   oppilaitos?: Oppilaitos
 }
 
@@ -53,6 +55,7 @@ export const PerusopetuksenLisäopetuksenOpiskeluoikeus = (
     aikaleima?: string
     päättymispäivä?: string
     lähdejärjestelmänId?: LähdejärjestelmäId
+    lähdejärjestelmäkytkentäPurettu?: LähdejärjestelmäkytkennänPurkaminen
     oppilaitos?: Oppilaitos
   } = {}
 ): PerusopetuksenLisäopetuksenOpiskeluoikeus => ({

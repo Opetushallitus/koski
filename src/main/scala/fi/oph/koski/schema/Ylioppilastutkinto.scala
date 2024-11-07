@@ -25,7 +25,8 @@ case class YlioppilastutkinnonOpiskeluoikeus(
   @Description("Toistaiseksi vain Kosken sisäisessä käytössä. Organisaatiopalvelun oppilaitos-OID-tunniste, jossa ylioppilastutkinto on suoritettu. Ei välttämättä ole oppilaitos, jossa henkilöllä on opintooikeus")
   oppilaitosSuorituspäivänä: Option[Oppilaitos] = None,
   @Description("Toistaiseksi vain Kosken sisäisessä käytössä.")
-  lisätiedot: Option[YlioppilastutkinnonOpiskeluoikeudenLisätiedot] = None
+  lisätiedot: Option[YlioppilastutkinnonOpiskeluoikeudenLisätiedot] = None,
+  lähdejärjestelmäkytkentäPurettu: Option[LähdejärjestelmäkytkennänPurkaminen] = None,
   ) extends KoskeenTallennettavaOpiskeluoikeus with YlioppilastutkinnonOpiskeluoikeudenAlkamisJaPäättymispäivät {
   override def arvioituPäättymispäivä = None
 

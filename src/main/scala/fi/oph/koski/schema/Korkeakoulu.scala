@@ -26,7 +26,7 @@ case class KorkeakoulunOpiskeluoikeus(
   virtaVirheet: List[VirtaVirhe] = List.empty,
   synteettinen: Boolean = false,
   @KoodistoUri("virtaopiskeluoikeudenluokittelu")
-  luokittelu: Option[List[Koodistokoodiviite]]
+  luokittelu: Option[List[Koodistokoodiviite]],
 ) extends Opiskeluoikeus with Equals {
   override def canEqual(that: Any): Boolean = that.isInstanceOf[KorkeakoulunOpiskeluoikeus]
   override def equals(that: Any): Boolean = that match {

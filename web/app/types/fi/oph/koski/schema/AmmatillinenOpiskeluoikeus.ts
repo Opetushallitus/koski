@@ -7,6 +7,7 @@ import { Koulutustoimija } from './Koulutustoimija'
 import { AmmatillisenOpiskeluoikeudenLisätiedot } from './AmmatillisenOpiskeluoikeudenLisatiedot'
 import { AmmatillinenPäätasonSuoritus } from './AmmatillinenPaatasonSuoritus'
 import { LähdejärjestelmäId } from './LahdejarjestelmaId'
+import { LähdejärjestelmäkytkennänPurkaminen } from './LahdejarjestelmakytkennanPurkaminen'
 import { Oppilaitos } from './Oppilaitos'
 
 /**
@@ -31,6 +32,7 @@ export type AmmatillinenOpiskeluoikeus = {
   lähdejärjestelmänId?: LähdejärjestelmäId
   arvioituPäättymispäivä?: string
   ostettu: boolean
+  lähdejärjestelmäkytkentäPurettu?: LähdejärjestelmäkytkennänPurkaminen
   oppilaitos?: Oppilaitos
 }
 
@@ -54,6 +56,7 @@ export const AmmatillinenOpiskeluoikeus = (
     lähdejärjestelmänId?: LähdejärjestelmäId
     arvioituPäättymispäivä?: string
     ostettu?: boolean
+    lähdejärjestelmäkytkentäPurettu?: LähdejärjestelmäkytkennänPurkaminen
     oppilaitos?: Oppilaitos
   } = {}
 ): AmmatillinenOpiskeluoikeus => ({
