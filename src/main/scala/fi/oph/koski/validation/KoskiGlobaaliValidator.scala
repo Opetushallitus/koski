@@ -79,7 +79,7 @@ class KoskiGlobaaliValidator(
 
           },
           timed(s"$timedBlockname LahdejarjestelmakytkennanPurkaminenValidation.validate") {
-            LahdejarjestelmakytkennanPurkaminenValidation.validate(
+            LahdejarjestelmakytkennanPurkaminenValidation.validateTiedonsiirto(
               opiskeluoikeus,
               opiskeluoikeusRepository,
             )

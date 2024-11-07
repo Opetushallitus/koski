@@ -1,8 +1,8 @@
 package fi.oph.koski.tiedonsiirto
 
 import fi.oph.koski.api.misc.PutOpiskeluoikeusTestMethods
-import fi.oph.koski.documentation.VapaaSivistystyöExample
-import fi.oph.koski.henkilo.{KoskiSpecificMockOppijat, UnverifiedHenkilöOid}
+import fi.oph.koski.documentation.{ExamplesLukio2019, VapaaSivistystyöExample}
+import fi.oph.koski.henkilo.{KoskiSpecificMockOppijat, LaajatOppijaHenkilöTiedot, UnverifiedHenkilöOid}
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.koskiuser.{KoskiMockUser, KoskiSpecificSession, MockUsers}
 import fi.oph.koski.schema.{Koodistokoodiviite, LähdejärjestelmäId, LähdejärjestelmäkytkennänPurkaminen, VapaanSivistystyönOpiskeluoikeus}
@@ -17,8 +17,8 @@ class LahdejarjestelmakytkennanPurkaminenSpec
   extends AnyFreeSpec
     with KoskiHttpSpec
     with PutOpiskeluoikeusTestMethods[VapaanSivistystyönOpiskeluoikeus] {
-  val app = KoskiApplicationForTests
-  val oppija = KoskiSpecificMockOppijat.lahdejarjestelmanPurku
+  val app: KoskiApplicationForTests.type = KoskiApplicationForTests
+  val oppija: LaajatOppijaHenkilöTiedot = KoskiSpecificMockOppijat.lahdejarjestelmanPurku
 
   "Käyttöoikeudet" - {
     "Pääkäyttäjällä on oikeus purkaa kytkentä" in {
@@ -64,14 +64,38 @@ class LahdejarjestelmakytkennanPurkaminenSpec
     }
   }
 
-  val defaultOpiskeluoikeus: VapaanSivistystyönOpiskeluoikeus = VapaaSivistystyöExample.opiskeluoikeusVapaatavoitteinen.copy(
-    lähdejärjestelmänId = Some(LähdejärjestelmäId(
-      id = Some("123"),
-      lähdejärjestelmä = Koodistokoodiviite("primus", "lahdejarjestelma"),
-    ))
+  "Purkamisen validaatiot" - {
+    "Opiskeluoikeutta ei voi purkaa, jos sillä ei ole lähdejärjestelmätunnistetta" in {
+      val opiskeluoikeusOid = oppijanEnsimmäsenOpiskeluoikeudenOid(KoskiSpecificMockOppijat.aikuisOpiskelijaMuuRahoitus)
+      puraKytkentä(opiskeluoikeusOid, MockUsers.paakayttaja) should equal(Left(
+        KoskiErrorCategory.forbidden.lähdejärjestelmäkytkennänPurkaminenEiSallittu("Opiskeluoikeudella ei ole lähdejärjestelmätunnistetta")
+      ))
+    }
+
+    "Lähdejärjestelmäkytkentää ei voi purkaa aktiiviselta opiskeluoikeudelta" in {
+      val opiskeluoikeusOid = app.opiskeluoikeusRepository.createOrUpdate(
+        UnverifiedHenkilöOid(oppija.oid, app.henkilöRepository),
+        ExamplesLukio2019.aktiivinenOpiskeluoikeus.copy(lähdejärjestelmänId = lähdejärjestelmäId),
+        allowUpdate = true,
+      )(KoskiSpecificSession.systemUser)
+        .toOption.get.oid
+
+      puraKytkentä(opiskeluoikeusOid, MockUsers.paakayttaja) should equal(Left(
+        KoskiErrorCategory.forbidden.lähdejärjestelmäkytkennänPurkaminenEiSallittu("Lähdejärjestelmäkytkentää ei voi purkaa aktiiviselta opiskeluoikeudelta")
+      ))
+    }
+  }
+
+  def lähdejärjestelmäId: Option[LähdejärjestelmäId] = Some(LähdejärjestelmäId(
+    id = Some("123"),
+    lähdejärjestelmä = Koodistokoodiviite("primus", "lahdejarjestelma"),
+  ))
+
+  def defaultOpiskeluoikeus: VapaanSivistystyönOpiskeluoikeus = VapaaSivistystyöExample.opiskeluoikeusVapaatavoitteinen.copy(
+    lähdejärjestelmänId = lähdejärjestelmäId,
   )
 
-  val opiskeluoikeusPurkamisella = defaultOpiskeluoikeus.copy(
+  def opiskeluoikeusPurkamisella: VapaanSivistystyönOpiskeluoikeus = defaultOpiskeluoikeus.copy(
     lähdejärjestelmäkytkentäPurettu = Some(LähdejärjestelmäkytkennänPurkaminen(purettu = LocalDateTime.now()))
   )
 
@@ -93,6 +117,13 @@ class LahdejarjestelmakytkennanPurkaminenSpec
       .puraLähdejärjestelmäkytkentä(opiskeluoikeusOid, app.henkilöRepository)
       .map { _ => true }
   }
+
+  private def oppijanEnsimmäsenOpiskeluoikeudenOid(henkilö: LaajatOppijaHenkilöTiedot): String =
+    app.oppijaFacade
+      .findOppija(henkilö.oid)(KoskiSpecificSession.systemUser)
+      .toOption.get.get
+      .opiskeluoikeudet.head.oid.get
+
 
   override def tag: universe.TypeTag[VapaanSivistystyönOpiskeluoikeus] = implicitly[TypeTag[VapaanSivistystyönOpiskeluoikeus]]
   override def header = response.header

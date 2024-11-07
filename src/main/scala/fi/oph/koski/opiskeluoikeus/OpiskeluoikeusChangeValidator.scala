@@ -45,7 +45,7 @@ class OpiskeluoikeusChangeValidator(
   }
 
   def validateLähdejärjestelmäIdnPoisto(oldState: KoskeenTallennettavaOpiskeluoikeus, newState: KoskeenTallennettavaOpiskeluoikeus): HttpStatus = {
-    if (oldState.lähdejärjestelmänId.isDefined && newState.lähdejärjestelmänId.isEmpty) {
+    if (oldState.lähdejärjestelmänId.isDefined && newState.lähdejärjestelmänId.isEmpty && newState.lähdejärjestelmäkytkentäPurettu.isEmpty) {
       KoskiErrorCategory.forbidden.kiellettyMuutos("Opiskeluoikeuden lähdejärjestelmäId:tä ei voi poistaa.")
     } else {
       HttpStatus.ok

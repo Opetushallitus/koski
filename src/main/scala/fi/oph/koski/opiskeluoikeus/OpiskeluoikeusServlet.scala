@@ -50,15 +50,8 @@ class OpiskeluoikeusServlet(implicit val application: KoskiApplication) extends 
   }
 
   post("/:oid/pura-lahdejarjestelmakytkenta") {
-    // TODO: Testikoodia access rightsien nopeaan testaamiseen, ei tarkoitus jäädä tähän
     renderEither {
-      val ooE = application.opiskeluoikeusRepository.findByOid(getStringParam("oid"))
-      val x = ooE.exists(oo => session.hasTiedonsiirtokytkennänPurkaminenAccess(oo.oppilaitosOid, oo.koulutustoimijaOid))
-      if (x) {
-        Right("TODO: Ei toteutettu")
-      } else {
-        Left(KoskiErrorCategory.forbidden())
-      }
+      application.opiskeluoikeusRepository.puraLähdejärjestelmäkytkentä(getStringParam("oid"), application.henkilöRepository)
     }
   }
 }
