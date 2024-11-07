@@ -301,6 +301,8 @@ object KoskiErrorCategory {
     val ainoanPäätasonSuorituksenPoisto = subcategory("ainoanPäätasonSuorituksenPoisto", "Yritetty poistaa opiskeluoikeuden ainoaa päätason suoritusta")
     val lähdejärjestelmäIdPuuttuu = subcategory("lähdejärjestelmäIdPuuttuu", "Käyttäjä on palvelukäyttäjä mutta lähdejärjestelmää ei ole määritelty")
     val lähdejärjestelmäIdEiSallittu = subcategory("lähdejärjestelmäIdEiSallittu", "Lähdejärjestelmä määritelty, mutta käyttäjä ei ole palvelukäyttäjä")
+    val lähdejärjestelmäkytkennänPurkaminenEiSallittu = subcategory("lähdejärjestelmäkytkennänPurkaminenEiSallittu", "Lähdejärjestelmäkytkentää ei voi purkaa tiedonsiirrolla")
+    val lähdejärjestelmäkytkennänMuuttaminenEiSallittu = subcategory("lähdejärjestelmäkytkennänMuuttaminenEiSallittu", "Lähdejärjestelmäkytkennän purkamista ei voi muuttaa")
     val juuriorganisaatioPuuttuu = subcategory("juuriorganisaatioPuuttuu", "Automaattisen tiedonsiirron palvelukäyttäjällä ei yksiselitteistä juuriorganisaatiota")
     val omienTietojenMuokkaus = subcategory("omienTietojenMuokkaus", "Omien tietojen muokkaus ei ole sallittua.")
     val oppijaOidinMuutos = subcategory("oppijaOidinMuutos", "Oppija OID ei vastaa opiskeluoikeuteen kuuluvaa oppija OID:a")

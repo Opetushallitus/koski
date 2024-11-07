@@ -1,58 +1,84 @@
 package fi.oph.koski.tiedonsiirto
 
+import fi.oph.koski.api.misc.PutOpiskeluoikeusTestMethods
 import fi.oph.koski.documentation.VapaaSivistystyöExample
 import fi.oph.koski.henkilo.{KoskiSpecificMockOppijat, UnverifiedHenkilöOid}
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.koskiuser.{KoskiMockUser, KoskiSpecificSession, MockUsers}
-import fi.oph.koski.schema.{Koodistokoodiviite, LähdejärjestelmäId}
+import fi.oph.koski.schema.{Koodistokoodiviite, LähdejärjestelmäId, LähdejärjestelmäkytkennänPurkaminen, VapaanSivistystyönOpiskeluoikeus}
 import fi.oph.koski.{KoskiApplicationForTests, KoskiHttpSpec}
 import org.scalatest.freespec.AnyFreeSpec
 
-class LahdejarjestelmakytkennanPurkaminenSpec extends AnyFreeSpec with KoskiHttpSpec {
+import java.time.LocalDateTime
+import scala.reflect.runtime.universe
+import scala.reflect.runtime.universe.TypeTag
+
+class LahdejarjestelmakytkennanPurkaminenSpec
+  extends AnyFreeSpec
+    with KoskiHttpSpec
+    with PutOpiskeluoikeusTestMethods[VapaanSivistystyönOpiskeluoikeus] {
   val app = KoskiApplicationForTests
   val oppija = KoskiSpecificMockOppijat.lahdejarjestelmanPurku
 
   "Käyttöoikeudet" - {
     "Pääkäyttäjällä on oikeus purkaa kytkentä" in {
-      puraKytkentä(purettavaOpiskeluoikeus, MockUsers.paakayttaja) should equal(
+      puraKytkentä(purettavaOpiskeluoikeusOid, MockUsers.paakayttaja) should equal(
         Right(true)
       )
     }
 
     "Oppilaitoksen pääkäyttäjällä on oikeus purkaa kytkentä" in {
-      puraKytkentä(purettavaOpiskeluoikeus, MockUsers.varsinaisSuomiPääkäyttäjä) should equal(
+      puraKytkentä(purettavaOpiskeluoikeusOid, MockUsers.varsinaisSuomiPääkäyttäjä) should equal(
         Right(true)
       )
     }
 
     "Oppilaitoksen tiedonsiirtäjällä ei ole oikeutta purkaa kytkentää" in {
-      puraKytkentä(purettavaOpiskeluoikeus, MockUsers.varsinaisSuomiOppilaitosTallentaja) should equal(
+      puraKytkentä(purettavaOpiskeluoikeusOid, MockUsers.varsinaisSuomiOppilaitosTallentaja) should equal(
         Left(KoskiErrorCategory.notFound.opiskeluoikeuttaEiLöydyTaiEiOikeuksia())
       )
     }
 
     "Väärän oppilaitoksen pääkäyttäjällä ei ole oikeutta purkaa kytkentä" in {
-      puraKytkentä(purettavaOpiskeluoikeus, MockUsers.omniaPääkäyttäjä) should equal(
+      puraKytkentä(purettavaOpiskeluoikeusOid, MockUsers.omniaPääkäyttäjä) should equal(
         Left(KoskiErrorCategory.notFound.opiskeluoikeuttaEiLöydyTaiEiOikeuksia())
       )
     }
+  }
 
-    "Väliaikainen testi, jolla tsekataan että tämä suite tulee varmasti ajettua CI:ssä" in {
-      2 + 2 should equal(5)
+  "Tiedonsiirron validaatiot" - {
+    val headers = authHeaders(MockUsers.varsinaisSuomiPalvelukäyttäjä) ++ jsonContent
+
+    "Estä purkaminen tiedonsiirron avulla" in {
+      putOpiskeluoikeus(opiskeluoikeusPurkamisella, oppija, headers) {
+        verifyResponseStatus(403, KoskiErrorCategory.forbidden.lähdejärjestelmäkytkennänPurkaminenEiSallittu())
+      }
+    }
+
+    "Puretun opiskeluoikeuden tietoja ei voi enää siirtää" in {
+      val oid = purettavaOpiskeluoikeusOid
+      puraKytkentä(oid, MockUsers.paakayttaja)
+      putOpiskeluoikeus(defaultOpiskeluoikeus.copy(oid = Some(oid)), oppija, headers) {
+        verifyResponseStatus(403, KoskiErrorCategory.forbidden.lähdejärjestelmäkytkennänMuuttaminenEiSallittu())
+      }
     }
   }
 
-  private def purettavaOpiskeluoikeus: String = {
-    val opiskeluoikeus = VapaaSivistystyöExample.opiskeluoikeusVapaatavoitteinen.copy(
-      lähdejärjestelmänId = Some(LähdejärjestelmäId(
-        id = Some("123"),
-        lähdejärjestelmä = Koodistokoodiviite("primus", "lahdejarjestelma"),
-      ))
-    )
+  val defaultOpiskeluoikeus: VapaanSivistystyönOpiskeluoikeus = VapaaSivistystyöExample.opiskeluoikeusVapaatavoitteinen.copy(
+    lähdejärjestelmänId = Some(LähdejärjestelmäId(
+      id = Some("123"),
+      lähdejärjestelmä = Koodistokoodiviite("primus", "lahdejarjestelma"),
+    ))
+  )
 
+  val opiskeluoikeusPurkamisella = defaultOpiskeluoikeus.copy(
+    lähdejärjestelmäkytkentäPurettu = Some(LähdejärjestelmäkytkennänPurkaminen(purettu = LocalDateTime.now()))
+  )
+
+  private def purettavaOpiskeluoikeusOid: String = {
     val result = app.opiskeluoikeusRepository.createOrUpdate(
       UnverifiedHenkilöOid(oppija.oid, app.henkilöRepository),
-      opiskeluoikeus,
+      defaultOpiskeluoikeus,
       allowUpdate = true,
     )(KoskiSpecificSession.systemUser)
 
@@ -67,4 +93,7 @@ class LahdejarjestelmakytkennanPurkaminenSpec extends AnyFreeSpec with KoskiHttp
       .puraLähdejärjestelmäkytkentä(opiskeluoikeusOid, app.henkilöRepository)
       .map { _ => true }
   }
+
+  override def tag: universe.TypeTag[VapaanSivistystyönOpiskeluoikeus] = implicitly[TypeTag[VapaanSivistystyönOpiskeluoikeus]]
+  override def header = response.header
 }

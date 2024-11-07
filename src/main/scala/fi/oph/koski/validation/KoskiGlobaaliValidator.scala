@@ -77,6 +77,12 @@ class KoskiGlobaaliValidator(
               case _ => HttpStatus.ok
             }
 
+          },
+          timed(s"$timedBlockname LahdejarjestelmakytkennanPurkaminenValidation.validate") {
+            LahdejarjestelmakytkennanPurkaminenValidation.validate(
+              opiskeluoikeus,
+              opiskeluoikeusRepository,
+            )
           }
           // TODO: Siirrä EB-ESH olemassaolovalidaatio tänne
           // TODO: Siirrä osaamismerkkien duplikaattivalidaatio tänne
