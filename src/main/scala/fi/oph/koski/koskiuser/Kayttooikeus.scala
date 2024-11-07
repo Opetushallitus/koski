@@ -34,6 +34,7 @@ object Rooli {
   val OPPIVELVOLLISUUSTIETO_RAJAPINTA = "OPPIVELVOLLISUUSTIETO_RAJAPINTA"
   val MITATOIDYT_OPISKELUOIKEUDET = "MITATOIDYT_OPISKELUOIKEUDET" // Ei käyttöoikeus-palvelussa
   val POISTETUT_OPISKELUOIKEUDET = "POISTETUT_OPISKELUOIKEUDET" // Ei käyttöoikeus-palvelussa
+  val LAHDEJARJESTELMAKYTKENNAN_PURKAMINEN = "LAHDEJARJESTELMAKYTKENNAN_PURKAMINEN" // Oikeus muuttaa tiedonsiirron kautta lisätty opiskeluoikeus käyttöliittymällä muokattavaksi
 
   // Suostumusperustaisen (OAuth2) -rajapinnan scopeissa käytetyt käyttöoikeudet. "OMADATAOAUTH2_"-jälkeinen osuus on sellaisenaan
   // tuettuna merkkijonona myös scopessa, joten näiden muuttamista ei voi tehdä vapaasti.
@@ -165,7 +166,13 @@ trait Käyttöoikeus {
 case class KäyttöoikeusGlobal(globalPalveluroolit: List[Palvelurooli]) extends Käyttöoikeus {
   def globalAccessType: List[AccessType.Value] = globalPalveluroolit flatMap {
     case Palvelurooli("KOSKI", "OPHKATSELIJA") => List(AccessType.read)
-    case Palvelurooli("KOSKI", "OPHPAAKAYTTAJA") => List(AccessType.read, AccessType.write, AccessType.tiedonsiirronMitätöinti, AccessType.käyttöliittymäsiirronMitätöinti)
+    case Palvelurooli("KOSKI", "OPHPAAKAYTTAJA") => List(
+      AccessType.read,
+      AccessType.write,
+      AccessType.tiedonsiirronMitätöinti,
+      AccessType.käyttöliittymäsiirronMitätöinti,
+      AccessType.lähdejärjestelmäkytkennänPurkaminen,
+    )
     case _ => Nil
   }
 
@@ -182,6 +189,7 @@ trait OrgKäyttöoikeus extends Käyttöoikeus {
     case Palvelurooli("KOSKI", "READ_UPDATE_ESIOPETUS") => List(AccessType.read, AccessType.write)
     case Palvelurooli("KOSKI", "LUKU_ESIOPETUS") => List(AccessType.read)
     case Palvelurooli("KOSKI", "TAITEENPERUSOPETUS_HANKINTAKOULUTUS") => List(AccessType.read, AccessType.editOnly)
+    case Palvelurooli("KOSKI", LAHDEJARJESTELMAKYTKENNAN_PURKAMINEN) => List(AccessType.lähdejärjestelmäkytkennänPurkaminen)
     case _ => Nil
   }
 

@@ -243,7 +243,7 @@ object Responses {
       "organisaatiot" -> List(
         Map(
           "organisaatioOid" -> "1.2.246.562.10.00000000001",
-          "kayttooikeudet" -> List(Map("palvelu" -> "KOSKI", "oikeus" -> "OPHPAAKAYTTAJA"), Map("palvelu" -> "KOSKI", "oikeus" -> "YLLAPITAJA"), Map("palvelu" -> "KOSKI", "oikeus" -> "LUOTTAMUKSELLINEN_KAIKKI_TIEDOT"))
+          "kayttooikeudet" -> List(Map("palvelu" -> "KOSKI", "oikeus" -> "OPHPAAKAYTTAJA"), Map("palvelu" -> "KOSKI", "oikeus" -> "YLLAPITAJA"), Map("palvelu" -> "KOSKI", "oikeus" -> "LUOTTAMUKSELLINEN_KAIKKI_TIEDOT"), Map("palvelu" -> "KOSKI", "oikeus" -> "LAHDEJARJESTELMAKYTKENNAN_PURKAMINEN"))
         ),
         Map(
           "organisaatioOid" -> "1.2.246.562.10.00000000001",

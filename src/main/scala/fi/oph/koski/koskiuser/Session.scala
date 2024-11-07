@@ -75,6 +75,7 @@ class KoskiSpecificSession(
   def hasWriteAccess(organisaatio: Organisaatio.Oid, koulutustoimija: Option[Organisaatio.Oid]) = hasAccess(organisaatio, koulutustoimija, AccessType.write) && hasRole(LUOTTAMUKSELLINEN_KAIKKI_TIEDOT)
   def hasTiedonsiirronMitätöintiAccess(organisaatio: Organisaatio.Oid, koulutustoimija: Option[Organisaatio.Oid]) = hasAccess(organisaatio, koulutustoimija, AccessType.tiedonsiirronMitätöinti)
   def hasKäyttöliittymäsiirronMitätöintiAccess(organisaatio: Organisaatio.Oid, koulutustoimija: Option[Organisaatio.Oid]) = hasAccess(organisaatio, koulutustoimija, AccessType.käyttöliittymäsiirronMitätöinti)
+  def hasLähdejärjestelmäkytkennänPurkaminenAccess(organisaatio: Organisaatio.Oid, koulutustoimija: Option[Organisaatio.Oid]): Boolean = hasAccess(organisaatio, koulutustoimija, AccessType.lähdejärjestelmäkytkennänPurkaminen)
 
   // HUOM!
   // Kun lisäät uuden luovutuspalvelukäyttöoikeuden alle, muista lisätä se myös
