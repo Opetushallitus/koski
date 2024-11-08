@@ -50,9 +50,9 @@ class OpiskeluoikeusServlet(implicit val application: KoskiApplication) extends 
   }
 
   post("/:oid/pura-lahdejarjestelmakytkenta") {
-    renderEither {
-      application.opiskeluoikeusRepository.puraLähdejärjestelmäkytkentä(getStringParam("oid"), application.henkilöRepository)
-    }
+    val result = application.opiskeluoikeusRepository.puraLähdejärjestelmäkytkentä(getStringParam("oid"), application.henkilöRepository)
+    result.foreach(r => KoskiAuditLogMessage(LAHDEJARJESTELMAKYTKENNAN_PURKAMINEN, session, Map(opiskeluoikeusOid -> r.oid)))
+    renderEither(result.map(r => LähdejärjestelmänPurkaminenResult(r.oid)))
   }
 }
 
