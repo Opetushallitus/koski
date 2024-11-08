@@ -26,7 +26,7 @@ class OmaDataOAuth2ResourceOwnerReactServlet(implicit val application: KoskiAppl
         case Left(validationError) =>
           redirectToSelfWithErrors(validationError)
         case Right(clientInfo) =>
-          validateQueryOtherParams() match {
+          validateQueryOtherParams(clientInfo) match {
             case Left(validationError) if isAuthenticated =>
               logoutAndSendErrorsToClient(clientInfo, validationError)
             case Left(validationError) =>

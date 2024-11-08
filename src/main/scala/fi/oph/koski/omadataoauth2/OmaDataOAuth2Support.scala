@@ -1,5 +1,7 @@
 package fi.oph.koski.omadataoauth2
 
+import fi.oph.koski.koodisto.{KoodistoKoodi, KoodistoViite}
+import fi.oph.koski.koskiuser.KäyttöoikeusOrg
 import org.scalatra.ScalatraServlet
 
 import java.net.URLEncoder
@@ -23,7 +25,7 @@ trait OmaDataOAuth2Support extends ScalatraServlet with OmaDataOAuth2Config {
   }
 
   // validoi parametrit, joissa olevista virheistä raportoidaan clientille redirectin kautta
-  protected def validateQueryOtherParams(): Either[ValidationError, ParamInfo] = {
+  protected def validateQueryOtherParams(clientInfo: ClientInfo): Either[ValidationError, ParamInfo] = {
     // TODO: TOR-2210: tee muiden parametrien validoinnit, joiden virheistä voi/kuuluu raportoida redirect_uri:n kautta
     // clientille asti. Esim. onko S256 code challenge annettu jne.
     for {
@@ -32,6 +34,7 @@ trait OmaDataOAuth2Support extends ScalatraServlet with OmaDataOAuth2Config {
       codeChallengeMethod <- validateCodeChallengeMethod()
       codeChallenge <- validateParamExistsOnce("code_challenge", ValidationErrorType.invalid_request)
       scope <- validateParamExistsOnce("scope", ValidationErrorType.invalid_request)
+      scope <- validateScope(clientInfo.clientId, scope)
     } yield ParamInfo(responseType, responseMode, codeChallengeMethod, codeChallenge, scope)
   }
 
@@ -89,10 +92,87 @@ trait OmaDataOAuth2Support extends ScalatraServlet with OmaDataOAuth2Config {
     }
   }
 
+  // TODO: TOR-2210 Tätä pitää kutsua myös resource endpointissa, koska oikeudet tai koodisto voi muuttua tokenin voimassaoloaikana
+  protected def validateScope(client_id: String, scope: String): Either[ValidationError, String] = {
+    for {
+      scope <- validateScopeContainsOnlyKoodistoValues(scope)
+      scope <- validateScopeAtLeastOneHenkilotiedotScope(scope)
+      scope <- validateScopeExactlyOneOpiskeluoikeudetScope(scope)
+    } yield scope
+  }
+
+  private def validateScopeContainsOnlyKoodistoValues(scope: String): Either[ValidationError, String] = {
+    val requestedScopes = scope.toUpperCase.split(" ")
+
+    val invalidScopes = requestedScopes
+      .filterNot(validScopes.contains)
+      .sorted
+
+    if (invalidScopes.isEmpty) {
+      Right(scope)
+    } else {
+      Left(ValidationError(ValidationErrorType.invalid_scope, s"scope=${scope} contains unknown scopes (${invalidScopes.mkString(", ")}))"))
+    }
+  }
+
+  private def validateScopeExactlyOneOpiskeluoikeudetScope(scope: String): Either[ValidationError, String] = {
+    val requestedScopes = scope.toUpperCase.split(" ").toSet
+
+    val opiskeluoikeudetScopes = requestedScopes.filter(_.startsWith("OPISKELUOIKEUDET_")).toSeq.sorted
+
+    if (opiskeluoikeudetScopes.length == 0) {
+      Left(ValidationError(ValidationErrorType.invalid_scope, s"scope=${scope} is missing a required OPISKELUOIKEUDET_ scope"))
+    } else if (opiskeluoikeudetScopes.length > 1) {
+      Left(ValidationError(ValidationErrorType.invalid_scope, s"scope=${scope} contains an invalid combination of scopes (${opiskeluoikeudetScopes.mkString(", ")}))"))
+    } else {
+      Right(scope)
+    }
+  }
+
+  private def validateScopeAtLeastOneHenkilotiedotScope(scope: String): Either[ValidationError, String] = {
+    val requestedScopes = scope.toUpperCase.split(" ").toSet
+
+    val henkilötiedotScopes = requestedScopes.filter(_.startsWith("HENKILOTIEDOT_")).toSeq.sorted
+
+    if (requestedScopes.exists(_.startsWith("HENKILOTIEDOT_"))) {
+      Right(scope)
+    } else {
+      Left(ValidationError(ValidationErrorType.invalid_scope, s"scope=${scope} is missing a required HENKILOTIEDOT_ scope"))
+    }
+  }
+
+  // TODO: TOR-2210 Tätä pitää kutsua vasta authorization/resource endpointissa, koska muuten käyttäjätunnuksen oikeudet
+  // paljastuvat turhan julkisessa rajapinnassa.
+  protected def validateScopeAllowedForUser(client_id: String, scope: String): Either[ValidationError, String] = {
+    val directoryUser = application.directoryClient.findUser(client_id)
+
+    val käyttöoikeudet = directoryUser
+      .toSeq
+      .flatMap(_.käyttöoikeudet)
+      .collect {
+        case ko: KäyttöoikeusOrg => ko
+      }
+
+    val allowedScopes: Set[String] =
+      käyttöoikeudet
+        .flatMap(_.organisaatiokohtaisetPalveluroolit
+          .filter(_.palveluName == "KOSKI")
+          .flatMap(_.toOmaDataOAuth2Scope)
+        )
+        .toSet
+    val requestedScopes = scope.toUpperCase.split(" ")
+    val tooWideScopes = requestedScopes.filterNot(allowedScopes.contains)
+
+    if (tooWideScopes.isEmpty) {
+      Right(scope)
+    } else {
+      Left(ValidationError(ValidationErrorType.invalid_scope, s"scope=${tooWideScopes.mkString(" ")} exceeds the rights granted to the client ${client_id}"))
+    }
+  }
+
   protected def createParamsString(params: Seq[(String, String)]): String = params.map {
     case (name, value) => s"${name}=${queryStringUrlEncode(value)}"
   }.mkString("&")
-
 
   private def validateRedirectUriRekisteröityAnnetulleClientIdlle(clientId: String, redirectUri: String): Either[ValidationError, Unit] = {
     if (hasRedirectUri(clientId, redirectUri)) {
@@ -128,6 +208,22 @@ trait OmaDataOAuth2Support extends ScalatraServlet with OmaDataOAuth2Config {
 
     redirect(frontendRedirect)
   }
+
+  protected def validScopes: Set[String] = {
+    findKoodisto("omadataoauth2scope").map(_.koodiArvo.toUpperCase()).toSet
+  }
+
+  private def findKoodisto(koodistoUri: String, versioNumero: Option[String] = None): Seq[KoodistoKoodi] = {
+    val versio: Option[KoodistoViite] = versioNumero match {
+      case Some("latest") =>
+        application.koodistoPalvelu.getLatestVersionOptional(koodistoUri)
+      case Some(versio) =>
+        Some(KoodistoViite(koodistoUri, versio.toInt))
+      case _ =>
+        application.koodistoPalvelu.getLatestVersionOptional(koodistoUri)
+    }
+    versio.toSeq.flatMap { koodisto => (application.koodistoPalvelu.getKoodistoKoodit(koodisto)) }
+  }
 }
 
 object ValidationError {
@@ -155,6 +251,7 @@ sealed abstract class ValidationErrorType(val errorType: String)
 object ValidationErrorType {
   final case object invalid_client_data extends ValidationErrorType("invalid_client_data")
   final case object invalid_request extends ValidationErrorType("invalid_request")
+  final case object invalid_scope extends ValidationErrorType("invalid_scope")
 }
 
 case class ClientInfo(
