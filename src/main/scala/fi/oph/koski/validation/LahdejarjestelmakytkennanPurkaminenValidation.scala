@@ -16,7 +16,7 @@ object LahdejarjestelmakytkennanPurkaminenValidation {
           validateTerminaalitila(purettava),
           validateMahdollinenPurkaminenTiedonsiirrossa(
             oo.oid,
-            purettava.lähdejärjestelmäkytkentäPurettu,
+            purettava,
             koskiOpiskeluoikeudet,
           )(KoskiSpecificSession.systemUser)
         )
@@ -33,9 +33,9 @@ object LahdejarjestelmakytkennanPurkaminenValidation {
       }
     )
 
-  private def validateMahdollinenPurkaminenTiedonsiirrossa(
+  private def validateMahdollinenPurkaminenTiedonsiirrossa[T <: KoskeenTallennettavaOpiskeluoikeus with LähdejärjestelmäkytkentäPurettavissa](
     oid: Option[String],
-    purku: Option[LähdejärjestelmäkytkennänPurkaminen],
+    oo: T,
     koskiOpiskeluoikeudet: CompositeOpiskeluoikeusRepository,
   )(implicit user: KoskiSpecificSession): HttpStatus =
     oid match {
@@ -44,19 +44,21 @@ object LahdejarjestelmakytkennanPurkaminenValidation {
           .findByOid(oid)
           .toOption
           .flatMap(_.toOpiskeluoikeusUnsafe.lähdejärjestelmäkytkentäPurettu)
-        (previous, purku) match {
-          case (None, Some(_)) =>
+        (previous, oo.lähdejärjestelmäkytkentäPurettu) match {
+          case (None, Some(_)) => // Purkutiedot on yritetty lisätä tiedonsiirron kautta
             KoskiErrorCategory.forbidden.lähdejärjestelmäkytkennänPurkaminenEiSallittu()
-          case (Some(_), None) =>
+          case (Some(_), None) => // Purkutiedot on poistettu
             KoskiErrorCategory.forbidden.lähdejärjestelmäkytkennänMuuttaminenEiSallittu()
-          case (Some(a), Some(b)) if a != b =>
+          case (Some(a), Some(b)) if a != b => // Purkutietojen sisältöä on muutettu
+            KoskiErrorCategory.forbidden.lähdejärjestelmäkytkennänMuuttaminenEiSallittu()
+          case (Some(_), Some(_)) if oo.lähdejärjestelmänId.isDefined => // Yritetään päivittää lähdejärjestelmästä purkutietojen kanssa
             KoskiErrorCategory.forbidden.lähdejärjestelmäkytkennänMuuttaminenEiSallittu()
           case _ =>
             HttpStatus.ok
         }
       case None =>
         // Ei sallita purkamista uuden opiskeluoikeuden luonnin yhteydessäkään, koska eihän siinä olisi mitään tolkkua
-        HttpStatus.validate(purku.isEmpty) {
+        HttpStatus.validate(oo.lähdejärjestelmäkytkentäPurettu.isEmpty) {
           KoskiErrorCategory.forbidden.lähdejärjestelmäkytkennänPurkaminenEiSallittu()
         }
     }

@@ -122,6 +122,15 @@ class LahdejarjestelmakytkennanPurkaminenSpec
       }
     }
 
+    "Hylkää tiedonsiirrot lähdejärjestelmästä, joilla yritetään päivittää purettua opiskeluoikeutta" in {
+      val headers = authHeaders(MockUsers.jyväskylänNormaalikoulunPalvelukäyttäjä) ++ jsonContent
+      val päivitettyOpiskeluoikeus = opiskeluoikeus.copy(
+        lähdejärjestelmänId = lähdejärjestelmäId
+      )
+      putOpiskeluoikeus(päivitettyOpiskeluoikeus, oppija, headers) {
+        verifyResponseStatus(403, KoskiErrorCategory.forbidden.lähdejärjestelmäkytkennänMuuttaminenEiSallittu())
+      }
+    }
   }
 
   def lähdejärjestelmäId: Option[LähdejärjestelmäId] = Some(LähdejärjestelmäId(
