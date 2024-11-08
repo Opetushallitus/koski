@@ -182,6 +182,7 @@ object KoskiErrorCategory {
         val useitaKeskeneräisiäVuosiluokanSuoritukia = subcategory("useitaKeskeneräisiäVuosiluokanSuoritukia", "Nuorten perusopetuksen opiskeluoikeudessa ei saa olla kuin enintään yksi kesken-tilainen vuosiluokan suoritus.")
         val vaatiiJotpaAsianumeron = subcategory("vaatiiJotpaAsianumeron", "JOTPA-rahoitteinen opiskeluoikeus vaatii JOTPA asianumeron lisätiedoissa")
         val jotpaAsianumeroAnnettuVaikkeiJotpaRahoitteinen = subcategory("jotpaAsianumeroAnnettuVaikkeiJotpaRahoitteinen", "JOTPA asianumero annettu vaikka opiskeluoikeus ei ole JOTPA-rahoitteinen")
+        val terminaalitilaaEiSaaPurkaa = subcategory("terminaalitilaaEiSaaPurkaa", "Tämän opiskeluoikeuden päättävän tilan saa vaihtaa vain toiseksi päättäväksi tilaksi")
       }
       val tila = new Tila
 

@@ -12,11 +12,14 @@ object LahdejarjestelmakytkennanPurkaminenValidation {
   ): HttpStatus =
     oo match {
       case purettava: LähdejärjestelmäkytkentäPurettavissa =>
-        validateMahdollinenPurkaminenTiedonsiirrossa(
-          oo.oid,
-          purettava.lähdejärjestelmäkytkentäPurettu,
-          koskiOpiskeluoikeudet,
-        )(KoskiSpecificSession.systemUser)
+        HttpStatus.fold(
+          validateTerminaalitila(purettava),
+          validateMahdollinenPurkaminenTiedonsiirrossa(
+            oo.oid,
+            purettava.lähdejärjestelmäkytkentäPurettu,
+            koskiOpiskeluoikeudet,
+          )(KoskiSpecificSession.systemUser)
+        )
       case _ => HttpStatus.ok
     }
 
@@ -56,5 +59,10 @@ object LahdejarjestelmakytkennanPurkaminenValidation {
         HttpStatus.validate(purku.isEmpty) {
           KoskiErrorCategory.forbidden.lähdejärjestelmäkytkennänPurkaminenEiSallittu()
         }
+    }
+
+  private def validateTerminaalitila[T <: KoskeenTallennettavaOpiskeluoikeus with LähdejärjestelmäkytkentäPurettavissa](oo: T): HttpStatus =
+    HttpStatus.validateNot(oo.lähdejärjestelmäkytkentäPurettu.isDefined && oo.aktiivinen) {
+      KoskiErrorCategory.badRequest.validation.tila.terminaalitilaaEiSaaPurkaa()
     }
 }

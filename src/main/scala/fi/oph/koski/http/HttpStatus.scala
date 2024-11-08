@@ -48,6 +48,13 @@ object HttpStatus {
   /** If predicate is true, yield 200/ok, else run given block */
   def validate(predicate: => Boolean)(status: => HttpStatus): HttpStatus = if (predicate) { ok } else { status }
 
+  /** If predicate is false, yield 200/ok, else run given block */
+  def validateNot(predicate: => Boolean)(status: => HttpStatus): HttpStatus = if (!predicate) {
+    ok
+  } else {
+    status
+  }
+
   /** Combine two statuses: concatenate errors list, pick highest status code */
   def append(a: HttpStatus, b: HttpStatus): HttpStatus = {
     HttpStatus(Math.max(a.statusCode, b.statusCode), a.errors ++ b.errors)
