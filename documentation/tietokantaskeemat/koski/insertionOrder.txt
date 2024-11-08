@@ -12,6 +12,7 @@ ytr_opiskeluoikeushistoria
 casserviceticket
 massaluovutus
 mydata_jako
+oauth2_jako
 opiskeluoikeus_fixture
 opiskeluoikeushistoria_fixture
 opiskeluoikeushistoria_virheet

@@ -9,6 +9,7 @@ paivitetty_opiskeluoikeus
 opiskeluoikeushistoria_virheet
 opiskeluoikeushistoria_fixture
 opiskeluoikeus_fixture
+oauth2_jako
 mydata_jako
 massaluovutus
 casserviceticket
