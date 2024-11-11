@@ -9,6 +9,7 @@ import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.koskiuser.{KoskiMockUser, KoskiSpecificSession, MockUsers}
 import fi.oph.koski.schema.{Koodistokoodiviite, LukionOpiskeluoikeudenTila, LukionOpiskeluoikeus, LukionOpiskeluoikeusjakso, LähdejärjestelmäId, LähdejärjestelmäkytkennänPurkaminen, VapaanSivistystyönOpiskeluoikeus}
 import fi.oph.koski.{KoskiApplicationForTests, KoskiHttpSpec}
+import org.scalatest.BeforeAndAfterAll
 import org.scalatest.freespec.AnyFreeSpec
 
 import java.time.{LocalDate, LocalDateTime}
@@ -18,7 +19,14 @@ import scala.reflect.runtime.universe.TypeTag
 class LahdejarjestelmakytkennanPurkaminenSpec
   extends AnyFreeSpec
     with KoskiHttpSpec
-    with PutOpiskeluoikeusTestMethods[VapaanSivistystyönOpiskeluoikeus] {
+    with PutOpiskeluoikeusTestMethods[VapaanSivistystyönOpiskeluoikeus]
+    with BeforeAndAfterAll {
+
+  override def beforeAll(): Unit = {
+    super.beforeAll()
+    resetFixtures()
+  }
+
   val app: KoskiApplicationForTests.type = KoskiApplicationForTests
   val oppija: LaajatOppijaHenkilöTiedot = KoskiSpecificMockOppijat.lahdejarjestelmanPurku
 
@@ -90,15 +98,22 @@ class LahdejarjestelmakytkennanPurkaminenSpec
 
   "Puretun opiskeluoikeuden validaatiot" - {
     implicit val user: KoskiSpecificSession = KoskiSpecificSession.systemUser
-    val oid = purettavaLukioOpiskeluoikeusOid
-    puraKytkentä(oid, MockUsers.paakayttaja)
 
-    val opiskeluoikeus = app.opiskeluoikeusRepository
-      .findByOid(oid)
-      .toOption.get.toOpiskeluoikeusUnsafe
-      .asInstanceOf[LukionOpiskeluoikeus]
+    def alustaPurettuOpiskeluoikeus = {
+      val oid = purettavaLukioOpiskeluoikeusOid
+      puraKytkentä(oid, MockUsers.paakayttaja) should equal(Right(true))
+
+      val opiskeluoikeus = app.opiskeluoikeusRepository
+        .findByOid(oid)
+        .toOption.get.toOpiskeluoikeusUnsafe
+        .asInstanceOf[LukionOpiskeluoikeus]
+      opiskeluoikeus.lähdejärjestelmäkytkentäPurettu.isDefined should equal(true)
+
+      opiskeluoikeus
+    }
 
     "Terminaalitilaa ei pysty vaihtamaan ei-terminaalitilaksi" in {
+      val opiskeluoikeus = alustaPurettuOpiskeluoikeus
       val päivitettyOpiskeluoikeus = opiskeluoikeus.copy(
         tila = opiskeluoikeus.tila.copy(opiskeluoikeusjaksot = opiskeluoikeus.tila.opiskeluoikeusjaksot.init)
       )
@@ -108,6 +123,7 @@ class LahdejarjestelmakytkennanPurkaminenSpec
     }
 
     "Terminaalitilan voi vaihtaa toiseksi terminaalitilaksi" in {
+      val opiskeluoikeus = alustaPurettuOpiskeluoikeus
       val päivitettyOpiskeluoikeus = opiskeluoikeus.copy(
         tila = LukionOpiskeluoikeudenTila(
           List(
@@ -123,6 +139,7 @@ class LahdejarjestelmakytkennanPurkaminenSpec
     }
 
     "Hylkää tiedonsiirrot lähdejärjestelmästä, joilla yritetään päivittää purettua opiskeluoikeutta" in {
+      val opiskeluoikeus = alustaPurettuOpiskeluoikeus
       val headers = authHeaders(MockUsers.jyväskylänNormaalikoulunPalvelukäyttäjä) ++ jsonContent
       val päivitettyOpiskeluoikeus = opiskeluoikeus.copy(
         lähdejärjestelmänId = lähdejärjestelmäId
