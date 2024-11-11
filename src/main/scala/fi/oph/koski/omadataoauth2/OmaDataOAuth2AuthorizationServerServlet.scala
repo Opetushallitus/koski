@@ -74,7 +74,7 @@ class OmaDataOAuth2AuthorizationServerServlet(implicit val application: KoskiApp
 object AccessTokenRequest {
   val formAccessTokenRequest: MappingValueType[AccessTokenRequest] = mapping(
     "grant_type" -> label("grant_type", text(required, oneOf(Seq("authorization_code")))),
-    "code" -> label("code", text(required, oneOf(Seq("foobar")))), // TODO: TOR-2210 Oikea koodi-patternin validointi?
+    "code" -> label("code", text(required)),
     "code_verifier" -> label("code_verifier", text(required)),
     "redirect_uri" -> label("redirect_uri", optional(text())), // TODO: TOR-2210 Vertaa, että tämän sisältö on täsmälleen sama kuin alkuperäisessä pyynnössä, jos siellä on redirect_uri annettu
     "client_id" -> label("client_id", text(required))

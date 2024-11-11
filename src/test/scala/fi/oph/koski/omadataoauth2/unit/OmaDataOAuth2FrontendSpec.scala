@@ -2,11 +2,15 @@ package fi.oph.koski.omadataoauth2.unit
 
 import fi.oph.koski.KoskiApplicationForTests
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
+import fi.oph.koski.log.AuditLogTester
+import fi.oph.koski.omadataoauth2.{OmaDataOAuth2Error, OmaDataOAuth2ErrorType}
+import org.http4s.Uri
 
 class OmaDataOAuth2FrontendSpec extends OmaDataOAuth2TestBase {
   val app = KoskiApplicationForTests
 
   val hetu = KoskiSpecificMockOppijat.eero.hetu.get
+  val oppijaOid = KoskiSpecificMockOppijat.eero.oid
 
   val tuntematonClientId = "loytymatonClientId"
   val vääräRedirectUri = "/koski/omadata-oauth2/EI-OLE/debug-post-response"
@@ -14,6 +18,8 @@ class OmaDataOAuth2FrontendSpec extends OmaDataOAuth2TestBase {
   val validClientId = "oauth2client"
   val validState = "internal state"
   val validRedirectUri = "/koski/omadata-oauth2/debug-post-response"
+
+  val validScope = "HENKILOTIEDOT_SYNTYMAAIKA HENKILOTIEDOT_NIMI OPISKELUOIKEUDET_SUORITETUT_TUTKINNOT"
 
   val validParams: Seq[(String, String)] = Seq(
     ("client_id", validClientId),
@@ -23,7 +29,7 @@ class OmaDataOAuth2FrontendSpec extends OmaDataOAuth2TestBase {
     ("code_challenge", "NjIyMGQ4NDAxZGM0ZDI5NTdlMWRlNDI2YWNhNjA1NGRiMjQyZTE0NTg0YzRmOGMwMmU3MzFkYjlhNTRlZTlmZA"),
     ("code_challenge_method", "S256"),
     ("state", validState),
-    ("scope", "HENKILOTIEDOT_SYNTYMAAIKA HENKILOTIEDOT_NIMI OPISKELUOIKEUDET_SUORITETUT_TUTKINNOT")
+    ("scope", validScope)
   )
 
   val validParamsString = createParamsString(validParams)
@@ -624,26 +630,52 @@ class OmaDataOAuth2FrontendSpec extends OmaDataOAuth2TestBase {
       }
     }
 
-    "palauttaa authorization code:n käyttäjän ollessa kirjautuneena" in {
-      val serverUri = s"${baseUri}?${validParamsString}"
+    "käyttäjän ollessa kirjautuneena" - {
+      "palauttaa authorization code:n" in {
+        val serverUri = s"${baseUri}?${validParamsString}"
 
-      val expectedCode = validDummyCode
-      val expectedResultParamsString = createParamsString(
-        Seq(
-          ("client_id", validClientId),
-          ("redirect_uri", validRedirectUri),
-          ("state", validState),
-          ("code", expectedCode),
-        )
-      )
+        val expectedResultParams =
+          Seq(
+            ("client_id", validClientId),
+            ("redirect_uri", validRedirectUri),
+            ("state", validState),
+          )
 
-      get(
-        uri = serverUri,
-        headers = kansalainenLoginHeaders(hetu)
-      ) {
-        verifyResponseStatus(302)
+        get(
+          uri = serverUri,
+          headers = kansalainenLoginHeaders(hetu)
+        ) {
+          verifyResponseStatus(302)
+          response.header("Location") should include(s"/koski/user/logout?target=/koski/omadata-oauth2/cas-workaround/post-response/")
+          val base64UrlEncodedParams = response.header("Location").split("/").last
 
-        response.header("Location") should include(s"/koski/user/logout?target=/koski/omadata-oauth2/cas-workaround/post-response/${base64UrlEncode(expectedResultParamsString)}")
+          encodedParamStringShouldContain(base64UrlEncodedParams, expectedResultParams)
+
+          val code = getFromEncodedParamString(base64UrlEncodedParams, "code")
+          code.isDefined should be(true)
+        }
+      }
+
+      "tekee auditlokituksen" in {
+        AuditLogTester.clearMessages()
+
+        val serverUri = s"${baseUri}?${validParamsString}"
+
+        get(
+          uri = serverUri,
+          headers = kansalainenLoginHeaders(hetu)
+        ) {
+          verifyResponseStatus(302)
+
+          AuditLogTester.verifyAuditLogMessage(Map(
+            "operation" -> "KANSALAINEN_MYDATA_LISAYS",
+            "target" -> Map(
+              "oppijaHenkiloOid" -> oppijaOid,
+              "omaDataKumppani" -> validClientId,
+              "omaDataOAuth2Scope" -> validScope
+            ),
+          ))
+        }
       }
     }
 
@@ -786,12 +818,76 @@ class OmaDataOAuth2FrontendSpec extends OmaDataOAuth2TestBase {
           response.header("Location") should include(s"/koski/user/logout?target=/koski/omadata-oauth2/cas-workaround/post-response/${base64UrlEncode(expectedResultParamsString)}")
         }
       }
-
     }
 
-    "TODO, virhetilanteessa X palautetaan callbackiin viesti Y" in {
-      // TODO: TOR-2210
+    "Kun tallennus tietokantaan epäonnistuu, välittää virhetiedot clientille" in {
+      def withOverridenErrorResult[T](f: => T): T =
+        try {
+          KoskiApplicationForTests.omaDataOAuth2Service.overridenCreateResultForUnitTests = Some(Left(OmaDataOAuth2Error(OmaDataOAuth2ErrorType.server_error, "dummy error")))
+          f
+        } finally {
+          KoskiApplicationForTests.omaDataOAuth2Service.overridenCreateResultForUnitTests = None
+        }
+
+      val serverUri = s"${baseUri}?${createParamsString(validParams)}"
+
+      val expectedError = "server_error"
+      val expectedParams =
+        Seq(
+          ("client_id", validClientId),
+          ("redirect_uri", validRedirectUri),
+          ("state", validState),
+          ("error", expectedError)
+        )
+
+      withOverridenErrorResult {
+        get(
+          uri = serverUri,
+          headers = kansalainenLoginHeaders(hetu)
+        ) {
+          verifyResponseStatus(302)
+          response.header("Location") should include(s"/koski/user/logout?target=/koski/omadata-oauth2/cas-workaround/post-response/")
+          val base64UrlEncodedParams = response.header("Location").split("/").last
+
+          encodedParamStringShouldContain(base64UrlEncodedParams, expectedParams)
+        }
+      }
     }
+
+
+    "Kun parametreissa on virhe, joka olisi pitänyt käsitellä jo frontendiä avattaessa, kerrotaan virheestä frontendissä" in {
+      // Selain/käyttäjä itse voi kutsua tätä routea väärillä parametreilla suoraan, siksi nämäkin tilanteet tulee käsitellä
+
+      val parametriNimi = "scope"
+      val eiSallittuArvo = "HENKILOTIEDOT_NIMI HENKILOTIEDOT_VIRHEELLINEN OPISKELUOIKEUDET_SUORITETUT_TUTKINNOT"
+
+      val eiSallitullaScopella = createParamsString(validParamsVaihdetullaArvolla(parametriNimi, eiSallittuArvo))
+
+      val serverUri = s"${baseUri}?${eiSallitullaScopella}"
+
+      get(
+        uri = serverUri,
+        headers = kansalainenLoginHeaders(hetu)
+      ) {
+        verifyResponseStatus(302)
+        response.header("Location") should include(s"/koski/user/logout?target=/koski/omadata-oauth2/cas-workaround/authorize/")
+        // TODO: TOR-2210: Toistaiseksi vain varmistetaan, että käyttäjä ohjataan frontendiin, ei tarkista välitettiinkö täsmälleen oikea virhesisältö
+      }
+    }
+  }
+
+  private def encodedParamStringShouldContain(base64UrlEncodedParams: String, expectedParams: Seq[(String, String)]) = {
+    val actualParamsString = base64UrlDecode(base64UrlEncodedParams)
+    val actualParams = Uri.unsafeFromString("/?" + actualParamsString).params
+
+    actualParams should contain allElementsOf (expectedParams)
+  }
+
+  private def getFromEncodedParamString(base64UrlEncodedParams: String, key: String): Option[String] = {
+    val actualParamsString = base64UrlDecode(base64UrlEncodedParams)
+    val actualParams = Uri.unsafeFromString("/?" + actualParamsString).params
+
+    actualParams.get(key)
   }
 
   "post-response -rajapinta" - {

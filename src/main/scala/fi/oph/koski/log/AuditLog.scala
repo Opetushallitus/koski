@@ -98,6 +98,7 @@ object KoskiAuditLogMessageField extends Enumeration {
   hakuEhto,
   juuriOrganisaatio,
   omaDataKumppani,
+  omaDataOAuth2Scope,
   suorituksenTyyppi = Value
 }
 

@@ -252,6 +252,7 @@ object OmaDataOAuth2ErrorType {
   final case object invalid_client_data extends OmaDataOAuth2ErrorType("invalid_client_data")
   final case object invalid_request extends OmaDataOAuth2ErrorType("invalid_request")
   final case object invalid_scope extends OmaDataOAuth2ErrorType("invalid_scope")
+  final case object server_error extends OmaDataOAuth2ErrorType("server_error")
 }
 
 case class ClientInfo(
