@@ -48,20 +48,20 @@ class OmaDataOAuth2ResourceOwnerReactServlet(implicit val application: KoskiAppl
     )
   }
 
-  private def redirectToSelfWithErrors(validationError: ValidationError) = {
+  private def redirectToSelfWithErrors(validationError: OmaDataOAuth2Error) = {
     // Parametreissa oli käyttäjälle rendattavia virheitä => redirectaa samaan routeen virhetietojen kanssa niiden näyttämiseksi
     logger.warn(validationError.getLoggedErrorMessage)
     redirect(s"/koski/omadata-oauth2/authorize?${getParamsWithError(validationError)}")
   }
 
-  private def logoutAndSendErrorsToClient(clientInfo: ClientInfo, validationError: ValidationError) = {
+  private def logoutAndSendErrorsToClient(clientInfo: ClientInfo, validationError: OmaDataOAuth2Error) = {
     // Lähetä virheet logout-redirectin kautta, koska käyttäjä oli jo kirjautunut
     val paramsString = createParamsString(clientInfo.getPostResponseServletParams ++ validationError.getPostResponseServletParams)
     logger.warn(validationError.getLoggedErrorMessage)
     redirectToPostResponseViaLogout(paramsString)
   }
 
-  private def sendErrorsToClient(clientInfo: ClientInfo, validationError: ValidationError): Unit = {
+  private def sendErrorsToClient(clientInfo: ClientInfo, validationError: OmaDataOAuth2Error): Unit = {
     // Lähetä suoraan redirect_uri:lle, koska käyttäjä ei ole vielä kirjautunut
     val paramsString = createParamsString(clientInfo.getPostResponseServletParams ++ validationError.getPostResponseServletParams)
     logger.warn(validationError.getLoggedErrorMessage)
@@ -75,7 +75,7 @@ class OmaDataOAuth2ResourceOwnerReactServlet(implicit val application: KoskiAppl
     redirect(casLoginURL)
   }
 
-  private def getParamsWithError(validationError: ValidationError): String = {
+  private def getParamsWithError(validationError: OmaDataOAuth2Error): String = {
     getCurrentURLParamsWithEnforcedPercentEncoding match {
       case Some(existingParams) =>
         existingParams + s"&${validationError.getClientErrorParams}"

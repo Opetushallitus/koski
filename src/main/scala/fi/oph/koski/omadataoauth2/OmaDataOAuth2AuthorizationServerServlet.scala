@@ -22,7 +22,7 @@ class OmaDataOAuth2AuthorizationServerServlet(implicit val application: KoskiApp
   post("/") {
     val result: AccessTokenResponse = validate(AccessTokenRequest.formAccessTokenRequest)(
       (errors: Seq[(String, String)]) => {
-        val validationError = ValidationError(ValidationErrorType.invalid_request, errors.map { case (a, b) => s"${a}: ${b}" }.mkString(";"))
+        val validationError = OmaDataOAuth2Error(OmaDataOAuth2ErrorType.invalid_request, errors.map { case (a, b) => s"${a}: ${b}" }.mkString(";"))
 
         logger.warn(validationError.getLoggedErrorMessage)
         AccessTokenErrorResponse(validationError)
@@ -50,24 +50,24 @@ class OmaDataOAuth2AuthorizationServerServlet(implicit val application: KoskiApp
     renderObject(result)
   }
 
-  private def validateAccessTokenRequest(request: AccessTokenRequest): Either[ValidationError, Unit] = {
+  private def validateAccessTokenRequest(request: AccessTokenRequest): Either[OmaDataOAuth2Error, Unit] = {
     for {
       _ <- validateClientId(request.client_id)
     } yield ()
   }
 
-  private def validateClientId(clientIdParam: String): Either[ValidationError, String] = {
+  private def validateClientId(clientIdParam: String): Either[OmaDataOAuth2Error, String] = {
     for {
       clientId <- validateClientIdRekisteröity(clientIdParam)
       _ <- validateClientIdSamaKuinKäyttäjätunnus(clientId)
     } yield clientId
   }
 
-  private def validateClientIdSamaKuinKäyttäjätunnus(clientId: String): Either[ValidationError, String] = {
+  private def validateClientIdSamaKuinKäyttäjätunnus(clientId: String): Either[OmaDataOAuth2Error, String] = {
     if (koskiSession.user.username == clientId) {
       Right(clientId)
     } else {
-      Left(ValidationError(ValidationErrorType.invalid_client_data, s"Annettu client_id ${clientId} on eri kuin mTLS-käyttäjä ${koskiSession.user.username}"))
+      Left(OmaDataOAuth2Error(OmaDataOAuth2ErrorType.invalid_client_data, s"Annettu client_id ${clientId} on eri kuin mTLS-käyttäjä ${koskiSession.user.username}"))
     }
   }
 }
@@ -104,7 +104,7 @@ case class AccessTokenSuccessResponse(
 }
 
 object AccessTokenErrorResponse {
-  def apply(validationError: ValidationError): AccessTokenErrorResponse = {
+  def apply(validationError: OmaDataOAuth2Error): AccessTokenErrorResponse = {
     AccessTokenErrorResponse(
       "invalid_client",
       Some(validationError.getLoggedErrorMessage),
