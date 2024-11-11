@@ -1,5 +1,6 @@
 revoke insert, update, delete, truncate on henkilo from oph;
 revoke insert, update, delete, truncate on mydata_jako from oph;
+revoke insert, update, delete, truncate on oauth2_jako from oph;
 revoke insert, update, delete, truncate on opiskeluoikeus from oph;
 revoke insert, update, delete, truncate on opiskeluoikeus_fixture from oph;
 revoke insert, update, delete, truncate on opiskeluoikeushistoria from oph;

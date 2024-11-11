@@ -313,6 +313,30 @@ object KoskiTables {
     def * = (asiakas, oppijaOid, voimassaAsti, aikaleima) <> (MyDataJakoRow.tupled, MyDataJakoRow.unapply)
   }
 
+  class OAuth2JakoTable(tag: Tag) extends Table[OAuth2JakoRow] (tag, "oauth2_jako") {
+    val codeSHA256 = column[String]("code_sha256", O.Unique)
+    val oppijaOid = column[String]("oppija_oid")
+    val clientId = column[String]("client_id")
+
+    val scope = column[String]("scope")
+    val codeChallenge = column[String]("code_challenge")
+    val redirectUri = column[String]("redirect_uri")
+
+    val accessTokenSHA256 = column[Option[String]]("access_token_sha256", O.Unique)
+
+    val codeVoimassaAsti = column[Timestamp]("code_voimassa_asti")
+    val voimassaAsti = column[Timestamp]("voimassa_asti")
+    val luotu = column[Timestamp]("luotu")
+    val muokattu = column[Timestamp]("muokattu")
+
+    val mitätöity = column[Boolean]("mitatoity")
+    val mitätöitySyy = column[Option[String]]("mitatoity_syy")
+
+    val pk = primaryKey("oauth2_jako_code_key", (codeSHA256))
+
+    def * = (codeSHA256, oppijaOid, clientId, scope, codeChallenge, redirectUri, accessTokenSHA256, codeVoimassaAsti, voimassaAsti, luotu, muokattu, mitätöity, mitätöitySyy) <> (OAuth2JakoRow.tupled, OAuth2JakoRow.unapply)
+  }
+
   class SchedulerTable(tag: Tag) extends Table[SchedulerRow](tag, "scheduler") {
     val name = column[String]("name", O.PrimaryKey)
     val nextFireTime = column[Timestamp]("nextfiretime")
@@ -435,6 +459,10 @@ object KoskiTables {
   val SuoritusJakoV2 = TableQuery[SuoritusjakoTableV2]
 
   val MyDataJako = TableQuery[MyDataJakoTable]
+
+  val OAuth2Jako = TableQuery[OAuth2JakoTable].filter(!_.mitätöity)
+
+  val OAuth2JakoKaikki = TableQuery[OAuth2JakoTable]
 
   val CasServiceTicketSessions = TableQuery[CasServiceTicketSessionTable]
 
@@ -687,6 +715,22 @@ case class JaonTyyppi(
 case class SuoritusjakoRowV2(secret: String, oppijaOid: String, data: JValue, voimassaAsti: Date, aikaleima: Timestamp)
 
 case class MyDataJakoRow(asiakas: String, oppijaOid: String, voimassaAsti: Date, aikaleima: Timestamp)
+
+case class OAuth2JakoRow(
+  codeSHA256: String,
+  oppijaOid: String,
+  clientId:String,
+  scope: String,
+  codeChallenge: String,
+  redirectUri: String,
+  accessTokenSHA256: Option[String],
+  codeVoimassaAsti: Timestamp,
+  voimassaAsti: Timestamp,
+  luotu: Timestamp,
+  muokattu: Timestamp,
+  mitätöity: Boolean,
+  mitätöitySyy: Option[String]
+)
 
 case class OidVersionTimestamp(oid: String, versionumero: Int, aikaleima: LocalDateTime)
 
