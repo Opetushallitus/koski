@@ -180,6 +180,10 @@ Esimerkki palautettavan datan rakenteesta:
 Kumppanin vastuulla on tarkistaa palautettujen henkilötietojen perusteella, että se sai oikean ja odottamansa henkilön tiedot. Tämä johtuu siitä, että mitään teknistä estettä ei ole sille, että kansalainen pyytää
 esim. ystäväänsä tekemään vahvan tunnistautumisen ja suostumuksen myöntämisen puolestaan. Tällöin KOSKI-järjestelmä palauttaa kumppanille kyseisen ystävän tiedot.
 
+Myös saadun datan sisällön kanssa tulee olla huolellinen. Kansalainen pystyy teknisesti muuttamaan kumppanin pyytämän scopen ennen suostumuksen antamista. Tässä tapauksessa kumppani saattaa
+saada kansalaisen tiedot eri scopella kuin itse pyysi. Esimerkiksi: jos kumppanin palvelulla on oikeudet sekä suoritettuihin tutkintoihin, että aktiivisiin ja päättyneisiin
+opintoihin, voi edellisiä pyytäessään saadakin jälkimmäiset, joiden tulkitseminen suoraviivaisesti suoritetuiksi tutkinnoiksi olisi virheellistä.
+
 ## Esimerkkiapplikaatio
 
 Osoitteessa [https://github.com/Opetushallitus/koski/tree/master/omadata-oauth2-sample](https://github.com/Opetushallitus/koski/tree/master/omadata-oauth2-sample) on rajapintaa käyttävän esimerkkiapplikaation lähdekoodi.
