@@ -28,7 +28,7 @@ class OmaDataOAuth2ResourceOwnerReactServlet(implicit val application: KoskiAppl
         case Right(clientInfo) =>
           validateQueryOtherParams(clientInfo) match {
             case Left(validationError) if isAuthenticated =>
-              logoutAndSendErrorsToClient(clientInfo, validationError)
+              logoutAndSendErrorsInParamsToClient(clientInfo, validationError)
             case Left(validationError) =>
               sendErrorsToClient(clientInfo, validationError)
             case Right(paramInfo) if !isAuthenticated =>
@@ -54,7 +54,7 @@ class OmaDataOAuth2ResourceOwnerReactServlet(implicit val application: KoskiAppl
     redirect(s"/koski/omadata-oauth2/authorize?${getParamsWithError(validationError)}")
   }
 
-  private def logoutAndSendErrorsToClient(clientInfo: ClientInfo, validationError: OmaDataOAuth2Error) = {
+  private def logoutAndSendErrorsInParamsToClient(clientInfo: ClientInfo, validationError: OmaDataOAuth2Error) = {
     // Lähetä virheet logout-redirectin kautta, koska käyttäjä oli jo kirjautunut
     val paramsString = createParamsString(clientInfo.getPostResponseServletParams ++ validationError.getPostResponseServletParams)
     logger.warn(validationError.getLoggedErrorMessage)
