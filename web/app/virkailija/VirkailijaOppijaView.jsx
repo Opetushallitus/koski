@@ -87,6 +87,23 @@ const invalidateE = invalidateBus
     () => (oppija) => Bacon.once(R.mergeRight(oppija, { event: 'invalidated' }))
   )
 
+const puraKytkentäBus = Bacon.Bus()
+export const puraLähdejärjestelmänKytkentä = (oid) => {
+  puraKytkentäBus.push(oid)
+}
+
+const puraKytkentäE = puraKytkentäBus.flatMapLatest((oid) =>
+  Http.post(`/koski/api/opiskeluoikeus/${oid}/pura-lahdejarjestelmakytkenta`, {
+    invalidateCache: [
+      '/koski/api/oppija',
+      '/koski/api/opiskeluoikeus',
+      '/koski/api/editor'
+    ]
+  }).map(
+    () => (oppija) => Bacon.once(R.mergeRight(oppija, { event: 'purettu' }))
+  )
+)
+
 const deletePäätasonSuoritusBus = Bacon.Bus()
 export const deletePäätasonSuoritus = (opiskeluoikeus, päätasonSuoritus) =>
   deletePäätasonSuoritusBus.push({
@@ -253,6 +270,7 @@ const createState = (oppijaOid) => {
     saveOppijaE,
     editE,
     invalidateE,
+    puraKytkentäE,
     deletePäätasonSuoritusE
   ) // :: EventStream [Model -> EventStream[Model]]
 
@@ -343,6 +361,9 @@ export class Oppija extends React.Component {
     const hetu = modelTitle(henkilö, 'hetu')
     const syntymäaika = modelTitle(henkilö, 'syntymäaika')
     stateP.filter((e) => e === 'invalidated').onValue(opiskeluoikeusInvalidated)
+    stateP
+      .filter((e) => e === 'purettu')
+      .onValue(lähdejärjestelmäkytkentäPurettu)
     stateP
       .filter((e) => e === 'päätasonSuoritusDeleted')
       .onValue(päätasonSuoritusDeleted)
@@ -532,5 +553,10 @@ const opiskeluoikeusInvalidated = () => {
 
 const päätasonSuoritusDeleted = () => {
   setInvalidationNotification('Suoritus poistettu')
+  window.location.reload(true)
+}
+
+const lähdejärjestelmäkytkentäPurettu = () => {
+  setInvalidationNotification('Lähdejärjestelmäkytkentä purettu')
   window.location.reload(true)
 }

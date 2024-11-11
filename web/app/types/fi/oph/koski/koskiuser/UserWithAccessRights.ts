@@ -13,6 +13,7 @@ export type UserWithAccessRights = {
   hasOneKoulutustoimijaWriteAccess: boolean
   hasAnyReadAccess: boolean
   hasRaportitAccess: boolean
+  hasLähdejärjestelmäkytkennänPurkaminenAccess: boolean
   hasGlobalReadAccess: boolean
   hasWriteAccess: boolean
   hasHenkiloUiWriteAccess: boolean
@@ -29,6 +30,7 @@ export const UserWithAccessRights = (o: {
   hasOneKoulutustoimijaWriteAccess: boolean
   hasAnyReadAccess: boolean
   hasRaportitAccess: boolean
+  hasLähdejärjestelmäkytkennänPurkaminenAccess: boolean
   hasGlobalReadAccess: boolean
   hasWriteAccess: boolean
   hasHenkiloUiWriteAccess: boolean
