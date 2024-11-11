@@ -100,7 +100,7 @@ class OmaDataOAuth2HyvaksyntaLanding extends React.Component {
     ) : null
 
     const errorPage =
-      this.state.error === 'invalid_client_data' ? (
+      this.state.error ? (
         <ErrorPage
           text={tTemplate('omadataoauth2_error', {
             error: this.state.error,
