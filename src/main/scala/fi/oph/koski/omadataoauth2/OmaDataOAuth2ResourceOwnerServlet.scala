@@ -39,7 +39,7 @@ class OmaDataOAuth2ResourceOwnerServlet(implicit val application: KoskiApplicati
 
           logoutAndRedirectWithErrorsToResourceOwnerFrontend(validationError.getClientErrorParams)
         case Right(clientInfo) =>
-          logoutAndSendErrorsToClient(clientInfo)
+          logoutAndSendErrorsInParamsToClient(clientInfo)
       }
     } else {
       validateQueryClientParams() match {
@@ -55,45 +55,71 @@ class OmaDataOAuth2ResourceOwnerServlet(implicit val application: KoskiApplicati
               logger.error(validationError.getLoggedErrorMessage)
 
               logoutAndRedirectWithErrorsToResourceOwnerFrontend(validationError.getClientErrorParams)
-            case _ =>
-              generateCodeAndSendViaLogoutToClient(clientInfo)
+            case Right(paramInfo) =>
+              generateCodeAndSendViaLogoutToClient(clientInfo, paramInfo.scope, paramInfo.codeChallenge)
           }
       }
     }
   }
 
-  private def logoutAndSendErrorsToClient(clientInfo: ClientInfo) = {
+  private def logoutAndSendErrorsInParamsToClient(clientInfo: ClientInfo) = {
+    logoutAndSendErrorToClient(
+      clientInfo,
+      params("error"),
+      multiParams("error_description").headOption,
+      multiParams("error_uri").headOption
+    )
+  }
+
+  private def logoutAndSendErrorToClient(
+    clientInfo: ClientInfo,
+    error: String,
+    errorDescription: Option[String] = None,
+    errorUri: Option[String] = None
+  ) = {
     val parameters =
       Seq(
         ("client_id", clientInfo.clientId),
         ("redirect_uri", clientInfo.redirectUri)
       ) ++
         clientInfo.state.toSeq.map(v => ("state", v)) ++
-        Seq(("error", params("error"))) ++
-        multiParams("error_description").headOption.toSeq.map(v => ("error_description", v)) ++
-        multiParams("error_uri").headOption.toSeq.map(v => ("error_uri", v))
+        Seq(("error", error)) ++
+        errorDescription.toSeq.map(v => ("error_description", v)) ++
+        errorUri.toSeq.map(v => ("error_uri", v))
 
     val postResponseParams = createParamsString(parameters)
 
     redirectToPostResponseViaLogout(postResponseParams)
   }
 
-  private def generateCodeAndSendViaLogoutToClient(clientInfo: ClientInfo) = {
-    // TODO: TOR-2210: luo authorization code, tallenna code_challenge yms. sen yhteyteen
+  private def generateCodeAndSendViaLogoutToClient(clientInfo: ClientInfo, scope: String, codeChallenge: String) = {
+    application.omaDataOAuth2Service.create(
+      clientId = clientInfo.clientId,
+      scope,
+      codeChallenge,
+      redirectUri = clientInfo.redirectUri,
+      koskiSession = session
+    ) match {
+      case Right(code) =>
+        val parameters = Seq(
+          ("client_id", clientInfo.clientId),
+          ("redirect_uri", clientInfo.redirectUri),
+        ) ++
+          clientInfo.state.toSeq.map(v => ("state", v)) ++
+          Seq(
+            ("code", code)
+          )
+        val postResponseParams = createParamsString(parameters)
+        redirectToPostResponseViaLogout(postResponseParams)
 
-    // Parametrit ok, välitä post-responsen ja logoutin kautta tiedot clientille
-    val parameters = Seq(
-      ("client_id", clientInfo.clientId),
-      ("redirect_uri", clientInfo.redirectUri),
-    ) ++
-      clientInfo.state.toSeq.map(v => ("state", v)) ++
-      Seq(
-        ("code", "foobar")
-      )
-
-    val postResponseParams = createParamsString(parameters)
-
-    redirectToPostResponseViaLogout(postResponseParams)
+      case Left(error) =>
+        logoutAndSendErrorToClient(
+          clientInfo,
+          error.errorType.toString,
+          Some(error.errorDescription),
+          None
+        )
+    }
   }
 }
 

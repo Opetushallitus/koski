@@ -47,6 +47,7 @@ abstract class DatabaseFixtureCreator(application: KoskiApplication, opiskeluoik
       KoskiTables.PerustiedotSync.delete,
       KoskiTables.SuoritusJako.delete,
       KoskiTables.SuoritusJakoV2.delete,
+      KoskiTables.OAuth2JakoKaikki.delete
     ) ++ oppijat.map(application.henkilöCache.addHenkilöAction)))
 
     application.perustiedotIndexer.sync(refresh = false) // Make sure the sync queue is empty

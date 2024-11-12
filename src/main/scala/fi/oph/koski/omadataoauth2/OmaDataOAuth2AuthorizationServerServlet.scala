@@ -22,7 +22,7 @@ class OmaDataOAuth2AuthorizationServerServlet(implicit val application: KoskiApp
   post("/") {
     val result: AccessTokenResponse = validate(AccessTokenRequest.formAccessTokenRequest)(
       (errors: Seq[(String, String)]) => {
-        val validationError = ValidationError(ValidationErrorType.invalid_request, errors.map { case (a, b) => s"${a}: ${b}" }.mkString(";"))
+        val validationError = OmaDataOAuth2Error(OmaDataOAuth2ErrorType.invalid_request, errors.map { case (a, b) => s"${a}: ${b}" }.mkString(";"))
 
         logger.warn(validationError.getLoggedErrorMessage)
         AccessTokenErrorResponse(validationError)
@@ -50,31 +50,31 @@ class OmaDataOAuth2AuthorizationServerServlet(implicit val application: KoskiApp
     renderObject(result)
   }
 
-  private def validateAccessTokenRequest(request: AccessTokenRequest): Either[ValidationError, Unit] = {
+  private def validateAccessTokenRequest(request: AccessTokenRequest): Either[OmaDataOAuth2Error, Unit] = {
     for {
       _ <- validateClientId(request.client_id)
     } yield ()
   }
 
-  private def validateClientId(clientIdParam: String): Either[ValidationError, String] = {
+  private def validateClientId(clientIdParam: String): Either[OmaDataOAuth2Error, String] = {
     for {
       clientId <- validateClientIdRekisteröity(clientIdParam)
       _ <- validateClientIdSamaKuinKäyttäjätunnus(clientId)
     } yield clientId
   }
 
-  private def validateClientIdSamaKuinKäyttäjätunnus(clientId: String): Either[ValidationError, String] = {
+  private def validateClientIdSamaKuinKäyttäjätunnus(clientId: String): Either[OmaDataOAuth2Error, String] = {
     if (koskiSession.user.username == clientId) {
       Right(clientId)
     } else {
-      Left(ValidationError(ValidationErrorType.invalid_client_data, s"Annettu client_id ${clientId} on eri kuin mTLS-käyttäjä ${koskiSession.user.username}"))
+      Left(OmaDataOAuth2Error(OmaDataOAuth2ErrorType.invalid_client_data, s"Annettu client_id ${clientId} on eri kuin mTLS-käyttäjä ${koskiSession.user.username}"))
     }
   }
 }
 object AccessTokenRequest {
   val formAccessTokenRequest: MappingValueType[AccessTokenRequest] = mapping(
     "grant_type" -> label("grant_type", text(required, oneOf(Seq("authorization_code")))),
-    "code" -> label("code", text(required, oneOf(Seq("foobar")))), // TODO: TOR-2210 Oikea koodi-patternin validointi?
+    "code" -> label("code", text(required)),
     "code_verifier" -> label("code_verifier", text(required)),
     "redirect_uri" -> label("redirect_uri", optional(text())), // TODO: TOR-2210 Vertaa, että tämän sisältö on täsmälleen sama kuin alkuperäisessä pyynnössä, jos siellä on redirect_uri annettu
     "client_id" -> label("client_id", text(required))
@@ -104,7 +104,7 @@ case class AccessTokenSuccessResponse(
 }
 
 object AccessTokenErrorResponse {
-  def apply(validationError: ValidationError): AccessTokenErrorResponse = {
+  def apply(validationError: OmaDataOAuth2Error): AccessTokenErrorResponse = {
     AccessTokenErrorResponse(
       "invalid_client",
       Some(validationError.getLoggedErrorMessage),

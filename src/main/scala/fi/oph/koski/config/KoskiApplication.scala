@@ -19,6 +19,7 @@ import fi.oph.koski.massaluovutus.{MassaluovutusCleanupScheduler, MassaluovutusS
 import fi.oph.koski.localization.{KoskiLocalizationConfig, LocalizationRepository}
 import fi.oph.koski.log.{AuditLog, Logging, TimedProxy}
 import fi.oph.koski.mydata.{MyDataRepository, MyDataService}
+import fi.oph.koski.omadataoauth2.{OmaDataOAuth2Repository, OmaDataOAuth2Service}
 import fi.oph.koski.omattiedot.HuoltajaService
 import fi.oph.koski.opiskeluoikeus._
 import fi.oph.koski.oppija.KoskiOppijaFacade
@@ -219,6 +220,9 @@ class KoskiApplication(
   lazy val massaluovutusScheduler: MassaluovutusScheduler = new MassaluovutusScheduler(this)
   lazy val massaluovutusCleanupScheduler: MassaluovutusCleanupScheduler = new MassaluovutusCleanupScheduler(this)
   lazy val ecsMetadata: ECSMetadataClient = new ECSMetadataClient(config)
+
+  lazy val omaDataOAuth2Repository = new OmaDataOAuth2Repository(masterDatabase.db)
+  lazy val omaDataOAuth2Service = new OmaDataOAuth2Service(omaDataOAuth2Repository, this)
 
   def init(): Future[Any] = {
     AuditLog.startHeartbeat()

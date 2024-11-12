@@ -14,86 +14,86 @@ trait OmaDataOAuth2Support extends ScalatraServlet with OmaDataOAuth2Config {
   def base64UrlDecode(str: String): String = new String(Base64.getUrlDecoder().decode(str), "UTF-8")
 
   // validoi parametrit, joissa olevista virheistä raportoidaan resource ownerille eikä clientille
-  protected def validateQueryClientParams(): Either[ValidationError, ClientInfo] = {
+  protected def validateQueryClientParams(): Either[OmaDataOAuth2Error, ClientInfo] = {
     for {
-      clientId <- validateParamExistsOnce("client_id", ValidationErrorType.invalid_client_data)
-      redirectUri <- validateParamExistsOnce("redirect_uri", ValidationErrorType.invalid_client_data)
-      state <- validateParamExistsAtMostOnce("state", ValidationErrorType.invalid_client_data)
+      clientId <- validateParamExistsOnce("client_id", OmaDataOAuth2ErrorType.invalid_client_data)
+      redirectUri <- validateParamExistsOnce("redirect_uri", OmaDataOAuth2ErrorType.invalid_client_data)
+      state <- validateParamExistsAtMostOnce("state", OmaDataOAuth2ErrorType.invalid_client_data)
       _ <- validateClientIdRekisteröity(clientId)
       _ <- validateRedirectUriRekisteröityAnnetulleClientIdlle(clientId, redirectUri)
     } yield ClientInfo(clientId, redirectUri, state)
   }
 
   // validoi parametrit, joissa olevista virheistä raportoidaan clientille redirectin kautta
-  protected def validateQueryOtherParams(clientInfo: ClientInfo): Either[ValidationError, ParamInfo] = {
+  protected def validateQueryOtherParams(clientInfo: ClientInfo): Either[OmaDataOAuth2Error, ParamInfo] = {
     // TODO: TOR-2210: tee muiden parametrien validoinnit, joiden virheistä voi/kuuluu raportoida redirect_uri:n kautta
     // clientille asti. Esim. onko S256 code challenge annettu jne.
     for {
       responseType <- validateResponseType()
       responseMode <- validateResponseMode()
       codeChallengeMethod <- validateCodeChallengeMethod()
-      codeChallenge <- validateParamExistsOnce("code_challenge", ValidationErrorType.invalid_request)
-      scope <- validateParamExistsOnce("scope", ValidationErrorType.invalid_request)
+      codeChallenge <- validateParamExistsOnce("code_challenge", OmaDataOAuth2ErrorType.invalid_request)
+      scope <- validateParamExistsOnce("scope", OmaDataOAuth2ErrorType.invalid_request)
       scope <- validateScope(clientInfo.clientId, scope)
     } yield ParamInfo(responseType, responseMode, codeChallengeMethod, codeChallenge, scope)
   }
 
   private def validateResponseType() = {
     for {
-      _ <- validateParamExistsOnce("response_type", ValidationErrorType.invalid_request)
-      responseType <- validateParamIs("response_type", Seq("code"), ValidationErrorType.invalid_request)
+      _ <- validateParamExistsOnce("response_type", OmaDataOAuth2ErrorType.invalid_request)
+      responseType <- validateParamIs("response_type", Seq("code"), OmaDataOAuth2ErrorType.invalid_request)
     } yield(responseType)
   }
 
   private def validateResponseMode() = {
     for {
-      _ <- validateParamExistsOnce("response_mode", ValidationErrorType.invalid_request)
-      responseMode <- validateParamIs("response_mode", Seq("form_post"), ValidationErrorType.invalid_request)
+      _ <- validateParamExistsOnce("response_mode", OmaDataOAuth2ErrorType.invalid_request)
+      responseMode <- validateParamIs("response_mode", Seq("form_post"), OmaDataOAuth2ErrorType.invalid_request)
     } yield(responseMode)
   }
 
   private def validateCodeChallengeMethod() = {
     for {
-      _ <- validateParamExistsOnce("code_challenge_method", ValidationErrorType.invalid_request)
-      codeChallengeMethod <- validateParamIs("code_challenge_method", Seq("S256"), ValidationErrorType.invalid_request)
+      _ <- validateParamExistsOnce("code_challenge_method", OmaDataOAuth2ErrorType.invalid_request)
+      codeChallengeMethod <- validateParamIs("code_challenge_method", Seq("S256"), OmaDataOAuth2ErrorType.invalid_request)
     } yield(codeChallengeMethod)
   }
 
-  private def validateParamExistsOnce(paramName: String, errorType: ValidationErrorType): Either[ValidationError, String] = {
+  private def validateParamExistsOnce(paramName: String, errorType: OmaDataOAuth2ErrorType): Either[OmaDataOAuth2Error, String] = {
     multiParams(paramName).length match {
-      case 0 => Left(ValidationError(errorType, s"required parameter ${paramName} missing"))
+      case 0 => Left(OmaDataOAuth2Error(errorType, s"required parameter ${paramName} missing"))
       case 1 => Right(params(paramName))
-      case _ => Left(ValidationError(errorType, s"parameter ${paramName} is repeated"))
+      case _ => Left(OmaDataOAuth2Error(errorType, s"parameter ${paramName} is repeated"))
     }
   }
 
-  private def validateParamExistsAtMostOnce(paramName: String, errorType: ValidationErrorType): Either[ValidationError, Option[String]] = {
+  private def validateParamExistsAtMostOnce(paramName: String, errorType: OmaDataOAuth2ErrorType): Either[OmaDataOAuth2Error, Option[String]] = {
     multiParams(paramName).length match {
       case 0 => Right(None)
       case 1 => Right(Some(params(paramName)))
-      case _ => Left(ValidationError(errorType, s"parameter ${paramName} is repeated"))
+      case _ => Left(OmaDataOAuth2Error(errorType, s"parameter ${paramName} is repeated"))
     }
   }
 
-  private def validateParamIs(paramName: String, allowedValues: Seq[String], errorType: ValidationErrorType): Either[ValidationError, String] = {
+  private def validateParamIs(paramName: String, allowedValues: Seq[String], errorType: OmaDataOAuth2ErrorType): Either[OmaDataOAuth2Error, String] = {
     val paramValue = params(paramName)
     allowedValues.contains(paramValue) match {
       case true => Right(paramValue)
-      case _ => Left(ValidationError(errorType, s"${paramName}=${paramValue} not supported. Supported values: ${allowedValues.mkString(",")}"))
+      case _ => Left(OmaDataOAuth2Error(errorType, s"${paramName}=${paramValue} not supported. Supported values: ${allowedValues.mkString(",")}"))
     }
   }
 
-  protected def validateClientIdRekisteröity(clientId: String): Either[ValidationError, String] = {
+  protected def validateClientIdRekisteröity(clientId: String): Either[OmaDataOAuth2Error, String] = {
     // TODO: TOR-2210: esim. koodisto voisi olla parempi source kuin konffitiedosto clientien tiedoille
     if (hasConfigForClient(clientId)) {
       Right(clientId)
     } else {
-      Left(ValidationError(ValidationErrorType.invalid_client_data, s"unregistered client ${clientId}"))
+      Left(OmaDataOAuth2Error(OmaDataOAuth2ErrorType.invalid_client_data, s"unregistered client ${clientId}"))
     }
   }
 
   // TODO: TOR-2210 Tätä pitää kutsua myös resource endpointissa, koska oikeudet tai koodisto voi muuttua tokenin voimassaoloaikana
-  protected def validateScope(client_id: String, scope: String): Either[ValidationError, String] = {
+  protected def validateScope(client_id: String, scope: String): Either[OmaDataOAuth2Error, String] = {
     for {
       scope <- validateScopeContainsOnlyKoodistoValues(scope)
       scope <- validateScopeAtLeastOneHenkilotiedotScope(scope)
@@ -101,7 +101,7 @@ trait OmaDataOAuth2Support extends ScalatraServlet with OmaDataOAuth2Config {
     } yield scope
   }
 
-  private def validateScopeContainsOnlyKoodistoValues(scope: String): Either[ValidationError, String] = {
+  private def validateScopeContainsOnlyKoodistoValues(scope: String): Either[OmaDataOAuth2Error, String] = {
     val requestedScopes = scope.toUpperCase.split(" ")
 
     val invalidScopes = requestedScopes
@@ -111,25 +111,25 @@ trait OmaDataOAuth2Support extends ScalatraServlet with OmaDataOAuth2Config {
     if (invalidScopes.isEmpty) {
       Right(scope)
     } else {
-      Left(ValidationError(ValidationErrorType.invalid_scope, s"scope=${scope} contains unknown scopes (${invalidScopes.mkString(", ")}))"))
+      Left(OmaDataOAuth2Error(OmaDataOAuth2ErrorType.invalid_scope, s"scope=${scope} contains unknown scopes (${invalidScopes.mkString(", ")}))"))
     }
   }
 
-  private def validateScopeExactlyOneOpiskeluoikeudetScope(scope: String): Either[ValidationError, String] = {
+  private def validateScopeExactlyOneOpiskeluoikeudetScope(scope: String): Either[OmaDataOAuth2Error, String] = {
     val requestedScopes = scope.toUpperCase.split(" ").toSet
 
     val opiskeluoikeudetScopes = requestedScopes.filter(_.startsWith("OPISKELUOIKEUDET_")).toSeq.sorted
 
     if (opiskeluoikeudetScopes.length == 0) {
-      Left(ValidationError(ValidationErrorType.invalid_scope, s"scope=${scope} is missing a required OPISKELUOIKEUDET_ scope"))
+      Left(OmaDataOAuth2Error(OmaDataOAuth2ErrorType.invalid_scope, s"scope=${scope} is missing a required OPISKELUOIKEUDET_ scope"))
     } else if (opiskeluoikeudetScopes.length > 1) {
-      Left(ValidationError(ValidationErrorType.invalid_scope, s"scope=${scope} contains an invalid combination of scopes (${opiskeluoikeudetScopes.mkString(", ")}))"))
+      Left(OmaDataOAuth2Error(OmaDataOAuth2ErrorType.invalid_scope, s"scope=${scope} contains an invalid combination of scopes (${opiskeluoikeudetScopes.mkString(", ")}))"))
     } else {
       Right(scope)
     }
   }
 
-  private def validateScopeAtLeastOneHenkilotiedotScope(scope: String): Either[ValidationError, String] = {
+  private def validateScopeAtLeastOneHenkilotiedotScope(scope: String): Either[OmaDataOAuth2Error, String] = {
     val requestedScopes = scope.toUpperCase.split(" ").toSet
 
     val henkilötiedotScopes = requestedScopes.filter(_.startsWith("HENKILOTIEDOT_")).toSeq.sorted
@@ -137,13 +137,13 @@ trait OmaDataOAuth2Support extends ScalatraServlet with OmaDataOAuth2Config {
     if (requestedScopes.exists(_.startsWith("HENKILOTIEDOT_"))) {
       Right(scope)
     } else {
-      Left(ValidationError(ValidationErrorType.invalid_scope, s"scope=${scope} is missing a required HENKILOTIEDOT_ scope"))
+      Left(OmaDataOAuth2Error(OmaDataOAuth2ErrorType.invalid_scope, s"scope=${scope} is missing a required HENKILOTIEDOT_ scope"))
     }
   }
 
   // TODO: TOR-2210 Tätä pitää kutsua vasta authorization/resource endpointissa, koska muuten käyttäjätunnuksen oikeudet
   // paljastuvat turhan julkisessa rajapinnassa.
-  protected def validateScopeAllowedForUser(client_id: String, scope: String): Either[ValidationError, String] = {
+  protected def validateScopeAllowedForUser(client_id: String, scope: String): Either[OmaDataOAuth2Error, String] = {
     val directoryUser = application.directoryClient.findUser(client_id)
 
     val käyttöoikeudet = directoryUser
@@ -166,7 +166,7 @@ trait OmaDataOAuth2Support extends ScalatraServlet with OmaDataOAuth2Config {
     if (tooWideScopes.isEmpty) {
       Right(scope)
     } else {
-      Left(ValidationError(ValidationErrorType.invalid_scope, s"scope=${tooWideScopes.mkString(" ")} exceeds the rights granted to the client ${client_id}"))
+      Left(OmaDataOAuth2Error(OmaDataOAuth2ErrorType.invalid_scope, s"scope=${tooWideScopes.mkString(" ")} exceeds the rights granted to the client ${client_id}"))
     }
   }
 
@@ -174,11 +174,11 @@ trait OmaDataOAuth2Support extends ScalatraServlet with OmaDataOAuth2Config {
     case (name, value) => s"${name}=${queryStringUrlEncode(value)}"
   }.mkString("&")
 
-  private def validateRedirectUriRekisteröityAnnetulleClientIdlle(clientId: String, redirectUri: String): Either[ValidationError, Unit] = {
+  private def validateRedirectUriRekisteröityAnnetulleClientIdlle(clientId: String, redirectUri: String): Either[OmaDataOAuth2Error, Unit] = {
     if (hasRedirectUri(clientId, redirectUri)) {
       Right(Unit)
     } else {
-      Left(ValidationError(ValidationErrorType.invalid_client_data, s"unregistered redirection URI ${redirectUri} for ${clientId}"))
+      Left(OmaDataOAuth2Error(OmaDataOAuth2ErrorType.invalid_client_data, s"unregistered redirection URI ${redirectUri} for ${clientId}"))
     }
   }
 
@@ -226,14 +226,14 @@ trait OmaDataOAuth2Support extends ScalatraServlet with OmaDataOAuth2Config {
   }
 }
 
-object ValidationError {
-  def apply(clientError: ValidationErrorType, errorDescription: String): ValidationError =
-    ValidationError(s"omadataoauth2-error-${UUID.randomUUID()}", clientError, errorDescription)
+object OmaDataOAuth2Error {
+  def apply(clientError: OmaDataOAuth2ErrorType, errorDescription: String): OmaDataOAuth2Error =
+    OmaDataOAuth2Error(s"omadataoauth2-error-${UUID.randomUUID()}", clientError, errorDescription)
 }
 
-case class ValidationError(
+case class OmaDataOAuth2Error(
   errorId: String,
-  errorType: ValidationErrorType,
+  errorType: OmaDataOAuth2ErrorType,
   errorDescription: String
 ) {
   def getClientErrorParams = s"error=${errorType.toString}&error_id=${errorId}"
@@ -246,12 +246,13 @@ case class ValidationError(
     )
 }
 
-sealed abstract class ValidationErrorType(val errorType: String)
+sealed abstract class OmaDataOAuth2ErrorType(val errorType: String)
 
-object ValidationErrorType {
-  final case object invalid_client_data extends ValidationErrorType("invalid_client_data")
-  final case object invalid_request extends ValidationErrorType("invalid_request")
-  final case object invalid_scope extends ValidationErrorType("invalid_scope")
+object OmaDataOAuth2ErrorType {
+  final case object invalid_client_data extends OmaDataOAuth2ErrorType("invalid_client_data")
+  final case object invalid_request extends OmaDataOAuth2ErrorType("invalid_request")
+  final case object invalid_scope extends OmaDataOAuth2ErrorType("invalid_scope")
+  final case object server_error extends OmaDataOAuth2ErrorType("server_error")
 }
 
 case class ClientInfo(
