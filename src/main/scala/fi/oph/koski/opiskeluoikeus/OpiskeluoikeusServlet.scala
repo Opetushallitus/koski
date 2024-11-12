@@ -9,7 +9,7 @@ import fi.oph.koski.log.KoskiOperation._
 import fi.oph.koski.log.{AuditLog, KoskiAuditLogMessage, Logging}
 import fi.oph.koski.oppija.HenkilönOpiskeluoikeusVersiot
 import fi.oph.koski.schema.KoskiSchema.strictDeserialization
-import fi.oph.koski.schema.{KoskeenTallennettavaOpiskeluoikeus, PäätasonSuoritus}
+import fi.oph.koski.schema.{KoskeenTallennettavaOpiskeluoikeus, Opiskeluoikeus, PäätasonSuoritus}
 import fi.oph.koski.servlet.{KoskiSpecificApiServlet, NoCache}
 import fi.oph.scalaschema.{ExtractionContext, SchemaValidatingExtractor}
 import fi.oph.scalaschema.extraction.ValidationError
@@ -48,4 +48,14 @@ class OpiskeluoikeusServlet(implicit val application: KoskiApplication) extends 
     val result = application.oppijaFacade.invalidateOpiskeluoikeus(getStringParam("oid"))
     renderEither[HenkilönOpiskeluoikeusVersiot](result)
   }
+
+  post("/:oid/pura-lahdejarjestelmakytkenta") {
+    val result = application.opiskeluoikeusRepository.puraLähdejärjestelmäkytkentä(getStringParam("oid"), application.henkilöRepository)
+    result.foreach(r => KoskiAuditLogMessage(LAHDEJARJESTELMAKYTKENNAN_PURKAMINEN, session, Map(opiskeluoikeusOid -> r.oid)))
+    renderEither(result.map(r => LähdejärjestelmänPurkaminenResult(r.oid)))
+  }
 }
+
+case class LähdejärjestelmänPurkaminenResult(
+  oid: Opiskeluoikeus.Oid,
+)

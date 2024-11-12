@@ -182,6 +182,7 @@ object KoskiErrorCategory {
         val useitaKeskeneräisiäVuosiluokanSuoritukia = subcategory("useitaKeskeneräisiäVuosiluokanSuoritukia", "Nuorten perusopetuksen opiskeluoikeudessa ei saa olla kuin enintään yksi kesken-tilainen vuosiluokan suoritus.")
         val vaatiiJotpaAsianumeron = subcategory("vaatiiJotpaAsianumeron", "JOTPA-rahoitteinen opiskeluoikeus vaatii JOTPA asianumeron lisätiedoissa")
         val jotpaAsianumeroAnnettuVaikkeiJotpaRahoitteinen = subcategory("jotpaAsianumeroAnnettuVaikkeiJotpaRahoitteinen", "JOTPA asianumero annettu vaikka opiskeluoikeus ei ole JOTPA-rahoitteinen")
+        val terminaalitilaaEiSaaPurkaa = subcategory("terminaalitilaaEiSaaPurkaa", "Tämän opiskeluoikeuden päättävän tilan saa vaihtaa vain toiseksi päättäväksi tilaksi")
       }
       val tila = new Tila
 
@@ -301,6 +302,8 @@ object KoskiErrorCategory {
     val ainoanPäätasonSuorituksenPoisto = subcategory("ainoanPäätasonSuorituksenPoisto", "Yritetty poistaa opiskeluoikeuden ainoaa päätason suoritusta")
     val lähdejärjestelmäIdPuuttuu = subcategory("lähdejärjestelmäIdPuuttuu", "Käyttäjä on palvelukäyttäjä mutta lähdejärjestelmää ei ole määritelty")
     val lähdejärjestelmäIdEiSallittu = subcategory("lähdejärjestelmäIdEiSallittu", "Lähdejärjestelmä määritelty, mutta käyttäjä ei ole palvelukäyttäjä")
+    val lähdejärjestelmäkytkennänPurkaminenEiSallittu = subcategory("lähdejärjestelmäkytkennänPurkaminenEiSallittu", "Lähdejärjestelmäkytkentää ei voi purkaa tiedonsiirrolla")
+    val lähdejärjestelmäkytkennänMuuttaminenEiSallittu = subcategory("lähdejärjestelmäkytkennänMuuttaminenEiSallittu", "Lähdejärjestelmäkytkennän purkamista ei voi muuttaa")
     val juuriorganisaatioPuuttuu = subcategory("juuriorganisaatioPuuttuu", "Automaattisen tiedonsiirron palvelukäyttäjällä ei yksiselitteistä juuriorganisaatiota")
     val omienTietojenMuokkaus = subcategory("omienTietojenMuokkaus", "Omien tietojen muokkaus ei ole sallittua.")
     val oppijaOidinMuutos = subcategory("oppijaOidinMuutos", "Oppija OID ei vastaa opiskeluoikeuteen kuuluvaa oppija OID:a")

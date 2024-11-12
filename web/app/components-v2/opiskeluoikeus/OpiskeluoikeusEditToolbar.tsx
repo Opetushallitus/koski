@@ -4,7 +4,10 @@ import { TestIdLayer, TestIdText } from '../../appstate/useTestId'
 import { formatDateRange } from '../../date/date'
 import { t } from '../../i18n/i18n'
 import { Opiskeluoikeus } from '../../types/fi/oph/koski/schema/Opiskeluoikeus'
-import { invalidateOpiskeluoikeus } from '../../util/koskiApi'
+import {
+  invalidateOpiskeluoikeus,
+  puraLähdejärjestelmäkytkentä
+} from '../../util/koskiApi'
 import { getOpiskeluoikeusOid } from '../../util/opiskeluoikeus'
 import { RequiresWriteAccess } from '../access/RequiresWriteAccess'
 import { Column, ColumnRow } from '../containers/Columns'
@@ -14,6 +17,8 @@ import { Trans } from '../texts/Trans'
 import { useVirkailijaUser } from '../../appstate/user'
 import { useVersionumero } from '../../appstate/useSearchParam'
 import { PoistuVersiohistoriastaButton } from './VersiohistoriaButton'
+import { RequiresLahdejarjestelmakytkennanPurkaminenAccess } from '../access/RequiresLahdejarjestelmakytkennanPurkaminenAccess'
+import { setInvalidationNotification } from '../../components/InvalidationNotification'
 
 export type OpiskeluoikeusEditToolbarProps = {
   opiskeluoikeus: Opiskeluoikeus
@@ -71,6 +76,15 @@ export const OpiskeluoikeusEditToolbar = (
             )
           )}
         </RequiresWriteAccess>
+        <RequiresLahdejarjestelmakytkennanPurkaminenAccess
+          opiskeluoikeus={props.opiskeluoikeus}
+        >
+          {opiskeluoikeusOid && (
+            <LähdejärjestelmäkytkennänPurkaminenButton
+              opiskeluoikeusOid={opiskeluoikeusOid}
+            />
+          )}
+        </RequiresLahdejarjestelmakytkennanPurkaminenAccess>
       </Column>
     </ColumnRow>
   )
@@ -111,6 +125,53 @@ const MitätöintiButton: React.FC<MitätöintiButtonProps> = (props) => {
           testId="button"
         >
           {t('Mitätöi opiskeluoikeus')}
+        </FlatButton>
+      )}
+    </TestIdLayer>
+  )
+}
+
+type LähdejärjestelmäkytkennänPurkaminenButtonProps = {
+  opiskeluoikeusOid: string
+}
+
+const LähdejärjestelmäkytkennänPurkaminenButton: React.FC<
+  MitätöintiButtonProps
+> = (props) => {
+  const puraKytkentä = useApiMethod(puraLähdejärjestelmäkytkentä)
+  const [confirmationVisible, setConfirmationVisible] = useState(false)
+
+  useOnApiSuccess(puraKytkentä, () => {
+    setInvalidationNotification('Lähdejärjestelmäkytkentä purettu')
+    location.reload()
+  })
+
+  return (
+    <TestIdLayer id="puraKytkenta">
+      {confirmationVisible ? (
+        <>
+          <RaisedButton
+            type="dangerzone"
+            onClick={() => puraKytkentä.call(props.opiskeluoikeusOid)}
+            testId="confirm"
+          >
+            {t(
+              'Vahvista lähdejärjestelmäkytkennän purkaminen, operaatiota ei voi peruuttaa'
+            )}
+          </RaisedButton>
+          <FlatButton
+            onClick={() => setConfirmationVisible(false)}
+            testId="cancel"
+          >
+            {t('Peruuta lähdejärjestelmäkytkennän purkaminen')}
+          </FlatButton>
+        </>
+      ) : (
+        <FlatButton
+          onClick={() => setConfirmationVisible(true)}
+          testId="button"
+        >
+          {t('Pura lähdejärjestelmäkytkentä')}
         </FlatButton>
       )}
     </TestIdLayer>

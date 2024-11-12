@@ -435,6 +435,7 @@ object LukioExampleData {
 
   val opiskeluoikeusAktiivinen = Koodistokoodiviite("lasna", Some("Läsnä"), "koskiopiskeluoikeudentila", Some(1))
   val opiskeluoikeusPäättynyt = Koodistokoodiviite("valmistunut", Some("Valmistunut"), "koskiopiskeluoikeudentila", Some(1))
+  val katsotaanEronneeksi = Koodistokoodiviite("katsotaaneronneeksi", Some("Katsotaan eronneeksi"), "koskiopiskeluoikeudentila", Some(1))
 
   val aikuistenOpetussuunnitelma = Koodistokoodiviite("aikuistenops", Some("Aikuisten ops"), "lukionoppimaara", Some(1))
   val nuortenOpetussuunnitelma = Koodistokoodiviite("nuortenops", Some("Nuorten ops"), "lukionoppimaara", Some(1))

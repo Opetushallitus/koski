@@ -6,6 +6,7 @@ import { Koulutustoimija } from './Koulutustoimija'
 import { TutkintokoulutukseenValmentavanOpiskeluoikeudenLisätiedot } from './TutkintokoulutukseenValmentavanOpiskeluoikeudenLisatiedot'
 import { TutkintokoulutukseenValmentavanKoulutuksenPäätasonSuoritus } from './TutkintokoulutukseenValmentavanKoulutuksenPaatasonSuoritus'
 import { LähdejärjestelmäId } from './LahdejarjestelmaId'
+import { LähdejärjestelmäkytkennänPurkaminen } from './LahdejarjestelmakytkennanPurkaminen'
 import { Oppilaitos } from './Oppilaitos'
 
 /**
@@ -29,6 +30,7 @@ export type TutkintokoulutukseenValmentavanOpiskeluoikeus = {
   järjestämislupa: Koodistokoodiviite<'tuvajarjestamislupa', string>
   lähdejärjestelmänId?: LähdejärjestelmäId
   arvioituPäättymispäivä?: string
+  lähdejärjestelmäkytkentäPurettu?: LähdejärjestelmäkytkennänPurkaminen
   oppilaitos?: Oppilaitos
 }
 
@@ -47,6 +49,7 @@ export const TutkintokoulutukseenValmentavanOpiskeluoikeus = (o: {
   järjestämislupa: Koodistokoodiviite<'tuvajarjestamislupa', string>
   lähdejärjestelmänId?: LähdejärjestelmäId
   arvioituPäättymispäivä?: string
+  lähdejärjestelmäkytkentäPurettu?: LähdejärjestelmäkytkennänPurkaminen
   oppilaitos?: Oppilaitos
 }): TutkintokoulutukseenValmentavanOpiskeluoikeus => ({
   tyyppi: Koodistokoodiviite({

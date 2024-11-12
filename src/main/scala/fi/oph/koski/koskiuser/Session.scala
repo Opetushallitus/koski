@@ -75,6 +75,7 @@ class KoskiSpecificSession(
   def hasWriteAccess(organisaatio: Organisaatio.Oid, koulutustoimija: Option[Organisaatio.Oid]) = hasAccess(organisaatio, koulutustoimija, AccessType.write) && hasRole(LUOTTAMUKSELLINEN_KAIKKI_TIEDOT)
   def hasTiedonsiirronMitätöintiAccess(organisaatio: Organisaatio.Oid, koulutustoimija: Option[Organisaatio.Oid]) = hasAccess(organisaatio, koulutustoimija, AccessType.tiedonsiirronMitätöinti)
   def hasKäyttöliittymäsiirronMitätöintiAccess(organisaatio: Organisaatio.Oid, koulutustoimija: Option[Organisaatio.Oid]) = hasAccess(organisaatio, koulutustoimija, AccessType.käyttöliittymäsiirronMitätöinti)
+  def hasLähdejärjestelmäkytkennänPurkaminenAccess(organisaatio: Organisaatio.Oid, koulutustoimija: Option[Organisaatio.Oid]): Boolean = hasAccess(organisaatio, koulutustoimija, AccessType.lähdejärjestelmäkytkennänPurkaminen)
 
   // HUOM!
   // Kun lisäät uuden luovutuspalvelukäyttöoikeuden alle, muista lisätä se myös
@@ -146,6 +147,7 @@ class KoskiSpecificSession(
   def hasAnyMitätöintiAccess = globalAccess.contains(AccessType.tiedonsiirronMitätöinti) || globalAccess.contains(AccessType.käyttöliittymäsiirronMitätöinti) || organisationOids(AccessType.tiedonsiirronMitätöinti).nonEmpty || organisationOids(AccessType.käyttöliittymäsiirronMitätöinti).nonEmpty
   def hasRaportitAccess = hasAnyReadAccess && hasRole(LUOTTAMUKSELLINEN_KAIKKI_TIEDOT) && !hasGlobalKoulutusmuotoReadAccess
   def sensitiveDataAllowed(requiredRoles: Set[Role]) = requiredRoles.exists(hasRole)
+  def hasAnyLähdejärjestelmäkytkennänPurkaminenAccess = globalAccess.contains(AccessType.lähdejärjestelmäkytkennänPurkaminen) || organisationOids(AccessType.lähdejärjestelmäkytkennänPurkaminen).nonEmpty
 
   // Note: keep in sync with PermissionCheckServlet's hasSufficientRoles function. See PermissionCheckServlet for more comments.
   private val OppijanumerorekisteriRekisterinpitäjä = Palvelurooli("OPPIJANUMEROREKISTERI", "REKISTERINPITAJA")

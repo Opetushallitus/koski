@@ -7,6 +7,7 @@ import { Koulutustoimija } from './Koulutustoimija'
 import { DIAOpiskeluoikeudenLisätiedot } from './DIAOpiskeluoikeudenLisatiedot'
 import { DIAPäätasonSuoritus } from './DIAPaatasonSuoritus'
 import { LähdejärjestelmäId } from './LahdejarjestelmaId'
+import { LähdejärjestelmäkytkennänPurkaminen } from './LahdejarjestelmakytkennanPurkaminen'
 import { Oppilaitos } from './Oppilaitos'
 
 /**
@@ -30,6 +31,7 @@ export type DIAOpiskeluoikeus = {
   päättymispäivä?: string
   lähdejärjestelmänId?: LähdejärjestelmäId
   arvioituPäättymispäivä?: string
+  lähdejärjestelmäkytkentäPurettu?: LähdejärjestelmäkytkennänPurkaminen
   oppilaitos?: Oppilaitos
 }
 
@@ -49,6 +51,7 @@ export const DIAOpiskeluoikeus = (
     päättymispäivä?: string
     lähdejärjestelmänId?: LähdejärjestelmäId
     arvioituPäättymispäivä?: string
+    lähdejärjestelmäkytkentäPurettu?: LähdejärjestelmäkytkennänPurkaminen
     oppilaitos?: Oppilaitos
   } = {}
 ): DIAOpiskeluoikeus => ({

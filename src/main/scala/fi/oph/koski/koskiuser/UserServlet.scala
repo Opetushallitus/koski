@@ -4,6 +4,8 @@ import fi.oph.koski.schema.Organisaatio.Oid
 import fi.oph.koski.servlet.{KoskiSpecificApiServlet, NoCache}
 
 class UserServlet(implicit val application: UserAuthenticationContext) extends KoskiSpecificApiServlet with KoskiSpecificAuthenticationSupport with NoCache {
+  val lähdejärjestelmäkytkentäPurettavissa = application.config.getBoolean("features.lähdejärjestelmäkytkennänPurkaminen")
+
   get("/") {
     renderEither[UserWithAccessRights](getUser.right.map { user =>
       koskiSessionOption.map { session => {
@@ -20,7 +22,8 @@ class UserServlet(implicit val application: UserAuthenticationContext) extends K
           hasRaportitAccess = session.hasRaportitAccess,
           hasKelaUiAccess = session.hasKelaAccess,
           varhaiskasvatuksenJärjestäjäKoulutustoimijat = session.varhaiskasvatusKoulutustoimijat.toList,
-          hasOneKoulutustoimijaWriteAccess = session.getKoulutustoimijatWithWriteAccess.size == 1
+          hasOneKoulutustoimijaWriteAccess = session.getKoulutustoimijatWithWriteAccess.size == 1,
+          hasLähdejärjestelmäkytkennänPurkaminenAccess = lähdejärjestelmäkytkentäPurettavissa && session.hasAnyLähdejärjestelmäkytkennänPurkaminenAccess,
         )
       }
       }.getOrElse(UserWithAccessRights(user.name, user.oid))
@@ -41,6 +44,7 @@ case class UserWithAccessRights(
   hasRaportitAccess: Boolean = false,
   hasKelaUiAccess: Boolean = false,
   varhaiskasvatuksenJärjestäjäKoulutustoimijat: List[String] = Nil,
-  hasOneKoulutustoimijaWriteAccess: Boolean = false
+  hasOneKoulutustoimijaWriteAccess: Boolean = false,
+  hasLähdejärjestelmäkytkennänPurkaminenAccess: Boolean = false,
 )
 

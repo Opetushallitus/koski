@@ -1,3 +1,7 @@
+## xx.11.2024
+
+- Lisätty kaikille opiskeluoikeuksille uusi kenttä `lähdejärjestelmäkytkentäPurettu`, joka ilmaisee että opiskeluoikeudelta on poistettu lähdejärjestelmätunniste, jotta sitä voidaan muokata KOSKI-käyttöliittymällä.
+
 ## 6.11.2024
 
 - Uskonnon oppimäärä (\*.osasuoritukset[].koulutusmoduuli.uskonnonOppimäärä) on deprekoitu kaikilta lukion ja perusopetuksen opiskeluoikeuksilta,

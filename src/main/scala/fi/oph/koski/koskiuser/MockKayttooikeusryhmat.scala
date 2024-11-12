@@ -23,13 +23,13 @@ object MockKäyttöoikeusryhmät {
     organisaatioKäyttäjä(organisaatioOid, List(Rooli.READ_UPDATE, Rooli.TIEDONSIIRTO, Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))
 
   def oppilaitosPääkäyttäjä(organisaatioOid: String): OrganisaatioJaKäyttöoikeudet =
-    organisaatioKäyttäjä(organisaatioOid, List(Rooli.READ, Rooli.KAIKKI_OPISKELUOIKEUS_TYYPIT, Rooli.TIEDONSIIRRON_MITATOINTI, Rooli.KAYTTOLIITTYMASIIRRON_MITATOINTI, Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))
+    organisaatioKäyttäjä(organisaatioOid, List(Rooli.READ, Rooli.KAIKKI_OPISKELUOIKEUS_TYYPIT, Rooli.TIEDONSIIRRON_MITATOINTI, Rooli.KAYTTOLIITTYMASIIRRON_MITATOINTI, Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT, Rooli.LAHDEJARJESTELMAKYTKENNAN_PURKAMINEN))
 
   def vastuukäyttäjä(organisaatioOid: String): OrganisaatioJaKäyttöoikeudet =
     organisaatioKäyttäjä(organisaatioOid, List(Rooli.READ))
 
   val ophPääkäyttäjä: OrganisaatioJaKäyttöoikeudet =
-    organisaatioKäyttäjä(Opetushallitus.organisaatioOid, List(Rooli.OPHPAAKAYTTAJA, Rooli.YLLAPITAJA, Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))
+    organisaatioKäyttäjä(Opetushallitus.organisaatioOid, List(Rooli.OPHPAAKAYTTAJA, Rooli.YLLAPITAJA, Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT, Rooli.LAHDEJARJESTELMAKYTKENNAN_PURKAMINEN))
 
   val ophKatselija: OrganisaatioJaKäyttöoikeudet =
     organisaatioKäyttäjä(Opetushallitus.organisaatioOid, List(Rooli.OPHKATSELIJA, Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))

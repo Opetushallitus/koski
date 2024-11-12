@@ -6,6 +6,7 @@ import { Koulutustoimija } from './Koulutustoimija'
 import { EuropeanSchoolOfHelsinkiOpiskeluoikeudenLisätiedot } from './EuropeanSchoolOfHelsinkiOpiskeluoikeudenLisatiedot'
 import { EuropeanSchoolOfHelsinkiPäätasonSuoritus } from './EuropeanSchoolOfHelsinkiPaatasonSuoritus'
 import { LähdejärjestelmäId } from './LahdejarjestelmaId'
+import { LähdejärjestelmäkytkennänPurkaminen } from './LahdejarjestelmakytkennanPurkaminen'
 import { Oppilaitos } from './Oppilaitos'
 
 /**
@@ -31,6 +32,7 @@ export type EuropeanSchoolOfHelsinkiOpiskeluoikeus = {
   päättymispäivä?: string
   lähdejärjestelmänId?: LähdejärjestelmäId
   arvioituPäättymispäivä?: string
+  lähdejärjestelmäkytkentäPurettu?: LähdejärjestelmäkytkennänPurkaminen
   oppilaitos?: Oppilaitos
 }
 
@@ -52,6 +54,7 @@ export const EuropeanSchoolOfHelsinkiOpiskeluoikeus = (
     päättymispäivä?: string
     lähdejärjestelmänId?: LähdejärjestelmäId
     arvioituPäättymispäivä?: string
+    lähdejärjestelmäkytkentäPurettu?: LähdejärjestelmäkytkennänPurkaminen
     oppilaitos?: Oppilaitos
   } = {}
 ): EuropeanSchoolOfHelsinkiOpiskeluoikeus => ({

@@ -5,6 +5,10 @@ import { currentLocation } from '../util/location'
 import Text from '../i18n/Text'
 import { modelData } from './EditorModel'
 import InvalidateOpiskeluoikeusButton from '../opiskeluoikeus/InvalidateOpiskeluoikeusButton'
+import { RequiresLahdejarjestelmakytkennanPurkaminenAccess } from '../components-v2/access/RequiresLahdejarjestelmakytkennanPurkaminenAccess.tsx'
+import { useVirkailijaUser } from '../appstate/user.tsx'
+import ButtonWithConfirmation from '../components/ButtonWithConfirmation'
+import { puraLähdejärjestelmänKytkentä } from '../virkailija/VirkailijaOppijaView.jsx'
 
 export class TogglableEditor extends React.Component {
   render() {
@@ -17,6 +21,7 @@ export class TogglableEditor extends React.Component {
     const modifiedContext = R.mergeRight(context, { edit })
     const showEditLink = model.editable && !editingAny
     const showDeleteLink = model.invalidatable && !showEditLink
+
     const editLink = showEditLink ? (
       <button
         className="koski-button toggle-edit"
@@ -25,12 +30,38 @@ export class TogglableEditor extends React.Component {
       >
         <Text name="muokkaa" />
       </button>
-    ) : showDeleteLink ? (
-      <InvalidateOpiskeluoikeusButton
-        opiskeluoikeus={model.context.opiskeluoikeus}
-      />
-    ) : null
+    ) : (
+      <div className="invalidate-etc-buttons">
+        {showDeleteLink && (
+          <div>
+            <InvalidateOpiskeluoikeusButton
+              opiskeluoikeus={model.context.opiskeluoikeus}
+            />
+          </div>
+        )}
+        <PuraLähdejärjestelmänKytkentäButton
+          opiskeluoikeus={modelData(model)}
+        />
+      </div>
+    )
 
     return renderChild(contextualizeModel(model, modifiedContext), editLink)
   }
 }
+
+const PuraLähdejärjestelmänKytkentäButton = (props) => (
+  <RequiresLahdejarjestelmakytkennanPurkaminenAccess
+    opiskeluoikeus={props.opiskeluoikeus}
+  >
+    <div>
+      <ButtonWithConfirmation
+        text="Pura lähdejärjestelmäkytkentä"
+        confirmationText="Vahvista lähdejärjestelmäkytkennän purkaminen, operaatiota ei voi peruuttaa"
+        cancelText="Peruuta"
+        action={() => puraLähdejärjestelmänKytkentä(props.opiskeluoikeus.oid)}
+        className="pura-kytkenta"
+        confirmationClassName="confirm-pura-kytkenta"
+      />
+    </div>
+  </RequiresLahdejarjestelmakytkennanPurkaminenAccess>
+)
