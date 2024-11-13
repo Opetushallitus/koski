@@ -1,7 +1,10 @@
 import { expect, Page } from '@playwright/test'
+import { Oppija } from '../../../app/types/fi/oph/koski/schema/Oppija'
+import { Raw } from '../../../app/util/schema'
+import { HenkilönOpiskeluoikeusVersiot } from '../../../app/types/fi/oph/koski/oppija/HenkilonOpiskeluoikeusVersiot'
 
 export class KoskiFixtures {
-  constructor(private readonly page: Page) {}
+  constructor(private readonly page: Page) { }
 
   /**
    * Resetoi Koski-fixturet.
@@ -23,6 +26,12 @@ export class KoskiFixtures {
       }
     ])
     expect(request.ok()).toBeTruthy()
+  }
+
+  async putOppija(oppija: Raw<Oppija>): Promise<HenkilönOpiskeluoikeusVersiot> {
+    const response = await this.page.request.put('/koski/api/oppija', { data: oppija })
+    const body = await response.body()
+    return JSON.parse(body.toString()) as HenkilönOpiskeluoikeusVersiot
   }
 
   async teardown() {
