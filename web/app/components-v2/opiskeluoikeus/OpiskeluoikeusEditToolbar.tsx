@@ -136,7 +136,7 @@ type LähdejärjestelmäkytkennänPurkaminenButtonProps = {
 }
 
 const LähdejärjestelmäkytkennänPurkaminenButton: React.FC<
-  MitätöintiButtonProps
+  LähdejärjestelmäkytkennänPurkaminenButtonProps
 > = (props) => {
   const puraKytkentä = useApiMethod(puraLähdejärjestelmäkytkentä)
   const [confirmationVisible, setConfirmationVisible] = useState(false)
