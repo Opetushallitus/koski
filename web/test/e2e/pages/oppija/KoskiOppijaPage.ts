@@ -16,6 +16,8 @@ export class KoskiOppijaPage {
   readonly tallennaBtn: Locator
   readonly peruutaMuutoksetLink: Locator
   readonly mitätöiOpiskeluoikeusLink: Locator
+  readonly puraLähdejärjestelmäkytkentä: Locator
+  readonly vahvistaLähdejärjestelmäkytkentäButton: Locator
   readonly peruutaOpiskeluoikeudenMitätöintiLink: Locator
   readonly vahvistaOpiskeluoikeudenMitätöintiButton: Locator
   readonly opiskeluoikeudenTiedot: Locator // TODO: Refactor
@@ -46,7 +48,7 @@ export class KoskiOppijaPage {
     this.opiskeluoikeudenTila = new OpiskeluoikeudenTilaDialog(page)
     this.muokkausNäkymäBtn = page.getByRole('button', {
       name: 'Muokkaa opiskeluoikeutta'
-    })
+    }).or(page.getByTestId('opiskeluoikeus.edit'))
     this.peruutaMuutoksetLink = page.getByRole('link', {
       name: 'Peruuta muutokset'
     })
@@ -61,6 +63,14 @@ export class KoskiOppijaPage {
     })
     this.vahvistaOpiskeluoikeudenMitätöintiButton = page.getByRole('link', {
       name: 'Vahvista mitätöinti, operaatiota ei voi peruuttaa'
+    })
+    this.puraLähdejärjestelmäkytkentä = page.getByRole('link', {
+      name: 'Pura lähdejärjestelmäkytkentä'
+    }).or(page.getByRole('button', {
+      name: 'Pura lähdejärjestelmäkytkentä'
+    }))
+    this.vahvistaLähdejärjestelmäkytkentäButton = page.getByRole('button', {
+      name: 'Vahvista lähdejärjestelmä'
     })
     // TODO: Refaktoroi assertio
     this.opiskeluoikeudenTiedot = page.locator('.opiskeluoikeuden-tiedot')
