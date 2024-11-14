@@ -5,6 +5,10 @@
 - Estetään uuden kaikille opikeluoikeuksille lisätyn kentän `lähdejärjestelmäkytkentäPurettu` lisääminen tai sen sisällön muokkaaminen tiedonsiirron kautta.
 - Estetään opiskeluoikeuden päivitys tiedonsiirron kautta, jos sen lähdejärjestelmäkytkentä on purettu.
 
+## 14.11.2024
+
+- Salli ammatillisen koulutuksen korotukset toisessa oppilaitoksessa suoritettuun tutkintoon
+
 ## 22.10.2024
 
 - Taiteen perusopetuksen virhetunnisteet ja -viestit ovat muuttuneet seuraavien validatioiden kohdalla:
