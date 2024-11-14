@@ -125,7 +125,8 @@ class RaportitService(application: KoskiApplication) {
 
   def perusopetukseenvalmistavanopetuksenraportti(request: AikajaksoRaporttiAikarajauksellaRequest, t: LocalizationReader) = {
     val valmistavanRaportti = PerusopetukseenValmistavanRaportti(perusopetukseenValmistavanRepository, t)
-    val mainSheet = valmistavanRaportti.buildRaportti(Seq(request.oppilaitosOid), request.alku, request.loppu, request.osasuoritustenAikarajaus, t)
+    val oppilaitosOids = accessResolver.kyselyOiditOrganisaatiolle(request.oppilaitosOid, "perusopetukseenvalmistavaopetus")
+    val mainSheet = valmistavanRaportti.buildRaportti(oppilaitosOids, request.alku, request.loppu, request.osasuoritustenAikarajaus, t)
 
     OppilaitosRaporttiResponse(
       sheets = Seq(mainSheet),

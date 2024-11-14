@@ -69,43 +69,68 @@ class PerusopetukseenValmistavanRaporttiSpec extends AnyFreeSpec with Matchers w
     }
 
     "Raportti näyttää oikealta" - {
-      val oids = Seq(MockOrganisaatiot.jyväskylänNormaalikoulu)
-      val alku = LocalDate.of(2000, 1, 1)
-      val loppu = LocalDate.of(2022, 1, 1)
+      def haeRaportti(organisaatioOid: String) = {
+        val alku = LocalDate.of(2000, 1, 1)
+        val loppu = LocalDate.of(2022, 1, 1)
 
-      lazy val rows = repository.perusopetukseenValmistavanRaporttiRows(oids, alku, loppu, osasuoritustenAikarajaus = false)
+        val raportitService = new RaportitService(KoskiApplicationForTests)
+        val raportti = raportitService.perusopetukseenvalmistavanopetuksenraportti(AikajaksoRaporttiAikarajauksellaRequest(
+          oppilaitosOid = organisaatioOid,
+          downloadToken = None,
+          password = "",
+          alku = alku,
+          loppu = loppu,
+          osasuoritustenAikarajaus = false,
+          kotikuntaPvm = None,
+          lang = t.language,
+        ), t)
 
-      lazy val report = valmistavanRaportti.buildDataSheetRows(rows, alku, loppu, t)
+        val sheet = raportti.sheets.head.asInstanceOf[DynamicDataSheet]
+        val report = sheet.rows
 
-      lazy val sheet = valmistavanRaportti.buildRaportti(oids, alku, loppu, osasuoritustenAikarajaus = false, t)
-      "Sarakkeiden järjestys" in {
-        sheet.columnSettings.map(_.title) should equal(Seq(
-          "Opiskeluoikeuden oid",
-          "Lähdejärjestelmä",
-          "Opiskeluoikeuden tunniste lähdejärjestelmässä",
-          "Koulutustoimijan nimi",
-          "Oppilaitoksen nimi",
-          "Toimipisteen nimi",
-          "Päivitetty",
-          "Yksilöity",
-          "Oppijan oid",
-          "hetu",
-          "Sukunimi",
-          "Etunimet",
-          "Kansalaisuus",
-          "Opiskeluoikeuden alkamispäivä",
-          "Viimeisin opiskeluoikeuden tila",
-          "Opiskeluoikeuden tilat aikajakson aikana",
-          "Suorituksen tyyppi",
-          "Suorituksen tila",
-          "Suorituksen vahvistuspäivä",
-          "Läsnäolopäiviä aikajakson aikana",
-          "ai Äidinkieli paikallinen",
-          "FY Fysiikka valtakunnallinen"
-        ))
+        (report, sheet)
       }
-      "Data näyttää oikealta" in {
-        sheet.rows.head should equal(defaultExpectedValmistavaRow.copy(opiskeluoikeusOid = report.head.head.toString).productIterator.toList ++ List("Arvosana S, 10.0 vuosiviikkotuntia", "Arvosana 9, 1.0 vuosiviikkotuntia, 7. vuosiluokka"))
+
+      "Haettaessa suoraan oppilaitokselle" - {
+        val (report, sheet) = haeRaportti(MockOrganisaatiot.jyväskylänNormaalikoulu)
+
+        "Sarakkeiden järjestys" in {
+          sheet.columnSettings.map(_.title) should equal(Seq(
+            "Opiskeluoikeuden oid",
+            "Lähdejärjestelmä",
+            "Opiskeluoikeuden tunniste lähdejärjestelmässä",
+            "Koulutustoimijan nimi",
+            "Oppilaitoksen nimi",
+            "Toimipisteen nimi",
+            "Päivitetty",
+            "Yksilöity",
+            "Oppijan oid",
+            "hetu",
+            "Sukunimi",
+            "Etunimet",
+            "Kansalaisuus",
+            "Opiskeluoikeuden alkamispäivä",
+            "Viimeisin opiskeluoikeuden tila",
+            "Opiskeluoikeuden tilat aikajakson aikana",
+            "Suorituksen tyyppi",
+            "Suorituksen tila",
+            "Suorituksen vahvistuspäivä",
+            "Läsnäolopäiviä aikajakson aikana",
+            "ai Äidinkieli paikallinen",
+            "FY Fysiikka valtakunnallinen"
+          ))
+        }
+
+        "Data näyttää oikealta" in {
+          sheet.rows.head should equal(defaultExpectedValmistavaRow.copy(opiskeluoikeusOid = report.head.head.toString).productIterator.toList ++ List("Arvosana S, 10.0 vuosiviikkotuntia", "Arvosana 9, 1.0 vuosiviikkotuntia, 7. vuosiluokka"))
+        }
+      }
+
+      "Haettaessa koulutustoimijalla" - {
+        val (report, sheet) = haeRaportti(MockOrganisaatiot.jyväskylänYliopisto)
+        "Data näyttää oikealta" in {
+          sheet.rows.head should equal(defaultExpectedValmistavaRow.copy(opiskeluoikeusOid = report.head.head.toString).productIterator.toList ++ List("Arvosana S, 10.0 vuosiviikkotuntia", "Arvosana 9, 1.0 vuosiviikkotuntia, 7. vuosiluokka"))
+        }
       }
     }
   }
