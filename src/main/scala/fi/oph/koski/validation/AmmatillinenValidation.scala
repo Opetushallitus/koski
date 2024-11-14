@@ -202,9 +202,10 @@ object AmmatillinenValidation {
       val alkuperäinenOid = korotuksenSuoritus.flatMap(_.korotettuOpiskeluoikeusOid)
       val oppijaOids = korotuksenSuoritus
         .flatMap(_.korotettuOpiskeluoikeusOid)
-        .flatMap(oid => koskiOpiskeluoikeudet.getOppijaOidsForOpiskeluoikeus(oid).toOption)
+        .flatMap(oid => koskiOpiskeluoikeudet.getOppijaOidsForOpiskeluoikeus(oid)(KoskiSpecificSession.systemUser).toOption)
         .getOrElse(List.empty)
-      val alkuperäinenOpiskeluoikeus = koskiOpiskeluoikeudet.findByOppijaOids(oppijaOids)
+      val alkuperäinenOpiskeluoikeus = koskiOpiskeluoikeudet
+        .findByOppijaOids(oppijaOids)(KoskiSpecificSession.systemUser)
         .find(oo => oo.oid.isDefined && alkuperäinenOid == oo.oid)
 
       HttpStatus.fold(
