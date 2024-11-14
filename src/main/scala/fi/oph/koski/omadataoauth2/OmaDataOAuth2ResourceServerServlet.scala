@@ -10,7 +10,7 @@ import org.scalatra.ContentEncodingSupport
 
 
 class OmaDataOAuth2ResourceServerServlet(implicit val application: KoskiApplication) extends KoskiSpecificApiServlet
-                                                                          with Logging with ContentEncodingSupport with NoCache with RequiresOmaDataOAuth2 {
+  with Logging with ContentEncodingSupport with NoCache with RequiresOmaDataOAuth2 {
 
   private val dummyResourceFilename = "/omadataoauth2/dummydata.json"
 
@@ -20,10 +20,19 @@ class OmaDataOAuth2ResourceServerServlet(implicit val application: KoskiApplicat
   post("/") {
     // TODO: TOR-2210 pitäisikö tarkistaa muita headereitä kuin Bearer?
     //
+    // TODO: TOR-2210: logitukset pois, kun aletaan käyttää oikeita salaisuuksia
+    logger.info("X-Auth header:" + request.header("X-Auth"))
     val result = request.header("X-Auth").map(_.split(" ")) match {
       case Some(Array("Bearer", token)) if token == "dummy-access-token" =>
         // TODO:  oikea toteutus + testit
         Right(JsonResources.readResource(dummyResourceFilename))
+      case Some(array) =>
+        array.zipWithIndex.foreach {
+          case(x,i) => logger.info("header" + i + ":" + x)
+        }
+        // TODO: TOR-2210 pitäisikö virheestä kertoa detaljeita, esim. oliko vaan expired token tms.?
+        // TODO: TOR-2210 Speksin mukainen virhesisältö, jos sellainen on resource serverille määritelty
+        Left(KoskiErrorCategory.badRequest())
       case _ =>
         // TODO: TOR-2210 pitäisikö virheestä kertoa detaljeita, esim. oliko vaan expired token tms.?
         // TODO: TOR-2210 Speksin mukainen virhesisältö, jos sellainen on resource serverille määritelty
