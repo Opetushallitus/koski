@@ -139,35 +139,6 @@ trait OmaDataOAuth2Support extends ScalatraServlet with OmaDataOAuth2Config {
     }
   }
 
-  // TODO: TOR-2210 Tätä pitää kutsua vasta authorization/resource endpointissa, koska muuten käyttäjätunnuksen oikeudet
-  // paljastuvat turhan julkisessa rajapinnassa.
-  protected def validateScopeAllowedForUser(client_id: String, scope: String): Either[OmaDataOAuth2Error, String] = {
-    val directoryUser = application.directoryClient.findUser(client_id)
-
-    val käyttöoikeudet = directoryUser
-      .toSeq
-      .flatMap(_.käyttöoikeudet)
-      .collect {
-        case ko: KäyttöoikeusOrg => ko
-      }
-
-    val allowedScopes: Set[String] =
-      käyttöoikeudet
-        .flatMap(_.organisaatiokohtaisetPalveluroolit
-          .filter(_.palveluName == "KOSKI")
-          .flatMap(_.toOmaDataOAuth2Scope)
-        )
-        .toSet
-    val requestedScopes = scope.toUpperCase.split(" ")
-    val tooWideScopes = requestedScopes.filterNot(allowedScopes.contains)
-
-    if (tooWideScopes.isEmpty) {
-      Right(scope)
-    } else {
-      Left(OmaDataOAuth2Error(OmaDataOAuth2ErrorType.invalid_scope, s"scope=${tooWideScopes.mkString(" ")} exceeds the rights granted to the client ${client_id}"))
-    }
-  }
-
   protected def createParamsString(params: Seq[(String, String)]): String = params.map {
     case (name, value) => s"${name}=${queryStringUrlEncode(value)}"
   }.mkString("&")
@@ -251,6 +222,7 @@ object OmaDataOAuth2ErrorType {
   final case object invalid_request extends OmaDataOAuth2ErrorType("invalid_request")
   final case object invalid_scope extends OmaDataOAuth2ErrorType("invalid_scope")
   final case object server_error extends OmaDataOAuth2ErrorType("server_error")
+  final case object invalid_client extends OmaDataOAuth2ErrorType("invalid_client")
 }
 
 case class ClientInfo(

@@ -20,7 +20,7 @@ class OmaDataOAuth2ResourceServerServlet(implicit val application: KoskiApplicat
   post("/") {
     // TODO: TOR-2210 pitäisikö tarkistaa muita headereitä kuin Bearer?
     val result = request.header("X-Auth").map(_.split(" ")) match {
-      case Some(Array("Bearer", token)) if token == "dummy-access-token" =>
+      case Some(Array("Bearer", token)) =>
         // TODO:  oikea toteutus + testit
         Right(JsonResources.readResource(dummyResourceFilename))
       case _ =>

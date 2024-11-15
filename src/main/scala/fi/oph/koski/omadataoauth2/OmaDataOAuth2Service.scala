@@ -3,7 +3,7 @@ package fi.oph.koski.omadataoauth2
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.koskiuser.KoskiSpecificSession
 import fi.oph.koski.log.KoskiAuditLogMessageField.{omaDataKumppani, omaDataOAuth2Scope, oppijaHenkiloOid}
-import fi.oph.koski.log.KoskiOperation.KANSALAINEN_MYDATA_LISAYS
+import fi.oph.koski.log.KoskiOperation.{KANSALAINEN_MYDATA_LISAYS, OAUTH2_ACCESS_TOKEN_LUONTI}
 import fi.oph.koski.log.{AuditLog, KoskiAuditLogMessage, Logging}
 import fi.oph.koski.omadataoauth2.OmaDataOAuth2Security.generateSecret
 import fi.oph.koski.util.ChainingSyntax.eitherChainingOps
@@ -34,5 +34,24 @@ class OmaDataOAuth2Service(oauth2Repository: OmaDataOAuth2Repository, val applic
             ))))
           .map(_ => code)
     }
+  }
+
+  def createAccessTokenForCode(
+    code: String,
+    expectedClientId: String,
+    expectedCodeChallenge: String,
+    expectedRedirectUri: Option[String],
+    koskiSession: KoskiSpecificSession,
+    allowedScopes: Set[String]
+  ): Either[OmaDataOAuth2Error, AccessTokenSuccessResponse] = {
+    oauth2Repository.createAccessTokenForCode(code, expectedClientId, expectedCodeChallenge, expectedRedirectUri, allowedScopes)
+      .tap(response =>
+        AuditLog.log(KoskiAuditLogMessage(OAUTH2_ACCESS_TOKEN_LUONTI, koskiSession, Map(
+          oppijaHenkiloOid -> response.oppijaOid,
+          omaDataKumppani -> expectedClientId,
+          omaDataOAuth2Scope -> response.scope
+        )))
+      )
+      .map(_.successResponse)
   }
 }
