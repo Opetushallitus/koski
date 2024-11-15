@@ -132,8 +132,6 @@ trait OmaDataOAuth2Support extends ScalatraServlet with OmaDataOAuth2Config {
   private def validateScopeAtLeastOneHenkilotiedotScope(scope: String): Either[OmaDataOAuth2Error, String] = {
     val requestedScopes = scope.toUpperCase.split(" ").toSet
 
-    val henkilötiedotScopes = requestedScopes.filter(_.startsWith("HENKILOTIEDOT_")).toSeq.sorted
-
     if (requestedScopes.exists(_.startsWith("HENKILOTIEDOT_"))) {
       Right(scope)
     } else {
