@@ -7,7 +7,7 @@ import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.henkilo.Kotikuntahistoria
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.raportit.{YleissivistäväRaporttiKurssi, YleissivistäväRaporttiOppiaine, YleissivistäväRaporttiOppiaineTaiKurssi}
-import fi.oph.koski.schema.LocalizedString
+import fi.oph.koski.schema.{Koodistokoodiviite, LocalizedString}
 import org.json4s.JValue
 import shapeless.{Generic, HNil}
 import slickless._
@@ -620,7 +620,10 @@ case class ROpiskeluoikeusRow(
   lähdejärjestelmäId: Option[String],
   oppivelvollisuudenSuorittamiseenKelpaava: Boolean,
   data: JValue
-)
+) {
+  def lisätiedotJotpaAsianumero: Option[String] =
+    JsonSerializer.extract[Option[String]](data \ "lisätiedot" \ "jotpaAsianumero" \ "koodiarvo")
+}
 
 case class RMitätöityOpiskeluoikeusRow(
   opiskeluoikeusOid: String,
@@ -760,6 +763,9 @@ case class RPäätasonSuoritusRow(
   def oppimääräKoodiarvoDatasta: Option[String] =
     JsonSerializer.extract[Option[String]](data \ "koulutusmoduuli" \ "oppimäärä" \ "koodiarvo")
       .orElse(oppimääräKoodiarvo)
+
+  def opintokokokonaisuusDatasta: Option[Koodistokoodiviite] =
+    JsonSerializer.extract[Option[Koodistokoodiviite]](data \ "koulutusmoduuli" \ "opintokokonaisuus")
 
   def koulutusModuulistaKäytettäväNimi(lang: String): Option[String] = {
     JsonSerializer.extract[Option[LocalizedString]](data \ "koulutusmoduuli" \ "tunniste" \ "nimi").map(_.get(lang))

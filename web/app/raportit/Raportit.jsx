@@ -214,7 +214,7 @@ const kaikkiRaportitKategorioittain = [
   {
     id: 'vst',
     tab: 'raporttikategoria-tab-vst',
-    heading: 'raporttikategoria-heading-vst',
+    heading: 'raporttikategoria-heading-vst-jotpa',
     raportit: [
       {
         id: 'jatkuvanoppimisenvapaansivistystyönraportti',
@@ -1110,7 +1110,7 @@ function VSTJotpa({ stateP }) {
   const exampleText = <Paragraphs name="VstJotpaRaportti-example" />
 
   return (
-    <AikajaksoRaporttiAikarajauksella
+    <AikajaksoRaportti
       stateP={stateP}
       apiEndpoint={'/vstjotpa'}
       title={titleText}

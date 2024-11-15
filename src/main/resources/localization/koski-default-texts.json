@@ -2741,6 +2741,14 @@
   "Peruuta lähdejärjestelmäkytkennän purkaminen": "Peruuta lähdejärjestelmäkytkennän purkaminen",
   "Pura lähdejärjestelmäkytkentä": "Pura lähdejärjestelmäkytkentä",
   "raporttikategoria-tab-vst": "VST",
-  "raporttikategoria-heading-vst": "Vapaa sivistystyö",
-  "raportti-tab-vstjotpa": "JOTPA-raportti"
+  "raporttikategoria-heading-vst-jotpa": "Jatkuvaan oppimiseen suunnattu vapaan sivistystyön koulutus",
+  "raportti-tab-vstjotpa": "JOTPA-raportti",
+  "raportti-excel-kolumni-opintokokonaisuus": "Opintokokonaisuus",
+  "raportti-excel-kolumni-jotpaAsianumero": "JOTPA-asianumero",
+  "raportti-excel-kolumni-yhteislaajuusKaikki": "Yhteislaajuus",
+  "raportti-excel-kolumni-yhteislaajuusHyväksytyt": "Yhteislaajuus (hyväksytyt)",
+  "VstJotpaRaportti-short-description": "Raportti sisältää jatkuvaan oppimiseen suunnatun (JOTPA) koulutuksen opiskeluoikeus- ja suoritustiedot tietojen oikeellisuuden tarkistamista varten valitulla aikajaksolla. Raportti pohjautuu viime yön tietoihin, eli tietojen päivitys KOSKI-tietovarantoon ei näy välittömästi raportilla.",
+  "VstJotpaRaportti-example": "Jos haluat tulostaa raportin tietylle päivälle, syötä sekä aikajakson alku- että loppupäivämääräkenttään sama päivämäärä.",
+  "raportti-excel-vst-jotpa-title": "VST JOTPA",
+  "raportti-excel-vst-jotpa-tiedoston-etuliite": "vst-jotpa_suoritustiedot"
 }

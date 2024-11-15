@@ -12,6 +12,7 @@ import fi.oph.koski.raportit.lukio._
 import fi.oph.koski.raportit.lukio.lops2021._
 import fi.oph.koski.raportit.perusopetus.{PerusopetuksenOppijamäärätAikajaksovirheetRaportti, PerusopetuksenOppijamäärätRaportti, PerusopetuksenRaportitRepository, PerusopetuksenVuosiluokkaRaportti}
 import fi.oph.koski.raportit.tuva.{TuvaPerusopetuksenOppijamäärätAikajaksovirheetRaportti, TuvaPerusopetuksenOppijamäärätRaportti, TuvaSuoritustiedotRaportti}
+import fi.oph.koski.raportit.vst.JatkuvanOppimisenVapaanSivistystyonRaportti
 import fi.oph.koski.schema.LocalizedString
 import fi.oph.koski.schema.Organisaatio.isValidOrganisaatioOid
 import fi.oph.koski.util.Retry
@@ -383,6 +384,16 @@ class RaportitService(application: KoskiApplication) {
       workbookSettings = WorkbookSettings(t.get("raportti-excel-tuva-suoritustiedot-title"), Some(request.password)),
       filename = s"${t.get("raportti-excel-tuva-suoritustiedot-tiedoston-etuliite")}_${request.oppilaitosOid}_${request.alku}_${request.loppu}.xlsx",
       downloadToken = request.downloadToken
+    )
+  }
+
+  def vstJotpa(request: AikajaksoRaporttiRequest, t: LocalizationReader) = {
+    val oppilaitosOids = accessResolver.kyselyOiditOrganisaatiolle(request.oppilaitosOid)
+    OppilaitosRaporttiResponse(
+      sheets = JatkuvanOppimisenVapaanSivistystyonRaportti.buildRaportti(raportointiDatabase, oppilaitosOids, request.alku, request.loppu, t),
+      workbookSettings = WorkbookSettings(t.get("raportti-excel-vst-jotpa-title"), Some(request.password)),
+      filename = s"${t.get("raportti-excel-vst-jotpa-tiedoston-etuliite")}_${request.oppilaitosOid}_${request.alku}_${request.loppu}.xlsx",
+      downloadToken = request.downloadToken,
     )
   }
 

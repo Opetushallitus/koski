@@ -245,6 +245,16 @@ class RaportitServlet(implicit val application: KoskiApplication) extends KoskiS
     writeExcel(raportitService.tuvaSuoritustiedot(parsedRequest, t), t)
   }
 
+  get("/vstjotpa") {
+    requireOpiskeluoikeudenKayttooikeudet(OpiskeluoikeudenTyyppi.vapaansivistystyonkoulutus)
+    val parsedRequest = parseAikajaksoRaporttiRequest
+    requireOpiskeluoikeudenKayttooikeudet(OpiskeluoikeudenTyyppi.tuva)
+    val parsedRequest = parseAikajaksoRaporttiRequest
+    val t = new LocalizationReader(application.koskiLocalizationRepository, parsedRequest.lang)
+    AuditLog.log(KoskiAuditLogMessage(OPISKELUOIKEUS_RAPORTTI, session, Map(hakuEhto -> s"raportti=vstjotpa&oppilaitosOid=${parsedRequest.oppilaitosOid}&alku=${parsedRequest.alku}&loppu=${parsedRequest.loppu}&lang=${parsedRequest.lang}")))
+    writeExcel(raportitService.vstJotpa(parsedRequest, t), t)
+  }
+
   private def requireOpiskeluoikeudenKayttooikeudet(opiskeluoikeudenTyyppiViite: Koodistokoodiviite) = {
     if (!session.allowedOpiskeluoikeusTyypit.contains(opiskeluoikeudenTyyppiViite.koodiarvo)) {
       haltWithStatus(KoskiErrorCategory.forbidden.opiskeluoikeudenTyyppi())
