@@ -43,14 +43,6 @@ class RaportitServlet(implicit val application: KoskiApplication) extends KoskiS
     raportitService.viimeisinOpiskeluoikeuspäivitystenVastaanottoaika
   }
 
-  // TODO: Tarpeeton kun uusi raporttikäli saadaan käyttöön, voi poistaa
-  get("/mahdolliset-raportit/:oppilaitosOid") {
-    getStringParam("oppilaitosOid") match {
-      case organisaatioService.ostopalveluRootOid => Set(EsiopetuksenRaportti.toString, EsiopetuksenOppijaMäärienRaportti.toString)
-      case oid: String => accessResolver.mahdollisetRaporttienTyypitOrganisaatiolle(validateOrganisaatioOid(oid)).map(_.toString)
-    }
-  }
-
   get("/paallekkaisetopiskeluoikeudet") {
     val req = parseAikajaksoRaporttiRequest
     val t = new LocalizationReader(application.koskiLocalizationRepository, req.lang)
