@@ -2739,5 +2739,8 @@
   "Lähdejärjestelmäkytkentä purettu": "Lähdejärjestelmäkytkentä purettu",
   "Vahvista lähdejärjestelmäkytkennän purkaminen, operaatiota ei voi peruuttaa": "Vahvista lähdejärjestelmäkytkennän purkaminen, operaatiota ei voi peruuttaa",
   "Peruuta lähdejärjestelmäkytkennän purkaminen": "Peruuta lähdejärjestelmäkytkennän purkaminen",
-  "Pura lähdejärjestelmäkytkentä": "Pura lähdejärjestelmäkytkentä"
+  "Pura lähdejärjestelmäkytkentä": "Pura lähdejärjestelmäkytkentä",
+  "raporttikategoria-tab-vst": "VST",
+  "raporttikategoria-heading-vst": "Vapaa sivistystyö",
+  "raportti-tab-vstjotpa": "JOTPA-raportti"
 }
