@@ -6,6 +6,7 @@ import fi.oph.koski.log.KoskiAuditLogMessageField.{omaDataKumppani, omaDataOAuth
 import fi.oph.koski.log.KoskiOperation.KANSALAINEN_MYDATA_LISAYS
 import fi.oph.koski.log.{AuditLog, KoskiAuditLogMessage, Logging}
 import fi.oph.koski.omadataoauth2.OmaDataOAuth2Security.generateSecret
+import fi.oph.koski.util.ChainingSyntax.eitherChainingOps
 
 class OmaDataOAuth2Service(oauth2Repository: OmaDataOAuth2Repository, val application: KoskiApplication) extends Logging {
 
@@ -24,16 +25,14 @@ class OmaDataOAuth2Service(oauth2Repository: OmaDataOAuth2Repository, val applic
       case _ =>
         val code = generateSecret
 
-        oauth2Repository.create(code, koskiSession.oid, clientId, scope, codeChallenge, redirectUri) match {
-          case Right(_) =>
+        oauth2Repository.create(code, koskiSession.oid, clientId, scope, codeChallenge, redirectUri)
+          .tap(_ =>
             AuditLog.log(KoskiAuditLogMessage(KANSALAINEN_MYDATA_LISAYS, koskiSession, Map(
               oppijaHenkiloOid -> koskiSession.oid,
               omaDataKumppani -> clientId,
               omaDataOAuth2Scope -> scope
-            )))
-            Right(code)
-          case Left(error) => Left(error)
-        }
+            ))))
+          .map(_ => code)
     }
   }
 }
