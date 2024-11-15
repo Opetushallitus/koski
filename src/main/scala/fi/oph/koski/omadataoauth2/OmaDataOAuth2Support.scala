@@ -19,7 +19,7 @@ trait OmaDataOAuth2Support extends ScalatraServlet with OmaDataOAuth2Config {
       clientId <- validateParamExistsOnce("client_id", OmaDataOAuth2ErrorType.invalid_client_data)
       redirectUri <- validateParamExistsOnce("redirect_uri", OmaDataOAuth2ErrorType.invalid_client_data)
       state <- validateParamExistsAtMostOnce("state", OmaDataOAuth2ErrorType.invalid_client_data)
-      _ <- validateClientIdRekisteröity(clientId)
+      _ <- validateClientIdRekisteröity(clientId, OmaDataOAuth2ErrorType.invalid_client_data)
       _ <- validateRedirectUriRekisteröityAnnetulleClientIdlle(clientId, redirectUri)
     } yield ClientInfo(clientId, redirectUri, state)
   }
@@ -83,12 +83,12 @@ trait OmaDataOAuth2Support extends ScalatraServlet with OmaDataOAuth2Config {
     }
   }
 
-  protected def validateClientIdRekisteröity(clientId: String): Either[OmaDataOAuth2Error, String] = {
+  protected def validateClientIdRekisteröity(clientId: String, errorType: OmaDataOAuth2ErrorType): Either[OmaDataOAuth2Error, String] = {
     // TODO: TOR-2210: esim. koodisto voisi olla parempi source kuin konffitiedosto clientien tiedoille
     if (hasConfigForClient(clientId)) {
       Right(clientId)
     } else {
-      Left(OmaDataOAuth2Error(OmaDataOAuth2ErrorType.invalid_client_data, s"unregistered client ${clientId}"))
+      Left(OmaDataOAuth2Error(errorType, s"unregistered client ${clientId}"))
     }
   }
 

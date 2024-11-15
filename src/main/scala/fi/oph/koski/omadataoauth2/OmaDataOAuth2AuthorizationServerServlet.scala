@@ -58,7 +58,7 @@ class OmaDataOAuth2AuthorizationServerServlet(implicit val application: KoskiApp
 
   private def validateClientId(clientIdParam: String): Either[OmaDataOAuth2Error, String] = {
     for {
-      clientId <- validateClientIdRekisteröity(clientIdParam)
+      clientId <- validateClientIdRekisteröity(clientIdParam, OmaDataOAuth2ErrorType.invalid_client_data)
       _ <- validateClientIdSamaKuinKäyttäjätunnus(clientId)
     } yield clientId
   }
