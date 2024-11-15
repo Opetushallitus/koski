@@ -1,47 +1,21 @@
 package fi.oph.koski.omadataoauth2.unit
 
 import fi.oph.koski.KoskiApplicationForTests
-import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.log.AuditLogTester
 import fi.oph.koski.omadataoauth2.{OmaDataOAuth2Error, OmaDataOAuth2ErrorType}
-import org.http4s.Uri
 
 class OmaDataOAuth2FrontendSpec extends OmaDataOAuth2TestBase {
   val app = KoskiApplicationForTests
 
-  val hetu = KoskiSpecificMockOppijat.eero.hetu.get
-  val oppijaOid = KoskiSpecificMockOppijat.eero.oid
-
   val tuntematonClientId = "loytymatonClientId"
   val vääräRedirectUri = "/koski/omadata-oauth2/EI-OLE/debug-post-response"
 
-  val validClientId = "oauth2client"
-  val validState = "internal state"
-  val validRedirectUri = "/koski/omadata-oauth2/debug-post-response"
-
-  val validScope = "HENKILOTIEDOT_SYNTYMAAIKA HENKILOTIEDOT_NIMI OPISKELUOIKEUDET_SUORITETUT_TUTKINNOT"
-
-  val validParams: Seq[(String, String)] = Seq(
-    ("client_id", validClientId),
-    ("response_type", "code"),
-    ("response_mode", "form_post"),
-    ("redirect_uri", validRedirectUri),
-    ("code_challenge", "NjIyMGQ4NDAxZGM0ZDI5NTdlMWRlNDI2YWNhNjA1NGRiMjQyZTE0NTg0YzRmOGMwMmU3MzFkYjlhNTRlZTlmZA"),
-    ("code_challenge_method", "S256"),
-    ("state", validState),
-    ("scope", validScope)
-  )
-
-  val validParamsString = createParamsString(validParams)
-
   "resource-owner authorize frontend -rajapinta" - {
-    val baseUri = "omadata-oauth2/authorize"
-
     "toimivilla parametreilla" - {
       "kirjautumattomalla käyttäjällä" - {
         "redirectaa login-sivulle, joka redirectaa sivulle, jossa parametrit base64url-enkoodattuna" in {
-          val serverUri = s"${baseUri}?${validParamsString}"
-          val expectedLoginUri = s"/koski/login/oppija?service=/koski/user/login?onSuccess=/koski/omadata-oauth2/cas-workaround/authorize/${base64UrlEncode(validParamsString)}"
+          val serverUri = s"${authorizeFrontendBaseUri}?${validAuthorizeParamsString}"
+          val expectedLoginUri = s"/koski/login/oppija?service=/koski/user/login?onSuccess=/koski/omadata-oauth2/cas-workaround/authorize/${base64UrlEncode(validAuthorizeParamsString)}"
 
           get(
             uri = serverUri
@@ -54,7 +28,7 @@ class OmaDataOAuth2FrontendSpec extends OmaDataOAuth2TestBase {
       }
       "kirjautuneella käyttäjällä" - {
         "palauttaa suostumuksen myöntämis -sivun" in {
-          val serverUri = s"${baseUri}?${validParamsString}"
+          val serverUri = s"${authorizeFrontendBaseUri}?${validAuthorizeParamsString}"
           get(
             uri = serverUri,
             headers = kansalainenLoginHeaders(hetu)
@@ -75,7 +49,7 @@ class OmaDataOAuth2FrontendSpec extends OmaDataOAuth2TestBase {
 
           val eiSallitullaScopella = createParamsString(validParamsVaihdetullaArvolla(parametriNimi, eiSallittuArvo))
 
-          val serverUri = s"${baseUri}?${eiSallitullaScopella}"
+          val serverUri = s"${authorizeFrontendBaseUri}?${eiSallitullaScopella}"
 
           val expectedLoginUri = s"/koski/login/oppija?service=/koski/user/login?onSuccess=/koski/omadata-oauth2/cas-workaround/authorize/${base64UrlEncode(eiSallitullaScopella)}"
 
@@ -96,7 +70,7 @@ class OmaDataOAuth2FrontendSpec extends OmaDataOAuth2TestBase {
 
           val eiSallitullaScopella = createParamsString(validParamsVaihdetullaArvolla(parametriNimi, eiSallittuArvo))
 
-          val serverUri = s"${baseUri}?${eiSallitullaScopella}"
+          val serverUri = s"${authorizeFrontendBaseUri}?${eiSallitullaScopella}"
 
           get(
             uri = serverUri,
@@ -121,8 +95,8 @@ class OmaDataOAuth2FrontendSpec extends OmaDataOAuth2TestBase {
         "redirectaa käyttäjän samaan osoitteeseen query-parametreihin sisällytetyllä virheilmoituksella" - {
           Seq("client_id", "redirect_uri").foreach(paramName => {
             s"kun ${paramName} puuttuu" in {
-              val väärälläParametrilla = createParamsString(validParams.filterNot(_._1 == paramName))
-              val serverUri = s"${baseUri}?${väärälläParametrilla}"
+              val väärälläParametrilla = createParamsString(validAuthorizeParams.filterNot(_._1 == paramName))
+              val serverUri = s"${authorizeFrontendBaseUri}?${väärälläParametrilla}"
 
               val expectedErrorMessageRegexp = "error=invalid_client_data&error_id=omadataoauth2-error-[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}".r
               get(
@@ -135,10 +109,10 @@ class OmaDataOAuth2FrontendSpec extends OmaDataOAuth2TestBase {
             }
 
             s"kun ${paramName} on annettu useammin kuin kerran" in {
-              val validValue = validParams.toMap.get(paramName).get
-              val väärälläParametrilla = createParamsString(validParams :+ (paramName, validValue))
+              val validValue = validAuthorizeParams.toMap.get(paramName).get
+              val väärälläParametrilla = createParamsString(validAuthorizeParams :+ (paramName, validValue))
 
-              val serverUri = s"${baseUri}?${väärälläParametrilla}"
+              val serverUri = s"${authorizeFrontendBaseUri}?${väärälläParametrilla}"
 
               val expectedErrorMessageRegexp = "error=invalid_client_data&error_id=omadataoauth2-error-[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}".r
               get(
@@ -153,9 +127,9 @@ class OmaDataOAuth2FrontendSpec extends OmaDataOAuth2TestBase {
           })
 
           "kun client_id on tuntematon" in {
-            val väärälläParametrilla = createParamsString((validParams.toMap + ("client_id" -> tuntematonClientId)).toSeq)
+            val väärälläParametrilla = createParamsString((validAuthorizeParams.toMap + ("client_id" -> tuntematonClientId)).toSeq)
 
-            val serverUri = s"${baseUri}?${väärälläParametrilla}"
+            val serverUri = s"${authorizeFrontendBaseUri}?${väärälläParametrilla}"
 
             val expectedErrorMessageRegexp = "error=invalid_client_data&error_id=omadataoauth2-error-[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}".r
             get(
@@ -168,9 +142,9 @@ class OmaDataOAuth2FrontendSpec extends OmaDataOAuth2TestBase {
           }
 
           "kun redirect_uri ei ole annetun client_idn tallennettu redirect_uri" in {
-            val väärälläParametrilla = createParamsString((validParams.toMap + ("redirect_uri" -> vääräRedirectUri)).toSeq)
+            val väärälläParametrilla = createParamsString((validAuthorizeParams.toMap + ("redirect_uri" -> vääräRedirectUri)).toSeq)
 
-            val serverUri = s"${baseUri}?${väärälläParametrilla}"
+            val serverUri = s"${authorizeFrontendBaseUri}?${väärälläParametrilla}"
 
             val expectedErrorMessageRegexp = "error=invalid_client_data&error_id=omadataoauth2-error-[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}".r
             get(
@@ -188,8 +162,8 @@ class OmaDataOAuth2FrontendSpec extends OmaDataOAuth2TestBase {
         "redirectaa käyttäjän samaan osoitteeseen query-parametreihin sisällytetyllä virheilmoituksella" - {
           Seq("client_id", "redirect_uri").foreach(paramName => {
             s"kun ${paramName} puuttuu" in {
-              val väärälläParametrilla = createParamsString(validParams.filterNot(_._1 == paramName))
-              val serverUri = s"${baseUri}?${väärälläParametrilla}"
+              val väärälläParametrilla = createParamsString(validAuthorizeParams.filterNot(_._1 == paramName))
+              val serverUri = s"${authorizeFrontendBaseUri}?${väärälläParametrilla}"
 
               val expectedErrorMessageRegexp = "error=invalid_client_data&error_id=omadataoauth2-error-[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}".r
               get(
@@ -203,10 +177,10 @@ class OmaDataOAuth2FrontendSpec extends OmaDataOAuth2TestBase {
 
           Seq("client_id", "redirect_uri", "state").foreach(paramName => {
             s"kun ${paramName} on annettu useammin kuin kerran" in {
-              val validValue = validParams.toMap.get(paramName).get
-              val väärälläParametrilla = createParamsString(validParams :+ (paramName, validValue))
+              val validValue = validAuthorizeParams.toMap.get(paramName).get
+              val väärälläParametrilla = createParamsString(validAuthorizeParams :+ (paramName, validValue))
 
-              val serverUri = s"${baseUri}?${väärälläParametrilla}"
+              val serverUri = s"${authorizeFrontendBaseUri}?${väärälläParametrilla}"
 
               val expectedErrorMessageRegexp = "error=invalid_client_data&error_id=omadataoauth2-error-[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}".r
               get(
@@ -220,9 +194,9 @@ class OmaDataOAuth2FrontendSpec extends OmaDataOAuth2TestBase {
           })
 
           "kun client_id on tuntematon" in {
-            val väärälläParametrilla = createParamsString((validParams.toMap + ("client_id" -> tuntematonClientId)).toSeq)
+            val väärälläParametrilla = createParamsString((validAuthorizeParams.toMap + ("client_id" -> tuntematonClientId)).toSeq)
 
-            val serverUri = s"${baseUri}?${väärälläParametrilla}"
+            val serverUri = s"${authorizeFrontendBaseUri}?${väärälläParametrilla}"
 
             val expectedErrorMessageRegexp = "error=invalid_client_data&error_id=omadataoauth2-error-[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}".r
             get(
@@ -234,9 +208,9 @@ class OmaDataOAuth2FrontendSpec extends OmaDataOAuth2TestBase {
           }
 
           "kun redirect_uri ei ole annetun client_idn tallennettu redirect_uri" in {
-            val väärälläParametrilla = createParamsString((validParams.toMap + ("redirect_uri" -> vääräRedirectUri)).toSeq)
+            val väärälläParametrilla = createParamsString((validAuthorizeParams.toMap + ("redirect_uri" -> vääräRedirectUri)).toSeq)
 
-            val serverUri = s"${baseUri}?${väärälläParametrilla}"
+            val serverUri = s"${authorizeFrontendBaseUri}?${väärälläParametrilla}"
 
             val expectedErrorMessageRegexp = "error=invalid_client_data&error_id=omadataoauth2-error-[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}".r
             get(
@@ -267,7 +241,7 @@ class OmaDataOAuth2FrontendSpec extends OmaDataOAuth2TestBase {
             s"kun pakollinen parametri ${paramName} puuttuu kokonaan" in {
               val puuttuvallaParametrilla = createParamsString(validParamsIlman(paramName))
 
-              val serverUri = s"${baseUri}?${puuttuvallaParametrilla}"
+              val serverUri = s"${authorizeFrontendBaseUri}?${puuttuvallaParametrilla}"
 
               get(
                 uri = serverUri
@@ -286,7 +260,7 @@ class OmaDataOAuth2FrontendSpec extends OmaDataOAuth2TestBase {
             s"kun parametri ${paramName} esiintyy useamman kerran" in {
               val duplikaattiParametrilla = createParamsString(validParamsDuplikaatilla(paramName))
 
-              val serverUri = s"${baseUri}?${duplikaattiParametrilla}"
+              val serverUri = s"${authorizeFrontendBaseUri}?${duplikaattiParametrilla}"
 
               get(
                 uri = serverUri
@@ -308,7 +282,7 @@ class OmaDataOAuth2FrontendSpec extends OmaDataOAuth2TestBase {
 
             val väärälläParametrilla = createParamsString(validParamsVaihdetullaArvolla(parametriNimi, tuntematonArvo))
 
-            val serverUri = s"${baseUri}?${väärälläParametrilla}"
+            val serverUri = s"${authorizeFrontendBaseUri}?${väärälläParametrilla}"
 
             get(
               uri = serverUri
@@ -328,7 +302,7 @@ class OmaDataOAuth2FrontendSpec extends OmaDataOAuth2TestBase {
 
             val väärälläParametrilla = createParamsString(validParamsVaihdetullaArvolla(parametriNimi, tuntematonArvo))
 
-            val serverUri = s"${baseUri}?${väärälläParametrilla}"
+            val serverUri = s"${authorizeFrontendBaseUri}?${väärälläParametrilla}"
 
             get(
               uri = serverUri
@@ -348,7 +322,7 @@ class OmaDataOAuth2FrontendSpec extends OmaDataOAuth2TestBase {
 
             val väärälläParametrilla = createParamsString(validParamsVaihdetullaArvolla(parametriNimi, tuntematonArvo))
 
-            val serverUri = s"${baseUri}?${väärälläParametrilla}"
+            val serverUri = s"${authorizeFrontendBaseUri}?${väärälläParametrilla}"
 
             get(
               uri = serverUri
@@ -368,7 +342,7 @@ class OmaDataOAuth2FrontendSpec extends OmaDataOAuth2TestBase {
 
             val eiSallitullaScopella = createParamsString(validParamsVaihdetullaArvolla(parametriNimi, eiSallittuArvo))
 
-            val serverUri = s"${baseUri}?${eiSallitullaScopella}"
+            val serverUri = s"${authorizeFrontendBaseUri}?${eiSallitullaScopella}"
 
             get(
               uri = serverUri
@@ -387,7 +361,7 @@ class OmaDataOAuth2FrontendSpec extends OmaDataOAuth2TestBase {
 
             val eiSallitullaScopella = createParamsString(validParamsVaihdetullaArvolla(parametriNimi, eiSallittuArvo))
 
-            val serverUri = s"${baseUri}?${eiSallitullaScopella}"
+            val serverUri = s"${authorizeFrontendBaseUri}?${eiSallitullaScopella}"
 
             get(
               uri = serverUri
@@ -406,7 +380,7 @@ class OmaDataOAuth2FrontendSpec extends OmaDataOAuth2TestBase {
 
             val eiSallitullaScopella = createParamsString(validParamsVaihdetullaArvolla(parametriNimi, eiSallittuArvo))
 
-            val serverUri = s"${baseUri}?${eiSallitullaScopella}"
+            val serverUri = s"${authorizeFrontendBaseUri}?${eiSallitullaScopella}"
 
             get(
               uri = serverUri
@@ -425,7 +399,7 @@ class OmaDataOAuth2FrontendSpec extends OmaDataOAuth2TestBase {
 
             val eiSallitullaScopella = createParamsString(validParamsVaihdetullaArvolla(parametriNimi, eiSallittuArvo))
 
-            val serverUri = s"${baseUri}?${eiSallitullaScopella}"
+            val serverUri = s"${authorizeFrontendBaseUri}?${eiSallitullaScopella}"
 
             get(
               uri = serverUri
@@ -452,7 +426,7 @@ class OmaDataOAuth2FrontendSpec extends OmaDataOAuth2TestBase {
             s"kun pakollinen parametri ${paramName} puuttuu kokonaan" in {
               val puuttuvallaParametrilla = createParamsString(validParamsIlman(paramName))
 
-              val serverUri = s"${baseUri}?${puuttuvallaParametrilla}"
+              val serverUri = s"${authorizeFrontendBaseUri}?${puuttuvallaParametrilla}"
 
               get(
                 uri = serverUri,
@@ -469,7 +443,7 @@ class OmaDataOAuth2FrontendSpec extends OmaDataOAuth2TestBase {
             s"kun parametri ${paramName} esiintyy useamman kerran" in {
               val duplikaattiParametrilla = createParamsString(validParamsDuplikaatilla(paramName))
 
-              val serverUri = s"${baseUri}?${duplikaattiParametrilla}"
+              val serverUri = s"${authorizeFrontendBaseUri}?${duplikaattiParametrilla}"
 
               get(
                 uri = serverUri,
@@ -489,7 +463,7 @@ class OmaDataOAuth2FrontendSpec extends OmaDataOAuth2TestBase {
 
             val väärälläParametrilla = createParamsString(validParamsVaihdetullaArvolla(parametriNimi, tuntematonArvo))
 
-            val serverUri = s"${baseUri}?${väärälläParametrilla}"
+            val serverUri = s"${authorizeFrontendBaseUri}?${väärälläParametrilla}"
 
             get(
               uri = serverUri,
@@ -507,7 +481,7 @@ class OmaDataOAuth2FrontendSpec extends OmaDataOAuth2TestBase {
 
             val väärälläParametrilla = createParamsString(validParamsVaihdetullaArvolla(parametriNimi, tuntematonArvo))
 
-            val serverUri = s"${baseUri}?${väärälläParametrilla}"
+            val serverUri = s"${authorizeFrontendBaseUri}?${väärälläParametrilla}"
 
             get(
               uri = serverUri,
@@ -525,7 +499,7 @@ class OmaDataOAuth2FrontendSpec extends OmaDataOAuth2TestBase {
 
             val väärälläParametrilla = createParamsString(validParamsVaihdetullaArvolla(parametriNimi, tuntematonArvo))
 
-            val serverUri = s"${baseUri}?${väärälläParametrilla}"
+            val serverUri = s"${authorizeFrontendBaseUri}?${väärälläParametrilla}"
 
             get(
               uri = serverUri,
@@ -543,7 +517,7 @@ class OmaDataOAuth2FrontendSpec extends OmaDataOAuth2TestBase {
 
             val eiSallitullaScopella = createParamsString(validParamsVaihdetullaArvolla(parametriNimi, eiSallittuArvo))
 
-            val serverUri = s"${baseUri}?${eiSallitullaScopella}"
+            val serverUri = s"${authorizeFrontendBaseUri}?${eiSallitullaScopella}"
 
             get(
               uri = serverUri,
@@ -561,7 +535,7 @@ class OmaDataOAuth2FrontendSpec extends OmaDataOAuth2TestBase {
 
             val eiSallitullaScopella = createParamsString(validParamsVaihdetullaArvolla(parametriNimi, eiSallittuArvo))
 
-            val serverUri = s"${baseUri}?${eiSallitullaScopella}"
+            val serverUri = s"${authorizeFrontendBaseUri}?${eiSallitullaScopella}"
 
             get(
               uri = serverUri,
@@ -579,7 +553,7 @@ class OmaDataOAuth2FrontendSpec extends OmaDataOAuth2TestBase {
 
             val eiSallitullaScopella = createParamsString(validParamsVaihdetullaArvolla(parametriNimi, eiSallittuArvo))
 
-            val serverUri = s"${baseUri}?${eiSallitullaScopella}"
+            val serverUri = s"${authorizeFrontendBaseUri}?${eiSallitullaScopella}"
 
             get(
               uri = serverUri,
@@ -597,7 +571,7 @@ class OmaDataOAuth2FrontendSpec extends OmaDataOAuth2TestBase {
 
             val eiSallitullaScopella = createParamsString(validParamsVaihdetullaArvolla(parametriNimi, eiSallittuArvo))
 
-            val serverUri = s"${baseUri}?${eiSallitullaScopella}"
+            val serverUri = s"${authorizeFrontendBaseUri}?${eiSallitullaScopella}"
 
             get(
               uri = serverUri,
@@ -618,10 +592,8 @@ class OmaDataOAuth2FrontendSpec extends OmaDataOAuth2TestBase {
   }
 
   "resource-owner authorize -rajapinta" - {
-    val baseUri = "api/omadata-oauth2/resource-owner/authorize"
-
     "ei toimi ilman kirjautumista" in {
-      val serverUri = s"${baseUri}?${validParamsString}"
+      val serverUri = s"${authorizeBaseUri}?${validAuthorizeParamsString}"
 
       get(
         uri = serverUri
@@ -632,7 +604,7 @@ class OmaDataOAuth2FrontendSpec extends OmaDataOAuth2TestBase {
 
     "käyttäjän ollessa kirjautuneena" - {
       "palauttaa authorization code:n" in {
-        val serverUri = s"${baseUri}?${validParamsString}"
+        val serverUri = s"${authorizeBaseUri}?${validAuthorizeParamsString}"
 
         val expectedResultParams =
           Seq(
@@ -659,7 +631,7 @@ class OmaDataOAuth2FrontendSpec extends OmaDataOAuth2TestBase {
       "tekee auditlokituksen" in {
         AuditLogTester.clearMessages()
 
-        val serverUri = s"${baseUri}?${validParamsString}"
+        val serverUri = s"${authorizeBaseUri}?${validAuthorizeParamsString}"
 
         get(
           uri = serverUri,
@@ -681,8 +653,8 @@ class OmaDataOAuth2FrontendSpec extends OmaDataOAuth2TestBase {
 
     Seq("client_id", "redirect_uri").foreach(paramName => {
       s"redirectaa logoutin kautta resource owner frontendiin kun ${paramName} puuttuu" in {
-        val väärälläParametrilla = createParamsString(validParams.filterNot(_._1 == paramName))
-        val serverUri = s"${baseUri}?${väärälläParametrilla}"
+        val väärälläParametrilla = createParamsString(validAuthorizeParams.filterNot(_._1 == paramName))
+        val serverUri = s"${authorizeBaseUri}?${väärälläParametrilla}"
         get(
           uri = serverUri,
           headers = kansalainenLoginHeaders(hetu)
@@ -693,10 +665,10 @@ class OmaDataOAuth2FrontendSpec extends OmaDataOAuth2TestBase {
       }
 
       s"redirectaa logoutin kautta resource owner frontendiin kun ${paramName} annettu enemmän kuin kerran" in {
-        val validValue = validParams.toMap.get(paramName).get
-        val väärälläParametrilla = createParamsString(validParams :+ (paramName, validValue))
+        val validValue = validAuthorizeParams.toMap.get(paramName).get
+        val väärälläParametrilla = createParamsString(validAuthorizeParams :+ (paramName, validValue))
 
-        val serverUri = s"${baseUri}?${väärälläParametrilla}"
+        val serverUri = s"${authorizeBaseUri}?${väärälläParametrilla}"
         get(
           uri = serverUri,
           headers = kansalainenLoginHeaders(hetu)
@@ -708,9 +680,9 @@ class OmaDataOAuth2FrontendSpec extends OmaDataOAuth2TestBase {
     })
 
     "redirectaa logoutin kautta resource owner frontendiin, jos kutsutaan epävalidilla client_id:llä" in {
-      val väärälläParametrilla = createParamsString((validParams.toMap + ("client_id" -> tuntematonClientId)).toSeq)
+      val väärälläParametrilla = createParamsString((validAuthorizeParams.toMap + ("client_id" -> tuntematonClientId)).toSeq)
 
-      val serverUri = s"${baseUri}?${väärälläParametrilla}"
+      val serverUri = s"${authorizeBaseUri}?${väärälläParametrilla}"
 
       get(
         uri = serverUri,
@@ -722,9 +694,9 @@ class OmaDataOAuth2FrontendSpec extends OmaDataOAuth2TestBase {
     }
 
     "redirectaa logoutin kautta resource owner frontendiin, jos kutsutaan epävalidilla redirect_uri:lla" in {
-      val väärälläParametrilla = createParamsString((validParams.toMap + ("redirect_uri" -> vääräRedirectUri)).toSeq)
+      val väärälläParametrilla = createParamsString((validAuthorizeParams.toMap + ("redirect_uri" -> vääräRedirectUri)).toSeq)
 
-      val serverUri = s"${baseUri}?${väärälläParametrilla}"
+      val serverUri = s"${authorizeBaseUri}?${väärälläParametrilla}"
 
       get(
         uri = serverUri,
@@ -737,13 +709,13 @@ class OmaDataOAuth2FrontendSpec extends OmaDataOAuth2TestBase {
 
     "kun halutaan välittää error" - {
       val validParamsWithError =
-        validParams ++
+        validAuthorizeParams ++
           Seq(("error", "access_denied"))
 
       Seq("client_id", "redirect_uri").foreach(paramName => {
         s"redirectaa logoutin kautta resource owner frontendiin kun ${paramName} puuttuu" in {
           val väärälläParametrilla = createParamsString(validParamsWithError.filterNot(_._1 == paramName))
-          val serverUri = s"${baseUri}?${väärälläParametrilla}"
+          val serverUri = s"${authorizeBaseUri}?${väärälläParametrilla}"
           get(
             uri = serverUri,
             headers = kansalainenLoginHeaders(hetu)
@@ -754,10 +726,10 @@ class OmaDataOAuth2FrontendSpec extends OmaDataOAuth2TestBase {
         }
 
         s"redirectaa logoutin kautta resource owner frontendiin kun ${paramName} annettu enemmän kuin kerran" in {
-          val validValue = validParams.toMap.get(paramName).get
+          val validValue = validAuthorizeParams.toMap.get(paramName).get
           val väärälläParametrilla = createParamsString(validParamsWithError :+ (paramName, validValue))
 
-          val serverUri = s"${baseUri}?${väärälläParametrilla}"
+          val serverUri = s"${authorizeBaseUri}?${väärälläParametrilla}"
           get(
             uri = serverUri,
             headers = kansalainenLoginHeaders(hetu)
@@ -771,7 +743,7 @@ class OmaDataOAuth2FrontendSpec extends OmaDataOAuth2TestBase {
       "redirectaa logoutin kautta resource owner frontendiin, jos kutsutaan epävalidilla client_id:llä" in {
         val väärälläParametrilla = createParamsString((validParamsWithError.toMap + ("client_id" -> tuntematonClientId)).toSeq)
 
-        val serverUri = s"${baseUri}?${väärälläParametrilla}"
+        val serverUri = s"${authorizeBaseUri}?${väärälläParametrilla}"
 
         get(
           uri = serverUri,
@@ -785,7 +757,7 @@ class OmaDataOAuth2FrontendSpec extends OmaDataOAuth2TestBase {
       "redirectaa logoutin kautta resource owner frontendiin, jos kutsutaan epävalidilla redirect_uri:lla" in {
         val väärälläParametrilla = createParamsString((validParamsWithError.toMap + ("redirect_uri" -> vääräRedirectUri)).toSeq)
 
-        val serverUri = s"${baseUri}?${väärälläParametrilla}"
+        val serverUri = s"${authorizeBaseUri}?${väärälläParametrilla}"
 
         get(
           uri = serverUri,
@@ -797,7 +769,7 @@ class OmaDataOAuth2FrontendSpec extends OmaDataOAuth2TestBase {
       }
 
       "välittää virhetiedot clientille, jos client_id ja redirect_uri ovat kunnossa" in {
-        val serverUri = s"${baseUri}?${createParamsString(validParamsWithError)}"
+        val serverUri = s"${authorizeBaseUri}?${createParamsString(validParamsWithError)}"
 
         val expectedError = "access_denied"
         val expectedResultParamsString = createParamsString(
@@ -829,7 +801,7 @@ class OmaDataOAuth2FrontendSpec extends OmaDataOAuth2TestBase {
           KoskiApplicationForTests.omaDataOAuth2Service.overridenCreateResultForUnitTests = None
         }
 
-      val serverUri = s"${baseUri}?${createParamsString(validParams)}"
+      val serverUri = s"${authorizeBaseUri}?${createParamsString(validAuthorizeParams)}"
 
       val expectedError = "server_error"
       val expectedParams =
@@ -863,7 +835,7 @@ class OmaDataOAuth2FrontendSpec extends OmaDataOAuth2TestBase {
 
       val eiSallitullaScopella = createParamsString(validParamsVaihdetullaArvolla(parametriNimi, eiSallittuArvo))
 
-      val serverUri = s"${baseUri}?${eiSallitullaScopella}"
+      val serverUri = s"${authorizeBaseUri}?${eiSallitullaScopella}"
 
       get(
         uri = serverUri,
@@ -876,23 +848,7 @@ class OmaDataOAuth2FrontendSpec extends OmaDataOAuth2TestBase {
     }
   }
 
-  private def encodedParamStringShouldContain(base64UrlEncodedParams: String, expectedParams: Seq[(String, String)]) = {
-    val actualParamsString = base64UrlDecode(base64UrlEncodedParams)
-    val actualParams = Uri.unsafeFromString("/?" + actualParamsString).params
-
-    actualParams should contain allElementsOf (expectedParams)
-  }
-
-  private def getFromEncodedParamString(base64UrlEncodedParams: String, key: String): Option[String] = {
-    val actualParamsString = base64UrlDecode(base64UrlEncodedParams)
-    val actualParams = Uri.unsafeFromString("/?" + actualParamsString).params
-
-    actualParams.get(key)
-  }
-
   "post-response -rajapinta" - {
-    val baseUri = "omadata-oauth2/post-response"
-
     val validPostResponseParams =Seq(
       ("client_id", validClientId),
       ("redirect_uri", validRedirectUri),
@@ -903,7 +859,7 @@ class OmaDataOAuth2FrontendSpec extends OmaDataOAuth2TestBase {
     Seq("client_id", "redirect_uri").foreach(paramName => {
       s"redirectaa resource owner frontendiin, kun ${paramName} puuttuu" in {
         val väärälläParametrilla = createParamsString(validPostResponseParams.filterNot(_._1 == paramName))
-        val serverUri = s"${baseUri}?${väärälläParametrilla}"
+        val serverUri = s"${postResponseBaseUri}?${väärälläParametrilla}"
         get(
           uri = serverUri
         ) {
@@ -915,10 +871,10 @@ class OmaDataOAuth2FrontendSpec extends OmaDataOAuth2TestBase {
 
     Seq("client_id", "redirect_uri", "state").foreach(paramName => {
       s"redirectaa resource owner frontendiin, kun ${paramName} annettu enemmän kuin kerran" in {
-        val validValue = validParams.toMap.get(paramName).get
+        val validValue = validAuthorizeParams.toMap.get(paramName).get
         val väärälläParametrilla = createParamsString(validPostResponseParams :+ (paramName, validValue))
 
-        val serverUri = s"${baseUri}?${väärälläParametrilla}"
+        val serverUri = s"${postResponseBaseUri}?${väärälläParametrilla}"
         get(
           uri = serverUri
         ) {
@@ -932,7 +888,7 @@ class OmaDataOAuth2FrontendSpec extends OmaDataOAuth2TestBase {
     "redirectaa resource owner frontendiin, jos kutsutaan epävalidilla client_id:llä" in {
       val väärälläParametrilla = createParamsString((validPostResponseParams.toMap + ("client_id" -> tuntematonClientId)).toSeq)
 
-      val serverUri = s"${baseUri}?${väärälläParametrilla}"
+      val serverUri = s"${postResponseBaseUri}?${väärälläParametrilla}"
 
       get(
         uri = serverUri
@@ -945,7 +901,7 @@ class OmaDataOAuth2FrontendSpec extends OmaDataOAuth2TestBase {
     "redirectaa resource owner frontendiin, kun kutsutaan epävalidilla redirect_uri:lla" in {
       val väärälläParametrilla = createParamsString((validPostResponseParams.toMap + ("redirect_uri" -> vääräRedirectUri)).toSeq)
 
-      val serverUri = s"${baseUri}?${väärälläParametrilla}"
+      val serverUri = s"${postResponseBaseUri}?${väärälläParametrilla}"
 
       get(
         uri = serverUri
@@ -958,7 +914,7 @@ class OmaDataOAuth2FrontendSpec extends OmaDataOAuth2TestBase {
     "välittää coden clientille, kun client_id ja redirect_uri ovat kunnossa" in {
       val expectedCode = validDummyCode
 
-      val serverUri = s"${baseUri}?${createParamsString(validPostResponseParams)}"
+      val serverUri = s"${postResponseBaseUri}?${createParamsString(validPostResponseParams)}"
 
       get(
         uri = serverUri
@@ -977,7 +933,7 @@ class OmaDataOAuth2FrontendSpec extends OmaDataOAuth2TestBase {
           validPostResponseParams.toMap - "code" + ("error" -> expectedError)
       ).toSeq
 
-      val serverUri = s"${baseUri}?${createParamsString(paramsWithError)}"
+      val serverUri = s"${postResponseBaseUri}?${createParamsString(paramsWithError)}"
 
       get(
         uri = serverUri
@@ -988,18 +944,5 @@ class OmaDataOAuth2FrontendSpec extends OmaDataOAuth2TestBase {
         body should include(validState)
       }
     }
-  }
-
-  private def validParamsIlman(paramName: String): Seq[(String, String)] = {
-    (validParams.toMap - paramName).toSeq
-  }
-
-  private def validParamsDuplikaatilla(paramName: String): Seq[(String, String)] = {
-    val duplikaatti = validParams.toMap.get(paramName).get
-    validParams ++ Seq((paramName, duplikaatti))
-  }
-
-  private def validParamsVaihdetullaArvolla(paramName: String, value: String): Seq[(String, String)] = {
-    (validParams.toMap + (paramName -> value)).toSeq
   }
 }
