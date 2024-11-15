@@ -9,7 +9,6 @@ import java.util.UUID.randomUUID
 
 object OmaDataOAuth2Security extends Logging {
   def sha256(str: String): String = {
-
     val result = String.format(
       "%064x",
       new BigInteger(
@@ -17,7 +16,6 @@ object OmaDataOAuth2Security extends Logging {
         MessageDigest.getInstance("SHA-256").digest(str.getBytes("UTF-8")))
     )
 
-    logger.info(str + "=>" + result)
     result
   }
 
