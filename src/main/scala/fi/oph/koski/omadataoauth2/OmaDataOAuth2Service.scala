@@ -3,9 +3,9 @@ package fi.oph.koski.omadataoauth2
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.koskiuser.KoskiSpecificSession
 import fi.oph.koski.log.KoskiAuditLogMessageField.{omaDataKumppani, omaDataOAuth2Scope, oppijaHenkiloOid}
-import fi.oph.koski.log.KoskiOperation.{KANSALAINEN_MYDATA_LISAYS}
+import fi.oph.koski.log.KoskiOperation.KANSALAINEN_MYDATA_LISAYS
 import fi.oph.koski.log.{AuditLog, KoskiAuditLogMessage, Logging}
-import java.util.UUID.randomUUID
+import fi.oph.koski.omadataoauth2.OmaDataOAuth2Security.generateSecret
 
 class OmaDataOAuth2Service(oauth2Repository: OmaDataOAuth2Repository, val application: KoskiApplication) extends Logging {
 
@@ -35,9 +35,5 @@ class OmaDataOAuth2Service(oauth2Repository: OmaDataOAuth2Repository, val applic
           case Left(error) => Left(error)
         }
     }
-  }
-
-  def generateSecret: String = {
-    randomUUID.toString.replaceAll("-", "")
   }
 }

@@ -4,6 +4,7 @@ import fi.oph.koski.log.Logging
 
 import java.math.BigInteger
 import java.security.MessageDigest
+import java.util.UUID.randomUUID
 
 object OmaDataOAuth2Security extends Logging {
   def sha256(str: String): String = {
@@ -17,5 +18,9 @@ object OmaDataOAuth2Security extends Logging {
 
     logger.info(str + "=>" + result)
     result
+  }
+
+  def generateSecret: String = {
+    randomUUID.toString.replaceAll("-", "")
   }
 }
