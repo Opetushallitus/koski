@@ -56,8 +56,6 @@ object OmaDataOAuth2Documentation extends Logging {
       "luovutuspalveluBaseUrl" -> luovutuspalveluBaseUrl
     )
 
-    logger.info(vars.toString)
-
     "\\{\\{var:(.+?)\\}\\}"
       .r("name")
       .replaceAllIn(markdown, { m => vars.getOrElse(m.group("name"), "!!! NOT FOUND !!!") })
