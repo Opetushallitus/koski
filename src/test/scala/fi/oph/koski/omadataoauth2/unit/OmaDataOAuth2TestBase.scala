@@ -1,7 +1,7 @@
 package fi.oph.koski.omadataoauth2.unit
 
 import fi.oph.koski.KoskiHttpSpec
-import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
+import fi.oph.koski.henkilo.{KoskiSpecificMockOppijat, LaajatOppijaHenkilöTiedot}
 import org.http4s.Uri
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.should.Matchers
@@ -24,7 +24,6 @@ class OmaDataOAuth2TestBase extends AnyFreeSpec with KoskiHttpSpec with Matchers
   val oppijaOid = KoskiSpecificMockOppijat.eero.oid
 
   // https://datatracker.ietf.org/doc/html/rfc7636#appendix-B
-  val validDummyCodeVerifier = "dBjftJeZ4CVP-mB92K27uhbUJU1p1r_wW1gFWFOEjXk"
   val validDummyCodeChallenge = "E9Melhoa2OwvFrEMTJguCHaoeK1t8URWbuGJSstw-cM"
 
   val validClientId = "oauth2client"
@@ -75,5 +74,38 @@ class OmaDataOAuth2TestBase extends AnyFreeSpec with KoskiHttpSpec with Matchers
     val actualParams = Uri.unsafeFromString("/?" + actualParamsString).params
 
     actualParams.get(key)
+  }
+
+  // Huom, tämä ohittaa yksikkötestejä varten "tuotantologiikan" ja lukee code:n suoraan URI:sta, eikä redirect_uri:n kautta
+  def createAuthorization(kansalainen: LaajatOppijaHenkilöTiedot, codeChallenge: String, scope: String = validScope) = {
+    val paramsString = createParamsString(
+      (validAuthorizeParams.toMap +
+        ("code_challenge" -> codeChallenge) +
+        ("scope" -> scope)
+        ).toSeq
+    )
+    val serverUri = s"${authorizeBaseUri}?${paramsString}"
+
+    val expectedResultParams =
+      Seq(
+        ("client_id", validClientId),
+        ("redirect_uri", validRedirectUri),
+        ("state", validState),
+      )
+
+    get(
+      uri = serverUri,
+      headers = kansalainenLoginHeaders(kansalainen.hetu.get)
+    ) {
+      verifyResponseStatus(302)
+      response.header("Location") should include(s"/koski/user/logout?target=/koski/omadata-oauth2/cas-workaround/post-response/")
+      val base64UrlEncodedParams = response.header("Location").split("/").last
+
+      encodedParamStringShouldContain(base64UrlEncodedParams, expectedResultParams)
+
+      val code = getFromEncodedParamString(base64UrlEncodedParams, "code")
+      code.isDefined should be(true)
+      code.get
+    }
   }
 }
