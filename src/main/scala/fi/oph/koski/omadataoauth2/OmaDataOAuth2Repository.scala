@@ -11,9 +11,6 @@ import java.time.LocalDateTime
 import java.time.temporal.ChronoUnit
 
 class OmaDataOAuth2Repository(val db: DB) extends DatabaseExecutionContext with Logging with QueryMethods {
-  def getByAccessToken(accessToken: String): Option[OAuth2JakoRow] =
-    runDbSync(OAuth2Jako.filter(r => r.accessTokenSHA256 === sha256(accessToken) && r.voimassaAsti >= Timestamp.valueOf(LocalDateTime.now)).result.headOption)
-
   def create(
     code: String,
     oppijaOid: String,
@@ -115,6 +112,45 @@ class OmaDataOAuth2Repository(val db: DB) extends DatabaseExecutionContext with 
     }
 
     runDbSync(updateAction.transactionally)
+  }
+
+  def getByAccessToken(
+    accessToken: String,
+    expectedClientId: String,
+    allowedScopes: Set[String]
+  ): Either[OmaDataOAuth2Error, AccessTokenInfo] = {
+    val accessTokenSHA256 = sha256(accessToken)
+
+    val maybeRow: Option[OAuth2JakoRow] = runDbSync(
+      OAuth2Jako.filter(
+        row =>
+          row.accessTokenSHA256 === accessTokenSHA256 &&
+            row.clientId === expectedClientId &&
+            row.voimassaAsti >= Timestamp.valueOf(LocalDateTime.now)
+      ).result.headOption
+    )
+
+    maybeRow match {
+      case None =>
+        Left(OmaDataOAuth2Error(OmaDataOAuth2ErrorType.invalid_request, "Access token not found or it has expired"))
+      case Some(row) if row.scope.split(" ").exists(scope => !allowedScopes.contains(scope)) =>
+        val tooWideScopes = row.scope.split(" ").filterNot(allowedScopes.contains)
+        val warning = OmaDataOAuth2Error(OmaDataOAuth2ErrorType.invalid_scope, s"scope=${tooWideScopes.mkString(" ")} exceeds the rights granted to the client ${row.clientId}")
+        logger.warn(warning.getLoggedErrorMessage)
+        Left(warning)
+      case Some(row)  =>
+        Right(
+          AccessTokenInfo(
+            AccessTokenSuccessResponse(
+              accessToken,
+              "Bearer",
+              LocalDateTime.now.until(row.voimassaAsti.toLocalDateTime, ChronoUnit.SECONDS).max(0)
+            ),
+            row.oppijaOid,
+            row.scope
+          )
+        )
+    }
   }
 
   private def updateRow(

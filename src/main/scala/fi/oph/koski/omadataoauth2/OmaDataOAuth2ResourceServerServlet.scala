@@ -21,17 +21,27 @@ class OmaDataOAuth2ResourceServerServlet(implicit val application: KoskiApplicat
     // TODO: TOR-2210 pitäisikö tarkistaa muita headereitä kuin Bearer?
     val result = request.header("X-Auth").map(_.split(" ")) match {
       case Some(Array("Bearer", token)) =>
-        // TODO:  oikea toteutus + testit
-        Right(JsonResources.readResource(dummyResourceFilename))
+        application.omaDataOAuth2Service.getByAccessToken(
+          accessToken = token,
+          expectedClientId = koskiSession.user.username,
+          koskiSession = koskiSession,
+          allowedScopes = koskiSession.omaDataOAuth2Scopes
+        ) match {
+          case Left(error) =>
+            val errorResult = AccessTokenErrorResponse(error)
+            response.setStatus(errorResult.httpStatus)
+            renderObject(errorResult)
+          case Right(successResponse) =>
+            // TODO:  oikea toteutus + testit
+            response.setStatus(200)
+            renderObject(JsonResources.readResource(dummyResourceFilename))
+        }
       case _ =>
         // TODO: TOR-2210 pitäisikö virheestä kertoa detaljeita, esim. oliko vaan expired token tms.?
         // TODO: TOR-2210 Speksin mukainen virhesisältö, jos sellainen on resource serverille määritelty
-        Left(KoskiErrorCategory.badRequest())
+        val errorResult = AccessTokenErrorResponse(OmaDataOAuth2Error(OmaDataOAuth2ErrorType.invalid_request, s"Request missing valid token parameters"))
+        response.setStatus(errorResult.httpStatus)
+        renderObject(errorResult)
     }
-    renderEither(result)
   }
 }
-
-case class DummyResourceResponse(
-  data: String
-)
