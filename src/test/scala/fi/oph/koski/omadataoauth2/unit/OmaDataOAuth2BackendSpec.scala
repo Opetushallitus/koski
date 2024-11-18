@@ -1,28 +1,23 @@
 package fi.oph.koski.omadataoauth2.unit
 
 import fi.oph.koski.DatabaseTestMethods
-import fi.oph.koski.db.KoskiTables.{OAuth2JakoKaikki}
-import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
+import fi.oph.koski.db.KoskiTables.OAuth2JakoKaikki
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.koskiuser.{KoskiMockUser, MockUsers}
 import fi.oph.koski.log.AuditLogTester
-import fi.oph.koski.omadataoauth2.AccessTokenErrorResponse
+import fi.oph.koski.omadataoauth2.{AccessTokenErrorResponse}
 import fi.oph.koski.omadataoauth2.OmaDataOAuth2Security.{createChallengeAndVerifier, sha256}
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 
-import java.nio.charset.StandardCharsets
 import java.sql.Timestamp
 import java.time.Instant
 
 class OmaDataOAuth2BackendSpec extends OmaDataOAuth2TestBase with DatabaseTestMethods {
-  val kansalainen = KoskiSpecificMockOppijat.eero
-  val validPalvelukäyttäjä = MockUsers.omadataOAuth2Palvelukäyttäjä
-
   "authorization-server rajapinta" - {
     "voi kutsua, kun on käyttöoikeudet" in {
       val pkce = createChallengeAndVerifier
-      val code = createAuthorization(kansalainen, pkce.challenge)
+      val code = createAuthorization(validKansalainen, pkce.challenge)
 
       postAuthorizationServerClientIdFromUsername(
         validPalvelukäyttäjä,
@@ -35,7 +30,7 @@ class OmaDataOAuth2BackendSpec extends OmaDataOAuth2TestBase with DatabaseTestMe
     }
     "tekee audit-lokimerkinnän" in {
       val pkce = createChallengeAndVerifier
-      val code = createAuthorization(kansalainen, pkce.challenge)
+      val code = createAuthorization(validKansalainen, pkce.challenge)
 
       AuditLogTester.clearMessages()
       postAuthorizationServerClientIdFromUsername(
@@ -59,7 +54,7 @@ class OmaDataOAuth2BackendSpec extends OmaDataOAuth2TestBase with DatabaseTestMe
 
     "ei voi kutsua ilman käyttöoikeuksia" in {
       val pkce = createChallengeAndVerifier
-      val code = createAuthorization(kansalainen, pkce.challenge)
+      val code = createAuthorization(validKansalainen, pkce.challenge)
 
       postAuthorizationServerClientIdFromUsername(
         MockUsers.kalle,
@@ -74,7 +69,7 @@ class OmaDataOAuth2BackendSpec extends OmaDataOAuth2TestBase with DatabaseTestMe
     "redirect_uri" - {
       "eri URI kuin autorisointikutussa aiheuttaa virheen" in {
         val pkce = createChallengeAndVerifier
-        val code = createAuthorization(kansalainen, pkce.challenge)
+        val code = createAuthorization(validKansalainen, pkce.challenge)
 
         val invalidRedirectUri = "/koski/omadata-oauth2/INVALID-debug-post-response"
 
@@ -90,9 +85,9 @@ class OmaDataOAuth2BackendSpec extends OmaDataOAuth2TestBase with DatabaseTestMe
           result.error_description.get should include("Attempted use of non-matching redirect_uri")
         }
       }
-      "väärän urin käyttöyritys sulkee koodin" in {
+      "väärän URIn käyttöyritys sulkee koodin" in {
         val pkce = createChallengeAndVerifier
-        val code = createAuthorization(kansalainen, pkce.challenge)
+        val code = createAuthorization(validKansalainen, pkce.challenge)
 
         val invalidRedirectUri = "/koski/omadata-oauth2/INVALID-debug-post-response"
 
@@ -125,7 +120,7 @@ class OmaDataOAuth2BackendSpec extends OmaDataOAuth2TestBase with DatabaseTestMe
     "grant_type" - {
       "puuttuminen aiheuttaa virheen" in {
         val pkce = createChallengeAndVerifier
-        val code = createAuthorization(kansalainen, pkce.challenge)
+        val code = createAuthorization(validKansalainen, pkce.challenge)
 
         postAuthorizationServerClientIdFromUsername(
           validPalvelukäyttäjä,
@@ -142,7 +137,7 @@ class OmaDataOAuth2BackendSpec extends OmaDataOAuth2TestBase with DatabaseTestMe
       }
       "muu arvo kuin authorization_code aiheuttaa virheen" in {
         val pkce = createChallengeAndVerifier
-        val code = createAuthorization(kansalainen, pkce.challenge)
+        val code = createAuthorization(validKansalainen, pkce.challenge)
 
         postAuthorizationServerClientIdFromUsername(
           validPalvelukäyttäjä,
@@ -162,7 +157,7 @@ class OmaDataOAuth2BackendSpec extends OmaDataOAuth2TestBase with DatabaseTestMe
     "client_id" - {
       "puuttuminen aiheuttaa virheen" in {
         val pkce = createChallengeAndVerifier
-        val code = createAuthorization(kansalainen, pkce.challenge)
+        val code = createAuthorization(validKansalainen, pkce.challenge)
 
         postAuthorizationServer(
           validPalvelukäyttäjä,
@@ -179,7 +174,7 @@ class OmaDataOAuth2BackendSpec extends OmaDataOAuth2TestBase with DatabaseTestMe
       }
       "voi kutsua, kun client on rekisteröity" in {
         val pkce = createChallengeAndVerifier
-        val code = createAuthorization(kansalainen, pkce.challenge)
+        val code = createAuthorization(validKansalainen, pkce.challenge)
 
         val user = MockUsers.omadataOAuth2Palvelukäyttäjä
         postAuthorizationServer(user,
@@ -195,7 +190,7 @@ class OmaDataOAuth2BackendSpec extends OmaDataOAuth2TestBase with DatabaseTestMe
         val user = MockUsers.rekisteröimätönOmadataOAuth2Palvelukäyttäjä
 
         val pkce = createChallengeAndVerifier
-        val code = createAuthorization(kansalainen, pkce.challenge)
+        val code = createAuthorization(validKansalainen, pkce.challenge)
 
         postAuthorizationServer(
           user,
@@ -216,7 +211,7 @@ class OmaDataOAuth2BackendSpec extends OmaDataOAuth2TestBase with DatabaseTestMe
         val vääräUser = MockUsers.rekisteröimätönOmadataOAuth2Palvelukäyttäjä
 
         val pkce = createChallengeAndVerifier
-        val code = createAuthorization(kansalainen, pkce.challenge)
+        val code = createAuthorization(validKansalainen, pkce.challenge)
 
         postAuthorizationServer(
           user,
@@ -236,7 +231,7 @@ class OmaDataOAuth2BackendSpec extends OmaDataOAuth2TestBase with DatabaseTestMe
     "scope" - {
       "palauttaa virheen, jos scope on liian laaja" in {
         val pkce = createChallengeAndVerifier
-        val code = createAuthorization(kansalainen, pkce.challenge, validScope + " HENKILOTIEDOT_HETU")
+        val code = createAuthorization(validKansalainen, pkce.challenge, validScope + " HENKILOTIEDOT_HETU")
 
         postAuthorizationServerClientIdFromUsername(
           validPalvelukäyttäjä,
@@ -253,7 +248,7 @@ class OmaDataOAuth2BackendSpec extends OmaDataOAuth2TestBase with DatabaseTestMe
 
       "liian laajan scopen käyttöyritys ei sulje koodia kokonaan" in {
         val pkce = createChallengeAndVerifier
-        val code = createAuthorization(kansalainen, pkce.challenge, validScope + " HENKILOTIEDOT_HETU")
+        val code = createAuthorization(validKansalainen, pkce.challenge, validScope + " HENKILOTIEDOT_HETU")
 
         postAuthorizationServerClientIdFromUsername(
           validPalvelukäyttäjä,
@@ -285,7 +280,7 @@ class OmaDataOAuth2BackendSpec extends OmaDataOAuth2TestBase with DatabaseTestMe
     "code" - {
       "puuttuminen aiheuttaa virheen" in {
         val pkce = createChallengeAndVerifier
-        val code = createAuthorization(kansalainen, pkce.challenge)
+        val code = createAuthorization(validKansalainen, pkce.challenge)
 
         postAuthorizationServerClientIdFromUsername(
           validPalvelukäyttäjä,
@@ -302,7 +297,7 @@ class OmaDataOAuth2BackendSpec extends OmaDataOAuth2TestBase with DatabaseTestMe
 
       "tuntematon koodi aiheuttaa virheen" in {
         val pkce = createChallengeAndVerifier
-        val code = createAuthorization(kansalainen, pkce.challenge) + "ERROR"
+        val code = createAuthorization(validKansalainen, pkce.challenge) + "ERROR"
 
         postAuthorizationServerClientIdFromUsername(
           validPalvelukäyttäjä,
@@ -320,7 +315,7 @@ class OmaDataOAuth2BackendSpec extends OmaDataOAuth2TestBase with DatabaseTestMe
       "ei toimi, jos mitätöity" in {
         // Triggeröi mitätöinti käyttämällä ensin väärää redirect_uri:a
         val pkce = createChallengeAndVerifier
-        val code = createAuthorization(kansalainen, pkce.challenge)
+        val code = createAuthorization(validKansalainen, pkce.challenge)
 
         val invalidRedirectUri = "/koski/omadata-oauth2/INVALID-debug-post-response"
 
@@ -353,7 +348,7 @@ class OmaDataOAuth2BackendSpec extends OmaDataOAuth2TestBase with DatabaseTestMe
       "ei toimi, jos vanhentunut" in {
         // Luo koodi
         val pkce = createChallengeAndVerifier
-        val code = createAuthorization(kansalainen, pkce.challenge)
+        val code = createAuthorization(validKansalainen, pkce.challenge)
 
         postAuthorizationServerClientIdFromUsername(
           validPalvelukäyttäjä,
@@ -391,7 +386,7 @@ class OmaDataOAuth2BackendSpec extends OmaDataOAuth2TestBase with DatabaseTestMe
       "saman koodin uudelleenkäyttöyritys" - {
         "palauttaa virheen" in {
           val pkce = createChallengeAndVerifier
-          val code = createAuthorization(kansalainen, pkce.challenge)
+          val code = createAuthorization(validKansalainen, pkce.challenge)
 
           postAuthorizationServerClientIdFromUsername(
             validPalvelukäyttäjä,
@@ -416,7 +411,7 @@ class OmaDataOAuth2BackendSpec extends OmaDataOAuth2TestBase with DatabaseTestMe
         }
         "sulkee koodin" in {
           val pkce = createChallengeAndVerifier
-          val code = createAuthorization(kansalainen, pkce.challenge)
+          val code = createAuthorization(validKansalainen, pkce.challenge)
 
           postAuthorizationServerClientIdFromUsername(
             validPalvelukäyttäjä,
@@ -460,7 +455,7 @@ class OmaDataOAuth2BackendSpec extends OmaDataOAuth2TestBase with DatabaseTestMe
     "code_verifier" - {
       "puuttuminen aiheuttaa virheen" in {
         val pkce = createChallengeAndVerifier
-        val code = createAuthorization(kansalainen, pkce.challenge)
+        val code = createAuthorization(validKansalainen, pkce.challenge)
 
         postAuthorizationServerClientIdFromUsername(
           validPalvelukäyttäjä,
@@ -477,7 +472,7 @@ class OmaDataOAuth2BackendSpec extends OmaDataOAuth2TestBase with DatabaseTestMe
 
       "tarkistetaan" in {
         val pkce = createChallengeAndVerifier
-        val code = createAuthorization(kansalainen, pkce.challenge)
+        val code = createAuthorization(validKansalainen, pkce.challenge)
 
         val invalidVerifier = pkce.verifier + "123"
 
@@ -496,7 +491,7 @@ class OmaDataOAuth2BackendSpec extends OmaDataOAuth2TestBase with DatabaseTestMe
 
       "väärän verifierin käyttö sulkee koodin" in {
         val pkce = createChallengeAndVerifier
-        val code = createAuthorization(kansalainen, pkce.challenge)
+        val code = createAuthorization(validKansalainen, pkce.challenge)
 
         val invalidVerifier = pkce.verifier + "123"
 

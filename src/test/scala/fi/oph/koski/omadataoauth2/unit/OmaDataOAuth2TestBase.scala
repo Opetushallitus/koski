@@ -2,11 +2,15 @@ package fi.oph.koski.omadataoauth2.unit
 
 import fi.oph.koski.KoskiHttpSpec
 import fi.oph.koski.henkilo.{KoskiSpecificMockOppijat, LaajatOppijaHenkilöTiedot}
+import fi.oph.koski.json.JsonSerializer
+import fi.oph.koski.koskiuser.{KoskiMockUser, MockUsers}
+import fi.oph.koski.omadataoauth2.{AccessTokenSuccessResponse, ChallengeAndVerifier}
 import org.http4s.Uri
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.should.Matchers
 
 import java.net.URLEncoder
+import java.nio.charset.StandardCharsets
 import java.util.Base64
 
 class OmaDataOAuth2TestBase extends AnyFreeSpec with KoskiHttpSpec with Matchers {
@@ -45,6 +49,9 @@ class OmaDataOAuth2TestBase extends AnyFreeSpec with KoskiHttpSpec with Matchers
 
   val validAuthorizeParamsString = createParamsString(validAuthorizeParams)
 
+  val validKansalainen = KoskiSpecificMockOppijat.eero
+  val validPalvelukäyttäjä = MockUsers.omadataOAuth2Palvelukäyttäjä
+
   def validParamsIlman(paramName: String): Seq[(String, String)] = {
     (validAuthorizeParams.toMap - paramName).toSeq
   }
@@ -74,6 +81,21 @@ class OmaDataOAuth2TestBase extends AnyFreeSpec with KoskiHttpSpec with Matchers
     val actualParams = Uri.unsafeFromString("/?" + actualParamsString).params
 
     actualParams.get(key)
+  }
+
+  def createAuthorizationAndToken(kansalainen: LaajatOppijaHenkilöTiedot, pkce: ChallengeAndVerifier): String = {
+    val code = createAuthorization(kansalainen, pkce.challenge)
+
+    val token = postAuthorizationServerClientIdFromUsername(
+      validPalvelukäyttäjä,
+      code = Some(code),
+      codeVerifier = Some(pkce.verifier),
+      redirectUri = Some(validRedirectUri)
+    ) {
+      verifyResponseStatusOk()
+      JsonSerializer.parse[AccessTokenSuccessResponse](response.body).access_token
+    }
+    token
   }
 
   // Huom, tämä ohittaa yksikkötestejä varten "tuotantologiikan" ja lukee code:n suoraan URI:sta, eikä redirect_uri:n kautta
@@ -107,5 +129,40 @@ class OmaDataOAuth2TestBase extends AnyFreeSpec with KoskiHttpSpec with Matchers
       code.isDefined should be(true)
       code.get
     }
+  }
+
+  def postAuthorizationServerClientIdFromUsername[T](
+    user: KoskiMockUser,
+    grantType: Option[String] = Some("authorization_code"),
+    code: Option[String],
+    codeVerifier: Option[String],
+    redirectUri: Option[String] = None)(f: => T): T =
+  {
+    val clientId = Some(user.username)
+    postAuthorizationServer(user, clientId, grantType, code, codeVerifier, redirectUri)(f)
+  }
+
+  def postAuthorizationServer[T](
+    user: KoskiMockUser,
+    clientId: Option[String],
+    grantType: Option[String] = Some("authorization_code"),
+    code: Option[String],
+    codeVerifier: Option[String],
+    redirectUri: Option[String] = None)(f: => T): T =
+  {
+    post(uri = "api/omadata-oauth2/authorization-server",
+      body = createFormParametersBody(grantType, code, codeVerifier, clientId, redirectUri),
+      headers = authHeaders(user) ++ formContent)(f)
+  }
+
+  def createFormParametersBody(grantType: Option[String], code: Option[String], codeVerifier: Option[String], clientId: Option[String], redirectUri: Option[String]): Array[Byte] = {
+    val params =
+      grantType.toSeq.map(v => ("grant_type", v)) ++
+        code.toSeq.map(v => ("code", v)) ++
+        codeVerifier.toSeq.map(v => ("code_verifier", v)) ++
+        clientId.toSeq.map(v => ("client_id", v)) ++
+        redirectUri.toSeq.map(v => ("redirect_uri", v))
+
+    createParamsString(params).getBytes(StandardCharsets.UTF_8)
   }
 }
