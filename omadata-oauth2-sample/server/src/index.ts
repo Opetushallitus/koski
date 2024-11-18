@@ -3,7 +3,6 @@ import path from 'node:path'
 import helmet from 'helmet'
 import RateLimit from 'express-rate-limit'
 import openidApiTest from './apiroutes/openid-api-test.js'
-import frontPageDummy from './apiroutes/front-page-dummy.js'
 import healthCheck from './apiroutes/healthcheck.js'
 import bodyParser from 'body-parser'
 import { fileURLToPath } from 'url'
@@ -33,8 +32,6 @@ const staticFilesPath = path.resolve(
 app.use(express.static(staticFilesPath))
 
 app.use('/api/openid-api-test', openidApiTest)
-
-app.use('/api/front-page-dummy', frontPageDummy)
 
 app.use('/api/healthcheck', healthCheck)
 

@@ -19,7 +19,7 @@ trait OmaDataOAuth2Support extends ScalatraServlet with OmaDataOAuth2Config {
       clientId <- validateParamExistsOnce("client_id", OmaDataOAuth2ErrorType.invalid_client_data)
       redirectUri <- validateParamExistsOnce("redirect_uri", OmaDataOAuth2ErrorType.invalid_client_data)
       state <- validateParamExistsAtMostOnce("state", OmaDataOAuth2ErrorType.invalid_client_data)
-      _ <- validateClientIdRekisteröity(clientId)
+      _ <- validateClientIdRekisteröity(clientId, OmaDataOAuth2ErrorType.invalid_client_data)
       _ <- validateRedirectUriRekisteröityAnnetulleClientIdlle(clientId, redirectUri)
     } yield ClientInfo(clientId, redirectUri, state)
   }
@@ -83,12 +83,12 @@ trait OmaDataOAuth2Support extends ScalatraServlet with OmaDataOAuth2Config {
     }
   }
 
-  protected def validateClientIdRekisteröity(clientId: String): Either[OmaDataOAuth2Error, String] = {
+  protected def validateClientIdRekisteröity(clientId: String, errorType: OmaDataOAuth2ErrorType): Either[OmaDataOAuth2Error, String] = {
     // TODO: TOR-2210: esim. koodisto voisi olla parempi source kuin konffitiedosto clientien tiedoille
     if (hasConfigForClient(clientId)) {
       Right(clientId)
     } else {
-      Left(OmaDataOAuth2Error(OmaDataOAuth2ErrorType.invalid_client_data, s"unregistered client ${clientId}"))
+      Left(OmaDataOAuth2Error(errorType, s"unregistered client ${clientId}"))
     }
   }
 
@@ -132,41 +132,10 @@ trait OmaDataOAuth2Support extends ScalatraServlet with OmaDataOAuth2Config {
   private def validateScopeAtLeastOneHenkilotiedotScope(scope: String): Either[OmaDataOAuth2Error, String] = {
     val requestedScopes = scope.toUpperCase.split(" ").toSet
 
-    val henkilötiedotScopes = requestedScopes.filter(_.startsWith("HENKILOTIEDOT_")).toSeq.sorted
-
     if (requestedScopes.exists(_.startsWith("HENKILOTIEDOT_"))) {
       Right(scope)
     } else {
       Left(OmaDataOAuth2Error(OmaDataOAuth2ErrorType.invalid_scope, s"scope=${scope} is missing a required HENKILOTIEDOT_ scope"))
-    }
-  }
-
-  // TODO: TOR-2210 Tätä pitää kutsua vasta authorization/resource endpointissa, koska muuten käyttäjätunnuksen oikeudet
-  // paljastuvat turhan julkisessa rajapinnassa.
-  protected def validateScopeAllowedForUser(client_id: String, scope: String): Either[OmaDataOAuth2Error, String] = {
-    val directoryUser = application.directoryClient.findUser(client_id)
-
-    val käyttöoikeudet = directoryUser
-      .toSeq
-      .flatMap(_.käyttöoikeudet)
-      .collect {
-        case ko: KäyttöoikeusOrg => ko
-      }
-
-    val allowedScopes: Set[String] =
-      käyttöoikeudet
-        .flatMap(_.organisaatiokohtaisetPalveluroolit
-          .filter(_.palveluName == "KOSKI")
-          .flatMap(_.toOmaDataOAuth2Scope)
-        )
-        .toSet
-    val requestedScopes = scope.toUpperCase.split(" ")
-    val tooWideScopes = requestedScopes.filterNot(allowedScopes.contains)
-
-    if (tooWideScopes.isEmpty) {
-      Right(scope)
-    } else {
-      Left(OmaDataOAuth2Error(OmaDataOAuth2ErrorType.invalid_scope, s"scope=${tooWideScopes.mkString(" ")} exceeds the rights granted to the client ${client_id}"))
     }
   }
 
@@ -253,6 +222,7 @@ object OmaDataOAuth2ErrorType {
   final case object invalid_request extends OmaDataOAuth2ErrorType("invalid_request")
   final case object invalid_scope extends OmaDataOAuth2ErrorType("invalid_scope")
   final case object server_error extends OmaDataOAuth2ErrorType("server_error")
+  final case object invalid_client extends OmaDataOAuth2ErrorType("invalid_client")
 }
 
 case class ClientInfo(

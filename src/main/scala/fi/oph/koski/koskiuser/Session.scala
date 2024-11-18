@@ -92,7 +92,13 @@ class KoskiSpecificSession(
 
   def hasSomeOmaDataOAuth2Access: Boolean = {
     // OAuth2-käyttäjillä on organisaatiokohtaiset oikeudet tiettyihin OAuth2-scopeihin, siksi käsittely poikkeaa muista luovutuspalvelukäyttäjistä, jotka ovat viranomaisia.
-    orgKäyttöoikeudet.flatMap(_.organisaatiokohtaisetPalveluroolit).exists(p => p.palveluName == "KOSKI" && p.rooli.startsWith("OMADATAOAUTH2_"))
+    orgKäyttöoikeudet.flatMap(_.organisaatiokohtaisetPalveluroolit).exists(p => p.palveluName == "KOSKI" && p.rooli.startsWith(omadataOAuth2Prefix))
+  }
+  def omaDataOAuth2Scopes: Set[String] = {
+    orgKäyttöoikeudet.flatMap(
+      _.organisaatiokohtaisetPalveluroolit
+        .filter(_.palveluName == "KOSKI")
+        .flatMap(_.toOmaDataOAuth2Scope))
   }
   // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
   // HUOM!

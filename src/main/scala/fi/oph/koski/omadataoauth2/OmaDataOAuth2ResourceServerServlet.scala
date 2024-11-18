@@ -19,29 +19,29 @@ class OmaDataOAuth2ResourceServerServlet(implicit val application: KoskiApplicat
   //      TAI OAuth2-protokollan mukainen virheilmoitus (joka luotetaan nginx:n välittävän sellaisenaan, jos pyyntö on tänne asti tullut?)
   post("/") {
     // TODO: TOR-2210 pitäisikö tarkistaa muita headereitä kuin Bearer?
-    //
-    // TODO: TOR-2210: logitukset pois, kun aletaan käyttää oikeita salaisuuksia
-    logger.info("X-Auth header:" + request.header("X-Auth"))
     val result = request.header("X-Auth").map(_.split(" ")) match {
-      case Some(Array("Bearer", token)) if token == "dummy-access-token" =>
-        // TODO:  oikea toteutus + testit
-        Right(JsonResources.readResource(dummyResourceFilename))
-      case Some(array) =>
-        array.zipWithIndex.foreach {
-          case(x,i) => logger.info("header" + i + ":" + x)
+      case Some(Array("Bearer", token)) =>
+        application.omaDataOAuth2Service.getByAccessToken(
+          accessToken = token,
+          expectedClientId = koskiSession.user.username,
+          koskiSession = koskiSession,
+          allowedScopes = koskiSession.omaDataOAuth2Scopes
+        ) match {
+          case Left(error) =>
+            val errorResult = AccessTokenErrorResponse(error)
+            response.setStatus(errorResult.httpStatus)
+            renderObject(errorResult)
+          case Right(successResponse) =>
+            // TODO:  oikea toteutus + testit
+            response.setStatus(200)
+            renderObject(JsonResources.readResource(dummyResourceFilename))
         }
-        // TODO: TOR-2210 pitäisikö virheestä kertoa detaljeita, esim. oliko vaan expired token tms.?
-        // TODO: TOR-2210 Speksin mukainen virhesisältö, jos sellainen on resource serverille määritelty
-        Left(KoskiErrorCategory.badRequest())
       case _ =>
         // TODO: TOR-2210 pitäisikö virheestä kertoa detaljeita, esim. oliko vaan expired token tms.?
         // TODO: TOR-2210 Speksin mukainen virhesisältö, jos sellainen on resource serverille määritelty
-        Left(KoskiErrorCategory.badRequest())
+        val errorResult = AccessTokenErrorResponse(OmaDataOAuth2Error(OmaDataOAuth2ErrorType.invalid_request, s"Request missing valid token parameters"))
+        response.setStatus(errorResult.httpStatus)
+        renderObject(errorResult)
     }
-    renderEither(result)
   }
 }
-
-case class DummyResourceResponse(
-  data: String
-)
