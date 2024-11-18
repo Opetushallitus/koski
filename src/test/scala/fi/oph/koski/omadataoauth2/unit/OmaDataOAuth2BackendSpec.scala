@@ -645,9 +645,23 @@ class OmaDataOAuth2BackendSpec extends OmaDataOAuth2TestBase with DatabaseTestMe
       "palautetaan scopen mukaan" in {
         // TODO: TOR-2210
       }
+      "audit-logitetaan scopen mukaan" in {
+        // TODO: TOR-2210
+      }
     }
     "aktiiviset opinnot" - {
       "palautetaan scopen mukaan" in {
+        // TODO: TOR-2210
+      }
+      "audit-logitetaan scopen mukaan" in {
+        // TODO: TOR-2210
+      }
+    }
+    "kaikki opinnot" - {
+      "palautetaan scopen mukaan" in {
+        // TODO: TOR-2210
+      }
+      "audit-logitetaan scopen mukaan" in {
         // TODO: TOR-2210
       }
     }
