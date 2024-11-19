@@ -36,7 +36,7 @@ object ExamplesMuuKuinSäänneltyKoulutus {
       aikaleima = None,
       oppilaitos = Some(jatkuvaKoulutusOyOppilaitos),
       tila = MuunKuinSäännellynKoulutuksenTila(List(
-        OpiskeluoikeudenJakso.läsnä(LocalDate.of(2023, 1, 1)),
+        OpiskeluoikeudenJakso.läsnä(LocalDate.of(2023, 1, 2)),
         OpiskeluoikeudenJakso.suoritettu(LocalDate.of(2023, 2, 1)),
       )),
       suoritukset = List(PäätasonSuoritus.suoritusOsasuorituksilla),
