@@ -204,3 +204,7 @@ case object IBSuoritustietojenTarkistus extends RaportinTyyppi {
 case object JatkuvanOppimisenVapaanSivistystyönRaportti extends RaportinTyyppi {
   val opiskeluoikeudenTyyppi = OpiskeluoikeudenTyyppi.vapaansivistystyonkoulutus.koodiarvo
 }
+
+case object MuunKuinSäännellynKoulutuksenRaportti extends RaportinTyyppi {
+  val opiskeluoikeudenTyyppi = OpiskeluoikeudenTyyppi.muukuinsaanneltykoulutus.koodiarvo
+}

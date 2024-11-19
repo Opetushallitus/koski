@@ -224,6 +224,18 @@ const kaikkiRaportitKategorioittain = [
     ]
   },
   {
+    id: 'muks',
+    tab: 'raporttikategoria-tab-muks',
+    heading: 'raporttikategoria-heading-muks',
+    raportit: [
+      {
+        id: 'muunkuinsäännellynkoulutuksenraportti',
+        name: 'raporttikategoria-heading-muks',
+        component: MUKS
+      }
+    ]
+  },
+  {
     id: 'muut',
     tab: 'raporttikategoria-tab-muut',
     heading: 'raportti-tab-paallekkaisetopiskeluoikeudet',
@@ -1116,7 +1128,23 @@ function VSTJotpa({ stateP }) {
       title={titleText}
       shortDescription={shortDescriptionText}
       example={exampleText}
-      osasuoritusType={osasuoritusTypes.OPINNOT}
+      lang={lang}
+    />
+  )
+}
+
+function MUKS({ stateP }) {
+  const titleText = <Text name="MuksRaportti-title" />
+  const shortDescriptionText = <Text name="MuksRaportti-short-description" />
+  const exampleText = <Paragraphs name="MuksRaportti-example" />
+
+  return (
+    <AikajaksoRaportti
+      stateP={stateP}
+      apiEndpoint={'/muks'}
+      title={titleText}
+      shortDescription={shortDescriptionText}
+      example={exampleText}
       lang={lang}
     />
   )

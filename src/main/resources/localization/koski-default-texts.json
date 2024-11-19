@@ -2750,5 +2750,10 @@
   "VstJotpaRaportti-short-description": "Raportti sisältää jatkuvaan oppimiseen suunnatun (JOTPA) koulutuksen opiskeluoikeus- ja suoritustiedot tietojen oikeellisuuden tarkistamista varten valitulla aikajaksolla. Raportti pohjautuu viime yön tietoihin, eli tietojen päivitys KOSKI-tietovarantoon ei näy välittömästi raportilla.",
   "VstJotpaRaportti-example": "Jos haluat tulostaa raportin tietylle päivälle, syötä sekä aikajakson alku- että loppupäivämääräkenttään sama päivämäärä.",
   "raportti-excel-vst-jotpa-title": "VST JOTPA",
-  "raportti-excel-vst-jotpa-tiedoston-etuliite": "vst-jotpa_suoritustiedot"
+  "raportti-excel-vst-jotpa-tiedoston-etuliite": "vst-jotpa_suoritustiedot",
+  "raporttikategoria-tab-muks": "MUKS",
+  "raporttikategoria-heading-muks": "Muu kuin säännelty koulutus",
+  "MuksRaportti-title": "Muun kuin säännellyn koulutuksen raportti",
+  "MuksRaportti-short-description": "TODO: Lyhyt kuvaus MUKS-raportista",
+  "MuksRaportti-example": "TODO: MUKS-raportin ohjeita"
 }
