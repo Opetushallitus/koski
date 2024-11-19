@@ -2754,6 +2754,9 @@
   "raporttikategoria-tab-muks": "MUKS",
   "raporttikategoria-heading-muks": "Muu kuin säännelty koulutus",
   "MuksRaportti-title": "Muun kuin säännellyn koulutuksen raportti",
-  "MuksRaportti-short-description": "TODO: Lyhyt kuvaus MUKS-raportista",
-  "MuksRaportti-example": "TODO: MUKS-raportin ohjeita"
+  "MuksRaportti-short-description": "Raportti sisältää muun kuin säännellyn koulutuksen opiskeluoikeus- ja suoritustiedot tietojen oikeellisuuden tarkistamista varten valitulla aikajaksolla. Raportti pohjautuu viime yön tietoihin, eli tietojen päivitys KOSKI-tietovarantoon ei näy välittömästi raportilla.",
+  "MuksRaportti-example": "Jos haluat tulostaa raportin tietylle päivälle, syötä sekä aikajakson alku- että loppupäivämääräkenttään sama päivämäärä.",
+  "raportti-excel-muks-title": "Muu kuin säännelty koulutus",
+  "raportti-excel-must-tiedoston-etuliite": "muks_suoritustiedot",
+  "raportti-excel-kolumni-yhteislaajuusKaikkiTuntia": "Yhteislaajuus (tuntia)"
 }

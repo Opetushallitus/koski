@@ -10,6 +10,7 @@ import fi.oph.koski.raportit.esiopetus.{EsiopetuksenOppijamäärätAikajaksovirh
 import fi.oph.koski.raportit.lukio.LukioOppiaineenOppimaaranKurssikertymat.{AikuistenOppimäärä, NuortenOppimäärä}
 import fi.oph.koski.raportit.lukio._
 import fi.oph.koski.raportit.lukio.lops2021._
+import fi.oph.koski.raportit.muks.MuunKuinSaannellynKoulutuksenRaportti
 import fi.oph.koski.raportit.perusopetus.{PerusopetuksenOppijamäärätAikajaksovirheetRaportti, PerusopetuksenOppijamäärätRaportti, PerusopetuksenRaportitRepository, PerusopetuksenVuosiluokkaRaportti}
 import fi.oph.koski.raportit.tuva.{TuvaPerusopetuksenOppijamäärätAikajaksovirheetRaportti, TuvaPerusopetuksenOppijamäärätRaportti, TuvaSuoritustiedotRaportti}
 import fi.oph.koski.raportit.vst.JatkuvanOppimisenVapaanSivistystyonRaportti
@@ -393,6 +394,16 @@ class RaportitService(application: KoskiApplication) {
       sheets = JatkuvanOppimisenVapaanSivistystyonRaportti.buildRaportti(raportointiDatabase, oppilaitosOids, request.alku, request.loppu, t),
       workbookSettings = WorkbookSettings(t.get("raportti-excel-vst-jotpa-title"), Some(request.password)),
       filename = s"${t.get("raportti-excel-vst-jotpa-tiedoston-etuliite")}_${request.oppilaitosOid}_${request.alku}_${request.loppu}.xlsx",
+      downloadToken = request.downloadToken,
+    )
+  }
+
+  def muuKuinSäänneltyKoulutus(request: AikajaksoRaporttiRequest, t: LocalizationReader) = {
+    val oppilaitosOids = accessResolver.kyselyOiditOrganisaatiolle(request.oppilaitosOid)
+    OppilaitosRaporttiResponse(
+      sheets = MuunKuinSaannellynKoulutuksenRaportti.buildRaportti(raportointiDatabase, oppilaitosOids, request.alku, request.loppu, t),
+      workbookSettings = WorkbookSettings(t.get("raportti-excel-muks-title"), Some(request.password)),
+      filename = s"${t.get("raportti-excel-must-tiedoston-etuliite")}_${request.oppilaitosOid}_${request.alku}_${request.loppu}.xlsx",
       downloadToken = request.downloadToken,
     )
   }
