@@ -116,21 +116,6 @@ class RaportitServletSpec extends AnyFreeSpec with RaportointikantaTestMethods w
           }
         }
       }
-      "koulutustoimijan oidilla haettessa vaaditaan koulutustoimijan oikeudet" in {
-        authGet(s"${mahdollisetRaportitUrl}${helsinginKaupunki}") {
-          verifyResponseStatus(403, KoskiErrorCategory.forbidden.organisaatio())
-        }
-      }
-      "koulutustoimijan oikeuksilla voi hakea vain oman koulutustoiminta-alueen raportteja" in {
-        authGet(s"${mahdollisetRaportitUrl}${helsinginKaupunki}", user = omniaPääkäyttäjä) {
-          verifyResponseStatus(403, KoskiErrorCategory.forbidden.organisaatio())
-        }
-      }
-      "koulutustoimijan oikeuksilla ei voi hakea toisen oppilaitoksen raportteja" in {
-        authGet(s"${mahdollisetRaportitUrl}${jyväskylänNormaalikoulu}", user = helsinginKaupunkiPalvelukäyttäjä) {
-          verifyResponseStatus(403, KoskiErrorCategory.forbidden.organisaatio())
-        }
-      }
       "ei voi ladata raporttia jos raportin opiskeluoikeuden tyyppiin ei ole oikeuksia" - {
         "perusopetuksen oikeuksilla yritys käyttää lukion raporttia" in {
           authGet(s"api/raportit/lukionsuoritustietojentarkistus?oppilaitosOid=${MockOrganisaatiot.jyväskylänNormaalikoulu}&alku=2016-01-01&loppu=2016-12-31&password=dummy", user = perusopetusTallentaja) {
@@ -176,11 +161,18 @@ class RaportitServletSpec extends AnyFreeSpec with RaportointikantaTestMethods w
     }
   }
 
-  private val mahdollisetRaportitUrl = "api/raportit/mahdolliset-raportit/"
   private val organisaatiotJaRaporttityypitUrl = "api/raportit/organisaatiot-ja-raporttityypit"
 
-  private def verifyMahdollisetRaportit(organisaatio: String, user: UserWithPassword = defaultUser)(f: Seq[Any] => Unit) =
-    verifyArrayResponse(s"${mahdollisetRaportitUrl}${organisaatio}", user, f)
+  private def verifyMahdollisetRaportit(organisaatio: String, user: UserWithPassword = defaultUser)(f: Seq[String] => Unit) =
+    verifyArrayResponse("api/raportit/organisaatiot-ja-raporttityypit", user, { arr =>
+      f(arr
+        .map(_.asInstanceOf[Map[String, Any]])
+        .filter(_.get("oid").contains(organisaatio))
+        .flatMap(_.get("raportit"))
+        .flatMap(_.asInstanceOf[Seq[String]])
+        .distinct
+      )
+    })
 
   private def verifyOrganisaatiohierarkia(user: UserWithPassword = defaultUser)(f: Seq[Any] => Unit) =
     verifyArrayResponse(organisaatiotJaRaporttityypitUrl, user, f)

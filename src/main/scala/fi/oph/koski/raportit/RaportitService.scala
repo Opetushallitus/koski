@@ -17,6 +17,7 @@ import fi.oph.koski.schema.Organisaatio.isValidOrganisaatioOid
 import fi.oph.koski.util.Retry
 
 import java.time.LocalDateTime
+import scala.collection.immutable
 
 class RaportitService(application: KoskiApplication) {
   private val raportointiDatabase = application.raportointiDatabase

@@ -35,7 +35,7 @@ class RaportitServlet(implicit val application: KoskiApplication) extends KoskiS
     organisaatioService.kaikkiKäyttöoikeudellisetOrganisaatiot
   }
 
-  get("/organisaatiot-ja-raporttityypit") {
+    get("/organisaatiot-ja-raporttityypit") {
     raportitService.getRaportinOrganisatiotJaRaporttiTyypit(organisaatioService.kaikkiKäyttöoikeudellisetOrganisaatiot)
   }
 
