@@ -149,7 +149,7 @@ jobs:
 
       - name: Deploy using CodeDeploy
         uses: aws-actions/amazon-ecs-deploy-task-definition@v1
-        if: github.event.inputs.environment != "prod"
+        if: github.event.inputs.environment != 'prod'
         with:
           task-definition: ${{ steps.task-def.outputs.task-definition }}
           service: koski
@@ -161,7 +161,7 @@ jobs:
 
       - name: Deploy Amazon ECS task definition
         uses: aws-actions/amazon-ecs-deploy-task-definition@v1
-        if: github.event.inputs.environment == "prod"
+        if: github.event.inputs.environment != 'prod'
         with:
           task-definition: ${{ steps.task-def.outputs.task-definition }}
           service: koski
