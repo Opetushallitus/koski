@@ -364,20 +364,14 @@ jobs:
           container-name: KoskiContainer
           image: ${{ steps.login-ecr.outputs.registry }}/koski:${{ github.sha }}
 
-      - name: Get AppSpec template
-        run: |
-          aws ssm get-parameter --name /koski/appspec-template --output text --query 'Parameter.Value' > appspec.json
-
-      - name: Deploy using CodeDeploy
+      - name: Deploy Amazon ECS task definition
+        id: koski-taskdef-deploy
         uses: aws-actions/amazon-ecs-deploy-task-definition@v1
         with:
           task-definition: ${{ steps.task-def.outputs.task-definition }}
           service: koski
           cluster: koski-cluster
           wait-for-service-stability: true
-          codedeploy-appspec: appspec.json
-          codedeploy-application: koski
-          codedeploy-deployment-group: koski-deployment-group
 
       - name: Get raportointikanta-loader task definition ARN
         id: get-raportointikanta-loader-taskdef-arn
