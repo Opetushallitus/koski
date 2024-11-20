@@ -58,42 +58,9 @@ class OmaDataOAuth2Service(oauth2Repository: OmaDataOAuth2Repository, val applic
   def getByAccessToken(
     accessToken: String,
     expectedClientId: String,
-    koskiSession: KoskiSpecificSession,
     allowedScopes: Set[String]
-  ): Either[OmaDataOAuth2Error, AccessTokenSuccessResponse] = {
+  ): Either[OmaDataOAuth2Error, AccessTokenInfo] = {
     oauth2Repository.getByAccessToken(accessToken, expectedClientId, allowedScopes)
-      .flatMap(response => {
-        response.scope.split(" ").filter(_.startsWith("OPISKELUOIKEUDET_")).toSeq match {
-          case Seq("OPISKELUOIKEUDET_SUORITETUT_TUTKINNOT") =>
-            auditLogKatsominen(OAUTH2_KATSOMINEN_SUORITETUT_TUTKINNOT, expectedClientId, koskiSession, response)
-            Right(response)
-          case Seq("OPISKELUOIKEUDET_AKTIIVISET_JA_PAATTYNEET_OPINNOT") =>
-            auditLogKatsominen(OAUTH2_KATSOMINEN_AKTIIVISET_JA_PAATTYNEET_OPINNOT, expectedClientId, koskiSession, response)
-            Right(response)
-          case Seq("OPISKELUOIKEUDET_KAIKKI_TIEDOT") =>
-            auditLogKatsominen(OAUTH2_KATSOMINEN_KAIKKI_TIEDOT, expectedClientId, koskiSession, response)
-            Right(response)
-          case _ =>
-            val error =
-              OmaDataOAuth2Error(OmaDataOAuth2ErrorType.server_error, s"Internal error, unable to handle OPISKELUOIKEUDET scope defined in ${response.scope}")
-            logger.error(error.getLoggedErrorMessage)
-            Left(error)
-        }
-      })
-      .map(_.successResponse)
-  }
-
-  private def auditLogKatsominen(
-    operation: KoskiOperation.KoskiOperation,
-    expectedClientId: String,
-    koskiSession: KoskiSpecificSession,
-    response: AccessTokenInfo
-  ): Unit = {
-    AuditLog.log(KoskiAuditLogMessage(operation, koskiSession, Map(
-      oppijaHenkiloOid -> response.oppijaOid,
-      omaDataKumppani -> expectedClientId,
-      omaDataOAuth2Scope -> response.scope
-    )))
   }
 }
 

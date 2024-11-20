@@ -1,19 +1,30 @@
 package fi.oph.koski.omadataoauth2.unit
 
-import fi.oph.koski.DatabaseTestMethods
+import fi.oph.koski.api.misc.OpiskeluoikeusTestMethods
+import fi.oph.koski.{DatabaseTestMethods, schema}
 import fi.oph.koski.db.KoskiTables.OAuth2JakoKaikki
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.koskiuser.{KoskiMockUser, MockUsers}
 import fi.oph.koski.log.AuditLogTester
-import fi.oph.koski.omadataoauth2.{AccessTokenErrorResponse, AccessTokenSuccessResponse}
+import fi.oph.koski.omadataoauth2.{AccessTokenErrorResponse, AccessTokenSuccessResponse, OmaDataOAuth2AktiivisetJaPäättyneetOpiskeluoikeudet, OmaDataOAuth2KaikkiOpiskeluoikeudet, OmaDataOAuth2SuoritetutTutkinnot}
 import fi.oph.koski.omadataoauth2.OmaDataOAuth2Security.{createChallengeAndVerifier, sha256}
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
+import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
+import fi.oph.koski.schema.{AmmatillinenOpiskeluoikeus, PerusopetuksenOpiskeluoikeudenLisätiedot, PerusopetuksenOpiskeluoikeus}
+import fi.oph.koski.suoritusjako.aktiivisetjapaattyneetopinnot.{AktiivisetJaPäättyneetOpinnotMuunKuinSäännellynKoulutuksenOpiskeluoikeus, AktiivisetJaPäättyneetOpinnotVerifiers}
+import fi.oph.koski.suoritusjako.suoritetuttutkinnot.{SuoritetutTutkinnotAmmatillinenOpiskeluoikeus, SuoritetutTutkinnotVerifiers}
 
 import java.sql.Timestamp
 import java.time.Instant
 
-class OmaDataOAuth2BackendSpec extends OmaDataOAuth2TestBase with DatabaseTestMethods {
+class OmaDataOAuth2BackendSpec
+  extends OmaDataOAuth2TestBase
+    with DatabaseTestMethods
+    with OpiskeluoikeusTestMethods
+    with SuoritetutTutkinnotVerifiers
+    with AktiivisetJaPäättyneetOpinnotVerifiers
+{
   "authorization-server rajapinta" - {
     "voi kutsua, kun on käyttöoikeudet" in {
       val pkce = createChallengeAndVerifier
@@ -636,33 +647,244 @@ class OmaDataOAuth2BackendSpec extends OmaDataOAuth2TestBase with DatabaseTestMe
       }
     }
     "henkilötiedot" - {
-      "palautetaan scopen mukaan" in {
-        // TODO: TOR-2210
+      "palautetaan" - {
+        "kun vain osa scopeista mukana" in {
+          val scope = "HENKILOTIEDOT_SYNTYMAAIKA HENKILOTIEDOT_NIMI OPISKELUOIKEUDET_SUORITETUT_TUTKINNOT"
+
+          val pkce = createChallengeAndVerifier
+          val token = createAuthorizationAndToken(validKansalainen, pkce, scope, MockUsers.omadataOAuth2KaikkiOikeudetPalvelukäyttäjä)
+
+          postResourceServer(token, MockUsers.omadataOAuth2KaikkiOikeudetPalvelukäyttäjä) {
+            verifyResponseStatusOk()
+            val data = JsonSerializer.parse[OmaDataOAuth2SuoritetutTutkinnot](response.body)
+
+            data.henkilö.hetu should be(None)
+            data.henkilö.oid should be(None)
+            data.henkilö.sukunimi should be(Some(validKansalainen.sukunimi))
+            data.henkilö.etunimet should be(Some(validKansalainen.etunimet))
+            data.henkilö.kutsumanimi should be(Some(validKansalainen.kutsumanimi))
+            data.henkilö.syntymäaika should be(validKansalainen.syntymäaika)
+          }
+        }
+        "kun kaikki scopet mukana" in {
+          val scope = "HENKILOTIEDOT_SYNTYMAAIKA HENKILOTIEDOT_NIMI HENKILOTIEDOT_HETU HENKILOTIEDOT_OPPIJANUMERO OPISKELUOIKEUDET_SUORITETUT_TUTKINNOT"
+
+          val pkce = createChallengeAndVerifier
+          val token = createAuthorizationAndToken(validKansalainen, pkce, scope, MockUsers.omadataOAuth2KaikkiOikeudetPalvelukäyttäjä)
+
+          postResourceServer(token, MockUsers.omadataOAuth2KaikkiOikeudetPalvelukäyttäjä) {
+            verifyResponseStatusOk()
+            val data = JsonSerializer.parse[OmaDataOAuth2SuoritetutTutkinnot](response.body)
+
+            data.henkilö.hetu should be(validKansalainen.hetu)
+            data.henkilö.oid should be(Some(validKansalainen.oid))
+            data.henkilö.sukunimi should be(Some(validKansalainen.sukunimi))
+            data.henkilö.etunimet should be(Some(validKansalainen.etunimet))
+            data.henkilö.kutsumanimi should be(Some(validKansalainen.kutsumanimi))
+            data.henkilö.syntymäaika should be(validKansalainen.syntymäaika)
+          }
+        }
+        "kun käytetään HENKILOTIEDOT_KAIKKI_TIEDOT" in {
+          val scope = "HENKILOTIEDOT_KAIKKI_TIEDOT OPISKELUOIKEUDET_SUORITETUT_TUTKINNOT"
+
+          val pkce = createChallengeAndVerifier
+          val token = createAuthorizationAndToken(validKansalainen, pkce, scope, MockUsers.omadataOAuth2KaikkiOikeudetPalvelukäyttäjä)
+
+          postResourceServer(token, MockUsers.omadataOAuth2KaikkiOikeudetPalvelukäyttäjä) {
+            verifyResponseStatusOk()
+            val data = JsonSerializer.parse[OmaDataOAuth2SuoritetutTutkinnot](response.body)
+
+            data.henkilö.hetu should be(validKansalainen.hetu)
+            data.henkilö.oid should be(Some(validKansalainen.oid))
+            data.henkilö.sukunimi should be(Some(validKansalainen.sukunimi))
+            data.henkilö.etunimet should be(Some(validKansalainen.etunimet))
+            data.henkilö.kutsumanimi should be(Some(validKansalainen.kutsumanimi))
+            data.henkilö.syntymäaika should be(validKansalainen.syntymäaika)
+          }
+        }
+
       }
     }
 
     "suoritetut tutkinnot" - {
-      "palautetaan scopen mukaan" in {
-        // TODO: TOR-2210
+      "palautetaan" in {
+        val oppija = KoskiSpecificMockOppijat.ammattilainen
+
+        val expectedOoData = getOpiskeluoikeus(oppija.oid, schema.OpiskeluoikeudenTyyppi.ammatillinenkoulutus.koodiarvo)
+        val expectedSuoritusData = expectedOoData.suoritukset.head
+
+        val scope = "HENKILOTIEDOT_SYNTYMAAIKA HENKILOTIEDOT_NIMI OPISKELUOIKEUDET_SUORITETUT_TUTKINNOT"
+
+        val pkce = createChallengeAndVerifier
+        val token = createAuthorizationAndToken(oppija, pkce, scope, MockUsers.omadataOAuth2KaikkiOikeudetPalvelukäyttäjä)
+
+        postResourceServer(token, MockUsers.omadataOAuth2KaikkiOikeudetPalvelukäyttäjä) {
+          verifyResponseStatusOk()
+          val data = JsonSerializer.parse[OmaDataOAuth2SuoritetutTutkinnot](response.body)
+
+          data.opiskeluoikeudet should have length 1
+          data.opiskeluoikeudet.head shouldBe a[SuoritetutTutkinnotAmmatillinenOpiskeluoikeus]
+
+          val actualOo = data.opiskeluoikeudet.head
+          val actualSuoritus = actualOo.suoritukset.head
+
+          verifyOpiskeluoikeusJaSuoritus(actualOo, actualSuoritus, expectedOoData, expectedSuoritusData)
+        }
       }
-      "audit-logitetaan scopen mukaan" in {
-        // TODO: TOR-2210
+      "audit-logitetaan" in {
+        val oppija = KoskiSpecificMockOppijat.ammattilainen
+
+        val scope = "HENKILOTIEDOT_SYNTYMAAIKA HENKILOTIEDOT_NIMI OPISKELUOIKEUDET_SUORITETUT_TUTKINNOT"
+
+        val pkce = createChallengeAndVerifier
+        val token = createAuthorizationAndToken(oppija, pkce, scope, MockUsers.omadataOAuth2KaikkiOikeudetPalvelukäyttäjä)
+
+        AuditLogTester.clearMessages()
+
+        postResourceServer(token, MockUsers.omadataOAuth2KaikkiOikeudetPalvelukäyttäjä) {
+          verifyResponseStatusOk()
+
+          AuditLogTester.verifyAuditLogMessage(Map(
+            "operation" -> "OAUTH2_KATSOMINEN_SUORITETUT_TUTKINNOT",
+            "target" -> Map(
+              "oppijaHenkiloOid" -> oppija.oid,
+              "omaDataKumppani" -> MockUsers.omadataOAuth2KaikkiOikeudetPalvelukäyttäjä.username,
+              "omaDataOAuth2Scope" -> scope
+            ),
+          ))
+        }
       }
     }
     "aktiiviset opinnot" - {
-      "palautetaan scopen mukaan" in {
-        // TODO: TOR-2210
+      "palautetaan" in {
+        val oppija = KoskiSpecificMockOppijat.jotpaMuuKuinSäännelty
+
+        val expectedOoData = getOpiskeluoikeus(oppija.oid, schema.OpiskeluoikeudenTyyppi.muukuinsaanneltykoulutus.koodiarvo)
+        val expectedSuoritusData = expectedOoData.suoritukset.head
+
+        val scope = "HENKILOTIEDOT_SYNTYMAAIKA HENKILOTIEDOT_NIMI OPISKELUOIKEUDET_AKTIIVISET_JA_PAATTYNEET_OPINNOT"
+
+        val pkce = createChallengeAndVerifier
+        val token = createAuthorizationAndToken(oppija, pkce, scope, MockUsers.omadataOAuth2KaikkiOikeudetPalvelukäyttäjä)
+
+        postResourceServer(token, MockUsers.omadataOAuth2KaikkiOikeudetPalvelukäyttäjä) {
+          verifyResponseStatusOk()
+          val data = JsonSerializer.parse[OmaDataOAuth2AktiivisetJaPäättyneetOpiskeluoikeudet](response.body)
+
+          data.opiskeluoikeudet should have length 1
+          data.opiskeluoikeudet.head shouldBe a[AktiivisetJaPäättyneetOpinnotMuunKuinSäännellynKoulutuksenOpiskeluoikeus]
+
+          val actualOo = data.opiskeluoikeudet.head
+          val actualSuoritus = actualOo.suoritukset.head
+
+          verifyOpiskeluoikeusJaSuoritus(actualOo, Seq(actualSuoritus), expectedOoData, Seq(expectedSuoritusData))
+        }
       }
-      "audit-logitetaan scopen mukaan" in {
-        // TODO: TOR-2210
+      "audit-logitetaan" in {
+        val oppija = KoskiSpecificMockOppijat.jotpaMuuKuinSäännelty
+
+        val scope = "HENKILOTIEDOT_SYNTYMAAIKA HENKILOTIEDOT_NIMI OPISKELUOIKEUDET_AKTIIVISET_JA_PAATTYNEET_OPINNOT"
+
+        val pkce = createChallengeAndVerifier
+        val token = createAuthorizationAndToken(oppija, pkce, scope, MockUsers.omadataOAuth2KaikkiOikeudetPalvelukäyttäjä)
+
+        AuditLogTester.clearMessages()
+
+        postResourceServer(token, MockUsers.omadataOAuth2KaikkiOikeudetPalvelukäyttäjä) {
+          verifyResponseStatusOk()
+
+          AuditLogTester.verifyAuditLogMessage(Map(
+            "operation" -> "OAUTH2_KATSOMINEN_AKTIIVISET_JA_PAATTYNEET_OPINNOT",
+            "target" -> Map(
+              "oppijaHenkiloOid" -> oppija.oid,
+              "omaDataKumppani" -> MockUsers.omadataOAuth2KaikkiOikeudetPalvelukäyttäjä.username,
+              "omaDataOAuth2Scope" -> scope
+            ),
+          ))
+        }
       }
     }
     "kaikki opinnot" - {
-      "palautetaan scopen mukaan" in {
-        // TODO: TOR-2210
+      "palautetaan" in {
+        val oppija = KoskiSpecificMockOppijat.ammattilainen
+
+        val expectedOoData = getOpiskeluoikeudet(oppija.oid, MockUsers.viranomainen)
+          .find(_.tyyppi.koodiarvo == schema.OpiskeluoikeudenTyyppi.ammatillinenkoulutus.koodiarvo)
+          .get
+
+        val scope = "HENKILOTIEDOT_SYNTYMAAIKA HENKILOTIEDOT_NIMI OPISKELUOIKEUDET_KAIKKI_TIEDOT"
+
+        val pkce = createChallengeAndVerifier
+        val token = createAuthorizationAndToken(oppija, pkce, scope, MockUsers.omadataOAuth2KaikkiOikeudetPalvelukäyttäjä)
+
+        postResourceServer(token, MockUsers.omadataOAuth2KaikkiOikeudetPalvelukäyttäjä) {
+          verifyResponseStatusOk()
+          val data = JsonSerializer.parse[OmaDataOAuth2KaikkiOpiskeluoikeudet](response.body)
+
+          data.opiskeluoikeudet should have length 1
+          data.opiskeluoikeudet.head shouldBe a[AmmatillinenOpiskeluoikeus]
+
+          val actualOo = data.opiskeluoikeudet.head.asInstanceOf[AmmatillinenOpiskeluoikeus]
+
+          actualOo should be(expectedOoData)
+        }
       }
-      "audit-logitetaan scopen mukaan" in {
-        // TODO: TOR-2210
+
+      "Ei palauteta luottamuksellisiksi määriteltyjä kenttiä" in {
+        val oppija = KoskiSpecificMockOppijat.toimintaAlueittainOpiskelija
+
+        val expectedOoData = getOpiskeluoikeudet(oppija.oid, MockUsers.viranomainen)
+          .find(_.tyyppi.koodiarvo == schema.OpiskeluoikeudenTyyppi.perusopetus.koodiarvo)
+          .get
+
+        // Varmista, että oppijalla on luottamuksellisia kenttiä:
+        val fullOoData = getOpiskeluoikeudet(oppija.oid, MockUsers.kalle)
+          .find(_.tyyppi.koodiarvo == schema.OpiskeluoikeudenTyyppi.perusopetus.koodiarvo)
+          .get
+        expectedOoData.lisätiedot.map(_.asInstanceOf[PerusopetuksenOpiskeluoikeudenLisätiedot]).map(_.vuosiluokkiinSitoutumatonOpetus) should be(Some(false))
+        fullOoData.lisätiedot.map(_.asInstanceOf[PerusopetuksenOpiskeluoikeudenLisätiedot]).map(_.vuosiluokkiinSitoutumatonOpetus) should be(Some(true))
+
+        val scope = "HENKILOTIEDOT_SYNTYMAAIKA HENKILOTIEDOT_NIMI OPISKELUOIKEUDET_KAIKKI_TIEDOT"
+
+        val pkce = createChallengeAndVerifier
+        val token = createAuthorizationAndToken(oppija, pkce, scope, MockUsers.omadataOAuth2KaikkiOikeudetPalvelukäyttäjä)
+
+        postResourceServer(token, MockUsers.omadataOAuth2KaikkiOikeudetPalvelukäyttäjä) {
+          verifyResponseStatusOk()
+          val data = JsonSerializer.parse[OmaDataOAuth2KaikkiOpiskeluoikeudet](response.body)
+
+          data.opiskeluoikeudet should have length 1
+          data.opiskeluoikeudet.head shouldBe a[PerusopetuksenOpiskeluoikeus]
+
+          val actualOo = data.opiskeluoikeudet.head.asInstanceOf[PerusopetuksenOpiskeluoikeus]
+
+          actualOo should be(expectedOoData)
+        }
+      }
+
+      "audit-logitetaan" in {
+        val oppija = KoskiSpecificMockOppijat.ammattilainen
+
+        val scope = "HENKILOTIEDOT_SYNTYMAAIKA HENKILOTIEDOT_NIMI OPISKELUOIKEUDET_KAIKKI_TIEDOT"
+
+        val pkce = createChallengeAndVerifier
+        val token = createAuthorizationAndToken(oppija, pkce, scope, MockUsers.omadataOAuth2KaikkiOikeudetPalvelukäyttäjä)
+
+        AuditLogTester.clearMessages()
+
+        postResourceServer(token, MockUsers.omadataOAuth2KaikkiOikeudetPalvelukäyttäjä) {
+          verifyResponseStatusOk()
+
+          AuditLogTester.verifyAuditLogMessage(Map(
+            "operation" -> "OAUTH2_KATSOMINEN_KAIKKI_TIEDOT",
+            "target" -> Map(
+              "oppijaHenkiloOid" -> oppija.oid,
+              "omaDataKumppani" -> MockUsers.omadataOAuth2KaikkiOikeudetPalvelukäyttäjä.username,
+              "omaDataOAuth2Scope" -> scope
+            ),
+          ))
+
+        }
       }
     }
   }

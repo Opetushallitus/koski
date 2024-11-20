@@ -32,7 +32,7 @@ test("OAuth2 data access from KOSKI using openid-client works", async ({
 
   // Check that oppija data containing ssn is displayed
   await page.waitForURL("**/api/openid-api-test/form-post-response-cb**")
-  await expect(page.locator("html")).toContainText("210281-9988")
+  await expect(page.locator("html")).toContainText("280618-402H")
 })
 
 test("Standard error from server is displayed when user declines", async ({

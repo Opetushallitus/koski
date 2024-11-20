@@ -453,7 +453,11 @@ class KoskiOppijaFacade(
       // servletissä erikseen sitä kutsuneen käyttäjän nimissä:
       KoskiSpecificSession.systemUserTallennetutYlioppilastutkinnonOpiskeluoikeudet,
       KoskiSpecificSession.systemUser // To prevent health checks from polluting the audit log
-    ).contains(user)) {
+    ).contains(user) &&
+      // OAuth2-audit -lokitus tehdään erikseen, jotta saadaan oikealla tavalla
+      // clientId, OAuth2 scope yms. mukaan audit-log -entryyn
+      !user.user.isOauth2Katsominen
+    ) {
       val operation = if (user.user.kansalainen && user.isUsersHuollettava(oid)) {
         KANSALAINEN_HUOLTAJA_OPISKELUOIKEUS_KATSOMINEN
       } else if (user.user.kansalainen) {
@@ -526,7 +530,7 @@ class KoskiOppijaFacade(
   }
 
   private def piilotaTietojaSuoritusjaosta(oppija: Oppija)(implicit koskiSession: KoskiSpecificSession) = {
-    if (koskiSession.user.isSuoritusjakoKatsominen) {
+    if (koskiSession.user.isSuoritusjakoKatsominen || koskiSession.user.isOauth2Katsominen) {
       piilotaLukuvuosimaksutiedot(oppija)
     } else {
       oppija

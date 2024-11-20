@@ -13,6 +13,7 @@ case class AuthenticationUser(
   huollettavat: Option[HuollettavatSearchResult] = None,
 ) extends UserWithUsername with UserWithOid {
   def isSuoritusjakoKatsominen: Boolean = oid == KoskiSpecificSession.SUORITUSJAKO_KATSOMINEN_USER
+  def isOauth2Katsominen: Boolean = oid == KoskiSpecificSession.OAUTH2_KATSOMINEN_USER
   def isYtrDownloadUser: Boolean = oid == KoskiSpecificSession.KOSKI_SYSTEM_USER_TALLENNETUT_YLIOPPILASTUTKINNON_OPISKELUOIKEUDET
 }
 
