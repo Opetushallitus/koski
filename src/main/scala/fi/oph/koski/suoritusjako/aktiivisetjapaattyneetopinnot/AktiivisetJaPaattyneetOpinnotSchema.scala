@@ -1,5 +1,6 @@
 package fi.oph.koski.suoritusjako.aktiivisetjapaattyneetopinnot
 
+import fi.oph.koski.henkilo.LaajatOppijaHenkilöTiedot
 import fi.oph.koski.schema
 import fi.oph.koski.schema.annotation.{Deprecated, KoodistoUri, Representative}
 import fi.oph.koski.suoritusjako.common.Jakolinkki
@@ -33,6 +34,11 @@ object AktiivisetJaPäättyneetOpinnotSchema {
 case class AktiivisetJaPäättyneetOpinnotOppija(
   jakolinkki: Option[Jakolinkki] = None,
   henkilö: Henkilo,
+  opiskeluoikeudet: List[AktiivisetJaPäättyneetOpinnotOpiskeluoikeus]
+)
+
+case class AktiivisetJaPäättyneetOpinnotOppijaLaajatHenkilötiedot(
+  henkilö: LaajatOppijaHenkilöTiedot,
   opiskeluoikeudet: List[AktiivisetJaPäättyneetOpinnotOpiskeluoikeus]
 )
 

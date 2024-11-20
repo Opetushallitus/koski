@@ -1,5 +1,6 @@
 package fi.oph.koski.suoritusjako.suoritetuttutkinnot
 
+import fi.oph.koski.henkilo.LaajatOppijaHenkilöTiedot
 import fi.oph.koski.schema
 import fi.oph.koski.schema.annotation.{Deprecated, KoodistoUri}
 import fi.oph.koski.suoritusjako.common.Jakolinkki
@@ -25,6 +26,11 @@ object SuoritetutTutkinnotSchema {
 case class SuoritetutTutkinnotOppija(
   jakolinkki: Option[Jakolinkki] = None,
   henkilö: Henkilo,
+  opiskeluoikeudet: List[SuoritetutTutkinnotOpiskeluoikeus]
+)
+
+case class SuoritetutTutkinnotOppijaLaajatHenkilötiedot(
+  henkilö: LaajatOppijaHenkilöTiedot,
   opiskeluoikeudet: List[SuoritetutTutkinnotOpiskeluoikeus]
 )
 

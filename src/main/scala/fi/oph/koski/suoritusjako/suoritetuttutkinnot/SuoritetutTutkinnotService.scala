@@ -19,26 +19,48 @@ class SuoritetutTutkinnotService(application: KoskiApplication) extends GlobalEx
 
   def findSuoritetutTutkinnotOppija(oppijaOid: String)
     (implicit koskiSession: KoskiSpecificSession): Either[HttpStatus, SuoritetutTutkinnotOppija] = {
-
-    val suoritetutTutkinnotOppija = opiskeluoikeusFacade.haeOpiskeluoikeudet(oppijaOid, SuoritetutTutkinnotSchema.schemassaTuetutOpiskeluoikeustyypit)
-      .map(teePalautettavaSuoritetutTutkinnotOppija)
-
-    suoritetutTutkinnotOppija
-      .foreach(sto => sto.opiskeluoikeudet
-        .collect({case oo: SuoritetutTutkinnotKoskeenTallennettavaOpiskeluoikeus => oo})
-        .foreach(
-          _.oid.map(application.oppijaFacade.merkitseSuoritusjakoTehdyksiIlmanKäyttöoikeudenTarkastusta)
-        )
+    findSuoritetutTutkinnotOppijaLaajatHenkilötiedot(
+      oppijaOid,
+      merkitseSuoritusjakoTehdyksi = true
+    ).map(oppijaLaajatTiedot => {
+      SuoritetutTutkinnotOppija(
+        henkilö = Henkilo.fromOppijaHenkilö(oppijaLaajatTiedot.henkilö),
+        opiskeluoikeudet = oppijaLaajatTiedot.opiskeluoikeudet
       )
+    })
+  }
+
+  def findSuoritetutTutkinnotOppijaLaajatHenkilötiedot(oppijaOid: String, merkitseSuoritusjakoTehdyksi: Boolean = true)
+    (implicit koskiSession: KoskiSpecificSession): Either[HttpStatus, SuoritetutTutkinnotOppijaLaajatHenkilötiedot] = {
+
+    val oppija: Either[HttpStatus, RawOppija[SuoritetutTutkinnotOpiskeluoikeus]] = findRawSuoritetutTutkinnotOppija(oppijaOid)
+
+    val suoritetutTutkinnotOppija = oppija.map(teePalautettavaSuoritetutTutkinnotOppijaLaajatHenkilötiedot)
+
+    if (merkitseSuoritusjakoTehdyksi) {
+      suoritetutTutkinnotOppija.foreach(oppija =>
+        oppija.opiskeluoikeudet
+          .collect({ case oo: SuoritetutTutkinnotKoskeenTallennettavaOpiskeluoikeus => oo })
+          .foreach(
+            _.oid.map(application.oppijaFacade.merkitseSuoritusjakoTehdyksiIlmanKäyttöoikeudenTarkastusta)
+          )
+      )
+    }
 
     suoritetutTutkinnotOppija
   }
 
-  private def teePalautettavaSuoritetutTutkinnotOppija(
+  private def findRawSuoritetutTutkinnotOppija(oppijaOid: String)(implicit koskiSession: KoskiSpecificSession): Either[HttpStatus, RawOppija[SuoritetutTutkinnotOpiskeluoikeus]] = {
+    val oppija: Either[HttpStatus, RawOppija[SuoritetutTutkinnotOpiskeluoikeus]] =
+      opiskeluoikeusFacade.haeOpiskeluoikeudet(oppijaOid, SuoritetutTutkinnotSchema.schemassaTuetutOpiskeluoikeustyypit)
+    oppija
+  }
+
+  private def teePalautettavaSuoritetutTutkinnotOppijaLaajatHenkilötiedot(
     rawOppija: RawOppija[SuoritetutTutkinnotOpiskeluoikeus]
-  ): SuoritetutTutkinnotOppija = {
-    SuoritetutTutkinnotOppija(
-      henkilö = Henkilo.fromOppijaHenkilö(rawOppija.henkilö),
+  ): SuoritetutTutkinnotOppijaLaajatHenkilötiedot = {
+    SuoritetutTutkinnotOppijaLaajatHenkilötiedot(
+      henkilö = rawOppija.henkilö,
       opiskeluoikeudet = suodataPalautettavat(rawOppija.opiskeluoikeudet).toList
     )
   }

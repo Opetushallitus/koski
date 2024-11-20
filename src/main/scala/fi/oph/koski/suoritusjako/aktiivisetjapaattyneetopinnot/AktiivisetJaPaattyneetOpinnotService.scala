@@ -17,25 +17,47 @@ class AktiivisetJaPäättyneetOpinnotService(application: KoskiApplication) exte
 
   def findOppija(oppijaOid: String)
     (implicit koskiSession: KoskiSpecificSession): Either[HttpStatus, AktiivisetJaPäättyneetOpinnotOppija] = {
-
-    val aktiivisetOpinnotOppija = opiskeluoikeusFacade.haeOpiskeluoikeudet(oppijaOid, AktiivisetJaPäättyneetOpinnotSchema.schemassaTuetutOpiskeluoikeustyypit)
-      .map(teePalautettavaAktiivisetJaPäättyneetOpinnotOppija)
-
-    aktiivisetOpinnotOppija.foreach(
-      _.opiskeluoikeudet.collect {
-        case oo: AktiivisetJaPäättyneetOpinnotKoskeenTallennettavaOpiskeluoikeus => oo
-      }
-      .foreach(_.oid.foreach(application.oppijaFacade.merkitseSuoritusjakoTehdyksiIlmanKäyttöoikeudenTarkastusta))
-    )
-
-    aktiivisetOpinnotOppija
+    findOppijaLaajatHenkilötiedot(
+      oppijaOid,
+      merkitseSuoritusjakoTehdyksi = true
+    ).map(oppijaLaajatTiedot => {
+      AktiivisetJaPäättyneetOpinnotOppija(
+        henkilö = Henkilo.fromOppijaHenkilö(oppijaLaajatTiedot.henkilö),
+        opiskeluoikeudet = oppijaLaajatTiedot.opiskeluoikeudet
+      )
+    })
   }
 
-  private def teePalautettavaAktiivisetJaPäättyneetOpinnotOppija(
+  def findOppijaLaajatHenkilötiedot(oppijaOid: String, merkitseSuoritusjakoTehdyksi: Boolean = true)
+    (implicit koskiSession: KoskiSpecificSession): Either[HttpStatus, AktiivisetJaPäättyneetOpinnotOppijaLaajatHenkilötiedot] = {
+
+    val oppija: Either[HttpStatus, RawOppija[AktiivisetJaPäättyneetOpinnotOpiskeluoikeus]] = findRawAktiivisetJaPäättyneetOpinnotOppija(oppijaOid)
+
+    val aktiivisetJaPäättyneetOpinnotTutkinnotOppija = oppija.map(teePalautettavaAktiivisetJaPäättyneetOpinnotOppijaLaajatHenkilötiedot)
+
+    if (merkitseSuoritusjakoTehdyksi) {
+      aktiivisetJaPäättyneetOpinnotTutkinnotOppija.foreach(oppija =>
+        oppija.opiskeluoikeudet.collect {
+          case oo: AktiivisetJaPäättyneetOpinnotKoskeenTallennettavaOpiskeluoikeus => oo
+        }
+          .foreach(_.oid.foreach(application.oppijaFacade.merkitseSuoritusjakoTehdyksiIlmanKäyttöoikeudenTarkastusta))
+      )
+    }
+
+    aktiivisetJaPäättyneetOpinnotTutkinnotOppija
+  }
+
+  private def findRawAktiivisetJaPäättyneetOpinnotOppija(oppijaOid: String)(implicit koskiSession: KoskiSpecificSession): Either[HttpStatus, RawOppija[AktiivisetJaPäättyneetOpinnotOpiskeluoikeus]] = {
+    val oppija: Either[HttpStatus, RawOppija[AktiivisetJaPäättyneetOpinnotOpiskeluoikeus]] =
+      opiskeluoikeusFacade.haeOpiskeluoikeudet(oppijaOid, AktiivisetJaPäättyneetOpinnotSchema.schemassaTuetutOpiskeluoikeustyypit)
+    oppija
+  }
+
+  private def teePalautettavaAktiivisetJaPäättyneetOpinnotOppijaLaajatHenkilötiedot(
     rawOppija: RawOppija[AktiivisetJaPäättyneetOpinnotOpiskeluoikeus]
-  ): AktiivisetJaPäättyneetOpinnotOppija = {
-    AktiivisetJaPäättyneetOpinnotOppija(
-      henkilö = Henkilo.fromOppijaHenkilö(rawOppija.henkilö),
+  ): AktiivisetJaPäättyneetOpinnotOppijaLaajatHenkilötiedot = {
+    AktiivisetJaPäättyneetOpinnotOppijaLaajatHenkilötiedot(
+      henkilö = rawOppija.henkilö,
       opiskeluoikeudet = suodataPalautettavat(rawOppija.opiskeluoikeudet).toList
     )
   }
