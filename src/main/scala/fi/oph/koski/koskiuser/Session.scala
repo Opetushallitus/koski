@@ -169,13 +169,9 @@ class KoskiSpecificSession(
   }
 
   def huollettavat: Either[HttpStatus, List[Huollettava]] = {
-    if (user.isSuoritusjakoKatsominen) {
-      Right(Nil)
-    } else {
-      user.huollettavat.collect {
-        case haku: HuollettavienHakuOnnistui => Right(haku.huollettavat)
-      }.getOrElse(Left(KoskiErrorCategory.unavailable.huollettavat()))
-    }
+    user.huollettavat.collect {
+      case haku: HuollettavienHakuOnnistui => Right(haku.huollettavat)
+    }.getOrElse(Left(KoskiErrorCategory.unavailable.huollettavat()))
   }
 
   def isUsersHuollettava(oid: String): Boolean = huollettavat.exists(_.exists(huollettava => huollettava.oid.contains(oid)))
