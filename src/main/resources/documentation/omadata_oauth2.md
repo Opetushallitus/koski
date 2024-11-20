@@ -119,6 +119,10 @@ Toistaiseksi **OPISKELUOIKEUDET_**-scopeja ei voi käyttää kuin yhtä kerralla
   <dd>
     Palautettavassa json-objektissa on henkilö.syntymäaika, muodossa YYYY-MM-DD
   </dd>
+  <dt>HENKILOTIEDOT_OPPIJANUMERO</dt>
+  <dd>
+    Palautettavassa json-objektissa on henkilö.oid, joka sisältää oppijanumeron
+  </dd>
   <dt>HENKILOTIEDOT_KAIKKI_TIEDOT</dt>
   <dd>
     Palautettavassa json-objektissa on kaikki em. henkilötiedot.
