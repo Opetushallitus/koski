@@ -168,6 +168,7 @@ class SuoritusjakoAPISpec extends AnyFreeSpec with SuoritusjakoTestMethods with 
       }
 
       "onnistuu post-requestilla ja tuottaa auditlog-merkinnän" in {
+        AuditLogTester.clearMessages()
         postSuoritusjakoPublicAPI(secrets("taiteen perusopetus")) {
           verifyResponseStatusOk()
           AuditLogTester.verifyAuditLogMessage(Map("operation" -> "KANSALAINEN_SUORITUSJAKO_KATSOMINEN"))
@@ -175,6 +176,7 @@ class SuoritusjakoAPISpec extends AnyFreeSpec with SuoritusjakoTestMethods with 
       }
 
       "onnistuu post-requestilla suoritetut tutkinnot, sisältää viimeisen voimassaolopäivän ja tuottaa auditlog-merkinnän" in {
+        AuditLogTester.clearMessages()
         postSuoritetutTutkinnotPublicAPI(secrets("suoritetut tutkinnot")) {
           verifyResponseStatusOk()
 
@@ -182,12 +184,12 @@ class SuoritusjakoAPISpec extends AnyFreeSpec with SuoritusjakoTestMethods with 
           implicit val context: ExtractionContext = strictDeserialization
           val oppija = SchemaValidatingExtractor.extract[SuoritetutTutkinnotOppija](bodyString).right.get
           oppija.jakolinkki should be(Some(Jakolinkki(LocalDate.now.plusMonths(6))))
-
           AuditLogTester.verifyAuditLogMessage(Map("operation" -> "KANSALAINEN_SUORITUSJAKO_KATSOMINEN_SUORITETUT_TUTKINNOT"))
         }
       }
 
       "onnistuu post-requestilla aktiiviset ja päättyneet opinnot, sisältää viimeisen voimassaolopäivän ja tuottaa auditlog-merkinnän" in {
+        AuditLogTester.clearMessages()
         postAktiivisetJaPäättyneetOpinnotPublicAPI(secrets("aktiiviset ja päättyneet opinnot")) {
           verifyResponseStatusOk()
 
