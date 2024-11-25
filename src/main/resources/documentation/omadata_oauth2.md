@@ -50,7 +50,7 @@ OAuth2-rajapinnassa on käytössä:
   <dt>(7) Toive suostumuksen voimassaoloajasta</dt>
   <dd>
     Aika sekunteina.
-    <br/>Tämä riippuu kumppanin käyttötapauksesta: esim. tarvitaanko kansalaisen tiedot vain yhden kerran, jolloin lyhyt voimassaoloaika riittää, vai tarvitseeko tietoihin päästä käsiksi pidemmän aikaa ilman, 
+    <br/>Tämä riippuu kumppanin käyttötapauksesta: esim. tarvitaanko kansalaisen tiedot vain yhden kerran, jolloin lyhyt voimassaoloaika riittää, vai tarvitseeko tietoihin päästä käsiksi pidemmän aikaa ilman,
     että kansalaiselta tarvitsee pyytää suostumusta uudestaan.
   </dd>
 </dl>
@@ -70,7 +70,7 @@ Rajapinnan kutsumista varten kumppanin toteuttama palvelu tarvitsee seuraavat ti
   <dd>Access token endpoint palauttaa aina Bearer-tokeneita.</dd>
 
   <dt>Authorization code:n ja access token:in voimassaoloaika</dt>
-  <dd>Näiden käsittely ja määrittely on vielä työn alla. 
+  <dd>Näiden käsittely ja määrittely on vielä työn alla.
     <br/>Todennäköisimmin ensimmäisessä versiossa authorization code:sta tehdään lyhytaikainen ja kertakäyttöinen ja access tokenista pidempiaikainen, minkä ajan voi määritellä kullekin clientille erikseen, eikä erillisiä refresh token:eita aluksi tueta.
   </dd>
 
@@ -95,17 +95,18 @@ Toistaiseksi **OPISKELUOIKEUDET_**-scopeja ei voi käyttää kuin yhtä kerralla
 <dl>
   <dt>OPISKELUOIKEUDET_SUORITETUT_TUTKINNOT</dt>
   <dd>
-    opiskeluoikeudet-taulukossa palautetaan oppijan suoritetut tutkinnot. Skeema: <a href="{{var:virkailijaBaseUrl}}/json-schema-viewer/?schema=suoritetut-tutkinnot-oppija-schema.json">{{var:virkailijaBaseUrl}}/json-schema-viewer/?schema=suoritetut-tutkinnot-oppija-schema.json</a>
+    opiskeluoikeudet-taulukossa palautetaan oppijan suoritetut tutkinnot. Skeema: <a href="{{var:virkailijaBaseUrl}}/json-schema-viewer/?schema=omadata-oauth2-suoritetut-tutkinnot-oppija-schema.json">{{var:virkailijaBaseUrl}}/json-schema-viewer/?schema=omadata-oauth2-suoritetut-tutkinnot-oppija-schema.json</a>
     Lisätietoja, ks. <a href="https://wiki.eduuni.fi/pages/viewpage.action?pageId=371305841">https://wiki.eduuni.fi/pages/viewpage.action?pageId=371305841</a>.
   </dd>
   <dt>OPISKELUOIKEUDET_AKTIIVISET_JA_PAATTYNEET_OPINNOT</dt>
   <dd>
-    opiskeluoikeudet-taulukossa palautetaan oppijan aktiiviset ja päättyneet opinnot. Skeema: <a href="{{var:virkailijaBaseUrl}}/json-schema-viewer/?schema=aktiiviset-ja-paattyneet-opinnot-oppija-schema.json">{{var:virkailijaBaseUrl}}/json-schema-viewer/?schema=aktiiviset-ja-paattyneet-opinnot-oppija-schema.json</a>
+    opiskeluoikeudet-taulukossa palautetaan oppijan aktiiviset ja päättyneet opinnot. Skeema: <a href="{{var:virkailijaBaseUrl}}/json-schema-viewer/?schema=omadata-oauth2-aktiiviset-ja-paattyneet-opinnot-oppija-schema.json">{{var:virkailijaBaseUrl}}/json-schema-viewer/?schema=omadata-oauth2-aktiiviset-ja-paattyneet-opinnot-oppija-schema.json</a>
     Lisätietoja, ks. <a href="https://wiki.eduuni.fi/pages/viewpage.action?pageId=371305841">https://wiki.eduuni.fi/pages/viewpage.action?pageId=371305841</a>.
   </dd>
   <dt>OPISKELUOIKEUDET_KAIKKI_TIEDOT</dt>
   <dd>
-    opiskeluoikeudet-taulukossa palautetaan kaikki oppijan opiskeluoikeustiedot, skeema: <a href="{{var:virkailijaBaseUrl}}/json-schema-viewer#koski-oppija-schema.json">{{var:virkailijaBaseUrl}}/json-schema-viewer#koski-oppija-schema.json</a>
+    opiskeluoikeudet-taulukossa palautetaan kaikki oppijan opiskeluoikeustiedot, mutta ilman luottamuksellisiksi määriteltyjä tietoja. Skeema: <a href="{{var:virkailijaBaseUrl}}/json-schema-viewer/?schema=omadata-oauth2-kaikki-tiedot-oppija-schema.json">{{var:virkailijaBaseUrl}}/json-schema-viewer/?schema=omadata-oauth2-kaikki-tiedot-oppija-schema.json</a>.
+    Luottamukselliseksi määritellyt tiedot on merkitty tekstimuotoiseen skeemaan, ks. <a href="{{var:virkailijaBaseUrl}}/dokumentaatio/koski-oppija-schema.html">{{var:virkailijaBaseUrl}}/dokumentaatio/koski-oppija-schema.html</a>
   </dd>
   <dt>HENKILOTIEDOT_HETU</dt>
   <dd>

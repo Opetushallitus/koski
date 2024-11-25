@@ -11,7 +11,10 @@ import fi.oph.koski.schema.{Opiskeluoikeus, Oppija, TäydellisetHenkilötiedot}
 import fi.oph.koski.servlet.{KoskiSpecificApiServlet, NoCache}
 import fi.oph.koski.suoritusjako.aktiivisetjapaattyneetopinnot.AktiivisetJaPäättyneetOpinnotOpiskeluoikeus
 import fi.oph.koski.suoritusjako.suoritetuttutkinnot.SuoritetutTutkinnotOpiskeluoikeus
+import fi.oph.scalaschema.{ClassSchema, SchemaToJson}
+import org.json4s.JValue
 import org.scalatra.ContentEncodingSupport
+import fi.oph.koski.schema
 
 import scala.util.chaining._
 import java.time.LocalDate
@@ -275,15 +278,31 @@ case class OmaDataOAuth2Henkilötiedot(
   syntymäaika: Option[LocalDate] = None
 )
 
+
+object OmaDataOAuth2KaikkiOpiskeluoikeudet {
+  lazy val schemaJson: JValue =
+    SchemaToJson.toJsonSchema(schema.KoskiSchema.createSchema(classOf[OmaDataOAuth2KaikkiOpiskeluoikeudet]).asInstanceOf[ClassSchema])
+}
+
 case class OmaDataOAuth2KaikkiOpiskeluoikeudet(
   henkilö: OmaDataOAuth2Henkilötiedot,
   opiskeluoikeudet: List[Opiskeluoikeus]
 )
 
+object OmaDataOAuth2SuoritetutTutkinnot {
+  lazy val schemaJson: JValue =
+    SchemaToJson.toJsonSchema(schema.KoskiSchema.createSchema(classOf[OmaDataOAuth2SuoritetutTutkinnot]).asInstanceOf[ClassSchema])
+}
+
 case class OmaDataOAuth2SuoritetutTutkinnot(
   henkilö: OmaDataOAuth2Henkilötiedot,
   opiskeluoikeudet: List[SuoritetutTutkinnotOpiskeluoikeus]
 )
+
+object OmaDataOAuth2AktiivisetJaPäättyneetOpiskeluoikeudet {
+  lazy val schemaJson: JValue =
+    SchemaToJson.toJsonSchema(schema.KoskiSchema.createSchema(classOf[OmaDataOAuth2AktiivisetJaPäättyneetOpiskeluoikeudet]).asInstanceOf[ClassSchema])
+}
 
 case class OmaDataOAuth2AktiivisetJaPäättyneetOpiskeluoikeudet(
   henkilö: OmaDataOAuth2Henkilötiedot,
