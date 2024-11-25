@@ -1,13 +1,13 @@
 package fi.oph.koski.huoltaja
 
 import com.typesafe.config.Config
-import fi.oph.koski.henkilo.KoskiSpecificMockOppijat.{eskari, faija, faijaFeilaa, turvakielto, ylioppilasLukiolainen}
+import fi.oph.koski.config.Environment
+import fi.oph.koski.henkilo.KoskiSpecificMockOppijat._
 import fi.oph.koski.henkilo.LaajatOppijaHenkilöTiedot
-import fi.oph.koski.http.Http._
+import fi.oph.koski.http.Http.{UriInterpolator, runIO}
 import fi.oph.koski.http._
 import fi.oph.koski.log.Logging
 import fi.oph.koski.valpas.opiskeluoikeusfixture.ValpasMockHuollettavatRepository
-
 
 trait HuollettavatRepository {
   def getHuollettavat(huoltajaHetu: String): Either[HttpStatus, List[VtjHuollettavaHenkilö]]
@@ -15,12 +15,14 @@ trait HuollettavatRepository {
 
 object HuollettavatRepository {
   def apply(config: Config): HuollettavatRepository = {
-    config.getString("opintopolku.virkailija.url") match {
-      case "mock" =>
-        new MockHuollettavatRepository
-      case url =>
-        val http = VirkailijaHttpClient(ServiceConfig.apply(config, "opintopolku.virkailija"), "/vtj-service", true)
-        new RemoteHuollettavatRepository(http)
+    if (Environment.isProdEnvironment(config)) {
+      val http = VirkailijaHttpClient(ServiceConfig.apply(config, "opintopolku.virkailija"), "/vtj-service", true)
+      new RemoteHuollettavatRepository(http)
+    } else if (Environment.isMockEnvironment(config) || config.getString("vtj.serviceUrl") == "mock") {
+      new MockHuollettavatRepository
+    } else {
+      val vtjClient = VtjClient(config)
+      new RemoteHuollettavatRepositoryVTJ(vtjClient)
     }
   }
 }
@@ -29,7 +31,7 @@ class RemoteHuollettavatRepository(val http: Http) extends HuollettavatRepositor
   def getHuollettavat(huoltajanHetu: String): Either[HttpStatus, List[VtjHuollettavaHenkilö]] = {
     runIO(
       http.get(uri"/vtj-service/resources/vtj/$huoltajanHetu")(Http
-        .parseJson[VtjHuoltajaHenkilöResponse])
+          .parseJson[VtjHuoltajaHenkilöResponse])
         .map(x => Right(x.huollettavat))
         .handleError {
           case e: Exception =>
@@ -37,6 +39,20 @@ class RemoteHuollettavatRepository(val http: Http) extends HuollettavatRepositor
             Left(KoskiErrorCategory.unavailable.huollettavat())
         }
     )
+  }
+}
+
+class RemoteHuollettavatRepositoryVTJ(val vtjClient: VtjClient) extends HuollettavatRepository with Logging {
+  def getHuollettavat(huoltajanHetu: String): Either[HttpStatus, List[VtjHuollettavaHenkilö]] = {
+    val response = vtjClient.getVtjResponse(huoltajanHetu, loppukayttaja = huoltajanHetu)
+    val paluukoodi = VtjParser.parsePaluukoodiFromVtjResponse(response)
+    paluukoodi.koodi match {
+      case "0000" | "0018" => Right(VtjParser.parseHuollettavatFromVtjResponse(response))
+      case "0001" | "0006" => Left(KoskiErrorCategory.unavailable.huollettavat())
+      case _ =>
+        logger.error("Tuntematon paluukoodi VTJ vastauksessa: " + response.toString())
+        Left(KoskiErrorCategory.unavailable.huollettavat())
+    }
   }
 }
 
@@ -63,7 +79,6 @@ class MockHuollettavatRepository extends HuollettavatRepository {
   }
 }
 
-case class VtjHuoltajaHenkilöResponse(huollettavat: List[VtjHuollettavaHenkilö])
 case class VtjHuollettavaHenkilö(etunimet: String, sukunimi: String, hetu: String)
 
 object VtjHuollettavaHenkilö {
