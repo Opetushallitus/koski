@@ -158,6 +158,7 @@ object KoskiErrorCategory {
         val oppiaineitaEiSallita = subcategory("oppiaineitaEiSallita", "9.vuosiluokan suoritukseen ei voi syöttää oppiaineita, kun sillä on vahvistus, eikä oppilas jää luokalle")
         val tilaMuuttunutLopullisenTilanJälkeen = subcategory("tilaMuuttunutLopullisenTilanJälkeen", "Opiskeluoikeuden tilojen valmistunut, eronnut jälkeen ei voi esiintyä muita tiloja")
         val montaPäättävääTilaa = subcategory("montaPäättävääTilaa", "Opiskeluoikeudella voi olla vain yksi opiskeluoikeuden päättävä tila")
+        val eiPäättävääTilaa = subcategory("eiPäättävääTilaa", "Opiskeluoikeudella pitää olla päättävä tila")
         val alkamispäiväPuuttuu = subcategory("alkamispäiväPuuttuu", "Suoritukselle ei ole merkitty alkamispäivää")
         val valmiiksiMerkityltäPuuttuuOsasuorituksia = subcategory("valmiiksiMerkityltäPuuttuuOsasuorituksia", "Valmiiksi merkityllä päätason suorituksella ei voi olla tyhjä osasuorituslista tai opiskeluoikeuden pitää olla linkitetty")
         val tilaltaPuuttuuRahoitusmuoto = subcategory("tilaltaPuuttuuRahoitusmuoto", "Opiskeluoikeuden tilalta vaaditaan rahoitusmuoto")
