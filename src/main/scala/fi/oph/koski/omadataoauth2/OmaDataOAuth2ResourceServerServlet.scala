@@ -30,7 +30,7 @@ class OmaDataOAuth2ResourceServerServlet(implicit val application: KoskiApplicat
       case Some(Array("Bearer", token)) =>
         renderRequestedData(token)
       case _ =>
-        renderInvalidRequestError("Request missing valid token parameters", msg => logger.warn(msg))
+        renderError(OmaDataOAuth2ErrorType.invalid_request, "Request missing valid token parameters", msg => logger.warn(msg))
     }
   }
 
@@ -44,8 +44,7 @@ class OmaDataOAuth2ResourceServerServlet(implicit val application: KoskiApplicat
         renderOpinnot(oppijaOid, scope)
       case Left(error) =>
         val errorResult = AccessTokenErrorResponse(error)
-        response.setStatus(errorResult.httpStatus)
-        renderObject(errorResult)
+        renderErrorWithStatus(errorResult, errorResult.httpStatus)
     }
   }
 
@@ -60,7 +59,7 @@ class OmaDataOAuth2ResourceServerServlet(implicit val application: KoskiApplicat
       case Seq("OPISKELUOIKEUDET_KAIKKI_TIEDOT") =>
         renderKaikkiTiedot(oppijaOid, scope, overrideSession)
       case _ =>
-        renderServerError(s"Internal error, unable to handle OPISKELUOIKEUDET scope defined in ${scope}", msg => logger.error(msg))
+        renderError(OmaDataOAuth2ErrorType.server_error, s"Internal error, unable to handle OPISKELUOIKEUDET scope defined in ${scope}", msg => logger.error(msg))
     }
   }
 
@@ -80,7 +79,7 @@ class OmaDataOAuth2ResourceServerServlet(implicit val application: KoskiApplicat
         response.setStatus(200)
         renderObject(result)
       case Left(httpStatus) =>
-        renderServerError(httpStatus, "Internal error", msg => logger.warn(msg))
+        renderError(OmaDataOAuth2ErrorType.server_error, httpStatus, "Internal error", msg => logger.warn(msg))
     }
   }
 
@@ -100,7 +99,7 @@ class OmaDataOAuth2ResourceServerServlet(implicit val application: KoskiApplicat
         response.setStatus(200)
         renderObject(result)
       case Left(httpStatus) =>
-        renderServerError(httpStatus, "Internal error", msg => logger.warn(msg))
+        renderError(OmaDataOAuth2ErrorType.server_error, httpStatus, "Internal error", msg => logger.warn(msg))
     }
   }
 
@@ -117,9 +116,9 @@ class OmaDataOAuth2ResourceServerServlet(implicit val application: KoskiApplicat
         response.setStatus(200)
         renderObject(result)
       case Right(_) =>
-        renderServerError("Internal error, datatype not recognized", msg => logger.error(msg))
+        renderError(OmaDataOAuth2ErrorType.server_error, "Internal error, datatype not recognized", msg => logger.error(msg))
       case Left(httpStatus) =>
-        renderServerError(httpStatus, "Internal error", msg => logger.warn(msg))
+        renderError(OmaDataOAuth2ErrorType.server_error, httpStatus, "Internal error", msg => logger.warn(msg))
     }
   }
 
@@ -137,27 +136,25 @@ class OmaDataOAuth2ResourceServerServlet(implicit val application: KoskiApplicat
     )))
   }
 
-  private def renderServerError(message: String, log: String => Unit): Unit = {
-    val error = OmaDataOAuth2Error(OmaDataOAuth2ErrorType.server_error, message)
-    log(error.getLoggedErrorMessage)
-    val errorResult = AccessTokenErrorResponse(error)
-    response.setStatus(errorResult.httpStatus)
+  private def renderError(errorType: OmaDataOAuth2ErrorType, message: String, log: String => Unit): Unit = {
+    val errorResult = logAndCreateError(errorType, message, log)
+    renderErrorWithStatus(errorResult, errorResult.httpStatus)
+  }
+
+  private def renderError(errorType: OmaDataOAuth2ErrorType, httpStatus: HttpStatus, message: String, log: String => Unit): Unit = {
+    val errorResult = logAndCreateError(errorType, httpStatus.errorString.getOrElse(message), log)
+    renderErrorWithStatus(errorResult, httpStatus.statusCode)
     renderObject(errorResult)
   }
 
-  private def renderServerError(httpStatus: HttpStatus, message: String, log: String => Unit): Unit = {
-    val error = OmaDataOAuth2Error(OmaDataOAuth2ErrorType.server_error, httpStatus.errorString.getOrElse(message))
+  private def logAndCreateError(errorType: OmaDataOAuth2ErrorType, message: String, log: String => Unit) = {
+    val error = OmaDataOAuth2Error(errorType, message)
     log(error.getLoggedErrorMessage)
-    val errorResult = AccessTokenErrorResponse(error)
-    response.setStatus(httpStatus.statusCode)
-    renderObject(errorResult)
+    AccessTokenErrorResponse(error)
   }
 
-  private def renderInvalidRequestError(message: String, log: String => Unit): Unit = {
-    val error = OmaDataOAuth2Error(OmaDataOAuth2ErrorType.invalid_request, message)
-    log(error.getLoggedErrorMessage)
-    val errorResult = AccessTokenErrorResponse(error)
-    response.setStatus(errorResult.httpStatus)
+  private def renderErrorWithStatus(errorResult: AccessTokenErrorResponse, status: Int): Unit = {
+    response.setStatus(status)
     renderObject(errorResult)
   }
 }
