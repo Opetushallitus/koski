@@ -17,4 +17,12 @@ class LocalizationReader(repository: LocalizationRepository, val language: Strin
   def format(date: LocalDate): String = date.format(finnishDateFormat)
 
   def formatDateString(date: String): String = format(LocalDate.parse(date))
+
+  def pick(fiText: String, svText: String): String = if (language == "sv") svText else fiText
+
+  def pick(fiText: Option[String], svText: Option[String], fallback: String): String =
+    (if (language == "sv") List(svText, fiText) else List(fiText, svText))
+      .flatten
+      .headOption
+      .getOrElse(fallback)
 }
