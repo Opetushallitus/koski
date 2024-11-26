@@ -74,6 +74,8 @@ describe('Raporttien luominen', function () {
           'Lukiokoulutus',
           'Lukiokoulutus (LOPS2021)',
           'IB-koulutus',
+          'VST',
+          'MUKS',
           'Yleiset'
         ])
         expect(page.valittuRaporttikategoria()).to.equal('Esiopetus')
@@ -110,6 +112,8 @@ describe('Raporttien luominen', function () {
           'Lukiokoulutus',
           'Lukiokoulutus (LOPS2021)',
           'IB-koulutus',
+          'VST',
+          'MUKS',
           'Yleiset'
         ])
         expect(page.valittuRaporttikategoria()).to.equal('Esiopetus')
@@ -282,7 +286,7 @@ describe('Raporttien luominen', function () {
       Authentication().login('kalle'),
       page.openPage(),
       page.odotaRaporttikategoriat(),
-      page.valitseRaporttikategoria(9), // Muut
+      page.valitseRaporttikategoria(11), // Muut
       page.haeOrganisaatioita('helsin')
     )
 
@@ -302,7 +306,7 @@ describe('Raporttien luominen', function () {
       Authentication().login('pää'),
       page.openPage(),
       page.odotaRaporttikategoriat(),
-      page.valitseRaporttikategoria(9), // Muut
+      page.valitseRaporttikategoria(11), // Muut
       page.haeOrganisaatioita('itä-suomen yliopisto')
     )
 
@@ -323,7 +327,7 @@ describe('Raporttien luominen', function () {
       Authentication().login('pää'),
       page.openPage(),
       page.odotaRaporttikategoriat(),
-      page.valitseRaporttikategoria(9), // Muut
+      page.valitseRaporttikategoria(11), // Muut
       page.haeOrganisaatioita('aikuisopisto')
     )
 
@@ -414,7 +418,7 @@ describe('Raporttien luominen', function () {
       Authentication().login('kalle'),
       page.openPage(),
       page.odotaRaporttikategoriat(),
-      page.valitseRaporttikategoria(9) // Muut
+      page.valitseRaporttikategoria(11) // Muut
     )
 
     it('Näyttää organisaatiovalitsimen', function () {
