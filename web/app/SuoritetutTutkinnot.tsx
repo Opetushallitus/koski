@@ -14,10 +14,10 @@ import { ContentContainer } from './components-v2/containers/ContentContainer'
 import { PlainList } from './components-v2/containers/PlainList'
 import { Trans } from './components-v2/texts/Trans'
 import { Flex } from './components-v2/containers/Flex'
-import { isSuoritetutTutkinnotOpiskeluoikeus } from './types/fi/oph/koski/suoritusjako/suoritetuttutkinnot/SuoritetutTutkinnotOpiskeluoikeus'
-import { isSuoritetutTutkinnotKoskeenTallennettavaOpiskeluoikeus } from './types/fi/oph/koski/suoritusjako/suoritetuttutkinnot/SuoritetutTutkinnotKoskeenTallennettavaOpiskeluoikeus'
+import { isSuoritetutTutkinnotOpiskeluoikeus } from './types/fi/oph/koski/suoritetuttutkinnot/SuoritetutTutkinnotOpiskeluoikeus'
+import { isSuoritetutTutkinnotKoskeenTallennettavaOpiskeluoikeus } from './types/fi/oph/koski/suoritetuttutkinnot/SuoritetutTutkinnotKoskeenTallennettavaOpiskeluoikeus'
 import Text from './i18n/Text'
-import { SuoritetutTutkinnotOppija } from './types/fi/oph/koski/suoritusjako/suoritetuttutkinnot/SuoritetutTutkinnotOppija'
+import { SuoritetutTutkinnotOppijaJakolinkillä } from './types/fi/oph/koski/suoritusjako/SuoritetutTutkinnotOppijaJakolinkilla'
 // @ts-ignore
 __webpack_nonce__ = window.nonce
 // @ts-ignore
@@ -38,7 +38,7 @@ const SuoritetutTutkinnot = () => {
       {mapError(response, () => (
         <Trans>{'Tietojen hakeminen epäonnistui'}</Trans>
       ))}
-      {mapSuccess(response, (responseData: SuoritetutTutkinnotOppija) => (
+      {mapSuccess(response, (responseData: SuoritetutTutkinnotOppijaJakolinkillä) => (
         <>
           <SuoritusjakoTopBar />
           <ContentContainer className="content-area suoritusjako suoritusjako-page">

@@ -1,5 +1,6 @@
 package fi.oph.koski.omadataoauth2
 
+import fi.oph.koski.aktiivisetjapaattyneetopinnot.AktiivisetJaPäättyneetOpinnotOpiskeluoikeus
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.henkilo.LaajatOppijaHenkilöTiedot
 import fi.oph.koski.http.HttpStatus
@@ -9,12 +10,11 @@ import fi.oph.koski.log.KoskiOperation.{OAUTH2_KATSOMINEN_AKTIIVISET_JA_PAATTYNE
 import fi.oph.koski.log.{AuditLog, KoskiAuditLogMessage, KoskiOperation, Logging}
 import fi.oph.koski.schema.{Opiskeluoikeus, Oppija, TäydellisetHenkilötiedot}
 import fi.oph.koski.servlet.{KoskiSpecificApiServlet, NoCache}
-import fi.oph.koski.suoritusjako.aktiivisetjapaattyneetopinnot.AktiivisetJaPäättyneetOpinnotOpiskeluoikeus
-import fi.oph.koski.suoritusjako.suoritetuttutkinnot.SuoritetutTutkinnotOpiskeluoikeus
 import fi.oph.scalaschema.{ClassSchema, SchemaToJson}
 import org.json4s.JValue
 import org.scalatra.ContentEncodingSupport
 import fi.oph.koski.schema
+import fi.oph.koski.suoritetuttutkinnot.SuoritetutTutkinnotOpiskeluoikeus
 
 import scala.util.chaining._
 import java.time.LocalDate
@@ -65,7 +65,7 @@ class OmaDataOAuth2ResourceServerServlet(implicit val application: KoskiApplicat
   }
 
   private def renderSuoritetutTutkinnot(oppijaOid: String, scope: String, overrideSession: KoskiSpecificSession): Unit = {
-    application.suoritetutTutkinnotService.findSuoritetutTutkinnotOppijaLaajatHenkilötiedot(
+    application.suoritetutTutkinnotService.findSuoritetutTutkinnotOppija(
       oppijaOid,
       merkitseSuoritusjakoTehdyksi = false
     )(overrideSession) match {

@@ -1,5 +1,6 @@
 package fi.oph.koski.omadataoauth2.unit
 
+import fi.oph.koski.aktiivisetjapaattyneetopinnot.AktiivisetJaPäättyneetOpinnotMuunKuinSäännellynKoulutuksenOpiskeluoikeus
 import fi.oph.koski.api.misc.OpiskeluoikeusTestMethods
 import fi.oph.koski.{DatabaseTestMethods, schema}
 import fi.oph.koski.db.KoskiTables.OAuth2JakoKaikki
@@ -12,8 +13,9 @@ import fi.oph.koski.omadataoauth2.OmaDataOAuth2Security.{createChallengeAndVerif
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.schema.{AmmatillinenOpiskeluoikeus, PerusopetuksenOpiskeluoikeudenLisätiedot, PerusopetuksenOpiskeluoikeus}
-import fi.oph.koski.suoritusjako.aktiivisetjapaattyneetopinnot.{AktiivisetJaPäättyneetOpinnotMuunKuinSäännellynKoulutuksenOpiskeluoikeus, AktiivisetJaPäättyneetOpinnotVerifiers}
-import fi.oph.koski.suoritusjako.suoritetuttutkinnot.{SuoritetutTutkinnotAmmatillinenOpiskeluoikeus, SuoritetutTutkinnotVerifiers}
+import fi.oph.koski.suoritetuttutkinnot.SuoritetutTutkinnotAmmatillinenOpiskeluoikeus
+import fi.oph.koski.suoritusjako.aktiivisetjapaattyneetopinnot.AktiivisetJaPäättyneetOpinnotVerifiers
+import fi.oph.koski.suoritusjako.suoritetuttutkinnot.SuoritetutTutkinnotVerifiers
 
 import java.sql.Timestamp
 import java.time.Instant

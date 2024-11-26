@@ -23,6 +23,8 @@ import org.scalatest.matchers.should.Matchers
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.documentation.AmmatillinenExampleData
 import fi.oph.koski.fixture.AmmatillinenOpiskeluoikeusTestData
+import fi.oph.koski.suoritetuttutkinnot.{SuoritetutTutkinnotAmmatillinenOpiskeluoikeus, SuoritetutTutkinnotAmmatillisenTutkinnonSuoritus, SuoritetutTutkinnotDIAOpiskeluoikeus, SuoritetutTutkinnotEBTutkinnonOpiskeluoikeus, SuoritetutTutkinnotKorkeakoulunOpiskeluoikeus, SuoritetutTutkinnotKoskeenTallennettavaOpiskeluoikeus, SuoritetutTutkinnotYlioppilastutkinnonOpiskeluoikeus}
+import fi.oph.koski.suoritusjako.SuoritetutTutkinnotOppijaJakolinkillä
 
 import java.net.InetAddress
 import java.time.LocalDate
@@ -43,7 +45,7 @@ class SuoritetutTutkinnotServiceSpec
   def tag: universe.TypeTag[schema.AmmatillinenOpiskeluoikeus] = implicitly[reflect.runtime.universe.TypeTag[schema.AmmatillinenOpiskeluoikeus]]
   override def defaultOpiskeluoikeus = makeOpiskeluoikeus(alkamispäivä = longTimeAgo, suoritus = ammatillisenTutkinnonOsittainenSuoritus)
 
-  val suoritetutTutkinnotService = KoskiApplicationForTests.suoritetutTutkinnotService
+  val suoritusjakoService = KoskiApplicationForTests.suoritusjakoService
 
   private val suoritusjakoKatsominenTestUser = new KoskiSpecificSession(
     AuthenticationUser(
@@ -72,7 +74,7 @@ class SuoritetutTutkinnotServiceSpec
     oppijaOidit.length should be > 100
 
     oppijaOidit.foreach(oppijaOid => {
-      val result = suoritetutTutkinnotService.findSuoritetutTutkinnotOppija(oppijaOid)
+      val result = suoritusjakoService.findSuoritetutTutkinnotOppija(oppijaOid)
       result.isRight should be(true)
 
       def isSuoritusjakoTehty(oid: String): Option[Boolean] = runDbSync(KoskiTables.KoskiOpiskeluOikeudet.filter(_.oid === oid).map(_.suoritusjakoTehty).result).headOption
@@ -92,7 +94,7 @@ class SuoritetutTutkinnotServiceSpec
       val expectedOoData = getOpiskeluoikeus(oppija.oid, schema.OpiskeluoikeudenTyyppi.ammatillinenkoulutus.koodiarvo)
       val expectedSuoritusData = expectedOoData.suoritukset.head
 
-      val result = suoritetutTutkinnotService.findSuoritetutTutkinnotOppija(oppija.oid)
+      val result = suoritusjakoService.findSuoritetutTutkinnotOppija(oppija.oid)
 
       result.isRight should be(true)
 
@@ -123,7 +125,7 @@ class SuoritetutTutkinnotServiceSpec
       val expectedOoData = getOpiskeluoikeus(oppija.oid, schema.OpiskeluoikeudenTyyppi.ammatillinenkoulutus.koodiarvo)
       val expectedSuoritusData = expectedOoData.suoritukset.head
 
-      val result = suoritetutTutkinnotService.findSuoritetutTutkinnotOppija(oppija.oid)
+      val result = suoritusjakoService.findSuoritetutTutkinnotOppija(oppija.oid)
 
       result.isRight should be(true)
 
@@ -146,7 +148,7 @@ class SuoritetutTutkinnotServiceSpec
       val expectedOoData = getOpiskeluoikeus(oppija.oid, schema.OpiskeluoikeudenTyyppi.ammatillinenkoulutus.koodiarvo)
       val expectedSuoritusData = expectedOoData.suoritukset.head
 
-      val result = suoritetutTutkinnotService.findSuoritetutTutkinnotOppija(oppija.oid)
+      val result = suoritusjakoService.findSuoritetutTutkinnotOppija(oppija.oid)
 
       result.isRight should be(true)
 
@@ -176,7 +178,7 @@ class SuoritetutTutkinnotServiceSpec
 
       lisääKorotettuSuoritus(oppija)
 
-      val result = suoritetutTutkinnotService.findSuoritetutTutkinnotOppija(oppija.oid)
+      val result = suoritusjakoService.findSuoritetutTutkinnotOppija(oppija.oid)
 
       result.isRight should be(true)
 
@@ -191,7 +193,7 @@ class SuoritetutTutkinnotServiceSpec
     "Monesta osaamisalasta palautetaan vain uusin" in {
       val oppija = KoskiSpecificMockOppijat.masterYlioppilasJaAmmattilainen
 
-      val result = suoritetutTutkinnotService.findSuoritetutTutkinnotOppija(oppija.oid)
+      val result = suoritusjakoService.findSuoritetutTutkinnotOppija(oppija.oid)
 
       result.isRight should be(true)
 
@@ -215,7 +217,7 @@ class SuoritetutTutkinnotServiceSpec
     "Monesta osaamisalasta tulkitaan uusimmaksi alkupäivämäärätön" in {
       val oppija = KoskiSpecificMockOppijat.masterYlioppilasJaAmmattilainen
 
-      val result = suoritetutTutkinnotService.findSuoritetutTutkinnotOppija(oppija.oid)
+      val result = suoritusjakoService.findSuoritetutTutkinnotOppija(oppija.oid)
 
       result.isRight should be(true)
 
@@ -245,7 +247,7 @@ class SuoritetutTutkinnotServiceSpec
       val expectedOoData = getOpiskeluoikeus(oppija.oid, schema.OpiskeluoikeudenTyyppi.ylioppilastutkinto.koodiarvo)
       val expectedSuoritusData = expectedOoData.suoritukset.head
 
-      val result = suoritetutTutkinnotService.findSuoritetutTutkinnotOppija(oppija.oid)
+      val result = suoritusjakoService.findSuoritetutTutkinnotOppija(oppija.oid)
 
       result.isRight should be(true)
 
@@ -274,7 +276,7 @@ class SuoritetutTutkinnotServiceSpec
       val expectedOoData = getOpiskeluoikeus(oppija.oid, schema.OpiskeluoikeudenTyyppi.ebtutkinto.koodiarvo)
       val expectedSuoritusData = expectedOoData.suoritukset.collectFirst { case eb: schema.EBTutkinnonSuoritus => eb }.get
 
-      val result = suoritetutTutkinnotService.findSuoritetutTutkinnotOppija(oppija.oid)
+      val result = suoritusjakoService.findSuoritetutTutkinnotOppija(oppija.oid)
 
       result.isRight should be(true)
 
@@ -299,7 +301,7 @@ class SuoritetutTutkinnotServiceSpec
       val expectedOoData = getOpiskeluoikeus(oppija.oid, schema.OpiskeluoikeudenTyyppi.diatutkinto.koodiarvo)
       val expectedSuoritusData = expectedOoData.suoritukset.collectFirst { case dia: schema.DIATutkinnonSuoritus => dia }.get
 
-      val result = suoritetutTutkinnotService.findSuoritetutTutkinnotOppija(oppija.oid)
+      val result = suoritusjakoService.findSuoritetutTutkinnotOppija(oppija.oid)
 
       result.isRight should be(true)
 
@@ -324,7 +326,7 @@ class SuoritetutTutkinnotServiceSpec
       val expectedOoData = getOpiskeluoikeus(oppija.oid, schema.OpiskeluoikeudenTyyppi.korkeakoulutus.koodiarvo)
       val expectedSuoritusData = expectedOoData.suoritukset.collectFirst { case korkeakoulu: schema.KorkeakoulututkinnonSuoritus => korkeakoulu }.get
 
-      val result = suoritetutTutkinnotService.findSuoritetutTutkinnotOppija(oppija.oid)
+      val result = suoritusjakoService.findSuoritetutTutkinnotOppija(oppija.oid)
 
       result.isRight should be(true)
 
@@ -349,8 +351,8 @@ class SuoritetutTutkinnotServiceSpec
       val oppijaMaster = KoskiSpecificMockOppijat.masterYlioppilasJaAmmattilainen
       val oppijaSlave = KoskiSpecificMockOppijat.slaveAmmattilainen
 
-      val resultMaster = suoritetutTutkinnotService.findSuoritetutTutkinnotOppija(oppijaMaster.oid)
-      val resultSlave = suoritetutTutkinnotService.findSuoritetutTutkinnotOppija(oppijaSlave.henkilö.oid)
+      val resultMaster = suoritusjakoService.findSuoritetutTutkinnotOppija(oppijaMaster.oid)
+      val resultSlave = suoritusjakoService.findSuoritetutTutkinnotOppija(oppijaSlave.henkilö.oid)
 
       resultMaster.isRight should be(true)
       resultMaster.foreach(o => {
@@ -378,7 +380,7 @@ class SuoritetutTutkinnotServiceSpec
     "Globaaleilla lukuoikeuksilla voi hakea" in {
       implicit val koskiSession = MockUsers.ophkatselija.toKoskiSpecificSession(KoskiApplicationForTests.käyttöoikeusRepository)
 
-      val result = suoritetutTutkinnotService.findSuoritetutTutkinnotOppija(oppija.oid)
+      val result = suoritusjakoService.findSuoritetutTutkinnotOppija(oppija.oid)
 
       result.isRight should be(true)
     }
@@ -400,12 +402,12 @@ class SuoritetutTutkinnotServiceSpec
   "jos YTR palauttaa virheen, palautetaan virhe" in {
     val oppija = KoskiSpecificMockOppijat.masterYlioppilasJaAmmattilainen
 
-    suoritetutTutkinnotService.findSuoritetutTutkinnotOppija(oppija.oid).isRight should be(true)
+    suoritusjakoService.findSuoritetutTutkinnotOppija(oppija.oid).isRight should be(true)
 
     KoskiApplicationForTests.cacheManager.invalidateAllCaches
     MockYtrClient.setFailureHetu(oppija.hetu.get)
 
-    val result = suoritetutTutkinnotService.findSuoritetutTutkinnotOppija(oppija.oid)
+    val result = suoritusjakoService.findSuoritetutTutkinnotOppija(oppija.oid)
 
     result.isRight should be(false)
     result should equal(Left(KoskiErrorCategory.unavailable.ytr()))
@@ -414,7 +416,7 @@ class SuoritetutTutkinnotServiceSpec
   "jos Virta palauttaa virheen, palautetaan virhe" in {
     val oppija = KoskiSpecificMockOppijat.virtaEiVastaa
 
-    val result = suoritetutTutkinnotService.findSuoritetutTutkinnotOppija(oppija.oid)
+    val result = suoritusjakoService.findSuoritetutTutkinnotOppija(oppija.oid)
 
     result.isRight should be(false)
     result should equal(Left(KoskiErrorCategory.unavailable.virta()))
@@ -423,12 +425,12 @@ class SuoritetutTutkinnotServiceSpec
   "jos YTR timeouttaa, palautetaan virhe" in {
     val oppija = KoskiSpecificMockOppijat.masterYlioppilasJaAmmattilainen
 
-    suoritetutTutkinnotService.findSuoritetutTutkinnotOppija(oppija.oid).isRight should be(true)
+    suoritusjakoService.findSuoritetutTutkinnotOppija(oppija.oid).isRight should be(true)
 
     KoskiApplicationForTests.cacheManager.invalidateAllCaches
     MockYtrClient.setTimeoutHetu(oppija.hetu.get)
 
-    val result = suoritetutTutkinnotService.findSuoritetutTutkinnotOppija(oppija.oid)
+    val result = suoritusjakoService.findSuoritetutTutkinnotOppija(oppija.oid)
 
     result.isRight should be(false)
     result should equal(Left(KoskiErrorCategory.unavailable()))
@@ -455,7 +457,7 @@ class SuoritetutTutkinnotServiceSpec
 
     val sisältyvä = createOpiskeluoikeus(oppija, sisältyväInput, user = MockUsers.omniaTallentaja)
 
-    val result = suoritetutTutkinnotService.findSuoritetutTutkinnotOppija(oppija.oid)
+    val result = suoritusjakoService.findSuoritetutTutkinnotOppija(oppija.oid)
 
     result.isRight should be(true)
 
@@ -547,7 +549,7 @@ class SuoritetutTutkinnotServiceSpec
     suoritukset = List(suoritus)
   )
 
-  private def verifyOppija(expected: LaajatOppijaHenkilöTiedot, actual: SuoritetutTutkinnotOppija) = {
+  private def verifyOppija(expected: LaajatOppijaHenkilöTiedot, actual: SuoritetutTutkinnotOppijaJakolinkillä) = {
     actual.henkilö.oid should be(expected.oid)
     actual.henkilö.etunimet should be(expected.etunimet)
     actual.henkilö.kutsumanimi should be(expected.kutsumanimi)
@@ -556,7 +558,7 @@ class SuoritetutTutkinnotServiceSpec
   }
 
   private def verifyEiOpiskeluoikeuksia(oppija: LaajatOppijaHenkilöTiedot) = {
-    val result = suoritetutTutkinnotService.findSuoritetutTutkinnotOppija(oppija.oid)
+    val result = suoritusjakoService.findSuoritetutTutkinnotOppija(oppija.oid)
 
     result.isRight should be(true)
 
@@ -568,7 +570,7 @@ class SuoritetutTutkinnotServiceSpec
   }
 
   private def verifyEiLöydyTaiEiKäyttöoikeuksia(oppijaOid: String)(implicit user: KoskiSpecificSession): Unit = {
-    val result = suoritetutTutkinnotService.findSuoritetutTutkinnotOppija(oppijaOid)(user)
+    val result = suoritusjakoService.findSuoritetutTutkinnotOppija(oppijaOid)(user)
 
     result.isLeft should be(true)
     result should equal(Left(KoskiErrorCategory.notFound.oppijaaEiLöydyTaiEiOikeuksia("Oppijaa ei löydy tai käyttäjällä ei ole oikeuksia tietojen katseluun.")))

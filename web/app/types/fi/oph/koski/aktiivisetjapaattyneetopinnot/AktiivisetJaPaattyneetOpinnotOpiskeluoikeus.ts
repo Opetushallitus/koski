@@ -1,0 +1,93 @@
+import {
+  AktiivisetJaPäättyneetOpinnotAikuistenPerusopetuksenOpiskeluoikeus,
+  isAktiivisetJaPäättyneetOpinnotAikuistenPerusopetuksenOpiskeluoikeus
+} from './AktiivisetJaPaattyneetOpinnotAikuistenPerusopetuksenOpiskeluoikeus'
+import {
+  AktiivisetJaPäättyneetOpinnotAmmatillinenOpiskeluoikeus,
+  isAktiivisetJaPäättyneetOpinnotAmmatillinenOpiskeluoikeus
+} from './AktiivisetJaPaattyneetOpinnotAmmatillinenOpiskeluoikeus'
+import {
+  AktiivisetJaPäättyneetOpinnotDIAOpiskeluoikeus,
+  isAktiivisetJaPäättyneetOpinnotDIAOpiskeluoikeus
+} from './AktiivisetJaPaattyneetOpinnotDIAOpiskeluoikeus'
+import {
+  AktiivisetJaPäättyneetOpinnotEBTutkinnonOpiskeluoikeus,
+  isAktiivisetJaPäättyneetOpinnotEBTutkinnonOpiskeluoikeus
+} from './AktiivisetJaPaattyneetOpinnotEBTutkinnonOpiskeluoikeus'
+import {
+  AktiivisetJaPäättyneetOpinnotEuropeanSchoolOfHelsinkiOpiskeluoikeus,
+  isAktiivisetJaPäättyneetOpinnotEuropeanSchoolOfHelsinkiOpiskeluoikeus
+} from './AktiivisetJaPaattyneetOpinnotEuropeanSchoolOfHelsinkiOpiskeluoikeus'
+import {
+  AktiivisetJaPäättyneetOpinnotIBOpiskeluoikeus,
+  isAktiivisetJaPäättyneetOpinnotIBOpiskeluoikeus
+} from './AktiivisetJaPaattyneetOpinnotIBOpiskeluoikeus'
+import {
+  AktiivisetJaPäättyneetOpinnotInternationalSchoolOpiskeluoikeus,
+  isAktiivisetJaPäättyneetOpinnotInternationalSchoolOpiskeluoikeus
+} from './AktiivisetJaPaattyneetOpinnotInternationalSchoolOpiskeluoikeus'
+import {
+  AktiivisetJaPäättyneetOpinnotKorkeakoulunOpiskeluoikeus,
+  isAktiivisetJaPäättyneetOpinnotKorkeakoulunOpiskeluoikeus
+} from './AktiivisetJaPaattyneetOpinnotKorkeakoulunOpiskeluoikeus'
+import {
+  AktiivisetJaPäättyneetOpinnotLukionOpiskeluoikeus,
+  isAktiivisetJaPäättyneetOpinnotLukionOpiskeluoikeus
+} from './AktiivisetJaPaattyneetOpinnotLukionOpiskeluoikeus'
+import {
+  AktiivisetJaPäättyneetOpinnotMuunKuinSäännellynKoulutuksenOpiskeluoikeus,
+  isAktiivisetJaPäättyneetOpinnotMuunKuinSäännellynKoulutuksenOpiskeluoikeus
+} from './AktiivisetJaPaattyneetOpinnotMuunKuinSaannellynKoulutuksenOpiskeluoikeus'
+import {
+  AktiivisetJaPäättyneetOpinnotTutkintokoulutukseenValmentavanOpiskeluoikeus,
+  isAktiivisetJaPäättyneetOpinnotTutkintokoulutukseenValmentavanOpiskeluoikeus
+} from './AktiivisetJaPaattyneetOpinnotTutkintokoulutukseenValmentavanOpiskeluoikeus'
+import {
+  AktiivisetJaPäättyneetOpinnotVapaanSivistystyönOpiskeluoikeus,
+  isAktiivisetJaPäättyneetOpinnotVapaanSivistystyönOpiskeluoikeus
+} from './AktiivisetJaPaattyneetOpinnotVapaanSivistystyonOpiskeluoikeus'
+import {
+  AktiivisetJaPäättyneetOpinnotYlioppilastutkinnonOpiskeluoikeus,
+  isAktiivisetJaPäättyneetOpinnotYlioppilastutkinnonOpiskeluoikeus
+} from './AktiivisetJaPaattyneetOpinnotYlioppilastutkinnonOpiskeluoikeus'
+
+/**
+ * AktiivisetJaPäättyneetOpinnotOpiskeluoikeus
+ *
+ * @see `fi.oph.koski.aktiivisetjapaattyneetopinnot.AktiivisetJaPäättyneetOpinnotOpiskeluoikeus`
+ */
+export type AktiivisetJaPäättyneetOpinnotOpiskeluoikeus =
+  | AktiivisetJaPäättyneetOpinnotAikuistenPerusopetuksenOpiskeluoikeus
+  | AktiivisetJaPäättyneetOpinnotAmmatillinenOpiskeluoikeus
+  | AktiivisetJaPäättyneetOpinnotDIAOpiskeluoikeus
+  | AktiivisetJaPäättyneetOpinnotEBTutkinnonOpiskeluoikeus
+  | AktiivisetJaPäättyneetOpinnotEuropeanSchoolOfHelsinkiOpiskeluoikeus
+  | AktiivisetJaPäättyneetOpinnotIBOpiskeluoikeus
+  | AktiivisetJaPäättyneetOpinnotInternationalSchoolOpiskeluoikeus
+  | AktiivisetJaPäättyneetOpinnotKorkeakoulunOpiskeluoikeus
+  | AktiivisetJaPäättyneetOpinnotLukionOpiskeluoikeus
+  | AktiivisetJaPäättyneetOpinnotMuunKuinSäännellynKoulutuksenOpiskeluoikeus
+  | AktiivisetJaPäättyneetOpinnotTutkintokoulutukseenValmentavanOpiskeluoikeus
+  | AktiivisetJaPäättyneetOpinnotVapaanSivistystyönOpiskeluoikeus
+  | AktiivisetJaPäättyneetOpinnotYlioppilastutkinnonOpiskeluoikeus
+
+export const isAktiivisetJaPäättyneetOpinnotOpiskeluoikeus = (
+  a: any
+): a is AktiivisetJaPäättyneetOpinnotOpiskeluoikeus =>
+  isAktiivisetJaPäättyneetOpinnotAikuistenPerusopetuksenOpiskeluoikeus(a) ||
+  isAktiivisetJaPäättyneetOpinnotAmmatillinenOpiskeluoikeus(a) ||
+  isAktiivisetJaPäättyneetOpinnotDIAOpiskeluoikeus(a) ||
+  isAktiivisetJaPäättyneetOpinnotEBTutkinnonOpiskeluoikeus(a) ||
+  isAktiivisetJaPäättyneetOpinnotEuropeanSchoolOfHelsinkiOpiskeluoikeus(a) ||
+  isAktiivisetJaPäättyneetOpinnotIBOpiskeluoikeus(a) ||
+  isAktiivisetJaPäättyneetOpinnotInternationalSchoolOpiskeluoikeus(a) ||
+  isAktiivisetJaPäättyneetOpinnotKorkeakoulunOpiskeluoikeus(a) ||
+  isAktiivisetJaPäättyneetOpinnotLukionOpiskeluoikeus(a) ||
+  isAktiivisetJaPäättyneetOpinnotMuunKuinSäännellynKoulutuksenOpiskeluoikeus(
+    a
+  ) ||
+  isAktiivisetJaPäättyneetOpinnotTutkintokoulutukseenValmentavanOpiskeluoikeus(
+    a
+  ) ||
+  isAktiivisetJaPäättyneetOpinnotVapaanSivistystyönOpiskeluoikeus(a) ||
+  isAktiivisetJaPäättyneetOpinnotYlioppilastutkinnonOpiskeluoikeus(a)

@@ -8,7 +8,7 @@ import {
 import * as R from 'ramda'
 import React from 'react'
 import Text from './i18n/Text'
-import { AktiivisetJaPäättyneetOpinnotOppija } from './types/fi/oph/koski/suoritusjako/aktiivisetjapaattyneetopinnot/AktiivisetJaPaattyneetOpinnotOppija'
+import { AktiivisetJaPäättyneetOpinnotOppijaJakolinkillä } from './types/fi/oph/koski/suoritusjako/AktiivisetJaPaattyneetOpinnotOppijaJakolinkilla'
 import { SuoritusjakoTopBar } from './components-v2/layout/SuoritusjakoTopBar'
 import { ContentContainer } from './components-v2/containers/ContentContainer'
 import { PlainList } from './components-v2/containers/PlainList'
@@ -39,7 +39,7 @@ const AktiivisetJaPäättyneetOpinnot = () => {
       ))}
       {mapSuccess(
         response,
-        (responseData: AktiivisetJaPäättyneetOpinnotOppija) => (
+        (responseData: AktiivisetJaPäättyneetOpinnotOppijaJakolinkillä) => (
           <>
             <SuoritusjakoTopBar />
             <ContentContainer className="content-area suoritusjako suoritusjako-page">

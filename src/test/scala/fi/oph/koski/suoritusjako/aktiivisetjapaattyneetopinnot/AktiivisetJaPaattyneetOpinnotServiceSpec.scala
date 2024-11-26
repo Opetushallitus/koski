@@ -1,5 +1,6 @@
 package fi.oph.koski.suoritusjako.aktiivisetjapaattyneetopinnot
 
+import fi.oph.koski.aktiivisetjapaattyneetopinnot.{AktiivisetJaPäättyneetOpinnotAikuistenPerusopetuksenOpiskeluoikeus, AktiivisetJaPäättyneetOpinnotAmmatillinenOpiskeluoikeus, AktiivisetJaPäättyneetOpinnotDIAOpiskeluoikeus, AktiivisetJaPäättyneetOpinnotEBTutkinnonOpiskeluoikeus, AktiivisetJaPäättyneetOpinnotEuropeanSchoolOfHelsinkiOpiskeluoikeus, AktiivisetJaPäättyneetOpinnotIBOpiskeluoikeus, AktiivisetJaPäättyneetOpinnotInternationalSchoolOpiskeluoikeus, AktiivisetJaPäättyneetOpinnotKoskeenTallennettavaOpiskeluoikeus, AktiivisetJaPäättyneetOpinnotLukionOpiskeluoikeus, AktiivisetJaPäättyneetOpinnotMuunKuinSäännellynKoulutuksenOpiskeluoikeus, AktiivisetJaPäättyneetOpinnotTutkintokoulutukseenValmentavanOpiskeluoikeus, AktiivisetJaPäättyneetOpinnotVapaanSivistystyönOpiskeluoikeus, AktiivisetJaPäättyneetOpinnotYlioppilastutkinnonOpiskeluoikeus}
 import fi.oph.koski.api.misc.{OpiskeluoikeusTestMethods, PutOpiskeluoikeusTestMethods}
 import fi.oph.koski.documentation.AmmatillinenExampleData._
 import fi.oph.koski.documentation.ExampleData.{longTimeAgo, opiskeluoikeusLäsnä, opiskeluoikeusMitätöity, valtionosuusRahoitteinen}
@@ -10,6 +11,7 @@ import fi.oph.koski.koskiuser.Rooli.OPHKATSELIJA
 import fi.oph.koski.koskiuser._
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.schema.MYPVuosiluokanSuoritus
+import fi.oph.koski.suoritusjako.AktiivisetJaPäättyneetOpinnotOppijaJakolinkillä
 import fi.oph.koski.virta.MockVirtaClient
 import fi.oph.koski.ytr.MockYtrClient
 import fi.oph.koski.{KoskiApplicationForTests, KoskiHttpSpec, schema}
@@ -35,7 +37,7 @@ class AktiivisetJaPäättyneetOpinnotServiceSpec
   def tag: universe.TypeTag[schema.AmmatillinenOpiskeluoikeus] = implicitly[reflect.runtime.universe.TypeTag[schema.AmmatillinenOpiskeluoikeus]]
   override def defaultOpiskeluoikeus = makeOpiskeluoikeus(alkamispäivä = longTimeAgo, suoritus = ammatillisenTutkinnonOsittainenSuoritus)
 
-  val aktiivisetJaPäättyneetOpinnotService = KoskiApplicationForTests.aktiivisetJaPäättyneetOpinnotService
+  val suoritusjakoService = KoskiApplicationForTests.suoritusjakoService
 
   private val suoritusjakoKatsominenTestUser = new KoskiSpecificSession(
     AuthenticationUser(
@@ -64,7 +66,7 @@ class AktiivisetJaPäättyneetOpinnotServiceSpec
     oppijaOidit.length should be > 100
 
     oppijaOidit.foreach(oppijaOid => {
-      val result = aktiivisetJaPäättyneetOpinnotService.findOppija(oppijaOid)
+      val result = suoritusjakoService.findAktiivisetJaPäättyneetOpinnotOppija(oppijaOid)
       result.isRight should be(true)
     })
   }
@@ -92,7 +94,7 @@ class AktiivisetJaPäättyneetOpinnotServiceSpec
         val expectedOoData = getOpiskeluoikeus(oppija.oid, schema.OpiskeluoikeudenTyyppi.ammatillinenkoulutus.koodiarvo)
         val expectedSuoritusDatat = expectedOoData.suoritukset
 
-        val result = aktiivisetJaPäättyneetOpinnotService.findOppija(oppija.oid)
+        val result = suoritusjakoService.findAktiivisetJaPäättyneetOpinnotOppija(oppija.oid)
 
         result.isRight should be(true)
 
@@ -116,7 +118,7 @@ class AktiivisetJaPäättyneetOpinnotServiceSpec
       val expectedOoData = getOpiskeluoikeus(oppija.oid, schema.OpiskeluoikeudenTyyppi.ammatillinenkoulutus.koodiarvo)
       val expectedSuoritusDatat = expectedOoData.suoritukset.collect { case s if !s.isInstanceOf[schema.NäyttötutkintoonValmistavanKoulutuksenSuoritus] => s}
 
-      val result = aktiivisetJaPäättyneetOpinnotService.findOppija(oppija.oid)
+      val result = suoritusjakoService.findAktiivisetJaPäättyneetOpinnotOppija(oppija.oid)
 
       result.isRight should be(true)
 
@@ -148,7 +150,7 @@ class AktiivisetJaPäättyneetOpinnotServiceSpec
       s"Tiedot palautetaan ${oppija.sukunimi} ${oppija.etunimet} (${oppija.hetu.getOrElse("EI HETUA")})" in {
         val expectedOoDatat = getOpiskeluoikeudet(oppija.oid).filter(_.tyyppi.koodiarvo == schema.OpiskeluoikeudenTyyppi.korkeakoulutus.koodiarvo)
 
-        val result = aktiivisetJaPäättyneetOpinnotService.findOppija(oppija.oid)
+        val result = suoritusjakoService.findAktiivisetJaPäättyneetOpinnotOppija(oppija.oid)
 
         result.isRight should be(true)
 
@@ -175,7 +177,7 @@ class AktiivisetJaPäättyneetOpinnotServiceSpec
     s"Keskeneräisen tietoja ei palauteta" in {
       val oppija = KoskiSpecificMockOppijat.ylioppilasEiValmistunut
 
-      val result = aktiivisetJaPäättyneetOpinnotService.findOppija(oppija.oid)
+      val result = suoritusjakoService.findAktiivisetJaPäättyneetOpinnotOppija(oppija.oid)
 
       result.isRight should be(true)
 
@@ -191,7 +193,7 @@ class AktiivisetJaPäättyneetOpinnotServiceSpec
       val expectedOoData = getOpiskeluoikeus(oppija.oid, schema.OpiskeluoikeudenTyyppi.ylioppilastutkinto.koodiarvo)
       val expectedSuoritusDatat = expectedOoData.suoritukset
 
-      val result = aktiivisetJaPäättyneetOpinnotService.findOppija(oppija.oid)
+      val result = suoritusjakoService.findAktiivisetJaPäättyneetOpinnotOppija(oppija.oid)
 
       result.isRight should be(true)
 
@@ -222,7 +224,7 @@ class AktiivisetJaPäättyneetOpinnotServiceSpec
         val expectedOoData = getOpiskeluoikeus(oppija.oid, schema.OpiskeluoikeudenTyyppi.aikuistenperusopetus.koodiarvo)
         val expectedSuoritusDatat = expectedOoData.suoritukset
 
-        val result = aktiivisetJaPäättyneetOpinnotService.findOppija(oppija.oid)
+        val result = suoritusjakoService.findAktiivisetJaPäättyneetOpinnotOppija(oppija.oid)
 
         result.isRight should be(true)
 
@@ -251,7 +253,7 @@ class AktiivisetJaPäättyneetOpinnotServiceSpec
         val expectedOoData = getOpiskeluoikeus(oppija.oid, schema.OpiskeluoikeudenTyyppi.diatutkinto.koodiarvo)
         val expectedSuoritusDatat = expectedOoData.suoritukset
 
-        val result = aktiivisetJaPäättyneetOpinnotService.findOppija(oppija.oid)
+        val result = suoritusjakoService.findAktiivisetJaPäättyneetOpinnotOppija(oppija.oid)
 
         result.isRight should be(true)
 
@@ -283,7 +285,7 @@ class AktiivisetJaPäättyneetOpinnotServiceSpec
         val expectedOoData = getOpiskeluoikeus(oppija.oid, schema.OpiskeluoikeudenTyyppi.ibtutkinto.koodiarvo)
         val expectedSuoritusDatat = expectedOoData.suoritukset
 
-        val result = aktiivisetJaPäättyneetOpinnotService.findOppija(oppija.oid)
+        val result = suoritusjakoService.findAktiivisetJaPäättyneetOpinnotOppija(oppija.oid)
 
         result.isRight should be(true)
 
@@ -319,7 +321,7 @@ class AktiivisetJaPäättyneetOpinnotServiceSpec
           case s: schema.EBTutkinnonSuoritus => s
         }
 
-        val result = aktiivisetJaPäättyneetOpinnotService.findOppija(oppija.oid)
+        val result = suoritusjakoService.findAktiivisetJaPäättyneetOpinnotOppija(oppija.oid)
 
         result.isRight should be(true)
 
@@ -350,7 +352,7 @@ class AktiivisetJaPäättyneetOpinnotServiceSpec
 
       expectedEshSuoritukset should have length 1
 
-      val result = aktiivisetJaPäättyneetOpinnotService.findOppija(oppija.oid)
+      val result = suoritusjakoService.findAktiivisetJaPäättyneetOpinnotOppija(oppija.oid)
 
       result.isRight should be(true)
 
@@ -385,7 +387,7 @@ class AktiivisetJaPäättyneetOpinnotServiceSpec
       }
 
       // Tarkista, että pelkkä EB-tutkinnon opiskeluoikeus palautetaan
-      val result = aktiivisetJaPäättyneetOpinnotService.findOppija(oppija.oid)
+      val result = suoritusjakoService.findAktiivisetJaPäättyneetOpinnotOppija(oppija.oid)
 
       result.isRight should be(true)
       result.map(o => {
@@ -416,7 +418,7 @@ class AktiivisetJaPäättyneetOpinnotServiceSpec
           case s if schema.InternationalSchoolOpiskeluoikeus.onLukiotaVastaavaInternationalSchoolinSuoritus(s.tyyppi.koodiarvo, s.koulutusmoduuli.tunniste.koodiarvo) => s
         }
 
-        val result = aktiivisetJaPäättyneetOpinnotService.findOppija(oppija.oid)
+        val result = suoritusjakoService.findAktiivisetJaPäättyneetOpinnotOppija(oppija.oid)
 
         result.isRight should be(true)
 
@@ -500,7 +502,7 @@ class AktiivisetJaPäättyneetOpinnotServiceSpec
       val expectedOoData = putAndGetOpiskeluoikeus(ooIlmanLukiotaVastaaviaSuorituksia, oppija)
       val expectedSuoritusDatat = expectedOoData.suoritukset.collect { case s: MYPVuosiluokanSuoritus if s.koulutusmoduuli.tunniste.koodiarvo == "10" => s }
 
-      val result = aktiivisetJaPäättyneetOpinnotService.findOppija(oppija.oid)
+      val result = suoritusjakoService.findAktiivisetJaPäättyneetOpinnotOppija(oppija.oid)
 
       result.isRight should be(true)
 
@@ -562,7 +564,7 @@ class AktiivisetJaPäättyneetOpinnotServiceSpec
         val expectedOoData = getOpiskeluoikeus(oppija.oid, schema.OpiskeluoikeudenTyyppi.lukiokoulutus.koodiarvo)
         val expectedSuoritusDatat = expectedOoData.suoritukset
 
-        val result = aktiivisetJaPäättyneetOpinnotService.findOppija(oppija.oid)
+        val result = suoritusjakoService.findAktiivisetJaPäättyneetOpinnotOppija(oppija.oid)
 
         result.isRight should be(true)
 
@@ -591,7 +593,7 @@ class AktiivisetJaPäättyneetOpinnotServiceSpec
         val expectedOoData = getOpiskeluoikeus(oppija.oid, schema.OpiskeluoikeudenTyyppi.muukuinsaanneltykoulutus.koodiarvo)
         val expectedSuoritusDatat = expectedOoData.suoritukset
 
-        val result = aktiivisetJaPäättyneetOpinnotService.findOppija(oppija.oid)
+        val result = suoritusjakoService.findAktiivisetJaPäättyneetOpinnotOppija(oppija.oid)
 
         result.isRight should be(true)
 
@@ -621,7 +623,7 @@ class AktiivisetJaPäättyneetOpinnotServiceSpec
         val expectedOoData = getOpiskeluoikeus(oppija.oid, schema.OpiskeluoikeudenTyyppi.tuva.koodiarvo)
         val expectedSuoritusDatat = expectedOoData.suoritukset
 
-        val result = aktiivisetJaPäättyneetOpinnotService.findOppija(oppija.oid)
+        val result = suoritusjakoService.findAktiivisetJaPäättyneetOpinnotOppija(oppija.oid)
 
         result.isRight should be(true)
 
@@ -657,7 +659,7 @@ class AktiivisetJaPäättyneetOpinnotServiceSpec
         val expectedOoData = getOpiskeluoikeus(oppija.oid, schema.OpiskeluoikeudenTyyppi.vapaansivistystyonkoulutus.koodiarvo)
         val expectedSuoritusDatat = expectedOoData.suoritukset
 
-        val result = aktiivisetJaPäättyneetOpinnotService.findOppija(oppija.oid)
+        val result = suoritusjakoService.findAktiivisetJaPäättyneetOpinnotOppija(oppija.oid)
 
         result.isRight should be(true)
 
@@ -699,7 +701,7 @@ class AktiivisetJaPäättyneetOpinnotServiceSpec
 
     val sisältyvä = createOpiskeluoikeus(oppija, sisältyväInput, user = MockUsers.omniaTallentaja)
 
-    val result = aktiivisetJaPäättyneetOpinnotService.findOppija(oppija.oid)
+    val result = suoritusjakoService.findAktiivisetJaPäättyneetOpinnotOppija(oppija.oid)
 
     result.isRight should be(true)
 
@@ -729,7 +731,7 @@ class AktiivisetJaPäättyneetOpinnotServiceSpec
     suoritukset = List(suoritus)
   )
 
-  private def verifyOppija(expected: LaajatOppijaHenkilöTiedot, actual: AktiivisetJaPäättyneetOpinnotOppija) = {
+  private def verifyOppija(expected: LaajatOppijaHenkilöTiedot, actual: AktiivisetJaPäättyneetOpinnotOppijaJakolinkillä) = {
     actual.henkilö.oid should be(expected.oid)
     actual.henkilö.etunimet should be(expected.etunimet)
     actual.henkilö.kutsumanimi should be(expected.kutsumanimi)
@@ -738,7 +740,7 @@ class AktiivisetJaPäättyneetOpinnotServiceSpec
   }
 
   private def verifyEiOpiskeluoikeuksia(oppija: LaajatOppijaHenkilöTiedot) = {
-    val result = aktiivisetJaPäättyneetOpinnotService.findOppija(oppija.oid)
+    val result = suoritusjakoService.findAktiivisetJaPäättyneetOpinnotOppija(oppija.oid)
 
     result.isRight should be(true)
 
@@ -750,7 +752,7 @@ class AktiivisetJaPäättyneetOpinnotServiceSpec
   }
 
   private def verifyEiLöydyTaiEiKäyttöoikeuksia(oppijaOid: String)(implicit user: KoskiSpecificSession): Unit = {
-    val result = aktiivisetJaPäättyneetOpinnotService.findOppija(oppijaOid)(user)
+    val result = suoritusjakoService.findAktiivisetJaPäättyneetOpinnotOppija(oppijaOid)(user)
 
     result.isLeft should be(true)
     result should equal(Left(KoskiErrorCategory.notFound.oppijaaEiLöydyTaiEiOikeuksia("Oppijaa ei löydy tai käyttäjällä ei ole oikeuksia tietojen katseluun.")))

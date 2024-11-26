@@ -15,8 +15,7 @@ import fi.oph.koski.massaluovutus.{QueryDocumentation, QueryResponse}
 import fi.oph.koski.omadataoauth2.{OmaDataOAuth2AktiivisetJaPäättyneetOpiskeluoikeudet, OmaDataOAuth2Documentation, OmaDataOAuth2KaikkiOpiskeluoikeudet, OmaDataOAuth2SuoritetutTutkinnot}
 import fi.oph.koski.schema.KoskiSchema
 import fi.oph.koski.servlet.{KoskiSpecificApiServlet, NoCache}
-import fi.oph.koski.suoritusjako.aktiivisetjapaattyneetopinnot.AktiivisetJaPäättyneetOpinnotSchema
-import fi.oph.koski.suoritusjako.suoritetuttutkinnot.SuoritetutTutkinnotSchema
+import fi.oph.koski.suoritusjako.{AktiivisetJaPäättyneetOpinnotOppijaJakolinkillä, SuoritetutTutkinnotOppijaJakolinkillä}
 import fi.oph.koski.valpas.kela.ValpasKelaSchema
 import fi.oph.koski.valpas.oppija.ValpasInternalSchema
 import fi.oph.koski.valpas.ytl.ValpasYtlSchema
@@ -71,11 +70,11 @@ class DocumentationApiServlet(application: KoskiApplication) extends KoskiSpecif
   }
 
   get("/suoritetut-tutkinnot-oppija-schema.json") {
-    SuoritetutTutkinnotSchema.schemaJson
+    SuoritetutTutkinnotOppijaJakolinkillä.schemaJson
   }
 
   get("/aktiiviset-ja-paattyneet-opinnot-oppija-schema.json") {
-    AktiivisetJaPäättyneetOpinnotSchema.schemaJson
+    AktiivisetJaPäättyneetOpinnotOppijaJakolinkillä.schemaJson
   }
 
   get("/vkt-oppija-schema.json") {

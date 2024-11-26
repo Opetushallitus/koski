@@ -1,8 +1,7 @@
 package fi.oph.koski.vkt
 
 import fi.oph.koski.schema
-import fi.oph.koski.schema.annotation.{Deprecated, KoodistoUri, Representative}
-import fi.oph.koski.suoritusjako.common.Jakolinkki
+import fi.oph.koski.schema.annotation.{KoodistoUri, Representative}
 import fi.oph.scalaschema.annotation.{Discriminator, SyntheticProperty, Title}
 import fi.oph.scalaschema.{ClassSchema, SchemaToJson}
 import org.json4s.JValue
