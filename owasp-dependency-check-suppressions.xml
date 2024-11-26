@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <suppressions xmlns="https://jeremylong.github.io/DependencyCheck/dependency-suppression.1.3.xsd">
   <suppress>
+    <notes>Suppress vulnerabilities for multiple Jetty dependencies</notes>
+    <packageUrl regex="true">^pkg:maven/org\.eclipse\.jetty/jetty\-.*@.*$</packageUrl>
+    <cve>CVE-2024-8184</cve>
+    <cve>CVE-2024-6763</cve>
+  </suppress>
+  <suppress>
     <cve>CVE-2023-4586</cve>
     <cve>CVE-2023-44487</cve>
     <cve>CVE-2021-32816</cve>
