@@ -49,7 +49,7 @@ class OmaDataOAuth2ResourceServerServlet(implicit val application: KoskiApplicat
   }
 
   private def renderOpinnot(oppijaOid: String, scope: String): Unit = {
-    val overrideSession = KoskiSpecificSession.suoritusjakoKatsominenUser(request)
+    val overrideSession = KoskiSpecificSession.oauth2KatsominenUser(request)
 
     scope.split(" ").filter(_.startsWith("OPISKELUOIKEUDET_")).toSeq match {
       case Seq("OPISKELUOIKEUDET_SUORITETUT_TUTKINNOT") =>

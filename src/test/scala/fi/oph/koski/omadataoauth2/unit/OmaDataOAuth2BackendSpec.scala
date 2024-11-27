@@ -54,7 +54,7 @@ class OmaDataOAuth2BackendSpec
       ) {
         verifyResponseStatusOk()
 
-        AuditLogTester.verifyAuditLogMessage(Map(
+        AuditLogTester.verifyOnlyAuditLogMessage(Map(
           "operation" -> "OAUTH2_ACCESS_TOKEN_LUONTI",
           "target" -> Map(
             "oppijaHenkiloOid" -> oppijaOid,
@@ -584,7 +584,7 @@ class OmaDataOAuth2BackendSpec
       postResourceServer(token) {
         verifyResponseStatusOk()
 
-        AuditLogTester.verifyAuditLogMessage(Map(
+        AuditLogTester.verifyOnlyAuditLogMessage(Map(
           "operation" -> "OAUTH2_KATSOMINEN_SUORITETUT_TUTKINNOT",
           "target" -> Map(
             "oppijaHenkiloOid" -> oppijaOid,
@@ -804,7 +804,7 @@ class OmaDataOAuth2BackendSpec
         postResourceServer(token, MockUsers.omadataOAuth2KaikkiOikeudetPalvelukäyttäjä) {
           verifyResponseStatusOk()
 
-          AuditLogTester.verifyAuditLogMessage(Map(
+          AuditLogTester.verifyOnlyAuditLogMessage(Map(
             "operation" -> "OAUTH2_KATSOMINEN_SUORITETUT_TUTKINNOT",
             "target" -> Map(
               "oppijaHenkiloOid" -> oppija.oid,
@@ -853,7 +853,7 @@ class OmaDataOAuth2BackendSpec
         postResourceServer(token, MockUsers.omadataOAuth2KaikkiOikeudetPalvelukäyttäjä) {
           verifyResponseStatusOk()
 
-          AuditLogTester.verifyAuditLogMessage(Map(
+          AuditLogTester.verifyOnlyAuditLogMessage(Map(
             "operation" -> "OAUTH2_KATSOMINEN_AKTIIVISET_JA_PAATTYNEET_OPINNOT",
             "target" -> Map(
               "oppijaHenkiloOid" -> oppija.oid,
@@ -935,7 +935,7 @@ class OmaDataOAuth2BackendSpec
         postResourceServer(token, MockUsers.omadataOAuth2KaikkiOikeudetPalvelukäyttäjä) {
           verifyResponseStatusOk()
 
-          AuditLogTester.verifyAuditLogMessage(Map(
+          AuditLogTester.verifyOnlyAuditLogMessage(Map(
             "operation" -> "OAUTH2_KATSOMINEN_KAIKKI_TIEDOT",
             "target" -> Map(
               "oppijaHenkiloOid" -> oppija.oid,
