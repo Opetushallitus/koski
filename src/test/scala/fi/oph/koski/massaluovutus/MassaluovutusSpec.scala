@@ -8,7 +8,7 @@ import fi.oph.koski.koskiuser.{KoskiSpecificSession, MockUsers, UserWithPassword
 import fi.oph.koski.log.AuditLogTester
 import fi.oph.koski.massaluovutus.organisaationopiskeluoikeudet.{MassaluovutusQueryOrganisaationOpiskeluoikeudet, MassaluovutusQueryOrganisaationOpiskeluoikeudetCsv, MassaluovutusQueryOrganisaationOpiskeluoikeudetJson, QueryOrganisaationOpiskeluoikeudetCsvDocumentation}
 import fi.oph.koski.massaluovutus.paallekkaisetopiskeluoikeudet.MassaluovutusQueryPaallekkaisetOpiskeluoikeudet
-import fi.oph.koski.massaluovutus.suoritusrekisteri.SuoritusrekisteriQuery
+import fi.oph.koski.massaluovutus.suoritusrekisteri.SuoritusrekisteriMuuttuneetJalkeenQuery
 import fi.oph.koski.massaluovutus.valintalaskenta.ValintalaskentaQuery
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.raportit.RaportitService
@@ -466,7 +466,7 @@ class MassaluovutusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers wit
   "Sure" - {
     val user = MockUsers.paakayttaja
 
-    def getQuery(muuttuneetJälkeen: LocalDateTime) = SuoritusrekisteriQuery(
+    def getQuery(muuttuneetJälkeen: LocalDateTime) = SuoritusrekisteriMuuttuneetJalkeenQuery(
       muuttuneetJälkeen = muuttuneetJälkeen
     )
 

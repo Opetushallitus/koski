@@ -17,10 +17,10 @@ import java.sql.Timestamp
 import java.time.LocalDateTime
 import scala.concurrent.duration.DurationInt
 
-@Title("Suoritusrekisterin kysely")
+@Title("Suoritusrekisterin kysely päivämäärän perusteella")
 @Description("Palauttaa Suoritusrekisteriä varten räätälöidyt tiedot annettujen oppijoiden ja koulutusmuodon mukaisista opiskeluoikeuksista.")
 @Description("Vastauksen skeema on saatavana <a href=\"/koski/json-schema-viewer/?schema=suoritusrekisteri-result.json\">täältä.</a>")
-case class SuoritusrekisteriQuery(
+case class SuoritusrekisteriMuuttuneetJalkeenQuery(
   @EnumValues(Set("sure"))
   `type`: String = "sure",
   @EnumValues(Set(QueryFormat.json))
@@ -60,7 +60,7 @@ case class SuoritusrekisteriQuery(
         SELECT id, aikaleima
         FROM opiskeluoikeus
         WHERE aikaleima >= ${Timestamp.valueOf(muuttuneetJälkeen)}
-          AND koulutusmuoto = any(${SuoritusrekisteriQuery.opiskeluoikeudenTyypit})
+          AND koulutusmuoto = any(${SuoritusrekisteriMuuttuneetJalkeenQuery.opiskeluoikeudenTyypit})
         ORDER BY aikaleima
       """.as[(Int, Timestamp)])
 
@@ -111,7 +111,7 @@ case class SuoritusrekisteriQuery(
       )
 }
 
-object SuoritusrekisteriQuery {
+object SuoritusrekisteriMuuttuneetJalkeenQuery {
   def opiskeluoikeudenTyypit: List[String] = List(
     "perusopetus",
     "aikuistenperusopetus",
