@@ -13,7 +13,7 @@ object KoskiSpecificMockOppijat {
 
   val hetuton = koskiSpecificOppijat.addOppija(LaajatOppijaHenkilöTiedot(oid = "1.2.246.562.24.99999999123", sukunimi = "Hetuton", etunimet = "Heikki", kutsumanimi = "Heikki", hetu = None, syntymäaika = Some(LocalDate.of(1977, 2, 24)), yksilöity = false))
   val syntymäajallinen = koskiSpecificOppijat.addOppija(LaajatOppijaHenkilöTiedot(oid = "1.2.246.562.24.99999999124", sukunimi = "Syntynyt", etunimet = "Sylvi", kutsumanimi = "Sylvi", hetu = Some("220627-833V"), syntymäaika = Some(LocalDate.of(1970, 1, 1))))
-  val eero = koskiSpecificOppijat.oppija("Esimerkki", "Eero", "010101-123N")
+  val eero = koskiSpecificOppijat.oppijaSyntymäaikaHetusta("Esimerkki", "Eero", "010101-123N")
   val eerola = koskiSpecificOppijat.oppija("Çelik-Eerola", "Jouni", "081165-793C")
   val markkanen = koskiSpecificOppijat.oppija("Markkanen-Fagerström", "Eéro Jorma-Petteri", "080154-770R", syntymäaika = Some(LocalDate.of(1954, 1, 8)))
   val teija = koskiSpecificOppijat.oppija("Tekijä", "Teija", "251019-039B", kotikunta = Some("091"))
