@@ -15,7 +15,7 @@ class AktiivisetJaPäättyneetOpinnotService(application: KoskiApplication) exte
     Some(AktiivisetJaPäättyneetOpinnotKorkeakoulunOpiskeluoikeus.fromKoskiSchema)
   )
 
-  def findOppijaLaajatHenkilötiedot(oppijaOid: String, merkitseSuoritusjakoTehdyksi: Boolean = true)
+  def findAktiivisetJaPäättyneetOpinnotOppija(oppijaOid: String, merkitseSuoritusjakoTehdyksi: Boolean = true)
     (implicit koskiSession: KoskiSpecificSession): Either[HttpStatus, AktiivisetJaPäättyneetOpinnotOppijaLaajatHenkilötiedot] = {
 
     val oppija: Either[HttpStatus, RawOppija[AktiivisetJaPäättyneetOpinnotOpiskeluoikeus]] = findRawAktiivisetJaPäättyneetOpinnotOppija(oppijaOid)

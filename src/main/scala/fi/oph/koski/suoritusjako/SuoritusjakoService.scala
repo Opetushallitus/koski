@@ -136,7 +136,7 @@ class SuoritusjakoService(
 
   def findAktiivisetJaPäättyneetOpinnotOppija(oppijaOid: String)
     (implicit koskiSession: KoskiSpecificSession): Either[HttpStatus, AktiivisetJaPäättyneetOpinnotOppijaJakolinkillä] = {
-    aktiivisetJaPäättyneetOpinnotService.findOppijaLaajatHenkilötiedot(
+    aktiivisetJaPäättyneetOpinnotService.findAktiivisetJaPäättyneetOpinnotOppija(
       oppijaOid,
       merkitseSuoritusjakoTehdyksi = true
     ).map(oppijaLaajatTiedot => {

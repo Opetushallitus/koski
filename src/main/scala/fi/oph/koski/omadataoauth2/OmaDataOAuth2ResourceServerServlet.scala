@@ -1,24 +1,14 @@
 package fi.oph.koski.omadataoauth2
 
-import fi.oph.koski.aktiivisetjapaattyneetopinnot.AktiivisetJaPäättyneetOpinnotOpiskeluoikeus
 import fi.oph.koski.config.KoskiApplication
-import fi.oph.koski.henkilo.LaajatOppijaHenkilöTiedot
 import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.koskiuser.{KoskiSpecificSession, RequiresOmaDataOAuth2}
 import fi.oph.koski.log.KoskiAuditLogMessageField.{omaDataKumppani, omaDataOAuth2Scope, oppijaHenkiloOid}
 import fi.oph.koski.log.KoskiOperation.{OAUTH2_KATSOMINEN_AKTIIVISET_JA_PAATTYNEET_OPINNOT, OAUTH2_KATSOMINEN_KAIKKI_TIEDOT, OAUTH2_KATSOMINEN_SUORITETUT_TUTKINNOT}
 import fi.oph.koski.log.{AuditLog, KoskiAuditLogMessage, KoskiOperation, Logging}
-import fi.oph.koski.schema.{Opiskeluoikeus, Oppija, TäydellisetHenkilötiedot}
 import fi.oph.koski.servlet.{KoskiSpecificApiServlet, NoCache}
-import fi.oph.scalaschema.{ClassSchema, SchemaToJson}
-import org.json4s.JValue
 import org.scalatra.ContentEncodingSupport
-import fi.oph.koski.schema
-import fi.oph.koski.suoritetuttutkinnot.SuoritetutTutkinnotOpiskeluoikeus
-
-import scala.util.chaining._
-import java.time.LocalDate
-
+import scala.reflect.runtime.universe.TypeTag
 
 class OmaDataOAuth2ResourceServerServlet(implicit val application: KoskiApplication) extends KoskiSpecificApiServlet
   with Logging with ContentEncodingSupport with NoCache with RequiresOmaDataOAuth2 {
@@ -53,72 +43,19 @@ class OmaDataOAuth2ResourceServerServlet(implicit val application: KoskiApplicat
 
     scope.split(" ").filter(_.startsWith("OPISKELUOIKEUDET_")).toSeq match {
       case Seq("OPISKELUOIKEUDET_SUORITETUT_TUTKINNOT") =>
-        renderSuoritetutTutkinnot(oppijaOid, scope, overrideSession)
+        val oppija = application.omaDataOAuth2Service.findSuoritetutTutkinnot(oppijaOid, scope, overrideSession)
+        auditLogKatsominen(OAUTH2_KATSOMINEN_SUORITETUT_TUTKINNOT, koskiSession.user.username, koskiSession, oppijaOid, scope)
+        renderOppijaData(oppija)
       case Seq("OPISKELUOIKEUDET_AKTIIVISET_JA_PAATTYNEET_OPINNOT") =>
-        renderAktiivisetJaPäättyneetOpinnot(oppijaOid, scope, overrideSession)
+        val oppija = application.omaDataOAuth2Service.findAktiivisetJaPäättyneetOpinnot(oppijaOid, scope, overrideSession)
+        auditLogKatsominen(OAUTH2_KATSOMINEN_AKTIIVISET_JA_PAATTYNEET_OPINNOT, koskiSession.user.username, koskiSession, oppijaOid, scope)
+        renderOppijaData(oppija)
       case Seq("OPISKELUOIKEUDET_KAIKKI_TIEDOT") =>
-        renderKaikkiTiedot(oppijaOid, scope, overrideSession)
+        val oppija = application.omaDataOAuth2Service.findKaikkiTiedot(oppijaOid, scope, overrideSession)
+        auditLogKatsominen(OAUTH2_KATSOMINEN_KAIKKI_TIEDOT, koskiSession.user.username, koskiSession, oppijaOid, scope)
+        renderOppijaData(oppija)
       case _ =>
         renderError(OmaDataOAuth2ErrorType.server_error, s"Internal error, unable to handle OPISKELUOIKEUDET scope defined in ${scope}", msg => logger.error(msg))
-    }
-  }
-
-  private def renderSuoritetutTutkinnot(oppijaOid: String, scope: String, overrideSession: KoskiSpecificSession): Unit = {
-    application.suoritetutTutkinnotService.findSuoritetutTutkinnotOppija(
-      oppijaOid,
-      merkitseSuoritusjakoTehdyksi = false
-    )(overrideSession) match {
-      case Right(oppija) =>
-        auditLogKatsominen(OAUTH2_KATSOMINEN_SUORITETUT_TUTKINNOT, koskiSession.user.username, koskiSession, oppijaOid, scope)
-
-        val result = OmaDataOAuth2SuoritetutTutkinnot(
-          henkilö = OmaDataOAuth2Henkilötiedot(oppija.henkilö, scope),
-          opiskeluoikeudet = oppija.opiskeluoikeudet
-        )
-
-        response.setStatus(200)
-        renderObject(result)
-      case Left(httpStatus) =>
-        renderError(OmaDataOAuth2ErrorType.server_error, httpStatus, "Internal error", msg => logger.warn(msg))
-    }
-  }
-
-  private def renderAktiivisetJaPäättyneetOpinnot(oppijaOid: String, scope: String, overrideSession: KoskiSpecificSession): Unit = {
-    application.aktiivisetJaPäättyneetOpinnotService.findOppijaLaajatHenkilötiedot(
-      oppijaOid,
-      merkitseSuoritusjakoTehdyksi = false
-    )(overrideSession) match {
-      case Right(oppija) =>
-        auditLogKatsominen(OAUTH2_KATSOMINEN_AKTIIVISET_JA_PAATTYNEET_OPINNOT, koskiSession.user.username, koskiSession, oppijaOid, scope)
-
-        val result = OmaDataOAuth2AktiivisetJaPäättyneetOpiskeluoikeudet(
-          henkilö = OmaDataOAuth2Henkilötiedot(oppija.henkilö, scope),
-          opiskeluoikeudet = oppija.opiskeluoikeudet
-        )
-
-        response.setStatus(200)
-        renderObject(result)
-      case Left(httpStatus) =>
-        renderError(OmaDataOAuth2ErrorType.server_error, httpStatus, "Internal error", msg => logger.warn(msg))
-    }
-  }
-
-  private def renderKaikkiTiedot(oppijaOid: String, scope: String, overrideSession: KoskiSpecificSession): Unit = {
-    application.oppijaFacade.findOppija(oppijaOid)(overrideSession).flatMap(_.warningsToLeft) match {
-      case Right(Oppija(henkilö: TäydellisetHenkilötiedot, opiskeluoikeudet: Seq[Opiskeluoikeus])) =>
-        auditLogKatsominen(OAUTH2_KATSOMINEN_KAIKKI_TIEDOT, koskiSession.user.username, koskiSession, oppijaOid, scope)
-
-        val result = OmaDataOAuth2KaikkiOpiskeluoikeudet(
-          henkilö = OmaDataOAuth2Henkilötiedot(henkilö, scope),
-          opiskeluoikeudet = opiskeluoikeudet.toList
-        )
-
-        response.setStatus(200)
-        renderObject(result)
-      case Right(_) =>
-        renderError(OmaDataOAuth2ErrorType.server_error, "Internal error, datatype not recognized", msg => logger.error(msg))
-      case Left(httpStatus) =>
-        renderError(OmaDataOAuth2ErrorType.server_error, httpStatus, "Internal error", msg => logger.warn(msg))
     }
   }
 
@@ -134,6 +71,13 @@ class OmaDataOAuth2ResourceServerServlet(implicit val application: KoskiApplicat
       omaDataKumppani -> expectedClientId,
       omaDataOAuth2Scope -> scope
     )))
+  }
+
+  private def renderOppijaData[T: TypeTag](oppija: Either[HttpStatus, T]): Unit = oppija match {
+    case Right(oppija) =>
+      renderObject(oppija)
+    case Left(httpStatus) =>
+      renderError(OmaDataOAuth2ErrorType.server_error, httpStatus, "Internal error", msg => logger.warn(msg))
   }
 
   private def renderError(errorType: OmaDataOAuth2ErrorType, message: String, log: String => Unit): Unit = {
@@ -158,150 +102,3 @@ class OmaDataOAuth2ResourceServerServlet(implicit val application: KoskiApplicat
     renderObject(errorResult)
   }
 }
-
-object OmaDataOAuth2Henkilötiedot {
-  def apply(laajatTiedot: LaajatOppijaHenkilöTiedot, scope: String): OmaDataOAuth2Henkilötiedot = {
-    val scopes = scope.split(" ").filter(_.startsWith("HENKILOTIEDOT_"))
-
-    def withNimi(henkilö: OmaDataOAuth2Henkilötiedot): OmaDataOAuth2Henkilötiedot = {
-      if (scopes.contains("HENKILOTIEDOT_NIMI") || scopes.contains("HENKILOTIEDOT_KAIKKI_TIEDOT")) {
-        henkilö.copy(
-          sukunimi = Some(laajatTiedot.sukunimi),
-          etunimet = Some(laajatTiedot.etunimet),
-          kutsumanimi = Some(laajatTiedot.kutsumanimi)
-        )
-      } else {
-        henkilö
-      }
-    }
-
-    def withOppijanumero(henkilö: OmaDataOAuth2Henkilötiedot): OmaDataOAuth2Henkilötiedot = {
-      if (scopes.contains("HENKILOTIEDOT_OPPIJANUMERO") || scopes.contains("HENKILOTIEDOT_KAIKKI_TIEDOT")) {
-        henkilö.copy(
-          oid = Some(laajatTiedot.oid)
-        )
-      } else {
-        henkilö
-      }
-    }
-
-    def withHetu(henkilö: OmaDataOAuth2Henkilötiedot): OmaDataOAuth2Henkilötiedot = {
-      if (scopes.contains("HENKILOTIEDOT_HETU") || scopes.contains("HENKILOTIEDOT_KAIKKI_TIEDOT")) {
-        henkilö.copy(
-          hetu = laajatTiedot.hetu
-        )
-      } else {
-        henkilö
-      }
-    }
-
-    def withSyntymäaika(henkilö: OmaDataOAuth2Henkilötiedot): OmaDataOAuth2Henkilötiedot = {
-      if (scopes.contains("HENKILOTIEDOT_SYNTYMAAIKA") || scopes.contains("HENKILOTIEDOT_KAIKKI_TIEDOT")) {
-        henkilö.copy(
-          syntymäaika = laajatTiedot.syntymäaika
-        )
-      } else {
-        henkilö
-      }
-    }
-
-    OmaDataOAuth2Henkilötiedot()
-      .pipe(withNimi)
-      .pipe(withOppijanumero)
-      .pipe(withHetu)
-      .pipe(withSyntymäaika)
-  }
-
-  def apply(täydellisetTiedot: TäydellisetHenkilötiedot, scope: String): OmaDataOAuth2Henkilötiedot = {
-    val scopes = scope.split(" ").filter(_.startsWith("HENKILOTIEDOT_"))
-
-    def withNimi(henkilö: OmaDataOAuth2Henkilötiedot): OmaDataOAuth2Henkilötiedot = {
-      if (scopes.contains("HENKILOTIEDOT_NIMI") || scopes.contains("HENKILOTIEDOT_KAIKKI_TIEDOT")) {
-        henkilö.copy(
-          sukunimi = Some(täydellisetTiedot.sukunimi),
-          etunimet = Some(täydellisetTiedot.etunimet),
-          kutsumanimi = Some(täydellisetTiedot.kutsumanimi)
-        )
-      } else {
-        henkilö
-      }
-    }
-
-    def withOppijanumero(henkilö: OmaDataOAuth2Henkilötiedot): OmaDataOAuth2Henkilötiedot = {
-      if (scopes.contains("HENKILOTIEDOT_OPPIJANUMERO") || scopes.contains("HENKILOTIEDOT_KAIKKI_TIEDOT")) {
-        henkilö.copy(
-          oid = Some(täydellisetTiedot.oid)
-        )
-      } else {
-        henkilö
-      }
-    }
-
-    def withHetu(henkilö: OmaDataOAuth2Henkilötiedot): OmaDataOAuth2Henkilötiedot = {
-      if (scopes.contains("HENKILOTIEDOT_HETU") || scopes.contains("HENKILOTIEDOT_KAIKKI_TIEDOT")) {
-        henkilö.copy(
-          hetu = täydellisetTiedot.hetu
-        )
-      } else {
-        henkilö
-      }
-    }
-
-    def withSyntymäaika(henkilö: OmaDataOAuth2Henkilötiedot): OmaDataOAuth2Henkilötiedot = {
-      if (scopes.contains("HENKILOTIEDOT_SYNTYMAAIKA") || scopes.contains("HENKILOTIEDOT_KAIKKI_TIEDOT")) {
-        henkilö.copy(
-          syntymäaika = täydellisetTiedot.syntymäaika
-        )
-      } else {
-        henkilö
-      }
-    }
-
-    OmaDataOAuth2Henkilötiedot()
-      .pipe(withNimi)
-      .pipe(withOppijanumero)
-      .pipe(withHetu)
-      .pipe(withSyntymäaika)
-  }
-
-}
-
-case class OmaDataOAuth2Henkilötiedot(
-  oid: Option[String] = None,
-  sukunimi: Option[String] = None,
-  etunimet: Option[String] = None,
-  kutsumanimi: Option[String] = None,
-  hetu: Option[String] = None,
-  syntymäaika: Option[LocalDate] = None
-)
-
-
-object OmaDataOAuth2KaikkiOpiskeluoikeudet {
-  lazy val schemaJson: JValue =
-    SchemaToJson.toJsonSchema(schema.KoskiSchema.createSchema(classOf[OmaDataOAuth2KaikkiOpiskeluoikeudet]).asInstanceOf[ClassSchema])
-}
-
-case class OmaDataOAuth2KaikkiOpiskeluoikeudet(
-  henkilö: OmaDataOAuth2Henkilötiedot,
-  opiskeluoikeudet: List[Opiskeluoikeus]
-)
-
-object OmaDataOAuth2SuoritetutTutkinnot {
-  lazy val schemaJson: JValue =
-    SchemaToJson.toJsonSchema(schema.KoskiSchema.createSchema(classOf[OmaDataOAuth2SuoritetutTutkinnot]).asInstanceOf[ClassSchema])
-}
-
-case class OmaDataOAuth2SuoritetutTutkinnot(
-  henkilö: OmaDataOAuth2Henkilötiedot,
-  opiskeluoikeudet: List[SuoritetutTutkinnotOpiskeluoikeus]
-)
-
-object OmaDataOAuth2AktiivisetJaPäättyneetOpiskeluoikeudet {
-  lazy val schemaJson: JValue =
-    SchemaToJson.toJsonSchema(schema.KoskiSchema.createSchema(classOf[OmaDataOAuth2AktiivisetJaPäättyneetOpiskeluoikeudet]).asInstanceOf[ClassSchema])
-}
-
-case class OmaDataOAuth2AktiivisetJaPäättyneetOpiskeluoikeudet(
-  henkilö: OmaDataOAuth2Henkilötiedot,
-  opiskeluoikeudet: List[AktiivisetJaPäättyneetOpinnotOpiskeluoikeus]
-)
