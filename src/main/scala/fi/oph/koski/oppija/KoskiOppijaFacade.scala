@@ -481,8 +481,10 @@ class KoskiOppijaFacade(
       .map(piilotaOppijanTietojaTarvittaessa)
 
   private def piilotaOppijanTietojaTarvittaessa(oppija: WithWarnings[Oppija])(implicit user: KoskiSpecificSession): WithWarnings[Oppija] = {
-    if (user.user.kansalainen || user.user.huollettava || user.user.isSuoritusjakoKatsominen) {
+    if (user.user.kansalainen || user.user.huollettava || user.user.isSuoritusjakoKatsominen ) {
       oppija.map(piilotetuillaTiedoilla)
+    } else if (user.user.isOauth2Katsominen) {
+      oppija.map(piilotetuillaOpiskeluoikeustiedoilla)
     } else {
       oppija
     }
@@ -491,14 +493,22 @@ class KoskiOppijaFacade(
   private def piilotaOppijanTietojaTarvittaessa(oppija: Oppija)(implicit user: KoskiSpecificSession): Oppija = {
     if (user.user.kansalainen || user.user.huollettava || user.user.isSuoritusjakoKatsominen) {
       piilotetuillaTiedoilla(oppija)
+    } else if (user.user.isOauth2Katsominen) {
+      piilotetuillaOpiskeluoikeustiedoilla(oppija)
     } else {
       oppija
     }
   }
 
   private def piilotetuillaTiedoilla(oppija: Oppija)(implicit koskiSession: KoskiSpecificSession): Oppija = {
+    val piilota = piilotaSensitiivisetHenkilötiedot _ andThen
+      piilotetuillaOpiskeluoikeustiedoilla
+
+    piilota(oppija)
+  }
+
+  private def piilotetuillaOpiskeluoikeustiedoilla(oppija: Oppija)(implicit koskiSession: KoskiSpecificSession): Oppija = {
     val piilota = piilotaArvosanatKeskeneräisistäSuorituksista _ andThen
-      piilotaSensitiivisetHenkilötiedot andThen
       piilotaKeskeneräisetPerusopetuksenPäättötodistukset andThen
       piilotaTietojaSuoritusjaosta andThen
       piilotaLaajuuksia

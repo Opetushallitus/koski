@@ -137,11 +137,11 @@ class YtrYoTodistusSpec extends AnyFreeSpec with KoskiHttpSpec with Opiskeluoike
       verifyResponseStatusOk()
       get(s"api/yotodistus/generate/fi/$oppijaOid", headers = headers) {
         verifyResponseStatus(204)
-        AuditLogTester.verifyAuditLogMessage(Map("operation" -> "YTR_YOTODISTUKSEN_LUONTI"))
+        AuditLogTester.verifyLastAuditLogMessage(Map("operation" -> "YTR_YOTODISTUKSEN_LUONTI"))
         Thread.sleep(3000)
         get(s"api/yotodistus/download/fi/$oppijaOid/foobar.pdf", headers = headers) {
           verifyResponseStatusOk()
-          AuditLogTester.verifyAuditLogMessage(Map("operation" -> "YTR_YOTODISTUKSEN_LATAAMINEN"))
+          AuditLogTester.verifyLastAuditLogMessage(Map("operation" -> "YTR_YOTODISTUKSEN_LATAAMINEN"))
           response.getHeader("Content-Type") should equal("application/pdf;charset=utf-8")
           bodyBytes should equal(resourceAsByteArray(s"/mockdata/yotodistus/mock-yotodistus.pdf"))
         }

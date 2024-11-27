@@ -30,7 +30,7 @@ class LukioonValmistavanKoulutuksenOpiskelijamaaratRaporttiSpec extends AnyFreeS
         verifyResponseStatusOk()
         response.headers("Content-Disposition").head should equal(s"""attachment; filename="lukioon_valmistavan_koulutuksen_opiskelijamaarat_20180101.xlsx"""")
         response.bodyBytes.take(ENCRYPTED_XLSX_PREFIX.length) should equal(ENCRYPTED_XLSX_PREFIX)
-        AuditLogTester.verifyAuditLogMessage(Map("operation" -> "OPISKELUOIKEUS_RAPORTTI", "target" -> Map("hakuEhto" -> s"raportti=luvaopiskelijamaarat&oppilaitosOid=${MockOrganisaatiot.helsinginKaupunki}&paiva=2018-01-01&lang=fi")))
+        AuditLogTester.verifyLastAuditLogMessage(Map("operation" -> "OPISKELUOIKEUS_RAPORTTI", "target" -> Map("hakuEhto" -> s"raportti=luvaopiskelijamaarat&oppilaitosOid=${MockOrganisaatiot.helsinginKaupunki}&paiva=2018-01-01&lang=fi")))
       }
     }
 
@@ -40,7 +40,7 @@ class LukioonValmistavanKoulutuksenOpiskelijamaaratRaporttiSpec extends AnyFreeS
         verifyResponseStatusOk()
         response.headers("Content-Disposition").head should equal(s"""attachment; filename="antal_studerande_gymnasieförberedande_20180101.xlsx"""")
         response.bodyBytes.take(ENCRYPTED_XLSX_PREFIX.length) should equal(ENCRYPTED_XLSX_PREFIX)
-        AuditLogTester.verifyAuditLogMessage(Map("operation" -> "OPISKELUOIKEUS_RAPORTTI", "target" -> Map("hakuEhto" -> s"raportti=luvaopiskelijamaarat&oppilaitosOid=${MockOrganisaatiot.helsinginKaupunki}&paiva=2018-01-01&lang=sv")))
+        AuditLogTester.verifyLastAuditLogMessage(Map("operation" -> "OPISKELUOIKEUS_RAPORTTI", "target" -> Map("hakuEhto" -> s"raportti=luvaopiskelijamaarat&oppilaitosOid=${MockOrganisaatiot.helsinginKaupunki}&paiva=2018-01-01&lang=sv")))
       }
     }
 

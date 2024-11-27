@@ -48,7 +48,7 @@ class HuoltajaSpec extends AnyFreeSpec with KoskiHttpSpec with OpiskeluoikeusTes
 
       get(s"api/omattiedot/editor/" + KoskiSpecificMockOppijat.ylioppilasLukiolainen.oid, headers = loginHeaders) {
         verifyResponseStatusOk()
-        AuditLogTester.verifyAuditLogMessage(Map("operation" -> "KANSALAINEN_HUOLTAJA_OPISKELUOIKEUS_KATSOMINEN"))
+        AuditLogTester.verifyLastAuditLogMessage(Map("operation" -> "KANSALAINEN_HUOLTAJA_OPISKELUOIKEUS_KATSOMINEN"))
         }
     }
   }

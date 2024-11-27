@@ -37,14 +37,14 @@ class ValpasKansalainenApiServletSpec extends ValpasTestBase with BeforeAndAfter
       val oppija = ValpasMockOppijat.lukioOpiskelija
       get(getOmatTiedotUrl, headers = kansalainenLoginHeaders(oppija.hetu.get)) {
         verifyResponseStatusOk()
-        AuditLogTester.verifyAuditLogMessage(katsominenAuditLogMessage(List(oppija.oid)))
+        AuditLogTester.verifyLastAuditLogMessage(katsominenAuditLogMessage(List(oppija.oid)))
       }
     }
 
     "Kansalaisen tietojen hakeminen tuottaa audit-logimerkinnän huollettavista" in {
       get(getOmatTiedotUrl, headers = kansalainenLoginHeaders("240470-621T")) {
         verifyResponseStatusOk() // Huoltajalla 240470-621T itsellään ei ole tietoja Valppaassa, joten viestissä on vain Valppaasta löytyvät huollettavat
-        AuditLogTester.verifyAuditLogMessage(huoltajaKatsominenAuditLogMessage(List(
+        AuditLogTester.verifyLastAuditLogMessage(huoltajaKatsominenAuditLogMessage(List(
           ValpasMockOppijat.turvakieltoOppija.oid,
           ValpasMockOppijat.oppivelvollinenYsiluokkaKeskenKeväällä2021.oid,
         )))

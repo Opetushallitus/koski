@@ -95,7 +95,7 @@ class SureSpec extends AnyFreeSpec with KoskiHttpSpec with OpiskeluoikeusTestMet
         val oids = Seq("1.2.246.562.24.90000000001", "1.2.246.562.24.90000000002", "1.2.246.562.24.90000000003", "1.2.246.562.24.90000000004")
         postOids(oids) {
           verifyResponseStatusOk()
-          AuditLogTester.verifyAuditLogMessage(Map("operation" -> "OPISKELUOIKEUS_HAKU", "target" -> Map("hakuEhto" -> "oids=1.2.246.562.24.90000000001,1.2.246.562.24.90000000002,...(4)")))
+          AuditLogTester.verifyLastAuditLogMessage(Map("operation" -> "OPISKELUOIKEUS_HAKU", "target" -> Map("hakuEhto" -> "oids=1.2.246.562.24.90000000001,1.2.246.562.24.90000000002,...(4)")))
         }
       }
       "Luottamuksellinen data" - {

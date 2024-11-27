@@ -138,7 +138,7 @@ class ValpasRouhintaApiServletSpec extends ValpasTestBase with BeforeAndAfterEac
 
     "jättää merkinnän auditlokiin" in {
       doKuntaQuery(ValpasMockUsers.valpasPyhtääJaAapajoenPeruskoulu, ValpasKuntarouhintaSpec.kuntaOid) {
-        AuditLogTester.verifyAuditLogMessage(Map(
+        AuditLogTester.verifyLastAuditLogMessage(Map(
           "operation" -> ValpasOperation.VALPAS_ROUHINTA_KUNTA.toString,
           "target" -> Map(
             ValpasAuditLogMessageField.hakulause.toString -> ValpasKuntarouhintaSpec.kuntakoodi,

@@ -12,7 +12,7 @@ class AuthenticationSpec extends AnyFreeSpec with Matchers with KoskiHttpSpec {
     "Valid credentials" in {
       post("user/login", JsonSerializer.writeWithRoot(Login("kalle", "kalle")), headers = jsonContent) {
         verifyResponseStatusOk()
-        AuditLogTester.verifyAuditLogMessage(Map("operation" -> "LOGIN", "user" -> Map("oid" -> MockUsers.kalle.oid)))
+        AuditLogTester.verifyLastAuditLogMessage(Map("operation" -> "LOGIN", "user" -> Map("oid" -> MockUsers.kalle.oid)))
       }
     }
     "Invalid credentials" in {

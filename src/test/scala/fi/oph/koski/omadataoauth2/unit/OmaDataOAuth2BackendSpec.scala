@@ -656,6 +656,10 @@ class OmaDataOAuth2BackendSpec
           val pkce = createChallengeAndVerifier
           val token = createAuthorizationAndToken(validKansalainen, pkce, scope, MockUsers.omadataOAuth2KaikkiOikeudetPalvelukäyttäjä)
 
+          // Tarkista esimerkkidata, että käytetyllä testihenkilöllä on kaikki tiedot olemassa
+          validKansalainen.hetu.isDefined should be(true)
+          validKansalainen.syntymäaika.isDefined should be(true)
+
           postResourceServer(token, MockUsers.omadataOAuth2KaikkiOikeudetPalvelukäyttäjä) {
             verifyResponseStatusOk()
             val data = JsonSerializer.parse[OmaDataOAuth2SuoritetutTutkinnot](response.body)
@@ -674,6 +678,10 @@ class OmaDataOAuth2BackendSpec
           val pkce = createChallengeAndVerifier
           val token = createAuthorizationAndToken(validKansalainen, pkce, scope, MockUsers.omadataOAuth2KaikkiOikeudetPalvelukäyttäjä)
 
+          // Tarkista esimerkkidata, että käytetyllä testihenkilöllä on kaikki tiedot olemassa
+          validKansalainen.hetu.isDefined should be(true)
+          validKansalainen.syntymäaika.isDefined should be(true)
+
           postResourceServer(token, MockUsers.omadataOAuth2KaikkiOikeudetPalvelukäyttäjä) {
             verifyResponseStatusOk()
             val data = JsonSerializer.parse[OmaDataOAuth2SuoritetutTutkinnot](response.body)
@@ -686,12 +694,17 @@ class OmaDataOAuth2BackendSpec
             data.henkilö.syntymäaika should be(validKansalainen.syntymäaika)
           }
         }
-        "kun käytetään HENKILOTIEDOT_KAIKKI_TIEDOT" in {
+
+        "kun käytetään HENKILOTIEDOT_KAIKKI_TIEDOT ja OPISKELUOIKEUDET_SUORITETUT_TUTKINNOT" in {
           val scope = "HENKILOTIEDOT_KAIKKI_TIEDOT OPISKELUOIKEUDET_SUORITETUT_TUTKINNOT"
 
           val pkce = createChallengeAndVerifier
           val token = createAuthorizationAndToken(validKansalainen, pkce, scope, MockUsers.omadataOAuth2KaikkiOikeudetPalvelukäyttäjä)
 
+          // Tarkista esimerkkidata, että käytetyllä testihenkilöllä on kaikki tiedot olemassa
+          validKansalainen.hetu.isDefined should be(true)
+          validKansalainen.syntymäaika.isDefined should be(true)
+
           postResourceServer(token, MockUsers.omadataOAuth2KaikkiOikeudetPalvelukäyttäjä) {
             verifyResponseStatusOk()
             val data = JsonSerializer.parse[OmaDataOAuth2SuoritetutTutkinnot](response.body)
@@ -705,6 +718,51 @@ class OmaDataOAuth2BackendSpec
           }
         }
 
+        "kun käytetään HENKILOTIEDOT_KAIKKI_TIEDOT ja OPISKELUOIKEUDET_AKTIIVISET_JA_PAATTYNEET_OPINNOT" in {
+          val scope = "HENKILOTIEDOT_KAIKKI_TIEDOT OPISKELUOIKEUDET_AKTIIVISET_JA_PAATTYNEET_OPINNOT"
+
+          val pkce = createChallengeAndVerifier
+          val token = createAuthorizationAndToken(validKansalainen, pkce, scope, MockUsers.omadataOAuth2KaikkiOikeudetPalvelukäyttäjä)
+
+          // Tarkista esimerkkidata, että käytetyllä testihenkilöllä on kaikki tiedot olemassa
+          validKansalainen.hetu.isDefined should be(true)
+          validKansalainen.syntymäaika.isDefined should be(true)
+
+          postResourceServer(token, MockUsers.omadataOAuth2KaikkiOikeudetPalvelukäyttäjä) {
+            verifyResponseStatusOk()
+            val data = JsonSerializer.parse[OmaDataOAuth2AktiivisetJaPäättyneetOpiskeluoikeudet](response.body)
+
+            data.henkilö.hetu should be(validKansalainen.hetu)
+            data.henkilö.oid should be(Some(validKansalainen.oid))
+            data.henkilö.sukunimi should be(Some(validKansalainen.sukunimi))
+            data.henkilö.etunimet should be(Some(validKansalainen.etunimet))
+            data.henkilö.kutsumanimi should be(Some(validKansalainen.kutsumanimi))
+            data.henkilö.syntymäaika should be(validKansalainen.syntymäaika)
+          }
+        }
+
+        "kun käytetään HENKILOTIEDOT_KAIKKI_TIEDOT ja OPISKELUOIKEUDET_KAIKKI_TIEDOT" in {
+          val scope = "HENKILOTIEDOT_KAIKKI_TIEDOT OPISKELUOIKEUDET_KAIKKI_TIEDOT"
+
+          val pkce = createChallengeAndVerifier
+          val token = createAuthorizationAndToken(validKansalainen, pkce, scope, MockUsers.omadataOAuth2KaikkiOikeudetPalvelukäyttäjä)
+
+          // Tarkista esimerkkidata, että käytetyllä testihenkilöllä on kaikki tiedot olemassa
+          validKansalainen.hetu.isDefined should be(true)
+          validKansalainen.syntymäaika.isDefined should be(true)
+
+          postResourceServer(token, MockUsers.omadataOAuth2KaikkiOikeudetPalvelukäyttäjä) {
+            verifyResponseStatusOk()
+            val data = JsonSerializer.parse[OmaDataOAuth2KaikkiOpiskeluoikeudet](response.body)
+
+            data.henkilö.hetu should be(validKansalainen.hetu)
+            data.henkilö.oid should be(Some(validKansalainen.oid))
+            data.henkilö.sukunimi should be(Some(validKansalainen.sukunimi))
+            data.henkilö.etunimet should be(Some(validKansalainen.etunimet))
+            data.henkilö.kutsumanimi should be(Some(validKansalainen.kutsumanimi))
+            data.henkilö.syntymäaika should be(validKansalainen.syntymäaika)
+          }
+        }
       }
     }
 

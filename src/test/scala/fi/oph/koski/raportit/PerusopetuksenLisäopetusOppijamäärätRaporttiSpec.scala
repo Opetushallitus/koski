@@ -159,7 +159,7 @@ class PerusopetuksenLisäopetusOppijamäärätRaporttiSpec extends AnyFreeSpec w
         verifyResponseStatusOk()
         response.headers("Content-Disposition").head should equal(s"""attachment; filename="lisaopetus_tunnuslukuraportti-2007-01-01.xlsx"""")
         response.bodyBytes.take(ENCRYPTED_XLSX_PREFIX.length) should equal(ENCRYPTED_XLSX_PREFIX)
-        AuditLogTester.verifyAuditLogMessage(
+        AuditLogTester.verifyLastAuditLogMessage(
           Map(
             "operation" -> "OPISKELUOIKEUS_RAPORTTI",
             "target" -> Map(
@@ -175,7 +175,7 @@ class PerusopetuksenLisäopetusOppijamäärätRaporttiSpec extends AnyFreeSpec w
         verifyResponseStatusOk()
         response.headers("Content-Disposition").head should equal(s"""attachment; filename="påbyggnadsundervisning_nyckeltal_rapport-2007-01-01.xlsx"""")
         response.bodyBytes.take(ENCRYPTED_XLSX_PREFIX.length) should equal(ENCRYPTED_XLSX_PREFIX)
-        AuditLogTester.verifyAuditLogMessage(
+        AuditLogTester.verifyLastAuditLogMessage(
           Map(
             "operation" -> "OPISKELUOIKEUS_RAPORTTI",
             "target" -> Map(

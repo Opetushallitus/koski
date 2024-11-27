@@ -42,7 +42,7 @@ class ValpasKelaServletSpec extends ValpasTestBase with BeforeAndAfterEach {
 
         postHetu(oppija.hetu.get) {
           verifyResponseStatusOk()
-          AuditLogTester.verifyAuditLogMessage(Map("operation" -> "OPPIVELVOLLISUUSREKISTERI_LUOVUTUS", "target" -> Map("oppijaHenkilöOid" -> oppija.oid)))
+          AuditLogTester.verifyLastAuditLogMessage(Map("operation" -> "OPPIVELVOLLISUUSREKISTERI_LUOVUTUS", "target" -> Map("oppijaHenkilöOid" -> oppija.oid)))
         }
       }
 
@@ -345,7 +345,7 @@ class ValpasKelaServletSpec extends ValpasTestBase with BeforeAndAfterEach {
 
         postHetut(hetut) {
           verifyResponseStatusOk()
-          AuditLogTester.verifyAuditLogMessage(Map("operation" -> "OPPIVELVOLLISUUSREKISTERI_LUOVUTUS", "target" -> Map("oppijaHenkilöOid" -> oppija.oid)))
+          AuditLogTester.verifyLastAuditLogMessage(Map("operation" -> "OPPIVELVOLLISUUSREKISTERI_LUOVUTUS", "target" -> Map("oppijaHenkilöOid" -> oppija.oid)))
         }
       }
 

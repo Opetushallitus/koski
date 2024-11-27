@@ -39,7 +39,7 @@ class YtlSpec
         response.length should equal(1)
         response(0).opiskeluoikeudet.length should equal(1)
 
-        AuditLogTester.verifyAuditLogMessage(Map("operation" -> "OPISKELUOIKEUS_KATSOMINEN", "target" -> Map("oppijaHenkiloOid" -> KoskiSpecificMockOppijat.amis.oid)))
+        AuditLogTester.verifyLastAuditLogMessage(Map("operation" -> "OPISKELUOIKEUS_KATSOMINEN", "target" -> Map("oppijaHenkiloOid" -> KoskiSpecificMockOppijat.amis.oid)))
       }
     }
 
@@ -338,7 +338,7 @@ class YtlSpec
         val response = JsonSerializer.parse[List[YtlOppija]](body)
         response.length should equal(1)
         response(0).opiskeluoikeudet.length should equal(2)
-        AuditLogTester.verifyAuditLogMessage(Map("operation" -> "OPISKELUOIKEUS_KATSOMINEN", "target" -> Map("oppijaHenkiloOid" -> KoskiSpecificMockOppijat.maksuttomuuttaPidennetty2.oid)))
+        AuditLogTester.verifyLastAuditLogMessage(Map("operation" -> "OPISKELUOIKEUS_KATSOMINEN", "target" -> Map("oppijaHenkiloOid" -> KoskiSpecificMockOppijat.maksuttomuuttaPidennetty2.oid)))
 
         // Järjestä opiskeluoikeudet samaan järjestykseen kuin vertailudatassa
         val järjestettyResponse = response.updated(0, response(0).copy(opiskeluoikeudet = response(0).opiskeluoikeudet.sortBy(_.tyyppi.koodiarvo)))

@@ -39,7 +39,7 @@ class ValpasOppivelvollisuudenKeskeytysApiSpec extends ValpasTestBase with Befor
     "Keskeytyksen lisääminen" in {
       lisääKeskeytys(okMääräaikainenKeskeytys) {
         verifyResponseStatusOk()
-        AuditLogTester.verifyAuditLogMessage(Map(
+        AuditLogTester.verifyLastAuditLogMessage(Map(
           "operation" -> ValpasOperation.VALPAS_OPPIVELVOLLISUUDEN_KESKEYTYS.toString,
           "target" -> Map(
             ValpasAuditLogMessageField.oppijaHenkilöOid.toString -> oppijaOid,
@@ -56,7 +56,7 @@ class ValpasOppivelvollisuudenKeskeytysApiSpec extends ValpasTestBase with Befor
         loppu = Some(LocalDate.of(2022, 2, 1))
       )) {
         verifyResponseStatusOk()
-        AuditLogTester.verifyAuditLogMessage(Map(
+        AuditLogTester.verifyLastAuditLogMessage(Map(
           "operation" -> ValpasOperation.VALPAS_OPPIVELVOLLISUUDEN_KESKEYTYKSEN_MUOKKAUS.toString,
           "target" -> Map(
             ValpasAuditLogMessageField.oppijaHenkilöOid.toString -> oppijaOid,
@@ -69,7 +69,7 @@ class ValpasOppivelvollisuudenKeskeytysApiSpec extends ValpasTestBase with Befor
     "Keskeytyksen poistaminen" in {
       poistaKeskeytys(uusiKeskeytys.id) {
         verifyResponseStatusOk()
-        AuditLogTester.verifyAuditLogMessage(Map(
+        AuditLogTester.verifyLastAuditLogMessage(Map(
           "operation" -> ValpasOperation.VALPAS_OPPIVELVOLLISUUDEN_KESKEYTYKSEN_POISTO.toString,
           "target" -> Map(
             ValpasAuditLogMessageField.oppijaHenkilöOid.toString -> oppijaOid,
