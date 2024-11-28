@@ -14,7 +14,7 @@ Lisäksi pitää olla ajettuna:
 
 Tämän jälkeen tarvittavat palvelut, mukaanlukien luovutuspalvelun, voi käynnistää:
 
-    npm run start-with-server-and-luovutuspalvelu
+    /omadata-oauth2-sample/client % npm run start-with-server-and-luovutuspalvelu
 
 Koko putken rakenne:
 

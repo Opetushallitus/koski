@@ -1,7 +1,6 @@
 package fi.oph.koski.omadataoauth2
 
 import fi.oph.koski.config.KoskiApplication
-import fi.oph.koski.koodisto.KoodistoViite
 import fi.oph.koski.koskiuser.{KoskiSpecificAuthenticationSupport, RequiresKansalainen}
 import fi.oph.koski.log.Logging
 import fi.oph.koski.schema.LocalizedString
@@ -15,10 +14,7 @@ class OmaDataOAuth2ResourceOwnerServlet(implicit val application: KoskiApplicati
   get("/client-details/:client_id") {
     val clientId = params("client_id")
     renderObject(ClientDetails(clientId,
-      application.koodistoPalvelu.getKoodistoKoodit(application.koodistoPalvelu.getLatestVersionRequired("omadataoauth2client"))
-        .find(_.koodiArvo == clientId)
-        .flatMap(_.nimi)
-        .getOrElse(LocalizedString.unlocalized(clientId))
+      application.omaDataOAuth2Service.getClientName(clientId)
     ))
   }
 
@@ -120,6 +116,14 @@ class OmaDataOAuth2ResourceOwnerServlet(implicit val application: KoskiApplicati
           None
         )
     }
+  }
+
+  get("/active-consents") {
+    application.omaDataOAuth2Service.getActiveRows(session)
+  }
+
+  delete("/active-consents/:code") {
+    application.omaDataOAuth2Service.revokeConsent(session, params("code"))
   }
 }
 
