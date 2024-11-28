@@ -45,8 +45,9 @@ class OmaDataOAuth2Repository(val db: DB) extends DatabaseExecutionContext with 
     } catch {
       case t:Throwable =>
         val errorMessage = s"Failed to add authorization for ${clientId} to access student info of ${oppijaOid}"
-        logger.error(t)(errorMessage)
-        Left(OmaDataOAuth2Error(OmaDataOAuth2ErrorType.server_error, errorMessage))
+        val error = OmaDataOAuth2Error(OmaDataOAuth2ErrorType.server_error, errorMessage)
+        logger.error(t)(error.getLoggedErrorMessage)
+        Left(error)
     }
   }
 

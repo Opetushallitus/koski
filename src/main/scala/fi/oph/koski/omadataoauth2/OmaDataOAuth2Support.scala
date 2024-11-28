@@ -213,6 +213,14 @@ case class OmaDataOAuth2Error(
       ("error", errorType.toString),
       ("error_description", s"${errorId}: ${errorDescription}")
     )
+
+  def getAccessTokenErrorResponse: AccessTokenErrorResponse = {
+    AccessTokenErrorResponse(
+      errorType.toString,
+      Some(s"${errorId}: ${errorDescription}"),
+      None
+    )
+  }
 }
 
 sealed abstract class OmaDataOAuth2ErrorType(val errorType: String)

@@ -22,14 +22,14 @@ class OmaDataOAuth2AuthorizationServerServlet(implicit val application: KoskiApp
         val validationError = OmaDataOAuth2Error(OmaDataOAuth2ErrorType.invalid_request, errors.map { case (a, b) => s"${a}: ${b}" }.mkString(";"))
 
         logger.warn(validationError.getLoggedErrorMessage)
-        AccessTokenErrorResponse(validationError)
+        validationError.getAccessTokenErrorResponse
       },
       (accessTokenRequest: AccessTokenRequest) => {
         validateAccessTokenRequest(accessTokenRequest) match {
           case Left(validationError) =>
 
             logger.warn(validationError.getLoggedErrorMessage)
-            AccessTokenErrorResponse(validationError)
+            validationError.getAccessTokenErrorResponse
           case _ =>
             application.omaDataOAuth2Service.createAccessTokenForCode(
               code = accessTokenRequest.code,
@@ -39,7 +39,7 @@ class OmaDataOAuth2AuthorizationServerServlet(implicit val application: KoskiApp
               koskiSession = koskiSession,
               allowedScopes = koskiSession.omaDataOAuth2Scopes
             ) match {
-              case Left(error) => AccessTokenErrorResponse(error)
+              case Left(error) => error.getAccessTokenErrorResponse
               case Right(successResponse) => successResponse
             }
         }
@@ -101,16 +101,6 @@ case class AccessTokenSuccessResponse(
   // scope: Option[String] // TOD: TOR-2210: jos aletaan joskus tukea scopen vaihtoa tässä vaiheessa
 ) extends AccessTokenResponse {
   val httpStatus = 200
-}
-
-object AccessTokenErrorResponse {
-  def apply(error: OmaDataOAuth2Error): AccessTokenErrorResponse = {
-    AccessTokenErrorResponse(
-      error.errorType.toString,
-      Some(error.errorDescription),
-      None
-    )
-  }
 }
 
 case class AccessTokenErrorResponse(

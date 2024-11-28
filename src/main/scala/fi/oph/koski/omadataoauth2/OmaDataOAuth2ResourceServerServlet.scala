@@ -33,7 +33,7 @@ class OmaDataOAuth2ResourceServerServlet(implicit val application: KoskiApplicat
       case Right(AccessTokenInfo(_, oppijaOid, scope)) =>
         renderOpinnot(oppijaOid, scope)
       case Left(error) =>
-        val errorResult = AccessTokenErrorResponse(error)
+        val errorResult = error.getAccessTokenErrorResponse
         renderErrorWithStatus(errorResult, errorResult.httpStatus)
     }
   }
@@ -94,7 +94,7 @@ class OmaDataOAuth2ResourceServerServlet(implicit val application: KoskiApplicat
   private def logAndCreateError(errorType: OmaDataOAuth2ErrorType, message: String, log: String => Unit) = {
     val error = OmaDataOAuth2Error(errorType, message)
     log(error.getLoggedErrorMessage)
-    AccessTokenErrorResponse(error)
+    error.getAccessTokenErrorResponse
   }
 
   private def renderErrorWithStatus(errorResult: AccessTokenErrorResponse, status: Int): Unit = {
