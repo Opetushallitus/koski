@@ -3,6 +3,7 @@ package fi.oph.koski.raportointikanta
 import fi.oph.koski.cloudwatch.CloudWatchMetricsService
 import fi.oph.koski.config.{Environment, KoskiApplication}
 import fi.oph.koski.db.{OpiskeluoikeusRow, RaportointiGenerointiDatabaseConfig}
+import fi.oph.koski.henkilo.{OpintopolkuHenkilöFacade, OppijanumeroRekisteriClientRetryStrategy}
 import fi.oph.koski.koskiuser.KoskiSpecificSession
 import fi.oph.koski.log.Logging
 import rx.lang.scala.schedulers.NewThreadScheduler
@@ -111,7 +112,15 @@ class RaportointikantaService(application: KoskiApplication) extends Logging {
     val kuntakoodit = application.koodistoPalvelu.getLatestVersionOptional("kunta")
       .map(application.koodistoPalvelu.getKoodistoKoodit)
       .getOrElse(List.empty)
-    HenkilöLoader.loadHenkilöt(application.opintopolkuHenkilöFacade, db, application.koodistoPalvelu, application.opiskeluoikeusRepository, kuntakoodit)
+    // Luodaan raportointikannan generointia varten oppijanumerorekisteriin oma client, jolla on pitkähermoinen uudelleenyritysstrategia
+    val opintopolkuHenkilöFacade = application.opintopolkuHenkilöFacade.withRetryStrategy(
+      OppijanumeroRekisteriClientRetryStrategy(
+        maxRetries = 10,
+        maxWaitBetweenRetries = 5.minutes,
+        retryTimeout = 3.minutes,
+      )
+    )
+    HenkilöLoader.loadHenkilöt(opintopolkuHenkilöFacade, db, application.koodistoPalvelu, application.opiskeluoikeusRepository, kuntakoodit)
   }
 
   def loadOrganisaatiot(db: RaportointiDatabase = raportointiDatabase): Int =
