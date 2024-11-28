@@ -9,9 +9,14 @@ import ModalDialog from '../../editor/ModalDialog'
 import { LuvanHallintaHeadline } from './LuvanHallintaHeadline'
 import { LuvanHallintaDisclaimer } from './LuvanHallintaDisclaimer'
 import NavBar from './NavBar'
-import { Kayttoluvat } from './KayttoLuvat'
+import {
+  Kayttolupa,
+  NoMyDataPermissions,
+  OAuth2Käyttölupa
+} from './KayttoLuvat'
 import Text from '../../i18n/Text'
 import { t } from '../../i18n/i18n'
+import { KoodistoProvider } from '../../appstate/koodisto'
 
 const getBirthDate = (editorResponse) => {
   if (!editorResponse) return
@@ -27,10 +32,10 @@ export class LuvanHallinta extends React.Component {
 
     this.state = {
       loading: true,
-      showDeleteConfirm: false,
       error: undefined,
-      removeId: '',
-      valtuudet: [],
+      lupaToRemove: null,
+      käyttöluvat: [],
+      oauth2käyttöluvat: [],
       birthday: undefined
     }
 
@@ -41,9 +46,15 @@ export class LuvanHallinta extends React.Component {
   }
 
   componentDidMount() {
-    const valtuutusS = Http.cachedGet('/koski/api/omadata/valtuutus', {
+    const käyttöluvatS = Http.cachedGet('/koski/api/omadata/valtuutus', {
       errorHandler: () => this.onHttpGetError()
     })
+    const oauth2käyttöluvatS = Http.cachedGet(
+      '/koski/api/omadata-oauth2/resource-owner/active-consents',
+      {
+        errorHandler: () => this.onHttpGetError()
+      }
+    )
     const birthDayS = Http.cachedGet('/koski/api/omattiedot/editor', {
       errorHandler: (e) => {
         if (e.httpStatus !== 404) {
@@ -54,9 +65,14 @@ export class LuvanHallinta extends React.Component {
       }
     }).map(getBirthDate)
 
-    Bacon.combineAsArray(valtuutusS, birthDayS).onValue(
-      ([valtuudet, birthday]) =>
-        this.setState({ valtuudet, birthday, loading: false })
+    Bacon.combineAsArray(käyttöluvatS, oauth2käyttöluvatS, birthDayS).onValue(
+      ([käyttöluvat, oauth2käyttöluvat, birthday]) =>
+        this.setState({
+          käyttöluvat,
+          oauth2käyttöluvat,
+          birthday,
+          loading: false
+        })
     )
   }
 
@@ -64,16 +80,20 @@ export class LuvanHallinta extends React.Component {
     this.setState({ error, loading: false })
   }
 
-  showDeleteConfirm(removeId) {
-    this.setState({ showDeleteConfirm: true, removeId, error: undefined })
+  showDeleteConfirm(lupa) {
+    this.setState({ lupaToRemove: lupa })
   }
 
   hideDeleteConfirm() {
-    this.setState({ showDeleteConfirm: false, removeId: '' })
+    this.setState({ lupaToRemove: null })
   }
 
-  removePermission(removeAsiakasId) {
-    Http.delete(`/koski/api/omadata/valtuutus/${removeAsiakasId}`, {
+  removePermission(lupa) {
+    const url = lupa.oauth2
+      ? `/koski/api/omadata-oauth2/resource-owner/active-consents/${lupa.id}`
+      : `/koski/api/omadata/valtuutus/${lupa.id}`
+
+    Http.delete(url, {
       errorHandler: () => {
         this.setState({
           showDeleteConfirm: false,
@@ -82,22 +102,29 @@ export class LuvanHallinta extends React.Component {
       }
     }).onValue(() => {
       this.setState((prevState) => ({
-        valtuudet: prevState.valtuudet.filter(
-          (_) => _.asiakasId !== removeAsiakasId
-        ),
-        showDeleteConfirm: false,
-        removeId: ''
+        käyttöluvat: lupa.oauth2
+          ? prevState.käyttöluvat
+          : prevState.käyttöluvat.filter((_) => _.asiakasId !== lupa.id),
+        oauth2käyttöluvat: lupa.oauth2
+          ? prevState.oauth2käyttöluvat.filter((v) => v.codeSHA256 !== lupa.id)
+          : prevState.oauth2käyttöluvat,
+        lupaToRemove: null
       }))
     })
   }
 
   render() {
-    const { loading, valtuudet, birthday, showDeleteConfirm, removeId, error } =
-      this.state
-    const removeName = valtuudet.reduce(
-      (acc, i) => (i.asiakasId === removeId ? i.asiakasName : acc),
-      ''
-    )
+    const {
+      loading,
+      käyttöluvat,
+      oauth2käyttöluvat,
+      birthday,
+      lupaToRemove,
+      error
+    } = this.state
+
+    const hasKayttolupia = käyttöluvat.length + oauth2käyttöluvat.length > 0
+
     const renderError = error ? <ErrorDisplay error={{ text: error }} /> : null
 
     if (loading)
@@ -108,38 +135,70 @@ export class LuvanHallinta extends React.Component {
       )
 
     return (
-      <div>
-        {renderError}
-        <div className="omattiedot-kayttoluvat">
-          <LuvanHallintaHeadline birthday={birthday} />
-          <NavBar />
-          <Kayttoluvat
-            kayttoluvat={valtuudet}
-            removeCallback={this.showDeleteConfirm}
-          />
-          {showDeleteConfirm && (
-            <ModalDialog
-              fullscreen={true}
-              onDismiss={this.hideDeleteConfirm}
-              onSubmit={() => this.removePermission(removeId)}
-              okTextKey={'Kyllä, poista lupa'}
-              cancelTextKey="Älä poista lupaa"
-            >
-              <div className="kayttoluvat-modal-container">
-                <Text name="Olet poistamassa palveluntarjoajalle" />
-                <span>{` "${removeName}" `}</span>
-                <Text
-                  name={
-                    'annettua lupaa nähdä opintoihisi liittyviä tietoja. ' +
-                    'Poistaessasi luvan, voit menettää palveluntarjoajan opintoihisi liittyvät edut'
+      <KoodistoProvider>
+        <div>
+          {renderError}
+          <div className="omattiedot-kayttoluvat">
+            <LuvanHallintaHeadline birthday={birthday} />
+            <NavBar />
+            <div className="kayttoluvat-container">
+              <ul className="kayttolupa-list">
+                {hasKayttolupia ? (
+                  <>
+                    {käyttöluvat.map((lupa) => (
+                      <Kayttolupa
+                        key={lupa.asiakasId}
+                        kayttolupa={lupa}
+                        removeCallback={this.showDeleteConfirm}
+                      />
+                    ))}
+                    {oauth2käyttöluvat.map((lupa) => (
+                      <OAuth2Käyttölupa
+                        key={lupa.clientId}
+                        kayttolupa={lupa}
+                        removeCallback={this.showDeleteConfirm}
+                      />
+                    ))}
+                  </>
+                ) : (
+                  <NoMyDataPermissions />
+                )}
+              </ul>
+            </div>
+            {lupaToRemove && (
+              <ModalDialog
+                fullscreen={true}
+                onDismiss={this.hideDeleteConfirm}
+                onSubmit={() => this.removePermission(lupaToRemove)}
+                okTextKey={'Kyllä, poista lupa'}
+                cancelTextKey="Älä poista lupaa"
+              >
+                <div className="kayttoluvat-modal-container">
+                  <Text name="Olet poistamassa palveluntarjoajalle" />
+                  <span>{` "${lupaToRemove.name}" `}</span>
+                  <Text
+                    name={'annettua lupaa nähdä opintoihisi liittyviä tietoja'}
+                  />
+                  {
+                    // Näytetään vain HSL luville
+                    lupaToRemove.oauth2 ? null : (
+                      <>
+                        <span> </span>
+                        <Text
+                          name={
+                            'Poistaessasi luvan menetät palveluntarjoajan tarjoamat opintoihisi liittyvät edut'
+                          }
+                        />
+                      </>
+                    )
                   }
-                />
-              </div>
-            </ModalDialog>
-          )}
-          <LuvanHallintaDisclaimer />
+                </div>
+              </ModalDialog>
+            )}
+            <LuvanHallintaDisclaimer />
+          </div>
         </div>
-      </div>
+      </KoodistoProvider>
     )
   }
 }

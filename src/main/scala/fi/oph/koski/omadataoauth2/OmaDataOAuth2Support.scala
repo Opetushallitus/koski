@@ -1,5 +1,6 @@
 package fi.oph.koski.omadataoauth2
 
+import fi.oph.koski.http.{ErrorDetail, HttpStatus}
 import fi.oph.koski.koodisto.{KoodistoKoodi, KoodistoViite}
 import fi.oph.koski.koskiuser.KäyttöoikeusOrg
 import org.scalatra.ScalatraServlet
@@ -213,6 +214,10 @@ case class OmaDataOAuth2Error(
       ("error", errorType.toString),
       ("error_description", s"${errorId}: ${errorDescription}")
     )
+
+  def toKoskiHttpStatus: HttpStatus = {
+    HttpStatus(400, List(ErrorDetail(key = errorType.errorType, errorDescription)))
+  }
 
   def getAccessTokenErrorResponse: AccessTokenErrorResponse = {
     AccessTokenErrorResponse(

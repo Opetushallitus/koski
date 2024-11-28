@@ -79,6 +79,8 @@ class FixtureCreator(application: KoskiApplication) extends Logging with QueryMe
       application.suoritusjakoRepository.deleteAllForOppija(oppijaOid)
       application.suoritusjakoRepositoryV2.deleteAllForOppija(oppijaOid)
 
+      application.omaDataOAuth2Repository.deleteAllForOppija(oppijaOid)
+
       // VST:n yms. mitätöinnit jättävät raatoja oo-tauluun, poista nekin
       runDbSync(DBIO.sequence(Seq(
         KoskiOpiskeluOikeudet.filter(_.oppijaOid  inSetBind List(oppijaOid)).delete

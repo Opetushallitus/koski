@@ -2,21 +2,21 @@ package fi.oph.koski.omadataoauth2.unit
 
 import fi.oph.koski.aktiivisetjapaattyneetopinnot.AktiivisetJaPäättyneetOpinnotMuunKuinSäännellynKoulutuksenOpiskeluoikeus
 import fi.oph.koski.api.misc.OpiskeluoikeusTestMethods
-import fi.oph.koski.{DatabaseTestMethods, KoskiApplicationForTests, schema}
 import fi.oph.koski.db.KoskiTables.OAuth2JakoKaikki
+import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
+import fi.oph.koski.fixture.FixtureCreator
+import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.koskiuser.{KoskiMockUser, MockUsers}
 import fi.oph.koski.log.AuditLogTester
-import fi.oph.koski.omadataoauth2.{AccessTokenErrorResponse, AccessTokenSuccessResponse, OmaDataOAuth2AktiivisetJaPäättyneetOpiskeluoikeudet, OmaDataOAuth2KaikkiOpiskeluoikeudet, OmaDataOAuth2SuoritetutTutkinnot}
 import fi.oph.koski.omadataoauth2.OmaDataOAuth2Security.{createChallengeAndVerifier, sha256}
-import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
-import fi.oph.koski.fixture.FixtureCreator
-import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
+import fi.oph.koski.omadataoauth2._
 import fi.oph.koski.schema.{AmmatillinenOpiskeluoikeus, PerusopetuksenOpiskeluoikeudenLisätiedot, PerusopetuksenOpiskeluoikeus}
 import fi.oph.koski.suoritetuttutkinnot.SuoritetutTutkinnotAmmatillinenOpiskeluoikeus
 import fi.oph.koski.suoritusjako.aktiivisetjapaattyneetopinnot.AktiivisetJaPäättyneetOpinnotVerifiers
 import fi.oph.koski.suoritusjako.suoritetuttutkinnot.SuoritetutTutkinnotVerifiers
+import fi.oph.koski.{DatabaseTestMethods, KoskiApplicationForTests, schema}
 
 import java.sql.Timestamp
 import java.time.Instant
@@ -978,6 +978,149 @@ class OmaDataOAuth2BackendSpec
 
       postResourceServer(token, palveluKäyttäjä) {
         verifyResponseStatus(404)
+      }
+    }
+  }
+
+  "suostumusten hallinta" - {
+    "kirjautumaton palauttaa 401" in {
+      get(uri = "api/omadata-oauth2/resource-owner/active-consents") {
+        verifyResponseStatus(401)
+      }
+    }
+
+    "palauttaa kansalaisen antaman suostumuksen" in {
+      clearOppijanOpiskeluoikeudet(validKansalainen.oid)
+      val pkce = createChallengeAndVerifier
+      val token = createAuthorizationAndToken(validKansalainen, pkce)
+
+      postResourceServer(token) {
+        verifyResponseStatusOk()
+      }
+
+      get(uri = "api/omadata-oauth2/resource-owner/active-consents", headers = kansalainenLoginHeaders(validKansalainen.hetu.get)) {
+        verifyResponseStatusOk()
+        val items = JsonSerializer.parse[List[OmaDataOAuth2JakoItem]](response.body)
+        items.length should be(1)
+        items.head.clientId should be(validClientId)
+      }
+    }
+
+    "suostumuksen voi perua, ja se aiheuttaa audit lokimerkinnän" in {
+      clearOppijanOpiskeluoikeudet(validKansalainen.oid)
+
+      val pkce = createChallengeAndVerifier
+      val token = createAuthorizationAndToken(validKansalainen, pkce)
+
+      postResourceServer(token) {
+        verifyResponseStatusOk()
+      }
+
+      val code = get(uri = "api/omadata-oauth2/resource-owner/active-consents", headers = kansalainenLoginHeaders(validKansalainen.hetu.get)) {
+        verifyResponseStatusOk()
+        val items = JsonSerializer.parse[List[OmaDataOAuth2JakoItem]](response.body)
+        items.length should be(1)
+        items.head.codeSHA256
+      }
+
+      delete(uri = "api/omadata-oauth2/resource-owner/active-consents/" + code, headers = kansalainenLoginHeaders(validKansalainen.hetu.get)) {
+        verifyResponseStatusOk()
+        AuditLogTester.verifyLastAuditLogMessage(Map(
+          "operation" -> "KANSALAINEN_MYDATA_POISTO",
+          "target" -> Map(
+            "oppijaHenkiloOid" -> oppijaOid,
+            "omaDataKumppani" -> validClientId,
+            "omaDataOAuth2Scope" -> validScope
+          ),
+        ))
+      }
+
+      get(uri = "api/omadata-oauth2/resource-owner/active-consents", headers = kansalainenLoginHeaders(validKansalainen.hetu.get)) {
+        verifyResponseStatusOk()
+        val items = JsonSerializer.parse[List[OmaDataOAuth2JakoItem]](response.body)
+        items should be(empty)
+      }
+    }
+
+    "toinen oppija ei voi perua toisen suostumusta" in {
+      clearOppijanOpiskeluoikeudet(validKansalainen.oid)
+
+      val pkce = createChallengeAndVerifier
+      val token = createAuthorizationAndToken(validKansalainen, pkce)
+
+      postResourceServer(token) {
+        verifyResponseStatusOk()
+      }
+
+      val code = get(uri = "api/omadata-oauth2/resource-owner/active-consents", headers = kansalainenLoginHeaders(validKansalainen.hetu.get)) {
+        verifyResponseStatusOk()
+        val items = JsonSerializer.parse[List[OmaDataOAuth2JakoItem]](response.body)
+        items.length should be(1)
+        items.head.codeSHA256
+      }
+
+      delete(uri = "api/omadata-oauth2/resource-owner/active-consents/" + code, headers = kansalainenLoginHeaders(KoskiSpecificMockOppijat.markkanen.hetu.get)) {
+        verifyResponseStatus(400)
+      }
+
+      get(uri = "api/omadata-oauth2/resource-owner/active-consents", headers = kansalainenLoginHeaders(validKansalainen.hetu.get)) {
+        verifyResponseStatusOk()
+        val items = JsonSerializer.parse[List[OmaDataOAuth2JakoItem]](response.body)
+        items.length should be(1)
+      }
+    }
+
+    "master oidilla voi hakea slave oidilla tallennettua suostumusta" in {
+
+      clearOppijanOpiskeluoikeudet(KoskiSpecificMockOppijat.master.oid)
+      clearOppijanOpiskeluoikeudet(KoskiSpecificMockOppijat.slave.henkilö.oid)
+
+      KoskiApplicationForTests.omaDataOAuth2Repository.create(
+        "asd",
+        KoskiSpecificMockOppijat.slave.henkilö.oid,
+        validClientId,
+        validScope,
+        validDummyCodeChallenge,
+        validRedirectUri
+      ).isRight should be(true)
+
+      get(uri = "api/omadata-oauth2/resource-owner/active-consents", headers = kansalainenLoginHeaders(KoskiSpecificMockOppijat.master.hetu.get)) {
+        verifyResponseStatusOk()
+        val items = JsonSerializer.parse[List[OmaDataOAuth2JakoItem]](response.body)
+        items.length should be(1)
+      }
+    }
+
+
+    "master oidilla voi perua slave oidilla tallennettua suostumusta" in {
+
+      clearOppijanOpiskeluoikeudet(KoskiSpecificMockOppijat.master.oid)
+      clearOppijanOpiskeluoikeudet(KoskiSpecificMockOppijat.slave.henkilö.oid)
+
+      KoskiApplicationForTests.omaDataOAuth2Repository.create(
+        "asd",
+        KoskiSpecificMockOppijat.slave.henkilö.oid,
+        validClientId,
+        validScope,
+        validDummyCodeChallenge,
+        validRedirectUri
+      ).isRight should be(true)
+
+      val code = get(uri = "api/omadata-oauth2/resource-owner/active-consents", headers = kansalainenLoginHeaders(KoskiSpecificMockOppijat.master.hetu.get)) {
+        verifyResponseStatusOk()
+        val items = JsonSerializer.parse[List[OmaDataOAuth2JakoItem]](response.body)
+        items.length should be(1)
+        items.head.codeSHA256
+      }
+
+      delete(uri = "api/omadata-oauth2/resource-owner/active-consents/" + code, headers = kansalainenLoginHeaders(KoskiSpecificMockOppijat.master.hetu.get)) {
+        verifyResponseStatusOk()
+      }
+
+      get(uri = "api/omadata-oauth2/resource-owner/active-consents", headers = kansalainenLoginHeaders(KoskiSpecificMockOppijat.master.hetu.get)) {
+        verifyResponseStatusOk()
+        val items = JsonSerializer.parse[List[OmaDataOAuth2JakoItem]](response.body)
+        items should be(empty)
       }
     }
   }

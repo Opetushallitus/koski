@@ -154,6 +154,18 @@ class OmaDataOAuth2Repository(val db: DB) extends DatabaseExecutionContext with 
     }
   }
 
+  def getBySHA256(codeSHA256: String): Option[OAuth2JakoRow] = {
+    runDbSync(OAuth2Jako.filter(_.codeSHA256 === codeSHA256).result.headOption)
+  }
+
+  def invalidateBySHA256(codeSHA256: String, mitätöitySyy: String): Left[OmaDataOAuth2Error, Nothing] = {
+    runDbSync(invalidateRow(OAuth2Jako.filter(_.codeSHA256 === codeSHA256), mitätöitySyy))
+  }
+
+  def getActiveRows(oppijaOids: Seq[String]): Seq[OAuth2JakoRow] = {
+    runDbSync(OAuth2Jako.filter(row => row.oppijaOid.inSet(oppijaOids) && row.voimassaAsti >= Timestamp.valueOf(LocalDateTime.now)).result)
+  }
+
   private def updateRow(
     rows: Query[KoskiTables.OAuth2JakoTable, OAuth2JakoRow, Seq],
     accessTokenSHA256: String
@@ -182,6 +194,10 @@ class OmaDataOAuth2Repository(val db: DB) extends DatabaseExecutionContext with 
           logger.error(error.getLoggedErrorMessage)
           DBIO.successful(Left(error))
       }
+  }
+
+  def deleteAllForOppija(oppijaOid: String): Int = {
+    runDbSync(OAuth2JakoKaikki.filter(_.oppijaOid === oppijaOid).delete)
   }
 }
 
