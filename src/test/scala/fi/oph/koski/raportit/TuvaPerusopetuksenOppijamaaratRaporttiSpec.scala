@@ -158,7 +158,7 @@ class TuvaPerusopetuksenOppijamäärätRaporttiSpec extends AnyFreeSpec with Mat
         verifyResponseStatusOk()
         response.headers("Content-Disposition").head should equal(s"""attachment; filename="tuva_perusopetus_tunnuslukuraportti-2021-10-01.xlsx"""")
         response.bodyBytes.take(ENCRYPTED_XLSX_PREFIX.length) should equal(ENCRYPTED_XLSX_PREFIX)
-        AuditLogTester.verifyAuditLogMessage(
+        AuditLogTester.verifyLastAuditLogMessage(
           Map(
             "operation" -> "OPISKELUOIKEUS_RAPORTTI",
             "target" -> Map(
@@ -174,7 +174,7 @@ class TuvaPerusopetuksenOppijamäärätRaporttiSpec extends AnyFreeSpec with Mat
         verifyResponseStatusOk()
         response.headers("Content-Disposition").head should equal(s"""attachment; filename="hux_grundlaggande_nyckeltalsrapport-2021-10-01.xlsx"""")
         response.bodyBytes.take(ENCRYPTED_XLSX_PREFIX.length) should equal(ENCRYPTED_XLSX_PREFIX)
-        AuditLogTester.verifyAuditLogMessage(
+        AuditLogTester.verifyLastAuditLogMessage(
           Map(
             "operation" -> "OPISKELUOIKEUS_RAPORTTI",
             "target" -> Map(

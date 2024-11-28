@@ -31,7 +31,7 @@ class AikuistenPerusopetuksenOppijamäärätRaporttiSpec extends AnyFreeSpec wit
         verifyResponseStatusOk()
         response.headers("Content-Disposition").head should equal(s"""attachment; filename="aikuisten_perusopetuksen_tunnuslukuraportti-2010-01-01.xlsx"""")
         response.bodyBytes.take(ENCRYPTED_XLSX_PREFIX.length) should equal(ENCRYPTED_XLSX_PREFIX)
-        AuditLogTester.verifyAuditLogMessage(Map("operation" -> "OPISKELUOIKEUS_RAPORTTI", "target" -> Map("hakuEhto" -> s"raportti=aikuistenperusopetuksenoppijamaaratraportti&oppilaitosOid=$jyväskylänNormaalikoulu&paiva=2010-01-01&lang=fi")))
+        AuditLogTester.verifyLastAuditLogMessage(Map("operation" -> "OPISKELUOIKEUS_RAPORTTI", "target" -> Map("hakuEhto" -> s"raportti=aikuistenperusopetuksenoppijamaaratraportti&oppilaitosOid=$jyväskylänNormaalikoulu&paiva=2010-01-01&lang=fi")))
       }
     }
 
@@ -40,7 +40,7 @@ class AikuistenPerusopetuksenOppijamäärätRaporttiSpec extends AnyFreeSpec wit
         verifyResponseStatusOk()
         response.headers("Content-Disposition").head should equal(s"""attachment; filename="grundläggande_vuxna_nyckeltal_rapport-2010-01-01.xlsx"""")
         response.bodyBytes.take(ENCRYPTED_XLSX_PREFIX.length) should equal(ENCRYPTED_XLSX_PREFIX)
-        AuditLogTester.verifyAuditLogMessage(Map("operation" -> "OPISKELUOIKEUS_RAPORTTI", "target" -> Map("hakuEhto" -> s"raportti=aikuistenperusopetuksenoppijamaaratraportti&oppilaitosOid=$jyväskylänNormaalikoulu&paiva=2010-01-01&lang=sv")))
+        AuditLogTester.verifyLastAuditLogMessage(Map("operation" -> "OPISKELUOIKEUS_RAPORTTI", "target" -> Map("hakuEhto" -> s"raportti=aikuistenperusopetuksenoppijamaaratraportti&oppilaitosOid=$jyväskylänNormaalikoulu&paiva=2010-01-01&lang=sv")))
       }
     }
 

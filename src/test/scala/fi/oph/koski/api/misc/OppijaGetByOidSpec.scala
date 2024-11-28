@@ -25,13 +25,13 @@ class OppijaGetByOidSpec
       "with valid oid" in {
         get("api/oppija/" + KoskiSpecificMockOppijat.eero.oid, headers = authHeaders()) {
           verifyResponseStatusOk()
-          AuditLogTester.verifyAuditLogMessage(Map("operation" -> "OPISKELUOIKEUS_KATSOMINEN"))
+          AuditLogTester.verifyLastAuditLogMessage(Map("operation" -> "OPISKELUOIKEUS_KATSOMINEN"))
         }
       }
       "with valid oid, hetuless oppija" in {
         get("api/oppija/" + KoskiSpecificMockOppijat.hetuton.oid, headers = authHeaders()) {
           verifyResponseStatusOk()
-          AuditLogTester.verifyAuditLogMessage(Map("operation" -> "OPISKELUOIKEUS_KATSOMINEN"))
+          AuditLogTester.verifyLastAuditLogMessage(Map("operation" -> "OPISKELUOIKEUS_KATSOMINEN"))
         }
       }
       "with invalid oid" in {

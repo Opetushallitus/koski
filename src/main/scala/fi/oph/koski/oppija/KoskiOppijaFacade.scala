@@ -453,7 +453,11 @@ class KoskiOppijaFacade(
       // servletissä erikseen sitä kutsuneen käyttäjän nimissä:
       KoskiSpecificSession.systemUserTallennetutYlioppilastutkinnonOpiskeluoikeudet,
       KoskiSpecificSession.systemUser // To prevent health checks from polluting the audit log
-    ).contains(user)) {
+    ).contains(user) &&
+      // OAuth2-audit -lokitus tehdään erikseen, jotta saadaan oikealla tavalla
+      // clientId, OAuth2 scope yms. mukaan audit-log -entryyn
+      !user.user.isOauth2Katsominen
+    ) {
       val operation = if (user.user.kansalainen && user.isUsersHuollettava(oid)) {
         KANSALAINEN_HUOLTAJA_OPISKELUOIKEUS_KATSOMINEN
       } else if (user.user.kansalainen) {
@@ -477,8 +481,10 @@ class KoskiOppijaFacade(
       .map(piilotaOppijanTietojaTarvittaessa)
 
   private def piilotaOppijanTietojaTarvittaessa(oppija: WithWarnings[Oppija])(implicit user: KoskiSpecificSession): WithWarnings[Oppija] = {
-    if (user.user.kansalainen || user.user.huollettava || user.user.isSuoritusjakoKatsominen) {
+    if (user.user.kansalainen || user.user.huollettava || user.user.isSuoritusjakoKatsominen ) {
       oppija.map(piilotetuillaTiedoilla)
+    } else if (user.user.isOauth2Katsominen) {
+      oppija.map(piilotetuillaOpiskeluoikeustiedoilla)
     } else {
       oppija
     }
@@ -487,14 +493,22 @@ class KoskiOppijaFacade(
   private def piilotaOppijanTietojaTarvittaessa(oppija: Oppija)(implicit user: KoskiSpecificSession): Oppija = {
     if (user.user.kansalainen || user.user.huollettava || user.user.isSuoritusjakoKatsominen) {
       piilotetuillaTiedoilla(oppija)
+    } else if (user.user.isOauth2Katsominen) {
+      piilotetuillaOpiskeluoikeustiedoilla(oppija)
     } else {
       oppija
     }
   }
 
   private def piilotetuillaTiedoilla(oppija: Oppija)(implicit koskiSession: KoskiSpecificSession): Oppija = {
+    val piilota = piilotaSensitiivisetHenkilötiedot _ andThen
+      piilotetuillaOpiskeluoikeustiedoilla
+
+    piilota(oppija)
+  }
+
+  private def piilotetuillaOpiskeluoikeustiedoilla(oppija: Oppija)(implicit koskiSession: KoskiSpecificSession): Oppija = {
     val piilota = piilotaArvosanatKeskeneräisistäSuorituksista _ andThen
-      piilotaSensitiivisetHenkilötiedot andThen
       piilotaKeskeneräisetPerusopetuksenPäättötodistukset andThen
       piilotaTietojaSuoritusjaosta andThen
       piilotaLaajuuksia
@@ -526,7 +540,7 @@ class KoskiOppijaFacade(
   }
 
   private def piilotaTietojaSuoritusjaosta(oppija: Oppija)(implicit koskiSession: KoskiSpecificSession) = {
-    if (koskiSession.user.isSuoritusjakoKatsominen) {
+    if (koskiSession.user.isSuoritusjakoKatsominen || koskiSession.user.isOauth2Katsominen) {
       piilotaLukuvuosimaksutiedot(oppija)
     } else {
       oppija

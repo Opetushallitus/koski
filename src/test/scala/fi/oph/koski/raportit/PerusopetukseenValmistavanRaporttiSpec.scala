@@ -55,7 +55,7 @@ class PerusopetukseenValmistavanRaporttiSpec extends AnyFreeSpec with Matchers w
         verifyResponseStatusOk()
         response.headers("Content-Disposition").head should equal(s"""attachment; filename="Perusopetukseen_valmistava_opetus_${jyväskylänNormaalikoulu}_2018-01-01_2022-01-01.xlsx"""")
         response.bodyBytes.take(ENCRYPTED_XLSX_PREFIX.length) should equal(ENCRYPTED_XLSX_PREFIX)
-        AuditLogTester.verifyAuditLogMessage(Map("operation" -> "OPISKELUOIKEUS_RAPORTTI", "target" -> Map("hakuEhto" -> s"raportti=perusopetukseenvalmistavansuoritustietojentarkistus&oppilaitosOid=$jyväskylänNormaalikoulu&alku=2018-01-01&loppu=2022-01-01&lang=fi")))
+        AuditLogTester.verifyLastAuditLogMessage(Map("operation" -> "OPISKELUOIKEUS_RAPORTTI", "target" -> Map("hakuEhto" -> s"raportti=perusopetukseenvalmistavansuoritustietojentarkistus&oppilaitosOid=$jyväskylänNormaalikoulu&alku=2018-01-01&loppu=2022-01-01&lang=fi")))
       }
     }
 
@@ -64,7 +64,7 @@ class PerusopetukseenValmistavanRaporttiSpec extends AnyFreeSpec with Matchers w
         verifyResponseStatusOk()
         response.headers("Content-Disposition").head should equal(s"""attachment; filename="Undervisning_som_förbereder_för_grundläggande_utbildning_${jyväskylänNormaalikoulu}_2018-01-01_2022-01-01.xlsx"""")
         response.bodyBytes.take(ENCRYPTED_XLSX_PREFIX.length) should equal(ENCRYPTED_XLSX_PREFIX)
-        AuditLogTester.verifyAuditLogMessage(Map("operation" -> "OPISKELUOIKEUS_RAPORTTI", "target" -> Map("hakuEhto" -> s"raportti=perusopetukseenvalmistavansuoritustietojentarkistus&oppilaitosOid=$jyväskylänNormaalikoulu&alku=2018-01-01&loppu=2022-01-01&lang=sv")))
+        AuditLogTester.verifyLastAuditLogMessage(Map("operation" -> "OPISKELUOIKEUS_RAPORTTI", "target" -> Map("hakuEhto" -> s"raportti=perusopetukseenvalmistavansuoritustietojentarkistus&oppilaitosOid=$jyväskylänNormaalikoulu&alku=2018-01-01&loppu=2022-01-01&lang=sv")))
       }
     }
 

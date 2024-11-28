@@ -86,6 +86,34 @@
   {
     "metadata": [
       {
+        "nimi": "Oppijanumero",
+        "kuvaus": "",
+        "lyhytNimi": "",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Studentnummer",
+        "kuvaus": "",
+        "lyhytNimi": "",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Student number",
+        "kuvaus": "",
+        "lyhytNimi": "",
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "omadataoauth2scope_henkilotiedotoppijanumero",
+    "versio": 1,
+    "koodiArvo": "henkilotiedot_oppijanumero"
+  },
+  {
+    "metadata": [
+      {
         "nimi": "Kaikki henkilötiedot",
         "kuvaus": "",
         "lyhytNimi": "",

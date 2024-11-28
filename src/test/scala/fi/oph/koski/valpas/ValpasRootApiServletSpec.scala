@@ -35,7 +35,7 @@ class ValpasRootApiServletSpec extends ValpasTestBase with BeforeAndAfterEach {
     val oppijaOid = ValpasMockOppijat.oppivelvollinenYsiluokkaKeskenKeväällä2021.oid
     authGet(getOppijaUrl(oppijaOid)) {
       verifyResponseStatusOk()
-      AuditLogTester.verifyAuditLogMessage(Map(
+      AuditLogTester.verifyLastAuditLogMessage(Map(
         "operation" -> ValpasOperation.VALPAS_OPPIJA_KATSOMINEN.toString,
         "target" -> Map(ValpasAuditLogMessageField.oppijaHenkilöOid.toString -> oppijaOid)))
     }
@@ -45,7 +45,7 @@ class ValpasRootApiServletSpec extends ValpasTestBase with BeforeAndAfterEach {
     val oppilaitosOid = MockOrganisaatiot.jyväskylänNormaalikoulu
     authGet(getOppijaListUrl(oppilaitosOid)) {
       verifyResponseStatusOk()
-      AuditLogTester.verifyAuditLogMessage(Map(
+      AuditLogTester.verifyLastAuditLogMessage(Map(
         "operation" -> ValpasOperation.VALPAS_OPPILAITOKSET_OPPIJAT_KATSOMINEN.toString,
         "target" -> Map(ValpasAuditLogMessageField.juuriOrganisaatio.toString -> oppilaitosOid)))
     }
@@ -60,7 +60,7 @@ class ValpasRootApiServletSpec extends ValpasTestBase with BeforeAndAfterEach {
       headers = authHeaders(defaultUser) ++ jsonContent,
     ) {
       verifyResponseStatusOk()
-      AuditLogTester.verifyAuditLogMessage(Map(
+      AuditLogTester.verifyLastAuditLogMessage(Map(
         "operation" -> ValpasOperation.VALPAS_OPPILAITOKSET_OPPIJAT_KATSOMINEN_HAKUTIEDOILLA.toString,
         "target" -> Map(
           ValpasAuditLogMessageField.juuriOrganisaatio.toString -> oppilaitosOid,

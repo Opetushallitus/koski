@@ -1,6 +1,7 @@
 package fi.oph.koski.config
 
 import com.typesafe.config.{Config, ConfigFactory}
+import fi.oph.koski.aktiivisetjapaattyneetopinnot.AktiivisetJaPäättyneetOpinnotService
 import fi.oph.koski.cache.CacheManager
 import fi.oph.koski.db.{KoskiDatabase, KoskiTables, RaportointiDatabaseConfig, RaportointiGenerointiDatabaseConfig, ValpasDatabaseConfig}
 import fi.oph.koski.opensearch.{IndexManager, OpenSearch}
@@ -30,8 +31,7 @@ import fi.oph.koski.pulssi.{KoskiPulssi, PrometheusRepository}
 import fi.oph.koski.raportointikanta.{Confidential, Public, RaportointiDatabase, RaportointikantaService}
 import fi.oph.koski.schedule.{KoskiScheduledTasks, PerustiedotManualSyncScheduler, PerustiedotSyncScheduler}
 import fi.oph.koski.sso.{CasOppijaCreationService, CasService, KoskiSessionRepository}
-import fi.oph.koski.suoritusjako.aktiivisetjapaattyneetopinnot.AktiivisetJaPäättyneetOpinnotService
-import fi.oph.koski.suoritusjako.suoritetuttutkinnot.SuoritetutTutkinnotService
+import fi.oph.koski.suoritetuttutkinnot.SuoritetutTutkinnotService
 import fi.oph.koski.suoritusjako.{SuoritusjakoRepository, SuoritusjakoRepositoryV2, SuoritusjakoService, SuoritusjakoServiceV2}
 import fi.oph.koski.suostumus.SuostumuksenPeruutusService
 import fi.oph.koski.tiedonsiirto.{IPService, TiedonsiirtoService}

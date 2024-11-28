@@ -1,11 +1,13 @@
 package fi.oph.koski.omadataoauth2
 
 import fi.oph.koski.config.KoskiApplication
+import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.koskiuser.KoskiSpecificSession
 import fi.oph.koski.log.KoskiAuditLogMessageField.{omaDataKumppani, omaDataOAuth2Scope, oppijaHenkiloOid}
-import fi.oph.koski.log.KoskiOperation.{KANSALAINEN_MYDATA_LISAYS, OAUTH2_ACCESS_TOKEN_LUONTI, OAUTH2_KATSOMINEN_AKTIIVISET_JA_PAATTYNEET_OPINNOT, OAUTH2_KATSOMINEN_SUORITETUT_TUTKINNOT, OAUTH2_KATSOMINEN_KAIKKI_TIEDOT}
-import fi.oph.koski.log.{AuditLog, KoskiAuditLogMessage, KoskiOperation, Logging}
+import fi.oph.koski.log.KoskiOperation.{KANSALAINEN_MYDATA_LISAYS, OAUTH2_ACCESS_TOKEN_LUONTI}
+import fi.oph.koski.log.{AuditLog, KoskiAuditLogMessage, Logging}
 import fi.oph.koski.omadataoauth2.OmaDataOAuth2Security.generateSecret
+import fi.oph.koski.schema.{Opiskeluoikeus, Oppija, TäydellisetHenkilötiedot}
 import fi.oph.koski.util.ChainingSyntax.eitherChainingOps
 
 class OmaDataOAuth2Service(oauth2Repository: OmaDataOAuth2Repository, val application: KoskiApplication) extends Logging {
@@ -58,42 +60,47 @@ class OmaDataOAuth2Service(oauth2Repository: OmaDataOAuth2Repository, val applic
   def getByAccessToken(
     accessToken: String,
     expectedClientId: String,
-    koskiSession: KoskiSpecificSession,
     allowedScopes: Set[String]
-  ): Either[OmaDataOAuth2Error, AccessTokenSuccessResponse] = {
+  ): Either[OmaDataOAuth2Error, AccessTokenInfo] = {
     oauth2Repository.getByAccessToken(accessToken, expectedClientId, allowedScopes)
-      .flatMap(response => {
-        response.scope.split(" ").filter(_.startsWith("OPISKELUOIKEUDET_")).toSeq match {
-          case Seq("OPISKELUOIKEUDET_SUORITETUT_TUTKINNOT") =>
-            auditLogKatsominen(OAUTH2_KATSOMINEN_SUORITETUT_TUTKINNOT, expectedClientId, koskiSession, response)
-            Right(response)
-          case Seq("OPISKELUOIKEUDET_AKTIIVISET_JA_PAATTYNEET_OPINNOT") =>
-            auditLogKatsominen(OAUTH2_KATSOMINEN_AKTIIVISET_JA_PAATTYNEET_OPINNOT, expectedClientId, koskiSession, response)
-            Right(response)
-          case Seq("OPISKELUOIKEUDET_KAIKKI_TIEDOT") =>
-            auditLogKatsominen(OAUTH2_KATSOMINEN_KAIKKI_TIEDOT, expectedClientId, koskiSession, response)
-            Right(response)
-          case _ =>
-            val error =
-              OmaDataOAuth2Error(OmaDataOAuth2ErrorType.server_error, s"Internal error, unable to handle OPISKELUOIKEUDET scope defined in ${response.scope}")
-            logger.error(error.getLoggedErrorMessage)
-            Left(error)
-        }
-      })
-      .map(_.successResponse)
   }
 
-  private def auditLogKatsominen(
-    operation: KoskiOperation.KoskiOperation,
-    expectedClientId: String,
-    koskiSession: KoskiSpecificSession,
-    response: AccessTokenInfo
-  ): Unit = {
-    AuditLog.log(KoskiAuditLogMessage(operation, koskiSession, Map(
-      oppijaHenkiloOid -> response.oppijaOid,
-      omaDataKumppani -> expectedClientId,
-      omaDataOAuth2Scope -> response.scope
-    )))
+  def findSuoritetutTutkinnot(oppijaOid: String, scope: String, overrideSession: KoskiSpecificSession): Either[HttpStatus, OmaDataOAuth2SuoritetutTutkinnot] = {
+    application.suoritetutTutkinnotService.findSuoritetutTutkinnotOppija(
+      oppijaOid,
+      merkitseSuoritusjakoTehdyksi = false
+    )(overrideSession).map(oppija => {
+      OmaDataOAuth2SuoritetutTutkinnot(
+        henkilö = OmaDataOAuth2Henkilötiedot(oppija.henkilö, scope),
+        opiskeluoikeudet = oppija.opiskeluoikeudet
+      )
+    })
+  }
+
+  def findAktiivisetJaPäättyneetOpinnot(oppijaOid: String, scope: String, overrideSession: KoskiSpecificSession): Either[HttpStatus, OmaDataOAuth2AktiivisetJaPäättyneetOpiskeluoikeudet] = {
+    application.aktiivisetJaPäättyneetOpinnotService.findAktiivisetJaPäättyneetOpinnotOppija(
+      oppijaOid,
+      merkitseSuoritusjakoTehdyksi = false
+    )(overrideSession).map(oppija => {
+      OmaDataOAuth2AktiivisetJaPäättyneetOpiskeluoikeudet(
+        henkilö = OmaDataOAuth2Henkilötiedot(oppija.henkilö, scope),
+        opiskeluoikeudet = oppija.opiskeluoikeudet
+      )
+    })
+  }
+
+  def findKaikkiTiedot(oppijaOid: String, scope: String, overrideSession: KoskiSpecificSession): Either[HttpStatus, OmaDataOAuth2KaikkiOpiskeluoikeudet] = {
+    application.oppijaFacade.findOppija(oppijaOid)(overrideSession).flatMap(_.warningsToLeft) match {
+      case Right(Oppija(henkilö: TäydellisetHenkilötiedot, opiskeluoikeudet: Seq[Opiskeluoikeus])) =>
+        Right(OmaDataOAuth2KaikkiOpiskeluoikeudet(
+          henkilö = OmaDataOAuth2Henkilötiedot(henkilö, scope),
+          opiskeluoikeudet = opiskeluoikeudet.toList
+        ))
+      case Right(_) =>
+        Left(KoskiErrorCategory.internalError("Datatype not recognized"))
+      case Left(httpStatus) =>
+        Left(httpStatus)
+    }
   }
 }
 

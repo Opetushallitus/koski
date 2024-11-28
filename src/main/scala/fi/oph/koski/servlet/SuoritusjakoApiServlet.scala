@@ -6,8 +6,8 @@ import fi.oph.koski.koskiuser.{KoskiSpecificSession, Unauthenticated}
 import fi.oph.koski.log.KoskiOperation.{KANSALAINEN_SUORITUSJAKO_KATSOMINEN_AKTIIVISET_JA_PAATTYNEET_OPINNOT, KANSALAINEN_SUORITUSJAKO_KATSOMINEN_SUORITETUT_TUTKINNOT}
 import fi.oph.koski.log.{AuditLog, KoskiAuditLogMessage}
 import fi.oph.koski.suoritusjako.OppijaJakolinkillä
-import fi.oph.koski.suoritusjako.aktiivisetjapaattyneetopinnot.AktiivisetJaPäättyneetOpinnotOppija
-import fi.oph.koski.suoritusjako.suoritetuttutkinnot.SuoritetutTutkinnotOppija
+import fi.oph.koski.suoritusjako.AktiivisetJaPäättyneetOpinnotOppijaJakolinkillä
+import fi.oph.koski.suoritusjako.SuoritetutTutkinnotOppijaJakolinkillä
 import fi.oph.koski.util.ChainingSyntax.chainingOps
 
 import java.time.LocalDate
@@ -21,7 +21,7 @@ class SuoritusjakoApiServlet(implicit application: KoskiApplication) extends Kos
     implicit val suoritusjakoUser = KoskiSpecificSession.suoritusjakoKatsominenUser(request)
     val result = application.suoritusjakoService.getSuoritetutTutkinnot(params("secret"))
       .tap(_ => AuditLog.log(KoskiAuditLogMessage(KANSALAINEN_SUORITUSJAKO_KATSOMINEN_SUORITETUT_TUTKINNOT, suoritusjakoUser, Map())))
-    renderEither[SuoritetutTutkinnotOppija](result)
+    renderEither[SuoritetutTutkinnotOppijaJakolinkillä](result)
   }
 
   post("/suoritetut-tutkinnot") {
@@ -31,7 +31,7 @@ class SuoritusjakoApiServlet(implicit application: KoskiApplication) extends Kos
       val body = JsonSerializer.extract[SuoritusjakoReadRequest](json)
       val result = application.suoritusjakoService.getSuoritetutTutkinnot(body.secret)
         .tap(_ => AuditLog.log(KoskiAuditLogMessage(KANSALAINEN_SUORITUSJAKO_KATSOMINEN_SUORITETUT_TUTKINNOT, suoritusjakoUser, Map())))
-      renderEither[SuoritetutTutkinnotOppija](result)
+      renderEither[SuoritetutTutkinnotOppijaJakolinkillä](result)
     })()
   }
 
@@ -40,7 +40,7 @@ class SuoritusjakoApiServlet(implicit application: KoskiApplication) extends Kos
     implicit val suoritusjakoUser = KoskiSpecificSession.suoritusjakoKatsominenUser(request)
     val result = application.suoritusjakoService.getAktiivisetJaPäättyneetOpinnot(params("secret"))
       .tap(_ => AuditLog.log(KoskiAuditLogMessage(KANSALAINEN_SUORITUSJAKO_KATSOMINEN_AKTIIVISET_JA_PAATTYNEET_OPINNOT, suoritusjakoUser, Map())))
-    renderEither[AktiivisetJaPäättyneetOpinnotOppija](result)
+    renderEither[AktiivisetJaPäättyneetOpinnotOppijaJakolinkillä](result)
   }
 
   post("/aktiiviset-ja-paattyneet-opinnot") {
@@ -50,7 +50,7 @@ class SuoritusjakoApiServlet(implicit application: KoskiApplication) extends Kos
       val body = JsonSerializer.extract[SuoritusjakoReadRequest](json)
       val result = application.suoritusjakoService.getAktiivisetJaPäättyneetOpinnot(body.secret)
         .tap(_ => AuditLog.log(KoskiAuditLogMessage(KANSALAINEN_SUORITUSJAKO_KATSOMINEN_AKTIIVISET_JA_PAATTYNEET_OPINNOT, suoritusjakoUser, Map())))
-      renderEither[AktiivisetJaPäättyneetOpinnotOppija](result)
+      renderEither[AktiivisetJaPäättyneetOpinnotOppijaJakolinkillä](result)
     })()
   }
 

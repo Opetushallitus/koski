@@ -42,7 +42,7 @@ class OppijaSearchSpec extends AnyFreeSpec with Matchers with SearchTestMethods 
     }
     "Audit logging" in {
       search("eero", defaultUser) {
-        AuditLogTester.verifyAuditLogMessage(Map("operation" -> "OPPIJA_HAKU", "target" -> Map("hakuEhto" -> "EERO")))
+        AuditLogTester.verifyLastAuditLogMessage(Map("operation" -> "OPPIJA_HAKU", "target" -> Map("hakuEhto" -> "EERO")))
       }
     }
     "When query is too short" - {

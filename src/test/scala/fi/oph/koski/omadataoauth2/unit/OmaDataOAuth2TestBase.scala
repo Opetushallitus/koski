@@ -30,7 +30,7 @@ class OmaDataOAuth2TestBase extends AnyFreeSpec with KoskiHttpSpec with Matchers
   // https://datatracker.ietf.org/doc/html/rfc7636#appendix-B
   val validDummyCodeChallenge = "E9Melhoa2OwvFrEMTJguCHaoeK1t8URWbuGJSstw-cM"
 
-  val validClientId = "oauth2client"
+  val validClientId = MockUsers.omadataOAuth2Palvelukäyttäjä.username
   val validState = "internal state"
   val validRedirectUri = "/koski/omadata-oauth2/debug-post-response"
 
@@ -83,11 +83,11 @@ class OmaDataOAuth2TestBase extends AnyFreeSpec with KoskiHttpSpec with Matchers
     actualParams.get(key)
   }
 
-  def createAuthorizationAndToken(kansalainen: LaajatOppijaHenkilöTiedot, pkce: ChallengeAndVerifier): String = {
-    val code = createAuthorization(kansalainen, pkce.challenge)
+  def createAuthorizationAndToken(kansalainen: LaajatOppijaHenkilöTiedot, pkce: ChallengeAndVerifier, scope: String = validScope, user: KoskiMockUser = validPalvelukäyttäjä): String = {
+    val code = createAuthorization(kansalainen, pkce.challenge, scope, user)
 
     val token = postAuthorizationServerClientIdFromUsername(
-      validPalvelukäyttäjä,
+      user,
       code = Some(code),
       codeVerifier = Some(pkce.verifier),
       redirectUri = Some(validRedirectUri)
@@ -99,18 +99,19 @@ class OmaDataOAuth2TestBase extends AnyFreeSpec with KoskiHttpSpec with Matchers
   }
 
   // Huom, tämä ohittaa yksikkötestejä varten "tuotantologiikan" ja lukee code:n suoraan URI:sta, eikä redirect_uri:n kautta
-  def createAuthorization(kansalainen: LaajatOppijaHenkilöTiedot, codeChallenge: String, scope: String = validScope) = {
+  def createAuthorization(kansalainen: LaajatOppijaHenkilöTiedot, codeChallenge: String, scope: String = validScope, user: KoskiMockUser = validPalvelukäyttäjä) = {
     val paramsString = createParamsString(
       (validAuthorizeParams.toMap +
         ("code_challenge" -> codeChallenge) +
-        ("scope" -> scope)
+        ("scope" -> scope) +
+        ("client_id" -> user.username)
         ).toSeq
     )
     val serverUri = s"${authorizeBaseUri}?${paramsString}"
 
     val expectedResultParams =
       Seq(
-        ("client_id", validClientId),
+        ("client_id", user.username),
         ("redirect_uri", validRedirectUri),
         ("state", validState),
       )

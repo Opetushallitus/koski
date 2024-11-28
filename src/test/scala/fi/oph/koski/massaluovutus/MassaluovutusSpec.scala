@@ -173,7 +173,7 @@ class MassaluovutusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers wit
         complete.files should have length 18
         complete.files.foreach(verifyResult(_, user))
 
-        AuditLogTester.verifyAuditLogMessage(Map(
+        AuditLogTester.verifyLastAuditLogMessage(Map(
           "operation" -> "OPISKELUOIKEUS_HAKU",
           "target" -> Map(
             "hakuEhto" -> "alkanutAikaisintaan=2020-01-01&organisaatio=1.2.246.562.10.346830761110",
@@ -231,7 +231,7 @@ class MassaluovutusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers wit
         complete.files should have length 5
         complete.files.foreach(verifyResult(_, user))
 
-        AuditLogTester.verifyAuditLogMessage(Map(
+        AuditLogTester.verifyLastAuditLogMessage(Map(
           "operation" -> "OPISKELUOIKEUS_HAKU",
           "target" -> Map(
             "hakuEhto" -> "alkanutAikaisintaan=2020-01-01&organisaatio=1.2.246.562.10.346830761110",
@@ -336,7 +336,7 @@ class MassaluovutusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers wit
         complete.files should have length 1
         complete.files.foreach(verifyResult(_, user))
 
-        AuditLogTester.verifyAuditLogMessage(Map(
+        AuditLogTester.verifyLastAuditLogMessage(Map(
           "operation" -> "OPISKELUOIKEUS_RAPORTTI",
           "target" -> Map(
             "hakuEhto" -> "alku=2000-01-01&lang=fi&loppu=2020-01-01&oppilaitosOid=1.2.246.562.10.346830761110&raportti=paallekkaisetopiskeluoikeudet",
@@ -507,7 +507,7 @@ class MassaluovutusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers wit
           )
         }
 
-        AuditLogTester.verifyAuditLogMessage(Map(
+        AuditLogTester.verifyLastAuditLogMessage(Map(
           "operation" -> "SUORITUSREKISTERI_OPISKELUOIKEUS_HAKU",
           "target" -> Map(
             "oppijaHenkiloOid" -> oppijaOid,

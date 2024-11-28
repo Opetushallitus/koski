@@ -1,47 +1,104 @@
 package fi.oph.koski.omadataoauth2
 
 import fi.oph.koski.config.KoskiApplication
-import fi.oph.koski.http.KoskiErrorCategory
-import fi.oph.koski.json.JsonResources
-import fi.oph.koski.koskiuser.RequiresOmaDataOAuth2
-import fi.oph.koski.log.Logging
+import fi.oph.koski.http.HttpStatus
+import fi.oph.koski.koskiuser.{KoskiSpecificSession, RequiresOmaDataOAuth2}
+import fi.oph.koski.log.KoskiAuditLogMessageField.{omaDataKumppani, omaDataOAuth2Scope, oppijaHenkiloOid}
+import fi.oph.koski.log.KoskiOperation.{OAUTH2_KATSOMINEN_AKTIIVISET_JA_PAATTYNEET_OPINNOT, OAUTH2_KATSOMINEN_KAIKKI_TIEDOT, OAUTH2_KATSOMINEN_SUORITETUT_TUTKINNOT}
+import fi.oph.koski.log.{AuditLog, KoskiAuditLogMessage, KoskiOperation, Logging}
 import fi.oph.koski.servlet.{KoskiSpecificApiServlet, NoCache}
 import org.scalatra.ContentEncodingSupport
-
+import scala.reflect.runtime.universe.TypeTag
 
 class OmaDataOAuth2ResourceServerServlet(implicit val application: KoskiApplication) extends KoskiSpecificApiServlet
   with Logging with ContentEncodingSupport with NoCache with RequiresOmaDataOAuth2 {
-
-  private val dummyResourceFilename = "/omadataoauth2/dummydata.json"
-
   // in: access token
   // out: data, jos käyttäjällä oikeudet kyseiseen access tokeniin.
-  //      TAI OAuth2-protokollan mukainen virheilmoitus (joka luotetaan nginx:n välittävän sellaisenaan, jos pyyntö on tänne asti tullut?)
+  //      TAI OAuth2-protokollan mukainen virheilmoitus
   post("/") {
-    // TODO: TOR-2210 pitäisikö tarkistaa muita headereitä kuin Bearer?
-    val result = request.header("X-Auth").map(_.split(" ")) match {
+    request.header("X-Auth").map(_.split(" ")) match {
       case Some(Array("Bearer", token)) =>
-        application.omaDataOAuth2Service.getByAccessToken(
-          accessToken = token,
-          expectedClientId = koskiSession.user.username,
-          koskiSession = koskiSession,
-          allowedScopes = koskiSession.omaDataOAuth2Scopes
-        ) match {
-          case Left(error) =>
-            val errorResult = AccessTokenErrorResponse(error)
-            response.setStatus(errorResult.httpStatus)
-            renderObject(errorResult)
-          case Right(successResponse) =>
-            // TODO:  oikea toteutus + testit
-            response.setStatus(200)
-            renderObject(JsonResources.readResource(dummyResourceFilename))
-        }
+        renderRequestedData(token)
       case _ =>
-        // TODO: TOR-2210 pitäisikö virheestä kertoa detaljeita, esim. oliko vaan expired token tms.?
-        // TODO: TOR-2210 Speksin mukainen virhesisältö, jos sellainen on resource serverille määritelty
-        val errorResult = AccessTokenErrorResponse(OmaDataOAuth2Error(OmaDataOAuth2ErrorType.invalid_request, s"Request missing valid token parameters"))
-        response.setStatus(errorResult.httpStatus)
-        renderObject(errorResult)
+        renderError(OmaDataOAuth2ErrorType.invalid_request, "Request missing valid token parameters", msg => logger.warn(msg))
     }
+  }
+
+  private def renderRequestedData(token: String): Unit = {
+    application.omaDataOAuth2Service.getByAccessToken(
+      accessToken = token,
+      expectedClientId = koskiSession.user.username,
+      allowedScopes = koskiSession.omaDataOAuth2Scopes
+    ) match {
+      case Right(AccessTokenInfo(_, oppijaOid, scope)) =>
+        renderOpinnot(oppijaOid, scope)
+      case Left(error) =>
+        val errorResult = error.getAccessTokenErrorResponse
+        renderErrorWithStatus(errorResult, errorResult.httpStatus)
+    }
+  }
+
+  private def renderOpinnot(oppijaOid: String, scope: String): Unit = {
+    val overrideSession = KoskiSpecificSession.oauth2KatsominenUser(request)
+
+    scope.split(" ").filter(_.startsWith("OPISKELUOIKEUDET_")).toSeq match {
+      case Seq("OPISKELUOIKEUDET_SUORITETUT_TUTKINNOT") =>
+        val oppija = application.omaDataOAuth2Service.findSuoritetutTutkinnot(oppijaOid, scope, overrideSession)
+        auditLogKatsominen(OAUTH2_KATSOMINEN_SUORITETUT_TUTKINNOT, koskiSession.user.username, koskiSession, oppijaOid, scope)
+        renderOppijaData(oppija)
+      case Seq("OPISKELUOIKEUDET_AKTIIVISET_JA_PAATTYNEET_OPINNOT") =>
+        val oppija = application.omaDataOAuth2Service.findAktiivisetJaPäättyneetOpinnot(oppijaOid, scope, overrideSession)
+        auditLogKatsominen(OAUTH2_KATSOMINEN_AKTIIVISET_JA_PAATTYNEET_OPINNOT, koskiSession.user.username, koskiSession, oppijaOid, scope)
+        renderOppijaData(oppija)
+      case Seq("OPISKELUOIKEUDET_KAIKKI_TIEDOT") =>
+        val oppija = application.omaDataOAuth2Service.findKaikkiTiedot(oppijaOid, scope, overrideSession)
+        auditLogKatsominen(OAUTH2_KATSOMINEN_KAIKKI_TIEDOT, koskiSession.user.username, koskiSession, oppijaOid, scope)
+        renderOppijaData(oppija)
+      case _ =>
+        renderError(OmaDataOAuth2ErrorType.server_error, s"Internal error, unable to handle OPISKELUOIKEUDET scope defined in ${scope}", msg => logger.error(msg))
+    }
+  }
+
+  private def auditLogKatsominen(
+    operation: KoskiOperation.KoskiOperation,
+    expectedClientId: String,
+    koskiSession: KoskiSpecificSession,
+    oppijaOid: String,
+    scope: String
+  ): Unit = {
+    AuditLog.log(KoskiAuditLogMessage(operation, koskiSession, Map(
+      oppijaHenkiloOid -> oppijaOid,
+      omaDataKumppani -> expectedClientId,
+      omaDataOAuth2Scope -> scope
+    )))
+  }
+
+  private def renderOppijaData[T: TypeTag](oppija: Either[HttpStatus, T]): Unit = oppija match {
+    case Right(oppija) =>
+      renderObject(oppija)
+    case Left(httpStatus) =>
+      renderError(OmaDataOAuth2ErrorType.server_error, httpStatus, "Internal error", msg => logger.warn(msg))
+  }
+
+  private def renderError(errorType: OmaDataOAuth2ErrorType, message: String, log: String => Unit): Unit = {
+    val errorResult = logAndCreateError(errorType, message, log)
+    renderErrorWithStatus(errorResult, errorResult.httpStatus)
+  }
+
+  private def renderError(errorType: OmaDataOAuth2ErrorType, httpStatus: HttpStatus, message: String, log: String => Unit): Unit = {
+    val errorResult = logAndCreateError(errorType, httpStatus.errorString.getOrElse(message), log)
+    renderErrorWithStatus(errorResult, httpStatus.statusCode)
+    renderObject(errorResult)
+  }
+
+  private def logAndCreateError(errorType: OmaDataOAuth2ErrorType, message: String, log: String => Unit) = {
+    val error = OmaDataOAuth2Error(errorType, message)
+    log(error.getLoggedErrorMessage)
+    error.getAccessTokenErrorResponse
+  }
+
+  private def renderErrorWithStatus(errorResult: AccessTokenErrorResponse, status: Int): Unit = {
+    response.setStatus(status)
+    renderObject(errorResult)
   }
 }

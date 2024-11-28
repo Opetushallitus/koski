@@ -45,7 +45,7 @@ class HslSpec extends AnyFreeSpec with KoskiHttpSpec with OpiskeluoikeusTestMeth
     "palauttaa oppilaan tiedot hetun perusteella" in {
       postHsl(MockUsers.hslKäyttäjä, opiskelija.hetu.get) {
         verifyResponseStatusOk()
-        AuditLogTester.verifyAuditLogMessage(Map("operation" -> "OPISKELUOIKEUS_KATSOMINEN"))
+        AuditLogTester.verifyLastAuditLogMessage(Map("operation" -> "OPISKELUOIKEUS_KATSOMINEN"))
 
         val actualJson = parseOpintoOikeudetJson()
         validateOpintoOikeudetJson(actualJson)

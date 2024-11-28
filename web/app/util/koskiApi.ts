@@ -13,8 +13,8 @@ import { GroupedKoodistot } from '../types/fi/oph/koski/typemodel/GroupedKoodist
 import { YtrCertificateResponse } from '../types/fi/oph/koski/ytr/YtrCertificateResponse'
 import { tapLeftP } from './fp/either'
 import { queryString } from './url'
-import { SuoritetutTutkinnotOppija } from '../types/fi/oph/koski/suoritusjako/suoritetuttutkinnot/SuoritetutTutkinnotOppija'
-import { AktiivisetJaPäättyneetOpinnotOppija } from '../types/fi/oph/koski/suoritusjako/aktiivisetjapaattyneetopinnot/AktiivisetJaPaattyneetOpinnotOppija'
+import { SuoritetutTutkinnotOppijaJakolinkillä } from '../types/fi/oph/koski/suoritusjako/SuoritetutTutkinnotOppijaJakolinkilla'
+import { AktiivisetJaPäättyneetOpinnotOppijaJakolinkillä } from '../types/fi/oph/koski/suoritusjako/AktiivisetJaPaattyneetOpinnotOppijaJakolinkilla'
 import { Koodistokoodiviite } from '../types/fi/oph/koski/schema/Koodistokoodiviite'
 import { Osaamismerkkikuva } from '../types/fi/oph/koski/servlet/Osaamismerkkikuva'
 import { lang } from '../i18n/i18n'
@@ -197,14 +197,14 @@ export const fetchSuoritusjako = (id: string) =>
 
 export const fetchSuoritetutTutkinnot = (id: string) =>
   handleExpiredSession(
-    apiGet<SuoritetutTutkinnotOppija>(
+    apiGet<SuoritetutTutkinnotOppijaJakolinkillä>(
       apiUrl(`opinnot/suoritetut-tutkinnot/${id}`)
     )
   )
 
 export const fetchAktiivisetJaPäättyneetOpinnot = (id: string) =>
   handleExpiredSession(
-    apiGet<AktiivisetJaPäättyneetOpinnotOppija>(
+    apiGet<AktiivisetJaPäättyneetOpinnotOppijaJakolinkillä>(
       apiUrl(`opinnot/aktiiviset-ja-paattyneet-opinnot/${id}`)
     )
   )

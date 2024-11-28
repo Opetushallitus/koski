@@ -36,7 +36,7 @@ class PalveluvaylaSpec extends AnyFreeSpec with KoskiHttpSpec with Opiskeluoikeu
     "palauttaa oppilaan tiedot hetun perusteella - vain osa opiskeluoikeuden kentistä mukana" in {
       postSuomiFiRekisteritiedot(MockUsers.suomiFiKäyttäjä, KoskiSpecificMockOppijat.ylioppilas.hetu.get) {
         verifyResponseStatusOk()
-        AuditLogTester.verifyAuditLogMessage(Map("operation" -> "KANSALAINEN_SUOMIFI_KATSOMINEN"))
+        AuditLogTester.verifyLastAuditLogMessage(Map("operation" -> "KANSALAINEN_SUOMIFI_KATSOMINEN"))
         val oppilaitokset = (soapResponse() \ "Body" \ "suomiFiRekisteritiedotResponse" \ "oppilaitokset").head
         oppilaitokset shouldEqual Utility.trim(
           <oppilaitokset>
@@ -64,7 +64,7 @@ class PalveluvaylaSpec extends AnyFreeSpec with KoskiHttpSpec with Opiskeluoikeu
     "palauttaa oppilaan tiedot hetun perusteella - kaikki opiskeluoikeuden kentät mukana" in {
       postSuomiFiRekisteritiedot(MockUsers.suomiFiKäyttäjä, KoskiSpecificMockOppijat.ammattilainen.hetu.get) {
         verifyResponseStatusOk()
-        AuditLogTester.verifyAuditLogMessage(Map("operation" -> "KANSALAINEN_SUOMIFI_KATSOMINEN"))
+        AuditLogTester.verifyLastAuditLogMessage(Map("operation" -> "KANSALAINEN_SUOMIFI_KATSOMINEN"))
         val oppilaitokset = (soapResponse() \ "Body" \ "suomiFiRekisteritiedotResponse" \ "oppilaitokset").head
         oppilaitokset shouldEqual Utility.trim(
           <oppilaitokset>
