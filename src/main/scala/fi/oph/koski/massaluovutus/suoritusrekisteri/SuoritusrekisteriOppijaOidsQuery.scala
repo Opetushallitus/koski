@@ -17,8 +17,9 @@ case class SuoritusrekisteriOppijaOidsQuery(
   `type`: String = "sure-oppijat",
   @EnumValues(Set(QueryFormat.json))
   format: String = QueryFormat.json,
+  @Description("Lista oppijoiden oideista, joiden tiedot haetaan")
   oppijaOids: Seq[String],
-) extends SuoritusrekisteriQuery with Logging {
+) extends SuoritusrekisteriQuery {
   def getOpiskeluoikeusIds(db: DB): Seq[(Int, Timestamp)] = {
     QueryMethods.runDbSync(
       db,

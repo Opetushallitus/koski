@@ -14,12 +14,14 @@ import java.time.LocalDateTime
 @Description("Palauttaa Suoritusrekisteriä varten räätälöidyt tiedot annettujen oppijoiden ja koulutusmuodon mukaisista opiskeluoikeuksista tietyn ajanhetken jälkeen.")
 @Description("Vastauksen skeema on saatavana <a href=\"/koski/json-schema-viewer/?schema=suoritusrekisteri-result.json\">täältä.</a>")
 case class SuoritusrekisteriMuuttuneetJalkeenQuery(
-  @EnumValues(Set("sure"))
-  `type`: String = "sure",
+  @EnumValues(Set("sure-muuttuneet"))
+  `type`: String = "sure-muuttuneet",
   @EnumValues(Set(QueryFormat.json))
   format: String = QueryFormat.json,
+  @Description("Aikaraja, jonka jälkeen muuttuneet opiskeluoikeudet haetaan.")
+  @Description("Teknisistä syistä johtuen kannattaa aina hakea tiedot hieman pidemmältä ajalta ja suodattaa itse tulosjoukosta tarpeettomat tiedot.")
   muuttuneetJälkeen: LocalDateTime,
-) extends SuoritusrekisteriQuery with Logging {
+) extends SuoritusrekisteriQuery {
   def getOpiskeluoikeusIds(db: DB): Seq[(Int, Timestamp)] =
     QueryMethods.runDbSync(
       db,
