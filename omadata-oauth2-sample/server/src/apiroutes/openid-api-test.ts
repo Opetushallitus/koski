@@ -18,11 +18,13 @@ const router: Router = express.Router()
 // TODO: TOR-2210: Toistaiseksi vain muistinvarainen map
 let verifiers: Map<string, string> = new Map()
 
-const scope: string =
+const defaultScope: string =
   'HENKILOTIEDOT_NIMI HENKILOTIEDOT_SYNTYMAAIKA HENKILOTIEDOT_HETU OPISKELUOIKEUDET_SUORITETUT_TUTKINNOT'
 
 router.get('/', async (req: Request, res: Response, next: NextFunction) => {
   try {
+    const scope = req.query.scope ? (req.query.scope as string) : defaultScope
+
     const state = uuidv4()
     const code_verifier = client.randomPKCECodeVerifier()
     verifiers.set(state, code_verifier)
@@ -45,7 +47,7 @@ router.get(
       const redirectTo = await buildAuthorizationUrl(
         code_verifier,
         state,
-        scope,
+        defaultScope,
         'http://localhost:9999/'
       )
 
