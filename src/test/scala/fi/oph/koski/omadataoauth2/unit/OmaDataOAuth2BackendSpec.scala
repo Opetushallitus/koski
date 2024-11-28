@@ -2,7 +2,7 @@ package fi.oph.koski.omadataoauth2.unit
 
 import fi.oph.koski.aktiivisetjapaattyneetopinnot.AktiivisetJaPäättyneetOpinnotMuunKuinSäännellynKoulutuksenOpiskeluoikeus
 import fi.oph.koski.api.misc.OpiskeluoikeusTestMethods
-import fi.oph.koski.{DatabaseTestMethods, schema}
+import fi.oph.koski.{DatabaseTestMethods, KoskiApplicationForTests, schema}
 import fi.oph.koski.db.KoskiTables.OAuth2JakoKaikki
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.json.JsonSerializer
@@ -11,6 +11,7 @@ import fi.oph.koski.log.AuditLogTester
 import fi.oph.koski.omadataoauth2.{AccessTokenErrorResponse, AccessTokenSuccessResponse, OmaDataOAuth2AktiivisetJaPäättyneetOpiskeluoikeudet, OmaDataOAuth2KaikkiOpiskeluoikeudet, OmaDataOAuth2SuoritetutTutkinnot}
 import fi.oph.koski.omadataoauth2.OmaDataOAuth2Security.{createChallengeAndVerifier, sha256}
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
+import fi.oph.koski.fixture.FixtureCreator
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.schema.{AmmatillinenOpiskeluoikeus, PerusopetuksenOpiskeluoikeudenLisätiedot, PerusopetuksenOpiskeluoikeus}
 import fi.oph.koski.suoritetuttutkinnot.SuoritetutTutkinnotAmmatillinenOpiskeluoikeus
@@ -945,6 +946,38 @@ class OmaDataOAuth2BackendSpec
           ))
 
         }
+      }
+    }
+
+    "kun oppijaa ei löydy lainkaan, palautetaan 404" in {
+      val olemassaolematonOppijaOid = FixtureCreator.generateOppijaOid(999999978)
+      val palveluKäyttäjä = MockUsers.omadataOAuth2KaikkiOikeudetPalvelukäyttäjä
+      val clientId = palveluKäyttäjä.username
+
+      val scope = "HENKILOTIEDOT_SYNTYMAAIKA HENKILOTIEDOT_NIMI OPISKELUOIKEUDET_KAIKKI_TIEDOT"
+
+      val pkce = createChallengeAndVerifier
+
+      KoskiApplicationForTests.omaDataOAuth2Repository.create(
+        code = "foo",
+        oppijaOid = olemassaolematonOppijaOid,
+        clientId,
+        scope,
+        codeChallenge = pkce.challenge,
+        redirectUri = validRedirectUri
+      ).isRight should be(true)
+
+      val token = KoskiApplicationForTests.omaDataOAuth2Repository.createAccessTokenForCode(
+        "foo",
+        clientId,
+        pkce.challenge,
+        Some(validRedirectUri),
+        scope.split(" ").toSet
+      ).getOrElse(throw new Error("Internal error"))
+        .successResponse.access_token
+
+      postResourceServer(token, palveluKäyttäjä) {
+        verifyResponseStatus(404)
       }
     }
   }
