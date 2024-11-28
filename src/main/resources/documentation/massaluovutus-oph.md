@@ -65,5 +65,8 @@ yhteyttä KOSKI-tiimiin.
 {{title:fi.oph.koski.massaluovutus.valintalaskenta.ValintalaskentaQuery}}
 {{docs:fi.oph.koski.massaluovutus.valintalaskenta.ValintalaskentaQuery}}
 
-{{title:fi.oph.koski.massaluovutus.suoritusrekisteri.SuoritusrekisteriQuery}}
-{{docs:fi.oph.koski.massaluovutus.suoritusrekisteri.SuoritusrekisteriQuery}}
+{{title:fi.oph.koski.massaluovutus.suoritusrekisteri.SuoritusrekisteriMuuttuneetJalkeenQuery}}
+{{docs:fi.oph.koski.massaluovutus.suoritusrekisteri.SuoritusrekisteriMuuttuneetJalkeenQuery}}
+
+{{title:fi.oph.koski.massaluovutus.suoritusrekisteri.SuoritusrekisteriOppijaOidsQuery}}
+{{docs:fi.oph.koski.massaluovutus.suoritusrekisteri.SuoritusrekisteriOppijaOidsQuery}}

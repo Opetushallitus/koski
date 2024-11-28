@@ -1,6 +1,5 @@
 package fi.oph.koski.massaluovutus.suoritusrekisteri
 
-import fi.oph.koski.db.PostgresDriverWithJsonSupport.plainAPI._
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.db.KoskiOpiskeluoikeusRowImplicits.getKoskiOpiskeluoikeusRow
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api.actionBasedSQLInterpolation
@@ -8,29 +7,20 @@ import fi.oph.koski.db.{DB, KoskiOpiskeluoikeusRow, KoskiTables, QueryMethods}
 import fi.oph.koski.koskiuser.KoskiSpecificSession
 import fi.oph.koski.koskiuser.Rooli.{OPHKATSELIJA, OPHPAAKAYTTAJA}
 import fi.oph.koski.log._
-import fi.oph.koski.massaluovutus.{MassaluovutusQueryParameters, MassaluovutusQueryPriority, QueryFormat, QueryResultWriter}
-import fi.oph.koski.schema.annotation.EnumValues
+import fi.oph.koski.massaluovutus.{MassaluovutusQueryParameters, MassaluovutusQueryPriority, QueryResultWriter}
 import fi.oph.koski.schema.{KoskeenTallennettavaOpiskeluoikeus, KoskiSchema}
-import fi.oph.scalaschema.annotation.{Description, Title}
 
 import java.sql.Timestamp
 import java.time.LocalDateTime
 import scala.concurrent.duration.DurationInt
 
-@Title("Suoritusrekisterin kysely")
-@Description("Palauttaa Suoritusrekisteriä varten räätälöidyt tiedot annettujen oppijoiden ja koulutusmuodon mukaisista opiskeluoikeuksista.")
-@Description("Vastauksen skeema on saatavana <a href=\"/koski/json-schema-viewer/?schema=suoritusrekisteri-result.json\">täältä.</a>")
-case class SuoritusrekisteriQuery(
-  @EnumValues(Set("sure"))
-  `type`: String = "sure",
-  @EnumValues(Set(QueryFormat.json))
-  format: String = QueryFormat.json,
-  muuttuneetJälkeen: LocalDateTime,
-) extends MassaluovutusQueryParameters with Logging {
+trait SuoritusrekisteriQuery extends MassaluovutusQueryParameters with Logging {
+  def getOpiskeluoikeusIds(db: DB): Seq[(Int, Timestamp)]
+
   override def priority: Int = MassaluovutusQueryPriority.high
 
   override def run(application: KoskiApplication, writer: QueryResultWriter)(implicit user: KoskiSpecificSession): Either[String, Unit] = {
-    val opiskeluoikeudet = muuttuneetOpiskeluoikeudet(application.masterDatabase.db)
+    val opiskeluoikeudet = getOpiskeluoikeusIds(application.masterDatabase.db)
     writer.predictFileCount(opiskeluoikeudet.size)
     opiskeluoikeudet.grouped(100).foreach { groupedOpiskeluoikeudet =>
       val db = selectDbByLag(application, groupedOpiskeluoikeudet.head._2)
@@ -51,18 +41,6 @@ case class SuoritusrekisteriQuery(
 
   override def queryAllowed(application: KoskiApplication)(implicit user: KoskiSpecificSession): Boolean =
     user.hasRole(OPHKATSELIJA) || user.hasRole(OPHPAAKAYTTAJA)
-
-
-  private def muuttuneetOpiskeluoikeudet(db: DB): Seq[(Int, Timestamp)] =
-    QueryMethods.runDbSync(
-      db,
-      sql"""
-        SELECT id, aikaleima
-        FROM opiskeluoikeus
-        WHERE aikaleima >= ${Timestamp.valueOf(muuttuneetJälkeen)}
-          AND koulutusmuoto = any(${SuoritusrekisteriQuery.opiskeluoikeudenTyypit})
-        ORDER BY aikaleima
-      """.as[(Int, Timestamp)])
 
   private def getOpiskeluoikeus(application: KoskiApplication, db: DB, id: Int): Option[SureResponse] =
     QueryMethods.runDbSync(
