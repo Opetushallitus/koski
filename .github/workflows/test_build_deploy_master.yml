@@ -372,6 +372,9 @@ jobs:
           service: koski
           cluster: koski-cluster
           wait-for-service-stability: true
+          codedeploy-appspec: appspec.json
+          codedeploy-application: koski
+          codedeploy-deployment-group: koski-deployment-group
 
       - name: Get raportointikanta-loader task definition ARN
         id: get-raportointikanta-loader-taskdef-arn

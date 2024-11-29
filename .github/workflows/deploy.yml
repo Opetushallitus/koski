@@ -149,7 +149,6 @@ jobs:
 
       - name: Deploy using CodeDeploy
         uses: aws-actions/amazon-ecs-deploy-task-definition@v1
-        if: github.event.inputs.environment != 'prod'
         with:
           task-definition: ${{ steps.task-def.outputs.task-definition }}
           service: koski
@@ -158,15 +157,6 @@ jobs:
           codedeploy-appspec: appspec.json
           codedeploy-application: koski
           codedeploy-deployment-group: koski-deployment-group
-
-      - name: Deploy Amazon ECS task definition
-        uses: aws-actions/amazon-ecs-deploy-task-definition@v1
-        if: github.event.inputs.environment == 'prod'
-        with:
-          task-definition: ${{ steps.task-def.outputs.task-definition }}
-          service: koski
-          cluster: koski-cluster
-          wait-for-service-stability: true
 
       - name: Get raportointikanta-loader loader task definition ARN
         id: get-raportointikanta-loader-taskdef-arn
