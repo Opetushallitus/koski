@@ -364,6 +364,10 @@ jobs:
           container-name: KoskiContainer
           image: ${{ steps.login-ecr.outputs.registry }}/koski:${{ github.sha }}
 
+      - name: Get AppSpec template
+        run: |
+          aws ssm get-parameter --name /koski/appspec-template --output text --query 'Parameter.Value' > appspec.json
+
       - name: Deploy Amazon ECS task definition
         id: koski-taskdef-deploy
         uses: aws-actions/amazon-ecs-deploy-task-definition@v1
