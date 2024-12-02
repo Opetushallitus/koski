@@ -16,6 +16,7 @@ import {
 } from './IBPaatasonSuoritusTiedot'
 import { Spacer } from '../components-v2/layout/Spacer'
 import { SuorituksenVahvistusField } from '../components-v2/opiskeluoikeus/SuorituksenVahvistus'
+import { OppiaineTable } from '../components-v2/opiskeluoikeus/OppiaineTable'
 
 export type IBEditorProps = AdaptedOpiskeluoikeusEditorProps<IBOpiskeluoikeus>
 
@@ -64,7 +65,10 @@ const IBPäätasonSuoritusEditor: React.FC<
         organisaatio={organisaatio}
         disableAdd={true} // TODO
       />
+
       <Spacer />
+
+      <OppiaineTable suoritus={päätasonSuoritus.suoritus} />
     </EditorContainer>
   )
 }
