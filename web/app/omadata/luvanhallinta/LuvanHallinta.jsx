@@ -52,7 +52,14 @@ export class LuvanHallinta extends React.Component {
     const oauth2käyttöluvatS = Http.cachedGet(
       '/koski/api/omadata-oauth2/resource-owner/active-consents',
       {
-        errorHandler: () => this.onHttpGetError()
+        errorHandler: (e) => {
+          if (e.httpStatus === 404) {
+            // Ignoorataan virhe kun api ei ole vielä päällä tuotannossa
+            this.setState({ loading: false })
+          } else {
+            this.onHttpGetError()
+          }
+        }
       }
     )
     const birthDayS = Http.cachedGet('/koski/api/omattiedot/editor', {
