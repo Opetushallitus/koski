@@ -111,16 +111,20 @@ case class OppijanumeroRekisteriClientRetryStrategy(
   maxWaitBetweenRetries: FiniteDuration,
   retryTimeout: FiniteDuration,
 ) extends Logging {
+  //  responseHeaderTimeout < requestTimeout < idleTimeout
   val maxTotalWaitTimeBetweenRetries: FiniteDuration = maxWaitBetweenRetries * (maxRetries - 1)
-  val totalTimeout: FiniteDuration = maxTotalWaitTimeBetweenRetries + retryTimeout * maxRetries
 
-  logger.info(s"Oppijanumerorekisteri retry strategy created: max retries = $maxRetries, max wait between retries = $maxWaitBetweenRetries, retry timeout = $retryTimeout, total timeout = $totalTimeout")
+  val requestTimeout: FiniteDuration = maxTotalWaitTimeBetweenRetries + retryTimeout * maxRetries
+  val idleTimeout: FiniteDuration = requestTimeout + 2.seconds
+
+  logger.info(s"Oppijanumerorekisteri retry strategy created: max retries = $maxRetries, max wait between retries = $maxWaitBetweenRetries, retry timeout = $retryTimeout, request timeout = $requestTimeout, idle timeout = $idleTimeout, total timeout = $requestTimeout")
 
   def applyConfig(builder: BlazeClientBuilder[IO]): BlazeClientBuilder[IO] = {
     builder
       .withConnectTimeout(retryTimeout - 1.seconds)
       .withResponseHeaderTimeout(retryTimeout)
-      .withRequestTimeout(totalTimeout)
+      .withRequestTimeout(requestTimeout)
+      .withIdleTimeout(idleTimeout)
   }
 
   def backoffPolicy: Int => Option[FiniteDuration] = RetryPolicy.exponentialBackoff(
