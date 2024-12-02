@@ -84,6 +84,18 @@ object AuditLogMockData extends Logging {
       raw = rawAuditlog("OPISKELUOIKEUS_KATSOMINEN")
     ),
     MockData(
+      studentOid = KoskiSpecificMockOppijat.ylioppilas.oid,
+      time = "2019-05-19T11:21:42.123+03",
+      organizationOid = List(MockOrganisaatiot.helsinginKaupunki),
+      raw = rawAuditlog("YTR_OPISKELUOIKEUS_KATSOMINEN")
+    ),
+    MockData(
+      studentOid = KoskiSpecificMockOppijat.ylioppilas.oid,
+      time = "2019-05-19T11:21:42.123+03",
+      organizationOid = List(MockOrganisaatiot.stadinAmmattiopisto),
+      raw = rawAuditlog("MUUTOSHISTORIA_KATSOMINEN")
+    ),
+    MockData(
       studentOid = KoskiSpecificMockOppijat.amis.oid,
       time = "2020-01-12T20:31:32.104+03",
       organizationOid = List(MockOrganisaatiot.helsinginKaupunki),
@@ -154,7 +166,56 @@ object AuditLogMockData extends Logging {
       time = "2000-01-12T20:31:32.104+03",
       organizationOid = List(Opetushallitus.organisaatioOid),
       raw = rawAuditlog("OPISKELUOIKEUS_KATSOMINEN")
-    )
+    ),
+    MockData(
+      studentOid = KoskiSpecificMockOppijat.ylioppilasLukiolainen.oid,
+      time = "2000-01-12T20:31:32.104+03",
+      organizationOid = List(MockOrganisaatiot.helsinginKaupunki),
+      raw = rawAuditlog("KANSALAINEN_SUORITUSJAKO_KATSOMINEN")
+    ),
+    MockData(
+      studentOid = KoskiSpecificMockOppijat.ylioppilasLukiolainen.oid,
+      time = "2000-01-13T20:31:32.104+03",
+      organizationOid = List(MockOrganisaatiot.helsinginKaupunki),
+      raw = rawAuditlog("KANSALAINEN_SUORITUSJAKO_KATSOMINEN_SUORITETUT_TUTKINNOT")
+    ),
+    MockData(
+      studentOid = KoskiSpecificMockOppijat.ylioppilasLukiolainen.oid,
+      time = "2000-01-14T20:31:32.104+03",
+      organizationOid = List(MockOrganisaatiot.helsinginKaupunki),
+      raw = rawAuditlog("KANSALAINEN_SUORITUSJAKO_KATSOMINEN_AKTIIVISET_JA_PAATTYNEET_OPINNOT")
+    ),
+    MockData(
+      studentOid = KoskiSpecificMockOppijat.ylioppilasLukiolainen.oid,
+      time = "2000-01-15T20:31:32.104+03",
+      organizationOid = List(MockOrganisaatiot.dvv),
+      raw = rawAuditlog("OAUTH2_KATSOMINEN_KAIKKI_TIEDOT")
+    ),
+    MockData(
+      studentOid = KoskiSpecificMockOppijat.ylioppilasLukiolainen.oid,
+      time = "2000-01-16T20:31:32.104+03",
+      organizationOid = List(MockOrganisaatiot.dvv),
+      raw = rawAuditlog("OAUTH2_KATSOMINEN_SUORITETUT_TUTKINNOT")
+    ),
+    MockData(
+      studentOid = KoskiSpecificMockOppijat.ylioppilasLukiolainen.oid,
+      time = "2000-01-17T20:31:32.104+03",
+      organizationOid = List(MockOrganisaatiot.dvv),
+      raw = rawAuditlog("OAUTH2_KATSOMINEN_AKTIIVISET_JA_PAATTYNEET_OPINNOT")
+    ),
+    MockData(
+      studentOid = KoskiSpecificMockOppijat.master.oid,
+      time = "2018-07-20T21:38:35.104+03",
+      organizationOid = List(MockOrganisaatiot.stadinAmmattiopisto),
+      raw = rawAuditlog("OPISKELUOIKEUS_KATSOMINEN")
+    ),
+    MockData(
+      studentOid = KoskiSpecificMockOppijat.slave.henkilö.oid,
+      time = "2018-07-21T21:38:35.104+03",
+      organizationOid = List(MockOrganisaatiot.helsinginKaupunki),
+      raw = rawAuditlog("OPISKELUOIKEUS_KATSOMINEN")
+    ),
+
   )
 
   private case class MockData(
