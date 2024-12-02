@@ -82,4 +82,7 @@ case class AdditionalExports(
   vapaanSivistystyönKoulutuksenPäätasonSuoritus: VapaanSivistystyönKoulutuksenPäätasonSuoritus,
   suorituskielellinen: Suorituskielellinen,
   maksuttomuustieto: MaksuttomuusTieto,
+  valinnanMahdollisuus: ValinnanMahdollisuus,
+  arvioinniton: Arvioinniton,
+  mahdollisestiArvioinniton: MahdollisestiArvioinniton,
 )

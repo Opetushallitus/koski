@@ -1,0 +1,60 @@
+.OppiaineTable {
+  width: 100%;
+
+  &__oppiaine {
+    width: 90%;
+  }
+
+  td,
+  th {
+    padding: @baseline;
+  }
+
+  thead {
+    th {
+      vertical-align: bottom;
+    }
+    .OppiaineTable__laajuus,
+    .OppiaineTable__arvosana {
+      text-align: right;
+    }
+  }
+
+  tbody {
+    td {
+      background-color: @color-blue-background;
+    }
+
+    .OppiaineRow {
+      &__icon {
+        font-family: FontAwesome;
+      }
+
+      &__nimi {
+        opacity: 66%;
+        line-height: 2 * @baseline;
+        margin-bottom: @baseline;
+      }
+
+      &__kurssit {
+        line-height: 2 * @baseline;
+
+        .Kurssi {
+          display: inline-block;
+          width: 4 * @baseline;
+          margin-right: @baseline;
+
+          &__tunniste {
+            color: @color-blue;
+            font-weight: 600;
+          }
+        }
+      }
+
+      &__laajuus,
+      &__arvosana {
+        text-align: right;
+      }
+    }
+  }
+}
