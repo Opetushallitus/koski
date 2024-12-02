@@ -9,11 +9,6 @@ import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.log.Logging
 import fi.oph.koski.schema.LocalizedString
 import fi.oph.koski.omaopintopolkuloki.AuditLogDynamoDB.AuditLogTableName
-import fi.oph.scalaschema.Serializer.format
-import org.json4s.{Extraction, JValue}
-import org.json4s.jackson.JsonMethods.compact
-import software.amazon.awssdk.services.dynamodb.DynamoDbClient
-import software.amazon.awssdk.services.dynamodb.model.QueryResponse
 import software.amazon.awssdk.services.dynamodb.model.{AttributeValue, QueryRequest}
 
 import scala.collection.JavaConverters._
@@ -30,12 +25,15 @@ class AuditLogService(app: KoskiApplication) extends Logging {
     val querySpec = QueryRequest.builder
       .tableName(AuditLogTableName)
       .keyConditionExpression("studentOid = :oid")
-      .filterExpression("not contains (organizationOid, :self) and (contains (#rawEntry, :katsominen) or contains(#rawEntry, :varda_service))")
+      .filterExpression("not contains (organizationOid, :self) and (contains (#rawEntry, :katsominen) or contains (#rawEntry, :oauth2_katsominen_kaikki_tiedot) or contains (#rawEntry, :oauth2_katsominen_suoritetut_tutkinnot) or contains (#rawEntry, :oauth2_katsominen_aktiiviset_ja_paattyneet_opinnot) or contains(#rawEntry, :varda_service))")
       .expressionAttributeNames(Map("#rawEntry" -> "raw").asJava)
       .expressionAttributeValues({
         val valueMap = new util.HashMap[String, AttributeValue]()
         valueMap.put(":oid", AttributeValue.builder.s(oppijaOid).build)
         valueMap.put(":self", AttributeValue.builder.s("self").build)
+        valueMap.put(":oauth2_katsominen_kaikki_tiedot", AttributeValue.builder.s("\"OAUTH2_KATSOMINEN_KAIKKI_TIEDOT\"").build)
+        valueMap.put(":oauth2_katsominen_suoritetut_tutkinnot", AttributeValue.builder.s("\"OAUTH2_KATSOMINEN_SUORITETUT_TUTKINNOT\"").build)
+        valueMap.put(":oauth2_katsominen_aktiiviset_ja_paattyneet_opinnot", AttributeValue.builder.s("\"OAUTH2_KATSOMINEN_AKTIIVISET_JA_PAATTYNEET_OPINNOT\"").build)
         valueMap.put(":katsominen", AttributeValue.builder.s("\"OPISKELUOIKEUS_KATSOMINEN\"").build)
         valueMap.put(":varda_service", AttributeValue.builder.s("\"varda\"").build)
         valueMap
