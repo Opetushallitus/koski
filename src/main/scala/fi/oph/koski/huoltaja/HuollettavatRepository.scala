@@ -4,7 +4,6 @@ import com.typesafe.config.Config
 import fi.oph.koski.config.Environment
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat._
 import fi.oph.koski.henkilo.LaajatOppijaHenkilöTiedot
-import fi.oph.koski.http.Http.{UriInterpolator, runIO}
 import fi.oph.koski.http._
 import fi.oph.koski.log.Logging
 import fi.oph.koski.valpas.opiskeluoikeusfixture.ValpasMockHuollettavatRepository
@@ -16,29 +15,11 @@ trait HuollettavatRepository {
 object HuollettavatRepository {
   def apply(config: Config): HuollettavatRepository = {
     if (Environment.isProdEnvironment(config)) {
-      val http = VirkailijaHttpClient(ServiceConfig.apply(config, "opintopolku.virkailija"), "/vtj-service", true)
-      new RemoteHuollettavatRepository(http)
-    } else if (Environment.isMockEnvironment(config) || config.getString("vtj.serviceUrl") == "mock") {
-      new MockHuollettavatRepository
-    } else {
       val vtjClient = VtjClient(config)
       new RemoteHuollettavatRepositoryVTJ(vtjClient)
+    } else {
+      new MockHuollettavatRepository
     }
-  }
-}
-
-class RemoteHuollettavatRepository(val http: Http) extends HuollettavatRepository with Logging {
-  def getHuollettavat(huoltajanHetu: String): Either[HttpStatus, List[VtjHuollettavaHenkilö]] = {
-    runIO(
-      http.get(uri"/vtj-service/resources/vtj/$huoltajanHetu")(Http
-          .parseJson[VtjHuoltajaHenkilöResponse])
-        .map(x => Right(x.huollettavat))
-        .handleError {
-          case e: Exception =>
-            logger.error(e.toString)
-            Left(KoskiErrorCategory.unavailable.huollettavat())
-        }
-    )
   }
 }
 
