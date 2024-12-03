@@ -52,6 +52,9 @@ type OppiaineRowProps = {
 
 const OppiaineRow: React.FC<OppiaineRowProps> = ({ oppiaine }) => {
   const kurssit = oppiaine.osasuoritukset || []
+  const kurssejaYhteensä = sum(
+    kurssit.map((k) => k.koulutusmoduuli.laajuus?.arvo || 0)
+  )
 
   return (
     <tr>
@@ -68,7 +71,7 @@ const OppiaineRow: React.FC<OppiaineRowProps> = ({ oppiaine }) => {
           ))}
         </div>
       </td>
-      <td className="OppiaineRow__laajuus">{kurssit.length}</td>
+      <td className="OppiaineRow__laajuus">{kurssejaYhteensä}</td>
       <td className="OppiaineRow__arvosana">{oppiaineenArvosana(oppiaine)}</td>
     </tr>
   )
