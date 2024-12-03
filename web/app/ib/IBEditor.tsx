@@ -17,6 +17,11 @@ import {
 import { Spacer } from '../components-v2/layout/Spacer'
 import { SuorituksenVahvistusField } from '../components-v2/opiskeluoikeus/SuorituksenVahvistus'
 import { OppiaineTable } from '../components-v2/opiskeluoikeus/OppiaineTable'
+import { sum } from '../util/numbers'
+import { PäätasonSuoritusOf } from '../util/opiskeluoikeus'
+import { isLaajuusKursseissa } from '../types/fi/oph/koski/schema/LaajuusKursseissa'
+import { OsasuoritusOf } from '../util/schema'
+import { isEmpty } from 'fp-ts/lib/Array'
 
 export type IBEditorProps = AdaptedOpiskeluoikeusEditorProps<IBOpiskeluoikeus>
 
@@ -43,6 +48,9 @@ const IBPäätasonSuoritusEditor: React.FC<
   const [päätasonSuoritus, setPäätasonSuoritus] = usePäätasonSuoritus(form)
   const organisaatio =
     opiskeluoikeus.oppilaitos || opiskeluoikeus.koulutustoimija
+  const kurssejaYhteensä = useSuoritetutKurssitYhteensä(
+    päätasonSuoritus.suoritus
+  )
 
   return (
     <EditorContainer
@@ -69,6 +77,27 @@ const IBPäätasonSuoritusEditor: React.FC<
       <Spacer />
 
       <OppiaineTable suoritus={päätasonSuoritus.suoritus} />
+
+      {kurssejaYhteensä !== null && (
+        <div className="IBPäätasonSuoritusEditor__yhteensä">
+          {t('Suoritettujen kurssien määrä yhteensä')}
+          {': '}
+          {kurssejaYhteensä}
+        </div>
+      )}
     </EditorContainer>
   )
+}
+
+const useSuoritetutKurssitYhteensä = (
+  pts: PäätasonSuoritusOf<IBOpiskeluoikeus>
+): number | null => {
+  const laajuudet = (pts.osasuoritukset || []).flatMap((oppiaine) =>
+    (oppiaine.osasuoritukset || []).flatMap((kurssi) =>
+      isLaajuusKursseissa(kurssi.koulutusmoduuli.laajuus)
+        ? [kurssi.koulutusmoduuli.laajuus.arvo]
+        : []
+    )
+  )
+  return isEmpty(laajuudet) ? null : sum(laajuudet)
 }
