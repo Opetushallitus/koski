@@ -85,4 +85,5 @@ case class AdditionalExports(
   valinnanMahdollisuus: ValinnanMahdollisuus,
   arvioinniton: Arvioinniton,
   mahdollisestiArvioinniton: MahdollisestiArvioinniton,
+  valinnaisuus: Valinnaisuus,
 )
