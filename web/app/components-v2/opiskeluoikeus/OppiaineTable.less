@@ -41,6 +41,7 @@
 
         .Kurssi {
           display: inline-block;
+          position: relative;
           width: 4 * @baseline;
           margin-right: @baseline;
 
@@ -56,5 +57,49 @@
         text-align: right;
       }
     }
+  }
+}
+
+.KurssiDetails {
+  position: absolute;
+  z-index: 100;
+
+  width: 550px;
+  padding: @padding;
+
+  background: white;
+  box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.2);
+
+  // .KurssiTooltip(@x, @y) tulee kurssi.less -tiedostosta
+  &-middle {
+    &-bottom {
+      .KurssiTooltip(middle, bottom);
+    }
+    &-top {
+      .KurssiTooltip(middle, topV2);
+    }
+  }
+  &-left {
+    &-bottom {
+      .KurssiTooltip(left, bottom);
+    }
+    &-top {
+      .KurssiTooltip(left, topV2);
+    }
+  }
+  &-right {
+    &-bottom {
+      .KurssiTooltip(right, bottom);
+    }
+    &-top {
+      .KurssiTooltip(right, topV2);
+    }
+  }
+}
+
+.KurssiTooltip(@x-alignment, @y-alignment) when (@y-alignment = topV2) {
+  bottom: 10px + 4 * @baseline;
+  &:after {
+    .KurssiTriangle(@x-alignment, top);
   }
 }
