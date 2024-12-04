@@ -17,7 +17,13 @@ class OmaDataOAuth2ResourceOwnerReactServlet(implicit val application: KoskiAppl
     setLangCookieFromDomainIfNecessary
     val lang = langFromCookie.getOrElse(langFromDomain)
 
-    if (multiParams("error").length > 0) {
+    val uri = request.getRequestURI
+    val queryString = request.getQueryString
+
+    // + -enkoodatut query-stringit rikkoutuvat redirecteissä, mutta esim. openid-client -OAuth2-kirjasto lähettää scopet +-enkoodattuina
+    if (queryString.contains('+')) {
+      redirect(s"$uri?${queryString.replace("+", "%20")}")
+    } else if (multiParams("error").length > 0) {
       // Parametreissa välitettiin virheilmoitus, joten
       // näytetään virhe käyttäjälle riippumatta sisäänkirjautumisstatuksesta
       landerHtml(nonce)
@@ -76,7 +82,7 @@ class OmaDataOAuth2ResourceOwnerReactServlet(implicit val application: KoskiAppl
   }
 
   private def getParamsWithError(validationError: OmaDataOAuth2Error): String = {
-    getCurrentURLParamsWithEnforcedPercentEncoding match {
+    getCurrentURLParams match {
       case Some(existingParams) =>
         existingParams + s"&${validationError.getClientErrorParams}"
       case _ =>
@@ -85,7 +91,7 @@ class OmaDataOAuth2ResourceOwnerReactServlet(implicit val application: KoskiAppl
   }
 
   private def getCasLoginURL(lang: String): String = {
-    val targetUrl = (request.getRequestURI, getCurrentURLParamsWithEnforcedPercentEncoding) match {
+    val targetUrl = (request.getRequestURI, getCurrentURLParams) match {
       case (_, Some(requestParamsNoEncoding)) =>
         // Käytä base64url-enkoodaus-workaroundia, koska URL sisälsi query-parametreja
         val noQueryParamsWorkaroundTarget = s"/koski/omadata-oauth2/cas-workaround/authorize/${base64UrlEncode(requestParamsNoEncoding)}"
@@ -121,12 +127,11 @@ class OmaDataOAuth2ResourceOwnerReactServlet(implicit val application: KoskiAppl
     }
   }
 
-  // + -enkoodatut query-stringit rikkoutuvat redirecteissä, mutta esim. openid-client -OAuth2-kirjasto lähettää scopet +-enkoodattuina
-  private def getCurrentURLParamsWithEnforcedPercentEncoding: Option[String] = {
+  private def getCurrentURLParams: Option[String] = {
     if (request.queryString.isEmpty) {
       None
     } else {
-      Some(request.queryString.replace("+", "%20"))
+      Some(request.queryString)
     }
   }
 }
