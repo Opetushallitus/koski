@@ -1080,7 +1080,7 @@ class OmaDataOAuth2BackendSpec
         KoskiSpecificMockOppijat.slave.henkilö.oid,
         validClientId,
         validScope,
-        validDummyCodeChallenge,
+        createValidDummyCodeChallenge,
         validRedirectUri
       ).isRight should be(true)
 
@@ -1102,7 +1102,7 @@ class OmaDataOAuth2BackendSpec
         KoskiSpecificMockOppijat.slave.henkilö.oid,
         validClientId,
         validScope,
-        validDummyCodeChallenge,
+        createValidDummyCodeChallenge,
         validRedirectUri
       ).isRight should be(true)
 

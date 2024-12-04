@@ -154,6 +154,10 @@ class OmaDataOAuth2Repository(val db: DB) extends DatabaseExecutionContext with 
     }
   }
 
+  def getByCodeChallenge(codeChallenge: String, clientId: String): Option[OAuth2JakoRow] = {
+    runDbSync(OAuth2JakoKaikki.filter(r => r.codeChallenge === codeChallenge && r.clientId === clientId).result.headOption)
+  }
+
   def getBySHA256(codeSHA256: String): Option[OAuth2JakoRow] = {
     runDbSync(OAuth2Jako.filter(_.codeSHA256 === codeSHA256).result.headOption)
   }

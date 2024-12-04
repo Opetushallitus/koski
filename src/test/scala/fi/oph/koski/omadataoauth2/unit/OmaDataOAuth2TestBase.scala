@@ -4,7 +4,7 @@ import fi.oph.koski.KoskiHttpSpec
 import fi.oph.koski.henkilo.{KoskiSpecificMockOppijat, LaajatOppijaHenkilöTiedot}
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.koskiuser.{KoskiMockUser, MockUsers}
-import fi.oph.koski.omadataoauth2.{AccessTokenSuccessResponse, ChallengeAndVerifier}
+import fi.oph.koski.omadataoauth2.{AccessTokenSuccessResponse, ChallengeAndVerifier, OmaDataOAuth2Security}
 import org.http4s.Uri
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.should.Matchers
@@ -28,7 +28,7 @@ class OmaDataOAuth2TestBase extends AnyFreeSpec with KoskiHttpSpec with Matchers
   val oppijaOid = KoskiSpecificMockOppijat.eero.oid
 
   // https://datatracker.ietf.org/doc/html/rfc7636#appendix-B
-  val validDummyCodeChallenge = "E9Melhoa2OwvFrEMTJguCHaoeK1t8URWbuGJSstw-cM"
+  def createValidDummyCodeChallenge: String = OmaDataOAuth2Security.createChallengeAndVerifier().challenge
 
   val validClientId = MockUsers.omadataOAuth2Palvelukäyttäjä.username
   val validState = "internal state"
@@ -36,33 +36,33 @@ class OmaDataOAuth2TestBase extends AnyFreeSpec with KoskiHttpSpec with Matchers
 
   val validScope = "HENKILOTIEDOT_SYNTYMAAIKA HENKILOTIEDOT_NIMI OPISKELUOIKEUDET_SUORITETUT_TUTKINNOT"
 
-  val validAuthorizeParams: Seq[(String, String)] = Seq(
+  def createValidAuthorizeParams: Seq[(String, String)] = Seq(
     ("client_id", validClientId),
     ("response_type", "code"),
     ("response_mode", "form_post"),
     ("redirect_uri", validRedirectUri),
-    ("code_challenge", validDummyCodeChallenge),
+    ("code_challenge", createValidDummyCodeChallenge),
     ("code_challenge_method", "S256"),
     ("state", validState),
     ("scope", validScope)
   )
 
-  val validAuthorizeParamsString = createParamsString(validAuthorizeParams)
+  def createValidAuthorizeParamsString: String = createParamsString(createValidAuthorizeParams)
 
   val validKansalainen = KoskiSpecificMockOppijat.eero
   val validPalvelukäyttäjä = MockUsers.omadataOAuth2Palvelukäyttäjä
 
   def validParamsIlman(paramName: String): Seq[(String, String)] = {
-    (validAuthorizeParams.toMap - paramName).toSeq
+    (createValidAuthorizeParams.toMap - paramName).toSeq
   }
 
   def validParamsDuplikaatilla(paramName: String): Seq[(String, String)] = {
-    val duplikaatti = validAuthorizeParams.toMap.get(paramName).get
-    validAuthorizeParams ++ Seq((paramName, duplikaatti))
+    val duplikaatti = createValidAuthorizeParams.toMap.get(paramName).get
+    createValidAuthorizeParams ++ Seq((paramName, duplikaatti))
   }
 
   def validParamsVaihdetullaArvolla(paramName: String, value: String): Seq[(String, String)] = {
-    (validAuthorizeParams.toMap + (paramName -> value)).toSeq
+    (createValidAuthorizeParams.toMap + (paramName -> value)).toSeq
   }
 
   def createParamsString(params: Seq[(String, String)]): String = params.map {
@@ -101,7 +101,7 @@ class OmaDataOAuth2TestBase extends AnyFreeSpec with KoskiHttpSpec with Matchers
   // Huom, tämä ohittaa yksikkötestejä varten "tuotantologiikan" ja lukee code:n suoraan URI:sta, eikä redirect_uri:n kautta
   def createAuthorization(kansalainen: LaajatOppijaHenkilöTiedot, codeChallenge: String, scope: String = validScope, user: KoskiMockUser = validPalvelukäyttäjä) = {
     val paramsString = createParamsString(
-      (validAuthorizeParams.toMap +
+      (createValidAuthorizeParams.toMap +
         ("code_challenge" -> codeChallenge) +
         ("scope" -> scope) +
         ("client_id" -> user.username)
