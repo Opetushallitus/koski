@@ -55,6 +55,9 @@ object Http extends Logging {
       .unsafeRunSync()
   }
 
+  def nonRetryingClient(name: String, configFn: ClientConfigFn = identity): Client[IO] =
+    baseClient(name, configFn)
+
   def retryingClient(name: String, configFn: ClientConfigFn = identity): Client[IO] =
     withLoggedRetry(baseClient(name, configFn))
 
