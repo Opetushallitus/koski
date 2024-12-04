@@ -1,6 +1,6 @@
 package fi.oph.koski.valpas.sso
 
-import fi.oph.koski.config.KoskiApplication
+import fi.oph.koski.config.{Environment, KoskiApplication}
 import fi.oph.koski.henkilo.OppijaHenkilö
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.koskiuser.{AuthenticationUser, UserLanguage}
@@ -74,7 +74,7 @@ class ValpasOppijaCasServlet(implicit val application: KoskiApplication) extends
   }
 
   private def toAuthenticationUser(oppija: OppijaHenkilö, hetu: String, serviceTicket: Option[String]): AuthenticationUser = {
-    val huollettavat = huoltajaServiceVtj.getHuollettavat(hetu)
+    val huollettavat = application.huoltajaServiceVtj.getHuollettavat(hetu)
     AuthenticationUser(
       oid = oppija.oid,
       username = oppija.oid,

@@ -13,7 +13,7 @@ import fi.oph.koski.hakemuspalvelu.HakemuspalveluService
 import fi.oph.koski.healthcheck.{HealthCheck, HealthMonitoring}
 import fi.oph.koski.henkilo.{HenkilöRepository, Hetu, KoskiHenkilöCache, OpintopolkuHenkilöFacade}
 import fi.oph.koski.history.{KoskiOpiskeluoikeusHistoryRepository, YtrOpiskeluoikeusHistoryRepository}
-import fi.oph.koski.huoltaja.HuoltajaServiceVtj
+import fi.oph.koski.huoltaja.{HuollettavatRepository, HuoltajaServiceVtj}
 import fi.oph.koski.koodisto.{KoodistoCreator, KoodistoPalvelu, KoodistoViitePalvelu}
 import fi.oph.koski.koskiuser._
 import fi.oph.koski.massaluovutus.{MassaluovutusCleanupScheduler, MassaluovutusScheduler, MassaluovutusService}
@@ -97,8 +97,9 @@ class KoskiApplication(
   lazy val virtaAccessChecker = new VirtaAccessChecker(käyttöoikeusRepository)
   lazy val ytrAccessChecker = new YtrAccessChecker(käyttöoikeusRepository)
   lazy val henkilöRepository = HenkilöRepository(this)
+  lazy val huollettavatRepository = HuollettavatRepository(config)
   lazy val huoltajaService = new HuoltajaService(this)
-  lazy val huoltajaServiceVtj = new HuoltajaServiceVtj(config, henkilöRepository)
+  lazy val huoltajaServiceVtj = new HuoltajaServiceVtj(henkilöRepository, huollettavatRepository)
   lazy val historyRepository = KoskiOpiskeluoikeusHistoryRepository(masterDatabase.db)
   lazy val ytrHistoryRepository = YtrOpiskeluoikeusHistoryRepository(masterDatabase.db)
   lazy val virta = TimedProxy[AuxiliaryOpiskeluoikeusRepository](VirtaOpiskeluoikeusRepository(virtaClient, oppilaitosRepository, koodistoViitePalvelu, organisaatioRepository, virtaAccessChecker, Some(validator)))
