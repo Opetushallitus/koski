@@ -26,13 +26,14 @@ class AuditLogService(app: KoskiApplication) extends Logging {
     val auditLogTable = dynamoDB.getTable(AuditLogTableName)
     val querySpec = new QuerySpec()
       .withKeyConditionExpression("studentOid = :oid")
-      .withFilterExpression("not contains (organizationOid, :self) and (contains (#rawEntry, :katsominen) or contains(#rawEntry, :varda_service))")
+      .withFilterExpression("not contains (organizationOid, :self) and (contains (#rawEntry, :katsominen) or contains (#rawEntry, :oauth2_katsominen) or contains(#rawEntry, :varda_service))")
       .withNameMap(Map("#rawEntry" -> "raw").asJava)
       .withValueMap({
         val valueMap = new util.HashMap[String, Object]()
         valueMap.put(":oid", oppijaOid)
         valueMap.put(":self", "self")
         valueMap.put(":katsominen", "\"OPISKELUOIKEUS_KATSOMINEN\"")
+        valueMap.put(":oauth2_katsominen", "\"OAUTH2_KATSOMINEN") // Loppulainausmerkki puuttuu tarkoituksella, jotta kaikki eri eventit tulevat mukaan
         valueMap.put(":varda_service", "\"varda\"")
         valueMap
       })
