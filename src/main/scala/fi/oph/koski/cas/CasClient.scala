@@ -2,6 +2,7 @@ package fi.oph.koski.cas
 
 import cats.data.EitherT
 import cats.effect.IO
+import fi.oph.koski.henkilo.Hetu
 import org.http4s.EntityDecoder.collectBinary
 import org.http4s.Status.{Created, Locked}
 import org.http4s.client._
@@ -119,10 +120,18 @@ class CasClient(casBaseUrl: Uri, client: Client[IO], callerId: String) extends L
         Try {
           val attributes: NodeSeq = (serviceResponse \ "authenticationSuccess" \ "attributes")
 
-          List("mail", "clientName", "displayName", "givenName", "personOid", "personName", "firstName", "nationalIdentificationNumber",
+          val result = List("mail", "clientName", "displayName", "givenName", "personOid", "personName", "firstName", "nationalIdentificationNumber",
             "impersonatorNationalIdentificationNumber", "impersonatorDisplayName")
             .map(key => (key, (attributes \ key).text))
             .toMap
+
+          val hetu = result("nationalIdentificationNumber")
+          Hetu.validFormat(hetu) match {
+            case Right(hetu) => result
+            case _ =>
+              logger.warn(s"Invalid hetu ${hetu} (length ${hetu.length}) in nationalIdentificationNumber field of XML response: ${serviceResponse.toString}")
+              result
+          }
         } match {
           case Success(decoded) => DecodeResult.successT(decoded)
           case Failure(ex) =>
