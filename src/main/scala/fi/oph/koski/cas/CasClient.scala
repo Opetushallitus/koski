@@ -44,10 +44,6 @@ class CasClient(casBaseUrl: Uri, client: Client[IO], callerId: String) extends L
     validateServiceTicket[Username](casBaseUrl, client, service, decodeVirkailijaUsername)(serviceTicket)
   }
 
-  def validateServiceTicket[R](service: String)(serviceTicket: ServiceTicket, responseHandler: Response[IO] => IO[R]): IO[R] = {
-    validateServiceTicket[R](casBaseUrl, client, service, responseHandler)(serviceTicket)
-  }
-
   private def validateServiceTicket[R](casBaseUrl: Uri, client: Client[IO], service: String, responseHandler: Response[IO] => IO[R])(serviceTicket: ServiceTicket): IO[R] = {
     val pUri: Uri = casBaseUrl.addPath("serviceValidate")
       .withQueryParam("ticket", serviceTicket)
@@ -115,23 +111,20 @@ class CasClient(casBaseUrl: Uri, client: Client[IO], callerId: String) extends L
   private val oppijaServiceTicketDecoder: EntityDecoder[IO, OppijaAttributes] =
     textOrXmlDecoder
       .map(s => Utility.trim(scala.xml.XML.loadString(s)))
-      .flatMapR[OppijaAttributes] { serviceResponse =>
-        Try {
-          val attributes: NodeSeq = (serviceResponse \ "authenticationSuccess" \ "attributes")
+      .flatMapR[OppijaAttributes] { serviceResponse => {
+        val attributes: NodeSeq = (serviceResponse \ "authenticationSuccess" \ "attributes")
 
-          List("mail", "clientName", "displayName", "givenName", "personOid", "personName", "firstName", "nationalIdentificationNumber",
+        if (attributes.length > 0) {
+          DecodeResult.successT(List("mail", "clientName", "displayName", "givenName", "personOid", "personName", "firstName", "nationalIdentificationNumber",
             "impersonatorNationalIdentificationNumber", "impersonatorDisplayName")
             .map(key => (key, (attributes \ key).text))
-            .toMap
-        } match {
-          case Success(decoded) => DecodeResult.successT(decoded)
-          case Failure(ex) =>
-            DecodeResult.failureT(InvalidMessageBodyFailure(
-              "Oppija Service Ticket validation response decoding failed: Failed to parse required values from response body",
-              Some(ex))
-            )
+            .toMap)
+        } else {
+          DecodeResult.failureT(InvalidMessageBodyFailure(
+            s"Oppija Service Ticket validation response decoding failed: response body has error or has wrong form ($serviceResponse)"
+          ))
         }
-      }
+      }}
 
   private val virkailijaServiceTicketDecoder: EntityDecoder[IO, Username] =
     textOrXmlDecoder

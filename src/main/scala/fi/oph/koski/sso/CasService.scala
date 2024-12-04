@@ -13,13 +13,13 @@ import scala.concurrent.duration.DurationInt
 class CasService(config: Config) extends Logging {
   private val casVirkailijaClient = new CasClient(
     config.getString("opintopolku.virkailija.url") + "/cas",
-    Http.retryingClient("cas.serviceticketvalidation.virkailija"),
+    Http.nonRetryingClient("cas.serviceticketvalidation.virkailija"),
     OpintopolkuCallerId.koski
   )
 
   private val casOppijaClient = new CasClient(
     config.getString("opintopolku.oppija.url") + "/cas-oppija",
-    Http.retryingClient("cas.serviceticketvalidation.oppija"),
+    Http.nonRetryingClient("cas.serviceticketvalidation.oppija"),
     OpintopolkuCallerId.koski
   )
 
