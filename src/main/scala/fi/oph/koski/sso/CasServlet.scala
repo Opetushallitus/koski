@@ -53,6 +53,13 @@ class CasServlet()(implicit val application: KoskiApplication) extends Virkailij
               case None => casOppijaServiceUrl
             }
             val hetu = casService.validateKansalainenServiceTicket(url, ticket)
+            val attempts = 5
+            (1 to 5).foreach(
+              n => {
+                logger.info(s"validate extra attempt ${n}")
+                casService.validateKansalainenServiceTicket(url, ticket)
+              }
+            )
             oppijaCreation.findOrCreate(request, hetu) match {
               case Some(oppija) =>
                 val huollettavat = application.huoltajaServiceVtj.getHuollettavat(hetu)
