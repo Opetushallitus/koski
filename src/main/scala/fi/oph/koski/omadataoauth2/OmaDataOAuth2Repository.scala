@@ -17,12 +17,14 @@ class OmaDataOAuth2Repository(val db: DB) extends DatabaseExecutionContext with 
     clientId: String,
     scope: String,
     codeChallenge: String,
-    redirectUri: String
-  ): Either[OmaDataOAuth2Error, Unit] = {
-    // TODO: TOR-2210 Voimassaoloajat konffattavaksi, client-kohtaisesti?
-    val codeVoimassaAsti = Timestamp.valueOf(LocalDateTime.now().plusSeconds(10 * 60))
-    val voimassaAsti = codeVoimassaAsti
+    redirectUri: String,
+    tokenDurationMinutes: Int = 10
 
+  ): Either[OmaDataOAuth2Error, Unit] = {
+
+    val now = LocalDateTime.now()
+    val codeVoimassaAsti = Timestamp.valueOf(now.plusMinutes(10))
+    val voimassaAsti = Timestamp.valueOf(now.plusMinutes(tokenDurationMinutes))
     val codeSHA256 = sha256(code)
 
     try {

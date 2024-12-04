@@ -20,6 +20,14 @@ trait OmaDataOAuth2Config extends Logging  {
     }
   }
 
+  def getTokenDurationMinutes(client_id: String): Int = {
+    getConfigOption(client_id) match {
+      case Some(config) if config.hasPath("token_duration_minutes") =>
+        config.getInt("token_duration_minutes")
+      case _ => 10
+    }
+  }
+
   private def getConfigOption(client_id: String): Option[TypeSafeConfig] = {
     conf.getConfigList("clients").asScala.find(member => member.getString("client_id") == client_id)
   }
