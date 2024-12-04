@@ -82,7 +82,7 @@ case class AmmatillisenOpiskeluoikeudenLisätiedot(
   vaativanErityisenTuenErityinenTehtävä: Option[List[Aikajakso]] = None,
   ulkomaanjaksot: Option[List[Ulkomaanjakso]] = None,
   @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))
-  hojks: Option[Hojks],
+  hojks: Option[Hojks] = None,
   @Description("Osallistuuko oppija vaikeasti vammaisille järjestettyyn opetukseen. Lista alku-loppu päivämääräpareja. Rahoituksen laskennassa käytettävä tieto.")
   @Tooltip("Tieto siitä, osallistuuko oppija vaikeasti vammaisille järjestettyyn opetukseen (alku- ja loppupäivä). Voi olla useita erillisiä jaksoja. Rahoituksen laskennassa käytettävä tieto.")
   @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))
@@ -115,6 +115,8 @@ case class AmmatillisenOpiskeluoikeudenLisätiedot(
   maksuttomuus: Option[List[Maksuttomuus]] = None,
   oikeuttaMaksuttomuuteenPidennetty: Option[List[OikeuttaMaksuttomuuteenPidennetty]] = None,
   jotpaAsianumero: Option[Koodistokoodiviite] = None,
+  @Description("Onko opiskeluoikeuden päättymisen syy siirtyminen tutkinnon uusiin perusteisiin.")
+  siirtynytTutkinnonUusiinPerusteisiin: Option[Boolean] = None,
 ) extends OpiskeluoikeudenLisätiedot
   with Ulkomaanjaksollinen
   with SisäoppilaitosmainenMajoitus

@@ -24,6 +24,7 @@ object AmmatillinenValidation {
           validateAmmatillisenKorotus(ammatillinen),
           validateKorotuksenAlkuperäinenOpiskeluoikeus(ammatillinen, henkilö, koskiOpiskeluoikeudet),
           validateOpiskeluoikeudenArvionnit(ammatillinen),
+          validateTutkinnonUusiinPerusteisiinSiirtyminen(ammatillinen),
         )
       case _ => HttpStatus.ok
     }
@@ -398,4 +399,13 @@ object AmmatillinenValidation {
         KoskiErrorCategory.badRequest.validation.arviointi.epäsopivaArvosana(s"""Suorituksen "$suorituksenNimi" arvosana ei voi olla hylätty""")
       }
     })
+
+  private def validateTutkinnonUusiinPerusteisiinSiirtyminen(oo: AmmatillinenOpiskeluoikeus): HttpStatus = {
+    val siirtynytTutkinnonUusiinPerusteisiin = oo.lisätiedot.exists(_.siirtynytTutkinnonUusiinPerusteisiin.contains(true))
+    val katsotaanEronneeksi = oo.tila.opiskeluoikeusjaksot.exists(_.tila.koodiarvo == "katsotaaneronneeksi")
+
+    HttpStatus.validate(!siirtynytTutkinnonUusiinPerusteisiin || katsotaanEronneeksi) {
+      KoskiErrorCategory.badRequest.validation.tila.eiPäättävääTilaa("Opiskeluoikeudella, jonka lisätiedoissa on merkintä 'siirtynyt tutkinnon uusiin perusteisiin', pitää päättyä tilaan 'katsotaan eronneeksi'.")
+    }
+  }
 }
