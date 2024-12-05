@@ -9,7 +9,7 @@ import {
 } from '../../components-v2/controls/Select'
 import { Koodistokoodiviite } from '../../types/fi/oph/koski/schema/Koodistokoodiviite'
 import { koodistokoodiviiteId } from '../../util/koodisto'
-import { DialogField } from '../state/state'
+import { DialogField } from '../../components-v2/createdialog/DialogField'
 import { DialogSelect } from './DialogSelect'
 
 export type DialogKoodistoSelectProps<U extends string> = {
