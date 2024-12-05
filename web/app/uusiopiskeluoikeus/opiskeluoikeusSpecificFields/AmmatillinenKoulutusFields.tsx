@@ -2,12 +2,14 @@ import React, { useCallback, useMemo, useState } from 'react'
 import { SuoritusFieldsProps } from '.'
 import { isSuccess, useApiWithParams } from '../../api-fetch'
 import { useKoodisto } from '../../appstate/koodisto'
-import { TestIdLayer } from '../../appstate/useTestId'
 import {
   SelectOption,
   groupKoodistoToOptions
 } from '../../components-v2/controls/Select'
-import { TextEdit } from '../../components-v2/controls/TextField'
+import {
+  PaikallinenKoulutus,
+  PaikallinenKoulutusFields
+} from '../../components-v2/opiskeluoikeus/PaikallinenKoulutusFields'
 import { t } from '../../i18n/i18n'
 import { isAmmatilliseenTehtäväänValmistavaKoulutus } from '../../types/fi/oph/koski/schema/AmmatilliseenTehtavaanValmistavaKoulutus'
 import { Koodistokoodiviite } from '../../types/fi/oph/koski/schema/Koodistokoodiviite'
@@ -201,67 +203,6 @@ const MuuAmmatillinenKoulutusFields = (props: SuoritusFieldsProps) => {
         </label>
       )}
     </>
-  )
-}
-
-type PaikallinenKoulutusFieldsProps = {
-  onChange: (values?: PaikallinenKoulutus) => void
-}
-
-type PaikallinenKoulutus = {
-  nimi: string
-  koodiarvo: string
-  kuvaus: string
-}
-
-const emptyPaikallinenKoulutus: PaikallinenKoulutus = {
-  nimi: '',
-  koodiarvo: '',
-  kuvaus: ''
-}
-
-const PaikallinenKoulutusFields = (props: PaikallinenKoulutusFieldsProps) => {
-  const [koulutus, setKoulutus] = useState<PaikallinenKoulutus>(
-    emptyPaikallinenKoulutus
-  )
-
-  const update = (field: keyof PaikallinenKoulutus) => (value?: string) => {
-    const patched: PaikallinenKoulutus = { ...koulutus, [field]: value }
-    setKoulutus(patched)
-    props.onChange(
-      patched.nimi && patched.koodiarvo && patched.kuvaus ? patched : undefined
-    )
-  }
-
-  return (
-    <TestIdLayer id="paikallinenKoulutus">
-      <section className="PaikallinenKoulutus">
-        <label>
-          {t('Nimi')}
-          <TextEdit
-            value={koulutus.nimi}
-            onChange={update('nimi')}
-            testId="nimi"
-          />
-        </label>
-        <label>
-          {t('Koodiarvo')}
-          <TextEdit
-            value={koulutus.koodiarvo}
-            onChange={update('koodiarvo')}
-            testId="koodiarvo"
-          />
-        </label>
-        <label>
-          {t('Kuvaus')}
-          <TextEdit
-            value={koulutus.kuvaus}
-            onChange={update('kuvaus')}
-            testId="kuvaus"
-          />
-        </label>
-      </section>
-    </TestIdLayer>
   )
 }
 
