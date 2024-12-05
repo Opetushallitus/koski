@@ -52,7 +52,9 @@ class CasService(config: Config) extends Logging {
     // miten kansainväliset kirjautumiset tehdään ja missä vaiheessa ja millä tavalla varmistetaan, että ei esim. ikinä käsitellä
     // suomalaisena hetuna muun maan kansallista hetua.
     if (!Environment.isProdEnvironment(config) && hetuAttempt.isEmpty) {
-      oppijaAttributes("personIdentifier")
+      logger.info(s"Oppija attributes: ${oppijaAttributes.map(pair => s"${pair._1} => ${pair._2}").mkString(", ")}")
+      val hetuAttempt2 = oppijaAttributes("personIdentifier")
+      hetuAttempt2
     } else {
       hetuAttempt
     }
