@@ -147,6 +147,7 @@ const IBPäätasonSuoritusEditor: React.FC<
         match(päätasonSuoritus.suoritus.koulutusmoduuli)
           .isClass(PreIBKoulutusmoduuli2015, () => (
             <UusiPreIB2015OppiaineDialog
+              päätasonSuoritus={päätasonSuoritus.suoritus}
               onClose={hideAddOppiaineDialog}
               onSubmit={addOppiaine}
             />
@@ -172,6 +173,7 @@ const useSuoritetutKurssitYhteensä = (
 }
 
 type UusiPreIB2015OppiaineDialogProps = {
+  päätasonSuoritus: PäätasonSuoritusOf<IBOpiskeluoikeus>
   onClose: () => void
   onSubmit: (oppiaine: PreIBSuorituksenOsasuoritus2015) => void
 }
@@ -180,7 +182,10 @@ const UusiPreIB2015OppiaineDialog: React.FC<
   UusiPreIB2015OppiaineDialogProps
 > = (props) => {
   const state = useUusiPreIB2015OppiaineState()
-  const tunnisteet = usePreIBTunnisteOptions(preIB2015Oppiainekategoriat)
+  const tunnisteet = usePreIBTunnisteOptions(
+    preIB2015Oppiainekategoriat,
+    props.päätasonSuoritus
+  )
   const kielet = useKielivalikoimaOptions(state.kieli.visible)
   const matematiikanOppimäärät = useMatematiikanOppimääräOptions(
     state.matematiikanOppimäärä.visible
@@ -284,7 +289,7 @@ const UusiPreIB2015OppiaineDialog: React.FC<
             />
           </label>
         )}
-        {state.paikallinenTunniste && (
+        {state.paikallinenTunniste.visible && (
           <PaikallinenKoulutusFields onChange={onPaikallinenKoulutus} />
         )}
       </ModalBody>
