@@ -75,14 +75,15 @@ class OmaDataOAuth2Service(oauth2Repository: OmaDataOAuth2Repository, val applic
     oauth2Repository.getByAccessToken(accessToken, expectedClientId, allowedScopes)
   }
 
-  def findSuoritetutTutkinnot(oppijaOid: String, scope: String, overrideSession: KoskiSpecificSession): Either[HttpStatus, OmaDataOAuth2SuoritetutTutkinnot] = {
+  def findSuoritetutTutkinnot(oppijaOid: String, scope: String, overrideSession: KoskiSpecificSession, tokenExpirationTime: String): Either[HttpStatus, OmaDataOAuth2SuoritetutTutkinnot] = {
     application.suoritetutTutkinnotService.findSuoritetutTutkinnotOppija(
       oppijaOid,
       merkitseSuoritusjakoTehdyksi = false
     )(overrideSession).map(oppija => {
       OmaDataOAuth2SuoritetutTutkinnot(
         henkilö = OmaDataOAuth2Henkilötiedot(oppija.henkilö, scope),
-        opiskeluoikeudet = oppija.opiskeluoikeudet
+        opiskeluoikeudet = oppija.opiskeluoikeudet,
+        tokenInfo = OmaDataOAuth2TokenInfo(scope, tokenExpirationTime)
       )
     })
   }
@@ -125,24 +126,26 @@ class OmaDataOAuth2Service(oauth2Repository: OmaDataOAuth2Repository, val applic
       .getOrElse(LocalizedString.unlocalized(clientId))
   }
 
-  def findAktiivisetJaPäättyneetOpinnot(oppijaOid: String, scope: String, overrideSession: KoskiSpecificSession): Either[HttpStatus, OmaDataOAuth2AktiivisetJaPäättyneetOpiskeluoikeudet] = {
+  def findAktiivisetJaPäättyneetOpinnot(oppijaOid: String, scope: String, overrideSession: KoskiSpecificSession, tokenExpirationTime: String): Either[HttpStatus, OmaDataOAuth2AktiivisetJaPäättyneetOpiskeluoikeudet] = {
     application.aktiivisetJaPäättyneetOpinnotService.findAktiivisetJaPäättyneetOpinnotOppija(
       oppijaOid,
       merkitseSuoritusjakoTehdyksi = false
     )(overrideSession).map(oppija => {
       OmaDataOAuth2AktiivisetJaPäättyneetOpiskeluoikeudet(
         henkilö = OmaDataOAuth2Henkilötiedot(oppija.henkilö, scope),
-        opiskeluoikeudet = oppija.opiskeluoikeudet
+        opiskeluoikeudet = oppija.opiskeluoikeudet,
+        tokenInfo = OmaDataOAuth2TokenInfo(scope, tokenExpirationTime)
       )
     })
   }
 
-  def findKaikkiTiedot(oppijaOid: String, scope: String, overrideSession: KoskiSpecificSession): Either[HttpStatus, OmaDataOAuth2KaikkiOpiskeluoikeudet] = {
+  def findKaikkiTiedot(oppijaOid: String, scope: String, overrideSession: KoskiSpecificSession, tokenExpirationTime: String): Either[HttpStatus, OmaDataOAuth2KaikkiOpiskeluoikeudet] = {
     application.oppijaFacade.findOppija(oppijaOid)(overrideSession).flatMap(_.warningsToLeft) match {
       case Right(Oppija(henkilö: TäydellisetHenkilötiedot, opiskeluoikeudet: Seq[Opiskeluoikeus])) =>
         Right(OmaDataOAuth2KaikkiOpiskeluoikeudet(
           henkilö = OmaDataOAuth2Henkilötiedot(henkilö, scope),
-          opiskeluoikeudet = opiskeluoikeudet.toList
+          opiskeluoikeudet = opiskeluoikeudet.toList,
+          tokenInfo = OmaDataOAuth2TokenInfo(scope, tokenExpirationTime)
         ))
       case Right(_) =>
         Left(KoskiErrorCategory.internalError("Datatype not recognized"))

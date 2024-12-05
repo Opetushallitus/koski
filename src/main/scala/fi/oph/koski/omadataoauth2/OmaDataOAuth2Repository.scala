@@ -8,6 +8,7 @@ import fi.oph.koski.omadataoauth2.OmaDataOAuth2Security.{generateSecret, sha256}
 
 import java.sql.Timestamp
 import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 import java.time.temporal.ChronoUnit
 
 class OmaDataOAuth2Repository(val db: DB) extends DatabaseExecutionContext with Logging with QueryMethods {
@@ -99,7 +100,8 @@ class OmaDataOAuth2Repository(val db: DB) extends DatabaseExecutionContext with 
               AccessTokenSuccessResponse(
                 accessTokenAttempt,
                 "Bearer",
-                LocalDateTime.now.until(row.voimassaAsti.toLocalDateTime, ChronoUnit.SECONDS).max(0)
+                LocalDateTime.now.until(row.voimassaAsti.toLocalDateTime, ChronoUnit.SECONDS).max(0),
+                row.voimassaAsti.toLocalDateTime.format(DateTimeFormatter.ISO_DATE_TIME)
               ),
               row.oppijaOid,
               row.scope
@@ -147,7 +149,8 @@ class OmaDataOAuth2Repository(val db: DB) extends DatabaseExecutionContext with 
             AccessTokenSuccessResponse(
               accessToken,
               "Bearer",
-              LocalDateTime.now.until(row.voimassaAsti.toLocalDateTime, ChronoUnit.SECONDS).max(0)
+              LocalDateTime.now.until(row.voimassaAsti.toLocalDateTime, ChronoUnit.SECONDS).max(0),
+              row.voimassaAsti.toLocalDateTime.format(DateTimeFormatter.ISO_DATE_TIME)
             ),
             row.oppijaOid,
             row.scope

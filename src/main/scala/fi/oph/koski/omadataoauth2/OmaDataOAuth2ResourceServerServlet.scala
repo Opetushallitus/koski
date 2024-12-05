@@ -30,28 +30,28 @@ class OmaDataOAuth2ResourceServerServlet(implicit val application: KoskiApplicat
       expectedClientId = koskiSession.user.username,
       allowedScopes = koskiSession.omaDataOAuth2Scopes
     ) match {
-      case Right(AccessTokenInfo(_, oppijaOid, scope)) =>
-        renderOpinnot(oppijaOid, scope)
+      case Right(AccessTokenInfo(AccessTokenSuccessResponse(_,_,_,tokenExpirationTime), oppijaOid, scope)) =>
+        renderOpinnot(oppijaOid, scope, tokenExpirationTime)
       case Left(error) =>
         val errorResult = error.getAccessTokenErrorResponse
         renderErrorWithStatus(errorResult, errorResult.httpStatus)
     }
   }
 
-  private def renderOpinnot(oppijaOid: String, scope: String): Unit = {
+  private def renderOpinnot(oppijaOid: String, scope: String, tokenExpirationTime: String): Unit = {
     val overrideSession = KoskiSpecificSession.oauth2KatsominenUser(request)
 
     scope.split(" ").filter(_.startsWith("OPISKELUOIKEUDET_")).toSeq match {
       case Seq("OPISKELUOIKEUDET_SUORITETUT_TUTKINNOT") =>
-        val oppija = application.omaDataOAuth2Service.findSuoritetutTutkinnot(oppijaOid, scope, overrideSession)
+        val oppija = application.omaDataOAuth2Service.findSuoritetutTutkinnot(oppijaOid, scope, overrideSession, tokenExpirationTime)
         auditLogKatsominen(OAUTH2_KATSOMINEN_SUORITETUT_TUTKINNOT, koskiSession.user.username, koskiSession, oppijaOid, scope)
         renderOppijaData(oppija)
       case Seq("OPISKELUOIKEUDET_AKTIIVISET_JA_PAATTYNEET_OPINNOT") =>
-        val oppija = application.omaDataOAuth2Service.findAktiivisetJaPäättyneetOpinnot(oppijaOid, scope, overrideSession)
+        val oppija = application.omaDataOAuth2Service.findAktiivisetJaPäättyneetOpinnot(oppijaOid, scope, overrideSession, tokenExpirationTime)
         auditLogKatsominen(OAUTH2_KATSOMINEN_AKTIIVISET_JA_PAATTYNEET_OPINNOT, koskiSession.user.username, koskiSession, oppijaOid, scope)
         renderOppijaData(oppija)
       case Seq("OPISKELUOIKEUDET_KAIKKI_TIEDOT") =>
-        val oppija = application.omaDataOAuth2Service.findKaikkiTiedot(oppijaOid, scope, overrideSession)
+        val oppija = application.omaDataOAuth2Service.findKaikkiTiedot(oppijaOid, scope, overrideSession, tokenExpirationTime)
         auditLogKatsominen(OAUTH2_KATSOMINEN_KAIKKI_TIEDOT, koskiSession.user.username, koskiSession, oppijaOid, scope)
         renderOppijaData(oppija)
       case _ =>
