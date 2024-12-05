@@ -4,6 +4,7 @@ import {
   DialogField,
   useDialogField
 } from '../../components-v2/createdialog/DialogField'
+import { localize } from '../../i18n/i18n'
 import { Koodistokoodiviite } from '../../types/fi/oph/koski/schema/Koodistokoodiviite'
 import { LocalizedString } from '../../types/fi/oph/koski/schema/LocalizedString'
 import { PaikallinenKoodi } from '../../types/fi/oph/koski/schema/PaikallinenKoodi'
@@ -73,8 +74,12 @@ export const useUusiPreIB2015OppiaineState =
       Koodistokoodiviite<'oppiaineaidinkielijakirjallisuus'>
     >(isLukionÄidinkieliJaKirjallisuus2015Tunniste(tunniste.value))
 
-    const paikallinenTunniste = useDialogField<PaikallinenKoodi>(false)
-    const paikallinenKuvaus = useDialogField<LocalizedString>(false)
+    const paikallinenTunniste = useDialogField<PaikallinenKoodi>(false, () =>
+      PaikallinenKoodi({ koodiarvo: '', nimi: localize('') })
+    )
+    const paikallinenKuvaus = useDialogField<LocalizedString>(false, () =>
+      localize('')
+    )
 
     const result = useMemo(
       () =>

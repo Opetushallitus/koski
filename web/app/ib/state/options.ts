@@ -2,11 +2,7 @@ import * as A from 'fp-ts/Array'
 import { pipe } from 'fp-ts/lib/function'
 import * as O from 'fp-ts/Option'
 import { useMemo } from 'react'
-import {
-  KoodistokoodiviiteKoodistonNimellä,
-  useKoodisto,
-  useKoodistot
-} from '../../appstate/koodisto'
+import { useKoodisto, useKoodistot } from '../../appstate/koodisto'
 import {
   groupKoodistoToOptions,
   mapOptionLabels,
@@ -15,6 +11,7 @@ import {
 } from '../../components-v2/controls/Select'
 import { t } from '../../i18n/i18n'
 import { Koodistokoodiviite } from '../../types/fi/oph/koski/schema/Koodistokoodiviite'
+import { KoodistoUriOf } from '../../util/koodisto'
 import { entries } from '../../util/objects'
 import {
   isIBOppiaineLanguageTunniste,
@@ -25,11 +22,7 @@ import {
   isLukionÄidinkieliJaKirjallisuus2015Tunniste,
   isVierasTaiToinenKotimainenKieli2015Tunniste
 } from '../oppiaineet/tunnisteet'
-import {
-  PreIBOppiaineTunniste,
-  PreIBOppiaineTunnisteKoodistoUri
-} from './preIBOppiaine'
-import { KoodistoUriOf } from '../../util/koodisto'
+import { PreIBOppiaineTunniste } from './preIBOppiaine'
 
 export const preIB2015Oppiainekategoriat = {
   'IB-oppiaine': [isIBOppiaineLanguageTunniste, isIBOppiaineMuuTunniste],
@@ -41,6 +34,8 @@ export const preIB2015Oppiainekategoriat = {
     isVierasTaiToinenKotimainenKieli2015Tunniste
   ]
 }
+
+export const PaikallinenKey = '__paikallinen__'
 
 const oppiaineCategoryResolver =
   <K extends Koodistokoodiviite>(
@@ -63,21 +58,20 @@ export const usePreIBTunnisteOptions = <K extends Koodistokoodiviite>(
     'koskioppiaineetyleissivistava'
   )
   return useMemo(() => {
-    if (tunnisteet) {
-      const getCategory = oppiaineCategoryResolver(kategoriat)
-      return pipe(
-        regroupKoodisto(tunnisteet, (tunniste) =>
-          getCategory(tunniste.koodiviite as K)
-        ),
-        // @ts-expect-error
-        groupKoodistoToOptions,
-        mapOptionLabels((k) =>
-          k.value?.koodiarvo ? `${k.label} (${k.value.koodiarvo})` : k.label
-        )
-      )
-    } else {
-      return null
-    }
+    const getCategory = oppiaineCategoryResolver(kategoriat)
+    return pipe(
+      regroupKoodisto(tunnisteet || [], (tunniste) =>
+        getCategory(tunniste.koodiviite as K)
+      ),
+      groupKoodistoToOptions,
+      mapOptionLabels((k) =>
+        k.value?.koodiarvo ? `${k.label} (${k.value.koodiarvo})` : k.label
+      ),
+      A.prepend({
+        key: PaikallinenKey,
+        label: t('Paikallinen')
+      })
+    )
   }, [kategoriat, tunnisteet])
 }
 
