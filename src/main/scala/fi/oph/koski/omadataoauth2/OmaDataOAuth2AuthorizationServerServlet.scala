@@ -97,6 +97,7 @@ case class AccessTokenSuccessResponse(
   access_token: String,
   token_type: String,
   expires_in: Long,
+  expirationTime: String,
   // refresh_token: Option[String] // TODO: TOR-2210: jos tarvitaan refresh token
   // scope: Option[String] // TOD: TOR-2210: jos aletaan joskus tukea scopen vaihtoa tässä vaiheessa
 ) extends AccessTokenResponse {

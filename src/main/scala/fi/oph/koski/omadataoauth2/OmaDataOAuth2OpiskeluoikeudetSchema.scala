@@ -18,7 +18,8 @@ object OmaDataOAuth2KaikkiOpiskeluoikeudet {
 
 case class OmaDataOAuth2KaikkiOpiskeluoikeudet(
   henkilö: OmaDataOAuth2Henkilötiedot,
-  opiskeluoikeudet: List[Opiskeluoikeus]
+  opiskeluoikeudet: List[Opiskeluoikeus],
+  tokenInfo: OmaDataOAuth2TokenInfo
 )
 
 object OmaDataOAuth2SuoritetutTutkinnot {
@@ -28,7 +29,8 @@ object OmaDataOAuth2SuoritetutTutkinnot {
 
 case class OmaDataOAuth2SuoritetutTutkinnot(
   henkilö: OmaDataOAuth2Henkilötiedot,
-  opiskeluoikeudet: List[SuoritetutTutkinnotOpiskeluoikeus]
+  opiskeluoikeudet: List[SuoritetutTutkinnotOpiskeluoikeus],
+  tokenInfo: OmaDataOAuth2TokenInfo
 )
 
 object OmaDataOAuth2AktiivisetJaPäättyneetOpiskeluoikeudet {
@@ -38,7 +40,8 @@ object OmaDataOAuth2AktiivisetJaPäättyneetOpiskeluoikeudet {
 
 case class OmaDataOAuth2AktiivisetJaPäättyneetOpiskeluoikeudet(
   henkilö: OmaDataOAuth2Henkilötiedot,
-  opiskeluoikeudet: List[AktiivisetJaPäättyneetOpinnotOpiskeluoikeus]
+  opiskeluoikeudet: List[AktiivisetJaPäättyneetOpinnotOpiskeluoikeus],
+  tokenInfo: OmaDataOAuth2TokenInfo
 )
 
 object OmaDataOAuth2Henkilötiedot {
@@ -154,4 +157,9 @@ case class OmaDataOAuth2Henkilötiedot(
   kutsumanimi: Option[String] = None,
   hetu: Option[String] = None,
   syntymäaika: Option[LocalDate] = None
+)
+
+case class OmaDataOAuth2TokenInfo(
+  scope: String,
+  expirationTime: String
 )
