@@ -37,7 +37,14 @@ class CasService(config: Config) extends Logging {
         .validateServiceTicketWithOppijaAttributes(url)(ticket)
         .timeout(10.seconds)
     )
-    oppijaAttributes("nationalIdentificationNumber")
+
+    val hetuAttempt = oppijaAttributes("nationalIdentificationNumber")
+
+    if (!Environment.isProdEnvironment(config) && hetuAttempt.isEmpty) {
+      oppijaAttributes("personIdentifier")
+    } else {
+      hetuAttempt
+    }
   }
 
   def validateVirkailijaServiceTicket(url: String, ticket: String): Username = {
