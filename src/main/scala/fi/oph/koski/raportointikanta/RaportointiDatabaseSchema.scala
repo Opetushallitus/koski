@@ -1258,7 +1258,6 @@ sealed trait Schema {
       #${name}.r_organisaatiohistoria,
       #${name}.r_opiskeluoikeus_aikajakso,
       #${name}.r_geneerinen_aikajakso,
-      #${name}.r_geneerinen_aikajakso,
       #${name}.r_ammatillisen_koulutuksen_jarjestamismuoto,
       #${name}.r_paatason_suoritus,
       #${name}.r_osasuoritus,

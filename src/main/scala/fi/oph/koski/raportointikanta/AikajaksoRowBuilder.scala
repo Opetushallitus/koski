@@ -182,6 +182,7 @@ object AikajaksoRowBuilder {
     val ulkomaanjaksolliset = o.lisätiedot match {
       case Some(lisatiedot) => lisatiedot match {
         case a: Ulkomaanaikajaksollinen => a.kaikkiUlkomaanaikajaksot.map(a => RGeneerinenAikajaksoRow(opiskeluoikeudenOid, GeneerinenAikajakso.ulkomaanjakso, Date.valueOf(a.alku), a.loppu.map(l => Date.valueOf(l))))
+        case _ => Nil
       }
       case _ => Nil
     }
