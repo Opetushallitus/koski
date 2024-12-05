@@ -39,6 +39,7 @@ import {
   IBPäätasonSuoritusTiedot
 } from './IBPaatasonSuoritusTiedot'
 import {
+  preIB2015Oppiainekategoriat,
   useAineryhmäOptions,
   useKielivalikoimaOptions,
   useMatematiikanOppimääräOptions,
@@ -46,6 +47,7 @@ import {
   useÄidinkielenKieliOptions
 } from './state/options'
 import { useUusiPreIB2015OppiaineState } from './state/preIBOppiaine'
+import { useKoodistoFiller } from '../appstate/koodisto'
 
 export type IBEditorProps = AdaptedOpiskeluoikeusEditorProps<IBOpiskeluoikeus>
 
@@ -77,16 +79,17 @@ const IBPäätasonSuoritusEditor: React.FC<
   )
   const [addOppiaineVisible, showAddOppiaineDialog, hideAddOppiaineDialog] =
     useBooleanState(false)
+  const fillKoodistot = useKoodistoFiller()
 
   const addOppiaine = useCallback(
-    (oppiaine: PreIBSuorituksenOsasuoritus2015) => {
+    async (oppiaine: PreIBSuorituksenOsasuoritus2015) => {
       form.updateAt(
         päätasonSuoritus.path.prop('osasuoritukset') as any,
-        appendOptional(oppiaine)
+        appendOptional(await fillKoodistot(oppiaine))
       )
       hideAddOppiaineDialog()
     },
-    [form, hideAddOppiaineDialog, päätasonSuoritus.path]
+    [fillKoodistot, form, hideAddOppiaineDialog, päätasonSuoritus.path]
   )
 
   return (
@@ -167,7 +170,7 @@ const UusiPreIB2015OppiaineDialog: React.FC<
   UusiPreIB2015OppiaineDialogProps
 > = (props) => {
   const state = useUusiPreIB2015OppiaineState()
-  const tunnisteet = usePreIBTunnisteOptions()
+  const tunnisteet = usePreIBTunnisteOptions(preIB2015Oppiainekategoriat)
   const kielet = useKielivalikoimaOptions(state.kieli.visible)
   const matematiikanOppimäärät = useMatematiikanOppimääräOptions(
     state.matematiikanOppimäärä.visible
