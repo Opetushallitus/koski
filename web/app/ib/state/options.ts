@@ -4,15 +4,18 @@ import * as O from 'fp-ts/Option'
 import { useMemo } from 'react'
 import { useKoodisto, useKoodistot } from '../../appstate/koodisto'
 import {
+  filterOptions,
   groupKoodistoToOptions,
   mapOptionLabels,
   regroupKoodisto,
   SelectOption
 } from '../../components-v2/controls/Select'
 import { t } from '../../i18n/i18n'
+import { IBOpiskeluoikeus } from '../../types/fi/oph/koski/schema/IBOpiskeluoikeus'
 import { Koodistokoodiviite } from '../../types/fi/oph/koski/schema/Koodistokoodiviite'
 import { KoodistoUriOf } from '../../util/koodisto'
 import { entries } from '../../util/objects'
+import { PäätasonSuoritusOf } from '../../util/opiskeluoikeus'
 import {
   isIBOppiaineLanguageTunniste,
   isIBOppiaineMuuTunniste,
@@ -51,19 +54,34 @@ const oppiaineCategoryResolver =
     )
 
 export const usePreIBTunnisteOptions = <K extends Koodistokoodiviite>(
-  kategoriat: Record<string, Array<(k: K) => boolean>>
+  categories: Record<string, Array<(k: K) => boolean>>,
+  päätasonSuoritus: PäätasonSuoritusOf<IBOpiskeluoikeus>
 ): SelectOption<PreIBOppiaineTunniste>[] | null => {
   const tunnisteet = useKoodistot<KoodistoUriOf<K>>(
     'oppiaineetib',
     'koskioppiaineetyleissivistava'
   )
+
+  const existingOppiaineet = useMemo(
+    () =>
+      (päätasonSuoritus.osasuoritukset || []).map(
+        (os) => os.koulutusmoduuli.tunniste.koodiarvo
+      ),
+    [päätasonSuoritus.osasuoritukset]
+  )
+
   return useMemo(() => {
-    const getCategory = oppiaineCategoryResolver(kategoriat)
+    const getCategory = oppiaineCategoryResolver(categories)
     return pipe(
       regroupKoodisto(tunnisteet || [], (tunniste) =>
         getCategory(tunniste.koodiviite as K)
       ),
       groupKoodistoToOptions,
+      filterOptions(
+        (k) =>
+          k.value?.koodiarvo === undefined ||
+          !existingOppiaineet.includes(k.value?.koodiarvo)
+      ),
       mapOptionLabels((k) =>
         k.value?.koodiarvo ? `${k.label} (${k.value.koodiarvo})` : k.label
       ),
@@ -72,7 +90,7 @@ export const usePreIBTunnisteOptions = <K extends Koodistokoodiviite>(
         label: t('Paikallinen')
       })
     )
-  }, [kategoriat, tunnisteet])
+  }, [categories, existingOppiaineet, tunnisteet])
 }
 
 const optionLoader =
