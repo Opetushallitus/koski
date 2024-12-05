@@ -317,7 +317,7 @@ const useSelectState = <T,>(props: SelectProps<T>) => {
     const opts =
       filter === '' || filter === null
         ? props.options
-        : filterOptions(props.options, filter)
+        : queryOptions(props.options, filter)
     // Remove one level of grouping if only one group is present
     return opts.length === 1 && opts[0].isGroup ? opts[0].children || [] : opts
   }, [filter, props.options])
@@ -490,6 +490,14 @@ export const mapOptions =
 export const mapOptionLabels = <T,>(f: (o: SelectOption<T>) => string) =>
   mapOptions((o: SelectOption<T>) => ({ ...o, label: f(o) }))
 
+export const filterOptions =
+  <T,>(f: (o: SelectOption<T>) => boolean) =>
+  (options: Array<SelectOption<T>>): Array<SelectOption<T>> =>
+    options.flatMap((o) => {
+      const children = o.children && filterOptions(f)(o.children)
+      return (children?.length || 0) > 0 || f(o) ? [{ ...o, children }] : []
+    })
+
 // Internal utils
 
 const selectOption = <T,>(
@@ -514,7 +522,7 @@ const flattenOptions = <T,>(options: OptionList<T>): FlatOptionList<T> => {
   return { arr: options.flatMap(flatten) }
 }
 
-const filterOptions = <T,>(
+const queryOptions = <T,>(
   options: OptionList<T>,
   query: string
 ): OptionList<T> => {
