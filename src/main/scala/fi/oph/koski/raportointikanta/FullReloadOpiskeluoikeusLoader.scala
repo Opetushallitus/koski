@@ -94,6 +94,9 @@ class FullReloadOpiskeluoikeusLoader(
     db.loadOpiskeluoikeudet(outputRows.map(_.right.get.rOpiskeluoikeusRow))
     db.loadOrganisaatioHistoria(outputRows.flatMap(_.right.get.organisaatioHistoriaRows))
     val aikajaksoRows = outputRows.flatMap(_.right.get.rOpiskeluoikeusAikajaksoRows)
+    val geneerisetAikajaksoRows = outputRows.flatMap(_.right.get.rGeneerinenAikajaksoRows)
+    val ammatillisetAikajaksoRows = outputRows.flatMap(_.right.get.rAmmatillisenKoulutuksenJarjestamismuotoAikajaksoRows)
+
     val esiopetusOpiskeluoikeusAikajaksoRows = outputRows.flatMap(_.right.get.esiopetusOpiskeluoikeusAikajaksoRows)
     val päätasonSuoritusRows = outputRows.flatMap(_.right.get.rPäätasonSuoritusRows)
     val osasuoritusRows = outputRows.flatMap(_.right.get.rOsasuoritusRows)
@@ -101,6 +104,8 @@ class FullReloadOpiskeluoikeusLoader(
     val topksAmmatillinenRaportointiRows = outputRows.flatMap(_.right.get.topksAmmatillinenRaportointiRows)
     db.loadOpiskeluoikeusAikajaksot(aikajaksoRows)
     db.loadEsiopetusOpiskeluoikeusAikajaksot(esiopetusOpiskeluoikeusAikajaksoRows)
+    db.loadGeneerisetAikajaksot(geneerisetAikajaksoRows)
+    db.loadAmmatillisenKoulutuksenJarjestamismuotoAikajaksot(ammatillisetAikajaksoRows)
     db.loadPäätasonSuoritukset(päätasonSuoritusRows)
     db.loadOsasuoritukset(osasuoritusRows)
     db.loadMuuAmmatillinenRaportointi(muuAmmatillinenRaportointiRows)

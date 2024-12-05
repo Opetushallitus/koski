@@ -107,7 +107,7 @@ class PerusopetuksenVuosiluokkaRaporttiSpec
       val hakuDate = date(2015, 5, 30)
       val rows = PerusopetuksenVuosiluokkaRaportti.buildRaportti(repository, Seq(MockOrganisaatiot.jyväskylänNormaalikoulu), hakuDate, None, "7", t)
       rows.map(_.suorituksenVahvistuspaiva).foreach(paivaStr => {
-        if (!paivaStr.isEmpty) {
+        if (paivaStr.nonEmpty) {
           val paiva = LocalDate.parse(paivaStr)
           paiva.isBefore(hakuDate) shouldBe (false)
         }

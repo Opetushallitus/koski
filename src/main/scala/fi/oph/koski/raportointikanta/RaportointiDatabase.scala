@@ -28,7 +28,7 @@ object RaportointiDatabase {
   // Jälkimmäinen arvo on skeemasta laskettu tunniste (kts. QueryMethods::getSchemaHash).
   // Testi nimeltä "Schema version has been updated" tarkastaa että versionumeroa päivitetään skeemamuutosten
   // myötä.
-  def schemaVersion: (Int, String) = (16, "0d358ffbd7efa9e7aab3a5c8b1e9d0cc")
+  def schemaVersion: (Int, String) = (17, "17093d783aa54af2a639e87e100baf4a")
 }
 
 class RaportointiDatabase(config: RaportointiDatabaseConfigBase) extends Logging with QueryMethods {
@@ -65,6 +65,8 @@ class RaportointiDatabase(config: RaportointiDatabaseConfigBase) extends Logging
     RYtrKokeenSuoritukset,
     RYtrTutkintokokonaisuudenKokeenSuoritukset,
     RKotikuntahistoria,
+    RGeneerinenAikajakso,
+    RAmmatillisenKoulutuksenJarjestamismuotoAikajakso
   )
 
   def vacuumAnalyze(): Unit = {
@@ -219,7 +221,9 @@ class RaportointiDatabase(config: RaportointiDatabaseConfigBase) extends Logging
       Kloonaus("r_osasuoritus", List("osasuoritus_id")),
       Kloonaus("muu_ammatillinen_raportointi"),
       Kloonaus("topks_ammatillinen_raportointi"),
-      Kloonaus("r_mitatoitu_opiskeluoikeus", List("opiskeluoikeus_oid"))
+      Kloonaus("r_mitatoitu_opiskeluoikeus", List("opiskeluoikeus_oid")),
+      Kloonaus("r_geneerinen_aikajakso"),
+      Kloonaus("r_ammatillisen_koulutuksen_jarjestamismuoto")
     ) ++ (if (enableYtr) {
       List(
         Kloonaus("r_ytr_tutkintokokonaisuuden_suoritus", List("ytr_tutkintokokonaisuuden_suoritus_id")),
@@ -324,6 +328,26 @@ class RaportointiDatabase(config: RaportointiDatabaseConfigBase) extends Logging
     val opiskeluoikeusOids = jaksot.map(_.opiskeluoikeusOid).toSet
     runDbSync(ROpiskeluoikeusAikajaksot.filter(_.opiskeluoikeusOid inSet opiskeluoikeusOids).delete, timeout = 5.minutes)
     runDbSync(ROpiskeluoikeusAikajaksot ++= jaksot, timeout = 5.minutes)
+  }
+
+  def loadGeneerisetAikajaksot(jaksot: Seq[RGeneerinenAikajaksoRow]): Unit =
+    runDbSync(RGeneerinenAikajakso ++= jaksot)
+
+  def updateGeneerisetAikajaksot(jaksot: Seq[RGeneerinenAikajaksoRow]): Unit = {
+    val opiskeluoikeusOids = jaksot.map(_.opiskeluoikeusOid).toSet
+    runDbSync(RGeneerinenAikajakso.filter(_.opiskeluoikeusOid inSet opiskeluoikeusOids).delete, timeout = 5.minutes)
+    runDbSync(RGeneerinenAikajakso ++= jaksot, timeout = 5.minutes)
+  }
+
+
+  def loadAmmatillisenKoulutuksenJarjestamismuotoAikajaksot(jaksot: Seq[RAmmatillisenKoulutuksenJarjestamismuotoAikajaksoRow]): Unit = {
+    runDbSync(RAmmatillisenKoulutuksenJarjestamismuotoAikajakso ++= jaksot)
+  }
+
+  def updateAmmatillisenKoulutuksenJarjestamismuotoAikajaksot(jaksot: Seq[RAmmatillisenKoulutuksenJarjestamismuotoAikajaksoRow]): Unit = {
+    val opiskeluoikeusOids = jaksot.map(_.opiskeluoikeusOid).toSet
+    runDbSync(RAmmatillisenKoulutuksenJarjestamismuotoAikajakso.filter(_.opiskeluoikeusOid inSet opiskeluoikeusOids).delete, timeout = 5.minutes)
+    runDbSync(RAmmatillisenKoulutuksenJarjestamismuotoAikajakso ++= jaksot, timeout = 5.minutes)
   }
 
   def loadEsiopetusOpiskeluoikeusAikajaksot(jaksot: Seq[EsiopetusOpiskeluoikeusAikajaksoRow]): Unit =
@@ -651,6 +675,20 @@ class RaportointiDatabase(config: RaportointiDatabaseConfigBase) extends Logging
     case Temp => TableQuery[RKotikuntahistoriaTableTemp]
     case Confidential => TableQuery[RKotikuntahistoriaConfidentialTable]
     case TempConfidential => TableQuery[RKotikuntahistoriaConfidentialTableTemp]
+  }
+
+  lazy val RGeneerinenAikajakso = schema match {
+    case Public => TableQuery[RGeneerinenAikajaksoTable]
+    case Temp => TableQuery[RGeneerinenAikajaksoTableTemp]
+    case Confidential => TableQuery[RGeneerinenAikajaksoConfidentialTable]
+    case TempConfidential => TableQuery[RGeneerinenAikajaksoConfidentialTableTemp]
+  }
+
+  lazy val RAmmatillisenKoulutuksenJarjestamismuotoAikajakso = schema match {
+    case Public => TableQuery[RAmmatillisenKoulutuksenJarjestamismuotoAikajaksoTable]
+    case Temp => TableQuery[RAmmatillisenKoulutuksenJarjestamismuotoAikajaksoTableTemp]
+    case Confidential => TableQuery[RAmmatillisenKoulutuksenJarjestamismuotoAikajaksoConfidentialTable]
+    case TempConfidential => TableQuery[RAmmatillisenKoulutuksenJarjestamismuotoAikajaksoConfidentialTableTemp]
   }
 }
 

@@ -29,7 +29,7 @@ object OpiskeluoikeusLoaderRowBuilder extends Logging {
       List[TOPKSAmmatillinenRaportointiRow]
     )]
 
-  type AikajaksoRows = (Seq[ROpiskeluoikeusAikajaksoRow], Seq[EsiopetusOpiskeluoikeusAikajaksoRow])
+  type AikajaksoRows = (Seq[ROpiskeluoikeusAikajaksoRow], Seq[EsiopetusOpiskeluoikeusAikajaksoRow], Seq[RGeneerinenAikajaksoRow], Seq[RAmmatillisenKoulutuksenJarjestamismuotoAikajaksoRow])
 
   type TutkintokokonaisuusId = Int
   case class YtrTutkintokokonaisuusRows(
@@ -45,7 +45,7 @@ object OpiskeluoikeusLoaderRowBuilder extends Logging {
       val toOpiskeluoikeusUnsafeDuration = System.nanoTime() - toOpiskeluoikeusUnsafeStartTime
       val ooRow = buildROpiskeluoikeusRow(inputRow.oppijaOid, inputRow.aikaleima, oo, inputRow.data)
 
-      val aikajaksoRows: AikajaksoRows = if (includeAikajaksot) buildAikajaksoRows(inputRow.oid, oo) else (Nil, Nil)
+      val aikajaksoRows: AikajaksoRows = if (includeAikajaksot) buildAikajaksoRows(inputRow.oid, oo) else (Nil, Nil, Nil, Nil)
       val suoritusRows: KoskiSuoritusRows = oo.suoritukset.zipWithIndex.map {
         case (ps, i) => OpiskeluoikeusLoaderRowBuilder.buildKoskiSuoritusRows(
           inputRow.oid,
@@ -57,11 +57,14 @@ object OpiskeluoikeusLoaderRowBuilder extends Logging {
           includeOsasuoritukset
         )
       }
+
       KoskiOutputRows(
         rOpiskeluoikeusRow = ooRow,
         organisaatioHistoriaRows = OrganisaatioHistoriaRowBuilder.buildOrganisaatioHistoriaRows(oo),
         rOpiskeluoikeusAikajaksoRows = aikajaksoRows._1,
         esiopetusOpiskeluoikeusAikajaksoRows = aikajaksoRows._2,
+        rGeneerinenAikajaksoRows = aikajaksoRows._3,
+        rAmmatillisenKoulutuksenJarjestamismuotoAikajaksoRows = aikajaksoRows._4,
         rPäätasonSuoritusRows = suoritusRows.map(_._1),
         rOsasuoritusRows = suoritusRows.flatMap(_._2),
         muuAmmatillinenOsasuoritusRaportointiRows = suoritusRows.flatMap(_._3),
@@ -185,8 +188,13 @@ object OpiskeluoikeusLoaderRowBuilder extends Logging {
       case esiopetus: EsiopetuksenOpiskeluoikeus => AikajaksoRowBuilder.buildEsiopetusOpiskeluoikeusAikajaksoRows(opiskeluoikeusOid, esiopetus)
       case _ => Nil
     }
+    val geneerisetAikajaksot = AikajaksoRowBuilder.buildGenericAikajaksoRows(opiskeluoikeusOid, opiskeluoikeus)
+    val ammatillisenKoulutuksenJarjestamismuotoAikajaksot = opiskeluoikeus match {
+      case ammatillinen: AmmatillinenOpiskeluoikeus => AikajaksoRowBuilder.buildAmmatillisenKoulutuksenJarjestamismuotoAikajaksoRows(opiskeluoikeusOid, ammatillinen)
+      case _ => Nil
+    }
 
-    (opiskeluoikeusAikajaksot, esiopetusOpiskeluoikeusAikajaksot)
+    (opiskeluoikeusAikajaksot, esiopetusOpiskeluoikeusAikajaksot, geneerisetAikajaksot, ammatillisenKoulutuksenJarjestamismuotoAikajaksot)
   }
 
   private val fieldsToExcludeFromPäätasonSuoritusJson = Set("osasuoritukset", "tyyppi", "toimipiste", "koulutustyyppi")
@@ -350,6 +358,7 @@ object OpiskeluoikeusLoaderRowBuilder extends Logging {
       case stp: MahdollisestiToimipisteellinen if stp.toimipiste.nonEmpty => stp.toimipiste.get
       case _ => oppilaitos
     }
+
     val päätaso = RPäätasonSuoritusRow(
       päätasonSuoritusId = päätasonSuoritusId,
       opiskeluoikeusOid = opiskeluoikeusOid,
@@ -386,8 +395,29 @@ object OpiskeluoikeusLoaderRowBuilder extends Logging {
       toimipisteOid = toimipiste.oid,
       toimipisteNimi = convertLocalizedString(toimipiste.nimi, "fi"),
       toimipisteNimiSv = convertLocalizedString(toimipiste.nimi, "sv"),
-      data = JsonManipulation.removeFields(data, fieldsToExcludeFromPäätasonSuoritusJson),
-      sisältyyOpiskeluoikeuteenOid = sisältyyOpiskeluoikeuteenOid
+      sisältyyOpiskeluoikeuteenOid = sisältyyOpiskeluoikeuteenOid,
+      tutkintonimike = ps match {
+        case s: Tutkintonimikkeellinen => s.tutkintonimike match {
+          case Some(a) => Some(a.map(tn => convertLocalizedString(tn.nimi, "fi")).mkString(", "))
+          case None => None
+        }
+        case _ => None
+      },
+      luokkaTaiRyhmä = ps match {
+        case l: Luokallinen => Some(l.luokka)
+        case l: MahdollisestiLuokallinen => l.luokka
+        case r: Ryhmällinen => r.ryhmä
+        case _ => None
+      },
+      perusteenDiaarinumero = ps.koulutusmoduuli match {
+        case d: Diaarinumerollinen => d.perusteenDiaarinumero
+        case _ => None
+      },
+      jääLuokalle = ps match {
+        case l: LuokalleJääntiTiedonSisältäväSuoritus => Some(l.jääLuokalle)
+        case _ => None
+      },
+      data = JsonManipulation.removeFields(data, fieldsToExcludeFromPäätasonSuoritusJson)
     )
     päätaso
   }
@@ -627,15 +657,17 @@ object OpiskeluoikeusLoaderRowBuilder extends Logging {
 }
 
 case class KoskiOutputRows(
-  rOpiskeluoikeusRow: ROpiskeluoikeusRow,
-  organisaatioHistoriaRows: Seq[ROrganisaatioHistoriaRow],
-  rOpiskeluoikeusAikajaksoRows: Seq[ROpiskeluoikeusAikajaksoRow],
-  esiopetusOpiskeluoikeusAikajaksoRows: Seq[EsiopetusOpiskeluoikeusAikajaksoRow],
-  rPäätasonSuoritusRows: Seq[RPäätasonSuoritusRow],
-  rOsasuoritusRows: Seq[ROsasuoritusRow],
-  muuAmmatillinenOsasuoritusRaportointiRows: Seq[MuuAmmatillinenOsasuoritusRaportointiRow],
-  topksAmmatillinenRaportointiRows: Seq[TOPKSAmmatillinenRaportointiRow],
-  toOpiskeluoikeusUnsafeDuration: Long = 0
+                            rOpiskeluoikeusRow: ROpiskeluoikeusRow,
+                            organisaatioHistoriaRows: Seq[ROrganisaatioHistoriaRow],
+                            rOpiskeluoikeusAikajaksoRows: Seq[ROpiskeluoikeusAikajaksoRow],
+                            esiopetusOpiskeluoikeusAikajaksoRows: Seq[EsiopetusOpiskeluoikeusAikajaksoRow],
+                            rGeneerinenAikajaksoRows: Seq[RGeneerinenAikajaksoRow],
+                            rAmmatillisenKoulutuksenJarjestamismuotoAikajaksoRows: Seq[RAmmatillisenKoulutuksenJarjestamismuotoAikajaksoRow],
+                            rPäätasonSuoritusRows: Seq[RPäätasonSuoritusRow],
+                            rOsasuoritusRows: Seq[ROsasuoritusRow],
+                            muuAmmatillinenOsasuoritusRaportointiRows: Seq[MuuAmmatillinenOsasuoritusRaportointiRow],
+                            topksAmmatillinenRaportointiRows: Seq[TOPKSAmmatillinenRaportointiRow],
+                            toOpiskeluoikeusUnsafeDuration: Long = 0
 )
 
 case class YtrOutputRows(

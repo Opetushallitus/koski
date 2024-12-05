@@ -397,7 +397,7 @@ class SuoritusjakoSpec extends AnyFreeSpec with SuoritusjakoTestMethods with Mat
 
         // Palautetaan tuplaus (ei luokallejäänti-suoritusta)
         oppija.opiskeluoikeudet.head.suoritukset.head match {
-          case s: PerusopetuksenVuosiluokanSuoritus => !s.jääLuokalle && s.luokka == "7A"
+          case s: PerusopetuksenVuosiluokanSuoritus => !s.jääLuokalle && s.luokka.contains("7A")
           case _ => fail("Väärä palautettu suoritus")
         }
       }
@@ -416,7 +416,7 @@ class SuoritusjakoSpec extends AnyFreeSpec with SuoritusjakoTestMethods with Mat
 
         // Palautetaan tuplaus (ei luokallejäänti-suoritusta)
         oppija.opiskeluoikeudet.head.suoritukset.head match {
-          case s: PerusopetuksenVuosiluokanSuoritus => !s.jääLuokalle && s.luokka == "7A"
+          case s: PerusopetuksenVuosiluokanSuoritus => !s.jääLuokalle && s.luokka.contains("7A")
           case _ => fail("Väärä palautettu suoritus")
         }
       }

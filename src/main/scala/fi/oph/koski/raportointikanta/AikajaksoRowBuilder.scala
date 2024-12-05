@@ -12,6 +12,14 @@ object AikajaksoRowBuilder {
     buildAikajaksoRows(buildROpiskeluoikeusAikajaksoRowForOneDay, opiskeluoikeusOid, opiskeluoikeus).flatten
   }
 
+  def buildGenericAikajaksoRows(opiskeluoikeusOid: String, opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus): Seq[RGeneerinenAikajaksoRow] = {
+    buildRGenericAikajaksoRows(opiskeluoikeusOid, opiskeluoikeus)
+  }
+
+  def buildAmmatillisenKoulutuksenJarjestamismuotoAikajaksoRows(opiskeluoikeusOid: String, opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus): Seq[RAmmatillisenKoulutuksenJarjestamismuotoAikajaksoRow] = {
+    buildRAmmatillisenKoulutuksenJarjestamismuotoAikajaksoRows(opiskeluoikeusOid, opiskeluoikeus)
+  }
+
   def buildEsiopetusOpiskeluoikeusAikajaksoRows(opiskeluoikeusOid: String, opiskeluoikeus: EsiopetuksenOpiskeluoikeus): Seq[EsiopetusOpiskeluoikeusAikajaksoRow] = {
     buildAikajaksoRows(buildEsiopetusAikajaksoRowForOneDay, opiskeluoikeusOid, opiskeluoikeus).flatten
   }
@@ -46,8 +54,8 @@ object AikajaksoRowBuilder {
     }
 
     def lisätietoVoimassaPäivänä(
-      aikajaksoLisätiedosta: PartialFunction[OpiskeluoikeudenLisätiedot, Option[Seq[DateContaining]]]
-    ): Boolean = {
+                                  aikajaksoLisätiedosta: PartialFunction[OpiskeluoikeudenLisätiedot, Option[Seq[DateContaining]]]
+                                ): Boolean = {
       o.lisätiedot.exists(l => aikajaksoVoimassaPäivänä(aikajaksoLisätiedosta.lift(l).flatten))
     }
 
@@ -161,6 +169,40 @@ object AikajaksoRowBuilder {
     }
   }
 
+  private object GeneerinenAikajakso {
+    val ulkomaanjakso = "ULKOMAANJAKSO"
+  }
+
+  object AmmatillisenKoulutuksenJarjestamismuotoAikajakso {
+    val koulutuksenJärjestäminenOppilaitosMuotoisena = "KOULUTUKSEN_JÄRJESTÄMINEN_OPPILAITOSMUOTOISENA"
+    val koulutuksenJärjestäminenOppisopimusKoulutuksena = "KOULUTUKSEN_JÄRJESTÄMINEN_OPPISOPIMUSKOULUTUKSENA"
+  }
+
+  private def buildRGenericAikajaksoRows(opiskeluoikeudenOid: String, o: Opiskeluoikeus): List[RGeneerinenAikajaksoRow] = {
+    val ulkomaanjaksolliset = o.lisätiedot match {
+      case Some(lisatiedot) => lisatiedot match {
+        case a: Ulkomaanaikajaksollinen => a.kaikkiUlkomaanaikajaksot.map(a => RGeneerinenAikajaksoRow(opiskeluoikeudenOid, GeneerinenAikajakso.ulkomaanjakso, Date.valueOf(a.alku), a.loppu.map(l => Date.valueOf(l))))
+      }
+      case _ => Nil
+    }
+
+    ulkomaanjaksolliset
+  }
+
+  private def buildRAmmatillisenKoulutuksenJarjestamismuotoAikajaksoRows(opiskeluoikeudenOid: String, o: Opiskeluoikeus): List[RAmmatillisenKoulutuksenJarjestamismuotoAikajaksoRow] = {
+    val aikajaksot: List[RAmmatillisenKoulutuksenJarjestamismuotoAikajaksoRow] = o.suoritukset.flatMap({
+      case a: Järjestämismuodollinen => a.järjestämismuodot.toList.flatten
+    }).map({
+      case Järjestämismuotojakso(alku, loppu, jm: JärjestämismuotoIlmanLisätietoja) if jm.tunniste.koodiarvo == "10" =>
+        RAmmatillisenKoulutuksenJarjestamismuotoAikajaksoRow(opiskeluoikeudenOid, AmmatillisenKoulutuksenJarjestamismuotoAikajakso.koulutuksenJärjestäminenOppilaitosMuotoisena, Date.valueOf(alku), loppu.map(l => Date.valueOf(l)), None, None, None)
+      case Järjestämismuotojakso(alku, loppu, jm: OppisopimuksellinenJärjestämismuoto) if jm.tunniste.koodiarvo == "20" =>
+        RAmmatillisenKoulutuksenJarjestamismuotoAikajaksoRow(opiskeluoikeudenOid, AmmatillisenKoulutuksenJarjestamismuotoAikajakso.koulutuksenJärjestäminenOppisopimusKoulutuksena, Date.valueOf(alku), loppu.map(l => Date.valueOf(l)), Some(jm.oppisopimus.työnantaja.yTunnus), jm.oppisopimus.oppisopimuksenPurkaminen.map(_.päivä).map(l => Date.valueOf(l)), jm.oppisopimus.oppisopimuksenPurkaminen.map(_.purettuKoeajalla))
+      case Järjestämismuotojakso(alku, loppu, jm: OppisopimuksellinenJärjestämismuoto) =>
+        RAmmatillisenKoulutuksenJarjestamismuotoAikajaksoRow(opiskeluoikeudenOid, AmmatillisenKoulutuksenJarjestamismuotoAikajakso.koulutuksenJärjestäminenOppisopimusKoulutuksena, Date.valueOf(alku), loppu.map(l => Date.valueOf(l)), Some(jm.oppisopimus.työnantaja.yTunnus), jm.oppisopimus.oppisopimuksenPurkaminen.map(_.päivä).map(l => Date.valueOf(l)), jm.oppisopimus.oppisopimuksenPurkaminen.map(_.purettuKoeajalla))
+    })
+    aikajaksot
+  }
+
   private def buildEsiopetusAikajaksoRowForOneDay(opiskeluoikeudenOid: String, o: EsiopetuksenOpiskeluoikeus, päivä: LocalDate): Option[EsiopetusOpiskeluoikeusAikajaksoRow] = {
     val jakso = o.tila.opiskeluoikeusjaksot
       .filterNot(_.alku.isAfter(päivä))
@@ -178,7 +220,7 @@ object AikajaksoRowBuilder {
       opiskeluoikeusPäättynyt = jakso.opiskeluoikeusPäättynyt,
       pidennettyOppivelvollisuus = o.lisätiedot.exists(_.pidennettyOppivelvollisuus.exists(_.contains(päivä))),
       tukimuodot = o.lisätiedot.flatMap(_.tukimuodot.map(_.map(_.koodiarvo))).map(_.mkString(";")),
-      erityisenTuenPäätös = !päivänäAktiivisetPäätökset.isEmpty,
+      erityisenTuenPäätös = päivänäAktiivisetPäätökset.nonEmpty,
       erityisenTuenPäätösOpiskeleeToimintaAlueittain = päivänäAktiivisetPäätökset.exists(_.opiskeleeToimintaAlueittain),
       erityisenTuenPäätösErityisryhmässä = päivänäAktiivisetPäätökset.exists(_.erityisryhmässä.getOrElse(false)),
       erityisenTuenPäätösToteutuspaikka = if (aktiivistenErityisenTuenPäätöksienToteutuspaikat.isEmpty) None else Some(aktiivistenErityisenTuenPäätöksienToteutuspaikat.mkString(";")),
@@ -192,7 +234,7 @@ object AikajaksoRowBuilder {
     // Note: When adding something here, remember to update aikajaksojenAlkupäivät (below), too
   }
 
-  val IndefiniteFuture = LocalDate.of(9999, 12, 31) // no special meaning, but must be after any possible real alkamis/päättymispäivä
+  val IndefiniteFuture: LocalDate = LocalDate.of(9999, 12, 31) // no special meaning, but must be after any possible real alkamis/päättymispäivä
 
   private def aikajaksot(o: KoskeenTallennettavaOpiskeluoikeus): Seq[(LocalDate, LocalDate)] = {
     val alkupäivät: Seq[LocalDate] = mahdollisetAikajaksojenAlkupäivät(o)
@@ -211,8 +253,8 @@ object AikajaksoRowBuilder {
   def toSeq[A <: Jakso](xs: Option[List[A]]*): Seq[Jakso] = xs.flatMap(_.getOrElse(Nil))
 
   private def aikajaksoMahdollisestiAlkamispäivällisestä
-    (o: KoskeenTallennettavaOpiskeluoikeus)
-    (m: MahdollisestiAlkupäivällinenJakso): Option[Jakso] = {
+  (o: KoskeenTallennettavaOpiskeluoikeus)
+  (m: MahdollisestiAlkupäivällinenJakso): Option[Jakso] = {
     List(m.alku, o.alkamispäivä).flatten.headOption match {
       case Some(alku) => Some(Aikajakso(alku, m.loppu))
       case None => None
@@ -220,16 +262,16 @@ object AikajaksoRowBuilder {
   }
 
   private def aikajaksotErityisenTuenPäätöksistä(
-    erityisenTuenPäätös: Option[ErityisenTuenPäätös],
-    erityisenTuenPäätökset: Option[List[ErityisenTuenPäätös]]
-  ): List[Aikajakso] = {
+                                                  erityisenTuenPäätös: Option[ErityisenTuenPäätös],
+                                                  erityisenTuenPäätökset: Option[List[ErityisenTuenPäätös]]
+                                                ): List[Aikajakso] = {
     (erityisenTuenPäätös.toList ++ erityisenTuenPäätökset.toList.flatten)
       .flatMap(päätös => päätös.alku.map(Aikajakso(_, päätös.loppu)))
   }
 
   private def aikajaksotTuvaErityisenTuenPäätöksistä(
-    erityisenTuenPäätökset: Option[List[TuvaErityisenTuenPäätös]]
-  ): List[Aikajakso] = {
+                                                      erityisenTuenPäätökset: Option[List[TuvaErityisenTuenPäätös]]
+                                                    ): List[Aikajakso] = {
     erityisenTuenPäätökset.toList.flatten.flatMap(päätös => päätös.alku.map(Aikajakso(_, päätös.loppu)))
   }
 
@@ -398,6 +440,7 @@ object AikajaksoRowBuilder {
       järjestämismuodot.getOrElse(List.empty).filter(_.järjestämismuoto.tunniste == JarjestamismuotoOppisopimus) ++
         osaamisenHankkimistavat.getOrElse(List.empty).filter(_.osaamisenHankkimistapa.tunniste == OsaamisenhankkimistapaOppisopimus)
     }
+
     o.suoritukset.flatMap {
       case s: Järjestämismuodollinen with OsaamisenHankkimistavallinen => convert(s.järjestämismuodot, s.osaamisenHankkimistavat)
       case s: Järjestämismuodollinen => convert(s.järjestämismuodot, None)
