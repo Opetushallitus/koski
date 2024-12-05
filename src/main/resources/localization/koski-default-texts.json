@@ -2761,5 +2761,7 @@
   "raportti-excel-must-tiedoston-etuliite": "muks_suoritustiedot",
   "raportti-excel-kolumni-yhteislaajuusKaikkiTuntia": "Yhteislaajuus (tuntia)",
   "Siirtynyt uusiin tutkinnon perusteisiin": "Siirtynyt uusiin tutkinnon perusteisiin",
-  "description:Onko opiskeluoikeuden päättymisen syy siirtyminen...": "Onko opiskeluoikeuden päättymisen syy siirtyminen tutkinnon uusiin perusteisiin."
+  "description:Onko opiskeluoikeuden päättymisen syy siirtyminen...": "Onko opiskeluoikeuden päättymisen syy siirtyminen tutkinnon uusiin perusteisiin.",
+  "IB-oppiaine": "IB-oppiaine",
+  "Lukion oppiaine": "Lukion oppiaine"
 }
