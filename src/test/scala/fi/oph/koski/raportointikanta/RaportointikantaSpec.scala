@@ -9,6 +9,7 @@ import fi.oph.koski.henkilo.KoskiSpecificMockOppijat.{master, masterEiKoskessa}
 import fi.oph.koski.json.{JsonFiles, JsonSerializer}
 import fi.oph.koski.koskiuser.MockUsers
 import fi.oph.koski.organisaatio.{MockOrganisaatiot, Organisaatiotyyppi}
+import fi.oph.koski.raportointikanta.AikajaksoRowBuilder.AmmatillisenKoulutuksenJarjestamismuotoAikajakso
 import fi.oph.koski.schema.KoskiSchema.strictDeserialization
 import fi.oph.koski.schema._
 import fi.oph.koski.util.Wait
@@ -22,7 +23,7 @@ import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.should.Matchers
 
 import java.sql.{Date, Timestamp}
-import java.time.{LocalDate, ZonedDateTime}
+import java.time.{LocalDate}
 
 class RaportointikantaSpec
   extends AnyFreeSpec
@@ -116,8 +117,8 @@ class RaportointikantaSpec
     "Huomioi linkitetyt oidit" in {
       val slaveOppija = KoskiSpecificMockOppijat.slave.henkilö
       val hakuOidit = Set(master.oid, slaveOppija.oid)
-      val henkilot = mainRaportointiDb.runDbSync(mainRaportointiDb.RHenkilöt.filter(_.oppijaOid inSet(hakuOidit)).result).toSet
-      henkilot should equal (Set(
+      val henkilot = mainRaportointiDb.runDbSync(mainRaportointiDb.RHenkilöt.filter(_.oppijaOid inSet (hakuOidit)).result).toSet
+      henkilot should equal(Set(
         RHenkilöRow(slaveOppija.oid, master.oid, List(slaveOppija.oid), master.hetu, None, Some(Date.valueOf("1997-10-10")), master.sukunimi, master.etunimet, Some("fi"), None, false, None, None, None, true),
         RHenkilöRow(master.oid, master.oid, List(slaveOppija.oid), master.hetu, None, Some(Date.valueOf("1997-10-10")), master.sukunimi, master.etunimet, Some("fi"), None, false, None, None, None, true)
       ))
@@ -140,7 +141,7 @@ class RaportointikantaSpec
         (MockOrganisaatiot.aapajoenKoulu, "suomi", "finska", "1"),
         (MockOrganisaatiot.yrkehögskolanArcada, "ruotsi", "svenska", "2")
       )
-      oppilaitoksetJaKielet.foreach{ case(oppilaitosOid, kieli, kieliSv, kielikoodi) =>
+      oppilaitoksetJaKielet.foreach { case (oppilaitosOid, kieli, kieliSv, kielikoodi) =>
         val oppilaitos = mainRaportointiDb.runDbSync(
           mainRaportointiDb.ROrganisaatiot.filter(_.organisaatioOid === oppilaitosOid).result
         ).head
@@ -188,12 +189,14 @@ class RaportointikantaSpec
     "YTR-opiskeluoikeuksia ei ladata raportointikantaan, jos YTR-lataus ei ole päällä" in {
       val loadResult = KoskiApplicationForTests.raportointikantaService.loadRaportointikanta(force = false, enableYtr = false)
       loadResult should be(true)
-      Wait.until { KoskiApplicationForTests.raportointikantaService.isLoadComplete }
+      Wait.until {
+        KoskiApplicationForTests.raportointikantaService.isLoadComplete
+      }
 
       val ytrOotRaportointikannassa = mainRaportointiDb.runDbSync(
         mainRaportointiDb.ROpiskeluoikeudet.filter(_.koulutusmuoto === "ylioppilastutkinto").result
       )
-      ytrOotRaportointikannassa should have length(0)
+      ytrOotRaportointikannassa should have length (0)
 
       val ootRaportointikannassa = mainRaportointiDb.runDbSync(
         mainRaportointiDb.ROpiskeluoikeudet.result
@@ -232,8 +235,8 @@ class RaportointikantaSpec
             verifyOrg(row.koulutustoimija, row.oppilaitos)
           } else if (
             tyypit.contains(Organisaatiotyyppi.OPPILAITOS) ||
-            tyypit.contains(Organisaatiotyyppi.VARHAISKASVATUKSEN_TOIMIPAIKKA) ||
-            tyypit.contains(Organisaatiotyyppi.OPPISOPIMUSTOIMIPISTE)
+              tyypit.contains(Organisaatiotyyppi.VARHAISKASVATUKSEN_TOIMIPAIKKA) ||
+              tyypit.contains(Organisaatiotyyppi.OPPISOPIMUSTOIMIPISTE)
           ) {
             row.oppilaitos should equal(None)
             verifyOrg(row.koulutustoimija, Some(row.organisaatioOid))
@@ -364,13 +367,13 @@ class RaportointikantaSpec
     }
 
     def verifyTutkintokokonaisuus(
-      expectedOo: YlioppilastutkinnonOpiskeluoikeus,
-      expectedTutkintokokonaisuudet: Seq[YlioppilastutkinnonTutkintokokonaisuudenLisätiedot],
-      actualPts: RPäätasonSuoritusRow,
-      actualTutkintokokonaisuudet: Seq[RYtrTutkintokokonaisuudenSuoritusRow]
-    ) = {
+                                   expectedOo: YlioppilastutkinnonOpiskeluoikeus,
+                                   expectedTutkintokokonaisuudet: Seq[YlioppilastutkinnonTutkintokokonaisuudenLisätiedot],
+                                   actualPts: RPäätasonSuoritusRow,
+                                   actualTutkintokokonaisuudet: Seq[RYtrTutkintokokonaisuudenSuoritusRow]
+                                 ) = {
       expectedTutkintokokonaisuudet.size shouldBe actualTutkintokokonaisuudet.size
-      actualTutkintokokonaisuudet.zip(expectedTutkintokokonaisuudet).foreach{ case(actualTutkintokokonaisuus, expectedTutkintokokonaisuus) =>
+      actualTutkintokokonaisuudet.zip(expectedTutkintokokonaisuudet).foreach { case (actualTutkintokokonaisuus, expectedTutkintokokonaisuus) =>
         actualTutkintokokonaisuus.opiskeluoikeusOid should equal(expectedOo.oid.get)
         actualTutkintokokonaisuus.päätasonSuoritusId should equal(actualPts.päätasonSuoritusId)
         actualTutkintokokonaisuus.suorituskieliKoodiarvo should equal(expectedTutkintokokonaisuus.suorituskieli.map(_.koodiarvo))
@@ -387,12 +390,12 @@ class RaportointikantaSpec
     }
 
     def verifyTutkintokerrat(
-      expectedOo: YlioppilastutkinnonOpiskeluoikeus,
-      expectedTutkintokerrat: List[YlioppilastutkinnonTutkintokerranLisätiedot],
-      actualPts: RPäätasonSuoritusRow,
-      actualTutkintokokonaisuudet: Seq[RYtrTutkintokokonaisuudenSuoritusRow],
-      actualTutkintokerrat: Seq[RYtrTutkintokerranSuoritusRow]
-    )  = {
+                              expectedOo: YlioppilastutkinnonOpiskeluoikeus,
+                              expectedTutkintokerrat: List[YlioppilastutkinnonTutkintokerranLisätiedot],
+                              actualPts: RPäätasonSuoritusRow,
+                              actualTutkintokokonaisuudet: Seq[RYtrTutkintokokonaisuudenSuoritusRow],
+                              actualTutkintokerrat: Seq[RYtrTutkintokerranSuoritusRow]
+                            ) = {
       actualTutkintokerrat.length should equal(expectedTutkintokerrat.length)
       actualTutkintokerrat.zip(expectedTutkintokerrat).foreach { case (actualTutkintokerta, expectedTutkintokerta) =>
         actualTutkintokerta.opiskeluoikeusOid should equal(expectedOo.oid.get)
@@ -414,20 +417,20 @@ class RaportointikantaSpec
     }
 
     def verifyKokeet(
-      expectedOo: YlioppilastutkinnonOpiskeluoikeus,
-      expectedKokeet: Seq[YlioppilastutkinnonKokeenSuoritus],
-      expectedSisältyvätKokeet: Seq[YlioppilastutkinnonSisältyväKoe],
-      actualPts: RPäätasonSuoritusRow,
-      actualTutkintokokonaisuudet: Seq[RYtrTutkintokokonaisuudenSuoritusRow],
-      actualTutkintokerrat: Seq[RYtrTutkintokerranSuoritusRow],
-      actualKokeet: Seq[RYtrKokeenSuoritusRow],
-      actualTutkintokokonaisuudenKokeet: Seq[RYtrTutkintokokonaisuudenKokeenSuoritusRow]
-    ) = {
+                      expectedOo: YlioppilastutkinnonOpiskeluoikeus,
+                      expectedKokeet: Seq[YlioppilastutkinnonKokeenSuoritus],
+                      expectedSisältyvätKokeet: Seq[YlioppilastutkinnonSisältyväKoe],
+                      actualPts: RPäätasonSuoritusRow,
+                      actualTutkintokokonaisuudet: Seq[RYtrTutkintokokonaisuudenSuoritusRow],
+                      actualTutkintokerrat: Seq[RYtrTutkintokerranSuoritusRow],
+                      actualKokeet: Seq[RYtrKokeenSuoritusRow],
+                      actualTutkintokokonaisuudenKokeet: Seq[RYtrTutkintokokonaisuudenKokeenSuoritusRow]
+                    ) = {
       actualKokeet.length should equal(expectedKokeet.length)
       actualKokeet.zip(expectedKokeet).foreach { case (actualKoe, expectedKoe) =>
         val actualTutkintokokonaisuus = actualTutkintokokonaisuudet.find(_.ytrTutkintokokonaisuudenSuoritusId == actualKoe.ytrTutkintokokonaisuudenSuoritusId).get
         val actualTutkintokerta = actualTutkintokerrat.find(_.ytrTutkintokerranSuoritusId == actualKoe.ytrTutkintokerranSuoritusId).get
-        val onExpectedSisältyväKoe = expectedSisältyvätKokeet.exists( sisältyväKoe =>
+        val onExpectedSisältyväKoe = expectedSisältyvätKokeet.exists(sisältyväKoe =>
           sisältyväKoe.tutkintokerta.koodiarvo == expectedKoe.tutkintokerta.koodiarvo &&
             sisältyväKoe.koulutusmoduuli.tunniste.koodiarvo == expectedKoe.koulutusmoduuli.tunniste.koodiarvo
         )
@@ -458,7 +461,7 @@ class RaportointikantaSpec
         ))
 
         // Jos koe on sisältyvä koe, on siitä lisätty rivi myös sisällyttävään tutkintokokonaisuuden suoritukseen linkitettynä
-        if(onExpectedSisältyväKoe){
+        if (onExpectedSisältyväKoe) {
           actualTutkintokokonaisuudet.size shouldBe 2
           actualTutkintokokonaisuudenKokeet should contain(RYtrTutkintokokonaisuudenKokeenSuoritusRow(
             ytrTutkintokokonaisuudenSuoritusId =
@@ -491,7 +494,7 @@ class RaportointikantaSpec
     val vstOpiskeluoikeus = SchemaValidatingExtractor.extract[Oppija](vstJson).right.get.opiskeluoikeudet.head.asInstanceOf[VapaanSivistystyönOpiskeluoikeus].copy(oid = Some(oid))
 
     val Läsnä = Koodistokoodiviite("lasna", "koskiopiskeluoikeudentila")
-    val Loma =  Koodistokoodiviite("loma", "koskiopiskeluoikeudentila")
+    val Loma = Koodistokoodiviite("loma", "koskiopiskeluoikeudentila")
     val Valmistunut = Koodistokoodiviite("valmistunut", "koskiopiskeluoikeudentila")
 
     "Aikajaksorivien rakennus" - {
@@ -621,6 +624,24 @@ class RaportointikantaSpec
           ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2016-04-01"), Date.valueOf("2016-04-30"), "lasna", Date.valueOf("2016-01-15"), vaativanErityisenTuenYhteydessäJärjestettäväMajoitus = true),
           ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2016-05-01"), Date.valueOf(AikajaksoRowBuilder.IndefiniteFuture), "lasna", Date.valueOf("2016-01-15"))
         ))
+      }
+      "Ammatillisen opiskeluoikeuden järjestämismuodot" in {
+        val opiskeluoikeus = ammatillinenOpiskeluoikeus.copy()
+        val aikajaksoRows = AikajaksoRowBuilder.buildAmmatillisenKoulutuksenJarjestamismuotoAikajaksoRows(oid, opiskeluoikeus)
+        aikajaksoRows.length should equal(1)
+        aikajaksoRows should equal(
+          Seq(
+            RAmmatillisenKoulutuksenJarjestamismuotoAikajaksoRow(
+              "1.2.246.562.15.123456",
+              AmmatillisenKoulutuksenJarjestamismuotoAikajakso.koulutuksenJärjestäminenOppilaitosMuotoisena,
+              Date.valueOf("2013-09-01"),
+              None,
+              None,
+              None,
+              None
+            )
+          )
+        )
       }
       "Ammatillisen opiskeluoikeuden lisätiedot, hojks" - {
         "Ei alku/loppupäivää" in {
@@ -756,7 +777,7 @@ class RaportointikantaSpec
         )
         val aikajaksoRows = AikajaksoRowBuilder.buildEsiopetusOpiskeluoikeusAikajaksoRows(oid, opiskeluoikeus)
         aikajaksoRows should equal(Seq(
-          EsiopetusOpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2000-01-01"), Date.valueOf("2000-02-01"), "lasna", Date.valueOf("2000-01-01"), tukimuodot = Some("1;2"),pidennettyOppivelvollisuus = true, erityisenTuenPäätös = true, vammainen = true, vaikeastiVammainen = true, kuljetusetu = true, koulukoti = true, sisäoppilaitosmainenMajoitus = true),
+          EsiopetusOpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2000-01-01"), Date.valueOf("2000-02-01"), "lasna", Date.valueOf("2000-01-01"), tukimuodot = Some("1;2"), pidennettyOppivelvollisuus = true, erityisenTuenPäätös = true, vammainen = true, vaikeastiVammainen = true, kuljetusetu = true, koulukoti = true, sisäoppilaitosmainenMajoitus = true),
           EsiopetusOpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2000-02-02"), Date.valueOf("2000-02-02"), "lasna", Date.valueOf("2000-01-01"), tukimuodot = Some("1;2"), pidennettyOppivelvollisuus = true, erityisenTuenPäätös = true, vammainen = true, vaikeastiVammainen = true, kuljetusetu = true, koulukoti = true, erityisenTuenPäätösOpiskeleeToimintaAlueittain = true, erityisenTuenPäätösErityisryhmässä = true, sisäoppilaitosmainenMajoitus = true),
           EsiopetusOpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2000-02-03"), Date.valueOf("2000-03-02"), "lasna", Date.valueOf("2000-01-01"), tukimuodot = Some("1;2"), erityisenTuenPäätös = true, erityisenTuenPäätösOpiskeleeToimintaAlueittain = true, erityisenTuenPäätösErityisryhmässä = true),
           EsiopetusOpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2000-03-03"), Date.valueOf("2000-03-03"), "lasna", Date.valueOf("2000-01-01"), tukimuodot = Some("1;2"), erityisenTuenPäätös = true, erityisenTuenPäätösOpiskeleeToimintaAlueittain = true, erityisenTuenPäätösErityisryhmässä = true, majoitusetu = true, sisäoppilaitosmainenMajoitus = true),
@@ -847,6 +868,31 @@ class RaportointikantaSpec
         ps.toimipisteNimi should equal(AmmatillinenExampleData.stadinToimipiste.nimi.get.get("fi"))
       }
 
+      "Päätason suorituksen tutkintonimike haetaan oikein" in {
+        val suoritus = ammatillinenOpiskeluoikeus.suoritukset.head.asInstanceOf[AmmatillisenTutkinnonSuoritus].copy(
+          toimipiste = AmmatillinenExampleData.stadinToimipiste,
+          osasuoritukset = None
+        )
+        val opiskeluoikeus = ammatillinenOpiskeluoikeus.copy(
+          suoritukset = List(suoritus)
+        )
+        val (ps, _, _, _) = OpiskeluoikeusLoaderRowBuilder.buildKoskiSuoritusRows(oid, None, opiskeluoikeus.oppilaitos.get, opiskeluoikeus.suoritukset.head, JObject(), 1)
+        ps.tutkintonimike should equal(Some("Ympäristönhoitaja"))
+      }
+
+      "Päätason suorituksen luokka ja ryhmä haetaan oikein" in {
+        val suoritus = ammatillinenOpiskeluoikeus.suoritukset.head.asInstanceOf[AmmatillisenTutkinnonSuoritus].copy(
+          toimipiste = AmmatillinenExampleData.stadinToimipiste,
+          osasuoritukset = None
+        )
+        val opiskeluoikeus = ammatillinenOpiskeluoikeus.copy(
+          suoritukset = List(suoritus)
+        )
+        val (ps, _, _, _) = OpiskeluoikeusLoaderRowBuilder.buildKoskiSuoritusRows(oid, None, opiskeluoikeus.oppilaitos.get, opiskeluoikeus.suoritukset.head, JObject(), 1)
+        ps.luokkaTaiRyhmä should equal(Some("YMP14SN"))
+      }
+
+
       "Päätason suorituksella on alkamispäivä" in {
         val suoritus = ammatillinenOpiskeluoikeus.suoritukset.head.asInstanceOf[AmmatillisenTutkinnonSuoritus].copy(
           osasuoritukset = None,
@@ -876,7 +922,7 @@ class RaportointikantaSpec
       val orgs = KoskiApplicationForTests.organisaatioRepository
       val mitätöidytKoskessa =
         mitätöidytPoistamattomatKoskessa.map(OpiskeluoikeusLoaderRowBuilder.buildRowMitätöity).map(_.right.get) ++
-        mitätöidytPoistetutTaiPerututSuostumuksetKoskessa.map(OpiskeluoikeusLoaderRowBuilder.buildRowMitätöity(orgs)).map(_.right.get)
+          mitätöidytPoistetutTaiPerututSuostumuksetKoskessa.map(OpiskeluoikeusLoaderRowBuilder.buildRowMitätöity(orgs)).map(_.right.get)
 
       mitätöidytKoskessa.distinct.length should equal(mitätöidytKoskessa.length)
       mitätöidytRaportointikannassa.length should equal(mitätöidytKoskessa.length)
@@ -980,15 +1026,15 @@ class RaportointikantaSpec
       var käytiinSeuraavallaDataaSisältävälläSivulla = false
 
       val loadResult = KoskiApplicationForTests.raportointikantaService.loadRaportointikanta(force = false, pageSize = 10, onAfterPage = (page, batch) => {
-          if (batch.exists(_.oid == poistettavaOpiskeluoikeusOid)) {
-            poistettavanVSTnSivu = page
+        if (batch.exists(_.oid == poistettavaOpiskeluoikeusOid)) {
+          poistettavanVSTnSivu = page
 
-            poistaOpiskeluoikeus(poistettavaOppijaOid, poistettavaOpiskeluoikeusOid)
-          }
+          poistaOpiskeluoikeus(poistettavaOppijaOid, poistettavaOpiskeluoikeusOid)
+        }
 
-          if (page == (poistettavanVSTnSivu + 1) && batch.length > 0) {
-            käytiinSeuraavallaDataaSisältävälläSivulla = true
-          }
+        if (page == (poistettavanVSTnSivu + 1) && batch.length > 0) {
+          käytiinSeuraavallaDataaSisältävälläSivulla = true
+        }
       })
       loadResult should be(true)
 
@@ -1017,7 +1063,7 @@ class RaportointikantaSpec
       päivitäRaportointikantaInkrementaalisesti()
 
       opiskeluoikeusCount should be(alkuperäinenOpiskeluoikeusCount - 1)
-      mitätöityOpiskeluoikeusCount should be (alkuperäinenMitätöityOpiskeluoikeusCount + 1)
+      mitätöityOpiskeluoikeusCount should be(alkuperäinenMitätöityOpiskeluoikeusCount + 1)
     }
 
     "Poistettu opiskeluoikeus päivittyy oikein inkrementaalisessa päivityksessä" in {
@@ -1032,7 +1078,7 @@ class RaportointikantaSpec
       päivitäRaportointikantaInkrementaalisesti()
 
       opiskeluoikeusCount should be(alkuperäinenOpiskeluoikeusCount - 1)
-      mitätöityOpiskeluoikeusCount should be (alkuperäinenMitätöityOpiskeluoikeusCount + 1)
+      mitätöityOpiskeluoikeusCount should be(alkuperäinenMitätöityOpiskeluoikeusCount + 1)
     }
 
     "Mitätöinnin peruutus päivittyy oikein inkrementaalisessa päivityksessä" in {
@@ -1050,7 +1096,7 @@ class RaportointikantaSpec
       päivitäRaportointikantaInkrementaalisesti()
 
       opiskeluoikeusCount should be(alkuperäinenOpiskeluoikeusCount + 1)
-      mitätöityOpiskeluoikeusCount should be (alkuperäinenMitätöityOpiskeluoikeusCount - 1)
+      mitätöityOpiskeluoikeusCount should be(alkuperäinenMitätöityOpiskeluoikeusCount - 1)
     }
   }
 
@@ -1074,9 +1120,13 @@ class RaportointikantaSpec
   }
 
   private def opiskeluoikeusCount: Int = mainRaportointiDb.runDbSync(mainRaportointiDb.ROpiskeluoikeudet.length.result)
+
   private def mitätöityOpiskeluoikeusCount: Int = mainRaportointiDb.runDbSync(mainRaportointiDb.RMitätöidytOpiskeluoikeudet.length.result)
+
   private def henkiloCount: Int = mainRaportointiDb.runDbSync(mainRaportointiDb.RHenkilöt.length.result)
+
   private def organisaatioCount: Int = mainRaportointiDb.runDbSync(mainRaportointiDb.ROrganisaatiot.length.result)
+
   private def koodistoKoodiCount: Int = mainRaportointiDb.runDbSync(mainRaportointiDb.RKoodistoKoodit.length.result)
 
   private def isLoading = authGet("api/raportointikanta/status") {

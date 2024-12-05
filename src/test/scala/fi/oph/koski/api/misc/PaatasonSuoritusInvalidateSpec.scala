@@ -54,7 +54,7 @@ class PaatasonSuoritusInvalidateSpec extends AnyFreeSpec with Matchers with Kosk
         val oo = oppija(KoskiSpecificMockOppijat.luokallejäänyt.oid).tallennettavatOpiskeluoikeudet.head
         val suoritus = oo.suoritukset
           .collect { case s: PerusopetuksenVuosiluokanSuoritus => s }
-          .find(_.luokka == "7A")
+          .find(_.luokka.contains("7A"))
           .get
 
         deletePäätasonSuoritus(oo.oid.get, 1, suoritus) {
@@ -65,11 +65,11 @@ class PaatasonSuoritusInvalidateSpec extends AnyFreeSpec with Matchers with Kosk
 
         val poistettuVuosiluokanSuoritus = updated.suoritukset
           .collect { case s: PerusopetuksenVuosiluokanSuoritus => s }
-          .filter(_.luokka == "7A")
+          .filter(_.luokka.contains("7A"))
 
         val jäljelläOlevaVuosiluokanSuoritus = updated.suoritukset
           .collect { case s: PerusopetuksenVuosiluokanSuoritus => s }
-          .filter(_.luokka == "7C")
+          .filter(_.luokka.contains("7C"))
 
         assert(poistettuVuosiluokanSuoritus.isEmpty)
         assert(jäljelläOlevaVuosiluokanSuoritus.length == 1)
@@ -79,7 +79,7 @@ class PaatasonSuoritusInvalidateSpec extends AnyFreeSpec with Matchers with Kosk
         val oo = oppija(KoskiSpecificMockOppijat.suoritusTuplana.oid).tallennettavatOpiskeluoikeudet.head
         val suoritus = oo.suoritukset
           .collect { case s: PerusopetuksenVuosiluokanSuoritus => s }
-          .find(_.luokka == "8C")
+          .find(_.luokka.contains("8C"))
           .get
 
         deletePäätasonSuoritus(oo.oid.get, 1, suoritus) {
@@ -90,7 +90,7 @@ class PaatasonSuoritusInvalidateSpec extends AnyFreeSpec with Matchers with Kosk
 
         val jäljelläOlevaVuosiluokanSuoritus = updated.suoritukset
           .collect { case s: PerusopetuksenVuosiluokanSuoritus => s }
-          .filter(_.luokka == "8C")
+          .filter(_.luokka.contains("8C"))
         assert(jäljelläOlevaVuosiluokanSuoritus.length == 1)
       }
     }

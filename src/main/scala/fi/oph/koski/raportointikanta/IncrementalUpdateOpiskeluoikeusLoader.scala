@@ -85,6 +85,12 @@ class IncrementalUpdateOpiskeluoikeusLoader(
     val aikajaksoRows = outputRows.flatMap(_.right.get.rOpiskeluoikeusAikajaksoRows)
     db.updateOpiskeluoikeusAikajaksot(aikajaksoRows)
 
+    val genericAikajaksoRows = outputRows.flatMap(_.right.get.rGeneerinenAikajaksoRows)
+    db.updateGeneerisetAikajaksot(genericAikajaksoRows)
+
+    val ammatillisenKoulutuksenJarjestamismuotoAikajaksoRows = outputRows.flatMap(_.right.get.rAmmatillisenKoulutuksenJarjestamismuotoAikajaksoRows)
+    db.updateAmmatillisenKoulutuksenJarjestamismuotoAikajaksot(ammatillisenKoulutuksenJarjestamismuotoAikajaksoRows)
+
     val esiopetusOpiskeluoikeusAikajaksoRows = outputRows.flatMap(_.right.get.esiopetusOpiskeluoikeusAikajaksoRows)
     db.updateEsiopetusOpiskeluoikeusAikajaksot(esiopetusOpiskeluoikeusAikajaksoRows)
 
