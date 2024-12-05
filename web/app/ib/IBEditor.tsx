@@ -1,6 +1,7 @@
 import { isEmpty } from 'fp-ts/lib/Array'
 import React, { useCallback } from 'react'
 import { useSchema } from '../appstate/constraints'
+import { useKoodistoFiller } from '../appstate/koodisto'
 import {
   EditorContainer,
   usePäätasonSuoritus
@@ -13,17 +14,23 @@ import {
 } from '../components-v2/containers/Modal'
 import { FlatButton } from '../components-v2/controls/FlatButton'
 import { RaisedButton } from '../components-v2/controls/RaisedButton'
+import { SelectOption } from '../components-v2/controls/Select'
 import { FormModel, useForm } from '../components-v2/forms/FormModel'
 import { AdaptedOpiskeluoikeusEditorProps } from '../components-v2/interoperability/useUiAdapter'
 import { Spacer } from '../components-v2/layout/Spacer'
 import { OpiskeluoikeusTitle } from '../components-v2/opiskeluoikeus/OpiskeluoikeusTitle'
 import { OppiaineTable } from '../components-v2/opiskeluoikeus/OppiaineTable'
+import {
+  PaikallinenKoulutus,
+  PaikallinenKoulutusFields
+} from '../components-v2/opiskeluoikeus/PaikallinenKoulutusFields'
 import { SuorituksenVahvistusField } from '../components-v2/opiskeluoikeus/SuorituksenVahvistus'
-import { t } from '../i18n/i18n'
+import { localize, t } from '../i18n/i18n'
 import { IBOpiskeluoikeus } from '../types/fi/oph/koski/schema/IBOpiskeluoikeus'
 import { IBTutkinto } from '../types/fi/oph/koski/schema/IBTutkinto'
 import { isLaajuusKursseissa } from '../types/fi/oph/koski/schema/LaajuusKursseissa'
 import { LukionOpiskeluoikeusjakso } from '../types/fi/oph/koski/schema/LukionOpiskeluoikeusjakso'
+import { PaikallinenKoodi } from '../types/fi/oph/koski/schema/PaikallinenKoodi'
 import { PreIBKoulutusmoduuli2015 } from '../types/fi/oph/koski/schema/PreIBKoulutusmoduuli2015'
 import { PreIBKoulutusmoduuli2019 } from '../types/fi/oph/koski/schema/PreIBKoulutusmoduuli2019'
 import { PreIBSuorituksenOsasuoritus2015 } from '../types/fi/oph/koski/schema/PreIBSuorituksenOsasuoritus2015'
@@ -39,6 +46,7 @@ import {
   IBPäätasonSuoritusTiedot
 } from './IBPaatasonSuoritusTiedot'
 import {
+  PaikallinenKey,
   preIB2015Oppiainekategoriat,
   useAineryhmäOptions,
   useKielivalikoimaOptions,
@@ -46,8 +54,10 @@ import {
   usePreIBTunnisteOptions,
   useÄidinkielenKieliOptions
 } from './state/options'
-import { useUusiPreIB2015OppiaineState } from './state/preIBOppiaine'
-import { useKoodistoFiller } from '../appstate/koodisto'
+import {
+  PreIBOppiaineTunniste,
+  useUusiPreIB2015OppiaineState
+} from './state/preIBOppiaine'
 
 export type IBEditorProps = AdaptedOpiskeluoikeusEditorProps<IBOpiskeluoikeus>
 
@@ -180,6 +190,29 @@ const UusiPreIB2015OppiaineDialog: React.FC<
     state.äidinkielenKieli.visible
   )
 
+  const onTunniste = useCallback(
+    (option?: SelectOption<PreIBOppiaineTunniste>) => {
+      state.tunniste.set(option?.value)
+      state.paikallinenTunniste.setVisible(option?.key === PaikallinenKey)
+    },
+    [state.paikallinenTunniste, state.tunniste]
+  )
+
+  const onPaikallinenKoulutus = useCallback(
+    (paikallinen?: PaikallinenKoulutus) => {
+      if (paikallinen) {
+        state.paikallinenTunniste.set(
+          PaikallinenKoodi({
+            koodiarvo: paikallinen.koodiarvo,
+            nimi: localize(paikallinen.nimi)
+          })
+        )
+        state.paikallinenKuvaus.set(localize(paikallinen.kuvaus))
+      }
+    },
+    [state.paikallinenKuvaus, state.paikallinenTunniste]
+  )
+
   const onSubmit = useCallback(() => {
     if (state.result) {
       props.onSubmit(state.result)
@@ -196,7 +229,7 @@ const UusiPreIB2015OppiaineDialog: React.FC<
             <DialogSelect
               options={tunnisteet}
               value={state.tunniste.value && koodiviiteId(state.tunniste.value)}
-              onChange={(o) => state.tunniste.set(o?.value)}
+              onChange={onTunniste}
               testId="tunniste"
             />
           </label>
@@ -250,6 +283,9 @@ const UusiPreIB2015OppiaineDialog: React.FC<
               testId="äidinkielenKieli"
             />
           </label>
+        )}
+        {state.paikallinenTunniste && (
+          <PaikallinenKoulutusFields onChange={onPaikallinenKoulutus} />
         )}
       </ModalBody>
       <ModalFooter>
