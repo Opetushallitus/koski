@@ -8,7 +8,6 @@ import org.http4s.client._
 import org.http4s._
 import org.typelevel.ci.CIString
 
-import scala.util.{Failure, Success, Try}
 import scala.xml._
 
 
@@ -116,7 +115,7 @@ class CasClient(casBaseUrl: Uri, client: Client[IO], callerId: String) extends L
 
         if (attributes.length > 0) {
           DecodeResult.successT(List("mail", "clientName", "displayName", "givenName", "personOid", "personName", "firstName", "nationalIdentificationNumber",
-            "impersonatorNationalIdentificationNumber", "impersonatorDisplayName")
+            "impersonatorNationalIdentificationNumber", "impersonatorDisplayName", "personIdentifier")
             .map(key => (key, (attributes \ key).text))
             .toMap)
         } else {
