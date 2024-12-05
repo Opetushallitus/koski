@@ -4,6 +4,7 @@ export type DialogField<T> = {
   value?: T
   set: (t?: T) => void
   visible: boolean
+  setVisible: (visible: boolean) => void
 }
 
 export const useDialogField = <T>(
@@ -21,5 +22,5 @@ export const useDialogField = <T>(
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isVisible])
 
-  return { value, set, visible }
+  return { value, set, visible, setVisible }
 }
