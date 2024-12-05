@@ -11,7 +11,7 @@ import fi.oph.koski.omadataoauth2.OmaDataOAuth2Security.generateSecret
 import fi.oph.koski.schema.{LocalizedString, Opiskeluoikeus, Oppija, TäydellisetHenkilötiedot}
 import fi.oph.koski.util.ChainingSyntax.eitherChainingOps
 
-class OmaDataOAuth2Service(oauth2Repository: OmaDataOAuth2Repository, val application: KoskiApplication) extends Logging {
+class OmaDataOAuth2Service(oauth2Repository: OmaDataOAuth2Repository, val application: KoskiApplication) extends Logging with OmaDataOAuth2Config {
 
   var overridenCreateResultForUnitTests: Option[Either[OmaDataOAuth2Error, String]] = None
 
@@ -25,6 +25,8 @@ class OmaDataOAuth2Service(oauth2Repository: OmaDataOAuth2Repository, val applic
 
     val codeChallengeExists = oauth2Repository.getByCodeChallenge(codeChallenge, clientId).isDefined
 
+    val tokenDurationMinutes = getTokenDurationMinutes(clientId)
+
     overridenCreateResultForUnitTests match {
       case Some(overridenResult) =>
         overridenResult
@@ -35,7 +37,7 @@ class OmaDataOAuth2Service(oauth2Repository: OmaDataOAuth2Repository, val applic
       case _ =>
         val code = generateSecret
 
-        oauth2Repository.create(code, koskiSession.oid, clientId, scope, codeChallenge, redirectUri)
+        oauth2Repository.create(code, koskiSession.oid, clientId, scope, codeChallenge, redirectUri, tokenDurationMinutes)
           .tap(_ =>
             AuditLog.log(KoskiAuditLogMessage(KANSALAINEN_MYDATA_LISAYS, koskiSession, Map(
               oppijaHenkiloOid -> koskiSession.oid,
