@@ -34,7 +34,7 @@ import { PaikallinenKoodi } from '../types/fi/oph/koski/schema/PaikallinenKoodi'
 import { PreIBKoulutusmoduuli2015 } from '../types/fi/oph/koski/schema/PreIBKoulutusmoduuli2015'
 import { PreIBKoulutusmoduuli2019 } from '../types/fi/oph/koski/schema/PreIBKoulutusmoduuli2019'
 import { PreIBSuorituksenOsasuoritus2015 } from '../types/fi/oph/koski/schema/PreIBSuorituksenOsasuoritus2015'
-import { appendOptional } from '../util/array'
+import { appendOptional, deleteAt } from '../util/array'
 import { koodiviiteId } from '../util/koodisto'
 import { sum } from '../util/numbers'
 import { PäätasonSuoritusOf } from '../util/opiskeluoikeus'
@@ -102,6 +102,16 @@ const IBPäätasonSuoritusEditor: React.FC<
     [fillKoodistot, form, hideAddOppiaineDialog, päätasonSuoritus.path]
   )
 
+  const deleteOppiaine = useCallback(
+    (index: number) => {
+      form.updateAt(
+        päätasonSuoritus.path.prop('osasuoritukset').optional(),
+        (ts) => deleteAt(index)(ts as any[])
+      )
+    },
+    [form, päätasonSuoritus.path]
+  )
+
   return (
     <EditorContainer
       form={form}
@@ -126,7 +136,11 @@ const IBPäätasonSuoritusEditor: React.FC<
 
       <Spacer />
 
-      <OppiaineTable suoritus={päätasonSuoritus.suoritus} />
+      <OppiaineTable
+        suoritus={päätasonSuoritus.suoritus}
+        form={form}
+        onDelete={deleteOppiaine}
+      />
 
       {kurssejaYhteensä !== null && (
         <footer className="IBPäätasonSuoritusEditor__footer">
