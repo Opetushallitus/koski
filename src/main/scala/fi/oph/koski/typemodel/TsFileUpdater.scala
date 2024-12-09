@@ -1,6 +1,7 @@
 package fi.oph.koski.typemodel
 
 import fi.oph.koski.aktiivisetjapaattyneetopinnot.AktiivisetJaPäättyneetOpinnotKoskeenTallennettavaOpiskeluoikeus
+import fi.oph.koski.editor.EnumValue
 import fi.oph.koski.history.OpiskeluoikeusHistoryPatch
 import fi.oph.koski.koskiuser.UserWithAccessRights
 import fi.oph.koski.oppija.HenkilönOpiskeluoikeusVersiot
@@ -67,6 +68,7 @@ case class AdditionalExports(
   osaamismerkkikuva: Osaamismerkkikuva,
   opiskeluoikeusClass: OpiskeluoikeusClass,
   tutkintoperuste: TutkintoPeruste,
+  enumValue: EnumValue,
 
   // Traitit jotka eivät automaattisesti exporttaudu skeemasta, koska ne eivät sellaisenaan
   // ole minkään tietomallin jäseniä (ainoastaan traitista periintyvät konkreettiset luokat exportataan automaattisesti).

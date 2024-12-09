@@ -287,12 +287,12 @@ export const koodiviite = <T extends string>(
  * Poistaa constraintin ympäriltä käärivät constraintit (esim. taulukko tai optional).
  * Jos sen ympärillä ei ole käärettä, palautetaan annettu malli sellaisenaan.
  */
-export const unbox = (constraint: Constraint | null): Constraint | null => {
+export const flatten = (constraint: Constraint | null): Constraint | null => {
   if (isArrayConstraint(constraint)) {
-    return unbox(constraint.items)
+    return flatten(constraint.items)
   }
   if (isOptionalConstraint(constraint)) {
-    return unbox(constraint.optional)
+    return flatten(constraint.optional)
   }
   return constraint
 }
