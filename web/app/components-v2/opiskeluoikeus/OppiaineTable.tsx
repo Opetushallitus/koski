@@ -15,6 +15,7 @@ import { suoritusValmis } from '../../util/suoritus'
 import { useBooleanState } from '../../util/useBooleanState'
 import { notUndefined } from '../../util/util'
 import { KeyValueRow, KeyValueTable } from '../containers/KeyValueTable'
+import { FlatButton } from '../controls/FlatButton'
 import { IconButton } from '../controls/IconButton'
 import { FormModel } from '../forms/FormModel'
 import { CHARCODE_REMOVE } from '../texts/Icon'
@@ -24,17 +25,21 @@ export type OppiainePäätasonSuoritus = IBPäätasonSuoritus
 
 export type OppiaineOsasuoritus = OsasuoritusOf<OppiainePäätasonSuoritus>
 
-export type OppiaineTableProps = {
+export type OppiaineTableProps<T> = {
   form: FormModel<IBOpiskeluoikeus>
   suoritus: OppiainePäätasonSuoritus
   onDelete: (index: number) => void
+  addOsasuoritusDialog: AddOppiaineenOsasuoritusDialog<T>
+  onAddOsasuoritus: (oppiaineIndex: number, osasuoritus: T) => void
 }
 
-export const OppiaineTable: React.FC<OppiaineTableProps> = ({
+export const OppiaineTable = <T,>({
   suoritus,
   form,
-  onDelete
-}) => {
+  onDelete,
+  addOsasuoritusDialog,
+  onAddOsasuoritus
+}: OppiaineTableProps<T>) => {
   const oppiaineet = suoritus.osasuoritukset || []
 
   return oppiaineet.length === 0 ? null : (
@@ -55,6 +60,8 @@ export const OppiaineTable: React.FC<OppiaineTableProps> = ({
             oppiaine={oppiaine}
             form={form}
             onDelete={() => onDelete(i)}
+            addOsasuoritusDialog={addOsasuoritusDialog}
+            onAddOsasuoritus={(osasuoritus) => onAddOsasuoritus(i, osasuoritus)}
           />
         ))}
       </tbody>
@@ -62,20 +69,45 @@ export const OppiaineTable: React.FC<OppiaineTableProps> = ({
   )
 }
 
-type OppiaineRowProps = {
+export type OppiaineRowProps<T> = {
   form: FormModel<IBOpiskeluoikeus>
   oppiaine: OppiaineOsasuoritus
+  addOsasuoritusDialog: AddOppiaineenOsasuoritusDialog<T>
+  onAddOsasuoritus: (t: T) => void
   onDelete: () => void
 }
 
-const OppiaineRow: React.FC<OppiaineRowProps> = ({
+export type AddOppiaineenOsasuoritusDialog<T> = React.FC<{
+  oppiaine: OppiaineOsasuoritus
+  onAdd: (t: T) => void
+  onClose: () => void
+}>
+
+const OppiaineRow = <T,>({
   oppiaine,
   form,
-  onDelete
-}) => {
+  onDelete,
+  addOsasuoritusDialog,
+  onAddOsasuoritus
+}: OppiaineRowProps<T>) => {
   const kurssit = oppiaine.osasuoritukset || []
   const kurssejaYhteensä = sum(
     kurssit.map((k) => k.koulutusmoduuli.laajuus?.arvo || 0)
+  )
+  const [
+    addOsasuoritusDialogVisible,
+    showAddOsasuoritusDialog,
+    hideAddOsasuoritusDialog
+  ] = useBooleanState(false)
+
+  const AddOsasuoritusDialog = addOsasuoritusDialog
+
+  const addOsasuoritus = useCallback(
+    (osasuoritus: T) => {
+      onAddOsasuoritus(osasuoritus)
+      hideAddOsasuoritusDialog()
+    },
+    [hideAddOsasuoritusDialog, onAddOsasuoritus]
   )
 
   return (
@@ -91,6 +123,11 @@ const OppiaineRow: React.FC<OppiaineRowProps> = ({
           {kurssit.map((kurssi, index) => (
             <Kurssi key={index} kurssi={kurssi} oppiaine={oppiaine} />
           ))}
+          {form.editMode && (
+            <FlatButton onClick={showAddOsasuoritusDialog}>
+              {t('Lisää osasuoritus')}
+            </FlatButton>
+          )}
         </div>
       </td>
       <td className="OppiaineRow__laajuus">{kurssejaYhteensä}</td>
@@ -104,6 +141,13 @@ const OppiaineRow: React.FC<OppiaineRowProps> = ({
             onClick={onDelete}
             testId="delete"
           />
+          {addOsasuoritusDialogVisible && (
+            <AddOsasuoritusDialog
+              oppiaine={oppiaine}
+              onAdd={addOsasuoritus}
+              onClose={hideAddOsasuoritusDialog}
+            />
+          )}
         </td>
       )}
     </tr>
@@ -151,7 +195,7 @@ const Kurssi: React.FC<KurssiProps> = ({ kurssi, oppiaine }) => {
       <div className="Kurssi__arvosana">
         {kurssi.arviointi
           ? parasArviointi(kurssi.arviointi as Arviointi[])?.arvosana.koodiarvo
-          : null}
+          : '-'}
       </div>
       {tooltipVisible && <KurssiDetails kurssi={kurssi} id={tooltipId} />}
     </div>

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 
 export type DialogField<T> = {
   value?: T
@@ -14,13 +14,20 @@ export const useDialogField = <T>(
   const [value, set] = useState<T | undefined>(defaultValue)
   const [visible, setVisible] = useState<boolean>(false)
 
+  const setVisibility = useCallback(
+    (b: boolean) => {
+      setVisible(b)
+      if (!b) {
+        set(defaultValue)
+      }
+    },
+    [defaultValue]
+  )
+
   useEffect(() => {
-    setVisible(isVisible)
-    if (!isVisible) {
-      set(defaultValue)
-    }
+    setVisibility(isVisible)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isVisible])
 
-  return { value, set, visible, setVisible }
+  return { value, set, visible, setVisible: setVisibility }
 }

@@ -2,7 +2,11 @@ import * as A from 'fp-ts/Array'
 import { pipe } from 'fp-ts/lib/function'
 import * as O from 'fp-ts/Option'
 import { useMemo } from 'react'
-import { useKoodisto, useKoodistot } from '../../appstate/koodisto'
+import {
+  KoodistokoodiviiteKoodistonNimellä,
+  useKoodisto,
+  useKoodistot
+} from '../../appstate/koodisto'
 import {
   filterOptions,
   groupKoodistoToOptions,
@@ -26,6 +30,11 @@ import {
   isVierasTaiToinenKotimainenKieli2015Tunniste
 } from '../oppiaineet/tunnisteet'
 import { PreIBOppiaineTunniste } from './preIBOppiaine'
+import {
+  LukiokurssiTunnisteUri,
+  lukiokurssiTunnisteUrit
+} from '../oppiaineet/preIBKurssi2015'
+import { NonEmptyArray } from 'fp-ts/lib/NonEmptyArray'
 
 export const preIB2015Oppiainekategoriat = {
   'IB-oppiaine': [isIBOppiaineLanguageTunniste, isIBOppiaineMuuTunniste],
@@ -52,6 +61,9 @@ const oppiaineCategoryResolver =
       O.map(([name, _]) => t(name)),
       O.toNullable
     )
+
+const labelWithKoodiarvo = (k: SelectOption<Koodistokoodiviite>): string =>
+  k.value?.koodiarvo ? `${k.label} (${k.value.koodiarvo})` : k.label
 
 export const usePreIBTunnisteOptions = <K extends Koodistokoodiviite>(
   categories: Record<string, Array<(k: K) => boolean>>,
@@ -82,9 +94,7 @@ export const usePreIBTunnisteOptions = <K extends Koodistokoodiviite>(
           k.value?.koodiarvo === undefined ||
           !existingOppiaineet.includes(k.value?.koodiarvo)
       ),
-      mapOptionLabels((k) =>
-        k.value?.koodiarvo ? `${k.label} (${k.value.koodiarvo})` : k.label
-      ),
+      mapOptionLabels(labelWithKoodiarvo),
       A.prepend({
         key: PaikallinenKey,
         label: t('Paikallinen')
@@ -108,3 +118,20 @@ export const useAineryhmäOptions = optionLoader('aineryhmaib')
 export const useÄidinkielenKieliOptions = optionLoader(
   'oppiaineaidinkielijakirjallisuus'
 )
+
+export const useLukioValtakunnallisetKurssit2015Options = (
+  required: boolean
+) => {
+  const koodit = useKoodistot(...(required ? lukiokurssiTunnisteUrit : []))
+  return useMemo(
+    () =>
+      pipe(
+        koodit || [],
+        groupKoodistoToOptions,
+        mapOptionLabels(labelWithKoodiarvo)
+      ),
+    [koodit]
+  ) as SelectOption<Koodistokoodiviite<LukiokurssiTunnisteUri>>[]
+}
+
+export const useLukiokurssinTyypit = optionLoader('lukionkurssintyyppi')
