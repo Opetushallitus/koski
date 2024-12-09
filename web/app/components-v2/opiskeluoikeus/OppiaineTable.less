@@ -1,0 +1,108 @@
+.OppiaineTable {
+  width: 100%;
+
+  &__oppiaine {
+    width: 90%;
+  }
+
+  td,
+  th {
+    padding: @baseline;
+  }
+
+  thead {
+    th {
+      vertical-align: bottom;
+    }
+    .OppiaineTable__laajuus,
+    .OppiaineTable__arvosana {
+      text-align: right;
+    }
+  }
+
+  tbody {
+    td {
+      background-color: @color-blue-background;
+    }
+
+    .OppiaineRow {
+      &__icon {
+        font-family: FontAwesome;
+      }
+
+      &__nimi {
+        opacity: 66%;
+        line-height: 2 * @baseline;
+        margin-bottom: @baseline;
+      }
+
+      &__kurssit {
+        line-height: 2 * @baseline;
+
+        .Kurssi {
+          display: inline-block;
+          position: relative;
+          width: 4 * @baseline;
+          margin-right: @baseline;
+
+          &__tunniste {
+            color: @color-blue;
+            font-weight: 600;
+          }
+        }
+      }
+
+      &__laajuus,
+      &__arvosana {
+        text-align: right;
+      }
+      &__poisto {
+        background: none;
+      }
+    }
+  }
+}
+
+.KurssiDetails {
+  position: absolute;
+  z-index: 100;
+
+  width: 550px;
+  padding: @padding;
+
+  background: white;
+  box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.2);
+
+  // .KurssiTooltip(@x, @y) tulee kurssi.less -tiedostosta
+  &-middle {
+    &-bottom {
+      .KurssiTooltip(middle, bottom);
+    }
+    &-top {
+      .KurssiTooltip(middle, topV2);
+    }
+  }
+  &-left {
+    &-bottom {
+      .KurssiTooltip(left, bottom);
+    }
+    &-top {
+      .KurssiTooltip(left, topV2);
+    }
+  }
+  &-right {
+    &-bottom {
+      .KurssiTooltip(right, bottom);
+    }
+    &-top {
+      .KurssiTooltip(right, topV2);
+    }
+  }
+}
+
+.KurssiTooltip(@x-alignment, @y-alignment) when (@y-alignment = topV2) {
+  bottom: 10px + 4 * @baseline;
+  &:after {
+    .KurssiTriangle(@x-alignment, top);
+  }
+}
