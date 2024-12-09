@@ -1,7 +1,8 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { ISO2FinnishDate } from '../../date/date'
 import { t } from '../../i18n/i18n'
 import { Arviointi } from '../../types/fi/oph/koski/schema/Arviointi'
+import { IBOpiskeluoikeus } from '../../types/fi/oph/koski/schema/IBOpiskeluoikeus'
 import { IBPäätasonSuoritus } from '../../types/fi/oph/koski/schema/IBPaatasonSuoritus'
 import { isMuidenLukioOpintojenPreIBSuoritus2019 } from '../../types/fi/oph/koski/schema/MuidenLukioOpintojenPreIBSuoritus2019'
 import { Suoritus } from '../../types/fi/oph/koski/schema/Suoritus'
@@ -14,6 +15,9 @@ import { suoritusValmis } from '../../util/suoritus'
 import { useBooleanState } from '../../util/useBooleanState'
 import { notUndefined } from '../../util/util'
 import { KeyValueRow, KeyValueTable } from '../containers/KeyValueTable'
+import { IconButton } from '../controls/IconButton'
+import { FormModel } from '../forms/FormModel'
+import { CHARCODE_REMOVE } from '../texts/Icon'
 
 // Vain OppiaineTablen tukemat päätason suoritukset (tätä komponenttia tullaan myöhemmin käyttämään ainakin lukion näkymille)
 export type OppiainePäätasonSuoritus = IBPäätasonSuoritus
@@ -21,10 +25,16 @@ export type OppiainePäätasonSuoritus = IBPäätasonSuoritus
 export type OppiaineOsasuoritus = OsasuoritusOf<OppiainePäätasonSuoritus>
 
 export type OppiaineTableProps = {
+  form: FormModel<IBOpiskeluoikeus>
   suoritus: OppiainePäätasonSuoritus
+  onDelete: (index: number) => void
 }
 
-export const OppiaineTable: React.FC<OppiaineTableProps> = ({ suoritus }) => {
+export const OppiaineTable: React.FC<OppiaineTableProps> = ({
+  suoritus,
+  form,
+  onDelete
+}) => {
   const oppiaineet = suoritus.osasuoritukset || []
 
   return oppiaineet.length === 0 ? null : (
@@ -35,11 +45,17 @@ export const OppiaineTable: React.FC<OppiaineTableProps> = ({ suoritus }) => {
           <th className="OppiaineTable__oppiaine">{t('Oppiaine')}</th>
           <th className="OppiaineTable__laajuus">{t('Laajuus (kurssia)')}</th>
           <th className="OppiaineTable__arvosana">{t('Arvosana')}</th>
+          {form.editMode && <th className="OppiaineTable__poisto" />}
         </tr>
       </thead>
       <tbody>
         {oppiaineet.map((oppiaine, i) => (
-          <OppiaineRow key={i} oppiaine={oppiaine} />
+          <OppiaineRow
+            key={i}
+            oppiaine={oppiaine}
+            form={form}
+            onDelete={() => onDelete(i)}
+          />
         ))}
       </tbody>
     </table>
@@ -47,10 +63,16 @@ export const OppiaineTable: React.FC<OppiaineTableProps> = ({ suoritus }) => {
 }
 
 type OppiaineRowProps = {
+  form: FormModel<IBOpiskeluoikeus>
   oppiaine: OppiaineOsasuoritus
+  onDelete: () => void
 }
 
-const OppiaineRow: React.FC<OppiaineRowProps> = ({ oppiaine }) => {
+const OppiaineRow: React.FC<OppiaineRowProps> = ({
+  oppiaine,
+  form,
+  onDelete
+}) => {
   const kurssit = oppiaine.osasuoritukset || []
   const kurssejaYhteensä = sum(
     kurssit.map((k) => k.koulutusmoduuli.laajuus?.arvo || 0)
@@ -73,6 +95,17 @@ const OppiaineRow: React.FC<OppiaineRowProps> = ({ oppiaine }) => {
       </td>
       <td className="OppiaineRow__laajuus">{kurssejaYhteensä}</td>
       <td className="OppiaineRow__arvosana">{oppiaineenArvosana(oppiaine)}</td>
+      {form.editMode && (
+        <td className="OppiaineRow__poisto">
+          <IconButton
+            charCode={CHARCODE_REMOVE}
+            label={t('Poista')}
+            size="input"
+            onClick={onDelete}
+            testId="delete"
+          />
+        </td>
+      )}
     </tr>
   )
 }
