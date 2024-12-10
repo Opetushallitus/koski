@@ -22,15 +22,14 @@ case class SuoritusrekisteriMuuttuneetJalkeenQuery(
   @Description("Teknisistä syistä johtuen kannattaa aina hakea tiedot hieman pidemmältä ajalta ja suodattaa itse tulosjoukosta tarpeettomat tiedot.")
   muuttuneetJälkeen: LocalDateTime,
 ) extends SuoritusrekisteriQuery {
-  def getOpiskeluoikeusIds(db: DB): Seq[(Int, Timestamp, String)] =
+  def getOpiskeluoikeusIds(db: DB): Seq[(Int, Timestamp)] =
     QueryMethods.runDbSync(
       db,
       sql"""
-        SELECT opiskeluoikeus.id, opiskeluoikeus.aikaleima, coalesce(henkilo.master_oid, henkilo.oid)
+        SELECT id, aikaleima
         FROM opiskeluoikeus
-        JOIN henkilo ON henkilo.oid = opiskeluoikeus.oppija_oid
         WHERE aikaleima >= ${Timestamp.valueOf(muuttuneetJälkeen)}
           AND koulutusmuoto = any(${SuoritusrekisteriQuery.opiskeluoikeudenTyypit})
         ORDER BY aikaleima
-      """.as[(Int, Timestamp, String)])
+      """.as[(Int, Timestamp)])
 }

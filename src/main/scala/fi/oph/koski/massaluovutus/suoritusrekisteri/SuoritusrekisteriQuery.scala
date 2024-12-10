@@ -15,19 +15,17 @@ import java.time.LocalDateTime
 import scala.concurrent.duration.DurationInt
 
 trait SuoritusrekisteriQuery extends MassaluovutusQueryParameters with Logging {
-  def getOpiskeluoikeusIds(db: DB): Seq[(Int, Timestamp, String)]
+  def getOpiskeluoikeusIds(db: DB): Seq[(Int, Timestamp)]
 
   override def priority: Int = MassaluovutusQueryPriority.high
 
   override def run(application: KoskiApplication, writer: QueryResultWriter)(implicit user: KoskiSpecificSession): Either[String, Unit] = {
-    val opiskeluoikeudetResult = getOpiskeluoikeusIds(application.masterDatabase.db)
-    val oppijaOidit = opiskeluoikeudetResult.groupBy(_._3)
-
-    writer.predictFileCount(oppijaOidit.size)
-    oppijaOidit.grouped(100).foreach { groupedResult =>
-      val db = selectDbByLag(application, groupedResult.head._2.head._2)
-      groupedResult.foreach { case (oppija_oid, opiskeluoikeudet) =>
-        opiskeluoikeudet.map(oo => getOpiskeluoikeus(application, db, oo._1)).foreach {
+    val opiskeluoikeudet = getOpiskeluoikeusIds(application.masterDatabase.db)
+    writer.predictFileCount(opiskeluoikeudet.size)
+    opiskeluoikeudet.grouped(100).foreach { groupedOpiskeluoikeudet =>
+      val db = selectDbByLag(application, groupedOpiskeluoikeudet.head._2)
+      groupedOpiskeluoikeudet.foreach { case (oid, _) =>
+        getOpiskeluoikeus(application, db, oid) match {
           case Some(response) =>
             val ooTyyppi = response.opiskeluoikeus.tyyppi.koodiarvo
             val ptsTyyppi = response.opiskeluoikeus.suoritukset.map(_.tyyppi.koodiarvo).mkString("-")

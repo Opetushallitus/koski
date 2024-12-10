@@ -20,17 +20,20 @@ case class SuoritusrekisteriOppijaOidsQuery(
   @Description("Lista oppijoiden oideista, joiden tiedot haetaan")
   oppijaOids: Seq[String],
 ) extends SuoritusrekisteriQuery {
-  def getOpiskeluoikeusIds(db: DB): Seq[(Int, Timestamp, String)] = {
+  def getOpiskeluoikeusIds(db: DB): Seq[(Int, Timestamp)] = {
     QueryMethods.runDbSync(
       db,
       sql"""
-        SELECT opiskeluoikeus.id, opiskeluoikeus.aikaleima, coalesce(henkilo.master_oid, henkilo.oid) as oid
+        SELECT id, aikaleima
         FROM opiskeluoikeus
-        JOIN henkilo ON henkilo.oid = opiskeluoikeus.oppija_oid
         WHERE
-          (henkilo.oid = any($oppijaOids) OR
-          henkilo.master_oid = any($oppijaOids))
+          opiskeluoikeus.oppija_oid = any($oppijaOids) OR
+          opiskeluoikeus.oppija_oid IN (
+            SELECT oid
+            FROM henkilo
+            WHERE master_oid = any($oppijaOids)
+          )
           AND koulutusmuoto = any(${SuoritusrekisteriQuery.opiskeluoikeudenTyypit})
-      """.as[(Int, Timestamp, String)])
+      """.as[(Int, Timestamp)])
   }
 }
