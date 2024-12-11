@@ -21,7 +21,7 @@ import { nonNull } from '../../util/fp/arrays'
 import { pluck } from '../../util/fp/objects'
 import { koodistokoodiviiteId } from '../../util/koodisto'
 import { clamp, sum } from '../../util/numbers'
-import { textSearch } from '../../util/strings'
+import { coerceForSort, textSearch } from '../../util/strings'
 import { CommonProps, common, cx } from '../CommonProps'
 import { Removable } from './Removable'
 import { Spinner } from '../texts/Spinner'
@@ -317,7 +317,7 @@ const useSelectState = <T,>(props: SelectProps<T>) => {
     const opts =
       filter === '' || filter === null
         ? props.options
-        : filterOptions(props.options, filter)
+        : queryOptions(props.options, filter)
     // Remove one level of grouping if only one group is present
     return opts.length === 1 && opts[0].isGroup ? opts[0].children || [] : opts
   }, [filter, props.options])
@@ -427,6 +427,15 @@ const useSelectState = <T,>(props: SelectProps<T>) => {
 
 // Exported utils
 
+export const regroupKoodisto = <T extends string>(
+  koodit: KoodistokoodiviiteKoodistonNimellä<T>[],
+  getGroup: (k: KoodistokoodiviiteKoodistonNimellä<T>) => string | null
+) =>
+  koodit.flatMap((k) => {
+    const group = getGroup(k)
+    return group === null ? [] : [{ ...k, koodistoNimi: group }]
+  })
+
 export const groupKoodistoToOptions = <T extends string>(
   koodit: KoodistokoodiviiteKoodistonNimellä<T>[],
   ords?: Array<Ord.Ord<KoodistokoodiviiteKoodistonNimellä>>,
@@ -463,12 +472,40 @@ export const perusteToOption = (peruste: Peruste): SelectOption<Peruste> => ({
   label: [peruste.koodiarvo, t(peruste.nimi)].filter(nonNull).join(' ')
 })
 
-export const SelectOptionOrd = Ord.contramap((o: SelectOption<any>) => o.label)(
-  string.Ord
-)
+export const SelectOptionOrd = Ord.contramap((o: SelectOption<any>) =>
+  coerceForSort(o.label)
+)(string.Ord)
 
-export const sortOptions = <T,>(options: Array<SelectOption<T>>) =>
-  A.sort(SelectOptionOrd)(options)
+export const sortOptions = <T,>(
+  options: Array<SelectOption<T>>
+): Array<SelectOption<T>> =>
+  pipe(
+    options,
+    A.sort(SelectOptionOrd),
+    A.map((o) => ({
+      ...o,
+      children: o.children && sortOptions(o.children)
+    }))
+  )
+
+export const mapOptions =
+  <T, S>(f: (o: SelectOption<T>) => SelectOption<S>) =>
+  (options: Array<SelectOption<T>>): Array<SelectOption<S>> =>
+    options.map((o) => ({
+      ...f(o),
+      children: o.children && mapOptions(f)(o.children)
+    }))
+
+export const mapOptionLabels = <T,>(f: (o: SelectOption<T>) => string) =>
+  mapOptions((o: SelectOption<T>) => ({ ...o, label: f(o) }))
+
+export const filterOptions =
+  <T,>(f: (o: SelectOption<T>) => boolean) =>
+  (options: Array<SelectOption<T>>): Array<SelectOption<T>> =>
+    options.flatMap((o) => {
+      const children = o.children && filterOptions(f)(o.children)
+      return (children?.length || 0) > 0 || f(o) ? [{ ...o, children }] : []
+    })
 
 // Internal utils
 
@@ -494,7 +531,7 @@ const flattenOptions = <T,>(options: OptionList<T>): FlatOptionList<T> => {
   return { arr: options.flatMap(flatten) }
 }
 
-const filterOptions = <T,>(
+const queryOptions = <T,>(
   options: OptionList<T>,
   query: string
 ): OptionList<T> => {

@@ -1,6 +1,9 @@
 import React, { useMemo } from 'react'
 import { useSchema } from '../../appstate/constraints'
-import { useKoodistoOfConstraint } from '../../appstate/koodisto'
+import {
+  useKoodistoOfConstraint,
+  useKoodistotOfConstraints
+} from '../../appstate/koodisto'
 import { TestIdText } from '../../appstate/useTestId'
 import { t } from '../../i18n/i18n'
 import { Arviointi } from '../../types/fi/oph/koski/schema/Arviointi'
@@ -14,9 +17,12 @@ import {
   OptionList,
   Select,
   SelectOption,
-  groupKoodistoToOptions
+  groupKoodistoToOptions,
+  mapOptionLabels,
+  sortOptions
 } from '../controls/Select'
 import { FieldEditorProps, FieldViewerProps } from '../forms/FormField'
+import { identity, pipe } from 'fp-ts/lib/function'
 
 type ArvosanaOf<T extends Arviointi> = T['arvosana']
 
@@ -50,6 +56,8 @@ export type ArvosanaEditProps<T extends Arviointi> = CommonProps<
 > & {
   createArviointi: (arvosana: ArvosanaOf<T>) => T
   disabled?: boolean
+  arviointiClass?: string
+  format?: (arvosana: ArvosanaOf<T>) => string
 }
 
 export const ArvosanaEdit = <T extends Arviointi>(
@@ -58,16 +66,24 @@ export const ArvosanaEdit = <T extends Arviointi>(
   const { createArviointi } = props
   const schemaClass = useMemo(
     // @ts-ignore - koska value ja initialValue voivat olla tyhjiä, saadaan $class varmuudella selvitettyä syöttämällä createArviointi-callbackille tyhjä arvosana
-    () => schemaClassName(createArviointi(null).$class),
-    [createArviointi]
+    () => schemaClassName(props.arviointiClass || createArviointi(null).$class),
+    [createArviointi, props.arviointiClass]
   )
   const arviointiSchema = useSchema(schemaClass)
-  const koodisto = useKoodistoOfConstraint(
-    C.singular(C.prop('arvosana')(arviointiSchema))
+  const koodisto = useKoodistotOfConstraints(
+    C.prop('arvosana')(arviointiSchema)
   )
   const groupedKoodisto = useMemo(
-    () => koodisto && groupKoodistoToOptions(koodisto),
-    [koodisto]
+    () =>
+      koodisto &&
+      pipe(
+        groupKoodistoToOptions(koodisto),
+        mapOptionLabels((o) =>
+          o.value && props.format ? props.format(o.value as any) : o.label
+        ),
+        sortOptions
+      ),
+    [koodisto, props]
   )
 
   const initialValue =
