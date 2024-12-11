@@ -1179,6 +1179,15 @@ sealed trait Schema {
     sqlu"CREATE INDEX ON #${name}.r_opiskeluoikeus_aikajakso(loppu, alku, opiskeluoikeus_oid)",
     sqlu"CREATE INDEX ON #${name}.r_opiskeluoikeus_aikajakso(oikeutta_maksuttomuuteen_pidennetty)",
 
+    sqlu"CREATE INDEX ON #${name}.r_aikajakso(opiskeluoikeus_oid, aikajakso_tyyppi, alku, loppu)",
+    sqlu"CREATE INDEX ON #${name}.r_aikajakso(aikajakso_tyyppi)",
+
+    sqlu"CREATE INDEX ON #${name}.r_koulutuksen_jarjestamismuoto_ammatillinen(opiskeluoikeus_oid, aikajakso_tyyppi, alku, loppu)",
+    sqlu"CREATE INDEX ON #${name}.r_koulutuksen_jarjestamismuoto_ammatillinen(aikajakso_tyyppi)",
+
+    sqlu"CREATE INDEX ON #${name}.r_osaamisen_hankkimistavat_ammatillinen(opiskeluoikeus_oid, aikajakso_tyyppi, alku, loppu)",
+    sqlu"CREATE INDEX ON #${name}.r_osaamisen_hankkimistavat_ammatillinen(aikajakso_tyyppi)",
+
     sqlu"CREATE UNIQUE INDEX ON #${name}.r_paatason_suoritus(paatason_suoritus_id)",
     sqlu"CREATE INDEX ON #${name}.r_paatason_suoritus(opiskeluoikeus_oid, suorituksen_tyyppi, koulutusmoduuli_koulutustyyppi)",
     sqlu"CREATE INDEX ON #${name}.r_paatason_suoritus(suorituksen_tyyppi)",
@@ -1231,6 +1240,9 @@ sealed trait Schema {
       #${name}.r_opiskeluoikeus,
       #${name}.r_organisaatiohistoria,
       #${name}.r_opiskeluoikeus_aikajakso,
+      #${name}.r_aikajakso,
+      #${name}.r_koulutuksen_jarjestamismuoto_ammatillinen,
+      #${name}.r_osaamisen_hankkimistavat_ammatillinen,
       #${name}.r_paatason_suoritus,
       #${name}.r_osasuoritus,
       #${name}.r_organisaatio,
