@@ -1490,7 +1490,7 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
 
     "Siirtyminen uudempiin perusteisiin" - {
       "Tietoa ei voi siirtää, jos opiskeluoikeus ei ole terminaalitilassa" in {
-        val lisätiedot = AmmatillisenOpiskeluoikeudenLisätiedot(siirtynytTutkinnonUusiinPerusteisiin = Some(true))
+        val lisätiedot = AmmatillisenOpiskeluoikeudenLisätiedot(siirtynytUusiinTutkinnonPerusteisiin = Some(true))
         val opiskeluoikeus = defaultOpiskeluoikeus.copy(
           lisätiedot = Some(lisätiedot),
           tila = AmmatillinenOpiskeluoikeudenTila(List(
@@ -1498,12 +1498,12 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
           )),
         )
         setupOppijaWithOpiskeluoikeus(opiskeluoikeus) {
-          verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.eiPäättävääTilaa("Opiskeluoikeudella, jonka lisätiedoissa on merkintä 'siirtynyt tutkinnon uusiin perusteisiin', pitää päättyä tilaan 'katsotaan eronneeksi'."))
+          verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.eiPäättävääTilaa("Opiskeluoikeudella, jonka lisätiedoissa on merkintä 'siirtynyt uusiin tutkinnon perusteisiin', pitää päättyä tilaan 'katsotaan eronneeksi'."))
         }
       }
 
       "Tiedon voi siirtää, jos opiskeluoikeus on päättynyt 'katsotaan eronneeksi' -tilaan" in {
-        val lisätiedot = AmmatillisenOpiskeluoikeudenLisätiedot(siirtynytTutkinnonUusiinPerusteisiin = Some(true))
+        val lisätiedot = AmmatillisenOpiskeluoikeudenLisätiedot(siirtynytUusiinTutkinnonPerusteisiin = Some(true))
         val opiskeluoikeus = AmmatillinenOpiskeluoikeusTestData.katsotaanEronneeksiOpiskeluoikeus(
           oppilaitosId = MockOrganisaatiot.stadinAmmattiopisto,
         )

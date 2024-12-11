@@ -1,13 +1,13 @@
 # Koskeen tallennettavien tietojen validaatiosäännöt
 
+## 11.12.2024
+
+- Estetään siirtynytUusiinTutkinnonPerusteisiin -kentän siirto ammatillisen opiskeluoikeuden lisätietoihin, jos opiskeluoikeus ei ole päättyvässä tilassa.
+
 ## xx.11.2024
 
 - Estetään uuden kaikille opikeluoikeuksille lisätyn kentän `lähdejärjestelmäkytkentäPurettu` lisääminen tai sen sisällön muokkaaminen tiedonsiirron kautta.
 - Estetään opiskeluoikeuden päivitys tiedonsiirron kautta, jos sen lähdejärjestelmäkytkentä on purettu.
-
-## 26.11.2024
-
-- Estetään siirtynytTutkinnonUusiinPerusteisiin -kentän siirto ammatillisen opiskeluoikeuden lisätietoihin, jos opiskeluoikeus ei ole päättyvässä tilassa.
 
 ## 14.11.2024
 

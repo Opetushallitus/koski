@@ -116,7 +116,7 @@ case class AmmatillisenOpiskeluoikeudenLisätiedot(
   oikeuttaMaksuttomuuteenPidennetty: Option[List[OikeuttaMaksuttomuuteenPidennetty]] = None,
   jotpaAsianumero: Option[Koodistokoodiviite] = None,
   @Description("Onko opiskeluoikeuden päättymisen syy siirtyminen tutkinnon uusiin perusteisiin.")
-  siirtynytTutkinnonUusiinPerusteisiin: Option[Boolean] = None,
+  siirtynytUusiinTutkinnonPerusteisiin: Option[Boolean] = None,
 ) extends OpiskeluoikeudenLisätiedot
   with Ulkomaanjaksollinen
   with SisäoppilaitosmainenMajoitus
