@@ -65,6 +65,9 @@ class RaportointiDatabase(config: RaportointiDatabaseConfigBase) extends Logging
     RYtrKokeenSuoritukset,
     RYtrTutkintokokonaisuudenKokeenSuoritukset,
     RKotikuntahistoria,
+    RAikajakso,
+    RAmmatillisenKoulutuksenJarjestamismuotoAikajakso,
+    ROsaamisenHankkimistapaAikajakso
   )
 
   def vacuumAnalyze(): Unit = {
@@ -651,6 +654,27 @@ class RaportointiDatabase(config: RaportointiDatabaseConfigBase) extends Logging
     case Temp => TableQuery[RKotikuntahistoriaTableTemp]
     case Confidential => TableQuery[RKotikuntahistoriaConfidentialTable]
     case TempConfidential => TableQuery[RKotikuntahistoriaConfidentialTableTemp]
+  }
+
+  lazy val RAikajakso = schema match {
+    case Public => TableQuery[RAikajaksoTable]
+    case Temp => TableQuery[RAikajaksoTableTemp]
+    case Confidential => TableQuery[RAikajaksoConfidentialTable]
+    case TempConfidential => TableQuery[RAikajaksoConfidentialTableTemp]
+  }
+
+  lazy val RAmmatillisenKoulutuksenJarjestamismuotoAikajakso = schema match {
+    case Public => TableQuery[RAmmatillisenKoulutuksenJarjestamismuotoAikajaksoTable]
+    case Temp => TableQuery[RAmmatillisenKoulutuksenJarjestamismuotoAikajaksoTableTemp]
+    case Confidential => TableQuery[RAmmatillisenKoulutuksenJarjestamismuotoAikajaksoConfidentialTable]
+    case TempConfidential => TableQuery[RAmmatillisenKoulutuksenJarjestamismuotoAikajaksoConfidentialTableTemp]
+  }
+
+  lazy val ROsaamisenHankkimistapaAikajakso = schema match {
+    case Public => TableQuery[ROsaamisenHankkimistapaAikajaksoTable]
+    case Temp => TableQuery[ROsaamisenHankkimistapaAikajaksoTableTemp]
+    case Confidential => TableQuery[ROsaamisenHankkimistapaAikajaksoConfidentialTable]
+    case TempConfidential => TableQuery[ROsaamisenHankkimistapaAikajaksoConfidentialTableTemp]
   }
 }
 
