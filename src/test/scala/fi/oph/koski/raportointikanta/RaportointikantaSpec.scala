@@ -3,12 +3,13 @@ package fi.oph.koski.raportointikanta
 import fi.oph.koski.api.misc.{OpiskeluoikeudenMitätöintiJaPoistoTestMethods, OpiskeluoikeusTestMethodsAmmatillinen}
 import fi.oph.koski.db.KoskiTables.{KoskiOpiskeluOikeudet, PoistetutOpiskeluoikeudet, YtrOpiskeluOikeudet}
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
-import fi.oph.koski.documentation.{AmmatillinenExampleData, YleissivistavakoulutusExampleData}
+import fi.oph.koski.documentation.{AmmatillinenExampleData, ExampleData, YleissivistavakoulutusExampleData}
 import fi.oph.koski.henkilo.{KoskiSpecificMockOppijat, LaajatOppijaHenkilöTiedot}
-import fi.oph.koski.henkilo.KoskiSpecificMockOppijat.{master, masterEiKoskessa}
+import fi.oph.koski.henkilo.KoskiSpecificMockOppijat.{master, masterEiKoskessa, turvakielto}
 import fi.oph.koski.json.{JsonFiles, JsonSerializer}
 import fi.oph.koski.koskiuser.MockUsers
 import fi.oph.koski.organisaatio.{MockOrganisaatiot, Organisaatiotyyppi}
+import fi.oph.koski.raportointikanta.AikajaksoRowBuilder.{AmmatillisenKoulutuksenJarjestamismuotoAikajakso, AikajaksoTyyppi}
 import fi.oph.koski.schema.KoskiSchema.strictDeserialization
 import fi.oph.koski.schema._
 import fi.oph.koski.util.Wait
@@ -18,11 +19,12 @@ import fi.oph.scalaschema.{ExtractionContext, SchemaValidatingExtractor}
 import org.json4s.{DefaultFormats, JNothing, JString}
 import org.json4s.JsonAST.{JBool, JObject}
 import org.json4s.jackson.JsonMethods
+import org.scalatest.Assertion
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.should.Matchers
 
 import java.sql.{Date, Timestamp}
-import java.time.{LocalDate, ZonedDateTime}
+import java.time.LocalDate
 
 class RaportointikantaSpec
   extends AnyFreeSpec
@@ -621,6 +623,41 @@ class RaportointikantaSpec
           ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2016-04-01"), Date.valueOf("2016-04-30"), "lasna", Date.valueOf("2016-01-15"), vaativanErityisenTuenYhteydessäJärjestettäväMajoitus = true),
           ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2016-05-01"), Date.valueOf(AikajaksoRowBuilder.IndefiniteFuture), "lasna", Date.valueOf("2016-01-15"))
         ))
+      }
+      "Ammatillisen opiskeluoikeuden järjestämismuodot" in {
+        val opiskeluoikeus = ammatillinenOpiskeluoikeus.copy()
+        val aikajaksoRows = AikajaksoRowBuilder.buildAmmatillisenKoulutuksenJarjestamismuotoAikajaksoRows(oid, opiskeluoikeus)
+        aikajaksoRows.length should equal(1)
+        aikajaksoRows should equal(
+          Seq(
+            RAmmatillisenKoulutuksenJarjestamismuotoAikajaksoRow(
+              "1.2.246.562.15.123456",
+              AmmatillisenKoulutuksenJarjestamismuotoAikajakso.koulutuksenJärjestäminenOppilaitosMuotoisena,
+              Date.valueOf("2013-09-01"),
+              None,
+              None,
+              None,
+              None
+            )
+          )
+        )
+      }
+      "Geneeriset aikajaksot" - {
+        "Ulkomaanjaksot" in {
+          val alku = LocalDate.parse("2022-01-01")
+          val loppu = LocalDate.parse("2023-01-01")
+          val opiskeluoikeus = ammatillinenOpiskeluoikeus.copy(lisätiedot = Some(
+            AmmatillisenOpiskeluoikeudenLisätiedot(
+              hojks = Some(Hojks(Koodistokoodiviite("valmistunut", "koskiopiskeluoikeudentila"), None, None)),
+              ulkomaanjaksot = Some(List(Ulkomaanjakso(alku = alku, loppu = Some(loppu), maa = ExampleData.suomi, kuvaus = LocalizedString.finnish("Foo bar"))))
+            )
+          ))
+          val aikajaksoRows = AikajaksoRowBuilder.buildAikajaksoRows(oid, opiskeluoikeus)
+          aikajaksoRows.length should equal(1)
+          aikajaksoRows should equal(
+            Seq(RAikajaksoRow(opiskeluoikeus.oid.get, AikajaksoTyyppi.ulkomaanjakso, Date.valueOf(alku), Some(Date.valueOf(loppu))))
+          )
+        }
       }
       "Ammatillisen opiskeluoikeuden lisätiedot, hojks" - {
         "Ei alku/loppupäivää" in {
