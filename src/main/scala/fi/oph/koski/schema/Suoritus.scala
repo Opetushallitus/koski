@@ -285,3 +285,11 @@ trait Korotuksellinen extends Suoritus with MahdollisestiTunnustettu {
   @KoodistoUri("ammatillisensuorituksenkorotus")
   def korotettu: Option[Koodistokoodiviite]
 }
+
+trait Luokallinen {
+  def luokka: String
+}
+
+trait MahdollisestiLuokallinen {
+  def luokka: Option[String]
+}

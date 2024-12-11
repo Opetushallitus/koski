@@ -386,8 +386,29 @@ object OpiskeluoikeusLoaderRowBuilder extends Logging {
       toimipisteOid = toimipiste.oid,
       toimipisteNimi = convertLocalizedString(toimipiste.nimi, "fi"),
       toimipisteNimiSv = convertLocalizedString(toimipiste.nimi, "sv"),
-      data = JsonManipulation.removeFields(data, fieldsToExcludeFromPäätasonSuoritusJson),
-      sisältyyOpiskeluoikeuteenOid = sisältyyOpiskeluoikeuteenOid
+      sisältyyOpiskeluoikeuteenOid = sisältyyOpiskeluoikeuteenOid,
+      tutkintonimike = ps match {
+        case s: Tutkintonimikkeellinen => s.tutkintonimike match {
+          case Some(a) => Some(a.map(tn => convertLocalizedString(tn.nimi, "fi")).mkString(", "))
+          case None => None
+        }
+        case _ => None
+      },
+      luokkaTaiRyhmä = ps match {
+        case l: Luokallinen => Some(l.luokka)
+        case l: MahdollisestiLuokallinen => l.luokka
+        case r: Ryhmällinen => r.ryhmä
+        case _ => None
+      },
+      perusteenDiaarinumero = ps.koulutusmoduuli match {
+        case d: Diaarinumerollinen => d.perusteenDiaarinumero
+        case _ => None
+      },
+      jääLuokalle = ps match {
+        case l: LuokalleJääntiTiedonSisältäväSuoritus => Some(l.jääLuokalle)
+        case _ => None
+      },
+      data = JsonManipulation.removeFields(data, fieldsToExcludeFromPäätasonSuoritusJson)
     )
     päätaso
   }

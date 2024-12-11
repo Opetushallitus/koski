@@ -847,6 +847,31 @@ class RaportointikantaSpec
         ps.toimipisteNimi should equal(AmmatillinenExampleData.stadinToimipiste.nimi.get.get("fi"))
       }
 
+      "Päätason suorituksen tutkintonimike haetaan oikein" in {
+        val suoritus = ammatillinenOpiskeluoikeus.suoritukset.head.asInstanceOf[AmmatillisenTutkinnonSuoritus].copy(
+          toimipiste = AmmatillinenExampleData.stadinToimipiste,
+          osasuoritukset = None
+        )
+        val opiskeluoikeus = ammatillinenOpiskeluoikeus.copy(
+          suoritukset = List(suoritus)
+        )
+        val (ps, _, _, _) = OpiskeluoikeusLoaderRowBuilder.buildKoskiSuoritusRows(oid, None, opiskeluoikeus.oppilaitos.get, opiskeluoikeus.suoritukset.head, JObject(), 1)
+        ps.tutkintonimike should equal(Some("Ympäristönhoitaja"))
+      }
+
+      "Päätason suorituksen luokka ja ryhmä haetaan oikein" in {
+        val suoritus = ammatillinenOpiskeluoikeus.suoritukset.head.asInstanceOf[AmmatillisenTutkinnonSuoritus].copy(
+          toimipiste = AmmatillinenExampleData.stadinToimipiste,
+          osasuoritukset = None
+        )
+        val opiskeluoikeus = ammatillinenOpiskeluoikeus.copy(
+          suoritukset = List(suoritus)
+        )
+        val (ps, _, _, _) = OpiskeluoikeusLoaderRowBuilder.buildKoskiSuoritusRows(oid, None, opiskeluoikeus.oppilaitos.get, opiskeluoikeus.suoritukset.head, JObject(), 1)
+        ps.luokkaTaiRyhmä should equal(Some("YMP14SN"))
+      }
+
+
       "Päätason suorituksella on alkamispäivä" in {
         val suoritus = ammatillinenOpiskeluoikeus.suoritukset.head.asInstanceOf[AmmatillisenTutkinnonSuoritus].copy(
           osasuoritukset = None,
