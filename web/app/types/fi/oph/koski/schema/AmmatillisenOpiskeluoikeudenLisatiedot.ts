@@ -28,6 +28,7 @@ export type AmmatillisenOpiskeluoikeudenLisätiedot = {
   vankilaopetuksessa?: Array<Aikajakso>
   henkilöstökoulutus: boolean
   erityinenTuki?: Array<Aikajakso>
+  siirtynytTutkinnonUusiinPerusteisiin?: boolean
   koulutusvienti: boolean
   opiskeluvalmiuksiaTukevatOpinnot?: Array<OpiskeluvalmiuksiaTukevienOpintojenJakso>
   jotpaAsianumero?: Koodistokoodiviite<'jotpaasianumero', string>
@@ -50,6 +51,7 @@ export const AmmatillisenOpiskeluoikeudenLisätiedot = (
     vankilaopetuksessa?: Array<Aikajakso>
     henkilöstökoulutus?: boolean
     erityinenTuki?: Array<Aikajakso>
+    siirtynytTutkinnonUusiinPerusteisiin?: boolean
     koulutusvienti?: boolean
     opiskeluvalmiuksiaTukevatOpinnot?: Array<OpiskeluvalmiuksiaTukevienOpintojenJakso>
     jotpaAsianumero?: Koodistokoodiviite<'jotpaasianumero', string>

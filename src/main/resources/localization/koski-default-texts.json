@@ -2759,5 +2759,7 @@
   "MuksRaportti-example": "Jos haluat tulostaa raportin tietylle päivälle, syötä sekä aikajakson alku- että loppupäivämääräkenttään sama päivämäärä.",
   "raportti-excel-muks-title": "Muu kuin säännelty koulutus",
   "raportti-excel-must-tiedoston-etuliite": "muks_suoritustiedot",
-  "raportti-excel-kolumni-yhteislaajuusKaikkiTuntia": "Yhteislaajuus (tuntia)"
+  "raportti-excel-kolumni-yhteislaajuusKaikkiTuntia": "Yhteislaajuus (tuntia)",
+  "Siirtynyt tutkinnon uusiin perusteisiin" : "Siirtynyt tutkinnon uusiin perusteisiin",
+  "description:Onko opiskeluoikeuden päättymisen syy siirtyminen..." : "Onko opiskeluoikeuden päättymisen syy siirtyminen tutkinnon uusiin perusteisiin."
 }
