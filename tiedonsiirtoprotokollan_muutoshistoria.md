@@ -1,10 +1,10 @@
+## 11.12.2024
+
+- Lisätty ammatillisen opiskeluoikeuden lisätietoihin uusi kenttä `siirtynytUusiinTutkinnonPerusteisiin`, joka ilmaisee opiskeluoikeuden päättymisen syyksi siirtymisen uudempiin perusteisiin.
+
 ## xx.11.2024
 
 - Lisätty kaikille opiskeluoikeuksille uusi kenttä `lähdejärjestelmäkytkentäPurettu`, joka ilmaisee että opiskeluoikeudelta on poistettu lähdejärjestelmätunniste, jotta sitä voidaan muokata KOSKI-käyttöliittymällä.
-
-## 26.11.2024
-
-- Lisätty ammatillisen opiskeluoikeuden lisätietoihin uusi kenttä `siirtynytTutkinnonUusiinPerusteisiin`, joka ilmaisee opiskeluoikeuden päättymisen syyksi siirtymisen uudempiin perusteisiin.
 
 ## 6.11.2024
 

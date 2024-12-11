@@ -401,11 +401,11 @@ object AmmatillinenValidation {
     })
 
   private def validateTutkinnonUusiinPerusteisiinSiirtyminen(oo: AmmatillinenOpiskeluoikeus): HttpStatus = {
-    val siirtynytTutkinnonUusiinPerusteisiin = oo.lisätiedot.exists(_.siirtynytTutkinnonUusiinPerusteisiin.contains(true))
+    val siirtynytUusiinTutkinnonPerusteisiin = oo.lisätiedot.exists(_.siirtynytUusiinTutkinnonPerusteisiin.contains(true))
     val katsotaanEronneeksi = oo.tila.opiskeluoikeusjaksot.exists(_.tila.koodiarvo == "katsotaaneronneeksi")
 
-    HttpStatus.validate(!siirtynytTutkinnonUusiinPerusteisiin || katsotaanEronneeksi) {
-      KoskiErrorCategory.badRequest.validation.tila.eiPäättävääTilaa("Opiskeluoikeudella, jonka lisätiedoissa on merkintä 'siirtynyt tutkinnon uusiin perusteisiin', pitää päättyä tilaan 'katsotaan eronneeksi'.")
+    HttpStatus.validate(!siirtynytUusiinTutkinnonPerusteisiin || katsotaanEronneeksi) {
+      KoskiErrorCategory.badRequest.validation.tila.eiPäättävääTilaa("Opiskeluoikeudella, jonka lisätiedoissa on merkintä 'siirtynyt uusiin tutkinnon perusteisiin', pitää päättyä tilaan 'katsotaan eronneeksi'.")
     }
   }
 }
