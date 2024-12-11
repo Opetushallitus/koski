@@ -222,7 +222,10 @@ class RaportointiDatabase(config: RaportointiDatabaseConfigBase) extends Logging
       Kloonaus("r_osasuoritus", List("osasuoritus_id")),
       Kloonaus("muu_ammatillinen_raportointi"),
       Kloonaus("topks_ammatillinen_raportointi"),
-      Kloonaus("r_mitatoitu_opiskeluoikeus", List("opiskeluoikeus_oid"))
+      Kloonaus("r_mitatoitu_opiskeluoikeus", List("opiskeluoikeus_oid")),
+      Kloonaus("r_aikajakso"),
+      Kloonaus("r_koulutuksen_jarjestamismuoto_ammatillinen"),
+      Kloonaus("r_osaamisen_hankkimistavat_ammatillinen")
     ) ++ (if (enableYtr) {
       List(
         Kloonaus("r_ytr_tutkintokokonaisuuden_suoritus", List("ytr_tutkintokokonaisuuden_suoritus_id")),
