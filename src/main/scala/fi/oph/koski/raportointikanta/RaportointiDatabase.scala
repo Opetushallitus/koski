@@ -28,7 +28,7 @@ object RaportointiDatabase {
   // Jälkimmäinen arvo on skeemasta laskettu tunniste (kts. QueryMethods::getSchemaHash).
   // Testi nimeltä "Schema version has been updated" tarkastaa että versionumeroa päivitetään skeemamuutosten
   // myötä.
-  def schemaVersion: (Int, String) = (16, "0d358ffbd7efa9e7aab3a5c8b1e9d0cc")
+  def schemaVersion: (Int, String) = (17, "a89ce6cde76f6c9a234e29e1f84e4f32")
 }
 
 class RaportointiDatabase(config: RaportointiDatabaseConfigBase) extends Logging with QueryMethods {
@@ -65,6 +65,9 @@ class RaportointiDatabase(config: RaportointiDatabaseConfigBase) extends Logging
     RYtrKokeenSuoritukset,
     RYtrTutkintokokonaisuudenKokeenSuoritukset,
     RKotikuntahistoria,
+    RAikajakso,
+    RAmmatillisenKoulutuksenJarjestamismuotoAikajakso,
+    ROsaamisenHankkimistapaAikajakso
   )
 
   def vacuumAnalyze(): Unit = {
@@ -219,7 +222,10 @@ class RaportointiDatabase(config: RaportointiDatabaseConfigBase) extends Logging
       Kloonaus("r_osasuoritus", List("osasuoritus_id")),
       Kloonaus("muu_ammatillinen_raportointi"),
       Kloonaus("topks_ammatillinen_raportointi"),
-      Kloonaus("r_mitatoitu_opiskeluoikeus", List("opiskeluoikeus_oid"))
+      Kloonaus("r_mitatoitu_opiskeluoikeus", List("opiskeluoikeus_oid")),
+      Kloonaus("r_aikajakso"),
+      Kloonaus("r_koulutuksen_jarjestamismuoto_ammatillinen"),
+      Kloonaus("r_osaamisen_hankkimistapa_ammatillinen")
     ) ++ (if (enableYtr) {
       List(
         Kloonaus("r_ytr_tutkintokokonaisuuden_suoritus", List("ytr_tutkintokokonaisuuden_suoritus_id")),
@@ -325,6 +331,36 @@ class RaportointiDatabase(config: RaportointiDatabaseConfigBase) extends Logging
     runDbSync(ROpiskeluoikeusAikajaksot.filter(_.opiskeluoikeusOid inSet opiskeluoikeusOids).delete, timeout = 5.minutes)
     runDbSync(ROpiskeluoikeusAikajaksot ++= jaksot, timeout = 5.minutes)
   }
+
+  def loadAikajaksot(jaksot: Seq[RAikajaksoRow]): Unit =
+    runDbSync(RAikajakso ++= jaksot)
+
+  def updateAikajaksot(jaksot: Seq[RAikajaksoRow]): Unit = {
+    val opiskeluoikeusOids = jaksot.map(_.opiskeluoikeusOid).toSet
+    runDbSync(RAikajakso.filter(_.opiskeluoikeusOid inSet opiskeluoikeusOids).delete, timeout = 5.minutes)
+    runDbSync(RAikajakso ++= jaksot, timeout = 5.minutes)
+  }
+
+  def loadAmmatillisenKoulutuksenJarjestamismuotoAikajaksot(jaksot: Seq[RAmmatillisenKoulutuksenJarjestamismuotoAikajaksoRow]): Unit = {
+    runDbSync(RAmmatillisenKoulutuksenJarjestamismuotoAikajakso ++= jaksot)
+  }
+
+  def updateAmmatillisenKoulutuksenJarjestamismuotoAikajaksot(jaksot: Seq[RAmmatillisenKoulutuksenJarjestamismuotoAikajaksoRow]): Unit = {
+    val opiskeluoikeusOids = jaksot.map(_.opiskeluoikeusOid).toSet
+    runDbSync(RAmmatillisenKoulutuksenJarjestamismuotoAikajakso.filter(_.opiskeluoikeusOid inSet opiskeluoikeusOids).delete, timeout = 5.minutes)
+    runDbSync(RAmmatillisenKoulutuksenJarjestamismuotoAikajakso ++= jaksot, timeout = 5.minutes)
+  }
+
+  def loadOsaamisenHankkimistapaAikajaksoRows(jaksot: Seq[ROsaamisenhankkimistapaAikajaksoRow]): Unit = {
+    runDbSync(ROsaamisenHankkimistapaAikajakso ++= jaksot)
+  }
+
+  def updateOsaamisenHankkimistapaAikajaksoRows(jaksot: Seq[ROsaamisenhankkimistapaAikajaksoRow]): Unit = {
+    val opiskeluoikeusOids = jaksot.map(_.opiskeluoikeusOid).toSet
+    runDbSync(ROsaamisenHankkimistapaAikajakso.filter(_.opiskeluoikeusOid inSet opiskeluoikeusOids).delete, timeout = 5.minutes)
+    runDbSync(ROsaamisenHankkimistapaAikajakso ++= jaksot, timeout = 5.minutes)
+  }
+
 
   def loadEsiopetusOpiskeluoikeusAikajaksot(jaksot: Seq[EsiopetusOpiskeluoikeusAikajaksoRow]): Unit =
     runDbSync(EsiopetusOpiskeluoikeusAikajaksot ++= jaksot)
@@ -651,6 +687,27 @@ class RaportointiDatabase(config: RaportointiDatabaseConfigBase) extends Logging
     case Temp => TableQuery[RKotikuntahistoriaTableTemp]
     case Confidential => TableQuery[RKotikuntahistoriaConfidentialTable]
     case TempConfidential => TableQuery[RKotikuntahistoriaConfidentialTableTemp]
+  }
+
+  lazy val RAikajakso = schema match {
+    case Public => TableQuery[RAikajaksoTable]
+    case Temp => TableQuery[RAikajaksoTableTemp]
+    case Confidential => TableQuery[RAikajaksoConfidentialTable]
+    case TempConfidential => TableQuery[RAikajaksoConfidentialTableTemp]
+  }
+
+  lazy val RAmmatillisenKoulutuksenJarjestamismuotoAikajakso = schema match {
+    case Public => TableQuery[RAmmatillisenKoulutuksenJarjestamismuotoAikajaksoTable]
+    case Temp => TableQuery[RAmmatillisenKoulutuksenJarjestamismuotoAikajaksoTableTemp]
+    case Confidential => TableQuery[RAmmatillisenKoulutuksenJarjestamismuotoAikajaksoConfidentialTable]
+    case TempConfidential => TableQuery[RAmmatillisenKoulutuksenJarjestamismuotoAikajaksoConfidentialTableTemp]
+  }
+
+  lazy val ROsaamisenHankkimistapaAikajakso = schema match {
+    case Public => TableQuery[ROsaamisenHankkimistapaAikajaksoTable]
+    case Temp => TableQuery[ROsaamisenHankkimistapaAikajaksoTableTemp]
+    case Confidential => TableQuery[ROsaamisenHankkimistapaAikajaksoConfidentialTable]
+    case TempConfidential => TableQuery[ROsaamisenHankkimistapaAikajaksoConfidentialTableTemp]
   }
 }
 

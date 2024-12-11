@@ -268,7 +268,7 @@ case class PerusopetuksenVuosiluokanSuoritus(
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("perusopetuksenvuosiluokka", koodistoUri = "suorituksentyyppi"),
   @Tooltip("Perusopetuksen vuosiluokkatodistuksen liitetieto (liitteenä annettu arvio käyttäytymisestä tai työskentelystä).")
   liitetiedot: Option[List[PerusopetuksenVuosiluokanSuorituksenLiite]] = None
-) extends PerusopetuksenPäätasonSuoritus with Todistus with Arvioinniton with ErityisopetuksellinenPäätasonSuoritus with LuokalleJääntiTiedonSisältäväSuoritus {
+) extends PerusopetuksenPäätasonSuoritus with Luokallinen with Todistus with Arvioinniton with ErityisopetuksellinenPäätasonSuoritus with LuokalleJääntiTiedonSisältäväSuoritus {
   def sisältääOsaAikaisenErityisopetuksen: Boolean = osaAikainenErityisopetus.getOrElse(false)
 }
 

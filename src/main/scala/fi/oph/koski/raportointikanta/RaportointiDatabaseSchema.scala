@@ -237,18 +237,26 @@ object RaportointiDatabaseSchema {
     val toimipisteOid = column[String]("toimipiste_oid", StringIdentifierType)
     val toimipisteNimi = column[String]("toimipiste_nimi")
     val toimipisteNimiSv = column[String]("toimipiste_nimi_sv")
-    val data = column[JValue]("data")
     val sisältyyOpiskeluoikeuteenOid = column[Option[String]]("sisaltyy_opiskeluoikeuteen_oid", StringIdentifierType)
+    val tutkintonimike = column[Option[String]]("tutkintonimike", StringIdentifierType)
+    val luokkaTaiRyhmä = column[Option[String]]("luokka_tai_ryhma", StringIdentifierType)
+    val perusteenDiaarinumero = column[Option[String]]("perusteen_diaarinumero", StringIdentifierType)
+    val jääLuokalle = column[Option[Boolean]]("jaa_luokalle")
+    val data = column[JValue]("data")
+
     def * = (päätasonSuoritusId :: opiskeluoikeusOid :: suorituksenTyyppi ::
       koulutusmoduuliKoodisto :: koulutusmoduuliKoodiarvo :: koulutusmoduuliKoulutustyyppi ::
       koulutusmoduuliLaajuusArvo :: koulutusmoduuliLaajuusYksikkö :: koulutusmoduuliNimi ::
       tutkinnonNimiPerusteessa :: suorituskieliKoodiarvo :: oppimääräKoodiarvo :: alkamispäivä ::
       vahvistusPäivä :: arviointiArvosanaKoodiarvo :: arviointiArvosanaKoodisto :: arviointiHyväksytty ::
-      arviointiPäivä :: toimipisteOid :: toimipisteNimi :: toimipisteNimiSv :: data :: sisältyyOpiskeluoikeuteenOid ::
+      arviointiPäivä :: toimipisteOid :: toimipisteNimi :: toimipisteNimiSv :: sisältyyOpiskeluoikeuteenOid :: tutkintonimike :: luokkaTaiRyhmä :: perusteenDiaarinumero :: jääLuokalle :: data ::
       HNil).mappedWith(Generic[RPäätasonSuoritusRow])
   }
+
   class RPäätasonSuoritusTableTemp(tag: Tag) extends RPäätasonSuoritusTable(tag, Temp)
+
   class RPäätasonSuoritusConfidentialTable(tag: Tag) extends RPäätasonSuoritusTable(tag, Confidential)
+
   class RPäätasonSuoritusConfidentialTableTemp(tag: Tag) extends RPäätasonSuoritusTable(tag, TempConfidential)
 
   class ROsasuoritusTable(tag: Tag, schema: Schema = Public) extends Table[ROsasuoritusRow](tag, schema.nameOpt, "r_osasuoritus") {
@@ -581,17 +589,97 @@ object RaportointiDatabaseSchema {
       turvakielto,
     ) <> (RKotikuntahistoriaRow.tupled, RKotikuntahistoriaRow.unapply)
   }
+
   class RKotikuntahistoriaTableTemp(tag: Tag) extends RKotikuntahistoriaTable(tag, Temp)
+
   class RKotikuntahistoriaConfidentialTable(tag: Tag) extends RKotikuntahistoriaTable(tag, Confidential)
+
   class RKotikuntahistoriaConfidentialTableTemp(tag: Tag) extends RKotikuntahistoriaTable(tag, TempConfidential)
 }
 
+class RAikajaksoTable(tag: Tag, schema: Schema = Public) extends Table[RAikajaksoRow](tag, schema.nameOpt, "r_aikajakso") {
+  val opiskeluoikeusOid = column[String]("opiskeluoikeus_oid")
+  val aikajaksoTyyppi = column[String]("aikajakso_tyyppi")
+  val alku = column[Date]("alku")
+  val loppu = column[Option[Date]]("loppu")
+
+  def * = (
+    opiskeluoikeusOid,
+    aikajaksoTyyppi,
+    alku,
+    loppu
+  ) <> (RAikajaksoRow.tupled, RAikajaksoRow.unapply)
+}
+
+class RAikajaksoTableTemp(tag: Tag) extends RAikajaksoTable(tag, Temp)
+
+class RAikajaksoConfidentialTable(tag: Tag) extends RAikajaksoTable(tag, Confidential)
+
+class RAikajaksoConfidentialTableTemp(tag: Tag) extends RAikajaksoTable(tag, TempConfidential)
+class RAmmatillisenKoulutuksenJarjestamismuotoAikajaksoTableTemp(tag: Tag) extends RAmmatillisenKoulutuksenJarjestamismuotoAikajaksoTable(tag, Temp)
+class RAmmatillisenKoulutuksenJarjestamismuotoAikajaksoConfidentialTable(tag: Tag) extends RAmmatillisenKoulutuksenJarjestamismuotoAikajaksoTable(tag, Confidential)
+class RAmmatillisenKoulutuksenJarjestamismuotoAikajaksoConfidentialTableTemp(tag: Tag) extends RAmmatillisenKoulutuksenJarjestamismuotoAikajaksoTable(tag, TempConfidential)
+class RAmmatillisenKoulutuksenJarjestamismuotoAikajaksoTable(tag: Tag, schema: Schema = Public) extends Table[RAmmatillisenKoulutuksenJarjestamismuotoAikajaksoRow](tag, schema.nameOpt, "r_koulutuksen_jarjestamismuoto_ammatillinen") {
+  val opiskeluoikeusOid = column[String]("opiskeluoikeus_oid")
+  val aikajaksoTyyppi = column[String]("aikajakso_tyyppi")
+  val alku = column[Date]("alku")
+  val loppu = column[Option[Date]]("loppu")
+  val oppisopimusOppimispaikanYTunnus = column[Option[String]]("oppisopimus_oppimispaikan_y_tunnus")
+  val oppisopimusPurkamisenPäivä = column[Option[Date]]("oppisopimus_purkamisen_paiva_purettu_koeajalla")
+  val oppisopimusPurettuKoeajalla = column[Option[Boolean]]("oppisopimus_purettu_koeajalla")
+
+  def * = (
+    opiskeluoikeusOid,
+    aikajaksoTyyppi,
+    alku,
+    loppu,
+    oppisopimusOppimispaikanYTunnus,
+    oppisopimusPurkamisenPäivä,
+    oppisopimusPurettuKoeajalla
+  ) <> (RAmmatillisenKoulutuksenJarjestamismuotoAikajaksoRow.tupled, RAmmatillisenKoulutuksenJarjestamismuotoAikajaksoRow.unapply)
+}
+
+class ROsaamisenHankkimistapaAikajaksoTable(tag: Tag, schema: Schema = Public) extends Table[ROsaamisenhankkimistapaAikajaksoRow](tag, schema.nameOpt, "r_osaamisen_hankkimistapa_ammatillinen") {
+  val opiskeluoikeusOid = column[String]("opiskeluoikeus_oid")
+  val aikajaksoTyyppi = column[String]("aikajakso_tyyppi")
+  val alku = column[Date]("alku")
+  val loppu = column[Option[Date]]("loppu")
+  val oppisopimusOppimispaikanYTunnus = column[Option[String]]("oppisopimus_oppimispaikan_y_tunnus")
+  val oppisopimusPurkamisenPäivä = column[Option[Date]]("oppisopimus_purkamisen_paiva_purettu_koeajalla")
+  val oppisopimusPurettuKoeajalla = column[Option[Boolean]]("oppisopimus_purettu_koeajalla")
+  val koulutussopimusPaikkakunta = column[Option[String]]("koulutussopimus_paikkakunta_koodiarvo")
+  val koulutussopimusMaa = column[Option[String]]("koulutussopimus_maa_koodiarvo")
+  val koulutussopimusYTunnus = column[Option[String]]("koulutussopimus_y_tunnus")
+
+  def * = (
+    opiskeluoikeusOid,
+    aikajaksoTyyppi,
+    alku,
+    loppu,
+    oppisopimusOppimispaikanYTunnus,
+    oppisopimusPurkamisenPäivä,
+    oppisopimusPurettuKoeajalla,
+    koulutussopimusPaikkakunta,
+    koulutussopimusMaa,
+    koulutussopimusYTunnus,
+  ) <> (ROsaamisenhankkimistapaAikajaksoRow.tupled, ROsaamisenhankkimistapaAikajaksoRow.unapply)
+}
+
+class ROsaamisenHankkimistapaAikajaksoTableTemp(tag: Tag) extends ROsaamisenHankkimistapaAikajaksoTable(tag, Temp)
+class ROsaamisenHankkimistapaAikajaksoConfidentialTable(tag: Tag) extends ROsaamisenHankkimistapaAikajaksoTable(tag, Confidential)
+class ROsaamisenHankkimistapaAikajaksoConfidentialTableTemp(tag: Tag) extends ROsaamisenHankkimistapaAikajaksoTable(tag, TempConfidential)
+
 trait AikajaksoRow[A] {
   def tila: String
+
   def tilaAlkanut: Date
+
   def alku: Date
+
   def loppu: Date
+
   def withTilaAlkanut(d: Date): A
+
   def withLoppu(d: Date): A
 }
 
@@ -626,132 +714,143 @@ case class ROpiskeluoikeusRow(
 }
 
 case class RMitätöityOpiskeluoikeusRow(
-  opiskeluoikeusOid: String,
-  versionumero: Int,
-  aikaleima: Timestamp,
-  oppijaOid: String,
-  mitätöity: Option[LocalDate],
-  suostumusPeruttu: Option[LocalDate],
-  tyyppi: String,
-  päätasonSuoritusTyypit: List[String],
-  oppilaitosOid: Option[String],
-  oppilaitoksenNimi: Option[String],
-  koulutustoimijaOid: Option[String],
-  koulutustoimijanNimi: Option[String],
-)
+                                        opiskeluoikeusOid: String,
+                                        versionumero: Int,
+                                        aikaleima: Timestamp,
+                                        oppijaOid: String,
+                                        mitätöity: Option[LocalDate],
+                                        suostumusPeruttu: Option[LocalDate],
+                                        tyyppi: String,
+                                        päätasonSuoritusTyypit: List[String],
+                                        oppilaitosOid: Option[String],
+                                        oppilaitoksenNimi: Option[String],
+                                        koulutustoimijaOid: Option[String],
+                                        koulutustoimijanNimi: Option[String],
+                                      )
 
 case class ROrganisaatioHistoriaRow(
-  opiskeluoikeusOid: String,
-  oppilaitosOid: Option[String],
-  koulutustoimijaOid: Option[String],
-  alku: LocalDate,
-  loppu: LocalDate
-)
+                                     opiskeluoikeusOid: String,
+                                     oppilaitosOid: Option[String],
+                                     koulutustoimijaOid: Option[String],
+                                     alku: LocalDate,
+                                     loppu: LocalDate
+                                   )
 
 case class ROpiskeluoikeusAikajaksoRow(
-  opiskeluoikeusOid: String,
-  alku: Date,
-  loppu: Date,
-  tila: String,
-  tilaAlkanut: Date,
-  opiskeluoikeusPäättynyt: Boolean = false,
-  opintojenRahoitus: Option[String] = None,
-  erityisenKoulutusTehtävänJaksoTehtäväKoodiarvo: Option[String] = None,
-  ulkomainenVaihtoopiskelija: Boolean = false,
-  majoitus: Boolean = false,
-  majoitusetu: Boolean = false,
-  kuljetusetu: Boolean = false,
-  sisäoppilaitosmainenMajoitus: Boolean = false,
-  vaativanErityisenTuenYhteydessäJärjestettäväMajoitus: Boolean = false,
-  erityinenTuki: Boolean = false,
-  vaativanErityisenTuenErityinenTehtävä: Boolean = false,
-  hojks: Boolean = false,
-  vammainen: Boolean = false,
-  vaikeastiVammainen: Boolean = false,
-  vammainenJaAvustaja: Boolean = false,
-  osaAikaisuus: Byte = 100,
-  opiskeluvalmiuksiaTukevatOpinnot: Boolean = false,
-  vankilaopetuksessa: Boolean = false,
-  oppisopimusJossainPäätasonSuorituksessa: Boolean = false,
-  pidennettyOppivelvollisuus: Boolean = false,
-  joustavaPerusopetus: Boolean = false,
-  koulukoti: Boolean = false,
-  oppimääränSuorittaja: Boolean = false,
-  maksuton: Boolean = false,
-  maksullinen: Boolean = false,
-  oikeuttaMaksuttomuuteenPidennetty: Boolean = false,
-  kotiopetus: Boolean = false,
-  ulkomaanjakso: Boolean = false,
-  id: Long = 0
-) extends AikajaksoRow[ROpiskeluoikeusAikajaksoRow] {
+                                        opiskeluoikeusOid: String,
+                                        alku: Date,
+                                        loppu: Date,
+                                        tila: String,
+                                        tilaAlkanut: Date,
+                                        opiskeluoikeusPäättynyt: Boolean = false,
+                                        opintojenRahoitus: Option[String] = None,
+                                        erityisenKoulutusTehtävänJaksoTehtäväKoodiarvo: Option[String] = None,
+                                        ulkomainenVaihtoopiskelija: Boolean = false,
+                                        majoitus: Boolean = false,
+                                        majoitusetu: Boolean = false,
+                                        kuljetusetu: Boolean = false,
+                                        sisäoppilaitosmainenMajoitus: Boolean = false,
+                                        vaativanErityisenTuenYhteydessäJärjestettäväMajoitus: Boolean = false,
+                                        erityinenTuki: Boolean = false,
+                                        vaativanErityisenTuenErityinenTehtävä: Boolean = false,
+                                        hojks: Boolean = false,
+                                        vammainen: Boolean = false,
+                                        vaikeastiVammainen: Boolean = false,
+                                        vammainenJaAvustaja: Boolean = false,
+                                        osaAikaisuus: Byte = 100,
+                                        opiskeluvalmiuksiaTukevatOpinnot: Boolean = false,
+                                        vankilaopetuksessa: Boolean = false,
+                                        oppisopimusJossainPäätasonSuorituksessa: Boolean = false,
+                                        pidennettyOppivelvollisuus: Boolean = false,
+                                        joustavaPerusopetus: Boolean = false,
+                                        koulukoti: Boolean = false,
+                                        oppimääränSuorittaja: Boolean = false,
+                                        maksuton: Boolean = false,
+                                        maksullinen: Boolean = false,
+                                        oikeuttaMaksuttomuuteenPidennetty: Boolean = false,
+                                        kotiopetus: Boolean = false,
+                                        ulkomaanjakso: Boolean = false,
+                                        id: Long = 0
+                                      ) extends AikajaksoRow[ROpiskeluoikeusAikajaksoRow] {
   def truncateToDates(start: Date, end: Date): ROpiskeluoikeusAikajaksoRow = this.copy(
     alku = if (alku.after(start)) alku else start,
     loppu = if (loppu.before(end)) loppu else end
   )
+
   def truncateToDates(start: LocalDate, end: LocalDate): ROpiskeluoikeusAikajaksoRow =
     this.truncateToDates(Date.valueOf(start), Date.valueOf(end))
+
   def lengthInDays: Int = ChronoUnit.DAYS.between(alku.toLocalDate, loppu.toLocalDate).toInt + 1
 
   def withLoppu(d: Date): ROpiskeluoikeusAikajaksoRow = this.copy(loppu = d)
+
   def withTilaAlkanut(d: Date): ROpiskeluoikeusAikajaksoRow = this.copy(tilaAlkanut = d)
 }
 
 case class EsiopetusOpiskeluoikeusAikajaksoRow(
-  opiskeluoikeusOid: String,
-  alku: Date,
-  loppu: Date,
-  tila: String,
-  tilaAlkanut: Date,
-  opiskeluoikeusPäättynyt: Boolean = false,
-  pidennettyOppivelvollisuus: Boolean = false,
-  tukimuodot: Option[String] = None,
-  erityisenTuenPäätös: Boolean = false,
-  erityisenTuenPäätösOpiskeleeToimintaAlueittain: Boolean = false,
-  erityisenTuenPäätösErityisryhmässä: Boolean = false,
-  erityisenTuenPäätösToteutuspaikka: Option[String] = None,
-  vammainen: Boolean = false,
-  vaikeastiVammainen: Boolean = false,
-  majoitusetu: Boolean = false,
-  kuljetusetu: Boolean = false,
-  sisäoppilaitosmainenMajoitus: Boolean = false,
-  koulukoti: Boolean = false
-) extends AikajaksoRow[EsiopetusOpiskeluoikeusAikajaksoRow] {
+                                                opiskeluoikeusOid: String,
+                                                alku: Date,
+                                                loppu: Date,
+                                                tila: String,
+                                                tilaAlkanut: Date,
+                                                opiskeluoikeusPäättynyt: Boolean = false,
+                                                pidennettyOppivelvollisuus: Boolean = false,
+                                                tukimuodot: Option[String] = None,
+                                                erityisenTuenPäätös: Boolean = false,
+                                                erityisenTuenPäätösOpiskeleeToimintaAlueittain: Boolean = false,
+                                                erityisenTuenPäätösErityisryhmässä: Boolean = false,
+                                                erityisenTuenPäätösToteutuspaikka: Option[String] = None,
+                                                vammainen: Boolean = false,
+                                                vaikeastiVammainen: Boolean = false,
+                                                majoitusetu: Boolean = false,
+                                                kuljetusetu: Boolean = false,
+                                                sisäoppilaitosmainenMajoitus: Boolean = false,
+                                                koulukoti: Boolean = false
+                                              ) extends AikajaksoRow[EsiopetusOpiskeluoikeusAikajaksoRow] {
   def withLoppu(d: Date): EsiopetusOpiskeluoikeusAikajaksoRow = this.copy(loppu = d)
+
   def withTilaAlkanut(d: Date): EsiopetusOpiskeluoikeusAikajaksoRow = this.copy(tilaAlkanut = d)
 }
 
 sealed trait RSuoritusRow {
   def arviointiArvosanaKoodiarvo: Option[String]
+
   def matchesWith(x: YleissivistäväRaporttiOppiaineTaiKurssi, lang: String): Boolean
+
   def arviointiHyväksytty: Option[Boolean]
+
   def arvioituJaHyväksytty: Boolean = arviointiHyväksytty.getOrElse(false)
 }
 
 case class RPäätasonSuoritusRow(
-  päätasonSuoritusId: Long,
-  opiskeluoikeusOid: String,
-  suorituksenTyyppi: String,
-  koulutusmoduuliKoodisto: Option[String],
-  koulutusmoduuliKoodiarvo: String,
-  koulutusmoduuliKoulutustyyppi: Option[String],
-  koulutusmoduuliLaajuusArvo: Option[Double],
-  koulutusmoduuliLaajuusYksikkö: Option[String],
-  koulutusmoduuliNimi: Option[String],
-  tutkinnonNimiPerusteessa: Option[String],
-  suorituskieliKoodiarvo: Option[String],
-  oppimääräKoodiarvo: Option[String],
-  alkamispäivä: Option[Date],
-  vahvistusPäivä: Option[Date],
-  arviointiArvosanaKoodiarvo: Option[String],
-  arviointiArvosanaKoodisto: Option[String],
-  arviointiHyväksytty: Option[Boolean],
-  arviointiPäivä: Option[Date],
-  toimipisteOid: String,
-  toimipisteNimi: String,
-  toimipisteNimiSv: String,
-  data: JValue,
-  sisältyyOpiskeluoikeuteenOid: Option[String]
-) extends RSuoritusRow {
+                                 päätasonSuoritusId: Long,
+                                 opiskeluoikeusOid: String,
+                                 suorituksenTyyppi: String,
+                                 koulutusmoduuliKoodisto: Option[String],
+                                 koulutusmoduuliKoodiarvo: String,
+                                 koulutusmoduuliKoulutustyyppi: Option[String],
+                                 koulutusmoduuliLaajuusArvo: Option[Double],
+                                 koulutusmoduuliLaajuusYksikkö: Option[String],
+                                 koulutusmoduuliNimi: Option[String],
+                                 tutkinnonNimiPerusteessa: Option[String],
+                                 suorituskieliKoodiarvo: Option[String],
+                                 oppimääräKoodiarvo: Option[String],
+                                 alkamispäivä: Option[Date],
+                                 vahvistusPäivä: Option[Date],
+                                 arviointiArvosanaKoodiarvo: Option[String],
+                                 arviointiArvosanaKoodisto: Option[String],
+                                 arviointiHyväksytty: Option[Boolean],
+                                 arviointiPäivä: Option[Date],
+                                 toimipisteOid: String,
+                                 toimipisteNimi: String,
+                                 toimipisteNimiSv: String,
+                                 sisältyyOpiskeluoikeuteenOid: Option[String],
+                                 tutkintonimike: Option[String],
+                                 luokkaTaiRyhmä: Option[String],
+                                 perusteenDiaarinumero: Option[String],
+                                 jääLuokalle: Option[Boolean],
+                                 data: JValue,
+                               ) extends RSuoritusRow {
   override def matchesWith(x: YleissivistäväRaporttiOppiaineTaiKurssi, lang: String): Boolean = {
     val isPaikallinen = !koulutusmoduuliKoodisto.contains("koskioppiaineetyleissivistava")
 
@@ -846,171 +945,203 @@ case class ROsasuoritusRow(
 
   def laajuus: BigDecimal = koulutusmoduuliLaajuusArvo.map(decimal).getOrElse(decimal(1.0))
 
-  def koulutusModuulinLaajuusYksikköNimi = JsonSerializer.extract[Option[LocalizedString]](data \ "koulutusmoduuli" \ "laajuus" \ "yksikkö" \ "nimi")
+  def koulutusModuulinLaajuusYksikköNimi: Option[LocalizedString] = JsonSerializer.extract[Option[LocalizedString]](data \ "koulutusmoduuli" \ "laajuus" \ "yksikkö" \ "nimi")
 
   def luokkaAsteNimi: Option[LocalizedString] = JsonSerializer.extract[Option[LocalizedString]](data \ "luokkaAste" \ "nimi")
 }
 
 case class RHenkilöRow(
-  oppijaOid: String,
-  masterOid: String,
-  linkitetytOidit: List[String],
-  hetu: Option[String],
-  sukupuoli: Option[String],
-  syntymäaika: Option[Date],
-  sukunimi: String,
-  etunimet: String,
-  aidinkieli: Option[String],
-  kansalaisuus: Option[String],
-  turvakielto: Boolean,
-  kotikunta: Option[String] = None,
-  kotikuntaNimiFi: Option[String] = None,
-  kotikuntaNimiSv: Option[String] = None,
-  yksiloity: Boolean
-)
+                        oppijaOid: String,
+                        masterOid: String,
+                        linkitetytOidit: List[String],
+                        hetu: Option[String],
+                        sukupuoli: Option[String],
+                        syntymäaika: Option[Date],
+                        sukunimi: String,
+                        etunimet: String,
+                        aidinkieli: Option[String],
+                        kansalaisuus: Option[String],
+                        turvakielto: Boolean,
+                        kotikunta: Option[String] = None,
+                        kotikuntaNimiFi: Option[String] = None,
+                        kotikuntaNimiSv: Option[String] = None,
+                        yksiloity: Boolean
+                      )
 
 case class ROrganisaatioRow(
-  organisaatioOid: String,
-  nimi: String,
-  nimiSv: String,
-  organisaatiotyypit: String,
-  oppilaitostyyppi: Option[String],
-  oppilaitosnumero: Option[String],
-  kotipaikka: Option[String],
-  yTunnus: Option[String],
-  koulutustoimija: Option[String],
-  oppilaitos: Option[String],
-)
+                             organisaatioOid: String,
+                             nimi: String,
+                             nimiSv: String,
+                             organisaatiotyypit: String,
+                             oppilaitostyyppi: Option[String],
+                             oppilaitosnumero: Option[String],
+                             kotipaikka: Option[String],
+                             yTunnus: Option[String],
+                             koulutustoimija: Option[String],
+                             oppilaitos: Option[String],
+                           )
 
 case class ROrganisaatioKieliRow(
-  organisaatioOid: String,
-  kielikoodi: String
-)
+                                  organisaatioOid: String,
+                                  kielikoodi: String
+                                )
 
 case class RKoodistoKoodiRow(
-  koodistoUri: String,
-  koodiarvo: String,
-  nimi: String,
-  nimiSv: String
-)
+                              koodistoUri: String,
+                              koodiarvo: String,
+                              nimi: String,
+                              nimiSv: String
+                            )
 
 case class RaportointikantaStatusRow(
-  name: String,
-  count: Int,
-  lastUpdate: Timestamp,
-  loadStarted: Option[Timestamp],
-  loadCompleted: Option[Timestamp],
-  dueTime: Option[Timestamp],
-)
+                                      name: String,
+                                      count: Int,
+                                      lastUpdate: Timestamp,
+                                      loadStarted: Option[Timestamp],
+                                      loadCompleted: Option[Timestamp],
+                                      dueTime: Option[Timestamp],
+                                    )
 
 case class ROppivelvollisuudestaVapautusRow(
-  oppijaOid: String,
-  vapautettu: Timestamp,
-)
+                                             oppijaOid: String,
+                                             vapautettu: Timestamp,
+                                           )
 
 case class MuuAmmatillinenOsasuoritusRaportointiRow(
-  opiskeluoikeusOid: String,
-  päätasonSuoritusId: Long,
-  toteuttavanLuokanNimi: String,
-  koulutusmoduuliLaajuusArvo: Option[Double] = None,
-  koulutusmoduuliLaajuusYksikkö: Option[String] = None,
-  arviointiHyväksytty: Boolean
-)
+                                                     opiskeluoikeusOid: String,
+                                                     päätasonSuoritusId: Long,
+                                                     toteuttavanLuokanNimi: String,
+                                                     koulutusmoduuliLaajuusArvo: Option[Double] = None,
+                                                     koulutusmoduuliLaajuusYksikkö: Option[String] = None,
+                                                     arviointiHyväksytty: Boolean
+                                                   )
 
 case class TOPKSAmmatillinenRaportointiRow(
-  opiskeluoikeudenOid: String,
-  päätasonSuoritusId: Long,
-  toteuttavanLuokanNimi: String,
-  rahoituksenPiirissä: Boolean,
-  arviointiHyväksytty: Boolean,
-  tunnustettu: Boolean,
-  koulutusmoduuliLaajuusArvo: Option[Double],
-  koulutusmoduuliLaajuusYksikkö: Option[String]
-)
+                                            opiskeluoikeudenOid: String,
+                                            päätasonSuoritusId: Long,
+                                            toteuttavanLuokanNimi: String,
+                                            rahoituksenPiirissä: Boolean,
+                                            arviointiHyväksytty: Boolean,
+                                            tunnustettu: Boolean,
+                                            koulutusmoduuliLaajuusArvo: Option[Double],
+                                            koulutusmoduuliLaajuusYksikkö: Option[String]
+                                          )
 
 case class RYtrTutkintokokonaisuudenSuoritusRow(
-  ytrTutkintokokonaisuudenSuoritusId: Long,
+                                                 ytrTutkintokokonaisuudenSuoritusId: Long,
 
-  päätasonSuoritusId: Long,
-  opiskeluoikeusOid: String,
+                                                 päätasonSuoritusId: Long,
+                                                 opiskeluoikeusOid: String,
 
-  tyyppiKoodiarvo: Option[String],
-  tilaKoodiarvo: Option[String],
-  suorituskieliKoodiarvo: Option[String],
+                                                 tyyppiKoodiarvo: Option[String],
+                                                 tilaKoodiarvo: Option[String],
+                                                 suorituskieliKoodiarvo: Option[String],
 
-  // Jos tyyppi = candidate ja tila = graduated , tähän tallennetaan true.
-  hyväksytystiValmistunutTutkinto: Option[Boolean],
+                                                 // Jos tyyppi = candidate ja tila = graduated , tähän tallennetaan true.
+                                                 hyväksytystiValmistunutTutkinto: Option[Boolean],
 
-  data: JValue
-)
+                                                 data: JValue
+                                               )
 
 case class RYtrTutkintokerranSuoritusRow(
-  ytrTutkintokerranSuoritusId: Long,
+                                          ytrTutkintokerranSuoritusId: Long,
 
-  ytrTutkintokokonaisuudenSuoritusId: Long,
-  päätasonSuoritusId: Long,
-  opiskeluoikeusOid: String,
+                                          ytrTutkintokokonaisuudenSuoritusId: Long,
+                                          päätasonSuoritusId: Long,
+                                          opiskeluoikeusOid: String,
 
-  tutkintokertaKoodiarvo: String,
-  vuosi: Int,
-  vuodenaikaKoodiarvo: String,
-  koulutustaustaKoodiarvo: Option[String],
-  oppilaitosOid: Option[String],
-  oppilaitosNimi: Option[String],
-  oppilaitosNimiSv: Option[String],
-  oppilaitosKotipaikka: Option[String],
-  oppilaitosnumero: Option[String],
+                                          tutkintokertaKoodiarvo: String,
+                                          vuosi: Int,
+                                          vuodenaikaKoodiarvo: String,
+                                          koulutustaustaKoodiarvo: Option[String],
+                                          oppilaitosOid: Option[String],
+                                          oppilaitosNimi: Option[String],
+                                          oppilaitosNimiSv: Option[String],
+                                          oppilaitosKotipaikka: Option[String],
+                                          oppilaitosnumero: Option[String],
 
-  data: JValue
-)
+                                          data: JValue
+                                        )
 
 case class RYtrKokeenSuoritusRow(
-  ytrKokeenSuoritusId: Long,
+                                  ytrKokeenSuoritusId: Long,
 
-  ytrTutkintokerranSuoritusId: Long,
-  ytrTutkintokokonaisuudenSuoritusId: Long,
-  päätasonSuoritusId: Long,
-  opiskeluoikeusOid: String,
+                                  ytrTutkintokerranSuoritusId: Long,
+                                  ytrTutkintokokonaisuudenSuoritusId: Long,
+                                  päätasonSuoritusId: Long,
+                                  opiskeluoikeusOid: String,
 
-  // Jaetut kentät ROsasuoritusRow kanssa
-  suorituksenTyyppi: String,
-  koulutusmoduuliKoodisto: Option[String],
-  koulutusmoduuliKoodiarvo: String,
-  koulutusmoduuliNimi: Option[String],
-  arviointiArvosanaKoodiarvo: Option[String],
-  arviointiArvosanaKoodisto: Option[String],
-  arviointiHyväksytty: Option[Boolean],
+                                  // Jaetut kentät ROsasuoritusRow kanssa
+                                  suorituksenTyyppi: String,
+                                  koulutusmoduuliKoodisto: Option[String],
+                                  koulutusmoduuliKoodiarvo: String,
+                                  koulutusmoduuliNimi: Option[String],
+                                  arviointiArvosanaKoodiarvo: Option[String],
+                                  arviointiArvosanaKoodisto: Option[String],
+                                  arviointiHyväksytty: Option[Boolean],
 
-  // YTR-spesifit kentät
-  arviointiPisteet: Option[Int],
-  keskeytynyt: Option[Boolean],
-  maksuton: Option[Boolean],
+                                  // YTR-spesifit kentät
+                                  arviointiPisteet: Option[Int],
+                                  keskeytynyt: Option[Boolean],
+                                  maksuton: Option[Boolean],
 
-  data: JValue
-)
+                                  data: JValue
+                                )
 
 case class RYtrTutkintokokonaisuudenKokeenSuoritusRow(
-  ytrTutkintokokonaisuudenSuoritusId: Long,
-  ytrKokeenSuoritusId: Long,
+                                                       ytrTutkintokokonaisuudenSuoritusId: Long,
+                                                       ytrKokeenSuoritusId: Long,
 
-  ytrTutkintokerranSuoritusId: Long,
+                                                       ytrTutkintokerranSuoritusId: Long,
 
-  // Tulevaisuutta varten: uuden lain myötä kokeita voi sisällyttää aiemmista tutkintokokonaisuuksista
-  sisällytetty: Boolean
-)
+                                                       // Tulevaisuutta varten: uuden lain myötä kokeita voi sisällyttää aiemmista tutkintokokonaisuuksista
+                                                       sisällytetty: Boolean
+                                                     )
 
 case class RKotikuntahistoriaRow(
-  masterOppijaOid: String,
-  kotikunta: String,
-  kotikunnanNimiFi: String,
-  kotikunnanNimiSv: String,
-  muuttoPvm: Option[Date],
-  poismuuttoPvm: Option[Date],
-  turvakielto: Boolean,
-)
+                                  masterOppijaOid: String,
+                                  kotikunta: String,
+                                  kotikunnanNimiFi: String,
+                                  kotikunnanNimiSv: String,
+                                  muuttoPvm: Option[Date],
+                                  poismuuttoPvm: Option[Date],
+                                  turvakielto: Boolean,
+                                )
+
+case class RAikajaksoRow(
+                                   opiskeluoikeusOid: String,
+                                   aikajaksoTyyppi: String,
+                                   alku: Date,
+                                   loppu: Option[Date]
+                                 )
+
+case class RAmmatillisenKoulutuksenJarjestamismuotoAikajaksoRow(
+                                   opiskeluoikeusOid: String,
+                                   aikajaksoTyyppi: String,
+                                   alku: Date,
+                                   loppu: Option[Date],
+                                   oppimispaikanYTunnus: Option[String],
+                                   oppisopimusPurkamisenPäivä: Option[Date],
+                                   oppisopimusPurettuKoeajalla: Option[Boolean]
+                                 )
+
+case class ROsaamisenhankkimistapaAikajaksoRow(
+                                                                 opiskeluoikeusOid: String,
+                                                                 aikajaksoTyyppi: String,
+                                                                 alku: Date,
+                                                                 loppu: Option[Date],
+                                                                 oppisopimusYTunnus: Option[String] = None,
+                                                                 oppisopimusPurkamisenPäivä: Option[Date] = None,
+                                                                 oppisopimusPurettuKoeajalla: Option[Boolean] = None,
+                                                                 koulutussopimusPaikkakunta: Option[String] = None,
+                                                                 koulutussopimusMaa: Option[String] = None,
+                                                                 koulutussopimusYTunnus: Option[String] = None
+                                                               )
+
 
 sealed trait Schema {
   def nameOpt: Option[String] = Some(name)
+
   def name: String
 
   def moveSchema(newSchema: Schema) = DBIO.seq(
@@ -1047,6 +1178,15 @@ sealed trait Schema {
     sqlu"CREATE INDEX ON #${name}.r_opiskeluoikeus_aikajakso(opiskeluoikeus_oid, loppu, alku, tila)",
     sqlu"CREATE INDEX ON #${name}.r_opiskeluoikeus_aikajakso(loppu, alku, opiskeluoikeus_oid)",
     sqlu"CREATE INDEX ON #${name}.r_opiskeluoikeus_aikajakso(oikeutta_maksuttomuuteen_pidennetty)",
+
+    sqlu"CREATE INDEX ON #${name}.r_aikajakso(opiskeluoikeus_oid, aikajakso_tyyppi, alku, loppu)",
+    sqlu"CREATE INDEX ON #${name}.r_aikajakso(aikajakso_tyyppi)",
+
+    sqlu"CREATE INDEX ON #${name}.r_koulutuksen_jarjestamismuoto_ammatillinen(opiskeluoikeus_oid, aikajakso_tyyppi, alku, loppu)",
+    sqlu"CREATE INDEX ON #${name}.r_koulutuksen_jarjestamismuoto_ammatillinen(aikajakso_tyyppi)",
+
+    sqlu"CREATE INDEX ON #${name}.r_osaamisen_hankkimistapa_ammatillinen(opiskeluoikeus_oid, aikajakso_tyyppi, alku, loppu)",
+    sqlu"CREATE INDEX ON #${name}.r_osaamisen_hankkimistapa_ammatillinen(aikajakso_tyyppi)",
 
     sqlu"CREATE UNIQUE INDEX ON #${name}.r_paatason_suoritus(paatason_suoritus_id)",
     sqlu"CREATE INDEX ON #${name}.r_paatason_suoritus(opiskeluoikeus_oid, suorituksen_tyyppi, koulutusmoduuli_koulutustyyppi)",
@@ -1100,6 +1240,9 @@ sealed trait Schema {
       #${name}.r_opiskeluoikeus,
       #${name}.r_organisaatiohistoria,
       #${name}.r_opiskeluoikeus_aikajakso,
+      #${name}.r_aikajakso,
+      #${name}.r_koulutuksen_jarjestamismuoto_ammatillinen,
+      #${name}.r_osaamisen_hankkimistapa_ammatillinen,
       #${name}.r_paatason_suoritus,
       #${name}.r_osasuoritus,
       #${name}.r_organisaatio,

@@ -93,6 +93,7 @@ trait EuropeanSchoolOfHelsinkiPäätasonSuoritus
   extends KoskeenTallennettavaPäätasonSuoritus
     with Toimipisteellinen
     with Arvioinniton
+    with MahdollisestiLuokallinen
     with SisältääTodistuksellaNäkyvätLisätiedot
 {
   def koulutusmoduuli: EuropeanSchoolOfHelsinkiPäätasonKoulutusmoduuli
