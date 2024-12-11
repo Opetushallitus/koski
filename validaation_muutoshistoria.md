@@ -1,5 +1,11 @@
 # Koskeen tallennettavien tietojen validaatiosäännöt
 
+## 20.12.2024
+
+- Sallittu oppilaitoksen vaihtaminen oppilaitoksesta 1.2.246.562.10.97089006874 oppilaitokseen 1.2.246.562.10.22909222972,
+  oppilaitoksesta 1.2.246.562.10.77250993894 oppilaitoksiin 1.2.246.562.10.10779357598, 1.2.246.562.10.29176843356 ja 1.2.246.562.10.28263231921,
+  sekä oppilaitoksesta 1.2.246.562.10.56312244082 oppilaitokseen 1.2.246.562.10.58563612637.
+
 ## 11.12.2024
 
 - Estetään siirtynytUusiinTutkinnonPerusteisiin -kentän siirto ammatillisen opiskeluoikeuden lisätietoihin, jos opiskeluoikeus ei ole päättyvässä tilassa.
