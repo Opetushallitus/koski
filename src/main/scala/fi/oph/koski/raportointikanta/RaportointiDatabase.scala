@@ -329,6 +329,36 @@ class RaportointiDatabase(config: RaportointiDatabaseConfigBase) extends Logging
     runDbSync(ROpiskeluoikeusAikajaksot ++= jaksot, timeout = 5.minutes)
   }
 
+  def loadAikajaksot(jaksot: Seq[RAikajaksoRow]): Unit =
+    runDbSync(RAikajakso ++= jaksot)
+
+  def updateAikajaksot(jaksot: Seq[RAikajaksoRow]): Unit = {
+    val opiskeluoikeusOids = jaksot.map(_.opiskeluoikeusOid).toSet
+    runDbSync(RAikajakso.filter(_.opiskeluoikeusOid inSet opiskeluoikeusOids).delete, timeout = 5.minutes)
+    runDbSync(RAikajakso ++= jaksot, timeout = 5.minutes)
+  }
+
+  def loadAmmatillisenKoulutuksenJarjestamismuotoAikajaksot(jaksot: Seq[RAmmatillisenKoulutuksenJarjestamismuotoAikajaksoRow]): Unit = {
+    runDbSync(RAmmatillisenKoulutuksenJarjestamismuotoAikajakso ++= jaksot)
+  }
+
+  def updateAmmatillisenKoulutuksenJarjestamismuotoAikajaksot(jaksot: Seq[RAmmatillisenKoulutuksenJarjestamismuotoAikajaksoRow]): Unit = {
+    val opiskeluoikeusOids = jaksot.map(_.opiskeluoikeusOid).toSet
+    runDbSync(RAmmatillisenKoulutuksenJarjestamismuotoAikajakso.filter(_.opiskeluoikeusOid inSet opiskeluoikeusOids).delete, timeout = 5.minutes)
+    runDbSync(RAmmatillisenKoulutuksenJarjestamismuotoAikajakso ++= jaksot, timeout = 5.minutes)
+  }
+
+  def loadOsaamisenHankkimistapaAikajaksoRows(jaksot: Seq[ROsaamisenhankkimistapaAikajaksoRow]): Unit = {
+    runDbSync(ROsaamisenHankkimistapaAikajakso ++= jaksot)
+  }
+
+  def updateOsaamisenHankkimistapaAikajaksoRows(jaksot: Seq[ROsaamisenhankkimistapaAikajaksoRow]): Unit = {
+    val opiskeluoikeusOids = jaksot.map(_.opiskeluoikeusOid).toSet
+    runDbSync(ROsaamisenHankkimistapaAikajakso.filter(_.opiskeluoikeusOid inSet opiskeluoikeusOids).delete, timeout = 5.minutes)
+    runDbSync(ROsaamisenHankkimistapaAikajakso ++= jaksot, timeout = 5.minutes)
+  }
+
+
   def loadEsiopetusOpiskeluoikeusAikajaksot(jaksot: Seq[EsiopetusOpiskeluoikeusAikajaksoRow]): Unit =
     runDbSync(EsiopetusOpiskeluoikeusAikajaksot ++= jaksot)
 
