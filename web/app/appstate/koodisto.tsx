@@ -1,7 +1,9 @@
 import * as A from 'fp-ts/Array'
 import * as E from 'fp-ts/Either'
+import * as Eq from 'fp-ts/Eq'
 import { pipe } from 'fp-ts/lib/function'
 import * as NEA from 'fp-ts/NonEmptyArray'
+import * as Ord from 'fp-ts/Ord'
 import * as string from 'fp-ts/string'
 import React, {
   useCallback,
@@ -10,19 +12,19 @@ import React, {
   useMemo,
   useState
 } from 'react'
+import { t } from '../i18n/i18n'
 import {
   isKoodistokoodiviite,
   Koodistokoodiviite
 } from '../types/fi/oph/koski/schema/Koodistokoodiviite'
 import { Constraint } from '../types/fi/oph/koski/typemodel/Constraint'
 import * as C from '../util/constraints'
+import { flatten } from '../util/constraints'
 import { nonNull } from '../util/fp/arrays'
 import { mapObjectValues } from '../util/fp/objects'
 import { fetchKoodistot } from '../util/koskiApi'
-import * as Ord from 'fp-ts/Ord'
-import { t } from '../i18n/i18n'
-import { unbox } from '../util/constraints'
 import { PropsWithOnlyChildren } from '../util/react'
+import { coerceForSort } from '../util/strings'
 
 /**
  * Palauttaa annetun koodiston koodiarvot. Jos koodiarvot-argumentti on annettu,
@@ -82,31 +84,55 @@ export const useKoodistot = <T extends string>(
  *
  * Heittää poikkeuksen, jos
  *    - annettu constraint ei viittaa koodistokoodiviitteeseen
- *    - tai constraint viittaa useampaan kuin yhteen koodistoon (TODO: lisää tälle tuki, jos tarvitset sitä).
  *
  * @returns KoodistokoodiviiteKoodistonNimellä[] kun koodisto on saatu ladattua, null jos koodistoa vielä ladataan tai tapahtui virhe
  */
 export const useKoodistoOfConstraint = <T extends string = string>(
   constraint: Constraint | null
 ): KoodistokoodiviiteKoodistonNimellä<T>[] | null => {
+  const c = useMemo(() => (constraint ? [constraint] : null), [constraint])
+  return useKoodistotOfConstraints(c)
+}
+
+/**
+ * Palauttaa vastaavat constrainteja vastaavat koodistot.
+ *
+ * Heittää poikkeuksen, jos
+ *    - annettu constraint ei viittaa koodistokoodiviitteeseen
+ *
+ * @returns KoodistokoodiviiteKoodistonNimellä[] kun koodisto on saatu ladattua, null jos koodistoa vielä ladataan tai tapahtui virhe
+ */
+export const useKoodistotOfConstraints = <T extends string = string>(
+  constraints: Constraint[] | null
+): KoodistokoodiviiteKoodistonNimellä<T>[] | null => {
   const koodistoSchemas = useMemo(
-    () => C.koodiviite<T>(unbox(constraint))?.filter(nonNull) || [],
-    [constraint]
+    () =>
+      (constraints || []).flatMap(
+        (c) => C.koodiviite<T>(flatten(c))?.filter(nonNull) || []
+      ),
+    [constraints]
   )
   const koodistot = useKoodistot<T>(
     ...koodistoSchemas.map((k) => k.koodistoUri)
   )
-  return (
-    koodistot?.filter((k) =>
-      koodistoSchemas.find(
-        (s) =>
-          s.koodistoUri === k.koodiviite.koodistoUri &&
-          (s.koodiarvot === null ||
-            A.isEmpty(s.koodiarvot) ||
-            s.koodiarvot.includes(k.koodiviite.koodiarvo))
-      )
-    ) || null
-  )
+  return useMemo(() => {
+    return koodistot
+      ? (pipe(
+          koodistot,
+          A.filter(
+            (k) =>
+              koodistoSchemas.find(
+                (s) =>
+                  s.koodistoUri === k.koodiviite.koodistoUri &&
+                  (s.koodiarvot === null ||
+                    A.isEmpty(s.koodiarvot) ||
+                    s.koodiarvot.includes(k.koodiviite.koodiarvo))
+              ) !== undefined
+          ),
+          A.uniq(KoodistokoodiviiteKoodistonNimelläEq)
+        ) as KoodistokoodiviiteKoodistonNimellä<T>[])
+      : null
+  }, [koodistoSchemas, koodistot])
 }
 
 /**
@@ -258,14 +284,13 @@ const distinct = A.uniq(string.Eq)
 
 export const KoodistokoodiviiteKoodistonNimelläOrd = Ord.contramap(
   (k: KoodistokoodiviiteKoodistonNimellä) =>
-    analyzeItem(t(k.koodiviite.nimi) || '')
+    coerceForSort(t(k.koodiviite.nimi) || '')
 )(string.Ord)
 
-const analyzeItem = (value: string): string =>
-  value
-    .split(' ')
-    .map((x) => {
-      const n = parseFloat(x.replace(',', '.'))
-      return Number.isFinite(n) ? x.padStart(16, '0') : x
-    })
-    .join(' ')
+export const KoodistokoodiviiteKoodistonKoodiarvollaOrd = Ord.contramap(
+  (k: KoodistokoodiviiteKoodistonNimellä) =>
+    coerceForSort(t(k.koodiviite.koodiarvo) || '')
+)(string.Ord)
+
+export const KoodistokoodiviiteKoodistonNimelläEq =
+  Eq.fromEquals<KoodistokoodiviiteKoodistonNimellä>((x, y) => x.id === y.id)

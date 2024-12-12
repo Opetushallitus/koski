@@ -84,15 +84,7 @@ export const VSTKoto2022KielitaitotasoEdit = (
   return props.value ? (
     <>
       <OsasuoritusSubproperty rowNumber={startRow} label="Taitotaso">
-        <ArvosanaEdit
-          {...props}
-          createArviointi={(arvosana) =>
-            VSTKotoutumiskoulutuksenKieliJaViestintäosaamisenArviointi({
-              arvosana,
-              arviointipäivä: todayISODate()
-            })
-          }
-        />
+        <ArvosanaEdit {...props} suoritusClassName={props.osasuoritus.$class} />
       </OsasuoritusSubproperty>
       <OsasuoritusSubproperty rowNumber={startRow + 1} label="Päivämäärä">
         <DateEdit
