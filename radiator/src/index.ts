@@ -1,10 +1,13 @@
 import * as E from 'fp-ts/Either'
+import dotenv from "dotenv"
 import {pipe} from 'fp-ts/lib/function'
 import {LocalHealthSource} from './health/LocalHealthSource'
 import {CloudWatchHealthSource} from './health/CloudWatchHealthSource'
 import {startServer} from './server'
 import {updateWithHealthData} from './state'
 import {RadiatorApiHealthSource} from './health/RadiatorApiHealthSource'
+
+dotenv.config()
 
 const getHealthSource = (env?: string, koskiDir?: string) => {
   switch (env) {
@@ -28,7 +31,7 @@ const getHealthSource = (env?: string, koskiDir?: string) => {
 
 const env = process.argv[2]
 const koskiDir = process.argv[3]
-const apiKey = process.env.APIKEY || ''
+const apiKey = process.env.APIKEY || process.env[`${env.toUpperCase}_RADIATOR_KEY`] ||  ''
 
 pipe(
   getHealthSource(env, koskiDir),
