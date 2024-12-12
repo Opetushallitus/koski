@@ -49,7 +49,7 @@ OAuth2-rajapinnassa on käytössä:
   </dd>
   <dt>(7) Toive suostumuksen voimassaoloajasta</dt>
   <dd>
-    Aika sekunteina.
+    Aika minuutteina.
     <br/>Tämä riippuu kumppanin käyttötapauksesta: esim. tarvitaanko kansalaisen tiedot vain yhden kerran, jolloin lyhyt voimassaoloaika riittää, vai tarvitseeko tietoihin päästä käsiksi pidemmän aikaa ilman,
     että kansalaiselta tarvitsee pyytää suostumusta uudestaan.
   </dd>
@@ -70,8 +70,9 @@ Rajapinnan kutsumista varten kumppanin toteuttama palvelu tarvitsee seuraavat ti
   <dd>Access token endpoint palauttaa aina Bearer-tokeneita.</dd>
 
   <dt>Authorization code:n ja access token:in voimassaoloaika</dt>
-  <dd>Näiden käsittely ja määrittely on vielä työn alla.
-    <br/>Todennäköisimmin ensimmäisessä versiossa authorization code:sta tehdään lyhytaikainen ja kertakäyttöinen ja access tokenista pidempiaikainen, minkä ajan voi määritellä kullekin clientille erikseen, eikä erillisiä refresh token:eita aluksi tueta.
+  <dd>Authorization code on lyhytaikainen (10 min) ja kertakäyttöinen.
+    <br/>Access tokenin voimassaoloaika määritellään kumppanin toiveiden ja käyttötapauksen perusteella.
+    <br/>Erillisiä refresh token:eita ei toistaiseksi tueta.
   </dd>
 
   <dt>Resource endpoint</dt>
@@ -90,7 +91,7 @@ Rajapinnan kutsumista varten kumppanin toteuttama palvelu tarvitsee seuraavat ti
 
 Listan kaikista tuetuista scopeista saa edellisessä kappaleessa mainitusta metatieto-linkistä.
 
-Toistaiseksi **OPISKELUOIKEUDET_**-scopeja ei voi käyttää kuin yhtä kerrallaan.
+**OPISKELUOIKEUDET_**-scopeja ei voi käyttää kuin yhtä kerrallaan.
 
 <dl>
   <dt>OPISKELUOIKEUDET_SUORITETUT_TUTKINNOT</dt>
