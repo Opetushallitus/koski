@@ -96,7 +96,7 @@ case class InternationalSchoolOpiskeluoikeudenLisätiedot(
   oikeuttaMaksuttomuuteenPidennetty: Option[List[OikeuttaMaksuttomuuteenPidennetty]] = None
 ) extends OpiskeluoikeudenLisätiedot with ErityisenKoulutustehtävänJaksollinen with Ulkomaanjaksollinen with MaksuttomuusTieto
 
-trait InternationalSchoolVuosiluokanSuoritus extends KoskeenTallennettavaPäätasonSuoritus with Toimipisteellinen with Arvioinniton with Suorituskielellinen {
+trait InternationalSchoolVuosiluokanSuoritus extends KoskeenTallennettavaPäätasonSuoritus with Toimipisteellinen with Arvioinniton with Suorituskielellinen with MahdollisestiLuokallinen {
   @Title("Koulutus")
   def koulutusmoduuli: InternationalSchoolLuokkaAste
   def tyyppi: Koodistokoodiviite

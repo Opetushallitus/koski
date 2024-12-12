@@ -12,6 +12,18 @@ object AikajaksoRowBuilder {
     buildAikajaksoRows(buildROpiskeluoikeusAikajaksoRowForOneDay, opiskeluoikeusOid, opiskeluoikeus).flatten
   }
 
+  def buildAikajaksoRows(opiskeluoikeusOid: String, opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus): Seq[RAikajaksoRow] = {
+    buildRAikajaksoRows(opiskeluoikeusOid, opiskeluoikeus)
+  }
+
+  def buildAmmatillisenKoulutuksenJarjestamismuotoAikajaksoRows(opiskeluoikeusOid: String, opiskeluoikeus: AmmatillinenOpiskeluoikeus): Seq[RAmmatillisenKoulutuksenJarjestamismuotoAikajaksoRow] = {
+    buildRAmmatillisenKoulutuksenJarjestamismuotoAikajaksoRows(opiskeluoikeusOid, opiskeluoikeus)
+  }
+
+  def buildOsaamisenHankkimistapaAikajaksoRows(opiskeluoikeusOid: String, opiskeluoikeus: AmmatillinenOpiskeluoikeus): Seq[ROsaamisenhankkimistapaAikajaksoRow] = {
+    buildROsaamisenHankkimistapaAikajaksoRows(opiskeluoikeusOid, opiskeluoikeus)
+  }
+
   def buildEsiopetusOpiskeluoikeusAikajaksoRows(opiskeluoikeusOid: String, opiskeluoikeus: EsiopetuksenOpiskeluoikeus): Seq[EsiopetusOpiskeluoikeusAikajaksoRow] = {
     buildAikajaksoRows(buildEsiopetusAikajaksoRowForOneDay, opiskeluoikeusOid, opiskeluoikeus).flatten
   }
@@ -159,6 +171,98 @@ object AikajaksoRowBuilder {
       ))
       // Note: When adding something here, remember to update aikajaksojenAlkupäivät (below), too
     }
+  }
+
+  object AikajaksoTyyppi {
+    val ulkomaanjakso = "ULKOMAANJAKSO"
+  }
+
+  // TODO: TOR-2222
+  object AmmatillisenKoulutuksenJarjestamismuotoAikajakso {
+    val koulutuksenJärjestäminenOppilaitosMuotoisena = "KOULUTUKSEN_JÄRJESTÄMINEN_OPPILAITOSMUOTOISENA"
+    val koulutuksenJärjestäminenOppisopimusKoulutuksena = "KOULUTUKSEN_JÄRJESTÄMINEN_OPPISOPIMUSKOULUTUKSENA"
+  }
+
+  // TODO: TOR-2222
+  object OsaamisenHankkimistapaAikajakso {
+    val oppilaitosmuotoinen = "KOULUTUKSEN_JÄRJESTÄMINEN_OPPILAITOSMUOTOISENA"
+    val oppisopimuksellinen = "KOULUTUKSEN_JÄRJESTÄMINEN_OPPISOPIMUSKOULUTUKSENA"
+    val koulutussopimuksellinen = "KOULUTUKSEN_JÄRJESTÄMINEN_KOULUTUSSOPIMUKSENA"
+  }
+
+  private def buildRAikajaksoRows(opiskeluoikeudenOid: String, o: Opiskeluoikeus): List[RAikajaksoRow] = {
+    val ulkomaanjaksolliset = o.lisätiedot match {
+      case Some(lisatiedot) => lisatiedot match {
+        case a: UlkomaanaikajaksojaSisältävä => a.kaikkiUlkomaanaikajaksot.map(a => RAikajaksoRow(opiskeluoikeudenOid, AikajaksoTyyppi.ulkomaanjakso, Date.valueOf(a.alku), a.loppu.map(l => Date.valueOf(l))))
+        case _ => Nil
+      }
+      case _ => Nil
+    }
+    ulkomaanjaksolliset
+  }
+
+  private def buildRAmmatillisenKoulutuksenJarjestamismuotoAikajaksoRows(opiskeluoikeudenOid: String, o: AmmatillinenOpiskeluoikeus): List[RAmmatillisenKoulutuksenJarjestamismuotoAikajaksoRow] = {
+    val aikajaksot: List[RAmmatillisenKoulutuksenJarjestamismuotoAikajaksoRow] = o.suoritukset.flatMap({
+      case a: Järjestämismuodollinen => a.järjestämismuodot.toList.flatten
+      case _ => Nil
+    }).flatMap {
+      case Järjestämismuotojakso(alku, loppu, jm: JärjestämismuotoIlmanLisätietoja) if jm.tunniste.koodiarvo == "10" =>
+        Some(RAmmatillisenKoulutuksenJarjestamismuotoAikajaksoRow(opiskeluoikeudenOid, jm.tunniste.koodiarvo, Date.valueOf(alku), loppu.map(l => Date.valueOf(l)), None, None, None))
+      case Järjestämismuotojakso(alku, loppu, jm: OppisopimuksellinenJärjestämismuoto) if jm.tunniste.koodiarvo == "20" =>
+        Some(RAmmatillisenKoulutuksenJarjestamismuotoAikajaksoRow(opiskeluoikeudenOid, jm.tunniste.koodiarvo, Date.valueOf(alku), loppu.map(l => Date.valueOf(l)), Some(jm.oppisopimus.työnantaja.yTunnus), jm.oppisopimus.oppisopimuksenPurkaminen.map(_.päivä).map(l => Date.valueOf(l)), jm.oppisopimus.oppisopimuksenPurkaminen.map(_.purettuKoeajalla)))
+      case Järjestämismuotojakso(alku, loppu, jm: OppisopimuksellinenJärjestämismuoto) =>
+        Some(RAmmatillisenKoulutuksenJarjestamismuotoAikajaksoRow(opiskeluoikeudenOid, jm.tunniste.koodiarvo, Date.valueOf(alku), loppu.map(l => Date.valueOf(l)), Some(jm.oppisopimus.työnantaja.yTunnus), jm.oppisopimus.oppisopimuksenPurkaminen.map(_.päivä).map(l => Date.valueOf(l)), jm.oppisopimus.oppisopimuksenPurkaminen.map(_.purettuKoeajalla)))
+      case _ => None
+    }
+    aikajaksot
+  }
+
+  private def buildROsaamisenHankkimistapaAikajaksoRows(opiskeluoikeudenOid: String, o: AmmatillinenOpiskeluoikeus): List[ROsaamisenhankkimistapaAikajaksoRow] = {
+    val rows: List[ROsaamisenhankkimistapaAikajaksoRow] = o.suoritukset.flatMap({
+      case a: OsaamisenHankkimistavallinen => a.osaamisenHankkimistavat.toList.flatten.map(jakso => (jakso, jakso.osaamisenHankkimistapa)).map({
+        case (hankkimistapajakso, hankkimistapa: OsaamisenHankkimistapaIlmanLisätietoja) if hankkimistapa.tunniste.koodiarvo == "oppilaitosmuotoinenkoulutus" => Some(ROsaamisenhankkimistapaAikajaksoRow(
+          opiskeluoikeudenOid,
+          hankkimistapa.tunniste.koodiarvo,
+          Date.valueOf(hankkimistapajakso.alku),
+          hankkimistapajakso.loppu.map(a => Date.valueOf(a)),
+          None, // Ei käytetä
+          None, // Ei käytetä
+          None, // Ei käytetä
+          None, // Ei käytetä
+          None, // Ei käytetä
+          None // Ei käytetä
+        ))
+        case (hankkimistapajakso, oppisopimus: OppisopimuksellinenOsaamisenHankkimistapa) if oppisopimus.tunniste.koodiarvo == "oppisopimus" => Some(ROsaamisenhankkimistapaAikajaksoRow(
+          opiskeluoikeudenOid,
+          oppisopimus.tunniste.koodiarvo,
+          Date.valueOf(hankkimistapajakso.alku),
+          hankkimistapajakso.loppu.map(a => Date.valueOf(a)),
+          Some(oppisopimus.oppisopimus.työnantaja.yTunnus),
+          oppisopimus.oppisopimus.oppisopimuksenPurkaminen.map(p => Date.valueOf(p.päivä)),
+          oppisopimus.oppisopimus.oppisopimuksenPurkaminen.map(_.purettuKoeajalla),
+          None, // Ei käytetä
+          None, // Ei käytetä
+          None // Ei käytetä
+        ))
+        case _ => None
+      })
+      case b: Koulutussopimuksellinen => b.koulutussopimukset.toList.flatten.map(r => Some(ROsaamisenhankkimistapaAikajaksoRow(
+        opiskeluoikeudenOid,
+        // TODO: TOR-2222
+        OsaamisenHankkimistapaAikajakso.koulutussopimuksellinen,
+        Date.valueOf(r.alku),
+        r.loppu.map(a => Date.valueOf(a)),
+        None, // Ei käytetä
+        None, // Ei käytetä
+        None, // Ei käytetä
+        Some(r.paikkakunta.koodiarvo),
+        Some(r.maa.koodiarvo),
+        r.työssäoppimispaikanYTunnus
+      )))
+      case _ => None
+    }).flatten
+
+    rows
   }
 
   private def buildEsiopetusAikajaksoRowForOneDay(opiskeluoikeudenOid: String, o: EsiopetuksenOpiskeluoikeus, päivä: LocalDate): Option[EsiopetusOpiskeluoikeusAikajaksoRow] = {
