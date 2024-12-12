@@ -91,6 +91,8 @@ object Constraints {
               )
             case _ => AnyConstraint()
           }
+        case b: BoundaryType =>
+          RefConstraint(className = b.className)
         case _: AnyType =>
           AnyConstraint()
       }
@@ -187,4 +189,10 @@ case class UnionConstraint(
 case class AnyConstraint(
   @EnumValue("any")
   `type`: String = "any",
+) extends Constraint
+
+case class RefConstraint(
+  @EnumValue("objectRef")
+  `type`: String = "objectRef",
+  className: String
 ) extends Constraint
