@@ -3,15 +3,15 @@ package fi.oph.koski.typemodel
 import fi.oph.scalaschema.SchemaFactory
 
 object TypeExport {
-  def toTypeDef(clss: Class[_], followClassRefs: Boolean = false): Seq[TypeModelWithClassName] = {
-    val schemaFactory: SchemaFactory = SchemaFactory()
+  val schemaFactory: SchemaFactory = SchemaFactory()
+
+  def toTypeDef(clss: Class[_], followClassRefs: Boolean = false, maxDepth: Int = Int.MaxValue, stopParsingAt: List[String] = Nil): Seq[TypeModelWithClassName] = {
     val schema = schemaFactory.createSchema(clss)
-    SchemaExport.toTypeDef(schema, followClassRefs)
+    SchemaExport.toTypeDef(schema, followClassRefs, maxDepth, stopParsingAt)
   }
 
   def getObjectModels(clss: Class[_]): List[ObjectType] =
     getTypeModel(clss).toList.flatMap(getObjectModels)
-
 
   def getObjectModels(model: TypeModel): List[ObjectType] =
     model match {
