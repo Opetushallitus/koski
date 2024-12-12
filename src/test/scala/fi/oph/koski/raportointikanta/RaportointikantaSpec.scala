@@ -632,7 +632,7 @@ class RaportointikantaSpec
           Seq(
             RAmmatillisenKoulutuksenJarjestamismuotoAikajaksoRow(
               "1.2.246.562.15.123456",
-              AmmatillisenKoulutuksenJarjestamismuotoAikajakso.koulutuksenJärjestäminenOppilaitosMuotoisena,
+              "10",
               Date.valueOf("2013-09-01"),
               None,
               None,
@@ -642,22 +642,20 @@ class RaportointikantaSpec
           )
         )
       }
-      "Geneeriset aikajaksot" - {
-        "Ulkomaanjaksot" in {
-          val alku = LocalDate.parse("2022-01-01")
-          val loppu = LocalDate.parse("2023-01-01")
-          val opiskeluoikeus = ammatillinenOpiskeluoikeus.copy(lisätiedot = Some(
-            AmmatillisenOpiskeluoikeudenLisätiedot(
-              hojks = Some(Hojks(Koodistokoodiviite("valmistunut", "koskiopiskeluoikeudentila"), None, None)),
-              ulkomaanjaksot = Some(List(Ulkomaanjakso(alku = alku, loppu = Some(loppu), maa = ExampleData.suomi, kuvaus = LocalizedString.finnish("Foo bar"))))
-            )
-          ))
-          val aikajaksoRows = AikajaksoRowBuilder.buildAikajaksoRows(oid, opiskeluoikeus)
-          aikajaksoRows.length should equal(1)
-          aikajaksoRows should equal(
-            Seq(RAikajaksoRow(opiskeluoikeus.oid.get, AikajaksoTyyppi.ulkomaanjakso, Date.valueOf(alku), Some(Date.valueOf(loppu))))
+      "Ulkomaanjaksot" in {
+        val alku = LocalDate.parse("2022-01-01")
+        val loppu = LocalDate.parse("2023-01-01")
+        val opiskeluoikeus = ammatillinenOpiskeluoikeus.copy(lisätiedot = Some(
+          AmmatillisenOpiskeluoikeudenLisätiedot(
+            hojks = Some(Hojks(Koodistokoodiviite("valmistunut", "koskiopiskeluoikeudentila"), None, None)),
+            ulkomaanjaksot = Some(List(Ulkomaanjakso(alku = alku, loppu = Some(loppu), maa = ExampleData.suomi, kuvaus = LocalizedString.finnish("Foo bar"))))
           )
-        }
+        ))
+        val aikajaksoRows = AikajaksoRowBuilder.buildAikajaksoRows(oid, opiskeluoikeus)
+        aikajaksoRows.length should equal(1)
+        aikajaksoRows should equal(
+          Seq(RAikajaksoRow(opiskeluoikeus.oid.get, AikajaksoTyyppi.ulkomaanjakso, Date.valueOf(alku), Some(Date.valueOf(loppu))))
+        )
       }
       "Ammatillisen opiskeluoikeuden lisätiedot, hojks" - {
         "Ei alku/loppupäivää" in {
