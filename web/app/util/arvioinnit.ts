@@ -79,3 +79,7 @@ export const parasArviointiIndex = <T extends Arviointi>(
     O.map((a) => arvioinnit.indexOf(a)),
     O.toUndefined
   )
+
+export const viimeisinArviointi = <T extends Arviointi>(
+  arvioinnit: T[]
+): T | undefined => pipe(arvioinnit, A.last, O.toUndefined)

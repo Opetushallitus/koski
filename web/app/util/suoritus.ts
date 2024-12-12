@@ -19,9 +19,13 @@ export const suoritusValmis = (suoritus: Suoritus) => {
     const arviointi =
       suoritus.arviointi && parasArviointi(suoritus.arviointi as Arviointi[])
     const arviointiPäivä = (arviointi as any)?.päivä
-    return arviointi && arviointiPäivä ? isInPast(arviointiPäivä) : !!arviointi
+    return arviointi
+      ? arviointiPäivä
+        ? isInPast(arviointiPäivä)
+        : !!arviointi
+      : false
   }
 }
 
 const isInPast = (dateStr?: string) =>
-  dateStr !== undefined && parseISODate(dateStr) < new Date()
+  dateStr !== undefined && parseISODate(dateStr) <= new Date()

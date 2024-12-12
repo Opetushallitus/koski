@@ -24,6 +24,11 @@ export const updateAt =
       O.getOrElseW(() => [])
     )
 
+export const replaceLast =
+  <T>(t: T) =>
+  (ts: T[] | undefined) =>
+    ts ? [...ts.slice(0, -1), t] : [t]
+
 export const appendOptional =
   <T>(t: T) =>
   (ts: T[] | undefined): T[] =>
