@@ -2,18 +2,24 @@ import * as A from 'fp-ts/Array'
 import { pipe } from 'fp-ts/lib/function'
 import * as O from 'fp-ts/Option'
 import { useMemo } from 'react'
-import { useKoodisto, useKoodistot } from '../../appstate/koodisto'
+import {
+  KoodistokoodiviiteKoodistonNimellä,
+  useKoodisto,
+  useKoodistot
+} from '../../appstate/koodisto'
 import {
   filterOptions,
   groupKoodistoToOptions,
   mapOptionLabels,
   regroupKoodisto,
-  SelectOption
+  SelectOption,
+  SelectOptionOrd,
+  sortOptions
 } from '../../components-v2/controls/Select'
 import { t } from '../../i18n/i18n'
 import { IBOpiskeluoikeus } from '../../types/fi/oph/koski/schema/IBOpiskeluoikeus'
 import { Koodistokoodiviite } from '../../types/fi/oph/koski/schema/Koodistokoodiviite'
-import { KoodistoUriOf } from '../../util/koodisto'
+import { koodistokoodiviiteId, KoodistoUriOf } from '../../util/koodisto'
 import { entries } from '../../util/objects'
 import { PäätasonSuoritusOf } from '../../util/opiskeluoikeus'
 import {
@@ -26,6 +32,14 @@ import {
   isVierasTaiToinenKotimainenKieli2015Tunniste
 } from '../oppiaineet/tunnisteet'
 import { PreIBOppiaineTunniste } from './preIBOppiaine'
+import {
+  LukiokurssiTunnisteUri,
+  lukiokurssiTunnisteUrit
+} from '../oppiaineet/preIBKurssi2015'
+import { NonEmptyArray } from 'fp-ts/lib/NonEmptyArray'
+import { useApiData, useApiWithParams } from '../../api-fetch'
+import { fetchOppiaineenKurssit } from '../../util/koskiApi'
+import { enumValuesToKoodistoSelectOptions } from '../../util/TypedEnumValue'
 
 export const preIB2015Oppiainekategoriat = {
   'IB-oppiaine': [isIBOppiaineLanguageTunniste, isIBOppiaineMuuTunniste],
@@ -40,6 +54,11 @@ export const preIB2015Oppiainekategoriat = {
 
 export const PaikallinenKey = '__paikallinen__'
 
+export const Paikallinen = Koodistokoodiviite({
+  koodistoUri: lukiokurssiTunnisteUrit[0],
+  koodiarvo: PaikallinenKey
+})
+
 const oppiaineCategoryResolver =
   <K extends Koodistokoodiviite>(
     types: Record<string, Array<(k: K) => boolean>>
@@ -52,6 +71,9 @@ const oppiaineCategoryResolver =
       O.map(([name, _]) => t(name)),
       O.toNullable
     )
+
+const labelWithKoodiarvo = (k: SelectOption<Koodistokoodiviite>): string =>
+  k.value?.koodiarvo ? `${k.value.koodiarvo} ${k.label}` : k.label
 
 export const usePreIBTunnisteOptions = <K extends Koodistokoodiviite>(
   categories: Record<string, Array<(k: K) => boolean>>,
@@ -82,9 +104,7 @@ export const usePreIBTunnisteOptions = <K extends Koodistokoodiviite>(
           k.value?.koodiarvo === undefined ||
           !existingOppiaineet.includes(k.value?.koodiarvo)
       ),
-      mapOptionLabels((k) =>
-        k.value?.koodiarvo ? `${k.label} (${k.value.koodiarvo})` : k.label
-      ),
+      mapOptionLabels(labelWithKoodiarvo),
       A.prepend({
         key: PaikallinenKey,
         label: t('Paikallinen')
@@ -108,3 +128,34 @@ export const useAineryhmäOptions = optionLoader('aineryhmaib')
 export const useÄidinkielenKieliOptions = optionLoader(
   'oppiaineaidinkielijakirjallisuus'
 )
+
+export const useLukiokurssinTyypit = optionLoader('lukionkurssintyyppi')
+
+export const useOppiaineenKurssiOptions = (
+  tunniste?: Koodistokoodiviite
+): SelectOption<Koodistokoodiviite>[] | null => {
+  const response = useApiWithParams(
+    fetchOppiaineenKurssit,
+    tunniste && [
+      tunniste.koodistoUri,
+      tunniste.koodiarvo,
+      ['lukionkurssit'] // ???
+    ]
+  )
+  const data = useApiData(response)
+  return useMemo(
+    () =>
+      pipe(
+        data || [],
+        enumValuesToKoodistoSelectOptions,
+        mapOptionLabels(labelWithKoodiarvo),
+        sortOptions,
+        A.append({
+          key: koodistokoodiviiteId(Paikallinen),
+          label: t('Lisää paikallinen'),
+          value: Paikallinen
+        } as SelectOption<Koodistokoodiviite>)
+      ),
+    [data]
+  )
+}
