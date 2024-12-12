@@ -56,7 +56,7 @@ export const VSTArviointiEdit = <T extends VSTArviointi>(
   return props.value ? (
     <>
       <OsasuoritusSubproperty rowNumber={startRow} label="Arvosana">
-        <ArvosanaEdit {...props} createArviointi={props.createArviointi} />
+        <ArvosanaEdit {...props} suoritusClassName={props.osasuoritus.$class} />
       </OsasuoritusSubproperty>
       {isVSTArviointiPäivällä(props.value) && (
         <OsasuoritusSubproperty rowNumber={startRow + 1} label="Päivämäärä">

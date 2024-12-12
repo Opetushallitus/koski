@@ -21,7 +21,7 @@ import { nonNull } from '../../util/fp/arrays'
 import { pluck } from '../../util/fp/objects'
 import { koodistokoodiviiteId } from '../../util/koodisto'
 import { clamp, sum } from '../../util/numbers'
-import { textSearch } from '../../util/strings'
+import { coerceForSort, textSearch } from '../../util/strings'
 import { CommonProps, common, cx } from '../CommonProps'
 import { Removable } from './Removable'
 import { Spinner } from '../texts/Spinner'
@@ -472,12 +472,21 @@ export const perusteToOption = (peruste: Peruste): SelectOption<Peruste> => ({
   label: [peruste.koodiarvo, t(peruste.nimi)].filter(nonNull).join(' ')
 })
 
-export const SelectOptionOrd = Ord.contramap((o: SelectOption<any>) => o.label)(
-  string.Ord
-)
+export const SelectOptionOrd = Ord.contramap((o: SelectOption<any>) =>
+  coerceForSort(o.label)
+)(string.Ord)
 
-export const sortOptions = <T,>(options: Array<SelectOption<T>>) =>
-  A.sort(SelectOptionOrd)(options)
+export const sortOptions = <T,>(
+  options: Array<SelectOption<T>>
+): Array<SelectOption<T>> =>
+  pipe(
+    options,
+    A.sort(SelectOptionOrd),
+    A.map((o) => ({
+      ...o,
+      children: o.children && sortOptions(o.children)
+    }))
+  )
 
 export const mapOptions =
   <T, S>(f: (o: SelectOption<T>) => SelectOption<S>) =>
