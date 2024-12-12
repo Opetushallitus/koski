@@ -177,7 +177,11 @@ Esimerkki palautettavan datan rakenteesta:
                 }
             },
             ...
-        ]
+        ],
+        "tokenInfo": {
+            "scope": "HENKILOTIEDOT_KAIKKI_TIEDOT OPISKELUOIKEUDET_KAIKKI_TIEDOT",
+            "expirationTime": "2024-12-12T15:16:12.474651+02:00"
+        }
     }
 
 
