@@ -12,14 +12,20 @@ import {
   ModalFooter,
   ModalTitle
 } from '../components-v2/containers/Modal'
+import { Checkbox } from '../components-v2/controls/Checkbox'
 import { FlatButton } from '../components-v2/controls/FlatButton'
+import { NumberField } from '../components-v2/controls/NumberField'
 import { RaisedButton } from '../components-v2/controls/RaisedButton'
-import { SelectOption } from '../components-v2/controls/Select'
+import { Select } from '../components-v2/controls/Select'
 import { FormModel, useForm } from '../components-v2/forms/FormModel'
 import { AdaptedOpiskeluoikeusEditorProps } from '../components-v2/interoperability/useUiAdapter'
 import { Spacer } from '../components-v2/layout/Spacer'
 import { OpiskeluoikeusTitle } from '../components-v2/opiskeluoikeus/OpiskeluoikeusTitle'
-import { OppiaineTable } from '../components-v2/opiskeluoikeus/OppiaineTable'
+import {
+  AddOppiaineenOsasuoritusDialog,
+  isArvioinnillinenOppiaine,
+  OppiaineTable
+} from '../components-v2/opiskeluoikeus/OppiaineTable'
 import {
   PaikallinenKoulutus,
   PaikallinenKoulutusFields
@@ -28,13 +34,20 @@ import { SuorituksenVahvistusField } from '../components-v2/opiskeluoikeus/Suori
 import { localize, t } from '../i18n/i18n'
 import { IBOpiskeluoikeus } from '../types/fi/oph/koski/schema/IBOpiskeluoikeus'
 import { IBTutkinto } from '../types/fi/oph/koski/schema/IBTutkinto'
-import { isLaajuusKursseissa } from '../types/fi/oph/koski/schema/LaajuusKursseissa'
+import {
+  isLaajuusKursseissa,
+  LaajuusKursseissa
+} from '../types/fi/oph/koski/schema/LaajuusKursseissa'
 import { LukionOpiskeluoikeusjakso } from '../types/fi/oph/koski/schema/LukionOpiskeluoikeusjakso'
-import { PaikallinenKoodi } from '../types/fi/oph/koski/schema/PaikallinenKoodi'
+import {
+  isPaikallinenKoodi,
+  PaikallinenKoodi
+} from '../types/fi/oph/koski/schema/PaikallinenKoodi'
 import { PreIBKoulutusmoduuli2015 } from '../types/fi/oph/koski/schema/PreIBKoulutusmoduuli2015'
 import { PreIBKoulutusmoduuli2019 } from '../types/fi/oph/koski/schema/PreIBKoulutusmoduuli2019'
+import { PreIBKurssinSuoritus2015 } from '../types/fi/oph/koski/schema/PreIBKurssinSuoritus2015'
 import { PreIBSuorituksenOsasuoritus2015 } from '../types/fi/oph/koski/schema/PreIBSuorituksenOsasuoritus2015'
-import { appendOptional, deleteAt } from '../util/array'
+import { appendOptional, deleteAt, replaceLast } from '../util/array'
 import { koodiviiteId } from '../util/koodisto'
 import { sum } from '../util/numbers'
 import { PäätasonSuoritusOf } from '../util/opiskeluoikeus'
@@ -45,19 +58,17 @@ import {
   ibKoulutusNimi,
   IBPäätasonSuoritusTiedot
 } from './IBPaatasonSuoritusTiedot'
+import { UusiPreIB2015OppiaineDialog } from './dialogs/UusiPreIB2015OppiaineDialog'
+import { createPreIBKurssinSuoritus2015 } from './oppiaineet/preIBKurssi2015'
 import {
-  PaikallinenKey,
-  preIB2015Oppiainekategoriat,
-  useAineryhmäOptions,
-  useKielivalikoimaOptions,
-  useMatematiikanOppimääräOptions,
-  usePreIBTunnisteOptions,
-  useÄidinkielenKieliOptions
+  useLukiokurssinTyypit,
+  useOppiaineenKurssiOptions
 } from './state/options'
-import {
-  PreIBOppiaineTunniste,
-  useUusiPreIB2015OppiaineState
-} from './state/preIBOppiaine'
+import { useIBOsasuoritusState } from './state/osasuoritusState'
+import { LukionArviointi } from '../types/fi/oph/koski/schema/LukionArviointi'
+import { LukionModuulinTaiPaikallisenOpintojaksonArviointi2019 } from '../types/fi/oph/koski/schema/LukionModuulinTaiPaikallisenOpintojaksonArviointi2019'
+import { IBKurssinArviointi } from '../types/fi/oph/koski/schema/IBKurssinArviointi'
+import { Arviointi } from '../types/fi/oph/koski/schema/Arviointi'
 
 export type IBEditorProps = AdaptedOpiskeluoikeusEditorProps<IBOpiskeluoikeus>
 
@@ -112,6 +123,59 @@ const IBPäätasonSuoritusEditor: React.FC<
     [form, päätasonSuoritus.path]
   )
 
+  const addOsasuoritus = useCallback(
+    (oppiaineIndex: number, osasuoritus: PreIBKurssinSuoritus2015) => {
+      form.updateAt(
+        päätasonSuoritus.path
+          .prop('osasuoritukset')
+          .optional()
+          .at(oppiaineIndex)
+          .prop('osasuoritukset') as any,
+        appendOptional(osasuoritus)
+      )
+    },
+    [form, päätasonSuoritus.path]
+  )
+
+  const addKurssiArviointi = useCallback(
+    (
+      oppiaineIndex: number,
+      osasuoritusIndex: number,
+      arviointi:
+        | LukionArviointi
+        | IBKurssinArviointi
+        | LukionModuulinTaiPaikallisenOpintojaksonArviointi2019
+    ) => {
+      form.updateAt(
+        päätasonSuoritus.path
+          .prop('osasuoritukset')
+          .optional()
+          .at(oppiaineIndex)
+          .prop('osasuoritukset')
+          .optional()
+          .at(osasuoritusIndex)
+          .prop('arviointi') as any,
+        replaceLast(arviointi)
+      )
+    },
+    [form, päätasonSuoritus.path]
+  )
+
+  const addOppiaineArviointi = useCallback(
+    (oppiaineIndex: number, arviointi: Arviointi) => {
+      form.updateAt(
+        päätasonSuoritus.path
+          .prop('osasuoritukset')
+          .optional()
+          .at(oppiaineIndex)
+          .guard(isArvioinnillinenOppiaine)
+          .prop('arviointi') as any,
+        replaceLast(arviointi)
+      )
+    },
+    [form, päätasonSuoritus.path]
+  )
+
   return (
     <EditorContainer
       form={form}
@@ -140,6 +204,10 @@ const IBPäätasonSuoritusEditor: React.FC<
         suoritus={päätasonSuoritus.suoritus}
         form={form}
         onDelete={deleteOppiaine}
+        addOsasuoritusDialog={AddIBOsasuoritusDialog}
+        onAddOsasuoritus={addOsasuoritus}
+        onArviointi={addKurssiArviointi}
+        onOppiaineArviointi={addOppiaineArviointi}
       />
 
       {kurssejaYhteensä !== null && (
@@ -186,36 +254,18 @@ const useSuoritetutKurssitYhteensä = (
   return isEmpty(laajuudet) ? null : sum(laajuudet)
 }
 
-type UusiPreIB2015OppiaineDialogProps = {
-  päätasonSuoritus: PäätasonSuoritusOf<IBOpiskeluoikeus>
-  onClose: () => void
-  onSubmit: (oppiaine: PreIBSuorituksenOsasuoritus2015) => void
-}
+const AddIBOsasuoritusDialog: AddOppiaineenOsasuoritusDialog<
+  PreIBKurssinSuoritus2015
+> = ({ onAdd, ...props }) => {
+  const koulutus = props.oppiaine.koulutusmoduuli
+  const state = useIBOsasuoritusState(koulutus, createPreIBKurssinSuoritus2015)
 
-const UusiPreIB2015OppiaineDialog: React.FC<
-  UusiPreIB2015OppiaineDialogProps
-> = (props) => {
-  const state = useUusiPreIB2015OppiaineState()
-  const tunnisteet = usePreIBTunnisteOptions(
-    preIB2015Oppiainekategoriat,
-    props.päätasonSuoritus
+  const lukioTunnisteet = useOppiaineenKurssiOptions(
+    !isPaikallinenKoodi(props.oppiaine.koulutusmoduuli.tunniste)
+      ? props.oppiaine.koulutusmoduuli.tunniste
+      : undefined
   )
-  const kielet = useKielivalikoimaOptions(state.kieli.visible)
-  const matematiikanOppimäärät = useMatematiikanOppimääräOptions(
-    state.matematiikanOppimäärä.visible
-  )
-  const ryhmät = useAineryhmäOptions(state.ryhmä.visible)
-  const äidinkielenKielet = useÄidinkielenKieliOptions(
-    state.äidinkielenKieli.visible
-  )
-
-  const onTunniste = useCallback(
-    (option?: SelectOption<PreIBOppiaineTunniste>) => {
-      state.tunniste.set(option?.value)
-      state.paikallinenTunniste.setVisible(option?.key === PaikallinenKey)
-    },
-    [state.paikallinenTunniste, state.tunniste]
-  )
+  const kurssityypit = useLukiokurssinTyypit(state.lukiokurssinTyyppi.visible)
 
   const onPaikallinenKoulutus = useCallback(
     (paikallinen?: PaikallinenKoulutus) => {
@@ -226,97 +276,76 @@ const UusiPreIB2015OppiaineDialog: React.FC<
             nimi: localize(paikallinen.nimi)
           })
         )
-        state.paikallinenKuvaus.set(localize(paikallinen.kuvaus))
+        state.kuvaus.set(localize(paikallinen.kuvaus))
       }
     },
-    [state.paikallinenKuvaus, state.paikallinenTunniste]
+    [state.kuvaus, state.paikallinenTunniste]
   )
 
-  const onSubmit = useCallback(() => {
-    if (state.result) {
-      props.onSubmit(state.result)
-    }
-  }, [props, state.result])
+  const addOsasuoritus = useCallback(() => {
+    state.result && onAdd(state.result)
+  }, [onAdd, state.result])
 
   return (
     <Modal>
-      <ModalTitle>{t('Oppiaineen lisäys')}</ModalTitle>
+      <ModalTitle>{t('Lisää osasuoritus')}</ModalTitle>
       <ModalBody>
-        {tunnisteet && (
+        {state.tunniste.visible && lukioTunnisteet && (
           <label>
-            {t('Oppiaine')}
-            <DialogSelect
-              options={tunnisteet}
+            {t('Osasuoritus')}
+            <Select
+              inlineOptions
+              options={lukioTunnisteet}
               value={state.tunniste.value && koodiviiteId(state.tunniste.value)}
-              onChange={onTunniste}
+              onChange={(o) => state.tunniste.set(o?.value as any)}
               testId="tunniste"
-            />
-          </label>
-        )}
-        {state.kieli.visible && kielet && (
-          <label>
-            {t('Kieli')}
-            <DialogSelect
-              options={kielet}
-              value={state.kieli.value && koodiviiteId(state.kieli.value)}
-              onChange={(o) => state.kieli.set(o?.value)}
-              testId="kieli"
-            />
-          </label>
-        )}
-        {state.ryhmä.visible && ryhmät && (
-          <label>
-            {t('Aineryhmä')}
-            <DialogSelect
-              options={ryhmät}
-              value={state.ryhmä.value && koodiviiteId(state.ryhmä.value)}
-              onChange={(o) => state.ryhmä.set(o?.value)}
-              testId="ryhmä"
-            />
-          </label>
-        )}
-        {state.matematiikanOppimäärä.visible && matematiikanOppimäärät && (
-          <label>
-            {t('Oppimäärä')}
-            <DialogSelect
-              options={matematiikanOppimäärät}
-              value={
-                state.matematiikanOppimäärä.value &&
-                koodiviiteId(state.matematiikanOppimäärä.value)
-              }
-              onChange={(o) => state.matematiikanOppimäärä.set(o?.value)}
-              testId="matematiikanOppimäärä"
-            />
-          </label>
-        )}
-        {state.äidinkielenKieli.visible && äidinkielenKielet && (
-          <label>
-            {t('Kieli')}
-            <DialogSelect
-              options={äidinkielenKielet}
-              value={
-                state.äidinkielenKieli.value &&
-                koodiviiteId(state.äidinkielenKieli.value)
-              }
-              onChange={(o) => state.äidinkielenKieli.set(o?.value)}
-              testId="äidinkielenKieli"
             />
           </label>
         )}
         {state.paikallinenTunniste.visible && (
           <PaikallinenKoulutusFields onChange={onPaikallinenKoulutus} />
         )}
+        {state.lukiokurssinTyyppi.visible && kurssityypit && (
+          <label>
+            {t('Kurssin tyyppi')}
+            <DialogSelect
+              options={kurssityypit}
+              value={
+                state.lukiokurssinTyyppi.value &&
+                koodiviiteId(state.lukiokurssinTyyppi.value)
+              }
+              onChange={(o) => state.lukiokurssinTyyppi.set(o?.value)}
+              testId="tunniste"
+            />
+          </label>
+        )}
+        {state.laajuus.visible && (
+          <label>
+            {t('Laajuus')}
+            <NumberField
+              value={state.laajuus.value?.arvo}
+              onChange={(arvo) =>
+                state.laajuus.set(LaajuusKursseissa({ arvo }))
+              }
+              testId="laajuus"
+            />
+          </label>
+        )}
+        {state.pakollinen.visible && (
+          <label>
+            <Checkbox
+              label={t('Pakollinen')}
+              checked={!!state.pakollinen.value}
+              onChange={state.pakollinen.set}
+              testId="pakollinen"
+            />
+          </label>
+        )}
       </ModalBody>
       <ModalFooter>
-        <FlatButton onClick={props.onClose} testId="cancel">
-          {t('Peruuta')}
-        </FlatButton>
-        <RaisedButton
-          onClick={onSubmit}
-          disabled={!state.result}
-          testId="submit"
-        >
-          {t('Lisää opiskeluoikeus')}
+        <FlatButton onClick={props.onClose}>{t('Peruuta')}</FlatButton>
+        <RaisedButton onClick={addOsasuoritus} disabled={!state.result}>
+          {t('Lisää')}
         </RaisedButton>
       </ModalFooter>
     </Modal>

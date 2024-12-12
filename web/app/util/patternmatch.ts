@@ -7,7 +7,7 @@ export type PatternMatcher<T, R> = {
   getOrNull: () => R | null
 }
 
-export const match = <T, R>(value: T): PatternMatcher<T, R> => {
+export const match = <T, R = any>(value: T): PatternMatcher<T, R> => {
   let firstResult: R | undefined
 
   return {

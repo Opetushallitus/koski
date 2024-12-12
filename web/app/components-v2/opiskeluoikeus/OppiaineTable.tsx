@@ -1,40 +1,58 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { ISO2FinnishDate } from '../../date/date'
 import { t } from '../../i18n/i18n'
+import { isArvioinniton } from '../../types/fi/oph/koski/schema/Arvioinniton'
 import { Arviointi } from '../../types/fi/oph/koski/schema/Arviointi'
 import { IBOpiskeluoikeus } from '../../types/fi/oph/koski/schema/IBOpiskeluoikeus'
 import { IBPäätasonSuoritus } from '../../types/fi/oph/koski/schema/IBPaatasonSuoritus'
-import { isMuidenLukioOpintojenPreIBSuoritus2019 } from '../../types/fi/oph/koski/schema/MuidenLukioOpintojenPreIBSuoritus2019'
+import { LukionArviointi } from '../../types/fi/oph/koski/schema/LukionArviointi'
+import { MuidenLukioOpintojenPreIBSuoritus2019 } from '../../types/fi/oph/koski/schema/MuidenLukioOpintojenPreIBSuoritus2019'
 import { Suoritus } from '../../types/fi/oph/koski/schema/Suoritus'
 import { isValinnaisuus } from '../../types/fi/oph/koski/schema/Valinnaisuus'
+import { isPaikallinenKoodi } from '../../types/fi/oph/koski/schema/PaikallinenKoodi'
+import { PreIBSuoritus2019 } from '../../types/fi/oph/koski/schema/PreIBSuoritus2019'
 import { isValinnanMahdollisuus } from '../../types/fi/oph/koski/schema/ValinnanMahdollisuus'
-import { parasArviointi } from '../../util/arvioinnit'
+import { parasArviointi, viimeisinArviointi } from '../../util/arvioinnit'
 import { sum } from '../../util/numbers'
 import { KoulutusmoduuliOf, OsasuoritusOf } from '../../util/schema'
 import { suoritusValmis } from '../../util/suoritus'
 import { useBooleanState } from '../../util/useBooleanState'
 import { notUndefined } from '../../util/util'
 import { KeyValueRow, KeyValueTable } from '../containers/KeyValueTable'
+import { FlatButton } from '../controls/FlatButton'
 import { IconButton } from '../controls/IconButton'
 import { FormModel } from '../forms/FormModel'
 import { CHARCODE_REMOVE } from '../texts/Icon'
+import { ArvosanaEdit } from './ArvosanaField'
 
 // Vain OppiaineTablen tukemat päätason suoritukset (tätä komponenttia tullaan myöhemmin käyttämään ainakin lukion näkymille)
 export type OppiainePäätasonSuoritus = IBPäätasonSuoritus
 
 export type OppiaineOsasuoritus = OsasuoritusOf<OppiainePäätasonSuoritus>
 
-export type OppiaineTableProps = {
+export type OppiaineTableProps<T> = {
   form: FormModel<IBOpiskeluoikeus>
   suoritus: OppiainePäätasonSuoritus
   onDelete: (index: number) => void
+  addOsasuoritusDialog: AddOppiaineenOsasuoritusDialog<T>
+  onAddOsasuoritus: (oppiaineIndex: number, osasuoritus: T) => void
+  onArviointi: (
+    oppiaineIndex: number,
+    osasuoritusIndex: number,
+    arviointi: LukionArviointi
+  ) => void
+  onOppiaineArviointi: (oppiaineIndex: number, arviointi: Arviointi) => void
 }
 
-export const OppiaineTable: React.FC<OppiaineTableProps> = ({
+export const OppiaineTable = <T,>({
   suoritus,
   form,
-  onDelete
-}) => {
+  onDelete,
+  addOsasuoritusDialog,
+  onAddOsasuoritus,
+  onArviointi,
+  onOppiaineArviointi
+}: OppiaineTableProps<T>) => {
   const oppiaineet = suoritus.osasuoritukset || []
 
   return oppiaineet.length === 0 ? null : (
@@ -55,6 +73,14 @@ export const OppiaineTable: React.FC<OppiaineTableProps> = ({
             oppiaine={oppiaine}
             form={form}
             onDelete={() => onDelete(i)}
+            addOsasuoritusDialog={addOsasuoritusDialog}
+            onAddOsasuoritus={(osasuoritus) => onAddOsasuoritus(i, osasuoritus)}
+            onArviointi={(osasuoritusIndex, arviointi) =>
+              onArviointi(i, osasuoritusIndex, arviointi)
+            }
+            onOppiaineArviointi={(arviointi) =>
+              onOppiaineArviointi(i, arviointi)
+            }
           />
         ))}
       </tbody>
@@ -62,20 +88,49 @@ export const OppiaineTable: React.FC<OppiaineTableProps> = ({
   )
 }
 
-type OppiaineRowProps = {
+export type OppiaineRowProps<T> = {
   form: FormModel<IBOpiskeluoikeus>
   oppiaine: OppiaineOsasuoritus
+  addOsasuoritusDialog: AddOppiaineenOsasuoritusDialog<T>
+  onAddOsasuoritus: (t: T) => void
+  onArviointi: (osasuoritusIndex: number, arviointi: LukionArviointi) => void
+  onOppiaineArviointi: (arviointi: Arviointi) => void
   onDelete: () => void
 }
 
-const OppiaineRow: React.FC<OppiaineRowProps> = ({
+export type AddOppiaineenOsasuoritusDialog<T> = React.FC<{
+  oppiaine: OppiaineOsasuoritus
+  onAdd: (t: T) => void
+  onClose: () => void
+}>
+
+const OppiaineRow = <T,>({
   oppiaine,
   form,
-  onDelete
-}) => {
+  onDelete,
+  addOsasuoritusDialog,
+  onAddOsasuoritus,
+  onArviointi,
+  onOppiaineArviointi
+}: OppiaineRowProps<T>) => {
   const kurssit = oppiaine.osasuoritukset || []
   const kurssejaYhteensä = sum(
     kurssit.map((k) => k.koulutusmoduuli.laajuus?.arvo || 0)
+  )
+  const [
+    addOsasuoritusDialogVisible,
+    showAddOsasuoritusDialog,
+    hideAddOsasuoritusDialog
+  ] = useBooleanState(false)
+
+  const AddOsasuoritusDialog = addOsasuoritusDialog
+
+  const addOsasuoritus = useCallback(
+    (osasuoritus: T) => {
+      onAddOsasuoritus(osasuoritus)
+      hideAddOsasuoritusDialog()
+    },
+    [hideAddOsasuoritusDialog, onAddOsasuoritus]
   )
 
   return (
@@ -89,12 +144,29 @@ const OppiaineRow: React.FC<OppiaineRowProps> = ({
         </div>
         <div className="OppiaineRow__kurssit">
           {kurssit.map((kurssi, index) => (
-            <Kurssi key={index} kurssi={kurssi} oppiaine={oppiaine} />
+            <Kurssi
+              key={index}
+              kurssi={kurssi}
+              oppiaine={oppiaine}
+              editMode={form.editMode}
+              onArviointi={(a) => a && onArviointi(index, a)}
+            />
           ))}
+          {form.editMode && (
+            <FlatButton onClick={showAddOsasuoritusDialog}>
+              {t('Lisää osasuoritus')}
+            </FlatButton>
+          )}
         </div>
       </td>
       <td className="OppiaineRow__laajuus">{kurssejaYhteensä}</td>
-      <td className="OppiaineRow__arvosana">{oppiaineenArvosana(oppiaine)}</td>
+      <td className="OppiaineRow__arvosana">
+        <OppiaineArvosana
+          form={form}
+          oppiaine={oppiaine}
+          onChange={onOppiaineArviointi}
+        />
+      </td>
       {form.editMode && (
         <td className="OppiaineRow__poisto">
           <IconButton
@@ -104,9 +176,58 @@ const OppiaineRow: React.FC<OppiaineRowProps> = ({
             onClick={onDelete}
             testId="delete"
           />
+          {addOsasuoritusDialogVisible && (
+            <AddOsasuoritusDialog
+              oppiaine={oppiaine}
+              onAdd={addOsasuoritus}
+              onClose={hideAddOsasuoritusDialog}
+            />
+          )}
         </td>
       )}
     </tr>
+  )
+}
+
+type OppiaineArvosanaProps = {
+  form: FormModel<IBOpiskeluoikeus>
+  oppiaine: OppiaineOsasuoritus
+  onChange: (a: Arviointi) => void
+}
+
+export const isArvioinnillinenOppiaine = (
+  os: OppiaineOsasuoritus
+): os is Exclude<OppiaineOsasuoritus, MuidenLukioOpintojenPreIBSuoritus2019> =>
+  !isArvioinniton(os)
+
+const OppiaineArvosana: React.FC<OppiaineArvosanaProps> = ({
+  form,
+  oppiaine,
+  onChange
+}) => {
+  const onChange_ = useCallback(
+    (a?: Arviointi) => {
+      a && onChange(a)
+    },
+    [onChange]
+  )
+
+  if (!isArvioinnillinenOppiaine(oppiaine)) {
+    return null
+  }
+
+  const arvioinnit: Arviointi[] | undefined = oppiaine.arviointi
+
+  return form.editMode ? (
+    <ArvosanaEdit
+      value={arvioinnit && viimeisinArviointi(arvioinnit)}
+      onChange={onChange_}
+      suoritusClassName={oppiaine.$class}
+    />
+  ) : (
+    <span>
+      {arvioinnit ? parasArviointi(arvioinnit)?.arvosana.koodiarvo : '-'}
+    </span>
   )
 }
 
@@ -122,19 +243,23 @@ const oppiaineenNimi = (
     .map((s) => t(s))
     .join(', ')
 
-const oppiaineenArvosana = (oppiaine: OppiaineOsasuoritus) =>
-  isMuidenLukioOpintojenPreIBSuoritus2019(oppiaine) || !oppiaine.arviointi
-    ? null
-    : parasArviointi(oppiaine.arviointi as Arviointi[])?.arvosana.koodiarvo
-
 type KurssiProps = {
+  editMode?: boolean
   oppiaine: OppiaineOsasuoritus
   kurssi: OsasuoritusOf<OppiaineOsasuoritus>
+  onArviointi: (arviointi?: LukionArviointi) => void
 }
 
-const Kurssi: React.FC<KurssiProps> = ({ kurssi, oppiaine }) => {
+const Kurssi: React.FC<KurssiProps> = ({
+  kurssi,
+  oppiaine,
+  editMode,
+  onArviointi
+}) => {
   const [tooltipVisible, openTooltip, closeTooltip] = useBooleanState(false)
   const tooltipId = `kurssi-${oppiaine.koulutusmoduuli.tunniste.koodiarvo}-${kurssi.koulutusmoduuli.tunniste.koodiarvo}`
+  const arviointi =
+    kurssi.arviointi && viimeisinArviointi([...kurssi.arviointi])
 
   return (
     <div className="Kurssi">
@@ -149,9 +274,18 @@ const Kurssi: React.FC<KurssiProps> = ({ kurssi, oppiaine }) => {
         {kurssi.koulutusmoduuli.tunniste.koodiarvo}
       </div>
       <div className="Kurssi__arvosana">
-        {kurssi.arviointi
-          ? parasArviointi(kurssi.arviointi as Arviointi[])?.arvosana.koodiarvo
-          : null}
+        {editMode ? (
+          <ArvosanaEdit
+            value={arviointi as any}
+            onChange={onArviointi}
+            suoritusClassName={kurssi.$class}
+            format={(k) => k.koodiarvo}
+          />
+        ) : kurssi.arviointi ? (
+          parasArviointi(kurssi.arviointi as Arviointi[])?.arvosana.koodiarvo
+        ) : (
+          '-'
+        )}
       </div>
       {tooltipVisible && <KurssiDetails kurssi={kurssi} id={tooltipId} />}
     </div>
