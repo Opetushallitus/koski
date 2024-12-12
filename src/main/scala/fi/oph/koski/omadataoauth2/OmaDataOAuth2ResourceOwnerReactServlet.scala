@@ -3,6 +3,7 @@ package fi.oph.koski.omadataoauth2
 import fi.oph.koski.config.{Environment, KoskiApplication}
 import fi.oph.koski.frontendvalvonta.FrontendValvontaMode
 import fi.oph.koski.koskiuser.KoskiSpecificAuthenticationSupport
+import fi.oph.koski.koskiuser.UserLanguage.setLanguageCookie
 import fi.oph.koski.servlet.{OmaOpintopolkuSupport, OppijaHtmlServlet}
 import org.scalatra.{MatchedRoute, ScalatraServlet}
 
@@ -14,8 +15,7 @@ class OmaDataOAuth2ResourceOwnerReactServlet(implicit val application: KoskiAppl
     FrontendValvontaMode(application.config.getString("frontend-valvonta.mode"))
 
   get("/authorize")(nonce => {
-    setLangCookieFromDomainIfNecessary
-    val lang = langFromCookie.getOrElse(langFromDomain)
+    val lang = setLangCookieIfNecessary
 
     val uri = request.getRequestURI
     val queryString = request.getQueryString
@@ -45,6 +45,17 @@ class OmaDataOAuth2ResourceOwnerReactServlet(implicit val application: KoskiAppl
       }
     }
   })
+
+  private def setLangCookieIfNecessary: String = {
+    multiParams("client_id").map(getOverrideDefaultLang) match {
+      case Seq(Some(lang)) if langFromCookie.isEmpty =>
+        setLanguageCookie(lang, response)
+        lang
+      case _ =>
+        setLangCookieFromDomainIfNecessary
+        langFromCookie.getOrElse(langFromDomain)
+    }
+  }
 
   private def landerHtml(nonce: String) = {
     htmlIndex(

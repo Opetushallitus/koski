@@ -6,8 +6,9 @@ import fi.oph.koski.log.Logging
 import scala.collection.JavaConverters._
 
 
-trait OmaDataOAuth2Config extends Logging  {
+trait OmaDataOAuth2Config extends Logging {
   def application: KoskiApplication
+
   protected def conf: TypeSafeConfig = application.config.getConfig("omadataoauth2")
 
   def hasConfigForClient(client_id: String): Boolean = getConfigOption(client_id).isDefined
@@ -39,4 +40,14 @@ trait OmaDataOAuth2Config extends Logging  {
       case _ => true
     }
   }
+
+  def getOverrideDefaultLang(client_id: String): Option[String] = {
+    getConfigOption(client_id) match {
+      case Some(clientConfig) if clientConfig.hasPath("override_default_language") =>
+        Some(clientConfig.getString("override_default_language"))
+      case _ =>
+        None
+    }
+  }
 }
+
