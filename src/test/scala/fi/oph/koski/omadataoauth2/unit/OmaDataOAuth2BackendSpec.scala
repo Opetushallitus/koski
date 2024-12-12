@@ -974,7 +974,7 @@ class OmaDataOAuth2BackendSpec
         Some(validRedirectUri),
         scope.split(" ").toSet
       ).getOrElse(throw new Error("Internal error"))
-        .successResponse.access_token
+        .accessToken
 
       postResourceServer(token, palveluKäyttäjä) {
         verifyResponseStatus(404)

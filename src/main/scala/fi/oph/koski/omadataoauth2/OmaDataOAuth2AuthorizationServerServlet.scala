@@ -9,6 +9,9 @@ import org.scalatra.ContentEncodingSupport
 import org.scalatra.forms._
 import org.scalatra.i18n.I18nSupport
 
+import java.time.Instant
+import java.time.temporal.ChronoUnit
+
 class OmaDataOAuth2AuthorizationServerServlet(implicit val application: KoskiApplication)
   extends KoskiSpecificApiServlet
     with Logging with ContentEncodingSupport with NoCache with FormSupport with I18nSupport with RequiresOmaDataOAuth2 with OmaDataOAuth2Support {
@@ -40,7 +43,11 @@ class OmaDataOAuth2AuthorizationServerServlet(implicit val application: KoskiApp
               allowedScopes = koskiSession.omaDataOAuth2Scopes
             ) match {
               case Left(error) => error.getAccessTokenErrorResponse
-              case Right(successResponse) => successResponse
+              case Right(accessTokenInfo: AccessTokenInfo) => AccessTokenSuccessResponse(
+                access_token = accessTokenInfo.accessToken,
+                token_type = "Bearer",
+                expires_in = Instant.now().until(accessTokenInfo.expirationTime, ChronoUnit.SECONDS)
+              )
             }
         }
       }
