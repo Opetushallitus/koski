@@ -12,7 +12,7 @@ import java.time.LocalDateTime
 
 @Title("Suoritusrekisterin kysely päivämäärän perusteella")
 @Description("Palauttaa Suoritusrekisteriä varten räätälöidyt tiedot annettujen oppijoiden ja koulutusmuodon mukaisista opiskeluoikeuksista tietyn ajanhetken jälkeen.")
-@Description("Vastauksen skeema on saatavana <a href=\"/koski/json-schema-viewer/?schema=suoritusrekisteri-result.json\">täältä.</a>")
+@Description("Vastauksen skeema on taulukko <a href=\"/koski/json-schema-viewer/?schema=suoritusrekisteri-result.json\">SureResponse</a>-objekteja.")
 case class SuoritusrekisteriMuuttuneetJalkeenQuery(
   @EnumValues(Set("sure-muuttuneet"))
   `type`: String = "sure-muuttuneet",

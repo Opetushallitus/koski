@@ -11,7 +11,7 @@ import java.sql.Timestamp
 
 @Title("Suoritusrekisterin kysely oppijoiden perusteella")
 @Description("Palauttaa Suoritusrekisteriä varten räätälöidyt tiedot annettujen oppijoiden opiskeluoikeuksista.")
-@Description("Vastauksen skeema on saatavana <a href=\"/koski/json-schema-viewer/?schema=suoritusrekisteri-result.json\">täältä.</a>")
+@Description("Vastauksen skeema on taulukko <a href=\"/koski/json-schema-viewer/?schema=suoritusrekisteri-result.json\">SureResponse</a>-objekteja.")
 case class SuoritusrekisteriOppijaOidsQuery(
   @EnumValues(Set("sure-oppijat"))
   `type`: String = "sure-oppijat",
