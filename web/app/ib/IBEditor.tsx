@@ -242,12 +242,14 @@ const IBPäätasonSuoritusEditor: React.FC<
       )}
 
       {addOppiaineVisible &&
+        organisaatio &&
         match(päätasonSuoritus.suoritus.koulutusmoduuli)
           .isClass(PreIBKoulutusmoduuli2015, () => (
             <UusiPreIB2015OppiaineDialog
               päätasonSuoritus={päätasonSuoritus.suoritus}
               onClose={hideAddOppiaineDialog}
               onSubmit={addOppiaine}
+              organisaatioOid={organisaatio?.oid}
             />
           ))
           .isClass(PreIBKoulutusmoduuli2019, () => <p>TODO</p>)

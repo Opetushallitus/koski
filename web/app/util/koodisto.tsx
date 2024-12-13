@@ -16,6 +16,7 @@ import {
   isKorkeakoulunPaikallinenArvosana,
   KorkeakoulunPaikallinenArvosana
 } from '../types/fi/oph/koski/schema/KorkeakoulunPaikallinenArvosana'
+import { nonNull } from './fp/arrays'
 
 export type KoodistoUriOf<T extends Koodistokoodiviite> = T['koodistoUri']
 export type KoodiarvotOf<T extends Koodistokoodiviite> = T['koodiarvo']

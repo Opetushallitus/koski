@@ -1,40 +1,49 @@
 import React, { useCallback } from 'react'
+import { usePreferences } from '../../appstate/preferences'
 import {
   Modal,
-  ModalTitle,
   ModalBody,
-  ModalFooter
+  ModalFooter,
+  ModalTitle
 } from '../../components-v2/containers/Modal'
 import { FlatButton } from '../../components-v2/controls/FlatButton'
 import { RaisedButton } from '../../components-v2/controls/RaisedButton'
-import { SelectOption } from '../../components-v2/controls/Select'
+import { Select, SelectOption } from '../../components-v2/controls/Select'
 import {
+  paikallinenKoulutus,
   PaikallinenKoulutus,
   PaikallinenKoulutusFields
 } from '../../components-v2/opiskeluoikeus/PaikallinenKoulutusFields'
 import { localize, t } from '../../i18n/i18n'
 import { IBOpiskeluoikeus } from '../../types/fi/oph/koski/schema/IBOpiskeluoikeus'
-import { PaikallinenKoodi } from '../../types/fi/oph/koski/schema/PaikallinenKoodi'
+import {
+  isPaikallinenKoodi,
+  PaikallinenKoodi
+} from '../../types/fi/oph/koski/schema/PaikallinenKoodi'
+import {
+  isPaikallinenLukionOppiaine2015,
+  PaikallinenLukionOppiaine2015
+} from '../../types/fi/oph/koski/schema/PaikallinenLukionOppiaine2015'
 import { PreIBSuorituksenOsasuoritus2015 } from '../../types/fi/oph/koski/schema/PreIBSuorituksenOsasuoritus2015'
 import { koodiviiteId } from '../../util/koodisto'
 import { PäätasonSuoritusOf } from '../../util/opiskeluoikeus'
 import { DialogSelect } from '../../uusiopiskeluoikeus/components/DialogSelect'
 import {
-  usePreIBTunnisteOptions,
   preIB2015Oppiainekategoriat,
+  useAineryhmäOptions,
   useKielivalikoimaOptions,
   useMatematiikanOppimääräOptions,
-  useAineryhmäOptions,
+  usePreIBTunnisteOptions,
   useÄidinkielenKieliOptions,
-  PaikallinenKey
+  UusiPaikallinenKey
 } from '../state/options'
 import {
-  useUusiPreIB2015OppiaineState,
-  PreIBOppiaineTunniste
+  PreIBOppiaineTunniste,
+  useUusiPreIB2015OppiaineState
 } from '../state/preIBOppiaine'
-import { Select } from '../../components-v2/controls/Select'
 
 export type UusiPreIB2015OppiaineDialogProps = {
+  organisaatioOid: string
   päätasonSuoritus: PäätasonSuoritusOf<IBOpiskeluoikeus>
   onClose: () => void
   onSubmit: (oppiaine: PreIBSuorituksenOsasuoritus2015) => void
@@ -44,9 +53,18 @@ export const UusiPreIB2015OppiaineDialog: React.FC<
   UusiPreIB2015OppiaineDialogProps
 > = (props) => {
   const state = useUusiPreIB2015OppiaineState()
+  const {
+    preferences: paikallisetOppiaineet,
+    store: storePaikallinenOppiaine,
+    remove: removePaikallinenOppiaine
+  } = usePreferences<PaikallinenLukionOppiaine2015>(
+    props.organisaatioOid,
+    'paikallinenlukionoppiaine'
+  )
   const tunnisteet = usePreIBTunnisteOptions(
     preIB2015Oppiainekategoriat,
-    props.päätasonSuoritus
+    props.päätasonSuoritus,
+    paikallisetOppiaineet
   )
   const kielet = useKielivalikoimaOptions(state.kieli.visible)
   const matematiikanOppimäärät = useMatematiikanOppimääräOptions(
@@ -59,11 +77,25 @@ export const UusiPreIB2015OppiaineDialog: React.FC<
 
   const onTunniste = useCallback(
     (option?: SelectOption<PreIBOppiaineTunniste>) => {
-      console.log('tunniste', option)
       state.tunniste.set(option?.value)
-      state.paikallinenTunniste.setVisible(option?.key === PaikallinenKey)
+      if (isPaikallinenKoodi(option?.value)) {
+        state.paikallinenTunniste.setVisible(true)
+        state.paikallinenTunniste.set(option.value)
+        state.paikallinenKuvaus.set(localize('todo: kaiva kuvaus'))
+      } else {
+        state.paikallinenTunniste.setVisible(option?.key === UusiPaikallinenKey)
+      }
     },
-    [state.paikallinenTunniste, state.tunniste]
+    [state.paikallinenKuvaus, state.paikallinenTunniste, state.tunniste]
+  )
+
+  const onDeleteTunniste = useCallback(
+    (option?: SelectOption<PreIBOppiaineTunniste>) => {
+      if (option?.value) {
+        removePaikallinenOppiaine(koodiviiteId(option.value))
+      }
+    },
+    [removePaikallinenOppiaine]
   )
 
   const onPaikallinenKoulutus = useCallback(
@@ -84,8 +116,15 @@ export const UusiPreIB2015OppiaineDialog: React.FC<
   const onSubmit = useCallback(() => {
     if (state.result) {
       props.onSubmit(state.result)
+      const koulutusmoduuli = state.result.koulutusmoduuli
+      if (isPaikallinenLukionOppiaine2015(koulutusmoduuli)) {
+        storePaikallinenOppiaine(
+          koodiviiteId(koulutusmoduuli.tunniste),
+          koulutusmoduuli
+        )
+      }
     }
-  }, [props, state.result])
+  }, [props, state.result, storePaikallinenOppiaine])
 
   return (
     <Modal>
@@ -99,10 +138,11 @@ export const UusiPreIB2015OppiaineDialog: React.FC<
               options={tunnisteet}
               value={
                 state.paikallinenTunniste.visible
-                  ? PaikallinenKey
+                  ? UusiPaikallinenKey
                   : state.tunniste.value && koodiviiteId(state.tunniste.value)
               }
               onChange={onTunniste}
+              onRemove={onDeleteTunniste}
               testId="tunniste"
             />
           </label>
@@ -158,7 +198,17 @@ export const UusiPreIB2015OppiaineDialog: React.FC<
           </label>
         )}
         {state.paikallinenTunniste.visible && (
-          <PaikallinenKoulutusFields onChange={onPaikallinenKoulutus} />
+          <PaikallinenKoulutusFields
+            onChange={onPaikallinenKoulutus}
+            initial={
+              state.paikallinenTunniste.value &&
+              state.paikallinenKuvaus.value &&
+              paikallinenKoulutus(
+                state.paikallinenTunniste.value,
+                state.paikallinenKuvaus.value
+              )
+            }
+          />
         )}
       </ModalBody>
       <ModalFooter>
@@ -170,7 +220,7 @@ export const UusiPreIB2015OppiaineDialog: React.FC<
           disabled={!state.result}
           testId="submit"
         >
-          {t('Lisää opiskeluoikeus')}
+          {t('Lisää')}
         </RaisedButton>
       </ModalFooter>
     </Modal>

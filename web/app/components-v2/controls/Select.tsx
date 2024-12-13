@@ -25,6 +25,7 @@ import { coerceForSort, textSearch } from '../../util/strings'
 import { CommonProps, common, cx } from '../CommonProps'
 import { Removable } from './Removable'
 import { Spinner } from '../texts/Spinner'
+import { PaikallinenKoodi } from '../../types/fi/oph/koski/schema/PaikallinenKoodi'
 
 export type SelectProps<T> = CommonProps<{
   initialValue?: OptionKey
@@ -233,7 +234,13 @@ const OptionList = <T,>(props: OptionListProps<T>): React.ReactElement => {
                 {opt.display || opt.label}
               </div>
             </Removable>
-            {opt.children && <OptionList options={opt.children} {...rest} />}
+            {opt.children && (
+              <OptionList
+                options={opt.children}
+                onRemove={onRemove}
+                {...rest}
+              />
+            )}
           </li>
         </TestIdLayer>
       ))}
@@ -427,6 +434,16 @@ const useSelectState = <T,>(props: SelectProps<T>) => {
 
 // Exported utils
 
+export const optionGroup = <T,>(
+  label: string,
+  children: SelectOption<T>[]
+): SelectOption<T> => ({
+  key: label,
+  label,
+  isGroup: true,
+  children
+})
+
 export const regroupKoodisto = <T extends string>(
   koodit: KoodistokoodiviiteKoodistonNimellä<T>[],
   getGroup: (k: KoodistokoodiviiteKoodistonNimellä<T>) => string | null
@@ -464,6 +481,16 @@ export const koodiviiteToOption = <T extends string>(
   key: koodistokoodiviiteId(koodiviite),
   value: koodiviite,
   label: t(koodiviite.nimi) || koodiviite.koodiarvo
+})
+
+export const paikallinenKoodiToOption = (
+  koodi: PaikallinenKoodi,
+  options?: Partial<SelectOption<PaikallinenKoodi>>
+): SelectOption<PaikallinenKoodi> => ({
+  key: `paikallinen_${koodi.koodistoUri || ''}_${koodi.koodiarvo}`,
+  value: koodi,
+  label: t(koodi.nimi) || koodi.koodiarvo,
+  ...options
 })
 
 export const perusteToOption = (peruste: Peruste): SelectOption<Peruste> => ({
