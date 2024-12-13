@@ -1,6 +1,5 @@
 package fi.oph.koski.config
 
-import com.amazonaws.util.EC2MetadataUtils
 import com.typesafe.config.{Config, ConfigException}
 import fi.oph.koski.db.DB
 

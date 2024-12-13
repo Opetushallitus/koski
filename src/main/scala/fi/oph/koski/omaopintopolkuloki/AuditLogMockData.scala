@@ -1,51 +1,50 @@
 package fi.oph.koski.omaopintopolkuloki
 
-import com.amazonaws.services.dynamodbv2.AmazonDynamoDB
-import com.amazonaws.services.dynamodbv2.model._
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.log.Logging
 import fi.oph.koski.organisaatio.{MockOrganisaatiot, Opetushallitus}
 import fi.oph.koski.omaopintopolkuloki.AuditLogDynamoDB.AuditLogTableName
+import software.amazon.awssdk.services.dynamodb.DynamoDbClient
+import software.amazon.awssdk.services.dynamodb.model.{AttributeDefinition, AttributeValue, CreateTableRequest, DeleteTableRequest, KeySchemaElement, KeyType, ProvisionedThroughput, PutItemRequest, ScalarAttributeType}
 
 import scala.collection.JavaConverters._
 
 object AuditLogMockData extends Logging {
 
-  def createTable(db: AmazonDynamoDB) = {
+  def createTable(db: DynamoDbClient) = {
     logger.info("Creating AuditLog DynamoDB table")
-    val tableDefinition = new CreateTableRequest()
-      .withAttributeDefinitions(
-        new AttributeDefinition("studentOid", ScalarAttributeType.S),
-        new AttributeDefinition("id", ScalarAttributeType.S)
+    val tableDefinition = CreateTableRequest.builder()
+      .attributeDefinitions(
+        AttributeDefinition.builder.attributeName("studentOid").attributeType(ScalarAttributeType.S).build(),
+        AttributeDefinition.builder.attributeName("id").attributeType(ScalarAttributeType.S).build(),
+      ).keySchema(
+        KeySchemaElement.builder.attributeName("studentOid").keyType(KeyType.HASH).build(),
+        KeySchemaElement.builder.attributeName("id").keyType(KeyType.RANGE).build()
       )
-      .withKeySchema(
-        new KeySchemaElement("studentOid", KeyType.HASH),
-        new KeySchemaElement("id", KeyType.RANGE)
+      .provisionedThroughput(
+        ProvisionedThroughput.builder.readCapacityUnits(20.longValue()).writeCapacityUnits(20.longValue()).build()
       )
-      .withProvisionedThroughput(
-        new ProvisionedThroughput(20.longValue(), 20.longValue())
-      )
-      .withTableName(AuditLogTableName)
+      .tableName(AuditLogTableName).build
 
-    if (db.listTables.getTableNames.asScala.contains(AuditLogTableName)) {
-      db.deleteTable(AuditLogTableName)
+    if (db.listTables.tableNames().asScala.contains(AuditLogTableName)) {
+      db.deleteTable(DeleteTableRequest.builder().tableName(AuditLogTableName).build())
     }
     db.createTable(tableDefinition)
     logger.info("Created AuditLog DynamoDB table")
   }
 
-  def insertMockData(db: AmazonDynamoDB) = {
+  def insertMockData(db: DynamoDbClient) = {
     logger.info("Inserting MockData to DynamoDB")
     data
       .zipWithIndex
       .map{ case (data, index) => Map(
-        "studentOid" -> new AttributeValue(data.studentOid),
-        "time" -> new AttributeValue(data.time),
-        "organizationOid" -> new AttributeValue(data.organizationOid.asJava),
-        "id" -> new AttributeValue(index.toString),
-        "raw" -> new AttributeValue(data.raw)
+        "studentOid" -> AttributeValue.builder.s(data.studentOid).build(),
+        "time" -> AttributeValue.builder.s(data.time).build(),
+        "organizationOid" -> AttributeValue.builder.ss(data.organizationOid.asJava).build(),
+        "id" -> AttributeValue.builder.s(index.toString).build(),
+        "raw" -> AttributeValue.builder.s(data.raw).build()
       ).asJava}
-      .foreach(item => db.putItem(AuditLogTableName, item))
+      .foreach(item => db.putItem(PutItemRequest.builder().tableName(AuditLogTableName).item(item).build()))
     logger.info("Done inserting MockData to DynamoDB")
   }
 
