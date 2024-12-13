@@ -2,13 +2,12 @@ package fi.oph.koski.omadataoauth2
 
 import fi.oph.koski.db.KoskiTables.{OAuth2Jako, OAuth2JakoKaikki}
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
-import fi.oph.koski.db.{DB, DatabaseExecutionContext, KoskiTables, OAuth2JakoRow, QueryMethods}
+import fi.oph.koski.db._
 import fi.oph.koski.log.Logging
 import fi.oph.koski.omadataoauth2.OmaDataOAuth2Security.{generateSecret, sha256}
 
 import java.sql.Timestamp
-import java.time.LocalDateTime
-import java.time.temporal.ChronoUnit
+import java.time.{Instant, LocalDateTime}
 
 class OmaDataOAuth2Repository(val db: DB) extends DatabaseExecutionContext with Logging with QueryMethods {
   def create(
@@ -89,20 +88,17 @@ class OmaDataOAuth2Repository(val db: DB) extends DatabaseExecutionContext with 
         val warning = OmaDataOAuth2Error(OmaDataOAuth2ErrorType.invalid_scope, s"scope=${tooWideScopes.mkString(" ")} exceeds the rights granted to the client ${row.clientId}")
         logger.warn(warning.getLoggedErrorMessage)
         DBIO.successful(Left(warning))
-      case Some(row)  =>
+      case Some(row) =>
         updateRow(
           rows = rows,
           accessTokenSHA256 = accessTokenAttemptSHA256.get
         ).flatMap {
           case 1 => DBIO.successful(Right(
             AccessTokenInfo(
-              AccessTokenSuccessResponse(
-                accessTokenAttempt,
-                "Bearer",
-                LocalDateTime.now.until(row.voimassaAsti.toLocalDateTime, ChronoUnit.SECONDS).max(0)
-              ),
-              row.oppijaOid,
-              row.scope
+              accessToken = accessTokenAttempt,
+              expirationTime = row.voimassaAsti.toInstant,
+              oppijaOid = row.oppijaOid,
+              scope = row.scope
             )
           ))
           case _ => {
@@ -141,16 +137,13 @@ class OmaDataOAuth2Repository(val db: DB) extends DatabaseExecutionContext with 
         val warning = OmaDataOAuth2Error(OmaDataOAuth2ErrorType.invalid_scope, s"scope=${tooWideScopes.mkString(" ")} exceeds the rights granted to the client ${row.clientId}")
         logger.warn(warning.getLoggedErrorMessage)
         Left(warning)
-      case Some(row)  =>
+      case Some(row) =>
         Right(
           AccessTokenInfo(
-            AccessTokenSuccessResponse(
-              accessToken,
-              "Bearer",
-              LocalDateTime.now.until(row.voimassaAsti.toLocalDateTime, ChronoUnit.SECONDS).max(0)
-            ),
-            row.oppijaOid,
-            row.scope
+            accessToken = accessToken,
+            expirationTime = row.voimassaAsti.toInstant,
+            oppijaOid = row.oppijaOid,
+            scope = row.scope
           )
         )
     }
@@ -208,7 +201,8 @@ class OmaDataOAuth2Repository(val db: DB) extends DatabaseExecutionContext with 
 }
 
 case class AccessTokenInfo(
-  successResponse: AccessTokenSuccessResponse,
+  accessToken: String,
+  expirationTime: Instant,
   oppijaOid: String,
   scope: String,
 )
