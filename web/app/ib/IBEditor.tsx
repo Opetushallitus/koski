@@ -123,6 +123,21 @@ const IBPäätasonSuoritusEditor: React.FC<
     [form, päätasonSuoritus.path]
   )
 
+  const deleteKurssi = useCallback(
+    (oppiaineIndex: number, kurssiIndex: number) => {
+      form.updateAt(
+        päätasonSuoritus.path
+          .prop('osasuoritukset')
+          .optional()
+          .at(oppiaineIndex)
+          .prop('osasuoritukset')
+          .optional(),
+        (ts) => deleteAt(kurssiIndex)(ts as any[])
+      )
+    },
+    [form, päätasonSuoritus.path]
+  )
+
   const addOsasuoritus = useCallback(
     (oppiaineIndex: number, osasuoritus: PreIBKurssinSuoritus2015) => {
       form.updateAt(
@@ -204,6 +219,7 @@ const IBPäätasonSuoritusEditor: React.FC<
         suoritus={päätasonSuoritus.suoritus}
         form={form}
         onDelete={deleteOppiaine}
+        onDeleteKurssi={deleteKurssi}
         addOsasuoritusDialog={AddIBOsasuoritusDialog}
         onAddOsasuoritus={addOsasuoritus}
         onArviointi={addKurssiArviointi}

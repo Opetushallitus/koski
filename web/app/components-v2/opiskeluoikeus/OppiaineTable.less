@@ -42,19 +42,30 @@
         .Kurssi {
           display: inline-block;
           position: relative;
-          width: 4 * @baseline;
+          min-width: 4 * @baseline;
+          max-width: 8 * @baseline;
           margin-right: @baseline;
 
           &__tunniste {
             color: @color-blue;
             font-weight: 600;
+            white-space: nowrap;
+            .IconButton {
+              margin-right: @baseline;
+            }
           }
         }
       }
 
-      &__laajuus,
+      &__laajuus {
+        text-align: right;
+      }
+
       &__arvosana {
         text-align: right;
+        .Select {
+          min-width: 150px;
+        }
       }
       &__poisto {
         background: none;

@@ -34,6 +34,7 @@ export type OppiaineTableProps<T> = {
   form: FormModel<IBOpiskeluoikeus>
   suoritus: OppiainePäätasonSuoritus
   onDelete: (index: number) => void
+  onDeleteKurssi: (index: number, kurssiIndex: number) => void
   addOsasuoritusDialog: AddOppiaineenOsasuoritusDialog<T>
   onAddOsasuoritus: (oppiaineIndex: number, osasuoritus: T) => void
   onArviointi: (
@@ -48,6 +49,7 @@ export const OppiaineTable = <T,>({
   suoritus,
   form,
   onDelete,
+  onDeleteKurssi,
   addOsasuoritusDialog,
   onAddOsasuoritus,
   onArviointi,
@@ -67,19 +69,24 @@ export const OppiaineTable = <T,>({
         </tr>
       </thead>
       <tbody>
-        {oppiaineet.map((oppiaine, i) => (
+        {oppiaineet.map((oppiaine, oppiaineIndex) => (
           <OppiaineRow
-            key={i}
+            key={oppiaineIndex}
             oppiaine={oppiaine}
             form={form}
-            onDelete={() => onDelete(i)}
+            onDelete={() => onDelete(oppiaineIndex)}
+            onDeleteKurssi={(osasuoritusIndex) =>
+              onDeleteKurssi(oppiaineIndex, osasuoritusIndex)
+            }
             addOsasuoritusDialog={addOsasuoritusDialog}
-            onAddOsasuoritus={(osasuoritus) => onAddOsasuoritus(i, osasuoritus)}
+            onAddOsasuoritus={(osasuoritus) =>
+              onAddOsasuoritus(oppiaineIndex, osasuoritus)
+            }
             onArviointi={(osasuoritusIndex, arviointi) =>
-              onArviointi(i, osasuoritusIndex, arviointi)
+              onArviointi(oppiaineIndex, osasuoritusIndex, arviointi)
             }
             onOppiaineArviointi={(arviointi) =>
-              onOppiaineArviointi(i, arviointi)
+              onOppiaineArviointi(oppiaineIndex, arviointi)
             }
           />
         ))}
@@ -96,6 +103,7 @@ export type OppiaineRowProps<T> = {
   onArviointi: (osasuoritusIndex: number, arviointi: LukionArviointi) => void
   onOppiaineArviointi: (arviointi: Arviointi) => void
   onDelete: () => void
+  onDeleteKurssi: (index: number) => void
 }
 
 export type AddOppiaineenOsasuoritusDialog<T> = React.FC<{
@@ -111,7 +119,8 @@ const OppiaineRow = <T,>({
   addOsasuoritusDialog,
   onAddOsasuoritus,
   onArviointi,
-  onOppiaineArviointi
+  onOppiaineArviointi,
+  onDeleteKurssi
 }: OppiaineRowProps<T>) => {
   const kurssit = oppiaine.osasuoritukset || []
   const kurssejaYhteensä = sum(
@@ -150,6 +159,7 @@ const OppiaineRow = <T,>({
               oppiaine={oppiaine}
               editMode={form.editMode}
               onArviointi={(a) => a && onArviointi(index, a)}
+              onDelete={() => onDeleteKurssi(index)}
             />
           ))}
           {form.editMode && (
@@ -248,13 +258,15 @@ type KurssiProps = {
   oppiaine: OppiaineOsasuoritus
   kurssi: OsasuoritusOf<OppiaineOsasuoritus>
   onArviointi: (arviointi?: LukionArviointi) => void
+  onDelete: () => void
 }
 
 const Kurssi: React.FC<KurssiProps> = ({
   kurssi,
   oppiaine,
   editMode,
-  onArviointi
+  onArviointi,
+  onDelete
 }) => {
   const [tooltipVisible, openTooltip, closeTooltip] = useBooleanState(false)
   const tooltipId = `kurssi-${oppiaine.koulutusmoduuli.tunniste.koodiarvo}-${kurssi.koulutusmoduuli.tunniste.koodiarvo}`
@@ -272,6 +284,15 @@ const Kurssi: React.FC<KurssiProps> = ({
         aria-describedby={tooltipId}
       >
         {kurssi.koulutusmoduuli.tunniste.koodiarvo}
+        {editMode && (
+          <IconButton
+            charCode={CHARCODE_REMOVE}
+            label={t('Poista')}
+            size="input"
+            onClick={onDelete}
+            testId="delete"
+          />
+        )}
       </div>
       <div className="Kurssi__arvosana">
         {editMode ? (
