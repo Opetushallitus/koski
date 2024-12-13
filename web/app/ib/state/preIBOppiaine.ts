@@ -32,8 +32,11 @@ export type PreIBOppiaineTunnisteKoodistoUri =
   | 'oppiaineetib'
   | 'koskioppiaineetyleissivistava'
 
-export type PreIBOppiaineTunniste =
+export type ValtakunnallinenPreIBOppiaineTunniste =
   Koodistokoodiviite<PreIBOppiaineTunnisteKoodistoUri>
+export type PreIBOppiaineTunniste =
+  | ValtakunnallinenPreIBOppiaineTunniste
+  | PaikallinenKoodi
 
 export type UusiPreIBOppiaineState<T> = {
   tunniste: DialogField<PreIBOppiaineTunniste>
@@ -50,10 +53,6 @@ export type UusiPreIBOppiaineState<T> = {
 
 export const useUusiPreIB2015OppiaineState =
   (): UusiPreIBOppiaineState<PreIBSuorituksenOsasuoritus2015> => {
-    const tunnisteOptions = useKoodistot<
-      'oppiaineetib' | 'oppiaine' | 'koskioppiaineetyleissivistava'
-    >('oppiaineetib', 'oppiaine', 'koskioppiaineetyleissivistava')
-
     const tunniste = useDialogField<PreIBOppiaineTunniste>(true)
 
     const kieli = useDialogField<Koodistokoodiviite<'kielivalikoima'>>(

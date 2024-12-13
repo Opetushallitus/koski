@@ -13,7 +13,7 @@ import {
   LukiokurssiTunnisteUri,
   PreIBKurssiProps
 } from '../oppiaineet/preIBKurssi2015'
-import { Paikallinen } from './options'
+import { UusiPaikallinen } from './options'
 
 export type IBOsasuoritusState<T> = {
   tunniste: DialogField<Koodistokoodiviite<LukiokurssiTunnisteUri>>
@@ -31,7 +31,7 @@ export const useIBOsasuoritusState = <T>(
 ): IBOsasuoritusState<T> => {
   const tunniste =
     useDialogField<Koodistokoodiviite<LukiokurssiTunnisteUri>>(true)
-  const paikallinen = tunniste.value === Paikallinen
+  const paikallinen = tunniste.value === UusiPaikallinen
 
   const lukiokurssinTyyppi = useDialogField<
     Koodistokoodiviite<'lukionkurssintyyppi'>

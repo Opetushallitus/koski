@@ -2,9 +2,12 @@ import React, { useState } from 'react'
 import { TestIdLayer } from '../../appstate/useTestId'
 import { t } from '../../i18n/i18n'
 import { TextEdit } from '../controls/TextField'
+import { PaikallinenKoodi } from '../../types/fi/oph/koski/schema/PaikallinenKoodi'
+import { LocalizedString } from '../../types/fi/oph/koski/schema/LocalizedString'
 
 export type PaikallinenKoulutusFieldsProps = {
   onChange: (values?: PaikallinenKoulutus) => void
+  initial?: PaikallinenKoulutus
 }
 
 export type PaikallinenKoulutus = {
@@ -19,11 +22,20 @@ const emptyPaikallinenKoulutus: PaikallinenKoulutus = {
   kuvaus: ''
 }
 
+export const paikallinenKoulutus = (
+  tunniste: PaikallinenKoodi,
+  kuvaus: LocalizedString
+): PaikallinenKoulutus => ({
+  nimi: t(tunniste.nimi),
+  koodiarvo: tunniste.koodiarvo,
+  kuvaus: t(kuvaus)
+})
+
 export const PaikallinenKoulutusFields = (
   props: PaikallinenKoulutusFieldsProps
 ) => {
   const [koulutus, setKoulutus] = useState<PaikallinenKoulutus>(
-    emptyPaikallinenKoulutus
+    props.initial || emptyPaikallinenKoulutus
   )
 
   const update = (field: keyof PaikallinenKoulutus) => (value?: string) => {
