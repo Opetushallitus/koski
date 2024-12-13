@@ -24,7 +24,7 @@ export type KoodiviiteIdOf<T extends Koodistokoodiviite> =
   `${KoodistoUriOf<T>}_${KoodiarvotOf<T>}`
 
 export const koodiviiteId = (a: KoodiViite): string =>
-  isKoodiviiteUriOptional(a) ? a.koodiarvo : koodistokoodiviiteId(a)
+  `${(a as any).koodistoUri || '_paikallinen'}_${a.koodiarvo}`
 
 export const koodistokoodiviiteId = (a: Koodistokoodiviite): string =>
   `${a.koodistoUri}_${a.koodiarvo}`

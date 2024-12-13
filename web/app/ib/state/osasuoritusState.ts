@@ -4,65 +4,76 @@ import {
   useDialogField
 } from '../../components-v2/createdialog/DialogField'
 import { OppiaineOsasuoritus } from '../../components-v2/opiskeluoikeus/OppiaineTable'
-import { Koodistokoodiviite } from '../../types/fi/oph/koski/schema/Koodistokoodiviite'
+import {
+  isKoodistokoodiviite,
+  Koodistokoodiviite
+} from '../../types/fi/oph/koski/schema/Koodistokoodiviite'
 import { LaajuusKursseissa } from '../../types/fi/oph/koski/schema/LaajuusKursseissa'
 import { LocalizedString } from '../../types/fi/oph/koski/schema/LocalizedString'
-import { PaikallinenKoodi } from '../../types/fi/oph/koski/schema/PaikallinenKoodi'
+import { isPaikallinenKoodi } from '../../types/fi/oph/koski/schema/PaikallinenKoodi'
 import { KoulutusmoduuliOf } from '../../util/schema'
 import {
-  LukiokurssiTunnisteUri,
+  IBOsasuoritusTunniste,
   PreIBKurssiProps
 } from '../oppiaineet/preIBKurssi2015'
-import { UusiPaikallinen } from './options'
+import { uusiPaikallinenKey } from './options'
+import { koodistokoodiviiteId, koodiviiteId } from '../../util/koodisto'
+
+export const UusiPaikallinenLukionKurssiKey = uusiPaikallinenKey('lukio')
+export const UusiIBKurssiKey = uusiPaikallinenKey('ib')
 
 export type IBOsasuoritusState<T> = {
-  tunniste: DialogField<Koodistokoodiviite<LukiokurssiTunnisteUri>>
+  tunniste: DialogField<IBOsasuoritusTunniste>
+  uusiTyyppi: DialogField<UusiOsasuoritustyyppi>
   lukiokurssinTyyppi: DialogField<Koodistokoodiviite<'lukionkurssintyyppi'>>
-  paikallinenTunniste: DialogField<PaikallinenKoodi>
   kuvaus: DialogField<LocalizedString>
   pakollinen: DialogField<boolean>
   laajuus: DialogField<LaajuusKursseissa>
+  isPaikallinen: boolean
   result?: T
 }
+
+export type UusiOsasuoritustyyppi = 'lukio' | 'ib'
 
 export const useIBOsasuoritusState = <T>(
   koulutus: KoulutusmoduuliOf<OppiaineOsasuoritus>,
   createOsasuoritus: (p: PreIBKurssiProps) => T
 ): IBOsasuoritusState<T> => {
-  const tunniste =
-    useDialogField<Koodistokoodiviite<LukiokurssiTunnisteUri>>(true)
-  const paikallinen = tunniste.value === UusiPaikallinen
+  const tunniste = useDialogField<IBOsasuoritusTunniste>(true)
+  const uusiTyyppi = useDialogField<UusiOsasuoritustyyppi>(false)
+
+  const isLukioValtakunnallinen = !uusiTyyppi.value
+  const isLukioPaikallinen = uusiTyyppi.value === 'lukio'
+  const isIBKurssi = uusiTyyppi.value === 'ib'
 
   const lukiokurssinTyyppi = useDialogField<
     Koodistokoodiviite<'lukionkurssintyyppi'>
-  >(tunniste.value !== undefined && !paikallinen)
+  >(isLukioValtakunnallinen || isLukioPaikallinen)
 
-  const paikallinenTunniste = useDialogField<PaikallinenKoodi>(paikallinen)
+  const pakollinen = useDialogField<boolean>(isIBKurssi)
 
-  const kuvaus = useDialogField<LocalizedString>(paikallinen)
+  const kuvaus = useDialogField<LocalizedString>(
+    isLukioPaikallinen || isIBKurssi
+  )
 
-  const pakollinen = useDialogField<boolean>(paikallinen)
-
-  const laajuus = useDialogField<LaajuusKursseissa>(paikallinen, () =>
-    LaajuusKursseissa({ arvo: 1 })
+  const laajuus = useDialogField<LaajuusKursseissa>(
+    isLukioPaikallinen || isIBKurssi,
+    () => LaajuusKursseissa({ arvo: 1 })
   )
 
   const result = useMemo(
     () =>
       createOsasuoritus({
-        lukioTunniste: paikallinen ? undefined : tunniste.value,
+        tunniste: tunniste.value,
         lukiokurssinTyyppi: lukiokurssinTyyppi.value,
-        paikallinenTunniste: paikallinenTunniste.value,
         kuvaus: kuvaus.value,
         pakollinen: pakollinen.value,
         laajuus: laajuus.value
       }),
     [
       createOsasuoritus,
-      paikallinen,
       tunniste.value,
       lukiokurssinTyyppi.value,
-      paikallinenTunniste.value,
       kuvaus.value,
       pakollinen.value,
       laajuus.value
@@ -71,11 +82,12 @@ export const useIBOsasuoritusState = <T>(
 
   return {
     tunniste,
+    uusiTyyppi,
     lukiokurssinTyyppi,
-    paikallinenTunniste,
     kuvaus,
     pakollinen,
     laajuus,
+    isPaikallinen: isLukioPaikallinen || isIBKurssi,
     result
   }
 }

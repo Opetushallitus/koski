@@ -35,7 +35,7 @@ import {
   useMatematiikanOppimääräOptions,
   usePreIBTunnisteOptions,
   useÄidinkielenKieliOptions,
-  UusiPaikallinenKey
+  UusiPaikallinenOppiaineKey
 } from '../state/options'
 import {
   PreIBOppiaineTunniste,
@@ -83,7 +83,9 @@ export const UusiPreIB2015OppiaineDialog: React.FC<
         state.paikallinenTunniste.set(option.value)
         state.paikallinenKuvaus.set(localize('todo: kaiva kuvaus'))
       } else {
-        state.paikallinenTunniste.setVisible(option?.key === UusiPaikallinenKey)
+        state.paikallinenTunniste.setVisible(
+          option?.key === UusiPaikallinenOppiaineKey
+        )
       }
     },
     [state.paikallinenKuvaus, state.paikallinenTunniste, state.tunniste]
@@ -138,7 +140,7 @@ export const UusiPreIB2015OppiaineDialog: React.FC<
               options={tunnisteet}
               value={
                 state.paikallinenTunniste.visible
-                  ? UusiPaikallinenKey
+                  ? UusiPaikallinenOppiaineKey
                   : state.tunniste.value && koodiviiteId(state.tunniste.value)
               }
               onChange={onTunniste}

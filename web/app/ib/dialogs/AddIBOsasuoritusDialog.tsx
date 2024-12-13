@@ -1,4 +1,5 @@
-import React, { useCallback } from 'react'
+import React, { useCallback, useMemo } from 'react'
+import { usePreferences } from '../../appstate/preferences'
 import {
   Modal,
   ModalBody,
@@ -9,45 +10,128 @@ import { Checkbox } from '../../components-v2/controls/Checkbox'
 import { FlatButton } from '../../components-v2/controls/FlatButton'
 import { NumberField } from '../../components-v2/controls/NumberField'
 import { RaisedButton } from '../../components-v2/controls/RaisedButton'
-import { Select } from '../../components-v2/controls/Select'
+import {
+  optionGroup,
+  paikallinenKoodiToOption,
+  Select,
+  SelectOption
+} from '../../components-v2/controls/Select'
 import { AddOppiaineenOsasuoritusDialog } from '../../components-v2/opiskeluoikeus/OppiaineTable'
 import {
+  paikallinenKoulutus,
   PaikallinenKoulutus,
   PaikallinenKoulutusFields
 } from '../../components-v2/opiskeluoikeus/PaikallinenKoulutusFields'
 import { localize, t } from '../../i18n/i18n'
+import { IBKurssi } from '../../types/fi/oph/koski/schema/IBKurssi'
+import { Koodistokoodiviite } from '../../types/fi/oph/koski/schema/Koodistokoodiviite'
 import { LaajuusKursseissa } from '../../types/fi/oph/koski/schema/LaajuusKursseissa'
 import {
   isPaikallinenKoodi,
   PaikallinenKoodi
 } from '../../types/fi/oph/koski/schema/PaikallinenKoodi'
+import { PaikallinenLukionKurssi2015 } from '../../types/fi/oph/koski/schema/PaikallinenLukionKurssi2015'
 import { PreIBKurssinSuoritus2015 } from '../../types/fi/oph/koski/schema/PreIBKurssinSuoritus2015'
 import { koodiviiteId } from '../../util/koodisto'
 import { DialogSelect } from '../../uusiopiskeluoikeus/components/DialogSelect'
-import { createPreIBKurssinSuoritus2015 } from '../oppiaineet/preIBKurssi2015'
+import {
+  createPreIBKurssinSuoritus2015,
+  IBOsasuoritusTunniste
+} from '../oppiaineet/preIBKurssi2015'
 import {
   useLukiokurssinTyypit,
   useOppiaineenKurssiOptions
 } from '../state/options'
-import { useIBOsasuoritusState } from '../state/osasuoritusState'
+import {
+  useIBOsasuoritusState,
+  UusiIBKurssiKey,
+  UusiPaikallinenLukionKurssiKey
+} from '../state/osasuoritusState'
 
 export const AddIBOsasuoritusDialog: AddOppiaineenOsasuoritusDialog<
   PreIBKurssinSuoritus2015
 > = ({ onAdd, ...props }) => {
   const koulutus = props.oppiaine.koulutusmoduuli
+  const {
+    preferences: paikallisetLukionKurssit,
+    store: storePaikallinenLukionKurssi,
+    remove: removePaikallinenLukionKurssi
+  } = usePreferences<PaikallinenLukionKurssi2015>(
+    props.organisaatioOid,
+    'paikallinenlukionkurssi'
+  )
+  const {
+    preferences: ibKurssit,
+    store: storeIBKurssi,
+    remove: removeIBKurssi
+  } = usePreferences<IBKurssi>(props.organisaatioOid, 'ibkurssi')
+
   const state = useIBOsasuoritusState(koulutus, createPreIBKurssinSuoritus2015)
 
-  const lukioTunnisteet = useOppiaineenKurssiOptions(
-    !isPaikallinenKoodi(props.oppiaine.koulutusmoduuli.tunniste)
-      ? props.oppiaine.koulutusmoduuli.tunniste
-      : undefined
+  const valtakunnallisetTunnisteetOptions =
+    useOppiaineenKurssiOptions(
+      !isPaikallinenKoodi(props.oppiaine.koulutusmoduuli.tunniste)
+        ? props.oppiaine.koulutusmoduuli.tunniste
+        : undefined
+    ) || []
+
+  const paikallisetTunnisteetOptions = useMemo(
+    () => [
+      optionGroup(t('IB-kurssit'), [
+        ...ibKurssit.map((kurssi) =>
+          paikallinenKoodiToOption(kurssi.tunniste, { removable: true })
+        ),
+        {
+          key: UusiIBKurssiKey,
+          label: t('Lisää uusi')
+        }
+      ]),
+      optionGroup(t('Paikalliset lukion kurssit'), [
+        ...paikallisetLukionKurssit.map((kurssi) =>
+          paikallinenKoodiToOption(kurssi.tunniste, { removable: true })
+        ),
+        {
+          key: UusiPaikallinenLukionKurssiKey,
+          label: t('Lisää uusi')
+        }
+      ])
+    ],
+    [ibKurssit, paikallisetLukionKurssit]
   )
+
+  const tunnisteet: SelectOption<Koodistokoodiviite | PaikallinenKoodi>[] = [
+    ...paikallisetTunnisteetOptions,
+    ...valtakunnallisetTunnisteetOptions
+  ]
+
   const kurssityypit = useLukiokurssinTyypit(state.lukiokurssinTyyppi.visible)
+
+  const onTunniste = useCallback(
+    (option?: SelectOption<Koodistokoodiviite | PaikallinenKoodi>) => {
+      if (
+        option?.key === UusiIBKurssiKey ||
+        option?.key === UusiPaikallinenLukionKurssiKey
+      ) {
+        state.uusiTyyppi.set(option.key === UusiIBKurssiKey ? 'ib' : 'lukio')
+        state.tunniste.set(
+          PaikallinenKoodi({ koodiarvo: '', nimi: localize('') })
+        )
+        state.kuvaus.set(localize(''))
+      } else if (isPaikallinenKoodi(option?.value)) {
+        state.tunniste.set(option.value)
+        state.kuvaus.set(localize('todo: kaiva kuvaus tähän'))
+      } else if (option?.value) {
+        state.uusiTyyppi.set(undefined)
+        state.tunniste.set(option.value as IBOsasuoritusTunniste)
+      }
+    },
+    [state.kuvaus, state.tunniste, state.uusiTyyppi]
+  )
 
   const onPaikallinenKoulutus = useCallback(
     (paikallinen?: PaikallinenKoulutus) => {
       if (paikallinen) {
-        state.paikallinenTunniste.set(
+        state.tunniste.set(
           PaikallinenKoodi({
             koodiarvo: paikallinen.koodiarvo,
             nimi: localize(paikallinen.nimi)
@@ -56,31 +140,65 @@ export const AddIBOsasuoritusDialog: AddOppiaineenOsasuoritusDialog<
         state.kuvaus.set(localize(paikallinen.kuvaus))
       }
     },
-    [state.kuvaus, state.paikallinenTunniste]
+    [state.kuvaus, state.tunniste]
   )
 
   const addOsasuoritus = useCallback(() => {
-    state.result && onAdd(state.result)
-  }, [onAdd, state.result])
+    const kurssi = state.result
+    if (kurssi) {
+      onAdd(kurssi)
+      if (state.uusiTyyppi.value === 'lukio') {
+        storePaikallinenLukionKurssi(
+          koodiviiteId(kurssi.koulutusmoduuli.tunniste),
+          kurssi.koulutusmoduuli as PaikallinenLukionKurssi2015
+        )
+      }
+      if (state.uusiTyyppi.value === 'ib') {
+        storeIBKurssi(
+          koodiviiteId(kurssi.koulutusmoduuli.tunniste),
+          kurssi.koulutusmoduuli as IBKurssi
+        )
+      }
+    }
+  }, [onAdd, state, storeIBKurssi, storePaikallinenLukionKurssi])
+
+  const onRemoveTunniste = useCallback(
+    (option: SelectOption<Koodistokoodiviite | PaikallinenKoodi>) => {
+      const key = option.value && koodiviiteId(option.value)
+      if (key) {
+        removePaikallinenLukionKurssi(key)
+        removeIBKurssi(key)
+      }
+    },
+    [removeIBKurssi, removePaikallinenLukionKurssi]
+  )
 
   return (
     <Modal>
       <ModalTitle>{t('Lisää osasuoritus')}</ModalTitle>
       <ModalBody>
-        {state.tunniste.visible && lukioTunnisteet && (
+        {state.tunniste.visible && valtakunnallisetTunnisteetOptions && (
           <label>
             {t('Osasuoritus')}
             <Select
               inlineOptions
-              options={lukioTunnisteet}
+              options={tunnisteet}
               value={state.tunniste.value && koodiviiteId(state.tunniste.value)}
-              onChange={(o) => state.tunniste.set(o?.value as any)}
+              onChange={onTunniste}
+              onRemove={onRemoveTunniste}
               testId="tunniste"
             />
           </label>
         )}
-        {state.paikallinenTunniste.visible && (
-          <PaikallinenKoulutusFields onChange={onPaikallinenKoulutus} />
+        {state.isPaikallinen && (
+          <PaikallinenKoulutusFields
+            onChange={onPaikallinenKoulutus}
+            initial={
+              isPaikallinenKoodi(state.tunniste.value) && state.kuvaus.value
+                ? paikallinenKoulutus(state.tunniste.value, state.kuvaus.value)
+                : undefined
+            }
+          />
         )}
         {state.lukiokurssinTyyppi.visible && kurssityypit && (
           <label>

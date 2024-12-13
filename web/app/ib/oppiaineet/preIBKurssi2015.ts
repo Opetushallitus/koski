@@ -2,20 +2,26 @@ import { IBKurssi } from '../../types/fi/oph/koski/schema/IBKurssi'
 import { Koodistokoodiviite } from '../../types/fi/oph/koski/schema/Koodistokoodiviite'
 import { LaajuusKursseissa } from '../../types/fi/oph/koski/schema/LaajuusKursseissa'
 import { LocalizedString } from '../../types/fi/oph/koski/schema/LocalizedString'
-import { PaikallinenKoodi } from '../../types/fi/oph/koski/schema/PaikallinenKoodi'
+import {
+  isPaikallinenKoodi,
+  PaikallinenKoodi
+} from '../../types/fi/oph/koski/schema/PaikallinenKoodi'
 import { PaikallinenLukionKurssi2015 } from '../../types/fi/oph/koski/schema/PaikallinenLukionKurssi2015'
 import { PreIBKurssi2015 } from '../../types/fi/oph/koski/schema/PreIBKurssi2015'
 import { PreIBKurssinSuoritus2015 } from '../../types/fi/oph/koski/schema/PreIBKurssinSuoritus2015'
 import { ValtakunnallinenLukionKurssi2015 } from '../../types/fi/oph/koski/schema/ValtakunnallinenLukionKurssi2015'
 
 export type PreIBKurssiProps = {
-  lukioTunniste?: Koodistokoodiviite<LukiokurssiTunnisteUri>
+  tunniste?: IBOsasuoritusTunniste
   lukiokurssinTyyppi?: Koodistokoodiviite<'lukionkurssintyyppi'>
-  paikallinenTunniste?: PaikallinenKoodi
   kuvaus?: LocalizedString
   pakollinen?: boolean
   laajuus?: LaajuusKursseissa
 }
+
+export type IBOsasuoritusTunniste =
+  | Koodistokoodiviite<LukiokurssiTunnisteUri>
+  | PaikallinenKoodi
 
 export const lukiokurssiTunnisteUrit: LukiokurssiTunnisteUri[] = [
   'lukionkurssit',
@@ -39,33 +45,32 @@ export const createPreIBKurssinSuoritus2015 = (props: PreIBKurssiProps) => {
 }
 
 const createPreIBKurssi2015 = ({
-  paikallinenTunniste,
-  lukioTunniste,
+  tunniste,
   lukiokurssinTyyppi,
   kuvaus,
   pakollinen,
   laajuus
 }: PreIBKurssiProps): PreIBKurssi2015 | null => {
-  if (lukiokurssinTyyppi && lukioTunniste) {
+  if (lukiokurssinTyyppi && tunniste && !isPaikallinenKoodi(tunniste)) {
     return ValtakunnallinenLukionKurssi2015({
-      tunniste: lukioTunniste,
+      tunniste,
       kurssinTyyppi: lukiokurssinTyyppi,
       laajuus
     })
   }
 
-  if (lukiokurssinTyyppi && paikallinenTunniste && kuvaus) {
+  if (lukiokurssinTyyppi && isPaikallinenKoodi(tunniste) && kuvaus) {
     return PaikallinenLukionKurssi2015({
-      tunniste: paikallinenTunniste,
+      tunniste,
       kurssinTyyppi: lukiokurssinTyyppi,
       kuvaus,
       laajuus
     })
   }
 
-  if (paikallinenTunniste && kuvaus) {
+  if (isPaikallinenKoodi(tunniste) && kuvaus) {
     return IBKurssi({
-      tunniste: paikallinenTunniste,
+      tunniste,
       kuvaus,
       pakollinen: !!pakollinen,
       laajuus

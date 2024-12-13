@@ -56,8 +56,9 @@ export const OppiaineTable = <T,>({
   onOppiaineArviointi
 }: OppiaineTableProps<T>) => {
   const oppiaineet = suoritus.osasuoritukset || []
+  const organisaatioOid = form.state.oppilaitos?.oid
 
-  return oppiaineet.length === 0 ? null : (
+  return oppiaineet.length === 0 && organisaatioOid ? null : (
     <table className="OppiaineTable">
       <thead>
         <tr>
@@ -72,6 +73,7 @@ export const OppiaineTable = <T,>({
         {oppiaineet.map((oppiaine, oppiaineIndex) => (
           <OppiaineRow
             key={oppiaineIndex}
+            organisaatioOid={organisaatioOid!}
             oppiaine={oppiaine}
             form={form}
             onDelete={() => onDelete(oppiaineIndex)}
@@ -97,6 +99,7 @@ export const OppiaineTable = <T,>({
 
 export type OppiaineRowProps<T> = {
   form: FormModel<IBOpiskeluoikeus>
+  organisaatioOid: string
   oppiaine: OppiaineOsasuoritus
   addOsasuoritusDialog: AddOppiaineenOsasuoritusDialog<T>
   onAddOsasuoritus: (t: T) => void
@@ -107,12 +110,14 @@ export type OppiaineRowProps<T> = {
 }
 
 export type AddOppiaineenOsasuoritusDialog<T> = React.FC<{
+  organisaatioOid: string
   oppiaine: OppiaineOsasuoritus
   onAdd: (t: T) => void
   onClose: () => void
 }>
 
 const OppiaineRow = <T,>({
+  organisaatioOid,
   oppiaine,
   form,
   onDelete,
@@ -188,6 +193,7 @@ const OppiaineRow = <T,>({
           />
           {addOsasuoritusDialogVisible && (
             <AddOsasuoritusDialog
+              organisaatioOid={organisaatioOid}
               oppiaine={oppiaine}
               onAdd={addOsasuoritus}
               onClose={hideAddOsasuoritusDialog}
