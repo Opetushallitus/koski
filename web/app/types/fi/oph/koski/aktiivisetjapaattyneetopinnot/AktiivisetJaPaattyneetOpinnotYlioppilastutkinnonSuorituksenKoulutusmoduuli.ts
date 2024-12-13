@@ -1,4 +1,6 @@
 import { AktiivisetJaPäättyneetOpinnotKoodistokoodiviite } from './AktiivisetJaPaattyneetOpinnotKoodistokoodiviite'
+import { Koodistokoodiviite } from '../schema/Koodistokoodiviite'
+import { LocalizedString } from '../schema/LocalizedString'
 
 /**
  * AktiivisetJaPäättyneetOpinnotYlioppilastutkinnonSuorituksenKoulutusmoduuli
@@ -9,11 +11,15 @@ export type AktiivisetJaPäättyneetOpinnotYlioppilastutkinnonSuorituksenKoulutu
   {
     $class: 'fi.oph.koski.aktiivisetjapaattyneetopinnot.AktiivisetJaPäättyneetOpinnotYlioppilastutkinnonSuorituksenKoulutusmoduuli'
     tunniste: AktiivisetJaPäättyneetOpinnotKoodistokoodiviite
+    eurooppalainenTutkintojenViitekehysEQF?: Koodistokoodiviite<'eqf', string>
+    kansallinenTutkintojenViitekehysNQF?: Koodistokoodiviite<'nqf', string>
   }
 
 export const AktiivisetJaPäättyneetOpinnotYlioppilastutkinnonSuorituksenKoulutusmoduuli =
   (o: {
     tunniste: AktiivisetJaPäättyneetOpinnotKoodistokoodiviite
+    eurooppalainenTutkintojenViitekehysEQF?: Koodistokoodiviite<'eqf', string>
+    kansallinenTutkintojenViitekehysNQF?: Koodistokoodiviite<'nqf', string>
   }): AktiivisetJaPäättyneetOpinnotYlioppilastutkinnonSuorituksenKoulutusmoduuli => ({
     $class:
       'fi.oph.koski.aktiivisetjapaattyneetopinnot.AktiivisetJaPäättyneetOpinnotYlioppilastutkinnonSuorituksenKoulutusmoduuli',

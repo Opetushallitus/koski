@@ -1,4 +1,6 @@
 import { SuoritetutTutkinnotKoodistokoodiviite } from './SuoritetutTutkinnotKoodistokoodiviite'
+import { Koodistokoodiviite } from '../schema/Koodistokoodiviite'
+import { LocalizedString } from '../schema/LocalizedString'
 
 /**
  * SuoritetutTutkinnotEBTutkinto
@@ -9,11 +11,15 @@ export type SuoritetutTutkinnotEBTutkinto = {
   $class: 'fi.oph.koski.suoritetuttutkinnot.SuoritetutTutkinnotEBTutkinto'
   tunniste: SuoritetutTutkinnotKoodistokoodiviite
   curriculum: SuoritetutTutkinnotKoodistokoodiviite
+  eurooppalainenTutkintojenViitekehysEQF?: Koodistokoodiviite<'eqf', string>
+  kansallinenTutkintojenViitekehysNQF?: Koodistokoodiviite<'nqf', string>
 }
 
 export const SuoritetutTutkinnotEBTutkinto = (o: {
   tunniste: SuoritetutTutkinnotKoodistokoodiviite
   curriculum: SuoritetutTutkinnotKoodistokoodiviite
+  eurooppalainenTutkintojenViitekehysEQF?: Koodistokoodiviite<'eqf', string>
+  kansallinenTutkintojenViitekehysNQF?: Koodistokoodiviite<'nqf', string>
 }): SuoritetutTutkinnotEBTutkinto => ({
   $class: 'fi.oph.koski.suoritetuttutkinnot.SuoritetutTutkinnotEBTutkinto',
   ...o
