@@ -14,7 +14,8 @@ class OmaDataOAuth2ResourceOwnerServlet(implicit val application: KoskiApplicati
   get("/client-details/:client_id") {
     val clientId = params("client_id")
     renderObject(ClientDetails(clientId,
-      application.omaDataOAuth2Service.getClientName(clientId)
+      application.omaDataOAuth2Service.getClientName(clientId),
+      getTokenDurationMinutes(clientId),
     ))
   }
 
@@ -129,5 +130,6 @@ class OmaDataOAuth2ResourceOwnerServlet(implicit val application: KoskiApplicati
 
 case class ClientDetails(
   id: String,
-  name: LocalizedString
+  name: LocalizedString,
+  tokenDurationMinutes: Int
 )

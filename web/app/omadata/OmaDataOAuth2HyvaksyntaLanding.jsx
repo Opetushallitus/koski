@@ -25,7 +25,7 @@ class OmaDataOAuth2HyvaksyntaLanding extends React.Component {
       error: this.parseError(),
       error_id: this.parseErrorId(),
       clientName: undefined,
-      durationInMin: 10 // TODO: TOR-2210: muuta tämä tulemaan bäkkäristä
+      durationInMin: undefined
     }
 
     this.authorizeClient = this.authorizeClient.bind(this)
@@ -68,6 +68,7 @@ class OmaDataOAuth2HyvaksyntaLanding extends React.Component {
       ).onValue((client) =>
         this.setState({
           clientName: client.name,
+          durationInMin: client.tokenDurationMinutes,
           loading: false
         })
       )
