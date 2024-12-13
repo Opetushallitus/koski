@@ -9,6 +9,7 @@ import fi.oph.koski.documentation.{AmmatillinenExampleData, AmmattitutkintoExamp
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat.{amiksenKorottaja, tyhjä}
 import fi.oph.koski.http.{ErrorMatcher, KoskiErrorCategory}
 import fi.oph.koski.json.JsonSerializer
+import fi.oph.koski.koskiuser.MockUsers
 import fi.oph.koski.koskiuser.MockUsers.{omniaTallentaja, stadinAmmattiopistoJaOppisopimuskeskusTallentaja}
 import fi.oph.koski.localization.LocalizedStringImplicits._
 import fi.oph.koski.organisaatio.MockOrganisaatiot
@@ -892,6 +893,34 @@ class OppijaValidationAmmatillisenTutkinnonOsittainenSuoritusSpec extends Tutkin
           }
         }
 
+        "Korotuksen voi tehdä toisessa oppilaitoksessa" in {
+          val omnia = Oppilaitos(oid = MockOrganisaatiot.omnia)
+          val omniaHeaders = authHeaders(MockUsers.omniaTallentaja) ++ jsonContent
+
+          val alkuperäinen = setupAndGetAlkuperäinen
+          alkuperäinen.oppilaitos.get.oid should not equal omnia.oid
+
+          val korotettuSuoritus = ammatillisenTutkinnonOsittainenSuoritus.copy(
+            toimipiste = omnia,
+            korotettuOpiskeluoikeusOid = alkuperäinen.oid,
+            korotettuKeskiarvo = Some(4.5),
+            korotettuKeskiarvoSisältääMukautettujaArvosanoja = Some(false),
+            osasuoritukset = Some(List(
+              korotettuTutkinnonOsanSuoritus.copy(korotettu = Some(korotuksenYritys)),
+              korotettuYhteisenTutkinnonOsanSuoritus
+            )))
+
+          val korotettuOo = makeOpiskeluoikeus(
+            oppilaitos = omnia,
+            suoritus = korotettuSuoritus,
+            tila = Some(opiskeluoikeusValmistunut),
+            alkamispäivä = alkamispäivä,
+          )
+
+          putOpiskeluoikeus(korotettuOo, amiksenKorottaja, omniaHeaders) {
+            verifyResponseStatusOk()
+          }
+        }
       }
 
       "Katsotaan eronneeksi korotus" - {

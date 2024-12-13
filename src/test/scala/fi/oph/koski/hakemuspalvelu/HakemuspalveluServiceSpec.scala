@@ -59,7 +59,7 @@ class HakemuspalveluServiceSpec
   "Access control toimii oikein" in {
     post("/api/hakemuspalvelu/oid", JsonSerializer.writeWithRoot(OidRequest(oid = KoskiSpecificMockOppijat.dippainssi.oid)), headers = authHeaders(hakemuspalveluKäyttäjä) ++ jsonContent) {
       verifyResponseStatusOk()
-      AuditLogTester.verifyAuditLogMessage(Map("operation" -> "HAKEMUSPALVELU_OPISKELUOIKEUS_HAKU"))
+      AuditLogTester.verifyLastAuditLogMessage(Map("operation" -> "HAKEMUSPALVELU_OPISKELUOIKEUS_HAKU"))
     }
 
     post("/api/hakemuspalvelu/oid", JsonSerializer.writeWithRoot(OidRequest(oid = KoskiSpecificMockOppijat.dippainssi.oid)), headers = authHeaders(vktKäyttäjä) ++ jsonContent) {

@@ -52,7 +52,10 @@ object ExamplesVapaaSivistystyöJotpa {
 
     lazy val keskeneräinenLähdejärjestelmästä: VapaanSivistystyönOpiskeluoikeus =
       keskeneräinen.copy(
-        lähdejärjestelmänId = Some(LähdejärjestelmäId(Some("12385493"), Koodistokoodiviite("primus", "lahdejarjestelma")))
+        lähdejärjestelmänId = Some(LähdejärjestelmäId(Some("12385493"), Koodistokoodiviite("primus", "lahdejarjestelma"))),
+        tila = VapaanSivistystyönOpiskeluoikeudenTila(List(
+          VapaanSivistystyönJotpaKoulutuksenOpiskeluoikeusjakso(LocalDate.of(2023, 1, 2), opiskeluoikeusLäsnä, Some(rahoitusJotpa))
+        )),
       )
   }
 

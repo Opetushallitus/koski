@@ -6,6 +6,7 @@ import { SisältäväOpiskeluoikeus } from './SisaltavaOpiskeluoikeus'
 import { Koulutustoimija } from './Koulutustoimija'
 import { PerusopetukseenValmistavanOpetuksenSuoritus } from './PerusopetukseenValmistavanOpetuksenSuoritus'
 import { LähdejärjestelmäId } from './LahdejarjestelmaId'
+import { LähdejärjestelmäkytkennänPurkaminen } from './LahdejarjestelmakytkennanPurkaminen'
 import { Oppilaitos } from './Oppilaitos'
 
 /**
@@ -30,6 +31,7 @@ export type PerusopetukseenValmistavanOpetuksenOpiskeluoikeus = {
   aikaleima?: string
   päättymispäivä?: string
   lähdejärjestelmänId?: LähdejärjestelmäId
+  lähdejärjestelmäkytkentäPurettu?: LähdejärjestelmäkytkennänPurkaminen
   oppilaitos?: Oppilaitos
 }
 
@@ -50,6 +52,7 @@ export const PerusopetukseenValmistavanOpetuksenOpiskeluoikeus = (
     aikaleima?: string
     päättymispäivä?: string
     lähdejärjestelmänId?: LähdejärjestelmäId
+    lähdejärjestelmäkytkentäPurettu?: LähdejärjestelmäkytkennänPurkaminen
     oppilaitos?: Oppilaitos
   } = {}
 ): PerusopetukseenValmistavanOpetuksenOpiskeluoikeus => ({

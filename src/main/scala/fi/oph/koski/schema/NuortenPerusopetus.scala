@@ -23,7 +23,8 @@ case class PerusopetuksenOpiskeluoikeus(
   suoritukset: List[PerusopetuksenPäätasonSuoritus],
   @KoodistoKoodiarvo(OpiskeluoikeudenTyyppi.perusopetus.koodiarvo)
   tyyppi: Koodistokoodiviite = OpiskeluoikeudenTyyppi.perusopetus,
-  organisaatiohistoria: Option[List[OpiskeluoikeudenOrganisaatiohistoria]] = None
+  organisaatiohistoria: Option[List[OpiskeluoikeudenOrganisaatiohistoria]] = None,
+  lähdejärjestelmäkytkentäPurettu: Option[LähdejärjestelmäkytkennänPurkaminen] = None,
 ) extends KoskeenTallennettavaOpiskeluoikeus {
   @Description("Oppijan oppimäärän päättymispäivä")
   override def päättymispäivä: Option[LocalDate] = super.päättymispäivä
@@ -584,6 +585,8 @@ trait Uskonto {
   @Description("Mikä uskonto on kyseessä")
   @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))
   @KoodistoUri("uskonnonoppimaara")
+  @Deprecated("Tätä tietoa ei saa tallentaa KOSKI-palveluun.")
+  @RedundantData // Siivoaa uskonnon oppimäärän pois muunnosten yhteydessä
   def uskonnonOppimäärä: Option[Koodistokoodiviite]
 }
 

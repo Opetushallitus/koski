@@ -569,7 +569,7 @@ class OppijaValidationTaiteenPerusopetusSpec
       )
 
       setupOppijaWithOpiskeluoikeus(oo, henkilö = oppija) {
-        verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.vahvistusIlmanArviointia("Suorituksella koulutus/999907 on vahvistus, vaikka arviointi puuttuu"))
+        verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.keskeneräinenOsasuoritus("Valmiiksi merkityllä suorituksella koulutus/999907 on keskeneräinen osasuoritus Musa 1 (Musiikin kurssi)"))
       }
     }
 
@@ -592,7 +592,7 @@ class OppijaValidationTaiteenPerusopetusSpec
       )
 
       setupOppijaWithOpiskeluoikeus(oo, henkilö = oppija) {
-        verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.vahvistusIlmanArviointia("Suorituksella koulutus/999907 on vahvistus, vaikka arviointi puuttuu"))
+        verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.keskeneräinenOsasuoritus("Valmiiksi merkityllä suorituksella koulutus/999907 on keskeneräinen osasuoritus Musa 3 (Musiikin kurssi)"))
       }
     }
 
@@ -607,7 +607,7 @@ class OppijaValidationTaiteenPerusopetusSpec
       )
 
       setupOppijaWithOpiskeluoikeus(oo, henkilö = oppija) {
-        verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.vahvistusIlmanArviointia("Suorituksella koulutus/999907 on vahvistus, vaikka arviointi puuttuu"))
+        verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.osasuoritusPuuttuu(s"Valmiiksi merkityllä suorituksella koulutus/999907 ei ole yhtään osasuoritusta"))
       }
     }
   }

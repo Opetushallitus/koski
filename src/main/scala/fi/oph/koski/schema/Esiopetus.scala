@@ -31,7 +31,8 @@ case class EsiopetuksenOpiskeluoikeus(
   @KoodistoKoodiarvo("JM02") // ostopalvelu
   @KoodistoKoodiarvo("JM03") // palveluseteli
   @KoodistoUri("vardajarjestamismuoto")
-  järjestämismuoto: Option[Koodistokoodiviite] = None
+  järjestämismuoto: Option[Koodistokoodiviite] = None,
+  lähdejärjestelmäkytkentäPurettu: Option[LähdejärjestelmäkytkennänPurkaminen] = None,
 ) extends KoskeenTallennettavaOpiskeluoikeus {
   @Description("Oppijan esiopetuksen lukuvuoden päättymispäivä. Esiopetuksen suoritusaika voi olla 2-vuotinen")
   override def päättymispäivä: Option[LocalDate] = super.päättymispäivä

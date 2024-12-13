@@ -12,10 +12,10 @@ import fi.oph.koski.massaluovutus.suoritusrekisteri.SureResponse
 import fi.oph.koski.massaluovutus.valintalaskenta.ValintalaskentaResult
 import fi.oph.koski.migri.MigriSchema
 import fi.oph.koski.massaluovutus.{QueryDocumentation, QueryResponse}
+import fi.oph.koski.omadataoauth2.{OmaDataOAuth2AktiivisetJaPäättyneetOpiskeluoikeudet, OmaDataOAuth2Documentation, OmaDataOAuth2KaikkiOpiskeluoikeudet, OmaDataOAuth2SuoritetutTutkinnot}
 import fi.oph.koski.schema.KoskiSchema
 import fi.oph.koski.servlet.{KoskiSpecificApiServlet, NoCache}
-import fi.oph.koski.suoritusjako.aktiivisetjapaattyneetopinnot.AktiivisetJaPäättyneetOpinnotSchema
-import fi.oph.koski.suoritusjako.suoritetuttutkinnot.SuoritetutTutkinnotSchema
+import fi.oph.koski.suoritusjako.{AktiivisetJaPäättyneetOpinnotOppijaJakolinkillä, SuoritetutTutkinnotOppijaJakolinkillä}
 import fi.oph.koski.valpas.kela.ValpasKelaSchema
 import fi.oph.koski.valpas.oppija.ValpasInternalSchema
 import fi.oph.koski.valpas.ytl.ValpasYtlSchema
@@ -39,7 +39,7 @@ class DocumentationApiServlet(application: KoskiApplication) extends KoskiSpecif
   }
 
   get("/sections.html") {
-    KoskiTiedonSiirtoHtml.htmlTextSections ++ QueryDocumentation.htmlTextSections(application)
+    KoskiTiedonSiirtoHtml.htmlTextSections ++ QueryDocumentation.htmlTextSections(application) ++ OmaDataOAuth2Documentation.htmlTextSections(application)
   }
 
   get("/apiOperations.json") {
@@ -70,11 +70,11 @@ class DocumentationApiServlet(application: KoskiApplication) extends KoskiSpecif
   }
 
   get("/suoritetut-tutkinnot-oppija-schema.json") {
-    SuoritetutTutkinnotSchema.schemaJson
+    SuoritetutTutkinnotOppijaJakolinkillä.schemaJson
   }
 
   get("/aktiiviset-ja-paattyneet-opinnot-oppija-schema.json") {
-    AktiivisetJaPäättyneetOpinnotSchema.schemaJson
+    AktiivisetJaPäättyneetOpinnotOppijaJakolinkillä.schemaJson
   }
 
   get("/vkt-oppija-schema.json") {
@@ -127,6 +127,18 @@ class DocumentationApiServlet(application: KoskiApplication) extends KoskiSpecif
 
   get("/suoritusrekisteri-result.json") {
     SureResponse.schemaJson
+  }
+
+  get("/omadata-oauth2-suoritetut-tutkinnot-oppija-schema.json") {
+    OmaDataOAuth2SuoritetutTutkinnot.schemaJson
+  }
+
+  get("/omadata-oauth2-aktiiviset-ja-paattyneet-opinnot-oppija-schema.json") {
+    OmaDataOAuth2AktiivisetJaPäättyneetOpiskeluoikeudet.schemaJson
+  }
+
+  get("/omadata-oauth2-kaikki-tiedot-oppija-schema.json") {
+    OmaDataOAuth2KaikkiOpiskeluoikeudet.schemaJson
   }
 
   override def toJsonString[T: ru.TypeTag](x: T): String = JsonSerializer.writeWithRoot(x)

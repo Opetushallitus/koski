@@ -77,7 +77,7 @@ object KoskiAuditLogMessage {
 
   def apply(operation: KoskiOperation, session: KoskiSpecificSession, extraFields: AuditLogMessage.ExtraFields): AuditLogMessage = {
     val logOp = new KoskiAuditLogOperation(operation)
-    if (session.user.isSuoritusjakoKatsominen || session.user.isYtrDownloadUser) {
+    if (session.user.isSuoritusjakoKatsominen || session.user.isYtrDownloadUser || session.user.isOauth2Katsominen) {
       val user = new User(session.clientIp, "", session.userAgent)
       AuditLogMessage(logOp, user, extraFields)
     } else {
@@ -98,6 +98,7 @@ object KoskiAuditLogMessageField extends Enumeration {
   hakuEhto,
   juuriOrganisaatio,
   omaDataKumppani,
+  omaDataOAuth2Scope,
   suorituksenTyyppi = Value
 }
 
@@ -136,7 +137,12 @@ object KoskiOperation extends Enumeration {
   VALINTAPALVELU_OPISKELUOIKEUS_HAKU,
   SUORITUSREKISTERI_OPISKELUOIKEUS_HAKU,
   VKT_OPISKELUOIKEUS_HAKU,
-  HAKEMUSPALVELU_OPISKELUOIKEUS_HAKU = Value
+  HAKEMUSPALVELU_OPISKELUOIKEUS_HAKU,
+  LAHDEJARJESTELMAKYTKENNAN_PURKAMINEN,
+  OAUTH2_ACCESS_TOKEN_LUONTI,
+  OAUTH2_KATSOMINEN_KAIKKI_TIEDOT,
+  OAUTH2_KATSOMINEN_SUORITETUT_TUTKINNOT,
+  OAUTH2_KATSOMINEN_AKTIIVISET_JA_PAATTYNEET_OPINNOT = Value
 }
 
 private class KoskiAuditLogOperation(op: KoskiOperation) extends AuditLogOperation(op)

@@ -19,6 +19,7 @@ object TaiteenPerusopetusValidation {
           validateHyväksytystiSuoritettuPäätasonSuoritus(oo),
           validateSuoritustenLaajuus(oo),
           validateSuostumusPeruttuSuoritukselta(oo, suostumuksenPeruutusService),
+          validateVahvistus(oo),
         )
       case _ => HttpStatus.ok
     }
@@ -131,4 +132,11 @@ object TaiteenPerusopetusValidation {
       case _ => HttpStatus.ok
     }
   }
+
+  def validateVahvistus(oo: TaiteenPerusopetuksenOpiskeluoikeus) =
+    HttpStatus.fold(oo.suoritukset.map(suoritus =>
+      HttpStatus.validate(!suoritus.vahvistettu || suoritus.osasuoritukset.exists(_.nonEmpty)) {
+        KoskiErrorCategory.badRequest.validation.tila.osasuoritusPuuttuu(s"Valmiiksi merkityllä suorituksella ${suoritus.koulutusmoduuli.tunniste} ei ole yhtään osasuoritusta")
+      }
+    ))
 }

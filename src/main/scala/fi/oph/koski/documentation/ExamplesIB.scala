@@ -46,7 +46,7 @@ object ExamplesIB {
       preIBAineSuoritus(LukioExampleData.lukionOppiaine("GE", None), List((valtakunnallinenKurssi("GE2"), "10"))).copy(arviointi = arviointi("10")),
       preIBAineSuoritus(LukioExampleData.lukionOppiaine("FY", None), List((valtakunnallinenKurssi("FY1"), "7"))).copy(arviointi = arviointi("7")),
       preIBAineSuoritus(LukioExampleData.lukionOppiaine("KE", None), List((valtakunnallinenKurssi("KE1"), "8"))).copy(arviointi = arviointi("8")),
-      preIBAineSuoritus(lukionUskonto(uskonto = None, diaarinumero = None), List((valtakunnallinenKurssi("UK4"), "10"))).copy(arviointi = arviointi("10")),
+      preIBAineSuoritus(lukionUskonto(diaarinumero = None), List((valtakunnallinenKurssi("UK4"), "10"))).copy(arviointi = arviointi("10")),
       preIBAineSuoritus(LukioExampleData.lukionOppiaine("FI", None), List((valtakunnallinenKurssi("FI1"), "S"))).copy(arviointi = arviointi("7")),
       preIBAineSuoritus(LukioExampleData.lukionOppiaine("PS", None), List((valtakunnallinenKurssi("PS1"), "8"))).copy(arviointi = arviointi("8")),
       preIBAineSuoritus(LukioExampleData.lukionOppiaine("HI", None), List(
@@ -93,7 +93,7 @@ object ExamplesIB {
         (Lukio2019ExampleData.muuModuuliOppiaineissa("MAB3"), "10")
       )).copy(arviointi = Lukio2019ExampleData.numeerinenLukionOppiaineenArviointi(10)),
 
-      lukionOppiaineenPreIBSuoritus2019(Lukio2019ExampleData.lukionUskonto(Some("KA")), List(
+      lukionOppiaineenPreIBSuoritus2019(Lukio2019ExampleData.lukionUskonto(), List(
         (Lukio2019ExampleData.muuModuuliOppiaineissa("UK1"), "9")
       )).copy(arviointi = Lukio2019ExampleData.numeerinenLukionOppiaineenArviointi(9)),
 

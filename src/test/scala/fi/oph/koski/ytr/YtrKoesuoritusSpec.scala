@@ -58,7 +58,7 @@ class YtrKoesuoritusSpec extends AnyFreeSpec with KoskiHttpSpec with Opiskeluoik
         verifyResponseStatusOk()
         bodyBytes should equal(resourceAsByteArray(s"/mockdata/ytr/2345K_XX_12345.pdf"))
       }
-      AuditLogTester.verifyAuditLogMessage(Map("operation" -> "KANSALAINEN_YLIOPPILASKOE_HAKU"))
+      AuditLogTester.verifyLastAuditLogMessage(Map("operation" -> "KANSALAINEN_YLIOPPILASKOE_HAKU"))
     }
 
     "huollettavan koesuorituksen haku aiheuttaa auditlogin" in {
@@ -67,7 +67,7 @@ class YtrKoesuoritusSpec extends AnyFreeSpec with KoskiHttpSpec with Opiskeluoik
         verifyResponseStatusOk()
         bodyBytes should equal(resourceAsByteArray(s"/mockdata/ytr/2345K_XX_12345.pdf"))
       }
-      AuditLogTester.verifyAuditLogMessage(Map("operation" -> "KANSALAINEN_HUOLTAJA_YLIOPPILASKOE_HAKU"))
+      AuditLogTester.verifyLastAuditLogMessage(Map("operation" -> "KANSALAINEN_HUOLTAJA_YLIOPPILASKOE_HAKU"))
     }
   }
 

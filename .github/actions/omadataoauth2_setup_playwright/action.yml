@@ -9,6 +9,11 @@ runs:
       working-directory: omadata-oauth2-sample/client
       run: npm ci
       shell: bash
+    - name: Install project dependencies luovutuspalvelu
+      working-directory: koski-luovutuspalvelu/proxy
+      run: npm ci
+      shell: bash
+
     - name: Get playwright version
       working-directory: omadata-oauth2-sample/client
       id: playwright-version

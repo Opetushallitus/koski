@@ -180,7 +180,7 @@ object OpiskeluoikeudenTyyppi {
   def kaikkiTyypit: Set[Koodistokoodiviite] = tyypit
 }
 
-trait KoskeenTallennettavaOpiskeluoikeus extends Opiskeluoikeus {
+trait KoskeenTallennettavaOpiskeluoikeus extends Opiskeluoikeus with LähdejärjestelmäkytkentäPurettavissa {
   import mojave._
 
   @Hidden
@@ -376,7 +376,20 @@ case class LähdejärjestelmäId(
   @KoodistoUri("lahdejarjestelma")
   lähdejärjestelmä: Koodistokoodiviite
 )
+
+@Title("Lähdejärjestelmäkytkennän purkaminen")
+@Description("Käytetään ilmaisemaan sitä että aiemmin lähdejärjestelmästä siirretty opiskeluoikeus on muutettu KOSKI-käyttöliittymällä muokattavaksi opiskeluoikeudeksi.")
+case class LähdejärjestelmäkytkennänPurkaminen(
+  @Description("Aika ja päivä jolloin opiskeluoikeus on muutettu KOSKI-käyttöliittymällä muokattavaksi")
+  purettu: LocalDateTime
+)
+
 trait Lähdejärjestelmällinen {
   @Hidden
   def lähdejärjestelmänId: Option[LähdejärjestelmäId]
+}
+
+trait LähdejärjestelmäkytkentäPurettavissa extends Lähdejärjestelmällinen {
+  @Hidden
+  def lähdejärjestelmäkytkentäPurettu: Option[LähdejärjestelmäkytkennänPurkaminen]
 }

@@ -38,7 +38,7 @@ class OppijaQuerySpec extends AnyFreeSpec with KoskiHttpSpec with Opiskeluoikeus
         }
         päättymispäivät should contain(("010101-123N", LocalDate.parse("2016-01-09")))
         päättymispäivät.map(_._2).foreach { pvm => pvm should (be >= LocalDate.parse("2016-01-01") and be <= LocalDate.parse("2016-12-31")) }
-        AuditLogTester.verifyAuditLogMessage(Map("operation" -> "OPISKELUOIKEUS_HAKU", "target" -> Map("hakuEhto" -> queryString)))
+        AuditLogTester.verifyLastAuditLogMessage(Map("operation" -> "OPISKELUOIKEUS_HAKU", "target" -> Map("hakuEhto" -> queryString)))
       }
       "alkamispäivämäärä" in {
         setupOppijaWithOpiskeluoikeus(makeOpiskeluoikeus(date(2100, 1, 2)), eero) {

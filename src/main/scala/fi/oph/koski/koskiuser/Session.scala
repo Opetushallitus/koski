@@ -75,6 +75,7 @@ class KoskiSpecificSession(
   def hasWriteAccess(organisaatio: Organisaatio.Oid, koulutustoimija: Option[Organisaatio.Oid]) = hasAccess(organisaatio, koulutustoimija, AccessType.write) && hasRole(LUOTTAMUKSELLINEN_KAIKKI_TIEDOT)
   def hasTiedonsiirronMitätöintiAccess(organisaatio: Organisaatio.Oid, koulutustoimija: Option[Organisaatio.Oid]) = hasAccess(organisaatio, koulutustoimija, AccessType.tiedonsiirronMitätöinti)
   def hasKäyttöliittymäsiirronMitätöintiAccess(organisaatio: Organisaatio.Oid, koulutustoimija: Option[Organisaatio.Oid]) = hasAccess(organisaatio, koulutustoimija, AccessType.käyttöliittymäsiirronMitätöinti)
+  def hasLähdejärjestelmäkytkennänPurkaminenAccess(organisaatio: Organisaatio.Oid, koulutustoimija: Option[Organisaatio.Oid]): Boolean = hasAccess(organisaatio, koulutustoimija, AccessType.lähdejärjestelmäkytkennänPurkaminen)
 
   // HUOM!
   // Kun lisäät uuden luovutuspalvelukäyttöoikeuden alle, muista lisätä se myös
@@ -91,7 +92,13 @@ class KoskiSpecificSession(
 
   def hasSomeOmaDataOAuth2Access: Boolean = {
     // OAuth2-käyttäjillä on organisaatiokohtaiset oikeudet tiettyihin OAuth2-scopeihin, siksi käsittely poikkeaa muista luovutuspalvelukäyttäjistä, jotka ovat viranomaisia.
-    orgKäyttöoikeudet.flatMap(_.organisaatiokohtaisetPalveluroolit).exists(p => p.palveluName == "KOSKI" && p.rooli.startsWith("OMADATAOAUTH2_"))
+    orgKäyttöoikeudet.flatMap(_.organisaatiokohtaisetPalveluroolit).exists(p => p.palveluName == "KOSKI" && p.rooli.startsWith(omadataOAuth2Prefix))
+  }
+  def omaDataOAuth2Scopes: Set[String] = {
+    orgKäyttöoikeudet.flatMap(
+      _.organisaatiokohtaisetPalveluroolit
+        .filter(_.palveluName == "KOSKI")
+        .flatMap(_.toOmaDataOAuth2Scope))
   }
   // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
   // HUOM!
@@ -146,6 +153,7 @@ class KoskiSpecificSession(
   def hasAnyMitätöintiAccess = globalAccess.contains(AccessType.tiedonsiirronMitätöinti) || globalAccess.contains(AccessType.käyttöliittymäsiirronMitätöinti) || organisationOids(AccessType.tiedonsiirronMitätöinti).nonEmpty || organisationOids(AccessType.käyttöliittymäsiirronMitätöinti).nonEmpty
   def hasRaportitAccess = hasAnyReadAccess && hasRole(LUOTTAMUKSELLINEN_KAIKKI_TIEDOT) && !hasGlobalKoulutusmuotoReadAccess
   def sensitiveDataAllowed(requiredRoles: Set[Role]) = requiredRoles.exists(hasRole)
+  def hasAnyLähdejärjestelmäkytkennänPurkaminenAccess = globalAccess.contains(AccessType.lähdejärjestelmäkytkennänPurkaminen) || organisationOids(AccessType.lähdejärjestelmäkytkennänPurkaminen).nonEmpty
 
   // Note: keep in sync with PermissionCheckServlet's hasSufficientRoles function. See PermissionCheckServlet for more comments.
   private val OppijanumerorekisteriRekisterinpitäjä = Palvelurooli("OPPIJANUMEROREKISTERI", "REKISTERINPITAJA")
@@ -199,6 +207,7 @@ object KoskiSpecificSession {
   private val KOSKI_SYSTEM_USER_MITÄTÖIDYT_JA_POISTETUT: String = "Koski system user mitätöidyt ja poistetut"
   private val UNTRUSTED_SYSTEM_USER = "Koski untrusted system user"
   val SUORITUSJAKO_KATSOMINEN_USER = "Koski suoritusjako katsominen"
+  val OAUTH2_KATSOMINEN_USER = "Koski OAuth2 katsominen"
   val OPH_KATSELIJA_USER = "Koski OPH katselija"
   // Internal user with root access
   val systemUser = new KoskiSpecificSession(
@@ -243,5 +252,5 @@ object KoskiSpecificSession {
 
   def suoritusjakoKatsominenUser(request: RichRequest) = new KoskiSpecificSession(AuthenticationUser(SUORITUSJAKO_KATSOMINEN_USER, SUORITUSJAKO_KATSOMINEN_USER, SUORITUSJAKO_KATSOMINEN_USER, None), UserLanguage.getLanguageFromCookie(request), LogUserContext.clientIpFromRequest(request), LogUserContext.userAgent(request), Set(KäyttöoikeusGlobal(List(Palvelurooli(OPHKATSELIJA)))))
   def ophKatselijaUser(request: RichRequest) = new KoskiSpecificSession(AuthenticationUser(OPH_KATSELIJA_USER, OPH_KATSELIJA_USER, OPH_KATSELIJA_USER, None), UserLanguage.getLanguageFromCookie(request), LogUserContext.clientIpFromRequest(request), LogUserContext.userAgent(request), Set(KäyttöoikeusGlobal(List(Palvelurooli(OPHKATSELIJA)))))
+  def oauth2KatsominenUser(request: RichRequest) = new KoskiSpecificSession(AuthenticationUser(OAUTH2_KATSOMINEN_USER, OAUTH2_KATSOMINEN_USER, OAUTH2_KATSOMINEN_USER, None), UserLanguage.getLanguageFromCookie(request), LogUserContext.clientIpFromRequest(request), LogUserContext.userAgent(request), Set(KäyttöoikeusGlobal(List(Palvelurooli(OPHKATSELIJA)))))
 }
-

@@ -86,24 +86,34 @@ Siksi uusia OAuth2-rajapinnan käyttäjiä lisättäessä tietoja pitää konfig
 
 ## Integraatiotestit
 
-Integraatiotestejä varten pitää Koski-backendin olla pystyssä (oletuksena `localhost:7021`) tai testit pitää käynnistää ajamalla `OmaDataOAuth2E2ESpec.scala`.
+Ks. [README.md#e2e-testit](../omadata-oauth2-sample/README.md#e2e-testit)
 
-Jos backend on valmiiksi ajossa, voi testit ajaa komennolla
+## Infran ylläpito
 
-    cd omadata-oauth2-sample/client
-    npm run playwright:test
-
-Testit ajetaan headless-selaimessa. Jos haluat selainikkunan näkyviin, aja testit komennolla `npm run playwright:test:debug`
+Ks. [https://github.com/Opetushallitus/koski-aws-infra/blob/master/documentation/oauth2.md](https://github.com/Opetushallitus/koski-aws-infra/blob/master/documentation/oauth2.md).
 
 ## Testi-osoitteita
 
-localhost testi-uri
-- toimiva: http://localhost:7021/koski/omadata-oauth2/authorize?client_id=oauth2client&response_type=code&response_mode=form_post&redirect_uri=%2Fkoski%2Fomadata-oauth2%2Fdebug-post-response&code_challenge=NjIyMGQ4NDAxZGM0ZDI5NTdlMWRlNDI2YWNhNjA1NGRiMjQyZTE0NTg0YzRmOGMwMmU3MzFkYjlhNTRlZTlmZA&code_challenge_method=S256&state=internal%20state&scope=HENKILOTIEDOT_SYNTYMAAIKA%20HENKILOTIEDOT_NIMI%20OPISKELUOIKEUDET_SUORITETUT_TUTKINNOT
-- toimiva täydellä localhost uri:lla redirect_urissa: http://localhost:7021/koski/omadata-oauth2/authorize?client_id=oauth2client&response_type=code&response_mode=form_post&redirect_uri=http%3A%2F%2Flocalhost%3A7021%2Fkoski%2Fomadata-oauth2%2Fdebug-post-response&code_challenge=NjIyMGQ4NDAxZGM0ZDI5NTdlMWRlNDI2YWNhNjA1NGRiMjQyZTE0NTg0YzRmOGMwMmU3MzFkYjlhNTRlZTlmZA&code_challenge_method=S256&state=internal%20state&scope=HENKILOTIEDOT_SYNTYMAAIKA%20HENKILOTIEDOT_NIMI%20OPISKELUOIKEUDET_SUORITETUT_TUTKINNOT
+### Localhost
 
-- rikkinäinen client_id : http://localhost:7021/koski/omadata-oauth2/authorize?client_id=eirek_client&response_type=code&response_mode=form_post&redirect_uri=%2Fkoski%2Fomadata-oauth2%2Fdebug-post-response&code_challenge=NjIyMGQ4NDAxZGM0ZDI5NTdlMWRlNDI2YWNhNjA1NGRiMjQyZTE0NTg0YzRmOGMwMmU3MzFkYjlhNTRlZTlmZA&code_challenge_method=S256&state=internal%20state&scope=HENKILOTIEDOT_SYNTYMAAIKA%20HENKILOTIEDOT_NIMI%20OPISKELUOIKEUDET_SUORITETUT_TUTKINNOT
+toimiva: http://localhost:7021/koski/omadata-oauth2/authorize?client_id=oauth2client&response_type=code&response_mode=form_post&redirect_uri=%2Fkoski%2Fomadata-oauth2%2Fdebug-post-response&code_challenge=NjIyMGQ4NDAxZGM0ZDI5NTdlMWRlNDI2YWNhNjA1NGRiMjQyZTE0NTg0YzRmOGMwMmU3MzFkYjlhNTRlZTlmZA&code_challenge_method=S256&state=internal%20state&scope=HENKILOTIEDOT_SYNTYMAAIKA%20HENKILOTIEDOT_NIMI%20OPISKELUOIKEUDET_SUORITETUT_TUTKINNOT
 
+toimiva täydellä localhost uri:lla redirect_urissa: http://localhost:7021/koski/omadata-oauth2/authorize?client_id=oauth2client&response_type=code&response_mode=form_post&redirect_uri=http%3A%2F%2Flocalhost%3A7021%2Fkoski%2Fomadata-oauth2%2Fdebug-post-response&code_challenge=NjIyMGQ4NDAxZGM0ZDI5NTdlMWRlNDI2YWNhNjA1NGRiMjQyZTE0NTg0YzRmOGMwMmU3MzFkYjlhNTRlZTlmZA&code_challenge_method=S256&state=internal%20state&scope=HENKILOTIEDOT_SYNTYMAAIKA%20HENKILOTIEDOT_NIMI%20OPISKELUOIKEUDET_SUORITETUT_TUTKINNOT
 
-untuva testi-uri https://untuvaopintopolku.fi/koski/omadata-oauth2/authorize?client_id=koskioauth2sampledevpk&response_type=code&response_mode=form_post&redirect_uri=%2Fkoski%2Fomadata-oauth2%2Fdebug-post-response&code_challenge=NjIyMGQ4NDAxZGM0ZDI5NTdlMWRlNDI2YWNhNjA1NGRiMjQyZTE0NTg0YzRmOGMwMmU3MzFkYjlhNTRlZTlmZA&code_challenge_method=S256&state=internal%20state&scope=HENKILOTIEDOT_SYNTYMAAIKA%20HENKILOTIEDOT_NIMI%20OPISKELUOIKEUDET_SUORITETUT_TUTKINNOT
+rikkinäinen client_id : http://localhost:7021/koski/omadata-oauth2/authorize?client_id=eirek_client&response_type=code&response_mode=form_post&redirect_uri=%2Fkoski%2Fomadata-oauth2%2Fdebug-post-response&code_challenge=NjIyMGQ4NDAxZGM0ZDI5NTdlMWRlNDI2YWNhNjA1NGRiMjQyZTE0NTg0YzRmOGMwMmU3MzFkYjlhNTRlZTlmZA&code_challenge_method=S256&state=internal%20state&scope=HENKILOTIEDOT_SYNTYMAAIKA%20HENKILOTIEDOT_NIMI%20OPISKELUOIKEUDET_SUORITETUT_TUTKINNOT
 
-untuva testi-uri, dvv:n cleint_id:llä https://untuvaopintopolku.fi/koski/omadata-oauth2/authorize?client_id=dvvdigilompakkopk&response_type=code&response_mode=form_post&redirect_uri=http%3A%2F%2Flocalhost%3A8380%2Foauth-authorization%2Fapi%2F1.0%2Fauth-callback&code_challenge=NjIyMGQ4NDAxZGM0ZDI5NTdlMWRlNDI2YWNhNjA1NGRiMjQyZTE0NTg0YzRmOGMwMmU3MzFkYjlhNTRlZTlmZA&code_challenge_method=S256&state=internal%20state&scope=HENKILOTIEDOT_SYNTYMAAIKA%20HENKILOTIEDOT_NIMI%20OPISKELUOIKEUDET_SUORITETUT_TUTKINNOT
+koko putken esimerkkiapplikaatiosta käynnistävä smoke-testi: http://localhost:7051/api/openid-api-test
+
+### Untuva
+
+toimiva https://untuvaopintopolku.fi/koski/omadata-oauth2/authorize?client_id=koskioauth2sampledevpk&response_type=code&response_mode=form_post&redirect_uri=%2Fkoski%2Fomadata-oauth2%2Fdebug-post-response&code_challenge=NjIyMGQ4NDAxZGM0ZDI5NTdlMWRlNDI2YWNhNjA1NGRiMjQyZTE0NTg0YzRmOGMwMmU3MzFkYjlhNTRlZTlmZA&code_challenge_method=S256&state=internal%20state&scope=HENKILOTIEDOT_SYNTYMAAIKA%20HENKILOTIEDOT_NIMI%20OPISKELUOIKEUDET_SUORITETUT_TUTKINNOT
+
+dokumentaatio-draft: https://untuvaopintopolku.fi/koski/dokumentaatio/rajapinnat/oauth2/omadata
+
+koko putken esimerkkiapplikaatiosta käynnistävä smoke-testi: https://oph-koski-omadataoauth2sample-dev.testiopintopolku.fi/api/openid-api-test
+
+### Untuva, DVV:n client:id:llä
+
+untuva testi-uri, dvv:n client_id:llä https://untuvaopintopolku.fi/koski/omadata-oauth2/authorize?client_id=dvvdigilompakkopk&response_type=code&response_mode=form_post&redirect_uri=http%3A%2F%2Flocalhost%3A8380%2Foauth-authorization%2Fapi%2F1.0%2Fauth-callback&code_challenge=NjIyMGQ4NDAxZGM0ZDI5NTdlMWRlNDI2YWNhNjA1NGRiMjQyZTE0NTg0YzRmOGMwMmU3MzFkYjlhNTRlZTlmZA&code_challenge_method=S256&state=internal%20state&scope=HENKILOTIEDOT_SYNTYMAAIKA%20HENKILOTIEDOT_NIMI%20OPISKELUOIKEUDET_SUORITETUT_TUTKINNOT
+
+untuva testi-uri, rikkinäinen redirect_uri, dvv:n client_id:llä https://untuvaopintopolku.fi/koski/omadata-oauth2/authorize?client_id=dvvdigilompakkopk&response_type=code&response_mode=form_post&redirect_uri=http%3A%2F%2Flocalhost%3A8380%2Fauth%2Fapi%2F1.0%2Fauth-callback&code_challenge=NjIyMGQ4NDAxZGM0ZDI5NTdlMWRlNDI2YWNhNjA1NGRiMjQyZTE0NTg0YzRmOGMwMmU3MzFkYjlhNTRlZTlmZA&code_challenge_method=S256&state=internal%20state&scope=HENKILOTIEDOT_SYNTYMAAIKA%20HENKILOTIEDOT_NIMI%20OPISKELUOIKEUDET_SUORITETUT_TUTKINNOT

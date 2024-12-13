@@ -29,7 +29,8 @@ case class TaiteenPerusopetuksenOpiskeluoikeus(
   @KoodistoKoodiarvo(OpiskeluoikeudenTyyppi.taiteenperusopetus.koodiarvo)
   tyyppi: Koodistokoodiviite = OpiskeluoikeudenTyyppi.taiteenperusopetus,
   organisaatiohistoria: Option[List[OpiskeluoikeudenOrganisaatiohistoria]] = None,
-  arvioituPäättymispäivä: Option[LocalDate]
+  arvioituPäättymispäivä: Option[LocalDate],
+  lähdejärjestelmäkytkentäPurettu: Option[LähdejärjestelmäkytkennänPurkaminen] = None,
 ) extends KoskeenTallennettavaOpiskeluoikeus {
   override def withOppilaitos(oppilaitos: Oppilaitos) = this.copy(oppilaitos = Some(oppilaitos))
   override def withKoulutustoimija(koulutustoimija: Koulutustoimija) = this.copy(koulutustoimija = Some(koulutustoimija))
@@ -64,10 +65,10 @@ case class TaiteenPerusopetuksenOpiskeluoikeusjakso(
  *****************************************************************************/
 
 trait TaiteenPerusopetuksenPäätasonSuoritus
-  extends KoskeenTallennettavaPäätasonSuoritus with SuostumusPeruttavissaOpiskeluoikeudelta {
+  extends KoskeenTallennettavaPäätasonSuoritus
+    with SuostumusPeruttavissaOpiskeluoikeudelta
+    with ArvioituOsasuoritustenPerusteella {
   def koulutusmoduuli: TaiteenPerusopetuksenOpintotaso
-  def arviointi: Option[List[Arviointi]] = None
-  override def arvioitu: Boolean = osasuoritusLista.nonEmpty && osasuoritusLista.forall(_.arvioitu)
 }
 
 @Title("Yleisen oppimäärän yhteisten opintojen suoritus")

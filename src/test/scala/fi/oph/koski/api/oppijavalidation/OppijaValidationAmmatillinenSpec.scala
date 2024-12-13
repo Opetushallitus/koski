@@ -1487,6 +1487,31 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
         }
       }
     }
+
+    "Siirtyminen uudempiin perusteisiin" - {
+      "Tietoa ei voi siirtää, jos opiskeluoikeus ei ole terminaalitilassa" in {
+        val lisätiedot = AmmatillisenOpiskeluoikeudenLisätiedot(siirtynytUusiinTutkinnonPerusteisiin = Some(true))
+        val opiskeluoikeus = defaultOpiskeluoikeus.copy(
+          lisätiedot = Some(lisätiedot),
+          tila = AmmatillinenOpiskeluoikeudenTila(List(
+            AmmatillinenOpiskeluoikeusjakso(LocalDate.of(2000, 1, 2), ExampleData.opiskeluoikeusLäsnä, Some(ExampleData.valtionosuusRahoitteinen)),
+          )),
+        )
+        setupOppijaWithOpiskeluoikeus(opiskeluoikeus) {
+          verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.eiPäättävääTilaa("Opiskeluoikeudella, jonka lisätiedoissa on merkintä 'siirtynyt uusiin tutkinnon perusteisiin', pitää päättyä tilaan 'katsotaan eronneeksi'."))
+        }
+      }
+
+      "Tiedon voi siirtää, jos opiskeluoikeus on päättynyt 'katsotaan eronneeksi' -tilaan" in {
+        val lisätiedot = AmmatillisenOpiskeluoikeudenLisätiedot(siirtynytUusiinTutkinnonPerusteisiin = Some(true))
+        val opiskeluoikeus = AmmatillinenOpiskeluoikeusTestData.katsotaanEronneeksiOpiskeluoikeus(
+          oppilaitosId = MockOrganisaatiot.stadinAmmattiopisto,
+        )
+        setupOppijaWithOpiskeluoikeus(opiskeluoikeus) {
+          verifyResponseStatusOk()
+        }
+      }
+    }
   }
 
   def vahvistus(date: LocalDate) = {

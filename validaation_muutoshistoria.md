@@ -1,5 +1,24 @@
 # Koskeen tallennettavien tietojen validaatiosäännöt
 
+## 11.12.2024
+
+- Estetään siirtynytUusiinTutkinnonPerusteisiin -kentän siirto ammatillisen opiskeluoikeuden lisätietoihin, jos opiskeluoikeus ei ole päättyvässä tilassa.
+
+## xx.11.2024
+
+- Estetään uuden kaikille opikeluoikeuksille lisätyn kentän `lähdejärjestelmäkytkentäPurettu` lisääminen tai sen sisällön muokkaaminen tiedonsiirron kautta.
+- Estetään opiskeluoikeuden päivitys tiedonsiirron kautta, jos sen lähdejärjestelmäkytkentä on purettu.
+
+## 14.11.2024
+
+- Salli ammatillisen koulutuksen korotukset toisessa oppilaitoksessa suoritettuun tutkintoon
+
+## 22.10.2024
+
+- Taiteen perusopetuksen virhetunnisteet ja -viestit ovat muuttuneet seuraavien validatioiden kohdalla:
+  - Jos osasuoritukselta puuttuu arviointi: vahvistusIlmanArviointia -> keskeneräinenOsasuoritus
+  - Jos osasuorituksia ei ole: vahvistusIlmanArviointia -> osasuoritusPuuttuu
+
 ## 18.10.2024
 
 - Nuorten perusopetuksen ja perusopetuksen lisäopetuksen suorituksille toiminta-alueittain vaaditaan laajuudet.

@@ -1,5 +1,6 @@
 package fi.oph.koski.suoritusjako
 
+import fi.oph.koski.aktiivisetjapaattyneetopinnot.AktiivisetJaPäättyneetOpinnotService
 import java.time.LocalDate
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.json.JsonSerializer
@@ -9,9 +10,7 @@ import fi.oph.koski.log.KoskiOperation.{KANSALAINEN_SUORITUSJAKO_LISAYS, KANSALA
 import fi.oph.koski.log.KoskiAuditLogMessageField.oppijaHenkiloOid
 import fi.oph.koski.oppija.KoskiOppijaFacade
 import fi.oph.koski.schema._
-import fi.oph.koski.suoritusjako.aktiivisetjapaattyneetopinnot.{AktiivisetJaPäättyneetOpinnotOppija, AktiivisetJaPäättyneetOpinnotService}
-import fi.oph.koski.suoritusjako.common.Jakolinkki
-import fi.oph.koski.suoritusjako.suoritetuttutkinnot.{SuoritetutTutkinnotOppija, SuoritetutTutkinnotService}
+import fi.oph.koski.suoritetuttutkinnot.SuoritetutTutkinnotService
 import fi.oph.koski.util.ChainingSyntax.chainingOps
 import fi.oph.koski.util.WithWarnings
 
@@ -93,12 +92,12 @@ class SuoritusjakoService(
       Suoritusjako(jako.secret, jako.voimassaAsti.toLocalDate, jako.aikaleima, jaonTyyppi = jako.jaonTyyppi))
   }
 
-  def getSuoritetutTutkinnot(secret: String)(implicit koskiSession: KoskiSpecificSession): Either[HttpStatus, SuoritetutTutkinnotOppija] = {
+  def getSuoritetutTutkinnot(secret: String)(implicit koskiSession: KoskiSpecificSession): Either[HttpStatus, SuoritetutTutkinnotOppijaJakolinkillä] = {
     suoritusjakoRepository.get(secret).flatMap(
       o =>
         (o.oppijaOid, o.jaonTyyppi) match {
           case (oppijaOid, Some("suoritetut-tutkinnot")) => {
-            suoritetutTutkinnotService.findSuoritetutTutkinnotOppija(oppijaOid)
+            findSuoritetutTutkinnotOppija(oppijaOid)
               .map(_.copy(
                 jakolinkki = Some(Jakolinkki(o.voimassaAsti.toLocalDate))
               ))
@@ -108,18 +107,44 @@ class SuoritusjakoService(
     )
   }
 
-  def getAktiivisetJaPäättyneetOpinnot(secret: String)(implicit koskiSession: KoskiSpecificSession): Either[HttpStatus, AktiivisetJaPäättyneetOpinnotOppija] = {
+  def findSuoritetutTutkinnotOppija(oppijaOid: String)
+    (implicit koskiSession: KoskiSpecificSession): Either[HttpStatus, SuoritetutTutkinnotOppijaJakolinkillä] = {
+    suoritetutTutkinnotService.findSuoritetutTutkinnotOppija(
+      oppijaOid,
+      merkitseSuoritusjakoTehdyksi = true
+    ).map(oppijaLaajatTiedot => {
+      SuoritetutTutkinnotOppijaJakolinkillä(
+        henkilö = SuoritusjakoHenkilö.fromOppijaHenkilö(oppijaLaajatTiedot.henkilö),
+        opiskeluoikeudet = oppijaLaajatTiedot.opiskeluoikeudet
+      )
+    })
+  }
+
+  def getAktiivisetJaPäättyneetOpinnot(secret: String)(implicit koskiSession: KoskiSpecificSession): Either[HttpStatus, AktiivisetJaPäättyneetOpinnotOppijaJakolinkillä] = {
     suoritusjakoRepository.get(secret).flatMap(
       o =>
         (o.oppijaOid, o.jaonTyyppi) match {
           case (oppijaOid, Some("aktiiviset-ja-paattyneet-opinnot")) =>
-            aktiivisetJaPäättyneetOpinnotService.findOppija(oppijaOid)
+            findAktiivisetJaPäättyneetOpinnotOppija(oppijaOid)
               .map(_.copy(
                 jakolinkki = Some(Jakolinkki(o.voimassaAsti.toLocalDate))
               ))
           case _ => Left(KoskiErrorCategory.notFound())
         }
     )
+  }
+
+  def findAktiivisetJaPäättyneetOpinnotOppija(oppijaOid: String)
+    (implicit koskiSession: KoskiSpecificSession): Either[HttpStatus, AktiivisetJaPäättyneetOpinnotOppijaJakolinkillä] = {
+    aktiivisetJaPäättyneetOpinnotService.findAktiivisetJaPäättyneetOpinnotOppija(
+      oppijaOid,
+      merkitseSuoritusjakoTehdyksi = true
+    ).map(oppijaLaajatTiedot => {
+      AktiivisetJaPäättyneetOpinnotOppijaJakolinkillä(
+        henkilö = SuoritusjakoHenkilö.fromOppijaHenkilö(oppijaLaajatTiedot.henkilö),
+        opiskeluoikeudet = oppijaLaajatTiedot.opiskeluoikeudet
+      )
+    })
   }
 
   private def filterOpiskeluoikeudet(opiskeluoikeudet: Seq[Opiskeluoikeus], suoritusIds: List[SuoritusIdentifier]): Seq[Opiskeluoikeus] = {

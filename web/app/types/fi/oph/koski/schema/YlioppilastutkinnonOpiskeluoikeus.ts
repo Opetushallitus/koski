@@ -6,6 +6,7 @@ import { YlioppilastutkinnonOpiskeluoikeudenLisätiedot } from './Ylioppilastutk
 import { YlioppilastutkinnonSuoritus } from './YlioppilastutkinnonSuoritus'
 import { LähdejärjestelmäId } from './LahdejarjestelmaId'
 import { Oppilaitos } from './Oppilaitos'
+import { LähdejärjestelmäkytkennänPurkaminen } from './LahdejarjestelmakytkennanPurkaminen'
 
 /**
  * YlioppilastutkinnonOpiskeluoikeus
@@ -26,6 +27,7 @@ export type YlioppilastutkinnonOpiskeluoikeus = {
   päättymispäivä?: string
   lähdejärjestelmänId?: LähdejärjestelmäId
   oppilaitosSuorituspäivänä?: Oppilaitos
+  lähdejärjestelmäkytkentäPurettu?: LähdejärjestelmäkytkennänPurkaminen
   oppilaitos?: Oppilaitos
 }
 
@@ -43,6 +45,7 @@ export const YlioppilastutkinnonOpiskeluoikeus = (
     päättymispäivä?: string
     lähdejärjestelmänId?: LähdejärjestelmäId
     oppilaitosSuorituspäivänä?: Oppilaitos
+    lähdejärjestelmäkytkentäPurettu?: LähdejärjestelmäkytkennänPurkaminen
     oppilaitos?: Oppilaitos
   } = {}
 ): YlioppilastutkinnonOpiskeluoikeus => ({

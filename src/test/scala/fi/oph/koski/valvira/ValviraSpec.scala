@@ -76,7 +76,7 @@ class ValviraSpec extends AnyFreeSpec with KoskiHttpSpec with OpiskeluoikeusTest
       AuditLogTester.clearMessages
       getHetu(KoskiSpecificMockOppijat.valviraaKiinnostavaTutkinto.hetu.get) {
         verifyResponseStatusOk()
-        AuditLogTester.verifyAuditLogMessage(Map("operation" -> "OPISKELUOIKEUS_KATSOMINEN", "target" -> Map("oppijaHenkiloOid" -> KoskiSpecificMockOppijat.valviraaKiinnostavaTutkinto.oid)))
+        AuditLogTester.verifyLastAuditLogMessage(Map("operation" -> "OPISKELUOIKEUS_KATSOMINEN", "target" -> Map("oppijaHenkiloOid" -> KoskiSpecificMockOppijat.valviraaKiinnostavaTutkinto.oid)))
       }
     }
     "Hetu ei päädy lokiin" in {

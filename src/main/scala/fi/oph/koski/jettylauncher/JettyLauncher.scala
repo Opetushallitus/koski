@@ -16,6 +16,8 @@ import org.eclipse.jetty.servlet.{ServletContextHandler, ServletHolder}
 import org.eclipse.jetty.util.thread.QueuedThreadPool
 import org.eclipse.jetty.webapp.WebAppContext
 
+import scala.concurrent.duration.DurationInt
+
 object JettyLauncher extends App with Logging {
   LogConfiguration.configureLogging()
 
@@ -91,9 +93,11 @@ class JettyLauncher(val port: Int, val application: KoskiApplication) extends Lo
     val httpConfig = new HttpConfiguration()
     httpConfig.addCustomizer( new ForwardedRequestCustomizer() )
     val connectionFactory = new HttpConnectionFactory( httpConfig )
-
     val connector = new ServerConnector(server, connectionFactory)
     connector.setPort(port)
+    val idleTimeoutMs = config.getLong("jettyIdleTimeoutSeconds") * 1000
+    logger.info(s"Setting Jetty idle connection timeout to $idleTimeoutMs ms")
+    connector.setIdleTimeout(idleTimeoutMs)
     server.addConnector(connector)
   }
 

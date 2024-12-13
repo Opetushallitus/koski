@@ -1,0 +1,76 @@
+<VTJHenkiloVastaussanoma xsi:schemaLocation="http://xml.vrk.fi/schema/vtjkysely PERUSLT1.xsd" tietojenPoimintaaika="20151117112133" sanomatunnus="PERUSLT1" versio="1.0">
+  <Asiakasinfo>
+    <InfoS>17.11.2015 11:21</InfoS>
+    <InfoR>17.11.2015 11:21</InfoR>
+    <InfoE>17.11.2015 11:21</InfoE>
+  </Asiakasinfo>
+  <Paluukoodi koodi="0000">Haku onnistui</Paluukoodi>
+  <Hakuperusteet>
+    <Henkilotunnus hakuperustePaluukoodi="1" hakuperusteTekstiS="Löytyi" hakuperusteTekstiR="Hittades" hakuperusteTekstiE="Found">310118-998M</Henkilotunnus>
+  </Hakuperusteet>
+  <Henkilo>
+    <Henkilotunnus voimassaolokoodi="1">010106A9322</Henkilotunnus>
+    <NykyinenSukunimi>
+      <Sukunimi>Haapakoski</Sukunimi>
+    </NykyinenSukunimi>
+    <NykyisetEtunimet>
+      <Etunimet>Alina Kukka-Maaria</Etunimet>
+    </NykyisetEtunimet>
+    <Kotikunta>
+      <Kuntanumero>915</Kuntanumero>
+      <KuntaS>Varkaus</KuntaS>
+      <KuntaR>Varkaus</KuntaR>
+      <KuntasuhdeAlkupvm>19701125</KuntasuhdeAlkupvm>
+    </Kotikunta>
+    <VakinainenKotimainenLahiosoite>
+      <LahiosoiteS>Iso Haukka Linnun Kuja 1 I 35</LahiosoiteS>
+      <LahiosoiteR/>
+      <Postinumero>78850</Postinumero>
+      <PostitoimipaikkaS>VARKAUS</PostitoimipaikkaS>
+      <PostitoimipaikkaR>VARKAUS</PostitoimipaikkaR>
+      <AsuminenAlkupvm>19960429</AsuminenAlkupvm>
+      <AsuminenLoppupvm/>
+    </VakinainenKotimainenLahiosoite>
+    <Aidinkieli>
+      <AidinkieliTietokoodi>1</AidinkieliTietokoodi>
+    </Aidinkieli>
+    <Huollettava>
+      <Henkilotunnus>300996-870E</Henkilotunnus>
+      <Sukunimi>Eskari</Sukunimi>
+      <Etunimet>Essi</Etunimet>
+      <Suhde>Syntymävuosi</Suhde>
+      <SuhdeTeksti>1996</SuhdeTeksti>
+    </Huollettava>
+    <Huollettava>
+      <Henkilotunnus>080698-703Y</Henkilotunnus>
+      <Sukunimi>Ylioppilaslukiolainen</Sukunimi>
+      <Etunimet>Ynjevi</Etunimet>
+      <Suhde>Syntymävuosi</Suhde>
+      <SuhdeTeksti>1998</SuhdeTeksti>
+    </Huollettava>
+    <Huollettava>
+      <Henkilotunnus>060488-681S</Henkilotunnus>
+      <Sukunimi>Oiditon</Sukunimi>
+      <Etunimet>Olli</Etunimet>
+      <Suhde>Syntymävuosi</Suhde>
+      <SuhdeTeksti>1988</SuhdeTeksti>
+    </Huollettava>
+    <Huollettava>
+      <Henkilotunnus>151067-2193</Henkilotunnus>
+      <Sukunimi>Turvakielto</Sukunimi>
+      <Etunimet>Tero</Etunimet>
+      <Suhde>Syntymävuosi</Suhde>
+      <SuhdeTeksti>1967</SuhdeTeksti>
+    </Huollettava>
+    <Huollettava>
+      <Henkilotunnus/>
+      <Sukunimi>Hetuton</Sukunimi>
+      <Etunimet>Heikki</Etunimet>
+      <Suhde>Syntymävuosi</Suhde>
+      <SuhdeTeksti>1997</SuhdeTeksti>
+    </Huollettava>
+    <Kuolintiedot>
+      <Kuolinpvm/>
+    </Kuolintiedot>
+  </Henkilo>
+</VTJHenkiloVastaussanoma>

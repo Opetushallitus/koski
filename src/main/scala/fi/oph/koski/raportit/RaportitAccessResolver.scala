@@ -43,20 +43,6 @@ case class RaportitAccessResolver(organisaatioRepository: OrganisaatioRepository
       .filter(raportti => session.allowedOpiskeluoikeusTyypit.contains(raportti.opiskeluoikeudenTyyppi))
   }
 
-  // TODO: Tarpeeton kun uusi raporttikäli saadaan käyttöön, voi poistaa
-  def mahdollisetRaporttienTyypitOrganisaatiolle(organisaatioOid: Organisaatio.Oid)(implicit session: KoskiSpecificSession): Set[RaportinTyyppi] = {
-    val organisaatio = organisaatioRepository.getOrganisaatio(organisaatioOid)
-    val isKoulutustoimija = organisaatio.exists(_.isInstanceOf[Koulutustoimija])
-
-    organisaatio
-      .flatMap(organisaatioWithOid => organisaatioRepository.getChildOids(organisaatioWithOid.oid))
-      .map(raportointiDatabase.oppilaitostenKoulutusmuodot)
-      .map(_.flatMap(raportinTyypitKoulutusmuodolle(_, isKoulutustoimija)))
-      .map(_.filter(checkRaporttiAccessIfAccessIsLimited(_)))
-      .map(_.filter(raportti => session.allowedOpiskeluoikeusTyypit.contains(raportti.opiskeluoikeudenTyyppi)))
-      .getOrElse(Set.empty[RaportinTyyppi])
-  }
-
   private def filterOppilaitosOidsByKoulutusmuoto(oppilaitosOids: Seq[String], koulutusmuoto: String): Seq[String] = {
     val query =
       sql"""
@@ -90,9 +76,11 @@ case class RaportitAccessResolver(organisaatioRepository: OrganisaatioRepository
     case "aikuistenperusopetus" if !isKoulutustoimija => Seq(AikuistenPerusopetusSuoritustietojenTarkistus, AikuistenPerusopetusOppijaMäärienRaportti, AikuistenPerusopetusKurssikertymänRaportti)
     case "aikuistenperusopetus" => Seq(AikuistenPerusopetusOppijaMäärienRaportti, AikuistenPerusopetusKurssikertymänRaportti)
     case "luva" => Seq(LuvaOpiskelijamaarat)
-    case "perusopetukseenvalmistavaopetus" if !isKoulutustoimija => Seq(PerusopetukseenValmistavanOpetuksenTarkistus)
+    case "perusopetukseenvalmistavaopetus" => Seq(PerusopetukseenValmistavanOpetuksenTarkistus)
     case "tuva" if !isKoulutustoimija => Seq(TuvaSuoritustietojenTarkistus, TuvaPerusopetuksenOppijaMääräRaportti)
     case "tuva" => Seq(TuvaPerusopetuksenOppijaMääräRaportti)
+    case "vapaansivistystyonkoulutus" => Seq(JatkuvanOppimisenVapaanSivistystyönRaportti)
+    case "muukuinsaanneltykoulutus" => Seq(MuunKuinSäännellynKoulutuksenRaportti)
     case _ => Seq.empty[RaportinTyyppi]
   }
 

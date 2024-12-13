@@ -1,6 +1,7 @@
 package fi.oph.koski.config
 
 import com.typesafe.config.{Config, ConfigFactory}
+import fi.oph.koski.aktiivisetjapaattyneetopinnot.AktiivisetJaPäättyneetOpinnotService
 import fi.oph.koski.cache.CacheManager
 import fi.oph.koski.db.{KoskiDatabase, KoskiTables, RaportointiDatabaseConfig, RaportointiGenerointiDatabaseConfig, ValpasDatabaseConfig}
 import fi.oph.koski.opensearch.{IndexManager, OpenSearch}
@@ -12,13 +13,14 @@ import fi.oph.koski.hakemuspalvelu.HakemuspalveluService
 import fi.oph.koski.healthcheck.{HealthCheck, HealthMonitoring}
 import fi.oph.koski.henkilo.{HenkilöRepository, Hetu, KoskiHenkilöCache, OpintopolkuHenkilöFacade}
 import fi.oph.koski.history.{KoskiOpiskeluoikeusHistoryRepository, YtrOpiskeluoikeusHistoryRepository}
-import fi.oph.koski.huoltaja.HuoltajaServiceVtj
+import fi.oph.koski.huoltaja.{HuollettavatRepository, HuoltajaServiceVtj}
 import fi.oph.koski.koodisto.{KoodistoCreator, KoodistoPalvelu, KoodistoViitePalvelu}
 import fi.oph.koski.koskiuser._
 import fi.oph.koski.massaluovutus.{MassaluovutusCleanupScheduler, MassaluovutusScheduler, MassaluovutusService}
 import fi.oph.koski.localization.{KoskiLocalizationConfig, LocalizationRepository}
 import fi.oph.koski.log.{AuditLog, Logging, TimedProxy}
 import fi.oph.koski.mydata.{MyDataRepository, MyDataService}
+import fi.oph.koski.omadataoauth2.{OmaDataOAuth2Repository, OmaDataOAuth2Service}
 import fi.oph.koski.omattiedot.HuoltajaService
 import fi.oph.koski.opiskeluoikeus._
 import fi.oph.koski.oppija.KoskiOppijaFacade
@@ -29,8 +31,7 @@ import fi.oph.koski.pulssi.{KoskiPulssi, PrometheusRepository}
 import fi.oph.koski.raportointikanta.{Confidential, Public, RaportointiDatabase, RaportointikantaService}
 import fi.oph.koski.schedule.{KoskiScheduledTasks, PerustiedotManualSyncScheduler, PerustiedotSyncScheduler}
 import fi.oph.koski.sso.{CasOppijaCreationService, CasService, KoskiSessionRepository}
-import fi.oph.koski.suoritusjako.aktiivisetjapaattyneetopinnot.AktiivisetJaPäättyneetOpinnotService
-import fi.oph.koski.suoritusjako.suoritetuttutkinnot.SuoritetutTutkinnotService
+import fi.oph.koski.suoritetuttutkinnot.SuoritetutTutkinnotService
 import fi.oph.koski.suoritusjako.{SuoritusjakoRepository, SuoritusjakoRepositoryV2, SuoritusjakoService, SuoritusjakoServiceV2}
 import fi.oph.koski.suostumus.SuostumuksenPeruutusService
 import fi.oph.koski.tiedonsiirto.{IPService, TiedonsiirtoService}
@@ -96,8 +97,9 @@ class KoskiApplication(
   lazy val virtaAccessChecker = new VirtaAccessChecker(käyttöoikeusRepository)
   lazy val ytrAccessChecker = new YtrAccessChecker(käyttöoikeusRepository)
   lazy val henkilöRepository = HenkilöRepository(this)
+  lazy val huollettavatRepository = HuollettavatRepository(config)
   lazy val huoltajaService = new HuoltajaService(this)
-  lazy val huoltajaServiceVtj = new HuoltajaServiceVtj(config, henkilöRepository)
+  lazy val huoltajaServiceVtj = new HuoltajaServiceVtj(henkilöRepository, huollettavatRepository)
   lazy val historyRepository = KoskiOpiskeluoikeusHistoryRepository(masterDatabase.db)
   lazy val ytrHistoryRepository = YtrOpiskeluoikeusHistoryRepository(masterDatabase.db)
   lazy val virta = TimedProxy[AuxiliaryOpiskeluoikeusRepository](VirtaOpiskeluoikeusRepository(virtaClient, oppilaitosRepository, koodistoViitePalvelu, organisaatioRepository, virtaAccessChecker, Some(validator)))
@@ -219,6 +221,9 @@ class KoskiApplication(
   lazy val massaluovutusScheduler: MassaluovutusScheduler = new MassaluovutusScheduler(this)
   lazy val massaluovutusCleanupScheduler: MassaluovutusCleanupScheduler = new MassaluovutusCleanupScheduler(this)
   lazy val ecsMetadata: ECSMetadataClient = new ECSMetadataClient(config)
+
+  lazy val omaDataOAuth2Repository = new OmaDataOAuth2Repository(masterDatabase.db)
+  lazy val omaDataOAuth2Service = new OmaDataOAuth2Service(omaDataOAuth2Repository, this)
 
   def init(): Future[Any] = {
     AuditLog.startHeartbeat()

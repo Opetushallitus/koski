@@ -1,14 +1,17 @@
 package fi.oph.koski.henkilo
 
 import com.typesafe.config.Config
+import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.db.DB
 import fi.oph.koski.fixture.FixtureCreator
 import fi.oph.koski.http.Http._
-import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
+import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory, RetryMiddleware}
 import fi.oph.koski.perustiedot.{OpiskeluoikeudenPerustiedotIndexer, OpiskeluoikeudenPerustiedotRepository}
 import fi.oph.koski.schema.Henkilö.Oid
 import fi.oph.koski.schema.TäydellisetHenkilötiedot
 import fi.oph.koski.util.Timing
+
+import scala.concurrent.duration.FiniteDuration
 
 trait OpintopolkuHenkilöFacade {
   def findOppijaByOid(oid: String): Option[LaajatOppijaHenkilöTiedot] =
@@ -24,6 +27,7 @@ trait OpintopolkuHenkilöFacade {
   def findOppijatByHetusNoSlaveOids(hetus: Seq[String]): Seq[OppijaHenkilö]
   def findSlaveOids(masterOid: String): List[Oid]
   def findKuntahistoriat(oids: Seq[String], turvakiellolliset: Boolean): Either[HttpStatus, Seq[OppijanumerorekisteriKotikuntahistoriaRow]]
+  def withRetryStrategy(strategy: OppijanumeroRekisteriClientRetryStrategy): OpintopolkuHenkilöFacade = this
 }
 
 object OpintopolkuHenkilöFacade {
@@ -34,18 +38,25 @@ object OpintopolkuHenkilöFacade {
     fixtures: => FixtureCreator,
     perustiedotRepository: => OpiskeluoikeudenPerustiedotRepository,
     perustiedotIndexer: => OpiskeluoikeudenPerustiedotIndexer,
+    rekisteriClientRetryStrategy: OppijanumeroRekisteriClientRetryStrategy = OppijanumeroRekisteriClientRetryStrategy.Default,
   ): OpintopolkuHenkilöFacade = config.getString("opintopolku.virkailija.url") match {
     case "mock" => new MockOpintopolkuHenkilöFacadeWithDBSupport(db, hetu, fixtures)
-    case _ => RemoteOpintopolkuHenkilöFacade(config, perustiedotRepository, perustiedotIndexer)
+    case _ => RemoteOpintopolkuHenkilöFacade(config, perustiedotRepository, perustiedotIndexer, rekisteriClientRetryStrategy)
   }
 }
 
 object RemoteOpintopolkuHenkilöFacade {
-  def apply(config: Config, perustiedotRepository: => OpiskeluoikeudenPerustiedotRepository, perustiedotIndexer: => OpiskeluoikeudenPerustiedotIndexer): RemoteOpintopolkuHenkilöFacade = {
+  def apply(
+    config: Config,
+    perustiedotRepository: => OpiskeluoikeudenPerustiedotRepository,
+    perustiedotIndexer: => OpiskeluoikeudenPerustiedotIndexer,
+    rekisteriClientRetryStrategy: OppijanumeroRekisteriClientRetryStrategy = OppijanumeroRekisteriClientRetryStrategy.Default,
+  ): RemoteOpintopolkuHenkilöFacade = {
+    val client = OppijanumeroRekisteriClient(config, rekisteriClientRetryStrategy)
     if (config.hasPath("authentication-service.mockOid") && config.getBoolean("authentication-service.mockOid")) {
-      new RemoteOpintopolkuHenkilöFacadeWithMockOids(OppijanumeroRekisteriClient(config), perustiedotRepository, perustiedotIndexer, config)
+      new RemoteOpintopolkuHenkilöFacadeWithMockOids(client, perustiedotRepository, perustiedotIndexer, config)
     } else {
-      new RemoteOpintopolkuHenkilöFacade(OppijanumeroRekisteriClient(config), config)
+      new RemoteOpintopolkuHenkilöFacade(client, config)
     }
   }
 }
@@ -89,6 +100,9 @@ class RemoteOpintopolkuHenkilöFacade(oppijanumeroRekisteriClient: OppijanumeroR
       logger.error(s"Kotikuntahistorian haku epäonnistui: $error")
       KoskiErrorCategory.internalError("Kotikuntahistorian haku epäonnistui")
     }
+
+  override def withRetryStrategy(strategy: OppijanumeroRekisteriClientRetryStrategy): RemoteOpintopolkuHenkilöFacade =
+    new RemoteOpintopolkuHenkilöFacade(oppijanumeroRekisteriClient.withRetryStrategy(strategy), config)
 }
 
 class RemoteOpintopolkuHenkilöFacadeWithMockOids(
@@ -124,6 +138,14 @@ class RemoteOpintopolkuHenkilöFacadeWithMockOids(
       LaajatOppijaHenkilöTiedot(henkilö.oid, henkilö.sukunimi, henkilö.etunimet, henkilö.kutsumanimi, Some("010101-123N"), None, None, None, None, 0, false)
     }.getOrElse(LaajatOppijaHenkilöTiedot(oid, oid.substring("1.2.246.562.24.".length, oid.length), "Testihenkilö", "Testihenkilö", Some("010101-123N"), None, None, None, None, 0, false))
   }
+
+  override def withRetryStrategy(strategy: OppijanumeroRekisteriClientRetryStrategy): RemoteOpintopolkuHenkilöFacade =
+    new RemoteOpintopolkuHenkilöFacadeWithMockOids(
+      oppijanumeroRekisteriClient.withRetryStrategy(strategy),
+      perustiedotRepository,
+      perustiedotIndexer,
+      config,
+    )
 }
 
 object RemoteOpintopolkuHenkilöFacadeWithMockOids {

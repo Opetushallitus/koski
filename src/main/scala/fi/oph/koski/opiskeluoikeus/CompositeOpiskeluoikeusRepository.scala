@@ -2,17 +2,18 @@ package fi.oph.koski.opiskeluoikeus
 
 import com.typesafe.config.Config
 
-import java.time.LocalDate
+import java.time.{LocalDate, LocalDateTime}
 import fi.oph.koski.db.KoskiOpiskeluoikeusRow
 import fi.oph.koski.executors.GlobalExecutionContext
-import fi.oph.koski.henkilo.{HenkilönTunnisteet, Hetu, LaajatOppijaHenkilöTiedot, PossiblyUnverifiedHenkilöOid}
+import fi.oph.koski.henkilo.{HenkilöRepository, HenkilönTunnisteet, Hetu, LaajatOppijaHenkilöTiedot, PossiblyUnverifiedHenkilöOid, UnverifiedHenkilöOid, VerifiedHenkilöOid}
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.koskiuser.KoskiSpecificSession
 import fi.oph.koski.log.Logging
 import fi.oph.koski.schema.Henkilö.Oid
-import fi.oph.koski.schema.{KoskeenTallennettavaOpiskeluoikeus, Opiskeluoikeus}
+import fi.oph.koski.schema.{KoskeenTallennettavaOpiskeluoikeus, LähdejärjestelmäId, LähdejärjestelmäkytkennänPurkaminen, LähdejärjestelmäkytkentäPurettavissa, Opiskeluoikeus}
 import fi.oph.koski.turvakielto.TurvakieltoService
 import fi.oph.koski.util.{Futures, WithWarnings}
+import fi.oph.koski.validation.LahdejarjestelmakytkennanPurkaminenValidation
 
 import scala.concurrent.Future
 import scala.util.{Failure, Success, Try}
@@ -146,4 +147,45 @@ class CompositeOpiskeluoikeusRepository(main: KoskiOpiskeluoikeusRepository, vir
 
   def suoritusjakoTehtyIlmanKäyttöoikeudenTarkastusta(opiskeluoikeusOid: String): Boolean =
     main.suoritusjakoTehtyIlmanKäyttöoikeudenTarkastusta(opiskeluoikeusOid)
+
+  def puraLähdejärjestelmäkytkentä
+    (opiskeluoikeusOid: String, henkilöRepostory: HenkilöRepository)
+    (implicit user: KoskiSpecificSession)
+  : Either[HttpStatus, CreateOrUpdateResult] =
+    for {
+      opiskeluoikeusRow <- findByOid(opiskeluoikeusOid)
+      _hasAccess        <- Either.cond(
+                            user.hasLähdejärjestelmäkytkennänPurkaminenAccess(
+                              opiskeluoikeusRow.oppilaitosOid,
+                              opiskeluoikeusRow.koulutustoimijaOid
+                            ),
+                            Unit,
+                            KoskiErrorCategory.notFound.opiskeluoikeuttaEiLöydyTaiEiOikeuksia()
+                           )
+      opiskeluoikeus    <- Right(opiskeluoikeusRow.toOpiskeluoikeusUnsafe)
+      _voiPurkaa        <- LahdejarjestelmakytkennanPurkaminenValidation.validatePurkaminen(opiskeluoikeus).toEither
+      newOo             <- purettuOpiskeluoikeus(opiskeluoikeus)
+      result            <- createOrUpdate(
+                            UnverifiedHenkilöOid(opiskeluoikeusRow.oppijaOid, henkilöRepostory),
+                            newOo,
+                            allowUpdate = true
+                          )
+    } yield result
+
+  private def purettuOpiskeluoikeus(oo: KoskeenTallennettavaOpiskeluoikeus): Either[HttpStatus, KoskeenTallennettavaOpiskeluoikeus] = {
+    import mojave._
+    oo match {
+      case p: LähdejärjestelmäkytkentäPurettavissa =>
+        val opiskeluoikeusL = shapeless.lens[KoskeenTallennettavaOpiskeluoikeus]
+        val lähdejärjestelmäIdL = opiskeluoikeusL.field[Option[LähdejärjestelmäId]]("lähdejärjestelmänId")
+        val lähdejärjestelmäkytkentäPurettuL = opiskeluoikeusL.field[Option[LähdejärjestelmäkytkennänPurkaminen]]("lähdejärjestelmäkytkentäPurettu")
+
+        val oo2 = lähdejärjestelmäIdL.set(p)(None)
+        val oo3 = lähdejärjestelmäkytkentäPurettuL.set(oo2)(Some(LähdejärjestelmäkytkennänPurkaminen(LocalDateTime.now())))
+
+        Right(oo3)
+      case _ =>
+        Left(KoskiErrorCategory.forbidden.lähdejärjestelmäkytkennänPurkaminenEiSallittu("Lähdejärjestelmäkytkentää ei voi purkaa tälle opiskeluoikeustyypille"))
+    }
+  }
 }

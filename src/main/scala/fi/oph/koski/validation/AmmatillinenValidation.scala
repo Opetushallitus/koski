@@ -24,6 +24,7 @@ object AmmatillinenValidation {
           validateAmmatillisenKorotus(ammatillinen),
           validateKorotuksenAlkuperäinenOpiskeluoikeus(ammatillinen, henkilö, koskiOpiskeluoikeudet),
           validateOpiskeluoikeudenArvionnit(ammatillinen),
+          validateTutkinnonUusiinPerusteisiinSiirtyminen(ammatillinen),
         )
       case _ => HttpStatus.ok
     }
@@ -202,9 +203,10 @@ object AmmatillinenValidation {
       val alkuperäinenOid = korotuksenSuoritus.flatMap(_.korotettuOpiskeluoikeusOid)
       val oppijaOids = korotuksenSuoritus
         .flatMap(_.korotettuOpiskeluoikeusOid)
-        .flatMap(oid => koskiOpiskeluoikeudet.getOppijaOidsForOpiskeluoikeus(oid).toOption)
+        .flatMap(oid => koskiOpiskeluoikeudet.getOppijaOidsForOpiskeluoikeus(oid)(KoskiSpecificSession.systemUser).toOption)
         .getOrElse(List.empty)
-      val alkuperäinenOpiskeluoikeus = koskiOpiskeluoikeudet.findByOppijaOids(oppijaOids)
+      val alkuperäinenOpiskeluoikeus = koskiOpiskeluoikeudet
+        .findByOppijaOids(oppijaOids)(KoskiSpecificSession.systemUser)
         .find(oo => oo.oid.isDefined && alkuperäinenOid == oo.oid)
 
       HttpStatus.fold(
@@ -397,4 +399,13 @@ object AmmatillinenValidation {
         KoskiErrorCategory.badRequest.validation.arviointi.epäsopivaArvosana(s"""Suorituksen "$suorituksenNimi" arvosana ei voi olla hylätty""")
       }
     })
+
+  private def validateTutkinnonUusiinPerusteisiinSiirtyminen(oo: AmmatillinenOpiskeluoikeus): HttpStatus = {
+    val siirtynytUusiinTutkinnonPerusteisiin = oo.lisätiedot.exists(_.siirtynytUusiinTutkinnonPerusteisiin.contains(true))
+    val katsotaanEronneeksi = oo.tila.opiskeluoikeusjaksot.exists(_.tila.koodiarvo == "katsotaaneronneeksi")
+
+    HttpStatus.validate(!siirtynytUusiinTutkinnonPerusteisiin || katsotaanEronneeksi) {
+      KoskiErrorCategory.badRequest.validation.tila.eiPäättävääTilaa("Opiskeluoikeudella, jonka lisätiedoissa on merkintä 'siirtynyt uusiin tutkinnon perusteisiin', pitää päättyä tilaan 'katsotaan eronneeksi'.")
+    }
+  }
 }

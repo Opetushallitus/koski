@@ -32,6 +32,7 @@ export type EditorMappingContext = {
 
 export type ValidationContext = {
   validationResult?: ModelErrorRecord
+  validationScope?: string[]
 }
 
 export type PrototypeListContext = {

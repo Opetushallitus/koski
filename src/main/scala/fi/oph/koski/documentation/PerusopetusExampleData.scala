@@ -45,12 +45,13 @@ object PerusopetusExampleData {
     NuortenPerusopetuksenPaikallinenOppiaine(tunniste = PaikallinenKoodi(koodiarvo = aine, nimi = nimi), laajuus = laajuus, kuvaus = kuvaus)
   def oppiaine(aine: String, laajuus: Option[LaajuusVuosiviikkotunneissa] = None) = MuuNuortenPerusopetuksenOppiaine(tunniste = Koodistokoodiviite(koodistoUri = "koskioppiaineetyleissivistava", koodiarvo = aine), laajuus = laajuus)
 
-  def uskonto(uskonto: Option[String] = None, laajuus: Option[LaajuusVuosiviikkotunneissa] = None, oppiaineenKoodiarvo: String = "KT", pakollinen: Boolean = true) =
+  def uskonto(laajuus: Option[LaajuusVuosiviikkotunneissa] = None, oppiaineenKoodiarvo: String = "KT", pakollinen: Boolean = true) =
     NuortenPerusopetuksenUskonto(tunniste = Koodistokoodiviite(koodistoUri = "koskioppiaineetyleissivistava",
       koodiarvo = oppiaineenKoodiarvo),
       pakollinen = pakollinen,
       laajuus = laajuus,
-      uskonnonOppimäärä = uskonto.map(u => Koodistokoodiviite(koodistoUri = "uskonnonoppimaara", koodiarvo = u)))
+      uskonnonOppimäärä = None,
+    )
 
   def äidinkieli(kieli: String, diaarinumero: Option[String] = None, laajuus: Option[LaajuusVuosiviikkotunneissa] = None) = NuortenPerusopetuksenÄidinkieliJaKirjallisuus(
     perusteenDiaarinumero = diaarinumero,
@@ -71,7 +72,7 @@ object PerusopetusExampleData {
     suoritus(kieli("B1", "SV", vuosiviikkotuntia(1)).copy(pakollinen = false, laajuus = vuosiviikkotuntia(1))).copy(arviointi = hyväksytty),
     suoritus(kieli("A1", "EN", vuosiviikkotuntia(1))).copy(arviointi = arviointi(8)),
     suoritus(kieli("AOM", "FI", vuosiviikkotuntia(1))).copy(arviointi = arviointi(8)),
-    suoritus(uskonto(Some("OR"), vuosiviikkotuntia(1))).copy(arviointi = arviointi(10)),
+    suoritus(uskonto(vuosiviikkotuntia(1))).copy(arviointi = arviointi(10)),
     suoritus(oppiaine("HI", vuosiviikkotuntia(1))).copy(arviointi = arviointi(8)),
     suoritus(oppiaine("YH", vuosiviikkotuntia(1))).copy(arviointi = arviointi(10)),
     suoritus(oppiaine("MA", vuosiviikkotuntia(1))).copy(arviointi = arviointi(9)),

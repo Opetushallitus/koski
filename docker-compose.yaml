@@ -31,7 +31,7 @@ services:
 
   localstack:
     container_name: koski-localstack
-    image: localstack/localstack:3.7.2@sha256:811d4cd67e6cc833cd5849ddaac454abd90c0d0fc00d402f8f82ee47926c5e10
+    image: localstack/localstack:s3-latest@sha256:c43ea609e7957594c47adcce52359425b427feceb7a4b3283eebd64fb949e353
     ports:
       - "127.0.0.1:4566:4566" # LocalStack Gateway
       - "127.0.0.1:4510-4559:4510-4559" # external services port range

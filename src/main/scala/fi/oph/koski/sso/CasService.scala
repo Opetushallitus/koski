@@ -13,13 +13,13 @@ import scala.concurrent.duration.DurationInt
 class CasService(config: Config) extends Logging {
   private val casVirkailijaClient = new CasClient(
     config.getString("opintopolku.virkailija.url") + "/cas",
-    Http.retryingClient("cas.serviceticketvalidation.virkailija"),
+    Http.nonRetryingClient("cas.serviceticketvalidation.virkailija"),
     OpintopolkuCallerId.koski
   )
 
   private val casOppijaClient = new CasClient(
     config.getString("opintopolku.oppija.url") + "/cas-oppija",
-    Http.retryingClient("cas.serviceticketvalidation.oppija"),
+    Http.nonRetryingClient("cas.serviceticketvalidation.oppija"),
     OpintopolkuCallerId.koski
   )
 
@@ -37,7 +37,25 @@ class CasService(config: Config) extends Logging {
         .validateServiceTicketWithOppijaAttributes(url)(ticket)
         .timeout(10.seconds)
     )
-    oppijaAttributes("nationalIdentificationNumber")
+
+    val hetuAttempt = oppijaAttributes("nationalIdentificationNumber")
+
+    // Lue testiympäristöissä hetu eri kentästä tarvittaessa;
+    //
+    // Testi-digilompakkoa käytettäessä hetu tulee tällä hetkellä eri polussa, ja koska oppija-cas välittää suomi.fi -tunnistuksen datat
+    // sellaisenaan ja suomi.fi:ssä on päätetty vaihtaa kentän nimeä, niin tätä pitää Koskenkin tukea.
+    //
+    // Pidemmällä aikavälillä näiden eri nimisten kenttien yhdistämisen pitäisi ehkä olla ennemmin otuva-palvelun vastuulla, mistä ovat sen
+    // kehittäjät tietoisia.
+    //
+    // Tuotannossa tätä ei voi laittaa päälle, koska digilompakkotunnistusväline on vielä työn alla. On myös vielä yleisesti epäselvää,
+    // miten kansainväliset kirjautumiset tehdään ja missä vaiheessa ja millä tavalla varmistetaan, että ei esim. ikinä käsitellä
+    // suomalaisena hetuna muun maan kansallista hetua.
+    if (!Environment.isProdEnvironment(config) && hetuAttempt.isEmpty) {
+      oppijaAttributes("personIdentifier")
+    } else {
+      hetuAttempt
+    }
   }
 
   def validateVirkailijaServiceTicket(url: String, ticket: String): Username = {

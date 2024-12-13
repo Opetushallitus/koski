@@ -90,6 +90,29 @@ class RaportointikantaSpec
       val henkilo = mainRaportointiDb.runDbSync(mainRaportointiDb.RHenkilöt.filter(_.hetu === mockHetu).result)
       henkilo should equal(Seq(expectedHenkilöRow))
     }
+    "Oppija, jolla on vain mitätöityjä opiskeluoikeuksia, löytyy r_henkilo-taulusta" in {
+      val mockHetu = "010106A492V"
+      val mockOppija = KoskiApplicationForTests.opintopolkuHenkilöFacade.findOppijaByHetu(mockHetu).get
+      val expectedHenkilöRow = RHenkilöRow(
+        mockOppija.oid,
+        mockOppija.oid,
+        mockOppija.linkitetytOidit,
+        mockOppija.hetu,
+        None,
+        Some(Date.valueOf("2006-01-01")),
+        mockOppija.sukunimi,
+        mockOppija.etunimet,
+        Some("fi"),
+        None,
+        false,
+        Some("091"),
+        Some("Helsinki"),
+        Some("Helsingfors"),
+        true
+      )
+      val henkilo = mainRaportointiDb.runDbSync(mainRaportointiDb.RHenkilöt.filter(_.hetu === mockHetu).result)
+      henkilo should equal(Seq(expectedHenkilöRow))
+    }
     "Huomioi linkitetyt oidit" in {
       val slaveOppija = KoskiSpecificMockOppijat.slave.henkilö
       val hakuOidit = Set(master.oid, slaveOppija.oid)
@@ -872,12 +895,14 @@ class RaportointikantaSpec
               case KoskiSpecificMockOppijat.eero.oid => "perusopetus"
               case KoskiSpecificMockOppijat.lukiolainen.oid => "ammatillinenkoulutus"
               case KoskiSpecificMockOppijat.poistettuOpiskeluoikeus.oid => "vapaansivistystyonkoulutus"
+              case KoskiSpecificMockOppijat.vainMitätöityjäOpiskeluoikeuksia.oid => "perusopetus"
               case _ => "???"
             },
             päätasonSuoritusTyypit = t._1.oppijaOid match {
               case KoskiSpecificMockOppijat.eero.oid => List("perusopetuksenoppimaara", "perusopetuksenvuosiluokka")
               case KoskiSpecificMockOppijat.lukiolainen.oid => List("ammatillinentutkinto")
               case KoskiSpecificMockOppijat.poistettuOpiskeluoikeus.oid => List("vstvapaatavoitteinenkoulutus")
+              case KoskiSpecificMockOppijat.vainMitätöityjäOpiskeluoikeuksia.oid => List("perusopetuksenoppimaara", "perusopetuksenvuosiluokka")
               case _ => List("???")
             },
             oppilaitosOid = t._1.oppilaitosOid,

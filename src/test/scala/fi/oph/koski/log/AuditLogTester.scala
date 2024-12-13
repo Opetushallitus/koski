@@ -12,13 +12,24 @@ import scala.annotation.tailrec
 object AuditLogTester extends Matchers with LogTester {
   override def appenderName: String = "Audit"
 
-  def verifyAuditLogMessage(params: Map[String, Any]): Unit = {
+  def verifyOnlyAuditLogMessage(params: Map[String, Any]): Unit = {
     retryingTest(times = 10) { () =>
-      val message = getLogMessages.lastOption.map(m => parse(m))
-      message match {
-        case Some(msg: JObject) => verifyAuditLogObject(msg, params)
-        case _ => throw new IllegalStateException("No audit log message found")
-      }
+      getLogMessages should have length(1)
+      verifyLastAuditLogMessageContains(params)
+    }
+  }
+
+  def verifyLastAuditLogMessage(params: Map[String, Any]): Unit = {
+    retryingTest(times = 10) { () =>
+      verifyLastAuditLogMessageContains(params)
+    }
+  }
+
+  private def verifyLastAuditLogMessageContains(params: Map[String, Any]): Unit = {
+    val message = getLogMessages.lastOption.map(m => parse(m))
+    message match {
+      case Some(msg: JObject) => verifyAuditLogObject(msg, params)
+      case _ => throw new IllegalStateException("No audit log message found")
     }
   }
 

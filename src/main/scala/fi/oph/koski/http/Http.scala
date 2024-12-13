@@ -4,7 +4,7 @@ import cats.effect.IO
 import cats.effect.unsafe.{IORuntime, IORuntimeConfig}
 import fi.oph.koski.executors.Pools
 import fi.oph.koski.http.Http.{Decode, ParameterizedUriWrapper, UriInterpolator}
-import fi.oph.koski.http.RetryMiddleware.{retryNonIdempotentRequests, withLoggedRetry}
+import fi.oph.koski.http.RetryMiddleware.{DefaultBackoffPolicy, retryNonIdempotentRequests, withLoggedRetry}
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.log.LogUtils.maskSensitiveInformation
 import fi.oph.koski.log.{LoggerWithContext, Logging}
@@ -40,6 +40,7 @@ object Http extends Logging {
 
   private def baseClient(name: String, configFn: ClientConfigFn): Client[IO] = {
     logger.info(s"Creating new pooled http client with $maxHttpConnections max total connections for $name")
+    //  responseHeaderTimeout < requestTimeout < idleTimeout
     val builder = BlazeClientBuilder[IO].withExecutionContext(ExecutionContext.fromExecutor(Pools.httpPool))
       .withMaxTotalConnections(maxHttpConnections)
       .withMaxWaitQueueLimit(1024)
@@ -54,11 +55,18 @@ object Http extends Logging {
       .unsafeRunSync()
   }
 
+  def nonRetryingClient(name: String, configFn: ClientConfigFn = identity): Client[IO] =
+    baseClient(name, configFn)
+
   def retryingClient(name: String, configFn: ClientConfigFn = identity): Client[IO] =
     withLoggedRetry(baseClient(name, configFn))
 
-  def unsafeRetryingClient(name: String, configFn: ClientConfigFn = identity): Client[IO] =
-    withLoggedRetry(baseClient(name, configFn), retryNonIdempotentRequests)
+  def unsafeRetryingClient(
+    name: String,
+    configFn: ClientConfigFn = identity,
+    backoffPolicy: Int => Option[FiniteDuration] = DefaultBackoffPolicy,
+  ): Client[IO] =
+    withLoggedRetry(baseClient(name, configFn), retryNonIdempotentRequests, backoffPolicy)
 
   // This guys allows you to make URIs from your Strings as in uri"http://google.com/s=${searchTerm}"
   // Takes care of URI encoding the components. You can prevent encoding a part by wrapping into an Uri using this selfsame method.

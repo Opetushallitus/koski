@@ -1,162 +1,1131 @@
 package fi.oph.koski.omadataoauth2.unit
 
+import fi.oph.koski.aktiivisetjapaattyneetopinnot.AktiivisetJaPäättyneetOpinnotMuunKuinSäännellynKoulutuksenOpiskeluoikeus
+import fi.oph.koski.api.misc.OpiskeluoikeusTestMethods
+import fi.oph.koski.db.KoskiTables.OAuth2JakoKaikki
+import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
+import fi.oph.koski.fixture.FixtureCreator
+import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.http.KoskiErrorCategory
+import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.koskiuser.{KoskiMockUser, MockUsers}
+import fi.oph.koski.log.AuditLogTester
+import fi.oph.koski.omadataoauth2.OmaDataOAuth2Security.{createChallengeAndVerifier, sha256}
+import fi.oph.koski.omadataoauth2._
+import fi.oph.koski.schema.{AmmatillinenOpiskeluoikeus, PerusopetuksenOpiskeluoikeudenLisätiedot, PerusopetuksenOpiskeluoikeus}
+import fi.oph.koski.suoritetuttutkinnot.SuoritetutTutkinnotAmmatillinenOpiskeluoikeus
+import fi.oph.koski.suoritusjako.aktiivisetjapaattyneetopinnot.AktiivisetJaPäättyneetOpinnotVerifiers
+import fi.oph.koski.suoritusjako.suoritetuttutkinnot.SuoritetutTutkinnotVerifiers
+import fi.oph.koski.{DatabaseTestMethods, KoskiApplicationForTests, schema}
 
-import java.nio.charset.StandardCharsets
+import java.sql.Timestamp
+import java.time.Instant
 
-class OmaDataOAuth2BackendSpec extends OmaDataOAuth2TestBase {
+class OmaDataOAuth2BackendSpec
+  extends OmaDataOAuth2TestBase
+    with DatabaseTestMethods
+    with OpiskeluoikeusTestMethods
+    with SuoritetutTutkinnotVerifiers
+    with AktiivisetJaPäättyneetOpinnotVerifiers
+{
   "authorization-server rajapinta" - {
     "voi kutsua, kun on käyttöoikeudet" in {
-      postAuthorizationServerClientIdFromUsername(MockUsers.omadataOAuth2Palvelukäyttäjä) {
+      val pkce = createChallengeAndVerifier
+      val code = createAuthorization(validKansalainen, pkce.challenge)
+
+      postAuthorizationServerClientIdFromUsername(
+        validPalvelukäyttäjä,
+        code = Some(code),
+        codeVerifier = Some(pkce.verifier),
+        redirectUri = Some(validRedirectUri)
+      ) {
         verifyResponseStatusOk()
       }
     }
+    "tekee audit-lokimerkinnän" in {
+      val pkce = createChallengeAndVerifier
+      val code = createAuthorization(validKansalainen, pkce.challenge)
+
+      AuditLogTester.clearMessages()
+      postAuthorizationServerClientIdFromUsername(
+        validPalvelukäyttäjä,
+        code = Some(code),
+        codeVerifier = Some(pkce.verifier),
+        redirectUri = Some(validRedirectUri)
+      ) {
+        verifyResponseStatusOk()
+
+        AuditLogTester.verifyOnlyAuditLogMessage(Map(
+          "operation" -> "OAUTH2_ACCESS_TOKEN_LUONTI",
+          "target" -> Map(
+            "oppijaHenkiloOid" -> oppijaOid,
+            "omaDataKumppani" -> validClientId,
+            "omaDataOAuth2Scope" -> validScope
+          ),
+        ))
+      }
+    }
+
     "ei voi kutsua ilman käyttöoikeuksia" in {
-      postAuthorizationServerClientIdFromUsername(MockUsers.kalle) {
+      val pkce = createChallengeAndVerifier
+      val code = createAuthorization(validKansalainen, pkce.challenge)
+
+      postAuthorizationServerClientIdFromUsername(
+        MockUsers.kalle,
+        code = Some(code),
+        codeVerifier = Some(pkce.verifier),
+        redirectUri = Some(validRedirectUri)
+      ) {
         verifyResponseStatus(403, KoskiErrorCategory.forbidden.vainOmaDataOAuth2())
       }
     }
 
     "redirect_uri" - {
-      "vaaditaan, jos oli mukana autorisointikutsussa" in {
-        // TODO: TOR-2210
-      }
+      "eri URI kuin autorisointikutussa aiheuttaa virheen" in {
+        val pkce = createChallengeAndVerifier
+        val code = createAuthorization(validKansalainen, pkce.challenge)
 
-      "vaaditaan, että on sama, jos oli annettu myös autorisointikutsussa" in {
-        // TODO: TOR-2210
-      }
+        val invalidRedirectUri = "/koski/omadata-oauth2/INVALID-debug-post-response"
 
-      "ei vaadita, jos ei ollut mukana autorisointikutsussa" in {
-        // TODO: TOR-2210, jos tätä polkua tuetaan
+        postAuthorizationServerClientIdFromUsername(
+          validPalvelukäyttäjä,
+          code = Some(code),
+          codeVerifier = Some(pkce.verifier),
+          redirectUri = Some(invalidRedirectUri)
+        ) {
+          verifyResponseStatus(400)
+          val result = JsonSerializer.parse[AccessTokenErrorResponse](response.body)
+          result.error should be("invalid_request")
+          result.error_description.get should include("Attempted use of non-matching redirect_uri")
+        }
+      }
+      "väärän URIn käyttöyritys sulkee koodin" in {
+        val pkce = createChallengeAndVerifier
+        val code = createAuthorization(validKansalainen, pkce.challenge)
+
+        val invalidRedirectUri = "/koski/omadata-oauth2/INVALID-debug-post-response"
+
+        postAuthorizationServerClientIdFromUsername(
+          validPalvelukäyttäjä,
+          code = Some(code),
+          codeVerifier = Some(pkce.verifier),
+          redirectUri = Some(invalidRedirectUri)
+        ) {
+          verifyResponseStatus(400)
+          val result = JsonSerializer.parse[AccessTokenErrorResponse](response.body)
+          result.error should be("invalid_request")
+          result.error_description.get should include("Attempted use of non-matching redirect_uri")
+        }
+
+        postAuthorizationServerClientIdFromUsername(
+          validPalvelukäyttäjä,
+          code = Some(code),
+          codeVerifier = Some(pkce.verifier),
+          redirectUri = Some(validRedirectUri)
+        ) {
+          verifyResponseStatus(400)
+          val result = JsonSerializer.parse[AccessTokenErrorResponse](response.body)
+          result.error should be("invalid_request")
+          result.error_description.get should include("Code not found or it has expired")
+        }
       }
     }
 
     "grant_type" - {
       "puuttuminen aiheuttaa virheen" in {
-        postAuthorizationServerClientIdFromUsername(MockUsers.omadataOAuth2Palvelukäyttäjä, grantType = None) {
-          verifyResponseStatus(400)
-          // TODO: TOR-2210: oikeat error-koodit ja sisällöt, https://www.rfc-editor.org/rfc/rfc6749#section-5.2
+        val pkce = createChallengeAndVerifier
+        val code = createAuthorization(validKansalainen, pkce.challenge)
 
+        postAuthorizationServerClientIdFromUsername(
+          validPalvelukäyttäjä,
+          code = Some(code),
+          codeVerifier = Some(pkce.verifier),
+          redirectUri = Some(validRedirectUri),
+          grantType = None
+        ) {
+          verifyResponseStatus(400)
+          val result = JsonSerializer.parse[AccessTokenErrorResponse](response.body)
+          result.error should be("invalid_request")
+          result.error_description.get should include("grant_type is required")
         }
       }
       "muu arvo kuin authorization_code aiheuttaa virheen" in {
-        postAuthorizationServerClientIdFromUsername(MockUsers.omadataOAuth2Palvelukäyttäjä, grantType = Some("ei_tuettu")) {
+        val pkce = createChallengeAndVerifier
+        val code = createAuthorization(validKansalainen, pkce.challenge)
+
+        postAuthorizationServerClientIdFromUsername(
+          validPalvelukäyttäjä,
+          code = Some(code),
+          codeVerifier = Some(pkce.verifier),
+          redirectUri = Some(validRedirectUri),
+          grantType = Some("ei_tuettu")
+        ) {
           verifyResponseStatus(400)
-          // TODO: TOR-2210: oikeat error-koodit ja sisällöt, https://www.rfc-editor.org/rfc/rfc6749#section-5.2
+          val result = JsonSerializer.parse[AccessTokenErrorResponse](response.body)
+          result.error should be("invalid_request")
+          result.error_description.get should include("grant_type must be one of 'authorization_code'")
         }
       }
     }
 
     "client_id" - {
       "puuttuminen aiheuttaa virheen" in {
-        postAuthorizationServer(MockUsers.omadataOAuth2Palvelukäyttäjä, clientId = None) {
-          verifyResponseStatus(400)
-          // TODO: TOR-2210: oikeat error-koodit ja sisällöt, https://www.rfc-editor.org/rfc/rfc6749#section-5.2
+        val pkce = createChallengeAndVerifier
+        val code = createAuthorization(validKansalainen, pkce.challenge)
 
+        postAuthorizationServer(
+          validPalvelukäyttäjä,
+          code = Some(code),
+          codeVerifier = Some(pkce.verifier),
+          redirectUri = Some(validRedirectUri),
+          clientId = None
+        ) {
+          verifyResponseStatus(400)
+          val result = JsonSerializer.parse[AccessTokenErrorResponse](response.body)
+          result.error should be("invalid_request")
+          result.error_description.get should include("client_id is required")
         }
       }
       "voi kutsua, kun client on rekisteröity" in {
+        val pkce = createChallengeAndVerifier
+        val code = createAuthorization(validKansalainen, pkce.challenge)
+
         val user = MockUsers.omadataOAuth2Palvelukäyttäjä
-        postAuthorizationServer(user, clientId = Some(user.username)) {
+        postAuthorizationServer(user,
+          clientId = Some(user.username),
+          code = Some(code),
+          codeVerifier = Some(pkce.verifier),
+          redirectUri = Some(validRedirectUri)
+        ) {
           verifyResponseStatusOk()
         }
       }
       "ei voi kutsua, kun clientia ei ole rekisteröity" in {
         val user = MockUsers.rekisteröimätönOmadataOAuth2Palvelukäyttäjä
-        postAuthorizationServer(user, clientId = Some(user.username)) {
-          // TODO: TOR-2210: oikeat error-koodit ja sisällöt, https://www.rfc-editor.org/rfc/rfc6749#section-5.2
+
+        val pkce = createChallengeAndVerifier
+        val code = createAuthorization(validKansalainen, pkce.challenge)
+
+        postAuthorizationServer(
+          user,
+          code = Some(code),
+          codeVerifier = Some(pkce.verifier),
+          redirectUri = Some(validRedirectUri),
+          clientId = Some(user.username)
+        ) {
           verifyResponseStatus(400)
+          val result = JsonSerializer.parse[AccessTokenErrorResponse](response.body)
+          result.error should be("invalid_client")
+          result.error_description.get should include("unregistered client oauth2clienteirek")
         }
       }
 
       "ei voi kutsua, jos rekisteröity client_id ei vastaa käyttäjätunnusta" in {
         val user = MockUsers.omadataOAuth2Palvelukäyttäjä
         val vääräUser = MockUsers.rekisteröimätönOmadataOAuth2Palvelukäyttäjä
-        postAuthorizationServer(user, clientId = Some(vääräUser.username)) {
-          // TODO: TOR-2210: oikeat error-koodit ja sisällöt, https://www.rfc-editor.org/rfc/rfc6749#section-5.2
+
+        val pkce = createChallengeAndVerifier
+        val code = createAuthorization(validKansalainen, pkce.challenge)
+
+        postAuthorizationServer(
+          user,
+          code = Some(code),
+          codeVerifier = Some(pkce.verifier),
+          redirectUri = Some(validRedirectUri),
+          clientId = Some(vääräUser.username)
+        ) {
           verifyResponseStatus(400)
+          val result = JsonSerializer.parse[AccessTokenErrorResponse](response.body)
+          result.error should be("invalid_client")
+          result.error_description.get should include("unregistered client oauth2clienteirek")
+        }
+      }
+    }
+
+    "scope" - {
+      "palauttaa virheen, jos scope on liian laaja" in {
+        val pkce = createChallengeAndVerifier
+        val code = createAuthorization(validKansalainen, pkce.challenge, validScope + " HENKILOTIEDOT_HETU")
+
+        postAuthorizationServerClientIdFromUsername(
+          validPalvelukäyttäjä,
+          code = Some(code),
+          codeVerifier = Some(pkce.verifier),
+          redirectUri = Some(validRedirectUri)
+        ) {
+          verifyResponseStatus(400)
+          val result = JsonSerializer.parse[AccessTokenErrorResponse](response.body)
+          result.error should be("invalid_scope")
+          result.error_description.get should include(s"scope=HENKILOTIEDOT_HETU exceeds the rights granted to the client ${validClientId}")
+        }
+      }
+
+      "liian laajan scopen käyttöyritys ei sulje koodia kokonaan" in {
+        val pkce = createChallengeAndVerifier
+        val code = createAuthorization(validKansalainen, pkce.challenge, validScope + " HENKILOTIEDOT_HETU")
+
+        postAuthorizationServerClientIdFromUsername(
+          validPalvelukäyttäjä,
+          code = Some(code),
+          codeVerifier = Some(pkce.verifier),
+          redirectUri = Some(validRedirectUri)
+        ) {
+          verifyResponseStatus(400)
+          val result = JsonSerializer.parse[AccessTokenErrorResponse](response.body)
+          result.error should be("invalid_scope")
+          result.error_description.get should include(s"scope=HENKILOTIEDOT_HETU exceeds the rights granted to the client ${validClientId}")
+        }
+
+        // Varmista, että sama virhe tulee uudestaan. Jos koodi olisi kokonaan suljettu, ei koodia löytyisi lainkaan.
+        postAuthorizationServerClientIdFromUsername(
+          validPalvelukäyttäjä,
+          code = Some(code),
+          codeVerifier = Some(pkce.verifier),
+          redirectUri = Some(validRedirectUri)
+        ) {
+          verifyResponseStatus(400)
+          val result = JsonSerializer.parse[AccessTokenErrorResponse](response.body)
+          result.error should be("invalid_scope")
+          result.error_description.get should include(s"scope=HENKILOTIEDOT_HETU exceeds the rights granted to the client ${validClientId}")
         }
       }
     }
 
     "code" - {
       "puuttuminen aiheuttaa virheen" in {
-        postAuthorizationServerClientIdFromUsername(MockUsers.omadataOAuth2Palvelukäyttäjä, code = None) {
+        val pkce = createChallengeAndVerifier
+        val code = createAuthorization(validKansalainen, pkce.challenge)
+
+        postAuthorizationServerClientIdFromUsername(
+          validPalvelukäyttäjä,
+          code = None,
+          codeVerifier = Some(pkce.verifier),
+          redirectUri = Some(validRedirectUri)
+        ) {
           verifyResponseStatus(400)
-          // TODO: TOR-2210: oikeat error-koodit ja sisällöt, https://www.rfc-editor.org/rfc/rfc6749#section-5.2
+          val result = JsonSerializer.parse[AccessTokenErrorResponse](response.body)
+          result.error should be("invalid_request")
+          result.error_description.get should include("code is required")
         }
       }
 
       "tuntematon koodi aiheuttaa virheen" in {
-        // TODO: TOR-2210
+        val pkce = createChallengeAndVerifier
+        val code = createAuthorization(validKansalainen, pkce.challenge) + "ERROR"
+
+        postAuthorizationServerClientIdFromUsername(
+          validPalvelukäyttäjä,
+          code = Some(code),
+          codeVerifier = Some(pkce.verifier),
+          redirectUri = Some(validRedirectUri)
+        ) {
+          verifyResponseStatus(400)
+          val result = JsonSerializer.parse[AccessTokenErrorResponse](response.body)
+          result.error should be("invalid_request")
+          result.error_description.get should include("Code not found or it has expired")
+        }
+      }
+
+      "ei toimi, jos mitätöity" in {
+        // Triggeröi mitätöinti käyttämällä ensin väärää redirect_uri:a
+        val pkce = createChallengeAndVerifier
+        val code = createAuthorization(validKansalainen, pkce.challenge)
+
+        val invalidRedirectUri = "/koski/omadata-oauth2/INVALID-debug-post-response"
+
+        postAuthorizationServerClientIdFromUsername(
+          validPalvelukäyttäjä,
+          code = Some(code),
+          codeVerifier = Some(pkce.verifier),
+          redirectUri = Some(invalidRedirectUri)
+        ) {
+          verifyResponseStatus(400)
+          val result = JsonSerializer.parse[AccessTokenErrorResponse](response.body)
+          result.error should be("invalid_request")
+          result.error_description.get should include("Attempted use of non-matching redirect_uri")
+        }
+
+        // Uusi yritys oikealla redirect_uri:lla
+        postAuthorizationServerClientIdFromUsername(
+          validPalvelukäyttäjä,
+          code = Some(code),
+          codeVerifier = Some(pkce.verifier),
+          redirectUri = Some(validRedirectUri)
+        ) {
+          verifyResponseStatus(400)
+          val result = JsonSerializer.parse[AccessTokenErrorResponse](response.body)
+          result.error should be("invalid_request")
+          result.error_description.get should include("Code not found or it has expired")
+        }
+      }
+
+      "ei toimi, jos vanhentunut" in {
+        // Luo koodi
+        val pkce = createChallengeAndVerifier
+        val code = createAuthorization(validKansalainen, pkce.challenge)
+
+        postAuthorizationServerClientIdFromUsername(
+          validPalvelukäyttäjä,
+          code = Some(code),
+          codeVerifier = Some(pkce.verifier),
+          redirectUri = Some(validRedirectUri)
+        ) {
+          verifyResponseStatusOk()
+        }
+
+        // Vaihda aikaleima menneisyyteen
+        runDbSync(
+          OAuth2JakoKaikki
+            .filter(_.codeSHA256 === sha256(code))
+            .map(_.codeVoimassaAsti)
+            .update(
+              Timestamp.from(Instant.now.minusSeconds(1))
+            )
+        )
+
+        // Yritä käyttää
+        postAuthorizationServerClientIdFromUsername(
+          validPalvelukäyttäjä,
+          code = Some(code),
+          codeVerifier = Some(pkce.verifier),
+          redirectUri = Some(validRedirectUri)
+        ) {
+          verifyResponseStatus(400)
+          val result = JsonSerializer.parse[AccessTokenErrorResponse](response.body)
+          result.error should be("invalid_request")
+          result.error_description.get should include("Code not found or it has expired")
+        }
+      }
+
+      "saman koodin uudelleenkäyttöyritys" - {
+        "palauttaa virheen" in {
+          val pkce = createChallengeAndVerifier
+          val code = createAuthorization(validKansalainen, pkce.challenge)
+
+          postAuthorizationServerClientIdFromUsername(
+            validPalvelukäyttäjä,
+            code = Some(code),
+            codeVerifier = Some(pkce.verifier),
+            redirectUri = Some(validRedirectUri)
+          ) {
+            verifyResponseStatusOk()
+          }
+
+          postAuthorizationServerClientIdFromUsername(
+            validPalvelukäyttäjä,
+            code = Some(code),
+            codeVerifier = Some(pkce.verifier),
+            redirectUri = Some(validRedirectUri)
+          ) {
+            verifyResponseStatus(400)
+            val result = JsonSerializer.parse[AccessTokenErrorResponse](response.body)
+            result.error should be("invalid_request")
+            result.error_description.get should include("Attempted authorization code reuse")
+          }
+        }
+        "sulkee koodin" in {
+          val pkce = createChallengeAndVerifier
+          val code = createAuthorization(validKansalainen, pkce.challenge)
+
+          postAuthorizationServerClientIdFromUsername(
+            validPalvelukäyttäjä,
+            code = Some(code),
+            codeVerifier = Some(pkce.verifier),
+            redirectUri = Some(validRedirectUri)
+          ) {
+            verifyResponseStatusOk()
+          }
+
+          postAuthorizationServerClientIdFromUsername(
+            validPalvelukäyttäjä,
+            code = Some(code),
+            codeVerifier = Some(pkce.verifier),
+            redirectUri = Some(validRedirectUri)
+          ) {
+            verifyResponseStatus(400)
+            val result = JsonSerializer.parse[AccessTokenErrorResponse](response.body)
+            result.error should be("invalid_request")
+            result.error_description.get should include("Attempted authorization code reuse")
+          }
+
+          postAuthorizationServerClientIdFromUsername(
+            validPalvelukäyttäjä,
+            code = Some(code),
+            codeVerifier = Some(pkce.verifier),
+            redirectUri = Some(validRedirectUri)
+          ) {
+            verifyResponseStatus(400)
+            val result = JsonSerializer.parse[AccessTokenErrorResponse](response.body)
+            result.error should be("invalid_request")
+            result.error_description.get should include("Code not found or it has expired")
+          }
+        }
+        "sulkee access tokenin" in {
+          val pkce = createChallengeAndVerifier
+          val code = createAuthorization(validKansalainen, pkce.challenge)
+
+          val token = postAuthorizationServerClientIdFromUsername(
+            validPalvelukäyttäjä,
+            code = Some(code),
+            codeVerifier = Some(pkce.verifier),
+            redirectUri = Some(validRedirectUri)
+          ) {
+            verifyResponseStatusOk()
+            JsonSerializer.parse[AccessTokenSuccessResponse](response.body).access_token
+          }
+
+          postAuthorizationServerClientIdFromUsername(
+            validPalvelukäyttäjä,
+            code = Some(code),
+            codeVerifier = Some(pkce.verifier),
+            redirectUri = Some(validRedirectUri)
+          ) {
+            verifyResponseStatus(400)
+            val result = JsonSerializer.parse[AccessTokenErrorResponse](response.body)
+            result.error should be("invalid_request")
+            result.error_description.get should include("Attempted authorization code reuse")
+          }
+
+          postResourceServer(token) {
+            verifyResponseStatus(400)
+            val result = JsonSerializer.parse[AccessTokenErrorResponse](response.body)
+            result.error should be("invalid_request")
+            result.error_description.get should include("Access token not found or it has expired")
+          }
+        }
       }
     }
 
     "code_verifier" - {
       "puuttuminen aiheuttaa virheen" in {
-        postAuthorizationServerClientIdFromUsername(MockUsers.omadataOAuth2Palvelukäyttäjä, codeVerifier = None) {
+        val pkce = createChallengeAndVerifier
+        val code = createAuthorization(validKansalainen, pkce.challenge)
+
+        postAuthorizationServerClientIdFromUsername(
+          validPalvelukäyttäjä,
+          code = Some(code),
+          codeVerifier = None,
+          redirectUri = Some(validRedirectUri)
+        ) {
           verifyResponseStatus(400)
-          // TODO: TOR-2210: oikeat error-koodit ja sisällöt, https://www.rfc-editor.org/rfc/rfc6749#section-5.2
+          val result = JsonSerializer.parse[AccessTokenErrorResponse](response.body)
+          result.error should be("invalid_request")
+          result.error_description.get should include("code_verifier is required")
         }
       }
 
       "tarkistetaan" in {
-        // TODO: TOR-2210
+        val pkce = createChallengeAndVerifier
+        val code = createAuthorization(validKansalainen, pkce.challenge)
+
+        val invalidVerifier = pkce.verifier + "123"
+
+        postAuthorizationServerClientIdFromUsername(
+          validPalvelukäyttäjä,
+          code = Some(code),
+          codeVerifier = Some(invalidVerifier),
+          redirectUri = Some(validRedirectUri)
+        ) {
+          verifyResponseStatus(400)
+          val result = JsonSerializer.parse[AccessTokenErrorResponse](response.body)
+          result.error should be("invalid_request")
+          result.error_description.get should include("Attempted use of invalid code_verifier")
+        }
+      }
+
+      "väärän verifierin käyttö sulkee koodin" in {
+        val pkce = createChallengeAndVerifier
+        val code = createAuthorization(validKansalainen, pkce.challenge)
+
+        val invalidVerifier = pkce.verifier + "123"
+
+        postAuthorizationServerClientIdFromUsername(
+          validPalvelukäyttäjä,
+          code = Some(code),
+          codeVerifier = Some(invalidVerifier),
+          redirectUri = Some(validRedirectUri)
+        ) {
+          verifyResponseStatus(400)
+          val result = JsonSerializer.parse[AccessTokenErrorResponse](response.body)
+          result.error should be("invalid_request")
+          result.error_description.get should include("Attempted use of invalid code_verifier")
+        }
+
+        postAuthorizationServerClientIdFromUsername(
+          validPalvelukäyttäjä,
+          code = Some(code),
+          codeVerifier = Some(pkce.verifier),
+          redirectUri = Some(validRedirectUri)
+        ) {
+          verifyResponseStatus(400)
+          val result = JsonSerializer.parse[AccessTokenErrorResponse](response.body)
+          result.error should be("invalid_request")
+          result.error_description.get should include("Code not found or it has expired")
+        }
       }
     }
   }
 
   "resource-server rajapinta" - {
     "voi kutsua, kun on käyttöoikeudet" in {
-      postResourceServer(MockUsers.omadataOAuth2Palvelukäyttäjä) {
+      val pkce = createChallengeAndVerifier
+      val token = createAuthorizationAndToken(validKansalainen, pkce)
+
+      postResourceServer(token) {
         verifyResponseStatusOk()
       }
-
     }
+
+    "tekee audit log -merkinnän" in {
+      val pkce = createChallengeAndVerifier
+      val token = createAuthorizationAndToken(validKansalainen, pkce)
+
+      AuditLogTester.clearMessages()
+
+      postResourceServer(token) {
+        verifyResponseStatusOk()
+
+        AuditLogTester.verifyOnlyAuditLogMessage(Map(
+          "operation" -> "OAUTH2_KATSOMINEN_SUORITETUT_TUTKINNOT",
+          "target" -> Map(
+            "oppijaHenkiloOid" -> oppijaOid,
+            "omaDataKumppani" -> validClientId,
+            "omaDataOAuth2Scope" -> validScope
+          ),
+        ))
+      }
+    }
+
     "ei voi kutsua ilman käyttöoikeuksia" in {
-      postResourceServer(MockUsers.kalle) {
+      val pkce = createChallengeAndVerifier
+      val token = createAuthorizationAndToken(validKansalainen, pkce)
+
+      postResourceServer(token, MockUsers.kalle) {
         verifyResponseStatus(403, KoskiErrorCategory.forbidden.vainOmaDataOAuth2())
       }
     }
+    "ei voi kutsua, jos liian laaja scope" in {
+      // palvelukäyttäjän käyttöoikeudet voivat muuttua myös tokenin elinaikana, siksi tämä on tärkeä testata
+      val pkce = createChallengeAndVerifier
+      val token = createAuthorizationAndToken(validKansalainen, pkce)
+
+      // Vaihda scope laajemmaksi
+      runDbSync(
+        OAuth2JakoKaikki
+          .filter(_.accessTokenSHA256 === sha256(token))
+          .map(_.scope)
+          .update(
+            validScope + " HENKILOTIEDOT_KAIKKI_TIEDOT"
+          )
+      )
+
+      // Yritä käyttää
+      postResourceServer(token) {
+        verifyResponseStatus(400)
+        val result = JsonSerializer.parse[AccessTokenErrorResponse](response.body)
+        result.error should be("invalid_scope")
+        result.error_description.get should include("scope=HENKILOTIEDOT_KAIKKI_TIEDOT exceeds the rights granted to the client oauth2client")
+      }
+    }
+    "ei voi kutsua, kun token on vanhentunut" in {
+      val pkce = createChallengeAndVerifier
+      val token = createAuthorizationAndToken(validKansalainen, pkce)
+
+      // Vaihda aikaleima menneisyyteen
+      runDbSync(
+        OAuth2JakoKaikki
+          .filter(_.accessTokenSHA256 === sha256(token))
+          .map(_.voimassaAsti)
+          .update(
+            Timestamp.from(Instant.now.minusSeconds(1))
+          )
+      )
+
+      // Yritä käyttää
+      postResourceServer(token) {
+        verifyResponseStatus(400)
+        val result = JsonSerializer.parse[AccessTokenErrorResponse](response.body)
+        result.error should be("invalid_request")
+        result.error_description.get should include("Access token not found or it has expired")
+      }
+    }
+    "henkilötiedot" - {
+      "palautetaan" - {
+        "kun vain osa scopeista mukana" in {
+          val scope = "HENKILOTIEDOT_SYNTYMAAIKA HENKILOTIEDOT_NIMI OPISKELUOIKEUDET_SUORITETUT_TUTKINNOT"
+
+          val pkce = createChallengeAndVerifier
+          val token = createAuthorizationAndToken(validKansalainen, pkce, scope, MockUsers.omadataOAuth2KaikkiOikeudetPalvelukäyttäjä)
+
+          // Tarkista esimerkkidata, että käytetyllä testihenkilöllä on kaikki tiedot olemassa
+          validKansalainen.hetu.isDefined should be(true)
+          validKansalainen.syntymäaika.isDefined should be(true)
+
+          postResourceServer(token, MockUsers.omadataOAuth2KaikkiOikeudetPalvelukäyttäjä) {
+            verifyResponseStatusOk()
+            val data = JsonSerializer.parse[OmaDataOAuth2SuoritetutTutkinnot](response.body)
+
+            data.henkilö.hetu should be(None)
+            data.henkilö.oid should be(None)
+            data.henkilö.sukunimi should be(Some(validKansalainen.sukunimi))
+            data.henkilö.etunimet should be(Some(validKansalainen.etunimet))
+            data.henkilö.kutsumanimi should be(Some(validKansalainen.kutsumanimi))
+            data.henkilö.syntymäaika should be(validKansalainen.syntymäaika)
+          }
+        }
+        "kun kaikki scopet mukana" in {
+          val scope = "HENKILOTIEDOT_SYNTYMAAIKA HENKILOTIEDOT_NIMI HENKILOTIEDOT_HETU HENKILOTIEDOT_OPPIJANUMERO OPISKELUOIKEUDET_SUORITETUT_TUTKINNOT"
+
+          val pkce = createChallengeAndVerifier
+          val token = createAuthorizationAndToken(validKansalainen, pkce, scope, MockUsers.omadataOAuth2KaikkiOikeudetPalvelukäyttäjä)
+
+          // Tarkista esimerkkidata, että käytetyllä testihenkilöllä on kaikki tiedot olemassa
+          validKansalainen.hetu.isDefined should be(true)
+          validKansalainen.syntymäaika.isDefined should be(true)
+
+          postResourceServer(token, MockUsers.omadataOAuth2KaikkiOikeudetPalvelukäyttäjä) {
+            verifyResponseStatusOk()
+            val data = JsonSerializer.parse[OmaDataOAuth2SuoritetutTutkinnot](response.body)
+
+            data.henkilö.hetu should be(validKansalainen.hetu)
+            data.henkilö.oid should be(Some(validKansalainen.oid))
+            data.henkilö.sukunimi should be(Some(validKansalainen.sukunimi))
+            data.henkilö.etunimet should be(Some(validKansalainen.etunimet))
+            data.henkilö.kutsumanimi should be(Some(validKansalainen.kutsumanimi))
+            data.henkilö.syntymäaika should be(validKansalainen.syntymäaika)
+          }
+        }
+
+        "kun käytetään HENKILOTIEDOT_KAIKKI_TIEDOT ja OPISKELUOIKEUDET_SUORITETUT_TUTKINNOT" in {
+          val scope = "HENKILOTIEDOT_KAIKKI_TIEDOT OPISKELUOIKEUDET_SUORITETUT_TUTKINNOT"
+
+          val pkce = createChallengeAndVerifier
+          val token = createAuthorizationAndToken(validKansalainen, pkce, scope, MockUsers.omadataOAuth2KaikkiOikeudetPalvelukäyttäjä)
+
+          // Tarkista esimerkkidata, että käytetyllä testihenkilöllä on kaikki tiedot olemassa
+          validKansalainen.hetu.isDefined should be(true)
+          validKansalainen.syntymäaika.isDefined should be(true)
+
+          postResourceServer(token, MockUsers.omadataOAuth2KaikkiOikeudetPalvelukäyttäjä) {
+            verifyResponseStatusOk()
+            val data = JsonSerializer.parse[OmaDataOAuth2SuoritetutTutkinnot](response.body)
+
+            data.henkilö.hetu should be(validKansalainen.hetu)
+            data.henkilö.oid should be(Some(validKansalainen.oid))
+            data.henkilö.sukunimi should be(Some(validKansalainen.sukunimi))
+            data.henkilö.etunimet should be(Some(validKansalainen.etunimet))
+            data.henkilö.kutsumanimi should be(Some(validKansalainen.kutsumanimi))
+            data.henkilö.syntymäaika should be(validKansalainen.syntymäaika)
+          }
+        }
+
+        "kun käytetään HENKILOTIEDOT_KAIKKI_TIEDOT ja OPISKELUOIKEUDET_AKTIIVISET_JA_PAATTYNEET_OPINNOT" in {
+          val scope = "HENKILOTIEDOT_KAIKKI_TIEDOT OPISKELUOIKEUDET_AKTIIVISET_JA_PAATTYNEET_OPINNOT"
+
+          val pkce = createChallengeAndVerifier
+          val token = createAuthorizationAndToken(validKansalainen, pkce, scope, MockUsers.omadataOAuth2KaikkiOikeudetPalvelukäyttäjä)
+
+          // Tarkista esimerkkidata, että käytetyllä testihenkilöllä on kaikki tiedot olemassa
+          validKansalainen.hetu.isDefined should be(true)
+          validKansalainen.syntymäaika.isDefined should be(true)
+
+          postResourceServer(token, MockUsers.omadataOAuth2KaikkiOikeudetPalvelukäyttäjä) {
+            verifyResponseStatusOk()
+            val data = JsonSerializer.parse[OmaDataOAuth2AktiivisetJaPäättyneetOpiskeluoikeudet](response.body)
+
+            data.henkilö.hetu should be(validKansalainen.hetu)
+            data.henkilö.oid should be(Some(validKansalainen.oid))
+            data.henkilö.sukunimi should be(Some(validKansalainen.sukunimi))
+            data.henkilö.etunimet should be(Some(validKansalainen.etunimet))
+            data.henkilö.kutsumanimi should be(Some(validKansalainen.kutsumanimi))
+            data.henkilö.syntymäaika should be(validKansalainen.syntymäaika)
+          }
+        }
+
+        "kun käytetään HENKILOTIEDOT_KAIKKI_TIEDOT ja OPISKELUOIKEUDET_KAIKKI_TIEDOT" in {
+          val scope = "HENKILOTIEDOT_KAIKKI_TIEDOT OPISKELUOIKEUDET_KAIKKI_TIEDOT"
+
+          val pkce = createChallengeAndVerifier
+          val token = createAuthorizationAndToken(validKansalainen, pkce, scope, MockUsers.omadataOAuth2KaikkiOikeudetPalvelukäyttäjä)
+
+          // Tarkista esimerkkidata, että käytetyllä testihenkilöllä on kaikki tiedot olemassa
+          validKansalainen.hetu.isDefined should be(true)
+          validKansalainen.syntymäaika.isDefined should be(true)
+
+          postResourceServer(token, MockUsers.omadataOAuth2KaikkiOikeudetPalvelukäyttäjä) {
+            verifyResponseStatusOk()
+            val data = JsonSerializer.parse[OmaDataOAuth2KaikkiOpiskeluoikeudet](response.body)
+
+            data.henkilö.hetu should be(validKansalainen.hetu)
+            data.henkilö.oid should be(Some(validKansalainen.oid))
+            data.henkilö.sukunimi should be(Some(validKansalainen.sukunimi))
+            data.henkilö.etunimet should be(Some(validKansalainen.etunimet))
+            data.henkilö.kutsumanimi should be(Some(validKansalainen.kutsumanimi))
+            data.henkilö.syntymäaika should be(validKansalainen.syntymäaika)
+          }
+        }
+      }
+    }
+
+    "suoritetut tutkinnot" - {
+      "palautetaan" in {
+        val oppija = KoskiSpecificMockOppijat.ammattilainen
+
+        val expectedOoData = getOpiskeluoikeus(oppija.oid, schema.OpiskeluoikeudenTyyppi.ammatillinenkoulutus.koodiarvo)
+        val expectedSuoritusData = expectedOoData.suoritukset.head
+
+        val scope = "HENKILOTIEDOT_SYNTYMAAIKA HENKILOTIEDOT_NIMI OPISKELUOIKEUDET_SUORITETUT_TUTKINNOT"
+
+        val pkce = createChallengeAndVerifier
+        val token = createAuthorizationAndToken(oppija, pkce, scope, MockUsers.omadataOAuth2KaikkiOikeudetPalvelukäyttäjä)
+
+        postResourceServer(token, MockUsers.omadataOAuth2KaikkiOikeudetPalvelukäyttäjä) {
+          verifyResponseStatusOk()
+          val data = JsonSerializer.parse[OmaDataOAuth2SuoritetutTutkinnot](response.body)
+
+          data.opiskeluoikeudet should have length 1
+          data.opiskeluoikeudet.head shouldBe a[SuoritetutTutkinnotAmmatillinenOpiskeluoikeus]
+
+          val actualOo = data.opiskeluoikeudet.head
+          val actualSuoritus = actualOo.suoritukset.head
+
+          verifyOpiskeluoikeusJaSuoritus(actualOo, actualSuoritus, expectedOoData, expectedSuoritusData)
+        }
+      }
+      "audit-logitetaan" in {
+        val oppija = KoskiSpecificMockOppijat.ammattilainen
+
+        val scope = "HENKILOTIEDOT_SYNTYMAAIKA HENKILOTIEDOT_NIMI OPISKELUOIKEUDET_SUORITETUT_TUTKINNOT"
+
+        val pkce = createChallengeAndVerifier
+        val token = createAuthorizationAndToken(oppija, pkce, scope, MockUsers.omadataOAuth2KaikkiOikeudetPalvelukäyttäjä)
+
+        AuditLogTester.clearMessages()
+
+        postResourceServer(token, MockUsers.omadataOAuth2KaikkiOikeudetPalvelukäyttäjä) {
+          verifyResponseStatusOk()
+
+          AuditLogTester.verifyOnlyAuditLogMessage(Map(
+            "operation" -> "OAUTH2_KATSOMINEN_SUORITETUT_TUTKINNOT",
+            "target" -> Map(
+              "oppijaHenkiloOid" -> oppija.oid,
+              "omaDataKumppani" -> MockUsers.omadataOAuth2KaikkiOikeudetPalvelukäyttäjä.username,
+              "omaDataOAuth2Scope" -> scope
+            ),
+          ))
+        }
+      }
+    }
+    "aktiiviset opinnot" - {
+      "palautetaan" in {
+        val oppija = KoskiSpecificMockOppijat.jotpaMuuKuinSäännelty
+
+        val expectedOoData = getOpiskeluoikeus(oppija.oid, schema.OpiskeluoikeudenTyyppi.muukuinsaanneltykoulutus.koodiarvo)
+        val expectedSuoritusData = expectedOoData.suoritukset.head
+
+        val scope = "HENKILOTIEDOT_SYNTYMAAIKA HENKILOTIEDOT_NIMI OPISKELUOIKEUDET_AKTIIVISET_JA_PAATTYNEET_OPINNOT"
+
+        val pkce = createChallengeAndVerifier
+        val token = createAuthorizationAndToken(oppija, pkce, scope, MockUsers.omadataOAuth2KaikkiOikeudetPalvelukäyttäjä)
+
+        postResourceServer(token, MockUsers.omadataOAuth2KaikkiOikeudetPalvelukäyttäjä) {
+          verifyResponseStatusOk()
+          val data = JsonSerializer.parse[OmaDataOAuth2AktiivisetJaPäättyneetOpiskeluoikeudet](response.body)
+
+          data.opiskeluoikeudet should have length 1
+          data.opiskeluoikeudet.head shouldBe a[AktiivisetJaPäättyneetOpinnotMuunKuinSäännellynKoulutuksenOpiskeluoikeus]
+
+          val actualOo = data.opiskeluoikeudet.head
+          val actualSuoritus = actualOo.suoritukset.head
+
+          verifyOpiskeluoikeusJaSuoritus(actualOo, Seq(actualSuoritus), expectedOoData, Seq(expectedSuoritusData))
+        }
+      }
+      "audit-logitetaan" in {
+        val oppija = KoskiSpecificMockOppijat.jotpaMuuKuinSäännelty
+
+        val scope = "HENKILOTIEDOT_SYNTYMAAIKA HENKILOTIEDOT_NIMI OPISKELUOIKEUDET_AKTIIVISET_JA_PAATTYNEET_OPINNOT"
+
+        val pkce = createChallengeAndVerifier
+        val token = createAuthorizationAndToken(oppija, pkce, scope, MockUsers.omadataOAuth2KaikkiOikeudetPalvelukäyttäjä)
+
+        AuditLogTester.clearMessages()
+
+        postResourceServer(token, MockUsers.omadataOAuth2KaikkiOikeudetPalvelukäyttäjä) {
+          verifyResponseStatusOk()
+
+          AuditLogTester.verifyOnlyAuditLogMessage(Map(
+            "operation" -> "OAUTH2_KATSOMINEN_AKTIIVISET_JA_PAATTYNEET_OPINNOT",
+            "target" -> Map(
+              "oppijaHenkiloOid" -> oppija.oid,
+              "omaDataKumppani" -> MockUsers.omadataOAuth2KaikkiOikeudetPalvelukäyttäjä.username,
+              "omaDataOAuth2Scope" -> scope
+            ),
+          ))
+        }
+      }
+    }
+    "kaikki opinnot" - {
+      "palautetaan" in {
+        val oppija = KoskiSpecificMockOppijat.ammattilainen
+
+        val expectedOoData = getOpiskeluoikeudet(oppija.oid, MockUsers.viranomainen)
+          .find(_.tyyppi.koodiarvo == schema.OpiskeluoikeudenTyyppi.ammatillinenkoulutus.koodiarvo)
+          .get
+
+        val scope = "HENKILOTIEDOT_SYNTYMAAIKA HENKILOTIEDOT_NIMI OPISKELUOIKEUDET_KAIKKI_TIEDOT"
+
+        val pkce = createChallengeAndVerifier
+        val token = createAuthorizationAndToken(oppija, pkce, scope, MockUsers.omadataOAuth2KaikkiOikeudetPalvelukäyttäjä)
+
+        postResourceServer(token, MockUsers.omadataOAuth2KaikkiOikeudetPalvelukäyttäjä) {
+          verifyResponseStatusOk()
+          val data = JsonSerializer.parse[OmaDataOAuth2KaikkiOpiskeluoikeudet](response.body)
+
+          data.opiskeluoikeudet should have length 1
+          data.opiskeluoikeudet.head shouldBe a[AmmatillinenOpiskeluoikeus]
+
+          val actualOo = data.opiskeluoikeudet.head.asInstanceOf[AmmatillinenOpiskeluoikeus]
+
+          actualOo should be(expectedOoData)
+        }
+      }
+
+      "Ei palauteta luottamuksellisiksi määriteltyjä kenttiä" in {
+        val oppija = KoskiSpecificMockOppijat.toimintaAlueittainOpiskelija
+
+        val expectedOoData = getOpiskeluoikeudet(oppija.oid, MockUsers.viranomainen)
+          .find(_.tyyppi.koodiarvo == schema.OpiskeluoikeudenTyyppi.perusopetus.koodiarvo)
+          .get
+
+        // Varmista, että oppijalla on luottamuksellisia kenttiä:
+        val fullOoData = getOpiskeluoikeudet(oppija.oid, MockUsers.kalle)
+          .find(_.tyyppi.koodiarvo == schema.OpiskeluoikeudenTyyppi.perusopetus.koodiarvo)
+          .get
+        expectedOoData.lisätiedot.map(_.asInstanceOf[PerusopetuksenOpiskeluoikeudenLisätiedot]).map(_.vuosiluokkiinSitoutumatonOpetus) should be(Some(false))
+        fullOoData.lisätiedot.map(_.asInstanceOf[PerusopetuksenOpiskeluoikeudenLisätiedot]).map(_.vuosiluokkiinSitoutumatonOpetus) should be(Some(true))
+
+        val scope = "HENKILOTIEDOT_SYNTYMAAIKA HENKILOTIEDOT_NIMI OPISKELUOIKEUDET_KAIKKI_TIEDOT"
+
+        val pkce = createChallengeAndVerifier
+        val token = createAuthorizationAndToken(oppija, pkce, scope, MockUsers.omadataOAuth2KaikkiOikeudetPalvelukäyttäjä)
+
+        postResourceServer(token, MockUsers.omadataOAuth2KaikkiOikeudetPalvelukäyttäjä) {
+          verifyResponseStatusOk()
+          val data = JsonSerializer.parse[OmaDataOAuth2KaikkiOpiskeluoikeudet](response.body)
+
+          data.opiskeluoikeudet should have length 1
+          data.opiskeluoikeudet.head shouldBe a[PerusopetuksenOpiskeluoikeus]
+
+          val actualOo = data.opiskeluoikeudet.head.asInstanceOf[PerusopetuksenOpiskeluoikeus]
+
+          actualOo should be(expectedOoData)
+        }
+      }
+
+      "audit-logitetaan" in {
+        val oppija = KoskiSpecificMockOppijat.ammattilainen
+
+        val scope = "HENKILOTIEDOT_SYNTYMAAIKA HENKILOTIEDOT_NIMI OPISKELUOIKEUDET_KAIKKI_TIEDOT"
+
+        val pkce = createChallengeAndVerifier
+        val token = createAuthorizationAndToken(oppija, pkce, scope, MockUsers.omadataOAuth2KaikkiOikeudetPalvelukäyttäjä)
+
+        AuditLogTester.clearMessages()
+
+        postResourceServer(token, MockUsers.omadataOAuth2KaikkiOikeudetPalvelukäyttäjä) {
+          verifyResponseStatusOk()
+
+          AuditLogTester.verifyOnlyAuditLogMessage(Map(
+            "operation" -> "OAUTH2_KATSOMINEN_KAIKKI_TIEDOT",
+            "target" -> Map(
+              "oppijaHenkiloOid" -> oppija.oid,
+              "omaDataKumppani" -> MockUsers.omadataOAuth2KaikkiOikeudetPalvelukäyttäjä.username,
+              "omaDataOAuth2Scope" -> scope
+            ),
+          ))
+
+        }
+      }
+    }
+
+    "kun oppijaa ei löydy lainkaan, palautetaan 404" in {
+      val olemassaolematonOppijaOid = FixtureCreator.generateOppijaOid(999999978)
+      val palveluKäyttäjä = MockUsers.omadataOAuth2KaikkiOikeudetPalvelukäyttäjä
+      val clientId = palveluKäyttäjä.username
+
+      val scope = "HENKILOTIEDOT_SYNTYMAAIKA HENKILOTIEDOT_NIMI OPISKELUOIKEUDET_KAIKKI_TIEDOT"
+
+      val pkce = createChallengeAndVerifier
+
+      KoskiApplicationForTests.omaDataOAuth2Repository.create(
+        code = "foo",
+        oppijaOid = olemassaolematonOppijaOid,
+        clientId,
+        scope,
+        codeChallenge = pkce.challenge,
+        redirectUri = validRedirectUri
+      ).isRight should be(true)
+
+      val token = KoskiApplicationForTests.omaDataOAuth2Repository.createAccessTokenForCode(
+        "foo",
+        clientId,
+        pkce.challenge,
+        Some(validRedirectUri),
+        scope.split(" ").toSet
+      ).getOrElse(throw new Error("Internal error"))
+        .accessToken
+
+      postResourceServer(token, palveluKäyttäjä) {
+        verifyResponseStatus(404)
+      }
+    }
   }
 
-  private def postAuthorizationServerClientIdFromUsername[T](
-    user: KoskiMockUser,
-    grantType: Option[String] = Some("authorization_code"),
-    code: Option[String] = Some(validDummyCode),
-    codeVerifier: Option[String] = Some(validDummyCodeVerifier),
-    redirectUri: Option[String] = None)(f: => T): T =
-  {
-    val clientId = Some(user.username)
-    postAuthorizationServer(user, clientId, grantType, code, codeVerifier, redirectUri)(f)
+  "suostumusten hallinta" - {
+    "kirjautumaton palauttaa 401" in {
+      get(uri = "api/omadata-oauth2/resource-owner/active-consents") {
+        verifyResponseStatus(401)
+      }
+    }
+
+    "palauttaa kansalaisen antaman suostumuksen" in {
+      clearOppijanOpiskeluoikeudet(validKansalainen.oid)
+      val pkce = createChallengeAndVerifier
+      val token = createAuthorizationAndToken(validKansalainen, pkce)
+
+      postResourceServer(token) {
+        verifyResponseStatusOk()
+      }
+
+      get(uri = "api/omadata-oauth2/resource-owner/active-consents", headers = kansalainenLoginHeaders(validKansalainen.hetu.get)) {
+        verifyResponseStatusOk()
+        val items = JsonSerializer.parse[List[OmaDataOAuth2JakoItem]](response.body)
+        items.length should be(1)
+        items.head.clientId should be(validClientId)
+      }
+    }
+
+    "suostumuksen voi perua, ja se aiheuttaa audit lokimerkinnän" in {
+      clearOppijanOpiskeluoikeudet(validKansalainen.oid)
+
+      val pkce = createChallengeAndVerifier
+      val token = createAuthorizationAndToken(validKansalainen, pkce)
+
+      postResourceServer(token) {
+        verifyResponseStatusOk()
+      }
+
+      val code = get(uri = "api/omadata-oauth2/resource-owner/active-consents", headers = kansalainenLoginHeaders(validKansalainen.hetu.get)) {
+        verifyResponseStatusOk()
+        val items = JsonSerializer.parse[List[OmaDataOAuth2JakoItem]](response.body)
+        items.length should be(1)
+        items.head.codeSHA256
+      }
+
+      delete(uri = "api/omadata-oauth2/resource-owner/active-consents/" + code, headers = kansalainenLoginHeaders(validKansalainen.hetu.get)) {
+        verifyResponseStatusOk()
+        AuditLogTester.verifyLastAuditLogMessage(Map(
+          "operation" -> "KANSALAINEN_MYDATA_POISTO",
+          "target" -> Map(
+            "oppijaHenkiloOid" -> oppijaOid,
+            "omaDataKumppani" -> validClientId,
+            "omaDataOAuth2Scope" -> validScope
+          ),
+        ))
+      }
+
+      get(uri = "api/omadata-oauth2/resource-owner/active-consents", headers = kansalainenLoginHeaders(validKansalainen.hetu.get)) {
+        verifyResponseStatusOk()
+        val items = JsonSerializer.parse[List[OmaDataOAuth2JakoItem]](response.body)
+        items should be(empty)
+      }
+    }
+
+    "toinen oppija ei voi perua toisen suostumusta" in {
+      clearOppijanOpiskeluoikeudet(validKansalainen.oid)
+
+      val pkce = createChallengeAndVerifier
+      val token = createAuthorizationAndToken(validKansalainen, pkce)
+
+      postResourceServer(token) {
+        verifyResponseStatusOk()
+      }
+
+      val code = get(uri = "api/omadata-oauth2/resource-owner/active-consents", headers = kansalainenLoginHeaders(validKansalainen.hetu.get)) {
+        verifyResponseStatusOk()
+        val items = JsonSerializer.parse[List[OmaDataOAuth2JakoItem]](response.body)
+        items.length should be(1)
+        items.head.codeSHA256
+      }
+
+      delete(uri = "api/omadata-oauth2/resource-owner/active-consents/" + code, headers = kansalainenLoginHeaders(KoskiSpecificMockOppijat.markkanen.hetu.get)) {
+        verifyResponseStatus(400)
+      }
+
+      get(uri = "api/omadata-oauth2/resource-owner/active-consents", headers = kansalainenLoginHeaders(validKansalainen.hetu.get)) {
+        verifyResponseStatusOk()
+        val items = JsonSerializer.parse[List[OmaDataOAuth2JakoItem]](response.body)
+        items.length should be(1)
+      }
+    }
+
+    "master oidilla voi hakea slave oidilla tallennettua suostumusta" in {
+
+      clearOppijanOpiskeluoikeudet(KoskiSpecificMockOppijat.master.oid)
+      clearOppijanOpiskeluoikeudet(KoskiSpecificMockOppijat.slave.henkilö.oid)
+
+      KoskiApplicationForTests.omaDataOAuth2Repository.create(
+        "asd",
+        KoskiSpecificMockOppijat.slave.henkilö.oid,
+        validClientId,
+        validScope,
+        createValidDummyCodeChallenge,
+        validRedirectUri
+      ).isRight should be(true)
+
+      get(uri = "api/omadata-oauth2/resource-owner/active-consents", headers = kansalainenLoginHeaders(KoskiSpecificMockOppijat.master.hetu.get)) {
+        verifyResponseStatusOk()
+        val items = JsonSerializer.parse[List[OmaDataOAuth2JakoItem]](response.body)
+        items.length should be(1)
+      }
+    }
+
+
+    "master oidilla voi perua slave oidilla tallennettua suostumusta" in {
+
+      clearOppijanOpiskeluoikeudet(KoskiSpecificMockOppijat.master.oid)
+      clearOppijanOpiskeluoikeudet(KoskiSpecificMockOppijat.slave.henkilö.oid)
+
+      KoskiApplicationForTests.omaDataOAuth2Repository.create(
+        "asd",
+        KoskiSpecificMockOppijat.slave.henkilö.oid,
+        validClientId,
+        validScope,
+        createValidDummyCodeChallenge,
+        validRedirectUri
+      ).isRight should be(true)
+
+      val code = get(uri = "api/omadata-oauth2/resource-owner/active-consents", headers = kansalainenLoginHeaders(KoskiSpecificMockOppijat.master.hetu.get)) {
+        verifyResponseStatusOk()
+        val items = JsonSerializer.parse[List[OmaDataOAuth2JakoItem]](response.body)
+        items.length should be(1)
+        items.head.codeSHA256
+      }
+
+      delete(uri = "api/omadata-oauth2/resource-owner/active-consents/" + code, headers = kansalainenLoginHeaders(KoskiSpecificMockOppijat.master.hetu.get)) {
+        verifyResponseStatusOk()
+      }
+
+      get(uri = "api/omadata-oauth2/resource-owner/active-consents", headers = kansalainenLoginHeaders(KoskiSpecificMockOppijat.master.hetu.get)) {
+        verifyResponseStatusOk()
+        val items = JsonSerializer.parse[List[OmaDataOAuth2JakoItem]](response.body)
+        items should be(empty)
+      }
+    }
   }
 
-  private def postAuthorizationServer[T](
-    user: KoskiMockUser,
-    clientId: Option[String],
-    grantType: Option[String] = Some("authorization_code"),
-    code: Option[String] = Some(validDummyCode),
-    codeVerifier: Option[String] = Some(validDummyCodeVerifier),
-    redirectUri: Option[String] = None)(f: => T): T =
-  {
-    post(uri = "api/omadata-oauth2/authorization-server",
-      body = createFormParametersBody(grantType, code, codeVerifier, clientId, redirectUri),
-      headers = authHeaders(user) ++ formContent)(f)
-  }
-
-  private def createFormParametersBody(grantType: Option[String], code: Option[String], codeVerifier: Option[String], clientId: Option[String], redirectUri: Option[String]): Array[Byte] = {
-    val params =
-      grantType.toSeq.map(v => ("grant_type", v)) ++
-      code.toSeq.map(v => ("code", v)) ++
-      codeVerifier.toSeq.map(v => ("code_verifier", v)) ++
-      clientId.toSeq.map(v => ("client_id", v)) ++
-      redirectUri.toSeq.map(v => ("redirect_uri", v))
-
-    createParamsString(params).getBytes(StandardCharsets.UTF_8)
-  }
-
-  private def postResourceServer[T](user: KoskiMockUser, token: String = "dummy-access-token")(f: => T): T = {
+  private def postResourceServer[T](token: String, user: KoskiMockUser = validPalvelukäyttäjä)(f: => T): T = {
     val tokenHeaders = Map("X-Auth" -> s"Bearer ${token}")
     post(uri = "api/omadata-oauth2/resource-server", headers = authHeaders(user) ++ tokenHeaders)(f)
   }

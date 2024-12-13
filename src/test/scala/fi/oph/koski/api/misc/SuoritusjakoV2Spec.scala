@@ -102,7 +102,7 @@ class SuoritusjakoV2Spec extends AnyFreeSpec with Matchers with OpiskeluoikeusTe
     val oppija = KoskiSpecificMockOppijat.lukiolainen
     postSuoritusjakoV2(getOpiskeluoikeudet(oppija.oid).toList, oppija) {
       verifyResponseStatusOk()
-      AuditLogTester.verifyAuditLogMessage(Map(
+      AuditLogTester.verifyLastAuditLogMessage(Map(
         "operation" -> "KANSALAINEN_SUORITUSJAKO_LISAYS",
         "user" -> Map("oid" -> oppija.oid),
         "target" -> Map("oppijaHenkiloOid" -> oppija.oid)

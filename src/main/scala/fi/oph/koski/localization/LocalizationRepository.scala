@@ -206,7 +206,7 @@ case class UpdateLocalization(
 )
 
 case class LocalizationServiceLocalization(
-  id: Int,
+  id: Option[Int],
   locale: String,
   category: String,
   key: String,

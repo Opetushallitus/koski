@@ -1,6 +1,6 @@
 package fi.oph.koski.api.oppijavalidation
 
-import fi.oph.koski.KoskiHttpSpec
+import fi.oph.koski.{KoskiApplicationForTests, KoskiHttpSpec}
 import fi.oph.koski.api.misc.OpiskeluoikeusTestMethodsPerusopetus
 import fi.oph.koski.documentation.AmmatillinenExampleData.primusLähdejärjestelmäId
 import fi.oph.koski.documentation.ExampleData._
@@ -11,10 +11,15 @@ import fi.oph.koski.documentation.PerusopetusExampleData._
 import fi.oph.koski.documentation.YleissivistavakoulutusExampleData.{helsinginMedialukio, jyväskylänNormaalikoulu, kulosaarenAlaAste, ressunLukio}
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.http.KoskiErrorCategory
+import fi.oph.koski.koskiuser.KoskiSpecificSession
 import fi.oph.koski.koskiuser.MockUsers.{helsinginKaupunkiPalvelukäyttäjä, jyväskylänNormaalikoulunPalvelukäyttäjä}
 import fi.oph.koski.localization.LocalizedStringImplicits._
+import fi.oph.koski.oppija.HenkilönOpiskeluoikeusVersiot
+import fi.oph.koski.schema.KoskiSchema.strictDeserialization
 import fi.oph.koski.schema._
 import mojave._
+import org.json4s.{JNothing, JObject, JString}
+import org.json4s.jackson.JsonMethods
 
 import java.time.LocalDate
 
@@ -91,10 +96,36 @@ class OppijaValidationPerusopetusSpec extends TutkinnonPerusteetTest[Perusopetuk
       }
     }
 
+    "Uskontoa ei tallenneta tietokantaan" in {
+      implicit val user: KoskiSpecificSession = KoskiSpecificSession.systemUser
+
+      val uskonnonSuoritus = suoritus(NuortenPerusopetuksenUskonto(
+        tunniste = Koodistokoodiviite(koodistoUri = "koskioppiaineetyleissivistava", koodiarvo = "KT"),
+        laajuus = vuosiviikkotuntia(3),
+        uskonnonOppimäärä = Some(Koodistokoodiviite(koodistoUri = "uskonnonoppimaara", koodiarvo = "AD")),
+      ))
+      setupOppijaWithOpiskeluoikeus(defaultOpiskeluoikeus.copy(
+        suoritukset = List(
+          yhdeksännenLuokanSuoritus.copy(vahvistus = None, osasuoritukset = Some(List(uskonnonSuoritus))),
+        ))) {
+          verifyResponseStatusOk()
+          val result = readValidatedResponse[HenkilönOpiskeluoikeusVersiot]
+
+          // Luetaan kantaan tallennettu arvo ilman ekstraktointia, jotta varmistetaan ettei uskonnon oppimäärä
+          // oikeasti ole kannassa (ekstraktointi siivoaisi sen pois luettaessa)
+          val oo = KoskiApplicationForTests.opiskeluoikeusRepository.findByOid(result.opiskeluoikeudet.head.oid).toOption.get
+          val suoritukset = oo.data \ "suoritukset"
+          val osasuoritukset = suoritukset(0) \ "osasuoritukset"
+          val uskonto = osasuoritukset(0) \ "koulutusmoduuli"
+
+          uskonto \ "tunniste" \ "koodiarvo" should equal(JString("KT"))
+          uskonto \ "uskonnonOppimäärä" should equal(JNothing)
+        }
+    }
+
     "Kaksi samaksi katsottua ET ja KT oppiainetta" - {
       def testisuoritus(oppiaineenKoodiarvo: String, pakollinen: Boolean) =
         suoritus(uskonto(
-          uskonto = None,
           pakollinen = pakollinen,
           laajuus = vuosiviikkotuntia(3),
           oppiaineenKoodiarvo = oppiaineenKoodiarvo

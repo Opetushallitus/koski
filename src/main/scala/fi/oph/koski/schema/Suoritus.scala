@@ -172,6 +172,10 @@ trait Arvioinniton extends Suoritus {
   override def arviointiPuuttuu = false
 }
 
+trait ArvioituOsasuoritustenPerusteella extends Arvioinniton {
+  override def arvioitu: Boolean = osasuoritusLista.nonEmpty && osasuoritusLista.forall(_.arvioitu)
+}
+
 trait Välisuoritus extends Arvioinniton
 
 trait MahdollisestiArvioinniton extends Suoritus {

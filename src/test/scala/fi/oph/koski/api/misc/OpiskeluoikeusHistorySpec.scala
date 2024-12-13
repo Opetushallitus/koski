@@ -102,7 +102,7 @@ class OpiskeluoikeusHistorySpec
         authGet("api/opiskeluoikeus/historia/" + opiskeluoikeus.oid.get) {
           val JArray(muutokset) = readHistory.head.muutos
           muutokset should not(be(empty))
-          AuditLogTester.verifyAuditLogMessage(Map("operation" -> "MUUTOSHISTORIA_KATSOMINEN"))
+          AuditLogTester.verifyLastAuditLogMessage(Map("operation" -> "MUUTOSHISTORIA_KATSOMINEN"))
         }
       }
 
@@ -110,7 +110,7 @@ class OpiskeluoikeusHistorySpec
         val opiskeluoikeus = setupOppijaWithAndGetOpiskeluoikeus(uusiOpiskeluoikeus, oppija)
         authGet("api/opiskeluoikeus/historia/" + opiskeluoikeus.oid.get, user = MockUsers.stadinVastuukäyttäjä) {
           readHistory.map(_.muutos) should equal(List(JNothing))
-          AuditLogTester.verifyAuditLogMessage(Map("operation" -> "MUUTOSHISTORIA_KATSOMINEN"))
+          AuditLogTester.verifyLastAuditLogMessage(Map("operation" -> "MUUTOSHISTORIA_KATSOMINEN"))
         }
       }
     }
@@ -122,7 +122,7 @@ class OpiskeluoikeusHistorySpec
           verifyResponseStatusOk()
           val versio = readOpiskeluoikeus
           versio should equal(opiskeluoikeus)
-          AuditLogTester.verifyAuditLogMessage(Map("operation" -> "MUUTOSHISTORIA_KATSOMINEN"))
+          AuditLogTester.verifyLastAuditLogMessage(Map("operation" -> "MUUTOSHISTORIA_KATSOMINEN"))
         }
       }
       "Tuntematon versionumero" - {

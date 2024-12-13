@@ -36,7 +36,7 @@ class EsiopetusRaporttiSpec extends AnyFreeSpec with Matchers with Raportointika
         verifyResponseStatusOk()
         response.headers("Content-Disposition").head should equal(s"""attachment; filename="esiopetus_koski_raportti_${jyväskylänNormaalikoulu}_20180101.xlsx"""")
         response.bodyBytes.take(ENCRYPTED_XLSX_PREFIX.length) should equal(ENCRYPTED_XLSX_PREFIX)
-        AuditLogTester.verifyAuditLogMessage(Map("operation" -> "OPISKELUOIKEUS_RAPORTTI", "target" -> Map("hakuEhto" -> s"raportti=esiopetus&oppilaitosOid=$jyväskylänNormaalikoulu&paiva=2018-01-01&lang=fi")))
+        AuditLogTester.verifyLastAuditLogMessage(Map("operation" -> "OPISKELUOIKEUS_RAPORTTI", "target" -> Map("hakuEhto" -> s"raportti=esiopetus&oppilaitosOid=$jyväskylänNormaalikoulu&paiva=2018-01-01&lang=fi")))
       }
     }
 
@@ -45,7 +45,7 @@ class EsiopetusRaporttiSpec extends AnyFreeSpec with Matchers with Raportointika
         verifyResponseStatusOk()
         response.headers("Content-Disposition").head should equal(s"""attachment; filename="förskoleundervisning_koski_rapport_${jyväskylänNormaalikoulu}_20180101.xlsx"""")
         response.bodyBytes.take(ENCRYPTED_XLSX_PREFIX.length) should equal(ENCRYPTED_XLSX_PREFIX)
-        AuditLogTester.verifyAuditLogMessage(Map("operation" -> "OPISKELUOIKEUS_RAPORTTI", "target" -> Map("hakuEhto" -> s"raportti=esiopetus&oppilaitosOid=$jyväskylänNormaalikoulu&paiva=2018-01-01&lang=sv")))
+        AuditLogTester.verifyLastAuditLogMessage(Map("operation" -> "OPISKELUOIKEUS_RAPORTTI", "target" -> Map("hakuEhto" -> s"raportti=esiopetus&oppilaitosOid=$jyväskylänNormaalikoulu&paiva=2018-01-01&lang=sv")))
       }
     }
 
@@ -117,7 +117,7 @@ class EsiopetusRaporttiSpec extends AnyFreeSpec with Matchers with Raportointika
       "voi hakea kaikki koulutustoimijan alla olevat tiedot" in {
         val raportti = buildOrganisaatioRaportti(helsinkiTallentaja, helsinginKaupunki)
         getOppilaitokset(raportti) should equal(List("Kulosaaren ala-aste", "Päiväkoti Majakka", "Päiväkoti Touhula"))
-        AuditLogTester.verifyAuditLogMessage(Map("operation" -> "OPISKELUOIKEUS_RAPORTTI", "target" -> Map("hakuEhto" -> s"raportti=esiopetus&oppilaitosOid=$helsinginKaupunki&paiva=2014-08-13&lang=fi")))
+        AuditLogTester.verifyLastAuditLogMessage(Map("operation" -> "OPISKELUOIKEUS_RAPORTTI", "target" -> Map("hakuEhto" -> s"raportti=esiopetus&oppilaitosOid=$helsinginKaupunki&paiva=2014-08-13&lang=fi")))
       }
 
       "voi hakea kaikki ostopalvelu/palveluseteli-tiedot" in {
@@ -126,19 +126,19 @@ class EsiopetusRaporttiSpec extends AnyFreeSpec with Matchers with Raportointika
         getRows(raportti).flatMap(_.ostopalveluTaiPalveluseteli) should equal(List("JM02", "JM02"))
 
         val ostopalveluOrganisaatiot = s"$jyväskylänNormaalikoulu,$päiväkotiMajakka,$päiväkotiTouhula"
-        AuditLogTester.verifyAuditLogMessage(Map("operation" -> "OPISKELUOIKEUS_RAPORTTI", "target" -> Map("hakuEhto" -> s"raportti=esiopetus&oppilaitosOid=$ostopalveluOrganisaatiot&paiva=2014-08-13&lang=fi")))
+        AuditLogTester.verifyLastAuditLogMessage(Map("operation" -> "OPISKELUOIKEUS_RAPORTTI", "target" -> Map("hakuEhto" -> s"raportti=esiopetus&oppilaitosOid=$ostopalveluOrganisaatiot&paiva=2014-08-13&lang=fi")))
       }
 
       "ei näe muiden ostopalvelu/palveluseteli-tietoja" in {
         val raportti = buildOstopalveluRaportti(tornioTallentaja)
         getOppilaitokset(raportti) should be(empty)
-        AuditLogTester.verifyAuditLogMessage(Map("operation" -> "OPISKELUOIKEUS_RAPORTTI", "target" -> Map("hakuEhto" -> s"raportti=esiopetus&oppilaitosOid=&paiva=2014-08-13&lang=fi")))
+        AuditLogTester.verifyLastAuditLogMessage(Map("operation" -> "OPISKELUOIKEUS_RAPORTTI", "target" -> Map("hakuEhto" -> s"raportti=esiopetus&oppilaitosOid=&paiva=2014-08-13&lang=fi")))
       }
 
       "globaaleilla käyttöoikeuksilla voi tehdä raportin" in {
         val raportti = buildOrganisaatioRaportti(MockUsers.paakayttaja, helsinginKaupunki)
         getOppilaitokset(raportti) should equal(List("Kulosaaren ala-aste", "Päiväkoti Majakka", "Päiväkoti Touhula"))
-        AuditLogTester.verifyAuditLogMessage(Map("operation" -> "OPISKELUOIKEUS_RAPORTTI", "target" -> Map("hakuEhto" -> s"raportti=esiopetus&oppilaitosOid=$helsinginKaupunki&paiva=2014-08-13&lang=fi")))
+        AuditLogTester.verifyLastAuditLogMessage(Map("operation" -> "OPISKELUOIKEUS_RAPORTTI", "target" -> Map("hakuEhto" -> s"raportti=esiopetus&oppilaitosOid=$helsinginKaupunki&paiva=2014-08-13&lang=fi")))
       }
     }
   }

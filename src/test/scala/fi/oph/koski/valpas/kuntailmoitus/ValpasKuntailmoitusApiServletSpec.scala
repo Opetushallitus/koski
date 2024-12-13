@@ -146,7 +146,7 @@ class ValpasKuntailmoitusApiServletSpec extends ValpasTestBase with BeforeAndAft
     val kuntailmoitusInput = teeKuntailmoitusInputKaikillaTiedoilla()
 
     post("/valpas/api/kuntailmoitus", body = kuntailmoitusInput, headers = authHeaders() ++ jsonContent) {
-      AuditLogTester.verifyAuditLogMessage(Map(
+      AuditLogTester.verifyLastAuditLogMessage(Map(
         "operation" -> ValpasOperation.VALPAS_OPPIJA_KUNTAILMOITUS.toString,
         "target" -> Map(
           ValpasAuditLogMessageField.oppijaHenkilöOid.toString ->
@@ -578,7 +578,7 @@ class ValpasKuntailmoitusApiServletSpec extends ValpasTestBase with BeforeAndAft
     post("/valpas/api/kuntailmoitus/pohjatiedot", body = pohjatiedotInput, headers = authHeaders() ++ jsonContent) {
       verifyResponseStatusOk()
 
-      AuditLogTester.verifyAuditLogMessage(Map(
+      AuditLogTester.verifyLastAuditLogMessage(Map(
         "operation" -> ValpasOperation.VALPAS_OPPIJA_KATSOMINEN.toString,
         "target" -> Map(
           ValpasAuditLogMessageField.oppijaHenkilöOid.toString ->
@@ -657,7 +657,7 @@ class ValpasKuntailmoitusApiServletSpec extends ValpasTestBase with BeforeAndAft
     ) {
       verifyResponseStatusOk()
 
-      AuditLogTester.verifyAuditLogMessage(Map(
+      AuditLogTester.verifyLastAuditLogMessage(Map(
         "operation" -> ValpasOperation.VALPAS_KUNNAT_OPPIJAT_KATSOMINEN.toString,
         "target" -> Map(
           ValpasAuditLogMessageField.juuriOrganisaatio.toString -> MockOrganisaatiot.helsinginKaupunki)
@@ -771,7 +771,7 @@ class ValpasKuntailmoitusApiServletSpec extends ValpasTestBase with BeforeAndAft
       verifyResponseStatus(204)
     }
 
-    AuditLogTester.verifyAuditLogMessage(Map(
+    AuditLogTester.verifyLastAuditLogMessage(Map(
       "operation" -> ValpasOperation.VALPAS_OPPIJA_KUNTAILMOITUKSEN_POISTO.toString,
       "target" -> Map(
         ValpasAuditLogMessageField.oppijaHenkilöOid.toString ->

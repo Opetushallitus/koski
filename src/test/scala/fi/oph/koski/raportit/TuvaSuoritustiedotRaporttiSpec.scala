@@ -31,7 +31,7 @@ class TuvaSuoritustiedotRaporttiSpec
         verifyResponseStatusOk()
         response.headers("Content-Disposition").head should equal(s"""attachment; filename="tuva_suoritustiedot_${stadinAmmattiopisto}_2018-01-01_2022-01-01.xlsx"""")
         response.bodyBytes.take(ENCRYPTED_XLSX_PREFIX.length) should equal(ENCRYPTED_XLSX_PREFIX)
-        AuditLogTester.verifyAuditLogMessage(Map("operation" -> "OPISKELUOIKEUS_RAPORTTI", "target" -> Map("hakuEhto" -> s"raportti=tuvasuoritustietojentarkistus&oppilaitosOid=$stadinAmmattiopisto&alku=2018-01-01&loppu=2022-01-01&lang=fi")))
+        AuditLogTester.verifyLastAuditLogMessage(Map("operation" -> "OPISKELUOIKEUS_RAPORTTI", "target" -> Map("hakuEhto" -> s"raportti=tuvasuoritustietojentarkistus&oppilaitosOid=$stadinAmmattiopisto&alku=2018-01-01&loppu=2022-01-01&lang=fi")))
       }
     }
 
@@ -40,7 +40,7 @@ class TuvaSuoritustiedotRaporttiSpec
         verifyResponseStatusOk()
         response.headers("Content-Disposition").head should equal(s"""attachment; filename="hux_prestationsuppgifter_${stadinAmmattiopisto}_2018-01-01_2022-01-01.xlsx"""")
         response.bodyBytes.take(ENCRYPTED_XLSX_PREFIX.length) should equal(ENCRYPTED_XLSX_PREFIX)
-        AuditLogTester.verifyAuditLogMessage(Map("operation" -> "OPISKELUOIKEUS_RAPORTTI", "target" -> Map("hakuEhto" -> s"raportti=tuvasuoritustietojentarkistus&oppilaitosOid=$stadinAmmattiopisto&alku=2018-01-01&loppu=2022-01-01&lang=sv")))
+        AuditLogTester.verifyLastAuditLogMessage(Map("operation" -> "OPISKELUOIKEUS_RAPORTTI", "target" -> Map("hakuEhto" -> s"raportti=tuvasuoritustietojentarkistus&oppilaitosOid=$stadinAmmattiopisto&alku=2018-01-01&loppu=2022-01-01&lang=sv")))
       }
     }
 

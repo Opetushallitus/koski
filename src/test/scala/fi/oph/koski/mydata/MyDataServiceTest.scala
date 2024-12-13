@@ -27,7 +27,7 @@ class MyDataServiceTest extends AnyFreeSpec with TestEnvironment with Matchers w
     "Käyttäjän antama hyväksyntä logitetaan audit-lokiin" in {
       KoskiApplicationForTests.mydataService.put(memberId, getSession)
 
-      AuditLogTester.verifyAuditLogMessage(Map(
+      AuditLogTester.verifyLastAuditLogMessage(Map(
         "operation" -> "KANSALAINEN_MYDATA_LISAYS",
         "user" -> Map("oid" -> oid),
         "target" -> Map(
@@ -40,7 +40,7 @@ class MyDataServiceTest extends AnyFreeSpec with TestEnvironment with Matchers w
     "Käyttäjän poistama hyväksyntä logitetaan audit-lokiin" in {
       KoskiApplicationForTests.mydataService.delete(memberId, getSession)
 
-      AuditLogTester.verifyAuditLogMessage(Map(
+      AuditLogTester.verifyLastAuditLogMessage(Map(
         "operation" -> "KANSALAINEN_MYDATA_POISTO",
         "user" -> Map("oid" -> oid),
         "target" -> Map(

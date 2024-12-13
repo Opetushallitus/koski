@@ -1,4 +1,5 @@
 import { defineConfig, devices } from "@playwright/test"
+import * as os from "os"
 
 /**
  * Read environment variables from file.
@@ -20,7 +21,7 @@ export default defineConfig({
      * Maximum time expect() should wait for the condition to be met.
      * For example in `await expect(locator).toHaveText();`
      */
-    timeout: 5000,
+    timeout: 5 * 1000,
   },
   /* Run tests in files in parallel */
   fullyParallel: true,
@@ -80,9 +81,38 @@ export default defineConfig({
   ],
 
   /* Run your local dev server before starting the tests */
-  webServer: {
-    command: `KOSKI_BACKEND_HOST=${process.env.KOSKI_BACKEND_HOST} npm-run-all --parallel start-server start`,
-    url: "http://localhost:7050",
-    reuseExistingServer: !process.env.CI,
-  },
+  webServer: [
+    {
+      command: `KOSKI_BACKEND_HOST=${process.env.KOSKI_BACKEND_HOST || process.env.CI ? `http://172.17.0.1:${process.env.KOSKI_BACKEND_PORT || "7021"}` : `http://${getMyIp()}:${process.env.KOSKI_BACKEND_PORT || "7021"}`} npm run build-and-start-luovutuspalvelu`,
+      url: "https://localhost:7022/koski-luovutuspalvelu/healthcheck/proxy",
+      reuseExistingServer: !process.env.CI,
+      stdout: "pipe",
+      stderr: "pipe",
+      timeout: 10 * 60 * 1000,
+      ignoreHTTPSErrors: true,
+    },
+    {
+      command: `KOSKI_BACKEND_HOST=${process.env.KOSKI_BACKEND_HOST || process.env.CI ? `http://172.17.0.1:${process.env.KOSKI_BACKEND_PORT || "7021"}` : `http://${getMyIp()}:${process.env.KOSKI_BACKEND_PORT || "7021"}`} npm run start-server`,
+      url: "http://localhost:7051/api/healthcheck",
+      reuseExistingServer: !process.env.CI,
+      stdout: "pipe",
+      stderr: "pipe",
+      timeout: 2 * 60 * 1000,
+    },
+    {
+      command: `KOSKI_BACKEND_HOST=${process.env.KOSKI_BACKEND_HOST || process.env.CI ? `http://172.17.0.1:${process.env.KOSKI_BACKEND_PORT || "7021"}` : `http://${getMyIp()}:${process.env.KOSKI_BACKEND_PORT || "7021"}`} npm run start`,
+      url: "http://localhost:7050",
+      reuseExistingServer: !process.env.CI,
+      stdout: "pipe",
+      stderr: "pipe",
+      timeout: 2 * 60 * 1000,
+    },
+  ],
 })
+
+function getMyIp() {
+  const addresses = Object.values(os.networkInterfaces()).reduce((acc, v) =>
+    acc.concat(v),
+  )
+  return addresses.find((a) => a.family === "IPv4" && !a.internal).address
+}

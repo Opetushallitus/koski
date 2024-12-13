@@ -1,7 +1,9 @@
 package fi.oph.koski.http
 
-import fi.oph.koski.TestEnvironment
+import fi.oph.koski.{KoskiApplicationForTests, TestEnvironment}
 import fi.oph.koski.json.JsonSerializer
+import fi.oph.koski.schema.KoskiSchema.strictDeserialization
+import fi.oph.scalaschema.extraction.ValidationError
 import org.json4s.JValue
 import org.json4s.JsonAST.JString
 import org.json4s.jackson.JsonMethods
@@ -65,6 +67,14 @@ trait HttpSpecification extends HttpTester with TestEnvironment with Assertions 
   }
 
   import reflect.runtime.universe.TypeTag
+
+  def readValidatedResponse[T: TypeTag]: T = {
+    val result = JsonMethods.parse(response.getContent())
+    KoskiApplicationForTests
+      .validatingAndResolvingExtractor.extract[T](strictDeserialization)(result)
+      .fold({ err => fail(err.errorString.getOrElse(err.toString)) }, identity)
+  }
+
   def readPaginatedResponse[T: TypeTag]: T = try {
     JsonSerializer.extract[T](parse(body) \ "result")
   } catch {

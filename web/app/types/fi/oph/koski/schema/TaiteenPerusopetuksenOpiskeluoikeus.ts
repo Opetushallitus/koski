@@ -5,6 +5,7 @@ import { OpiskeluoikeudenOrganisaatiohistoria } from './OpiskeluoikeudenOrganisa
 import { Koulutustoimija } from './Koulutustoimija'
 import { TaiteenPerusopetuksenPäätasonSuoritus } from './TaiteenPerusopetuksenPaatasonSuoritus'
 import { LähdejärjestelmäId } from './LahdejarjestelmaId'
+import { LähdejärjestelmäkytkennänPurkaminen } from './LahdejarjestelmakytkennanPurkaminen'
 import { Oppilaitos } from './Oppilaitos'
 
 /**
@@ -31,6 +32,7 @@ export type TaiteenPerusopetuksenOpiskeluoikeus = {
     'taiteenperusopetuskoulutuksentoteutustapa',
     string
   >
+  lähdejärjestelmäkytkentäPurettu?: LähdejärjestelmäkytkennänPurkaminen
   oppilaitos?: Oppilaitos
 }
 
@@ -52,6 +54,7 @@ export const TaiteenPerusopetuksenOpiskeluoikeus = (o: {
     'taiteenperusopetuskoulutuksentoteutustapa',
     string
   >
+  lähdejärjestelmäkytkentäPurettu?: LähdejärjestelmäkytkennänPurkaminen
   oppilaitos?: Oppilaitos
 }): TaiteenPerusopetuksenOpiskeluoikeus => ({
   tyyppi: Koodistokoodiviite({

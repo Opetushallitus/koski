@@ -18,7 +18,8 @@ case class MuunKuinSäännellynKoulutuksenOpiskeluoikeus (
   @KoodistoKoodiarvo(OpiskeluoikeudenTyyppi.muukuinsaanneltykoulutus.koodiarvo)
   tyyppi: Koodistokoodiviite = OpiskeluoikeudenTyyppi.muukuinsaanneltykoulutus,
   organisaatiohistoria: Option[List[OpiskeluoikeudenOrganisaatiohistoria]] = None,
-  lisätiedot: Option[MuunKuinSäännellynKoulutuksenLisätiedot] = None
+  lisätiedot: Option[MuunKuinSäännellynKoulutuksenLisätiedot] = None,
+  lähdejärjestelmäkytkentäPurettu: Option[LähdejärjestelmäkytkennänPurkaminen] = None,
 ) extends KoskeenTallennettavaOpiskeluoikeus {
   override def sisältyyOpiskeluoikeuteen: Option[SisältäväOpiskeluoikeus] = None
   override def withKoulutustoimija(koulutustoimija: Koulutustoimija): KoskeenTallennettavaOpiskeluoikeus =

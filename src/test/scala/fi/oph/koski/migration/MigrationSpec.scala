@@ -13,7 +13,7 @@ class MigrationSpec extends AnyFreeSpec with Matchers with RaportointikantaTestM
   "Migraatiot" - {
     "Havaittiin uusi tietokannan migraatiotiedosto. Migraatiot, varsinkin jos koskevat Kosken suurimpia tauluja, on hyvä testata tietokantareplikaa vasten.\n" +
       "Korjaa tämän testin odottama tiedostomäärä, kun olet varma että migraatiot voi viedä eteenpäin.\nDokumentaatio: documentation/tietokantamigraatiot.md" in {
-      new File("./src/main/resources/db/migration").listFiles.length should equal (99)
+      new File("./src/main/resources/db/migration").listFiles.length should equal (100)
     }
   }
 
@@ -48,10 +48,10 @@ class MigrationSpec extends AnyFreeSpec with Matchers with RaportointikantaTestM
         "OrganisaatioHistoriaRowBuilder.scala"                      -> "7e586d9e273a5a4ee7beae257f22c7f4",
         "OrganisaatioLoader.scala"                                  -> "4f7ce51cb922dbc11e694ebe85ab3472",
         "PäivitettyOpiskeluoikeusLoader.scala"                      -> "500545bbe7ef47dedcfdc49580b536d2",
-        "RaportointiDatabase.scala"                                 -> "fc0398cdef955357e22019a706141d41",
+        "RaportointiDatabase.scala"                                 -> "c71b010bf602f8ef5a57ebc9381e6824",
         "RaportointiDatabaseCustomFunctions.scala"                  -> "956f101d1219c49ac9134b72a30caf3a",
-        "RaportointiDatabaseSchema.scala"                           -> "c5ad373521dbbefe85fc46ca6a36b98d",
-        "RaportointikantaService.scala"                             -> "287d3c81aae78ab9347c98680287994a",
+        "RaportointiDatabaseSchema.scala"                           -> "9bc7e965f66dd000cfdda61e346d8993",
+        "RaportointikantaService.scala"                             -> "a4cc105d423366b41e6dd4d2fcbec4a",
         "RaportointikantaStatusServlet.scala"                       -> "9fd6f796adfb2034cce0151b7330cd1a",
         "RaportointikantaTestServlet.scala"                         -> "d457be86e60dd84545378ae415236d26",
         "RaportointikantaTableQueries.scala"                        -> "f2f26c217992539c1e61dcbd031fc642",

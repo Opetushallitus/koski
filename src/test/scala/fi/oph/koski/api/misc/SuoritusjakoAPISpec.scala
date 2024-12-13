@@ -8,9 +8,8 @@ import fi.oph.koski.log.{AccessLogTester, AuditLogTester}
 import fi.oph.koski.schema.KoskiSchema.strictDeserialization
 import fi.oph.koski.schema._
 import fi.oph.koski.servlet.SuoritusjakoReadRequest
-import fi.oph.koski.suoritusjako.aktiivisetjapaattyneetopinnot.AktiivisetJaPäättyneetOpinnotOppija
-import fi.oph.koski.suoritusjako.common.Jakolinkki
-import fi.oph.koski.suoritusjako.suoritetuttutkinnot.SuoritetutTutkinnotOppija
+import fi.oph.koski.suoritusjako.{AktiivisetJaPäättyneetOpinnotOppijaJakolinkillä, Jakolinkki}
+import fi.oph.koski.suoritusjako.SuoritetutTutkinnotOppijaJakolinkillä
 import fi.oph.koski.suoritusjako.{OppijaJakolinkillä, Suoritusjako, SuoritusjakoRequest}
 import fi.oph.scalaschema.{ExtractionContext, SchemaValidatingExtractor}
 import org.scalatest.BeforeAndAfterAll
@@ -103,7 +102,7 @@ class SuoritusjakoAPISpec extends AnyFreeSpec with SuoritusjakoTestMethods with 
         AuditLogTester.clearMessages
         postSuoritusjakoV3(secrets("taiteen perusopetus")) {
           verifyResponseStatusOk()
-          AuditLogTester.verifyAuditLogMessage(Map("operation" -> "KANSALAINEN_SUORITUSJAKO_KATSOMINEN"))
+          AuditLogTester.verifyLastAuditLogMessage(Map("operation" -> "KANSALAINEN_SUORITUSJAKO_KATSOMINEN"))
         }
       }
     }
@@ -153,7 +152,7 @@ class SuoritusjakoAPISpec extends AnyFreeSpec with SuoritusjakoTestMethods with 
         AuditLogTester.clearMessages
         getSuoritusjakoPublicAPI(secrets("taiteen perusopetus")) {
           verifyResponseStatusOk()
-          AuditLogTester.verifyAuditLogMessage(Map("operation" -> "KANSALAINEN_SUORITUSJAKO_KATSOMINEN"))
+          AuditLogTester.verifyLastAuditLogMessage(Map("operation" -> "KANSALAINEN_SUORITUSJAKO_KATSOMINEN"))
         }
       }
 
@@ -168,35 +167,37 @@ class SuoritusjakoAPISpec extends AnyFreeSpec with SuoritusjakoTestMethods with 
       }
 
       "onnistuu post-requestilla ja tuottaa auditlog-merkinnän" in {
+        AuditLogTester.clearMessages()
         postSuoritusjakoPublicAPI(secrets("taiteen perusopetus")) {
           verifyResponseStatusOk()
-          AuditLogTester.verifyAuditLogMessage(Map("operation" -> "KANSALAINEN_SUORITUSJAKO_KATSOMINEN"))
+          AuditLogTester.verifyLastAuditLogMessage(Map("operation" -> "KANSALAINEN_SUORITUSJAKO_KATSOMINEN"))
         }
       }
 
       "onnistuu post-requestilla suoritetut tutkinnot, sisältää viimeisen voimassaolopäivän ja tuottaa auditlog-merkinnän" in {
+        AuditLogTester.clearMessages()
         postSuoritetutTutkinnotPublicAPI(secrets("suoritetut tutkinnot")) {
           verifyResponseStatusOk()
 
           val bodyString = new String(response.bodyBytes, StandardCharsets.UTF_8)
           implicit val context: ExtractionContext = strictDeserialization
-          val oppija = SchemaValidatingExtractor.extract[SuoritetutTutkinnotOppija](bodyString).right.get
+          val oppija = SchemaValidatingExtractor.extract[SuoritetutTutkinnotOppijaJakolinkillä](bodyString).right.get
           oppija.jakolinkki should be(Some(Jakolinkki(LocalDate.now.plusMonths(6))))
-
-          AuditLogTester.verifyAuditLogMessage(Map("operation" -> "KANSALAINEN_SUORITUSJAKO_KATSOMINEN_SUORITETUT_TUTKINNOT"))
+          AuditLogTester.verifyLastAuditLogMessage(Map("operation" -> "KANSALAINEN_SUORITUSJAKO_KATSOMINEN_SUORITETUT_TUTKINNOT"))
         }
       }
 
       "onnistuu post-requestilla aktiiviset ja päättyneet opinnot, sisältää viimeisen voimassaolopäivän ja tuottaa auditlog-merkinnän" in {
+        AuditLogTester.clearMessages()
         postAktiivisetJaPäättyneetOpinnotPublicAPI(secrets("aktiiviset ja päättyneet opinnot")) {
           verifyResponseStatusOk()
 
           val bodyString = new String(response.bodyBytes, StandardCharsets.UTF_8)
           implicit val context: ExtractionContext = strictDeserialization
-          val oppija = SchemaValidatingExtractor.extract[AktiivisetJaPäättyneetOpinnotOppija](bodyString).right.get
+          val oppija = SchemaValidatingExtractor.extract[AktiivisetJaPäättyneetOpinnotOppijaJakolinkillä](bodyString).right.get
           oppija.jakolinkki should be(Some(Jakolinkki(LocalDate.now.plusMonths(6))))
 
-          AuditLogTester.verifyAuditLogMessage(Map("operation" -> "KANSALAINEN_SUORITUSJAKO_KATSOMINEN_AKTIIVISET_JA_PAATTYNEET_OPINNOT"))
+          AuditLogTester.verifyLastAuditLogMessage(Map("operation" -> "KANSALAINEN_SUORITUSJAKO_KATSOMINEN_AKTIIVISET_JA_PAATTYNEET_OPINNOT"))
         }
       }
 

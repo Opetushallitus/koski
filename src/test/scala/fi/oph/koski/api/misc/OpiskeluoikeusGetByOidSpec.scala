@@ -18,7 +18,7 @@ class OpiskeluoikeusGetByOidSpec extends AnyFreeSpec with Matchers with KoskiHtt
         AuditLogTester.clearMessages
         get("api/opiskeluoikeus/" + oid, headers = authHeaders()) {
           verifyResponseStatusOk()
-          AuditLogTester.verifyAuditLogMessage(Map("operation" -> "OPISKELUOIKEUS_KATSOMINEN"))
+          AuditLogTester.verifyLastAuditLogMessage(Map("operation" -> "OPISKELUOIKEUS_KATSOMINEN"))
         }
       }
       "with unknown oid" in {

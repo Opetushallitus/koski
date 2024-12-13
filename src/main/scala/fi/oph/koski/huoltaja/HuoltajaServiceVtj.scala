@@ -1,15 +1,10 @@
 package fi.oph.koski.huoltaja
 
-import com.typesafe.config.Config
 import fi.oph.koski.henkilo.HenkilöRepository
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
-import fi.oph.koski.koskiuser.KoskiSpecificSession
 import fi.oph.koski.log.Logging
 
-
-class HuoltajaServiceVtj(config: Config, henkilöRepository: HenkilöRepository) extends Logging {
-  private val huollettavatRepository = HuollettavatRepository(config)
-
+class HuoltajaServiceVtj(henkilöRepository: HenkilöRepository, huollettavatRepository: HuollettavatRepository) extends Logging {
   def getHuollettavat(hetu: String): HuollettavatSearchResult = try {
     huollettavatRepository.getHuollettavat(hetu).map(_.flatMap(oiditHuollettaville)) match {
       case Right(huollettavat) =>
@@ -20,8 +15,8 @@ class HuoltajaServiceVtj(config: Config, henkilöRepository: HenkilöRepository)
     }
   }
   catch {
-    case _: Exception =>
-      logger.error("Huollettavien haku epäonnistui")
+    case e: Exception =>
+      logger.error(s"Huollettavien haku epäonnistui. ${e.toString}")
       HuollettavienHakuEpäonnistui(KoskiErrorCategory.unavailable.huollettavat())
   }
 

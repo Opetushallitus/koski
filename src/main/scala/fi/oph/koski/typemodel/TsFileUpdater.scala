@@ -1,5 +1,6 @@
 package fi.oph.koski.typemodel
 
+import fi.oph.koski.aktiivisetjapaattyneetopinnot.AktiivisetJaPäättyneetOpinnotKoskeenTallennettavaOpiskeluoikeus
 import fi.oph.koski.history.OpiskeluoikeusHistoryPatch
 import fi.oph.koski.koskiuser.UserWithAccessRights
 import fi.oph.koski.oppija.HenkilönOpiskeluoikeusVersiot
@@ -7,8 +8,8 @@ import fi.oph.koski.organisaatio.OrganisaatioHierarkia
 import fi.oph.koski.preferences.KeyValue
 import fi.oph.koski.schema._
 import fi.oph.koski.servlet.Osaamismerkkikuva
-import fi.oph.koski.suoritusjako.aktiivisetjapaattyneetopinnot.{AktiivisetJaPäättyneetOpinnotKoskeenTallennettavaOpiskeluoikeus, AktiivisetJaPäättyneetOpinnotOppija}
-import fi.oph.koski.suoritusjako.suoritetuttutkinnot.{SuoritetutTutkinnotKoskeenTallennettavaOpiskeluoikeus, SuoritetutTutkinnotOppija}
+import fi.oph.koski.suoritetuttutkinnot.SuoritetutTutkinnotKoskeenTallennettavaOpiskeluoikeus
+import fi.oph.koski.suoritusjako.{AktiivisetJaPäättyneetOpinnotOppijaJakolinkillä, SuoritetutTutkinnotOppijaJakolinkillä}
 import fi.oph.koski.tutkinto.TutkintoPeruste
 import fi.oph.koski.typemodel.TypescriptTypes.Options
 import fi.oph.koski.ytr.YtrCertificateResponse
@@ -61,8 +62,8 @@ case class AdditionalExports(
   opiskeluoikeusHistoryPatch: OpiskeluoikeusHistoryPatch,
   päätasonSuoritus: PäätasonSuoritus,
   ytrCertificateResponse: YtrCertificateResponse,
-  suoritetutTutkinnotOppija: SuoritetutTutkinnotOppija,
-  aktiivisetOpinnotOppija: AktiivisetJaPäättyneetOpinnotOppija,
+  suoritetutTutkinnotOppija: SuoritetutTutkinnotOppijaJakolinkillä,
+  aktiivisetOpinnotOppija: AktiivisetJaPäättyneetOpinnotOppijaJakolinkillä,
   osaamismerkkikuva: Osaamismerkkikuva,
   opiskeluoikeusClass: OpiskeluoikeusClass,
   tutkintoperuste: TutkintoPeruste,

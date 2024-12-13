@@ -324,6 +324,7 @@ class KoskiSpecificDatabaseFixtureCreator(application: KoskiApplication) extends
       (KoskiSpecificMockOppijat.vuonna2003SyntynytPeruskouluValmis2021, MaksuttomuusRaporttiFixtures.peruskouluSuoritettu2021),
       (KoskiSpecificMockOppijat.vuonna2004SyntynytPeruskouluValmis2021MuuttanutSuomeenTäysiIkäisenä, MaksuttomuusRaporttiFixtures.peruskouluSuoritettu2021),
       (KoskiSpecificMockOppijat.vuonna2004SyntynytPeruskouluValmis2021EiKotikuntahistoriaa, MaksuttomuusRaporttiFixtures.peruskouluSuoritettu2021),
+      (KoskiSpecificMockOppijat.vainMitätöityjäOpiskeluoikeuksia, PerusopetuksenOpiskeluoikeusTestData.mitätöitäväOpiskeluoikeus),
     )
   }
 
@@ -337,6 +338,7 @@ class KoskiSpecificDatabaseFixtureCreator(application: KoskiApplication) extends
     List(
       (KoskiSpecificMockOppijat.eero, PerusopetuksenOpiskeluoikeusTestData.mitätöityOpiskeluoikeus), // Mitätöintiä ei voi tehdä ensimmäisellä kirjoituksella
       (KoskiSpecificMockOppijat.lukiolainen, AmmatillinenOpiskeluoikeusTestData.mitätöityOpiskeluoikeus), // Mitätöintiä ei voi tehdä ensimmäisellä kirjoituksella
+      (KoskiSpecificMockOppijat.vainMitätöityjäOpiskeluoikeuksia, PerusopetuksenOpiskeluoikeusTestData.mitätöityOpiskeluoikeus), // Mitätöintiä ei voi tehdä ensimmäisellä kirjoituksella
     )
   }
 
@@ -406,6 +408,33 @@ object AmmatillinenOpiskeluoikeusTestData {
       tila = AmmatillinenOpiskeluoikeudenTila(List(
         AmmatillinenOpiskeluoikeusjakso(alkamispäivä, ExampleData.opiskeluoikeusLäsnä, Some(ExampleData.valtionosuusRahoitteinen)),
         AmmatillinenOpiskeluoikeusjakso(päättymispäivä, ExampleData.opiskeluoikeusValmistunut, Some(ExampleData.valtionosuusRahoitteinen))
+      )),
+      lisätiedot = Some(AmmatillisenOpiskeluoikeudenLisätiedot(
+        hojks = None,
+        erityinenTuki = Some(List(Aikajakso(alkamispäivä, None))),
+        vaikeastiVammainen = Some(List(Aikajakso(alkamispäivä, None))),
+        vankilaopetuksessa = Some(List(Aikajakso(alkamispäivä, None)))
+      )),
+    )
+  }
+
+  def katsotaanEronneeksiOpiskeluoikeus(oppilaitosId: String, koulutusKoodi: Int = 351301, diaariNumero: String = "39/011/2014", alkamispäivä: LocalDate = date(2019, 5, 30), päättymispäivä: LocalDate = date(2020, 5, 30)): AmmatillinenOpiskeluoikeus = {
+    val oppilaitos: Oppilaitos = Oppilaitos(oppilaitosId, None, None)
+    val koulutusKoodiViite = Koodistokoodiviite(koulutusKoodi.toString, None, "koulutus", None)
+
+    AmmatillinenOpiskeluoikeus(
+      oppilaitos = Some(oppilaitos),
+      suoritukset = List(AmmatillisenTutkinnonSuoritus(
+        koulutusmoduuli = AmmatillinenTutkintoKoulutus(koulutusKoodiViite, Some(diaariNumero)),
+        toimipiste = oppilaitos,
+        suorituskieli = suomenKieli,
+        suoritustapa = AmmatillinenExampleData.suoritustapaOps,
+        keskiarvo = Some(4.0),
+        osasuoritukset = Some(List(pakollinenTutkinnonOsanSuoritus("101050", "Yritystoiminnan suunnittelu", ammatillisetTutkinnonOsat, k3, 40, alkamispäivä)))
+      )),
+      tila = AmmatillinenOpiskeluoikeudenTila(List(
+        AmmatillinenOpiskeluoikeusjakso(alkamispäivä, ExampleData.opiskeluoikeusLäsnä, Some(ExampleData.valtionosuusRahoitteinen)),
+        AmmatillinenOpiskeluoikeusjakso(päättymispäivä, ExampleData.opiskeluoikeusKatsotaanEronneeksi, Some(ExampleData.valtionosuusRahoitteinen))
       )),
       lisätiedot = Some(AmmatillisenOpiskeluoikeudenLisätiedot(
         hojks = None,

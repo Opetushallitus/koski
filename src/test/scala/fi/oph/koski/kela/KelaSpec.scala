@@ -39,7 +39,7 @@ class KelaSpec
       AuditLogTester.clearMessages
       postHetu(KoskiSpecificMockOppijat.amis.hetu.get) {
         verifyResponseStatusOk()
-        AuditLogTester.verifyAuditLogMessage(Map("operation" -> "OPISKELUOIKEUS_KATSOMINEN", "target" -> Map("oppijaHenkiloOid" -> KoskiSpecificMockOppijat.amis.oid)))
+        AuditLogTester.verifyLastAuditLogMessage(Map("operation" -> "OPISKELUOIKEUS_KATSOMINEN", "target" -> Map("oppijaHenkiloOid" -> KoskiSpecificMockOppijat.amis.oid)))
       }
     }
     "Palautetaan 400 jos pyyntö tehdään epävalidilla hetulla" in {
@@ -318,7 +318,7 @@ class KelaSpec
       AuditLogTester.clearMessages
       postHetut(List(KoskiSpecificMockOppijat.amis.hetu.get)) {
         verifyResponseStatusOk()
-        AuditLogTester.verifyAuditLogMessage(Map("operation" -> "OPISKELUOIKEUS_KATSOMINEN", "target" -> Map("oppijaHenkiloOid" -> KoskiSpecificMockOppijat.amis.oid)))
+        AuditLogTester.verifyLastAuditLogMessage(Map("operation" -> "OPISKELUOIKEUS_KATSOMINEN", "target" -> Map("oppijaHenkiloOid" -> KoskiSpecificMockOppijat.amis.oid)))
       }
     }
     "Ei luo AuditLogia jos hetulla löytyvä oppija puuttuu vastauksesta" in {
@@ -524,7 +524,7 @@ class KelaSpec
           val history = JsonSerializer.parse[List[KelaOpiskeluoikeusHistoryPatch]](body)
 
           history.length should equal(2)
-          AuditLogTester.verifyAuditLogMessage(Map("operation" -> "MUUTOSHISTORIA_KATSOMINEN", "target" -> Map("opiskeluoikeusOid" -> historiaFixture.opiskeluoikeus.oid.get)))
+          AuditLogTester.verifyLastAuditLogMessage(Map("operation" -> "MUUTOSHISTORIA_KATSOMINEN", "target" -> Map("opiskeluoikeusOid" -> historiaFixture.opiskeluoikeus.oid.get)))
         }
       }
 
@@ -536,7 +536,7 @@ class KelaSpec
           val response = JsonSerializer.parse[KelaOppija](body)
 
           response.opiskeluoikeudet.headOption.flatMap(_.versionumero) should equal(Some(1))
-          AuditLogTester.verifyAuditLogMessage(Map("operation" -> "OPISKELUOIKEUS_KATSOMINEN", "target" -> Map("oppijaHenkiloOid" -> KoskiSpecificMockOppijat.amis.oid)))
+          AuditLogTester.verifyLastAuditLogMessage(Map("operation" -> "OPISKELUOIKEUS_KATSOMINEN", "target" -> Map("oppijaHenkiloOid" -> KoskiSpecificMockOppijat.amis.oid)))
         }
       }
 
@@ -705,7 +705,7 @@ class KelaSpec
           val history = JsonSerializer.parse[List[OpiskeluoikeusHistoryPatch]](body)
 
           history.length should equal(2)
-          AuditLogTester.verifyAuditLogMessage(Map("operation" -> "MUUTOSHISTORIA_KATSOMINEN", "target" -> Map("opiskeluoikeusOid" -> historiaFixture.opiskeluoikeus.oid.get)))
+          AuditLogTester.verifyLastAuditLogMessage(Map("operation" -> "MUUTOSHISTORIA_KATSOMINEN", "target" -> Map("opiskeluoikeusOid" -> historiaFixture.opiskeluoikeus.oid.get)))
         }
       }
 
@@ -717,7 +717,7 @@ class KelaSpec
           val response = JsonSerializer.parse[KelaOppija](body)
 
           response.opiskeluoikeudet.headOption.flatMap(_.versionumero) should equal(Some(1))
-          AuditLogTester.verifyAuditLogMessage(Map("operation" -> "OPISKELUOIKEUS_KATSOMINEN", "target" -> Map("oppijaHenkiloOid" -> KoskiSpecificMockOppijat.amis.oid)))
+          AuditLogTester.verifyLastAuditLogMessage(Map("operation" -> "OPISKELUOIKEUS_KATSOMINEN", "target" -> Map("oppijaHenkiloOid" -> KoskiSpecificMockOppijat.amis.oid)))
         }
       }
     }

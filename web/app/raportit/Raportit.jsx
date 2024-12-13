@@ -212,6 +212,30 @@ const kaikkiRaportitKategorioittain = [
     ]
   },
   {
+    id: 'vst',
+    tab: 'raporttikategoria-tab-vst',
+    heading: 'raporttikategoria-heading-vst-jotpa',
+    raportit: [
+      {
+        id: 'jatkuvanoppimisenvapaansivistystyönraportti',
+        name: 'raportti-tab-vstjotpa',
+        component: VSTJotpa
+      }
+    ]
+  },
+  {
+    id: 'muks',
+    tab: 'raporttikategoria-tab-muks',
+    heading: 'raporttikategoria-heading-muks',
+    raportit: [
+      {
+        id: 'muunkuinsäännellynkoulutuksenraportti',
+        name: 'raporttikategoria-heading-muks',
+        component: MUKS
+      }
+    ]
+  },
+  {
     id: 'muut',
     tab: 'raporttikategoria-tab-muut',
     heading: 'raportti-tab-paallekkaisetopiskeluoikeudet',
@@ -649,7 +673,9 @@ function PerusopetuksenVuosiluokka({ stateP }) {
   const dateInputHelpText = (
     <Text name="PerusopetuksenVuosiluokka-date-input-help" />
   )
-  const kotikuntaPvmInputHelp = <Text name="PerusopetuksenVuosiluokka-kotikunta-date-input-help" />
+  const kotikuntaPvmInputHelp = (
+    <Text name="PerusopetuksenVuosiluokka-kotikunta-date-input-help" />
+  )
   const exampleText = <Paragraphs name="PerusopetuksenVuosiluokka-example" />
 
   return (
@@ -671,7 +697,9 @@ function Lukioraportti({ stateP }) {
   const titleText = <Text name="Lukioraportti-title" />
   const shortDescriptionText = <Text name="Lukioraportti-short-description" />
   const exampleText = <Paragraphs name="Lukioraportti-example" />
-  const kotikuntaPvmInputHelp = <Text name="Lukioraportti-kotikunta-date-input-help" />
+  const kotikuntaPvmInputHelp = (
+    <Text name="Lukioraportti-kotikunta-date-input-help" />
+  )
 
   return (
     <AikajaksoRaporttiAikarajauksella
@@ -692,7 +720,9 @@ function Lukio2019raportti({ stateP }) {
   const titleText = <Text name="Lukioraportti-title" />
   const shortDescriptionText = <Text name="Lukioraportti-short-description" />
   const exampleText = <Paragraphs name="Lukioraportti-example" />
-  const kotikuntaPvmInputHelp = <Text name="Lukioraportti-kotikunta-date-input-help" />
+  const kotikuntaPvmInputHelp = (
+    <Text name="Lukioraportti-kotikunta-date-input-help" />
+  )
 
   return (
     <AikajaksoRaporttiAikarajauksella
@@ -807,7 +837,9 @@ function EsiopetusRaportti({ stateP }) {
     <Text name="esiopetusraportti-short-description" />
   )
   const dateInputHelpText = <Text name="esiopetusraportti-date-input-help" />
-  const kotikuntaPvmInputHelp = <Text name="esiopetusraportti-kotikunta-date-input-help" />
+  const kotikuntaPvmInputHelp = (
+    <Text name="esiopetusraportti-kotikunta-date-input-help" />
+  )
   const exampleText = <Paragraphs name="esiopetusraportti-example" />
 
   return (
@@ -1078,6 +1110,42 @@ function IBSuoritustiedot({ stateP }) {
       osasuoritustenAikarajausKylläKuvaus={
         'ib-raportti-osasuoritusten-aikarajaus-kyllä'
       }
+    />
+  )
+}
+
+function VSTJotpa({ stateP }) {
+  const titleText = <Text name="VstJotpaRaportti-title" />
+  const shortDescriptionText = (
+    <Text name="VstJotpaRaportti-short-description" />
+  )
+  const exampleText = <Paragraphs name="VstJotpaRaportti-example" />
+
+  return (
+    <AikajaksoRaportti
+      stateP={stateP}
+      apiEndpoint={'/vstjotpa'}
+      title={titleText}
+      shortDescription={shortDescriptionText}
+      example={exampleText}
+      lang={lang}
+    />
+  )
+}
+
+function MUKS({ stateP }) {
+  const titleText = <Text name="MuksRaportti-title" />
+  const shortDescriptionText = <Text name="MuksRaportti-short-description" />
+  const exampleText = <Paragraphs name="MuksRaportti-example" />
+
+  return (
+    <AikajaksoRaportti
+      stateP={stateP}
+      apiEndpoint={'/muks'}
+      title={titleText}
+      shortDescription={shortDescriptionText}
+      example={exampleText}
+      lang={lang}
     />
   )
 }

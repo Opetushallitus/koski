@@ -2,36 +2,14 @@ import React from 'baret'
 import {
   formatFinnishDate,
   ISO2FinnishDate,
+  ISO2FinnishDateTime,
   parseISODate
 } from '../../date/date'
 import Text from '../../i18n/Text'
+import { t } from '../../i18n/i18n'
+import { useKoodisto } from '../../appstate/koodisto'
 
-export class Kayttoluvat extends React.Component {
-  render() {
-    const { kayttoluvat, removeCallback } = this.props
-    const hasKayttolupia = kayttoluvat.length > 0
-
-    return (
-      <div className="kayttoluvat-container">
-        <ul className="kayttolupa-list">
-          {hasKayttolupia ? (
-            kayttoluvat.map((lupa) => (
-              <Kayttolupa
-                key={lupa.asiakasId}
-                kayttolupa={lupa}
-                removeCallback={removeCallback}
-              />
-            ))
-          ) : (
-            <NoMyDataPermissions />
-          )}
-        </ul>
-      </div>
-    )
-  }
-}
-
-const Kayttolupa = ({ kayttolupa, removeCallback }) => {
+export const Kayttolupa = ({ kayttolupa, removeCallback }) => {
   const { asiakasName, asiakasId, expirationDate, timestamp, purpose } =
     kayttolupa
   const expDateInFinnish = formatFinnishDate(parseISODate(expirationDate))
@@ -73,7 +51,81 @@ const Kayttolupa = ({ kayttolupa, removeCallback }) => {
         <div className="peru-lupa">
           <button
             className="inline-link-button"
-            onClick={() => removeCallback(asiakasId)}
+            onClick={() =>
+              removeCallback({
+                id: asiakasId,
+                name: asiakasName,
+                oauth2: false
+              })
+            }
+          >
+            <Text name="Peru lupa" />
+          </button>
+        </div>
+      </div>
+    </li>
+  )
+}
+
+export const OAuth2Käyttölupa = ({ kayttolupa, removeCallback }) => {
+  const { creationDate, expirationDate, scope } = kayttolupa
+  const clientName = t(kayttolupa.clientName)
+  const expDateInFinnish = ISO2FinnishDateTime(expirationDate)
+  const timestampInFinnish = ISO2FinnishDateTime(creationDate)
+
+  const scopesKoodisto = useKoodisto('omadataoauth2scope')
+
+  const localizedScope = (koodi) => {
+    if (scopesKoodisto === null) {
+      return koodi
+    }
+    const koodistoRecord = scopesKoodisto.find(
+      (k) => k.koodiviite.koodiarvo === koodi.toLowerCase()
+    )
+    return koodistoRecord ? t(koodistoRecord.koodiviite.nimi) : koodi
+  }
+
+  const scopes = scope.split(' ')
+
+  return (
+    <li className="kayttolupa-container" tabIndex={0}>
+      <h3 className="asiakas">{clientName}</h3>
+
+      <div className="bottom-items">
+        <div className="container">
+          <div className="voimassaolo">
+            <div className="teksti">
+              <Text name="Lupa voimassa" />
+            </div>
+            <div className="aikaleima">
+              <span className="mobile-whitespace">{': '}</span>
+              <span> {`${timestampInFinnish} - ${expDateInFinnish}`}</span>
+            </div>
+          </div>
+
+          <div className="oikeudet">
+            <span className="list-label">
+              <Text name="Palveluntarjoaja näkee seuraavat opintoihisi liittyvät tiedot" />
+              {':'}
+            </span>
+            <ul>
+              {scopes.map((s) => (
+                <li key={s}>{localizedScope(s)}</li>
+              ))}
+            </ul>
+          </div>
+        </div>
+
+        <div className="peru-lupa">
+          <button
+            className="inline-link-button"
+            onClick={() => {
+              removeCallback({
+                id: kayttolupa.codeSHA256,
+                name: clientName,
+                oauth2: true
+              })
+            }}
           >
             <Text name="Peru lupa" />
           </button>
@@ -95,7 +147,7 @@ const Kayttotarkoitus = ({ purpose }) => (
   </div>
 )
 
-const NoMyDataPermissions = () => (
+export const NoMyDataPermissions = () => (
   <li className="no-permission">
     <Text
       name={

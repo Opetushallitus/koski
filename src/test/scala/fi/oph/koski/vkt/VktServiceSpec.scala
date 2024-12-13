@@ -58,7 +58,7 @@ class VktServiceSpec
   "Access control toimii oikein" in {
     post("/api/vkt/oid", JsonSerializer.writeWithRoot(OidRequest(oid = KoskiSpecificMockOppijat.dippainssi.oid)), headers = authHeaders(vktKäyttäjä) ++ jsonContent){
       verifyResponseStatusOk()
-      AuditLogTester.verifyAuditLogMessage(Map("operation" -> "VKT_OPISKELUOIKEUS_HAKU"))
+      AuditLogTester.verifyLastAuditLogMessage(Map("operation" -> "VKT_OPISKELUOIKEUS_HAKU"))
     }
 
     post("/api/vkt/oid", JsonSerializer.writeWithRoot(OidRequest(oid = KoskiSpecificMockOppijat.dippainssi.oid)), headers = authHeaders(hakemuspalveluKäyttäjä) ++ jsonContent){

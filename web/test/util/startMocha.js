@@ -4,8 +4,6 @@ if (window.callPhantom) {
   console.log('PhantomJS mode')
 }
 
-// For fi.oph.koski.browserstack.BrowserstackMochaTest
-runner.errors = []
 function mapError(e) {
   var logEntry = { title: e.title }
   if (e.err) logEntry.message = e.err.message

@@ -191,6 +191,8 @@ export const shouldShowProperty = (context) => (property) => {
   if (property.deprecated && modelEmpty(property.model)) return false
   if (property.onlyWhen && !checkOnlyWhen(property.owner, property.onlyWhen))
     return false
+  if (property.hiddenWhen && checkOnlyWhen(property.owner, property.hiddenWhen))
+    return false
   return true
 }
 

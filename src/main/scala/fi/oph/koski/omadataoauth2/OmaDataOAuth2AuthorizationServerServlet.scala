@@ -3,45 +3,52 @@ package fi.oph.koski.omadataoauth2
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.koskiuser.RequiresOmaDataOAuth2
 import fi.oph.koski.log.Logging
+import fi.oph.koski.omadataoauth2.OmaDataOAuth2Security.challengeFromVerifier
 import fi.oph.koski.servlet.{KoskiSpecificApiServlet, NoCache}
 import org.scalatra.ContentEncodingSupport
 import org.scalatra.forms._
 import org.scalatra.i18n.I18nSupport
 
-
+import java.time.Instant
+import java.time.temporal.ChronoUnit
 
 class OmaDataOAuth2AuthorizationServerServlet(implicit val application: KoskiApplication)
   extends KoskiSpecificApiServlet
     with Logging with ContentEncodingSupport with NoCache with FormSupport with I18nSupport with RequiresOmaDataOAuth2 with OmaDataOAuth2Support {
 
   // in: auth code yms. OAuth2 headerit
-  // out: access token, jos käyttäjällä oikeudet kyseiseen authorization codeen.
-  //      TAI OAuth2-protokollan mukainen virheilmoitus (
-  //      TODO: TOR-2210 joka luotetaan nginx:n välittävän sellaisenaan, jos pyyntö on tänne asti tullut?)
-  // TODO: TOR-2210 Lisävarmistus, että hyväksytään vain "application/x-www-form-urlencoded"-tyylinen input?
+  // out: access token, jos käyttäjällä oikeudet kyseiseen authorization codeen
+  //        TAI OAuth2-protokollan mukainen virheilmoitus (
   post("/") {
     val result: AccessTokenResponse = validate(AccessTokenRequest.formAccessTokenRequest)(
       (errors: Seq[(String, String)]) => {
-        val validationError = ValidationError(ValidationErrorType.invalid_request, errors.map { case (a, b) => s"${a}: ${b}" }.mkString(";"))
+        val validationError = OmaDataOAuth2Error(OmaDataOAuth2ErrorType.invalid_request, errors.map { case (a, b) => s"${a}: ${b}" }.mkString(";"))
 
         logger.warn(validationError.getLoggedErrorMessage)
-        AccessTokenErrorResponse(validationError)
+        validationError.getAccessTokenErrorResponse
       },
       (accessTokenRequest: AccessTokenRequest) => {
         validateAccessTokenRequest(accessTokenRequest) match {
           case Left(validationError) =>
 
             logger.warn(validationError.getLoggedErrorMessage)
-            AccessTokenErrorResponse(validationError)
+            validationError.getAccessTokenErrorResponse
           case _ =>
-            // TODO: TOR-2210 Oikea toteutus ja yksikkötestit
-            // Bearer-token spec: https://www.rfc-editor.org/rfc/rfc6750
-
-            AccessTokenSuccessResponse(
-              access_token = "dummy-access-token",
-              token_type = "Bearer",
-              expires_in = 600
-            )
+            application.omaDataOAuth2Service.createAccessTokenForCode(
+              code = accessTokenRequest.code,
+              expectedClientId = accessTokenRequest.client_id,
+              expectedCodeChallenge = challengeFromVerifier(accessTokenRequest.code_verifier),
+              expectedRedirectUri = accessTokenRequest.redirect_uri,
+              koskiSession = koskiSession,
+              allowedScopes = koskiSession.omaDataOAuth2Scopes
+            ) match {
+              case Left(error) => error.getAccessTokenErrorResponse
+              case Right(accessTokenInfo: AccessTokenInfo) => AccessTokenSuccessResponse(
+                access_token = accessTokenInfo.accessToken,
+                token_type = "Bearer",
+                expires_in = Instant.now().until(accessTokenInfo.expirationTime, ChronoUnit.SECONDS)
+              )
+            }
         }
       }
     )
@@ -50,33 +57,33 @@ class OmaDataOAuth2AuthorizationServerServlet(implicit val application: KoskiApp
     renderObject(result)
   }
 
-  private def validateAccessTokenRequest(request: AccessTokenRequest): Either[ValidationError, Unit] = {
+  private def validateAccessTokenRequest(request: AccessTokenRequest): Either[OmaDataOAuth2Error, Unit] = {
     for {
       _ <- validateClientId(request.client_id)
     } yield ()
   }
 
-  private def validateClientId(clientIdParam: String): Either[ValidationError, String] = {
+  private def validateClientId(clientIdParam: String): Either[OmaDataOAuth2Error, String] = {
     for {
-      clientId <- validateClientIdRekisteröity(clientIdParam)
+      clientId <- validateClientIdRekisteröity(clientIdParam, OmaDataOAuth2ErrorType.invalid_client)
       _ <- validateClientIdSamaKuinKäyttäjätunnus(clientId)
     } yield clientId
   }
 
-  private def validateClientIdSamaKuinKäyttäjätunnus(clientId: String): Either[ValidationError, String] = {
+  private def validateClientIdSamaKuinKäyttäjätunnus(clientId: String): Either[OmaDataOAuth2Error, String] = {
     if (koskiSession.user.username == clientId) {
       Right(clientId)
     } else {
-      Left(ValidationError(ValidationErrorType.invalid_client_data, s"Annettu client_id ${clientId} on eri kuin mTLS-käyttäjä ${koskiSession.user.username}"))
+      Left(OmaDataOAuth2Error(OmaDataOAuth2ErrorType.invalid_client, s"Annettu client_id ${clientId} on eri kuin mTLS-käyttäjä ${koskiSession.user.username}"))
     }
   }
 }
 object AccessTokenRequest {
   val formAccessTokenRequest: MappingValueType[AccessTokenRequest] = mapping(
     "grant_type" -> label("grant_type", text(required, oneOf(Seq("authorization_code")))),
-    "code" -> label("code", text(required, oneOf(Seq("foobar")))), // TODO: TOR-2210 Oikea koodi-patternin validointi?
+    "code" -> label("code", text(required)),
     "code_verifier" -> label("code_verifier", text(required)),
-    "redirect_uri" -> label("redirect_uri", optional(text())), // TODO: TOR-2210 Vertaa, että tämän sisältö on täsmälleen sama kuin alkuperäisessä pyynnössä, jos siellä on redirect_uri annettu
+    "redirect_uri" -> label("redirect_uri", optional(text())),
     "client_id" -> label("client_id", text(required))
   )(AccessTokenRequest.apply)
 }
@@ -101,16 +108,6 @@ case class AccessTokenSuccessResponse(
   // scope: Option[String] // TOD: TOR-2210: jos aletaan joskus tukea scopen vaihtoa tässä vaiheessa
 ) extends AccessTokenResponse {
   val httpStatus = 200
-}
-
-object AccessTokenErrorResponse {
-  def apply(validationError: ValidationError): AccessTokenErrorResponse = {
-    AccessTokenErrorResponse(
-      "invalid_client",
-      Some(validationError.getLoggedErrorMessage),
-      None
-    )
-  }
 }
 
 case class AccessTokenErrorResponse(
