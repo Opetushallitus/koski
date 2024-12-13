@@ -5,6 +5,7 @@ import fi.oph.koski.henkilo.LaajatOppijaHenkilöTiedot
 import fi.oph.koski.schema
 import fi.oph.koski.schema.{Opiskeluoikeus, TäydellisetHenkilötiedot}
 import fi.oph.koski.suoritetuttutkinnot.SuoritetutTutkinnotOpiskeluoikeus
+import fi.oph.scalaschema.annotation.Title
 import fi.oph.scalaschema.{ClassSchema, SchemaToJson}
 import org.json4s.JValue
 
@@ -27,6 +28,7 @@ object OmaDataOAuth2SuoritetutTutkinnot {
     SchemaToJson.toJsonSchema(schema.KoskiSchema.createSchema(classOf[OmaDataOAuth2SuoritetutTutkinnot]).asInstanceOf[ClassSchema])
 }
 
+@Title("Omadata OAuth2 suoritetut tutkinnot")
 case class OmaDataOAuth2SuoritetutTutkinnot(
   henkilö: OmaDataOAuth2Henkilötiedot,
   opiskeluoikeudet: List[SuoritetutTutkinnotOpiskeluoikeus],
@@ -38,6 +40,7 @@ object OmaDataOAuth2AktiivisetJaPäättyneetOpiskeluoikeudet {
     SchemaToJson.toJsonSchema(schema.KoskiSchema.createSchema(classOf[OmaDataOAuth2AktiivisetJaPäättyneetOpiskeluoikeudet]).asInstanceOf[ClassSchema])
 }
 
+@Title("Omadata OAuth2 aktiiviset ja päättyneet opiskeluoikeudet")
 case class OmaDataOAuth2AktiivisetJaPäättyneetOpiskeluoikeudet(
   henkilö: OmaDataOAuth2Henkilötiedot,
   opiskeluoikeudet: List[AktiivisetJaPäättyneetOpinnotOpiskeluoikeus],
