@@ -66,6 +66,7 @@ class AktiivisetJaPäättyneetOpinnotService(application: KoskiApplication) exte
             .filter(josYOTutkintoNiinVahvistettu)
             .filter(josEBTutkintoNiinVahvistettu)
             .filter(vähintäänS5josESHSecondaryLower)
+            .map(lisääViitekehystiedot)
         )
       }.filter(_.suoritukset.nonEmpty)
   }
@@ -114,5 +115,9 @@ class AktiivisetJaPäättyneetOpinnotService(application: KoskiApplication) exte
         if s.tyyppi.koodiarvo == "europeanschoolofhelsinkivuosiluokkasecondarylower" => s.koulutusmoduuli.tunniste.koodiarvo == "S5"
       case _ => true
     }
+  }
+
+  private def lisääViitekehystiedot(s: Suoritus): Suoritus = {
+    s.withKoulutusmoduuli(s.koulutusmoduuli.withViitekehykset(application.koodistoViitePalvelu))
   }
 }

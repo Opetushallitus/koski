@@ -15,7 +15,7 @@ import fi.oph.koski.{DatabaseTestMethods, KoskiApplicationForTests, KoskiHttpSpe
 import fi.oph.koski.ytr.MockYtrClient
 import fi.oph.koski.localization.LocalizedStringImplicits._
 import fi.oph.koski.organisaatio.MockOrganisaatiot.omnia
-import fi.oph.koski.schema.AmmatillinenOpiskeluoikeus
+import fi.oph.koski.schema.{AmmatillinenOpiskeluoikeus, Koodistokoodiviite}
 import fi.oph.koski.virta.MockVirtaClient
 import org.scalatest.{BeforeAndAfterAll, BeforeAndAfterEach}
 import org.scalatest.freespec.AnyFreeSpec
@@ -340,11 +340,12 @@ class SuoritetutTutkinnotServiceSpec
         val actualSuoritus = actualOo.suoritukset.head
 
         verifyOpiskeluoikeusJaSuoritus(actualOo, actualSuoritus, expectedOoData, expectedSuoritusData)
+
+        actualSuoritus.koulutusmoduuli.eurooppalainenTutkintojenViitekehysEQF should equal(Some(Koodistokoodiviite("7", "eqf")))
+        actualSuoritus.koulutusmoduuli.kansallinenTutkintojenViitekehysNQF should equal(Some(Koodistokoodiviite("7", "nqf")))
       })
     }
   }
-
-
 
   "Linkitetyt oppijat" - {
     "Masterin ja slaven tutkinnot palautetaan kummankin oideilla" in {

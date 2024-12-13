@@ -40,5 +40,7 @@ case class AktiivisetJaPäättyneetOpinnotEBTutkinnonPäätasonSuoritus(
 case class AktiivisetJaPäättyneetOpinnotEBTutkinnonKoulutusmoduuli(
   tunniste: AktiivisetJaPäättyneetOpinnotKoodistokoodiviite,
   curriculum: AktiivisetJaPäättyneetOpinnotKoodistokoodiviite,
-  koulutustyyppi: Option[AktiivisetJaPäättyneetOpinnotKoodistokoodiviite]
-) extends SuorituksenKooditettuKoulutusmoduuli
+  koulutustyyppi: Option[AktiivisetJaPäättyneetOpinnotKoodistokoodiviite],
+  eurooppalainenTutkintojenViitekehysEQF: Option[schema.Koodistokoodiviite],
+  kansallinenTutkintojenViitekehysNQF: Option[schema.Koodistokoodiviite]
+) extends ViitekehyksellisenTutkintoSuorituksenKoulutusmoduuli

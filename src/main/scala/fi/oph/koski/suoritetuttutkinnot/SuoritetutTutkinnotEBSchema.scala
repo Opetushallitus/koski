@@ -34,5 +34,7 @@ case class SuoritetutTutkinnotEBTutkinnonSuoritus(
 
 case class SuoritetutTutkinnotEBTutkinto(
   tunniste: SuoritetutTutkinnotKoodistokoodiviite,
-  curriculum: SuoritetutTutkinnotKoodistokoodiviite
+  curriculum: SuoritetutTutkinnotKoodistokoodiviite,
+  eurooppalainenTutkintojenViitekehysEQF: Option[schema.Koodistokoodiviite],
+  kansallinenTutkintojenViitekehysNQF: Option[schema.Koodistokoodiviite]
 ) extends SuorituksenKoulutusmoduuli

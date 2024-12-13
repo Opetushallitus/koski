@@ -1,7 +1,8 @@
 package fi.oph.koski.suoritusjako.aktiivisetjapaattyneetopinnot
 
-import fi.oph.koski.aktiivisetjapaattyneetopinnot.{AktiivisetJaPäättyneetOpinnotAikuistenPerusopetuksenOpiskeluoikeus, AktiivisetJaPäättyneetOpinnotAmmatillinenOpiskeluoikeus, AktiivisetJaPäättyneetOpinnotAmmatillinenPäätasonSuoritus, AktiivisetJaPäättyneetOpinnotDIAOpiskeluoikeus, AktiivisetJaPäättyneetOpinnotEBTutkinnonOpiskeluoikeus, AktiivisetJaPäättyneetOpinnotEBTutkinnonPäätasonSuoritus, AktiivisetJaPäättyneetOpinnotEuropeanSchoolOfHelsinkiOpiskeluoikeus, AktiivisetJaPäättyneetOpinnotEuropeanSchoolOfHelsinkiPäätasonSuoritus, AktiivisetJaPäättyneetOpinnotIBOpiskeluoikeus, AktiivisetJaPäättyneetOpinnotInternationalSchoolOpiskeluoikeus, AktiivisetJaPäättyneetOpinnotInternationalSchoolVuosiluokanSuoritus, AktiivisetJaPäättyneetOpinnotKorkeakouluSuoritus, AktiivisetJaPäättyneetOpinnotKorkeakoulunOpintojaksonSuoritus, AktiivisetJaPäättyneetOpinnotKorkeakoulunOpiskeluoikeus, AktiivisetJaPäättyneetOpinnotKorkeakoulututkinnonSuoritus, AktiivisetJaPäättyneetOpinnotKoskeenTallennettavaOpiskeluoikeus, AktiivisetJaPäättyneetOpinnotLukionOpiskeluoikeus, AktiivisetJaPäättyneetOpinnotMuuKorkeakoulunSuoritus, AktiivisetJaPäättyneetOpinnotMuunAmmatillisenKoulutuksenSuoritus, AktiivisetJaPäättyneetOpinnotMuunKuinSäännellynKoulutuksenOpiskeluoikeus, AktiivisetJaPäättyneetOpinnotMuunKuinSäännellynKoulutuksenPäätasonSuoritus, AktiivisetJaPäättyneetOpinnotOpiskeluoikeus, AktiivisetJaPäättyneetOpinnotOsaamisenHankkimistavallinen, AktiivisetJaPäättyneetOpinnotPäätasonSuoritus, AktiivisetJaPäättyneetOpinnotTutkintokoulutukseenValmentavanOpiskeluoikeus, AktiivisetJaPäättyneetOpinnotVapaanSivistystyönOpiskeluoikeus, AktiivisetJaPäättyneetOpinnotVapaanSivistystyönPäätasonSuoritus, AktiivisetJaPäättyneetOpinnotYlioppilastutkinnonOpiskeluoikeus, AktiivisetJaPäättyneetOpinnotYlioppilastutkinnonPäätasonSuoritus, Suoritus}
-import fi.oph.koski.schema
+import fi.oph.koski.aktiivisetjapaattyneetopinnot.{AktiivisetJaPäättyneetOpinnotAikuistenPerusopetuksenOpiskeluoikeus, AktiivisetJaPäättyneetOpinnotAmmatillinenOpiskeluoikeus, AktiivisetJaPäättyneetOpinnotAmmatillinenPäätasonSuoritus, AktiivisetJaPäättyneetOpinnotDIAOpiskeluoikeus, AktiivisetJaPäättyneetOpinnotEBTutkinnonOpiskeluoikeus, AktiivisetJaPäättyneetOpinnotEBTutkinnonPäätasonSuoritus, AktiivisetJaPäättyneetOpinnotEuropeanSchoolOfHelsinkiOpiskeluoikeus, AktiivisetJaPäättyneetOpinnotEuropeanSchoolOfHelsinkiPäätasonSuoritus, AktiivisetJaPäättyneetOpinnotIBOpiskeluoikeus, AktiivisetJaPäättyneetOpinnotInternationalSchoolOpiskeluoikeus, AktiivisetJaPäättyneetOpinnotInternationalSchoolVuosiluokanSuoritus, AktiivisetJaPäättyneetOpinnotKorkeakouluSuoritus, AktiivisetJaPäättyneetOpinnotKorkeakoulunOpintojaksonSuoritus, AktiivisetJaPäättyneetOpinnotKorkeakoulunOpiskeluoikeus, AktiivisetJaPäättyneetOpinnotKorkeakoulututkinnonSuoritus, AktiivisetJaPäättyneetOpinnotKoskeenTallennettavaOpiskeluoikeus, AktiivisetJaPäättyneetOpinnotLukionOpiskeluoikeus, AktiivisetJaPäättyneetOpinnotMuuKorkeakoulunSuoritus, AktiivisetJaPäättyneetOpinnotMuunAmmatillisenKoulutuksenSuoritus, AktiivisetJaPäättyneetOpinnotMuunKuinSäännellynKoulutuksenOpiskeluoikeus, AktiivisetJaPäättyneetOpinnotMuunKuinSäännellynKoulutuksenPäätasonSuoritus, AktiivisetJaPäättyneetOpinnotOpiskeluoikeus, AktiivisetJaPäättyneetOpinnotOsaamisenHankkimistavallinen, AktiivisetJaPäättyneetOpinnotPäätasonSuoritus, AktiivisetJaPäättyneetOpinnotTutkintokoulutukseenValmentavanOpiskeluoikeus, AktiivisetJaPäättyneetOpinnotVapaanSivistystyönOpiskeluoikeus, AktiivisetJaPäättyneetOpinnotVapaanSivistystyönPäätasonSuoritus, AktiivisetJaPäättyneetOpinnotYlioppilastutkinnonOpiskeluoikeus, AktiivisetJaPäättyneetOpinnotYlioppilastutkinnonPäätasonSuoritus, Suoritus, ViitekehyksellisenTutkintoSuorituksenKoulutusmoduuli}
+import fi.oph.koski.schema.KoodistostaLöytyväKoulutusmoduuli
+import fi.oph.koski.{KoskiApplicationForTests, schema}
 import org.scalatest.matchers.should.Matchers
 
 trait AktiivisetJaPäättyneetOpinnotVerifiers extends Matchers {
@@ -156,6 +157,9 @@ trait AktiivisetJaPäättyneetOpinnotVerifiers extends Matchers {
 
     actualSuoritus.tyyppi.koodiarvo should equal(expectedSuoritusData.tyyppi.koodiarvo)
     actualSuoritus.koulutusmoduuli.tunniste.koodiarvo should equal(expectedSuoritusData.koulutusmoduuli.tunniste.koodiarvo)
+
+    actualSuoritus.koulutusmoduuli.eurooppalainenTutkintojenViitekehysEQF should equal(haeSisältyväKoodi("eqf", expectedSuoritusData.koulutusmoduuli.tunniste))
+    actualSuoritus.koulutusmoduuli.kansallinenTutkintojenViitekehysNQF should equal(haeSisältyväKoodi("nqf", expectedSuoritusData.koulutusmoduuli.tunniste))
   }
 
   private def verifyISH(
@@ -182,6 +186,9 @@ trait AktiivisetJaPäättyneetOpinnotVerifiers extends Matchers {
     actualSuoritus.koulutusmoduuli.tunniste.koodiarvo should equal(expectedSuoritusData.koulutusmoduuli.tunniste.koodiarvo)
     actualSuoritus.koulutusmoduuli.koulutustyyppi.map(_.koodiarvo) should equal(expectedSuoritusData.koulutusmoduuli.koulutustyyppi.map(_.koodiarvo))
     actualSuoritus.koulutusmoduuli.opintokokonaisuus.koodiarvo should equal(expectedSuoritusData.koulutusmoduuli.opintokokonaisuus.koodiarvo)
+
+    actualSuoritus.koulutusmoduuli.eurooppalainenTutkintojenViitekehysEQF should equal(haeSisältyväKoodi("eqf", expectedSuoritusData.koulutusmoduuli.tunniste))
+    actualSuoritus.koulutusmoduuli.kansallinenTutkintojenViitekehysNQF should equal(haeSisältyväKoodi("nqf", expectedSuoritusData.koulutusmoduuli.tunniste))
   }
 
   private def verifyVST(
@@ -194,6 +201,13 @@ trait AktiivisetJaPäättyneetOpinnotVerifiers extends Matchers {
 
     actualSuoritus.tyyppi.koodiarvo should equal(expectedSuoritusData.tyyppi.koodiarvo)
     actualSuoritus.koulutusmoduuli.tunniste.koodiarvo should equal(expectedSuoritusData.koulutusmoduuli.tunniste.koodiarvo)
+
+    expectedSuoritusData.koulutusmoduuli match {
+      case k: KoodistostaLöytyväKoulutusmoduuli =>
+        actualSuoritus.koulutusmoduuli.asInstanceOf[ViitekehyksellisenTutkintoSuorituksenKoulutusmoduuli].eurooppalainenTutkintojenViitekehysEQF should equal(haeSisältyväKoodi("eqf", k.tunniste))
+        actualSuoritus.koulutusmoduuli.asInstanceOf[ViitekehyksellisenTutkintoSuorituksenKoulutusmoduuli].kansallinenTutkintojenViitekehysNQF should equal(haeSisältyväKoodi("nqf", k.tunniste))
+      case _ =>
+    }
   }
 
   private def verifyYO(
@@ -206,6 +220,10 @@ trait AktiivisetJaPäättyneetOpinnotVerifiers extends Matchers {
 
     actualSuoritus.tyyppi.koodiarvo should equal(expectedSuoritusData.tyyppi.koodiarvo)
     actualSuoritus.koulutusmoduuli.tunniste.koodiarvo should equal(expectedSuoritusData.koulutusmoduuli.tunniste.koodiarvo)
+
+    actualSuoritus.koulutusmoduuli.eurooppalainenTutkintojenViitekehysEQF should equal(haeSisältyväKoodi("eqf", expectedSuoritusData.koulutusmoduuli.tunniste))
+    actualSuoritus.koulutusmoduuli.kansallinenTutkintojenViitekehysNQF should equal(haeSisältyväKoodi("nqf", expectedSuoritusData.koulutusmoduuli.tunniste))
+
     actualSuoritus.vahvistus.map(_.päivä) should equal(expectedSuoritusData.vahvistus.map(_.päivä))
     actualSuoritus.vahvistus.isDefined should be(true)
   }
@@ -242,6 +260,9 @@ trait AktiivisetJaPäättyneetOpinnotVerifiers extends Matchers {
     verifyPäätasonSuoritus(actualSuoritus, expectedSuoritusData)
     actualSuoritus.koulutusmoduuli.koulutustyyppi.map(_.koodiarvo) should equal(expectedSuoritusData.koulutusmoduuli.koulutustyyppi.map(_.koodiarvo))
     actualSuoritus.koulutusmoduuli.perusteenDiaarinumero should equal(expectedSuoritusData.koulutusmoduuli.perusteenDiaarinumero)
+
+    actualSuoritus.koulutusmoduuli.eurooppalainenTutkintojenViitekehysEQF should equal(haeSisältyväKoodi("eqf", expectedSuoritusData.koulutusmoduuli.tunniste))
+    actualSuoritus.koulutusmoduuli.kansallinenTutkintojenViitekehysNQF should equal(haeSisältyväKoodi("nqf", expectedSuoritusData.koulutusmoduuli.tunniste))
   }
 
   private def verifyAmmatillinen(
@@ -278,6 +299,9 @@ trait AktiivisetJaPäättyneetOpinnotVerifiers extends Matchers {
   ): Unit = {
     actualSuoritus.koulutusmoduuli.tunniste.koodiarvo should be(expectedSuoritusData.koulutusmoduuli.tunniste.koodiarvo)
 
+    actualSuoritus.koulutusmoduuli.asInstanceOf[ViitekehyksellisenTutkintoSuorituksenKoulutusmoduuli].eurooppalainenTutkintojenViitekehysEQF should equal(haeSisältyväKoodi("eqf", expectedSuoritusData.koulutusmoduuli.tunniste))
+    actualSuoritus.koulutusmoduuli.asInstanceOf[ViitekehyksellisenTutkintoSuorituksenKoulutusmoduuli].kansallinenTutkintojenViitekehysNQF should equal(haeSisältyväKoodi("nqf", expectedSuoritusData.koulutusmoduuli.tunniste))
+
     verifyOsaamisenHankkimistavallinen(actualSuoritus, expectedSuoritusData)
     verifyKoulutussopimuksellinen(actualSuoritus, expectedSuoritusData)
   }
@@ -287,6 +311,9 @@ trait AktiivisetJaPäättyneetOpinnotVerifiers extends Matchers {
     expectedSuoritusData: schema.AmmatillisenTutkinnonOsittainenSuoritus
   ): Unit = {
     actualSuoritus.koulutusmoduuli.tunniste.koodiarvo should be(expectedSuoritusData.koulutusmoduuli.tunniste.koodiarvo)
+
+    actualSuoritus.koulutusmoduuli.asInstanceOf[ViitekehyksellisenTutkintoSuorituksenKoulutusmoduuli].eurooppalainenTutkintojenViitekehysEQF should equal(haeSisältyväKoodi("eqf", expectedSuoritusData.koulutusmoduuli.tunniste))
+    actualSuoritus.koulutusmoduuli.asInstanceOf[ViitekehyksellisenTutkintoSuorituksenKoulutusmoduuli].kansallinenTutkintojenViitekehysNQF should equal(haeSisältyväKoodi("nqf", expectedSuoritusData.koulutusmoduuli.tunniste))
 
     verifyOsaamisenHankkimistavallinen(actualSuoritus, expectedSuoritusData)
     verifyKoulutussopimuksellinen(actualSuoritus, expectedSuoritusData)
@@ -307,6 +334,14 @@ trait AktiivisetJaPäättyneetOpinnotVerifiers extends Matchers {
     expectedSuoritusData: schema.MuunAmmatillisenKoulutuksenSuoritus
   ): Unit = {
     actualSuoritus.koulutusmoduuli.tunniste.koodiarvo should be(expectedSuoritusData.koulutusmoduuli.tunniste.koodiarvo)
+
+    (expectedSuoritusData.koulutusmoduuli, actualSuoritus.koulutusmoduuli) match {
+      case (k: KoodistostaLöytyväKoulutusmoduuli, ak: ViitekehyksellisenTutkintoSuorituksenKoulutusmoduuli) =>
+        ak.eurooppalainenTutkintojenViitekehysEQF should equal(haeSisältyväKoodi("eqf", k.tunniste))
+        ak.kansallinenTutkintojenViitekehysNQF should equal(haeSisältyväKoodi("nqf", k.tunniste))
+      case _ =>
+    }
+
     actualSuoritus.täydentääTutkintoa.map(_.tunniste.koodiarvo) should be(expectedSuoritusData.täydentääTutkintoa.map(_.tunniste.koodiarvo))
 
     verifyOsaamisenHankkimistavallinen(actualSuoritus, expectedSuoritusData)
@@ -319,6 +354,9 @@ trait AktiivisetJaPäättyneetOpinnotVerifiers extends Matchers {
   ): Unit = {
     actualSuoritus.koulutusmoduuli.tunniste.koodiarvo should be(expectedSuoritusData.koulutusmoduuli.tunniste.koodiarvo)
 
+    actualSuoritus.koulutusmoduuli.asInstanceOf[ViitekehyksellisenTutkintoSuorituksenKoulutusmoduuli].eurooppalainenTutkintojenViitekehysEQF should equal(haeSisältyväKoodi("eqf", expectedSuoritusData.koulutusmoduuli.tunniste))
+    actualSuoritus.koulutusmoduuli.asInstanceOf[ViitekehyksellisenTutkintoSuorituksenKoulutusmoduuli].kansallinenTutkintojenViitekehysNQF should equal(haeSisältyväKoodi("nqf", expectedSuoritusData.koulutusmoduuli.tunniste))
+
     verifyOsaamisenHankkimistavallinen(actualSuoritus, expectedSuoritusData)
     verifyKoulutussopimuksellinen(actualSuoritus, expectedSuoritusData)
   }
@@ -329,6 +367,9 @@ trait AktiivisetJaPäättyneetOpinnotVerifiers extends Matchers {
   ): Unit = {
     actualSuoritus.koulutusmoduuli.tunniste.koodiarvo should be(expectedSuoritusData.koulutusmoduuli.tunniste.koodiarvo)
 
+    actualSuoritus.koulutusmoduuli.asInstanceOf[ViitekehyksellisenTutkintoSuorituksenKoulutusmoduuli].eurooppalainenTutkintojenViitekehysEQF should equal(haeSisältyväKoodi("eqf", expectedSuoritusData.koulutusmoduuli.tunniste))
+    actualSuoritus.koulutusmoduuli.asInstanceOf[ViitekehyksellisenTutkintoSuorituksenKoulutusmoduuli].kansallinenTutkintojenViitekehysNQF should equal(haeSisältyväKoodi("nqf", expectedSuoritusData.koulutusmoduuli.tunniste))
+
     verifyKoulutussopimuksellinen(actualSuoritus, expectedSuoritusData)
   }
 
@@ -337,6 +378,9 @@ trait AktiivisetJaPäättyneetOpinnotVerifiers extends Matchers {
     expectedSuoritusData: schema.ValmaKoulutuksenSuoritus
   ): Unit = {
     actualSuoritus.koulutusmoduuli.tunniste.koodiarvo should be(expectedSuoritusData.koulutusmoduuli.tunniste.koodiarvo)
+
+    actualSuoritus.koulutusmoduuli.asInstanceOf[ViitekehyksellisenTutkintoSuorituksenKoulutusmoduuli].eurooppalainenTutkintojenViitekehysEQF should equal(haeSisältyväKoodi("eqf", expectedSuoritusData.koulutusmoduuli.tunniste))
+    actualSuoritus.koulutusmoduuli.asInstanceOf[ViitekehyksellisenTutkintoSuorituksenKoulutusmoduuli].kansallinenTutkintojenViitekehysNQF should equal(haeSisältyväKoodi("nqf", expectedSuoritusData.koulutusmoduuli.tunniste))
 
     verifyKoulutussopimuksellinen(actualSuoritus, expectedSuoritusData)
   }
@@ -393,10 +437,18 @@ trait AktiivisetJaPäättyneetOpinnotVerifiers extends Matchers {
         actualSuoritus.suorituskieli.map(_.koodiarvo) should equal(expectedSuoritusData.suorituskieli.map(_.koodiarvo))
         actualSuoritus.koulutusmoduuli.koulutustyyppi should equal(expectedSuoritusData.koulutusmoduuli.koulutustyyppi)
         actualSuoritus.koulutusmoduuli.virtaNimi should equal(expectedSuoritusData.koulutusmoduuli.virtaNimi)
+
+        actualSuoritus.koulutusmoduuli.eurooppalainenTutkintojenViitekehysEQF should equal(haeSisältyväKoodi("eqf", expectedSuoritusData.koulutusmoduuli.tunniste))
+        actualSuoritus.koulutusmoduuli.kansallinenTutkintojenViitekehysNQF should equal(haeSisältyväKoodi("nqf", expectedSuoritusData.koulutusmoduuli.tunniste))
+
       case (actualSuoritus: AktiivisetJaPäättyneetOpinnotMuuKorkeakoulunSuoritus, expectedSuoritusData: schema.MuuKorkeakoulunSuoritus) =>
         actualSuoritus.koulutusmoduuli.nimi should equal(expectedSuoritusData.koulutusmoduuli.nimi)
+        actualSuoritus.koulutusmoduuli.eurooppalainenTutkintojenViitekehysEQF should equal(haeSisältyväKoodi("eqf", expectedSuoritusData.koulutusmoduuli.tunniste))
+        actualSuoritus.koulutusmoduuli.kansallinenTutkintojenViitekehysNQF should equal(haeSisältyväKoodi("nqf", expectedSuoritusData.koulutusmoduuli.tunniste))
+
       case (actualSuoritus: AktiivisetJaPäättyneetOpinnotKorkeakoulunOpintojaksonSuoritus, expectedSuoritusData: schema.KorkeakoulunOpintojaksonSuoritus) =>
         actualSuoritus.koulutusmoduuli.nimi should equal(expectedSuoritusData.koulutusmoduuli.nimi)
+
       case _ => fail(s"Palautettiin tunnistamattoman tyyppistä suoritusdataa actual: (${actualSuoritus.getClass.getName}), expected:(${expectedSuoritusData.getClass.getName})")
     }
   }
@@ -404,6 +456,14 @@ trait AktiivisetJaPäättyneetOpinnotVerifiers extends Matchers {
   private def verifyPäätasonSuoritus(actualSuoritus: AktiivisetJaPäättyneetOpinnotPäätasonSuoritus, expectedSuoritusData: schema.PäätasonSuoritus) = {
     actualSuoritus.tyyppi.koodiarvo should equal(expectedSuoritusData.tyyppi.koodiarvo)
     actualSuoritus.koulutusmoduuli.tunniste.koodiarvo should equal(expectedSuoritusData.koulutusmoduuli.tunniste.koodiarvo)
+
+    expectedSuoritusData.koulutusmoduuli match {
+      case k: KoodistostaLöytyväKoulutusmoduuli =>
+        actualSuoritus.koulutusmoduuli.eurooppalainenTutkintojenViitekehysEQF should equal(haeSisältyväKoodi("eqf", k.tunniste))
+        actualSuoritus.koulutusmoduuli.kansallinenTutkintojenViitekehysNQF should equal(haeSisältyväKoodi("nqf", k.tunniste))
+      case _ =>
+    }
+
     expectedSuoritusData match {
       case es: schema.Suorituskielellinen => actualSuoritus.suorituskieli.koodiarvo should equal(es.suorituskieli.koodiarvo)
       case _ => fail(s"Yritettiin tutkita suorituskieletöntä päätason suoritustyyppiä: ${expectedSuoritusData.tyyppi.koodiarvo}")
@@ -469,5 +529,15 @@ trait AktiivisetJaPäättyneetOpinnotVerifiers extends Matchers {
     actualOo.tila.opiskeluoikeusjaksot.map(_.alku) should equal(expectedOoData.tila.opiskeluoikeusjaksot.map(_.alku))
   }
 
+  private def haeSisältyväKoodi(koodistoUri: String, tunniste: schema.Koodistokoodiviite): Option[schema.Koodistokoodiviite] = {
+    val koodisto = KoskiApplicationForTests.koodistoViitePalvelu.koodistoPalvelu.getLatestVersionRequired(koodistoUri)
+    val sisältyvä: Option[schema.Koodistokoodiviite] = KoskiApplicationForTests.koodistoViitePalvelu.getSisältyvätKoodiViitteet(koodisto, tunniste) match {
+      case Some(List(viite)) =>
+        Some(viite)
+      case _ =>
+        None
+    }
+    sisältyvä
+  }
 }
 
