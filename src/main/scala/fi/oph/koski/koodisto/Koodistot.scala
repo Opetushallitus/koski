@@ -134,6 +134,8 @@ object Koodistot {
     KoodistoAsetus("kieli"),
     KoodistoAsetus("kielivalikoima"),
     KoodistoAsetus("koulutus"),
+    KoodistoAsetus("eqf"),
+    KoodistoAsetus("nqf"),
     KoodistoAsetus("koulutus", koodistoVersio = Some(11)),
     KoodistoAsetus("koulutustyyppi"),
     KoodistoAsetus("kunta"),
