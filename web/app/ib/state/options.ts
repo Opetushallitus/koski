@@ -37,6 +37,7 @@ import {
   PreIBOppiaineTunniste,
   ValtakunnallinenPreIBOppiaineTunniste
 } from './preIBOppiaine'
+import { nonNull } from '../../util/fp/arrays'
 
 export const preIB2015Oppiainekategoriat = {
   'IB-oppiaine': [isIBOppiaineLanguageTunniste, isIBOppiaineMuuTunniste],
@@ -49,12 +50,8 @@ export const preIB2015Oppiainekategoriat = {
   ]
 }
 
-export const UusiPaikallinenKey = '__uusi_paikallinen__'
-
-export const UusiPaikallinen = Koodistokoodiviite({
-  koodistoUri: lukiokurssiTunnisteUrit[0],
-  koodiarvo: UusiPaikallinenKey
-})
+export const uusiPaikallinenKey = (type?: string) =>
+  `__${['uusi_paikallinen', type].filter(nonNull).join('_')}__`
 
 const oppiaineCategoryResolver =
   <K extends Koodistokoodiviite>(
@@ -68,6 +65,8 @@ const oppiaineCategoryResolver =
       O.map(([name, _]) => t(name)),
       O.toNullable
     )
+
+export const UusiPaikallinenOppiaineKey = uusiPaikallinenKey('oppiaine')
 
 const labelWithKoodiarvo = (k: SelectOption<Koodistokoodiviite>): string =>
   k.value?.koodiarvo ? `${k.value.koodiarvo} ${k.label}` : k.label
@@ -97,7 +96,7 @@ export const usePreIBTunnisteOptions = <K extends Koodistokoodiviite>(
           paikallinenKoodiToOption(kurssi.tunniste, { removable: true })
         ),
         {
-          key: UusiPaikallinenKey,
+          key: UusiPaikallinenOppiaineKey,
           label: t('Lisää uusi')
         }
       ])
@@ -164,12 +163,7 @@ export const useOppiaineenKurssiOptions = (
         data || [],
         enumValuesToKoodistoSelectOptions,
         mapOptionLabels(labelWithKoodiarvo),
-        sortOptions,
-        A.append({
-          key: koodistokoodiviiteId(UusiPaikallinen),
-          label: t('Lisää paikallinen'),
-          value: UusiPaikallinen
-        } as SelectOption<Koodistokoodiviite>)
+        sortOptions
       ),
     [data]
   )

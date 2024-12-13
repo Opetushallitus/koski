@@ -19,7 +19,7 @@ import { Koodistokoodiviite } from '../../types/fi/oph/koski/schema/Koodistokood
 import { LocalizedString } from '../../types/fi/oph/koski/schema/LocalizedString'
 import { nonNull } from '../../util/fp/arrays'
 import { pluck } from '../../util/fp/objects'
-import { koodistokoodiviiteId } from '../../util/koodisto'
+import { koodistokoodiviiteId, koodiviiteId } from '../../util/koodisto'
 import { clamp, sum } from '../../util/numbers'
 import { coerceForSort, textSearch } from '../../util/strings'
 import { CommonProps, common, cx } from '../CommonProps'
@@ -487,7 +487,7 @@ export const paikallinenKoodiToOption = (
   koodi: PaikallinenKoodi,
   options?: Partial<SelectOption<PaikallinenKoodi>>
 ): SelectOption<PaikallinenKoodi> => ({
-  key: `paikallinen_${koodi.koodistoUri || ''}_${koodi.koodiarvo}`,
+  key: koodiviiteId(koodi),
   value: koodi,
   label: t(koodi.nimi) || koodi.koodiarvo,
   ...options
