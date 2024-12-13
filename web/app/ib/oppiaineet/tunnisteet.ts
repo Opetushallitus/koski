@@ -1,25 +1,30 @@
-import { Koodistokoodiviite } from '../../types/fi/oph/koski/schema/Koodistokoodiviite'
+import {
+  isKoodistokoodiviite,
+  Koodistokoodiviite
+} from '../../types/fi/oph/koski/schema/Koodistokoodiviite'
+import { PaikallinenKoodi } from '../../types/fi/oph/koski/schema/PaikallinenKoodi'
 import { ItemOf } from '../../util/types'
 
-export const tunnisteGuard =
+export const koodiviiteTunnisteGuard =
   <U extends string, T extends readonly string[]>(uri: U, koodiarvot: T) =>
-  (k?: Koodistokoodiviite): k is Koodistokoodiviite<U, ItemOf<T>> =>
-    !!k && k.koodistoUri === uri && koodiarvot.includes(k.koodiarvo)
+  (
+    k?: Koodistokoodiviite | PaikallinenKoodi
+  ): k is Koodistokoodiviite<U, ItemOf<T>> =>
+    isKoodistokoodiviite(k) &&
+    k.koodistoUri === uri &&
+    koodiarvot.includes(k.koodiarvo)
 
 export const tunnisteUriGuard =
   <U extends string>(uri: U) =>
   (k?: Koodistokoodiviite): k is Koodistokoodiviite<U> =>
     !!k && k.koodistoUri === uri
 
-export const isIBOppiaineLanguageTunniste = tunnisteGuard('oppiaineetib', [
-  'A',
-  'A2',
-  'B',
-  'AB',
-  'CLA'
-] as const)
+export const isIBOppiaineLanguageTunniste = koodiviiteTunnisteGuard(
+  'oppiaineetib',
+  ['A', 'A2', 'B', 'AB', 'CLA'] as const
+)
 
-export const isIBOppiaineMuuTunniste = tunnisteGuard('oppiaineetib', [
+export const isIBOppiaineMuuTunniste = koodiviiteTunnisteGuard('oppiaineetib', [
   'BIO',
   'BU',
   'CHE',
@@ -51,14 +56,13 @@ export const isIBOppiaineMuuTunniste = tunnisteGuard('oppiaineetib', [
   'MATAI'
 ] as const)
 
-export const isLukionMatematiikka2015Tunniste = tunnisteGuard(
+export const isLukionMatematiikka2015Tunniste = koodiviiteTunnisteGuard(
   'koskioppiaineetyleissivistava',
   ['MA']
 )
 
-export const isLukionMuuValtakunnallinenOppiaine2015Tunniste = tunnisteGuard(
-  'koskioppiaineetyleissivistava',
-  [
+export const isLukionMuuValtakunnallinenOppiaine2015Tunniste =
+  koodiviiteTunnisteGuard('koskioppiaineetyleissivistava', [
     'HI',
     'MU',
     'BI',
@@ -75,32 +79,33 @@ export const isLukionMuuValtakunnallinenOppiaine2015Tunniste = tunnisteGuard(
     'LI',
     'KU',
     'OP'
-  ] as const
-)
+  ] as const)
 
-export const isLukionUskonto2015Tunniste = tunnisteGuard(
+export const isLukionUskonto2015Tunniste = koodiviiteTunnisteGuard(
   'koskioppiaineetyleissivistava',
   ['KT'] as const
 )
 
-export const isLukionÄidinkieliJaKirjallisuus2015Tunniste = tunnisteGuard(
-  'koskioppiaineetyleissivistava',
-  ['AI'] as const
-)
+export const isLukionÄidinkieliJaKirjallisuus2015Tunniste =
+  koodiviiteTunnisteGuard('koskioppiaineetyleissivistava', ['AI'] as const)
 
-export const isVierasTaiToinenKotimainenKieli2015Tunniste = tunnisteGuard(
-  'koskioppiaineetyleissivistava',
-  ['A1', 'A2', 'B1', 'B2', 'B3', 'AOM'] as const
-)
+export const isVierasTaiToinenKotimainenKieli2015Tunniste =
+  koodiviiteTunnisteGuard('koskioppiaineetyleissivistava', [
+    'A1',
+    'A2',
+    'B1',
+    'B2',
+    'B3',
+    'AOM'
+  ] as const)
 
-export const isLukionMatematiikka2019Tunniste = tunnisteGuard(
+export const isLukionMatematiikka2019Tunniste = koodiviiteTunnisteGuard(
   'koskioppiaineetyleissivistava',
   ['MA'] as const
 )
 
-export const isLukionMuuValtakunnallinenOppiaine2019Tunniste = tunnisteGuard(
-  'koskioppiaineetyleissivistava',
-  [
+export const isLukionMuuValtakunnallinenOppiaine2019Tunniste =
+  koodiviiteTunnisteGuard('koskioppiaineetyleissivistava', [
     'HI',
     'MU',
     'BI',
@@ -115,34 +120,36 @@ export const isLukionMuuValtakunnallinenOppiaine2019Tunniste = tunnisteGuard(
     'LI',
     'KU',
     'OP'
-  ] as const
-)
+  ] as const)
 
-export const isLukionUskonto2019Tunniste = tunnisteGuard(
+export const isLukionUskonto2019Tunniste = koodiviiteTunnisteGuard(
   'koskioppiaineetyleissivistava',
   ['KT'] as const
 )
 
-export const isLukionÄidinkieliJaKirjallisuus2019Tunniste = tunnisteGuard(
-  'koskioppiaineetyleissivistava',
-  ['AI'] as const
+export const isLukionÄidinkieliJaKirjallisuus2019Tunniste =
+  koodiviiteTunnisteGuard('koskioppiaineetyleissivistava', ['AI'] as const)
+
+export const isVierasTaiToinenKotimainenKieli2019Tunniste =
+  koodiviiteTunnisteGuard('koskioppiaineetyleissivistava', [
+    'A',
+    'B1',
+    'B2',
+    'B3',
+    'AOM'
+  ] as const)
+
+export const isLukiodiplomit2019Tunniste = koodiviiteTunnisteGuard(
+  'lukionmuutopinnot',
+  ['LD'] as const
 )
 
-export const isVierasTaiToinenKotimainenKieli2019Tunniste = tunnisteGuard(
-  'koskioppiaineetyleissivistava',
-  ['A', 'B1', 'B2', 'B3', 'AOM'] as const
-)
-
-export const isLukiodiplomit2019Tunniste = tunnisteGuard('lukionmuutopinnot', [
-  'LD'
-] as const)
-
-export const isMuutLukionSuoritukset2019Tunniste = tunnisteGuard(
+export const isMuutLukionSuoritukset2019Tunniste = koodiviiteTunnisteGuard(
   'lukionmuutopinnot',
   ['MS'] as const
 )
 
-export const isTemaattisetOpinnot2019Tunniste = tunnisteGuard(
+export const isTemaattisetOpinnot2019Tunniste = koodiviiteTunnisteGuard(
   'lukionmuutopinnot',
   ['TO'] as const
 )
