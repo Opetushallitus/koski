@@ -500,21 +500,24 @@ class MassaluovutusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers wit
         }
         val complete = waitForCompletion(queryId, user)
 
-        val (oppijaOid, opiskeluoikeusOid) = verifyResultAndContent(complete.files.last, user) {
+        verifyResultAndContent(complete.files.last, user) {
           val json = JsonMethods.parse(response.body)
-          (
-            (json \ "oppijaOid").extract[String],
-            (json \ "opiskeluoikeus" \ "oid").extract[String],
-          )
+          val oos = json.asInstanceOf[JArray]
+          oos.arr.map(v =>
+            (
+              (v \ "oppijaOid").extract[String],
+              (v \ "opiskeluoikeus" \ "oid").extract[String],
+            )).foreach { case (oppijaOid, opiskeluoikeusOid) =>
+            AuditLogTester.verifyLastAuditLogMessage(Map(
+              "operation" -> "SUORITUSREKISTERI_OPISKELUOIKEUS_HAKU",
+              "target" -> Map(
+                "oppijaHenkiloOid" -> oppijaOid,
+                "opiskeluoikeusOid" -> opiskeluoikeusOid,
+              ),
+            ))
+          }
         }
 
-        AuditLogTester.verifyLastAuditLogMessage(Map(
-          "operation" -> "SUORITUSREKISTERI_OPISKELUOIKEUS_HAKU",
-          "target" -> Map(
-            "oppijaHenkiloOid" -> oppijaOid,
-            "opiskeluoikeusOid" -> opiskeluoikeusOid,
-          ),
-        ))
 
       }
     }
@@ -534,7 +537,10 @@ class MassaluovutusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers wit
       }
 
       def getOpiskeluoikeudet(tyyppi: Option[String] = None): List[JValue] = {
-        val oos = jsonFiles.map(_ \ "opiskeluoikeus")
+        val oos = jsonFiles.flatMap {
+          case JArray(a) => a
+          case _ => Nil
+        }.map(_ \ "opiskeluoikeus")
         tyyppi match {
           case Some(t) => oos.filter(oo => (oo \ "tyyppi" \ "koodiarvo").extract[String] == t)
           case None => oos
@@ -667,21 +673,23 @@ class MassaluovutusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers wit
         }
         val complete = waitForCompletion(queryId, user)
 
-        val (oppijaOid, opiskeluoikeusOid) = verifyResultAndContent(complete.files.last, user) {
+        verifyResultAndContent(complete.files.last, user) {
           val json = JsonMethods.parse(response.body)
-          (
-            (json \ "oppijaOid").extract[String],
-            (json \ "opiskeluoikeus" \ "oid").extract[String],
-          )
+          val oos = json.asInstanceOf[JArray]
+          oos.arr.map(v =>
+            (
+              (v \ "oppijaOid").extract[String],
+              (v \ "opiskeluoikeus" \ "oid").extract[String],
+            )).foreach { case (oppijaOid, opiskeluoikeusOid) =>
+            AuditLogTester.verifyLastAuditLogMessage(Map(
+              "operation" -> "SUORITUSREKISTERI_OPISKELUOIKEUS_HAKU",
+              "target" -> Map(
+                "oppijaHenkiloOid" -> oppijaOid,
+                "opiskeluoikeusOid" -> opiskeluoikeusOid,
+              ),
+            ))
+          }
         }
-
-        AuditLogTester.verifyLastAuditLogMessage(Map(
-          "operation" -> "SUORITUSREKISTERI_OPISKELUOIKEUS_HAKU",
-          "target" -> Map(
-            "oppijaHenkiloOid" -> oppijaOid,
-            "opiskeluoikeusOid" -> opiskeluoikeusOid,
-          ),
-        ))
 
       }
     }
@@ -701,7 +709,10 @@ class MassaluovutusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers wit
       }
 
       def getOpiskeluoikeudet(tyyppi: Option[String] = None): List[JValue] = {
-        val oos = jsonFiles.map(_ \ "opiskeluoikeus")
+        val oos = jsonFiles.flatMap {
+          case JArray(a) => a
+          case _ => Nil
+        }.map(_ \ "opiskeluoikeus")
         tyyppi match {
           case Some(t) => oos.filter(oo => (oo \ "tyyppi" \ "koodiarvo").extract[String] == t)
           case None => oos

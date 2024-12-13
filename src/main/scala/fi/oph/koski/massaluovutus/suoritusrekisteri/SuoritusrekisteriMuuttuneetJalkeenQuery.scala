@@ -12,7 +12,7 @@ import java.time.LocalDateTime
 
 @Title("Suoritusrekisterin kysely päivämäärän perusteella")
 @Description("Palauttaa Suoritusrekisteriä varten räätälöidyt tiedot annettujen oppijoiden ja koulutusmuodon mukaisista opiskeluoikeuksista tietyn ajanhetken jälkeen.")
-@Description("Vastauksen skeema on saatavana <a href=\"/koski/json-schema-viewer/?schema=suoritusrekisteri-result.json\">täältä.</a>")
+@Description("Vastauksen skeema on taulukko <a href=\"/koski/json-schema-viewer/?schema=suoritusrekisteri-result.json\">SureResponse</a>-objekteja.")
 case class SuoritusrekisteriMuuttuneetJalkeenQuery(
   @EnumValues(Set("sure-muuttuneet"))
   `type`: String = "sure-muuttuneet",
@@ -22,14 +22,15 @@ case class SuoritusrekisteriMuuttuneetJalkeenQuery(
   @Description("Teknisistä syistä johtuen kannattaa aina hakea tiedot hieman pidemmältä ajalta ja suodattaa itse tulosjoukosta tarpeettomat tiedot.")
   muuttuneetJälkeen: LocalDateTime,
 ) extends SuoritusrekisteriQuery {
-  def getOpiskeluoikeusIds(db: DB): Seq[(Int, Timestamp)] =
+  def getOpiskeluoikeusIds(db: DB): Seq[(Int, Timestamp, String)] =
     QueryMethods.runDbSync(
       db,
       sql"""
-        SELECT id, aikaleima
+        SELECT opiskeluoikeus.id, opiskeluoikeus.aikaleima, coalesce(henkilo.master_oid, henkilo.oid)
         FROM opiskeluoikeus
+        JOIN henkilo ON henkilo.oid = opiskeluoikeus.oppija_oid
         WHERE aikaleima >= ${Timestamp.valueOf(muuttuneetJälkeen)}
           AND koulutusmuoto = any(${SuoritusrekisteriQuery.opiskeluoikeudenTyypit})
         ORDER BY aikaleima
-      """.as[(Int, Timestamp)])
+      """.as[(Int, Timestamp, String)])
 }
