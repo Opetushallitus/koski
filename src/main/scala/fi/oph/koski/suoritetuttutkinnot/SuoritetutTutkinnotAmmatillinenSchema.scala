@@ -1,6 +1,7 @@
 package fi.oph.koski.suoritetuttutkinnot
 
 import fi.oph.koski.schema
+import fi.oph.koski.schema.Koodistokoodiviite
 import fi.oph.koski.schema.annotation.{Deprecated, KoodistoKoodiarvo}
 import fi.oph.koski.util.DateOrdering.localDateOptionOrdering
 import fi.oph.scalaschema.annotation.{Description, ReadFlattened, Title}
@@ -103,13 +104,17 @@ case class SuoritetutTutkinnotKokoTaiOsittaisenAmmatillisenTutkinnonKoulutusmodu
   tunniste: SuoritetutTutkinnotKoodistokoodiviite,
   perusteenDiaarinumero: Option[String],
   perusteenNimi: Option[schema.LocalizedString],
-  koulutustyyppi: Option[SuoritetutTutkinnotKoodistokoodiviite]
+  koulutustyyppi: Option[SuoritetutTutkinnotKoodistokoodiviite],
+  eurooppalainenTutkintojenViitekehysEQF: Option[schema.Koodistokoodiviite],
+  kansallinenTutkintojenViitekehysNQF: Option[schema.Koodistokoodiviite]
 ) extends SuoritetutTutkinnotAmmatillisenSuorituksenKoulutusmoduuli
 
 case class SuoritetutTutkinnotMuunAmmatillisenKoulutuksenKoulutusmoduuli(
   tunniste: SuoritetutTutkinnotKoodistokoodiviite,
   laajuus: Option[SuoritetutTutkinnotLaajuus],
-  kuvaus: Option[schema.LocalizedString]
+  kuvaus: Option[schema.LocalizedString],
+  eurooppalainenTutkintojenViitekehysEQF: Option[schema.Koodistokoodiviite],
+  kansallinenTutkintojenViitekehysNQF: Option[schema.Koodistokoodiviite]
 ) extends SuoritetutTutkinnotAmmatillisenSuorituksenKoulutusmoduuli
 
 trait OsaamisenHankkimistapa {

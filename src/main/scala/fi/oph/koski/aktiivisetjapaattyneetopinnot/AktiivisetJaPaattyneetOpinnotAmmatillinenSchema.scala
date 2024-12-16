@@ -137,32 +137,42 @@ case class AktiivisetJaPäättyneetOpinnotValmaKoulutuksenSuoritus(
 
 trait AktiivisetJaPäättyneetOpinnotAmmatillisenSuorituksenKoulutusmoduuli extends SuorituksenKoulutusmoduuli
 
+trait AktiivisetJaPäättyneetOpinnotViitekehyksellisenAmmatillisenTutkintoSuorituksenKoulutusmoduuli extends AktiivisetJaPäättyneetOpinnotAmmatillisenSuorituksenKoulutusmoduuli with ViitekehyksellisenTutkintoSuorituksenKoulutusmoduuli
+
 case class AktiivisetJaPäättyneetOpinnotAmmatillinenTutkintoKoulutus(
   tunniste: AktiivisetJaPäättyneetOpinnotKoodistokoodiviite,
   perusteenDiaarinumero: Option[String],
   perusteenNimi: Option[schema.LocalizedString],
   koulutustyyppi: Option[AktiivisetJaPäättyneetOpinnotKoodistokoodiviite],
-) extends AktiivisetJaPäättyneetOpinnotAmmatillisenSuorituksenKoulutusmoduuli
+  eurooppalainenTutkintojenViitekehysEQF: Option[schema.Koodistokoodiviite],
+  kansallinenTutkintojenViitekehysNQF: Option[schema.Koodistokoodiviite]
+) extends AktiivisetJaPäättyneetOpinnotViitekehyksellisenAmmatillisenTutkintoSuorituksenKoulutusmoduuli
 
 trait AktiivisetJaPäättyneetOpinnotMuuAmmatillinenKoulutus extends AktiivisetJaPäättyneetOpinnotAmmatillisenSuorituksenKoulutusmoduuli
+
+trait AktiivisetJaPäättyneetOpinnotViitekehyksellinenMuuAmmatillinenKoulutus extends AktiivisetJaPäättyneetOpinnotMuuAmmatillinenKoulutus with AktiivisetJaPäättyneetOpinnotViitekehyksellisenAmmatillisenTutkintoSuorituksenKoulutusmoduuli
 
 @Title("Ammatilliseen tehtävään valmistava koulutus")
 case class AktiivisetJaPäättyneetOpinnotAmmatilliseenTehtäväänValmistavaKoulutus(
   tunniste: AktiivisetJaPäättyneetOpinnotKoodistokoodiviite,
   kuvaus: Option[schema.LocalizedString],
-) extends AktiivisetJaPäättyneetOpinnotMuuAmmatillinenKoulutus
+  eurooppalainenTutkintojenViitekehysEQF: Option[schema.Koodistokoodiviite],
+  kansallinenTutkintojenViitekehysNQF: Option[schema.Koodistokoodiviite]
+) extends AktiivisetJaPäättyneetOpinnotViitekehyksellinenMuuAmmatillinenKoulutus
 
 @Title("Paikallinen muu ammatillinen koulutus")
 case class AktiivisetJaPäättyneetOpinnotPaikallinenMuuAmmatillinenKoulutus(
   tunniste: AktiivisetJaPäättyneetOpinnotPaikallinenKoodi,
-  kuvaus: schema.LocalizedString
-) extends AktiivisetJaPäättyneetOpinnotMuuAmmatillinenKoulutus
+  kuvaus: schema.LocalizedString,
+  ) extends AktiivisetJaPäättyneetOpinnotMuuAmmatillinenKoulutus
 
 case class AktiivisetJaPäättyneetOpinnotTelmaKoulutus(
   tunniste: AktiivisetJaPäättyneetOpinnotKoodistokoodiviite,
   perusteenDiaarinumero: Option[String],
   koulutustyyppi: Option[AktiivisetJaPäättyneetOpinnotKoodistokoodiviite],
-) extends AktiivisetJaPäättyneetOpinnotAmmatillisenSuorituksenKoulutusmoduuli
+  eurooppalainenTutkintojenViitekehysEQF: Option[schema.Koodistokoodiviite],
+  kansallinenTutkintojenViitekehysNQF: Option[schema.Koodistokoodiviite]
+) extends AktiivisetJaPäättyneetOpinnotViitekehyksellisenAmmatillisenTutkintoSuorituksenKoulutusmoduuli
 
 case class AktiivisetJaPäättyneetOpinnotTutkinnonOsaaPienemmistäKokonaisuuksistaKoostuvaKoulutus(
   tunniste: AktiivisetJaPäättyneetOpinnotPaikallinenKoodi,
@@ -173,7 +183,9 @@ case class AktiivisetJaPäättyneetOpinnotValmaKoulutus(
   tunniste: AktiivisetJaPäättyneetOpinnotKoodistokoodiviite,
   perusteenDiaarinumero: Option[String],
   koulutustyyppi: Option[AktiivisetJaPäättyneetOpinnotKoodistokoodiviite],
-) extends AktiivisetJaPäättyneetOpinnotAmmatillisenSuorituksenKoulutusmoduuli
+  eurooppalainenTutkintojenViitekehysEQF: Option[schema.Koodistokoodiviite],
+  kansallinenTutkintojenViitekehysNQF: Option[schema.Koodistokoodiviite]
+) extends AktiivisetJaPäättyneetOpinnotViitekehyksellisenAmmatillisenTutkintoSuorituksenKoulutusmoduuli
 
 case class OsaamisenHankkimistapa (
   tunniste: AktiivisetJaPäättyneetOpinnotKoodistokoodiviite,

@@ -63,7 +63,7 @@ object AktiivisetJaPäättyneetOpinnotKorkeakoulunOpiskeluoikeus {
           AktiivisetJaPäättyneetOpinnotKorkeakoulunOpintojaksonSuoritus(
             koulutusmoduuli = AktiivisetJaPäättyneetOpinnotKorkeakoulunOpintojakso(
               tunniste = AktiivisetJaPäättyneetOpinnotPaikallinenKoodi.fromKoskiSchema(s.koulutusmoduuli.tunniste),
-              nimi = s.koulutusmoduuli.nimi,
+              nimi = s.koulutusmoduuli.nimi
             ),
             vahvistus = s.vahvistus.map(v => Vahvistus(v.päivä)),
             suorituskieli = s.suorituskieli.map(AktiivisetJaPäättyneetOpinnotKoodistokoodiviite.fromKoskiSchema),
@@ -79,7 +79,9 @@ object AktiivisetJaPäättyneetOpinnotKorkeakoulunOpiskeluoikeus {
             koulutusmoduuli = AktiivisetJaPäättyneetOpinnotKorkeakoulututkinto(
               tunniste = AktiivisetJaPäättyneetOpinnotKoodistokoodiviite.fromKoskiSchema(s.koulutusmoduuli.tunniste),
               koulutustyyppi = s.koulutusmoduuli.koulutustyyppi.map(AktiivisetJaPäättyneetOpinnotKoodistokoodiviite.fromKoskiSchema),
-              virtaNimi = s.koulutusmoduuli.virtaNimi
+              virtaNimi = s.koulutusmoduuli.virtaNimi,
+              eurooppalainenTutkintojenViitekehysEQF = None, // Täydennetään myöhemmässä vaiheessa
+              kansallinenTutkintojenViitekehysNQF = None, // Täydennetään myöhemmässä vaiheessa
             ),
             vahvistus = s.vahvistus.map(v => Vahvistus(v.päivä)),
             suorituskieli = s.suorituskieli.map(AktiivisetJaPäättyneetOpinnotKoodistokoodiviite.fromKoskiSchema),
@@ -95,6 +97,8 @@ object AktiivisetJaPäättyneetOpinnotKorkeakoulunOpiskeluoikeus {
             koulutusmoduuli = AktiivisetJaPäättyneetOpinnotMuuKorkeakoulunOpinto(
               tunniste = AktiivisetJaPäättyneetOpinnotKoodistokoodiviite.fromKoskiSchema(s.koulutusmoduuli.tunniste),
               nimi = s.koulutusmoduuli.nimi,
+              eurooppalainenTutkintojenViitekehysEQF = None, // Täydennetään myöhemmässä vaiheessa
+              kansallinenTutkintojenViitekehysNQF = None, // Täydennetään myöhemmässä vaiheessa
             ),
             vahvistus = s.vahvistus.map(v => Vahvistus(v.päivä)),
             suorituskieli = s.suorituskieli.map(AktiivisetJaPäättyneetOpinnotKoodistokoodiviite.fromKoskiSchema),
@@ -191,19 +195,23 @@ case class AktiivisetJaPäättyneetOpinnotLukuvuosi_IlmoittautumisjaksonLukuvuos
 case class AktiivisetJaPäättyneetOpinnotMuuKorkeakoulunOpinto(
   tunniste: AktiivisetJaPäättyneetOpinnotKoodistokoodiviite,
   nimi: schema.LocalizedString,
-) extends SuorituksenKoulutusmoduuli
+  eurooppalainenTutkintojenViitekehysEQF: Option[schema.Koodistokoodiviite],
+  kansallinenTutkintojenViitekehysNQF: Option[schema.Koodistokoodiviite]
+) extends ViitekehyksellisenTutkintoSuorituksenKoulutusmoduuli
 
 @Title("Korkeakoulututkinto")
 case class AktiivisetJaPäättyneetOpinnotKorkeakoulututkinto(
   tunniste: AktiivisetJaPäättyneetOpinnotKoodistokoodiviite,
   koulutustyyppi: Option[AktiivisetJaPäättyneetOpinnotKoodistokoodiviite],
-  virtaNimi: Option[schema.LocalizedString]
-) extends SuorituksenKoulutusmoduuli
+  virtaNimi: Option[schema.LocalizedString],
+  eurooppalainenTutkintojenViitekehysEQF: Option[schema.Koodistokoodiviite],
+  kansallinenTutkintojenViitekehysNQF: Option[schema.Koodistokoodiviite]
+) extends ViitekehyksellisenTutkintoSuorituksenKoulutusmoduuli
 
 @Title("Korkeakoulun opintojakso")
 case class AktiivisetJaPäättyneetOpinnotKorkeakoulunOpintojakso(
   tunniste: AktiivisetJaPäättyneetOpinnotPaikallinenKoodi,
-  nimi: schema.LocalizedString,
+  nimi: schema.LocalizedString
 ) extends SuorituksenKoulutusmoduuli
 
 @Title("Koulutuskuntajakso")

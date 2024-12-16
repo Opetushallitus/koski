@@ -1,6 +1,7 @@
-import { SuoritetutTutkinnotKoodistokoodiviite } from './SuoritetutTutkinnotKoodistokoodiviite'
-import { SuoritetutTutkinnotLaajuus } from './SuoritetutTutkinnotLaajuus'
+import { Koodistokoodiviite } from '../schema/Koodistokoodiviite'
 import { LocalizedString } from '../schema/LocalizedString'
+import { SuoritetutTutkinnotLaajuus } from './SuoritetutTutkinnotLaajuus'
+import { SuoritetutTutkinnotKoodistokoodiviite } from './SuoritetutTutkinnotKoodistokoodiviite'
 
 /**
  * SuoritetutTutkinnotMuunAmmatillisenKoulutuksenKoulutusmoduuli
@@ -9,16 +10,20 @@ import { LocalizedString } from '../schema/LocalizedString'
  */
 export type SuoritetutTutkinnotMuunAmmatillisenKoulutuksenKoulutusmoduuli = {
   $class: 'fi.oph.koski.suoritetuttutkinnot.SuoritetutTutkinnotMuunAmmatillisenKoulutuksenKoulutusmoduuli'
-  tunniste: SuoritetutTutkinnotKoodistokoodiviite
+  kansallinenTutkintojenViitekehysNQF?: Koodistokoodiviite<'nqf', string>
+  eurooppalainenTutkintojenViitekehysEQF?: Koodistokoodiviite<'eqf', string>
   laajuus?: SuoritetutTutkinnotLaajuus
   kuvaus?: LocalizedString
+  tunniste: SuoritetutTutkinnotKoodistokoodiviite
 }
 
 export const SuoritetutTutkinnotMuunAmmatillisenKoulutuksenKoulutusmoduuli =
   (o: {
-    tunniste: SuoritetutTutkinnotKoodistokoodiviite
+    kansallinenTutkintojenViitekehysNQF?: Koodistokoodiviite<'nqf', string>
+    eurooppalainenTutkintojenViitekehysEQF?: Koodistokoodiviite<'eqf', string>
     laajuus?: SuoritetutTutkinnotLaajuus
     kuvaus?: LocalizedString
+    tunniste: SuoritetutTutkinnotKoodistokoodiviite
   }): SuoritetutTutkinnotMuunAmmatillisenKoulutuksenKoulutusmoduuli => ({
     $class:
       'fi.oph.koski.suoritetuttutkinnot.SuoritetutTutkinnotMuunAmmatillisenKoulutuksenKoulutusmoduuli',

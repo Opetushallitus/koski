@@ -33,5 +33,7 @@ case class SuoritetutTutkinnotDIATutkinnonSuoritus(
 ) extends Suoritus
 
 case class SuoritetutTutkinnotDIATutkinto(
-  tunniste: SuoritetutTutkinnotKoodistokoodiviite
+  tunniste: SuoritetutTutkinnotKoodistokoodiviite,
+  eurooppalainenTutkintojenViitekehysEQF: Option[schema.Koodistokoodiviite],
+  kansallinenTutkintojenViitekehysNQF: Option[schema.Koodistokoodiviite]
 ) extends SuorituksenKoulutusmoduuli

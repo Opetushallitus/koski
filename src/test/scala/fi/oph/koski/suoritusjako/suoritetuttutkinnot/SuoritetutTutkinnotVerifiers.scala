@@ -1,6 +1,7 @@
 package fi.oph.koski.suoritusjako.suoritetuttutkinnot
 
-import fi.oph.koski.schema
+import fi.oph.koski.schema.KoodistostaLöytyväKoulutusmoduuli
+import fi.oph.koski.{KoskiApplicationForTests, schema}
 import fi.oph.koski.suoritetuttutkinnot.{SuoritetutTutkinnotAmmatillinenOpiskeluoikeus, SuoritetutTutkinnotAmmatillisenTutkinnonOsittainenSuoritus, SuoritetutTutkinnotAmmatillisenTutkinnonOsittainenTaiKokoSuoritus, SuoritetutTutkinnotAmmatillisenTutkinnonSuoritus, SuoritetutTutkinnotDIAOpiskeluoikeus, SuoritetutTutkinnotDIATutkinnonSuoritus, SuoritetutTutkinnotEBTutkinnonOpiskeluoikeus, SuoritetutTutkinnotEBTutkinnonSuoritus, SuoritetutTutkinnotKorkeakoulunOpiskeluoikeus, SuoritetutTutkinnotKorkeakoulututkinnonSuoritus, SuoritetutTutkinnotKoskeenTallennettavaOpiskeluoikeus, SuoritetutTutkinnotMuunAmmatillisenKoulutuksenSuoritus, SuoritetutTutkinnotOpiskeluoikeus, SuoritetutTutkinnotYlioppilastutkinnonOpiskeluoikeus, SuoritetutTutkinnotYlioppilastutkinnonPäätasonSuoritus, Suoritus}
 import org.scalatest.matchers.should.Matchers
 
@@ -121,6 +122,9 @@ trait SuoritetutTutkinnotVerifiers extends Matchers
     actualSuoritus.koulutusmoduuli.perusteenNimi should equal(expectedSuoritusData.koulutusmoduuli.perusteenNimi)
     actualSuoritus.koulutusmoduuli.koulutustyyppi.map(_.koodiarvo) should equal(expectedSuoritusData.koulutusmoduuli.koulutustyyppi.map(_.koodiarvo))
 
+    actualSuoritus.koulutusmoduuli.eurooppalainenTutkintojenViitekehysEQF should equal(haeSisältyväKoodi("eqf", expectedSuoritusData.koulutusmoduuli.tunniste))
+    actualSuoritus.koulutusmoduuli.kansallinenTutkintojenViitekehysNQF should equal(haeSisältyväKoodi("nqf", expectedSuoritusData.koulutusmoduuli.tunniste))
+
     actualSuoritus.toimipiste.map(_.oid) should equal(Some(expectedSuoritusData.toimipiste.oid))
     actualSuoritus.vahvistus.map(_.päivä) should equal(expectedSuoritusData.vahvistus.map(_.päivä))
     actualSuoritus.tyyppi.koodiarvo should equal(expectedSuoritusData.tyyppi.koodiarvo)
@@ -136,6 +140,14 @@ trait SuoritetutTutkinnotVerifiers extends Matchers
     actualSuoritus.koulutusmoduuli.laajuus.map(_.arvo) should equal(expectedSuoritusData.koulutusmoduuli.laajuus.map(_.arvo))
     actualSuoritus.koulutusmoduuli.laajuus.map(_.yksikkö.koodiarvo) should equal(expectedSuoritusData.koulutusmoduuli.laajuus.map(_.yksikkö.koodiarvo))
     actualSuoritus.koulutusmoduuli.laajuus.map(_.yksikkö.koodistoUri) should equal(expectedSuoritusData.koulutusmoduuli.laajuus.map(_.yksikkö.koodistoUri))
+
+    expectedSuoritusData.koulutusmoduuli match {
+      case k: KoodistostaLöytyväKoulutusmoduuli =>
+        actualSuoritus.koulutusmoduuli.eurooppalainenTutkintojenViitekehysEQF should equal(haeSisältyväKoodi("eqf", k.tunniste))
+        actualSuoritus.koulutusmoduuli.kansallinenTutkintojenViitekehysNQF should equal(haeSisältyväKoodi("nqf", k.tunniste))
+      case _ =>
+    }
+
     actualSuoritus.toimipiste.map(_.oid) should equal(Some(expectedSuoritusData.toimipiste.oid))
     actualSuoritus.vahvistus.map(_.päivä) should equal(expectedSuoritusData.vahvistus.map(_.päivä))
     actualSuoritus.tyyppi.koodiarvo should equal(expectedSuoritusData.tyyppi.koodiarvo)
@@ -160,6 +172,10 @@ trait SuoritetutTutkinnotVerifiers extends Matchers
     actualOo.suoritukset.length should equal(1)
 
     actualSuoritus.koulutusmoduuli.tunniste.koodiarvo should equal(expectedSuoritusData.koulutusmoduuli.tunniste.koodiarvo)
+
+    actualSuoritus.koulutusmoduuli.eurooppalainenTutkintojenViitekehysEQF should equal(haeSisältyväKoodi("eqf", expectedSuoritusData.koulutusmoduuli.tunniste))
+    actualSuoritus.koulutusmoduuli.kansallinenTutkintojenViitekehysNQF should equal(haeSisältyväKoodi("nqf", expectedSuoritusData.koulutusmoduuli.tunniste))
+
     actualSuoritus.toimipiste.map(_.oid) should equal(Some(expectedSuoritusData.toimipiste.oid))
     actualSuoritus.vahvistus.map(_.päivä) should equal(expectedSuoritusData.vahvistus.map(_.päivä))
     actualSuoritus.tyyppi.koodiarvo should equal(expectedSuoritusData.tyyppi.koodiarvo)
@@ -180,6 +196,10 @@ trait SuoritetutTutkinnotVerifiers extends Matchers
     actualSuoritus.koulutusmoduuli.tunniste.koodiarvo should equal(expectedSuoritusData.koulutusmoduuli.tunniste.koodiarvo)
     actualSuoritus.koulutusmoduuli.koulutustyyppi.map(_.koodiarvo) should equal(expectedSuoritusData.koulutusmoduuli.koulutustyyppi.map(_.koodiarvo))
     actualSuoritus.koulutusmoduuli.virtaNimi should equal(expectedSuoritusData.koulutusmoduuli.virtaNimi)
+
+    actualSuoritus.koulutusmoduuli.eurooppalainenTutkintojenViitekehysEQF should equal(haeSisältyväKoodi("eqf", expectedSuoritusData.koulutusmoduuli.tunniste))
+    actualSuoritus.koulutusmoduuli.kansallinenTutkintojenViitekehysNQF should equal(haeSisältyväKoodi("nqf", expectedSuoritusData.koulutusmoduuli.tunniste))
+
     actualSuoritus.toimipiste.map(_.oid) should equal(Some(expectedSuoritusData.toimipiste.oid))
     actualSuoritus.vahvistus.map(_.päivä) should equal(expectedSuoritusData.vahvistus.map(_.päivä))
     actualSuoritus.tyyppi.koodiarvo should equal(expectedSuoritusData.tyyppi.koodiarvo)
@@ -196,6 +216,10 @@ trait SuoritetutTutkinnotVerifiers extends Matchers
 
     actualSuoritus.koulutusmoduuli.tunniste.koodiarvo should equal(expectedSuoritusData.koulutusmoduuli.tunniste.koodiarvo)
     actualSuoritus.koulutusmoduuli.curriculum.koodiarvo should equal(expectedSuoritusData.koulutusmoduuli.curriculum.koodiarvo)
+
+    actualSuoritus.koulutusmoduuli.eurooppalainenTutkintojenViitekehysEQF should equal(haeSisältyväKoodi("eqf", expectedSuoritusData.koulutusmoduuli.tunniste))
+    actualSuoritus.koulutusmoduuli.kansallinenTutkintojenViitekehysNQF should equal(haeSisältyväKoodi("nqf", expectedSuoritusData.koulutusmoduuli.tunniste))
+
     actualSuoritus.toimipiste.map(_.oid) should equal(Some(expectedSuoritusData.toimipiste.oid))
     actualSuoritus.vahvistus.map(_.päivä) should equal(expectedSuoritusData.vahvistus.map(_.päivä))
     actualSuoritus.tyyppi.koodiarvo should equal(expectedSuoritusData.tyyppi.koodiarvo)
@@ -211,6 +235,10 @@ trait SuoritetutTutkinnotVerifiers extends Matchers
     actualOo.suoritukset.length should equal(1)
 
     actualSuoritus.koulutusmoduuli.tunniste.koodiarvo should equal(expectedSuoritusData.koulutusmoduuli.tunniste.koodiarvo)
+
+    actualSuoritus.koulutusmoduuli.eurooppalainenTutkintojenViitekehysEQF should equal(haeSisältyväKoodi("eqf", expectedSuoritusData.koulutusmoduuli.tunniste))
+    actualSuoritus.koulutusmoduuli.kansallinenTutkintojenViitekehysNQF should equal(haeSisältyväKoodi("nqf", expectedSuoritusData.koulutusmoduuli.tunniste))
+
     actualSuoritus.toimipiste.map(_.oid) should equal(Some(expectedSuoritusData.toimipiste.oid))
     actualSuoritus.vahvistus.map(_.päivä) should equal(expectedSuoritusData.vahvistus.map(_.päivä))
     actualSuoritus.suorituskieli.map(_.koodiarvo) should equal(Some(expectedSuoritusData.suorituskieli.koodiarvo))
@@ -236,4 +264,14 @@ trait SuoritetutTutkinnotVerifiers extends Matchers
     actualOo.tyyppi.koodiarvo should equal(expectedOoData.tyyppi.koodiarvo)
   }
 
+  private def haeSisältyväKoodi(koodistoUri: String, tunniste: schema.Koodistokoodiviite): Option[schema.Koodistokoodiviite] = {
+    val koodisto = KoskiApplicationForTests.koodistoViitePalvelu.koodistoPalvelu.getLatestVersionRequired(koodistoUri)
+    val sisältyvä: Option[schema.Koodistokoodiviite] = KoskiApplicationForTests.koodistoViitePalvelu.getSisältyvätKoodiViitteet(koodisto, tunniste) match {
+      case Some(List(viite)) =>
+        Some(viite)
+      case _ =>
+        None
+    }
+    sisältyvä
+  }
 }

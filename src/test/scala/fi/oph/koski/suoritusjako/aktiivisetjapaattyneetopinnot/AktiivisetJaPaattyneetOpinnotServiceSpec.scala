@@ -1,6 +1,6 @@
 package fi.oph.koski.suoritusjako.aktiivisetjapaattyneetopinnot
 
-import fi.oph.koski.aktiivisetjapaattyneetopinnot.{AktiivisetJaPäättyneetOpinnotAikuistenPerusopetuksenOpiskeluoikeus, AktiivisetJaPäättyneetOpinnotAmmatillinenOpiskeluoikeus, AktiivisetJaPäättyneetOpinnotDIAOpiskeluoikeus, AktiivisetJaPäättyneetOpinnotEBTutkinnonOpiskeluoikeus, AktiivisetJaPäättyneetOpinnotEuropeanSchoolOfHelsinkiOpiskeluoikeus, AktiivisetJaPäättyneetOpinnotIBOpiskeluoikeus, AktiivisetJaPäättyneetOpinnotInternationalSchoolOpiskeluoikeus, AktiivisetJaPäättyneetOpinnotKoskeenTallennettavaOpiskeluoikeus, AktiivisetJaPäättyneetOpinnotLukionOpiskeluoikeus, AktiivisetJaPäättyneetOpinnotMuunKuinSäännellynKoulutuksenOpiskeluoikeus, AktiivisetJaPäättyneetOpinnotTutkintokoulutukseenValmentavanOpiskeluoikeus, AktiivisetJaPäättyneetOpinnotVapaanSivistystyönOpiskeluoikeus, AktiivisetJaPäättyneetOpinnotYlioppilastutkinnonOpiskeluoikeus}
+import fi.oph.koski.aktiivisetjapaattyneetopinnot.{AktiivisetJaPäättyneetOpinnotAikuistenPerusopetuksenOpiskeluoikeus, AktiivisetJaPäättyneetOpinnotAmmatillinenOpiskeluoikeus, AktiivisetJaPäättyneetOpinnotDIAOpiskeluoikeus, AktiivisetJaPäättyneetOpinnotEBTutkinnonOpiskeluoikeus, AktiivisetJaPäättyneetOpinnotEuropeanSchoolOfHelsinkiOpiskeluoikeus, AktiivisetJaPäättyneetOpinnotIBOpiskeluoikeus, AktiivisetJaPäättyneetOpinnotInternationalSchoolOpiskeluoikeus, AktiivisetJaPäättyneetOpinnotKoskeenTallennettavaOpiskeluoikeus, AktiivisetJaPäättyneetOpinnotLukionOpiskeluoikeus, AktiivisetJaPäättyneetOpinnotMuunKuinSäännellynKoulutuksenOpiskeluoikeus, AktiivisetJaPäättyneetOpinnotTutkintokoulutukseenValmentavanOpiskeluoikeus, AktiivisetJaPäättyneetOpinnotVapaanSivistystyönOpiskeluoikeus, AktiivisetJaPäättyneetOpinnotYlioppilastutkinnonOpiskeluoikeus, ViitekehyksellisenTutkintoSuorituksenKoulutusmoduuli}
 import fi.oph.koski.api.misc.{OpiskeluoikeusTestMethods, PutOpiskeluoikeusTestMethods}
 import fi.oph.koski.documentation.AmmatillinenExampleData._
 import fi.oph.koski.documentation.ExampleData.{longTimeAgo, opiskeluoikeusLäsnä, opiskeluoikeusMitätöity, valtionosuusRahoitteinen}
@@ -10,7 +10,7 @@ import fi.oph.koski.koskiuser.KoskiSpecificSession.SUORITUSJAKO_KATSOMINEN_USER
 import fi.oph.koski.koskiuser.Rooli.OPHKATSELIJA
 import fi.oph.koski.koskiuser._
 import fi.oph.koski.organisaatio.MockOrganisaatiot
-import fi.oph.koski.schema.MYPVuosiluokanSuoritus
+import fi.oph.koski.schema.{Koodistokoodiviite, MYPVuosiluokanSuoritus}
 import fi.oph.koski.suoritusjako.AktiivisetJaPäättyneetOpinnotOppijaJakolinkillä
 import fi.oph.koski.virta.MockVirtaClient
 import fi.oph.koski.ytr.MockYtrClient
@@ -68,6 +68,26 @@ class AktiivisetJaPäättyneetOpinnotServiceSpec
     oppijaOidit.foreach(oppijaOid => {
       val result = suoritusjakoService.findAktiivisetJaPäättyneetOpinnotOppija(oppijaOid)
       result.isRight should be(true)
+    })
+  }
+
+  "Palautetaan EQF- ja NQF-tietoja" in {
+    val oppija = KoskiSpecificMockOppijat.ammattilainen
+
+    val expectedOoData = getOpiskeluoikeus(oppija.oid, schema.OpiskeluoikeudenTyyppi.ammatillinenkoulutus.koodiarvo)
+
+    val result = suoritusjakoService.findAktiivisetJaPäättyneetOpinnotOppija(oppija.oid)
+
+    result.isRight should be(true)
+
+    result.map(o => {
+      verifyOppija(oppija, o)
+
+      val actualOo = o.opiskeluoikeudet.head
+      val actualSuoritukset = actualOo.suoritukset
+
+      actualSuoritukset.foreach(_.koulutusmoduuli.asInstanceOf[ViitekehyksellisenTutkintoSuorituksenKoulutusmoduuli].eurooppalainenTutkintojenViitekehysEQF should equal(Some(Koodistokoodiviite("4", "eqf"))))
+      actualSuoritukset.foreach(_.koulutusmoduuli.asInstanceOf[ViitekehyksellisenTutkintoSuorituksenKoulutusmoduuli].kansallinenTutkintojenViitekehysNQF should equal(Some(Koodistokoodiviite("4", "nqf"))))
     })
   }
 

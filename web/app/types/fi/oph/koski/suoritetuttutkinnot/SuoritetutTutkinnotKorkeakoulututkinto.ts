@@ -1,5 +1,6 @@
-import { SuoritetutTutkinnotKoodistokoodiviite } from './SuoritetutTutkinnotKoodistokoodiviite'
+import { Koodistokoodiviite } from '../schema/Koodistokoodiviite'
 import { LocalizedString } from '../schema/LocalizedString'
+import { SuoritetutTutkinnotKoodistokoodiviite } from './SuoritetutTutkinnotKoodistokoodiviite'
 
 /**
  * SuoritetutTutkinnotKorkeakoulututkinto
@@ -8,15 +9,19 @@ import { LocalizedString } from '../schema/LocalizedString'
  */
 export type SuoritetutTutkinnotKorkeakoulututkinto = {
   $class: 'fi.oph.koski.suoritetuttutkinnot.SuoritetutTutkinnotKorkeakoulututkinto'
-  tunniste: SuoritetutTutkinnotKoodistokoodiviite
-  koulutustyyppi?: SuoritetutTutkinnotKoodistokoodiviite
+  kansallinenTutkintojenViitekehysNQF?: Koodistokoodiviite<'nqf', string>
+  eurooppalainenTutkintojenViitekehysEQF?: Koodistokoodiviite<'eqf', string>
   virtaNimi?: LocalizedString
+  koulutustyyppi?: SuoritetutTutkinnotKoodistokoodiviite
+  tunniste: SuoritetutTutkinnotKoodistokoodiviite
 }
 
 export const SuoritetutTutkinnotKorkeakoulututkinto = (o: {
-  tunniste: SuoritetutTutkinnotKoodistokoodiviite
-  koulutustyyppi?: SuoritetutTutkinnotKoodistokoodiviite
+  kansallinenTutkintojenViitekehysNQF?: Koodistokoodiviite<'nqf', string>
+  eurooppalainenTutkintojenViitekehysEQF?: Koodistokoodiviite<'eqf', string>
   virtaNimi?: LocalizedString
+  koulutustyyppi?: SuoritetutTutkinnotKoodistokoodiviite
+  tunniste: SuoritetutTutkinnotKoodistokoodiviite
 }): SuoritetutTutkinnotKorkeakoulututkinto => ({
   $class:
     'fi.oph.koski.suoritetuttutkinnot.SuoritetutTutkinnotKorkeakoulututkinto',

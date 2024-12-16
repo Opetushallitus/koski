@@ -1,9 +1,10 @@
 package fi.oph.koski.aktiivisetjapaattyneetopinnot
 
 import fi.oph.koski.henkilo.LaajatOppijaHenkilöTiedot
+import fi.oph.koski.koodisto.KoodistoViitePalvelu
 import fi.oph.koski.schema
 import fi.oph.koski.schema.annotation.{Deprecated, KoodistoUri, Representative}
-import fi.oph.scalaschema.annotation.{Discriminator, ReadFlattened, SyntheticProperty, Title}
+import fi.oph.scalaschema.annotation.{Description, Discriminator, ReadFlattened, SyntheticProperty, Title}
 
 import java.time.LocalDate
 
@@ -67,10 +68,17 @@ trait Suoritus {
   def tyyppi: schema.Koodistokoodiviite
   def vahvistus: Option[Vahvistus]
   def toimipiste: Option[Toimipiste]
+
+  def withKoulutusmoduuli(km: SuorituksenKoulutusmoduuli): Suoritus = {
+    import mojave._
+    shapeless.lens[Suoritus].field[SuorituksenKoulutusmoduuli]("koulutusmoduuli").set(this)(km)
+  }
 }
 
 trait AktiivisetJaPäättyneetOpinnotKoodiViite {
   def koodiarvo: String
+
+  def toKoskiSchema: Option[schema.Koodistokoodiviite]
 }
 
 @Title("Koodistokoodiviite")
@@ -80,7 +88,21 @@ case class AktiivisetJaPäättyneetOpinnotKoodistokoodiviite(
   lyhytNimi: Option[schema.LocalizedString],
   koodistoUri: Option[String],
   koodistoVersio: Option[Int]
-) extends AktiivisetJaPäättyneetOpinnotKoodiViite
+) extends AktiivisetJaPäättyneetOpinnotKoodiViite {
+  def toKoskiSchema: Option[schema.Koodistokoodiviite] = {
+    koodistoUri match {
+      case Some(uri) =>
+        Some(schema.Koodistokoodiviite(
+          koodiarvo,
+          nimi,
+          lyhytNimi,
+          uri,
+          koodistoVersio
+        ))
+      case _ => None
+    }
+  }
+}
 
 object AktiivisetJaPäättyneetOpinnotKoodistokoodiviite{
   def fromKoskiSchema(kv: schema.Koodistokoodiviite) = AktiivisetJaPäättyneetOpinnotKoodistokoodiviite(
@@ -97,7 +119,9 @@ case class AktiivisetJaPäättyneetOpinnotPaikallinenKoodi(
   koodiarvo: String,
   nimi: schema.LocalizedString,
   koodistoUri: Option[String]
-) extends AktiivisetJaPäättyneetOpinnotKoodiViite
+) extends AktiivisetJaPäättyneetOpinnotKoodiViite {
+  def toKoskiSchema: Option[schema.Koodistokoodiviite] = None
+}
 
 object AktiivisetJaPäättyneetOpinnotPaikallinenKoodi {
   def fromKoskiSchema(kv: schema.PaikallinenKoodi) = AktiivisetJaPäättyneetOpinnotPaikallinenKoodi(
@@ -142,10 +166,46 @@ trait AktiivisetJaPäättyneetOpinnotOpiskeluoikeudenLisätiedot
 
 trait SuorituksenKoulutusmoduuli {
   def tunniste: AktiivisetJaPäättyneetOpinnotKoodiViite
+
+  def withViitekehykset(koodistoViitePalvelu: KoodistoViitePalvelu): SuorituksenKoulutusmoduuli = this
 }
 
 trait SuorituksenKooditettuKoulutusmoduuli extends SuorituksenKoulutusmoduuli {
   def tunniste: AktiivisetJaPäättyneetOpinnotKoodistokoodiviite
+}
+
+trait ViitekehyksellisenTutkintoSuorituksenKoulutusmoduuli extends SuorituksenKooditettuKoulutusmoduuli {
+  @KoodistoUri("eqf")
+  @Description("Koulutusta vastaava eurooppalainen tutkinnon viitekehystieto, jos tieto on saatavilla")
+  def eurooppalainenTutkintojenViitekehysEQF: Option[schema.Koodistokoodiviite]
+  @KoodistoUri("nqf")
+  @Description("Koulutusta vastaava kansallinen tutkinnon viitekehystieto, jos tieto on saatavilla")
+  def kansallinenTutkintojenViitekehysNQF: Option[schema.Koodistokoodiviite]
+
+  override def withViitekehykset(koodistoViitePalvelu: KoodistoViitePalvelu): ViitekehyksellisenTutkintoSuorituksenKoulutusmoduuli = {
+    import mojave._
+
+    val eqf: Option[schema.Koodistokoodiviite] = haeSisältyväKoodi(koodistoViitePalvelu, "eqf")
+    val nqf: Option[schema.Koodistokoodiviite] = haeSisältyväKoodi(koodistoViitePalvelu, "nqf")
+
+    val withEqf = shapeless.lens[ViitekehyksellisenTutkintoSuorituksenKoulutusmoduuli].field[Option[schema.Koodistokoodiviite]]("eurooppalainenTutkintojenViitekehysEQF").set(this)(eqf)
+    shapeless.lens[ViitekehyksellisenTutkintoSuorituksenKoulutusmoduuli].field[Option[schema.Koodistokoodiviite]]("kansallinenTutkintojenViitekehysNQF").set(withEqf)(nqf)
+  }
+
+  private def haeSisältyväKoodi(koodistoViitePalvelu: KoodistoViitePalvelu, koodistoUri: String): Option[schema.Koodistokoodiviite] = {
+    val koodisto = koodistoViitePalvelu.koodistoPalvelu.getLatestVersionRequired(koodistoUri)
+    tunniste.toKoskiSchema match {
+      case Some(koodiViite) =>
+        val sisältyvä: Option[schema.Koodistokoodiviite] = koodistoViitePalvelu.getSisältyvätKoodiViitteet(koodisto, koodiViite) match {
+          case Some(List(viite)) =>
+            Some(viite)
+          case _ =>
+            None
+        }
+        sisältyvä
+      case None => None
+    }
+  }
 }
 
 @Title("Päätason suoritus")
@@ -162,7 +222,9 @@ case class AktiivisetJaPäättyneetOpinnotPäätasonKoulutusmoduuli(
   tunniste: AktiivisetJaPäättyneetOpinnotKoodistokoodiviite,
   perusteenDiaarinumero: Option[String],
   koulutustyyppi: Option[AktiivisetJaPäättyneetOpinnotKoodistokoodiviite],
-) extends SuorituksenKooditettuKoulutusmoduuli
+  eurooppalainenTutkintojenViitekehysEQF: Option[schema.Koodistokoodiviite],
+  kansallinenTutkintojenViitekehysNQF: Option[schema.Koodistokoodiviite]
+) extends ViitekehyksellisenTutkintoSuorituksenKoulutusmoduuli
 
 @ReadFlattened
 @Title("Osaamisalajakso")

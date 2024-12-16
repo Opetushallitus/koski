@@ -66,6 +66,7 @@ class SuoritetutTutkinnotService(application: KoskiApplication) extends GlobalEx
             .filter(vahvistettuNykyhetkeenMennessä)
             .filter(josMuuAmmatillinenNiinTehtäväänValmistava)
             .filterNot(onKorotusSuoritus)
+            .map(lisääViitekehystiedot)
         )
       }.filter(_.suoritukset.nonEmpty)
   }
@@ -121,5 +122,9 @@ class SuoritetutTutkinnotService(application: KoskiApplication) extends GlobalEx
         if ms.korotettuOpiskeluoikeusOid.isDefined => true
       case _ => false
     }
+  }
+
+  private def lisääViitekehystiedot(s: Suoritus): Suoritus = {
+    s.withKoulutusmoduuli(s.koulutusmoduuli.withViitekehykset(application.koodistoViitePalvelu))
   }
 }

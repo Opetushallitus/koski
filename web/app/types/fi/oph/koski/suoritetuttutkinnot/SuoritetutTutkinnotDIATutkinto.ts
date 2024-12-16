@@ -1,4 +1,6 @@
 import { SuoritetutTutkinnotKoodistokoodiviite } from './SuoritetutTutkinnotKoodistokoodiviite'
+import { Koodistokoodiviite } from '../schema/Koodistokoodiviite'
+import { LocalizedString } from '../schema/LocalizedString'
 
 /**
  * SuoritetutTutkinnotDIATutkinto
@@ -8,10 +10,14 @@ import { SuoritetutTutkinnotKoodistokoodiviite } from './SuoritetutTutkinnotKood
 export type SuoritetutTutkinnotDIATutkinto = {
   $class: 'fi.oph.koski.suoritetuttutkinnot.SuoritetutTutkinnotDIATutkinto'
   tunniste: SuoritetutTutkinnotKoodistokoodiviite
+  eurooppalainenTutkintojenViitekehysEQF?: Koodistokoodiviite<'eqf', string>
+  kansallinenTutkintojenViitekehysNQF?: Koodistokoodiviite<'nqf', string>
 }
 
 export const SuoritetutTutkinnotDIATutkinto = (o: {
   tunniste: SuoritetutTutkinnotKoodistokoodiviite
+  eurooppalainenTutkintojenViitekehysEQF?: Koodistokoodiviite<'eqf', string>
+  kansallinenTutkintojenViitekehysNQF?: Koodistokoodiviite<'nqf', string>
 }): SuoritetutTutkinnotDIATutkinto => ({
   $class: 'fi.oph.koski.suoritetuttutkinnot.SuoritetutTutkinnotDIATutkinto',
   ...o

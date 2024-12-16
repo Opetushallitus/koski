@@ -42,5 +42,5 @@ case class AktiivisetJaPäättyneetOpinnotInternationalSchoolVuosiluokanSuoritus
 case class AktiivisetJaPäättyneetOpinnotInternationalSchoolKoulutusmoduuli(
   tunniste: AktiivisetJaPäättyneetOpinnotKoodistokoodiviite,
   koulutustyyppi: Option[AktiivisetJaPäättyneetOpinnotKoodistokoodiviite],
-  diplomaType: Option[AktiivisetJaPäättyneetOpinnotKoodistokoodiviite],
+  diplomaType: Option[AktiivisetJaPäättyneetOpinnotKoodistokoodiviite]
 ) extends SuorituksenKooditettuKoulutusmoduuli

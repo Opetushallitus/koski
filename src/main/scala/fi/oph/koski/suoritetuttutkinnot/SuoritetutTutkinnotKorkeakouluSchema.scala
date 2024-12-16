@@ -35,7 +35,9 @@ object SuoritetutTutkinnotKorkeakoulunOpiskeluoikeus {
         SuoritetutTutkinnotKorkeakoulututkinto(
           SuoritetutTutkinnotKoodistokoodiviite.fromKoskiSchema(s.koulutusmoduuli.tunniste),
           s.koulutusmoduuli.koulutustyyppi.map(SuoritetutTutkinnotKoodistokoodiviite.fromKoskiSchema),
-          s.koulutusmoduuli.virtaNimi
+          s.koulutusmoduuli.virtaNimi,
+          eurooppalainenTutkintojenViitekehysEQF = None,
+          kansallinenTutkintojenViitekehysNQF = None // TODO: TOR-2210
         ),
         Some(Toimipiste(
           s.toimipiste.oid,
@@ -81,5 +83,7 @@ case class SuoritetutTutkinnotKorkeakoulututkinnonSuoritus(
 case class SuoritetutTutkinnotKorkeakoulututkinto(
   tunniste: SuoritetutTutkinnotKoodistokoodiviite,
   koulutustyyppi: Option[SuoritetutTutkinnotKoodistokoodiviite],
-  virtaNimi: Option[schema.LocalizedString]
+  virtaNimi: Option[schema.LocalizedString],
+  eurooppalainenTutkintojenViitekehysEQF: Option[schema.Koodistokoodiviite],
+  kansallinenTutkintojenViitekehysNQF: Option[schema.Koodistokoodiviite]
 ) extends SuorituksenKoulutusmoduuli

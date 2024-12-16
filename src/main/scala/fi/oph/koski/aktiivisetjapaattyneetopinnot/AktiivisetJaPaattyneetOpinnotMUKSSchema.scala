@@ -40,4 +40,6 @@ case class AktiivisetJaPäättyneetOpinnotMuuKuinSäänneltyKoulutus(
   tunniste: AktiivisetJaPäättyneetOpinnotKoodistokoodiviite,
   koulutustyyppi: Option[AktiivisetJaPäättyneetOpinnotKoodistokoodiviite],
   opintokokonaisuus: AktiivisetJaPäättyneetOpinnotKoodistokoodiviite,
-) extends SuorituksenKoulutusmoduuli
+  eurooppalainenTutkintojenViitekehysEQF: Option[schema.Koodistokoodiviite],
+  kansallinenTutkintojenViitekehysNQF: Option[schema.Koodistokoodiviite]
+) extends ViitekehyksellisenTutkintoSuorituksenKoulutusmoduuli

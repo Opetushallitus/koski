@@ -1,5 +1,6 @@
-import { AktiivisetJaPäättyneetOpinnotKoodistokoodiviite } from './AktiivisetJaPaattyneetOpinnotKoodistokoodiviite'
+import { Koodistokoodiviite } from '../schema/Koodistokoodiviite'
 import { LocalizedString } from '../schema/LocalizedString'
+import { AktiivisetJaPäättyneetOpinnotKoodistokoodiviite } from './AktiivisetJaPaattyneetOpinnotKoodistokoodiviite'
 
 /**
  * AktiivisetJaPäättyneetOpinnotKorkeakoulututkinto
@@ -8,15 +9,19 @@ import { LocalizedString } from '../schema/LocalizedString'
  */
 export type AktiivisetJaPäättyneetOpinnotKorkeakoulututkinto = {
   $class: 'fi.oph.koski.aktiivisetjapaattyneetopinnot.AktiivisetJaPäättyneetOpinnotKorkeakoulututkinto'
-  tunniste: AktiivisetJaPäättyneetOpinnotKoodistokoodiviite
-  koulutustyyppi?: AktiivisetJaPäättyneetOpinnotKoodistokoodiviite
+  kansallinenTutkintojenViitekehysNQF?: Koodistokoodiviite<'nqf', string>
+  eurooppalainenTutkintojenViitekehysEQF?: Koodistokoodiviite<'eqf', string>
   virtaNimi?: LocalizedString
+  koulutustyyppi?: AktiivisetJaPäättyneetOpinnotKoodistokoodiviite
+  tunniste: AktiivisetJaPäättyneetOpinnotKoodistokoodiviite
 }
 
 export const AktiivisetJaPäättyneetOpinnotKorkeakoulututkinto = (o: {
-  tunniste: AktiivisetJaPäättyneetOpinnotKoodistokoodiviite
-  koulutustyyppi?: AktiivisetJaPäättyneetOpinnotKoodistokoodiviite
+  kansallinenTutkintojenViitekehysNQF?: Koodistokoodiviite<'nqf', string>
+  eurooppalainenTutkintojenViitekehysEQF?: Koodistokoodiviite<'eqf', string>
   virtaNimi?: LocalizedString
+  koulutustyyppi?: AktiivisetJaPäättyneetOpinnotKoodistokoodiviite
+  tunniste: AktiivisetJaPäättyneetOpinnotKoodistokoodiviite
 }): AktiivisetJaPäättyneetOpinnotKorkeakoulututkinto => ({
   $class:
     'fi.oph.koski.aktiivisetjapaattyneetopinnot.AktiivisetJaPäättyneetOpinnotKorkeakoulututkinto',

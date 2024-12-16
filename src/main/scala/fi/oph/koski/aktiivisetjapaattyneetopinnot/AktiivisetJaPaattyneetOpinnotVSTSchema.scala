@@ -76,25 +76,33 @@ case class AktiivisetJaPäättyneetOpinnotVapaanSivistystyönMaahanmuuttajienKot
   tunniste: AktiivisetJaPäättyneetOpinnotKoodistokoodiviite,
   perusteenDiaarinumero: Option[String],
   koulutustyyppi: Option[AktiivisetJaPäättyneetOpinnotKoodistokoodiviite],
-) extends SuorituksenKooditettuKoulutusmoduuli
+  eurooppalainenTutkintojenViitekehysEQF: Option[schema.Koodistokoodiviite],
+  kansallinenTutkintojenViitekehysNQF: Option[schema.Koodistokoodiviite]
+) extends ViitekehyksellisenTutkintoSuorituksenKoulutusmoduuli
 
 @Title("Oppivelvollisille suunnattu vapaan sivistystyön koulutus")
 case class AktiivisetJaPäättyneetOpinnotOppivelvollisilleSuunnattuVapaanSivistystyönKoulutus(
   tunniste: AktiivisetJaPäättyneetOpinnotKoodistokoodiviite,
   perusteenDiaarinumero: Option[String],
   koulutustyyppi: Option[AktiivisetJaPäättyneetOpinnotKoodistokoodiviite],
-) extends SuorituksenKooditettuKoulutusmoduuli
+  eurooppalainenTutkintojenViitekehysEQF: Option[schema.Koodistokoodiviite],
+  kansallinenTutkintojenViitekehysNQF: Option[schema.Koodistokoodiviite]
+) extends ViitekehyksellisenTutkintoSuorituksenKoulutusmoduuli
 
 @Title("Vapaan sivistystyön JOTPA-koulutus")
 case class AktiivisetJaPäättyneetOpinnotVapaanSivistystyönJotpaKoulutus(
   tunniste: AktiivisetJaPäättyneetOpinnotKoodistokoodiviite,
   koulutustyyppi: Option[AktiivisetJaPäättyneetOpinnotKoodistokoodiviite],
   opintokokonaisuus: AktiivisetJaPäättyneetOpinnotKoodistokoodiviite,
-) extends SuorituksenKooditettuKoulutusmoduuli
+  eurooppalainenTutkintojenViitekehysEQF: Option[schema.Koodistokoodiviite],
+  kansallinenTutkintojenViitekehysNQF: Option[schema.Koodistokoodiviite]
+) extends ViitekehyksellisenTutkintoSuorituksenKoulutusmoduuli
 
 @Title("Vapaan sivistystyön lukutaitokoulutus")
 case class AktiivisetJaPäättyneetOpinnotVapaanSivistystyönLukutaitokoulutus(
   tunniste: AktiivisetJaPäättyneetOpinnotKoodistokoodiviite,
   perusteenDiaarinumero: Option[String],
   koulutustyyppi: Option[AktiivisetJaPäättyneetOpinnotKoodistokoodiviite],
-) extends SuorituksenKooditettuKoulutusmoduuli
+  eurooppalainenTutkintojenViitekehysEQF: Option[schema.Koodistokoodiviite],
+  kansallinenTutkintojenViitekehysNQF: Option[schema.Koodistokoodiviite]
+) extends ViitekehyksellisenTutkintoSuorituksenKoulutusmoduuli

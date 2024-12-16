@@ -33,7 +33,9 @@ object AktiivisetJaPäättyneetOpinnotYlioppilastutkinnonOpiskeluoikeus {
     ),
     suoritukset = yo.suoritukset.map(s => AktiivisetJaPäättyneetOpinnotYlioppilastutkinnonPäätasonSuoritus(
       AktiivisetJaPäättyneetOpinnotYlioppilastutkinnonSuorituksenKoulutusmoduuli(
-        AktiivisetJaPäättyneetOpinnotKoodistokoodiviite.fromKoskiSchema(s.koulutusmoduuli.tunniste)
+        AktiivisetJaPäättyneetOpinnotKoodistokoodiviite.fromKoskiSchema(s.koulutusmoduuli.tunniste),
+        eurooppalainenTutkintojenViitekehysEQF = None, // Täydennetään myöhemmässä vaiheessa
+        kansallinenTutkintojenViitekehysNQF = None, // Täydennetään myöhemmässä vaiheessa
       ),
       Some(Toimipiste(
         s.toimipiste.oid,
@@ -77,5 +79,7 @@ case class AktiivisetJaPäättyneetOpinnotYlioppilastutkinnonPäätasonSuoritus(
 
 case class AktiivisetJaPäättyneetOpinnotYlioppilastutkinnonSuorituksenKoulutusmoduuli(
   tunniste: AktiivisetJaPäättyneetOpinnotKoodistokoodiviite,
-) extends SuorituksenKoulutusmoduuli
+  eurooppalainenTutkintojenViitekehysEQF: Option[schema.Koodistokoodiviite],
+  kansallinenTutkintojenViitekehysNQF: Option[schema.Koodistokoodiviite]
+) extends ViitekehyksellisenTutkintoSuorituksenKoulutusmoduuli
 

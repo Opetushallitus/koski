@@ -114,14 +114,12 @@ const dokumentaatioContentP = (location, contentP) =>
             ''
           )}
 
-{/* TODO: TOR-2210: Poista kommenttimerkit lisätäksesi navigointiin, kun dokumentaatio on julkaisuvalmis
           {naviLink(
             '/koski/dokumentaatio/rajapinnat/oauth2/omadata',
-            'OAuth2-standardin mukaiset Omadata-rajapinnat',
+            'OAuth2-omadata-rajapinnat',
             location,
             ''
           )}
-*/}
 
           {naviLink(
             '/koski/dokumentaatio/rajapinnat/massaluovutus/koulutuksenjarjestajat',
