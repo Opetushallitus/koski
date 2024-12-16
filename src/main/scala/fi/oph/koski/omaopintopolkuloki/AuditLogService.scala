@@ -2,15 +2,19 @@ package fi.oph.koski.omaopintopolkuloki
 
 
 import java.util
-import com.amazonaws.services.dynamodbv2.document.{Item}
-import com.amazonaws.services.dynamodbv2.document.spec.QuerySpec
 import fi.oph.koski.config.KoskiApplication
-import fi.oph.koski.organisaatio.{Opetushallitus}
+import fi.oph.koski.organisaatio.Opetushallitus
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.log.Logging
 import fi.oph.koski.schema.LocalizedString
 import fi.oph.koski.omaopintopolkuloki.AuditLogDynamoDB.AuditLogTableName
+import fi.oph.scalaschema.Serializer.format
+import org.json4s.{Extraction, JValue}
+import org.json4s.jackson.JsonMethods.compact
+import software.amazon.awssdk.services.dynamodb.DynamoDbClient
+import software.amazon.awssdk.services.dynamodb.model.QueryResponse
+import software.amazon.awssdk.services.dynamodb.model.{AttributeValue, QueryRequest}
 
 import scala.collection.JavaConverters._
 
@@ -22,23 +26,23 @@ class AuditLogService(app: KoskiApplication) extends Logging {
     runQuery(oppijaOid).flatMap(results => HttpStatus.foldEithers(buildLogs(results).toSeq))
   }
 
-  private def runQuery(oppijaOid: String): Either[HttpStatus, Seq[Item]] = {
-    val auditLogTable = dynamoDB.getTable(AuditLogTableName)
-    val querySpec = new QuerySpec()
-      .withKeyConditionExpression("studentOid = :oid")
-      .withFilterExpression("not contains (organizationOid, :self) and (contains (#rawEntry, :katsominen) or contains(#rawEntry, :varda_service))")
-      .withNameMap(Map("#rawEntry" -> "raw").asJava)
-      .withValueMap({
-        val valueMap = new util.HashMap[String, Object]()
-        valueMap.put(":oid", oppijaOid)
-        valueMap.put(":self", "self")
-        valueMap.put(":katsominen", "\"OPISKELUOIKEUS_KATSOMINEN\"")
-        valueMap.put(":varda_service", "\"varda\"")
+  private def runQuery(oppijaOid: String): Either[HttpStatus, Seq[util.Map[String, AttributeValue]]] = {
+    val querySpec = QueryRequest.builder
+      .tableName(AuditLogTableName)
+      .keyConditionExpression("studentOid = :oid")
+      .filterExpression("not contains (organizationOid, :self) and (contains (#rawEntry, :katsominen) or contains(#rawEntry, :varda_service))")
+      .expressionAttributeNames(Map("#rawEntry" -> "raw").asJava)
+      .expressionAttributeValues({
+        val valueMap = new util.HashMap[String, AttributeValue]()
+        valueMap.put(":oid", AttributeValue.builder.s(oppijaOid).build)
+        valueMap.put(":self", AttributeValue.builder.s("self").build)
+        valueMap.put(":katsominen", AttributeValue.builder.s("\"OPISKELUOIKEUS_KATSOMINEN\"").build)
+        valueMap.put(":varda_service", AttributeValue.builder.s("\"varda\"").build)
         valueMap
       })
 
     try {
-      Right(auditLogTable.query(querySpec).asScala.toIterator.toList)
+      Right(dynamoDB.query(querySpec.build()).items().asScala)
     } catch {
       case e: Exception => {
         logger.error(e)(s"AuditLogien haku epäonnistui oidille $oppijaOid")
@@ -46,10 +50,25 @@ class AuditLogService(app: KoskiApplication) extends Logging {
       }
     }
   }
+  private def convertToAuditLogRow(item: util.Map[String, AttributeValue]): AuditlogRow = {
+    val organizationOid = item.asScala.view.collectFirst {
+      case ("organizationOid", value) if value.ss() != null => value.ss().asScala.toList
+    }.getOrElse(List.empty[String])
 
-  private def buildLogs(queryResults: Seq[Item]): Iterable[Either[HttpStatus, OrganisaationAuditLogit]] = {
+    val raw = item.asScala.view.collectFirst {
+      case ("raw", value) if value.ss() != null => value.s()
+    }.getOrElse("")
+
+    val time = item.asScala.view.collectFirst {
+      case ("time", value) if value.s() != null => value.s()
+    }.getOrElse("")
+
+    AuditlogRow(organizationOid, raw, time)
+  }
+
+  private def buildLogs(queryResults: Seq[util.Map[String, AttributeValue]]): Iterable[Either[HttpStatus, OrganisaationAuditLogit]] = {
     val timestampsGroupedByListOfOidsAndServiceName = queryResults.map(item => {
-      val parsedRow = JsonSerializer.parse[AuditlogRow](item.toJSON, ignoreExtras = true)
+      val parsedRow = convertToAuditLogRow(item)
       val parsedRaw = JsonSerializer.parse[AuditlogRaw](parsedRow.raw, ignoreExtras = true)
       val organisaatioOidit = parsedRow.organizationOid
       val timestampString = parsedRow.time

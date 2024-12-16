@@ -1,15 +1,16 @@
 package fi.oph.koski.ytr
 
-import com.amazonaws.services.s3.AmazonS3URI
-import fi.oph.koski.config.{Environment, KoskiApplication}
+import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.log.Logging
 import fi.oph.koski.util.Streams
 import fi.oph.koski.ytr.MockYtrClient.yoTodistusResource
 import software.amazon.awssdk.core.sync.ResponseTransformer
+import software.amazon.awssdk.services.s3.{S3Client, S3Utilities}
 import software.amazon.awssdk.services.s3.model.{GetObjectRequest, GetObjectResponse}
 
 import java.io.OutputStream
+import java.net.URI
 
 object YoTodistusService {
   def apply(application: KoskiApplication): YoTodistusService = {
@@ -70,8 +71,10 @@ class RemoteYoTodistusService(application: KoskiApplication, config: YtrS3Config
     }
 
   private def objectRequest(url: String) = {
-    val uri = new AmazonS3URI(url)
-    logger.info(s"getCertificate ${uri.getKey} from bucket ${uri.getBucket} (url = $url)")
-    GetObjectRequest.builder.bucket(uri.getBucket).key(uri.getKey).build
+    val uri = S3Client.create.utilities.parseUri(URI.create(url))
+    val bucket = uri.bucket().get()
+    val key = uri.key().get()
+    logger.info(s"getCertificate ${key} from bucket ${bucket} (url = $url)")
+    GetObjectRequest.builder.bucket(bucket).key(key).build
   }
 }
