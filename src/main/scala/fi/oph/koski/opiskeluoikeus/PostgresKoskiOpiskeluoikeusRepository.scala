@@ -88,8 +88,9 @@ class PostgresKoskiOpiskeluoikeusRepository(
     opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus,
     allowUpdate: Boolean,
     allowDeleteCompleted: Boolean = false,
+    skipValidations: Boolean = false,
   )(implicit user: KoskiSpecificSession): Either[HttpStatus, CreateOrUpdateResult] = {
-    actions.createOrUpdate(oppijaOid, opiskeluoikeus, allowUpdate, allowDeleteCompleted)
+    actions.createOrUpdate(oppijaOid, opiskeluoikeus, allowUpdate, allowDeleteCompleted, skipValidations)
   }
 
   def merkitseSuoritusjakoTehdyksiIlmanKäyttöoikeudenTarkastusta(oid: String): HttpStatus = {
