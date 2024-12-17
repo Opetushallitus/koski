@@ -69,12 +69,13 @@ trait PostgresOpiskeluoikeusRepositoryActions[OOROW <: OpiskeluoikeusRow, OOTABL
     opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus,
     allowUpdate: Boolean,
     allowDeleteCompleted: Boolean,
+    skipValidations: Boolean = false
   )(implicit user: KoskiSpecificSession): Either[HttpStatus, CreateOrUpdateResult] = {
     def createOrUpdateWithRetry: Either[HttpStatus, CreateOrUpdateResult] = {
       val result = try {
         runDbSync {
           (for {
-            result <- createOrUpdateAction(oppijaOid, opiskeluoikeus, allowUpdate, allowDeleteCompleted)
+            result <- createOrUpdateAction(oppijaOid, opiskeluoikeus, allowUpdate, allowDeleteCompleted, skipValidations)
             syncAction <- syncAction(oppijaOid, opiskeluoikeus, result)
           } yield result).transactionally
         }
@@ -115,6 +116,7 @@ trait PostgresOpiskeluoikeusRepositoryActions[OOROW <: OpiskeluoikeusRow, OOTABL
     opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus,
     allowUpdate: Boolean,
     allowDeleteCompleted: Boolean = false,
+    skipValidations: Boolean = false,
   )(implicit user: KoskiSpecificSession): dbio.DBIOAction[Either[HttpStatus, CreateOrUpdateResult], NoStream, Read with Write with Transactional]
 
   protected def findByIdentifierAction(identifier: OpiskeluoikeusIdentifier)(implicit user: KoskiSpecificSession): dbio.DBIOAction[Either[HttpStatus, List[OOROW]], NoStream, Read] = {
@@ -203,10 +205,11 @@ trait PostgresOpiskeluoikeusRepositoryActions[OOROW <: OpiskeluoikeusRow, OOTABL
     oppijaOid: PossiblyUnverifiedHenkilöOid,
     oldRow: OOROW,
     uusiOpiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus,
-    allowDeleteCompletedSuoritukset: Boolean
+    allowDeleteCompletedSuoritukset: Boolean,
+    skipValidations: Boolean = false
   )(implicit user: KoskiSpecificSession): DBIOAction[Either[HttpStatus, CreateOrUpdateResult], NoStream, Read with Write with Transactional] = {
     if (oppijaOid.oppijaOid == oldRow.oppijaOid) {
-      updateAction(oldRow, uusiOpiskeluoikeus, allowDeleteCompletedSuoritukset)
+      updateAction(oldRow, uusiOpiskeluoikeus, allowDeleteCompletedSuoritukset, skipValidations)
     } else { // Check if oppija oid belongs to master of slave oppija oids
       oppijaOidsByOppijaOid(oldRow.oppijaOid).flatMap { oids =>
         if (oids.contains(oppijaOid.oppijaOid)) {
@@ -221,7 +224,8 @@ trait PostgresOpiskeluoikeusRepositoryActions[OOROW <: OpiskeluoikeusRow, OOTABL
   private def updateAction[A <: PäätasonSuoritus](
     oldRow: OOROW,
     uusiOpiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus,
-    allowDeleteCompletedSuoritukset: Boolean
+    allowDeleteCompletedSuoritukset: Boolean,
+    skipValidations: Boolean = false
   )(implicit user: KoskiSpecificSession): DBIOAction[Either[HttpStatus, CreateOrUpdateResult], NoStream, Write with Transactional with Read] = {
     val (id, oid, versionumero) = (oldRow.id, oldRow.oid, oldRow.versionumero)
     val nextVersionumero = versionumero + 1
@@ -239,13 +243,14 @@ trait PostgresOpiskeluoikeusRepositoryActions[OOROW <: OpiskeluoikeusRow, OOTABL
         val onVstOsaamismerkinSuoritus = tallennettavaOpiskeluoikeus.suoritukset.exists(_.tyyppi.koodiarvo == "vstosaamismerkki")
         val onMitätöitävissä = OpiskeluoikeusAccessChecker.isInvalidatable(tallennettavaOpiskeluoikeus, user)
 
-        val ohitaValidaatiovirheeet = config.getStringList("validaatiot.ohitaValidaatiovirheetKäyttäjällä").contains(user.user.username)
+        val ohitaValidaatiovirheetKäyttäjällä = config.getStringList("validaatiot.ohitaValidaatiovirheetKäyttäjällä").contains(user.user.username)
+        val ohitaValidaatiovirheet = ohitaValidaatiovirheetKäyttäjällä || skipValidations
 
         validator.validateOpiskeluoikeusChange(vanhaOpiskeluoikeus, tallennettavaOpiskeluoikeus) match {
           case HttpStatus.ok if tallennettavaOpiskeluoikeus.mitätöity && onTaiteenPerusopetusOpiskeluoikeus && !onMitätöitävissä =>
             DBIO.successful(Left(KoskiErrorCategory.forbidden("Mitätöinti ei sallittu")))
-          case status if status.isOk || ohitaValidaatiovirheeet =>
-            if (status.isError) {
+          case status if status.isOk || ohitaValidaatiovirheet =>
+            if (status.isError && ohitaValidaatiovirheetKäyttäjällä) {
               logger.info(s"Ohitetaan käyttäjätunnuksen perusteella validaatiovirheitä")
             }
             if (tallennettavaOpiskeluoikeus.mitätöity && (onVstVapaatavoitteinenSuoritus || onVstOsaamismerkinSuoritus || onTaiteenPerusopetusOpiskeluoikeus)) {
