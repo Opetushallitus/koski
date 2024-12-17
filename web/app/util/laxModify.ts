@@ -1,6 +1,37 @@
 import { updateAt } from './array'
 
-export type PathToken = string | number
+/**
+ * Polun osa.
+ *
+ * Merkkijono on objektin propertyn nimi.
+ * Numero on taulukon indeksi.
+ * OptionalProp on objektin property, joka voi olla tyhjä. Kyseinen tyyppi sisältää myös ohjeet tyhjän arvon luomiseksi.
+ */
+export type PathToken = string | number | OptionalProp
+
+export type OptionalProp = {
+  key: string
+  onEmpty: () => any
+}
+
+const isOptionalProp = (a?: any): a is OptionalProp =>
+  typeof a === 'object' &&
+  typeof a.key === 'string' &&
+  typeof a.onEmpty === 'function'
+
+const getKey = (token: PathToken): string | number =>
+  isOptionalProp(token) ? token.key : token
+
+const getValueOrCreate = (t: any, token: PathToken): any =>
+  isOptionalProp(token) ? t?.[token.key] ?? token.onEmpty() : t?.[token]
+
+export const get =
+  <T>(...path: PathToken[]) =>
+  (t: any): T => {
+    if (path.length === 0) return t
+    const [head, ...tail] = path
+    return get(...tail)(getValueOrCreate(t, head)) as T
+  }
 
 export const modify =
   (...path: PathToken[]) =>
@@ -19,14 +50,23 @@ export const modifyWithDebug =
   <T>(t: T): T => {
     let valueAtPath: any = undefined
     let resultAtPath: any = undefined
-    const result = modify(...path)((value) => {
-      valueAtPath = value
-      resultAtPath = f(value as any)
-      return resultAtPath
-    })(t)
+    let result: any = undefined
+    let error: any = undefined
+    try {
+      result = modify(...path)((value) => {
+        valueAtPath = value
+        resultAtPath = f(value as any)
+        return resultAtPath
+      })(t)
+    } catch (err) {
+      error = err
+    }
     console.group('Modify')
     console.log('Source:', t)
-    console.log('Path:', path.join('.'))
+    console.log(
+      'Path:',
+      path.map((p) => (isOptionalProp(p) ? `${p.key}?` : p)).join('.')
+    )
     console.group('Values along path')
     valuesAlongPath(t, path).forEach(({ path: p, value }) => {
       if (value === undefined) {
@@ -40,24 +80,27 @@ export const modifyWithDebug =
     console.log('Before:', valueAtPath)
     console.log('After:', resultAtPath)
     console.groupEnd()
-    console.log('Result:', result)
+    if (result !== undefined) console.log('Result:', result)
+    if (error !== undefined) console.log('Error:', error)
     console.groupEnd()
     return result
   }
 
 const modifyObjectOrArray = <T>(
   obj: T,
-  key: PathToken,
+  token: PathToken,
   f: (a: any) => any
 ): T =>
   typeof obj === 'object'
     ? Array.isArray(obj)
-      ? typeof key === 'number'
-        ? (updateAt(key, f(obj[key]))(obj || []) as T)
-        : throwError(`Invalid path: key '${key}' cannot point to an array`)
-      : { ...obj, [key]: f((obj as any)[key]) }
+      ? typeof token === 'number'
+        ? (updateAt(token, f(getValueOrCreate(obj, token)))(obj || []) as T)
+        : throwError(
+            `Invalid path: key '${getKey(token)}' cannot point to an array`
+          )
+      : { ...obj, [getKey(token)]: f(getValueOrCreate(obj, token)) }
     : throwError(
-        `Invalid path: key '${key}' cannot point to a non-object ${JSON.stringify(obj)}`
+        `Invalid path: key '${token}' cannot point to a non-object ${JSON.stringify(obj)}`
       )
 
 const throwError = (message: string): never => {
@@ -67,12 +110,16 @@ const throwError = (message: string): never => {
 const valuesAlongPath = (
   t: any,
   path: PathToken[],
-  accumPath: string = '.'
+  accumPath: string = ''
 ): Array<{ path: string; value: any }> => {
-  if (path.length === 0) return []
+  if (path.length === 0) return [{ path: accumPath, value: t }]
   const [token, ...rest] = path
   return [
     { path: accumPath, value: t },
-    ...valuesAlongPath(t?.[token], rest, accumPath + token + '.')
+    ...valuesAlongPath(
+      getValueOrCreate(t, token),
+      rest,
+      accumPath + '.' + getKey(token)
+    )
   ]
 }
