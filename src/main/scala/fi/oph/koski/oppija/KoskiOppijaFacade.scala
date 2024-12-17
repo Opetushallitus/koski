@@ -177,6 +177,7 @@ class KoskiOppijaFacade(
     allowUpdate: Boolean,
     allowDeleteCompleted: Boolean = false,
     skipGlobaaliValidation: Boolean = false,
+    skipValidations: Boolean = false,
   )(implicit user: KoskiSpecificSession): Either[HttpStatus, HenkilönOpiskeluoikeusVersiot] = {
     val timedBlockname = s"createOrUpdate ${oppija.opiskeluoikeudet.map(_.tyyppi.koodiarvo).mkString(",")}"
     timed(timedBlockname) {
@@ -221,7 +222,7 @@ class KoskiOppijaFacade(
               Left(KoskiErrorCategory.forbidden.omienTietojenMuokkaus())
             } else {
               val opiskeluoikeusCreationResults: Seq[Either[HttpStatus, OpiskeluoikeusVersio]] = opiskeluoikeudet.map { opiskeluoikeus =>
-                createOrUpdateOpiskeluoikeus(oppijaOid, opiskeluoikeus, allowUpdate, allowDeleteCompleted)
+                createOrUpdateOpiskeluoikeus(oppijaOid, opiskeluoikeus, allowUpdate, allowDeleteCompleted, skipValidations)
               }
 
               opiskeluoikeusCreationResults.find(_.isLeft) match {
@@ -272,14 +273,15 @@ class KoskiOppijaFacade(
     invalidate(
       opiskeluoikeusOid,
       cancelPäätasonSuoritus(opiskeluoikeusOid, päätasonSuoritus, versionumero),
-      oppija => createOrUpdate(oppija, allowUpdate = true, allowDeleteCompleted = true, skipGlobaaliValidation = true)
+      oppija => createOrUpdate(oppija, allowUpdate = true, allowDeleteCompleted = true, skipGlobaaliValidation = true, skipValidations = true)
     )
 
   private def createOrUpdateOpiskeluoikeus(
     oppijaOid: PossiblyUnverifiedHenkilöOid,
     opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus,
     allowUpdate: Boolean,
-    allowDeleteCompleted: Boolean = false
+    allowDeleteCompleted: Boolean = false,
+    skipValidations: Boolean = false,
   )(implicit user: KoskiSpecificSession)
   : Either[HttpStatus, OpiskeluoikeusVersio] = {
     if (oppijaOid.oppijaOid == user.oid) {
@@ -289,7 +291,7 @@ class KoskiOppijaFacade(
         case ytrOo: YlioppilastutkinnonOpiskeluoikeus =>
           ytrDownloadedOpiskeluoikeusRepository.createOrUpdate(oppijaOid, ytrOo)
         case _ =>
-          opiskeluoikeusRepository.createOrUpdate(oppijaOid, opiskeluoikeus, allowUpdate, allowDeleteCompleted)
+          opiskeluoikeusRepository.createOrUpdate(oppijaOid, opiskeluoikeus, allowUpdate, allowDeleteCompleted, skipValidations)
       }
       result.right.map { (result: CreateOrUpdateResult) =>
         applicationLog(oppijaOid, opiskeluoikeus, result)
