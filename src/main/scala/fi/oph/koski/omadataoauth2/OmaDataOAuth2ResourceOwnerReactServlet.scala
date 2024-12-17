@@ -15,10 +15,20 @@ class OmaDataOAuth2ResourceOwnerReactServlet(implicit val application: KoskiAppl
     FrontendValvontaMode(application.config.getString("frontend-valvonta.mode"))
 
   get("/authorize")(nonce => {
-    val lang = setLangCookieIfNecessary
-
     val uri = request.getRequestURI
     val queryString = request.getQueryString
+
+    logger.info(s"/authorize langFromCookie: ${langFromCookie}")
+
+    val lang = multiParams("client_id").map(getOverrideDefaultLang) match {
+      case Seq(Some(lang)) if langFromCookie.isEmpty =>
+        logger.info(s"/authorize setting language cookie based on config to: ${lang}, refresh via redirect")
+        setLanguageCookie(lang, response)
+        redirect(s"$uri?${queryString.replace("+", "%20")}")
+      case _ =>
+        setLangCookieFromDomainIfNecessary
+        langFromCookie.getOrElse(langFromDomain)
+    }
 
     // + -enkoodatut query-stringit rikkoutuvat redirecteissä, mutta esim. openid-client -OAuth2-kirjasto lähettää scopet +-enkoodattuina
     if (queryString.contains('+')) {

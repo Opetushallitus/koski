@@ -54,7 +54,7 @@ const HetuLogin = ({ loginUrl = '/koski/cas/oppija', redirectUrl = null }) => {
   })
 
   login.onValue((x) => {
-    Cookie.set('lang', x.lang)
+    //Cookie.set('lang', x.lang)
     if (
       x.resp.headers &&
       x.resp.headers.map &&
