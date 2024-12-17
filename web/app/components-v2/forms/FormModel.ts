@@ -59,6 +59,14 @@ export type FormModel<O extends object> = {
   readonly updateAt: <T>(optic: FormOptic<O, T>, modify: (t: T) => T) => void
 
   /**
+   * Päivitä lomakkeen tietoja
+   *
+   * @param modify Funktio joka ottaa argumenttina vastaan osoitetun arvon edellisen tilan ja palauttaa uuden.
+   * @see https://akheron.github.io/optics-ts/
+   */
+  readonly update: (modify: (t: O) => O) => void
+
+  /**
    * Validoi lomakkeen tiedot lomakkeelle annettua constraintia vasten.
    * Validoinnin tulos tallentuu propertyihin *isValid* ja *errors*.
    */
@@ -164,6 +172,21 @@ export const useForm = <O extends object>(
     [editMode, initialData, validate]
   )
 
+  const root: FormModelProp<'root'> = useMemo(() => $.optic_<O>(), [])
+
+  const update: FormModelProp<'update'> = useCallback(
+    <T>(modify: (t: O) => O) => {
+      if (editMode) {
+        dispatch({
+          type: 'modify',
+          modify,
+          modifyInitialData: modifiesShape(root, modify, initialData)
+        })
+      }
+    },
+    [editMode, initialData, root]
+  )
+
   const { push: setErrors, clearAll: clearErrors } = globalErrors
   const save: FormModelProp<'save'> = useCallback(
     async <T>(
@@ -192,8 +215,6 @@ export const useForm = <O extends object>(
     [clearErrors, data, editMode, setEditMode, setErrors]
   )
 
-  const root: FormModelProp<'root'> = useMemo(() => $.optic_<O>(), [])
-
   return useMemo(
     () => ({
       state: data,
@@ -207,6 +228,7 @@ export const useForm = <O extends object>(
       root,
       startEdit,
       pending,
+      update,
       updateAt,
       validate,
       save,
@@ -224,6 +246,7 @@ export const useForm = <O extends object>(
       root,
       startEdit,
       pending,
+      update,
       updateAt,
       validate,
       save,
