@@ -3,7 +3,7 @@ import {
   DialogField,
   useDialogField
 } from '../../components-v2/createdialog/DialogField'
-import { OppiaineOsasuoritus } from '../../components-v2/opiskeluoikeus/OppiaineTable'
+import { Oppiaine } from '../../components-v2/opiskeluoikeus/OppiaineTable'
 import {
   isKoodistokoodiviite,
   Koodistokoodiviite
@@ -36,7 +36,6 @@ export type IBOsasuoritusState<T> = {
 export type UusiOsasuoritustyyppi = 'lukio' | 'ib'
 
 export const useIBOsasuoritusState = <T>(
-  koulutus: KoulutusmoduuliOf<OppiaineOsasuoritus>,
   createOsasuoritus: (p: PreIBKurssiProps) => T
 ): IBOsasuoritusState<T> => {
   const tunniste = useDialogField<IBOsasuoritusTunniste>(true)

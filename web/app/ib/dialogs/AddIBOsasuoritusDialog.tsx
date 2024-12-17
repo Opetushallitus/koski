@@ -66,7 +66,7 @@ export const AddIBOsasuoritusDialog: AddOppiaineenOsasuoritusDialog<
     remove: removeIBKurssi
   } = usePreferences<IBKurssi>(props.organisaatioOid, 'ibkurssi')
 
-  const state = useIBOsasuoritusState(koulutus, createPreIBKurssinSuoritus2015)
+  const state = useIBOsasuoritusState(createPreIBKurssinSuoritus2015)
 
   const valtakunnallisetTunnisteetOptions =
     useOppiaineenKurssiOptions(

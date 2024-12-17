@@ -9,7 +9,7 @@ import { TestIdLayer } from '../../appstate/useTestId'
 
 export type KoodistoSelectProps<T extends string> = CommonProps<{
   koodistoUri: T
-  addNewText: string | LocalizedString
+  addNewText?: string | LocalizedString
   onSelect: (
     tunniste: Koodistokoodiviite<T> | undefined,
     isNew: boolean
@@ -19,6 +19,7 @@ export type KoodistoSelectProps<T extends string> = CommonProps<{
   testId: string | number
   value?: string
   zeroValueOption?: boolean
+  inlineOptions?: boolean
 }>
 
 export function KoodistoSelect<T extends string>(
@@ -61,6 +62,7 @@ export function KoodistoSelect<T extends string>(
   return (
     <TestIdLayer id="addOsasuoritus">
       <Select
+        inlineOptions={props.inlineOptions}
         placeholder={props.addNewText}
         options={options}
         hideEmpty
