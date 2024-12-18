@@ -1,5 +1,5 @@
 import { isEmpty } from 'fp-ts/lib/Array'
-import React, { useCallback } from 'react'
+import React, { useCallback, useMemo } from 'react'
 import { useSchema } from '../appstate/constraints'
 import { useKoodistoFiller } from '../appstate/koodisto'
 import {
@@ -14,14 +14,19 @@ import { OpiskeluoikeusTitle } from '../components-v2/opiskeluoikeus/Opiskeluoik
 import { OppiaineTable } from '../components-v2/opiskeluoikeus/OppiaineTable'
 import { SuorituksenVahvistusField } from '../components-v2/opiskeluoikeus/SuorituksenVahvistus'
 import { t } from '../i18n/i18n'
+import { Arviointi } from '../types/fi/oph/koski/schema/Arviointi'
+import { isIBAineRyhmäOppiaine } from '../types/fi/oph/koski/schema/IBAineRyhmaOppiaine'
 import { IBOpiskeluoikeus } from '../types/fi/oph/koski/schema/IBOpiskeluoikeus'
+import { IBPäätasonSuoritus } from '../types/fi/oph/koski/schema/IBPaatasonSuoritus'
 import { IBTutkinto } from '../types/fi/oph/koski/schema/IBTutkinto'
 import { isLaajuusKursseissa } from '../types/fi/oph/koski/schema/LaajuusKursseissa'
 import { LukionOpiskeluoikeusjakso } from '../types/fi/oph/koski/schema/LukionOpiskeluoikeusjakso'
+import { isMuidenLukioOpintojenPreIBSuoritus2019 } from '../types/fi/oph/koski/schema/MuidenLukioOpintojenPreIBSuoritus2019'
 import { PreIBKoulutusmoduuli2015 } from '../types/fi/oph/koski/schema/PreIBKoulutusmoduuli2015'
 import { PreIBKoulutusmoduuli2019 } from '../types/fi/oph/koski/schema/PreIBKoulutusmoduuli2019'
 import { PreIBSuorituksenOsasuoritus2015 } from '../types/fi/oph/koski/schema/PreIBSuorituksenOsasuoritus2015'
 import { appendOptional } from '../util/array'
+import { parasArviointi } from '../util/arvioinnit'
 import { sum } from '../util/numbers'
 import { PäätasonSuoritusOf } from '../util/opiskeluoikeus'
 import { match } from '../util/patternmatch'
@@ -32,7 +37,6 @@ import {
 } from './IBPaatasonSuoritusTiedot'
 import { AddIBOsasuoritusDialog } from './dialogs/AddIBOsasuoritusDialog'
 import { UusiPreIB2015OppiaineDialog } from './dialogs/UusiPreIB2015OppiaineDialog'
-import { modify } from '../util/laxModify'
 
 export type IBEditorProps = AdaptedOpiskeluoikeusEditorProps<IBOpiskeluoikeus>
 
@@ -77,6 +81,8 @@ const IBPäätasonSuoritusEditor: React.FC<
     [fillKoodistot, form, hideAddOppiaineDialog, päätasonSuoritus.pathTokens]
   )
 
+  const valmis = useOsasuorituksetValmiit(päätasonSuoritus.suoritus)
+
   return (
     <EditorContainer
       form={form}
@@ -96,7 +102,7 @@ const IBPäätasonSuoritusEditor: React.FC<
         form={form}
         suoritusPath={päätasonSuoritus.path}
         organisaatio={organisaatio}
-        disableAdd={true} // TODO
+        disableAdd={!valmis}
       />
 
       <Spacer />
@@ -152,3 +158,18 @@ const useSuoritetutKurssitYhteensä = (
   )
   return isEmpty(laajuudet) ? null : sum(laajuudet)
 }
+
+const useOsasuorituksetValmiit = (pts: IBPäätasonSuoritus): boolean =>
+  useMemo(() => {
+    const oppiaineet = pts.osasuoritukset
+    if (!oppiaineet || oppiaineet.length === 0) return false
+
+    return oppiaineet.every((oppiaine) => {
+      if (isMuidenLukioOpintojenPreIBSuoritus2019(oppiaine)) {
+        return true
+      }
+      const arviointi =
+        oppiaine.arviointi && parasArviointi(oppiaine.arviointi as Arviointi[])
+      return !!arviointi?.hyväksytty
+    })
+  }, [pts.osasuoritukset])
