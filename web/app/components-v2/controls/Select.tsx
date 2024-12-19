@@ -6,7 +6,9 @@ import { pipe } from 'fp-ts/lib/function'
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import {
   KoodistokoodiviiteKoodistonNimellä,
-  KoodistokoodiviiteKoodistonNimelläOrd
+  KoodistokoodiviiteKoodistonNimelläOrd,
+  useKoodisto,
+  useKoodistot
 } from '../../appstate/koodisto'
 import { Peruste } from '../../appstate/peruste'
 import {
@@ -433,6 +435,16 @@ const useSelectState = <T,>(props: SelectProps<T>) => {
 }
 
 // Exported utils
+
+export const useKoodistoOptions = <T extends string>(
+  ...koodistoUris: T[]
+): SelectOption<Koodistokoodiviite<T>>[] => {
+  const koodisto = useKoodistot(...koodistoUris)
+  return useMemo(
+    () => (koodisto ? groupKoodistoToOptions(koodisto) : []),
+    [koodisto]
+  ) as SelectOption<Koodistokoodiviite<T>>[]
+}
 
 export const optionGroup = <T,>(
   label: string,
