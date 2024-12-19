@@ -8,3 +8,12 @@ export const textSearch = (query: string): ((text: string) => boolean) => {
   const pattern = query.toLowerCase().trim().split(' ').join('.*')
   return (text) => !!text.toLowerCase().match(new RegExp(pattern))
 }
+
+export const coerceForSort = (value: string): string =>
+  value
+    .split(' ')
+    .map((x) => {
+      const n = parseFloat(x.replace(',', '.'))
+      return Number.isFinite(n) ? x.padStart(16, '0') : x
+    })
+    .join(' ')

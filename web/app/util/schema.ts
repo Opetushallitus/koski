@@ -22,12 +22,14 @@ import { ItemOf } from './types'
 import { Suoritus } from '../types/fi/oph/koski/schema/Suoritus'
 import { Arviointi } from '../types/fi/oph/koski/schema/Arviointi'
 
-export type Raw<T> = T extends object ? Omit<{ [K in keyof T]: Raw<T[K]> }, "$class"> : T
+export type Raw<T> = T extends object
+  ? Omit<{ [K in keyof T]: Raw<T[K]> }, '$class'>
+  : T
 
 export const isKoodistoviiteOf =
   <T extends string>(uri: T) =>
-    (viite: Koodistokoodiviite): viite is Koodistokoodiviite<T> =>
-      viite.koodistoUri === uri
+  (viite: Koodistokoodiviite): viite is Koodistokoodiviite<T> =>
+    viite.koodistoUri === uri
 
 export type OsasuoritusOf<T extends Suoritus> = T extends {
   osasuoritukset?: Array<infer S>

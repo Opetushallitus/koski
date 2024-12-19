@@ -13,6 +13,7 @@ import { assertNever } from '../../util/selfcare'
 import { ValidationRule } from './ValidationRule'
 import { validateData, ValidationError } from './validator'
 import { storeDeferredPreferences } from '../../appstate/preferences'
+import { modify, PathToken } from '../../util/laxModify'
 
 export enum EditMode {
   View = 0,
@@ -51,12 +52,38 @@ export type FormModel<O extends object> = {
 
   /**
    * Päivitä lomakkeen tietoja polun määrittelemästä paikasta.
+   * Käytä tätä linssien kanssa, kun haluat tyyppiturvallisuutta.
    *
    * @param optic Lens tai Prism joka osoittaa muutettavaan kohtan lomakkeen tiedoissa.
    * @param modify Funktio joka ottaa argumenttina vastaan osoitetun arvon edellisen tilan ja palauttaa uuden.
    * @see https://akheron.github.io/optics-ts/
    */
   readonly updateAt: <T>(optic: FormOptic<O, T>, modify: (t: T) => T) => void
+
+  /**
+   * Päivitä lomakkeen tietoja polun määrittelemästä paikasta.
+   * Tämä versio EI ole tyyppiturvallinen. Käytä sitä kun sinulle riittää helppous.
+   *
+   * @param path Polku tietorakenteen sisälle
+   * @param modify Funktio joka ottaa argumenttina vastaan osoitetun arvon edellisen tilan ja palauttaa uuden.
+   */
+  readonly modify: (...path: PathToken[]) => <T>(modify: (t: T) => T) => void
+
+  /**
+   * Päivitä lomakkeen tietoja polun määrittelemästä paikasta.
+   * Tämä versio EI ole tyyppiturvallinen. Käytä sitä kun sinulle riittää helppous.
+   * Funktiorakenne on suunniteltu käytettäväksi helpommin komponenttien kanssa.
+   *
+   * @example
+   *    <DateEdit
+   *      value={arviointi.päivä}
+   *      onChange={form.set('suoritukset', 0, 'osasuoritukset', 1, 'arviointi', 'päivä')}
+   *    />
+   *
+   * @param path Polku tietorakenteen sisälle
+   * @param value Arvo joka asetetaan polun määrittämään paikkaan
+   */
+  readonly set: (...path: PathToken[]) => <T>(value: T) => void
 
   /**
    * Validoi lomakkeen tiedot lomakkeelle annettua constraintia vasten.
@@ -150,18 +177,42 @@ export const useForm = <O extends object>(
   }, [validate])
 
   const updateAt: FormModelProp<'updateAt'> = useCallback(
-    <T>(optic: FormOptic<O, T>, modify: (t: T) => T) => {
+    <T>(optic: FormOptic<O, T>, modifyFn: (t: T) => T) => {
       if (editMode) {
         dispatch({
           type: 'modify',
-          modify: modifyValue(optic)(modify),
-          modifyInitialData: modifiesShape(optic, modify, initialData)
+          modify: modifyValue(optic)(modifyFn),
+          modifyInitialData: modifiesShape(optic, modifyFn, initialData)
         })
         // Validate after modify
         validate()
       }
     },
     [editMode, initialData, validate]
+  )
+
+  const root: FormModelProp<'root'> = useMemo(() => $.optic_<O>(), [])
+
+  const modifyState: FormModelProp<'modify'> = useCallback(
+    (...path: PathToken[]) =>
+      <T>(f: (t: T) => T) => {
+        if (editMode) {
+          const modifyFn = modify(...path)(f)
+          dispatch({
+            type: 'modify',
+            modify: modifyFn,
+            modifyInitialData: modifiesShape(root, modifyFn, initialData)
+          })
+        }
+      },
+    [editMode, initialData, root]
+  )
+
+  const setState: FormModelProp<'set'> = useCallback(
+    (...path: PathToken[]) =>
+      <T>(value: T) =>
+        modifyState(...path)(() => value),
+    [modifyState]
   )
 
   const { push: setErrors, clearAll: clearErrors } = globalErrors
@@ -192,8 +243,6 @@ export const useForm = <O extends object>(
     [clearErrors, data, editMode, setEditMode, setErrors]
   )
 
-  const root: FormModelProp<'root'> = useMemo(() => $.optic_<O>(), [])
-
   return useMemo(
     () => ({
       state: data,
@@ -207,6 +256,8 @@ export const useForm = <O extends object>(
       root,
       startEdit,
       pending,
+      modify: modifyState,
+      set: setState,
       updateAt,
       validate,
       save,
@@ -224,6 +275,8 @@ export const useForm = <O extends object>(
       root,
       startEdit,
       pending,
+      modifyState,
+      setState,
       updateAt,
       validate,
       save,

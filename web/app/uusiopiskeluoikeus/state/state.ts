@@ -1,7 +1,11 @@
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useCallback, useMemo } from 'react'
 import { isSuccess, useApiOnce } from '../../api-fetch'
 import { useSchema } from '../../appstate/constraints'
 import { Peruste } from '../../appstate/peruste'
+import {
+  DialogField,
+  useDialogField
+} from '../../components-v2/createdialog/DialogField'
 import { todayISODate } from '../../date/date'
 import { OrganisaatioHierarkia } from '../../types/fi/oph/koski/organisaatio/OrganisaatioHierarkia'
 import { Koodistokoodiviite } from '../../types/fi/oph/koski/schema/Koodistokoodiviite'
@@ -406,30 +410,6 @@ export const useUusiOpiskeluoikeusDialogState =
       result
     }
   }
-
-export type DialogField<T> = {
-  value?: T
-  set: (t?: T) => void
-  visible: boolean
-}
-
-export const useDialogField = <T>(
-  isVisible: boolean,
-  defaultValue?: () => T
-): DialogField<T> => {
-  const [value, set] = useState<T | undefined>(defaultValue)
-  const [visible, setVisible] = useState<boolean>(false)
-
-  useEffect(() => {
-    setVisible(isVisible)
-    if (!isVisible) {
-      set(defaultValue)
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isVisible])
-
-  return { value, set, visible }
-}
 
 export const asObject = (className?: string) =>
   className ? { $class: className } : undefined
