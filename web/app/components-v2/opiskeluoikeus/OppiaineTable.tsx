@@ -439,16 +439,23 @@ const KurssiDetails: React.FC<KurssiTooltipProps> = ({ kurssi, id }) => {
             <KeyValueRow localizableLabel="Nimi">
               {t(kurssi.koulutusmoduuli.tunniste.nimi)}
             </KeyValueRow>
+
             <KeyValueRow localizableLabel="Laajuus">
               {kurssi.koulutusmoduuli.laajuus?.arvo}{' '}
               {t(kurssi.koulutusmoduuli.laajuus?.yksikkö.nimi)}
             </KeyValueRow>
+
             <KeyValueRow localizableLabel="Kurssin tyyppi">
               {!isValinnaisuus(kurssi.koulutusmoduuli) ||
               kurssi.koulutusmoduuli.pakollinen
                 ? 'Pakollinen'
                 : 'Valinnainen'}
             </KeyValueRow>
+
+            <KeyValueRow localizableLabel="Suorituskieli">
+              {t(kurssi.suorituskieli?.nimi)}
+            </KeyValueRow>
+
             {kurssi.arviointi && (
               <KeyValueRow localizableLabel="Arviointi">
                 {kurssi.arviointi.map((arviointi, index) => (
@@ -466,6 +473,7 @@ const KurssiDetails: React.FC<KurssiTooltipProps> = ({ kurssi, id }) => {
                 ))}
               </KeyValueRow>
             )}
+
             {isLukionKurssinSuoritus2015(kurssi) && (
               <>
                 {kurssi.tunnustettu && (
@@ -473,6 +481,7 @@ const KurssiDetails: React.FC<KurssiTooltipProps> = ({ kurssi, id }) => {
                     {t(kurssi.tunnustettu.selite)}
                   </KeyValueRow>
                 )}
+
                 <KeyValueRow localizableLabel="Lisätiedot">
                   {pipe(
                     [
