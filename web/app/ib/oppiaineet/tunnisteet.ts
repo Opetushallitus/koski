@@ -153,3 +153,42 @@ export const isTemaattisetOpinnot2019Tunniste = koodiviiteTunnisteGuard(
   'lukionmuutopinnot',
   ['TO'] as const
 )
+
+export const isMuidenLukioOpintojenPreIBSuoritus2019OppiaineenTunniste =
+  koodiviiteTunnisteGuard('lukionmuutopinnot', ['LD', 'MS', 'TO'] as const)
+
+export const isLukionVieraanKielenModuuliOppiaineissa2019OppiaineenTunniste =
+  koodiviiteTunnisteGuard('koskioppiaineetyleissivistava', [
+    'A',
+    'B1',
+    'B2',
+    'B3',
+    'AOM'
+  ] as const)
+
+export const isLukionMuuModuuliOppiaineissa2019OppiaineenTunniste =
+  koodiviiteTunnisteGuard('koskioppiaineetyleissivistava', [
+    'MA',
+    'BI',
+    'ET',
+    'FI',
+    'FY',
+    'GE',
+    'HI',
+    'KE',
+    'KU',
+    'LI',
+    'MU',
+    'OP',
+    'PS',
+    'TE',
+    'YH',
+    'KT',
+    'AI'
+  ])
+
+export const isLukionMuuModuuliMuissaOpinnoissa2019OppiaineenTunniste =
+  koodiviiteTunnisteGuard('lukionmuutopinnot', ['MS', 'LD'])
+
+export const isLukionVieraanKielenModuuliMuissaOpinnoissa2019OppiaineenTunniste =
+  koodiviiteTunnisteGuard('lukionmuutopinnot', ['MS'])

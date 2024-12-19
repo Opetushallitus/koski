@@ -3,42 +3,35 @@ import {
   DialogField,
   useDialogField
 } from '../../components-v2/createdialog/DialogField'
-import { Oppiaine } from '../../components-v2/opiskeluoikeus/OppiaineTable'
-import {
-  isKoodistokoodiviite,
-  Koodistokoodiviite
-} from '../../types/fi/oph/koski/schema/Koodistokoodiviite'
+import { Koodistokoodiviite } from '../../types/fi/oph/koski/schema/Koodistokoodiviite'
 import { LaajuusKursseissa } from '../../types/fi/oph/koski/schema/LaajuusKursseissa'
 import { LocalizedString } from '../../types/fi/oph/koski/schema/LocalizedString'
-import { isPaikallinenKoodi } from '../../types/fi/oph/koski/schema/PaikallinenKoodi'
-import { KoulutusmoduuliOf } from '../../util/schema'
+import { PreIBKurssinSuoritus2015 } from '../../types/fi/oph/koski/schema/PreIBKurssinSuoritus2015'
 import {
-  IBOsasuoritusTunniste,
-  PreIBKurssiProps
+  createPreIBKurssinSuoritus2015,
+  PreIB2015OsasuoritusTunniste,
+  PreIBKurssi2015Props
 } from '../oppiaineet/preIBKurssi2015'
 import { uusiPaikallinenKey } from './options'
-import { koodistokoodiviiteId, koodiviiteId } from '../../util/koodisto'
 
 export const UusiPaikallinenLukionKurssiKey = uusiPaikallinenKey('lukio')
 export const UusiIBKurssiKey = uusiPaikallinenKey('ib')
 
-export type IBOsasuoritusState<T> = {
-  tunniste: DialogField<IBOsasuoritusTunniste>
+export type PreIB2015OsasuoritusState = {
+  tunniste: DialogField<PreIB2015OsasuoritusTunniste>
   uusiTyyppi: DialogField<UusiOsasuoritustyyppi>
   lukiokurssinTyyppi: DialogField<Koodistokoodiviite<'lukionkurssintyyppi'>>
   kuvaus: DialogField<LocalizedString>
   pakollinen: DialogField<boolean>
   laajuus: DialogField<LaajuusKursseissa>
   isPaikallinen: boolean
-  result?: T
+  result: PreIBKurssinSuoritus2015 | null
 }
 
 export type UusiOsasuoritustyyppi = 'lukio' | 'ib'
 
-export const useIBOsasuoritusState = <T>(
-  createOsasuoritus: (p: PreIBKurssiProps) => T
-): IBOsasuoritusState<T> => {
-  const tunniste = useDialogField<IBOsasuoritusTunniste>(true)
+export const usePreIB2015OsasuoritusState = (): PreIB2015OsasuoritusState => {
+  const tunniste = useDialogField<PreIB2015OsasuoritusTunniste>(true)
   const uusiTyyppi = useDialogField<UusiOsasuoritustyyppi>(false)
 
   const isLukioValtakunnallinen = !uusiTyyppi.value
@@ -62,7 +55,7 @@ export const useIBOsasuoritusState = <T>(
 
   const result = useMemo(
     () =>
-      createOsasuoritus({
+      createPreIBKurssinSuoritus2015({
         tunniste: tunniste.value,
         lukiokurssinTyyppi: lukiokurssinTyyppi.value,
         kuvaus: kuvaus.value,
@@ -70,7 +63,6 @@ export const useIBOsasuoritusState = <T>(
         laajuus: laajuus.value
       }),
     [
-      createOsasuoritus,
       tunniste.value,
       lukiokurssinTyyppi.value,
       kuvaus.value,

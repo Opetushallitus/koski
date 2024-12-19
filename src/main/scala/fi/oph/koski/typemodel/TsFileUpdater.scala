@@ -86,4 +86,6 @@ case class AdditionalExports(
   arvioinniton: Arvioinniton,
   mahdollisestiArvioinniton: MahdollisestiArvioinniton,
   valinnaisuus: Valinnaisuus,
+  preIBLukionModuulinSuoritus2019: PreIBLukionModuulinSuoritus2019,
+  preIBLukionModuulinTaiPaikallisenOpintojaksonSuoritus2019: PreIBLukionModuulinTaiPaikallisenOpintojaksonSuoritus2019,
 )

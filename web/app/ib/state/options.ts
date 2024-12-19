@@ -18,12 +18,12 @@ import { t } from '../../i18n/i18n'
 import { IBOpiskeluoikeus } from '../../types/fi/oph/koski/schema/IBOpiskeluoikeus'
 import { Koodistokoodiviite } from '../../types/fi/oph/koski/schema/Koodistokoodiviite'
 import { PaikallinenLukionOppiaine2015 } from '../../types/fi/oph/koski/schema/PaikallinenLukionOppiaine2015'
-import { koodistokoodiviiteId, KoodistoUriOf } from '../../util/koodisto'
+import { nonNull } from '../../util/fp/arrays'
+import { KoodistoUriOf } from '../../util/koodisto'
 import { fetchOppiaineenKurssit } from '../../util/koskiApi'
 import { entries } from '../../util/objects'
 import { PäätasonSuoritusOf } from '../../util/opiskeluoikeus'
 import { enumValuesToKoodistoSelectOptions } from '../../util/TypedEnumValue'
-import { lukiokurssiTunnisteUrit } from '../oppiaineet/preIBKurssi2015'
 import {
   isIBOppiaineLanguageTunniste,
   isIBOppiaineMuuTunniste,
@@ -37,7 +37,7 @@ import {
   PreIBOppiaineTunniste,
   ValtakunnallinenPreIBOppiaineTunniste
 } from './preIBOppiaine'
-import { nonNull } from '../../util/fp/arrays'
+import { PaikallinenLukionOppiaine2019 } from '../../types/fi/oph/koski/schema/PaikallinenLukionOppiaine2019'
 
 export const preIB2015Oppiainekategoriat = {
   'IB-oppiaine': [isIBOppiaineLanguageTunniste, isIBOppiaineMuuTunniste],
@@ -68,10 +68,11 @@ const oppiaineCategoryResolver =
 
 export const UusiPaikallinenOppiaineKey = uusiPaikallinenKey('oppiaine')
 
-const labelWithKoodiarvo = (k: SelectOption<Koodistokoodiviite>): string =>
-  k.value?.koodiarvo ? `${k.value.koodiarvo} ${k.label}` : k.label
+export const labelWithKoodiarvo = (
+  k: SelectOption<Koodistokoodiviite>
+): string => (k.value?.koodiarvo ? `${k.value.koodiarvo} ${k.label}` : k.label)
 
-export const usePreIBTunnisteOptions = <K extends Koodistokoodiviite>(
+export const usePreIB2015TunnisteOptions = <K extends Koodistokoodiviite>(
   categories: Record<string, Array<(k: K) => boolean>>,
   päätasonSuoritus: PäätasonSuoritusOf<IBOpiskeluoikeus>,
   paikallisetOppiaineet: PaikallinenLukionOppiaine2015[]
@@ -120,6 +121,54 @@ export const usePreIBTunnisteOptions = <K extends Koodistokoodiviite>(
         mapOptionLabels(labelWithKoodiarvo)
       ) as SelectOption<ValtakunnallinenPreIBOppiaineTunniste>[]
     }, [categories, existingOppiaineet, valtakunnallisetTunnisteet])
+
+  return useMemo(
+    () => [...paikallisetOptions, ...valtakunnallisetOptions],
+    [paikallisetOptions, valtakunnallisetOptions]
+  )
+}
+
+export const usePreIB2019TunnisteOptions = (
+  päätasonSuoritus: PäätasonSuoritusOf<IBOpiskeluoikeus>,
+  paikallisetOppiaineet: PaikallinenLukionOppiaine2019[]
+): SelectOption<PreIBOppiaineTunniste>[] => {
+  const koodisto = useKoodisto('koskioppiaineetyleissivistava')
+
+  const existingOppiaineet = useMemo(
+    () =>
+      (päätasonSuoritus.osasuoritukset || []).map(
+        (os) => os.koulutusmoduuli.tunniste.koodiarvo
+      ),
+    [päätasonSuoritus.osasuoritukset]
+  )
+
+  const paikallisetOptions = useMemo(
+    () => [
+      optionGroup(t('Paikallinen oppiaine'), [
+        ...paikallisetOppiaineet.map((kurssi) =>
+          paikallinenKoodiToOption(kurssi.tunniste, { removable: true })
+        ),
+        {
+          key: UusiPaikallinenOppiaineKey,
+          label: t('Lisää uusi')
+        }
+      ])
+    ],
+    [paikallisetOppiaineet]
+  )
+
+  const valtakunnallisetOptions = useMemo(() => {
+    return pipe(
+      koodisto || [],
+      groupKoodistoToOptions,
+      filterOptions(
+        (k) =>
+          k.value?.koodiarvo === undefined ||
+          !existingOppiaineet.includes(k.value?.koodiarvo)
+      ),
+      mapOptionLabels(labelWithKoodiarvo)
+    ) as SelectOption<Koodistokoodiviite<'koskioppiaineetyleissivistava'>>[]
+  }, [existingOppiaineet, koodisto])
 
   return useMemo(
     () => [...paikallisetOptions, ...valtakunnallisetOptions],

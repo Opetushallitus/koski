@@ -21,48 +21,46 @@ import {
   PaikallinenKoodi
 } from '../../types/fi/oph/koski/schema/PaikallinenKoodi'
 import {
-  isPaikallinenLukionOppiaine2015,
-  PaikallinenLukionOppiaine2015
-} from '../../types/fi/oph/koski/schema/PaikallinenLukionOppiaine2015'
-import { PreIBSuorituksenOsasuoritus2015 } from '../../types/fi/oph/koski/schema/PreIBSuorituksenOsasuoritus2015'
+  isPaikallinenLukionOppiaine2019,
+  PaikallinenLukionOppiaine2019
+} from '../../types/fi/oph/koski/schema/PaikallinenLukionOppiaine2019'
+import { PreIBSuorituksenOsasuoritus2019 } from '../../types/fi/oph/koski/schema/PreIBSuorituksenOsasuoritus2019'
 import { koodiviiteId } from '../../util/koodisto'
 import { PäätasonSuoritusOf } from '../../util/opiskeluoikeus'
 import { DialogSelect } from '../../uusiopiskeluoikeus/components/DialogSelect'
 import {
-  preIB2015Oppiainekategoriat,
   useAineryhmäOptions,
   useKielivalikoimaOptions,
   useMatematiikanOppimääräOptions,
-  usePreIB2015TunnisteOptions,
+  usePreIB2019TunnisteOptions,
   useÄidinkielenKieliOptions,
   UusiPaikallinenOppiaineKey
 } from '../state/options'
 import {
   PreIBOppiaineTunniste,
-  useUusiPreIB2015OppiaineState
+  useUusiPreIB2019OppiaineState
 } from '../state/preIBOppiaine'
 
-export type UusiPreIB2015OppiaineDialogProps = {
+export type UusiPreIB2019OppiaineDialogProps = {
   organisaatioOid: string
   päätasonSuoritus: PäätasonSuoritusOf<IBOpiskeluoikeus>
   onClose: () => void
-  onSubmit: (oppiaine: PreIBSuorituksenOsasuoritus2015) => void
+  onSubmit: (oppiaine: PreIBSuorituksenOsasuoritus2019) => void
 }
 
-export const UusiPreIB2015OppiaineDialog: React.FC<
-  UusiPreIB2015OppiaineDialogProps
+export const UusiPreIB2019OppiaineDialog: React.FC<
+  UusiPreIB2019OppiaineDialogProps
 > = (props) => {
-  const state = useUusiPreIB2015OppiaineState()
+  const state = useUusiPreIB2019OppiaineState()
   const {
     preferences: paikallisetOppiaineet,
     store: storePaikallinenOppiaine,
     remove: removePaikallinenOppiaine
-  } = usePreferences<PaikallinenLukionOppiaine2015>(
+  } = usePreferences<PaikallinenLukionOppiaine2019>(
     props.organisaatioOid,
-    'paikallinenlukionoppiaine'
+    'paikallinenlukionoppiaine2019'
   )
-  const tunnisteet = usePreIB2015TunnisteOptions(
-    preIB2015Oppiainekategoriat,
+  const tunnisteet = usePreIB2019TunnisteOptions(
     props.päätasonSuoritus,
     paikallisetOppiaineet
   )
@@ -119,7 +117,7 @@ export const UusiPreIB2015OppiaineDialog: React.FC<
     if (state.result) {
       props.onSubmit(state.result)
       const koulutusmoduuli = state.result.koulutusmoduuli
-      if (isPaikallinenLukionOppiaine2015(koulutusmoduuli)) {
+      if (isPaikallinenLukionOppiaine2019(koulutusmoduuli)) {
         storePaikallinenOppiaine(
           koodiviiteId(koulutusmoduuli.tunniste),
           koulutusmoduuli
