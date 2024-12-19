@@ -34,21 +34,18 @@ import { PaikallinenLukionKurssi2015 } from '../../types/fi/oph/koski/schema/Pai
 import { PreIBKurssinSuoritus2015 } from '../../types/fi/oph/koski/schema/PreIBKurssinSuoritus2015'
 import { koodiviiteId } from '../../util/koodisto'
 import { DialogSelect } from '../../uusiopiskeluoikeus/components/DialogSelect'
-import {
-  createPreIBKurssinSuoritus2015,
-  IBOsasuoritusTunniste
-} from '../oppiaineet/preIBKurssi2015'
+import { PreIB2015OsasuoritusTunniste } from '../oppiaineet/preIBKurssi2015'
 import {
   useLukiokurssinTyypit,
   useOppiaineenKurssiOptions
 } from '../state/options'
 import {
-  useIBOsasuoritusState,
+  usePreIB2015OsasuoritusState,
   UusiIBKurssiKey,
   UusiPaikallinenLukionKurssiKey
-} from '../state/osasuoritusState'
+} from '../state/preIB2015Kurssi'
 
-export const AddIBOsasuoritusDialog: AddOppiaineenOsasuoritusDialog<
+export const UusiPreIB2015OsasuoritusDialog: AddOppiaineenOsasuoritusDialog<
   PreIBKurssinSuoritus2015
 > = ({ onAdd, ...props }) => {
   const koulutus = props.oppiaine.koulutusmoduuli
@@ -66,7 +63,7 @@ export const AddIBOsasuoritusDialog: AddOppiaineenOsasuoritusDialog<
     remove: removeIBKurssi
   } = usePreferences<IBKurssi>(props.organisaatioOid, 'ibkurssi')
 
-  const state = useIBOsasuoritusState(createPreIBKurssinSuoritus2015)
+  const state = usePreIB2015OsasuoritusState()
 
   const valtakunnallisetTunnisteetOptions =
     useOppiaineenKurssiOptions(
@@ -122,7 +119,7 @@ export const AddIBOsasuoritusDialog: AddOppiaineenOsasuoritusDialog<
         state.kuvaus.set(localize('todo: kaiva kuvaus tähän'))
       } else if (option?.value) {
         state.uusiTyyppi.set(undefined)
-        state.tunniste.set(option.value as IBOsasuoritusTunniste)
+        state.tunniste.set(option.value as PreIB2015OsasuoritusTunniste)
       }
     },
     [state.kuvaus, state.tunniste, state.uusiTyyppi]

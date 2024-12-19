@@ -2,6 +2,7 @@ import * as O from 'fp-ts/Option'
 import * as Ord from 'fp-ts/Ord'
 import { pipe } from 'fp-ts/lib/function'
 import { Ord as StringOrd } from 'fp-ts/string'
+import { Arviointi } from '../types/fi/oph/koski/schema/Arviointi'
 import {
   HenkilövahvistusPaikkakunnalla,
   isHenkilövahvistusPaikkakunnalla
@@ -14,13 +15,13 @@ import {
   HenkilövahvistusValinnaisellaTittelilläJaValinnaisellaPaikkakunnalla,
   isHenkilövahvistusValinnaisellaTittelilläJaValinnaisellaPaikkakunnalla
 } from '../types/fi/oph/koski/schema/HenkilovahvistusValinnaisellaTittelillaJaValinnaisellaPaikkakunnalla'
+import { KoodiViite } from '../types/fi/oph/koski/schema/KoodiViite'
 import { Koodistokoodiviite } from '../types/fi/oph/koski/schema/Koodistokoodiviite'
 import { OpiskeluoikeudenTila } from '../types/fi/oph/koski/schema/OpiskeluoikeudenTila'
 import { Opiskeluoikeusjakso } from '../types/fi/oph/koski/schema/Opiskeluoikeusjakso'
+import { Suoritus } from '../types/fi/oph/koski/schema/Suoritus'
 import { Vahvistus } from '../types/fi/oph/koski/schema/Vahvistus'
 import { ItemOf } from './types'
-import { Suoritus } from '../types/fi/oph/koski/schema/Suoritus'
-import { Arviointi } from '../types/fi/oph/koski/schema/Arviointi'
 
 export type Raw<T> = T extends object
   ? Omit<{ [K in keyof T]: Raw<T[K]> }, '$class'>
@@ -85,3 +86,5 @@ export type ArviointiOf<T extends Suoritus> = T extends {
 export type ArvosanaOf<T extends Arviointi> = T['arvosana']
 
 export type KoulutusmoduuliOf<T extends Suoritus> = T['koulutusmoduuli']
+
+export type TunnisteOf<T extends { tunniste: KoodiViite }> = T['tunniste']

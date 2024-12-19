@@ -11,15 +11,15 @@ import { PreIBKurssi2015 } from '../../types/fi/oph/koski/schema/PreIBKurssi2015
 import { PreIBKurssinSuoritus2015 } from '../../types/fi/oph/koski/schema/PreIBKurssinSuoritus2015'
 import { ValtakunnallinenLukionKurssi2015 } from '../../types/fi/oph/koski/schema/ValtakunnallinenLukionKurssi2015'
 
-export type PreIBKurssiProps = {
-  tunniste?: IBOsasuoritusTunniste
+export type PreIBKurssi2015Props = {
+  tunniste?: PreIB2015OsasuoritusTunniste
   lukiokurssinTyyppi?: Koodistokoodiviite<'lukionkurssintyyppi'>
   kuvaus?: LocalizedString
   pakollinen?: boolean
   laajuus?: LaajuusKursseissa
 }
 
-export type IBOsasuoritusTunniste =
+export type PreIB2015OsasuoritusTunniste =
   | Koodistokoodiviite<LukiokurssiTunnisteUri>
   | PaikallinenKoodi
 
@@ -34,7 +34,9 @@ export type LukiokurssiTunnisteUri =
   | 'lukionkurssitops2004aikuiset'
   | 'lukionkurssitops2003nuoret'
 
-export const createPreIBKurssinSuoritus2015 = (props: PreIBKurssiProps) => {
+export const createPreIBKurssinSuoritus2015 = (
+  props: PreIBKurssi2015Props
+): PreIBKurssinSuoritus2015 | null => {
   const koulutusmoduuli = createPreIBKurssi2015(props)
   return (
     koulutusmoduuli &&
@@ -50,7 +52,7 @@ const createPreIBKurssi2015 = ({
   kuvaus,
   pakollinen,
   laajuus
-}: PreIBKurssiProps): PreIBKurssi2015 | null => {
+}: PreIBKurssi2015Props): PreIBKurssi2015 | null => {
   if (lukiokurssinTyyppi && tunniste && !isPaikallinenKoodi(tunniste)) {
     return ValtakunnallinenLukionKurssi2015({
       tunniste,

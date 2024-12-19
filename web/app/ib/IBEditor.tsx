@@ -35,8 +35,11 @@ import {
   ibKoulutusNimi,
   IBPäätasonSuoritusTiedot
 } from './IBPaatasonSuoritusTiedot'
-import { AddIBOsasuoritusDialog } from './dialogs/AddIBOsasuoritusDialog'
+import { UusiPreIB2015OsasuoritusDialog } from './dialogs/UusiPreIB2015OsasuoritusDialog'
 import { UusiPreIB2015OppiaineDialog } from './dialogs/UusiPreIB2015OppiaineDialog'
+import { UusiPreIB2019OppiaineDialog } from './dialogs/UusiPreIB2019OppiaineDialog'
+import { OsasuoritusOf } from '../util/schema'
+import { UusiPreIB2019OsasuoritusDialog } from './dialogs/UusiPreIB2019OsasuoritusDialog'
 
 export type IBEditorProps = AdaptedOpiskeluoikeusEditorProps<IBOpiskeluoikeus>
 
@@ -71,7 +74,7 @@ const IBPäätasonSuoritusEditor: React.FC<
   const fillKoodistot = useKoodistoFiller()
 
   const addOppiaine = useCallback(
-    async (oppiaine: PreIBSuorituksenOsasuoritus2015) => {
+    async (oppiaine: OsasuoritusOf<IBPäätasonSuoritus>) => {
       form.modify(
         ...päätasonSuoritus.pathTokens,
         'osasuoritukset'
@@ -110,23 +113,32 @@ const IBPäätasonSuoritusEditor: React.FC<
       <OppiaineTable
         selectedSuoritus={päätasonSuoritus}
         form={form}
-        addOsasuoritusDialog={AddIBOsasuoritusDialog as any}
+        addOsasuoritusDialog={match(päätasonSuoritus.suoritus.koulutusmoduuli)
+          .isClass(
+            PreIBKoulutusmoduuli2015,
+            () => UusiPreIB2015OsasuoritusDialog
+          )
+          .isClass(
+            PreIBKoulutusmoduuli2019,
+            () => UusiPreIB2019OsasuoritusDialog
+          )
+          .get()}
       />
 
-      {kurssejaYhteensä !== null && (
-        <footer className="IBPäätasonSuoritusEditor__footer">
-          {form.editMode && (
-            <RaisedButton onClick={showAddOppiaineDialog}>
-              {t('Lisää oppiaine')}
-            </RaisedButton>
-          )}
+      <footer className="IBPäätasonSuoritusEditor__footer">
+        {form.editMode && (
+          <RaisedButton onClick={showAddOppiaineDialog}>
+            {t('Lisää oppiaine')}
+          </RaisedButton>
+        )}
+        {kurssejaYhteensä !== null && (
           <div className="IBPäätasonSuoritusEditor__yhteensä">
             {t('Suoritettujen kurssien määrä yhteensä')}
             {': '}
             {kurssejaYhteensä}
           </div>
-        </footer>
-      )}
+        )}
+      </footer>
 
       {addOppiaineVisible &&
         organisaatio &&
@@ -139,7 +151,14 @@ const IBPäätasonSuoritusEditor: React.FC<
               organisaatioOid={organisaatio?.oid}
             />
           ))
-          .isClass(PreIBKoulutusmoduuli2019, () => <p>TODO</p>)
+          .isClass(PreIBKoulutusmoduuli2019, () => (
+            <UusiPreIB2019OppiaineDialog
+              päätasonSuoritus={päätasonSuoritus.suoritus}
+              onClose={hideAddOppiaineDialog}
+              onSubmit={addOppiaine}
+              organisaatioOid={organisaatio?.oid}
+            />
+          ))
           .isClass(IBTutkinto, () => <p>TODO</p>)
           .getOrNull()}
     </EditorContainer>
