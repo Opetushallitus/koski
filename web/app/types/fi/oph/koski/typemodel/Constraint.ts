@@ -7,6 +7,7 @@ import { NumberConstraint, isNumberConstraint } from './NumberConstraint'
 import { ObjectConstraint, isObjectConstraint } from './ObjectConstraint'
 import { OptionalConstraint, isOptionalConstraint } from './OptionalConstraint'
 import { RecordConstraint, isRecordConstraint } from './RecordConstraint'
+import { RefConstraint, isRefConstraint } from './RefConstraint'
 import { StringConstraint, isStringConstraint } from './StringConstraint'
 import { UnionConstraint, isUnionConstraint } from './UnionConstraint'
 
@@ -25,6 +26,7 @@ export type Constraint =
   | ObjectConstraint
   | OptionalConstraint
   | RecordConstraint
+  | RefConstraint
   | StringConstraint
   | UnionConstraint
 
@@ -38,5 +40,6 @@ export const isConstraint = (a: any): a is Constraint =>
   isObjectConstraint(a) ||
   isOptionalConstraint(a) ||
   isRecordConstraint(a) ||
+  isRefConstraint(a) ||
   isStringConstraint(a) ||
   isUnionConstraint(a)

@@ -19,6 +19,7 @@ export type TextEditProps = CommonProps<
       autoFocus?: boolean
       testId?: string
       disabled?: boolean
+      large?: boolean
     }
   >
 >
@@ -30,7 +31,9 @@ export const TextEdit: React.FC<TextEditProps> = (props) => {
   useEffect(() => setInternalValue(props.value), [props.value])
 
   const { onChange } = props
-  const onChangeCB: React.ChangeEventHandler<HTMLInputElement> = useCallback(
+  const onChangeCB: React.ChangeEventHandler<
+    HTMLInputElement | HTMLTextAreaElement
+  > = useCallback(
     (event) => {
       setInternalValue(event.target.value)
       onChange(event.target.value)
@@ -40,18 +43,34 @@ export const TextEdit: React.FC<TextEditProps> = (props) => {
 
   return (
     <label {...common(props, ['TextEdit'])}>
-      <input
-        className={cx(
-          'TextEdit__input',
-          props.errors && 'TextEdit__input--error'
-        )}
-        placeholder={props.placeholder}
-        value={internalValue}
-        onChange={onChangeCB}
-        autoFocus={props.autoFocus}
-        disabled={props.disabled}
-        data-testid={testId}
-      />
+      {props.large ? (
+        <textarea
+          className={cx(
+            'TextEdit__input',
+            props.errors && 'TextEdit__input--error'
+          )}
+          placeholder={props.placeholder}
+          onChange={onChangeCB}
+          autoFocus={props.autoFocus}
+          disabled={props.disabled}
+          data-testid={testId}
+        >
+          {internalValue}
+        </textarea>
+      ) : (
+        <input
+          className={cx(
+            'TextEdit__input',
+            props.errors && 'TextEdit__input--error'
+          )}
+          placeholder={props.placeholder}
+          value={internalValue}
+          onChange={onChangeCB}
+          autoFocus={props.autoFocus}
+          disabled={props.disabled}
+          data-testid={testId}
+        />
+      )}
       <FieldErrors errors={props.errors} />
     </label>
   )

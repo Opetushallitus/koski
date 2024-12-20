@@ -1,5 +1,8 @@
 export type EmptyObject = { _?: never }
 
+export const entries = <T>(obj: Record<string, T>): Array<[string, T]> =>
+  Object.entries(obj)
+
 export const withoutNullValues = <T extends object>(obj: T): Partial<T> =>
   Object.fromEntries(
     Object.entries(obj).filter(

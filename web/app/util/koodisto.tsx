@@ -16,14 +16,17 @@ import {
   isKorkeakoulunPaikallinenArvosana,
   KorkeakoulunPaikallinenArvosana
 } from '../types/fi/oph/koski/schema/KorkeakoulunPaikallinenArvosana'
+import { nonNull } from './fp/arrays'
 
 export type KoodistoUriOf<T extends Koodistokoodiviite> = T['koodistoUri']
 export type KoodiarvotOf<T extends Koodistokoodiviite> = T['koodiarvo']
 export type KoodiviiteIdOf<T extends Koodistokoodiviite> =
   `${KoodistoUriOf<T>}_${KoodiarvotOf<T>}`
+export type PermissiveKoodiviite<T extends KoodiViite> =
+  T extends Koodistokoodiviite<infer U> ? Koodistokoodiviite<U> : T
 
 export const koodiviiteId = (a: KoodiViite): string =>
-  isKoodiviiteUriOptional(a) ? a.koodiarvo : koodistokoodiviiteId(a)
+  `${(a as any).koodistoUri || '_paikallinen'}_${a.koodiarvo}`
 
 export const koodistokoodiviiteId = (a: Koodistokoodiviite): string =>
   `${a.koodistoUri}_${a.koodiarvo}`

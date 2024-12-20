@@ -85,7 +85,7 @@ module.exports = {
   },
   plugins: [
     new ForkTsCheckerWebpackPlugin({
-      typescript: { mode: 'write-tsbuildinfo' }
+      typescript: { mode: 'write-tsbuildinfo', memoryLimit: 1000000000 }
     }),
     new ESLintPlugin({
       extensions: ['js', 'jsx', 'ts', 'tsx'],
