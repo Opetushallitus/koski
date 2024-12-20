@@ -40,7 +40,7 @@ object AuditLogMockData extends Logging {
       .map{ case (data, index) => Map(
         "studentOid" -> AttributeValue.builder.s(data.studentOid).build(),
         "time" -> AttributeValue.builder.s(data.time).build(),
-        "organizationOid" -> AttributeValue.builder.ss(data.organizationOid.asJava).build(),
+        "organizationOid" -> AttributeValue.builder.l(data.organizationOid.map(o => AttributeValue.builder.s(o).build()).asJava).build(),
         "id" -> AttributeValue.builder.s(index.toString).build(),
         "raw" -> AttributeValue.builder.s(data.raw).build()
       ).asJava}
