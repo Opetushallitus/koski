@@ -9,11 +9,6 @@ import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.log.Logging
 import fi.oph.koski.schema.LocalizedString
 import fi.oph.koski.omaopintopolkuloki.AuditLogDynamoDB.AuditLogTableName
-import fi.oph.scalaschema.Serializer.format
-import org.json4s.{Extraction, JValue}
-import org.json4s.jackson.JsonMethods.compact
-import software.amazon.awssdk.services.dynamodb.DynamoDbClient
-import software.amazon.awssdk.services.dynamodb.model.QueryResponse
 import software.amazon.awssdk.services.dynamodb.model.{AttributeValue, QueryRequest}
 
 import scala.collection.JavaConverters._
@@ -52,7 +47,10 @@ class AuditLogService(app: KoskiApplication) extends Logging {
   }
   private def convertToAuditLogRow(item: util.Map[String, AttributeValue]): AuditlogRow = {
     val organizationOid = item.asScala.view.collectFirst {
-      case ("organizationOid", value) if value.ss() != null => value.ss().asScala.toList
+      case ("organizationOid", value) if value.l() != null =>
+        value.l().asScala.toList.collect {
+          case v if v.s() != null => v.s()
+        }
     }.getOrElse(List.empty[String])
 
     val raw = item.asScala.view.collectFirst {
@@ -70,7 +68,7 @@ class AuditLogService(app: KoskiApplication) extends Logging {
     val timestampsGroupedByListOfOidsAndServiceName = queryResults.map(item => {
       val parsedRow = convertToAuditLogRow(item)
       val parsedRaw = JsonSerializer.parse[AuditlogRaw](parsedRow.raw, ignoreExtras = true)
-      val organisaatioOidit = parsedRow.organizationOid
+      val organisaatioOidit = parsedRow.organizationOid.sorted
       val timestampString = parsedRow.time
       val serviceName = parsedRaw.serviceName
       (organisaatioOidit, serviceName, timestampString)
