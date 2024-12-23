@@ -32,6 +32,10 @@ import * as NonEmptyArray from 'fp-ts/NonEmptyArray'
 import * as O from 'fp-ts/Option'
 import * as A from 'fp-ts/Array'
 import { pipe } from 'fp-ts/lib/function'
+import { useSchema } from '../../appstate/constraints'
+import { IBTutkinnonSuoritus } from '../../types/fi/oph/koski/schema/IBTutkinnonSuoritus'
+import { IBOppiaineenPredictedArviointi } from '../../types/fi/oph/koski/schema/IBOppiaineenPredictedArviointi'
+import { isIBOppiaineenSuoritus } from '../../types/fi/oph/koski/schema/IBOppiaineenSuoritus'
 
 // Vain OppiaineTablen tukemat päätason suoritukset (tätä komponenttia tullaan myöhemmin käyttämään ainakin lukion näkymille)
 export type OppiaineTableOpiskeluoikeus = IBOpiskeluoikeus
@@ -58,6 +62,9 @@ export const OppiaineTable = <T extends OppiaineTablePäätasonSuoritus>({
   const path = selectedSuoritus.pathTokens
   const oppiaineet = suoritus?.osasuoritukset || []
   const organisaatioOid = form.state.oppilaitos?.oid
+
+  const showPredictedGrade =
+    selectedSuoritus.suoritus.$class === IBTutkinnonSuoritus.className
 
   const oppiainePath = (index: number) => [...path, 'osasuoritukset', index]
 
@@ -98,6 +105,14 @@ export const OppiaineTable = <T extends OppiaineTablePäätasonSuoritus>({
       )(appendOptional(arviointi))
     }
 
+  const addPredictedGrade =
+    (oppiaineIndex: number) => (arviointi: Arviointi) => {
+      form.debug.modify(
+        ...oppiainePath(oppiaineIndex),
+        'predictedArviointi'
+      )(appendOptional(arviointi))
+    }
+
   return oppiaineet.length === 0 && organisaatioOid ? null : (
     <table className="OppiaineTable">
       <thead>
@@ -105,6 +120,11 @@ export const OppiaineTable = <T extends OppiaineTablePäätasonSuoritus>({
           <th></th>
           <th className="OppiaineTable__oppiaine">{t('Oppiaine')}</th>
           <th className="OppiaineTable__laajuus">{t('Laajuus (kurssia)')}</th>
+          {showPredictedGrade && (
+            <th className="OppiaineTable__predictedGrade">
+              {t('Predicted grade')}
+            </th>
+          )}
           <th className="OppiaineTable__arvosana">{t('Arvosana')}</th>
           {form.editMode && <th className="OppiaineTable__poisto" />}
         </tr>
@@ -116,6 +136,7 @@ export const OppiaineTable = <T extends OppiaineTablePäätasonSuoritus>({
             organisaatioOid={organisaatioOid!}
             oppiaine={oppiaine}
             form={form}
+            showPredictedGrade={showPredictedGrade}
             oppiainePath={[
               ...selectedSuoritus.pathTokens,
               'osasuoritukset',
@@ -127,6 +148,7 @@ export const OppiaineTable = <T extends OppiaineTablePäätasonSuoritus>({
             onAddOsasuoritus={addOsasuoritus(oppiaineIndex)}
             onArviointi={addKurssiArviointi(oppiaineIndex)}
             onOppiaineArviointi={addOppiaineArviointi(oppiaineIndex)}
+            onPredictedGrade={addPredictedGrade(oppiaineIndex)}
           />
         ))}
       </tbody>
@@ -139,10 +161,12 @@ export type OppiaineRowProps<T> = {
   oppiainePath: PathToken[]
   organisaatioOid: string
   oppiaine: Oppiaine
+  showPredictedGrade: boolean
   addOsasuoritusDialog: AddOppiaineenOsasuoritusDialog<T>
   onAddOsasuoritus: (t: T) => void
   onArviointi: (osasuoritusIndex: number, arviointi: LukionArviointi) => void
   onOppiaineArviointi: (arviointi: Arviointi) => void
+  onPredictedGrade: (arviointi: Arviointi) => void
   onDelete: () => void
   onDeleteKurssi: (index: number) => void
 }
@@ -159,10 +183,12 @@ const OppiaineRow = <T,>({
   oppiaine,
   oppiainePath,
   form,
+  showPredictedGrade,
   onDelete,
   addOsasuoritusDialog,
   onAddOsasuoritus,
   onArviointi,
+  onPredictedGrade,
   onOppiaineArviointi,
   onDeleteKurssi
 }: OppiaineRowProps<T>) => {
@@ -215,6 +241,15 @@ const OppiaineRow = <T,>({
         </div>
       </td>
       <td className="OppiaineRow__laajuus">{kurssejaYhteensä}</td>
+      {showPredictedGrade && (
+        <td className="OppiaineRow__predictedGrade">
+          <PredictedGrade
+            form={form}
+            oppiaine={oppiaine}
+            onChange={onPredictedGrade}
+          />
+        </td>
+      )}
       <td className="OppiaineRow__arvosana">
         <OppiaineArvosana
           form={form}
@@ -279,6 +314,38 @@ const OppiaineArvosana: React.FC<OppiaineArvosanaProps> = ({
       value={arvioinnit && viimeisinArviointi(arvioinnit)}
       onChange={onChange_}
       suoritusClassName={oppiaine.$class}
+    />
+  ) : (
+    <span>
+      {arvioinnit ? parasArviointi(arvioinnit)?.arvosana.koodiarvo : '-'}
+    </span>
+  )
+}
+
+const PredictedGrade: React.FC<OppiaineArvosanaProps> = ({
+  form,
+  oppiaine,
+  onChange
+}) => {
+  const onChange_ = useCallback(
+    (a?: Arviointi) => {
+      a && onChange(a)
+    },
+    [onChange]
+  )
+
+  if (!isIBOppiaineenSuoritus(oppiaine)) {
+    return null
+  }
+
+  const arvioinnit: Arviointi[] | undefined = oppiaine.predictedArviointi
+
+  return form.editMode ? (
+    <ArvosanaEdit
+      value={arvioinnit && viimeisinArviointi(arvioinnit)}
+      onChange={onChange_}
+      suoritusClassName={oppiaine.$class}
+      arviointiPropName="predictedArviointi"
     />
   ) : (
     <span>

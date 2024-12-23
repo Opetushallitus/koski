@@ -13,7 +13,7 @@ import { assertNever } from '../../util/selfcare'
 import { ValidationRule } from './ValidationRule'
 import { validateData, ValidationError } from './validator'
 import { storeDeferredPreferences } from '../../appstate/preferences'
-import { modify, PathToken } from '../../util/laxModify'
+import { modify, modifyWithDebug, PathToken } from '../../util/laxModify'
 
 export enum EditMode {
   View = 0,
@@ -106,6 +106,11 @@ export type FormModel<O extends object> = {
    * Siirry pois muokkaustilasta ja palauta lomakkeen tiedot edeltäneeseen tilaan.
    */
   readonly cancel: () => void
+
+  /**
+   * Debug-versiot osasta metodeista
+   */
+  readonly debug: Pick<FormModel<O>, 'modify' | 'set'>
 }
 
 /**
@@ -193,11 +198,12 @@ export const useForm = <O extends object>(
 
   const root: FormModelProp<'root'> = useMemo(() => $.optic_<O>(), [])
 
-  const modifyState: FormModelProp<'modify'> = useCallback(
-    (...path: PathToken[]) =>
+  const modifyState = useCallback(
+    (debug: boolean): FormModelProp<'modify'> =>
+      (...path: PathToken[]) =>
       <T>(f: (t: T) => T) => {
         if (editMode) {
-          const modifyFn = modify(...path)(f)
+          const modifyFn = (debug ? modifyWithDebug : modify)(...path)(f)
           dispatch({
             type: 'modify',
             modify: modifyFn,
@@ -208,10 +214,11 @@ export const useForm = <O extends object>(
     [editMode, initialData, root]
   )
 
-  const setState: FormModelProp<'set'> = useCallback(
-    (...path: PathToken[]) =>
+  const setState = useCallback(
+    (debug: boolean): FormModelProp<'set'> =>
+      (...path: PathToken[]) =>
       <T>(value: T) =>
-        modifyState(...path)(() => value),
+        modifyState(debug)(...path)(() => value),
     [modifyState]
   )
 
@@ -256,13 +263,17 @@ export const useForm = <O extends object>(
       root,
       startEdit,
       pending,
-      modify: modifyState,
-      set: setState,
+      modify: modifyState(false),
+      set: setState(false),
       updateAt,
       validate,
       save,
       cancel,
-      errors
+      errors,
+      debug: {
+        modify: modifyState(true),
+        set: setState(true)
+      }
     }),
     [
       data,
@@ -444,7 +455,7 @@ const modifyValue =
 
 const modifiesShape = <O extends object, T>(
   optic: FormOptic<O, T>,
-  modify: (t: T) => T,
+  modifyFn: (t: T) => T,
   data: O
 ): boolean => {
   const value = getValue(optic)(data)
@@ -452,7 +463,7 @@ const modifiesShape = <O extends object, T>(
     return true
   }
   if (Array.isArray(value)) {
-    const result = modify(value)
+    const result = modifyFn(value)
     if (!Array.isArray(result) || result.length !== value.length) {
       return true
     }

@@ -55,6 +55,7 @@ export type ArvosanaEditProps<T extends Arviointi> = CommonProps<
   FieldEditorProps<T | undefined, EmptyObject>
 > & {
   suoritusClassName: string
+  arviointiPropName?: string
   disabled?: boolean
   format?: (arvosana: ArvosanaOf<T>) => string
 }
@@ -64,7 +65,7 @@ export const ArvosanaEdit = <T extends Arviointi>(
 ) => {
   const arviointiSchema = useChildSchema(
     props.suoritusClassName,
-    'arviointi.[]'
+    `${props.arviointiPropName || 'arviointi'}.[]`
   )
   const arvosanaSchema = useMemo(
     () => pipe(arviointiSchema, C.prop('arvosana'), C.join),

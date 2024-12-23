@@ -24,22 +24,24 @@ import { LukionOpiskeluoikeusjakso } from '../types/fi/oph/koski/schema/LukionOp
 import { isMuidenLukioOpintojenPreIBSuoritus2019 } from '../types/fi/oph/koski/schema/MuidenLukioOpintojenPreIBSuoritus2019'
 import { PreIBKoulutusmoduuli2015 } from '../types/fi/oph/koski/schema/PreIBKoulutusmoduuli2015'
 import { PreIBKoulutusmoduuli2019 } from '../types/fi/oph/koski/schema/PreIBKoulutusmoduuli2019'
-import { PreIBSuorituksenOsasuoritus2015 } from '../types/fi/oph/koski/schema/PreIBSuorituksenOsasuoritus2015'
 import { appendOptional } from '../util/array'
 import { parasArviointi } from '../util/arvioinnit'
 import { sum } from '../util/numbers'
 import { PäätasonSuoritusOf } from '../util/opiskeluoikeus'
 import { match } from '../util/patternmatch'
+import { OsasuoritusOf } from '../util/schema'
 import { useBooleanState } from '../util/useBooleanState'
 import {
+import { UusiIBTutkintoOppiaineDialog } from './dialogs/UusiIBTutkintoOppiaineDialog'
+import { UusiIBTutkintoOsasuoritusDialog } from './dialogs/UusiIBTutkintoOsasuoritusDialog'
   ibKoulutusNimi,
   IBPäätasonSuoritusTiedot
 } from './IBPaatasonSuoritusTiedot'
-import { UusiPreIB2015OsasuoritusDialog } from './dialogs/UusiPreIB2015OsasuoritusDialog'
 import { UusiPreIB2015OppiaineDialog } from './dialogs/UusiPreIB2015OppiaineDialog'
+import { UusiPreIB2015OsasuoritusDialog } from './dialogs/UusiPreIB2015OsasuoritusDialog'
 import { UusiPreIB2019OppiaineDialog } from './dialogs/UusiPreIB2019OppiaineDialog'
-import { OsasuoritusOf } from '../util/schema'
 import { UusiPreIB2019OsasuoritusDialog } from './dialogs/UusiPreIB2019OsasuoritusDialog'
+import { UusiIBTutkintoOsasuoritusDialog } from './dialogs/UusiIBTutkintoOsasuoritusDialog'
 
 export type IBEditorProps = AdaptedOpiskeluoikeusEditorProps<IBOpiskeluoikeus>
 
@@ -122,6 +124,7 @@ const IBPäätasonSuoritusEditor: React.FC<
             PreIBKoulutusmoduuli2019,
             () => UusiPreIB2019OsasuoritusDialog
           )
+          .isClass(IBTutkinto, () => UusiIBTutkintoOsasuoritusDialog)
           .get()}
       />
 
