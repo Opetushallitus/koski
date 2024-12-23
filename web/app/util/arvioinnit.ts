@@ -67,9 +67,9 @@ const ConsolidatedArviointiOrd = Ord.fromCompare<ConsolidatedArviointi>(
 export const ArviointiOrd = contramapArviointi(ConsolidatedArviointiOrd)
 
 export const parasArviointi = <T extends Arviointi>(
-  arvioinnit: T[]
+  arvioinnit?: T[]
 ): T | undefined =>
-  pipe(arvioinnit, A.sort(ArviointiOrd), A.last, O.toUndefined)
+  pipe(arvioinnit || [], A.sort(ArviointiOrd), A.last, O.toUndefined)
 
 export const parasArviointiIndex = <T extends Arviointi>(
   arvioinnit: T[]
@@ -81,5 +81,5 @@ export const parasArviointiIndex = <T extends Arviointi>(
   )
 
 export const viimeisinArviointi = <T extends Arviointi>(
-  arvioinnit: T[]
-): T | undefined => pipe(arvioinnit, A.last, O.toUndefined)
+  arvioinnit?: T[]
+): T | undefined => pipe(arvioinnit || [], A.last, O.toUndefined)

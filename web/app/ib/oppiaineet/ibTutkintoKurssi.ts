@@ -1,3 +1,4 @@
+import { localize } from '../../i18n/i18n'
 import { IBKurssi } from '../../types/fi/oph/koski/schema/IBKurssi'
 import { IBKurssinSuoritus } from '../../types/fi/oph/koski/schema/IBKurssinSuoritus'
 import { Koodistokoodiviite } from '../../types/fi/oph/koski/schema/Koodistokoodiviite'

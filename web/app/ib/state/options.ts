@@ -191,6 +191,7 @@ export const useAineryhmäOptions = optionLoader('aineryhmaib')
 export const useÄidinkielenKieliOptions = optionLoader(
   'oppiaineaidinkielijakirjallisuus'
 )
+export const useOppiaineTasoOptions = optionLoader('oppiaineentasoib')
 
 export const useLukiokurssinTyypit = optionLoader('lukionkurssintyyppi')
 

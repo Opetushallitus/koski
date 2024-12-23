@@ -25,60 +25,60 @@
     td {
       background-color: @color-blue-background;
     }
+  }
+}
 
-    .OppiaineRow {
-      &__icon {
-        font-family: FontAwesome;
-      }
+.OppiaineRow {
+  &__icon {
+    font-family: FontAwesome;
+  }
 
-      &__nimi {
-        opacity: 66%;
-        line-height: 2 * @baseline;
-        margin-bottom: @baseline;
-      }
+  &__nimi {
+    opacity: 66%;
+    line-height: 2 * @baseline;
+    margin-bottom: @baseline;
+  }
 
-      &__kurssit {
-        line-height: 2 * @baseline;
+  &__kurssit {
+    line-height: 2 * @baseline;
 
-        .Kurssi {
-          display: inline-block;
-          position: relative;
-          min-width: 4 * @baseline;
-          max-width: 8 * @baseline;
-          margin-right: @baseline;
+    .Kurssi {
+      display: inline-block;
+      position: relative;
+      min-width: 4 * @baseline;
+      max-width: 8 * @baseline;
+      margin-right: @baseline;
 
-          &__tunniste {
-            color: @color-blue;
-            background: none;
-            border: none;
-            padding: 0;
-            margin: 0;
-            text-align: left;
-
-            font-weight: 600;
-            white-space: nowrap;
-            .IconButton {
-              margin-right: @baseline;
-            }
-          }
-        }
-      }
-
-      &__laajuus {
-        text-align: right;
-      }
-
-      &__arvosana,
-      &__predictedGrade {
-        text-align: right;
-        .Select {
-          min-width: 150px;
-        }
-      }
-      &__poisto {
+      &__tunniste {
+        color: @color-blue;
         background: none;
+        border: none;
+        padding: 0;
+        margin: 0;
+        text-align: left;
+
+        font-weight: 600;
+        white-space: nowrap;
+        .IconButton {
+          margin-right: @baseline;
+        }
       }
     }
+  }
+
+  &__laajuus {
+    text-align: right;
+  }
+
+  &__arvosana,
+  &__predictedGrade {
+    text-align: right;
+    .Select {
+      min-width: 150px;
+    }
+  }
+  &__poisto {
+    background: none;
   }
 }
 

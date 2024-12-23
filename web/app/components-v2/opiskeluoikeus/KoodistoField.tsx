@@ -9,7 +9,10 @@ import {
   SelectOption,
   groupKoodistoToOptions
 } from '../controls/Select'
-import { useKoodisto } from '../../appstate/koodisto'
+import {
+  KoodistokoodiviiteKoodistonNimellä,
+  useKoodisto
+} from '../../appstate/koodisto'
 
 export type KoodistoViewProps<T extends string> = CommonProps<
   FieldViewerProps<
@@ -33,12 +36,13 @@ export type KoodistoEditProps<T extends string> = CommonProps<
     {
       koodistoUri: T
       testId: string
+      koodiarvot?: string[]
     }
   >
 >
 
 export const KoodistoEdit = <T extends string>(props: KoodistoEditProps<T>) => {
-  const koodisto = useKoodisto(props.koodistoUri)
+  const koodisto = useKoodisto(props.koodistoUri, props.koodiarvot)
   const options = useMemo(
     () =>
       (koodisto ?? []).map((k) => ({

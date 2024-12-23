@@ -7,10 +7,7 @@ import { IBKurssinSuoritus } from '../../types/fi/oph/koski/schema/IBKurssinSuor
 import { Koodistokoodiviite } from '../../types/fi/oph/koski/schema/Koodistokoodiviite'
 import { LaajuusKursseissa } from '../../types/fi/oph/koski/schema/LaajuusKursseissa'
 import { LocalizedString } from '../../types/fi/oph/koski/schema/LocalizedString'
-import {
-  isPaikallinenKoodi,
-  PaikallinenKoodi
-} from '../../types/fi/oph/koski/schema/PaikallinenKoodi'
+import { PaikallinenKoodi } from '../../types/fi/oph/koski/schema/PaikallinenKoodi'
 import { createIBKurssinSuoritus } from '../oppiaineet/ibTutkintoKurssi'
 import { uusiPaikallinenKey } from './options'
 

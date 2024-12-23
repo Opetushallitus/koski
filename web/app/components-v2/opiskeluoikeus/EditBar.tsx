@@ -55,7 +55,9 @@ export const EditBar = <T extends object>(props: EditBarProps<T>) => {
           (console.warn(props.form.errors),
           (
             <TestIdText id="editStatus">
-              <Trans>{'Korjaa virheelliset tiedot.'}</Trans>
+              <span title={JSON.stringify(props.form.errors, null, 2)}>
+                <Trans>{'Korjaa virheelliset tiedot.'}</Trans>
+              </span>
             </TestIdText>
           ))}
       </ButtonGroup>

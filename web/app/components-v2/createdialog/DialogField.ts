@@ -9,7 +9,7 @@ export type DialogField<T> = {
 
 export const useDialogField = <T>(
   isVisible: boolean,
-  defaultValue?: () => T
+  defaultValue?: () => T | undefined
 ): DialogField<T> => {
   const [value, set] = useState<T | undefined>(defaultValue)
   const [visible, setVisible] = useState<boolean>(false)
