@@ -810,6 +810,57 @@ class MassaluovutusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers wit
         ))
       }
     }
+
+    "Haku slave oidilla palauttaa master-oppijan" in {
+      val query = getQuery(Seq(KoskiSpecificMockOppijat.slave.henkilö.oid))
+      val queryId = addQuerySuccessfully(query, user) { response =>
+        response.status should equal(QueryState.pending)
+        response.queryId
+      }
+      val complete = waitForCompletion(queryId, user)
+
+      val jsonFiles = complete.files.map { file =>
+        verifyResultAndContent(file, user) {
+          JsonMethods.parse(response.body)
+        }
+      }
+
+      (jsonFiles.head.extract[Seq[JObject]].head \ "oppijaOid").extract[String] should equal(KoskiSpecificMockOppijat.master.oid)
+    }
+
+    "Haku master oidilla palauttaa oppijan slave-oidineen" in {
+      val query = getQuery(Seq(KoskiSpecificMockOppijat.master.oid))
+      val queryId = addQuerySuccessfully(query, user) { response =>
+        response.status should equal(QueryState.pending)
+        response.queryId
+      }
+      val complete = waitForCompletion(queryId, user)
+
+      val jsonFiles = complete.files.map { file =>
+        verifyResultAndContent(file, user) {
+          JsonMethods.parse(response.body)
+        }
+      }
+
+      (jsonFiles.head.extract[Seq[JObject]].head \ "kaikkiOidit").extract[Set[String]] should equal(Set(KoskiSpecificMockOppijat.master.oid, KoskiSpecificMockOppijat.slave.henkilö.oid))
+    }
+
+    "Haku master- ja slave oidilla samaan aikaan palauttaa vain yhden oppijan" in {
+      val query = getQuery(Seq(KoskiSpecificMockOppijat.master.oid, KoskiSpecificMockOppijat.slave.henkilö.oid))
+      val queryId = addQuerySuccessfully(query, user) { response =>
+        response.status should equal(QueryState.pending)
+        response.queryId
+      }
+      val complete = waitForCompletion(queryId, user)
+
+      val jsonFiles = complete.files.map { file =>
+        verifyResultAndContent(file, user) {
+          JsonMethods.parse(response.body)
+        }
+      }
+
+      jsonFiles.head.extract[Seq[JObject]].length should equal(1)
+    }
   }
 
   def addQuery[T](query: MassaluovutusQueryParameters, user: UserWithPassword)(f: => T): T =
