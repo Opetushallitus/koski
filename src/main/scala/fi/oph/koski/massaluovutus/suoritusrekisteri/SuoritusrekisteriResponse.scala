@@ -9,8 +9,9 @@ import java.time.LocalDateTime
 
 case class SureResponse(
   oppijaOid: String,
+  kaikkiOidit: Seq[String],
   aikaleima: LocalDateTime,
-  opiskeluoikeus: SureOpiskeluoikeus,
+  opiskeluoikeudet: Seq[SureOpiskeluoikeus],
 )
 
 object SureResponse {
@@ -18,7 +19,7 @@ object SureResponse {
     SchemaToJson.toJsonSchema(KoskiSchema.createSchema(classOf[SureResponse]).asInstanceOf[ClassSchema])
 }
 
-object SureOpiskeluoikeus {
+object SureOpiskeluoikeusO {
   def apply(oo: KoskeenTallennettavaOpiskeluoikeus): Option[SureOpiskeluoikeus] =
     (oo match {
       case o: PerusopetuksenOpiskeluoikeus => Some(SurePerusopetuksenOpiskeluoikeus(o))

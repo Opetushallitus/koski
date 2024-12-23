@@ -22,6 +22,7 @@ import org.json4s.{JArray, JInt, JNothing, JObject, JValue}
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.{BeforeAndAfterAll, BeforeAndAfterEach}
+import shapeless.syntax.std.tuple.productTupleOps
 
 import java.net.URL
 import java.sql.Timestamp
@@ -506,9 +507,8 @@ class MassaluovutusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers wit
           oos.arr.map(v =>
             (
               (v \ "oppijaOid").extract[String],
-              (v \ "opiskeluoikeus" \ "oid").extract[String],
-            )).foreach { case (oppijaOid, opiskeluoikeusOid) =>
-            AuditLogTester.verifyLastAuditLogMessage(Map(
+              ((v \ "opiskeluoikeudet").extract[List[JObject]].last \ "oid").extract[String])).last match {
+            case (oppijaOid, opiskeluoikeusOid) => AuditLogTester.verifyLastAuditLogMessage(Map(
               "operation" -> "SUORITUSREKISTERI_OPISKELUOIKEUS_HAKU",
               "target" -> Map(
                 "oppijaHenkiloOid" -> oppijaOid,
@@ -517,8 +517,6 @@ class MassaluovutusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers wit
             ))
           }
         }
-
-
       }
     }
 
@@ -540,7 +538,10 @@ class MassaluovutusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers wit
         val oos = jsonFiles.flatMap {
           case JArray(a) => a
           case _ => Nil
-        }.map(_ \ "opiskeluoikeus")
+        }.map(_ \ "opiskeluoikeudet").flatMap {
+          case JArray(a) => a
+          case _ => Nil
+        }
         tyyppi match {
           case Some(t) => oos.filter(oo => (oo \ "tyyppi" \ "koodiarvo").extract[String] == t)
           case None => oos
@@ -679,9 +680,8 @@ class MassaluovutusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers wit
           oos.arr.map(v =>
             (
               (v \ "oppijaOid").extract[String],
-              (v \ "opiskeluoikeus" \ "oid").extract[String],
-            )).foreach { case (oppijaOid, opiskeluoikeusOid) =>
-            AuditLogTester.verifyLastAuditLogMessage(Map(
+              ((v \ "opiskeluoikeudet").extract[List[JObject]].last \ "oid").extract[String])).last match {
+            case (oppijaOid, opiskeluoikeusOid) => AuditLogTester.verifyLastAuditLogMessage(Map(
               "operation" -> "SUORITUSREKISTERI_OPISKELUOIKEUS_HAKU",
               "target" -> Map(
                 "oppijaHenkiloOid" -> oppijaOid,
@@ -690,7 +690,6 @@ class MassaluovutusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers wit
             ))
           }
         }
-
       }
     }
 
@@ -712,7 +711,10 @@ class MassaluovutusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers wit
         val oos = jsonFiles.flatMap {
           case JArray(a) => a
           case _ => Nil
-        }.map(_ \ "opiskeluoikeus")
+        }.map(_ \ "opiskeluoikeudet").flatMap {
+          case JArray(a) => a
+          case _ => Nil
+        }
         tyyppi match {
           case Some(t) => oos.filter(oo => (oo \ "tyyppi" \ "koodiarvo").extract[String] == t)
           case None => oos

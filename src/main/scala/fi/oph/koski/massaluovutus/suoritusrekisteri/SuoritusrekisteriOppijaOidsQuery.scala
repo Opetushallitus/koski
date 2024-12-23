@@ -24,7 +24,7 @@ case class SuoritusrekisteriOppijaOidsQuery(
     QueryMethods.runDbSync(
       db,
       sql"""
-        SELECT opiskeluoikeus.id, opiskeluoikeus.aikaleima, coalesce(henkilo.master_oid, henkilo.oid) as oid
+        SELECT opiskeluoikeus.id, opiskeluoikeus.aikaleima, coalesce(henkilo.master_oid, henkilo.oid) as master_oid
         FROM opiskeluoikeus
         JOIN henkilo ON henkilo.oid = opiskeluoikeus.oppija_oid
         WHERE

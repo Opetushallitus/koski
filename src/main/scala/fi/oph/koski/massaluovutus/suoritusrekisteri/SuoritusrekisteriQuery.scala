@@ -7,6 +7,7 @@ import fi.oph.koski.db.{DB, KoskiOpiskeluoikeusRow, KoskiTables, QueryMethods}
 import fi.oph.koski.koskiuser.KoskiSpecificSession
 import fi.oph.koski.koskiuser.Rooli.{OPHKATSELIJA, OPHPAAKAYTTAJA}
 import fi.oph.koski.log._
+import fi.oph.koski.massaluovutus.suoritusrekisteri.opiskeluoikeus.SureOpiskeluoikeus
 import fi.oph.koski.massaluovutus.{MassaluovutusQueryParameters, MassaluovutusQueryPriority, QueryResultWriter}
 import fi.oph.koski.schema.{KoskeenTallennettavaOpiskeluoikeus, KoskiSchema}
 
@@ -21,18 +22,25 @@ trait SuoritusrekisteriQuery extends MassaluovutusQueryParameters with Logging {
 
   override def run(application: KoskiApplication, writer: QueryResultWriter)(implicit user: KoskiSpecificSession): Either[String, Unit] = {
     val opiskeluoikeudetResult = getOpiskeluoikeusIds(application.masterDatabase.db)
-    val oppijaOidit = opiskeluoikeudetResult.groupBy(_._3)
+    val resultsByOppija = opiskeluoikeudetResult.groupBy(_._3)
 
-    writer.predictFileCount(oppijaOidit.size)
-    oppijaOidit.grouped(100).foreach { groupedResult =>
-      val db = selectDbByLag(application, groupedResult.head._2.head._2)
-      groupedResult.foreach { case (oppija_oid, opiskeluoikeudet) =>
+    writer.predictFileCount(resultsByOppija.size / 100)
+    resultsByOppija.grouped(100).zipWithIndex.foreach { case (oppijaResult, index) =>
+      val sureResponses = oppijaResult.map { case (oppija_oid, opiskeluoikeudet) =>
+        val latestTimestamp = opiskeluoikeudet.maxBy(_._2.toInstant)._2
+        val db = selectDbByLag(application, latestTimestamp)
         val response = opiskeluoikeudet.flatMap(oo => getOpiskeluoikeus(application, db, oo._1))
         response.foreach { oo =>
-          auditLog(oo.oppijaOid, oo.opiskeluoikeus.oid)
+          auditLog(oppija_oid, oo.oid)
         }
-        writer.putJson(s"$oppija_oid", response)
+        SureResponse(
+          oppijaOid = oppija_oid,
+          kaikkiOidit = application.henkilöRepository.findByOid(oppija_oid).get.kaikkiOidit,
+          aikaleima = LocalDateTime.from(latestTimestamp.toLocalDateTime),
+          opiskeluoikeudet = response
+        )
       }
+      writer.putJson(s"$index", sureResponses)
     }
     Right(())
   }
@@ -40,7 +48,7 @@ trait SuoritusrekisteriQuery extends MassaluovutusQueryParameters with Logging {
   override def queryAllowed(application: KoskiApplication)(implicit user: KoskiSpecificSession): Boolean =
     user.hasRole(OPHKATSELIJA) || user.hasRole(OPHPAAKAYTTAJA)
 
-  private def getOpiskeluoikeus(application: KoskiApplication, db: DB, id: Int): Option[SureResponse] =
+  private def getOpiskeluoikeus(application: KoskiApplication, db: DB, id: Int): Option[SureOpiskeluoikeus] =
     QueryMethods.runDbSync(
       db,
       sql"""
@@ -48,7 +56,7 @@ trait SuoritusrekisteriQuery extends MassaluovutusQueryParameters with Logging {
          FROM opiskeluoikeus
          WHERE id = $id
       """.as[KoskiOpiskeluoikeusRow]
-    ).headOption.flatMap(toResponse(application))
+    ).headOption.flatMap(toSureOpiskeluoikeus(application))
 
   private def selectDbByLag(application: KoskiApplication, opiskeluoikeusAikaleima: Timestamp): DB = {
     val safetyLimit = 15.seconds
@@ -62,11 +70,11 @@ trait SuoritusrekisteriQuery extends MassaluovutusQueryParameters with Logging {
     }
   }
 
-  private def toResponse(application: KoskiApplication)(row: KoskiOpiskeluoikeusRow): Option[SureResponse] = {
+  private def toSureOpiskeluoikeus(application: KoskiApplication)(row: KoskiOpiskeluoikeusRow): Option[SureOpiskeluoikeus] = {
     val json = KoskiTables.KoskiOpiskeluoikeusTable.readAsJValue(row.data, row.oid, row.versionumero, row.aikaleima)
     application.validatingAndResolvingExtractor.extract[KoskeenTallennettavaOpiskeluoikeus](KoskiSchema.strictDeserialization)(json) match {
       case Right(oo: KoskeenTallennettavaOpiskeluoikeus) =>
-        SureOpiskeluoikeus(oo).map(SureResponse(row.oppijaOid, row.aikaleima.toLocalDateTime, _))
+        SureOpiskeluoikeusO(oo)
       case Left(errors) =>
         logger.warn(s"Error deserializing opiskeluoikeus: ${errors}")
         None
