@@ -1,5 +1,10 @@
+import { fromCompare } from 'fp-ts/lib/Ord'
 import { Koodistokoodiviite } from '../types/fi/oph/koski/schema/Koodistokoodiviite'
 import { KoodiViite } from '../types/fi/oph/koski/schema/KoodiViite'
+import {
+  isKorkeakoulunPaikallinenArvosana,
+  KorkeakoulunPaikallinenArvosana
+} from '../types/fi/oph/koski/schema/KorkeakoulunPaikallinenArvosana'
 import {
   isLukionOppiaineidenOppimäärätKoodi2019,
   LukionOppiaineidenOppimäärätKoodi2019
@@ -12,11 +17,6 @@ import {
   isSynteettinenKoodiviite,
   SynteettinenKoodiviite
 } from '../types/fi/oph/koski/schema/SynteettinenKoodiviite'
-import {
-  isKorkeakoulunPaikallinenArvosana,
-  KorkeakoulunPaikallinenArvosana
-} from '../types/fi/oph/koski/schema/KorkeakoulunPaikallinenArvosana'
-import { nonNull } from './fp/arrays'
 
 export type KoodistoUriOf<T extends Koodistokoodiviite> = T['koodistoUri']
 export type KoodiarvotOf<T extends Koodistokoodiviite> = T['koodiarvo']
@@ -66,3 +66,10 @@ export const asKoodiviite = <U extends string, A extends string = string>(
     `Cannot cast Koodistokoodiviite<"${a.koodistoUri}"> to Koodistokoodiviite<"${koodistoUri}">`
   )
 }
+
+export const koodiviiteEquals =
+  <T extends KoodiViite>(a: T) =>
+  (b: T): boolean =>
+    a.$class === b.$class &&
+    a.koodiarvo === b.koodiarvo &&
+    (a as any).koodistoUri === (b as any).koodistoUri
