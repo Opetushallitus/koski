@@ -32,7 +32,7 @@ import {
 } from '../../types/fi/oph/koski/schema/PaikallinenKoodi'
 import { PaikallinenLukionKurssi2015 } from '../../types/fi/oph/koski/schema/PaikallinenLukionKurssi2015'
 import { PreIBKurssinSuoritus2015 } from '../../types/fi/oph/koski/schema/PreIBKurssinSuoritus2015'
-import { koodiviiteId } from '../../util/koodisto'
+import { koodiviiteEquals, koodiviiteId } from '../../util/koodisto'
 import { DialogSelect } from '../../uusiopiskeluoikeus/components/DialogSelect'
 import { PreIB2015OsasuoritusTunniste } from '../oppiaineet/preIBKurssi2015'
 import {
@@ -105,6 +105,7 @@ export const UusiPreIB2015OsasuoritusDialog: AddOppiaineenOsasuoritusDialog<
 
   const onTunniste = useCallback(
     (option?: SelectOption<Koodistokoodiviite | PaikallinenKoodi>) => {
+      const tunniste = option?.value
       if (
         option?.key === UusiIBKurssiKey ||
         option?.key === UusiPaikallinenLukionKurssiKey
@@ -114,15 +115,24 @@ export const UusiPreIB2015OsasuoritusDialog: AddOppiaineenOsasuoritusDialog<
           PaikallinenKoodi({ koodiarvo: '', nimi: localize('') })
         )
         state.kuvaus.set(localize(''))
-      } else if (isPaikallinenKoodi(option?.value)) {
-        state.tunniste.set(option.value)
-        state.kuvaus.set(localize('todo: kaiva kuvaus tähän'))
+      } else if (isPaikallinenKoodi(tunniste)) {
+        const kurssi = [...paikallisetLukionKurssit, ...ibKurssit].find((k) =>
+          koodiviiteEquals(tunniste)(k.tunniste)
+        )
+        state.tunniste.set(tunniste)
+        state.kuvaus.set(kurssi?.kuvaus)
       } else if (option?.value) {
         state.uusiTyyppi.set(undefined)
         state.tunniste.set(option.value as PreIB2015OsasuoritusTunniste)
       }
     },
-    [state.kuvaus, state.tunniste, state.uusiTyyppi]
+    [
+      ibKurssit,
+      paikallisetLukionKurssit,
+      state.kuvaus,
+      state.tunniste,
+      state.uusiTyyppi
+    ]
   )
 
   const onPaikallinenKoulutus = useCallback(

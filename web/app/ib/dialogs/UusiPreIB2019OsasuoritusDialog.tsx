@@ -27,13 +27,16 @@ import {
 } from '../../components-v2/opiskeluoikeus/PaikallinenKoulutusFields'
 import { localize, t } from '../../i18n/i18n'
 import { Koodistokoodiviite } from '../../types/fi/oph/koski/schema/Koodistokoodiviite'
-import { LukionPaikallinenOpintojakso2019 } from '../../types/fi/oph/koski/schema/LukionPaikallinenOpintojakso2019'
+import {
+  isLukionPaikallinenOpintojakso2019,
+  LukionPaikallinenOpintojakso2019
+} from '../../types/fi/oph/koski/schema/LukionPaikallinenOpintojakso2019'
 import {
   isPaikallinenKoodi,
   PaikallinenKoodi
 } from '../../types/fi/oph/koski/schema/PaikallinenKoodi'
 import { PreIBLukionModuulinTaiPaikallisenOpintojaksonSuoritus2019 } from '../../types/fi/oph/koski/schema/PreIBLukionModuulinTaiPaikallisenOpintojaksonSuoritus2019'
-import { koodiviiteId } from '../../util/koodisto'
+import { koodiviiteEquals, koodiviiteId } from '../../util/koodisto'
 import { PreIB2019OsasuoritusTunniste } from '../oppiaineet/preIBModuuli2019'
 import { labelWithKoodiarvo } from '../state/options'
 import {
@@ -93,19 +96,24 @@ export const UusiPreIB2019OsasuoritusDialog: AddOppiaineenOsasuoritusDialog<
 
   const onTunniste = useCallback(
     (option?: SelectOption<Koodistokoodiviite | PaikallinenKoodi>) => {
+      const tunniste = option?.value
       if (option?.key === UusiPaikallinenLukionKurssiKey) {
         state.tunniste.set(
           PaikallinenKoodi({ koodiarvo: '', nimi: localize('') })
         )
         state.kuvaus.set(localize(''))
-      } else if (isPaikallinenKoodi(option?.value)) {
-        state.tunniste.set(option.value)
-        state.kuvaus.set(localize('todo: kaiva kuvaus tähän'))
+      } else if (isPaikallinenKoodi(tunniste)) {
+        const opintojakso = paikallisetOpintojaksot.find((jakso) =>
+          koodiviiteEquals(tunniste)(jakso.tunniste)
+        )
+        state.tunniste.set(tunniste)
+        state.kuvaus.set(opintojakso?.kuvaus)
+        state.laajuus.set(opintojakso?.laajuus)
       } else if (option?.value) {
         state.tunniste.set(option.value as PreIB2019OsasuoritusTunniste)
       }
     },
-    [state.kuvaus, state.tunniste]
+    [paikallisetOpintojaksot, state.kuvaus, state.laajuus, state.tunniste]
   )
 
   const onPaikallinenKoulutus = useCallback(
@@ -127,8 +135,15 @@ export const UusiPreIB2019OsasuoritusDialog: AddOppiaineenOsasuoritusDialog<
     const kurssi = state.result
     if (kurssi) {
       onAdd(kurssi)
+
+      if (isLukionPaikallinenOpintojakso2019(kurssi.koulutusmoduuli)) {
+        storePaikallinenOpintojakso(
+          koodiviiteId(kurssi.koulutusmoduuli.tunniste),
+          kurssi.koulutusmoduuli
+        )
+      }
     }
-  }, [onAdd, state])
+  }, [onAdd, state.result, storePaikallinenOpintojakso])
 
   const onRemoveTunniste = useCallback(
     (option: SelectOption<Koodistokoodiviite | PaikallinenKoodi>) => {
