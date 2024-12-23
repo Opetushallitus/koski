@@ -359,6 +359,8 @@ const reducer = <O>(
         ? action.modify(state.initialData)
         : state.initialData
 
+      console.log('Modify model', state.data, '-->', data)
+
       return state.editMode
         ? {
             ...state,

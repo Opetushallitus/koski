@@ -35,5 +35,11 @@ export const shortClassName = (fullClassName: string): string => {
 
 export const isKoodistoOf =
   <T extends string>(koodistoUri: T) =>
-    (koodiviite?: Koodistokoodiviite): koodiviite is Koodistokoodiviite<T> =>
-      koodiviite?.koodistoUri === koodistoUri
+  (koodiviite?: Koodistokoodiviite): koodiviite is Koodistokoodiviite<T> =>
+    koodiviite?.koodistoUri === koodistoUri
+
+export const isKoodiarvoOf =
+  <T extends string, S extends string>(koodistoUri: T, koodiarvot: S[]) =>
+  (koodiviite?: Koodistokoodiviite): koodiviite is Koodistokoodiviite<T, S> =>
+    koodiviite?.koodistoUri === koodistoUri &&
+    koodiarvot.includes(koodiviite?.koodiarvo as any)

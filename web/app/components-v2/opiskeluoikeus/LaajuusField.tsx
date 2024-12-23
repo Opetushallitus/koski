@@ -13,6 +13,7 @@ import { FieldEditorProps, FieldViewerProps } from '../forms/FormField'
 import { nonNull } from '../../util/fp/arrays'
 import { TestIdLayer, TestIdText, useTestId } from '../../appstate/useTestId'
 import { EmptyObject } from '../../util/objects'
+import { LaajuusKursseissa } from '../../types/fi/oph/koski/schema/LaajuusKursseissa'
 
 /* ---------------------------------------------------------------------
  *
@@ -98,6 +99,15 @@ export const LaajuusOpintopisteissäEdit: React.FC<
   <LaajuusEdit
     {...props}
     createLaajuus={(arvo: any) => LaajuusOpintopisteissä({ arvo }) as any}
+  />
+)
+
+export const LaajuusKursseissaEdit: React.FC<
+  DefaultLaajuusEditProps<LaajuusOpintopisteissä>
+> = (props) => (
+  <LaajuusEdit
+    {...props}
+    createLaajuus={(arvo: any) => LaajuusKursseissa({ arvo }) as any}
   />
 )
 

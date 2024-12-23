@@ -1,10 +1,19 @@
+import { string } from 'fp-ts'
+import * as A from 'fp-ts/Array'
+import { pipe } from 'fp-ts/lib/function'
+import * as NonEmptyArray from 'fp-ts/NonEmptyArray'
+import * as O from 'fp-ts/Option'
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { ISO2FinnishDate } from '../../date/date'
 import { t } from '../../i18n/i18n'
 import { isArvioinniton } from '../../types/fi/oph/koski/schema/Arvioinniton'
 import { Arviointi } from '../../types/fi/oph/koski/schema/Arviointi'
 import { IBOpiskeluoikeus } from '../../types/fi/oph/koski/schema/IBOpiskeluoikeus'
+import { isIBOppiaineenSuoritus } from '../../types/fi/oph/koski/schema/IBOppiaineenSuoritus'
+import { IBTheoryOfKnowledgeSuoritus } from '../../types/fi/oph/koski/schema/IBTheoryOfKnowledgeSuoritus'
+import { IBTutkinnonSuoritus } from '../../types/fi/oph/koski/schema/IBTutkinnonSuoritus'
 import { LukionArviointi } from '../../types/fi/oph/koski/schema/LukionArviointi'
+import { isLukionKurssinSuoritus2015 } from '../../types/fi/oph/koski/schema/LukionKurssinSuoritus2015'
 import { MuidenLukioOpintojenPreIBSuoritus2019 } from '../../types/fi/oph/koski/schema/MuidenLukioOpintojenPreIBSuoritus2019'
 import { Suoritus } from '../../types/fi/oph/koski/schema/Suoritus'
 import { isValinnaisuus } from '../../types/fi/oph/koski/schema/Valinnaisuus'
@@ -13,6 +22,7 @@ import { PreIBSuoritus2019 } from '../../types/fi/oph/koski/schema/PreIBSuoritus
 import { isValinnanMahdollisuus } from '../../types/fi/oph/koski/schema/ValinnanMahdollisuus'
 import { appendOptional, deleteAt } from '../../util/array'
 import { parasArviointi, viimeisinArviointi } from '../../util/arvioinnit'
+import { nonFalsy } from '../../util/fp/arrays'
 import { PathToken } from '../../util/laxModify'
 import { sum } from '../../util/numbers'
 import { PäätasonSuoritusOf } from '../../util/opiskeluoikeus'
@@ -28,23 +38,15 @@ import { FormModel, getValue } from '../forms/FormModel'
 import { CHARCODE_REMOVE } from '../texts/Icon'
 import { ArvosanaEdit } from './ArvosanaField'
 import { OppiaineTableKurssiEditor } from './OppiaineTableKurssiEditor'
-import { isLukionKurssinSuoritus2015 } from '../../types/fi/oph/koski/schema/LukionKurssinSuoritus2015'
-import { nonFalsy, nonNull } from '../../util/fp/arrays'
-import * as NonEmptyArray from 'fp-ts/NonEmptyArray'
-import * as O from 'fp-ts/Option'
-import * as A from 'fp-ts/Array'
-import { pipe } from 'fp-ts/lib/function'
-import { useSchema } from '../../appstate/constraints'
-import { IBTutkinnonSuoritus } from '../../types/fi/oph/koski/schema/IBTutkinnonSuoritus'
-import { IBOppiaineenPredictedArviointi } from '../../types/fi/oph/koski/schema/IBOppiaineenPredictedArviointi'
-import { isIBOppiaineenSuoritus } from '../../types/fi/oph/koski/schema/IBOppiaineenSuoritus'
 
 // Vain OppiaineTablen tukemat päätason suoritukset (tätä komponenttia tullaan myöhemmin käyttämään ainakin lukion näkymille)
 export type OppiaineTableOpiskeluoikeus = IBOpiskeluoikeus
 export type OppiaineTablePäätasonSuoritus =
   PäätasonSuoritusOf<OppiaineTableOpiskeluoikeus>
 
-export type Oppiaine = OsasuoritusOf<OppiaineTablePäätasonSuoritus>
+export type Oppiaine =
+  | OsasuoritusOf<OppiaineTablePäätasonSuoritus>
+  | IBTheoryOfKnowledgeSuoritus
 export type OppiaineenOsasuoritus = OsasuoritusOf<Oppiaine>
 
 export type OppiaineTableProps<T extends OppiaineTablePäätasonSuoritus> = {
@@ -91,7 +93,7 @@ export const OppiaineTable = <T extends OppiaineTablePäätasonSuoritus>({
 
   const addKurssiArviointi =
     (oppiaineIndex: number) =>
-    (osasuoritusIndex: number, arviointi: ArviointiOf<OppiaineenOsasuoritus>) =>
+    (osasuoritusIndex: number, arviointi: Arviointi) =>
       form.modify(
         ...oppiainePath(oppiaineIndex),
         'osasuoritukset',
@@ -159,14 +161,14 @@ export const OppiaineTable = <T extends OppiaineTablePäätasonSuoritus>({
 }
 
 export type OppiaineRowProps<T> = {
-  form: FormModel<IBOpiskeluoikeus>
+  form: FormModel<OppiaineTableOpiskeluoikeus>
   oppiainePath: PathToken[]
   organisaatioOid: string
   oppiaine: Oppiaine
   showPredictedGrade: boolean
   addOsasuoritusDialog: AddOppiaineenOsasuoritusDialog<T>
   onAddOsasuoritus: (t: T) => void
-  onArviointi: (osasuoritusIndex: number, arviointi: LukionArviointi) => void
+  onArviointi: (osasuoritusIndex: number, arviointi: Arviointi) => void
   onOppiaineArviointi: (arviointi: Arviointi) => void
   onPredictedGrade: (arviointi: Arviointi) => void
   onDelete: () => void
@@ -223,24 +225,15 @@ const OppiaineRow = <T,>({
         <div className="OppiaineRow__nimi">
           {oppiaineenNimi(oppiaine.koulutusmoduuli)}
         </div>
-        <div className="OppiaineRow__kurssit">
-          {kurssit.map((kurssi, index) => (
-            <Kurssi
-              key={index}
-              form={form}
-              kurssi={kurssi}
-              kurssiPath={[...oppiainePath, 'osasuoritukset', index]}
-              oppiaine={oppiaine}
-              onArviointi={(a) => a && onArviointi(index, a)}
-              onDelete={() => onDeleteKurssi(index)}
-            />
-          ))}
-          {form.editMode && (
-            <FlatButton onClick={showAddOsasuoritusDialog}>
-              {t('Lisää osasuoritus')}
-            </FlatButton>
-          )}
-        </div>
+        <OppiaineenKurssit
+          form={form}
+          kurssit={kurssit}
+          oppiaine={oppiaine}
+          oppiainePath={oppiainePath}
+          onArviointi={onArviointi}
+          onDeleteKurssi={onDeleteKurssi}
+          onShowAddOsasuoritusDialog={showAddOsasuoritusDialog}
+        />
       </td>
       <td className="OppiaineRow__laajuus">{kurssejaYhteensä}</td>
       {showPredictedGrade && (
@@ -282,8 +275,47 @@ const OppiaineRow = <T,>({
   )
 }
 
+export type OppiaineenKurssitProps = {
+  form: FormModel<OppiaineTableOpiskeluoikeus>
+  kurssit: OppiaineenOsasuoritus[]
+  oppiaine: Oppiaine
+  oppiainePath: PathToken[]
+  onArviointi: (osasuoritusIndex: number, arviointi: Arviointi) => void
+  onDeleteKurssi: (index: number) => void
+  onShowAddOsasuoritusDialog: () => void
+}
+
+export const OppiaineenKurssit = ({
+  form,
+  kurssit,
+  oppiaine,
+  oppiainePath,
+  onArviointi,
+  onDeleteKurssi,
+  onShowAddOsasuoritusDialog
+}: OppiaineenKurssitProps) => (
+  <div className="OppiaineRow__kurssit">
+    {kurssit.map((kurssi, index) => (
+      <Kurssi
+        key={index}
+        form={form}
+        kurssi={kurssi}
+        kurssiPath={[...oppiainePath, 'osasuoritukset', index]}
+        oppiaine={oppiaine}
+        onArviointi={(a) => a && onArviointi(index, a)}
+        onDelete={() => onDeleteKurssi(index)}
+      />
+    ))}
+    {form.editMode && (
+      <FlatButton onClick={onShowAddOsasuoritusDialog}>
+        {t('Lisää osasuoritus')}
+      </FlatButton>
+    )}
+  </div>
+)
+
 type OppiaineArvosanaProps = {
-  form: FormModel<IBOpiskeluoikeus>
+  form: FormModel<OppiaineTableOpiskeluoikeus>
   oppiaine: Oppiaine
   onChange: (a: Arviointi) => void
 }
@@ -367,7 +399,7 @@ const oppiaineenNimi = (koulutusmoduuli: KoulutusmoduuliOf<Oppiaine>) =>
     .join(', ')
 
 type KurssiProps = {
-  form: FormModel<IBOpiskeluoikeus>
+  form: FormModel<OppiaineTableOpiskeluoikeus>
   oppiaine: Oppiaine
   kurssi: OsasuoritusOf<Oppiaine>
   kurssiPath: PathToken[]
@@ -375,7 +407,7 @@ type KurssiProps = {
   onDelete: () => void
 }
 
-const Kurssi: React.FC<KurssiProps> = ({
+export const Kurssi: React.FC<KurssiProps> = ({
   form,
   kurssi,
   kurssiPath,

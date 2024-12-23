@@ -9,6 +9,7 @@ import { TestIdLayer } from '../../appstate/useTestId'
 
 export type KoodistoSelectProps<T extends string> = CommonProps<{
   koodistoUri: T
+  koodiarvot?: string[]
   addNewText?: string | LocalizedString
   onSelect: (
     tunniste: Koodistokoodiviite<T> | undefined,
@@ -25,7 +26,7 @@ export type KoodistoSelectProps<T extends string> = CommonProps<{
 export function KoodistoSelect<T extends string>(
   props: KoodistoSelectProps<T>
 ) {
-  const koodisto = useKoodisto(props.koodistoUri)
+  const koodisto = useKoodisto(props.koodistoUri, props.koodiarvot)
   const { filter, zeroValueOption } = props
   const options: OptionList<Koodistokoodiviite<T>> = useMemo(() => {
     const koodistoOptions = (koodisto || [])

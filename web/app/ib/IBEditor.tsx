@@ -42,6 +42,7 @@ import { UusiPreIB2015OsasuoritusDialog } from './dialogs/UusiPreIB2015Osasuorit
 import { UusiPreIB2019OppiaineDialog } from './dialogs/UusiPreIB2019OppiaineDialog'
 import { UusiPreIB2019OsasuoritusDialog } from './dialogs/UusiPreIB2019OsasuoritusDialog'
 import { UusiIBTutkintoOsasuoritusDialog } from './dialogs/UusiIBTutkintoOsasuoritusDialog'
+import { UusiIBTutkintoOppiaineDialog } from './dialogs/UusiIBTutkintoOppiaineDialog'
 
 export type IBEditorProps = AdaptedOpiskeluoikeusEditorProps<IBOpiskeluoikeus>
 
@@ -162,7 +163,14 @@ const IBPäätasonSuoritusEditor: React.FC<
               organisaatioOid={organisaatio?.oid}
             />
           ))
-          .isClass(IBTutkinto, () => <p>TODO</p>)
+          .isClass(IBTutkinto, () => (
+            <UusiIBTutkintoOppiaineDialog
+              päätasonSuoritus={päätasonSuoritus.suoritus}
+              onClose={hideAddOppiaineDialog}
+              onSubmit={addOppiaine}
+              organisaatioOid={organisaatio?.oid}
+            />
+          ))
           .getOrNull()}
     </EditorContainer>
   )
