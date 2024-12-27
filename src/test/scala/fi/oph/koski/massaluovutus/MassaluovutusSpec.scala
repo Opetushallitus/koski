@@ -1,5 +1,6 @@
 package fi.oph.koski.massaluovutus
 
+import fi.oph.koski.api.misc.OpiskeluoikeusTestMethodsAmmatillinen
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api.actionBasedSQLInterpolation
 import fi.oph.koski.db.QueryMethods
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
@@ -14,6 +15,7 @@ import fi.oph.koski.massaluovutus.valintalaskenta.ValintalaskentaQuery
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.raportit.RaportitService
 import fi.oph.koski.schema.KoskiSchema.strictDeserialization
+import fi.oph.koski.schema.{KoskeenTallennettavaOpiskeluoikeus, LocalizedString, PerusopetuksenVuosiluokanSuoritus}
 import fi.oph.koski.util.Wait
 import fi.oph.koski.{KoskiApplicationForTests, KoskiHttpSpec}
 import fi.oph.scalaschema.Serializer.format
@@ -22,15 +24,13 @@ import org.json4s.{JArray, JInt, JNothing, JObject, JValue}
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.{BeforeAndAfterAll, BeforeAndAfterEach}
-import shapeless.syntax.std.tuple.productTupleOps
 
 import java.net.URL
 import java.sql.Timestamp
 import java.time.{Duration, LocalDate, LocalDateTime}
 import java.util.UUID
-import scala.util.matching.Regex
 
-class MassaluovutusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers with BeforeAndAfterAll with BeforeAndAfterEach {
+class MassaluovutusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers with BeforeAndAfterAll with BeforeAndAfterEach with OpiskeluoikeusTestMethodsAmmatillinen {
   val app = KoskiApplicationForTests
 
   override protected def beforeAll(): Unit = {
@@ -634,6 +634,33 @@ class MassaluovutusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers wit
           "valmistunut"
         ))
      }
+    }
+
+    "Palauttaa oppijan kaikki opiskeluoikeudet jos yksikin on muuttunut" in {
+      val oppija = KoskiSpecificMockOppijat.moniaEriOpiskeluoikeuksia
+      val oo = getOpiskeluoikeus(oppija.oid, "perusopetus")
+      val muokattuOo = oo.withSuoritukset(oo.suoritukset.map {
+        case p: PerusopetuksenVuosiluokanSuoritus => p.copy(todistuksellaNäkyvätLisätiedot = Some(LocalizedString.finnish("asd")))
+        case s => s
+      })
+      createOrUpdate(oppija, muokattuOo)
+      val tallennettuOo = getOpiskeluoikeus(muokattuOo.oid.get).asInstanceOf[KoskeenTallennettavaOpiskeluoikeus]
+
+      val query = getQuery(tallennettuOo.aikaleima.get)
+      val queryId = addQuerySuccessfully(query, user) { response =>
+        response.status should equal(QueryState.pending)
+        response.queryId
+      }
+      val complete = waitForCompletion(queryId, user)
+
+      val jsonFiles = complete.files.map { file =>
+        verifyResultAndContent(file, user) {
+          JsonMethods.parse(response.body)
+        }
+      }
+      val oppijat = jsonFiles.head.extract[Seq[JObject]]
+      oppijat.length should equal(1)
+      (oppijat.head \ "opiskeluoikeudet").extract[Seq[JObject]].length should equal(7)
     }
   }
 
