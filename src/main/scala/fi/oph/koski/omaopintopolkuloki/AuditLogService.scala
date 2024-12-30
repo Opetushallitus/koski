@@ -53,9 +53,7 @@ class AuditLogService(app: KoskiApplication) extends Logging {
         }
     }.getOrElse(List.empty[String])
 
-    val raw = item.asScala.view.collectFirst {
-      case ("raw", value) if value.s() != null => value.s()
-    }.getOrElse("")
+    val raw = ""
 
     val time = item.asScala.view.collectFirst {
       case ("time", value) if value.s() != null => value.s()
