@@ -24,13 +24,15 @@ case class SuoritusrekisteriOppijaOidsQuery(
     QueryMethods.runDbSync(
       db,
       sql"""
-        SELECT opiskeluoikeus.id, opiskeluoikeus.aikaleima, coalesce(henkilo.master_oid, henkilo.oid) as oid
+        SELECT opiskeluoikeus.id, opiskeluoikeus.aikaleima, coalesce(henkilo.master_oid, henkilo.oid) as master_oid
         FROM opiskeluoikeus
-        JOIN henkilo ON henkilo.oid = opiskeluoikeus.oppija_oid
-        WHERE
-          (henkilo.oid = any($oppijaOids) OR
-          henkilo.master_oid = any($oppijaOids))
-          AND koulutusmuoto = any(${SuoritusrekisteriQuery.opiskeluoikeudenTyypit})
+          JOIN henkilo ON henkilo.oid = opiskeluoikeus.oppija_oid
+        WHERE COALESCE(henkilo.master_oid, henkilo.oid) IN (
+          SELECT DISTINCT COALESCE(h.master_oid, h.oid)
+          FROM henkilo h
+          WHERE h.oid = any($oppijaOids)
+          )
+        AND opiskeluoikeus.koulutusmuoto = any(${SuoritusrekisteriQuery.opiskeluoikeudenTyypit})
       """.as[(Int, Timestamp, String)])
   }
 }

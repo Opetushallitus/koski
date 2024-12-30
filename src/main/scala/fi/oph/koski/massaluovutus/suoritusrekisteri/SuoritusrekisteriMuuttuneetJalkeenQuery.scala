@@ -26,11 +26,17 @@ case class SuoritusrekisteriMuuttuneetJalkeenQuery(
     QueryMethods.runDbSync(
       db,
       sql"""
-        SELECT opiskeluoikeus.id, opiskeluoikeus.aikaleima, coalesce(henkilo.master_oid, henkilo.oid)
+        SELECT opiskeluoikeus.id,
+          opiskeluoikeus.aikaleima,
+          COALESCE(henkilo.master_oid, henkilo.oid) AS master_oid
         FROM opiskeluoikeus
-        JOIN henkilo ON henkilo.oid = opiskeluoikeus.oppija_oid
-        WHERE aikaleima >= ${Timestamp.valueOf(muuttuneetJälkeen)}
-          AND koulutusmuoto = any(${SuoritusrekisteriQuery.opiskeluoikeudenTyypit})
-        ORDER BY aikaleima
+          JOIN henkilo ON henkilo.oid = opiskeluoikeus.oppija_oid
+        WHERE COALESCE(henkilo.master_oid, henkilo.oid) IN (
+          SELECT DISTINCT COALESCE(h.master_oid, h.oid) AS master_oid
+          FROM henkilo h
+            JOIN opiskeluoikeus o ON h.oid = o.oppija_oid
+          WHERE aikaleima >= ${Timestamp.valueOf(muuttuneetJälkeen)}
+            AND o.koulutusmuoto = ANY(${SuoritusrekisteriQuery.opiskeluoikeudenTyypit}))
+        ORDER BY opiskeluoikeus.aikaleima
       """.as[(Int, Timestamp, String)])
 }

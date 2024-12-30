@@ -1,5 +1,6 @@
 package fi.oph.koski.massaluovutus
 
+import fi.oph.koski.api.misc.OpiskeluoikeusTestMethodsAmmatillinen
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api.actionBasedSQLInterpolation
 import fi.oph.koski.db.QueryMethods
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
@@ -14,6 +15,7 @@ import fi.oph.koski.massaluovutus.valintalaskenta.ValintalaskentaQuery
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.raportit.RaportitService
 import fi.oph.koski.schema.KoskiSchema.strictDeserialization
+import fi.oph.koski.schema.{KoskeenTallennettavaOpiskeluoikeus, LocalizedString, PerusopetuksenVuosiluokanSuoritus}
 import fi.oph.koski.util.Wait
 import fi.oph.koski.{KoskiApplicationForTests, KoskiHttpSpec}
 import fi.oph.scalaschema.Serializer.format
@@ -27,9 +29,8 @@ import java.net.URL
 import java.sql.Timestamp
 import java.time.{Duration, LocalDate, LocalDateTime}
 import java.util.UUID
-import scala.util.matching.Regex
 
-class MassaluovutusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers with BeforeAndAfterAll with BeforeAndAfterEach {
+class MassaluovutusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers with BeforeAndAfterAll with BeforeAndAfterEach with OpiskeluoikeusTestMethodsAmmatillinen {
   val app = KoskiApplicationForTests
 
   override protected def beforeAll(): Unit = {
@@ -506,9 +507,8 @@ class MassaluovutusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers wit
           oos.arr.map(v =>
             (
               (v \ "oppijaOid").extract[String],
-              (v \ "opiskeluoikeus" \ "oid").extract[String],
-            )).foreach { case (oppijaOid, opiskeluoikeusOid) =>
-            AuditLogTester.verifyLastAuditLogMessage(Map(
+              ((v \ "opiskeluoikeudet").extract[List[JObject]].last \ "oid").extract[String])).last match {
+            case (oppijaOid, opiskeluoikeusOid) => AuditLogTester.verifyLastAuditLogMessage(Map(
               "operation" -> "SUORITUSREKISTERI_OPISKELUOIKEUS_HAKU",
               "target" -> Map(
                 "oppijaHenkiloOid" -> oppijaOid,
@@ -517,8 +517,6 @@ class MassaluovutusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers wit
             ))
           }
         }
-
-
       }
     }
 
@@ -540,7 +538,10 @@ class MassaluovutusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers wit
         val oos = jsonFiles.flatMap {
           case JArray(a) => a
           case _ => Nil
-        }.map(_ \ "opiskeluoikeus")
+        }.map(_ \ "opiskeluoikeudet").flatMap {
+          case JArray(a) => a
+          case _ => Nil
+        }
         tyyppi match {
           case Some(t) => oos.filter(oo => (oo \ "tyyppi" \ "koodiarvo").extract[String] == t)
           case None => oos
@@ -634,6 +635,33 @@ class MassaluovutusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers wit
         ))
      }
     }
+
+    "Palauttaa oppijan kaikki opiskeluoikeudet jos yksikin on muuttunut" in {
+      val oppija = KoskiSpecificMockOppijat.moniaEriOpiskeluoikeuksia
+      val oo = getOpiskeluoikeus(oppija.oid, "perusopetus")
+      val muokattuOo = oo.withSuoritukset(oo.suoritukset.map {
+        case p: PerusopetuksenVuosiluokanSuoritus => p.copy(todistuksellaNäkyvätLisätiedot = Some(LocalizedString.finnish("asd")))
+        case s => s
+      })
+      createOrUpdate(oppija, muokattuOo)
+      val tallennettuOo = getOpiskeluoikeus(muokattuOo.oid.get).asInstanceOf[KoskeenTallennettavaOpiskeluoikeus]
+
+      val query = getQuery(tallennettuOo.aikaleima.get)
+      val queryId = addQuerySuccessfully(query, user) { response =>
+        response.status should equal(QueryState.pending)
+        response.queryId
+      }
+      val complete = waitForCompletion(queryId, user)
+
+      val jsonFiles = complete.files.map { file =>
+        verifyResultAndContent(file, user) {
+          JsonMethods.parse(response.body)
+        }
+      }
+      val oppijat = jsonFiles.head.extract[Seq[JObject]]
+      oppijat.length should equal(1)
+      (oppijat.head \ "opiskeluoikeudet").extract[Seq[JObject]].length should equal(7)
+    }
   }
 
   "Suoritusrekisterikysely - oppija-oideilla hakeminen" - {
@@ -679,9 +707,8 @@ class MassaluovutusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers wit
           oos.arr.map(v =>
             (
               (v \ "oppijaOid").extract[String],
-              (v \ "opiskeluoikeus" \ "oid").extract[String],
-            )).foreach { case (oppijaOid, opiskeluoikeusOid) =>
-            AuditLogTester.verifyLastAuditLogMessage(Map(
+              ((v \ "opiskeluoikeudet").extract[List[JObject]].last \ "oid").extract[String])).last match {
+            case (oppijaOid, opiskeluoikeusOid) => AuditLogTester.verifyLastAuditLogMessage(Map(
               "operation" -> "SUORITUSREKISTERI_OPISKELUOIKEUS_HAKU",
               "target" -> Map(
                 "oppijaHenkiloOid" -> oppijaOid,
@@ -690,7 +717,6 @@ class MassaluovutusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers wit
             ))
           }
         }
-
       }
     }
 
@@ -712,7 +738,10 @@ class MassaluovutusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers wit
         val oos = jsonFiles.flatMap {
           case JArray(a) => a
           case _ => Nil
-        }.map(_ \ "opiskeluoikeus")
+        }.map(_ \ "opiskeluoikeudet").flatMap {
+          case JArray(a) => a
+          case _ => Nil
+        }
         tyyppi match {
           case Some(t) => oos.filter(oo => (oo \ "tyyppi" \ "koodiarvo").extract[String] == t)
           case None => oos
@@ -807,6 +836,57 @@ class MassaluovutusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers wit
           "valmistunut"
         ))
       }
+    }
+
+    "Haku slave oidilla palauttaa master-oppijan" in {
+      val query = getQuery(Seq(KoskiSpecificMockOppijat.slave.henkilö.oid))
+      val queryId = addQuerySuccessfully(query, user) { response =>
+        response.status should equal(QueryState.pending)
+        response.queryId
+      }
+      val complete = waitForCompletion(queryId, user)
+
+      val jsonFiles = complete.files.map { file =>
+        verifyResultAndContent(file, user) {
+          JsonMethods.parse(response.body)
+        }
+      }
+
+      (jsonFiles.head.extract[Seq[JObject]].head \ "oppijaOid").extract[String] should equal(KoskiSpecificMockOppijat.master.oid)
+    }
+
+    "Haku master oidilla palauttaa oppijan slave-oidineen" in {
+      val query = getQuery(Seq(KoskiSpecificMockOppijat.master.oid))
+      val queryId = addQuerySuccessfully(query, user) { response =>
+        response.status should equal(QueryState.pending)
+        response.queryId
+      }
+      val complete = waitForCompletion(queryId, user)
+
+      val jsonFiles = complete.files.map { file =>
+        verifyResultAndContent(file, user) {
+          JsonMethods.parse(response.body)
+        }
+      }
+
+      (jsonFiles.head.extract[Seq[JObject]].head \ "kaikkiOidit").extract[Set[String]] should equal(Set(KoskiSpecificMockOppijat.master.oid, KoskiSpecificMockOppijat.slave.henkilö.oid))
+    }
+
+    "Haku master- ja slave oidilla samaan aikaan palauttaa vain yhden oppijan" in {
+      val query = getQuery(Seq(KoskiSpecificMockOppijat.master.oid, KoskiSpecificMockOppijat.slave.henkilö.oid))
+      val queryId = addQuerySuccessfully(query, user) { response =>
+        response.status should equal(QueryState.pending)
+        response.queryId
+      }
+      val complete = waitForCompletion(queryId, user)
+
+      val jsonFiles = complete.files.map { file =>
+        verifyResultAndContent(file, user) {
+          JsonMethods.parse(response.body)
+        }
+      }
+
+      jsonFiles.head.extract[Seq[JObject]].length should equal(1)
     }
   }
 
