@@ -157,6 +157,7 @@ object Koodistot {
     KoodistoAsetus("virtaopiskeluoikeudenluokittelu"),
     KoodistoAsetus("virtaopiskeluoikeudentyyppi"),
     KoodistoAsetus("virtaopsuorluokittelu"),
+    KoodistoAsetus("virtapatevyys"),
     KoodistoAsetus("moduulikoodistolops2021"),
     KoodistoAsetus("yhteystietojenalkupera"),
     KoodistoAsetus("yhteystietotyypit"),

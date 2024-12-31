@@ -22,6 +22,7 @@ export type KorkeakoulunOpiskeluoikeudenLisätiedot = {
     string
   >
   lukukausiIlmoittautuminen?: Lukukausi_Ilmoittautuminen
+  opettajapatevyys?: Array<Koodistokoodiviite<'virtapatevyys', string>>
 }
 
 export const KorkeakoulunOpiskeluoikeudenLisätiedot = (
@@ -35,6 +36,7 @@ export const KorkeakoulunOpiskeluoikeudenLisätiedot = (
       string
     >
     lukukausiIlmoittautuminen?: Lukukausi_Ilmoittautuminen
+    opettajapatevyys?: Array<Koodistokoodiviite<'virtapatevyys', string>>
   } = {}
 ): KorkeakoulunOpiskeluoikeudenLisätiedot => ({
   koulutuskuntaJaksot: [],
