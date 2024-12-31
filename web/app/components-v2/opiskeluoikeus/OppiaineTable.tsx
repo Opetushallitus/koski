@@ -26,8 +26,9 @@ import { nonFalsy } from '../../util/fp/arrays'
 import { PathToken } from '../../util/laxModify'
 import { sum } from '../../util/numbers'
 import { PäätasonSuoritusOf } from '../../util/opiskeluoikeus'
-import {
 import { KoulutusmoduuliOf, OsasuoritusOf } from '../../util/schema'
+import { suoritusValmis } from '../../util/suoritus'
+import { match } from '../../util/patternmatch'
 import { useBooleanState } from '../../util/useBooleanState'
 import { notUndefined } from '../../util/util'
 import { ActivePäätasonSuoritus } from '../containers/EditorContainer'
@@ -36,7 +37,7 @@ import { FlatButton } from '../controls/FlatButton'
 import { IconButton } from '../controls/IconButton'
 import { FormModel, getValue } from '../forms/FormModel'
 import { CHARCODE_REMOVE } from '../texts/Icon'
-import { ArvosanaEdit } from './ArvosanaField'
+import { ArvosanaEdit, koodiarvoOnly } from './ArvosanaField'
 import { OppiaineTableKurssiEditor } from './OppiaineTableKurssiEditor'
 
 // Vain OppiaineTablen tukemat päätason suoritukset (tätä komponenttia tullaan myöhemmin käyttämään ainakin lukion näkymille)
@@ -348,6 +349,7 @@ const OppiaineArvosana: React.FC<OppiaineArvosanaProps> = ({
       value={arvioinnit && viimeisinArviointi(arvioinnit)}
       onChange={onChange_}
       suoritusClassName={oppiaine.$class}
+      format={koodiarvoOnly}
     />
   ) : (
     <span>
@@ -380,6 +382,7 @@ const PredictedGrade: React.FC<OppiaineArvosanaProps> = ({
       onChange={onChange_}
       suoritusClassName={oppiaine.$class}
       arviointiPropName="predictedArviointi"
+      format={koodiarvoOnly}
     />
   ) : (
     <span>
@@ -451,7 +454,7 @@ export const Kurssi: React.FC<KurssiProps> = ({
             value={arviointi as any}
             onChange={onArviointi}
             suoritusClassName={kurssi.$class}
-            format={(k) => k.koodiarvo}
+            format={koodiarvoOnly}
           />
         ) : kurssi.arviointi ? (
           parasArviointi(kurssi.arviointi as Arviointi[])?.arvosana.koodiarvo

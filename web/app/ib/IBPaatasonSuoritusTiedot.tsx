@@ -13,26 +13,22 @@ import {
   LocalizedTextView
 } from '../components-v2/controls/LocalizedTestField'
 import { Select, useKoodistoOptions } from '../components-v2/controls/Select'
-import { TextEdit, TextView } from '../components-v2/controls/TextField'
 import { FormField } from '../components-v2/forms/FormField'
-import {
-  FormModel,
-  FormOptic,
-  getValue
-} from '../components-v2/forms/FormModel'
+import { FormModel, getValue } from '../components-v2/forms/FormModel'
 import {
   ArvosanaEdit,
-  ArvosanaView
+  ArvosanaView,
+  koodiarvoAndNimi
 } from '../components-v2/opiskeluoikeus/ArvosanaField'
+import {
+  BooleanEdit,
+  BooleanView
+} from '../components-v2/opiskeluoikeus/BooleanField'
 import {
   KoodistoEdit,
   KoodistoView
 } from '../components-v2/opiskeluoikeus/KoodistoField'
 import { KoodistoSelect } from '../components-v2/opiskeluoikeus/KoodistoSelect'
-import {
-  LaajuusKursseissaEdit,
-  LaajuusView
-} from '../components-v2/opiskeluoikeus/LaajuusField'
 import { OppiaineenKurssit } from '../components-v2/opiskeluoikeus/OppiaineTable'
 import {
   OrganisaatioEdit,
@@ -52,6 +48,7 @@ import { Koodistokoodiviite } from '../types/fi/oph/koski/schema/Koodistokoodivi
 import { appendOptional, deleteAt } from '../util/array'
 import { parasArviointi } from '../util/arvioinnit'
 import { koodiviiteId } from '../util/koodisto'
+import { lastElement } from '../util/optics'
 import { isKoodiarvoOf } from '../util/types'
 import { useBooleanState } from '../util/useBooleanState'
 import { DialogSelect } from '../uusiopiskeluoikeus/components/DialogSelect'
@@ -63,11 +60,6 @@ import {
   useKielivalikoimaOptions,
   useOppiaineTasoOptions
 } from './state/options'
-import { lastElement } from '../util/optics'
-import {
-  BooleanEdit,
-  BooleanView
-} from '../components-v2/opiskeluoikeus/BooleanField'
 
 export type IBTutkintTiedotProps = {
   form: FormModel<IBOpiskeluoikeus>
@@ -339,6 +331,7 @@ const ExtendedEssayFieldRows: React.FC<IBTutkinnonTiedotRowsProps> = ({
             <KoodistoSelect
               koodistoUri="arviointiasteikkocorerequirementsib"
               value={state.arvosana.value?.koodiarvo}
+              format={koodiarvoAndNimi}
               onSelect={state.arvosana.set}
               testId="arvosana"
             />
@@ -348,12 +341,14 @@ const ExtendedEssayFieldRows: React.FC<IBTutkinnonTiedotRowsProps> = ({
     </>
   ) : (
     <KeyValueRow localizableLabel="Extended essay">
-      {
-        parasArviointi(päätasonSuoritus.suoritus.extendedEssay?.arviointi)
-          ?.arvosana.koodiarvo
-      }
+      {parasArvosana(päätasonSuoritus.suoritus.extendedEssay?.arviointi)}
     </KeyValueRow>
   )
+}
+
+const parasArvosana = (arviointi?: Arviointi[]) => {
+  const paras = parasArviointi(arviointi)?.arvosana
+  return paras ? koodiarvoAndNimi(paras as Koodistokoodiviite) : null
 }
 
 const CreativityActionServiceField: React.FC<IBTutkinnonTiedotRowsProps> = ({

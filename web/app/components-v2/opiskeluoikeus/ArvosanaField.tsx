@@ -57,8 +57,12 @@ export type ArvosanaEditProps<T extends Arviointi> = CommonProps<
   suoritusClassName: string
   arviointiPropName?: string
   disabled?: boolean
-  format?: (arvosana: ArvosanaOf<T>) => string
+  format?: (arvosana: Koodistokoodiviite) => string
 }
+
+export const koodiarvoAndNimi = (k: Koodistokoodiviite) =>
+  `${k.koodiarvo} (${t(k.nimi)})`
+export const koodiarvoOnly = (k: Koodistokoodiviite) => k.koodiarvo
 
 export const ArvosanaEdit = <T extends Arviointi>(
   props: ArvosanaEditProps<T>
@@ -80,7 +84,7 @@ export const ArvosanaEdit = <T extends Arviointi>(
       pipe(
         groupKoodistoToOptions(koodisto),
         mapOptionLabels((o) =>
-          o.value && props.format ? props.format(o.value as any) : o.label
+          o.value ? (props.format || koodiarvoAndNimi)(o.value as any) : o.label
         ),
         sortOptions
       ),
