@@ -13,6 +13,8 @@ object MaskedSlf4jRequestLogWriter {
   def maskSensitiveInformationFrontendUris(s: String): String = {
     s
       .replaceAll("(/koski/opinnot/[0-9a-f]{8})([0-9a-f]+)", "$1************************")
+      .replaceAll("(/koski/opinnot/suoritetut-tutkinnot/[0-9a-f]{8})([0-9a-f]+)", "$1************************")
+      .replaceAll("(/koski/opinnot/aktiiviset-ja-paattyneet-opinnot/[0-9a-f]{8})([0-9a-f]+)", "$1************************")
       .replaceAll("(/koski/kela/)(\\d\\S+)", "$1******-****")
   }
 
@@ -26,6 +28,8 @@ object MaskedSlf4jRequestLogWriter {
       .replaceAll("(/koski/valpas/api/henkilohaku/maksuttomuus/)(\\d\\S+)", "$1******-****")
       .replaceAll("(/koski/valpas/api/henkilohaku/kunta/)(\\d\\S+)", "$1******-****")
       .replaceAll("(/koski/api/opinnot/[0-9a-f]{8})([0-9a-f]+)", "$1************************")
+      .replaceAll("(/koski/api/opinnot/suoritetut-tutkinnot/[0-9a-f]{8})([0-9a-f]+)", "$1************************")
+      .replaceAll("(/koski/api/opinnot/aktiiviset-ja-paattyneet-opinnot/[0-9a-f]{8})([0-9a-f]+)", "$1************************")
   }
 }
 
