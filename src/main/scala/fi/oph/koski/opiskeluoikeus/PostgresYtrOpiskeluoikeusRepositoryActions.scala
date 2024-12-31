@@ -48,6 +48,7 @@ class PostgresYtrOpiskeluoikeusRepositoryActions(
     opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus,
     allowUpdate: Boolean,
     allowDeleteCompleted: Boolean,
+    skipValidations: Boolean = false,
   )(implicit user: KoskiSpecificSession): DBIOAction[Either[HttpStatus, CreateOrUpdateResult], NoStream, Read with Write with Transactional] = {
     val identifier = OpiskeluoikeusIdentifier(oppijaOid.oppijaOid, opiskeluoikeus)
 
@@ -56,7 +57,7 @@ class PostgresYtrOpiskeluoikeusRepositoryActions(
         case Right(Nil) =>
           createAction(oppijaOid, opiskeluoikeus)
         case Right(aiemmatOpiskeluoikeudet) if allowUpdate =>
-          updateIfUnambiguousAiempiOpiskeluoikeusAction(oppijaOid, opiskeluoikeus, aiemmatOpiskeluoikeudet, allowDeleteCompleted)
+          updateIfUnambiguousAiempiOpiskeluoikeusAction(oppijaOid, opiskeluoikeus, aiemmatOpiskeluoikeudet, allowDeleteCompleted, skipValidations)
         case Right(_) =>
           DBIO.successful(Left(KoskiErrorCategory.conflict.exists())) // Ei tehdä uutta, koska vastaava vanha YO-opiskeluoikeus on olemassa
         case Left(err) =>
@@ -68,11 +69,12 @@ class PostgresYtrOpiskeluoikeusRepositoryActions(
     oppijaOid: PossiblyUnverifiedHenkilöOid,
     opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus,
     aiemmatOpiskeluoikeudet: List[YtrOpiskeluoikeusRow],
-    allowDeleteCompleted: Boolean
+    allowDeleteCompleted: Boolean,
+    skipValidations: Boolean = false,
   )(implicit user: KoskiSpecificSession): DBIOAction[Either[HttpStatus, CreateOrUpdateResult], NoStream, Read with Write with Transactional] = {
     aiemmatOpiskeluoikeudet match {
       case List(vanhaOpiskeluoikeus) =>
-        updateIfSameOppijaAction(oppijaOid, vanhaOpiskeluoikeus, opiskeluoikeus, allowDeleteCompleted)
+        updateIfSameOppijaAction(oppijaOid, vanhaOpiskeluoikeus, opiskeluoikeus, allowDeleteCompleted, skipValidations)
       case _ =>
         DBIO.successful(Left(KoskiErrorCategory.conflict.löytyiEnemmänKuinYksiRivi(s"Löytyi enemmän kuin yksi rivi päivitettäväksi (${aiemmatOpiskeluoikeudet.map(_.oid)})")))
     }
