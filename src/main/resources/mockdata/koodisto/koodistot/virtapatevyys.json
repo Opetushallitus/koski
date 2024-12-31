@@ -1,0 +1,31 @@
+{
+  "koodistoUri": "virtapatevyys",
+  "resourceUri": "https://virkailija.opintopolku.fi/koodisto-service/rest/codes/virtapatevyys",
+  "omistaja": "",
+  "organisaatioOid": "1.2.246.562.10.2013112012294919827487",
+  "lukittu": null,
+  "codesGroupUri": "virta",
+  "version": 8,
+  "versio": 1,
+  "paivitysPvm": "2024-09-09",
+  "paivittajaOid": "1.2.246.562.24.83381171057",
+  "voimassaAlkuPvm": "2013-01-01",
+  "voimassaLoppuPvm": null,
+  "tila": "LUONNOS",
+  "metadata": [
+    {
+      "kieli": "FI",
+      "nimi": "VIRTA Pätevyys",
+      "kuvaus": "Pätevyys (ks. https://confluence.csc.fi/display/VIRTA/Tietovarannon+koodistot)",
+      "kayttoohje": null,
+      "kasite": null,
+      "kohdealue": null,
+      "sitovuustaso": null,
+      "kohdealueenOsaAlue": null,
+      "toimintaymparisto": null,
+      "tarkentaaKoodistoa": null,
+      "huomioitavaKoodisto": null,
+      "koodistonLahde": null
+    }
+  ]
+}
