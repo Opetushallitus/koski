@@ -170,7 +170,14 @@ class SuoritusjakoAPISpec extends AnyFreeSpec with SuoritusjakoTestMethods with 
         AuditLogTester.clearMessages()
         postSuoritusjakoPublicAPI(secrets("taiteen perusopetus")) {
           verifyResponseStatusOk()
-          AuditLogTester.verifyLastAuditLogMessage(Map("operation" -> "KANSALAINEN_SUORITUSJAKO_KATSOMINEN"))
+
+          val bodyString = new String(response.bodyBytes, StandardCharsets.UTF_8)
+          implicit val context: ExtractionContext = strictDeserialization
+          val oppija = SchemaValidatingExtractor.extract[OppijaJakolinkillä](bodyString).right.get
+
+          AuditLogTester.verifyLastAuditLogMessage(Map(
+            "operation" -> "KANSALAINEN_SUORITUSJAKO_KATSOMINEN",
+            "target" -> Map("oppijaHenkiloOid" -> oppija.henkilö.asInstanceOf[TäydellisetHenkilötiedot].oid)))
         }
       }
 
@@ -183,7 +190,11 @@ class SuoritusjakoAPISpec extends AnyFreeSpec with SuoritusjakoTestMethods with 
           implicit val context: ExtractionContext = strictDeserialization
           val oppija = SchemaValidatingExtractor.extract[SuoritetutTutkinnotOppijaJakolinkillä](bodyString).right.get
           oppija.jakolinkki should be(Some(Jakolinkki(LocalDate.now.plusMonths(6))))
-          AuditLogTester.verifyLastAuditLogMessage(Map("operation" -> "KANSALAINEN_SUORITUSJAKO_KATSOMINEN_SUORITETUT_TUTKINNOT"))
+
+          AuditLogTester.verifyLastAuditLogMessage(Map(
+            "operation" -> "KANSALAINEN_SUORITUSJAKO_KATSOMINEN_SUORITETUT_TUTKINNOT",
+            "target" -> Map("oppijaHenkiloOid" -> oppija.henkilö.oid)
+          ))
         }
       }
 
@@ -197,7 +208,10 @@ class SuoritusjakoAPISpec extends AnyFreeSpec with SuoritusjakoTestMethods with 
           val oppija = SchemaValidatingExtractor.extract[AktiivisetJaPäättyneetOpinnotOppijaJakolinkillä](bodyString).right.get
           oppija.jakolinkki should be(Some(Jakolinkki(LocalDate.now.plusMonths(6))))
 
-          AuditLogTester.verifyLastAuditLogMessage(Map("operation" -> "KANSALAINEN_SUORITUSJAKO_KATSOMINEN_AKTIIVISET_JA_PAATTYNEET_OPINNOT"))
+          AuditLogTester.verifyLastAuditLogMessage(Map(
+            "operation" -> "KANSALAINEN_SUORITUSJAKO_KATSOMINEN_AKTIIVISET_JA_PAATTYNEET_OPINNOT",
+            "target" -> Map("oppijaHenkiloOid" -> oppija.henkilö.oid)
+          ))
         }
       }
 
