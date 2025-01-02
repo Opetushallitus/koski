@@ -374,7 +374,8 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
       .map(l => koodistoViitePalvelu.validateRequired(koodistoUri, l))
 
   private def parsePatevyys(parentNode: Node, koodistoUri: String): List[Koodistokoodiviite] = (parentNode \ "Patevyys")
-    .map(_.text).filter(s => s.nonEmpty && s.length == 2).toList
+    .map(_.text)
+    .filter(s => s.nonEmpty && s.length == 2 && s.forall(_.isLetter)).toList
     .map(l => koodistoViitePalvelu.validateRequired(koodistoUri, l))
 
   private def laajuudetYhteensä(osasuoritukset: List[KorkeakoulunOpintojaksonSuoritus]) = {
