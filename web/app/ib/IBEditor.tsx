@@ -11,7 +11,10 @@ import { FormModel, useForm } from '../components-v2/forms/FormModel'
 import { AdaptedOpiskeluoikeusEditorProps } from '../components-v2/interoperability/useUiAdapter'
 import { Spacer } from '../components-v2/layout/Spacer'
 import { OpiskeluoikeusTitle } from '../components-v2/opiskeluoikeus/OpiskeluoikeusTitle'
-import { OppiaineTable } from '../components-v2/opiskeluoikeus/OppiaineTable'
+import {
+  Oppiaine,
+  OppiaineTable
+} from '../components-v2/opiskeluoikeus/OppiaineTable'
 import { SuorituksenVahvistusField } from '../components-v2/opiskeluoikeus/SuorituksenVahvistus'
 import { t } from '../i18n/i18n'
 import { Arviointi } from '../types/fi/oph/koski/schema/Arviointi'
@@ -41,8 +44,6 @@ import { UusiPreIB2015OppiaineDialog } from './dialogs/UusiPreIB2015OppiaineDial
 import { UusiPreIB2015OsasuoritusDialog } from './dialogs/UusiPreIB2015OsasuoritusDialog'
 import { UusiPreIB2019OppiaineDialog } from './dialogs/UusiPreIB2019OppiaineDialog'
 import { UusiPreIB2019OsasuoritusDialog } from './dialogs/UusiPreIB2019OsasuoritusDialog'
-import { UusiIBTutkintoOsasuoritusDialog } from './dialogs/UusiIBTutkintoOsasuoritusDialog'
-import { UusiIBTutkintoOppiaineDialog } from './dialogs/UusiIBTutkintoOppiaineDialog'
 
 export type IBEditorProps = AdaptedOpiskeluoikeusEditorProps<IBOpiskeluoikeus>
 
@@ -116,6 +117,7 @@ const IBPäätasonSuoritusEditor: React.FC<
       <OppiaineTable
         selectedSuoritus={päätasonSuoritus}
         form={form}
+        groupBy={groupByAineryhmä}
         addOsasuoritusDialog={match(päätasonSuoritus.suoritus.koulutusmoduuli)
           .isClass(
             PreIBKoulutusmoduuli2015,
@@ -175,6 +177,11 @@ const IBPäätasonSuoritusEditor: React.FC<
     </EditorContainer>
   )
 }
+
+const groupByAineryhmä = (oppiaine: Oppiaine): string =>
+  isIBAineRyhmäOppiaine(oppiaine.koulutusmoduuli)
+    ? t(oppiaine.koulutusmoduuli.ryhmä.nimi)
+    : ''
 
 const useSuoritetutKurssitYhteensä = (
   pts: PäätasonSuoritusOf<IBOpiskeluoikeus>
