@@ -35,11 +35,11 @@ import { match } from '../util/patternmatch'
 import { OsasuoritusOf } from '../util/schema'
 import { useBooleanState } from '../util/useBooleanState'
 import {
-import { UusiIBTutkintoOppiaineDialog } from './dialogs/UusiIBTutkintoOppiaineDialog'
-import { UusiIBTutkintoOsasuoritusDialog } from './dialogs/UusiIBTutkintoOsasuoritusDialog'
   ibKoulutusNimi,
   IBPäätasonSuoritusTiedot
 } from './IBPaatasonSuoritusTiedot'
+import { UusiIBTutkintoOppiaineDialog } from './dialogs/UusiIBTutkintoOppiaineDialog'
+import { UusiIBTutkintoOsasuoritusDialog } from './dialogs/UusiIBTutkintoOsasuoritusDialog'
 import { UusiPreIB2015OppiaineDialog } from './dialogs/UusiPreIB2015OppiaineDialog'
 import { UusiPreIB2015OsasuoritusDialog } from './dialogs/UusiPreIB2015OsasuoritusDialog'
 import { UusiPreIB2019OppiaineDialog } from './dialogs/UusiPreIB2019OppiaineDialog'
