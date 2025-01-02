@@ -11,6 +11,7 @@ import {
 } from '../../types/fi/oph/koski/schema/Koodistokoodiviite'
 import { Opiskeluoikeusjakso } from '../../types/fi/oph/koski/schema/Opiskeluoikeusjakso'
 import { VapaanSivistystyönJotpaKoulutuksenOpiskeluoikeusjakso } from '../../types/fi/oph/koski/schema/VapaanSivistystyonJotpaKoulutuksenOpiskeluoikeusjakso'
+import { hasProp } from '../../util/constraints'
 import { KoodiarvotOf } from '../../util/koodisto'
 import { isValmistuvaTerminaalitila } from '../../util/opiskeluoikeus'
 import { ClassOf } from '../../util/types'
@@ -24,7 +25,6 @@ import { RaisedButton } from '../controls/RaisedButton'
 import { FormField, Nothing } from '../forms/FormField'
 import { FormModel, useForm } from '../forms/FormModel'
 import { ValidationError } from '../forms/validator'
-import { TestIdLayer } from '../../appstate/useTestId'
 
 export type UusiOpiskeluoikeudenTilaModalProps<T extends Opiskeluoikeusjakso> =
   CommonProps<{
@@ -86,15 +86,6 @@ const useInitialOpiskelujaksoForm = <T extends Opiskeluoikeusjakso>(
       })
     }
   }, [opiskeluoikeusjaksoClass])
-
-function hasRahoitus(x: string) {
-  switch (x) {
-    case VapaanSivistystyönJotpaKoulutuksenOpiskeluoikeusjakso.className:
-      return true
-    default:
-      return false
-  }
-}
 
 type P<T extends Opiskeluoikeusjakso> = {
   form: FormModel<UusiOpiskeluoikeusjakso<T>>
@@ -198,6 +189,9 @@ export const UusiOpiskeluoikeudenTilaModal = <T extends Opiskeluoikeusjakso>(
     }
   }, [form.state, props])
 
+  const schema = useSchema(props.opiskeluoikeusjaksoClass)
+  const hasRahoitus = hasProp(schema, 'opintojenRahoitus')
+
   return (
     <Modal
       {...common(props, ['UusiOpiskeluoikeudenTilaModal'])}
@@ -234,7 +228,7 @@ export const UusiOpiskeluoikeudenTilaModal = <T extends Opiskeluoikeusjakso>(
           />
         </Label>
 
-        {hasRahoitus(props.opiskeluoikeusjaksoClass) && (
+        {hasRahoitus && (
           <OpiskeluoikeudenTilanRahoitusField
             form={form}
             enableValmistuminen={props.enableValmistuminen}
