@@ -2,6 +2,7 @@ import { isEmpty } from 'fp-ts/lib/Array'
 import React, { useCallback, useMemo } from 'react'
 import { useSchema } from '../appstate/constraints'
 import { useKoodistoFiller } from '../appstate/koodisto'
+import { TestIdRoot } from '../appstate/useTestId'
 import {
   EditorContainer,
   usePäätasonSuoritus
@@ -98,53 +99,55 @@ const IBPäätasonSuoritusEditor: React.FC<
       onChangeSuoritus={setPäätasonSuoritus}
       createOpiskeluoikeusjakso={LukionOpiskeluoikeusjakso}
     >
-      <IBPäätasonSuoritusTiedot
-        form={form}
-        päätasonSuoritus={päätasonSuoritus}
-      />
+      <TestIdRoot id={päätasonSuoritus.testId}>
+        <IBPäätasonSuoritusTiedot
+          form={form}
+          päätasonSuoritus={päätasonSuoritus}
+        />
 
-      <Spacer />
+        <Spacer />
 
-      <SuorituksenVahvistusField
-        form={form}
-        suoritusPath={päätasonSuoritus.path}
-        organisaatio={organisaatio}
-        disableAdd={!valmis}
-      />
+        <SuorituksenVahvistusField
+          form={form}
+          suoritusPath={päätasonSuoritus.path}
+          organisaatio={organisaatio}
+          disableAdd={!valmis}
+        />
 
-      <Spacer />
+        <Spacer />
 
-      <OppiaineTable
-        selectedSuoritus={päätasonSuoritus}
-        form={form}
-        groupBy={groupByAineryhmä}
-        addOsasuoritusDialog={match(päätasonSuoritus.suoritus.koulutusmoduuli)
-          .isClass(
-            PreIBKoulutusmoduuli2015,
-            () => UusiPreIB2015OsasuoritusDialog
-          )
-          .isClass(
-            PreIBKoulutusmoduuli2019,
-            () => UusiPreIB2019OsasuoritusDialog
-          )
-          .isClass(IBTutkinto, () => UusiIBTutkintoOsasuoritusDialog)
-          .get()}
-      />
+        <OppiaineTable
+          selectedSuoritus={päätasonSuoritus}
+          form={form}
+          groupBy={groupByAineryhmä}
+          addOsasuoritusDialog={match(päätasonSuoritus.suoritus.koulutusmoduuli)
+            .isClass(
+              PreIBKoulutusmoduuli2015,
+              () => UusiPreIB2015OsasuoritusDialog
+            )
+            .isClass(
+              PreIBKoulutusmoduuli2019,
+              () => UusiPreIB2019OsasuoritusDialog
+            )
+            .isClass(IBTutkinto, () => UusiIBTutkintoOsasuoritusDialog)
+            .get()}
+        />
 
-      <footer className="IBPäätasonSuoritusEditor__footer">
-        {form.editMode && (
-          <RaisedButton onClick={showAddOppiaineDialog}>
-            {t('Lisää oppiaine')}
-          </RaisedButton>
-        )}
-        {kurssejaYhteensä !== null && (
-          <div className="IBPäätasonSuoritusEditor__yhteensä">
-            {t('Suoritettujen kurssien määrä yhteensä')}
-            {': '}
-            {kurssejaYhteensä}
-          </div>
-        )}
-      </footer>
+        <footer className="IBPäätasonSuoritusEditor__footer">
+          {form.editMode && (
+            <RaisedButton onClick={showAddOppiaineDialog}>
+              {t('Lisää oppiaine')}
+            </RaisedButton>
+          )}
+          {kurssejaYhteensä !== null && (
+            <div className="IBPäätasonSuoritusEditor__yhteensä">
+              {t('Suoritettujen kurssien määrä yhteensä')}
+              {': '}
+              {kurssejaYhteensä}
+            </div>
+          )}
+        </footer>
+      </TestIdRoot>
 
       {addOppiaineVisible &&
         organisaatio &&

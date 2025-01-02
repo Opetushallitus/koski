@@ -1,6 +1,7 @@
 import { createControl } from './controls'
 
 export const Label = createControl((self) => ({
+  elem: self,
   value: () => self.innerText(),
   waitFor: (timeout?: number) => self.waitFor({ timeout }),
   waitForToDisappear: (timeout?: number) =>

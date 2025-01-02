@@ -60,6 +60,7 @@ import {
   useKielivalikoimaOptions,
   useOppiaineTasoOptions
 } from './state/options'
+import { TestIdText } from '../appstate/useTestId'
 
 export type IBTutkintTiedotProps = {
   form: FormModel<IBOpiskeluoikeus>
@@ -76,7 +77,9 @@ export const IBPäätasonSuoritusTiedot: React.FC<IBTutkintTiedotProps> = ({
   return (
     <KeyValueTable>
       <KeyValueRow localizableLabel="Koulutus">
-        {t(ibKoulutusNimi(opiskeluoikeus))}
+        <TestIdText id="koulutus">
+          {t(ibKoulutusNimi(opiskeluoikeus))}
+        </TestIdText>
       </KeyValueRow>
       <KeyValueRow localizableLabel="Oppilaitos / toimipiste">
         <FormField
@@ -93,6 +96,7 @@ export const IBPäätasonSuoritusTiedot: React.FC<IBTutkintTiedotProps> = ({
           view={KoodistoView}
           edit={KoodistoEdit}
           editProps={{ koodistoUri: 'kieli' }}
+          testId="suorituskieli"
         />
       </KeyValueRow>
       {hasPäätasonsuoritusOf(isIBTutkinnonSuoritus, päätasonSuoritus) && (
@@ -107,6 +111,7 @@ export const IBPäätasonSuoritusTiedot: React.FC<IBTutkintTiedotProps> = ({
           path={path.prop('todistuksellaNäkyvätLisätiedot')}
           view={LocalizedTextView}
           edit={LocalizedTextEdit}
+          testId="todistuksellaNäkyvätLisätiedot"
         />
       </KeyValueRow>
     </KeyValueTable>
