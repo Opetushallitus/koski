@@ -12,7 +12,7 @@ export const deleteAt =
     pipe(
       ts,
       A.deleteAt(i),
-      O.getOrElseW(() => [])
+      O.getOrElseW(() => ts)
     )
 
 export const updateAt =

@@ -1,10 +1,13 @@
 import { string } from 'fp-ts'
 import * as A from 'fp-ts/Array'
-import { pipe } from 'fp-ts/lib/function'
+import { constant, pipe } from 'fp-ts/lib/function'
+import * as NEA from 'fp-ts/NonEmptyArray'
 import * as NonEmptyArray from 'fp-ts/NonEmptyArray'
 import * as O from 'fp-ts/Option'
-import React, { useCallback, useEffect, useRef, useState } from 'react'
+import * as Ord from 'fp-ts/Ord'
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { ISO2FinnishDate } from '../../date/date'
+import { TestIdLayer, TestIdText } from '../../appstate/useTestId'
 import { t } from '../../i18n/i18n'
 import { isArvioinniton } from '../../types/fi/oph/koski/schema/Arvioinniton'
 import { Arviointi } from '../../types/fi/oph/koski/schema/Arviointi'
@@ -25,6 +28,7 @@ import { parasArviointi, viimeisinArviointi } from '../../util/arvioinnit'
 import { nonFalsy } from '../../util/fp/arrays'
 import { PathToken } from '../../util/laxModify'
 import { sum } from '../../util/numbers'
+import { entries } from '../../util/objects'
 import { PäätasonSuoritusOf } from '../../util/opiskeluoikeus'
 import { KoulutusmoduuliOf, OsasuoritusOf } from '../../util/schema'
 import { suoritusValmis } from '../../util/suoritus'
@@ -39,6 +43,9 @@ import { FormModel, getValue } from '../forms/FormModel'
 import { CHARCODE_REMOVE } from '../texts/Icon'
 import { ArvosanaEdit, koodiarvoOnly } from './ArvosanaField'
 import { OppiaineTableKurssiEditor } from './OppiaineTableKurssiEditor'
+import { TestIdLayer, TestIdText } from '../../appstate/useTestId'
+import { string } from 'fp-ts'
+import { isPaikallinenKoodi } from '../../types/fi/oph/koski/schema/PaikallinenKoodi'
 
 // Vain OppiaineTablen tukemat päätason suoritukset (tätä komponenttia tullaan myöhemmin käyttämään ainakin lukion näkymille)
 export type OppiaineTableOpiskeluoikeus = IBOpiskeluoikeus
@@ -56,69 +63,86 @@ export type OppiaineTableProps<T extends OppiaineTablePäätasonSuoritus> = {
   addOsasuoritusDialog: AddOppiaineenOsasuoritusDialog<
     OsasuoritusOf<OsasuoritusOf<T>>
   >
+  groupBy?: (oppiaine: Oppiaine) => string
 }
 
 export const OppiaineTable = <T extends OppiaineTablePäätasonSuoritus>({
   form,
   selectedSuoritus,
-  addOsasuoritusDialog
+  addOsasuoritusDialog,
+  groupBy
 }: OppiaineTableProps<T>) => {
   const suoritus = getValue(selectedSuoritus.path)(form.state)
   const path = selectedSuoritus.pathTokens
-  const oppiaineet = suoritus?.osasuoritukset || []
   const organisaatioOid = form.state.oppilaitos?.oid
 
   const showPredictedGrade =
     selectedSuoritus.suoritus.$class === IBTutkinnonSuoritus.className
+  const hidePaikallinenIndicator =
+    selectedSuoritus.suoritus.$class === IBTutkinnonSuoritus.className
 
-  const oppiainePath = (index: number) => [...path, 'osasuoritukset', index]
+  const oppiainePath = (oppiaine: Oppiaine) => [
+    ...path,
+    'osasuoritukset',
+    suoritus?.osasuoritukset?.findIndex((os) => os === oppiaine) ?? -1
+  ]
 
-  const deleteOppiaine = (index: number) => () =>
+  const deleteOppiaine = (oppiaine: Oppiaine) => () =>
     form.modify(
       ...path,
       'osasuoritukset'
-    )((os: Oppiaine[]) => deleteAt(index)(os))
+    )((os: Oppiaine[]) => deleteAt(os.indexOf(oppiaine) ?? -1)(os))
 
-  const deleteKurssi = (oppiaineIndex: number) => (kurssiIndex: number) =>
+  const deleteKurssi = (oppiaine: Oppiaine) => (kurssiIndex: number) =>
     form.modify(
-      ...oppiainePath(oppiaineIndex),
+      ...oppiainePath(oppiaine),
       'osasuoritukset'
     )((os: OppiaineenOsasuoritus[]) => deleteAt(kurssiIndex)(os))
 
   const addOsasuoritus =
-    (oppiaineIndex: number) => (osasuoritus: OppiaineenOsasuoritus) =>
+    (oppiaine: Oppiaine) => (osasuoritus: OppiaineenOsasuoritus) =>
       form.modify(
-        ...oppiainePath(oppiaineIndex),
+        ...oppiainePath(oppiaine),
         'osasuoritukset'
       )(appendOptional(osasuoritus))
 
   const addKurssiArviointi =
-    (oppiaineIndex: number) =>
-    (osasuoritusIndex: number, arviointi: Arviointi) =>
+    (oppiaine: Oppiaine) => (osasuoritusIndex: number, arviointi: Arviointi) =>
       form.modify(
-        ...oppiainePath(oppiaineIndex),
+        ...oppiainePath(oppiaine),
         'osasuoritukset',
         osasuoritusIndex,
         'arviointi'
       )(appendOptional(arviointi))
 
   const addOppiaineArviointi =
-    (oppiaineIndex: number) => (arviointi: Arviointi) => {
+    (oppiaine: Oppiaine) => (arviointi: Arviointi) => {
       form.modify(
-        ...oppiainePath(oppiaineIndex),
+        ...oppiainePath(oppiaine),
         'arviointi'
       )(appendOptional(arviointi))
     }
 
-  const addPredictedGrade =
-    (oppiaineIndex: number) => (arviointi: Arviointi) => {
-      form.debug.modify(
-        ...oppiainePath(oppiaineIndex),
-        'predictedArviointi'
-      )(appendOptional(arviointi))
-    }
+  const addPredictedGrade = (oppiaine: Oppiaine) => (arviointi: Arviointi) => {
+    form.debug.modify(
+      ...oppiainePath(oppiaine),
+      'predictedArviointi'
+    )(appendOptional(arviointi))
+  }
 
-  return oppiaineet.length === 0 && organisaatioOid ? null : (
+  const groupedOppiaineet = useMemo(
+    () =>
+      pipe(
+        suoritus?.osasuoritukset || [],
+        NEA.fromArray<Oppiaine>,
+        O.map(NEA.groupBy(groupBy || constant(''))),
+        O.map(entries),
+        O.getOrElse(constant<Array<[string, NEA.NonEmptyArray<Oppiaine>]>>([]))
+      ),
+    [groupBy, suoritus?.osasuoritukset]
+  )
+
+  return A.isEmpty(groupedOppiaineet) && organisaatioOid ? null : (
     <table className="OppiaineTable">
       <thead>
         <tr>
@@ -134,29 +158,47 @@ export const OppiaineTable = <T extends OppiaineTablePäätasonSuoritus>({
           {form.editMode && <th className="OppiaineTable__poisto" />}
         </tr>
       </thead>
-      <tbody>
-        {oppiaineet.map((oppiaine, oppiaineIndex) => (
-          <OppiaineRow
-            key={oppiaineIndex}
-            organisaatioOid={organisaatioOid!}
-            oppiaine={oppiaine}
-            form={form}
-            showPredictedGrade={showPredictedGrade}
-            oppiainePath={[
-              ...selectedSuoritus.pathTokens,
-              'osasuoritukset',
-              oppiaineIndex
-            ]}
-            onDelete={deleteOppiaine(oppiaineIndex)}
-            onDeleteKurssi={deleteKurssi(oppiaineIndex)}
-            addOsasuoritusDialog={addOsasuoritusDialog}
-            onAddOsasuoritus={addOsasuoritus(oppiaineIndex)}
-            onArviointi={addKurssiArviointi(oppiaineIndex)}
-            onOppiaineArviointi={addOppiaineArviointi(oppiaineIndex)}
-            onPredictedGrade={addPredictedGrade(oppiaineIndex)}
-          />
+      <TestIdLayer id="oppiaineryhmät">
+        {groupedOppiaineet.map(([groupName, oppiaineet], groupIndex) => (
+          <TestIdLayer id={groupIndex} key={groupIndex}>
+            <tbody key={groupIndex}>
+              {groupName ? (
+                <tr>
+                  <th colSpan={10}>
+                    <TestIdText id="nimi">{groupName}</TestIdText>
+                  </th>
+                </tr>
+              ) : null}
+              <TestIdLayer id="oppiaineet">
+                {oppiaineet.map((oppiaine, oppiaineIndex) => (
+                  <TestIdLayer id={oppiaineIndex} key={oppiaineIndex}>
+                    <OppiaineRow
+                      organisaatioOid={organisaatioOid!}
+                      oppiaine={oppiaine}
+                      form={form}
+                      showPredictedGrade={showPredictedGrade}
+                      oppiainePath={[
+                        ...selectedSuoritus.pathTokens,
+                        'osasuoritukset',
+                        oppiaineIndex
+                      ]}
+                      hidePaikallinenIndicator={hidePaikallinenIndicator}
+                      onDelete={deleteOppiaine(oppiaine)}
+                      onDeleteKurssi={deleteKurssi(oppiaine)}
+                      addOsasuoritusDialog={addOsasuoritusDialog}
+                      onAddOsasuoritus={addOsasuoritus(oppiaine)}
+                      onArviointi={addKurssiArviointi(oppiaine)}
+                      onOppiaineArviointi={addOppiaineArviointi(oppiaine)}
+                      onPredictedGrade={addPredictedGrade(oppiaine)}
+                      key={oppiaineIndex}
+                    />
+                  </TestIdLayer>
+                ))}
+              </TestIdLayer>
+            </tbody>
+          </TestIdLayer>
         ))}
-      </tbody>
+      </TestIdLayer>
     </table>
   )
 }
@@ -168,6 +210,7 @@ export type OppiaineRowProps<T> = {
   oppiaine: Oppiaine
   showPredictedGrade: boolean
   addOsasuoritusDialog: AddOppiaineenOsasuoritusDialog<T>
+  hidePaikallinenIndicator?: boolean
   onAddOsasuoritus: (t: T) => void
   onArviointi: (osasuoritusIndex: number, arviointi: Arviointi) => void
   onOppiaineArviointi: (arviointi: Arviointi) => void
@@ -189,6 +232,7 @@ const OppiaineRow = <T,>({
   oppiainePath,
   form,
   showPredictedGrade,
+  hidePaikallinenIndicator,
   onDelete,
   addOsasuoritusDialog,
   onAddOsasuoritus,
@@ -199,7 +243,7 @@ const OppiaineRow = <T,>({
 }: OppiaineRowProps<T>) => {
   const kurssit = oppiaine.osasuoritukset || []
   const kurssejaYhteensä = sum(
-    kurssit.map((k) => k.koulutusmoduuli.laajuus?.arvo || 0)
+    kurssit.map((k) => k.koulutusmoduuli.laajuus?.arvo || 1)
   )
   const [
     addOsasuoritusDialogVisible,
@@ -224,19 +268,24 @@ const OppiaineRow = <T,>({
       </td>
       <td className="OppiaineRow__oppiaine">
         <div className="OppiaineRow__nimi">
-          {oppiaineenNimi(oppiaine.koulutusmoduuli)}
+          <TestIdText id="nimi">
+            {oppiaineenNimi(oppiaine.koulutusmoduuli)}
+          </TestIdText>
         </div>
         <OppiaineenKurssit
           form={form}
           kurssit={kurssit}
           oppiaine={oppiaine}
           oppiainePath={oppiainePath}
+          hidePaikallinenIndicator={hidePaikallinenIndicator}
           onArviointi={onArviointi}
           onDeleteKurssi={onDeleteKurssi}
           onShowAddOsasuoritusDialog={showAddOsasuoritusDialog}
         />
       </td>
-      <td className="OppiaineRow__laajuus">{kurssejaYhteensä}</td>
+      <td className="OppiaineRow__laajuus">
+        <TestIdText id="laajuus">{kurssejaYhteensä}</TestIdText>
+      </td>
       {showPredictedGrade && (
         <td className="OppiaineRow__predictedGrade">
           <PredictedGrade
@@ -281,39 +330,80 @@ export type OppiaineenKurssitProps = {
   kurssit: OppiaineenOsasuoritus[]
   oppiaine: Oppiaine
   oppiainePath: PathToken[]
+  hidePaikallinenIndicator?: boolean
   onArviointi: (osasuoritusIndex: number, arviointi: Arviointi) => void
   onDeleteKurssi: (index: number) => void
   onShowAddOsasuoritusDialog: () => void
 }
+
+const kurssiNaturalOrd = Ord.contramap((kurssi: OppiaineenOsasuoritus) => {
+  const tunniste = kurssi.koulutusmoduuli.tunniste.koodiarvo
+  const match = tunniste.match(/([^\d]*)(\d*)/)
+  return match ? `${match[1]}${match[2].padStart(8, '0')}` : tunniste
+})(string.Ord)
 
 export const OppiaineenKurssit = ({
   form,
   kurssit,
   oppiaine,
   oppiainePath,
+  hidePaikallinenIndicator,
   onArviointi,
   onDeleteKurssi,
   onShowAddOsasuoritusDialog
-}: OppiaineenKurssitProps) => (
-  <div className="OppiaineRow__kurssit">
-    {kurssit.map((kurssi, index) => (
-      <Kurssi
-        key={index}
-        form={form}
-        kurssi={kurssi}
-        kurssiPath={[...oppiainePath, 'osasuoritukset', index]}
-        oppiaine={oppiaine}
-        onArviointi={(a) => a && onArviointi(index, a)}
-        onDelete={() => onDeleteKurssi(index)}
-      />
-    ))}
-    {form.editMode && (
-      <FlatButton onClick={onShowAddOsasuoritusDialog}>
-        {t('Lisää osasuoritus')}
-      </FlatButton>
-    )}
-  </div>
-)
+}: OppiaineenKurssitProps) => {
+  const sortedKurssit = useMemo(
+    () => A.sort(kurssiNaturalOrd)(kurssit),
+    [kurssit]
+  )
+
+  const mapBack = useCallback(
+    (index: number) => kurssit.indexOf(sortedKurssit[index]),
+    [kurssit, sortedKurssit]
+  )
+
+  const addArviointi = useCallback(
+    (osasuoritusIndex: number) => (arviointi?: Arviointi) => {
+      if (arviointi) {
+        onArviointi(mapBack(osasuoritusIndex), arviointi)
+      }
+    },
+    [onArviointi, mapBack]
+  )
+
+  const deleteKurssi = useCallback(
+    (sortedIndex: number) => {
+      onDeleteKurssi(kurssit.indexOf(sortedKurssit[sortedIndex]))
+    },
+    [sortedKurssit, kurssit, onDeleteKurssi]
+  )
+
+  return (
+    <div className="OppiaineRow__kurssit">
+      <TestIdLayer id="kurssit">
+        {sortedKurssit.map((kurssi, index) => (
+          <TestIdLayer id={index} key={index}>
+            <Kurssi
+              key={index}
+              form={form}
+              kurssi={kurssi}
+              kurssiPath={[...oppiainePath, 'osasuoritukset', index]}
+              oppiaine={oppiaine}
+              hidePaikallinenIndicator={hidePaikallinenIndicator}
+              onArviointi={addArviointi(index)}
+              onDelete={() => deleteKurssi(index)}
+            />
+          </TestIdLayer>
+        ))}
+      </TestIdLayer>
+      {form.editMode && (
+        <FlatButton onClick={onShowAddOsasuoritusDialog} testId="addKurssi">
+          {t('Lisää osasuoritus')}
+        </FlatButton>
+      )}
+    </div>
+  )
+}
 
 type OppiaineArvosanaProps = {
   form: FormModel<OppiaineTableOpiskeluoikeus>
@@ -352,9 +442,9 @@ const OppiaineArvosana: React.FC<OppiaineArvosanaProps> = ({
       format={koodiarvoOnly}
     />
   ) : (
-    <span>
+    <TestIdText id="arvosana.value">
       {arvioinnit ? parasArviointi(arvioinnit)?.arvosana.koodiarvo : '-'}
-    </span>
+    </TestIdText>
   )
 }
 
@@ -383,29 +473,33 @@ const PredictedGrade: React.FC<OppiaineArvosanaProps> = ({
       suoritusClassName={oppiaine.$class}
       arviointiPropName="predictedArviointi"
       format={koodiarvoOnly}
+      testId="predictedGrade"
     />
   ) : (
-    <span>
+    <TestIdText id="predictedGrade.value">
       {arvioinnit ? parasArviointi(arvioinnit)?.arvosana.koodiarvo : '-'}
-    </span>
+    </TestIdText>
   )
 }
 
 const oppiaineenNimi = (koulutusmoduuli: KoulutusmoduuliOf<Oppiaine>) =>
-  [
-    koulutusmoduuli.tunniste.nimi,
-    (koulutusmoduuli as any)?.kieli?.nimi,
-    (koulutusmoduuli as any)?.oppimäärä?.nimi
-  ]
-    .filter(notUndefined)
-    .map((s) => t(s))
-    .join(', ')
+  pipe(
+    [
+      (koulutusmoduuli as any)?.oppimäärä?.nimi ||
+        koulutusmoduuli.tunniste.nimi,
+      (koulutusmoduuli as any)?.kieli?.nimi
+    ],
+    A.filter(notUndefined),
+    A.map(t),
+    (as) => as.join(', ')
+  )
 
 type KurssiProps = {
   form: FormModel<OppiaineTableOpiskeluoikeus>
   oppiaine: Oppiaine
   kurssi: OsasuoritusOf<Oppiaine>
   kurssiPath: PathToken[]
+  hidePaikallinenIndicator?: boolean
   onArviointi: (arviointi?: LukionArviointi) => void
   onDelete: () => void
 }
@@ -415,6 +509,7 @@ export const Kurssi: React.FC<KurssiProps> = ({
   kurssi,
   kurssiPath,
   oppiaine,
+  hidePaikallinenIndicator,
   onArviointi,
   onDelete
 }) => {
@@ -437,7 +532,12 @@ export const Kurssi: React.FC<KurssiProps> = ({
         onBlur={closeTooltip}
         aria-describedby={tooltipId}
       >
-        {kurssi.koulutusmoduuli.tunniste.koodiarvo}
+        <TestIdText id="tunniste">
+          {kurssi.koulutusmoduuli.tunniste.koodiarvo}
+          {!hidePaikallinenIndicator &&
+            isPaikallinenKoodi(kurssi.koulutusmoduuli.tunniste) &&
+            ' *'}
+        </TestIdText>
         {form.editMode && (
           <IconButton
             charCode={CHARCODE_REMOVE}
@@ -456,10 +556,13 @@ export const Kurssi: React.FC<KurssiProps> = ({
             suoritusClassName={kurssi.$class}
             format={koodiarvoOnly}
           />
-        ) : kurssi.arviointi ? (
-          parasArviointi(kurssi.arviointi as Arviointi[])?.arvosana.koodiarvo
         ) : (
-          '-'
+          <TestIdText id="arvosana.value">
+            {kurssi.arviointi
+              ? parasArviointi(kurssi.arviointi as Arviointi[])?.arvosana
+                  .koodiarvo
+              : '–'}
+          </TestIdText>
         )}
       </div>
       {editModalVisible ? (
