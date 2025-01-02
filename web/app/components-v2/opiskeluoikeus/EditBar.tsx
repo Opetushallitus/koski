@@ -51,11 +51,15 @@ export const EditBar = <T extends object>(props: EditBarProps<T>) => {
             <Trans>{'Ei tallentamattomia muutoksia'}</Trans>
           </TestIdText>
         )}
-        {!props.form.isValid && (
-          <TestIdText id="editStatus">
-            <Trans>{'Korjaa virheelliset tiedot.'}</Trans>
-          </TestIdText>
-        )}
+        {!props.form.isValid &&
+          (console.warn(props.form.errors),
+          (
+            <TestIdText id="editStatus">
+              <span title={JSON.stringify(props.form.errors, null, 2)}>
+                <Trans>{'Korjaa virheelliset tiedot.'}</Trans>
+              </span>
+            </TestIdText>
+          ))}
       </ButtonGroup>
     </FooterBar>
   ) : null

@@ -2,14 +2,25 @@ import * as A from 'fp-ts/Array'
 import * as Eq from 'fp-ts/Eq'
 import { pipe } from 'fp-ts/lib/function'
 import { isArrayConstraint } from '../types/fi/oph/koski/typemodel/ArrayConstraint'
-import { Constraint } from '../types/fi/oph/koski/typemodel/Constraint'
+import {
+  Constraint,
+  isConstraint
+} from '../types/fi/oph/koski/typemodel/Constraint'
 import { isObjectConstraint } from '../types/fi/oph/koski/typemodel/ObjectConstraint'
 import { isOptionalConstraint } from '../types/fi/oph/koski/typemodel/OptionalConstraint'
-import { isStringConstraint } from '../types/fi/oph/koski/typemodel/StringConstraint'
-import { isUnionConstraint } from '../types/fi/oph/koski/typemodel/UnionConstraint'
+import {
+  isStringConstraint,
+  StringConstraint
+} from '../types/fi/oph/koski/typemodel/StringConstraint'
+import {
+  isUnionConstraint,
+  UnionConstraint
+} from '../types/fi/oph/koski/typemodel/UnionConstraint'
 import { nonNull } from './fp/arrays'
 import { ClassOf, ObjWithClass, schemaClassName, shortClassName } from './types'
 import { isAnyConstraint } from '../types/fi/oph/koski/typemodel/AnyConstraint'
+import { intersects } from './array'
+import { isRefConstraint } from '../types/fi/oph/koski/typemodel/RefConstraint'
 
 /**
  * Muuta yksittäinen constraint listaksi. Palauttaa null, jos annettu arvo on null.
@@ -17,7 +28,7 @@ import { isAnyConstraint } from '../types/fi/oph/koski/typemodel/AnyConstraint'
  * Useimmat constrainteihin liittyvät funktiot käsittelevä† listoja, jotta niiden ketjutus olisi helpompaa.
  */
 export const asList = (c: Constraint | null): Constraint[] | null =>
-  c ? [c] : null
+  c ? (isUnionConstraint(c) ? Object.values(c.anyOf) : [c]) : null
 
 /**
  * Ottaa listasta sen ainoan arvon. Heittää poikkeuksen, jos taulukon koko muuta kuin 1.
@@ -31,9 +42,9 @@ export const singular = <T>(c: T[] | null): T | null => {
   }
   if (c.length > 1) {
     throw new Error(
-      `Tried to take a single item from a set of ${c.length} items: ${c
-        .map((x) => `${x}`)
-        .join(', ')}`
+      `Tried to take a single item from a set of ${c.length} items: [${c
+        .map((a) => (isConstraint(a) ? toString(a) : `${a}`))
+        .join(', ')}]`
     )
   }
   return c[0]
@@ -265,6 +276,11 @@ export const koodiviite = <T extends string>(
   if (!constraint) {
     return null
   }
+  if (isUnionConstraint(constraint)) {
+    return Object.values(constraint.anyOf)
+      .flatMap(koodiviite)
+      .filter(nonNull) as Array<KoodiviiteConstraint<T>>
+  }
   if (
     isObjectConstraint(constraint) &&
     constraint.class === 'fi.oph.koski.schema.Koodistokoodiviite'
@@ -280,22 +296,75 @@ export const koodiviite = <T extends string>(
       koodiarvot
     })) || null) as Array<KoodiviiteConstraint<T>> | null
   }
-  throw new Error(`${toString(constraint)} is not Object(Koodistokoodiviite)`)
+  throw new Error(`${toString(constraint)} is not Object<Koodistokoodiviite>`)
 }
 
 /**
  * Poistaa constraintin ympäriltä käärivät constraintit (esim. taulukko tai optional).
  * Jos sen ympärillä ei ole käärettä, palautetaan annettu malli sellaisenaan.
  */
-export const unbox = (constraint: Constraint | null): Constraint | null => {
+export const flatten = (constraint: Constraint | null): Constraint | null => {
   if (isArrayConstraint(constraint)) {
-    return unbox(constraint.items)
+    return flatten(constraint.items)
   }
   if (isOptionalConstraint(constraint)) {
-    return unbox(constraint.optional)
+    return flatten(constraint.optional)
   }
   return constraint
 }
+
+/**
+ * Poistaa constraintin ympäriltä kaikki käärivät constraintit (esim. taulukko tai optional).
+ * Jos sen ympärillä ei ole käärettä, palautetaan annettu malli sellaisenaan.
+ */
+export const deepFlatten = (
+  constraint: Constraint | null
+): Constraint | null => {
+  const flat = flatten(constraint)
+  return flat === constraint ? flat : deepFlatten(flat)
+}
+
+export const filter =
+  (cond: (c: Constraint) => boolean) =>
+  (constraints: Constraint[] | null): Constraint[] | null =>
+    constraints && constraints.flatMap((c) => asList(c)!.filter(cond))
+
+export const satisfiesEnum =
+  (...values: string[]) =>
+  (constraint: Constraint): constraint is StringConstraint =>
+    isStringConstraint(constraint) &&
+    (constraint.enum === undefined ||
+      values.length === 0 ||
+      intersects(constraint.enum, values))
+
+export const filterKoodistokoodiviite =
+  (uri: string, koodiarvot?: string[]) =>
+  (koodistot: Constraint[] | null): Constraint[] | null =>
+    koodistot &&
+    filter((kc) => {
+      if (isObjectConstraint(kc)) {
+        const uriMatch = prop('koodistoUri')(kc)?.find(satisfiesEnum(uri))
+        const koodiarvoMatch = prop('koodiarvo')(kc)?.find(
+          satisfiesEnum(...(koodiarvot || []))
+        )
+        return !!uriMatch && !!koodiarvoMatch
+      }
+      return false
+    })(koodistot)
+
+export const join = (constraints: Constraint[] | null) =>
+  constraints
+    ? constraints.length === 1
+      ? constraints[0]
+      : UnionConstraint({
+          anyOf: Object.fromEntries(
+            constraints.map((c, i) => [i.toString(), c])
+          )
+        })
+    : null
+
+export const isNonEmpty = (constraints: Constraint[] | null): boolean =>
+  !!constraints && constraints.length > 0
 
 /**
  * Tekee constraintista ihmisystävällisen merkkijonon. Käytetään lähinnä virheilmoituksiin kehittäjille.
@@ -312,6 +381,12 @@ export const toString = (constraint: Constraint | null): string => {
   }
   if (isOptionalConstraint(constraint)) {
     return `Optional<${toString(constraint.optional)}>`
+  }
+  if (isRefConstraint(constraint)) {
+    return `ref to Object<${shortClassName(constraint.className)}>`
+  }
+  if (isUnionConstraint(constraint)) {
+    return Object.values(constraint.anyOf).map(toString).join(' | ')
   }
   return shortClassName(constraint.$class)
 }

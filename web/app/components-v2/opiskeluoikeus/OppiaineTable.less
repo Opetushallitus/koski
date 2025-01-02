@@ -1,0 +1,127 @@
+.OppiaineTable {
+  width: 100%;
+
+  &__oppiaine {
+    width: 90%;
+  }
+
+  td,
+  th {
+    padding: @baseline;
+  }
+
+  thead {
+    th {
+      vertical-align: bottom;
+    }
+    .OppiaineTable__laajuus,
+    .OppiaineTable__arvosana,
+    .OppiaineTable__predictedGrade {
+      text-align: right;
+    }
+  }
+
+  tbody {
+    td {
+      background-color: @color-blue-background;
+    }
+  }
+}
+
+.OppiaineRow {
+  &__icon {
+    font-family: FontAwesome;
+  }
+
+  &__nimi {
+    opacity: 66%;
+    line-height: 2 * @baseline;
+    margin-bottom: @baseline;
+  }
+
+  &__kurssit {
+    line-height: 2 * @baseline;
+
+    .Kurssi {
+      display: inline-block;
+      position: relative;
+      min-width: 4 * @baseline;
+      max-width: 8 * @baseline;
+      margin-right: @baseline;
+
+      &__tunniste {
+        color: @color-blue;
+        background: none;
+        border: none;
+        padding: 0;
+        margin: 0;
+        text-align: left;
+
+        font-weight: 600;
+        white-space: nowrap;
+        .IconButton {
+          margin-right: @baseline;
+        }
+      }
+    }
+  }
+
+  &__laajuus {
+    text-align: right;
+  }
+
+  &__arvosana,
+  &__predictedGrade {
+    text-align: right;
+    .Select {
+      min-width: 150px;
+    }
+  }
+  &__poisto {
+    background: none;
+  }
+}
+
+.KurssiDetails {
+  position: absolute;
+  z-index: 100;
+
+  width: 550px;
+  padding: @padding;
+
+  background: white;
+  box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.2);
+
+  // .KurssiTooltip(@x, @y) tulee kurssi.less -tiedostosta
+  &-middle {
+    &-bottom {
+      .KurssiTooltip(middle, bottom);
+    }
+    &-top {
+      .KurssiTooltip(middle, topV2);
+    }
+  }
+  &-left {
+    &-bottom {
+      .KurssiTooltip(left, bottom);
+    }
+    &-top {
+      .KurssiTooltip(left, topV2);
+    }
+  }
+  &-right {
+    &-bottom {
+      .KurssiTooltip(right, bottom);
+    }
+    &-top {
+      .KurssiTooltip(right, topV2);
+    }
+  }
+}
+
+.KurssiTooltip(@x-alignment, @y-alignment) when (@y-alignment = topV2) {
+  bottom: 10px + 4 * @baseline;
+  &:after {
+    .KurssiTriangle(@x-alignment, top);
+  }
+}

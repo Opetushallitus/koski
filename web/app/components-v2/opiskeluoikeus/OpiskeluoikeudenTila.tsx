@@ -43,26 +43,7 @@ import {
   UusiOpiskeluoikeudenTilaModal,
   UusiOpiskeluoikeusjakso
 } from './UusiOpiskeluoikeudenTilaModal'
-
-type RahoituksellinenOpiskeluoikeusjakso = Extract<
-  Opiskeluoikeusjakso,
-  { opintojenRahoitus?: any }
->
-function isRahoituksellinenOpiskeluoikeusjakso(
-  x: Opiskeluoikeusjakso
-): x is RahoituksellinenOpiskeluoikeusjakso {
-  return (
-    isAikuistenPerusopetuksenOpiskeluoikeusjakso(x) ||
-    isAmmatillinenOpiskeluoikeusjakso(x) ||
-    isDIAOpiskeluoikeusjakso(x) ||
-    isEuropeanSchoolOfHelsinkiOpiskeluoikeusjakso(x) ||
-    isInternationalSchoolOpiskeluoikeusjakso(x) ||
-    isLukionOpiskeluoikeusjakso(x) ||
-    isMuunKuinSäännellynKoulutuksenOpiskeluoikeudenJakso(x) ||
-    isTutkintokoulutukseenValmentavanOpiskeluoikeusjakso(x) ||
-    isVapaanSivistystyönJotpaKoulutuksenOpiskeluoikeusjakso(x)
-  )
-}
+import { isRahoituksellinenOpiskeluoikeusjakso } from '../../util/opiskeluoikeusjakso'
 
 // Opiskeluoikeuden tila viewer
 
@@ -102,14 +83,16 @@ export const OpiskeluoikeudenTilaView = <T extends OpiskeluoikeudenTila>(
                     </TestIdText>
                   </time>,
                   <React.Fragment key={`jakso_tila_lisatiedot_${index}`}>
-                    <TestIdText id="tila">
-                      <span>{t(jakso.tila.nimi)}</span>
-                      <span>
-                        {isVapaanSivistystyönOpiskeluoikeusjakso(jakso) &&
-                          isRahoituksellinenOpiskeluoikeusjakso(jakso) &&
-                          ` (${t(jakso.opintojenRahoitus?.nimi)})`}
-                      </span>
-                    </TestIdText>
+                    <TestIdText id="tila">{t(jakso.tila.nimi)}</TestIdText>
+                    {isRahoituksellinenOpiskeluoikeusjakso(jakso) && (
+                      <>
+                        {' ('}
+                        <TestIdText id="rahoitus">
+                          {t(jakso.opintojenRahoitus?.nimi)}
+                        </TestIdText>
+                        {')'}
+                      </>
+                    )}
                   </React.Fragment>
                 ]}
               </KeyColumnedValuesRow>

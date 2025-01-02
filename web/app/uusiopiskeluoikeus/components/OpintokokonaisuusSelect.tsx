@@ -1,6 +1,6 @@
 import React from 'react'
 import { DialogKoodistoSelect } from './DialogKoodistoSelect'
-import { DialogField } from '../state/state'
+import { DialogField } from '../../components-v2/createdialog/DialogField'
 import { Koodistokoodiviite } from '../../types/fi/oph/koski/schema/Koodistokoodiviite'
 import { KoodistokoodiviiteKoodistonNimellä } from '../../appstate/koodisto'
 import { t } from '../../i18n/i18n'

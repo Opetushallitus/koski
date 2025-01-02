@@ -25,16 +25,26 @@ export const KeyValueTable = (props: KeyValueTableProps) => (
 export type KeyValueRowProps = CommonPropsWithChildren<{
   localizableLabel?: string | LocalizedString
   indent?: number
+  innerKeyValueTable?: boolean
 }>
 
 export const KeyValueRow = (props: KeyValueRowProps) => {
   const indent = props.indent || 0
+  const nameSpans = props.innerKeyValueTable
+    ? { default: 8, small: 12, phone: 16 }
+    : { default: 4, small: 8, phone: 12 }
+  const valueSpans = {
+    default: 24 - nameSpans.default - indent,
+    small: 24 - nameSpans.small - indent,
+    phone: 24 - nameSpans.phone - indent
+  }
+
   return props.children ? (
     <ColumnRow component="li" {...common(props, ['KeyValueRow'])}>
       {props.indent && <Column span={props.indent} />}
       <Column
         className="KeyValueRow__name"
-        span={{ default: 4, small: 8, phone: 12 }}
+        span={nameSpans}
         valign="top"
         component="span"
       >
@@ -42,11 +52,7 @@ export const KeyValueRow = (props: KeyValueRowProps) => {
       </Column>
       <Column
         className="KeyValueRow__value"
-        span={{
-          default: 20 - indent,
-          small: 16 - indent,
-          phone: 12 - indent
-        }}
+        span={valueSpans}
         valign="top"
         component="span"
       >

@@ -266,6 +266,10 @@ case class AnyType(
   def `type`: DataType = DataTypes.Any
 }
 
+case class BoundaryType(className: String) extends TypeModel {
+  def `type`: DataType = DataTypes.Object
+}
+
 // Common
 
 case class Limit(n: Double, inclusive: Boolean)

@@ -17,7 +17,7 @@ export type CollectableOptic<S, A> =
   | $.Traversal<S, any, A>
   | $.Fold<S, A>
 
-export type ItemOf<S extends any[]> = S[0]
+export type ItemOf<S extends readonly any[]> = S[0]
 
 export type OpiskeluoikeudenTyyppiOf<T extends Opiskeluoikeus> = KoodiarvotOf<
   T['tyyppi']
@@ -37,3 +37,9 @@ export const isKoodistoOf =
   <T extends string>(koodistoUri: T) =>
   (koodiviite?: Koodistokoodiviite): koodiviite is Koodistokoodiviite<T> =>
     koodiviite?.koodistoUri === koodistoUri
+
+export const isKoodiarvoOf =
+  <T extends string, S extends string>(koodistoUri: T, koodiarvot: S[]) =>
+  (koodiviite?: Koodistokoodiviite): koodiviite is Koodistokoodiviite<T, S> =>
+    koodiviite?.koodistoUri === koodistoUri &&
+    koodiarvot.includes(koodiviite?.koodiarvo as any)
