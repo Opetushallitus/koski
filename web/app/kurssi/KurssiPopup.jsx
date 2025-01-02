@@ -4,7 +4,6 @@ import DIATutkintovaiheenLukukaudenArviointiEditor, {
   hasLasketaanKokonaispistemäärään
 } from '../dia/DIATutkintovaiheenLukukaudenArviointiEditor'
 import { PropertiesEditor } from '../editor/PropertiesEditor'
-import IBKurssinArviointiEditor from '../ib/IBKurssinArviointiEditor'
 import AikuistenPerusopetuksenKurssinArviointiEditor from '../perusopetus/AikuistenPerusopetuksenKurssinArviointiEditor'
 import { hasArviointi } from '../suoritus/Suoritus'
 import { isAikuistenPerusopetuksenKurssi, isIBKurssi } from './kurssi'
@@ -19,8 +18,6 @@ export const isDIAOsasuorituksenArviointi = (osasuoritus) => (property) =>
   hasLasketaanKokonaispistemäärään(osasuoritus)
 
 const resolvePropertyEditor = (model, property) => {
-  if (isIBKurssi(model) && property.key === 'arviointi')
-    return IBKurssinArviointiEditor
   if (
     isDIAOppiaineenTutkintovaiheenOsasuoritus(model) &&
     property.key === 'arviointi'
