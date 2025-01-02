@@ -40,4 +40,9 @@ trait MyDataConfig extends Logging  {
     )
   }
 
+  def isMyDataOrg(orgOid: String): Boolean = {
+    conf.getConfigList("members").asScala.exists(member =>
+      member.getString("orgOid") == orgOid
+    )
+  }
 }
