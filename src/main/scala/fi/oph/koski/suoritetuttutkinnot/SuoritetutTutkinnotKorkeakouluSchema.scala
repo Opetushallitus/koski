@@ -22,13 +22,10 @@ object SuoritetutTutkinnotKorkeakoulunOpiskeluoikeus {
         kt.kotipaikka.map(SuoritetutTutkinnotKoodistokoodiviite.fromKoskiSchema)
       )
     ),
-    lisätiedot = kk.lisätiedot
-      .flatMap(_.virtaOpiskeluoikeudenTyyppi)
-      .map(virtaOpiskeluoikeudenTyyppiKoski =>
-        SuoritetutTutkinnotKorkeakoulunLisätiedot(
-          virtaOpiskeluoikeudenTyyppi = Some(SuoritetutTutkinnotKoodistokoodiviite.fromKoskiSchema(virtaOpiskeluoikeudenTyyppiKoski))
-        )
-      ),
+    lisätiedot = kk.lisätiedot.map(l => SuoritetutTutkinnotKorkeakoulunLisätiedot(
+      virtaOpiskeluoikeudenTyyppi = l.virtaOpiskeluoikeudenTyyppi.map(SuoritetutTutkinnotKoodistokoodiviite.fromKoskiSchema),
+      opettajapatevyys = l.opettajapatevyys.map(_.map(SuoritetutTutkinnotKoodistokoodiviite.fromKoskiSchema))
+    )),
     suoritukset = kk.suoritukset
       .collect { case t: schema.KorkeakoulututkinnonSuoritus => t }
       .map(s => SuoritetutTutkinnotKorkeakoulututkinnonSuoritus(
@@ -69,6 +66,7 @@ case class SuoritetutTutkinnotKorkeakoulunOpiskeluoikeus(
 
 case class SuoritetutTutkinnotKorkeakoulunLisätiedot(
   virtaOpiskeluoikeudenTyyppi: Option[SuoritetutTutkinnotKoodistokoodiviite],
+  opettajapatevyys: Option[List[SuoritetutTutkinnotKoodistokoodiviite]]
 )
 
 @Title("Korkeakoulututkinnon suoritus")
