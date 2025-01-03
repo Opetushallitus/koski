@@ -204,6 +204,8 @@
                                 <virta:Opintopiste>0.000000</virta:Opintopiste>
                             </virta:Sisaltyvyys>
                             <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+                            <virta:Patevyys>il</virta:Patevyys>
+                            <virta:Patevyys>aa</virta:Patevyys>
                         </virta:Opintosuoritus>
                         <virta:Opintosuoritus valtakunnallinenKoulutusmoduulitunniste="" opiskeluoikeusAvain="1114082125" opiskelijaAvain="1114082124" koulutusmoduulitunniste="IA3027" avain="1125491590">
                             <virta:SuoritusPvm>2015-12-04</virta:SuoritusPvm>
