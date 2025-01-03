@@ -51,6 +51,11 @@ class VirtaXMLConverterSpec extends AnyFreeSpec with TestEnvironment with Matche
         <virta:Luokittelu>{luokittelu.get}</virta:Luokittelu>
       }
     }
+    <virta:Patevyys>kl</virta:Patevyys>
+    <virta:Patevyys>aj</virta:Patevyys>
+    <virta:Patevyys>ob</virta:Patevyys>
+    <virta:Patevyys>ll4</virta:Patevyys>
+    <virta:Patevyys>12</virta:Patevyys>
   </virta:Opintosuoritus>
 
   val virtaOpiskeluoikeudet: Elem = opiskeluoikeusWithOrganisaatio(None)
@@ -112,6 +117,11 @@ class VirtaXMLConverterSpec extends AnyFreeSpec with TestEnvironment with Matche
         <virta:Nimi kieli="fi">Nimi 2</virta:Nimi>
         <virta:Nimi kieli="sv">Nimi 2</virta:Nimi>
         <virta:Nimi kieli="en">Nimi 2</virta:Nimi>
+        <virta:Patevyys>ew</virta:Patevyys>
+        <virta:Patevyys>oa</virta:Patevyys>
+        <virta:Patevyys>ob</virta:Patevyys>
+        <virta:Patevyys>far</virta:Patevyys>
+        <virta:Patevyys>16</virta:Patevyys>
       </virta:Jakso>
       <virta:Laajuus>
         <virta:Opintopiste>240</virta:Opintopiste>
@@ -172,6 +182,15 @@ class VirtaXMLConverterSpec extends AnyFreeSpec with TestEnvironment with Matche
         val opiskeluoikeudet = converter.convertToOpiskeluoikeudet(opiskeluoikeusWithOrganisaatio(None, luokittelu=None))
         val luokittelut = opiskeluoikeudet.flatMap(_.luokittelu)
         luokittelut should be (empty)
+      }
+    }
+
+    "Patevyys" - {
+      "parsitaan opintosuorituksilta sekä jaksoilta ilman duplikaatteja ja vain kaksimerkkiset kirjainkoodit huomioidaan" in {
+        val oo = converter.convertToOpiskeluoikeudet(opiskeluoikeusSuorituksella())
+        oo should have size (1)
+        val patevyydet = oo.head.lisätiedot.flatMap(_.opettajapatevyys.map(x => x.map(_.koodiarvo))).getOrElse(List())
+        patevyydet should equal(List("aj", "ew", "kl", "oa", "ob"))
       }
     }
 
