@@ -312,9 +312,7 @@ const initialContextValue: PreferencesContext = {
 
 const PreferencesContext = React.createContext(initialContextValue)
 
-export const PreferencesProvider: React.FC<PropsWithOnlyChildren> = (
-  props
-) => {
+export const PreferencesProvider: React.FC<PropsWithOnlyChildren> = (props) => {
   const [preferences, setPreferences] = useState<
     Record<OrganisaatioOid, OrganisaatioPreferences>
   >({})

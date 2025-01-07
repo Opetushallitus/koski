@@ -40,7 +40,10 @@ export const RaporttiPaivalta = ({
       p && {
         oppilaitosOid: o.oid,
         paiva: formatISODate(p),
-        kotikuntaPvm: showKotikuntaPvmInput && !isEqualDate(today(), kkp) ? formatISODate(kkp) : undefined,
+        kotikuntaPvm:
+          showKotikuntaPvmInput && !isEqualDate(today(), kkp)
+            ? formatISODate(kkp)
+            : undefined,
         lang,
         password,
         baseUrl: `/koski/api/raportit${apiEndpoint}`
@@ -64,7 +67,11 @@ export const RaporttiPaivalta = ({
       <PaivaValinta paivaAtom={paivaAtom} ohje={dateInputHelp} />
 
       {showKotikuntaPvmInput && (
-        <PaivaValinta paivaAtom={kotikuntaPvmAtom} label={t("select-kotikunta-date")} ohje={kotikuntaPvmInputHelp} />
+        <PaivaValinta
+          paivaAtom={kotikuntaPvmAtom}
+          label={t('select-kotikunta-date')}
+          ohje={kotikuntaPvmInputHelp}
+        />
       )}
 
       <RaportinLataus

@@ -17,7 +17,9 @@ import { OptionList, Select } from '../controls/Select'
 import { FieldEditorProps, FieldViewerProps } from '../forms/FormField'
 import { Trans } from '../texts/Trans'
 
-type PerusteViewProps = CommonProps<FieldViewerProps<string | undefined, EmptyObject>>
+type PerusteViewProps = CommonProps<
+  FieldViewerProps<string | undefined, EmptyObject>
+>
 
 export const PerusteView: React.FC<PerusteViewProps> = (props) => {
   const { TreeNode, ...tree } = useTree()

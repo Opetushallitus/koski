@@ -4,7 +4,7 @@ import Http from '../util/http'
 import Text from '../i18n/Text'
 import { formatFinnishDate, parseISODate } from '../date/date'
 import { getBirthdayFromEditorRes } from '../util/util'
-import OmaDataOAuth2AnnaHyvaksynta from "./OmaDataOAuth2AnnaHyvaksynta";
+import OmaDataOAuth2AnnaHyvaksynta from './OmaDataOAuth2AnnaHyvaksynta'
 
 const editorP = Http.cachedGet('/koski/api/omattiedot/editor', {
   errorMapper: () => undefined

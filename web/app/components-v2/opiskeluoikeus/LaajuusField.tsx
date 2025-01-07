@@ -21,7 +21,9 @@ import { EmptyObject } from '../../util/objects'
  * ---------------------------------------------------------------------
  */
 
-export type LaajuusViewProps = CommonProps<FieldViewerProps<Laajuus, EmptyObject>>
+export type LaajuusViewProps = CommonProps<
+  FieldViewerProps<Laajuus, EmptyObject>
+>
 
 export const LaajuusView = (props: LaajuusViewProps) => {
   return (

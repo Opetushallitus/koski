@@ -13,7 +13,8 @@ import {
   dokumentaatioOpintohallintojärjestelmätP,
   dokumentaatioLuovutuspalveluP,
   dokumentaatioPalveluväyläOmadataP,
-  dokumentaatioKyselytP, dokumentaatioOmadataOAuth2P
+  dokumentaatioKyselytP,
+  dokumentaatioOmadataOAuth2P
 } from '../dokumentaatio/Dokumentaatio'
 import { onlyIfHasReadAccess } from './accessCheck'
 import { raportitContentP } from '../raportit/Raportit'

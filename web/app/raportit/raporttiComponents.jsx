@@ -12,9 +12,7 @@ export const LyhytKuvaus = ({ children }) =>
 
 export const PaivaValinta = ({ paivaAtom, ohje, label }) => (
   <div className="parametri">
-    <label>
-      {label || <Text name="select-date" />}
-    </label>
+    <label>{label || <Text name="select-date" />}</label>
     <DateInput
       value={paivaAtom.get()}
       valueCallback={(value) => paivaAtom.set(value)}

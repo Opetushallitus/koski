@@ -41,17 +41,17 @@ class OmaDataOAuth2HyvaksyntaLanding extends React.Component {
   }
 
   parseScope() {
-    const urlParams= new URLSearchParams(currentLocation().queryString)
+    const urlParams = new URLSearchParams(currentLocation().queryString)
     return urlParams.get('scope')
   }
 
   parseError() {
-    const urlParams= new URLSearchParams(currentLocation().queryString)
+    const urlParams = new URLSearchParams(currentLocation().queryString)
     return urlParams.get('error')
   }
 
   parseErrorId() {
-    const urlParams= new URLSearchParams(currentLocation().queryString)
+    const urlParams = new URLSearchParams(currentLocation().queryString)
     return urlParams.get('error_id')
   }
 
@@ -100,15 +100,14 @@ class OmaDataOAuth2HyvaksyntaLanding extends React.Component {
       <ErrorDisplay error={{ text: this.state.error }} />
     ) : null
 
-    const errorPage =
-      this.state.error ? (
-        <ErrorPage
-          text={tTemplate('omadataoauth2_error', {
-            error: this.state.error,
-            error_id: this.state.error_id
-          })}
-        />
-      ) : null
+    const errorPage = this.state.error ? (
+      <ErrorPage
+        text={tTemplate('omadataoauth2_error', {
+          error: this.state.error,
+          error_id: this.state.error_id
+        })}
+      />
+    ) : null
 
     return (
       <KoodistoProvider>

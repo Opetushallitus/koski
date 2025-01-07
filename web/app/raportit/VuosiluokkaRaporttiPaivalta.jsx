@@ -42,7 +42,7 @@ export const VuosiluokkaRaporttiPaivalta = ({
     (o, p, kkp, v) =>
       o &&
       p &&
-      v && 
+      v &&
       kkp && {
         oppilaitosOid: o.oid,
         paiva: formatISODate(p),
@@ -71,7 +71,13 @@ export const VuosiluokkaRaporttiPaivalta = ({
       <LyhytKuvaus>{shortDescription}</LyhytKuvaus>
 
       <PaivaValinta paivaAtom={paivaAtom} ohje={dateInputHelp} />
-      {showKotikuntaPvmInput && <PaivaValinta label={t('select-kotikunta-date')} paivaAtom={kotikuntaPvmAtom} ohje={kotikuntaPvmInputHelp} />}
+      {showKotikuntaPvmInput && (
+        <PaivaValinta
+          label={t('select-kotikunta-date')}
+          paivaAtom={kotikuntaPvmAtom}
+          ohje={kotikuntaPvmInputHelp}
+        />
+      )}
 
       <div className="dropdown-selection parametri vuosiluokka">
         <label>
