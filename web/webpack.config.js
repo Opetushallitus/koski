@@ -1,6 +1,5 @@
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin')
-const ESLintPlugin = require('eslint-webpack-plugin')
 const path = require('path')
 
 module.exports = {
@@ -86,10 +85,6 @@ module.exports = {
   plugins: [
     new ForkTsCheckerWebpackPlugin({
       typescript: { mode: 'write-tsbuildinfo' }
-    }),
-    new ESLintPlugin({
-      extensions: ['js', 'jsx', 'ts', 'tsx'],
-      failOnWarning: false // Ei failata compilationia ESLint-varoituksille
     }),
     new CopyWebpackPlugin({
       patterns: [
