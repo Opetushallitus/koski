@@ -146,12 +146,15 @@ view-db-docs:
 eslint:
 	cd web && npm run lint
 
+.PHONY: prettier
+	cd web && npm run prettier:check
+
 .PHONY: scalastyle
 scalastyle:
 	mvn scalastyle:check -P scalastyle
 
 .PHONY: lint
-lint: eslint scalastyle
+lint: eslint prettier scalastyle
 
 .PHONY: owasp
 owasp:

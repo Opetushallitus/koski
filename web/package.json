@@ -117,6 +117,7 @@
     "playwright:test:trace": "npx playwright test --trace on && npx playwright show-report",
     "playwright:codegen": "npx playwright codegen",
     "typecheck": "tsc --noEmit --project tsconfig.json",
+    "prettier:check": "prettier --check app",
     "prettier:fix": "prettier --write app",
     "prettier:tests:fix": "prettier --write test"
   }
