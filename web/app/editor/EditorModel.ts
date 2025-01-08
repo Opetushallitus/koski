@@ -149,8 +149,8 @@ const ensureModelId = <T extends EditorModel>(
   force?: boolean
 ): Identified<T> | undefined => {
   if (model && (force || !isIdentified(model))) {
-    ; (model as any).modelId = calculateModelId(model)
-      ; (model as any).data = null // reset modelData caching
+    ;(model as any).modelId = calculateModelId(model)
+    ;(model as any).data = null // reset modelData caching
   }
   return model as Identified<T>
 }
@@ -504,9 +504,9 @@ export const createOptionalEmpty = <M extends EditorModel & OptionalModel>(
 ): OptionalModel =>
   isSomeOptionalModel(optModel)
     ? {
-      optional: optModel.optional,
-      optionalPrototype: optModel.optionalPrototype
-    }
+        optional: optModel.optional,
+        optionalPrototype: optModel.optionalPrototype
+      }
     : {}
 
 export const resetOptionalModel = <
@@ -705,12 +705,13 @@ const modelErrors = <T extends ValidationContext>(
 }
 
 export const applyChangesAndValidate = <
-  M extends EditorModel & Contextualized<EditorMappingContext & ValidationContext>
+  M extends EditorModel &
+    Contextualized<EditorMappingContext & ValidationContext>
 >(
   modelBeforeChange: M,
   changes: ChangeBusAction[]
 ) => {
-  type AppliedChanges = { model: M, scopes: string[] }
+  type AppliedChanges = { model: M; scopes: string[] }
 
   const basePath = toPath(modelBeforeChange.path)
   const withAppliedChanges = changes.reduce(
@@ -732,7 +733,10 @@ export const applyChangesAndValidate = <
     { model: modelBeforeChange, scopes: [] } satisfies AppliedChanges
   )
 
-  return applyValidationScopes(validateModel(withAppliedChanges.model), withAppliedChanges.scopes)
+  return applyValidationScopes(
+    validateModel(withAppliedChanges.model),
+    withAppliedChanges.scopes
+  )
 }
 
 const getValidationScope = (path: string[]): string => {
@@ -746,13 +750,21 @@ const getValidationScope = (path: string[]): string => {
 
 const applyValidationScopes = <
   M extends EditorModel & Contextualized<ValidationContext>
->(model: M, scopes: string[]) => {
-  const validationScope = R.uniq([...(model.context.validationScope || []), ...scopes])
+>(
+  model: M,
+  scopes: string[]
+) => {
+  const validationScope = R.uniq([
+    ...(model.context.validationScope || []),
+    ...scopes
+  ])
 
   const errors = model.context.validationResult
   if (errors) {
-    const inValidationScope = (path: string) => !!validationScope.find(s => path.startsWith(s))
-    const validationResult = filterObjByKey<typeof errors>(inValidationScope)(errors)
+    const inValidationScope = (path: string) =>
+      !!validationScope.find((s) => path.startsWith(s))
+    const validationResult =
+      filterObjByKey<typeof errors>(inValidationScope)(errors)
     return addContext(model, { validationResult, validationScope })
   }
 
@@ -770,13 +782,13 @@ export const validateModel = <
 
   const pushError =
     (model: EditorModel & Contextualized, results: ModelErrorRecord) =>
-      (error: ModelError) => {
-        const path = justPath(model.path)
-        const fullPath = path.concat(error.path || []).join('.')
-        results[fullPath]
-          ? results[fullPath].push(error)
-          : (results[fullPath] = [error])
-      }
+    (error: ModelError) => {
+      const path = justPath(model.path)
+      const fullPath = path.concat(error.path || []).join('.')
+      results[fullPath]
+        ? results[fullPath].push(error)
+        : (results[fullPath] = [error])
+    }
 
   const validateInner = (
     model: EditableModel & Contextualized<EditorMappingContext>,
@@ -874,18 +886,18 @@ const modelItemsRaw = (model?: EditorModel): EditorModel[] =>
 
 const contextualizeProperty =
   <M extends ObjectModel & Contextualized<T>, T extends object>(mainModel: M) =>
-    (
-      property?: ObjectModelProperty
-    ): ContextualizedObjectModelProperty<M, T> | undefined => {
-      if (!property) return property
-      const model = contextualizeChild(mainModel, property.model, property.key)!
-      return R.mergeRight(property, {
-        model,
-        owner: mainModel,
-        editable:
-          property.editable === undefined ? mainModel.editable : property.editable
-      }) as any as ContextualizedObjectModelProperty<M, T>
-    }
+  (
+    property?: ObjectModelProperty
+  ): ContextualizedObjectModelProperty<M, T> | undefined => {
+    if (!property) return property
+    const model = contextualizeChild(mainModel, property.model, property.key)!
+    return R.mergeRight(property, {
+      model,
+      owner: mainModel,
+      editable:
+        property.editable === undefined ? mainModel.editable : property.editable
+    }) as any as ContextualizedObjectModelProperty<M, T>
+  }
 
 let arrayKeyCounter = 0
 export const ensureArrayKey = (v: ListModel) => {

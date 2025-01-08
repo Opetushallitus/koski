@@ -74,7 +74,12 @@ export const createAmmatillinenOpiskeluoikeus = (
           })
         ]
       }),
-      lisätiedot: createAmmatillisenOpiskeluoikeudenLisätiedot(alku, maksuton, opintojenRahoitus, jotpaAsianumero),
+      lisätiedot: createAmmatillisenOpiskeluoikeudenLisätiedot(
+        alku,
+        maksuton,
+        opintojenRahoitus,
+        jotpaAsianumero
+      ),
       suoritukset: [suoritus]
     })
   )
@@ -84,13 +89,18 @@ const createAmmatillisenOpiskeluoikeudenLisätiedot = (
   alku: string,
   maksuton: boolean | null,
   opintojenRahoitus: Koodistokoodiviite<'opintojenrahoitus'>,
-  jotpaAsianumero?: Koodistokoodiviite<'jotpaasianumero'>): AmmatillisenOpiskeluoikeudenLisätiedot | undefined => {
+  jotpaAsianumero?: Koodistokoodiviite<'jotpaasianumero'>
+): AmmatillisenOpiskeluoikeudenLisätiedot | undefined => {
   if (maksuton === null && !jotpaAsianumero) {
     return undefined
   }
   return AmmatillisenOpiskeluoikeudenLisätiedot({
-    ...(maksuton === null ? {} : { maksuttomuus: [Maksuttomuus({ alku, maksuton })] }),
-    ...(jotpaAsianumero && isJotpaRahoituksenKoodistoviite(opintojenRahoitus) ? { jotpaAsianumero } : {})
+    ...(maksuton === null
+      ? {}
+      : { maksuttomuus: [Maksuttomuus({ alku, maksuton })] }),
+    ...(jotpaAsianumero && isJotpaRahoituksenKoodistoviite(opintojenRahoitus)
+      ? { jotpaAsianumero }
+      : {})
   })
 }
 

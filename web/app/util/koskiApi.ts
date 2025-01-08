@@ -184,7 +184,11 @@ export const invalidateOpiskeluoikeus = (opiskeluoikeusOid: string) =>
 
 export const puraLähdejärjestelmäkytkentä = (opiskeluoikeusOid: string) =>
   handleExpiredSession(
-    apiPost<void>(apiUrl(`opiskeluoikeus/${opiskeluoikeusOid}/pura-lahdejarjestelmakytkenta`))
+    apiPost<void>(
+      apiUrl(
+        `opiskeluoikeus/${opiskeluoikeusOid}/pura-lahdejarjestelmakytkenta`
+      )
+    )
   )
 
 export const fetchOmatTiedotOppija = () =>

@@ -12,7 +12,10 @@ import { OptionList, Select } from '../controls/Select'
 import { FieldEditorProps, FieldViewerProps } from '../forms/FormField'
 
 type OpintokokonaisuusViewProps = CommonProps<
-  FieldViewerProps<Koodistokoodiviite<'opintokokonaisuudet', string>, EmptyObject>
+  FieldViewerProps<
+    Koodistokoodiviite<'opintokokonaisuudet', string>,
+    EmptyObject
+  >
 >
 
 export const OpintokokonaisuusView: React.FC<OpintokokonaisuusViewProps> = (
@@ -35,7 +38,10 @@ export const OpintokokonaisuusView: React.FC<OpintokokonaisuusViewProps> = (
 }
 
 type OpintokokonaisuusEditProps = CommonProps<
-  FieldEditorProps<Koodistokoodiviite<'opintokokonaisuudet', string>, EmptyObject>
+  FieldEditorProps<
+    Koodistokoodiviite<'opintokokonaisuudet', string>,
+    EmptyObject
+  >
 >
 
 export const OpintokokonaisuusEdit: React.FC<OpintokokonaisuusEditProps> = (

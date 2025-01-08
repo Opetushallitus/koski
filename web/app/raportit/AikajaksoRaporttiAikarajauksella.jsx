@@ -86,7 +86,7 @@ export const AikajaksoRaporttiAikarajauksella = ({
       o &&
       a &&
       l &&
-      l.valueOf() >= a.valueOf() && 
+      l.valueOf() >= a.valueOf() &&
       (!showKotikuntaPvmInput || kkp) && {
         oppilaitosOid: o.oid,
         alku: formatISODate(a),
@@ -131,7 +131,13 @@ export const AikajaksoRaporttiAikarajauksella = ({
         ]}
       />
 
-      {showKotikuntaPvmInput && <PaivaValinta label={t('select-kotikunta-date')} paivaAtom={kotikuntaPvmAtom} ohje={kotikuntaPvmInputHelp} />}
+      {showKotikuntaPvmInput && (
+        <PaivaValinta
+          label={t('select-kotikunta-date')}
+          paivaAtom={kotikuntaPvmAtom}
+          ohje={kotikuntaPvmInputHelp}
+        />
+      )}
 
       <RaportinLataus
         password={password}
