@@ -132,7 +132,28 @@ export const usePreIB2019TunnisteOptions = (
   päätasonSuoritus: PäätasonSuoritusOf<IBOpiskeluoikeus>,
   paikallisetOppiaineet: PaikallinenLukionOppiaine2019[]
 ): SelectOption<PreIBOppiaineTunniste>[] => {
-  const koodisto = useKoodisto('koskioppiaineetyleissivistava')
+  const koodisto = useKoodisto('koskioppiaineetyleissivistava', [
+    'A',
+    'B1',
+    'B2',
+    'B3',
+    'AI',
+    'KT',
+    'BI',
+    'ET',
+    'FI',
+    'FY',
+    'GE',
+    'KE',
+    'KU',
+    'LI',
+    'MU',
+    'OP',
+    'PS',
+    'TE',
+    'YH',
+    'MA'
+  ])
 
   const existingOppiaineet = useMemo(
     () =>
