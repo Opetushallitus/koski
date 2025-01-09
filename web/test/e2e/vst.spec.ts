@@ -42,8 +42,11 @@ test.describe('Vapaa sivistystyö', () => {
         ).toHaveText('1.1.2023')
         await expect(
           page.getByTestId('opiskeluoikeus.tila.value.items.0.tila')
+        ).toHaveText('Läsnä')
+        await expect(
+          page.getByTestId('opiskeluoikeus.tila.value.items.0.rahoitus')
         ).toHaveText(
-          'Läsnä (Jatkuvan oppimisen ja työllisyyden palvelukeskuksen rahoitus)'
+          'Jatkuvan oppimisen ja työllisyyden palvelukeskuksen rahoitus'
         )
         await expect(
           page.getByTestId('opiskeluoikeus.voimassaoloaika')
