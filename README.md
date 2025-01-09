@@ -142,7 +142,7 @@ Staattinen analyysi ([ScalaStyle](http://www.scalastyle.org/) ja [ESLint](http:/
 make lint
 ```
 
-Kosken versioitu paketti tehdään kopioimalla versionhallinnassa olevat tiedostot hakemistoon `target/dist` ja buildaamalla applikaatio uudelleen siellä ([dist.sh](scripts/dist.sh)). War-pakettiin päätyy siis lopulta `target/dist/target/webapp`-hakemiston sisältö.
+Kosken versioitu paketti tehdään CI:ssä ([dist.sh](scripts/dist.sh)) skriptillä. War-pakettiin päätyy siis lopulta `target/webapp`-hakemiston sisältö.
 
 ### Koski-sovelluksen ajaminen paikallisesti
 
