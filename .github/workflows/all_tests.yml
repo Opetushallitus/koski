@@ -12,6 +12,52 @@ env:
   TZ: Europe/Helsinki
 
 jobs:
+  build_koski:
+    name: Build Koski app
+    runs-on: ${{ inputs.runs-on }}
+    steps:
+      - name: Lookup existing target dir cache
+        id: lookup
+        uses: actions/cache/restore@v4
+        with:
+          path: target/
+          key: ${{ runner.os }}-target-${{ github.sha }}
+          lookup-only: "true"
+      - uses: actions/checkout@v4
+        if: steps.lookup.outputs.cache-hit != 'true'
+      - name: Set up Java 11
+        if: steps.lookup.outputs.cache-hit != 'true'
+        uses: actions/setup-java@v3
+        with:
+          java-version: "11"
+          architecture: "x64"
+          distribution: "zulu"
+      - name: Cache Maven packages
+        if: steps.lookup.outputs.cache-hit != 'true'
+        uses: actions/cache@v3
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
+      - name: Cache Node modules
+        if: steps.lookup.outputs.cache-hit != 'true'
+        uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+      - name: Build Koski
+        if: steps.lookup.outputs.cache-hit != 'true'
+        run: mvn test -DskipTests=true --batch-mode
+      - name: Cache target dir
+        if: steps.lookup.outputs.cache-hit != 'true'
+        uses: actions/cache/save@v4
+        with:
+          path: target/
+          key: ${{ runner.os }}-target-${{ github.sha }}
+
   lint_koski:
     name: Lint Koski
     runs-on: ${{ inputs.runs-on }}
@@ -25,7 +71,7 @@ jobs:
           architecture: "x64"
           distribution: "zulu"
 
-      - name: Setup Node 16
+      - name: Setup Node
         uses: actions/setup-node@v3
         with:
           node-version: "20.17.0"
@@ -93,6 +139,7 @@ jobs:
     name: Backend (api oppijavalidation)
     runs-on: ${{ inputs.runs-on }}
     if: ${{ !contains(github.event.head_commit.message, '[skip-tests]') }}
+    needs: [build_koski]
     steps:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/koski_backend_test
@@ -104,6 +151,7 @@ jobs:
     name: Backend (api misc 1/2)
     runs-on: ${{ inputs.runs-on }}
     if: ${{ !contains(github.event.head_commit.message, '[skip-tests]') }}
+    needs: [build_koski]
     steps:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/koski_backend_test
@@ -116,6 +164,7 @@ jobs:
     name: Backend (api misc 2/2)
     runs-on: ${{ inputs.runs-on }}
     if: ${{ !contains(github.event.head_commit.message, '[skip-tests]') }}
+    needs: [build_koski]
     steps:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/koski_backend_test
@@ -128,6 +177,7 @@ jobs:
     name: Backend (non-mock)
     runs-on: ${{ inputs.runs-on }}
     if: ${{ !contains(github.event.head_commit.message, '[skip-tests]') }}
+    needs: [build_koski]
     steps:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/koski_backend_test
@@ -139,6 +189,7 @@ jobs:
     name: Backend (other 1/4)
     runs-on: ${{ inputs.runs-on }}
     if: ${{ !contains(github.event.head_commit.message, '[skip-tests]') }}
+    needs: [build_koski]
     steps:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/koski_backend_test
@@ -173,6 +224,7 @@ jobs:
     name: Backend (other 2/4)
     runs-on: ${{ inputs.runs-on }}
     if: ${{ !contains(github.event.head_commit.message, '[skip-tests]') }}
+    needs: [build_koski]
     steps:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/koski_backend_test
@@ -185,6 +237,7 @@ jobs:
     name: Backend (other 3/4)
     runs-on: ${{ inputs.runs-on }}
     if: ${{ !contains(github.event.head_commit.message, '[skip-tests]') }}
+    needs: [build_koski]
     steps:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/koski_backend_test
@@ -206,6 +259,7 @@ jobs:
     name: Backend (other 4/4)
     runs-on: ${{ inputs.runs-on }}
     if: ${{ !contains(github.event.head_commit.message, '[skip-tests]') }}
+    needs: [build_koski]
     steps:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/koski_backend_test
@@ -234,6 +288,7 @@ jobs:
         shardTotal: [7]
     runs-on: ${{ inputs.runs-on }}
     if: ${{ !contains(github.event.head_commit.message, '[skip-tests]') }}
+    needs: [build_koski]
     steps:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/koski_frontend_test
@@ -272,6 +327,7 @@ jobs:
         shardTotal: [5]
     runs-on: ${{ inputs.runs-on }}
     if: ${{ !contains(github.event.head_commit.message, '[skip-tests]') }}
+    needs: [build_koski]
     steps:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/koski_frontend_playwright_test
@@ -288,6 +344,7 @@ jobs:
         shardTotal: [6]
     runs-on: ${{ inputs.runs-on }}
     if: ${{ !contains(github.event.head_commit.message, '[skip-tests]') }}
+    needs: [build_koski]
     steps:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/valpas_integration_test

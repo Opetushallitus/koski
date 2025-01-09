@@ -41,9 +41,9 @@ runs:
       run: docker compose --progress quiet up -d
       shell: bash
 
-    - name: Compile tests
-      uses: nick-fields/retry@v3
+    - name: Restore target dir
+      uses: actions/cache/restore@v4
       with:
-        max_attempts: 1
-        timeout_minutes: 20
-        command: mvn test-compile --batch-mode
+        path: "target/"
+        key: ${{ runner.os }}-target-${{ github.sha }}
+        fail-on-cache-miss: "true"
