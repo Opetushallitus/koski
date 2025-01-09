@@ -69,16 +69,14 @@ export function KoodistoSelect<T extends string>(
   )
 
   return (
-    <TestIdLayer id="addOsasuoritus">
-      <Select
-        inlineOptions={props.inlineOptions}
-        placeholder={props.addNewText}
-        options={options}
-        hideEmpty
-        onChange={onChangeCB}
-        testId="select"
-        value={props.value}
-      />
-    </TestIdLayer>
+    <Select
+      inlineOptions={props.inlineOptions}
+      placeholder={props.addNewText}
+      options={options}
+      hideEmpty
+      onChange={onChangeCB}
+      testId={props.testId}
+      value={props.value}
+    />
   )
 }

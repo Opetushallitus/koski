@@ -113,7 +113,7 @@ export const ArvosanaEdit = <T extends Arviointi>(
         options={groupedKoodisto as OptionList<ArvosanaOf<T>>}
         onChange={onChange}
         disabled={props.disabled}
-        testId="arvosana.edit"
+        testId={`${props.testId || 'arvosana'}.edit`}
       />
     )
   )

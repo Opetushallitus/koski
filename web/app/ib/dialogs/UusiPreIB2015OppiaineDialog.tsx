@@ -167,7 +167,7 @@ export const UusiPreIB2015OppiaineDialog: React.FC<
               options={ryhmät}
               value={state.ryhmä.value && koodiviiteId(state.ryhmä.value)}
               onChange={(o) => state.ryhmä.set(o?.value)}
-              testId="ryhmä"
+              testId="aineryhmä"
             />
           </label>
         )}

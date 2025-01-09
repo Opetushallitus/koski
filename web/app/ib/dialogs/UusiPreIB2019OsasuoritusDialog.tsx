@@ -70,7 +70,7 @@ export const UusiPreIB2019OsasuoritusDialog: AddOppiaineenOsasuoritusDialog<
 
   const paikallisetTunnisteetOptions = useMemo(
     () => [
-      optionGroup(t('Paikalliset moduulit'), [
+      optionGroup(t('Paikalliset opintojaksot'), [
         ...paikallisetOpintojaksot.map((kurssi) =>
           paikallinenKoodiToOption(kurssi.tunniste, { removable: true })
         ),
@@ -204,19 +204,23 @@ export const UusiPreIB2019OsasuoritusDialog: AddOppiaineenOsasuoritusDialog<
           />
         )}
         {state.pakollinen.visible && (
-          <label>
-            <Checkbox
-              label={t('Pakollinen')}
-              checked={!!state.pakollinen.value}
-              onChange={state.pakollinen.set}
-              testId="pakollinen"
-            />
-          </label>
+          <Checkbox
+            label={t('Pakollinen')}
+            checked={!!state.pakollinen.value}
+            onChange={state.pakollinen.set}
+            testId="pakollinen"
+          />
         )}
       </ModalBody>
       <ModalFooter>
-        <FlatButton onClick={props.onClose}>{t('Peruuta')}</FlatButton>
-        <RaisedButton onClick={addOsasuoritus} disabled={!state.result}>
+        <FlatButton onClick={props.onClose} testId="cancel">
+          {t('Peruuta')}
+        </FlatButton>
+        <RaisedButton
+          onClick={addOsasuoritus}
+          disabled={!state.result}
+          testId="submit"
+        >
           {t('Lisää')}
         </RaisedButton>
       </ModalFooter>

@@ -83,13 +83,16 @@ export const OpiskeluoikeudenTilaView = <T extends OpiskeluoikeudenTila>(
                     </TestIdText>
                   </time>,
                   <React.Fragment key={`jakso_tila_lisatiedot_${index}`}>
-                    <TestIdText id="tila">
-                      <span>{t(jakso.tila.nimi)}</span>
-                      <span>
-                        {isRahoituksellinenOpiskeluoikeusjakso(jakso) &&
-                          ` (${t(jakso.opintojenRahoitus?.nimi)})`}
-                      </span>
-                    </TestIdText>
+                    <TestIdText id="tila">{t(jakso.tila.nimi)}</TestIdText>
+                    {isRahoituksellinenOpiskeluoikeusjakso(jakso) && (
+                      <>
+                        {' ('}
+                        <TestIdText id="rahoitus">
+                          {t(jakso.opintojenRahoitus?.nimi)}
+                        </TestIdText>
+                        {')'}
+                      </>
+                    )}
                   </React.Fragment>
                 ]}
               </KeyColumnedValuesRow>

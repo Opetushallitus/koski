@@ -217,7 +217,7 @@ export const UusiPreIB2015OsasuoritusDialog: AddOppiaineenOsasuoritusDialog<
                 koodiviiteId(state.lukiokurssinTyyppi.value)
               }
               onChange={(o) => state.lukiokurssinTyyppi.set(o?.value)}
-              testId="tunniste"
+              testId="tyyppi"
             />
           </label>
         )}
@@ -245,8 +245,14 @@ export const UusiPreIB2015OsasuoritusDialog: AddOppiaineenOsasuoritusDialog<
         )}
       </ModalBody>
       <ModalFooter>
-        <FlatButton onClick={props.onClose}>{t('Peruuta')}</FlatButton>
-        <RaisedButton onClick={addOsasuoritus} disabled={!state.result}>
+        <FlatButton onClick={props.onClose} testId="cancel">
+          {t('Peruuta')}
+        </FlatButton>
+        <RaisedButton
+          onClick={addOsasuoritus}
+          disabled={!state.result}
+          testId="submit"
+        >
           {t('Lisää')}
         </RaisedButton>
       </ModalFooter>

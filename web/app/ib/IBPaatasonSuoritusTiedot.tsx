@@ -60,6 +60,7 @@ import {
   useKielivalikoimaOptions,
   useOppiaineTasoOptions
 } from './state/options'
+import { TestIdLayer, TestIdText } from '../appstate/useTestId'
 
 export type IBTutkintTiedotProps = {
   form: FormModel<IBOpiskeluoikeus>
@@ -76,7 +77,9 @@ export const IBPäätasonSuoritusTiedot: React.FC<IBTutkintTiedotProps> = ({
   return (
     <KeyValueTable>
       <KeyValueRow localizableLabel="Koulutus">
-        {t(ibKoulutusNimi(opiskeluoikeus))}
+        <TestIdText id="koulutus">
+          {t(päätasonSuoritus.suoritus.koulutusmoduuli.tunniste.nimi)}
+        </TestIdText>
       </KeyValueRow>
       <KeyValueRow localizableLabel="Oppilaitos / toimipiste">
         <FormField
@@ -93,6 +96,7 @@ export const IBPäätasonSuoritusTiedot: React.FC<IBTutkintTiedotProps> = ({
           view={KoodistoView}
           edit={KoodistoEdit}
           editProps={{ koodistoUri: 'kieli' }}
+          testId="suorituskieli"
         />
       </KeyValueRow>
       {hasPäätasonsuoritusOf(isIBTutkinnonSuoritus, päätasonSuoritus) && (
@@ -107,6 +111,7 @@ export const IBPäätasonSuoritusTiedot: React.FC<IBTutkintTiedotProps> = ({
           path={path.prop('todistuksellaNäkyvätLisätiedot')}
           view={LocalizedTextView}
           edit={LocalizedTextEdit}
+          testId="todistuksellaNäkyvätLisätiedot"
         />
       </KeyValueRow>
     </KeyValueTable>
@@ -144,6 +149,7 @@ const IBTutkinnonTiedotRows: React.FC<IBTutkinnonTiedotRowsProps> = ({
           view={KoodistoView}
           edit={KoodistoEdit}
           editProps={{ koodistoUri: 'arviointiasteikkolisapisteetib' }}
+          testId="lisäpisteet"
         />
       </KeyValueRow>
     </>
@@ -198,55 +204,62 @@ const TheoryOfKnowledgeRows: React.FC<IBTutkinnonTiedotRowsProps> = ({
   )
 
   return (
-    <KeyValueRow localizableLabel="Theory of knowledge">
-      <KeyValueTable>
-        <KeyValueRow localizableLabel="Arvosana" innerKeyValueTable>
-          <FormField
-            form={form}
-            path={theoryOfKnowledgePath
-              .optional()
-              .prop('arviointi')
-              .compose(lastElement())}
-            view={ArvosanaView}
-            edit={ArvosanaEdit}
-            editProps={{
-              suoritusClassName: IBTheoryOfKnowledgeSuoritus.className
-            }}
-          />
-        </KeyValueRow>
-        <KeyValueRow localizableLabel="Pakollinen" innerKeyValueTable>
-          <FormField
-            form={form}
-            path={theoryOfKnowledgePath
-              .optional()
-              .prop('koulutusmoduuli')
-              .prop('pakollinen')
-              .optional()}
-            view={BooleanView}
-            edit={BooleanEdit}
-          />
-        </KeyValueRow>
-        <KeyValueRow localizableLabel="Kurssit" innerKeyValueTable>
-          <OppiaineenKurssit
-            form={form}
-            kurssit={kurssit}
-            oppiaine={theoryOfKnowledge!}
-            oppiainePath={[...päätasonSuoritus.pathTokens, 'theoryOfKnowledge']}
-            onArviointi={onKurssinArviointi}
-            onDeleteKurssi={onDelete}
-            onShowAddOsasuoritusDialog={showNewKurssiDialog}
-          />
-          {newKurssiDialogVisible && (
-            <UusiIBTutkintoOsasuoritusDialog
-              organisaatioOid={päätasonSuoritus.suoritus.toimipiste.oid}
-              oppiaine={theoryOfKnowledge!}
-              onAdd={onAdd}
-              onClose={hideNewKurssiDialog}
+    <TestIdLayer id="theoryOfKnowledge">
+      <KeyValueRow localizableLabel="Theory of knowledge">
+        <KeyValueTable>
+          <KeyValueRow localizableLabel="Arvosana" innerKeyValueTable>
+            <FormField
+              form={form}
+              path={theoryOfKnowledgePath
+                .optional()
+                .prop('arviointi')
+                .compose(lastElement())}
+              view={ArvosanaView}
+              edit={ArvosanaEdit}
+              editProps={{
+                suoritusClassName: IBTheoryOfKnowledgeSuoritus.className
+              }}
             />
-          )}
-        </KeyValueRow>
-      </KeyValueTable>
-    </KeyValueRow>
+          </KeyValueRow>
+          <KeyValueRow localizableLabel="Pakollinen" innerKeyValueTable>
+            <FormField
+              form={form}
+              path={theoryOfKnowledgePath
+                .optional()
+                .prop('koulutusmoduuli')
+                .prop('pakollinen')
+                .optional()}
+              view={BooleanView}
+              edit={BooleanEdit}
+              testId="pakollinen"
+            />
+          </KeyValueRow>
+          <KeyValueRow localizableLabel="Kurssit" innerKeyValueTable>
+            <OppiaineenKurssit
+              form={form}
+              kurssit={kurssit}
+              oppiaine={theoryOfKnowledge!}
+              oppiainePath={[
+                ...päätasonSuoritus.pathTokens,
+                'theoryOfKnowledge'
+              ]}
+              hidePaikallinenIndicator
+              onArviointi={onKurssinArviointi}
+              onDeleteKurssi={onDelete}
+              onShowAddOsasuoritusDialog={showNewKurssiDialog}
+            />
+            {newKurssiDialogVisible && (
+              <UusiIBTutkintoOsasuoritusDialog
+                organisaatioOid={päätasonSuoritus.suoritus.toimipiste.oid}
+                oppiaine={theoryOfKnowledge!}
+                onAdd={onAdd}
+                onClose={hideNewKurssiDialog}
+              />
+            )}
+          </KeyValueRow>
+        </KeyValueTable>
+      </KeyValueRow>
+    </TestIdLayer>
   )
 }
 
@@ -341,7 +354,9 @@ const ExtendedEssayFieldRows: React.FC<IBTutkinnonTiedotRowsProps> = ({
     </>
   ) : (
     <KeyValueRow localizableLabel="Extended essay">
-      {parasArvosana(päätasonSuoritus.suoritus.extendedEssay?.arviointi)}
+      <TestIdText id="extendedEssay">
+        {parasArvosana(päätasonSuoritus.suoritus.extendedEssay?.arviointi)}
+      </TestIdText>
     </KeyValueRow>
   )
 }
@@ -386,11 +401,9 @@ const CreativityActionServiceField: React.FC<IBTutkinnonTiedotRowsProps> = ({
       value={props.value?.koodiarvo}
       onSelect={onSelect}
       zeroValueOption
+      testId="creativityActionService"
     />
   ) : (
-    <KoodistoView {...props} />
+    <KoodistoView {...props} testId="creativityActionService" />
   )
 }
-
-export const ibKoulutusNimi = (opiskeluoikeus: IBOpiskeluoikeus): string =>
-  `${t(opiskeluoikeus.suoritukset[0]?.koulutusmoduuli.tunniste.nimi)}`

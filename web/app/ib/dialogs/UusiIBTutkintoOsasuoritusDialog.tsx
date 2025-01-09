@@ -163,7 +163,7 @@ export const UusiIBTutkintoOsasuoritusDialog: AddOppiaineenOsasuoritusDialog<
               koodistoUri="kieli"
               value={state.suorituskieli.value?.koodiarvo}
               onSelect={state.suorituskieli.set}
-              testId="kieli"
+              testId="suorituskieli"
             />
           </label>
         )}
@@ -179,8 +179,14 @@ export const UusiIBTutkintoOsasuoritusDialog: AddOppiaineenOsasuoritusDialog<
         )}
       </ModalBody>
       <ModalFooter>
-        <FlatButton onClick={props.onClose}>{t('Peruuta')}</FlatButton>
-        <RaisedButton onClick={addOsasuoritus} disabled={!state.result}>
+        <FlatButton onClick={props.onClose} testId="cancel">
+          {t('Peruuta')}
+        </FlatButton>
+        <RaisedButton
+          onClick={addOsasuoritus}
+          disabled={!state.result}
+          testId="submit"
+        >
           {t('Lisää')}
         </RaisedButton>
       </ModalFooter>
