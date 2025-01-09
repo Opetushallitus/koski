@@ -9,6 +9,7 @@ import { LocalizedString } from '../../types/fi/oph/koski/schema/LocalizedString
 import { PreIBKurssinSuoritus2015 } from '../../types/fi/oph/koski/schema/PreIBKurssinSuoritus2015'
 import {
   createPreIBKurssinSuoritus2015,
+  PreIB2015KurssiOppiaineenTunniste,
   PreIB2015OsasuoritusTunniste,
   PreIBKurssi2015Props
 } from '../oppiaineet/preIBKurssi2015'
@@ -30,7 +31,9 @@ export type PreIB2015OsasuoritusState = {
 
 export type UusiOsasuoritustyyppi = 'lukio' | 'ib'
 
-export const usePreIB2015OsasuoritusState = (): PreIB2015OsasuoritusState => {
+export const usePreIB2015OsasuoritusState = (
+  oppiaineenTunniste: PreIB2015KurssiOppiaineenTunniste
+): PreIB2015OsasuoritusState => {
   const tunniste = useDialogField<PreIB2015OsasuoritusTunniste>(true)
   const uusiTyyppi = useDialogField<UusiOsasuoritustyyppi>(false)
 
@@ -56,6 +59,7 @@ export const usePreIB2015OsasuoritusState = (): PreIB2015OsasuoritusState => {
   const result = useMemo(
     () =>
       createPreIBKurssinSuoritus2015({
+        oppiaineenTunniste,
         tunniste: tunniste.value,
         lukiokurssinTyyppi: lukiokurssinTyyppi.value,
         kuvaus: kuvaus.value,
@@ -63,6 +67,7 @@ export const usePreIB2015OsasuoritusState = (): PreIB2015OsasuoritusState => {
         laajuus: laajuus.value
       }),
     [
+      oppiaineenTunniste,
       tunniste.value,
       lukiokurssinTyyppi.value,
       kuvaus.value,

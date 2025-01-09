@@ -1,3 +1,4 @@
+import { t } from '../../i18n/i18n'
 import { IBKurssi } from '../../types/fi/oph/koski/schema/IBKurssi'
 import { Koodistokoodiviite } from '../../types/fi/oph/koski/schema/Koodistokoodiviite'
 import { LaajuusKursseissa } from '../../types/fi/oph/koski/schema/LaajuusKursseissa'
@@ -9,15 +10,24 @@ import {
 import { PaikallinenLukionKurssi2015 } from '../../types/fi/oph/koski/schema/PaikallinenLukionKurssi2015'
 import { PreIBKurssi2015 } from '../../types/fi/oph/koski/schema/PreIBKurssi2015'
 import { PreIBKurssinSuoritus2015 } from '../../types/fi/oph/koski/schema/PreIBKurssinSuoritus2015'
+import { PreIBSuorituksenOsasuoritus2015 } from '../../types/fi/oph/koski/schema/PreIBSuorituksenOsasuoritus2015'
 import { ValtakunnallinenLukionKurssi2015 } from '../../types/fi/oph/koski/schema/ValtakunnallinenLukionKurssi2015'
+import { PermissiveKoodiviite } from '../../util/koodisto'
+import { KoulutusmoduuliOf, TunnisteOf } from '../../util/schema'
+import { isValidPaikallinenKoodi } from './tunnisteet'
 
 export type PreIBKurssi2015Props = {
+  oppiaineenTunniste: PreIB2015KurssiOppiaineenTunniste
   tunniste?: PreIB2015OsasuoritusTunniste
   lukiokurssinTyyppi?: Koodistokoodiviite<'lukionkurssintyyppi'>
   kuvaus?: LocalizedString
   pakollinen?: boolean
   laajuus?: LaajuusKursseissa
 }
+
+export type PreIB2015KurssiOppiaineenTunniste = PermissiveKoodiviite<
+  TunnisteOf<KoulutusmoduuliOf<PreIBSuorituksenOsasuoritus2015>>
+>
 
 export type PreIB2015OsasuoritusTunniste =
   | Koodistokoodiviite<LukiokurssiTunnisteUri>
@@ -47,6 +57,7 @@ export const createPreIBKurssinSuoritus2015 = (
 }
 
 const createPreIBKurssi2015 = ({
+  oppiaineenTunniste,
   tunniste,
   lukiokurssinTyyppi,
   kuvaus,
@@ -61,22 +72,24 @@ const createPreIBKurssi2015 = ({
     })
   }
 
-  if (lukiokurssinTyyppi && isPaikallinenKoodi(tunniste) && kuvaus) {
-    return PaikallinenLukionKurssi2015({
-      tunniste,
-      kurssinTyyppi: lukiokurssinTyyppi,
-      kuvaus,
-      laajuus
-    })
-  }
-
-  if (isPaikallinenKoodi(tunniste) && kuvaus) {
-    return IBKurssi({
-      tunniste,
-      kuvaus,
-      pakollinen: !!pakollinen,
-      laajuus
-    })
+  if (isValidPaikallinenKoodi(tunniste) && kuvaus) {
+    if (oppiaineenTunniste.koodistoUri === 'oppiaineetib') {
+      return IBKurssi({
+        tunniste,
+        kuvaus,
+        pakollinen: !!pakollinen,
+        laajuus
+      })
+    } else {
+      return lukiokurssinTyyppi
+        ? PaikallinenLukionKurssi2015({
+            tunniste,
+            kurssinTyyppi: lukiokurssinTyyppi,
+            kuvaus,
+            laajuus
+          })
+        : null
+    }
   }
 
   return null

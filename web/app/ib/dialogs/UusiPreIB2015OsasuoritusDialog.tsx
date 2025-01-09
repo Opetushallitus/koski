@@ -48,7 +48,6 @@ import {
 export const UusiPreIB2015OsasuoritusDialog: AddOppiaineenOsasuoritusDialog<
   PreIBKurssinSuoritus2015
 > = ({ onAdd, ...props }) => {
-  const koulutus = props.oppiaine.koulutusmoduuli
   const {
     preferences: paikallisetLukionKurssit,
     store: storePaikallinenLukionKurssi,
@@ -63,7 +62,9 @@ export const UusiPreIB2015OsasuoritusDialog: AddOppiaineenOsasuoritusDialog<
     remove: removeIBKurssi
   } = usePreferences<IBKurssi>(props.organisaatioOid, 'ibkurssi')
 
-  const state = usePreIB2015OsasuoritusState()
+  const state = usePreIB2015OsasuoritusState(
+    props.oppiaine.koulutusmoduuli.tunniste
+  )
 
   const valtakunnallisetTunnisteetOptions =
     useOppiaineenKurssiOptions(

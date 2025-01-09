@@ -21,6 +21,7 @@ import {
   isLukionÄidinkieliJaKirjallisuus2019Tunniste,
   isMuutLukionSuoritukset2019Tunniste,
   isTemaattisetOpinnot2019Tunniste,
+  isValidPaikallinenKoodi,
   isVierasTaiToinenKotimainenKieli2019Tunniste
 } from './tunnisteet'
 
@@ -91,7 +92,7 @@ const createPreIBLukionOppiaine2019 = ({
       : null
   }
 
-  if (paikallinenTunniste && paikallinenKuvaus) {
+  if (isValidPaikallinenKoodi(paikallinenTunniste) && paikallinenKuvaus) {
     return PaikallinenLukionOppiaine2019({
       tunniste: paikallinenTunniste,
       kuvaus: paikallinenKuvaus,

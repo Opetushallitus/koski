@@ -1,3 +1,4 @@
+import { t } from '../../i18n/i18n'
 import { IBOppiaineLanguage } from '../../types/fi/oph/koski/schema/IBOppiaineLanguage'
 import { IBOppiaineMuu } from '../../types/fi/oph/koski/schema/IBOppiaineMuu'
 import { LukionÄidinkieliJaKirjallisuus2015 } from '../../types/fi/oph/koski/schema/LukionAidinkieliJaKirjallisuus2015'
@@ -17,6 +18,7 @@ import {
   isLukionMuuValtakunnallinenOppiaine2015Tunniste,
   isLukionUskonto2015Tunniste,
   isLukionÄidinkieliJaKirjallisuus2015Tunniste,
+  isValidPaikallinenKoodi,
   isVierasTaiToinenKotimainenKieli2015Tunniste
 } from './tunnisteet'
 
@@ -101,14 +103,12 @@ const createPreIBOppiaine2015 = ({
       : null
   }
 
-  if (paikallinenTunniste) {
-    return paikallinenKuvaus
-      ? PaikallinenLukionOppiaine2015({
-          pakollinen: true,
-          kuvaus: paikallinenKuvaus,
-          tunniste: paikallinenTunniste
-        })
-      : null
+  if (isValidPaikallinenKoodi(paikallinenTunniste) && paikallinenKuvaus) {
+    return PaikallinenLukionOppiaine2015({
+      pakollinen: true,
+      kuvaus: paikallinenKuvaus,
+      tunniste: paikallinenTunniste
+    })
   }
 
   return null

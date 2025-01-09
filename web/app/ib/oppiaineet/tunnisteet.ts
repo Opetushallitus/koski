@@ -1,8 +1,12 @@
+import { t } from '../../i18n/i18n'
 import {
   isKoodistokoodiviite,
   Koodistokoodiviite
 } from '../../types/fi/oph/koski/schema/Koodistokoodiviite'
-import { PaikallinenKoodi } from '../../types/fi/oph/koski/schema/PaikallinenKoodi'
+import {
+  isPaikallinenKoodi,
+  PaikallinenKoodi
+} from '../../types/fi/oph/koski/schema/PaikallinenKoodi'
 import { ItemOf } from '../../util/types'
 
 export const koodiviiteTunnisteGuard =
@@ -192,3 +196,8 @@ export const isLukionMuuModuuliMuissaOpinnoissa2019OppiaineenTunniste =
 
 export const isLukionVieraanKielenModuuliMuissaOpinnoissa2019OppiaineenTunniste =
   koodiviiteTunnisteGuard('lukionmuutopinnot', ['MS'])
+
+export const isValidPaikallinenKoodi = (
+  koodi?: any
+): koodi is PaikallinenKoodi =>
+  isPaikallinenKoodi(koodi) && !!koodi?.koodiarvo && !!t(koodi?.nimi)

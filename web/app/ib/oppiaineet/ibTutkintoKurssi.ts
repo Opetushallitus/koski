@@ -1,10 +1,10 @@
-import { localize } from '../../i18n/i18n'
 import { IBKurssi } from '../../types/fi/oph/koski/schema/IBKurssi'
 import { IBKurssinSuoritus } from '../../types/fi/oph/koski/schema/IBKurssinSuoritus'
 import { Koodistokoodiviite } from '../../types/fi/oph/koski/schema/Koodistokoodiviite'
 import { LaajuusKursseissa } from '../../types/fi/oph/koski/schema/LaajuusKursseissa'
 import { LocalizedString } from '../../types/fi/oph/koski/schema/LocalizedString'
 import { PaikallinenKoodi } from '../../types/fi/oph/koski/schema/PaikallinenKoodi'
+import { isValidPaikallinenKoodi } from './tunnisteet'
 
 export type IBKurssinSuoritusProps = {
   tunniste?: PaikallinenKoodi
@@ -21,7 +21,7 @@ export const createIBKurssinSuoritus = ({
   pakollinen,
   suorituskieli
 }: IBKurssinSuoritusProps): IBKurssinSuoritus | null =>
-  tunniste && kuvaus && (laajuus?.arvo || 0) > 0
+  isValidPaikallinenKoodi(tunniste) && kuvaus && (laajuus?.arvo || 0) > 0
     ? IBKurssinSuoritus({
         koulutusmoduuli: IBKurssi({
           kuvaus,
