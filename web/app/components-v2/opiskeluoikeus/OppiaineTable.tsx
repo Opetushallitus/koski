@@ -342,6 +342,16 @@ const kurssiNaturalOrd = Ord.contramap((kurssi: OppiaineenOsasuoritus) => {
   return match ? `${match[1]}${match[2].padStart(8, '0')}` : tunniste
 })(string.Ord)
 
+const booleanOrd = Ord.fromCompare((a?: boolean, b?: boolean) =>
+  a ? (b ? 0 : -1) : b ? 1 : 0
+)
+
+const kurssiPakollinenOrd = Ord.contramap((kurssi: OppiaineenOsasuoritus) =>
+  isValinnaisuus(kurssi.koulutusmoduuli)
+    ? kurssi.koulutusmoduuli.pakollinen
+    : undefined
+)(booleanOrd)
+
 export const OppiaineenKurssit = ({
   form,
   kurssit,
@@ -353,7 +363,7 @@ export const OppiaineenKurssit = ({
   onShowAddOsasuoritusDialog
 }: OppiaineenKurssitProps) => {
   const sortedKurssit = useMemo(
-    () => A.sort(kurssiNaturalOrd)(kurssit),
+    () => A.sortBy([kurssiPakollinenOrd, kurssiNaturalOrd])(kurssit),
     [kurssit]
   )
 
