@@ -12,6 +12,10 @@ runs:
     - name: "🔨 Setup backend and databases"
       uses: ./.github/actions/setup_backend
 
+    - name: npm ci
+      run: cd web && npm ci
+      shell: bash
+
     - name: Run frontend tests
       env:
         MOCHA_SHARD_INDEX: ${{inputs.shardIndex}}
