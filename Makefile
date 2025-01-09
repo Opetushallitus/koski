@@ -167,7 +167,7 @@ owaspresults:
 .PHONY: snyk
 snyk: # javascript dependency vulnerability check
 	mvn generate-resources # to download correct node/npm version via frontend-maven-plugin
-	./web/node/node web/node_modules/snyk/dist/cli/index.js test web valpas-web
+	node web/node_modules/snyk/dist/cli/index.js test web valpas-web
 
 .PHONY: checkdoc_validation
 checkdoc_validation:
