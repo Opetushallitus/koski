@@ -10,6 +10,7 @@ import { VapaanSivistystyönOpiskeluoikeus } from '../../types/fi/oph/koski/sche
 import { OsasuoritusOf } from '../../util/schema'
 import { VSTSuoritusOsasuorituksilla } from './types'
 import { appendOptional } from '../../util/array'
+import { TestIdLayer } from '../../appstate/useTestId'
 
 type AddKoodistonOsasuoritusProps<
   T extends VSTSuoritusOsasuorituksilla,
@@ -52,12 +53,14 @@ export const AddKoodistonOsasuoritus = <
   return (
     <ColumnRow indent={props.level + 1}>
       <Column span={10}>
-        <KoodistoSelect
-          koodistoUri={props.koodistoUri}
-          addNewText={props.placeholder || t('Lisää osasuoritus')}
-          onSelect={onSelect}
-          testId="addOsasuoritus"
-        />
+        <TestIdLayer id="addOsasuoritus">
+          <KoodistoSelect
+            koodistoUri={props.koodistoUri}
+            addNewText={props.placeholder || t('Lisää osasuoritus')}
+            onSelect={onSelect}
+            testId="select"
+          />
+        </TestIdLayer>
       </Column>
     </ColumnRow>
   )

@@ -10,6 +10,7 @@ import {
 } from '../../components-v2/forms/FormModel'
 import { Spacer } from '../../components-v2/layout/Spacer'
 import {
+  koodinNimiOnly,
   ParasArvosanaEdit,
   ParasArvosanaView
 } from '../../components-v2/opiskeluoikeus/ArvosanaField'
@@ -225,14 +226,11 @@ export const osasuoritusToTableRow = ({
           form={form}
           path={osasuoritusPath.path('arviointi')}
           view={ParasArvosanaView}
-          edit={(arvosanaProps) => (
-            <ParasArvosanaEdit
-              {...arvosanaProps}
-              createArviointi={createArviointi(
-                VSTKotoutumiskoulutuksenOsasuorituksenArviointi2022
-              )}
-            />
-          )}
+          edit={ParasArvosanaEdit}
+          editProps={{
+            suoritusClassName: osasuoritus?.$class,
+            format: koodinNimiOnly
+          }}
         />
       )
     },

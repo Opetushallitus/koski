@@ -63,10 +63,16 @@ export type ArvosanaEditProps<T extends Arviointi> = CommonProps<
 export const koodiarvoAndNimi = (k: Koodistokoodiviite) =>
   `${k.koodiarvo} (${t(k.nimi)})`
 export const koodiarvoOnly = (k: Koodistokoodiviite) => k.koodiarvo
+export const koodinNimiOnly = (k: Koodistokoodiviite) =>
+  t(k.nimi) || k.koodiarvo
 
 export const ArvosanaEdit = <T extends Arviointi>(
   props: ArvosanaEditProps<T>
 ) => {
+  if (!props.suoritusClassName) {
+    console.error('ArvosanaEdit property suoritusClassName missing')
+  }
+
   const arviointiSchema = useChildSchema(
     props.suoritusClassName,
     `${props.arviointiPropName || 'arviointi'}.[]`
@@ -165,6 +171,7 @@ export type ParasArvosanaEditProps<T extends Arviointi> = CommonProps<
   FieldEditorProps<T[] | undefined, EmptyObject>
 > & {
   suoritusClassName: string
+  format?: (arvosana: Koodistokoodiviite) => string
 }
 
 export const ParasArvosanaEdit = <T extends Arviointi>(
@@ -185,6 +192,7 @@ export const ParasArvosanaEdit = <T extends Arviointi>(
       value={arviointi}
       onChange={onChange}
       suoritusClassName={props.suoritusClassName}
+      format={props.format}
       disabled={disabled}
     />
   )

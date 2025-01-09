@@ -76,12 +76,10 @@ export const VSTOsaamismerkkiEditor: React.FC<VSTOsaamismerkkiEditor> = ({
                 form={form}
                 path={päätasonSuoritus.path.prop('arviointi')}
                 view={(props) => <ParasArvosanaView {...props} />}
-                edit={(props) => (
-                  <ParasArvosanaEdit
-                    {...props}
-                    createArviointi={createOsaamismerkkiArviointi}
-                  />
-                )}
+                edit={ParasArvosanaEdit}
+                editProps={{
+                  suoritusClassName: päätasonSuoritus.suoritus.$class
+                }}
                 testId="arvosana"
               />
             </KeyValueRow>

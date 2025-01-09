@@ -7,6 +7,7 @@ import {
   getValue
 } from '../../components-v2/forms/FormModel'
 import {
+  koodinNimiOnly,
   ParasArvosanaEdit,
   ParasArvosanaView
 } from '../../components-v2/opiskeluoikeus/ArvosanaField'
@@ -128,10 +129,11 @@ export const osasuoritusToTableRow = ({
 }: OsasuoritusToTableRowParams): OsasuoritusRowData<
   'Osasuoritus' | 'Laajuus' | 'Arvosana'
 > => {
-  const osasuoritus = suoritusPath
+  const osasuoritusPath = suoritusPath
     .prop('osasuoritukset')
     .optional()
     .at(osasuoritusIndex)
+  const osasuoritus = getValue(osasuoritusPath)(form.state)
 
   return {
     suoritusIndex,
@@ -142,7 +144,7 @@ export const osasuoritusToTableRow = ({
       Osasuoritus: (
         <FormField
           form={form}
-          path={osasuoritus.path('koulutusmoduuli.tunniste.nimi')}
+          path={osasuoritusPath.path('koulutusmoduuli.tunniste.nimi')}
           view={LocalizedTextView}
           testId="nimi"
         />
@@ -150,7 +152,7 @@ export const osasuoritusToTableRow = ({
       Laajuus: (
         <FormField
           form={form}
-          path={osasuoritus.prop('koulutusmoduuli')}
+          path={osasuoritusPath.prop('koulutusmoduuli')}
           view={PaikallisenKoulutusmoduulinLaajuusView}
           edit={PaikallisenKoulutusmoduulinLaajuusEdit}
           editProps={{
@@ -163,16 +165,13 @@ export const osasuoritusToTableRow = ({
       Arvosana: (
         <FormField
           form={form}
-          path={osasuoritus.path('arviointi')}
+          path={osasuoritusPath.path('arviointi')}
           view={ParasArvosanaView}
-          edit={(arvosanaProps) => (
-            <ParasArvosanaEdit
-              {...arvosanaProps}
-              createArviointi={createArviointi(
-                VapaanSivistystyöVapaatavoitteisenKoulutuksenArviointi
-              )}
-            />
-          )}
+          edit={ParasArvosanaEdit}
+          editProps={{
+            suoritusClassName: osasuoritus?.$class,
+            format: koodinNimiOnly
+          }}
         />
       )
     },
@@ -183,7 +182,7 @@ export const osasuoritusToTableRow = ({
         form={form}
         suoritusPath={suoritusPath}
         // @ts-expect-error Korjaa tyypitys
-        osasuoritusPath={osasuoritus}
+        osasuoritusPath={osasuoritusPath}
       />
     )
   }

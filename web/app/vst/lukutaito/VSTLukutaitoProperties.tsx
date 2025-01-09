@@ -1,8 +1,13 @@
 import React from 'react'
 import { LocalizedTextView } from '../../components-v2/controls/LocalizedTestField'
 import { FormField } from '../../components-v2/forms/FormField'
-import { FormModel, FormOptic } from '../../components-v2/forms/FormModel'
 import {
+  FormModel,
+  FormOptic,
+  getValue
+} from '../../components-v2/forms/FormModel'
+import {
+  koodinNimiOnly,
   ParasArvosanaEdit,
   ParasArvosanaView
 } from '../../components-v2/opiskeluoikeus/ArvosanaField'
@@ -15,10 +20,8 @@ import {
   TaitotasoEdit,
   TaitotasoView
 } from '../../components-v2/opiskeluoikeus/TaitotasoField'
-import { OppivelvollisilleSuunnatunVapaanSivistystyönOpintokokonaisuudenArviointi } from '../../types/fi/oph/koski/schema/OppivelvollisilleSuunnatunVapaanSivistystyonOpintokokonaisuudenArviointi'
 import { VapaanSivistystyönLukutaitokoulutuksenKokonaisuudenSuoritus } from '../../types/fi/oph/koski/schema/VapaanSivistystyonLukutaitokoulutuksenKokonaisuudenSuoritus'
 import { VapaanSivistystyönOpiskeluoikeus } from '../../types/fi/oph/koski/schema/VapaanSivistystyonOpiskeluoikeus'
-import { createArviointi } from '../common/arviointi'
 import { VSTSuoritusOsasuorituksilla } from '../common/types'
 import { VSTLukutaitoKielitaitotasoProperty } from './VSTLukutaitoKielitaitotasoField'
 
@@ -66,6 +69,7 @@ export const osasuoritusToTableRow = ({
     .prop('osasuoritukset')
     .optional()
     .at(osasuoritusIndex)
+  const osasuoritus = getValue(osasuoritusPath)(form.state)
 
   return {
     suoritusIndex,
@@ -94,14 +98,11 @@ export const osasuoritusToTableRow = ({
           form={form}
           path={osasuoritusPath.path('arviointi')}
           view={ParasArvosanaView}
-          edit={(arvosanaProps) => (
-            <ParasArvosanaEdit
-              {...arvosanaProps}
-              createArviointi={createArviointi(
-                OppivelvollisilleSuunnatunVapaanSivistystyönOpintokokonaisuudenArviointi
-              )}
-            />
-          )}
+          edit={ParasArvosanaEdit}
+          editProps={{
+            suoritusClassName: osasuoritus?.$class,
+            format: koodinNimiOnly
+          }}
         />
       ),
       Taitotaso: (

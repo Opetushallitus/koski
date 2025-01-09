@@ -39,7 +39,6 @@ export type VSTArviointiEditProps<T extends VSTArviointi> = CommonProps<
   FieldEditorProps<
     T,
     {
-      createArviointi: (arvosana: ArvosanaOf<T>) => T
       osasuoritus: VSTSuoritusArvioinnilla
     }
   >
