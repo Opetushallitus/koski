@@ -35,7 +35,7 @@ const tryToLogin = async (page: Page) => {
   await click(page, "#continue-button");
 
   return (
-    (await textContent(page, ".header__name")) === "Nordea Demos. 21.2.1981"
+    (await textContent(page, ".header__name")) === "Demo Nordeas. 21.2.1981"
   );
 };
 
