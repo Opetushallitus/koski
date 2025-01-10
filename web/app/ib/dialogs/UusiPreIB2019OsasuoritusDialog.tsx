@@ -50,7 +50,6 @@ import { LaajuusOpintopisteissä } from '../../types/fi/oph/koski/schema/Laajuus
 export const UusiPreIB2019OsasuoritusDialog: AddOppiaineenOsasuoritusDialog<
   PreIBLukionModuulinTaiPaikallisenOpintojaksonSuoritus2019
 > = ({ onAdd, ...props }) => {
-  const koulutus = props.oppiaine.koulutusmoduuli
   const {
     preferences: paikallisetOpintojaksot,
     store: storePaikallinenOpintojakso,

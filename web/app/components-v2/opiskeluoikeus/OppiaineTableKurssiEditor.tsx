@@ -4,10 +4,11 @@ import { LaajuusKursseissa } from '../../types/fi/oph/koski/schema/LaajuusKursse
 import { isLukionKurssinSuoritus2015 } from '../../types/fi/oph/koski/schema/LukionKurssinSuoritus2015'
 import { OsaamisenTunnustaminen } from '../../types/fi/oph/koski/schema/OsaamisenTunnustaminen'
 import { isPaikallinenLukionKurssi2015 } from '../../types/fi/oph/koski/schema/PaikallinenLukionKurssi2015'
+import { isValinnaisuus } from '../../types/fi/oph/koski/schema/Valinnaisuus'
 import { isValtakunnallinenLukionKurssi2015 } from '../../types/fi/oph/koski/schema/ValtakunnallinenLukionKurssi2015'
 import { PathToken, get } from '../../util/laxModify'
-import { KeyValueTable, KeyValueRow } from '../containers/KeyValueTable'
-import { Modal, ModalTitle, ModalBody, ModalFooter } from '../containers/Modal'
+import { KeyValueRow, KeyValueTable } from '../containers/KeyValueTable'
+import { Modal, ModalBody, ModalFooter, ModalTitle } from '../containers/Modal'
 import { Checkbox } from '../controls/Checkbox'
 import { DateEdit } from '../controls/DateField'
 import { FlatButton } from '../controls/FlatButton'
@@ -34,6 +35,7 @@ const laajuusPath: PathToken[] = [
     onEmpty: () => LaajuusKursseissa({ arvo: 0 })
   }
 ]
+const pakollinenPath: PathToken[] = ['koulutusmoduuli', 'pakollinen']
 const arviointiPath = (index: number): PathToken[] => ['arviointi', index]
 const arviointipäiväPath = (index: number): PathToken[] => [
   'arviointi',
@@ -83,6 +85,17 @@ export const OppiaineTableKurssiEditor: React.FC<
                 />
               </KeyValueRow>
             ))}
+
+          {isValinnaisuus(kurssi.koulutusmoduuli) && (
+            <KeyValueRow localizableLabel="Pakollinen">
+              <Checkbox
+                label=""
+                checked={kurssi.koulutusmoduuli.pakollinen}
+                onChange={form.set(...path, ...pakollinenPath)}
+                testId="pakollinen"
+              />
+            </KeyValueRow>
+          )}
 
           <KeyValueRow localizableLabel="Arviointi">
             {(kurssi.arviointi || []).map((arviointi, index) => (
