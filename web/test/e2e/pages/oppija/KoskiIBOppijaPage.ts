@@ -104,7 +104,15 @@ export const IBTestIds = {
       pakollinen: FormField(Label, Select),
       kurssit: arrayOf(KurssiFields)
     },
-    extendedEssay: Label,
+    extendedEssay: {
+      oppiaine: Label,
+      kieli: Label,
+      taso: Label,
+      ryhma: Label,
+      pakollinen: Label,
+      aihe: Label,
+      arvosana: Label
+    },
     creativityActionService: Label,
     lisäpisteet: FormField(Label, Select),
 

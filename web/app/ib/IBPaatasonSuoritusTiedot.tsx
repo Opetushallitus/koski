@@ -143,14 +143,16 @@ const IBTutkinnonTiedotRows: React.FC<IBTutkinnonTiedotRowsProps> = ({
         />
       </KeyValueRow>
       <KeyValueRow localizableLabel="Lisäpisteet">
-        <FormField
-          form={form}
-          path={path.prop('lisäpisteet')}
-          view={KoodistoView}
-          edit={KoodistoEdit}
-          editProps={{ koodistoUri: 'arviointiasteikkolisapisteetib' }}
-          testId="lisäpisteet"
-        />
+        {(form.editMode || päätasonSuoritus.suoritus.lisäpisteet) && (
+          <FormField
+            form={form}
+            path={path.prop('lisäpisteet')}
+            view={KoodistoView}
+            edit={KoodistoEdit}
+            editProps={{ koodistoUri: 'arviointiasteikkolisapisteetib' }}
+            testId="lisäpisteet"
+          />
+        )}
       </KeyValueRow>
     </>
   )
@@ -273,97 +275,128 @@ const ExtendedEssayFieldRows: React.FC<IBTutkinnonTiedotRowsProps> = ({
   const ryhmät = useAineryhmäOptions(true)
   const tasot = useOppiaineTasoOptions(true)
 
-  return form.editMode ? (
-    <>
+  if (!form.editMode && !päätasonSuoritus.suoritus.extendedEssay) {
+    return null
+  }
+
+  return (
+    <TestIdLayer id="extendedEssay">
       <KeyValueRow localizableLabel="Extended essay">
         <KeyValueTable>
           {state.tunniste.visible && tunnisteet && (
-            <KeyValueRow localizableLabel="Tunniste" innerKeyValueTable>
-              <Select
-                inlineOptions
-                options={tunnisteet}
-                value={
-                  state.tunniste.value && koodiviiteId(state.tunniste.value)
-                }
-                onChange={(opt) => state.tunniste.set(opt?.value)}
-                testId="tunniste"
-              />
+            <KeyValueRow localizableLabel="Oppiaine" innerKeyValueTable>
+              {form.editMode ? (
+                <Select
+                  inlineOptions
+                  options={tunnisteet}
+                  value={
+                    state.tunniste.value && koodiviiteId(state.tunniste.value)
+                  }
+                  onChange={(opt) => state.tunniste.set(opt?.value)}
+                  testId="oppiaine"
+                />
+              ) : (
+                <TestIdText id="oppiaine">
+                  {t(state.tunniste.value?.nimi)}
+                </TestIdText>
+              )}
             </KeyValueRow>
           )}
           {state.kieli.visible && kielet && (
             <KeyValueRow localizableLabel="Kieli" innerKeyValueTable>
-              <DialogSelect
-                options={kielet}
-                value={state.kieli.value && koodiviiteId(state.kieli.value)}
-                onChange={(o) => state.kieli.set(o?.value)}
-                testId="kieli"
-              />
+              {form.editMode ? (
+                <DialogSelect
+                  options={kielet}
+                  value={state.kieli.value && koodiviiteId(state.kieli.value)}
+                  onChange={(o) => state.kieli.set(o?.value)}
+                  testId="kieli"
+                />
+              ) : (
+                <TestIdText id="kieli">
+                  {t(state.kieli?.value?.nimi)}
+                </TestIdText>
+              )}
             </KeyValueRow>
           )}
           {state.taso.visible && tasot && (
             <KeyValueRow localizableLabel="Taso" innerKeyValueTable>
-              <DialogSelect
-                options={tasot}
-                value={state.taso.value && koodiviiteId(state.taso.value)}
-                onChange={(o) => state.taso.set(o?.value)}
-                testId="taso"
-              />
+              {form.editMode ? (
+                <DialogSelect
+                  options={tasot}
+                  value={state.taso.value && koodiviiteId(state.taso.value)}
+                  onChange={(o) => state.taso.set(o?.value)}
+                  testId="taso"
+                />
+              ) : (
+                <TestIdText id="taso">{t(state.taso.value?.nimi)}</TestIdText>
+              )}
             </KeyValueRow>
           )}
           {state.ryhmä.visible && ryhmät && (
             <KeyValueRow localizableLabel="Aineryhmä" innerKeyValueTable>
-              <DialogSelect
-                options={ryhmät}
-                value={state.ryhmä.value && koodiviiteId(state.ryhmä.value)}
-                onChange={(o) => state.ryhmä.set(o?.value)}
-                testId="ryhmä"
-              />
+              {form.editMode ? (
+                <DialogSelect
+                  options={ryhmät}
+                  value={state.ryhmä.value && koodiviiteId(state.ryhmä.value)}
+                  onChange={(o) => state.ryhmä.set(o?.value)}
+                  testId="ryhmä"
+                />
+              ) : (
+                <TestIdText id="ryhma">{t(state.ryhmä.value?.nimi)}</TestIdText>
+              )}
             </KeyValueRow>
           )}
           {state.pakollinen.visible && (
             <KeyValueRow innerKeyValueTable>
-              <Checkbox
-                label={t('Pakollinen')}
-                checked={!!state.pakollinen.value}
-                onChange={state.pakollinen.set}
-                testId="pakollinen"
-              />
+              {form.editMode ? (
+                <Checkbox
+                  label={t('Pakollinen')}
+                  checked={!!state.pakollinen.value}
+                  onChange={state.pakollinen.set}
+                  testId="pakollinen"
+                />
+              ) : (
+                <TestIdText id="pakollinen">
+                  {state.pakollinen ? t('Pakollinen') : t('Valinnainen')}
+                </TestIdText>
+              )}
             </KeyValueRow>
           )}
         </KeyValueTable>
         {state.aihe.visible && (
           <KeyValueRow localizableLabel="Aihe" innerKeyValueTable>
-            <LocalizedTextEdit
-              value={state.aihe.value}
-              onChange={state.aihe.set}
-            />
+            {form.editMode ? (
+              <LocalizedTextEdit
+                value={state.aihe.value}
+                onChange={state.aihe.set}
+                testId="aihe"
+              />
+            ) : (
+              <TestIdText id="aihe">{t(state.aihe.value)}</TestIdText>
+            )}
           </KeyValueRow>
         )}
         {state.arvosana.visible && (
           <KeyValueRow localizableLabel="Arvosana" innerKeyValueTable>
-            <KoodistoSelect
-              koodistoUri="arviointiasteikkocorerequirementsib"
-              value={state.arvosana.value?.koodiarvo}
-              format={koodiarvoAndNimi}
-              onSelect={state.arvosana.set}
-              testId="arvosana"
-            />
+            {form.editMode ? (
+              <KoodistoSelect
+                koodistoUri="arviointiasteikkocorerequirementsib"
+                value={state.arvosana.value?.koodiarvo}
+                format={koodiarvoAndNimi}
+                onSelect={state.arvosana.set}
+                testId="arvosana"
+              />
+            ) : (
+              <TestIdText id="arvosana">
+                {state.arvosana.value?.koodiarvo}{' '}
+                {t(state.arvosana.value?.nimi)}
+              </TestIdText>
+            )}
           </KeyValueRow>
         )}
       </KeyValueRow>
-    </>
-  ) : (
-    <KeyValueRow localizableLabel="Extended essay">
-      <TestIdText id="extendedEssay">
-        {parasArvosana(päätasonSuoritus.suoritus.extendedEssay?.arviointi)}
-      </TestIdText>
-    </KeyValueRow>
+    </TestIdLayer>
   )
-}
-
-const parasArvosana = (arviointi?: Arviointi[]) => {
-  const paras = parasArviointi(arviointi)?.arvosana
-  return paras ? koodiarvoAndNimi(paras as Koodistokoodiviite) : null
 }
 
 const CreativityActionServiceField: React.FC<IBTutkinnonTiedotRowsProps> = ({
@@ -394,6 +427,10 @@ const CreativityActionServiceField: React.FC<IBTutkinnonTiedotRowsProps> = ({
     },
     [form, päätasonSuoritus.path]
   )
+
+  if (!form.editMode && !päätasonSuoritus.suoritus.creativityActionService) {
+    return null
+  }
 
   return form.editMode ? (
     <KoodistoSelect

@@ -148,7 +148,7 @@ const IBPäätasonSuoritusEditor: React.FC<
           {kurssejaYhteensä !== null && (
             <>
               <div className="IBPäätasonSuoritusEditor__yhteensä">
-                {t('Suoritettujen kurssien määrä yhteensä')}
+                {t('Suoritettujen kurssien laajuus yhteensä')}
                 {': '}
                 <TestIdText id="suoritettujaKurssejaYhteensä">
                   {kurssejaYhteensä}

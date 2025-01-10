@@ -881,7 +881,23 @@ test.describe('IB', () => {
         await expect(
           suoritus.theoryOfKnowledge.kurssit(1).arvosana.viewer
         ).toHaveText('S')
-        await expect(suoritus.extendedEssay.elem).toHaveText('B (Good)')
+        await expect(suoritus.extendedEssay.oppiaine.elem).toHaveText(
+          'Language A: language and literature'
+        )
+        await expect(suoritus.extendedEssay.kieli.elem).toHaveText('englanti')
+        await expect(suoritus.extendedEssay.taso.elem).toHaveText(
+          'Higher Level'
+        )
+        await expect(suoritus.extendedEssay.ryhma.elem).toHaveText(
+          'Studies in language and literature'
+        )
+        await expect(suoritus.extendedEssay.pakollinen.elem).toHaveText(
+          'Pakollinen'
+        )
+        await expect(suoritus.extendedEssay.aihe.elem).toHaveText(
+          "How is the theme of racial injustice treated in Harper Lee's To Kill a Mockingbird and Solomon Northup's 12 Years a Slave"
+        )
+        await expect(suoritus.extendedEssay.arvosana.elem).toHaveText('B Good')
         await expect(suoritus.creativityActionService.elem).toHaveText('pass')
         await expect(suoritus.lisäpisteet.viewer).toHaveText('3')
 
