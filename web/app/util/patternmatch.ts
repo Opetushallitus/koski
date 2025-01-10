@@ -5,6 +5,7 @@ export type PatternMatcher<T, R> = {
     then: (a: T) => R
   ) => PatternMatcher<T, R>
   getOrNull: () => R | null
+  getOrElse: (onElse: () => R) => R
   get: () => R
 }
 
@@ -30,6 +31,9 @@ export const match = <T, R = any>(value: T): PatternMatcher<T, R> => {
     },
     getOrNull() {
       return firstResult === undefined ? null : firstResult
+    },
+    getOrElse(onElse) {
+      return firstResult || onElse()
     },
     get() {
       if (firstResult) return firstResult

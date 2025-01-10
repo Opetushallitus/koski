@@ -21,6 +21,7 @@ import { ClassOf, ObjWithClass, schemaClassName, shortClassName } from './types'
 import { isAnyConstraint } from '../types/fi/oph/koski/typemodel/AnyConstraint'
 import { intersects } from './array'
 import { isRefConstraint } from '../types/fi/oph/koski/typemodel/RefConstraint'
+import { deepEqual } from './fp/objects'
 
 /**
  * Muuta yksittäinen constraint listaksi. Palauttaa null, jos annettu arvo on null.
@@ -310,6 +311,12 @@ export const flatten = (constraint: Constraint | null): Constraint | null => {
   if (isOptionalConstraint(constraint)) {
     return flatten(constraint.optional)
   }
+  if (isUnionConstraint(constraint)) {
+    const anyOf = Object.values(constraint.anyOf)
+    if (anyOf.length === 1) {
+      return anyOf[0]
+    }
+  }
   return constraint
 }
 
@@ -358,13 +365,18 @@ export const join = (constraints: Constraint[] | null) =>
       ? constraints[0]
       : UnionConstraint({
           anyOf: Object.fromEntries(
-            constraints.map((c, i) => [i.toString(), c])
+            distinct(constraints).map((c, i) => [i.toString(), c])
           )
         })
     : null
 
 export const isNonEmpty = (constraints: Constraint[] | null): boolean =>
   !!constraints && constraints.length > 0
+
+export const distinct = (cs: Constraint[]): Constraint[] =>
+  A.uniq(ConstraintEq)(cs)
+
+export const ConstraintEq = Eq.fromEquals<Constraint>(deepEqual)
 
 /**
  * Tekee constraintista ihmisystävällisen merkkijonon. Käytetään lähinnä virheilmoituksiin kehittäjille.

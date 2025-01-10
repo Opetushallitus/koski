@@ -6,8 +6,8 @@ import * as NonEmptyArray from 'fp-ts/NonEmptyArray'
 import * as O from 'fp-ts/Option'
 import * as Ord from 'fp-ts/Ord'
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import { ISO2FinnishDate } from '../../date/date'
 import { TestIdLayer, TestIdText } from '../../appstate/useTestId'
+import { ISO2FinnishDate } from '../../date/date'
 import { t } from '../../i18n/i18n'
 import { isArvioinniton } from '../../types/fi/oph/koski/schema/Arvioinniton'
 import { Arviointi } from '../../types/fi/oph/koski/schema/Arviointi'
@@ -18,10 +18,10 @@ import { IBTutkinnonSuoritus } from '../../types/fi/oph/koski/schema/IBTutkinnon
 import { LukionArviointi } from '../../types/fi/oph/koski/schema/LukionArviointi'
 import { isLukionKurssinSuoritus2015 } from '../../types/fi/oph/koski/schema/LukionKurssinSuoritus2015'
 import { MuidenLukioOpintojenPreIBSuoritus2019 } from '../../types/fi/oph/koski/schema/MuidenLukioOpintojenPreIBSuoritus2019'
-import { Suoritus } from '../../types/fi/oph/koski/schema/Suoritus'
-import { isValinnaisuus } from '../../types/fi/oph/koski/schema/Valinnaisuus'
 import { isPaikallinenKoodi } from '../../types/fi/oph/koski/schema/PaikallinenKoodi'
 import { PreIBSuoritus2019 } from '../../types/fi/oph/koski/schema/PreIBSuoritus2019'
+import { Suoritus } from '../../types/fi/oph/koski/schema/Suoritus'
+import { isValinnaisuus } from '../../types/fi/oph/koski/schema/Valinnaisuus'
 import { isValinnanMahdollisuus } from '../../types/fi/oph/koski/schema/ValinnanMahdollisuus'
 import { appendOptional, deleteAt } from '../../util/array'
 import { parasArviointi, viimeisinArviointi } from '../../util/arvioinnit'
@@ -30,9 +30,9 @@ import { PathToken } from '../../util/laxModify'
 import { sum } from '../../util/numbers'
 import { entries } from '../../util/objects'
 import { PäätasonSuoritusOf } from '../../util/opiskeluoikeus'
+import { match } from '../../util/patternmatch'
 import { KoulutusmoduuliOf, OsasuoritusOf } from '../../util/schema'
 import { suoritusValmis } from '../../util/suoritus'
-import { match } from '../../util/patternmatch'
 import { useBooleanState } from '../../util/useBooleanState'
 import { notUndefined } from '../../util/util'
 import { ActivePäätasonSuoritus } from '../containers/EditorContainer'
@@ -43,9 +43,6 @@ import { FormModel, getValue } from '../forms/FormModel'
 import { CHARCODE_REMOVE } from '../texts/Icon'
 import { ArvosanaEdit, koodiarvoOnly } from './ArvosanaField'
 import { OppiaineTableKurssiEditor } from './OppiaineTableKurssiEditor'
-import { TestIdLayer, TestIdText } from '../../appstate/useTestId'
-import { string } from 'fp-ts'
-import { isPaikallinenKoodi } from '../../types/fi/oph/koski/schema/PaikallinenKoodi'
 
 // Vain OppiaineTablen tukemat päätason suoritukset (tätä komponenttia tullaan myöhemmin käyttämään ainakin lukion näkymille)
 export type OppiaineTableOpiskeluoikeus = IBOpiskeluoikeus
@@ -142,13 +139,23 @@ export const OppiaineTable = <T extends OppiaineTablePäätasonSuoritus>({
     [groupBy, suoritus?.osasuoritukset]
   )
 
+  const laajuusyksikkö = useMemo(
+    () =>
+      match(selectedSuoritus.suoritus)
+        .isClass(PreIBSuoritus2019, () => t('opintopistettä'))
+        .getOrElse(() => t('kurssia')),
+    [selectedSuoritus]
+  )
+
   return A.isEmpty(groupedOppiaineet) && organisaatioOid ? null : (
     <table className="OppiaineTable">
       <thead>
         <tr>
           <th></th>
           <th className="OppiaineTable__oppiaine">{t('Oppiaine')}</th>
-          <th className="OppiaineTable__laajuus">{t('Laajuus (kurssia)')}</th>
+          <th className="OppiaineTable__laajuus">
+            {`${t('Laajuus')} (${laajuusyksikkö})`}
+          </th>
           {showPredictedGrade && (
             <th className="OppiaineTable__predictedGrade">
               {t('Predicted grade')}
