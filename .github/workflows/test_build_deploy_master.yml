@@ -133,7 +133,7 @@ jobs:
           aws ssm get-parameter --name /koski/appspec-template --output text --query 'Parameter.Value' > appspec.json
 
       - name: Deploy using CodeDeploy
-        uses: aws-actions/amazon-ecs-deploy-task-definition@v1
+        uses: aws-actions/amazon-ecs-deploy-task-definition@v2
         with:
           task-definition: ${{ steps.task-def.outputs.task-definition }}
           service: koski
@@ -162,7 +162,7 @@ jobs:
 
       - name: Deploy Amazon ECS task definition
         id: raportointikanta-loader-taskdef-deploy
-        uses: aws-actions/amazon-ecs-deploy-task-definition@v1
+        uses: aws-actions/amazon-ecs-deploy-task-definition@v2
         with:
           task-definition: ${{ steps.raportointikanta-loader-task-def.outputs.task-definition }}
           cluster: koski-cluster
@@ -191,7 +191,7 @@ jobs:
 
       - name: Deploy Amazon ECS task definition
         id: ytr-data-loader-taskdef-deploy
-        uses: aws-actions/amazon-ecs-deploy-task-definition@v1
+        uses: aws-actions/amazon-ecs-deploy-task-definition@v2
         with:
           task-definition: ${{ steps.ytr-data-loader-task-def.outputs.task-definition }}
           cluster: koski-cluster
@@ -251,7 +251,7 @@ jobs:
           aws ssm get-parameter --name /koski/appspec-template --output text --query 'Parameter.Value' > appspec.json
 
       - name: Deploy using CodeDeploy
-        uses: aws-actions/amazon-ecs-deploy-task-definition@v1
+        uses: aws-actions/amazon-ecs-deploy-task-definition@v2
         with:
           task-definition: ${{ steps.task-def.outputs.task-definition }}
           service: koski
@@ -280,7 +280,7 @@ jobs:
 
       - name: Deploy Amazon ECS task definition
         id: raportointikanta-loader-taskdef-deploy
-        uses: aws-actions/amazon-ecs-deploy-task-definition@v1
+        uses: aws-actions/amazon-ecs-deploy-task-definition@v2
         with:
           task-definition: ${{ steps.raportointikanta-loader-task-def.outputs.task-definition }}
           cluster: koski-cluster
@@ -309,7 +309,7 @@ jobs:
 
       - name: Deploy Amazon ECS task definition
         id: ytr-data-loader-taskdef-deploy
-        uses: aws-actions/amazon-ecs-deploy-task-definition@v1
+        uses: aws-actions/amazon-ecs-deploy-task-definition@v2
         with:
           task-definition: ${{ steps.ytr-data-loader-task-def.outputs.task-definition }}
           cluster: koski-cluster
@@ -370,7 +370,7 @@ jobs:
 
       - name: Deploy Amazon ECS task definition
         id: koski-taskdef-deploy
-        uses: aws-actions/amazon-ecs-deploy-task-definition@v1
+        uses: aws-actions/amazon-ecs-deploy-task-definition@v2
         with:
           task-definition: ${{ steps.task-def.outputs.task-definition }}
           service: koski
@@ -399,7 +399,7 @@ jobs:
 
       - name: Deploy Amazon ECS task definition
         id: raportointikanta-loader-taskdef-deploy
-        uses: aws-actions/amazon-ecs-deploy-task-definition@v1
+        uses: aws-actions/amazon-ecs-deploy-task-definition@v2
         with:
           task-definition: ${{ steps.raportointikanta-loader-task-def.outputs.task-definition }}
           cluster: koski-cluster
@@ -428,7 +428,7 @@ jobs:
 
       - name: Deploy Amazon ECS task definition
         id: ytr-data-loader-taskdef-deploy
-        uses: aws-actions/amazon-ecs-deploy-task-definition@v1
+        uses: aws-actions/amazon-ecs-deploy-task-definition@v2
         with:
           task-definition: ${{ steps.ytr-data-loader-task-def.outputs.task-definition }}
           cluster: koski-cluster
