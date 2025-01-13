@@ -1,7 +1,6 @@
 SHELL := /bin/bash
 
 env = cloud
-cleandist = true
 mvn_argline =
 mvn_opts =
 
@@ -167,7 +166,7 @@ owaspresults:
 .PHONY: snyk
 snyk: # javascript dependency vulnerability check
 	mvn generate-resources # to download correct node/npm version via frontend-maven-plugin
-	./web/node/node web/node_modules/snyk/dist/cli/index.js test web valpas-web
+	node web/node_modules/snyk/dist/cli/index.js test web valpas-web
 
 .PHONY: checkdoc_validation
 checkdoc_validation:
@@ -228,13 +227,12 @@ valpas-fronttest-6:
 
 .PHONY: dist
 dist: check-version
-	cleandist=$(cleandist) ./scripts/dist.sh $(version)
+	./scripts/dist.sh $(version)
 
 .PHONY: check-version
 check-version:
 ifndef version
 	@echo "version is not set."
 	@echo "Set version with version=<version>"
-	@echo "Use version=local for locally installed version"
 	exit 1
 endif

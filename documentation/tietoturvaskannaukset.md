@@ -35,13 +35,13 @@ Voit ajaa Snykiä seuraavasti, SNYK_TOKEN löytyy 1Passwordista:
 ```
 export SNYK_TOKEN=XXXXX
 make snyk TAI
-./web/node/node web/node_modules/snyk/dist/cli/index.js test web valpas-web
+./web/node_modules/snyk/dist/cli/index.js test web valpas-web
 ```
 
 Virheet on helpoin hiljentää Snykin wizard työkalulla, jonka voit ajaa web tai valpas-web hakemistossa seuraavasti:
 
 web
-`./node/node node_modules/snyk/dist/cli/index.js wizard`
+`node node_modules/snyk/dist/cli/index.js wizard`
 
 valpas-web
-`./node/node ../web/node_modules/snyk/dist/cli/index.js wizard`
+`node ../web/node_modules/snyk/dist/cli/index.js wizard`
