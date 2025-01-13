@@ -1,15 +1,15 @@
 package fi.oph.koski.luovutuspalvelu
 
-import fi.oph.koski.config.{Environment, KoskiApplication}
+import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.json.JsonSerializer
-import fi.oph.koski.koskiuser.RequiresSuomiFiOrHsl
+import fi.oph.koski.koskiuser.{RequiresProxyResponse, RequiresSuomiFiOrHsl}
 import fi.oph.koski.schema.LocalizedString
 import fi.oph.koski.servlet.NoCache
 
 import scala.xml.{Elem, Node, NodeSeq}
 
-class PalveluvaylaServlet(implicit val application: KoskiApplication) extends SoapServlet with RequiresSuomiFiOrHsl with NoCache {
+class PalveluvaylaServlet(implicit val application: KoskiApplication) extends SoapServlet with RequiresSuomiFiOrHsl with RequiresProxyResponse with NoCache {
   private val suomiFiService = new SuomiFiService(application)
   private val hslService = new HslService(application)
 
