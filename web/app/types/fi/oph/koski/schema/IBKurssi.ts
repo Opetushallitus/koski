@@ -1,6 +1,6 @@
 import { LocalizedString } from './LocalizedString'
 import { PaikallinenKoodi } from './PaikallinenKoodi'
-import { LaajuusKursseissa } from './LaajuusKursseissa'
+import { LaajuusOpintopisteissäTaiKursseissa } from './LaajuusOpintopisteissaTaiKursseissa'
 
 /**
  * IB-lukion kurssin tunnistetiedot
@@ -12,14 +12,14 @@ export type IBKurssi = {
   kuvaus: LocalizedString
   tunniste: PaikallinenKoodi
   pakollinen: boolean
-  laajuus?: LaajuusKursseissa
+  laajuus?: LaajuusOpintopisteissäTaiKursseissa
 }
 
 export const IBKurssi = (o: {
   kuvaus: LocalizedString
   tunniste: PaikallinenKoodi
   pakollinen: boolean
-  laajuus?: LaajuusKursseissa
+  laajuus?: LaajuusOpintopisteissäTaiKursseissa
 }): IBKurssi => ({ $class: 'fi.oph.koski.schema.IBKurssi', ...o })
 
 IBKurssi.className = 'fi.oph.koski.schema.IBKurssi' as const

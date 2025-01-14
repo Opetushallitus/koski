@@ -202,7 +202,8 @@ case class IBKurssi(
   tunniste: PaikallinenKoodi,
   @Discriminator
   pakollinen: Boolean = true,
-  override val laajuus: Option[LaajuusKursseissa]
+  @Description("1.8.2025 alkaen laajuus tallennetaan opintopisteissä. Sitä ennen alkaneisiin opiskeluoikeuksiin tallennetaan kursseina.")
+  override val laajuus: Option[LaajuusOpintopisteissäTaiKursseissa]
 ) extends KoulutusmoduuliValinnainenLaajuus with Valinnaisuus with PreIBKurssi2015 with StorablePreference {
   def nimi: LocalizedString = tunniste.nimi
 }
