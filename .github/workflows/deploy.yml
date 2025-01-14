@@ -24,133 +24,17 @@ jobs:
         with:
           commithash: ${{ inputs.commithash }}
   publish_image:
-    name: Publish Koski Docker Image
+    name: Publish Koski Docker Image and package
     needs: [build]
     uses: ./.github/workflows/publish_image.yml
     with:
       commithash: ${{ inputs.commithash }}
     secrets: inherit
-  checkbuilddeploy:
+  deploy:
     name: Deploy
     needs: [publish_image]
-    environment:
-      name: ${{ github.event.inputs.environment }}
-    runs-on: ubuntu-20.04
-    permissions:
-      id-token: write
-      contents: read
-      packages: write
-    steps:
-      - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v1-node16
-        with:
-          role-to-assume: ${{ secrets.DEPLOY_ROLE }}
-          role-duration-seconds: 3600
-          role-session-name: KoskiDeployment-${{ github.event.inputs.environment }}-${{ github.event.inputs.commithash }}
-          aws-region: eu-west-1
-
-      - name: Login to Amazon ECR
-        id: login-deployment
-        uses: aws-actions/amazon-ecr-login@v1
-        with:
-          registries: ${{ secrets.ECR_ACCOUNT_ID }}
-          mask-password: "true"
-
-      - name: Get task definition ARN
-        id: get-taskdef-arn
-        run: |
-          echo "taskdef-arn=$(aws ssm get-parameter --name /koski/task-definition-skeleton --output text --query 'Parameter.Value')" >> $GITHUB_OUTPUT
-
-      - name: Get task definition skeleton
-        run: |
-          aws ecs describe-task-definition --task-definition ${{ steps.get-taskdef-arn.outputs.taskdef-arn }} --query 'taskDefinition' > task-definition.json
-
-      - name: Render Amazon ECS task definition
-        id: task-def
-        uses: aws-actions/amazon-ecs-render-task-definition@v1
-        with:
-          task-definition: task-definition.json
-          container-name: KoskiContainer
-          image: ${{ steps.login-deployment.outputs.registry }}/koski:${{ github.event.inputs.commithash }}
-
-      - name: Get AppSpec template
-        run: |
-          aws ssm get-parameter --name /koski/appspec-template --output text --query 'Parameter.Value' > appspec.json
-
-      - name: Deploy using CodeDeploy
-        uses: aws-actions/amazon-ecs-deploy-task-definition@v2
-        with:
-          task-definition: ${{ steps.task-def.outputs.task-definition }}
-          service: koski
-          cluster: koski-cluster
-          wait-for-service-stability: true
-          codedeploy-appspec: appspec.json
-          codedeploy-application: koski
-          codedeploy-deployment-group: koski-deployment-group
-
-      - name: Get raportointikanta-loader loader task definition ARN
-        id: get-raportointikanta-loader-taskdef-arn
-        run: |
-          echo "taskdef-arn=$(aws ssm get-parameter --name /koski/raportointikanta-loader/task-definition-skeleton --output text --query 'Parameter.Value')" >> $GITHUB_OUTPUT
-
-      - name: Get task definition skeleton
-        run: |
-          aws ecs describe-task-definition --task-definition ${{ steps.get-raportointikanta-loader-taskdef-arn.outputs.taskdef-arn }} --query 'taskDefinition' > raportointikanta-loader-task-definition.json
-
-      - name: Render Amazon ECS task definition
-        id: raportointikanta-loader-task-def
-        uses: aws-actions/amazon-ecs-render-task-definition@v1
-        with:
-          task-definition: raportointikanta-loader-task-definition.json
-          container-name: RaportointikantaLoaderContainer
-          image: ${{ steps.login-deployment.outputs.registry }}/koski:${{ github.event.inputs.commithash }}
-
-      - name: Deploy Amazon ECS task definition
-        id: raportointikanta-loader-taskdef-deploy
-        uses: aws-actions/amazon-ecs-deploy-task-definition@v2
-        with:
-          task-definition: ${{ steps.raportointikanta-loader-task-def.outputs.task-definition }}
-          cluster: koski-cluster
-
-      - name: Write task definition ARN to parameter store
-        env:
-          TASKDEF_ARN: ${{ steps.raportointikanta-loader-taskdef-deploy.outputs.task-definition-arn }}
-        run: aws ssm put-parameter --overwrite --name /koski/raportointikanta-loader/task-definition --type String --value ${TASKDEF_ARN}
-
-      - name: Get ytr-data-loader loader task definition ARN
-        id: get-ytr-data-loader-taskdef-arn
-        run: |
-          echo "taskdef-arn=$(aws ssm get-parameter --name /koski/ytr-data-loader/task-definition-skeleton --output text --query 'Parameter.Value')" >> $GITHUB_OUTPUT
-
-      - name: Get task definition skeleton
-        run: |
-          aws ecs describe-task-definition --task-definition ${{ steps.get-ytr-data-loader-taskdef-arn.outputs.taskdef-arn }} --query 'taskDefinition' > ytr-data-loader-task-definition.json
-
-      - name: Render Amazon ECS task definition
-        id: ytr-data-loader-task-def
-        uses: aws-actions/amazon-ecs-render-task-definition@v1
-        with:
-          task-definition: ytr-data-loader-task-definition.json
-          container-name: YtrDataLoaderContainer
-          image: ${{ steps.login-deployment.outputs.registry }}/koski:${{ github.event.inputs.commithash }}
-
-      - name: Deploy Amazon ECS task definition
-        id: ytr-data-loader-taskdef-deploy
-        uses: aws-actions/amazon-ecs-deploy-task-definition@v2
-        with:
-          task-definition: ${{ steps.ytr-data-loader-task-def.outputs.task-definition }}
-          cluster: koski-cluster
-
-      - name: Write task definition ARN to parameter store
-        env:
-          TASKDEF_ARN: ${{ steps.ytr-data-loader-taskdef-deploy.outputs.task-definition-arn }}
-        run: aws ssm put-parameter --overwrite --name /koski/ytr-data-loader/task-definition --type String --value ${TASKDEF_ARN}
-
-      - name: Report task ready
-        uses: ravsamhq/notify-slack-action@95a35215cdf7ab510d2cdd20ae94f342d212a1a1
-        if: always()
-        with:
-          status: ${{ job.status }}
-          notification_title: ${{ github.event.inputs.environment }} install {status_message}
-        env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+    uses: ./.github/workflows/deploy_koski.yml
+    with:
+      environment: ${{ inputs.environment }}
+      commithash: ${{ inputs.commithash }}
+    secrets: inherit
