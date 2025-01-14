@@ -1,0 +1,54 @@
+name: "Build Koski app + tests"
+inputs:
+  commithash:
+    required: false
+    type: string
+    description: "Commit hash to build"
+    default: ${{ github.sha }}
+runs:
+  using: composite
+  steps:
+    - name: Lookup existing target dir cache
+      id: lookup
+      uses: actions/cache/restore@v4
+      with:
+        path: target/
+        key: ${{ runner.os }}-target-${{ inputs.commithash }}
+        lookup-only: "true"
+    - uses: actions/checkout@v4
+      if: steps.lookup.outputs.cache-hit != 'true'
+      with:
+        ref: ${{ inputs.commithash }}
+    - name: Set up Java 11
+      if: steps.lookup.outputs.cache-hit != 'true'
+      uses: actions/setup-java@v3
+      with:
+        java-version: "11"
+        architecture: "x64"
+        distribution: "zulu"
+    - name: Cache Maven packages
+      if: steps.lookup.outputs.cache-hit != 'true'
+      uses: actions/cache@v3
+      with:
+        path: ~/.m2/repository
+        key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+        restore-keys: |
+          ${{ runner.os }}-maven-
+    - name: Cache Node modules
+      if: steps.lookup.outputs.cache-hit != 'true'
+      uses: actions/cache@v3
+      with:
+        path: ~/.npm
+        key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+        restore-keys: |
+          ${{ runner.os }}-node-
+    - name: Build Koski app + tests
+      if: steps.lookup.outputs.cache-hit != 'true'
+      run: mvn test -DskipTests=true --batch-mode
+      shell: bash
+    - name: Cache target dir
+      if: steps.lookup.outputs.cache-hit != 'true'
+      uses: actions/cache/save@v4
+      with:
+        path: target/
+        key: ${{ runner.os }}-target-${{ github.sha }}
