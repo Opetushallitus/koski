@@ -51,47 +51,17 @@ export const UusiPreIB2019OsasuoritusDialog: AddOppiaineenOsasuoritusDialog<
   PreIBLukionModuulinTaiPaikallisenOpintojaksonSuoritus2019
 > = ({ onAdd, ...props }) => {
   const {
-    preferences: paikallisetOpintojaksot,
-    store: storePaikallinenOpintojakso,
-    remove: removePaikallinenOpintojakso
-  } = usePreferences<LukionPaikallinenOpintojakso2019>(
-    props.organisaatioOid,
-    'lukionpaikallinenopintojakso2019'
-  )
+    tunnisteet,
+    paikallisetOpintojaksot,
+    storePaikallinenOpintojakso,
+    removePaikallinenOpintojakso
+  } = useTunnisteOptions(props.organisaatioOid)
 
   const state = usePreIB2019OsasuoritusState(
     isPreIBSuorituksenOsasuoritus2019(props.oppiaine)
       ? props.oppiaine.koulutusmoduuli.tunniste
       : undefined
   )
-
-  const lukioTunnisteOptions = useKoodistoOptions('moduulikoodistolops2021')
-
-  const paikallisetTunnisteetOptions = useMemo(
-    () => [
-      optionGroup(t('Paikalliset opintojaksot'), [
-        ...paikallisetOpintojaksot.map((kurssi) =>
-          paikallinenKoodiToOption(kurssi.tunniste, { removable: true })
-        ),
-        {
-          key: UusiPaikallinenLukionKurssiKey,
-          label: t('Lisää uusi')
-        }
-      ])
-    ],
-    [paikallisetOpintojaksot]
-  )
-
-  const tunnisteet: SelectOption<Koodistokoodiviite | PaikallinenKoodi>[] =
-    useMemo(
-      () => [
-        ...paikallisetTunnisteetOptions,
-        ...sortOptions(
-          mapOptionLabels(labelWithKoodiarvo)(lukioTunnisteOptions)
-        )
-      ],
-      [lukioTunnisteOptions, paikallisetTunnisteetOptions]
-    )
 
   const onTunniste = useCallback(
     (option?: SelectOption<Koodistokoodiviite | PaikallinenKoodi>) => {
@@ -158,7 +128,7 @@ export const UusiPreIB2019OsasuoritusDialog: AddOppiaineenOsasuoritusDialog<
     <Modal>
       <ModalTitle>{t('Lisää osasuoritus')}</ModalTitle>
       <ModalBody>
-        {state.tunniste.visible && lukioTunnisteOptions && (
+        {state.tunniste.visible && (
           <label>
             {t('Osasuoritus')}
             <Select
@@ -225,4 +195,53 @@ export const UusiPreIB2019OsasuoritusDialog: AddOppiaineenOsasuoritusDialog<
       </ModalFooter>
     </Modal>
   )
+}
+
+const useTunnisteOptions = (organisaatioOid: string) => {
+  const {
+    preferences: paikallisetOpintojaksot,
+    store: storePaikallinenOpintojakso,
+    remove: removePaikallinenOpintojakso
+  } = usePreferences<LukionPaikallinenOpintojakso2019>(
+    organisaatioOid,
+    'lukionpaikallinenopintojakso2019'
+  )
+
+  const ogLukioTunnisteOptions = useKoodistoOptions('moduulikoodistolops2021')
+  const lukioTunnisteOptions = mapOptionLabels<
+    Koodistokoodiviite<'moduulikoodistolops2021'>
+  >((o) => (o.isGroup ? t('Moduulit') : o.label))(ogLukioTunnisteOptions)
+
+  const paikallisetTunnisteetOptions = useMemo(
+    () => [
+      optionGroup(t('Paikalliset opintojaksot'), [
+        ...paikallisetOpintojaksot.map((kurssi) =>
+          paikallinenKoodiToOption(kurssi.tunniste, { removable: true })
+        ),
+        {
+          key: UusiPaikallinenLukionKurssiKey,
+          label: t('Lisää uusi')
+        }
+      ])
+    ],
+    [paikallisetOpintojaksot]
+  )
+
+  const tunnisteet: SelectOption<Koodistokoodiviite | PaikallinenKoodi>[] =
+    useMemo(
+      () => [
+        ...paikallisetTunnisteetOptions,
+        ...sortOptions(
+          mapOptionLabels(labelWithKoodiarvo)(lukioTunnisteOptions)
+        )
+      ],
+      [lukioTunnisteOptions, paikallisetTunnisteetOptions]
+    )
+
+  return {
+    tunnisteet,
+    paikallisetOpintojaksot,
+    storePaikallinenOpintojakso,
+    removePaikallinenOpintojakso
+  }
 }
