@@ -10,27 +10,36 @@ import { LocalizedString } from '../../types/fi/oph/koski/schema/LocalizedString
 import { PaikallinenKoodi } from '../../types/fi/oph/koski/schema/PaikallinenKoodi'
 import { createIBKurssinSuoritus } from '../oppiaineet/ibTutkintoKurssi'
 import { uusiPaikallinenKey } from './options'
+import { LaajuusOpintopisteissäTaiKursseissa } from '../../types/fi/oph/koski/schema/LaajuusOpintopisteissaTaiKursseissa'
+import {
+  createIBLaajuus,
+  useIBLaajuusyksikkö
+} from '../components/IBLaajuusEdit'
 
 export const UusiIBKurssiKey = uusiPaikallinenKey('ib')
 
 export type IBTutkintoKurssiState = {
   tunniste: DialogField<PaikallinenKoodi>
   kuvaus: DialogField<LocalizedString>
-  laajuus: DialogField<LaajuusKursseissa>
+  laajuus: DialogField<LaajuusOpintopisteissäTaiKursseissa>
   pakollinen: DialogField<boolean>
   suorituskieli: DialogField<Koodistokoodiviite<'kieli'>>
   result: IBKurssinSuoritus | null
 }
 
-export const useIBTutkintoKurssiState = (): IBTutkintoKurssiState => {
+export const useIBTutkintoKurssiState = (
+  alkamispäivä?: string
+): IBTutkintoKurssiState => {
   const tunniste = useDialogField<PaikallinenKoodi>(true)
   const tunnisteSelected = !!tunniste.value
 
   const kuvaus = useDialogField<LocalizedString>(tunnisteSelected)
 
-  const laajuus = useDialogField<LaajuusKursseissa>(tunnisteSelected, () =>
-    LaajuusKursseissa({ arvo: 1 })
+  const laajuus = useDialogField<LaajuusOpintopisteissäTaiKursseissa>(
+    tunnisteSelected,
+    () => createIBLaajuus(1, laajuusyksikkö)
   )
+  const laajuusyksikkö = useIBLaajuusyksikkö(laajuus.value, alkamispäivä)
 
   const pakollinen = useDialogField<boolean>(tunnisteSelected)
 

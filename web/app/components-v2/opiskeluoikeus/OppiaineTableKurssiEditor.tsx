@@ -1,9 +1,15 @@
-import React from 'react'
+import React, { useCallback } from 'react'
 import { emptyLocalizedString, t } from '../../i18n/i18n'
+import {
+  createIBLaajuus,
+  useIBLaajuusyksikkö
+} from '../../ib/components/IBLaajuusEdit'
+import { isIBKurssinSuoritus } from '../../types/fi/oph/koski/schema/IBKurssinSuoritus'
 import { LaajuusKursseissa } from '../../types/fi/oph/koski/schema/LaajuusKursseissa'
 import { isLukionKurssinSuoritus2015 } from '../../types/fi/oph/koski/schema/LukionKurssinSuoritus2015'
 import { OsaamisenTunnustaminen } from '../../types/fi/oph/koski/schema/OsaamisenTunnustaminen'
 import { isPaikallinenLukionKurssi2015 } from '../../types/fi/oph/koski/schema/PaikallinenLukionKurssi2015'
+import { isPreIBKurssinSuoritus2015 } from '../../types/fi/oph/koski/schema/PreIBKurssinSuoritus2015'
 import { isValinnaisuus } from '../../types/fi/oph/koski/schema/Valinnaisuus'
 import { isValtakunnallinenLukionKurssi2015 } from '../../types/fi/oph/koski/schema/ValtakunnallinenLukionKurssi2015'
 import { PathToken, get } from '../../util/laxModify'
@@ -13,17 +19,16 @@ import { Checkbox } from '../controls/Checkbox'
 import { DateEdit } from '../controls/DateField'
 import { FlatButton } from '../controls/FlatButton'
 import { LocalizedTextEdit } from '../controls/LocalizedTestField'
-import { NumberField } from '../controls/NumberField'
 import { RaisedButton } from '../controls/RaisedButton'
 import { FormModel } from '../forms/FormModel'
 import { ArvosanaEdit } from './ArvosanaField'
 import { KoodistoSelect } from './KoodistoSelect'
+import { LaajuusEdit } from './LaajuusField'
 import {
   OppiaineTableOpiskeluoikeus,
   OppiaineenOsasuoritus,
   isKuvauksellinen
 } from './OppiaineTable'
-import { isIBKurssi } from '../../types/fi/oph/koski/schema/IBKurssi'
 
 type OppiaineTableKurssiEditorProps = {
   form: FormModel<OppiaineTableOpiskeluoikeus>
@@ -60,7 +65,16 @@ export const OppiaineTableKurssiEditor: React.FC<
       })
     )
 
-  console.log('kurssi.koulutusmoduuli', kurssi.koulutusmoduuli)
+  const ibYksikkö = useIBLaajuusyksikkö(
+    kurssi.koulutusmoduuli.laajuus,
+    form.state.alkamispäivä
+  )
+  const createLaajuus = useCallback((arvo: number) => {
+    if (isPreIBKurssinSuoritus2015(kurssi) || isIBKurssinSuoritus(kurssi)) {
+      return createIBLaajuus(arvo, ibYksikkö)
+    }
+    throw new Error(`Unimplemented: createLaajuus for ${kurssi.$class}`)
+  }, [])
 
   return (
     <Modal onClose={onClose}>
@@ -80,9 +94,10 @@ export const OppiaineTableKurssiEditor: React.FC<
           )}
 
           <KeyValueRow localizableLabel="Laajuus">
-            <NumberField
-              value={kurssi.koulutusmoduuli.laajuus?.arvo}
-              onChange={form.set(...path, ...laajuusPath, 'arvo')}
+            <LaajuusEdit
+              value={kurssi.koulutusmoduuli.laajuus}
+              onChange={form.set(...path, ...laajuusPath)}
+              createLaajuus={createLaajuus}
             />
           </KeyValueRow>
 

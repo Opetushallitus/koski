@@ -1,19 +1,21 @@
 import { isNonEmpty } from 'fp-ts/lib/Array'
 import * as $ from 'optics-ts'
-import React, { useCallback } from 'react'
+import React, { useCallback, useEffect } from 'react'
+import { useSafeState } from '../../api-fetch'
+import { useKoodistoFiller } from '../../appstate/koodisto'
+import { TestIdLayer, TestIdText } from '../../appstate/useTestId'
 import { t } from '../../i18n/i18n'
 import { Laajuus } from '../../types/fi/oph/koski/schema/Laajuus'
+import { LaajuusKursseissa } from '../../types/fi/oph/koski/schema/LaajuusKursseissa'
 import { LaajuusOpintopisteissä } from '../../types/fi/oph/koski/schema/LaajuusOpintopisteissa'
+import { nonNull } from '../../util/fp/arrays'
 import { formatNumber, removeFloatingPointDrift } from '../../util/numbers'
+import { EmptyObject } from '../../util/objects'
 import { CollectableOptic } from '../../util/types'
 import { common, CommonProps } from '../CommonProps'
 import { NumberField } from '../controls/NumberField'
 import { FieldErrors } from '../forms/FieldErrors'
 import { FieldEditorProps, FieldViewerProps } from '../forms/FormField'
-import { nonNull } from '../../util/fp/arrays'
-import { TestIdLayer, TestIdText, useTestId } from '../../appstate/useTestId'
-import { EmptyObject } from '../../util/objects'
-import { LaajuusKursseissa } from '../../types/fi/oph/koski/schema/LaajuusKursseissa'
 
 /* ---------------------------------------------------------------------
  *
@@ -55,11 +57,25 @@ export type LaajuusEditProps<T extends Laajuus> = CommonProps<
  */
 
 export const LaajuusEdit = <T extends Laajuus>(props: LaajuusEditProps<T>) => {
+  const fillNimi = useKoodistoFiller()
   const { onChange, createLaajuus } = props
   const onChangeCB = useCallback(
     (arvo: number) => onChange(createLaajuus(arvo)),
     [createLaajuus, onChange]
   )
+
+  const [yksikönNimi, setYksikönNimi] = useSafeState<string>('')
+
+  useEffect(() => {
+    const laajuus = props.value || createLaajuus(0)
+    if (laajuus.yksikkö.nimi || laajuus.yksikkö.lyhytNimi) {
+      setYksikönNimi(t(laajuus.yksikkö.lyhytNimi || laajuus.yksikkö.nimi) || '')
+    } else {
+      fillNimi(laajuus).then((l) =>
+        setYksikönNimi(t(l.yksikkö.lyhytNimi || l.yksikkö.nimi) || '')
+      )
+    }
+  }, [createLaajuus, fillNimi, props.value, setYksikönNimi])
 
   return (
     <label {...common(props, ['LaajuusField'])}>
@@ -71,9 +87,9 @@ export const LaajuusEdit = <T extends Laajuus>(props: LaajuusEditProps<T>) => {
           hasErrors={Boolean(props.errors)}
           testId="laajuus.edit"
         />
-        <span className="LaajuusField__yksikko">
-          {t(props.value?.yksikkö.lyhytNimi || props.value?.yksikkö.nimi)}
-        </span>
+        <TestIdText id="laajuus.unit" className="LaajuusField__yksikko">
+          {yksikönNimi}
+        </TestIdText>
       </div>
       <TestIdLayer id="laajuus.edit">
         <FieldErrors errors={props.errors} />
