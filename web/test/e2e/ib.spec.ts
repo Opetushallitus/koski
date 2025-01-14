@@ -274,10 +274,10 @@ test.describe('IB', () => {
               await modal.submit.button.click()
 
               const kurssi = oppiaine.kurssit(3)
-              await expect(kurssi.tunniste.elem).toHaveText('ÄI5')
+              await expect(kurssi.tunniste.button).toHaveText('ÄI5')
 
               await kurssi.delete.button.click()
-              await expect(kurssi.tunniste.elem).not.toBeAttached()
+              await expect(kurssi.tunniste.button).not.toBeAttached()
             })
 
             test('Lukion paikallinen kurssi', async ({ ibOppijaPage }) => {
@@ -309,10 +309,10 @@ test.describe('IB', () => {
               await modal.submit.button.click()
 
               const kurssi = oppiaine.kurssit(3)
-              await expect(kurssi.tunniste.elem).toHaveText('ÄI11 *')
+              await expect(kurssi.tunniste.button).toHaveText('ÄI11 *')
 
               await kurssi.delete.button.click()
-              await expect(kurssi.tunniste.elem).not.toBeAttached()
+              await expect(kurssi.tunniste.button).not.toBeAttached()
             })
           })
         })
@@ -668,10 +668,10 @@ test.describe('IB', () => {
             await modal.submit.button.click()
 
             const kurssi = oppiaine.kurssit(2)
-            await expect(kurssi.tunniste.elem).toHaveText('ÄI9')
+            await expect(kurssi.tunniste.button).toHaveText('ÄI9')
 
             await kurssi.delete.button.click()
-            await expect(kurssi.tunniste.elem).not.toBeAttached()
+            await expect(kurssi.tunniste.button).not.toBeAttached()
           })
 
           test('Lukion paikallisen opintojakson suoritus', async ({
@@ -705,10 +705,10 @@ test.describe('IB', () => {
             await modal.submit.button.click()
 
             const kurssi = oppiaine.kurssit(2)
-            await expect(kurssi.tunniste.elem).toHaveText('ÄI11 *')
+            await expect(kurssi.tunniste.button).toHaveText('ÄI11 *')
 
             await kurssi.delete.button.click()
-            await expect(kurssi.tunniste.elem).not.toBeAttached()
+            await expect(kurssi.tunniste.button).not.toBeAttached()
           })
         })
 
@@ -870,13 +870,13 @@ test.describe('IB', () => {
           'Kyllä'
         )
         await expect(
-          suoritus.theoryOfKnowledge.kurssit(0).tunniste.elem
+          suoritus.theoryOfKnowledge.kurssit(0).tunniste.button
         ).toHaveText('TOK1')
         await expect(
           suoritus.theoryOfKnowledge.kurssit(0).arvosana.viewer
         ).toHaveText('S')
         await expect(
-          suoritus.theoryOfKnowledge.kurssit(1).tunniste.elem
+          suoritus.theoryOfKnowledge.kurssit(1).tunniste.button
         ).toHaveText('TOK2')
         await expect(
           suoritus.theoryOfKnowledge.kurssit(1).arvosana.viewer
@@ -1094,10 +1094,10 @@ test.describe('IB', () => {
             await modal.submit.button.click()
 
             const kurssi = oppiaine.kurssit(9)
-            await expect(kurssi.tunniste.elem).toHaveText('ÄI11')
+            await expect(kurssi.tunniste.button).toHaveText('ÄI11')
 
             await kurssi.delete.button.click()
-            await expect(kurssi.tunniste.elem).not.toBeAttached()
+            await expect(kurssi.tunniste.button).not.toBeAttached()
           })
         })
 
@@ -1157,6 +1157,41 @@ test.describe('IB', () => {
             await expect(uusiOppiaine.nimi.elem).not.toBeAttached()
           })
         })
+      })
+    })
+
+    test.describe('Laajuuden yksikön vaihtuminen', () => {
+      test.beforeEach(async ({ ibOppijaPage }) => {
+        await ibOppijaPage.edit()
+      })
+
+      test('Kursseja ennen 1.8.2025 alkaneelle opiskeluoikeudelle', async ({
+        ibOppijaPage
+      }) => {
+        const kurssi = ibOppijaPage.oppiaineryhmä(1, 0).oppiaineet(0).kurssit(0)
+        await kurssi.tunniste.click()
+        await expect(kurssi.modal.laajuus.unit).toHaveText('kurssia')
+      })
+
+      test('Opintopisteitä 1.8.2025 alkaneelle opiskeluoikeudelle', async ({
+        ibOppijaPage,
+        page
+      }) => {
+        await ibOppijaPage.$.opiskeluoikeus.tila.edit
+          .items(0)
+          .date.set('1.8.2025')
+        await ibOppijaPage.$.opiskeluoikeus.tila.edit
+          .items(1)
+          .date.set('1.6.2026')
+        await ibOppijaPage.tallenna()
+
+        await page.reload()
+        await ibOppijaPage.selectSuoritus(1)
+        await ibOppijaPage.edit()
+
+        const kurssi = ibOppijaPage.oppiaineryhmä(1, 0).oppiaineet(0).kurssit(0)
+        await kurssi.tunniste.click()
+        await expect(kurssi.modal.laajuus.unit).toHaveText('op')
       })
     })
   })

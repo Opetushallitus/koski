@@ -76,6 +76,7 @@ export const OppiaineTable = <T extends OppiaineTablePäätasonSuoritus>({
   const suoritus = getValue(selectedSuoritus.path)(form.state)
   const path = selectedSuoritus.pathTokens
   const organisaatioOid = form.state.oppilaitos?.oid
+  const alkamispäivä = form.state.alkamispäivä
 
   const showPredictedGrade =
     selectedSuoritus.suoritus.$class === IBTutkinnonSuoritus.className
@@ -185,6 +186,7 @@ export const OppiaineTable = <T extends OppiaineTablePäätasonSuoritus>({
                   <TestIdLayer id={oppiaineIndex} key={oppiaineIndex}>
                     <OppiaineRow
                       organisaatioOid={organisaatioOid!}
+                      alkamispäivä={alkamispäivä}
                       oppiaine={oppiaine}
                       form={form}
                       showPredictedGrade={showPredictedGrade}
@@ -218,6 +220,7 @@ export type OppiaineRowProps<T> = {
   form: FormModel<OppiaineTableOpiskeluoikeus>
   oppiainePath: PathToken[]
   organisaatioOid: string
+  alkamispäivä?: string
   oppiaine: Oppiaine
   showPredictedGrade: boolean
   addOsasuoritusDialog: AddOppiaineenOsasuoritusDialog<T>
@@ -231,6 +234,7 @@ export type OppiaineRowProps<T> = {
 }
 
 export type AddOppiaineenOsasuoritusDialog<T> = React.FC<{
+  alkamispäivä?: string
   organisaatioOid: string
   oppiaine: Oppiaine
   onAdd: (t: T) => void
@@ -239,6 +243,7 @@ export type AddOppiaineenOsasuoritusDialog<T> = React.FC<{
 
 const OppiaineRow = <T,>({
   organisaatioOid,
+  alkamispäivä,
   oppiaine,
   oppiainePath,
   form,
@@ -324,6 +329,7 @@ const OppiaineRow = <T,>({
           />
           {addOsasuoritusDialogVisible && (
             <AddOsasuoritusDialog
+              alkamispäivä={alkamispäivä}
               organisaatioOid={organisaatioOid}
               oppiaine={oppiaine}
               onAdd={addOsasuoritus}
