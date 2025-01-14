@@ -15,8 +15,24 @@ env:
 
 run-name: Deploy to ${{ inputs.environment }}
 jobs:
+  build:
+    name: Build Koski
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/build_koski
+        with:
+          commithash: ${{ inputs.commithash }}
+  publish_image:
+    name: Publish Koski Docker Image
+    needs: [build]
+    uses: ./.github/workflows/publish_image.yml
+    with:
+      commithash: ${{ inputs.commithash }}
+    secrets: inherit
   checkbuilddeploy:
-    name: Build and deploy
+    name: Deploy
+    needs: [publish_image]
     environment:
       name: ${{ github.event.inputs.environment }}
     runs-on: ubuntu-20.04
@@ -25,92 +41,6 @@ jobs:
       contents: read
       packages: write
     steps:
-      - uses: actions/checkout@v4
-        with:
-          ref: ${{ github.event.inputs.commithash }}
-          # Number of commits to fetch. 0 indicates all history for all branches and tags.
-          fetch-depth: 0
-
-      - name: Print git diff with master branch
-        run: |
-          echo "Changed files:"
-          git diff --name-only origin/master...
-          echo "Changes to files:"
-          git diff origin/master...
-
-      - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v1-node16
-        with:
-          role-to-assume: ${{ secrets.ECR_ROLE }}
-          role-duration-seconds: 3600
-          role-session-name: KoskiDeploymentEcr-${{ github.event.inputs.environment }}-${{ github.event.inputs.commithash }}
-          aws-region: eu-west-1
-
-      - name: Login to Amazon ECR
-        id: login-ecr
-        uses: aws-actions/amazon-ecr-login@v1
-        with:
-          registries: ${{ secrets.ECR_ACCOUNT_ID }}
-          mask-password: "true"
-
-      - name: Check if container image already exists in ECR
-        env:
-          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-          ECR_REPOSITORY: koski
-          IMAGE_TAG: ${{ github.event.inputs.commithash  }}
-        id: check-image
-        run: |
-          echo "image-exists=$(docker manifest inspect $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG > /dev/null 2>&1 ; echo $?)" >> $GITHUB_OUTPUT
-
-      - name: Cache Maven packages
-        uses: actions/cache@v3
-        if: steps.check-image.outputs.image-exists != '0'
-        with:
-          path: ~/.m2/repository
-          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
-          restore-keys: |
-            ${{ runner.os }}-maven-
-
-      - name: Cache Node modules
-        uses: actions/cache@v3
-        if: steps.check-image.outputs.image-exists != '0'
-        with:
-          path: ~/.npm
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-node-
-
-      - name: Set up Java 11
-        uses: actions/setup-java@v4
-        if: steps.check-image.outputs.image-exists != '0'
-        with:
-          java-version: "11"
-          architecture: "x64"
-          distribution: "zulu"
-          cache: "maven"
-
-      - name: Setup settings.xml
-        uses: s4u/maven-settings-action@v2.8.0
-        if: steps.check-image.outputs.image-exists != '0'
-        with:
-          servers: '[{"id": "github","configuration": {"httpHeaders": {"property": {"name": "Authorization","value": "Bearer ${{ secrets.GITHUB_TOKEN }}"}}}}]'
-
-      - name: Build application and publish it to Github Packages
-        if: steps.check-image.outputs.image-exists != '0'
-        run: make dist version=${{ github.event.inputs.commithash }}
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Build, tag, and push image to Amazon ECR
-        if: steps.check-image.outputs.image-exists != '0'
-        env:
-          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-          ECR_REPOSITORY: koski
-          IMAGE_TAG: ${{ github.event.inputs.commithash }}
-        run: |
-          docker build -f docker-build/Dockerfile -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG --build-arg KOSKI_VERSION=$IMAGE_TAG .
-          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
-
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1-node16
         with:

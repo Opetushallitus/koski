@@ -18,6 +18,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/build_koski
+        with:
+          commithash: ${{ github.sha }}
   lint_koski:
     name: Lint Koski
     runs-on: ${{ inputs.runs-on }}

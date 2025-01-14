@@ -17,7 +17,6 @@ help:
 	@echo "make docker-dbs	- Start databases with docker compose"
 	@echo "make watch	- Watch for changes in webapp files"
 	@echo "make clean	- Remove generated build data"
-	@echo "make dist version=<version> - Builds and verifies application version"
 
 .PHONY: logdir
 logdir:
@@ -221,18 +220,3 @@ valpas-fronttest-5:
 .PHONY: valpas-fronttest-6
 valpas-fronttest-6:
 	mvn $(mvn_opts) -DargLine="$(mvn_argline)" scalatest:test -Dsuites="fi.oph.koski.frontendvalpas.jest.ValpasFrontSpec6" --batch-mode
-
-
-### Dist
-
-.PHONY: dist
-dist: check-version
-	./scripts/dist.sh $(version)
-
-.PHONY: check-version
-check-version:
-ifndef version
-	@echo "version is not set."
-	@echo "Set version with version=<version>"
-	exit 1
-endif

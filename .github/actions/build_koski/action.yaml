@@ -1,10 +1,9 @@
 name: "Build Koski app + tests"
 inputs:
   commithash:
-    required: false
+    required: true
     type: string
     description: "Commit hash to build"
-    default: ${{ github.sha }}
 runs:
   using: composite
   steps:
@@ -51,4 +50,4 @@ runs:
       uses: actions/cache/save@v4
       with:
         path: target/
-        key: ${{ runner.os }}-target-${{ github.sha }}
+        key: ${{ runner.os }}-target-${{ inputs.commithash }}
