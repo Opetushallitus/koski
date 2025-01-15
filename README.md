@@ -142,7 +142,7 @@ Staattinen analyysi ([ScalaStyle](http://www.scalastyle.org/) ja [ESLint](http:/
 make lint
 ```
 
-Kosken versioitu paketti tehdään CI:ssä ([dist.sh](scripts/dist.sh)) skriptillä. War-pakettiin päätyy siis lopulta `target/webapp`-hakemiston sisältö.
+Kosken versioitu paketti tehdään CI:ssä `publish_image.yml` -workflowssa. War-pakettiin päätyy siis lopulta `target/webapp`-hakemiston sisältö.
 
 ### Koski-sovelluksen ajaminen paikallisesti
 
