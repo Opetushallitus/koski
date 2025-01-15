@@ -397,83 +397,6 @@
         <version>2.6</version>
       </plugin>
       <plugin>
-        <groupId>com.github.eirslett</groupId>
-        <artifactId>frontend-maven-plugin</artifactId>
-        <version>1.12.0</version>
-        <executions>
-          <execution>
-            <id>koski - install node and npm</id>
-            <goals>
-              <goal>install-node-and-npm</goal>
-            </goals>
-            <configuration>
-              <workingDirectory>web</workingDirectory>
-              <nodeVersion>v20.17.0</nodeVersion>
-            </configuration>
-          </execution>
-          <execution>
-            <id>npm version</id>
-            <goals>
-              <goal>npm</goal>
-            </goals>
-            <configuration>
-              <workingDirectory>web</workingDirectory>
-              <arguments>--version</arguments>
-            </configuration>
-          </execution>
-          <execution>
-            <id>koski - npm ci</id>
-            <goals>
-              <goal>npm</goal>
-            </goals>
-            <configuration>
-              <workingDirectory>web</workingDirectory>
-              <arguments>ci</arguments>
-            </configuration>
-          </execution>
-          <execution>
-            <id>koski - npm build</id>
-            <goals>
-              <goal>npm</goal>
-            </goals>
-            <configuration>
-              <workingDirectory>web</workingDirectory>
-              <arguments>run build:prod</arguments>
-            </configuration>
-          </execution>
-          <execution>
-            <id>valpas - install node and npm</id>
-            <goals>
-              <goal>install-node-and-npm</goal>
-            </goals>
-            <configuration>
-              <workingDirectory>valpas-web</workingDirectory>
-              <nodeVersion>v20.17.0</nodeVersion>
-            </configuration>
-          </execution>
-          <execution>
-            <id>valpas - npm ci</id>
-            <goals>
-              <goal>npm</goal>
-            </goals>
-            <configuration>
-              <workingDirectory>valpas-web</workingDirectory>
-              <arguments>ci</arguments>
-            </configuration>
-          </execution>
-          <execution>
-            <id>valpas - npm build</id>
-            <goals>
-              <goal>npm</goal>
-            </goals>
-            <configuration>
-              <workingDirectory>valpas-web</workingDirectory>
-              <arguments>run build:prod</arguments>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
-      <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-enforcer-plugin</artifactId>
         <version>3.0.0</version>
@@ -556,8 +479,66 @@
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>exec-maven-plugin</artifactId>
-        <version>3.0.0</version>
+        <version>3.5.0</version>
         <executions>
+          <execution>
+            <id>koski - npm ci</id>
+            <goals>
+              <goal>exec</goal>
+            </goals>
+            <phase>generate-resources</phase>
+            <configuration>
+              <workingDirectory>web</workingDirectory>
+              <executable>npm</executable>
+              <arguments>
+                <argument>ci</argument>
+              </arguments>
+            </configuration>
+          </execution>
+          <execution>
+            <id>koski - npm build</id>
+            <goals>
+              <goal>exec</goal>
+            </goals>
+            <phase>generate-resources</phase>
+            <configuration>
+              <workingDirectory>web</workingDirectory>
+              <executable>npm</executable>
+              <arguments>
+                <argument>run</argument>
+                <argument>build:prod</argument>
+              </arguments>
+            </configuration>
+          </execution>
+          <execution>
+            <id>valpas - npm ci</id>
+            <goals>
+              <goal>exec</goal>
+            </goals>
+            <phase>generate-resources</phase>
+            <configuration>
+              <workingDirectory>valpas-web</workingDirectory>
+              <executable>npm</executable>
+              <arguments>
+                <argument>ci</argument>
+              </arguments>
+            </configuration>
+          </execution>
+          <execution>
+            <id>valpas - npm build</id>
+            <goals>
+              <goal>exec</goal>
+            </goals>
+            <phase>generate-resources</phase>
+            <configuration>
+              <workingDirectory>valpas-web</workingDirectory>
+              <executable>npm</executable>
+              <arguments>
+                <argument>run</argument>
+                <argument>build:prod</argument>
+              </arguments>
+            </configuration>
+          </execution>
           <execution>
             <id>Create buildversion.txt</id>
             <phase>generate-resources</phase>
@@ -569,12 +550,6 @@
               <commandlineArgs>scripts/create-buildversion.sh
                 ${basedir}/target/webapp/buildversion.txt ${project.version}</commandlineArgs>
             </configuration>
-          </execution>
-          <execution>
-            <id>Run a main class from command line</id>
-            <goals>
-              <goal>java</goal>
-            </goals>
           </execution>
         </executions>
         <configuration>
