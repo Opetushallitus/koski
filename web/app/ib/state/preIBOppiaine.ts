@@ -1,5 +1,4 @@
 import { useMemo } from 'react'
-import { useKoodistot } from '../../appstate/koodisto'
 import {
   DialogField,
   useDialogField
@@ -9,16 +8,17 @@ import { Koodistokoodiviite } from '../../types/fi/oph/koski/schema/Koodistokood
 import { LocalizedString } from '../../types/fi/oph/koski/schema/LocalizedString'
 import { PaikallinenKoodi } from '../../types/fi/oph/koski/schema/PaikallinenKoodi'
 import { PreIBSuorituksenOsasuoritus2015 } from '../../types/fi/oph/koski/schema/PreIBSuorituksenOsasuoritus2015'
+import { PreIBSuorituksenOsasuoritus2019 } from '../../types/fi/oph/koski/schema/PreIBSuorituksenOsasuoritus2019'
 import { createPreIBSuorituksenOsasuoritus2015 } from '../oppiaineet/preIBOppiaine2015'
+import { createPreIBSuorituksenOsasuoritus2019 } from '../oppiaineet/preIBOppiaine2019'
 import {
   isIBOppiaineLanguageTunniste,
   isIBOppiaineMuuTunniste,
   isLukionMatematiikka2015Tunniste,
   isLukionÄidinkieliJaKirjallisuus2015Tunniste,
-  isVierasTaiToinenKotimainenKieli2015Tunniste
+  isVierasTaiToinenKotimainenKieli2015Tunniste,
+  isVierasTaiToinenKotimainenKieli2019Tunniste
 } from '../oppiaineet/tunnisteet'
-import { PreIBSuorituksenOsasuoritus2019 } from '../../types/fi/oph/koski/schema/PreIBSuorituksenOsasuoritus2019'
-import { createPreIBSuorituksenOsasuoritus2019 } from '../oppiaineet/preIBOppiaine2019'
 
 export type PreIBOppiaineProps = {
   tunniste?: PreIBOppiaineTunniste
@@ -122,7 +122,7 @@ export const useUusiPreIB2019OppiaineState =
 
     const kieli = useDialogField<Koodistokoodiviite<'kielivalikoima'>>(
       isIBOppiaineLanguageTunniste(tunniste.value) ||
-        isVierasTaiToinenKotimainenKieli2015Tunniste(tunniste.value)
+        isVierasTaiToinenKotimainenKieli2019Tunniste(tunniste.value)
     )
 
     const ryhmä = useDialogField<Koodistokoodiviite<'aineryhmaib'>>(

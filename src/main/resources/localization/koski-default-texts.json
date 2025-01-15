@@ -2765,5 +2765,8 @@
   "description:Onko opiskeluoikeuden päättymisen syy siirtyminen...": "Onko opiskeluoikeuden päättymisen syy siirtyminen tutkinnon uusiin perusteisiin.",
   "IB-oppiaine": "IB-oppiaine",
   "Lukion oppiaine": "Lukion oppiaine",
-  "Aineryhmä": "Aineryhmä"
+  "Aineryhmä": "Aineryhmä",
+  "Oppiaineen lisäys": "Oppiaineen lisäys",
+  "IB-kurssit": "IB-kurssit",
+  "Paikalliset lukion kurssit": "Paikalliset lukion kurssit"
 }
