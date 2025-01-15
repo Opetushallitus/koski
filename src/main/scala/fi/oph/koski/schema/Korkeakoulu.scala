@@ -62,7 +62,10 @@ case class KorkeakoulunOpiskeluoikeudenLisätiedot(
   lukukausiIlmoittautuminen: Option[Lukukausi_Ilmoittautuminen] = None,
   järjestäväOrganisaatio: Option[Oppilaitos] = None,
   @Title("Koulutuskunnat")
-  koulutuskuntaJaksot: List[KoulutuskuntaJakso] = Nil
+  koulutuskuntaJaksot: List[KoulutuskuntaJakso] = Nil,
+  @Title("Opettajanpätevyys")
+  @KoodistoUri("virtapatevyys")
+  opettajapatevyys: Option[List[Koodistokoodiviite]],
 ) extends OpiskeluoikeudenLisätiedot {
   def ensisijaisuusVoimassa(d: LocalDate): Boolean = ensisijaisuus.exists(_.exists((j: Aikajakso) => j.contains(d)))
 }
