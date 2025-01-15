@@ -33,6 +33,7 @@ import { UusiOpiskeluoikeusjakso } from '../opiskeluoikeus/UusiOpiskeluoikeudenT
 import { CHARCODE_ADD, Icon } from '../texts/Icon'
 import { Trans } from '../texts/Trans'
 import { isEmptyModelObject } from '../../util/objects'
+import { PathToken } from '../../util/laxModify'
 
 export type EditorContainerProps<T extends Opiskeluoikeus> =
   CommonPropsWithChildren<{
@@ -60,6 +61,7 @@ export type ActivePäätasonSuoritus<
 > = {
   index: number
   path: FormOptic<T, S>
+  pathTokens: PathToken[]
   suoritus: S
   testId: string
 }
@@ -234,6 +236,7 @@ export const usePäätasonSuoritus = <T extends Opiskeluoikeus>(
       index,
       suoritus: form.state.suoritukset[index],
       path: päätasonSuoritusPath(index),
+      pathTokens: ['suoritukset', index],
       testId: `suoritukset.${index}`
     }),
     [form.state.suoritukset, index]

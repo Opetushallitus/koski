@@ -97,9 +97,11 @@ export const TestIdText: React.FC<
   }>
 > = (props) => {
   const testId = useTestId(props.id)
-  return (
+  return props.children !== undefined &&
+    props.children !== null &&
+    props.children !== '' ? (
     <span {...common(props)} data-testid={testId} key={testId}>
       {props.children}
     </span>
-  )
+  ) : null
 }

@@ -7,6 +7,7 @@ import {
   getValue
 } from '../../../components-v2/forms/FormModel'
 import {
+  koodinNimiOnly,
   ParasArvosanaEdit,
   ParasArvosanaView
 } from '../../../components-v2/opiskeluoikeus/ArvosanaField'
@@ -100,6 +101,7 @@ export const osasuoritusToTableRow = ({
     .prop('osasuoritukset')
     .optional()
     .at(osasuoritusIndex)
+  const osasuoritus = getValue(osasuoritusPath)(form.state)
 
   return {
     suoritusIndex,
@@ -128,12 +130,11 @@ export const osasuoritusToTableRow = ({
           form={form}
           path={osasuoritusPath.path('arviointi')}
           view={ParasArvosanaView}
-          edit={(arvosanaProps) => (
-            <ParasArvosanaEdit
-              {...arvosanaProps}
-              createArviointi={createKielitaitoarviointi}
-            />
-          )}
+          edit={ParasArvosanaEdit}
+          editProps={{
+            suoritusClassName: osasuoritus?.$class,
+            format: koodinNimiOnly
+          }}
         />
       )
     },

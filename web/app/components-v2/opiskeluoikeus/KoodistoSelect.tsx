@@ -4,12 +4,20 @@ import { t } from '../../i18n/i18n'
 import { Koodistokoodiviite } from '../../types/fi/oph/koski/schema/Koodistokoodiviite'
 import { LocalizedString } from '../../types/fi/oph/koski/schema/LocalizedString'
 import { CommonProps } from '../CommonProps'
-import { OptionList, Select, SelectOption } from '../controls/Select'
+import {
+  mapOptionLabels,
+  OptionList,
+  Select,
+  SelectOption
+} from '../controls/Select'
 import { TestIdLayer } from '../../appstate/useTestId'
+import * as A from 'fp-ts/Array'
+import { pipe } from 'fp-ts/lib/function'
 
 export type KoodistoSelectProps<T extends string> = CommonProps<{
   koodistoUri: T
-  addNewText: string | LocalizedString
+  koodiarvot?: string[]
+  addNewText?: string | LocalizedString
   onSelect: (
     tunniste: Koodistokoodiviite<T> | undefined,
     isNew: boolean
@@ -19,27 +27,29 @@ export type KoodistoSelectProps<T extends string> = CommonProps<{
   testId: string | number
   value?: string
   zeroValueOption?: boolean
+  inlineOptions?: boolean
+  format?: (k: Koodistokoodiviite) => string
 }>
 
 export function KoodistoSelect<T extends string>(
   props: KoodistoSelectProps<T>
 ) {
-  const koodisto = useKoodisto(props.koodistoUri)
+  const koodisto = useKoodisto(props.koodistoUri, props.koodiarvot)
   const { filter, zeroValueOption } = props
   const options: OptionList<Koodistokoodiviite<T>> = useMemo(() => {
-    const koodistoOptions = (koodisto || [])
-      .map((tunniste) => ({
+    const koodistoOptions = pipe(
+      koodisto || [],
+      A.map((tunniste) => ({
         key: tunniste.koodiviite.koodiarvo,
         label: t(tunniste.koodiviite.nimi),
         value: tunniste.koodiviite,
         removable: true
-      }))
-      .filter((entry) => {
-        if (filter === undefined) {
-          return entry
-        }
-        return filter(entry.value)
-      })
+      })),
+      A.filter((entry) => (filter ? filter(entry.value) : true)),
+      mapOptionLabels((option) =>
+        option.value && props.format ? props.format(option.value) : option.label
+      )
+    )
 
     const zeroValue = {
       key: 'Ei valintaa',
@@ -48,7 +58,7 @@ export function KoodistoSelect<T extends string>(
     }
 
     return zeroValueOption ? [zeroValue, ...koodistoOptions] : koodistoOptions
-  }, [koodisto, filter, zeroValueOption])
+  }, [koodisto, zeroValueOption, filter, props])
 
   const { onSelect } = props
   const onChangeCB = useCallback(
@@ -59,15 +69,14 @@ export function KoodistoSelect<T extends string>(
   )
 
   return (
-    <TestIdLayer id="addOsasuoritus">
-      <Select
-        placeholder={props.addNewText}
-        options={options}
-        hideEmpty
-        onChange={onChangeCB}
-        testId="select"
-        value={props.value}
-      />
-    </TestIdLayer>
+    <Select
+      inlineOptions={props.inlineOptions}
+      placeholder={props.addNewText}
+      options={options}
+      hideEmpty
+      onChange={onChangeCB}
+      testId={props.testId}
+      value={props.value}
+    />
   )
 }

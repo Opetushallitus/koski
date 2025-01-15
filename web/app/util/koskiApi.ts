@@ -1,26 +1,27 @@
 import { apiDelete, ApiFailure, apiGet, apiPost, apiPut } from '../api-fetch'
+import { lang } from '../i18n/i18n'
 import { OpiskeluoikeusHistoryPatch } from '../types/fi/oph/koski/history/OpiskeluoikeusHistoryPatch'
 import { HenkilönOpiskeluoikeusVersiot } from '../types/fi/oph/koski/oppija/HenkilonOpiskeluoikeusVersiot'
 import { OrganisaatioHierarkia } from '../types/fi/oph/koski/organisaatio/OrganisaatioHierarkia'
 import { KeyValue } from '../types/fi/oph/koski/preferences/KeyValue'
+import { Koodistokoodiviite } from '../types/fi/oph/koski/schema/Koodistokoodiviite'
 import { OidHenkilö } from '../types/fi/oph/koski/schema/OidHenkilo'
 import { Opiskeluoikeus } from '../types/fi/oph/koski/schema/Opiskeluoikeus'
 import { Oppija } from '../types/fi/oph/koski/schema/Oppija'
 import { PäätasonSuoritus } from '../types/fi/oph/koski/schema/PaatasonSuoritus'
 import { StorablePreference } from '../types/fi/oph/koski/schema/StorablePreference'
+import { Suoritus } from '../types/fi/oph/koski/schema/Suoritus'
+import { Osaamismerkkikuva } from '../types/fi/oph/koski/servlet/Osaamismerkkikuva'
+import { AktiivisetJaPäättyneetOpinnotOppijaJakolinkillä } from '../types/fi/oph/koski/suoritusjako/AktiivisetJaPaattyneetOpinnotOppijaJakolinkilla'
+import { SuoritetutTutkinnotOppijaJakolinkillä } from '../types/fi/oph/koski/suoritusjako/SuoritetutTutkinnotOppijaJakolinkilla'
+import { TutkintoPeruste } from '../types/fi/oph/koski/tutkinto/TutkintoPeruste'
 import { Constraint } from '../types/fi/oph/koski/typemodel/Constraint'
 import { GroupedKoodistot } from '../types/fi/oph/koski/typemodel/GroupedKoodistot'
+import { OpiskeluoikeusClass } from '../types/fi/oph/koski/typemodel/OpiskeluoikeusClass'
 import { YtrCertificateResponse } from '../types/fi/oph/koski/ytr/YtrCertificateResponse'
 import { tapLeftP } from './fp/either'
+import { TypedEnumValue } from './TypedEnumValue'
 import { queryString } from './url'
-import { SuoritetutTutkinnotOppijaJakolinkillä } from '../types/fi/oph/koski/suoritusjako/SuoritetutTutkinnotOppijaJakolinkilla'
-import { AktiivisetJaPäättyneetOpinnotOppijaJakolinkillä } from '../types/fi/oph/koski/suoritusjako/AktiivisetJaPaattyneetOpinnotOppijaJakolinkilla'
-import { Koodistokoodiviite } from '../types/fi/oph/koski/schema/Koodistokoodiviite'
-import { Osaamismerkkikuva } from '../types/fi/oph/koski/servlet/Osaamismerkkikuva'
-import { lang } from '../i18n/i18n'
-import { OpiskeluoikeusClass } from '../types/fi/oph/koski/typemodel/OpiskeluoikeusClass'
-import { TutkintoPeruste } from '../types/fi/oph/koski/tutkinto/TutkintoPeruste'
-import { Suoritus } from '../types/fi/oph/koski/schema/Suoritus'
 
 const apiUrl = (path: string, query?: object): string =>
   `/koski/api/${path}${queryString({ class_refs: 'true', ...query })}`
@@ -121,9 +122,16 @@ export const fetchPerustelinkki = (diaarinumero: string) =>
     )
   )
 
-export const fetchConstraint = (schemaClass: string) =>
+export const fetchConstraint = (
+  schemaClass: string,
+  shallow: boolean = false
+) =>
   handleExpiredSession(
-    apiGet<Constraint>(apiUrl(`types/constraints/${schemaClass}`))
+    apiGet<Constraint>(
+      apiUrl(`types/constraints/${schemaClass}`, {
+        shallow: shallow ? 'true' : undefined
+      })
+    )
   )
 
 export type OrgTypesToShow =
@@ -294,6 +302,27 @@ export const fetchTutkinnonPerusteenSuoritustavat = (diaarinumero: string) =>
   handleExpiredSession(
     apiGet<Koodistokoodiviite<'ammatillisentutkinnonsuoritustapa'>[]>(
       apiUrl(`tutkinnonperusteet/suoritustavat/${diaarinumero}`)
+    )
+  )
+
+export const fetchOppiaineenKurssit = (
+  oppiaineKoodistoUri: string,
+  oppiaineKoodiarvo: string,
+  kurssikoodistoUris: string[],
+  oppimääräKoodistoUri?: string,
+  oppimääräKoodiarvo?: string,
+  oppimääränDiaarinumero?: string
+) =>
+  handleExpiredSession(
+    apiGet<TypedEnumValue<Koodistokoodiviite>[]>(
+      apiUrl(
+        `editor/koodit/${oppiaineKoodistoUri}/${oppiaineKoodiarvo}/kurssit/${kurssikoodistoUris.join(',')}`,
+        {
+          oppimaaraKoodisto: oppimääräKoodistoUri,
+          oppimaaraKoodiarvo: oppimääräKoodiarvo,
+          oppimaaraDiaarinumero: oppimääränDiaarinumero
+        }
+      )
     )
   )
 

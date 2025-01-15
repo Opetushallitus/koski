@@ -82,4 +82,10 @@ case class AdditionalExports(
   vapaanSivistystyönKoulutuksenPäätasonSuoritus: VapaanSivistystyönKoulutuksenPäätasonSuoritus,
   suorituskielellinen: Suorituskielellinen,
   maksuttomuustieto: MaksuttomuusTieto,
+  valinnanMahdollisuus: ValinnanMahdollisuus,
+  arvioinniton: Arvioinniton,
+  mahdollisestiArvioinniton: MahdollisestiArvioinniton,
+  valinnaisuus: Valinnaisuus,
+  preIBLukionModuulinSuoritus2019: PreIBLukionModuulinSuoritus2019,
+  preIBLukionModuulinTaiPaikallisenOpintojaksonSuoritus2019: PreIBLukionModuulinTaiPaikallisenOpintojaksonSuoritus2019,
 )

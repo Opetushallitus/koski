@@ -6,7 +6,9 @@ import { pipe } from 'fp-ts/lib/function'
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import {
   KoodistokoodiviiteKoodistonNimellä,
-  KoodistokoodiviiteKoodistonNimelläOrd
+  KoodistokoodiviiteKoodistonNimelläOrd,
+  useKoodisto,
+  useKoodistot
 } from '../../appstate/koodisto'
 import { Peruste } from '../../appstate/peruste'
 import {
@@ -19,12 +21,13 @@ import { Koodistokoodiviite } from '../../types/fi/oph/koski/schema/Koodistokood
 import { LocalizedString } from '../../types/fi/oph/koski/schema/LocalizedString'
 import { nonNull } from '../../util/fp/arrays'
 import { pluck } from '../../util/fp/objects'
-import { koodistokoodiviiteId } from '../../util/koodisto'
+import { koodistokoodiviiteId, koodiviiteId } from '../../util/koodisto'
 import { clamp, sum } from '../../util/numbers'
-import { textSearch } from '../../util/strings'
+import { coerceForSort, textSearch } from '../../util/strings'
 import { CommonProps, common, cx } from '../CommonProps'
 import { Removable } from './Removable'
 import { Spinner } from '../texts/Spinner'
+import { PaikallinenKoodi } from '../../types/fi/oph/koski/schema/PaikallinenKoodi'
 
 export type SelectProps<T> = CommonProps<{
   initialValue?: OptionKey
@@ -233,7 +236,13 @@ const OptionList = <T,>(props: OptionListProps<T>): React.ReactElement => {
                 {opt.display || opt.label}
               </div>
             </Removable>
-            {opt.children && <OptionList options={opt.children} {...rest} />}
+            {opt.children && (
+              <OptionList
+                options={opt.children}
+                onRemove={onRemove}
+                {...rest}
+              />
+            )}
           </li>
         </TestIdLayer>
       ))}
@@ -317,7 +326,7 @@ const useSelectState = <T,>(props: SelectProps<T>) => {
     const opts =
       filter === '' || filter === null
         ? props.options
-        : filterOptions(props.options, filter)
+        : queryOptions(props.options, filter)
     // Remove one level of grouping if only one group is present
     return opts.length === 1 && opts[0].isGroup ? opts[0].children || [] : opts
   }, [filter, props.options])
@@ -427,6 +436,35 @@ const useSelectState = <T,>(props: SelectProps<T>) => {
 
 // Exported utils
 
+export const useKoodistoOptions = <T extends string>(
+  ...koodistoUris: T[]
+): SelectOption<Koodistokoodiviite<T>>[] => {
+  const koodisto = useKoodistot(...koodistoUris)
+  return useMemo(
+    () => (koodisto ? groupKoodistoToOptions(koodisto) : []),
+    [koodisto]
+  ) as SelectOption<Koodistokoodiviite<T>>[]
+}
+
+export const optionGroup = <T,>(
+  label: string,
+  children: SelectOption<T>[]
+): SelectOption<T> => ({
+  key: label,
+  label,
+  isGroup: true,
+  children
+})
+
+export const regroupKoodisto = <T extends string>(
+  koodit: KoodistokoodiviiteKoodistonNimellä<T>[],
+  getGroup: (k: KoodistokoodiviiteKoodistonNimellä<T>) => string | null
+) =>
+  koodit.flatMap((k) => {
+    const group = getGroup(k)
+    return group === null ? [] : [{ ...k, koodistoNimi: group }]
+  })
+
 export const groupKoodistoToOptions = <T extends string>(
   koodit: KoodistokoodiviiteKoodistonNimellä<T>[],
   ords?: Array<Ord.Ord<KoodistokoodiviiteKoodistonNimellä>>,
@@ -457,18 +495,56 @@ export const koodiviiteToOption = <T extends string>(
   label: t(koodiviite.nimi) || koodiviite.koodiarvo
 })
 
+export const paikallinenKoodiToOption = (
+  koodi: PaikallinenKoodi,
+  options?: Partial<SelectOption<PaikallinenKoodi>>
+): SelectOption<PaikallinenKoodi> => ({
+  key: koodiviiteId(koodi),
+  value: koodi,
+  label: t(koodi.nimi) || koodi.koodiarvo,
+  ...options
+})
+
 export const perusteToOption = (peruste: Peruste): SelectOption<Peruste> => ({
   key: peruste.koodiarvo,
   value: peruste,
   label: [peruste.koodiarvo, t(peruste.nimi)].filter(nonNull).join(' ')
 })
 
-export const SelectOptionOrd = Ord.contramap((o: SelectOption<any>) => o.label)(
-  string.Ord
-)
+export const SelectOptionOrd = Ord.contramap((o: SelectOption<any>) =>
+  coerceForSort(o.label)
+)(string.Ord)
 
-export const sortOptions = <T,>(options: Array<SelectOption<T>>) =>
-  A.sort(SelectOptionOrd)(options)
+export const sortOptions = <T,>(
+  options: Array<SelectOption<T>>
+): Array<SelectOption<T>> =>
+  pipe(
+    options,
+    A.sort(SelectOptionOrd),
+    A.map((o) => ({
+      ...o,
+      children: o.children && sortOptions(o.children)
+    }))
+  )
+
+export const mapOptions =
+  <T, S>(f: (o: SelectOption<T>) => SelectOption<S>) =>
+  (options: Array<SelectOption<T>>): Array<SelectOption<S>> =>
+    options.map((o) => ({
+      ...f(o),
+      children: o.children && mapOptions(f)(o.children)
+    }))
+
+export const mapOptionLabels = <T,>(f: (o: SelectOption<T>) => string) =>
+  mapOptions((o: SelectOption<T>) => ({ ...o, label: f(o) }))
+
+export const filterOptions =
+  <T,>(f: (o: SelectOption<T>) => boolean) =>
+  (options: Array<SelectOption<T>>): Array<SelectOption<T>> =>
+    options.flatMap((o) => {
+      const children = o.children && filterOptions(f)(o.children)
+      return (children?.length || 0) > 0 || f(o) ? [{ ...o, children }] : []
+    })
 
 // Internal utils
 
@@ -494,7 +570,7 @@ const flattenOptions = <T,>(options: OptionList<T>): FlatOptionList<T> => {
   return { arr: options.flatMap(flatten) }
 }
 
-const filterOptions = <T,>(
+const queryOptions = <T,>(
   options: OptionList<T>,
   query: string
 ): OptionList<T> => {

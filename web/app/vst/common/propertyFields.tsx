@@ -58,10 +58,7 @@ export const ArviointiProperty = <T extends VSTSuoritusArvioinnilla>(
           path={props.path.prop('arviointi')}
           view={VSTArviointiView}
           edit={VSTArviointiEdit}
-          editProps={{
-            osasuoritus,
-            createArviointi: createArviointi(props.arviointi)
-          }}
+          editProps={{ osasuoritus }}
         />
       </OsasuoritusProperty>
     </TestIdLayer>

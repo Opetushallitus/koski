@@ -17,7 +17,11 @@ class TypeModelServlet(implicit val application: KoskiApplication)
 {
   get("/constraints/:schemaClass") {
     val className = s"fi.oph.koski.schema.${params("schemaClass").replaceAll("[^\\w\\däÄöÖ]", "")}"
-    val typeAndSubtypes = TypeExport.toTypeDef(Class.forName(className), followClassRefs = true)
+    val typeAndSubtypes = TypeExport.toTypeDef(
+      clss = Class.forName(className),
+      followClassRefs = true,
+      stopParsingAt = stopSchemaParsingForConstraintsAt,
+    )
     val requestedType = typeAndSubtypes.find(_.fullClassName == className)
     val constraint = requestedType
       .map(t => Constraints.build(t, typeAndSubtypes))
@@ -85,6 +89,11 @@ class TypeModelServlet(implicit val application: KoskiApplication)
     .anyOf
     .collect { case ClassRef(c) => c }
     .flatMap(OpiskeluoikeusClass.apply)
+
+  // Lisää tähän sellaiset luokat, jotka aiheuttavat valtavien tietomallivastausten luonnin
+  private lazy val stopSchemaParsingForConstraintsAt: List[String] = List(
+    "fi.oph.koski.schema.OsaamisenTunnustaminen",
+  )
 }
 
 case class GroupedKoodistot(

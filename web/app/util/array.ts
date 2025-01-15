@@ -12,7 +12,7 @@ export const deleteAt =
     pipe(
       ts,
       A.deleteAt(i),
-      O.getOrElseW(() => [])
+      O.getOrElseW(() => ts)
     )
 
 export const updateAt =
@@ -23,6 +23,11 @@ export const updateAt =
       A.updateAt(i, t),
       O.getOrElseW(() => [])
     )
+
+export const replaceLast =
+  <T>(t: T) =>
+  (ts: T[] | undefined) =>
+    ts ? [...ts.slice(0, -1), t] : [t]
 
 export const appendOptional =
   <T>(t: T) =>

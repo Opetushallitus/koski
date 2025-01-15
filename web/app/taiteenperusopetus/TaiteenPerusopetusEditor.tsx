@@ -4,6 +4,8 @@ import { useSchema } from '../appstate/constraints'
 import { useKoodistoFiller } from '../appstate/koodisto'
 import { assortedPreferenceType, usePreferences } from '../appstate/preferences'
 import { OpenAllButton, useTree } from '../appstate/tree'
+import { TestIdRoot } from '../appstate/useTestId'
+import { useKansalainenTaiSuoritusjako } from '../appstate/user'
 import { KansalainenOnly } from '../components-v2/access/KansalainenOnly'
 import { Column, ColumnRow } from '../components-v2/containers/Columns'
 import {
@@ -13,13 +15,19 @@ import {
 import { LocalizedTextView } from '../components-v2/controls/LocalizedTestField'
 import { RemoveArrayItemField } from '../components-v2/controls/RemoveArrayItemField'
 import { FormField } from '../components-v2/forms/FormField'
-import { FormModel, FormOptic, useForm } from '../components-v2/forms/FormModel'
+import {
+  FormModel,
+  FormOptic,
+  getValue,
+  useForm
+} from '../components-v2/forms/FormModel'
 import { useRemovePäätasonSuoritus } from '../components-v2/forms/useRemovePaatasonSuoritus'
 import { AdaptedOpiskeluoikeusEditorProps } from '../components-v2/interoperability/useUiAdapter'
 import { Spacer } from '../components-v2/layout/Spacer'
 import {
   ParasArvosanaEdit,
-  ParasArvosanaView
+  ParasArvosanaView,
+  koodinNimiOnly
 } from '../components-v2/opiskeluoikeus/ArvosanaField'
 import {
   LaajuusOpintopisteissäEdit,
@@ -51,12 +59,9 @@ import {
 } from './UusiTaiteenPerusopetuksenPäätasonSuoritus'
 import {
   TaiteenPerusopetuksenPäätasonSuoritusEq,
-  createTpoArviointi,
   minimimääräArvioitujaOsasuorituksia,
   taiteenPerusopetuksenSuorituksenNimi
 } from './tpoCommon'
-import { TestIdRoot } from '../appstate/useTestId'
-import { useKansalainenTaiSuoritusjako } from '../appstate/user'
 
 export type TaiteenPerusopetusEditorProps =
   AdaptedOpiskeluoikeusEditorProps<TaiteenPerusopetuksenOpiskeluoikeus>
@@ -330,10 +335,11 @@ const osasuoritusToTableRow = (
   suoritusIndex: number,
   osasuoritusIndex: number
 ): OsasuoritusRowData<'Osasuoritus' | 'Laajuus' | 'Arviointi'> => {
-  const osasuoritus = suoritusPath
+  const osasuoritusPath = suoritusPath
     .prop('osasuoritukset')
     .optional()
     .at(osasuoritusIndex)
+  const osasuoritus = getValue(osasuoritusPath)(form.state)
 
   return {
     suoritusIndex,
@@ -343,7 +349,7 @@ const osasuoritusToTableRow = (
       Osasuoritus: (
         <FormField
           form={form}
-          path={osasuoritus.path('koulutusmoduuli.tunniste.nimi')}
+          path={osasuoritusPath.path('koulutusmoduuli.tunniste.nimi')}
           view={LocalizedTextView}
           testId="nimi"
         />
@@ -351,7 +357,7 @@ const osasuoritusToTableRow = (
       Laajuus: (
         <FormField
           form={form}
-          path={osasuoritus.path('koulutusmoduuli.laajuus')}
+          path={osasuoritusPath.path('koulutusmoduuli.laajuus')}
           view={LaajuusView}
           edit={LaajuusOpintopisteissäEdit}
           testId="laajuus"
@@ -360,14 +366,13 @@ const osasuoritusToTableRow = (
       Arviointi: (
         <FormField
           form={form}
-          path={osasuoritus.prop('arviointi')}
+          path={osasuoritusPath.prop('arviointi')}
           view={(props) => <ParasArvosanaView {...props} />}
-          edit={(props) => (
-            <ParasArvosanaEdit
-              {...props}
-              createArviointi={createTpoArviointi}
-            />
-          )}
+          edit={ParasArvosanaEdit}
+          editProps={{
+            suoritusClassName: osasuoritus?.$class,
+            format: koodinNimiOnly
+          }}
           testId="arvosana"
         />
       )
@@ -375,7 +380,7 @@ const osasuoritusToTableRow = (
     content: (
       <TpoOsasuoritusProperties
         form={form}
-        osasuoritusPath={osasuoritus}
+        osasuoritusPath={osasuoritusPath}
         testId={osasuoritusTestId(
           suoritusIndex,
           osasuoritusIndex,

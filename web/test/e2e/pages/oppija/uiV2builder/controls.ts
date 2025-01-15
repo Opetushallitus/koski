@@ -50,11 +50,13 @@ export const FormField = <E extends Editor>(
           throw new Error('Trying to set an editor value without editor')
         }
         return edit.set(value)
-      }
+      },
+      viewer: child('value')
     }
   }) as Control<
     E & {
       value: (editMode: boolean) => Promise<string>
       set: (value: string) => Promise<void>
+      viewer: Locator
     }
   >

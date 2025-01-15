@@ -3,13 +3,16 @@ import { t } from '../../i18n/i18n'
 import { Koodistokoodiviite } from '../../types/fi/oph/koski/schema/Koodistokoodiviite'
 import { CommonProps, common } from '../CommonProps'
 import { FieldEditorProps, FieldViewerProps } from '../forms/FormField'
-import { TestIdLayer } from '../../appstate/useTestId'
+import { TestIdLayer, useTestId } from '../../appstate/useTestId'
 import {
   Select,
   SelectOption,
   groupKoodistoToOptions
 } from '../controls/Select'
-import { useKoodisto } from '../../appstate/koodisto'
+import {
+  KoodistokoodiviiteKoodistonNimellä,
+  useKoodisto
+} from '../../appstate/koodisto'
 
 export type KoodistoViewProps<T extends string> = CommonProps<
   FieldViewerProps<
@@ -21,11 +24,14 @@ export type KoodistoViewProps<T extends string> = CommonProps<
   >
 >
 
-export const KoodistoView = <T extends string>(props: KoodistoViewProps<T>) => (
-  <div {...common(props)} data-testid={props.testId}>
-    {t(props.value?.nimi) || '–'}
-  </div>
-)
+export const KoodistoView = <T extends string>(props: KoodistoViewProps<T>) => {
+  const testId = useTestId(props.testId)
+  return (
+    <div {...common(props)} data-testid={testId}>
+      {t(props.value?.nimi) || '–'}
+    </div>
+  )
+}
 
 export type KoodistoEditProps<T extends string> = CommonProps<
   FieldEditorProps<
@@ -33,12 +39,13 @@ export type KoodistoEditProps<T extends string> = CommonProps<
     {
       koodistoUri: T
       testId: string
+      koodiarvot?: string[]
     }
   >
 >
 
 export const KoodistoEdit = <T extends string>(props: KoodistoEditProps<T>) => {
-  const koodisto = useKoodisto(props.koodistoUri)
+  const koodisto = useKoodisto(props.koodistoUri, props.koodiarvot)
   const options = useMemo(
     () =>
       (koodisto ?? []).map((k) => ({

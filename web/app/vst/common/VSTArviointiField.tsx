@@ -39,7 +39,6 @@ export type VSTArviointiEditProps<T extends VSTArviointi> = CommonProps<
   FieldEditorProps<
     T,
     {
-      createArviointi: (arvosana: ArvosanaOf<T>) => T
       osasuoritus: VSTSuoritusArvioinnilla
     }
   >
@@ -56,7 +55,7 @@ export const VSTArviointiEdit = <T extends VSTArviointi>(
   return props.value ? (
     <>
       <OsasuoritusSubproperty rowNumber={startRow} label="Arvosana">
-        <ArvosanaEdit {...props} createArviointi={props.createArviointi} />
+        <ArvosanaEdit {...props} suoritusClassName={props.osasuoritus.$class} />
       </OsasuoritusSubproperty>
       {isVSTArviointiPäivällä(props.value) && (
         <OsasuoritusSubproperty rowNumber={startRow + 1} label="Päivämäärä">

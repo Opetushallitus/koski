@@ -13,6 +13,7 @@ import { assertNever } from '../../util/selfcare'
 import { ValidationRule } from './ValidationRule'
 import { validateData, ValidationError } from './validator'
 import { storeDeferredPreferences } from '../../appstate/preferences'
+import { modify, modifyWithDebug, PathToken } from '../../util/laxModify'
 
 export enum EditMode {
   View = 0,
@@ -51,12 +52,38 @@ export type FormModel<O extends object> = {
 
   /**
    * Päivitä lomakkeen tietoja polun määrittelemästä paikasta.
+   * Käytä tätä linssien kanssa, kun haluat tyyppiturvallisuutta.
    *
    * @param optic Lens tai Prism joka osoittaa muutettavaan kohtan lomakkeen tiedoissa.
    * @param modify Funktio joka ottaa argumenttina vastaan osoitetun arvon edellisen tilan ja palauttaa uuden.
    * @see https://akheron.github.io/optics-ts/
    */
   readonly updateAt: <T>(optic: FormOptic<O, T>, modify: (t: T) => T) => void
+
+  /**
+   * Päivitä lomakkeen tietoja polun määrittelemästä paikasta.
+   * Tämä versio EI ole tyyppiturvallinen. Käytä sitä kun sinulle riittää helppous.
+   *
+   * @param path Polku tietorakenteen sisälle
+   * @param modify Funktio joka ottaa argumenttina vastaan osoitetun arvon edellisen tilan ja palauttaa uuden.
+   */
+  readonly modify: (...path: PathToken[]) => <T>(modify: (t: T) => T) => void
+
+  /**
+   * Päivitä lomakkeen tietoja polun määrittelemästä paikasta.
+   * Tämä versio EI ole tyyppiturvallinen. Käytä sitä kun sinulle riittää helppous.
+   * Funktiorakenne on suunniteltu käytettäväksi helpommin komponenttien kanssa.
+   *
+   * @example
+   *    <DateEdit
+   *      value={arviointi.päivä}
+   *      onChange={form.set('suoritukset', 0, 'osasuoritukset', 1, 'arviointi', 'päivä')}
+   *    />
+   *
+   * @param path Polku tietorakenteen sisälle
+   * @param value Arvo joka asetetaan polun määrittämään paikkaan
+   */
+  readonly set: (...path: PathToken[]) => <T>(value: T) => void
 
   /**
    * Validoi lomakkeen tiedot lomakkeelle annettua constraintia vasten.
@@ -79,6 +106,11 @@ export type FormModel<O extends object> = {
    * Siirry pois muokkaustilasta ja palauta lomakkeen tiedot edeltäneeseen tilaan.
    */
   readonly cancel: () => void
+
+  /**
+   * Debug-versiot osasta metodeista
+   */
+  readonly debug: Pick<FormModel<O>, 'modify' | 'set'>
 }
 
 /**
@@ -150,18 +182,44 @@ export const useForm = <O extends object>(
   }, [validate])
 
   const updateAt: FormModelProp<'updateAt'> = useCallback(
-    <T>(optic: FormOptic<O, T>, modify: (t: T) => T) => {
+    <T>(optic: FormOptic<O, T>, modifyFn: (t: T) => T) => {
       if (editMode) {
         dispatch({
           type: 'modify',
-          modify: modifyValue(optic)(modify),
-          modifyInitialData: modifiesShape(optic, modify, initialData)
+          modify: modifyValue(optic)(modifyFn),
+          modifyInitialData: modifiesShape(optic, modifyFn, initialData)
         })
         // Validate after modify
         validate()
       }
     },
     [editMode, initialData, validate]
+  )
+
+  const root: FormModelProp<'root'> = useMemo(() => $.optic_<O>(), [])
+
+  const modifyState = useCallback(
+    (debug: boolean): FormModelProp<'modify'> =>
+      (...path: PathToken[]) =>
+      <T>(f: (t: T) => T) => {
+        if (editMode) {
+          const modifyFn = (debug ? modifyWithDebug : modify)(...path)(f)
+          dispatch({
+            type: 'modify',
+            modify: modifyFn,
+            modifyInitialData: modifiesShape(root, modifyFn, initialData)
+          })
+        }
+      },
+    [editMode, initialData, root]
+  )
+
+  const setState = useCallback(
+    (debug: boolean): FormModelProp<'set'> =>
+      (...path: PathToken[]) =>
+      <T>(value: T) =>
+        modifyState(debug)(...path)(() => value),
+    [modifyState]
   )
 
   const { push: setErrors, clearAll: clearErrors } = globalErrors
@@ -192,8 +250,6 @@ export const useForm = <O extends object>(
     [clearErrors, data, editMode, setEditMode, setErrors]
   )
 
-  const root: FormModelProp<'root'> = useMemo(() => $.optic_<O>(), [])
-
   return useMemo(
     () => ({
       state: data,
@@ -207,11 +263,17 @@ export const useForm = <O extends object>(
       root,
       startEdit,
       pending,
+      modify: modifyState(false),
+      set: setState(false),
       updateAt,
       validate,
       save,
       cancel,
-      errors
+      errors,
+      debug: {
+        modify: modifyState(true),
+        set: setState(true)
+      }
     }),
     [
       data,
@@ -224,6 +286,8 @@ export const useForm = <O extends object>(
       root,
       startEdit,
       pending,
+      modifyState,
+      setState,
       updateAt,
       validate,
       save,
@@ -294,6 +358,8 @@ const reducer = <O>(
       const initialData = action.modifyInitialData
         ? action.modify(state.initialData)
         : state.initialData
+
+      // console.log('Modify model', state.data, '-->', data)
 
       return state.editMode
         ? {
@@ -391,7 +457,7 @@ const modifyValue =
 
 const modifiesShape = <O extends object, T>(
   optic: FormOptic<O, T>,
-  modify: (t: T) => T,
+  modifyFn: (t: T) => T,
   data: O
 ): boolean => {
   const value = getValue(optic)(data)
@@ -399,7 +465,7 @@ const modifiesShape = <O extends object, T>(
     return true
   }
   if (Array.isArray(value)) {
-    const result = modify(value)
+    const result = modifyFn(value)
     if (!Array.isArray(result) || result.length !== value.length) {
       return true
     }
