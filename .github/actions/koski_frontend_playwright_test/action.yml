@@ -26,7 +26,7 @@ runs:
         max_attempts: 2
         timeout_minutes: 45
         command: mvn scalatest:test -Pintegrationtest -Dsuites="fi.oph.koski.e2e.KoskiFrontSpec" --batch-mode
-    - uses: actions/upload-artifact@v3
+    - uses: actions/upload-artifact@v4
       if: always()
       with:
         name: koski-playwright-report-${{inputs.shardIndex}}-of-${{inputs.shardTotal}}
