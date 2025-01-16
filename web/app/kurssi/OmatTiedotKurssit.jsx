@@ -15,6 +15,7 @@ import {
   isPreIBKurssi
 } from '../suoritus/Koulutusmoduuli'
 import { PropertiesEditor } from '../editor/PropertiesEditor'
+import IBKurssinArviointiEditor from '../ib/IBKurssinArviointiEditor'
 import { ArvosanaEditor } from '../suoritus/ArvosanaEditor'
 import { FootnoteHint } from '../components/footnote'
 import Text from '../i18n/Text'
@@ -130,6 +131,13 @@ class MobileKurssi extends React.Component {
                 !['tunniste', 'koodiarvo', 'nimi'].includes(p.key)
               }
               className="kansalainen"
+              getValueEditor={(prop, getDefault) =>
+                isIBKurssi(kurssi) && prop.key === 'arviointi' ? (
+                  <IBKurssinArviointiEditor model={kurssi} />
+                ) : (
+                  getDefault()
+                )
+              }
             />
           </td>
         </tr>

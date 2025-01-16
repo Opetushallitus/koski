@@ -4,6 +4,7 @@ import { modelData, modelItems } from '../editor/EditorModel'
 import { t } from '../i18n/i18n'
 import { isMobileAtom } from '../util/isMobileAtom'
 import { OmatTiedotLukionOppiaineetTableHead } from '../lukio/fragments/LukionOppiaineetTableHead'
+import { arvosanaFootnote } from '../ib/IB'
 import { FootnoteDescriptions } from '../components/footnote'
 import { OmatTiedotLukionOppiaine } from '../lukio/OmatTiedotLukionOppiaineet'
 import { resolveArvosanaModel } from './ArvosanaEditor'
@@ -47,12 +48,18 @@ const OmatTiedotOppiaineryhmä = ({
                   ? 'predictedArviointi' // Predicted grade löytyy, mutta ei päättöarvosanaa
                   : 'arviointi'
 
+            const footnote =
+              (predictedArviointiVanhassaHaarassa ||
+                (!arviointi && predictedArviointi)) &&
+              arvosanaFootnote
+
             return (
               <OmatTiedotLukionOppiaine
                 baret-lift
                 key={oppiaineIndex}
                 oppiaine={oppiaine}
                 isMobile={isMobileAtom}
+                footnote={footnote}
                 showKeskiarvo={false}
                 notFoundText={null}
                 useOppiaineLaajuus={useOppiaineLaajuus}

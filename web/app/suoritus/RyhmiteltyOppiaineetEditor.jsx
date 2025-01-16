@@ -4,6 +4,7 @@ import { modelData, modelItems } from '../editor/EditorModel'
 import { t } from '../i18n/i18n'
 import { LukionOppiaineetTableHead } from '../lukio/fragments/LukionOppiaineetTableHead'
 import { LukionOppiaineEditor } from '../lukio/LukionOppiaineEditor'
+import { arvosanaFootnote, ibRyhmät } from '../ib/IB'
 import { UusiRyhmiteltyOppiaineDropdown } from '../oppiaine/UusiRyhmiteltyOppiaineDropdown'
 import { FootnoteDescriptions } from '../components/footnote'
 import {
@@ -29,6 +30,16 @@ const diaCustomizations = {
 }
 
 const typeDependentCustomizations = {
+  ibtutkinto: {
+    groupAineet: ibRyhmät,
+    laajuusyksikkö: 'kurssia',
+    useOppiaineLaajuus: false,
+    showArviointi: true,
+    showRyhmättömät: false,
+    oppiaineOptionsFilter: R.identity,
+    getFootnote: (oppiaine) =>
+      modelData(oppiaine, 'arviointi.-1.predicted') && arvosanaFootnote
+  },
   diavalmistavavaihe: diaCustomizations,
   diatutkintovaihe: R.mergeDeepWith(R.concat, diaCustomizations, {
     additionalEditableProperties: [
@@ -124,13 +135,17 @@ export default ({
     edit
   )
 
+  const isIbTutkinto = suorituksetModel.parent.value.classes.includes(
+    'ibtutkinnonsuoritus'
+  )
+
   const commonOppiaineProps = {
     additionalEditableProperties,
     additionalEditableKoulutusmoduuliProperties,
     useOppiaineLaajuus,
     showArviointi,
-    showKeskiarvo: true,
-    showPredictedArviointi: false,
+    showKeskiarvo: !isIbTutkinto,
+    showPredictedArviointi: isIbTutkinto,
     customOsasuoritusTitle,
     customOsasuoritusAlternativesCompletionFn: customOsasuoritusAlternativesFn,
     customKurssitSortFn
@@ -142,6 +157,10 @@ export default ({
         <LukionOppiaineetTableHead
           laajuusyksikkö={laajuusyksikkö}
           showArviointi={showArviointi}
+          showPredictedArviointi={isIbTutkinto}
+          arvosanaHeader={
+            isIbTutkinto ? <Text name="Päättöarvosana" /> : undefined
+          }
         />
         <tbody>
           {aineryhmät.map((ryhmät) =>
