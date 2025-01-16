@@ -19,7 +19,7 @@ jobs:
           architecture: "x64"
           distribution: "zulu"
 
-      - name: Setup Node 16
+      - name: Setup Node
         uses: actions/setup-node@v3
         with:
           node-version: "20.17.0"

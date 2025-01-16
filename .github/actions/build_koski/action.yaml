@@ -18,6 +18,11 @@ runs:
       if: steps.lookup.outputs.cache-hit != 'true'
       with:
         ref: ${{ inputs.commithash }}
+    - name: Setup Node
+      if: steps.lookup.outputs.cache-hit != 'true'
+      uses: actions/setup-node@v3
+      with:
+        node-version: "20.17.0"
     - name: Set up Java 11
       if: steps.lookup.outputs.cache-hit != 'true'
       uses: actions/setup-java@v3
