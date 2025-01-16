@@ -430,14 +430,20 @@ export type FormOptic<S, A> =
 export const getValue =
   <S, A>(optic: FormOptic<S, A>) =>
   (source: S): A | undefined => {
-    switch (optic._tag) {
-      case 'Equivalence':
-      case 'Lens':
-        return $.get(optic)(source)
-      case 'Prism':
-        return $.preview(optic)(source)
-      default:
-        assertNever(optic)
+    try {
+      switch (optic._tag) {
+        case 'Equivalence':
+        case 'Lens':
+          return $.get(optic)(source)
+        case 'Prism':
+          return $.preview(optic)(source)
+
+        default:
+          assertNever(optic)
+      }
+    } catch {
+      console.error('An invalid optic detected')
+      return undefined
     }
   }
 

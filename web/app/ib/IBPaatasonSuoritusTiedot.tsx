@@ -215,6 +215,7 @@ const TheoryOfKnowledgeRows: React.FC<IBTutkinnonTiedotRowsProps> = ({
               path={theoryOfKnowledgePath
                 .optional()
                 .prop('arviointi')
+                .optional()
                 .compose(lastElement())}
               view={ArvosanaView}
               edit={ArvosanaEdit}
