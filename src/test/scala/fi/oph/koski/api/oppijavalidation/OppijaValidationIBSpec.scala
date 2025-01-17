@@ -302,6 +302,71 @@ class OppijaValidationIBSpec extends AnyFreeSpec with KoskiHttpSpec with PutOpis
         }
       }
     }
+
+    "Muutokset IB-tutkinnon rakenteeseen 1.8.2025 alkaen" - {
+      val rajapäivä = LocalDate.of(2025, 8, 1)
+
+      def createOpiskeluoikeusYhdelläKurssilla(
+        alkamispäivä: LocalDate,
+        laajuus: LaajuusOpintopisteissäTaiKursseissa
+      ) = opiskeluoikeus.copy(
+        tila = LukionOpiskeluoikeudenTila(
+          opiskeluoikeusjaksot = List(
+            LukionOpiskeluoikeusjakso(alkamispäivä, LukioExampleData.opiskeluoikeusAktiivinen, Some(ExampleData.valtionosuusRahoitteinen)),
+          )
+        ),
+        suoritukset = List(
+          ibTutkinnonSuoritus(predicted = false, vahvistus = None).copy(
+            osasuoritukset = Some(List(
+              ibAineSuoritus(
+                ibKieli("A", "FI", standardLevel, 1),
+                None,
+                None,
+                List(
+                  (ibKurssi("FIN_S1", "A Finnish standard level 1").copy(laajuus = Some(laajuus)), "4", Some("B"))),
+              ))
+            )
+          )
+        )
+      )
+
+
+      "Ennen rajapäivää" - {
+        "Laajuuden ilmoitus kursseina ok" in {
+          val oo = createOpiskeluoikeusYhdelläKurssilla(rajapäivä.minusDays(1), LaajuusKursseissa(1))
+          setupOppijaWithOpiskeluoikeus(oo) {
+            verifyResponseStatusOk()
+          }
+        }
+
+        "Laajuuden ilmoitus opintopisteinä ei ole ok" in {
+          val oo = createOpiskeluoikeusYhdelläKurssilla(rajapäivä.minusDays(1), LaajuusOpintopisteissä(1))
+          setupOppijaWithOpiskeluoikeus(oo) {
+            verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.laajuudet.osauoritusVääräLaajuus(
+              "Osasuorituksen laajuuden voi ilmoitettaa opintopisteissä vain 1.8.2025 tai myöhemmin alkaneille IB-tutkinnon opiskeluoikeuksille"
+            ))
+          }
+        }
+      }
+
+      "Rajapäivän jälkeen" - {
+        "Laajuuden ilmoitus kursseina ei ole ok" in {
+          val oo = createOpiskeluoikeusYhdelläKurssilla(rajapäivä, LaajuusKursseissa(1))
+          setupOppijaWithOpiskeluoikeus(oo) {
+            verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.laajuudet.osauoritusVääräLaajuus(
+              "Osasuorituksen laajuus on ilmoitettava opintopisteissä 1.8.2025 tai myöhemmin alkaneille IB-tutkinnon opiskeluoikeuksille"
+            ))
+          }
+        }
+
+        "Laajuuden ilmoitus opintopisteinä on ok" in {
+          val oo = createOpiskeluoikeusYhdelläKurssilla(rajapäivä, LaajuusOpintopisteissä(1))
+          setupOppijaWithOpiskeluoikeus(oo) {
+            verifyResponseStatusOk()
+          }
+        }
+      }
+    }
   }
 
   private def opiskeluoikeusIBTutkinnollaWithOppiaineet(oppiaineet: List[IBOppiaineenSuoritus]) = {
