@@ -43,7 +43,15 @@ import { UusiPreIB2015OsasuoritusDialog } from './dialogs/UusiPreIB2015Osasuorit
 import { UusiPreIB2019OppiaineDialog } from './dialogs/UusiPreIB2019OppiaineDialog'
 import { UusiPreIB2019OsasuoritusDialog } from './dialogs/UusiPreIB2019OsasuoritusDialog'
 import { containsPaikallinenSuoritus } from '../util/suoritus'
-import { IBTutkinnonSuoritus } from '../types/fi/oph/koski/schema/IBTutkinnonSuoritus'
+import {
+  IBTutkinnonSuoritus,
+  isIBTutkinnonSuoritus
+} from '../types/fi/oph/koski/schema/IBTutkinnonSuoritus'
+import { append } from '../util/fp/arrays'
+import { PreIBSuoritus2019 } from '../types/fi/oph/koski/schema/PreIBSuoritus2019'
+import { LocalizedString } from '../types/fi/oph/koski/schema/LocalizedString'
+import { Koodistokoodiviite } from '../types/fi/oph/koski/schema/Koodistokoodiviite'
+import { OrganisaatioWithOid } from '../types/fi/oph/koski/schema/OrganisaatioWithOid'
 
 export type IBEditorProps = AdaptedOpiskeluoikeusEditorProps<IBOpiskeluoikeus>
 
@@ -97,6 +105,38 @@ const IBPäätasonSuoritusEditor: React.FC<
     [päätasonSuoritus]
   )
 
+  const fillNimet = useKoodistoFiller()
+
+  const addSuoritusProps = useMemo(() => {
+    const createSuoritus = async (
+      suoritusCtor: (props: {
+        suorituskieli: Koodistokoodiviite<'kieli'>
+        toimipiste: OrganisaatioWithOid
+      }) => IBPäätasonSuoritus
+    ) => {
+      const pohjasuoritus = form.state.suoritukset[0]
+      const uusiSuoritus = suoritusCtor({
+        suorituskieli: pohjasuoritus.suorituskieli,
+        toimipiste: pohjasuoritus.toimipiste
+      })
+      const filledSuoritus = await fillNimet(uusiSuoritus)
+      form.modify('suoritukset')(append(filledSuoritus))
+    }
+
+    const suoritukset = form.state.suoritukset
+    if (suoritukset.length < 2) {
+      return isIBTutkinnonSuoritus(suoritukset[0])
+        ? {
+            suorituksenLisäys: t('lisää pre-IB-suoritus'),
+            onCreateSuoritus: () => createSuoritus(PreIBSuoritus2019)
+          }
+        : {
+            suorituksenLisäys: t('lisää IB-tutkinnon suoritus'),
+            onCreateSuoritus: () => createSuoritus(IBTutkinnonSuoritus)
+          }
+    }
+  }, [form])
+
   return (
     <EditorContainer
       form={form}
@@ -104,6 +144,7 @@ const IBPäätasonSuoritusEditor: React.FC<
       invalidatable={invalidatable}
       onChangeSuoritus={setPäätasonSuoritus}
       createOpiskeluoikeusjakso={LukionOpiskeluoikeusjakso}
+      {...addSuoritusProps}
     >
       <TestIdRoot id={päätasonSuoritus.testId}>
         <IBPäätasonSuoritusTiedot
