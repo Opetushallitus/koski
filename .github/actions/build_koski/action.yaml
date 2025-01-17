@@ -48,7 +48,11 @@ runs:
           ${{ runner.os }}-node-
     - name: Build Koski app + tests
       if: steps.lookup.outputs.cache-hit != 'true'
-      run: mvn test -DskipTests=true --batch-mode
+      env:
+        version: ${{ inputs.commithash }}
+      run: |
+        mvn versions:set -DnewVersion="$version" --batch-mode
+        mvn test -DskipTests=true --batch-mode
       shell: bash
     - name: Cache target dir
       if: steps.lookup.outputs.cache-hit != 'true'

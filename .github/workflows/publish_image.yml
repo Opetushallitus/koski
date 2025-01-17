@@ -86,7 +86,7 @@ jobs:
           version: ${{ inputs.commithash }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          mvn versions:set -DnewVersion="$version"
+          mvn versions:set -DnewVersion="$version" --batch-mode
           mvn war:war deploy:deploy --batch-mode -Dmaven.skip.install=true -DaltDeploymentRepository=github::default::https://maven.pkg.github.com/Opetushallitus/koski
 
       - name: Build, tag, and push image to Amazon ECR
