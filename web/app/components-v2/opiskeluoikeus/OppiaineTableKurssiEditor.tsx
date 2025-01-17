@@ -1,8 +1,8 @@
-import React, { useCallback } from 'react'
+import React, { useCallback, useMemo } from 'react'
 import { emptyLocalizedString, t } from '../../i18n/i18n'
 import {
   createIBLaajuus,
-  useIBLaajuusyksikkö
+  createIBLaajuusyksikkö
 } from '../../ib/components/IBLaajuusEdit'
 import { isIBKurssinSuoritus } from '../../types/fi/oph/koski/schema/IBKurssinSuoritus'
 import { LaajuusKursseissa } from '../../types/fi/oph/koski/schema/LaajuusKursseissa'
@@ -65,9 +65,13 @@ export const OppiaineTableKurssiEditor: React.FC<
       })
     )
 
-  const ibYksikkö = useIBLaajuusyksikkö(
-    kurssi.koulutusmoduuli.laajuus,
-    form.state.alkamispäivä
+  const ibYksikkö = useMemo(
+    () =>
+      createIBLaajuusyksikkö(
+        kurssi.koulutusmoduuli.laajuus,
+        form.state.alkamispäivä
+      ),
+    [kurssi.koulutusmoduuli.laajuus, form.state.alkamispäivä]
   )
   const createLaajuus = useCallback((arvo: number) => {
     if (isPreIBKurssinSuoritus2015(kurssi) || isIBKurssinSuoritus(kurssi)) {

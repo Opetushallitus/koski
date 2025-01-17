@@ -3,13 +3,15 @@ import {
   LaajuusEdit,
   LaajuusEditProps
 } from '../../components-v2/opiskeluoikeus/LaajuusField'
-import { parseISODateNullable, today } from '../../date/date'
+import { todayISODate } from '../../date/date'
 import { Koodistokoodiviite } from '../../types/fi/oph/koski/schema/Koodistokoodiviite'
 import { LaajuusKursseissa } from '../../types/fi/oph/koski/schema/LaajuusKursseissa'
 import { LaajuusOpintopisteissä } from '../../types/fi/oph/koski/schema/LaajuusOpintopisteissa'
 import { LaajuusOpintopisteissäTaiKursseissa } from '../../types/fi/oph/koski/schema/LaajuusOpintopisteissaTaiKursseissa'
+import { config } from '../../util/config'
 
-const laajuusyksikönVaihtumispäivä = new Date(2025, 8 - 1, 1)
+const laajuusyksikönVaihtumispäivä =
+  config().rajapäivät.ibLaajuusOpintopisteinäAlkaen
 
 export type IBLaajuusEditProps = Omit<
   LaajuusEditProps<LaajuusOpintopisteissäTaiKursseissa> & {
@@ -18,8 +20,15 @@ export type IBLaajuusEditProps = Omit<
   'createLaajuus'
 >
 
-export const IBLaajuusEdit: React.FC<IBLaajuusEditProps> = (props) => {
-  const yksikkö = useIBLaajuusyksikkö(props.value, props.alkamispäivä)
+export const IBLaajuusEdit: React.FC<IBLaajuusEditProps> = ({
+  alkamispäivä,
+  ...props
+}) => {
+  const yksikkö = useMemo(
+    () => createIBLaajuusyksikkö(props.value, alkamispäivä),
+    [props.value, alkamispäivä]
+  )
+
   const createLaajuus = useCallback(
     (arvo: number) => {
       return createIBLaajuus(arvo, yksikkö!)
@@ -53,21 +62,15 @@ type IBLaajuusYksikkö = Koodistokoodiviite<
   typeof Kursseja | typeof Opintopisteitä
 >
 
-export const useIBLaajuusyksikkö = (
+export const createIBLaajuusyksikkö = (
   value?: LaajuusOpintopisteissäTaiKursseissa,
   alkamispäivä?: string
 ): IBLaajuusYksikkö =>
-  useMemo(
-    () =>
-      value
-        ? value.yksikkö
-        : laajuusyksikköPäivänPerusteella(
-            (alkamispäivä && parseISODateNullable(alkamispäivä)) || today()
-          ),
-    [value, alkamispäivä]
-  )
+  value
+    ? value.yksikkö
+    : laajuusyksikköPäivänPerusteella(alkamispäivä || todayISODate())
 
-const laajuusyksikköPäivänPerusteella = (pvm: Date): IBLaajuusYksikkö =>
+const laajuusyksikköPäivänPerusteella = (pvm: string): IBLaajuusYksikkö =>
   Koodistokoodiviite({
     koodiarvo: pvm < laajuusyksikönVaihtumispäivä ? Kursseja : Opintopisteitä,
     koodistoUri: 'opintojenlaajuusyksikko'
