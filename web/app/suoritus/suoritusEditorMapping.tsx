@@ -11,11 +11,6 @@ import {
   ebSuorituksenClass,
   eshSuorituksenClass
 } from '../esh/europeanschoolofhelsinkiSuoritus'
-import {
-  CreativityActionService,
-  ExtendedEssay,
-  TheoryOfKnowledge
-} from '../ib/IBYhteinenSuoritus'
 import InternationalSchoolOppiaineetEditor from '../internationalschool/InternationalSchoolOppiaineetEditor'
 import { MuuKuinSäänneltySuoritustaulukko } from '../jotpa/MuuKuinSäänneltySuoritustaulukko'
 import {
@@ -284,13 +279,6 @@ export const resolvePropertyEditor = (
         return null
       }
 
-    // IB
-    case 'theoryOfKnowledge':
-      return <TheoryOfKnowledge model={property.model} />
-    case 'creativityActionService':
-      return <CreativityActionService model={property.model} />
-    case 'extendedEssay':
-      return <ExtendedEssay model={property.model} />
     case 'täydentääTutkintoa':
       return <TäydentääTutkintoaEditor model={property.model} />
 
