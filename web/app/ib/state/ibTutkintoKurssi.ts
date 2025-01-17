@@ -5,16 +5,15 @@ import {
 } from '../../components-v2/createdialog/DialogField'
 import { IBKurssinSuoritus } from '../../types/fi/oph/koski/schema/IBKurssinSuoritus'
 import { Koodistokoodiviite } from '../../types/fi/oph/koski/schema/Koodistokoodiviite'
-import { LaajuusKursseissa } from '../../types/fi/oph/koski/schema/LaajuusKursseissa'
+import { LaajuusOpintopisteissäTaiKursseissa } from '../../types/fi/oph/koski/schema/LaajuusOpintopisteissaTaiKursseissa'
 import { LocalizedString } from '../../types/fi/oph/koski/schema/LocalizedString'
 import { PaikallinenKoodi } from '../../types/fi/oph/koski/schema/PaikallinenKoodi'
-import { createIBKurssinSuoritus } from '../oppiaineet/ibTutkintoKurssi'
-import { uusiPaikallinenKey } from './options'
-import { LaajuusOpintopisteissäTaiKursseissa } from '../../types/fi/oph/koski/schema/LaajuusOpintopisteissaTaiKursseissa'
 import {
   createIBLaajuus,
-  useIBLaajuusyksikkö
+  createIBLaajuusyksikkö
 } from '../components/IBLaajuusEdit'
+import { createIBKurssinSuoritus } from '../oppiaineet/ibTutkintoKurssi'
+import { uusiPaikallinenKey } from './options'
 
 export const UusiIBKurssiKey = uusiPaikallinenKey('ib')
 
@@ -37,9 +36,8 @@ export const useIBTutkintoKurssiState = (
 
   const laajuus = useDialogField<LaajuusOpintopisteissäTaiKursseissa>(
     tunnisteSelected,
-    () => createIBLaajuus(1, laajuusyksikkö)
+    () => createIBLaajuus(1, createIBLaajuusyksikkö(undefined, alkamispäivä))
   )
-  const laajuusyksikkö = useIBLaajuusyksikkö(laajuus.value, alkamispäivä)
 
   const pakollinen = useDialogField<boolean>(tunnisteSelected)
 
