@@ -69,6 +69,14 @@ class KoskiGlobaaliValidator(
               rajapäivät
             )
           },
+          timed(s"${timedBlockname} IBValidation.validateIbOpiskeluoikeusGlobal") {
+            IBValidation.validateIbOpiskeluoikeusGlobal(
+              oppijanOid,
+              opiskeluoikeus,
+              opiskeluoikeusRepository,
+              config,
+            )
+          },
           timed(s"${timedBlockname} DuplikaattiValidation.validateDuplikaatit") {
             oppijanHenkilötiedot match {
               case Some(h) =>

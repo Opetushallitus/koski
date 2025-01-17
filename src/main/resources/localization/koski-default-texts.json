@@ -884,7 +884,7 @@
   "Kaikki opiskeluoikeudet validoitu.": "Kaikki opiskeluoikeudet validoitu.",
   "Kansalaisuus": "Kansalaisuus",
   "Kansanopistojen vapaan sivistystyön koulutus oppivelvollisille": "Kansanopistojen vapaan sivistystyön koulutus oppivelvollisille",
-  "Katso, miltä suoritusote näyttää selaimessa": "Katso, miltä suoritusote näyttää selaimessa",
+  "Katso, miltä suoritusote näyttää selaimessa": "Katso, miltä suoritusote näyttää selaimessa",
   "Katso, miltä suoritusote näyttää selaimessa": "Katso, miltä suoritusote näyttää selaimessa",
   "Kattavat tiedot valituista suorituksista": "Kattavat tiedot valituista suorituksista",
   "Kattavuus": "Kattavuus",
@@ -2441,7 +2441,6 @@
   "Tiedot oppilaitoksesta, jossa opiskeluoikeutesi on": "Tiedot oppilaitoksesta, jossa opiskeluoikeutesi on",
   "Tiedustelu opintopolun tiedoista": "Tiedustelu Opintopolun tiedoista",
   "Tietoa KOSKI-palvelun pyytämistä henkilötiedoista": "Tietoa KOSKI-palvelun pyytämistä henkilötiedoista",
-  "Tietoa KOSKI-palvelun pyytämistä henkilötiedoista": "Tietoa KOSKI-palvelun pyytämistä henkilötiedoista",
   "Tietoja käytetään opiskelijahintaisten matkalippujen myöntämiseen.": "Tietoja käytetään matkalippujen opiskelija-alennuksen myöntämiseen.",
   "Tietojani käyttäneet toimijat": "Tietojani käyttäneet toimijat",
   "Tietojen hakeminen epäonnistui": "Tietojen hakeminen epäonnistui",
@@ -2796,5 +2795,7 @@
   "Opetettavan aineen pätevyys" : "Opetettavan aineen pätevyys",
   "description:Yleisen kielitutkinnon osakokeet" : "Yleisen kielitutkinnon osakokeet",
   "description:Yleisessä kielitutkinnossa 'lasna' vastaa tutkintopäivää,..." : "Yleisessä kielitutkinnossa 'lasna' vastaa tutkintopäivää, 'hyvaksytystisuoritettu' arviointipäivää",
-  "Tutkintopäivä": "Tutkintopäivä"
+  "Tutkintopäivä": "Tutkintopäivä",
+  "description:Kielitutkinnon suoritukset osat": "Kielitutkinnon suoritukset osat",
+  "description:1.8.2025 alkaen laajuus tallennetaan opintopisteissä....": "1.8.2025 alkaen laajuus tallennetaan opintopisteissä. Sitä ennen alkaneisiin opiskeluoikeuksiin tallennetaan kursseina."
 }
