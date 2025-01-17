@@ -15,7 +15,6 @@ import {
   SelectOption
 } from '../../components-v2/controls/Select'
 import { KoodistoSelect } from '../../components-v2/opiskeluoikeus/KoodistoSelect'
-import { LaajuusEdit } from '../../components-v2/opiskeluoikeus/LaajuusField'
 import { AddOppiaineenOsasuoritusDialog } from '../../components-v2/opiskeluoikeus/OppiaineTable'
 import {
   paikallinenKoulutus,
@@ -26,12 +25,12 @@ import { localize, t } from '../../i18n/i18n'
 import { IBKurssi } from '../../types/fi/oph/koski/schema/IBKurssi'
 import { IBKurssinSuoritus } from '../../types/fi/oph/koski/schema/IBKurssinSuoritus'
 import { Koodistokoodiviite } from '../../types/fi/oph/koski/schema/Koodistokoodiviite'
-import { LaajuusKursseissa } from '../../types/fi/oph/koski/schema/LaajuusKursseissa'
 import {
   isPaikallinenKoodi,
   PaikallinenKoodi
 } from '../../types/fi/oph/koski/schema/PaikallinenKoodi'
 import { koodiviiteEquals, koodiviiteId } from '../../util/koodisto'
+import { IBLaajuusEdit } from '../components/IBLaajuusEdit'
 import {
   useIBTutkintoKurssiState,
   UusiIBKurssiKey
@@ -39,14 +38,14 @@ import {
 
 export const UusiIBTutkintoOsasuoritusDialog: AddOppiaineenOsasuoritusDialog<
   IBKurssinSuoritus
-> = ({ onAdd, ...props }) => {
+> = ({ onAdd, alkamispäivä, ...props }) => {
   const {
     preferences: ibKurssit,
     store: storeIBKurssi,
     remove: removeIBKurssi
   } = usePreferences<IBKurssi>(props.organisaatioOid, 'ibkurssi')
 
-  const state = useIBTutkintoKurssiState()
+  const state = useIBTutkintoKurssiState(alkamispäivä)
 
   const tunnisteOptions = useMemo(
     () => [
@@ -149,10 +148,10 @@ export const UusiIBTutkintoOsasuoritusDialog: AddOppiaineenOsasuoritusDialog<
         {state.laajuus.visible && (
           <label>
             {t('Laajuus')}
-            <LaajuusEdit
+            <IBLaajuusEdit
+              alkamispäivä={alkamispäivä}
               value={state.laajuus.value}
               onChange={state.laajuus.set}
-              createLaajuus={(arvo) => LaajuusKursseissa({ arvo })}
             />
           </label>
         )}
