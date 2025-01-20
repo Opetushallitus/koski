@@ -99,3 +99,13 @@ Esimerkki laskentataulukkomuotoisen datan hakemisesta:
     {{var:headers}}
 
     {{json:PaallekkaisetOpiskeluoikeudetXlsx}}
+
+{{title:fi.oph.koski.massaluovutus.luokallejaaneet.MassaluovutusQueryLuokalleJaaneet}}
+{{docs:fi.oph.koski.massaluovutus.luokallejaaneet.MassaluovutusQueryLuokalleJaaneet}}
+
+Esimerkki:
+
+    POST {{var:baseUrl}}/api/massaluovutus HTTP/1.1
+    {{var:headers}}
+
+    {{json:LuokalleJaaneetJson}}
