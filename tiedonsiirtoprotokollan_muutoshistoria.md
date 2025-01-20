@@ -1,5 +1,9 @@
 ## 6.3.2025
 
+- Lisätty IB-opiskeluoikeuden kursseille mahdollisuus tallentaa laajuus kurssien sijaan opintopisteinä.
+
+## 3.3.2025
+
 - Lisätty kielitutkinnon opiskeluoikeus ja sille yleisen kielitutkinnon päätason suoritus
 
 ## 25.2.2025
