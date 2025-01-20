@@ -1,5 +1,10 @@
 # Koskeen tallennettavien tietojen validaatiosäännöt
 
+## 13.3.2025
+
+- Sallitaan laajuuden tallentaminen opintopisteinä IB-opiskeluoikeuden kursseille 1.8.2025 alkaen, jonka myötä laajuuden tallentaminen kursseina ei
+  enää ole mahdollista.
+
 ## 11.3.2025
 
 - Lisätty validaatiot yleiselle kielitutkinnolle:
