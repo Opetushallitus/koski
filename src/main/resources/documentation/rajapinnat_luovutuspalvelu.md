@@ -8,11 +8,22 @@ Kutsut käyttävät REST-tyylistä poiketen POST-metodia, koska pyyntöjen URLit
 erilaisiin lokeihin (esim. kuormantasaimet, virheilmoitukset), ja näihin lokeihin ei haluta henkilötunnuksia.
 
 Pyynnöt luovutuspalveluun tunnistetaan TLS-kättelyn palvelinvarmenteella ja rajataan IP-osoitteen perusteella.
-Tätä varten kutsujan on ilmoitettava käytettävän varmenteen subject-nimi ja ne IP-osoitteet/verkot, joista pyynnöt tehdään.
+Tätä varten kutsujan on ilmoitettava käytettävän varmenteen subject-tieto ja ne IP-osoitteet/verkot, joista pyynnöt tehdään.
 
-Palvelinvarmenteen on oltava luotettavan CA:n myöntämä (yleisesti selaimien hyväksymät CA:t tai Väestörekisterikeskus),
+Palvelinvarmenteen on oltava luotettavan CA:n myöntämä (yleisesti selaimien hyväksymät CA:t tai DVV),
 ja sen "extended key usage" -kentässä on sallittava "client authentication" -käyttötarkoitus.
-Salausprotokollan on oltava TLS 1.2 tai uudempi.
+Salausprotokollan on oltava TLS 1.2 tai 1.3.
+
+Varmenneketjun maksimipituus on 4 eli välivarmenteita saa olla ketjussa korkeintaan kaksi.
+
+KOSKI-palvelu tarvitsee varmenteesta vain subject-tiedon, mutta kätevintä voi olla toimittaa fullchain.pem-tiedosto,
+mistä KOSKI-palvelun kehittäjät saavat tunnistetiedon varmasti oikeassa muodossa.
+
+Sertifikaatin uusimisprosessi kannattaa rakentaa niin, että subject-nimi ei siinä muutu,
+jolloin KOSKI-palvelulle ei tarvitse toimittaa uutta nimeä sertifikaatin uusimisen jälkeen.
+
+Varmenteen päivittämisestä tarvitsee viestiä KOSKI-palvelulle vain siinä tapauksessa,
+että varmenteen subject-kenttä muuttuu tai IP-osoitteet vaihtuvat.
 
 Rajapintojen käyttöönoton yhteydessä on saatavissa pyynnöstä myös lista esimerkkihenkilöistä,
 joiden avulla rajapintaintegraatiota on mahdollista testata.
