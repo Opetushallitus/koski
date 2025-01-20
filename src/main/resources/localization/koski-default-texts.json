@@ -2768,5 +2768,6 @@
   "Aineryhmä": "Aineryhmä",
   "Oppiaineen lisäys": "Oppiaineen lisäys",
   "IB-kurssit": "IB-kurssit",
-  "Paikalliset lukion kurssit": "Paikalliset lukion kurssit"
+  "Paikalliset lukion kurssit": "Paikalliset lukion kurssit",
+  "description:1.8.2025 alkaen laajuus tallennetaan opintopisteissä...." : "1.8.2025 alkaen laajuus tallennetaan opintopisteissä. Sitä ennen alkaneisiin opiskeluoikeuksiin tallennetaan kursseina."
 }
