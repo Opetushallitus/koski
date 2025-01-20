@@ -8,6 +8,7 @@ import fi.oph.koski.kela.KelaSchema
 import fi.oph.koski.koodisto.Koodistot
 import fi.oph.koski.koskiuser.Unauthenticated
 import fi.oph.koski.luovutuspalvelu.HslResponse
+import fi.oph.koski.massaluovutus.luokallejaaneet.MassaluovutusQueryLuokalleJaaneetResult
 import fi.oph.koski.massaluovutus.suoritusrekisteri.SureResponse
 import fi.oph.koski.massaluovutus.valintalaskenta.ValintalaskentaResult
 import fi.oph.koski.migri.MigriSchema
@@ -127,6 +128,10 @@ class DocumentationApiServlet(application: KoskiApplication) extends KoskiSpecif
 
   get("/suoritusrekisteri-result.json") {
     SureResponse.schemaJson
+  }
+
+  get("/luokalle-jaaneet-result.json") {
+    MassaluovutusQueryLuokalleJaaneetResult.schemaJson
   }
 
   get("/omadata-oauth2-suoritetut-tutkinnot-oppija-schema.json") {

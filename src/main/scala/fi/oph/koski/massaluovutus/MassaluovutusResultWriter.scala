@@ -7,6 +7,8 @@ import fi.oph.koski.koskiuser.KoskiSpecificSession
 import fi.oph.koski.localization.LocalizationReader
 import fi.oph.koski.raportit.{DataSheet, ExcelWriter, OppilaitosRaporttiResponse}
 import fi.oph.koski.util.CsvFormatter
+import org.json4s.JValue
+import org.json4s.jackson.JsonMethods
 import software.amazon.awssdk.core.internal.sync.FileContentStreamProvider
 import software.amazon.awssdk.http.ContentStreamProvider
 
@@ -56,6 +58,9 @@ case class QueryResultWriter(
 
   def putJson[T: TypeTag](name: String, obj: T)(implicit user: KoskiSpecificSession): Unit =
     putJson(name, JsonSerializer.write(obj))
+
+  def putJson(name: String, json: JValue): Unit =
+    putJson(name, JsonMethods.pretty(json))
 
   def createCsv[T <: Product](name: String, partitionSize: Option[Long])(implicit manager: Using.Manager): CsvStream[T] =
     manager(new CsvStream[T](s"$queryId-$name", partitionSize, { (file, partition) =>
