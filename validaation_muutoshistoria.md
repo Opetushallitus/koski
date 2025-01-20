@@ -1,5 +1,10 @@
 # Koskeen tallennettavien tietojen validaatiosäännöt
 
+## x.1.2025
+
+- Sallitaan laajuuden tallentaminen opintopisteinä IB-opiskeluoikeuden kursseille 1.8.2025 alkaen, jonka myötä laajuuden tallentaminen kursseina ei
+  enää ole mahdollista.
+
 ## 20.12.2024
 
 - Sallittu oppilaitoksen vaihtaminen oppilaitoksesta 1.2.246.562.10.97089006874 oppilaitokseen 1.2.246.562.10.22909222972,
