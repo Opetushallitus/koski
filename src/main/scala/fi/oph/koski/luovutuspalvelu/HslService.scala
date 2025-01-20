@@ -20,6 +20,8 @@ class HslService(application: KoskiApplication) extends Logging {
         fetchOppija(hetu).map { oppija =>
           val suostumuksenPaattymispaiva = getPaattymispaiva(oppijaHenkilö.oid)
 
+          logger.info("Construct HslResponse for " + oppijaHenkilö.oid)
+
           HslResponse(
             henkilö = HslHenkilo.fromOppija(oppijaHenkilö),
             opiskeluoikeudet = oppija.opiskeluoikeudet.flatMap(oo => HslOpiskeluoikeus(oo)).toList,
