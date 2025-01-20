@@ -1,3 +1,7 @@
+## x.2.2025
+
+- Lisätty IB-opiskeluoikeuden kursseille mahdollisuus tallentaa laajuus kurssien sijaan opintopisteinä.
+
 ## 25.2.2025
 
 - Poistetaan maksuttomuustiedon vaatimus European School of Helsinki-opiskeluoikeuksista
