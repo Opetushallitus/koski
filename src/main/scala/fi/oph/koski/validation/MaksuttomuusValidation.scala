@@ -13,6 +13,8 @@ import fi.oph.koski.util.DateOrdering.localDateOrdering
 import fi.oph.koski.util.Optional.coalesce
 import fi.oph.koski.util.{DateOrdering, FinnishDateFormat}
 import fi.oph.koski.valpas.opiskeluoikeusrepository.ValpasRajapäivätService
+import fi.oph.koski.valpas.oppija.ValpasOppijaLaajatTiedotService
+import fi.oph.koski.valpas.valpasuser.ValpasSession
 
 import java.time.LocalDate
 import java.time.LocalDate.{of => date}
@@ -25,10 +27,14 @@ object MaksuttomuusValidation extends Logging {
                                         opiskeluoikeusRepository: CompositeOpiskeluoikeusRepository,
                                         rajapäivät: ValpasRajapäivätService,
                                         oppijanumerorekisteri: OpintopolkuHenkilöFacade,
+                                        valpasOppijaLaajatTiedotService: ValpasOppijaLaajatTiedotService,
                                         config: Config,
                                        ): HttpStatus = {
     val oppijanSyntymäpäivä = oppijanHenkilötiedot.flatMap(_.syntymäaika)
     val perusopetuksenAikavälit = opiskeluoikeusRepository.getPerusopetuksenAikavälitIlmanKäyttöoikeustarkistusta(oppijanOid)
+    val valpasOppija = valpasOppijaLaajatTiedotService.getOppijaLaajatTiedot(
+      oppijaOid = oppijanOid, haeMyösVainOppijanumerorekisterissäOleva = false, palautaLukionAineopinnotJaYOTutkinnotJosMyösAmmatillisiaOpintoja = false
+    )(ValpasSession.untrustedUser)
 
     val maksuttomuustietoSiirretty =
       opiskeluoikeus
@@ -67,12 +73,22 @@ object MaksuttomuusValidation extends Logging {
     val eiLaajennettuOppivelvollinenSyyt =
       eiOppivelvollisuudenLaajentamislainPiirissäSyyt(oppijanSyntymäpäivä, perusopetuksenAikavälit, rajapäivät)
 
+
+    val maksullinenKoulutus = opiskeluoikeus
+      .lisätiedot
+      .collect { case l: MaksuttomuusTieto => l.maksuttomuus.toList.flatten }
+      .exists(_.exists(!_.maksuton))
+    val vapautettuOppivelvollisuudesta = valpasOppija.map(_.oppivelvollisuudestaVapautettu).getOrElse(false)
+    val vapautettuOppivelvollisuudestaJaKoulutusMaksuton = vapautettuOppivelvollisuudesta && maksullinenKoulutus
+    val oppijaOnHetuton = oppijanHenkilötiedot.exists(_.hetu.isEmpty)
+
     val (maksuttomuustietoVaaditaan, maksuttomuustietoVaaditaanLog) = maksuttomuustiedotVaaditaan(
       opiskeluoikeus,
       oppijanHenkilötiedot,
       perusopetuksenAikavälit,
       rajapäivät,
       oppijanumerorekisteri,
+      vapautettuOppivelvollisuudesta,
       config,
     )
 
@@ -93,6 +109,14 @@ object MaksuttomuusValidation extends Logging {
         (
           preIBMaksuttomuusTietoEiSallittu(opiskeluoikeus, rajapäivät),
           s"oppija on aloittanut Pre-IB opinnot aiemmin kuin ${rajapäivät.lakiVoimassaPeruskoulustaValmistuneillaAlku.format(FinnishDateFormat.finnishDateFormat)}"
+        ),
+        (
+          vapautettuOppivelvollisuudestaJaKoulutusMaksuton,
+          s"oppija on vapautettu oppivelvollisuudesta"
+        ),
+        (
+          oppijaOnHetuton,
+          s"oppijan tiedoista ei löydy henkilötunnusta"
         ),
       )
 
@@ -186,6 +210,7 @@ object MaksuttomuusValidation extends Logging {
     perusopetuksenAikavälit: Seq[Päivämääräväli],
     rajapäivät: ValpasRajapäivätService,
     oppijanumerorekisteri: OpintopolkuHenkilöFacade,
+    vapautettuOppivelvollisuudesta: Boolean,
     config: Config,
   ): (Boolean, MaksuttomuustiedotVaaditaanLogData) = {
     val oppijanSyntymäpäivä = oppijanHenkilötiedot.flatMap(_.syntymäaika)
@@ -225,7 +250,9 @@ object MaksuttomuusValidation extends Logging {
       eiOleValmistunutPeruskoulustaEnnenOppivelvollisuuslainVoimaanAstumista &&
       opinnotAlkaneetEnnenKuinMaksuttomuudenYläikärajaOnTäyttynyt &&
       koulutusKelpaaOppivelvollisuudenSuorittamiseen &&
-      oppijaOnKotikuntahistorianPerusteellaLainPiirissä
+      oppijaOnKotikuntahistorianPerusteellaLainPiirissä &&
+      // 6.oppijaa ei ole vapautettu oppivelvollisuudesta
+      !vapautettuOppivelvollisuudesta
 
     val logData = MaksuttomuustiedotVaaditaanLogData(originalResult, newResult)
 
