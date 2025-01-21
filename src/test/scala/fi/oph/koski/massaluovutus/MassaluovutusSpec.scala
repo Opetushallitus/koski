@@ -8,11 +8,13 @@ import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.koskiuser.{KoskiSpecificSession, MockUsers, UserWithPassword}
 import fi.oph.koski.log.AuditLogTester
+import fi.oph.koski.massaluovutus.luokallejaaneet.MassaluovutusQueryLuokalleJaaneet
 import fi.oph.koski.massaluovutus.organisaationopiskeluoikeudet.{MassaluovutusQueryOrganisaationOpiskeluoikeudet, MassaluovutusQueryOrganisaationOpiskeluoikeudetCsv, MassaluovutusQueryOrganisaationOpiskeluoikeudetJson, QueryOrganisaationOpiskeluoikeudetCsvDocumentation}
 import fi.oph.koski.massaluovutus.paallekkaisetopiskeluoikeudet.MassaluovutusQueryPaallekkaisetOpiskeluoikeudet
 import fi.oph.koski.massaluovutus.suoritusrekisteri.{SuoritusrekisteriMuuttuneetJalkeenQuery, SuoritusrekisteriOppijaOidsQuery}
 import fi.oph.koski.massaluovutus.valintalaskenta.ValintalaskentaQuery
 import fi.oph.koski.organisaatio.MockOrganisaatiot
+import fi.oph.koski.organisaatio.MockOrganisaatiot.jyväskylänNormaalikoulu
 import fi.oph.koski.raportit.RaportitService
 import fi.oph.koski.schema.KoskiSchema.strictDeserialization
 import fi.oph.koski.schema.{KoskeenTallennettavaOpiskeluoikeus, LocalizedString, PerusopetuksenVuosiluokanSuoritus}
@@ -889,6 +891,57 @@ class MassaluovutusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers wit
       jsonFiles.head.extract[Seq[JObject]].length should equal(1)
     }
   }
+
+  "Luokalle jäämiset" - {
+    "JSON" - {
+      "Ei onnistu väärän organisaation tietoihin" in {
+        addQuery(MassaluovutusQueryLuokalleJaaneet(organisaatioOid = Some(MockOrganisaatiot.jyväskylänNormaalikoulu)), MockUsers.helsinkiKatselija) {
+          verifyResponseStatus(403, KoskiErrorCategory.forbidden())
+        }
+      }
+
+      "Ei onnistu, jos organisaatiota ei ole annettu, eikä sitä voida päätellä yksiselitteisesti" in {
+        addQuery(MassaluovutusQueryLuokalleJaaneet(organisaatioOid = None), MockUsers.kahdenOrganisaatioPalvelukäyttäjä) {
+          verifyResponseStatus(400, KoskiErrorCategory.badRequest.massaluovutus.eiYksiselitteinenOrganisaatio())
+        }
+      }
+
+      "Ei onnistu ilman oikeuksia sensitiivisen datan lukemiseen" in {
+        addQuery(MassaluovutusQueryLuokalleJaaneet(organisaatioOid = Some(MockOrganisaatiot.jyväskylänNormaalikoulu)), MockUsers.tallentajaEiLuottamuksellinen) {
+          verifyResponseStatus(403, KoskiErrorCategory.forbidden())
+        }
+      }
+
+      "Kysely onnistuu ja palauttaa oikeat tiedostot" in {
+        AuditLogTester.clearMessages()
+        val user = MockUsers.helsinkiKatselija
+        val queryId = addQuerySuccessfully(MassaluovutusQueryLuokalleJaaneet(organisaatioOid = None), user) { response =>
+          response.status should equal(QueryState.pending)
+          response.query.asInstanceOf[MassaluovutusQueryLuokalleJaaneet].organisaatioOid should contain(MockOrganisaatiot.helsinginKaupunki)
+          response.queryId
+        }
+        val complete = waitForCompletion(queryId, user)
+
+        complete.files should have length 2
+        complete.files.foreach(verifyResult(_, user))
+
+        AuditLogTester.verifyLastAuditLogMessage(Map(
+          "operation" -> "OPISKELUOIKEUS_KATSOMINEN",
+          "target" -> Map(
+            "oppijaHenkiloOid" -> KoskiSpecificMockOppijat.perusopetuksenTiedonsiirto.oid,
+          ),
+        ))
+      }
+
+      "Toisen käyttäjän kyselyn tietoja ei voi hakea" in {
+        val queryId = addQuerySuccessfully(MassaluovutusQueryLuokalleJaaneet(organisaatioOid = None), MockUsers.helsinkiKatselija)(_.queryId)
+        getQuery(queryId, MockUsers.jyväskylänKatselijaEsiopetus) {
+          verifyResponseStatus(404, KoskiErrorCategory.notFound())
+        }
+      }
+    }
+  }
+
 
   def addQuery[T](query: MassaluovutusQueryParameters, user: UserWithPassword)(f: => T): T =
     post("api/massaluovutus", JsonSerializer.writeWithRoot(query), headers = authHeaders(user) ++ jsonContent)(f)
