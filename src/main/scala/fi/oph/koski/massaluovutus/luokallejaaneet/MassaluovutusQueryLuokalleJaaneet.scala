@@ -10,10 +10,13 @@ import fi.oph.koski.history.OpiskeluoikeusHistoryPatch
 import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.koskiuser.{AccessType, KoskiSpecificSession, Rooli}
-import fi.oph.koski.log.Logging
+import fi.oph.koski.log.KoskiAuditLogMessageField.{hakuEhto, oppijaHenkiloOid}
+import fi.oph.koski.log.KoskiOperation.OPISKELUOIKEUS_KATSOMINEN
+import fi.oph.koski.log.{AuditLog, KoskiAuditLogMessage, Logging}
 import fi.oph.koski.massaluovutus.MassaluovutusUtils.defaultOrganisaatio
 import fi.oph.koski.massaluovutus.{MassaluovutusQueryParameters, QueryFormat, QueryResultWriter}
-import fi.oph.koski.schema.{KoskeenTallennettavaOpiskeluoikeus, PerusopetuksenOpiskeluoikeus}
+import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusQueryContext
+import fi.oph.koski.schema.PerusopetuksenOpiskeluoikeus
 import fi.oph.koski.schema.annotation.EnumValues
 import fi.oph.scalaschema.annotation.{Description, Title}
 import org.json4s.jackson.JsonMethods
@@ -47,6 +50,7 @@ case class MassaluovutusQueryLuokalleJaaneet (
               val response = MassaluovutusQueryLuokalleJaaneetResult(oo, luokka, oppijaOid)
               writer.putJson(s"${opiskeluoikeusOid}_luokka_$luokka", response)
             }
+          auditLog(oppijaOid)
         }
     }
 
@@ -79,7 +83,18 @@ case class MassaluovutusQueryLuokalleJaaneet (
       GROUP BY
         r_opiskeluoikeus.oppija_oid,
         r_opiskeluoikeus.opiskeluoikeus_oid
+      ORDER BY
+        r_opiskeluoikeus.oppija_oid,
+        r_opiskeluoikeus.opiskeluoikeus_oid
     """.as[Tuple2[String, String]])
+
+  private def auditLog(oppijaOid: String)(implicit user: KoskiSpecificSession): Unit = {
+    AuditLog.log(KoskiAuditLogMessage(
+      OPISKELUOIKEUS_KATSOMINEN,
+      user,
+      Map(oppijaHenkiloOid -> oppijaOid),
+    ))
+  }
 }
 
 case class LuokalleJääntiAccumulator(
