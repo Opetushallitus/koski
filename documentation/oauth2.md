@@ -1,6 +1,12 @@
 # OAuth 2.0:n käyttöönotto suostumusperusteisessa kansalaisen tietojen luovutuksessa kolmansille osapuolille
 
-## KOSKI-palvelun nykytoteutuksen tukemat tietojenluovutustavat
+Tämä dokumentti kuvaa OAuth2 -arkkitehtuuria ja toteutusta yleisemmin.
+
+Toteutuksen tekninen dokumentaatio rajapintaintegraatioita tekeville on osoitteessa https://testiopintopolku.fi/koski/dokumentaatio/rajapinnat/oauth2/omadata
+
+Sisäisen toteutuksen yksityiskohtia on dokumentissa [oauth2toteutus.md](oauth2toteutus.md)
+
+## KOSKI-palvelun aiemman toteutuksen tukemat tietojenluovutustavat
 
 OPH:n ulkopuolisten osapuolten backendit autentikoituvat Koskeen tällä hetkellä seuraavilla tavoilla:
 - (A1) Basic auth: opintohallintojärjestelmät
@@ -15,15 +21,15 @@ Käyttäjä voi itse rajoittaa ja määritellä tarkemmin jakamansa tietosisäll
 - (C1) Luomalla KOSKI-järjestelmän Oma Opintopolku -käyttöliittymässä jakolinkin (URL), jonka
 hän voi toimittaa esim. sähköpostitse tai johonkin copy-pasteamalla haluamilleen tahoille
 
-Uusi tapa, joka esim. digilompakkoa ja muita vastaavia palveluita varten tarvitaan on yhdistelmä näiden jo
+Uusi tapa, joka esim. digilompakkoa ja muita vastaavia palveluita varten kehitettiin on yhdistelmä näiden jo
 toteuttamista asioista, eli:
 - kolmannen osapuolen palvelun pitää käyttää KOSKI-järjestelmää autentikoituna ja tunnistettavana (kuten A1-A3)
 - hyväksyntä-käyttöliittymät loppukäyttäjälle kuten HSL:n tapauksessa (B1)
 - mahdollisuus rajoittaa ja valita haluttu osuus tietosisällöstä, kuten jakolinkillä (C1)
 
-## Toteutusehdotus
+## Toteutuksen kuvaus
 
-Ehdotus on käyttää OAuth 2.0 -standardin mukaista authorization code -flowta, käyttäen backendien väliseen autentikointiin
+Käytetään OAuth 2.0 -standardin mukaista authorization code -flowta, käyttäen backendien väliseen autentikointiin
 olemassaolevaa KOSKI-luovutuspalvelun jo tukemaa Mutual TLS (mTLS) client certificate -tunnistusta:
 
 ![OAuth 2.0 ehdotus](kuvat/png/oauth2.png)
@@ -37,19 +43,17 @@ olemassaolevaa KOSKI-luovutuspalvelun jo tukemaa Mutual TLS (mTLS) client certif
 [png/oauth2tietokanta.png](kuvat/png/oauth2tietokanta.png)
 [svg/oauth2tietokanta.svg](kuvat/svg/oauth2tietokanta.svg)
 
-Jaetun datan sisältö (vaiheen 6. vastausviestissä) on samanmuotoinen kuin jo toteutetuissa ratkaisuissa.
-Ks. esim. https://virkailija.testiopintopolku.fi/koski/json-schema-viewer/?schema=suoritetut-tutkinnot-oppija-schema.json , mikä sopisi melkein
-sellaisenaan esim. scope:n "opiskeluoikeudet:suoritetut_tutkinnot henkilötiedot:nimi_ja_syntymäaika" mukaiseksi jaetuksi JSON-sisällöksi.
+Jaetun datan sisältö (vaiheen 6. vastausviestissä) on samanmuotoinen kuin jo toteutetuissa suoritusjakolinkkiratkaisuissa.
 
 ## Toteutusehdotuksen arkkitehtuuripäätökset
 
-Otsikkoina on ehdotettu päätös. Otsikossa kirjaimen lisäksi oleva numerokoodi indikoi, että dokumentoituna otsikon
+Otsikkoina on tehty päätös. Otsikossa kirjaimen lisäksi oleva numerokoodi indikoi, että dokumentoituna otsikon
 alla on myös muita hylättyjä vaihtoehtoja.
 
 ### (A.1) käyttäjä aloittaa tietojen luovutus -flown client-applikaatiossa.
 
 Tämä on yleinen OAauth 2.0 -toteutus, joka tukee useita käyttötapauksia sellaisenaan. Allaolevat muut vaihtoehdot voi
-toteuttaa haluttaessa tämän rinnalle.
+toteuttaa haluttaessa myöhemmin tämän rinnalle.
 
 (A.2) Tälle toinen/lisävaihtoehto voisi olla, että käyttäjä aloittaa flown ja tekee valinnat KOSKI-palvelun käyttöliittymässä, ja luo
 KOSKI-käyttöliittymässä linkin/QR-koodin, jota voi käyttää hyödyntäjä-applikaatiossa. Tässä on vielä seuraavat lisävaihtoehdot:
@@ -71,7 +75,7 @@ URL-osoitteista, joihin luotu linkki käyttäjän selaimen/mobiilikäyttöliitty
 Jotta saadaan käytettyä olemassaolevaa, käytössä toimivaa ja jo ennestään auditoitua tunnistamistoteutusta. Myös access token:illa
 tehdyt pyynnöt käyttävät tätä mekanismia.
 
-Tämä vaatii ainakin sen verran työtä nginx-luovutuspalveluumme, että muokataan virhekoodit ja -ilmoitukset OAuth 2.0:n mTLS-autentikointitavan
+Tätä varten nginx-toteutuksen virhekoodit ja -ilmoitukset on muokattu OAuth 2.0:n mTLS-autentikointitavan
 (https://www.rfc-editor.org/rfc/rfc8705.html) mukaisiksi.
 
 (B.2) Toinen vaihtoehto tähän autentikointiin olisi: Eräs OAuth 2.0 -standardin tarjoamien keinojen mukainen vaihtoehto
@@ -87,13 +91,15 @@ KOSKI-backendiin, mitkä pitäisi luultavasti myös auditoida erikseen. Hallinta
 ilman käyttöliittymiä työmäärän säästämiseksi, mutta manuaalinenkin tapa vaatii jonkin turvallisen tavan välittää client
 secretin sisältö hyödyntäjille, mitä client certtejä käytettäessä ei tarvitse tehdä.
 
-KOSKI-backendissä Client:in tunnistamisen client secretillä voisi tehdä edelleen ainakin 2 eri tavalla:
+KOSKI-backendissä Client:in tunnistamisen client secretillä on tehty näin:
 
 (B.2.1) KOSKI-luovutuspalvelu yhdistää client id + client secret:in johonkin Opintopolun
 käyttäjätunnukseen, jota käyttämällä edelleenohjaa liikenteen KOSKI-backendille. Eli samoin
-kuin nykyinen luovutuspalvelu tekee client certiä käyttäen. Tämä olisi konsistenttia
-nykyisen luovutuspalvelun kanssa ja mahdollistaisi suoraan käyttäjätunnuksen oikeuksien
+kuin nykyinen luovutuspalvelu tekee client certiä käyttäen. Tämä on konsistenttia
+nykyisen luovutuspalvelun kanssa ja mahdollistaa suoraan käyttäjätunnuksen oikeuksien
 hallinnan Opintopolun nykyisillä käyttöliittymillä.
+
+Hylätty vaihtoehto:
 
 (B.2.2) Client kutsuu suoraan KOSKI-backendiä, missä oikeudet tarkistetaan ilman Opintopolku-
 loginia. Tämä olisi mahdollisesti pienempitöinen toteuttaa, kun KOSKI-backendissä voisi mahdollisesti
@@ -114,6 +120,9 @@ on jo toteutettu muille tiedonluovutustavoille (HSL, linkkijaot).
 Tämä on jätetty kuvaamatta, loginin oletetaan tapahtuvan olemassaolevalla Oman opintopolun mekanismilla ja sen tukemilla
 käyttäjän autentikointitavoilla.
 
+Tämän rajoitteiden vuoksi jouduttiin toteuttamaan melko monimutkainen workaround-route, ks. sekvenssikaavio
+[oauth2toteutus.md](oauth2toteutus.md):ssa
+
 ### (E) Käytetään OAauth 2.0:n scopeja jaetun tietosisällön valitsemisessa
 
 Scope voi sisältää esim. opiskeluoikeuden/päätason suorituksen tunnistamiseen riittäviä tietoja, tai olla jokin merkkijono, jolla
@@ -125,13 +134,17 @@ esim. kuinka tarkat henkilötiedot välitetään.
 Teoriassa OAuth 2.0 mahdollistaa myös rajoitetumman scopen erillisten access token:ien luomisen saman
 authorization code:n avulla, mutta tämän tukeminen olisi turhaa monimutkaisuutta
 
-### (G) Access tokenien voimassaoloaika on sama kuin authorization codella eikä refresh tokeneita käytetä
+### (G.1) Authorization codella on lyhyt voimassaoloaika ja access tokenilla tarvittaessa pitkä. Refresh tokeneita ei käytetä
 
 Erillisiä refresh tokeneita ei käytetä, koska liikenne backendien välillä autentikoidaan aina client cert:llä (B.1):n mukaisesti.
 Jos päätetäänkin tukea muita backendien autentikointitapoja, tulee tämä kuitenkin mahdollisesti toteuttaa.
 
-Käyttäjän tehdessä revoken authorization code:lle, voidaan välittömästi poistaa kaikki sen kautta luodut access tokenitkin. Yksittäisen
+Käyttäjän tehdessä revoken authorization code:lle, poistetaan sen kautta luodut access tokenitkin. Yksittäisen
 hyödyntäjän käyttöoikeudet voi myös tarvittaessa poistaa nopeasti muuttamalla käyttäjätunnuksen käyttöoikeuksia Opintopolussa.
+
+Hylätty vaihtoehto:
+
+(G.2) Access tokenien voimassaoloaika on sama kuin authorization codella
 
 ### (H) client id = Opintopolun käyttäjätunnus
 
@@ -150,9 +163,6 @@ KOSKI-backendiin ei ole tarjolla valmista hyvin olemassoleviin HTTP-palvelintote
 Tämä aiheuttaa vähän lisätyötä, kun OAuth 2.0:n headerformaatit yms. pitää selvittää ja toteuttaa itse detaljitasolla, mutta toisaalta
 meidän ei tarvitse toteuttaa kuin authorization code -flow, joten eri viestinvaihtoja on kuitenkin melko rajallinen määrä.
 
-(I.2) *TODO, tsekkaa Java-kirjastot* Vaikka sopivaa Scala -kirjastoa ei ole löytynyt, pitäisi vielä tarkistaa, löytyisikö jokin valmis
-Java-kirjasto, jonka voisimme ottaa käyttöön.
-
 ### (J) Vaaditaan clienteilta PKCE:n toteuttaminen authorization code:n luomisessa
 
 PKCE estää tietyt tietoturvahyökkäykset, ja mahdollistaa helpomman laajennettavuuden mahdollisesti jatkossa stand-alone mobiili- tai web-clienteille.
@@ -161,7 +171,13 @@ PKCE estää tietyt tietoturvahyökkäykset, ja mahdollistaa helpomman laajennet
 
 machine-to-machine on eri flow kuin authorization code, ja sitä joka tapauksessa vasta suunnitellaan eikä toteuteta.
 
-### (L.1) Järjestelmän jatkuvaa testaamista tukemaan HSL:n mekanismin toteutus muutetaan KOSKI-palvelussa sisäisesti käyttämään OAuth 2.0 -luovutusta
+### (L.2) Järjestelmän testausta varten toteutetaan oma testi-client
+
+Pyörii testiympäristöissä, ks. linkit https://testiopintopolku.fi/koski/dokumentaatio/rajapinnat/oauth2/omadata
+
+Hylätty:
+
+(L.1) Järjestelmän jatkuvaa testaamista tukemaan HSL:n mekanismin toteutus muutetaan KOSKI-palvelussa sisäisesti käyttämään OAuth 2.0 -luovutusta
 
 HSL:n ei tarvitsisi tehdä muutoksia, mutta KOSKI-tiimissä OAuth 2.0 :lla olisi aktiivista jatkuvaa käyttöä. Tätä toteutettaessa testaisimme
 järjestelmän myös simuloimalla jotain Client:ia tuotantoympäristössä, mikä meidän pitää joka tapauksessa itse toteutusvaiheessa tehdä jollain
@@ -173,9 +189,6 @@ code_challenge + -verifier:ien tallentamiseksi. Nykyinen HSL:lle erillisessä la
 pitäisi myös siirtää KOSKI-backendiin yhdeksi mahdolliseksi "scope":ksi tietojenluovutuksessa, mitä on suunniteltu tehtäväksi muutenkin.
 Tämä myös yksinkertaistaisi HSL-logiikan ylläpitoa, ja tämän tekemisen jälkeen olisi HSL:nkin helppo siirtyä halutessaan ja
 lain/sen tulkintojen salliessa tähän ilman palveluväylää toimivaan tietojenluovutustapaan.
-
-(L.2) Jos tämä osoittautuu liian haastavaksi, niin voidaan myös tehdä vain testi-client. Joka tapauksessa on hyvä testata järjestelmä esim.
-pienellä node-applikaatiolla, joka pyörii vähintään testiopintopolussa.
 
 ### (M) KOSKI-palvelussa tallennetaan tieto siitä, mitä scope:ja kullakin client_id:llä on lupa käyttää
 
@@ -226,60 +239,6 @@ Tämä on tärkeää, jotta käyttäjä pystyy myös itse mahdollisimman helpost
 
 Hyödyntäjätoteutuksen toiminta keskeytetään ainakin. jos code_challenge ei vaihdu kaikissa pyynnöissä. Muitakin vastaavia menetelmiä saattaa kannattaa toteuttaa, ks. https://www.ietf.org/archive/id/draft-ietf-oauth-security-topics-25.html ja https://www.rfc-editor.org/rfc/rfc6819.html .
 
-### TODO
+### (T) Authorization code välitetään post response -modella
 
-*TODO: Tutki, pitäisikö sallia ainoastaan POST response mode:n käyttö? https://openid.net/specs/oauth-v2-form-post-response-mode-1_0.html*
-
-# Sekvenssikaavio toteutuksen toiminnasta
-
-![OAuth 2.0 servletit Koskessa](kuvat/png/oauth2sekvenssiservleteissa.png)
-[oauth2sekvenssiservleteissa.puml](kuvat/oauth2sekvenssiservleteissa.puml)
-[png/oauth2sekvenssiservleteissa.png](kuvat/png/oauth2sekvenssiservleteissa.png)
-[svg/oauth2sekvenssiservleteissa.svg](kuvat/svg/oauth2sekvenssiservleteissa.svg)
-
-    PARAMS:
-    client_id             =dvvdigilompakkopk
-    redirect_uri          <DVV:n kertoma ja Koskeen rekisteröity callback-URI>
-    state
-    scope                 Esim. HENKILOTIEDOT_SYNTYMAAIKA HENKILOTIEDOT_NIMI OPISKELUOIKEUDET_SUORITETUT_TUTKINNOT
-    response_type         =code
-    response_mode         =form_post
-    code_challenge_method =S256
-    code_challenge
-      Virhetilanteissa voi sisältää myös:
-    error
-    error_id
-
-    RESPONSE_PARAMS:
-    client_id
-    redirect_uri
-    state
-    code
-      Virhetilanteissa code:n sijasta voi sisältää:
-    error
-    error_description
-    error_uri
-
-    RESPONSE:
-    state
-    code
-      Virhetilanteissa code:n sijasta voi sisältää:
-    error
-    error_description
-    error_uri
-
-    CODE_PARAMS:
-    grant_type            =authorization_code
-    code
-    code_verifier
-    redirect_uri
-    client_id
-
-    TOKEN_RESPONSE:
-    access_token
-    token_type        =Bearer
-    expires_in
-
-# Testi-osoitteista
-
-localhost testi-uri http://localhost:7021/koski/omadata-oauth2/authorize?client_id=oauth2client&response_type=code&response_mode=form_post&redirect_uri=%2Fkoski%2Fomadata-oauth2%2Fdebug-post-response&code_challenge=NjIyMGQ4NDAxZGM0ZDI5NTdlMWRlNDI2YWNhNjA1NGRiMjQyZTE0NTg0YzRmOGMwMmU3MzFkYjlhNTRlZTlmZA&code_challenge_method=S256&state=internal+state&scope=HENKILOTIEDOT_SYNTYMAAIKA+HENKILOTIEDOT_NIMI+OPISKELUOIKEUDET_SUORITETUT_TUTKINNOT
+https://openid.net/specs/oauth-v2-form-post-response-mode-1_0.html

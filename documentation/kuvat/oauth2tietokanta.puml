@@ -4,25 +4,29 @@ title OAuth2 -tietokanta KOSKI-backendissä
 rectangle #White {
 
 Note as taulu
- Access token:eille ei toistaiseksi tarvita omaa
- taulua, koska niiden elinkaari on korkeintaan
- sama kuin authorization code:lla.
+ Toistaiseksi vain yksi taulu.
 end note
 
-entity "authorization_code" as auth {
-  *id : int <<generated>>
-  --
-  *code : uuid
-  *oppija_oid : text <<FK>>
-  *client_id : text
-  *scope : array<text>
-  *voimassa_asti : date
-  access_token : uuid
-  code_challenge : text
-  code_challenge_method : text
+entity "oauth2_jako" as auth {
+  *code_sha256: text <<primary key>>
 
-  *luotu : timestamp
-  *muokattu : timestamp
+  *oppija_oid: text
+  *client_id : text
+
+  *scope : text
+  *code_challenge : text
+  *redirect_uri : text
+
+  access_token_sha256 : text unique
+
+  *code_voimassa_asti : timestamptz
+  *voimassa_asti : timestamptz
+
+  *luotu : timestamptz
+  *muokattu : timestamptz
+
+  mitatoity : boolean
+  mitatoity_syy : text
 }
 
 }
