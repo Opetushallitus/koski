@@ -257,6 +257,9 @@ class ValpasOpiskeluoikeusDatabaseFixtureCreator(application: KoskiApplication) 
     (ValpasMockOppijat.oppijaJollaAmisJaValmistunutYO, ValpasOpiskeluoikeusExampleData.valmistunutYsiluokkalainenToinenKoulu),
     (ValpasMockOppijat.oppijaJollaAmisJaValmistunutYO, ValpasOpiskeluoikeusExampleData.ammattikouluEronnutOpiskeluoikeus),
     (ValpasMockOppijat.taiteenPerusopetusPäättynyt, ValpasOpiskeluoikeusExampleData.taiteenPerusopetusPäättynyt),
+    (ValpasMockOppijat.ammattitutkintoYoTutkinnonJalkeen, ValpasOpiskeluoikeusExampleData.valmistunutYsiluokkalainenToinenKoulu),
+    (ValpasMockOppijat.ammattitutkintoYoTutkinnonJalkeen, ValpasOpiskeluoikeusExampleData.lukionOpiskeluoikeusValmistunut),
+    (ValpasMockOppijat.ammattitutkintoYoTutkinnonJalkeen, ValpasOpiskeluoikeusExampleData.keskeneräinenAmmattitutkinnonOpiskeluoikeus),
   )
 
   protected def secondBatchOpiskeluOikeudet: List[(OppijaHenkilö, KoskeenTallennettavaOpiskeluoikeus)] = List(
