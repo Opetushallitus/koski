@@ -4,6 +4,7 @@ import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.documentation.Markdown
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.log.Logging
+import fi.oph.koski.massaluovutus.luokallejaaneet.MassaluovutusQueryLuokalleJaaneetExamples
 import fi.oph.koski.massaluovutus.organisaationopiskeluoikeudet.{QueryOrganisaationOpiskeluoikeudetCsvDocumentation, QueryOrganisaationOpiskeluoikeudetJsonDocumentation}
 import fi.oph.koski.massaluovutus.paallekkaisetopiskeluoikeudet.QueryPaallekkaisetOpiskeluoikeudetDocumentation
 import fi.oph.koski.massaluovutus.valintalaskenta.ValintalaskentaQueryDocumentation
@@ -237,6 +238,7 @@ object QueryExamples {
       ValintalaskentaQueryDocumentation.outputFiles,
       application.config.getString("koski.root.url"),
     ))
+    case "LuokalleJaaneetJson" => asJson(MassaluovutusQueryLuokalleJaaneetExamples.query)
     case _ => None
   }
 
