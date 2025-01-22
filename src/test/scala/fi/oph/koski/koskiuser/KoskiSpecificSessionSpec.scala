@@ -41,6 +41,8 @@ class KoskiSpecificSessionSpec
       |opintopolku.virkailija.username = "foo"
       |opintopolku.virkailija.password = "bar"
       |opintopolku.oppija.url = "http://localhost:9877"
+      |otuvaTokenEndpoint="mock"
+      |oppijanumerorekisteri.baseUrl="http://localhost:9877"
     """.stripMargin)
 
   implicit val cacheManager = GlobalCacheManager
