@@ -61,6 +61,7 @@ import {
   useKielivalikoimaOptions,
   useOppiaineTasoOptions
 } from './state/options'
+import { isNonEmpty } from 'fp-ts/lib/Array'
 
 export type IBTutkintTiedotProps = {
   form: FormModel<IBOpiskeluoikeus>
@@ -237,27 +238,31 @@ const TheoryOfKnowledgeRows: React.FC<IBTutkinnonTiedotRowsProps> = ({
             />
           </KeyValueRow>
           <KeyValueRow localizableLabel="Kurssit" innerKeyValueTable>
-            <OppiaineenKurssit
-              form={form}
-              kurssit={kurssit}
-              oppiaine={theoryOfKnowledge!}
-              oppiainePath={[
-                ...päätasonSuoritus.pathTokens,
-                'theoryOfKnowledge'
-              ]}
-              hidePaikallinenIndicator
-              onArviointi={onKurssinArviointi}
-              onDeleteKurssi={onDelete}
-              onShowAddOsasuoritusDialog={showNewKurssiDialog}
-            />
-            {newKurssiDialogVisible && (
-              <UusiIBTutkintoOsasuoritusDialog
-                organisaatioOid={päätasonSuoritus.suoritus.toimipiste.oid}
-                oppiaine={theoryOfKnowledge!}
-                onAdd={onAdd}
-                onClose={hideNewKurssiDialog}
-              />
-            )}
+            {isNonEmpty(kurssit) ? (
+              <>
+                <OppiaineenKurssit
+                  form={form}
+                  kurssit={kurssit}
+                  oppiaine={theoryOfKnowledge!}
+                  oppiainePath={[
+                    ...päätasonSuoritus.pathTokens,
+                    'theoryOfKnowledge'
+                  ]}
+                  hidePaikallinenIndicator
+                  onArviointi={onKurssinArviointi}
+                  onDeleteKurssi={onDelete}
+                  onShowAddOsasuoritusDialog={showNewKurssiDialog}
+                />
+                {newKurssiDialogVisible && (
+                  <UusiIBTutkintoOsasuoritusDialog
+                    organisaatioOid={päätasonSuoritus.suoritus.toimipiste.oid}
+                    oppiaine={theoryOfKnowledge!}
+                    onAdd={onAdd}
+                    onClose={hideNewKurssiDialog}
+                  />
+                )}
+              </>
+            ) : null}
           </KeyValueRow>
         </KeyValueTable>
       </KeyValueRow>
