@@ -238,7 +238,8 @@ object QueryExamples {
       ValintalaskentaQueryDocumentation.outputFiles,
       application.config.getString("koski.root.url"),
     ))
-    case "LuokalleJaaneetJson" => asJson(MassaluovutusQueryLuokalleJaaneetExamples.query)
+    case "LuokalleJaaneetJson" => asJson(MassaluovutusQueryLuokalleJaaneetExamples.jsonQuery)
+    case "LuokalleJaaneetCsv" => asJson(MassaluovutusQueryLuokalleJaaneetExamples.csvQuery)
     case _ => None
   }
 
