@@ -10,7 +10,7 @@ import fi.oph.koski.history.OpiskeluoikeusHistoryPatch
 import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.koskiuser.{AccessType, KoskiSpecificSession, Rooli}
-import fi.oph.koski.log.KoskiAuditLogMessageField.{hakuEhto, oppijaHenkiloOid}
+import fi.oph.koski.log.KoskiAuditLogMessageField.{hakuEhto, opiskeluoikeusId, oppijaHenkiloOid}
 import fi.oph.koski.log.KoskiOperation.OPISKELUOIKEUS_KATSOMINEN
 import fi.oph.koski.log.{AuditLog, KoskiAuditLogMessage, Logging}
 import fi.oph.koski.massaluovutus.MassaluovutusUtils.defaultOrganisaatio
@@ -20,22 +20,22 @@ import fi.oph.koski.schema.PerusopetuksenOpiskeluoikeus
 import fi.oph.koski.schema.annotation.EnumValues
 import fi.oph.scalaschema.annotation.{Description, Title}
 import org.json4s.jackson.JsonMethods
-import org.json4s.{JArray, JValue}
+import org.json4s.{JArray, JNothing, JValue}
 
 import java.sql.Timestamp
+import java.time.LocalDateTime
 
 @Title("Perusopetuksen luokalle jäämiset")
 @Description("Tämä kysely on tarkoitettu opiskeluoikeusversioiden löytäiseksi KOSKI-varannoksi, joissa perusopetuksen opiskeluoikeuteen on merkitty tieto, että oppilas jää luokalle.")
 @Description("Vastauksen skeema on saatavana <a href=\"/koski/json-schema-viewer/?schema=luokalle-jaaneet-result.json\">täältä.</a>")
-case class MassaluovutusQueryLuokalleJaaneet (
+trait MassaluovutusQueryLuokalleJaaneet extends MassaluovutusQueryParameters with DatabaseConverters with Logging {
   @EnumValues(Set("luokallejaaneet"))
-  `type`: String = "luokallejaaneet",
-  @EnumValues(Set(QueryFormat.json))
-  format: String = QueryFormat.json,
+  def `type`: String
+  def format: String
   @Description("Kyselyyn otettavan koulutustoimijan tai oppilaitoksen oid. Jos ei ole annettu, päätellään käyttäjän käyttöoikeuksista.")
-  organisaatioOid: Option[String],
-) extends MassaluovutusQueryParameters with DatabaseConverters with Logging {
-  override def run(application: KoskiApplication, writer: QueryResultWriter)(implicit user: KoskiSpecificSession): Either[String, Unit] = {
+  def organisaatioOid: Option[String]
+
+  def forEachResult(application: KoskiApplication)(f: MassaluovutusQueryLuokalleJaaneetResult => Unit)(implicit user: KoskiSpecificSession): Either[String, Unit] = {
     val oppilaitosOids = application.organisaatioService.organisaationAlaisetOrganisaatiot(organisaatioOid.get)
     val oids = haeLuokalleJäämisenSisältävätOpiskeluoikeusOidit(application.raportointiDatabase.db, oppilaitosOids)
 
@@ -43,13 +43,14 @@ case class MassaluovutusQueryLuokalleJaaneet (
       application.historyRepository
         .findByOpiskeluoikeusOid(opiskeluoikeusOid)
         .map { patches =>
-          patches
-            .foldLeft(LuokalleJääntiAccumulator()) { (acc, diff) => acc.next(diff) }
-            .matches
-            .foreach { case (luokka, oo) =>
-              val response = MassaluovutusQueryLuokalleJaaneetResult(oo, luokka, oppijaOid)
-              writer.putJson(s"${opiskeluoikeusOid}_luokka_$luokka", response)
+          val result = patches.foldLeft(LuokalleJääntiAccumulator()) { (acc, diff) => acc.next(diff) }
+          if (result.invalidHistory) {
+            f(MassaluovutusQueryLuokalleJaaneetResult(LuokalleJääntiMatch.empty(opiskeluoikeusOid), "err", oppijaOid))
+          } else {
+            result.matches.foreach {
+              case (luokka, oo) => f(MassaluovutusQueryLuokalleJaaneetResult(oo, luokka, oppijaOid))
             }
+          }
           auditLog(oppijaOid)
         }
     }
@@ -62,13 +63,6 @@ case class MassaluovutusQueryLuokalleJaaneet (
       organisaatioOid.exists(user.organisationOids(AccessType.read).contains)
         && user.sensitiveDataAllowed(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))
       )
-
-  override def fillAndValidate(implicit user: KoskiSpecificSession): Either[HttpStatus, MassaluovutusQueryLuokalleJaaneet] =
-    if (organisaatioOid.isEmpty) {
-      defaultOrganisaatio.map(o => copy(organisaatioOid = Some(o)))
-    } else {
-      Right(this)
-    }
 
   private def haeLuokalleJäämisenSisältävätOpiskeluoikeusOidit(raportointiDb: DB, oppilaitosOids: Seq[String]): Seq[(String, String)] =
     QueryMethods.runDbSync(raportointiDb, sql"""
@@ -140,6 +134,7 @@ case class LuokalleJääntiAccumulator(
 
 case class LuokalleJääntiMatch(
   opiskeluoikeus: JValue,
+  oid: String,
   aikaleima: Timestamp,
   versio: Int,
 ) {
@@ -147,6 +142,7 @@ case class LuokalleJääntiMatch(
     JsonSerializer
       .extract[PerusopetuksenOpiskeluoikeus](opiskeluoikeus)
       .copy(
+        oid = Some(oid),
         versionumero = Some(versio),
         aikaleima = Some(aikaleima.toLocalDateTime),
       )
@@ -155,7 +151,15 @@ case class LuokalleJääntiMatch(
 object LuokalleJääntiMatch {
   def apply(opiskeluoikeus: JValue, diff: OpiskeluoikeusHistoryPatch): LuokalleJääntiMatch = LuokalleJääntiMatch(
     opiskeluoikeus = opiskeluoikeus,
+    oid = diff.opiskeluoikeusOid,
     aikaleima = diff.aikaleima,
     versio = diff.versionumero,
+  )
+
+  def empty(oid: String): LuokalleJääntiMatch = LuokalleJääntiMatch(
+    opiskeluoikeus = JNothing,
+    oid = oid,
+    aikaleima = Timestamp.valueOf(LocalDateTime.MIN),
+    versio = 0
   )
 }
