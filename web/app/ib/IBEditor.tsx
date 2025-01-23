@@ -187,18 +187,16 @@ const IBPäätasonSuoritusEditor: React.FC<
             </RaisedButton>
           )}
           {kurssejaYhteensä !== null && (
-            <>
-              <div className="IBPäätasonSuoritusEditor__yhteensä">
-                {t('Suoritettujen kurssien laajuus yhteensä')}
-                {': '}
-                <TestIdText id="suoritettujaKurssejaYhteensä">
-                  {kurssejaYhteensä}
-                </TestIdText>
-              </div>
-              {paikallisiaSuorituksia && (
-                <div>{`* = ${t('paikallinen kurssi tai oppiaine')}`}</div>
-              )}
-            </>
+            <div className="IBPäätasonSuoritusEditor__yhteensä">
+              {t('Suoritettujen kurssien laajuus yhteensä')}
+              {': '}
+              <TestIdText id="suoritettujaKurssejaYhteensä">
+                {kurssejaYhteensä}
+              </TestIdText>
+            </div>
+          )}
+          {paikallisiaSuorituksia && (
+            <div>{`* = ${t('paikallinen kurssi tai oppiaine')}`}</div>
           )}
         </footer>
 
