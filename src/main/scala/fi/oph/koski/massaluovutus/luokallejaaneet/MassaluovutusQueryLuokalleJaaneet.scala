@@ -10,7 +10,7 @@ import fi.oph.koski.history.OpiskeluoikeusHistoryPatch
 import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.koskiuser.{AccessType, KoskiSpecificSession, Rooli}
-import fi.oph.koski.log.KoskiAuditLogMessageField.{hakuEhto, oppijaHenkiloOid}
+import fi.oph.koski.log.KoskiAuditLogMessageField.{hakuEhto, opiskeluoikeusId, oppijaHenkiloOid}
 import fi.oph.koski.log.KoskiOperation.OPISKELUOIKEUS_KATSOMINEN
 import fi.oph.koski.log.{AuditLog, KoskiAuditLogMessage, Logging}
 import fi.oph.koski.massaluovutus.MassaluovutusUtils.defaultOrganisaatio
@@ -20,9 +20,10 @@ import fi.oph.koski.schema.PerusopetuksenOpiskeluoikeus
 import fi.oph.koski.schema.annotation.EnumValues
 import fi.oph.scalaschema.annotation.{Description, Title}
 import org.json4s.jackson.JsonMethods
-import org.json4s.{JArray, JValue}
+import org.json4s.{JArray, JNothing, JValue}
 
 import java.sql.Timestamp
+import java.time.LocalDateTime
 
 @Title("Perusopetuksen luokalle jäämiset")
 @Description("Tämä kysely on tarkoitettu opiskeluoikeusversioiden löytäiseksi KOSKI-varannoksi, joissa perusopetuksen opiskeluoikeuteen on merkitty tieto, että oppilas jää luokalle.")
@@ -42,10 +43,14 @@ trait MassaluovutusQueryLuokalleJaaneet extends MassaluovutusQueryParameters wit
       application.historyRepository
         .findByOpiskeluoikeusOid(opiskeluoikeusOid)
         .map { patches =>
-          patches
-            .foldLeft(LuokalleJääntiAccumulator()) { (acc, diff) => acc.next(diff) }
-            .matches
-            .foreach { case (luokka, oo) => f(MassaluovutusQueryLuokalleJaaneetResult(oo, luokka, oppijaOid)) }
+          val result = patches.foldLeft(LuokalleJääntiAccumulator()) { (acc, diff) => acc.next(diff) }
+          if (result.invalidHistory) {
+            f(MassaluovutusQueryLuokalleJaaneetResult(LuokalleJääntiMatch.empty(opiskeluoikeusOid), "err", oppijaOid))
+          } else {
+            result.matches.foreach {
+              case (luokka, oo) => f(MassaluovutusQueryLuokalleJaaneetResult(oo, luokka, oppijaOid))
+            }
+          }
           auditLog(oppijaOid)
         }
     }
@@ -149,5 +154,12 @@ object LuokalleJääntiMatch {
     oid = diff.opiskeluoikeusOid,
     aikaleima = diff.aikaleima,
     versio = diff.versionumero,
+  )
+
+  def empty(oid: String): LuokalleJääntiMatch = LuokalleJääntiMatch(
+    opiskeluoikeus = JNothing,
+    oid = oid,
+    aikaleima = Timestamp.valueOf(LocalDateTime.MIN),
+    versio = 0
   )
 }

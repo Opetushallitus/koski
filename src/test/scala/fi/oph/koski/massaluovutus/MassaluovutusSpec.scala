@@ -8,13 +8,12 @@ import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.koskiuser.{KoskiSpecificSession, MockUsers, UserWithPassword}
 import fi.oph.koski.log.AuditLogTester
-import fi.oph.koski.massaluovutus.luokallejaaneet.MassaluovutusQueryLuokalleJaaneet
+import fi.oph.koski.massaluovutus.luokallejaaneet.{MassaluovutusQueryLuokalleJaaneet, MassaluovutusQueryLuokalleJaaneetJson}
 import fi.oph.koski.massaluovutus.organisaationopiskeluoikeudet.{MassaluovutusQueryOrganisaationOpiskeluoikeudet, MassaluovutusQueryOrganisaationOpiskeluoikeudetCsv, MassaluovutusQueryOrganisaationOpiskeluoikeudetJson, QueryOrganisaationOpiskeluoikeudetCsvDocumentation}
 import fi.oph.koski.massaluovutus.paallekkaisetopiskeluoikeudet.MassaluovutusQueryPaallekkaisetOpiskeluoikeudet
 import fi.oph.koski.massaluovutus.suoritusrekisteri.{SuoritusrekisteriMuuttuneetJalkeenQuery, SuoritusrekisteriOppijaOidsQuery}
 import fi.oph.koski.massaluovutus.valintalaskenta.ValintalaskentaQuery
 import fi.oph.koski.organisaatio.MockOrganisaatiot
-import fi.oph.koski.organisaatio.MockOrganisaatiot.jyväskylänNormaalikoulu
 import fi.oph.koski.raportit.RaportitService
 import fi.oph.koski.schema.KoskiSchema.strictDeserialization
 import fi.oph.koski.schema.{KoskeenTallennettavaOpiskeluoikeus, LocalizedString, PerusopetuksenVuosiluokanSuoritus}
@@ -895,19 +894,19 @@ class MassaluovutusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers wit
   "Luokalle jäämiset" - {
     "JSON" - {
       "Ei onnistu väärän organisaation tietoihin" in {
-        addQuery(MassaluovutusQueryLuokalleJaaneet(organisaatioOid = Some(MockOrganisaatiot.jyväskylänNormaalikoulu)), MockUsers.helsinkiKatselija) {
+        addQuery(MassaluovutusQueryLuokalleJaaneetJson(organisaatioOid = Some(MockOrganisaatiot.jyväskylänNormaalikoulu)), MockUsers.helsinkiKatselija) {
           verifyResponseStatus(403, KoskiErrorCategory.forbidden())
         }
       }
 
       "Ei onnistu, jos organisaatiota ei ole annettu, eikä sitä voida päätellä yksiselitteisesti" in {
-        addQuery(MassaluovutusQueryLuokalleJaaneet(organisaatioOid = None), MockUsers.kahdenOrganisaatioPalvelukäyttäjä) {
+        addQuery(MassaluovutusQueryLuokalleJaaneetJson(organisaatioOid = None), MockUsers.kahdenOrganisaatioPalvelukäyttäjä) {
           verifyResponseStatus(400, KoskiErrorCategory.badRequest.massaluovutus.eiYksiselitteinenOrganisaatio())
         }
       }
 
       "Ei onnistu ilman oikeuksia sensitiivisen datan lukemiseen" in {
-        addQuery(MassaluovutusQueryLuokalleJaaneet(organisaatioOid = Some(MockOrganisaatiot.jyväskylänNormaalikoulu)), MockUsers.tallentajaEiLuottamuksellinen) {
+        addQuery(MassaluovutusQueryLuokalleJaaneetJson(organisaatioOid = Some(MockOrganisaatiot.jyväskylänNormaalikoulu)), MockUsers.tallentajaEiLuottamuksellinen) {
           verifyResponseStatus(403, KoskiErrorCategory.forbidden())
         }
       }
@@ -915,7 +914,7 @@ class MassaluovutusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers wit
       "Kysely onnistuu ja palauttaa oikeat tiedostot" in {
         AuditLogTester.clearMessages()
         val user = MockUsers.helsinkiKatselija
-        val queryId = addQuerySuccessfully(MassaluovutusQueryLuokalleJaaneet(organisaatioOid = None), user) { response =>
+        val queryId = addQuerySuccessfully(MassaluovutusQueryLuokalleJaaneetJson(organisaatioOid = None), user) { response =>
           response.status should equal(QueryState.pending)
           response.query.asInstanceOf[MassaluovutusQueryLuokalleJaaneet].organisaatioOid should contain(MockOrganisaatiot.helsinginKaupunki)
           response.queryId
@@ -934,7 +933,7 @@ class MassaluovutusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers wit
       }
 
       "Toisen käyttäjän kyselyn tietoja ei voi hakea" in {
-        val queryId = addQuerySuccessfully(MassaluovutusQueryLuokalleJaaneet(organisaatioOid = None), MockUsers.helsinkiKatselija)(_.queryId)
+        val queryId = addQuerySuccessfully(MassaluovutusQueryLuokalleJaaneetJson(organisaatioOid = None), MockUsers.helsinkiKatselija)(_.queryId)
         getQuery(queryId, MockUsers.jyväskylänKatselijaEsiopetus) {
           verifyResponseStatus(404, KoskiErrorCategory.notFound())
         }
