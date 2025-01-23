@@ -104,7 +104,7 @@ class OpiskeluoikeusFacade[OPISKELUOIKEUS: TypeTag](
     }
   }
 
-  def getAndConvertYtrData(
+  private def getAndConvertYtrData(
     masterHenkilö: LaajatOppijaHenkilöTiedot,
     useDownloadedYtr: Boolean,
     converter: schema.YlioppilastutkinnonOpiskeluoikeus => OPISKELUOIKEUS
@@ -119,7 +119,7 @@ class OpiskeluoikeusFacade[OPISKELUOIKEUS: TypeTag](
     }
   }
 
-  def fetchYtrOpiskeluoikeudet(
+  private def fetchYtrOpiskeluoikeudet(
     masterHenkilö: LaajatOppijaHenkilöTiedot,
     useDownloadedYtr: Boolean)
   : Seq[schema.YlioppilastutkinnonOpiskeluoikeus] = {
@@ -136,7 +136,7 @@ class OpiskeluoikeusFacade[OPISKELUOIKEUS: TypeTag](
     }
   }
 
-  def fetchDownloadedYtrOpiskeluoikeudet(
+  private def fetchDownloadedYtrOpiskeluoikeudet(
     masterHenkilö: LaajatOppijaHenkilöTiedot
   ): Seq[schema.YlioppilastutkinnonOpiskeluoikeus] = {
     application.oppijaFacade.findYtrDownloadedOppija(
@@ -148,7 +148,7 @@ class OpiskeluoikeusFacade[OPISKELUOIKEUS: TypeTag](
       .getOrElse(Seq.empty)
   }
 
-  def fetchYtrOpiskeluoikeudet(
+  private def fetchYtrOpiskeluoikeudet(
     masterHenkilö: LaajatOppijaHenkilöTiedot
   ): Seq[schema.YlioppilastutkinnonOpiskeluoikeus] = {
     application.ytr.findByOppija(masterHenkilö)(KoskiSpecificSession.systemUserTallennetutYlioppilastutkinnonOpiskeluoikeudet).collect {
