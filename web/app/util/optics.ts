@@ -67,11 +67,20 @@ export const currentLanguage = $.optic_<LocalizedString>().iso(t, localize)
 /**
  * Linssi jolla voi viitata taulukon viimeiseen alkioon
  */
+const noMatch = Symbol('noMatch')
 export const lastElement = <T>() =>
   $.optic_<T[]>()
     .lens(
-      (as): T | undefined => as[as.length - 1],
-      (as, v) => (v === undefined ? as.slice(0, -1) : [...as.slice(0, -1), v])
+      (as): T | typeof noMatch => {
+        return as.length === 0 ? noMatch : as[as.length - 1]
+      },
+      (as, v): T[] => {
+        return v === noMatch ? as : [...as.slice(0, -1), v]
+      }
+    )
+    .iso(
+      (a) => (a === noMatch ? undefined : a),
+      (b) => (b === undefined ? noMatch : b)
     )
     .optional()
 
