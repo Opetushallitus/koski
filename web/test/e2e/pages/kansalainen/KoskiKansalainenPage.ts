@@ -145,7 +145,9 @@ export class KoskiKansalainenPage {
     const confirmBtn = this.page.getByText('Kyllä, peru suostumus')
     await expect(confirmBtn).toBeDisabled()
 
-    await this.page.locator('.SuostumuksenPeruminen .Checkbox__input').click()
+    await this.page
+      .getByTestId('suoritukset.0.modal.suostumuksenPeruminen.label')
+      .click()
 
     await confirmBtn.click()
 

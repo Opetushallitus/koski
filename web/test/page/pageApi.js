@@ -153,10 +153,10 @@ function Page(mainElement) {
             } else {
               throw new Error(
                 'Option with value ' +
-                  value +
-                  ' and index ' +
-                  index +
-                  ' was not found.'
+                value +
+                ' and index ' +
+                index +
+                ' was not found.'
               )
             }
           case 'AUTOCOMPLETE': // Autocomplete.jsx

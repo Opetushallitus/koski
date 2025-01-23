@@ -592,12 +592,12 @@ function AddOppijaPage() {
     selectSuoritustyyppi: function (suoritustyyppi) {
       return suoritustyyppi
         ? selectValue('suoritustyyppi', suoritustyyppi)
-        : function () {}
+        : function () { }
     },
     selectSuoritustapa: function (suoritustapa) {
       return suoritustapa
         ? selectValue('suoritustapa', suoritustapa)
-        : function () {}
+        : function () { }
     },
     selectAloituspäivä: function (date) {
       return pageApi.setInputValue(
@@ -606,7 +606,7 @@ function AddOppijaPage() {
       )
     },
     selectOpiskeluoikeudenTila: function (tila) {
-      return tila ? selectValue('tila', tila) : function () {}
+      return tila ? selectValue('tila', tila) : function () { }
     },
     selectMaksuttomuus: function (index) {
       return eventually(async () => {
@@ -719,7 +719,7 @@ function AddOppijaPage() {
     selectOpintojenRahoitus: function (rahoitus) {
       return rahoitus
         ? selectValue('opintojenRahoitus', rahoitus)
-        : function () {}
+        : function () { }
     },
     opiskeluoikeudenTilat: function () {
       return selectOptions('tila')
@@ -746,11 +746,10 @@ function AddOppijaPage() {
     },
     goBack: click(findSingle('h1 a')),
     selectFromDropdown,
-    selectVarhaiskasvatusOrganisaationUlkopuolelta: function (checked) {
-      return pageApi.setInputValue(
-        '[data-testid="uusiOpiskeluoikeus.modal.hankintakoulutus.esiopetus"]',
-        checked
-      )
+    selectVarhaiskasvatusOrganisaationUlkopuolelta: function () {
+      return click(findSingle(
+        '[data-testid="uusiOpiskeluoikeus.modal.hankintakoulutus.esiopetus.label"]',
+      ))
     },
     selectJärjestämismuoto: function (järjestämismuoto) {
       return selectValue(
