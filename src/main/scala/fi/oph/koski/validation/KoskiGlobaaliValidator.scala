@@ -13,6 +13,7 @@ import fi.oph.koski.schema._
 import fi.oph.koski.util.Timing
 import fi.oph.koski.valpas.opiskeluoikeusrepository.ValpasRajapäivätService
 import fi.oph.koski.valpas.oppija.ValpasOppijaLaajatTiedotService
+import fi.oph.koski.valpas.oppivelvollisuudestavapautus.ValpasOppivelvollisuudestaVapautusService
 
 // Tähän voi lisätä validointeja, joissa oppijan henkilöllisyys on jo tiedossa, minkä avulla voi tutkia
 // esimerkiksi oppijan muiden opiskeluoikeuksien ominaisuuksia. Kaikki muut validaatiot pitää lisätä
@@ -29,7 +30,7 @@ class KoskiGlobaaliValidator(
   rajapäivät: ValpasRajapäivätService,
   oppijanumerorekisteri: OpintopolkuHenkilöFacade,
   validationConfig: ValidationTestContext,
-  valpasOppijaLaajatTiedotService: ValpasOppijaLaajatTiedotService,
+  valpasOppivelvollisuudestaVapautusService: ValpasOppivelvollisuudestaVapautusService,
   config: Config
 ) extends Timing
 {
@@ -55,7 +56,7 @@ class KoskiGlobaaliValidator(
               opiskeluoikeusRepository,
               rajapäivät,
               oppijanumerorekisteri,
-              valpasOppijaLaajatTiedotService,
+              valpasOppivelvollisuudestaVapautusService,
               config,
             )
           },

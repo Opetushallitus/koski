@@ -212,7 +212,7 @@ class KoskiApplication(
     valpasRajapäivätService,
     opintopolkuHenkilöFacade,
     validationContext,
-    valpasOppijaLaajatTiedotService,
+    valpasOppivelvollisuudestaVapautusService,
     config
   )
   lazy val healthMonitoring: HealthMonitoring = new HealthMonitoring()

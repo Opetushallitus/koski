@@ -10,11 +10,9 @@ import fi.oph.koski.oppivelvollisuustieto.Oppivelvollisuustiedot
 import fi.oph.koski.schema._
 import fi.oph.koski.util.ChainingSyntax.localDateOps
 import fi.oph.koski.util.DateOrdering.localDateOrdering
-import fi.oph.koski.util.Optional.coalesce
 import fi.oph.koski.util.{DateOrdering, FinnishDateFormat}
 import fi.oph.koski.valpas.opiskeluoikeusrepository.ValpasRajapäivätService
-import fi.oph.koski.valpas.oppija.ValpasOppijaLaajatTiedotService
-import fi.oph.koski.valpas.valpasuser.ValpasSession
+import fi.oph.koski.valpas.oppivelvollisuudestavapautus.ValpasOppivelvollisuudestaVapautusService
 
 import java.time.LocalDate
 import java.time.LocalDate.{of => date}
@@ -27,14 +25,11 @@ object MaksuttomuusValidation extends Logging {
                                         opiskeluoikeusRepository: CompositeOpiskeluoikeusRepository,
                                         rajapäivät: ValpasRajapäivätService,
                                         oppijanumerorekisteri: OpintopolkuHenkilöFacade,
-                                        valpasOppijaLaajatTiedotService: ValpasOppijaLaajatTiedotService,
+                                        valpasOppivelvollisuudestaVapautusService: ValpasOppivelvollisuudestaVapautusService,
                                         config: Config,
                                        ): HttpStatus = {
     val oppijanSyntymäpäivä = oppijanHenkilötiedot.flatMap(_.syntymäaika)
     val perusopetuksenAikavälit = opiskeluoikeusRepository.getPerusopetuksenAikavälitIlmanKäyttöoikeustarkistusta(oppijanOid)
-    val valpasOppija = valpasOppijaLaajatTiedotService.getOppijaLaajatTiedot(
-      oppijaOid = oppijanOid, haeMyösVainOppijanumerorekisterissäOleva = false, palautaLukionAineopinnotJaYOTutkinnotJosMyösAmmatillisiaOpintoja = false
-    )(ValpasSession.untrustedUser)
 
     val maksuttomuustietoSiirretty =
       opiskeluoikeus
@@ -74,12 +69,15 @@ object MaksuttomuusValidation extends Logging {
       eiOppivelvollisuudenLaajentamislainPiirissäSyyt(oppijanSyntymäpäivä, perusopetuksenAikavälit, rajapäivät)
 
 
-    val maksullinenKoulutus = opiskeluoikeus
+    val maksutonKoulutus = opiskeluoikeus
       .lisätiedot
       .collect { case l: MaksuttomuusTieto => l.maksuttomuus.toList.flatten }
-      .exists(_.exists(!_.maksuton))
-    val vapautettuOppivelvollisuudesta = valpasOppija.map(_.oppivelvollisuudestaVapautettu).getOrElse(false)
-    val vapautettuOppivelvollisuudestaJaKoulutusMaksuton = vapautettuOppivelvollisuudesta && maksullinenKoulutus
+      .exists(_.exists(_.maksuton))
+
+    val vapautettuOppivelvollisuudesta = valpasOppivelvollisuudestaVapautusService
+      .findVapautukset(List(oppijanOid)).exists(vapautus => !vapautus.tulevaisuudessa && !vapautus.mitätöitymässä)
+
+    val vapautettuOppivelvollisuudestaJaKoulutusMaksuton = vapautettuOppivelvollisuudesta && maksutonKoulutus
     val oppijaOnHetuton = oppijanHenkilötiedot.exists(_.hetu.isEmpty)
 
     val (maksuttomuustietoVaaditaan, maksuttomuustietoVaaditaanLog) = maksuttomuustiedotVaaditaan(
@@ -112,7 +110,7 @@ object MaksuttomuusValidation extends Logging {
         ),
         (
           vapautettuOppivelvollisuudestaJaKoulutusMaksuton,
-          s"oppija on vapautettu oppivelvollisuudesta"
+          s"oppija on vapautettu oppivelvollisuudesta ja koulutusta yritettiin merkitä maksuttomaksi"
         ),
         (
           oppijaOnHetuton,
