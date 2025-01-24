@@ -15,17 +15,24 @@ export const Checkbox: React.FC<CheckboxProps> = (props) => {
   const id = useMemo(() => Math.random().toString(), [])
   const testId = useTestId(props.testId)
   return (
-    <div {...common(props, ['Checkbox'])}>
+    <div {...common(props, ['Checkbox'])} data-testid={testId}>
       <input
         id={id}
         key={Math.random()}
         className="Checkbox__input"
         type="checkbox"
         checked={props.checked}
-        onChange={(event) => props.onChange(event.target.checked)}
-        data-testid={testId}
+        onChange={(_) => {}}
+        data-testid={`${testId}.input`}
       />
-      <label htmlFor={id} onClick={() => props.onChange(!props.checked)}>
+      <label
+        htmlFor={id}
+        onClick={() => {
+          console.log('label onClick')
+          return props.onChange(!props.checked)
+        }}
+        data-testid={`${testId}.label`}
+      >
         <span className="Checkbox__label">{t(props.label)}</span>
       </label>
     </div>

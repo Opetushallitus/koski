@@ -1,4 +1,5 @@
 import React, { useCallback, useMemo } from 'react'
+import { TestIdLayer, TestIdText } from '../appstate/useTestId'
 import {
   ActivePäätasonSuoritus,
   hasPäätasonsuoritusOf
@@ -39,6 +40,7 @@ import { Arviointi } from '../types/fi/oph/koski/schema/Arviointi'
 import { IBKurssinArviointi } from '../types/fi/oph/koski/schema/IBKurssinArviointi'
 import { IBKurssinSuoritus } from '../types/fi/oph/koski/schema/IBKurssinSuoritus'
 import { IBOpiskeluoikeus } from '../types/fi/oph/koski/schema/IBOpiskeluoikeus'
+import { IBOppiaineTheoryOfKnowledge } from '../types/fi/oph/koski/schema/IBOppiaineTheoryOfKnowledge'
 import { IBTheoryOfKnowledgeSuoritus } from '../types/fi/oph/koski/schema/IBTheoryOfKnowledgeSuoritus'
 import {
   IBTutkinnonSuoritus,
@@ -46,7 +48,6 @@ import {
 } from '../types/fi/oph/koski/schema/IBTutkinnonSuoritus'
 import { Koodistokoodiviite } from '../types/fi/oph/koski/schema/Koodistokoodiviite'
 import { appendOptional, deleteAt } from '../util/array'
-import { parasArviointi } from '../util/arvioinnit'
 import { koodiviiteId } from '../util/koodisto'
 import { lastElement } from '../util/optics'
 import { isKoodiarvoOf } from '../util/types'
@@ -60,7 +61,7 @@ import {
   useKielivalikoimaOptions,
   useOppiaineTasoOptions
 } from './state/options'
-import { TestIdLayer, TestIdText } from '../appstate/useTestId'
+import { isNonEmpty } from 'fp-ts/lib/Array'
 
 export type IBTutkintTiedotProps = {
   form: FormModel<IBOpiskeluoikeus>
@@ -71,7 +72,6 @@ export const IBPäätasonSuoritusTiedot: React.FC<IBTutkintTiedotProps> = ({
   form,
   päätasonSuoritus
 }) => {
-  const opiskeluoikeus = form.state
   const path = päätasonSuoritus.path
 
   return (
@@ -169,20 +169,19 @@ const TheoryOfKnowledgeRows: React.FC<IBTutkinnonTiedotRowsProps> = ({
   const theoryOfKnowledge = getValue(theoryOfKnowledgePath)(form.state)
 
   const [kurssitPath, kurssit] = useMemo(() => {
-    const path = päätasonSuoritus.path
-      .prop('theoryOfKnowledge')
-      .optional()
+    const path = theoryOfKnowledgePath
+      .valueOr(emptyTheoryOfKnowledge)
       .prop('osasuoritukset')
-      .optional()
+      .valueOr([])
     return [path, getValue(path)(form.state) || []]
-  }, [form.state, päätasonSuoritus])
+  }, [form.state, theoryOfKnowledgePath])
 
   const onAdd = useCallback(
     (kurssi: IBKurssinSuoritus) => {
       form.updateAt(
         päätasonSuoritus.path
           .prop('theoryOfKnowledge')
-          .optional()
+          .valueOr(emptyTheoryOfKnowledge)
           .prop('osasuoritukset'),
         appendOptional(kurssi)
       )
@@ -213,9 +212,9 @@ const TheoryOfKnowledgeRows: React.FC<IBTutkinnonTiedotRowsProps> = ({
             <FormField
               form={form}
               path={theoryOfKnowledgePath
-                .optional()
+                .valueOr(emptyTheoryOfKnowledge)
                 .prop('arviointi')
-                .optional()
+                .valueOr([])
                 .compose(lastElement())}
               view={ArvosanaView}
               edit={ArvosanaEdit}
@@ -228,7 +227,7 @@ const TheoryOfKnowledgeRows: React.FC<IBTutkinnonTiedotRowsProps> = ({
             <FormField
               form={form}
               path={theoryOfKnowledgePath
-                .optional()
+                .valueOr(emptyTheoryOfKnowledge)
                 .prop('koulutusmoduuli')
                 .prop('pakollinen')
                 .optional()}
@@ -238,33 +237,41 @@ const TheoryOfKnowledgeRows: React.FC<IBTutkinnonTiedotRowsProps> = ({
             />
           </KeyValueRow>
           <KeyValueRow localizableLabel="Kurssit" innerKeyValueTable>
-            <OppiaineenKurssit
-              form={form}
-              kurssit={kurssit}
-              oppiaine={theoryOfKnowledge!}
-              oppiainePath={[
-                ...päätasonSuoritus.pathTokens,
-                'theoryOfKnowledge'
-              ]}
-              hidePaikallinenIndicator
-              onArviointi={onKurssinArviointi}
-              onDeleteKurssi={onDelete}
-              onShowAddOsasuoritusDialog={showNewKurssiDialog}
-            />
-            {newKurssiDialogVisible && (
-              <UusiIBTutkintoOsasuoritusDialog
-                organisaatioOid={päätasonSuoritus.suoritus.toimipiste.oid}
-                oppiaine={theoryOfKnowledge!}
-                onAdd={onAdd}
-                onClose={hideNewKurssiDialog}
-              />
-            )}
+            {isNonEmpty(kurssit) ? (
+              <>
+                <OppiaineenKurssit
+                  form={form}
+                  kurssit={kurssit}
+                  oppiaine={theoryOfKnowledge!}
+                  oppiainePath={[
+                    ...päätasonSuoritus.pathTokens,
+                    'theoryOfKnowledge'
+                  ]}
+                  hidePaikallinenIndicator
+                  onArviointi={onKurssinArviointi}
+                  onDeleteKurssi={onDelete}
+                  onShowAddOsasuoritusDialog={showNewKurssiDialog}
+                />
+                {newKurssiDialogVisible && (
+                  <UusiIBTutkintoOsasuoritusDialog
+                    organisaatioOid={päätasonSuoritus.suoritus.toimipiste.oid}
+                    oppiaine={theoryOfKnowledge!}
+                    onAdd={onAdd}
+                    onClose={hideNewKurssiDialog}
+                  />
+                )}
+              </>
+            ) : null}
           </KeyValueRow>
         </KeyValueTable>
       </KeyValueRow>
     </TestIdLayer>
   )
 }
+
+const emptyTheoryOfKnowledge = IBTheoryOfKnowledgeSuoritus({
+  koulutusmoduuli: IBOppiaineTheoryOfKnowledge({ pakollinen: false })
+})
 
 const ExtendedEssayFieldRows: React.FC<IBTutkinnonTiedotRowsProps> = ({
   form,

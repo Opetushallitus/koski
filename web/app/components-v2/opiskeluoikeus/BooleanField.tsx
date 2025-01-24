@@ -47,7 +47,7 @@ export const BooleanEdit: React.FC<BooleanEditProps> = ({
   <Checkbox
     label={label || t('Kyllä')}
     checked={!!value}
-    onChange={(ch) => (console.log('checked', value, '-->', ch), onChange(ch))}
+    onChange={onChange}
     testId={`${testId || 'bool'}`}
   />
 )

@@ -7,6 +7,8 @@ import {
   FormFieldProps
 } from './FormField'
 import { FormOptic, getValue } from './FormModel'
+import { Removable } from '../controls/Removable'
+import { deleteAt } from '../../util/array'
 
 export type FormListFieldProps<
   FormState extends object,
@@ -18,7 +20,9 @@ export type FormListFieldProps<
     FieldEditorProps<FieldValue, any>
   >,
   FieldValue
-> = FormFieldProps<FormState, ValueList, ViewComponent, EditComponent>
+> = FormFieldProps<FormState, ValueList, ViewComponent, EditComponent> & {
+  removable?: boolean
+}
 
 export const FormListField = <
   FormState extends object,
@@ -39,9 +43,15 @@ export const FormListField = <
     FieldValue
   >
 ) => {
-  const values = (getValue(
-    props.path as FormOptic<FormState, ValueList | undefined>
-  )(props.form.state) || []) as FieldValue[]
+  const path = props.path as FormOptic<FormState, ValueList | undefined>
+  const values = (getValue(path)(props.form.state) || []) as FieldValue[]
+
+  const remove = (index: number) => () => {
+    props.form.updateAt(
+      path,
+      (ts) => (ts ? deleteAt(index)(ts) : undefined) as ValueList
+    )
+  }
 
   return (
     <>
@@ -53,22 +63,31 @@ export const FormListField = <
           edit,
           editProps,
           errorsFromPath,
-          testId
+          testId,
+          removable
         } = props
-        const path = props.path.index(index) as FormOptic<FormState, FieldValue>
+        const valuePath = props.path.index(index) as FormOptic<
+          FormState,
+          FieldValue
+        >
         return (
           <TestIdLayer key={index} id={index}>
-            <FormField
-              form={form}
-              path={path}
-              view={view}
-              viewProps={viewProps}
-              edit={edit}
-              editProps={editProps}
-              errorsFromPath={errorsFromPath}
-              testId={testId}
-              index={index}
-            />
+            <Removable
+              isRemovable={Boolean(form.editMode && removable)}
+              onClick={remove(index)}
+            >
+              <FormField
+                form={form}
+                path={valuePath}
+                view={view}
+                viewProps={viewProps}
+                edit={edit}
+                editProps={editProps}
+                errorsFromPath={errorsFromPath}
+                testId={testId}
+                index={index}
+              />
+            </Removable>
           </TestIdLayer>
         )
       })}

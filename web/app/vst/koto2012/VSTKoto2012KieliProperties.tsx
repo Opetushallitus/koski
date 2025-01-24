@@ -32,7 +32,7 @@ export const VSTKoto2012KieliProperties: React.FC<
   // Huom! On väärin ottaa arviointilistan viimeinen arviointi ja luottaa että se on oikein, mutta se on riittävä tässä tapauksessa.
   const arviointiPath = props.path
     .prop('arviointi')
-    .optional()
+    .valueOr([])
     .compose(lastElement())
 
   return (

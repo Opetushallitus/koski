@@ -26,13 +26,16 @@ export type KeyValueRowProps = CommonPropsWithChildren<{
   localizableLabel?: string | LocalizedString
   indent?: number
   innerKeyValueTable?: boolean
+  largeLabel?: boolean
 }>
 
 export const KeyValueRow = (props: KeyValueRowProps) => {
   const indent = props.indent || 0
   const nameSpans = props.innerKeyValueTable
     ? { default: 8, small: 12, phone: 16 }
-    : { default: 4, small: 8, phone: 12 }
+    : props.largeLabel
+      ? { default: 8, small: 12, phone: 12 }
+      : { default: 4, small: 8, phone: 12 }
   const valueSpans = {
     default: 24 - nameSpans.default - indent,
     small: 24 - nameSpans.small - indent,

@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
+ 
 import { NonEmptyArray } from 'fp-ts/lib/NonEmptyArray'
 import React, { useCallback, useMemo } from 'react'
 import { useAllowedStrings, useSchema } from '../../appstate/constraints'
@@ -181,7 +181,7 @@ export const UusiOpiskeluoikeudenTilaModal = <T extends Opiskeluoikeusjakso>(
     if (errors) {
       // onSubmitista ei tällä implementointihetkellä pitäisi tulla virheitä,
       // joten virheiden näyttämisen voi toteuttaa myöhemmin vasta kun sitä tarvitaan.
-      // eslint-disable-next-line no-console
+       
       console.warn(
         'Käsittelemättömiä validointivirheitä UusiOpiskeluoikeudenTilaModalissa:',
         errors
