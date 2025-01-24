@@ -123,12 +123,45 @@ class MaksuttomuusSpec extends AnyFreeSpec with OpiskeluoikeusTestMethodsAmmatil
       }
     }
 
+    "Oppivelvollisuudesta vapautus" - {
+      oppivelvollisuudestaVapautusService.db.deleteAll()
+
+      FixtureUtil.resetMockData(KoskiApplicationForTests, resetKoskiFixtures = false)
+
+      "Maksuttomuustiedon voi siirtää vaikka olisi vapautus" in {
+        val oppija = KoskiSpecificMockOppijat.vuonna2005SyntynytEiOpiskeluoikeuksiaFikstuurissa
+        oppivelvollisuudestaVapautusService.lisääOppivelvollisuudestaVapautus(UusiOppivelvollisuudestaVapautus(oppija.oid, LocalDate.of(2000, 8, 1), "091"))(defaultValpasSession) should equal(Right(()))
+        setupOppijaWithMaksuttomuus(
+          List(Maksuttomuus(date(2021, 8, 1), None, true)),
+          oppija,
+          alkamispäivällä(defaultOpiskeluoikeus, date(2021, 8, 1))
+        ) {
+          verifyResponseStatusOk()
+        }
+      }
+
+      "Maksullinen-tietoa ei saa siirtää jos vapautus" in {
+        val oppija = KoskiSpecificMockOppijat.vuonna2005SyntynytEiOpiskeluoikeuksiaFikstuurissa
+
+        oppivelvollisuudestaVapautusService.db.deleteAll()
+        oppivelvollisuudestaVapautusService.lisääOppivelvollisuudestaVapautus(UusiOppivelvollisuudestaVapautus(oppija.oid, LocalDate.of(2000, 8, 1), "091"))(defaultValpasSession) should equal(Right(()))
+
+        setupOppijaWithMaksuttomuus(
+          List(Maksuttomuus(date(2021, 8, 1), None, false)),
+          oppija,
+          alkamispäivällä(defaultOpiskeluoikeus, date(2021, 8, 1))
+        ) {
+          verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation("Tieto koulutuksen maksuttomuudesta ei ole relevantti tässä opiskeluoikeudessa, sillä oppija on vapautettu oppivelvollisuudesta ja koulutusta yritettiin merkitä maksuttomaksi."))
+        }
+      }
+    }
+
     "Siirto kun opiskelijalla perusopetuksen päättötodistus tai siihen verrattavissa oleva suoritus" - {
       "Ei saa siirtää jos suoritus vahvistettu ennen Valpas-lain voimaantuloaikaa" - {
         "Aikuisten perusopetuksen oppimäärä" in {
           val opiskeluoikeus = ExamplesAikuistenPerusopetus.aikuistenPerusopetuksenOpiskeluoikeusAlkuvaiheineen
 
-          putOpiskeluoikeus(opiskeluoikeus, KoskiSpecificMockOppijat.vuonna2005SyntynytEiOpiskeluoikeuksiaFikstuurissa) {
+          setupOppijaWithOpiskeluoikeus(opiskeluoikeus, KoskiSpecificMockOppijat.vuonna2005SyntynytEiOpiskeluoikeuksiaFikstuurissa) {
             verifyResponseStatusOk()
           }
 
@@ -139,8 +172,6 @@ class MaksuttomuusSpec extends AnyFreeSpec with OpiskeluoikeusTestMethodsAmmatil
           ) {
             verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation("Tieto koulutuksen maksuttomuudesta ei ole relevantti tässä opiskeluoikeudessa, sillä oppija on suorittanut oppivelvollisuutensa ennen 1.1.2021 eikä tästä syystä kuulu laajennetun oppivelvollisuuden piiriin."))
           }
-
-          resetFixtures()
         }
 
         "Perusopetuksen vahvistettu oppimäärä opiskeluoikeuden valmistumisella" in {
@@ -153,7 +184,7 @@ class MaksuttomuusSpec extends AnyFreeSpec with OpiskeluoikeusTestMethodsAmmatil
             päättymispäivä = Some(date(2020, 8, 1)),
           )
 
-          putOpiskeluoikeus(opiskeluoikeus, KoskiSpecificMockOppijat.vuonna2005SyntynytEiOpiskeluoikeuksiaFikstuurissa) {
+          setupOppijaWithOpiskeluoikeus(opiskeluoikeus, KoskiSpecificMockOppijat.vuonna2005SyntynytEiOpiskeluoikeuksiaFikstuurissa) {
             verifyResponseStatusOk()
           }
 
@@ -164,8 +195,6 @@ class MaksuttomuusSpec extends AnyFreeSpec with OpiskeluoikeusTestMethodsAmmatil
           ) {
             verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation("Tieto koulutuksen maksuttomuudesta ei ole relevantti tässä opiskeluoikeudessa, sillä oppija on suorittanut oppivelvollisuutensa ennen 1.1.2021 eikä tästä syystä kuulu laajennetun oppivelvollisuuden piiriin."))
           }
-
-          resetFixtures()
         }
 
         "Perusopetuksen vahvistettu oppimäärä ilman opiskeluoikeuden valmistumista" in {
@@ -179,7 +208,7 @@ class MaksuttomuusSpec extends AnyFreeSpec with OpiskeluoikeusTestMethodsAmmatil
             päättymispäivä = None,
           )
 
-          putOpiskeluoikeus(opiskeluoikeus, KoskiSpecificMockOppijat.vuonna2005SyntynytEiOpiskeluoikeuksiaFikstuurissa) {
+          setupOppijaWithOpiskeluoikeus(opiskeluoikeus, KoskiSpecificMockOppijat.vuonna2005SyntynytEiOpiskeluoikeuksiaFikstuurissa) {
             verifyResponseStatusOk()
           }
 
@@ -190,8 +219,6 @@ class MaksuttomuusSpec extends AnyFreeSpec with OpiskeluoikeusTestMethodsAmmatil
           ) {
             verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation("Tieto koulutuksen maksuttomuudesta ei ole relevantti tässä opiskeluoikeudessa, sillä oppija on suorittanut oppivelvollisuutensa ennen 1.1.2021 eikä tästä syystä kuulu laajennetun oppivelvollisuuden piiriin."))
           }
-
-          resetFixtures()
         }
 
         "International Schoolin ysiluokka" in {
@@ -200,7 +227,7 @@ class MaksuttomuusSpec extends AnyFreeSpec with OpiskeluoikeusTestMethodsAmmatil
           )
           val ysiLuokka: MYPVuosiluokanSuoritus = ExamplesInternationalSchool.grade9.copy(alkamispäivä = Some(date(2015, 6, 30)))
 
-          putOpiskeluoikeus(opiskeluoikeus.withSuoritukset(List(ysiLuokka)), KoskiSpecificMockOppijat.vuonna2005SyntynytEiOpiskeluoikeuksiaFikstuurissa) {
+          setupOppijaWithOpiskeluoikeus(opiskeluoikeus.withSuoritukset(List(ysiLuokka)), KoskiSpecificMockOppijat.vuonna2005SyntynytEiOpiskeluoikeuksiaFikstuurissa) {
             verifyResponseStatusOk()
           }
 
@@ -211,8 +238,6 @@ class MaksuttomuusSpec extends AnyFreeSpec with OpiskeluoikeusTestMethodsAmmatil
           ) {
             verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation("Tieto koulutuksen maksuttomuudesta ei ole relevantti tässä opiskeluoikeudessa, sillä oppija on suorittanut oppivelvollisuutensa ennen 1.1.2021 eikä tästä syystä kuulu laajennetun oppivelvollisuuden piiriin."))
           }
-
-          resetFixtures()
         }
         "European School of Helsinki -koulun luokka S4" in {
           val opiskeluoikeus = ExamplesEuropeanSchoolOfHelsinki.opiskeluoikeus.copy(
@@ -220,7 +245,7 @@ class MaksuttomuusSpec extends AnyFreeSpec with OpiskeluoikeusTestMethodsAmmatil
           )
           val s4Luokka: SecondaryLowerVuosiluokanSuoritus = ExamplesEuropeanSchoolOfHelsinki.s4.copy(alkamispäivä = Some(ExamplesEuropeanSchoolOfHelsinki.alkamispäivä))
 
-          putOpiskeluoikeus(opiskeluoikeus.withSuoritukset(List(s4Luokka)), KoskiSpecificMockOppijat.vuonna2005SyntynytEiOpiskeluoikeuksiaFikstuurissa) {
+          setupOppijaWithOpiskeluoikeus(opiskeluoikeus.withSuoritukset(List(s4Luokka)), KoskiSpecificMockOppijat.vuonna2005SyntynytEiOpiskeluoikeuksiaFikstuurissa) {
             verifyResponseStatusOk()
           }
 
@@ -231,8 +256,6 @@ class MaksuttomuusSpec extends AnyFreeSpec with OpiskeluoikeusTestMethodsAmmatil
           ) {
             verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation("Tieto koulutuksen maksuttomuudesta ei ole relevantti tässä opiskeluoikeudessa, sillä oppija on suorittanut oppivelvollisuutensa ennen 1.1.2021 eikä tästä syystä kuulu laajennetun oppivelvollisuuden piiriin."))
           }
-
-          resetFixtures()
         }
         "International Schoolin vahvistettu ysiluokka ilman opiskeluoikeuden päättymistä" in {
           val opiskeluoikeus = ExamplesInternationalSchool.opiskeluoikeus.copy(
@@ -245,7 +268,7 @@ class MaksuttomuusSpec extends AnyFreeSpec with OpiskeluoikeusTestMethodsAmmatil
           )
           val ysiLuokka: MYPVuosiluokanSuoritus = ExamplesInternationalSchool.grade9.copy(alkamispäivä = Some(date(2015, 6, 30)))
 
-          putOpiskeluoikeus(opiskeluoikeus.withSuoritukset(List(ysiLuokka)), KoskiSpecificMockOppijat.vuonna2005SyntynytEiOpiskeluoikeuksiaFikstuurissa) {
+          setupOppijaWithOpiskeluoikeus(opiskeluoikeus.withSuoritukset(List(ysiLuokka)), KoskiSpecificMockOppijat.vuonna2005SyntynytEiOpiskeluoikeuksiaFikstuurissa) {
             verifyResponseStatusOk()
           }
 
@@ -256,8 +279,6 @@ class MaksuttomuusSpec extends AnyFreeSpec with OpiskeluoikeusTestMethodsAmmatil
           ) {
             verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation("Tieto koulutuksen maksuttomuudesta ei ole relevantti tässä opiskeluoikeudessa, sillä oppija on suorittanut oppivelvollisuutensa ennen 1.1.2021 eikä tästä syystä kuulu laajennetun oppivelvollisuuden piiriin."))
           }
-
-          resetFixtures()
         }
         "European School of Helsinki -koulun S4 ilman opiskeluoikeuden päättymistä" in {
           val opiskeluoikeus = ExamplesEuropeanSchoolOfHelsinki.opiskeluoikeus.copy(
@@ -270,7 +291,7 @@ class MaksuttomuusSpec extends AnyFreeSpec with OpiskeluoikeusTestMethodsAmmatil
           )
           val s4Luokka: SecondaryLowerVuosiluokanSuoritus = ExamplesEuropeanSchoolOfHelsinki.s4.copy(alkamispäivä = Some(date(2015, 6, 30)))
 
-          putOpiskeluoikeus(opiskeluoikeus.withSuoritukset(List(s4Luokka)), KoskiSpecificMockOppijat.vuonna2005SyntynytEiOpiskeluoikeuksiaFikstuurissa) {
+          setupOppijaWithOpiskeluoikeus(opiskeluoikeus.withSuoritukset(List(s4Luokka)), KoskiSpecificMockOppijat.vuonna2005SyntynytEiOpiskeluoikeuksiaFikstuurissa) {
             verifyResponseStatusOk()
           }
 
@@ -281,14 +302,12 @@ class MaksuttomuusSpec extends AnyFreeSpec with OpiskeluoikeusTestMethodsAmmatil
           ) {
             verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation("Tieto koulutuksen maksuttomuudesta ei ole relevantti tässä opiskeluoikeudessa, sillä oppija on suorittanut oppivelvollisuutensa ennen 1.1.2021 eikä tästä syystä kuulu laajennetun oppivelvollisuuden piiriin."))
           }
-
-          resetFixtures()
         }
 
         "Linkitetty oppija - slavella siirron estävä oppimäärä" in {
           val opiskeluoikeus = ExamplesAikuistenPerusopetus.aikuistenPerusopetuksenOpiskeluoikeusAlkuvaiheineen
 
-          putOpiskeluoikeus(opiskeluoikeus, KoskiSpecificMockOppijat.oppivelvollisuustietoSlave1.henkilö) {
+          setupOppijaWithOpiskeluoikeus(opiskeluoikeus, KoskiSpecificMockOppijat.oppivelvollisuustietoSlave1.henkilö) {
             verifyResponseStatusOk()
           }
 
@@ -299,13 +318,11 @@ class MaksuttomuusSpec extends AnyFreeSpec with OpiskeluoikeusTestMethodsAmmatil
           ) {
             verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation("Tieto koulutuksen maksuttomuudesta ei ole relevantti tässä opiskeluoikeudessa, sillä oppija on suorittanut oppivelvollisuutensa ennen 1.1.2021 eikä tästä syystä kuulu laajennetun oppivelvollisuuden piiriin."))
           }
-
-          resetFixtures()
         }
         "Linkitetty oppija - masterilla siirron estävä oppimäärä" in {
           val opiskeluoikeus = ExamplesAikuistenPerusopetus.aikuistenPerusopetuksenOpiskeluoikeusAlkuvaiheineen
 
-          putOpiskeluoikeus(opiskeluoikeus, KoskiSpecificMockOppijat.oppivelvollisuustietoMaster) {
+          setupOppijaWithOpiskeluoikeus(opiskeluoikeus, KoskiSpecificMockOppijat.oppivelvollisuustietoMaster) {
             verifyResponseStatusOk()
           }
 
@@ -316,8 +333,6 @@ class MaksuttomuusSpec extends AnyFreeSpec with OpiskeluoikeusTestMethodsAmmatil
           ) {
             verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation("Tieto koulutuksen maksuttomuudesta ei ole relevantti tässä opiskeluoikeudessa, sillä oppija on suorittanut oppivelvollisuutensa ennen 1.1.2021 eikä tästä syystä kuulu laajennetun oppivelvollisuuden piiriin."))
           }
-
-          resetFixtures()
         }
       }
       "Saa siirtää, jos ennen rajapäivää tehty vahvistus on mitätöidyssä opiskeluoikeudessa" in {
@@ -330,7 +345,7 @@ class MaksuttomuusSpec extends AnyFreeSpec with OpiskeluoikeusTestMethodsAmmatil
           päättymispäivä = Some(date(2020, 8, 1))
         )
 
-        val mitätöity = mitätöiOpiskeluoikeus(createOpiskeluoikeus(KoskiSpecificMockOppijat.vuonna2005SyntynytEiOpiskeluoikeuksiaFikstuurissa, opiskeluoikeus))
+        mitätöiOpiskeluoikeus(setupOppijaWithAndGetOpiskeluoikeus(henkilö = KoskiSpecificMockOppijat.vuonna2005SyntynytEiOpiskeluoikeuksiaFikstuurissa, oo = opiskeluoikeus))
 
         putMaksuttomuus(
           List(Maksuttomuus(date(2021, 8, 1), None, true)),
@@ -339,8 +354,6 @@ class MaksuttomuusSpec extends AnyFreeSpec with OpiskeluoikeusTestMethodsAmmatil
         ) {
           verifyResponseStatusOk()
         }
-
-        resetFixtures()
       }
       "Saa siirtää, jos ennen rajapäivää loppunut peruskoulun suoritus on päättynyt eroamiseen" in {
         val peruskoulunAlkamispäivä = date(2010, 8, 1)
@@ -360,7 +373,9 @@ class MaksuttomuusSpec extends AnyFreeSpec with OpiskeluoikeusTestMethodsAmmatil
           )
         )
 
-        createOpiskeluoikeus(KoskiSpecificMockOppijat.vuonna2005SyntynytEiOpiskeluoikeuksiaFikstuurissa, opiskeluoikeus)
+        setupOppijaWithOpiskeluoikeus(opiskeluoikeus, KoskiSpecificMockOppijat.vuonna2005SyntynytEiOpiskeluoikeuksiaFikstuurissa) {
+          verifyResponseStatusOk()
+        }
 
         val peruskoulunJälkeisenAlkamispäivä = date(2021, 8, 1)
         putMaksuttomuus(
@@ -370,8 +385,6 @@ class MaksuttomuusSpec extends AnyFreeSpec with OpiskeluoikeusTestMethodsAmmatil
         ) {
           verifyResponseStatusOk()
         }
-
-        resetFixtures()
       }
       "Saa siirtää jos suoritus vahvistettu Valpas-lain voimaantulopäivän jälkeen" in {
         val opiskeluoikeus = PerusopetusExampleData.opiskeluoikeus(
@@ -730,10 +743,10 @@ class MaksuttomuusSpec extends AnyFreeSpec with OpiskeluoikeusTestMethodsAmmatil
     }
 
     "Maksuttomuustietoja ei vaadita, jos opinnot ovat alkaneet myöhemmin kuin sen vuoden lopussa, jolloin oppija täyttää 20 vuotta" in {
-      resetFixtures()
+
       val alkamispäivä = oppija.syntymäaika.get.plusYears(20).atEndOfYear.plusDays(1)
       val opiskeluoikeus = päättymispäivällä(alkamispäivällä(defaultOpiskeluoikeus, alkamispäivä), alkamispäivä.plusDays(10)).copy(lisätiedot = None)
-      putOpiskeluoikeus(opiskeluoikeus, oppija) {
+      setupOppijaWithOpiskeluoikeus(opiskeluoikeus, oppija) {
         verifyResponseStatusOk()
       }
     }
