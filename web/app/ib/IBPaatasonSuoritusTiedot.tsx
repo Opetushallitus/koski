@@ -72,7 +72,6 @@ export const IBPäätasonSuoritusTiedot: React.FC<IBTutkintTiedotProps> = ({
   form,
   päätasonSuoritus
 }) => {
-  const opiskeluoikeus = form.state
   const path = päätasonSuoritus.path
 
   return (

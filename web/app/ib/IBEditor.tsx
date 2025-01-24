@@ -52,6 +52,7 @@ import { PreIBSuoritus2019 } from '../types/fi/oph/koski/schema/PreIBSuoritus201
 import { LocalizedString } from '../types/fi/oph/koski/schema/LocalizedString'
 import { Koodistokoodiviite } from '../types/fi/oph/koski/schema/Koodistokoodiviite'
 import { OrganisaatioWithOid } from '../types/fi/oph/koski/schema/OrganisaatioWithOid'
+import { IBLisätiedot } from './IBLisatiedot'
 
 export type IBEditorProps = AdaptedOpiskeluoikeusEditorProps<IBOpiskeluoikeus>
 
@@ -135,7 +136,7 @@ const IBPäätasonSuoritusEditor: React.FC<
             onCreateSuoritus: () => createSuoritus(IBTutkinnonSuoritus)
           }
     }
-  }, [form])
+  }, [form, fillNimet])
 
   return (
     <EditorContainer
@@ -144,6 +145,7 @@ const IBPäätasonSuoritusEditor: React.FC<
       invalidatable={invalidatable}
       onChangeSuoritus={setPäätasonSuoritus}
       createOpiskeluoikeusjakso={LukionOpiskeluoikeusjakso}
+      lisätiedotContainer={IBLisätiedot}
       {...addSuoritusProps}
     >
       <TestIdRoot id={päätasonSuoritus.testId}>

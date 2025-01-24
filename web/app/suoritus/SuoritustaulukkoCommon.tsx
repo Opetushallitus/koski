@@ -1,5 +1,5 @@
 /* eslint-disable react/jsx-no-literals */
-/* eslint-disable @typescript-eslint/no-non-null-assertion */
+ 
 import React from 'baret'
 import { tutkinnonOsanRyhmät } from '../koodisto/koodistot'
 import { t } from '../i18n/i18n'

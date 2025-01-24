@@ -345,8 +345,10 @@ export type OppiaineenKurssitProps = {
 
 const kurssiNaturalOrd = Ord.contramap((kurssi: OppiaineenOsasuoritus) => {
   const tunniste = kurssi.koulutusmoduuli.tunniste.koodiarvo
-  const match = tunniste.match(/([^\d]*)(\d*)/)
-  return match ? `${match[1]}${match[2].padStart(8, '0')}` : tunniste
+  const tunnisteMatch = tunniste.match(/([^\d]*)(\d*)/)
+  return tunnisteMatch
+    ? `${tunnisteMatch[1]}${tunnisteMatch[2].padStart(8, '0')}`
+    : tunniste
 })(string.Ord)
 
 const booleanOrd = Ord.fromCompare((a?: boolean, b?: boolean) =>
