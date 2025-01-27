@@ -184,6 +184,19 @@ Esimerkki palautettavan datan rakenteesta:
         }
     }
 
+### Virhetilanteet
+
+OAuth2:n speksaamissa authorization ja token endpoint rajapinnoissa palautetaan virheilmoitukset speksin mukaisina. Esimerkiksi
+token endpointissa virhekoodi `400 Bad Request` ja sisältönä JSON, esimerkiksi:
+
+    {
+      "error" : "invalid_client",
+      "error_description" : "Varmenne puuttuu"
+    }
+
+Resource endpointeissa käytetään myös yleisempiä virhekoodeja. Esimerkiksi jos oppijalla ei ole tallennettuna mitään
+opiskeluoikeuksia KOSKI-palveluun tai KOSKI-palvelun kautta välitettäviin VIRTA- ja Ylioppilastutkintorekistereihin,
+palautetaan virhekoodi `404 Not Found`.
 
 ## Huomioita datan käsittelystä
 
