@@ -17,6 +17,7 @@ import org.json4s.JValue
 import java.net.URL
 import java.time.{Duration, LocalDateTime, OffsetDateTime}
 import java.util.UUID
+import scala.annotation.nowarn
 import scala.io.Source
 import scala.reflect.runtime.universe.TypeTag
 import scala.xml.{Elem, Node, Text}
@@ -76,6 +77,7 @@ object QueryDocumentation extends Logging {
       })
 
   def addVariableTexts(application: KoskiApplication, markdown: String): String = {
+    @nowarn("msg=constructor URL in class URL is deprecated")
     val rootUrl = new URL(application.config.getString("koski.root.url"))
     val host = rootUrl.getHost
     val baseUrl = rootUrl.getPath

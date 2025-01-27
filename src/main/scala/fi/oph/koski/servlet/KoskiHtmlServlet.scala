@@ -7,6 +7,7 @@ import fi.oph.koski.log.Logging
 import fi.oph.koski.util.XML
 
 import java.net.{URI, URL}
+import scala.annotation.nowarn
 import scala.xml.Elem
 
 trait KoskiHtmlServlet extends HtmlServlet with KoskiSpecificAuthenticationSupport with Logging {
@@ -28,6 +29,7 @@ trait KoskiHtmlServlet extends HtmlServlet with KoskiSpecificAuthenticationSuppo
     renderHtml(html)
   }
 
+  @nowarn("msg=constructor URL in class URL is deprecated")
   def subdomainRedirectNeeded: Option[String] = {
     val url = new URL(request.getRequestURL.toString)
     "(\\w+)\\.(.+)".r("subdomain", "rest").findFirstMatchIn(url.getHost) match {
