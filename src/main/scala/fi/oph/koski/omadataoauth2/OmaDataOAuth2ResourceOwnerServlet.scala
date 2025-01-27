@@ -19,14 +19,6 @@ class OmaDataOAuth2ResourceOwnerServlet(implicit val application: KoskiApplicati
     ))
   }
 
-  // TODO: TOR-2210: Pitäisikö tämän olla POST-route, ja vasta frontendissä tehdä redirect? Kuten HSL-käyttöliittymässä tehdään, mikä toki on monimutkaisempaa.
-  //
-  // Tällöin kumppanin palvelu (tai siinä palvelussa oleva tietoturva-aukko) ei pystyisi "kikkailemaan" ja ohjaamaan valmiiksi kirjautuneen käyttäjän
-  // selainta suoraan tähän API-osoitteeseen hyväksyntäkäyttöliittymän ohi. Onko tätä tarvetta estää?
-  //
-  // oppija-CAS-loginin kautta tähän GET-routeen ei voi kuitenkaan suoraa linkkiä voi tehdä, koska CAS estää query-parametrit omassa uudelleenohjauksen käsittelyssään.
-  // Eli ulkopuolinen taho ei pysty kuitenkaan muodostamaan tällä hetkellä URL-osoitetta, joka veisi käyttäjän CAS-kirjautumisen kautta suoraan tähän ilman hyväksyntä-käyttöliittymän
-  // avaamista.
   get("/authorize") {
     if (multiParams("error").length > 0) {
       validateQueryClientParams() match {

@@ -86,14 +86,6 @@ class OmaDataOAuth2FrontendSpec extends OmaDataOAuth2TestBase {
       }
     }
 
-    "Suostumuksen myöntämis- ja datan haku-operaatiot audit-lokitetaan" in {
-      // TODO: TOR-2210
-    }
-
-    "error-query parametrilla näyttää virheilmoituksen käyttäjälle" in {
-      // TODO: TOR-2210
-    }
-
     "viallisella client_id/redirect_uri:lla" - {
       "kirjautuneella käyttäjällä" - {
         "redirectaa käyttäjän samaan osoitteeseen query-parametreihin sisällytetyllä virheilmoituksella" - {
@@ -237,7 +229,6 @@ class OmaDataOAuth2FrontendSpec extends OmaDataOAuth2TestBase {
         "scope"
       )
 
-      // TODO: TOR-2210: testaa kirjatuneena ja kirjautumatta, molemmat
       "kirjautumattomana" - {
 
         "redirectaa virhetiedot palauttavalle post response -sivulle" - {
@@ -416,9 +407,6 @@ class OmaDataOAuth2FrontendSpec extends OmaDataOAuth2TestBase {
               response.header("Location") should include regex("omadataoauth2-error-[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}".r)
             }
           }
-          "kun code_challenge ei ole validimuotoinen challenge" in {
-            // TODO: TOR-2210
-          }
         }
       }
 
@@ -585,9 +573,6 @@ class OmaDataOAuth2FrontendSpec extends OmaDataOAuth2TestBase {
               response.header("Location") should include(s"/koski/user/logout?target=/koski/omadata-oauth2/cas-workaround/post-response/")
               // TODO: TOR-2210: Base64url-enkoodattu osa Location-URLista pitäisi dekoodata ja tarkistaa sisältö
             }
-          }
-          "kun code_challenge ei ole validimuotoinen challenge" in {
-            // TODO: TOR-2210
           }
         }
       }

@@ -103,9 +103,7 @@ trait AccessTokenResponse {
 case class AccessTokenSuccessResponse(
   access_token: String,
   token_type: String,
-  expires_in: Long,
-  // refresh_token: Option[String] // TODO: TOR-2210: jos tarvitaan refresh token
-  // scope: Option[String] // TOD: TOR-2210: jos aletaan joskus tukea scopen vaihtoa tässä vaiheessa
+  expires_in: Long
 ) extends AccessTokenResponse {
   val httpStatus = 200
 }

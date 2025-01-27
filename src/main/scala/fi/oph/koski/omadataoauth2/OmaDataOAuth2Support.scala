@@ -27,8 +27,6 @@ trait OmaDataOAuth2Support extends ScalatraServlet with OmaDataOAuth2Config {
 
   // validoi parametrit, joissa olevista virheistä raportoidaan clientille redirectin kautta
   protected def validateQueryOtherParams(clientInfo: ClientInfo): Either[OmaDataOAuth2Error, ParamInfo] = {
-    // TODO: TOR-2210: tee muiden parametrien validoinnit, joiden virheistä voi/kuuluu raportoida redirect_uri:n kautta
-    // clientille asti. Esim. onko S256 code challenge annettu jne.
     for {
       responseType <- validateResponseType()
       responseMode <- validateResponseMode()
@@ -85,7 +83,6 @@ trait OmaDataOAuth2Support extends ScalatraServlet with OmaDataOAuth2Config {
   }
 
   protected def validateClientIdRekisteröity(clientId: String, errorType: OmaDataOAuth2ErrorType): Either[OmaDataOAuth2Error, String] = {
-    // TODO: TOR-2210: esim. koodisto voisi olla parempi source kuin konffitiedosto clientien tiedoille
     if (hasConfigForClient(clientId)) {
       Right(clientId)
     } else {
