@@ -16,7 +16,6 @@ import java.util.concurrent.{CountDownLatch, TimeUnit}
 import java.util.concurrent.atomic.AtomicReference
 import java.util.{HashSet, Locale}
 import javax.servlet.http.{HttpServletRequest, HttpServletResponse}
-import scala.annotation.nowarn
 import scala.util.control.Breaks._
 
 /**
@@ -91,7 +90,6 @@ class RaamiProxyServlet(val proxyHost: String, val proxyPrefix: String, val appl
     httpClient.stop()
   }
 
-  @nowarn("msg=constructor URL in class URL is deprecated")
   protected def setHostHeader(request: Request, value: String): Request = {
     // Jetty.HttpClient ei osaa korvata headeria, ellei sitä aseta ensin tyhjäksi
     request.header(HttpHeader.HOST, null)

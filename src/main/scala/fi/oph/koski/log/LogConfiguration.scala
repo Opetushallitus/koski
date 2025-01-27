@@ -2,7 +2,6 @@ package fi.oph.koski.log
 
 import java.io.File
 import java.net.URL
-import scala.annotation.nowarn
 
 object LogConfiguration {
   // The actual technical limit is currently docker's 16kB for line length in stdout. Set the limit to 5000, since
@@ -12,7 +11,6 @@ object LogConfiguration {
   private val LocalLog4jConfigPath = "src/main/resources/log4j2-local.xml"
   private val TestLog4jConfigPath = "src/main/resources/log4j2-test.xml"
 
-  @nowarn("msg=constructor URL in class URL is deprecated")
   def configureLogging(isTestEnvironment: Boolean = false): Unit = {
     val log4jConfig = Option(System.getProperty("log4j.configuration"))
       .map(path => new URL(path))

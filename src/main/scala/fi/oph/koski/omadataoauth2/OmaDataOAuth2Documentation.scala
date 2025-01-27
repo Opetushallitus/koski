@@ -6,11 +6,9 @@ import fi.oph.koski.log.Logging
 import fi.oph.koski.util.TryWithLogging
 
 import java.net.URL
-import scala.annotation.nowarn
 import scala.io.Source
 
 // TODO: TOR-2210: Tähän lisää dokumentaatiota, esimerkkejä yms., jonka generointiin voi ottaa lisää mallia massaluovutuksen QueryDocumentation-luokasta
-@nowarn("msg=constructor URL in class URL is deprecated")
 object OmaDataOAuth2Documentation extends Logging {
   // Skeema-jsonit
 
