@@ -73,9 +73,11 @@ const kulosaarenAlaAsteTableContent = `
 const aapajaoenKouluTableContent = `
   Aaapajoen-peruskoulusta-valmistunut Valpas              | 16.2.2005   | 9C | 29.5.2021  | Ei hakemusta         | –                           | –                         | –                                                                          |
   Amis-ja-YO Valpas                                       | 30.8.2005   | 9C | 29.5.2021  | Ei hakemusta         | –                           | –                         | –                                                                          |
+  Ammattitutkinto yo-tutkinnon Jälkeen Antti              | 30.8.2005   | 9C | 29.5.2021  | Ei hakemusta         | –                           | –                         | hourglass_empty6.9.2021 alkaen: Stadin ammatti- ja aikuisopisto, Ammatillinen koulutus |
   Kahdella-oppija-oidilla Valpas                          | 15.2.2005   | 9C | 29.5.2021  | Hakenut open_in_new  | Varasija: Ressun lukio      | –                         | doneJyväskylän normaalikoulu, Lukiokoulutus                                |
   Kahdella-oppija-oidilla-ilmo Valpas                     | 4.6.2005    | 9C | 29.5.2021  | Ei hakemusta         | –                           | –                         | doneJyväskylän normaalikoulu, Lukiokoulutus                                |
   KahdenKoulunYsi-ilmo Valpas                             | 21.11.2004  | 9C | 29.5.2021  | Ei hakemusta         | –                           | –                         | –                                                                          |
+  Lukio-opinnot Ammattitutkinnon Jälkeen Lucia            | 30.8.2005   | 9C | 29.5.2021  | Ei hakemusta         | –                           | –                         | hourglass_empty6.9.2021 alkaen: Jyväskylän normaalikoulu, Lukiokoulutus    |
 `
 
 const jklHakutilannePath = hakutilannePathWithOrg.href("/virkailija", {
@@ -195,7 +197,7 @@ describe("Hakutilannenäkymä", () => {
     await selectOrganisaatioByNimi("LAKKAUTETTU: Aapajoen koulu")
     await urlIsEventually(pathToUrl(aapajoenKouluHakutilannePath))
     await waitTableLoadingHasFinished(".hakutilanne")
-    await textEventuallyEquals(".card__header", "Hakeutumisvelvollisia (5)")
+    await textEventuallyEquals(".card__header", "Hakeutumisvelvollisia (7)")
 
     await dataTableEventuallyEquals(
       ".hakutilanne",

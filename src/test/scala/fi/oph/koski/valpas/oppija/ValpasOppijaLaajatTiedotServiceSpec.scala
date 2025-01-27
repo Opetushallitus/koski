@@ -45,7 +45,7 @@ class ValpasOppijaLaajatTiedotServiceSpec extends ValpasOppijaTestBase {
         Set(ValpasMockOppijat.oppivelvollinenMonellaOppijaOidillaMaster.oid, ValpasMockOppijat.oppivelvollinenMonellaOppijaOidillaToinen.oid, ValpasMockOppijat.oppivelvollinenMonellaOppijaOidillaKolmas.oid),
         List(
           ExpectedData(
-            ValpasOpiskeluoikeusExampleData.lukionOpiskeluoikeus,
+            ValpasOpiskeluoikeusExampleData.lukionOpiskeluoikeus(),
             onHakeutumisValvottavaOpiskeluoikeus = false,
             onHakeutumisvalvovaOppilaitos = false,
             onSuorittamisvalvovaOppilaitos = true,
@@ -93,7 +93,7 @@ class ValpasOppijaLaajatTiedotServiceSpec extends ValpasOppijaTestBase {
         Set(ValpasMockOppijat.oppivelvollinenMonellaOppijaOidillaMaster.oid, ValpasMockOppijat.oppivelvollinenMonellaOppijaOidillaToinen.oid, ValpasMockOppijat.oppivelvollinenMonellaOppijaOidillaKolmas.oid),
         List(
           ExpectedData(
-            ValpasOpiskeluoikeusExampleData.lukionOpiskeluoikeus,
+            ValpasOpiskeluoikeusExampleData.lukionOpiskeluoikeus(),
             onHakeutumisValvottavaOpiskeluoikeus = false,
             onHakeutumisvalvovaOppilaitos = false,
             onSuorittamisvalvovaOppilaitos = true,
@@ -125,7 +125,7 @@ class ValpasOppijaLaajatTiedotServiceSpec extends ValpasOppijaTestBase {
         Set(ValpasMockOppijat.oppivelvollinenMonellaOppijaOidillaMaster.oid, ValpasMockOppijat.oppivelvollinenMonellaOppijaOidillaToinen.oid, ValpasMockOppijat.oppivelvollinenMonellaOppijaOidillaKolmas.oid),
         List(
           ExpectedData(
-            ValpasOpiskeluoikeusExampleData.lukionOpiskeluoikeus,
+            ValpasOpiskeluoikeusExampleData.lukionOpiskeluoikeus(),
             onHakeutumisValvottavaOpiskeluoikeus = false,
             onHakeutumisvalvovaOppilaitos = false,
             onSuorittamisvalvovaOppilaitos = true,
