@@ -9,7 +9,6 @@ import org.scalatra.ContentEncodingSupport
 import org.scalatra.forms._
 import org.scalatra.i18n.I18nSupport
 
-// TODO: TOR-2210: Poista tämä: tehty vain post-responsen alustavaa debuggausta varten.
 class OmaDataOAuth2PostResponseDebugServlet(implicit val application: KoskiApplication)
   extends KoskiSpecificApiServlet
     with Logging with ContentEncodingSupport with NoCache with FormSupport with I18nSupport with Unauthenticated

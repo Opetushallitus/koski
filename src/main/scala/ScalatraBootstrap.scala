@@ -189,9 +189,6 @@ class ScalatraBootstrap extends LifeCycle with Logging with Timing with GlobalEx
       // OPH:n nginx:äänkin uusia routeja. Siksi toistaiseksi väärin muodostetussa polussa
       // https://opintopolku.fi/koski/omadata-oauth2/.well-known/oauth-authorization-server .
       mount("/koski/omadata-oauth2/.well-known/oauth-authorization-server", new OmaDataOAuth2DiscoveryServlet)
-
-      // TODO: TOR-2210: Poista debug-servlet kokonaan!
-      mount("/koski/omadata-oauth2/debug-post-response", new OmaDataOAuth2PostResponseDebugServlet)
     }
 
     if (Environment.isLocalDevelopmentEnvironment(application.config)) {
@@ -206,6 +203,8 @@ class ScalatraBootstrap extends LifeCycle with Logging with Timing with GlobalEx
       }
 
       mount("/types", new LocalDevOnlyTypeModelServlet())
+
+      mount("/koski/omadata-oauth2/debug-post-response", new OmaDataOAuth2PostResponseDebugServlet)
     }
 
     if (
@@ -216,6 +215,7 @@ class ScalatraBootstrap extends LifeCycle with Logging with Timing with GlobalEx
       mount("/koski/api/test/suoritusjakoV2", new SuoritusjakoServletV2)
       mount("/koski/api/test/raportointikanta", new RaportointikantaTestServlet)
       mount("/koski/api/test/opensearch", new OpenSearchServlet)
+
     }
 
     Futures.await(initTasks) // await for all initialization tasks to complete
