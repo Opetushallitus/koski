@@ -16,23 +16,28 @@ export default ({ oppijaOid, opiskeluoikeusTyypit, selectedIndex }) => {
   const toggleAdd = (event) => {
     addingAtom.modify((x) => !x)
   }
-  const addOpiskeluoikeus = (opiskeluoikeus) => {
-    if (!opiskeluoikeus) {
-      addingAtom.set(false)
-    } else {
-      const oppija = {
-        henkilö: { oid: oppijaOid },
-        opiskeluoikeudet: [opiskeluoikeus]
+  const addOpiskeluoikeus = (opiskeluoikeus) =>
+    new Promise((resolve, reject) => {
+      if (!opiskeluoikeus) {
+        addingAtom.set(false)
+      } else {
+        const oppija = {
+          henkilö: { oid: oppijaOid },
+          opiskeluoikeudet: [opiskeluoikeus]
+        }
+        const tyyppi = opiskeluoikeus.tyyppi.koodiarvo
+        postNewOppija(oppija)
+          .doError(() => {
+            addingAtom.set(false)
+            reject()
+          })
+          .onValue(() => {
+            reloadOppija()
+            navigateTo('?opiskeluoikeudenTyyppi=' + tyyppi)
+            resolve()
+          })
       }
-      const tyyppi = opiskeluoikeus.tyyppi.koodiarvo
-      postNewOppija(oppija)
-        .doError(() => addingAtom.set(false))
-        .onValue(() => {
-          reloadOppija()
-          navigateTo('?opiskeluoikeudenTyyppi=' + tyyppi)
-        })
-    }
-  }
+    })
 
   const canAddOpiskeluoikeusP = userP.map((u) => !!u.hasWriteAccess)
   return (
