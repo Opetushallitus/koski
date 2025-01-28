@@ -523,13 +523,13 @@ class MassaluovutusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers wit
 
     "Palautuneen datan filtteröinti" - {
       val query = getQuery(LocalDateTime.now().minusHours(1))
-      val queryId = addQuerySuccessfully(query, user) { response =>
+      lazy val queryId = addQuerySuccessfully(query, user) { response =>
         response.status should equal(QueryState.pending)
         response.queryId
       }
-      val complete = waitForCompletion(queryId, user)
+      lazy val complete = waitForCompletion(queryId, user)
 
-      val jsonFiles = complete.files.map { file =>
+      lazy val jsonFiles = complete.files.map { file =>
         verifyResultAndContent(file, user) {
           JsonMethods.parse(response.body)
         }
@@ -723,13 +723,13 @@ class MassaluovutusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers wit
 
     "Palautuneen datan filtteröinti" - {
       val query = getQuery(oppijaOids)
-      val queryId = addQuerySuccessfully(query, user) { response =>
+      lazy val queryId = addQuerySuccessfully(query, user) { response =>
         response.status should equal(QueryState.pending)
         response.queryId
       }
-      val complete = waitForCompletion(queryId, user)
+      lazy val complete = waitForCompletion(queryId, user)
 
-      val jsonFiles = complete.files.map { file =>
+      lazy val jsonFiles = complete.files.map { file =>
         verifyResultAndContent(file, user) {
           JsonMethods.parse(response.body)
         }
