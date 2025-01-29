@@ -237,7 +237,7 @@ const TheoryOfKnowledgeRows: React.FC<IBTutkinnonTiedotRowsProps> = ({
             />
           </KeyValueRow>
           <KeyValueRow localizableLabel="Kurssit" innerKeyValueTable>
-            {isNonEmpty(kurssit) ? (
+            {isNonEmpty(kurssit) || form.editMode ? (
               <>
                 <OppiaineenKurssit
                   form={form}
