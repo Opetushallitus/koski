@@ -9,7 +9,7 @@ import org.http4s.Uri
 
 import scala.xml.NodeSeq
 
-class OmaDataOAuth2LogoutPostResponseServlet(implicit val application: KoskiApplication) extends ScalatraServlet with OppijaHtmlServlet with NoCache with OmaDataOAuth2Support {
+class OmaDataOAuth2LogoutPostResponseServlet(implicit val application: KoskiApplication) extends ScalatraServlet with OppijaHtmlServlet with NoCache with OmaDataOAuth2ServletSupport {
 
   val allowFrameAncestors: Boolean = !Environment.isServerEnvironment(application.config)
   val frontendValvontaMode: FrontendValvontaMode.FrontendValvontaMode =

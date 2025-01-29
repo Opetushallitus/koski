@@ -9,7 +9,7 @@ import org.scalatra.ContentEncodingSupport
 
 
 class OmaDataOAuth2ResourceOwnerServlet(implicit val application: KoskiApplication)
-  extends KoskiSpecificApiServlet with KoskiSpecificAuthenticationSupport with Logging with ContentEncodingSupport with NoCache with LanguageSupport with OmaDataOAuth2Support with RequiresKansalainen {
+  extends KoskiSpecificApiServlet with KoskiSpecificAuthenticationSupport with Logging with ContentEncodingSupport with NoCache with LanguageSupport with OmaDataOAuth2ServletSupport with RequiresKansalainen {
 
   get("/client-details/:client_id") {
     val clientId = params("client_id")

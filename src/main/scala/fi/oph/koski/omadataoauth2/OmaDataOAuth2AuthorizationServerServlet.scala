@@ -14,7 +14,7 @@ import java.time.temporal.ChronoUnit
 
 class OmaDataOAuth2AuthorizationServerServlet(implicit val application: KoskiApplication)
   extends KoskiSpecificApiServlet
-    with Logging with ContentEncodingSupport with NoCache with FormSupport with I18nSupport with RequiresOmaDataOAuth2 with OmaDataOAuth2Support {
+    with Logging with ContentEncodingSupport with NoCache with FormSupport with I18nSupport with RequiresOmaDataOAuth2 with OmaDataOAuth2ServletSupport {
 
   // in: auth code yms. OAuth2 headerit
   // out: access token, jos käyttäjällä oikeudet kyseiseen authorization codeen
