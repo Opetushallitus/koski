@@ -116,9 +116,9 @@ case class LuokalleJääntiAccumulator(
   }
 
   private def newMathes(oo: JsonNode, diff: OpiskeluoikeusHistoryPatch): Map[String, LuokalleJääntiMatch] =
-    jääLuokalleLuokilla(oo).foldLeft(Map() : Map[String, LuokalleJääntiMatch]) { (acc, m) =>
+    jääLuokalleLuokilla(oo).foldLeft(matches) { (acc, m) =>
       val (luokka, ooJson) = m
-      if (acc.keySet.contains(luokka)) {
+      if (acc.contains(luokka)) {
         acc
       } else {
         acc + (luokka -> LuokalleJääntiMatch(ooJson, diff))
