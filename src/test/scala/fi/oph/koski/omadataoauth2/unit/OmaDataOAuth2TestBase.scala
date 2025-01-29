@@ -11,7 +11,7 @@ import org.scalatest.matchers.should.Matchers
 
 import java.net.URLEncoder
 import java.nio.charset.StandardCharsets
-import java.util.Base64
+import java.util.{Base64, UUID}
 
 class OmaDataOAuth2TestBase extends AnyFreeSpec with KoskiHttpSpec with Matchers {
   protected def queryStringUrlEncode(str: String): String = URLEncoder.encode(str, "UTF-8").replace("+", "%20")
@@ -74,6 +74,24 @@ class OmaDataOAuth2TestBase extends AnyFreeSpec with KoskiHttpSpec with Matchers
     val actualParams = Uri.unsafeFromString("/?" + actualParamsString).params
 
     actualParams should contain allElementsOf (expectedParams)
+  }
+
+  def encodedParamStringShouldContainErrorUuidAsErrorId(base64UrlEncodedParams: String) = {
+    val actualParamsString = base64UrlDecode(base64UrlEncodedParams)
+    val actualParams = Uri.unsafeFromString("/?" + actualParamsString).params
+
+    actualParams("error_id") should startWith("omadataoauth2-error-")
+
+    val uuid = actualParams("error_id").stripPrefix("omadataoauth2-error-")
+    noException should be thrownBy UUID.fromString(uuid)
+  }
+
+  def encodedParamStringShouldContainErrorDescriptionWithUuid(base64UrlEncodedParams: String, expectedErrorDescription: String) = {
+    val actualParamsString = base64UrlDecode(base64UrlEncodedParams)
+    val actualParams = Uri.unsafeFromString("/?" + actualParamsString).params
+
+    actualParams("error_description") should startWith("omadataoauth2-error-")
+    actualParams("error_description") should endWith(expectedErrorDescription)
   }
 
   def getFromEncodedParamString(base64UrlEncodedParams: String, key: String): Option[String] = {
