@@ -13,6 +13,8 @@ case class MassaluovutusQueryLuokalleJaaneetResult(
   oppijaOid: String,
   @Description("Luokka-aste, jolle luokalle jääminen on merkitty")
   luokka: String,
+  @Description("Opiskeluoikeuden viimeisimmän version versionumero")
+  viimeisinVersionumero: Option[Int],
   @Description("Opiskeluoikeuden tiedot")
   opiskeluoikeus: PerusopetuksenOpiskeluoikeus,
 )
@@ -22,6 +24,7 @@ object MassaluovutusQueryLuokalleJaaneetResult {
     MassaluovutusQueryLuokalleJaaneetResult(
       oppijaOid = oppijaOid,
       luokka = luokka,
+      viimeisinVersionumero = m.viimeisinVersionumero,
       opiskeluoikeus = m.perusopetuksenOpiskeluoikeus,
     )
 

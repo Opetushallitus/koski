@@ -36,13 +36,15 @@ case class CsvFields(
   oppijanumero: String,
   luokka: String,
   versionumero: Option[Int],
+  viimeisinVersionumero: Option[Int],
 )
 
 object CsvFields {
-  def apply(r:  MassaluovutusQueryLuokalleJaaneetResult): CsvFields = CsvFields(
+  def apply(r: MassaluovutusQueryLuokalleJaaneetResult): CsvFields = CsvFields(
     r.opiskeluoikeus.oid,
     r.oppijaOid,
     r.luokka,
     r.opiskeluoikeus.versionumero,
+    r.viimeisinVersionumero,
   )
 }
