@@ -2,15 +2,11 @@ package fi.oph.koski.omadataoauth2
 
 import fi.oph.koski.http.{ErrorDetail, HttpStatus}
 import fi.oph.koski.koodisto.{KoodistoKoodi, KoodistoViite}
-import fi.oph.koski.koskiuser.KäyttöoikeusOrg
-import org.scalatra.ScalatraServlet
 
-import java.net.URLEncoder
-import java.util.{Base64, UUID}
+import java.util.UUID
 
 trait OmaDataOAuth2Support extends OmaDataOAuth2Config {
-  // TODO: TOR-2210 Tätä pitää kutsua myös resource endpointissa, koska oikeudet tai koodisto voi muuttua tokenin voimassaoloaikana
-  protected def validateScope(client_id: String, scope: String): Either[OmaDataOAuth2Error, String] = {
+  protected def validateScope(scope: String): Either[OmaDataOAuth2Error, String] = {
     for {
       scope <- validateScopeContainsOnlyKoodistoValues(scope)
       scope <- validateScopeAtLeastOneHenkilotiedotScope(scope)

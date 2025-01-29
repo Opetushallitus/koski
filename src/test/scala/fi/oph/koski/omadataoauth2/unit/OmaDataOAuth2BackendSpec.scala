@@ -651,6 +651,29 @@ class OmaDataOAuth2BackendSpec
         result.error_description.get should include("Access token not found or it has expired")
       }
     }
+    "ei voi kutsua, jos scope on muuttunut epävalidiksi" in {
+      val pkce = createChallengeAndVerifier
+      val token = createAuthorizationAndToken(validKansalainen, pkce)
+
+      // Vaihda scope epävalidiksi (simuloi taustalla tapahtunutta validointimuutosta)
+      runDbSync(
+        OAuth2JakoKaikki
+          .filter(_.accessTokenSHA256 === sha256(token))
+          .map(_.scope)
+          .update(
+            "HENKILOTIEDOT_SYNTYMAAIKA HENKILOTIEDOT_NIMI OPISKELUOIKEUDET_SUORITETUT_TUTKINNOT OPISKELUOIKEUDET_EI_ENAA_OLEMASSA"
+          )
+      )
+
+      // Yritä käyttää
+      postResourceServer(token) {
+        verifyResponseStatus(400)
+        val result = JsonSerializer.parse[AccessTokenErrorResponse](response.body)
+        result.error should be("invalid_scope")
+        result.error_description.get should include("scope=HENKILOTIEDOT_SYNTYMAAIKA HENKILOTIEDOT_NIMI OPISKELUOIKEUDET_SUORITETUT_TUTKINNOT OPISKELUOIKEUDET_EI_ENAA_OLEMASSA contains unknown scopes (OPISKELUOIKEUDET_EI_ENAA_OLEMASSA))")
+      }
+    }
+
     "henkilötiedot" - {
       "palautetaan" - {
         "kun vain osa scopeista mukana" in {

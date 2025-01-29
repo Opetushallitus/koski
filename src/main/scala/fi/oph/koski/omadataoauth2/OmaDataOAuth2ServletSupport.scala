@@ -30,7 +30,7 @@ trait OmaDataOAuth2ServletSupport extends ScalatraServlet with OmaDataOAuth2Supp
       codeChallengeMethod <- validateCodeChallengeMethod()
       codeChallenge <- validateParamExistsOnce("code_challenge", OmaDataOAuth2ErrorType.invalid_request)
       scope <- validateParamExistsOnce("scope", OmaDataOAuth2ErrorType.invalid_request)
-      scope <- validateScope(clientInfo.clientId, scope)
+      scope <- validateScope(scope)
     } yield ParamInfo(responseType, responseMode, codeChallengeMethod, codeChallenge, scope)
   }
 
