@@ -1,3 +1,4 @@
+import { isNonEmpty } from 'fp-ts/lib/Array'
 import React, { useCallback, useMemo } from 'react'
 import { TestIdLayer, TestIdText } from '../appstate/useTestId'
 import {
@@ -17,9 +18,9 @@ import { Select, useKoodistoOptions } from '../components-v2/controls/Select'
 import { FormField } from '../components-v2/forms/FormField'
 import { FormModel, getValue } from '../components-v2/forms/FormModel'
 import {
-  ArvosanaEdit,
-  ArvosanaView,
-  koodiarvoAndNimi
+  koodiarvoAndNimi,
+  ParasArvosanaEdit,
+  ParasArvosanaView
 } from '../components-v2/opiskeluoikeus/ArvosanaField'
 import {
   BooleanEdit,
@@ -49,7 +50,6 @@ import {
 import { Koodistokoodiviite } from '../types/fi/oph/koski/schema/Koodistokoodiviite'
 import { appendOptional, deleteAt } from '../util/array'
 import { koodiviiteId } from '../util/koodisto'
-import { lastElement } from '../util/optics'
 import { isKoodiarvoOf } from '../util/types'
 import { useBooleanState } from '../util/useBooleanState'
 import { DialogSelect } from '../uusiopiskeluoikeus/components/DialogSelect'
@@ -61,7 +61,6 @@ import {
   useKielivalikoimaOptions,
   useOppiaineTasoOptions
 } from './state/options'
-import { isNonEmpty } from 'fp-ts/lib/Array'
 
 export type IBTutkintTiedotProps = {
   form: FormModel<IBOpiskeluoikeus>
@@ -211,13 +210,9 @@ const TheoryOfKnowledgeRows: React.FC<IBTutkinnonTiedotRowsProps> = ({
           <KeyValueRow localizableLabel="Arvosana" innerKeyValueTable>
             <FormField
               form={form}
-              path={theoryOfKnowledgePath
-                .valueOr(emptyTheoryOfKnowledge)
-                .prop('arviointi')
-                .valueOr([])
-                .compose(lastElement())}
-              view={ArvosanaView}
-              edit={ArvosanaEdit}
+              path={theoryOfKnowledgePath.optional().prop('arviointi')}
+              view={ParasArvosanaView}
+              edit={ParasArvosanaEdit}
               editProps={{
                 suoritusClassName: IBTheoryOfKnowledgeSuoritus.className
               }}
