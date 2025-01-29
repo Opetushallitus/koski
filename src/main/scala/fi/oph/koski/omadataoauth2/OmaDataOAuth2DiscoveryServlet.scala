@@ -9,7 +9,7 @@ import fi.oph.koski.servlet.{KoskiSpecificApiServlet, NoCache}
 import org.scalatra.{ContentEncodingSupport}
 
 class OmaDataOAuth2DiscoveryServlet(implicit val application: KoskiApplication) extends KoskiSpecificApiServlet
-  with OmaDataOAuth2Support with Logging with ContentEncodingSupport with NoCache with Unauthenticated {
+  with OmaDataOAuth2ServletSupport with Logging with ContentEncodingSupport with NoCache with Unauthenticated {
 
   val allowFrameAncestors: Boolean = !Environment.isServerEnvironment(application.config)
   val frontendValvontaMode: FrontendValvontaMode.FrontendValvontaMode =

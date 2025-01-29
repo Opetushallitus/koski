@@ -36,7 +36,6 @@ class OmaDataOAuth2HyvaksyntaLanding extends React.Component {
     const urlParams = new URLSearchParams(currentLocation().queryString)
     const clientId = urlParams.get('client_id')
 
-    // TODO TOR-2210: Tarkista, että client_id on jokin olemassaoleva? Tämän voinee tehdä tässä jo ennen valtuutusta, vai tehdäänkö bäkkärissä, ja tässä vaan luotetaan?
     return clientId
   }
 
@@ -76,21 +75,17 @@ class OmaDataOAuth2HyvaksyntaLanding extends React.Component {
       logError(error)
       this.setState({ loading: false })
     }
-
-    // TODO: TOR-2210: tässä voisi hakea myös scope detailsit ja välittää eteenpäin selväkielisinä merkkijonoina rendattavaksi
   }
 
   authorizeClient() {
-    // TODO: TOR-2210 Pitäisikö parametreista tässä filtteröidä pois muut kuin ne, mistä backend on kiinnostunut?
     let params = new URL(document.location.toString()).searchParams
 
     window.location.href = `/koski/api/omadata-oauth2/resource-owner/authorize?${params.toString()}`
   }
 
   declineClient() {
-    // TODO: TOR-2210 Pitäisikö parametreista tässä filtteröidä pois muut kuin ne, mistä backend on kiinnostunut?
     let params = new URL(document.location.toString()).searchParams
-    params.set('error', 'access_denied') // TODO: TOR-2210: tämä on standardinmukainen minimivirhe, pitäisikö lisätä detskuja? https://www.rfc-editor.org/rfc/rfc6749#section-4.1.2.1
+    params.set('error', 'access_denied')
 
     window.location.href = `/koski/api/omadata-oauth2/resource-owner/authorize?${params.toString()}`
   }

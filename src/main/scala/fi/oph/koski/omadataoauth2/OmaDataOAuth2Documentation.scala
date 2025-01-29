@@ -8,10 +8,7 @@ import fi.oph.koski.util.TryWithLogging
 import java.net.URL
 import scala.io.Source
 
-// TODO: TOR-2210: Tähän lisää dokumentaatiota, esimerkkejä yms., jonka generointiin voi ottaa lisää mallia massaluovutuksen QueryDocumentation-luokasta
 object OmaDataOAuth2Documentation extends Logging {
-  // Skeema-jsonit
-
   // HTML-stringit, jotka palautetaan polusta /koski/api/documentation/sections.html
   private val sectionSources = Map(
     "oauth2_omadata" -> "documentation/omadata_oauth2.md"
