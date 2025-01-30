@@ -210,7 +210,10 @@ const TheoryOfKnowledgeRows: React.FC<IBTutkinnonTiedotRowsProps> = ({
           <KeyValueRow localizableLabel="Arvosana" innerKeyValueTable>
             <FormField
               form={form}
-              path={theoryOfKnowledgePath.optional().prop('arviointi')}
+              path={theoryOfKnowledgePath
+                .valueOr(emptyTheoryOfKnowledge)
+                .prop('arviointi')
+                .valueOr([])}
               view={ParasArvosanaView}
               edit={ParasArvosanaEdit}
               editProps={{
