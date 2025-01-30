@@ -43,6 +43,17 @@ object PerusopetuksenVuosiluokkaRaportti extends VuosiluokkaRaporttiPaivalta wit
     val päätasonVahvistusPäivä = row.päätasonSuoritus.vahvistusPäivä
     val kotikunta = if (t.language == "sv") row.henkilo.kotikuntaNimiSv else row.henkilo.kotikuntaNimiFi
 
+    val omanÄidinkielenArvosanaJaLaajuus = {
+      val arvosana = row.päätasonSuoritus.omanÄidinkielenOpinnotArvosanaDatasta.getOrElse(t.get("raportti-excel-default-value-arvosana-puuttuu"))
+      val laajuus = row.päätasonSuoritus.omanÄidinkielenOpinnotLaajuusDatasta.getOrElse(t.get("raportti-excel-default-value-laajuus-puuttuu"))
+      s"$arvosana:$laajuus"
+    }
+
+    val omanÄidinkielenKieli = {
+      val kieli = row.päätasonSuoritus.omanÄidinkielenOpinnotKieliDatasta.getOrElse(t.get("raportti-excel-default-value-oppiaine-puuttuu"))
+      s"$kieli"
+    }
+
     PerusopetusRow(
       opiskeluoikeusOid = row.opiskeluoikeus.opiskeluoikeusOid,
       oppilaitoksenNimi = if(t.language == "sv") row.opiskeluoikeus.oppilaitosNimiSv else row.opiskeluoikeus.oppilaitosNimi,
@@ -72,6 +83,8 @@ object PerusopetuksenVuosiluokkaRaportti extends VuosiluokkaRaporttiPaivalta wit
       voimassaolevatVuosiluokat = row.voimassaolevatVuosiluokat.mkString(","),
       aidinkieli = oppiaineenArvosanaTiedot(päätasonVahvistusPäivä, t, "AI")(pakollisetValtakunnalliset),
       pakollisenAidinkielenOppimaara = getOppiaineenOppimäärä("AI", t)(pakollisetValtakunnalliset),
+      omanÄidinkielenLaajuusJaArvosana = omanÄidinkielenArvosanaJaLaajuus,
+      omanÄidinkielenKieli = omanÄidinkielenKieli,
       kieliA1 = oppiaineenArvosanaTiedot(päätasonVahvistusPäivä, t, "A1")(pakollisetValtakunnalliset),
       kieliA1Oppimaara = getOppiaineenOppimäärä("A1", t)(pakollisetValtakunnalliset),
       kieliA2 = oppiaineenArvosanaTiedot(päätasonVahvistusPäivä, t, "A2")(pakollisetValtakunnalliset),
@@ -296,6 +309,8 @@ object PerusopetuksenVuosiluokkaRaportti extends VuosiluokkaRaporttiPaivalta wit
     "voimassaolevatVuosiluokat" -> CompactColumn(t.get("raportti-excel-kolumni-voimassaolevatVuosiluokat"), comment = Some(t.get("raportti-excel-kolumni-voimassaolevatVuosiluokat-comment"))),
     "aidinkieli" -> CompactColumn(t.get("raportti-excel-kolumni-aidinkieli")),
     "pakollisenAidinkielenOppimaara" -> CompactColumn(t.get("raportti-excel-kolumni-pakollisenAidinkielenOppimaara")),
+    "omanÄidinkielenLaajuusJaArvosana" -> CompactColumn(t.get("raportti-excel-kolumni-omanÄidinkielenArvosanaJaLaajuus")),
+    "omanÄidinkielenKieli" -> CompactColumn(t.get("raportti-excel-kolumni-omanÄidinkielenKieli")),
     "kieliA1" -> CompactColumn(t.get("raportti-excel-kolumni-kieliA1")),
     "kieliA1Oppimaara" -> CompactColumn(t.get("raportti-excel-kolumni-kieliA1Oppimaara")),
     "kieliA2" -> CompactColumn(t.get("raportti-excel-kolumni-kieliA2")),
@@ -375,6 +390,8 @@ private[raportit] case class PerusopetusRow(
   voimassaolevatVuosiluokat: String,
   aidinkieli: String,
   pakollisenAidinkielenOppimaara: String,
+  omanÄidinkielenLaajuusJaArvosana: String,
+  omanÄidinkielenKieli: String,
   kieliA1: String,
   kieliA1Oppimaara: String,
   kieliA2: String,

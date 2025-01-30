@@ -318,6 +318,8 @@ class PerusopetuksenVuosiluokkaRaporttiSpec
     jaaLuokalle = false,
     aidinkieli = "9",
     pakollisenAidinkielenOppimaara = "Suomen kieli ja kirjallisuus",
+    omanÄidinkielenLaajuusJaArvosana = "Arvosana puuttuu:Ei laajuutta",
+    omanÄidinkielenKieli = "Oppiaine puuttuu",
     kieliA1 = "8",
     kieliA1Oppimaara = "englanti",
     kieliA2 = "Oppiaine puuttuu",
