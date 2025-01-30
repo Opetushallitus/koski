@@ -201,7 +201,8 @@ palautetaan virhekoodi `404 Not Found`.
 ## Huomioita datan käsittelystä
 
 Kumppanin vastuulla on tarkistaa palautettujen henkilötietojen perusteella, että se sai oikean ja odottamansa henkilön tiedot. Tämä johtuu siitä, että mitään teknistä estettä ei ole sille, että kansalainen pyytää
-esim. ystäväänsä tekemään vahvan tunnistautumisen ja suostumuksen myöntämisen puolestaan. Tällöin KOSKI-järjestelmä palauttaa kumppanille kyseisen ystävän tiedot.
+esim. ystäväänsä tekemään vahvan tunnistautumisen ja suostumuksen myöntämisen puolestaan. Tällöin KOSKI-järjestelmä palauttaa kumppanille kyseisen ystävän tiedot. Tämä voi tapahtua myös kansalaiskäyttäjän tietämättä
+hyökkääjän toimesta, mikäli kansalainen on saatu käyttämään selainta jollain tavalla vaarantuneessa ympäristössä.
 
 Myös saadun datan sisällön kanssa tulee olla huolellinen. Kansalainen pystyy teknisesti muuttamaan kumppanin pyytämän scopen ennen suostumuksen antamista. Tässä tapauksessa kumppani saattaa
 saada kansalaisen tiedot eri scopella kuin itse pyysi. Esimerkiksi: jos kumppanin palvelulla on oikeudet sekä suoritettuihin tutkintoihin, että aktiivisiin ja päättyneisiin
