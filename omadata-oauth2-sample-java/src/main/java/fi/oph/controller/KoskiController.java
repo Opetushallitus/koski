@@ -85,5 +85,11 @@ public class KoskiController {
         var dispatcher = servletContext.getRequestDispatcher(HOME_URL);
         dispatcher.forward(request, response);
     }
+
+    @GetMapping("/oauth2/logout/koski")
+    public void logoutGet(Authentication authentication, HttpServletRequest request, HttpServletResponse response) throws IOException {
+        koskiService.logout(authentication, request, response);
+        response.sendRedirect(HOME_URL);
+    }
 }
 

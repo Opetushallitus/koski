@@ -2,6 +2,7 @@ package fi.oph.service;
 
 import fi.oph.config.KoskiConfig;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
 import org.springframework.security.oauth2.client.web.OAuth2AuthorizedClientRepository;
@@ -25,5 +26,9 @@ public class KoskiService {
 
     public OAuth2AuthorizedClient getAuthorizedClient(Authentication authentication, HttpServletRequest request) {
         return authorizedClientRepository.loadAuthorizedClient(koskiConfig.getRegistrationId(), authentication, request);
+    }
+
+    public void logout(Authentication authentication, HttpServletRequest request, HttpServletResponse response) {
+        authorizedClientRepository.removeAuthorizedClient(getRegistrationId(), authentication, request, response);
     }
 }
