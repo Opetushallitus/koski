@@ -1,0 +1,10 @@
+server:
+  port: 7051
+
+logging:
+  level:
+    org.springframework.security: DEBUG
+
+spring:
+  application:
+    name: omadata-oauth2-sample-java
