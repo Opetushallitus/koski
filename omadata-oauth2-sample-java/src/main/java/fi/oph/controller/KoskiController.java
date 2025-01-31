@@ -82,6 +82,8 @@ public class KoskiController {
             return;
         }
         var servletContext = request.getServletContext();
+        var jsonData = koskiService.fetchDataFromResourceServer(auth2AuthorizedClient);
+        servletContext.setAttribute("data", jsonData);
         var dispatcher = servletContext.getRequestDispatcher(HOME_URL);
         dispatcher.forward(request, response);
     }
