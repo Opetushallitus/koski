@@ -10,7 +10,7 @@
   </parent>
   <groupId>fi.oph</groupId>
   <artifactId>omadata-oauth2-sample-java</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
+  <version>1.0.0</version>
   <name>omadata-oauth2-sample-java</name>
   <description>OmaData OAuth2 esimerkki-applikaatio</description>
 
