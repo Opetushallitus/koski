@@ -29,6 +29,14 @@ class ValpasOppivelvollisuudestaVapautusService(application: KoskiApplication) e
     LocalDate.of(2022, 8, 1)
   }
 
+  def findVapautukset(oppijaOids: List[String]): Seq[OppivelvollisuudestaVapautus] = {
+    val aktiivisetKunnat = organisaatioService.aktiivisetKunnat()
+    val dueTime = raportitService.viimeisinOpiskeluoikeuspäivitystenVastaanottoaika
+    val vapautukset = db.getOppivelvollisuudestaVapautetutOppijat(oppijaOids)
+    vapautukset
+      .flatMap(OppivelvollisuudestaVapautus.apply(aktiivisetKunnat, rajapäivätService, dueTime))
+  }
+
   def mapVapautetutOppijat[T](oppijat: Seq[T], toOids: T => Seq[String])(map: (T, OppivelvollisuudestaVapautus) => T): Seq[T] = {
     val oppijaOids = oppijat.flatMap(toOids)
     val vapautukset = db.getOppivelvollisuudestaVapautetutOppijat(oppijaOids)
