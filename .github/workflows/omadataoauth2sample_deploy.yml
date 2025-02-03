@@ -3,7 +3,7 @@ on:
   workflow_dispatch:
     inputs:
       environment:
-        description: "Target environment (dev/qa/prod)"
+        description: "Target environment (dev/qa)"
         required: true
         default: "dev"
       commithash:
