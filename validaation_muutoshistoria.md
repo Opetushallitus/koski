@@ -1,5 +1,11 @@
 # Koskeen tallennettavien tietojen validaatiosäännöt
 
+## 27.1.2025
+- Maksuttomuus-lisätieto vaaditaan jos oppijaa ei ole vapautettu oppivelvollisuudesta
+- Maksuttomuus-lisätietoa ei saa siirtää kun
+  - tieto on "maksuton" ja oppija on vapautettu oppivelvollisuudesta
+  - oppija on hetuton
+
 ## 20.12.2024
 
 - Sallittu oppilaitoksen vaihtaminen oppilaitoksesta 1.2.246.562.10.97089006874 oppilaitokseen 1.2.246.562.10.22909222972,
