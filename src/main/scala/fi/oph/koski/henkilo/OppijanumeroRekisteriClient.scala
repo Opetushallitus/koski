@@ -12,6 +12,7 @@ import fi.oph.koski.schema.Koodistokoodiviite
 import cats.syntax.parallel._
 import fi.oph.koski.log.Logging
 import org.http4s.blaze.client.BlazeClientBuilder
+import org.http4s.client.Client
 import org.http4s.client.middleware.RetryPolicy
 
 import scala.concurrent.duration.{DurationInt, FiniteDuration}
@@ -33,9 +34,26 @@ case class OppijanumeroRekisteriClient(
   def withRetryStrategy(strategy: OppijanumeroRekisteriClientRetryStrategy): OppijanumeroRekisteriClient =
     this.copy(retryStrategy = strategy)
 
+  private val onrBaseUrl = config.getString("oppijanumerorekisteri.baseUrl")
+
   private val baseUrl = "/oppijanumerorekisteri-service"
 
-  private val oidServiceHttp = VirkailijaHttpClient(makeServiceConfig(config), baseUrl, true)
+  private val otuvaTokenEndpoint = config.getString("otuvaTokenEndpoint")
+
+  private val oauth2clientFactory: (String, Client[IO]) => Http = {
+    if (otuvaTokenEndpoint == "mock") {
+      (root: String, client: Client[IO]) => {
+        Http(root, ClientWithBasicAuthentication(client,
+          config.getString("opintopolku.virkailija.username"),
+          config.getString("opintopolku.virkailija.password"),
+        ))
+      }
+    } else {
+      new OtuvaOAuth2ClientFactory(OtuvaOAuth2Credentials.fromSecretsManager, otuvaTokenEndpoint).apply
+    }
+  }
+
+  private val oidServiceHttp = oauth2clientFactory(onrBaseUrl, Http.retryingClient(baseUrl))
 
   private val postRetryingOidServiceHttp = {
     // Osa POST-metodilla ONR:ään tehtävistä kyselyistä on oikeasti idempotentteja,
@@ -43,16 +61,8 @@ case class OppijanumeroRekisteriClient(
     // esim. raportointoinkannan generointi jatkamaan, vaikka onr-yhteys hetken pätkisikin.
     val client = unsafeRetryingClient(baseUrl, retryStrategy.applyConfig, retryStrategy.backoffPolicy)
 
-    VirkailijaHttpClient(
-      makeServiceConfig(config),
-      baseUrl,
-      client,
-      preferGettingCredentialsFromSecretsManager = true
-    )
+    oauth2clientFactory(onrBaseUrl, client)
   }
-
-  private def makeServiceConfig(config: Config) =
-    ServiceConfig.apply(config, "authentication-service", "authentication-service.virkailija", "opintopolku.virkailija")
 
   private def henkilöByOid[T](oid: String) =
     oidServiceHttp.get[T](uri"/oppijanumerorekisteri-service/henkilo/$oid")(_)

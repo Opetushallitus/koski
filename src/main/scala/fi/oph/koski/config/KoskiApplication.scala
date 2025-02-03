@@ -212,6 +212,7 @@ class KoskiApplication(
     valpasRajapäivätService,
     opintopolkuHenkilöFacade,
     validationContext,
+    valpasOppivelvollisuudestaVapautusService,
     config
   )
   lazy val healthMonitoring: HealthMonitoring = new HealthMonitoring()
@@ -222,7 +223,7 @@ class KoskiApplication(
   lazy val massaluovutusCleanupScheduler: MassaluovutusCleanupScheduler = new MassaluovutusCleanupScheduler(this)
   lazy val ecsMetadata: ECSMetadataClient = new ECSMetadataClient(config)
 
-  lazy val omaDataOAuth2Repository = new OmaDataOAuth2Repository(masterDatabase.db)
+  lazy val omaDataOAuth2Repository = new OmaDataOAuth2Repository(this, masterDatabase.db)
   lazy val omaDataOAuth2Service = new OmaDataOAuth2Service(omaDataOAuth2Repository, this)
 
   def init(): Future[Any] = {

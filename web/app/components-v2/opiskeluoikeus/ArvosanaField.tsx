@@ -32,13 +32,11 @@ export type ArvosanaViewProps<T extends Arviointi> = CommonProps<
 
 export const ArvosanaView = <T extends Arviointi>(
   props: ArvosanaViewProps<T>
-) => {
-  return props.value ? (
-    <TestIdText {...props} id="arvosana.value">
-      {t(props.value.arvosana?.nimi)}
-    </TestIdText>
-  ) : null
-}
+) => (
+  <TestIdText {...props} id="arvosana.value">
+    {props.value ? t(props.value.arvosana?.nimi) : '-'}
+  </TestIdText>
+)
 
 export type ParasArvosanaViewProps<T extends Arviointi> = CommonProps<
   FieldViewerProps<T[] | undefined, EmptyObject>

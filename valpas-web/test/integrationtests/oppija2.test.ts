@@ -122,6 +122,14 @@ const maahanmuuttajaPath = oppijaPath.href("/virkailija", {
   oppijaOid: "1.2.246.562.24.00000000181",
 })
 
+const ammattitutkintoYoTutkinnonJalkeenPath = oppijaPath.href("/virkailija", {
+  oppijaOid: "1.2.246.562.24.00000000182",
+})
+
+const lukioOpinnotAmmattitutkinnonJalkeenPath = oppijaPath.href("/virkailija", {
+  oppijaOid: "1.2.246.562.24.00000000183",
+})
+
 const mainHeadingEquals = (expected: string) =>
   textEventuallyEquals("h1.heading--primary", expected)
 const secondaryHeadingEquals = (expected: string) =>
@@ -892,6 +900,44 @@ describe("Oppijakohtainen näkymä 2/2", () => {
           kotikuntaSuomessaAlkaen: "1.1.2014",
           oppivelvollisuudenKeskeytysBtn: true,
           merkitseVapautusBtn: true,
+        }),
+      )
+    })
+  })
+
+  describe("Ammatillisen tutkinnon tarkennukset", () => {
+    it("Jos YO tutkinnon vahvistuspäivä on ennen kuin ammatillisen tutkinnon (perus-, ammattitutkinto tai erikoisammattitutkinto) opiskeluoikeus alkaa, päättyy maksuttomuus YO- tutkinnon vahvistuspäivään", async () => {
+      await loginAs(ammattitutkintoYoTutkinnonJalkeenPath, "valpas-pää")
+      await resetMockData("2021-09-05")
+      await mainHeadingEquals(
+        "Ammattitutkinto yo-tutkinnon Jälkeen Antti (300805A1918)",
+      )
+      await oppivelvollisuustiedotEquals(
+        oppivelvollisuustiedot({
+          opiskelutilanne: "Ei",
+          oppivelvollisuus: "5.9.2021 asti",
+          maksuttomuusoikeus: "5.9.2021 asti",
+          oppivelvollisuudenKeskeytysBtn: true,
+          merkitseVapautusBtn: true,
+          kuntailmoitusBtn: true,
+        }),
+      )
+    })
+
+    it("Jos ammatillinen tutkinto (perus-, ammattitutkinto tai erikoisammattitutkinto)  on valmistunut (vahvistuspäivän mukaan), ennen kuin lukion opinnot (aine tai koko oppimäärä) alkaa, päättyy maksuttomuus ammatillisen tutkinnon (perus-, ammattitutkinto tai erikoisammattitutkinto) vahvistuspäivään", async () => {
+      await loginAs(lukioOpinnotAmmattitutkinnonJalkeenPath, "valpas-pää")
+      await resetMockData("2021-09-05")
+      await mainHeadingEquals(
+        "Lukio-opinnot Ammattitutkinnon Jälkeen Lucia (300805A4409)",
+      )
+      await oppivelvollisuustiedotEquals(
+        oppivelvollisuustiedot({
+          opiskelutilanne: "Ei",
+          oppivelvollisuus: "5.9.2021 asti",
+          maksuttomuusoikeus: "5.9.2021 asti",
+          oppivelvollisuudenKeskeytysBtn: true,
+          merkitseVapautusBtn: true,
+          kuntailmoitusBtn: true,
         }),
       )
     })

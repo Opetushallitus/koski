@@ -36,8 +36,8 @@ object SuoritetutTutkinnotKorkeakoulunOpiskeluoikeus {
           SuoritetutTutkinnotKoodistokoodiviite.fromKoskiSchema(s.koulutusmoduuli.tunniste),
           s.koulutusmoduuli.koulutustyyppi.map(SuoritetutTutkinnotKoodistokoodiviite.fromKoskiSchema),
           s.koulutusmoduuli.virtaNimi,
-          eurooppalainenTutkintojenViitekehysEQF = None,
-          kansallinenTutkintojenViitekehysNQF = None // TODO: TOR-2210
+          eurooppalainenTutkintojenViitekehysEQF = None, // Täydennetään myöhemmässä vaiheessa
+          kansallinenTutkintojenViitekehysNQF = None // Täydennetään myöhemmässä vaiheessa
         ),
         Some(Toimipiste(
           s.toimipiste.oid,

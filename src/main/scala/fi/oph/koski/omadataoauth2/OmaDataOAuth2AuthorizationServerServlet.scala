@@ -14,7 +14,7 @@ import java.time.temporal.ChronoUnit
 
 class OmaDataOAuth2AuthorizationServerServlet(implicit val application: KoskiApplication)
   extends KoskiSpecificApiServlet
-    with Logging with ContentEncodingSupport with NoCache with FormSupport with I18nSupport with RequiresOmaDataOAuth2 with OmaDataOAuth2Support {
+    with Logging with ContentEncodingSupport with NoCache with FormSupport with I18nSupport with RequiresOmaDataOAuth2 with OmaDataOAuth2ServletSupport {
 
   // in: auth code yms. OAuth2 headerit
   // out: access token, jos käyttäjällä oikeudet kyseiseen authorization codeen
@@ -103,9 +103,7 @@ trait AccessTokenResponse {
 case class AccessTokenSuccessResponse(
   access_token: String,
   token_type: String,
-  expires_in: Long,
-  // refresh_token: Option[String] // TODO: TOR-2210: jos tarvitaan refresh token
-  // scope: Option[String] // TOD: TOR-2210: jos aletaan joskus tukea scopen vaihtoa tässä vaiheessa
+  expires_in: Long
 ) extends AccessTokenResponse {
   val httpStatus = 200
 }

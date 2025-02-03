@@ -75,6 +75,12 @@ class OpiskeluoikeusFacade[OPISKELUOIKEUS: TypeTag](
           ))
       }
 
+      val onOpiskeluoikeuksiaKoskessaFut: Future[Either[HttpStatus, Boolean]] =
+        masterHenkilöFut
+          .map(_.flatMap(masterHenkilö =>
+            Right(opiskeluoikeusRepository.oppijallaOnOpiskeluoikeuksiaKoskessa(masterHenkilö.oid))
+          ))
+
       val opiskeluoikeudetFut: Future[Either[HttpStatus, Seq[OPISKELUOIKEUS]]] =
         masterHenkilöFut
           .map(_.flatMap(masterHenkilö =>
@@ -86,16 +92,20 @@ class OpiskeluoikeusFacade[OPISKELUOIKEUS: TypeTag](
 
       val rawOppija = for {
         henkilö <- EitherT(masterHenkilöFut)
+        onOpiskeluoikeuksiaKoskessa <- EitherT(onOpiskeluoikeuksiaKoskessaFut)
         opiskeluoikeudet <- EitherT(opiskeluoikeudetFut)
         ytrResult <- EitherT(ytrResultFut)
         virtaResult <- EitherT(virtaResultFut)
-      } yield RawOppija(henkilö, opiskeluoikeudet ++ ytrResult ++ virtaResult)
+      } yield RawOppija(henkilö, onOpiskeluoikeuksiaKoskessa, opiskeluoikeudet ++ ytrResult ++ virtaResult)
 
       try {
         Futures.await(
           future = rawOppija.value,
           atMost = if (Environment.isUnitTestEnvironment(application.config)) { 10.seconds } else { 5.minutes }
-        )
+        ) match {
+          case Right(o) if !o.onKoskestaLuovutettavissa => Left(notFoundResult)
+          case result => result
+        }
       } catch {
         case _: TimeoutException => Left(KoskiErrorCategory.unavailable())
       }
@@ -104,7 +114,7 @@ class OpiskeluoikeusFacade[OPISKELUOIKEUS: TypeTag](
     }
   }
 
-  def getAndConvertYtrData(
+  private def getAndConvertYtrData(
     masterHenkilö: LaajatOppijaHenkilöTiedot,
     useDownloadedYtr: Boolean,
     converter: schema.YlioppilastutkinnonOpiskeluoikeus => OPISKELUOIKEUS
@@ -119,7 +129,7 @@ class OpiskeluoikeusFacade[OPISKELUOIKEUS: TypeTag](
     }
   }
 
-  def fetchYtrOpiskeluoikeudet(
+  private def fetchYtrOpiskeluoikeudet(
     masterHenkilö: LaajatOppijaHenkilöTiedot,
     useDownloadedYtr: Boolean)
   : Seq[schema.YlioppilastutkinnonOpiskeluoikeus] = {
@@ -136,7 +146,7 @@ class OpiskeluoikeusFacade[OPISKELUOIKEUS: TypeTag](
     }
   }
 
-  def fetchDownloadedYtrOpiskeluoikeudet(
+  private def fetchDownloadedYtrOpiskeluoikeudet(
     masterHenkilö: LaajatOppijaHenkilöTiedot
   ): Seq[schema.YlioppilastutkinnonOpiskeluoikeus] = {
     application.oppijaFacade.findYtrDownloadedOppija(
@@ -148,7 +158,7 @@ class OpiskeluoikeusFacade[OPISKELUOIKEUS: TypeTag](
       .getOrElse(Seq.empty)
   }
 
-  def fetchYtrOpiskeluoikeudet(
+  private def fetchYtrOpiskeluoikeudet(
     masterHenkilö: LaajatOppijaHenkilöTiedot
   ): Seq[schema.YlioppilastutkinnonOpiskeluoikeus] = {
     application.ytr.findByOppija(masterHenkilö)(KoskiSpecificSession.systemUserTallennetutYlioppilastutkinnonOpiskeluoikeudet).collect {
@@ -159,5 +169,9 @@ class OpiskeluoikeusFacade[OPISKELUOIKEUS: TypeTag](
 
 case class RawOppija[OPISKELUOIKEUS: TypeTag](
   henkilö: LaajatOppijaHenkilöTiedot,
+  onOpiskeluoikeuksiaKoskessa: Boolean,
   opiskeluoikeudet: Seq[OPISKELUOIKEUS]
-)
+) {
+  def onKoskestaLuovutettavissa: Boolean =
+    onOpiskeluoikeuksiaKoskessa || opiskeluoikeudet.nonEmpty
+}

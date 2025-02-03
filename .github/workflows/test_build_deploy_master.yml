@@ -30,10 +30,28 @@ jobs:
       commithash: ${{ github.sha }}
     secrets: inherit
 
+  deploy_omadataoauth2sample_dev:
+    name: Deploy OmaData OAuth2 sample to dev environment
+    needs: [deploy_dev]
+    uses: ./.github/workflows/omadataoauth2sample_deploy_call.yml
+    with:
+      environment: dev
+      commithash: ${{ github.sha }}
+    secrets: inherit
+
   deploy_qa:
     name: Deploy to qa environment
     needs: [deploy_dev]
     uses: ./.github/workflows/deploy_koski.yml
+    with:
+      environment: qa
+      commithash: ${{ github.sha }}
+    secrets: inherit
+
+  deploy_omadataoauth2sample_qa:
+    name: Deploy OmaData OAuth2 sample to qa environment
+    needs: [deploy_qa]
+    uses: ./.github/workflows/omadataoauth2sample_deploy_call.yml
     with:
       environment: qa
       commithash: ${{ github.sha }}

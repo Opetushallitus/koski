@@ -33,9 +33,21 @@ class FixtureCreator(application: KoskiApplication) extends Logging with QueryMe
     reloadRaportointikanta: Boolean = false,
     reloadYtrData: Boolean = false,
   ): Unit = synchronized {
+    def reloadRaportointikantaAndWait(): Unit = {
+      raportointikantaService.loadRaportointikanta(force = true, pageSize = OpiskeluoikeusLoader.LocalTestingBatchSize)
+      Wait.until {
+        raportointikantaService.isLoadComplete
+      }
+    }
+
     if (shouldUseFixtures) {
       val fixtureNameHasChanged = fixtureState.name != currentFixtureState.name
       application.cacheManager.invalidateAllCaches
+
+      if (raportointikantaService.isEmpty && reloadRaportointikanta) {
+        reloadRaportointikantaAndWait()
+      }
+
       application.suostumuksenPeruutusService.deleteAll()
       currentFixtureState = fixtureState
       fixtureState.resetFixtures
@@ -52,8 +64,7 @@ class FixtureCreator(application: KoskiApplication) extends Logging with QueryMe
       }
 
       if (reloadRaportointikanta || fixtureNameHasChanged) {
-        raportointikantaService.loadRaportointikanta(force = true, pageSize = OpiskeluoikeusLoader.LocalTestingBatchSize)
-        Wait.until { raportointikantaService.isLoadComplete }
+        reloadRaportointikantaAndWait()
       }
 
       logger.info(s"Application fixtures reset to ${fixtureState.name}")

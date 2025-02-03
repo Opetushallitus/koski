@@ -15,6 +15,52 @@ class OpiskeluoikeusRepository[OPISKELUOIKEUS: TypeTag](
   val db: DB,
   val validatingAndResolvingExtractor: ValidatingAndResolvingExtractor
 ) extends QueryMethods {
+
+  def oppijallaOnOpiskeluoikeuksiaKoskessa(oppijaMasterOid: String): Boolean = {
+    runDbSync(SQLHelpers.concatMany(Some(
+      sql"""
+with
+  haettu_oppija as (
+    select
+      oid as oppija_oid,
+      coalesce(master_oid, oid) as oppija_master_oid
+    from henkilo
+    where henkilo.oid = $oppijaMasterOid or henkilo.master_oid = $oppijaMasterOid
+  )
+  , linkitetty as (
+    select
+      distinct haettu_oppija.oppija_master_oid
+    from
+      haettu_oppija
+      inner join haettu_oppija h2 on h2.oppija_master_oid = haettu_oppija.oppija_master_oid and h2.oppija_master_oid <> h2.oppija_oid
+  )
+  , opiskeluoikeus_kaikki as (
+    select
+      haettu_oppija.oppija_master_oid,
+      oid as opiskeluoikeus_oid
+    from
+      opiskeluoikeus
+      join haettu_oppija on haettu_oppija.oppija_oid = opiskeluoikeus.oppija_oid
+      left join linkitetty on linkitetty.oppija_master_oid = haettu_oppija.oppija_master_oid
+    where mitatoity = false
+  )
+select exists(select 1 from opiskeluoikeus_kaikki) AS "exists"
+      """)).as[ExistsRow])
+      .headOption
+      .map(_.exists)
+      .getOrElse(false)
+  }
+
+  private implicit def getExistsRow: GetResult[ExistsRow] = GetResult(r => {
+    ExistsRow(
+      exists = r.rs.getBoolean("exists")
+    )
+  })
+
+  case class ExistsRow(
+    exists: Boolean
+  )
+
   def getOppijanKaikkiOpiskeluoikeudet(
     palautettavatOpiskeluoikeudenTyypit: Seq[String],
     oppijaMasterOid: String

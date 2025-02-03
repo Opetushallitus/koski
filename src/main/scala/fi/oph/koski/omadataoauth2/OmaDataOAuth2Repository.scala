@@ -1,5 +1,6 @@
 package fi.oph.koski.omadataoauth2
 
+import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.db.KoskiTables.{OAuth2Jako, OAuth2JakoKaikki}
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.db._
@@ -9,7 +10,7 @@ import fi.oph.koski.omadataoauth2.OmaDataOAuth2Security.{generateSecret, sha256}
 import java.sql.Timestamp
 import java.time.{Instant, LocalDateTime}
 
-class OmaDataOAuth2Repository(val db: DB) extends DatabaseExecutionContext with Logging with QueryMethods {
+class OmaDataOAuth2Repository(val application: KoskiApplication, val db: DB) extends DatabaseExecutionContext with OmaDataOAuth2Support with Logging with QueryMethods {
   def create(
     code: String,
     oppijaOid: String,
@@ -129,9 +130,13 @@ class OmaDataOAuth2Repository(val db: DB) extends DatabaseExecutionContext with 
       ).result.headOption
     )
 
+    val validateError = maybeRow.flatMap(row => validateScope(row.scope).left.toOption)
+
     maybeRow match {
       case None =>
         Left(OmaDataOAuth2Error(OmaDataOAuth2ErrorType.invalid_request, "Access token not found or it has expired"))
+      case Some(_) if validateError.isDefined =>
+        Left(validateError.get)
       case Some(row) if row.scope.split(" ").exists(scope => !allowedScopes.contains(scope)) =>
         val tooWideScopes = row.scope.split(" ").filterNot(allowedScopes.contains)
         val warning = OmaDataOAuth2Error(OmaDataOAuth2ErrorType.invalid_scope, s"scope=${tooWideScopes.mkString(" ")} exceeds the rights granted to the client ${row.clientId}")

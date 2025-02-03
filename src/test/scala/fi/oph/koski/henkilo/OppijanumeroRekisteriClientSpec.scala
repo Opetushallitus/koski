@@ -29,9 +29,10 @@ class OppijanumeroRekisteriClientSpec
   private val config = ConfigFactory.parseString(
     """
       |authentication-service.useCas = false
-      |opintopolku.virkailija.url = "http://localhost:9876"
       |opintopolku.virkailija.username = "foo"
       |opintopolku.virkailija.password = "bar"
+      |otuvaTokenEndpoint="mock"
+      |oppijanumerorekisteri.baseUrl="http://localhost:9876"
     """.stripMargin)
 
   private val mockClient = OppijanumeroRekisteriClient(config)

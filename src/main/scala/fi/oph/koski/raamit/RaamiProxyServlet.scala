@@ -4,8 +4,8 @@ import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.log.Logging
 import org.eclipse.jetty.client.HttpClient
 import org.eclipse.jetty.client.api.{Request, Response, Result}
-import org.eclipse.jetty.http.{HttpHeader}
-import org.eclipse.jetty.util.{HttpCookieStore}
+import org.eclipse.jetty.http.HttpHeader
+import org.eclipse.jetty.util.HttpCookieStore
 import org.eclipse.jetty.util.ssl.SslContextFactory
 import org.scalatra.ScalatraServlet
 
