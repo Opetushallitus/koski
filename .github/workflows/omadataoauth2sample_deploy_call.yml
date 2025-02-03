@@ -1,0 +1,115 @@
+name: Deploy OmaDataOAuth2Sample
+on:
+  workflow_call:
+    inputs:
+      environment:
+        description: "Target environment (dev/qa)"
+        type: string
+        required: true
+      commithash:
+        description: "Commit hash to deploy from"
+        type: string
+        required: true
+env:
+  ECR_REPOSITORY: omadataoauth2sample
+  TASK_FAMILY: omadataoauth2sample
+  CLUSTER: koski-cluster
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.inputs.commithash }}
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ vars.OMADATAOAUTH2SAMPLE_ECR_ROLE }}
+          role-duration-seconds: 3600
+          role-session-name: KoskiOmaDataOAuth2SampleDeploymentEcr-${{ github.event.inputs.environment }}
+          aws-region: eu-west-1
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+        with:
+          registries: ${{ secrets.ECR_ACCOUNT_ID }}
+          mask-password: "true"
+
+      - name: Check if container image already exists in ECR
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          IMAGE_TAG: ${{ github.event.inputs.commithash  }}
+        id: check-image
+        run: |
+          echo "image-exists=$(docker manifest inspect $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG > /dev/null 2>&1 ; echo $?)" >> $GITHUB_OUTPUT
+
+      - name: Build, tag, and push image to Amazon ECR
+        if: steps.check-image.outputs.image-exists != '0'
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          IMAGE_TAG: ${{ github.event.inputs.commithash }}
+        run: |
+          docker build -f omadata-oauth2-sample/Dockerfile -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG omadata-oauth2-sample
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+
+  deploy:
+    name: Deploy
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+    needs: [build]
+    environment:
+      name: ${{ github.event.inputs.environment }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.inputs.commithash }}
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ vars.OMADATAOAUTH2SAMPLE_DEPLOY_ROLE }}
+          role-duration-seconds: 3600
+          role-session-name: KoskiOmaDataOAuth2SampleDeployment-${{ github.event.inputs.environment }}
+          aws-region: eu-west-1
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+        with:
+          registries: ${{ secrets.ECR_ACCOUNT_ID }}
+          mask-password: "true"
+
+      - name: Get task definition skeleton
+        id: get-task-def
+        run: |
+          TASK_DEFINITION_ARN=$(aws ecs describe-task-definition --task-definition "${{ env.TASK_FAMILY }}" --region eu-west-1 | jq -r .taskDefinition.taskDefinitionArn )
+          aws ecs describe-task-definition --task-definition $TASK_DEFINITION_ARN --query 'taskDefinition' \
+          | jq 'del(.registeredBy, .registeredAt, .status, .revision, .requiresAttributes, .taskDefinitionArn, .compatibilities)' \
+          > task-definition.json
+          echo "TASK_DEFINITION_ARN=$TASK_DEFINITION_ARN" >> "$GITHUB_OUTPUT"
+
+      - name: Render Amazon ECS task definition
+        id: render-task-def
+        uses: aws-actions/amazon-ecs-render-task-definition@v1
+        with:
+          task-definition: task-definition.json
+          container-name: ${{ env.ECR_REPOSITORY }}
+          image: ${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}:${{ github.event.inputs.commithash }}
+
+      - name: Deploy to Amazon ECS service
+        uses: aws-actions/amazon-ecs-deploy-task-definition@v2
+        with:
+          task-definition: ${{ steps.render-task-def.outputs.task-definition }}
+          service: ${{ env.TASK_FAMILY }}
+          cluster: ${{ env.CLUSTER }}
+          wait-for-service-stability: true
