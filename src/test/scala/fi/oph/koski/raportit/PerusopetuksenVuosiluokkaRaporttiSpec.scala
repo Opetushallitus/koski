@@ -165,6 +165,15 @@ class PerusopetuksenVuosiluokkaRaporttiSpec
         }
       }
 
+      "Oman äidinkielen tiedot näkyvät oikein" in {
+        val result = PerusopetuksenVuosiluokkaRaportti.buildRaportti(repository, Seq(MockOrganisaatiot.jyväskylänNormaalikoulu), date(2016, 1, 1), None, "9", t)
+        val opiskeluoikeusOid = getOpiskeluoikeudet(KoskiSpecificMockOppijat.ysiluokkalainen.oid).find(_.tyyppi.koodiarvo == "perusopetus").get.oid.get
+        val rows = result.filter(_.opiskeluoikeusOid == opiskeluoikeusOid)
+        rows.length should equal(1)
+        rows.head.omanÄidinkielenLaajuusJaArvosana should equal("S:1.0")
+        rows.head.omanÄidinkielenKieli should equal("SE")
+      }
+
       "Jos oppilas on jäämässä luokalle käytetään yhdeksännen luokan vuosiluokka suoritusta (ei vahvistusta luokalle jäänti suorituksella)" in {
         withAdditionalSuoritukset(KoskiSpecificMockOppijat.vuosiluokkalainen, List(perusopetuksenOppimääränSuoritus.copy(vahvistus = None), yhdeksännenLuokanLuokallejääntiSuoritus.copy(vahvistus = None), kahdeksannenLuokanSuoritus)) {
           val result = PerusopetuksenVuosiluokkaRaportti.buildRaportti(repository, Seq(MockOrganisaatiot.jyväskylänNormaalikoulu), date(2016, 1, 1), None, "9", t)
