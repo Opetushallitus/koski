@@ -45,14 +45,14 @@ class OmaDataOAuth2ResourceOwnerServlet(implicit val application: KoskiApplicati
 
               logoutAndRedirectWithErrorsToResourceOwnerFrontend(validationError.getClientErrorParams)
             case Right(paramInfo) =>
-              generateCodeAndSendViaLogoutToClient(clientInfo, paramInfo.scope, paramInfo.codeChallenge)
+              generateCodeAndSendToClient(clientInfo, paramInfo.scope, paramInfo.codeChallenge)
           }
       }
     }
   }
 
   private def logoutAndSendErrorsInParamsToClient(clientInfo: ClientInfo) = {
-    logoutAndSendErrorToClient(
+    sendErrorToClient(
       clientInfo,
       params("error"),
       multiParams("error_description").headOption,
@@ -60,7 +60,7 @@ class OmaDataOAuth2ResourceOwnerServlet(implicit val application: KoskiApplicati
     )
   }
 
-  private def logoutAndSendErrorToClient(
+  private def sendErrorToClient(
     clientInfo: ClientInfo,
     error: String,
     errorDescription: Option[String] = None,
@@ -78,10 +78,10 @@ class OmaDataOAuth2ResourceOwnerServlet(implicit val application: KoskiApplicati
 
     val postResponseParams = createParamsString(parameters)
 
-    redirectToPostResponseViaLogout(postResponseParams)
+    redirectToPostResponse(useLogoutBeforeRedirect(clientInfo.clientId), postResponseParams)
   }
 
-  private def generateCodeAndSendViaLogoutToClient(clientInfo: ClientInfo, scope: String, codeChallenge: String) = {
+  private def generateCodeAndSendToClient(clientInfo: ClientInfo, scope: String, codeChallenge: String) = {
     application.omaDataOAuth2Service.create(
       clientId = clientInfo.clientId,
       scope,
@@ -99,10 +99,10 @@ class OmaDataOAuth2ResourceOwnerServlet(implicit val application: KoskiApplicati
             ("code", code)
           )
         val postResponseParams = createParamsString(parameters)
-        redirectToPostResponseViaLogout(postResponseParams)
+        redirectToPostResponse(useLogoutBeforeRedirect(clientInfo.clientId), postResponseParams)
 
       case Left(error) =>
-        logoutAndSendErrorToClient(
+        sendErrorToClient(
           clientInfo,
           error.errorType.toString,
           Some(error.errorDescription),

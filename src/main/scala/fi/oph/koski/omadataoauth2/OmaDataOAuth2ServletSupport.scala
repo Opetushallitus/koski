@@ -99,16 +99,24 @@ trait OmaDataOAuth2ServletSupport extends ScalatraServlet with OmaDataOAuth2Supp
     }
   }
 
-  protected def redirectToPostResponse(postResponseParams: String): Unit = {
-    redirect(s"/koski/omadata-oauth2/post-response/?${postResponseParams}")
+  protected def redirectToPostResponse(doLogout: Boolean, postResponseParams: String) = {
+    val uri =
+      if (doLogout) {
+        createPostResponseUriViaLogout(postResponseParams)
+      } else {
+        createPostResponseUri(postResponseParams)
+      }
+    redirect(uri)
   }
 
-  protected def redirectToPostResponseViaLogout(postResponseParams: String) = {
+  private def createPostResponseUriViaLogout(postResponseParams: String) = {
     val postResponseParamsBase64UrlEncoded = base64UrlEncode(postResponseParams)
-    val logoutRedirect = s"/koski/omadata-oauth2/cas-workaround/post-response/${postResponseParamsBase64UrlEncoded}"
-    val logoutUri = s"/koski/user/logout?target=${logoutRedirect}"
+    val postResponseRedirect = s"/koski/omadata-oauth2/cas-workaround/post-response/${postResponseParamsBase64UrlEncoded}"
+    s"/koski/user/logout?target=${postResponseRedirect}"
+  }
 
-    redirect(logoutUri)
+  private def createPostResponseUri(postResponseParams: String) = {
+    s"/koski/omadata-oauth2/post-response/?${postResponseParams}"
   }
 
   protected def logoutAndRedirectWithErrorsToResourceOwnerFrontend(parameters: String) = {

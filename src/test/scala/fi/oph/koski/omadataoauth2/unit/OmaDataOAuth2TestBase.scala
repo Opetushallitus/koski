@@ -31,6 +31,7 @@ class OmaDataOAuth2TestBase extends AnyFreeSpec with KoskiHttpSpec with Matchers
   def createValidDummyCodeChallenge: String = OmaDataOAuth2Security.createChallengeAndVerifier().challenge
 
   val validClientId = MockUsers.omadataOAuth2Palvelukäyttäjä.username
+  val validClientIdEiLogouttia = MockUsers.omadataOAuth2IlmanLogoutPalvelukäyttäjä.username
   val validState = "internal state"
   val validRedirectUri = "/koski/omadata-oauth2/debug-post-response"
 
@@ -57,12 +58,20 @@ class OmaDataOAuth2TestBase extends AnyFreeSpec with KoskiHttpSpec with Matchers
   }
 
   def validParamsDuplikaatilla(paramName: String): Seq[(String, String)] = {
-    val duplikaatti = createValidAuthorizeParams.toMap.get(paramName).get
-    createValidAuthorizeParams ++ Seq((paramName, duplikaatti))
+    duplikaatilla(createValidAuthorizeParams, paramName)
+  }
+
+  def duplikaatilla(params: Seq[(String, String)], paramName: String) = {
+    val duplikaatti = params.toMap.get(paramName).get
+    params ++ Seq((paramName, duplikaatti))
   }
 
   def validParamsVaihdetullaArvolla(paramName: String, value: String): Seq[(String, String)] = {
-    (createValidAuthorizeParams.toMap + (paramName -> value)).toSeq
+    vaihdetullaArvolla(createValidAuthorizeParams, paramName, value)
+  }
+
+  def vaihdetullaArvolla(params: Seq[(String, String)], paramName: String, value: String): Seq[(String, String)] = {
+    (params.toMap + (paramName -> value)).toSeq
   }
 
   def createParamsString(params: Seq[(String, String)]): String = params.map {
