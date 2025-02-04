@@ -84,7 +84,7 @@ KoskiSpecificLogoutServlet -> cas_oppija : REDIRECT /cas-oppija/logout?\n  servi
 
 cas_oppija -> OmaDataOAuth2CASWorkaroundServlet : REDIRECT /koski/omadata-oauth2/cas-workaround\n      /post-response/BASE64URLENCODED_RESPONSE_PARAMS
 
-OmaDataOAuth2CASWorkaroundServlet -> OmaDataOAuth2LogoutPostResponseServlet : REDIRECT /koski/omadata-oauth2/cas-workaround\n      /post-response/RESPONSE_PARAMS
+OmaDataOAuth2CASWorkaroundServlet -> OmaDataOAuth2LogoutPostResponseServlet : REDIRECT /post-response/RESPONSE_PARAMS
 
 OmaDataOAuth2LogoutPostResponseServlet -> user_agent : Auto-submit web form, jossa RESPONSE inputteina
 
