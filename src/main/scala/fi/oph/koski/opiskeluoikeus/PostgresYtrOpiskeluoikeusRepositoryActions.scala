@@ -31,7 +31,7 @@ class PostgresYtrOpiskeluoikeusRepositoryActions(
   protected def Opiskeluoikeudet = YtrOpiskeluOikeudet
   protected def OpiskeluOikeudetWithAccessCheck(implicit user: KoskiSpecificSession) = YtrOpiskeluOikeudetWithAccessCheck
 
-  protected def saveHistory(opiskeluoikeus: JValue, historia: OpiskeluoikeusHistory, diff: JArray): Int = {
+  protected def saveHistoryError(opiskeluoikeus: JValue, historia: OpiskeluoikeusHistory, diff: JArray): Int = {
     errorRepository.saveYtr(opiskeluoikeus, historia, diff)
   }
 

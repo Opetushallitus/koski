@@ -298,7 +298,7 @@ trait PostgresOpiskeluoikeusRepositoryActions[OOROW <: OpiskeluoikeusRow, OOTABL
   private def validateHistoria(opiskeluoikeusJson: JValue, historia: OpiskeluoikeusHistory): Option[String] = try {
     val opiskeluoikeusDiffHistoria = jsonDiff(opiskeluoikeusJson, historia.asOpiskeluoikeusJson)
     if (opiskeluoikeusDiffHistoria.values.nonEmpty) {
-      val id = saveHistory(
+      val id = saveHistoryError(
         opiskeluoikeus = opiskeluoikeusJson,
         historia = historia,
         diff = opiskeluoikeusDiffHistoria,
@@ -311,5 +311,5 @@ trait PostgresOpiskeluoikeusRepositoryActions[OOROW <: OpiskeluoikeusRow, OOTABL
     case e: JsonPatchException => Some(s"Virhe opiskeluoikeushistorian validoinnissa: ${e.getMessage}")
   }
 
-  protected def saveHistory(opiskeluoikeus: JValue, historia: OpiskeluoikeusHistory, diff: JArray): Int
+  protected def saveHistoryError(opiskeluoikeus: JValue, historia: OpiskeluoikeusHistory, diff: JArray): Int
 }

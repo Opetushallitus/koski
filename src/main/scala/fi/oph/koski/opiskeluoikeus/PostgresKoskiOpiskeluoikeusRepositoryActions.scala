@@ -38,7 +38,7 @@ class PostgresKoskiOpiskeluoikeusRepositoryActions(
   protected def Opiskeluoikeudet = KoskiOpiskeluOikeudet
   protected def OpiskeluOikeudetWithAccessCheck(implicit user: KoskiSpecificSession) = KoskiOpiskeluOikeudetWithAccessCheck
 
-  protected def saveHistory(opiskeluoikeus: JValue, historia: OpiskeluoikeusHistory, diff: JArray): Int = {
+  protected def saveHistoryError(opiskeluoikeus: JValue, historia: OpiskeluoikeusHistory, diff: JArray): Int = {
     errorRepository.save(opiskeluoikeus, historia, diff)
   }
 
