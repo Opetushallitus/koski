@@ -1,10 +1,11 @@
 package fi.oph.koski.omadataoauth2.unit
 
 import fi.oph.koski.aktiivisetjapaattyneetopinnot.AktiivisetJaPäättyneetOpinnotMuunKuinSäännellynKoulutuksenOpiskeluoikeus
-import fi.oph.koski.api.misc.OpiskeluoikeusTestMethods
+import fi.oph.koski.api.misc.{OpiskeluoikeusTestMethods, OpiskeluoikeusTestMethodsPerusopetus, PutOpiskeluoikeusTestMethods}
 import fi.oph.koski.db.KoskiTables.OAuth2JakoKaikki
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
-import fi.oph.koski.fixture.FixtureCreator
+import fi.oph.koski.documentation.PerusopetusExampleData
+import fi.oph.koski.fixture.{FixtureCreator, PerusopetuksenOpiskeluoikeusTestData}
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.json.JsonSerializer
@@ -27,6 +28,7 @@ class OmaDataOAuth2BackendSpec
     with OpiskeluoikeusTestMethods
     with SuoritetutTutkinnotVerifiers
     with AktiivisetJaPäättyneetOpinnotVerifiers
+    with OpiskeluoikeusTestMethodsPerusopetus
 {
   "authorization-server rajapinta" - {
     "voi kutsua, kun on käyttöoikeudet" in {
@@ -649,6 +651,29 @@ class OmaDataOAuth2BackendSpec
         result.error_description.get should include("Access token not found or it has expired")
       }
     }
+    "ei voi kutsua, jos scope on muuttunut epävalidiksi" in {
+      val pkce = createChallengeAndVerifier
+      val token = createAuthorizationAndToken(validKansalainen, pkce)
+
+      // Vaihda scope epävalidiksi (simuloi taustalla tapahtunutta validointimuutosta)
+      runDbSync(
+        OAuth2JakoKaikki
+          .filter(_.accessTokenSHA256 === sha256(token))
+          .map(_.scope)
+          .update(
+            "HENKILOTIEDOT_SYNTYMAAIKA HENKILOTIEDOT_NIMI OPISKELUOIKEUDET_SUORITETUT_TUTKINNOT OPISKELUOIKEUDET_EI_ENAA_OLEMASSA"
+          )
+      )
+
+      // Yritä käyttää
+      postResourceServer(token) {
+        verifyResponseStatus(400)
+        val result = JsonSerializer.parse[AccessTokenErrorResponse](response.body)
+        result.error should be("invalid_scope")
+        result.error_description.get should include("scope=HENKILOTIEDOT_SYNTYMAAIKA HENKILOTIEDOT_NIMI OPISKELUOIKEUDET_SUORITETUT_TUTKINNOT OPISKELUOIKEUDET_EI_ENAA_OLEMASSA contains unknown scopes (OPISKELUOIKEUDET_EI_ENAA_OLEMASSA))")
+      }
+    }
+
     "henkilötiedot" - {
       "palautetaan" - {
         "kun vain osa scopeista mukana" in {
@@ -949,37 +974,72 @@ class OmaDataOAuth2BackendSpec
       }
     }
 
-    "kun oppijaa ei löydy lainkaan, palautetaan 404" in {
-      val olemassaolematonOppijaOid = FixtureCreator.generateOppijaOid(999999978)
-      val palveluKäyttäjä = MockUsers.omadataOAuth2KaikkiOikeudetPalvelukäyttäjä
-      val clientId = palveluKäyttäjä.username
+    val olemassaolematonOppijaOid = FixtureCreator.generateOppijaOid(999999978)
 
-      val scope = "HENKILOTIEDOT_SYNTYMAAIKA HENKILOTIEDOT_NIMI OPISKELUOIKEUDET_KAIKKI_TIEDOT"
+    Seq("OPISKELUOIKEUDET_KAIKKI_TIEDOT", "OPISKELUOIKEUDET_SUORITETUT_TUTKINNOT", "OPISKELUOIKEUDET_AKTIIVISET_JA_PAATTYNEET_OPINNOT").map(ooScope => {
+      s"Kun oppijan kaikki opiskeluoikeudet on mitätöity, palautetaan 404 - ${ooScope}" in {
+        val mitätöityOppijaOid = KoskiSpecificMockOppijat.vainMitätöityjäOpiskeluoikeuksia.oid
+        val palveluKäyttäjä = MockUsers.omadataOAuth2KaikkiOikeudetPalvelukäyttäjä
+        val clientId = palveluKäyttäjä.username
 
-      val pkce = createChallengeAndVerifier
+        val scope = s"HENKILOTIEDOT_SYNTYMAAIKA HENKILOTIEDOT_NIMI ${ooScope}"
 
-      KoskiApplicationForTests.omaDataOAuth2Repository.create(
-        code = "foo",
-        oppijaOid = olemassaolematonOppijaOid,
-        clientId,
-        scope,
-        codeChallenge = pkce.challenge,
-        redirectUri = validRedirectUri
-      ).isRight should be(true)
+        val pkce = createChallengeAndVerifier
 
-      val token = KoskiApplicationForTests.omaDataOAuth2Repository.createAccessTokenForCode(
-        "foo",
-        clientId,
-        pkce.challenge,
-        Some(validRedirectUri),
-        scope.split(" ").toSet
-      ).getOrElse(throw new Error("Internal error"))
-        .accessToken
+        KoskiApplicationForTests.omaDataOAuth2Repository.create(
+          code = s"foo${ooScope}",
+          oppijaOid = mitätöityOppijaOid,
+          clientId,
+          scope,
+          codeChallenge = pkce.challenge,
+          redirectUri = validRedirectUri
+        ).isRight should be(true)
 
-      postResourceServer(token, palveluKäyttäjä) {
-        verifyResponseStatus(404)
+        val token = KoskiApplicationForTests.omaDataOAuth2Repository.createAccessTokenForCode(
+            s"foo${ooScope}",
+            clientId,
+            pkce.challenge,
+            Some(validRedirectUri),
+            scope.split(" ").toSet
+          ).getOrElse(throw new Error("Internal error"))
+          .accessToken
+
+        postResourceServer(token, palveluKäyttäjä) {
+          verifyResponseStatus(404)
+        }
       }
-    }
+
+      s"kun oppijaa ei löydy lainkaan, palautetaan 404 - ${ooScope}" in {
+        val palveluKäyttäjä = MockUsers.omadataOAuth2KaikkiOikeudetPalvelukäyttäjä
+        val clientId = palveluKäyttäjä.username
+
+        val scope = s"HENKILOTIEDOT_SYNTYMAAIKA HENKILOTIEDOT_NIMI ${ooScope}"
+
+        val pkce = createChallengeAndVerifier
+
+        KoskiApplicationForTests.omaDataOAuth2Repository.create(
+          code = s"foobar${ooScope}",
+          oppijaOid = olemassaolematonOppijaOid,
+          clientId,
+          scope,
+          codeChallenge = pkce.challenge,
+          redirectUri = validRedirectUri
+        ).isRight should be(true)
+
+        val token = KoskiApplicationForTests.omaDataOAuth2Repository.createAccessTokenForCode(
+            s"foobar${ooScope}",
+            clientId,
+            pkce.challenge,
+            Some(validRedirectUri),
+            scope.split(" ").toSet
+          ).getOrElse(throw new Error("Internal error"))
+          .accessToken
+
+        postResourceServer(token, palveluKäyttäjä) {
+          verifyResponseStatus(404)
+        }
+      }
+    })
   }
 
   "suostumusten hallinta" - {
@@ -990,7 +1050,9 @@ class OmaDataOAuth2BackendSpec
     }
 
     "palauttaa kansalaisen antaman suostumuksen" in {
-      clearOppijanOpiskeluoikeudet(validKansalainen.oid)
+      setupOppijaWithOpiskeluoikeus(opiskeluoikeus = PerusopetusExampleData.päättötodistusOpiskeluoikeus(), henkilö = validKansalainen) {
+        verifyResponseStatusOk()
+      }
       val pkce = createChallengeAndVerifier
       val token = createAuthorizationAndToken(validKansalainen, pkce)
 
@@ -1007,8 +1069,9 @@ class OmaDataOAuth2BackendSpec
     }
 
     "suostumuksen voi perua, ja se aiheuttaa audit lokimerkinnän" in {
-      clearOppijanOpiskeluoikeudet(validKansalainen.oid)
-
+      setupOppijaWithOpiskeluoikeus(opiskeluoikeus = PerusopetusExampleData.päättötodistusOpiskeluoikeus(), henkilö = validKansalainen) {
+        verifyResponseStatusOk()
+      }
       val pkce = createChallengeAndVerifier
       val token = createAuthorizationAndToken(validKansalainen, pkce)
 
@@ -1043,8 +1106,9 @@ class OmaDataOAuth2BackendSpec
     }
 
     "toinen oppija ei voi perua toisen suostumusta" in {
-      clearOppijanOpiskeluoikeudet(validKansalainen.oid)
-
+      setupOppijaWithOpiskeluoikeus(opiskeluoikeus = PerusopetusExampleData.päättötodistusOpiskeluoikeus(), henkilö = validKansalainen) {
+        verifyResponseStatusOk()
+      }
       val pkce = createChallengeAndVerifier
       val token = createAuthorizationAndToken(validKansalainen, pkce)
 

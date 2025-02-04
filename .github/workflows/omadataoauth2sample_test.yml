@@ -13,7 +13,7 @@ env:
 
 jobs:
   test-client:
-    name: Test client
+    name: OAuth2 client
     runs-on: ${{ inputs.runs-on }}
     permissions:
       contents: read
@@ -29,7 +29,7 @@ jobs:
       - run: cd omadata-oauth2-sample/client && npm run build
         # TODO add test step when there are tests
   test-server:
-    name: Test server
+    name: OAuth2 server
     runs-on: ${{ inputs.runs-on }}
     permissions:
       contents: read
@@ -45,7 +45,7 @@ jobs:
       - run: cd omadata-oauth2-sample/server && npm run build
       # TODO add test step when there are tests
   test-e2e:
-    name: E2E ${{matrix.shardIndex}}/${{matrix.shardTotal}}
+    name: OAuth2 E2E ${{matrix.shardIndex}}/${{matrix.shardTotal}}
     runs-on: ${{ inputs.runs-on }}
     strategy:
       fail-fast: false

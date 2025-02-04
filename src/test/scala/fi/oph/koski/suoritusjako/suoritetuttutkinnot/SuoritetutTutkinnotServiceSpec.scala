@@ -66,15 +66,26 @@ class SuoritetutTutkinnotServiceSpec
     super.afterEach()
   }
 
-  "Kosken testioppijoiden tiedot voi hakea ilman virheitä" in {
+  "Kosken testioppijoiden tiedot voi hakea, ja ne joko palauttavat tiedot tai 404" in {
+    // Tämä testi varmistaa, että mitään yllättäviä 500 tms. virheitä ei tapahdu, ja suuruusluokat on oikein, eli suurin osa testioppijoista löytyy, ja osa palauttaa 404.
     val oppijaOidit = KoskiSpecificMockOppijat.defaultOppijat
       .filter(o => o.henkilö.hetu.isEmpty || o.henkilö.hetu.exists(!KoskiApplicationForTests.virtaClient.asInstanceOf[MockVirtaClient].virheenAiheuttavaHetu(_)))
       .map(_.henkilö.oid)
 
     oppijaOidit.length should be > 100
 
-    oppijaOidit.foreach(oppijaOid => {
-      val result = suoritusjakoService.findSuoritetutTutkinnotOppija(oppijaOid)
+    val results = oppijaOidit.map(suoritusjakoService.findSuoritetutTutkinnotOppija)
+
+    val (onnistuu, eiOnnistu) = results.partition(_.isRight)
+
+    val (eiOnnistu404, _) = eiOnnistu.partition(_.left.get.statusCode == 404)
+
+    onnistuu.length should be > 100
+    eiOnnistu.length should be > 20
+    eiOnnistu.length should be < 35
+    eiOnnistu.length should be(eiOnnistu404.length)
+
+    onnistuu.foreach(result => {
       result.isRight should be(true)
 
       def isSuoritusjakoTehty(oid: String): Option[Boolean] = runDbSync(KoskiTables.KoskiOpiskeluOikeudet.filter(_.oid === oid).map(_.suoritusjakoTehty).result).headOption
@@ -84,6 +95,13 @@ class SuoritetutTutkinnotServiceSpec
           .foreach(_.oid.flatMap(isSuoritusjakoTehty).map(_ should be(true)))
       )
     })
+  }
+
+  "Oppija, josta ei ole tietoja Koskessa/YTR:ssä/Virrassa, palauttaa 404" in {
+    val result = suoritusjakoService.findSuoritetutTutkinnotOppija(KoskiSpecificMockOppijat.vainMitätöityjäOpiskeluoikeuksia.oid)
+
+    result.isLeft should be(true)
+    result.left.get.statusCode should be(404)
   }
 
   "Ammatillinen tutkinto" - {

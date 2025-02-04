@@ -160,7 +160,11 @@ class PostgresKoskiOpiskeluoikeusRepositoryActions(
   private def allowOpiskeluoikeusCreationOnConflict(oo: AmmatillinenOpiskeluoikeus, row: KoskiOpiskeluoikeusRow): Boolean = {
     lazy val perusteenDiaarinumero: Option[String] = {
       val value = (row.data \ "suoritukset")(0) \ "koulutusmoduuli" \ "perusteenDiaarinumero"
-      Option(value.extract[String])
+      try {
+        Option(value.extract[String])
+      } catch {
+        case _: org.json4s.MappingException => None
+      }
     }
 
     // Jos oppilaitos ja perusteen diaarinumero ovat samat, ei sallita päällekkäisen opiskeluoikeuden luontia...

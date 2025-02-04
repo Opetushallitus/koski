@@ -232,7 +232,7 @@ object ValpasOppijaTestData {
       ValpasMockOppijat.oppivelvollinenMonellaOppijaOidillaMaster,
       List(
         ExpectedData(
-          ValpasOpiskeluoikeusExampleData.lukionOpiskeluoikeus,
+          ValpasOpiskeluoikeusExampleData.lukionOpiskeluoikeus(),
           onHakeutumisValvottavaOpiskeluoikeus = false,
           onHakeutumisvalvovaOppilaitos = false,
           onSuorittamisvalvovaOppilaitos = false,
@@ -258,7 +258,7 @@ object ValpasOppijaTestData {
       ValpasMockOppijat.oppivelvollinenMonellaOppijaOidillaJollaIlmoitusMaster,
       List(
         ExpectedData(
-          ValpasOpiskeluoikeusExampleData.lukionOpiskeluoikeus,
+          ValpasOpiskeluoikeusExampleData.lukionOpiskeluoikeus(),
           onHakeutumisValvottavaOpiskeluoikeus = false,
           onHakeutumisvalvovaOppilaitos = false,
           onSuorittamisvalvovaOppilaitos = false,
@@ -442,7 +442,7 @@ object ValpasOppijaTestData {
       ValpasMockOppijat.oppivelvollinenMonellaOppijaOidillaJollaIlmoitusMaster2,
       List(
         ExpectedData(
-          ValpasOpiskeluoikeusExampleData.lukionOpiskeluoikeus,
+          ValpasOpiskeluoikeusExampleData.lukionOpiskeluoikeus(),
           onHakeutumisValvottavaOpiskeluoikeus = false,
           onHakeutumisvalvovaOppilaitos = false,
           onSuorittamisvalvovaOppilaitos = true,

@@ -104,6 +104,7 @@ object MockYtrClient extends YtrClient {
     "300805A847D",
     "060807A7787",
     "050122A673D",
+    "300805A1918",
   )
 
   var latestOppijaJsonByHetu: Option[YtrSsnWithPreviousSsns] = None

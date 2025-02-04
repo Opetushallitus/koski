@@ -15,7 +15,7 @@ import { URLSearchParams } from 'url'
 
 const router: Router = express.Router()
 
-// TODO: TOR-2210: Toistaiseksi vain muistinvarainen map
+// Toistaiseksi vain muistinvarainen map, riittää tähän esimerkkikäyttöön, tietokanta olisi overkill
 let verifiers: Map<string, string> = new Map()
 
 const defaultScope: string =
@@ -80,8 +80,8 @@ router.post(
       const protectedResource = await fetchData(token)
 
       res.json(protectedResource)
-      // TODO: TOR-2210: jos tehtäisiin oikeaa clientia, niin tässä kohtaa kuuluisi vielä
-      //  redirectata clientin näkymään (mikä vaatii CSP:n höllennyksen, tavan välittää dataa, yms.)
+      // Jos tehtäisiin oikeaa clientia, niin tässä kohtaa kuuluisi vielä
+      // redirectata clientin näkymään (mikä vaatii CSP:n höllennyksen, tavan välittää dataa, yms.)
     } catch (err) {
       if (err instanceof AuthorizationResponseError) {
         res.json(Object.fromEntries(err.cause))

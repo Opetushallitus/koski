@@ -48,7 +48,12 @@ trait MassaluovutusQueryLuokalleJaaneet extends MassaluovutusQueryParameters wit
             f(MassaluovutusQueryLuokalleJaaneetResult(LuokalleJääntiMatch.empty(opiskeluoikeusOid), "err", oppijaOid))
           } else {
             result.matches.foreach {
-              case (luokka, oo) => f(MassaluovutusQueryLuokalleJaaneetResult(oo, luokka, oppijaOid))
+              case (luokka, oo) =>
+                val viimeisinOo = application.opiskeluoikeusRepository.findByOid(opiskeluoikeusOid)
+                val result = MassaluovutusQueryLuokalleJaaneetResult(oo, luokka, oppijaOid).copy(
+                  viimeisinVersionumero = viimeisinOo.map(_.versionumero).toOption,
+                )
+                f(result)
             }
           }
           auditLog(oppijaOid)
@@ -111,9 +116,9 @@ case class LuokalleJääntiAccumulator(
   }
 
   private def newMathes(oo: JsonNode, diff: OpiskeluoikeusHistoryPatch): Map[String, LuokalleJääntiMatch] =
-    jääLuokalleLuokilla(oo).foldLeft(Map() : Map[String, LuokalleJääntiMatch]) { (acc, m) =>
+    jääLuokalleLuokilla(oo).foldLeft(matches) { (acc, m) =>
       val (luokka, ooJson) = m
-      if (acc.keySet.contains(luokka)) {
+      if (acc.contains(luokka)) {
         acc
       } else {
         acc + (luokka -> LuokalleJääntiMatch(ooJson, diff))
@@ -137,6 +142,7 @@ case class LuokalleJääntiMatch(
   oid: String,
   aikaleima: Timestamp,
   versio: Int,
+  viimeisinVersionumero: Option[Int],
 ) {
   def perusopetuksenOpiskeluoikeus: PerusopetuksenOpiskeluoikeus =
     JsonSerializer
@@ -154,12 +160,14 @@ object LuokalleJääntiMatch {
     oid = diff.opiskeluoikeusOid,
     aikaleima = diff.aikaleima,
     versio = diff.versionumero,
+    viimeisinVersionumero = None,
   )
 
   def empty(oid: String): LuokalleJääntiMatch = LuokalleJääntiMatch(
     opiskeluoikeus = JNothing,
     oid = oid,
     aikaleima = Timestamp.valueOf(LocalDateTime.MIN),
-    versio = 0
+    versio = 0,
+    viimeisinVersionumero = None,
   )
 }

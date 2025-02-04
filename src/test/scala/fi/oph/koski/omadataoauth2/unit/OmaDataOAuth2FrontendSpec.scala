@@ -86,14 +86,6 @@ class OmaDataOAuth2FrontendSpec extends OmaDataOAuth2TestBase {
       }
     }
 
-    "Suostumuksen myöntämis- ja datan haku-operaatiot audit-lokitetaan" in {
-      // TODO: TOR-2210
-    }
-
-    "error-query parametrilla näyttää virheilmoituksen käyttäjälle" in {
-      // TODO: TOR-2210
-    }
-
     "viallisella client_id/redirect_uri:lla" - {
       "kirjautuneella käyttäjällä" - {
         "redirectaa käyttäjän samaan osoitteeseen query-parametreihin sisällytetyllä virheilmoituksella" - {
@@ -237,7 +229,6 @@ class OmaDataOAuth2FrontendSpec extends OmaDataOAuth2TestBase {
         "scope"
       )
 
-      // TODO: TOR-2210: testaa kirjatuneena ja kirjautumatta, molemmat
       "kirjautumattomana" - {
 
         "redirectaa virhetiedot palauttavalle post response -sivulle" - {
@@ -416,9 +407,6 @@ class OmaDataOAuth2FrontendSpec extends OmaDataOAuth2TestBase {
               response.header("Location") should include regex("omadataoauth2-error-[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}".r)
             }
           }
-          "kun code_challenge ei ole validimuotoinen challenge" in {
-            // TODO: TOR-2210
-          }
         }
       }
 
@@ -432,13 +420,24 @@ class OmaDataOAuth2FrontendSpec extends OmaDataOAuth2TestBase {
 
               val serverUri = s"${authorizeFrontendBaseUri}?${puuttuvallaParametrilla}"
 
+              val expectedError = "invalid_request"
+              val expectedParams =
+                Seq(
+                  ("client_id", validClientId),
+                  ("redirect_uri", validRedirectUri),
+                  ("state", validState),
+                  ("error", expectedError)
+                )
+
               get(
                 uri = serverUri,
                 headers = kansalainenLoginHeaders(hetu)
               ) {
                 verifyResponseStatus(302)
                 response.header("Location") should include(s"/koski/user/logout?target=/koski/omadata-oauth2/cas-workaround/post-response/")
-                // TODO: TOR-2210: Base64url-enkoodattu osa Location-URLista pitäisi dekoodata ja tarkistaa sisältö
+                val base64UrlEncodedParams = response.header("Location").split("/").last
+                encodedParamStringShouldContain(base64UrlEncodedParams, expectedParams)
+                encodedParamStringShouldContainErrorDescriptionWithUuid(base64UrlEncodedParams, s"required parameter ${paramName} missing")
               }
             }
           })
@@ -449,13 +448,24 @@ class OmaDataOAuth2FrontendSpec extends OmaDataOAuth2TestBase {
 
               val serverUri = s"${authorizeFrontendBaseUri}?${duplikaattiParametrilla}"
 
+              val expectedError = "invalid_request"
+              val expectedParams =
+                Seq(
+                  ("client_id", validClientId),
+                  ("redirect_uri", validRedirectUri),
+                  ("state", validState),
+                  ("error", expectedError)
+                )
+
               get(
                 uri = serverUri,
                 headers = kansalainenLoginHeaders(hetu)
               ) {
                 verifyResponseStatus(302)
                 response.header("Location") should include(s"/koski/user/logout?target=/koski/omadata-oauth2/cas-workaround/post-response/")
-                // TODO: TOR-2210: Base64url-enkoodattu osa Location-URLista pitäisi dekoodata ja tarkistaa sisältö
+                val base64UrlEncodedParams = response.header("Location").split("/").last
+                encodedParamStringShouldContain(base64UrlEncodedParams, expectedParams)
+                encodedParamStringShouldContainErrorDescriptionWithUuid(base64UrlEncodedParams, s"parameter ${paramName} is repeated")
               }
             }
           })
@@ -469,13 +479,24 @@ class OmaDataOAuth2FrontendSpec extends OmaDataOAuth2TestBase {
 
             val serverUri = s"${authorizeFrontendBaseUri}?${väärälläParametrilla}"
 
+            val expectedError = "invalid_request"
+            val expectedParams =
+              Seq(
+                ("client_id", validClientId),
+                ("redirect_uri", validRedirectUri),
+                ("state", validState),
+                ("error", expectedError)
+              )
+
             get(
               uri = serverUri,
               headers = kansalainenLoginHeaders(hetu)
             ) {
               verifyResponseStatus(302)
               response.header("Location") should include(s"/koski/user/logout?target=/koski/omadata-oauth2/cas-workaround/post-response/")
-              // TODO: TOR-2210: Base64url-enkoodattu osa Location-URLista pitäisi dekoodata ja tarkistaa sisältö
+              val base64UrlEncodedParams = response.header("Location").split("/").last
+              encodedParamStringShouldContain(base64UrlEncodedParams, expectedParams)
+              encodedParamStringShouldContainErrorDescriptionWithUuid(base64UrlEncodedParams, s"${parametriNimi}=${tuntematonArvo} not supported. Supported values: ${tuetutArvot}")
             }
           }
           "kun response_mode ei ole form_post" in {
@@ -487,13 +508,24 @@ class OmaDataOAuth2FrontendSpec extends OmaDataOAuth2TestBase {
 
             val serverUri = s"${authorizeFrontendBaseUri}?${väärälläParametrilla}"
 
+            val expectedError = "invalid_request"
+            val expectedParams =
+              Seq(
+                ("client_id", validClientId),
+                ("redirect_uri", validRedirectUri),
+                ("state", validState),
+                ("error", expectedError)
+              )
+
             get(
               uri = serverUri,
               headers = kansalainenLoginHeaders(hetu)
             ) {
               verifyResponseStatus(302)
               response.header("Location") should include(s"/koski/user/logout?target=/koski/omadata-oauth2/cas-workaround/post-response/")
-              // TODO: TOR-2210: Base64url-enkoodattu osa Location-URLista pitäisi dekoodata ja tarkistaa sisältö
+              val base64UrlEncodedParams = response.header("Location").split("/").last
+              encodedParamStringShouldContain(base64UrlEncodedParams, expectedParams)
+              encodedParamStringShouldContainErrorDescriptionWithUuid(base64UrlEncodedParams, s"${parametriNimi}=${tuntematonArvo} not supported. Supported values: ${tuetutArvot}")
             }
           }
           "kun code_challenge_method ei ole S256" in {
@@ -505,13 +537,24 @@ class OmaDataOAuth2FrontendSpec extends OmaDataOAuth2TestBase {
 
             val serverUri = s"${authorizeFrontendBaseUri}?${väärälläParametrilla}"
 
+            val expectedError = "invalid_request"
+            val expectedParams =
+              Seq(
+                ("client_id", validClientId),
+                ("redirect_uri", validRedirectUri),
+                ("state", validState),
+                ("error", expectedError)
+              )
+
             get(
               uri = serverUri,
               headers = kansalainenLoginHeaders(hetu)
             ) {
               verifyResponseStatus(302)
               response.header("Location") should include(s"/koski/user/logout?target=/koski/omadata-oauth2/cas-workaround/post-response/")
-              // TODO: TOR-2210: Base64url-enkoodattu osa Location-URLista pitäisi dekoodata ja tarkistaa sisältö
+              val base64UrlEncodedParams = response.header("Location").split("/").last
+              encodedParamStringShouldContain(base64UrlEncodedParams, expectedParams)
+              encodedParamStringShouldContainErrorDescriptionWithUuid(base64UrlEncodedParams, s"${parametriNimi}=${tuntematonArvo} not supported. Supported values: ${tuetutArvot}")
             }
           }
 
@@ -523,6 +566,15 @@ class OmaDataOAuth2FrontendSpec extends OmaDataOAuth2TestBase {
 
             val serverUri = s"${authorizeFrontendBaseUri}?${eiSallitullaScopella}"
 
+            val expectedError = "invalid_scope"
+            val expectedParams =
+              Seq(
+                ("client_id", validClientId),
+                ("redirect_uri", validRedirectUri),
+                ("state", validState),
+                ("error", expectedError)
+              )
+
             get(
               uri = serverUri,
               headers = kansalainenLoginHeaders(hetu)
@@ -530,7 +582,9 @@ class OmaDataOAuth2FrontendSpec extends OmaDataOAuth2TestBase {
             ) {
               verifyResponseStatus(302)
               response.header("Location") should include(s"/koski/user/logout?target=/koski/omadata-oauth2/cas-workaround/post-response/")
-              // TODO: TOR-2210: Base64url-enkoodattu osa Location-URLista pitäisi dekoodata ja tarkistaa sisältö
+              val base64UrlEncodedParams = response.header("Location").split("/").last
+              encodedParamStringShouldContain(base64UrlEncodedParams, expectedParams)
+              encodedParamStringShouldContainErrorDescriptionWithUuid(base64UrlEncodedParams, s"${parametriNimi}=${eiSallittuArvo} contains unknown scopes (HENKILOTIEDOT_VIRHEELLINEN))")
             }
           }
           "kun scopessa on toistensa kanssa epäyhteensopivia arvoja" in {
@@ -541,6 +595,15 @@ class OmaDataOAuth2FrontendSpec extends OmaDataOAuth2TestBase {
 
             val serverUri = s"${authorizeFrontendBaseUri}?${eiSallitullaScopella}"
 
+            val expectedError = "invalid_scope"
+            val expectedParams =
+              Seq(
+                ("client_id", validClientId),
+                ("redirect_uri", validRedirectUri),
+                ("state", validState),
+                ("error", expectedError)
+              )
+
             get(
               uri = serverUri,
               headers = kansalainenLoginHeaders(hetu)
@@ -548,7 +611,9 @@ class OmaDataOAuth2FrontendSpec extends OmaDataOAuth2TestBase {
             ) {
               verifyResponseStatus(302)
               response.header("Location") should include(s"/koski/user/logout?target=/koski/omadata-oauth2/cas-workaround/post-response/")
-              // TODO: TOR-2210: Base64url-enkoodattu osa Location-URLista pitäisi dekoodata ja tarkistaa sisältö
+              val base64UrlEncodedParams = response.header("Location").split("/").last
+              encodedParamStringShouldContain(base64UrlEncodedParams, expectedParams)
+              encodedParamStringShouldContainErrorDescriptionWithUuid(base64UrlEncodedParams, s"${parametriNimi}=${eiSallittuArvo} contains an invalid combination of scopes (OPISKELUOIKEUDET_KAIKKI_TIEDOT, OPISKELUOIKEUDET_SUORITETUT_TUTKINNOT))")
             }
           }
           "kun scopesta puuttuu opiskeluoikeudet-scope kokonaan" in {
@@ -559,6 +624,15 @@ class OmaDataOAuth2FrontendSpec extends OmaDataOAuth2TestBase {
 
             val serverUri = s"${authorizeFrontendBaseUri}?${eiSallitullaScopella}"
 
+            val expectedError = "invalid_scope"
+            val expectedParams =
+              Seq(
+                ("client_id", validClientId),
+                ("redirect_uri", validRedirectUri),
+                ("state", validState),
+                ("error", expectedError)
+              )
+
             get(
               uri = serverUri,
               headers = kansalainenLoginHeaders(hetu)
@@ -566,7 +640,9 @@ class OmaDataOAuth2FrontendSpec extends OmaDataOAuth2TestBase {
             ) {
               verifyResponseStatus(302)
               response.header("Location") should include(s"/koski/user/logout?target=/koski/omadata-oauth2/cas-workaround/post-response/")
-              // TODO: TOR-2210: Base64url-enkoodattu osa Location-URLista pitäisi dekoodata ja tarkistaa sisältö
+              val base64UrlEncodedParams = response.header("Location").split("/").last
+              encodedParamStringShouldContain(base64UrlEncodedParams, expectedParams)
+              encodedParamStringShouldContainErrorDescriptionWithUuid(base64UrlEncodedParams, s"${parametriNimi}=${eiSallittuArvo} is missing a required OPISKELUOIKEUDET_ scope")
             }
           }
           "kun scopesta puuttuu henkilötiedot-scope kokonaan" in {
@@ -577,17 +653,25 @@ class OmaDataOAuth2FrontendSpec extends OmaDataOAuth2TestBase {
 
             val serverUri = s"${authorizeFrontendBaseUri}?${eiSallitullaScopella}"
 
+            val expectedError = "invalid_scope"
+            val expectedParams =
+              Seq(
+                ("client_id", validClientId),
+                ("redirect_uri", validRedirectUri),
+                ("state", validState),
+                ("error", expectedError)
+              )
+
             get(
               uri = serverUri,
               headers = kansalainenLoginHeaders(hetu)
             ) {
               verifyResponseStatus(302)
               response.header("Location") should include(s"/koski/user/logout?target=/koski/omadata-oauth2/cas-workaround/post-response/")
-              // TODO: TOR-2210: Base64url-enkoodattu osa Location-URLista pitäisi dekoodata ja tarkistaa sisältö
+              val base64UrlEncodedParams = response.header("Location").split("/").last
+              encodedParamStringShouldContain(base64UrlEncodedParams, expectedParams)
+              encodedParamStringShouldContainErrorDescriptionWithUuid(base64UrlEncodedParams, s"${parametriNimi}=${eiSallittuArvo} is missing a required HENKILOTIEDOT_ scope")
             }
-          }
-          "kun code_challenge ei ole validimuotoinen challenge" in {
-            // TODO: TOR-2210
           }
         }
       }
@@ -910,13 +994,21 @@ class OmaDataOAuth2FrontendSpec extends OmaDataOAuth2TestBase {
 
       val serverUri = s"${authorizeBaseUri}?${eiSallitullaScopella}"
 
+      val expectedParams =
+        Seq(
+          ("error", "invalid_scope")
+        )
+
       get(
         uri = serverUri,
         headers = kansalainenLoginHeaders(hetu)
       ) {
         verifyResponseStatus(302)
         response.header("Location") should include(s"/koski/user/logout?target=/koski/omadata-oauth2/cas-workaround/authorize/")
-        // TODO: TOR-2210: Toistaiseksi vain varmistetaan, että käyttäjä ohjataan frontendiin, ei tarkista välitettiinkö täsmälleen oikea virhesisältö
+
+        val base64UrlEncodedParams = response.header("Location").split("/").last
+        encodedParamStringShouldContain(base64UrlEncodedParams, expectedParams)
+        encodedParamStringShouldContainErrorUuidAsErrorId(base64UrlEncodedParams)
       }
     }
   }
