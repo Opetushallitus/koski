@@ -33,10 +33,8 @@ class OmaDataOAuth2ResourceOwnerReactServlet(implicit val application: KoskiAppl
           redirectToSelfWithErrors(validationError)
         case Right(clientInfo) =>
           validateQueryOtherParams(clientInfo) match {
-            case Left(validationError) if isAuthenticated =>
-              logoutAndSendErrorsInParamsToClient(clientInfo, validationError)
             case Left(validationError) =>
-              sendErrorsToClient(clientInfo, validationError)
+              sendErrorsInParamsToClient(isAuthenticated, clientInfo, validationError)
             case Right(paramInfo) if !isAuthenticated =>
               loginAndRedirectToSelf(lang)
             case Right(paramInfo) if isAuthenticated =>
@@ -60,19 +58,12 @@ class OmaDataOAuth2ResourceOwnerReactServlet(implicit val application: KoskiAppl
     redirect(s"/koski/omadata-oauth2/authorize?${getParamsWithError(validationError)}")
   }
 
-  private def logoutAndSendErrorsInParamsToClient(clientInfo: ClientInfo, validationError: OmaDataOAuth2Error) = {
-    // Lähetä virheet logout-redirectin kautta, koska käyttäjä oli jo kirjautunut
-    val paramsString = createParamsString(clientInfo.getPostResponseServletParams ++ validationError.getPostResponseServletParams)
-    logger.warn(validationError.getLoggedErrorMessage)
-    redirectToPostResponseViaLogout(paramsString)
-  }
-
-  private def sendErrorsToClient(clientInfo: ClientInfo, validationError: OmaDataOAuth2Error): Unit = {
-    // Lähetä suoraan redirect_uri:lle, koska käyttäjä ei ole vielä kirjautunut
+  private def sendErrorsInParamsToClient(isAuthenticated: Boolean, clientInfo: ClientInfo, validationError: OmaDataOAuth2Error) = {
     val paramsString = createParamsString(clientInfo.getPostResponseServletParams ++ validationError.getPostResponseServletParams)
     logger.warn(validationError.getLoggedErrorMessage)
 
-    redirectToPostResponse(paramsString)
+    // Lähetä virheet logout-redirectin kautta vain, jos käyttäjä oli jo kirjautunut
+    redirectToPostResponse(isAuthenticated && useLogoutBeforeRedirect(clientInfo.clientId), paramsString)
   }
 
   private def loginAndRedirectToSelf(lang: String) = {

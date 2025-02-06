@@ -52,10 +52,42 @@ object MockUsers {
     )))
   )
 
+  val omadataOAuth2IlmanLogoutPalvelukäyttäjä = KoskiMockUser(
+    "oauth2clientnologout",
+    "oauth2clientnologout",
+    "1.2.246.562.24.99999985296",
+    Seq(OrganisaatioJaKäyttöoikeudet(MockOrganisaatiot.dvv, List(
+      PalveluJaOikeus("KOSKI", Rooli.OMADATAOAUTH2_HENKILOTIEDOT_NIMI),
+      PalveluJaOikeus("KOSKI", Rooli.OMADATAOAUTH2_HENKILOTIEDOT_SYNTYMAAIKA),
+      PalveluJaOikeus("KOSKI", Rooli.OMADATAOAUTH2_HENKILOTIEDOT_HETU),
+      PalveluJaOikeus("KOSKI", Rooli.OMADATAOAUTH2_HENKILOTIEDOT_OPPIJANUMERO),
+      PalveluJaOikeus("KOSKI", Rooli.OMADATAOAUTH2_HENKILOTIEDOT_KAIKKI_TIEDOT),
+      PalveluJaOikeus("KOSKI", Rooli.OMADATAOAUTH2_OPISKELUOIKEUDET_SUORITETUT_TUTKINNOT),
+      PalveluJaOikeus("KOSKI", Rooli.OMADATAOAUTH2_OPISKELUOIKEUDET_AKTIIVISET_JA_PAATTYNEET_OPINNOT),
+      PalveluJaOikeus("KOSKI", Rooli.OMADATAOAUTH2_OPISKELUOIKEUDET_KAIKKI_TIEDOT)
+    )))
+  )
+
   val omadataOAuth2SampleAppPalvelukäyttäjä = KoskiMockUser(
     "omadataoauth2sample",
     "omadataoauth2sample",
     "1.2.246.562.24.99999984735",
+    Seq(OrganisaatioJaKäyttöoikeudet(MockOrganisaatiot.dvv, List(
+      PalveluJaOikeus("KOSKI", Rooli.OMADATAOAUTH2_HENKILOTIEDOT_NIMI),
+      PalveluJaOikeus("KOSKI", Rooli.OMADATAOAUTH2_HENKILOTIEDOT_SYNTYMAAIKA),
+      PalveluJaOikeus("KOSKI", Rooli.OMADATAOAUTH2_HENKILOTIEDOT_HETU),
+      PalveluJaOikeus("KOSKI", Rooli.OMADATAOAUTH2_HENKILOTIEDOT_OPPIJANUMERO),
+      PalveluJaOikeus("KOSKI", Rooli.OMADATAOAUTH2_HENKILOTIEDOT_KAIKKI_TIEDOT),
+      PalveluJaOikeus("KOSKI", Rooli.OMADATAOAUTH2_OPISKELUOIKEUDET_SUORITETUT_TUTKINNOT),
+      PalveluJaOikeus("KOSKI", Rooli.OMADATAOAUTH2_OPISKELUOIKEUDET_AKTIIVISET_JA_PAATTYNEET_OPINNOT),
+      PalveluJaOikeus("KOSKI", Rooli.OMADATAOAUTH2_OPISKELUOIKEUDET_KAIKKI_TIEDOT)
+    )))
+  )
+
+  val omadataOAuth2SampleAppPalvelukäyttäjäNoLogout = KoskiMockUser(
+    "omadataoauth2samplenologout",
+    "omadataoauth2samplenologout",
+    "1.2.246.562.24.99999984739",
     Seq(OrganisaatioJaKäyttöoikeudet(MockOrganisaatiot.dvv, List(
       PalveluJaOikeus("KOSKI", Rooli.OMADATAOAUTH2_HENKILOTIEDOT_NIMI),
       PalveluJaOikeus("KOSKI", Rooli.OMADATAOAUTH2_HENKILOTIEDOT_SYNTYMAAIKA),
@@ -653,8 +685,10 @@ object MockUsers {
     pohjoiskalotinKoulutussäätiöKäyttäjä,
     omadataOAuth2Palvelukäyttäjä,
     omadataOAuth2KaikkiOikeudetPalvelukäyttäjä,
+    omadataOAuth2IlmanLogoutPalvelukäyttäjä,
     rekisteröimätönOmadataOAuth2Palvelukäyttäjä,
-    omadataOAuth2SampleAppPalvelukäyttäjä
+    omadataOAuth2SampleAppPalvelukäyttäjä,
+    omadataOAuth2SampleAppPalvelukäyttäjäNoLogout
   )
 }
 

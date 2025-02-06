@@ -39,4 +39,12 @@ trait OmaDataOAuth2Config extends Logging  {
       case _ => true
     }
   }
+
+  def useLogoutBeforeRedirect(client_id: String): Boolean = {
+    getConfigOption(client_id) match {
+      case Some(config) if config.hasPath("logout_before_redirect") =>
+        config.getBoolean("logout_before_redirect")
+      case _ => true
+    }
+  }
 }
