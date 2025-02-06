@@ -1,6 +1,6 @@
 # OAuth 2.0:n toteutus Koskessa
 
-Ks. myös [oauth2.md](oauth2.md)
+Katso myös [oauth2.md](oauth2.md)
 
 ## Uusien palveluntarjoajien lisääminen
 
