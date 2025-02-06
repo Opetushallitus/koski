@@ -78,6 +78,8 @@ user -> user_agent : Hyväksy valtuutus
 
 user_agent -> OmaDataOAuth2ResourceOwnerServlet : GET /koski/api/omadata-oauth2/authorize/?PARAMS
 
+alt logout before redirect
+
 OmaDataOAuth2ResourceOwnerServlet -> KoskiSpecificLogoutServlet : REDIRECT /koski/user/logout?\n  target=/koski/omadata-oauth2/cas-workaround\n      /post-response/BASE64URLENCODED_RESPONSE_PARAMS
 
 KoskiSpecificLogoutServlet -> cas_oppija : REDIRECT /cas-oppija/logout?\n  service=/koski/omadata-oauth2/cas-workaround\n      /post-response/BASE64URLENCODED_RESPONSE_PARAMS
@@ -85,6 +87,12 @@ KoskiSpecificLogoutServlet -> cas_oppija : REDIRECT /cas-oppija/logout?\n  servi
 cas_oppija -> OmaDataOAuth2CASWorkaroundServlet : REDIRECT /koski/omadata-oauth2/cas-workaround\n      /post-response/BASE64URLENCODED_RESPONSE_PARAMS
 
 OmaDataOAuth2CASWorkaroundServlet -> OmaDataOAuth2LogoutPostResponseServlet : REDIRECT /post-response/RESPONSE_PARAMS
+
+else no logout
+
+OmaDataOAuth2ResourceOwnerServlet -> OmaDataOAuth2LogoutPostResponseServlet : REDIRECT /post-response/RESPONSE_PARAMS
+
+end
 
 OmaDataOAuth2LogoutPostResponseServlet -> user_agent : Auto-submit web form, jossa RESPONSE inputteina
 
