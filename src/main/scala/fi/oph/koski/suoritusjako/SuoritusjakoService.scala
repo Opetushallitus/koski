@@ -1,6 +1,9 @@
 package fi.oph.koski.suoritusjako
 
+import com.typesafe.config.Config
 import fi.oph.koski.aktiivisetjapaattyneetopinnot.AktiivisetJaPäättyneetOpinnotService
+import fi.oph.koski.db.SuoritusjakoRow
+
 import java.time.LocalDate
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.json.JsonSerializer
@@ -13,6 +16,9 @@ import fi.oph.koski.schema._
 import fi.oph.koski.suoritetuttutkinnot.SuoritetutTutkinnotService
 import fi.oph.koski.util.ChainingSyntax.chainingOps
 import fi.oph.koski.util.WithWarnings
+import org.scalatra.servlet.RichRequest
+
+import javax.servlet.http.HttpServletRequest
 
 
 case class SuoritusjakoPayload(
@@ -70,20 +76,38 @@ class SuoritusjakoService(
     }
   }
 
-  def get(secret: String)(implicit koskiSession: KoskiSpecificSession): Either[HttpStatus, WithWarnings[OppijaJakolinkillä]] = {
-    suoritusjakoRepository.get(secret).flatMap {
-      case suoritusjako if suoritusjako.jaonTyyppi.isEmpty =>
-        oppijaFacade.findOppija(suoritusjako.oppijaOid)(koskiSession).map(_.map { oppija =>
-          val suoritusIdentifiers = JsonSerializer.extract[List[SuoritusIdentifier]](suoritusjako.suoritusIds)
-          val filtered = filterOpiskeluoikeudet(oppija.opiskeluoikeudet, suoritusIdentifiers)
-          val oppijaResult = oppija.copy(opiskeluoikeudet = filtered)
-          OppijaJakolinkillä(
-            jakolinkki = Some(Jakolinkki(suoritusjako.voimassaAsti.toLocalDate())),
-            henkilö = oppijaResult.henkilö,
-            opiskeluoikeudet = oppijaResult.opiskeluoikeudet
-          )
-        })
-      case _ => Left(KoskiErrorCategory.notFound())
+  // Sessio tarvitaan JSON serialisoinnille, jotta saadaan kenttiä piilotettua/näkyviin jakolinkin luomispäivän mukaan
+  def getOppijaJakolinkilläAndSession(secret: String, request: RichRequest, config: Config): Either[HttpStatus, (WithWarnings[OppijaJakolinkillä], KoskiSpecificSession)] = {
+    for {
+      row <- suoritusjakoRepository.get(secret)
+      session <- getSessionFromRow(row, config, request)
+      result <- getOppijaJakolinkilläFromRow(row, session)
+    } yield (result, session)
+  }
+
+  def getSessionFromRow(row: SuoritusjakoRow, config: com.typesafe.config.Config, request: RichRequest): Either[HttpStatus, KoskiSpecificSession] = {
+    val erityishenkilötiedotJakolinkkeihinAlkaen = LocalDate.parse(config.getString("erityishenkilötiedotJakolinkkeihinAlkaen")).minusDays(1)
+    if (row.aikaleima.toLocalDateTime.toLocalDate.isAfter(erityishenkilötiedotJakolinkkeihinAlkaen)) {
+      Right(KoskiSpecificSession.suoritusjakoKatsominenErityisilläHenkilötiedoillaUser(request))
+    } else {
+      Right(KoskiSpecificSession.suoritusjakoKatsominenUser(request))
+    }
+  }
+
+  def getOppijaJakolinkilläFromRow(row: SuoritusjakoRow, session: KoskiSpecificSession): Either[HttpStatus, WithWarnings[OppijaJakolinkillä]] = {
+    if (row.jaonTyyppi.isDefined) {
+      Left(KoskiErrorCategory.notFound())
+    } else {
+      oppijaFacade.findOppija(row.oppijaOid)(session).map(_.map { oppija =>
+        val suoritusIdentifiers = JsonSerializer.extract[List[SuoritusIdentifier]](row.suoritusIds)
+        val filtered = filterOpiskeluoikeudet(oppija.opiskeluoikeudet, suoritusIdentifiers)
+        val oppijaResult = oppija.copy(opiskeluoikeudet = filtered)
+        OppijaJakolinkillä(
+          jakolinkki = Some(Jakolinkki(row.voimassaAsti.toLocalDate())),
+          henkilö = oppijaResult.henkilö,
+          opiskeluoikeudet = oppijaResult.opiskeluoikeudet
+        )
+      })
     }
   }
 

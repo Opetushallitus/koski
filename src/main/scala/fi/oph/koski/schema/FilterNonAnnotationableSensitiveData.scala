@@ -43,7 +43,7 @@ object FilterNonAnnotationableSensitiveData {
         val lisätiedot = if(lisätiedollinen.lisätiedot.nonEmpty) {
           Some(lisätiedollinen.lisätiedot.toList.flatten.filter(
             _.tunniste.koodiarvo != "mukautettu" ||
-              user.sensitiveDataAllowed(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT, Rooli.MIGRI, Rooli.HSL, Rooli.SUOMIFI))
+              user.sensitiveDataAllowed(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT, Rooli.MIGRI, Rooli.HSL, Rooli.SUOMIFI, Rooli.SUORITUSJAKO_KATSELIJA))
           ))
         } else {
           None

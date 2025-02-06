@@ -16,23 +16,6 @@ import { t } from '../../i18n/i18n'
 const Url = '/koski/api/suoritusjako'
 const doShare = (suoritusIds) => Http.post(Url, [...suoritusIds])
 
-const Ingressi = () => (
-  <div className="suoritusjako-form__caption">
-    <Text
-      name={
-        'Luomalla jakolinkin voit näyttää suoritustietosi haluamillesi henkilöille (esimerkiksi työtä tai opiskelupaikkaa hakiessasi). ' +
-        'Luotuasi linkin voit tarkistaa tarkan sisällön Esikatsele-painikkeella.'
-      }
-    />
-    <br />
-    <Text
-      name={
-        'Voit valita jaettavaksi yksittäisiä tutkintoja tai vaihtoehtoisesti esimääriteltyjä kokonaisuuksia.'
-      }
-    />
-  </div>
-)
-
 const SuoritusjakoList = ({ opiskeluoikeudet, suoritusjaot, onRemove }) => (
   <div>
     {!R.isEmpty(suoritusjaot) && (
@@ -40,14 +23,7 @@ const SuoritusjakoList = ({ opiskeluoikeudet, suoritusjaot, onRemove }) => (
         <h2>
           <Text name="Voimassaolevat linkit" />
         </h2>
-        <div className="link-information">
-          <Text
-            name={
-              'Jakolinkillä voit näyttää suoritustietosi haluamillesi henkilöille (esimerkiksi työtä tai opiskelupaikkaa hakiessasi). ' +
-              'Linkin saajan ei tarvitse kirjautua Oma Opintopolku-palveluun.'
-            }
-          />
-        </div>
+
         <ul className="suoritusjako-form__link-list">
           {suoritusjaot.map((suoritusjako) => (
             <li key={suoritusjako.secret}>
@@ -297,6 +273,20 @@ export class SuoritusjakoForm extends React.Component {
         tabIndex={-1}
         ref={(e) => (this.formSectionElem = e)}
       >
+
+        <div className="suoritusjako-form__caption">
+          <Text name={'jakolinkki-information-alku'} />
+          <ul>
+            <li>
+              <Text name={'jakolinkki-information-yksilöllistetyt'} />
+            </li>
+            <li>
+              <Text name={'jakolinkki-information-mukautetut'} />
+            </li>
+          </ul>
+          <Text name={'jakolinkki-information-loppu'} />
+        </div>
+
         {this.showLinkRemovalSuccess.map(
           (shouldShow) =>
             shouldShow && (
@@ -322,9 +312,6 @@ export class SuoritusjakoForm extends React.Component {
                 <Text name="Jakolinkin luominen onnistui." />
               </div>
             )
-        )}
-        {this.suoritusjaot.map(
-          (suoritusjaot) => R.isEmpty(suoritusjaot) && <Ingressi />
         )}
         <SuoritusjakoList
           baret-lift

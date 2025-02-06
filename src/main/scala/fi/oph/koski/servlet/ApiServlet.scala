@@ -1,5 +1,6 @@
 package fi.oph.koski.servlet
 
+import fi.oph.koski.db.SuoritusjakoRow
 import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.koskiuser.KoskiSpecificSession
@@ -10,7 +11,9 @@ import org.json4s._
 import org.json4s.jackson.JsonMethods
 import org.scalatra._
 
+import java.time.LocalDate
 import scala.reflect.runtime.universe.{TypeRefApi, TypeTag}
+import scala.reflect.runtime.{universe => ru}
 import scala.runtime.BoxedUnit
 
 trait ApiServlet extends BaseServlet with Logging with TimedServlet with ContentEncodingSupport with CacheControlSupport {
@@ -71,8 +74,26 @@ trait ApiServlet extends BaseServlet with Logging with TimedServlet with Content
 }
 
 trait KoskiSpecificApiServlet extends ApiServlet with KoskiSpecificBaseServlet {
-  def toJsonString[T: TypeTag](x: T): String = {
-    implicit val session = koskiSessionOption getOrElse KoskiSpecificSession.untrustedUser
+
+  def renderEither[T: ru.TypeTag](result: Either[HttpStatus, T], sessionOverride: KoskiSpecificSession): Unit = {
+    result match {
+      case Right(x) => renderObject[T](x, sessionOverride)
+      case Left(status) => haltWithStatus(status)
+    }
+  }
+
+  def renderObject[T: TypeTag](x: T, sessionOverride: KoskiSpecificSession): Unit = {
+    x match {
+      case _: Unit => response.setStatus(204)
+      case _: BoxedUnit => response.setStatus(204)
+      case _ => writeJson(toJsonString[T](x, sessionOverride))
+    }
+  }
+
+  def toJsonString[T: TypeTag](x: T): String = toJsonString(x, KoskiSpecificSession.untrustedUser)
+
+  def toJsonString[T: TypeTag](x: T, sessionOverride: KoskiSpecificSession): String = {
+    implicit val session = koskiSessionOption getOrElse sessionOverride
     // Ajax request won't have "text/html" in Accept header, clicking "JSON" button will
     val pretty = Option(request.getHeader("accept")).exists(_.contains("text/html"))
     val tag = implicitly[TypeTag[T]]

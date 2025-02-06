@@ -37,7 +37,8 @@ trait SuoritusjakoTestMethods extends KoskiHttpSpec with OpiskeluoikeusTestMetho
   }
 
   def getSuoritusjakoOppija(secret: String): Oppija = {
-    KoskiApplicationForTests.suoritusjakoService.get(secret)(mockKoskiSession).flatMap(_.warningsToLeft).right.get.toOppija
+    KoskiApplicationForTests.suoritusjakoRepository.get(secret)
+      .flatMap(row => KoskiApplicationForTests.suoritusjakoService.getOppijaJakolinkilläFromRow(row, mockKoskiSession)).right.get.get.toOppija()
   }
 
   def getSuoritusjakoDescriptors[A](hetu: String = suoritusjakoHetu, authenticate: Boolean = true)(f: => A): A = {
@@ -93,5 +94,9 @@ trait SuoritusjakoTestMethods extends KoskiHttpSpec with OpiskeluoikeusTestMetho
     val expected = expectedSuoritusjaot.map { s => AlmostSameTimestamp(s.secret, s.expirationDate, s.timestamp) }
     val actual = actualSuoritusjaot.map { s => AlmostSameTimestamp(s.secret, s.expirationDate, s.timestamp) }
     actual should contain theSameElementsAs expected
+  }
+
+  def updateAikaleimaForTest(secret: String, timestamp: Timestamp) = {
+    KoskiApplicationForTests.suoritusjakoRepository.updateAikaleimaForTest(secret, timestamp)
   }
 }

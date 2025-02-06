@@ -266,7 +266,7 @@ case class AmmatillisenTutkinnonSuoritus(
   @Tooltip("Keskiarvoon sisältyy mukautettuja arvosanoja")
   @OnlyWhen("suoritustapa/koodiarvo","reformi")
   @OnlyWhen("suoritustapa/koodiarvo","ops")
-  @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))
+  @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT, Rooli.SUORITUSJAKO_KATSELIJA))
   keskiarvoSisältääMukautettujaArvosanoja: Option[Boolean] = None
 ) extends AmmatillisenTutkinnonOsittainenTaiKokoSuoritus
   with Todistus
@@ -335,7 +335,7 @@ case class AmmatillisenTutkinnonOsittainenSuoritus(
   @Tooltip("Keskiarvoon sisältyy mukautettuja arvosanoja")
   @OnlyWhen("suoritustapa/koodiarvo","reformi")
   @OnlyWhen("suoritustapa/koodiarvo","ops")
-  @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))
+  @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT, Rooli.SUORITUSJAKO_KATSELIJA))
   keskiarvoSisältääMukautettujaArvosanoja: Option[Boolean] = None,
   @Title("Korotetun suorituksen alkuperäinen opiskeluoikeus")
   @Description("Korotetun suorituksen alkuperäinen opiskeluoikeus")
@@ -352,7 +352,7 @@ case class AmmatillisenTutkinnonOsittainenSuoritus(
   @Tooltip("Korotettuun keskiarvoon sisältyy mukautettuja arvosanoja")
   @OnlyWhen("suoritustapa/koodiarvo", "reformi")
   @OnlyWhen("suoritustapa/koodiarvo", "ops")
-  @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))
+  @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT, Rooli.SUORITUSJAKO_KATSELIJA))
   korotettuKeskiarvoSisältääMukautettujaArvosanoja: Option[Boolean] = None
 ) extends AmmatillisenTutkinnonOsittainenTaiKokoSuoritus
 
