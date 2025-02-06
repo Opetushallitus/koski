@@ -1,12 +1,9 @@
 package fi.oph.koski.suoritusjako
 
 import fi.oph.koski.config.KoskiApplication
-import fi.oph.koski.http.HttpStatus
-import fi.oph.koski.koskiuser.{KoskiSpecificAuthenticationSupport, KoskiSpecificSession}
+import fi.oph.koski.json.JsonSerializer
+import fi.oph.koski.koskiuser.KoskiSpecificAuthenticationSupport
 import fi.oph.koski.log.Logging
-import fi.oph.koski.omattiedot.OmatTiedotEditorModel
-import fi.oph.koski.schema.KoskiSchema.strictDeserialization
-import fi.oph.koski.schema.Oppija
 import fi.oph.koski.servlet.{KoskiSpecificApiServlet, NoCache}
 import org.json4s.JValue
 
@@ -18,17 +15,12 @@ class SuoritusjakoServletV3(implicit val application: KoskiApplication)
 
   post("/") {
     withJsonBody { (json: JValue) => {
-      implicit val suoritusjakoUser = KoskiSpecificSession.suoritusjakoKatsominenUser(request)
-      val jako = application
-        .validatingAndResolvingExtractor
-        .extract[SuoritusjakoRequest](strictDeserialization)(json)
-        .flatMap(r => application.suoritusjakoService.get(r.secret)(suoritusjakoUser))
-        .map(_.getIgnoringWarnings)
-      renderEither[OppijaJakolinkillä](jako)
-    } } (parseErrorHandler = handleUnparseableJson)
-  }
-
-  private def handleUnparseableJson(status: HttpStatus) = {
-    haltWithStatus(status)
+      val body = JsonSerializer.extract[SuoritusjakoRequest](json)
+      application.suoritusjakoService.getOppijaJakolinkilläAndSession(body.secret, request, application.config) match {
+        case Left(status) => haltWithStatus(status)
+        case Right((result, session)) => renderObject[OppijaJakolinkillä](result.getIgnoringWarnings, session)
+      }
+    }
+    }()
   }
 }

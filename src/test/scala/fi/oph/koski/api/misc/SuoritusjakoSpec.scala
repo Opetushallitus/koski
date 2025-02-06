@@ -479,6 +479,77 @@ class SuoritusjakoSpec extends AnyFreeSpec with SuoritusjakoTestMethods with Mat
         bodyString should not include(KorkeakoulunOpiskeluoikeudenLukuvuosimaksu.toString.toLowerCase)
       }
     }
+
+
+    "ei sisällä tietoja yksilöllistetyistä opinnoista kun jako on luotu ennen rajapäivää" in {
+      val json =
+        """[{"oppilaitosOid":"1.2.246.562.10.14613773812","suorituksenTyyppi":"perusopetuksenoppimaara","koulutusmoduulinTunniste":"201101"}]"""
+
+      var secret: String = null
+
+      createSuoritusjako(json, "220109-784L"){
+        verifyResponseStatusOk()
+        secret = JsonSerializer.parse[Suoritusjako](response.body).secret
+      }
+      updateAikaleimaForTest(secret, Timestamp.valueOf(LocalDate.of(2000,1,1).atStartOfDay()))
+      getSuoritusjako(secret) {
+        val bodyString = new String(response.bodyBytes, StandardCharsets.UTF_8)
+        bodyString should not include ("yksilöllistettyOppimäärä")
+      }
+    }
+
+    "sisältää tiedot yksilöllistetyistä opinnoista kun jako on luotu rajapäivän jälkeen" in {
+      val json =
+        """[{"oppilaitosOid":"1.2.246.562.10.14613773812","suorituksenTyyppi":"perusopetuksenoppimaara","koulutusmoduulinTunniste":"201101"}]"""
+
+      var secret: String = null
+
+      createSuoritusjako(json, "220109-784L"){
+        verifyResponseStatusOk()
+        secret = JsonSerializer.parse[Suoritusjako](response.body).secret
+      }
+
+      getSuoritusjako(secret) {
+        val bodyString = new String(response.bodyBytes, StandardCharsets.UTF_8)
+        bodyString should include ("yksilöllistettyOppimäärä")
+      }
+    }
+
+    "ei sisällä tietoja mukautetuista opinnoista kun jako on luotu ennen rajapäivää" in {
+      val json =
+        """[{"oppilaitosOid":"1.2.246.562.10.52251087186","suorituksenTyyppi":"ammatillinentutkintoosittainen","koulutusmoduulinTunniste":"361902"}]"""
+
+      var secret: String = null
+
+      createSuoritusjako(json, "140493-2798"){
+        verifyResponseStatusOk()
+        secret = JsonSerializer.parse[Suoritusjako](response.body).secret
+      }
+      updateAikaleimaForTest(secret, Timestamp.valueOf(LocalDate.of(2000,1,1).atStartOfDay()))
+      getSuoritusjako(secret) {
+        val bodyString = new String(response.bodyBytes, StandardCharsets.UTF_8)
+        bodyString should not include ("keskiarvoSisältääMukautettujaArvosanoja")
+        bodyString should not include ("\"mukautettu\"")
+      }
+    }
+
+    "sisältää tiedot mukautetuista opinnoista kun jako on luotu ennen rajapäivää" in {
+      val json =
+        """[{"oppilaitosOid":"1.2.246.562.10.52251087186","suorituksenTyyppi":"ammatillinentutkintoosittainen","koulutusmoduulinTunniste":"361902"}]"""
+
+      var secret: String = null
+
+      createSuoritusjako(json, "140493-2798"){
+        verifyResponseStatusOk()
+        secret = JsonSerializer.parse[Suoritusjako](response.body).secret
+      }
+      getSuoritusjako(secret) {
+        val bodyString = new String(response.bodyBytes, StandardCharsets.UTF_8)
+        bodyString should include ("keskiarvoSisältääMukautettujaArvosanoja")
+        bodyString should include ("\"mukautettu\"")
+      }
+    }
+
   }
 
   "Suoritusjaon katsominen" - {

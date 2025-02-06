@@ -18,15 +18,15 @@ import scala.reflect.runtime.universe.TypeTag
 class SuoritusjakoServlet(implicit val application: KoskiApplication) extends EditorApiServlet with KoskiSpecificAuthenticationSupport with Logging with NoCache {
 
   post("/editor") {
-    implicit val koskiSession = KoskiSpecificSession.suoritusjakoKatsominenUser(request)
     withJsonBody({ body =>
-      val request = JsonSerializer.extract[SuoritusjakoRequest](body)
-      renderEither[EditorModel](
-        SuoritusjakoSecret.validate(request.secret)
-          .flatMap(secret => application.suoritusjakoService.get(secret)(koskiSession))
-          .map(_.map(_.toOppija))
-          .map(oppija => OmatTiedotEditorModel.toEditorModel(userOppija = oppija, näytettäväOppija = oppija)(application, koskiSession))
-      )
+      val json = JsonSerializer.extract[SuoritusjakoRequest](body)
+      application.suoritusjakoService.getOppijaJakolinkilläAndSession(json.secret, request, application.config) match {
+        case Left(status) => haltWithStatus(status)
+        case Right((result, session)) =>
+          renderObject[EditorModel](
+            result.map(_.toOppija()).map(oppija => OmatTiedotEditorModel.toEditorModel(oppija)(application, session)).getIgnoringWarnings
+          )
+      }
     })()
   }
 
