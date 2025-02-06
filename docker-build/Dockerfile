@@ -16,7 +16,7 @@ RUN cp /usr/share/zoneinfo/Europe/Helsinki /etc/localtime && apk del tzdata
 RUN echo 'Europe/Helsinki' > /etc/timezone
 
 # Install Prometheus JMX exporter
-RUN wget -q https://repo1.maven.org/maven2/io/prometheus/jmx/jmx_prometheus_javaagent/${PROMETHEUS_JMX_EXPORTER_VERSION}/jmx_prometheus_javaagent-${PROMETHEUS_JMX_EXPORTER_VERSION}.jar \
+RUN wget -q https://github.com/prometheus/jmx_exporter/releases/download/${PROMETHEUS_JMX_EXPORTER_VERSION}/jmx_prometheus_javaagent-${PROMETHEUS_JMX_EXPORTER_VERSION}.jar \
     -O /usr/local/bin/jmx_prometheus_javaagent.jar && \
     echo "$PROMETHEUS_JMX_EXPORTER_JAR_HASH  /usr/local/bin/jmx_prometheus_javaagent.jar" | sha256sum -c
 COPY docker-build/jmx_exporter_config.yml /etc
