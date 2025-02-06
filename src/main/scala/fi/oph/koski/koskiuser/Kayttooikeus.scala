@@ -35,6 +35,7 @@ object Rooli {
   val MITATOIDYT_OPISKELUOIKEUDET = "MITATOIDYT_OPISKELUOIKEUDET" // Ei käyttöoikeus-palvelussa
   val POISTETUT_OPISKELUOIKEUDET = "POISTETUT_OPISKELUOIKEUDET" // Ei käyttöoikeus-palvelussa
   val LAHDEJARJESTELMAKYTKENNAN_PURKAMINEN = "LAHDEJARJESTELMAKYTKENNAN_PURKAMINEN" // Oikeus muuttaa tiedonsiirron kautta lisätty opiskeluoikeus käyttöliittymällä muokattavaksi
+  val SUORITUSJAKO_KATSELIJA = "SUORITUSJAKO_KATSELIJA" // Ei käyttöoikeus-palvelussa
 
   // Suostumusperustaisen (OAuth2) -rajapinnan scopeissa käytetyt käyttöoikeudet. "OMADATAOAUTH2_"-jälkeinen osuus on sellaisenaan
   // tuettuna merkkijonona myös scopessa, joten näiden muuttamista ei voi tehdä vapaasti.

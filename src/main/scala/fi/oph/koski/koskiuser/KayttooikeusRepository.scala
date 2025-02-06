@@ -18,20 +18,26 @@ class KäyttöoikeusRepository(organisaatioRepository: OrganisaatioRepository, d
 
   private def haeKäyttöoikeudet(user: AuthenticationUser): Set[Käyttöoikeus] = {
     val username = user.username
-    directoryClient.findUser(username) match {
-      case Some(ldapUser) =>
-        ldapUser.käyttöoikeudet.toSet.flatMap { k: Käyttöoikeus =>
-          k match {
-            case k: KäyttöoikeusGlobal => List(k)
-            case k: KäyttöoikeusViranomainen => List(k)
-            case k: KäyttöoikeusOrg => organisaatioKäyttöoikeudet(username, k)
+
+    // TODO remove hack??
+    if (user.kansalainen) {
+      Set(KäyttöoikeusGlobal(List(Palvelurooli("KOSKI", Rooli.SUORITUSJAKO_KATSELIJA))))
+    } else {
+      directoryClient.findUser(username) match {
+        case Some(ldapUser) =>
+          ldapUser.käyttöoikeudet.toSet.flatMap { k: Käyttöoikeus =>
+            k match {
+              case k: KäyttöoikeusGlobal => List(k)
+              case k: KäyttöoikeusViranomainen => List(k)
+              case k: KäyttöoikeusOrg => organisaatioKäyttöoikeudet(username, k)
+            }
           }
-        }
-      case None =>
-        if (!user.kansalainen) {
-          logger.warn(s"User $username not found")
-        }
-        Set.empty
+        case None =>
+          if (!user.kansalainen) {
+            logger.warn(s"User $username not found")
+          }
+          Set.empty
+      }
     }
   }
 
