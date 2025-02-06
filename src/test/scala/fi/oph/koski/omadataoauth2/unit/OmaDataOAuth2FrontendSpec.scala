@@ -88,10 +88,10 @@ class OmaDataOAuth2FrontendSpec extends OmaDataOAuth2TestBase {
     }
 
     "viallisella client_id/redirect_uri:lla" - {
-      "kirjautuneella käyttäjällä" - {
-        "redirectaa käyttäjän samaan osoitteeseen query-parametreihin sisällytetyllä virheilmoituksella" - {
-          Seq("client_id", "redirect_uri").foreach(paramName => {
-            s"kun ${paramName} puuttuu" in {
+      "redirectaa käyttäjän samaan osoitteeseen query-parametreihin sisällytetyllä virheilmoituksella" - {
+        Seq("client_id", "redirect_uri").foreach(paramName => {
+          s"kun ${paramName} puuttuu" - {
+            "kirjautuneella käyttäjällä" in {
               val väärälläParametrilla = createParamsString(createValidAuthorizeParams.filterNot(_._1 == paramName))
               val serverUri = s"${authorizeFrontendBaseUri}?${väärälläParametrilla}"
 
@@ -101,11 +101,27 @@ class OmaDataOAuth2FrontendSpec extends OmaDataOAuth2TestBase {
                 headers = kansalainenLoginHeaders(hetu)
               ) {
                 verifyResponseStatus(302)
-                response.header("Location") should include regex(expectedErrorMessageRegexp)
+                response.header("Location") should include regex (expectedErrorMessageRegexp)
               }
             }
+            "kirjautumattomalla käyttäjällä" in {
+              val väärälläParametrilla = createParamsString(createValidAuthorizeParams.filterNot(_._1 == paramName))
+              val serverUri = s"${authorizeFrontendBaseUri}?${väärälläParametrilla}"
 
-            s"kun ${paramName} on annettu useammin kuin kerran" in {
+              val expectedErrorMessageRegexp = "error=invalid_client_data&error_id=omadataoauth2-error-[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}".r
+              get(
+                uri = serverUri
+              ) {
+                verifyResponseStatus(302)
+                response.header("Location") should include regex (expectedErrorMessageRegexp)
+              }
+            }
+          }
+        })
+
+        Seq("client_id", "redirect_uri").foreach(paramName => {
+          s"kun ${paramName} on annettu useammin kuin kerran" - {
+            "kirjautuneella käyttäjällä" in {
               val validValue = createValidAuthorizeParams.toMap.get(paramName).get
               val väärälläParametrilla = createParamsString(createValidAuthorizeParams :+ (paramName, validValue))
 
@@ -117,13 +133,33 @@ class OmaDataOAuth2FrontendSpec extends OmaDataOAuth2TestBase {
                 headers = kansalainenLoginHeaders(hetu)
               ) {
                 verifyResponseStatus(302)
-                response.header("Location") should include regex(expectedErrorMessageRegexp)
+                response.header("Location") should include regex (expectedErrorMessageRegexp)
               }
-
             }
-          })
+          }
+        })
 
-          "kun client_id on tuntematon" in {
+        Seq("client_id", "redirect_uri", "state").foreach(paramName => {
+          s"kun ${paramName} on annettu useammin kuin kerran" - {
+            "kirjautumattomalla käyttäjällä" in {
+              val validValue = createValidAuthorizeParams.toMap.get(paramName).get
+              val väärälläParametrilla = createParamsString(createValidAuthorizeParams :+ (paramName, validValue))
+
+              val serverUri = s"${authorizeFrontendBaseUri}?${väärälläParametrilla}"
+
+              val expectedErrorMessageRegexp = "error=invalid_client_data&error_id=omadataoauth2-error-[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}".r
+              get(
+                uri = serverUri
+              ) {
+                verifyResponseStatus(302)
+                response.header("Location") should include regex (expectedErrorMessageRegexp)
+              }
+            }
+          }
+        })
+
+        "kun client_id on tuntematon" - {
+          "kirjautuneella käyttäjällä" in {
             val väärälläParametrilla = createParamsString((createValidAuthorizeParams.toMap + ("client_id" -> tuntematonClientId)).toSeq)
 
             val serverUri = s"${authorizeFrontendBaseUri}?${väärälläParametrilla}"
@@ -134,77 +170,40 @@ class OmaDataOAuth2FrontendSpec extends OmaDataOAuth2TestBase {
               headers = kansalainenLoginHeaders(hetu)
             ) {
               verifyResponseStatus(302)
-              response.header("Location") should include regex(expectedErrorMessageRegexp)
+              response.header("Location") should include regex (expectedErrorMessageRegexp)
             }
           }
-
-          "kun redirect_uri ei ole annetun client_idn tallennettu redirect_uri" in {
-            val väärälläParametrilla = createParamsString((createValidAuthorizeParams.toMap + ("redirect_uri" -> vääräRedirectUri)).toSeq)
+          "kirjautumattomalla käyttäjällä" in {
+            val väärälläParametrilla = createParamsString((createValidAuthorizeParams.toMap + ("client_id" -> tuntematonClientId)).toSeq)
 
             val serverUri = s"${authorizeFrontendBaseUri}?${väärälläParametrilla}"
 
             val expectedErrorMessageRegexp = "error=invalid_client_data&error_id=omadataoauth2-error-[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}".r
             get(
-              uri = serverUri,
-              headers = kansalainenLoginHeaders(hetu)
+              uri = serverUri
             ) {
               verifyResponseStatus(302)
-              response.header("Location") should include regex(expectedErrorMessageRegexp)
+              response.header("Location") should include regex (expectedErrorMessageRegexp)
             }
           }
         }
-      }
 
-      "kirjautumattomalla käyttäjällä" - {
-        "redirectaa käyttäjän samaan osoitteeseen query-parametreihin sisällytetyllä virheilmoituksella" - {
-          Seq("client_id", "redirect_uri").foreach(paramName => {
-            s"kun ${paramName} puuttuu" in {
-              val väärälläParametrilla = createParamsString(createValidAuthorizeParams.filterNot(_._1 == paramName))
-              val serverUri = s"${authorizeFrontendBaseUri}?${väärälläParametrilla}"
-
-              val expectedErrorMessageRegexp = "error=invalid_client_data&error_id=omadataoauth2-error-[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}".r
-              get(
-                uri = serverUri
-              ) {
-                verifyResponseStatus(302)
-                response.header("Location") should include regex(expectedErrorMessageRegexp)
-              }
-            }
-          })
-
-          Seq("client_id", "redirect_uri", "state").foreach(paramName => {
-            s"kun ${paramName} on annettu useammin kuin kerran" in {
-              val validValue = createValidAuthorizeParams.toMap.get(paramName).get
-              val väärälläParametrilla = createParamsString(createValidAuthorizeParams :+ (paramName, validValue))
-
-              val serverUri = s"${authorizeFrontendBaseUri}?${väärälläParametrilla}"
-
-              val expectedErrorMessageRegexp = "error=invalid_client_data&error_id=omadataoauth2-error-[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}".r
-              get(
-                uri = serverUri
-              ) {
-                verifyResponseStatus(302)
-                response.header("Location") should include regex(expectedErrorMessageRegexp)
-              }
-
-            }
-          })
-
-          "kun client_id on tuntematon" in {
-            val väärälläParametrilla = createParamsString((createValidAuthorizeParams.toMap + ("client_id" -> tuntematonClientId)).toSeq)
+        "kun redirect_uri ei ole annetun client_idn tallennettu redirect_uri" - {
+          "kirjautuneella käyttäjällä" in {
+            val väärälläParametrilla = createParamsString((createValidAuthorizeParams.toMap + ("redirect_uri" -> vääräRedirectUri)).toSeq)
 
             val serverUri = s"${authorizeFrontendBaseUri}?${väärälläParametrilla}"
 
             val expectedErrorMessageRegexp = "error=invalid_client_data&error_id=omadataoauth2-error-[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}".r
             get(
-              uri = serverUri
+              uri = serverUri,
+              headers = kansalainenLoginHeaders(hetu)
             ) {
               verifyResponseStatus(302)
-              response.header("Location") should include regex(expectedErrorMessageRegexp)
+              response.header("Location") should include regex (expectedErrorMessageRegexp)
             }
           }
-
-          "kun redirect_uri ei ole annetun client_idn tallennettu redirect_uri" in {
+          "kirjautumattomalla käyttäjällä" in {
             val väärälläParametrilla = createParamsString((createValidAuthorizeParams.toMap + ("redirect_uri" -> vääräRedirectUri)).toSeq)
 
             val serverUri = s"${authorizeFrontendBaseUri}?${väärälläParametrilla}"
@@ -214,7 +213,7 @@ class OmaDataOAuth2FrontendSpec extends OmaDataOAuth2TestBase {
               uri = serverUri
             ) {
               verifyResponseStatus(302)
-              response.header("Location") should include regex(expectedErrorMessageRegexp)
+              response.header("Location") should include regex (expectedErrorMessageRegexp)
             }
           }
         }
@@ -230,11 +229,10 @@ class OmaDataOAuth2FrontendSpec extends OmaDataOAuth2TestBase {
         "scope"
       )
 
-      "kirjautumattomana" - {
-
-        "redirectaa virhetiedot palauttavalle post response -sivulle" - {
-          muutPakollisetParametrinimet.foreach(paramName => {
-            s"kun pakollinen parametri ${paramName} puuttuu kokonaan" in {
+      muutPakollisetParametrinimet.foreach(paramName => {
+        s"kun pakollinen parametri ${paramName} puuttuu kokonaan" - {
+          "redirectaa virhetiedot palauttavalle post response -sivulle" - {
+            "kirjautumattomana" in {
               val puuttuvallaParametrilla = createParamsString(validParamsIlman(paramName))
 
               val serverUri = s"${authorizeFrontendBaseUri}?${puuttuvallaParametrilla}"
@@ -243,180 +241,42 @@ class OmaDataOAuth2FrontendSpec extends OmaDataOAuth2TestBase {
                 uri = serverUri
               ) {
                 verifyResponseStatus(302)
-                response.header("Location") should not include(s"logout")
+                response.header("Location") should not include (s"logout")
                 response.header("Location") should include(s"/koski/omadata-oauth2/post-response/")
                 response.header("Location") should include(s"error=invalid_request")
                 response.header("Location") should include(queryStringUrlEncode(s"required parameter ${paramName} missing"))
-                response.header("Location") should include regex("omadataoauth2-error-[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}".r)
+                response.header("Location") should include regex ("omadataoauth2-error-[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}".r)
               }
             }
-          })
+            "kirjautuneena clientilla, jolle ei haluta logouttia" in {
+              val puuttuvallaParametrilla = createParamsString(vaihdetullaArvolla(validParamsIlman(paramName), "client_id", validClientIdEiLogouttia))
 
-          muutPakollisetParametrinimet.foreach(paramName => {
-            s"kun parametri ${paramName} esiintyy useamman kerran" in {
-              val duplikaattiParametrilla = createParamsString(validParamsDuplikaatilla(paramName))
+              val serverUri = s"${authorizeFrontendBaseUri}?${puuttuvallaParametrilla}"
 
-              val serverUri = s"${authorizeFrontendBaseUri}?${duplikaattiParametrilla}"
+              val expectedError = "invalid_request"
+              val expectedParams =
+                Seq(
+                  ("client_id", validClientIdEiLogouttia),
+                  ("redirect_uri", validRedirectUri),
+                  ("state", validState),
+                  ("error", expectedError)
+                )
 
               get(
-                uri = serverUri
+                uri = serverUri,
+                headers = kansalainenLoginHeaders(hetu)
               ) {
                 verifyResponseStatus(302)
-                response.header("Location") should not include(s"logout")
                 response.header("Location") should include(s"/koski/omadata-oauth2/post-response/")
-                response.header("Location") should include(s"error=invalid_request")
-                response.header("Location") should include(queryStringUrlEncode(s"parameter ${paramName} is repeated"))
-                response.header("Location") should include regex("omadataoauth2-error-[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}".r)
+                val actualParams = Uri.unsafeFromString(response.header("Location")).params
+
+                actualParams should contain allElementsOf (expectedParams)
+                actualParams("error_description") should include(s"required parameter ${paramName} missing")
               }
             }
-          })
-
-          "kun response_type ei ole code" in {
-            val parametriNimi = "response_type"
-            val tuntematonArvo = "tuntematon_arvo"
-            val tuetutArvot = "code"
-
-            val väärälläParametrilla = createParamsString(validParamsVaihdetullaArvolla(parametriNimi, tuntematonArvo))
-
-            val serverUri = s"${authorizeFrontendBaseUri}?${väärälläParametrilla}"
-
-            get(
-              uri = serverUri
-            ) {
-              verifyResponseStatus(302)
-              response.header("Location") should not include(s"logout")
-              response.header("Location") should include(s"/koski/omadata-oauth2/post-response/")
-              response.header("Location") should include(s"error=invalid_request")
-              response.header("Location") should include(queryStringUrlEncode(s"${parametriNimi}=${tuntematonArvo} not supported. Supported values: ${tuetutArvot}"))
-              response.header("Location") should include regex("omadataoauth2-error-[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}".r)
-            }
           }
-          "kun response_mode ei ole form_post" in {
-            val parametriNimi = "response_mode"
-            val tuntematonArvo = "tuntematon_arvo"
-            val tuetutArvot = "form_post"
-
-            val väärälläParametrilla = createParamsString(validParamsVaihdetullaArvolla(parametriNimi, tuntematonArvo))
-
-            val serverUri = s"${authorizeFrontendBaseUri}?${väärälläParametrilla}"
-
-            get(
-              uri = serverUri
-            ) {
-              verifyResponseStatus(302)
-              response.header("Location") should not include(s"logout")
-              response.header("Location") should include(s"/koski/omadata-oauth2/post-response/")
-              response.header("Location") should include(s"error=invalid_request")
-              response.header("Location") should include(queryStringUrlEncode(s"${parametriNimi}=${tuntematonArvo} not supported. Supported values: ${tuetutArvot}"))
-              response.header("Location") should include regex("omadataoauth2-error-[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}".r)
-            }
-          }
-          "kun code_challenge_method ei ole S256" in {
-            val parametriNimi = "code_challenge_method"
-            val tuntematonArvo = "tuntematon_arvo"
-            val tuetutArvot = "S256"
-
-            val väärälläParametrilla = createParamsString(validParamsVaihdetullaArvolla(parametriNimi, tuntematonArvo))
-
-            val serverUri = s"${authorizeFrontendBaseUri}?${väärälläParametrilla}"
-
-            get(
-              uri = serverUri
-            ) {
-              verifyResponseStatus(302)
-              response.header("Location") should not include(s"logout")
-              response.header("Location") should include(s"/koski/omadata-oauth2/post-response/")
-              response.header("Location") should include(s"error=invalid_request")
-              response.header("Location") should include(queryStringUrlEncode(s"${parametriNimi}=${tuntematonArvo} not supported. Supported values: ${tuetutArvot}"))
-              response.header("Location") should include regex("omadataoauth2-error-[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}".r)
-            }
-          }
-
-          "kun scope on epävalidi" in {
-            val parametriNimi = "scope"
-            val eiSallittuArvo = "HENKILOTIEDOT_NIMI HENKILOTIEDOT_VIRHEELLINEN OPISKELUOIKEUDET_SUORITETUT_TUTKINNOT"
-
-            val eiSallitullaScopella = createParamsString(validParamsVaihdetullaArvolla(parametriNimi, eiSallittuArvo))
-
-            val serverUri = s"${authorizeFrontendBaseUri}?${eiSallitullaScopella}"
-
-            get(
-              uri = serverUri
-            ) {
-              verifyResponseStatus(302)
-              response.header("Location") should not include(s"logout")
-              response.header("Location") should include(s"/koski/omadata-oauth2/post-response/")
-              response.header("Location") should include(s"error=invalid_scope")
-              response.header("Location") should include(queryStringUrlEncode(s"${parametriNimi}=${eiSallittuArvo} contains unknown scopes (HENKILOTIEDOT_VIRHEELLINEN)"))
-              response.header("Location") should include regex("omadataoauth2-error-[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}".r)
-            }
-          }
-          "kun scopessa on toistensa kanssa epäyhteensopivia arvoja" in {
-            val parametriNimi = "scope"
-            val eiSallittuArvo = "HENKILOTIEDOT_NIMI OPISKELUOIKEUDET_SUORITETUT_TUTKINNOT OPISKELUOIKEUDET_KAIKKI_TIEDOT"
-
-            val eiSallitullaScopella = createParamsString(validParamsVaihdetullaArvolla(parametriNimi, eiSallittuArvo))
-
-            val serverUri = s"${authorizeFrontendBaseUri}?${eiSallitullaScopella}"
-
-            get(
-              uri = serverUri
-            ) {
-              verifyResponseStatus(302)
-              response.header("Location") should not include(s"logout")
-              response.header("Location") should include(s"/koski/omadata-oauth2/post-response/")
-              response.header("Location") should include(s"error=invalid_scope")
-              response.header("Location") should include(queryStringUrlEncode(s"${parametriNimi}=${eiSallittuArvo} contains an invalid combination of scopes (OPISKELUOIKEUDET_KAIKKI_TIEDOT, OPISKELUOIKEUDET_SUORITETUT_TUTKINNOT)"))
-              response.header("Location") should include regex("omadataoauth2-error-[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}".r)
-            }
-          }
-          "kun scopesta puuttuu opiskeluoikeudet-scope kokonaan" in {
-            val parametriNimi = "scope"
-            val eiSallittuArvo = "HENKILOTIEDOT_NIMI HENKILOTIEDOT_HETU"
-
-            val eiSallitullaScopella = createParamsString(validParamsVaihdetullaArvolla(parametriNimi, eiSallittuArvo))
-
-            val serverUri = s"${authorizeFrontendBaseUri}?${eiSallitullaScopella}"
-
-            get(
-              uri = serverUri
-            ) {
-              verifyResponseStatus(302)
-              response.header("Location") should not include(s"logout")
-              response.header("Location") should include(s"/koski/omadata-oauth2/post-response/")
-              response.header("Location") should include(s"error=invalid_scope")
-              response.header("Location") should include(queryStringUrlEncode(s"${parametriNimi}=${eiSallittuArvo} is missing a required OPISKELUOIKEUDET_ scope"))
-              response.header("Location") should include regex("omadataoauth2-error-[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}".r)
-            }
-          }
-          "kun scopesta puuttuu henkilötiedot-scope kokonaan" in {
-            val parametriNimi = "scope"
-            val eiSallittuArvo = "OPISKELUOIKEUDET_KAIKKI_TIEDOT"
-
-            val eiSallitullaScopella = createParamsString(validParamsVaihdetullaArvolla(parametriNimi, eiSallittuArvo))
-
-            val serverUri = s"${authorizeFrontendBaseUri}?${eiSallitullaScopella}"
-
-            get(
-              uri = serverUri
-            ) {
-              verifyResponseStatus(302)
-              response.header("Location") should not include(s"logout")
-              response.header("Location") should include(s"/koski/omadata-oauth2/post-response/")
-              response.header("Location") should include(s"error=invalid_scope")
-              response.header("Location") should include(queryStringUrlEncode(s"${parametriNimi}=${eiSallittuArvo} is missing a required HENKILOTIEDOT_ scope"))
-              response.header("Location") should include regex("omadataoauth2-error-[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}".r)
-            }
-          }
-        }
-      }
-
-      "kirjautuneena clientilla, jolle halutaan logout" - {
-
-        "redirectaa logoutin kautta virhetiedot palauttavalle post response -sivulle" - {
-
-          muutPakollisetParametrinimet.foreach(paramName => {
-            s"kun pakollinen parametri ${paramName} puuttuu kokonaan" in {
+          "redirectaa logoutin kautta virhetiedot palauttavalle post response -sivulle" - {
+            "kirjautuneena clientilla, jolle halutaan logout" in {
               val puuttuvallaParametrilla = createParamsString(validParamsIlman(paramName))
 
               val serverUri = s"${authorizeFrontendBaseUri}?${puuttuvallaParametrilla}"
@@ -441,10 +301,57 @@ class OmaDataOAuth2FrontendSpec extends OmaDataOAuth2TestBase {
                 encodedParamStringShouldContainErrorDescriptionWithUuid(base64UrlEncodedParams, s"required parameter ${paramName} missing")
               }
             }
-          })
+          }
+        }
+      })
 
-          muutPakollisetParametrinimet.foreach(paramName => {
-            s"kun parametri ${paramName} esiintyy useamman kerran" in {
+      muutPakollisetParametrinimet.foreach(paramName => {
+        s"kun parametri ${paramName} esiintyy useamman kerran" - {
+          "redirectaa virhetiedot palauttavalle post response -sivulle" - {
+            "kirjautumattomana" in {
+              val duplikaattiParametrilla = createParamsString(validParamsDuplikaatilla(paramName))
+
+              val serverUri = s"${authorizeFrontendBaseUri}?${duplikaattiParametrilla}"
+
+              get(
+                uri = serverUri
+              ) {
+                verifyResponseStatus(302)
+                response.header("Location") should not include(s"logout")
+                response.header("Location") should include(s"/koski/omadata-oauth2/post-response/")
+                response.header("Location") should include(s"error=invalid_request")
+                response.header("Location") should include(queryStringUrlEncode(s"parameter ${paramName} is repeated"))
+                response.header("Location") should include regex("omadataoauth2-error-[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}".r)
+              }
+            }
+            "kirjautuneena clientilla, jolle ei haluta logouttia" in {
+              val duplikaattiParametrilla = createParamsString(duplikaatilla(validParamsVaihdetullaArvolla("client_id", validClientIdEiLogouttia), paramName))
+
+              val serverUri = s"${authorizeFrontendBaseUri}?${duplikaattiParametrilla}"
+
+              val expectedError = "invalid_request"
+              val expectedParams =
+                Seq(
+                  ("client_id", validClientIdEiLogouttia),
+                  ("redirect_uri", validRedirectUri),
+                  ("state", validState),
+                  ("error", expectedError)
+                )
+
+              get(
+                uri = serverUri,
+                headers = kansalainenLoginHeaders(hetu)
+              ) {
+                verifyResponseStatus(302)
+                response.header("Location") should include(s"/koski/omadata-oauth2/post-response/")
+                val actualParams = Uri.unsafeFromString(response.header("Location")).params
+                actualParams should contain allElementsOf (expectedParams)
+                actualParams("error_description") should include(s"parameter ${paramName} is repeated")
+              }
+            }
+          }
+          "redirectaa logoutin kautta virhetiedot palauttavalle post response -sivulle" - {
+            "kirjautuneena clientilla, jolle halutaan logout" in {
               val duplikaattiParametrilla = createParamsString(validParamsDuplikaatilla(paramName))
 
               val serverUri = s"${authorizeFrontendBaseUri}?${duplikaattiParametrilla}"
@@ -469,9 +376,64 @@ class OmaDataOAuth2FrontendSpec extends OmaDataOAuth2TestBase {
                 encodedParamStringShouldContainErrorDescriptionWithUuid(base64UrlEncodedParams, s"parameter ${paramName} is repeated")
               }
             }
-          })
+          }
+        }
+      })
 
-          "kun response_type ei ole code" in {
+      "kun response_type ei ole code" - {
+        "redirectaa virhetiedot palauttavalle post response -sivulle" - {
+          "kirjautumattomana" in {
+            val parametriNimi = "response_type"
+            val tuntematonArvo = "tuntematon_arvo"
+            val tuetutArvot = "code"
+
+            val väärälläParametrilla = createParamsString(validParamsVaihdetullaArvolla(parametriNimi, tuntematonArvo))
+
+            val serverUri = s"${authorizeFrontendBaseUri}?${väärälläParametrilla}"
+
+            get(
+              uri = serverUri
+            ) {
+              verifyResponseStatus(302)
+              response.header("Location") should not include(s"logout")
+              response.header("Location") should include(s"/koski/omadata-oauth2/post-response/")
+              response.header("Location") should include(s"error=invalid_request")
+              response.header("Location") should include(queryStringUrlEncode(s"${parametriNimi}=${tuntematonArvo} not supported. Supported values: ${tuetutArvot}"))
+              response.header("Location") should include regex("omadataoauth2-error-[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}".r)
+            }
+          }
+          "kirjautuneena clientilla, jolle ei haluta logouttia" in {
+            val parametriNimi = "response_type"
+            val tuntematonArvo = "tuntematon_arvo"
+            val tuetutArvot = "code"
+
+            val väärälläParametrilla = createParamsString(vaihdetullaArvolla(validParamsVaihdetullaArvolla(parametriNimi, tuntematonArvo), "client_id", validClientIdEiLogouttia))
+
+            val serverUri = s"${authorizeFrontendBaseUri}?${väärälläParametrilla}"
+
+            val expectedError = "invalid_request"
+            val expectedParams =
+              Seq(
+                ("client_id", validClientIdEiLogouttia),
+                ("redirect_uri", validRedirectUri),
+                ("state", validState),
+                ("error", expectedError)
+              )
+
+            get(
+              uri = serverUri,
+              headers = kansalainenLoginHeaders(hetu)
+            ) {
+              verifyResponseStatus(302)
+              response.header("Location") should include(s"/koski/omadata-oauth2/post-response/")
+              val actualParams = Uri.unsafeFromString(response.header("Location")).params
+              actualParams should contain allElementsOf (expectedParams)
+              actualParams("error_description") should include(s"${parametriNimi}=${tuntematonArvo} not supported. Supported values: ${tuetutArvot}")
+            }
+          }
+        }
+        "redirectaa logoutin kautta virhetiedot palauttavalle post response -sivulle" - {
+          "kirjautuneena clientilla, jolle halutaan logout" in {
             val parametriNimi = "response_type"
             val tuntematonArvo = "tuntematon_arvo"
             val tuetutArvot = "code"
@@ -500,7 +462,63 @@ class OmaDataOAuth2FrontendSpec extends OmaDataOAuth2TestBase {
               encodedParamStringShouldContainErrorDescriptionWithUuid(base64UrlEncodedParams, s"${parametriNimi}=${tuntematonArvo} not supported. Supported values: ${tuetutArvot}")
             }
           }
-          "kun response_mode ei ole form_post" in {
+        }
+      }
+
+      "kun response_mode ei ole form_post" - {
+        "redirectaa virhetiedot palauttavalle post response -sivulle" - {
+          "kirjautumattomana" in {
+            val parametriNimi = "response_mode"
+            val tuntematonArvo = "tuntematon_arvo"
+            val tuetutArvot = "form_post"
+
+            val väärälläParametrilla = createParamsString(validParamsVaihdetullaArvolla(parametriNimi, tuntematonArvo))
+
+            val serverUri = s"${authorizeFrontendBaseUri}?${väärälläParametrilla}"
+
+            get(
+              uri = serverUri
+            ) {
+              verifyResponseStatus(302)
+              response.header("Location") should not include(s"logout")
+              response.header("Location") should include(s"/koski/omadata-oauth2/post-response/")
+              response.header("Location") should include(s"error=invalid_request")
+              response.header("Location") should include(queryStringUrlEncode(s"${parametriNimi}=${tuntematonArvo} not supported. Supported values: ${tuetutArvot}"))
+              response.header("Location") should include regex("omadataoauth2-error-[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}".r)
+            }
+          }
+          "kirjautuneena clientilla, jolle ei haluta logouttia" in {
+            val parametriNimi = "response_mode"
+            val tuntematonArvo = "tuntematon_arvo"
+            val tuetutArvot = "form_post"
+
+            val väärälläParametrilla = createParamsString(vaihdetullaArvolla(validParamsVaihdetullaArvolla(parametriNimi, tuntematonArvo), "client_id", validClientIdEiLogouttia))
+
+            val serverUri = s"${authorizeFrontendBaseUri}?${väärälläParametrilla}"
+
+            val expectedError = "invalid_request"
+            val expectedParams =
+              Seq(
+                ("client_id", validClientIdEiLogouttia),
+                ("redirect_uri", validRedirectUri),
+                ("state", validState),
+                ("error", expectedError)
+              )
+
+            get(
+              uri = serverUri,
+              headers = kansalainenLoginHeaders(hetu)
+            ) {
+              verifyResponseStatus(302)
+              response.header("Location") should include(s"/koski/omadata-oauth2/post-response/")
+              val actualParams = Uri.unsafeFromString(response.header("Location")).params
+              actualParams should contain allElementsOf (expectedParams)
+              actualParams("error_description") should include(s"${parametriNimi}=${tuntematonArvo} not supported. Supported values: ${tuetutArvot}")
+            }
+          }
+        }
+        "redirectaa logoutin kautta virhetiedot palauttavalle post response -sivulle" - {
+          "kirjautuneena clientilla, jolle halutaan logout" in {
             val parametriNimi = "response_mode"
             val tuntematonArvo = "tuntematon_arvo"
             val tuetutArvot = "form_post"
@@ -529,7 +547,63 @@ class OmaDataOAuth2FrontendSpec extends OmaDataOAuth2TestBase {
               encodedParamStringShouldContainErrorDescriptionWithUuid(base64UrlEncodedParams, s"${parametriNimi}=${tuntematonArvo} not supported. Supported values: ${tuetutArvot}")
             }
           }
-          "kun code_challenge_method ei ole S256" in {
+        }
+      }
+
+      "kun code_challenge_method ei ole S256" - {
+        "redirectaa virhetiedot palauttavalle post response -sivulle" - {
+          "kirjautumattomana" in {
+            val parametriNimi = "code_challenge_method"
+            val tuntematonArvo = "tuntematon_arvo"
+            val tuetutArvot = "S256"
+
+            val väärälläParametrilla = createParamsString(validParamsVaihdetullaArvolla(parametriNimi, tuntematonArvo))
+
+            val serverUri = s"${authorizeFrontendBaseUri}?${väärälläParametrilla}"
+
+            get(
+              uri = serverUri
+            ) {
+              verifyResponseStatus(302)
+              response.header("Location") should not include(s"logout")
+              response.header("Location") should include(s"/koski/omadata-oauth2/post-response/")
+              response.header("Location") should include(s"error=invalid_request")
+              response.header("Location") should include(queryStringUrlEncode(s"${parametriNimi}=${tuntematonArvo} not supported. Supported values: ${tuetutArvot}"))
+              response.header("Location") should include regex("omadataoauth2-error-[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}".r)
+            }
+          }
+          "kirjautuneena clientilla, jolle ei haluta logouttia" in {
+            val parametriNimi = "code_challenge_method"
+            val tuntematonArvo = "tuntematon_arvo"
+            val tuetutArvot = "S256"
+
+            val väärälläParametrilla = createParamsString(vaihdetullaArvolla(validParamsVaihdetullaArvolla(parametriNimi, tuntematonArvo), "client_id", validClientIdEiLogouttia))
+
+            val serverUri = s"${authorizeFrontendBaseUri}?${väärälläParametrilla}"
+
+            val expectedError = "invalid_request"
+            val expectedParams =
+              Seq(
+                ("client_id", validClientIdEiLogouttia),
+                ("redirect_uri", validRedirectUri),
+                ("state", validState),
+                ("error", expectedError)
+              )
+
+            get(
+              uri = serverUri,
+              headers = kansalainenLoginHeaders(hetu)
+            ) {
+              verifyResponseStatus(302)
+              response.header("Location") should include(s"/koski/omadata-oauth2/post-response/")
+              val actualParams = Uri.unsafeFromString(response.header("Location")).params
+              actualParams should contain allElementsOf (expectedParams)
+              actualParams("error_description") should include(s"${parametriNimi}=${tuntematonArvo} not supported. Supported values: ${tuetutArvot}")
+            }
+          }
+        }
+        "redirectaa logoutin kautta virhetiedot palauttavalle post response -sivulle" - {
+          "kirjautuneena clientilla, jolle halutaan logout" in {
             val parametriNimi = "code_challenge_method"
             val tuntematonArvo = "tuntematon_arvo"
             val tuetutArvot = "S256"
@@ -558,8 +632,63 @@ class OmaDataOAuth2FrontendSpec extends OmaDataOAuth2TestBase {
               encodedParamStringShouldContainErrorDescriptionWithUuid(base64UrlEncodedParams, s"${parametriNimi}=${tuntematonArvo} not supported. Supported values: ${tuetutArvot}")
             }
           }
+        }
+      }
 
-          "kun scope on epävalidi" in {
+      "kun scope on epävalidi" - {
+        "redirectaa virhetiedot palauttavalle post response -sivulle" - {
+          "kirjautumattomana" in {
+            val parametriNimi = "scope"
+            val eiSallittuArvo = "HENKILOTIEDOT_NIMI HENKILOTIEDOT_VIRHEELLINEN OPISKELUOIKEUDET_SUORITETUT_TUTKINNOT"
+
+            val eiSallitullaScopella = createParamsString(validParamsVaihdetullaArvolla(parametriNimi, eiSallittuArvo))
+
+            val serverUri = s"${authorizeFrontendBaseUri}?${eiSallitullaScopella}"
+
+            get(
+              uri = serverUri
+            ) {
+              verifyResponseStatus(302)
+              response.header("Location") should not include (s"logout")
+              response.header("Location") should include(s"/koski/omadata-oauth2/post-response/")
+              response.header("Location") should include(s"error=invalid_scope")
+              response.header("Location") should include(queryStringUrlEncode(s"${parametriNimi}=${eiSallittuArvo} contains unknown scopes (HENKILOTIEDOT_VIRHEELLINEN)"))
+              response.header("Location") should include regex ("omadataoauth2-error-[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}".r)
+            }
+          }
+          "kirjautuneena clientilla, jolle ei haluta logouttia" in {
+
+            val parametriNimi = "scope"
+            val eiSallittuArvo = "HENKILOTIEDOT_NIMI HENKILOTIEDOT_VIRHEELLINEN OPISKELUOIKEUDET_SUORITETUT_TUTKINNOT"
+
+            val eiSallitullaScopella = createParamsString(vaihdetullaArvolla(validParamsVaihdetullaArvolla(parametriNimi, eiSallittuArvo), "client_id", validClientIdEiLogouttia))
+
+            val serverUri = s"${authorizeFrontendBaseUri}?${eiSallitullaScopella}"
+
+            val expectedError = "invalid_scope"
+            val expectedParams =
+              Seq(
+                ("client_id", validClientIdEiLogouttia),
+                ("redirect_uri", validRedirectUri),
+                ("state", validState),
+                ("error", expectedError)
+              )
+
+            get(
+              uri = serverUri,
+              headers = kansalainenLoginHeaders(hetu)
+
+            ) {
+              verifyResponseStatus(302)
+              response.header("Location") should include(s"/koski/omadata-oauth2/post-response/")
+              val actualParams = Uri.unsafeFromString(response.header("Location")).params
+              actualParams should contain allElementsOf (expectedParams)
+              actualParams("error_description") should include(s"${parametriNimi}=${eiSallittuArvo} contains unknown scopes (HENKILOTIEDOT_VIRHEELLINEN))")
+            }
+          }
+        }
+        "redirectaa logoutin kautta virhetiedot palauttavalle post response -sivulle" - {
+          "kirjautuneena clientilla, jolle halutaan logout" in {
             val parametriNimi = "scope"
             val eiSallittuArvo = "HENKILOTIEDOT_NIMI HENKILOTIEDOT_VIRHEELLINEN OPISKELUOIKEUDET_SUORITETUT_TUTKINNOT"
 
@@ -588,7 +717,62 @@ class OmaDataOAuth2FrontendSpec extends OmaDataOAuth2TestBase {
               encodedParamStringShouldContainErrorDescriptionWithUuid(base64UrlEncodedParams, s"${parametriNimi}=${eiSallittuArvo} contains unknown scopes (HENKILOTIEDOT_VIRHEELLINEN))")
             }
           }
-          "kun scopessa on toistensa kanssa epäyhteensopivia arvoja" in {
+        }
+      }
+
+      "kun scopessa on toistensa kanssa epäyhteensopivia arvoja" - {
+        "redirectaa virhetiedot palauttavalle post response -sivulle" - {
+          "kirjautumattomana" in {
+            val parametriNimi = "scope"
+            val eiSallittuArvo = "HENKILOTIEDOT_NIMI OPISKELUOIKEUDET_SUORITETUT_TUTKINNOT OPISKELUOIKEUDET_KAIKKI_TIEDOT"
+
+            val eiSallitullaScopella = createParamsString(validParamsVaihdetullaArvolla(parametriNimi, eiSallittuArvo))
+
+            val serverUri = s"${authorizeFrontendBaseUri}?${eiSallitullaScopella}"
+
+            get(
+              uri = serverUri
+            ) {
+              verifyResponseStatus(302)
+              response.header("Location") should not include (s"logout")
+              response.header("Location") should include(s"/koski/omadata-oauth2/post-response/")
+              response.header("Location") should include(s"error=invalid_scope")
+              response.header("Location") should include(queryStringUrlEncode(s"${parametriNimi}=${eiSallittuArvo} contains an invalid combination of scopes (OPISKELUOIKEUDET_KAIKKI_TIEDOT, OPISKELUOIKEUDET_SUORITETUT_TUTKINNOT)"))
+              response.header("Location") should include regex ("omadataoauth2-error-[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}".r)
+            }
+          }
+          "kirjautuneena clientilla, jolle ei haluta logouttia" in {
+            val parametriNimi = "scope"
+            val eiSallittuArvo = "HENKILOTIEDOT_NIMI OPISKELUOIKEUDET_SUORITETUT_TUTKINNOT OPISKELUOIKEUDET_KAIKKI_TIEDOT"
+
+            val eiSallitullaScopella = createParamsString(vaihdetullaArvolla(validParamsVaihdetullaArvolla(parametriNimi, eiSallittuArvo), "client_id", validClientIdEiLogouttia))
+
+            val serverUri = s"${authorizeFrontendBaseUri}?${eiSallitullaScopella}"
+
+            val expectedError = "invalid_scope"
+            val expectedParams =
+              Seq(
+                ("client_id", validClientIdEiLogouttia),
+                ("redirect_uri", validRedirectUri),
+                ("state", validState),
+                ("error", expectedError)
+              )
+
+            get(
+              uri = serverUri,
+              headers = kansalainenLoginHeaders(hetu)
+
+            ) {
+              verifyResponseStatus(302)
+              response.header("Location") should include(s"/koski/omadata-oauth2/post-response/")
+              val actualParams = Uri.unsafeFromString(response.header("Location")).params
+              actualParams should contain allElementsOf (expectedParams)
+              actualParams("error_description") should include(s"${parametriNimi}=${eiSallittuArvo} contains an invalid combination of scopes (OPISKELUOIKEUDET_KAIKKI_TIEDOT, OPISKELUOIKEUDET_SUORITETUT_TUTKINNOT))")
+            }
+          }
+        }
+        "redirectaa logoutin kautta virhetiedot palauttavalle post response -sivulle" - {
+          "kirjautuneena clientilla, jolle halutaan logout" in {
             val parametriNimi = "scope"
             val eiSallittuArvo = "HENKILOTIEDOT_NIMI OPISKELUOIKEUDET_SUORITETUT_TUTKINNOT OPISKELUOIKEUDET_KAIKKI_TIEDOT"
 
@@ -617,7 +801,62 @@ class OmaDataOAuth2FrontendSpec extends OmaDataOAuth2TestBase {
               encodedParamStringShouldContainErrorDescriptionWithUuid(base64UrlEncodedParams, s"${parametriNimi}=${eiSallittuArvo} contains an invalid combination of scopes (OPISKELUOIKEUDET_KAIKKI_TIEDOT, OPISKELUOIKEUDET_SUORITETUT_TUTKINNOT))")
             }
           }
-          "kun scopesta puuttuu opiskeluoikeudet-scope kokonaan" in {
+        }
+      }
+
+      "kun scopesta puuttuu opiskeluoikeudet-scope kokonaan" - {
+        "redirectaa virhetiedot palauttavalle post response -sivulle" - {
+          "kirjautumattomana" in {
+            val parametriNimi = "scope"
+            val eiSallittuArvo = "HENKILOTIEDOT_NIMI HENKILOTIEDOT_HETU"
+
+            val eiSallitullaScopella = createParamsString(validParamsVaihdetullaArvolla(parametriNimi, eiSallittuArvo))
+
+            val serverUri = s"${authorizeFrontendBaseUri}?${eiSallitullaScopella}"
+
+            get(
+              uri = serverUri
+            ) {
+              verifyResponseStatus(302)
+              response.header("Location") should not include (s"logout")
+              response.header("Location") should include(s"/koski/omadata-oauth2/post-response/")
+              response.header("Location") should include(s"error=invalid_scope")
+              response.header("Location") should include(queryStringUrlEncode(s"${parametriNimi}=${eiSallittuArvo} is missing a required OPISKELUOIKEUDET_ scope"))
+              response.header("Location") should include regex ("omadataoauth2-error-[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}".r)
+            }
+          }
+          "kirjautuneena clientilla, jolle ei haluta logouttia" in {
+            val parametriNimi = "scope"
+            val eiSallittuArvo = "HENKILOTIEDOT_NIMI HENKILOTIEDOT_HETU"
+
+            val eiSallitullaScopella = createParamsString(vaihdetullaArvolla(validParamsVaihdetullaArvolla(parametriNimi, eiSallittuArvo), "client_id", validClientIdEiLogouttia))
+
+            val serverUri = s"${authorizeFrontendBaseUri}?${eiSallitullaScopella}"
+
+            val expectedError = "invalid_scope"
+            val expectedParams =
+              Seq(
+                ("client_id", validClientIdEiLogouttia),
+                ("redirect_uri", validRedirectUri),
+                ("state", validState),
+                ("error", expectedError)
+              )
+
+            get(
+              uri = serverUri,
+              headers = kansalainenLoginHeaders(hetu)
+
+            ) {
+              verifyResponseStatus(302)
+              response.header("Location") should include(s"/koski/omadata-oauth2/post-response/")
+              val actualParams = Uri.unsafeFromString(response.header("Location")).params
+              actualParams should contain allElementsOf (expectedParams)
+              actualParams("error_description") should include(s"${parametriNimi}=${eiSallittuArvo} is missing a required OPISKELUOIKEUDET_ scope")
+            }
+          }
+        }
+        "redirectaa logoutin kautta virhetiedot palauttavalle post response -sivulle" - {
+          "kirjautuneena clientilla, jolle halutaan logout" in {
             val parametriNimi = "scope"
             val eiSallittuArvo = "HENKILOTIEDOT_NIMI HENKILOTIEDOT_HETU"
 
@@ -646,7 +885,61 @@ class OmaDataOAuth2FrontendSpec extends OmaDataOAuth2TestBase {
               encodedParamStringShouldContainErrorDescriptionWithUuid(base64UrlEncodedParams, s"${parametriNimi}=${eiSallittuArvo} is missing a required OPISKELUOIKEUDET_ scope")
             }
           }
-          "kun scopesta puuttuu henkilötiedot-scope kokonaan" in {
+        }
+      }
+
+      "kun scopesta puuttuu henkilötiedot-scope kokonaan" - {
+        "redirectaa virhetiedot palauttavalle post response -sivulle" - {
+          "kirjautumattomana" in {
+            val parametriNimi = "scope"
+            val eiSallittuArvo = "OPISKELUOIKEUDET_KAIKKI_TIEDOT"
+
+            val eiSallitullaScopella = createParamsString(validParamsVaihdetullaArvolla(parametriNimi, eiSallittuArvo))
+
+            val serverUri = s"${authorizeFrontendBaseUri}?${eiSallitullaScopella}"
+
+            get(
+              uri = serverUri
+            ) {
+              verifyResponseStatus(302)
+              response.header("Location") should not include(s"logout")
+              response.header("Location") should include(s"/koski/omadata-oauth2/post-response/")
+              response.header("Location") should include(s"error=invalid_scope")
+              response.header("Location") should include(queryStringUrlEncode(s"${parametriNimi}=${eiSallittuArvo} is missing a required HENKILOTIEDOT_ scope"))
+              response.header("Location") should include regex("omadataoauth2-error-[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}".r)
+            }
+          }
+          "kirjautuneena clientilla, jolle ei haluta logouttia" in {
+            val parametriNimi = "scope"
+            val eiSallittuArvo = "OPISKELUOIKEUDET_KAIKKI_TIEDOT"
+
+            val eiSallitullaScopella = createParamsString(vaihdetullaArvolla(validParamsVaihdetullaArvolla(parametriNimi, eiSallittuArvo), "client_id", validClientIdEiLogouttia))
+
+            val serverUri = s"${authorizeFrontendBaseUri}?${eiSallitullaScopella}"
+
+            val expectedError = "invalid_scope"
+            val expectedParams =
+              Seq(
+                ("client_id", validClientIdEiLogouttia),
+                ("redirect_uri", validRedirectUri),
+                ("state", validState),
+                ("error", expectedError)
+              )
+
+            get(
+              uri = serverUri,
+              headers = kansalainenLoginHeaders(hetu)
+            ) {
+              verifyResponseStatus(302)
+              response.header("Location") should include(s"/koski/omadata-oauth2/post-response/")
+              val actualParams = Uri.unsafeFromString(response.header("Location")).params
+              actualParams should contain allElementsOf (expectedParams)
+              actualParams("error_description") should include(s"${parametriNimi}=${eiSallittuArvo} is missing a required HENKILOTIEDOT_ scope")
+            }
+          }
+        }
+        "redirectaa logoutin kautta virhetiedot palauttavalle post response -sivulle" - {
+          "kirjautuneena clientilla, jolle halutaan logout" in {
             val parametriNimi = "scope"
             val eiSallittuArvo = "OPISKELUOIKEUDET_KAIKKI_TIEDOT"
 
@@ -676,276 +969,7 @@ class OmaDataOAuth2FrontendSpec extends OmaDataOAuth2TestBase {
           }
         }
       }
-
-      "kirjautuneena clientilla, jolle ei haluta logouttia" - {
-
-        "redirectaa virhetiedot palauttavalle post response -sivulle" - {
-
-          muutPakollisetParametrinimet.foreach(paramName => {
-            s"kun pakollinen parametri ${paramName} puuttuu kokonaan" in {
-              val puuttuvallaParametrilla = createParamsString(vaihdetullaArvolla(validParamsIlman(paramName), "client_id", validClientIdEiLogouttia))
-
-              val serverUri = s"${authorizeFrontendBaseUri}?${puuttuvallaParametrilla}"
-
-              val expectedError = "invalid_request"
-              val expectedParams =
-                Seq(
-                  ("client_id", validClientIdEiLogouttia),
-                  ("redirect_uri", validRedirectUri),
-                  ("state", validState),
-                  ("error", expectedError)
-                )
-
-              get(
-                uri = serverUri,
-                headers = kansalainenLoginHeaders(hetu)
-              ) {
-                verifyResponseStatus(302)
-                response.header("Location") should include(s"/koski/omadata-oauth2/post-response/")
-                val actualParams = Uri.unsafeFromString(response.header("Location")).params
-
-                actualParams should contain allElementsOf (expectedParams)
-                actualParams("error_description") should include(s"required parameter ${paramName} missing")
-              }
-            }
-          })
-
-          muutPakollisetParametrinimet.foreach(paramName => {
-            s"kun parametri ${paramName} esiintyy useamman kerran" in {
-              val duplikaattiParametrilla = createParamsString(duplikaatilla(validParamsVaihdetullaArvolla("client_id", validClientIdEiLogouttia), paramName))
-
-              val serverUri = s"${authorizeFrontendBaseUri}?${duplikaattiParametrilla}"
-
-              val expectedError = "invalid_request"
-              val expectedParams =
-                Seq(
-                  ("client_id", validClientIdEiLogouttia),
-                  ("redirect_uri", validRedirectUri),
-                  ("state", validState),
-                  ("error", expectedError)
-                )
-
-              get(
-                uri = serverUri,
-                headers = kansalainenLoginHeaders(hetu)
-              ) {
-                verifyResponseStatus(302)
-                response.header("Location") should include(s"/koski/omadata-oauth2/post-response/")
-                val actualParams = Uri.unsafeFromString(response.header("Location")).params
-                actualParams should contain allElementsOf (expectedParams)
-                actualParams("error_description") should include(s"parameter ${paramName} is repeated")
-              }
-            }
-          })
-
-          "kun response_type ei ole code" in {
-            val parametriNimi = "response_type"
-            val tuntematonArvo = "tuntematon_arvo"
-            val tuetutArvot = "code"
-
-            val väärälläParametrilla = createParamsString(vaihdetullaArvolla(validParamsVaihdetullaArvolla(parametriNimi, tuntematonArvo), "client_id", validClientIdEiLogouttia))
-
-            val serverUri = s"${authorizeFrontendBaseUri}?${väärälläParametrilla}"
-
-            val expectedError = "invalid_request"
-            val expectedParams =
-              Seq(
-                ("client_id", validClientIdEiLogouttia),
-                ("redirect_uri", validRedirectUri),
-                ("state", validState),
-                ("error", expectedError)
-              )
-
-            get(
-              uri = serverUri,
-              headers = kansalainenLoginHeaders(hetu)
-            ) {
-              verifyResponseStatus(302)
-              response.header("Location") should include(s"/koski/omadata-oauth2/post-response/")
-              val actualParams = Uri.unsafeFromString(response.header("Location")).params
-              actualParams should contain allElementsOf (expectedParams)
-              actualParams("error_description") should include(s"${parametriNimi}=${tuntematonArvo} not supported. Supported values: ${tuetutArvot}")
-            }
-          }
-          "kun response_mode ei ole form_post" in {
-            val parametriNimi = "response_mode"
-            val tuntematonArvo = "tuntematon_arvo"
-            val tuetutArvot = "form_post"
-
-            val väärälläParametrilla = createParamsString(vaihdetullaArvolla(validParamsVaihdetullaArvolla(parametriNimi, tuntematonArvo), "client_id", validClientIdEiLogouttia))
-
-            val serverUri = s"${authorizeFrontendBaseUri}?${väärälläParametrilla}"
-
-            val expectedError = "invalid_request"
-            val expectedParams =
-              Seq(
-                ("client_id", validClientIdEiLogouttia),
-                ("redirect_uri", validRedirectUri),
-                ("state", validState),
-                ("error", expectedError)
-              )
-
-            get(
-              uri = serverUri,
-              headers = kansalainenLoginHeaders(hetu)
-            ) {
-              verifyResponseStatus(302)
-              response.header("Location") should include(s"/koski/omadata-oauth2/post-response/")
-              val actualParams = Uri.unsafeFromString(response.header("Location")).params
-              actualParams should contain allElementsOf (expectedParams)
-              actualParams("error_description") should include(s"${parametriNimi}=${tuntematonArvo} not supported. Supported values: ${tuetutArvot}")
-            }
-          }
-          "kun code_challenge_method ei ole S256" in {
-            val parametriNimi = "code_challenge_method"
-            val tuntematonArvo = "tuntematon_arvo"
-            val tuetutArvot = "S256"
-
-            val väärälläParametrilla = createParamsString(vaihdetullaArvolla(validParamsVaihdetullaArvolla(parametriNimi, tuntematonArvo), "client_id", validClientIdEiLogouttia))
-
-            val serverUri = s"${authorizeFrontendBaseUri}?${väärälläParametrilla}"
-
-            val expectedError = "invalid_request"
-            val expectedParams =
-              Seq(
-                ("client_id", validClientIdEiLogouttia),
-                ("redirect_uri", validRedirectUri),
-                ("state", validState),
-                ("error", expectedError)
-              )
-
-            get(
-              uri = serverUri,
-              headers = kansalainenLoginHeaders(hetu)
-            ) {
-              verifyResponseStatus(302)
-              response.header("Location") should include(s"/koski/omadata-oauth2/post-response/")
-              val actualParams = Uri.unsafeFromString(response.header("Location")).params
-              actualParams should contain allElementsOf (expectedParams)
-              actualParams("error_description") should include(s"${parametriNimi}=${tuntematonArvo} not supported. Supported values: ${tuetutArvot}")
-            }
-          }
-
-          "kun scope on epävalidi" in {
-            val parametriNimi = "scope"
-            val eiSallittuArvo = "HENKILOTIEDOT_NIMI HENKILOTIEDOT_VIRHEELLINEN OPISKELUOIKEUDET_SUORITETUT_TUTKINNOT"
-
-            val eiSallitullaScopella = createParamsString(vaihdetullaArvolla(validParamsVaihdetullaArvolla(parametriNimi, eiSallittuArvo), "client_id", validClientIdEiLogouttia))
-
-            val serverUri = s"${authorizeFrontendBaseUri}?${eiSallitullaScopella}"
-
-            val expectedError = "invalid_scope"
-            val expectedParams =
-              Seq(
-                ("client_id", validClientIdEiLogouttia),
-                ("redirect_uri", validRedirectUri),
-                ("state", validState),
-                ("error", expectedError)
-              )
-
-            get(
-              uri = serverUri,
-              headers = kansalainenLoginHeaders(hetu)
-
-            ) {
-              verifyResponseStatus(302)
-              response.header("Location") should include(s"/koski/omadata-oauth2/post-response/")
-              val actualParams = Uri.unsafeFromString(response.header("Location")).params
-              actualParams should contain allElementsOf (expectedParams)
-              actualParams("error_description") should include(s"${parametriNimi}=${eiSallittuArvo} contains unknown scopes (HENKILOTIEDOT_VIRHEELLINEN))")
-            }
-          }
-          "kun scopessa on toistensa kanssa epäyhteensopivia arvoja" in {
-            val parametriNimi = "scope"
-            val eiSallittuArvo = "HENKILOTIEDOT_NIMI OPISKELUOIKEUDET_SUORITETUT_TUTKINNOT OPISKELUOIKEUDET_KAIKKI_TIEDOT"
-
-            val eiSallitullaScopella = createParamsString(vaihdetullaArvolla(validParamsVaihdetullaArvolla(parametriNimi, eiSallittuArvo), "client_id", validClientIdEiLogouttia))
-
-            val serverUri = s"${authorizeFrontendBaseUri}?${eiSallitullaScopella}"
-
-            val expectedError = "invalid_scope"
-            val expectedParams =
-              Seq(
-                ("client_id", validClientIdEiLogouttia),
-                ("redirect_uri", validRedirectUri),
-                ("state", validState),
-                ("error", expectedError)
-              )
-
-            get(
-              uri = serverUri,
-              headers = kansalainenLoginHeaders(hetu)
-
-            ) {
-              verifyResponseStatus(302)
-              response.header("Location") should include(s"/koski/omadata-oauth2/post-response/")
-              val actualParams = Uri.unsafeFromString(response.header("Location")).params
-              actualParams should contain allElementsOf (expectedParams)
-              actualParams("error_description") should include(s"${parametriNimi}=${eiSallittuArvo} contains an invalid combination of scopes (OPISKELUOIKEUDET_KAIKKI_TIEDOT, OPISKELUOIKEUDET_SUORITETUT_TUTKINNOT))")
-            }
-          }
-          "kun scopesta puuttuu opiskeluoikeudet-scope kokonaan" in {
-            val parametriNimi = "scope"
-            val eiSallittuArvo = "HENKILOTIEDOT_NIMI HENKILOTIEDOT_HETU"
-
-            val eiSallitullaScopella = createParamsString(vaihdetullaArvolla(validParamsVaihdetullaArvolla(parametriNimi, eiSallittuArvo), "client_id", validClientIdEiLogouttia))
-
-            val serverUri = s"${authorizeFrontendBaseUri}?${eiSallitullaScopella}"
-
-            val expectedError = "invalid_scope"
-            val expectedParams =
-              Seq(
-                ("client_id", validClientIdEiLogouttia),
-                ("redirect_uri", validRedirectUri),
-                ("state", validState),
-                ("error", expectedError)
-              )
-
-            get(
-              uri = serverUri,
-              headers = kansalainenLoginHeaders(hetu)
-
-            ) {
-              verifyResponseStatus(302)
-              response.header("Location") should include(s"/koski/omadata-oauth2/post-response/")
-              val actualParams = Uri.unsafeFromString(response.header("Location")).params
-              actualParams should contain allElementsOf (expectedParams)
-              actualParams("error_description") should include(s"${parametriNimi}=${eiSallittuArvo} is missing a required OPISKELUOIKEUDET_ scope")
-            }
-          }
-          "kun scopesta puuttuu henkilötiedot-scope kokonaan" in {
-            val parametriNimi = "scope"
-            val eiSallittuArvo = "OPISKELUOIKEUDET_KAIKKI_TIEDOT"
-
-            val eiSallitullaScopella = createParamsString(vaihdetullaArvolla(validParamsVaihdetullaArvolla(parametriNimi, eiSallittuArvo), "client_id", validClientIdEiLogouttia))
-
-            val serverUri = s"${authorizeFrontendBaseUri}?${eiSallitullaScopella}"
-
-            val expectedError = "invalid_scope"
-            val expectedParams =
-              Seq(
-                ("client_id", validClientIdEiLogouttia),
-                ("redirect_uri", validRedirectUri),
-                ("state", validState),
-                ("error", expectedError)
-              )
-
-            get(
-              uri = serverUri,
-              headers = kansalainenLoginHeaders(hetu)
-            ) {
-              verifyResponseStatus(302)
-              response.header("Location") should include(s"/koski/omadata-oauth2/post-response/")
-              val actualParams = Uri.unsafeFromString(response.header("Location")).params
-              actualParams should contain allElementsOf (expectedParams)
-              actualParams("error_description") should include(s"${parametriNimi}=${eiSallittuArvo} is missing a required HENKILOTIEDOT_ scope")
-            }
-          }
-        }
-      }
-
     }
-
   }
 
   "resource-owner authorize -rajapinta" - {
