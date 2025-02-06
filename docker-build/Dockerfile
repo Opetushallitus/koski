@@ -1,8 +1,8 @@
 FROM adoptopenjdk/openjdk11:jdk-11.0.24_8-alpine-slim@sha256:ad9fc1d77b75716067e23574a6a2f50596a4cdeec8bd363a8e9d7cffd2977583
 
 ARG KOSKI_VERSION
-ARG PROMETHEUS_JMX_EXPORTER_VERSION="1.0.1"
-ARG PROMETHEUS_JMX_EXPORTER_JAR_HASH="7d61f737fd661610ccc14aea79764faa1ea94a340cbc8f0029b3d2edea3d80c1"
+ARG PROMETHEUS_JMX_EXPORTER_VERSION="1.1.0"
+ARG PROMETHEUS_JMX_EXPORTER_JAR_HASH="2d158db7a4cd2999f40ca30a2532bc8456ca3ecf37498cbe60a02a588bf3c9f1"
 
 # Install:
 # * tzdata for timezones
@@ -16,7 +16,7 @@ RUN cp /usr/share/zoneinfo/Europe/Helsinki /etc/localtime && apk del tzdata
 RUN echo 'Europe/Helsinki' > /etc/timezone
 
 # Install Prometheus JMX exporter
-RUN wget -q https://repo1.maven.org/maven2/io/prometheus/jmx/jmx_prometheus_javaagent/${PROMETHEUS_JMX_EXPORTER_VERSION}/jmx_prometheus_javaagent-${PROMETHEUS_JMX_EXPORTER_VERSION}.jar \
+RUN wget -q https://github.com/prometheus/jmx_exporter/releases/download/${PROMETHEUS_JMX_EXPORTER_VERSION}/jmx_prometheus_javaagent-${PROMETHEUS_JMX_EXPORTER_VERSION}.jar \
     -O /usr/local/bin/jmx_prometheus_javaagent.jar && \
     echo "$PROMETHEUS_JMX_EXPORTER_JAR_HASH  /usr/local/bin/jmx_prometheus_javaagent.jar" | sha256sum -c
 COPY docker-build/jmx_exporter_config.yml /etc
