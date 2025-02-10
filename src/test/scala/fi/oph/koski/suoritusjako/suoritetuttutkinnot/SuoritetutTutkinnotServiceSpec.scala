@@ -362,7 +362,8 @@ class SuoritetutTutkinnotServiceSpec
         actualSuoritus.koulutusmoduuli.eurooppalainenTutkintojenViitekehysEQF should equal(Some(Koodistokoodiviite("7", "eqf")))
         actualSuoritus.koulutusmoduuli.kansallinenTutkintojenViitekehysNQF should equal(Some(Koodistokoodiviite("7", "nqf")))
 
-        actualOo.asInstanceOf[SuoritetutTutkinnotKorkeakoulunOpiskeluoikeus].lisätiedot.flatMap(_.opettajapatevyys.map(_.map(_.koodiarvo))) should equal(Some(List("aa", "il")))
+        actualOo.asInstanceOf[SuoritetutTutkinnotKorkeakoulunOpiskeluoikeus].lisätiedot.flatMap(_.opettajanPätevyys.map(_.map(_.koodiarvo))) should equal(Some(List("il")))
+        actualOo.asInstanceOf[SuoritetutTutkinnotKorkeakoulunOpiskeluoikeus].lisätiedot.flatMap(_.opetettavanAineenPätevyys.map(_.map(_.koodiarvo))) should equal(Some(List("aa")))
       })
     }
   }

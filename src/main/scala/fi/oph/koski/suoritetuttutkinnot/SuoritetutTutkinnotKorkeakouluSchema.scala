@@ -24,7 +24,8 @@ object SuoritetutTutkinnotKorkeakoulunOpiskeluoikeus {
     ),
     lisätiedot = kk.lisätiedot.map(l => SuoritetutTutkinnotKorkeakoulunLisätiedot(
       virtaOpiskeluoikeudenTyyppi = l.virtaOpiskeluoikeudenTyyppi.map(SuoritetutTutkinnotKoodistokoodiviite.fromKoskiSchema),
-      opettajapatevyys = l.opettajapatevyys.map(_.map(SuoritetutTutkinnotKoodistokoodiviite.fromKoskiSchema))
+      opettajanPätevyys = l.opettajanPätevyys.map(_.map(SuoritetutTutkinnotKoodistokoodiviite.fromKoskiSchema)),
+      opetettavanAineenPätevyys = l.opetettavanAineenPätevyys.map(_.map(SuoritetutTutkinnotKoodistokoodiviite.fromKoskiSchema))
     )),
     suoritukset = kk.suoritukset
       .collect { case t: schema.KorkeakoulututkinnonSuoritus => t }
@@ -66,7 +67,8 @@ case class SuoritetutTutkinnotKorkeakoulunOpiskeluoikeus(
 
 case class SuoritetutTutkinnotKorkeakoulunLisätiedot(
   virtaOpiskeluoikeudenTyyppi: Option[SuoritetutTutkinnotKoodistokoodiviite],
-  opettajapatevyys: Option[List[SuoritetutTutkinnotKoodistokoodiviite]]
+  opettajanPätevyys: Option[List[SuoritetutTutkinnotKoodistokoodiviite]],
+  opetettavanAineenPätevyys: Option[List[SuoritetutTutkinnotKoodistokoodiviite]],
 )
 
 @Title("Korkeakoulututkinnon suoritus")
