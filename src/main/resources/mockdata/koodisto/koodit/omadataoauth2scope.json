@@ -2,62 +2,6 @@
   {
     "metadata": [
       {
-        "nimi": "Nimi",
-        "kuvaus": "",
-        "lyhytNimi": "",
-        "kieli": "FI"
-      },
-      {
-        "nimi": "Namn",
-        "kuvaus": "",
-        "lyhytNimi": "",
-        "kieli": "SV"
-      },
-      {
-        "nimi": "Name",
-        "kuvaus": "",
-        "lyhytNimi": "",
-        "kieli": "EN"
-      }
-    ],
-    "withinCodeElements": [],
-    "includesCodeElements": [],
-    "levelsWithCodeElements": [],
-    "koodiUri": "omadataoauth2scope_henkilotiedotnimi",
-    "versio": 1,
-    "koodiArvo": "henkilotiedot_nimi"
-  },
-  {
-    "metadata": [
-      {
-        "nimi": "Syntymäaika",
-        "kuvaus": "",
-        "lyhytNimi": "",
-        "kieli": "FI"
-      },
-      {
-        "nimi": "Födelsedatum",
-        "kuvaus": "",
-        "lyhytNimi": "",
-        "kieli": "SV"
-      },
-      {
-        "nimi": "Date of birth",
-        "kuvaus": "",
-        "lyhytNimi": "",
-        "kieli": "EN"
-      }
-    ],
-    "withinCodeElements": [],
-    "includesCodeElements": [],
-    "levelsWithCodeElements": [],
-    "koodiUri": "omadataoauth2scope_henkilotiedotsyntymaaika",
-    "versio": 1,
-    "koodiArvo": "henkilotiedot_syntymaaika"
-  },
-  {
-    "metadata": [
-      {
         "nimi": "Henkilötunnus",
         "kuvaus": "",
         "lyhytNimi": "",
@@ -82,6 +26,62 @@
     "koodiUri": "omadataoauth2scope_henkilotiedothetu",
     "versio": 1,
     "koodiArvo": "henkilotiedot_hetu"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "Kaikki henkilötiedot (hetu, syntymäaika, nimi, oppijanumero)",
+        "kuvaus": "",
+        "lyhytNimi": "",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Kaikki henkilötiedot (hetu, syntymäaika, nimi, oppijanumero)",
+        "kuvaus": "",
+        "lyhytNimi": "",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Kaikki henkilötiedot (hetu, syntymäaika, nimi, oppijanumero)",
+        "kuvaus": "",
+        "lyhytNimi": "",
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "omadataoauth2scope_henkilotiedotkaikkitiedot",
+    "versio": 1,
+    "koodiArvo": "henkilotiedot_kaikki_tiedot"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "Nimi",
+        "kuvaus": "",
+        "lyhytNimi": "",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Namn",
+        "kuvaus": "",
+        "lyhytNimi": "",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Name",
+        "kuvaus": "",
+        "lyhytNimi": "",
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "omadataoauth2scope_henkilotiedotnimi",
+    "versio": 1,
+    "koodiArvo": "henkilotiedot_nimi"
   },
   {
     "metadata": [
@@ -114,19 +114,19 @@
   {
     "metadata": [
       {
-        "nimi": "Kaikki henkilötiedot",
+        "nimi": "Syntymäaika",
         "kuvaus": "",
         "lyhytNimi": "",
         "kieli": "FI"
       },
       {
-        "nimi": "All information",
+        "nimi": "Födelsedatum",
         "kuvaus": "",
         "lyhytNimi": "",
         "kieli": "SV"
       },
       {
-        "nimi": "All information",
+        "nimi": "Date of birth",
         "kuvaus": "",
         "lyhytNimi": "",
         "kieli": "EN"
@@ -135,37 +135,9 @@
     "withinCodeElements": [],
     "includesCodeElements": [],
     "levelsWithCodeElements": [],
-    "koodiUri": "omadataoauth2scope_henkilotiedotkaikkitiedot",
+    "koodiUri": "omadataoauth2scope_henkilotiedotsyntymaaika",
     "versio": 1,
-    "koodiArvo": "henkilotiedot_kaikki_tiedot"
-  },
-  {
-    "metadata": [
-      {
-        "nimi": "Suoritetut tutkinnot",
-        "kuvaus": "",
-        "lyhytNimi": "",
-        "kieli": "FI"
-      },
-      {
-        "nimi": "Avlagda examina",
-        "kuvaus": "",
-        "lyhytNimi": "",
-        "kieli": "SV"
-      },
-      {
-        "nimi": "Completed degrees",
-        "kuvaus": "",
-        "lyhytNimi": "",
-        "kieli": "EN"
-      }
-    ],
-    "withinCodeElements": [],
-    "includesCodeElements": [],
-    "levelsWithCodeElements": [],
-    "koodiUri": "omadataoauth2scope_opiskeluoikeudetsuoritetuttutkinnot",
-    "versio": 1,
-    "koodiArvo": "opiskeluoikeudet_suoritetut_tutkinnot"
+    "koodiArvo": "henkilotiedot_syntymaaika"
   },
   {
     "metadata": [
@@ -204,13 +176,13 @@
         "kieli": "FI"
       },
       {
-        "nimi": "All information",
+        "nimi": "Kaikki opiskeluoikeustiedot",
         "kuvaus": "",
         "lyhytNimi": "",
         "kieli": "SV"
       },
       {
-        "nimi": "All information",
+        "nimi": "Kaikki opiskeluoikeustiedot",
         "kuvaus": "",
         "lyhytNimi": "",
         "kieli": "EN"
@@ -222,5 +194,33 @@
     "koodiUri": "omadataoauth2scope_opiskeluoikeudetkaikkitiedot",
     "versio": 1,
     "koodiArvo": "opiskeluoikeudet_kaikki_tiedot"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "Suoritetut tutkinnot",
+        "kuvaus": "",
+        "lyhytNimi": "",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Avlagda examina",
+        "kuvaus": "",
+        "lyhytNimi": "",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Completed degrees",
+        "kuvaus": "",
+        "lyhytNimi": "",
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "omadataoauth2scope_opiskeluoikeudetsuoritetuttutkinnot",
+    "versio": 1,
+    "koodiArvo": "opiskeluoikeudet_suoritetut_tutkinnot"
   }
 ]

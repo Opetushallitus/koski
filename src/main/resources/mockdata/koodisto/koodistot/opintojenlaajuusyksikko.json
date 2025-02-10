@@ -22,21 +22,6 @@
     },
     {
       "codesUri": "koulutus",
-      "codesVersion": 4,
-      "passive": true,
-      "nimi": {
-        "FI": "koulutus",
-        "SV": "koulutus",
-        "EN": "koulutus"
-      },
-      "kuvaus": {
-        "FI": "koulutus",
-        "SV": "koulutus",
-        "EN": "koulutus"
-      }
-    },
-    {
-      "codesUri": "koulutus",
       "codesVersion": 10,
       "passive": true,
       "nimi": {
@@ -67,7 +52,7 @@
     },
     {
       "codesUri": "koulutus",
-      "codesVersion": 2,
+      "codesVersion": 9,
       "passive": true,
       "nimi": {
         "SV": "koulutus",
@@ -82,7 +67,67 @@
     },
     {
       "codesUri": "koulutus",
-      "codesVersion": 9,
+      "codesVersion": 3,
+      "passive": true,
+      "nimi": {
+        "FI": "koulutus",
+        "SV": "koulutus",
+        "EN": "koulutus"
+      },
+      "kuvaus": {
+        "FI": "koulutus",
+        "SV": "koulutus",
+        "EN": "koulutus"
+      }
+    },
+    {
+      "codesUri": "koulutus",
+      "codesVersion": 12,
+      "passive": false,
+      "nimi": {
+        "FI": "koulutus",
+        "SV": "koulutus",
+        "EN": "koulutus"
+      },
+      "kuvaus": {
+        "FI": "Koodistoa ylläpitävät Noora Vauhkonen (ammatilliset koulutukset), Riku Hanhinen (korkeakoulutukset), Juho Helminen (yleissivistävä koulutus). Koodistoa käytetään mm. hakujen koulutustarjonnassa, KOSKI-palvelun tiedonsiirroissa, OIVAssa ja OKM Virta-palvelussa. Tilastokeskus vastaa koodiston koodituksesta (https://www2.tilastokeskus.fi/fi/luokitukset/koulutus/). Koodeja ylläpidetään käsin. Koodiston ja Tilastokeskuksen välillä ei ole integraatiota.",
+        "SV": "koulutus",
+        "EN": "koulutus"
+      }
+    },
+    {
+      "codesUri": "koulutus",
+      "codesVersion": 5,
+      "passive": true,
+      "nimi": {
+        "FI": "koulutus",
+        "SV": "koulutus",
+        "EN": "koulutus"
+      },
+      "kuvaus": {
+        "FI": "koulutus",
+        "SV": "koulutus",
+        "EN": "koulutus"
+      }
+    },
+    {
+      "codesUri": "koulutus",
+      "codesVersion": 4,
+      "passive": true,
+      "nimi": {
+        "FI": "koulutus",
+        "SV": "koulutus",
+        "EN": "koulutus"
+      },
+      "kuvaus": {
+        "FI": "koulutus",
+        "SV": "koulutus",
+        "EN": "koulutus"
+      }
+    },
+    {
+      "codesUri": "koulutus",
+      "codesVersion": 2,
       "passive": true,
       "nimi": {
         "SV": "koulutus",
@@ -107,21 +152,6 @@
       "kuvaus": {
         "SV": "koulutus",
         "FI": "Koodistoa ylläpitävät Tuija Koskela (Opetushallitus,  Ammatillinen osaaminen yksikkö)  ja yhteishaun osalta Outi Kivipelto (Opetushallitus, Oppijanpalvelut yksikkö). Koodistoa käytetään mm. hakujen koulutustarjonnassa, KOSKEn tiedonsiirroissa ja OIVAssa.",
-        "EN": "koulutus"
-      }
-    },
-    {
-      "codesUri": "koulutus",
-      "codesVersion": 3,
-      "passive": true,
-      "nimi": {
-        "FI": "koulutus",
-        "SV": "koulutus",
-        "EN": "koulutus"
-      },
-      "kuvaus": {
-        "FI": "koulutus",
-        "SV": "koulutus",
         "EN": "koulutus"
       }
     },
@@ -172,37 +202,7 @@
     },
     {
       "codesUri": "koulutus",
-      "codesVersion": 12,
-      "passive": false,
-      "nimi": {
-        "FI": "koulutus",
-        "SV": "koulutus",
-        "EN": "koulutus"
-      },
-      "kuvaus": {
-        "FI": "Koodistoa ylläpitävät Perttu Venäläinen  (ammatilliset koulutukset), Riku Hanhinen (korkeakoulutukset), Juho Helminen (yleissivistävä koulutus). Koodistoa käytetään mm. hakujen koulutustarjonnassa, KOSKI-palvelun tiedonsiirroissa, OIVAssa ja OKM Virta-palvelussa. Tilastokeskus vastaa koodiston koodituksesta (https://www2.tilastokeskus.fi/fi/luokitukset/koulutus/). Koodeja ylläpidetään käsin. Koodiston ja Tilastokeskuksen välillä ei ole integraatiota.",
-        "SV": "koulutus",
-        "EN": "koulutus"
-      }
-    },
-    {
-      "codesUri": "koulutus",
       "codesVersion": 6,
-      "passive": true,
-      "nimi": {
-        "FI": "koulutus",
-        "SV": "koulutus",
-        "EN": "koulutus"
-      },
-      "kuvaus": {
-        "FI": "koulutus",
-        "SV": "koulutus",
-        "EN": "koulutus"
-      }
-    },
-    {
-      "codesUri": "koulutus",
-      "codesVersion": 5,
       "passive": true,
       "nimi": {
         "FI": "koulutus",

@@ -2361,6 +2361,11 @@
         "passive": true
       },
       {
+        "codeElementUri": "koulutus_672102",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
         "codeElementUri": "koulutus_651202",
         "codeElementVersion": 3,
         "passive": true
@@ -2401,6 +2406,11 @@
         "passive": true
       },
       {
+        "codeElementUri": "koulutus_672202",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
         "codeElementUri": "koulutus_771214",
         "codeElementVersion": 1,
         "passive": true
@@ -2439,6 +2449,11 @@
         "codeElementUri": "koulutus_742999",
         "codeElementVersion": 1,
         "passive": true
+      },
+      {
+        "codeElementUri": "koulutus_772102",
+        "codeElementVersion": 1,
+        "passive": false
       },
       {
         "codeElementUri": "koulutus_655999",
@@ -2514,6 +2529,11 @@
         "codeElementUri": "koulutus_633108",
         "codeElementVersion": 1,
         "passive": true
+      },
+      {
+        "codeElementUri": "koulutus_772202",
+        "codeElementVersion": 1,
+        "passive": false
       },
       {
         "codeElementUri": "koulutus_762205",
@@ -29891,14 +29911,14 @@
         "passive": false
       },
       {
-        "codeElementUri": "koulutus_842101",
-        "codeElementVersion": 11,
-        "passive": true
-      },
-      {
         "codeElementUri": "lukiolinjat_0051",
         "codeElementVersion": 2,
         "passive": false
+      },
+      {
+        "codeElementUri": "koulutus_842101",
+        "codeElementVersion": 11,
+        "passive": true
       },
       {
         "codeElementUri": "lukiolinjat_0115",
@@ -36288,6 +36308,11 @@
       {
         "codeElementUri": "lukiolinjat_0114",
         "codeElementVersion": 2,
+        "passive": false
+      },
+      {
+        "codeElementUri": "koulutus_826116",
+        "codeElementVersion": 1,
         "passive": false
       }
     ],

@@ -1425,6 +1425,34 @@
   {
     "metadata": [
       {
+        "nimi": "kannada",
+        "kuvaus": "kannada",
+        "lyhytNimi": "kannada",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "kannada",
+        "kuvaus": "kannada",
+        "lyhytNimi": "kannada",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Kannada",
+        "kuvaus": "Kannada",
+        "lyhytNimi": "Kannada",
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "kielivalikoima_kn",
+    "versio": 1,
+    "koodiArvo": "KN"
+  },
+  {
+    "metadata": [
+      {
         "nimi": "korea",
         "kuvaus": "korea",
         "lyhytNimi": "korea",
@@ -1477,6 +1505,34 @@
     "koodiUri": "kielivalikoima_ku",
     "versio": 1,
     "koodiArvo": "KU"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "muu kieli",
+        "kuvaus": null,
+        "lyhytNimi": "muu kieli",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "övrigt språk",
+        "kuvaus": null,
+        "lyhytNimi": "övrigt språk",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Other languages",
+        "kuvaus": null,
+        "lyhytNimi": "Other languages",
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "kielivalikoima_kx",
+    "versio": 1,
+    "koodiArvo": "KX"
   },
   {
     "metadata": [
@@ -1690,6 +1746,34 @@
     "koodiUri": "kielivalikoima_mk",
     "versio": 1,
     "koodiArvo": "MK"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "malajalam",
+        "kuvaus": "malajalam",
+        "lyhytNimi": "malajalam",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "malayalam",
+        "kuvaus": "malayalam",
+        "lyhytNimi": "malayalam",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Malayalam",
+        "kuvaus": "Malayalam",
+        "lyhytNimi": "Malayalam",
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "kielivalikoima_ml",
+    "versio": 1,
+    "koodiArvo": "ML"
   },
   {
     "metadata": [
@@ -2516,6 +2600,90 @@
   {
     "metadata": [
       {
+        "nimi": "pohjoissaame",
+        "kuvaus": "pohjoissaame",
+        "lyhytNimi": "pohjoissaame",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "nordsamiska",
+        "kuvaus": "nordsamiska",
+        "lyhytNimi": "nordsamiska",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Northern Sámi",
+        "kuvaus": "Northern Sámi",
+        "lyhytNimi": "Northern Sámi",
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "kielivalikoima_sme",
+    "versio": 1,
+    "koodiArvo": "SME"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "inarinsaame",
+        "kuvaus": "inarinsaame",
+        "lyhytNimi": "inarinsaame",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "enaresamiska",
+        "kuvaus": "enaresamiska",
+        "lyhytNimi": "enaresamiska",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Inari Sámi",
+        "kuvaus": "Inari Sámi",
+        "lyhytNimi": "Inari Sámi",
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "kielivalikoima_smn",
+    "versio": 1,
+    "koodiArvo": "SMN"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "koltansaame",
+        "kuvaus": "koltansaame",
+        "lyhytNimi": "koltansaame",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "skoltsamiska",
+        "kuvaus": "skoltsamiska",
+        "lyhytNimi": "skoltsamiska",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Skolt Sámi",
+        "kuvaus": "Skolt Sámi",
+        "lyhytNimi": "Skolt Sámi",
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "kielivalikoima_sms",
+    "versio": 1,
+    "koodiArvo": "SMS"
+  },
+  {
+    "metadata": [
+      {
         "nimi": "somali",
         "kuvaus": "somali",
         "lyhytNimi": "somali",
@@ -2857,6 +3025,34 @@
     "koodiUri": "kielivalikoima_ta",
     "versio": 1,
     "koodiArvo": "TA"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "telugu",
+        "kuvaus": "telugu",
+        "lyhytNimi": "telugu",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "telugu",
+        "kuvaus": "telugu",
+        "lyhytNimi": "telugu",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Telegu",
+        "kuvaus": "Telegu",
+        "lyhytNimi": "Telegu",
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "kielivalikoima_te",
+    "versio": 1,
+    "koodiArvo": "TE"
   },
   {
     "metadata": [

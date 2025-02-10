@@ -16,7 +16,7 @@
       },
       "kuvaus": {
         "SV": "koulutustyyppi",
-        "FI": "Koulutustarjontapalvelun käyttöliittymän käytössä oleva koodisto",
+        "FI": "Vanhan koulutustarjontapalvelun (tarjonta-service) käyttöliittymän käytössä oleva koodisto. Käytössä myös KOSKI-palvelussa",
         "EN": "koulutustyyppi"
       }
     }

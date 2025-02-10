@@ -3514,7 +3514,23 @@
         "passive": false
       }
     ],
-    "levelsWithCodeElements": [],
+    "levelsWithCodeElements": [
+      {
+        "codeElementUri": "koulutustyyppikouta_amm",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "koulutustyyppikouta_ammosaamisala",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "koulutustyyppikouta_ammtutkinnonosa",
+        "codeElementVersion": 1,
+        "passive": false
+      }
+    ],
     "koodiUri": "koulutustyyppi_1",
     "versio": 2,
     "koodiArvo": "1"
@@ -3718,7 +3734,23 @@
         "passive": false
       }
     ],
-    "levelsWithCodeElements": [],
+    "levelsWithCodeElements": [
+      {
+        "codeElementUri": "koulutustyyppikouta_vapaasivistystyomuu",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "koulutustyyppikouta_vapaasivistystyoopistovuosi",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "koulutustyyppikouta_vapaasivistystyoosaamismerkki",
+        "codeElementVersion": 1,
+        "passive": false
+      }
+    ],
     "koodiUri": "koulutustyyppi_10",
     "versio": 2,
     "koodiArvo": "10"
@@ -16153,7 +16185,13 @@
         "passive": false
       }
     ],
-    "levelsWithCodeElements": [],
+    "levelsWithCodeElements": [
+      {
+        "codeElementUri": "koulutustyyppikouta_amm",
+        "codeElementVersion": 1,
+        "passive": false
+      }
+    ],
     "koodiUri": "koulutustyyppi_11",
     "versio": 2,
     "koodiArvo": "11"
@@ -30168,7 +30206,13 @@
         "passive": false
       }
     ],
-    "levelsWithCodeElements": [],
+    "levelsWithCodeElements": [
+      {
+        "codeElementUri": "koulutustyyppikouta_amm",
+        "codeElementVersion": 1,
+        "passive": false
+      }
+    ],
     "koodiUri": "koulutustyyppi_12",
     "versio": 2,
     "koodiArvo": "12"
@@ -33483,7 +33527,13 @@
         "passive": false
       }
     ],
-    "levelsWithCodeElements": [],
+    "levelsWithCodeElements": [
+      {
+        "codeElementUri": "koulutustyyppikouta_amm",
+        "codeElementVersion": 1,
+        "passive": false
+      }
+    ],
     "koodiUri": "koulutustyyppi_13",
     "versio": 2,
     "koodiArvo": "13"
@@ -33638,7 +33688,13 @@
         "passive": false
       }
     ],
-    "levelsWithCodeElements": [],
+    "levelsWithCodeElements": [
+      {
+        "codeElementUri": "koulutustyyppikouta_lk",
+        "codeElementVersion": 1,
+        "passive": false
+      }
+    ],
     "koodiUri": "koulutustyyppi_14",
     "versio": 2,
     "koodiArvo": "14"
@@ -34036,7 +34092,13 @@
         "passive": false
       }
     ],
-    "levelsWithCodeElements": [],
+    "levelsWithCodeElements": [
+      {
+        "codeElementUri": "koulutustyyppikouta_aikuistenperusopetus",
+        "codeElementVersion": 1,
+        "passive": false
+      }
+    ],
     "koodiUri": "koulutustyyppi_17",
     "versio": 2,
     "koodiArvo": "17"
@@ -34693,7 +34755,13 @@
         "passive": false
       }
     ],
-    "levelsWithCodeElements": [],
+    "levelsWithCodeElements": [
+      {
+        "codeElementUri": "koulutustyyppikouta_lk",
+        "codeElementVersion": 1,
+        "passive": false
+      }
+    ],
     "koodiUri": "koulutustyyppi_2",
     "versio": 2,
     "koodiArvo": "2"
@@ -34950,7 +35018,13 @@
         "passive": false
       }
     ],
-    "levelsWithCodeElements": [],
+    "levelsWithCodeElements": [
+      {
+        "codeElementUri": "koulutustyyppikouta_lk",
+        "codeElementVersion": 1,
+        "passive": false
+      }
+    ],
     "koodiUri": "koulutustyyppi_21",
     "versio": 1,
     "koodiArvo": "21"
@@ -35169,7 +35243,13 @@
         "passive": false
       }
     ],
-    "levelsWithCodeElements": [],
+    "levelsWithCodeElements": [
+      {
+        "codeElementUri": "koulutustyyppikouta_amm",
+        "codeElementVersion": 1,
+        "passive": false
+      }
+    ],
     "koodiUri": "koulutustyyppi_24",
     "versio": 1,
     "koodiArvo": "24"
@@ -37104,6 +37184,16 @@
         "codeElementUri": "koulutus_000002",
         "codeElementVersion": 3,
         "passive": true
+      },
+      {
+        "codeElementUri": "koulutus_772102",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "koulutus_772202",
+        "codeElementVersion": 1,
+        "passive": false
       },
       {
         "codeElementUri": "koulutus_000001",
@@ -39843,7 +39933,48 @@
         "passive": false
       }
     ],
-    "levelsWithCodeElements": [],
+    "levelsWithCodeElements": [
+      {
+        "codeElementUri": "koulutustyyppikouta_amk",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "koulutustyyppikouta_ammopeerityisopejaopo",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "koulutustyyppikouta_kkopintojakso",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "koulutustyyppikouta_kkopintokokonaisuus",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "koulutustyyppikouta_yo",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "koulutustyyppikouta_erikoistumiskoulutus",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "koulutustyyppikouta_erikoislaakari",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "koulutustyyppikouta_opepedagopinnot",
+        "codeElementVersion": 1,
+        "passive": false
+      }
+    ],
     "koodiUri": "koulutustyyppi_3",
     "versio": 2,
     "koodiArvo": "3"
@@ -43372,7 +43503,13 @@
         "passive": false
       }
     ],
-    "levelsWithCodeElements": [],
+    "levelsWithCodeElements": [
+      {
+        "codeElementUri": "koulutustyyppikouta_amm",
+        "codeElementVersion": 1,
+        "passive": false
+      }
+    ],
     "koodiUri": "koulutustyyppi_4",
     "versio": 2,
     "koodiArvo": "4"
@@ -43410,7 +43547,13 @@
       }
     ],
     "includesCodeElements": [],
-    "levelsWithCodeElements": [],
+    "levelsWithCodeElements": [
+      {
+        "codeElementUri": "koulutustyyppikouta_tuva",
+        "codeElementVersion": 1,
+        "passive": false
+      }
+    ],
     "koodiUri": "koulutustyyppi_40",
     "versio": 1,
     "koodiArvo": "40"
@@ -43448,7 +43591,13 @@
       }
     ],
     "includesCodeElements": [],
-    "levelsWithCodeElements": [],
+    "levelsWithCodeElements": [
+      {
+        "codeElementUri": "koulutustyyppikouta_tuva",
+        "codeElementVersion": 1,
+        "passive": false
+      }
+    ],
     "koodiUri": "koulutustyyppi_41",
     "versio": 1,
     "koodiArvo": "41"
@@ -43479,7 +43628,13 @@
       }
     ],
     "includesCodeElements": [],
-    "levelsWithCodeElements": [],
+    "levelsWithCodeElements": [
+      {
+        "codeElementUri": "koulutustyyppikouta_amm",
+        "codeElementVersion": 1,
+        "passive": false
+      }
+    ],
     "koodiUri": "koulutustyyppi_42",
     "versio": 1,
     "koodiArvo": "42"
@@ -43698,7 +43853,13 @@
         "passive": false
       }
     ],
-    "levelsWithCodeElements": [],
+    "levelsWithCodeElements": [
+      {
+        "codeElementUri": "koulutustyyppikouta_telma",
+        "codeElementVersion": 1,
+        "passive": false
+      }
+    ],
     "koodiUri": "koulutustyyppi_5",
     "versio": 2,
     "koodiArvo": "5"
@@ -44395,7 +44556,13 @@
       }
     ],
     "includesCodeElements": [],
-    "levelsWithCodeElements": [],
+    "levelsWithCodeElements": [
+      {
+        "codeElementUri": "koulutustyyppikouta_taiteenperusopetus",
+        "codeElementVersion": 1,
+        "passive": false
+      }
+    ],
     "koodiUri": "koulutustyyppi_999907",
     "versio": 1,
     "koodiArvo": "999907"

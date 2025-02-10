@@ -34563,6 +34563,16 @@
         "passive": true
       },
       {
+        "codeElementUri": "koulutus_672102",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "koulutus_672202",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
         "codeElementUri": "koulutus_651999",
         "codeElementVersion": 9,
         "passive": true
@@ -47247,6 +47257,16 @@
         "passive": false
       },
       {
+        "codeElementUri": "koulutus_772102",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "koulutus_772202",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
         "codeElementUri": "koulutus_751303",
         "codeElementVersion": 1,
         "passive": false
@@ -51793,6 +51813,11 @@
       {
         "codeElementUri": "koulutus_835365",
         "codeElementVersion": 12,
+        "passive": false
+      },
+      {
+        "codeElementUri": "koulutus_826116",
+        "codeElementVersion": 1,
         "passive": false
       }
     ],

@@ -6,17 +6,6 @@
   "lukittu": null,
   "withinCodes": [
     {
-      "codesUri": "oppilaitostyyppifasetti",
-      "codesVersion": 1,
-      "passive": false,
-      "nimi": {
-        "FI": "Oppilaitostyyppifasetti"
-      },
-      "kuvaus": {
-        "FI": "Oppilaitostyyppifasetti"
-      }
-    },
-    {
       "codesUri": "haunkohdejoukko",
       "codesVersion": 1,
       "passive": false,
@@ -29,6 +18,17 @@
         "SV": "haun kohdejoukko",
         "FI": "haun kohdejoukko",
         "EN": "haun kohdejoukko"
+      }
+    },
+    {
+      "codesUri": "oppilaitostyyppifasetti",
+      "codesVersion": 1,
+      "passive": false,
+      "nimi": {
+        "FI": "Oppilaitostyyppifasetti"
+      },
+      "kuvaus": {
+        "FI": "Oppilaitostyyppifasetti"
       }
     },
     {
@@ -48,6 +48,21 @@
     }
   ],
   "includesCodes": [
+    {
+      "codesUri": "koulutusasteoph2002",
+      "codesVersion": 1,
+      "passive": false,
+      "nimi": {
+        "SV": "koulutusasteoph2002",
+        "FI": "koulutusasteoph2002",
+        "EN": "koulutusasteoph2002"
+      },
+      "kuvaus": {
+        "SV": "koulutusasteoph2002",
+        "FI": "koulutusasteoph2002",
+        "EN": "koulutusasteoph2002"
+      }
+    },
     {
       "codesUri": "koulutustyyppi",
       "codesVersion": 1,
@@ -74,23 +89,8 @@
       },
       "kuvaus": {
         "SV": "koulutustyyppi",
-        "FI": "Koulutustarjontapalvelun käyttöliittymän käytössä oleva koodisto",
+        "FI": "Vanhan koulutustarjontapalvelun (tarjonta-service) käyttöliittymän käytössä oleva koodisto. Käytössä myös KOSKI-palvelussa",
         "EN": "koulutustyyppi"
-      }
-    },
-    {
-      "codesUri": "koulutusasteoph2002",
-      "codesVersion": 1,
-      "passive": false,
-      "nimi": {
-        "SV": "koulutusasteoph2002",
-        "FI": "koulutusasteoph2002",
-        "EN": "koulutusasteoph2002"
-      },
-      "kuvaus": {
-        "SV": "koulutusasteoph2002",
-        "FI": "koulutusasteoph2002",
-        "EN": "koulutusasteoph2002"
       }
     }
   ],
@@ -104,20 +104,6 @@
   "voimassaLoppuPvm": null,
   "tila": "LUONNOS",
   "metadata": [
-    {
-      "kieli": "EN",
-      "nimi": "Type of educational institution",
-      "kuvaus": "Type of educational institution",
-      "kayttoohje": null,
-      "kasite": null,
-      "kohdealue": null,
-      "sitovuustaso": null,
-      "kohdealueenOsaAlue": null,
-      "toimintaymparisto": null,
-      "tarkentaaKoodistoa": null,
-      "huomioitavaKoodisto": null,
-      "koodistonLahde": null
-    },
     {
       "kieli": "FI",
       "nimi": "oppilaitostyyppi",
@@ -136,6 +122,20 @@
       "kieli": "SV",
       "nimi": "läroanstaltstyp",
       "kuvaus": "läroanstaltstyp",
+      "kayttoohje": null,
+      "kasite": null,
+      "kohdealue": null,
+      "sitovuustaso": null,
+      "kohdealueenOsaAlue": null,
+      "toimintaymparisto": null,
+      "tarkentaaKoodistoa": null,
+      "huomioitavaKoodisto": null,
+      "koodistonLahde": null
+    },
+    {
+      "kieli": "EN",
+      "nimi": "Type of educational institution",
+      "kuvaus": "Type of educational institution",
       "kayttoohje": null,
       "kasite": null,
       "kohdealue": null,

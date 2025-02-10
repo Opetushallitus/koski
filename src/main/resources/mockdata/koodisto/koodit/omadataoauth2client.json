@@ -2,62 +2,6 @@
   {
     "metadata": [
       {
-        "nimi": "OAuth2 sample client (fi)",
-        "kuvaus": "",
-        "lyhytNimi": "",
-        "kieli": "FI"
-      },
-      {
-        "nimi": "OAuth2 sample client (sv)",
-        "kuvaus": "",
-        "lyhytNimi": "",
-        "kieli": "SV"
-      },
-      {
-        "nimi": "OAuth2 sample client (en)",
-        "kuvaus": "",
-        "lyhytNimi": "",
-        "kieli": "EN"
-      }
-    ],
-    "withinCodeElements": [],
-    "includesCodeElements": [],
-    "levelsWithCodeElements": [],
-    "koodiUri": "omadataoauth2client_oauth2sample",
-    "versio": 1,
-    "koodiArvo": "oauth2sample"
-  },
-  {
-    "metadata": [
-      {
-        "nimi": "OAuth2 sample no logout client (fi)",
-        "kuvaus": "",
-        "lyhytNimi": "",
-        "kieli": "FI"
-      },
-      {
-        "nimi": "OAuth2 sample no logout client (sv)",
-        "kuvaus": "",
-        "lyhytNimi": "",
-        "kieli": "SV"
-      },
-      {
-        "nimi": "OAuth2 sample no logout client (en)",
-        "kuvaus": "",
-        "lyhytNimi": "",
-        "kieli": "EN"
-      }
-    ],
-    "withinCodeElements": [],
-    "includesCodeElements": [],
-    "levelsWithCodeElements": [],
-    "koodiUri": "omadataoauth2client_omadataoauth2samplenologout",
-    "versio": 1,
-    "koodiArvo": "omadataoauth2samplenologout"
-  },
-  {
-    "metadata": [
-      {
         "nimi": "OAuth2 debug client (fi)",
         "kuvaus": "",
         "lyhytNimi": "",
@@ -114,19 +58,19 @@
   {
     "metadata": [
       {
-        "nimi": "OAuth2 debug client 3 (fi)",
+        "nimi": "OAuth2 sample client (fi)",
         "kuvaus": "",
         "lyhytNimi": "",
         "kieli": "FI"
       },
       {
-        "nimi": "OAuth2 debug client 3 (sv)",
+        "nimi": "OAuth2 sample client (sv)",
         "kuvaus": "",
         "lyhytNimi": "",
         "kieli": "SV"
       },
       {
-        "nimi": "OAuth2 debug client 3 (en)",
+        "nimi": "OAuth2 sample client (en)",
         "kuvaus": "",
         "lyhytNimi": "",
         "kieli": "EN"
@@ -135,8 +79,8 @@
     "withinCodeElements": [],
     "includesCodeElements": [],
     "levelsWithCodeElements": [],
-    "koodiUri": "omadataoauth2client_oauth2clientnologout",
+    "koodiUri": "omadataoauth2client_oauth2sample",
     "versio": 1,
-    "koodiArvo": "oauth2clientnologout"
+    "koodiArvo": "oauth2sample"
   }
 ]

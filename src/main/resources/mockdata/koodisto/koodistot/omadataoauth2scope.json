@@ -1,6 +1,6 @@
 {
   "koodistoUri": "omadataoauth2scope",
-  "resourceUri": "https://virkailija.opintopolku.fi/koodisto-service/rest/codes/omadataoauth2scopes",
+  "resourceUri": "https://virkailija.opintopolku.fi/koodisto-service/rest/codes/omadataoauth2scope",
   "omistaja": null,
   "organisaatioOid": "1.2.246.562.10.00000000001",
   "lukittu": null,
@@ -10,12 +10,26 @@
   "codesGroupUri": "koski",
   "version": 0,
   "versio": 1,
-  "paivitysPvm": "2023-03-13",
+  "paivitysPvm": "2024-10-18",
   "paivittajaOid": "1.2.246.562.24.98063222086",
   "voimassaAlkuPvm": "2023-01-01",
   "voimassaLoppuPvm": null,
   "tila": "LUONNOS",
   "metadata": [
+    {
+      "kieli": "FI",
+      "nimi": "omadataoauth2 scope",
+      "kuvaus": "omadataoauth2 scope",
+      "kayttoohje": null,
+      "kasite": null,
+      "kohdealue": null,
+      "sitovuustaso": null,
+      "kohdealueenOsaAlue": null,
+      "toimintaymparisto": null,
+      "tarkentaaKoodistoa": null,
+      "huomioitavaKoodisto": null,
+      "koodistonLahde": null
+    },
     {
       "kieli": "SV",
       "nimi": "omadataoauth2 scope",
@@ -32,20 +46,6 @@
     },
     {
       "kieli": "EN",
-      "nimi": "omadataoauth2 scope",
-      "kuvaus": "omadataoauth2 scope",
-      "kayttoohje": null,
-      "kasite": null,
-      "kohdealue": null,
-      "sitovuustaso": null,
-      "kohdealueenOsaAlue": null,
-      "toimintaymparisto": null,
-      "tarkentaaKoodistoa": null,
-      "huomioitavaKoodisto": null,
-      "koodistonLahde": null
-    },
-    {
-      "kieli": "FI",
       "nimi": "omadataoauth2 scope",
       "kuvaus": "omadataoauth2 scope",
       "kayttoohje": null,
