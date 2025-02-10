@@ -189,6 +189,16 @@ class PostgresKoskiOpiskeluoikeusRepository(
       """.as[LocalDate])
   }
 
+  def getKoulutusmuodonAlkamisajatIlmanKäyttöoikeustarkistusta(
+    oppijaOid: String,
+    koulutusmuoto: String
+  ): Map[Opiskeluoikeus.Oid, LocalDate] = runDbSync(sql"""
+      SELECT oid, alkamispaiva
+      FROM opiskeluoikeus
+      WHERE oppija_oid = $oppijaOid
+        AND koulutusmuoto = $koulutusmuoto
+  """.as[(String, LocalDate)]).toMap
+
   private implicit def getLocalDate: GetResult[LocalDate] = GetResult(r => {
     r.getLocalDate("paiva")
   })

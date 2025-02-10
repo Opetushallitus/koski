@@ -1,3 +1,7 @@
+## x.1.2025
+
+- Lisätty IB-opiskeluoikeuden kursseille mahdollisuus tallentaa laajuus kurssien sijaan opintopisteinä.
+
 ## 11.12.2024
 
 - Lisätty ammatillisen opiskeluoikeuden lisätietoihin uusi kenttä `siirtynytUusiinTutkinnonPerusteisiin`, joka ilmaisee opiskeluoikeuden päättymisen syyksi siirtymisen uudempiin perusteisiin.
