@@ -1993,6 +1993,8 @@
   "raportti-excel-kolumni-fysiikka": "Fysiikka",
   "raportti-excel-kolumni-vaikeastiVammainen": "Vaikeimmin kehitysvammainen",
   "raportti-excel-kolumni-pakollisenAidinkielenOppimaara": "Äidinkielen oppimäärä",
+  "raportti-excel-kolumni-omanÄidinkielenArvosanaJaLaajuus": "Oman äidinkielen arvosana ja laajuus",
+  "raportti-excel-kolumni-omanÄidinkielenKieli": "Oman äidinkielen kieli",
   "raportti-excel-kolumni-vammainen": "Vammainen",
   "raportti-excel-kolumni-opiskeluoikeusOid": "Opiskeluoikeuden oid",
   "deprecated:Kenttä ei ole käytössä": "Kenttä ei ole käytössä",

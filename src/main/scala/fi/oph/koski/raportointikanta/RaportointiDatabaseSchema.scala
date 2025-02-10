@@ -866,6 +866,15 @@ case class RPäätasonSuoritusRow(
   def opintokokokonaisuusDatasta: Option[Koodistokoodiviite] =
     JsonSerializer.extract[Option[Koodistokoodiviite]](data \ "koulutusmoduuli" \ "opintokokonaisuus")
 
+  def omanÄidinkielenOpinnotLaajuusDatasta: Option[String] =
+    JsonSerializer.extract[Option[String]](data \ "omanÄidinkielenOpinnot" \ "laajuus" \ "arvo")
+
+  def omanÄidinkielenOpinnotArvosanaDatasta: Option[String] =
+    JsonSerializer.extract[Option[String]](data \ "omanÄidinkielenOpinnot" \ "arvosana" \ "koodiarvo")
+
+  def omanÄidinkielenOpinnotKieliDatasta: Option[String] =
+    JsonSerializer.extract[Option[String]](data \ "omanÄidinkielenOpinnot" \ "kieli" \ "koodiarvo")
+
   def koulutusModuulistaKäytettäväNimi(lang: String): Option[String] = {
     JsonSerializer.extract[Option[LocalizedString]](data \ "koulutusmoduuli" \ "tunniste" \ "nimi").map(_.get(lang))
       .orElse(koulutusmoduuliNimi)
