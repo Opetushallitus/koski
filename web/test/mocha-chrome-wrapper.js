@@ -8,19 +8,19 @@ process.on('unhandledRejection', (reason, promise) => {
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const { exec } = require('child_process')
 
-setInterval(function () {
-  exec('../scripts/cpuhogs.sh', function (err, stdout, stderr) {
-    console.log(stderr)
-    console.log(stdout)
-  })
-  exec('../scripts/memhogs.sh', function (err, stdout, stderr) {
-    console.log(stderr)
-    console.log(stdout)
-  })
-  exec('../scripts/filehogs.sh', function (err, stdout, stderr) {
-    console.log(stderr)
-    console.log(stdout)
-  })
-}, 60000)
+// setInterval(function () {
+//   exec('../scripts/cpuhogs.sh', function (err, stdout, stderr) {
+//     console.log(stderr)
+//     console.log(stdout)
+//   })
+//   exec('../scripts/memhogs.sh', function (err, stdout, stderr) {
+//     console.log(stderr)
+//     console.log(stdout)
+//   })
+//   exec('../scripts/filehogs.sh', function (err, stdout, stderr) {
+//     console.log(stderr)
+//     console.log(stdout)
+//   })
+// }, 60000)
 
 require('mocha-chrome/cli.js')
