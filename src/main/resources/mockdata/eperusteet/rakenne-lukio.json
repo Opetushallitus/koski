@@ -12,8 +12,8 @@
   "toteutus": "lops",
   "koulutukset": [],
   "kielet": [
-    "sv",
-    "fi"
+    "fi",
+    "sv"
   ],
   "kuvaus": {
     "_id": "1431926",
@@ -84,7 +84,12 @@
   "suoritustavat": [
     {
       "suoritustapakoodi": "lukiokoulutus",
-      "laajuusYksikko": "KURSSI"
+      "laajuusYksikko": "KURSSI",
+      "perusteenOsa": {
+        "osanTyyppi": "tutkinnon_muodostuminen",
+        "nimi": null,
+        "meta": null
+      }
     }
   ],
   "lukiokoulutus": {

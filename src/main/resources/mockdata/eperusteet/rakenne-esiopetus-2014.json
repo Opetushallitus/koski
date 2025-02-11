@@ -1,7 +1,7 @@
 {
   "id": 419551,
   "globalVersion": {
-    "aikaleima": 1702986376507
+    "aikaleima": 1728995572003
   },
   "nimi": {
     "_id": "881328",
@@ -12,8 +12,8 @@
   "toteutus": "yksinkertainen",
   "koulutukset": [],
   "kielet": [
-    "sv",
-    "fi"
+    "fi",
+    "sv"
   ],
   "kuvaus": {
     "_id": "4653556",
@@ -41,9 +41,9 @@
   "siirtymaPaattyy": null,
   "voimassaoloLoppuu": null,
   "paatospvm": 1419199200000,
-  "viimeisinJulkaisuAika": 1687157150969,
+  "viimeisinJulkaisuAika": 1728995572003,
   "luotu": 1422024343692,
-  "muokattu": 1702986376503,
+  "muokattu": 1705563934876,
   "tila": "valmis",
   "tyyppi": "normaali",
   "koulutusvienti": false,
