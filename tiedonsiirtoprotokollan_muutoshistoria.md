@@ -1,3 +1,7 @@
+## 11.2.2025
+
+- Jakolinkkeihin näkyville tieto yksilöllistetyistä oppiaineista ja osaamisen arvioinnin mukauttamisesta
+
 ## 11.12.2024
 
 - Lisätty ammatillisen opiskeluoikeuden lisätietoihin uusi kenttä `siirtynytUusiinTutkinnonPerusteisiin`, joka ilmaisee opiskeluoikeuden päättymisen syyksi siirtymisen uudempiin perusteisiin.
