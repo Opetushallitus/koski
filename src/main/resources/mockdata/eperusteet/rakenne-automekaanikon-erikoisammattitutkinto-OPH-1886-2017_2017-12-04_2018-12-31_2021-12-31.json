@@ -24,8 +24,8 @@
     }
   ],
   "kielet": [
-    "sv",
-    "fi"
+    "fi",
+    "sv"
   ],
   "kuvaus": {
     "_id": "4386241",
@@ -164,7 +164,8 @@
                     "tunniste": "8a993c67-2a87-4b86-ac78-836e8491add4",
                     "pakollinen": true,
                     "erikoisuus": null,
-                    "_tutkinnonOsaViite": "2448038"
+                    "_tutkinnonOsaViite": "2448038",
+                    "nimi": null
                   },
                   {
                     "kuvaus": null,
@@ -172,7 +173,8 @@
                     "tunniste": "b16e1318-d445-47bb-9c6f-0ca70fa4e60b",
                     "pakollinen": true,
                     "erikoisuus": null,
-                    "_tutkinnonOsaViite": "2449202"
+                    "_tutkinnonOsaViite": "2449202",
+                    "nimi": null
                   }
                 ],
                 "versioId": null
@@ -205,7 +207,8 @@
                     "tunniste": "e34892a1-464a-4fff-b781-0b45b3978705",
                     "pakollinen": false,
                     "erikoisuus": null,
-                    "_tutkinnonOsaViite": "2449204"
+                    "_tutkinnonOsaViite": "2449204",
+                    "nimi": null
                   },
                   {
                     "kuvaus": null,
@@ -213,7 +216,8 @@
                     "tunniste": "5a465abc-c00e-4b91-b6fc-7b8c5474a96e",
                     "pakollinen": false,
                     "erikoisuus": null,
-                    "_tutkinnonOsaViite": "2449205"
+                    "_tutkinnonOsaViite": "2449205",
+                    "nimi": null
                   },
                   {
                     "kuvaus": null,
@@ -221,7 +225,8 @@
                     "tunniste": "55ea032d-01bc-4bbe-a00b-1743d48edab2",
                     "pakollinen": false,
                     "erikoisuus": null,
-                    "_tutkinnonOsaViite": "2449206"
+                    "_tutkinnonOsaViite": "2449206",
+                    "nimi": null
                   },
                   {
                     "kuvaus": null,
@@ -229,7 +234,8 @@
                     "tunniste": "64695ab0-2fe5-4cf1-ad1b-240ac74b5b39",
                     "pakollinen": false,
                     "erikoisuus": null,
-                    "_tutkinnonOsaViite": "2449207"
+                    "_tutkinnonOsaViite": "2449207",
+                    "nimi": null
                   },
                   {
                     "kuvaus": null,
@@ -237,7 +243,8 @@
                     "tunniste": "f7b0ce91-6575-48af-8f48-b3e43b48bd69",
                     "pakollinen": false,
                     "erikoisuus": null,
-                    "_tutkinnonOsaViite": "2451568"
+                    "_tutkinnonOsaViite": "2451568",
+                    "nimi": null
                   },
                   {
                     "kuvaus": null,
@@ -245,7 +252,8 @@
                     "tunniste": "3bb890a7-557c-457f-b991-d32c7de7464b",
                     "pakollinen": false,
                     "erikoisuus": null,
-                    "_tutkinnonOsaViite": "2451870"
+                    "_tutkinnonOsaViite": "2451870",
+                    "nimi": null
                   },
                   {
                     "kuvaus": null,
@@ -253,7 +261,8 @@
                     "tunniste": "1cbfd537-4e38-4f46-ad81-14292d957baf",
                     "pakollinen": false,
                     "erikoisuus": null,
-                    "_tutkinnonOsaViite": "2451871"
+                    "_tutkinnonOsaViite": "2451871",
+                    "nimi": null
                   },
                   {
                     "kuvaus": null,
@@ -327,7 +336,8 @@
                     "tunniste": "93b8105d-f0eb-4b07-b4ba-ac6671811b32",
                     "pakollinen": true,
                     "erikoisuus": null,
-                    "_tutkinnonOsaViite": "2448038"
+                    "_tutkinnonOsaViite": "2448038",
+                    "nimi": null
                   },
                   {
                     "kuvaus": null,
@@ -335,7 +345,8 @@
                     "tunniste": "9e24fa48-1b98-41b6-979f-2c891c138551",
                     "pakollinen": true,
                     "erikoisuus": null,
-                    "_tutkinnonOsaViite": "2449202"
+                    "_tutkinnonOsaViite": "2449202",
+                    "nimi": null
                   }
                 ],
                 "versioId": null
@@ -368,7 +379,8 @@
                     "tunniste": "a4d5e4cf-0bae-489f-b46d-c73f629bc154",
                     "pakollinen": false,
                     "erikoisuus": null,
-                    "_tutkinnonOsaViite": "2449204"
+                    "_tutkinnonOsaViite": "2449204",
+                    "nimi": null
                   },
                   {
                     "kuvaus": null,
@@ -376,7 +388,8 @@
                     "tunniste": "438592f7-ed6e-4845-bb3c-8c2287663d6e",
                     "pakollinen": false,
                     "erikoisuus": null,
-                    "_tutkinnonOsaViite": "2449205"
+                    "_tutkinnonOsaViite": "2449205",
+                    "nimi": null
                   },
                   {
                     "kuvaus": null,
@@ -384,7 +397,8 @@
                     "tunniste": "d5acdd69-36f8-454b-9ca9-119ddd770784",
                     "pakollinen": false,
                     "erikoisuus": null,
-                    "_tutkinnonOsaViite": "2449206"
+                    "_tutkinnonOsaViite": "2449206",
+                    "nimi": null
                   },
                   {
                     "kuvaus": null,
@@ -392,7 +406,8 @@
                     "tunniste": "1d2db594-e745-4850-b3ac-9a2032ecbcea",
                     "pakollinen": false,
                     "erikoisuus": null,
-                    "_tutkinnonOsaViite": "2449207"
+                    "_tutkinnonOsaViite": "2449207",
+                    "nimi": null
                   },
                   {
                     "kuvaus": null,
@@ -400,7 +415,8 @@
                     "tunniste": "268e4da5-bdcc-467b-92ac-be13d174e15d",
                     "pakollinen": false,
                     "erikoisuus": null,
-                    "_tutkinnonOsaViite": "2451568"
+                    "_tutkinnonOsaViite": "2451568",
+                    "nimi": null
                   },
                   {
                     "kuvaus": null,
@@ -408,7 +424,8 @@
                     "tunniste": "684967fa-8b56-4618-a726-4b6949be60d1",
                     "pakollinen": false,
                     "erikoisuus": null,
-                    "_tutkinnonOsaViite": "2451870"
+                    "_tutkinnonOsaViite": "2451870",
+                    "nimi": null
                   },
                   {
                     "kuvaus": null,
@@ -416,7 +433,8 @@
                     "tunniste": "a0d80ce8-2284-4d7d-8bbf-d523a747fff5",
                     "pakollinen": false,
                     "erikoisuus": null,
-                    "_tutkinnonOsaViite": "2451871"
+                    "_tutkinnonOsaViite": "2451871",
+                    "nimi": null
                   },
                   {
                     "kuvaus": {
@@ -494,7 +512,8 @@
                     "tunniste": "10b00a06-8a21-4eff-8625-ea1e4ce0406e",
                     "pakollinen": true,
                     "erikoisuus": null,
-                    "_tutkinnonOsaViite": "2448038"
+                    "_tutkinnonOsaViite": "2448038",
+                    "nimi": null
                   },
                   {
                     "kuvaus": null,
@@ -502,7 +521,8 @@
                     "tunniste": "5d8bb452-d2ed-4f2a-9775-9e0d53fac519",
                     "pakollinen": true,
                     "erikoisuus": null,
-                    "_tutkinnonOsaViite": "2449203"
+                    "_tutkinnonOsaViite": "2449203",
+                    "nimi": null
                   }
                 ],
                 "versioId": null
@@ -535,7 +555,8 @@
                     "tunniste": "01030a10-7487-41b1-bd4b-4b96212fb422",
                     "pakollinen": false,
                     "erikoisuus": null,
-                    "_tutkinnonOsaViite": "2449204"
+                    "_tutkinnonOsaViite": "2449204",
+                    "nimi": null
                   },
                   {
                     "kuvaus": null,
@@ -543,7 +564,8 @@
                     "tunniste": "a6b7dbff-e5d0-48ce-9166-3f58d862f549",
                     "pakollinen": false,
                     "erikoisuus": null,
-                    "_tutkinnonOsaViite": "2449205"
+                    "_tutkinnonOsaViite": "2449205",
+                    "nimi": null
                   },
                   {
                     "kuvaus": null,
@@ -551,7 +573,8 @@
                     "tunniste": "d45abfe7-bb88-4c5a-afb3-d74325aaf955",
                     "pakollinen": false,
                     "erikoisuus": null,
-                    "_tutkinnonOsaViite": "2449206"
+                    "_tutkinnonOsaViite": "2449206",
+                    "nimi": null
                   },
                   {
                     "kuvaus": null,
@@ -559,7 +582,8 @@
                     "tunniste": "408a65d1-8a64-428a-adb6-d8d7e5f1425c",
                     "pakollinen": false,
                     "erikoisuus": null,
-                    "_tutkinnonOsaViite": "2449207"
+                    "_tutkinnonOsaViite": "2449207",
+                    "nimi": null
                   },
                   {
                     "kuvaus": null,
@@ -567,7 +591,8 @@
                     "tunniste": "6d55d44e-a700-43a5-a635-183b892d1f81",
                     "pakollinen": false,
                     "erikoisuus": null,
-                    "_tutkinnonOsaViite": "2451568"
+                    "_tutkinnonOsaViite": "2451568",
+                    "nimi": null
                   },
                   {
                     "kuvaus": null,
@@ -575,7 +600,8 @@
                     "tunniste": "9e2b0daf-e5d5-4561-8d2f-35a94eb4f020",
                     "pakollinen": false,
                     "erikoisuus": null,
-                    "_tutkinnonOsaViite": "2451870"
+                    "_tutkinnonOsaViite": "2451870",
+                    "nimi": null
                   },
                   {
                     "kuvaus": null,
@@ -583,7 +609,8 @@
                     "tunniste": "70741cc2-e25b-47b4-89a5-26ada94ca66a",
                     "pakollinen": false,
                     "erikoisuus": null,
-                    "_tutkinnonOsaViite": "2451871"
+                    "_tutkinnonOsaViite": "2451871",
+                    "nimi": null
                   },
                   {
                     "kuvaus": null,
@@ -923,6 +950,11 @@
           }
         ]
       },
+      "perusteenOsa": {
+        "osanTyyppi": "tutkinnon_muodostuminen",
+        "nimi": null,
+        "meta": null
+      },
       "tutkinnonOsaViitteet": [
         {
           "id": 2449206,
@@ -1005,6 +1037,7 @@
       "koodiUri": "tutkinnonosat_300054",
       "koodiArvo": "300054",
       "laajuus": null,
+      "tutkinnonosaViiteId": 2448038,
       "osaAlueet": [],
       "tyyppi": "normaali",
       "valmaTelmaSisalto": null,
@@ -1605,6 +1638,14 @@
         "_tunniste": "5d419138-265e-45a5-a33e-4e40bba5b12b",
         "fi": "<p>Tutkinnon suorittaja osaa</p>\n\n<ul>\n\t<li>toimia asiakaspalvelutilanteessa ja ottaa vastaan töitä</li>\n\t<li>määritellä vian ja tehdä korjaussuunnitelman</li>\n\t<li>suunnitella työnsä ja huomioida yhteistyön eri osastojen välillä</li>\n\t<li>korjata ajoneuvon</li>\n\t<li>luovuttaa valmiin työn asiakkaalle.</li>\n</ul>",
         "sv": "<p>Examinanden kan</p>\n\n<p>• sköta kundservicesituationer och ta emot arbeten</p>\n\n<p>• diagnostisera ett fel och göra upp en reparationsplan</p>\n\n<p>• planera sitt arbete och ta hänsyn till samarbetet mellan olika avdelningar</p>\n\n<p>• reparera fordon</p>\n\n<p>• överlämna ett färdigt arbete till kunden.</p>"
+      },
+      "perusteenOsa": {
+        "osanTyyppi": "tutkinnonosa",
+        "nimi": {
+          "fi": "Korjauksen haltuunotto",
+          "sv": "Behärskande av reparationsprocessen"
+        },
+        "meta": null
       }
     },
     {
@@ -1634,6 +1675,7 @@
       "koodiUri": "tutkinnonosat_300051",
       "koodiArvo": "300051",
       "laajuus": null,
+      "tutkinnonosaViiteId": 2449202,
       "osaAlueet": [],
       "tyyppi": "normaali",
       "valmaTelmaSisalto": null,
@@ -2090,6 +2132,14 @@
         "_tunniste": "4e8eab09-e7d7-4340-8dfe-b0ff835e4d5e",
         "fi": "<p>Tutkinnon suorittaja osaa:</p>\n\n<ul>\n\t<li>toimia asiakaspalvelutilanteessa ja ottaa vastaan töitä</li>\n\t<li>ottaa vastaan ajoneuvoon liittyvän, diagnosointia edellyttävän sähköjärjestelmän työn</li>\n\t<li>tehdä nykyaikaiseen ajoneuvoon vianmäärityksen työsuunnitelman ja kustannuslaskelman</li>\n\t<li>tehdä nykyaikaiseen ajoneuvoon vianmäärityksen</li>\n\t<li>luovuttaa valmiin työn asiakkaalle.</li>\n</ul>",
         "sv": "<p>Examinanden kan:</p>\n\n<p>• sköta kundservicesituationer och ta emot arbeten</p>\n\n<p>• ta emot ett arbete som gäller elsystemet i ett fordon och som kräver diagnostisering</p>\n\n<p>• göra upp en arbetsplan och en kostnadskalkyl för diagnostisering av ett fel i ett modernt fordon</p>\n\n<p>• diagnostisera ett fel i ett modernt fordon</p>\n\n<p>• överlämna ett färdigt arbete till kunden.</p>"
+      },
+      "perusteenOsa": {
+        "osanTyyppi": "tutkinnonosa",
+        "nimi": {
+          "fi": "Ajoneuvon vianmääritys",
+          "sv": "Diagnostisering av fel hos fordon"
+        },
+        "meta": null
       }
     },
     {
@@ -2119,6 +2169,7 @@
       "koodiUri": "tutkinnonosat_300057",
       "koodiArvo": "300057",
       "laajuus": null,
+      "tutkinnonosaViiteId": 2449204,
       "osaAlueet": [],
       "tyyppi": "normaali",
       "valmaTelmaSisalto": null,
@@ -2411,6 +2462,14 @@
         "_tunniste": "74b88999-5f23-4a65-b7b8-16b776baacb1",
         "fi": "<p>Tutkinnon suorittaja osaa:</p>\n\n<ul>\n\t<li>ylläpitää ja jakaa teknistä tietoa</li>\n\t<li>kehittää ja ylläpitää korjaamon teknisiä toimintoja</li>\n\t<li>laskea laitehankintojen kannattavuuden.</li>\n</ul>",
         "sv": "<p>Examinanden kan:</p>\n\n<p>• uppdatera och distribuera teknisk information</p>\n\n<p>• utveckla och underhålla en verkstads tekniska aktiviteter</p>\n\n<p>• beräkna lönsamheten för inköp av utrustning.</p>"
+      },
+      "perusteenOsa": {
+        "osanTyyppi": "tutkinnonosa",
+        "nimi": {
+          "fi": "Teknisenä asiantuntijana toimiminen",
+          "sv": "Arbete som teknisk expert"
+        },
+        "meta": null
       }
     },
     {
@@ -2440,6 +2499,7 @@
       "koodiUri": "tutkinnonosat_300058",
       "koodiArvo": "300058",
       "laajuus": null,
+      "tutkinnonosaViiteId": 2449205,
       "osaAlueet": [],
       "tyyppi": "normaali",
       "valmaTelmaSisalto": null,
@@ -2984,6 +3044,14 @@
         "_tunniste": "bb3a28dd-da87-4b8e-9524-136bd7e8af06",
         "fi": "<p>Tutkinnon suorittaja osaa</p>\n\n<ul>\n\t<li>noudattaa kilpa-autoiluun ja ajoneuvojen testaukseen liittyviä sääntöjä ja määräyksiä toiminnassaan</li>\n\t<li>muuttaa alustan säätöjä ajoneuvon käyttäytymisestä annetun palautteen perusteella</li>\n\t<li>suunnitella kilpa-auton sähköjärjestelmän ja mitoittaa siihen liittyvät komponentit</li>\n\t<li>käyttää tiedonkeruujärjestelmää muuttaakseen moottorin tai oheislaitteen toimintaa halutulla tavalla</li>\n\t<li>määrittää syyn moottorin ja voimansiirron ei-toivottuun toimintaan ja osaa ohjeistaa vian korjauksen</li>\n\t<li>toimia kilpa-auto- tai testausmekaanikon työskentely-ympäristössä ja osana tiimin organisaatiota.</li>\n</ul>",
         "sv": "<p>Examinanden kan</p>\n\n<p>• följa de regler och föreskrifter som gäller biltävlingar och testning av fordon</p>\n\n<p>• ändra chassiinställningar utifrån respons om fordonets beteende</p>\n\n<p>• planera elsystemet för en tävlingsbil och dimensionera de komponenter som hör samman med det</p>\n\n<p>• använda ett datainsamlingssystem för att ändra motorns eller kringutrustningens funktion på önskat sätt</p>\n\n<p>• identifiera orsaken till motorns eller transmissionens oönskade funktion och ge instruktioner om hur felet ska åtgärdas</p>\n\n<p>• verka i en miljö där mekaniker arbetar med tävlingsbilar eller testning och medverka i ett teams organisation.</p>"
+      },
+      "perusteenOsa": {
+        "osanTyyppi": "tutkinnonosa",
+        "nimi": {
+          "fi": "Testaus ja kilpailutoiminta",
+          "sv": "Testning och tävlingsverksamhet"
+        },
+        "meta": null
       }
     },
     {
@@ -3013,6 +3081,7 @@
       "koodiUri": "tutkinnonosat_300056",
       "koodiArvo": "300056",
       "laajuus": null,
+      "tutkinnonosaViiteId": 2449206,
       "osaAlueet": [],
       "tyyppi": "normaali",
       "valmaTelmaSisalto": null,
@@ -3299,6 +3368,14 @@
         "_tunniste": "537f066b-de8f-484b-89b2-2041a54bba34",
         "fi": "<p>Tutkinnon suorittaja osaa</p>\n\n<ul>\n\t<li>tehdä riskikartoituksen sähkö- ja hybridiajoneuvoon</li>\n\t<li>määrittää korkeajännitejärjestelmän vian ja tehdä korjaussuunnitelman</li>\n\t<li>tehdä jännitetöitä.</li>\n</ul>",
         "sv": "<p>Examinanden kan</p>\n\n<p>• utföra en riskkartläggning som gäller ett elfordon och ett hybridfordon</p>\n\n<p>• diagnostisera fel i ett högspänningssystem och göra upp en reparationsplan</p>\n\n<p>• utföra spänningsarbeten.</p>"
+      },
+      "perusteenOsa": {
+        "osanTyyppi": "tutkinnonosa",
+        "nimi": {
+          "fi": "Sähköajoneuvojen korjaus",
+          "sv": "Reparation av elfordon"
+        },
+        "meta": null
       }
     },
     {
@@ -3328,6 +3405,7 @@
       "koodiUri": "tutkinnonosat_300055",
       "koodiArvo": "300055",
       "laajuus": null,
+      "tutkinnonosaViiteId": 2449207,
       "osaAlueet": [],
       "tyyppi": "normaali",
       "valmaTelmaSisalto": null,
@@ -3710,6 +3788,14 @@
         "_tunniste": "be7ad782-6636-4b52-b6f2-8322f8cb88b4",
         "fi": "<p>Tutkinnon suorittaja osaa</p>\n\n<ul>\n\t<li>suunnitella ja tehdä korjauksia ja muutostöitä päälli- tai korirakenteisiin</li>\n\t<li>korjata sähköhydrauliikka- ja sähköpneumatiikkajärjestelmiä</li>\n\t<li>korjata jäähdytys- ja lämmityslaitteistoja.</li>\n</ul>",
         "sv": "<p>Examinanden kan</p>\n\n<p>• planera och utföra reparationer och ändringar av överredes- eller karosskonstruktioner</p>\n\n<p>• reparera elhydrauliska och elpneumatiska system</p>\n\n<p>• reparera kyl- och uppvärmningsanordningar.</p>"
+      },
+      "perusteenOsa": {
+        "osanTyyppi": "tutkinnonosa",
+        "nimi": {
+          "fi": "Päälli- ja korirakenteiden asennus sekä korjaus",
+          "sv": "Montering och reparation av överredes- och karosskonstruktioner"
+        },
+        "meta": null
       }
     },
     {
@@ -3739,6 +3825,7 @@
       "koodiUri": "tutkinnonosat_300052",
       "koodiArvo": "300052",
       "laajuus": null,
+      "tutkinnonosaViiteId": 2451568,
       "osaAlueet": [],
       "tyyppi": "normaali",
       "valmaTelmaSisalto": null,
@@ -4097,6 +4184,14 @@
         "_tunniste": "3998a827-c05f-4f1f-a1c7-61a897cd4da3",
         "fi": "<p>Tutkinnon suorittaja osaa:</p>\n\n<ul>\n\t<li>tehdä sähköpneumaattisesti ohjattujen ilmajousitusrakenteiden vianhaun ja korjaukset</li>\n\t<li>tehdä sähköisesti ohjattujen jarrujärjestelmien vianhaun ja korjauksen</li>\n\t<li>tehdä ajonhallintajärjestelmien vianhaun ja korjaukset.</li>\n</ul>",
         "sv": "<p>Examinanden kan:</p>\n\n<ul>\n\t<li>söka fel på elpneumatiskt styrda luftfjädringskonstruktioner och reparera dem</li>\n\t<li>söka fel på elstyrda bromssystem och reparera dem</li>\n\t<li>söka fel hos systemen för elektronisk stabilitetskontroll och reparera dem.</li>\n</ul>"
+      },
+      "perusteenOsa": {
+        "osanTyyppi": "tutkinnonosa",
+        "nimi": {
+          "fi": "Alusta- ja jarrujärjestelmien asiantuntijana toimiminen",
+          "sv": "Arbete som expert på chassi- och bromssystem"
+        },
+        "meta": null
       }
     },
     {
@@ -4126,6 +4221,7 @@
       "koodiUri": "tutkinnonosat_300053",
       "koodiArvo": "300053",
       "laajuus": null,
+      "tutkinnonosaViiteId": 2451870,
       "osaAlueet": [],
       "tyyppi": "normaali",
       "valmaTelmaSisalto": null,
@@ -4428,6 +4524,14 @@
         "_tunniste": "e2c34b87-0aa9-4bb8-b744-17c96d98aebc",
         "fi": "<p>Tutkinnon suorittaja osaa</p>\n\n<ul>\n\t<li>käyttää valmistajakohtaisia huollon ja itsediagnostiikan työkaluja ja ohjelmistoja</li>\n\t<li>tehdä erilaisiin väylätekniikkoihin liittyviä korjauksia</li>\n\t<li>eliminoida sähköstaattisen purkauksen (ESD) ja sähkömagneettisen yhteensopivuuden (EMC) vaikutukset</li>\n\t<li>tehdä komponenttien vaihtoihin liittyvät kalibroinnit, virittämiset ja sopeuttamiset.</li>\n</ul>",
         "sv": "<p>Examinanden kan</p>\n\n<p>• använda tillverkarspecifika verktyg och datorprogram för underhåll och självdiagnostik</p>\n\n<p>• göra reparationer som rör olika busstekniker</p>\n\n<p>• eliminera effekterna av elektrostatisk urladdning (ESD) och elektromagnetisk kompatibilitet (EMC)</p>\n\n<p>• göra de kalibreringar, trimningar och anpassningar som behövs vid byte av komponenter.</p>"
+      },
+      "perusteenOsa": {
+        "osanTyyppi": "tutkinnonosa",
+        "nimi": {
+          "fi": "Koneenohjausjärjestelmien ylläpito ja säätäminen",
+          "sv": "Underhåll och reglering av maskinstyrningssystem"
+        },
+        "meta": null
       }
     },
     {
@@ -4457,6 +4561,7 @@
       "koodiUri": "tutkinnonosat_300050",
       "koodiArvo": "300050",
       "laajuus": null,
+      "tutkinnonosaViiteId": 2451871,
       "osaAlueet": [],
       "tyyppi": "normaali",
       "valmaTelmaSisalto": null,
@@ -4735,6 +4840,14 @@
         "_tunniste": "5fa24e65-c40d-4f87-97d8-b20a055991e9",
         "fi": "<p>Tutkinnon suorittaja osaa:</p>\n\n<ul>\n\t<li>tunnistaa kehittämisen kohteita</li>\n\t<li>suunnitella kehitystehtävän</li>\n\t<li>toteuttaa kehitystehtävä</li>\n\t<li>esitellä kehitystehtävän.</li>\n</ul>",
         "sv": "<p>Examinanden kan:</p>\n\n<p>• identifiera utvecklingsområden</p>\n\n<p>• planera en utvecklingsuppgift</p>\n\n<p>• genomföra utvecklingsuppgiften</p>\n\n<p>• presentera utvecklingsuppgiften.</p>"
+      },
+      "perusteenOsa": {
+        "osanTyyppi": "tutkinnonosa",
+        "nimi": {
+          "fi": "Ajoneuvoalan kehitystehtävä",
+          "sv": "Utvecklingsuppgift inom fordonsbranschen"
+        },
+        "meta": null
       }
     },
     {
@@ -4764,6 +4877,7 @@
       "koodiUri": "tutkinnonosat_300059",
       "koodiArvo": "300059",
       "laajuus": null,
+      "tutkinnonosaViiteId": 2449203,
       "osaAlueet": [],
       "tyyppi": "normaali",
       "valmaTelmaSisalto": null,
@@ -5312,6 +5426,14 @@
         "_tunniste": "33c5676c-d62e-489d-8aed-f099215e2a80",
         "fi": "<p>Tutkinnon suorittaja osaa</p>\n\n<ul>\n\t<li>ottaa vastaan työkoneeseen liittyvän, diagnosointia edellyttävän työn</li>\n\t<li>muodostaa dokumentaation ja lähtötietojen perusteella kokonaiskuvan oireeseen liittyvistä, tutkittavista järjestelmistä</li>\n\t<li>tehdä nykyaikaiseen työkoneeseen vianmäärityksen työsuunnitelman ja kustannuslaskelman</li>\n\t<li>tehdä nykyaikaiseen työkoneeseen vianmäärityksen</li>\n\t<li>säätää ja virittää järjestelmän toimintakuntoon</li>\n\t<li>tehdä toimintakunnon varmistuksen.</li>\n</ul>",
         "sv": "<p>Examinanden kan</p>\n\n<p>• ta emot ett arbete som gäller en arbetsmaskin och som kräver diagnostisering</p>\n\n<p>• utifrån dokumentation och utgångsdata skapa sig en helhetsbild av de system som symtomet i fråga hör ihop med och som ska undersökas</p>\n\n<p>• göra upp en arbetsplan och en kostnadskalkyl för diagnostisering av fel i en modern arbetsmaskin</p>\n\n<p>• diagnostisera fel i en modern arbetsmaskin</p>\n\n<p>• ställa in och trimma system så att de fungerar</p>\n\n<p>• göra en funktionskontroll.</p>"
+      },
+      "perusteenOsa": {
+        "osanTyyppi": "tutkinnonosa",
+        "nimi": {
+          "fi": "Työkoneiden vianmääritykset",
+          "sv": "Diagnostisering av fel hos arbetsmaskiner"
+        },
+        "meta": null
       }
     }
   ]

@@ -45,6 +45,11 @@
     {
       "suoritustapakoodi": "lukiokoulutus2019",
       "laajuusYksikko": "OPINTOPISTE",
+      "perusteenOsa": {
+        "osanTyyppi": "tutkinnon_muodostuminen",
+        "nimi": null,
+        "meta": null
+      },
       "tutkinnonOsaViitteet": []
     }
   ],
@@ -54,8 +59,6 @@
         {
           "id": 7824180,
           "nimi": {
-            "_id": "7824003",
-            "_tunniste": "efc5a842-3f34-40ea-b692-abfef79ef56b",
             "fi": "Hyvinvointiosaaminen",
             "sv": "Kompetens för välbefinnande"
           },
@@ -74,13 +77,19 @@
             "_id": "7845041",
             "_tunniste": "2510674d-5336-4e15-8627-69118bc36ab5",
             "fi": "<ul>\n\t<li>Huolenpito itsestä ja muista</li>\n\t<li>Omien vahvuuksien tunnistaminen ja käyttäminen sekä identiteetin rakentaminen</li>\n\t<li>Sinnikkyys muutosten ja yllätysten maailmassa</li>\n</ul>"
+          },
+          "perusteenOsa": {
+            "osanTyyppi": "lukio_laajaalainen_osaaminen",
+            "nimi": {
+              "fi": "Hyvinvointiosaaminen",
+              "sv": "Kompetens för välbefinnande"
+            },
+            "meta": null
           }
         },
         {
           "id": 7824181,
           "nimi": {
-            "_id": "7824214",
-            "_tunniste": "4770dca6-0018-4c08-bc73-1b3933d3d3b0",
             "fi": "Vuorovaikutusosaaminen",
             "sv": "Kommunikativ kompetens"
           },
@@ -99,13 +108,19 @@
             "_id": "7845042",
             "_tunniste": "027857c4-312b-48bf-a300-dbab6dedce9a",
             "fi": "<ul>\n\t<li>Tunne- ja empatiataidot</li>\n\t<li>Sosiaaliset taidot, yhteistyökyky ja yhdessä oppimisen taidot</li>\n\t<li>Kielitietoisuus ja rakentavan viestinnän taito</li>\n</ul>"
+          },
+          "perusteenOsa": {
+            "osanTyyppi": "lukio_laajaalainen_osaaminen",
+            "nimi": {
+              "fi": "Vuorovaikutusosaaminen",
+              "sv": "Kommunikativ kompetens"
+            },
+            "meta": null
           }
         },
         {
           "id": 7824182,
           "nimi": {
-            "_id": "7824215",
-            "_tunniste": "09575a52-889d-45f6-b955-293af6325b79",
             "fi": "Monitieteinen ja luova osaaminen",
             "sv": "Tvärvetenskaplig och kreativ kompetens"
           },
@@ -124,13 +139,19 @@
             "_id": "7845043",
             "_tunniste": "d269afcb-2342-4b0c-89ee-3e44881bc187",
             "fi": "<ul>\n\t<li>Uteliaisuus ja motivaatio oppia sekä etsiä merkityksiä ja yhdistellä asioita uudenlaisilla tavoilla</li>\n\t<li>Oppimisen säätely, lähdekriittisyys ja jatkuva oppimistaitojen kehittäminen</li>\n\t<li>Monilukutaito digiajassa</li>\n</ul>"
+          },
+          "perusteenOsa": {
+            "osanTyyppi": "lukio_laajaalainen_osaaminen",
+            "nimi": {
+              "fi": "Monitieteinen ja luova osaaminen",
+              "sv": "Tvärvetenskaplig och kreativ kompetens"
+            },
+            "meta": null
           }
         },
         {
           "id": 7824183,
           "nimi": {
-            "_id": "7824216",
-            "_tunniste": "7076e227-8c7f-44cc-86e7-7ee1da44d3a0",
             "fi": "Yhteiskunnallinen osaaminen",
             "sv": "Samhällelig kompetens"
           },
@@ -149,13 +170,19 @@
             "_id": "7845044",
             "_tunniste": "1ec1f95c-9e7a-462a-aee3-4837b66ae99e",
             "fi": "<ul>\n\t<li>Demokratiataidot, vaikuttaminen turvallisen, okeudenmukaisen ja kestävän tulevaisuuden puolesta</li>\n\t<li>Osaamisen käyttäminen sekä omaksi että yhteiskunnan hyväksi</li>\n\t<li>Uudistumiskyky, työelämävalmiudet ja yrittäjämäinen asenne</li>\n</ul>"
+          },
+          "perusteenOsa": {
+            "osanTyyppi": "lukio_laajaalainen_osaaminen",
+            "nimi": {
+              "fi": "Yhteiskunnallinen osaaminen",
+              "sv": "Samhällelig kompetens"
+            },
+            "meta": null
           }
         },
         {
           "id": 7824184,
           "nimi": {
-            "_id": "7824217",
-            "_tunniste": "82f692da-3350-4d1c-b80b-7ad52797025e",
             "fi": "Eettisyys ja ympäristöosaaminen",
             "sv": "Etisk kompetens och miljökompetens"
           },
@@ -174,13 +201,19 @@
             "_id": "7845045",
             "_tunniste": "41554a60-0b22-48ff-92f5-815710d3d324",
             "fi": "<ul>\n\t<li>Arvolähtöinen ja eettinen toiminta yhteiseksi hyväksi</li>\n\t<li>Luonnon monimuotoisuuden arvostaminen ja tutkimustietoon perustuva ilmasto-osaaminen</li>\n\t<li>Kiertotalouden ymmärtäminen ja kestävä kuluttajuus</li>\n</ul>"
+          },
+          "perusteenOsa": {
+            "osanTyyppi": "lukio_laajaalainen_osaaminen",
+            "nimi": {
+              "fi": "Eettisyys ja ympäristöosaaminen",
+              "sv": "Etisk kompetens och miljökompetens"
+            },
+            "meta": null
           }
         },
         {
           "id": 7824185,
           "nimi": {
-            "_id": "7824218",
-            "_tunniste": "790dc191-9be9-4197-b8dd-25dde3631d90",
             "fi": "Globaali- ja kulttuuriosaaminen",
             "sv": "Global och kulturell kompetens"
           },
@@ -199,6 +232,14 @@
             "_id": "7845046",
             "_tunniste": "42ab729b-8a4b-4677-aedb-a582f8e23577",
             "fi": "<ul>\n\t<li>Kansainvälisyysvalmiudet ja maailmankansalaisen asenne</li>\n\t<li>Suomalaisen, eurooppalaisen ja globaalin kulttuuriperinnön tuntemus sekä kulttuurisen moninaisuuden ymmärtäminen</li>\n\t<li>Eettinen toimijuus globaaliss media ja teknologiaaailmassa</li>\n</ul>"
+          },
+          "perusteenOsa": {
+            "osanTyyppi": "lukio_laajaalainen_osaaminen",
+            "nimi": {
+              "fi": "Globaali- ja kulttuuriosaaminen",
+              "sv": "Global och kulturell kompetens"
+            },
+            "meta": null
           }
         }
       ]
@@ -287,8 +328,6 @@
               {
                 "id": 7838044,
                 "nimi": {
-                  "_id": "7864804",
-                  "_tunniste": "a9fa8e99-7772-418c-b903-04eaba59446a",
                   "fi": "Kielitaito osana opiskelua ja muita elämänalueita"
                 },
                 "pakollinen": true,
@@ -355,13 +394,18 @@
                     ]
                   }
                 ],
-                "_oppiaine": "7823728"
+                "_oppiaine": "7823728",
+                "perusteenOsa": {
+                  "osanTyyppi": "lukio_moduuli",
+                  "nimi": {
+                    "fi": "Kielitaito osana opiskelua ja muita elämänalueita"
+                  },
+                  "meta": null
+                }
               },
               {
                 "id": 7838045,
                 "nimi": {
-                  "_id": "7864805",
-                  "_tunniste": "54d2bb4f-66e0-4436-9388-de402370faee",
                   "fi": "Arkipäivän vuorovaikutusta"
                 },
                 "pakollinen": true,
@@ -433,13 +477,18 @@
                     ]
                   }
                 ],
-                "_oppiaine": "7823728"
+                "_oppiaine": "7823728",
+                "perusteenOsa": {
+                  "osanTyyppi": "lukio_moduuli",
+                  "nimi": {
+                    "fi": "Arkipäivän vuorovaikutusta"
+                  },
+                  "meta": null
+                }
               },
               {
                 "id": 7838046,
                 "nimi": {
-                  "_id": "7864806",
-                  "_tunniste": "5010221b-7168-4cce-b8eb-8168df833499",
                   "fi": "Mediat"
                 },
                 "pakollinen": true,
@@ -496,10 +545,24 @@
                     ]
                   }
                 ],
-                "_oppiaine": "7823728"
+                "_oppiaine": "7823728",
+                "perusteenOsa": {
+                  "osanTyyppi": "lukio_moduuli",
+                  "nimi": {
+                    "fi": "Mediat"
+                  },
+                  "meta": null
+                }
               }
             ],
-            "oppimaarat": []
+            "oppimaarat": [],
+            "perusteenOsa": {
+              "osanTyyppi": "lukio_oppiaine",
+              "nimi": {
+                "fi": "Perusopetuksessa alkanut kieli"
+              },
+              "meta": null
+            }
           },
           {
             "id": 7823729,
@@ -547,8 +610,6 @@
               {
                 "id": 7838047,
                 "nimi": {
-                  "_id": "7864808",
-                  "_tunniste": "669a3be7-b90d-4d46-96c1-2660962bd8e0",
                   "fi": "Kieleen tutustuminen"
                 },
                 "pakollinen": true,
@@ -610,13 +671,18 @@
                     ]
                   }
                 ],
-                "_oppiaine": "7823729"
+                "_oppiaine": "7823729",
+                "perusteenOsa": {
+                  "osanTyyppi": "lukio_moduuli",
+                  "nimi": {
+                    "fi": "Kieleen tutustuminen"
+                  },
+                  "meta": null
+                }
               },
               {
                 "id": 7838048,
                 "nimi": {
-                  "_id": "7864809",
-                  "_tunniste": "d6b4dd01-0e90-4f00-ab85-0f7e97749230",
                   "fi": "Asioiminen ja harrastukset"
                 },
                 "pakollinen": true,
@@ -688,13 +754,18 @@
                     ]
                   }
                 ],
-                "_oppiaine": "7823729"
+                "_oppiaine": "7823729",
+                "perusteenOsa": {
+                  "osanTyyppi": "lukio_moduuli",
+                  "nimi": {
+                    "fi": "Asioiminen ja harrastukset"
+                  },
+                  "meta": null
+                }
               },
               {
                 "id": 7838049,
                 "nimi": {
-                  "_id": "7864970",
-                  "_tunniste": "3fbe2ce9-6339-4b54-a830-b68cbca0b689",
                   "fi": "Elinympäristö ja sosiaaliset verkostot"
                 },
                 "pakollinen": true,
@@ -756,10 +827,24 @@
                     ]
                   }
                 ],
-                "_oppiaine": "7823729"
+                "_oppiaine": "7823729",
+                "perusteenOsa": {
+                  "osanTyyppi": "lukio_moduuli",
+                  "nimi": {
+                    "fi": "Elinympäristö ja sosiaaliset verkostot"
+                  },
+                  "meta": null
+                }
               }
             ],
-            "oppimaarat": []
+            "oppimaarat": [],
+            "perusteenOsa": {
+              "osanTyyppi": "lukio_oppiaine",
+              "nimi": {
+                "fi": "Lukiokoulutukseen valmistavassa koulutuksessa alkava kieli"
+              },
+              "meta": null
+            }
           },
           {
             "id": 7838524,
@@ -807,8 +892,6 @@
               {
                 "id": 7839540,
                 "nimi": {
-                  "_id": "7864972",
-                  "_tunniste": "7defffc6-f3b7-4cde-b312-590e14434d69",
                   "fi": "Kieli ja identiteetti"
                 },
                 "pakollinen": true,
@@ -870,13 +953,18 @@
                     ]
                   }
                 ],
-                "_oppiaine": "7838524"
+                "_oppiaine": "7838524",
+                "perusteenOsa": {
+                  "osanTyyppi": "lukio_moduuli",
+                  "nimi": {
+                    "fi": "Kieli ja identiteetti"
+                  },
+                  "meta": null
+                }
               },
               {
                 "id": 7839541,
                 "nimi": {
-                  "_id": "7864973",
-                  "_tunniste": "85d6bf57-ae33-4d0f-8b65-7d085f3b53b8",
                   "fi": "Kirjoittaminen ja nykykulttuuri"
                 },
                 "pakollinen": true,
@@ -933,13 +1021,18 @@
                     ]
                   }
                 ],
-                "_oppiaine": "7838524"
+                "_oppiaine": "7838524",
+                "perusteenOsa": {
+                  "osanTyyppi": "lukio_moduuli",
+                  "nimi": {
+                    "fi": "Kirjoittaminen ja nykykulttuuri"
+                  },
+                  "meta": null
+                }
               },
               {
                 "id": 7839542,
                 "nimi": {
-                  "_id": "7864974",
-                  "_tunniste": "194fca22-6401-4e4b-a637-39882bdd9e73",
                   "fi": "Puheviestinnän taitojen syventäminen"
                 },
                 "pakollinen": true,
@@ -1001,12 +1094,35 @@
                     ]
                   }
                 ],
-                "_oppiaine": "7838524"
+                "_oppiaine": "7838524",
+                "perusteenOsa": {
+                  "osanTyyppi": "lukio_moduuli",
+                  "nimi": {
+                    "fi": "Puheviestinnän taitojen syventäminen"
+                  },
+                  "meta": null
+                }
               }
             ],
-            "oppimaarat": []
+            "oppimaarat": [],
+            "perusteenOsa": {
+              "osanTyyppi": "lukio_oppiaine",
+              "nimi": {
+                "fi": "Opiskelijan oma äidinkieli"
+              },
+              "meta": null
+            }
           }
-        ]
+        ],
+        "perusteenOsa": {
+          "osanTyyppi": "lukio_oppiaine",
+          "nimi": {
+            "_id": "7838318",
+            "_tunniste": "f3d0248b-0421-44c5-8e86-f536ba430353",
+            "fi": "Muut kielet"
+          },
+          "meta": null
+        }
       },
       {
         "id": 7838520,
@@ -1034,7 +1150,16 @@
         "pakollisetModuulitKuvaus": null,
         "valinnaisetModuulitKuvaus": null,
         "moduulit": [],
-        "oppimaarat": []
+        "oppimaarat": [],
+        "perusteenOsa": {
+          "osanTyyppi": "lukio_oppiaine",
+          "nimi": {
+            "_id": "7838466",
+            "_tunniste": "8997a76d-1269-44a6-b10f-12741609477b",
+            "fi": "Valinnaiset opinnot"
+          },
+          "meta": null
+        }
       },
       {
         "id": 7823725,
@@ -1112,8 +1237,6 @@
               {
                 "id": 7837832,
                 "nimi": {
-                  "_id": "7864976",
-                  "_tunniste": "21c688f7-6658-41d3-b39c-93976d9c0112",
                   "fi": "Kielitietoisuus"
                 },
                 "pakollinen": true,
@@ -1190,13 +1313,18 @@
                     ]
                   }
                 ],
-                "_oppiaine": "7823726"
+                "_oppiaine": "7823726",
+                "perusteenOsa": {
+                  "osanTyyppi": "lukio_moduuli",
+                  "nimi": {
+                    "fi": "Kielitietoisuus"
+                  },
+                  "meta": null
+                }
               },
               {
                 "id": 7837833,
                 "nimi": {
-                  "_id": "7864977",
-                  "_tunniste": "1adccbd7-5f21-4908-831b-8297e92f7015",
                   "fi": "Tekstitietoisuus"
                 },
                 "pakollinen": true,
@@ -1258,13 +1386,18 @@
                     ]
                   }
                 ],
-                "_oppiaine": "7823726"
+                "_oppiaine": "7823726",
+                "perusteenOsa": {
+                  "osanTyyppi": "lukio_moduuli",
+                  "nimi": {
+                    "fi": "Tekstitietoisuus"
+                  },
+                  "meta": null
+                }
               },
               {
                 "id": 7837834,
                 "nimi": {
-                  "_id": "7864978",
-                  "_tunniste": "9e6fe90c-e3b4-4f1e-aab7-c377dc517f6c",
                   "fi": "Eri tiedonalojen kieli"
                 },
                 "pakollinen": true,
@@ -1341,13 +1474,18 @@
                     ]
                   }
                 ],
-                "_oppiaine": "7823726"
+                "_oppiaine": "7823726",
+                "perusteenOsa": {
+                  "osanTyyppi": "lukio_moduuli",
+                  "nimi": {
+                    "fi": "Eri tiedonalojen kieli"
+                  },
+                  "meta": null
+                }
               },
               {
                 "id": 7837835,
                 "nimi": {
-                  "_id": "7864979",
-                  "_tunniste": "6a6dd35a-cb71-440a-982e-1e9aa78120bf",
                   "fi": "Tekstien kirjoittaminen ja tuottaminen"
                 },
                 "pakollinen": true,
@@ -1419,13 +1557,18 @@
                     ]
                   }
                 ],
-                "_oppiaine": "7823726"
+                "_oppiaine": "7823726",
+                "perusteenOsa": {
+                  "osanTyyppi": "lukio_moduuli",
+                  "nimi": {
+                    "fi": "Tekstien kirjoittaminen ja tuottaminen"
+                  },
+                  "meta": null
+                }
               },
               {
                 "id": 7837836,
                 "nimi": {
-                  "_id": "7865100",
-                  "_tunniste": "e5ae6ab9-b1fe-485c-ba50-d21f30cf0f7e",
                   "fi": "Eri tiedonalojen tekstien kirjoittaminen"
                 },
                 "pakollinen": true,
@@ -1486,13 +1629,18 @@
                     ]
                   }
                 ],
-                "_oppiaine": "7823726"
+                "_oppiaine": "7823726",
+                "perusteenOsa": {
+                  "osanTyyppi": "lukio_moduuli",
+                  "nimi": {
+                    "fi": "Eri tiedonalojen tekstien kirjoittaminen"
+                  },
+                  "meta": null
+                }
               },
               {
                 "id": 7837837,
                 "nimi": {
-                  "_id": "7865101",
-                  "_tunniste": "2453a31c-f284-4167-a0f2-57891c3f6026",
                   "fi": "Vuorovaikutus 1"
                 },
                 "pakollinen": true,
@@ -1564,13 +1712,18 @@
                     ]
                   }
                 ],
-                "_oppiaine": "7823726"
+                "_oppiaine": "7823726",
+                "perusteenOsa": {
+                  "osanTyyppi": "lukio_moduuli",
+                  "nimi": {
+                    "fi": "Vuorovaikutus 1"
+                  },
+                  "meta": null
+                }
               },
               {
                 "id": 7837838,
                 "nimi": {
-                  "_id": "7865102",
-                  "_tunniste": "368778d4-6034-41c7-8b3b-1af398cf3706",
                   "fi": "Kirjallisuus 1"
                 },
                 "pakollinen": true,
@@ -1637,13 +1790,18 @@
                     ]
                   }
                 ],
-                "_oppiaine": "7823726"
+                "_oppiaine": "7823726",
+                "perusteenOsa": {
+                  "osanTyyppi": "lukio_moduuli",
+                  "nimi": {
+                    "fi": "Kirjallisuus 1"
+                  },
+                  "meta": null
+                }
               },
               {
                 "id": 7837839,
                 "nimi": {
-                  "_id": "7865103",
-                  "_tunniste": "60f7b47f-24c5-4c60-a7f1-58de138c1a39",
                   "fi": "Kirjallisuus 2"
                 },
                 "pakollinen": true,
@@ -1705,13 +1863,18 @@
                     ]
                   }
                 ],
-                "_oppiaine": "7823726"
+                "_oppiaine": "7823726",
+                "perusteenOsa": {
+                  "osanTyyppi": "lukio_moduuli",
+                  "nimi": {
+                    "fi": "Kirjallisuus 2"
+                  },
+                  "meta": null
+                }
               },
               {
                 "id": 7838040,
                 "nimi": {
-                  "_id": "7865104",
-                  "_tunniste": "92054af1-f8ca-40d8-90d5-b8960acded55",
                   "fi": "Kulttuurinen moninaisuus"
                 },
                 "pakollinen": true,
@@ -1773,13 +1936,18 @@
                     ]
                   }
                 ],
-                "_oppiaine": "7823726"
+                "_oppiaine": "7823726",
+                "perusteenOsa": {
+                  "osanTyyppi": "lukio_moduuli",
+                  "nimi": {
+                    "fi": "Kulttuurinen moninaisuus"
+                  },
+                  "meta": null
+                }
               },
               {
                 "id": 7838041,
                 "nimi": {
-                  "_id": "7865106",
-                  "_tunniste": "7d7a803e-b928-4e5f-9f99-0013bd1318d2",
                   "fi": "Vuorovaikutus 2"
                 },
                 "pakollinen": true,
@@ -1866,13 +2034,18 @@
                     ]
                   }
                 ],
-                "_oppiaine": "7823726"
+                "_oppiaine": "7823726",
+                "perusteenOsa": {
+                  "osanTyyppi": "lukio_moduuli",
+                  "nimi": {
+                    "fi": "Vuorovaikutus 2"
+                  },
+                  "meta": null
+                }
               },
               {
                 "id": 7838042,
                 "nimi": {
-                  "_id": "7865107",
-                  "_tunniste": "1d262f94-76d8-4299-85b5-5a9621f907e4",
                   "fi": "Digitaaliset tekstitaidot"
                 },
                 "pakollinen": true,
@@ -1949,13 +2122,18 @@
                     ]
                   }
                 ],
-                "_oppiaine": "7823726"
+                "_oppiaine": "7823726",
+                "perusteenOsa": {
+                  "osanTyyppi": "lukio_moduuli",
+                  "nimi": {
+                    "fi": "Digitaaliset tekstitaidot"
+                  },
+                  "meta": null
+                }
               },
               {
                 "id": 7838043,
                 "nimi": {
-                  "_id": "7865108",
-                  "_tunniste": "3d986385-0803-4b85-80a0-66b4a593aa5b",
                   "fi": "Mediakulttuuri"
                 },
                 "pakollinen": true,
@@ -2027,10 +2205,24 @@
                     ]
                   }
                 ],
-                "_oppiaine": "7823726"
+                "_oppiaine": "7823726",
+                "perusteenOsa": {
+                  "osanTyyppi": "lukio_moduuli",
+                  "nimi": {
+                    "fi": "Mediakulttuuri"
+                  },
+                  "meta": null
+                }
               }
             ],
-            "oppimaarat": []
+            "oppimaarat": [],
+            "perusteenOsa": {
+              "osanTyyppi": "lukio_oppiaine",
+              "nimi": {
+                "fi": "Suomi toisena kielenä ja kirjallisuus"
+              },
+              "meta": null
+            }
           },
           {
             "id": 7838525,
@@ -2080,8 +2272,6 @@
               {
                 "id": 7853720,
                 "nimi": {
-                  "_id": "7865230",
-                  "_tunniste": "6e6799d4-726f-4050-8479-5f7ad9615a10",
                   "fi": "Kielitietoisuus"
                 },
                 "pakollinen": true,
@@ -2158,13 +2348,18 @@
                     ]
                   }
                 ],
-                "_oppiaine": "7838525"
+                "_oppiaine": "7838525",
+                "perusteenOsa": {
+                  "osanTyyppi": "lukio_moduuli",
+                  "nimi": {
+                    "fi": "Kielitietoisuus"
+                  },
+                  "meta": null
+                }
               },
               {
                 "id": 7853721,
                 "nimi": {
-                  "_id": "7865233",
-                  "_tunniste": "612ea7ce-a442-48d5-bf18-9087c9d8a845",
                   "fi": "Tekstitietoisuus"
                 },
                 "pakollinen": true,
@@ -2226,13 +2421,18 @@
                     ]
                   }
                 ],
-                "_oppiaine": "7838525"
+                "_oppiaine": "7838525",
+                "perusteenOsa": {
+                  "osanTyyppi": "lukio_moduuli",
+                  "nimi": {
+                    "fi": "Tekstitietoisuus"
+                  },
+                  "meta": null
+                }
               },
               {
                 "id": 7853722,
                 "nimi": {
-                  "_id": "7865234",
-                  "_tunniste": "5a963fe2-0d63-482a-8cc5-53f57e102532",
                   "fi": "Eri tiedonalojen kieli"
                 },
                 "pakollinen": true,
@@ -2304,13 +2504,18 @@
                     ]
                   }
                 ],
-                "_oppiaine": "7838525"
+                "_oppiaine": "7838525",
+                "perusteenOsa": {
+                  "osanTyyppi": "lukio_moduuli",
+                  "nimi": {
+                    "fi": "Eri tiedonalojen kieli"
+                  },
+                  "meta": null
+                }
               },
               {
                 "id": 7853723,
                 "nimi": {
-                  "_id": "7865235",
-                  "_tunniste": "8008e357-9562-440c-afa7-6d8aecc3db11",
                   "fi": "Tekstien kirjoittaminen ja tuottaminen"
                 },
                 "pakollinen": true,
@@ -2382,13 +2587,18 @@
                     ]
                   }
                 ],
-                "_oppiaine": "7838525"
+                "_oppiaine": "7838525",
+                "perusteenOsa": {
+                  "osanTyyppi": "lukio_moduuli",
+                  "nimi": {
+                    "fi": "Tekstien kirjoittaminen ja tuottaminen"
+                  },
+                  "meta": null
+                }
               },
               {
                 "id": 7853724,
                 "nimi": {
-                  "_id": "7865236",
-                  "_tunniste": "581b7a54-16f4-4255-a6bc-2e2ebf55373a",
                   "fi": "Eri tiedonalojen tekstien kirjoittaminen"
                 },
                 "pakollinen": true,
@@ -2450,13 +2660,18 @@
                     ]
                   }
                 ],
-                "_oppiaine": "7838525"
+                "_oppiaine": "7838525",
+                "perusteenOsa": {
+                  "osanTyyppi": "lukio_moduuli",
+                  "nimi": {
+                    "fi": "Eri tiedonalojen tekstien kirjoittaminen"
+                  },
+                  "meta": null
+                }
               },
               {
                 "id": 7853725,
                 "nimi": {
-                  "_id": "7865237",
-                  "_tunniste": "303b2bfd-625d-45c1-a2f4-a15eb366f115",
                   "fi": "Vuorovaikutus 1"
                 },
                 "pakollinen": true,
@@ -2528,13 +2743,18 @@
                     ]
                   }
                 ],
-                "_oppiaine": "7838525"
+                "_oppiaine": "7838525",
+                "perusteenOsa": {
+                  "osanTyyppi": "lukio_moduuli",
+                  "nimi": {
+                    "fi": "Vuorovaikutus 1"
+                  },
+                  "meta": null
+                }
               },
               {
                 "id": 7853726,
                 "nimi": {
-                  "_id": "7865238",
-                  "_tunniste": "e1e8942d-01fb-4878-ad08-da815e8068c8",
                   "fi": "Kirjallisuus 1"
                 },
                 "pakollinen": true,
@@ -2601,13 +2821,18 @@
                     ]
                   }
                 ],
-                "_oppiaine": "7838525"
+                "_oppiaine": "7838525",
+                "perusteenOsa": {
+                  "osanTyyppi": "lukio_moduuli",
+                  "nimi": {
+                    "fi": "Kirjallisuus 1"
+                  },
+                  "meta": null
+                }
               },
               {
                 "id": 7853727,
                 "nimi": {
-                  "_id": "7865330",
-                  "_tunniste": "d56df476-854c-4cb6-9612-e0d94ac3e5d2",
                   "fi": "Kirjallisuus 2"
                 },
                 "pakollinen": true,
@@ -2669,13 +2894,18 @@
                     ]
                   }
                 ],
-                "_oppiaine": "7838525"
+                "_oppiaine": "7838525",
+                "perusteenOsa": {
+                  "osanTyyppi": "lukio_moduuli",
+                  "nimi": {
+                    "fi": "Kirjallisuus 2"
+                  },
+                  "meta": null
+                }
               },
               {
                 "id": 7853728,
                 "nimi": {
-                  "_id": "7865336",
-                  "_tunniste": "c5da1376-676f-4e6c-abcf-7fc938069f7a",
                   "fi": "Kulttuurinen moninaisuus"
                 },
                 "pakollinen": true,
@@ -2737,13 +2967,18 @@
                     ]
                   }
                 ],
-                "_oppiaine": "7838525"
+                "_oppiaine": "7838525",
+                "perusteenOsa": {
+                  "osanTyyppi": "lukio_moduuli",
+                  "nimi": {
+                    "fi": "Kulttuurinen moninaisuus"
+                  },
+                  "meta": null
+                }
               },
               {
                 "id": 7853729,
                 "nimi": {
-                  "_id": "7865337",
-                  "_tunniste": "93da6649-4b57-4b0d-aae1-23402ae05ef0",
                   "fi": "Vuorovaikutus 2"
                 },
                 "pakollinen": true,
@@ -2830,13 +3065,18 @@
                     ]
                   }
                 ],
-                "_oppiaine": "7838525"
+                "_oppiaine": "7838525",
+                "perusteenOsa": {
+                  "osanTyyppi": "lukio_moduuli",
+                  "nimi": {
+                    "fi": "Vuorovaikutus 2"
+                  },
+                  "meta": null
+                }
               },
               {
                 "id": 7853740,
                 "nimi": {
-                  "_id": "7865338",
-                  "_tunniste": "e1b07da6-c29a-43df-b9b1-c0b865adcea7",
                   "fi": "Digitaaliset tekstitaidot"
                 },
                 "pakollinen": true,
@@ -2913,13 +3153,18 @@
                     ]
                   }
                 ],
-                "_oppiaine": "7838525"
+                "_oppiaine": "7838525",
+                "perusteenOsa": {
+                  "osanTyyppi": "lukio_moduuli",
+                  "nimi": {
+                    "fi": "Digitaaliset tekstitaidot"
+                  },
+                  "meta": null
+                }
               },
               {
                 "id": 7853741,
                 "nimi": {
-                  "_id": "7865339",
-                  "_tunniste": "dc6cfccc-c2f3-4e18-9a32-991a17d5c48a",
                   "fi": "Mediakulttuuri"
                 },
                 "pakollinen": true,
@@ -2991,12 +3236,35 @@
                     ]
                   }
                 ],
-                "_oppiaine": "7838525"
+                "_oppiaine": "7838525",
+                "perusteenOsa": {
+                  "osanTyyppi": "lukio_moduuli",
+                  "nimi": {
+                    "fi": "Mediakulttuuri"
+                  },
+                  "meta": null
+                }
               }
             ],
-            "oppimaarat": []
+            "oppimaarat": [],
+            "perusteenOsa": {
+              "osanTyyppi": "lukio_oppiaine",
+              "nimi": {
+                "fi": "Ruotsi toisena kielenä ja kirjallisuus",
+                "sv": "Svenska som andraspråk och litteratur"
+              },
+              "meta": null
+            }
           }
-        ]
+        ],
+        "perusteenOsa": {
+          "osanTyyppi": "lukio_oppiaine",
+          "nimi": {
+            "fi": "Äidinkieli ja kirjallisuus",
+            "sv": "Modersmål och litteratur"
+          },
+          "meta": null
+        }
       },
       {
         "id": 7838521,
@@ -3050,8 +3318,6 @@
           {
             "id": 7839548,
             "nimi": {
-              "_id": "7865460",
-              "_tunniste": "340db0b1-7e9a-465c-99e0-04db58fae9af",
               "fi": "Opinto-ohjaus"
             },
             "pakollinen": true,
@@ -3198,10 +3464,24 @@
                 ]
               }
             ],
-            "_oppiaine": "7838521"
+            "_oppiaine": "7838521",
+            "perusteenOsa": {
+              "osanTyyppi": "lukio_moduuli",
+              "nimi": {
+                "fi": "Opinto-ohjaus"
+              },
+              "meta": null
+            }
           }
         ],
-        "oppimaarat": []
+        "oppimaarat": [],
+        "perusteenOsa": {
+          "osanTyyppi": "lukio_oppiaine",
+          "nimi": {
+            "fi": "Opinto-ohjaus"
+          },
+          "meta": null
+        }
       },
       {
         "id": 7838522,
@@ -3249,8 +3529,6 @@
           {
             "id": 7839543,
             "nimi": {
-              "_id": "7865462",
-              "_tunniste": "78215938-c464-40eb-ae5b-3e659ce57c1b",
               "fi": "Matematiikka"
             },
             "pakollinen": true,
@@ -3297,10 +3575,24 @@
                 ]
               }
             ],
-            "_oppiaine": "7838522"
+            "_oppiaine": "7838522",
+            "perusteenOsa": {
+              "osanTyyppi": "lukio_moduuli",
+              "nimi": {
+                "fi": "Matematiikka"
+              },
+              "meta": null
+            }
           }
         ],
-        "oppimaarat": []
+        "oppimaarat": [],
+        "perusteenOsa": {
+          "osanTyyppi": "lukio_oppiaine",
+          "nimi": {
+            "fi": "Matematiikka"
+          },
+          "meta": null
+        }
       },
       {
         "id": 7838523,
@@ -3348,8 +3640,6 @@
           {
             "id": 7839546,
             "nimi": {
-              "_id": "7865468",
-              "_tunniste": "a518801a-39f3-465d-bd64-6c3f38267a2b",
               "fi": "Historian perusteita"
             },
             "pakollinen": true,
@@ -3416,10 +3706,24 @@
                 ]
               }
             ],
-            "_oppiaine": "7838523"
+            "_oppiaine": "7838523",
+            "perusteenOsa": {
+              "osanTyyppi": "lukio_moduuli",
+              "nimi": {
+                "fi": "Historian perusteita"
+              },
+              "meta": null
+            }
           }
         ],
-        "oppimaarat": []
+        "oppimaarat": [],
+        "perusteenOsa": {
+          "osanTyyppi": "lukio_oppiaine",
+          "nimi": {
+            "fi": "Historia"
+          },
+          "meta": null
+        }
       },
       {
         "id": 7838526,
@@ -3467,8 +3771,6 @@
           {
             "id": 7853742,
             "nimi": {
-              "_id": "7865560",
-              "_tunniste": "76565992-fce6-4d27-971e-a8d2550b7eb1",
               "fi": "Fysiikka ja kemia"
             },
             "pakollinen": true,
@@ -3525,10 +3827,24 @@
                 ]
               }
             ],
-            "_oppiaine": "7838526"
+            "_oppiaine": "7838526",
+            "perusteenOsa": {
+              "osanTyyppi": "lukio_moduuli",
+              "nimi": {
+                "fi": "Fysiikka ja kemia"
+              },
+              "meta": null
+            }
           }
         ],
-        "oppimaarat": []
+        "oppimaarat": [],
+        "perusteenOsa": {
+          "osanTyyppi": "lukio_oppiaine",
+          "nimi": {
+            "fi": "Fysiikka"
+          },
+          "meta": null
+        }
       },
       {
         "id": 7838527,
@@ -3576,8 +3892,6 @@
           {
             "id": 7853743,
             "nimi": {
-              "_id": "7865562",
-              "_tunniste": "d2b29575-6620-4e17-9fb0-2cb045ce1564",
               "fi": "Fysiikka ja kemia"
             },
             "pakollinen": true,
@@ -3634,10 +3948,24 @@
                 ]
               }
             ],
-            "_oppiaine": "7838527"
+            "_oppiaine": "7838527",
+            "perusteenOsa": {
+              "osanTyyppi": "lukio_moduuli",
+              "nimi": {
+                "fi": "Fysiikka ja kemia"
+              },
+              "meta": null
+            }
           }
         ],
-        "oppimaarat": []
+        "oppimaarat": [],
+        "perusteenOsa": {
+          "osanTyyppi": "lukio_oppiaine",
+          "nimi": {
+            "fi": "Kemia"
+          },
+          "meta": null
+        }
       },
       {
         "id": 7838528,
@@ -3685,8 +4013,6 @@
           {
             "id": 7853744,
             "nimi": {
-              "_id": "7865564",
-              "_tunniste": "ab39ef8e-5ca1-47ae-b2ed-be5cabf536f4",
               "fi": "Biologia ja maantiede"
             },
             "pakollinen": true,
@@ -3743,10 +4069,24 @@
                 ]
               }
             ],
-            "_oppiaine": "7838528"
+            "_oppiaine": "7838528",
+            "perusteenOsa": {
+              "osanTyyppi": "lukio_moduuli",
+              "nimi": {
+                "fi": "Biologia ja maantiede"
+              },
+              "meta": null
+            }
           }
         ],
-        "oppimaarat": []
+        "oppimaarat": [],
+        "perusteenOsa": {
+          "osanTyyppi": "lukio_oppiaine",
+          "nimi": {
+            "fi": "Biologia"
+          },
+          "meta": null
+        }
       },
       {
         "id": 7838529,
@@ -3794,8 +4134,6 @@
           {
             "id": 7853745,
             "nimi": {
-              "_id": "7865566",
-              "_tunniste": "0509825f-0f26-4a93-836a-8d34670f77fc",
               "fi": "Biologia ja maantiede"
             },
             "pakollinen": true,
@@ -3852,10 +4190,24 @@
                 ]
               }
             ],
-            "_oppiaine": "7838529"
+            "_oppiaine": "7838529",
+            "perusteenOsa": {
+              "osanTyyppi": "lukio_moduuli",
+              "nimi": {
+                "fi": "Biologia ja maantiede"
+              },
+              "meta": null
+            }
           }
         ],
-        "oppimaarat": []
+        "oppimaarat": [],
+        "perusteenOsa": {
+          "osanTyyppi": "lukio_oppiaine",
+          "nimi": {
+            "fi": "Maantiede"
+          },
+          "meta": null
+        }
       },
       {
         "id": 7853560,
@@ -3905,8 +4257,6 @@
           {
             "id": 7839549,
             "nimi": {
-              "_id": "7865568",
-              "_tunniste": "5e330ac5-cccb-40c8-9b9f-392ed3d9bcd2",
               "fi": "Suomen yhteiskunta ja kulttuurit"
             },
             "pakollinen": true,
@@ -4008,10 +4358,24 @@
                 ]
               }
             ],
-            "_oppiaine": "7853560"
+            "_oppiaine": "7853560",
+            "perusteenOsa": {
+              "osanTyyppi": "lukio_moduuli",
+              "nimi": {
+                "fi": "Suomen yhteiskunta ja kulttuurit"
+              },
+              "meta": null
+            }
           }
         ],
-        "oppimaarat": []
+        "oppimaarat": [],
+        "perusteenOsa": {
+          "osanTyyppi": "lukio_oppiaine",
+          "nimi": {
+            "fi": "Yhteiskuntaoppi"
+          },
+          "meta": null
+        }
       }
     ],
     "sisalto": {

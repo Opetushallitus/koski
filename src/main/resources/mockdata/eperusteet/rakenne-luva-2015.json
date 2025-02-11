@@ -13,8 +13,8 @@
   "toteutus": "yksinkertainen",
   "koulutukset": [],
   "kielet": [
-    "sv",
-    "fi"
+    "fi",
+    "sv"
   ],
   "kuvaus": null,
   "maarayskirje": {
@@ -46,7 +46,12 @@
   "suoritustavat": [
     {
       "suoritustapakoodi": "lukiokoulutus",
-      "laajuusYksikko": "KURSSI"
+      "laajuusYksikko": "KURSSI",
+      "perusteenOsa": {
+        "osanTyyppi": "tutkinnon_muodostuminen",
+        "nimi": null,
+        "meta": null
+      }
     }
   ],
   "lukiokoulutus": {

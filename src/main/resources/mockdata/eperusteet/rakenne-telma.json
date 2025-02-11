@@ -24,8 +24,8 @@
     }
   ],
   "kielet": [
-    "sv",
-    "fi"
+    "fi",
+    "sv"
   ],
   "kuvaus": {
     "_id": "4314846",
@@ -115,7 +115,8 @@
                 "tunniste": "11072876-d0f7-4162-856c-c9fcd97f7ba5",
                 "pakollinen": false,
                 "erikoisuus": null,
-                "_tutkinnonOsaViite": "2983198"
+                "_tutkinnonOsaViite": "2983198",
+                "nimi": null
               },
               {
                 "kuvaus": null,
@@ -123,7 +124,8 @@
                 "tunniste": "df3f713f-bfcc-4a7b-917c-4804f1bc8102",
                 "pakollinen": false,
                 "erikoisuus": null,
-                "_tutkinnonOsaViite": "2983199"
+                "_tutkinnonOsaViite": "2983199",
+                "nimi": null
               },
               {
                 "kuvaus": null,
@@ -131,7 +133,8 @@
                 "tunniste": "e1b27d93-c615-434e-b081-8ba880f9caed",
                 "pakollinen": false,
                 "erikoisuus": null,
-                "_tutkinnonOsaViite": "2988470"
+                "_tutkinnonOsaViite": "2988470",
+                "nimi": null
               },
               {
                 "kuvaus": {
@@ -415,6 +418,11 @@
           }
         ]
       },
+      "perusteenOsa": {
+        "osanTyyppi": "tutkinnon_muodostuminen",
+        "nimi": null,
+        "meta": null
+      },
       "tutkinnonOsaViitteet": [
         {
           "id": 2983199,
@@ -433,7 +441,7 @@
         {
           "id": 2988470,
           "laajuus": 0,
-          "laajuusMaksimi": 20,
+          "laajuusMaksimi": 20.0,
           "jarjestys": 3,
           "_tutkinnonOsa": "3018112"
         }
@@ -474,6 +482,7 @@
       "koodiUri": "tutkinnonosat_400005",
       "koodiArvo": "400005",
       "laajuus": 0,
+      "tutkinnonosaViiteId": 2983198,
       "laajuusMaksimi": 25,
       "osaAlueet": [],
       "tyyppi": "normaali",
@@ -786,7 +795,15 @@
         ]
       },
       "geneerinenArviointiasteikko": null,
-      "vapaatTekstit": []
+      "vapaatTekstit": [],
+      "perusteenOsa": {
+        "osanTyyppi": "tutkinnonosa",
+        "nimi": {
+          "fi": "Ammatillisen toimintakyvyn vahvistaminen",
+          "sv": "Stärkande av den yrkesinriktade funktionsförmågan"
+        },
+        "meta": null
+      }
     },
     {
       "id": 3003004,
@@ -817,6 +834,7 @@
       "koodiUri": "tutkinnonosat_400006",
       "koodiArvo": "400006",
       "laajuus": 0,
+      "tutkinnonosaViiteId": 2983199,
       "laajuusMaksimi": 15,
       "osaAlueet": [],
       "tyyppi": "normaali",
@@ -1022,7 +1040,15 @@
         ]
       },
       "geneerinenArviointiasteikko": null,
-      "vapaatTekstit": []
+      "vapaatTekstit": [],
+      "perusteenOsa": {
+        "osanTyyppi": "tutkinnonosa",
+        "nimi": {
+          "fi": "Opiskeluvalmiuksien vahvistaminen ",
+          "sv": "Stärkande av studiefärdigheter"
+        },
+        "meta": null
+      }
     },
     {
       "id": 3018112,
@@ -1053,7 +1079,8 @@
       "koodiUri": "tutkinnonosat_400007",
       "koodiArvo": "400007",
       "laajuus": 0,
-      "laajuusMaksimi": 20,
+      "tutkinnonosaViiteId": 2988470,
+      "laajuusMaksimi": 20.0,
       "osaAlueet": [],
       "tyyppi": "normaali",
       "valmaTelmaSisalto": {
@@ -1140,7 +1167,15 @@
         ]
       },
       "geneerinenArviointiasteikko": null,
-      "vapaatTekstit": []
+      "vapaatTekstit": [],
+      "perusteenOsa": {
+        "osanTyyppi": "tutkinnonosa",
+        "nimi": {
+          "fi": "Työelämään valmentautuminen",
+          "sv": "Förberedelse för arbetslivet"
+        },
+        "meta": null
+      }
     }
   ]
 }

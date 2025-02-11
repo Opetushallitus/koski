@@ -99,7 +99,8 @@
                 "tunniste": "bb8b2579-817c-4001-abb6-b5201bd35d71",
                 "pakollinen": true,
                 "erikoisuus": null,
-                "_tutkinnonOsaViite": "1014261"
+                "_tutkinnonOsaViite": "1014261",
+                "nimi": null
               },
               {
                 "kuvaus": null,
@@ -107,7 +108,8 @@
                 "tunniste": "5ab547a5-2807-476f-aef0-e8d9796a8233",
                 "pakollinen": true,
                 "erikoisuus": null,
-                "_tutkinnonOsaViite": "1014262"
+                "_tutkinnonOsaViite": "1014262",
+                "nimi": null
               },
               {
                 "kuvaus": null,
@@ -115,7 +117,8 @@
                 "tunniste": "1c82e4c0-35a6-4e79-95e5-5f15b53247cc",
                 "pakollinen": true,
                 "erikoisuus": null,
-                "_tutkinnonOsaViite": "1014263"
+                "_tutkinnonOsaViite": "1014263",
+                "nimi": null
               },
               {
                 "kuvaus": null,
@@ -123,7 +126,8 @@
                 "tunniste": "1e84e4c6-725b-46df-93d8-a7be79868155",
                 "pakollinen": true,
                 "erikoisuus": null,
-                "_tutkinnonOsaViite": "1014264"
+                "_tutkinnonOsaViite": "1014264",
+                "nimi": null
               }
             ],
             "versioId": null
@@ -154,7 +158,8 @@
                 "tunniste": "0b866f12-a6b2-4577-8e6e-d18ecd62c11f",
                 "pakollinen": false,
                 "erikoisuus": null,
-                "_tutkinnonOsaViite": "1014265"
+                "_tutkinnonOsaViite": "1014265",
+                "nimi": null
               },
               {
                 "kuvaus": null,
@@ -162,7 +167,8 @@
                 "tunniste": "11e9ac05-d22d-4d55-9156-0adb64a07d78",
                 "pakollinen": false,
                 "erikoisuus": null,
-                "_tutkinnonOsaViite": "1014266"
+                "_tutkinnonOsaViite": "1014266",
+                "nimi": null
               },
               {
                 "kuvaus": null,
@@ -170,7 +176,8 @@
                 "tunniste": "b0790bfb-75aa-4215-9901-af3ce5936986",
                 "pakollinen": false,
                 "erikoisuus": null,
-                "_tutkinnonOsaViite": "1014267"
+                "_tutkinnonOsaViite": "1014267",
+                "nimi": null
               }
             ],
             "versioId": null
@@ -201,7 +208,8 @@
                 "tunniste": "2624f8cc-fff2-418f-aeaa-9a7d6f238060",
                 "pakollinen": false,
                 "erikoisuus": null,
-                "_tutkinnonOsaViite": "1014268"
+                "_tutkinnonOsaViite": "1014268",
+                "nimi": null
               }
             ],
             "versioId": null
@@ -335,6 +343,11 @@
           }
         ]
       },
+      "perusteenOsa": {
+        "osanTyyppi": "tutkinnon_muodostuminen",
+        "nimi": null,
+        "meta": null
+      },
       "tutkinnonOsaViitteet": [
         {
           "id": 1014268,
@@ -409,6 +422,7 @@
       "koodiUri": "tutkinnonosat_104052",
       "koodiArvo": "104052",
       "laajuus": null,
+      "tutkinnonosaViiteId": 1014261,
       "osaAlueet": [],
       "tyyppi": "normaali",
       "valmaTelmaSisalto": null,
@@ -429,6 +443,14 @@
       "ammattitaitovaatimukset": {
         "_id": "1017689",
         "fi": "<p>Tutkinnon suorittaja tuntee yleiset johtamistavat ja -periaatteet sekä ymmärtää ihmisten johtamisen merkityksen organisaation kilpailutekijänä. Hän osaa asettaa työryhmälleen tavoitteet ja pystyy ohjaamaan alaistensa työskentelyä. Hän pystyy analysoimaan osaamistaan ja laatimaan itselleen tavoite- ja kehittymissuunnitelman. Hän on kannustava työtovereitaan ja työyhteisöään kohtaan sekä hallitsee oman ajankäyttönsä. Tutkittava kykenee viestimään selkeästi niin esimiehenä kuin työtoverin tai alaisen ominaisuudessakin. Tutkinnon suorittaja on yhteistyökykyinen ja edistää organisaation yhteistoimintakokonaisuutta. Hän osaa muodostaa vaihtoehtoisia ratkaisuja erilaisissa kiireisissäkin työtilanteissa ja tekee harkittuja päätöksiä. Hän ottaa johtamistyössään huomioon tuote- ja henkilöstöriskit sekä tuntee korjaamotoimintaa koskevat ympäristömääräykset ja vastuunsa ympäristöturvallisuuden edistämisessä.</p>\n\n<p>Tutkinnon suorittaja tuntee työlainsäädännön ja korjaamoalan työehtosopimuksen keskeisen sisällön, työnantajaa ja työntekijää koskevat oikeudet ja velvoitteet sekä toimii niiden mukaisesti. Hän osaa tunnistaa vastuualueensa henkilöstön ammatilliset valmiudet ja kehittämistarpeet. Tutkinnon suorittaja tietää työsuojelun ja ergonomian merkityksen yrityksen toimintaan ja tuottavuuteen.</p>"
+      },
+      "perusteenOsa": {
+        "osanTyyppi": "tutkinnonosa",
+        "nimi": {
+          "fi": "Johtaminen ja henkilöstön kehittäminen",
+          "sv": "Ledarskap och personalutveckling"
+        },
+        "meta": null
       }
     },
     {
@@ -460,6 +482,7 @@
       "koodiUri": "tutkinnonosat_104053",
       "koodiArvo": "104053",
       "laajuus": null,
+      "tutkinnonosaViiteId": 1014262,
       "osaAlueet": [],
       "tyyppi": "normaali",
       "valmaTelmaSisalto": null,
@@ -480,6 +503,14 @@
       "ammattitaitovaatimukset": {
         "_id": "1017793",
         "fi": "<p>Tutkinnon suorittaja tuntee korjaamopalvelujen yleiset markkinointitavat ja osaa soveltaa niitä käytännön työtilanteissa. Hän osaa korjaamossa tarvittavan henkilökohtaisen myynti- ja asiakaspalvelun. Hän osaa käyttää asiakaspalautetta toiminnan kehittämiseen. Hän pystyy arvioimaan asiakaspalvelutapaansa ja kehittämään sitä.</p>\n\n<p>Tutkinnon suorittaja ymmärtää palvelujen lisämyynnin merkityksen ja osaa sisällyttää sen joustavasti korjaamon työnmyyntiin. Hän ymmärtää tietojärjestelmien periaatteen ja osaa hyödyntää yrityksen tietojärjestelmää kohdennetussa markkinoinnissa. Asiakaspalvelussa ja kirjeenvaihdossa hän pystyy selkeään viestintään. Hänellä on äidinkielensä lisäksi riittävä vieraan kielen taito selviytyäkseen teknisestä informaatiosta ja työssään tarvittavasta viestinnästä. Hän tuntee korjaamopalvelujen kaupankäynnin lainsäädännön sekä sopimusehdot ja sopimuskäytännön.</p>"
+      },
+      "perusteenOsa": {
+        "osanTyyppi": "tutkinnonosa",
+        "nimi": {
+          "fi": "Asiakaspalvelu ja korjaamopalvelujen markkinointi",
+          "sv": "Kundbetjäning och marknadsföring av reparationsverkstadens service"
+        },
+        "meta": null
       }
     },
     {
@@ -511,6 +542,7 @@
       "koodiUri": "tutkinnonosat_104054",
       "koodiArvo": "104054",
       "laajuus": null,
+      "tutkinnonosaViiteId": 1014263,
       "osaAlueet": [],
       "tyyppi": "normaali",
       "valmaTelmaSisalto": null,
@@ -531,6 +563,14 @@
       "ammattitaitovaatimukset": {
         "_id": "1017797",
         "fi": "<p>Tutkinnon suorittaja osaa suunnitella ja ohjata toimintaa työpaikallaan tehokkaasti. Hän osaa käyttää suunnittelun apuna alakohtaisia tieto- ja ohjausjärjestelmiä ja hallitsee sähköisen viestinnän perusteet.</p>\n\n<p>Tutkittava osaa hyödyntää kulloinkin tarvittavat resurssit hyvän asiakaspalvelun takaamiseksi. Hän hallitsee oman yksikkönsä työprosessin rakenteen ja osaa kehittää yksikön toimintaa tuottavuuden parantamiseksi. Hän osaa muodostaa vaihtoehtoisia ratkaisuja muuttuvissa tilanteissa ja pystyy muuttamaan työn suunnittelua tarvittaessa.</p>\n\n<p>Tutkinnon suorittaja tuntee laatu- ja ympäristöasiat ja toimii niitä noudattaen. Hän tuntee korjaamon työsuojelu-, turvallisuus- ja ympäristömääräykset.</p>"
+      },
+      "perusteenOsa": {
+        "osanTyyppi": "tutkinnonosa",
+        "nimi": {
+          "fi": "Työnsuunnittelu ja organisointi",
+          "sv": "Arbetsplanering och organisering"
+        },
+        "meta": null
       }
     },
     {
@@ -562,6 +602,7 @@
       "koodiUri": "tutkinnonosat_104055",
       "koodiArvo": "104055",
       "laajuus": null,
+      "tutkinnonosaViiteId": 1014264,
       "osaAlueet": [],
       "tyyppi": "normaali",
       "valmaTelmaSisalto": null,
@@ -582,6 +623,14 @@
       "ammattitaitovaatimukset": {
         "_id": "1017870",
         "fi": "<p>Tutkinnon suorittaja tietää, mitkä osatekijät vaikuttavat korjaamon kannattavuuteen, miten kannattavuutta voidaan kehittää ja miten hän itse voi vaikuttaa siihen.</p>\n\n<p>Tutkinnon suorittaja osaa hinnoitella palvelut kannattavasti. Hän tuntee eri maksutavat ja niihin liittyvät turvallisuusriskit. Hän osaa työtehtävissä tarvittavat laskutoimitukset. Työ- ja laitesuunnittelussa sekä hankinnoissa hän pystyy perusteleman ratkaisuja yritystaloudellisesti. Tutkittava pystyy osallistumaan vastuualueensa osalta korjaamon budjetin laadintaan.</p>"
+      },
+      "perusteenOsa": {
+        "osanTyyppi": "tutkinnonosa",
+        "nimi": {
+          "fi": "Taloudellinen toiminta",
+          "sv": "Ekonomisk verksamhet"
+        },
+        "meta": null
       }
     },
     {
@@ -613,6 +662,7 @@
       "koodiUri": "tutkinnonosat_104056",
       "koodiArvo": "104056",
       "laajuus": null,
+      "tutkinnonosaViiteId": 1014265,
       "osaAlueet": [],
       "tyyppi": "normaali",
       "valmaTelmaSisalto": null,
@@ -633,6 +683,14 @@
       "ammattitaitovaatimukset": {
         "_id": "1017875",
         "fi": "<p>Tutkinnon suorittaja tuntee organisaatiokoulutuksen yleiset periaatteet ja oman yksikön henkilöstön koulutus- ja kehittämissuunnitelmat. Hän tuntee korjaamon työprosessit siten, että kykenee tunnistamaan henkilöstön koulutus- ja kehittämistarpeet. Hän pystyy osallistumaan koulutussuunnitelmien kehittämiseen yhteistyössä muiden koulutuksesta vastaavien henkilöiden kanssa.</p>\n\n<p>Hän on suunnitelmallinen, tavoitteellinen ja yhteistyökykyinen sekä tulee toimeen erilaisissa työtehtävissä toimivien henkilöiden kanssa. Hän pystyy analysoimaan ja esittämään asiat sekä suullisesti että kirjallisesti.</p>\n\n<p>Tutkinnon suorittaja pystyy osallistumaan työntekijöiden kehittämiseen ja opastukseen yksilöinä, ryhmien jäseninä ja työyhteisökokonaisuutena. Hän kykenee laatimaan ja toimeenpanemaan työpaikalla henkilöstön perehdyttämis- ja kehittämisohjelman sekä toimimaan työpaikkakouluttajana. Hän pystyy ohjaamaan ja perehdyttämään alan opiskelijoita.</p>"
+      },
+      "perusteenOsa": {
+        "osanTyyppi": "tutkinnonosa",
+        "nimi": {
+          "fi": "Työpaikkakoulutus",
+          "sv": "Arbetsplatsutbildning"
+        },
+        "meta": null
       }
     },
     {
@@ -664,6 +722,7 @@
       "koodiUri": "tutkinnonosat_104057",
       "koodiArvo": "104057",
       "laajuus": null,
+      "tutkinnonosaViiteId": 1014266,
       "osaAlueet": [],
       "tyyppi": "normaali",
       "valmaTelmaSisalto": null,
@@ -684,6 +743,14 @@
       "ammattitaitovaatimukset": {
         "_id": "1017879",
         "fi": "<p>Tutkinnon suorittaja osaa projektimuotoisen työskentelyn periaatteet. Hän kykenee johtamaan yli oman vastuualueensa ulottuvaa projektia. Hän pystyy laatimaan projektisuunnitelman, joka sisältää ainakin projektin tavoitteen, toiminnan kuvauksen, resurssitarpeet, aikataulut ja kustannusarvion. Suorittaja osaa projektin päättämisen ja kirjallisen raportoinnin. Hän osaa käyttää projektityössä käytössä olevia ongelmanratkaisutekniikoita. Hän pystyy toimimaan kokousten puheenjohtajana.</p>"
+      },
+      "perusteenOsa": {
+        "osanTyyppi": "tutkinnonosa",
+        "nimi": {
+          "fi": "Projektiosaaminen",
+          "sv": "Projektkunnande"
+        },
+        "meta": null
       }
     },
     {
@@ -715,6 +782,7 @@
       "koodiUri": "tutkinnonosat_104058",
       "koodiArvo": "104058",
       "laajuus": null,
+      "tutkinnonosaViiteId": 1014267,
       "osaAlueet": [],
       "tyyppi": "normaali",
       "valmaTelmaSisalto": null,
@@ -735,6 +803,14 @@
       "ammattitaitovaatimukset": {
         "_id": "1017943",
         "fi": "<p>Tutkinnon suorittaja on perehtynyt oman toimialansa ajoneuvotekniikan kehitykseen ja tietää, mitä vaatimuksia kehittyvä tekniikka tuo korjaamohenkilöstölle ja -varusteille. Hän pystyy toimimaan yritystasoisena asiantuntijana valitsemallaan alueella, joka voi olla esim. ajoneuvoelektroniikka, turvajärjestelmät, koritekniikka, polttonestejärjestelmät, rakennemuutokset tai vastaava osaamiskokonaisuus. Hän seuraa valitsemansa alueen kehitystä ja toimii sen alueen opastajana ja asiantuntijana yrityksessä. Hän tietää eri järjestelmien huoltoon ja korjaukseen liittyvät vaarat ja ehkäisevät toimenpiteet vahinkojen välttämiseksi. Hän tiedostaa huollon merkityksen taloudellisuuteen vaikuttavana tekijänä ja autoliikenteen aiheuttamien ympäristöhaittojen vähentäjänä.</p>"
+      },
+      "perusteenOsa": {
+        "osanTyyppi": "tutkinnonosa",
+        "nimi": {
+          "fi": "Tekniikan asiantuntemus",
+          "sv": "Teknisk sakkunskap"
+        },
+        "meta": null
       }
     },
     {
@@ -766,6 +842,7 @@
       "koodiUri": "tutkinnonosat_104059",
       "koodiArvo": "104059",
       "laajuus": null,
+      "tutkinnonosaViiteId": 1014268,
       "osaAlueet": [],
       "tyyppi": "normaali",
       "valmaTelmaSisalto": null,
@@ -786,6 +863,14 @@
       "ammattitaitovaatimukset": {
         "_id": "1017947",
         "fi": "<p>Tutkinnon suorittaja tietää, mitä yrittäjänä toimiminen edellyttää. Hän osaa arvioida yrittäjyyttään ja mahdollista yritystoimintaansa sekä sitä, millä alueilla ja miten hän voi kehittää yrittäjävalmiuksiaan. Hänellä on oman alansa vankka ammattitaito. Hän ymmärtää alansa yritystoimintaa ja hänellä on oman yrityksen aloittamiseksi tarvittavat perustiedot. Hän osaa tarkastella alaa ja sen tarjoamia yritystoiminnan käynnistämisen ja kehittämisen mahdollisuuksia sekä riskejä.</p>\n\n<p>Tutkinnon suorittaja tietää eri yritysmuotojen eron ja tuntee yrityksen perustamisen hallintomenettelyt. Hän osaa kehittää yhdessä asiantuntijoiden kanssa markkinakelpoisen liikeidean ja tietää, miten sitä käytetään toiminnan suunnittelun ja toteutuksen pohjana. Hän tietää, millaisia taloudellisia, tuotannollisia ja henkisiä voimavaroja yritystoiminnan toteuttaminen vaatii, ja osaa arvioida niiden tarpeen esimerkiksi oman yritystoiminnan aloittamisen näkökulmasta. Tutkinnon suorittaja ymmärtää asiakassuhteiden ja muiden yhteistyösuhteiden merkityksen olennaisena osana menestyvää yritystoimintaa ja on tältä pohjalta valmis kehittämään näitä suhteita. Hän tuntee tuotteen hinnanmuodostuksen ja tietää keskeisimpiä talouden tunnuslukuja. Hän tuntee yritystoimintaan liittyvää keskeistä lainsäädäntöä. Hän osaa hankkia yrityksen perustamisessa ja toiminnan eri vaiheissa tarvitsemaansa tietoa ja asiantuntijapalvelua.</p>"
+      },
+      "perusteenOsa": {
+        "osanTyyppi": "tutkinnonosa",
+        "nimi": {
+          "fi": "Yrittäjyys",
+          "sv": "Företagsamhet"
+        },
+        "meta": null
       }
     }
   ]

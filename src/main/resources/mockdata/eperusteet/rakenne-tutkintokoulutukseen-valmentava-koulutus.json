@@ -24,8 +24,8 @@
     }
   ],
   "kielet": [
-    "sv",
-    "fi"
+    "fi",
+    "sv"
   ],
   "kuvaus": {
     "_id": "7534933",
@@ -84,7 +84,7 @@
   "suorittaneenOsaaminen": null,
   "perusteenAikataulut": [
     {
-      "id": 7792510,
+      "id": 7534990,
       "peruste": {
         "id": 7534950,
         "nimi": {
@@ -102,12 +102,12 @@
         "_perusteprojekti": null
       },
       "tavoite": {
-        "_id": "7792500",
-        "_tunniste": "e218ddea-44f8-45c0-a64a-46ced3e39dee",
-        "fi": "Peruste astuu voimaan"
+        "_id": "7534934",
+        "_tunniste": "bc81169b-f996-4b50-bde8-2e6985502978",
+        "fi": "Peruste luotu"
       },
-      "tapahtuma": "julkaisu",
-      "tapahtumapaiva": 1627765200000,
+      "tapahtuma": "luominen",
+      "tapahtumapaiva": 1610688369525,
       "julkinen": false
     },
     {
@@ -138,7 +138,7 @@
       "julkinen": false
     },
     {
-      "id": 7534990,
+      "id": 7792510,
       "peruste": {
         "id": 7534950,
         "nimi": {
@@ -156,12 +156,12 @@
         "_perusteprojekti": null
       },
       "tavoite": {
-        "_id": "7534934",
-        "_tunniste": "bc81169b-f996-4b50-bde8-2e6985502978",
-        "fi": "Peruste luotu"
+        "_id": "7792500",
+        "_tunniste": "e218ddea-44f8-45c0-a64a-46ced3e39dee",
+        "fi": "Peruste astuu voimaan"
       },
-      "tapahtuma": "luominen",
-      "tapahtumapaiva": 1610688369525,
+      "tapahtuma": "julkaisu",
+      "tapahtumapaiva": 1627765200000,
       "julkinen": false
     }
   ],
