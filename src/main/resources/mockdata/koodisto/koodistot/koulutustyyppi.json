@@ -7,6 +7,51 @@
   "withinCodes": [
     {
       "codesUri": "koulutus",
+      "codesVersion": 4,
+      "passive": true,
+      "nimi": {
+        "FI": "koulutus",
+        "SV": "koulutus",
+        "EN": "koulutus"
+      },
+      "kuvaus": {
+        "FI": "koulutus",
+        "SV": "koulutus",
+        "EN": "koulutus"
+      }
+    },
+    {
+      "codesUri": "tutkintotyyppi",
+      "codesVersion": 1,
+      "passive": false,
+      "nimi": {
+        "SV": "tutkintotyyppi",
+        "FI": "tutkintotyyppi",
+        "EN": "tutkintotyyppi"
+      },
+      "kuvaus": {
+        "SV": "tutkintotyyppi",
+        "FI": "tutkintotyyppi",
+        "EN": "tutkintotyyppi"
+      }
+    },
+    {
+      "codesUri": "koulutus",
+      "codesVersion": 6,
+      "passive": true,
+      "nimi": {
+        "FI": "koulutus",
+        "SV": "koulutus",
+        "EN": "koulutus"
+      },
+      "kuvaus": {
+        "FI": "koulutus",
+        "SV": "koulutus",
+        "EN": "koulutus"
+      }
+    },
+    {
+      "codesUri": "koulutus",
       "codesVersion": 11,
       "passive": true,
       "nimi": {
@@ -22,37 +67,52 @@
     },
     {
       "codesUri": "koulutus",
-      "codesVersion": 10,
-      "passive": true,
+      "codesVersion": 12,
+      "passive": false,
       "nimi": {
-        "SV": "koulutus",
         "FI": "koulutus",
+        "SV": "koulutus",
         "EN": "koulutus"
       },
       "kuvaus": {
+        "FI": "Koodistoa ylläpitävät Noora Vauhkonen (ammatilliset koulutukset), Riku Hanhinen (korkeakoulutukset), Juho Helminen (yleissivistävä koulutus). Koodistoa käytetään mm. hakujen koulutustarjonnassa, KOSKI-palvelun tiedonsiirroissa, OIVAssa ja OKM Virta-palvelussa. Tilastokeskus vastaa koodiston koodituksesta (https://www2.tilastokeskus.fi/fi/luokitukset/koulutus/). Koodeja ylläpidetään käsin. Koodiston ja Tilastokeskuksen välillä ei ole integraatiota.",
         "SV": "koulutus",
-        "FI": "koulutus",
         "EN": "koulutus"
       }
     },
     {
       "codesUri": "koulutus",
-      "codesVersion": 2,
+      "codesVersion": 5,
       "passive": true,
       "nimi": {
-        "SV": "koulutus",
         "FI": "koulutus",
+        "SV": "koulutus",
         "EN": "koulutus"
       },
       "kuvaus": {
-        "SV": "koulutus",
         "FI": "koulutus",
+        "SV": "koulutus",
         "EN": "koulutus"
       }
     },
     {
       "codesUri": "koulutus",
-      "codesVersion": 4,
+      "codesVersion": 7,
+      "passive": true,
+      "nimi": {
+        "FI": "koulutus",
+        "SV": "koulutus",
+        "EN": "koulutus"
+      },
+      "kuvaus": {
+        "FI": "koulutus",
+        "SV": "koulutus",
+        "EN": "koulutus"
+      }
+    },
+    {
+      "codesUri": "koulutus",
+      "codesVersion": 8,
       "passive": true,
       "nimi": {
         "FI": "koulutus",
@@ -68,6 +128,21 @@
     {
       "codesUri": "koulutus",
       "codesVersion": 9,
+      "passive": true,
+      "nimi": {
+        "SV": "koulutus",
+        "FI": "koulutus",
+        "EN": "koulutus"
+      },
+      "kuvaus": {
+        "SV": "koulutus",
+        "FI": "koulutus",
+        "EN": "koulutus"
+      }
+    },
+    {
+      "codesUri": "koulutus",
+      "codesVersion": 2,
       "passive": true,
       "nimi": {
         "SV": "koulutus",
@@ -123,46 +198,16 @@
     },
     {
       "codesUri": "koulutus",
-      "codesVersion": 5,
+      "codesVersion": 10,
       "passive": true,
       "nimi": {
-        "FI": "koulutus",
         "SV": "koulutus",
+        "FI": "koulutus",
         "EN": "koulutus"
       },
       "kuvaus": {
-        "FI": "koulutus",
         "SV": "koulutus",
-        "EN": "koulutus"
-      }
-    },
-    {
-      "codesUri": "koulutus",
-      "codesVersion": 7,
-      "passive": true,
-      "nimi": {
         "FI": "koulutus",
-        "SV": "koulutus",
-        "EN": "koulutus"
-      },
-      "kuvaus": {
-        "FI": "koulutus",
-        "SV": "koulutus",
-        "EN": "koulutus"
-      }
-    },
-    {
-      "codesUri": "koulutus",
-      "codesVersion": 6,
-      "passive": true,
-      "nimi": {
-        "FI": "koulutus",
-        "SV": "koulutus",
-        "EN": "koulutus"
-      },
-      "kuvaus": {
-        "FI": "koulutus",
-        "SV": "koulutus",
         "EN": "koulutus"
       }
     },
@@ -180,54 +225,24 @@
         "SV": "koulutus",
         "EN": "koulutus"
       }
-    },
-    {
-      "codesUri": "tutkintotyyppi",
-      "codesVersion": 1,
-      "passive": false,
-      "nimi": {
-        "SV": "tutkintotyyppi",
-        "FI": "tutkintotyyppi",
-        "EN": "tutkintotyyppi"
-      },
-      "kuvaus": {
-        "SV": "tutkintotyyppi",
-        "FI": "tutkintotyyppi",
-        "EN": "tutkintotyyppi"
-      }
-    },
-    {
-      "codesUri": "koulutus",
-      "codesVersion": 12,
-      "passive": false,
-      "nimi": {
-        "FI": "koulutus",
-        "SV": "koulutus",
-        "EN": "koulutus"
-      },
-      "kuvaus": {
-        "FI": "Koodistoa ylläpitävät Perttu Venäläinen  (ammatilliset koulutukset), Riku Hanhinen (korkeakoulutukset), Juho Helminen (yleissivistävä koulutus). Koodistoa käytetään mm. hakujen koulutustarjonnassa, KOSKI-palvelun tiedonsiirroissa, OIVAssa ja OKM Virta-palvelussa. Tilastokeskus vastaa koodiston koodituksesta (https://www2.tilastokeskus.fi/fi/luokitukset/koulutus/). Koodeja ylläpidetään käsin. Koodiston ja Tilastokeskuksen välillä ei ole integraatiota.",
-        "SV": "koulutus",
-        "EN": "koulutus"
-      }
-    },
-    {
-      "codesUri": "koulutus",
-      "codesVersion": 8,
-      "passive": true,
-      "nimi": {
-        "FI": "koulutus",
-        "SV": "koulutus",
-        "EN": "koulutus"
-      },
-      "kuvaus": {
-        "FI": "koulutus",
-        "SV": "koulutus",
-        "EN": "koulutus"
-      }
     }
   ],
   "includesCodes": [
+    {
+      "codesUri": "koskikoulutustendiaarinumerot",
+      "codesVersion": 1,
+      "passive": false,
+      "nimi": {
+        "SV": "Koski - koulutusten diaarinumerot",
+        "FI": "Koski - koulutusten diaarinumerot",
+        "EN": "Koski - koulutusten diaarinumerot"
+      },
+      "kuvaus": {
+        "SV": "Koodisto sisältää diaarinumerot, joiden mukaisille perusteille ei Koskessa suoriteta validointeja. Perusteeseen liittyviä validointeja ei haluta suorittaa jos esimerkiksi diaarinumeron mukaista perustetta ei ole saatavilla ePerusteet rajapinnasta.",
+        "FI": "Koodisto sisältää diaarinumerot, joiden mukaisille perusteille ei Koskessa suoriteta validointeja. Perusteeseen liittyviä validointeja ei haluta suorittaa jos esimerkiksi diaarinumeron mukaista perustetta ei ole saatavilla ePerusteet rajapinnasta.",
+        "EN": "Koodisto sisältää diaarinumerot, joiden mukaisille perusteille ei Koskessa suoriteta validointeja. Perusteeseen liittyviä validointeja ei haluta suorittaa jos esimerkiksi diaarinumeron mukaista perustetta ei ole saatavilla ePerusteet rajapinnasta."
+      }
+    },
     {
       "codesUri": "pohjakoulutusvaatimustoinenaste",
       "codesVersion": 1,
@@ -287,29 +302,30 @@
         "SV": "valintakokeen tyyppi",
         "EN": "valintakokeen tyyppi"
       }
-    },
+    }
+  ],
+  "levelsWithCodes": [
     {
-      "codesUri": "koskikoulutustendiaarinumerot",
+      "codesUri": "koulutustyyppikouta",
       "codesVersion": 1,
       "passive": false,
       "nimi": {
-        "SV": "Koski - koulutusten diaarinumerot",
-        "FI": "Koski - koulutusten diaarinumerot",
-        "EN": "Koski - koulutusten diaarinumerot"
+        "SV": "Koulutustyyppi (kouta)",
+        "FI": "Koulutustyyppi (kouta)",
+        "EN": "Koulutustyyppi (kouta)"
       },
       "kuvaus": {
-        "SV": "Koodisto sisältää diaarinumerot, joiden mukaisille perusteille ei Koskessa suoriteta validointeja. Perusteeseen liittyviä validointeja ei haluta suorittaa jos esimerkiksi diaarinumeron mukaista perustetta ei ole saatavilla ePerusteet rajapinnasta.",
-        "FI": "Koodisto sisältää diaarinumerot, joiden mukaisille perusteille ei Koskessa suoriteta validointeja. Perusteeseen liittyviä validointeja ei haluta suorittaa jos esimerkiksi diaarinumeron mukaista perustetta ei ole saatavilla ePerusteet rajapinnasta.",
-        "EN": "Koodisto sisältää diaarinumerot, joiden mukaisille perusteille ei Koskessa suoriteta validointeja. Perusteeseen liittyviä validointeja ei haluta suorittaa jos esimerkiksi diaarinumeron mukaista perustetta ei ole saatavilla ePerusteet rajapinnasta."
+        "SV": "Koulutustarjontapalvelun (kouta) käytössä oleva koulutustyyppikoodisto. Koodiarvot ovat koodattuina suoraan koutan tietomallissa, eikä ole integraatiota koulutustyypin osalta tähän koodistoon, eli on vain dokumentaatiotarkoitusta varten.",
+        "FI": "Koulutustarjontapalvelun (kouta) käytössä oleva koulutustyyppikoodisto. Koodiarvot ovat koodattuina suoraan koutan tietomallissa, eikä ole integraatiota koulutustyypin osalta tähän koodistoon, eli on vain dokumentaatiotarkoitusta varten.",
+        "EN": "Koulutustarjontapalvelun (kouta) käytössä oleva koulutustyyppikoodisto. Koodiarvot ovat koodattuina suoraan koutan tietomallissa, eikä ole integraatiota koulutustyypin osalta tähän koodistoon, eli on vain dokumentaatiotarkoitusta varten."
       }
     }
   ],
-  "levelsWithCodes": [],
   "codesGroupUri": "koulutuskoodistot",
-  "version": 6,
+  "version": 8,
   "versio": 2,
-  "paivitysPvm": "2017-10-30",
-  "paivittajaOid": null,
+  "paivitysPvm": "2024-10-31",
+  "paivittajaOid": "1.2.246.562.24.42485718933",
   "voimassaAlkuPvm": "2015-03-27",
   "voimassaLoppuPvm": null,
   "tila": "LUONNOS",
@@ -345,7 +361,7 @@
     {
       "kieli": "FI",
       "nimi": "koulutustyyppi",
-      "kuvaus": "Koulutustarjontapalvelun käyttöliittymän käytössä oleva koodisto",
+      "kuvaus": "Vanhan koulutustarjontapalvelun (tarjonta-service) käyttöliittymän käytössä oleva koodisto. Käytössä myös KOSKI-palvelussa",
       "kayttoohje": null,
       "kasite": null,
       "kohdealue": null,

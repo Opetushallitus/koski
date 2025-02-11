@@ -349,7 +349,9 @@ describe('Perusopetus', function () {
               )
 
               it('näyttää virheilmoituksen laajuudesta', function () {
-                expect(extractAsText(S('.error-text'))).to.equal('Oppiaineen sosiaaliset taidot laajuus puuttuu')
+                expect(extractAsText(S('.error-text'))).to.equal(
+                  'Oppiaineen sosiaaliset taidot laajuus puuttuu'
+                )
               })
 
               describe('laajuudella', function () {
@@ -1816,15 +1818,18 @@ describe('Perusopetus', function () {
               'hindi',
               'hollanti',
               'igbo',
+              'inarinsaame',
               'indonesia',
               'islanti',
               'italia',
               'japani',
               'joruba',
+              'kannada',
               'kantoninkiina',
               'katalaani',
               'keskikhmer',
               'kiina',
+              'koltansaame',
               'korea',
               'kreikka',
               'kroatia',
@@ -1834,13 +1839,16 @@ describe('Perusopetus', function () {
               'liettua',
               'makedonia',
               'malaiji',
+              'malajalam',
               'mandariinikiina',
               'mongoli',
+              'muu kieli',
               'muu kieli',
               'nepali',
               'norja',
               'paštu, myös: afgaani',
               'persia, farsi',
+              'pohjoissaame',
               'portugali',
               'puola',
               'ranska',
@@ -1865,6 +1873,7 @@ describe('Perusopetus', function () {
               'tamili',
               'tanska',
               'tataari',
+              'telugu',
               'thai',
               'tigrinja',
               'turkki',
@@ -2856,8 +2865,7 @@ describe('Perusopetus', function () {
 
         describe('Käyttöliittymän tila', function () {
           it('Lisää-nappi on enabloitu', function () {
-            eventually(() =>
-              expect(addOppija.isEnabled()).to.equal(true))
+            eventually(() => expect(addOppija.isEnabled()).to.equal(true))
           })
 
           it('Ei näytetä opintojen rahoitus -kenttää', function () {
@@ -4680,7 +4688,7 @@ describe('Perusopetus', function () {
             kognitiivisetTaidot
               .propertyBySelector('.arvosana')
               .selectValue('8'),
-            editor.saveChanges,
+            editor.saveChanges
           )
 
           it('toimii', function () {

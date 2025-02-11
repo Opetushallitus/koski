@@ -19,7 +19,13 @@
     ],
     "withinCodeElements": [],
     "includesCodeElements": [],
-    "levelsWithCodeElements": [],
+    "levelsWithCodeElements": [
+      {
+        "codeElementUri": "koulutustyyppikouta_amk",
+        "codeElementVersion": 1,
+        "passive": false
+      }
+    ],
     "koodiUri": "virtaopiskeluoikeudentyyppi_1",
     "versio": 1,
     "koodiArvo": "1"
@@ -46,7 +52,18 @@
     ],
     "withinCodeElements": [],
     "includesCodeElements": [],
-    "levelsWithCodeElements": [],
+    "levelsWithCodeElements": [
+      {
+        "codeElementUri": "koulutustyyppikouta_kkopintojakso",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "koulutustyyppikouta_kkopintokokonaisuus",
+        "codeElementVersion": 1,
+        "passive": false
+      }
+    ],
     "koodiUri": "virtaopiskeluoikeudentyyppi_10",
     "versio": 1,
     "koodiArvo": "10"
@@ -73,7 +90,18 @@
     ],
     "withinCodeElements": [],
     "includesCodeElements": [],
-    "levelsWithCodeElements": [],
+    "levelsWithCodeElements": [
+      {
+        "codeElementUri": "koulutustyyppikouta_kkopintojakso",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "koulutustyyppikouta_kkopintokokonaisuus",
+        "codeElementVersion": 1,
+        "passive": false
+      }
+    ],
     "koodiUri": "virtaopiskeluoikeudentyyppi_11",
     "versio": 1,
     "koodiArvo": "11"
@@ -100,7 +128,13 @@
     ],
     "withinCodeElements": [],
     "includesCodeElements": [],
-    "levelsWithCodeElements": [],
+    "levelsWithCodeElements": [
+      {
+        "codeElementUri": "koulutustyyppikouta_kkopintokokonaisuus",
+        "codeElementVersion": 1,
+        "passive": false
+      }
+    ],
     "koodiUri": "virtaopiskeluoikeudentyyppi_12",
     "versio": 1,
     "koodiArvo": "12"
@@ -127,7 +161,18 @@
     ],
     "withinCodeElements": [],
     "includesCodeElements": [],
-    "levelsWithCodeElements": [],
+    "levelsWithCodeElements": [
+      {
+        "codeElementUri": "koulutustyyppikouta_kkopintojakso",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "koulutustyyppikouta_kkopintokokonaisuus",
+        "codeElementVersion": 1,
+        "passive": false
+      }
+    ],
     "koodiUri": "virtaopiskeluoikeudentyyppi_13",
     "versio": 1,
     "koodiArvo": "13"
@@ -154,7 +199,13 @@
     ],
     "withinCodeElements": [],
     "includesCodeElements": [],
-    "levelsWithCodeElements": [],
+    "levelsWithCodeElements": [
+      {
+        "codeElementUri": "koulutustyyppikouta_opepedagopinnot",
+        "codeElementVersion": 1,
+        "passive": false
+      }
+    ],
     "koodiUri": "virtaopiskeluoikeudentyyppi_14",
     "versio": 1,
     "koodiArvo": "14"
@@ -181,7 +232,13 @@
     ],
     "withinCodeElements": [],
     "includesCodeElements": [],
-    "levelsWithCodeElements": [],
+    "levelsWithCodeElements": [
+      {
+        "codeElementUri": "koulutustyyppikouta_ammopeerityisopejaopo",
+        "codeElementVersion": 1,
+        "passive": false
+      }
+    ],
     "koodiUri": "virtaopiskeluoikeudentyyppi_15",
     "versio": 1,
     "koodiArvo": "15"
@@ -208,7 +265,18 @@
     ],
     "withinCodeElements": [],
     "includesCodeElements": [],
-    "levelsWithCodeElements": [],
+    "levelsWithCodeElements": [
+      {
+        "codeElementUri": "koulutustyyppikouta_kkopintojakso",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "koulutustyyppikouta_kkopintokokonaisuus",
+        "codeElementVersion": 1,
+        "passive": false
+      }
+    ],
     "koodiUri": "virtaopiskeluoikeudentyyppi_16",
     "versio": 1,
     "koodiArvo": "16"
@@ -235,7 +303,18 @@
     ],
     "withinCodeElements": [],
     "includesCodeElements": [],
-    "levelsWithCodeElements": [],
+    "levelsWithCodeElements": [
+      {
+        "codeElementUri": "koulutustyyppikouta_kkopintojakso",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "koulutustyyppikouta_kkopintokokonaisuus",
+        "codeElementVersion": 1,
+        "passive": false
+      }
+    ],
     "koodiUri": "virtaopiskeluoikeudentyyppi_17",
     "versio": 1,
     "koodiArvo": "17"
@@ -262,7 +341,18 @@
     ],
     "withinCodeElements": [],
     "includesCodeElements": [],
-    "levelsWithCodeElements": [],
+    "levelsWithCodeElements": [
+      {
+        "codeElementUri": "koulutustyyppikouta_kkopintojakso",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "koulutustyyppikouta_kkopintokokonaisuus",
+        "codeElementVersion": 1,
+        "passive": false
+      }
+    ],
     "koodiUri": "virtaopiskeluoikeudentyyppi_18",
     "versio": 1,
     "koodiArvo": "18"
@@ -289,7 +379,13 @@
     ],
     "withinCodeElements": [],
     "includesCodeElements": [],
-    "levelsWithCodeElements": [],
+    "levelsWithCodeElements": [
+      {
+        "codeElementUri": "koulutustyyppikouta_erikoistumiskoulutus",
+        "codeElementVersion": 1,
+        "passive": false
+      }
+    ],
     "koodiUri": "virtaopiskeluoikeudentyyppi_19",
     "versio": 1,
     "koodiArvo": "19"
@@ -314,7 +410,13 @@
     ],
     "withinCodeElements": [],
     "includesCodeElements": [],
-    "levelsWithCodeElements": [],
+    "levelsWithCodeElements": [
+      {
+        "codeElementUri": "koulutustyyppikouta_yo",
+        "codeElementVersion": 1,
+        "passive": false
+      }
+    ],
     "koodiUri": "virtaopiskeluoikeudentyyppi_2",
     "versio": 1,
     "koodiArvo": "2"
@@ -340,7 +442,18 @@
     ],
     "withinCodeElements": [],
     "includesCodeElements": [],
-    "levelsWithCodeElements": [],
+    "levelsWithCodeElements": [
+      {
+        "codeElementUri": "koulutustyyppikouta_kkopintojakso",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "koulutustyyppikouta_kkopintokokonaisuus",
+        "codeElementVersion": 1,
+        "passive": false
+      }
+    ],
     "koodiUri": "virtaopiskeluoikeudentyyppi_20",
     "versio": 1,
     "koodiArvo": "20"
@@ -365,7 +478,13 @@
     ],
     "withinCodeElements": [],
     "includesCodeElements": [],
-    "levelsWithCodeElements": [],
+    "levelsWithCodeElements": [
+      {
+        "codeElementUri": "koulutustyyppikouta_amk",
+        "codeElementVersion": 1,
+        "passive": false
+      }
+    ],
     "koodiUri": "virtaopiskeluoikeudentyyppi_3",
     "versio": 1,
     "koodiArvo": "3"
@@ -390,7 +509,13 @@
     ],
     "withinCodeElements": [],
     "includesCodeElements": [],
-    "levelsWithCodeElements": [],
+    "levelsWithCodeElements": [
+      {
+        "codeElementUri": "koulutustyyppikouta_yo",
+        "codeElementVersion": 1,
+        "passive": false
+      }
+    ],
     "koodiUri": "virtaopiskeluoikeudentyyppi_4",
     "versio": 1,
     "koodiArvo": "4"
@@ -417,7 +542,13 @@
     ],
     "withinCodeElements": [],
     "includesCodeElements": [],
-    "levelsWithCodeElements": [],
+    "levelsWithCodeElements": [
+      {
+        "codeElementUri": "koulutustyyppikouta_erikoislaakari",
+        "codeElementVersion": 1,
+        "passive": false
+      }
+    ],
     "koodiUri": "virtaopiskeluoikeudentyyppi_5",
     "versio": 1,
     "koodiArvo": "5"
@@ -442,7 +573,13 @@
     ],
     "withinCodeElements": [],
     "includesCodeElements": [],
-    "levelsWithCodeElements": [],
+    "levelsWithCodeElements": [
+      {
+        "codeElementUri": "koulutustyyppikouta_yo",
+        "codeElementVersion": 1,
+        "passive": false
+      }
+    ],
     "koodiUri": "virtaopiskeluoikeudentyyppi_6",
     "versio": 1,
     "koodiArvo": "6"
@@ -467,7 +604,13 @@
     ],
     "withinCodeElements": [],
     "includesCodeElements": [],
-    "levelsWithCodeElements": [],
+    "levelsWithCodeElements": [
+      {
+        "codeElementUri": "koulutustyyppikouta_yo",
+        "codeElementVersion": 1,
+        "passive": false
+      }
+    ],
     "koodiUri": "virtaopiskeluoikeudentyyppi_7",
     "versio": 1,
     "koodiArvo": "7"
@@ -494,7 +637,18 @@
     ],
     "withinCodeElements": [],
     "includesCodeElements": [],
-    "levelsWithCodeElements": [],
+    "levelsWithCodeElements": [
+      {
+        "codeElementUri": "koulutustyyppikouta_kkopintojakso",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "koulutustyyppikouta_kkopintokokonaisuus",
+        "codeElementVersion": 1,
+        "passive": false
+      }
+    ],
     "koodiUri": "virtaopiskeluoikeudentyyppi_8",
     "versio": 1,
     "koodiArvo": "8"
@@ -521,7 +675,18 @@
     ],
     "withinCodeElements": [],
     "includesCodeElements": [],
-    "levelsWithCodeElements": [],
+    "levelsWithCodeElements": [
+      {
+        "codeElementUri": "koulutustyyppikouta_kkopintojakso",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "koulutustyyppikouta_kkopintokokonaisuus",
+        "codeElementVersion": 1,
+        "passive": false
+      }
+    ],
     "koodiUri": "virtaopiskeluoikeudentyyppi_9",
     "versio": 1,
     "koodiArvo": "9"

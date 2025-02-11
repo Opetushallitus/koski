@@ -6,7 +6,23 @@
   "lukittu": null,
   "withinCodes": [],
   "includesCodes": [],
-  "levelsWithCodes": [],
+  "levelsWithCodes": [
+    {
+      "codesUri": "koulutustyyppikouta",
+      "codesVersion": 1,
+      "passive": false,
+      "nimi": {
+        "SV": "Koulutustyyppi (kouta)",
+        "FI": "Koulutustyyppi (kouta)",
+        "EN": "Koulutustyyppi (kouta)"
+      },
+      "kuvaus": {
+        "SV": "Koulutustarjontapalvelun (kouta) käytössä oleva koulutustyyppikoodisto. Koodiarvot ovat koodattuina suoraan koutan tietomallissa, eikä ole integraatiota koulutustyypin osalta tähän koodistoon, eli on vain dokumentaatiotarkoitusta varten.",
+        "FI": "Koulutustarjontapalvelun (kouta) käytössä oleva koulutustyyppikoodisto. Koodiarvot ovat koodattuina suoraan koutan tietomallissa, eikä ole integraatiota koulutustyypin osalta tähän koodistoon, eli on vain dokumentaatiotarkoitusta varten.",
+        "EN": "Koulutustarjontapalvelun (kouta) käytössä oleva koulutustyyppikoodisto. Koodiarvot ovat koodattuina suoraan koutan tietomallissa, eikä ole integraatiota koulutustyypin osalta tähän koodistoon, eli on vain dokumentaatiotarkoitusta varten."
+      }
+    }
+  ],
   "codesGroupUri": "koski",
   "version": 0,
   "versio": 1,

@@ -22,7 +22,13 @@
     ],
     "withinCodeElements": [],
     "includesCodeElements": [],
-    "levelsWithCodeElements": [],
+    "levelsWithCodeElements": [
+      {
+        "codeElementUri": "koulutustyyppikouta_aikuistenperusopetus",
+        "codeElementVersion": 1,
+        "passive": false
+      }
+    ],
     "koodiUri": "suorituksentyyppi_aikuistenperusopetuksenalkuvaiheenkurssi",
     "versio": 1,
     "koodiArvo": "aikuistenperusopetuksenalkuvaiheenkurssi"
@@ -47,7 +53,13 @@
     ],
     "withinCodeElements": [],
     "includesCodeElements": [],
-    "levelsWithCodeElements": [],
+    "levelsWithCodeElements": [
+      {
+        "codeElementUri": "koulutustyyppikouta_aikuistenperusopetus",
+        "codeElementVersion": 1,
+        "passive": false
+      }
+    ],
     "koodiUri": "suorituksentyyppi_aikuistenperusopetuksenalkuvaiheenoppiaine",
     "versio": 1,
     "koodiArvo": "aikuistenperusopetuksenalkuvaiheenoppiaine"
@@ -72,7 +84,13 @@
     ],
     "withinCodeElements": [],
     "includesCodeElements": [],
-    "levelsWithCodeElements": [],
+    "levelsWithCodeElements": [
+      {
+        "codeElementUri": "koulutustyyppikouta_aikuistenperusopetus",
+        "codeElementVersion": 1,
+        "passive": false
+      }
+    ],
     "koodiUri": "suorituksentyyppi_aikuistenperusopetuksenkurssi",
     "versio": 1,
     "koodiArvo": "aikuistenperusopetuksenkurssi"
@@ -100,7 +118,13 @@
     ],
     "withinCodeElements": [],
     "includesCodeElements": [],
-    "levelsWithCodeElements": [],
+    "levelsWithCodeElements": [
+      {
+        "codeElementUri": "koulutustyyppikouta_aikuistenperusopetus",
+        "codeElementVersion": 1,
+        "passive": false
+      }
+    ],
     "koodiUri": "suorituksentyyppi_aikuistenperusopetuksenoppiaine",
     "versio": 1,
     "koodiArvo": "aikuistenperusopetuksenoppiaine"
@@ -113,7 +137,7 @@
         "kieli": "FI"
       },
       {
-        "nimi": "Lärökurs i den grundläggande utbildningen för vuxna",
+        "nimi": "Lärokurs i den grundläggande utbildningen för vuxna",
         "kuvaus": null,
         "kieli": "SV"
       },
@@ -125,7 +149,13 @@
     ],
     "withinCodeElements": [],
     "includesCodeElements": [],
-    "levelsWithCodeElements": [],
+    "levelsWithCodeElements": [
+      {
+        "codeElementUri": "koulutustyyppikouta_aikuistenperusopetus",
+        "codeElementVersion": 1,
+        "passive": false
+      }
+    ],
     "koodiUri": "suorituksentyyppi_aikuistenperusopetuksenoppimaara",
     "versio": 1,
     "koodiArvo": "aikuistenperusopetuksenoppimaara"
@@ -150,7 +180,13 @@
     ],
     "withinCodeElements": [],
     "includesCodeElements": [],
-    "levelsWithCodeElements": [],
+    "levelsWithCodeElements": [
+      {
+        "codeElementUri": "koulutustyyppikouta_aikuistenperusopetus",
+        "codeElementVersion": 1,
+        "passive": false
+      }
+    ],
     "koodiUri": "suorituksentyyppi_aikuistenperusopetuksenoppimaaranalkuvaihe",
     "versio": 1,
     "koodiArvo": "aikuistenperusopetuksenoppimaaranalkuvaihe"
@@ -178,7 +214,13 @@
     ],
     "withinCodeElements": [],
     "includesCodeElements": [],
-    "levelsWithCodeElements": [],
+    "levelsWithCodeElements": [
+      {
+        "codeElementUri": "koulutustyyppikouta_opepedagopinnot",
+        "codeElementVersion": 1,
+        "passive": false
+      }
+    ],
     "koodiUri": "suorituksentyyppi_ammatillinenkorkeakouluopintoja",
     "versio": 1,
     "koodiArvo": "ammatillinenkorkeakouluopintoja"
@@ -259,7 +301,13 @@
     ],
     "withinCodeElements": [],
     "includesCodeElements": [],
-    "levelsWithCodeElements": [],
+    "levelsWithCodeElements": [
+      {
+        "codeElementUri": "koulutustyyppikouta_amm",
+        "codeElementVersion": 1,
+        "passive": false
+      }
+    ],
     "koodiUri": "suorituksentyyppi_ammatillinentutkinto",
     "versio": 1,
     "koodiArvo": "ammatillinentutkinto"
@@ -284,7 +332,13 @@
     ],
     "withinCodeElements": [],
     "includesCodeElements": [],
-    "levelsWithCodeElements": [],
+    "levelsWithCodeElements": [
+      {
+        "codeElementUri": "koulutustyyppikouta_ammtutkinnonosa",
+        "codeElementVersion": 1,
+        "passive": false
+      }
+    ],
     "koodiUri": "suorituksentyyppi_ammatillinentutkintoosittainen",
     "versio": 1,
     "koodiArvo": "ammatillinentutkintoosittainen"
@@ -309,7 +363,13 @@
     ],
     "withinCodeElements": [],
     "includesCodeElements": [],
-    "levelsWithCodeElements": [],
+    "levelsWithCodeElements": [
+      {
+        "codeElementUri": "koulutustyyppikouta_ammtutkinnonosa",
+        "codeElementVersion": 1,
+        "passive": false
+      }
+    ],
     "koodiUri": "suorituksentyyppi_ammatillisentutkinnonosa",
     "versio": 1,
     "koodiArvo": "ammatillisentutkinnonosa"
@@ -334,7 +394,13 @@
     ],
     "withinCodeElements": [],
     "includesCodeElements": [],
-    "levelsWithCodeElements": [],
+    "levelsWithCodeElements": [
+      {
+        "codeElementUri": "koulutustyyppikouta_ammmuu",
+        "codeElementVersion": 1,
+        "passive": false
+      }
+    ],
     "koodiUri": "suorituksentyyppi_ammatillisentutkinnonosaapienempikokonaisuus",
     "versio": 1,
     "koodiArvo": "ammatillisentutkinnonosaapienempikokonaisuus"
@@ -362,7 +428,13 @@
     ],
     "withinCodeElements": [],
     "includesCodeElements": [],
-    "levelsWithCodeElements": [],
+    "levelsWithCodeElements": [
+      {
+        "codeElementUri": "koulutustyyppikouta_ammmuu",
+        "codeElementVersion": 1,
+        "passive": false
+      }
+    ],
     "koodiUri": "suorituksentyyppi_ammatillisentutkinnonosanosaalue",
     "versio": 1,
     "koodiArvo": "ammatillisentutkinnonosanosaalue"
@@ -614,7 +686,13 @@
     ],
     "withinCodeElements": [],
     "includesCodeElements": [],
-    "levelsWithCodeElements": [],
+    "levelsWithCodeElements": [
+      {
+        "codeElementUri": "koulutustyyppikouta_lk",
+        "codeElementVersion": 1,
+        "passive": false
+      }
+    ],
     "koodiUri": "suorituksentyyppi_ebtutkinto",
     "versio": 1,
     "koodiArvo": "ebtutkinto"
@@ -1125,7 +1203,13 @@
     ],
     "withinCodeElements": [],
     "includesCodeElements": [],
-    "levelsWithCodeElements": [],
+    "levelsWithCodeElements": [
+      {
+        "codeElementUri": "koulutustyyppikouta_lk",
+        "codeElementVersion": 1,
+        "passive": false
+      }
+    ],
     "koodiUri": "suorituksentyyppi_ibtutkinto",
     "versio": 1,
     "koodiArvo": "ibtutkinto"
@@ -1372,7 +1456,13 @@
     ],
     "withinCodeElements": [],
     "includesCodeElements": [],
-    "levelsWithCodeElements": [],
+    "levelsWithCodeElements": [
+      {
+        "codeElementUri": "koulutustyyppikouta_kkopintojakso",
+        "codeElementVersion": 1,
+        "passive": false
+      }
+    ],
     "koodiUri": "suorituksentyyppi_korkeakoulunopintojakso",
     "versio": 1,
     "koodiArvo": "korkeakoulunopintojakso"
@@ -1397,7 +1487,18 @@
     ],
     "withinCodeElements": [],
     "includesCodeElements": [],
-    "levelsWithCodeElements": [],
+    "levelsWithCodeElements": [
+      {
+        "codeElementUri": "koulutustyyppikouta_amk",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "koulutustyyppikouta_yo",
+        "codeElementVersion": 1,
+        "passive": false
+      }
+    ],
     "koodiUri": "suorituksentyyppi_korkeakoulututkinto",
     "versio": 1,
     "koodiArvo": "korkeakoulututkinto"
@@ -1549,7 +1650,13 @@
     ],
     "withinCodeElements": [],
     "includesCodeElements": [],
-    "levelsWithCodeElements": [],
+    "levelsWithCodeElements": [
+      {
+        "codeElementUri": "koulutustyyppikouta_lk",
+        "codeElementVersion": 1,
+        "passive": false
+      }
+    ],
     "koodiUri": "suorituksentyyppi_lukionoppimaara",
     "versio": 1,
     "koodiArvo": "lukionoppimaara"
@@ -1763,7 +1870,13 @@
     ],
     "withinCodeElements": [],
     "includesCodeElements": [],
-    "levelsWithCodeElements": [],
+    "levelsWithCodeElements": [
+      {
+        "codeElementUri": "koulutustyyppikouta_ammmuu",
+        "codeElementVersion": 1,
+        "passive": false
+      }
+    ],
     "koodiUri": "suorituksentyyppi_muuammatillinenkoulutus",
     "versio": 1,
     "koodiArvo": "muuammatillinenkoulutus"
@@ -1788,7 +1901,33 @@
     ],
     "withinCodeElements": [],
     "includesCodeElements": [],
-    "levelsWithCodeElements": [],
+    "levelsWithCodeElements": [
+      {
+        "codeElementUri": "koulutustyyppikouta_opepedagopinnot",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "koulutustyyppikouta_kkopintokokonaisuus",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "koulutustyyppikouta_erikoislaakari",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "koulutustyyppikouta_erikoistumiskoulutus",
+        "codeElementVersion": 1,
+        "passive": false
+      },
+      {
+        "codeElementUri": "koulutustyyppikouta_ammopeerityisopejaopo",
+        "codeElementVersion": 1,
+        "passive": false
+      }
+    ],
     "koodiUri": "suorituksentyyppi_muukorkeakoulunsuoritus",
     "versio": 1,
     "koodiArvo": "muukorkeakoulunsuoritus"
@@ -1816,7 +1955,13 @@
     ],
     "withinCodeElements": [],
     "includesCodeElements": [],
-    "levelsWithCodeElements": [],
+    "levelsWithCodeElements": [
+      {
+        "codeElementUri": "koulutustyyppikouta_muu",
+        "codeElementVersion": 1,
+        "passive": false
+      }
+    ],
     "koodiUri": "suorituksentyyppi_muukuinsaanneltykoulutus",
     "versio": 1,
     "koodiArvo": "muukuinsaanneltykoulutus"
@@ -1843,7 +1988,13 @@
     ],
     "withinCodeElements": [],
     "includesCodeElements": [],
-    "levelsWithCodeElements": [],
+    "levelsWithCodeElements": [
+      {
+        "codeElementUri": "koulutustyyppikouta_ammmuu",
+        "codeElementVersion": 1,
+        "passive": false
+      }
+    ],
     "koodiUri": "suorituksentyyppi_muunammatillisenkoulutuksenosasuoritus",
     "versio": 1,
     "koodiArvo": "muunammatillisenkoulutuksenosasuoritus"
@@ -1871,7 +2022,13 @@
     ],
     "withinCodeElements": [],
     "includesCodeElements": [],
-    "levelsWithCodeElements": [],
+    "levelsWithCodeElements": [
+      {
+        "codeElementUri": "koulutustyyppikouta_muu",
+        "codeElementVersion": 1,
+        "passive": false
+      }
+    ],
     "koodiUri": "suorituksentyyppi_muunkuinsaannellynkoulutuksenosasuoritus",
     "versio": 1,
     "koodiArvo": "muunkuinsaannellynkoulutuksenosasuoritus"
@@ -2379,7 +2536,13 @@
     ],
     "withinCodeElements": [],
     "includesCodeElements": [],
-    "levelsWithCodeElements": [],
+    "levelsWithCodeElements": [
+      {
+        "codeElementUri": "koulutustyyppikouta_taiteenperusopetus",
+        "codeElementVersion": 1,
+        "passive": false
+      }
+    ],
     "koodiUri": "suorituksentyyppi_taiteenperusopetuksenlaajanoppimaaranperusopinnot",
     "versio": 1,
     "koodiArvo": "taiteenperusopetuksenlaajanoppimaaranperusopinnot"
@@ -2407,7 +2570,13 @@
     ],
     "withinCodeElements": [],
     "includesCodeElements": [],
-    "levelsWithCodeElements": [],
+    "levelsWithCodeElements": [
+      {
+        "codeElementUri": "koulutustyyppikouta_taiteenperusopetus",
+        "codeElementVersion": 1,
+        "passive": false
+      }
+    ],
     "koodiUri": "suorituksentyyppi_taiteenperusopetuksenlaajanoppimaaransyventavatopinnot",
     "versio": 1,
     "koodiArvo": "taiteenperusopetuksenlaajanoppimaaransyventavatopinnot"
@@ -2435,7 +2604,13 @@
     ],
     "withinCodeElements": [],
     "includesCodeElements": [],
-    "levelsWithCodeElements": [],
+    "levelsWithCodeElements": [
+      {
+        "codeElementUri": "koulutustyyppikouta_taiteenperusopetus",
+        "codeElementVersion": 1,
+        "passive": false
+      }
+    ],
     "koodiUri": "suorituksentyyppi_taiteenperusopetuksenpaikallinenopintokokonaisuus",
     "versio": 1,
     "koodiArvo": "taiteenperusopetuksenpaikallinenopintokokonaisuus"
@@ -2463,7 +2638,13 @@
     ],
     "withinCodeElements": [],
     "includesCodeElements": [],
-    "levelsWithCodeElements": [],
+    "levelsWithCodeElements": [
+      {
+        "codeElementUri": "koulutustyyppikouta_taiteenperusopetus",
+        "codeElementVersion": 1,
+        "passive": false
+      }
+    ],
     "koodiUri": "suorituksentyyppi_taiteenperusopetuksenyleisenoppimaaranteemaopinnot",
     "versio": 1,
     "koodiArvo": "taiteenperusopetuksenyleisenoppimaaranteemaopinnot"
@@ -2491,7 +2672,13 @@
     ],
     "withinCodeElements": [],
     "includesCodeElements": [],
-    "levelsWithCodeElements": [],
+    "levelsWithCodeElements": [
+      {
+        "codeElementUri": "koulutustyyppikouta_taiteenperusopetus",
+        "codeElementVersion": 1,
+        "passive": false
+      }
+    ],
     "koodiUri": "suorituksentyyppi_taiteenperusopetuksenyleisenoppimaaranyhteisetopinnot",
     "versio": 1,
     "koodiArvo": "taiteenperusopetuksenyleisenoppimaaranyhteisetopinnot"
@@ -2516,7 +2703,13 @@
     ],
     "withinCodeElements": [],
     "includesCodeElements": [],
-    "levelsWithCodeElements": [],
+    "levelsWithCodeElements": [
+      {
+        "codeElementUri": "koulutustyyppikouta_telma",
+        "codeElementVersion": 1,
+        "passive": false
+      }
+    ],
     "koodiUri": "suorituksentyyppi_telma",
     "versio": 1,
     "koodiArvo": "telma"
@@ -2568,7 +2761,13 @@
     ],
     "withinCodeElements": [],
     "includesCodeElements": [],
-    "levelsWithCodeElements": [],
+    "levelsWithCodeElements": [
+      {
+        "codeElementUri": "koulutustyyppikouta_ammmuu",
+        "codeElementVersion": 1,
+        "passive": false
+      }
+    ],
     "koodiUri": "suorituksentyyppi_tutkinnonosaapienemmistakokonaisuuksistakoostuvasuoritus",
     "versio": 1,
     "koodiArvo": "tutkinnonosaapienemmistäkokonaisuuksistakoostuvasuoritus"
@@ -2595,7 +2794,13 @@
     ],
     "withinCodeElements": [],
     "includesCodeElements": [],
-    "levelsWithCodeElements": [],
+    "levelsWithCodeElements": [
+      {
+        "codeElementUri": "koulutustyyppikouta_ammmuu",
+        "codeElementVersion": 1,
+        "passive": false
+      }
+    ],
     "koodiUri": "suorituksentyyppi_tutkinnonosaapienempikokonaisuus",
     "versio": 1,
     "koodiArvo": "tutkinnonosaapienempikokonaisuus"
@@ -2651,7 +2856,13 @@
     ],
     "withinCodeElements": [],
     "includesCodeElements": [],
-    "levelsWithCodeElements": [],
+    "levelsWithCodeElements": [
+      {
+        "codeElementUri": "koulutustyyppikouta_tuva",
+        "codeElementVersion": 1,
+        "passive": false
+      }
+    ],
     "koodiUri": "suorituksentyyppi_tuvaammatillinenkoulutus",
     "versio": 1,
     "koodiArvo": "tuvaammatillinenkoulutus"
@@ -2676,7 +2887,13 @@
     ],
     "withinCodeElements": [],
     "includesCodeElements": [],
-    "levelsWithCodeElements": [],
+    "levelsWithCodeElements": [
+      {
+        "codeElementUri": "koulutustyyppikouta_tuva",
+        "codeElementVersion": 1,
+        "passive": false
+      }
+    ],
     "koodiUri": "suorituksentyyppi_tuvakoulutuksensuoritus",
     "versio": 1,
     "koodiArvo": "tuvakoulutuksensuoritus"
@@ -2704,7 +2921,13 @@
     ],
     "withinCodeElements": [],
     "includesCodeElements": [],
-    "levelsWithCodeElements": [],
+    "levelsWithCodeElements": [
+      {
+        "codeElementUri": "koulutustyyppikouta_tuva",
+        "codeElementVersion": 1,
+        "passive": false
+      }
+    ],
     "koodiUri": "suorituksentyyppi_tuvalukiokoulutus",
     "versio": 1,
     "koodiArvo": "tuvalukiokoulutus"
@@ -2732,7 +2955,13 @@
     ],
     "withinCodeElements": [],
     "includesCodeElements": [],
-    "levelsWithCodeElements": [],
+    "levelsWithCodeElements": [
+      {
+        "codeElementUri": "koulutustyyppikouta_tuva",
+        "codeElementVersion": 1,
+        "passive": false
+      }
+    ],
     "koodiUri": "suorituksentyyppi_tuvaperusopetus",
     "versio": 1,
     "koodiArvo": "tuvaperusopetus"
@@ -2810,7 +3039,13 @@
     ],
     "withinCodeElements": [],
     "includesCodeElements": [],
-    "levelsWithCodeElements": [],
+    "levelsWithCodeElements": [
+      {
+        "codeElementUri": "koulutustyyppikouta_vapaasivistystyomuu",
+        "codeElementVersion": 1,
+        "passive": false
+      }
+    ],
     "koodiUri": "suorituksentyyppi_vstjotpakoulutuksenosasuoritus",
     "versio": 1,
     "koodiArvo": "vstjotpakoulutuksenosasuoritus"
@@ -2838,7 +3073,13 @@
     ],
     "withinCodeElements": [],
     "includesCodeElements": [],
-    "levelsWithCodeElements": [],
+    "levelsWithCodeElements": [
+      {
+        "codeElementUri": "koulutustyyppikouta_vapaasivistystyomuu",
+        "codeElementVersion": 1,
+        "passive": false
+      }
+    ],
     "koodiUri": "suorituksentyyppi_vstjotpakoulutus",
     "versio": 1,
     "koodiArvo": "vstjotpakoulutus"
@@ -2863,7 +3104,13 @@
     ],
     "withinCodeElements": [],
     "includesCodeElements": [],
-    "levelsWithCodeElements": [],
+    "levelsWithCodeElements": [
+      {
+        "codeElementUri": "koulutustyyppikouta_vapaasivistystyomuu",
+        "codeElementVersion": 1,
+        "passive": false
+      }
+    ],
     "koodiUri": "suorituksentyyppi_vstlukutaitokoulutuksenkokonaisuudensuoritus",
     "versio": 1,
     "koodiArvo": "vstlukutaitokoulutuksenkokonaisuudensuoritus"
@@ -2891,7 +3138,13 @@
     ],
     "withinCodeElements": [],
     "includesCodeElements": [],
-    "levelsWithCodeElements": [],
+    "levelsWithCodeElements": [
+      {
+        "codeElementUri": "koulutustyyppikouta_vapaasivistystyomuu",
+        "codeElementVersion": 1,
+        "passive": false
+      }
+    ],
     "koodiUri": "suorituksentyyppi_vstlukutaitokoulutus",
     "versio": 1,
     "koodiArvo": "vstlukutaitokoulutus"
@@ -2916,7 +3169,13 @@
     ],
     "withinCodeElements": [],
     "includesCodeElements": [],
-    "levelsWithCodeElements": [],
+    "levelsWithCodeElements": [
+      {
+        "codeElementUri": "koulutustyyppikouta_vapaasivistystyomuu",
+        "codeElementVersion": 1,
+        "passive": false
+      }
+    ],
     "koodiUri": "suorituksentyyppi_vstmaahanmuuttajienkotoutumiskoulutuksenkieliopintojensuoritus",
     "versio": 1,
     "koodiArvo": "vstmaahanmuuttajienkotoutumiskoulutuksenkieliopintojensuoritus"
@@ -2941,7 +3200,13 @@
     ],
     "withinCodeElements": [],
     "includesCodeElements": [],
-    "levelsWithCodeElements": [],
+    "levelsWithCodeElements": [
+      {
+        "codeElementUri": "koulutustyyppikouta_vapaasivistystyomuu",
+        "codeElementVersion": 1,
+        "passive": false
+      }
+    ],
     "koodiUri": "suorituksentyyppi_vstmaahanmuuttajienkotoutumiskoulutuksenkielitaitojensuoritus",
     "versio": 1,
     "koodiArvo": "vstmaahanmuuttajienkotoutumiskoulutuksenkielitaitojensuoritus"
@@ -2966,7 +3231,13 @@
     ],
     "withinCodeElements": [],
     "includesCodeElements": [],
-    "levelsWithCodeElements": [],
+    "levelsWithCodeElements": [
+      {
+        "codeElementUri": "koulutustyyppikouta_vapaasivistystyomuu",
+        "codeElementVersion": 1,
+        "passive": false
+      }
+    ],
     "koodiUri": "suorituksentyyppi_vstmaahanmuuttajienkotoutumiskoulutuksenohjauksensuoritus",
     "versio": 1,
     "koodiArvo": "vstmaahanmuuttajienkotoutumiskoulutuksenohjauksensuoritus"
@@ -2991,7 +3262,13 @@
     ],
     "withinCodeElements": [],
     "includesCodeElements": [],
-    "levelsWithCodeElements": [],
+    "levelsWithCodeElements": [
+      {
+        "codeElementUri": "koulutustyyppikouta_vapaasivistystyomuu",
+        "codeElementVersion": 1,
+        "passive": false
+      }
+    ],
     "koodiUri": "suorituksentyyppi_vstmaahanmuuttajienkotoutumiskoulutuksenohjaus",
     "versio": 1,
     "koodiArvo": "vstmaahanmuuttajienkotoutumiskoulutuksenohjaus"
@@ -3016,7 +3293,13 @@
     ],
     "withinCodeElements": [],
     "includesCodeElements": [],
-    "levelsWithCodeElements": [],
+    "levelsWithCodeElements": [
+      {
+        "codeElementUri": "koulutustyyppikouta_vapaasivistystyomuu",
+        "codeElementVersion": 1,
+        "passive": false
+      }
+    ],
     "koodiUri": "suorituksentyyppi_vstmaahanmuuttajienkotoutumiskoulutuksentyoelamajayhteiskuntataitojenkokonaisuudensuoritus",
     "versio": 1,
     "koodiArvo": "vstmaahanmuuttajienkotoutumiskoulutuksentyoelamajayhteiskuntataitojenkokonaisuudensuoritus"
@@ -3041,7 +3324,13 @@
     ],
     "withinCodeElements": [],
     "includesCodeElements": [],
-    "levelsWithCodeElements": [],
+    "levelsWithCodeElements": [
+      {
+        "codeElementUri": "koulutustyyppikouta_vapaasivistystyomuu",
+        "codeElementVersion": 1,
+        "passive": false
+      }
+    ],
     "koodiUri": "suorituksentyyppi_vstmaahanmuuttajienkotoutumiskoulutuksentyoelamajayhteiskuntataitojensuoritus",
     "versio": 1,
     "koodiArvo": "vstmaahanmuuttajienkotoutumiskoulutuksentyoelamajayhteiskuntataitojensuoritus"
@@ -3066,7 +3355,13 @@
     ],
     "withinCodeElements": [],
     "includesCodeElements": [],
-    "levelsWithCodeElements": [],
+    "levelsWithCodeElements": [
+      {
+        "codeElementUri": "koulutustyyppikouta_vapaasivistystyomuu",
+        "codeElementVersion": 1,
+        "passive": false
+      }
+    ],
     "koodiUri": "suorituksentyyppi_vstmaahanmuuttajienkotoutumiskoulutuksentyoelamajayhteiskuntataitojentyoelamajaksonsuoritus",
     "versio": 1,
     "koodiArvo": "vstmaahanmuuttajienkotoutumiskoulutuksentyoelamajayhteiskuntataitojentyoelamajaksonsuoritus"
@@ -3091,7 +3386,13 @@
     ],
     "withinCodeElements": [],
     "includesCodeElements": [],
-    "levelsWithCodeElements": [],
+    "levelsWithCodeElements": [
+      {
+        "codeElementUri": "koulutustyyppikouta_vapaasivistystyomuu",
+        "codeElementVersion": 1,
+        "passive": false
+      }
+    ],
     "koodiUri": "suorituksentyyppi_vstmaahanmuuttajienkotoutumiskoulutuksenvalinnaistenopintojenosasuoritus",
     "versio": 1,
     "koodiArvo": "vstmaahanmuuttajienkotoutumiskoulutuksenvalinnaistenopintojenosasuoritus"
@@ -3116,7 +3417,13 @@
     ],
     "withinCodeElements": [],
     "includesCodeElements": [],
-    "levelsWithCodeElements": [],
+    "levelsWithCodeElements": [
+      {
+        "codeElementUri": "koulutustyyppikouta_vapaasivistystyomuu",
+        "codeElementVersion": 1,
+        "passive": false
+      }
+    ],
     "koodiUri": "suorituksentyyppi_vstmaahanmuuttajienkotoutumiskoulutuksenvalinnaistensuoritus",
     "versio": 1,
     "koodiArvo": "vstmaahanmuuttajienkotoutumiskoulutuksenvalinnaistensuoritus"
@@ -3144,7 +3451,13 @@
     ],
     "withinCodeElements": [],
     "includesCodeElements": [],
-    "levelsWithCodeElements": [],
+    "levelsWithCodeElements": [
+      {
+        "codeElementUri": "koulutustyyppikouta_vapaasivistystyomuu",
+        "codeElementVersion": 1,
+        "passive": false
+      }
+    ],
     "koodiUri": "suorituksentyyppi_vstmaahanmuuttajienkotoutumiskoulutus",
     "versio": 1,
     "koodiArvo": "vstmaahanmuuttajienkotoutumiskoulutus"
@@ -3169,7 +3482,13 @@
     ],
     "withinCodeElements": [],
     "includesCodeElements": [],
-    "levelsWithCodeElements": [],
+    "levelsWithCodeElements": [
+      {
+        "codeElementUri": "koulutustyyppikouta_vapaasivistystyomuu",
+        "codeElementVersion": 1,
+        "passive": false
+      }
+    ],
     "koodiUri": "suorituksentyyppi_vstmuuallasuoritetutopinnot",
     "versio": 1,
     "koodiArvo": "vstmuuallasuoritetutopinnot"
@@ -3197,7 +3516,13 @@
     ],
     "withinCodeElements": [],
     "includesCodeElements": [],
-    "levelsWithCodeElements": [],
+    "levelsWithCodeElements": [
+      {
+        "codeElementUri": "koulutustyyppikouta_vapaasivistystyomuu",
+        "codeElementVersion": 1,
+        "passive": false
+      }
+    ],
     "koodiUri": "suorituksentyyppi_vstopintokokonaisuus",
     "versio": 1,
     "koodiArvo": "vstopintokokonaisuus"
@@ -3225,7 +3550,13 @@
     ],
     "withinCodeElements": [],
     "includesCodeElements": [],
-    "levelsWithCodeElements": [],
+    "levelsWithCodeElements": [
+      {
+        "codeElementUri": "koulutustyyppikouta_vapaasivistystyoopistovuosi",
+        "codeElementVersion": 1,
+        "passive": false
+      }
+    ],
     "koodiUri": "suorituksentyyppi_vstoppivelvollisillesuunnattukoulutus",
     "versio": 1,
     "koodiArvo": "vstoppivelvollisillesuunnattukoulutus"
@@ -3253,7 +3584,13 @@
     ],
     "withinCodeElements": [],
     "includesCodeElements": [],
-    "levelsWithCodeElements": [],
+    "levelsWithCodeElements": [
+      {
+        "codeElementUri": "koulutustyyppikouta_vapaasivistystyomuu",
+        "codeElementVersion": 1,
+        "passive": false
+      }
+    ],
     "koodiUri": "suorituksentyyppi_vstosaamiskokonaisuus",
     "versio": 1,
     "koodiArvo": "vstosaamiskokonaisuus"
@@ -3281,7 +3618,13 @@
     ],
     "withinCodeElements": [],
     "includesCodeElements": [],
-    "levelsWithCodeElements": [],
+    "levelsWithCodeElements": [
+      {
+        "codeElementUri": "koulutustyyppikouta_vapaasivistystyoosaamismerkki",
+        "codeElementVersion": 1,
+        "passive": false
+      }
+    ],
     "koodiUri": "suorituksentyyppi_vstosaamismerkki",
     "versio": 1,
     "koodiArvo": "vstosaamismerkki"
@@ -3309,7 +3652,13 @@
     ],
     "withinCodeElements": [],
     "includesCodeElements": [],
-    "levelsWithCodeElements": [],
+    "levelsWithCodeElements": [
+      {
+        "codeElementUri": "koulutustyyppikouta_vapaasivistystyomuu",
+        "codeElementVersion": 1,
+        "passive": false
+      }
+    ],
     "koodiUri": "suorituksentyyppi_vstvalinnainensuuntautuminen",
     "versio": 1,
     "koodiArvo": "vstvalinnainensuuntautuminen"
@@ -3337,7 +3686,13 @@
     ],
     "withinCodeElements": [],
     "includesCodeElements": [],
-    "levelsWithCodeElements": [],
+    "levelsWithCodeElements": [
+      {
+        "codeElementUri": "koulutustyyppikouta_vapaasivistystyomuu",
+        "codeElementVersion": 1,
+        "passive": false
+      }
+    ],
     "koodiUri": "suorituksentyyppi_vstvapaatavoitteinenkoulutus",
     "versio": 1,
     "koodiArvo": "vstvapaatavoitteinenkoulutus"
@@ -3362,7 +3717,13 @@
     ],
     "withinCodeElements": [],
     "includesCodeElements": [],
-    "levelsWithCodeElements": [],
+    "levelsWithCodeElements": [
+      {
+        "codeElementUri": "koulutustyyppikouta_vapaasivistystyomuu",
+        "codeElementVersion": 1,
+        "passive": false
+      }
+    ],
     "koodiUri": "suorituksentyyppi_vstvapaatavoitteisenkoulutuksenosasuoritus",
     "versio": 1,
     "koodiArvo": "vstvapaatavoitteisenkoulutuksenosasuoritus"
@@ -3412,7 +3773,13 @@
     ],
     "withinCodeElements": [],
     "includesCodeElements": [],
-    "levelsWithCodeElements": [],
+    "levelsWithCodeElements": [
+      {
+        "codeElementUri": "koulutustyyppikouta_lk",
+        "codeElementVersion": 1,
+        "passive": false
+      }
+    ],
     "koodiUri": "suorituksentyyppi_ylioppilastutkinto",
     "versio": 1,
     "koodiArvo": "ylioppilastutkinto"

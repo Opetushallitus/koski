@@ -83,6 +83,21 @@
       }
     },
     {
+      "codesUri": "kielisuhde",
+      "codesVersion": 2,
+      "passive": false,
+      "nimi": {
+        "SV": "språklig",
+        "FI": "kielisuhde",
+        "EN": "language distribution"
+      },
+      "kuvaus": {
+        "SV": "språklig",
+        "FI": "Kielisuhde jakaa kunnat yksikielisiin suomen- tai ruotsinkielisiin kuntiin sekä kaksikielisiin kuntiin, joissa enemmistön kieli voi olla joko suomi tai ruotsi. Näin luokkia on yhteensä neljä. Valtioneuvosto määrää kuntien suomen-, ruotsin- tai kaksikielisyydestä kymmeneksi vuodeksi kerrallaan. Viimeisin päätös  (423/2003) koskee vuosia 2013-2022. Koodistoa käytetään ainakin aluekoodistossa.\n\nKoodistoon liittyvät tiedustelut yhteisetpalvelut@opintopolku.fi\nOpetushallitus varaa oikeuden muuttaa Opintopolun koodistoja, niissä olevia koodeja sekä niiden selitteitä ja kuvauksia",
+        "EN": "language distribution"
+      }
+    },
+    {
       "codesUri": "maakunta",
       "codesVersion": 1,
       "passive": true,
@@ -125,21 +140,6 @@
         "FI": "Tilastollinen kuntaryhmitys on Tilastokeskuksessa kehitetty kaupunkimaisuuden kuvaaja, joka on ollut käytössä vuodesta 1989 lähtien. Se jakaa kunnat taajamaväestön osuuden ja suurimman taajaman väkiluvun perusteella kaupunkimaisiin, taajaan asuttuihin ja maaseutumaisiin kuntiin.\nTaajama ei ole riippuvainen hallinnollisista aluejaoista, joten se voi ulottua useamman kuin yhden kunnan alueelle.\n \nTilastollinen kuntaryhmitys perustuu 24.10.2011 lähtien kerran vuodessa tehtävään taajamarajaukseen ja siitä saatuun tietoon taajamaväestöstä.\n \nTaajamakäsite:\n \nTaajama on rakennustihentymä, jossa on vähintään 200 asukasta. Taajaman määrittely perustuu Suomen ympäristökeskuksen (SYKE) paikkatietomenetelmillä tekemiin määritelmiin, joissa on käytetty Tilastokeskuksen250m x 250m - ruutuaineiston rakennus- ja väestötietoja. Määrittelyssä tarkastellaan rakennuksia sisältävien ruutujen ja niiden naapuriruutujen rakennusten määrää sekä rakennusten kerrosalamäärää. Määrittelyssä syntyneistä yhtenäisistä rakennustihentymistä valitaan ne, joissa on vähinään 200 asukasta.",
         "SV": "statistisk kommungruppering",
         "EN": "statistical grouping of municipalities"
-      }
-    },
-    {
-      "codesUri": "kielisuhde",
-      "codesVersion": 2,
-      "passive": false,
-      "nimi": {
-        "SV": "språklig",
-        "FI": "kielisuhde",
-        "EN": "language distribution"
-      },
-      "kuvaus": {
-        "SV": "språklig",
-        "FI": "Kielisuhde jakaa kunnat yksikielisiin suomen- tai ruotsinkielisiin kuntiin sekä kaksikielisiin kuntiin, joissa enemmistön kieli voi olla joko suomi tai ruotsi. Näin luokkia on yhteensä neljä. Valtioneuvosto määrää kuntien suomen-, ruotsin- tai kaksikielisyydestä kymmeneksi vuodeksi kerrallaan. Viimeisin päätös  (423/2003) koskee vuosia 2013-2022. Koodistoa käytetään ainakin aluekoodistossa.\n\nKoodistoon liittyvät tiedustelut yhteisetpalvelut@opintopolku.fi\nOpetushallitus varaa oikeuden muuttaa Opintopolun koodistoja, niissä olevia koodeja sekä niiden selitteitä ja kuvauksia",
-        "EN": "language distribution"
       }
     },
     {
