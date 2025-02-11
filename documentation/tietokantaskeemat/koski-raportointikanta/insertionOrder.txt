@@ -24,7 +24,7 @@ r_opiskeluoikeus
 r_opiskeluoikeus_aikajakso
 r_oppivelvollisuudesta_vapautus
 r_organisaatiohistoria
-r_osaamisen_hankkimistavat_ammatillinen
+r_osaamisen_hankkimistapa_ammatillinen
 r_osasuoritus
 r_paatason_suoritus
 r_ytr_kokeen_suoritus
