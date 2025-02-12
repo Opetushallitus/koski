@@ -44,9 +44,16 @@ object PerusopetuksenVuosiluokkaRaportti extends VuosiluokkaRaporttiPaivalta wit
     val kotikunta = if (t.language == "sv") row.henkilo.kotikuntaNimiSv else row.henkilo.kotikuntaNimiFi
 
     val omanÄidinkielenArvosanaJaLaajuus = {
-      val arvosana = row.päätasonSuoritus.omanÄidinkielenOpinnotArvosanaDatasta.getOrElse(t.get("raportti-excel-default-value-arvosana-puuttuu"))
-      val laajuus = row.päätasonSuoritus.omanÄidinkielenOpinnotLaajuusDatasta.getOrElse(t.get("raportti-excel-default-value-laajuus-puuttuu"))
-      s"$arvosana:$laajuus"
+      val arvosana = row.päätasonSuoritus.omanÄidinkielenOpinnotArvosanaDatasta
+      val laajuus = row.päätasonSuoritus.omanÄidinkielenOpinnotLaajuusDatasta
+      arvosana match {
+        case None => t.get("raportti-excel-default-value-oppiaine-puuttuu")
+        case Some(arvosana) =>
+          laajuus match {
+            case None    => s"$arvosana - laajuus puuttuu"
+            case Some(laajuus) => s"$arvosana laajuus: $laajuus"
+          }
+      }
     }
 
     val omanÄidinkielenKieli = {

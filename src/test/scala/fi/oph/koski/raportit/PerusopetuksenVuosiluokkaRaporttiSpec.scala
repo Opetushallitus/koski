@@ -170,7 +170,7 @@ class PerusopetuksenVuosiluokkaRaporttiSpec
         val opiskeluoikeusOid = getOpiskeluoikeudet(KoskiSpecificMockOppijat.ysiluokkalainen.oid).find(_.tyyppi.koodiarvo == "perusopetus").get.oid.get
         val rows = result.filter(_.opiskeluoikeusOid == opiskeluoikeusOid)
         rows.length should equal(1)
-        rows.head.omanÄidinkielenLaajuusJaArvosana should equal("S:1.0")
+        rows.head.omanÄidinkielenLaajuusJaArvosana should equal("S laajuus: 1.0")
         rows.head.omanÄidinkielenKieli should equal("saame, lappi")
       }
 
@@ -327,7 +327,7 @@ class PerusopetuksenVuosiluokkaRaporttiSpec
     jaaLuokalle = false,
     aidinkieli = "9",
     pakollisenAidinkielenOppimaara = "Suomen kieli ja kirjallisuus",
-    omanÄidinkielenLaajuusJaArvosana = "Arvosana puuttuu:Ei laajuutta",
+    omanÄidinkielenLaajuusJaArvosana = "Oppiaine puuttuu",
     omanÄidinkielenKieli = "Oppiaine puuttuu",
     kieliA1 = "8",
     kieliA1Oppimaara = "englanti",
