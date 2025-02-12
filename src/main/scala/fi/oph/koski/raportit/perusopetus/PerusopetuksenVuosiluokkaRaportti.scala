@@ -310,7 +310,7 @@ object PerusopetuksenVuosiluokkaRaportti extends VuosiluokkaRaporttiPaivalta wit
     "voimassaolevatVuosiluokat" -> CompactColumn(t.get("raportti-excel-kolumni-voimassaolevatVuosiluokat"), comment = Some(t.get("raportti-excel-kolumni-voimassaolevatVuosiluokat-comment"))),
     "aidinkieli" -> CompactColumn(t.get("raportti-excel-kolumni-aidinkieli")),
     "pakollisenAidinkielenOppimaara" -> CompactColumn(t.get("raportti-excel-kolumni-pakollisenAidinkielenOppimaara")),
-    "omanÄidinkielenLaajuusJaArvosana" -> CompactColumn(t.get("raportti-excel-kolumni-omanÄidinkielenArvosanaJaLaajuus")),
+    "omanÄidinkielenLaajuusJaArvosana" -> CompactColumn(t.get("raportti-excel-kolumni-omanÄidinkielenLaajuusJaArvosana")),
     "omanÄidinkielenKieli" -> CompactColumn(t.get("raportti-excel-kolumni-omanÄidinkielenKieli")),
     "kieliA1" -> CompactColumn(t.get("raportti-excel-kolumni-kieliA1")),
     "kieliA1Oppimaara" -> CompactColumn(t.get("raportti-excel-kolumni-kieliA1Oppimaara")),

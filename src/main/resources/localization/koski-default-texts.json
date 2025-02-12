@@ -1822,6 +1822,8 @@
   "raportti-excel-kolumni-nuortenOppimaaranSuorittajiaVOSRahoitteisia-comment": "\"Läsnä\"-tilaisista opiskeluoikeuksista ne, joissa päätason suorituksena lukion oppimäärän suoritus nuorten opetussuunnitelman mukaan ja joille on merkitty raportin tulostusparametreissa määritellylle päivälle osuvalle läsnäolojaksolle rahoitusmuodoksi \"Valtionosuusrahoitteinen koulutus\"",
   "raportti-excel-kolumni-oikeuttaMaksuttomuuteenPidennetty": "Oikeutta maksuttomuuteen pidennetty",
   "raportti-excel-kolumni-oikeuttaMaksuttomuuteenPidennetty-comment": "Aikajaksot oikeuteen maksuttomuuden pidennyksestä, jotka ovat olleet voimassa tulostusparametreissa valitun aikajakson aikana.",
+  "raportti-excel-kolumni-omanÄidinkielenKieli": "Oman äidinkielen kieli",
+  "raportti-excel-kolumni-omanÄidinkielenLaajuusJaArvosana": "Oman äidinkielen laajuus ja arvosana",
   "raportti-excel-kolumni-oo-rahoitusmuodot": "Opiskeluoikeuden rahoitusmuodot",
   "raportti-excel-kolumni-oo-rahoitusmuodot-comment": "Jokaiselle opiskeluoikeuden tilajaksolle merkityt rahoitusmuodot riippumatta siitä, osuvatko tilat tulostusparametreissa määritellyn aikajakson sisään. Rahoitusmuodot erotettu toisistaan pilkulla ja järjestetty kronologisesti. Sellainen tilajakso, josta ei löydy rahoitusmuotoa ilmaistaan merkillä \"-\". Jos siis opiskeluoikeudella on valtionosuusrahoitteinen \"Läsnä\"-tila sekä väliaikainen keskeytys ilman rahoitusmuotoa, kentässä on arvo \"1,-\". HUOM! Kaikissa opiskeluoikeuksissa (esim. perusopetus, esiopetus) tieto rahoitusmuodosta ei ole relevantti.",
   "raportti-excel-kolumni-opetuskieli": "Opetuskieli",
