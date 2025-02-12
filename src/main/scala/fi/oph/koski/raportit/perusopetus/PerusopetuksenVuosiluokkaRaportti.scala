@@ -44,14 +44,22 @@ object PerusopetuksenVuosiluokkaRaportti extends VuosiluokkaRaporttiPaivalta wit
     val kotikunta = if (t.language == "sv") row.henkilo.kotikuntaNimiSv else row.henkilo.kotikuntaNimiFi
 
     val omanÄidinkielenArvosanaJaLaajuus = {
-      val arvosana = row.päätasonSuoritus.omanÄidinkielenOpinnotArvosanaDatasta.getOrElse(t.get("raportti-excel-default-value-arvosana-puuttuu"))
-      val laajuus = row.päätasonSuoritus.omanÄidinkielenOpinnotLaajuusDatasta.getOrElse(t.get("raportti-excel-default-value-laajuus-puuttuu"))
-      s"$arvosana:$laajuus"
+      val arvosana = row.päätasonSuoritus.omanÄidinkielenOpinnotArvosanaDatasta
+      val laajuus = row.päätasonSuoritus.omanÄidinkielenOpinnotLaajuusDatasta
+      arvosana match {
+        case None => t.get("raportti-excel-default-value-oppiaine-puuttuu")
+        case Some(arvosana) =>
+          laajuus match {
+            case None    => s"$arvosana - laajuus puuttuu"
+            case Some(laajuus) => s"$arvosana laajuus: $laajuus"
+          }
+      }
     }
 
     val omanÄidinkielenKieli = {
-      val kieli = row.päätasonSuoritus.omanÄidinkielenOpinnotKieliDatasta.getOrElse(t.get("raportti-excel-default-value-oppiaine-puuttuu"))
-      s"$kieli"
+      row.päätasonSuoritus.omanÄidinkielenOpinnotKieliDatasta
+        .map(_.get(t.language))
+        .getOrElse(t.get("raportti-excel-default-value-oppiaine-puuttuu"))
     }
 
     PerusopetusRow(
@@ -309,7 +317,7 @@ object PerusopetuksenVuosiluokkaRaportti extends VuosiluokkaRaporttiPaivalta wit
     "voimassaolevatVuosiluokat" -> CompactColumn(t.get("raportti-excel-kolumni-voimassaolevatVuosiluokat"), comment = Some(t.get("raportti-excel-kolumni-voimassaolevatVuosiluokat-comment"))),
     "aidinkieli" -> CompactColumn(t.get("raportti-excel-kolumni-aidinkieli")),
     "pakollisenAidinkielenOppimaara" -> CompactColumn(t.get("raportti-excel-kolumni-pakollisenAidinkielenOppimaara")),
-    "omanÄidinkielenLaajuusJaArvosana" -> CompactColumn(t.get("raportti-excel-kolumni-omanÄidinkielenArvosanaJaLaajuus")),
+    "omanÄidinkielenLaajuusJaArvosana" -> CompactColumn(t.get("raportti-excel-kolumni-omanÄidinkielenLaajuusJaArvosana")),
     "omanÄidinkielenKieli" -> CompactColumn(t.get("raportti-excel-kolumni-omanÄidinkielenKieli")),
     "kieliA1" -> CompactColumn(t.get("raportti-excel-kolumni-kieliA1")),
     "kieliA1Oppimaara" -> CompactColumn(t.get("raportti-excel-kolumni-kieliA1Oppimaara")),
