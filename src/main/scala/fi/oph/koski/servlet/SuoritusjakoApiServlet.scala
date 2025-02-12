@@ -55,18 +55,29 @@ class SuoritusjakoApiServlet(implicit application: KoskiApplication) extends Kos
 
   get("/:secret") {
     contentType = "application/json"
-    implicit val suoritusjakoUser = KoskiSpecificSession.suoritusjakoKatsominenUser(request)
-    val result = application.suoritusjakoService.get(params("secret"))
-    renderEither[OppijaJakolinkillä](result.map(_.getIgnoringWarnings))
+
+    (for {
+      row <- application.suoritusjakoRepository.get(params("secret"))
+      session <- getSessionFromRow(row, application.config)
+      result <- application.suoritusjakoService.getFromRow(row, session)
+    } yield (result, session)) match {
+      case Left(status) => haltWithStatus(status)
+      case Right((result,session)) => renderObject[OppijaJakolinkillä](result.getIgnoringWarnings, session)
+    }
   }
 
   post("/") {
     contentType = "application/json"
-    implicit val suoritusjakoUser = KoskiSpecificSession.suoritusjakoKatsominenUser(request)
     withJsonBody({ json =>
       val body = JsonSerializer.extract[SuoritusjakoReadRequest](json)
-      val result = application.suoritusjakoService.get(body.secret)
-      renderEither[OppijaJakolinkillä](result.map(_.getIgnoringWarnings))
+      (for {
+        row <- application.suoritusjakoRepository.get(body.secret)
+        session <- getSessionFromRow(row, application.config)
+        result <- application.suoritusjakoService.getFromRow(row, session)
+      } yield (result, session)) match {
+        case Left(status) => haltWithStatus(status)
+        case Right((result,session)) => renderObject[OppijaJakolinkillä](result.getIgnoringWarnings, session)
+      }
     })()
   }
 }
