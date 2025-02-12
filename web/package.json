@@ -83,7 +83,7 @@
     "less-loader": "^12.2.0",
     "lodash": "^4.17.21",
     "mocha": "^10.7.3",
-    "mocha-chrome": "github:Opetushallitus/mocha-chrome#4.0.0",
+    "mocha-chrome": "github:opetushallitus/mocha-chrome#1b89c2b8d29debb68740d16f011ee567c1afcf87",
     "moment": "^2.30.1",
     "node-gyp": "^10.2.0",
     "postcss": "^8.4.47",
