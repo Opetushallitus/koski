@@ -86,7 +86,7 @@ trait KoskiSpecificApiServlet extends ApiServlet with KoskiSpecificBaseServlet {
 
   def renderEither[T: ru.TypeTag](result: Either[HttpStatus, T], sessionOverride: KoskiSpecificSession): Unit = {
     result match {
-      case Right(x) => renderObject(x, sessionOverride)
+      case Right(x) => renderObject[T](x, sessionOverride)
       case Left(status) => haltWithStatus(status)
     }
   }
@@ -95,7 +95,7 @@ trait KoskiSpecificApiServlet extends ApiServlet with KoskiSpecificBaseServlet {
     x match {
       case _: Unit => response.setStatus(204)
       case _: BoxedUnit => response.setStatus(204)
-      case _ => writeJson(toJsonString(x, sessionOverride))
+      case _ => writeJson(toJsonString[T](x, sessionOverride))
     }
   }
 
