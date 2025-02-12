@@ -50,8 +50,9 @@ object PerusopetuksenVuosiluokkaRaportti extends VuosiluokkaRaporttiPaivalta wit
     }
 
     val omanÄidinkielenKieli = {
-      val kieli = row.päätasonSuoritus.omanÄidinkielenOpinnotKieliDatasta.getOrElse(t.get("raportti-excel-default-value-oppiaine-puuttuu"))
-      s"$kieli"
+      row.päätasonSuoritus.omanÄidinkielenOpinnotKieliDatasta
+        .map(_.get(t.language))
+        .getOrElse(t.get("raportti-excel-default-value-oppiaine-puuttuu"))
     }
 
     PerusopetusRow(

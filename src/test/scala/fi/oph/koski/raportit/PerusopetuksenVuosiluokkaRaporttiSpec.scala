@@ -171,7 +171,7 @@ class PerusopetuksenVuosiluokkaRaporttiSpec
         val rows = result.filter(_.opiskeluoikeusOid == opiskeluoikeusOid)
         rows.length should equal(1)
         rows.head.omanÄidinkielenLaajuusJaArvosana should equal("S:1.0")
-        rows.head.omanÄidinkielenKieli should equal("SE")
+        rows.head.omanÄidinkielenKieli should equal("saame, lappi")
       }
 
       "Jos oppilas on jäämässä luokalle käytetään yhdeksännen luokan vuosiluokka suoritusta (ei vahvistusta luokalle jäänti suorituksella)" in {
