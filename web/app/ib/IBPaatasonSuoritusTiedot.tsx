@@ -203,7 +203,7 @@ const TheoryOfKnowledgeRows: React.FC<IBTutkinnonTiedotRowsProps> = ({
     [form, kurssitPath]
   )
 
-  return (
+  return theoryOfKnowledge || form.editMode ? (
     <TestIdLayer id="theoryOfKnowledge">
       <KeyValueRow localizableLabel="Theory of knowledge">
         <KeyValueTable>
@@ -264,7 +264,7 @@ const TheoryOfKnowledgeRows: React.FC<IBTutkinnonTiedotRowsProps> = ({
         </KeyValueTable>
       </KeyValueRow>
     </TestIdLayer>
-  )
+  ) : null
 }
 
 const emptyTheoryOfKnowledge = IBTheoryOfKnowledgeSuoritus({
