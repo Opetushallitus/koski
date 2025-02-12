@@ -1,9 +1,9 @@
+import { Koodistokoodiviite } from './Koodistokoodiviite'
+import { LocalizedString } from './LocalizedString'
 import { Aikajakso } from './Aikajakso'
 import { KorkeakoulunOpiskeluoikeudenLukuvuosimaksu } from './KorkeakoulunOpiskeluoikeudenLukuvuosimaksu'
 import { Oppilaitos } from './Oppilaitos'
 import { KoulutuskuntaJakso } from './KoulutuskuntaJakso'
-import { Koodistokoodiviite } from './Koodistokoodiviite'
-import { LocalizedString } from './LocalizedString'
 import { Lukukausi_Ilmoittautuminen } from './LukukausiIlmoittautuminen'
 
 /**
@@ -13,9 +13,11 @@ import { Lukukausi_Ilmoittautuminen } from './LukukausiIlmoittautuminen'
  */
 export type KorkeakoulunOpiskeluoikeudenLisätiedot = {
   $class: 'fi.oph.koski.schema.KorkeakoulunOpiskeluoikeudenLisätiedot'
+  opettajanPätevyys?: Array<Koodistokoodiviite<'virtapatevyys', string>>
   ensisijaisuus?: Array<Aikajakso>
   maksettavatLukuvuosimaksut?: Array<KorkeakoulunOpiskeluoikeudenLukuvuosimaksu>
   järjestäväOrganisaatio?: Oppilaitos
+  opetettavanAineenPätevyys?: Array<Koodistokoodiviite<'virtapatevyys', string>>
   koulutuskuntaJaksot: Array<KoulutuskuntaJakso>
   virtaOpiskeluoikeudenTyyppi?: Koodistokoodiviite<
     'virtaopiskeluoikeudentyyppi',
@@ -26,9 +28,13 @@ export type KorkeakoulunOpiskeluoikeudenLisätiedot = {
 
 export const KorkeakoulunOpiskeluoikeudenLisätiedot = (
   o: {
+    opettajanPätevyys?: Array<Koodistokoodiviite<'virtapatevyys', string>>
     ensisijaisuus?: Array<Aikajakso>
     maksettavatLukuvuosimaksut?: Array<KorkeakoulunOpiskeluoikeudenLukuvuosimaksu>
     järjestäväOrganisaatio?: Oppilaitos
+    opetettavanAineenPätevyys?: Array<
+      Koodistokoodiviite<'virtapatevyys', string>
+    >
     koulutuskuntaJaksot?: Array<KoulutuskuntaJakso>
     virtaOpiskeluoikeudenTyyppi?: Koodistokoodiviite<
       'virtaopiskeluoikeudentyyppi',

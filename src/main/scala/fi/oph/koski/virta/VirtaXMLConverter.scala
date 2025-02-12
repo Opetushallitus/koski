@@ -39,6 +39,10 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
       .flatMap(v => parseLuokittelu(v, "virtaopiskeluoikeudenluokittelu"))
       .toList
 
+    def opettajaPatevyysJaksolta(opiskeluoikeusNode: Node): List[Koodistokoodiviite] = (opiskeluoikeusNode \ "Jakso")
+      .flatMap(v => parsePatevyys(v, "virtapatevyys"))
+      .toList
+
     val (orphans, opiskeluoikeudet) = opiskeluoikeusNodes.foldLeft((suoritusRoots, Nil: List[KorkeakoulunOpiskeluoikeus])) { case ((suoritusRootsLeft, opiskeluOikeudet), opiskeluoikeusNode) =>
       virheet = ListBuffer[VirtaVirhe]()
       val (opiskeluOikeudenSuoritukset: List[Node], muutSuoritukset: List[Node]) = suoritusRootsLeft.partition(sisältyyOpiskeluoikeuteen(_, opiskeluoikeusNode, suoritusNodeList, None))
@@ -76,7 +80,23 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
           lukukausiIlmoittautuminen = lukukausiIlmoittautuminen(oppilaitos, opiskeluoikeudenTila, avain(opiskeluoikeusNode), virtaXml),
           järjestäväOrganisaatio = järjestäväOrganisaatio(opiskeluoikeusNode, oppilaitoksenNimiPäivä),
           maksettavatLukuvuosimaksut = Some(lukuvuosimaksut),
-          koulutuskuntaJaksot = koulutuskuntajaksot(opiskeluoikeusNode)
+          koulutuskuntaJaksot = koulutuskuntajaksot(opiskeluoikeusNode),
+          opettajanPätevyys = noneIfEmpty(
+              opettajaPatevyysJaksolta(opiskeluoikeusNode) ++
+              suoritusNodeList.flatMap(v => parsePatevyys(v, "virtapatevyys"))
+            ).map(
+              _.distinct
+                .filter(v => Set("ik","il","im","in","io","ip","iq","ir","is","it","iu","iv","iw","ix","iy","ja","jb","jc","jd","ke","oa","ob","oe","of","og","pv","rv","sv","va","vo","vs").contains(v.koodiarvo))
+                .sortBy(_.koodiarvo)
+            ),
+          opetettavanAineenPätevyys = noneIfEmpty(
+            opettajaPatevyysJaksolta(opiskeluoikeusNode) ++
+              suoritusNodeList.flatMap(v => parsePatevyys(v, "virtapatevyys"))
+          ).map(
+            _.distinct
+              .filter(v => Set("aa","ab","ac","ad","ae","af","ag","ah","ai","aj","ak","al","am","an","ao","as","at","au","av","aw","ax","ay","az","ba","bb","bc","bd","be","bf","bg","bh","bi","bj","bk","bl","bm","bn","bo","bq","br","bs","bt","bu","bv","bw","bx","by","bz","ca","cb","cc","cd","ce","cf","cg","ch","ci","cj","ck","cl","cp","cq","cr","cs","ct","cu","cv","cx","cy","cz","da","db","dc","dd","de","df","dg","dh","di","dj","dk","dl","dm","dn","dr","ds","dt","du","dv","dw","dx","dy","dz","ed","ee","ef","eg","eh","ei","ej","ek","el","em","en","eo","ep","eq","er","es","et","eu","ev","ew","ex","ey","ez","fa","fb","fc","fd","fe","ff","fg","fh","fi","fj","fk","fl","fm","fn","fo","fp","fw","fx","fy","fz","ga","gb","gc","gd","ge","gf","gg","gh","gi","gj","gk","gl","gm","gn","go","gp","gq","gr","gs","gt","gu","gv","gw","gx","gy","gz","ha","hb","hc","hd","he","hf","hg","hh","hi","hj","hk","hl","hm","hn","ho","hp","hq","hr","hs","ht","hu","hv","hw","hx","hy","hz","ia","ib","ic","id","ie","if","ig","ij","je","jf","jg","jh","ji","jj","jk","jl","jm","jn","jo","jp","jq","jr","js","jt","ju","jv","jw","jx","jy","jz","ka","kb","kc","kd","kk","kl","km","kn","ko","kp","kq","ks","kt","ku","ms","ts","tt").contains(v.koodiarvo))
+              .sortBy(_.koodiarvo)
+          )
         )),
         virtaVirheet = virheet.toList,
         luokittelu = noneIfEmpty(opiskeluoikeudenLuokittelu(opiskeluoikeusNode))
@@ -366,6 +386,11 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
   private def parseLuokittelu(parentNode: Node, koodistoUri: String): List[Koodistokoodiviite] = (parentNode \ "Luokittelu")
       .map(_.text).filter(s => s.nonEmpty && s.toInt > 0).toList
       .map(l => koodistoViitePalvelu.validateRequired(koodistoUri, l))
+
+  private def parsePatevyys(parentNode: Node, koodistoUri: String): List[Koodistokoodiviite] = (parentNode \ "Patevyys")
+    .map(_.text)
+    .filter(s => s.nonEmpty && s.length == 2 && s.forall(_.isLetter)).toList
+    .map(l => koodistoViitePalvelu.validateRequired(koodistoUri, l))
 
   private def laajuudetYhteensä(osasuoritukset: List[KorkeakoulunOpintojaksonSuoritus]) = {
     val laajuudet = osasuoritukset.flatMap(_.koulutusmoduuli.laajuus).map(_.arvo.toDouble).map(BigDecimal(_))
