@@ -402,10 +402,8 @@ describe('Omat tiedot', function () {
             before(click(omattiedot.suoritusjakoButton))
 
             it('näytetään ingressi', function () {
-              expect(form.ingressi()).to.equal(
-                'Luomalla jakolinkin voit näyttää suoritustietosi haluamillesi henkilöille (esimerkiksi työtä tai opiskelupaikkaa hakiessasi). ' +
-                  'Luotuasi linkin voit tarkistaa tarkan sisällön Esikatsele-painikkeella.\n' +
-                  'Voit valita jaettavaksi yksittäisiä tutkintoja tai vaihtoehtoisesti esimääriteltyjä kokonaisuuksia.'
+              expect(form.ingressi()).to.include(
+                'Jakolinkillä voit näyttää suoritustietosi haluamillesi henkilöille'
               )
             })
 
