@@ -1,19 +1,20 @@
 name: Update Koski localizations
-on: [workflow_dispatch]
+on:
+  [workflow_dispatch]
   #schedule:
   #  - cron: "0 7 1 2-12/2 *"
 jobs:
   updatelocalizations:
     name: Update localizations
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v4
       - name: Set up Java 11
         uses: actions/setup-java@v3
         with:
-          java-version: '11'
-          architecture: 'x64'
-          distribution: 'zulu'
+          java-version: "11"
+          architecture: "x64"
+          distribution: "zulu"
       - name: Cache Maven packages
         uses: actions/cache@v3
         with:
@@ -51,10 +52,10 @@ jobs:
       - name: Create PR with updated localizations
         uses: peter-evans/create-pull-request@2b011faafdcbc9ceb11414d64d0573f37c774b04
         with:
-            commit-message: Päivitä lokalisaatiot
-            title: "[${{ env.date }}]: Päivitä lokalisaatiot"
-            body: |
-              Tämä on automaattisesti luotu PR, jolla päivitetään Koski- ja Valpas-palvelun käyttämät lokalisaatiot.
+          commit-message: Päivitä lokalisaatiot
+          title: "[${{ env.date }}]: Päivitä lokalisaatiot"
+          body: |
+            Tämä on automaattisesti luotu PR, jolla päivitetään Koski- ja Valpas-palvelun käyttämät lokalisaatiot.
 
-              Käy muutokset läpi ja korjaa mahdollisesti hajonneet testit.
-            branch: tor-xxxx-koski-localization-update-${{ env.date }}
+            Käy muutokset läpi ja korjaa mahdollisesti hajonneet testit.
+          branch: tor-xxxx-koski-localization-update-${{ env.date }}
