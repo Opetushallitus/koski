@@ -18,9 +18,7 @@ import fi.oph.koski.validation.LahdejarjestelmakytkennanPurkaminenValidation
 import scala.concurrent.Future
 import scala.util.{Failure, Success, Try}
 
-class CompositeOpiskeluoikeusRepository(main: KoskiOpiskeluoikeusRepository, virta: AuxiliaryOpiskeluoikeusRepository, ytr: AuxiliaryOpiskeluoikeusRepository, config: Config) extends GlobalExecutionContext with Logging {
-
-  val sallitutSynteettisetHetutVirtaHakuihin = config.getStringList("virta.sallitutSynteettisetHetut")
+class CompositeOpiskeluoikeusRepository(main: KoskiOpiskeluoikeusRepository, virta: AuxiliaryOpiskeluoikeusRepository, ytr: AuxiliaryOpiskeluoikeusRepository, hetuValidator: Hetu) extends GlobalExecutionContext with Logging {
 
   private def withErrorLogging[T](fun: () => T)(implicit user: KoskiSpecificSession): T = {
     Try(fun()) match {
@@ -82,18 +80,16 @@ class CompositeOpiskeluoikeusRepository(main: KoskiOpiskeluoikeusRepository, vir
     val virtaResultFuture = {
       // Vaikka Kosken testiympäristöissä synteettiset hetut sallitaan, Virrassa ne eivät toimi, joten käytetään Virran kanssa oideja
       val hetu = tunnisteet.hetu.getOrElse("")
-      val isRealHetu = sallitutSynteettisetHetutVirtaHakuihin.contains(hetu) || (virtaHetuValidator.validate(hetu) match {
+      val isRealHetu = hetuValidator.validate(hetu) match {
         case Right(_) => true
         case _ => false
-      })
+      }
 
       Future { if (useVirta) virta.findByOppija(if (isRealHetu) { tunnisteet } else { tunnisteet.ilmanHetua }) else Nil }.transform(mapFailureToVirtaUnavailable(_, oid))
     }
     val virtaResult = Futures.await(virtaResultFuture)
     WithWarnings(mainResult ++ virtaResult.getIgnoringWarnings ++ ytrResult.getIgnoringWarnings, virtaResult.warnings ++ ytrResult.warnings)
   }
-
-  private val virtaHetuValidator = new Hetu(acceptSyntheticHetus = false)
 
   def findByCurrentUser(tunnisteet: HenkilönTunnisteet)(implicit user: KoskiSpecificSession): WithWarnings[Seq[Opiskeluoikeus]] = {
     val oid = tunnisteet.oid
