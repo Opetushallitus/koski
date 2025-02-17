@@ -11,6 +11,7 @@ import { ISO2FinnishDate } from '../../date/date'
 import { t } from '../../i18n/i18n'
 import { isArvioinniton } from '../../types/fi/oph/koski/schema/Arvioinniton'
 import { Arviointi } from '../../types/fi/oph/koski/schema/Arviointi'
+import { isIBKurssi } from '../../types/fi/oph/koski/schema/IBKurssi'
 import { IBOpiskeluoikeus } from '../../types/fi/oph/koski/schema/IBOpiskeluoikeus'
 import { isIBOppiaineenSuoritus } from '../../types/fi/oph/koski/schema/IBOppiaineenSuoritus'
 import { IBTheoryOfKnowledgeSuoritus } from '../../types/fi/oph/koski/schema/IBTheoryOfKnowledgeSuoritus'
@@ -43,6 +44,8 @@ import { FormModel, getValue } from '../forms/FormModel'
 import { CHARCODE_REMOVE } from '../texts/Icon'
 import { ArvosanaEdit, koodiarvoOnly } from './ArvosanaField'
 import { OppiaineTableKurssiEditor } from './OppiaineTableKurssiEditor'
+import { LocalizedString } from '../../types/fi/oph/koski/schema/LocalizedString'
+import { isPaikallinenLukionKurssi2015 } from '../../types/fi/oph/koski/schema/PaikallinenLukionKurssi2015'
 
 // Vain OppiaineTablen tukemat päätason suoritukset (tätä komponenttia tullaan myöhemmin käyttämään ainakin lukion näkymille)
 export type OppiaineTableOpiskeluoikeus = IBOpiskeluoikeus
@@ -662,6 +665,12 @@ const KurssiDetails: React.FC<KurssiTooltipProps> = ({ kurssi, id }) => {
               {t(kurssi.koulutusmoduuli.tunniste.nimi)}
             </KeyValueRow>
 
+            {isKuvauksellinen(kurssi.koulutusmoduuli) && (
+              <KeyValueRow localizableLabel="Kuvaus">
+                {t(kurssi.koulutusmoduuli.kuvaus)}
+              </KeyValueRow>
+            )}
+
             <KeyValueRow localizableLabel="Laajuus">
               {kurssi.koulutusmoduuli.laajuus?.arvo}{' '}
               {t(kurssi.koulutusmoduuli.laajuus?.yksikkö.nimi)}
@@ -732,3 +741,11 @@ const KurssiDetails: React.FC<KurssiTooltipProps> = ({ kurssi, id }) => {
     </div>
   )
 }
+
+export const isKuvauksellinen = (
+  koulutusmoduuli: KoulutusmoduuliOf<OsasuoritusOf<Oppiaine>>
+): koulutusmoduuli is Extract<
+  KoulutusmoduuliOf<OsasuoritusOf<Oppiaine>>,
+  { kuvaus: LocalizedString }
+> =>
+  isIBKurssi(koulutusmoduuli) || isPaikallinenLukionKurssi2015(koulutusmoduuli)
