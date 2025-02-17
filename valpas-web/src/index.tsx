@@ -1,7 +1,7 @@
 import * as E from "fp-ts/Either"
 import { pipe } from "fp-ts/lib/function"
 import React from "react"
-import ReactDOM from "react-dom"
+import { createRoot } from "react-dom/client"
 import "regenerator-runtime/runtime"
 import { fetchAppConfiguration } from "./api/api"
 import { withRetries } from "./api/apiUtils"
@@ -27,7 +27,8 @@ const loadWindowProperties = async (): Promise<void> =>
 async function main() {
   document.documentElement.lang = getLanguage()
   await loadWindowProperties()
-  ReactDOM.render(<ValpasApp />, document.getElementById("app"))
+  const root = createRoot(document.getElementById("app")!)
+  root.render(<ValpasApp />)
 }
 
 main()
