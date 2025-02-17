@@ -20,8 +20,10 @@ import { ArvosanaEdit } from './ArvosanaField'
 import { KoodistoSelect } from './KoodistoSelect'
 import {
   OppiaineTableOpiskeluoikeus,
-  OppiaineenOsasuoritus
+  OppiaineenOsasuoritus,
+  isKuvauksellinen
 } from './OppiaineTable'
+import { isIBKurssi } from '../../types/fi/oph/koski/schema/IBKurssi'
 
 type OppiaineTableKurssiEditorProps = {
   form: FormModel<OppiaineTableOpiskeluoikeus>
@@ -58,6 +60,8 @@ export const OppiaineTableKurssiEditor: React.FC<
       })
     )
 
+  console.log('kurssi.koulutusmoduuli', kurssi.koulutusmoduuli)
+
   return (
     <Modal onClose={onClose}>
       <ModalTitle>
@@ -66,6 +70,15 @@ export const OppiaineTableKurssiEditor: React.FC<
       </ModalTitle>
       <ModalBody>
         <KeyValueTable>
+          {isKuvauksellinen(kurssi.koulutusmoduuli) && (
+            <KeyValueRow localizableLabel="Kuvaus">
+              <LocalizedTextEdit
+                value={kurssi.koulutusmoduuli.kuvaus}
+                onChange={form.set(...path, 'koulutusmoduuli', 'kuvaus')}
+              />
+            </KeyValueRow>
+          )}
+
           <KeyValueRow localizableLabel="Laajuus">
             <NumberField
               value={kurssi.koulutusmoduuli.laajuus?.arvo}
