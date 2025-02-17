@@ -11,6 +11,12 @@ import "./style/index.less"
 import { ValpasApp } from "./views/ValpasApp"
 import "./window.ts"
 
+// Hack: Pakotetaan Parcel pitämään nämä mukana bundlessa
+// Kts. https://github.com/date-fns/date-fns/issues/3670#issuecomment-1899246376
+//      https://github.com/parcel-bundler/parcel/issues/9676
+import { formatters, longFormatters } from "date-fns"
+const FORCE_BUNDLE = [formatters, longFormatters]
+
 const loadWindowProperties = async (): Promise<void> =>
   pipe(
     await withRetries(3, fetchAppConfiguration),
