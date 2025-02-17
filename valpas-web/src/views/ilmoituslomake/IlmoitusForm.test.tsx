@@ -1,4 +1,4 @@
-import { act, render, RenderResult, waitFor } from "@testing-library/react"
+import { render, RenderResult, waitFor } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
 import fetchMock from "jest-fetch-mock"
 import React from "react"
@@ -173,7 +173,7 @@ const toggleCheckbox = async (form: RenderResult, labelText: string) => {
 
 const submit = async (form: RenderResult, onSubmitMock?: jest.Mock) => {
   const numberOfCalls = fetchMock.mock.calls.length
-  await act(async () => await userEvent.click(getSubmitButton(form)))
+  await waitFor(async () => await userEvent.click(getSubmitButton(form)))
   if (onSubmitMock) {
     await waitFor(() => expect(onSubmitMock).toHaveBeenCalledTimes(1))
     expect(fetchMock).toHaveBeenCalledTimes(numberOfCalls + 1)

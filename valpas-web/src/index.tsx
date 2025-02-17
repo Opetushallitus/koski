@@ -1,7 +1,7 @@
 import * as E from "fp-ts/Either"
 import { pipe } from "fp-ts/lib/function"
 import React from "react"
-import ReactDOM from "react-dom"
+import { createRoot } from "react-dom/client"
 import "regenerator-runtime/runtime"
 import { fetchAppConfiguration } from "./api/api"
 import { withRetries } from "./api/apiUtils"
@@ -10,6 +10,12 @@ import { enableFeature } from "./state/featureFlags"
 import "./style/index.less"
 import { ValpasApp } from "./views/ValpasApp"
 import "./window.ts"
+
+// Hack: Pakotetaan Parcel pitämään nämä mukana bundlessa
+// Kts. https://github.com/date-fns/date-fns/issues/3670#issuecomment-1899246376
+//      https://github.com/parcel-bundler/parcel/issues/9676
+import { formatters, longFormatters } from "date-fns"
+const FORCE_BUNDLE = [formatters, longFormatters]
 
 const loadWindowProperties = async (): Promise<void> =>
   pipe(
@@ -27,7 +33,8 @@ const loadWindowProperties = async (): Promise<void> =>
 async function main() {
   document.documentElement.lang = getLanguage()
   await loadWindowProperties()
-  ReactDOM.render(<ValpasApp />, document.getElementById("app"))
+  const root = createRoot(document.getElementById("app")!)
+  root.render(<ValpasApp />)
 }
 
 main()
