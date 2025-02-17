@@ -98,16 +98,18 @@ object Oppivelvollisuustiedot {
                 oppija_oid,
                 master_oid,
                 syntymaaika,
+                -- Maksuttomuuden pidennysjaksojen päivät, jotka ovat ennen 1.8.2022, lisätään maksuttomuuskauden loppuun
                 (select count(distinct paivat) from (
-                    select generate_series(alku, loppu, interval '1 day') paivat
+                    select generate_series(alku, least(loppu, '2022-07-31'), interval '1 day') paivat
                     from #${s.name}.r_opiskeluoikeus_aikajakso ooaj
                     inner join #${s.name}.r_opiskeluoikeus oo on (oo.oppija_oid = henkilo.oppija_oid
                       or oo.oppija_oid = any(henkilo.linkitetyt_oidit)
                       or oo.oppija_oid = henkilo.master_oid)
-                    where oikeutta_maksuttomuuteen_pidennetty = true
+                    where oikeutta_maksuttomuuteen_pidennetty = true and
+                      alku >= '2021-8-1'
                     and (ooaj.opiskeluoikeus_oid = oo.opiskeluoikeus_oid)
                     )
-                pidennyspaivat) as maksuttomuutta_pidennetty_yhteensa
+                pidennyspaivat) as maksuttomuutta_pidennetty_yhteensa_vanha_laki
               from
                 #${s.name}.r_henkilo henkilo
               where syntymaaika >= '#$valpasLakiVoimassaVanhinSyntymäaika'::date
@@ -271,11 +273,14 @@ object Oppivelvollisuustiedot {
           where data->'lisätiedot'->'oikeuttaMaksuttomuuteenPidennetty' is not null
         ),
 
+        -- 1.8.2022 jälkeen alkavat pidennysjaksot alkavat aina maksuttomuuskauden päättymisen (oppijan 20. ikävuoden lopun) jälkeen
+        -- ja määrittävät siten itsessään maksuttomuuskauden päättymisen
         maksuttomuuden_pidennysjakso as (
           select
             oppija_oid as master_oid,
             max(jakso->>'loppu')::date as loppu
           from maksuttomuuden_pidennysjaksot
+          where (jakso->>'alku')::date >= '2022-08-01'
           group by oppija_oid
         )
 
@@ -325,8 +330,8 @@ object Oppivelvollisuustiedot {
                 ylioppilastutkinnon_vahvistus_paiva,
                 ammattitutkinnon_vahvistus_paiva,
                 #${s.name}.vuodenViimeinenPaivamaara(syntymaaika + interval '#$maksuttomuusLoppuuIka year'))
-            end::date
-          ) as oikeusKoulutuksenMaksuttomuuteenVoimassaAsti,
+            end + (interval '1 day' * maksuttomuutta_pidennetty_yhteensa_vanha_laki)
+          )::date as oikeusKoulutuksenMaksuttomuuteenVoimassaAsti,
 
           kotikunta_suomessa_alkaen.pvm as kotikuntaSuomessaAlkaen
 

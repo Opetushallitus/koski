@@ -142,7 +142,7 @@ object KoskiSpecificMockOppijat {
   val vuonna2005SyntynytEiOpiskeluoikeuksiaFikstuurissa = koskiSpecificOppijat.oppija("Vuonna 2005 syntynyt", "Ei opiskeluoikeuksia fikstuurissa", "030705A5719", syntymäaika = Some(LocalDate.of(2005, 7, 3)), kotikunta = Some("091"))
   val nuoriHetuton = koskiSpecificOppijat.addOppija(LaajatOppijaHenkilöTiedot(oid = "1.2.246.562.24.99999999888", sukunimi = "Hetuton", etunimet = "Veeti", kutsumanimi = "Veeti", hetu = None, syntymäaika = Some(LocalDate.of(2004, 2, 24)), yksilöity = false))
   val vuonna2005SyntynytUlkomainenVaihtoopiskelija = koskiSpecificOppijat.addOppija(LaajatOppijaHenkilöTiedot(oid = "1.2.246.562.24.55599999333", sukunimi = "Vaihto-opiskelija", etunimet = "Valter", kutsumanimi = "Valter", hetu = None, syntymäaika = Some(LocalDate.of(2005, 2, 24))))
-  val vuonna2005SyntynytPeruskouluValmis2021 = koskiSpecificOppijat.oppija("Vuonna 2005 syntynyt", "Peruskoulu suoritettu 2021", "251105A2755", syntymäaika = Some(LocalDate.of(2005, 1, 1)))
+  val vuonna2005SyntynytPeruskouluValmis2021 = koskiSpecificOppijat.oppija("Vuonna 2005 syntynyt", "Peruskoulu suoritettu 2021", "251105A2755", syntymäaika = Some(LocalDate.of(2005, 1, 1)), kotikunta = Some("091"))
   val rikkinäinenOpiskeluoikeus = koskiSpecificOppijat.oppija("Rikkinäinen", "Opiskeluoikeus", "140615-7608", syntymäaika = Some(LocalDate.of(2003, 12, 31)))
   val kelaRikkinäinenOpiskeluoikeus = koskiSpecificOppijat.oppija("Rikkinäinen", "Kela", "111104A855K", syntymäaika = Some(LocalDate.of(2004, 11, 11)))
   val vuonna2004SyntynytPeruskouluValmis2021EiKotikuntaaSuomessa = koskiSpecificOppijat.oppija("Vuonna 2004 syntynyt maastamuuttaja", "Peruskoulu suoritettu 2021", "030904A251A", syntymäaika = Some(LocalDate.of(2004, 1, 1)))
