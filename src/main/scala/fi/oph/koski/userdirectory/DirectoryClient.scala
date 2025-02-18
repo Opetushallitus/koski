@@ -47,8 +47,15 @@ object DirectoryClient {
         val roolit = käyttöoikeudet.collect { case PalveluJaOikeus(palvelu, oikeus) => Palvelurooli(palvelu, oikeus) }
         if (!roolit.map(_.palveluName).exists(List("KOSKI", "VALPAS").contains)) {
           Nil
-        } else if (organisaatioOid == Opetushallitus.organisaatioOid) {
+        } else if (
+          organisaatioOid == Opetushallitus.organisaatioOid ||
+            roolit.map(_.rooli).forall(_.startsWith(Rooli.omadataOAuth2Prefix))
+        ) {
           List(KäyttöoikeusGlobal(roolit))
+        } else if (
+          roolit.map(_.rooli).exists(_.startsWith(Rooli.omadataOAuth2Prefix))
+        ) {
+          throw new InternalError("Tätä käyttöoikeuskombinaatiota ei tueta")
         } else if (hasViranomaisRooli(roolit)) {
           List(KäyttöoikeusViranomainen(roolit))
         } else {

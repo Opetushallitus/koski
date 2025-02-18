@@ -44,6 +44,20 @@ class OmaDataOAuth2BackendSpec
         verifyResponseStatusOk()
       }
     }
+    "voi kutsua, kun on käyttöoikeudet OPH:lla" in {
+      val user = MockUsers.omadataOAuth2OphPalvelukäyttäjä
+      val pkce = createChallengeAndVerifier
+      val code = createAuthorization(kansalainen = validKansalainen, codeChallenge = pkce.challenge, user = user)
+
+      postAuthorizationServerClientIdFromUsername(
+        user,
+        code = Some(code),
+        codeVerifier = Some(pkce.verifier),
+        redirectUri = Some(validRedirectUri)
+      ) {
+        verifyResponseStatusOk()
+      }
+    }
     "tekee audit-lokimerkinnän" in {
       val pkce = createChallengeAndVerifier
       val code = createAuthorization(validKansalainen, pkce.challenge)

@@ -100,6 +100,17 @@ object MockUsers {
     )))
   )
 
+  val omadataOAuth2OphPalvelukäyttäjä = KoskiMockUser(
+    "oauth2oph",
+    "oauth2oph",
+    "1.2.246.562.24.99999988375",
+    Seq(OrganisaatioJaKäyttöoikeudet(Opetushallitus.organisaatioOid, List(
+      PalveluJaOikeus("KOSKI", Rooli.OMADATAOAUTH2_OPISKELUOIKEUDET_SUORITETUT_TUTKINNOT),
+      PalveluJaOikeus("KOSKI", Rooli.OMADATAOAUTH2_HENKILOTIEDOT_NIMI),
+      PalveluJaOikeus("KOSKI", Rooli.OMADATAOAUTH2_HENKILOTIEDOT_SYNTYMAAIKA),
+    )))
+  )
+
   val rekisteröimätönOmadataOAuth2Palvelukäyttäjä = KoskiMockUser(
     "oauth2clienteirek",
     "oauth2clienteirek",
@@ -688,7 +699,8 @@ object MockUsers {
     omadataOAuth2IlmanLogoutPalvelukäyttäjä,
     rekisteröimätönOmadataOAuth2Palvelukäyttäjä,
     omadataOAuth2SampleAppPalvelukäyttäjä,
-    omadataOAuth2SampleAppPalvelukäyttäjäNoLogout
+    omadataOAuth2SampleAppPalvelukäyttäjäNoLogout,
+    omadataOAuth2OphPalvelukäyttäjä
   )
 }
 
