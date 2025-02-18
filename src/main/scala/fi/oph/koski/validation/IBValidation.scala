@@ -28,8 +28,14 @@ object IBValidation {
         case Some(alkamispäivä) =>
           val aiemminTallennetutAlkamispäivät = ooRepository.getKoulutusmuodonAlkamisajatIlmanKäyttöoikeustarkistusta(oppijaOid, "ibtutkinto")
           val alkamispäivät = aiemminTallennetutAlkamispäivät + (oo.oid.getOrElse("") -> alkamispäivä)
-          val ekaAlkamispäivä = alkamispäivät.values.min
-          validateIBKurssienLaajuusyksiköt(oo, ekaAlkamispäivä, ibKurssinLaajuusOpintopisteissäAlkaen(config))
+          val varhaisinAlkamispäivä = alkamispäivät.values.min
+          val rajapäivä = ibKurssinLaajuusOpintopisteissäAlkaen(config)
+          val ibTutkinto = oo.suoritukset.collect { case pts: IBTutkinnonSuoritus => pts }
+
+          HttpStatus.fold(
+            List(validateIBKurssienLaajuusyksiköt(oo, ekaAlkamispäivä, rajapäivä)) ++
+            ibTutkinto.map(validateCoreRequirements(_, ekaAlkamispäivä, rajapäivä))
+          )
         case None =>
           // Ei oikeasti ok, mutta alkamispäivän validaatio saa napata tämän tapauksen,
           // eikä tämä validaatio ota kantaa missä järjestyksessä validaatiot ajetaan.
@@ -86,11 +92,28 @@ object IBValidation {
       case _ => HttpStatus.ok
     }.getOrElse(HttpStatus.ok)
 
-  def predictedArvioinninVaatiminenVoimassa(config: Config): Boolean =
+  private def predictedArvioinninVaatiminenVoimassa(config: Config): Boolean =
     Option(LocalDate.parse(config.getString("validaatiot.ibSuorituksenVahvistusVaatiiPredictedArvosanan")))
       .exists(_.isEqualOrBefore(LocalDate.now()))
 
-  def ibKurssinLaajuusOpintopisteissäAlkaen(config: Config): LocalDate =
+  private def ibKurssinLaajuusOpintopisteissäAlkaen(config: Config): LocalDate =
     LocalDate.parse(config.getString("validaatiot.ibLaajuudetOpintopisteinäAlkaen"))
 
+  private def validateCoreRequirements(pts: IBTutkinnonSuoritus, alkamispäivä: LocalDate, rajapäivä: LocalDate): HttpStatus = {
+    def validate(isEmpty: Boolean, errorText: => String): HttpStatus =
+      HttpStatus.validate(isEmpty)(KoskiErrorCategory.badRequest.validation.rakenne.dpCoreDeprecated(errorText))
+
+    lazy val dateString = FinnishDateFormat.format(rajapäivä)
+
+    if (alkamispäivä.isEqualOrAfter(rajapäivä)) {
+      HttpStatus.fold(
+        validate(pts.theoryOfKnowledge.isEmpty, s"Theory of Knowledge -suoritus on siirrettävä osasuorituksena $dateString tai myöhemmin alkaneelle IB-opiskeluoikeudelle"),
+        validate(pts.creativityActionService.isEmpty, s"Creativity Action Service -suoritus on siirrettävä osasuorituksena $dateString tai myöhemmin alkaneelle IB-opiskeluoikeudelle"),
+        validate(pts.extendedEssay.isEmpty, s"Extended Essay -suoritus on siirrettävä osasuorituksena $dateString tai myöhemmin alkaneelle IB-opiskeluoikeudelle"),
+        validate(pts.lisäpisteet.isEmpty, s"Lisäpisteitä ei voi siirtää $dateString tai myöhemmin alkaneelle IB-opiskeluoikeudelle"),
+      )
+    } else {
+      HttpStatus.ok
+    }
+  }
 }
