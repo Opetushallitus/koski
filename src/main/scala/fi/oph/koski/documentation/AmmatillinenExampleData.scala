@@ -696,6 +696,7 @@ object AmmatillinenExampleData {
     vahvistus = vahvistus(date(2016, 5, 31), stadinAmmattiopisto, Some(helsinki)),
     alkamispäivä = None,
     toimipiste = stadinToimipiste,
+    keskiarvoSisältääMukautettujaArvosanoja = Some(true),
     osasuoritukset = Some(List(
       osittaisenTutkinnonTutkinnonOsanSuoritus(h2, ammatillisetTutkinnonOsat, "100001", "Audiovisuaalisen tuotannon toteuttaminen", 20).copy(
         tunnustettu = Some(tunnustettu),

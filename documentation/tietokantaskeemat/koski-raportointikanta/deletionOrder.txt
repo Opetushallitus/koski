@@ -6,7 +6,7 @@ r_ytr_tutkintokerran_suoritus
 r_ytr_kokeen_suoritus
 r_paatason_suoritus
 r_osasuoritus
-r_osaamisen_hankkimistavat_ammatillinen
+r_osaamisen_hankkimistapa_ammatillinen
 r_organisaatiohistoria
 r_oppivelvollisuudesta_vapautus
 r_opiskeluoikeus_aikajakso

@@ -1,7 +1,7 @@
 package fi.oph.koski.suoritusjako
 
 import java.sql.{Date, Timestamp}
-import java.time.{Instant, LocalDate}
+import java.time.{Instant, LocalDate, LocalDateTime}
 import fi.oph.koski.db.{DB, KoskiTables, QueryMethods, SuoritusjakoRow}
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.db.KoskiTables.{SuoritusJako, SuoritusjakoTable}
@@ -71,4 +71,11 @@ class SuoritusjakoRepository(val db: DB) extends Logging with QueryMethods {
     r.oppijaOid === oppijaOid &&
       r.secret === secret &&
       r.voimassaAsti >= Date.valueOf(LocalDate.now)
+
+
+  def updateAikaleimaForTest(secret: String, timestamp: Timestamp) = {
+    runDbSync(
+      SuoritusJako.filter(_.secret === secret).map(_.aikaleima).update(timestamp)
+    )
+  }
 }
