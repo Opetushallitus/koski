@@ -1366,7 +1366,13 @@ object ValpasOppijaTestData {
     ),
     (
       ValpasMockOppijat.lukionAineOpinnotJaAmmatillisia,
-      List(ExpectedData(
+      List(ExpectedData( // Ei todellisuudessa suorittamisvalvottava, mutta haluttiin näkyville käyttäliittymään vuonna 2025
+        ValpasOpiskeluoikeusExampleData.lukionAineopintojenOpiskeluoikeusAlkaa2021Syksyllä(None),
+        onHakeutumisValvottavaOpiskeluoikeus = false,
+        onHakeutumisvalvovaOppilaitos = false,
+        onSuorittamisvalvovaOppilaitos = true,
+        perusopetuksenJälkeinenTiedot = Some(ExpectedDataPerusopetuksenJälkeinenTiedot("voimassa", "lasna")),
+      ), ExpectedData(
         ValpasOpiskeluoikeusExampleData.ammattikouluOpiskeluoikeus,
         onHakeutumisValvottavaOpiskeluoikeus = false,
         onHakeutumisvalvovaOppilaitos = false,

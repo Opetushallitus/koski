@@ -1912,7 +1912,7 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
         opiskeluoikeus.paatason_suoritukset->0->>'ryhmä' DESC NULLS LAST,
         opiskeluoikeus.tarkastelupaivan_tila,
         opiskeluoikeus.oppilaitos_oid,
-        opiskeluoikeus.paatason_suoritukset->0->'suorituksentyyppi'->>'koodiarvo',
+        opiskeluoikeus.paatason_suoritukset->0->'suorituksenTyyppi'->>'koodiarvo',
         opiskeluoikeus.paatason_suoritukset->0->'toimipiste'->>'oid'
     ) opiskeluoikeudet
   FROM

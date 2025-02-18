@@ -132,14 +132,13 @@ class ValpasOppijaLaajatTiedotService(
   }
 
   def getOppijaLaajatTiedotYhteystiedoillaJaKuntailmoituksilla
-    (oppijaOid: ValpasHenkilö.Oid)
+    (oppijaOid: ValpasHenkilö.Oid, palautaLukionAineopinnot: Boolean = false)
     (implicit session: ValpasSession)
   : Either[HttpStatus, OppijaHakutilanteillaLaajatTiedot] = {
     val haeMyösVainOppijanumerorekisterissäOleva =
       accessResolver.accessToAnyOrg(ValpasRooli.KUNTA) ||
       accessResolver.accessToAnyOrg(ValpasRooli.OPPILAITOS_MAKSUTTOMUUS)
     val palautaLukionAineopinnotJaYOTutkinnotJosMyösAmmatillisiaOpintoja = true
-    val palautaLukionAineopinnot = true
 
     val rooli = ValpasOppijaLaajatTiedotService.roolitJoilleHaetaanKaikistaOVLPiirinOppijoista.find(accessResolver.accessToAnyOrg)
 

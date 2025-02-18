@@ -29,7 +29,7 @@ class ValpasOppijalistatService(
   : Either[HttpStatus, Seq[ValpasOppijaLaajatTiedot]] = {
     accessResolver.assertAccessToOrg(rooli, oppilaitosOid)
       .map(_ => opiskeluoikeusDbService.getOppijatByOppilaitos(oppilaitosOid, hakeutumisvalvontaTieto))
-      .flatMap(results => HttpStatus.foldEithers(results.map(oppijaLaajatTiedotService.asValpasOppijaLaajatTiedot())))
+      .flatMap(results => HttpStatus.foldEithers(results.map(oppijaLaajatTiedotService.asValpasOppijaLaajatTiedot(palautaLukionAineopinnot = palautaLukionAineopinnot))))
       .map(accessResolver.filterByOppijaAccess(rooli))
   }
 

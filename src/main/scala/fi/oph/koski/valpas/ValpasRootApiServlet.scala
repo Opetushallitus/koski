@@ -126,7 +126,7 @@ class ValpasRootApiServlet(implicit val application: KoskiApplication) extends V
 
   get("/oppija/:oid") {
     renderEither(
-      oppijaLaajatTiedotService.getOppijaLaajatTiedotYhteystiedoillaJaKuntailmoituksilla(params("oid"))
+      oppijaLaajatTiedotService.getOppijaLaajatTiedotYhteystiedoillaJaKuntailmoituksilla(params("oid"), palautaLukionAineopinnot = true)
         .tap(result => auditLogOppijaKatsominen(result.oppija.henkilö.oid))
     )
   }
