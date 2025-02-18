@@ -87,6 +87,10 @@ Rajapinnan kutsumista varten kumppanin toteuttama palvelu tarvitsee seuraavat ti
   </dd>
 </dl>
 
+### Käyttäjän kielen asettaminen
+
+Authorization endpoint tukee optionaalista ylimääräistä query-parametria `locale=(fi|sv|en)`, jolla käyttäjälle näkyvän kielen voi vaihtaa haluamakseen.
+
 ## Scopet ja palautettava data
 
 Listan kaikista tuetuista scopeista saa edellisessä kappaleessa mainitusta metatieto-linkistä.

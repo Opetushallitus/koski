@@ -20,7 +20,7 @@ class OmaDataOAuth2FrontendSpec extends OmaDataOAuth2TestBase {
           val authorizeParamsString = createValidAuthorizeParamsString
 
           val serverUri = s"${authorizeFrontendBaseUri}?${authorizeParamsString}"
-          val expectedLoginUri = s"/koski/login/oppija?service=/koski/user/login?onSuccess=/koski/omadata-oauth2/cas-workaround/authorize/${base64UrlEncode(authorizeParamsString)}"
+          val expectedLoginUri = s"/koski/login/oppija?locale=fi&service=/koski/user/login?onSuccess=/koski/omadata-oauth2/cas-workaround/authorize/${base64UrlEncode(authorizeParamsString)}"
 
           get(
             uri = serverUri
@@ -56,7 +56,7 @@ class OmaDataOAuth2FrontendSpec extends OmaDataOAuth2TestBase {
 
           val serverUri = s"${authorizeFrontendBaseUri}?${eiSallitullaScopella}"
 
-          val expectedLoginUri = s"/koski/login/oppija?service=/koski/user/login?onSuccess=/koski/omadata-oauth2/cas-workaround/authorize/${base64UrlEncode(eiSallitullaScopella)}"
+          val expectedLoginUri = s"/koski/login/oppija?locale=fi&service=/koski/user/login?onSuccess=/koski/omadata-oauth2/cas-workaround/authorize/${base64UrlEncode(eiSallitullaScopella)}"
 
           get(
             uri = serverUri
