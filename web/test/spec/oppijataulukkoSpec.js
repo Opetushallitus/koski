@@ -206,10 +206,12 @@ describe('Oppijataulukko', function () {
           'IB-Pre-IB-uusilukio, Pate',
           'IB-predicted, Petteri',
           'Ibe, Vanhanen',
+          'Keskeneräinen, IB-Tutkinto',
           'Kurssikertyma, Eronnut Aineopiskelija',
           'Kurssikertyma, Valmistunut Aineopiskelija'
         ])
-        expect(page.opiskeluoikeudeTotal()).to.equal('9')
+        expect(page.opiskeluoikeudeTotal()).to.equal('10')
+        
       })
     })
 

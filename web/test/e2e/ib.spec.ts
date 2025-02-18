@@ -840,14 +840,14 @@ test.describe('IB', () => {
   })
 
   test.describe('IB-tutkinto', () => {
-    const oppijaOid = '1.2.246.562.24.00000000060'
-
-    test.beforeEach(async ({ oppijaPage, ibOppijaPage }) => {
-      await oppijaPage.goto(oppijaOid)
-      await ibOppijaPage.selectSuoritus(1)
-    })
-
     test.describe('Tietojen näyttäminen', () => {
+      const oppijaOid = '1.2.246.562.24.00000000060'
+
+      test.beforeEach(async ({ oppijaPage, ibOppijaPage }) => {
+        await oppijaPage.goto(oppijaOid)
+        await ibOppijaPage.selectSuoritus(1)
+      })
+
       test('IB-tutkinnon opiskeluoikeuden tiedot näytetään oikein', async ({
         ibOppijaPage
       }) => {
@@ -1041,6 +1041,13 @@ test.describe('IB', () => {
     })
 
     test.describe('Tietojen muokkaaminen', () => {
+      const oppijaOid = '1.2.246.562.24.00000000060'
+
+      test.beforeEach(async ({ oppijaPage, ibOppijaPage }) => {
+        await oppijaPage.goto(oppijaOid)
+        await ibOppijaPage.selectSuoritus(1)
+      })
+
       test.beforeEach(async ({ ibOppijaPage }) => {
         await ibOppijaPage.edit()
       })
@@ -1183,14 +1190,17 @@ test.describe('IB', () => {
     })
 
     test.describe('Laajuuden yksikön vaihtuminen', () => {
-      test.beforeEach(async ({ ibOppijaPage }) => {
+      const oppijaOid = '1.2.246.562.24.00000000177'
+
+      test.beforeEach(async ({ oppijaPage, ibOppijaPage }) => {
+        await oppijaPage.goto(oppijaOid)
         await ibOppijaPage.edit()
       })
 
       test('Kursseja ennen 1.8.2025 alkaneelle opiskeluoikeudelle', async ({
         ibOppijaPage
       }) => {
-        const kurssi = ibOppijaPage.oppiaineryhmä(1, 0).oppiaineet(0).kurssit(0)
+        const kurssi = ibOppijaPage.oppiaineryhmä(0).oppiaineet(0).kurssit(0)
         await kurssi.tunniste.click()
         await expect(kurssi.modal.laajuus.unit).toHaveText('kurssia')
       })
@@ -1202,16 +1212,12 @@ test.describe('IB', () => {
         await ibOppijaPage.$.opiskeluoikeus.tila.edit
           .items(0)
           .date.set('1.8.2025')
-        await ibOppijaPage.$.opiskeluoikeus.tila.edit
-          .items(1)
-          .date.set('1.6.2026')
         await ibOppijaPage.tallenna()
 
         await page.reload()
-        await ibOppijaPage.selectSuoritus(1)
         await ibOppijaPage.edit()
 
-        const kurssi = ibOppijaPage.oppiaineryhmä(1, 0).oppiaineet(0).kurssit(0)
+        const kurssi = ibOppijaPage.oppiaineryhmä(0).oppiaineet(0).kurssit(0)
         await kurssi.tunniste.click()
         await expect(kurssi.modal.laajuus.unit).toHaveText('op')
       })
