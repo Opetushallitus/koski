@@ -309,7 +309,7 @@ class OppijaValidationIBSpec extends AnyFreeSpec with KoskiHttpSpec with PutOpis
       def createOpiskeluoikeusYhdelläKurssilla(
         alkamispäivä: LocalDate,
         laajuus: LaajuusOpintopisteissäTaiKursseissa,
-        modifyPts: IBTutkinnonSuoritus => IBTutkinnonSuoritus = filterIbTutkinto(),
+        modifyPts: IBTutkinnonSuoritus => IBPäätasonSuoritus = filterIbTutkinto(),
       ): IBOpiskeluoikeus = opiskeluoikeus.copy(
         tila = LukionOpiskeluoikeudenTila(
           opiskeluoikeusjaksot = List(
@@ -421,6 +421,24 @@ class OppijaValidationIBSpec extends AnyFreeSpec with KoskiHttpSpec with PutOpis
               verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.rakenne.dpCoreDeprecated(
                 "Lisäpisteitä ei voi siirtää 1.8.2025 tai myöhemmin alkaneelle IB-opiskeluoikeudelle"
               ))
+            }
+          }
+        }
+
+        "Pre-IB:n opetussunnitelma" - {
+          "Vuoden 2015 opetussuunnitelman mukaista pre-ib-suoritusta ei voi siirtää" in {
+            val oo = createOpiskeluoikeusYhdelläKurssilla(rajapäivä, LaajuusOpintopisteissä(1), { _ => preIBSuoritus })
+            setupOppijaWithOpiskeluoikeus(oo) {
+              verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.rakenne(
+                "1.8.2025 tai myöhemmin alkaneelle IB-opiskeluoikeudelle voi siirtää vain vuoden 2019 opetussuunnitelman mukaisen pre-IB-suorituksen"
+              ))
+            }
+          }
+
+          "Vuoden 2019 opetussuunnitelman mukaisen pre-ib-suorituksen voi siirtää" in {
+            val oo = createOpiskeluoikeusYhdelläKurssilla(rajapäivä, LaajuusOpintopisteissä(1), { _ => preIBSuoritus2019 })
+            setupOppijaWithOpiskeluoikeus(oo) {
+              verifyResponseStatusOk()
             }
           }
         }

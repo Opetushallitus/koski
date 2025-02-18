@@ -3,7 +3,7 @@ package fi.oph.koski.validation
 import com.typesafe.config.Config
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.opiskeluoikeus.CompositeOpiskeluoikeusRepository
-import fi.oph.koski.schema.{IBKurssi, IBKurssinSuoritus, IBOpiskeluoikeus, IBOppiaineenArviointi, IBOppiaineenPredictedArviointi, IBOppiaineenSuoritus, IBPäätasonSuoritus, IBTutkinnonSuoritus, KoskeenTallennettavaOpiskeluoikeus, LaajuusKursseissa, LaajuusOpintopisteissä, LaajuusOsaamispisteissä}
+import fi.oph.koski.schema.{IBKurssi, IBKurssinSuoritus, IBOpiskeluoikeus, IBOppiaineenArviointi, IBOppiaineenPredictedArviointi, IBOppiaineenSuoritus, IBPäätasonSuoritus, IBTutkinnonSuoritus, KoskeenTallennettavaOpiskeluoikeus, LaajuusKursseissa, LaajuusOpintopisteissä, LaajuusOsaamispisteissä, PreIBSuoritus2015}
 import fi.oph.koski.util.ChainingSyntax._
 import fi.oph.koski.util.DateOrdering.localDateOrdering
 import fi.oph.koski.util.FinnishDateFormat
@@ -34,7 +34,8 @@ object IBValidation {
 
           HttpStatus.fold(
             List(validateIBKurssienLaajuusyksiköt(oo, ekaAlkamispäivä, rajapäivä)) ++
-            ibTutkinto.map(validateCoreRequirements(_, ekaAlkamispäivä, rajapäivä))
+            ibTutkinto.map(validateCoreRequirements(_, ekaAlkamispäivä, rajapäivä)) ++
+            oo.suoritukset.map(validatePreIB2019Suoritus(_, ekaAlkamispäivä, rajapäivä))
           )
         case None =>
           // Ei oikeasti ok, mutta alkamispäivän validaatio saa napata tämän tapauksen,
@@ -116,4 +117,12 @@ object IBValidation {
       HttpStatus.ok
     }
   }
+
+  private def validatePreIB2019Suoritus(pts: IBPäätasonSuoritus, alkamispäivä: LocalDate, rajapäivä: LocalDate): HttpStatus =
+    pts match {
+      case _: PreIBSuoritus2015 if alkamispäivä.isEqualOrAfter(rajapäivä) =>
+        KoskiErrorCategory.badRequest.validation.rakenne(s"${FinnishDateFormat.format(rajapäivä)} tai myöhemmin alkaneelle IB-opiskeluoikeudelle voi siirtää vain vuoden 2019 opetussuunnitelman mukaisen pre-IB-suorituksen")
+      case _ =>
+        HttpStatus.ok
+    }
 }
