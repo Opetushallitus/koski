@@ -260,6 +260,26 @@ object ExamplesIB {
     lisäpisteet = Some(Koodistokoodiviite(koodiarvo = "3", koodistoUri = "arviointiasteikkolisapisteetib"))
   )
 
+  def keskeneräinenIbTutkintoOpiskeluoikeus(alkamispäivä: LocalDate) = IBOpiskeluoikeus(
+    oppilaitos = Some(ressunLukio),
+    tila = LukionOpiskeluoikeudenTila(
+      List(
+        LukionOpiskeluoikeusjakso(alkamispäivä, LukioExampleData.opiskeluoikeusAktiivinen, Some(ExampleData.valtionosuusRahoitteinen)),
+      )
+    ),
+    suoritukset = List(
+      IBTutkinnonSuoritus(
+        toimipiste = ressunLukio,
+        suorituskieli = englanti,
+        osasuoritukset = Some(osasuoritukset(vainPredictedArviointi = true)),
+        theoryOfKnowledge = None,
+        extendedEssay = None,
+        creativityActionService = None,
+        lisäpisteet = None,
+      )
+    )
+  )
+
   def preIBAineSuoritus(oppiaine: PreIBOppiaine2015, kurssit: List[(PreIBKurssi2015, String)]) = PreIBOppiaineenSuoritus2015(
     koulutusmoduuli = oppiaine,
     osasuoritukset = Some(kurssit.map { case (kurssi, arvosana) =>
