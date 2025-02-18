@@ -2,8 +2,13 @@
 
 ## x.1.2025
 
-- Sallitaan laajuuden tallentaminen opintopisteinä IB-opiskeluoikeuden kursseille 1.8.2025 alkaen, jonka myötä laajuuden tallentaminen kursseina ei
-  enää ole mahdollista.
+- Muutokset IB-opiskeluoikeuksille, jotka ovat alkaneet 1.8.2025 tai myöhemmin:
+  - Laajuus tallennetaan kursseille opintopisteinä, jonka myötä laajuuden tallentaminen kursseina ei enää ole mahdollista.
+  - IB-tutkinnon suorituksen alla oleviin erillisiin kenttiin ei voi enää tuoda seuraavia tietoja, vaan ne on tuotava osasuorituksina:
+    - Theory of Knowledge
+    - Extended Essay
+    - Creativity Action Service
+    - Lisäpisteet
 
 ## 25.2.2025
 
