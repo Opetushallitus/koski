@@ -226,7 +226,9 @@ test.describe('IB', () => {
 
       test.describe('Suoritusten tiedot', () => {
         test.describe('Oppiaineiden muokkaus', () => {
-          test('Arvosana-asteikko on oikea', async ({ ibOppijaPage }) => {
+          test('Pre-IB 2015:n arvosana-asteikko on oikea', async ({
+            ibOppijaPage
+          }) => {
             const oppiaine = ibOppijaPage.oppiaineryhmä().oppiaineet(0)
             expect(await oppiaine.arvosana.options()).toEqual([
               '4',
@@ -250,7 +252,9 @@ test.describe('IB', () => {
           })
 
           test.describe('Kurssit', () => {
-            test('Arvosanan muuttaminen', async ({ ibOppijaPage }) => {
+            test('Pre-IB 2015:n arvosanan muuttaminen', async ({
+              ibOppijaPage
+            }) => {
               const kurssi = ibOppijaPage
                 .oppiaineryhmä()
                 .oppiaineet(0)
@@ -465,7 +469,7 @@ test.describe('IB', () => {
     })
 
     test.describe('Tietojen näyttäminen', () => {
-      test('Opiskeluoikeuden tiedot näytetään oikein', async ({
+      test('Pre-IB 2019:n opiskeluoikeuden tiedot näytetään oikein', async ({
         ibOppijaPage
       }) => {
         const tiedot = ibOppijaPage.$.opiskeluoikeus
@@ -485,7 +489,9 @@ test.describe('IB', () => {
         )
       })
 
-      test('Suorituksen tiedot näkyvissä', async ({ ibOppijaPage }) => {
+      test('Pre-IB 2019:n suorituksen tiedot näkyvissä', async ({
+        ibOppijaPage
+      }) => {
         const suoritus = ibOppijaPage.$.suoritukset(0)
         await expect(suoritus.koulutus.elem).toHaveText('Pre-IB 2019')
         await expect(await suoritus.organisaatio.value()).toEqual(
@@ -503,7 +509,7 @@ test.describe('IB', () => {
         )
       })
 
-      test('Oppiaineiden ja kurssien arvosanat näytetään', async ({
+      test('Pre-IB 2019:n oppiaineiden ja kurssien arvosanat näytetään', async ({
         ibOppijaPage
       }) => {
         await ibOppijaPage.testOppiaineryhmät({
@@ -636,7 +642,9 @@ test.describe('IB', () => {
             ])
           })
 
-          test('Arvosanan muuttaminen', async ({ ibOppijaPage }) => {
+          test('Pre-IB 2019:n oppiaineen arvosanan muuttaminen', async ({
+            ibOppijaPage
+          }) => {
             const oppiaine = ibOppijaPage.oppiaineryhmä().oppiaineet(0)
             await oppiaine.arvosana.set('arviointiasteikkoyleissivistava_10')
             await ibOppijaPage.tallenna()
@@ -645,7 +653,9 @@ test.describe('IB', () => {
         })
 
         test.describe('Kurssien muokkaus', () => {
-          test('Arvosanan muuttaminen', async ({ ibOppijaPage }) => {
+          test('Pre-IB 2019:n kurssin arvosanan muuttaminen', async ({
+            ibOppijaPage
+          }) => {
             const kurssi = ibOppijaPage.oppiaineryhmä().oppiaineet(0).kurssit(0)
             await kurssi.arvosana.set('arviointiasteikkoyleissivistava_10')
             await ibOppijaPage.tallenna()
@@ -713,7 +723,7 @@ test.describe('IB', () => {
         })
 
         test.describe('Oppiaineen lisäys', () => {
-          test('Lukion kieliaine', async ({ ibOppijaPage }) => {
+          test('Pre-IB 2019:n lukion kieliaine', async ({ ibOppijaPage }) => {
             const suoritus = ibOppijaPage.$.suoritukset(0)
             await suoritus.addOppiaine.button.click()
 
@@ -734,7 +744,9 @@ test.describe('IB', () => {
             await expect(uusiOppiaine.nimi.elem).not.toBeAttached()
           })
 
-          test('Lukion matematiikka', async ({ ibOppijaPage }) => {
+          test('Pre-IB 2019:n lukion matematiikka', async ({
+            ibOppijaPage
+          }) => {
             const suoritus = ibOppijaPage.$.suoritukset(0)
 
             await suoritus.oppiaineryhmät(0).oppiaineet(1).delete.button.click() // Poista opiskeluoikeudella jo oleva matematiikka
@@ -762,7 +774,7 @@ test.describe('IB', () => {
             await expect(uusiOppiaine.nimi.elem).not.toBeAttached()
           })
 
-          test('Lukion äidinkieli', async ({ ibOppijaPage }) => {
+          test('Pre-IB 2019:n lukion äidinkieli', async ({ ibOppijaPage }) => {
             const suoritus = ibOppijaPage.$.suoritukset(0)
 
             await suoritus.oppiaineryhmät(0).oppiaineet(0).delete.button.click() // Poista opiskeluoikeudella jo oleva äidinkielen oppiaine
@@ -789,7 +801,9 @@ test.describe('IB', () => {
             await expect(uusiOppiaine.nimi.elem).not.toBeAttached()
           })
 
-          test('Paikallinen oppiaine', async ({ ibOppijaPage }) => {
+          test('Pre-IB 2019:n paikallinen oppiaine', async ({
+            ibOppijaPage
+          }) => {
             const suoritus = ibOppijaPage.$.suoritukset(0)
 
             await suoritus.addOppiaine.button.click()
@@ -834,7 +848,7 @@ test.describe('IB', () => {
     })
 
     test.describe('Tietojen näyttäminen', () => {
-      test('Opiskeluoikeuden tiedot näytetään oikein', async ({
+      test('IB-tutkinnon opiskeluoikeuden tiedot näytetään oikein', async ({
         ibOppijaPage
       }) => {
         const tiedot = ibOppijaPage.$.opiskeluoikeus
@@ -854,7 +868,9 @@ test.describe('IB', () => {
         )
       })
 
-      test('Suorituksen tiedot näkyvissä', async ({ ibOppijaPage }) => {
+      test('IB-tutkinnon suorituksen tiedot näkyvissä', async ({
+        ibOppijaPage
+      }) => {
         const suoritus = ibOppijaPage.$.suoritukset(1)
         await expect(suoritus.koulutus.elem).toHaveText(
           'IB-tutkinto (International Baccalaureate)'
@@ -908,7 +924,7 @@ test.describe('IB', () => {
         )
       })
 
-      test('Oppiaineiden ja kurssien arvosanat näytetään', async ({
+      test('IB-tutkinnon oppiaineiden ja kurssien arvosanat näytetään', async ({
         ibOppijaPage
       }) => {
         await ibOppijaPage.testSuorituksenOppiaineryhmät(
@@ -1031,7 +1047,9 @@ test.describe('IB', () => {
 
       test.describe('Oppiaineiden muokkaus', () => {
         test.describe('Oppiaineen arvosana', () => {
-          test('Arvosana-asteikko on oikea', async ({ ibOppijaPage }) => {
+          test('IB-tutkinnon arvosana-asteikko on oikea', async ({
+            ibOppijaPage
+          }) => {
             const oppiaine = ibOppijaPage.oppiaineryhmä(1).oppiaineet(0)
             expect(await oppiaine.arvosana.options()).toEqual([
               '1',
@@ -1047,7 +1065,9 @@ test.describe('IB', () => {
             ])
           })
 
-          test('Arvosanan muuttaminen', async ({ ibOppijaPage }) => {
+          test('IB-tutkinnon  arvosanan muuttaminen', async ({
+            ibOppijaPage
+          }) => {
             const oppiaine = ibOppijaPage.oppiaineryhmä(1).oppiaineet(0)
             await oppiaine.arvosana.set('arviointiasteikkoib_7')
             await ibOppijaPage.tallenna()
@@ -1056,7 +1076,9 @@ test.describe('IB', () => {
         })
 
         test.describe('Kurssien muokkaus', () => {
-          test('Arvosanan muuttaminen', async ({ ibOppijaPage }) => {
+          test('IB-tutkinnon kurssin arvosanan muuttaminen', async ({
+            ibOppijaPage
+          }) => {
             const kurssi = ibOppijaPage
               .oppiaineryhmä(1)
               .oppiaineet(0)
