@@ -22,7 +22,8 @@ class ValpasOppijalistatService(
     (
       rooli: ValpasRooli.Role,
       oppilaitosOid: ValpasOppilaitos.Oid,
-      hakeutumisvalvontaTieto: HakeutumisvalvontaTieto.Value
+      hakeutumisvalvontaTieto: HakeutumisvalvontaTieto.Value,
+      palautaLukionAineopinnot: Boolean = false
     )
       (implicit session: ValpasSession)
   : Either[HttpStatus, Seq[ValpasOppijaLaajatTiedot]] = {

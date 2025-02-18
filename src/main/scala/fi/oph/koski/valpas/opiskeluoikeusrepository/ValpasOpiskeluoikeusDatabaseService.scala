@@ -909,6 +909,16 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
           AND pts.suorituksen_tyyppi = 'lukionoppimaara'
         LIMIT 1
       ) AS lukio_oppimaaran_suorituksia ON TRUE
+      LEFT JOIN LATERAL (
+        SELECT
+          TRUE AS loytyi
+        FROM
+          r_paatason_suoritus pts
+        WHERE
+          pts.opiskeluoikeus_oid = ov_kelvollinen_opiskeluoikeus.opiskeluoikeus_oid
+          AND pts.suorituksen_tyyppi = 'lukionaineopinnot'
+        LIMIT 1
+      ) AS lukio_aineopintojen_suorituksia ON TRUE
     WHERE
       -- (0) henkilö on oppivelvollinen: suorittamisvalvontaa ei voi suorittaa enää sen jälkeen kun henkilön
       -- oppivelvollisuus on päättynyt
@@ -926,9 +936,11 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
         OR esh_perusopetuksen_jalkeisia_suorituksia.loytyi IS TRUE
       )
       -- (1c) Lukiossa vain oppimäärän suoritukset ovat suorittamisvalvottavia
+      -- (1cc) Aineopinnot halutaan silti näkyviin suoritusvalvottavien listanäkymään
       AND (
         ov_kelvollinen_opiskeluoikeus.koulutusmuoto <> 'lukiokoulutus'
         OR lukio_oppimaaran_suorituksia.loytyi IS TRUE
+        OR lukio_aineopintojen_suorituksia.loytyi IS TRUE
       )
       -- (1d) EB-tutkinto ei ole koskaan suorittamisvalvottava, vaikka se kelpaakin oppivelvollisuuden suorittamiseen
       AND (ov_kelvollinen_opiskeluoikeus.koulutusmuoto <> 'ebtutkinto')
