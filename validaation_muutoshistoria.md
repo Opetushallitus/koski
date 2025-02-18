@@ -9,6 +9,7 @@
     - Extended Essay
     - Creativity Action Service
     - Lisäpisteet
+  - Mahdollista siirtää vain vuoden 2019 opetussuunnitelman mukainen pre-IB-suoritus.
 
 ## 11.3.2025
 
