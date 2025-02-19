@@ -42,6 +42,7 @@ case class SureAmmatillisenTutkinnonSuoritus(
   vahvistuspäivä: Option[LocalDate],
   koulutusmoduuli: AmmatillinenTutkintoKoulutus,
   suorituskieli: Koodistokoodiviite,
+  osasuoritukset: List[SureAmmatillisenTutkinnonOsasuoritus],
 ) extends SureAmmatillinenPäätasonSuoritus
   with Suorituskielellinen
   with Vahvistuspäivällinen
@@ -54,6 +55,24 @@ object SureAmmatillisenTutkinnonSuoritus {
       vahvistuspäivä = s.vahvistus.map(_.päivä),
       koulutusmoduuli = s.koulutusmoduuli,
       suorituskieli = s.suorituskieli,
+      osasuoritukset = s.osasuoritukset.toList.flatten.map(SureAmmatillisenTutkinnonOsasuoritus.apply),
+    )
+}
+
+@Title("Ammatillisen tutkinnon osan suoritus")
+case class SureAmmatillisenTutkinnonOsasuoritus(
+  @KoodistoKoodiarvo("ammatillisentutkinnonosa")
+  tyyppi: Koodistokoodiviite,
+  koulutusmoduuli: AmmatillisenTutkinnonOsa,
+  arviointi: Option[List[AmmatillinenArviointi]],
+) extends SureSuoritus
+
+object SureAmmatillisenTutkinnonOsasuoritus {
+  def apply(s: AmmatillisenTutkinnonOsanSuoritus): SureAmmatillisenTutkinnonOsasuoritus =
+    SureAmmatillisenTutkinnonOsasuoritus(
+      tyyppi = s.tyyppi,
+      koulutusmoduuli = s.koulutusmoduuli,
+      arviointi = s.arviointi,
     )
 }
 
