@@ -1145,5 +1145,20 @@
     "koodiUri": "lahdejarjestelma_ytr",
     "versio": 1,
     "koodiArvo": "ytr"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "Kielitutkintorekisteri",
+        "kuvaus": null,
+        "kieli": "FI"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "lahdejarjestelma_kielitutkintorekisteri",
+    "versio": 1,
+    "koodiArvo": "kielitutkintorekisteri"
   }
 ]

@@ -648,5 +648,32 @@
     "koodiUri": "opiskeluoikeudentyyppi_ylioppilastutkinto",
     "versio": 1,
     "koodiArvo": "ylioppilastutkinto"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "Kielitutkinto",
+        "kuvaus": "",
+        "lyhytNimi": "Kielitutkinto",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Kielitutkinto",
+        "kuvaus": "",
+        "lyhytNimi": "",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Kielitutkinto",
+        "kuvaus": null,
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "opiskeluoikeudentyyppi_kielitutkinto",
+    "versio": 1,
+    "koodiArvo": "kielitutkinto"
   }
 ]

@@ -3783,5 +3783,56 @@
     "koodiUri": "suorituksentyyppi_ylioppilastutkinto",
     "versio": 1,
     "koodiArvo": "ylioppilastutkinto"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "Yleinen kielitutkinto",
+        "kuvaus": null,
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Yleinen kielitutkinto",
+        "kuvaus": null,
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Yleinen kielitutkinto",
+        "kuvaus": null,
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "suorituksentyyppi_yleinenkielitutkinto",
+    "versio": 1,
+    "koodiArvo": "yleinenkielitutkinto"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "Yleisen kielitutkinnon osa",
+        "kuvaus": null,
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Yleisen kielitutkinnon osa",
+        "kuvaus": null,
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Yleisen kielitutkinnon osa",
+        "kuvaus": null,
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "suorituksentyyppi_yleisenkielitutkinnonosa",
+    "versio": 1,
+    "koodiArvo": "yleisenkielitutkinnonosa"
+
   }
 ]

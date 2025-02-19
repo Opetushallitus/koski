@@ -1,3 +1,7 @@
+## 3.3.2025
+
+- Lisätty kielitutkinnon opiskeluoikeus ja sille yleisen kielitutkinnon päätason suoritus
+
 ## 25.2.2025
 
 - Poistetaan maksuttomuustiedon vaatimus European School of Helsinki-opiskeluoikeuksista

@@ -1,0 +1,50 @@
+[
+  {
+    "metadata": [
+      {
+        "nimi": "Perustaso",
+        "kuvaus": "",
+        "lyhytNimi": "",
+        "kieli": "FI"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "ykitutkintotaso_pt",
+    "versio": 1,
+    "koodiArvo": "pt"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "Keskitaso",
+        "kuvaus": "",
+        "lyhytNimi": "",
+        "kieli": "FI"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "ykitutkintotaso_kt",
+    "versio": 1,
+    "koodiArvo": "kt"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "Ylin taso",
+        "kuvaus": "",
+        "lyhytNimi": "",
+        "kieli": "FI"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "ykitutkintotaso_yt",
+    "versio": 1,
+    "koodiArvo": "yt"
+  }
+]
