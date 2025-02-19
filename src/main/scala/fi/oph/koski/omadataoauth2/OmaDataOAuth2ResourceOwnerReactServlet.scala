@@ -2,7 +2,7 @@ package fi.oph.koski.omadataoauth2
 
 import fi.oph.koski.config.{Environment, KoskiApplication}
 import fi.oph.koski.frontendvalvonta.FrontendValvontaMode
-import fi.oph.koski.koskiuser.KoskiSpecificAuthenticationSupport
+import fi.oph.koski.koskiuser.{KoskiSpecificAuthenticationSupport, UserLanguage}
 import fi.oph.koski.servlet.{OmaOpintopolkuSupport, OppijaHtmlServlet}
 import org.scalatra.{MatchedRoute, ScalatraServlet}
 
@@ -14,8 +14,14 @@ class OmaDataOAuth2ResourceOwnerReactServlet(implicit val application: KoskiAppl
     FrontendValvontaMode(application.config.getString("frontend-valvonta.mode"))
 
   get("/authorize")(nonce => {
-    setLangCookieFromDomainIfNecessary
-    val lang = langFromCookie.getOrElse(langFromDomain)
+    val lang = if (multiParams("locale").length > 0) {
+      val langParam = params("locale")
+      UserLanguage.setLanguageCookie(langParam, response)
+      langParam
+    } else {
+      setLangCookieFromDomainIfNecessary
+      langFromCookie.getOrElse(langFromDomain)
+    }
 
     val uri = request.getRequestURI
     val queryString = request.getQueryString

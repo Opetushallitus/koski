@@ -32,7 +32,7 @@ class MyDataSupportTest extends AnyFreeSpec with TestEnvironment with Matchers w
       (() => mockRequest.getRequestURI).expects().returning("/koski/omadata/valtuutus/hsl")
 
       support(mockRequest).getCasLoginURL(lang = lang) should
-        equal("/koski/login/oppija?service=/koski/user/login?onSuccess=/koski/omadata/valtuutus/hsl?callback=http://www.hsl.fi&valtuudet=false&redirect=%2Fkoski%2Fomadata%2Fvaltuutus%2Fhsl%3Fcallback%3Dhttp%3A%2F%2Fwww.hsl.fi")
+        equal(s"/koski/login/oppija?locale=${lang}&service=/koski/user/login?onSuccess=/koski/omadata/valtuutus/hsl?callback=http://www.hsl.fi&valtuudet=false&redirect=%2Fkoski%2Fomadata%2Fvaltuutus%2Fhsl%3Fcallback%3Dhttp%3A%2F%2Fwww.hsl.fi")
     }
     "Palauttaa oikean URL:n sisään loganneille" in {
       val mockRequest = mock[HttpServletRequest]

@@ -4,14 +4,16 @@ import ReactDOM from 'react-dom'
 import ErrorPage from './ErrorPage'
 import Spinner from './Spinner'
 import Footer from './Footer'
-import Header from './Header'
 import Http from '../util/http'
 import { currentLocation } from '../util/location'
 import { Error as ErrorDisplay, logError } from '../util/Error'
-import { tTemplate } from '../i18n/i18n'
+import { lang, Language, tTemplate } from '../i18n/i18n'
 
 import OmaDataOAuth2UusiHyvaksynta from './OmaDataOAuth2UusiHyvaksynta'
 import { KoodistoProvider } from '../appstate/koodisto'
+import Text from '../i18n/Text'
+import Cookie from 'js-cookie'
+
 __webpack_nonce__ = window.nonce
 
 class OmaDataOAuth2HyvaksyntaLanding extends React.Component {
@@ -132,6 +134,65 @@ class OmaDataOAuth2HyvaksyntaLanding extends React.Component {
       </KoodistoProvider>
     )
   }
+}
+const Header = () => {
+  return (
+    <div className="header">
+      <div className="title">
+        <img src="/koski/images/opintopolku_logo.svg" alt="" />
+        <h1>
+          <Text name="Oma Opintopolku" />
+        </h1>
+      </div>
+
+      <div className="lang">
+        <ChangeLang />
+      </div>
+    </div>
+  )
+}
+
+const ChangeLang = () => (
+  <div className="change-lang">
+    {lang !== 'fi' ? (
+      <button
+        id={'change-lang-fi'}
+        onClick={() => setLang('fi')}
+        title={'Suomeksi'}
+      >
+        {'Suomi'}
+      </button>
+    ) : null}
+
+    {lang !== 'sv' ? (
+      <button
+        id={'change-lang-sv'}
+        onClick={() => setLang('sv')}
+        title={'På svenska'}
+      >
+        {'Svenska'}
+      </button>
+    ) : null}
+
+    {lang !== 'en' ? (
+      <button
+        id={'change-lang-en'}
+        onClick={() => setLang('en')}
+        title={'In English'}
+      >
+        {'English'}
+      </button>
+    ) : null}
+  </div>
+)
+
+const setLang = (newLang) => {
+  Cookie.set('lang', newLang)
+
+  let url = new URL(location.href)
+  url.searchParams.delete('locale')
+
+  window.location.href = url.href
 }
 
 ReactDOM.render(

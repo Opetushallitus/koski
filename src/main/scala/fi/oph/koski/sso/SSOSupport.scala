@@ -3,7 +3,7 @@ package fi.oph.koski.sso
 import java.net.{URI, URLDecoder, URLEncoder}
 import com.typesafe.config.Config
 import fi.oph.koski.json.JsonSerializer
-import fi.oph.koski.koskiuser.{AuthenticationUser, UserAuthenticationContext}
+import fi.oph.koski.koskiuser.{AuthenticationUser, UserAuthenticationContext, UserLanguage}
 import fi.oph.koski.log.Logging
 import org.scalatra.{Cookie, CookieOptions, ScalatraBase}
 
@@ -91,8 +91,11 @@ trait SSOSupport extends ScalatraBase with Logging {
 
   def redirectToOppijaLogin = {
     response.addCookie(Cookie("koskiReturnUrl", currentUrl)(CookieOptions(secure = isHttps, path = "/", maxAge = 60, httpOnly = true)))
+
+    val lang = UserLanguage.getLanguageFromCookie(request)
+
     if (ssoConfig.isCasSsoUsed) {
-      redirect(application.config.getString("opintopolku.oppija.url") + "/cas-oppija/login?service=" + casOppijaServiceUrl + "&valtuudet=false")
+      redirect(application.config.getString("opintopolku.oppija.url") + s"/cas-oppija/login?locale=${lang}&service=${casOppijaServiceUrl}&valtuudet=false")
     } else {
       redirect(localOppijaLoginPage + "?onSuccess=" + URLEncoder.encode(params.getOrElse("redirect", ""), "UTF-8"))
     }
