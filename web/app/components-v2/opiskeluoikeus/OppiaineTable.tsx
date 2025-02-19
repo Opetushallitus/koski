@@ -46,6 +46,7 @@ import { ArvosanaEdit, koodiarvoOnly } from './ArvosanaField'
 import { OppiaineTableKurssiEditor } from './OppiaineTableKurssiEditor'
 import { LocalizedString } from '../../types/fi/oph/koski/schema/LocalizedString'
 import { isPaikallinenLukionKurssi2015 } from '../../types/fi/oph/koski/schema/PaikallinenLukionKurssi2015'
+import { isLukionPaikallinenOpintojakso2019 } from '../../types/fi/oph/koski/schema/LukionPaikallinenOpintojakso2019'
 
 // Vain OppiaineTablen tukemat päätason suoritukset (tätä komponenttia tullaan myöhemmin käyttämään ainakin lukion näkymille)
 export type OppiaineTableOpiskeluoikeus = IBOpiskeluoikeus
@@ -748,4 +749,6 @@ export const isKuvauksellinen = (
   KoulutusmoduuliOf<OsasuoritusOf<Oppiaine>>,
   { kuvaus: LocalizedString }
 > =>
-  isIBKurssi(koulutusmoduuli) || isPaikallinenLukionKurssi2015(koulutusmoduuli)
+  isIBKurssi(koulutusmoduuli) ||
+  isPaikallinenLukionKurssi2015(koulutusmoduuli) ||
+  isLukionPaikallinenOpintojakso2019(koulutusmoduuli)
