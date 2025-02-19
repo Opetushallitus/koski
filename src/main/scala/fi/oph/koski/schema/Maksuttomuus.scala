@@ -28,21 +28,5 @@ case class OikeuttaMaksuttomuuteenPidennetty (
   override def toString: String = s"$alku – $loppu"
 }
 
-object OikeuttaMaksuttomuuteenPidennetty {
-  def maksuttomuusJaksojenYhteenlaskettuPituus(jaksot: Seq[OikeuttaMaksuttomuuteenPidennetty]): Int = {
-    val uniikitPäivät = mutable.HashSet.empty[Long]
-    jaksot.foreach(
-      jakso => {
-        var päivä = jakso.alku
-        while (päivä.isBefore(jakso.loppu.plusDays(1))) { // plusDays koska maksuttomuuden pidennyksen kesto on loppupäivä-inklusiivinen. 1.10 - 2.10 = 2 päivää.
-          uniikitPäivät.add(päivä.toEpochDay)
-          päivä = päivä.plusDays(1)
-        }
-      }
-    )
-    uniikitPäivät.size
-  }
-}
-
 @Description("Laajennetun oppivelvollisuuden suoritus")
 trait SuoritusVaatiiMahdollisestiMaksuttomuusTiedonOpiskeluoikeudelta extends PäätasonSuoritus
