@@ -111,7 +111,7 @@ trait AuthenticationSupport extends BaseServlet with SSOSupport {
     val fakeServiceTicket: String = "koski-" + UUID.randomUUID()
     application.koskiSessionRepository.store(fakeServiceTicket, user, LogUserContext.clientIpFromRequest(request), LogUserContext.userAgent(request))
     logger.info("Local session ticket created: " + fakeServiceTicket)
-    UserLanguage.setLanguageCookie(lang.getOrElse(UserLanguage.getLanguageFromLDAP(user, application.directoryClient)), response)
+    UserLanguage.setLanguageCookie(lang.getOrElse(UserLanguage.getLanguageFromLDAP(user, application.directoryClient).getOrElse("fi")), response)
     user.copy(serviceTicket = Some(fakeServiceTicket))
   }
 

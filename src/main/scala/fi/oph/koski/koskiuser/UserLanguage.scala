@@ -7,16 +7,16 @@ import org.scalatra.servlet.{RichRequest, RichResponse}
 import org.scalatra.{Cookie, CookieOptions}
 
 object UserLanguage extends Logging {
-  def getLanguageFromLDAP(user: AuthenticationUser, directoryClient: DirectoryClient): String = {
+  def getLanguageFromLDAP(user: AuthenticationUser, directoryClient: DirectoryClient): Option[String] = {
     val username = user.username
     directoryClient.findUser(username) match {
       case Some(ldapUser) =>
-        sanitizeLanguage(ldapUser.asiointikieli).getOrElse("fi")
+        sanitizeLanguage(ldapUser.asiointikieli)
       case _ =>
         if (!user.kansalainen) {
           logger.warn(s"User $username not found")
         }
-        "fi"
+        None
     }
   }
 
