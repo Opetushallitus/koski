@@ -1,7 +1,8 @@
 package fi.oph.koski.api.misc
 
+import fi.oph.koski.documentation.AmmatillinenExampleData.{ammatillisenTutkinnonOsittainenSuoritus, stadinAmmattiopisto}
 import fi.oph.koski.{KoskiApplicationForTests, KoskiHttpSpec}
-import fi.oph.koski.documentation.ExampleData.{opiskeluoikeusEronnut, opiskeluoikeusLäsnä, vahvistusPaikkakunnalla}
+import fi.oph.koski.documentation.ExampleData.{opiskeluoikeusEronnut, opiskeluoikeusLäsnä, opiskeluoikeusValmistunut, vahvistusPaikkakunnalla}
 import fi.oph.koski.documentation.PerusopetusExampleData.{perusopetuksenOppimääränSuoritus, yhdeksännenLuokanSuoritus}
 import fi.oph.koski.documentation._
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat._
@@ -685,6 +686,21 @@ class MaksuttomuusSpec extends AnyFreeSpec with OpiskeluoikeusTestMethodsAmmatil
     "Maksuttomuustiedot vaaditaan, jos kaikki tietyt oppijan ja opiskeluoikeuden ehdot täyttyvät" in {
       setupOppijaWithOpiskeluoikeus(opiskeluoikeus, oppija) {
         verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation("Tieto koulutuksen maksuttomuudesta vaaditaan opiskeluoikeudelle."))
+      }
+    }
+
+    "Maksuttomuustietoja ei vaadita osittaiselle ammatilliselle tutkinnolle" in {
+      val opiskeluoikeus = AmmatillinenOpiskeluoikeus(
+        oppilaitos = Some(stadinAmmattiopisto),
+        suoritukset = List(ammatillisenTutkinnonOsittainenSuoritus),
+        tila = AmmatillinenOpiskeluoikeudenTila(
+          List(
+            AmmatillinenOpiskeluoikeusjakso(alkamispaiva, opiskeluoikeusLäsnä, Some(ExampleData.valtionosuusRahoitteinen)),
+          )
+        )
+      )
+      setupOppijaWithOpiskeluoikeus(opiskeluoikeus, oppija) {
+        verifyResponseStatusOk()
       }
     }
 

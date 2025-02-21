@@ -242,6 +242,9 @@ object MaksuttomuusValidation extends Logging {
         case _ => false
       }
 
+    // TOR-2302 osatutkintotavoitteisiin tutkintoihin ei vaadita maksuttomuustietoa
+    val eiOsatutkintotavoitteinen = !opiskeluoikeus.suoritukset.exists(_.isInstanceOf[AmmatillisenTutkinnonOsittainenSuoritus])
+
     val originalResult = false
 
     val newResult = oppijaOnSyntymäajanPerusteellaLainPiirissä &&
@@ -249,6 +252,7 @@ object MaksuttomuusValidation extends Logging {
       opinnotAlkaneetEnnenKuinMaksuttomuudenYläikärajaOnTäyttynyt &&
       koulutusKelpaaOppivelvollisuudenSuorittamiseen &&
       oppijaOnKotikuntahistorianPerusteellaLainPiirissä &&
+      eiOsatutkintotavoitteinen &&
       // 6.oppijaa ei ole vapautettu oppivelvollisuudesta
       !vapautettuOppivelvollisuudesta
 
