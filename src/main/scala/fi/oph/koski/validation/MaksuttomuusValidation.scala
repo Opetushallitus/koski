@@ -242,6 +242,9 @@ object MaksuttomuusValidation extends Logging {
         case _ => false
       }
 
+    // TOR-2302 osatutkintotavoitteisiin tutkintoihin ei vaadita maksuttomuustietoa
+    val eiOsatutkintotavoitteinen = !opiskeluoikeus.suoritukset.exists(_.isInstanceOf[AmmatillisenTutkinnonOsittainenSuoritus])
+
     val originalResult = false
 
     val newResult = oppijaOnSyntymäajanPerusteellaLainPiirissä &&
@@ -249,6 +252,7 @@ object MaksuttomuusValidation extends Logging {
       opinnotAlkaneetEnnenKuinMaksuttomuudenYläikärajaOnTäyttynyt &&
       koulutusKelpaaOppivelvollisuudenSuorittamiseen &&
       oppijaOnKotikuntahistorianPerusteellaLainPiirissä &&
+      eiOsatutkintotavoitteinen &&
       // 6.oppijaa ei ole vapautettu oppivelvollisuudesta
       !vapautettuOppivelvollisuudesta
 
@@ -352,10 +356,12 @@ object MaksuttomuusValidation extends Logging {
       .flatMap(_.syntymäaika)
       .map(rajapäivät.maksuttomuusVoimassaAstiIänPerusteella)
 
+    // Maksuttomuuden pidennysjaksot ennen maksuttomuuskauden varsinaista loppua, jotka sisältävät päiviä ennen 1.8.2022
+    // ovat sallittuja ja päivät ennen 1.8.2022 lisätään maksuttomuuskauden loppuun
     val virheelliset =
       maksuttomuusPäättyyIänPerusteella
         .toList
-        .flatMap(rajapäivä => pidennykset.filter(_.alku.isEqualOrBefore(rajapäivä)))
+        .flatMap(rajapäivä => pidennykset.filter(p => p.alku.isEqualOrAfter(date(2022, 8, 1)) && p.alku.isEqualOrBefore(rajapäivä)))
 
     if (virheelliset.isEmpty) {
       HttpStatus.ok

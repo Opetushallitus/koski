@@ -1,3 +1,7 @@
+## 21.2.2025
+
+- Poistetaan maksuttomuustiedon vaatimus ammatillisen osatutkintotavoitteisista opiskeluoikeuksista
+
 ## 11.2.2025
 
 - Jakolinkkeihin näkyville tieto yksilöllistetyistä oppiaineista ja osaamisen arvioinnin mukauttamisesta

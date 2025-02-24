@@ -1,12 +1,9 @@
 package fi.oph.koski.raportointikanta
 
-import fi.oph.koski.henkilo.{Hetu, OpintopolkuHenkilöFacade}
-import fi.oph.koski.henkilo.LaajatOppijaHenkilöTiedot
+import fi.oph.koski.henkilo.{Hetu, LaajatOppijaHenkilöTiedot, OpintopolkuHenkilöFacade}
 import fi.oph.koski.koodisto.{KoodistoKoodi, KoodistoPalvelu, Kunta}
-import fi.oph.koski.koskiuser.KoskiSpecificSession
 import fi.oph.koski.log.Logging
 import fi.oph.koski.opiskeluoikeus.CompositeOpiskeluoikeusRepository
-import fi.oph.koski.schema.{Koodistokoodiviite, MaksuttomuusTieto, OikeuttaMaksuttomuuteenPidennetty}
 
 import java.sql.Date
 
@@ -89,33 +86,5 @@ object HenkilöLoader extends Logging {
       kotikuntaNimiFi = Kunta.getKunnanNimi(oppija.kotikunta, koodistoPalvelu, "fi"),
       kotikuntaNimiSv = Kunta.getKunnanNimi(oppija.kotikunta, koodistoPalvelu, "sv"),
       yksiloity =  oppija.yksilöity
-      // TODO: Disabloitu ainakin väliaikaiseksi, kun kokeillaan SQL-pohjaista tapaa näiden laskemiseen.
-      // Nyt jos tämä maksuttomuuden pidennys lasketaan tässä kohtaa, joudutaan käymään kokonaisuutena
-      // kaksi kertaa läpi kaikki opiskeluoikeudet, mitä Koskessa on, kun raportointikantaa luodaan.
-      //oikeuttaMaksuttomuuteenPidennettyYhteensä = oikeuttaMaksuttomuuteenPidennettyYhteensä(oppija, opiskeluoikeusRepository)
     )
-
-  private def oikeuttaMaksuttomuuteenPidennettyYhteensä(oppija: LaajatOppijaHenkilöTiedot, opiskeluoikeusRepository: CompositeOpiskeluoikeusRepository): Int = {
-    val maksuttomuusJaksot = opiskeluoikeusRepository.findByOppija(oppija, false, false)(KoskiSpecificSession.systemUser).map(
-      _.map(_.lisätiedot match {
-        case Some(tiedot) => {
-          tiedot match {
-            case maksuttomuusTieto: MaksuttomuusTieto => {
-              maksuttomuusTieto.oikeuttaMaksuttomuuteenPidennetty.toList.flatten
-            }
-            case _ => List()
-          }
-        }
-        case None => List()
-      })
-    )
-
-    maksuttomuusJaksot.warningsToLeft match {
-      case Right(jaksot) => OikeuttaMaksuttomuuteenPidennetty.maksuttomuusJaksojenYhteenlaskettuPituus(jaksot.flatten)
-      case _ => {
-        logger.error(s"Pidennystä maksuttoman opiskelun oikeuteen ei voitu laskea oppijalle ${oppija.oid}")
-        0
-      }
-    }
-  }
 }

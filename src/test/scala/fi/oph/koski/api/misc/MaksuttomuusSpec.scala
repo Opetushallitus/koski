@@ -1,12 +1,15 @@
 package fi.oph.koski.api.misc
 
+import fi.oph.koski.documentation.AmmatillinenExampleData.{ammatillisenTutkinnonOsittainenSuoritus, stadinAmmattiopisto}
 import fi.oph.koski.{KoskiApplicationForTests, KoskiHttpSpec}
-import fi.oph.koski.documentation.ExampleData.{opiskeluoikeusEronnut, opiskeluoikeusLäsnä, vahvistusPaikkakunnalla}
+import fi.oph.koski.documentation.ExampleData.{opiskeluoikeusEronnut, opiskeluoikeusLäsnä, opiskeluoikeusValmistunut, vahvistusPaikkakunnalla}
 import fi.oph.koski.documentation.PerusopetusExampleData.{perusopetuksenOppimääränSuoritus, yhdeksännenLuokanSuoritus}
 import fi.oph.koski.documentation._
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat._
 import fi.oph.koski.henkilo.{KoskiSpecificMockOppijat, OppijaHenkilö}
 import fi.oph.koski.http.KoskiErrorCategory
+import fi.oph.koski.oppivelvollisuustieto.Oppivelvollisuustiedot
+import fi.oph.koski.raportointikanta.RaportointikantaTestMethods
 import fi.oph.koski.schema._
 import fi.oph.koski.util.ChainingSyntax.localDateOps
 import fi.oph.koski.valpas.oppivelvollisuudestavapautus.ValpasOppivelvollisuudestaVapautusService
@@ -15,7 +18,7 @@ import org.scalatest.freespec.AnyFreeSpec
 import java.time.LocalDate
 import java.time.LocalDate.{of => date}
 
-class MaksuttomuusSpec extends AnyFreeSpec with OpiskeluoikeusTestMethodsAmmatillinen with KoskiHttpSpec {
+class MaksuttomuusSpec extends AnyFreeSpec with OpiskeluoikeusTestMethodsAmmatillinen with KoskiHttpSpec with RaportointikantaTestMethods {
   val oppivelvollisuudestaVapautusService: ValpasOppivelvollisuudestaVapautusService = KoskiApplicationForTests.valpasOppivelvollisuudestaVapautusService
 
   oppivelvollisuudestaVapautusService.db.deleteAll()
@@ -672,48 +675,6 @@ class MaksuttomuusSpec extends AnyFreeSpec with OpiskeluoikeusTestMethodsAmmatil
         }
       }
     }
-
-    val jaksoAikainen = OikeuttaMaksuttomuuteenPidennetty(LocalDate.of(2020, 10, 10),
-      LocalDate.of(2020, 10, 15))
-    val jaksoAikainenPäällekäinen = OikeuttaMaksuttomuuteenPidennetty(LocalDate.of(2020, 10, 12),
-      LocalDate.of(2020, 10, 25))
-
-    val jaksoKeskimmäinen = OikeuttaMaksuttomuuteenPidennetty(LocalDate.of(2020, 12, 10),
-      LocalDate.of(2021, 1, 15))
-    val jaksoKeskimmäinenSisäkkäinen = OikeuttaMaksuttomuuteenPidennetty(LocalDate.of(2020, 12, 20),
-      LocalDate.of(2021, 1, 14))
-
-    val jaksoMyöhäinen = OikeuttaMaksuttomuuteenPidennetty(LocalDate.of(2021, 10, 10),
-      LocalDate.of(2021, 10, 15))
-    val jaksoMyöhäinenHetiPerään = OikeuttaMaksuttomuuteenPidennetty(LocalDate.of(2021, 10, 15),
-      LocalDate.of(2021, 10, 20))
-
-    "Pidennyksen yhteenlasku" - {
-      "Peräkkäiset aikajaksot tyhjällä välillä" in {
-        OikeuttaMaksuttomuuteenPidennetty.maksuttomuusJaksojenYhteenlaskettuPituus(List(jaksoAikainen, jaksoMyöhäinen)) should equal (12)
-      }
-      "Peräkkäiset aikajaksot, suoraan toisiaan seuraavat" in {
-        OikeuttaMaksuttomuuteenPidennetty.maksuttomuusJaksojenYhteenlaskettuPituus(List(jaksoMyöhäinen, jaksoMyöhäinenHetiPerään)) should equal (11)
-      }
-      "Päällekkäiset aikajaksot" in {
-        OikeuttaMaksuttomuuteenPidennetty.maksuttomuusJaksojenYhteenlaskettuPituus(List(jaksoAikainen, jaksoAikainenPäällekäinen)) should equal (16)
-      }
-      "Sisäkkäiset aikajaksot" in {
-        OikeuttaMaksuttomuuteenPidennetty.maksuttomuusJaksojenYhteenlaskettuPituus(List(jaksoKeskimmäinen, jaksoKeskimmäinenSisäkkäinen)) should equal (37)
-      }
-      "Peräkkäisiä, sisäkkäisiä ja erillisiä yhdessä" in {
-        OikeuttaMaksuttomuuteenPidennetty.maksuttomuusJaksojenYhteenlaskettuPituus(List(
-          jaksoMyöhäinenHetiPerään,
-          jaksoAikainen,
-          jaksoMyöhäinen,
-          jaksoKeskimmäinen,
-          jaksoAikainenPäällekäinen,
-          jaksoKeskimmäinenSisäkkäinen)) should equal (64)
-      }
-      "Sama aikajakso kahdesti" in {
-        OikeuttaMaksuttomuuteenPidennetty.maksuttomuusJaksojenYhteenlaskettuPituus(List(jaksoKeskimmäinen, jaksoKeskimmäinen)) should equal (37)
-      }
-    }
   }
 
   "Maksuttomuustietojen vaatiminen niiden puuttuessa" - {
@@ -725,6 +686,21 @@ class MaksuttomuusSpec extends AnyFreeSpec with OpiskeluoikeusTestMethodsAmmatil
     "Maksuttomuustiedot vaaditaan, jos kaikki tietyt oppijan ja opiskeluoikeuden ehdot täyttyvät" in {
       setupOppijaWithOpiskeluoikeus(opiskeluoikeus, oppija) {
         verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation("Tieto koulutuksen maksuttomuudesta vaaditaan opiskeluoikeudelle."))
+      }
+    }
+
+    "Maksuttomuustietoja ei vaadita osittaiselle ammatilliselle tutkinnolle" in {
+      val opiskeluoikeus = AmmatillinenOpiskeluoikeus(
+        oppilaitos = Some(stadinAmmattiopisto),
+        suoritukset = List(ammatillisenTutkinnonOsittainenSuoritus),
+        tila = AmmatillinenOpiskeluoikeudenTila(
+          List(
+            AmmatillinenOpiskeluoikeusjakso(alkamispaiva, opiskeluoikeusLäsnä, Some(ExampleData.valtionosuusRahoitteinen)),
+          )
+        )
+      )
+      setupOppijaWithOpiskeluoikeus(opiskeluoikeus, oppija) {
+        verifyResponseStatusOk()
       }
     }
 
@@ -775,6 +751,65 @@ class MaksuttomuusSpec extends AnyFreeSpec with OpiskeluoikeusTestMethodsAmmatil
       putOpiskeluoikeus(opiskeluoikeus, oppija) {
         verifyResponseStatusOk()
       }
+    }
+  }
+
+  "Maksuttomuuden pidennyksen laskenta" - {
+
+    "Maksuttomuuden pidennyspäivät 1.8.2021-31.7.2022 välillä lisätään maksuttomuuskauden loppuun" in {
+      val oppija = KoskiSpecificMockOppijat.vuonna2005SyntynytPeruskouluValmis2021
+      val alkamispaiva = date(2021, 8, 2)
+      val maksuttomuusJaksot = Some(List(Maksuttomuus(alkamispaiva, None, maksuton = true)))
+      val opiskeluoikeus = alkamispäivällä(defaultOpiskeluoikeus, alkamispaiva)
+      val pidennykset = List(OikeuttaMaksuttomuuteenPidennetty(date(2021, 9, 3), date(2021, 10, 24)))
+
+      mitätöiOppijanKaikkiOpiskeluoikeudet(oppija)
+      putMaksuttomuuttaPidennetty(pidennykset, oppija, opiskeluoikeus, maksuttomuusJaksot) {
+        verifyResponseStatusOk()
+      }
+      reloadRaportointikanta()
+
+      val result = Oppivelvollisuustiedot.queryByOid(oppija.oid, mainRaportointiDb)
+
+      result.get.oikeusMaksuttomaanKoulutukseenVoimassaAsti should equal(date(2026, 2, 21)) // 20. ikävuoden loppu + 52 päivää
+    }
+
+    "Maksuttomuuden pidennyspäivät 1.8.2021-31.7.2022 välillä lisätään maksuttomuuskauden loppuun vain ko. ajalta vaikka pidennys loppuu 31.7.2022 jälkeen" in {
+      val oppija = KoskiSpecificMockOppijat.vuonna2005SyntynytPeruskouluValmis2021
+      val alkamispaiva = date(2021, 8, 2)
+      val maksuttomuusJaksot = Some(List(Maksuttomuus(alkamispaiva, None, maksuton = true)))
+      val opiskeluoikeus = alkamispäivällä(defaultOpiskeluoikeus, alkamispaiva)
+      val pidennykset = List(OikeuttaMaksuttomuuteenPidennetty(date(2022, 7, 30), date(2022, 9, 1)))
+
+      mitätöiOppijanKaikkiOpiskeluoikeudet(oppija)
+      putMaksuttomuuttaPidennetty(pidennykset, oppija, opiskeluoikeus, maksuttomuusJaksot) {
+        verifyResponseStatusOk()
+      }
+      reloadRaportointikanta()
+
+      val result = Oppivelvollisuustiedot.queryByOid(oppija.oid, mainRaportointiDb)
+
+      result.get.oikeusMaksuttomaanKoulutukseenVoimassaAsti should equal(date(2026, 1, 2)) // 20. ikävuoden loppu + 2 päivää
+    }
+
+
+    "Maksuttomuuden pidennyspäiviä ennen 1.8.2022 ei oteta huomioon, jos uusia, 20. ikävuoden lopun jälkeen loppuvia pidennyksiä on myös olemassa" in {
+      val oppija = KoskiSpecificMockOppijat.vuonna2005SyntynytPeruskouluValmis2021
+      val alkamispaiva = date(2021, 8, 2)
+      val maksuttomuusJaksot = Some(List(Maksuttomuus(alkamispaiva, None, maksuton = true)))
+      val opiskeluoikeus = alkamispäivällä(defaultOpiskeluoikeus, alkamispaiva)
+      val pidennykset = List(OikeuttaMaksuttomuuteenPidennetty(date(2022, 7, 30), date(2022, 9, 1)),
+        OikeuttaMaksuttomuuteenPidennetty(date(2026, 1, 1), date(2026, 3, 31)))
+
+      mitätöiOppijanKaikkiOpiskeluoikeudet(oppija)
+      putMaksuttomuuttaPidennetty(pidennykset, oppija, opiskeluoikeus, maksuttomuusJaksot) {
+        verifyResponseStatusOk()
+      }
+      reloadRaportointikanta()
+
+      val result = Oppivelvollisuustiedot.queryByOid(oppija.oid, mainRaportointiDb)
+
+      result.get.oikeusMaksuttomaanKoulutukseenVoimassaAsti should equal(date(2026, 3, 31)) // viimeisimmän pidennyksen loppu
     }
   }
 

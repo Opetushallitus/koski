@@ -1,6 +1,11 @@
 # Koskeen tallennettavien tietojen validaatiosäännöt
 
+## 20.2.2025
+
+- Korjataan maksuttomuuden pidennys-validaatiota sallimaan vanhan oppivelvollisuuslain alaisia pidennysjaksoja, jotka alkavat ennen 1.8.2022
+
 ## 27.1.2025
+
 - Maksuttomuus-lisätieto vaaditaan jos oppijaa ei ole vapautettu oppivelvollisuudesta
 - Maksuttomuus-lisätietoa ei saa siirtää kun
   - tieto on "maksuton" ja oppija on vapautettu oppivelvollisuudesta
