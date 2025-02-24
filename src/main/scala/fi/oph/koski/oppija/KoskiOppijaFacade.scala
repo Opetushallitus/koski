@@ -263,7 +263,7 @@ class KoskiOppijaFacade(
     invalidate(
       opiskeluoikeusOid,
       cancelOpiskeluoikeus(opiskeluoikeusOid),
-      oppija => createOrUpdate(oppija, allowUpdate = true)
+      oppija => createOrUpdate(oppija, allowUpdate = true, skipValidations = true)
     )
 
   def invalidatePäätasonSuoritus

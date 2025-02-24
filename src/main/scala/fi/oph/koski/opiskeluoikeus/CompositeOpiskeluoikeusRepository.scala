@@ -169,7 +169,8 @@ class CompositeOpiskeluoikeusRepository(main: KoskiOpiskeluoikeusRepository, vir
       result            <- createOrUpdate(
                             UnverifiedHenkilöOid(opiskeluoikeusRow.oppijaOid, henkilöRepostory),
                             newOo,
-                            allowUpdate = true
+                            allowUpdate = true,
+                            skipValidations = true
                           )
     } yield result
 
