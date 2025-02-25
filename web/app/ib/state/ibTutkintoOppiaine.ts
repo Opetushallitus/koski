@@ -3,14 +3,16 @@ import {
   DialogField,
   useDialogField
 } from '../../components-v2/createdialog/DialogField'
-import { IBOppiaineenSuoritus } from '../../types/fi/oph/koski/schema/IBOppiaineenSuoritus'
-import { Koodistokoodiviite } from '../../types/fi/oph/koski/schema/Koodistokoodiviite'
-import { createIBOppiaineenSuoritus } from '../oppiaineet/ibTutkintoOppiaine'
-import { isIBOppiaineLanguageTunniste } from '../oppiaineet/tunnisteet'
-import { init } from 'ramda'
-import { isIBOppiaineLanguage } from '../../types/fi/oph/koski/schema/IBOppiaineLanguage'
-import { IBExtendedEssaySuoritus } from '../../types/fi/oph/koski/schema/IBExtendedEssaySuoritus'
 import { IBAineRyhmäOppiaine } from '../../types/fi/oph/koski/schema/IBAineRyhmaOppiaine'
+import { isIBOppiaineLanguage } from '../../types/fi/oph/koski/schema/IBOppiaineLanguage'
+import { IBTutkinnonOppiaineenSuoritus } from '../../types/fi/oph/koski/schema/IBTutkinnonOppiaineenSuoritus'
+import { Koodistokoodiviite } from '../../types/fi/oph/koski/schema/Koodistokoodiviite'
+import { LocalizedString } from '../../types/fi/oph/koski/schema/LocalizedString'
+import {
+  createIBTutkinnonOppiaine,
+  DPCoreOppiaineet
+} from '../oppiaineet/ibTutkintoOppiaine'
+import { isIBOppiaineLanguageTunniste } from '../oppiaineet/tunnisteet'
 
 export type UusiIBTutkintoOppiaineState = {
   tunniste: DialogField<Koodistokoodiviite<'oppiaineetib'>>
@@ -18,7 +20,15 @@ export type UusiIBTutkintoOppiaineState = {
   ryhmä: DialogField<Koodistokoodiviite<'aineryhmaib'>>
   taso: DialogField<Koodistokoodiviite<'oppiaineentasoib'>>
   pakollinen: DialogField<boolean>
-  result: IBOppiaineenSuoritus | null
+  extendedEssay: {
+    tunniste: DialogField<Koodistokoodiviite<'oppiaineetib'>>
+    kieli: DialogField<Koodistokoodiviite<'kielivalikoima'>>
+    ryhmä: DialogField<Koodistokoodiviite<'aineryhmaib'>>
+    taso: DialogField<Koodistokoodiviite<'oppiaineentasoib'>>
+    pakollinen: DialogField<boolean>
+    aihe: DialogField<LocalizedString>
+  }
+  result: IBTutkinnonOppiaineenSuoritus | null
 }
 
 export const useIBTutkintoOppiaineState = (
@@ -28,7 +38,13 @@ export const useIBTutkintoOppiaineState = (
     true,
     () => initial?.tunniste
   )
-  const tunnisteSelected = !!tunniste.value
+  const ibOppiaineSelected =
+    tunniste.value !== undefined &&
+    !DPCoreOppiaineet.includes(tunniste.value.koodiarvo)
+  const coreOppiaineSelected =
+    tunniste.value !== undefined &&
+    DPCoreOppiaineet.includes(tunniste.value.koodiarvo)
+  const extendedEssaySelected = tunniste.value?.koodiarvo === 'EE'
 
   const kieli = useDialogField<Koodistokoodiviite<'kielivalikoima'>>(
     isIBOppiaineLanguageTunniste(tunniste.value),
@@ -36,30 +52,62 @@ export const useIBTutkintoOppiaineState = (
   )
 
   const ryhmä = useDialogField<Koodistokoodiviite<'aineryhmaib'>>(
-    tunnisteSelected,
+    ibOppiaineSelected,
     () => initial?.ryhmä
   )
 
   const taso = useDialogField<Koodistokoodiviite<'oppiaineentasoib'>>(
-    tunnisteSelected,
+    ibOppiaineSelected,
     () => initial?.taso
   )
 
   const pakollinen = useDialogField<boolean>(
-    tunnisteSelected,
+    ibOppiaineSelected || coreOppiaineSelected,
     () => initial?.pakollinen
   )
 
+  const essayTunniste = useDialogField<Koodistokoodiviite<'oppiaineetib'>>(
+    extendedEssaySelected
+  )
+
+  const essayKieli = useDialogField<Koodistokoodiviite<'kielivalikoima'>>(
+    isIBOppiaineLanguageTunniste(essayTunniste.value)
+  )
+  const essayRyhmä = useDialogField<Koodistokoodiviite<'aineryhmaib'>>(true)
+  const essayTaso = useDialogField<Koodistokoodiviite<'oppiaineentasoib'>>(true)
+  const essayPakollinen = useDialogField<boolean>(true)
+  const essayAihe = useDialogField<LocalizedString>(extendedEssaySelected)
+
   const result = useMemo(
     () =>
-      createIBOppiaineenSuoritus({
+      createIBTutkinnonOppiaine({
         tunniste: tunniste.value,
         kieli: kieli.value,
         ryhmä: ryhmä.value,
         taso: taso.value,
-        pakollinen: pakollinen.value
+        pakollinen: pakollinen.value,
+        extendedEssay: {
+          tunniste: essayTunniste.value,
+          kieli: essayKieli.value,
+          ryhmä: essayRyhmä.value,
+          taso: essayTaso.value,
+          pakollinen: essayPakollinen.value,
+          aihe: essayAihe.value
+        }
       }),
-    [kieli.value, pakollinen.value, ryhmä.value, taso.value, tunniste.value]
+    [
+      essayAihe.value,
+      essayKieli.value,
+      essayPakollinen.value,
+      essayRyhmä.value,
+      essayTaso.value,
+      essayTunniste.value,
+      kieli.value,
+      pakollinen.value,
+      ryhmä.value,
+      taso.value,
+      tunniste.value
+    ]
   )
 
   return {
@@ -68,6 +116,14 @@ export const useIBTutkintoOppiaineState = (
     ryhmä,
     taso,
     pakollinen,
+    extendedEssay: {
+      tunniste: essayTunniste,
+      kieli: essayKieli,
+      ryhmä: essayRyhmä,
+      taso: essayTaso,
+      pakollinen: essayPakollinen,
+      aihe: essayAihe
+    },
     result
   }
 }
