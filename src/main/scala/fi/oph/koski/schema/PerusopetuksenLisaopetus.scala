@@ -188,7 +188,7 @@ case class PerusopetuksenLisäopetuksenSuoritus(
   with MonikielinenSuoritus
   with Suorituskielellinen
   with ErityisopetuksellinenPäätasonSuoritus
-  with SuoritusVaatiiMahdollisestiMaksuttomuusTiedonOpiskeluoikeudelta
+  with OppivelvollisuudenSuorittamiseenKelpaava
   with MahdollisestiLuokallinen {
   def sisältääOsaAikaisenErityisopetuksen: Boolean = osaAikainenErityisopetus.getOrElse(false)
 }

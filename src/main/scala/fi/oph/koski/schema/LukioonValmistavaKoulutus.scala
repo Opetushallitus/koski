@@ -54,7 +54,7 @@ case class LukioonValmistavanKoulutuksenSuoritus(
   with Arvioinniton
   with Suorituskielellinen
   with Oppimäärällinen
-  with SuoritusVaatiiMahdollisestiMaksuttomuusTiedonOpiskeluoikeudelta
+  with OppivelvollisuudenSuorittamiseenKelpaava
 
 @Description("Lukioon valmistavan koulutuksen (LUVA) tunnistetiedot")
 case class LukioonValmistavaKoulutus(

@@ -40,7 +40,7 @@ case class LukionOppimääränSuoritus2015(
   with Arvioinniton
   with KoulusivistyskieliKieliaineesta
   with Oppimäärällinen
-  with SuoritusVaatiiMahdollisestiMaksuttomuusTiedonOpiskeluoikeudelta
+  with OppivelvollisuudenSuorittamiseenKelpaava
   with LukionOppimääränSuoritus {
   def oppimääränKoodiarvo = Some(oppimäärä.koodiarvo)
 }

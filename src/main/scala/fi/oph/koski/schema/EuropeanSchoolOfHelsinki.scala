@@ -191,7 +191,7 @@ case class SecondaryUpperVuosiluokanSuoritus(
   jääLuokalle: Boolean = false,
   todistuksellaNäkyvätLisätiedot: Option[LocalizedString] = None,
   override val osasuoritukset: Option[List[SecondaryUpperOppiaineenSuoritus]] = None
-) extends OppivelvollisuudenSuorittamiseenKelpaavaESHVuosiluokanSuoritus with SuoritusVaatiiMahdollisestiMaksuttomuusTiedonOpiskeluoikeudelta {
+) extends OppivelvollisuudenSuorittamiseenKelpaavaESHVuosiluokanSuoritus with OppivelvollisuudenSuorittamiseenKelpaava {
   override def ilmanAlkamispäivää(): EuropeanSchoolOfHelsinkiVuosiluokanSuoritus = this.copy(alkamispäivä = None)
 
   override protected def tyypinMukainenJärjestysKriteeri: Int = 400

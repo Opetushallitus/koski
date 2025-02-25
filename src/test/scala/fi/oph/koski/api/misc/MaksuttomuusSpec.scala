@@ -26,7 +26,7 @@ class MaksuttomuusSpec extends AnyFreeSpec with OpiskeluoikeusTestMethodsAmmatil
   "Tiedon siirtäminen" - {
     lazy val opiskeluoikeus = alkamispäivällä(defaultOpiskeluoikeus, date(2021, 1, 1))
     "Testattavan opiskeluoikeuden suoritus on merkitty vaativan maksuttomuustiedon lisätiedoilta" in {
-      opiskeluoikeus.suoritukset.collectFirst { case s: SuoritusVaatiiMahdollisestiMaksuttomuusTiedonOpiskeluoikeudelta => s }.isDefined shouldBe(true)
+      opiskeluoikeus.suoritukset.collectFirst { case s: OppivelvollisuudenSuorittamiseenKelpaava => s }.isDefined shouldBe(true)
     }
     "Saa siirtää jos opiskeluoikeus on alkanut ennen 1.1.2021" in {
       setupOppijaWithMaksuttomuus(
@@ -104,7 +104,7 @@ class MaksuttomuusSpec extends AnyFreeSpec with OpiskeluoikeusTestMethodsAmmatil
     "Ei saa siirtää jos opiskeluoikeus ei sisällä suoritusta joka vaatii maksuttomuus tiedon" in {
       val o = alkamispäivällä(defaultOpiskeluoikeus, date(2021, 8, 1))
       val oo = o.copy(suoritukset = List(AmmatillinenExampleData.kiinteistösihteerinMuuAmmatillinenKoulutus().copy(alkamispäivä = Some(date(2021, 8, 1)))))
-      oo.suoritukset.collectFirst { case s: SuoritusVaatiiMahdollisestiMaksuttomuusTiedonOpiskeluoikeudelta => s}.isDefined shouldBe(false)
+      oo.suoritukset.collectFirst { case s: OppivelvollisuudenSuorittamiseenKelpaava => s}.isDefined shouldBe(false)
 
       putMaksuttomuus(
         List(

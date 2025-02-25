@@ -94,7 +94,7 @@ case class OppivelvollisilleSuunnattuVapaanSivistystyönKoulutuksenSuoritus(
   todistuksellaNäkyvätLisätiedot: Option[LocalizedString] = None
 ) extends VapaanSivistystyönKoulutuksenPäätasonSuoritus
     with OpintopistelaajuuksienYhteislaskennallinenPäätasonSuoritus[LaajuusOpintopisteissä]
-    with SuoritusVaatiiMahdollisestiMaksuttomuusTiedonOpiskeluoikeudelta
+    with OppivelvollisuudenSuorittamiseenKelpaava
 
 @Description("Vapaan sivistystyön oppivelvollisuuskoulutuksen tunnistetiedot")
 case class OppivelvollisilleSuunnattuVapaanSivistystyönKoulutus(
@@ -243,7 +243,7 @@ case class OppivelvollisilleSuunnattuMaahanmuuttajienKotoutumiskoulutuksenSuorit
   @Description("Todistuksella näytettävä lisätieto, vapaamuotoinen tekstikenttä")
   todistuksellaNäkyvätLisätiedot: Option[LocalizedString] = None
 ) extends VapaanSivistystyönKoulutuksenPäätasonSuoritus
-  with SuoritusVaatiiMahdollisestiMaksuttomuusTiedonOpiskeluoikeudelta
+  with OppivelvollisuudenSuorittamiseenKelpaava
   with OpintopistelaajuuksienYhteislaskennallinenSuoritus[LaajuusOpintopisteissä]
 
 @Description("Vapaan sivistystyön maahanmuuttajien kotoutumiskoulutuksen tunnistetiedot")

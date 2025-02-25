@@ -30,7 +30,7 @@ case class AikuistenPerusopetuksenAlkuvaiheenSuoritus(
   with Todistus
   with Arvioinniton
   with SuoritustavallinenPerusopetuksenSuoritus
-  with SuoritusVaatiiMahdollisestiMaksuttomuusTiedonOpiskeluoikeudelta
+  with OppivelvollisuudenSuorittamiseenKelpaava
   with MahdollisestiLuokallinen
 
 @Description("Aikuisten perusopetuksen alkuvaiheen tunnistetiedot")

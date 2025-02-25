@@ -151,7 +151,7 @@ object MaksuttomuusValidation extends Logging {
         if InternationalSchoolOpiskeluoikeus.onLukiotaVastaavaInternationalSchoolinSuoritus(myp.tyyppi.koodiarvo, myp.koulutusmoduuli.tunniste.koodiarvo) => myp
       case esh: EuropeanSchoolOfHelsinkiVuosiluokanSuoritus
         if EuropeanSchoolOfHelsinkiOpiskeluoikeus.vuosiluokallaMahdollisestiMaksuttomuusLisätieto(esh.koulutusmoduuli.tunniste.koodistoUri, esh.koulutusmoduuli.tunniste.koodiarvo) => esh
-      case s: SuoritusVaatiiMahdollisestiMaksuttomuusTiedonOpiskeluoikeudelta => s
+      case s: OppivelvollisuudenSuorittamiseenKelpaava => s
     }.isDefined
 
   // Huom! Valpas käyttää myös tätä funktiota!
