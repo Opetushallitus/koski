@@ -1,15 +1,17 @@
 export const memoize = <A extends any[], T>(
-  fn: (...a: A) => T,
+  fn: (...a: A) => Promise<T>,
   getKey: (...a: A) => string
 ) => {
   const cache: Record<string, T> = {}
-  return (...args: A): T => {
+  return async (...args: A): Promise<T> => {
     const key = getKey(...args)
     if (cache[key]) {
       return cache[key]
     }
-    const result = fn(...args)
-    cache[key] = result
+    const result = await fn(...args)
+    if (result !== undefined && result !== null) {
+      cache[key] = result
+    }
     return result
   }
 }
