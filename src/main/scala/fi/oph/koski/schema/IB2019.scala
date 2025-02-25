@@ -30,7 +30,7 @@ case class PreIBSuoritus2019(
   with SuullisenKielitaidonKokeellinen2019
   with Ryhmällinen
   with OpintopistelaajuuksienYhteislaskennallinenPäätasonSuoritus[LaajuusOpintopisteissä]
-  with SuoritusVaatiiMahdollisestiMaksuttomuusTiedonOpiskeluoikeudelta
+  with OppivelvollisuudenSuorittamiseenKelpaava
 
 trait PreIBSuorituksenOsasuoritus2019
   extends Suoritus with OpintopistelaajuuksienYhteislaskennallinenSuoritus[LaajuusOpintopisteissä]

@@ -8,7 +8,7 @@ import fi.oph.koski.koskiuser.{AccessType, RequiresVirkailijaOrPalveluk채ytt채j�
 import fi.oph.koski.organisaatio.OrganisaatioOid
 import fi.oph.koski.preferences.PreferencesService
 import fi.oph.koski.schema.KoskiSchema.strictDeserialization
-import fi.oph.koski.schema.{P채채tasonSuoritus, SuoritusVaatiiMahdollisestiMaksuttomuusTiedonOpiskeluoikeudelta}
+import fi.oph.koski.schema.{P채채tasonSuoritus, OppivelvollisuudenSuorittamiseenKelpaava}
 import fi.oph.koski.servlet.NoCache
 import fi.oph.koski.util.WithWarnings
 
@@ -85,7 +85,7 @@ class   EditorServlet(implicit val application: KoskiApplication)
     withJsonBody { body =>
       render[Boolean](
         application.validatingAndResolvingExtractor.extract[P채채tasonSuoritus](strictDeserialization)(body)
-        .map(_.isInstanceOf[SuoritusVaatiiMahdollisestiMaksuttomuusTiedonOpiskeluoikeudelta])
+        .map(_.isInstanceOf[OppivelvollisuudenSuorittamiseenKelpaava])
         .getOrElse(false)
       )
     }()

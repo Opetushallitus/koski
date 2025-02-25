@@ -28,7 +28,7 @@ case class OppivelvollisilleSuunnattuMaahanmuuttajienKotoutumiskoulutuksenSuorit
   @Description("Todistuksella näytettävä lisätieto, vapaamuotoinen tekstikenttä")
   todistuksellaNäkyvätLisätiedot: Option[LocalizedString] = None
 ) extends VapaanSivistystyönKoulutuksenPäätasonSuoritus
-  with SuoritusVaatiiMahdollisestiMaksuttomuusTiedonOpiskeluoikeudelta
+  with OppivelvollisuudenSuorittamiseenKelpaava
   with OpintopistelaajuuksienYhteislaskennallinenPäätasonSuoritus[LaajuusOpintopisteissä]
   with OpintopistelaajuuksienYhteislaskennallinenSuoritus[LaajuusOpintopisteissä]
 

@@ -81,7 +81,7 @@ case class TutkintokoulutukseenValmentavanKoulutuksenSuoritus(
   @Description("Todistuksella näytettävä lisätieto, vapaamuotoinen tekstikenttä")
   todistuksellaNäkyvätLisätiedot: Option[LocalizedString] = None
 ) extends TutkintokoulutukseenValmentavanKoulutuksenPäätasonSuoritus with Toimipisteellinen with Suorituskielellinen
-  with Todistus with Arvioinniton with SuoritusVaatiiMahdollisestiMaksuttomuusTiedonOpiskeluoikeudelta with Suoritus
+  with Todistus with Arvioinniton with OppivelvollisuudenSuorittamiseenKelpaava with Suoritus
 
 @Description("Tutkintokoulutukseen valmentavan koulutuksen tunnistetiedot")
 case class TutkintokoulutukseenValmentavanKoulutus(

@@ -49,7 +49,7 @@ case class IBTutkinnonSuoritus(
   todistuksellaNäkyvätLisätiedot: Option[LocalizedString] = None,
   @KoodistoKoodiarvo("ibtutkinto")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("ibtutkinto", koodistoUri = "suorituksentyyppi")
-) extends IBPäätasonSuoritus with Todistus with SuoritusVaatiiMahdollisestiMaksuttomuusTiedonOpiskeluoikeudelta
+) extends IBPäätasonSuoritus with Todistus with OppivelvollisuudenSuorittamiseenKelpaava
 
 trait IBPäätasonSuoritus extends KoskeenTallennettavaPäätasonSuoritus with Toimipisteellinen with Arvioinniton with Suorituskielellinen
 trait PreIBSuorituksenOsasuoritus2015 extends Suoritus

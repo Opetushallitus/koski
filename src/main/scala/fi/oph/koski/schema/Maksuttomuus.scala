@@ -29,4 +29,4 @@ case class OikeuttaMaksuttomuuteenPidennetty (
 }
 
 @Description("Laajennetun oppivelvollisuuden suoritus")
-trait SuoritusVaatiiMahdollisestiMaksuttomuusTiedonOpiskeluoikeudelta extends PäätasonSuoritus
+trait OppivelvollisuudenSuorittamiseenKelpaava extends PäätasonSuoritus

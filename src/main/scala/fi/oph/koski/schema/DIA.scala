@@ -59,7 +59,7 @@ case class DIAOpiskeluoikeudenLisätiedot(
   oikeuttaMaksuttomuuteenPidennetty: Option[List[OikeuttaMaksuttomuuteenPidennetty]] = None
 ) extends OpiskeluoikeudenLisätiedot with ErityisenKoulutustehtävänJaksollinen with Ulkomaanjaksollinen with UlkomainenVaihtoopiskelija with MaksuttomuusTieto
 
-trait DIAPäätasonSuoritus extends KoskeenTallennettavaPäätasonSuoritus with Toimipisteellinen with Arvioinniton with Suorituskielellinen with SuoritusVaatiiMahdollisestiMaksuttomuusTiedonOpiskeluoikeudelta
+trait DIAPäätasonSuoritus extends KoskeenTallennettavaPäätasonSuoritus with Toimipisteellinen with Arvioinniton with Suorituskielellinen with OppivelvollisuudenSuorittamiseenKelpaava
 
 @Title("DIA-tutkinnon suoritus")
 case class DIATutkinnonSuoritus(

@@ -366,7 +366,7 @@ trait AmmatillisenTutkinnonOsittainenTaiKokoSuoritus extends AmmatillinenPääta
   with Ryhmällinen
   with Tutkintonimikkeellinen
   with Osaamisalallinen
-  with SuoritusVaatiiMahdollisestiMaksuttomuusTiedonOpiskeluoikeudelta
+  with OppivelvollisuudenSuorittamiseenKelpaava
   with MahdollisestiKeskiarvollinen
   with Järjestämismuodollinen
   with OsaamisenHankkimistavallinen
@@ -1311,7 +1311,7 @@ case class ValmaKoulutuksenSuoritus(
 ) extends ValmentavaSuoritus
   with AmmatillinenPäätasonSuoritus
   with Ryhmällinen
-  with SuoritusVaatiiMahdollisestiMaksuttomuusTiedonOpiskeluoikeudelta
+  with OppivelvollisuudenSuorittamiseenKelpaava
 
 trait ValmaKoulutuksenOsanTaiOsanOsaAlueenSuoritus extends ValmentavanKoulutuksenOsanSuoritus
   with MahdollisestiSuorituskielellinen
@@ -1401,7 +1401,7 @@ case class TelmaKoulutuksenSuoritus(
 ) extends ValmentavaSuoritus
   with AmmatillinenPäätasonSuoritus
   with Ryhmällinen
-  with SuoritusVaatiiMahdollisestiMaksuttomuusTiedonOpiskeluoikeudelta
+  with OppivelvollisuudenSuorittamiseenKelpaava
 
 @Title("TELMA-koulutuksen osan suoritus")
 @Description("Suoritettavan TELMA-koulutuksen osan tiedot")

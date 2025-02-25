@@ -53,7 +53,7 @@ case class LukionOppimääränSuoritus2019(
   with KoulusivistyskieliKieliaineesta
   with SuoritettavissaErityisenäTutkintona2019
   with Oppimäärällinen
-  with SuoritusVaatiiMahdollisestiMaksuttomuusTiedonOpiskeluoikeudelta
+  with OppivelvollisuudenSuorittamiseenKelpaava
   with LukionOppimääränSuoritus
 
 @Title("Lukion oppiaineiden oppimäärien suoritus 2019")

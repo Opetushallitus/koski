@@ -150,8 +150,8 @@ object MaksuttomuusValidation extends Logging {
       case myp: MYPVuosiluokanSuoritus
         if InternationalSchoolOpiskeluoikeus.onLukiotaVastaavaInternationalSchoolinSuoritus(myp.tyyppi.koodiarvo, myp.koulutusmoduuli.tunniste.koodiarvo) => myp
       case esh: EuropeanSchoolOfHelsinkiVuosiluokanSuoritus
-        if EuropeanSchoolOfHelsinkiOpiskeluoikeus.vuosiluokallaMahdollisestiMaksuttomuusLisätieto(esh.koulutusmoduuli.tunniste.koodistoUri, esh.koulutusmoduuli.tunniste.koodiarvo) => esh
-      case s: SuoritusVaatiiMahdollisestiMaksuttomuusTiedonOpiskeluoikeudelta => s
+        if EuropeanSchoolOfHelsinkiOpiskeluoikeus.vuosiluokkaKelpaaOppivelvollisuudenSuorittamiseen(esh.koulutusmoduuli.tunniste.koodistoUri, esh.koulutusmoduuli.tunniste.koodiarvo) => esh
+      case s: OppivelvollisuudenSuorittamiseenKelpaava => s
     }.isDefined
 
   // Huom! Valpas käyttää myös tätä funktiota!
@@ -242,8 +242,9 @@ object MaksuttomuusValidation extends Logging {
         case _ => false
       }
 
-    // TOR-2302 osatutkintotavoitteisiin tutkintoihin ei vaadita maksuttomuustietoa
+    // TOR-2302 osatutkintotavoitteisiin ja ESH-tutkintoihin ei vaadita maksuttomuustietoa
     val eiOsatutkintotavoitteinen = !opiskeluoikeus.suoritukset.exists(_.isInstanceOf[AmmatillisenTutkinnonOsittainenSuoritus])
+    val eiESH = !opiskeluoikeus.suoritukset.exists(_.isInstanceOf[EuropeanSchoolOfHelsinkiPäätasonSuoritus])
 
     val originalResult = false
 
@@ -253,6 +254,7 @@ object MaksuttomuusValidation extends Logging {
       koulutusKelpaaOppivelvollisuudenSuorittamiseen &&
       oppijaOnKotikuntahistorianPerusteellaLainPiirissä &&
       eiOsatutkintotavoitteinen &&
+      eiESH &&
       // 6.oppijaa ei ole vapautettu oppivelvollisuudesta
       !vapautettuOppivelvollisuudesta
 

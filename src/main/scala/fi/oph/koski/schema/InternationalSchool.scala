@@ -145,7 +145,7 @@ case class DiplomaVuosiluokanSuoritus(
   @KoodistoKoodiarvo("internationalschooldiplomavuosiluokka")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("internationalschooldiplomavuosiluokka", koodistoUri = "suorituksentyyppi"),
   override val osasuoritukset: Option[List[DiplomaIBOppiaineenSuoritus]] = None
-) extends InternationalSchoolVuosiluokanSuoritus with SuoritusVaatiiMahdollisestiMaksuttomuusTiedonOpiskeluoikeudelta
+) extends InternationalSchoolVuosiluokanSuoritus with OppivelvollisuudenSuorittamiseenKelpaava
 
 trait InternationalSchoolLuokkaAste extends KoodistostaLöytyväKoulutusmoduuli with Laajuudeton {
   @KoodistoUri("internationalschoolluokkaaste")
