@@ -704,6 +704,13 @@ class MaksuttomuusSpec extends AnyFreeSpec with OpiskeluoikeusTestMethodsAmmatil
       }
     }
 
+    "Maksuttomuustietoja ei vaadita European School of Helsinki tutkinnolle" in {
+      val opiskeluoikeus = ExamplesEuropeanSchoolOfHelsinki.opiskeluoikeus
+      setupOppijaWithOpiskeluoikeus(opiskeluoikeus, oppija) {
+        verifyResponseStatusOk()
+      }
+    }
+
     "Maksuttomuustietoja ei vaadita jos on vapautus oppivelvollisuudesta" in {
       oppivelvollisuudestaVapautusService.db.lisääOppivelvollisuudestaVapautus(oppija.oid, "", LocalDate.of(2000, 8, 1), "091")
 

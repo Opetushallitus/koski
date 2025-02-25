@@ -1,3 +1,7 @@
+## 25.2.2025
+
+- Poistetaan maksuttomuustiedon vaatimus European School of Helsinki-opiskeluoikeuksista
+
 ## 21.2.2025
 
 - Poistetaan maksuttomuustiedon vaatimus ammatillisen osatutkintotavoitteisista opiskeluoikeuksista

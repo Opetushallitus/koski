@@ -1,5 +1,9 @@
 # Koskeen tallennettavien tietojen validaatiosäännöt
 
+## 25.2.2025
+
+- Poistetaan maksuttomuustiedon vaatimus European School of Helsinki-opiskeluoikeuksista
+
 ## 20.2.2025
 
 - Korjataan maksuttomuuden pidennys-validaatiota sallimaan vanhan oppivelvollisuuslain alaisia pidennysjaksoja, jotka alkavat ennen 1.8.2022

@@ -242,8 +242,9 @@ object MaksuttomuusValidation extends Logging {
         case _ => false
       }
 
-    // TOR-2302 osatutkintotavoitteisiin tutkintoihin ei vaadita maksuttomuustietoa
+    // TOR-2302 osatutkintotavoitteisiin ja ESH-tutkintoihin ei vaadita maksuttomuustietoa
     val eiOsatutkintotavoitteinen = !opiskeluoikeus.suoritukset.exists(_.isInstanceOf[AmmatillisenTutkinnonOsittainenSuoritus])
+    val eiESH = !opiskeluoikeus.suoritukset.exists(_.isInstanceOf[EuropeanSchoolOfHelsinkiPäätasonSuoritus])
 
     val originalResult = false
 
@@ -253,6 +254,7 @@ object MaksuttomuusValidation extends Logging {
       koulutusKelpaaOppivelvollisuudenSuorittamiseen &&
       oppijaOnKotikuntahistorianPerusteellaLainPiirissä &&
       eiOsatutkintotavoitteinen &&
+      eiESH &&
       // 6.oppijaa ei ole vapautettu oppivelvollisuudesta
       !vapautettuOppivelvollisuudesta
 
