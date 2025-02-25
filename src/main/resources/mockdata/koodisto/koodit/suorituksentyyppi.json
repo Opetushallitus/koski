@@ -1111,6 +1111,21 @@
   {
     "metadata": [
       {
+        "nimi": "IB-lukion core-oppiaine",
+        "kuvaus": null,
+        "kieli": "FI"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "suorituksentyyppi_ibcore",
+    "versio": 1,
+    "koodiArvo": "ibcore"
+  },
+  {
+    "metadata": [
+      {
         "nimi": "IB-lukion CAS (Creativity-Action-Service)",
         "kuvaus": null,
         "kieli": "FI"
