@@ -259,16 +259,20 @@
     }
 
     .acceptance-button-container {
-      position: fixed;
-      left: 0;
-      bottom: 0;
       width: 100%;
       background-color: @color-link-blue;
       text-align: center;
 
       @media @media-phone {
+        position: fixed;
+        left: 0;
+        bottom: 0;
         font-size: 16px;
         align-items: center;
+      }
+
+      @media @media-full {
+        position: relative;
       }
 
       .koski-button {
@@ -281,6 +285,9 @@
 
       .acceptance-button {
         margin-top: 16px;
+        margin-bottom: 16px;
+        margin-left: 4px;
+        margin-right: 24px;
         width: 209px;
         font-size: 18px;
         font-weight: 600;
@@ -293,7 +300,7 @@
 
       .decline-button {
         font-size: 18px;
-        margin-bottom: 4px;
+        margin: 4px 4px;
 
         background: none;
         border: none;
@@ -302,10 +309,6 @@
 
         @media @media-phone {
           font-size: 14px;
-        }
-
-        @media @media-full {
-          margin: 4px 0;
         }
       }
     }
