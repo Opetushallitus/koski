@@ -90,4 +90,5 @@ case class AdditionalExports(
   valinnaisuus: Valinnaisuus,
   preIBLukionModuulinSuoritus2019: PreIBLukionModuulinSuoritus2019,
   preIBLukionModuulinTaiPaikallisenOpintojaksonSuoritus2019: PreIBLukionModuulinTaiPaikallisenOpintojaksonSuoritus2019,
+  ibTaso: IBTaso,
 )
