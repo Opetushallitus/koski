@@ -85,7 +85,7 @@ const AcceptanceParagraphs = ({ durationInMin, clientId }) => {
         <Text name="Omat opiskeluoikeustietosi voit tarkistaa Oma Opintopolku-sivustolla" />
       </p>
       <p>
-        <a href="https://opintopolku.fi/koski/omattiedot">
+        <a href="https://opintopolku.fi/koski/omattiedot" target="_blank">
           <Text name="Oma Opintopolussa olevat omat opintosuorituksesi" />
         </a>
       </p>
@@ -97,7 +97,7 @@ const AcceptanceParagraphs = ({ durationInMin, clientId }) => {
         <Text name="Lisätietoja Opetushallituksen suorittamasta tietojen käsittelystä saat Opintopolku-palvelusta" />
       </p>
       <p>
-        <a href="https://opintopolku.fi/wp/tietosuojaseloste/koski-palvelun-tietosuojaseloste/">
+        <a href="https://opintopolku.fi/wp/tietosuojaseloste/koski-palvelun-tietosuojaseloste/" target="_blank">
           <Text name="KOSKI-palvelun tietosuojaseloste Opintopolku-sivustolla" />
         </a>
       </p>
@@ -142,7 +142,7 @@ const LinkkiPalveluntarjoajaan = ({ clientId }) => {
         <Text name="omadataoauth2_lisatietoja_palveluntarjoajalta_saat" />
       </p>
       <p>
-        <a href={t(linkkiId)}>
+        <a href={t(linkkiId)} target="_blank">
           <Text name={linkkitekstiId} />
         </a>
       </p>
