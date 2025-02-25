@@ -365,13 +365,14 @@ object ExamplesIB {
     suoritukset = opiskeluoikeus.suoritukset.map {
       case suoritus: IBTutkinnonSuoritus =>
         suoritus.copy(
-          osasuoritukset = suoritus.osasuoritukset.map(_.map(osasuoritus =>
-            osasuoritus.copy(
+          osasuoritukset = suoritus.osasuoritukset.map(_.map {
+            case osasuoritus: IBOppiaineenSuoritus => osasuoritus.copy(
               arviointi = Some(osasuoritus.predictedArviointi.getOrElse(List.empty).map(IBOppiaineenArviointi.apply) ++ osasuoritus.arviointi.getOrElse(List.empty))
                 .flatMap(optionalList),
               predictedArviointi = None
             )
-          ))
+            case os: Any => os
+          })
         )
       case s: IBPäätasonSuoritus => s
     }

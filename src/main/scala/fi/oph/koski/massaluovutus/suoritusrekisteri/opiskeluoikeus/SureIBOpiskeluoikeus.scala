@@ -60,7 +60,10 @@ object SureIBTutkinnonSuoritus {
       vahvistuspäivä = s.vahvistus.map(_.päivä),
       koulutusmoduuli = s.koulutusmoduuli,
       suorituskieli = s.suorituskieli,
-      osasuoritukset = s.osasuoritukset.map(_.map(SureIBOppiaineenSuoritus.apply)),
+      osasuoritukset = s.osasuoritukset.map(_.flatMap {
+        case oppiaine: IBOppiaineenSuoritus => Some(SureIBOppiaineenSuoritus(oppiaine))
+        case _ => None // TODO TOR-2263: Theory of knowledget yms. pitää mäpätä surelle yhteensopivasti Sure-rajapintaan
+      }),
       theoryOfKnowledgeSuoritus = s.theoryOfKnowledge,
       extendedEssay = s.extendedEssay,
       creativityActionService = s.creativityActionService,
