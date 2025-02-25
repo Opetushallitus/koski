@@ -67,7 +67,10 @@ object IBValidation {
       päätasonSuoritus.vahvistettu &&
       päätasonSuoritus.vahvistus.exists(!_.päivä.isBefore(LocalDate.of(2024, 1, 1)))
     ) {
-      HttpStatus.validate(päätasonSuoritus.osasuoritukset.exists(_.exists(_.predictedArviointi.exists(!_.isEmpty)))) {
+      HttpStatus.validate(päätasonSuoritus.osasuoritukset.exists(_.exists {
+        case os: IBOppiaineenSuoritus => os.predictedArviointi.exists(_.nonEmpty)
+        case _ => true
+      })) {
         KoskiErrorCategory.badRequest.validation.arviointi.arviointiPuuttuu(s"Vahvistettu suoritus ${päätasonSuoritus.koulutusmoduuli.tunniste} ei sisällä vähintään yhtä osasuoritusta, jolla on predicted grade")
       }
     } else {

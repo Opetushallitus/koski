@@ -197,10 +197,10 @@ class OppijaValidationIBSpec extends AnyFreeSpec with KoskiHttpSpec with PutOpis
             )
           )
 
-          val osasuoritukset = suoritus.osasuoritukset.map(_.map(_.copy(
+          val osasuoritukset = modifyIBOppiaineenSuoritus(suoritus, _.copy(
             arviointi = ibArviointi("5"),
             predictedArviointi = None,
-          )))
+          ))
           val opiskeluoikeus = defaultOpiskeluoikeus.copy(
             tila = LukionOpiskeluoikeudenTila(
               List(
@@ -226,10 +226,10 @@ class OppijaValidationIBSpec extends AnyFreeSpec with KoskiHttpSpec with PutOpis
               kunta = helsinki
             )
           )
-          val osasuoritukset = suoritus.osasuoritukset.map(_.map(os => os.copy(
+          val osasuoritukset = modifyIBOppiaineenSuoritus(suoritus, os => os.copy(
             arviointi = (if (os.koulutusmoduuli.tunniste.koodiarvo == "A2") { None } else { ibArviointi("5") }),
             predictedArviointi = ibPredictedArviointi("4"),
-          )))
+          ))
           val opiskeluoikeus = defaultOpiskeluoikeus.copy(
             tila = LukionOpiskeluoikeudenTila(
               List(
@@ -248,10 +248,10 @@ class OppijaValidationIBSpec extends AnyFreeSpec with KoskiHttpSpec with PutOpis
 
         "Onnistuu, kun kaikilla osasuorituksilla on päättöarvosana ja osalla niistä predicted-arvosana" in {
           val suoritus = ibTutkinnonSuoritus(predicted = false)
-          val osasuoritukset = suoritus.osasuoritukset.map(_.map(os => os.copy(
+          val osasuoritukset = modifyIBOppiaineenSuoritus(suoritus, os => os.copy(
             arviointi = ibArviointi("5"),
-            predictedArviointi = (if (os.koulutusmoduuli.tunniste.koodiarvo != "A2") { None } else { ibPredictedArviointi("4") }),
-          )))
+            predictedArviointi = if (os.koulutusmoduuli.tunniste.koodiarvo != "A2") None else ibPredictedArviointi("4"),
+          ))
           val opiskeluoikeus = defaultOpiskeluoikeus.copy(suoritukset = List(suoritus.copy(osasuoritukset = osasuoritukset)))
           setupOppijaWithOpiskeluoikeus(opiskeluoikeus) {
             verifyResponseStatusOk()
@@ -260,10 +260,10 @@ class OppijaValidationIBSpec extends AnyFreeSpec with KoskiHttpSpec with PutOpis
 
         "Onnistuu, kun molemmat arvosanat on annettu" in {
           val suoritus = ibTutkinnonSuoritus(predicted = false)
-          val osasuoritukset = suoritus.osasuoritukset.map(_.map(_.copy(
+          val osasuoritukset = modifyIBOppiaineenSuoritus(suoritus, _.copy(
             arviointi = ibArviointi("5"),
             predictedArviointi = ibPredictedArviointi("4"),
-          )))
+          ))
           val opiskeluoikeus = defaultOpiskeluoikeus.copy(suoritukset = List(suoritus.copy(osasuoritukset = osasuoritukset)))
           setupOppijaWithOpiskeluoikeus(opiskeluoikeus) {
             verifyResponseStatusOk()
@@ -283,10 +283,10 @@ class OppijaValidationIBSpec extends AnyFreeSpec with KoskiHttpSpec with PutOpis
             )
           )
 
-          val osasuoritukset = suoritus.osasuoritukset.map(_.map(_.copy(
+          val osasuoritukset = modifyIBOppiaineenSuoritus(suoritus, _.copy(
             arviointi = ibArviointi("5"),
             predictedArviointi = None,
-          )))
+          ))
           val opiskeluoikeus = defaultOpiskeluoikeus.copy(
             tila = LukionOpiskeluoikeudenTila(
               List(
@@ -338,7 +338,6 @@ class OppijaValidationIBSpec extends AnyFreeSpec with KoskiHttpSpec with PutOpis
           creativityActionService = if (cas) pts.creativityActionService else None,
           lisäpisteet = if (lisäpisteet) pts.lisäpisteet else None,
         )
-
 
       "Ennen rajapäivää" - {
         "Laajuuden ilmoitus kursseina ok" in {
@@ -463,4 +462,10 @@ class OppijaValidationIBSpec extends AnyFreeSpec with KoskiHttpSpec with PutOpis
       ))
     )
   }
+
+  private def modifyIBOppiaineenSuoritus(suoritus: IBTutkinnonSuoritus, f: IBOppiaineenSuoritus => IBOppiaineenSuoritus) =
+    suoritus.osasuoritukset.map(_.map {
+      case os: IBOppiaineenSuoritus => f(os)
+      case os: Any => os
+    })
 }

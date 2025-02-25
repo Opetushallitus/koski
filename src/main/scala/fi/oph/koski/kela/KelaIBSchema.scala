@@ -103,7 +103,9 @@ case class KelaIBOsasuorituksenKoulutusmoduuli(
   taso: Option[KelaKoodistokoodiviite],
   ryhmä: Option[KelaKoodistokoodiviite],
   kurssinTyyppi: Option[KelaKoodistokoodiviite],
-  oppimäärä: Option[KelaKoodistokoodiviite]
+  oppimäärä: Option[KelaKoodistokoodiviite],
+  @Description("Vain extended essay")
+  aine: Option[KelaIBAineRyhmäOppiaine],
 ) extends OsasuorituksenKoulutusmoduuli
 
 case class IBTheoryOfKnowledgeSuoritus(

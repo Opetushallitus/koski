@@ -885,7 +885,6 @@
   "Kansalaisuus": "Kansalaisuus",
   "Kansanopistojen vapaan sivistystyön koulutus oppivelvollisille": "Kansanopistojen vapaan sivistystyön koulutus oppivelvollisille",
   "Katso, miltä suoritusote näyttää selaimessa": "Katso, miltä suoritusote näyttää selaimessa",
-  "Katso, miltä suoritusote näyttää selaimessa": "Katso, miltä suoritusote näyttää selaimessa",
   "Kattavat tiedot valituista suorituksista": "Kattavat tiedot valituista suorituksista",
   "Kattavuus": "Kattavuus",
   "Käyttääksesi Koski-palvelua tarvitset käyttöoikeudet.": "Käyttääksesi Koski-palvelua tarvitset käyttöoikeudet.",
@@ -2797,5 +2796,9 @@
   "description:Yleisessä kielitutkinnossa 'lasna' vastaa tutkintopäivää,..." : "Yleisessä kielitutkinnossa 'lasna' vastaa tutkintopäivää, 'hyvaksytystisuoritettu' arviointipäivää",
   "Tutkintopäivä": "Tutkintopäivä",
   "description:Kielitutkinnon suoritukset osat": "Kielitutkinnon suoritukset osat",
-  "description:1.8.2025 alkaen laajuus tallennetaan opintopisteissä....": "1.8.2025 alkaen laajuus tallennetaan opintopisteissä. Sitä ennen alkaneisiin opiskeluoikeuksiin tallennetaan kursseina."
+  "description:1.8.2025 alkaen laajuus tallennetaan opintopisteissä....": "1.8.2025 alkaen laajuus tallennetaan opintopisteissä. Sitä ennen alkaneisiin opiskeluoikeuksiin tallennetaan kursseina.",
+  "deprecated:CAS tallennetaan osasuorituksiin 1.8.2025 tai..." : "CAS tallennetaan osasuorituksiin 1.8.2025 tai myöhemmin alkaneille IB-opinnoille",
+  "deprecated:Theory of Knowledge tallennetaan osasuorituksiin..." : "Theory of Knowledge tallennetaan osasuorituksiin 1.8.2025 tai myöhemmin alkaneille IB-opinnoille",
+  "deprecated:Lisäpisteitä ei tallennetaa 1.8.2025 tai..." : "Lisäpisteitä ei tallennetaa 1.8.2025 tai myöhemmin alkaneille IB-opinnoille",
+  "deprecated:Extended Essay tallennetaan osasuorituksiin 1.8.2025..." : "Extended Essay tallennetaan osasuorituksiin 1.8.2025 tai myöhemmin alkaneille IB-opinnoille"
 }
