@@ -51,6 +51,7 @@ import { isIBTaso } from '../../types/fi/oph/koski/schema/IBTaso'
 import { isIBAineRyhmäOppiaine } from '../../types/fi/oph/koski/schema/IBAineRyhmaOppiaine'
 import { isIBOppiaineExtendedEssay } from '../../types/fi/oph/koski/schema/IBOppiaineExtendedEssay'
 import { isIBOppiaineLanguage } from '../../types/fi/oph/koski/schema/IBOppiaineLanguage'
+import { isIBOppiaineCAS } from '../../types/fi/oph/koski/schema/IBOppiaineCAS'
 
 // Vain OppiaineTablen tukemat päätason suoritukset (tätä komponenttia tullaan myöhemmin käyttämään ainakin lukion näkymille)
 export type OppiaineTableOpiskeluoikeus = IBOpiskeluoikeus
@@ -446,13 +447,18 @@ export const OppiaineenKurssit = ({
           </TestIdLayer>
         ))}
       </TestIdLayer>
-      {form.editMode && (
+      {form.editMode && isOsasuorituksellinenOppiaine(oppiaine) && (
         <FlatButton onClick={onShowAddOsasuoritusDialog} testId="addKurssi">
           {t('Lisää osasuoritus')}
         </FlatButton>
       )}
     </div>
   )
+}
+
+const isOsasuorituksellinenOppiaine = (oppiaine?: Oppiaine): boolean => {
+  const koulutus = oppiaine?.koulutusmoduuli
+  return !isIBOppiaineCAS(koulutus) && !isIBOppiaineExtendedEssay(koulutus)
 }
 
 type OppiaineArvosanaProps = {
