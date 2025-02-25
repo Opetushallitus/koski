@@ -38,7 +38,7 @@ case class EuropeanSchoolOfHelsinkiOpiskeluoikeus(
 }
 
 object EuropeanSchoolOfHelsinkiOpiskeluoikeus {
-  def vuosiluokallaMahdollisestiMaksuttomuusLisätieto(
+  def vuosiluokkaKelpaaOppivelvollisuudenSuorittamiseen(
     koulutusmoduulinUri: String,
     koulutusmoduulinKoodiarvo: String
   ): Boolean = (koulutusmoduulinUri, koulutusmoduulinKoodiarvo) match {
