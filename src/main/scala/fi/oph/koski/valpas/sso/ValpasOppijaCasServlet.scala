@@ -39,7 +39,7 @@ class ValpasOppijaCasServlet(implicit val application: KoskiApplication) extends
             case Some(oppija) =>
               val user = toAuthenticationUser(oppija, hetu, Some(ticket))
               koskiSessions.store(ticket, user, LogUserContext.clientIpFromRequest(request), LogUserContext.userAgent(request))
-              UserLanguage.setLanguageCookie(UserLanguage.getLanguageFromLDAP(user, directoryClient), response)
+              UserLanguage.setLanguageCookie(UserLanguage.getLanguageFromLDAP(user, directoryClient).getOrElse(UserLanguage.getLanguageFromCookie(request)), response)
               setUser(Right(user))
               redirectAfterLogin
 
