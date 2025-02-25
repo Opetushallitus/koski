@@ -99,6 +99,7 @@ import {
   isEsiopetuksenSuoritus
 } from './EsiopetuksenSuoritus'
 import { IBCASSuoritus, isIBCASSuoritus } from './IBCASSuoritus'
+import { IBDBCoreSuoritus, isIBDBCoreSuoritus } from './IBDBCoreSuoritus'
 import {
   IBExtendedEssaySuoritus,
   isIBExtendedEssaySuoritus
@@ -623,6 +624,7 @@ export type Suoritus =
   | EBTutkinnonSuoritus
   | EsiopetuksenSuoritus
   | IBCASSuoritus
+  | IBDBCoreSuoritus
   | IBExtendedEssaySuoritus
   | IBKurssinSuoritus
   | IBOppiaineenSuoritus
@@ -778,6 +780,7 @@ export const isSuoritus = (a: any): a is Suoritus =>
   isEBTutkinnonSuoritus(a) ||
   isEsiopetuksenSuoritus(a) ||
   isIBCASSuoritus(a) ||
+  isIBDBCoreSuoritus(a) ||
   isIBExtendedEssaySuoritus(a) ||
   isIBKurssinSuoritus(a) ||
   isIBOppiaineenSuoritus(a) ||
