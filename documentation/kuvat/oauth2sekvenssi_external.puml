@@ -78,6 +78,8 @@ user_agent -> Koski : GET /koski/api/omadata-oauth2/authorize/?PARAMS
 
 Koski -> CAS : logout
 
+Koski -> Koski : Luo ja tallenna authorization code\nja sen yhteyteen muut parametrit,\nmm. code_challenge ja scope
+
 Koski -> user_agent : REDIRECT /post-response/RESPONSE_PARAMS
 note left
 RESPONSE_PARAMS:
@@ -120,6 +122,10 @@ redirect_uri
 client_id
 end note
 
+Koski -> Koski : tarkista code ja että code_verifier\nvastaa codelle tallennettua code_challengea
+
+Koski -> Koski : Luo ja tallenna access_token coden yhteyteen
+
 Koski -> client : TOKEN_RESPONSE
 note left
 TOKEN_RESPONSE:
@@ -132,6 +138,8 @@ end
 group OAuth2 resource-endpointin käyttö
 
 client -> Koski : mutual-TLS POST https://oph-koski-luovutuspalvelu.opintopolku.fi/koski/api/omadata-oauth2/resource-server\n  Authorization=Bearer TOKEN
+
+Koski -> Koski : Hae ja muotoile opiskeluoikeus-DATA\naccess_tokenin ja scopen perusteella
 
 Koski -> client : DATA
 
