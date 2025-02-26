@@ -73,12 +73,15 @@ export const OppiaineTableKurssiEditor: React.FC<
       ),
     [kurssi.koulutusmoduuli.laajuus, form.state.alkamispäivä]
   )
-  const createLaajuus = useCallback((arvo: number) => {
-    if (isPreIBKurssinSuoritus2015(kurssi) || isIBKurssinSuoritus(kurssi)) {
-      return createIBLaajuus(arvo, ibYksikkö)
-    }
-    throw new Error(`Unimplemented: createLaajuus for ${kurssi.$class}`)
-  }, [])
+  const createLaajuus = useCallback(
+    (arvo: number) => {
+      if (isPreIBKurssinSuoritus2015(kurssi) || isIBKurssinSuoritus(kurssi)) {
+        return createIBLaajuus(arvo, ibYksikkö)
+      }
+      throw new Error(`Unimplemented: createLaajuus for ${kurssi.$class}`)
+    },
+    [ibYksikkö, kurssi]
+  )
 
   return (
     <Modal onClose={onClose}>
