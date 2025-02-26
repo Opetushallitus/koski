@@ -4,30 +4,31 @@ title OAuth2 -happy path -sekvenssi esimerkki-hyödyntäjälle
 actor user
 
 participant client_service [
-  Hyödyntäjä palvelu
+  Hyödyntäjän palvelu
 ]
 
 participant client [
-  Hyödyntäjä-OAuth2-backend
-  Client
+  Hyödyntäjän OAuth2-alijärjestelmä
+  OAuth2 Client
 ]
 
 participant user_agent [
   Web-selain
-  User agent
+  OAuth2 User agent
 ]
 
 ' /koski/omadata-oauth2/authorize:
 participant Koski [
   KOSKI
+  OAuth2 Authorization server & resource server
 ]
 
 ' https://untuvaopintopolku.fi/cas-oppija/login/fi/?service=...
 participant CAS [
-  Opintopolku/Suomi.fi-auth
+  Opintopolku & Suomi.fi-kirjautuminen
 ]
 
-group Esimerkki hyödyntäjäpalvelusta, jossa erillinen alijärjestelmä OAuth2-clientille\n   HUOM: Hyödyntäjä-palveluiden sisäisiä kirjautumisia ja muita autentikointeja ei ole tässä kuvattu
+group Esimerkki hyödyntäjäpalvelusta, jossa erillinen\n alijärjestelmä OAuth2-clientille\n HUOM: Hyödyntäjä-palveluiden sisäisiä kirjautumisia\n  ja muita autentikointeja ei ole tässä kuvattu
 
 user -> user_agent : OPEN https://client/
 user_agent -> client_service : GET /
@@ -136,7 +137,7 @@ Koski -> client : DATA
 
 end
 
-group Esimerkki hyödyntäjäpalvelusta, jossa erillinen alijärjestelmä OAuth2-clientille
+group Esimerkki hyödyntäjäpalvelusta, jossa erillinen\n alijärjestelmä OAuth2-clientille
 
 client -> client : Analysoi/muunna DATA hyödyntäjän käyttöön
 
