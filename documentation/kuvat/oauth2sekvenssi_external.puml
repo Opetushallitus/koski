@@ -1,7 +1,7 @@
 @startuml
 title OAuth2 -happy path -sekvenssi esimerkki-hyödyntäjälle
 
-actor user
+actor Käyttäjä as user
 
 participant client_service [
   Hyödyntäjän palvelu
@@ -28,7 +28,7 @@ participant CAS [
   Opintopolku & Suomi.fi-kirjautuminen
 ]
 
-group Esimerkki hyödyntäjäpalvelusta, jossa erillinen\n alijärjestelmä OAuth2-clientille\n HUOM: Hyödyntäjä-palveluiden sisäisiä kirjautumisia\n  ja muita autentikointeja ei ole tässä kuvattu
+group Esimerkki hyödyntäjän palvelusta, jossa erillinen\n alijärjestelmä OAuth2-clientille\n HUOM: Hyödyntäjän palveluiden sisäisiä kirjautumisia\n  ja muita autentikointeja ei ole tässä kuvattu
 
 user -> user_agent : OPEN https://client/
 user_agent -> client_service : GET /
@@ -137,7 +137,7 @@ Koski -> client : DATA
 
 end
 
-group Esimerkki hyödyntäjäpalvelusta, jossa erillinen\n alijärjestelmä OAuth2-clientille
+group Esimerkki hyödyntäjän palvelusta, jossa erillinen\n alijärjestelmä OAuth2-clientille
 
 client -> client : Analysoi/muunna DATA hyödyntäjän käyttöön
 
