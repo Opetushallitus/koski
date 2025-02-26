@@ -43,7 +43,7 @@ case class SureIBTutkinnonSuoritus(
   vahvistuspäivä: Option[LocalDate],
   koulutusmoduuli: IBTutkinto,
   suorituskieli: Koodistokoodiviite,
-  osasuoritukset: Option[List[SureIBOppiaineenSuoritus]],
+  osasuoritukset: Option[List[SureIBTutkinnonOppiaine]],
   theoryOfKnowledgeSuoritus: Option[IBTheoryOfKnowledgeSuoritus],
   extendedEssay: Option[IBExtendedEssaySuoritus],
   creativityActionService: Option[IBCASSuoritus],
@@ -62,7 +62,8 @@ object SureIBTutkinnonSuoritus {
       suorituskieli = s.suorituskieli,
       osasuoritukset = s.osasuoritukset.map(_.flatMap {
         case oppiaine: IBOppiaineenSuoritus => Some(SureIBOppiaineenSuoritus(oppiaine))
-        case _ => None // TODO TOR-2263: Theory of knowledget yms. pitää mäpätä surelle yhteensopivasti Sure-rajapintaan
+        case oppiaine: IBDBCoreSuoritus => Some(SureIBDBCoreSuoritus(oppiaine))
+        case _ => None
       }),
       theoryOfKnowledgeSuoritus = s.theoryOfKnowledge,
       extendedEssay = s.extendedEssay,
@@ -71,13 +72,15 @@ object SureIBTutkinnonSuoritus {
     )
 }
 
+trait SureIBTutkinnonOppiaine extends SureSuoritus
+
 @Title("IB-tutkinnon oppiaineen suoritus")
 case class SureIBOppiaineenSuoritus(
   @KoodistoKoodiarvo("iboppiaine")
   tyyppi: Koodistokoodiviite,
   koulutusmoduuli: IBAineRyhmäOppiaine,
   predictedArviointi: Option[List[IBOppiaineenPredictedArviointi]],
-) extends SureSuoritus
+) extends SureIBTutkinnonOppiaine
 
 object SureIBOppiaineenSuoritus {
   def apply(s: IBOppiaineenSuoritus): SureIBOppiaineenSuoritus =
@@ -85,5 +88,22 @@ object SureIBOppiaineenSuoritus {
       tyyppi = s.tyyppi,
       koulutusmoduuli = s.koulutusmoduuli,
       predictedArviointi = s.predictedArviointi,
+    )
+}
+
+@Title("IB-tutkinnon DP Core -oppiaineen suoritus")
+case class SureIBDBCoreSuoritus(
+  @KoodistoKoodiarvo("ibcore")
+  tyyppi: Koodistokoodiviite,
+  koulutusmoduuli: IBDPCoreOppiaine,
+  arviointi: Option[List[IBOppiaineenArviointi]] = None,
+) extends SureIBTutkinnonOppiaine
+
+object SureIBDBCoreSuoritus {
+  def apply(s: IBDBCoreSuoritus): SureIBDBCoreSuoritus =
+    SureIBDBCoreSuoritus(
+      tyyppi = s.tyyppi,
+      koulutusmoduuli = s.koulutusmoduuli,
+      arviointi = s.arviointi
     )
 }
