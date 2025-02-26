@@ -155,7 +155,7 @@ user -> user_agent : Hyväksy/katsele/filtteröi/muokkaa opintotietoja
 
 else
 
-user -> user_agent : Tee ostoksia opiskelja-alennuksella
+user -> user_agent : Tee ostoksia opiskelija-alennuksella
 
 else
 
