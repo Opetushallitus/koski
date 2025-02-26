@@ -12,3 +12,11 @@ export const clamp =
   (min: number, max: number) =>
   (n: number): number =>
     Math.min(max, Math.max(min, n))
+
+export const indexSequence = (
+  from: number = 0,
+  step: number = 1
+): (() => number) => {
+  let n = from - step
+  return () => (n += step)
+}

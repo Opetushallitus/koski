@@ -31,7 +31,7 @@ import { appendOptional, deleteAt } from '../../util/array'
 import { parasArviointi, viimeisinArviointi } from '../../util/arvioinnit'
 import { nonFalsy, nonNull } from '../../util/fp/arrays'
 import { PathToken } from '../../util/laxModify'
-import { sum } from '../../util/numbers'
+import { indexSequence, sum } from '../../util/numbers'
 import { entries } from '../../util/objects'
 import { PäätasonSuoritusOf } from '../../util/opiskeluoikeus'
 import { match } from '../../util/patternmatch'
@@ -52,6 +52,7 @@ import { isIBAineRyhmäOppiaine } from '../../types/fi/oph/koski/schema/IBAineRy
 import { isIBOppiaineExtendedEssay } from '../../types/fi/oph/koski/schema/IBOppiaineExtendedEssay'
 import { isIBOppiaineLanguage } from '../../types/fi/oph/koski/schema/IBOppiaineLanguage'
 import { isIBOppiaineCAS } from '../../types/fi/oph/koski/schema/IBOppiaineCAS'
+import { OppiaineTableOppiaineEditor } from './OppiaineTableOppiaineEditor'
 
 // Vain OppiaineTablen tukemat päätason suoritukset (tätä komponenttia tullaan myöhemmin käyttämään ainakin lukion näkymille)
 export type OppiaineTableOpiskeluoikeus = IBOpiskeluoikeus
@@ -157,6 +158,8 @@ export const OppiaineTable = <T extends OppiaineTablePäätasonSuoritus>({
     [selectedSuoritus]
   )
 
+  const nextOppiaineIndex = indexSequence()
+
   return A.isEmpty(groupedOppiaineet) && organisaatioOid ? null : (
     <table className="OppiaineTable">
       <thead>
@@ -187,31 +190,37 @@ export const OppiaineTable = <T extends OppiaineTablePäätasonSuoritus>({
                 </tr>
               ) : null}
               <TestIdLayer id="oppiaineet">
-                {oppiaineet.map((oppiaine, oppiaineIndex) => (
-                  <TestIdLayer id={oppiaineIndex} key={oppiaineIndex}>
-                    <OppiaineRow
-                      organisaatioOid={organisaatioOid!}
-                      alkamispäivä={alkamispäivä}
-                      oppiaine={oppiaine}
-                      form={form}
-                      showPredictedGrade={showPredictedGrade}
-                      oppiainePath={[
-                        ...selectedSuoritus.pathTokens,
-                        'osasuoritukset',
-                        oppiaineIndex
-                      ]}
-                      hidePaikallinenIndicator={hidePaikallinenIndicator}
-                      onDelete={deleteOppiaine(oppiaine)}
-                      onDeleteKurssi={deleteKurssi(oppiaine)}
-                      addOsasuoritusDialog={addOsasuoritusDialog}
-                      onAddOsasuoritus={addOsasuoritus(oppiaine)}
-                      onArviointi={addKurssiArviointi(oppiaine)}
-                      onOppiaineArviointi={addOppiaineArviointi(oppiaine)}
-                      onPredictedGrade={addPredictedGrade(oppiaine)}
-                      key={oppiaineIndex}
-                    />
-                  </TestIdLayer>
-                ))}
+                {oppiaineet.map((oppiaine, oppiaineArrayIndex) => {
+                  const oppiaineModelIndex = nextOppiaineIndex()
+                  return (
+                    <TestIdLayer
+                      id={oppiaineArrayIndex}
+                      key={oppiaineModelIndex}
+                    >
+                      <OppiaineRow
+                        organisaatioOid={organisaatioOid!}
+                        alkamispäivä={alkamispäivä}
+                        oppiaine={oppiaine}
+                        form={form}
+                        showPredictedGrade={showPredictedGrade}
+                        oppiainePath={[
+                          ...selectedSuoritus.pathTokens,
+                          'osasuoritukset',
+                          oppiaineModelIndex
+                        ]}
+                        hidePaikallinenIndicator={hidePaikallinenIndicator}
+                        onDelete={deleteOppiaine(oppiaine)}
+                        onDeleteKurssi={deleteKurssi(oppiaine)}
+                        addOsasuoritusDialog={addOsasuoritusDialog}
+                        onAddOsasuoritus={addOsasuoritus(oppiaine)}
+                        onArviointi={addKurssiArviointi(oppiaine)}
+                        onOppiaineArviointi={addOppiaineArviointi(oppiaine)}
+                        onPredictedGrade={addPredictedGrade(oppiaine)}
+                        key={oppiaineArrayIndex}
+                      />
+                    </TestIdLayer>
+                  )
+                })}
               </TestIdLayer>
             </tbody>
           </TestIdLayer>
@@ -273,6 +282,8 @@ const OppiaineRow = <T,>({
   ] = useBooleanState(false)
 
   const [tooltipVisible, openTooltip, closeTooltip] = useBooleanState(false)
+  const [editModalVisible, openEditModal, closeEditModal] =
+    useBooleanState(false)
   const tooltipId = `oppiaine-${oppiaine.koulutusmoduuli.tunniste.koodiarvo}`
 
   const AddOsasuoritusDialog = addOsasuoritusDialog
@@ -294,7 +305,7 @@ const OppiaineRow = <T,>({
         <div className="OppiaineRow__nimi">
           <button
             className="Oppiaine__tunniste"
-            onClick={openTooltip}
+            onClick={form.editMode ? openEditModal : openTooltip}
             onTouchStart={openTooltip}
             onMouseEnter={openTooltip}
             onMouseLeave={closeTooltip}
@@ -306,7 +317,7 @@ const OppiaineRow = <T,>({
               {oppiaineenNimi(oppiaine.koulutusmoduuli)}
             </TestIdText>
           </button>
-          {tooltipVisible && (
+          {tooltipVisible && !editModalVisible && (
             <OppiaineDetails id={tooltipId} oppiaine={oppiaine} />
           )}
         </div>
@@ -356,6 +367,13 @@ const OppiaineRow = <T,>({
               oppiaine={oppiaine}
               onAdd={addOsasuoritus}
               onClose={hideAddOsasuoritusDialog}
+            />
+          )}
+          {editModalVisible && (
+            <OppiaineTableOppiaineEditor
+              form={form}
+              path={oppiainePath}
+              onClose={closeEditModal}
             />
           )}
         </td>
