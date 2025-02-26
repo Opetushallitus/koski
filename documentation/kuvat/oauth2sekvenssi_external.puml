@@ -1,0 +1,167 @@
+@startuml
+title OAuth2 -happy path -sekvenssi esimerkki-hyödyntäjälle
+
+actor user
+
+participant client_service [
+  Hyödyntäjä palvelu
+]
+
+participant client [
+  Hyödyntäjä-OAuth2-backend
+  Client
+]
+
+participant user_agent [
+  Web-selain
+  User agent
+]
+
+' /koski/omadata-oauth2/authorize:
+participant Koski [
+  KOSKI
+]
+
+' https://untuvaopintopolku.fi/cas-oppija/login/fi/?service=...
+participant CAS [
+  Opintopolku/Suomi.fi-auth
+]
+
+group Esimerkki hyödyntäjäpalvelusta, jossa erillinen alijärjestelmä OAuth2-clientille\n   HUOM: Hyödyntäjä-palveluiden sisäisiä kirjautumisia ja muita autentikointeja ei ole tässä kuvattu
+
+user -> user_agent : OPEN https://client/
+user_agent -> client_service : GET /
+client_service -> user_agent : HTML-sivu
+user -> user_agent : OPEN "Lisää/käsittele KOSKI-opintotiedot"-toiminto
+user_agent -> client_service : GET /koski-opintotiedot
+client_service -> user_agent : REDIRECT https://oauth2-client/koski-opintotiedot
+user_agent -> client : GET /koski-opintotiedot
+client -> client : Luo CODE_VERIFIER ja CODE_CHALLENGE, tallenna CODE_VERIFIER
+client -> user_agent : REDIRECT https://opintopolku.fi/koski/omadata-oauth2/authorize/PARAMS
+note left
+PARAMS:
+client_id
+redirect_uri
+state
+scope
+response_type=code
+response_mode=form_post
+code_challenge_method=S256
+code_challenge
+end note
+end
+
+group OAuth2 authorization end-pointin käyttö
+
+user_agent -> Koski : GET /koski/omadata-oauth2/authorize/PARAMS
+
+Koski -> user_agent : REDIRECT https://opintopolku.fi/.../login?...onSuccess=/koski/omadata-oauth2/authorize/PARAMS
+
+user_agent -> CAS : GET https://opintopolku.fi/.../login?...onSuccess=/koski/omadata-oauth2/authorize/PARAMS
+
+CAS -> user_agent : HTML:Login-sivu
+
+user -> user_agent : Suomi.fi & opintopolku.fi -login
+
+user_agent -> CAS : Suomi.fi & opintopolku.fi -login
+
+CAS -> user_agent : REDIRECT /koski/omadata-oauth2/authorize/PARAMS
+
+user_agent -> Koski : GET /koski/omadata-oauth2/authorize/PARAMS
+
+Koski -> user_agent : HTML:Hyväksyntä-sivu
+
+user -> user_agent : Hyväksy valtuutus
+
+user_agent -> Koski : GET /koski/api/omadata-oauth2/authorize/?PARAMS
+
+Koski -> CAS : logout
+
+Koski -> user_agent : REDIRECT /post-response/RESPONSE_PARAMS
+note left
+RESPONSE_PARAMS:
+client_id
+redirect_uri
+state
+code
+  Virhetilanteissa code:n sijasta voi sisältää:
+error
+error_description
+error_uri
+end note
+
+user_agent -> Koski : GET /post-response/RESPONSE_PARAMS
+
+Koski -> user_agent : HTML:Auto-submit web form, jossa RESPONSE inputteina
+
+user_agent -> client : POST redirect_uri\nbody=CODE_RESPONSE
+note left
+CODE_RESPONSE:
+state
+code
+  Virhetilanteissa code:n sijasta voi sisältää:
+error
+error_description
+error_uri
+end note
+
+end
+
+group OAuth2 token-endpointin käyttö
+
+client -> Koski : mutual-TLS POST https://oph-koski-luovutuspalvelu.opintopolku.fi/koski/api/omadata-oauth2/authorization-server/\n  body=CODE_PARAMS
+note left
+CODE_PARAMS:
+grant_type=authorization_code
+code
+code_verifier
+redirect_uri
+client_id
+end note
+
+Koski -> client : TOKEN_RESPONSE
+note left
+TOKEN_RESPONSE:
+access_token
+token_type=Bearer
+expires_in
+end note
+end
+
+group OAuth2 resource-endpointin käyttö
+
+client -> Koski : mutual-TLS POST https://oph-koski-luovutuspalvelu.opintopolku.fi/koski/api/omadata-oauth2/resource-server\n  Authorization=Bearer TOKEN
+
+Koski -> client : DATA
+
+end
+
+group Esimerkki hyödyntäjäpalvelusta, jossa erillinen alijärjestelmä OAuth2-clientille
+
+client -> client : Analysoi/muunna DATA hyödyntäjän käyttöön
+
+client -> client_service : Tallenna opintotiedot
+
+client -> user_agent : REDIRECT https://client/
+
+user_agent -> client_service : GET /
+
+client_service -> user_agent : HTML-sivu, jossa opintotiedot mukana
+
+alt
+
+user -> user_agent : Hyväksy/katsele/filtteröi/muokkaa opintotietoja
+
+else
+
+user -> user_agent : Tee ostoksia opiskelja-alennuksella
+
+else
+
+user -> user_agent : ...
+
+end
+
+end
+
+@enduml
