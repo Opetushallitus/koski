@@ -37,7 +37,7 @@ user -> user_agent : OPEN "Lisää/käsittele KOSKI-opintotiedot"-toiminto
 user_agent -> client_service : GET /koski-opintotiedot
 client_service -> user_agent : REDIRECT https://oauth2-client/koski-opintotiedot
 user_agent -> client : GET /koski-opintotiedot
-client -> client : Luo CODE_VERIFIER ja CODE_CHALLENGE, tallenna CODE_VERIFIER
+client -> client : Muodosta state, generoi code_verifier ja code_challenge,\ntallenna code_verifier staten kanssa
 client -> user_agent : REDIRECT https://opintopolku.fi/koski/omadata-oauth2/authorize/PARAMS
 note left
 PARAMS:
@@ -111,6 +111,8 @@ end note
 end
 
 group OAuth2 token-endpointin käyttö
+
+client -> client : Hae statelle tallennettu code_verifier
 
 client -> Koski : mutual-TLS POST https://oph-koski-luovutuspalvelu.opintopolku.fi/koski/api/omadata-oauth2/authorization-server/\n  body=CODE_PARAMS
 note left
