@@ -2,6 +2,7 @@ package fi.oph.koski.validation
 
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.schema._
+import fi.oph.koski.validation.Lukio2019VieraatKieletValidation.omanÄidinkielenOpinnotPrefixit
 
 object Lukio2019OsasuoritusValidation {
 
@@ -97,7 +98,9 @@ object Lukio2019OsasuoritusValidation {
 
   private def validateModuulitÄidinkielessä(suoritus: Suoritus, parents: List[Suoritus]): HttpStatus = (suoritus, parents) match {
     case (_: LukionModuulinSuoritus2019, (_ : LukionOppiaineenSuoritus2019) :: _)
-      if parents.head.koulutusmoduuli.isInstanceOf[LukionÄidinkieliJaKirjallisuus2019] && !äidinkielenSallitutModuulit.contains(suoritus.koulutusmoduuli.tunniste.koodiarvo) =>
+      if parents.head.koulutusmoduuli.isInstanceOf[LukionÄidinkieliJaKirjallisuus2019]
+        && !äidinkielenSallitutModuulit.contains(suoritus.koulutusmoduuli.tunniste.koodiarvo)
+        && !omanÄidinkielenOpinnotPrefixit.exists(suoritus.koulutusmoduuli.tunniste.koodiarvo.startsWith(_)) =>
         KoskiErrorCategory.badRequest.validation.rakenne.epäsopiviaOsasuorituksia(s"Äidinkielen oppiaineeseen ei voi lisätä moduulia ${suoritus.koulutusmoduuli.tunniste}.")
     case _ =>
       HttpStatus.ok

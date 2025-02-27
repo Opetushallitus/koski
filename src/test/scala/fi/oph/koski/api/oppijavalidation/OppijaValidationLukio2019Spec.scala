@@ -1239,9 +1239,9 @@ class OppijaValidationLukio2019Spec extends AnyFreeSpec with PutOpiskeluoikeusTe
       }
     }
 
-    "ÄI111 ei sallittu" in {
-      verify("ÄI111") {
-        verifyResponseStatus(400)
+    "BI1 ei sallittu" in {
+      verify("BI1") {
+        verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.rakenne.epäsopiviaOsasuorituksia("Äidinkielen oppiaineeseen ei voi lisätä moduulia moduulikoodistolops2021/BI1."))
       }
     }
   }
