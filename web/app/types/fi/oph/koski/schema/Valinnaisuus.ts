@@ -81,6 +81,10 @@ import {
   isLukionVieraanKielenModuuliOppiaineissa2019
 } from './LukionVieraanKielenModuuliOppiaineissa2019'
 import {
+  LukionÄidinkielenModuuli2019,
+  isLukionÄidinkielenModuuli2019
+} from './LukionAidinkielenModuuli2019'
+import {
   LukionÄidinkieliJaKirjallisuus2015,
   isLukionÄidinkieliJaKirjallisuus2015
 } from './LukionAidinkieliJaKirjallisuus2015'
@@ -201,6 +205,7 @@ export type Valinnaisuus =
   | LukionUskonto2019
   | LukionVieraanKielenModuuliMuissaOpinnoissa2019
   | LukionVieraanKielenModuuliOppiaineissa2019
+  | LukionÄidinkielenModuuli2019
   | LukionÄidinkieliJaKirjallisuus2015
   | LukionÄidinkieliJaKirjallisuus2019
   | LukioonValmistavaÄidinkieliJaKirjallisuus
@@ -251,6 +256,7 @@ export const isValinnaisuus = (a: any): a is Valinnaisuus =>
   isLukionUskonto2019(a) ||
   isLukionVieraanKielenModuuliMuissaOpinnoissa2019(a) ||
   isLukionVieraanKielenModuuliOppiaineissa2019(a) ||
+  isLukionÄidinkielenModuuli2019(a) ||
   isLukionÄidinkieliJaKirjallisuus2015(a) ||
   isLukionÄidinkieliJaKirjallisuus2019(a) ||
   isLukioonValmistavaÄidinkieliJaKirjallisuus(a) ||
