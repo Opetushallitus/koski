@@ -116,6 +116,7 @@ object Oppivelvollisuustiedot {
                 and (
                   turvakielto = true
                   or not (kotikunta is null or kotikunta = any(#$ulkopuolisetKunnatTaiKuntaVirheellinen))
+                  or ${kotikuntahistoriaConfig.käytäOppivelvollisuudenPäättelyyn}
                 )
                 and master_oid not in (
                                 select
