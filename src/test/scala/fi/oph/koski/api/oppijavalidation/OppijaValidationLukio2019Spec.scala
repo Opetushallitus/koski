@@ -1216,6 +1216,36 @@ class OppijaValidationLukio2019Spec extends AnyFreeSpec with PutOpiskeluoikeusTe
     }
   }
 
+  "Äidinkielen moduulit" - {
+    def verify[A](kieli: String)(expect: => A): A = {
+      val oo = aktiivinenOpiskeluoikeus.copy(
+        suoritukset = List(vahvistamatonOppimääränSuoritus.copy(
+          osasuoritukset = Some(List(
+            oppiaineenSuoritus(Lukio2019ExampleData.lukionÄidinkieli("AI1", pakollinen = true)).copy(osasuoritukset =
+              Some(List(moduulinSuoritusOppiaineissa(äidinkielenModuuliOppiaineissa(kieli))))
+            )
+          ))
+        ))
+      )
+
+      setupOppijaWithOpiskeluoikeus(oo) {
+        expect
+      }
+    }
+
+    "ÄI1 sallittu" in {
+      verify("ÄI1") {
+        verifyResponseStatusOk()
+      }
+    }
+
+    "ÄI111 ei sallittu" in {
+      verify("ÄI111") {
+        verifyResponseStatus(400)
+      }
+    }
+  }
+
   "Äidinkielen omainen oppiaine" - {
     def verify[A](kieli: String)(expect: => A): A = {
       val oo = aktiivinenOpiskeluoikeus.copy(

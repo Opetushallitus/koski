@@ -330,6 +330,13 @@ object Lukio2019ExampleData {
     suorituskieli = None
   )
 
+  def äidinkielenModuuliOppiaineissa(moduuli: String, laajuusOpintopisteinä: Double = 2.0f) =
+    LukionÄidinkielenModuuli2019(
+      tunniste = Koodistokoodiviite(koodistoUri = "moduulikoodistolops2021", koodiarvo = moduuli),
+      laajuus = laajuus(laajuusOpintopisteinä),
+      pakollinen = true
+    )
+
   def vieraanKielenModuuliOppiaineissa(moduuli: String, laajuusOpintopisteinä: Double = 2.0f, kieli: Option[String] = None) =
     LukionVieraanKielenModuuliOppiaineissa2019(
       tunniste = Koodistokoodiviite(koodistoUri = "moduulikoodistolops2021", koodiarvo = moduuli),
