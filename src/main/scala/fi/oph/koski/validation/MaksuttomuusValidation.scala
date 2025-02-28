@@ -317,12 +317,12 @@ object MaksuttomuusValidation extends Logging {
   }
 
   private def validateMaksuttomuuttaPidennetty(jaksot: List[OikeuttaMaksuttomuuteenPidennetty], maksuttomuus: List[Maksuttomuus], opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus) = {
-    def betweenOpiskeluoikeudenAlkamisPäättymis(jakso: OikeuttaMaksuttomuuteenPidennetty) = {
+    def alkuBetweenOpiskeluoikeudenAlkamisPäättymis(jakso: OikeuttaMaksuttomuuteenPidennetty) = {
       val voimassaolonSisällä = between(opiskeluoikeus.alkamispäivä, opiskeluoikeus.päättymispäivä)_
-      voimassaolonSisällä(jakso.alku) && voimassaolonSisällä(jakso.loppu)
+      voimassaolonSisällä(jakso.alku)
     }
 
-    val voimassaolonUlkopuolella = jaksot.filterNot(betweenOpiskeluoikeudenAlkamisPäättymis)
+    val voimassaolonUlkopuolella = jaksot.filterNot(alkuBetweenOpiskeluoikeudenAlkamisPäättymis)
     val jaksonAlkuEnnenLoppua = jaksot.filterNot(jakso => !jakso.alku.isAfter(jakso.loppu))
     val päällekkäisiäJaksoja = jaksot.zip(jaksot.drop(1)).filter { case (a,b) => a.overlaps(b) }
 
