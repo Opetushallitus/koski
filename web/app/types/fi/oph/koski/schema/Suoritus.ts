@@ -583,6 +583,14 @@ import {
   isYhteisenTutkinnonOsanOsaAlueenSuoritus
 } from './YhteisenTutkinnonOsanOsaAlueenSuoritus'
 import {
+  YleisenKielitutkinnonOsanSuoritus,
+  isYleisenKielitutkinnonOsanSuoritus
+} from './YleisenKielitutkinnonOsanSuoritus'
+import {
+  YleisenKielitutkinnonSuoritus,
+  isYleisenKielitutkinnonSuoritus
+} from './YleisenKielitutkinnonSuoritus'
+import {
   YlioppilastutkinnonKokeenSuoritus,
   isYlioppilastutkinnonKokeenSuoritus
 } from './YlioppilastutkinnonKokeenSuoritus'
@@ -746,6 +754,8 @@ export type Suoritus =
   | YhteisenAmmatillisenTutkinnonOsanSuoritus
   | YhteisenOsittaisenAmmatillisenTutkinnonTutkinnonosanSuoritus
   | YhteisenTutkinnonOsanOsaAlueenSuoritus
+  | YleisenKielitutkinnonOsanSuoritus
+  | YleisenKielitutkinnonSuoritus
   | YlioppilastutkinnonKokeenSuoritus
   | YlioppilastutkinnonSuoritus
 
@@ -935,5 +945,7 @@ export const isSuoritus = (a: any): a is Suoritus =>
   isYhteisenAmmatillisenTutkinnonOsanSuoritus(a) ||
   isYhteisenOsittaisenAmmatillisenTutkinnonTutkinnonosanSuoritus(a) ||
   isYhteisenTutkinnonOsanOsaAlueenSuoritus(a) ||
+  isYleisenKielitutkinnonOsanSuoritus(a) ||
+  isYleisenKielitutkinnonSuoritus(a) ||
   isYlioppilastutkinnonKokeenSuoritus(a) ||
   isYlioppilastutkinnonSuoritus(a)
