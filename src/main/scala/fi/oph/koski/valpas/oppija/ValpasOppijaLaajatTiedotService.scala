@@ -45,7 +45,8 @@ class ValpasOppijaLaajatTiedotService(
       rooli: ValpasRooli.Role,
       oppijaOid: ValpasHenkilö.Oid,
       haeMyösVainOppijanumerorekisterissäOleva: Boolean,
-      palautaLukionAineopinnotJaYOTutkinnotJosMyösAmmatillisiaOpintoja: Boolean
+      palautaLukionAineopinnotJaYOTutkinnotJosMyösAmmatillisiaOpintoja: Boolean,
+      palautaLukionAineopinnot: Boolean
     )
     (implicit session: ValpasSession)
   : Either[HttpStatus, ValpasOppijaLaajatTiedot] = {
@@ -53,7 +54,10 @@ class ValpasOppijaLaajatTiedotService(
 
     opiskeluoikeusDbService.getOppija(oppijaOid, rajaaOVKelpoisiinOpiskeluoikeuksiin, haeMyösOppivelvollisuudestaVapautettu = true) match {
       case Some(oppijaRow) =>
-        asValpasOppijaLaajatTiedot(palautaLukionAineopinnotJaYOTutkinnotJosMyösAmmatillisiaOpintoja)(oppijaRow)
+        asValpasOppijaLaajatTiedot(
+          palautaLukionAineopinnotJaYOTutkinnotJosMyösAmmatillisiaOpintoja = palautaLukionAineopinnotJaYOTutkinnotJosMyösAmmatillisiaOpintoja,
+          palautaLukionAineopinnot = palautaLukionAineopinnot
+        )(oppijaRow)
           .flatMap(accessResolver.withOppijaAccessAsRole(rooli))
           .map(withTurvakieltosiivottuVapautus)
           .map(withTurvakieltosiivottuKotikunta)
@@ -90,14 +94,16 @@ class ValpasOppijaLaajatTiedotService(
         laajimmatRoolit.head,
         oppijaOid,
         haeMyösVainOppijanumerorekisterissäOleva = false,
-        palautaLukionAineopinnotJaYOTutkinnotJosMyösAmmatillisiaOpintoja = false
+        palautaLukionAineopinnotJaYOTutkinnotJosMyösAmmatillisiaOpintoja = false,
+        palautaLukionAineopinnot = false
       )
     } else {
       getOppijaLaajatTiedot(
         roolit.head,
         oppijaOid,
         haeMyösVainOppijanumerorekisterissäOleva = false,
-        palautaLukionAineopinnotJaYOTutkinnotJosMyösAmmatillisiaOpintoja = false
+        palautaLukionAineopinnotJaYOTutkinnotJosMyösAmmatillisiaOpintoja = false,
+        palautaLukionAineopinnot = false
       )
     }
   }
@@ -106,13 +112,17 @@ class ValpasOppijaLaajatTiedotService(
     (
       oppijaOid: ValpasHenkilö.Oid,
       haeMyösVainOppijanumerorekisterissäOleva: Boolean,
-      palautaLukionAineopinnotJaYOTutkinnotJosMyösAmmatillisiaOpintoja: Boolean
+      palautaLukionAineopinnotJaYOTutkinnotJosMyösAmmatillisiaOpintoja: Boolean,
+      palautaLukionAineopinnot: Boolean
     )
     (implicit session: ValpasSession)
   : Either[HttpStatus, ValpasOppijaLaajatTiedot] = {
     opiskeluoikeusDbService.getOppija(oppijaOid, rajaaOVKelpoisiinOpiskeluoikeuksiin = true, haeMyösOppivelvollisuudestaVapautettu = true) match {
       case Some(oppijaRow) =>
-        asValpasOppijaLaajatTiedot(palautaLukionAineopinnotJaYOTutkinnotJosMyösAmmatillisiaOpintoja)(oppijaRow)
+        asValpasOppijaLaajatTiedot(
+          palautaLukionAineopinnotJaYOTutkinnotJosMyösAmmatillisiaOpintoja = palautaLukionAineopinnotJaYOTutkinnotJosMyösAmmatillisiaOpintoja,
+          palautaLukionAineopinnot = palautaLukionAineopinnot
+        )(oppijaRow)
           .flatMap(accessResolver.withOppijaAccess(_))
       case None if haeMyösVainOppijanumerorekisterissäOleva =>
         oppijanumerorekisteriService.getOppijaLaajatTiedotOppijanumerorekisteristä(oppijaOid)
@@ -122,7 +132,7 @@ class ValpasOppijaLaajatTiedotService(
   }
 
   def getOppijaLaajatTiedotYhteystiedoillaJaKuntailmoituksilla
-    (oppijaOid: ValpasHenkilö.Oid)
+    (oppijaOid: ValpasHenkilö.Oid, palautaLukionAineopinnot: Boolean = false)
     (implicit session: ValpasSession)
   : Either[HttpStatus, OppijaHakutilanteillaLaajatTiedot] = {
     val haeMyösVainOppijanumerorekisterissäOleva =
@@ -136,7 +146,8 @@ class ValpasOppijaLaajatTiedotService(
       oppijaOid,
       rooli,
       haeMyösVainOppijanumerorekisterissäOleva,
-      palautaLukionAineopinnotJaYOTutkinnotJosMyösAmmatillisiaOpintoja
+      palautaLukionAineopinnotJaYOTutkinnotJosMyösAmmatillisiaOpintoja,
+      palautaLukionAineopinnot
     )
       .flatMap(withKuntailmoitukset)
       .map(withOikeusTehdäKuntailmoitus)
@@ -149,7 +160,8 @@ class ValpasOppijaLaajatTiedotService(
       oppijaOid: ValpasHenkilö.Oid,
       rooli: Option[ValpasRooli.Role] = None,
       haeMyösVainOppijanumerorekisterissäOleva: Boolean = false,
-      palautaLukionAineopinnotJaYOTutkinnotJosMyösAmmatillisiaOpintoja: Boolean = false
+      palautaLukionAineopinnotJaYOTutkinnotJosMyösAmmatillisiaOpintoja: Boolean = false,
+      palautaLukionAineopinnot: Boolean = false
     )
     (implicit session: ValpasSession)
   : Either[HttpStatus, OppijaHakutilanteillaLaajatTiedot] = {
@@ -160,13 +172,15 @@ class ValpasOppijaLaajatTiedotService(
       case None => getOppijaLaajatTiedot(
         oppijaOid,
         haeMyösVainOppijanumerorekisterissäOleva,
-        palautaLukionAineopinnotJaYOTutkinnotJosMyösAmmatillisiaOpintoja
+        palautaLukionAineopinnotJaYOTutkinnotJosMyösAmmatillisiaOpintoja,
+        palautaLukionAineopinnot
       )
       case Some(r) => getOppijaLaajatTiedot(
         r,
         oppijaOid,
         haeMyösVainOppijanumerorekisterissäOleva,
-        palautaLukionAineopinnotJaYOTutkinnotJosMyösAmmatillisiaOpintoja
+        palautaLukionAineopinnotJaYOTutkinnotJosMyösAmmatillisiaOpintoja,
+        palautaLukionAineopinnot
       )
     })
       .map(withTurvakieltosiivottuKotikunta)
@@ -177,7 +191,8 @@ class ValpasOppijaLaajatTiedotService(
   }
 
   def asValpasOppijaLaajatTiedot(
-    palautaLukionAineopinnotJaYOTutkinnotJosMyösAmmatillisiaOpintoja: Boolean = false
+    palautaLukionAineopinnotJaYOTutkinnotJosMyösAmmatillisiaOpintoja: Boolean = false,
+    palautaLukionAineopinnot: Boolean = false
   )(dbRow: ValpasOppijaRow): Either[HttpStatus, ValpasOppijaLaajatTiedot] = {
     validatingAndResolvingExtractor
       .extract[List[ValpasOpiskeluoikeusLaajatTiedot]](strictDeserialization)(dbRow.opiskeluoikeudet)
@@ -189,7 +204,12 @@ class ValpasOppijaLaajatTiedotService(
         val onAmmatillisiaOpintoja = opiskeluoikeudet.exists(_.tyyppi.koodiarvo == "ammatillinenkoulutus")
         if (onAmmatillisiaOpintoja && palautaLukionAineopinnotJaYOTutkinnotJosMyösAmmatillisiaOpintoja) {
           opiskeluoikeudet
-        } else {
+        } else if (palautaLukionAineopinnot) {
+          opiskeluoikeudet.filter(o => o.päätasonSuoritukset.exists(s =>
+            !Set("ylioppilastutkinto").contains(s.suorituksenTyyppi.koodiarvo) // TODO: selvitä miten vanhojen aineopintojen kanssa tehdään - otetaanko mukaan?
+          ))
+        }
+        else {
           opiskeluoikeudet.filter(o => o.päätasonSuoritukset.exists(s =>
             !Set("lukionoppiaineenoppimaara", "lukionaineopinnot", "ylioppilastutkinto").contains(s.suorituksenTyyppi.koodiarvo)
           ))
@@ -403,7 +423,8 @@ class ValpasOppijaLaajatTiedotService(
           ValpasRooli.OPPILAITOS_HAKEUTUMINEN,
           key.oppijaOid,
           haeMyösVainOppijanumerorekisterissäOleva = false,
-          palautaLukionAineopinnotJaYOTutkinnotJosMyösAmmatillisiaOpintoja = false
+          palautaLukionAineopinnotJaYOTutkinnotJosMyösAmmatillisiaOpintoja = false,
+          palautaLukionAineopinnot = false
         ))
         .flatMap(accessResolver.withOppijaAccessAsOrganisaatio(ValpasRooli.OPPILAITOS_HAKEUTUMINEN, key.oppilaitosOid))
         .flatMap(accessResolver.withOpiskeluoikeusAccess(ValpasRooli.OPPILAITOS_HAKEUTUMINEN)(key.opiskeluoikeusOid))

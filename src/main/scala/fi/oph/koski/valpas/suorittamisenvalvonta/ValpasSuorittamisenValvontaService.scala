@@ -29,7 +29,7 @@ class ValpasSuorittamisenValvontaService(
     (oppilaitosOid: ValpasOppilaitos.Oid)
       (implicit session: ValpasSession)
   : Either[HttpStatus, Seq[OppijaHakutilanteillaLaajatTiedot]] =
-    oppijalistatService.getOppijatLaajatTiedot(ValpasRooli.OPPILAITOS_SUORITTAMINEN, oppilaitosOid, HakeutumisvalvontaTieto.Kaikki)
+    oppijalistatService.getOppijatLaajatTiedot(ValpasRooli.OPPILAITOS_SUORITTAMINEN, oppilaitosOid, HakeutumisvalvontaTieto.Kaikki, palautaLukionAineopinnot = true)
       .map(oppijat => oppijat.map(OppijaHakutilanteillaLaajatTiedot.apply))
       .map(_.map(poistaEronneetTaiValmistuneetOpiskeluoikeudetJoillaUusiKelpaavaOpiskelupaikka))
       .map(kuntailmoitusService.poistaKuntailmoitetutOpiskeluoikeudet(säästäJosOpiskeluoikeusVoimassa = true))

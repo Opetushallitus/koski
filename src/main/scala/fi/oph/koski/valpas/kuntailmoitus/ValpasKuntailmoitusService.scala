@@ -74,7 +74,7 @@ class ValpasKuntailmoitusService(
       .map(withOikeusTekijäOrganisaatioon)
       .map { ilmoitus =>
         ilmoitus.oppijaOid
-          .flatMap(oppijaLaajatTiedotService.getOppijaLaajatTiedot(_, haeMyösVainOppijanumerorekisterissäOleva = false, palautaLukionAineopinnotJaYOTutkinnotJosMyösAmmatillisiaOpintoja = false).toOption)
+          .flatMap(oppijaLaajatTiedotService.getOppijaLaajatTiedot(_, haeMyösVainOppijanumerorekisterissäOleva = false, palautaLukionAineopinnotJaYOTutkinnotJosMyösAmmatillisiaOpintoja = false, palautaLukionAineopinnot = false).toOption)
           .collect { case o: ValpasOppivelvollinenOppijaLaajatTiedot => o }
           .map(oppija => oppijaLaajatTiedotService.lisääAktiivisuustiedot(oppija)(List(ilmoitus)).head)
           .getOrElse(ilmoitus)

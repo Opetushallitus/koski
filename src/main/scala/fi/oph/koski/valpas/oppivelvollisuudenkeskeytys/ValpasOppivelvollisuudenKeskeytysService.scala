@@ -33,7 +33,8 @@ class ValpasOppivelvollisuudenKeskeytysService(
       oppija                          <- oppijaLaajatTiedotService.getOppijaLaajatTiedot(
                                            keskeytys.oppijaOid,
                                            haeMyösVainOppijanumerorekisterissäOleva,
-                                           palautaLukionAineopinnotJaYOTutkinnotJosMyösAmmatillisiaOpintoja
+                                           palautaLukionAineopinnotJaYOTutkinnotJosMyösAmmatillisiaOpintoja,
+                                            palautaLukionAineopinnot = false
                                          )
       oppijaJonkaOvVoidaanKeskeyttää  <- validateKeskeytettäväOppija(oppija)
       ovKeskeytys                     <- ovKeskeytysRepositoryService.create(keskeytys)
@@ -56,7 +57,8 @@ class ValpasOppivelvollisuudenKeskeytysService(
           .flatMap(_ => oppijaLaajatTiedotService.getOppijaLaajatTiedot(
             keskeytys.oppijaOid,
             haeMyösVainOppijanumerorekisterissäOleva,
-            palautaLukionAineopinnotJaYOTutkinnotJosMyösAmmatillisiaOpintoja
+            palautaLukionAineopinnotJaYOTutkinnotJosMyösAmmatillisiaOpintoja,
+            palautaLukionAineopinnot = false
           ))
           .flatMap(accessResolver.withOppijaAccess(_))
           .flatMap(_ => ovKeskeytysRepositoryService.update(muutos))
@@ -79,7 +81,8 @@ class ValpasOppivelvollisuudenKeskeytysService(
           .flatMap(_ => oppijaLaajatTiedotService.getOppijaLaajatTiedot(
             keskeytys.oppijaOid,
             haeMyösVainOppijanumerorekisterissäOleva,
-            palautaLukionAineopinnotJaYOTutkinnotJosMyösAmmatillisiaOpintoja
+            palautaLukionAineopinnotJaYOTutkinnotJosMyösAmmatillisiaOpintoja,
+            palautaLukionAineopinnot = false
           ))
           .flatMap(accessResolver.withOppijaAccess(_))
           .flatMap(_ => ovKeskeytysRepositoryService.delete(uuid))
@@ -102,7 +105,8 @@ class ValpasOppivelvollisuudenKeskeytysService(
       .flatMap(o => oppijaLaajatTiedotService.getOppijaLaajatTiedot(
         o,
         haeMyösVainOppijanumerorekisterissäOleva,
-        palautaLukionAineopinnotJaYOTutkinnotJosMyösAmmatillisiaOpintoja
+        palautaLukionAineopinnotJaYOTutkinnotJosMyösAmmatillisiaOpintoja,
+        palautaLukionAineopinnot = false
       )) // Tarkasta oikeus katsoa oppijan tietoja getOppijaLaajatTiedot avulla
       .map(_ => ovKeskeytyshistoria)
   }

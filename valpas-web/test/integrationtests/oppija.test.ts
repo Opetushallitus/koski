@@ -521,18 +521,27 @@ describe("Oppijakohtainen näkymä 1/2", () => {
     `)
   })
 
-  it("Oppivelvollisuuden suorittamiseen kelpaamattomia opintoja ei näytetä", async () => {
+  it("Oppivelvollisuuden suorittamiseen kelpaamattomia opintoja ei näytetä (paitsi lukion aineopinnot)", async () => {
     await loginAs(lukionAineopinnotAloittanutPath, "valpas-jkl-normaali")
     await mainHeadingEquals("LukionAineopinnotAloittanut Valpas (040305A559A)")
     await opiskeluhistoriaEquals(
-      historiaOpintoOikeus({
-        otsikko: "Perusopetus 2012 – 2021",
-        tila: "Valmistunut",
-        toimipiste: "Jyväskylän normaalikoulu",
-        ryhmä: "9C",
-        alkamispäivä: "15.8.2012",
-        päättymispäivä: "30.5.2021",
-      }),
+      merge(
+        historiaOpintoOikeus({
+          otsikko: "Lukion aineopinnot 2021 –",
+          tila: "Läsnä",
+          maksuttomuus: ["Ei"],
+          toimipiste: "Jyväskylän normaalikoulu",
+          alkamispäivä: "15.8.2021",
+        }),
+        historiaOpintoOikeus({
+          otsikko: "Perusopetus 2012 – 2021",
+          tila: "Valmistunut",
+          toimipiste: "Jyväskylän normaalikoulu",
+          ryhmä: "9C",
+          alkamispäivä: "15.8.2012",
+          päättymispäivä: "30.5.2021",
+        }),
+      ),
     )
   })
 
