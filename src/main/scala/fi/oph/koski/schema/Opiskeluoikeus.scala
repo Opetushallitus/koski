@@ -263,6 +263,8 @@ trait KoskeenTallennettavaOpiskeluoikeus extends Opiskeluoikeus with Lähdejärj
         t.copy(opiskeluoikeusjaksot = t.opiskeluoikeusjaksot :+ MuunKuinSäännellynKoulutuksenOpiskeluoikeudenJakso(mitätöityKoodistokoodiviite, mitatointiPvm, None))
       case t: TaiteenPerusopetuksenOpiskeluoikeudenTila =>
         t.copy(opiskeluoikeusjaksot = t.opiskeluoikeusjaksot :+ TaiteenPerusopetuksenOpiskeluoikeusjakso(mitatointiPvm, mitätöityKoodistokoodiviite))
+      case t: KielitutkinnonOpiskeluoikeudenTila =>
+        t.copy(opiskeluoikeusjaksot = t.opiskeluoikeusjaksot :+ KielitutkinnonOpiskeluoikeudenOpiskeluoikeusjakso(mitatointiPvm, mitätöityKoodistokoodiviite))
     }
 
     withTila(uusiTila)
