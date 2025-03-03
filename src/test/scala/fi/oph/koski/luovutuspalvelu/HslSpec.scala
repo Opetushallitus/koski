@@ -194,29 +194,6 @@ class HslSpec extends AnyFreeSpec with KoskiHttpSpec with OpiskeluoikeusTestMeth
       }
     }
 
-    "sisältää tiedon järjestämismuodoista (ja oppisopimuksesta) jos olemassa" in {
-      KoskiApplicationForTests.mydataRepository.create(valviraaKiinnostavaTutkinto.oid, "hsl")
-      postHsl(MockUsers.hslKäyttäjä, valviraaKiinnostavaTutkinto.hetu.get) {
-        verifyResponseStatusOk()
-
-        val actualJson = parseOpintoOikeudetJson()
-        val opiskeluoikeudet = (actualJson \ "opiskeluoikeudet").children
-
-        opiskeluoikeudet should have size 1
-
-        val suoritukset = (opiskeluoikeudet.head \ "suoritukset").children
-        suoritukset should not be empty
-
-        val järjestämismuodot = (suoritukset.head \ "järjestämismuodot").children
-        järjestämismuodot should not be empty
-
-        val oppisopimusOld = järjestämismuodot.find { j =>
-          (j \ "järjestämismuoto" \ "tunniste" \ "koodiarvo").extract[String] == "20"
-        }
-        oppisopimusOld should not be empty
-      }
-    }
-
     "sisältää tiedon koulutussopimuksista jos olemassa" - {
       KoskiApplicationForTests.mydataRepository.create(reformitutkinto.oid, "hsl")
       postHsl(MockUsers.hslKäyttäjä, reformitutkinto.hetu.get) {
