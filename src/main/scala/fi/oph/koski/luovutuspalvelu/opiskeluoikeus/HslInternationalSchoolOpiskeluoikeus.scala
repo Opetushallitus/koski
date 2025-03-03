@@ -28,7 +28,7 @@ object HslInternationalSchoolOpiskeluoikeus {
     oid = oo.oid.getOrElse(""),
     oppilaitos = oo.oppilaitos,
     tila = HslOpiskeluoikeudenTila.apply(oo.tila),
-    suoritukset = oo.suoritukset.map(HslDefaultPäätasonSuoritus.apply),
+    suoritukset = oo.suoritukset.filter { x => List("9", "10", "11").contains(x.koulutusmoduuli.tunniste.koodiarvo) }.map(HslDefaultPäätasonSuoritus.apply),
     lisätiedot = oo.lisätiedot.map(HslDefaultOpiskeluoikeudenLisätiedot.apply),
     arvioituPäättymispäivä = oo.arvioituPäättymispäivä,
     aikaleima = oo.aikaleima,
