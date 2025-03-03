@@ -372,8 +372,9 @@ object Responses {
           Map("palvelu" -> "KOSKI", "oikeus" -> "GLOBAALI_LUKU_TOINEN_ASTE"),
           Map("palvelu" -> "KOSKI", "oikeus" -> "GLOBAALI_LUKU_KORKEAKOULU"),
           Map("palvelu" -> "KOSKI", "oikeus" -> "GLOBAALI_LUKU_MUU_KUIN_SAANNELTY"),
-          Map("palvelu" -> "KOSKI", "oikeus" -> "GLOBAALI_LUKU_TAITEENPERUSOPETUS"))
-      ))
+          Map("palvelu" -> "KOSKI", "oikeus" -> "GLOBAALI_LUKU_TAITEENPERUSOPETUS"),
+          Map("palvelu" -> "KOSKI", "oikeus" -> "GLOBAALI_LUKU_KIELITUTKINTO"),
+      )))
     )),
     "Pertti" -> List(Map(
       "oidHenkilo" -> MockUsers.perusopetusViranomainen.oid,
