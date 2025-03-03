@@ -603,11 +603,12 @@ class MaksuttomuusSpec extends AnyFreeSpec with OpiskeluoikeusTestMethodsAmmatil
         verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation(s"Opiskeluoikeudella on koulutuksen maksuttomuuden pidennykseen liittyvä jakso, jonka alku- ja/tai loppupäivä ei ole opiskeluoikeuden voimassaolon (2021-08-02 - 2021-12-12) sisällä 2021-12-13 – 2021-12-14"))
       }
     }
-    "Ei sallita jakson päättymispäivää jälkeen opiskeluoikeuden päättymisen" in {
+    "Sallitaan jakson päättymispäivä opiskeluoikeuden päättymisen jälkeen" in {
+      mitätöiOppijanKaikkiOpiskeluoikeudet(oppija)
       putMaksuttomuuttaPidennetty(List(
         OikeuttaMaksuttomuuteenPidennetty(date(2021, 8, 2), date(2021, 12, 13))
       ), oppija, opiskeluoikeus, maksuttomuusJakso) {
-        verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation(s"Opiskeluoikeudella on koulutuksen maksuttomuuden pidennykseen liittyvä jakso, jonka alku- ja/tai loppupäivä ei ole opiskeluoikeuden voimassaolon (2021-08-02 - 2021-12-12) sisällä 2021-08-02 – 2021-12-13"))
+        verifyResponseStatusOk()
       }
     }
     "Jakson päättymispäivä ei voi olla ennen jakson alkamispäivää" in {
@@ -685,7 +686,7 @@ class MaksuttomuusSpec extends AnyFreeSpec with OpiskeluoikeusTestMethodsAmmatil
 
     "Maksuttomuustiedot vaaditaan, jos kaikki tietyt oppijan ja opiskeluoikeuden ehdot täyttyvät" in {
       setupOppijaWithOpiskeluoikeus(opiskeluoikeus, oppija) {
-        verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation("Tieto koulutuksen maksuttomuudesta vaaditaan opiskeluoikeudelle."))
+        verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation("Tieto koulutuksen maksuttomuudesta/maksullisuudesta vaaditaan opiskeluoikeudelle."))
       }
     }
 

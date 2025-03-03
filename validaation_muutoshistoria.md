@@ -1,5 +1,9 @@
 # Koskeen tallennettavien tietojen validaatiosäännöt
 
+## 28.2.2025
+
+- Sallitaan maksuttomuuden pidennysjaksot päättymään opiskeluoikeuden voimassaolon päättymisen jälkeen
+
 ## 25.2.2025
 
 - Poistetaan maksuttomuustiedon vaatimus European School of Helsinki-opiskeluoikeuksista
