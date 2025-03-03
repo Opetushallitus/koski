@@ -34,6 +34,8 @@ object HslOpiskeluoikeus {
       case o: AikuistenPerusopetuksenOpiskeluoikeus => Some(HslAikuistenPerusopetuksenOpiskeluoikeus(o))
       case o: AmmatillinenOpiskeluoikeus => Some(HslAmmatillinenOpiskeluoikeus(o))
       case o: DIAOpiskeluoikeus => Some(HslDiaOpiskeluoikeus(o))
+      case o: EBOpiskeluoikeus => Some(HslEBOpiskeluoikeus(o))
+      case o: EuropeanSchoolOfHelsinkiOpiskeluoikeus => Some(HslEuropeanSchoolOfHelsinkiOpiskeluoikeus(o))
       case o: IBOpiskeluoikeus => Some(HslIBOpiskeluoikeus(o))
       case o: InternationalSchoolOpiskeluoikeus => Some(HslInternationalSchoolOpiskeluoikeus(o))
       case o: KorkeakoulunOpiskeluoikeus => Some(HslKorkeakoulunOpiskeluoikeus(o))
@@ -42,6 +44,7 @@ object HslOpiskeluoikeus {
       case o: PerusopetukseenValmistavanOpetuksenOpiskeluoikeus => Some(HslPerusopetukseenValmistavanOpetuksenOpiskeluoikeus(o))
       case o: PerusopetuksenLisäopetuksenOpiskeluoikeus => Some(HslPerusopetuksenLisäopetuksenOpiskeluoikeus(o))
       case o: PerusopetuksenOpiskeluoikeus => Some(HslPerusopetuksenOpiskeluoikeus(o))
+      case o: TutkintokoulutukseenValmentavanOpiskeluoikeus => Some(HslTutkintokoulutukseenValmentavanOpiskeluoikeus(o))
       case o: YlioppilastutkinnonOpiskeluoikeus => Some(HslYlioppilastutkinnonOpiskeluoikeus(o))
       case _ => None
     })
