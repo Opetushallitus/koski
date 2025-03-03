@@ -1,12 +1,17 @@
 package fi.oph.koski.documentation
 
+import fi.oph.koski.documentation.AmmatillinenExampleData.exampleHenkilö
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.schema._
 
 import java.time.LocalDate
 
 object ExamplesKielitutkinto {
-  def opiskeluoikeus: KielitutkinnonOpiskeluoikeus = KielitutkinnonOpiskeluoikeus(
+  lazy val examples = List(
+    Example("kielitutkinto - yleinen kielitutkinto", "Yleisen kielitutkinnon suoritus", Oppija(exampleHenkilö.copy(hetu = "160586-873P"), Seq(ykiOpiskeluoikeus)))
+  )
+
+  def ykiOpiskeluoikeus: KielitutkinnonOpiskeluoikeus = KielitutkinnonOpiskeluoikeus(
     tila = KielitutkinnonOpiskeluoikeudenTila(
       opiskeluoikeusjaksot = List(
         Opiskeluoikeusjakso.tutkintopäivä(LocalDate.of(2025, 1, 1)),
