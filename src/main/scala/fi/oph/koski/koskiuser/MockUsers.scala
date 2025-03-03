@@ -416,6 +416,7 @@ object MockUsers {
       PalveluJaOikeus("KOSKI", Rooli.GLOBAALI_LUKU_KORKEAKOULU),
       PalveluJaOikeus("KOSKI", Rooli.GLOBAALI_LUKU_MUU_KUIN_SAANNELTY),
       PalveluJaOikeus("KOSKI", Rooli.GLOBAALI_LUKU_TAITEENPERUSOPETUS),
+      PalveluJaOikeus("KOSKI", Rooli.GLOBAALI_LUKU_KIELITUTKINTO),
     )))
   )
 

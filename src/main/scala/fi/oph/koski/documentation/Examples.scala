@@ -29,7 +29,8 @@ object Examples {
     ExamplesEuropeanSchoolOfHelsinki.examples ++
     ExamplesEB.examples ++
     ExamplesVapaaSivistystyöJotpa.Examples.examples ++
-    ExamplesTaiteenPerusopetus.examples
+    ExamplesTaiteenPerusopetus.examples ++
+    ExamplesKielitutkinto.examples
 
   val searchByHetuExamples: List[ExampleHetuSearch] = List(
     ExampleHetuSearch("010101-123N", "Henkilötunnus", HenkilötiedotHetuRequest("010101-123N")),

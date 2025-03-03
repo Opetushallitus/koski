@@ -11,6 +11,7 @@ class KaikilleOpiskeluoikeudenTyypeilleOnKayttooikeusSpec extends AnyFreeSpec wi
       Rooli.AIKUISTENPERUSOPETUS,
       Rooli.AMMATILLINENKOULUTUS,
       Rooli.DIATUTKINTO,
+      Rooli.KIELITUTKINTO,
       Rooli.ESIOPETUS,
       Rooli.IBTUTKINTO,
       Rooli.INTERNATIONALSCHOOL,
@@ -26,7 +27,7 @@ class KaikilleOpiskeluoikeudenTyypeilleOnKayttooikeusSpec extends AnyFreeSpec wi
       Rooli.TUVA,
       Rooli.ESH,
       Rooli.EBTUTKINTO,
-      Rooli.TAITEENPERUSOPETUS
+      Rooli.TAITEENPERUSOPETUS,
     ).map(_.toLowerCase))
   }
 }

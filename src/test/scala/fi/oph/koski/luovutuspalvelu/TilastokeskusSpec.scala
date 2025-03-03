@@ -240,7 +240,11 @@ class TilastokeskusSpec extends AnyFreeSpec with KoskiHttpSpec with Opiskeluoike
     case Oppija(h: TäydellisetHenkilötiedot, opiskeluoikeudet) => {
       // Filtteröi pois oppijat, joilla vain VST vapaatavoitteisia tai osaamismerkkejä. Ks. TilastokeskusServlet / extraFilters
       val opiskeluoikeudetIlmanVst =
-        opiskeluoikeudet.filterNot(_.suoritukset.exists(s => Set(SuorituksenTyyppi.vstosaamismerkki, SuorituksenTyyppi.vstvapaatavoitteinenkoulutus).contains(s.tyyppi)))
+        opiskeluoikeudet.filterNot(_.suoritukset.exists(s => Set(
+          SuorituksenTyyppi.vstosaamismerkki,
+          SuorituksenTyyppi.vstvapaatavoitteinenkoulutus,
+          SuorituksenTyyppi.yleinenKielitutkinto,
+        ).contains(s.tyyppi)))
 
       if (opiskeluoikeudetIlmanVst.isEmpty) {
         Nil

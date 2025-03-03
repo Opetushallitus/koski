@@ -193,6 +193,10 @@ import {
   isVapaanSivistystyönVapaatavoitteisenKoulutuksenSuoritus
 } from './VapaanSivistystyonVapaatavoitteisenKoulutuksenSuoritus'
 import {
+  YleisenKielitutkinnonSuoritus,
+  isYleisenKielitutkinnonSuoritus
+} from './YleisenKielitutkinnonSuoritus'
+import {
   YlioppilastutkinnonSuoritus,
   isYlioppilastutkinnonSuoritus
 } from './YlioppilastutkinnonSuoritus'
@@ -253,6 +257,7 @@ export type PäätasonSuoritus =
   | VapaanSivistystyönLukutaitokoulutuksenSuoritus
   | VapaanSivistystyönOsaamismerkinSuoritus
   | VapaanSivistystyönVapaatavoitteisenKoulutuksenSuoritus
+  | YleisenKielitutkinnonSuoritus
   | YlioppilastutkinnonSuoritus
 
 export const isPäätasonSuoritus = (a: any): a is PäätasonSuoritus =>
@@ -310,4 +315,5 @@ export const isPäätasonSuoritus = (a: any): a is PäätasonSuoritus =>
   isVapaanSivistystyönLukutaitokoulutuksenSuoritus(a) ||
   isVapaanSivistystyönOsaamismerkinSuoritus(a) ||
   isVapaanSivistystyönVapaatavoitteisenKoulutuksenSuoritus(a) ||
+  isYleisenKielitutkinnonSuoritus(a) ||
   isYlioppilastutkinnonSuoritus(a)

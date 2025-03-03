@@ -170,6 +170,7 @@ object OpiskeluoikeudenTyyppi {
   val ebtutkinto = apply("ebtutkinto")
   val muukuinsaanneltykoulutus = apply("muukuinsaanneltykoulutus")
   val taiteenperusopetus = apply("taiteenperusopetus")
+  val kielitutkinto = apply("kielitutkinto")
 
   private def apply(koodiarvo: String): Koodistokoodiviite = {
     val tyyppi = Koodistokoodiviite(koodiarvo, "opiskeluoikeudentyyppi")
@@ -200,9 +201,14 @@ trait KoskeenTallennettavaOpiskeluoikeus extends Opiskeluoikeus with Lähdejärj
     shapeless.lens[KoskeenTallennettavaOpiskeluoikeus].field[List[Suoritus]]("suoritukset").set(this)(suoritukset)
   }
 
-  final def withHistoria(historia: Option[List[OpiskeluoikeudenOrganisaatiohistoria]]): KoskeenTallennettavaOpiskeluoikeus = {
-    shapeless.lens[KoskeenTallennettavaOpiskeluoikeus].field[Option[List[OpiskeluoikeudenOrganisaatiohistoria]]]("organisaatiohistoria").set(this)(historia)
-  }
+  final def withHistoria(historia: Option[List[OpiskeluoikeudenOrganisaatiohistoria]]): KoskeenTallennettavaOpiskeluoikeus =
+    this match {
+      case _: Organisaatiohistoriaton => this
+      case _ => shapeless.lens[KoskeenTallennettavaOpiskeluoikeus]
+        .field[Option[List[OpiskeluoikeudenOrganisaatiohistoria]]]("organisaatiohistoria")
+        .set(this)(historia)
+    }
+
   def withKoulutustoimija(koulutustoimija: Koulutustoimija): KoskeenTallennettavaOpiskeluoikeus
   def withOppilaitos(oppilaitos: Oppilaitos): KoskeenTallennettavaOpiskeluoikeus
   final def withTila(tila: OpiskeluoikeudenTila): KoskeenTallennettavaOpiskeluoikeus =
@@ -257,10 +263,16 @@ trait KoskeenTallennettavaOpiskeluoikeus extends Opiskeluoikeus with Lähdejärj
         t.copy(opiskeluoikeusjaksot = t.opiskeluoikeusjaksot :+ MuunKuinSäännellynKoulutuksenOpiskeluoikeudenJakso(mitätöityKoodistokoodiviite, mitatointiPvm, None))
       case t: TaiteenPerusopetuksenOpiskeluoikeudenTila =>
         t.copy(opiskeluoikeusjaksot = t.opiskeluoikeusjaksot :+ TaiteenPerusopetuksenOpiskeluoikeusjakso(mitatointiPvm, mitätöityKoodistokoodiviite))
+      case t: KielitutkinnonOpiskeluoikeudenTila =>
+        t.copy(opiskeluoikeusjaksot = t.opiskeluoikeusjaksot :+ KielitutkinnonOpiskeluoikeudenOpiskeluoikeusjakso(mitatointiPvm, mitätöityKoodistokoodiviite))
     }
 
     withTila(uusiTila)
   }
+}
+
+trait Organisaatiohistoriaton {
+  def organisaatiohistoria: Option[List[OpiskeluoikeudenOrganisaatiohistoria]] = None
 }
 
 @Description("Päävastuullisen koulutuksen järjestäjän luoman opiskeluoikeuden tiedot. Nämä tiedot kertovat, että kyseessä on ns. ulkopuolisen sopimuskumppanin suoritustieto, joka liittyy päävastuullisen koulutuksen järjestäjän luomaan opiskeluoikeuteen. Ks. tarkemmin https://wiki.eduuni.fi/display/OPHPALV/4.+Ammatillisten+opiskeluoikeuksien+linkitys")

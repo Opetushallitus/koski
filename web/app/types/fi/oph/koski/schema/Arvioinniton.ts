@@ -225,6 +225,10 @@ import {
   isVapaanSivistystyönVapaatavoitteisenKoulutuksenSuoritus
 } from './VapaanSivistystyonVapaatavoitteisenKoulutuksenSuoritus'
 import {
+  YleisenKielitutkinnonSuoritus,
+  isYleisenKielitutkinnonSuoritus
+} from './YleisenKielitutkinnonSuoritus'
+import {
   YlioppilastutkinnonSuoritus,
   isYlioppilastutkinnonSuoritus
 } from './YlioppilastutkinnonSuoritus'
@@ -293,6 +297,7 @@ export type Arvioinniton =
   | VapaanSivistystyönJotpaKoulutuksenSuoritus
   | VapaanSivistystyönLukutaitokoulutuksenSuoritus
   | VapaanSivistystyönVapaatavoitteisenKoulutuksenSuoritus
+  | YleisenKielitutkinnonSuoritus
   | YlioppilastutkinnonSuoritus
 
 export const isArvioinniton = (a: any): a is Arvioinniton =>
@@ -366,4 +371,5 @@ export const isArvioinniton = (a: any): a is Arvioinniton =>
   isVapaanSivistystyönJotpaKoulutuksenSuoritus(a) ||
   isVapaanSivistystyönLukutaitokoulutuksenSuoritus(a) ||
   isVapaanSivistystyönVapaatavoitteisenKoulutuksenSuoritus(a) ||
+  isYleisenKielitutkinnonSuoritus(a) ||
   isYlioppilastutkinnonSuoritus(a)
