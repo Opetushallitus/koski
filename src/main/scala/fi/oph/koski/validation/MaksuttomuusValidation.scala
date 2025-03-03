@@ -133,7 +133,7 @@ object MaksuttomuusValidation extends Logging {
       } else {
         // Maksuttomuustietoja ei ole siirretty -> tarkasta ettei maksuttomuustietojen siirtämistä vaadita
         HttpStatus.validate(!maksuttomuustietoVaaditaan) {
-          KoskiErrorCategory.badRequest.validation("Tieto koulutuksen maksuttomuudesta vaaditaan opiskeluoikeudelle.")
+          KoskiErrorCategory.badRequest.validation("Tieto koulutuksen maksuttomuudesta/maksullisuudesta vaaditaan opiskeluoikeudelle.")
         }
       }
     )
