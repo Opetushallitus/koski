@@ -1,6 +1,7 @@
 package fi.oph.koski.typemodel
 
 import fi.oph.koski.aktiivisetjapaattyneetopinnot.AktiivisetJaPäättyneetOpinnotKoskeenTallennettavaOpiskeluoikeus
+import fi.oph.koski.config.ConfigForFrontend
 import fi.oph.koski.history.OpiskeluoikeusHistoryPatch
 import fi.oph.koski.koskiuser.UserWithAccessRights
 import fi.oph.koski.oppija.HenkilönOpiskeluoikeusVersiot
@@ -67,6 +68,7 @@ case class AdditionalExports(
   osaamismerkkikuva: Osaamismerkkikuva,
   opiskeluoikeusClass: OpiskeluoikeusClass,
   tutkintoperuste: TutkintoPeruste,
+  configForFrontend: ConfigForFrontend,
 
   // Traitit jotka eivät automaattisesti exporttaudu skeemasta, koska ne eivät sellaisenaan
   // ole minkään tietomallin jäseniä (ainoastaan traitista periintyvät konkreettiset luokat exportataan automaattisesti).
@@ -88,4 +90,5 @@ case class AdditionalExports(
   valinnaisuus: Valinnaisuus,
   preIBLukionModuulinSuoritus2019: PreIBLukionModuulinSuoritus2019,
   preIBLukionModuulinTaiPaikallisenOpintojaksonSuoritus2019: PreIBLukionModuulinTaiPaikallisenOpintojaksonSuoritus2019,
+  ibTaso: IBTaso,
 )

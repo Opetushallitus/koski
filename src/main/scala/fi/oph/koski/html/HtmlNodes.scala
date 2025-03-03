@@ -1,6 +1,6 @@
 package fi.oph.koski.html
 
-import fi.oph.koski.config.{Environment, KoskiApplication}
+import fi.oph.koski.config.{ConfigForFrontend, Environment, KoskiApplication}
 import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.koskiuser.KoskiSpecificSession
 import fi.oph.koski.localization.LocalizationRepository
@@ -15,11 +15,18 @@ import scala.xml.NodeSeq.Empty
 import scala.xml.{Elem, NodeSeq}
 
 trait HtmlNodes extends KoskiSpecificBaseServlet with LanguageSupport {
+  private val frontendConfig = ConfigForFrontend(application.config)
+
   def application: KoskiApplication
   def buildVersion: Option[String]
   def localizations: LocalizationRepository = application.koskiLocalizationRepository
 
-  def htmlIndex(scriptBundleName: String, raamit: Raamit = EiRaameja, scripts: NodeSeq = Empty, responsive: Boolean = false, allowIndexing: Boolean = false,
+  def htmlIndex(
+    scriptBundleName: String,
+    raamit: Raamit = EiRaameja,
+    scripts: NodeSeq = Empty,
+    responsive: Boolean = false,
+    allowIndexing: Boolean = false,
     nonce: String
   ): Elem = {
     val bodyClasses = scriptBundleName.replace("koski-", "").replace(".js", "") + "-page"
@@ -40,6 +47,7 @@ trait HtmlNodes extends KoskiSpecificBaseServlet with LanguageSupport {
         </script>
         <script nonce={nonce} >
           {setWindowVar("environment", Environment.currentEnvironment(application.config))}
+          {setWindowVar("config", frontendConfig)}
         </script>
         {scripts}
         <script nonce={nonce} id="bundle" src={"/koski/js/" + scriptBundleName + "?" + buildVersion.getOrElse(scriptTimestamp(scriptBundleName))}></script>

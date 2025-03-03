@@ -133,6 +133,13 @@ class CompositeOpiskeluoikeusRepository(main: KoskiOpiskeluoikeusRepository, vir
     )
   }
 
+  def getKoulutusmuodonAlkamisajatIlmanKäyttöoikeustarkistusta(
+    oppijaOid: String,
+    koulutusmuoto: String
+  ): Map[Opiskeluoikeus.Oid, LocalDate] = {
+    main.getKoulutusmuodonAlkamisajatIlmanKäyttöoikeustarkistusta(oppijaOid, koulutusmuoto)
+  }
+
   def getOppijaOidsForOpiskeluoikeus(opiskeluoikeusOid: String)(implicit user: KoskiSpecificSession): Either[HttpStatus, List[Oid]] =
     main.getOppijaOidsForOpiskeluoikeus(opiskeluoikeusOid)
 

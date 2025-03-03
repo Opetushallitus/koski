@@ -68,8 +68,10 @@ export const asKoodiviite = <U extends string, A extends string = string>(
 }
 
 export const koodiviiteEquals =
-  <T extends KoodiViite>(a: T) =>
-  (b: T): boolean =>
+  <T extends KoodiViite>(a?: T) =>
+  (b?: T): boolean =>
+    a !== undefined &&
+    b !== undefined &&
     a.$class === b.$class &&
     a.koodiarvo === b.koodiarvo &&
     (a as any).koodistoUri === (b as any).koodistoUri

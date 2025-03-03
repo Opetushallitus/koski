@@ -34,9 +34,12 @@
   }
 
   &__nimi {
-    opacity: 66%;
+    position: relative;
     line-height: 2 * @baseline;
     margin-bottom: @baseline;
+    .Oppiaine__tunniste {
+      font-weight: 400;
+    }
   }
 
   &__kurssit {
@@ -48,21 +51,6 @@
       min-width: 4 * @baseline;
       max-width: 8 * @baseline;
       margin-right: @baseline;
-
-      &__tunniste {
-        color: @color-blue;
-        background: none;
-        border: none;
-        padding: 0;
-        margin: 0;
-        text-align: left;
-
-        font-weight: 600;
-        white-space: nowrap;
-        .IconButton {
-          margin-right: @baseline;
-        }
-      }
     }
   }
 
@@ -79,6 +67,23 @@
   }
   &__poisto {
     background: none;
+  }
+}
+
+.Oppiaine__tunniste,
+.Kurssi__tunniste {
+  color: @color-blue;
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+  text-align: left;
+
+  font-weight: 600;
+  white-space: nowrap;
+
+  .IconButton {
+    margin-right: @baseline;
   }
 }
 
