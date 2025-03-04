@@ -1,12 +1,12 @@
 package fi.oph.koski.luovutuspalvelu.opiskeluoikeus
 
-import fi.oph.koski.schema.{InternationalSchoolOpiskeluoikeus, Koodistokoodiviite, OpiskeluoikeudenOrganisaatiohistoria, Oppilaitos, SisältäväOpiskeluoikeus}
+import fi.oph.koski.schema.{EBOpiskeluoikeus, EuropeanSchoolOfHelsinkiOpiskeluoikeus, Koodistokoodiviite, Oppilaitos, SisältäväOpiskeluoikeus}
 import fi.oph.scalaschema.annotation.Title
 
 import java.time.{LocalDate, LocalDateTime}
 
-@Title("International School opiskeluoikeus")
-case class HslInternationalSchoolOpiskeluoikeus(
+@Title("EB-tutkinnon opiskeluoikeus")
+case class HslEBOpiskeluoikeus(
   tyyppi: Koodistokoodiviite,
   oid: String,
   oppilaitos: Option[Oppilaitos],
@@ -22,13 +22,13 @@ case class HslInternationalSchoolOpiskeluoikeus(
   sisältyyOpiskeluoikeuteen: Option[SisältäväOpiskeluoikeus]
 ) extends HslOpiskeluoikeus
 
-object HslInternationalSchoolOpiskeluoikeus {
-  def apply(oo: InternationalSchoolOpiskeluoikeus): HslInternationalSchoolOpiskeluoikeus = HslInternationalSchoolOpiskeluoikeus(
+object HslEBOpiskeluoikeus {
+  def apply(oo: EBOpiskeluoikeus): HslEBOpiskeluoikeus = HslEBOpiskeluoikeus(
     tyyppi = oo.tyyppi,
     oid = oo.oid.getOrElse(""),
     oppilaitos = oo.oppilaitos,
     tila = HslOpiskeluoikeudenTila.apply(oo.tila),
-    suoritukset = oo.suoritukset.filter { x => List("9", "10", "11").contains(x.koulutusmoduuli.tunniste.koodiarvo) }.map(HslDefaultPäätasonSuoritus.apply),
+    suoritukset = oo.suoritukset.map(HslDefaultPäätasonSuoritus.apply),
     lisätiedot = oo.lisätiedot.map(HslDefaultOpiskeluoikeudenLisätiedot.apply),
     arvioituPäättymispäivä = oo.arvioituPäättymispäivä,
     aikaleima = oo.aikaleima,
