@@ -1,0 +1,138 @@
+@startuml
+title OAuth2 -happy path -aktiviteettidiagrammi swimlaneilla
+|Hyödyntäjä-palvelu|
+|Hyödyntäjän KOSKI-integraatiopalvelu|
+|Hyödyntäjän KOSKI-integraatiopalvelu 2|
+|OPH KOSKI|
+|Hyödyntäjä-palvelu|
+start
+:Käyttäjä avaa web-sivun
+(tai mobiiliappiksen)
+ja aloittaa vahvan
+tunnistautumisen;
+|Suomi.fi|
+:Tunnistaudu;
+|Hyödyntäjä-palvelu|
+:Pyydä opintotietoja;
+note left
+mukana:
+hetu
+nimi
+end note
+|Hyödyntäjän KOSKI-integraatiopalvelu|
+:Luo state,
+code_challenge ja code_verifier;
+:Tallenna hetu staten yhteyteen;
+:Muodosta OAuth2
+authorization endpoint URI ja
+ohjaa käyttäjän selain sinne;
+note left
+https://opintopolku.fi
+/koski/omadata-oauth2
+/authorize/PARAMS
+
+PARAMS:
+client_id
+redirect_uri
+state
+scope
+response_type=code
+response_mode=form_post
+code_challenge_method=S256
+code_challenge
+
+end note
+|OPH KOSKI|
+:Aloita vahva tunnistautuminen;
+|Suomi.fi|
+:Lähetä tunnistautumistiedot
+(jos käyttäjä oli jo tunnistautunut,
+jos ei, niin tunnistaudu ensin);
+|OPH KOSKI|
+:Vastaanota ja tallenna käyttäjän
+antama suostumus ja siihen liitetty
+authorization code ja code_challenge;
+:Lähetä OAuth2 authorization code ja state;
+note left
+POST redirect_uri
+body=CODE_RESPONSE
+
+CODE_RESPONSE:
+state
+code
+  Virhetilanteissa code:n sijasta voi sisältää:
+error
+error_description
+error_uri
+
+end note
+|Hyödyntäjän KOSKI-integraatiopalvelu 2|
+:Hae statelle tallennettu
+code_verifier;
+|Hyödyntäjän KOSKI-integraatiopalvelu|
+:Palauta code_verifier;
+|Hyödyntäjän KOSKI-integraatiopalvelu 2|
+:Pyydä access tokenia,
+mukana code_verifier;
+note left
+mutual-TLS POST
+https://oph-koski-luovutuspalvelu.opintopolku.fi
+/koski/api/omadata-oauth2
+/authorization-server/
+  body=CODE_PARAMS
+
+mutual-TLS tarvitsee:
+(1) Voimassaolevan luotetun
+  CA:n myöntämän
+  asiakasvarmenteen
+  (client certificate)
+(2) Kiinteän IP-osoitteen/
+  -avaruuden
+
+CODE_PARAMS:
+grant_type=authorization_code
+code
+code_verifier
+redirect_uri
+client_id
+end note
+|OPH KOSKI|
+:Tarkista varmenne ja ip-osoite;
+:Tarkista code_challenge-code_verifier
+vastaavuus;
+:Luo, tallenna ja vastaa access tokenilla;
+|Hyödyntäjän KOSKI-integraatiopalvelu 2|
+:Pyydä opintotietoja access tokenilla;
+note left
+mutual-TLS POST
+https://oph-koski-luovutuspalvelu.opintopolku.fi
+/koski/api/omadata-oauth2/resource-server
+  Authorization=Bearer TOKEN
+
+mutual-TLS tarvitsee:
+ (1) Voimassaolevan luotetun
+   CA:n myöntämän
+   asiakasvarmenteen
+   (client certificate)
+ (2) Kiinteän IP-osoitteen/
+   -avaruuden
+
+end note
+|OPH KOSKI|
+:Tarkista varmenne ja ip-osoite;
+:Vastaa opintotiedoilla;
+|Hyödyntäjän KOSKI-integraatiopalvelu 2|
+:Hae statelle tallennettu hetu;
+|Hyödyntäjän KOSKI-integraatiopalvelu|
+:Palauta hetu;
+|Hyödyntäjän KOSKI-integraatiopalvelu 2|
+:Tarkista, että opintotiedot
+vastaavat hetua;
+:Päättele opiskelijastatus
+opintotiedoista ("sääntömoottori");
+:Lähetä opiskelijastatus;
+|Hyödyntäjä-palvelu|
+:Tallenna opiskelijastatus;
+stop
+
+@enduml

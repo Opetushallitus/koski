@@ -116,6 +116,14 @@ client -> client : Hae statelle tallennettu code_verifier
 
 client -> Koski : mutual-TLS POST https://oph-koski-luovutuspalvelu.opintopolku.fi/koski/api/omadata-oauth2/authorization-server/\n  body=CODE_PARAMS
 note left
+mutual-TLS tarvitsee:
+(1) Voimassaolevan luotetun
+  CA:n myöntämän
+  asiakasvarmenteen
+  (client certificate)
+(2) Kiinteän IP-osoitteen/
+  -avaruuden
+
 CODE_PARAMS:
 grant_type=authorization_code
 code
@@ -140,6 +148,15 @@ end
 group OAuth2 resource-endpointin käyttö
 
 client -> Koski : mutual-TLS POST https://oph-koski-luovutuspalvelu.opintopolku.fi/koski/api/omadata-oauth2/resource-server\n  Authorization=Bearer TOKEN
+note left
+mutual-TLS tarvitsee:
+(1) Voimassaolevan luotetun
+  CA:n myöntämän
+  asiakasvarmenteen
+  (client certificate)
+(2) Kiinteän IP-osoitteen/
+  -avaruuden
+end note
 
 Koski -> Koski : Hae ja muotoile opiskeluoikeus-DATA\naccess_tokenin ja scopen perusteella
 
