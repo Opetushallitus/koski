@@ -1,8 +1,8 @@
 @startuml
-title OAuth2 -happy path -aktiviteettidiagrammi swimlaneilla
+title OAuth2 -happy path -aktiviteettidiagrammi swimlaneilla\neriytä tilallinen ja tilaton integraatio
 |Hyödyntäjä-palvelu|
-|Hyödyntäjän KOSKI-integraatiopalvelu|
-|Hyödyntäjän KOSKI-integraatiopalvelu 2|
+|Hyödyntäjän tilallinen KOSKI-integraatiopalvelu|
+|Hyödyntäjän tilaton KOSKI-integraatiopalvelu|
 |OPH KOSKI|
 |Hyödyntäjä-palvelu|
 start
@@ -19,7 +19,7 @@ mukana:
 hetu
 nimi
 end note
-|Hyödyntäjän KOSKI-integraatiopalvelu|
+|Hyödyntäjän tilallinen KOSKI-integraatiopalvelu|
 :Luo state,
 code_challenge ja code_verifier;
 :Tallenna hetu staten yhteyteen;
@@ -66,12 +66,12 @@ error_description
 error_uri
 
 end note
-|Hyödyntäjän KOSKI-integraatiopalvelu 2|
+|Hyödyntäjän tilaton KOSKI-integraatiopalvelu|
 :Hae statelle tallennettu
 code_verifier;
-|Hyödyntäjän KOSKI-integraatiopalvelu|
+|Hyödyntäjän tilallinen KOSKI-integraatiopalvelu|
 :Palauta code_verifier;
-|Hyödyntäjän KOSKI-integraatiopalvelu 2|
+|Hyödyntäjän tilaton KOSKI-integraatiopalvelu|
 :Pyydä access tokenia,
 mukana code_verifier;
 note left
@@ -101,7 +101,7 @@ end note
 :Tarkista code_challenge-code_verifier
 vastaavuus;
 :Luo, tallenna ja vastaa access tokenilla;
-|Hyödyntäjän KOSKI-integraatiopalvelu 2|
+|Hyödyntäjän tilaton KOSKI-integraatiopalvelu|
 :Pyydä opintotietoja access tokenilla;
 note left
 mutual-TLS POST
@@ -121,11 +121,11 @@ end note
 |OPH KOSKI|
 :Tarkista varmenne ja ip-osoite;
 :Vastaa opintotiedoilla;
-|Hyödyntäjän KOSKI-integraatiopalvelu 2|
+|Hyödyntäjän tilaton KOSKI-integraatiopalvelu|
 :Hae statelle tallennettu hetu;
-|Hyödyntäjän KOSKI-integraatiopalvelu|
+|Hyödyntäjän tilallinen KOSKI-integraatiopalvelu|
 :Palauta hetu;
-|Hyödyntäjän KOSKI-integraatiopalvelu 2|
+|Hyödyntäjän tilaton KOSKI-integraatiopalvelu|
 :Tarkista, että opintotiedot
 vastaavat hetua;
 :Päättele opiskelijastatus
