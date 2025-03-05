@@ -1,13 +1,18 @@
 package fi.oph.koski.documentation
 
-import fi.oph.koski.documentation.AmmatillinenExampleData.exampleHenkilö
+import fi.oph.koski.henkilo.{KoskiSpecificMockOppijat, LaajatOppijaHenkilöTiedot}
+import fi.oph.koski.henkilo.MockOppijat.asUusiOppija
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.schema._
 
 import java.time.LocalDate
+import scala.collection.immutable
 
 object ExamplesKielitutkinto {
-  lazy val examples = List(
+  lazy val exampleMockOppija: LaajatOppijaHenkilöTiedot = KoskiSpecificMockOppijat.kielitutkinnonSuorittaja
+  lazy val exampleHenkilö: UusiHenkilö = asUusiOppija(exampleMockOppija)
+
+  lazy val examples: immutable.Seq[Example] = List(
     Example("kielitutkinto - yleinen kielitutkinto", "Yleisen kielitutkinnon suoritus", Oppija(exampleHenkilö.copy(hetu = "160586-873P"), Seq(ykiOpiskeluoikeus)))
   )
 

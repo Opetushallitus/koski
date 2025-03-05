@@ -602,6 +602,14 @@ object MockUsers {
     )))
   )
 
+  val kielitutkintorekisteriKäyttäjä = KoskiMockUser(
+    "Kielitutkintorekisteri",
+    "kitu",
+    "1.2.246.562.24.69696942058",
+    Seq(OrganisaatioJaKäyttöoikeudet(Opetushallitus.organisaatioOid, List(
+      PalveluJaOikeus("KOSKI", Rooli.KIELITUTKINTOREKISTERI),
+    )))
+  )
 
   val hakemuspalveluKäyttäjä = KoskiMockUser(
     "Hakemuspalvelu-virkailija",
@@ -701,7 +709,8 @@ object MockUsers {
     rekisteröimätönOmadataOAuth2Palvelukäyttäjä,
     omadataOAuth2SampleAppPalvelukäyttäjä,
     omadataOAuth2SampleAppPalvelukäyttäjäNoLogout,
-    omadataOAuth2OphPalvelukäyttäjä
+    omadataOAuth2OphPalvelukäyttäjä,
+    kielitutkintorekisteriKäyttäjä,
   )
 }
 
