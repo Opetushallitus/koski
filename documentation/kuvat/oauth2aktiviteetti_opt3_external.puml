@@ -1,0 +1,205 @@
+@startuml
+title OAuth2 -happy path -aktiviteettidiagrammi swimlaneilla\neriytä sääntömoottoripalvelu
+|Hyödyntäjä-palvelu|
+|Hyödyntäjän KOSKI-integraatiopalvelu|
+|Hyödyntäjän tilaton sääntömoottoripalvelu|
+|OPH KOSKI|
+
+|Hyödyntäjä-palvelu|
+start
+:Käyttäjä avaa selaimessa
+web-sivun
+ja aloittaa vahvan
+tunnistautumisen;
+
+|Suomi.fi|
+:Tunnistaudu;
+
+|Hyödyntäjä-palvelu|
+:Käyttäjä siirtyy
+selaimessa
+opintotietojen hakuun;
+
+|Hyödyntäjän KOSKI-integraatiopalvelu|
+
+:Näytä selaimessa opintotietojen
+hakunäkymä;
+note left
+Tätä näkymää ei välttämättä tarvita
+end note
+:Backend:
+Luo sessio ja sille state,
+code_challenge ja code_verifier;
+:Backend:
+Hae henkilötiedot (hetu);
+
+|Hyödyntäjä-palvelu|
+:Backend:
+Palauta henkilötiedot;
+note left
+hetun välitys
+esim. näin
+end note
+
+|Hyödyntäjän KOSKI-integraatiopalvelu|
+
+:Backend:
+Tallenna hetu staten yhteyteen;
+:Backend:
+Muodosta OAuth2
+authorization endpoint URI ja
+ohjaa käyttäjän selain sinne;
+note left
+https://opintopolku.fi
+/koski/omadata-oauth2
+/authorize/PARAMS
+
+PARAMS:
+client_id
+redirect_uri
+state
+scope
+response_type=code
+response_mode=form_post
+code_challenge_method=S256
+code_challenge
+
+end note
+
+|OPH KOSKI|
+:Aloita vahva tunnistautuminen;
+
+|Suomi.fi|
+:Lähetä tunnistautumistiedot
+(käyttäjä on jo tunnistautunut);
+
+|OPH KOSKI|
+:Käyttäjä hyväksyy opintotietojen
+luovuttamisen;
+:Backend:
+Luo authorization code,
+vastaanota ja tallenna käyttäjän
+antama suostumus sekä
+authorization code ja code_challenge;
+:Selain:
+Lähetä OAuth2 authorization code ja state;
+note left
+POST redirect_uri
+body=CODE_RESPONSE
+
+CODE_RESPONSE:
+state
+code
+  Virhetilanteissa code:n sijasta voi sisältää:
+error
+error_description
+error_uri
+
+end note
+
+|Hyödyntäjän KOSKI-integraatiopalvelu|
+
+:Backend:
+Hae statelle tallennettu
+code_verifier;
+
+:Backend:
+Pyydä access tokenia,
+mukana code_verifier;
+note left
+mutual-TLS POST
+https://oph-koski-luovutuspalvelu.opintopolku.fi
+/koski/api/omadata-oauth2
+/authorization-server/
+  body=CODE_PARAMS
+
+mutual-TLS tarvitsee:
+(1) Voimassaolevan luotetun
+  CA:n myöntämän
+  asiakasvarmenteen
+  (client certificate)
+(2) Kiinteän IP-osoitteen/
+  -avaruuden
+
+CODE_PARAMS:
+grant_type=authorization_code
+code
+code_verifier
+redirect_uri
+client_id
+end note
+
+|OPH KOSKI|
+:Backend:
+Tarkista varmenne ja ip-osoite;
+:Backend:
+Tarkista code_challenge-code_verifier
+vastaavuus;
+:Backend:
+Luo, tallenna ja vastaa access tokenilla;
+
+|Hyödyntäjän KOSKI-integraatiopalvelu|
+
+:Backend:
+Pyydä opintotietoja access tokenilla;
+note left
+mutual-TLS POST
+https://oph-koski-luovutuspalvelu.opintopolku.fi
+/koski/api/omadata-oauth2/resource-server
+  Authorization=Bearer TOKEN
+
+mutual-TLS tarvitsee:
+ (1) Voimassaolevan luotetun
+   CA:n myöntämän
+   asiakasvarmenteen
+   (client certificate)
+ (2) Kiinteän IP-osoitteen/
+   -avaruuden
+
+end note
+
+|OPH KOSKI|
+:Backend:
+Tarkista varmenne ja ip-osoite;
+:Backend:
+Vastaa opintotiedoilla;
+
+|Hyödyntäjän KOSKI-integraatiopalvelu|
+
+:Backend:
+Hae statelle tallennettu hetu;
+
+|Hyödyntäjän KOSKI-integraatiopalvelu|
+
+:Backend:
+Lähetä opintotiedot ja hetu;
+
+|Hyödyntäjän tilaton sääntömoottoripalvelu|
+:Backend:
+Tarkista, että opintotiedot
+vastaavat hetua;
+:Backend:
+Päättele opiskelijastatus
+opintotiedoista ("sääntömoottori");
+:Backend:
+Vastaa opiskelijastatuksella;
+
+|Hyödyntäjän KOSKI-integraatiopalvelu|
+
+:Backend:
+Lähetä opiskelijastatus;
+|Hyödyntäjä-palvelu|
+:Backend:
+Tallenna opiskelijastatus,
+vastaa OK;
+
+|Hyödyntäjän KOSKI-integraatiopalvelu|
+
+:Backend:
+Uudelleenohjaa käyttäjän selain
+takaisin hyödyntäjä-palveluun;
+
+|Hyödyntäjä-palvelu|
+stop
+
+@enduml
