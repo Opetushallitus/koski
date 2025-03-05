@@ -13,11 +13,11 @@ Tämän jälkeen luovutuspalvelun, voi käynnistää:
 
 Tämän varsinen esimerkki-applikaatio frontti & backend käynnistetään terminaalissa:
 
-    ./mvnw spring-boot:run
+    KOSKI_BACKEND_HOST=http://localhost:7021 ./mvnw spring-boot:run
 
 Koko putken rakenne:
 
-    (1) Esimerkki-applikaation frontti & backend, http://localhost:7051
+    (1) Esimerkki-applikaation frontti & backend, http://localhost:7052
 
        kutsuu:
     (2) Docker-kontissa ajettu koski-luovutuspalvelu, https://localhost:7022

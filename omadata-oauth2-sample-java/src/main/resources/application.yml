@@ -1,5 +1,5 @@
 server:
-  port: 7051
+  port: 7052
 
 logging:
   level:
@@ -33,7 +33,7 @@ spring:
         provider:
           koski-tls:
             token-uri: https://localhost:7022/koski/api/omadata-oauth2/authorization-server
-            authorization-uri: http://localhost:7021/koski/omadata-oauth2/authorize
+            authorization-uri: ${KOSKI_BACKEND_HOST}/koski/omadata-oauth2/authorize
 
 koski:
   resource-server:
