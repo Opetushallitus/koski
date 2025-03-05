@@ -35,8 +35,8 @@ public class KoskiController {
     private String getUserNotAuthenticatedHtml() {
         return """
                 <center>
-                <h1><a href="/oauth2/authorization/%s">Login</a></h1>
-                <br/>You are NOT authenticated.<br/>
+                <h1><a href="/oauth2/authorization/%s">Login and authorize</a></h1>
+                <br/>You have NOT authorized use of your data.<br/>
                 </center>
                 """.formatted(koskiService.getRegistrationId());
     }
@@ -46,7 +46,7 @@ public class KoskiController {
         return """
                 <center>
                 <h1><a href="/oauth2/logout/%s">Logout</a></h1>
-                <br/>You are authenticated.<br/>
+                <br/>You have authorized use of your data.<br/>
                 <br/>Access token: %s
                 <br/>Issued at: %s
                 <br/>Expires at: %s
@@ -76,13 +76,13 @@ public class KoskiController {
     public void oAuth2DoneCallbackEndpoint(Authentication authentication,
                                            HttpServletRequest request, HttpServletResponse response
     ) throws IOException, ServletException {
-        var auth2AuthorizedClient = koskiService.getAuthorizedClient(authentication, request);
-        if (auth2AuthorizedClient == null) {
+        var authorizedClient = koskiService.getAuthorizedClient(authentication, request);
+        if (authorizedClient == null) {
             response.sendRedirect(HOME_URL);
             return;
         }
         var servletContext = request.getServletContext();
-        var jsonData = koskiService.fetchDataFromResourceServer(auth2AuthorizedClient);
+        var jsonData = koskiService.fetchDataFromResourceServer(authorizedClient);
         servletContext.setAttribute("data", jsonData);
         var dispatcher = servletContext.getRequestDispatcher(HOME_URL);
         dispatcher.forward(request, response);
