@@ -13,11 +13,11 @@ spring:
       pem:
         koski-ssl-bundle:
           keystore:
-            certificate: "${jod.koski.client-cert:../koski-luovutuspalvelu/proxy/test/testca/certs/client.crt}"
-            private-key: "${jod.koski.client-key:../koski-luovutuspalvelu/proxy/test/testca/private/client.key}"
+            certificate: "${jod.koski.client-cert:../../koski-luovutuspalvelu/proxy/test/testca/certs/client.crt}"
+            private-key: "${jod.koski.client-key:../../koski-luovutuspalvelu/proxy/test/testca/private/client.key}"
           truststore:
             # Our client will trust the Authorization and Resource server with it's the certificate.
-            certificate: "${jod.koski.server-cert:../koski-luovutuspalvelu/proxy/test/testca/certs/root-ca.crt}"
+            certificate: "${jod.koski.server-cert:../../koski-luovutuspalvelu/proxy/test/testca/certs/root-ca.crt}"
   security:
     oauth2:
       client:
