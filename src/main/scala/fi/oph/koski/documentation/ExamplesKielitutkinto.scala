@@ -42,10 +42,11 @@ object ExamplesKielitutkinto {
         )),
         osasuoritukset = Some(List(
           ExamplesKielitutkinto.Osasuoritus.yleisenKielitutkinnonOsa("tekstinymmartaminen", "2", arviointipäivä),
-          ExamplesKielitutkinto.Osasuoritus.yleisenKielitutkinnonOsa("kirjoittaminen", "2", arviointipäivä),
-          ExamplesKielitutkinto.Osasuoritus.yleisenKielitutkinnonOsa("puheenymmartaminen", "2", arviointipäivä),
-          ExamplesKielitutkinto.Osasuoritus.yleisenKielitutkinnonOsa("puhuminen", "2", arviointipäivä),
-        ))
+          ExamplesKielitutkinto.Osasuoritus.yleisenKielitutkinnonOsa("kirjoittaminen", "3", arviointipäivä),
+          ExamplesKielitutkinto.Osasuoritus.yleisenKielitutkinnonOsa("puheenymmartaminen", "4", arviointipäivä),
+          ExamplesKielitutkinto.Osasuoritus.yleisenKielitutkinnonOsa("puhuminen", "4", arviointipäivä),
+        )),
+        yleisarvosana = Some(Koodistokoodiviite("3", "ykiarvosana")),
       )
   }
 

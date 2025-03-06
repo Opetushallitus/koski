@@ -58,6 +58,8 @@ case class YleisenKielitutkinnonSuoritus(
   override val osasuoritukset: Option[List[YleisenKielitutkinnonOsanSuoritus]],
   @KoodistoKoodiarvo("yleinenkielitutkinto")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("yleinenkielitutkinto", koodistoUri = "suorituksentyyppi"),
+  @KoodistoUri("ykiarvosana")
+  yleisarvosana: Option[Koodistokoodiviite],
 ) extends KielitutkinnonPäätasonSuoritus with Arvioinniton
 
 case class YleinenKielitutkinto(

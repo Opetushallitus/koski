@@ -1,4 +1,4 @@
-## 3.3.2025
+## 6.3.2025
 
 - Lisätty kielitutkinnon opiskeluoikeus ja sille yleisen kielitutkinnon päätason suoritus
 
