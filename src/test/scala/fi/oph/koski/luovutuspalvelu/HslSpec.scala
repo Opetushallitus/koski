@@ -244,6 +244,58 @@ class HslSpec extends AnyFreeSpec with KoskiHttpSpec with OpiskeluoikeusTestMeth
     }
   }
 
+  "tarkista ish luokka-asteet" in {
+    KoskiApplicationForTests.mydataRepository.create(internationalschool.oid, "hsl")
+
+    val originalIsh = getOpiskeluoikeudet(internationalschool.oid)
+      .filter(_.tyyppi.koodiarvo == "internationalschool")
+    originalIsh should have size 1
+    originalIsh.head.suoritukset should have size 13
+
+    postHsl(MockUsers.hslKäyttäjä, internationalschool.hetu.get) {
+      val opintoOikeudetXml = soapResponse() \ "Body" \ "opintoOikeudetServiceResponse" \ "opintoOikeudet"
+      val opintoOikeudetJsonString = (opintoOikeudetXml.text)
+      val actualJson = JsonMethods.parse(opintoOikeudetJsonString)
+      val opiskeluoikeudet = (actualJson \ "opiskeluoikeudet").children
+
+      val suoritukset: List[JValue] = opiskeluoikeudet
+        .filter { oo =>
+          (oo \ "tyyppi" \ "koodiarvo").extractOpt[String].contains("internationalschool")
+        }
+        .flatMap { oo =>
+          (oo \ "suoritukset").children
+        }
+
+      suoritukset should have size 3
+    }
+  }
+
+  "tarkista esh luokka-asteet" in {
+    KoskiApplicationForTests.mydataRepository.create(europeanSchoolOfHelsinki.oid, "hsl")
+
+    val originalEsh = getOpiskeluoikeudet(europeanSchoolOfHelsinki.oid)
+      .filter(_.tyyppi.koodiarvo == "europeanschoolofhelsinki")
+    originalEsh should have size 1
+    originalEsh.head.suoritukset should have size 15
+
+    postHsl(MockUsers.hslKäyttäjä, europeanSchoolOfHelsinki.hetu.get) {
+      val opintoOikeudetXml = soapResponse() \ "Body" \ "opintoOikeudetServiceResponse" \ "opintoOikeudet"
+      val opintoOikeudetJsonString = (opintoOikeudetXml.text)
+      val actualJson = JsonMethods.parse(opintoOikeudetJsonString)
+      val opiskeluoikeudet = (actualJson \ "opiskeluoikeudet").children
+
+      val suoritukset: List[JValue] = opiskeluoikeudet
+        .filter { oo =>
+          (oo \ "tyyppi" \ "koodiarvo").extractOpt[String].contains("europeanschoolofhelsinki")
+        }
+        .flatMap { oo =>
+          (oo \ "suoritukset").children
+        }
+
+      suoritukset should have size 3
+    }
+  }
+
 
   private def postHsl[A](user: MockUser, hetu: String)(fn: => A): A = {
     post("api/palveluvayla/hsl", body = soapRequest(hetu), headers = authHeaders(user) ++ Map(("Content-type" -> "text/xml")))(fn)
