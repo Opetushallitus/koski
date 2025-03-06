@@ -1,6 +1,14 @@
-## OmaData OAuth2 esimerkki-applikaatio
+# OmaData OAuth2 esimerkki-applikaatio
 
-# Kehitys
+Tässä hakemistossa on 2 esimerkkiapplikaatiota:
+
+Node-JS -versio, jonka lähdekoodi alihakemistoissa [client](client/) ja [server](server/). Kehitysohjeet tälle alla.
+
+Java-versio, jonka lähdekoodi hakemistossa [java](java/). Ks. [java/README.md](java/README.md).
+
+## Node-JS -esimerkkiapplikaatio
+
+### Kehitys
 
 Vaatii, että Koski on käynnissä portissa 7021. ks. [README.md](../README.md#koski-sovelluksen-ajaminen-paikallisesti) ja 
 että [koski-luovutuspalvelu](https://github.com/Opetushallitus/koski-luovutuspalvelu) -repositoryn sisältö on koski-hakemiston juuressa alihakemistossa
@@ -33,6 +41,10 @@ Koko putken rakenne:
           172.17.0.1 ja <port> arvottu.
           Lokaalisti <lokaali-ip> haetaan client/scripts/getmyip.js -skriptillä ja <port> on aina 7021.
 
+### Node-JS -version ympäristöön vienti
+
+Github actionsista käynnistettävissä, ks. [omadataoauth2sample_deploy.yml](../.github/workflows/omadataoauth2sample_deploy.yml)
+
 ## E2E-testit
 
 Em. koko putki -osuuden lisäksi pitää olla ajettuna:
@@ -46,8 +58,4 @@ Testien käynnistys:
 Ks. muut playwright-skriptit, esim. debug-moodi [package.json](client/package.json).
 
 Tarvittaessa, ja esim. CI:llä, Playwright-konfiguraation webServer-osuus [playwright.config.ts](client/playwright.config.ts) käynnistää
-esimerkki-applikaation frontin ja backendin, sekä luovutuspalvelun.
-
-# Ympäristöön vienti
-
-Github actionsista käynnistettävissä, ks. [omadataoauth2sample_deploy.yml](../.github/workflows/omadataoauth2sample_deploy.yml)
+esimerkki-applikaation frontin ja backendin, Java-version, sekä luovutuspalvelun.
