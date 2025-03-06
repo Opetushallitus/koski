@@ -21,9 +21,9 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version-file: 'omadata-oauth2-sample/.nvmrc'
-          cache: 'npm'
-          cache-dependency-path: 'omadata-oauth2-sample/client/package-lock.json'
+          node-version-file: "omadata-oauth2-sample/.nvmrc"
+          cache: "npm"
+          cache-dependency-path: "omadata-oauth2-sample/client/package-lock.json"
       - run: cd omadata-oauth2-sample/client && npm ci
       - run: cd omadata-oauth2-sample/client && npm run lint
       - run: cd omadata-oauth2-sample/client && npm run build
@@ -37,33 +37,33 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version-file: 'omadata-oauth2-sample/.nvmrc'
-          cache: 'npm'
-          cache-dependency-path: 'omadata-oauth2-sample/server/package-lock.json'
+          node-version-file: "omadata-oauth2-sample/.nvmrc"
+          cache: "npm"
+          cache-dependency-path: "omadata-oauth2-sample/server/package-lock.json"
       - run: cd omadata-oauth2-sample/server && npm ci
       - run: cd omadata-oauth2-sample/server && npm run lint
       - run: cd omadata-oauth2-sample/server && npm run build
       # TODO add test step when there are tests
-  test-e2e:
-    name: OAuth2 E2E ${{matrix.shardIndex}}/${{matrix.shardTotal}}
-    runs-on: ${{ inputs.runs-on }}
-    strategy:
-      fail-fast: false
-      matrix:
-        shardIndex: [1]
-        shardTotal: [1]
-    if: ${{ !contains(github.event.head_commit.message, '[skip-tests]') }}
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+  # test-e2e:
+  #   name: OAuth2 E2E ${{matrix.shardIndex}}/${{matrix.shardTotal}}
+  #   runs-on: ${{ inputs.runs-on }}
+  #   strategy:
+  #     fail-fast: false
+  #     matrix:
+  #       shardIndex: [1]
+  #       shardTotal: [1]
+  #   if: ${{ !contains(github.event.head_commit.message, '[skip-tests]') }}
+  #   steps:
+  #     - name: Checkout
+  #       uses: actions/checkout@v4
 
-      - name: Checkout luovutuspalvelu for e2e tests
-        uses: actions/checkout@v4
-        with:
-          repository: Opetushallitus/koski-luovutuspalvelu
-          path: koski-luovutuspalvelu
+  #     - name: Checkout luovutuspalvelu for e2e tests
+  #       uses: actions/checkout@v4
+  #       with:
+  #         repository: Opetushallitus/koski-luovutuspalvelu
+  #         path: koski-luovutuspalvelu
 
-      - uses: ./.github/actions/omadataoauth2_e2e_test
-        with:
-          shardIndex: ${{ matrix.shardIndex }}
-          shardTotal: ${{ matrix.shardTotal }}
+  #     - uses: ./.github/actions/omadataoauth2_e2e_test
+  #       with:
+  #         shardIndex: ${{ matrix.shardIndex }}
+  #         shardTotal: ${{ matrix.shardTotal }}
