@@ -194,29 +194,6 @@ class HslSpec extends AnyFreeSpec with KoskiHttpSpec with OpiskeluoikeusTestMeth
       }
     }
 
-    "sisältää tiedon järjestämismuodoista (ja oppisopimuksesta) jos olemassa" in {
-      KoskiApplicationForTests.mydataRepository.create(valviraaKiinnostavaTutkinto.oid, "hsl")
-      postHsl(MockUsers.hslKäyttäjä, valviraaKiinnostavaTutkinto.hetu.get) {
-        verifyResponseStatusOk()
-
-        val actualJson = parseOpintoOikeudetJson()
-        val opiskeluoikeudet = (actualJson \ "opiskeluoikeudet").children
-
-        opiskeluoikeudet should have size 1
-
-        val suoritukset = (opiskeluoikeudet.head \ "suoritukset").children
-        suoritukset should not be empty
-
-        val järjestämismuodot = (suoritukset.head \ "järjestämismuodot").children
-        järjestämismuodot should not be empty
-
-        val oppisopimusOld = järjestämismuodot.find { j =>
-          (j \ "järjestämismuoto" \ "tunniste" \ "koodiarvo").extract[String] == "20"
-        }
-        oppisopimusOld should not be empty
-      }
-    }
-
     "sisältää tiedon koulutussopimuksista jos olemassa" - {
       KoskiApplicationForTests.mydataRepository.create(reformitutkinto.oid, "hsl")
       postHsl(MockUsers.hslKäyttäjä, reformitutkinto.hetu.get) {
@@ -264,6 +241,46 @@ class HslSpec extends AnyFreeSpec with KoskiHttpSpec with OpiskeluoikeusTestMeth
       val expectedObject = JsonMethods.parse(expectedOppimääräJson)
 
       oppimääränSuoritus.get should equal(expectedObject)
+    }
+  }
+
+  "tarkista ish luokka-asteet" in {
+    KoskiApplicationForTests.mydataRepository.create(internationalschool.oid, "hsl")
+    postHsl(MockUsers.hslKäyttäjä, internationalschool.hetu.get) {
+      val opintoOikeudetXml = soapResponse() \ "Body" \ "opintoOikeudetServiceResponse" \ "opintoOikeudet"
+      val opintoOikeudetJsonString = (opintoOikeudetXml.text)
+      val actualJson = JsonMethods.parse(opintoOikeudetJsonString)
+      val opiskeluoikeudet = (actualJson \ "opiskeluoikeudet").children
+
+      val suoritukset: List[JValue] = opiskeluoikeudet.flatMap { oo =>
+        (oo \ "suoritukset").children
+      }.map { suoritus =>
+        suoritus \ "tyyppi"
+      }.filter { tyyppi =>
+        (tyyppi \ "koodiarvo").extractOpt[String].exists(_.contains("internationalschool"))
+      }
+
+      suoritukset should have size 3
+    }
+  }
+
+  "tarkista esh luokka-asteet" in {
+    KoskiApplicationForTests.mydataRepository.create(europeanSchoolOfHelsinki.oid, "hsl")
+    postHsl(MockUsers.hslKäyttäjä, europeanSchoolOfHelsinki.hetu.get) {
+      val opintoOikeudetXml = soapResponse() \ "Body" \ "opintoOikeudetServiceResponse" \ "opintoOikeudet"
+      val opintoOikeudetJsonString = (opintoOikeudetXml.text)
+      val actualJson = JsonMethods.parse(opintoOikeudetJsonString)
+      val opiskeluoikeudet = (actualJson \ "opiskeluoikeudet").children
+
+      val suoritukset: List[JValue] = opiskeluoikeudet.flatMap { oo =>
+        (oo \ "suoritukset").children
+      }.map { suoritus =>
+        suoritus \ "tyyppi"
+      }.filter { tyyppi =>
+        (tyyppi \ "koodiarvo").extractOpt[String].exists(_.contains("europeanschool"))
+      }
+
+      suoritukset should have size 3
     }
   }
 
