@@ -53,6 +53,9 @@ export const YleinenKielitutkintoEditor: React.FC<
         {suoritus.osasuoritukset?.map((os, index) => (
           <YleisenKielitutkinnonOsanSuoritusEditor osa={os} key={index} />
         ))}
+        <KeyValueRow localizableLabel="Yleisarvosana">
+          {t(suoritus.yleisarvosana?.nimi)}
+        </KeyValueRow>
       </KeyValueTable>
     </>
   ) : null

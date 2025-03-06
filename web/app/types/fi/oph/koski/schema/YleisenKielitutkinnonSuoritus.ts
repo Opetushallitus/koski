@@ -14,6 +14,7 @@ export type YleisenKielitutkinnonSuoritus = {
   $class: 'fi.oph.koski.schema.YleisenKielitutkinnonSuoritus'
   tyyppi: Koodistokoodiviite<'suorituksentyyppi', 'yleinenkielitutkinto'>
   tila?: Koodistokoodiviite<'suorituksentila', string>
+  yleisarvosana?: Koodistokoodiviite<'ykiarvosana', string>
   koulutusmoduuli: YleinenKielitutkinto
   toimipiste: OrganisaatioWithOid
   osasuoritukset?: Array<YleisenKielitutkinnonOsanSuoritus>
@@ -23,6 +24,7 @@ export type YleisenKielitutkinnonSuoritus = {
 export const YleisenKielitutkinnonSuoritus = (o: {
   tyyppi?: Koodistokoodiviite<'suorituksentyyppi', 'yleinenkielitutkinto'>
   tila?: Koodistokoodiviite<'suorituksentila', string>
+  yleisarvosana?: Koodistokoodiviite<'ykiarvosana', string>
   koulutusmoduuli: YleinenKielitutkinto
   toimipiste: OrganisaatioWithOid
   osasuoritukset?: Array<YleisenKielitutkinnonOsanSuoritus>
