@@ -121,10 +121,6 @@ object Koodistot {
     KoodistoAsetus("ammatillisensuorituksenkorotus"),
     KoodistoAsetus("omadataoauth2scope"),
     KoodistoAsetus("omadataoauth2client"),
-    // TODO: Nämä siirtyvät KIOS-viranhaltijoiden ylläpidettäväksi, mutta luodaan ne ensin KOSKI-koodilla.
-    KoodistoAsetus("ykiarvosana"),
-    KoodistoAsetus("ykisuorituksenosa"),
-    KoodistoAsetus("ykitutkintotaso"),
   )
   val koskiKoodistot = koskiKoodistoAsetukset.map(_.toString)
 
@@ -169,6 +165,9 @@ object Koodistot {
     KoodistoAsetus("koulutuksenosattuva"),
     KoodistoAsetus("osaamismerkit"),
     KoodistoAsetus("jotpaasianumero"),
+    KoodistoAsetus("ykiarvosana"),
+    KoodistoAsetus("ykisuorituksenosa"),
+    KoodistoAsetus("ykitutkintotaso"),
   )
   val muutKoodistot = muutKoodistoAsetukset.map(_.toString)
 
