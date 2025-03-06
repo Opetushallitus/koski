@@ -244,6 +244,9 @@ class HslSpec extends AnyFreeSpec with KoskiHttpSpec with OpiskeluoikeusTestMeth
     }
   }
 
+  // TODO Testaa että ISH palauttaa vain luokka-asteet 9-11
+  // TODO Testaa että ESH palauttaa vain luokka-asteet S5-S7
+
 
   private def postHsl[A](user: MockUser, hetu: String)(fn: => A): A = {
     post("api/palveluvayla/hsl", body = soapRequest(hetu), headers = authHeaders(user) ++ Map(("Content-type" -> "text/xml")))(fn)
