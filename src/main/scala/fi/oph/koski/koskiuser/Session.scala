@@ -59,7 +59,7 @@ class KoskiSpecificSession(
   def organisationOids(accessType: AccessType.Value): Set[String] = orgKäyttöoikeudet.collect { case k: KäyttöoikeusOrg if k.organisaatioAccessType.contains(accessType) => k.organisaatio.oid }
   lazy val globalAccess = globalKäyttöoikeudet.flatMap { _.globalAccessType }
   def isRoot = globalAccess.contains(AccessType.write)
-  def isPalvelukäyttäjä = orgKäyttöoikeudet.flatMap(_.organisaatiokohtaisetPalveluroolit).contains(Palvelurooli(TIEDONSIIRTO))
+  def isPalvelukäyttäjä = orgKäyttöoikeudet.flatMap(_.organisaatiokohtaisetPalveluroolit).contains(Palvelurooli(TIEDONSIIRTO)) || isKielitutkintorekisteri
   def hasReadAccess(organisaatio: Organisaatio.Oid, koulutustoimija: Option[Organisaatio.Oid]) = hasAccess(organisaatio, koulutustoimija, AccessType.read)
 
   def hasRaporttiReadAccess(organisaatio: Organisaatio.Oid): Boolean = {
@@ -138,6 +138,9 @@ class KoskiSpecificSession(
         .exists(k => koulutustoimija.contains(k.organisaatio.oid) && k.organisaatioAccessType.contains(accessType))
   }
 
+  def hasKielitutkintoAccess(organisaatio: Organisaatio.Oid, koulutustoimija: Option[Organisaatio.Oid], accessType: AccessType.Value): Boolean =
+    hasAccess(organisaatio, koulutustoimija, accessType) || (isKielitutkintorekisteri && globalAccess.contains(accessType))
+
   def hasAccess(organisaatio: Organisaatio.Oid, koulutustoimija: Option[Organisaatio.Oid], accessType: AccessType.Value): Boolean = {
     val access = globalAccess.contains(accessType) ||
       organisationOids(accessType).contains(organisaatio) ||
@@ -156,6 +159,7 @@ class KoskiSpecificSession(
   def hasRaportitAccess = hasAnyReadAccess && hasRole(LUOTTAMUKSELLINEN_KAIKKI_TIEDOT) && !hasGlobalKoulutusmuotoReadAccess
   def sensitiveDataAllowed(allowedRoles: Set[Role]) = allowedRoles.exists(hasRole)
   def hasAnyLähdejärjestelmäkytkennänPurkaminenAccess = globalAccess.contains(AccessType.lähdejärjestelmäkytkennänPurkaminen) || organisationOids(AccessType.lähdejärjestelmäkytkennänPurkaminen).nonEmpty
+  def isKielitutkintorekisteri: Boolean = globalKäyttöoikeudet.exists(_.globalPalveluroolit.contains(Palvelurooli("KOSKI", KIELITUTKINTOREKISTERI)))
 
   // Note: keep in sync with PermissionCheckServlet's hasSufficientRoles function. See PermissionCheckServlet for more comments.
   private val OppijanumerorekisteriRekisterinpitäjä = Palvelurooli("OPPIJANUMEROREKISTERI", "REKISTERINPITAJA")

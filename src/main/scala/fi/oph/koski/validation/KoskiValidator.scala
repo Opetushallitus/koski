@@ -14,7 +14,7 @@ import fi.oph.koski.opiskeluoikeus.KoskiOpiskeluoikeusRepository
 import fi.oph.koski.organisaatio.OrganisaatioRepository
 import fi.oph.koski.schema.Henkilö.Oid
 import fi.oph.koski.schema.KoskiSchema.strictDeserialization
-import fi.oph.koski.schema.Opiskeluoikeus.{koulutustoimijaTraversal}
+import fi.oph.koski.schema.Opiskeluoikeus.koulutustoimijaTraversal
 import fi.oph.koski.schema._
 import fi.oph.koski.suostumus.SuostumuksenPeruutusService
 import fi.oph.koski.tutkinto.Koulutustyyppi._
@@ -525,6 +525,10 @@ class KoskiValidator(
       case t: TaiteenPerusopetuksenOpiskeluoikeus =>
         val koulutustoimija = if(t.onHankintakoulutus) opiskeluoikeudenKoulutustoimija else organisaationKoulutustoimija
         HttpStatus.validate(user.hasTaiteenPerusopetusAccess(organisaatio.oid, koulutustoimija, accessType)) {
+          KoskiErrorCategory.forbidden.organisaatio("Ei oikeuksia organisatioon " + organisaatio.oid)
+        }
+      case _: KielitutkinnonOpiskeluoikeus =>
+        HttpStatus.validate(user.hasKielitutkintoAccess(organisaatio.oid, organisaationKoulutustoimija, accessType)) {
           KoskiErrorCategory.forbidden.organisaatio("Ei oikeuksia organisatioon " + organisaatio.oid)
         }
       case _ =>

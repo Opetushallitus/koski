@@ -1,9 +1,9 @@
 {
   "henkilö" : {
     "hetu" : "160586-873P",
-    "etunimet" : "Aarne",
-    "kutsumanimi" : "Aarne",
-    "sukunimi" : "Ammattilainen"
+    "etunimet" : "Kielitutkinto",
+    "kutsumanimi" : "Kielitutkinto",
+    "sukunimi" : "Suorittaja"
   },
   "opiskeluoikeudet" : [ {
     "tila" : {

@@ -37,6 +37,7 @@ object Rooli {
   val POISTETUT_OPISKELUOIKEUDET = "POISTETUT_OPISKELUOIKEUDET" // Ei käyttöoikeus-palvelussa
   val LAHDEJARJESTELMAKYTKENNAN_PURKAMINEN = "LAHDEJARJESTELMAKYTKENNAN_PURKAMINEN" // Oikeus muuttaa tiedonsiirron kautta lisätty opiskeluoikeus käyttöliittymällä muokattavaksi
   val SUORITUSJAKO_KATSELIJA = "SUORITUSJAKO_KATSELIJA" // Ei käyttöoikeus-palvelussa
+  val KIELITUTKINTOREKISTERI = "KIELITUTKINTOREKISTERI"
 
   // Suostumusperustaisen (OAuth2) -rajapinnan scopeissa käytetyt käyttöoikeudet. "OMADATAOAUTH2_"-jälkeinen osuus on sellaisenaan
   // tuettuna merkkijonona myös scopessa, joten näiden muuttamista ei voi tehdä vapaasti.
@@ -167,6 +168,7 @@ object Käyttöoikeus {
     case Palvelurooli("KOSKI", GLOBAALI_LUKU_TAITEENPERUSOPETUS) => List(Palvelurooli(TAITEENPERUSOPETUS))
     case Palvelurooli("KOSKI", TAITEENPERUSOPETUS_HANKINTAKOULUTUS) => List(Palvelurooli(TAITEENPERUSOPETUS))
     case Palvelurooli("KOSKI", GLOBAALI_LUKU_KIELITUTKINTO) => List(Palvelurooli(KIELITUTKINTO))
+    case Palvelurooli("KOSKI", KIELITUTKINTOREKISTERI) => List(Palvelurooli(KIELITUTKINTO))
     case rooli => List(rooli)
   }
 }
@@ -185,6 +187,10 @@ case class KäyttöoikeusGlobal(globalPalveluroolit: List[Palvelurooli]) extends
       AccessType.tiedonsiirronMitätöinti,
       AccessType.käyttöliittymäsiirronMitätöinti,
       AccessType.lähdejärjestelmäkytkennänPurkaminen,
+    )
+    case Palvelurooli("KOSKI", KIELITUTKINTOREKISTERI) => List(
+      AccessType.read,
+      AccessType.write,
     )
     case _ => Nil
   }
