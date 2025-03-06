@@ -44,10 +44,11 @@ import {
   UusiIBKurssiKey,
   UusiPaikallinenLukionKurssiKey
 } from '../state/preIB2015Kurssi'
+import { IBLaajuusEdit } from '../components/IBLaajuusEdit'
 
 export const UusiPreIB2015OsasuoritusDialog: AddOppiaineenOsasuoritusDialog<
   PreIBKurssinSuoritus2015
-> = ({ onAdd, ...props }) => {
+> = ({ onAdd, alkamispäivä, ...props }) => {
   const {
     preferences: paikallisetLukionKurssit,
     store: storePaikallinenLukionKurssi,
@@ -63,7 +64,8 @@ export const UusiPreIB2015OsasuoritusDialog: AddOppiaineenOsasuoritusDialog<
   } = usePreferences<IBKurssi>(props.organisaatioOid, 'ibkurssi')
 
   const state = usePreIB2015OsasuoritusState(
-    props.oppiaine.koulutusmoduuli.tunniste
+    props.oppiaine.koulutusmoduuli.tunniste,
+    alkamispäivä
   )
 
   const valtakunnallisetTunnisteetOptions =
@@ -225,12 +227,10 @@ export const UusiPreIB2015OsasuoritusDialog: AddOppiaineenOsasuoritusDialog<
         {state.laajuus.visible && (
           <label>
             {t('Laajuus')}
-            <NumberField
-              value={state.laajuus.value?.arvo}
-              onChange={(arvo) =>
-                state.laajuus.set(LaajuusKursseissa({ arvo }))
-              }
-              testId="laajuus"
+            <IBLaajuusEdit
+              alkamispäivä={alkamispäivä}
+              value={state.laajuus.value}
+              onChange={state.laajuus.set}
             />
           </label>
         )}

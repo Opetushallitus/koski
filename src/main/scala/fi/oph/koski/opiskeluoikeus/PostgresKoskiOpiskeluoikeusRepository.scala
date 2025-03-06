@@ -14,6 +14,7 @@ import slick.dbio.{DBIOAction, NoStream}
 import slick.jdbc.GetResult
 import slick.lifted.Query
 
+import java.sql.Timestamp
 import java.time.LocalDate
 
 class PostgresKoskiOpiskeluoikeusRepository(
@@ -188,6 +189,19 @@ class PostgresKoskiOpiskeluoikeusRepository(
           and oppija_oid = any(select oids from linkitetyt)
       """.as[LocalDate])
   }
+
+  def getKoulutusmuodonAlkamisajatIlmanKäyttöoikeustarkistusta(
+    oppijaOid: String,
+    koulutusmuoto: String
+  ): Map[Opiskeluoikeus.Oid, LocalDate] =
+    runDbSync(sql"""
+      SELECT oid, alkamispaiva
+      FROM opiskeluoikeus
+      WHERE oppija_oid = $oppijaOid
+        AND koulutusmuoto = $koulutusmuoto
+  """.as[(String, Timestamp)])
+      .toMap
+      .mapValues(_.toLocalDateTime.toLocalDate)
 
   private implicit def getLocalDate: GetResult[LocalDate] = GetResult(r => {
     r.getLocalDate("paiva")

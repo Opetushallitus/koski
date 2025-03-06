@@ -260,6 +260,26 @@ object ExamplesIB {
     lisäpisteet = Some(Koodistokoodiviite(koodiarvo = "3", koodistoUri = "arviointiasteikkolisapisteetib"))
   )
 
+  def keskeneräinenIbTutkintoOpiskeluoikeus(alkamispäivä: LocalDate) = IBOpiskeluoikeus(
+    oppilaitos = Some(ressunLukio),
+    tila = LukionOpiskeluoikeudenTila(
+      List(
+        LukionOpiskeluoikeusjakso(alkamispäivä, LukioExampleData.opiskeluoikeusAktiivinen, Some(ExampleData.valtionosuusRahoitteinen)),
+      )
+    ),
+    suoritukset = List(
+      IBTutkinnonSuoritus(
+        toimipiste = ressunLukio,
+        suorituskieli = englanti,
+        osasuoritukset = Some(osasuoritukset(vainPredictedArviointi = true)),
+        theoryOfKnowledge = None,
+        extendedEssay = None,
+        creativityActionService = None,
+        lisäpisteet = None,
+      )
+    )
+  )
+
   def preIBAineSuoritus(oppiaine: PreIBOppiaine2015, kurssit: List[(PreIBKurssi2015, String)]) = PreIBOppiaineenSuoritus2015(
     koulutusmoduuli = oppiaine,
     osasuoritukset = Some(kurssit.map { case (kurssi, arvosana) =>
@@ -345,13 +365,14 @@ object ExamplesIB {
     suoritukset = opiskeluoikeus.suoritukset.map {
       case suoritus: IBTutkinnonSuoritus =>
         suoritus.copy(
-          osasuoritukset = suoritus.osasuoritukset.map(_.map(osasuoritus =>
-            osasuoritus.copy(
+          osasuoritukset = suoritus.osasuoritukset.map(_.map {
+            case osasuoritus: IBOppiaineenSuoritus => osasuoritus.copy(
               arviointi = Some(osasuoritus.predictedArviointi.getOrElse(List.empty).map(IBOppiaineenArviointi.apply) ++ osasuoritus.arviointi.getOrElse(List.empty))
                 .flatMap(optionalList),
               predictedArviointi = None
             )
-          ))
+            case os: Any => os
+          })
         )
       case s: IBPäätasonSuoritus => s
     }
