@@ -1,0 +1,40 @@
+server:
+  port: 7052
+
+logging:
+  level:
+    org.springframework.security: DEBUG
+
+spring:
+  application:
+    name: omadata-oauth2-sample-java
+  ssl:
+    bundle:
+      pem:
+        koski-ssl-bundle:
+          keystore:
+            certificate: "${jod.koski.client-cert:../../koski-luovutuspalvelu/proxy/test/testca/certs/client.crt}"
+            private-key: "${jod.koski.client-key:../../koski-luovutuspalvelu/proxy/test/testca/private/client.key}"
+          truststore:
+            # Our client will trust the Authorization and Resource server with it's the certificate.
+            certificate: "${jod.koski.server-cert:../../koski-luovutuspalvelu/proxy/test/testca/certs/root-ca.crt}"
+  security:
+    oauth2:
+      client:
+        registration:
+          koski:
+            provider: koski-tls
+            client-id: omadataoauth2sample
+            client-authentication-method: none
+            authorization-grant-type: authorization_code
+            scope: HENKILOTIEDOT_HETU,OPISKELUOIKEUDET_KAIKKI_TIEDOT
+            client-name: koski
+            redirect-uri: "{baseUrl}/api/openid-api-test/form-post-response-cb"
+        provider:
+          koski-tls:
+            token-uri: https://localhost:7022/koski/api/omadata-oauth2/authorization-server
+            authorization-uri: ${KOSKI_BACKEND_HOST}/koski/omadata-oauth2/authorize
+
+koski:
+  resource-server:
+    url: https://localhost:7022/koski/api/omadata-oauth2/resource-server

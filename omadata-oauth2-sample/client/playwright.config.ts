@@ -107,6 +107,14 @@ export default defineConfig({
       stderr: "pipe",
       timeout: 2 * 60 * 1000,
     },
+    {
+      command: `JAVA_HOME=${process.env.CI ? process.env.JAVA_HOME_23_X64 : process.env.JAVA_HOME} KOSKI_BACKEND_HOST=${process.env.KOSKI_BACKEND_HOST || process.env.CI ? `http://172.17.0.1:${process.env.KOSKI_BACKEND_PORT || "7021"}` : `http://${getMyIp()}:${process.env.KOSKI_BACKEND_PORT || "7021"}`} npm run start-java-sample`,
+      url: "http://localhost:7052",
+      reuseExistingServer: !process.env.CI,
+      stdout: "pipe",
+      stderr: "pipe",
+      timeout: 2 * 60 * 1000,
+    },
   ],
 })
 
