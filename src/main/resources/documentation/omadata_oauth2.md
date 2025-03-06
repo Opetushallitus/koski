@@ -216,10 +216,12 @@ opintoihin, voi edellisiä pyytäessään saadakin jälkimmäiset, joiden tulkit
 
 Osoitteessa [https://github.com/Opetushallitus/koski/tree/master/omadata-oauth2-sample](https://github.com/Opetushallitus/koski/tree/master/omadata-oauth2-sample) on rajapintaa käyttävän esimerkkiapplikaation lähdekoodi.
 
-OPH:n testiympäristöissä esimerkkiapplikaatio pyörii osoitteissa:
+OPH:n testiympäristöissä esimerkkiapplikaation Node-JS -versio pyörii osoitteissa:
 
 * DEV-ympäristö: [https://oph-koski-omadataoauth2sample-dev.testiopintopolku.fi/](https://oph-koski-omadataoauth2sample-dev.testiopintopolku.fi/)
 * QA-ympäristö: [https://oph-koski-omadataoauth2sample-qa.testiopintopolku.fi/](https://oph-koski-omadataoauth2sample-qa.testiopintopolku.fi/)
+
+Java-versio ei ole ajossa ympäristössä.
 
 ## Linkkejä spesifikaatioihin
 
