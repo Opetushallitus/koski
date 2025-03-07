@@ -84,8 +84,8 @@ object ExamplesIB {
     todistuksellaNäkyvätLisätiedot = Some("Suorittanut etäopetuskokeiluna"),
     osasuoritukset = Some(List(
       lukionOppiaineenPreIBSuoritus2019(Lukio2019ExampleData.lukionÄidinkieli("AI1", false), List(
-        (Lukio2019ExampleData.muuModuuliOppiaineissa("ÄI1"), "8"),
-        (Lukio2019ExampleData.muuModuuliOppiaineissa("ÄI2").copy(pakollinen = false), "8")
+        (Lukio2019ExampleData.äidinkielenModuuliOppiaineissa("ÄI1"), "8"),
+        (Lukio2019ExampleData.äidinkielenModuuliOppiaineissa("ÄI2").copy(pakollinen = false), "8")
       )).copy(arviointi = Lukio2019ExampleData.numeerinenLukionOppiaineenArviointi(9)),
 
       lukionOppiaineenPreIBSuoritus2019(Lukio2019ExampleData.matematiikka("MAB"), List(
