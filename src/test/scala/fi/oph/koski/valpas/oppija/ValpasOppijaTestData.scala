@@ -701,6 +701,17 @@ object ValpasOppijaTestData {
         )
       )
     ),
+    (ValpasMockOppijat.muuttanutUlkomaille,
+      List(
+        ExpectedData(
+          ValpasOpiskeluoikeusExampleData.oppivelvollinenYsiluokkaKeskenKeväällä2021Opiskeluoikeus,
+          onHakeutumisValvottavaOpiskeluoikeus = true,
+          onHakeutumisvalvovaOppilaitos = true,
+          onSuorittamisvalvovaOppilaitos = false,
+          perusopetusTiedot = Some(ExpectedDataPerusopetusTiedot("voimassa", "lasna")),
+        )
+      )
+    ),
   ).sortBy(item => (item._1.sukunimi, item._1.etunimet))
 
   // Jyväskylän normaalikoulusta löytyvät näytettävät hakeutumisvelvolliset aakkosjärjestyksessä, tutkittaessa syksyn rajapäivän jälkeen
@@ -1082,6 +1093,17 @@ object ValpasOppijaTestData {
           onHakeutumisvalvovaOppilaitos = true,
           onSuorittamisvalvovaOppilaitos = false,
           muuOpetusTiedot = Some(ExpectedDataMuuOpetusTiedot("eronnut", "eronnut")),
+        )
+      )
+    ),
+    (ValpasMockOppijat.muuttanutUlkomaille,
+      List(
+        ExpectedData(
+          ValpasOpiskeluoikeusExampleData.oppivelvollinenYsiluokkaKeskenKeväällä2021Opiskeluoikeus,
+          onHakeutumisValvottavaOpiskeluoikeus = true,
+          onHakeutumisvalvovaOppilaitos = true,
+          onSuorittamisvalvovaOppilaitos = false,
+          perusopetusTiedot = Some(ExpectedDataPerusopetusTiedot("voimassa", "lasna")),
         )
       )
     ),
