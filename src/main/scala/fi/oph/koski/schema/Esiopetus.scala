@@ -41,19 +41,28 @@ case class EsiopetuksenOpiskeluoikeus(
 }
 
 case class EsiopetuksenOpiskeluoikeudenLisätiedot(
+  @Description("Kenttä ei käytössä 1.9.2026 alkaen.")
   @Description("Pidennetty oppivelvollisuus alkamis- ja päättymispäivineen. Kentän puuttuminen tai null-arvo tulkitaan siten, että oppilaalla ei ole pidennettyä oppivelvollisuutta.")
   @Description("Tieto mahdollisesta pidennetystä oppivelvollisuudesta alkamis- ja päättymispäivineen.")
   @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))
   @OksaUri("tmpOKSAID517", "pidennetty oppivelvollisuus")
   pidennettyOppivelvollisuus: Option[Aikajakso] = None,
+  @Description("Kenttä käytössä 1.8.2026 alkaen.")
+  @Description("Korvaa kentän pidennettyOppivelvollisuus.")
+  @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))
+  päätösVarhennetustaOppivelvollisuudesta: Option[Aikajakso] = None,
+  @Description("Kenttä käytössä 1.8.2026 alkaen.")
+  @Description("Päätös opetuksen järjestämisestä oppilaalle vamman, sairauden tai toimintakyvyn rajoitteen perusteella.")
+  @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))
+  päätösOpetuksenJärjestämisestäVammanSairaudenTaiRajoitteenPerusteella: Option[List[Aikajakso]] = None,
   @KoodistoUri("perusopetuksentukimuoto")
   @Description("Oppilaan saamat laissa säädetyt tukimuodot.")
   @Tooltip("Oppilaan saamat laissa säädetyt tukimuodot. Voi olla useita.")
   @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))
   @RedundantData
   tukimuodot: Option[List[Koodistokoodiviite]] = None,
-  @Description("Erityisen tuen päätös alkamis- ja päättymispäivineen. Kentän puuttuminen tai null-arvo tulkitaan siten, että päätöstä ei ole tehty. Rahoituksen laskennassa käytettävä tieto.")
-  @Tooltip("Mahdollisen erityisen tuen päätöksen alkamis- ja päättymispäivät. Rahoituksen laskennassa käytettävä tieto.")
+  @Description("Erityisen tuen päätös alkamis- ja päättymispäivineen. Kentän puuttuminen tai null-arvo tulkitaan siten, että päätöstä ei ole tehty. Rahoituksen laskennassa käytettävä tieto. Voimassa 31.8.2026 asti.")
+  @Tooltip("Mahdollisen erityisen tuen päätöksen alkamis- ja päättymispäivät. Rahoituksen laskennassa käytettävä tieto. Voimassa 31.8.2026 asti.")
   @OksaUri("tmpOKSAID281", "henkilökohtainen opetuksen järjestämistä koskeva suunnitelma")
   @Deprecated("Käytä korvaavaa kenttää Erityisen tuen päätökset")
   @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))
@@ -63,10 +72,16 @@ case class EsiopetuksenOpiskeluoikeudenLisätiedot(
   @OksaUri("tmpOKSAID281", "henkilökohtainen opetuksen järjestämistä koskeva suunnitelma")
   @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))
   erityisenTuenPäätökset: Option[List[ErityisenTuenPäätös]] = None,
+  @Description("Kenttä käytössä 1.8.2025 alkaen")
+  @Description("Korvaa aiemman kentän erityisenTuenPäätökset.")
+  @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))
+  tukeaKoskevatPäätökset: Option[List[TukeaKoskevaPäätös]] = None,
+  @Description("Kenttä ei käytössä 1.9.2026 alkaen.")
   @Description("Onko oppija muu kuin vaikeimmin kehitysvammainen. Lista alku-loppu päivämääräpareja. Rahoituksen laskennassa käytettävä tieto.")
-  @Tooltip("Tieto siitä, onko oppija muu kuin vaikeimmin kehitysvammainen (alku- ja loppupäivämäärät). Voi olla useita erillisiä jaksoja. Rahoituksen laskennassa käytettävä tieto.")
+  @Tooltip("Tieto siitä, onko oppija muu kuin vaikeimmin kehitysvammainen (alku- ja loppupäivämäärät). Voi olla useita erillisiä jaksoja. Rahoituksen laskennassa käytettävä tieto. Kenttä ei käytössä 1.9.2026 alkaen.")
   @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))
   vammainen: Option[List[Aikajakso]] = None,
+  @Description("Kenttä ei käytössä 1.9.2026 alkaen.")
   @Description("Onko oppija vaikeasti kehitysvammainen. Lista alku-loppu päivämääräpareja. Rahoituksen laskennassa käytettävä tieto.")
   @Tooltip("Tieto siitä, onko oppija vaikeasti kehitysvammainen (alku- ja loppupäivämäärät). Voi olla useita erillisiä jaksoja. Rahoituksen laskennassa käytettävä tieto.")
   @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))
@@ -92,7 +107,9 @@ case class EsiopetuksenOpiskeluoikeudenLisätiedot(
   with Kuljetusetuinen
   with Vammainen
   with VaikeastiVammainen
+  with VammaSairausTaiRajoite
   with PidennettyOppivelvollisuus
+  with VarhennettuOppivelvollisuus
 {
   def kaikkiErityisenTuenPäätöstenAikajaksot: List[MahdollisestiAlkupäivällinenJakso] = {
     erityisenTuenPäätös.map(p => List(p)).getOrElse(List.empty) ++ erityisenTuenPäätökset.getOrElse(List.empty)

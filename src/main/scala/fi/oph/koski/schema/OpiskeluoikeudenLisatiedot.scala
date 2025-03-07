@@ -67,6 +67,10 @@ trait UlkomainenVaihtoopiskelija {
   def ulkomainenVaihtoopiskelija: Boolean
 }
 
+trait VammaSairausTaiRajoite {
+  def päätösOpetuksenJärjestämisestäVammanSairaudenTaiRajoitteenPerusteella: Option[List[Aikajakso]]
+}
+
 trait Vammainen {
   def vammainen: Option[List[Aikajakso]]
 }
@@ -81,6 +85,10 @@ trait VammainenJaAvustaja {
 
 trait PidennettyOppivelvollisuus extends Vammainen with VaikeastiVammainen with ErityisenTuenPäätöksiäSisältäväLisätieto {
   def pidennettyOppivelvollisuus: Option[Aikajakso]
+}
+
+trait VarhennettuOppivelvollisuus extends Vammainen with VaikeastiVammainen with ErityisenTuenPäätöksiäSisältäväLisätieto {
+  def päätösVarhennetustaOppivelvollisuudesta: Option[Aikajakso]
 }
 
 trait OsaAikaisuusjaksollinen {

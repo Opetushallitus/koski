@@ -87,11 +87,16 @@ case class PerusopetuksenOpiskeluoikeudenLisätiedot(
   @Tooltip("Perusopetuksen aloitusta aikaistettu, eli oppilas aloittanut peruskoulun ennen oppivelvollisuusikää.")
   @DefaultValue(false)
   aloittanutEnnenOppivelvollisuutta: Boolean = false,
+  @Description("Kenttä ei käytössä 1.9.2026 alkaen.")
   @Description("Pidennetty oppivelvollisuus alkamis- ja päättymispäivineen. Kentän puuttuminen tai null-arvo tulkitaan siten, että oppilaalla ei ole pidennettyä oppivelvollisuutta. Rahoituksen laskennassa käytettävä tieto.")
   @Tooltip("Mahdollisen pidennetyn oppivelvollisuuden alkamis- ja päättymispäivät. Rahoituksen laskennassa käytettävä tieto.")
   @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))
   @OksaUri("tmpOKSAID517", "pidennetty oppivelvollisuus")
   pidennettyOppivelvollisuus: Option[Aikajakso] = None,
+  @Description("Kenttä käytössä 1.8.2026 alkaen.")
+  @Description("Päätös opetuksen järjestämisestä oppilaalle vamman, sairauden tai toimintakyvyn rajoitteen perusteella.")
+  @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))
+  päätösOpetuksenJärjestämisestäVammanSairaudenTaiRajoitteenPerusteella: Option[List[Aikajakso]] = None,
   @KoodistoUri("perusopetuksentukimuoto")
   @Description("Oppilaan saamat laissa säädetyt tukimuodot.")
   @Tooltip("Oppilaan saamat laissa säädetyt tukimuodot. Voi olla useita.")
@@ -104,11 +109,16 @@ case class PerusopetuksenOpiskeluoikeudenLisätiedot(
   @Deprecated("Käytä korvaavaa kenttää Erityisen tuen päätökset")
   @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))
   erityisenTuenPäätös: Option[ErityisenTuenPäätös] = None,
+  @Description("Kenttä ei käytössä 1.8.2026 alkaen.")
   @Description("Erityisen tuen päätökset alkamis- ja päättymispäivineen. Voi olla useita erillisiä jaksoja. Rahoituksen laskennassa käytettävä tieto.")
   @Tooltip("Mahdollisen erityisen tuen päätösten alkamis- ja päättymispäivät. Voi olla useita erillisiä jaksoja. Rahoituksen laskennassa käytettävä tieto.")
   @OksaUri("tmpOKSAID281", "henkilökohtainen opetuksen järjestämistä koskeva suunnitelma")
   @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))
   erityisenTuenPäätökset: Option[List[ErityisenTuenPäätös]] = None,
+  @Description("Kenttä käytössä 1.8.2025 alkaen.")
+  @Description("Korvaa aiemman kentän erityisenTuenPäätökset.")
+  @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))
+  tukeaKoskevatPäätökset: Option[List[TukeaKoskevaPäätös]] = None,
   @Description("Tehostetun tuen päätös alkamis- ja päättymispäivineen. Kentän puuttuminen tai null-arvo tulkitaan siten, että päätöstä ei ole tehty.")
   @Tooltip("Mahdollisen tehostetun tuen päätös päätöksen alkamis- ja päättymispäivät.")
   @OksaUri("tmpOKSAID511", "tehostettu tuki")
@@ -146,10 +156,12 @@ case class PerusopetuksenOpiskeluoikeudenLisätiedot(
   @DefaultValue(false)
   @Title("Vuosiluokkiin sitomaton opetus")
   vuosiluokkiinSitoutumatonOpetus: Boolean = false,
+  @Description("Kenttä ei käytössä 1.9.2026 alkaen.")
   @Description("Onko oppija muu kuin vaikeimmin kehitysvammainen. Lista alku-loppu päivämääräpareja. Rahoituksen laskennassa käytettävä tieto.")
   @Tooltip("Tieto siitä, onko oppija muu kuin vaikeimmin kehitysvammainen (alku- ja loppupäivämäärät). Voi olla useita erillisiä jaksoja. Rahoituksen laskennassa käytettävä tieto.")
   @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))
   vammainen: Option[List[Aikajakso]] = None,
+  @Description("Kenttä ei käytössä 1.9.2026 alkaen.")
   @Description("Onko oppija vaikeasti kehitysvammainen. Lista alku-loppu päivämääräpareja. Rahoituksen laskennassa käytettävä tieto.")
   @Tooltip("Tieto siitä, onko oppija vaikeasti kehitysvammainen (alku- ja loppupäivämäärät). Voi olla useita erillisiä jaksoja. Rahoituksen laskennassa käytettävä tieto.")
   @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))
@@ -180,6 +192,7 @@ case class PerusopetuksenOpiskeluoikeudenLisätiedot(
   with Kotiopetuksellinen
   with Vammainen
   with VaikeastiVammainen
+  with VammaSairausTaiRajoite
   with PidennettyOppivelvollisuus
   with Ulkomaanaikajaksollinen
 {
@@ -340,6 +353,8 @@ case class NuortenPerusopetuksenOppiaineenSuoritus(
   koulutusmoduuli: NuortenPerusopetuksenOppiaine,
   @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT, Rooli.SUORITUSJAKO_KATSELIJA))
   yksilöllistettyOppimäärä: Boolean = false,
+  @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT, Rooli.SUORITUSJAKO_KATSELIJA))
+  rajattuOppimäärä: Boolean = false,
   @Description("Tieto siitä, onko oppiaineen opetus painotettu (true/false). Painotetun opetuksen (oppiaine tai oppiainekokonaisuus, kaksikielinen opetus) tavoitteet ja arviointiperusteet ovat valtakunnallisen opetussuunnitelman perusteiden mukaiset.")
   @Tooltip("Onko oppilas ollut oppiaineessa painotetussa opetuksessa. Painotetun opetuksen (oppiaine tai oppiainekokonaisuus, kaksikielinen opetus) tavoitteet ja arviointiperusteet ovat valtakunnallisen opetussuunnitelman perusteiden mukaiset.")
   painotettuOpetus: Boolean = false,
@@ -348,7 +363,7 @@ case class NuortenPerusopetuksenOppiaineenSuoritus(
   @KoodistoKoodiarvo("perusopetuksenoppiaine")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "perusopetuksenoppiaine", koodistoUri = "suorituksentyyppi"),
   suoritustapa: Option[Koodistokoodiviite] = None
-) extends PerusopetuksenOppiaineenSuoritus with OppiaineenTaiToiminta_AlueenSuoritus with Vahvistukseton with Yksilöllistettävä with MahdollisestiSuorituskielellinen with SuoritustapanaMahdollisestiErityinenTutkinto
+) extends PerusopetuksenOppiaineenSuoritus with OppiaineenTaiToiminta_AlueenSuoritus with Vahvistukseton with Yksilöllistettävä with MahdollisestiRajattuOppimäärä with MahdollisestiSuorituskielellinen with SuoritustapanaMahdollisestiErityinenTutkinto
 
 trait OppiaineenOppimääränSuoritus
 
