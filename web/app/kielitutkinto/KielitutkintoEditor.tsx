@@ -7,9 +7,7 @@ import {
 } from '../components-v2/containers/EditorContainer'
 import { FormModel, useForm } from '../components-v2/forms/FormModel'
 import { AdaptedOpiskeluoikeusEditorProps } from '../components-v2/interoperability/useUiAdapter'
-import { Spacer } from '../components-v2/layout/Spacer'
 import { OpiskeluoikeusTitle } from '../components-v2/opiskeluoikeus/OpiskeluoikeusTitle'
-import { SuorituksenVahvistusField } from '../components-v2/opiskeluoikeus/SuorituksenVahvistus'
 import { KielitutkinnonOpiskeluoikeudenOpiskeluoikeusjakso } from '../types/fi/oph/koski/schema/KielitutkinnonOpiskeluoikeudenOpiskeluoikeusjakso'
 import { KielitutkinnonOpiskeluoikeus } from '../types/fi/oph/koski/schema/KielitutkinnonOpiskeluoikeus'
 import { YleinenKielitutkintoEditor } from './YleinenKielitutkintoEditor'
@@ -27,7 +25,7 @@ export const KielitutkintoEditor: React.FC<KielitutkintoEditorProps> = (
     <>
       <OpiskeluoikeusTitle
         opiskeluoikeus={form.state}
-        opiskeluoikeudenNimi={'ib-tutkinto'}
+        opiskeluoikeudenNimi="kielitutkinto"
       />
       <KielitutkinnonPäätasonSuoritusEditor {...props} form={form} />
     </>
