@@ -404,7 +404,7 @@ describe("Oppijahaku", () => {
     await fillQueryField("130805A850J", "maksuttomuusoppijasearch")
     await submit("maksuttomuusoppijasearch")
     await expectResultToBe(
-      "Henkilö ei ole laajennetun oppivelvollisuuden piirissä, tai hän on suorittanut oppivelvollisuutensa eikä hänellä ole oikeutta maksuttomaan koulutukseen.",
+      "Löytyi: MuuttanutUlkomaille Valpas (130805A850J)",
       undefined,
       "maksuttomuusoppijasearch",
     )

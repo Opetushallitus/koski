@@ -5,7 +5,7 @@ import {
   expectElementEventuallyVisible,
 } from "../integrationtests-env/browser/content"
 
-export const jklNormaalikouluTableHead = "Hakeutumisvelvollisia (47)"
+export const jklNormaalikouluTableHead = "Hakeutumisvelvollisia (48)"
 export const jklNormaalikouluTableContent = `
   Amis-valmistunut-eronnut-valmasta Valpas                | 18.6.2005   | 9C | 30.5.2021  | Ei hakemusta         | –                           | –                         | done3 opiskeluoikeutta                                                     |
   Epäonninen Valpas                                       | 30.10.2005  | 9C | –          | Ei hakemusta         | –                           | –                         | –                                                                          |
@@ -31,6 +31,7 @@ export const jklNormaalikouluTableContent = `
   LuokallejäänytYsiluokkalainen Valpas                    | 2.8.2005    | 9A | –          | 2 hakua              | –                           | –                         | –                                                                          |
   LuokallejäänytYsiluokkalainenJatkaa Valpas              | 6.2.2005    | 9B | –          | Ei hakemusta         | –                           | –                         | –                                                                          |
   Läsnä-17-vuotta-täyttävä-8-luokkalainen Valpas          | 10.11.2004  | 8C | –          | Ei hakemusta         | –                           | –                         | –                                                                          |
+  MuuttanutUlkomaille Valpas                              | 13.8.2005   | 9C | –          | Ei hakemusta         | –                           | –                         | –                                                                          |
   Oppivelvollinen-hetullinen Valpas                       | 3.1.2005    | 9C | –          | Ei hakemusta         | –                           | –                         | –                                                                          |
   Oppivelvollinen-ysiluokka-kesken-keväällä-2021 Valpas   | 22.11.2005  | 9C | –          | Hakenut open_in_new  | 2. Helsingin medialukio     | doneHelsingin medialukio  | –                                                                          |
   Oppivelvollinen-ysiluokka-kesken-keväällä-2021-rikkinäinen-7-luokka Valpas | 21.3.2005 | 9C | – | Ei hakemusta | –                           | –                         | –                                                                          |
