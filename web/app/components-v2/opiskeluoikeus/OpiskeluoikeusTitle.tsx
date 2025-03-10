@@ -43,8 +43,8 @@ export const OpiskeluoikeusTitle = (props: OpiskeluoikeusTitleProps) => {
 
   const vainYhdenPäättävänTilanVuosi =
     props.opiskeluoikeus.päättymispäivä &&
-    props.opiskeluoikeus.tila.opiskeluoikeusjaksot.length <= 1 &&
-    yearFromIsoDateString(props.opiskeluoikeus.päättymispäivä)
+    props.opiskeluoikeus.tila.opiskeluoikeusjaksot.length <= 1 ?
+    yearFromIsoDateString(props.opiskeluoikeus.päättymispäivä) : undefined
 
   const vuodet =
     vainYhdenPäättävänTilanVuosi ||

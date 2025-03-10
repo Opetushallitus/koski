@@ -16,8 +16,8 @@ export const parseFinnishDate = (dateStr: string) => {
   }
 }
 export const parseISODateTime = (dateStr: string) =>
-  fecha.parse(dateStr, 'YYYY-MM-DDThh:mmZZ') ||
-  fecha.parse(dateStr, 'YYYY-MM-DDThh:mm:ss.SSS')
+  fecha.parse(dateStr, 'YYYY-MM-DDTHH:mmZZ') ||
+  fecha.parse(dateStr, 'YYYY-MM-DDTHH:mm:ss.SSS')
 
 export const formatFinnishDateTime = (date: Date) =>
   format(date, 'D.M.YYYY H:mm')
@@ -25,7 +25,7 @@ export const formatFinnishDateTime = (date: Date) =>
 export const ISO2FinnishDateTime = (dateStr: string) =>
   mapDate(parseISODateTime(dateStr), formatFinnishDateTime)
 
-export const parseISODate = (dateStr: string) =>
+export const parseISODate = (dateStr: string): Date | null =>
   fecha.parse(dateStr, 'YYYY-MM-DD')
 
 export const formatFinnishDate = (date: Date) => format(date, 'D.M.YYYY')
@@ -49,17 +49,17 @@ export const formatYearRange = formatRange(yearFromIsoDateString)
 
 const format = (date: Date | number, mask: string) => {
   try {
-    return fecha.format(date, mask)
+    return fecha.format(ensureDate(date), mask)
   } catch (e) {
     console.error('invalid date', date)
   }
 }
 
-const isDate = (date: Date | boolean | undefined): date is Date =>
-  date !== undefined && typeof date !== 'boolean'
+const isDate = (date: Date | boolean | null | undefined): date is Date =>
+  date instanceof Date
 
 const mapDate = <T>(
-  date: Date | boolean | undefined,
+  date: Date | boolean | null | undefined,
   fn: (d: Date) => T
 ): T | undefined => (isDate(date) ? fn(date) : undefined)
 
@@ -69,7 +69,7 @@ export const todayISODate = (): string => formatISODate(today()) || ''
 
 export const addDays =
   (days: number) =>
-  (date: Date | boolean): Date | undefined =>
+  (date: Date | null | boolean): Date | undefined =>
     mapDate(date, (d) => {
       d.setDate(d.getDate() + days)
       return d
@@ -86,3 +86,5 @@ export const addDaysISO =
         (date) => date && formatISODate(date)
       )) ||
     undefined
+
+    export const ensureDate = (d: Date | number): Date => d instanceof Date ? d : new Date(d)
