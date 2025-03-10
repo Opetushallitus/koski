@@ -103,7 +103,7 @@ case class IBDBCoreSuoritus(
   suorituskieli: Option[Koodistokoodiviite] = None,
   @Description("Oppiaineeseen kuuluvien kurssien suoritukset")
   @Title("Kurssit")
-  override val osasuoritukset: Option[List[IBKurssinSuoritus]],
+  override val osasuoritukset: Option[List[IBKurssinSuoritus]] = None,
   @KoodistoKoodiarvo("ibcore")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "ibcore", koodistoUri = "suorituksentyyppi")
 ) extends IBTutkinnonOppiaineenSuoritus
@@ -343,9 +343,9 @@ trait MuuOppiaineIB extends IBOppiaine {
 case class IBOppiaineMuu(
   @Description("IB-lukion oppiaineen tunnistetiedot")
   tunniste: Koodistokoodiviite,
-  laajuus: Option[LaajuusTunneissa],
+  laajuus: Option[LaajuusTunneissa] = None,
   @Description("Oppiaineen taso (Higher Level (HL) tai Standard Level (SL)")
-  taso: Option[Koodistokoodiviite],
+  taso: Option[Koodistokoodiviite] = None,
   @Description("Oppiaineen aineryhmä (1-6)")
   ryhmä: Koodistokoodiviite,
   pakollinen: Boolean = true
@@ -373,7 +373,7 @@ case class IBOppiaineCAS(
   @Description("Oppiaineen Creativity, activity, service tunniste")
   @KoodistoKoodiarvo("CAS")
   tunniste: Koodistokoodiviite = Koodistokoodiviite(koodistoUri = "oppiaineetib", koodiarvo = "CAS", nimi = Some(english("Creativity, activity, service"))),
-  laajuus: Option[LaajuusTunneissa],
+  laajuus: Option[LaajuusTunneissa] = None,
   pakollinen: Boolean = true
 ) extends IBDPCoreOppiaine
 

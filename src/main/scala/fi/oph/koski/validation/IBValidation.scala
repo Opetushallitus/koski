@@ -3,7 +3,7 @@ package fi.oph.koski.validation
 import com.typesafe.config.Config
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.opiskeluoikeus.CompositeOpiskeluoikeusRepository
-import fi.oph.koski.schema.{IBKurssi, IBKurssinSuoritus, IBOpiskeluoikeus, IBOppiaineenArviointi, IBOppiaineenPredictedArviointi, IBOppiaineenSuoritus, IBPäätasonSuoritus, IBTutkinnonSuoritus, KoskeenTallennettavaOpiskeluoikeus, LaajuusKursseissa, LaajuusOpintopisteissä, LaajuusOsaamispisteissä, PreIBSuoritus2015}
+import fi.oph.koski.schema.{IBDBCoreSuoritus, IBKurssi, IBKurssinSuoritus, IBOpiskeluoikeus, IBOppiaineenArviointi, IBOppiaineenPredictedArviointi, IBOppiaineenSuoritus, IBPäätasonSuoritus, IBTutkinnonSuoritus, KoskeenTallennettavaOpiskeluoikeus, LaajuusKursseissa, LaajuusOpintopisteissä, LaajuusOsaamispisteissä, PreIBSuoritus2015}
 import fi.oph.koski.util.ChainingSyntax._
 import fi.oph.koski.util.DateOrdering.localDateOrdering
 import fi.oph.koski.util.FinnishDateFormat
@@ -117,7 +117,10 @@ object IBValidation {
         validate(pts.lisäpisteet.isEmpty, s"Lisäpisteitä ei voi siirtää $dateString tai myöhemmin alkaneelle IB-opiskeluoikeudelle"),
       )
     } else {
-      HttpStatus.ok
+      validate(
+        !pts.osasuoritukset.exists(_.exists(_.isInstanceOf[IBDBCoreSuoritus])),
+        s"DP Core -oppiaineita ei voi siirtää osasuorituksena ennen $dateString alkaneelle IB-opiskeluoikeudelle"
+      )
     }
   }
 
