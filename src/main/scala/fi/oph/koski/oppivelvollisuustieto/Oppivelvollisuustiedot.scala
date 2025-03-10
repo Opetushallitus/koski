@@ -144,10 +144,20 @@ object Oppivelvollisuustiedot {
         kotikunta_suomessa_alkaen as (
           select
             master_oid,
-		        min(coalesce(muutto_pvm, poismuutto_pvm)) pvm
+            min(coalesce(muutto_pvm, poismuutto_pvm)) pvm
           from #${confidentialSchema.name}.r_kotikuntahistoria
           where not kotikunta = any(#$ulkopuolisetKunnat)
           group by master_oid
+        ),
+
+        -- Päivä jolloin oppija on muuttanut ulkomaille, jos viimeisin (nykyinen) kotikunta on ulkomailla, muuten null
+        muuttanut_ulkomaille_alkaen as (
+          select distinct on (master_oid)
+            master_oid,
+            case when kotikunta = any(#$ulkopuolisetKunnat) then muutto_pvm end as pvm
+          from #${confidentialSchema.name}.r_kotikuntahistoria
+          where muutto_pvm is not null
+          order by master_oid, muutto_pvm desc
         ),
 
         ammattitutkinto as (
@@ -303,7 +313,9 @@ object Oppivelvollisuustiedot {
               ebtutkinto_toisen_asteen_vahvistus_paiva,
               ylioppilastutkinnon_vahvistus_paiva,
               ammattitutkinnon_vahvistus_paiva,
-              (syntymaaika + interval '#$oppivelvollisuusLoppuuIka year' - interval '1 day')::date)
+              (syntymaaika + interval '#$oppivelvollisuusLoppuuIka year' - interval '1 day')::date,
+              muuttanut_ulkomaille_alkaen.pvm
+              )
             as oppivelvollisuusVoimassaAsti,
 
           -- Huom! Osa samasta logiikasta on myös Scala-koodina ValpasRajapäivätService-luokassa. Varmista muutosten jälkeen,
@@ -348,6 +360,7 @@ object Oppivelvollisuustiedot {
           left join maksuttomuuden_pidennysjakso on oppivelvolliset_henkilot.master_oid = maksuttomuuden_pidennysjakso.master_oid
           left join amis_ja_lukio_samanaikaisuus on oppivelvolliset_henkilot.master_oid = amis_ja_lukio_samanaikaisuus.master_oid
           left join kotikunta_suomessa_alkaen on oppivelvolliset_henkilot.master_oid = kotikunta_suomessa_alkaen.master_oid
+          left join muuttanut_ulkomaille_alkaen on oppivelvolliset_henkilot.master_oid = muuttanut_ulkomaille_alkaen.master_oid
         where
           (
             (not ${kotikuntahistoriaConfig.käytäOppivelvollisuudenPäättelyyn})

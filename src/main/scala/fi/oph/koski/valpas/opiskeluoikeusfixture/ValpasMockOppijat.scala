@@ -96,7 +96,7 @@ object ValpasMockOppijat {
   val peruskoulustaValmistunutIlman9Luokkaa = valpasOppijat.oppijaSyntymäaikaHetusta("Valmistunut-ei-ysiluokkaa", "Valpas", "240905A4064", kotikunta = Some("091"))
   val peruskoulustaLokakuussaValmistunutIlman9Luokkaa = valpasOppijat.oppijaSyntymäaikaHetusta("Valmistunut-lokakuussa-ei-ysiluokkaa", "Valpas", "110505A1818", kotikunta = Some("091"))
   val lukioVanhallaOpsilla = valpasOppijat.oppijaSyntymäaikaHetusta("LukioVanhallaOpsilla", "Valpas", "060704A687P", kotikunta = Some("091"))
-  val muuttanutUlkomaille = valpasOppijat.oppijaSyntymäaikaHetusta("MuuttanutUlkomaille", "Valpas", "130805A850J")
+  val muuttanutUlkomaille = valpasOppijat.oppijaSyntymäaikaHetusta("MuuttanutUlkomaille", "Valpas", "130805A850J", kotikunta = Some("200"))
   val turvakieltoOppijaTyhjälläKotikunnalla = valpasOppijat.oppijaSyntymäaikaHetusta("TurvakieltoTyhjälläKotikunnalla", "Valpas", "280705A584U", valpasOppijat.generateId(), None, turvakielto = true, kotikunta = Some(""))
   val oppivelvollinenIntSchoolYsiluokkaKeskenKeväällä2021 = valpasOppijat.oppijaSyntymäaikaHetusta("Oppivelvollinen-int-school-kesken-keväällä-2021", "Valpas", "180205A026B", kotikunta = Some("091"))
   val intSchoolKasiluokkaKeskenKeväällä2021 = valpasOppijat.oppijaSyntymäaikaHetusta("Int-school-kasiluokka-kesken-keväällä-2021", "Valpas", "030705A638E", kotikunta = Some("091"))
