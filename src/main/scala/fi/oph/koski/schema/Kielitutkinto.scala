@@ -36,7 +36,7 @@ case class KielitutkinnonOpiskeluoikeudenTila(
 
 case class KielitutkinnonOpiskeluoikeudenOpiskeluoikeusjakso(
   alku: LocalDate,
-  @Description("Yleisessä kielitutkinnossa 'lasna' vastaa tutkintopäivää, 'hyvaksytystisuoritettu' arviointipäivää") // TODO: Tarjoiluehdotus, tämä pitää sopia
+  @Description("Yleisessä kielitutkinnossa 'lasna' vastaa tutkintopäivää, 'hyvaksytystisuoritettu' arviointipäivää")
   @KoodistoKoodiarvo("lasna")
   @KoodistoKoodiarvo("hyvaksytystisuoritettu")
   @KoodistoKoodiarvo("mitatoity")

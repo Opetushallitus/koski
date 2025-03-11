@@ -8,13 +8,13 @@
   "opiskeluoikeudet" : [ {
     "tila" : {
       "opiskeluoikeusjaksot" : [ {
-        "alku" : "2025-01-01",
+        "alku" : "2011-01-01",
         "tila" : {
           "koodiarvo" : "lasna",
           "koodistoUri" : "koskiopiskeluoikeudentila"
         }
       }, {
-        "alku" : "2025-01-03",
+        "alku" : "2011-03-02",
         "tila" : {
           "koodiarvo" : "hyvaksytystisuoritettu",
           "koodistoUri" : "koskiopiskeluoikeudentila"
@@ -24,11 +24,11 @@
     "suoritukset" : [ {
       "koulutusmoduuli" : {
         "tunniste" : {
-          "koodiarvo" : "pt",
+          "koodiarvo" : "kt",
           "koodistoUri" : "ykitutkintotaso"
         },
         "kieli" : {
-          "koodiarvo" : "EN",
+          "koodiarvo" : "FI",
           "koodistoUri" : "kieli"
         }
       },
@@ -36,7 +36,7 @@
         "oid" : "1.2.246.562.10.78513447389"
       },
       "vahvistus" : {
-        "päivä" : "2025-01-03",
+        "päivä" : "2011-03-02",
         "myöntäjäOrganisaatio" : {
           "oid" : "1.2.246.562.10.346830761110"
         }
@@ -54,10 +54,10 @@
         },
         "arviointi" : [ {
           "arvosana" : {
-            "koodiarvo" : "2",
+            "koodiarvo" : "3",
             "koodistoUri" : "ykiarvosana"
           },
-          "päivä" : "2025-01-03",
+          "päivä" : "2011-03-02",
           "hyväksytty" : true
         } ]
       }, {
@@ -73,11 +73,11 @@
         },
         "arviointi" : [ {
           "arvosana" : {
-            "koodiarvo" : "2",
+            "koodiarvo" : "alle3",
             "koodistoUri" : "ykiarvosana"
           },
-          "päivä" : "2025-01-03",
-          "hyväksytty" : true
+          "päivä" : "2011-03-02",
+          "hyväksytty" : false
         } ]
       }, {
         "tyyppi" : {
@@ -92,10 +92,10 @@
         },
         "arviointi" : [ {
           "arvosana" : {
-            "koodiarvo" : "2",
+            "koodiarvo" : "4",
             "koodistoUri" : "ykiarvosana"
           },
-          "päivä" : "2025-01-03",
+          "päivä" : "2011-03-02",
           "hyväksytty" : true
         } ]
       }, {
@@ -111,23 +111,27 @@
         },
         "arviointi" : [ {
           "arvosana" : {
-            "koodiarvo" : "2",
+            "koodiarvo" : "3",
             "koodistoUri" : "ykiarvosana"
           },
-          "päivä" : "2025-01-03",
+          "päivä" : "2011-03-02",
           "hyväksytty" : true
         } ]
       } ],
       "tyyppi" : {
         "koodiarvo" : "yleinenkielitutkinto",
         "koodistoUri" : "suorituksentyyppi"
+      },
+      "yleisarvosana" : {
+        "koodiarvo" : "3",
+        "koodistoUri" : "ykiarvosana"
       }
     } ],
     "tyyppi" : {
       "koodiarvo" : "kielitutkinto",
       "koodistoUri" : "opiskeluoikeudentyyppi"
     },
-    "alkamispäivä" : "2025-01-01",
-    "päättymispäivä" : "2025-01-03"
+    "alkamispäivä" : "2011-01-01",
+    "päättymispäivä" : "2011-03-02"
   } ]
 }
