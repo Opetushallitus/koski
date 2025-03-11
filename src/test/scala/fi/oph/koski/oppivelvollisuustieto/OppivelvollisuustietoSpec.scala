@@ -9,7 +9,7 @@ import fi.oph.koski.documentation.PerusopetusExampleData.yhdeksännenLuokanSuori
 import fi.oph.koski.documentation._
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat._
 import fi.oph.koski.raportointikanta.{RaportointiDatabase, RaportointikantaTestMethods}
-import fi.oph.koski.henkilo.OppijaHenkilö
+import fi.oph.koski.henkilo.{KoskiSpecificMockOppijat, OppijaHenkilö}
 import fi.oph.koski.schema._
 import fi.oph.koski.valpas.opiskeluoikeusfixture.FixtureUtil
 import fi.oph.koski.{DirtiesFixtures, KoskiApplicationForTests, KoskiHttpSpec}
@@ -487,25 +487,30 @@ class OppivelvollisuustietoSpec
     }
 
     "Oppivelvollisuuden ja maksuttomuuden päättely kuntahistorian perusteella" - {
-      resetFixtures()
+      lazy val resetKoskiFixtures = resetFixtures()
 
       def isOppivelvollinen(oid: String): Boolean =
         Oppivelvollisuustiedot.queryByOids(Seq(oid), KoskiApplicationForTests.raportointiDatabase).nonEmpty
 
       "Suomeen täysi-ikäisenä muuttanut ei ole oppivelvollisuden alainen" in {
+        resetKoskiFixtures
         isOppivelvollinen("1.2.246.562.24.00000000166") should be(false)
       }
 
       "Suomeen alaikäisenä muuttanut on oppivelvollisuden alainen" in {
+        resetKoskiFixtures
         isOppivelvollinen("1.2.246.562.24.00000000167") should be(true)
       }
 
       "Suomesta alaikäisenä pois muuttanut ja täysi-ikäisenä takaisin muuttanut on oppivelvollisuden alainen" in {
+        resetKoskiFixtures
         isOppivelvollinen("1.2.246.562.24.00000000168") should be(true)
+        // Nykyinen kotikunta Suomessa -> oppivelvollisuuden päättyminen iän mukaan
         queryOids("1.2.246.562.24.00000000168").head.oppivelvollisuusVoimassaAsti shouldBe(date(2023,12,31))
       }
 
       "Ahvenanmaalta täysi-ikäisenä Manner-Suomeen muuttanut ei ole oppivelvollisuden alainen" in {
+        resetKoskiFixtures
         isOppivelvollinen("1.2.246.562.24.00000000169") should be(false)
       }
 
@@ -515,7 +520,7 @@ class OppivelvollisuustietoSpec
             db.db,
             sql"SELECT COUNT(*) FROM #${db.schema.name}.r_kotikuntahistoria WHERE master_oid = $oid".as[Int],
           ).head
-
+        resetKoskiFixtures
         val oid = "1.2.246.562.24.00000000071"
         getKotikuntahistoriaCount(KoskiApplicationForTests.raportointiDatabase, oid) should equal(1)
         getKotikuntahistoriaCount(KoskiApplicationForTests.raportointiDatabase.confidential.get, oid) should equal(2)
@@ -523,10 +528,17 @@ class OppivelvollisuustietoSpec
     }
 
     "Oppivelvollisuuden ja maksuttomuuden päättely kuntahistorian perusteella (Valpas fixturella)" - {
-      FixtureUtil.resetMockData(defaultKoskiApplication)
+      lazy val resetValpasMockData = FixtureUtil.resetMockData(defaultKoskiApplication)
+
       "Ulkoimaille muutto päättää oppivelvollisuuden" in {
+        resetValpasMockData
         val result = queryOids("1.2.246.562.24.00000000088")
         result.head.oppivelvollisuusVoimassaAsti shouldBe date(2023, 1, 1)
+      }
+      "Muuttanut ulkomaille ennen 7v, mutta opiskeluoikeus on (teoreettisesti) olemassa -> oppivelvollisuus päättyy samana päivänä kuin alkaa" in {
+        resetValpasMockData
+        val result = queryOids("1.2.246.562.24.00000000184")
+        result.head.oppivelvollisuusVoimassaAsti shouldBe date(2012, 9, 1)
       }
     }
   }
