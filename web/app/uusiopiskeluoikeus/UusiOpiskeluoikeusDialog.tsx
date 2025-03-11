@@ -34,7 +34,7 @@ export const UusiOpiskeluoikeusDialog = (
       }
       setCreating(false)
     }
-  }, [props, result])
+  }, [props, result, setCreating])
 
   return (
     <TestIdRoot id="uusiOpiskeluoikeus">
