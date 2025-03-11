@@ -4,7 +4,11 @@ import React, { useCallback, useMemo } from "react"
 import ReactDatePicker from "react-date-picker"
 import { getLanguage } from "../../i18n/i18n"
 import { ISODate } from "../../state/common"
+
+import "react-date-picker/dist/DatePicker.css"
+import "react-calendar/dist/Calendar.css"
 import "./DatePicker.less"
+import { Value } from "react-calendar/dist/esm/shared/types.js"
 
 const b = bem("datepicker")
 
@@ -22,7 +26,10 @@ export const DatePicker = (props: DatePickerProps) => {
 
   const emitChange = props.onChange
   const onChange = useCallback(
-    (date: Date) => emitChange(formatISO(date, { representation: "date" })),
+    (date: Value) =>
+      date instanceof Date
+        ? emitChange(formatISO(date, { representation: "date" }))
+        : console.error("Unsupported date value:", date),
     [emitChange],
   )
 
