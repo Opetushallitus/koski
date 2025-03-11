@@ -1,5 +1,11 @@
 # Koskeen tallennettavien tietojen validaatiosäännöt
 
+## 11.3.2025
+
+- Lisätty validaatiot yleiselle kielitutkinnolle:
+  - Arviointipäivän ja vahvistuspäivän tulee olla samat
+  - Sallitaan vain tutkintotason mukaiset arvosanat osakokeen arvioinnille
+
 ## 28.2.2025
 
 - Sallitaan maksuttomuuden pidennysjaksot päättymään opiskeluoikeuden voimassaolon päättymisen jälkeen

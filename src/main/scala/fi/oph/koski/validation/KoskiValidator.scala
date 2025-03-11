@@ -165,6 +165,7 @@ class KoskiValidator(
           TaiteenPerusopetusValidation.validateOpiskeluoikeus(config)(opiskeluoikeus, suostumuksenPeruutusService),
           IBValidation.validateIbOpiskeluoikeus(config)(opiskeluoikeus),
           ToimintaAlueetValidation.validateToimintaAlueellinenOpiskeluoikeus(config)(opiskeluoikeus),
+          KielitutkintoValidation.validateOpiskeluoikeus(opiskeluoikeus),
         )
       } match {
         case HttpStatus.ok => Right(opiskeluoikeus)
