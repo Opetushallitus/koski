@@ -11,9 +11,11 @@ import fi.oph.koski.henkilo.KoskiSpecificMockOppijat._
 import fi.oph.koski.raportointikanta.{RaportointiDatabase, RaportointikantaTestMethods}
 import fi.oph.koski.henkilo.OppijaHenkilö
 import fi.oph.koski.schema._
+import fi.oph.koski.valpas.opiskeluoikeusfixture.FixtureUtil
 import fi.oph.koski.{DirtiesFixtures, KoskiApplicationForTests, KoskiHttpSpec}
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.should.Matchers
+
 import java.time.LocalDate
 import java.time.LocalDate.{of => date}
 
@@ -500,6 +502,7 @@ class OppivelvollisuustietoSpec
 
       "Suomesta alaikäisenä pois muuttanut ja täysi-ikäisenä takaisin muuttanut on oppivelvollisuden alainen" in {
         isOppivelvollinen("1.2.246.562.24.00000000168") should be(true)
+        queryOids("1.2.246.562.24.00000000168").head.oppivelvollisuusVoimassaAsti shouldBe(date(2023,12,31))
       }
 
       "Ahvenanmaalta täysi-ikäisenä Manner-Suomeen muuttanut ei ole oppivelvollisuden alainen" in {
@@ -516,6 +519,14 @@ class OppivelvollisuustietoSpec
         val oid = "1.2.246.562.24.00000000071"
         getKotikuntahistoriaCount(KoskiApplicationForTests.raportointiDatabase, oid) should equal(1)
         getKotikuntahistoriaCount(KoskiApplicationForTests.raportointiDatabase.confidential.get, oid) should equal(2)
+      }
+    }
+
+    "Oppivelvollisuuden ja maksuttomuuden päättely kuntahistorian perusteella (Valpas fixturella)" - {
+      FixtureUtil.resetMockData(defaultKoskiApplication)
+      "Ulkoimaille muutto päättää oppivelvollisuuden" in {
+        val result = queryOids("1.2.246.562.24.00000000088")
+        result.head.oppivelvollisuusVoimassaAsti shouldBe date(2023, 1, 1)
       }
     }
   }

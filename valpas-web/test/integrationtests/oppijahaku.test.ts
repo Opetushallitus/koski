@@ -399,7 +399,7 @@ describe("Oppijahaku", () => {
     )
   })
 
-  it("Maksuttomuus: Oppija, jonka kotikunta ei ole Suomessa, ei löydy oppijahaulla", async () => {
+  it("Maksuttomuus: Oppija, jonka kotikunta ei ole Suomessa, muutta on ollut ennen kuin täyttänyt 18v, löytyy oppijahaulla", async () => {
     await hakuLogin()
     await fillQueryField("130805A850J", "maksuttomuusoppijasearch")
     await submit("maksuttomuusoppijasearch")
