@@ -64,13 +64,13 @@ object ExamplesKielitutkinto {
   }
 
   object Osasuoritus {
-    def yleisenKielitutkinnonOsa(tyyppi: String, arvosana: String, arviointiPäivä: LocalDate): YleisenKielitutkinnonOsanSuoritus =
-      YleisenKielitutkinnonOsanSuoritus(
-        koulutusmoduuli = YleisenKielitutkinnonOsa(
+    def yleisenKielitutkinnonOsa(tyyppi: String, arvosana: String, arviointiPäivä: LocalDate): YleisenKielitutkinnonOsakokeenSuoritus =
+      YleisenKielitutkinnonOsakokeenSuoritus(
+        koulutusmoduuli = YleisenKielitutkinnonOsakoe(
           tunniste = Koodistokoodiviite(tyyppi, "ykisuorituksenosa"),
         ),
         arviointi = Some(List(
-          YleisenKielitutkinnonOsanArviointi(
+          YleisenKielitutkinnonOsakokeenArviointi(
             arvosana = Koodistokoodiviite(arvosana, "ykiarvosana"),
             päivä = arviointiPäivä,
           )

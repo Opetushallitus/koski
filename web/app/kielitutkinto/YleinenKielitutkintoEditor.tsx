@@ -12,7 +12,6 @@ import { Spacer } from '../components-v2/layout/Spacer'
 import { ISO2FinnishDate } from '../date/date'
 import { t } from '../i18n/i18n'
 import { KielitutkinnonOpiskeluoikeus } from '../types/fi/oph/koski/schema/KielitutkinnonOpiskeluoikeus'
-import { YleisenKielitutkinnonOsanSuoritus } from '../types/fi/oph/koski/schema/YleisenKielitutkinnonOsanSuoritus'
 import { YleisenKielitutkinnonSuoritus } from '../types/fi/oph/koski/schema/YleisenKielitutkinnonSuoritus'
 import { ykiParasArvosana } from './yleinenKielitutkinto'
 import { SuorituksenVahvistusField } from '../components-v2/opiskeluoikeus/SuorituksenVahvistus'
@@ -20,6 +19,7 @@ import { ActivePäätasonSuoritus } from '../components-v2/containers/EditorCont
 import { Oppilaitos } from '../types/fi/oph/koski/schema/Oppilaitos'
 import { Koulutustoimija } from '../types/fi/oph/koski/schema/Koulutustoimija'
 import { KielitutkinnonOpiskeluoikeudenTila } from '../types/fi/oph/koski/schema/KielitutkinnonOpiskeluoikeudenTila'
+import { YleisenKielitutkinnonOsakokeenSuoritus } from '../types/fi/oph/koski/schema/YleisenKielitutkinnonOsakokeenSuoritus'
 
 export type YleinenKielitutkintoEditorProps = {
   form: FormModel<KielitutkinnonOpiskeluoikeus>
@@ -95,7 +95,7 @@ const YleisenKielitutkinnonTiedot: React.FC<
 )
 
 type YleisenKielitutkinnonOsanSuoritusEditorProps = {
-  osa: YleisenKielitutkinnonOsanSuoritus
+  osa: YleisenKielitutkinnonOsakokeenSuoritus
 }
 
 const YleisenKielitutkinnonOsanSuoritusEditor: React.FC<
