@@ -53,6 +53,7 @@ export type EditorContainerProps<T extends Opiskeluoikeus> =
     onCreateSuoritus?: () => void
     suorituksetVahvistettu?: boolean
     lisätiedotContainer?: React.FC<any>
+    opiskeluoikeudenTilaEditor?: React.ReactNode
   }>
 
 export type ActivePäätasonSuoritus<
@@ -155,18 +156,22 @@ export const EditorContainer = <T extends Opiskeluoikeus>(
 
         <Spacer />
 
-        <FormField
-          form={props.form}
-          path={opiskeluoikeudenTilaPath}
-          view={OpiskeluoikeudenTilaView}
-          edit={OpiskeluoikeudenTilaEdit}
-          editProps={{
-            enableValmistuminen: suorituksetVahvistettu,
-            createJakso: props.createOpiskeluoikeusjakso,
-            opiskeluoikeusJaksoClassName: props.opiskeluoikeusJaksoClassName
-          }}
-        />
-        <Spacer />
+        {props.opiskeluoikeudenTilaEditor || (
+          <>
+            <FormField
+              form={props.form}
+              path={opiskeluoikeudenTilaPath}
+              view={OpiskeluoikeudenTilaView}
+              edit={OpiskeluoikeudenTilaEdit}
+              editProps={{
+                enableValmistuminen: suorituksetVahvistettu,
+                createJakso: props.createOpiskeluoikeusjakso,
+                opiskeluoikeusJaksoClassName: props.opiskeluoikeusJaksoClassName
+              }}
+            />
+            <Spacer />
+          </>
+        )}
         <FormField
           form={props.form}
           path={opiskeluoikeudenOrganisaatiohistoriaPath}

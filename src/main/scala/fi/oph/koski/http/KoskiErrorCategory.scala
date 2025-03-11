@@ -184,6 +184,7 @@ object KoskiErrorCategory {
         val vaatiiJotpaAsianumeron = subcategory("vaatiiJotpaAsianumeron", "JOTPA-rahoitteinen opiskeluoikeus vaatii JOTPA asianumeron lisätiedoissa")
         val jotpaAsianumeroAnnettuVaikkeiJotpaRahoitteinen = subcategory("jotpaAsianumeroAnnettuVaikkeiJotpaRahoitteinen", "JOTPA asianumero annettu vaikka opiskeluoikeus ei ole JOTPA-rahoitteinen")
         val terminaalitilaaEiSaaPurkaa = subcategory("terminaalitilaaEiSaaPurkaa", "Tämän opiskeluoikeuden päättävän tilan saa vaihtaa vain toiseksi päättäväksi tilaksi")
+        val tilaPuuttuu = subcategory("tilaPuuttuu", "Vaadittava tila puuttuu")
       }
       val tila = new Tila
 

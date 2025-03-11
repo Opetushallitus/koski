@@ -13,26 +13,38 @@ object ExamplesKielitutkinto {
   lazy val exampleHenkilö: UusiHenkilö = asUusiOppija(exampleMockOppija)
 
   lazy val examples: immutable.Seq[Example] = List(
-    Example("kielitutkinto - yleinen kielitutkinto", "Yleisen kielitutkinnon suoritus", Oppija(exampleHenkilö.copy(hetu = "160586-873P"), Seq(ykiOpiskeluoikeus)))
-  )
-
-  def ykiOpiskeluoikeus: KielitutkinnonOpiskeluoikeus = KielitutkinnonOpiskeluoikeus(
-    tila = KielitutkinnonOpiskeluoikeudenTila(
-      opiskeluoikeusjaksot = List(
-        Opiskeluoikeusjakso.tutkintopäivä(LocalDate.of(2025, 1, 1)),
-        Opiskeluoikeusjakso.valmis(LocalDate.of(2025, 1, 3)),
-      )
-    ),
-    suoritukset = List(
-      ExamplesKielitutkinto.PäätasonSuoritus.yleinenKielitutkinto("pt", "EN", LocalDate.of(2025, 1, 3))
+    Example(
+      "kielitutkinto - yleinen kielitutkinto",
+      "Vanhemman rakenteen mukainen yleisen kielitutkinnon suoritus (sisältää yleisarvosanan)",
+      Oppija(exampleHenkilö.copy(hetu = "160586-873P"), Seq(ykiOpiskeluoikeus(LocalDate.of(2011, 1, 1), "FI", "kt"))),
     )
   )
 
+  def ykiOpiskeluoikeus(tutkintopäivä: LocalDate, kieli: String, tutkintotaso: String): KielitutkinnonOpiskeluoikeus = {
+    val arviointipäivä = tutkintopäivä.plusDays(60)
+    KielitutkinnonOpiskeluoikeus(
+      tila = KielitutkinnonOpiskeluoikeudenTila(
+        opiskeluoikeusjaksot = List(
+          Opiskeluoikeusjakso.tutkintopäivä(tutkintopäivä),
+          Opiskeluoikeusjakso.valmis(arviointipäivä),
+        )
+      ),
+      suoritukset = List(
+        ExamplesKielitutkinto.PäätasonSuoritus.yleinenKielitutkinto(tutkintotaso, kieli, arviointipäivä)
+      )
+    )
+  }
+
   object PäätasonSuoritus {
-    def yleinenKielitutkinto(tutkintotaso: String, kieli: String, arviointipäivä: LocalDate): YleisenKielitutkinnonSuoritus =
+    def yleinenKielitutkinto(tutkintotaso: String, kieli: String, arviointipäivä: LocalDate): YleisenKielitutkinnonSuoritus = {
+      val arvosana = tutkintotaso match {
+        case "pt" => 1
+        case "kt" => 3
+        case "yt" => 5
+      }
       YleisenKielitutkinnonSuoritus(
         koulutusmoduuli = YleinenKielitutkinto(
-          tunniste = Koodistokoodiviite(tutkintotaso, "ykitutkintotaso"),
+          tunniste = Koodistokoodiviite(tutkintotaso.toString, "ykitutkintotaso"),
           kieli = Koodistokoodiviite(kieli, "kieli"),
         ),
         toimipiste = OidOrganisaatio(MockOrganisaatiot.varsinaisSuomenKansanopistoToimipiste),
@@ -41,23 +53,24 @@ object ExamplesKielitutkinto {
           myöntäjäOrganisaatio = OidOrganisaatio(MockOrganisaatiot.helsinginKaupunki),
         )),
         osasuoritukset = Some(List(
-          ExamplesKielitutkinto.Osasuoritus.yleisenKielitutkinnonOsa("tekstinymmartaminen", "2", arviointipäivä),
-          ExamplesKielitutkinto.Osasuoritus.yleisenKielitutkinnonOsa("kirjoittaminen", "3", arviointipäivä),
-          ExamplesKielitutkinto.Osasuoritus.yleisenKielitutkinnonOsa("puheenymmartaminen", "4", arviointipäivä),
-          ExamplesKielitutkinto.Osasuoritus.yleisenKielitutkinnonOsa("puhuminen", "4", arviointipäivä),
+          ExamplesKielitutkinto.Osasuoritus.yleisenKielitutkinnonOsa("tekstinymmartaminen", s"$arvosana", arviointipäivä),
+          ExamplesKielitutkinto.Osasuoritus.yleisenKielitutkinnonOsa("kirjoittaminen", s"alle$arvosana", arviointipäivä),
+          ExamplesKielitutkinto.Osasuoritus.yleisenKielitutkinnonOsa("puheenymmartaminen", s"${arvosana + 1}", arviointipäivä),
+          ExamplesKielitutkinto.Osasuoritus.yleisenKielitutkinnonOsa("puhuminen", s"$arvosana", arviointipäivä),
         )),
-        yleisarvosana = Some(Koodistokoodiviite("3", "ykiarvosana")),
+        yleisarvosana = if (arviointipäivä.isBefore(LocalDate.of(2012, 1, 1))) Some(Koodistokoodiviite(s"$arvosana", "ykiarvosana")) else None,
       )
+    }
   }
 
   object Osasuoritus {
-    def yleisenKielitutkinnonOsa(tyyppi: String, arvosana: String, arviointiPäivä: LocalDate): YleisenKielitutkinnonOsanSuoritus =
-      YleisenKielitutkinnonOsanSuoritus(
-        koulutusmoduuli = YleisenKielitutkinnonOsa(
+    def yleisenKielitutkinnonOsa(tyyppi: String, arvosana: String, arviointiPäivä: LocalDate): YleisenKielitutkinnonOsakokeenSuoritus =
+      YleisenKielitutkinnonOsakokeenSuoritus(
+        koulutusmoduuli = YleisenKielitutkinnonOsakoe(
           tunniste = Koodistokoodiviite(tyyppi, "ykisuorituksenosa"),
         ),
         arviointi = Some(List(
-          YleisenKielitutkinnonOsanArviointi(
+          YleisenKielitutkinnonOsakokeenArviointi(
             arvosana = Koodistokoodiviite(arvosana, "ykiarvosana"),
             päivä = arviointiPäivä,
           )

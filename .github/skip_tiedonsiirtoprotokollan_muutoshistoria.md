@@ -9,3 +9,4 @@ TOR-XXX - vaihdettu dokumentaatioon termi oppilashallinto --> opintohallinto
 TOR-2238 - lisätty Arvioinniton-kantaluokka, mutta itse skeeman rakenne ei ole muuttunut
 TOR-2047 - Muutettu vain tietomallin käliin vaikuttavaa osaa, ei vaikutusta koulutusjärjestelmiin
 TOR-2222 - lisätty tietomalliin traitteja, jolla ei ole toiminnallisia vaikutuksia
+TOR-2298 - Poistettu kommentti koodista

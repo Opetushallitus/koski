@@ -36,7 +36,7 @@ case class KielitutkinnonOpiskeluoikeudenTila(
 
 case class KielitutkinnonOpiskeluoikeudenOpiskeluoikeusjakso(
   alku: LocalDate,
-  @Description("Yleisessä kielitutkinnossa 'lasna' vastaa tutkintopäivää, 'hyvaksytystisuoritettu' arviointipäivää") // TODO: Tarjoiluehdotus, tämä pitää sopia
+  @Description("Yleisessä kielitutkinnossa 'lasna' vastaa tutkintopäivää, 'hyvaksytystisuoritettu' arviointipäivää")
   @KoodistoKoodiarvo("lasna")
   @KoodistoKoodiarvo("hyvaksytystisuoritettu")
   @KoodistoKoodiarvo("mitatoity")
@@ -54,8 +54,8 @@ case class YleisenKielitutkinnonSuoritus(
   koulutusmoduuli: YleinenKielitutkinto,
   toimipiste: OrganisaatioWithOid,
   vahvistus: Option[Päivämäärävahvistus] = None,
-  @Description("Kielitutkinnon suoritukset osat")
-  override val osasuoritukset: Option[List[YleisenKielitutkinnonOsanSuoritus]],
+  @Description("Yleisen kielitutkinnon osakokeet")
+  override val osasuoritukset: Option[List[YleisenKielitutkinnonOsakokeenSuoritus]],
   @KoodistoKoodiarvo("yleinenkielitutkinto")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("yleinenkielitutkinto", koodistoUri = "suorituksentyyppi"),
   @KoodistoUri("ykiarvosana")
@@ -71,23 +71,23 @@ case class YleinenKielitutkinto(
   def nimi: LocalizedString = tunniste.nimi.getOrElse(unlocalized(tunniste.koodiarvo))
 }
 
-// Kielitutkinnon osasuoritus
+// Yleisen kielitutkinnon osakoe
 
-case class YleisenKielitutkinnonOsanSuoritus(
-  @KoodistoKoodiarvo("yleisenkielitutkinnonosa")
+case class YleisenKielitutkinnonOsakokeenSuoritus(
+                                                   @KoodistoKoodiarvo("yleisenkielitutkinnonosa")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("yleisenkielitutkinnonosa", "suorituksentyyppi"),
-  koulutusmoduuli: YleisenKielitutkinnonOsa,
-  arviointi: Option[List[YleisenKielitutkinnonOsanArviointi]],
+                                                   koulutusmoduuli: YleisenKielitutkinnonOsakoe,
+                                                   arviointi: Option[List[YleisenKielitutkinnonOsakokeenArviointi]],
 ) extends Suoritus with Vahvistukseton
 
-case class YleisenKielitutkinnonOsa(
+case class YleisenKielitutkinnonOsakoe(
   @KoodistoUri("ykisuorituksenosa")
   tunniste: Koodistokoodiviite,
 ) extends Koulutusmoduuli {
   def nimi: LocalizedString = tunniste.nimi.getOrElse(unlocalized(tunniste.koodiarvo))
 }
 
-case class YleisenKielitutkinnonOsanArviointi(
+case class YleisenKielitutkinnonOsakokeenArviointi(
   @KoodistoUri("ykiarvosana")
   arvosana: Koodistokoodiviite,
   päivä: LocalDate,

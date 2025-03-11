@@ -202,9 +202,9 @@ import {
   isVapaanSivistystyönOsaamismerkinArviointi
 } from './VapaanSivistystyonOsaamismerkinArviointi'
 import {
-  YleisenKielitutkinnonOsanArviointi,
-  isYleisenKielitutkinnonOsanArviointi
-} from './YleisenKielitutkinnonOsanArviointi'
+  YleisenKielitutkinnonOsakokeenArviointi,
+  isYleisenKielitutkinnonOsakokeenArviointi
+} from './YleisenKielitutkinnonOsakokeenArviointi'
 import {
   YlioppilaskokeenArviointi,
   isYlioppilaskokeenArviointi
@@ -269,7 +269,7 @@ export type Arviointi =
   | VapaanSivistystyöVapaatavoitteisenKoulutuksenArviointi
   | VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenKieliopintojenArviointi
   | VapaanSivistystyönOsaamismerkinArviointi
-  | YleisenKielitutkinnonOsanArviointi
+  | YleisenKielitutkinnonOsakokeenArviointi
   | YlioppilaskokeenArviointi
 
 export const isArviointi = (a: any): a is Arviointi =>
@@ -332,5 +332,5 @@ export const isArviointi = (a: any): a is Arviointi =>
     a
   ) ||
   isVapaanSivistystyönOsaamismerkinArviointi(a) ||
-  isYleisenKielitutkinnonOsanArviointi(a) ||
+  isYleisenKielitutkinnonOsakokeenArviointi(a) ||
   isYlioppilaskokeenArviointi(a)

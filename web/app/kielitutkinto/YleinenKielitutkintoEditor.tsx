@@ -12,13 +12,14 @@ import { Spacer } from '../components-v2/layout/Spacer'
 import { ISO2FinnishDate } from '../date/date'
 import { t } from '../i18n/i18n'
 import { KielitutkinnonOpiskeluoikeus } from '../types/fi/oph/koski/schema/KielitutkinnonOpiskeluoikeus'
-import { YleisenKielitutkinnonOsanSuoritus } from '../types/fi/oph/koski/schema/YleisenKielitutkinnonOsanSuoritus'
 import { YleisenKielitutkinnonSuoritus } from '../types/fi/oph/koski/schema/YleisenKielitutkinnonSuoritus'
 import { ykiParasArvosana } from './yleinenKielitutkinto'
 import { SuorituksenVahvistusField } from '../components-v2/opiskeluoikeus/SuorituksenVahvistus'
 import { ActivePäätasonSuoritus } from '../components-v2/containers/EditorContainer'
 import { Oppilaitos } from '../types/fi/oph/koski/schema/Oppilaitos'
 import { Koulutustoimija } from '../types/fi/oph/koski/schema/Koulutustoimija'
+import { KielitutkinnonOpiskeluoikeudenTila } from '../types/fi/oph/koski/schema/KielitutkinnonOpiskeluoikeudenTila'
+import { YleisenKielitutkinnonOsakokeenSuoritus } from '../types/fi/oph/koski/schema/YleisenKielitutkinnonOsakokeenSuoritus'
 
 export type YleinenKielitutkintoEditorProps = {
   form: FormModel<KielitutkinnonOpiskeluoikeus>
@@ -37,7 +38,10 @@ export const YleinenKielitutkintoEditor: React.FC<
 
   return suoritus ? (
     <>
-      <YleisenKielitutkinnonTiedot päätasonSuoritus={suoritus} />
+      <YleisenKielitutkinnonTiedot
+        päätasonSuoritus={suoritus}
+        tila={form.state.tila}
+      />
 
       <Spacer />
 
@@ -53,9 +57,14 @@ export const YleinenKielitutkintoEditor: React.FC<
         {suoritus.osasuoritukset?.map((os, index) => (
           <YleisenKielitutkinnonOsanSuoritusEditor osa={os} key={index} />
         ))}
-        <KeyValueRow localizableLabel="Yleisarvosana">
-          {t(suoritus.yleisarvosana?.nimi)}
-        </KeyValueRow>
+        {suoritus.yleisarvosana && (
+          <>
+            <Spacer />
+            <KeyValueRow localizableLabel="Yleisarvosana">
+              {t(suoritus.yleisarvosana?.nimi)}
+            </KeyValueRow>
+          </>
+        )}
       </KeyValueTable>
     </>
   ) : null
@@ -63,11 +72,12 @@ export const YleinenKielitutkintoEditor: React.FC<
 
 type YleisenKielitutkinnonTiedotProps = {
   päätasonSuoritus: YleisenKielitutkinnonSuoritus
+  tila: KielitutkinnonOpiskeluoikeudenTila
 }
 
 const YleisenKielitutkinnonTiedot: React.FC<
   YleisenKielitutkinnonTiedotProps
-> = ({ päätasonSuoritus }) => (
+> = ({ päätasonSuoritus, tila }) => (
   <KeyValueTable>
     <KeyValueRow localizableLabel="Taso">
       {t(päätasonSuoritus.koulutusmoduuli.tunniste.nimi)}
@@ -75,11 +85,17 @@ const YleisenKielitutkinnonTiedot: React.FC<
     <KeyValueRow localizableLabel="Kieli">
       {t(päätasonSuoritus.koulutusmoduuli.kieli.nimi)}
     </KeyValueRow>
+    <KeyValueRow localizableLabel="Tutkintopäivä">
+      {ISO2FinnishDate(getJaksonAlkupäivä(tila, 'lasna'))}
+    </KeyValueRow>
+    <KeyValueRow localizableLabel="Arviointipäivä">
+      {ISO2FinnishDate(getJaksonAlkupäivä(tila, 'hyvaksytystisuoritettu'))}
+    </KeyValueRow>
   </KeyValueTable>
 )
 
 type YleisenKielitutkinnonOsanSuoritusEditorProps = {
-  osa: YleisenKielitutkinnonOsanSuoritus
+  osa: YleisenKielitutkinnonOsakokeenSuoritus
 }
 
 const YleisenKielitutkinnonOsanSuoritusEditor: React.FC<
@@ -92,3 +108,10 @@ const YleisenKielitutkinnonOsanSuoritusEditor: React.FC<
     </KeyValueRow>
   )
 }
+
+const getJaksonAlkupäivä = (
+  tila: KielitutkinnonOpiskeluoikeudenTila,
+  koodiarvo: string
+): string | undefined =>
+  tila.opiskeluoikeusjaksot.find((jakso) => jakso.tila.koodiarvo === koodiarvo)
+    ?.alku

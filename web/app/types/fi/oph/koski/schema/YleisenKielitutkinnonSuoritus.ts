@@ -2,7 +2,7 @@ import { Koodistokoodiviite } from './Koodistokoodiviite'
 import { LocalizedString } from './LocalizedString'
 import { YleinenKielitutkinto } from './YleinenKielitutkinto'
 import { OrganisaatioWithOid } from './OrganisaatioWithOid'
-import { YleisenKielitutkinnonOsanSuoritus } from './YleisenKielitutkinnonOsanSuoritus'
+import { YleisenKielitutkinnonOsakokeenSuoritus } from './YleisenKielitutkinnonOsakokeenSuoritus'
 import { Päivämäärävahvistus } from './Paivamaaravahvistus'
 
 /**
@@ -17,7 +17,7 @@ export type YleisenKielitutkinnonSuoritus = {
   yleisarvosana?: Koodistokoodiviite<'ykiarvosana', string>
   koulutusmoduuli: YleinenKielitutkinto
   toimipiste: OrganisaatioWithOid
-  osasuoritukset?: Array<YleisenKielitutkinnonOsanSuoritus>
+  osasuoritukset?: Array<YleisenKielitutkinnonOsakokeenSuoritus>
   vahvistus?: Päivämäärävahvistus
 }
 
@@ -27,7 +27,7 @@ export const YleisenKielitutkinnonSuoritus = (o: {
   yleisarvosana?: Koodistokoodiviite<'ykiarvosana', string>
   koulutusmoduuli: YleinenKielitutkinto
   toimipiste: OrganisaatioWithOid
-  osasuoritukset?: Array<YleisenKielitutkinnonOsanSuoritus>
+  osasuoritukset?: Array<YleisenKielitutkinnonOsakokeenSuoritus>
   vahvistus?: Päivämäärävahvistus
 }): YleisenKielitutkinnonSuoritus => ({
   tyyppi: Koodistokoodiviite({
