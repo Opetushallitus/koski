@@ -2441,7 +2441,7 @@
   "Tiedot oppilaitoksesta, jossa opiskeluoikeutesi on": "Tiedot oppilaitoksesta, jossa opiskeluoikeutesi on",
   "Tiedustelu opintopolun tiedoista": "Tiedustelu Opintopolun tiedoista",
   "Tietoa KOSKI-palvelun pyytämistä henkilötiedoista": "Tietoa KOSKI-palvelun pyytämistä henkilötiedoista",
-  "Tietoa KOSKI-palvelun pyytämistä henkilötiedoista ": "Tietoa KOSKI-palvelun pyytämistä henkilötiedoista ",
+  "Tietoa KOSKI-palvelun pyytämistä henkilötiedoista": "Tietoa KOSKI-palvelun pyytämistä henkilötiedoista",
   "Tietoja käytetään opiskelijahintaisten matkalippujen myöntämiseen.": "Tietoja käytetään matkalippujen opiskelija-alennuksen myöntämiseen.",
   "Tietojani käyttäneet toimijat": "Tietojani käyttäneet toimijat",
   "Tietojen hakeminen epäonnistui": "Tietojen hakeminen epäonnistui",
@@ -2794,6 +2794,7 @@
   "Y-tunnus": "Y-tunnus",
   "Opettajan pätevyys" : "Opettajan pätevyys",
   "Opetettavan aineen pätevyys" : "Opetettavan aineen pätevyys",
-  "description:Kielitutkinnon suoritukset osat" : "Kielitutkinnon suoritukset osat",
-  "description:Yleisessä kielitutkinnossa 'lasna' vastaa tutkintopäivää,..." : "Yleisessä kielitutkinnossa 'lasna' vastaa tutkintopäivää, 'hyvaksytystisuoritettu' arviointipäivää"
+  "description:Yleisen kielitutkinnon osakokeet" : "Yleisen kielitutkinnon osakokeet",
+  "description:Yleisessä kielitutkinnossa 'lasna' vastaa tutkintopäivää,..." : "Yleisessä kielitutkinnossa 'lasna' vastaa tutkintopäivää, 'hyvaksytystisuoritettu' arviointipäivää",
+  "Tutkintopäivä": "Tutkintopäivä"
 }

@@ -11,6 +11,7 @@ import { OpiskeluoikeusTitle } from '../components-v2/opiskeluoikeus/Opiskeluoik
 import { KielitutkinnonOpiskeluoikeudenOpiskeluoikeusjakso } from '../types/fi/oph/koski/schema/KielitutkinnonOpiskeluoikeudenOpiskeluoikeusjakso'
 import { KielitutkinnonOpiskeluoikeus } from '../types/fi/oph/koski/schema/KielitutkinnonOpiskeluoikeus'
 import { YleinenKielitutkintoEditor } from './YleinenKielitutkintoEditor'
+import { YleinenKielitutkinto } from '../types/fi/oph/koski/schema/YleinenKielitutkinto'
 
 export type KielitutkintoEditorProps =
   AdaptedOpiskeluoikeusEditorProps<KielitutkinnonOpiskeluoikeus>
@@ -41,6 +42,13 @@ const KielitutkinnonPäätasonSuoritusEditor: React.FC<
   const organisaatio =
     opiskeluoikeus.oppilaitos || opiskeluoikeus.koulutustoimija
 
+  const overrides =
+    !form.editMode &&
+    opiskeluoikeus.suoritukset[0].koulutusmoduuli.$class ===
+      YleinenKielitutkinto.className
+      ? { opiskeluoikeudenTilaEditor: <></> } // Ei näytetä opiskeluoikeuden tilaa näyttötilassa
+      : null
+
   return (
     <EditorContainer
       form={form}
@@ -50,6 +58,7 @@ const KielitutkinnonPäätasonSuoritusEditor: React.FC<
       createOpiskeluoikeusjakso={
         KielitutkinnonOpiskeluoikeudenOpiskeluoikeusjakso
       }
+      {...overrides}
     >
       <TestIdRoot id={päätasonSuoritus.testId}>
         <YleinenKielitutkintoEditor

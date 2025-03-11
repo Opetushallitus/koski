@@ -405,7 +405,6 @@ describe('Oppijataulukko', function () {
           'of Puppets, Master',
           'Oppija, Oili',
           'Perusopetuksensiirto, Pertti',
-          'Suorittaja, Kielitutkinto',
           't, tavallinen',
           'Toiminta, Tommi',
           'Tupla, Toivo',
