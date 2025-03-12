@@ -113,11 +113,6 @@ object Oppivelvollisuustiedot {
               from
                 #${s.name}.r_henkilo henkilo
               where syntymaaika >= '#$valpasLakiVoimassaVanhinSyntymäaika'::date
-                and (
-                  turvakielto = true
-                  or not (kotikunta is null or kotikunta = any(#$ulkopuolisetKunnatTaiKuntaVirheellinen))
-                  or ${kotikuntahistoriaConfig.käytäOppivelvollisuudenPäättelyyn}
-                )
                 and master_oid not in (
                                 select
                                   henkilo.master_oid
@@ -372,8 +367,7 @@ object Oppivelvollisuustiedot {
           left join oppivelvollisuus_alkaa on oppivelvolliset_henkilot.master_oid = oppivelvollisuus_alkaa.master_oid
         where
           (
-            (not ${kotikuntahistoriaConfig.käytäOppivelvollisuudenPäättelyyn})
-            or (kotikunta_suomessa_alkaen.pvm is null)
+            (kotikunta_suomessa_alkaen.pvm is null)
             or (kotikunta_suomessa_alkaen.pvm < oppivelvolliset_henkilot.syntymaaika + interval '18 years')
           )
       """

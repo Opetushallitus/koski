@@ -45,7 +45,6 @@ case class OppijanumerorekisteriKotikuntahistoriaRow(
 }
 
 case class KotikuntahistoriaConfig(config: Config) {
-  def käytäOppivelvollisuudenPäättelyyn: Boolean = getBoolean("kotikuntahistoria.oppivelvollisuustiedotFiltering")
   def käytäMaksuttomuustietojenValidointiin: Boolean = getBoolean("kotikuntahistoria.maksuttomuusValidation")
 
   private def getBoolean(path: String): Boolean =
