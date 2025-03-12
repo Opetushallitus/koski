@@ -2,11 +2,13 @@ package fi.oph.koski.validation
 
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.schema._
+import fi.oph.koski.validation.Lukio2019VieraatKieletValidation.omanÄidinkielenOpinnotPrefixit
 
 object Lukio2019OsasuoritusValidation {
 
   val lukiodiplomit = List("KOLD1", "KULD2", "KÄLD3", "LILD4", "MELD5", "MULD6", "TALD7", "TELD8")
   val lukiodiplomienSallitutOppiaineet = List(("KU", "KULD2"), ("LI", "LILD4"), ("MU", "MULD6"), ("TE", "TELD8"))
+  val äidinkielenSallitutModuulit = List("ÄI1", "ÄI2", "ÄI3", "ÄI4", "ÄI5", "ÄI6", "ÄI7", "ÄI8", "ÄI9", "ÄI10", "ÄI11", "MO1", "MO2", "MO3", "MO4", "MO5", "MO6", "MO7", "MO8", "MO9", "MO10", "MO11", "ÄIS1", "ÄIS2", "ÄIS3", "ÄIS4", "ÄIS5", "ÄIS6", "ÄIS7", "ÄIS8", "ÄIS9", "ÄIS10", "ÄIS11", "ÄIR1", "ÄIR2", "ÄIR3", "ÄIR4", "ÄIR5", "ÄIR6", "ÄIR7", "ÄIR8", "ÄIR9", "ÄIR10", "ÄIR11", "ÄIV1", "ÄIV2", "ÄIV3", "ÄIV4", "ÄIV5", "ÄIV6", "ÄIV7", "ÄIV8", "ÄIV9", "ÄIV10", "ÄIV11", "S21", "S22", "S23", "S24", "S25", "S26", "S27", "S28", "S29", "S210", "S211", "SV21", "SV22", "SV23", "SV24", "SV25", "SV26", "SV27", "SV28", "SV29", "SV210", "SV211", "MOS1", "MOS2", "MOS3", "MOS4", "MOS5", "MOS6", "MOS7", "MOS8", "MOS9", "MOS10", "MOS11", "MOR1", "MOR2", "MOR3", "MOR4", "MOR5", "MOR6", "MOR7", "MOR8", "MOR9", "MOR10", "MOR11", "MOT1", "MOT2", "MOT3", "MOT4", "MOT5", "MOT6", "MOT7", "MOT8", "MOT9", "MOT10", "MOT11")
 
   def validate(suoritus: Suoritus, parents: List[Suoritus]): HttpStatus = {
     HttpStatus.fold(List(
@@ -15,7 +17,8 @@ object Lukio2019OsasuoritusValidation {
       validateLukiodiplomiLaajuus(suoritus),
       validateOppiaineenSuorituskieli(suoritus, parents),
       validateModuulinJaPaikallisenOpintojaksonSuorituskieli(suoritus, parents),
-      validateModuulitPaikallisessaOppiaineessa(suoritus, parents)
+      validateModuulitPaikallisessaOppiaineessa(suoritus, parents),
+      validateModuulitÄidinkielessä(suoritus, parents),
     ))
   }
 
@@ -91,5 +94,15 @@ object Lukio2019OsasuoritusValidation {
 
   private def suorituksenTunniste(suoritus: Suoritus): KoodiViite = {
     suoritus.koulutusmoduuli.tunniste
+  }
+
+  private def validateModuulitÄidinkielessä(suoritus: Suoritus, parents: List[Suoritus]): HttpStatus = (suoritus, parents) match {
+    case (_: LukionModuulinSuoritus2019, (_ : LukionOppiaineenSuoritus2019) :: _)
+      if parents.head.koulutusmoduuli.isInstanceOf[LukionÄidinkieliJaKirjallisuus2019]
+        && !äidinkielenSallitutModuulit.contains(suoritus.koulutusmoduuli.tunniste.koodiarvo)
+        && !omanÄidinkielenOpinnotPrefixit.exists(suoritus.koulutusmoduuli.tunniste.koodiarvo.startsWith(_)) =>
+        KoskiErrorCategory.badRequest.validation.rakenne.epäsopiviaOsasuorituksia(s"Äidinkielen oppiaineeseen ei voi lisätä moduulia ${suoritus.koulutusmoduuli.tunniste}.")
+    case _ =>
+      HttpStatus.ok
   }
 }

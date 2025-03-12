@@ -278,6 +278,14 @@ case class LukionMuuModuuliMuissaOpinnoissa2019(
   pakollinen: Boolean
 ) extends LukionModuuliMuissaOpinnoissa2019
 
+@Title("Lukion äidinkielen moduuli 2019")
+@OnlyWhen("../../../koulutusmoduuli/tunniste/koodiarvo", "AI")
+case class LukionÄidinkielenModuuli2019(
+  tunniste: Koodistokoodiviite,
+  laajuus: LaajuusOpintopisteissä,
+  pakollinen: Boolean
+) extends LukionModuuliOppiaineissa2019
+
 @Title("Lukion vieraan kielen moduuli oppiaineissa 2019")
 @OnlyWhen("../../../koulutusmoduuli/tunniste/koodiarvo", "A")
 @OnlyWhen("../../../koulutusmoduuli/tunniste/koodiarvo", "B1")
@@ -310,7 +318,6 @@ case class LukionVieraanKielenModuuliOppiaineissa2019(
 @OnlyWhen("../../../koulutusmoduuli/tunniste/koodiarvo", "TE")
 @OnlyWhen("../../../koulutusmoduuli/tunniste/koodiarvo", "YH")
 @OnlyWhen("../../../koulutusmoduuli/tunniste/koodiarvo", "KT")
-@OnlyWhen("../../../koulutusmoduuli/tunniste/koodiarvo", "AI")
 case class LukionMuuModuuliOppiaineissa2019(
   tunniste: Koodistokoodiviite,
   laajuus: LaajuusOpintopisteissä,

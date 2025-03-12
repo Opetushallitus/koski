@@ -1216,6 +1216,36 @@ class OppijaValidationLukio2019Spec extends AnyFreeSpec with PutOpiskeluoikeusTe
     }
   }
 
+  "Äidinkielen moduulit" - {
+    def verify[A](kieli: String)(expect: => A): A = {
+      val oo = aktiivinenOpiskeluoikeus.copy(
+        suoritukset = List(vahvistamatonOppimääränSuoritus.copy(
+          osasuoritukset = Some(List(
+            oppiaineenSuoritus(Lukio2019ExampleData.lukionÄidinkieli("AI1", pakollinen = true)).copy(osasuoritukset =
+              Some(List(moduulinSuoritusOppiaineissa(äidinkielenModuuliOppiaineissa(kieli))))
+            )
+          ))
+        ))
+      )
+
+      setupOppijaWithOpiskeluoikeus(oo) {
+        expect
+      }
+    }
+
+    "ÄI1 sallittu" in {
+      verify("ÄI1") {
+        verifyResponseStatusOk()
+      }
+    }
+
+    "BI1 ei sallittu" in {
+      verify("BI1") {
+        verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.rakenne.epäsopiviaOsasuorituksia("Äidinkielen oppiaineeseen ei voi lisätä moduulia moduulikoodistolops2021/BI1."))
+      }
+    }
+  }
+
   "Äidinkielen omainen oppiaine" - {
     def verify[A](kieli: String)(expect: => A): A = {
       val oo = aktiivinenOpiskeluoikeus.copy(
