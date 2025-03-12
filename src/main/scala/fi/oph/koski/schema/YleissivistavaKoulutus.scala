@@ -32,6 +32,14 @@ trait Yksilöllistettävä {
   def yksilöllistettyOppimäärä: Boolean
 }
 
+trait MahdollisestiRajattuOppimäärä {
+  @DefaultValue(false)
+  @Description("Tieto siitä, onko oppiaineen oppimäärä rajattu (true/false). Jos oppilas opiskelee yhdessä rajatun oppimäärän mukaan, myös päättöarviointi voi näissä aineissa olla sanallinen. Korvaa aiemman kentän yksilöllistetty oppimäärä. Voimassa 1.8.2025 alkaen.")
+  @Tooltip("Onko oppilas opiskellut oppiaineessa rajatun oppimäärän. Jos oppilas opiskelee yhdessä rajatun oppimäärän mukaan, myös päättöarviointi voi näissä aineissa olla sanallinen.")
+  @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT, Rooli.SUORITUSJAKO_KATSELIJA))
+  def rajattuOppimäärä: Boolean
+}
+
 trait YleissivistavaOppiaine extends KoodistostaLöytyväKoulutusmoduuli with Valinnaisuus {
   @Description("Oppiaine")
   @KoodistoUri("koskioppiaineetyleissivistava")
