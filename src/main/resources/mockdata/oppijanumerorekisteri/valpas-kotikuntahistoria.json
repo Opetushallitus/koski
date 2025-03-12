@@ -22,5 +22,29 @@
     "kotikunta": "091",
     "kuntaanMuuttopv": "2016-01-01",
     "kunnastaPoisMuuttopv": null
+  },
+  {
+    "oid": "1.2.246.562.24.00000000088",
+    "kotikunta": "091",
+    "kuntaanMuuttopv": null,
+    "kunnastaPoisMuuttopv": "2023-01-01"
+  },
+  {
+    "oid": "1.2.246.562.24.00000000088",
+    "kotikunta": "200",
+    "kuntaanMuuttopv": "2023-01-01",
+    "kunnastaPoisMuuttopv": null
+  },
+  {
+    "oid": "1.2.246.562.24.00000000184",
+    "kotikunta": "091",
+    "kuntaanMuuttopv": null,
+    "kunnastaPoisMuuttopv": "2010-10-01"
+  },
+  {
+    "oid": "1.2.246.562.24.00000000184",
+    "kotikunta": "200",
+    "kuntaanMuuttopv": "2010-10-01",
+    "kunnastaPoisMuuttopv": null
   }
 ]

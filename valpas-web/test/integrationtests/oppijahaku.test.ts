@@ -399,12 +399,12 @@ describe("Oppijahaku", () => {
     )
   })
 
-  it("Maksuttomuus: Oppija, jonka kotikunta ei ole Suomessa, ei löydy oppijahaulla", async () => {
+  it("Maksuttomuus: Oppija, jonka kotikunta ei ole Suomessa, muutta on ollut ennen kuin täyttänyt 18v, löytyy oppijahaulla", async () => {
     await hakuLogin()
     await fillQueryField("130805A850J", "maksuttomuusoppijasearch")
     await submit("maksuttomuusoppijasearch")
     await expectResultToBe(
-      "Henkilö ei ole laajennetun oppivelvollisuuden piirissä, tai hän on suorittanut oppivelvollisuutensa eikä hänellä ole oikeutta maksuttomaan koulutukseen.",
+      "Löytyi: MuuttanutUlkomaille Valpas (130805A850J)",
       undefined,
       "maksuttomuusoppijasearch",
     )
