@@ -83,7 +83,7 @@ export default defineConfig({
   /* Run your local dev server before starting the tests */
   webServer: [
     {
-      command: `KOSKI_BACKEND_HOST=${process.env.KOSKI_BACKEND_HOST || process.env.CI ? `http://172.17.0.1:${process.env.KOSKI_BACKEND_PORT || "7021"}` : `http://${getMyIp()}:${process.env.KOSKI_BACKEND_PORT || "7021"}`} npm run build-and-start-luovutuspalvelu`,
+      command: `KOSKI_BACKEND_HOST=${process.env.KOSKI_BACKEND_HOST || process.env.CI ? `http://172.17.0.1:${process.env.KOSKI_BACKEND_PORT || "7021"}` : `http://${getMyIp()}:${process.env.KOSKI_BACKEND_PORT || "7021"}`} npm run ${process.env.CI ? "start-luovutuspalvelu" : "build-and-start-luovutuspalvelu"}`,
       url: "https://localhost:7022/koski-luovutuspalvelu/healthcheck/proxy",
       reuseExistingServer: !process.env.CI,
       stdout: "pipe",
