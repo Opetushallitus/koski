@@ -345,3 +345,4 @@ jobs:
     name: "👀OAuth2"
     needs: [build_koski]
     uses: ./.github/workflows/omadataoauth2sample_test.yml
+    secrets: inherit
