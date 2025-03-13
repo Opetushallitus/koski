@@ -1190,7 +1190,7 @@ test.describe('IB', () => {
     })
 
     test.describe('Laajuuden yksikön vaihtuminen', () => {
-      const oppijaOid = '1.2.246.562.24.00000000177'
+      const oppijaOid = '1.2.246.562.24.00000000178'
 
       test.beforeEach(async ({ oppijaPage, ibOppijaPage }) => {
         await oppijaPage.goto(oppijaOid)

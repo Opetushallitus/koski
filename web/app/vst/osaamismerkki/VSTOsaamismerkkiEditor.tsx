@@ -50,6 +50,7 @@ export const VSTOsaamismerkkiEditor: React.FC<VSTOsaamismerkkiEditor> = ({
         createOpiskeluoikeusjakso={createVstOsaamismerkkiOpiskeluoikeusjakso}
         onChangeSuoritus={onChangeSuoritus}
         opiskeluoikeusJaksoClassName="fi.oph.koski.schema.VapaanSivistystyönOsaamismerkinOpiskeluoikeusjakso"
+        testId={päätasonSuoritus.testId}
       >
         <Spacer />
         <KansalainenOnly>

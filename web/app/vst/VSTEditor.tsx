@@ -1,7 +1,9 @@
 import React, { useContext, useEffect, useMemo } from 'react'
 import { useSchema } from '../appstate/constraints'
 import { OpiskeluoikeusContext } from '../appstate/opiskeluoikeus'
-import { TestIdRoot } from '../appstate/useTestId'
+import { useTree } from '../appstate/tree'
+import { useKansalainenTaiSuoritusjako } from '../appstate/user'
+import { TestIdLayer } from '../appstate/useTestId'
 import {
   ActivePäätasonSuoritus,
   hasPäätasonsuoritusOf,
@@ -12,31 +14,29 @@ import { AdaptedOpiskeluoikeusEditorProps } from '../components-v2/interoperabil
 import { OpiskeluoikeusTitle } from '../components-v2/opiskeluoikeus/OpiskeluoikeusTitle'
 import { t } from '../i18n/i18n'
 import { Arviointi } from '../types/fi/oph/koski/schema/Arviointi'
+import { Koulutustoimija } from '../types/fi/oph/koski/schema/Koulutustoimija'
+import { Oppilaitos } from '../types/fi/oph/koski/schema/Oppilaitos'
 import { isOppivelvollisilleSuunnattuMaahanmuuttajienKotoutumiskoulutuksenSuoritus } from '../types/fi/oph/koski/schema/OppivelvollisilleSuunnattuMaahanmuuttajienKotoutumiskoulutuksenSuoritus'
 import { isOppivelvollisilleSuunnattuMaahanmuuttajienKotoutumiskoulutuksenSuoritus2022 } from '../types/fi/oph/koski/schema/OppivelvollisilleSuunnattuMaahanmuuttajienKotoutumiskoulutuksenSuoritus2022'
 import { isOppivelvollisilleSuunnattuVapaanSivistystyönKoulutuksenSuoritus } from '../types/fi/oph/koski/schema/OppivelvollisilleSuunnattuVapaanSivistystyonKoulutuksenSuoritus'
 import { isVapaanSivistystyönJotpaKoulutuksenSuoritus } from '../types/fi/oph/koski/schema/VapaanSivistystyonJotpaKoulutuksenSuoritus'
+import { isVapaanSivistystyönKoulutuksenPäätasonSuoritus } from '../types/fi/oph/koski/schema/VapaanSivistystyonKoulutuksenPaatasonSuoritus'
 import { isVapaanSivistystyönLukutaitokoulutuksenSuoritus } from '../types/fi/oph/koski/schema/VapaanSivistystyonLukutaitokoulutuksenSuoritus'
 import { VapaanSivistystyönOpiskeluoikeus } from '../types/fi/oph/koski/schema/VapaanSivistystyonOpiskeluoikeus'
+import { isVapaanSivistystyönOsaamismerkinSuoritus } from '../types/fi/oph/koski/schema/VapaanSivistystyonOsaamismerkinSuoritus'
+import { VapaanSivistystyönPäätasonSuoritus } from '../types/fi/oph/koski/schema/VapaanSivistystyonPaatasonSuoritus'
 import { isVapaanSivistystyönVapaatavoitteisenKoulutuksenSuoritus } from '../types/fi/oph/koski/schema/VapaanSivistystyonVapaatavoitteisenKoulutuksenSuoritus'
 import { parasArviointi } from '../util/arvioinnit'
+import { isVSTSuoritusArvioinnilla } from './common/arviointi'
 import { VSTJotpaEditor } from './jotpa/VSTJotpaEditor'
 import { KOPSEditor } from './kops/KOPSEditor'
 import { VSTKoto2012Editor } from './koto2012/VSTKoto2012Editor'
 import { VSTKoto2022Editor } from './koto2022/VSTKoto2022Editor'
 import { VSTLukutaitoEditor } from './lukutaito/VSTLukutaitoEditor'
-import { VSTVapaatavoitteinenEditor } from './vapaatavoitteinen/VSTVapaatavoitteinenEditor'
-import { isVSTSuoritusArvioinnilla } from './common/arviointi'
-import { isVapaanSivistystyönKoulutuksenPäätasonSuoritus } from '../types/fi/oph/koski/schema/VapaanSivistystyonKoulutuksenPaatasonSuoritus'
-import { isVapaanSivistystyönOsaamismerkinSuoritus } from '../types/fi/oph/koski/schema/VapaanSivistystyonOsaamismerkinSuoritus'
-import { VSTOsaamismerkkiEditor } from './osaamismerkki/VSTOsaamismerkkiEditor'
 import { OsaamismerkkiKuva } from './osaamismerkki/OsaamismerkkiKuva'
-import { useTree } from '../appstate/tree'
-import { useKansalainenTaiSuoritusjako } from '../appstate/user'
-import { Koulutustoimija } from '../types/fi/oph/koski/schema/Koulutustoimija'
-import { Oppilaitos } from '../types/fi/oph/koski/schema/Oppilaitos'
-import { VapaanSivistystyönPäätasonSuoritus } from '../types/fi/oph/koski/schema/VapaanSivistystyonPaatasonSuoritus'
 import { OsaamismerkkiTitle } from './osaamismerkki/OsaamismerkkiTitle'
+import { VSTOsaamismerkkiEditor } from './osaamismerkki/VSTOsaamismerkkiEditor'
+import { VSTVapaatavoitteinenEditor } from './vapaatavoitteinen/VSTVapaatavoitteinenEditor'
 
 type VSTEditorProps =
   AdaptedOpiskeluoikeusEditorProps<VapaanSivistystyönOpiskeluoikeus>
@@ -177,7 +177,7 @@ const PäätasonSuoritusEditor: React.FC<{
   const { editorProps, päätasonSuoritus } = props
 
   return (
-    <TestIdRoot id={päätasonSuoritus.testId}>
+    <>
       {hasPäätasonsuoritusOf(
         isVapaanSivistystyönJotpaKoulutuksenSuoritus,
         päätasonSuoritus
@@ -233,7 +233,7 @@ const PäätasonSuoritusEditor: React.FC<{
           päätasonSuoritus={päätasonSuoritus}
         />
       )}
-    </TestIdRoot>
+    </>
   )
 }
 

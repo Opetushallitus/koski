@@ -2,7 +2,7 @@ import { isEmpty } from 'fp-ts/lib/Array'
 import React, { useCallback, useMemo } from 'react'
 import { useSchema } from '../appstate/constraints'
 import { useKoodistoFiller } from '../appstate/koodisto'
-import { TestIdRoot, TestIdText } from '../appstate/useTestId'
+import { TestIdLayer, TestIdRoot, TestIdText } from '../appstate/useTestId'
 import {
   EditorContainer,
   usePäätasonSuoritus
@@ -146,92 +146,91 @@ const IBPäätasonSuoritusEditor: React.FC<
       onChangeSuoritus={setPäätasonSuoritus}
       createOpiskeluoikeusjakso={LukionOpiskeluoikeusjakso}
       lisätiedotContainer={IBLisätiedot}
+      testId={päätasonSuoritus.testId}
       {...addSuoritusProps}
     >
-      <TestIdRoot id={päätasonSuoritus.testId}>
-        <IBPäätasonSuoritusTiedot
-          form={form}
-          päätasonSuoritus={päätasonSuoritus}
-          alkamispäivä={form.state.alkamispäivä}
-        />
+      <IBPäätasonSuoritusTiedot
+        form={form}
+        päätasonSuoritus={päätasonSuoritus}
+        alkamispäivä={form.state.alkamispäivä}
+      />
 
-        <Spacer />
+      <Spacer />
 
-        <SuorituksenVahvistusField
-          form={form}
-          suoritusPath={päätasonSuoritus.path}
-          organisaatio={organisaatio}
-          disableAdd={!valmis}
-        />
+      <SuorituksenVahvistusField
+        form={form}
+        suoritusPath={päätasonSuoritus.path}
+        organisaatio={organisaatio}
+        disableAdd={!valmis}
+      />
 
-        <Spacer />
+      <Spacer />
 
-        <OppiaineTable
-          selectedSuoritus={päätasonSuoritus}
-          form={form}
-          groupBy={groupByAineryhmä}
-          addOsasuoritusDialog={match(päätasonSuoritus.suoritus.koulutusmoduuli)
-            .isClass(
-              PreIBKoulutusmoduuli2015,
-              () => UusiPreIB2015OsasuoritusDialog
-            )
-            .isClass(
-              PreIBKoulutusmoduuli2019,
-              () => UusiPreIB2019OsasuoritusDialog
-            )
-            .isClass(IBTutkinto, () => UusiIBTutkintoOsasuoritusDialog)
-            .get()}
-        />
+      <OppiaineTable
+        selectedSuoritus={päätasonSuoritus}
+        form={form}
+        groupBy={groupByAineryhmä}
+        addOsasuoritusDialog={match(päätasonSuoritus.suoritus.koulutusmoduuli)
+          .isClass(
+            PreIBKoulutusmoduuli2015,
+            () => UusiPreIB2015OsasuoritusDialog
+          )
+          .isClass(
+            PreIBKoulutusmoduuli2019,
+            () => UusiPreIB2019OsasuoritusDialog
+          )
+          .isClass(IBTutkinto, () => UusiIBTutkintoOsasuoritusDialog)
+          .get()}
+      />
 
-        <footer className="IBPäätasonSuoritusEditor__footer">
-          {form.editMode && (
-            <RaisedButton onClick={showAddOppiaineDialog} testId="addOppiaine">
-              {t('Lisää oppiaine')}
-            </RaisedButton>
-          )}
-          {kurssejaYhteensä !== null && (
-            <div className="IBPäätasonSuoritusEditor__yhteensä">
-              {t('Suoritettujen kurssien laajuus yhteensä')}
-              {': '}
-              <TestIdText id="suoritettujaKurssejaYhteensä">
-                {kurssejaYhteensä}
-              </TestIdText>
-            </div>
-          )}
-          {paikallisiaSuorituksia && (
-            <div>{`* = ${t('paikallinen kurssi tai oppiaine')}`}</div>
-          )}
-        </footer>
+      <footer className="IBPäätasonSuoritusEditor__footer">
+        {form.editMode && (
+          <RaisedButton onClick={showAddOppiaineDialog} testId="addOppiaine">
+            {t('Lisää oppiaine')}
+          </RaisedButton>
+        )}
+        {kurssejaYhteensä !== null && (
+          <div className="IBPäätasonSuoritusEditor__yhteensä">
+            {t('Suoritettujen kurssien laajuus yhteensä')}
+            {': '}
+            <TestIdText id="suoritettujaKurssejaYhteensä">
+              {kurssejaYhteensä}
+            </TestIdText>
+          </div>
+        )}
+        {paikallisiaSuorituksia && (
+          <div>{`* = ${t('paikallinen kurssi tai oppiaine')}`}</div>
+        )}
+      </footer>
 
-        {addOppiaineVisible &&
-          organisaatio &&
-          match(päätasonSuoritus.suoritus.koulutusmoduuli)
-            .isClass(PreIBKoulutusmoduuli2015, () => (
-              <UusiPreIB2015OppiaineDialog
-                päätasonSuoritus={päätasonSuoritus.suoritus}
-                onClose={hideAddOppiaineDialog}
-                onSubmit={addOppiaine}
-                organisaatioOid={organisaatio?.oid}
-              />
-            ))
-            .isClass(PreIBKoulutusmoduuli2019, () => (
-              <UusiPreIB2019OppiaineDialog
-                päätasonSuoritus={päätasonSuoritus.suoritus}
-                onClose={hideAddOppiaineDialog}
-                onSubmit={addOppiaine}
-                organisaatioOid={organisaatio?.oid}
-              />
-            ))
-            .isClass(IBTutkinto, () => (
-              <UusiIBTutkintoOppiaineDialog
-                päätasonSuoritus={päätasonSuoritus.suoritus}
-                onClose={hideAddOppiaineDialog}
-                onSubmit={addOppiaine}
-                organisaatioOid={organisaatio?.oid}
-              />
-            ))
-            .getOrNull()}
-      </TestIdRoot>
+      {addOppiaineVisible &&
+        organisaatio &&
+        match(päätasonSuoritus.suoritus.koulutusmoduuli)
+          .isClass(PreIBKoulutusmoduuli2015, () => (
+            <UusiPreIB2015OppiaineDialog
+              päätasonSuoritus={päätasonSuoritus.suoritus}
+              onClose={hideAddOppiaineDialog}
+              onSubmit={addOppiaine}
+              organisaatioOid={organisaatio?.oid}
+            />
+          ))
+          .isClass(PreIBKoulutusmoduuli2019, () => (
+            <UusiPreIB2019OppiaineDialog
+              päätasonSuoritus={päätasonSuoritus.suoritus}
+              onClose={hideAddOppiaineDialog}
+              onSubmit={addOppiaine}
+              organisaatioOid={organisaatio?.oid}
+            />
+          ))
+          .isClass(IBTutkinto, () => (
+            <UusiIBTutkintoOppiaineDialog
+              päätasonSuoritus={päätasonSuoritus.suoritus}
+              onClose={hideAddOppiaineDialog}
+              onSubmit={addOppiaine}
+              organisaatioOid={organisaatio?.oid}
+            />
+          ))
+          .getOrNull()}
     </EditorContainer>
   )
 }

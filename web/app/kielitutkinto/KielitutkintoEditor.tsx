@@ -1,6 +1,6 @@
 import React from 'react'
 import { useSchema } from '../appstate/constraints'
-import { TestIdRoot } from '../appstate/useTestId'
+import { TestIdLayer, TestIdRoot } from '../appstate/useTestId'
 import {
   EditorContainer,
   usePäätasonSuoritus
@@ -58,16 +58,15 @@ const KielitutkinnonPäätasonSuoritusEditor: React.FC<
       createOpiskeluoikeusjakso={
         KielitutkinnonOpiskeluoikeudenOpiskeluoikeusjakso
       }
+      testId={päätasonSuoritus.testId}
       {...overrides}
     >
-      <TestIdRoot id={päätasonSuoritus.testId}>
-        <YleinenKielitutkintoEditor
-          form={form}
-          path={form.root.prop('suoritukset').at(0)}
-          päätasonSuoritus={päätasonSuoritus}
-          organisaatio={organisaatio}
-        />
-      </TestIdRoot>
+      <YleinenKielitutkintoEditor
+        form={form}
+        path={form.root.prop('suoritukset').at(0)}
+        päätasonSuoritus={päätasonSuoritus}
+        organisaatio={organisaatio}
+      />
     </EditorContainer>
   )
 }

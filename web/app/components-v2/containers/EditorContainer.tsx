@@ -41,6 +41,7 @@ export type EditorContainerProps<T extends Opiskeluoikeus> =
     oppijaOid: string
     invalidatable: boolean
     onChangeSuoritus: (suoritusIndex: number) => void
+    testId: string
     createOpiskeluoikeusjakso: (
       seed: UusiOpiskeluoikeusjakso<OpiskeluoikeusjaksoOf<T['tila']>>
     ) => OpiskeluoikeusjaksoOf<T['tila']> | NonEmptyArray<ValidationError>
@@ -146,7 +147,7 @@ export const EditorContainer = <T extends Opiskeluoikeus>(
 
   return (
     <article {...common(props, ['EditorContainer'])}>
-      <TestIdRoot id="opiskeluoikeus">
+      <TestIdLayer id="opiskeluoikeus">
         <OpiskeluoikeusEditToolbar
           opiskeluoikeus={props.form.state}
           editMode={props.form.editMode}
@@ -202,32 +203,34 @@ export const EditorContainer = <T extends Opiskeluoikeus>(
               <Spacer />
             </>
           )}
-      </TestIdRoot>
+      </TestIdLayer>
 
       <h2>
         <Trans>{'Suoritukset'}</Trans>
       </h2>
 
-      <TestIdRoot id="suoritusTabs">
+      <TestIdLayer id="suoritusTabs">
         <Tabs
           tabs={suoritusTabs}
           active={suoritusIndex}
           onSelect={changeSuoritusTab}
         />
-      </TestIdRoot>
+      </TestIdLayer>
 
       <Spacer />
 
-      <div key={suoritusIndex}>{props.children}</div>
+      <TestIdLayer id={props.testId}>
+        <div key={suoritusIndex}>{props.children}</div>
+      </TestIdLayer>
 
-      <TestIdRoot id="opiskeluoikeus">
+      <TestIdLayer id="opiskeluoikeus">
         <EditBar form={props.form} onSave={onSave} />
         {props.form.isSaved && (
           <TestIdLayer id="saved">
             <Snackbar>{t('Tallennettu')}</Snackbar>
           </TestIdLayer>
         )}
-      </TestIdRoot>
+      </TestIdLayer>
     </article>
   )
 }

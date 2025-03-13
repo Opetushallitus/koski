@@ -35,15 +35,17 @@ test.describe('Vapaan sivistyön VST osaamismerkki', () => {
     await vstOppijaPage.edit()
 
     // Lisää arviointi
-    await page.getByTestId('suoritukset.0.arvosana.edit.input').click()
+    await page.getByTestId('oo.0.suoritukset.0.arvosana.edit.input').click()
     await page
       .getByTestId(
-        'suoritukset.0.arvosana.edit.options.arviointiasteikkovst_Hyväksytty.item'
+        'oo.0.suoritukset.0.arvosana.edit.options.arviointiasteikkovst_Hyväksytty.item'
       )
       .click()
-    await page.getByTestId('suoritukset.0.arviointi.0.date.edit.input').click()
     await page
-      .getByTestId('suoritukset.0.arviointi.0.date.edit.input')
+      .getByTestId('oo.0.suoritukset.0.arviointi.0.date.edit.input')
+      .click()
+    await page
+      .getByTestId('oo.0.suoritukset.0.arviointi.0.date.edit.input')
       .fill('1.1.2024')
 
     // Lisää vahvistus
@@ -55,14 +57,14 @@ test.describe('Vapaan sivistyön VST osaamismerkki', () => {
 
     // Vaihda tilan viimeinen päivä samaksi kuin arviointi- ja vahvistuspäivät
     await page
-      .getByTestId('opiskeluoikeus.tila.edit.items.0.date.edit.input')
+      .getByTestId('oo.0.opiskeluoikeus.tila.edit.items.0.date.edit.input')
       .click()
     await page
-      .getByTestId('opiskeluoikeus.tila.edit.items.0.date.edit.input')
+      .getByTestId('oo.0.opiskeluoikeus.tila.edit.items.0.date.edit.input')
       .fill('1.1.2024')
 
     // Tallenna muutokset
-    await page.getByTestId('opiskeluoikeus.save').click()
+    await page.getByTestId('oo.0.opiskeluoikeus.save').click()
 
     // Oppija löytyy oppijahaulla uudestaan
     await virkailijaPage.goto()
@@ -70,7 +72,7 @@ test.describe('Vapaan sivistyön VST osaamismerkki', () => {
     await search.clickOnFirst()
 
     // Varmista versiohistoriaa käyttämällä, että versio 2 tuli luotua muokatessa
-    await page.getByTestId('opiskeluoikeus.versiohistoria.button').click()
-    await page.getByTestId('opiskeluoikeus.versiohistoria.list.2').click()
+    await page.getByTestId('oo.0.opiskeluoikeus.versiohistoria.button').click()
+    await page.getByTestId('oo.0.opiskeluoikeus.versiohistoria.list.2').click()
   })
 })

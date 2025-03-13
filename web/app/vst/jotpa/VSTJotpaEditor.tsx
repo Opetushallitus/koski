@@ -1,5 +1,6 @@
 import React from 'react'
 import { OpenAllButton, useTree } from '../../appstate/tree'
+import { TestIdLayer } from '../../appstate/useTestId'
 import { EditorContainer } from '../../components-v2/containers/EditorContainer'
 import { FormOptic } from '../../components-v2/forms/FormModel'
 import { Spacer } from '../../components-v2/layout/Spacer'
@@ -12,8 +13,8 @@ import { VapaanSivistystyönJotpaKoulutuksenSuoritus } from '../../types/fi/oph/
 import { VapaanSivistystyönOpiskeluoikeus } from '../../types/fi/oph/koski/schema/VapaanSivistystyonOpiskeluoikeus'
 import { VapaanSivistystyönOpiskeluoikeusjakso } from '../../types/fi/oph/koski/schema/VapaanSivistystyonOpiskeluoikeusjakso'
 import { deleteAt } from '../../util/array'
-import { VSTLisatiedot } from '../common/VSTLisatiedot'
 import { VSTLaajuudetYhteensä } from '../common/VSTLaajuudetYhteensa'
+import { VSTLisatiedot } from '../common/VSTLisatiedot'
 import { arviointienPuolestaVahvistettavissa } from '../common/arviointi'
 import { isCompletedJotpaOsasuoritus } from '../common/osasuoritukset'
 import * as Suoritus from '../common/suoritusFields'
@@ -51,6 +52,7 @@ export const VSTJotpaEditor: React.FC<VSTJotpaEditorProps> = ({
         lisätiedotContainer={VSTLisatiedot}
         onChangeSuoritus={onChangeSuoritus}
         opiskeluoikeusJaksoClassName="fi.oph.koski.schema.VapaanSivistystyönJotpaKoulutuksenOpiskeluoikeusjakso"
+        testId={päätasonSuoritus.testId}
       >
         <PäätasosuorituksenTiedot>
           <Suoritus.Toimipiste form={form} suoritus={päätasonSuoritus} />

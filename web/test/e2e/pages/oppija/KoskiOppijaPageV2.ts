@@ -1,9 +1,11 @@
 import { Locator, Page, expect } from '@playwright/test'
 import { build, BuiltIdNode, IdNodeObject } from './uiV2builder/builder'
+import { notUndefined } from '../../../../app/util/util'
 
 export class KoskiOppijaPageV2<T extends IdNodeObject<string>> {
   page: Page
   $: BuiltIdNode<T>
+  private idHierarchy: T
   editMode: boolean
   suoritusIndex: number
   osasuoritusIndex: number
@@ -14,14 +16,23 @@ export class KoskiOppijaPageV2<T extends IdNodeObject<string>> {
 
   constructor(page: Page, idHierarchy: T) {
     this.page = page
-    this.$ = build(page, idHierarchy)
+    this.idHierarchy = idHierarchy
+    this.$ = this.opiskeluoikeus(0)
     this.suoritusIndex = 0
     this.osasuoritusIndex = 0
     this.editMode = false
 
-    this.saveBtn = page.getByTestId('opiskeluoikeus.save')
-    this.saveSnackbar = page.getByTestId('opiskeluoikeus.saved.snackbar')
+    this.saveBtn = this.getByTestId('opiskeluoikeus.save')
+    this.saveSnackbar = this.getByTestId('opiskeluoikeus.saved.snackbar')
     this.errors = page.getByTestId('globalErrors')
+  }
+
+  getByTestId(id?: string, ooIndex?: number) {
+    return this.page.getByTestId([`oo.${ooIndex || 0}`, id].filter(notUndefined).join('.'))
+  }
+
+  opiskeluoikeus(index: number) {
+    return build(this.page, this.idHierarchy, `oo.${index}`)
   }
 
   async goto(oppijaOid: string) {
