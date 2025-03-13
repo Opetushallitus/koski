@@ -152,6 +152,7 @@ const IBPäätasonSuoritusEditor: React.FC<
         <IBPäätasonSuoritusTiedot
           form={form}
           päätasonSuoritus={päätasonSuoritus}
+          alkamispäivä={form.state.alkamispäivä}
         />
 
         <Spacer />
