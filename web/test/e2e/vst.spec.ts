@@ -1,3 +1,4 @@
+/* eslint-disable mocha/no-identical-title */
 import { foreachAsync, repeatAsync } from '../util/iterating'
 import { expect as _expect, test } from './base'
 import { KoskiKansalainenPage } from './pages/kansalainen/KoskiKansalainenPage'
@@ -37,123 +38,121 @@ test.describe('Vapaa sivistystyö', () => {
     test.describe('VST JOTPA', () => {
       test.beforeEach(openOppijaPage(jotpaKoulutus, false))
       test('Näyttää tiedot oikein', async ({ page }) => {
+        const getByTestId = (id: string) => page.getByTestId(`oo.0.${id}`)
         await expect(
-          page.getByTestId('opiskeluoikeus.tila.value.items.0.date')
+          getByTestId('opiskeluoikeus.tila.value.items.0.date')
         ).toHaveText('1.1.2023')
         await expect(
-          page.getByTestId('opiskeluoikeus.tila.value.items.0.tila')
+          getByTestId('opiskeluoikeus.tila.value.items.0.tila')
         ).toHaveText('Läsnä')
         await expect(
-          page.getByTestId('opiskeluoikeus.tila.value.items.0.rahoitus')
+          getByTestId('opiskeluoikeus.tila.value.items.0.rahoitus')
         ).toHaveText(
           'Jatkuvan oppimisen ja työllisyyden palvelukeskuksen rahoitus'
         )
+        await expect(getByTestId('opiskeluoikeus.voimassaoloaika')).toHaveText(
+          'Opiskeluoikeuden voimassaoloaika: 1.1.2023 –'
+        )
+        await expect(getByTestId('suoritukset.0.toimipiste.value')).toHaveText(
+          'Varsinais-Suomen kansanopisto'
+        )
+        await expect(getByTestId('suoritukset.0.tunniste.nimi')).toHaveText(
+          'Vapaan sivistystyön koulutus'
+        )
         await expect(
-          page.getByTestId('opiskeluoikeus.voimassaoloaika')
-        ).toHaveText('Opiskeluoikeuden voimassaoloaika: 1.1.2023 –')
-        await expect(
-          page.getByTestId('suoritukset.0.toimipiste.value')
-        ).toHaveText('Varsinais-Suomen kansanopisto')
-        await expect(
-          page.getByTestId('suoritukset.0.tunniste.nimi')
-        ).toHaveText('Vapaan sivistystyön koulutus')
-        await expect(
-          page.getByTestId('suoritukset.0.tunniste.koodiarvo')
+          getByTestId('suoritukset.0.tunniste.koodiarvo')
         ).toHaveText('099999')
         await expect(
-          page.getByTestId('suoritukset.0.osasuoritukset.0.nimi.value')
+          getByTestId('suoritukset.0.osasuoritukset.0.nimi.value')
         ).toHaveText('Kuvantekemisen perusvälineistö')
 
         await expect(
-          page.getByTestId('suoritukset.0.osasuoritukset.0.laajuus.value')
+          getByTestId('suoritukset.0.osasuoritukset.0.laajuus.value')
         ).toHaveText('1 op')
         await expect(
-          page.getByTestId('suoritukset.0.osasuoritukset.0.arvosana.value')
+          getByTestId('suoritukset.0.osasuoritukset.0.arvosana.value')
         ).toHaveText('9')
         await expect(
-          page.getByTestId('suoritukset.0.osasuoritukset.1.nimi.value')
+          getByTestId('suoritukset.0.osasuoritukset.1.nimi.value')
         ).toHaveText('Kuvallisen viestinnän perusteet')
         await expect(
-          page.getByTestId('suoritukset.0.osasuoritukset.1.laajuus.value')
+          getByTestId('suoritukset.0.osasuoritukset.1.laajuus.value')
         ).toHaveText('1 op')
         await expect(
-          page.getByTestId('suoritukset.0.osasuoritukset.1.arvosana.value')
+          getByTestId('suoritukset.0.osasuoritukset.1.arvosana.value')
         ).toHaveText('Hyväksytty')
         await expect(
-          page.getByTestId('suoritukset.0.osasuoritukset.2.nimi.value')
+          getByTestId('suoritukset.0.osasuoritukset.2.nimi.value')
         ).toHaveText('Tussitekniikat I ja II')
         await expect(
-          page.getByTestId('suoritukset.0.osasuoritukset.2.laajuus.value')
+          getByTestId('suoritukset.0.osasuoritukset.2.laajuus.value')
         ).toHaveText('1 op')
-        await page.getByTestId('suoritukset.0.osasuoritukset.0.expand').click({
+        await getByTestId('suoritukset.0.osasuoritukset.0.expand').click({
           timeout: 2000
         })
         await expect(
-          page.getByTestId(
+          getByTestId(
             'suoritukset.0.osasuoritukset.0.properties.arviointi.0.arvosana.value'
           )
         ).toHaveText('9')
         await expect(
-          page.getByTestId(
+          getByTestId(
             'suoritukset.0.osasuoritukset.0.properties.arviointi.0.date.value'
           )
         ).toHaveText('1.2.2023')
         await expect(
-          page.getByTestId(
+          getByTestId(
             'suoritukset.0.osasuoritukset.0.properties.arviointi.1.arvosana.value'
           )
         ).toHaveText('Hylätty')
         await expect(
-          page.getByTestId(
+          getByTestId(
             'suoritukset.0.osasuoritukset.0.properties.arviointi.1.date.value'
           )
         ).toHaveText('1.1.2023')
-        await page.getByTestId('suoritukset.0.osasuoritukset.1.expand').click()
+        await getByTestId('suoritukset.0.osasuoritukset.1.expand').click()
         await expect(
-          page.getByTestId(
+          getByTestId(
             'suoritukset.0.osasuoritukset.1.properties.arviointi.0.arvosana.value'
           )
         ).toHaveText('Hyväksytty')
         await expect(
-          page.getByTestId(
+          getByTestId(
             'suoritukset.0.osasuoritukset.1.properties.arviointi.0.date.value'
           )
         ).toHaveText('1.3.2023')
-        await page.getByTestId('suoritukset.0.osasuoritukset.2.expand').click()
-        await expect(page.getByTestId('suoritukset.0.yhteensa')).toHaveText(
-          '3 op'
-        )
+        await getByTestId('suoritukset.0.osasuoritukset.2.expand').click()
+        await expect(getByTestId('suoritukset.0.yhteensa')).toHaveText('3 op')
       })
     })
     test.describe('VST lukutaitokoulutus', () => {
       test.beforeEach(openOppijaPage(lukutaitokoulutus, false))
       test('Näyttää tiedot oikein', async ({ page }) => {
+        const getByTestId = (id: string) => page.getByTestId(`oo.0.${id}`)
         await expect(
-          page.getByTestId('opiskeluoikeus.tila.value.items.0.date')
+          getByTestId('opiskeluoikeus.tila.value.items.0.date')
         ).toHaveText('1.9.2021')
         await expect(
-          page.getByTestId('opiskeluoikeus.tila.value.items.0.tila')
+          getByTestId('opiskeluoikeus.tila.value.items.0.tila')
         ).toHaveText('Läsnä')
-        await expect(
-          page.getByTestId('opiskeluoikeus.voimassaoloaika')
-        ).toHaveText(
+        await expect(getByTestId('opiskeluoikeus.voimassaoloaika')).toHaveText(
           'Opiskeluoikeuden voimassaoloaika: 1.9.2021 – 31.5.2022 (Arvioitu päättymispäivä)'
         )
+        await expect(getByTestId('suoritukset.0.toimipiste.value')).toHaveText(
+          'Itä-Suomen yliopisto'
+        )
+        await expect(getByTestId('suoritukset.0.tunniste.nimi')).toHaveText(
+          'Lukutaitokoulutus oppivelvollisille'
+        )
         await expect(
-          page.getByTestId('suoritukset.0.toimipiste.value')
-        ).toHaveText('Itä-Suomen yliopisto')
-        await expect(
-          page.getByTestId('suoritukset.0.tunniste.nimi')
-        ).toHaveText('Lukutaitokoulutus oppivelvollisille')
-        await expect(
-          page.getByTestId('suoritukset.0.tunniste.koodiarvo')
+          getByTestId('suoritukset.0.tunniste.koodiarvo')
         ).toHaveText('999911')
-        await expect(
-          page.getByTestId('suoritukset.0.peruste.value')
-        ).toHaveText('OPH-2984-2017')
-        await expect(
-          page.getByTestId('suoritukset.0.laajuus.value')
-        ).toHaveText('80 op')
+        await expect(getByTestId('suoritukset.0.peruste.value')).toHaveText(
+          'OPH-2984-2017'
+        )
+        await expect(getByTestId('suoritukset.0.laajuus.value')).toHaveText(
+          '80 op'
+        )
 
         const osasuoritukset = [
           {
@@ -200,67 +199,58 @@ test.describe('Vapaa sivistystyö', () => {
         let i = 0
         for (const osasuoritus of osasuoritukset) {
           await expect(
-            page.getByTestId(`suoritukset.0.osasuoritukset.${i}.nimi.value`)
+            getByTestId(`suoritukset.0.osasuoritukset.${i}.nimi.value`)
           ).toHaveText(osasuoritus.nimi)
           await expect(
-            page.getByTestId(`suoritukset.0.osasuoritukset.${i}.laajuus.value`)
+            getByTestId(`suoritukset.0.osasuoritukset.${i}.laajuus.value`)
           ).toHaveText(osasuoritus.laajuus)
           await expect(
-            page.getByTestId(`suoritukset.0.osasuoritukset.${i}.arvosana.value`)
+            getByTestId(`suoritukset.0.osasuoritukset.${i}.arvosana.value`)
           ).toHaveText(osasuoritus.arvosana)
           await expect(
-            page.getByTestId(
-              `suoritukset.0.osasuoritukset.${i}.taitotaso.value`
-            )
+            getByTestId(`suoritukset.0.osasuoritukset.${i}.taitotaso.value`)
           ).toHaveText(osasuoritus.taitotaso)
-          await page
-            .getByTestId(`suoritukset.0.osasuoritukset.${i}.expand`)
-            .click()
+          await getByTestId(`suoritukset.0.osasuoritukset.${i}.expand`).click()
           await expect(
-            page.getByTestId(
+            getByTestId(
               `suoritukset.0.osasuoritukset.${i}.properties.arviointi.0.arvosana.value`
             )
           ).toHaveText(osasuoritus.expander.arvosana)
           await expect(
-            page.getByTestId(
+            getByTestId(
               `suoritukset.0.osasuoritukset.${i}.properties.arviointi.0.date.value`
             )
           ).toHaveText(osasuoritus.expander.arvosanaPvm)
           i++
         }
-        await expect(page.getByTestId('suoritukset.0.yhteensa')).toHaveText(
-          '80 op'
-        )
+        await expect(getByTestId('suoritukset.0.yhteensa')).toHaveText('80 op')
       })
     })
     test.describe('VST kansanopisto', () => {
       test.beforeEach(openOppijaPage(kansanopisto, false))
       test('Näyttää tiedot oikein', async ({ page }) => {
+        const getByTestId = (id: string) => page.getByTestId(`oo.0.${id}`)
         await expect(
-          page.getByTestId('opiskeluoikeus.tila.value.items.0.date')
+          getByTestId('opiskeluoikeus.tila.value.items.0.date')
         ).toHaveText('1.9.2021')
         await expect(
-          page.getByTestId('opiskeluoikeus.tila.value.items.0.tila')
+          getByTestId('opiskeluoikeus.tila.value.items.0.tila')
         ).toHaveText('Läsnä')
-        await expect(
-          page.getByTestId('opiskeluoikeus.voimassaoloaika')
-        ).toHaveText(
+        await expect(getByTestId('opiskeluoikeus.voimassaoloaika')).toHaveText(
           'Opiskeluoikeuden voimassaoloaika: 1.9.2021 – 31.5.2022 (Arvioitu päättymispäivä)'
         )
-        await expect(
-          page.getByTestId('suoritukset.0.toimipiste.value')
-        ).toHaveText('Varsinais-Suomen kansanopisto')
-        await expect(
-          page.getByTestId('suoritukset.0.tunniste.nimi')
-        ).toHaveText(
+        await expect(getByTestId('suoritukset.0.toimipiste.value')).toHaveText(
+          'Varsinais-Suomen kansanopisto'
+        )
+        await expect(getByTestId('suoritukset.0.tunniste.nimi')).toHaveText(
           'Kansanopistojen vapaan sivistystyön koulutus oppivelvollisille'
         )
         await expect(
-          page.getByTestId('suoritukset.0.tunniste.koodiarvo')
+          getByTestId('suoritukset.0.tunniste.koodiarvo')
         ).toHaveText('999909')
-        await expect(
-          page.getByTestId('suoritukset.0.peruste.value')
-        ).toHaveText('OPH-58-2021')
+        await expect(getByTestId('suoritukset.0.peruste.value')).toHaveText(
+          'OPH-58-2021'
+        )
 
         type Osasuoritus = {
           nimi: string
@@ -484,63 +474,62 @@ test.describe('Vapaa sivistystyö', () => {
         let i = 0
         for (const osasuoritus of osasuoritukset) {
           await expect(
-            page.getByTestId(`suoritukset.0.osasuoritukset.${i}.nimi.value`)
+            getByTestId(`suoritukset.0.osasuoritukset.${i}.nimi.value`)
           ).toHaveText(osasuoritus.nimi)
           await expect(
-            page.getByTestId(`suoritukset.0.osasuoritukset.${i}.laajuus.value`)
+            getByTestId(`suoritukset.0.osasuoritukset.${i}.laajuus.value`)
           ).toHaveText(osasuoritus.laajuus)
           // Expander
           if (osasuoritus.expander !== undefined) {
-            await page
-              .getByTestId(`suoritukset.0.osasuoritukset.${i}.expand`)
-              .click()
+            await getByTestId(
+              `suoritukset.0.osasuoritukset.${i}.expand`
+            ).click()
             if (osasuoritus.expander.osasuoritukset !== undefined) {
               let a = 0
               for (const alaosasuoritus of osasuoritus.expander
                 .osasuoritukset) {
                 await expect(
-                  page.getByTestId(
+                  getByTestId(
                     `suoritukset.0.osasuoritukset.${i}.properties.osasuoritukset.${a}.arvosana.value`
                   )
                 ).toHaveText(alaosasuoritus.arvosana)
                 await expect(
-                  page.getByTestId(
+                  getByTestId(
                     `suoritukset.0.osasuoritukset.${i}.properties.osasuoritukset.${a}.laajuus.value`
                   )
                 ).toHaveText(alaosasuoritus.laajuus)
                 await expect(
-                  page.getByTestId(
+                  getByTestId(
                     `suoritukset.0.osasuoritukset.${i}.properties.osasuoritukset.${a}.nimi.value`
                   )
                 ).toHaveText(alaosasuoritus.nimi)
                 if (alaosasuoritus.extra !== undefined) {
                   await page
-                    .getByTestId(
-                      `suoritukset.0.osasuoritukset.${i}.properties.osasuoritukset.${a}.expand`
-                    )
-                    .click()
+                  getByTestId(
+                    `suoritukset.0.osasuoritukset.${i}.properties.osasuoritukset.${a}.expand`
+                  ).click()
                   if (alaosasuoritus.extra.kuvaus !== undefined) {
                     await expect(
-                      page.getByTestId(
+                      getByTestId(
                         `suoritukset.0.osasuoritukset.${i}.properties.osasuoritukset.${a}.properties.kuvaus.value`
                       )
                     ).toHaveText(alaosasuoritus.extra.kuvaus)
                   }
                   if (alaosasuoritus.extra.tunnustettu !== undefined) {
                     await expect(
-                      page.getByTestId(
+                      getByTestId(
                         `suoritukset.0.osasuoritukset.${i}.properties.osasuoritukset.${a}.properties.tunnustettu.value`
                       )
                     ).toHaveText(alaosasuoritus.extra.tunnustettu)
                   }
                   if (alaosasuoritus.extra.arviointi !== undefined) {
                     await expect(
-                      page.getByTestId(
+                      getByTestId(
                         `suoritukset.0.osasuoritukset.${i}.properties.osasuoritukset.${a}.properties.arviointi.0.arvosana.value`
                       )
                     ).toHaveText(alaosasuoritus.extra.arviointi.arvosana)
                     await expect(
-                      page.getByTestId(
+                      getByTestId(
                         `suoritukset.0.osasuoritukset.${i}.properties.osasuoritukset.${a}.properties.arviointi.0.date.value`
                       )
                     ).toHaveText(alaosasuoritus.extra.arviointi.pvm)
@@ -553,39 +542,34 @@ test.describe('Vapaa sivistystyö', () => {
           i++
         }
 
-        await expect(page.getByTestId('suoritukset.0.yhteensa')).toHaveText(
-          '55 op'
-        )
+        await expect(getByTestId('suoritukset.0.yhteensa')).toHaveText('55 op')
       })
     })
     test.describe('VST Oppivelvollisille suunnattu', () => {
       test.beforeEach(openOppijaPage(oppivelvollisilleSuunnattu, false))
       test('Näyttää tiedot oikein', async ({ page }) => {
+        const getByTestId = (id: string) => page.getByTestId(`oo.0.${id}`)
         await expect(
-          page.getByTestId('opiskeluoikeus.tila.value.items.0.date')
+          getByTestId('opiskeluoikeus.tila.value.items.0.date')
         ).toHaveText('1.9.2021')
         await expect(
-          page.getByTestId('opiskeluoikeus.tila.value.items.0.tila')
+          getByTestId('opiskeluoikeus.tila.value.items.0.tila')
         ).toHaveText('Läsnä')
-        await expect(
-          page.getByTestId('opiskeluoikeus.voimassaoloaika')
-        ).toHaveText(
+        await expect(getByTestId('opiskeluoikeus.voimassaoloaika')).toHaveText(
           'Opiskeluoikeuden voimassaoloaika: 1.9.2021 – 31.5.2022 (Arvioitu päättymispäivä)'
         )
-        await expect(
-          page.getByTestId('suoritukset.0.toimipiste.value')
-        ).toHaveText('Varsinais-Suomen kansanopisto')
-        await expect(
-          page.getByTestId('suoritukset.0.tunniste.nimi')
-        ).toHaveText(
+        await expect(getByTestId('suoritukset.0.toimipiste.value')).toHaveText(
+          'Varsinais-Suomen kansanopisto'
+        )
+        await expect(getByTestId('suoritukset.0.tunniste.nimi')).toHaveText(
           'Kansanopistojen vapaan sivistystyön koulutus oppivelvollisille'
         )
         await expect(
-          page.getByTestId('suoritukset.0.tunniste.koodiarvo')
+          getByTestId('suoritukset.0.tunniste.koodiarvo')
         ).toHaveText('999909')
-        await expect(
-          page.getByTestId('suoritukset.0.peruste.value')
-        ).toHaveText('OPH-58-2021')
+        await expect(getByTestId('suoritukset.0.peruste.value')).toHaveText(
+          'OPH-58-2021'
+        )
 
         type Osasuoritus = {
           nimi: string
@@ -809,63 +793,61 @@ test.describe('Vapaa sivistystyö', () => {
         let i = 0
         for (const osasuoritus of osasuoritukset) {
           await expect(
-            page.getByTestId(`suoritukset.0.osasuoritukset.${i}.nimi.value`)
+            getByTestId(`suoritukset.0.osasuoritukset.${i}.nimi.value`)
           ).toHaveText(osasuoritus.nimi)
           await expect(
-            page.getByTestId(`suoritukset.0.osasuoritukset.${i}.laajuus.value`)
+            getByTestId(`suoritukset.0.osasuoritukset.${i}.laajuus.value`)
           ).toHaveText(osasuoritus.laajuus)
           // Expander
           if (osasuoritus.expander !== undefined) {
-            await page
-              .getByTestId(`suoritukset.0.osasuoritukset.${i}.expand`)
-              .click()
+            await getByTestId(
+              `suoritukset.0.osasuoritukset.${i}.expand`
+            ).click()
             if (osasuoritus.expander.osasuoritukset !== undefined) {
               let a = 0
               for (const alaosasuoritus of osasuoritus.expander
                 .osasuoritukset) {
                 await expect(
-                  page.getByTestId(
+                  getByTestId(
                     `suoritukset.0.osasuoritukset.${i}.properties.osasuoritukset.${a}.arvosana.value`
                   )
                 ).toHaveText(alaosasuoritus.arvosana)
                 await expect(
-                  page.getByTestId(
+                  getByTestId(
                     `suoritukset.0.osasuoritukset.${i}.properties.osasuoritukset.${a}.laajuus.value`
                   )
                 ).toHaveText(alaosasuoritus.laajuus)
                 await expect(
-                  page.getByTestId(
+                  getByTestId(
                     `suoritukset.0.osasuoritukset.${i}.properties.osasuoritukset.${a}.nimi.value`
                   )
                 ).toHaveText(alaosasuoritus.nimi)
                 if (alaosasuoritus.extra !== undefined) {
-                  await page
-                    .getByTestId(
-                      `suoritukset.0.osasuoritukset.${i}.properties.osasuoritukset.${a}.expand`
-                    )
-                    .click()
+                  await getByTestId(
+                    `suoritukset.0.osasuoritukset.${i}.properties.osasuoritukset.${a}.expand`
+                  ).click()
                   if (alaosasuoritus.extra.kuvaus !== undefined) {
                     await expect(
-                      page.getByTestId(
+                      getByTestId(
                         `suoritukset.0.osasuoritukset.${i}.properties.osasuoritukset.${a}.properties.kuvaus.value`
                       )
                     ).toHaveText(alaosasuoritus.extra.kuvaus)
                   }
                   if (alaosasuoritus.extra.tunnustettu !== undefined) {
                     await expect(
-                      page.getByTestId(
+                      getByTestId(
                         `suoritukset.0.osasuoritukset.${i}.properties.osasuoritukset.${a}.properties.tunnustettu.value`
                       )
                     ).toHaveText(alaosasuoritus.extra.tunnustettu)
                   }
                   if (alaosasuoritus.extra.arviointi !== undefined) {
                     await expect(
-                      page.getByTestId(
+                      getByTestId(
                         `suoritukset.0.osasuoritukset.${i}.properties.osasuoritukset.${a}.properties.arviointi.0.arvosana.value`
                       )
                     ).toHaveText(alaosasuoritus.extra.arviointi.arvosana)
                     await expect(
-                      page.getByTestId(
+                      getByTestId(
                         `suoritukset.0.osasuoritukset.${i}.properties.osasuoritukset.${a}.properties.arviointi.0.date.value`
                       )
                     ).toHaveText(alaosasuoritus.extra.arviointi.pvm)
@@ -878,35 +860,34 @@ test.describe('Vapaa sivistystyö', () => {
           i++
         }
 
-        await expect(page.getByTestId('suoritukset.0.yhteensa')).toHaveText(
-          '55 op'
-        )
+        await expect(getByTestId('suoritukset.0.yhteensa')).toHaveText('55 op')
       })
     })
     test.describe('VST Kotoutumiskoulutus oppivelvollisille', () => {
       test.beforeEach(openOppijaPage(kotoutumiskoulutus2022, false))
       test('Näyttää tiedot oikein', async ({ page }) => {
+        const getByTestId = (id: string) => page.getByTestId(`oo.0.${id}`)
         await expect(
-          page.getByTestId('opiskeluoikeus.tila.value.items.0.date')
+          getByTestId('opiskeluoikeus.tila.value.items.0.date')
         ).toHaveText('1.8.2022')
         await expect(
-          page.getByTestId('opiskeluoikeus.tila.value.items.0.tila')
+          getByTestId('opiskeluoikeus.tila.value.items.0.tila')
         ).toHaveText('Läsnä')
+        await expect(getByTestId('opiskeluoikeus.voimassaoloaika')).toHaveText(
+          'Opiskeluoikeuden voimassaoloaika: 1.8.2022 –'
+        )
+        await expect(getByTestId('suoritukset.0.toimipiste.value')).toHaveText(
+          'Varsinais-Suomen kansanopisto'
+        )
+        await expect(getByTestId('suoritukset.0.tunniste.nimi')).toHaveText(
+          'Kotoutumiskoulutus oppivelvollisille'
+        )
         await expect(
-          page.getByTestId('opiskeluoikeus.voimassaoloaika')
-        ).toHaveText('Opiskeluoikeuden voimassaoloaika: 1.8.2022 –')
-        await expect(
-          page.getByTestId('suoritukset.0.toimipiste.value')
-        ).toHaveText('Varsinais-Suomen kansanopisto')
-        await expect(
-          page.getByTestId('suoritukset.0.tunniste.nimi')
-        ).toHaveText('Kotoutumiskoulutus oppivelvollisille')
-        await expect(
-          page.getByTestId('suoritukset.0.tunniste.koodiarvo')
+          getByTestId('suoritukset.0.tunniste.koodiarvo')
         ).toHaveText('999910')
-        await expect(
-          page.getByTestId('suoritukset.0.peruste.value')
-        ).toHaveText('OPH-649-2022')
+        await expect(getByTestId('suoritukset.0.peruste.value')).toHaveText(
+          'OPH-649-2022'
+        )
 
         type Osasuoritus = {
           nimi: string
@@ -1006,62 +987,60 @@ test.describe('Vapaa sivistystyö', () => {
         let i = 0
         for (const osasuoritus of osasuoritukset) {
           await expect(
-            page.getByTestId(`suoritukset.0.osasuoritukset.${i}.nimi.value`)
+            getByTestId(`suoritukset.0.osasuoritukset.${i}.nimi.value`)
           ).toHaveText(osasuoritus.nimi)
           await expect(
-            page.getByTestId(`suoritukset.0.osasuoritukset.${i}.laajuus.value`)
+            getByTestId(`suoritukset.0.osasuoritukset.${i}.laajuus.value`)
           ).toHaveText(osasuoritus.laajuus)
           // Expander
           if (osasuoritus.expander !== undefined) {
-            await page
-              .getByTestId(`suoritukset.0.osasuoritukset.${i}.expand`)
-              .click()
+            await getByTestId(
+              `suoritukset.0.osasuoritukset.${i}.expand`
+            ).click()
             if (osasuoritus.expander.osasuoritukset !== undefined) {
               let a = 0
               for (const alaosasuoritus of osasuoritus.expander
                 .osasuoritukset) {
                 if (alaosasuoritus.arvosana) {
                   await expect(
-                    page.getByTestId(
+                    getByTestId(
                       `suoritukset.0.osasuoritukset.${i}.properties.osasuoritukset.${a}.arvosana.value`
                     )
                   ).toHaveText(alaosasuoritus.arvosana)
                 }
                 if (alaosasuoritus.laajuus) {
                   await expect(
-                    page.getByTestId(
+                    getByTestId(
                       `suoritukset.0.osasuoritukset.${i}.properties.osasuoritukset.${a}.laajuus.value`
                     )
                   ).toHaveText(alaosasuoritus.laajuus)
                 }
                 await expect(
-                  page.getByTestId(
+                  getByTestId(
                     `suoritukset.0.osasuoritukset.${i}.properties.osasuoritukset.${a}.nimi.value`
                   )
                 ).toHaveText(alaosasuoritus.nimi)
                 if (alaosasuoritus.extra !== undefined) {
-                  await page
-                    .getByTestId(
-                      `suoritukset.0.osasuoritukset.${i}.properties.osasuoritukset.${a}.expand`
-                    )
-                    .click()
+                  await getByTestId(
+                    `suoritukset.0.osasuoritukset.${i}.properties.osasuoritukset.${a}.expand`
+                  ).click()
                   if (alaosasuoritus.extra.kuvaus !== undefined) {
                     await expect(
-                      page.getByTestId(
+                      getByTestId(
                         `suoritukset.0.osasuoritukset.${i}.properties.osasuoritukset.${a}.properties.kuvaus.value`
                       )
                     ).toHaveText(alaosasuoritus.extra.kuvaus)
                   }
                   if (alaosasuoritus.extra.tunnustettu !== undefined) {
                     await expect(
-                      page.getByTestId(
+                      getByTestId(
                         `suoritukset.0.osasuoritukset.${i}.properties.osasuoritukset.${a}.properties.tunnustettu.value`
                       )
                     ).toHaveText(alaosasuoritus.extra.tunnustettu)
                   }
                   if (alaosasuoritus.extra.arviointi !== undefined) {
                     await expect(
-                      page.getByTestId(
+                      getByTestId(
                         `suoritukset.0.osasuoritukset.${i}.properties.osasuoritukset.${a}.properties.arviointi.0.arvosana.value`
                       )
                     ).toHaveText(alaosasuoritus.extra.arviointi.arvosana)
@@ -1074,34 +1053,33 @@ test.describe('Vapaa sivistystyö', () => {
           i++
         }
 
-        await expect(page.getByTestId('suoritukset.0.yhteensa')).toHaveText(
-          '39 op'
-        )
+        await expect(getByTestId('suoritukset.0.yhteensa')).toHaveText('39 op')
       })
     })
     test.describe('Vapaatavoitteinen vst-koulutus', () => {
       test.beforeEach(openOppijaPage(vapaatavoitteinenKoulutus, false))
       test('Näyttää tiedot oikein', async ({ page }) => {
+        const getByTestId = (id: string) => page.getByTestId(`oo.0.${id}`)
         await expect(
-          page.getByTestId('opiskeluoikeus.tila.value.items.0.date')
+          getByTestId('opiskeluoikeus.tila.value.items.0.date')
         ).toHaveText('31.5.2022')
         await expect(
-          page.getByTestId('opiskeluoikeus.tila.value.items.0.tila')
+          getByTestId('opiskeluoikeus.tila.value.items.0.tila')
         ).toHaveText('Hyväksytysti suoritettu')
+        await expect(getByTestId('opiskeluoikeus.voimassaoloaika')).toHaveText(
+          'Opiskeluoikeuden voimassaoloaika: 31.5.2022 – 31.5.2022'
+        )
+        await expect(getByTestId('suoritukset.0.toimipiste.value')).toHaveText(
+          'Varsinais-Suomen kansanopisto'
+        )
+        await expect(getByTestId('suoritukset.0.tunniste.nimi')).toHaveText(
+          'Vapaan sivistystyön koulutus'
+        )
         await expect(
-          page.getByTestId('opiskeluoikeus.voimassaoloaika')
-        ).toHaveText('Opiskeluoikeuden voimassaoloaika: 31.5.2022 – 31.5.2022')
-        await expect(
-          page.getByTestId('suoritukset.0.toimipiste.value')
-        ).toHaveText('Varsinais-Suomen kansanopisto')
-        await expect(
-          page.getByTestId('suoritukset.0.tunniste.nimi')
-        ).toHaveText('Vapaan sivistystyön koulutus')
-        await expect(
-          page.getByTestId('suoritukset.0.tunniste.koodiarvo')
+          getByTestId('suoritukset.0.tunniste.koodiarvo')
         ).toHaveText('099999')
         await expect(
-          page.getByTestId('suoritukset.0.opintokokonaisuus.value')
+          getByTestId('suoritukset.0.opintokokonaisuus.value')
         ).toHaveText('1138 Kuvallisen ilmaisun perusteet ja välineet')
 
         type Osasuoritus = {
@@ -1150,56 +1128,54 @@ test.describe('Vapaa sivistystyö', () => {
         let i = 0
         for (const osasuoritus of osasuoritukset) {
           await expect(
-            page.getByTestId(`suoritukset.0.osasuoritukset.${i}.nimi.value`)
+            getByTestId(`suoritukset.0.osasuoritukset.${i}.nimi.value`)
           ).toHaveText(osasuoritus.nimi)
           await expect(
-            page.getByTestId(`suoritukset.0.osasuoritukset.${i}.laajuus.value`)
+            getByTestId(`suoritukset.0.osasuoritukset.${i}.laajuus.value`)
           ).toHaveText(osasuoritus.laajuus)
           // Expander
           if (osasuoritus.expander !== undefined) {
-            await page
-              .getByTestId(`suoritukset.0.osasuoritukset.${i}.expand`)
-              .click()
+            await getByTestId(
+              `suoritukset.0.osasuoritukset.${i}.expand`
+            ).click()
             if (osasuoritus.expander.osasuoritukset !== undefined) {
               let a = 0
               for (const alaosasuoritus of osasuoritus.expander
                 .osasuoritukset) {
                 await expect(
-                  page.getByTestId(
+                  getByTestId(
                     `suoritukset.0.osasuoritukset.${i}.properties.osasuoritukset.${a}.arvosana.value`
                   )
                 ).toHaveText(alaosasuoritus.arvosana)
                 await expect(
-                  page.getByTestId(
+                  getByTestId(
                     `suoritukset.0.osasuoritukset.${i}.properties.osasuoritukset.${a}.laajuus.value`
                   )
                 ).toHaveText(alaosasuoritus.laajuus)
                 await expect(
-                  page.getByTestId(
+                  getByTestId(
                     `suoritukset.0.osasuoritukset.${i}.properties.osasuoritukset.${a}.nimi.value`
                   )
                 ).toHaveText(alaosasuoritus.nimi)
                 if (alaosasuoritus.extra !== undefined) {
-                  await page
-                    .getByTestId(
-                      `suoritukset.0.osasuoritukset.${i}.properties.osasuoritukset.${a}.expand`
-                    )
-                    .click()
+                  await getByTestId(
+                    `suoritukset.0.osasuoritukset.${i}.properties.osasuoritukset.${a}.expand`
+                  ).click()
                   if (alaosasuoritus.extra.kuvaus !== undefined) {
                     await expect(
-                      page.getByTestId(
+                      getByTestId(
                         `suoritukset.0.osasuoritukset.${i}.properties.osasuoritukset.${a}.properties.kuvaus.value`
                       )
                     ).toHaveText(alaosasuoritus.extra.kuvaus)
                   }
                   if (alaosasuoritus.extra.arviointi !== undefined) {
                     await expect(
-                      page.getByTestId(
+                      getByTestId(
                         `suoritukset.0.osasuoritukset.${i}.properties.osasuoritukset.${a}.properties.arviointi.0.arvosana.value`
                       )
                     ).toHaveText(alaosasuoritus.extra.arviointi.arvosana)
                     await expect(
-                      page.getByTestId(
+                      getByTestId(
                         `suoritukset.0.osasuoritukset.${i}.properties.osasuoritukset.${a}.properties.arviointi.0.date.value`
                       )
                     ).toHaveText(alaosasuoritus.extra.arviointi.pvm)
@@ -1212,50 +1188,49 @@ test.describe('Vapaa sivistystyö', () => {
           i++
         }
 
-        await expect(page.getByTestId('suoritukset.0.yhteensa')).toHaveText(
-          '5 op'
-        )
+        await expect(getByTestId('suoritukset.0.yhteensa')).toHaveText('5 op')
       })
     })
     test.describe('VST osaamismerkki', () => {
       test.beforeEach(openOppijaPage(osaamismerkki, false))
       test('Näyttää tiedot oikein', async ({ page }) => {
-        await expect(page.getByTestId('opiskeluoikeus.kuva')).toBeVisible()
-        await expect(page.getByTestId('opiskeluoikeus.nimi')).toHaveText(
+        const getByTestId = (id: string) => page.getByTestId(`oo.0.${id}`)
+        await expect(getByTestId('opiskeluoikeus.kuva')).toBeVisible()
+        await expect(getByTestId('opiskeluoikeus.nimi')).toHaveText(
           'Varsinais-Suomen kansanopisto, oma osaamispolku(2024, hyväksytysti suoritettu)'
         )
         await expect(
-          page.getByTestId('opiskeluoikeus.tila.value.items.0.date')
+          getByTestId('opiskeluoikeus.tila.value.items.0.date')
         ).toHaveText('1.1.2024')
         await expect(
-          page.getByTestId('opiskeluoikeus.tila.value.items.0.tila')
+          getByTestId('opiskeluoikeus.tila.value.items.0.tila')
         ).toHaveText('Hyväksytysti suoritettu')
-        await expect(
-          page.getByTestId('opiskeluoikeus.voimassaoloaika')
-        ).toHaveText('Opiskeluoikeuden voimassaoloaika: 1.1.2024 – 1.1.2024')
-        await expect(page.getByTestId('suoritusTabs.0.tab')).toHaveText(
+        await expect(getByTestId('opiskeluoikeus.voimassaoloaika')).toHaveText(
+          'Opiskeluoikeuden voimassaoloaika: 1.1.2024 – 1.1.2024'
+        )
+        await expect(getByTestId('suoritusTabs.0.tab')).toHaveText(
           'Vapaan sivistystyön osaamismerkki'
         )
+        await expect(getByTestId('suoritukset.0.toimipiste.value')).toHaveText(
+          'Varsinais-Suomen kansanopisto'
+        )
         await expect(
-          page.getByTestId('suoritukset.0.toimipiste.value')
-        ).toHaveText('Varsinais-Suomen kansanopisto')
-        await expect(
-          page.getByTestId('suoritukset.0.tunniste.koodiarvo-ja-nimi')
+          getByTestId('suoritukset.0.tunniste.koodiarvo-ja-nimi')
         ).toHaveText('1001 Oma osaamispolku')
         await expect(
-          page.getByTestId('suoritukset.0.arviointi.0.arvosana.value')
+          getByTestId('suoritukset.0.arviointi.0.arvosana.value')
         ).toHaveText('Hyväksytty')
         await expect(
-          page.getByTestId('suoritukset.0.arviointi.0.date.value')
+          getByTestId('suoritukset.0.arviointi.0.date.value')
         ).toHaveText('1.1.2024')
         await expect(
-          page.getByTestId('suoritukset.0.suorituksenVahvistus.value.status')
+          getByTestId('suoritukset.0.suorituksenVahvistus.value.status')
         ).toHaveText('Suoritus valmis')
         await expect(
-          page.getByTestId('suoritukset.0.suorituksenVahvistus.value.details')
+          getByTestId('suoritukset.0.suorituksenVahvistus.value.details')
         ).toHaveText('Vahvistus: 1.1.2024 Jyväskylän normaalikoulu')
         await expect(
-          page.getByTestId('suoritukset.0.suorituksenVahvistus.value.henkilö.0')
+          getByTestId('suoritukset.0.suorituksenVahvistus.value.henkilö.0')
         ).toHaveText('Reijo Reksi (rehtori)')
       })
     })
@@ -1263,7 +1238,7 @@ test.describe('Vapaa sivistystyö', () => {
       test.beforeEach(openOppijaPage(vstMaksuttomuus, false))
       test('Lisätiedot nappi näkyvissä', async ({ page }) => {
         await expect(
-          page.getByTestId('opiskeluoikeus.lisätiedotButton')
+          page.getByTestId('oo.0.opiskeluoikeus.lisätiedotButton')
         ).toBeVisible()
       })
     })
@@ -2140,7 +2115,7 @@ test.describe('Vapaa sivistystyö', () => {
           .remove.click()
         await vstOppijaPage.saveBtn.click()
         await expect(
-          page.getByTestId('opiskeluoikeus.lisätiedotButton')
+          page.getByTestId('oo.0.opiskeluoikeus.lisätiedotButton')
         ).not.toBeVisible()
       })
     })
@@ -2219,11 +2194,13 @@ test.describe('Vapaa sivistystyö', () => {
         kansalainenPage,
         page
       }) => {
-        await expect(page.getByTestId('opiskeluoikeus.kuva')).toBeAttached()
-        await kansalainenPage.expandOpiskeluoikeus()
+        const getByTestId = (id: string) =>
+          page.getByTestId(`osaamismerkit.0.${id}`)
+        await expect(getByTestId('opiskeluoikeus.kuva')).toBeAttached()
+        await kansalainenPage.expandOsaamismerkki()
         await kansalainenPage.collapseOpiskeluoikeus()
-        await expect(page.getByTestId('opiskeluoikeus.kuva')).toBeAttached()
-        await kansalainenPage.expandOpiskeluoikeus()
+        await expect(getByTestId('opiskeluoikeus.kuva')).toBeAttached()
+        await kansalainenPage.expandOsaamismerkki()
 
         await tarkistaTiedot(page, kansalainenPage)
 
@@ -2249,7 +2226,7 @@ test.describe('Vapaa sivistystyö', () => {
         const page2 = await page2Promise
 
         const kansalainenPage2 = KoskiKansalainenPage.create(page2)
-        await kansalainenPage2.expandOpiskeluoikeus()
+        await kansalainenPage2.expandOsaamismerkki()
 
         await tarkistaTiedot(page2, kansalainenPage2)
       })
@@ -2258,37 +2235,37 @@ test.describe('Vapaa sivistystyö', () => {
         page: Page,
         kansalainenPage: KoskiKansalainenPage
       ) => {
+        const getByTestId = (id: string) =>
+          page.getByTestId(`osaamismerkit.0.${id}`)
         await expect(kansalainenPage.opiskeluoikeusTitle).toContainText(
           'Oma osaamispolku(2024, hyväksytysti suoritettu)Opiskeluoikeuden oid: 1.2.246.562.15'
         )
+        await expect(getByTestId('opiskeluoikeus.voimassaoloaika')).toHaveText(
+          'Opiskeluoikeuden voimassaoloaika: 1.1.2024 – 1.1.2024'
+        )
+        await expect(getByTestId('suoritukset.0.toimipiste.value')).toHaveText(
+          'Varsinais-Suomen kansanopisto'
+        )
         await expect(
-          page.getByTestId('opiskeluoikeus.voimassaoloaika')
-        ).toHaveText('Opiskeluoikeuden voimassaoloaika: 1.1.2024 – 1.1.2024')
-        await expect(
-          page.getByTestId('suoritukset.0.toimipiste.value')
-        ).toHaveText('Varsinais-Suomen kansanopisto')
-        await expect(
-          page.getByTestId('suoritukset.0.arviointi.0.arvosana.value')
+          getByTestId('suoritukset.0.arviointi.0.arvosana.value')
         ).toHaveText('Hyväksytty')
         await expect(
-          page.getByTestId('suoritukset.0.arviointi.0.date.value')
+          getByTestId('suoritukset.0.arviointi.0.date.value')
         ).toHaveText('1.1.2024')
         await expect(
-          page.getByTestId('suoritukset.0.tunniste.koodiarvo-ja-nimi')
+          getByTestId('suoritukset.0.tunniste.koodiarvo-ja-nimi')
         ).toHaveText('1001 Oma osaamispolku')
         await expect(
-          page
-            .getByTestId('suoritukset.0.tunniste.koodiarvo-ja-nimi')
-            .locator('a')
+          getByTestId('suoritukset.0.tunniste.koodiarvo-ja-nimi').locator('a')
         ).toBeAttached()
         await expect(
-          page.getByTestId('suoritukset.0.suorituksenVahvistus.value.status')
+          getByTestId('suoritukset.0.suorituksenVahvistus.value.status')
         ).toHaveText('Suoritus valmis')
         await expect(
-          page.getByTestId('suoritukset.0.suorituksenVahvistus.value.details')
+          getByTestId('suoritukset.0.suorituksenVahvistus.value.details')
         ).toHaveText('Vahvistus: 1.1.2024 Jyväskylän normaalikoulu')
         await expect(
-          page.getByTestId('suoritukset.0.suorituksenVahvistus.value.henkilö.0')
+          getByTestId('suoritukset.0.suorituksenVahvistus.value.henkilö.0')
         ).toHaveText('Reijo Reksi (rehtori)')
       }
     })
@@ -2297,7 +2274,7 @@ test.describe('Vapaa sivistystyö', () => {
       test.describe('Vapaatavoitteinen VST', () => {
         test.use({ storageState: kansalainen('010917-156A') })
         test('Suostumuksen voi perua', async ({ kansalainenPage, page }) => {
-          await page.getByTestId('opiskeluoikeus.expand').click()
+          await page.getByTestId('oo.0.opiskeluoikeus.expand').click()
           await kansalainenPage.expectSuostumusPeruttavissa()
           await kansalainenPage.peruSuostumus()
         })
@@ -2317,7 +2294,9 @@ test.describe('Vapaa sivistystyö', () => {
           await kansalainenPage.jaaValitsemasiOpinnotButton().click()
 
           await page.reload() // TODO: Käli olisi hyvä fiksata niin, ettei tätä tarvita
-          await page.getByTestId('opiskeluoikeus.expand').click()
+          await kansalainenPage
+            .getOpiskeluoikeusElementByTestId('opiskeluoikeus.expand')
+            .click()
           await kansalainenPage.expectSuostumusEiPeruttavissa()
         })
       })
@@ -2325,20 +2304,21 @@ test.describe('Vapaa sivistystyö', () => {
       test.describe('Lukutaitokoulutus', () => {
         test.use({ storageState: kansalainen('231158-467R') })
         test('Suostumusta ei voi perua, koska se ei ole peruttavaa tyyppiä', async ({
-          kansalainenPage,
-          page
+          kansalainenPage
         }) => {
-          await page.getByTestId('opiskeluoikeus.expand').click()
+          await kansalainenPage
+            .getOpiskeluoikeusElementByTestId('opiskeluoikeus.expand')
+            .click()
           await kansalainenPage.expectSuostumusEiPeruttavissa()
         })
       })
 
       test.describe('Osaamismerkki VST', () => {
         test.use({ storageState: kansalainen('050705A564B') })
-        test('Suostumuksen voi perua', async ({ kansalainenPage, page }) => {
-          await page.getByTestId('opiskeluoikeus.expand').click()
+        test('Suostumuksen voi perua', async ({ kansalainenPage }) => {
+          await kansalainenPage.expandOsaamismerkki()
           await kansalainenPage.expectSuostumusPeruttavissa()
-          await kansalainenPage.peruSuostumus()
+          await kansalainenPage.peruSuostumus('osaamismerkit.0')
         })
       })
     })

@@ -1,6 +1,6 @@
 import { expect, Locator, Page } from '@playwright/test'
 import { KoskiOppijaPageV2 } from './KoskiOppijaPageV2'
-import { BuiltIdNode } from './uiV2builder/builder'
+import { build, BuiltIdNode } from './uiV2builder/builder'
 import { Button } from './uiV2builder/Button'
 import { Checkbox } from './uiV2builder/Checkbox'
 import { Input } from './uiV2builder/Input'
@@ -50,6 +50,8 @@ export class KoskiUusiOppijaPage extends KoskiOppijaPageV2<
     super(page, UusiOpiskeluoikeusFormTestIds)
 
     this.page = page
+    this.$ = build(this.page, UusiOpiskeluoikeusFormTestIds)
+    
     this.controls = this.$.uusiOpiskeluoikeus.modal
     this.lisaaOppijaButton = page.getByLabel('Tunnus')
   }
@@ -139,7 +141,7 @@ export class KoskiUusiOppijaPage extends KoskiOppijaPageV2<
     const submitBtn = this.$.uusiOpiskeluoikeus.modal.submit.button
     await expect(submitBtn).toBeEnabled()
     await submitBtn.click()
-    await expect(this.page.getByTestId('error')).not.toBeVisible()
+    await expect(this.getByTestId('error')).not.toBeVisible()
     await expect(this.page).toHaveURL(/\/koski\/oppija\/1.2.246.562.24.\d+.*/)
   }
 }

@@ -61,15 +61,18 @@ import {
   useKielivalikoimaOptions,
   useOppiaineTasoOptions
 } from './state/options'
+import { config } from '../util/config'
 
 export type IBTutkintTiedotProps = {
   form: FormModel<IBOpiskeluoikeus>
   päätasonSuoritus: ActivePäätasonSuoritus<IBOpiskeluoikeus>
+  alkamispäivä?: string
 }
 
 export const IBPäätasonSuoritusTiedot: React.FC<IBTutkintTiedotProps> = ({
   form,
-  päätasonSuoritus
+  päätasonSuoritus,
+  alkamispäivä
 }) => {
   const path = päätasonSuoritus.path
 
@@ -102,6 +105,7 @@ export const IBPäätasonSuoritusTiedot: React.FC<IBTutkintTiedotProps> = ({
         <IBTutkinnonTiedotRows
           form={form}
           päätasonSuoritus={päätasonSuoritus}
+          alkamispäivä={alkamispäivä}
         />
       )}
       <KeyValueRow localizableLabel="Todistuksella näkyvät lisätiedot">
@@ -123,26 +127,38 @@ type IBTutkinnonTiedotRowsProps = {
     IBOpiskeluoikeus,
     IBTutkinnonSuoritus
   >
+  alkamispäivä?: string
 }
 
 const IBTutkinnonTiedotRows: React.FC<IBTutkinnonTiedotRowsProps> = ({
   form,
-  päätasonSuoritus
+  päätasonSuoritus,
+  alkamispäivä
 }) => {
   const path = päätasonSuoritus.path
 
   return (
     <>
-      <TheoryOfKnowledgeRows form={form} päätasonSuoritus={päätasonSuoritus} />
-      <ExtendedEssayFieldRows form={form} päätasonSuoritus={päätasonSuoritus} />
+      <TheoryOfKnowledgeRows
+        form={form}
+        päätasonSuoritus={päätasonSuoritus}
+        alkamispäivä={alkamispäivä}
+      />
+      <ExtendedEssayFieldRows
+        form={form}
+        päätasonSuoritus={päätasonSuoritus}
+        alkamispäivä={alkamispäivä}
+      />
       <KeyValueRow localizableLabel="Creativity action service">
         <CreativityActionServiceField
           form={form}
           päätasonSuoritus={päätasonSuoritus}
+          alkamispäivä={alkamispäivä}
         />
       </KeyValueRow>
       <KeyValueRow localizableLabel="Lisäpisteet">
-        {(form.editMode || päätasonSuoritus.suoritus.lisäpisteet) && (
+        {((form.editMode && !dpOppiaineetOsasuorituksina(alkamispäivä)) ||
+          päätasonSuoritus.suoritus.lisäpisteet) && (
           <FormField
             form={form}
             path={path.prop('lisäpisteet')}
@@ -159,7 +175,8 @@ const IBTutkinnonTiedotRows: React.FC<IBTutkinnonTiedotRowsProps> = ({
 
 const TheoryOfKnowledgeRows: React.FC<IBTutkinnonTiedotRowsProps> = ({
   form,
-  päätasonSuoritus
+  päätasonSuoritus,
+  alkamispäivä
 }) => {
   const [newKurssiDialogVisible, showNewKurssiDialog, hideNewKurssiDialog] =
     useBooleanState(false)
@@ -203,7 +220,8 @@ const TheoryOfKnowledgeRows: React.FC<IBTutkinnonTiedotRowsProps> = ({
     [form, kurssitPath]
   )
 
-  return theoryOfKnowledge || form.editMode ? (
+  return theoryOfKnowledge ||
+    (form.editMode && !dpOppiaineetOsasuorituksina(alkamispäivä)) ? (
     <TestIdLayer id="theoryOfKnowledge">
       <KeyValueRow localizableLabel="Theory of knowledge">
         <KeyValueTable>
@@ -273,7 +291,8 @@ const emptyTheoryOfKnowledge = IBTheoryOfKnowledgeSuoritus({
 
 const ExtendedEssayFieldRows: React.FC<IBTutkinnonTiedotRowsProps> = ({
   form,
-  päätasonSuoritus
+  päätasonSuoritus,
+  alkamispäivä
 }) => {
   const state = useExtendedEssayState(form, päätasonSuoritus)
   const tunnisteet = useKoodistoOptions('oppiaineetib')
@@ -281,7 +300,10 @@ const ExtendedEssayFieldRows: React.FC<IBTutkinnonTiedotRowsProps> = ({
   const ryhmät = useAineryhmäOptions(true)
   const tasot = useOppiaineTasoOptions(true)
 
-  if (!form.editMode && !päätasonSuoritus.suoritus.extendedEssay) {
+  if (
+    !(form.editMode && !dpOppiaineetOsasuorituksina(alkamispäivä)) &&
+    !päätasonSuoritus.suoritus.extendedEssay
+  ) {
     return null
   }
 
@@ -407,7 +429,8 @@ const ExtendedEssayFieldRows: React.FC<IBTutkinnonTiedotRowsProps> = ({
 
 const CreativityActionServiceField: React.FC<IBTutkinnonTiedotRowsProps> = ({
   form,
-  päätasonSuoritus
+  päätasonSuoritus,
+  alkamispäivä
 }) => {
   const props = useMemo(
     () => ({
@@ -434,7 +457,10 @@ const CreativityActionServiceField: React.FC<IBTutkinnonTiedotRowsProps> = ({
     [form, päätasonSuoritus.path]
   )
 
-  if (!form.editMode && !päätasonSuoritus.suoritus.creativityActionService) {
+  if (
+    !(form.editMode && !dpOppiaineetOsasuorituksina(alkamispäivä)) &&
+    !päätasonSuoritus.suoritus.creativityActionService
+  ) {
     return null
   }
 
@@ -450,3 +476,9 @@ const CreativityActionServiceField: React.FC<IBTutkinnonTiedotRowsProps> = ({
     <KoodistoView {...props} testId="creativityActionService" />
   )
 }
+
+const coreOppiaineidenTietomallinMuuttumisenRajapäivä =
+  config().rajapäivät.ibLaajuusOpintopisteinäAlkaen
+
+const dpOppiaineetOsasuorituksina = (alkupäivä?: string): boolean =>
+  (alkupäivä || '') >= coreOppiaineidenTietomallinMuuttumisenRajapäivä

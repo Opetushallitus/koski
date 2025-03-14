@@ -5,6 +5,7 @@ import { useVirkailijaUiAdapter } from '../components-v2/interoperability/useUiA
 import { currentLocation } from '../util/location.js'
 import { flatMapArray } from '../util/util'
 import OpiskeluoikeudetNavBar from './OpiskeluoikeudetNavBar'
+import { TestIdRoot } from '../appstate/useTestId'
 
 export const OppijaEditor = ({ model }) => {
   const oppijaOid = modelData(model, 'henkilö.oid')
@@ -46,7 +47,9 @@ export const OppijaEditor = ({ model }) => {
                   return (
                     <li key={oppilaitosIndex + '-' + opiskeluoikeusIndex}>
                       {Editor ? (
-                        <Editor />
+                        <TestIdRoot id={`oo.${opiskeluoikeusIndex}`}>
+                          <Editor />
+                        </TestIdRoot>
                       ) : (
                         <OpiskeluoikeusEditor
                           model={addContext(opiskeluoikeus, {

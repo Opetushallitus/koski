@@ -1,6 +1,6 @@
 import React from 'react'
 import { TreeHook } from '../../appstate/tree'
-import { TestIdRoot, TestIdText } from '../../appstate/useTestId'
+import { TestIdLayer, TestIdRoot, TestIdText } from '../../appstate/useTestId'
 import { useKansalainenTaiSuoritusjako } from '../../appstate/user'
 import { CommonProps, common } from '../../components-v2/CommonProps'
 import { VirkailijaOnly } from '../../components-v2/access/VirkailijaOnly'
@@ -129,7 +129,7 @@ export const OsaamismerkkiTitle = (props: OsaamismerkkiTitleProps) => {
   )
 
   return (
-    <TestIdRoot id="opiskeluoikeus">
+    <TestIdLayer id="opiskeluoikeus">
       {props.tree ? (
         <ExpandButton
           expanded={props.tree.isOpen}
@@ -141,7 +141,7 @@ export const OsaamismerkkiTitle = (props: OsaamismerkkiTitleProps) => {
       ) : (
         <>{children}</>
       )}
-    </TestIdRoot>
+    </TestIdLayer>
   )
 }
 

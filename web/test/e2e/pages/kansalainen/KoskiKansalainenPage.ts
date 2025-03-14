@@ -11,15 +11,11 @@ import { SuoritusotePage } from './SuoritusotePage'
 export class KoskiKansalainenPage {
   $: BuiltIdNode<KansalainenUIV2TestIds>
   peruSuostumusLinkki: Locator
-  expandButton: Locator
-  suoritusTab: Locator
   opiskeluoikeusTitle: Locator
 
   constructor(private readonly page: Page) {
     this.$ = build(page, KansalainenUIV2TestIds)
     this.peruSuostumusLinkki = page.locator('.peru-suostumus-linkki')
-    this.expandButton = page.getByTestId('opiskeluoikeus.expand')
-    this.suoritusTab = page.getByTestId('suoritusTabs.0.tab')
     this.opiskeluoikeusTitle = page
       .locator('.OpiskeluoikeusTitle')
       .or(page.locator('.OsaamismerkkiTitle'))
@@ -42,16 +38,16 @@ export class KoskiKansalainenPage {
     await this.page.getByRole('button', { name }).click()
   }
 
-  async expandOpiskeluoikeus() {
-    await expect(this.suoritusTab).not.toBeAttached()
-    await this.expandButton.click()
-    await expect(this.suoritusTab).toBeAttached()
+  async expandOsaamismerkki(index: number = 0) {
+    await expect(this.osaamismerkkiSuoritusTab(index)).not.toBeAttached()
+    await this.osaamismerkkiExpandButton(index).click()
+    await expect(this.osaamismerkkiSuoritusTab(index)).toBeAttached()
   }
 
-  async collapseOpiskeluoikeus() {
-    await expect(this.suoritusTab).toBeAttached()
-    await this.expandButton.click()
-    await expect(this.suoritusTab).not.toBeAttached()
+  async collapseOpiskeluoikeus(index: number = 0) {
+    await expect(this.osaamismerkkiSuoritusTab(index)).toBeAttached()
+    await this.osaamismerkkiExpandButton(index).click()
+    await expect(this.osaamismerkkiSuoritusTab(index)).not.toBeAttached()
   }
 
   async setYoTodistusLanguage(lang: YoTodistusLanguage) {
@@ -139,15 +135,21 @@ export class KoskiKansalainenPage {
     })
   }
 
-  async peruSuostumus() {
+  async peruSuostumus(testIdPrefix?: string) {
     await this.peruSuostumusLinkki.click()
 
     const confirmBtn = this.page.getByText('Kyllä, peru suostumus')
     await expect(confirmBtn).toBeDisabled()
 
-    await this.page
-      .getByTestId('suoritukset.0.modal.suostumuksenPeruminen.label')
-      .click()
+    await (
+      testIdPrefix
+        ? this.page.getByTestId(
+            `${testIdPrefix}.suoritukset.0.modal.suostumuksenPeruminen.label`
+          )
+        : this.getOpiskeluoikeusElementByTestId(
+            'suoritukset.0.modal.suostumuksenPeruminen.label'
+          )
+    ).click()
 
     await confirmBtn.click()
 
@@ -156,6 +158,21 @@ export class KoskiKansalainenPage {
         'Tiedoillasi ei löydy opintosuorituksia eikä opiskeluoikeuksia.'
       )
     ).toBeAttached()
+  }
+
+  getOpiskeluoikeusElementByTestId(
+    id: string,
+    opiskeluoikeusIndex: number = 0
+  ) {
+    return this.page.getByTestId(`oo.${opiskeluoikeusIndex}.${id}`)
+  }
+
+  osaamismerkkiSuoritusTab(index: number = 0) {
+    return this.page.getByTestId(`osaamismerkit.${index}.suoritusTabs.0.tab`)
+  }
+
+  osaamismerkkiExpandButton(index: number = 0) {
+    return this.page.getByTestId(`osaamismerkit.${index}.opiskeluoikeus.expand`)
   }
 }
 

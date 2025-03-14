@@ -35,9 +35,10 @@ export class KoskiTpoOppijaPage extends KoskiOppijaPageV2<
   }
 
   async osasuoritustieto(key: 'nimi' | 'laajuus' | 'arvosana') {
-    return this.$.suoritukset(this.suoritusIndex)
-      .osasuoritukset(this.osasuoritusIndex)
-      [key].value(this.editMode)
+    const oo = this.$.suoritukset(this.suoritusIndex).osasuoritukset(
+      this.osasuoritusIndex
+    )[key]
+    return oo.value(this.editMode)
   }
 
   async osasuoritusProperty(key: 'arvosana' | 'date' | 'tunnustettu') {

@@ -15,6 +15,7 @@ import ChevronDownIcon from '../icons/ChevronDownIcon'
 import { OmatTiedotOpiskeluoikeus } from './OmatTiedotOpiskeluoikeus'
 import { useKansalainenUiAdapter } from '../components-v2/interoperability/useUiAdapter'
 import { t } from '../i18n/i18n'
+import { TestIdLayer, TestIdRoot } from '../appstate/useTestId'
 
 export const OmatTiedotEditor = ({ model }) => {
   const oppijaOid = modelData(model, 'henkilö.oid')
@@ -40,24 +41,28 @@ export const OmatTiedotEditor = ({ model }) => {
             />
           ))}
           {osaamismerkit.length > 0 ? (
-            <div className="oppilaitos-container">
-              <h2 className="oppilaitos-title">{t('Osaamismerkit')}</h2>
-              <ul className="opiskeluoikeudet-list">
-                {osaamismerkit.map((opiskeluoikeus, opiskeluoikeusIndex) => (
-                  <li key={opiskeluoikeusIndex}>
-                    <div className="opiskeluoikeus-container">
-                      <Osaamismerkki
-                        key={opiskeluoikeusIndex}
-                        opiskeluoikeus={opiskeluoikeus}
-                        opiskeluoikeusIndex={opiskeluoikeusIndex}
-                        oppijaOid={oppijaOid}
-                        uiAdapter={uiAdapter}
-                      />
-                    </div>
-                  </li>
-                ))}
-              </ul>
-            </div>
+            <TestIdRoot id="osaamismerkit">
+              <div className="oppilaitos-container">
+                <h2 className="oppilaitos-title">{t('Osaamismerkit')}</h2>
+                <ul className="opiskeluoikeudet-list">
+                  {osaamismerkit.map((opiskeluoikeus, opiskeluoikeusIndex) => (
+                    <li key={opiskeluoikeusIndex}>
+                      <TestIdLayer id={opiskeluoikeusIndex}>
+                        <div className="opiskeluoikeus-container">
+                          <Osaamismerkki
+                            key={opiskeluoikeusIndex}
+                            opiskeluoikeus={opiskeluoikeus}
+                            opiskeluoikeusIndex={opiskeluoikeusIndex}
+                            oppijaOid={oppijaOid}
+                            uiAdapter={uiAdapter}
+                          />
+                        </div>
+                      </TestIdLayer>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </TestIdRoot>
           ) : null}
         </>
       )}
@@ -78,7 +83,7 @@ const Oppilaitokset = ({ oppilaitos, oppijaOid, uiAdapter }) => {
     (oo) => !onOsaamismerkinOpiskeluoikeus(oo)
   )
   return opiskeluoikeudet.length > 0 ? (
-    <>
+    <TestIdRoot id="oo">
       <div className="oppilaitos-container">
         <h2 className="oppilaitos-title">
           {modelTitle(oppilaitos, 'oppilaitos')}
@@ -86,24 +91,28 @@ const Oppilaitokset = ({ oppilaitos, oppijaOid, uiAdapter }) => {
         <ul className="opiskeluoikeudet-list">
           {opiskeluoikeudet.map((opiskeluoikeus, opiskeluoikeusIndex) => {
             const Editor = uiAdapter.getOpiskeluoikeusEditor(opiskeluoikeus)
-            return Editor ? (
-              <li key={opiskeluoikeusIndex}>
-                <div className="opiskeluoikeus-container">
-                  <Editor key={opiskeluoikeusIndex} />
-                </div>
-              </li>
-            ) : (
-              <li key={opiskeluoikeusIndex}>
-                <Opiskeluoikeus
-                  opiskeluoikeus={opiskeluoikeus}
-                  oppijaOid={oppijaOid}
-                />
-              </li>
+            return (
+              <TestIdLayer id={opiskeluoikeusIndex}>
+                {Editor ? (
+                  <li key={opiskeluoikeusIndex}>
+                    <div className="opiskeluoikeus-container">
+                      <Editor key={opiskeluoikeusIndex} />
+                    </div>
+                  </li>
+                ) : (
+                  <li key={opiskeluoikeusIndex}>
+                    <Opiskeluoikeus
+                      opiskeluoikeus={opiskeluoikeus}
+                      oppijaOid={oppijaOid}
+                    />
+                  </li>
+                )}
+              </TestIdLayer>
             )
           })}
         </ul>
       </div>
-    </>
+    </TestIdRoot>
   ) : null
 }
 

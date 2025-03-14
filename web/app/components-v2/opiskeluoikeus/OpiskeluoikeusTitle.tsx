@@ -1,6 +1,6 @@
 import React from 'react'
 import { TreeHook } from '../../appstate/tree'
-import { TestIdRoot, TestIdText } from '../../appstate/useTestId'
+import { TestIdLayer, TestIdRoot, TestIdText } from '../../appstate/useTestId'
 import { useKansalainenTaiSuoritusjako } from '../../appstate/user'
 import { formatYearRange, yearFromIsoDateString } from '../../date/date'
 import { t } from '../../i18n/i18n'
@@ -43,8 +43,9 @@ export const OpiskeluoikeusTitle = (props: OpiskeluoikeusTitleProps) => {
 
   const vainYhdenPäättävänTilanVuosi =
     props.opiskeluoikeus.päättymispäivä &&
-    props.opiskeluoikeus.tila.opiskeluoikeusjaksot.length <= 1 ?
-    yearFromIsoDateString(props.opiskeluoikeus.päättymispäivä) : undefined
+    props.opiskeluoikeus.tila.opiskeluoikeusjaksot.length <= 1
+      ? yearFromIsoDateString(props.opiskeluoikeus.päättymispäivä)
+      : undefined
 
   const vuodet =
     vainYhdenPäättävänTilanVuosi ||
@@ -109,7 +110,7 @@ export const OpiskeluoikeusTitle = (props: OpiskeluoikeusTitleProps) => {
   )
 
   return (
-    <TestIdRoot id="opiskeluoikeus">
+    <TestIdLayer id="opiskeluoikeus">
       {props.tree ? (
         <ExpandButton
           expanded={props.tree.isOpen}
@@ -121,6 +122,6 @@ export const OpiskeluoikeusTitle = (props: OpiskeluoikeusTitleProps) => {
       ) : (
         <>{children}</>
       )}
-    </TestIdRoot>
+    </TestIdLayer>
   )
 }

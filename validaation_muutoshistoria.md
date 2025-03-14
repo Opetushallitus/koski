@@ -1,5 +1,16 @@
 # Koskeen tallennettavien tietojen validaatiosäännöt
 
+## 13.3.2025
+
+- Muutokset IB-opiskeluoikeuksille, jotka ovat alkaneet 1.8.2025 tai myöhemmin:
+  - Laajuus tallennetaan kursseille opintopisteinä, jonka myötä laajuuden tallentaminen kursseina ei enää ole mahdollista.
+  - IB-tutkinnon suorituksen alla oleviin erillisiin kenttiin ei voi enää tuoda seuraavia tietoja, vaan ne on tuotava osasuorituksina:
+    - Theory of Knowledge
+    - Extended Essay
+    - Creativity Action Service
+    - Lisäpisteet
+  - Mahdollista siirtää vain vuoden 2019 opetussuunnitelman mukainen pre-IB-suoritus.
+
 ## 11.3.2025
 
 - Lisätty validaatiot yleiselle kielitutkinnolle:

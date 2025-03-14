@@ -8,7 +8,7 @@ import fi.oph.koski.documentation.YleissivistavakoulutusExampleData.ressunLukio
 import fi.oph.koski.documentation.{ExampleData, LukioExampleData}
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat.vuonna2004SyntynytPeruskouluValmis2021
 import fi.oph.koski.http.{ErrorMatcher, KoskiErrorCategory}
-import fi.oph.koski.schema._
+import fi.oph.koski.schema.{IBDPCoreOppiaine, _}
 import org.scalatest.freespec.AnyFreeSpec
 
 import java.time.LocalDate
@@ -197,10 +197,10 @@ class OppijaValidationIBSpec extends AnyFreeSpec with KoskiHttpSpec with PutOpis
             )
           )
 
-          val osasuoritukset = suoritus.osasuoritukset.map(_.map(_.copy(
+          val osasuoritukset = modifyIBOppiaineenSuoritus(suoritus, _.copy(
             arviointi = ibArviointi("5"),
             predictedArviointi = None,
-          )))
+          ))
           val opiskeluoikeus = defaultOpiskeluoikeus.copy(
             tila = LukionOpiskeluoikeudenTila(
               List(
@@ -226,10 +226,10 @@ class OppijaValidationIBSpec extends AnyFreeSpec with KoskiHttpSpec with PutOpis
               kunta = helsinki
             )
           )
-          val osasuoritukset = suoritus.osasuoritukset.map(_.map(os => os.copy(
+          val osasuoritukset = modifyIBOppiaineenSuoritus(suoritus, os => os.copy(
             arviointi = (if (os.koulutusmoduuli.tunniste.koodiarvo == "A2") { None } else { ibArviointi("5") }),
             predictedArviointi = ibPredictedArviointi("4"),
-          )))
+          ))
           val opiskeluoikeus = defaultOpiskeluoikeus.copy(
             tila = LukionOpiskeluoikeudenTila(
               List(
@@ -248,10 +248,10 @@ class OppijaValidationIBSpec extends AnyFreeSpec with KoskiHttpSpec with PutOpis
 
         "Onnistuu, kun kaikilla osasuorituksilla on päättöarvosana ja osalla niistä predicted-arvosana" in {
           val suoritus = ibTutkinnonSuoritus(predicted = false)
-          val osasuoritukset = suoritus.osasuoritukset.map(_.map(os => os.copy(
+          val osasuoritukset = modifyIBOppiaineenSuoritus(suoritus, os => os.copy(
             arviointi = ibArviointi("5"),
-            predictedArviointi = (if (os.koulutusmoduuli.tunniste.koodiarvo != "A2") { None } else { ibPredictedArviointi("4") }),
-          )))
+            predictedArviointi = if (os.koulutusmoduuli.tunniste.koodiarvo != "A2") None else ibPredictedArviointi("4"),
+          ))
           val opiskeluoikeus = defaultOpiskeluoikeus.copy(suoritukset = List(suoritus.copy(osasuoritukset = osasuoritukset)))
           setupOppijaWithOpiskeluoikeus(opiskeluoikeus) {
             verifyResponseStatusOk()
@@ -260,10 +260,10 @@ class OppijaValidationIBSpec extends AnyFreeSpec with KoskiHttpSpec with PutOpis
 
         "Onnistuu, kun molemmat arvosanat on annettu" in {
           val suoritus = ibTutkinnonSuoritus(predicted = false)
-          val osasuoritukset = suoritus.osasuoritukset.map(_.map(_.copy(
+          val osasuoritukset = modifyIBOppiaineenSuoritus(suoritus, _.copy(
             arviointi = ibArviointi("5"),
             predictedArviointi = ibPredictedArviointi("4"),
-          )))
+          ))
           val opiskeluoikeus = defaultOpiskeluoikeus.copy(suoritukset = List(suoritus.copy(osasuoritukset = osasuoritukset)))
           setupOppijaWithOpiskeluoikeus(opiskeluoikeus) {
             verifyResponseStatusOk()
@@ -283,10 +283,10 @@ class OppijaValidationIBSpec extends AnyFreeSpec with KoskiHttpSpec with PutOpis
             )
           )
 
-          val osasuoritukset = suoritus.osasuoritukset.map(_.map(_.copy(
+          val osasuoritukset = modifyIBOppiaineenSuoritus(suoritus, _.copy(
             arviointi = ibArviointi("5"),
             predictedArviointi = None,
-          )))
+          ))
           val opiskeluoikeus = defaultOpiskeluoikeus.copy(
             tila = LukionOpiskeluoikeudenTila(
               List(
@@ -298,6 +298,202 @@ class OppijaValidationIBSpec extends AnyFreeSpec with KoskiHttpSpec with PutOpis
           )
           setupOppijaWithOpiskeluoikeus(opiskeluoikeus) {
             verifyResponseStatusOk()
+          }
+        }
+      }
+    }
+
+    "Muutokset IB-tutkinnon rakenteeseen 1.8.2025 alkaen" - {
+      val rajapäivä = LocalDate.of(2025, 8, 1)
+
+      def createOpiskeluoikeusYhdelläKurssilla(
+        alkamispäivä: LocalDate,
+        laajuus: LaajuusOpintopisteissäTaiKursseissa,
+        modifyPts: IBTutkinnonSuoritus => IBPäätasonSuoritus = filterIbTutkinto(),
+      ): IBOpiskeluoikeus = opiskeluoikeus.copy(
+        tila = LukionOpiskeluoikeudenTila(
+          opiskeluoikeusjaksot = List(
+            LukionOpiskeluoikeusjakso(alkamispäivä, LukioExampleData.opiskeluoikeusAktiivinen, Some(ExampleData.valtionosuusRahoitteinen)),
+          )
+        ),
+        suoritukset = List(
+          modifyPts(ibTutkinnonSuoritus(predicted = false, vahvistus = None).copy(
+            osasuoritukset = Some(List(
+              ibAineSuoritus(
+                ibKieli("A", "FI", standardLevel, 1),
+                None,
+                None,
+                List(
+                  (ibKurssi("FIN_S1", "A Finnish standard level 1").copy(laajuus = Some(laajuus)), "4", Some("B"))),
+              ))
+            )
+          ))
+        )
+      )
+
+      def filterIbTutkinto(extendedEssay: Boolean = false, theoryOfKnowledge: Boolean = false, cas: Boolean = false, lisäpisteet: Boolean = false)(pts: IBTutkinnonSuoritus): IBTutkinnonSuoritus =
+        pts.copy(
+          extendedEssay = if (extendedEssay) pts.extendedEssay else None,
+          theoryOfKnowledge = if (theoryOfKnowledge) pts.theoryOfKnowledge else None,
+          creativityActionService = if (cas) pts.creativityActionService else None,
+          lisäpisteet = if (lisäpisteet) pts.lisäpisteet else None,
+        )
+
+      def osasuorituksilla(os: IBTutkinnonOppiaineenSuoritus*)(pts: IBTutkinnonSuoritus): IBTutkinnonSuoritus =
+        filterIbTutkinto()(pts).copy(osasuoritukset = Some(os.toList))
+
+      val extendedEssay = IBDBCoreSuoritus(
+        koulutusmoduuli = IBOppiaineExtendedEssay(
+          aine = IBOppiaineMuu(
+            tunniste = Koodistokoodiviite("BIO", "oppiaineetib"),
+            ryhmä = Koodistokoodiviite("4", "aineryhmaib"),
+          ),
+          aihe = Finnish("Torakoiden jalostus"),
+        ),
+      )
+
+      val theoryOfKnowledge = IBDBCoreSuoritus(koulutusmoduuli = IBOppiaineTheoryOfKnowledge())
+
+      val casOppiaine = IBDBCoreSuoritus(koulutusmoduuli = IBOppiaineCAS())
+
+      "Ennen rajapäivää" - {
+        "Laajuuden ilmoitus kursseina ok" in {
+          val oo = createOpiskeluoikeusYhdelläKurssilla(rajapäivä.minusDays(1), LaajuusKursseissa(1))
+          setupOppijaWithOpiskeluoikeus(oo) {
+            verifyResponseStatusOk()
+          }
+        }
+
+        "Laajuuden ilmoitus opintopisteinä ei ole ok" in {
+          val oo = createOpiskeluoikeusYhdelläKurssilla(rajapäivä.minusDays(1), LaajuusOpintopisteissä(1))
+          setupOppijaWithOpiskeluoikeus(oo) {
+            verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.laajuudet.osauoritusVääräLaajuus(
+              "Osasuorituksen laajuuden voi ilmoitettaa opintopisteissä vain 1.8.2025 tai myöhemmin alkaneille IB-tutkinnon opiskeluoikeuksille"
+            ))
+          }
+        }
+
+        "Core Requirements" - {
+          "Core Requirements -kentät voidaan siirtää" in {
+            val oo = createOpiskeluoikeusYhdelläKurssilla(rajapäivä.minusDays(1), LaajuusKursseissa(1), filterIbTutkinto(
+              theoryOfKnowledge = true,
+              extendedEssay = true,
+              cas = true,
+              lisäpisteet = true,
+            ))
+            setupOppijaWithOpiskeluoikeus(oo) {
+              verifyResponseStatusOk()
+            }
+          }
+
+          "Osasuorituksina" - {
+            "Extended Essay ei voi siirtää osasuorituksena" in {
+              val oo = createOpiskeluoikeusYhdelläKurssilla(rajapäivä.minusDays(1), LaajuusKursseissa(1), osasuorituksilla(extendedEssay))
+              setupOppijaWithOpiskeluoikeus(oo) {
+                verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.rakenne.dpCoreDeprecated(
+                  "DP Core -oppiaineita ei voi siirtää osasuorituksena ennen 1.8.2025 alkaneelle IB-opiskeluoikeudelle"
+                ))
+              }
+            }
+
+            "Theory of Knowledge ei voi siirtää osasuorituksena" in {
+              val oo = createOpiskeluoikeusYhdelläKurssilla(rajapäivä.minusDays(1), LaajuusKursseissa(1), osasuorituksilla(theoryOfKnowledge))
+              setupOppijaWithOpiskeluoikeus(oo) {
+                verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.rakenne.dpCoreDeprecated(
+                  "DP Core -oppiaineita ei voi siirtää osasuorituksena ennen 1.8.2025 alkaneelle IB-opiskeluoikeudelle"
+                ))
+              }
+            }
+
+            "CAS ei voi siirtää osasuorituksena" in {
+              val oo = createOpiskeluoikeusYhdelläKurssilla(rajapäivä.minusDays(1), LaajuusKursseissa(1), osasuorituksilla(casOppiaine))
+              setupOppijaWithOpiskeluoikeus(oo) {
+                verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.rakenne.dpCoreDeprecated(
+                  "DP Core -oppiaineita ei voi siirtää osasuorituksena ennen 1.8.2025 alkaneelle IB-opiskeluoikeudelle"
+                ))
+              }
+            }
+          }
+        }
+      }
+
+      "Rajapäivän jälkeen" - {
+        "Laajuuden ilmoitus kursseina ei ole ok" in {
+          val oo = createOpiskeluoikeusYhdelläKurssilla(rajapäivä, LaajuusKursseissa(1))
+          setupOppijaWithOpiskeluoikeus(oo) {
+            verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.laajuudet.osauoritusVääräLaajuus(
+              "Osasuorituksen laajuus on ilmoitettava opintopisteissä 1.8.2025 tai myöhemmin alkaneille IB-tutkinnon opiskeluoikeuksille"
+            ))
+          }
+        }
+
+        "Laajuuden ilmoitus opintopisteinä on ok" in {
+          val oo = createOpiskeluoikeusYhdelläKurssilla(rajapäivä, LaajuusOpintopisteissä(1))
+          setupOppijaWithOpiskeluoikeus(oo) {
+            verifyResponseStatusOk()
+          }
+        }
+
+        "Core Requirements" - {
+          "DP Core -oppiaineet voi siirtää osasuorituksina" in {
+            val oo = createOpiskeluoikeusYhdelläKurssilla(rajapäivä, LaajuusKursseissa(1), osasuorituksilla(extendedEssay, theoryOfKnowledge, casOppiaine))
+            setupOppijaWithOpiskeluoikeus(oo) {
+              verifyResponseStatusOk()
+            }
+          }
+
+          "Extended Essay ei voi siirtää päätason suorituksen kenttään" in {
+            val oo = createOpiskeluoikeusYhdelläKurssilla(rajapäivä, LaajuusOpintopisteissä(1), filterIbTutkinto(extendedEssay = true))
+            setupOppijaWithOpiskeluoikeus(oo) {
+              verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.rakenne.dpCoreDeprecated(
+                "Extended Essay -suoritus on siirrettävä osasuorituksena 1.8.2025 tai myöhemmin alkaneelle IB-opiskeluoikeudelle"
+              ))
+            }
+          }
+
+          "Theory of Knowledge ei voi siirtää päätason suorituksen kenttään" in {
+            val oo = createOpiskeluoikeusYhdelläKurssilla(rajapäivä, LaajuusOpintopisteissä(1), filterIbTutkinto(theoryOfKnowledge = true))
+            setupOppijaWithOpiskeluoikeus(oo) {
+              verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.rakenne.dpCoreDeprecated(
+                "Theory of Knowledge -suoritus on siirrettävä osasuorituksena 1.8.2025 tai myöhemmin alkaneelle IB-opiskeluoikeudelle"
+              ))
+            }
+          }
+
+          "CAS ei voi siirtää päätason suorituksen kenttään" in {
+            val oo = createOpiskeluoikeusYhdelläKurssilla(rajapäivä, LaajuusOpintopisteissä(1), filterIbTutkinto(cas = true))
+            setupOppijaWithOpiskeluoikeus(oo) {
+              verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.rakenne.dpCoreDeprecated(
+                "Creativity Action Service -suoritus on siirrettävä osasuorituksena 1.8.2025 tai myöhemmin alkaneelle IB-opiskeluoikeudelle"
+              ))
+            }
+          }
+
+          "Lisäpisteitä ei voi siirtää" in {
+            val oo = createOpiskeluoikeusYhdelläKurssilla(rajapäivä, LaajuusOpintopisteissä(1), filterIbTutkinto(lisäpisteet = true))
+            setupOppijaWithOpiskeluoikeus(oo) {
+              verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.rakenne.dpCoreDeprecated(
+                "Lisäpisteitä ei voi siirtää 1.8.2025 tai myöhemmin alkaneelle IB-opiskeluoikeudelle"
+              ))
+            }
+          }
+        }
+
+        "Pre-IB:n opetussunnitelma" - {
+          "Vuoden 2015 opetussuunnitelman mukaista pre-ib-suoritusta ei voi siirtää" in {
+            val oo = createOpiskeluoikeusYhdelläKurssilla(rajapäivä, LaajuusOpintopisteissä(1), { _ => preIBSuoritus })
+            setupOppijaWithOpiskeluoikeus(oo) {
+              verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.rakenne(
+                "1.8.2025 tai myöhemmin alkaneelle IB-opiskeluoikeudelle voi siirtää vain vuoden 2019 opetussuunnitelman mukaisen pre-IB-suorituksen"
+              ))
+            }
+          }
+
+          "Vuoden 2019 opetussuunnitelman mukaisen pre-ib-suorituksen voi siirtää" in {
+            val oo = createOpiskeluoikeusYhdelläKurssilla(rajapäivä, LaajuusOpintopisteissä(1), { _ => preIBSuoritus2019 })
+            setupOppijaWithOpiskeluoikeus(oo) {
+              verifyResponseStatusOk()
+            }
           }
         }
       }
@@ -321,4 +517,10 @@ class OppijaValidationIBSpec extends AnyFreeSpec with KoskiHttpSpec with PutOpis
       ))
     )
   }
+
+  private def modifyIBOppiaineenSuoritus(suoritus: IBTutkinnonSuoritus, f: IBOppiaineenSuoritus => IBOppiaineenSuoritus) =
+    suoritus.osasuoritukset.map(_.map {
+      case os: IBOppiaineenSuoritus => f(os)
+      case os: Any => os
+    })
 }

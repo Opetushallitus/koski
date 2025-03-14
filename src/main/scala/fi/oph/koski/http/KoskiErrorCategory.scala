@@ -145,6 +145,7 @@ object KoskiErrorCategory {
         val tuvaOsasuorituksiaLiianVähän = subcategory("tuvaOsasuorituksiaLiianVähän", "Tutkintokoulutukseen valmentavan koulutuksen osasuorituksia on oltava vähintään kolmesta eri koulutuksen osasta.")
         val tpoVääräOpintotaso = subcategory("tpoVääräOpintotaso", "Suorituksen opintotaso ei sisälly opiskeluoikeuden oppimäärään.")
         val tpoEriTaiteenalat = subcategory("tpoEriTaiteenalat", "Taiteen perusopetuksen opiskeluoikeudella ei voi olla suorituksia eri taiteenaloilta.")
+        val dpCoreDeprecated = subcategory("dpCoreDeprecated", "DP Core -suoritukset on siirrettävä osasuorituksina")
       }
       val rakenne = new Rakenne
 
@@ -202,6 +203,7 @@ object KoskiErrorCategory {
         val taiteenPerusopetuksenLaajuus = subcategory("taiteenPerusopetuksenLaajuus", "Taiteen perusopetuksen suorituksen laajuus on liian pieni")
         val perusopetukseenValmistavaOpetusKokonaislaajuusYksikköEiTunneissa = subcategory("perusopetukseenValmistavaOpetusKokonaislaajuusYksikköEiTunneissa", "Peruskoulutukseen valmistavan opetuksen kokonaislaajuus yksikkö on oltava tunneissa")
         val suorituksenLaajuusEiVastaaRakennetta = subcategory("suorituksenLaajuusEiVastaaRakennetta", "Suorituksen laajuus ei vastaa rakennetta")
+        val osauoritusVääräLaajuus = subcategory("osauoritusVääräLaajuus", "Osasuorituksella on väärä laajuus")
       }
       val laajuudet = new Laajuudet
 

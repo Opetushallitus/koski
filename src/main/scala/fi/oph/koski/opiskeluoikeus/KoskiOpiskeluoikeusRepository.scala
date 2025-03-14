@@ -30,6 +30,11 @@ trait KoskiOpiskeluoikeusRepository {
     oppijaOid: String,
     muutettavanOpiskeluoikeudenOid: Option[String]
   ): Seq[LocalDate]
+
+  def getKoulutusmuodonAlkamisajatIlmanKäyttöoikeustarkistusta(
+    oppijaOid: String,
+    koulutusmuoto: String
+  ): Map[Opiskeluoikeus.Oid, LocalDate]
   def merkitseSuoritusjakoTehdyksiIlmanKäyttöoikeudenTarkastusta(oid: String): HttpStatus
   def suoritusjakoTehtyIlmanKäyttöoikeudenTarkastusta(oid: String): Boolean
   def isKuoriOpiskeluoikeus(opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus): Boolean

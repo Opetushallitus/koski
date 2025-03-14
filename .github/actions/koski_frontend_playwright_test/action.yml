@@ -23,11 +23,9 @@ runs:
         PLAYWRIGHT_SHARD_INDEX: ${{inputs.shardIndex}}
         PLAYWRIGHT_SHARD_TOTAL: ${{inputs.shardTotal}}
         PLAYWRIGHT_HTML_REPORT: koski-playwright-report-${{inputs.shardIndex}}-of-${{inputs.shardTotal}}
-      uses: nick-fields/retry@v3
-      with:
-        max_attempts: 2
-        timeout_minutes: 45
-        command: mvn scalatest:test -Pintegrationtest -Dsuites="fi.oph.koski.e2e.KoskiFrontSpec" --batch-mode
+      run: mvn scalatest:test -Pintegrationtest -Dsuites="fi.oph.koski.e2e.KoskiFrontSpec" --batch-mode
+      shell: bash
+
     - uses: actions/upload-artifact@v4
       if: always()
       with:

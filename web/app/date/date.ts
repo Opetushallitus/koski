@@ -1,6 +1,13 @@
 import fecha from 'fecha'
 import { pipe } from 'fp-ts/lib/function'
 
+const toUndefined =
+  <T extends any[]>(f: (...as: T) => Date | null | boolean) =>
+  (...as: T): Date | undefined => {
+    const date = f(...as)
+    return isDate(date) ? date : undefined
+  }
+
 const finnishDateRE = /([0-3]?\d)\.([0-2]?\d)\.(\d\d\d\d)/
 export const formatISODate = (date: Date) => format(date, 'YYYY-MM-DD')
 export const parseFinnishDate = (dateStr: string) => {
@@ -27,6 +34,8 @@ export const ISO2FinnishDateTime = (dateStr: string) =>
 
 export const parseISODate = (dateStr: string): Date | null =>
   fecha.parse(dateStr, 'YYYY-MM-DD')
+
+export const parseISODateNullable = toUndefined(parseISODate)
 
 export const formatFinnishDate = (date: Date) => format(date, 'D.M.YYYY')
 

@@ -1,7 +1,7 @@
 import { IBKurssi } from '../../types/fi/oph/koski/schema/IBKurssi'
 import { IBKurssinSuoritus } from '../../types/fi/oph/koski/schema/IBKurssinSuoritus'
 import { Koodistokoodiviite } from '../../types/fi/oph/koski/schema/Koodistokoodiviite'
-import { LaajuusKursseissa } from '../../types/fi/oph/koski/schema/LaajuusKursseissa'
+import { LaajuusOpintopisteissäTaiKursseissa } from '../../types/fi/oph/koski/schema/LaajuusOpintopisteissaTaiKursseissa'
 import { LocalizedString } from '../../types/fi/oph/koski/schema/LocalizedString'
 import { PaikallinenKoodi } from '../../types/fi/oph/koski/schema/PaikallinenKoodi'
 import { isValidPaikallinenKoodi } from './tunnisteet'
@@ -9,7 +9,7 @@ import { isValidPaikallinenKoodi } from './tunnisteet'
 export type IBKurssinSuoritusProps = {
   tunniste?: PaikallinenKoodi
   kuvaus?: LocalizedString
-  laajuus?: LaajuusKursseissa
+  laajuus?: LaajuusOpintopisteissäTaiKursseissa
   pakollinen?: boolean
   suorituskieli?: Koodistokoodiviite<'kieli'>
 }

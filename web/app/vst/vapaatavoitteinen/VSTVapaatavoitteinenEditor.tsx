@@ -55,6 +55,7 @@ export const VSTVapaatavoitteinenEditor: React.FC<
         }
         onChangeSuoritus={onChangeSuoritus}
         opiskeluoikeusJaksoClassName="fi.oph.koski.schema.VapaanSivistystyönVapaatavoitteisenKoulutuksenOpiskeluoikeusjakso"
+        testId={päätasonSuoritus.testId}
       >
         <KansalainenOnly>
           <PäätasonSuorituksenSuostumuksenPeruminen

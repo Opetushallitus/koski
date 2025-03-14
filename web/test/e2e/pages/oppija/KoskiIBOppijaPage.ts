@@ -4,13 +4,14 @@ import { expect } from '../../base'
 import { KoskiOppijaPageV2 } from './KoskiOppijaPageV2'
 import { arrayOf } from './uiV2builder/builder'
 import { Button } from './uiV2builder/Button'
+import { Checkbox } from './uiV2builder/Checkbox'
 import { FormField } from './uiV2builder/controls'
 import { Input } from './uiV2builder/Input'
+import { LaajuusInput } from './uiV2builder/LaajuusInput'
 import { Label } from './uiV2builder/Label'
 import { OpiskeluoikeusHeader } from './uiV2builder/OpiskeluoikeusHeader'
 import { Select } from './uiV2builder/Select'
 import { SuorituksenVahvistus } from './uiV2builder/SuorituksenVahvistus'
-import { Checkbox } from './uiV2builder/Checkbox'
 
 export class KoskiIBOppijaPage extends KoskiOppijaPageV2<typeof IBTestIds> {
   constructor(page: Page) {
@@ -62,13 +63,13 @@ export class KoskiIBOppijaPage extends KoskiOppijaPageV2<typeof IBTestIds> {
           } = kurssit[kurssiIndex]
           const kurssi = oppiaine.kurssit(parseInt(kurssiIndex))
 
-          await expect(kurssi.tunniste.elem).toHaveText(
+          await expect(kurssi.tunniste.button).toHaveText(
             paikallinen ? `${tunniste} *` : tunniste
           )
           await expect(kurssi.arvosana.viewer).toHaveText(kurssinArvosana)
         }
         const olematonKurssi = oppiaine.kurssit(kurssit.length)
-        await expect(olematonKurssi.tunniste.elem).not.toBeAttached()
+        await expect(olematonKurssi.tunniste.button).not.toBeAttached()
       }
     }
   }
@@ -85,9 +86,12 @@ const PaikallinenKoulutusFields = {
 }
 
 const KurssiFields = {
-  tunniste: Label,
+  tunniste: Button,
   arvosana: FormField(Label, Select),
-  delete: Button
+  delete: Button,
+  modal: {
+    laajuus: LaajuusInput
+  }
 }
 
 export const IBTestIds = {

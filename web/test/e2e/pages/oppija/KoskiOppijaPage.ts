@@ -48,7 +48,7 @@ export class KoskiOppijaPage {
     this.opiskeluoikeudenTila = new OpiskeluoikeudenTilaDialog(page)
     this.muokkausNäkymäBtn = page.getByRole('button', {
       name: 'Muokkaa opiskeluoikeutta'
-    }).or(page.getByTestId('opiskeluoikeus.edit'))
+    }).or(page.getByTestId('oo.0.opiskeluoikeus.edit'))
     this.peruutaMuutoksetLink = page.getByRole('link', {
       name: 'Peruuta muutokset'
     })

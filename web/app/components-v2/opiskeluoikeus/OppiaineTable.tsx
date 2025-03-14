@@ -16,19 +16,22 @@ import { IBOpiskeluoikeus } from '../../types/fi/oph/koski/schema/IBOpiskeluoike
 import { isIBOppiaineenSuoritus } from '../../types/fi/oph/koski/schema/IBOppiaineenSuoritus'
 import { IBTheoryOfKnowledgeSuoritus } from '../../types/fi/oph/koski/schema/IBTheoryOfKnowledgeSuoritus'
 import { IBTutkinnonSuoritus } from '../../types/fi/oph/koski/schema/IBTutkinnonSuoritus'
+import { LocalizedString } from '../../types/fi/oph/koski/schema/LocalizedString'
 import { LukionArviointi } from '../../types/fi/oph/koski/schema/LukionArviointi'
 import { isLukionKurssinSuoritus2015 } from '../../types/fi/oph/koski/schema/LukionKurssinSuoritus2015'
+import { isLukionPaikallinenOpintojakso2019 } from '../../types/fi/oph/koski/schema/LukionPaikallinenOpintojakso2019'
 import { MuidenLukioOpintojenPreIBSuoritus2019 } from '../../types/fi/oph/koski/schema/MuidenLukioOpintojenPreIBSuoritus2019'
 import { isPaikallinenKoodi } from '../../types/fi/oph/koski/schema/PaikallinenKoodi'
+import { isPaikallinenLukionKurssi2015 } from '../../types/fi/oph/koski/schema/PaikallinenLukionKurssi2015'
 import { PreIBSuoritus2019 } from '../../types/fi/oph/koski/schema/PreIBSuoritus2019'
 import { Suoritus } from '../../types/fi/oph/koski/schema/Suoritus'
 import { isValinnaisuus } from '../../types/fi/oph/koski/schema/Valinnaisuus'
 import { isValinnanMahdollisuus } from '../../types/fi/oph/koski/schema/ValinnanMahdollisuus'
 import { appendOptional, deleteAt } from '../../util/array'
 import { parasArviointi, viimeisinArviointi } from '../../util/arvioinnit'
-import { nonFalsy } from '../../util/fp/arrays'
+import { nonFalsy, nonNull } from '../../util/fp/arrays'
 import { PathToken } from '../../util/laxModify'
-import { sum } from '../../util/numbers'
+import { indexSequence, sum } from '../../util/numbers'
 import { entries } from '../../util/objects'
 import { PäätasonSuoritusOf } from '../../util/opiskeluoikeus'
 import { match } from '../../util/patternmatch'
@@ -44,9 +47,12 @@ import { FormModel, getValue } from '../forms/FormModel'
 import { CHARCODE_REMOVE } from '../texts/Icon'
 import { ArvosanaEdit, koodiarvoOnly } from './ArvosanaField'
 import { OppiaineTableKurssiEditor } from './OppiaineTableKurssiEditor'
-import { LocalizedString } from '../../types/fi/oph/koski/schema/LocalizedString'
-import { isPaikallinenLukionKurssi2015 } from '../../types/fi/oph/koski/schema/PaikallinenLukionKurssi2015'
-import { isLukionPaikallinenOpintojakso2019 } from '../../types/fi/oph/koski/schema/LukionPaikallinenOpintojakso2019'
+import { isIBTaso } from '../../types/fi/oph/koski/schema/IBTaso'
+import { isIBAineRyhmäOppiaine } from '../../types/fi/oph/koski/schema/IBAineRyhmaOppiaine'
+import { isIBOppiaineExtendedEssay } from '../../types/fi/oph/koski/schema/IBOppiaineExtendedEssay'
+import { isIBOppiaineLanguage } from '../../types/fi/oph/koski/schema/IBOppiaineLanguage'
+import { isIBOppiaineCAS } from '../../types/fi/oph/koski/schema/IBOppiaineCAS'
+import { OppiaineTableOppiaineEditor } from './OppiaineTableOppiaineEditor'
 
 // Vain OppiaineTablen tukemat päätason suoritukset (tätä komponenttia tullaan myöhemmin käyttämään ainakin lukion näkymille)
 export type OppiaineTableOpiskeluoikeus = IBOpiskeluoikeus
@@ -76,6 +82,7 @@ export const OppiaineTable = <T extends OppiaineTablePäätasonSuoritus>({
   const suoritus = getValue(selectedSuoritus.path)(form.state)
   const path = selectedSuoritus.pathTokens
   const organisaatioOid = form.state.oppilaitos?.oid
+  const alkamispäivä = form.state.alkamispäivä
 
   const showPredictedGrade =
     selectedSuoritus.suoritus.$class === IBTutkinnonSuoritus.className
@@ -151,6 +158,8 @@ export const OppiaineTable = <T extends OppiaineTablePäätasonSuoritus>({
     [selectedSuoritus]
   )
 
+  const nextOppiaineIndex = indexSequence()
+
   return A.isEmpty(groupedOppiaineet) && organisaatioOid ? null : (
     <table className="OppiaineTable">
       <thead>
@@ -181,30 +190,37 @@ export const OppiaineTable = <T extends OppiaineTablePäätasonSuoritus>({
                 </tr>
               ) : null}
               <TestIdLayer id="oppiaineet">
-                {oppiaineet.map((oppiaine, oppiaineIndex) => (
-                  <TestIdLayer id={oppiaineIndex} key={oppiaineIndex}>
-                    <OppiaineRow
-                      organisaatioOid={organisaatioOid!}
-                      oppiaine={oppiaine}
-                      form={form}
-                      showPredictedGrade={showPredictedGrade}
-                      oppiainePath={[
-                        ...selectedSuoritus.pathTokens,
-                        'osasuoritukset',
-                        oppiaineIndex
-                      ]}
-                      hidePaikallinenIndicator={hidePaikallinenIndicator}
-                      onDelete={deleteOppiaine(oppiaine)}
-                      onDeleteKurssi={deleteKurssi(oppiaine)}
-                      addOsasuoritusDialog={addOsasuoritusDialog}
-                      onAddOsasuoritus={addOsasuoritus(oppiaine)}
-                      onArviointi={addKurssiArviointi(oppiaine)}
-                      onOppiaineArviointi={addOppiaineArviointi(oppiaine)}
-                      onPredictedGrade={addPredictedGrade(oppiaine)}
-                      key={oppiaineIndex}
-                    />
-                  </TestIdLayer>
-                ))}
+                {oppiaineet.map((oppiaine, oppiaineArrayIndex) => {
+                  const oppiaineModelIndex = nextOppiaineIndex()
+                  return (
+                    <TestIdLayer
+                      id={oppiaineArrayIndex}
+                      key={oppiaineModelIndex}
+                    >
+                      <OppiaineRow
+                        organisaatioOid={organisaatioOid!}
+                        alkamispäivä={alkamispäivä}
+                        oppiaine={oppiaine}
+                        form={form}
+                        showPredictedGrade={showPredictedGrade}
+                        oppiainePath={[
+                          ...selectedSuoritus.pathTokens,
+                          'osasuoritukset',
+                          oppiaineModelIndex
+                        ]}
+                        hidePaikallinenIndicator={hidePaikallinenIndicator}
+                        onDelete={deleteOppiaine(oppiaine)}
+                        onDeleteKurssi={deleteKurssi(oppiaine)}
+                        addOsasuoritusDialog={addOsasuoritusDialog}
+                        onAddOsasuoritus={addOsasuoritus(oppiaine)}
+                        onArviointi={addKurssiArviointi(oppiaine)}
+                        onOppiaineArviointi={addOppiaineArviointi(oppiaine)}
+                        onPredictedGrade={addPredictedGrade(oppiaine)}
+                        key={oppiaineArrayIndex}
+                      />
+                    </TestIdLayer>
+                  )
+                })}
               </TestIdLayer>
             </tbody>
           </TestIdLayer>
@@ -218,6 +234,7 @@ export type OppiaineRowProps<T> = {
   form: FormModel<OppiaineTableOpiskeluoikeus>
   oppiainePath: PathToken[]
   organisaatioOid: string
+  alkamispäivä?: string
   oppiaine: Oppiaine
   showPredictedGrade: boolean
   addOsasuoritusDialog: AddOppiaineenOsasuoritusDialog<T>
@@ -231,6 +248,7 @@ export type OppiaineRowProps<T> = {
 }
 
 export type AddOppiaineenOsasuoritusDialog<T> = React.FC<{
+  alkamispäivä?: string
   organisaatioOid: string
   oppiaine: Oppiaine
   onAdd: (t: T) => void
@@ -239,6 +257,7 @@ export type AddOppiaineenOsasuoritusDialog<T> = React.FC<{
 
 const OppiaineRow = <T,>({
   organisaatioOid,
+  alkamispäivä,
   oppiaine,
   oppiainePath,
   form,
@@ -262,6 +281,11 @@ const OppiaineRow = <T,>({
     hideAddOsasuoritusDialog
   ] = useBooleanState(false)
 
+  const [tooltipVisible, openTooltip, closeTooltip] = useBooleanState(false)
+  const [editModalVisible, openEditModal, closeEditModal] =
+    useBooleanState(false)
+  const tooltipId = `oppiaine-${oppiaine.koulutusmoduuli.tunniste.koodiarvo}`
+
   const AddOsasuoritusDialog = addOsasuoritusDialog
 
   const addOsasuoritus = useCallback(
@@ -279,9 +303,23 @@ const OppiaineRow = <T,>({
       </td>
       <td className="OppiaineRow__oppiaine">
         <div className="OppiaineRow__nimi">
-          <TestIdText id="nimi">
-            {oppiaineenNimi(oppiaine.koulutusmoduuli)}
-          </TestIdText>
+          <button
+            className="Oppiaine__tunniste"
+            onClick={form.editMode ? openEditModal : openTooltip}
+            onTouchStart={openTooltip}
+            onMouseEnter={openTooltip}
+            onMouseLeave={closeTooltip}
+            onFocus={openTooltip}
+            onBlur={closeTooltip}
+            aria-describedby={tooltipId}
+          >
+            <TestIdText id="nimi">
+              {oppiaineenNimi(oppiaine.koulutusmoduuli)}
+            </TestIdText>
+          </button>
+          {tooltipVisible && !editModalVisible && (
+            <OppiaineDetails id={tooltipId} oppiaine={oppiaine} />
+          )}
         </div>
         <OppiaineenKurssit
           form={form}
@@ -324,10 +362,18 @@ const OppiaineRow = <T,>({
           />
           {addOsasuoritusDialogVisible && (
             <AddOsasuoritusDialog
+              alkamispäivä={alkamispäivä}
               organisaatioOid={organisaatioOid}
               oppiaine={oppiaine}
               onAdd={addOsasuoritus}
               onClose={hideAddOsasuoritusDialog}
+            />
+          )}
+          {editModalVisible && (
+            <OppiaineTableOppiaineEditor
+              form={form}
+              path={oppiainePath}
+              onClose={closeEditModal}
             />
           )}
         </td>
@@ -419,13 +465,18 @@ export const OppiaineenKurssit = ({
           </TestIdLayer>
         ))}
       </TestIdLayer>
-      {form.editMode && (
+      {form.editMode && isOsasuorituksellinenOppiaine(oppiaine) && (
         <FlatButton onClick={onShowAddOsasuoritusDialog} testId="addKurssi">
           {t('Lisää osasuoritus')}
         </FlatButton>
       )}
     </div>
   )
+}
+
+const isOsasuorituksellinenOppiaine = (oppiaine?: Oppiaine): boolean => {
+  const koulutus = oppiaine?.koulutusmoduuli
+  return !isIBOppiaineCAS(koulutus) && !isIBOppiaineExtendedEssay(koulutus)
 }
 
 type OppiaineArvosanaProps = {
@@ -619,12 +670,126 @@ const SuorituksenTilaIcon: React.FC<SuorituksenTilaIconProps> = ({
 type TooltipXPosition = 'left' | 'right' | 'middle'
 type TooltipYPosition = 'top' | 'bottom'
 
+type OppiaineTooltipProps = {
+  id: string
+  oppiaine: Oppiaine
+}
+
+const OppiaineDetails: React.FC<OppiaineTooltipProps> = ({ oppiaine, id }) => {
+  const koulutus = oppiaine.koulutusmoduuli
+  const fields: string[][] = [
+    isIBOppiaineExtendedEssay(koulutus)
+      ? ['Aine', t(koulutus.aine.tunniste.nimi)]
+      : null,
+    isIBOppiaineExtendedEssay(koulutus) ? ['Aihe', t(koulutus.aihe)] : null,
+    isIBOppiaineLanguage(koulutus) ? ['Kieli', t(koulutus.kieli.nimi)] : null,
+    isValinnaisuus(koulutus)
+      ? ['Pakollinen', t(koulutus.pakollinen ? 'Kyllä' : 'Ei')]
+      : null,
+    isIBTaso(koulutus) && koulutus.taso
+      ? ['Taso', t(koulutus.taso.nimi)]
+      : null,
+    isIBAineRyhmäOppiaine(koulutus) ? ['Ryhmä', t(koulutus.ryhmä.nimi)] : null
+  ].filter(nonNull)
+
+  return A.isEmpty(fields) ? null : (
+    <Details id={id}>
+      <KeyValueTable>
+        {fields.map(([label, value]) => (
+          <KeyValueRow localizableLabel={label}>{value}</KeyValueRow>
+        ))}
+      </KeyValueTable>
+    </Details>
+  )
+}
+
 type KurssiTooltipProps = {
   id: string
   kurssi: OsasuoritusOf<Oppiaine>
 }
 
-const KurssiDetails: React.FC<KurssiTooltipProps> = ({ kurssi, id }) => {
+const KurssiDetails: React.FC<KurssiTooltipProps> = ({ kurssi, id }) => (
+  <Details id={id}>
+    <KeyValueTable>
+      <KeyValueRow localizableLabel="Nimi">
+        {t(kurssi.koulutusmoduuli.tunniste.nimi)}
+      </KeyValueRow>
+
+      {isKuvauksellinen(kurssi.koulutusmoduuli) && (
+        <KeyValueRow localizableLabel="Kuvaus">
+          {t(kurssi.koulutusmoduuli.kuvaus)}
+        </KeyValueRow>
+      )}
+
+      <KeyValueRow localizableLabel="Laajuus">
+        {kurssi.koulutusmoduuli.laajuus?.arvo}{' '}
+        {t(kurssi.koulutusmoduuli.laajuus?.yksikkö.nimi)}
+      </KeyValueRow>
+
+      <KeyValueRow localizableLabel="Kurssin tyyppi">
+        {!isValinnaisuus(kurssi.koulutusmoduuli) ||
+        kurssi.koulutusmoduuli.pakollinen
+          ? 'Pakollinen'
+          : 'Valinnainen'}
+      </KeyValueRow>
+
+      <KeyValueRow localizableLabel="Suorituskieli">
+        {t(kurssi.suorituskieli?.nimi)}
+      </KeyValueRow>
+
+      {kurssi.arviointi && (
+        <KeyValueRow localizableLabel="Arviointi">
+          {kurssi.arviointi.map((arviointi, index) => (
+            <KeyValueTable key={index}>
+              <KeyValueRow localizableLabel="Arvosana" innerKeyValueTable>
+                {`${arviointi.arvosana.koodiarvo} (${t(arviointi.arvosana.nimi)})`}
+              </KeyValueRow>
+              <KeyValueRow localizableLabel="Arviointipäivä" innerKeyValueTable>
+                {ISO2FinnishDate(arviointi.päivä)}
+              </KeyValueRow>
+            </KeyValueTable>
+          ))}
+        </KeyValueRow>
+      )}
+
+      {isLukionKurssinSuoritus2015(kurssi) && (
+        <>
+          {kurssi.tunnustettu && (
+            <KeyValueRow localizableLabel="Tunnustettu">
+              {t(kurssi.tunnustettu.selite)}
+            </KeyValueRow>
+          )}
+
+          <KeyValueRow localizableLabel="Lisätiedot">
+            {pipe(
+              [
+                kurssi.suoritettuLukiodiplomina &&
+                  t('Suoritettu lukiodiplomina'),
+                kurssi.suoritettuSuullisenaKielikokeena &&
+                  t('Suoritettu suullisena kielikokeena')
+              ],
+              A.filter(nonFalsy),
+              NonEmptyArray.fromArray,
+              O.map((texts) => (
+                <ul>
+                  {texts.map((text, i) => (
+                    <li key={i}>{text}</li>
+                  ))}
+                </ul>
+              )),
+              O.toNullable
+            )}
+          </KeyValueRow>
+        </>
+      )}
+    </KeyValueTable>
+  </Details>
+)
+
+const Details: React.FC<React.PropsWithChildren<{ id: string }>> = ({
+  id,
+  children
+}) => {
   const [xPos, setXPos] = useState<TooltipXPosition>()
   const [yPos, setYPos] = useState<TooltipYPosition>()
   const self = useRef<HTMLDivElement>(null)
@@ -661,82 +826,7 @@ const KurssiDetails: React.FC<KurssiTooltipProps> = ({ kurssi, id }) => {
           role="tooltip"
           id={id}
         >
-          <KeyValueTable>
-            <KeyValueRow localizableLabel="Nimi">
-              {t(kurssi.koulutusmoduuli.tunniste.nimi)}
-            </KeyValueRow>
-
-            {isKuvauksellinen(kurssi.koulutusmoduuli) && (
-              <KeyValueRow localizableLabel="Kuvaus">
-                {t(kurssi.koulutusmoduuli.kuvaus)}
-              </KeyValueRow>
-            )}
-
-            <KeyValueRow localizableLabel="Laajuus">
-              {kurssi.koulutusmoduuli.laajuus?.arvo}{' '}
-              {t(kurssi.koulutusmoduuli.laajuus?.yksikkö.nimi)}
-            </KeyValueRow>
-
-            <KeyValueRow localizableLabel="Kurssin tyyppi">
-              {!isValinnaisuus(kurssi.koulutusmoduuli) ||
-              kurssi.koulutusmoduuli.pakollinen
-                ? 'Pakollinen'
-                : 'Valinnainen'}
-            </KeyValueRow>
-
-            <KeyValueRow localizableLabel="Suorituskieli">
-              {t(kurssi.suorituskieli?.nimi)}
-            </KeyValueRow>
-
-            {kurssi.arviointi && (
-              <KeyValueRow localizableLabel="Arviointi">
-                {kurssi.arviointi.map((arviointi, index) => (
-                  <KeyValueTable key={index}>
-                    <KeyValueRow localizableLabel="Arvosana" innerKeyValueTable>
-                      {`${arviointi.arvosana.koodiarvo} (${t(arviointi.arvosana.nimi)})`}
-                    </KeyValueRow>
-                    <KeyValueRow
-                      localizableLabel="Arviointipäivä"
-                      innerKeyValueTable
-                    >
-                      {ISO2FinnishDate(arviointi.päivä)}
-                    </KeyValueRow>
-                  </KeyValueTable>
-                ))}
-              </KeyValueRow>
-            )}
-
-            {isLukionKurssinSuoritus2015(kurssi) && (
-              <>
-                {kurssi.tunnustettu && (
-                  <KeyValueRow localizableLabel="Tunnustettu">
-                    {t(kurssi.tunnustettu.selite)}
-                  </KeyValueRow>
-                )}
-
-                <KeyValueRow localizableLabel="Lisätiedot">
-                  {pipe(
-                    [
-                      kurssi.suoritettuLukiodiplomina &&
-                        t('Suoritettu lukiodiplomina'),
-                      kurssi.suoritettuSuullisenaKielikokeena &&
-                        t('Suoritettu suullisena kielikokeena')
-                    ],
-                    A.filter(nonFalsy),
-                    NonEmptyArray.fromArray,
-                    O.map((texts) => (
-                      <ul>
-                        {texts.map((text, i) => (
-                          <li key={i}>{text}</li>
-                        ))}
-                      </ul>
-                    )),
-                    O.toNullable
-                  )}
-                </KeyValueRow>
-              </>
-            )}
-          </KeyValueTable>
+          {children}
         </aside>
       )}
     </div>

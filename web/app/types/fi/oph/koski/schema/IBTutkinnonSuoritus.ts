@@ -5,7 +5,7 @@ import { IBCASSuoritus } from './IBCASSuoritus'
 import { IBTheoryOfKnowledgeSuoritus } from './IBTheoryOfKnowledgeSuoritus'
 import { IBTutkinto } from './IBTutkinto'
 import { OrganisaatioWithOid } from './OrganisaatioWithOid'
-import { IBOppiaineenSuoritus } from './IBOppiaineenSuoritus'
+import { IBTutkinnonOppiaineenSuoritus } from './IBTutkinnonOppiaineenSuoritus'
 import { HenkilövahvistusPaikkakunnalla } from './HenkilovahvistusPaikkakunnalla'
 
 /**
@@ -25,7 +25,7 @@ export type IBTutkinnonSuoritus = {
   theoryOfKnowledge?: IBTheoryOfKnowledgeSuoritus
   koulutusmoduuli: IBTutkinto
   toimipiste: OrganisaatioWithOid
-  osasuoritukset?: Array<IBOppiaineenSuoritus>
+  osasuoritukset?: Array<IBTutkinnonOppiaineenSuoritus>
   vahvistus?: HenkilövahvistusPaikkakunnalla
 }
 
@@ -40,7 +40,7 @@ export const IBTutkinnonSuoritus = (o: {
   theoryOfKnowledge?: IBTheoryOfKnowledgeSuoritus
   koulutusmoduuli?: IBTutkinto
   toimipiste: OrganisaatioWithOid
-  osasuoritukset?: Array<IBOppiaineenSuoritus>
+  osasuoritukset?: Array<IBTutkinnonOppiaineenSuoritus>
   vahvistus?: HenkilövahvistusPaikkakunnalla
 }): IBTutkinnonSuoritus => ({
   tyyppi: Koodistokoodiviite({
