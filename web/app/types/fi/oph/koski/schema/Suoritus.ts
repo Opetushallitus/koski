@@ -516,6 +516,34 @@ import {
   isValtakunnalliseenTutkinnonOsaanLiittyvänTutkinnonOsaaPienemmänKokonaisuudenSuoritus
 } from './ValtakunnalliseenTutkinnonOsaanLiittyvanTutkinnonOsaaPienemmanKokonaisuudenSuoritus'
 import {
+  ValtionhallinnonKielitutkinnonKirjallisenKielitaidonOsakokeenSuoritus,
+  isValtionhallinnonKielitutkinnonKirjallisenKielitaidonOsakokeenSuoritus
+} from './ValtionhallinnonKielitutkinnonKirjallisenKielitaidonOsakokeenSuoritus'
+import {
+  ValtionhallinnonKielitutkinnonKirjallisenKielitaidonSuoritus,
+  isValtionhallinnonKielitutkinnonKirjallisenKielitaidonSuoritus
+} from './ValtionhallinnonKielitutkinnonKirjallisenKielitaidonSuoritus'
+import {
+  ValtionhallinnonKielitutkinnonSuoritus,
+  isValtionhallinnonKielitutkinnonSuoritus
+} from './ValtionhallinnonKielitutkinnonSuoritus'
+import {
+  ValtionhallinnonKielitutkinnonSuullisenKielitaidonOsakokeenSuoritus,
+  isValtionhallinnonKielitutkinnonSuullisenKielitaidonOsakokeenSuoritus
+} from './ValtionhallinnonKielitutkinnonSuullisenKielitaidonOsakokeenSuoritus'
+import {
+  ValtionhallinnonKielitutkinnonSuullisenKielitaidonSuoritus,
+  isValtionhallinnonKielitutkinnonSuullisenKielitaidonSuoritus
+} from './ValtionhallinnonKielitutkinnonSuullisenKielitaidonSuoritus'
+import {
+  ValtionhallinnonKielitutkinnonYmmärtämisenKielitaidonOsakokeenSuoritus,
+  isValtionhallinnonKielitutkinnonYmmärtämisenKielitaidonOsakokeenSuoritus
+} from './ValtionhallinnonKielitutkinnonYmmartamisenKielitaidonOsakokeenSuoritus'
+import {
+  ValtionhallinnonKielitutkinnonYmmärtämisenKielitaidonSuoritus,
+  isValtionhallinnonKielitutkinnonYmmärtämisenKielitaidonSuoritus
+} from './ValtionhallinnonKielitutkinnonYmmartamisenKielitaidonSuoritus'
+import {
   VapaanSivistystyönJotpaKoulutuksenOsasuorituksenSuoritus,
   isVapaanSivistystyönJotpaKoulutuksenOsasuorituksenSuoritus
 } from './VapaanSivistystyonJotpaKoulutuksenOsasuorituksenSuoritus'
@@ -739,6 +767,13 @@ export type Suoritus =
   | ValmaKoulutuksenOsanSuoritus
   | ValmaKoulutuksenSuoritus
   | ValtakunnalliseenTutkinnonOsaanLiittyvänTutkinnonOsaaPienemmänKokonaisuudenSuoritus
+  | ValtionhallinnonKielitutkinnonKirjallisenKielitaidonOsakokeenSuoritus
+  | ValtionhallinnonKielitutkinnonKirjallisenKielitaidonSuoritus
+  | ValtionhallinnonKielitutkinnonSuoritus
+  | ValtionhallinnonKielitutkinnonSuullisenKielitaidonOsakokeenSuoritus
+  | ValtionhallinnonKielitutkinnonSuullisenKielitaidonSuoritus
+  | ValtionhallinnonKielitutkinnonYmmärtämisenKielitaidonOsakokeenSuoritus
+  | ValtionhallinnonKielitutkinnonYmmärtämisenKielitaidonSuoritus
   | VapaanSivistystyönJotpaKoulutuksenOsasuorituksenSuoritus
   | VapaanSivistystyönJotpaKoulutuksenSuoritus
   | VapaanSivistystyönLukutaitokoulutuksenKokonaisuudenSuoritus
@@ -917,6 +952,13 @@ export const isSuoritus = (a: any): a is Suoritus =>
   isValtakunnalliseenTutkinnonOsaanLiittyvänTutkinnonOsaaPienemmänKokonaisuudenSuoritus(
     a
   ) ||
+  isValtionhallinnonKielitutkinnonKirjallisenKielitaidonOsakokeenSuoritus(a) ||
+  isValtionhallinnonKielitutkinnonKirjallisenKielitaidonSuoritus(a) ||
+  isValtionhallinnonKielitutkinnonSuoritus(a) ||
+  isValtionhallinnonKielitutkinnonSuullisenKielitaidonOsakokeenSuoritus(a) ||
+  isValtionhallinnonKielitutkinnonSuullisenKielitaidonSuoritus(a) ||
+  isValtionhallinnonKielitutkinnonYmmärtämisenKielitaidonOsakokeenSuoritus(a) ||
+  isValtionhallinnonKielitutkinnonYmmärtämisenKielitaidonSuoritus(a) ||
   isVapaanSivistystyönJotpaKoulutuksenOsasuorituksenSuoritus(a) ||
   isVapaanSivistystyönJotpaKoulutuksenSuoritus(a) ||
   isVapaanSivistystyönLukutaitokoulutuksenKokonaisuudenSuoritus(a) ||

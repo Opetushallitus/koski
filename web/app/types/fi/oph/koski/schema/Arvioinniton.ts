@@ -213,6 +213,10 @@ import {
   isValmaKoulutuksenSuoritus
 } from './ValmaKoulutuksenSuoritus'
 import {
+  ValtionhallinnonKielitutkinnonSuoritus,
+  isValtionhallinnonKielitutkinnonSuoritus
+} from './ValtionhallinnonKielitutkinnonSuoritus'
+import {
   VapaanSivistystyönJotpaKoulutuksenSuoritus,
   isVapaanSivistystyönJotpaKoulutuksenSuoritus
 } from './VapaanSivistystyonJotpaKoulutuksenSuoritus'
@@ -294,6 +298,7 @@ export type Arvioinniton =
   | VSTKotoutumiskoulutuksenYhteiskuntaJaTyöelämäosaaminenAlaosasuoritus
   | VSTKotoutumiskoulutusValinnaistenOpintojenAlaosasuoritus
   | ValmaKoulutuksenSuoritus
+  | ValtionhallinnonKielitutkinnonSuoritus
   | VapaanSivistystyönJotpaKoulutuksenSuoritus
   | VapaanSivistystyönLukutaitokoulutuksenSuoritus
   | VapaanSivistystyönVapaatavoitteisenKoulutuksenSuoritus
@@ -368,6 +373,7 @@ export const isArvioinniton = (a: any): a is Arvioinniton =>
   isVSTKotoutumiskoulutuksenYhteiskuntaJaTyöelämäosaaminenAlaosasuoritus(a) ||
   isVSTKotoutumiskoulutusValinnaistenOpintojenAlaosasuoritus(a) ||
   isValmaKoulutuksenSuoritus(a) ||
+  isValtionhallinnonKielitutkinnonSuoritus(a) ||
   isVapaanSivistystyönJotpaKoulutuksenSuoritus(a) ||
   isVapaanSivistystyönLukutaitokoulutuksenSuoritus(a) ||
   isVapaanSivistystyönVapaatavoitteisenKoulutuksenSuoritus(a) ||

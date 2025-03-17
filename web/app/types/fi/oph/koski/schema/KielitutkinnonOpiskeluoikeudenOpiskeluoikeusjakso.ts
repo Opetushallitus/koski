@@ -11,7 +11,7 @@ export type KielitutkinnonOpiskeluoikeudenOpiskeluoikeusjakso = {
   alku: string
   tila: Koodistokoodiviite<
     'koskiopiskeluoikeudentila',
-    'lasna' | 'hyvaksytystisuoritettu' | 'mitatoity'
+    'lasna' | 'hyvaksytystisuoritettu' | 'paattynyt' | 'mitatoity'
   >
 }
 
@@ -19,7 +19,7 @@ export const KielitutkinnonOpiskeluoikeudenOpiskeluoikeusjakso = (o: {
   alku: string
   tila: Koodistokoodiviite<
     'koskiopiskeluoikeudentila',
-    'lasna' | 'hyvaksytystisuoritettu' | 'mitatoity'
+    'lasna' | 'hyvaksytystisuoritettu' | 'paattynyt' | 'mitatoity'
   >
 }): KielitutkinnonOpiskeluoikeudenOpiskeluoikeusjakso => ({
   $class:
