@@ -1,8 +1,13 @@
-<<<<<<< HEAD
+## x.4.2025
+
+- Lisätty kielitutkinnon opiskeluoikeuteen valtionhallinon kielitutkinnot
+
 ## 26.3.2025
+
 - Muutetty opettajapätevyyksiin liittyvien kenttien nimet - uudet termit ovat "opettajan pedagogiset opinnot" ja "opetettavan aineen opinnot"
 
 ## 26.3.2025
+
 - Lisätty myöhemmin voimaantulevia muutoksia tietomalliin:
   - Esiopetus
     - Tukijaksot

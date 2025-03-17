@@ -3849,5 +3849,80 @@
     "versio": 1,
     "koodiArvo": "yleisenkielitutkinnonosa"
 
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "Valtionhallinnon kielitutkinto",
+        "kuvaus": null,
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Valtionhallinnon kielitutkinto",
+        "kuvaus": null,
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Valtionhallinnon kielitutkinto",
+        "kuvaus": null,
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "suorituksentyyppi_valtionhallinnonkielitutkinto",
+    "versio": 1,
+    "koodiArvo": "valtionhallinnonkielitutkinto"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "Valtionhallinnon kielitutkinnon kielitaito",
+        "kuvaus": null,
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Valtionhallinnon kielitutkinnon kielitaito",
+        "kuvaus": null,
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Valtionhallinnon kielitutkinnon kielitaito",
+        "kuvaus": null,
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "suorituksentyyppi_valtionhallinnonkielitaito",
+    "versio": 1,
+    "koodiArvo": "valtionhallinnonkielitaito"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "Valtionhallinnon kielitutkinnon osakoe",
+        "kuvaus": null,
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Valtionhallinnon kielitutkinnon osakoe",
+        "kuvaus": null,
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Valtionhallinnon kielitutkinnon osakoe",
+        "kuvaus": null,
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "suorituksentyyppi_valtionhallinnonkielitutkinnonosakoe",
+    "versio": 1,
+    "koodiArvo": "valtionhallinnonkielitutkinnonosakoe"
   }
 ]

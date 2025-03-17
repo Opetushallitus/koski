@@ -1,0 +1,34 @@
+[
+  {
+    "metadata": [
+      {
+        "nimi": "Hyvä ja tyydyttävä",
+        "kuvaus": "",
+        "lyhytNimi": "",
+        "kieli": "FI"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "vkttaitotaso_hyvajatyydyttava",
+    "versio": 1,
+    "koodiArvo": "hyvajatyydyttava"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "Erinomainen",
+        "kuvaus": "",
+        "lyhytNimi": "",
+        "kieli": "FI"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "vkttaitotaso_erinomainen",
+    "versio": 1,
+    "koodiArvo": "erinomainen"
+  }
+]

@@ -1,0 +1,63 @@
+{
+  "koodistoUri": "vkttutkinto",
+  "resourceUri": "https://virkailija.opintopolku.fi/koodisto-service/rest/codes/ykitutkintotaso",
+  "omistaja": "Opetushallitus",
+  "organisaatioOid": "1.2.246.562.10.00000000001",
+  "lukittu": null,
+  "withinCodes": [],
+  "includesCodes": [],
+  "levelsWithCodes": [],
+  "codesGroupUri": "koski",
+  "version": 2,
+  "versio": 1,
+  "paivitysPvm": "2025-02-19",
+  "paivittajaOid": "1.2.246.562.24.25909319372",
+  "voimassaAlkuPvm": "2014-11-01",
+  "voimassaLoppuPvm": null,
+  "tila": "LUONNOS",
+  "metadata": [
+    {
+      "kieli": "EN",
+      "nimi": "VKT-tutkinto",
+      "kuvaus": "Valtionhallinnon kielitutkinnon tyyppi",
+      "kayttoohje": null,
+      "kasite": null,
+      "kohdealue": null,
+      "sitovuustaso": null,
+      "kohdealueenOsaAlue": null,
+      "toimintaymparisto": null,
+      "tarkentaaKoodistoa": null,
+      "huomioitavaKoodisto": null,
+      "koodistonLahde": null
+    },
+    {
+      "kieli": "SV",
+      "nimi": "VKT-tutkinto",
+      "kuvaus": "Valtionhallinnon kielitutkinnon tyyppi",
+      "kayttoohje": null,
+      "kasite": null,
+      "kohdealue": null,
+      "sitovuustaso": null,
+      "kohdealueenOsaAlue": null,
+      "toimintaymparisto": null,
+      "tarkentaaKoodistoa": null,
+      "huomioitavaKoodisto": null,
+      "koodistonLahde": null
+    },
+    {
+      "kieli": "FI",
+      "nimi": "VKT-tutkinto",
+      "kuvaus": "Valtionhallinnon kielitutkinnon tyyppi",
+      "kayttoohje": null,
+      "kasite": null,
+      "kohdealue": null,
+      "sitovuustaso": null,
+      "kohdealueenOsaAlue": null,
+      "toimintaymparisto": null,
+      "tarkentaaKoodistoa": null,
+      "huomioitavaKoodisto": null,
+      "koodistonLahde": null
+    }
+  ],
+  "codesVersions": []
+}
