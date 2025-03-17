@@ -1,19 +1,31 @@
-import { last } from 'fp-ts/lib/Array'
-import { toNullable } from 'fp-ts/lib/Option'
+import * as A from 'fp-ts/Array'
+import { pipe } from 'fp-ts/lib/function'
+import * as O from 'fp-ts/Option'
 import React from 'react'
 import { ActivePäätasonSuoritus } from '../components-v2/containers/EditorContainer'
 import {
   KeyValueRow,
   KeyValueTable
 } from '../components-v2/containers/KeyValueTable'
+import { LocalizedTextView } from '../components-v2/controls/LocalizedTestField'
+import { FormField } from '../components-v2/forms/FormField'
 import {
   FormModel,
   FormOptic,
   getValue
 } from '../components-v2/forms/FormModel'
 import { Spacer } from '../components-v2/layout/Spacer'
+import {
+  koodinNimiOnly,
+  ParasArvosanaEdit,
+  ParasArvosanaPäiväView,
+  ParasArvosanaView
+} from '../components-v2/opiskeluoikeus/ArvosanaField'
+import {
+  OsasuoritusRowData,
+  OsasuoritusTable
+} from '../components-v2/opiskeluoikeus/OsasuoritusTable'
 import { SuorituksenVahvistusField } from '../components-v2/opiskeluoikeus/SuorituksenVahvistus'
-import { ISO2FinnishDate } from '../date/date'
 import { t } from '../i18n/i18n'
 import { KielitutkinnonOpiskeluoikeudenTila } from '../types/fi/oph/koski/schema/KielitutkinnonOpiskeluoikeudenTila'
 import { KielitutkinnonOpiskeluoikeus } from '../types/fi/oph/koski/schema/KielitutkinnonOpiskeluoikeus'
@@ -21,30 +33,7 @@ import { Koulutustoimija } from '../types/fi/oph/koski/schema/Koulutustoimija'
 import { Oppilaitos } from '../types/fi/oph/koski/schema/Oppilaitos'
 import { ValtionhallinnonKielitutkinnonKielitaidonSuoritus } from '../types/fi/oph/koski/schema/ValtionhallinnonKielitutkinnonKielitaidonSuoritus'
 import { ValtionhallinnonKielitutkinnonSuoritus } from '../types/fi/oph/koski/schema/ValtionhallinnonKielitutkinnonSuoritus'
-import {
-  OsasuoritusRowData,
-  OsasuoritusTable
-} from '../components-v2/opiskeluoikeus/OsasuoritusTable'
-import { LocalizedTextView } from '../components-v2/controls/LocalizedTestField'
-import { FormField } from '../components-v2/forms/FormField'
-import {
-  ParasArvosanaView,
-  ParasArvosanaEdit,
-  koodinNimiOnly,
-  ParasArvosanaPäiväView
-} from '../components-v2/opiskeluoikeus/ArvosanaField'
-import {
-  OsasuoritusProperty,
-  OsasuoritusSubproperty
-} from '../components-v2/opiskeluoikeus/OsasuoritusProperty'
 import { OsasuoritusOf } from '../util/schema'
-import { ValtionhallinnonKielitutkinnonKirjallisenKielitaidonOsakokeenSuoritus } from '../types/fi/oph/koski/schema/ValtionhallinnonKielitutkinnonKirjallisenKielitaidonOsakokeenSuoritus'
-import { ValtionhallinnonKielitutkinnonSuullisenKielitaidonOsakokeenSuoritus } from '../types/fi/oph/koski/schema/ValtionhallinnonKielitutkinnonSuullisenKielitaidonOsakokeenSuoritus'
-import { ValtionhallinnonKielitutkinnonYmmärtämisenKielitaidonOsakokeenSuoritus } from '../types/fi/oph/koski/schema/ValtionhallinnonKielitutkinnonYmmartamisenKielitaidonOsakokeenSuoritus'
-import { DateView } from '../components-v2/controls/DateField'
-import { pipe } from 'fp-ts/lib/function'
-import * as A from 'fp-ts/Array'
-import * as O from 'fp-ts/Option'
 
 export type ValtionhallinnonKielitutkintoEditorProps = {
   form: FormModel<KielitutkinnonOpiskeluoikeus>
