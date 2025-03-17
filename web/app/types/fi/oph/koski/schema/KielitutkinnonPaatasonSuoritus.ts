@@ -1,4 +1,8 @@
 import {
+  ValtionhallinnonKielitutkinnonSuoritus,
+  isValtionhallinnonKielitutkinnonSuoritus
+} from './ValtionhallinnonKielitutkinnonSuoritus'
+import {
   YleisenKielitutkinnonSuoritus,
   isYleisenKielitutkinnonSuoritus
 } from './YleisenKielitutkinnonSuoritus'
@@ -8,8 +12,12 @@ import {
  *
  * @see `fi.oph.koski.schema.KielitutkinnonPäätasonSuoritus`
  */
-export type KielitutkinnonPäätasonSuoritus = YleisenKielitutkinnonSuoritus
+export type KielitutkinnonPäätasonSuoritus =
+  | ValtionhallinnonKielitutkinnonSuoritus
+  | YleisenKielitutkinnonSuoritus
 
 export const isKielitutkinnonPäätasonSuoritus = (
   a: any
-): a is KielitutkinnonPäätasonSuoritus => isYleisenKielitutkinnonSuoritus(a)
+): a is KielitutkinnonPäätasonSuoritus =>
+  isValtionhallinnonKielitutkinnonSuoritus(a) ||
+  isYleisenKielitutkinnonSuoritus(a)
