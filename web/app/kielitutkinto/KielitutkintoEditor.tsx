@@ -3,6 +3,7 @@ import { useSchema } from '../appstate/constraints'
 import { TestIdLayer, TestIdRoot } from '../appstate/useTestId'
 import {
   EditorContainer,
+  hasPäätasonsuoritusOf,
   usePäätasonSuoritus
 } from '../components-v2/containers/EditorContainer'
 import { FormModel, useForm } from '../components-v2/forms/FormModel'
@@ -12,6 +13,8 @@ import { KielitutkinnonOpiskeluoikeudenOpiskeluoikeusjakso } from '../types/fi/o
 import { KielitutkinnonOpiskeluoikeus } from '../types/fi/oph/koski/schema/KielitutkinnonOpiskeluoikeus'
 import { YleinenKielitutkintoEditor } from './YleinenKielitutkintoEditor'
 import { YleinenKielitutkinto } from '../types/fi/oph/koski/schema/YleinenKielitutkinto'
+import { match } from '../util/patternmatch'
+import { isYleisenKielitutkinnonSuoritus } from '../types/fi/oph/koski/schema/YleisenKielitutkinnonSuoritus'
 
 export type KielitutkintoEditorProps =
   AdaptedOpiskeluoikeusEditorProps<KielitutkinnonOpiskeluoikeus>
@@ -42,13 +45,6 @@ const KielitutkinnonPäätasonSuoritusEditor: React.FC<
   const organisaatio =
     opiskeluoikeus.oppilaitos || opiskeluoikeus.koulutustoimija
 
-  const overrides =
-    !form.editMode &&
-    opiskeluoikeus.suoritukset[0].koulutusmoduuli.$class ===
-      YleinenKielitutkinto.className
-      ? { opiskeluoikeudenTilaEditor: <></> } // Ei näytetä opiskeluoikeuden tilaa näyttötilassa
-      : null
-
   return (
     <EditorContainer
       form={form}
@@ -59,14 +55,18 @@ const KielitutkinnonPäätasonSuoritusEditor: React.FC<
         KielitutkinnonOpiskeluoikeudenOpiskeluoikeusjakso
       }
       testId={päätasonSuoritus.testId}
-      {...overrides}
+      opiskeluoikeudenTilaEditor={form.editMode ? null : <></>} // Piilota tilaeditori näyttökäyttöliittymästä
     >
-      <YleinenKielitutkintoEditor
-        form={form}
-        path={form.root.prop('suoritukset').at(0)}
-        päätasonSuoritus={päätasonSuoritus}
-        organisaatio={organisaatio}
-      />
+      {hasPäätasonsuoritusOf(
+        isYleisenKielitutkinnonSuoritus,
+        päätasonSuoritus
+      ) && (
+        <YleinenKielitutkintoEditor
+          form={form}
+          päätasonSuoritus={päätasonSuoritus}
+          organisaatio={organisaatio}
+        />
+      )}
     </EditorContainer>
   )
 }
