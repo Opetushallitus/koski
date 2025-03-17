@@ -47,6 +47,20 @@ class KielitutkintorekisteriSpec
     "ei pysty lukemaan kielitutkinnon opiskeluoikeuden" in { cannotRead(ExamplesKielitutkinto.exampleMockOppija) }
   }
 
+  "Raportointikanta" - {
+    "Kielitutkinnot eivät siirry raportointikantaan" in {
+      val oppija = KoskiSpecificMockOppijat.kielitutkinnonSuorittaja
+      implicit val session: KoskiSpecificSession = MockUsers.paakayttaja.toKoskiSpecificSession(KoskiApplicationForTests.käyttöoikeusRepository)
+      val rows = KoskiApplicationForTests
+        .opiskeluoikeusRepository
+        .findByOppija(oppija, useVirta = false, useYtr = false)
+        .getIgnoringWarnings
+        .toList
+
+      rows should equal(List.empty)
+    }
+  }
+
   private def canWrite(data: JValue)(implicit session: KoskiSpecificSession): Unit =
     write(data) should matchPattern { case Right(_) => }
 
