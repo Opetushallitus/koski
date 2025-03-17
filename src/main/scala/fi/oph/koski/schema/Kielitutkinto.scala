@@ -27,7 +27,7 @@ case class KielitutkinnonOpiskeluoikeus(
   override def arvioituPäättymispäivä: Option[LocalDate] = None
   override def sisältyyOpiskeluoikeuteen: Option[SisältäväOpiskeluoikeus] = None
 
-  def lisätiedot: Option[KielitutkinnonLisätiedot] = None
+  def lisätiedot: Option[OpiskeluoikeudenLisätiedot] = None
 }
 
 case class KielitutkinnonOpiskeluoikeudenTila(
@@ -43,11 +43,9 @@ case class KielitutkinnonOpiskeluoikeudenOpiskeluoikeusjakso(
   tila: Koodistokoodiviite,
 ) extends KoskiOpiskeluoikeusjakso
 
-case class KielitutkinnonLisätiedot() extends OpiskeluoikeudenLisätiedot
-
-// Kielitutkinnon päätason suoritus
-
 trait KielitutkinnonPäätasonSuoritus extends KoskeenTallennettavaPäätasonSuoritus
+
+// Yleisen kielitutkinnon päätason suoritus
 
 case class YleisenKielitutkinnonSuoritus(
   @Title("Koulutus")
