@@ -1,7 +1,7 @@
 package fi.oph.koski.validation
 
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
-import fi.oph.koski.schema.{KielitutkinnonOpiskeluoikeus, KoskeenTallennettavaOpiskeluoikeus, YleisenKielitutkinnonOsakokeenSuoritus, YleisenKielitutkinnonSuoritus}
+import fi.oph.koski.schema.{KielitutkinnonOpiskeluoikeus, KoskeenTallennettavaOpiskeluoikeus, Suoritus, ValtionhallinnonKielitutkinnonOsakokeenSuoritus, ValtionhallinnonKielitutkinnonSuoritus, YleisenKielitutkinnonOsakokeenSuoritus, YleisenKielitutkinnonSuoritus}
 
 object KielitutkintoValidation {
   def validateOpiskeluoikeus(opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus): HttpStatus =
@@ -16,6 +16,7 @@ object KielitutkintoValidation {
         validateYleisenKielitutkinnonPäivät(opiskeluoikeus, pts),
         validateYleisenKielitutkinnonArvioinnit(pts),
       )
+      case pts: ValtionhallinnonKielitutkinnonSuoritus => HttpStatus.ok // TODO
       case _ => HttpStatus.ok
     }
 
@@ -43,10 +44,10 @@ object KielitutkintoValidation {
 
   private def validateYleisenKielitutkinnonOsakokeidenArvioinnit(sallitutArvosanat: List[String], osakokeet: List[YleisenKielitutkinnonOsakokeenSuoritus]): HttpStatus =
     HttpStatus.fold(osakokeet.map(
-      osakoe => validateYleisenKielitutkinnonOsakokeenArviointi(sallitutArvosanat ++ List("9", "10", "11"), osakoe)
+      osakoe => validateKielitutkinnonOsakokeenArviointi(sallitutArvosanat ++ List("9", "10", "11"), osakoe)
     ))
 
-  private def validateYleisenKielitutkinnonOsakokeenArviointi(sallitutArvosanat: List[String], osakoe: YleisenKielitutkinnonOsakokeenSuoritus): HttpStatus = {
+  private def validateKielitutkinnonOsakokeenArviointi(sallitutArvosanat: List[String], osakoe: Suoritus): HttpStatus = {
     val arvosanat = osakoe.arviointi.toList.flatten.map(_.arvosana.koodiarvo)
     HttpStatus.fold(
       List(HttpStatus.validate(arvosanat.nonEmpty)(KoskiErrorCategory.badRequest.validation.arviointi.arviointiPuuttuu("Osakokeen arviointi puuttuu"))) ++

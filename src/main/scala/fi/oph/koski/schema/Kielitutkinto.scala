@@ -72,10 +72,10 @@ case class YleinenKielitutkinto(
 // Yleisen kielitutkinnon osakoe
 
 case class YleisenKielitutkinnonOsakokeenSuoritus(
-                                                   @KoodistoKoodiarvo("yleisenkielitutkinnonosa")
+  @KoodistoKoodiarvo("yleisenkielitutkinnonosa")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("yleisenkielitutkinnonosa", "suorituksentyyppi"),
-                                                   koulutusmoduuli: YleisenKielitutkinnonOsakoe,
-                                                   arviointi: Option[List[YleisenKielitutkinnonOsakokeenArviointi]],
+  koulutusmoduuli: YleisenKielitutkinnonOsakoe,
+  arviointi: Option[List[YleisenKielitutkinnonOsakokeenArviointi]],
 ) extends Suoritus with Vahvistukseton
 
 case class YleisenKielitutkinnonOsakoe(
@@ -92,5 +92,155 @@ case class YleisenKielitutkinnonOsakokeenArviointi(
 ) extends ArviointiPäivämäärällä {
   override def arvioitsijat: Option[List[Arvioitsija]] = None
   override def hyväksytty: Boolean = List("1", "2", "3", "4", "5", "6").contains(arvosana.koodiarvo)
+  override def arvosanaKirjaimin: LocalizedString = arvosana.nimi.getOrElse(unlocalized(arvosana.koodiarvo))
+}
+
+// Valtiohallinnon kielitutkinnon päätason suoritus
+
+case class ValtionhallinnonKielitutkinnonSuoritus(
+  @Title("Koulutus")
+  koulutusmoduuli: ValtionhallinnonKielitutkinto,
+  toimipiste: OrganisaatioWithOid,
+  vahvistus: Option[Päivämäärävahvistus] = None,
+  override val osasuoritukset: Option[List[ValtionhallinnonKielitutkinnonKielitaidonSuoritus]],
+  @KoodistoKoodiarvo("valtionhallinnonkielitutkinto")
+  tyyppi: Koodistokoodiviite = Koodistokoodiviite("valtionhallinnonkielitutkinto", koodistoUri = "suorituksentyyppi"),
+) extends KielitutkinnonPäätasonSuoritus with Arvioinniton
+
+case class ValtionhallinnonKielitutkinto(
+  @KoodistoUri("vkttutkintotaso")
+  tunniste: Koodistokoodiviite,
+  @KoodistoUri("kieli")
+  kieli: Koodistokoodiviite,
+) extends Koulutusmoduuli {
+  def nimi: LocalizedString =
+    unlocalized(List(
+      tunniste,
+      kieli,
+    ).map(k => k.nimi.getOrElse(unlocalized(k.koodiarvo))).mkString(", "))
+}
+
+// Valtionhallunnon kielitutkinnon kielitaidot
+
+trait ValtionhallinnonKielitutkinnonKielitaidonSuoritus extends Suoritus with Vahvistukseton {
+  @Discriminator
+  def koulutusmoduuli: ValtionhallinnonKielitutkinnonKielitaito
+  @KoodistoKoodiarvo("valtionhallinnonkielitaito")
+  def tyyppi: Koodistokoodiviite
+  def arviointi: Option[List[ValtionhallinnonKielitutkinnonArviointi]]
+}
+
+trait ValtionhallinnonKielitutkinnonKielitaito extends Koulutusmoduuli {
+  @KoodistoUri("vktkielitaito")
+  def tunniste: Koodistokoodiviite
+
+  def nimi: LocalizedString = tunniste.nimi.getOrElse(unlocalized(tunniste.koodiarvo))
+}
+
+case class ValtionhallinnonKielitutkinnonSuullisenKielitaidonSuoritus(
+  koulutusmoduuli: ValtionhallinnonKielitutkinnonSuullinenKielitaito,
+  @KoodistoKoodiarvo("valtionhallinnonkielitaito")
+  tyyppi: Koodistokoodiviite = Koodistokoodiviite("valtionhallinnonkielitaito", koodistoUri = "suorituksentyyppi"),
+  arviointi: Option[List[ValtionhallinnonKielitutkinnonArviointi]] = None,
+  override val osasuoritukset: Option[List[ValtionhallinnonKielitutkinnonSuullisenKielitaidonOsakokeenSuoritus]],
+) extends ValtionhallinnonKielitutkinnonKielitaidonSuoritus
+
+case class ValtionhallinnonKielitutkinnonKirjallisenKielitaidonSuoritus(
+  koulutusmoduuli: ValtionhallinnonKielitutkinnonKirjallinenKielitaito,
+  @KoodistoKoodiarvo("valtionhallinnonkielitaito")
+  tyyppi: Koodistokoodiviite = Koodistokoodiviite("valtionhallinnonkielitaito", koodistoUri = "suorituksentyyppi"),
+  arviointi: Option[List[ValtionhallinnonKielitutkinnonArviointi]] = None,
+  override val osasuoritukset: Option[List[ValtionhallinnonKielitutkinnonKirjallisenKielitaidonOsakokeenSuoritus]],
+) extends ValtionhallinnonKielitutkinnonKielitaidonSuoritus
+
+case class ValtionhallinnonKielitutkinnonYmmärtämisenKielitaidonSuoritus(
+  koulutusmoduuli: ValtionhallinnonKielitutkinnonYmmärtämisenKielitaito,
+  @KoodistoKoodiarvo("valtionhallinnonkielitaito")
+  tyyppi: Koodistokoodiviite = Koodistokoodiviite("valtionhallinnonkielitaito", koodistoUri = "suorituksentyyppi"),
+  arviointi: Option[List[ValtionhallinnonKielitutkinnonArviointi]] = None,
+  override val osasuoritukset: Option[List[ValtionhallinnonKielitutkinnonYmmärtämisenKielitaidonOsakokeenSuoritus]],
+) extends ValtionhallinnonKielitutkinnonKielitaidonSuoritus
+
+case class ValtionhallinnonKielitutkinnonSuullinenKielitaito(
+  @KoodistoKoodiarvo("suullinen")
+  tunniste: Koodistokoodiviite = Koodistokoodiviite("suullinen", "vktkielitaito")
+) extends ValtionhallinnonKielitutkinnonKielitaito
+
+case class ValtionhallinnonKielitutkinnonKirjallinenKielitaito(
+  @KoodistoKoodiarvo("kirjallinen")
+  tunniste: Koodistokoodiviite = Koodistokoodiviite("kirjallinen", "vktkielitaito")
+) extends ValtionhallinnonKielitutkinnonKielitaito
+
+case class ValtionhallinnonKielitutkinnonYmmärtämisenKielitaito(
+  @KoodistoKoodiarvo("ymmartaminen")
+  tunniste: Koodistokoodiviite = Koodistokoodiviite("ymmartaminen", "vktkielitaito")
+) extends ValtionhallinnonKielitutkinnonKielitaito
+
+// Valtionhallinnon kielitutkinnon osakoe
+
+trait ValtionhallinnonKielitutkinnonOsakokeenSuoritus extends Suoritus with Vahvistukseton {
+  @KoodistoKoodiarvo("valtionhallinnonkielitutkinnonosakoe")
+  def tyyppi: Koodistokoodiviite
+  def koulutusmoduuli: ValtionhallinnonKielitutkinnonOsakoe
+  def arviointi: Option[List[ValtionhallinnonKielitutkinnonArviointi]]
+
+  override def valmis: Boolean = super.valmis && arviointi.exists(_.exists(_.hyväksytty))
+}
+
+case class ValtionhallinnonKielitutkinnonSuullisenKielitaidonOsakokeenSuoritus(
+  @KoodistoKoodiarvo("valtionhallinnonkielitutkinnonosakoe")
+  tyyppi: Koodistokoodiviite = Koodistokoodiviite("valtionhallinnonkielitutkinnonosakoe", "suorituksentyyppi"),
+  koulutusmoduuli: ValtionhallinnonSuullisenKielitutkinnonOsakoe,
+  arviointi: Option[List[ValtionhallinnonKielitutkinnonArviointi]],
+) extends ValtionhallinnonKielitutkinnonOsakokeenSuoritus
+
+case class ValtionhallinnonKielitutkinnonKirjallisenKielitaidonOsakokeenSuoritus(
+  @KoodistoKoodiarvo("valtionhallinnonkielitutkinnonosakoe")
+  tyyppi: Koodistokoodiviite = Koodistokoodiviite("valtionhallinnonkielitutkinnonosakoe", "suorituksentyyppi"),
+  koulutusmoduuli: ValtionhallinnonKirjallisenKielitutkinnonOsakoe,
+  arviointi: Option[List[ValtionhallinnonKielitutkinnonArviointi]],
+) extends ValtionhallinnonKielitutkinnonOsakokeenSuoritus
+
+case class ValtionhallinnonKielitutkinnonYmmärtämisenKielitaidonOsakokeenSuoritus(
+  @KoodistoKoodiarvo("valtionhallinnonkielitutkinnonosakoe")
+  tyyppi: Koodistokoodiviite = Koodistokoodiviite("valtionhallinnonkielitutkinnonosakoe", "suorituksentyyppi"),
+  koulutusmoduuli: ValtionhallinnonYmmärtämisenKielitutkinnonOsakoe,
+  arviointi: Option[List[ValtionhallinnonKielitutkinnonArviointi]],
+) extends ValtionhallinnonKielitutkinnonOsakokeenSuoritus
+
+trait ValtionhallinnonKielitutkinnonOsakoe extends Koulutusmoduuli {
+  @KoodistoUri("vktosakoe")
+  def tunniste: Koodistokoodiviite
+  def nimi: LocalizedString = tunniste.nimi.getOrElse(unlocalized(tunniste.koodiarvo))
+}
+
+case class ValtionhallinnonSuullisenKielitutkinnonOsakoe(
+  @KoodistoKoodiarvo("puhuminen")
+  @KoodistoKoodiarvo("puheenymmartaminen")
+  tunniste: Koodistokoodiviite,
+) extends ValtionhallinnonKielitutkinnonOsakoe
+
+case class ValtionhallinnonKirjallisenKielitutkinnonOsakoe(
+  @KoodistoKoodiarvo("kirjoittaminen")
+  @KoodistoKoodiarvo("tekstinymmartaminen")
+  tunniste: Koodistokoodiviite,
+) extends ValtionhallinnonKielitutkinnonOsakoe
+
+case class ValtionhallinnonYmmärtämisenKielitutkinnonOsakoe(
+  @KoodistoKoodiarvo("puheenymmartaminen")
+  @KoodistoKoodiarvo("tekstinymmartaminen")
+  tunniste: Koodistokoodiviite,
+) extends ValtionhallinnonKielitutkinnonOsakoe
+
+
+// Valtionhallinnon kielitutkinnon arviointi
+
+case class ValtionhallinnonKielitutkinnonArviointi(
+  @KoodistoUri("vktarvosana")
+  arvosana: Koodistokoodiviite,
+  päivä: LocalDate,
+) extends ArviointiPäivämäärällä {
+  override def arvioitsijat: Option[List[Arvioitsija]] = None
+  override def hyväksytty: Boolean = arvosana.koodiarvo != "hylatty"
   override def arvosanaKirjaimin: LocalizedString = arvosana.nimi.getOrElse(unlocalized(arvosana.koodiarvo))
 }
