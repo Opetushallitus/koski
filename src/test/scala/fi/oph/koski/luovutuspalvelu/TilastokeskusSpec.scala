@@ -244,6 +244,7 @@ class TilastokeskusSpec extends AnyFreeSpec with KoskiHttpSpec with Opiskeluoike
           SuorituksenTyyppi.vstosaamismerkki,
           SuorituksenTyyppi.vstvapaatavoitteinenkoulutus,
           SuorituksenTyyppi.yleinenKielitutkinto,
+          SuorituksenTyyppi.valtionhallinnonKielitutkinto,
         ).contains(s.tyyppi)))
 
       if (opiskeluoikeudetIlmanVst.isEmpty) {
