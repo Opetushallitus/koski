@@ -32,7 +32,7 @@ OAuth2-rajapinnassa on käytössä:
   </dd>
   <dt>(4) Mahdolliset ketjutetut paluuosoitteet</dt>
   <dd>
-    Jos redirect_uriin KOSKI-palvelusta tuleva pyyntö aiheuttaa uusia uudelleenohjauksia kumppanin palvelun sisällä, täytyy nekin osoitteet ottaa huomioon KOSKI-palvelun CSP:ssä (Content Security Policy)
+    Jos redirect_uriin KOSKI-palvelusta tuleva pyyntö aiheuttaa uusia uudelleenohjauksia kumppanin palvelun sisällä toiseen domainiin, täytyy nekin osoitteet ottaa huomioon KOSKI-palvelun CSP:ssä (Content Security Policy)
     <br/>Nämä voivat olla eri testiympäristössä ja tuotannossa.
   </dd>
   <dt>(5) Mutual TLS (mTLS) -client-sertifikaatin tunnistetieto</dt>
