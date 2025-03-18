@@ -43,6 +43,46 @@ class YtlSpec
       }
     }
 
+    "Yhden oppijan hakeminen oidilla onnistuu ja tuottaa auditlog viestin" in {
+      AuditLogTester.clearMessages
+      val oidit = List(
+        KoskiSpecificMockOppijat.amis
+      ).map(_.oid)
+
+      postOidit(oidit) {
+        verifyResponseStatusOk()
+        val response = JsonSerializer.parse[List[YtlOppija]](body)
+
+        response.length should equal(1)
+        response(0).opiskeluoikeudet.length should equal(1)
+
+        AuditLogTester.verifyLastAuditLogMessage(Map("operation" -> "OPISKELUOIKEUS_KATSOMINEN", "target" -> Map("oppijaHenkiloOid" -> KoskiSpecificMockOppijat.amis.oid)))
+      }
+    }
+
+    "Saman oppijan hakeminen hetulla ja oidilla palauttaa opiskeluoikeudet vain kerran" in {
+      AuditLogTester.clearMessages
+      val hetut = List(
+        KoskiSpecificMockOppijat.amis
+      ).map(_.hetu.get)
+
+      val oidit = List(
+        KoskiSpecificMockOppijat.amis
+      ).map(_.oid)
+
+
+      postOppijat(oidit, hetut) {
+        verifyResponseStatusOk()
+        val response = JsonSerializer.parse[List[YtlOppija]](body)
+
+        response.length should equal(1)
+        response(0).opiskeluoikeudet.length should equal(1)
+
+        AuditLogTester.verifyLastAuditLogMessage(Map("operation" -> "OPISKELUOIKEUS_KATSOMINEN", "target" -> Map("oppijaHenkiloOid" -> KoskiSpecificMockOppijat.amis.oid)))
+      }
+
+    }
+
     "Koulutustoimijalla ja yrityksessä vahvistetut suoritukset toimivat" in {
       resetFixtures()
 
