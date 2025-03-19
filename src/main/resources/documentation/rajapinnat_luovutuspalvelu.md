@@ -16,6 +16,9 @@ Salausprotokollan on oltava TLS 1.2 tai 1.3.
 
 Varmenneketjun maksimipituus on 4 eli välivarmenteita saa olla ketjussa korkeintaan kaksi.
 
+Varmenteen nimen pitää olla Subject distinguished name (subject dn, subject) -kentässä: Subject alternative name -kenttää
+ei tueta.
+
 KOSKI-palvelu tarvitsee varmenteesta vain subject-tiedon, mutta kätevintä voi olla toimittaa fullchain.pem-tiedosto,
 mistä KOSKI-palvelun kehittäjät saavat tunnistetiedon varmasti oikeassa muodossa.
 
