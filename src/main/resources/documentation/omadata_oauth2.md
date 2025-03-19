@@ -37,9 +37,10 @@ OAuth2-rajapinnassa on käytössä:
   </dd>
   <dt>(5) Mutual TLS (mTLS) -client-sertifikaatin tunnistetieto</dt>
   <dd>
-    Subject distinguished name, subject dn. Sertifikaatin tulee olla yleisesti tunnetun CA:n tai DVV:n CA:n allekirjoittama. KOSKI-palvelu tarvitsee vain subject-nimen, mutta kätevintä voi olla toimittaa
-    fullchain.pem-tiedosto, mistä KOSKI-palvelun kehittäjät saavat tunnistetiedon varmasti oikeassa muodossa.
-    <br/>Sertifikaatin uusimisprosessi kannattaa rakentaa niin, että subject-nimi ei siinä muutu, jolloin KOSKI-palvelulle ei tarvitse toimittaa uutta nimeä sertifikaatin uusimisen jälkeen.
+    Subject distinguished name, subject dn. 
+    <br/>Tekniset speksit varmenteelle ovat samat kuin viranomaisrajapinnoissa. Ne on dokumentoitu sivun 
+    <a href="{{var:virkailijaBaseUrl}}/json-schema-viewerdokumentaatio/rajapinnat/luovutuspalvelu">{{var:virkailijaBaseUrl}}/json-schema-viewerdokumentaatio/rajapinnat/luovutuspalvelu</a>
+    alussa.    
     <br/>Tämä voi olla eri testiympäristössä ja tuotannossa.
   </dd>
   <dt>(6) Kumppanin palvelun ip-osoitteet</dt>
