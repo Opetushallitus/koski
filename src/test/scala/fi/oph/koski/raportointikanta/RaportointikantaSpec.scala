@@ -11,6 +11,7 @@ import fi.oph.koski.json.{JsonFiles, JsonSerializer}
 import fi.oph.koski.koskiuser.MockUsers
 import fi.oph.koski.organisaatio.{MockOrganisaatiot, Organisaatiotyyppi}
 import fi.oph.koski.raportointikanta.AikajaksoRowBuilder.AikajaksoTyyppi
+import fi.oph.koski.raportointikanta.OpiskeluoikeusLoader.isRaportointikantaanSiirrettäväOpiskeluoikeus
 import fi.oph.koski.schema.KoskiSchema.strictDeserialization
 import fi.oph.koski.schema._
 import fi.oph.koski.util.Wait
@@ -1195,7 +1196,7 @@ class RaportointikantaSpec
 
   "Inkrementaalinen lataus muutetaan täyslataukseksi jos päivitettäviä rivien määrä ylittää raja-arvon" in {
     KoskiApplicationForTests.fixtureCreator.resetFixtures(reloadRaportointikanta = true, reloadYtrData = true)
-    val kaikkiOpiskeluoikeudet = runDbSync(KoskiOpiskeluOikeudet.filter(_.mitätöity === false).result)
+    val kaikkiOpiskeluoikeudet = runDbSync(KoskiOpiskeluOikeudet.filter(_.mitätöity === false).result).filter(isRaportointikantaanSiirrettäväOpiskeluoikeus)
     val kaikkiYtrOpiskeluoikeudet = runDbSync(YtrOpiskeluOikeudet.result)
     val incrementalLoadMaxRows = 50
 

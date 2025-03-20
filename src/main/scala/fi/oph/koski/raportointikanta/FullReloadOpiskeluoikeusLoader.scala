@@ -3,6 +3,7 @@ package fi.oph.koski.raportointikanta
 import fi.oph.koski.db.{KoskiOpiskeluoikeusRow, OpiskeluoikeusRow, YtrOpiskeluoikeusRow}
 import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusQueryService
 import fi.oph.koski.organisaatio.OrganisaatioRepository
+import fi.oph.koski.raportointikanta.OpiskeluoikeusLoader.isRaportointikantaanSiirrettäväOpiskeluoikeus
 import fi.oph.koski.suostumus.SuostumuksenPeruutusService
 import rx.lang.scala.Observable
 
@@ -201,10 +202,9 @@ class FullReloadOpiskeluoikeusLoader(
       opiskeluoikeusQueryRepository: OpiskeluoikeusQueryService,
     )
   : Observable[Seq[OpiskeluoikeusRow]] =
-    if (enableYtr) {
+    (if (enableYtr) {
       opiskeluoikeusQueryRepository.koskiJaYtrOpiskeluoikeudetSivuittainWithoutAccessCheck(pageSize)
     } else {
       opiskeluoikeusQueryRepository.koskiOpiskeluoikeudetSivuittainWithoutAccessCheck(pageSize)
-    }
-
+    }).map(_.filter(isRaportointikantaanSiirrettäväOpiskeluoikeus))
 }

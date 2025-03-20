@@ -1,5 +1,6 @@
 package fi.oph.koski.raportointikanta
 
+import fi.oph.koski.db.OpiskeluoikeusRow
 import fi.oph.koski.log.Logging
 import rx.lang.scala.{Observable, Subscriber}
 
@@ -9,6 +10,9 @@ import scala.concurrent.duration.DurationInt
 object OpiskeluoikeusLoader {
   val DefaultBatchSize = 500
   val LocalTestingBatchSize = 100
+
+  def isRaportointikantaanSiirrettäväOpiskeluoikeus(oo: OpiskeluoikeusRow): Boolean =
+    oo.koulutusmuoto != "kielitutkinto"
 }
 
 trait OpiskeluoikeusLoader extends Logging {

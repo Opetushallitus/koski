@@ -3,6 +3,7 @@ package fi.oph.koski.raportointikanta
 import fi.oph.koski.db.{DB, KoskiOpiskeluoikeusRow, OpiskeluoikeusRow}
 import fi.oph.koski.opiskeluoikeus.PäivitetytOpiskeluoikeudetJonoService
 import fi.oph.koski.organisaatio.OrganisaatioRepository
+import fi.oph.koski.raportointikanta.OpiskeluoikeusLoader.isRaportointikantaanSiirrettäväOpiskeluoikeus
 import fi.oph.koski.schema.Opiskeluoikeus
 import fi.oph.koski.suostumus.SuostumuksenPeruutusService
 import fi.oph.koski.util.TimeConversions.toTimestamp
@@ -58,7 +59,8 @@ class IncrementalUpdateOpiskeluoikeusLoader(
   private def updateBatch(
     batch: Seq[KoskiOpiskeluoikeusRow]
   ): Seq[LoadResult] = {
-    val (mitätöidytOot, olemassaolevatOot) = batch.partition(_.mitätöity)
+    val (mitätöidytOot, kaikkiOlemassaolevatOot) = batch.partition(_.mitätöity)
+    val olemassaolevatOot = kaikkiOlemassaolevatOot.filter(isRaportointikantaanSiirrettäväOpiskeluoikeus)
     val (poistetutOot, mitätöidytEiPoistetutOot) = mitätöidytOot.partition(_.poistettu)
 
     val resultOlemassaolevatOot = updateBatchOlemassaolevatOpiskeluoikeudet(olemassaolevatOot, mitätöidytOot.map(_.oid))
