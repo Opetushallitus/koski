@@ -153,7 +153,7 @@ describe("Oppijakohtainen näkymä 2/2", () => {
       historiaOpintoOikeus({
         otsikko: "Lukion oppimäärä 2019 –",
         tila: "Läsnä",
-        maksuttomuus: ["Ei"],
+        maksuttomuus: ["1.8.2019– maksuton"],
         toimipiste: "Jyväskylän normaalikoulu",
         ryhmä: "AH",
         alkamispäivä: "1.8.2019",
@@ -529,7 +529,7 @@ describe("Oppijakohtainen näkymä 2/2", () => {
         historiaOpintoOikeus({
           otsikko: "Ammatillinen tutkinto 2012 –",
           tila: "Läsnä",
-          maksuttomuus: ["Ei"],
+          maksuttomuus: ["1.9.2012– maksuton"],
           toimipiste:
             "Stadin ammatti- ja aikuisopisto, Lehtikuusentien toimipaikka",
           alkamispäivä: "1.9.2012",
@@ -836,7 +836,7 @@ describe("Oppijakohtainen näkymä 2/2", () => {
         historiaOpintoOikeus({
           otsikko: "Lukion oppimäärä 2021 –",
           tila: "Väliaikaisesti keskeytynyt 2.8.2021",
-          maksuttomuus: ["Ei"],
+          maksuttomuus: ["1.8.2021– maksuton"],
           toimipiste: "Jyväskylän normaalikoulu",
           ryhmä: "AH",
           alkamispäivä: "1.8.2021",
@@ -870,7 +870,7 @@ describe("Oppijakohtainen näkymä 2/2", () => {
         historiaOpintoOikeus({
           otsikko: "VALMA 2012 –",
           tila: "Läsnä",
-          maksuttomuus: ["Ei"],
+          maksuttomuus: ["1.9.2012– maksuton"],
           toimipiste: "Stadin ammatti- ja aikuisopisto",
           alkamispäivä: "1.9.2012",
         }),

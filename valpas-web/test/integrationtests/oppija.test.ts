@@ -561,7 +561,7 @@ describe("Oppijakohtainen näkymä 1/2", () => {
       historiaOpintoOikeus({
         otsikko: "Lukion oppimäärä 2019 –",
         tila: "Läsnä",
-        maksuttomuus: ["Ei"],
+        maksuttomuus: ["1.8.2019– maksuton"],
         toimipiste: "Jyväskylän normaalikoulu",
         ryhmä: "AH",
         alkamispäivä: "1.8.2019",
@@ -588,7 +588,7 @@ describe("Oppijakohtainen näkymä 1/2", () => {
       historiaOpintoOikeus({
         otsikko: "Lukion oppimäärä 2019 –",
         tila: "Läsnä",
-        maksuttomuus: ["Ei"],
+        maksuttomuus: ["1.8.2019– maksuton"],
         toimipiste: "Jyväskylän normaalikoulu",
         ryhmä: "AH",
         alkamispäivä: "1.8.2019",
@@ -631,7 +631,7 @@ describe("Oppijakohtainen näkymä 1/2", () => {
         historiaOpintoOikeus({
           otsikko: "Lukion oppimäärä 2019 –",
           tila: "Läsnä",
-          maksuttomuus: ["Ei"],
+          maksuttomuus: ["1.8.2019– maksuton"],
           toimipiste: "Jyväskylän normaalikoulu",
           ryhmä: "AH",
           alkamispäivä: "1.8.2019",
