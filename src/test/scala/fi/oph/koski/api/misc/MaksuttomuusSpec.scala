@@ -163,7 +163,7 @@ class MaksuttomuusSpec extends AnyFreeSpec with OpiskeluoikeusTestMethodsAmmatil
 
       "Ei saa siirtää jos suoritus vahvistettu ennen Valpas-lain voimaantuloaikaa" - {
         "Aikuisten perusopetuksen oppimäärä" in {
-          val opiskeluoikeus = ExamplesAikuistenPerusopetus.aikuistenPerusopetuksenOpiskeluoikeusAlkuvaiheineen
+          val opiskeluoikeus = ExamplesAikuistenPerusopetus.aikuistenPerusopetuksenOpiskeluoikeusAlkuvaiheineen.withLisääPuuttuvaMaksuttomuustieto
 
           setupOppijaWithOpiskeluoikeus(opiskeluoikeus, KoskiSpecificMockOppijat.vuonna2005SyntynytEiOpiskeluoikeuksiaFikstuurissa) {
             verifyResponseStatusOk()
@@ -309,7 +309,7 @@ class MaksuttomuusSpec extends AnyFreeSpec with OpiskeluoikeusTestMethodsAmmatil
         }
 
         "Linkitetty oppija - slavella siirron estävä oppimäärä" in {
-          val opiskeluoikeus = ExamplesAikuistenPerusopetus.aikuistenPerusopetuksenOpiskeluoikeusAlkuvaiheineen
+          val opiskeluoikeus = ExamplesAikuistenPerusopetus.aikuistenPerusopetuksenOpiskeluoikeusAlkuvaiheineen.withLisääPuuttuvaMaksuttomuustieto
 
           setupOppijaWithOpiskeluoikeus(opiskeluoikeus, KoskiSpecificMockOppijat.oppivelvollisuustietoSlave1.henkilö) {
             verifyResponseStatusOk()
@@ -324,7 +324,7 @@ class MaksuttomuusSpec extends AnyFreeSpec with OpiskeluoikeusTestMethodsAmmatil
           }
         }
         "Linkitetty oppija - masterilla siirron estävä oppimäärä" in {
-          val opiskeluoikeus = ExamplesAikuistenPerusopetus.aikuistenPerusopetuksenOpiskeluoikeusAlkuvaiheineen
+          val opiskeluoikeus = ExamplesAikuistenPerusopetus.aikuistenPerusopetuksenOpiskeluoikeusAlkuvaiheineen.withLisääPuuttuvaMaksuttomuustieto
 
           setupOppijaWithOpiskeluoikeus(opiskeluoikeus, KoskiSpecificMockOppijat.oppivelvollisuustietoMaster) {
             verifyResponseStatusOk()
@@ -424,7 +424,7 @@ class MaksuttomuusSpec extends AnyFreeSpec with OpiskeluoikeusTestMethodsAmmatil
       }
       "Ei tarvitse siirtää, jos peruskoulu loppunut eroamiseen ennen vuotta 2021" in {
         val alkamispäivä = date(2021, 1, 1)
-        val opiskeluoikeus = LukioExampleData.alkamispäivällä(LukioExampleData.lukionOpiskeluoikeus(), alkamispäivä)
+        val opiskeluoikeus = LukioExampleData.alkamispäivällä(LukioExampleData.lukionOpiskeluoikeus(), alkamispäivä).withLisääPuuttuvaMaksuttomuustieto
         val oppija = KoskiSpecificMockOppijat.vuonna2004SyntynytMuttaEronnutPeruskoulustaEnnen2021
 
         putOpiskeluoikeus(opiskeluoikeus, oppija) {

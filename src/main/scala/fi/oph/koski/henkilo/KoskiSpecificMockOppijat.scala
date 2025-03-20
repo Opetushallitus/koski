@@ -197,6 +197,7 @@ object KoskiSpecificMockOppijat {
   val vapaaSivistystyöMaksuttomuus = koskiSpecificOppijat.oppija("VST", "Maksuttomuus", "311204A059L", syntymäaika = Some(LocalDate.of(2004, 12, 31)), kotikunta = Some("091"))
   val vuonna2003SyntynytPeruskouluValmis2021 = koskiSpecificOppijat.oppija("Vuonna 2003 syntynyt", "Peruskoulu suoritettu 2021", "010103A3373", syntymäaika = Some(LocalDate.of(2003, 1, 1)), kotikunta = Some("091"))
   val vuonna2004SyntynytPeruskouluValmis2021MuuttanutSuomeenTäysiIkäisenä = koskiSpecificOppijat.oppija("Vuonna 2004 syntynyt (muuttanut Suomeen täysi-ikäisenä)", "Peruskoulu suoritettu 2021", "010104A3304", syntymäaika = Some(LocalDate.of(2004, 1, 1)), kotikunta = Some("091"))
+  // TODO: Tältä oppijalta pitää kotikuntahistoria poistaa kokonaan, eikä luoda defaulttia. Pitää tehdä, kun siirtää kotikuntahistoria-mockitkin oppijoiden luonnin yhteyteen json-filestä.
   val vuonna2004SyntynytPeruskouluValmis2021EiKotikuntahistoriaa = koskiSpecificOppijat.oppija("Vuonna 2004 syntynyt (ei kotikuntahistoriaa)", "Peruskoulu suoritettu 2021", "010104A227T", syntymäaika = Some(LocalDate.of(2004, 1, 1)), kotikunta = Some("091"))
   val vainMitätöityjäOpiskeluoikeuksia = koskiSpecificOppijat.oppija("Mitätön", "Minna", "010106A492V", syntymäaika = Some(LocalDate.of(2006, 1, 1)), kotikunta = Some("091"))
   val lahdejarjestelmanPurku = koskiSpecificOppijat.oppija("Purettava", "Lasse", "010106A013D", syntymäaika = Some(LocalDate.of(2006, 1, 1)), kotikunta = Some("091"))
