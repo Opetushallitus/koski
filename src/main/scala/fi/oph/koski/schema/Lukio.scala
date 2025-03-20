@@ -38,6 +38,25 @@ case class LukionOpiskeluoikeus(
   })
 
   def isOppimääräSuoritettu = oppimääräSuoritettu.getOrElse(false)
+
+  def withLisääPuuttuvaMaksuttomuustieto = {
+    lazy val uudellaMaksuttomuustiedolla = this.copy(
+      lisätiedot = Some(
+        this.lisätiedot.getOrElse(LukionOpiskeluoikeudenLisätiedot())
+          .copy(
+            maksuttomuus = Some(List(Maksuttomuus(this.alkamispäivä.getOrElse(throw new InternalError("Alkupäivä puuttuu")), None, true)))
+          )
+      )
+    )
+
+    lisätiedot match {
+      case None =>
+        uudellaMaksuttomuustiedolla
+      case Some(lt) if lt.maksuttomuus.toSeq.flatten.isEmpty =>
+        uudellaMaksuttomuustiedolla
+      case _ => this
+    }
+  }
 }
 
 @Description("Lukion opiskeluoikeuden lisätiedot")

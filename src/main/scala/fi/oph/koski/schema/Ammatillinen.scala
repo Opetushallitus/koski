@@ -36,6 +36,25 @@ case class AmmatillinenOpiskeluoikeus(
   override def withKoulutustoimija(koulutustoimija: Koulutustoimija) = this.copy(koulutustoimija = Some(koulutustoimija))
   def onValmistunut = tila.opiskeluoikeusjaksot.lastOption.exists(_.tila.koodiarvo == "valmistunut")
   def onKatsotaanEronneeksi = tila.opiskeluoikeusjaksot.lastOption.exists(_.tila.koodiarvo == "katsotaaneronneeksi")
+
+  def withLisääPuuttuvaMaksuttomuustieto = {
+    lazy val uudellaMaksuttomuustiedolla = this.copy(
+      lisätiedot = Some(
+        this.lisätiedot.getOrElse(AmmatillisenOpiskeluoikeudenLisätiedot())
+          .copy(
+            maksuttomuus = Some(List(Maksuttomuus(this.alkamispäivä.getOrElse(throw new InternalError("Alkupäivä puuttuu")), None, true)))
+          )
+      )
+    )
+
+    lisätiedot match {
+      case None =>
+        uudellaMaksuttomuustiedolla
+      case Some(lt) if lt.maksuttomuus.toSeq.flatten.isEmpty =>
+        uudellaMaksuttomuustiedolla
+      case _ => this
+    }
+  }
 }
 
 trait AmmatillinenPäätasonSuoritus extends KoskeenTallennettavaPäätasonSuoritus
