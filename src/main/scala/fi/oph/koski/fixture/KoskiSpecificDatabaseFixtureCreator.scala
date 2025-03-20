@@ -20,6 +20,8 @@ import java.time.LocalDate.{of => date}
 
 class KoskiSpecificDatabaseFixtureCreator(application: KoskiApplication) extends DatabaseFixtureCreator(application, "opiskeluoikeus_fixture", "opiskeluoikeushistoria_fixture") {
   protected def oppijat = KoskiSpecificMockOppijat.defaultOppijat
+  protected def kuntahistoriat = KoskiSpecificMockOppijat.defaultKuntahistoriat
+  protected def turvakieltoKuntahistoriat = KoskiSpecificMockOppijat.defaultTurvakieltoKuntahistoriat
 
   protected lazy val invalidOpiskeluoikeudet: List[(OppijaHenkilö, KoskeenTallennettavaOpiskeluoikeus)] = {
     val validOpiskeluoikeus: AmmatillinenOpiskeluoikeus = updateFieldsAndValidateOpiskeluoikeus(AmmatillinenExampleData.opiskeluoikeus(tutkinto = tietoJaViestintäTekniikanPerustutkinnonSuoritus(stadinToimipiste)))
@@ -96,7 +98,7 @@ class KoskiSpecificDatabaseFixtureCreator(application: KoskiApplication) extends
             // Pulssi menee sekaisin eikä tunnista opiskeluoikeutta ammatilliseksi opiskeluoikeudeksi.
             nimi = Some(LocalizedString.finnish("Ammatillinen koulutus"))
           ),
-        )
+        ).withLisääPuuttuvaMaksuttomuustieto
       ),
       (KoskiSpecificMockOppijat.kelaRikkinäinenOpiskeluoikeus, AmmatillinenExampleData.perustutkintoOpiskeluoikeusValmis().copy(
           tyyppi = OpiskeluoikeudenTyyppi.ammatillinenkoulutus.copy(
@@ -252,7 +254,7 @@ class KoskiSpecificDatabaseFixtureCreator(application: KoskiApplication) extends
       (KoskiSpecificMockOppijat.vuonna2004SyntynytMuttaEronnutPeruskoulustaEnnen2021, MaksuttomuusRaporttiFixtures.peruskouluEronnut2020),
       (KoskiSpecificMockOppijat.opiskeleeAmmatillisessaErityisoppilaitoksessa,
         // Normaali tapaus: opiskeluoikeuden oppilaitos on erityisoppilaitos
-        AmmatillinenPerustutkintoExample.perustutkintoOpiskeluoikeusValmisOrganisaatiohistorialla()
+        AmmatillinenPerustutkintoExample.perustutkintoOpiskeluoikeusValmisOrganisaatiohistorialla().withLisääPuuttuvaMaksuttomuustieto
       ),
       (KoskiSpecificMockOppijat.opiskeleeAmmatillisessaErityisoppilaitoksessa2,
         // Erityisoppilaitos esiintyy vain suorituksen toimipisteessä
@@ -262,7 +264,7 @@ class KoskiSpecificDatabaseFixtureCreator(application: KoskiApplication) extends
           toimipiste = AmmatillinenExampleData.kiipulanAmmattiopisto,
           organisaatioHistorianOppilaitos = AmmatillinenExampleData.stadinAmmattiopisto,
           vahvistuksenOrganisaatio = AmmatillinenExampleData.stadinAmmattiopisto
-        )
+        ).withLisääPuuttuvaMaksuttomuustieto
       ),
       (KoskiSpecificMockOppijat.opiskeleeAmmatillisessaErityisoppilaitoksessa,
         // Erityisoppilaitos esiintyy vain suorituksen vahvistuksen organisaationa
@@ -272,7 +274,7 @@ class KoskiSpecificDatabaseFixtureCreator(application: KoskiApplication) extends
           toimipiste = AmmatillinenExampleData.stadinToimipiste,
           organisaatioHistorianOppilaitos = AmmatillinenExampleData.stadinAmmattiopisto,
           vahvistuksenOrganisaatio = AmmatillinenExampleData.kiipulanAmmattiopisto
-        )
+        ).withLisääPuuttuvaMaksuttomuustieto
       ),
       (KoskiSpecificMockOppijat.tuva, ExamplesTutkintokoulutukseenValmentavaKoulutus.tuvaOpiskeluOikeusValmistunut),
       (KoskiSpecificMockOppijat.tuvaPerus, ExamplesTutkintokoulutukseenValmentavaKoulutus.tuvaOpiskeluOikeusEiValmistunut),

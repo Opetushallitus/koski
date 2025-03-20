@@ -12,7 +12,11 @@ object MockOppijat {
     UusiHenkilö(oppija.hetu.get, oppija.etunimet, Some(oppija.kutsumanimi), oppija.sukunimi)
 }
 
-class MockOppijat(private var oppijat: List[OppijaHenkilöWithMasterInfo] = Nil) extends Logging {
+class MockOppijat(
+  private var oppijat: List[OppijaHenkilöWithMasterInfo] = Nil,
+  var kuntahistoriat: scala.collection.mutable.Map[String, Seq[OppijanumerorekisteriKotikuntahistoriaRow]] = scala.collection.mutable.Map.empty,
+  var turvakieltoKuntahistoriat: scala.collection.mutable.Map[String, Seq[OppijanumerorekisteriKotikuntahistoriaRow]] = scala.collection.mutable.Map.empty
+) extends Logging {
   private var idCounter = oppijat.length
   val äidinkieli: Some[Koodistokoodiviite] = Some(Koodistokoodiviite("FI", None, "kieli", None))
 
@@ -28,7 +32,7 @@ class MockOppijat(private var oppijat: List[OppijaHenkilöWithMasterInfo] = Nil)
     kotikunta: Option[String] = None,
     äidinkieli: Option[String] = Some("fi"),
     syntymäaika: Option[LocalDate] = None
-  ): LaajatOppijaHenkilöTiedot =
+  ): LaajatOppijaHenkilöTiedot = {
     addOppija(henkilo.LaajatOppijaHenkilöTiedot(
       oid = oid,
       sukunimi = suku,
@@ -42,6 +46,7 @@ class MockOppijat(private var oppijat: List[OppijaHenkilöWithMasterInfo] = Nil)
       sukupuoli = sukupuoli,
       kotikunta = kotikunta
     ))
+  }
 
   def oppijaSyntymäaikaHetusta(
     suku: String,
@@ -64,6 +69,21 @@ class MockOppijat(private var oppijat: List[OppijaHenkilöWithMasterInfo] = Nil)
 
   def addOppija(oppija: OppijaHenkilöWithMasterInfo): OppijaHenkilöWithMasterInfo = {
     oppijat = oppija :: oppijat
+
+    // Luo tyhjä kotikuntahistoria
+    oppija.henkilö match {
+      case h: LaajatOppijaHenkilöTiedot if oppija.master.isEmpty =>
+        h.kotikunta.foreach(k => {
+          val syntymäaika = h.syntymäaika.getOrElse(LocalDate.of(1900, 1, 1))
+          val kuntahistoria = OppijanumerorekisteriKotikuntahistoriaRow(h.oid, k, Some(syntymäaika), None)
+          if (h.turvakielto) {
+            turvakieltoKuntahistoriat.put(h.oid, Seq(kuntahistoria))
+          } else {
+            kuntahistoriat.put(h.oid, Seq(kuntahistoria))
+          }
+        })
+      case _ => Unit
+    }
     oppija
   }
 
@@ -73,6 +93,10 @@ class MockOppijat(private var oppijat: List[OppijaHenkilöWithMasterInfo] = Nil)
   }
 
   def getOppijat = oppijat
+
+  def getKuntahistoriat = kuntahistoriat
+
+  def getTurvakieltoKuntahistoriat = turvakieltoKuntahistoriat
 
   def generateId(): String = this.synchronized {
     idCounter = idCounter + 1
