@@ -24,6 +24,26 @@ case class InternationalSchoolOpiskeluoikeus(
   override def withOppilaitos(oppilaitos: Oppilaitos) = this.copy(oppilaitos = Some(oppilaitos))
   override def withKoulutustoimija(koulutustoimija: Koulutustoimija) = this.copy(koulutustoimija = Some(koulutustoimija))
   override def sisältyyOpiskeluoikeuteen: Option[SisältäväOpiskeluoikeus] = None
+
+  def withLisääPuuttuvaMaksuttomuustieto = {
+    lazy val uudellaMaksuttomuustiedolla = this.copy(
+      lisätiedot = Some(
+        this.lisätiedot.getOrElse(InternationalSchoolOpiskeluoikeudenLisätiedot())
+          .copy(
+            maksuttomuus = Some(List(Maksuttomuus(this.alkamispäivä.getOrElse(throw new InternalError("Alkupäivä puuttuu")), None, true)))
+          )
+      )
+    )
+
+    lisätiedot match {
+      case None =>
+        uudellaMaksuttomuustiedolla
+      case Some(lt) if lt.maksuttomuus.toSeq.flatten.isEmpty =>
+        uudellaMaksuttomuustiedolla
+      case _ => this
+    }
+  }
+
 }
 
 object InternationalSchoolOpiskeluoikeus {

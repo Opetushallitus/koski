@@ -33,6 +33,37 @@ case class TutkintokoulutukseenValmentavanOpiskeluoikeus(
   override def withOppilaitos(oppilaitos: Oppilaitos): KoskeenTallennettavaOpiskeluoikeus = this.copy(oppilaitos = Some(oppilaitos))
 
   override def sisältyyOpiskeluoikeuteen: Option[SisältäväOpiskeluoikeus] = None
+
+  def withLisääPuuttuvaMaksuttomuustieto = {
+    lazy val maksuttomuus = Some(List(Maksuttomuus(this.alkamispäivä.getOrElse(throw new InternalError("Alkupäivä puuttuu")), None, true)))
+    lazy val uudellaMaksuttomuustiedolla = this.copy(
+      lisätiedot = Some(
+        this.lisätiedot match {
+          case None => this.järjestämislupa.koodiarvo match {
+            case "ammatillinen" => TutkintokoulutukseenValmentavanOpiskeluoikeudenAmmatillisenLuvanLisätiedot(maksuttomuus = maksuttomuus)
+            case "lukio" => TutkintokoulutukseenValmentavanOpiskeluoikeudenLukiokoulutuksenLuvanLisätiedot(maksuttomuus = maksuttomuus)
+            case "perusopetus" => TutkintokoulutukseenValmentavanOpiskeluoikeudenPerusopetuksenLuvanLisätiedot(maksuttomuus = maksuttomuus)
+          }
+          case Some(lt: TutkintokoulutukseenValmentavanOpiskeluoikeudenAmmatillisenLuvanLisätiedot) =>
+            lt.copy(maksuttomuus = maksuttomuus)
+          case Some(lt: TutkintokoulutukseenValmentavanOpiskeluoikeudenLukiokoulutuksenLuvanLisätiedot) =>
+            lt.copy(maksuttomuus = maksuttomuus)
+          case Some(lt: TutkintokoulutukseenValmentavanOpiskeluoikeudenPerusopetuksenLuvanLisätiedot) =>
+            lt.copy(maksuttomuus = maksuttomuus)
+          case _ => throw new InternalError("Toteutus puuttuu")
+        }
+      )
+    )
+
+    lisätiedot match {
+      case None =>
+        uudellaMaksuttomuustiedolla
+      case Some(lt) if lt.maksuttomuus.toSeq.flatten.isEmpty =>
+        uudellaMaksuttomuustiedolla
+      case _ => this
+    }
+  }
+
 }
 
 case class TutkintokoulutukseenValmentavanOpiskeluoikeudenTila(

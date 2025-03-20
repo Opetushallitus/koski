@@ -29,6 +29,25 @@ case class LukioonValmistavanKoulutuksenOpiskeluoikeus(
 ) extends KoskeenTallennettavaOpiskeluoikeus {
   override def withOppilaitos(oppilaitos: Oppilaitos) = this.copy(oppilaitos = Some(oppilaitos))
   override def withKoulutustoimija(koulutustoimija: Koulutustoimija) = this.copy(koulutustoimija = Some(koulutustoimija))
+
+  def withLisääPuuttuvaMaksuttomuustieto = {
+    lazy val uudellaMaksuttomuustiedolla = this.copy(
+      lisätiedot = Some(
+        this.lisätiedot.getOrElse(LukioonValmistavanKoulutuksenOpiskeluoikeudenLisätiedot())
+          .copy(
+            maksuttomuus = Some(List(Maksuttomuus(this.alkamispäivä.getOrElse(throw new InternalError("Alkupäivä puuttuu")), None, true)))
+          )
+      )
+    )
+
+    lisätiedot match {
+      case None =>
+        uudellaMaksuttomuustiedolla
+      case Some(lt) if lt.maksuttomuus.toSeq.flatten.isEmpty =>
+        uudellaMaksuttomuustiedolla
+      case _ => this
+    }
+  }
 }
 
 @Description("Lukioon valmistavan koulutus (LUVA) suoritus")

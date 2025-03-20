@@ -130,7 +130,6 @@ trait MaksuttomuusTieto extends OpiskeluoikeudenLisätiedot {
 
   final def withMaksuttomus(maksuttomuus: Option[List[Maksuttomuus]]): MaksuttomuusTieto =
     shapeless.lens[MaksuttomuusTieto].field[Option[List[Maksuttomuus]]]("maksuttomuus").set(this)(maksuttomuus)
-
   final def withOikeuttaMaksuttomuuteenPidennetty(oikeuttaMaksuttomuuteenPidennetty: Option[List[OikeuttaMaksuttomuuteenPidennetty]]): MaksuttomuusTieto =
     shapeless.lens[MaksuttomuusTieto].field[Option[List[OikeuttaMaksuttomuuteenPidennetty]]]("oikeuttaMaksuttomuuteenPidennetty").set(this)(oikeuttaMaksuttomuuteenPidennetty)
 }
