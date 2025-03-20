@@ -1677,13 +1677,13 @@ object ValpasOpiskeluoikeusExampleData {
       AikuistenPerusopetuksenOpiskeluoikeusjakso(alkamispäivä, opiskeluoikeusLäsnä, Some(valtionosuusRahoitteinen))
     ) ++ valmistunut.toList
 
-    ExamplesAikuistenPerusopetus.aikuistenPerusopetuksenOpiskeluoikeusAlkuvaiheineen.copy(
+    ExamplesAikuistenPerusopetus.aikuistenPerusopetuksenOpiskeluoikeusAlkuvaiheineenValmistunutVanhanOppivelvollisuuslainAikana.copy(
       oppilaitos = Some(ressunLukio),
       tila = AikuistenPerusopetuksenOpiskeluoikeudenTila(
         tilat
       ),
       suoritukset = List(
-        ExamplesAikuistenPerusopetus.aikuistenPerusopetuksenAlkuvaiheenSuoritus.copy(
+        ExamplesAikuistenPerusopetus.aikuistenPerusopetuksenAlkuvaiheenSuoritus().copy(
           toimipiste = ressunLukio,
           vahvistus = valmistumispäivä.flatMap(vp => vahvistusPaikkakunnalla(vp))
         ),

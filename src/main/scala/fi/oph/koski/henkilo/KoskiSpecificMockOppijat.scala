@@ -1,9 +1,10 @@
 package fi.oph.koski.henkilo
 
 import java.time.LocalDate
-
 import fi.oph.koski.koskiuser.MockUsers
 import fi.oph.koski.schema.UusiHenkilö
+
+import scala.collection.mutable
 
 object KoskiSpecificMockOppijat {
   private val koskiSpecificOppijat = new MockOppijat
@@ -11,8 +12,8 @@ object KoskiSpecificMockOppijat {
   // Tällä oppijalla ei ole fixtuureissa opiskeluoikeuksia, eikä tätä lisätä henkilöpalveluun.
   val tyhjä = UusiHenkilö("230872-7258", "Tero", Some("Tero"), "Tyhjä")
 
-  val hetuton = koskiSpecificOppijat.addOppija(LaajatOppijaHenkilöTiedot(oid = "1.2.246.562.24.99999999123", sukunimi = "Hetuton", etunimet = "Heikki", kutsumanimi = "Heikki", hetu = None, syntymäaika = Some(LocalDate.of(1977, 2, 24)), yksilöity = false))
-  val syntymäajallinen = koskiSpecificOppijat.addOppija(LaajatOppijaHenkilöTiedot(oid = "1.2.246.562.24.99999999124", sukunimi = "Syntynyt", etunimet = "Sylvi", kutsumanimi = "Sylvi", hetu = Some("220627-833V"), syntymäaika = Some(LocalDate.of(1970, 1, 1))))
+  val hetuton = koskiSpecificOppijat.addLaajatOppijaHenkilöTiedot(LaajatOppijaHenkilöTiedot(oid = "1.2.246.562.24.99999999123", sukunimi = "Hetuton", etunimet = "Heikki", kutsumanimi = "Heikki", hetu = None, syntymäaika = Some(LocalDate.of(1977, 2, 24)), yksilöity = false))
+  val syntymäajallinen = koskiSpecificOppijat.addLaajatOppijaHenkilöTiedot(LaajatOppijaHenkilöTiedot(oid = "1.2.246.562.24.99999999124", sukunimi = "Syntynyt", etunimet = "Sylvi", kutsumanimi = "Sylvi", hetu = Some("220627-833V"), syntymäaika = Some(LocalDate.of(1970, 1, 1))))
   val eero = koskiSpecificOppijat.oppijaSyntymäaikaHetusta("Esimerkki", "Eero", "010101-123N")
   val eerola = koskiSpecificOppijat.oppija("Çelik-Eerola", "Jouni", "081165-793C")
   val markkanen = koskiSpecificOppijat.oppija("Markkanen-Fagerström", "Eéro Jorma-Petteri", "080154-770R", syntymäaika = Some(LocalDate.of(1954, 1, 8)))
@@ -82,13 +83,13 @@ object KoskiSpecificMockOppijat {
   val eskari = koskiSpecificOppijat.oppija("Eskari", "Essi", "300996-870E", kotikunta = Some("179"))
   val eskariAikaisillaLisätiedoilla = koskiSpecificOppijat.oppija("Lisä-Eskari", "Essiina", "300996-7419")
   val master = koskiSpecificOppijat.oppija("of Puppets", "Master", "101097-6107")
-  val slave = koskiSpecificOppijat.addOppija(OppijaHenkilöWithMasterInfo(LaajatOppijaHenkilöTiedot(oid = "1.2.246.562.24.00000051473", sukunimi = "of Puppets", etunimet = "Slave", kutsumanimi = "Slave", hetu = Some("101097-6107"), syntymäaika = None), Some(master)))
-  val masterEiKoskessa = koskiSpecificOppijat.addOppija(LaajatOppijaHenkilöTiedot(oid = koskiSpecificOppijat.generateId(), sukunimi = "Master", etunimet = "Master", kutsumanimi = "Master", hetu = Some("270366-697B"), syntymäaika = None))
-  val slaveMasterEiKoskessa = koskiSpecificOppijat.addOppija(OppijaHenkilöWithMasterInfo(LaajatOppijaHenkilöTiedot(oid = "1.2.246.562.24.41000051473", hetu = Some("270366-697B"), syntymäaika = None, sukunimi = "Slave", etunimet = "Slave", kutsumanimi = "Slave"), Some(masterEiKoskessa)))
-  val omattiedotSlave = koskiSpecificOppijat.addOppija(OppijaHenkilöWithMasterInfo(LaajatOppijaHenkilöTiedot(oid = koskiSpecificOppijat.generateId(), hetu = Some("190751-739W"), syntymäaika = None, etunimet = MockUsers.omattiedot.ldapUser.etunimet, kutsumanimi = MockUsers.omattiedot.ldapUser.etunimet, sukunimi = MockUsers.omattiedot.ldapUser.sukunimi), Some(omattiedot)))
+  val slave = koskiSpecificOppijat.addOppijaHenkilöWithMasterInfo(OppijaHenkilöWithMasterInfo(LaajatOppijaHenkilöTiedot(oid = "1.2.246.562.24.00000051473", sukunimi = "of Puppets", etunimet = "Slave", kutsumanimi = "Slave", hetu = Some("101097-6107"), syntymäaika = None), Some(master)))
+  val masterEiKoskessa = koskiSpecificOppijat.addLaajatOppijaHenkilöTiedot(LaajatOppijaHenkilöTiedot(oid = koskiSpecificOppijat.generateId(), sukunimi = "Master", etunimet = "Master", kutsumanimi = "Master", hetu = Some("270366-697B"), syntymäaika = None))
+  val slaveMasterEiKoskessa = koskiSpecificOppijat.addOppijaHenkilöWithMasterInfo(OppijaHenkilöWithMasterInfo(LaajatOppijaHenkilöTiedot(oid = "1.2.246.562.24.41000051473", hetu = Some("270366-697B"), syntymäaika = None, sukunimi = "Slave", etunimet = "Slave", kutsumanimi = "Slave"), Some(masterEiKoskessa)))
+  val omattiedotSlave = koskiSpecificOppijat.addOppijaHenkilöWithMasterInfo(OppijaHenkilöWithMasterInfo(LaajatOppijaHenkilöTiedot(oid = koskiSpecificOppijat.generateId(), hetu = Some("190751-739W"), syntymäaika = None, etunimet = MockUsers.omattiedot.ldapUser.etunimet, kutsumanimi = MockUsers.omattiedot.ldapUser.etunimet, sukunimi = MockUsers.omattiedot.ldapUser.sukunimi), Some(omattiedot)))
   val opiskeluoikeudenOidKonflikti = koskiSpecificOppijat.oppija("Oidkonflikti", "Oskari", "260539-745W", "1.2.246.562.24.09090909090")
   val eiKoskessa = koskiSpecificOppijat.oppija("EiKoskessa", "Eino", "270181-5263", "1.2.246.562.24.99999555555", vanhaHetu = Some("270181-517T"))
-  val eiKoskessaHetuton = koskiSpecificOppijat.addOppija(LaajatOppijaHenkilöTiedot(oid = "1.2.246.562.24.99999555556", sukunimi = "EiKoskessaHetuton", etunimet = "Eino", kutsumanimi = "Eino", hetu = None, syntymäaika = None))
+  val eiKoskessaHetuton = koskiSpecificOppijat.addLaajatOppijaHenkilöTiedot(LaajatOppijaHenkilöTiedot(oid = "1.2.246.562.24.99999555556", sukunimi = "EiKoskessaHetuton", etunimet = "Eino", kutsumanimi = "Eino", hetu = None, syntymäaika = None))
   val turvakielto = koskiSpecificOppijat.oppija("Turvakielto", "Tero", "151067-2193", turvakielto = true)
   val montaJaksoaKorkeakoululainen = koskiSpecificOppijat.oppija("Korkeakoululainen", "Monta-Opintojaksoa", "030199-3419")
   val organisaatioHistoria = koskiSpecificOppijat.oppija("Historoitsija", "Hiisi", "200994-834A")
@@ -133,15 +134,15 @@ object KoskiSpecificMockOppijat {
   val etk18vSyntynytToukokuunViimeisenäPäivänä = koskiSpecificOppijat.oppija("Nopea", "Noa", "310598-4959", syntymäaika = Some(LocalDate.of(1998, 5, 31)))
   val oppivelvollisuustietoLiianVanha = koskiSpecificOppijat.oppija("Oppivelvollisuustieto", "LiianVanha", "311203A245B", syntymäaika = Some(LocalDate.of(2003, 12, 31)), kotikunta = Some("091"))
   val oppivelvollisuustietoMaster = koskiSpecificOppijat.oppija("Oppivelvollisuustieto", "Master", "260904A350B", syntymäaika = Some(LocalDate.of(2004, 1, 1)), kotikunta = Some("091"))
-  val oppivelvollisuustietoSlave1 = koskiSpecificOppijat.addOppija(OppijaHenkilöWithMasterInfo(LaajatOppijaHenkilöTiedot(oid = "1.2.246.562.24.00000051491", sukunimi = "Oppivelvollisuustieto", etunimet = "Slave1", kutsumanimi = "Slave1", hetu = Some("260904A350B"), syntymäaika = Some(LocalDate.of(2005, 1, 1)), kotikunta = Some("091")), Some(oppivelvollisuustietoMaster)))
-  val oppivelvollisuustietoSlave2 = koskiSpecificOppijat.addOppija(OppijaHenkilöWithMasterInfo(LaajatOppijaHenkilöTiedot(oid = "1.2.246.562.24.00000051492", sukunimi = "Oppivelvollisuustieto", etunimet = "Slave2", kutsumanimi = "Slave2", hetu = Some("260904A350B"), syntymäaika = Some(LocalDate.of(2004, 1, 1)), kotikunta = Some("091")), Some(oppivelvollisuustietoMaster)))
+  val oppivelvollisuustietoSlave1 = koskiSpecificOppijat.addOppijaHenkilöWithMasterInfo(OppijaHenkilöWithMasterInfo(LaajatOppijaHenkilöTiedot(oid = "1.2.246.562.24.00000051491", sukunimi = "Oppivelvollisuustieto", etunimet = "Slave1", kutsumanimi = "Slave1", hetu = Some("260904A350B"), syntymäaika = Some(LocalDate.of(2005, 1, 1)), kotikunta = Some("091")), Some(oppivelvollisuustietoMaster)))
+  val oppivelvollisuustietoSlave2 = koskiSpecificOppijat.addOppijaHenkilöWithMasterInfo(OppijaHenkilöWithMasterInfo(LaajatOppijaHenkilöTiedot(oid = "1.2.246.562.24.00000051492", sukunimi = "Oppivelvollisuustieto", etunimet = "Slave2", kutsumanimi = "Slave2", hetu = Some("260904A350B"), syntymäaika = Some(LocalDate.of(2004, 1, 1)), kotikunta = Some("091")), Some(oppivelvollisuustietoMaster)))
   val maksuttomuuttaPidennetty1 = koskiSpecificOppijat.oppija("Pidennetty1", "Maksuttomuutta1", "190525-0401", syntymäaika = Some(LocalDate.of(2004, 1, 1)), kotikunta = Some("091"))
   val maksuttomuuttaPidennetty2 = koskiSpecificOppijat.oppija("Pidennetty2", "Maksuttomuutta2", "220835-2325", syntymäaika = Some(LocalDate.of(2004, 1, 1)), kotikunta = Some("091"))
   val vuonna2004SyntynytPeruskouluValmis2021 = koskiSpecificOppijat.oppija("Vuonna 2004 syntynyt", "Peruskoulu suoritettu 2021", "010104A153D", syntymäaika = Some(LocalDate.of(2004, 1, 1)), kotikunta = Some("091"))
   val vuonna2004SyntynytMuttaPeruskouluValmisEnnen2021 = koskiSpecificOppijat.oppija("Vuonna 2004 syntynyt", "Peruskoulu suoritettu ennen 2021", "010104A811M", syntymäaika = Some(LocalDate.of(2004, 1, 1)), kotikunta = Some("091"))
   val vuonna2005SyntynytEiOpiskeluoikeuksiaFikstuurissa = koskiSpecificOppijat.oppija("Vuonna 2005 syntynyt", "Ei opiskeluoikeuksia fikstuurissa", "030705A5719", syntymäaika = Some(LocalDate.of(2005, 7, 3)), kotikunta = Some("091"))
-  val nuoriHetuton = koskiSpecificOppijat.addOppija(LaajatOppijaHenkilöTiedot(oid = "1.2.246.562.24.99999999888", sukunimi = "Hetuton", etunimet = "Veeti", kutsumanimi = "Veeti", hetu = None, syntymäaika = Some(LocalDate.of(2004, 2, 24)), yksilöity = false))
-  val vuonna2005SyntynytUlkomainenVaihtoopiskelija = koskiSpecificOppijat.addOppija(LaajatOppijaHenkilöTiedot(oid = "1.2.246.562.24.55599999333", sukunimi = "Vaihto-opiskelija", etunimet = "Valter", kutsumanimi = "Valter", hetu = None, syntymäaika = Some(LocalDate.of(2005, 2, 24))))
+  val nuoriHetuton = koskiSpecificOppijat.addLaajatOppijaHenkilöTiedot(LaajatOppijaHenkilöTiedot(oid = "1.2.246.562.24.99999999888", sukunimi = "Hetuton", etunimet = "Veeti", kutsumanimi = "Veeti", hetu = None, syntymäaika = Some(LocalDate.of(2004, 2, 24)), yksilöity = false))
+  val vuonna2005SyntynytUlkomainenVaihtoopiskelija = koskiSpecificOppijat.addLaajatOppijaHenkilöTiedot(LaajatOppijaHenkilöTiedot(oid = "1.2.246.562.24.55599999333", sukunimi = "Vaihto-opiskelija", etunimet = "Valter", kutsumanimi = "Valter", hetu = None, syntymäaika = Some(LocalDate.of(2005, 2, 24))))
   val vuonna2005SyntynytPeruskouluValmis2021 = koskiSpecificOppijat.oppija("Vuonna 2005 syntynyt", "Peruskoulu suoritettu 2021", "251105A2755", syntymäaika = Some(LocalDate.of(2005, 1, 1)), kotikunta = Some("091"))
   val rikkinäinenOpiskeluoikeus = koskiSpecificOppijat.oppija("Rikkinäinen", "Opiskeluoikeus", "140615-7608", syntymäaika = Some(LocalDate.of(2003, 12, 31)))
   val kelaRikkinäinenOpiskeluoikeus = koskiSpecificOppijat.oppija("Rikkinäinen", "Kela", "111104A855K", syntymäaika = Some(LocalDate.of(2004, 11, 11)))
@@ -181,7 +182,7 @@ object KoskiSpecificMockOppijat {
   val ylioppilasEiValmistunut = koskiSpecificOppijat.oppija("Yliniemi", "Kalevi", "120674-064R")
   val ammattilainenVahvistettuTulevaisuudessa = koskiSpecificOppijat.oppija("Tuleva-ammattilainen", "Tuure", "280128-6867")
   val masterYlioppilasJaAmmattilainen = koskiSpecificOppijat.oppija("Mastinen", "Maarni", "151031-620R")
-  val slaveAmmattilainen = koskiSpecificOppijat.addOppija(OppijaHenkilöWithMasterInfo(LaajatOppijaHenkilöTiedot(oid = "1.2.246.562.24.00000057489", sukunimi = "Slavinen", etunimet = "Saarni", kutsumanimi = "Ammi", hetu = Some("140661-592P"), syntymäaika = None), Some(masterYlioppilasJaAmmattilainen)))
+  val slaveAmmattilainen = koskiSpecificOppijat.addOppijaHenkilöWithMasterInfo(OppijaHenkilöWithMasterInfo(LaajatOppijaHenkilöTiedot(oid = "1.2.246.562.24.00000057489", sukunimi = "Slavinen", etunimet = "Saarni", kutsumanimi = "Ammi", hetu = Some("140661-592P"), syntymäaika = None), Some(masterYlioppilasJaAmmattilainen)))
   val ammatilliseenTetäväänValmistavaMuuAmmatillinenVahvistettu = koskiSpecificOppijat.oppija("Tehtävään-Valmistava-vahvistettu", "Tauno", "120418-275F")
   val jotpaMuuKuinSäänneltySuoritettu = koskiSpecificOppijat.oppija("Suorituinen", "Muksu", "150100A254N")
   val pelkkäYoKannassaUudenOvLainPiirissä = koskiSpecificOppijat.oppija("YO-opiskeluoikeus", "Valpas", "060807A7787", syntymäaika = Some(LocalDate.of(2007, 8, 6)), kotikunta = Some("091"))
@@ -197,8 +198,12 @@ object KoskiSpecificMockOppijat {
   val vapaaSivistystyöMaksuttomuus = koskiSpecificOppijat.oppija("VST", "Maksuttomuus", "311204A059L", syntymäaika = Some(LocalDate.of(2004, 12, 31)), kotikunta = Some("091"))
   val vuonna2003SyntynytPeruskouluValmis2021 = koskiSpecificOppijat.oppija("Vuonna 2003 syntynyt", "Peruskoulu suoritettu 2021", "010103A3373", syntymäaika = Some(LocalDate.of(2003, 1, 1)), kotikunta = Some("091"))
   val vuonna2004SyntynytPeruskouluValmis2021MuuttanutSuomeenTäysiIkäisenä = koskiSpecificOppijat.oppija("Vuonna 2004 syntynyt (muuttanut Suomeen täysi-ikäisenä)", "Peruskoulu suoritettu 2021", "010104A3304", syntymäaika = Some(LocalDate.of(2004, 1, 1)), kotikunta = Some("091"))
-  // TODO: Tältä oppijalta pitää kotikuntahistoria poistaa kokonaan, eikä luoda defaulttia. Pitää tehdä, kun siirtää kotikuntahistoria-mockitkin oppijoiden luonnin yhteyteen json-filestä.
-  val vuonna2004SyntynytPeruskouluValmis2021EiKotikuntahistoriaa = koskiSpecificOppijat.oppija("Vuonna 2004 syntynyt (ei kotikuntahistoriaa)", "Peruskoulu suoritettu 2021", "010104A227T", syntymäaika = Some(LocalDate.of(2004, 1, 1)), kotikunta = Some("091"))
+  val vuonna2004SyntynytPeruskouluValmis2021EiKotikuntahistoriaa = koskiSpecificOppijat.oppija(
+    "Vuonna 2004 syntynyt (ei kotikuntahistoriaa)", "Peruskoulu suoritettu 2021", "010104A227T",
+    syntymäaika = Some(LocalDate.of(2004, 1, 1)),
+    kotikunta = Some("091"),
+    kuntahistoriaMock = MockOppijat.kuntahistoriaTyhjä _
+  )
   val vainMitätöityjäOpiskeluoikeuksia = koskiSpecificOppijat.oppija("Mitätön", "Minna", "010106A492V", syntymäaika = Some(LocalDate.of(2006, 1, 1)), kotikunta = Some("091"))
   val lahdejarjestelmanPurku = koskiSpecificOppijat.oppija("Purettava", "Lasse", "010106A013D", syntymäaika = Some(LocalDate.of(2006, 1, 1)), kotikunta = Some("091"))
   val rikkinäinenPerusopetus = koskiSpecificOppijat.oppija("Rikkinäinen", "Perusopetus", "311203A729Y", syntymäaika = Some(LocalDate.of(2003, 12, 31)))
@@ -208,15 +213,17 @@ object KoskiSpecificMockOppijat {
   //Jos luot uuden oppijan voi hetun generoida täältä: http://www.lintukoto.net/muut/henkilotunnus/index.php
   //Huomaa, että hetun pitää olla oikean kaltainen
 
-  val virtaOppija = koskiSpecificOppijat.addOppija(LaajatOppijaHenkilöTiedot(oid = "1.2.246.562.24.57060795845", sukunimi = "Virta", etunimet = "Veikko", kutsumanimi = "Veikko", hetu = Some("270191-4208"), syntymäaika = Some(LocalDate.of(1978, 3, 25)), äidinkieli = None, kansalaisuus = None))
-  val virtaOppijaHetuton = koskiSpecificOppijat.addOppija(OppijaHenkilöWithMasterInfo(
+  val virtaOppija = koskiSpecificOppijat.addLaajatOppijaHenkilöTiedot(LaajatOppijaHenkilöTiedot(oid = "1.2.246.562.24.57060795845", sukunimi = "Virta", etunimet = "Veikko", kutsumanimi = "Veikko", hetu = Some("270191-4208"), syntymäaika = Some(LocalDate.of(1978, 3, 25)), äidinkieli = None, kansalaisuus = None))
+  val virtaOppijaHetuton = koskiSpecificOppijat.addOppijaHenkilöWithMasterInfo(OppijaHenkilöWithMasterInfo(
     LaajatOppijaHenkilöTiedot(oid = "1.2.246.562.24.20170814313", sukunimi = "Virta", etunimet = "Veikko", kutsumanimi = "Veikko", hetu = None, syntymäaika = Some(LocalDate.of(1978, 3, 25)), äidinkieli = None, kansalaisuus = None),
     Some(virtaOppija)))
 
-  val virtaOppijaValiaikainenHetu = koskiSpecificOppijat.addOppija(LaajatOppijaHenkilöTiedot(oid = "1.2.246.562.24.20170814999", sukunimi = "Hetu", etunimet = "Valiaikainen", kutsumanimi = "Vahetu", hetu = Some("010469-999W"), syntymäaika = Some(LocalDate.of(1969, 4, 1)), äidinkieli = None, kansalaisuus = None))
+  val virtaOppijaValiaikainenHetu = koskiSpecificOppijat.addLaajatOppijaHenkilöTiedot(LaajatOppijaHenkilöTiedot(oid = "1.2.246.562.24.20170814999", sukunimi = "Hetu", etunimet = "Valiaikainen", kutsumanimi = "Vahetu", hetu = Some("010469-999W"), syntymäaika = Some(LocalDate.of(1969, 4, 1)), äidinkieli = None, kansalaisuus = None))
   val virtaOpiskeluoikeuksiaSamallaAvaimella = koskiSpecificOppijat.oppija("Opiskeluoikeuksia-samalla-avaimella", "Korkeakoululainen", "130505A831H")
 
   val pelkkäYo2021 = koskiSpecificOppijat.oppija("Pelkkä YO", "Koski", "300805A847D", syntymäaika = Some(LocalDate.of(2005,8,30)),kotikunta = Some("091"))
 
   def defaultOppijat = koskiSpecificOppijat.getOppijat
+  def defaultKuntahistoriat: mutable.Map[String, Seq[OppijanumerorekisteriKotikuntahistoriaRow]] = koskiSpecificOppijat.getKuntahistoriat
+  def defaultTurvakieltoKuntahistoriat: mutable.Map[String, Seq[OppijanumerorekisteriKotikuntahistoriaRow]] = koskiSpecificOppijat.getTurvakieltoKuntahistoriat
 }

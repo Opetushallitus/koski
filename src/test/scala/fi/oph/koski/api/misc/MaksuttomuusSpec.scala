@@ -163,7 +163,7 @@ class MaksuttomuusSpec extends AnyFreeSpec with OpiskeluoikeusTestMethodsAmmatil
 
       "Ei saa siirtää jos suoritus vahvistettu ennen Valpas-lain voimaantuloaikaa" - {
         "Aikuisten perusopetuksen oppimäärä" in {
-          val opiskeluoikeus = ExamplesAikuistenPerusopetus.aikuistenPerusopetuksenOpiskeluoikeusAlkuvaiheineen
+          val opiskeluoikeus = ExamplesAikuistenPerusopetus.aikuistenPerusopetuksenOpiskeluoikeusAlkuvaiheineenValmistunutVanhanOppivelvollisuuslainAikana
 
           setupOppijaWithOpiskeluoikeus(opiskeluoikeus, KoskiSpecificMockOppijat.vuonna2005SyntynytEiOpiskeluoikeuksiaFikstuurissa) {
             verifyResponseStatusOk()
@@ -309,7 +309,7 @@ class MaksuttomuusSpec extends AnyFreeSpec with OpiskeluoikeusTestMethodsAmmatil
         }
 
         "Linkitetty oppija - slavella siirron estävä oppimäärä" in {
-          val opiskeluoikeus = ExamplesAikuistenPerusopetus.aikuistenPerusopetuksenOpiskeluoikeusAlkuvaiheineen
+          val opiskeluoikeus = ExamplesAikuistenPerusopetus.aikuistenPerusopetuksenOpiskeluoikeusAlkuvaiheineenValmistunutVanhanOppivelvollisuuslainAikana
 
           setupOppijaWithOpiskeluoikeus(opiskeluoikeus, KoskiSpecificMockOppijat.oppivelvollisuustietoSlave1.henkilö) {
             verifyResponseStatusOk()
@@ -324,7 +324,7 @@ class MaksuttomuusSpec extends AnyFreeSpec with OpiskeluoikeusTestMethodsAmmatil
           }
         }
         "Linkitetty oppija - masterilla siirron estävä oppimäärä" in {
-          val opiskeluoikeus = ExamplesAikuistenPerusopetus.aikuistenPerusopetuksenOpiskeluoikeusAlkuvaiheineen
+          val opiskeluoikeus = ExamplesAikuistenPerusopetus.aikuistenPerusopetuksenOpiskeluoikeusAlkuvaiheineenValmistunutVanhanOppivelvollisuuslainAikana
 
           setupOppijaWithOpiskeluoikeus(opiskeluoikeus, KoskiSpecificMockOppijat.oppivelvollisuustietoMaster) {
             verifyResponseStatusOk()

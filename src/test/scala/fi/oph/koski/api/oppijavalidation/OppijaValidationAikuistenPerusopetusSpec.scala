@@ -64,8 +64,8 @@ class OppijaValidationAikuistenPerusopetusSpec
   "Alkuvaiheen suoritus" - {
     "Kun yritetään liittää suoritus väärään koulutustyyppiin liittyvään perusteeseen -> HTTP 400" in {
       val oo = defaultOpiskeluoikeus.copy(
-        suoritukset = List(aikuistenPerusopetuksenAlkuvaiheenSuoritus.copy(
-          koulutusmoduuli = aikuistenPerusopetuksenAlkuvaiheenSuoritus.koulutusmoduuli.copy(perusteenDiaarinumero = Some(vääräntyyppisenPerusteenDiaarinumero))
+        suoritukset = List(aikuistenPerusopetuksenAlkuvaiheenSuoritus().copy(
+          koulutusmoduuli = aikuistenPerusopetuksenAlkuvaiheenSuoritus().koulutusmoduuli.copy(perusteenDiaarinumero = Some(vääräntyyppisenPerusteenDiaarinumero))
         ))
       )
 
@@ -77,8 +77,8 @@ class OppijaValidationAikuistenPerusopetusSpec
     "oppiaineen arviointia" - {
       "ei vaadita" in {
         val opiskeluoikeus = defaultOpiskeluoikeus.copy(
-          suoritukset = List(aikuistenPerusopetuksenAlkuvaiheenSuoritus.copy(
-            osasuoritukset = aikuistenPerusopetuksenAlkuvaiheenSuoritus.osasuoritukset.map(_.map(_.copy(arviointi = None)))
+          suoritukset = List(aikuistenPerusopetuksenAlkuvaiheenSuoritus().copy(
+            osasuoritukset = aikuistenPerusopetuksenAlkuvaiheenSuoritus().osasuoritukset.map(_.map(_.copy(arviointi = None)))
           ))
         )
         setupOppijaWithOpiskeluoikeus(opiskeluoikeus) {
@@ -89,8 +89,8 @@ class OppijaValidationAikuistenPerusopetusSpec
     "kurssin arviointi" - {
       "vaaditaan" in {
         val opiskeluoikeus = defaultOpiskeluoikeus.copy(
-          suoritukset = List(aikuistenPerusopetuksenAlkuvaiheenSuoritus.copy(
-            osasuoritukset = aikuistenPerusopetuksenAlkuvaiheenSuoritus.osasuoritukset.map(xs =>
+          suoritukset = List(aikuistenPerusopetuksenAlkuvaiheenSuoritus().copy(
+            osasuoritukset = aikuistenPerusopetuksenAlkuvaiheenSuoritus().osasuoritukset.map(xs =>
               List(xs.head.copy(
                 arviointi = None,
                 osasuoritukset = xs.head.osasuoritukset.map(x => List(x.head.copy(arviointi = None))))
@@ -111,8 +111,8 @@ class OppijaValidationAikuistenPerusopetusSpec
     "aikuisten perusopetuksen oppivaiheessa" - {
       "sallitaan" in {
         val opiskeluoikeus = defaultOpiskeluoikeus.copy(
-          suoritukset = List(aikuistenPerusopetuksenAlkuvaiheenSuoritus.copy(
-            osasuoritukset = aikuistenPerusopetuksenAlkuvaiheenSuoritus.osasuoritukset.map(xs => xs.head :: xs)
+          suoritukset = List(aikuistenPerusopetuksenAlkuvaiheenSuoritus().copy(
+            osasuoritukset = aikuistenPerusopetuksenAlkuvaiheenSuoritus().osasuoritukset.map(xs => xs.head :: xs)
           ))
         )
         setupOppijaWithOpiskeluoikeus(opiskeluoikeus) {
@@ -138,7 +138,7 @@ class OppijaValidationAikuistenPerusopetusSpec
       val opiskeluoikeus = opiskeluoikeusWithValmistunutTila.copy(
         suoritukset = List(
           aikuistenPerusopetuksenOppimääränSuoritus(),
-          aikuistenPerusopetuksenAlkuvaiheenSuoritus
+          aikuistenPerusopetuksenAlkuvaiheenSuoritus()
         )
       )
       setupOppijaWithOpiskeluoikeus(opiskeluoikeus) {
@@ -149,7 +149,7 @@ class OppijaValidationAikuistenPerusopetusSpec
       val opiskeluoikeus = opiskeluoikeusWithValmistunutTila.copy(
         suoritukset = List(
           aikuistenPerusopetuksenOppimääränSuoritus(),
-          aikuistenPerusopetuksenAlkuvaiheenSuoritus.copy(vahvistus = None)
+          aikuistenPerusopetuksenAlkuvaiheenSuoritus().copy(vahvistus = None)
         )
       )
       setupOppijaWithOpiskeluoikeus(opiskeluoikeus) {
@@ -167,7 +167,7 @@ class OppijaValidationAikuistenPerusopetusSpec
     "Ei voida asettaa kun perusopetuksen oppimäärä on vahvistamatta" in {
       val opiskeluoikeus = opiskeluoikeusWithValmistunutTila.copy(
         suoritukset = List(
-          aikuistenPerusopetuksenAlkuvaiheenSuoritus,
+          aikuistenPerusopetuksenAlkuvaiheenSuoritus(),
           aikuistenPerusopetuksenOppimääränSuoritus().copy(vahvistus = None)
         )
       )
@@ -176,14 +176,14 @@ class OppijaValidationAikuistenPerusopetusSpec
       }
     }
     "Ei voida asettaa kun vahvistettu alkuvaihe on ainoa suoritus" in {
-      val opiskeluoikeus = opiskeluoikeusWithValmistunutTila.copy(suoritukset = List(aikuistenPerusopetuksenAlkuvaiheenSuoritus))
+      val opiskeluoikeus = opiskeluoikeusWithValmistunutTila.copy(suoritukset = List(aikuistenPerusopetuksenAlkuvaiheenSuoritus()))
       setupOppijaWithOpiskeluoikeus(opiskeluoikeus) {
         verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.suoritusPuuttuu("Opiskeluoikeutta aikuistenperusopetus ei voi merkitä valmiiksi kun siitä puuttuu suoritus aikuistenperusopetuksenoppimaara tai perusopetuksenoppiaineenoppimaara"))
       }
     }
     "Ei voida asettaa kun vahvistamaton alkuvaihe on ainut suoritus" in {
       val opiskeluoikeus = opiskeluoikeusWithValmistunutTila.copy(
-        suoritukset = List(aikuistenPerusopetuksenAlkuvaiheenSuoritus.copy(vahvistus = None))
+        suoritukset = List(aikuistenPerusopetuksenAlkuvaiheenSuoritus().copy(vahvistus = None))
       )
       setupOppijaWithOpiskeluoikeus(opiskeluoikeus) {
         verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.suoritusPuuttuu("Opiskeluoikeutta aikuistenperusopetus ei voi merkitä valmiiksi kun siitä puuttuu suoritus aikuistenperusopetuksenoppimaara tai perusopetuksenoppiaineenoppimaara"))

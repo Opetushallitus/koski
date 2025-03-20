@@ -823,7 +823,7 @@ class AikuistenPerusopetusRaporttiSpec
   lazy val oid = "123"
 
   private def lisääMaksuttomuusJaPäätasonSuorituksia(oppija: LaajatOppijaHenkilöTiedot, päätasonSuoritukset: List[AikuistenPerusopetuksenPäätasonSuoritus]) = {
-    val oo = ExamplesAikuistenPerusopetus.aikuistenPerusopetuksenOpiskeluoikeusAlkuvaiheineen
+    val oo = ExamplesAikuistenPerusopetus.aikuistenPerusopetuksenOpiskeluoikeusAlkuvaiheineenValmistunutUudenOppivelvollisuuslainAikana
     putOppija(Oppija(oppija, List(
       oo.copy(
         oid = None,

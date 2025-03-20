@@ -58,7 +58,7 @@ class AikuistenPerusopetuksenAineopiskelijoidenKurssikertymätSpec
     koulutustoimija = None,
     oppilaitos = Some(oppilaitos),
     suoritukset = List(
-      aikuistenPerusopetuksenAlkuvaiheenSuoritus,
+      aikuistenPerusopetuksenAlkuvaiheenSuoritus(),
       aikuistenPerusopetukseOppimääränSuoritus(aikuistenPerusopetus2017, oppiaineidenSuoritukset2017)
     ),
     lisätiedot = Some(AikuistenPerusopetuksenOpiskeluoikeudenLisätiedot(vaikeastiVammainen = Some(List(Aikajakso(date(2014, 6, 6), None)))))

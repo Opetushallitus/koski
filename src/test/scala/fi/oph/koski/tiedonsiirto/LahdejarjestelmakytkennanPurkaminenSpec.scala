@@ -107,6 +107,7 @@ class LahdejarjestelmakytkennanPurkaminenSpec
         .findByOid(oid)
         .toOption.get.toOpiskeluoikeusUnsafe
         .asInstanceOf[LukionOpiskeluoikeus]
+        .withLisääPuuttuvaMaksuttomuustieto
       opiskeluoikeus.lähdejärjestelmäkytkentäPurettu.isDefined should equal(true)
 
       opiskeluoikeus
@@ -116,7 +117,7 @@ class LahdejarjestelmakytkennanPurkaminenSpec
       val opiskeluoikeus = alustaPurettuOpiskeluoikeus
       val päivitettyOpiskeluoikeus = opiskeluoikeus.copy(
         tila = opiskeluoikeus.tila.copy(opiskeluoikeusjaksot = opiskeluoikeus.tila.opiskeluoikeusjaksot.init)
-      )
+      ).withLisääPuuttuvaMaksuttomuustieto
       putOpiskeluoikeus(päivitettyOpiskeluoikeus, oppija) {
         verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.terminaalitilaaEiSaaPurkaa())
       }
@@ -132,7 +133,7 @@ class LahdejarjestelmakytkennanPurkaminenSpec
           )
         ),
         suoritukset = List(oppimääränSuoritus.copy(vahvistus = None)),
-      )
+      ).withLisääPuuttuvaMaksuttomuustieto
       putOpiskeluoikeus(päivitettyOpiskeluoikeus, oppija) {
         verifyResponseStatusOk()
       }
@@ -176,7 +177,7 @@ class LahdejarjestelmakytkennanPurkaminenSpec
   private def purettavaLukioOpiskeluoikeusOid: String = {
     val result = app.opiskeluoikeusRepository.createOrUpdate(
       UnverifiedHenkilöOid(oppija.oid, app.henkilöRepository),
-      päättynytLukioOpiskeluoikeus,
+      päättynytLukioOpiskeluoikeus.withLisääPuuttuvaMaksuttomuustieto,
       allowUpdate = true,
     )(KoskiSpecificSession.systemUser)
 

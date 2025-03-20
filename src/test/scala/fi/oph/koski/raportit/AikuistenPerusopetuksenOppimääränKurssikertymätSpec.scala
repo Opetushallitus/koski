@@ -40,7 +40,7 @@ class AikuistenPerusopetuksenOppimääränKurssikertymätSpec
     raporttiBuilder.build(List(jyväskylänNormaalikoulu), aikaisintaan, viimeistaan, t)(session(defaultUser)).rows.map(_.asInstanceOf[AikuistenPerusopetuksenOppimääränKurssikertymätRow])
 
   override protected def alterFixture(): Unit = {
-    val ooEronnut = ExamplesAikuistenPerusopetus.aikuistenPerusopetuksenOpiskeluoikeusAlkuvaiheineen.copy(
+    val ooEronnut = ExamplesAikuistenPerusopetus.aikuistenPerusopetuksenOpiskeluoikeusAlkuvaiheineenValmistunutVanhanOppivelvollisuuslainAikana.copy(
       tila = AikuistenPerusopetuksenOpiskeluoikeudenTila(
         List(
           AikuistenPerusopetuksenOpiskeluoikeusjakso(date(2008, 8, 15), opiskeluoikeusLäsnä, Some(valtionosuusRahoitteinen)),
@@ -48,7 +48,7 @@ class AikuistenPerusopetuksenOppimääränKurssikertymätSpec
         )
       ),
       suoritukset = List(
-        aikuistenPerusopetuksenAlkuvaiheenSuoritus.copy(
+        aikuistenPerusopetuksenAlkuvaiheenSuoritus().copy(
           osasuoritukset = Some(List(
             alkuvaiheenOppiaineenSuoritus(AikuistenPerusopetuksenAlkuvaiheenÄidinkieliJaKirjallisuus(kieli = Koodistokoodiviite(koodiarvo = "AI1", koodistoUri = "oppiaineaidinkielijakirjallisuus"))).copy(
               arviointi = PerusopetusExampleData.arviointi(9, Some(date(2016, 12, 29))),
@@ -61,14 +61,14 @@ class AikuistenPerusopetuksenOppimääränKurssikertymätSpec
       )
     )
 
-    val oo  = ExamplesAikuistenPerusopetus.aikuistenPerusopetuksenOpiskeluoikeusAlkuvaiheineen.copy(
+    val oo  = ExamplesAikuistenPerusopetus.aikuistenPerusopetuksenOpiskeluoikeusAlkuvaiheineenValmistunutVanhanOppivelvollisuuslainAikana.copy(
       tila = AikuistenPerusopetuksenOpiskeluoikeudenTila(
         List(
           AikuistenPerusopetuksenOpiskeluoikeusjakso(aikaisintaan.minusYears(1), opiskeluoikeusLäsnä, Some(valtionosuusRahoitteinen)),
         )
       ),
       suoritukset = List(
-        aikuistenPerusopetuksenAlkuvaiheenSuoritus.copy(
+        aikuistenPerusopetuksenAlkuvaiheenSuoritus().copy(
           osasuoritukset = Some(List(
             alkuvaiheenOppiaineenSuoritus(AikuistenPerusopetuksenAlkuvaiheenÄidinkieliJaKirjallisuus(kieli = Koodistokoodiviite(koodiarvo = "AI1", koodistoUri = "oppiaineaidinkielijakirjallisuus"))).copy(
               arviointi = PerusopetusExampleData.arviointi(9, Some(viimeistaan.plusMonths(2))),
@@ -109,7 +109,7 @@ class AikuistenPerusopetuksenOppimääränKurssikertymätSpec
     koulutustoimija = None,
     oppilaitos = Some(oppilaitos),
     suoritukset = List(
-      aikuistenPerusopetuksenAlkuvaiheenSuoritus,
+      aikuistenPerusopetuksenAlkuvaiheenSuoritus(),
       aikuistenPerusopetukseOppimääränSuoritus(aikuistenPerusopetus2017, oppiaineidenSuoritukset2017)
     ),
     lisätiedot = Some(AikuistenPerusopetuksenOpiskeluoikeudenLisätiedot(vaikeastiVammainen = Some(List(Aikajakso(date(2014, 6, 6), None)))))
@@ -120,7 +120,7 @@ class AikuistenPerusopetuksenOppimääränKurssikertymätSpec
         val jyväskylänOpiskeluoikeus: AikuistenPerusopetuksenOpiskeluoikeus = setupOppijaWithAndGetOpiskeluoikeus(defaultOpiskeluoikeus, defaultHenkilö, user = paakayttaja)
         val kuoriOpiskeluoikeus = createLinkitetytOpiskeluoikeudet(jyväskylänOpiskeluoikeus, MockOrganisaatiot.jyväskylänNormaalikoulu).copy(
           suoritukset = List(
-            aikuistenPerusopetuksenAlkuvaiheenSuoritus,
+            aikuistenPerusopetuksenAlkuvaiheenSuoritus(),
             aikuistenPerusopetukseOppimääränSuoritus(aikuistenPerusopetus2017, oppiaineidenSuoritukset2017)
           ),
         )
@@ -182,7 +182,7 @@ class AikuistenPerusopetuksenOppimääränKurssikertymätSpec
     val pihviOpiskeluoikeus = makeOpiskeluoikeus(oppilaitos = Oppilaitos(pihviOppilaitos)).copy(
       oid = kuoriOpiskeluoikeus.oid,
       suoritukset = List(
-        aikuistenPerusopetuksenAlkuvaiheenSuoritus,
+        aikuistenPerusopetuksenAlkuvaiheenSuoritus(),
         aikuistenPerusopetukseOppimääränSuoritus(aikuistenPerusopetus2017, oppiaineidenSuoritukset2017)
       ),
       sisältyyOpiskeluoikeuteen = Some(SisältäväOpiskeluoikeus(kuoriOpiskeluoikeus.oppilaitos.get, kuoriOpiskeluoikeus.oid.get))

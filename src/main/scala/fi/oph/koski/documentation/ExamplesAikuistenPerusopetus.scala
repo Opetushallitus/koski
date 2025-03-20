@@ -17,7 +17,7 @@ object ExamplesAikuistenPerusopetus {
     Example("perusopetuksen oppiaineen oppimäärä - päättötodistus", "Aikuisopiskelija on suorittanut peruskoulun äidinkielen oppimäärän", aineopiskelija),
     Example("aikuisten perusopetuksen oppiaineen oppimärä - kesken", "Aikuisopiskelija suorittaa peruskoulun matematiikan oppimäärää", aineopiskelijaKesken),
     Example("aikuisten perusopetuksen oppimäärä 2015", "Aikuisopiskelija on suorittanut aikuisten perusopetuksen oppimäärän opetussuunnitelman 2015 mukaisesti", aikuistenPerusopetuksenOppimäärä2015),
-    Example("aikuisten perusopetuksen oppimäärä 2017", "Aikuisopiskelija on suorittanut aikuisten perusopetuksen oppimäärän alkuvaiheineen opetussuunnitelman 2017 mukaisesti", Oppija(exampleHenkilö, List(aikuistenPerusopetuksenOpiskeluoikeusAlkuvaiheineen)))
+    Example("aikuisten perusopetuksen oppimäärä 2017", "Aikuisopiskelija on suorittanut aikuisten perusopetuksen oppimäärän alkuvaiheineen opetussuunnitelman 2017 mukaisesti", Oppija(exampleHenkilö, List(aikuistenPerusopetuksenOpiskeluoikeusAlkuvaiheineenValmistunutVanhanOppivelvollisuuslainAikana)))
   )
 
   lazy val aineopiskelija = Oppija(
@@ -108,11 +108,11 @@ object ExamplesAikuistenPerusopetus {
     ))
   )
 
-  def aikuistenPerusopetuksenOpiskeluoikeusAlkuvaiheineen = AikuistenPerusopetuksenOpiskeluoikeus(
+  def aikuistenPerusopetuksenOpiskeluoikeusAlkuvaiheineenValmistunutVanhanOppivelvollisuuslainAikana = AikuistenPerusopetuksenOpiskeluoikeus(
     oppilaitos = Some(jyväskylänNormaalikoulu),
     koulutustoimija = None,
     suoritukset = List(
-      aikuistenPerusopetuksenAlkuvaiheenSuoritus,
+      aikuistenPerusopetuksenAlkuvaiheenSuoritus(),
       aikuistenPerusopetukseOppimääränSuoritus(aikuistenPerusopetus2017, oppiaineidenSuoritukset2017)
     ),
     tila = AikuistenPerusopetuksenOpiskeluoikeudenTila(
@@ -123,13 +123,36 @@ object ExamplesAikuistenPerusopetus {
     )
   )
 
-  def aikuistenPerusopetukseOppimääränSuoritus(koulutus: AikuistenPerusopetus, oppiaineet: Option[List[AikuistenPerusopetuksenOppiaineenSuoritus]]) = {
+  def aikuistenPerusopetuksenOpiskeluoikeusAlkuvaiheineenValmistunutUudenOppivelvollisuuslainAikana = {
+    val valmistumispäivä = date(2021, 6, 4)
+
+    AikuistenPerusopetuksenOpiskeluoikeus(
+      oppilaitos = Some(jyväskylänNormaalikoulu),
+      koulutustoimija = None,
+      suoritukset = List(
+        aikuistenPerusopetuksenAlkuvaiheenSuoritus(vahvistus = vahvistusPaikkakunnalla(valmistumispäivä)),
+        aikuistenPerusopetukseOppimääränSuoritus(aikuistenPerusopetus2017, oppiaineidenSuoritukset2017, vahvistus = vahvistusPaikkakunnalla(valmistumispäivä) )
+      ),
+      tila = AikuistenPerusopetuksenOpiskeluoikeudenTila(
+        List(
+          AikuistenPerusopetuksenOpiskeluoikeusjakso(date(2008, 8, 15), opiskeluoikeusLäsnä, Some(valtionosuusRahoitteinen)),
+          AikuistenPerusopetuksenOpiskeluoikeusjakso(valmistumispäivä, opiskeluoikeusValmistunut, Some(valtionosuusRahoitteinen))
+        )
+      )
+    )
+  }
+
+  def aikuistenPerusopetukseOppimääränSuoritus(
+    koulutus: AikuistenPerusopetus,
+    oppiaineet: Option[List[AikuistenPerusopetuksenOppiaineenSuoritus]],
+    vahvistus: Option[HenkilövahvistusPaikkakunnalla] = vahvistusPaikkakunnalla()
+  ) = {
     AikuistenPerusopetuksenOppimääränSuoritus(
       koulutusmoduuli = koulutus,
       suorituskieli = suomenKieli,
       omanÄidinkielenOpinnot = ExamplesLukio.omanÄidinkielenOpinnotSaame,
       toimipiste = jyväskylänNormaalikoulu,
-      vahvistus = vahvistusPaikkakunnalla(),
+      vahvistus = vahvistus,
       suoritustapa = suoritustapaErityinenTutkinto,
       osasuoritukset = oppiaineet
     )
@@ -255,7 +278,7 @@ object ExamplesAikuistenPerusopetus {
       List(AikuistenPerusopetuksenOpiskeluoikeus(
         oppilaitos = Some(jyväskylänNormaalikoulu),
         koulutustoimija = None,
-        suoritukset = List(aikuistenPerusopetuksenAlkuvaiheenSuoritus),
+        suoritukset = List(aikuistenPerusopetuksenAlkuvaiheenSuoritus()),
         tila = AikuistenPerusopetuksenOpiskeluoikeudenTila(
           List(
             AikuistenPerusopetuksenOpiskeluoikeusjakso(date(2008, 8, 15), opiskeluoikeusLäsnä, Some(valtionosuusRahoitteinen)),
@@ -266,12 +289,14 @@ object ExamplesAikuistenPerusopetus {
     )
   }
 
-  def aikuistenPerusopetuksenAlkuvaiheenSuoritus = AikuistenPerusopetuksenAlkuvaiheenSuoritus(
+  def aikuistenPerusopetuksenAlkuvaiheenSuoritus(
+    vahvistus: Option[HenkilövahvistusPaikkakunnalla] = vahvistusPaikkakunnalla()
+  ) = AikuistenPerusopetuksenAlkuvaiheenSuoritus(
     aikuistenPerusopetuksenAlkuvaihe2017,
     suorituskieli = suomenKieli,
     omanÄidinkielenOpinnot = ExamplesLukio.omanÄidinkielenOpinnotSaame,
     toimipiste = jyväskylänNormaalikoulu,
-    vahvistus = vahvistusPaikkakunnalla(),
+    vahvistus = vahvistus,
     suoritustapa = suoritustapaErityinenTutkinto,
     osasuoritukset = alkuvaiheenOppiaineet
   )

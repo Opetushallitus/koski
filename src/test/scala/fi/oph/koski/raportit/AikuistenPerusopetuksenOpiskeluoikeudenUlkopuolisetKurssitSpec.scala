@@ -35,7 +35,7 @@ class AikuistenPerusopetuksenOpiskeluoikeudenUlkopuolisetKurssitSpec
     raporttiBuilder.build(List(jyväskylänNormaalikoulu), date(2006, 1, 1), date(2018, 12, 30), t)(session(defaultUser)).rows.map(_.asInstanceOf[AikuistenPerusopetuksenOpiskeluoikeudenUlkopuolisetKurssitRow])
 
   override protected def alterFixture(): Unit = {
-    val ooEronnut = ExamplesAikuistenPerusopetus.aikuistenPerusopetuksenOpiskeluoikeusAlkuvaiheineen.copy(
+    val ooEronnut = ExamplesAikuistenPerusopetus.aikuistenPerusopetuksenOpiskeluoikeusAlkuvaiheineenValmistunutVanhanOppivelvollisuuslainAikana.copy(
       tila = AikuistenPerusopetuksenOpiskeluoikeudenTila(
         List(
           AikuistenPerusopetuksenOpiskeluoikeusjakso(date(2008, 8, 15), opiskeluoikeusLäsnä, Some(valtionosuusRahoitteinen)),
@@ -43,7 +43,7 @@ class AikuistenPerusopetuksenOpiskeluoikeudenUlkopuolisetKurssitSpec
         )
       ),
       suoritukset = List(
-        aikuistenPerusopetuksenAlkuvaiheenSuoritus
+        aikuistenPerusopetuksenAlkuvaiheenSuoritus()
       )
     )
     putOpiskeluoikeus(ooEronnut, tyhjä){
@@ -66,7 +66,7 @@ class AikuistenPerusopetuksenOpiskeluoikeudenUlkopuolisetKurssitSpec
     koulutustoimija = None,
     oppilaitos = Some(oppilaitos),
     suoritukset = List(
-      aikuistenPerusopetuksenAlkuvaiheenSuoritus,
+      aikuistenPerusopetuksenAlkuvaiheenSuoritus(),
       aikuistenPerusopetukseOppimääränSuoritus(aikuistenPerusopetus2017, oppiaineidenSuoritukset2017)
     ),
     lisätiedot = Some(AikuistenPerusopetuksenOpiskeluoikeudenLisätiedot(vaikeastiVammainen = Some(List(Aikajakso(date(2014, 6, 6), None)))))

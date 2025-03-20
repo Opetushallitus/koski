@@ -20,6 +20,8 @@ import java.time.LocalDate.{of => date}
 
 class KoskiSpecificDatabaseFixtureCreator(application: KoskiApplication) extends DatabaseFixtureCreator(application, "opiskeluoikeus_fixture", "opiskeluoikeushistoria_fixture") {
   protected def oppijat = KoskiSpecificMockOppijat.defaultOppijat
+  protected def kuntahistoriat = KoskiSpecificMockOppijat.defaultKuntahistoriat
+  protected def turvakieltoKuntahistoriat = KoskiSpecificMockOppijat.defaultTurvakieltoKuntahistoriat
 
   protected lazy val invalidOpiskeluoikeudet: List[(OppijaHenkilö, KoskeenTallennettavaOpiskeluoikeus)] = {
     val validOpiskeluoikeus: AmmatillinenOpiskeluoikeus = updateFieldsAndValidateOpiskeluoikeus(AmmatillinenExampleData.opiskeluoikeus(tutkinto = tietoJaViestintäTekniikanPerustutkinnonSuoritus(stadinToimipiste)))
@@ -160,7 +162,7 @@ class KoskiSpecificDatabaseFixtureCreator(application: KoskiApplication) extends
       (KoskiSpecificMockOppijat.toimintaAlueittainOpiskelija, ExamplesPerusopetus.toimintaAlueittainOpiskelija.tallennettavatOpiskeluoikeudet.head),
       (KoskiSpecificMockOppijat.oppiaineenKorottaja, ExamplesAikuistenPerusopetus.oppiaineenOppimääräOpiskeluoikeus),
       (KoskiSpecificMockOppijat.montaOppiaineenOppimäärääOpiskeluoikeudessa, ExamplesAikuistenPerusopetus.montaOppiaineenOppimääränSuoritustaOpiskeluoikeus),
-      (KoskiSpecificMockOppijat.aikuisOpiskelija, ExamplesAikuistenPerusopetus.aikuistenPerusopetuksenOpiskeluoikeusAlkuvaiheineen),
+      (KoskiSpecificMockOppijat.aikuisOpiskelija, ExamplesAikuistenPerusopetus.aikuistenPerusopetuksenOpiskeluoikeusAlkuvaiheineenValmistunutVanhanOppivelvollisuuslainAikana),
       (KoskiSpecificMockOppijat.aikuisAineOpiskelijaMuuKuinVos, AikuistenPerusopetusOppijaMaaratRaporttiFixtures.aineOpiskelijaMuuKuinVos),
       (KoskiSpecificMockOppijat.aikuisOpiskelijaMuuKuinVos, AikuistenPerusopetusOppijaMaaratRaporttiFixtures.oppimääränSuorittajaMuuKuinVos),
       (KoskiSpecificMockOppijat.aikuisOpiskelijaVieraskielinen, AikuistenPerusopetusOppijaMaaratRaporttiFixtures.oppimääränSuorittaja),

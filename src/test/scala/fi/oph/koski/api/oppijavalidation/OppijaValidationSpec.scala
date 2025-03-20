@@ -4,7 +4,7 @@ import fi.oph.koski.KoskiHttpSpec
 import fi.oph.koski.api.misc.OpiskeluoikeusTestMethodsAmmatillinen
 import fi.oph.koski.documentation.AmmatillinenExampleData.{stadinAmmattiopisto, _}
 import fi.oph.koski.documentation.ExampleData.{helsinki, vahvistus}
-import fi.oph.koski.documentation.ExamplesAikuistenPerusopetus.aikuistenPerusopetuksenOpiskeluoikeusAlkuvaiheineen
+import fi.oph.koski.documentation.ExamplesAikuistenPerusopetus.aikuistenPerusopetuksenOpiskeluoikeusAlkuvaiheineenValmistunutVanhanOppivelvollisuuslainAikana
 import fi.oph.koski.documentation.{AmmatillinenExampleData, ExampleData}
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat.opiskeluoikeudenOidKonflikti
@@ -210,8 +210,8 @@ class OppijaValidationSpec extends AnyFreeSpec with KoskiHttpSpec with Opiskeluo
 
         "Tyypin muutos" in {
           val opiskeluoikeus = lastOpiskeluoikeus(KoskiSpecificMockOppijat.ysiluokkalainen.oid)
-          putOppija(Oppija(KoskiSpecificMockOppijat.ysiluokkalainen, List(aikuistenPerusopetuksenOpiskeluoikeusAlkuvaiheineen.withOidAndVersion(opiskeluoikeus.oid, versionumero = None)))) {
-            verifyResponseStatus(403, KoskiErrorCategory.forbidden.kiellettyMuutos(s"Opiskeluoikeuden tyyppiä ei voi vaihtaa. Vanha tyyppi ${opiskeluoikeus.tyyppi.koodiarvo}. Uusi tyyppi ${aikuistenPerusopetuksenOpiskeluoikeusAlkuvaiheineen.tyyppi.koodiarvo}."))
+          putOppija(Oppija(KoskiSpecificMockOppijat.ysiluokkalainen, List(aikuistenPerusopetuksenOpiskeluoikeusAlkuvaiheineenValmistunutVanhanOppivelvollisuuslainAikana.withOidAndVersion(opiskeluoikeus.oid, versionumero = None)))) {
+            verifyResponseStatus(403, KoskiErrorCategory.forbidden.kiellettyMuutos(s"Opiskeluoikeuden tyyppiä ei voi vaihtaa. Vanha tyyppi ${opiskeluoikeus.tyyppi.koodiarvo}. Uusi tyyppi ${aikuistenPerusopetuksenOpiskeluoikeusAlkuvaiheineenValmistunutVanhanOppivelvollisuuslainAikana.tyyppi.koodiarvo}."))
           }
         }
       }

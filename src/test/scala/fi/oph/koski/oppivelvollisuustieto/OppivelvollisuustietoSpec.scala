@@ -57,7 +57,7 @@ class OppivelvollisuustietoSpec
         queryOids(oppivelvollisuustietoLiianVanha.oid) shouldBe(Nil)
       }
       "Henkilö on suorittanut aikuisten perusopetuksen oppimäärän ennen vuotta 2021" in {
-        clearAndInsert(oikeusOpiskelunMaksuttomuuteen, ExamplesAikuistenPerusopetus.aikuistenPerusopetuksenOpiskeluoikeusAlkuvaiheineen)
+        clearAndInsert(oikeusOpiskelunMaksuttomuuteen, ExamplesAikuistenPerusopetus.aikuistenPerusopetuksenOpiskeluoikeusAlkuvaiheineenValmistunutVanhanOppivelvollisuuslainAikana)
         reloadRaportointikanta
         queryOids(oikeusOpiskelunMaksuttomuuteen.oid) shouldBe(Nil)
       }
@@ -339,8 +339,8 @@ class OppivelvollisuustietoSpec
 
       "Jos on suorittanut IB-tutkinnon ja international schoolin, käytetään päättymispäivänä ikään perustuvaa vahvistuspäivää, koska kumpikaan ei ole ov-päättävä tutkinto" - {
         "Vahvistuspäivä päättää molemmat aikaisemmin" in {
-          clearAndInsert(master, ibTutkinto(ibTutkinnonVahvistus = Some(date(2021, 3, 3))))
-          clearAndInsert(slave1, ibTutkinto(ibTutkinnonVahvistus = Some(date(2025, 1, 1))))
+          clearAndInsert(master, ibTutkinto(ibTutkinnonVahvistus = Some(date(2021, 3, 3))).withLisääPuuttuvaMaksuttomuustieto)
+          clearAndInsert(slave1, ibTutkinto(ibTutkinnonVahvistus = Some(date(2025, 1, 1))).withLisääPuuttuvaMaksuttomuustieto)
           clearAndInsert(slave2, internationalSchoolToinenAste(vahvistusGrade12 = Some(date(2021, 1, 1))))
           reloadRaportointikanta
           verifyTestiOidit(oppivelvollisuus = date(2021, 12, 31), maksuttomuus = date(2024, 12, 31))
@@ -385,8 +385,8 @@ class OppivelvollisuustietoSpec
         "Jos on suorittanut IB-tutkinnon ja European school of Helsingin, käytetään päättymispäivänä EB-tutkinnon vahvistuspäivää, koska IB-merkintä Koskessa ei ole ov:n päättävä tutkinto" - {
           "Vahvistuspäivä päättää molemmat aikaisemmin" in {
             resetFixtures
-            insert(master, ibTutkinto(ibTutkinnonVahvistus = Some(date(2021, 1, 1))))
-            insert(slave1, ibTutkinto(ibTutkinnonVahvistus = Some(date(2025, 1, 1))))
+            insert(master, ibTutkinto(ibTutkinnonVahvistus = Some(date(2021, 1, 1))).withLisääPuuttuvaMaksuttomuustieto)
+            insert(slave1, ibTutkinto(ibTutkinnonVahvistus = Some(date(2025, 1, 1))).withLisääPuuttuvaMaksuttomuustieto)
             insertEuropeanSchoolOfHelsinkiToinenAsteEB(slave2, vahvistusEB = Some(date(2021, 3, 3)))
             reloadRaportointikanta
             verifyTestiOidit(oppivelvollisuus = date(2021, 3, 3), maksuttomuus = date(2021, 3, 3))
@@ -396,9 +396,9 @@ class OppivelvollisuustietoSpec
 
       "Jos suorittaa vain IB-tutkintoa, käytetään päättymispäivänä ikään perustuvaa päivää, koska Koskeen vahvistettu ib-suoritus ei päätä oppivelvollisuutta" - {
         "Vahvistuspäivä päättää molemmat aikaisemmin" in {
-          clearAndInsert(master, ibTutkinto(ibTutkinnonVahvistus = Some(date(2021, 1, 1))))
-          clearAndInsert(slave1, ibTutkinto(ibTutkinnonVahvistus = Some(date(2025, 1, 1))))
-          clearAndInsert(slave2, ibTutkinto(ibTutkinnonVahvistus = None))
+          clearAndInsert(master, ibTutkinto(ibTutkinnonVahvistus = Some(date(2021, 1, 1))).withLisääPuuttuvaMaksuttomuustieto)
+          clearAndInsert(slave1, ibTutkinto(ibTutkinnonVahvistus = Some(date(2025, 1, 1))).withLisääPuuttuvaMaksuttomuustieto)
+          clearAndInsert(slave2, ibTutkinto(ibTutkinnonVahvistus = None).withLisääPuuttuvaMaksuttomuustieto)
           reloadRaportointikanta
           verifyTestiOidit(oppivelvollisuus = date(2021, 12, 31), maksuttomuus = date(2024, 12, 31))
         }
@@ -406,8 +406,8 @@ class OppivelvollisuustietoSpec
 
       "Jos suorittaa IB-tutkintoa ja lukiota, käytetään päättymispäivänä ikään perustuvaa päivää, koska kumpikaan merkintä ei ole ov:n päättävä tutkinto" - {
         "Vahvistuspäivä päättää molemmat aikaisemmin" in {
-          clearAndInsert(master, ibTutkinto(ibTutkinnonVahvistus = Some(date(2021, 1, 1))))
-          clearAndInsert(slave1, ibTutkinto(ibTutkinnonVahvistus = Some(date(2025, 1, 1))))
+          clearAndInsert(master, ibTutkinto(ibTutkinnonVahvistus = Some(date(2021, 1, 1))).withLisääPuuttuvaMaksuttomuustieto)
+          clearAndInsert(slave1, ibTutkinto(ibTutkinnonVahvistus = Some(date(2025, 1, 1))).withLisääPuuttuvaMaksuttomuustieto)
           clearAndInsert(slave2, lukionOppimäärä(vahvistus = None))
           reloadRaportointikanta
           verifyTestiOidit(oppivelvollisuus = date(2021, 12, 31), maksuttomuus = date(2024, 12, 31))
@@ -416,7 +416,7 @@ class OppivelvollisuustietoSpec
 
       "Jos suorittaa IB-tutkintoa, lukiota ja ammattikoulua, käytetään päättymispäivänä ikään perustuvia päiviä, koska ov-päättävää tutkintoa ei ole" - {
         "Vahvistuspäivä päättää molemmat aikaisemmin" in {
-          clearAndInsert(master, ibTutkinto(ibTutkinnonVahvistus = Some(date(2021, 1, 1))))
+          clearAndInsert(master, ibTutkinto(ibTutkinnonVahvistus = Some(date(2021, 1, 1))).withLisääPuuttuvaMaksuttomuustieto)
           clearAndInsert(slave1, ammatillinenTutkinto(vahvistus = None))
           clearAndInsert(slave2, lukionOppimäärä(vahvistus = None))
           reloadRaportointikanta
@@ -426,9 +426,9 @@ class OppivelvollisuustietoSpec
 
       "Jos on suorittanut DIA-tutkinnon, käytetään päättymispäivänä päivää, joka lopettaa aikaisemmin oikeuden maksuttomuuteen tai oppivelvollisuuteen" - {
         "Vahvistuspäivä päättää molemmat aikaisemmin" in {
-          clearAndInsert(master, diaTutkinto(diaTutkinnonVahvistus = Some(date(2021, 1, 1))))
-          clearAndInsert(slave1, diaTutkinto(diaTutkinnonVahvistus = Some(date(2025, 1, 1))))
-          clearAndInsert(slave2, diaTutkinto(diaTutkinnonVahvistus = None))
+          clearAndInsert(master, diaTutkinto(diaTutkinnonVahvistus = Some(date(2021, 1, 1))).withLisääPuuttuvaMaksuttomuustieto)
+          clearAndInsert(slave1, diaTutkinto(diaTutkinnonVahvistus = Some(date(2025, 1, 1))).withLisääPuuttuvaMaksuttomuustieto)
+          clearAndInsert(slave2, diaTutkinto(diaTutkinnonVahvistus = None).withLisääPuuttuvaMaksuttomuustieto)
           reloadRaportointikanta
           verifyTestiOidit(oppivelvollisuus = date(2021, 1, 1), maksuttomuus = date(2021, 1, 1))
         }
@@ -655,7 +655,7 @@ class OppivelvollisuustietoSpec
     )
   }
 
-  private def ibTutkinto(ibTutkinnonVahvistus: Option[LocalDate]): Opiskeluoikeus = {
+  private def ibTutkinto(ibTutkinnonVahvistus: Option[LocalDate]): IBOpiskeluoikeus = {
     ExamplesIB.aktiivinenOpiskeluoikeus.copy(
       lisätiedot = None,
       suoritukset = List(
@@ -667,7 +667,7 @@ class OppivelvollisuustietoSpec
     )
   }
 
-  private def diaTutkinto(diaTutkinnonVahvistus: Option[LocalDate]): Opiskeluoikeus = {
+  private def diaTutkinto(diaTutkinnonVahvistus: Option[LocalDate]): DIAOpiskeluoikeus = {
     ExamplesDIA.opiskeluoikeus.copy(
       tila = DIAOpiskeluoikeudenTila(
         List(
