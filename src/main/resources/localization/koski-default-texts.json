@@ -2800,5 +2800,22 @@
   "deprecated:CAS tallennetaan osasuorituksiin 1.8.2025 tai..." : "CAS tallennetaan osasuorituksiin 1.8.2025 tai myöhemmin alkaneille IB-opinnoille",
   "deprecated:Theory of Knowledge tallennetaan osasuorituksiin..." : "Theory of Knowledge tallennetaan osasuorituksiin 1.8.2025 tai myöhemmin alkaneille IB-opinnoille",
   "deprecated:Lisäpisteitä ei tallennetaa 1.8.2025 tai..." : "Lisäpisteitä ei tallennetaa 1.8.2025 tai myöhemmin alkaneille IB-opinnoille",
-  "deprecated:Extended Essay tallennetaan osasuorituksiin 1.8.2025..." : "Extended Essay tallennetaan osasuorituksiin 1.8.2025 tai myöhemmin alkaneille IB-opinnoille"
+  "deprecated:Extended Essay tallennetaan osasuorituksiin 1.8.2025..." : "Extended Essay tallennetaan osasuorituksiin 1.8.2025 tai myöhemmin alkaneille IB-opinnoille",
+  "description:Kielitutkinnon suoritukset osat" : "Kielitutkinnon suoritukset osat",
+  "description:Yleisessä kielitutkinnossa 'lasna' vastaa tutkintopäivää,..." : "Yleisessä kielitutkinnossa 'lasna' vastaa tutkintopäivää, 'hyvaksytystisuoritettu' arviointipäivää",
+  "tooltip:Onko oppilas opiskellut oppiaineessa rajatun..." : "Onko oppilas opiskellut oppiaineessa rajatun oppimäärän. Jos oppilas opiskelee yhdessä rajatun oppimäärän mukaan, myös päättöarviointi voi näissä aineissa olla sanallinen.",
+  "Tukea koskevat päätökset" : "Tukea koskevat päätökset",
+  "description:Oppivelvollisen tukea koskevat päätöstiedot" : "Oppivelvollisen tukea koskevat päätöstiedot",
+  "Rajattu oppimäärä" : "Rajattu oppimäärä",
+  "description:Korvaa aiemman kentän erityisenTuenPäätökset." : "Korvaa aiemman kentän erityisenTuenPäätökset.",
+  "description:Oppilaalla päätös opiskelun järjestämisestä toiminta-alueittain...." : "Oppilaalla päätös opiskelun järjestämisestä toiminta-alueittain. Tällöin oppilaalla on rajattu oppimäärä ja opetus järjestetty toiminta-alueittain. Oppilaalla on aina tukea koskeva päätös. Oppilaan opetussuunnitelmaan kuuluvat toiminta-alueet ovat motoriset taidot, kieli ja kommunikaatio, sosiaaliset taidot, päivittäisten toimintojen taidot ja kognitiiviset taidot. Huom: toiminta-alue arviointeineen on kuvattu oppiaineen suorituksessa.",
+  "Päätös opetuksen järjestämisestä vamman sairauden tai rajoitteen perusteella" : "Päätös opetuksen järjestämisestä vamman sairauden tai rajoitteen perusteella",
+  "description:Korvaa kentän pidennettyOppivelvollisuus." : "Korvaa kentän pidennettyOppivelvollisuus.",
+  "Päätös varhennetusta oppivelvollisuudesta" : "Päätös varhennetusta oppivelvollisuudesta",
+  "description:Päätös opetuksen järjestämisestä oppilaalle vamman,..." : "Päätös opetuksen järjestämisestä oppilaalle vamman, sairauden tai toimintakyvyn rajoitteen perusteella.",
+  "description:Kenttä käytössä 1.8.2025 alkaen" : "Kenttä käytössä 1.8.2025 alkaen",
+  "description:Kenttä käytössä 1.8.2026 alkaen." : "Kenttä käytössä 1.8.2026 alkaen.",
+  "description:Kenttä käytössä 1.8.2025 alkaen." : "Kenttä käytössä 1.8.2025 alkaen.",
+  "description:Kenttä ei käytössä 1.9.2026 alkaen." : "Kenttä ei käytössä 1.9.2026 alkaen.",
+  "description:Kenttä ei käytössä 1.8.2026 alkaen." : "Kenttä ei käytössä 1.8.2026 alkaen."
 }
