@@ -36,6 +36,7 @@
     "start-with-server-and-luovutuspalvelu-no-logout": "NOLOGOUT=nologout npm-run-all --parallel build-and-start-luovutuspalvelu start-server start",
     "start-server": "NODE_EXTRA_CA_CERTS=../../koski-luovutuspalvelu/proxy/test/testca/certs/root-ca.crt CLIENT_ID=omadataoauth2sample${NOLOGOUT} ENABLE_LOCAL_MTLS=true RESOURCE_ENDPOINT_URL=https://localhost:7022/koski/api/omadata-oauth2/resource-server npm run --prefix ../server start",
     "build-and-start-luovutuspalvelu": "KOSKI_BACKEND_HOST=${KOSKI_BACKEND_HOST:-http://$(node scripts/getmyip.js):7021} CLIENT_USERNAME=omadataoauth2sample${NOLOGOUT} CLIENT_PASSWORD=omadataoauth2sample${NOLOGOUT} npm run --prefix ../../koski-luovutuspalvelu/proxy local",
+    "start-luovutuspalvelu": "KOSKI_BACKEND_HOST=${KOSKI_BACKEND_HOST:-http://$(node scripts/getmyip.js):7021} CLIENT_USERNAME=omadataoauth2sample${NOLOGOUT} CLIENT_PASSWORD=omadataoauth2sample${NOLOGOUT} npm run --prefix ../../koski-luovutuspalvelu/proxy start",
     "start-java-sample-and-luovutuspalvelu": "npm-run-all --parallel build-and-start-luovutuspalvelu start-java-sample",
     "start-java-sample": "cd ../java && KOSKI_BACKEND_HOST=${KOSKI_BACKEND_HOST:-http://$(node ../client/scripts/getmyip.js):7021} ./mvnw spring-boot:run",
     "build": "react-scripts build",

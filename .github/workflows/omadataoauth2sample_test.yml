@@ -44,26 +44,30 @@ jobs:
       - run: cd omadata-oauth2-sample/server && npm run lint
       - run: cd omadata-oauth2-sample/server && npm run build
       # TODO add test step when there are tests
-  # test-e2e:
-  #   name: OAuth2 E2E ${{matrix.shardIndex}}/${{matrix.shardTotal}}
-  #   runs-on: ${{ inputs.runs-on }}
-  #   strategy:
-  #     fail-fast: false
-  #     matrix:
-  #       shardIndex: [1]
-  #       shardTotal: [1]
-  #   if: ${{ !contains(github.event.head_commit.message, '[skip-tests]') }}
-  #   steps:
-  #     - name: Checkout
-  #       uses: actions/checkout@v4
+  test-e2e:
+   name: OAuth2 E2E ${{matrix.shardIndex}}/${{matrix.shardTotal}}
+   runs-on: ${{ inputs.runs-on }}
+   permissions:
+     contents: read
+     id-token: write
+   strategy:
+     fail-fast: false
+     matrix:
+       shardIndex: [1]
+       shardTotal: [1]
+   if: ${{ !contains(github.event.head_commit.message, '[skip-tests]') }}
+   steps:
+     - name: Checkout
+       uses: actions/checkout@v4
 
-  #     - name: Checkout luovutuspalvelu for e2e tests
-  #       uses: actions/checkout@v4
-  #       with:
-  #         repository: Opetushallitus/koski-luovutuspalvelu
-  #         path: koski-luovutuspalvelu
+     - name: Checkout luovutuspalvelu for e2e tests
+       uses: actions/checkout@v4
+       with:
+         repository: Opetushallitus/koski-luovutuspalvelu
+         path: koski-luovutuspalvelu
 
-  #     - uses: ./.github/actions/omadataoauth2_e2e_test
-  #       with:
-  #         shardIndex: ${{ matrix.shardIndex }}
-  #         shardTotal: ${{ matrix.shardTotal }}
+     - uses: ./.github/actions/omadataoauth2_e2e_test
+       with:
+         shardIndex: ${{ matrix.shardIndex }}
+         shardTotal: ${{ matrix.shardTotal }}
+         AWS_OPH_UTILITY_ROLE_ARN: ${{ secrets.AWS_OPH_UTILITY_ROLE_ARN }}
