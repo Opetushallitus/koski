@@ -1,5 +1,6 @@
 import { TehostetunTuenPäätös } from './TehostetunTuenPaatos'
 import { Aikajakso } from './Aikajakso'
+import { TukeaKoskevaPäätös } from './TukeaKoskevaPaatos'
 import { ErityisenTuenPäätös } from './ErityisenTuenPaatos'
 import { Koodistokoodiviite } from './Koodistokoodiviite'
 import { LocalizedString } from './LocalizedString'
@@ -20,14 +21,17 @@ export type PerusopetuksenOpiskeluoikeudenLisätiedot = {
   kotiopetus?: Aikajakso
   oikeusMaksuttomaanAsuntolapaikkaan?: Aikajakso
   kuljetusetu?: Aikajakso
+  päätösOpetuksenJärjestämisestäVammanSairaudenTaiRajoitteenPerusteella?: Array<Aikajakso>
   vaikeastiVammainen?: Array<Aikajakso>
   perusopetuksenAloittamistaLykätty?: boolean
+  tukeaKoskevatPäätökset?: Array<TukeaKoskevaPäätös>
   koulukoti?: Array<Aikajakso>
   erityisenTuenPäätökset?: Array<ErityisenTuenPäätös>
   aloittanutEnnenOppivelvollisuutta: boolean
   erityisenTuenPäätös?: ErityisenTuenPäätös
   ulkomailla?: Aikajakso
   vammainen?: Array<Aikajakso>
+  päätösToimintaAlueittainOpiskelusta?: Aikajakso
   tehostetunTuenPäätös?: TehostetunTuenPäätös
   tukimuodot?: Array<Koodistokoodiviite<'perusopetuksentukimuoto', string>>
   vuosiluokkiinSitoutumatonOpetus: boolean
@@ -45,14 +49,17 @@ export const PerusopetuksenOpiskeluoikeudenLisätiedot = (
     kotiopetus?: Aikajakso
     oikeusMaksuttomaanAsuntolapaikkaan?: Aikajakso
     kuljetusetu?: Aikajakso
+    päätösOpetuksenJärjestämisestäVammanSairaudenTaiRajoitteenPerusteella?: Array<Aikajakso>
     vaikeastiVammainen?: Array<Aikajakso>
     perusopetuksenAloittamistaLykätty?: boolean
+    tukeaKoskevatPäätökset?: Array<TukeaKoskevaPäätös>
     koulukoti?: Array<Aikajakso>
     erityisenTuenPäätökset?: Array<ErityisenTuenPäätös>
     aloittanutEnnenOppivelvollisuutta?: boolean
     erityisenTuenPäätös?: ErityisenTuenPäätös
     ulkomailla?: Aikajakso
     vammainen?: Array<Aikajakso>
+    päätösToimintaAlueittainOpiskelusta?: Aikajakso
     tehostetunTuenPäätös?: TehostetunTuenPäätös
     tukimuodot?: Array<Koodistokoodiviite<'perusopetuksentukimuoto', string>>
     vuosiluokkiinSitoutumatonOpetus?: boolean
