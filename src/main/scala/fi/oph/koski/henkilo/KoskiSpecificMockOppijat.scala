@@ -1,9 +1,10 @@
 package fi.oph.koski.henkilo
 
 import java.time.LocalDate
-
 import fi.oph.koski.koskiuser.MockUsers
 import fi.oph.koski.schema.UusiHenkilö
+
+import scala.collection.mutable
 
 object KoskiSpecificMockOppijat {
   private val koskiSpecificOppijat = new MockOppijat
@@ -219,4 +220,6 @@ object KoskiSpecificMockOppijat {
   val pelkkäYo2021 = koskiSpecificOppijat.oppija("Pelkkä YO", "Koski", "300805A847D", syntymäaika = Some(LocalDate.of(2005,8,30)),kotikunta = Some("091"))
 
   def defaultOppijat = koskiSpecificOppijat.getOppijat
+  def defaultKuntahistoriat: mutable.Map[String, Seq[OppijanumerorekisteriKotikuntahistoriaRow]] = koskiSpecificOppijat.getKuntahistoriat
+  def defaultTurvakieltoKuntahistoriat: mutable.Map[String, Seq[OppijanumerorekisteriKotikuntahistoriaRow]] = koskiSpecificOppijat.getTurvakieltoKuntahistoriat
 }

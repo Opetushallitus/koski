@@ -206,4 +206,6 @@ object ValpasMockOppijat {
   )
 
   def defaultOppijat = valpasOppijat.getOppijat
+  def defaultKuntahistoriat = valpasOppijat.getKuntahistoriat
+  def defaultTurvakieltoKuntahistoriat = valpasOppijat.getTurvakieltoKuntahistoriat
 }

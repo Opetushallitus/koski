@@ -4,7 +4,7 @@ import fi.oph.koski.config.{Environment, KoskiApplication}
 import fi.oph.koski.db.KoskiTables.KoskiOpiskeluOikeudet
 import fi.oph.koski.db.QueryMethods
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
-import fi.oph.koski.henkilo.{KoskiSpecificMockOppijat, MockOpintopolkuHenkilöFacade, OppijaHenkilöWithMasterInfo}
+import fi.oph.koski.henkilo.{KoskiSpecificMockOppijat, MockOpintopolkuHenkilöFacade, OppijaHenkilöWithMasterInfo, OppijanumerorekisteriKotikuntahistoriaRow}
 import fi.oph.koski.koskiuser.KoskiSpecificSession
 import fi.oph.koski.localization.MockLocalizationRepository
 import fi.oph.koski.log.Logging
@@ -12,6 +12,8 @@ import fi.oph.koski.opiskeluoikeus.OpiskeluoikeushistoriaErrorRepository
 import fi.oph.koski.raportointikanta.OpiskeluoikeusLoader
 import fi.oph.koski.util.{Timing, Wait}
 import fi.oph.koski.valpas.opiskeluoikeusfixture.ValpasOpiskeluoikeusFixtureState
+
+import scala.collection.mutable
 
 object FixtureCreator {
   def generateOppijaOid(counter: Int) = "1.2.246.562.24." + "%011d".format(counter)
@@ -27,7 +29,9 @@ class FixtureCreator(application: KoskiApplication) extends Logging with QueryMe
   private val opiskeluoikeushistoriaErrorRepository = new OpiskeluoikeushistoriaErrorRepository(application.masterDatabase.db)
 
   def defaultOppijat: List[OppijaHenkilöWithMasterInfo] = currentFixtureState.defaultOppijat
-
+  def defaultKuntahistoriat: mutable.Map[String, Seq[OppijanumerorekisteriKotikuntahistoriaRow]] = currentFixtureState.defaultKuntahistoriat
+  def defaultTurvakieltoKuntahistoriat: mutable.Map[String, Seq[OppijanumerorekisteriKotikuntahistoriaRow]] = currentFixtureState.defaultTurvakieltoKuntahistoriat
+  
   def resetFixtures(
     fixtureState: FixtureState = koskiSpecificFixtureState,
     reloadRaportointikanta: Boolean = false,
@@ -126,6 +130,8 @@ class FixtureCreator(application: KoskiApplication) extends Logging with QueryMe
 trait FixtureState extends Timing {
   def name: String
   def defaultOppijat: List[OppijaHenkilöWithMasterInfo]
+  def defaultKuntahistoriat: mutable.Map[String, Seq[OppijanumerorekisteriKotikuntahistoriaRow]]
+  def defaultTurvakieltoKuntahistoriat: mutable.Map[String, Seq[OppijanumerorekisteriKotikuntahistoriaRow]]
   def resetFixtures: Unit
 
   def oppijaOids: List[String]
@@ -135,6 +141,13 @@ class NotInitializedFixtureState extends FixtureState {
   val name: String = NotInitializedFixtureState.name
 
   def defaultOppijat = {
+    throw new IllegalStateException("Internal error: Fixtures not initialized correctly")
+  }
+
+  def defaultKuntahistoriat = {
+    throw new IllegalStateException("Internal error: Fixtures not initialized correctly")
+  }
+  def defaultTurvakieltoKuntahistoriat = {
     throw new IllegalStateException("Internal error: Fixtures not initialized correctly")
   }
 
@@ -153,7 +166,7 @@ object NotInitializedFixtureState {
 
 abstract class DatabaseFixtureState(application: KoskiApplication) extends FixtureState {
   def resetFixtures = {
-    application.henkilöRepository.opintopolku.henkilöt.asInstanceOf[MockOpintopolkuHenkilöFacade].resetFixtures(defaultOppijat)
+    application.henkilöRepository.opintopolku.henkilöt.asInstanceOf[MockOpintopolkuHenkilöFacade].resetFixtures(defaultOppijat, defaultKuntahistoriat, defaultTurvakieltoKuntahistoriat)
     timed("Resetting database fixtures") (databaseFixtureCreator.resetFixtures)
   }
 
@@ -168,6 +181,9 @@ class KoskiSpecificFixtureState(application: KoskiApplication) extends DatabaseF
   val name: String = KoskiSpecificFixtureState.name
 
   def defaultOppijat: List[OppijaHenkilöWithMasterInfo] = KoskiSpecificMockOppijat.defaultOppijat
+  def defaultKuntahistoriat: mutable.Map[String, Seq[OppijanumerorekisteriKotikuntahistoriaRow]] = KoskiSpecificMockOppijat.defaultKuntahistoriat
+  def defaultTurvakieltoKuntahistoriat: mutable.Map[String, Seq[OppijanumerorekisteriKotikuntahistoriaRow]] = KoskiSpecificMockOppijat.defaultTurvakieltoKuntahistoriat
+
 
   lazy val databaseFixtureCreator: DatabaseFixtureCreator = new KoskiSpecificDatabaseFixtureCreator(application)
 }

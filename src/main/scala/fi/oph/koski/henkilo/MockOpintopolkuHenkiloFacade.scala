@@ -14,16 +14,25 @@ import fi.oph.koski.valpas.opiskeluoikeusfixture.ValpasOpiskeluoikeusFixtureStat
 import org.json4s.jackson.JsonMethods
 
 import java.time.LocalDate
+import scala.collection.mutable
 import scala.io.Source
 import scala.util.Using
 
 class MockOpintopolkuHenkilöFacade(val hetu: Hetu, fixtures: => FixtureCreator) extends OpintopolkuHenkilöFacade with Logging {
   private var alkuperäisetOppijat = KoskiSpecificMockOppijat.defaultOppijat
+  private var alkuperäisetKuntahistoriat: mutable.Map[String, Seq[OppijanumerorekisteriKotikuntahistoriaRow]] = KoskiSpecificMockOppijat.defaultKuntahistoriat
+  private var alkuperäisetTurvakieltoKuntahistoriat: mutable.Map[String, Seq[OppijanumerorekisteriKotikuntahistoriaRow]] = KoskiSpecificMockOppijat.defaultTurvakieltoKuntahistoriat
   private var oppijat = new MockOppijat(alkuperäisetOppijat)
 
-  def resetFixtures(uudetOppijat: List[OppijaHenkilöWithMasterInfo]): Unit = synchronized {
+  def resetFixtures(
+    uudetOppijat: List[OppijaHenkilöWithMasterInfo],
+    uudetKuntahistoriat: mutable.Map[String, Seq[OppijanumerorekisteriKotikuntahistoriaRow]],
+    uudetTurvakieltoKuntahistoriat: mutable.Map[String, Seq[OppijanumerorekisteriKotikuntahistoriaRow]]
+  ): Unit = synchronized {
     alkuperäisetOppijat = uudetOppijat
-    oppijat = new MockOppijat(alkuperäisetOppijat)
+    alkuperäisetKuntahistoriat = uudetKuntahistoriat
+    alkuperäisetTurvakieltoKuntahistoriat = uudetTurvakieltoKuntahistoriat
+    oppijat = new MockOppijat(alkuperäisetOppijat, alkuperäisetKuntahistoriat, alkuperäisetTurvakieltoKuntahistoriat)
   }
 
   private def create(createUserInfo: UusiOppijaHenkilö): Either[HttpStatus, String] = synchronized {
@@ -134,13 +143,25 @@ class MockOpintopolkuHenkilöFacade(val hetu: Hetu, fixtures: => FixtureCreator)
     hetus.flatMap(findOppijaByHetu)
   }
 
-  def findKuntahistoriat(oids: Seq[String], turvakielto: Boolean): Either[HttpStatus, Seq[OppijanumerorekisteriKotikuntahistoriaRow]] =
-    Right((fixtures.getCurrentFixtureStateName() match {
+  def findKuntahistoriat(oids: Seq[String], turvakielto: Boolean): Either[HttpStatus, Seq[OppijanumerorekisteriKotikuntahistoriaRow]] = {
+    val ylikirjoitetut = (fixtures.getCurrentFixtureStateName() match {
       case KoskiSpecificFixtureState.name if turvakielto => koskiKotikuntahistoriaTurvakieltoData
       case KoskiSpecificFixtureState.name if !turvakielto => koskiKotikuntahistoriaData
       case ValpasOpiskeluoikeusFixtureState.name => valpasKotikuntahistoriaData
       case _ => Seq.empty
-    }).filter(row => oids.contains(row.oid)))
+    })
+      .filter(row => oids.contains(row.oid))
+
+    val muut = oids
+      .filterNot(oid => ylikirjoitetut.exists(_.oid == oid))
+      .flatMap {
+        case oid if !turvakielto => oppijat.kuntahistoriat.get(oid).toSeq
+        case oid if turvakielto => oppijat.turvakieltoKuntahistoriat.get(oid).toSeq
+      }
+      .flatten
+
+    Right(ylikirjoitetut ++ muut)
+  }
 
   override def findSlaveOids(masterOid: String): List[Oid] =
     alkuperäisetOppijat.filter(_.master.exists(_.oid == masterOid)).map(_.henkilö.oid)

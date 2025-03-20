@@ -20,6 +20,8 @@ import java.time.LocalDate.{of => date}
 
 class KoskiSpecificDatabaseFixtureCreator(application: KoskiApplication) extends DatabaseFixtureCreator(application, "opiskeluoikeus_fixture", "opiskeluoikeushistoria_fixture") {
   protected def oppijat = KoskiSpecificMockOppijat.defaultOppijat
+  protected def kuntahistoriat = KoskiSpecificMockOppijat.defaultKuntahistoriat
+  protected def turvakieltoKuntahistoriat = KoskiSpecificMockOppijat.defaultTurvakieltoKuntahistoriat
 
   protected lazy val invalidOpiskeluoikeudet: List[(OppijaHenkilö, KoskeenTallennettavaOpiskeluoikeus)] = {
     val validOpiskeluoikeus: AmmatillinenOpiskeluoikeus = updateFieldsAndValidateOpiskeluoikeus(AmmatillinenExampleData.opiskeluoikeus(tutkinto = tietoJaViestintäTekniikanPerustutkinnonSuoritus(stadinToimipiste)))

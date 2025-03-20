@@ -126,6 +126,8 @@ abstract class DatabaseFixtureCreator(application: KoskiApplication, opiskeluoik
   }
 
   protected def oppijat: List[OppijaHenkilöWithMasterInfo]
+  protected def kuntahistoriat: mutable.Map[String, Seq[OppijanumerorekisteriKotikuntahistoriaRow]]
+  protected def turvakieltoKuntahistoriat: mutable.Map[String, Seq[OppijanumerorekisteriKotikuntahistoriaRow]]
 
   protected def invalidOpiskeluoikeudet: List[(OppijaHenkilö, KoskeenTallennettavaOpiskeluoikeus)]
 
