@@ -610,6 +610,50 @@ class OppijaValidationPerusopetusSpec extends TutkinnonPerusteetTest[Perusopetuk
         }
       }
     }
+    "Päätös opetuksen järjestämisestä vamman, sairauden tai toimintakyvyn rajoitteen perusteella" - {
+      val päätöksetSallittuAlkaen = LocalDate.of(2026, 8, 1)
+      val vammaisuustietojenViimeinenPäättymispäivä = LocalDate.of(2026, 8, 31)
+      val erityisenTuenPäätöstenViimeinenKäyttöpäivä = LocalDate.of(2026, 8, 31)
+      def makeOpiskeluoikeus(alku: LocalDate = päätöksetSallittuAlkaen, vammaisuusLoppu: LocalDate = vammaisuustietojenViimeinenPäättymispäivä) = {
+        defaultOpiskeluoikeus.copy(
+          suoritukset = List(
+            yhdeksännenLuokanSuoritus,
+            päättötodistusToimintaAlueilla.copy(
+              vahvistus = vahvistusPaikkakunnalla(LocalDate.of(2024, 7, 1)),
+            ),
+          ),
+          lisätiedot = Some(PerusopetuksenOpiskeluoikeudenLisätiedot(
+            päätösOpetuksenJärjestämisestäVammanSairaudenTaiRajoitteenPerusteella = Some(List(Aikajakso(alku = Some(alku), loppu = None))),
+            vammainen = Some(List(Aikajakso(alku = Some(vammaisuustietojenViimeinenPäättymispäivä.minusYears(1)), loppu = Some(erityisenTuenPäätöstenViimeinenKäyttöpäivä)))),
+            pidennettyOppivelvollisuus = Some(Aikajakso(alku = Some(vammaisuustietojenViimeinenPäättymispäivä.minusYears(1)), loppu = Some(erityisenTuenPäätöstenViimeinenKäyttöpäivä))),
+            erityisenTuenPäätökset = Some(List(ErityisenTuenPäätös(alku = Some(vammaisuustietojenViimeinenPäättymispäivä.minusYears(1)), loppu = Some(erityisenTuenPäätöstenViimeinenKäyttöpäivä), erityisryhmässä = None)))
+          )
+        ))
+      }
+      "Päätös ei saa alkaa ennen voimaantuloa" in {
+        val oo = makeOpiskeluoikeus(päätöksetSallittuAlkaen.minusDays(1))
+        setupOppijaWithOpiskeluoikeus(oo) {
+          verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.date(
+            "Päätös opetuksen järjestämisestä vamman, sairauden tai rajoitteen perusteella -lisätiedon varhaisin sallittu voimassaolopäivä on 2026-08-01"
+          ))
+        }
+        setupOppijaWithOpiskeluoikeus(makeOpiskeluoikeus()) {
+          verifyResponseStatusOk()
+        }
+      }
+
+      /* Testi on tarpeeton, koska vammaisuusjakso edellyttää erityisen tuen päätöstä ja erityisen tuen päätökset on estetty erikseen
+      "Vanhat vammaisuustiedot eivät saa olla voimassa rajapäivän jälkeen" in {
+        setupOppijaWithOpiskeluoikeus(makeOpiskeluoikeus(vammaisuusLoppu = vammaisuustietojenViimeinenPäättymispäivä.plusDays(1))) {
+          verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.date(
+            "Vammainen -lisätiedon viimeinen sallittu voimassaolopäivä on 2026-08-31"
+          ))
+        }
+        setupOppijaWithOpiskeluoikeus(makeOpiskeluoikeus()) {
+          verifyResponseStatusOk()
+        }
+      }*/
+    }
     "Suorituksen vahvistuspäivä on ennen 1.8.2020" - {
       "Vuosiluokan suoritus" - {
         "Laajuutta ei vaadita pakollisilta oppiaineilta" in {
