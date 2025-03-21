@@ -572,6 +572,44 @@ class OppijaValidationPerusopetusSpec extends TutkinnonPerusteetTest[Perusopetuk
         }
       }
     }
+    "Tukea koskevat päätökset" - {
+      val tukeaKoskevatPäätöksetVoimaan = LocalDate.of(2025, 8, 1)
+      val erityisenTuenPäätöstenViimeinenKäyttöpäivä = LocalDate.of(2026, 8, 31)
+      def makeOpiskeluoikeus(tkpAlku: LocalDate = tukeaKoskevatPäätöksetVoimaan, etpAlku: LocalDate = erityisenTuenPäätöstenViimeinenKäyttöpäivä) = {
+        defaultOpiskeluoikeus.copy(
+          suoritukset = List(
+            yhdeksännenLuokanSuoritus,
+            päättötodistusToimintaAlueilla.copy(
+              vahvistus = vahvistusPaikkakunnalla(LocalDate.of(2024, 7, 1)),
+            ),
+          ),
+          lisätiedot = Some(PerusopetuksenOpiskeluoikeudenLisätiedot(
+            tukeaKoskevatPäätökset = Some(List(TukeaKoskevaPäätös(alku = Some(tkpAlku), loppu = None))),
+            erityisenTuenPäätökset = Some(List(ErityisenTuenPäätös(alku = Some(etpAlku), loppu = None, erityisryhmässä = None)))
+          )
+        ))
+      }
+      "Tukea koskeva päätös ei saa alkaa ennen voimaantuloa" in {
+        setupOppijaWithOpiskeluoikeus(makeOpiskeluoikeus(tkpAlku = tukeaKoskevatPäätöksetVoimaan.minusDays(1))) {
+          verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.date(
+            "Tukea koskevat päätökset -lisätiedon varhaisin sallittu voimassaolopäivä on 2025-08-01"
+          ))
+        }
+        setupOppijaWithOpiskeluoikeus(makeOpiskeluoikeus(tukeaKoskevatPäätöksetVoimaan)) {
+          verifyResponseStatusOk()
+        }
+      }
+      "Erityisen tuen päätökset eivät saa olla voimassa päättymispäivän jälkeen" in {
+        setupOppijaWithOpiskeluoikeus(makeOpiskeluoikeus(etpAlku = erityisenTuenPäätöstenViimeinenKäyttöpäivä.plusDays(2))) {
+          verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.date(
+            "Erityisen tuen päätösten viimeinen sallittu voimassaolopäivä on 2026-08-31"
+          ))
+        }
+        setupOppijaWithOpiskeluoikeus(makeOpiskeluoikeus(etpAlku = erityisenTuenPäätöstenViimeinenKäyttöpäivä)) {
+          verifyResponseStatusOk()
+        }
+      }
+    }
     "Suorituksen vahvistuspäivä on ennen 1.8.2020" - {
       "Vuosiluokan suoritus" - {
         "Laajuutta ei vaadita pakollisilta oppiaineilta" in {
