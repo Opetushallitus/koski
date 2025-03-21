@@ -1,7 +1,8 @@
 package fi.oph.koski.validation
 
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
-import fi.oph.koski.schema.{KielitutkinnonOpiskeluoikeus, KoskeenTallennettavaOpiskeluoikeus, Suoritus, ValtionhallinnonKielitutkinnonOsakokeenSuoritus, ValtionhallinnonKielitutkinnonSuoritus, YleisenKielitutkinnonOsakokeenSuoritus, YleisenKielitutkinnonSuoritus}
+import fi.oph.koski.schema._
+import fi.oph.koski.util.ChainingSyntax.symmetricalEitherChainingOps
 
 object KielitutkintoValidation {
   def validateOpiskeluoikeus(opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus): HttpStatus =
@@ -16,7 +17,8 @@ object KielitutkintoValidation {
         validateYleisenKielitutkinnonPäivät(opiskeluoikeus, pts),
         validateYleisenKielitutkinnonArvioinnit(pts),
       )
-      case pts: ValtionhallinnonKielitutkinnonSuoritus => HttpStatus.ok // TODO
+      case pts: ValtionhallinnonKielitutkinnonSuoritus =>
+        validateValtionhallinnonKielitutkinnonArvioinnit(pts)
       case _ => HttpStatus.ok
     }
 
@@ -47,8 +49,35 @@ object KielitutkintoValidation {
       osakoe => validateKielitutkinnonOsakokeenArviointi(sallitutArvosanat ++ List("9", "10", "11"), osakoe)
     ))
 
-  private def validateKielitutkinnonOsakokeenArviointi(sallitutArvosanat: List[String], osakoe: Suoritus): HttpStatus = {
-    val arvosanat = osakoe.arviointi.toList.flatten.map(_.arvosana.koodiarvo)
+  private def validateValtionhallinnonKielitutkinnonArvioinnit(pts: ValtionhallinnonKielitutkinnonSuoritus): HttpStatus = {
+    val sallitutArvosanat = pts.koulutusmoduuli.tunniste.koodiarvo match {
+      case "hyvajatyydyttava" => Right(List("hyva", "tyydyttava", "hylatty"))
+      case "erinomainen" => Right(List("erinomainen", "hylatty"))
+      case koodi: Any => Left(KoskiErrorCategory.badRequest.validation.rakenne.epäsopiviaOsasuorituksia(s"Tuntematon tutkintotason tunniste: $koodi"))
+    }
+
+    val kielitaidonSuoritukset = pts.osasuoritukset.toList.flatten
+
+    HttpStatus.fold(
+      kielitaidonSuoritukset.map { kielitaito =>
+        val osakokeidenSuoritukset = kielitaito.osasuoritukset.toList.flatten
+        sallitutArvosanat.map(arvosanat => HttpStatus.fold(
+          List(validateValtionhallinnonKielitutkinnonKielitaidonArviointi(arvosanat, kielitaito)) ++
+          osakokeidenSuoritukset.map(validateKielitutkinnonOsakokeenArviointi(arvosanat, _))
+        )).get
+      }
+    )
+  }
+
+  private def validateValtionhallinnonKielitutkinnonKielitaidonArviointi(sallitutArvosanat: List[String], kielitaito: ValtionhallinnonKielitutkinnonKielitaidonSuoritus): HttpStatus =
+    if (kielitaito.arviointi.isDefined) {
+      validateKielitutkinnonOsakokeenArviointi(sallitutArvosanat, kielitaito)
+    } else {
+      HttpStatus.ok
+    }
+
+  private def validateKielitutkinnonOsakokeenArviointi(sallitutArvosanat: List[String], suoritus: Suoritus): HttpStatus = {
+    val arvosanat = suoritus.arviointi.toList.flatten.map(_.arvosana.koodiarvo)
     HttpStatus.fold(
       List(HttpStatus.validate(arvosanat.nonEmpty)(KoskiErrorCategory.badRequest.validation.arviointi.arviointiPuuttuu("Osakokeen arviointi puuttuu"))) ++
       arvosanat.map(arvosana =>
@@ -56,7 +85,7 @@ object KielitutkintoValidation {
           sallitutArvosanat.contains(arvosana)
         )(
           KoskiErrorCategory.badRequest.validation.arviointi.epäsopivaArvosana(
-            s"Osakoe sisältää virheellisen arvosanan $arvosana (sallitut koodiarvot ovat: ${sallitutArvosanat.mkString(", ")})"
+            s"Suoritus ${suoritus.koulutusmoduuli.tunniste} sisältää virheellisen arvosanan $arvosana (sallitut koodiarvot ovat: ${sallitutArvosanat.mkString(", ")})"
           )
         )
       )
