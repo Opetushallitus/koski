@@ -1,6 +1,5 @@
 import React from 'react'
 import { useSchema } from '../appstate/constraints'
-import { TestIdLayer, TestIdRoot } from '../appstate/useTestId'
 import {
   EditorContainer,
   hasPäätasonsuoritusOf,
@@ -11,10 +10,10 @@ import { AdaptedOpiskeluoikeusEditorProps } from '../components-v2/interoperabil
 import { OpiskeluoikeusTitle } from '../components-v2/opiskeluoikeus/OpiskeluoikeusTitle'
 import { KielitutkinnonOpiskeluoikeudenOpiskeluoikeusjakso } from '../types/fi/oph/koski/schema/KielitutkinnonOpiskeluoikeudenOpiskeluoikeusjakso'
 import { KielitutkinnonOpiskeluoikeus } from '../types/fi/oph/koski/schema/KielitutkinnonOpiskeluoikeus'
-import { YleinenKielitutkintoEditor } from './YleinenKielitutkintoEditor'
-import { YleinenKielitutkinto } from '../types/fi/oph/koski/schema/YleinenKielitutkinto'
-import { match } from '../util/patternmatch'
+import { isValtionhallinnonKielitutkinnonSuoritus } from '../types/fi/oph/koski/schema/ValtionhallinnonKielitutkinnonSuoritus'
 import { isYleisenKielitutkinnonSuoritus } from '../types/fi/oph/koski/schema/YleisenKielitutkinnonSuoritus'
+import { ValtionhallinnonKielitutkintoEditor } from './ValtiohallinnonKielitutkintoEditor'
+import { YleinenKielitutkintoEditor } from './YleinenKielitutkintoEditor'
 
 export type KielitutkintoEditorProps =
   AdaptedOpiskeluoikeusEditorProps<KielitutkinnonOpiskeluoikeus>
@@ -62,6 +61,16 @@ const KielitutkinnonPäätasonSuoritusEditor: React.FC<
         päätasonSuoritus
       ) && (
         <YleinenKielitutkintoEditor
+          form={form}
+          päätasonSuoritus={päätasonSuoritus}
+          organisaatio={organisaatio}
+        />
+      )}
+      {hasPäätasonsuoritusOf(
+        isValtionhallinnonKielitutkinnonSuoritus,
+        päätasonSuoritus
+      ) && (
+        <ValtionhallinnonKielitutkintoEditor
           form={form}
           päätasonSuoritus={päätasonSuoritus}
           organisaatio={organisaatio}
