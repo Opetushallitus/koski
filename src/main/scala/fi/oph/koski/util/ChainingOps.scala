@@ -11,6 +11,8 @@ object ChainingSyntax {
 
   implicit final def eitherChainingOps[S, T](e: Either[S, T]): EitherChainingOps[S, T] = new EitherChainingOps(e)
 
+  implicit final def symmetricalEitherChainingOps[T](e: Either[T, T]): SymmetricalEitherChainingOps[T] = new SymmetricalEitherChainingOps(e)
+
   implicit final def stringOps(s: String): StringChainingOps = new StringChainingOps(s)
 
   implicit final def localDateOps(d: LocalDate): LocalDateChainingOps = new LocalDateChainingOps(d)
@@ -37,6 +39,10 @@ final class EitherChainingOps[S, T](private val self: Either[S, T]) extends AnyV
     self.left.foreach(f)
     self
   }
+}
+
+final class SymmetricalEitherChainingOps[T](private val self: Either[T, T]) extends AnyVal {
+  def get: T = self.fold(identity, identity)
 }
 
 final class StringChainingOps(private val self: String) extends AnyVal {

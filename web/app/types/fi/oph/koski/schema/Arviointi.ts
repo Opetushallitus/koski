@@ -186,6 +186,10 @@ import {
   isVSTKotoutumiskoulutuksenOsasuorituksenArviointi2022
 } from './VSTKotoutumiskoulutuksenOsasuorituksenArviointi2022'
 import {
+  ValtionhallinnonKielitutkinnonArviointi,
+  isValtionhallinnonKielitutkinnonArviointi
+} from './ValtionhallinnonKielitutkinnonArviointi'
+import {
   VapaanSivistystyöJotpaKoulutuksenArviointi,
   isVapaanSivistystyöJotpaKoulutuksenArviointi
 } from './VapaanSivistystyoJotpaKoulutuksenArviointi'
@@ -265,6 +269,7 @@ export type Arviointi =
   | TelmaJaValmaArviointi
   | VSTKotoutumiskoulutuksenKieliJaViestintäosaamisenArviointi
   | VSTKotoutumiskoulutuksenOsasuorituksenArviointi2022
+  | ValtionhallinnonKielitutkinnonArviointi
   | VapaanSivistystyöJotpaKoulutuksenArviointi
   | VapaanSivistystyöVapaatavoitteisenKoulutuksenArviointi
   | VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenKieliopintojenArviointi
@@ -326,6 +331,7 @@ export const isArviointi = (a: any): a is Arviointi =>
   isTelmaJaValmaArviointi(a) ||
   isVSTKotoutumiskoulutuksenKieliJaViestintäosaamisenArviointi(a) ||
   isVSTKotoutumiskoulutuksenOsasuorituksenArviointi2022(a) ||
+  isValtionhallinnonKielitutkinnonArviointi(a) ||
   isVapaanSivistystyöJotpaKoulutuksenArviointi(a) ||
   isVapaanSivistystyöVapaatavoitteisenKoulutuksenArviointi(a) ||
   isVapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenKieliopintojenArviointi(

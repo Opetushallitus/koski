@@ -1,3 +1,7 @@
+## x.3.2025
+
+- Lisätty kielitutkinnon opiskeluoikeuteen valtionhallinon kielitutkinnot
+
 ## 13.3.2025
 
 - Lisätty IB-opiskeluoikeuden kursseille mahdollisuus tallentaa laajuus kurssien sijaan opintopisteinä.

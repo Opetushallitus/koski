@@ -1,5 +1,9 @@
 # Koskeen tallennettavien tietojen validaatiosäännöt
 
+## x.3.2025
+
+- Valtionhallinnon kielitutkintojen kielitaitojen ja osakokeiden arvosanojen on vastattava tutkintotasoa.
+
 ## 13.3.2025
 
 - Muutokset IB-opiskeluoikeuksille, jotka ovat alkaneet 1.8.2025 tai myöhemmin:
