@@ -1,4 +1,5 @@
 import { Aikajakso } from './Aikajakso'
+import { TukeaKoskevaPäätös } from './TukeaKoskevaPaatos'
 import { ErityisenTuenPäätös } from './ErityisenTuenPaatos'
 import { Koodistokoodiviite } from './Koodistokoodiviite'
 import { LocalizedString } from './LocalizedString'
@@ -11,9 +12,11 @@ import { LocalizedString } from './LocalizedString'
 export type EsiopetuksenOpiskeluoikeudenLisätiedot = {
   $class: 'fi.oph.koski.schema.EsiopetuksenOpiskeluoikeudenLisätiedot'
   pidennettyOppivelvollisuus?: Aikajakso
+  päätösVarhennetustaOppivelvollisuudesta?: Aikajakso
   majoitusetu?: Aikajakso
   kuljetusetu?: Aikajakso
   vaikeastiVammainen?: Array<Aikajakso>
+  tukeaKoskevatPäätökset?: Array<TukeaKoskevaPäätös>
   koulukoti?: Array<Aikajakso>
   erityisenTuenPäätökset?: Array<ErityisenTuenPäätös>
   erityisenTuenPäätös?: ErityisenTuenPäätös
@@ -25,9 +28,11 @@ export type EsiopetuksenOpiskeluoikeudenLisätiedot = {
 export const EsiopetuksenOpiskeluoikeudenLisätiedot = (
   o: {
     pidennettyOppivelvollisuus?: Aikajakso
+    päätösVarhennetustaOppivelvollisuudesta?: Aikajakso
     majoitusetu?: Aikajakso
     kuljetusetu?: Aikajakso
     vaikeastiVammainen?: Array<Aikajakso>
+    tukeaKoskevatPäätökset?: Array<TukeaKoskevaPäätös>
     koulukoti?: Array<Aikajakso>
     erityisenTuenPäätökset?: Array<ErityisenTuenPäätös>
     erityisenTuenPäätös?: ErityisenTuenPäätös

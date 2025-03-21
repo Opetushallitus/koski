@@ -1,5 +1,13 @@
 # Koskeen tallennettavien tietojen validaatiosäännöt
 
+## XX.3.2025
+Lisätty uusia tietueita ja niiden käyttöönottoa koskevat validaatiot:
+ * tukea koskevien päätösten voimaantulo ja erityisen tuen päätösten viimeinen voimassaolopäivä
+ * päätös toiminta-alueittain opiskelusta -lisätiedon voimaantulo
+ * päätös opetuksen järjestämisestä vamman, sairauden tai toimintakyvyn rajoitteen perusteella ja vanhojen vammaisuustietojen viimeinen voimassaolopäivä
+ * päätös varhennetusta opiskeluoikeudesta voimaantulo ja pidennetyn oppivelvollisuuden viimeinen voimassaolopäivä
+
+
 ## 13.3.2025
 
 - Muutokset IB-opiskeluoikeuksille, jotka ovat alkaneet 1.8.2025 tai myöhemmin:
