@@ -1,3 +1,19 @@
+## XX.3.2025
+- Lisätty myöhemmin voimaantulevia muutoksia tietomalliin:
+  - Esiopetus
+    - Tukea koskevat päätökset
+    - Päätös varhennetusta opiskeluoikeudesta
+    - Vammaisuustiedot deprekoidaan
+    - Pidennetty oppivelvollisuus deprekoidaan
+  - Perusopetus
+    - Tukea koskevat päätökset
+    - Päätös opetuksen järjestämisestä vamman, sairauden tai toimintakyvyn rajoitteen perusteella
+    - Päätös opetuksen järjestämisestä toiminta-alueittain
+    - Oppiaineen oppimäärälle tieto "rajattu oppimäärä" - korvaa yksilöllistetyn oppimäärän
+    - Vammaisuustiedot deprekoidaan
+    - Pidennetty oppivelvollisuus deprekoidaan
+    - Yksilöllistetty oppimäärä deprekoidaan
+
 ## 13.3.2025
 
 - Lisätty IB-opiskeluoikeuden kursseille mahdollisuus tallentaa laajuus kurssien sijaan opintopisteinä.
