@@ -14,6 +14,7 @@ import fi.oph.koski.schema._
 import fi.oph.koski.validation.KoskiValidator
 
 import java.time.LocalDate
+import java.time.LocalDate.{of => date}
 
 class OppijaValidationEsiopetusSpec extends TutkinnonPerusteetTest[EsiopetuksenOpiskeluoikeus] with EsiopetusSpecification {
   "Peruskoulun esiopetus -> HTTP 200" in {
@@ -792,6 +793,30 @@ class OppijaValidationEsiopetusSpec extends TutkinnonPerusteetTest[EsiopetuksenO
       )
 
       duplikaattiaEiSallittu(defaultOpiskeluoikeus, opiskeluoikeus)
+    }
+
+    "Varhennettu opiskeluoikeus" - {
+      val päätöksetSallittuAlkaen = LocalDate.of(2026, 8, 1)
+      def makeOpiskeluoikeus(alku: LocalDate = päätöksetSallittuAlkaen) = {
+        defaultOpiskeluoikeus.copy(
+          tila = NuortenPerusopetuksenOpiskeluoikeudenTila(List(NuortenPerusopetuksenOpiskeluoikeusjakso(date(2014, 8, 13), opiskeluoikeusLäsnä))),
+          lisätiedot = Some(EsiopetuksenOpiskeluoikeudenLisätiedot(
+            päätösVarhennetustaOppivelvollisuudesta = Some(Aikajakso(alku = Some(alku), loppu = None)),
+            tukeaKoskevatPäätökset = Some(List(TukeaKoskevaPäätös(alku = Some(alku), loppu = None))),
+          )
+        ))
+      }
+      "Päätös varhennetusta oppivelvollisuudesta ei saa alkaa ennen voimaantuloa" in {
+        val oo = makeOpiskeluoikeus(päätöksetSallittuAlkaen.minusDays(1))
+        setupOppijaWithOpiskeluoikeus(oo) {
+          verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.date(
+            "Päätös varhennetusta oppivelvollisuudesta -lisätiedon varhaisin sallittu voimassaolopäivä on 2026-08-01"
+          ))
+        }
+        setupOppijaWithOpiskeluoikeus(makeOpiskeluoikeus()) {
+          verifyResponseStatusOk()
+        }
+      }
     }
 
     def duplikaattiaEiSallittu(oo1: EsiopetuksenOpiskeluoikeus, oo2: EsiopetuksenOpiskeluoikeus): Unit = {
