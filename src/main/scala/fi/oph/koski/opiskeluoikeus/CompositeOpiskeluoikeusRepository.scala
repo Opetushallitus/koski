@@ -118,8 +118,8 @@ class CompositeOpiskeluoikeusRepository(main: KoskiOpiskeluoikeusRepository, vir
     WithWarnings(siivotutOpiskeluoikeudet, virtaResult.warnings ++ ytrResult.warnings)
   }
 
-  def getPerusopetuksenAikavälitIlmanKäyttöoikeustarkistusta(oppijaOid: String): Seq[Päivämääräväli] = {
-    main.getPerusopetuksenAikavälitIlmanKäyttöoikeustarkistusta(oppijaOid)
+  def getPerusopetuksenAikavälitIlmanKäyttöoikeustarkistusta(tallennettavaOpiskeluoikeus: Option[KoskeenTallennettavaOpiskeluoikeus], oppijaOid: String): Seq[Päivämääräväli] = {
+    main.getPerusopetuksenAikavälitIlmanKäyttöoikeustarkistusta(tallennettavaOpiskeluoikeus, oppijaOid)
   }
 
   def getLukionOpiskeluoikeuksienAlkamisajatIlmanKäyttöoikeustarkistusta(

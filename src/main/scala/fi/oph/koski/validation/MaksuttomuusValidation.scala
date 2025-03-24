@@ -29,7 +29,7 @@ object MaksuttomuusValidation extends Logging {
                                         config: Config,
                                        ): HttpStatus = {
     val oppijanSyntymäpäivä = oppijanHenkilötiedot.flatMap(_.syntymäaika)
-    val perusopetuksenAikavälit = opiskeluoikeusRepository.getPerusopetuksenAikavälitIlmanKäyttöoikeustarkistusta(oppijanOid)
+    val perusopetuksenAikavälit = opiskeluoikeusRepository.getPerusopetuksenAikavälitIlmanKäyttöoikeustarkistusta(Some(opiskeluoikeus), oppijanOid)
 
     val maksuttomuustietoSiirretty =
       opiskeluoikeus

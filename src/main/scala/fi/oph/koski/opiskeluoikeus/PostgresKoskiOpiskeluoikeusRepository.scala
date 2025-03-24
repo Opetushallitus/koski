@@ -122,10 +122,30 @@ class PostgresKoskiOpiskeluoikeusRepository(
     }
   }
 
-  def getPerusopetuksenAikavälitIlmanKäyttöoikeustarkistusta(oppijaOid: String): Seq[Päivämääräväli] = {
+  def getPerusopetuksenAikavälitIlmanKäyttöoikeustarkistusta(tallennettavaOpiskeluoikeus: Option[KoskeenTallennettavaOpiskeluoikeus], oppijaOid: String): Seq[Päivämääräväli] = {
     // HUOMIOI, JOS TÄTÄ MUUTAT: Pitää olla synkassa Oppivelvollisuustiedot.scala:n createPrecomputedTable-metodissa
     // raportointikantaan tehtävän tarkistuksen kanssa. Muuten Valppaan maksuttomuushaku menee rikki.
-    runDbSync(
+
+    // TODO: Tämä(kään) ei mene nyt täysin oikein: tietokannasta tarkistettaessa pitäisi ignoroida uuden lisättävän opiskeluoikeuden aiempi kopio. Jotta tämän saisi korjattua, pitäisi
+    // maksuttomuusvalidaatiot siirtää change-validaatioihin syvemmälle kirjoitusputkea, jotta mahdollinen ylikirjoitettava opiskeluoikeus olisi jo tiedossa ja voitaisiin siten ignoroida
+    // SQL-kyselyssä.
+    val opiskeluoikeudesta = tallennettavaOpiskeluoikeus.toSeq.flatMap(oo =>
+      if (!oo.mitätöity && oo.alkamispäivä.isDefined) {
+        val alkamispäivä = oo.alkamispäivä.get
+        oo.suoritukset.collect {
+          case s: AikuistenPerusopetuksenOppimääränSuoritus => s
+          case s: PerusopetuksenOppimääränSuoritus => s
+          case s: InternationalSchoolVuosiluokanSuoritus if s.koulutusmoduuli.tunniste.koodiarvo == "9" => s
+          case s: SecondaryLowerVuosiluokanSuoritus if s.koulutusmoduuli.tunniste.koodiarvo == "S4" => s
+        }.map(s =>
+          Päivämääräväli(alkamispäivä, oo.päättymispäivä, s.vahvistus.map(_.päivä))
+        )
+      } else {
+        Seq.empty
+      }
+    )
+
+    val aiemmistaOpiskeluoikeuksista = runDbSync(
       sql"""
         with master as (
           select case when master_oid is not null then master_oid else oid end as oid
@@ -152,6 +172,8 @@ class PostgresKoskiOpiskeluoikeusRepository(
           )
           and oppija_oid = any(select oids from linkitetyt)
       """.as[Päivämääräväli])
+
+    opiskeluoikeudesta ++ aiemmistaOpiskeluoikeuksista
   }
 
   private implicit def getPäivämääräväli: GetResult[Päivämääräväli] = GetResult(r => {
