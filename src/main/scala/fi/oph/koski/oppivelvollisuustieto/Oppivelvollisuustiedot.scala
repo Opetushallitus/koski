@@ -92,20 +92,11 @@ object Oppivelvollisuustiedot {
     sqlu"""
       create table #${s.name}.oppivelvollisuustiedot as
         with
-          kotikunta_suomessa_alkaen as (
-            select
-              master_oid,
-              min(coalesce(muutto_pvm, poismuutto_pvm)) pvm
-            from #${confidentialSchema.name}.r_kotikuntahistoria
-            where not kotikunta = any(#$ulkopuolisetKunnat)
-            group by master_oid
-          ),
-
           oppivelvolliset_henkilot as (
 
               select
                 oppija_oid,
-                henkilo.master_oid,
+                master_oid,
                 syntymaaika,
                 -- Maksuttomuuden pidennysjaksojen päivät, jotka ovat ennen 1.8.2022, lisätään maksuttomuuskauden loppuun
                 (select count(distinct paivat) from (
@@ -121,11 +112,8 @@ object Oppivelvollisuustiedot {
                 pidennyspaivat) as maksuttomuutta_pidennetty_yhteensa_vanha_laki
               from
                 #${s.name}.r_henkilo henkilo
-                left join kotikunta_suomessa_alkaen on henkilo.master_oid = kotikunta_suomessa_alkaen.master_oid
               where syntymaaika >= '#$valpasLakiVoimassaVanhinSyntymäaika'::date
-                and kotikunta_suomessa_alkaen.pvm is not null
-                and kotikunta_suomessa_alkaen.pvm < syntymaaika + interval '18 years'
-                and henkilo.master_oid not in (
+                and master_oid not in (
                                 select
                                   henkilo.master_oid
                                 from
@@ -146,6 +134,15 @@ object Oppivelvollisuustiedot {
                                   and vahvistus_paiva < '#$valpasLakiVoimassaPeruskoulustaValmistuneilla'::date)
                 )
 
+        ),
+
+        kotikunta_suomessa_alkaen as (
+          select
+            master_oid,
+            min(coalesce(muutto_pvm, poismuutto_pvm)) pvm
+          from #${confidentialSchema.name}.r_kotikuntahistoria
+          where not kotikunta = any(#$ulkopuolisetKunnat)
+          group by master_oid
         ),
 
         -- Päivä jolloin oppija on muuttanut ulkomaille, jos viimeisin (nykyinen) kotikunta on ulkomailla, muuten null
@@ -368,6 +365,11 @@ object Oppivelvollisuustiedot {
           left join kotikunta_suomessa_alkaen on oppivelvolliset_henkilot.master_oid = kotikunta_suomessa_alkaen.master_oid
           left join nykyinen_kotikunta_ulkomailla_alkaen on oppivelvolliset_henkilot.master_oid = nykyinen_kotikunta_ulkomailla_alkaen.master_oid
           left join oppivelvollisuus_alkaa on oppivelvolliset_henkilot.master_oid = oppivelvollisuus_alkaa.master_oid
+        where
+          (
+            (kotikunta_suomessa_alkaen.pvm is null)
+            or (kotikunta_suomessa_alkaen.pvm < oppivelvolliset_henkilot.syntymaaika + interval '18 years')
+          )
       """
   }
 
