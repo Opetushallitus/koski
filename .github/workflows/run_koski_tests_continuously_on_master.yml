@@ -12,3 +12,4 @@ jobs:
   tests:
     name: "👀"
     uses: ./.github/workflows/all_tests.yml
+    secrets: inherit

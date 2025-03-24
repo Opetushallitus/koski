@@ -12,6 +12,7 @@ jobs:
   tests:
     name: "👀 Tests"
     uses: ./.github/workflows/all_tests.yml
+    secrets: inherit
 
   publish_image:
     name: Publish Koski Docker Image and package
