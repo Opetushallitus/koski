@@ -39,7 +39,7 @@ class OppijaValidationLukioAlkamispäiväSpec
         setupOppijaWithOpiskeluoikeus(
           defaultOpiskeluoikeus.copy(
             tila = LukionOpiskeluoikeudenTila(List(LukionOpiskeluoikeusjakso(aiempiAlkamispäivä, opiskeluoikeusLäsnä, Some(valtionosuusRahoitteinen))))
-          ),
+          ).withLisääPuuttuvaMaksuttomuustieto,
           KoskiSpecificMockOppijat.vuonna2005SyntynytPeruskouluValmis2021
         ) {
            verifyResponseStatusOk()
@@ -52,7 +52,7 @@ class OppijaValidationLukioAlkamispäiväSpec
               toimipiste = ressunLukio
             )),
             tila = LukionOpiskeluoikeudenTila(List(LukionOpiskeluoikeusjakso(alkamispäivä, opiskeluoikeusLäsnä, Some(valtionosuusRahoitteinen))))
-          ),
+          ).withLisääPuuttuvaMaksuttomuustieto,
           KoskiSpecificMockOppijat.vuonna2005SyntynytPeruskouluValmis2021
         ) {
           verifyResponseStatusOk()
@@ -65,7 +65,9 @@ class OppijaValidationLukioAlkamispäiväSpec
       }
       "Ei sallita 2005 tai myöhemmin syntyneelle, jos ei ole aiempia lukion opiskeluoikeuksia" in {
         setupOppijaWithOpiskeluoikeus(
-          defaultOpiskeluoikeus.copy(tila = LukionOpiskeluoikeudenTila(List(LukionOpiskeluoikeusjakso(alkamispäivä, opiskeluoikeusLäsnä, Some(valtionosuusRahoitteinen))))),
+          defaultOpiskeluoikeus.copy(
+            tila = LukionOpiskeluoikeudenTila(List(LukionOpiskeluoikeusjakso(alkamispäivä, opiskeluoikeusLäsnä, Some(valtionosuusRahoitteinen))))
+          ).withLisääPuuttuvaMaksuttomuustieto,
           KoskiSpecificMockOppijat.vuonna2005SyntynytPeruskouluValmis2021
         ) {
           verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.rakenne.liianVanhaOpetussuunnitelma(
@@ -75,7 +77,9 @@ class OppijaValidationLukioAlkamispäiväSpec
       }
       "Ei sallita 2005 tai myöhemmin syntyneelle, jos ei ole aiempia lukion opiskeluoikeuksia, paitsi se, jota ollaan parhaillaan muokkaamassa" in {
         val luodunOpiskeluoikeudenOid = setupOppijaWithOpiskeluoikeus(
-          defaultOpiskeluoikeus.copy(tila = LukionOpiskeluoikeudenTila(List(LukionOpiskeluoikeusjakso(aiempiAlkamispäivä, opiskeluoikeusLäsnä, Some(valtionosuusRahoitteinen))))),
+          defaultOpiskeluoikeus.copy(
+            tila = LukionOpiskeluoikeudenTila(List(LukionOpiskeluoikeusjakso(aiempiAlkamispäivä, opiskeluoikeusLäsnä, Some(valtionosuusRahoitteinen))))
+          ).withLisääPuuttuvaMaksuttomuustieto,
           KoskiSpecificMockOppijat.vuonna2005SyntynytPeruskouluValmis2021
         ) {
           verifyResponseStatusOk()
@@ -86,7 +90,7 @@ class OppijaValidationLukioAlkamispäiväSpec
           defaultOpiskeluoikeus.copy(
             oid = Some(luodunOpiskeluoikeudenOid),
             tila = LukionOpiskeluoikeudenTila(List(LukionOpiskeluoikeusjakso(alkamispäivä, opiskeluoikeusLäsnä, Some(valtionosuusRahoitteinen))))
-          ),
+          ).withLisääPuuttuvaMaksuttomuustieto,
           KoskiSpecificMockOppijat.vuonna2005SyntynytPeruskouluValmis2021
         ) {
           verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.rakenne.liianVanhaOpetussuunnitelma(
@@ -99,7 +103,8 @@ class OppijaValidationLukioAlkamispäiväSpec
           setupOppijaWithOpiskeluoikeus(
             defaultOpiskeluoikeus.copy(
               tila = LukionOpiskeluoikeudenTila(List(LukionOpiskeluoikeusjakso(alkamispäivä, opiskeluoikeusLäsnä, Some(valtionosuusRahoitteinen)))),
-              suoritukset = List(päättötodistusSuoritus.copy(oppimäärä = aikuistenOpetussuunnitelma))),
+              suoritukset = List(päättötodistusSuoritus.copy(oppimäärä = aikuistenOpetussuunnitelma))
+            ).withLisääPuuttuvaMaksuttomuustieto,
             KoskiSpecificMockOppijat.vuonna2005SyntynytPeruskouluValmis2021
           ) {
             verifyResponseStatusOk()
@@ -111,7 +116,8 @@ class OppijaValidationLukioAlkamispäiväSpec
               tila = LukionOpiskeluoikeudenTila(List(LukionOpiskeluoikeusjakso(alkamispäivä, opiskeluoikeusLäsnä, Some(valtionosuusRahoitteinen)))),
               suoritukset = List(lukionOppiaineenOppimääränSuoritusYhteiskuntaoppi.copy(
                 koulutusmoduuli = lukionOppiaine("YH", diaarinumero = Some(aikuistenOpsinPerusteet2015))
-              ))),
+              ))
+            ),
             KoskiSpecificMockOppijat.vuonna2005SyntynytPeruskouluValmis2021
           ) {
             verifyResponseStatusOk()
@@ -124,7 +130,7 @@ class OppijaValidationLukioAlkamispäiväSpec
         setupOppijaWithOpiskeluoikeus(
           defaultOpiskeluoikeus.copy(
             tila = LukionOpiskeluoikeudenTila(List(LukionOpiskeluoikeusjakso(aiempiAlkamispäivä, opiskeluoikeusLäsnä, Some(valtionosuusRahoitteinen))))
-          ),
+          ).withLisääPuuttuvaMaksuttomuustieto,
           KoskiSpecificMockOppijat.vuonna2005SyntynytPeruskouluValmis2021
         ) {
           verifyResponseStatusOk()

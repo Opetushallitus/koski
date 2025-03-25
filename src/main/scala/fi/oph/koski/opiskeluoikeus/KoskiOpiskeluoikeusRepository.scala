@@ -25,7 +25,7 @@ trait KoskiOpiskeluoikeusRepository {
   def findByOppijaOids(oids: List[String])(implicit user: KoskiSpecificSession): Seq[Opiskeluoikeus]
   def findByCurrentUserOids(oids: List[String])(implicit user: KoskiSpecificSession): Seq[Opiskeluoikeus]
   def findHuollettavaByOppijaOids(oids: List[String])(implicit user: KoskiSpecificSession): Seq[Opiskeluoikeus]
-  def getPerusopetuksenAikavälitIlmanKäyttöoikeustarkistusta(oppijaOid: String): Seq[Päivämääräväli]
+  def getPerusopetuksenAikavälitIlmanKäyttöoikeustarkistusta(tallennettavaOpiskeluoikeus: Option[KoskeenTallennettavaOpiskeluoikeus], oppijaOid: String): Seq[Päivämääräväli]
   def getLukionMuidenOpiskeluoikeuksienAlkamisajatIlmanKäyttöoikeustarkistusta(
     oppijaOid: String,
     muutettavanOpiskeluoikeudenOid: Option[String]

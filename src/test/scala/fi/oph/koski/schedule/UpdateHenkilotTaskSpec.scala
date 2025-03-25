@@ -53,6 +53,10 @@ class UpdateHenkilotTaskSpec extends AnyFreeSpec with TestEnvironment with Match
     new UpdateHenkilotTask(application).updateHenkilöt(refresh = true)(Some(parseJson(s"""{"lastRun": ${currentTimeMillis}}""")))
   }
 
-  override protected def afterEach(): Unit = henkilöFacade.resetFixtures(KoskiApplicationForTests.fixtureCreator.defaultOppijat)
+  override protected def afterEach(): Unit = henkilöFacade.resetFixtures(
+    KoskiApplicationForTests.fixtureCreator.defaultOppijat,
+    KoskiApplicationForTests.fixtureCreator.defaultKuntahistoriat,
+    KoskiApplicationForTests.fixtureCreator.defaultTurvakieltoKuntahistoriat
+  )
   private def henkilöFacade = application.opintopolkuHenkilöFacade.asInstanceOf[MockOpintopolkuHenkilöFacade]
 }

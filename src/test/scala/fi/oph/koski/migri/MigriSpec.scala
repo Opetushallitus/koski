@@ -70,7 +70,7 @@ class MigriSpec extends AnyFreeSpec with KoskiHttpSpec with OpiskeluoikeusTestMe
     "Master-oppijalle tallennettu opiskeluoikeus löytyy slave-oppijan oidilla" in {
       resetFixtures()
 
-      val uusiOo = ExamplesLukio2019.opiskeluoikeus.copy()
+      val uusiOo = ExamplesLukio2019.opiskeluoikeus.copy().withLisääPuuttuvaMaksuttomuustieto
       putOpiskeluoikeus(uusiOo, masterOppija, authHeaders(MockUsers.jyväskyläTallentaja) ++ jsonContent) {
         verifyResponseStatusOk()
       }
@@ -88,7 +88,7 @@ class MigriSpec extends AnyFreeSpec with KoskiHttpSpec with OpiskeluoikeusTestMe
     "Slave-oppijalle tallennettu opiskeluoikeus löytyy slave-oppijan oidilla" in {
       resetFixtures()
 
-      val uusiOo = ExamplesLukio2019.opiskeluoikeus.copy()
+      val uusiOo = ExamplesLukio2019.opiskeluoikeus.copy().withLisääPuuttuvaMaksuttomuustieto
       putOpiskeluoikeus(uusiOo, slaveOppija1.henkilö, authHeaders(MockUsers.jyväskyläTallentaja) ++ jsonContent) {
         verifyResponseStatusOk()
       }
@@ -105,7 +105,7 @@ class MigriSpec extends AnyFreeSpec with KoskiHttpSpec with OpiskeluoikeusTestMe
     "Slave-oppijalle tallennettu opiskeluoikeus löytyy master-oppijan oidilla" in {
       resetFixtures()
 
-      val uusiOo = ExamplesLukio2019.opiskeluoikeus.copy()
+      val uusiOo = ExamplesLukio2019.opiskeluoikeus.copy().withLisääPuuttuvaMaksuttomuustieto
       putOpiskeluoikeus(uusiOo, slaveOppija1.henkilö, authHeaders(MockUsers.jyväskyläTallentaja) ++ jsonContent) {
         verifyResponseStatusOk()
       }
@@ -122,7 +122,7 @@ class MigriSpec extends AnyFreeSpec with KoskiHttpSpec with OpiskeluoikeusTestMe
     "Slave-oppijalle tallennettu opiskeluoikeus löytyy sisarus-slaven oidilla" in {
       resetFixtures()
 
-      val uusiOo = ExamplesLukio2019.opiskeluoikeus.copy()
+      val uusiOo = ExamplesLukio2019.opiskeluoikeus.copy().withLisääPuuttuvaMaksuttomuustieto
       putOpiskeluoikeus(uusiOo, slaveOppija1.henkilö, authHeaders(MockUsers.jyväskyläTallentaja) ++ jsonContent) {
         verifyResponseStatusOk()
       }

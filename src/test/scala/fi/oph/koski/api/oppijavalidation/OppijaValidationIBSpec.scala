@@ -139,7 +139,7 @@ class OppijaValidationIBSpec extends AnyFreeSpec with KoskiHttpSpec with PutOpis
         }
       }
       "Kun opiskeluoikeus alkanut ennen 1.1.2021" - {
-        "Palautetaan HTTP/400" in {
+        "Palautetaan HTTP/200" in {
           val opiskeluoikeus = defaultOpiskeluoikeus.copy(
             lisätiedot = Some(LukionOpiskeluoikeudenLisätiedot(maksuttomuus = Some(List(Maksuttomuus(alku = date(2020, 12, 31) , loppu = None, maksuton = true))))),
             tila = LukionOpiskeluoikeudenTila(
@@ -150,7 +150,7 @@ class OppijaValidationIBSpec extends AnyFreeSpec with KoskiHttpSpec with PutOpis
             )
           )
           setupOppijaWithOpiskeluoikeus(opiskeluoikeus, henkilö = vuonna2004SyntynytPeruskouluValmis2021) {
-            verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation("Tieto koulutuksen maksuttomuudesta ei ole relevantti tässä opiskeluoikeudessa, sillä oppija on aloittanut Pre-IB opinnot aiemmin kuin 1.1.2021."))
+            verifyResponseStatusOk()
           }
         }
       }

@@ -4,7 +4,7 @@ import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.db.KoskiTables._
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.db._
-import fi.oph.koski.henkilo.{OppijaHenkilö, OppijaHenkilöWithMasterInfo}
+import fi.oph.koski.henkilo.{MockOpintopolkuHenkilöFacade, OppijaHenkilö, OppijaHenkilöWithMasterInfo, OppijanumerorekisteriKotikuntahistoriaRow}
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.json.JsonSerializer.serializeWithRoot
 import fi.oph.koski.koskiuser.{AccessType, KoskiSpecificSession}
@@ -14,6 +14,8 @@ import fi.oph.koski.schema._
 import fi.oph.koski.util.Timing
 import slick.dbio.DBIO
 
+import java.io
+import scala.collection.mutable
 import scala.reflect.runtime.universe.TypeTag
 
 abstract class DatabaseFixtureCreator(application: KoskiApplication, opiskeluoikeusFixtureCacheTableName: String, opiskeluoikeusHistoriaFixtureCacheTableName: String) extends QueryMethods with Timing {
@@ -84,28 +86,48 @@ abstract class DatabaseFixtureCreator(application: KoskiApplication, opiskeluoik
   private def luoOpiskeluoikeudetJaPerustiedot(fixtureSetName: String, opiskeluoikeudet: List[(OppijaHenkilö, KoskeenTallennettavaOpiskeluoikeus)], allowUpdate: Boolean = false): Seq[OpiskeluoikeudenOsittaisetTiedot] = {
     val adder = new OppijaServletOppijaAdder(application)
 
-    opiskeluoikeudet.zipWithIndex.map { case ((henkilö, inputOo), index) =>
-      val oppijaJson = serializeWithRoot(Oppija(
-        henkilö = henkilö.toHenkilötiedotJaOid,
-        opiskeluoikeudet = List(inputOo),
-      ))
+    val errors: mutable.ListBuffer[String] = mutable.ListBuffer.empty
 
-      val perustiedot = for {
-        versiot       <- adder.add(user, oppijaJson, allowUpdate, requestDescription = "")
-        oid           <- versiot.opiskeluoikeudet.headOption.map(_.oid).toRight(new Exception("Opiskeluoikeutta ei löydy, vaikka se äsken tallennettiin"))
-        ooRow         <- application.possu.findByOidIlmanKäyttöoikeustarkistusta(oid)
-        oo            <- ooRow.toOpiskeluoikeus
-        perustiedot   <- Right(OpiskeluoikeudenPerustiedot.makePerustiedot(ooRow.id, oo, application.henkilöRepository.opintopolku.withMasterInfo(henkilö)))
-      } yield perustiedot
+    val result = opiskeluoikeudet.zipWithIndex.map { case ((henkilö, inputOo), index) =>
+      try {
+        val perustiedot = luoOpiskeluoikeudetJaPerustiedotOppijalle(fixtureSetName, allowUpdate, adder, henkilö, inputOo)
+        perustiedot.fold(
+          error => throw new Exception(s"Fikstuurin opiskeluoikeuden ${index + 1}/${opiskeluoikeudet.length} ($fixtureSetName: ${henkilö.sukunimi} ${henkilö.etunimet}, ${inputOo.tyyppi.koodiarvo}) luonti ei onnistu: $error"),
+          o => Seq(o)
+        )
+      } catch {
+        case e: Exception =>
+          logger.error(e.getMessage)
+          errors += e.getMessage
+          Seq.empty
+      }
+    }.flatten
 
-      perustiedot.fold(
-        error => throw new Exception(s"Fikstuurin opiskeluoikeuden ${index + 1}/${opiskeluoikeudet.length} ($fixtureSetName: ${henkilö.sukunimi} ${henkilö.etunimet}, ${inputOo.tyyppi.koodiarvo}) luonti ei onnistu: $error"),
-        identity
-      )
+    if (errors.nonEmpty) {
+      throw new Exception(errors.mkString(",\n"))
     }
+
+    result
+  }
+
+  private def luoOpiskeluoikeudetJaPerustiedotOppijalle(fixtureSetName: String, allowUpdate: Boolean, adder: OppijaServletOppijaAdder, henkilö: OppijaHenkilö, inputOo: KoskeenTallennettavaOpiskeluoikeus): Either[io.Serializable, OpiskeluoikeudenPerustiedot] = {
+    val oppijaJson = serializeWithRoot(Oppija(
+      henkilö = henkilö.toHenkilötiedotJaOid,
+      opiskeluoikeudet = List(inputOo),
+    ))
+
+    for {
+      versiot <- adder.add(user, oppijaJson, allowUpdate, requestDescription = "")
+      oid <- versiot.opiskeluoikeudet.headOption.map(_.oid).toRight(new Exception("Opiskeluoikeutta ei löydy, vaikka se äsken tallennettiin"))
+      ooRow <- application.possu.findByOidIlmanKäyttöoikeustarkistusta(oid)
+      oo <- ooRow.toOpiskeluoikeus
+      perustiedot <- Right(OpiskeluoikeudenPerustiedot.makePerustiedot(ooRow.id, oo, application.henkilöRepository.opintopolku.withMasterInfo(henkilö)))
+    } yield perustiedot
   }
 
   protected def oppijat: List[OppijaHenkilöWithMasterInfo]
+  protected def kuntahistoriat: mutable.Map[String, Seq[OppijanumerorekisteriKotikuntahistoriaRow]]
+  protected def turvakieltoKuntahistoriat: mutable.Map[String, Seq[OppijanumerorekisteriKotikuntahistoriaRow]]
 
   protected def invalidOpiskeluoikeudet: List[(OppijaHenkilö, KoskeenTallennettavaOpiskeluoikeus)]
 

@@ -2104,21 +2104,6 @@ test.describe('Vapaa sivistystyö', () => {
         )
       })
     })
-
-    test.describe('VST maksuttomuus', () => {
-      test.beforeEach(openOppijaPage(vstMaksuttomuus, true))
-      test('Maksuttomuuden poistaminen', async ({ page, vstOppijaPage }) => {
-        vstOppijaPage.$.opiskeluoikeus.lisätiedotButton.click()
-
-        vstOppijaPage.$.opiskeluoikeus.lisätiedot
-          .maksuttomuudet(0)
-          .remove.click()
-        await vstOppijaPage.saveBtn.click()
-        await expect(
-          page.getByTestId('oo.0.opiskeluoikeus.lisätiedotButton')
-        ).not.toBeVisible()
-      })
-    })
   })
 
   test.describe('Lähdejärjestelmästä siirretty opiskeluoikeus', () => {

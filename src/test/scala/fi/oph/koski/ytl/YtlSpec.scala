@@ -94,12 +94,12 @@ class YtlSpec
         oppija2.oid
       )
 
-      val uusiOo1 = AmmatillinenExampleData.perustutkintoOpiskeluoikeusValmisVahvistettuKoulutustoimijalla()
+      val uusiOo1 = AmmatillinenExampleData.perustutkintoOpiskeluoikeusValmisVahvistettuKoulutustoimijalla().withLisääPuuttuvaMaksuttomuustieto
       putOpiskeluoikeus(uusiOo1, oppija1, authHeaders(MockUsers.paakayttaja) ++ jsonContent) {
         verifyResponseStatusOk()
       }
 
-      val uusiOo2 = AmmatillinenExampleData.perustutkintoOpiskeluoikeusValmisVahvistettuYrityksessä()
+      val uusiOo2 = AmmatillinenExampleData.perustutkintoOpiskeluoikeusValmisVahvistettuYrityksessä().withLisääPuuttuvaMaksuttomuustieto
       putOpiskeluoikeus(uusiOo1, oppija2, authHeaders(MockUsers.paakayttaja) ++ jsonContent) {
         verifyResponseStatusOk()
       }
@@ -122,7 +122,7 @@ class YtlSpec
       "Slave-oppijalle tallennettu opiskeluoikeus löytyy slave-oppijan oidilla" in {
         resetFixtures()
 
-        val uusiOo = ExamplesLukio2019.opiskeluoikeus.copy()
+        val uusiOo = ExamplesLukio2019.opiskeluoikeus.copy().withLisääPuuttuvaMaksuttomuustieto
         putOpiskeluoikeus(uusiOo, slaveOppija1.henkilö, authHeaders(MockUsers.jyväskyläTallentaja) ++ jsonContent) {
           verifyResponseStatusOk()
         }
@@ -143,7 +143,7 @@ class YtlSpec
       "Master-oppijalle tallennettu opiskeluoikeus löytyy slave-oppijan oidilla" in {
         resetFixtures()
 
-        val uusiOo = ExamplesLukio2019.opiskeluoikeus.copy()
+        val uusiOo = ExamplesLukio2019.opiskeluoikeus.copy().withLisääPuuttuvaMaksuttomuustieto
         putOpiskeluoikeus(uusiOo, masterOppija, authHeaders(MockUsers.jyväskyläTallentaja) ++ jsonContent) {
           verifyResponseStatusOk()
         }
@@ -165,7 +165,7 @@ class YtlSpec
       "Slave-oppijalle tallennettu opiskeluoikeus löytyy master-oppijan oidilla" in {
         resetFixtures()
 
-        val uusiOo = ExamplesLukio2019.opiskeluoikeus.copy()
+        val uusiOo = ExamplesLukio2019.opiskeluoikeus.copy().withLisääPuuttuvaMaksuttomuustieto
         putOpiskeluoikeus(uusiOo, slaveOppija1.henkilö, authHeaders(MockUsers.jyväskyläTallentaja) ++ jsonContent) {
           verifyResponseStatusOk()
         }
@@ -186,7 +186,7 @@ class YtlSpec
       "Slave-oppijalle tallennettu opiskeluoikeus löytyy toisen slave-oppijan oidilla" in {
         resetFixtures()
 
-        val uusiOo = ExamplesLukio2019.opiskeluoikeus.copy()
+        val uusiOo = ExamplesLukio2019.opiskeluoikeus.copy().withLisääPuuttuvaMaksuttomuustieto
         putOpiskeluoikeus(uusiOo, slaveOppija1.henkilö, authHeaders(MockUsers.jyväskyläTallentaja) ++ jsonContent) {
           verifyResponseStatusOk()
         }
@@ -207,7 +207,7 @@ class YtlSpec
       "Saman oppijan hakeminen master-oppijan oidilla ja hetulla palauttaa oppijan vain yhden kerran" in {
         resetFixtures()
 
-        val uusiOo = ExamplesLukio2019.opiskeluoikeus.copy()
+        val uusiOo = ExamplesLukio2019.opiskeluoikeus.copy().withLisääPuuttuvaMaksuttomuustieto
         putOpiskeluoikeus(uusiOo, slaveOppija1.henkilö, authHeaders(MockUsers.jyväskyläTallentaja) ++ jsonContent) {
           verifyResponseStatusOk()
         }
@@ -230,7 +230,7 @@ class YtlSpec
       "Saman oppijan hakeminen slave-oppijan oidilla ja hetulla palauttaa oppijan molemmilla" in {
         resetFixtures()
 
-        val uusiOo = ExamplesLukio2019.opiskeluoikeus.copy()
+        val uusiOo = ExamplesLukio2019.opiskeluoikeus.copy().withLisääPuuttuvaMaksuttomuustieto
         putOpiskeluoikeus(uusiOo, slaveOppija1.henkilö, authHeaders(MockUsers.jyväskyläTallentaja) ++ jsonContent) {
           verifyResponseStatusOk()
         }
@@ -254,7 +254,7 @@ class YtlSpec
       "Slave-oppijalle tallennettu opiskeluoikeus palautetaan kaikilla haetuilla samaan oppijaan viittaavilla oideilla" in {
         resetFixtures()
 
-        val uusiOo = ExamplesLukio2019.opiskeluoikeus.copy()
+        val uusiOo = ExamplesLukio2019.opiskeluoikeus.copy().withLisääPuuttuvaMaksuttomuustieto
         putOpiskeluoikeus(uusiOo, slaveOppija1.henkilö, authHeaders(MockUsers.jyväskyläTallentaja) ++ jsonContent) {
           verifyResponseStatusOk()
         }
@@ -283,7 +283,7 @@ class YtlSpec
       "Slave-oppijalle tallennettu opiskeluoikeus palautetaan hetulla + slave-oideilla haettaessa niillä kaikilla" in {
         resetFixtures()
 
-        val uusiOo = ExamplesLukio2019.opiskeluoikeus.copy()
+        val uusiOo = ExamplesLukio2019.opiskeluoikeus.copy().withLisääPuuttuvaMaksuttomuustieto
         putOpiskeluoikeus(uusiOo, slaveOppija1.henkilö, authHeaders(MockUsers.jyväskyläTallentaja) ++ jsonContent) {
           verifyResponseStatusOk()
         }
@@ -310,7 +310,7 @@ class YtlSpec
       "Slave-oppijalle tallennettu opiskeluoikeus palautetaan vain kerran haettaessa master-hetulla ja master-oidilla" in {
         resetFixtures()
 
-        val uusiOo = ExamplesLukio2019.opiskeluoikeus.copy()
+        val uusiOo = ExamplesLukio2019.opiskeluoikeus.copy().withLisääPuuttuvaMaksuttomuustieto
         putOpiskeluoikeus(uusiOo, slaveOppija1.henkilö, authHeaders(MockUsers.jyväskyläTallentaja) ++ jsonContent) {
           verifyResponseStatusOk()
         }
@@ -332,7 +332,7 @@ class YtlSpec
       "Aikaleimalla kysyttäessä linkitettyjä oideja sisältävät oppijat palautetaan aina" in {
         resetFixtures()
 
-        val uusiOo = ExamplesLukio2019.opiskeluoikeus.copy()
+        val uusiOo = ExamplesLukio2019.opiskeluoikeus.copy().withLisääPuuttuvaMaksuttomuustieto
         putOpiskeluoikeus(uusiOo, slaveOppija1.henkilö, authHeaders(MockUsers.jyväskyläTallentaja) ++ jsonContent) {
           verifyResponseStatusOk()
         }

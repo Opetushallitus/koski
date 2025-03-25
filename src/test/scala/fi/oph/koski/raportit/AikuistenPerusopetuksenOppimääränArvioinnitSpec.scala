@@ -35,18 +35,18 @@ class AikuistenPerusopetuksenOppimääränArvioinnitSpec
   private val viimeistaan: LocalDate = date(2018, 12, 30)
   private lazy val raportti = raporttiBuilder.build(List(jyväskylänNormaalikoulu), aikaisintaan, viimeistaan, t)(session(defaultUser))
 
-  var resultOo = ExamplesAikuistenPerusopetus.aikuistenPerusopetuksenOpiskeluoikeusAlkuvaiheineen
+  var resultOo = ExamplesAikuistenPerusopetus.aikuistenPerusopetuksenOpiskeluoikeusAlkuvaiheineenValmistunutVanhanOppivelvollisuuslainAikana
 
   override protected def alterFixture(): Unit = {
     resultOo = setupOppijaWithAndGetOpiskeluoikeus(
-      ExamplesAikuistenPerusopetus.aikuistenPerusopetuksenOpiskeluoikeusAlkuvaiheineen.copy(
+      ExamplesAikuistenPerusopetus.aikuistenPerusopetuksenOpiskeluoikeusAlkuvaiheineenValmistunutVanhanOppivelvollisuuslainAikana.copy(
         tila = AikuistenPerusopetuksenOpiskeluoikeudenTila(
           List(
             AikuistenPerusopetuksenOpiskeluoikeusjakso(aikaisintaan.minusYears(1), opiskeluoikeusLäsnä, Some(valtionosuusRahoitteinen)),
           )
         ),
         suoritukset = List(
-          aikuistenPerusopetuksenAlkuvaiheenSuoritus.copy(
+          aikuistenPerusopetuksenAlkuvaiheenSuoritus().copy(
             osasuoritukset = Some(List(
               alkuvaiheenOppiaineenSuoritus(AikuistenPerusopetuksenAlkuvaiheenÄidinkieliJaKirjallisuus(kieli = Koodistokoodiviite(koodiarvo = "AI1", koodistoUri = "oppiaineaidinkielijakirjallisuus"))).copy(
                 arviointi = PerusopetusExampleData.arviointi(9, Some(viimeistaan.plusMonths(2))),
@@ -84,7 +84,7 @@ class AikuistenPerusopetuksenOppimääränArvioinnitSpec
     reloadRaportointikanta
   }
 
-  override def defaultOpiskeluoikeus = ExamplesAikuistenPerusopetus.aikuistenPerusopetuksenOpiskeluoikeusAlkuvaiheineen
+  override def defaultOpiskeluoikeus = ExamplesAikuistenPerusopetus.aikuistenPerusopetuksenOpiskeluoikeusAlkuvaiheineenValmistunutVanhanOppivelvollisuuslainAikana
 
   def tag = implicitly[reflect.runtime.universe.TypeTag[AikuistenPerusopetuksenOpiskeluoikeus]]
 

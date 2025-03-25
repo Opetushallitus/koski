@@ -10,9 +10,32 @@ import fi.oph.koski.schema._
 object MockOppijat {
   def asUusiOppija(oppija: LaajatOppijaHenkilöTiedot) =
     UusiHenkilö(oppija.hetu.get, oppija.etunimet, Some(oppija.kutsumanimi), oppija.sukunimi)
+
+  def kuntahistoriaDefault(oppija: OppijaHenkilöWithMasterInfo): OppijanKuntahistoria = {
+    oppija.henkilö match {
+      case h: LaajatOppijaHenkilöTiedot
+        if oppija.master.isEmpty && // Ei lisätä historiaa oletusarvoisesti sivoppijaoideille
+          h.kotikunta.isDefined =>
+        val kotikunta = h.kotikunta.get
+        val syntymäaika = h.syntymäaika.getOrElse(LocalDate.of(1900, 1, 1))
+        val kuntahistoria = OppijanumerorekisteriKotikuntahistoriaRow(h.oid, kotikunta, Some(syntymäaika), None)
+        if (h.turvakielto) {
+          OppijanKuntahistoria(Some(h.oid), Seq.empty, Seq(kuntahistoria))
+        } else {
+          OppijanKuntahistoria(Some(h.oid), Seq(kuntahistoria), Seq.empty)
+        }
+      case _ => OppijanKuntahistoria(None, Seq.empty, Seq.empty)
+    }
+  }
+
+  def kuntahistoriaTyhjä(oppija: OppijaHenkilöWithMasterInfo): OppijanKuntahistoria = OppijanKuntahistoria(None, Seq.empty, Seq.empty)
 }
 
-class MockOppijat(private var oppijat: List[OppijaHenkilöWithMasterInfo] = Nil) extends Logging {
+class MockOppijat(
+  private var oppijat: List[OppijaHenkilöWithMasterInfo] = Nil,
+  var kuntahistoriat: scala.collection.mutable.Map[String, Seq[OppijanumerorekisteriKotikuntahistoriaRow]] = scala.collection.mutable.Map.empty,
+  var turvakieltoKuntahistoriat: scala.collection.mutable.Map[String, Seq[OppijanumerorekisteriKotikuntahistoriaRow]] = scala.collection.mutable.Map.empty
+) extends Logging {
   private var idCounter = oppijat.length
   val äidinkieli: Some[Koodistokoodiviite] = Some(Koodistokoodiviite("FI", None, "kieli", None))
 
@@ -27,9 +50,10 @@ class MockOppijat(private var oppijat: List[OppijaHenkilöWithMasterInfo] = Nil)
     sukupuoli: Option[String] = None,
     kotikunta: Option[String] = None,
     äidinkieli: Option[String] = Some("fi"),
-    syntymäaika: Option[LocalDate] = None
-  ): LaajatOppijaHenkilöTiedot =
-    addOppija(henkilo.LaajatOppijaHenkilöTiedot(
+    syntymäaika: Option[LocalDate] = None,
+    kuntahistoriaMock: OppijaHenkilöWithMasterInfo => OppijanKuntahistoria = MockOppijat.kuntahistoriaDefault
+  ): LaajatOppijaHenkilöTiedot = {
+    addLaajatOppijaHenkilöTiedot(henkilo.LaajatOppijaHenkilöTiedot(
       oid = oid,
       sukunimi = suku,
       etunimet = etu,
@@ -41,7 +65,8 @@ class MockOppijat(private var oppijat: List[OppijaHenkilöWithMasterInfo] = Nil)
       vanhatHetut = vanhaHetu.toList,
       sukupuoli = sukupuoli,
       kotikunta = kotikunta
-    ))
+    ), kuntahistoriaMock)
+  }
 
   def oppijaSyntymäaikaHetusta(
     suku: String,
@@ -53,26 +78,44 @@ class MockOppijat(private var oppijat: List[OppijaHenkilöWithMasterInfo] = Nil)
     vanhaHetu: Option[String] = None,
     sukupuoli: Option[String] = None,
     kotikunta: Option[String] = None,
-    äidinkieli: Option[String] = Some("fi")
+    äidinkieli: Option[String] = Some("fi"),
+    kuntahistoriaMock: OppijaHenkilöWithMasterInfo => OppijanKuntahistoria = MockOppijat.kuntahistoriaDefault
   ): LaajatOppijaHenkilöTiedot = {
     val syntymäaika = Hetu.century(hetu).map(century => Hetu.birthday(hetu, century))
     oppija(
-      suku, etu, hetu, oid, kutsumanimi, turvakielto, vanhaHetu, sukupuoli, kotikunta, äidinkieli, syntymäaika)
+      suku, etu, hetu, oid, kutsumanimi, turvakielto, vanhaHetu, sukupuoli, kotikunta, äidinkieli, syntymäaika, kuntahistoriaMock)
   }
 
-  def addOppija(oppija: LaajatOppijaHenkilöTiedot): LaajatOppijaHenkilöTiedot = addOppija(OppijaHenkilöWithMasterInfo(oppija, None)).henkilö.asInstanceOf[LaajatOppijaHenkilöTiedot]
+  def addLaajatOppijaHenkilöTiedot(
+    oppija: LaajatOppijaHenkilöTiedot,
+    kuntahistoriaMock: OppijaHenkilöWithMasterInfo => OppijanKuntahistoria = MockOppijat.kuntahistoriaDefault
+  ): LaajatOppijaHenkilöTiedot = addOppijaHenkilöWithMasterInfo(OppijaHenkilöWithMasterInfo(oppija, None), kuntahistoriaMock).henkilö.asInstanceOf[LaajatOppijaHenkilöTiedot]
 
-  def addOppija(oppija: OppijaHenkilöWithMasterInfo): OppijaHenkilöWithMasterInfo = {
+  def addOppijaHenkilöWithMasterInfo(
+    oppija: OppijaHenkilöWithMasterInfo,
+    kuntahistoriaMock: OppijaHenkilöWithMasterInfo => OppijanKuntahistoria = MockOppijat.kuntahistoriaDefault
+  ): OppijaHenkilöWithMasterInfo = {
     oppijat = oppija :: oppijat
+
+    kuntahistoriaMock(oppija) match {
+      case OppijanKuntahistoria(Some(oppijaOid), kuntahistoria, turvakieltoKuntahistoria) =>
+        kuntahistoriat.put(oppijaOid, kuntahistoria)
+        turvakieltoKuntahistoriat.put(oppijaOid, turvakieltoKuntahistoria)
+      case _ =>
+    }
     oppija
   }
 
   def duplicate(masterOppija: LaajatOppijaHenkilöTiedot): LaajatOppijaHenkilöTiedot = {
     val oppijaCopy = masterOppija.copy(oid = generateId())
-    addOppija(OppijaHenkilöWithMasterInfo(oppijaCopy, Some(masterOppija))).henkilö.asInstanceOf[LaajatOppijaHenkilöTiedot]
+    addOppijaHenkilöWithMasterInfo(OppijaHenkilöWithMasterInfo(oppijaCopy, Some(masterOppija)), MockOppijat.kuntahistoriaTyhjä _).henkilö.asInstanceOf[LaajatOppijaHenkilöTiedot]
   }
 
   def getOppijat = oppijat
+
+  def getKuntahistoriat = kuntahistoriat
+
+  def getTurvakieltoKuntahistoriat = turvakieltoKuntahistoriat
 
   def generateId(): String = this.synchronized {
     idCounter = idCounter + 1
@@ -83,3 +126,9 @@ class MockOppijat(private var oppijat: List[OppijaHenkilöWithMasterInfo] = Nil)
 class TestingException(text: String) extends RuntimeException(text) with Loggable {
   def logString = text
 }
+
+case class OppijanKuntahistoria(
+  val oppijaOid: Option[String],
+  val kuntahistoria: Seq[OppijanumerorekisteriKotikuntahistoriaRow],
+  val turvakieltoKuntahistoria: Seq[OppijanumerorekisteriKotikuntahistoriaRow]
+)

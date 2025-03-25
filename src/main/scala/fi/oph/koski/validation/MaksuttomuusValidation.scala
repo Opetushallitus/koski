@@ -29,7 +29,7 @@ object MaksuttomuusValidation extends Logging {
                                         config: Config,
                                        ): HttpStatus = {
     val oppijanSyntymäpäivä = oppijanHenkilötiedot.flatMap(_.syntymäaika)
-    val perusopetuksenAikavälit = opiskeluoikeusRepository.getPerusopetuksenAikavälitIlmanKäyttöoikeustarkistusta(oppijanOid)
+    val perusopetuksenAikavälit = opiskeluoikeusRepository.getPerusopetuksenAikavälitIlmanKäyttöoikeustarkistusta(Some(opiskeluoikeus), oppijanOid)
 
     val maksuttomuustietoSiirretty =
       opiskeluoikeus
@@ -105,10 +105,6 @@ object MaksuttomuusValidation extends Logging {
           s"oppija on aloittanut vanhojen lukion opetussuunnitelman perusteiden mukaisen koulutuksen aiemmin kuin ${lukioVanhallaOpsillaSallittuAlkamisjakso.alku}"
         ),
         (
-          preIBMaksuttomuusTietoEiSallittu(opiskeluoikeus, rajapäivät),
-          s"oppija on aloittanut Pre-IB opinnot aiemmin kuin ${rajapäivät.lakiVoimassaPeruskoulustaValmistuneillaAlku.format(FinnishDateFormat.finnishDateFormat)}"
-        ),
-        (
           vapautettuOppivelvollisuudestaJaKoulutusMaksuton,
           s"oppija on vapautettu oppivelvollisuudesta ja koulutusta yritettiin merkitä maksuttomaksi"
         ),
@@ -137,11 +133,6 @@ object MaksuttomuusValidation extends Logging {
         }
       }
     )
-  }
-
-  def preIBMaksuttomuusTietoEiSallittu(opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus, rajapäivät: ValpasRajapäivätService): Boolean = opiskeluoikeus.suoritukset.exists {
-    case _: PreIBSuoritus2015 => opiskeluoikeus.alkamispäivä.exists(_.isBefore(rajapäivät.lakiVoimassaPeruskoulustaValmistuneillaAlku))
-    case _ => false
   }
 
   // Huom! Valpas käyttää myös tätä funktiota!

@@ -83,7 +83,7 @@ class ValpasOppijanumerorekisteriService(application: KoskiApplication) {
     val onMahdollisestiLainPiirissä =
       MaksuttomuusValidation.eiOppivelvollisuudenLaajentamislainPiirissäSyyt(
         henkilö.syntymäaika,
-        opiskeluoikeusRepository.getPerusopetuksenAikavälitIlmanKäyttöoikeustarkistusta(henkilö.oid),
+        opiskeluoikeusRepository.getPerusopetuksenAikavälitIlmanKäyttöoikeustarkistusta(None, henkilö.oid),
         rajapäivätService
       ).isEmpty
     lazy val onTarpeeksiVanhaKeskeytysmerkintöjäVarten = rajapäivätService.oppijaOnTarpeeksiVanhaKeskeytysmerkintöjäVarten(henkilö.syntymäaika)
@@ -103,7 +103,7 @@ class ValpasOppijanumerorekisteriService(application: KoskiApplication) {
   private def onKansalaiselleNäkyväVainOnrssäOlevaOppija(henkilö: OppijaHenkilö): Boolean = {
     val onMahdollisestiLainPiirissä = MaksuttomuusValidation.eiOppivelvollisuudenLaajentamislainPiirissäSyyt(
       henkilö.syntymäaika,
-      opiskeluoikeusRepository.getPerusopetuksenAikavälitIlmanKäyttöoikeustarkistusta(henkilö.oid),
+      opiskeluoikeusRepository.getPerusopetuksenAikavälitIlmanKäyttöoikeustarkistusta(None, henkilö.oid),
       rajapäivätService
     ).isEmpty
     lazy val onTarpeeksiVanhaKeskeytysmerkintöjäVarten = rajapäivätService.oppijaOnTarpeeksiVanhaKeskeytysmerkintöjäVarten(henkilö.syntymäaika)
