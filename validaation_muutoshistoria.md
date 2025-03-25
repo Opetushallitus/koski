@@ -1,5 +1,11 @@
 # Koskeen tallennettavien tietojen validaatiosäännöt
 
+## 26.3.2025
+
+- Korjauksia maksuttomuusvalidaatioihin, mm. edellisen oppivelvollisuuslain aikaiseen perusopetuksen
+  päättymisen tarkistukseen ja poistettu esto siirtää maksuttomuustiedot edellisen oppivelvollisuuslain aikana
+  alkaneille IB-opinnoille.
+
 ## 13.3.2025
 
 - Muutokset IB-opiskeluoikeuksille, jotka ovat alkaneet 1.8.2025 tai myöhemmin:
