@@ -144,23 +144,14 @@ class MockOpintopolkuHenkilöFacade(val hetu: Hetu, fixtures: => FixtureCreator)
   }
 
   def findKuntahistoriat(oids: Seq[String], turvakielto: Boolean): Either[HttpStatus, Seq[OppijanumerorekisteriKotikuntahistoriaRow]] = {
-    val ylikirjoitetut = (fixtures.getCurrentFixtureStateName() match {
-      case KoskiSpecificFixtureState.name if turvakielto => koskiKotikuntahistoriaTurvakieltoData
-      case KoskiSpecificFixtureState.name if !turvakielto => koskiKotikuntahistoriaData
-      case ValpasOpiskeluoikeusFixtureState.name => valpasKotikuntahistoriaData
-      case _ => Seq.empty
-    })
-      .filter(row => oids.contains(row.oid))
-
-    val muut = oids
-      .filterNot(oid => ylikirjoitetut.exists(_.oid == oid))
+    Right(
+      oids
       .flatMap {
         case oid if !turvakielto => oppijat.kuntahistoriat.get(oid).toSeq
         case oid if turvakielto => oppijat.turvakieltoKuntahistoriat.get(oid).toSeq
       }
       .flatten
-
-    Right(ylikirjoitetut ++ muut)
+    )
   }
 
   override def findSlaveOids(masterOid: String): List[Oid] =
@@ -192,15 +183,6 @@ class MockOpintopolkuHenkilöFacade(val hetu: Hetu, fixtures: => FixtureCreator)
     vanhatHetut = Nil,
     kotikunta = None
   )
-
-  private lazy val koskiKotikuntahistoriaData: Seq[OppijanumerorekisteriKotikuntahistoriaRow] =
-    loadKotikuntahistoria("koski-kotikuntahistoria.json")
-
-  private lazy val koskiKotikuntahistoriaTurvakieltoData: Seq[OppijanumerorekisteriKotikuntahistoriaRow] =
-    loadKotikuntahistoria("koski-kotikuntahistoria-turvakielto.json")
-
-  private lazy val valpasKotikuntahistoriaData: Seq[OppijanumerorekisteriKotikuntahistoriaRow] =
-    loadKotikuntahistoria("valpas-kotikuntahistoria.json")
 
   def loadKotikuntahistoria(resourceName: String): Seq[OppijanumerorekisteriKotikuntahistoriaRow] =
     Using.Manager { use =>

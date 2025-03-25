@@ -17,7 +17,18 @@ object KoskiSpecificMockOppijat {
   val eero = koskiSpecificOppijat.oppijaSyntymäaikaHetusta("Esimerkki", "Eero", "010101-123N")
   val eerola = koskiSpecificOppijat.oppija("Çelik-Eerola", "Jouni", "081165-793C")
   val markkanen = koskiSpecificOppijat.oppija("Markkanen-Fagerström", "Eéro Jorma-Petteri", "080154-770R", syntymäaika = Some(LocalDate.of(1954, 1, 8)))
-  val teija = koskiSpecificOppijat.oppija("Tekijä", "Teija", "251019-039B", kotikunta = Some("091"))
+  val teija = koskiSpecificOppijat.oppija("Tekijä", "Teija", "251019-039B", kotikunta = Some("091"),
+    kuntahistoriaMock = h => {
+      val historia = Seq(
+        OppijanumerorekisteriKotikuntahistoriaRow(h.henkilö.oid, "178", Some(LocalDate.of(2024, 1, 1)), Some(LocalDate.of(2024, 6, 1)))
+      )
+      OppijanKuntahistoria(
+        Some(h.henkilö.oid),
+        historia,
+        Seq.empty
+      )
+    }
+  )
   val tero = koskiSpecificOppijat.oppija("Tunkkila-Fagerlund", "Tero Petteri Gustaf", "280608-6619")
   val presidentti = koskiSpecificOppijat.oppija("Presidentti", "Tasavallan", "")
   val koululainen = koskiSpecificOppijat.oppija("Koululainen", "Kaisa", "220109-784L")
@@ -25,7 +36,18 @@ object KoskiSpecificMockOppijat {
   val luokallejäänyt = koskiSpecificOppijat.oppija("Luokallejäänyt", "Lasse", "170186-6520")
   val ysiluokkalainen = koskiSpecificOppijat.oppija("Ysiluokkalainen", "Ylermi", "160932-311V", kotikunta = Some("179"))
   val vuosiluokkalainen = koskiSpecificOppijat.oppija("Vuosiluokkalainen", "Ville", "010100-325X")
-  val monessaKoulussaOllut = koskiSpecificOppijat.oppija("Monikoululainen", "Miia", "180497-112F", kotikunta = Some("091"))
+  val monessaKoulussaOllut = koskiSpecificOppijat.oppija("Monikoululainen", "Miia", "180497-112F", kotikunta = Some("091"),
+    kuntahistoriaMock = h => {
+      val historia = Seq(
+        OppijanumerorekisteriKotikuntahistoriaRow(h.henkilö.oid, "178", Some(LocalDate.of(2024, 1, 1)), Some(LocalDate.of(2024, 6, 1)))
+      )
+      OppijanKuntahistoria(
+        Some(h.henkilö.oid),
+        historia,
+        Seq.empty
+      )
+    }
+  )
   val lukiolainen = koskiSpecificOppijat.oppija("Lukiolainen", "Liisa", "020655-2479", kotikunta = Some("179"))
   val lukioKesken = koskiSpecificOppijat.oppija("Lukiokesken", "Leila", "190363-279X")
   val uusiLukio = koskiSpecificOppijat.oppija("Uusilukio", "Ulla", "250605A518Y")
@@ -80,7 +102,18 @@ object KoskiSpecificMockOppijat {
   val dia = koskiSpecificOppijat.oppija("Dia", "Dia", "151013-2195")
   val internationalschool = koskiSpecificOppijat.oppija("International", "Ida", "170186-854H")
   val europeanSchoolOfHelsinki = koskiSpecificOppijat.oppija("Eurooppalainen", "Emilia", "050707A130V")
-  val eskari = koskiSpecificOppijat.oppija("Eskari", "Essi", "300996-870E", kotikunta = Some("179"))
+  val eskari = koskiSpecificOppijat.oppija("Eskari", "Essi", "300996-870E", kotikunta = Some("179"),
+    kuntahistoriaMock = h => {
+      val historia = Seq(
+        OppijanumerorekisteriKotikuntahistoriaRow(h.henkilö.oid, "178", Some(LocalDate.of(2024, 1, 1)), Some(LocalDate.of(2024, 6, 1)))
+      )
+      OppijanKuntahistoria(
+        Some(h.henkilö.oid),
+        historia,
+        Seq.empty
+      )
+    }
+  )
   val eskariAikaisillaLisätiedoilla = koskiSpecificOppijat.oppija("Lisä-Eskari", "Essiina", "300996-7419")
   val master = koskiSpecificOppijat.oppija("of Puppets", "Master", "101097-6107")
   val slave = koskiSpecificOppijat.addOppijaHenkilöWithMasterInfo(OppijaHenkilöWithMasterInfo(LaajatOppijaHenkilöTiedot(oid = "1.2.246.562.24.00000051473", sukunimi = "of Puppets", etunimet = "Slave", kutsumanimi = "Slave", hetu = Some("101097-6107"), syntymäaika = None), Some(master)))
@@ -90,7 +123,21 @@ object KoskiSpecificMockOppijat {
   val opiskeluoikeudenOidKonflikti = koskiSpecificOppijat.oppija("Oidkonflikti", "Oskari", "260539-745W", "1.2.246.562.24.09090909090")
   val eiKoskessa = koskiSpecificOppijat.oppija("EiKoskessa", "Eino", "270181-5263", "1.2.246.562.24.99999555555", vanhaHetu = Some("270181-517T"))
   val eiKoskessaHetuton = koskiSpecificOppijat.addLaajatOppijaHenkilöTiedot(LaajatOppijaHenkilöTiedot(oid = "1.2.246.562.24.99999555556", sukunimi = "EiKoskessaHetuton", etunimet = "Eino", kutsumanimi = "Eino", hetu = None, syntymäaika = None))
-  val turvakielto = koskiSpecificOppijat.oppija("Turvakielto", "Tero", "151067-2193", turvakielto = true)
+  val turvakielto = koskiSpecificOppijat.oppija("Turvakielto", "Tero", "151067-2193", turvakielto = true,
+    kuntahistoriaMock = h => {
+      val historia = Seq(
+        OppijanumerorekisteriKotikuntahistoriaRow(h.henkilö.oid, "178", Some(LocalDate.of(2010, 1, 1)), Some(LocalDate.of(2024, 3, 1)))
+      )
+      val turvakieltohistoria = Seq(
+        OppijanumerorekisteriKotikuntahistoriaRow(h.henkilö.oid, "91", Some(LocalDate.of(2024, 3, 1)), None)
+      )
+      OppijanKuntahistoria(
+        Some(h.henkilö.oid),
+        historia,
+        turvakieltohistoria
+      )
+    }
+  )
   val montaJaksoaKorkeakoululainen = koskiSpecificOppijat.oppija("Korkeakoululainen", "Monta-Opintojaksoa", "030199-3419")
   val organisaatioHistoria = koskiSpecificOppijat.oppija("Historoitsija", "Hiisi", "200994-834A")
   val montaKoulutuskoodiaAmis = koskiSpecificOppijat.oppija("Koodari", "Monthy", "151099-036E")
@@ -138,8 +185,30 @@ object KoskiSpecificMockOppijat {
   val oppivelvollisuustietoSlave2 = koskiSpecificOppijat.addOppijaHenkilöWithMasterInfo(OppijaHenkilöWithMasterInfo(LaajatOppijaHenkilöTiedot(oid = "1.2.246.562.24.00000051492", sukunimi = "Oppivelvollisuustieto", etunimet = "Slave2", kutsumanimi = "Slave2", hetu = Some("260904A350B"), syntymäaika = Some(LocalDate.of(2004, 1, 1)), kotikunta = Some("091")), Some(oppivelvollisuustietoMaster)))
   val maksuttomuuttaPidennetty1 = koskiSpecificOppijat.oppija("Pidennetty1", "Maksuttomuutta1", "190525-0401", syntymäaika = Some(LocalDate.of(2004, 1, 1)), kotikunta = Some("091"))
   val maksuttomuuttaPidennetty2 = koskiSpecificOppijat.oppija("Pidennetty2", "Maksuttomuutta2", "220835-2325", syntymäaika = Some(LocalDate.of(2004, 1, 1)), kotikunta = Some("091"))
-  val vuonna2004SyntynytPeruskouluValmis2021 = koskiSpecificOppijat.oppija("Vuonna 2004 syntynyt", "Peruskoulu suoritettu 2021", "010104A153D", syntymäaika = Some(LocalDate.of(2004, 1, 1)), kotikunta = Some("091"))
-  val vuonna2004SyntynytMuttaPeruskouluValmisEnnen2021 = koskiSpecificOppijat.oppija("Vuonna 2004 syntynyt", "Peruskoulu suoritettu ennen 2021", "010104A811M", syntymäaika = Some(LocalDate.of(2004, 1, 1)), kotikunta = Some("091"))
+  val vuonna2004SyntynytPeruskouluValmis2021 = koskiSpecificOppijat.oppija("Vuonna 2004 syntynyt", "Peruskoulu suoritettu 2021", "010104A153D", syntymäaika = Some(LocalDate.of(2004, 1, 1)), kotikunta = Some("091"),
+    kuntahistoriaMock = h => {
+      val historia = Seq(
+        OppijanumerorekisteriKotikuntahistoriaRow(h.henkilö.oid, "091", Some(LocalDate.of(2010, 1, 1)), None)
+      )
+      OppijanKuntahistoria(
+        Some(h.henkilö.oid),
+        historia,
+        Seq.empty
+      )
+    }
+  )
+  val vuonna2004SyntynytMuttaPeruskouluValmisEnnen2021 = koskiSpecificOppijat.oppija("Vuonna 2004 syntynyt", "Peruskoulu suoritettu ennen 2021", "010104A811M", syntymäaika = Some(LocalDate.of(2004, 1, 1)), kotikunta = Some("091"),
+    kuntahistoriaMock = h => {
+      val historia = Seq(
+        OppijanumerorekisteriKotikuntahistoriaRow(h.henkilö.oid, "091", Some(LocalDate.of(2010, 1, 1)), None)
+      )
+      OppijanKuntahistoria(
+        Some(h.henkilö.oid),
+        historia,
+        Seq.empty
+      )
+    }
+  )
   val vuonna2005SyntynytEiOpiskeluoikeuksiaFikstuurissa = koskiSpecificOppijat.oppija("Vuonna 2005 syntynyt", "Ei opiskeluoikeuksia fikstuurissa", "030705A5719", syntymäaika = Some(LocalDate.of(2005, 7, 3)), kotikunta = Some("091"))
   val nuoriHetuton = koskiSpecificOppijat.addLaajatOppijaHenkilöTiedot(LaajatOppijaHenkilöTiedot(oid = "1.2.246.562.24.99999999888", sukunimi = "Hetuton", etunimet = "Veeti", kutsumanimi = "Veeti", hetu = None, syntymäaika = Some(LocalDate.of(2004, 2, 24)), yksilöity = false))
   val vuonna2005SyntynytUlkomainenVaihtoopiskelija = koskiSpecificOppijat.addLaajatOppijaHenkilöTiedot(LaajatOppijaHenkilöTiedot(oid = "1.2.246.562.24.55599999333", sukunimi = "Vaihto-opiskelija", etunimet = "Valter", kutsumanimi = "Valter", hetu = None, syntymäaika = Some(LocalDate.of(2005, 2, 24))))
@@ -175,7 +244,18 @@ object KoskiSpecificMockOppijat {
   val ylioppilasLukiolainenMaksamatonSuoritus = koskiSpecificOppijat.oppija("Maksamaa-Toikkarinen", "Matti", "101000A3582")
   val ylioppilasLukiolainenVanhaSuoritus = koskiSpecificOppijat.oppija("Vanhanen-Toikkarinen", "Vanja", "190580-678T")
   val ylioppilasLukiolainenTimeouttaava = koskiSpecificOppijat.oppija("Outinen-Toikkarinen", "Taimi", "270900A2635")
-  val ylioppilasLukiolainenRikki = koskiSpecificOppijat.oppija("Rikko-Toikkarinen", "Risto", "280100A855E", kotikunta = Some("091"))
+  val ylioppilasLukiolainenRikki = koskiSpecificOppijat.oppija("Rikko-Toikkarinen", "Risto", "280100A855E", kotikunta = Some("091"),
+    kuntahistoriaMock = h => {
+      val historia = Seq(
+        OppijanumerorekisteriKotikuntahistoriaRow(h.henkilö.oid, "178", Some(LocalDate.of(2024, 1, 1)), Some(LocalDate.of(2024, 6, 1)))
+      )
+      OppijanKuntahistoria(
+        Some(h.henkilö.oid),
+        historia,
+        Seq.empty
+      )
+    }
+  )
   val amisKoulutusvienti = koskiSpecificOppijat.oppija("Koulutusvientiläinen", "Amis", "020605A3368")
   val opiskeleeAmmatillisessaErityisoppilaitoksessa2 = koskiSpecificOppijat.oppija("Erityisoppilaitoksessa", "Emppu", "211005A867V", syntymäaika = Some(LocalDate.of(2005, 2, 21)), kotikunta = Some("091"))
   val vanhanMallinenIBOppija = koskiSpecificOppijat.oppija("Ibe", "Vanhanen", "101000A684K")
@@ -191,13 +271,86 @@ object KoskiSpecificMockOppijat {
   val pelkkäESH = koskiSpecificOppijat.oppija("Eurooppalainen", "Eeva", "100906A5544")
   val vapaaSivistystyöOsaamismerkki = koskiSpecificOppijat.oppija("Vapaa-Sivistys", "Osaamismerkki", "050705A564B")
   val moniaEriOpiskeluoikeuksia = koskiSpecificOppijat.oppija("Monia", "Useita", "230108A744P")
-  val suomeenTäysiikäisenäMuuttanut = koskiSpecificOppijat.oppija("Jenkins", "Jenny", "010106A1328", kotikunta = Some("091"))
-  val suomeenAlaikäisenäMuuttanut = koskiSpecificOppijat.oppija("Anderson", "Andrew", "010106A8159", kotikunta = Some("091"))
-  val ulkomaillaHetkenAsunut = koskiSpecificOppijat.oppija("Matkailija", "Matilda", "010106A604F", kotikunta = Some("091"))
-  val suomeenAhvenanmaaltaTäysiikäisenäMuuttanut = koskiSpecificOppijat.oppija("Anderson", "Anders", "010106A0398", kotikunta = Some("091"))
+  val suomeenTäysiikäisenäMuuttanut = koskiSpecificOppijat.oppija("Jenkins", "Jenny", "010106A1328", kotikunta = Some("091"),
+    kuntahistoriaMock = h => {
+      val historia = Seq(
+        OppijanumerorekisteriKotikuntahistoriaRow(h.henkilö.oid, "200", Some(LocalDate.of(2006, 1, 1)), Some(LocalDate.of(2024, 3, 1))),
+        OppijanumerorekisteriKotikuntahistoriaRow(h.henkilö.oid, "091", Some(LocalDate.of(2024, 3, 1)), None),
+      )
+      OppijanKuntahistoria(
+        Some(h.henkilö.oid),
+        historia,
+        Seq.empty
+      )
+    }
+  )
+  val suomeenAlaikäisenäMuuttanut = koskiSpecificOppijat.oppija("Anderson", "Andrew", "010106A8159", kotikunta = Some("091"),
+    kuntahistoriaMock = h => {
+    val historia = Seq(
+      OppijanumerorekisteriKotikuntahistoriaRow(h.henkilö.oid, "200", None,                           Some(LocalDate.of(2024, 3, 1))),
+      OppijanumerorekisteriKotikuntahistoriaRow(h.henkilö.oid, "091", Some(LocalDate.of(2022, 3, 1)), None),
+    )
+    OppijanKuntahistoria(
+      Some(h.henkilö.oid),
+      historia,
+      Seq.empty
+    )
+  }
+  )
+  val ulkomaillaHetkenAsunut = koskiSpecificOppijat.oppija("Matkailija", "Matilda", "010106A604F", kotikunta = Some("091"),
+    kuntahistoriaMock = h => {
+      val historia = Seq(
+        OppijanumerorekisteriKotikuntahistoriaRow(h.henkilö.oid, "091", Some(LocalDate.of(2006, 1, 1)), Some(LocalDate.of(2024, 3, 1))),
+        OppijanumerorekisteriKotikuntahistoriaRow(h.henkilö.oid, "200", Some(LocalDate.of(2022, 3, 1)), Some(LocalDate.of(2024, 3, 1))),
+        OppijanumerorekisteriKotikuntahistoriaRow(h.henkilö.oid, "091", Some(LocalDate.of(2024, 3, 1)), None)
+      )
+      OppijanKuntahistoria(
+        Some(h.henkilö.oid),
+        historia,
+        Seq.empty
+      )
+    }
+  )
+  val suomeenAhvenanmaaltaTäysiikäisenäMuuttanut = koskiSpecificOppijat.oppija("Anderson", "Anders", "010106A0398", kotikunta = Some("091"),
+    kuntahistoriaMock = h => {
+      val historia = Seq(
+        OppijanumerorekisteriKotikuntahistoriaRow(h.henkilö.oid, "170", Some(LocalDate.of(2006, 1, 1)), Some(LocalDate.of(2024, 3, 1))),
+        OppijanumerorekisteriKotikuntahistoriaRow(h.henkilö.oid, "478", Some(LocalDate.of(2010, 1, 1)), Some(LocalDate.of(2024, 3, 1))),
+        OppijanumerorekisteriKotikuntahistoriaRow(h.henkilö.oid, "091", Some(LocalDate.of(2024, 3, 1)), None)
+      )
+      OppijanKuntahistoria(
+        Some(h.henkilö.oid),
+        historia,
+        Seq.empty
+      )
+    }
+  )
   val vapaaSivistystyöMaksuttomuus = koskiSpecificOppijat.oppija("VST", "Maksuttomuus", "311204A059L", syntymäaika = Some(LocalDate.of(2004, 12, 31)), kotikunta = Some("091"))
-  val vuonna2003SyntynytPeruskouluValmis2021 = koskiSpecificOppijat.oppija("Vuonna 2003 syntynyt", "Peruskoulu suoritettu 2021", "010103A3373", syntymäaika = Some(LocalDate.of(2003, 1, 1)), kotikunta = Some("091"))
-  val vuonna2004SyntynytPeruskouluValmis2021MuuttanutSuomeenTäysiIkäisenä = koskiSpecificOppijat.oppija("Vuonna 2004 syntynyt (muuttanut Suomeen täysi-ikäisenä)", "Peruskoulu suoritettu 2021", "010104A3304", syntymäaika = Some(LocalDate.of(2004, 1, 1)), kotikunta = Some("091"))
+  val vuonna2003SyntynytPeruskouluValmis2021 = koskiSpecificOppijat.oppija("Vuonna 2003 syntynyt", "Peruskoulu suoritettu 2021", "010103A3373", syntymäaika = Some(LocalDate.of(2003, 1, 1)), kotikunta = Some("091"),
+    kuntahistoriaMock = h => {
+      val historia = Seq(
+        OppijanumerorekisteriKotikuntahistoriaRow(h.henkilö.oid, "091", Some(LocalDate.of(2010, 1, 1)), None)
+      )
+      OppijanKuntahistoria(
+        Some(h.henkilö.oid),
+        historia,
+        Seq.empty
+      )
+    }
+  )
+  val vuonna2004SyntynytPeruskouluValmis2021MuuttanutSuomeenTäysiIkäisenä = koskiSpecificOppijat.oppija("Vuonna 2004 syntynyt (muuttanut Suomeen täysi-ikäisenä)", "Peruskoulu suoritettu 2021", "010104A3304", syntymäaika = Some(LocalDate.of(2004, 1, 1)), kotikunta = Some("091"),
+    kuntahistoriaMock = h => {
+      val historia = Seq(
+        OppijanumerorekisteriKotikuntahistoriaRow(h.henkilö.oid, "478", Some(LocalDate.of(2004, 1, 1)), Some(LocalDate.of(2024, 2, 1))),
+        OppijanumerorekisteriKotikuntahistoriaRow(h.henkilö.oid, "091", Some(LocalDate.of(2024, 2, 1)), None)
+      )
+      OppijanKuntahistoria(
+        Some(h.henkilö.oid),
+        historia,
+        Seq.empty
+      )
+    }
+  )
   val vuonna2004SyntynytPeruskouluValmis2021EiKotikuntahistoriaa = koskiSpecificOppijat.oppija(
     "Vuonna 2004 syntynyt (ei kotikuntahistoriaa)", "Peruskoulu suoritettu 2021", "010104A227T",
     syntymäaika = Some(LocalDate.of(2004, 1, 1)),

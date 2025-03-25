@@ -494,12 +494,12 @@ class OppivelvollisuustietoSpec
 
       "Suomeen täysi-ikäisenä muuttanut ei ole oppivelvollisuden alainen" in {
         resetKoskiFixtures
-        isOppivelvollinen("1.2.246.562.24.00000000166") should be(false)
+        isOppivelvollinen(KoskiSpecificMockOppijat.suomeenTäysiikäisenäMuuttanut.oid) should be(false)
       }
 
       "Suomeen alaikäisenä muuttanut on oppivelvollisuden alainen" in {
         resetKoskiFixtures
-        isOppivelvollinen("1.2.246.562.24.00000000167") should be(true)
+        isOppivelvollinen(KoskiSpecificMockOppijat.suomeenAlaikäisenäMuuttanut.oid) should be(true)
       }
 
       "Suomesta alaikäisenä pois muuttanut ja täysi-ikäisenä takaisin muuttanut on oppivelvollisuden alainen" in {
