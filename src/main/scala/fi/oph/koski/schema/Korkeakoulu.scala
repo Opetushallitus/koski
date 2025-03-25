@@ -66,11 +66,11 @@ case class KorkeakoulunOpiskeluoikeudenLisätiedot(
   @Title("Opettajan pedagogiset opinnot")
   @InfoDescription("opettajan kelpoisuuden määritelmä")
   @KoodistoUri("virtapatevyys")
-  opettajanPätevyys: Option[List[Koodistokoodiviite]],
+  opettajanPedagogisetOpinnot: Option[List[Koodistokoodiviite]],
   @Title("Opetettavan aineen opinnot")
   @InfoDescription("opettajan kelpoisuuden määritelmä")
   @KoodistoUri("virtapatevyys")
-  opetettavanAineenPätevyys: Option[List[Koodistokoodiviite]],
+  opetettavanAineenOpinnot: Option[List[Koodistokoodiviite]],
 ) extends OpiskeluoikeudenLisätiedot {
   def ensisijaisuusVoimassa(d: LocalDate): Boolean = ensisijaisuus.exists(_.exists((j: Aikajakso) => j.contains(d)))
 }
