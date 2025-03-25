@@ -55,7 +55,9 @@ object AktiivisetJaPäättyneetOpinnotKorkeakoulunOpiskeluoikeus {
           )
         )
       ),
-      koulutuskuntaJaksot = lisätiedot.koulutuskuntaJaksot.map(j => AktiivisetJaPäättyneetOpinnotKoulutuskuntaJakso(j.alku, j.loppu, j.koulutuskunta))
+      koulutuskuntaJaksot = lisätiedot.koulutuskuntaJaksot.map(j => AktiivisetJaPäättyneetOpinnotKoulutuskuntaJakso(j.alku, j.loppu, j.koulutuskunta)),
+      opettajanPätevyys = lisätiedot.opettajanPätevyys.map(_.map(AktiivisetJaPäättyneetOpinnotKoodistokoodiviite.fromKoskiSchema)),
+      opetettavanAineenPätevyys = lisätiedot.opetettavanAineenPätevyys.map(_.map(AktiivisetJaPäättyneetOpinnotKoodistokoodiviite.fromKoskiSchema)),
     )),
     suoritukset = kk.suoritukset
       .map {
@@ -167,7 +169,9 @@ case class AktiivisetJaPäättyneetOpinnotMuuKorkeakoulunSuoritus(
 case class AktiivisetJaPäättyneetOpinnotKorkeakoulunOpiskeluoikeudenLisätiedot(
   virtaOpiskeluoikeudenTyyppi: Option[AktiivisetJaPäättyneetOpinnotKoodistokoodiviite],
   lukukausiIlmoittautuminen: Option[AktiivisetJaPäättyneetOpinnotLukukausi_Ilmoittautuminen],
-  koulutuskuntaJaksot: List[AktiivisetJaPäättyneetOpinnotKoulutuskuntaJakso]
+  koulutuskuntaJaksot: List[AktiivisetJaPäättyneetOpinnotKoulutuskuntaJakso],
+  opettajanPätevyys: Option[List[AktiivisetJaPäättyneetOpinnotKoodistokoodiviite]],
+  opetettavanAineenPätevyys: Option[List[AktiivisetJaPäättyneetOpinnotKoodistokoodiviite]],
 ) extends AktiivisetJaPäättyneetOpinnotOpiskeluoikeudenLisätiedot
 
 @Title("Lukukausi-ilmoittautuminen")
