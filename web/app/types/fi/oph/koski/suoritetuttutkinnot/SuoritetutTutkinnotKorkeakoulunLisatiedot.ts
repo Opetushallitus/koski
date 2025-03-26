@@ -8,15 +8,15 @@ import { SuoritetutTutkinnotKoodistokoodiviite } from './SuoritetutTutkinnotKood
 export type SuoritetutTutkinnotKorkeakoulunLisätiedot = {
   $class: 'fi.oph.koski.suoritetuttutkinnot.SuoritetutTutkinnotKorkeakoulunLisätiedot'
   virtaOpiskeluoikeudenTyyppi?: SuoritetutTutkinnotKoodistokoodiviite
-  opettajanPätevyys?: Array<SuoritetutTutkinnotKoodistokoodiviite>
-  opetettavanAineenPätevyys?: Array<SuoritetutTutkinnotKoodistokoodiviite>
+  opettajanPedagogisetOpinnot?: Array<SuoritetutTutkinnotKoodistokoodiviite>
+  opetettavanAineenOpinnot?: Array<SuoritetutTutkinnotKoodistokoodiviite>
 }
 
 export const SuoritetutTutkinnotKorkeakoulunLisätiedot = (
   o: {
     virtaOpiskeluoikeudenTyyppi?: SuoritetutTutkinnotKoodistokoodiviite
-    opettajanPätevyys?: Array<SuoritetutTutkinnotKoodistokoodiviite>
-    opetettavanAineenPätevyys?: Array<SuoritetutTutkinnotKoodistokoodiviite>
+    opettajanPedagogisetOpinnot?: Array<SuoritetutTutkinnotKoodistokoodiviite>
+    opetettavanAineenOpinnot?: Array<SuoritetutTutkinnotKoodistokoodiviite>
   } = {}
 ): SuoritetutTutkinnotKorkeakoulunLisätiedot => ({
   $class:
