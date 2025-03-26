@@ -38,7 +38,7 @@ class KoskiOppijaExamplesValidationSpec extends AnyFreeSpec with TestEnvironment
       testDeserialization(OidHenkilö(oid))
       testDeserialization[Henkilö](OidHenkilö(oid))
       testDeserialization(OidHenkilö(""), Left(List(ValidationError("oid",JString(""),EmptyString()))))
-      testDeserialization(OidHenkilö("123"), Left(List(ValidationError("oid",JString("123"),RegExMismatch("""^1\.2\.246\.562\.24\.\d{11}$""")))))
+      testDeserialization(OidHenkilö("123"), Left(List(ValidationError("oid",JString("123"),RegExMismatch("""^1\.2\.246\.562\.(24|98|198)\.\d{11}$""")))))
       testDeserialization[Henkilö](TäydellisetHenkilötiedot(oid, Some("123456-7890"), Some(LocalDate.of(1977, 2, 2)), "etu", "kutsu", "suku", Some(Koodistokoodiviite("fi", "kieli")), Some(List(Koodistokoodiviite("fi", "maatjavaltiot2")))))
     }
     "Suoritus" in {

@@ -10,7 +10,9 @@ sealed trait Organisaatio extends Localized
 object Organisaatio {
   type Oid = String
   def isValidOrganisaatioOid(oid: String) = {
-    """^1\.2\.246\.562\.10\.\d{11,24}$""".r.findFirstIn(oid).isDefined
+    // 10 tuotantoluokka
+    // 99, 199 käytössä testiopintopolussa/untuvassa testidatalle
+    """^1\.2\.246\.562\.(10|99|199)\.\d{11,24}$""".r.findFirstIn(oid).isDefined
   }
 }
 
@@ -96,7 +98,9 @@ case class Tutkintotoimikunta(
 
 trait OrganisaatioWithOid extends Organisaatio {
   @Description("Organisaation tunniste Opintopolku-palvelussa. Oid numero, joka on kaikilla organisaatiotasoilla: toimipisteen oid, koulun oid, koulutuksen järjestäjän oid")
-  @RegularExpression("""^1\.2\.246\.562\.10\.\d{11,24}$""")
+  // 10 tuotantoluokka
+  // 99, 199 käytössä testiopintopolussa/untuvassa testidatalle
+  @RegularExpression("""^1\.2\.246\.562\.(10|99|199)\.\d{11,24}$""")
   @Discriminator
   def oid: Organisaatio.Oid
   @Description("Organisaation (kielistetty) nimi")
