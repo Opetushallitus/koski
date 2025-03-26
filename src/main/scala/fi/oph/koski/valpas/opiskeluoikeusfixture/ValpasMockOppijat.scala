@@ -1,7 +1,7 @@
 package fi.oph.koski.valpas.opiskeluoikeusfixture
 
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat.koskiSpecificOppijat
-import fi.oph.koski.henkilo.MockOppijat
+import fi.oph.koski.henkilo.{MockOppijat, OppijanKuntahistoria, OppijanumerorekisteriKotikuntahistoriaRow}
 import fi.oph.koski.valpas.valpasuser.ValpasMockUsers
 
 import java.time.LocalDate
@@ -96,7 +96,19 @@ object ValpasMockOppijat {
   val peruskoulustaValmistunutIlman9Luokkaa = valpasOppijat.oppijaSyntymäaikaHetusta("Valmistunut-ei-ysiluokkaa", "Valpas", "240905A4064", kotikunta = Some("091"))
   val peruskoulustaLokakuussaValmistunutIlman9Luokkaa = valpasOppijat.oppijaSyntymäaikaHetusta("Valmistunut-lokakuussa-ei-ysiluokkaa", "Valpas", "110505A1818", kotikunta = Some("091"))
   val lukioVanhallaOpsilla = valpasOppijat.oppijaSyntymäaikaHetusta("LukioVanhallaOpsilla", "Valpas", "060704A687P", kotikunta = Some("091"))
-  val muuttanutUlkomaille = valpasOppijat.oppijaSyntymäaikaHetusta("MuuttanutUlkomaille", "Valpas", "130805A850J", kotikunta = Some("200"))
+  val muuttanutUlkomaille = valpasOppijat.oppijaSyntymäaikaHetusta("MuuttanutUlkomaille", "Valpas", "130805A850J", kotikunta = Some("200"),
+    kuntahistoriaMock = h => {
+      val historia = Seq(
+        OppijanumerorekisteriKotikuntahistoriaRow(h.henkilö.oid, "091", None, Some(LocalDate.of(2023, 1, 1))),
+        OppijanumerorekisteriKotikuntahistoriaRow(h.henkilö.oid, "200", Some(LocalDate.of(2023, 1, 1)), None),
+      )
+      OppijanKuntahistoria(
+        Some(h.henkilö.oid),
+        historia,
+        Seq.empty
+      )
+    }
+  )
   val turvakieltoOppijaTyhjälläKotikunnalla = valpasOppijat.oppijaSyntymäaikaHetusta("TurvakieltoTyhjälläKotikunnalla", "Valpas", "280705A584U", valpasOppijat.generateId(), None, turvakielto = true, kotikunta = Some(""))
   val oppivelvollinenIntSchoolYsiluokkaKeskenKeväällä2021 = valpasOppijat.oppijaSyntymäaikaHetusta("Oppivelvollinen-int-school-kesken-keväällä-2021", "Valpas", "180205A026B", kotikunta = Some("091"))
   val intSchoolKasiluokkaKeskenKeväällä2021 = valpasOppijat.oppijaSyntymäaikaHetusta("Int-school-kasiluokka-kesken-keväällä-2021", "Valpas", "030705A638E", kotikunta = Some("091"))
@@ -189,10 +201,36 @@ object ValpasMockOppijat {
   val eshEbTutkinnostaEronnut = valpasOppijat.oppijaSyntymäaikaHetusta("ESH-EB-tutkinnosta-eronnut", "Valpas", hetu = "180610A758F", kotikunta = Some("624"))
   val eshKeskenEbTutkinnonAloittanut = valpasOppijat.oppijaSyntymäaikaHetusta("ESH-kesken-EB-tutkinnon-aloittanut", "Valpas", hetu = "021110A1065", kotikunta = Some("624"))
   val taiteenPerusopetusPäättynyt = valpasOppijat.oppijaSyntymäaikaHetusta("Taiteilija", "Petra", "010110A955U", kotikunta = Some("091"))
-  val ulkomailtaSuomeenMuuttanut = valpasOppijat.oppijaSyntymäaikaHetusta("Maahanmuuttaja", "Masa", "010106A431W", kotikunta = Some("091"))
+  val ulkomailtaSuomeenMuuttanut = valpasOppijat.oppijaSyntymäaikaHetusta("Maahanmuuttaja", "Masa", "010106A431W", kotikunta = Some("091"),
+    kuntahistoriaMock = h => {
+      val historia = Seq(
+        OppijanumerorekisteriKotikuntahistoriaRow(h.henkilö.oid, "200", Some(LocalDate.of(2006, 1, 1)), Some(LocalDate.of(2016, 1, 1))),
+        OppijanumerorekisteriKotikuntahistoriaRow(h.henkilö.oid, "091", Some(LocalDate.of(2014, 1, 1)), Some(LocalDate.of(2015, 1, 1))),
+        OppijanumerorekisteriKotikuntahistoriaRow(h.henkilö.oid, "200", Some(LocalDate.of(2015, 1, 1)), Some(LocalDate.of(2016, 1, 1))),
+        OppijanumerorekisteriKotikuntahistoriaRow(h.henkilö.oid, "091", Some(LocalDate.of(2016, 1, 1)), None),
+      )
+      OppijanKuntahistoria(
+        Some(h.henkilö.oid),
+        historia,
+        Seq.empty
+      )
+    }
+  )
   val ammattitutkintoYoTutkinnonJalkeen = valpasOppijat.oppijaSyntymäaikaHetusta("Ammattitutkinto yo-tutkinnon Jälkeen", "Antti", "300805A1918", kotikunta = Some("091"))
   val lukioOpinnotAmmattitutkinnonJalkeen = valpasOppijat.oppijaSyntymäaikaHetusta("Lukio-opinnot Ammattitutkinnon Jälkeen", "Lucia", "300805A4409", kotikunta = Some("091"))
-  val muuttanutUlkomailleEnnen7vIkää = valpasOppijat.oppijaSyntymäaikaHetusta("muuttanutUlkomailleEnnen7vIkää", "Valpas", "130805A881J", kotikunta = Some("200"))
+  val muuttanutUlkomailleEnnen7vIkää = valpasOppijat.oppijaSyntymäaikaHetusta("muuttanutUlkomailleEnnen7vIkää", "Valpas", "130805A881J", kotikunta = Some("200"),
+    kuntahistoriaMock = h => {
+      val historia = Seq(
+        OppijanumerorekisteriKotikuntahistoriaRow(h.henkilö.oid, "091", None, Some(LocalDate.of(2010, 10, 1))),
+        OppijanumerorekisteriKotikuntahistoriaRow(h.henkilö.oid, "200", Some(LocalDate.of(2010, 10, 1)), None),
+      )
+      OppijanKuntahistoria(
+        Some(h.henkilö.oid),
+        historia,
+        Seq.empty
+      )
+    }
+  )
   val oppijaTyhjälläKotikunnalla = valpasOppijat.oppijaSyntymäaikaHetusta("TyhjälläKotikunnalla", "Valpas", "081105A407E", kotikunta = None)
 
   // Kutsumanimi ja yhteystiedot haetaan oppijanumerorekisteristä Valpas-käyttäjälle, tallennetaan siksi käyttäjä myös "oppijana" mockeihin

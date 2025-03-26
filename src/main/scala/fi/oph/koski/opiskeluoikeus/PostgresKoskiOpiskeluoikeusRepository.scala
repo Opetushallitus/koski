@@ -126,9 +126,8 @@ class PostgresKoskiOpiskeluoikeusRepository(
     // HUOMIOI, JOS TÄTÄ MUUTAT: Pitää olla synkassa Oppivelvollisuustiedot.scala:n createPrecomputedTable-metodissa
     // raportointikantaan tehtävän tarkistuksen kanssa. Muuten Valppaan maksuttomuushaku menee rikki.
 
-    // TODO: Tämä(kään) ei mene nyt täysin oikein: tietokannasta tarkistettaessa pitäisi ignoroida uuden lisättävän opiskeluoikeuden aiempi kopio. Jotta tämän saisi korjattua, pitäisi
-    // maksuttomuusvalidaatiot siirtää change-validaatioihin syvemmälle kirjoitusputkea, jotta mahdollinen ylikirjoitettava opiskeluoikeus olisi jo tiedossa ja voitaisiin siten ignoroida
-    // SQL-kyselyssä.
+    // Ota huomioon myös opiskeluoikeus, jota ollaan lisäämässä, koska sekin saattaa olla esim. oppivelvollisuuden edellisen lain
+    // aikana päättänyt.
     val opiskeluoikeudesta = tallennettavaOpiskeluoikeus.toSeq.flatMap(oo =>
       if (!oo.mitätöity && oo.alkamispäivä.isDefined) {
         val alkamispäivä = oo.alkamispäivä.get
@@ -145,6 +144,10 @@ class PostgresKoskiOpiskeluoikeusRepository(
       }
     )
 
+    val tallennettavaOid = tallennettavaOpiskeluoikeus.flatMap(_.oid)
+    val tallennettavaLähdejärjestelmänKoodiarvo = tallennettavaOpiskeluoikeus.flatMap(_.lähdejärjestelmänId).map(_.lähdejärjestelmä.koodiarvo)
+    val tallennettavaLähdejärjestelmänId = tallennettavaOpiskeluoikeus.flatMap(_.lähdejärjestelmänId).flatMap(_.id)
+    
     val aiemmistaOpiskeluoikeuksista = runDbSync(
       sql"""
         with master as (
@@ -163,6 +166,18 @@ class PostgresKoskiOpiskeluoikeusRepository(
         from opiskeluoikeus
         cross join jsonb_array_elements(data -> 'suoritukset') suoritukset
         where not opiskeluoikeus.mitatoity
+          and (not (
+                    ($tallennettavaOid is not null)
+                    and (opiskeluoikeus.oid = $tallennettavaOid)
+                   )
+              )
+          and (not (
+                    ($tallennettavaLähdejärjestelmänId is not null)
+                    and (opiskeluoikeus.data -> 'lähdejärjestelmänId' ->> 'id' is not null)
+                    and (opiskeluoikeus.data -> 'lähdejärjestelmänId' ->> 'id' = $tallennettavaLähdejärjestelmänId)
+                    and (opiskeluoikeus.data -> 'lähdejärjestelmänId' -> 'lähdejärjestelmä' ->> 'koodiarvo' = $tallennettavaLähdejärjestelmänKoodiarvo)
+                   )
+              )
           and (suoritukset -> 'tyyppi' ->> 'koodiarvo' = 'perusopetuksenoppimaara'
             or suoritukset -> 'tyyppi' ->> 'koodiarvo' = 'aikuistenperusopetuksenoppimaara'
             or (suoritukset -> 'tyyppi' ->> 'koodiarvo' = 'internationalschoolmypvuosiluokka'
