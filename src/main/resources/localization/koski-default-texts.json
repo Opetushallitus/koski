@@ -2790,8 +2790,6 @@
   "Yritys": "Yritys",
   "Yths maksettu": "Yths maksettu",
   "Y-tunnus": "Y-tunnus",
-  "Opettajan pätevyys" : "Opettajan pätevyys",
-  "Opetettavan aineen pätevyys" : "Opetettavan aineen pätevyys",
   "description:Yleisen kielitutkinnon osakokeet" : "Yleisen kielitutkinnon osakokeet",
   "description:Yleisessä kielitutkinnossa 'lasna' vastaa tutkintopäivää,..." : "Yleisessä kielitutkinnossa 'lasna' vastaa tutkintopäivää, 'hyvaksytystisuoritettu' arviointipäivää",
   "Tutkintopäivä": "Tutkintopäivä",
@@ -2800,5 +2798,8 @@
   "deprecated:CAS tallennetaan osasuorituksiin 1.8.2025 tai..." : "CAS tallennetaan osasuorituksiin 1.8.2025 tai myöhemmin alkaneille IB-opinnoille",
   "deprecated:Theory of Knowledge tallennetaan osasuorituksiin..." : "Theory of Knowledge tallennetaan osasuorituksiin 1.8.2025 tai myöhemmin alkaneille IB-opinnoille",
   "deprecated:Lisäpisteitä ei tallennetaa 1.8.2025 tai..." : "Lisäpisteitä ei tallennetaa 1.8.2025 tai myöhemmin alkaneille IB-opinnoille",
-  "deprecated:Extended Essay tallennetaan osasuorituksiin 1.8.2025..." : "Extended Essay tallennetaan osasuorituksiin 1.8.2025 tai myöhemmin alkaneille IB-opinnoille"
+  "deprecated:Extended Essay tallennetaan osasuorituksiin 1.8.2025..." : "Extended Essay tallennetaan osasuorituksiin 1.8.2025 tai myöhemmin alkaneille IB-opinnoille",
+  "Opettajan pedagogiset opinnot" : "Opettajan pedagogiset opinnot",
+  "Opetettavan aineen opinnot" : "Opetettavan aineen opinnot",
+  "infoDescription:opettajan kelpoisuuden määritelmä" : "Opettajan kelpoisuus muodostuu pedagogisista opinnoista, tutkinnosta ja opetettavan aineen opinnoista. Katso tarkemmin asetus opetustoimen henkilöstön kelpoisuuksista https://www.finlex.fi/fi/laki/ajantasa/1998/19980986"
 }

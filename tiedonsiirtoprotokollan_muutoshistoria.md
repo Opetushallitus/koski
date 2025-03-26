@@ -1,3 +1,6 @@
+## 26.3.2025
+- Muutetty opettajapätevyyksiin liittyvien kenttien nimet - uudet termit ovat "opettajan pedagogiset opinnot" ja "opetettavan aineen opinnot"
+
 ## 13.3.2025
 
 - Lisätty IB-opiskeluoikeuden kursseille mahdollisuus tallentaa laajuus kurssien sijaan opintopisteinä.
