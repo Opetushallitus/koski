@@ -11,7 +11,9 @@ object Henkilö {
   type Hetu = String
   def withOid(oid: String) = OidHenkilö(oid)
   def isValidHenkilöOid(oid: String) = {
-    """^1\.2\.246\.562\.24\.\d{11}$""".r.findFirstIn(oid).isDefined
+    // 24 tuotantoluokka
+    // 98, 198 käytössä testiopintopolussa/untuvassa DVV:n testiaineiston henkilöille
+    """^1\.2\.246\.562\.(24|98|198)\.\d{11}$""".r.findFirstIn(oid).isDefined
   }
 }
 
@@ -94,6 +96,8 @@ case class Nimitiedot(etunimet: String, kutsumanimi: String, sukunimi: String) e
 trait HenkilöWithOid extends Henkilö {
   @Description("Oppijanumero 'oid' on oppijan yksilöivä tunniste Opintopolku-palvelussa ja Koskessa")
   @OksaUri("tmpOKSAID760", "oppijanumero")
-  @RegularExpression("""^1\.2\.246\.562\.24\.\d{11}$""")
+  // 24 tuotantoluokka
+  // 98, 198 käytössä testiopintopolussa/untuvassa DVV:n testiaineiston henkilöille
+  @RegularExpression("""^1\.2\.246\.562\.(24|98|198)\.\d{11}$""")
   def oid: Henkilö.Oid
 }
