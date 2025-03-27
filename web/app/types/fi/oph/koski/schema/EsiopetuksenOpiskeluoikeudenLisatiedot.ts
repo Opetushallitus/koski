@@ -2,6 +2,7 @@ import { Aikajakso } from './Aikajakso'
 import { ErityisenTuenPäätös } from './ErityisenTuenPaatos'
 import { Koodistokoodiviite } from './Koodistokoodiviite'
 import { LocalizedString } from './LocalizedString'
+import { Tukijakso } from './Tukijakso'
 
 /**
  * EsiopetuksenOpiskeluoikeudenLisätiedot
@@ -18,7 +19,9 @@ export type EsiopetuksenOpiskeluoikeudenLisätiedot = {
   erityisenTuenPäätökset?: Array<ErityisenTuenPäätös>
   erityisenTuenPäätös?: ErityisenTuenPäätös
   vammainen?: Array<Aikajakso>
+  varhennetunOppivelvollisuudenJaksot?: Array<Aikajakso>
   tukimuodot?: Array<Koodistokoodiviite<'perusopetuksentukimuoto', string>>
+  tukijaksot?: Array<Tukijakso>
   sisäoppilaitosmainenMajoitus?: Array<Aikajakso>
 }
 
@@ -32,7 +35,9 @@ export const EsiopetuksenOpiskeluoikeudenLisätiedot = (
     erityisenTuenPäätökset?: Array<ErityisenTuenPäätös>
     erityisenTuenPäätös?: ErityisenTuenPäätös
     vammainen?: Array<Aikajakso>
+    varhennetunOppivelvollisuudenJaksot?: Array<Aikajakso>
     tukimuodot?: Array<Koodistokoodiviite<'perusopetuksentukimuoto', string>>
+    tukijaksot?: Array<Tukijakso>
     sisäoppilaitosmainenMajoitus?: Array<Aikajakso>
   } = {}
 ): EsiopetuksenOpiskeluoikeudenLisätiedot => ({

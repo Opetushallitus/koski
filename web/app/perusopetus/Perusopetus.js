@@ -41,7 +41,7 @@ export const isVuosiluokkaTaiPerusopetuksenOppimäärä = (suoritus) =>
     suorituksenTyyppi(suoritus)
   )
 export const isYksilöllistetty = (suoritus) =>
-  modelData(suoritus, 'yksilöllistettyOppimäärä')
+  modelData(suoritus, 'yksilöllistettyOppimäärä') || modelData(suoritus, 'rajattuOppimäärä')
 export const isPainotettu = (suoritus) =>
   modelData(suoritus, 'painotettuOpetus')
 export const isKorotus = (suoritus) => modelData(suoritus, 'korotus')
@@ -62,7 +62,7 @@ export const oppimääränOsasuoritukset = (
     : Bacon.constant([])
 
 const YksilöllistettyFootnote = {
-  title: 'Yksilöllistetty oppimäärä',
+  title: 'Yksilöllistetty tai rajattu oppimäärä',
   hint: '*'
 }
 const PainotettuFootnote = { title: 'Painotettu opetus', hint: '**' }

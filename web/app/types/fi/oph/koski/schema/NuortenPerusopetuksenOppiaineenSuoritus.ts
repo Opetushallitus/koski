@@ -18,6 +18,7 @@ export type NuortenPerusopetuksenOppiaineenSuoritus = {
     'perusopetuksensuoritustapa',
     'erityinentutkinto'
   >
+  rajattuOppimäärä: boolean
   painotettuOpetus: boolean
   koulutusmoduuli: NuortenPerusopetuksenOppiaine
   yksilöllistettyOppimäärä: boolean
@@ -32,6 +33,7 @@ export const NuortenPerusopetuksenOppiaineenSuoritus = (o: {
     'perusopetuksensuoritustapa',
     'erityinentutkinto'
   >
+  rajattuOppimäärä?: boolean
   painotettuOpetus: boolean
   koulutusmoduuli: NuortenPerusopetuksenOppiaine
   yksilöllistettyOppimäärä?: boolean
@@ -40,6 +42,7 @@ export const NuortenPerusopetuksenOppiaineenSuoritus = (o: {
     koodiarvo: 'perusopetuksenoppiaine',
     koodistoUri: 'suorituksentyyppi'
   }),
+  rajattuOppimäärä: false,
   $class: 'fi.oph.koski.schema.NuortenPerusopetuksenOppiaineenSuoritus',
   yksilöllistettyOppimäärä: false,
   ...o

@@ -3,6 +3,7 @@ import { Aikajakso } from './Aikajakso'
 import { ErityisenTuenPäätös } from './ErityisenTuenPaatos'
 import { Koodistokoodiviite } from './Koodistokoodiviite'
 import { LocalizedString } from './LocalizedString'
+import { Tukijakso } from './Tukijakso'
 
 /**
  * PerusopetuksenOpiskeluoikeudenLisätiedot
@@ -27,11 +28,14 @@ export type PerusopetuksenOpiskeluoikeudenLisätiedot = {
   aloittanutEnnenOppivelvollisuutta: boolean
   erityisenTuenPäätös?: ErityisenTuenPäätös
   ulkomailla?: Aikajakso
+  toimintaAlueittainOpiskelu?: Array<Aikajakso>
   vammainen?: Array<Aikajakso>
   tehostetunTuenPäätös?: TehostetunTuenPäätös
   tukimuodot?: Array<Koodistokoodiviite<'perusopetuksentukimuoto', string>>
   vuosiluokkiinSitoutumatonOpetus: boolean
+  tukijaksot?: Array<Tukijakso>
   sisäoppilaitosmainenMajoitus?: Array<Aikajakso>
+  opetuksenJärjestäminenVammanSairaudenTaiRajoitteenPerusteella?: Array<Aikajakso>
 }
 
 export const PerusopetuksenOpiskeluoikeudenLisätiedot = (
@@ -52,11 +56,14 @@ export const PerusopetuksenOpiskeluoikeudenLisätiedot = (
     aloittanutEnnenOppivelvollisuutta?: boolean
     erityisenTuenPäätös?: ErityisenTuenPäätös
     ulkomailla?: Aikajakso
+    toimintaAlueittainOpiskelu?: Array<Aikajakso>
     vammainen?: Array<Aikajakso>
     tehostetunTuenPäätös?: TehostetunTuenPäätös
     tukimuodot?: Array<Koodistokoodiviite<'perusopetuksentukimuoto', string>>
     vuosiluokkiinSitoutumatonOpetus?: boolean
+    tukijaksot?: Array<Tukijakso>
     sisäoppilaitosmainenMajoitus?: Array<Aikajakso>
+    opetuksenJärjestäminenVammanSairaudenTaiRajoitteenPerusteella?: Array<Aikajakso>
   } = {}
 ): PerusopetuksenOpiskeluoikeudenLisätiedot => ({
   aloittanutEnnenOppivelvollisuutta: false,
