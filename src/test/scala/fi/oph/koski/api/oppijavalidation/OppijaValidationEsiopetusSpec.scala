@@ -14,6 +14,7 @@ import fi.oph.koski.schema._
 import fi.oph.koski.validation.KoskiValidator
 
 import java.time.LocalDate
+import java.time.LocalDate.{of => date}
 
 class OppijaValidationEsiopetusSpec extends TutkinnonPerusteetTest[EsiopetuksenOpiskeluoikeus] with EsiopetusSpecification {
   "Peruskoulun esiopetus -> HTTP 200" in {
@@ -792,6 +793,39 @@ class OppijaValidationEsiopetusSpec extends TutkinnonPerusteetTest[EsiopetuksenO
       )
 
       duplikaattiaEiSallittu(defaultOpiskeluoikeus, opiskeluoikeus)
+    }
+
+    "Varhennettu oppivelvollisuus" - {
+      val päätöksetSallittuAlkaen = LocalDate.parse(KoskiApplicationForTests.config.getString("validaatiot.varhennettuOppivelvollisuusVoimaan"))
+      def makeOpiskeluoikeus(alku: LocalDate = päätöksetSallittuAlkaen) = {
+        defaultOpiskeluoikeus.copy(
+          tila = NuortenPerusopetuksenOpiskeluoikeudenTila(List(NuortenPerusopetuksenOpiskeluoikeusjakso(date(2026, 7, 31), opiskeluoikeusLäsnä))),
+          lisätiedot = Some(EsiopetuksenOpiskeluoikeudenLisätiedot(
+            varhennetunOppivelvollisuudenJaksot = Some(List(Aikajakso(alku = Some(alku), loppu = None))),
+            tukijaksot = Some(List(Tukijakso(alku = Some(alku), loppu = None))),
+          ))
+        )
+      }
+      "Varhennettu oppivelvollisuus ei saa alkaa ennen voimaantuloa ja vaatii tukijakson" in {
+        val oo = makeOpiskeluoikeus(päätöksetSallittuAlkaen)
+        setupOppijaWithOpiskeluoikeus(oo) {
+          verifyResponseStatusOk()
+        }
+
+        val ooLiianAikaisin = makeOpiskeluoikeus(päätöksetSallittuAlkaen.minusDays(1))
+        setupOppijaWithOpiskeluoikeus(ooLiianAikaisin) {
+          verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.date(
+            "Varhennetun oppivelvollisuuden jaksot -lisätiedon varhaisin sallittu voimassaolopäivä on 2026-08-01"
+          ))
+        }
+
+        val ooIlmanTukijaksoja = oo.copy(lisätiedot = oo.lisätiedot.map(_.copy(tukijaksot = None)))
+        setupOppijaWithOpiskeluoikeus(ooIlmanTukijaksoja) {
+          verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.date(
+            "Varhennetun oppivelvollisuuden jaksoissa on päiviä, joille ei ole tukijaksoa: List(2026-08-01 – )"
+          ))
+        }
+      }
     }
 
     def duplikaattiaEiSallittu(oo1: EsiopetuksenOpiskeluoikeus, oo2: EsiopetuksenOpiskeluoikeus): Unit = {
