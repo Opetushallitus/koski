@@ -61,10 +61,15 @@ trait OikeusmaksuttomaanAsuntolapaikkaanBooleanina extends OpiskeluoikeudenLisä
 
 trait ErityisenTuenPäätöksiäSisältäväLisätieto {
   def kaikkiErityisenTuenPäätöstenAikajaksot: List[MahdollisestiAlkupäivällinenJakso]
+  def erityisenTuenPäätökset: Option[List[MahdollisestiAlkupäivällinenJakso]]
 }
 
 trait UlkomainenVaihtoopiskelija {
   def ulkomainenVaihtoopiskelija: Boolean
+}
+
+trait ToimintaAlueittainOpiskeleva extends Tukijaksollinen {
+  def toimintaAlueittainOpiskelu: Option[List[Aikajakso]]
 }
 
 trait Vammainen {
@@ -81,6 +86,26 @@ trait VammainenJaAvustaja {
 
 trait PidennettyOppivelvollisuus extends Vammainen with VaikeastiVammainen with ErityisenTuenPäätöksiäSisältäväLisätieto {
   def pidennettyOppivelvollisuus: Option[Aikajakso]
+}
+
+trait VarhennettuOppivelvollisuus extends PidennettyOppivelvollisuus with Tukijaksollinen {
+  def varhennetunOppivelvollisuudenJaksot: Option[List[Aikajakso]]
+}
+
+trait Tukijaksollinen extends ErityisenTuenPäätöksiäSisältäväLisätieto {
+  def tukijaksot:  Option[List[Tukijakso]]
+  def kaikkiTukijaksot: List[MahdollisestiAlkupäivällinenJakso]
+}
+
+trait TukijaksollinenVanhatLisätiedot {
+  def pidennettyOppivelvollisuus: Option[Aikajakso]
+  def vammainen: Option[List[Aikajakso]]
+  def vaikeastiVammainen: Option[List[Aikajakso]]
+  def erityisenTuenPäätökset: Option[List[ErityisenTuenPäätös]]
+}
+
+trait VammaSairausTaiRajoite extends Tukijaksollinen with Vammainen with VaikeastiVammainen {
+  def opetuksenJärjestäminenVammanSairaudenTaiRajoitteenPerusteella: Option[List[Aikajakso]]
 }
 
 trait OsaAikaisuusjaksollinen {

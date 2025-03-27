@@ -2801,5 +2801,21 @@
   "deprecated:Extended Essay tallennetaan osasuorituksiin 1.8.2025..." : "Extended Essay tallennetaan osasuorituksiin 1.8.2025 tai myöhemmin alkaneille IB-opinnoille",
   "Opettajan pedagogiset opinnot" : "Opettajan pedagogiset opinnot",
   "Opetettavan aineen opinnot" : "Opetettavan aineen opinnot",
-  "infoDescription:opettajan kelpoisuuden määritelmä" : "Opettajan kelpoisuus muodostuu pedagogisista opinnoista, tutkinnosta ja opetettavan aineen opinnoista. Katso tarkemmin asetus opetustoimen henkilöstön kelpoisuuksista: https://www.finlex.fi/fi/laki/ajantasa/1998/19980986"
+  "infoDescription:opettajan kelpoisuuden määritelmä" : "Opettajan kelpoisuus muodostuu pedagogisista opinnoista, tutkinnosta ja opetettavan aineen opinnoista. Katso tarkemmin asetus opetustoimen henkilöstön kelpoisuuksista: https://www.finlex.fi/fi/laki/ajantasa/1998/19980986",
+  "tooltip:Onko oppilas opiskellut oppiaineessa rajatun..." : "Onko oppilas opiskellut oppiaineessa rajatun oppimäärän. Jos oppilas opiskelee yhdessä rajatun oppimäärän mukaan, myös päättöarviointi voi näissä aineissa olla sanallinen.",
+  "description:Oppivelvollisen tukijaksot" : "Oppivelvollisen tukijaksot",
+  "Rajattu oppimäärä" : "Rajattu oppimäärä",
+  "description:Korvaa aiemman kentän erityisenTuenPäätökset." : "Korvaa aiemman kentän erityisenTuenPäätökset.",
+  "description:Oppilaalla päätös opiskelun järjestämisestä toiminta-alueittain...." : "Oppilaalla päätös opiskelun järjestämisestä toiminta-alueittain. Tällöin oppilaalla on rajattu oppimäärä ja opetus järjestetty toiminta-alueittain. Oppilaalla on aina tukea koskeva päätös. Oppilaan opetussuunnitelmaan kuuluvat toiminta-alueet ovat motoriset taidot, kieli ja kommunikaatio, sosiaaliset taidot, päivittäisten toimintojen taidot ja kognitiiviset taidot. Huom: toiminta-alue arviointeineen on kuvattu oppiaineen suorituksessa.",
+  "description:Korvaa kentän pidennettyOppivelvollisuus." : "Korvaa kentän pidennettyOppivelvollisuus.",
+  "description:Päätös opetuksen järjestämisestä oppilaalle vamman,..." : "Päätös opetuksen järjestämisestä oppilaalle vamman, sairauden tai toimintakyvyn rajoitteen perusteella.",
+  "description:Kenttä käytössä 1.8.2025 alkaen" : "Kenttä käytössä 1.8.2025 alkaen",
+  "description:Kenttä käytössä 1.8.2026 alkaen." : "Kenttä käytössä 1.8.2026 alkaen.",
+  "description:Kenttä käytössä 1.8.2025 alkaen." : "Kenttä käytössä 1.8.2025 alkaen.",
+  "description:Kenttä ei käytössä 1.9.2026 alkaen." : "Kenttä ei käytössä 1.9.2026 alkaen.",
+  "description:Kenttä ei käytössä 1.8.2026 alkaen." : "Kenttä ei käytössä 1.8.2026 alkaen.",
+  "Yksilöllistetty tai rajattu oppimäärä": "Yksilöllistetty tai rajattu oppimäärä",
+  "Tukijaksot" : "Tukijaksot",
+  "Varhennetun oppivelvollisuuden jaksot" : "Varhennetun oppivelvollisuuden jaksot",
+  "Opetuksen järjestäminen vamman sairauden tai rajoitteen perusteella" : "Opetuksen järjestäminen vamman sairauden tai rajoitteen perusteella"
 }
