@@ -139,8 +139,8 @@ object RaportointiDatabaseSchema {
     val joustavaPerusopetus = column[Boolean]("joustava_perusopetus")
     val koulukoti = column[Boolean]("koulukoti")
     val oppimääränSuorittaja = column[Boolean]("oppimaaran_suorittaja")
-    val maksuton = column[Boolean]("maksuton")
-    val maksullinen = column[Boolean]("maksullinen")
+    val maksuton = column[Option[Boolean]]("maksuton")
+    val maksullinen = column[Option[Boolean]]("maksullinen")
     val oikeuttaMaksuttomuuteenPidennetty = column[Boolean]("oikeutta_maksuttomuuteen_pidennetty")
     val kotiopetus = column[Boolean]("kotiopetus")
     val ulkomaanjakso = column[Boolean]("ulkomaanjakso")
@@ -765,8 +765,8 @@ case class ROpiskeluoikeusAikajaksoRow(
                                         joustavaPerusopetus: Boolean = false,
                                         koulukoti: Boolean = false,
                                         oppimääränSuorittaja: Boolean = false,
-                                        maksuton: Boolean = false,
-                                        maksullinen: Boolean = false,
+                                        maksuton: Option[Boolean] = None,
+                                        maksullinen: Option[Boolean] = None,
                                         oikeuttaMaksuttomuuteenPidennetty: Boolean = false,
                                         kotiopetus: Boolean = false,
                                         ulkomaanjakso: Boolean = false,

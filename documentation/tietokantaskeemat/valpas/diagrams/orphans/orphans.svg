@@ -37,12 +37,12 @@
 <text text-anchor="start" x="52" y="-32.1" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">muu_haku</text>
 <polygon fill="none" stroke="#000000" points="204,-25 204,-47 294,-47 294,-25 204,-25"/>
 <text text-anchor="start" x="207" y="-32.7" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">bool[1]</text>
-<polygon fill="#ffffff" stroke="transparent" points="32,-6 32,-25 122,-25 122,-6 32,-6"/>
-<polygon fill="none" stroke="#000000" points="32,-6 32,-25 122,-25 122,-6 32,-6"/>
+<polygon fill="#ffffff" stroke="transparent" points="32,-6 32,-25 109,-25 109,-6 32,-6"/>
+<polygon fill="none" stroke="#000000" points="32,-6 32,-25 109,-25 109,-6 32,-6"/>
 <text text-anchor="start" x="35" y="-12.1" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">&lt; 0</text>
-<polygon fill="#ffffff" stroke="transparent" points="122,-6 122,-25 204,-25 204,-6 122,-6"/>
-<polygon fill="none" stroke="#000000" points="122,-6 122,-25 204,-25 204,-6 122,-6"/>
-<text text-anchor="start" x="194.8862" y="-12.1" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000"> &#160;</text>
+<polygon fill="#ffffff" stroke="transparent" points="109,-6 109,-25 204,-25 204,-6 109,-6"/>
+<polygon fill="none" stroke="#000000" points="109,-6 109,-25 204,-25 204,-6 109,-6"/>
+<text text-anchor="start" x="168.6105" y="-12.1" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">0 rows</text>
 <polygon fill="#ffffff" stroke="transparent" points="204,-6 204,-25 294,-25 294,-6 204,-6"/>
 <polygon fill="none" stroke="#000000" points="204,-6 204,-25 294,-25 294,-6 204,-6"/>
 <text text-anchor="start" x="275.4053" y="-12.1" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">0 &gt;</text>

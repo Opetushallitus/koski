@@ -153,11 +153,19 @@ object AikajaksoRowBuilder {
           case _ => false
         },
         oppisopimusJossainPäätasonSuorituksessa = oppisopimusAikajaksot(o).exists(_.contains(päivä)),
-        maksuton = lisätietoVoimassaPäivänä {
-          case l: MaksuttomuusTieto => l.maksuttomuus.map(ms => ms.filter(_.maksuton))
+        maksuton = o.lisätiedot match {
+          case Some(l: MaksuttomuusTieto) =>
+            l.maksuttomuus.flatMap { m =>
+              m.find(_.contains(päivä)).map(_.maksuton)
+            }
+          case _ => None
         },
-        maksullinen = lisätietoVoimassaPäivänä {
-          case l: MaksuttomuusTieto => l.maksuttomuus.map(ms => ms.filterNot(_.maksuton))
+        maksullinen = o.lisätiedot match {
+          case Some(l: MaksuttomuusTieto) if l.maksuttomuus.exists(_.nonEmpty) =>
+            l.maksuttomuus.flatMap { m =>
+              m.find(_.contains(päivä)).map(!_.maksuton)
+            }
+          case _ => None
         },
         oikeuttaMaksuttomuuteenPidennetty = lisätietoVoimassaPäivänä {
           case l: MaksuttomuusTieto => l.oikeuttaMaksuttomuuteenPidennetty
