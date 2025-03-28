@@ -327,10 +327,10 @@ class KoskiSpecificDatabaseFixtureCreator(application: KoskiApplication) extends
       (KoskiSpecificMockOppijat.vuonna2004SyntynytPeruskouluValmis2021MuuttanutSuomeenTäysiIkäisenä, MaksuttomuusRaporttiFixtures.peruskouluSuoritettu2021),
       (KoskiSpecificMockOppijat.vuonna2004SyntynytPeruskouluValmis2021EiKotikuntahistoriaa, MaksuttomuusRaporttiFixtures.peruskouluSuoritettu2021),
       (KoskiSpecificMockOppijat.vainMitätöityjäOpiskeluoikeuksia, PerusopetuksenOpiskeluoikeusTestData.mitätöitäväOpiskeluoikeus),
-      (KoskiSpecificMockOppijat.kielitutkinnonSuorittaja, ExamplesKielitutkinto.ykiOpiskeluoikeus(LocalDate.of(2011, 1, 3), "FI", "kt")),
-      (KoskiSpecificMockOppijat.kielitutkinnonSuorittaja, ExamplesKielitutkinto.ykiOpiskeluoikeus(LocalDate.of(2023, 11, 17), "SV", "pt")),
-      (KoskiSpecificMockOppijat.kielitutkinnonSuorittaja, ExamplesKielitutkinto.vktOpiskeluoikeus(LocalDate.of(2020, 9, 10), "FI", List("kirjallinen", "suullinen"), "hyvajatyydyttava")),
-      (KoskiSpecificMockOppijat.kielitutkinnonSuorittaja, ExamplesKielitutkinto.vktOpiskeluoikeus(LocalDate.of(2022, 8, 12), "FI", List("kirjallinen"), "erinomainen")),
+      (KoskiSpecificMockOppijat.kielitutkinnonSuorittaja, ExamplesKielitutkinto.YleisetKielitutkinnot.opiskeluoikeus(LocalDate.of(2011, 1, 3), "FI", "kt")),
+      (KoskiSpecificMockOppijat.kielitutkinnonSuorittaja, ExamplesKielitutkinto.YleisetKielitutkinnot.opiskeluoikeus(LocalDate.of(2023, 11, 17), "SV", "pt")),
+      (KoskiSpecificMockOppijat.kielitutkinnonSuorittaja, ExamplesKielitutkinto.ValtionhallinnonKielitutkinnot.opiskeluoikeus(LocalDate.of(2020, 9, 10), "FI", List("kirjallinen", "suullinen"), "hyvajatyydyttava")),
+      (KoskiSpecificMockOppijat.kielitutkinnonSuorittaja, ExamplesKielitutkinto.ValtionhallinnonKielitutkinnot.opiskeluoikeus(LocalDate.of(2022, 8, 12), "FI", List("kirjallinen"), "erinomainen")),
       (KoskiSpecificMockOppijat.keskeneräinenIbTutkinto, ExamplesIB.keskeneräinenIbTutkintoOpiskeluoikeus(LocalDate.of(2025, 7, 30))),
     )
   }
