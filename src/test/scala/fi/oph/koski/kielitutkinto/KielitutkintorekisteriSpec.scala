@@ -1,22 +1,29 @@
 package fi.oph.koski.kielitutkinto
 
+import fi.oph.koski.api.misc.{OpiskeluoikeusTestMethods, PutOpiskeluoikeusTestMethods}
 import fi.oph.koski.documentation.{ExamplesKielitutkinto, ExamplesLukio}
 import fi.oph.koski.henkilo.{KoskiSpecificMockOppijat, LaajatOppijaHenkilöTiedot}
-import fi.oph.koski.http.HttpStatus
+import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.koskiuser.{KoskiSpecificSession, MockUsers}
 import fi.oph.koski.{KoskiApplicationForTests, KoskiHttpSpec}
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.should.Matchers
 import fi.oph.koski.oppija.{HenkilönOpiskeluoikeusVersiot, OppijaServletOppijaAdder}
-import fi.oph.koski.schema.{KielitutkinnonOpiskeluoikeus, Koodistokoodiviite, LukionOpiskeluoikeus, LähdejärjestelmäId, Oppija}
+import fi.oph.koski.schema.{KielitutkinnonOpiskeluoikeus, Koodistokoodiviite, LukionOpiskeluoikeus, LähdejärjestelmäId, Oppija, ValtionhallinnonKielitutkinnonArviointi, ValtionhallinnonKielitutkinnonKirjallisenKielitaidonSuoritus, ValtionhallinnonKielitutkinnonSuoritus, YlioppilastutkinnonOpiskeluoikeus}
 import fi.oph.koski.util.WithWarnings
 import org.json4s.JValue
+
+import java.time.LocalDate
+import scala.reflect.runtime.universe
 
 class KielitutkintorekisteriSpec
   extends AnyFreeSpec
     with KoskiHttpSpec
-    with Matchers {
+    with Matchers
+    with PutOpiskeluoikeusTestMethods[KielitutkinnonOpiskeluoikeus] {
+
+
 
   val oppijaAdder = new OppijaServletOppijaAdder(KoskiApplicationForTests)
   val kielitutkinnonSuorittaja = ExamplesKielitutkinto.exampleMockOppija
@@ -61,6 +68,92 @@ class KielitutkintorekisteriSpec
     }
   }
 
+  "Validaatiot" - {
+    "Valtionhallinnon kielitutkinto" - {
+      val arviointipäivä = LocalDate.of(2025, 1, 15)
+      val opiskeluoikeus = ExamplesKielitutkinto.ValtionhallinnonKielitutkinnot.Opiskeluoikeus.valmis(
+        tutkintopäivä = LocalDate.of(2025, 1, 1),
+        kieli = "FI",
+        kielitaidot = List("kirjallinen"),
+        tutkintotaso = "hyvajatyydyttava",
+      )
+
+      "Ei voi siirtää väärän taitotason mukaisella kielitaidon arvioinnilla" in {
+        val invalidOo = opiskeluoikeus.copy(
+          suoritukset = opiskeluoikeus.suoritukset.map {
+            case pts: ValtionhallinnonKielitutkinnonSuoritus => pts.copy(
+              osasuoritukset = pts.osasuoritukset.map(_.map {
+                case kielitaito: ValtionhallinnonKielitutkinnonKirjallisenKielitaidonSuoritus => kielitaito.copy(
+                  arviointi = ExamplesKielitutkinto.ValtionhallinnonKielitutkinnot.Kielitaidot.arviointi("erinomainen", arviointipäivä)
+                )
+              })
+            )
+          }
+        )
+
+        postOpiskeluoikeus(invalidOo) {
+          verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.arviointi.epäsopivaArvosana(
+            "Suoritus vktkielitaito/kirjallinen sisältää virheellisen arvosanan erinomainen (sallitut koodiarvot ovat: hyva, tyydyttava, hylatty)"
+          ))
+        }
+      }
+
+      "Ei voi siirtää väärän taitotason mukaisella osakokeen arvioinnilla" in {
+        val invalidOo = opiskeluoikeus.copy(
+          suoritukset = opiskeluoikeus.suoritukset.map {
+            case pts: ValtionhallinnonKielitutkinnonSuoritus => pts.copy(
+              osasuoritukset = pts.osasuoritukset.map(_.map {
+                case kielitaito: ValtionhallinnonKielitutkinnonKirjallisenKielitaidonSuoritus => kielitaito.copy(
+                  osasuoritukset = kielitaito.osasuoritukset.map(_.map(_.copy(
+                    arviointi = ExamplesKielitutkinto.ValtionhallinnonKielitutkinnot.Kielitaidot.arviointi("erinomainen", arviointipäivä)
+                  )))
+                )
+              })
+            )
+          }
+        )
+
+        postOpiskeluoikeus(invalidOo) {
+          verifyResponseStatus(400,
+            KoskiErrorCategory.badRequest.validation.arviointi.epäsopivaArvosana(
+              "Suoritus vktosakoe/kirjoittaminen sisältää virheellisen arvosanan erinomainen (sallitut koodiarvot ovat: hyva, tyydyttava, hylatty)"
+            ),
+            KoskiErrorCategory.badRequest.validation.arviointi.epäsopivaArvosana(
+              "Suoritus vktosakoe/tekstinymmartaminen sisältää virheellisen arvosanan erinomainen (sallitut koodiarvot ovat: hyva, tyydyttava, hylatty)"
+            ),
+          )
+        }
+      }
+
+      "Ei voi siirtää arviointia kielitaidolle, jos osakoe on hylätty" in {
+        val invalidOo = opiskeluoikeus.copy(
+          suoritukset = opiskeluoikeus.suoritukset.map {
+            case pts: ValtionhallinnonKielitutkinnonSuoritus => pts.copy(
+              osasuoritukset = pts.osasuoritukset.map(_.map {
+                case kielitaito: ValtionhallinnonKielitutkinnonKirjallisenKielitaidonSuoritus => kielitaito.copy(
+                  osasuoritukset = kielitaito.osasuoritukset.map(_.map(_.copy(
+                    arviointi = ExamplesKielitutkinto.ValtionhallinnonKielitutkinnot.Kielitaidot.arviointi("hylatty", arviointipäivä)
+                  )))
+                )
+              })
+            )
+          }
+        )
+
+        postOpiskeluoikeus(invalidOo) {
+          verifyResponseStatus(400,
+            KoskiErrorCategory.badRequest.validation.tila.keskeneräinenOsasuoritus(
+              "Valmiiksi merkityllä suorituksella vkttutkintotaso/hyvajatyydyttava on keskeneräinen osasuoritus vktosakoe/kirjoittaminen"
+            ),
+            KoskiErrorCategory.badRequest.validation.tila.keskeneräinenOsasuoritus(
+              "Valmiiksi merkityllä suorituksella vktkielitaito/kirjallinen on keskeneräinen osasuoritus vktosakoe/kirjoittaminen"
+            ),
+          )
+        }
+      }
+    }
+  }
+
   private def canWrite(data: JValue)(implicit session: KoskiSpecificSession): Unit =
     write(data) should matchPattern { case Right(_) => }
 
@@ -91,4 +184,7 @@ class KielitutkintorekisteriSpec
       )))
     }
   ))
+
+  def tag: universe.TypeTag[KielitutkinnonOpiskeluoikeus] = implicitly[reflect.runtime.universe.TypeTag[KielitutkinnonOpiskeluoikeus]]
+  def defaultOpiskeluoikeus: KielitutkinnonOpiskeluoikeus = ExamplesKielitutkinto.YleisetKielitutkinnot.opiskeluoikeus(LocalDate.of(2025, 1, 1), "FI", "pt")
 }
