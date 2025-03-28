@@ -92,7 +92,9 @@ case class OppijanumeroRekisteriClient(
 
   def findMasterOppijat(oids: List[String]): IO[Map[String, LaajatOppijaHenkilöTiedot]] =
     postRetryingOidServiceHttp.post(uri"/oppijanumerorekisteri-service/henkilo/masterHenkilosByOidList", oids)(json4sEncoderOf[List[String]])(Http.parseJson[Map[String, OppijaNumerorekisteriOppija]])
-    .map(_.mapValues(_.toOppijaHenkilö(Nil)))
+      .flatMap(_.toList.parTraverse { case (oid, oppija) =>
+        findSlaveOids(oppija.oidHenkilo).map(slaves => oid -> oppija.toOppijaHenkilö(slaves))
+      }.map(_.toMap))
 
   def findOppijatByHetusNoSlaveOids(hetus: Seq[String]): IO[List[SuppeatOppijaHenkilöTiedot]] =
     postRetryingOidServiceHttp.post(uri"/oppijanumerorekisteri-service/henkilo/henkiloPerustietosByHenkiloHetuList", hetus)(json4sEncoderOf[Seq[String]])(Http.parseJson[List[OppijaNumerorekisteriPerustiedot]])
