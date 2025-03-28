@@ -86,7 +86,7 @@ describe('Perusopetus', function () {
             'B2-kieli, saksa 9 4 vuosiviikkotuntia\n' +
             'Tietokoneen hyötykäyttö 9\n' +
             'Kuvaus Kurssilla tarjotaan yksityiskohtaisempaa tietokoneen, oheislaitteiden sekä käyttöjärjestelmän ja ohjelmien tuntemusta.\n' +
-            '* = yksilöllistetty oppimäärä, ** = painotettu opetus'
+            '* = yksilöllistetty tai rajattu oppimäärä, ** = painotettu opetus'
           )
         })
 
@@ -190,7 +190,7 @@ describe('Perusopetus', function () {
             'Käyttäytymisen arviointi\n' +
             'Arvosana S\n' +
             'Sanallinen arviointi Esimerkillistä käyttäytymistä koko vuoden ajan\n' +
-            '* = yksilöllistetty oppimäärä, ** = painotettu opetus'
+            '* = yksilöllistetty tai rajattu oppimäärä, ** = painotettu opetus'
           )
         })
       })
@@ -2789,7 +2789,7 @@ describe('Perusopetus', function () {
             'Liikunta S 0,5 vuosiviikkotuntia\n' +
             'B2-kieli, saksa 9 4 vuosiviikkotuntia\n' +
             'Tietokoneen hyötykäyttö 9\n' +
-            '* = yksilöllistetty oppimäärä, ** = painotettu opetus'
+            '* = yksilöllistetty tai rajattu oppimäärä, ** = painotettu opetus'
           )
         })
       })
@@ -4283,7 +4283,7 @@ describe('Perusopetus', function () {
 
           it('Ensin piilottaa oppiaineiden arvosanat (ja sanallisen arvioinnin)', function () {
             expect(extractAsText(S('.oppiaineet'))).to.equal(
-              'Arviointiasteikko\nArvostelu 4-10, S (suoritettu) tai H (hylätty)\nYhteiset oppiaineet\nOppiaine\nMatematiikka *\n* = yksilöllistetty oppimäärä'
+              'Arviointiasteikko\nArvostelu 4-10, S (suoritettu) tai H (hylätty)\nYhteiset oppiaineet\nOppiaine\nMatematiikka *\n* = yksilöllistetty tai rajattu oppimäärä'
             )
           })
 
@@ -4297,7 +4297,7 @@ describe('Perusopetus', function () {
 
             it('näyttää oppiaineiden arvosanat', function () {
               expect(extractAsText(S('.oppiaineet'))).to.equal(
-                'Arviointiasteikko\nArvostelu 4-10, S (suoritettu) tai H (hylätty)\nYhteiset oppiaineet\nOppiaine Arvosana\nMatematiikka S *\nSanallinen arviointi Hienoa työtä\n* = yksilöllistetty oppimäärä'
+                'Arviointiasteikko\nArvostelu 4-10, S (suoritettu) tai H (hylätty)\nYhteiset oppiaineet\nOppiaine Arvosana\nMatematiikka S *\nSanallinen arviointi Hienoa työtä\n* = yksilöllistetty tai rajattu oppimäärä'
               )
             })
 
@@ -4606,7 +4606,7 @@ describe('Perusopetus', function () {
           'Oppiaine Arvosana\n' +
           'Monialainen oppimiskokonaisuus S\n' +
           'Kuvaus Tehtiin ryhmätyönä webbisivusto, jossa kerrotaan tupakoinnin haitoista\n' +
-          '* = yksilöllistetty oppimäärä, † = perusopetuksen päättötodistuksen arvosanan korotus'
+          '* = yksilöllistetty tai rajattu oppimäärä, † = perusopetuksen päättötodistuksen arvosanan korotus'
         )
       })
     })

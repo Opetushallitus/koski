@@ -6,6 +6,14 @@
   päättymisen tarkistukseen ja poistettu esto siirtää maksuttomuustiedot edellisen oppivelvollisuuslain aikana
   alkaneille IB-opinnoille.
 
+## 26.3.2025
+
+Lisätty uusia tietueita ja niiden käyttöönottoa koskevat validaatiot:
+ * tukijaksojen voimaantulo ja erityisen tuen päätösten viimeinen voimassaolopäivä
+ * toiminta-alueittain opiskelusta -lisätiedon voimaantulo
+ * opetuksen järjestäminen vamman, sairauden tai toimintakyvyn rajoitteen perusteella ja vanhojen vammaisuustietojen viimeinen voimassaolopäivä
+ * varhennetun oppivelvollisuuden voimaantulo ja pidennetyn oppivelvollisuuden viimeinen voimassaolopäivä
+
 ## 13.3.2025
 
 - Muutokset IB-opiskeluoikeuksille, jotka ovat alkaneet 1.8.2025 tai myöhemmin:

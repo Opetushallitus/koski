@@ -173,7 +173,7 @@ export const expandableProperties = (model) => {
   const extraPropertiesFilter = (p) => {
     if (
       !edit &&
-      ['yksilöllistettyOppimäärä', 'painotettuOpetus', 'korotus'].includes(
+      ['yksilöllistettyOppimäärä', 'painotettuOpetus', 'korotus', 'rajattuOppimäärä'].includes(
         p.key
       )
     )
