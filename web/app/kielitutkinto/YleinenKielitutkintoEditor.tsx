@@ -23,7 +23,6 @@ import { YleisenKielitutkinnonOsakokeenSuoritus } from '../types/fi/oph/koski/sc
 
 export type YleinenKielitutkintoEditorProps = {
   form: FormModel<KielitutkinnonOpiskeluoikeus>
-  path: FormOptic<KielitutkinnonOpiskeluoikeus, YleisenKielitutkinnonSuoritus>
   päätasonSuoritus: ActivePäätasonSuoritus<
     KielitutkinnonOpiskeluoikeus,
     YleisenKielitutkinnonSuoritus
@@ -33,7 +32,8 @@ export type YleinenKielitutkintoEditorProps = {
 
 export const YleinenKielitutkintoEditor: React.FC<
   YleinenKielitutkintoEditorProps
-> = ({ form, path, päätasonSuoritus, organisaatio }) => {
+> = ({ form, päätasonSuoritus, organisaatio }) => {
+  const path = päätasonSuoritus.path
   const suoritus = getValue(path)(form.state)
 
   return suoritus ? (

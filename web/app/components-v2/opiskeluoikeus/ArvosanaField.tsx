@@ -23,6 +23,7 @@ import {
   sortOptions
 } from '../controls/Select'
 import { FieldEditorProps, FieldViewerProps } from '../forms/FormField'
+import { DateView } from '../controls/DateField'
 
 type ArvosanaOf<T extends Arviointi> = T['arvosana']
 
@@ -47,6 +48,13 @@ export const ParasArvosanaView = <T extends Arviointi>(
 ) => {
   const paras = props.value !== undefined && parasArviointi(props.value)
   return paras ? <ArvosanaView {...props} value={paras} /> : null
+}
+
+export const ParasArvosanaPäiväView = <T extends Arviointi>(
+  props: ParasArvosanaViewProps<T>
+) => {
+  const paras = props.value !== undefined && parasArviointi(props.value)
+  return paras ? <DateView {...props} value={(paras as any).päivä} /> : null
 }
 
 export type ArvosanaEditProps<T extends Arviointi> = CommonProps<

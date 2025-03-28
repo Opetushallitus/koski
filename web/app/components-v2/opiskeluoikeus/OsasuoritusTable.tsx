@@ -67,6 +67,8 @@ export const OsasuoritusTable = <DATA_KEYS extends string, P>(
   const { addNewOsasuoritusView: AddNewOsasuoritusView } = props
   const newOsasuoritusIds = useNewItems(getRowId, props.rows)
 
+  const skipExpandableColumn = rows.every((row) => !row.expandable)
+
   return (
     <>
       {rows[0] && <OsasuoritusHeader row={rows[0]} editMode={editMode} />}
@@ -78,6 +80,7 @@ export const OsasuoritusTable = <DATA_KEYS extends string, P>(
               row={row}
               initiallyOpen={newOsasuoritusIds.includes(getRowId(row))}
               expandable={row.expandable}
+              skipExpandableColumn={skipExpandableColumn}
               completed={completed ? completed(index) : undefined}
               onRemove={onRemoveCb(index)}
             />
@@ -98,6 +101,7 @@ export type OsasuoritusRowProps<DATA_KEYS extends string> = CommonProps<{
   editMode: boolean
   completed?: boolean
   expandable?: boolean
+  skipExpandableColumn?: boolean
   row: OsasuoritusRowData<DATA_KEYS>
   onRemove?: () => void
   initiallyOpen?: boolean
@@ -134,7 +138,8 @@ export const OsasuoritusRow = <DATA_KEYS extends string>(
   const spans = getSpans(
     props.row.columns,
     indentation,
-    Boolean(props.editMode && props.onRemove)
+    Boolean(props.editMode && props.onRemove),
+    props.skipExpandableColumn
   )
 
   const expandable = props.expandable === undefined ? true : props.expandable
@@ -147,15 +152,17 @@ export const OsasuoritusRow = <DATA_KEYS extends string>(
         {spans.indent > 0 && (
           <Column span={spans.indent} className="OsasuoritusHeader__indent" />
         )}
-        <Column span={spans.leftIcons} align="right">
-          {props.row.content && expandable && (
-            <ExpandButton
-              expanded={tree.isOpen}
-              onChange={tree.toggle}
-              label={t('Osasuoritus')}
-            />
-          )}
-        </Column>
+        {!props.skipExpandableColumn && (
+          <Column span={spans.leftIcons} align="right">
+            {props.row.content && expandable && (
+              <ExpandButton
+                expanded={tree.isOpen}
+                onChange={tree.toggle}
+                label={t('Osasuoritus')}
+              />
+            )}
+          </Column>
+        )}
         <Column span={1}>
           {props.completed === true && (
             // eslint-disable-next-line react/jsx-no-literals
@@ -186,7 +193,7 @@ export const OsasuoritusRow = <DATA_KEYS extends string>(
         )}
       </ColumnRow>
       {expandable && tree.isOpen && props.row.content && (
-        <LayoutProvider indent={1}>
+        <LayoutProvider indent={2}>
           <TestIdLayer id="properties">
             <Section>{props.row.content}</Section>
           </TestIdLayer>
@@ -196,11 +203,16 @@ export const OsasuoritusRow = <DATA_KEYS extends string>(
   )
 }
 
-const getSpans = (dataObj: object, depth?: number, canRemove?: boolean) => {
+const getSpans = (
+  dataObj: object,
+  depth?: number,
+  canRemove?: boolean,
+  skipExpandableColumn?: boolean
+) => {
   const DATA_SPAN: ResponsiveValue<number> = { default: 4, phone: 8, small: 6 }
 
   const indent = depth || 0
-  const leftIcons = 1
+  const leftIcons = skipExpandableColumn ? 0 : 1
   const completed = 1
   const rightIcons = canRemove ? 1 : 0
   const dataCount = Object.values(dataObj).length
