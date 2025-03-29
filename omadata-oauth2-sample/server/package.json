@@ -31,7 +31,7 @@
     "helmet": "^7.1.0",
     "openid-client": "^6.1.7",
     "undici": "^6.21.1",
-    "uuid": "^11.0.2"
+    "uuid": "^11.1.0"
   },
   "devDependencies": {
     "@aws-sdk/types": "^3.654.0",
