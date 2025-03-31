@@ -56,7 +56,7 @@ jobs:
           retry_wait_seconds: 1800
           retry_on_exit_code: 99
           command: |
-            mvn dependency-check:check -P owasp --batch-mode | tee owasp-output.log
+            mvn dependency-check:check -P owasp -DnvdApiKey=${{secrets.NVD_NIST_GOV_API_KEY}} --batch-mode | tee owasp-output.log
             STATUS="${PIPESTATUS[0]}"
 
             if [ "$STATUS" != "0" ]; then
