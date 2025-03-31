@@ -42,4 +42,34 @@
     </plugins>
   </build>
 
+  <profiles>
+    <profile>
+      <id>owasp</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.owasp</groupId>
+            <artifactId>dependency-check-maven</artifactId>
+            <version>12.1.0</version>
+            <configuration>
+              <suppressionFiles>
+                <suppressionFile>owasp-dependency-check-suppressions-oauth2-sample.xml</suppressionFile>
+              </suppressionFiles>
+              <failBuildOnCVSS>1</failBuildOnCVSS>
+              <assemblyAnalyzerEnabled>false</assemblyAnalyzerEnabled>
+            </configuration>
+            <executions>
+              <execution>
+                <id>owasp-check</id>
+                <goals>
+                  <goal>check</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
+
 </project>

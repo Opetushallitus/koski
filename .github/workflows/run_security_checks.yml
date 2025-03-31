@@ -46,8 +46,8 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-node-
 
-      - name: Run owasp
-        id: owasp
+      - name: Run OWASP Koski pom.xml
+        id: owasp-koski
         uses: nick-fields/retry@v3
         with:
           max_attempts: 5
@@ -72,12 +72,46 @@ jobs:
               fi
             fi
 
-      - name: Archive OWASP results
+      - name: Archive OWASP Koski pom.xml results
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: owasp-report
+          name: owasp-report-koski
           path: target/dependency-check-report.html
+
+      - name: Run OWASP OAuth2 Java sample pom.xml
+        id: owasp-oauth2-java-sample
+        uses: nick-fields/retry@v3
+        with:
+          max_attempts: 5
+          # max_attempts: 5
+          timeout_minutes: 10
+          retry_wait_seconds: 1800
+          retry_on_exit_code: 99
+          command: |
+            cd omadata-oauth2-sample/java
+            mvn dependency-check:check -P owasp -DnvdApiKey=${{secrets.NVD_NIST_GOV_API_KEY}} --batch-mode | tee owasp-output.log
+            STATUS="${PIPESTATUS[0]}"
+
+            if [ "$STATUS" != "0" ]; then
+              EOF=$(dd if=/dev/urandom bs=15 count=1 status=none | base64)
+              echo "errors<<$EOF" >> $GITHUB_OUTPUT
+              grep "\[ERROR\]" owasp-output.log >> $GITHUB_OUTPUT
+              echo "$EOF" >> $GITHUB_OUTPUT
+
+              if grep -q "One or more dependencies were identified with vulnerabilities" owasp-output.log; then
+                exit $STATUS
+              else
+                exit 99
+              fi
+            fi
+
+      - name: Archive OWASP OAuth2 Java sample pom.xml results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: owasp-report-oauth2-java-sample
+          path: omadata-oauth2-sample/java/target/dependency-check-report.html
 
       - name: Save NVD database to cache
         uses: actions/cache/save@v3
