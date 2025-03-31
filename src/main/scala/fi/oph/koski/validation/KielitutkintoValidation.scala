@@ -24,13 +24,16 @@ object KielitutkintoValidation {
 
   private def validateYleisenKielitutkinnonPäivät(opiskeluoikeus: KielitutkinnonOpiskeluoikeus, pts: YleisenKielitutkinnonSuoritus): HttpStatus = {
     val tutkintopäivä = opiskeluoikeus.tila.opiskeluoikeusjaksot.find(_.tila.koodiarvo == "lasna").map(_.alku)
-    val arviointipäivä = opiskeluoikeus.tila.opiskeluoikeusjaksot.find(_.tila.koodiarvo == "hyvaksytystisuoritettu").map(_.alku)
+    val arviointitila = opiskeluoikeus.tila.opiskeluoikeusjaksot.find(k => List("hyvaksytystisuoritettu", "paattynyt").contains(k.tila.koodiarvo))
+    val arviointipäivä = arviointitila.map(_.alku)
     val vahvistuspäivä = pts.vahvistus.map(_.päivä)
 
     HttpStatus.fold(
       HttpStatus.validate(tutkintopäivä.isDefined)(KoskiErrorCategory.badRequest.validation.tila.tilaPuuttuu("Kielitutkinnolta puuttuu 'lasna'-tilainen opiskeluoikeuden jakso")),
-      HttpStatus.validate(arviointipäivä.isDefined)(KoskiErrorCategory.badRequest.validation.tila.tilaPuuttuu("Kielitutkinnolta puuttuu 'hyvaksytystisuoritettu'-tilainen opiskeluoikeuden jakso")),
-      HttpStatus.validate(arviointipäivä == vahvistuspäivä)(KoskiErrorCategory.badRequest.validation.date.päättymispäivämäärä(s"Arviointipäivä ${arviointipäivä.getOrElse("null")} (hyväksytysti suoritettu -tilainen opiskeluoikeusjakso) on eri kuin vahvistuksen päivämäärä ${vahvistuspäivä.getOrElse("null")}")),
+      HttpStatus.validate(arviointipäivä.isDefined)(KoskiErrorCategory.badRequest.validation.tila.tilaPuuttuu("Kielitutkinnolta puuttuu 'hyvaksytystisuoritettu' tai 'paattynyt' -tilainen opiskeluoikeuden jakso")),
+      HttpStatus.validate(arviointipäivä == vahvistuspäivä)(KoskiErrorCategory.badRequest.validation.date.päättymispäivämäärä(
+        s"Arviointipäivä ${arviointipäivä.getOrElse("null")} (${arviointitila.map(_.tila.koodiarvo).getOrElse("hyvaksytystisuoritettu tai paattynyt")} -tilainen opiskeluoikeusjakso) on eri kuin vahvistuksen päivämäärä ${vahvistuspäivä.getOrElse("null")}")
+      ),
     )
   }
 

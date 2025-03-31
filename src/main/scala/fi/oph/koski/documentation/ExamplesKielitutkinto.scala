@@ -256,6 +256,11 @@ object ExamplesKielitutkinto {
         alku = alku,
         tila = Koodistokoodiviite("hyvaksytystisuoritettu", "koskiopiskeluoikeudentila"),
       )
-  }
 
+    def päättynyt(alku: LocalDate): KielitutkinnonOpiskeluoikeudenOpiskeluoikeusjakso =
+      KielitutkinnonOpiskeluoikeudenOpiskeluoikeusjakso(
+        alku = alku,
+        tila = Koodistokoodiviite("paattynyt", "koskiopiskeluoikeudentila"),
+      )
+  }
 }

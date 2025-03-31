@@ -39,6 +39,7 @@ case class KielitutkinnonOpiskeluoikeudenOpiskeluoikeusjakso(
   @Description("Yleisessä kielitutkinnossa 'lasna' vastaa tutkintopäivää, 'hyvaksytystisuoritettu' arviointipäivää")
   @KoodistoKoodiarvo("lasna")
   @KoodistoKoodiarvo("hyvaksytystisuoritettu")
+  @KoodistoKoodiarvo("paattynyt")
   @KoodistoKoodiarvo("mitatoity")
   tila: Koodistokoodiviite,
 ) extends KoskiOpiskeluoikeusjakso
