@@ -24,19 +24,21 @@ jobs:
         with:
           node-version: "22.14.0"
 
-      - name: Cache Maven packages
-        uses: actions/cache@v3
-        with:
-          path: ~/.m2/repository
-          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
-          restore-keys: |
-            ${{ runner.os }}-maven-
+      - name: Get Date
+        id: get-date
+        run: |
+          echo "datetime=$(/bin/date -u "+%Y%m%d%H")" >> $GITHUB_OUTPUT
+        shell: bash
 
-      - name: Restore NVD database from cache
+      - name: Restore cached Maven dependencies
         uses: actions/cache/restore@v3
         with:
-          path: ~/.m2/repository/org/owasp/dependency-check-data
-          key: ${{ runner.os }}-owasp-db
+          path: ~/.m2/repository
+          # Using datetime in cache key as OWASP database may change, without the pom changing
+          key: ${{ runner.os }}-maven-${{ steps.get-date.outputs.datetime }}-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-${{ steps.get-date.outputs.datetime }}
+            ${{ runner.os }}-maven-
 
       - name: Cache Node modules
         uses: actions/cache@v3
@@ -113,12 +115,12 @@ jobs:
           name: owasp-report-oauth2-java-sample
           path: omadata-oauth2-sample/java/target/dependency-check-report.html
 
-      - name: Save NVD database to cache
+      - name: Cache Maven dependencies
         uses: actions/cache/save@v3
         if: always()
         with:
-          path: ~/.m2/repository/org/owasp/dependency-check-data
-          key: ${{ runner.os }}-owasp-db
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ steps.get-date.outputs.datetime }}-${{ hashFiles('**/pom.xml') }}
 
       - name: Run snyk
         id: snyk
