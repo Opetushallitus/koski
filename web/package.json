@@ -8,7 +8,7 @@
     "url": "https://github.com/Opetushallitus/koski.git"
   },
   "engines": {
-    "node": "20.17.0",
+    "node": "22.14.0",
     "npm": "9||10"
   },
   "dependencies": {
