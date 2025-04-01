@@ -37,7 +37,7 @@ class MigrationSpec extends AnyFreeSpec with Matchers with RaportointikantaTestM
       val dir = "./src/main/scala/fi/oph/koski/raportointikanta"
       val expectedChecksums = Map(
         "AikajaksoRowBuilder.scala"                                 -> "fe219812bdff1d57c3caa26cc318efff",
-        "HenkiloLoader.scala"                                       -> "a66955357fdce6fce3ede6dddf6d8d84",
+        "HenkiloLoader.scala"                                       -> "598b0ea4831e18f14837f4e96c4c2709",
         "KoodistoLoader.scala"                                      -> "86c90ec069d1c5ec5ee9faa65fb1399e",
         "KoskiEventBridgeClient.scala"                              -> "f8a09d358ebb3fe2ed4d8875ccccef12",
         "LoaderUtils.scala"                                         -> "38d31b4d1cfa5e3892083bb39f7f0047",
@@ -48,9 +48,9 @@ class MigrationSpec extends AnyFreeSpec with Matchers with RaportointikantaTestM
         "OrganisaatioHistoriaRowBuilder.scala"                      -> "7e586d9e273a5a4ee7beae257f22c7f4",
         "OrganisaatioLoader.scala"                                  -> "4f7ce51cb922dbc11e694ebe85ab3472",
         "PäivitettyOpiskeluoikeusLoader.scala"                      -> "500545bbe7ef47dedcfdc49580b536d2",
-        "RaportointiDatabase.scala"                                 -> "99859f4a654045f70f68ee649113cad0",
+        "RaportointiDatabase.scala"                                 -> "420eb07b9fee1dcc13e4fd704d1e3a1b",
         "RaportointiDatabaseCustomFunctions.scala"                  -> "956f101d1219c49ac9134b72a30caf3a",
-        "RaportointiDatabaseSchema.scala"                           -> "c71a762c63354f7d8e29802541d536ca",
+        "RaportointiDatabaseSchema.scala"                           -> "5778d6e7ed0f2e39d5e82145f2ac898",
         "RaportointikantaService.scala"                             -> "a4cc105d423366b41e6dd4d2fcbec4a",
         "RaportointikantaStatusServlet.scala"                       -> "9fd6f796adfb2034cce0151b7330cd1a",
         "RaportointikantaTestServlet.scala"                         -> "d457be86e60dd84545378ae415236d26",
@@ -59,7 +59,7 @@ class MigrationSpec extends AnyFreeSpec with Matchers with RaportointikantaTestM
         "OpiskeluoikeusLoaderRowBuilder.scala"                      -> "676fde035c7733941b8767e96d818e06",
         "IncrementalUpdateOpiskeluoikeusLoader.scala"               -> "46e03564ff69e78bc8fd2fa797c14d98",
         "FullReloadOpiskeluoikeusLoader.scala"                      -> "30f7e156d6d789b985c08b32b9aa197e",
-        "VipunenExport.scala"                                       -> "9563ec86b4214f871fbd085e44c048cb",
+        "VipunenExport.scala"                                       -> "e01d5a8dedee5127212210694624131f",
       )
 
       val errors = getListOfFiles(dir).flatMap(file => {

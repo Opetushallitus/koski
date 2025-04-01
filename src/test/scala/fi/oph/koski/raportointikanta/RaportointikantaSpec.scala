@@ -56,7 +56,6 @@ class RaportointikantaSpec
       henkilo should equal(Seq(RHenkilöRow(
         mockOppija.oid,
         mockOppija.oid,
-        mockOppija.linkitetytOidit,
         mockOppija.hetu,
         None,
         Some(Date.valueOf("1901-01-01")),
@@ -77,7 +76,6 @@ class RaportointikantaSpec
       val expectedHenkilöRow = RHenkilöRow(
         mockOppija.oid,
         mockOppija.oid,
-        mockOppija.linkitetytOidit,
         mockOppija.hetu,
         None,
         Some(Date.valueOf("1980-03-08")),
@@ -100,7 +98,6 @@ class RaportointikantaSpec
       val expectedHenkilöRow = RHenkilöRow(
         mockOppija.oid,
         mockOppija.oid,
-        mockOppija.linkitetytOidit,
         mockOppija.hetu,
         None,
         Some(Date.valueOf("2006-01-01")),
@@ -117,21 +114,12 @@ class RaportointikantaSpec
       val henkilo = mainRaportointiDb.runDbSync(mainRaportointiDb.RHenkilöt.filter(_.hetu === mockHetu).result)
       henkilo should equal(Seq(expectedHenkilöRow))
     }
-    "Huomioi linkitetyt oidit" in {
-      val slaveOppija = KoskiSpecificMockOppijat.slave.henkilö
-      val hakuOidit = Set(master.oid, slaveOppija.oid)
-      val henkilot = mainRaportointiDb.runDbSync(mainRaportointiDb.RHenkilöt.filter(_.oppijaOid inSet(hakuOidit)).result).toSet
-      henkilot should equal (Set(
-        RHenkilöRow(slaveOppija.oid, master.oid, List(slaveOppija.oid), master.hetu, None, Some(Date.valueOf("1997-10-10")), master.sukunimi, master.etunimet, Some("fi"), None, false, None, None, None, true),
-        RHenkilöRow(master.oid, master.oid, List(slaveOppija.oid), master.hetu, None, Some(Date.valueOf("1997-10-10")), master.sukunimi, master.etunimet, Some("fi"), None, false, None, None, None, true)
-      ))
-    }
     "Master oidia ei löydy koskesta" in {
       val slaveOppija = KoskiSpecificMockOppijat.slaveMasterEiKoskessa.henkilö
       val henkilot = mainRaportointiDb.runDbSync(mainRaportointiDb.RHenkilöt.filter(_.hetu === slaveOppija.hetu.get).result).toSet
       henkilot should equal(Set(
-        RHenkilöRow(slaveOppija.oid, masterEiKoskessa.oid, List(slaveOppija.oid), masterEiKoskessa.hetu, None, Some(Date.valueOf("1966-03-27")), masterEiKoskessa.sukunimi, masterEiKoskessa.etunimet, None, None, false, Some("179"), Some("Jyväskylä"), Some("Jyväskylä"), true),
-        RHenkilöRow(masterEiKoskessa.oid, masterEiKoskessa.oid, List(slaveOppija.oid), masterEiKoskessa.hetu, None, Some(Date.valueOf("1966-03-27")), masterEiKoskessa.sukunimi, masterEiKoskessa.etunimet, None, None, false, Some("179"), Some("Jyväskylä"), Some("Jyväskylä"), true)
+        RHenkilöRow(slaveOppija.oid, masterEiKoskessa.oid, masterEiKoskessa.hetu, None, Some(Date.valueOf("1966-03-27")), masterEiKoskessa.sukunimi, masterEiKoskessa.etunimet, None, None, false, Some("179"), Some("Jyväskylä"), Some("Jyväskylä"), true),
+        RHenkilöRow(masterEiKoskessa.oid, masterEiKoskessa.oid, masterEiKoskessa.hetu, None, Some(Date.valueOf("1966-03-27")), masterEiKoskessa.sukunimi, masterEiKoskessa.etunimet, None, None, false, Some("179"), Some("Jyväskylä"), Some("Jyväskylä"), true)
       ))
     }
     "Organisaatiot on ladattu" in {

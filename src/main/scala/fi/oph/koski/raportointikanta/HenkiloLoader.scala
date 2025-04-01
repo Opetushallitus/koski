@@ -73,7 +73,6 @@ object HenkilöLoader extends Logging {
     RHenkilöRow(
       oppijaOid = oid,
       masterOid = oppija.oid,
-      linkitetytOidit = oppija.linkitetytOidit,
       hetu = oppija.hetu,
       sukupuoli = oppija.sukupuoli,
       syntymäaika = oppija.syntymäaika.orElse(oppija.hetu.flatMap(Hetu.toBirthday)).map(Date.valueOf),

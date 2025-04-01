@@ -356,7 +356,6 @@ object RaportointiDatabaseSchema {
   class RHenkilöTable(tag: Tag, schema: Schema = Public) extends Table[RHenkilöRow](tag, schema.nameOpt, "r_henkilo") {
     val oppijaOid = column[String]("oppija_oid", O.PrimaryKey, StringIdentifierType)
     val masterOid = column[String]("master_oid", StringIdentifierType)
-    val linkitetytOidit = column[List[String]]("linkitetyt_oidit")
     val hetu = column[Option[String]]("hetu", StringIdentifierType)
     val sukupuoli = column[Option[String]]("sukupuoli")
     val syntymäaika = column[Option[Date]]("syntymaaika")
@@ -369,7 +368,7 @@ object RaportointiDatabaseSchema {
     val kotikuntaNimiFi = column[Option[String]]("kotikunta_nimi_fi")
     val kotikuntaNimiSv = column[Option[String]]("kotikunta_nimi_sv")
     val yksiloity = column[Boolean]("yksiloity")
-    def * = (oppijaOid, masterOid, linkitetytOidit, hetu, sukupuoli, syntymäaika, sukunimi, etunimet, äidinkieli, kansalaisuus, turvakielto, kotikunta, kotikuntaNimiFi, kotikuntaNimiSv, yksiloity) <> (RHenkilöRow.tupled, RHenkilöRow.unapply)
+    def * = (oppijaOid, masterOid, hetu, sukupuoli, syntymäaika, sukunimi, etunimet, äidinkieli, kansalaisuus, turvakielto, kotikunta, kotikuntaNimiFi, kotikuntaNimiSv, yksiloity) <> (RHenkilöRow.tupled, RHenkilöRow.unapply)
   }
   class RHenkilöTableTemp(tag: Tag) extends RHenkilöTable(tag, Temp)
   class RHenkilöConfidentialTable(tag: Tag) extends RHenkilöTable(tag, Confidential)
@@ -962,7 +961,6 @@ case class ROsasuoritusRow(
 case class RHenkilöRow(
                         oppijaOid: String,
                         masterOid: String,
-                        linkitetytOidit: List[String],
                         hetu: Option[String],
                         sukupuoli: Option[String],
                         syntymäaika: Option[Date],
@@ -1233,7 +1231,6 @@ sealed trait Schema {
   def createOtherIndexes() = DBIO.seq(
     sqlu"CREATE INDEX ON #${name}.r_henkilo(hetu)",
     sqlu"CREATE INDEX ON #${name}.r_henkilo(oppija_oid, aidinkieli)",
-    sqlu"CREATE INDEX ON #${name}.r_henkilo(linkitetyt_oidit)",
     sqlu"CREATE INDEX ON #${name}.r_henkilo(master_oid)",
 
     sqlu"CREATE INDEX ON #${name}.r_organisaatio(oppilaitosnumero)",
