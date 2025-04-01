@@ -74,12 +74,11 @@ export const UusiIBTutkintoOsasuoritusDialog: AddOppiaineenOsasuoritusDialog<
         )
         state.tunniste.set(tunniste)
         state.kuvaus.set(kurssi?.kuvaus)
-        state.laajuus.set(kurssi?.laajuus)
       } else if (option?.value) {
         state.tunniste.set(option.value)
       }
     },
-    [ibKurssit, state.kuvaus, state.laajuus, state.tunniste]
+    [ibKurssit, state.kuvaus, state.tunniste]
   )
 
   const onPaikallinenKoulutus = useCallback(
