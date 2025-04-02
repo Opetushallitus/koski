@@ -164,14 +164,6 @@ class ValpasOppijaSearchService(application: KoskiApplication) extends Logging {
         palautaLukionAineopinnot = false
       )
       .map(o => ValpasLöytyiHenkilöhakuResult.apply(o, rajapäivätService))
-
-  implicit private val getResultValpasLöytyiHenkilöhakuResult: GetResult[ValpasLöytyiHenkilöhakuResult] = GetResult(row =>
-    ValpasLöytyiHenkilöhakuResult(
-      oid = row.rs.getString("oid"),
-      hetu = Option(row.rs.getString("hetu")),
-      etunimet = row.rs.getString("etunimet"),
-      sukunimi = row.rs.getString("sukunimi"),
-    ))
 }
 
 object ValpasLöytyiHenkilöhakuResult {
