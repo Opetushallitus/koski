@@ -37,13 +37,6 @@ case class LaajatOppijaHenkilöTiedot(
   def kaikkiOidit: List[String] = oid :: linkitetytOidit
 
   override def ilmanHetua: HenkilönTunnisteet = this.copy(hetu = None)
-
-  def laajennetunOppivelvollisuudenUlkopuolinenKunnanPerusteella: Boolean = {
-    kotikunta match {
-      case Some(k) => oppivelvollisuudenUlkopuolisetKunnatTaiKuntaVirheellinen.contains(k)
-      case _ => true
-    }
-  }
 }
 
 case class SuppeatOppijaHenkilöTiedot(

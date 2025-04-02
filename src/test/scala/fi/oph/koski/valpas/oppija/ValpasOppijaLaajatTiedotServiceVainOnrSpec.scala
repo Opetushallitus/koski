@@ -133,6 +133,18 @@ class ValpasOppijaLaajatTiedotServiceVainOnrSpec extends ValpasOppijaTestBase {
       result should be(expectedResult)
     }
 
+    "ei palauta lain piirissä kotikuntahistorian vuoksi olematonta oppijaa" in {
+      val expectedResult = Left(HttpStatus(403,List(ErrorDetail(
+        ValpasErrorCategory.forbidden.oppija.key, "Käyttäjällä ei ole oikeuksia annetun oppijan tietoihin"
+      ))))
+
+      val result = oppijaLaajatTiedotService.getOppijaLaajatTiedotYhteystiedoillaJaKuntailmoituksilla(
+        ValpasMockOppijat.eiKoskessaEikäOppivelvollinenKotikuntahistorianPerusteella.oid
+      )(session(ValpasMockUsers.valpasHelsinki))
+
+      result should be(expectedResult)
+    }
+
     "ei palauta hetutonta oppijaa" in {
       val expectedResult = Left(HttpStatus(403,List(ErrorDetail(
         ValpasErrorCategory.forbidden.oppija.key, "Käyttäjällä ei ole oikeuksia annetun oppijan tietoihin"

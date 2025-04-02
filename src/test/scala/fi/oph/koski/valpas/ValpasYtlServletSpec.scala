@@ -58,7 +58,8 @@ class ValpasYtlServletSpec  extends ValpasTestBase with BeforeAndAfterEach {
     ValpasMockOppijat.eiKoskessaOppivelvollinen,
     ValpasMockOppijat.eiOppivelvollinenLiianNuori,
     ValpasMockOppijat.eiKoskessaOppivelvollinenAhvenanmaalainen,
-    ValpasMockOppijat.eiKoskessaAlle18VuotiasMuttaEiOppivelvollinenSyntymäajanPerusteella
+    ValpasMockOppijat.eiKoskessaAlle18VuotiasMuttaEiOppivelvollinenSyntymäajanPerusteella,
+    ValpasMockOppijat.eiKoskessaEikäOppivelvollinenKotikuntahistorianPerusteella
   )
 
   "YTL-luovutuspalvelukäyttäjä" - {
@@ -134,6 +135,10 @@ class ValpasYtlServletSpec  extends ValpasTestBase with BeforeAndAfterEach {
             oppijaOid = ValpasMockOppijat.eiKoskessaAlle18VuotiasMuttaEiOppivelvollinenSyntymäajanPerusteella.oid,
             maksuttomuudenPiirissä = Some(false),
           ),
+          YtlMaksuttomuustieto(
+            oppijaOid = ValpasMockOppijat.eiKoskessaEikäOppivelvollinenKotikuntahistorianPerusteella.oid,
+            maksuttomuudenPiirissä = Some(false),
+          )
         )
 
         doQuery(oidit = Some(oids)) {
@@ -237,6 +242,11 @@ class ValpasYtlServletSpec  extends ValpasTestBase with BeforeAndAfterEach {
             oikeusMaksuttomaanKoulutukseenVoimassaAsti = None,
             maksuttomuudenPiirissä = Some(false),
           ),
+          YtlMaksuttomuustieto(
+            oppijaOid = ValpasMockOppijat.eiKoskessaEikäOppivelvollinenKotikuntahistorianPerusteella.oid,
+            hetu = ValpasMockOppijat.eiKoskessaEikäOppivelvollinenKotikuntahistorianPerusteella.hetu,
+            maksuttomuudenPiirissä = Some(false),
+          )
         )
 
         doQuery(hetut = Some(hetut)) {

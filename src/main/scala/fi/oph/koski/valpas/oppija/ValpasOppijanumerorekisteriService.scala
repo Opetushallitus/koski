@@ -3,6 +3,7 @@ package fi.oph.koski.valpas.oppija
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.henkilo.{LaajatOppijaHenkilöTiedot, OppijaHenkilö}
 import fi.oph.koski.http.HttpStatus
+import fi.oph.koski.oppivelvollisuustieto.Oppivelvollisuustiedot
 import fi.oph.koski.validation.MaksuttomuusValidation
 import fi.oph.koski.valpas.opiskeluoikeusrepository.ValpasHenkilö.Oid
 import fi.oph.koski.valpas.opiskeluoikeusrepository.{ValpasHenkilö, ValpasOppivelvollinenOppijaLaajatTiedot}
@@ -124,8 +125,12 @@ class ValpasOppijanumerorekisteriService(application: KoskiApplication) {
 
   private def onKotikunnanPerusteellaLaajennetunOppivelvollisuudenPiirissä(henkilö: OppijaHenkilö): Boolean = {
     asLaajatOppijaHenkilöTiedot(henkilö) match {
-      case Some(o) if o.turvakielto || !o.laajennetunOppivelvollisuudenUlkopuolinenKunnanPerusteella =>
-        true
+      case Some(o)  =>
+        o.syntymäaika match {
+          case Some(s) =>
+            Oppivelvollisuustiedot.oppivelvollinenKotikuntahistorianPerusteella(o.oid, s, application.opintopolkuHenkilöFacade)
+          case _ => false
+        }
       case _ =>
         false
     }
