@@ -126,9 +126,10 @@ class ValpasOppijaSearchService(application: KoskiApplication) extends Logging {
           // valmistumiseen, ei ole enää maksuttomuuden piirissä:
           case Some(o) => ValpasEiLainTaiMaksuttomuudenPiirissäHenkilöhakuResult(Some(o.henkilö.oid), o.henkilö.hetu)
           case None => oppijanumerorekisteriService.asLaajatOppijaHenkilöTiedot(henkilö) match {
-            case Some(h) if !h.turvakielto && h.laajennetunOppivelvollisuudenUlkopuolinenKunnanPerusteella => ValpasEiLainTaiMaksuttomuudenPiirissäHenkilöhakuResult(Some(h.oid), h.hetu)
             case Some(h) if oppijanumerorekisteriService.onMaksuttomuuskäyttäjälleNäkyväVainOnrssäOlevaOppija(h) =>
               ValpasLöytyiHenkilöhakuResult(h, vainOppijanumerorekisterissä = true, rajapäivätService)
+            case Some(h) if oppijanumerorekisteriService.onMaksuttomuuskäyttäjänHenkilöhaussaNäkyväVainOnrssäOlevaOppija(h) =>
+              ValpasEiLainTaiMaksuttomuudenPiirissäHenkilöhakuResult(Some(h.oid), h.hetu)
             case _ => ValpasEiLöytynytHenkilöhakuResult()
           }
         })
@@ -164,14 +165,6 @@ class ValpasOppijaSearchService(application: KoskiApplication) extends Logging {
         palautaLukionAineopinnot = false
       )
       .map(o => ValpasLöytyiHenkilöhakuResult.apply(o, rajapäivätService))
-
-  implicit private val getResultValpasLöytyiHenkilöhakuResult: GetResult[ValpasLöytyiHenkilöhakuResult] = GetResult(row =>
-    ValpasLöytyiHenkilöhakuResult(
-      oid = row.rs.getString("oid"),
-      hetu = Option(row.rs.getString("hetu")),
-      etunimet = row.rs.getString("etunimet"),
-      sukunimi = row.rs.getString("sukunimi"),
-    ))
 }
 
 object ValpasLöytyiHenkilöhakuResult {

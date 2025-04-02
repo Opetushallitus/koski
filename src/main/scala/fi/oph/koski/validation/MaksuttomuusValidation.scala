@@ -9,7 +9,6 @@ import fi.oph.koski.opiskeluoikeus.{CompositeOpiskeluoikeusRepository, Päiväm�
 import fi.oph.koski.oppivelvollisuustieto.Oppivelvollisuustiedot
 import fi.oph.koski.schema._
 import fi.oph.koski.util.ChainingSyntax.localDateOps
-import fi.oph.koski.util.DateOrdering.localDateOrdering
 import fi.oph.koski.util.{DateOrdering, FinnishDateFormat}
 import fi.oph.koski.valpas.opiskeluoikeusrepository.ValpasRajapäivätService
 import fi.oph.koski.valpas.oppivelvollisuudestavapautus.ValpasOppivelvollisuudestaVapautusService
@@ -229,7 +228,7 @@ object MaksuttomuusValidation extends Logging {
     // 5. oppija on kotikuntahistorian perusteella lain piirissä
     lazy val oppijaOnKotikuntahistorianPerusteellaLainPiirissä =
       (oppijaOid, oppijanSyntymäpäivä) match {
-        case (Some(oid), Some(syntymäpäivä)) => oppivelvollinenKotikuntahistorianPerusteella(oid, syntymäpäivä, oppijanumerorekisteri)
+        case (Some(oid), Some(syntymäpäivä)) => Oppivelvollisuustiedot.oppivelvollinenKotikuntahistorianPerusteella(oid, syntymäpäivä, oppijanumerorekisteri)
         case _ => false
       }
 
@@ -255,22 +254,6 @@ object MaksuttomuusValidation extends Logging {
       if (KotikuntahistoriaConfig(config).käytäMaksuttomuustietojenValidointiin) newResult else originalResult,
       logData,
     )
-  }
-
-  def oppivelvollinenKotikuntahistorianPerusteella(oppijaOid: String, syntymäpäivä: LocalDate, oppijanumerorekisteri: OpintopolkuHenkilöFacade): Boolean = {
-    val täysiIkäinenAlkaen = syntymäpäivä.plusYears(18)
-    def onMannerSuomenKunta(kuntakoodi: String): Boolean =
-      !Oppivelvollisuustiedot.oppivelvollisuudenUlkopuolisetKunnat.contains(kuntakoodi)
-
-    val kotikuntaSuomessaAlkaen = Seq(false, true)
-      .flatMap(t => oppijanumerorekisteri.findKuntahistoriat(Seq(oppijaOid), turvakiellolliset = t).getOrElse(Seq.empty))
-      .filter(k => onMannerSuomenKunta(k.kotikunta))
-      .sortBy(_.pvm)
-      .headOption
-
-    kotikuntaSuomessaAlkaen.exists {
-      _.pvm.exists(_.isBefore(täysiIkäinenAlkaen))
-    }
   }
 
   def validateAndFillJaksot(opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus): Either[HttpStatus, KoskeenTallennettavaOpiskeluoikeus] = {

@@ -2,12 +2,13 @@ package fi.oph.koski.oppivelvollisuustieto
 
 import com.typesafe.config.Config
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.plainAPI._
-import fi.oph.koski.henkilo.KotikuntahistoriaConfig
+import fi.oph.koski.henkilo.{KotikuntahistoriaConfig, OpintopolkuHenkilöFacade}
 import fi.oph.koski.raportit.AhvenanmaanKunnat.ahvenanmaanKunnat
 import fi.oph.koski.raportointikanta.{RaportointiDatabase, Schema}
 import fi.oph.koski.valpas.opiskeluoikeusrepository.ValpasRajapäivätService
 import org.postgresql.util.PSQLException
 import slick.jdbc.GetResult
+import fi.oph.koski.util.DateOrdering.localDateOrdering
 
 import java.time.LocalDate
 
@@ -21,6 +22,22 @@ object Oppivelvollisuustiedot {
       "198", // Ei kotikuntaa Suomessa
       "200", // Ulkomaat
     )
+
+  def oppivelvollinenKotikuntahistorianPerusteella(oppijaOid: String, syntymäpäivä: LocalDate, oppijanumerorekisteri: OpintopolkuHenkilöFacade): Boolean = {
+    val täysiIkäinenAlkaen = syntymäpäivä.plusYears(18)
+    def onMannerSuomenKunta(kuntakoodi: String): Boolean =
+      !Oppivelvollisuustiedot.oppivelvollisuudenUlkopuolisetKunnat.contains(kuntakoodi)
+
+    val kotikuntaSuomessaAlkaen = Seq(false, true)
+      .flatMap(t => oppijanumerorekisteri.findKuntahistoriat(Seq(oppijaOid), turvakiellolliset = t).getOrElse(Seq.empty))
+      .filter(k => onMannerSuomenKunta(k.kotikunta))
+      .sortBy(_.pvm)
+      .headOption
+
+    kotikuntaSuomessaAlkaen.exists {
+      _.pvm.exists(_.isBefore(täysiIkäinenAlkaen))
+    }
+  }
 
   def queryByOid(oid: String, db: RaportointiDatabase): Option[Oppivelvollisuustieto] = {
     try {

@@ -3,6 +3,7 @@ package fi.oph.koski.valpas.oppija
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.henkilo.{LaajatOppijaHenkilöTiedot, OppijaHenkilö}
 import fi.oph.koski.http.HttpStatus
+import fi.oph.koski.oppivelvollisuustieto.Oppivelvollisuustiedot
 import fi.oph.koski.validation.MaksuttomuusValidation
 import fi.oph.koski.valpas.opiskeluoikeusrepository.ValpasHenkilö.Oid
 import fi.oph.koski.valpas.opiskeluoikeusrepository.{ValpasHenkilö, ValpasOppivelvollinenOppijaLaajatTiedot}
@@ -80,24 +81,35 @@ class ValpasOppijanumerorekisteriService(application: KoskiApplication) {
     onMaksuttomuuskäyttäjälleNäkyväVainOnrssäOlevaOppija(henkilö)
 
   def onMaksuttomuuskäyttäjälleNäkyväVainOnrssäOlevaOppija(henkilö: OppijaHenkilö): Boolean = {
+    lazy val näytäKotikunnanPerusteella = onKotikunnanPerusteellaLaajennetunOppivelvollisuudenPiirissä(henkilö)
+
+    onMaksuttomuuskäyttäjänHenkilöhaussaNäkyväVainOnrssäOlevaOppija(henkilö) &&
+      näytäKotikunnanPerusteella
+  }
+
+  def onMaksuttomuuskäyttäjänHenkilöhaussaNäkyväVainOnrssäOlevaOppija(henkilö: OppijaHenkilö): Boolean = {
     val onMahdollisestiLainPiirissä =
       MaksuttomuusValidation.eiOppivelvollisuudenLaajentamislainPiirissäSyyt(
         henkilö.syntymäaika,
         opiskeluoikeusRepository.getPerusopetuksenAikavälitIlmanKäyttöoikeustarkistusta(None, henkilö.oid),
         rajapäivätService
       ).isEmpty
-    lazy val onTarpeeksiVanhaKeskeytysmerkintöjäVarten = rajapäivätService.oppijaOnTarpeeksiVanhaKeskeytysmerkintöjäVarten(henkilö.syntymäaika)
-    lazy val näytäKotikunnanPerusteella = onKotikunnanPerusteellaLaajennetunOppivelvollisuudenPiirissä(henkilö)
-    // Toistaiseksi vain hetullisilla voi olla kotikunta, mutta tämä saattaa tulevaisuudessa muuttua, joten varmistetaan,
-    // että henkilöllä on myös hetu
+    lazy val onTarpeeksiVanhaKeskeytysmerkintöjäVarten = onTarpeeksiVanhaOllakseenLainPiirissä(henkilö)
     lazy val näytäHetunOlemassaolonPerusteella = henkilö.hetu.isDefined
-    lazy val maksuttomuudenPäättymispäiväTulevaisuudessa = !rajapäivätService.tarkastelupäivä.isAfter(rajapäivätService.maksuttomuusVoimassaAstiIänPerusteella(henkilö.syntymäaika.get))
+    lazy val maksuttomuudenPäättymispäiväTulevaisuudessa = maksuttomuudenPäättymispäiväOnTulevaisuudessa(henkilö)
 
     onMahdollisestiLainPiirissä &&
       onTarpeeksiVanhaKeskeytysmerkintöjäVarten &&
-      näytäKotikunnanPerusteella &&
       näytäHetunOlemassaolonPerusteella &&
       maksuttomuudenPäättymispäiväTulevaisuudessa
+  }
+
+  private def onTarpeeksiVanhaOllakseenLainPiirissä(henkilö: OppijaHenkilö): Boolean = {
+    rajapäivätService.oppijaOnTarpeeksiVanhaKeskeytysmerkintöjäVarten(henkilö.syntymäaika)
+  }
+
+  private def maksuttomuudenPäättymispäiväOnTulevaisuudessa(henkilö: OppijaHenkilö) = {
+    !rajapäivätService.tarkastelupäivä.isAfter(rajapäivätService.maksuttomuusVoimassaAstiIänPerusteella(henkilö.syntymäaika.get))
   }
 
   private def onKansalaiselleNäkyväVainOnrssäOlevaOppija(henkilö: OppijaHenkilö): Boolean = {
@@ -113,8 +125,12 @@ class ValpasOppijanumerorekisteriService(application: KoskiApplication) {
 
   private def onKotikunnanPerusteellaLaajennetunOppivelvollisuudenPiirissä(henkilö: OppijaHenkilö): Boolean = {
     asLaajatOppijaHenkilöTiedot(henkilö) match {
-      case Some(o) if o.turvakielto || !o.laajennetunOppivelvollisuudenUlkopuolinenKunnanPerusteella =>
-        true
+      case Some(o)  =>
+        o.syntymäaika match {
+          case Some(s) =>
+            Oppivelvollisuustiedot.oppivelvollinenKotikuntahistorianPerusteella(o.oid, s, application.opintopolkuHenkilöFacade)
+          case _ => false
+        }
       case _ =>
         false
     }

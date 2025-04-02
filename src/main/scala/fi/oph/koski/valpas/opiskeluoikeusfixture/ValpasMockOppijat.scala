@@ -232,6 +232,17 @@ object ValpasMockOppijat {
     }
   )
   val oppijaTyhjälläKotikunnalla = valpasOppijat.oppijaSyntymäaikaHetusta("TyhjälläKotikunnalla", "Valpas", "081105A407E", kotikunta = None)
+  val eiKoskessaEikäOppivelvollinenKotikuntahistorianPerusteella = valpasOppijat.oppijaSyntymäaikaHetusta("Kosketon-ei-oppivelvollinen-ulkomailla", "Valpas", "041006A550X", kotikunta = Some("091"),
+    kuntahistoriaMock = h => {
+      val historia = Seq(
+        OppijanumerorekisteriKotikuntahistoriaRow(h.henkilö.oid, "198", Some(LocalDate.of(2006, 4, 10)), None)
+      )
+      OppijanKuntahistoria(
+        Some(h.henkilö.oid),
+        historia,
+        Seq.empty
+      )
+    })
 
   // Kutsumanimi ja yhteystiedot haetaan oppijanumerorekisteristä Valpas-käyttäjälle, tallennetaan siksi käyttäjä myös "oppijana" mockeihin
   val käyttäjäValpasJklNormaalikoulu = valpasOppijat.oppija(
