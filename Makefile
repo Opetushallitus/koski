@@ -163,10 +163,11 @@ owasp:
 owaspresults:
 	open target/dependency-check-report.html
 
+# TODO: omadata-oauth2-sample/client, vaatii isompia päivityksiä saada läpi (pitäisi poistaa create-react-app yms.)
 .PHONY: snyk
 snyk: # javascript dependency vulnerability check
-	mvn generate-resources # to download correct node/npm version via frontend-maven-plugin
-	node web/node_modules/snyk/dist/cli/index.js test web valpas-web
+	mvn generate-resources # to download correct node/npm version
+	node web/node_modules/snyk/dist/cli/index.js test web valpas-web omadata-oauth2-sample/server
 
 .PHONY: checkdoc_validation
 checkdoc_validation:

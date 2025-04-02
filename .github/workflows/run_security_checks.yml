@@ -24,19 +24,21 @@ jobs:
         with:
           node-version: "22.14.0"
 
-      - name: Cache Maven packages
-        uses: actions/cache@v3
-        with:
-          path: ~/.m2/repository
-          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
-          restore-keys: |
-            ${{ runner.os }}-maven-
+      - name: Get Date
+        id: get-date
+        run: |
+          echo "datetime=$(/bin/date -u "+%Y%m%d%H")" >> $GITHUB_OUTPUT
+        shell: bash
 
-      - name: Restore NVD database from cache
+      - name: Restore cached Maven dependencies
         uses: actions/cache/restore@v3
         with:
-          path: ~/.m2/repository/org/owasp/dependency-check-data
-          key: ${{ runner.os }}-owasp-db
+          path: ~/.m2/repository
+          # Using datetime in cache key as OWASP database may change, without the pom changing
+          key: ${{ runner.os }}-maven-${{ steps.get-date.outputs.datetime }}-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-${{ steps.get-date.outputs.datetime }}
+            ${{ runner.os }}-maven-
 
       - name: Cache Node modules
         uses: actions/cache@v3
@@ -46,8 +48,8 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-node-
 
-      - name: Run owasp
-        id: owasp
+      - name: Run OWASP Koski pom.xml
+        id: owasp-koski
         uses: nick-fields/retry@v3
         with:
           max_attempts: 5
@@ -56,7 +58,7 @@ jobs:
           retry_wait_seconds: 1800
           retry_on_exit_code: 99
           command: |
-            mvn dependency-check:check -P owasp --batch-mode | tee owasp-output.log
+            mvn dependency-check:check -P owasp -DnvdApiKey=${{secrets.NVD_NIST_GOV_API_KEY}} --batch-mode | tee owasp-output.log
             STATUS="${PIPESTATUS[0]}"
 
             if [ "$STATUS" != "0" ]; then
@@ -72,19 +74,53 @@ jobs:
               fi
             fi
 
-      - name: Archive OWASP results
+      - name: Archive OWASP Koski pom.xml results
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: owasp-report
+          name: owasp-report-koski
           path: target/dependency-check-report.html
 
-      - name: Save NVD database to cache
+      - name: Run OWASP OAuth2 Java sample pom.xml
+        id: owasp-oauth2-java-sample
+        uses: nick-fields/retry@v3
+        with:
+          max_attempts: 5
+          # max_attempts: 5
+          timeout_minutes: 10
+          retry_wait_seconds: 1800
+          retry_on_exit_code: 99
+          command: |
+            cd omadata-oauth2-sample/java
+            mvn dependency-check:check -P owasp -DnvdApiKey=${{secrets.NVD_NIST_GOV_API_KEY}} --batch-mode | tee owasp-output.log
+            STATUS="${PIPESTATUS[0]}"
+
+            if [ "$STATUS" != "0" ]; then
+              EOF=$(dd if=/dev/urandom bs=15 count=1 status=none | base64)
+              echo "errors<<$EOF" >> $GITHUB_OUTPUT
+              grep "\[ERROR\]" owasp-output.log >> $GITHUB_OUTPUT
+              echo "$EOF" >> $GITHUB_OUTPUT
+
+              if grep -q "One or more dependencies were identified with vulnerabilities" owasp-output.log; then
+                exit $STATUS
+              else
+                exit 99
+              fi
+            fi
+
+      - name: Archive OWASP OAuth2 Java sample pom.xml results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: owasp-report-oauth2-java-sample
+          path: omadata-oauth2-sample/java/target/dependency-check-report.html
+
+      - name: Cache Maven dependencies
         uses: actions/cache/save@v3
         if: always()
         with:
-          path: ~/.m2/repository/org/owasp/dependency-check-data
-          key: ${{ runner.os }}-owasp-db
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ steps.get-date.outputs.datetime }}-${{ hashFiles('**/pom.xml') }}
 
       - name: Run snyk
         id: snyk
