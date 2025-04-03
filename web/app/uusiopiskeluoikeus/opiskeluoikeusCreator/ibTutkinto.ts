@@ -54,7 +54,6 @@ const createIBPäätasonSuoritus = (
   suorituskieli: Koodistokoodiviite<'kieli'>,
   organisaatio: OrganisaatioHierarkia
 ) => {
-  console.log('ib suorituksen tyyppi', suorituksenTyyppi)
   switch (suorituksenTyyppi.koodiarvo) {
     case 'ibtutkinto':
       return IBTutkinnonSuoritus({

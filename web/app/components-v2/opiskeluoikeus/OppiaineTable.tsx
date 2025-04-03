@@ -11,9 +11,14 @@ import { ISO2FinnishDate } from '../../date/date'
 import { t } from '../../i18n/i18n'
 import { isArvioinniton } from '../../types/fi/oph/koski/schema/Arvioinniton'
 import { Arviointi } from '../../types/fi/oph/koski/schema/Arviointi'
+import { isIBAineRyhmäOppiaine } from '../../types/fi/oph/koski/schema/IBAineRyhmaOppiaine'
 import { isIBKurssi } from '../../types/fi/oph/koski/schema/IBKurssi'
 import { IBOpiskeluoikeus } from '../../types/fi/oph/koski/schema/IBOpiskeluoikeus'
+import { isIBOppiaineCAS } from '../../types/fi/oph/koski/schema/IBOppiaineCAS'
 import { isIBOppiaineenSuoritus } from '../../types/fi/oph/koski/schema/IBOppiaineenSuoritus'
+import { isIBOppiaineExtendedEssay } from '../../types/fi/oph/koski/schema/IBOppiaineExtendedEssay'
+import { isIBOppiaineLanguage } from '../../types/fi/oph/koski/schema/IBOppiaineLanguage'
+import { isIBTaso } from '../../types/fi/oph/koski/schema/IBTaso'
 import { IBTheoryOfKnowledgeSuoritus } from '../../types/fi/oph/koski/schema/IBTheoryOfKnowledgeSuoritus'
 import { IBTutkinnonSuoritus } from '../../types/fi/oph/koski/schema/IBTutkinnonSuoritus'
 import { LocalizedString } from '../../types/fi/oph/koski/schema/LocalizedString'
@@ -23,7 +28,6 @@ import { isLukionPaikallinenOpintojakso2019 } from '../../types/fi/oph/koski/sch
 import { MuidenLukioOpintojenPreIBSuoritus2019 } from '../../types/fi/oph/koski/schema/MuidenLukioOpintojenPreIBSuoritus2019'
 import { isPaikallinenKoodi } from '../../types/fi/oph/koski/schema/PaikallinenKoodi'
 import { isPaikallinenLukionKurssi2015 } from '../../types/fi/oph/koski/schema/PaikallinenLukionKurssi2015'
-import { PreIBSuoritus2019 } from '../../types/fi/oph/koski/schema/PreIBSuoritus2019'
 import { Suoritus } from '../../types/fi/oph/koski/schema/Suoritus'
 import { isValinnaisuus } from '../../types/fi/oph/koski/schema/Valinnaisuus'
 import { isValinnanMahdollisuus } from '../../types/fi/oph/koski/schema/ValinnanMahdollisuus'
@@ -34,7 +38,6 @@ import { PathToken } from '../../util/laxModify'
 import { indexSequence, sum } from '../../util/numbers'
 import { entries } from '../../util/objects'
 import { PäätasonSuoritusOf } from '../../util/opiskeluoikeus'
-import { match } from '../../util/patternmatch'
 import { KoulutusmoduuliOf, OsasuoritusOf } from '../../util/schema'
 import { suoritusValmis } from '../../util/suoritus'
 import { useBooleanState } from '../../util/useBooleanState'
@@ -47,11 +50,6 @@ import { FormModel, getValue } from '../forms/FormModel'
 import { CHARCODE_REMOVE } from '../texts/Icon'
 import { ArvosanaEdit, koodiarvoOnly } from './ArvosanaField'
 import { OppiaineTableKurssiEditor } from './OppiaineTableKurssiEditor'
-import { isIBTaso } from '../../types/fi/oph/koski/schema/IBTaso'
-import { isIBAineRyhmäOppiaine } from '../../types/fi/oph/koski/schema/IBAineRyhmaOppiaine'
-import { isIBOppiaineExtendedEssay } from '../../types/fi/oph/koski/schema/IBOppiaineExtendedEssay'
-import { isIBOppiaineLanguage } from '../../types/fi/oph/koski/schema/IBOppiaineLanguage'
-import { isIBOppiaineCAS } from '../../types/fi/oph/koski/schema/IBOppiaineCAS'
 import { OppiaineTableOppiaineEditor } from './OppiaineTableOppiaineEditor'
 
 // Vain OppiaineTablen tukemat päätason suoritukset (tätä komponenttia tullaan myöhemmin käyttämään ainakin lukion näkymille)
@@ -150,13 +148,12 @@ export const OppiaineTable = <T extends OppiaineTablePäätasonSuoritus>({
     [groupBy, suoritus?.osasuoritukset]
   )
 
-  const laajuusyksikkö = useMemo(
-    () =>
-      match(selectedSuoritus.suoritus)
-        .isClass(PreIBSuoritus2019, () => t('opintopistettä'))
-        .getOrElse(() => t('kurssia')),
-    [selectedSuoritus]
-  )
+  const laajuusyksikkö = useMemo(() => {
+    const koulutusmoduuli = (suoritus?.osasuoritukset || []).flatMap(
+      (os) => (os.osasuoritukset || []) as Suoritus[]
+    )[0]?.koulutusmoduuli
+    return t((koulutusmoduuli as any)?.laajuus?.yksikkö.nimi)
+  }, [suoritus?.osasuoritukset])
 
   const nextOppiaineIndex = indexSequence()
 
@@ -167,7 +164,7 @@ export const OppiaineTable = <T extends OppiaineTablePäätasonSuoritus>({
           <th></th>
           <th className="OppiaineTable__oppiaine">{t('Oppiaine')}</th>
           <th className="OppiaineTable__laajuus">
-            {`${t('Laajuus')} (${laajuusyksikkö})`}
+            {`${t('Laajuus')} ${laajuusyksikkö ? `(${laajuusyksikkö})` : ''}`}
           </th>
           {showPredictedGrade && (
             <th className="OppiaineTable__predictedGrade">
@@ -272,7 +269,7 @@ const OppiaineRow = <T,>({
   onDeleteKurssi
 }: OppiaineRowProps<T>) => {
   const kurssit = oppiaine.osasuoritukset || []
-  const kurssejaYhteensä = sum(
+  const laajuusYhteensä = sum(
     kurssit.map((k) => k.koulutusmoduuli.laajuus?.arvo || 1)
   )
   const [
@@ -333,7 +330,7 @@ const OppiaineRow = <T,>({
         />
       </td>
       <td className="OppiaineRow__laajuus">
-        <TestIdText id="laajuus">{kurssejaYhteensä}</TestIdText>
+        <TestIdText id="laajuus">{laajuusYhteensä}</TestIdText>
       </td>
       {showPredictedGrade && (
         <td className="OppiaineRow__predictedGrade">

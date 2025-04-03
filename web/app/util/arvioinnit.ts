@@ -24,6 +24,10 @@ const hylkäysmerkinnät: Record<string, string> = {
   arviointiasteikkoyleissivistava: 'H'
 }
 
+const arvosanajärjestykset: Record<string, string[]> = {
+  arviointiasteikkoib: ['O', 'F', 'S', '1', '2', '3', '4', '5', '6', '7']
+}
+
 const isSuoritusmerkintä = (arviointi: ConsolidatedArviointi): boolean =>
   suoritusmerkinnät[arviointi.koodistoUri] === arviointi.koodiarvo
 
@@ -45,6 +49,13 @@ const ConsolidatedArviointiOrd = Ord.fromCompare<ConsolidatedArviointi>(
   (first, second) => {
     if (first.koodiarvo === second.koodiarvo) {
       return 0
+    }
+    const order = arvosanajärjestykset[first.koodistoUri]
+    if (order) {
+      return number.Ord.compare(
+        order.indexOf(first.koodiarvo),
+        order.indexOf(second.koodiarvo)
+      )
     }
     if (
       isSuoritusmerkintä(first) ||
