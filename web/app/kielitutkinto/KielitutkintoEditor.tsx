@@ -21,7 +21,7 @@ export type KielitutkintoEditorProps =
 export const KielitutkintoEditor: React.FC<KielitutkintoEditorProps> = (
   props
 ) => {
-  const opiskeluoikeusSchema = useSchema('IBOpiskeluoikeus')
+  const opiskeluoikeusSchema = useSchema('KielitutkinnonOpiskeluoikeus')
   const form = useForm(props.opiskeluoikeus, false, opiskeluoikeusSchema)
 
   return (
