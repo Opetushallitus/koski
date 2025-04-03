@@ -59,6 +59,12 @@ export const OppiaineTableOppiaineEditor: React.FC<
                   testId="tunniste"
                 />
               </KeyValueRow>
+              <KeyValueRow localizableLabel="Aihe">
+                <LocalizedTextEdit
+                  value={koulutus.aihe}
+                  onChange={form.set(...path, 'koulutusmoduuli', 'aihe')}
+                />
+              </KeyValueRow>
             </>
           )}
           {isIBOppiaineLanguage(koulutus) && (
