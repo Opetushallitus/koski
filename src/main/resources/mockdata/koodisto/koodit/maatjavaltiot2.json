@@ -17393,13 +17393,7 @@
         "passive": false
       }
     ],
-    "includesCodeElements": [
-      {
-        "codeElementUri": "valtioryhmat_2",
-        "codeElementVersion": 1,
-        "passive": false
-      }
-    ],
+    "includesCodeElements": [],
     "levelsWithCodeElements": [
       {
         "codeElementUri": "maatjavaltiot1_gbr",

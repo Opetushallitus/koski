@@ -4,6 +4,9 @@
   "omistaja": "",
   "organisaatioOid": "1.2.246.562.10.2013112012294919827487",
   "lukittu": null,
+  "withinCodes": [],
+  "includesCodes": [],
+  "levelsWithCodes": [],
   "codesGroupUri": "virta",
   "version": 8,
   "versio": 1,
@@ -27,5 +30,6 @@
       "huomioitavaKoodisto": null,
       "koodistonLahde": null
     }
-  ]
+  ],
+  "codesVersions": []
 }

@@ -1,7 +1,7 @@
 {
   "id": 1667890,
   "globalVersion": {
-    "aikaleima": 1503056774303
+    "aikaleima": 1743673996592
   },
   "nimi": {
     "_id": "2691193",
@@ -28,9 +28,9 @@
   "siirtymaPaattyy": null,
   "voimassaoloLoppuu": null,
   "paatospvm": 1447365600000,
-  "viimeisinJulkaisuAika": null,
+  "viimeisinJulkaisuAika": 1633018911014,
   "luotu": 1465204451968,
-  "muokattu": 1503056774303,
+  "muokattu": 1743667491920,
   "tila": "valmis",
   "tyyppi": "normaali",
   "koulutusvienti": false,
@@ -899,8 +899,7 @@
           "koodiArvo": "AI",
           "koodiUri": "oppiaineetyleissivistava2_ai",
           "nimi": {
-            "_id": "1946988",
-            "fi": "Äidinkieli ja kirjallisuus"
+            "_id": "1946988"
           },
           "koosteinen": true,
           "abstrakti": false,
@@ -909,22 +908,18 @@
           "soveltavaKurssiKuvaus": null,
           "tavoitteet": {
             "otsikko": {
-              "_id": "1947102",
-              "fi": "Opetuksen tavoitteet"
+              "_id": "1947102"
             },
             "teksti": {
-              "_id": "1947104",
-              "fi": "<p>Suomen kielen opetuksen tavoitteena on monilukutaito, jonka avulla opiskelija ymmärtää, tuottaa, osaa arvioida ja analysoida erilaisia puhuttuja ja kirjoitettuja suomenkielisiä tekstejä sekä päivittäisessä vuorovaikutuksessa, koulutyöskentelyssä että yhteiskunnassa. Monilukutaitoa kehitetään koko lukiokoulutukseen valmistavan koulutuksen ajan, ei ainoastaan suomen kielen opetuksessa.</p>\n\n<p>Suomen kielen opetuksessa korostuu viestinnällisyys sekä toiminnallisuus eli se, miten erilaisissa kielenkäyttötilanteissa toimitaan ja mihin kieltä käytetään. Lukiokoulutukseen valmistavassa koulutuksessa vahvistetaan perusopetuksen aikana opittuja sisältöjä sekä annetaan valmiuksia lukio-opintoja varten. Opetuksessa tuetaan kielitaidon eri osa-alueiden sekä eri tiedonalojen kielen kehittymistä.</p>\n\n<p>Lukiokoulutukseen valmistavassa koulutuksessa varmistetaan, että opiskelija on saavuttanut perusopetuksen suomi toisena kielenä -oppimäärän tavoitteet. Suomen kielen opetuksen perusoletuksena lukiokoulutukseen valmistavassa koulutuksessa onkin, että opiskelija hallitsee kehittyvän peruskielitaidon eli osaa toimia tarkoituksenmukaisella tavalla erilaisissa kielenkäyttötilanteissa, osaa tulkita puhuttuja ja kirjoitettuja tekstejä kriittisesti sekä käyttää kieltä monipuolisesti ja luovasti, tuntee kirjallisuutta ja kulttuuria, rakentaa monikielistä ja -kulttuurista identiteettiään sekä osaa arvioida ja käyttää kielellisiä valmiuksiaan kaiken oppimisen tukena. Lukiokoulutukseen valmistavan koulutuksen aikana näitä taitoja syvennetään ja varmistetaan.</p>\n\n<p>Lukiokoulutukseen valmistavan koulutuksen alussa opiskelijan kielitaito kartoitetaan ja opiskelijalle asetetaan oppimistavoitteet siten, että opiskelijan kielitaitoprofiili kehittyy tasaisesti. Kielitaito koostuu tulkintataidoista eli kuullun ja luetun ymmärtämisestä sekä tuottamistaidoista eli puhumisesta ja kirjoittamisesta. Näihin kaikkiin osa-alueisiin sisältyy sanaston ja rakenteiden hallinta. Lukiokoulutukseen valmistavan koulutuksen päättyessä opiskelijalla tulisi olla toimiva tai sujuva peruskielitaito (kielitaidon tasojen kuvausasteikon taso B1). Kielitaidon eri osa-alueiden osaamista kuvaava kielitaitoprofiili voi kuitenkin vaihdella opiskelijakohtaisesti.</p>\n\n<p><strong>Opiskeluympäristö ja työtavat</strong></p>\n\n<p>Toisen kielen oppimisessa koko kohdekielinen ympäristö tukee opiskelijan kielitaidon kehittymistä. Näin ollen erityisesti suomen kielessä hyödynnetään luokkahuoneen ulkopuolisia ja digitaalisia ympäristöjä. Opiskelijaa kannustetaan erilaisten verkossa tarjolla olevien interaktiivisten oppimisympäristöjen käyttöön. Huomiota kiinnitetään erityisesti kriittiseen tiedonhakuun ja opiskelijan omaan osallistumiseen.</p>\n\n<p>Opiskelijan kielitaidon kokonaisvaltaista kehittämistä tukee se, kun opetuksessa huomioidaan mahdollisuuksien mukaan muissa oppiaineissa käytettyä materiaalia. Näistä voidaan poimia kielellistä ainesta, joiden avulla vahvistetaan eri tekstilajien ymmärtämistä ja tuottamista.</p>"
+              "_id": "1947104"
             }
           },
           "arviointi": {
             "otsikko": {
-              "_id": "1947048",
-              "fi": "Arviointi"
+              "_id": "1947048"
             },
             "teksti": {
-              "_id": "1947103",
-              "fi": "<p>Opiskelijalle annetaan monipuolista sanallista palautetta hänen edistymisestään kielitaidon eri osa-alueilla, jotta opiskelijalle muodostuu realistinen käsitys omasta kielitaidostaan. Lukiokoulutukseen valmistavan koulutuksen todistukseen merkitään opiskelijan saavuttama kielitaidon taso suomen kielen luetun ymmärtämisessä, kirjoittamisessa, kuullun ymmärtämisessä ja puhumisessa kielitaidon tason kuvausasteikon mukaisesti. Lukiokoulutukseen valmistavassa koulutuksessa käytetään voimassa oleviin lukiokoulutuksen opetussuunnitelman perusteisiin sisältyvää kielitaidon tasojen kuvausasteikkoa. Kurssit arvioidaan asteikolla suoritettu–hylätty.</p>"
+              "_id": "1947103"
             }
           },
           "tehtava": null,
@@ -937,8 +932,7 @@
               "koodiArvo": "AI7",
               "koodiUri": "oppiaineetyleissivistava2_ai7",
               "nimi": {
-                "_id": "1947046",
-                "fi": "Suomi toisena kielenä ja kirjallisuus (vähintään 10 kurssia)"
+                "_id": "1947046"
               },
               "koosteinen": false,
               "abstrakti": null,
@@ -958,44 +952,35 @@
                   "koodiUri": "lukionkurssit_lvs1",
                   "koodiArvo": "LVS1",
                   "lokalisoituKoodi": {
-                    "_id": "1695426",
-                    "fi": "LVS1"
+                    "_id": "1695426"
                   },
                   "tyyppi": "PAKOLLINEN",
                   "nimi": {
-                    "_id": "1695425",
-                    "fi": "Kielen rakenteet funktionaalisesta näkökulmasta",
-                    "sv": "Språkstrukturer ur funktionell synvinkel"
+                    "_id": "1695425"
                   },
                   "kuvaus": null,
                   "tavoitteet": {
                     "otsikko": {
-                      "_id": "1695429",
-                      "fi": "Tavoitteet"
+                      "_id": "1695429"
                     },
                     "teksti": {
-                      "_id": "1695460",
-                      "fi": "<p>Kurssin tavoitteena on, että opiskelija</p>\n\n<p>• tuntee kielitaitonsa vahvuudet ja kehittämiskohteet</p>\n\n<p>• kertaa perusopetuksen suomen kielen oppimäärän keskeisiä sisältöjä ja kehittää kielen rakenteen hallintaansa</p>\n\n<p>• vahvistaa morfologisen sekä sana- ja lausetason osaamistaan</p>\n\n<p>• hallitsee ne lausetason taidot, joilla vahvistetaan opiskelijan kirjoittamisen taitoa.</p>"
+                      "_id": "1695460"
                     }
                   },
                   "keskeisetSisallot": {
                     "otsikko": {
-                      "_id": "1695427",
-                      "fi": "Keskeiset sisällöt"
+                      "_id": "1695427"
                     },
                     "teksti": {
-                      "_id": "1830459",
-                      "fi": "<p>• opiskelijan kielitaidon kartoitus</p>\n\n<p>• keskeinen morfologia</p>\n\n<p>• syntaksin vahvistaminen ja kirjoittamistaidon kehittyminen</p>\n\n<p>• lausetyyppien, sanajärjestyksen ja rektioiden harjoittelu</p>\n\n<p>• puhutun kielen ja kirjoitetun kielen morfologiset ja syntaktiset erot sekä niiden vaikutus kielenkäyttöön</p>"
+                      "_id": "1830459"
                     }
                   },
                   "tavoitteetJaKeskeisetSisallot": {
                     "otsikko": {
-                      "_id": "1830510",
-                      "fi": "Arviointi"
+                      "_id": "1830510"
                     },
                     "teksti": {
-                      "_id": "1830511",
-                      "fi": "<p>suoritettu – hylätty</p>"
+                      "_id": "1830511"
                     }
                   }
                 },
@@ -1007,34 +992,27 @@
                   "koodiUri": "lukionkurssit_lvs2",
                   "koodiArvo": "LVS2",
                   "lokalisoituKoodi": {
-                    "_id": "1938816",
-                    "fi": "LVS2"
+                    "_id": "1938816"
                   },
                   "tyyppi": "PAKOLLINEN",
                   "nimi": {
-                    "_id": "1938815",
-                    "fi": "Tekstin rakenteet funktionaalisesta näkökulmasta",
-                    "sv": "Textstrukturer ur funktionell synvinkel"
+                    "_id": "1938815"
                   },
                   "kuvaus": null,
                   "tavoitteet": {
                     "otsikko": {
-                      "_id": "1938819",
-                      "fi": "Tavoitteet"
+                      "_id": "1938819"
                     },
                     "teksti": {
-                      "_id": "1938922",
-                      "fi": "<p>Kurssin tavoitteena on, että opiskelija</p>\n\n<p>• kertaa perusopetuksen suomen kielen oppimäärän keskeisiä sisältöjä ja kehittää kielen rakenteen hallintaansa</p>\n\n<p>• vahvistaa tekstikieliopin hallintaa</p>\n\n<p>• tutustuu tekstilajien rakennepiirteisiin.</p>"
+                      "_id": "1938922"
                     }
                   },
                   "keskeisetSisallot": {
                     "otsikko": {
-                      "_id": "1938818",
-                      "fi": "Keskeiset sisällöt"
+                      "_id": "1938818"
                     },
                     "teksti": {
-                      "_id": "1938921",
-                      "fi": "<p>• kirjoitetun kielen rakenteet tekstitasolla</p>\n\n<p>• erilajisten tekstien rakentuminen ja keinot niiden rakentamiseen</p>\n\n<p>• metatekstit, koheesio ja sidoksisuus</p>\n\n<p>• päälause, rinnasteinen ja alisteinen sivulause</p>\n\n<p>• lausekeajattelu luetun ymmärtämisen tukena</p>"
+                      "_id": "1938921"
                     }
                   },
                   "tavoitteetJaKeskeisetSisallot": null
@@ -1047,34 +1025,27 @@
                   "koodiUri": "lukionkurssit_lvs3",
                   "koodiArvo": "LVS3",
                   "lokalisoituKoodi": {
-                    "_id": "1938924",
-                    "fi": "LVS3"
+                    "_id": "1938924"
                   },
                   "tyyppi": "PAKOLLINEN",
                   "nimi": {
-                    "_id": "1938923",
-                    "fi": "Eri tiedonalojen kieli",
-                    "sv": "Språket inom olika ämnesområden"
+                    "_id": "1938923"
                   },
                   "kuvaus": null,
                   "tavoitteet": {
                     "otsikko": {
-                      "_id": "1938929",
-                      "fi": "Tavoitteet"
+                      "_id": "1938929"
                     },
                     "teksti": {
-                      "_id": "1938950",
-                      "fi": "<p>Kurssin tavoitteena on, että opiskelija</p>\n\n<p>• kehittää eri tiedonalojen kielen hallintaa</p>\n\n<p>• kehittää käsitteellisen kielen hallintaa</p>\n\n<p>• ymmärtää oppiaineiden tekstien erilaisia tapoja kuvata/hahmottaa ilmiöitä ja rakennepiirteitä</p>\n\n<p>• hallitsee eri oppiaineiden tekstikäytänteitä</p>\n\n<p>• tuntee eri oppiaineiden tyypillisiä tekstilajeja.</p>"
+                      "_id": "1938950"
                     }
                   },
                   "keskeisetSisallot": {
                     "otsikko": {
-                      "_id": "1938927",
-                      "fi": "Keskeiset sisällöt"
+                      "_id": "1938927"
                     },
                     "teksti": {
-                      "_id": "1938928",
-                      "fi": "<p>• eri tiedonalojen tyypilliset käsitteet, määritelmät ja tekstilajit</p>\n\n<p>• eri tiedonalojen tekstien rakennepiirteet</p>\n\n<p>• tietotekstien käsitesisällöt omassa puheessa</p>\n\n<p>• tietotekstien käsitteistön ymmärtäminen ja aktiivinen tuottaminen</p>"
+                      "_id": "1938928"
                     }
                   },
                   "tavoitteetJaKeskeisetSisallot": null
@@ -1087,34 +1058,27 @@
                   "koodiUri": "lukionkurssit_lvs4",
                   "koodiArvo": "LVS4",
                   "lokalisoituKoodi": {
-                    "_id": "1938952",
-                    "fi": "LVS4"
+                    "_id": "1938952"
                   },
                   "tyyppi": "PAKOLLINEN",
                   "nimi": {
-                    "_id": "1938951",
-                    "fi": "Tekstejä kirjoittamaan",
-                    "sv": "Skriva texter"
+                    "_id": "1938951"
                   },
                   "kuvaus": null,
                   "tavoitteet": {
                     "otsikko": {
-                      "_id": "1938957",
-                      "fi": "Tavoitteet"
+                      "_id": "1938957"
                     },
                     "teksti": {
-                      "_id": "1938958",
-                      "fi": "<p>Kurssin tavoitteena on, että opiskelija</p>\n\n<p>• kirjoittaa eri tiedonalojen opiskeluun liittyviä tekstejä </p>\n\n<p>• ymmärtää ja tulkitsee suullisesti ja kirjallisesti eri tiedonaloille tyypillisiä tekstejä</p>\n\n<p>• harjoittelee yhdessä kirjoittamista.</p>"
+                      "_id": "1938958"
                     }
                   },
                   "keskeisetSisallot": {
                     "otsikko": {
-                      "_id": "1938955",
-                      "fi": "Keskeiset sisällöt"
+                      "_id": "1938955"
                     },
                     "teksti": {
-                      "_id": "1938956",
-                      "fi": "<p>• erilaisten arkipäivän tekstien tuottaminen, esimerkiksi blogiviesti tai muu verkkoteksti, mielipide, kommentti, kritiikki, formaali ja ei-formaali sähköposti</p>\n\n<p>• opiskeluun liittyvien tekstien tuottaminen, esimerkiksi tutkielma, koevastaus, essee, käsitemäärittely, lähteiden käyttö tai tiedon esittäminen visuaalisesti (esim. diagrammi ja taulukko)</p>\n\n<p>• tarkka kuvailu ja yksityiskohtainen kerronta</p>\n\n<p>• sanaston varioivuus ja idiomaattisuus</p>\n\n<p>• käsitteiden määrittely sekä systemaattinen sanojen johtaminen</p>\n\n<p>• yhdessä kirjoittaminen</p>\n\n<p>• omien ja toisten tekstien huoltaminen ja oikeakielisyys, esimerkiksi alkukirjain, välimerkit, kappalejako</p>"
+                      "_id": "1938956"
                     }
                   },
                   "tavoitteetJaKeskeisetSisallot": null
@@ -1127,34 +1091,27 @@
                   "koodiUri": "lukionkurssit_lvs5",
                   "koodiArvo": "LVS5",
                   "lokalisoituKoodi": {
-                    "_id": "1939000",
-                    "fi": "LVS5"
+                    "_id": "1939000"
                   },
                   "tyyppi": "PAKOLLINEN",
                   "nimi": {
-                    "_id": "1938959",
-                    "fi": "Kuunnellaan ja puhutaan 1",
-                    "sv": "Lyssna och tala 1"
+                    "_id": "1938959"
                   },
                   "kuvaus": null,
                   "tavoitteet": {
                     "otsikko": {
-                      "_id": "1939005",
-                      "fi": "Tavoitteet"
+                      "_id": "1939005"
                     },
                     "teksti": {
-                      "_id": "1939006",
-                      "fi": "<p>Kurssin tavoitteena on, että opiskelija</p>\n\n<p>• kehittää ilmaisutaitojaan</p>\n\n<p>• kehittää puhutun kielen ymmärtämisen ja tuottamisen taitoaan.</p>"
+                      "_id": "1939006"
                     }
                   },
                   "keskeisetSisallot": {
                     "otsikko": {
-                      "_id": "1939003",
-                      "fi": "Keskeiset sisällöt"
+                      "_id": "1939003"
                     },
                     "teksti": {
-                      "_id": "1939004",
-                      "fi": "<p>• suomen kielen kuuntelemisen ja puhumisen harjoittelu</p>\n\n<p>• ilmaisutaidon harjoituksia (pari- ja ryhmäharjoituksia), roolileikkejä, fiktiivisiä tekstejä, runoja ja riimejä</p>\n\n<p>• puheen pitäminen vapaasta aiheesta</p>\n\n<p>• idiomaattinen reagointi</p>\n\n<p>• huomion kiinnittymistä puhekielen tilanteiseen variaatioon</p>\n\n<p>• läpäisevästi huomiota ääntämiseen, lausepainoon ja puheen rytmiin</p>"
+                      "_id": "1939004"
                     }
                   },
                   "tavoitteetJaKeskeisetSisallot": null
@@ -1167,34 +1124,27 @@
                   "koodiUri": "lukionkurssit_lvs6",
                   "koodiArvo": "LVS6",
                   "lokalisoituKoodi": {
-                    "_id": "1939008",
-                    "fi": "LVS6"
+                    "_id": "1939008"
                   },
                   "tyyppi": "PAKOLLINEN",
                   "nimi": {
-                    "_id": "1939007",
-                    "fi": "Suomalainen kirjallisuus ja kulttuuri",
-                    "sv": "Litteratur och kultur i Finland"
+                    "_id": "1939007"
                   },
                   "kuvaus": null,
                   "tavoitteet": {
                     "otsikko": {
-                      "_id": "1939043",
-                      "fi": "Tavoitteet"
+                      "_id": "1939043"
                     },
                     "teksti": {
-                      "_id": "1939044",
-                      "fi": "<p>Kurssin tavoitteena on, että opiskelija</p>\n\n<p>• tutustuu suomalaiseen nykykirjallisuuteen ja kulttuuriin</p>\n\n<p>• tutustuu kirjallisuuden keskeisiin analyysikäsitteisiin.</p>"
+                      "_id": "1939044"
                     }
                   },
                   "keskeisetSisallot": {
                     "otsikko": {
-                      "_id": "1939041",
-                      "fi": "Keskeiset sisällöt"
+                      "_id": "1939041"
                     },
                     "teksti": {
-                      "_id": "1939042",
-                      "fi": "<p>• Suomen nykykirjallisuuden ja kulttuurin peruskäsitteitä </p>\n\n<p>• lyhyt katsaus muutamaan tärkeään nykykirjailijaan</p>\n\n<p>• kirjallisuuden tekstilajit, esimerkiksi romaani, novelli, runo, näytelmä</p>\n\n<p>• erilaisiin tekstilajeihin tutustuminen lukemalla</p>\n\n<p>• kirjallisuuden analysoinnin käsitteitä sekä erilaisia analyysikeinoja</p>"
+                      "_id": "1939042"
                     }
                   },
                   "tavoitteetJaKeskeisetSisallot": null
@@ -1207,34 +1157,27 @@
                   "koodiUri": "lukionkurssit_lvs7",
                   "koodiArvo": "LVS7",
                   "lokalisoituKoodi": {
-                    "_id": "1939150",
-                    "fi": "LVS7"
+                    "_id": "1939150"
                   },
                   "tyyppi": "PAKOLLINEN",
                   "nimi": {
-                    "_id": "1939049",
-                    "fi": "Maailmankirjallisuus ja kulttuurinen monimuotoisuus",
-                    "sv": "Världslitteratur och kulturell mångfald"
+                    "_id": "1939049"
                   },
                   "kuvaus": null,
                   "tavoitteet": {
                     "otsikko": {
-                      "_id": "1939155",
-                      "fi": "Tavoitteet"
+                      "_id": "1939155"
                     },
                     "teksti": {
-                      "_id": "1939156",
-                      "fi": "<p>Kurssin tavoitteena on, että opiskelija</p>\n\n<p>• tulee tietoiseksi kulttuurisesta monimuotoisuudesta</p>\n\n<p>• vahvistaa kulttuurista identiteettiään.</p>"
+                      "_id": "1939156"
                     }
                   },
                   "keskeisetSisallot": {
                     "otsikko": {
-                      "_id": "1939153",
-                      "fi": "Keskeiset sisällöt"
+                      "_id": "1939153"
                     },
                     "teksti": {
-                      "_id": "1939154",
-                      "fi": "<p>• kulttuurinen monimuotoisuus ja moninaiset identiteetit </p>\n\n<p>• toiseuden kokemus</p>\n\n<p>• kirjallisuuteen liittyvä monimediainen esitys luetun teoksen pohjalta</p>\n\n<p>• omien fiktiivisten tekstien tuottaminen</p>\n\n<p>• kulttuurinen monimuotoisuus: ihmisryhmien monenlaiset ja muuttuvat elämänmuodot, esimerkiksi nuorison ajankohtaiset alakulttuurit: erilaiset nettiyhteisöt ja fanifiktio</p>"
+                      "_id": "1939154"
                     }
                   },
                   "tavoitteetJaKeskeisetSisallot": null
@@ -1247,34 +1190,27 @@
                   "koodiUri": "lukionkurssit_lvs8",
                   "koodiArvo": "LVS8",
                   "lokalisoituKoodi": {
-                    "_id": "1939158",
-                    "fi": "LVS8"
+                    "_id": "1939158"
                   },
                   "tyyppi": "PAKOLLINEN",
                   "nimi": {
-                    "_id": "1939157",
-                    "fi": "Kuunnellaan ja puhutaan 2",
-                    "sv": "Lyssna och tala 2"
+                    "_id": "1939157"
                   },
                   "kuvaus": null,
                   "tavoitteet": {
                     "otsikko": {
-                      "_id": "1939203",
-                      "fi": "Tavoitteet"
+                      "_id": "1939203"
                     },
                     "teksti": {
-                      "_id": "1939204",
-                      "fi": "<p>Kurssin tavoitteena on, että opiskelija</p>\n\n<p>• kehittyy yhteistyö- ja neuvottelutaidoissa</p>\n\n<p>• kehittyy tiedottavan ja vaikuttavan puhumisen taidoissa</p>\n\n<p>• vahvistaa analysoivan kuuntelemisen taitoaan.</p>"
+                      "_id": "1939204"
                     }
                   },
                   "keskeisetSisallot": {
                     "otsikko": {
-                      "_id": "1939201",
-                      "fi": "Keskeiset sisällöt"
+                      "_id": "1939201"
                     },
                     "teksti": {
-                      "_id": "1939202",
-                      "fi": "<p>• vahvistetaan digitaalisia tekstitaitoja</p>\n\n<p>• kiinnitetään huomiota sosiaalisessa mediassa käytettyyn kieleen analysoinnin ja harjoittelun keinoin</p>\n\n<p>• harjoitellaan verkkosivustojen luotettavuuden vertailua</p>\n\n<p>• arvioidaan verkkotekstejä</p>\n\n<p>• tuotetaan erilaisia digitaalisia tekstejä huomioiden kuvat, videot, linkitys ja liikkuva kuva</p>\n\n<p>• oppija aktiivisena tiedontuottajana: oppijan pääsy (tuovat itse valitsemiaan tekstejä oppitunnille), osallisuus ja toimijuus suhteessa teksteihin</p>"
+                      "_id": "1939202"
                     }
                   },
                   "tavoitteetJaKeskeisetSisallot": null
@@ -1287,34 +1223,27 @@
                   "koodiUri": "lukionkurssit_lvs9",
                   "koodiArvo": "LVS9",
                   "lokalisoituKoodi": {
-                    "_id": "1939374",
-                    "fi": "LVS9"
+                    "_id": "1939374"
                   },
                   "tyyppi": "PAKOLLINEN",
                   "nimi": {
-                    "_id": "1939373",
-                    "fi": "Digitaaliset tekstitaidot",
-                    "sv": "Digital textkompetens"
+                    "_id": "1939373"
                   },
                   "kuvaus": null,
                   "tavoitteet": {
                     "otsikko": {
-                      "_id": "1939379",
-                      "fi": "Tavoitteet"
+                      "_id": "1939379"
                     },
                     "teksti": {
-                      "_id": "1939420",
-                      "fi": "<p>Kurssin tavoitteena on, että opiskelija</p>\n\n<p>• tutustuu mediakulttuuriin osana omaa elämäänsä</p>\n\n<p>• tuottaa erilaisia mediatekstejä erilaisin teknologisin välinein</p>\n\n<p>• pohtii sosiaalisen median merkitystä oman elämänsä näkökulmasta.</p>"
+                      "_id": "1939420"
                     }
                   },
                   "keskeisetSisallot": {
                     "otsikko": {
-                      "_id": "1939377",
-                      "fi": "Keskeiset sisällöt"
+                      "_id": "1939377"
                     },
                     "teksti": {
-                      "_id": "1939378",
-                      "fi": "<p>• vahvistetaan digitaalisia tekstitaitoja</p>\n\n<p>• kiinnitetään huomiota sosiaalisessa mediassa käytettyyn kieleen analysoinnin ja harjoittelun keinoin</p>\n\n<p>• harjoitellaan verkkosivustojen luotettavuuden vertailua</p>\n\n<p>• arvioidaan verkkotekstejä</p>\n\n<p>• tuotetaan erilaisia digitaalisia tekstejä huomioiden kuvat, videot, linkitys ja liikkuva kuva</p>\n\n<p>• oppija aktiivisena tiedontuottajana: oppijan pääsy (tuovat itse valitsemiaan tekstejä oppitunnille), osallisuus ja toimijuus suhteessa teksteihin</p>"
+                      "_id": "1939378"
                     }
                   },
                   "tavoitteetJaKeskeisetSisallot": null
@@ -1327,34 +1256,27 @@
                   "koodiUri": "lukionkurssit_lvs10",
                   "koodiArvo": "LVS10",
                   "lokalisoituKoodi": {
-                    "_id": "1939206",
-                    "fi": "LVS10"
+                    "_id": "1939206"
                   },
                   "tyyppi": "PAKOLLINEN",
                   "nimi": {
-                    "_id": "1939205",
-                    "fi": "Mediakulttuuri",
-                    "sv": "Mediakulttuuri"
+                    "_id": "1939205"
                   },
                   "kuvaus": null,
                   "tavoitteet": {
                     "otsikko": {
-                      "_id": "1939370",
-                      "fi": "Tavoitteet"
+                      "_id": "1939370"
                     },
                     "teksti": {
-                      "_id": "1939371",
-                      "fi": "<p>Kurssin tavoitteena on, että opiskelija</p>\n\n<p>• tutustuu mediakulttuuriin yhteiskunnallisesta näkökulmasta</p>\n\n<p>• pohtii sosiaalisen median merkitystä yhteiskunnallisena ilmiönä.</p>"
+                      "_id": "1939371"
                     }
                   },
                   "keskeisetSisallot": {
                     "otsikko": {
-                      "_id": "1939278",
-                      "fi": "Keskeiset sisällöt"
+                      "_id": "1939278"
                     },
                     "teksti": {
-                      "_id": "1939279",
-                      "fi": "<p>• mediat ja niiden ilmaisukeinot</p>\n\n<p>• uutiskriteerit</p>\n\n<p>• aikakauslehdet</p>\n\n<p>• vaikuttamaan pyrkivän viestinnän osatekijöiden analyysi (esim. mainosten kieli)</p>\n\n<p>• kuvat ja kuvanlukeminen</p>\n\n<p>• oppijoiden itsensä valitsemien verkkovideoiden analyysikeinoja</p>"
+                      "_id": "1939279"
                     }
                   },
                   "tavoitteetJaKeskeisetSisallot": null
@@ -1372,9 +1294,7 @@
           "koodiArvo": "MK2",
           "koodiUri": "oppiaineetyleissivistava2_mk2",
           "nimi": {
-            "_id": "1931254",
-            "fi": "Muut kielet (vähintään 3 kurssia)",
-            "sv": "Övriga språk (minst 3 kurser)"
+            "_id": "1931254"
           },
           "koosteinen": true,
           "abstrakti": false,
@@ -1386,8 +1306,7 @@
           "tehtava": {
             "otsikko": null,
             "teksti": {
-              "_id": "1689276",
-              "fi": "<p>Muiden kielten opinnot voivat lukiokoulutukseen valmistavassa koulutuksessa muodostua yhdentai useamman kielen kursseista. Valittavia kursseja ovat toisen kotimaisen kielen, vieraiden kieltenja mahdollisuuksien mukaan opiskelijan oman äidinkielen kurssit, joista koulutuksen järjestäjäntulee tarjota yhteensä vähintään kolme.</p>"
+              "_id": "1689276"
             }
           },
           "oppimaarat": [
@@ -1399,9 +1318,7 @@
               "koodiArvo": "POAK",
               "koodiUri": "oppiaineetyleissivistava2_poak",
               "nimi": {
-                "_id": "1931255",
-                "fi": "Perusopetuksessa alkanut kieli",
-                "sv": "Språk som påbörjats i den grundläggande  utbildningen"
+                "_id": "1931255"
               },
               "koosteinen": false,
               "abstrakti": true,
@@ -1410,22 +1327,18 @@
               "soveltavaKurssiKuvaus": null,
               "tavoitteet": {
                 "otsikko": {
-                  "_id": "1941611",
-                  "fi": "Opetuksen tavoitteet"
+                  "_id": "1941611"
                 },
                 "teksti": {
-                  "_id": "1941612",
-                  "fi": "<p>Opetuksen päätavoitteena on vahvistaa perusopetuksessa tai muualla saatua toisen kotimaisen tai vieraan kielen taitoa.</p>\n\n<p>Lisäksi tavoitteena on, että opiskelija</p>\n\n<p>• osaa viestiä kohdekielelle ja sen kulttuurille ominaisella tavalla</p>\n\n<p>• osaa arvioida kielitaitoaan suhteissa tavoitteisiin</p>\n\n<p>• tuntee omat vahvuutensa ja kehittymistarpeensa viestijänä ja kielen opiskelijana</p>\n\n<p>• osaa kehittää kielitaitoaan tarkoituksenmukaisin strategioin</p>\n\n<p>• ymmärtää opiskeltavan kielen merkityksen oman tulevaisuuden kannalta sekä sen merkityksen Suomelle ja kansainvälisesti. </p>\n\n<p> </p>\n\n<p>Opetuksen tavoitetason määrittelyssä hyödynnetään perusopetuksen opetussuunnitelman perusteissa 2014 määriteltyjä tavoitetasoja.</p>\n\n<p> </p>\n\n<p><strong>Opiskeluympäristö ja työtavat</strong></p>\n\n<p>Opiskeluympäristön ja käytettävien työtapojen tulee tukea aikaisempiin kokemuksiin pohjautuvaa tiedonrakentumista ja auttaa asetettujen tavoitteiden saavuttamista. Opiskeluympäristön tulee antaa tilaisuuksia kokeilla ja löytää itselleen sopivia työskentelymuotoja. Erilaisia apuvälineitä kuten digitaalisia sanakirjoja ja lähdemateriaaleja voidaan käyttää tuntityöskentelyssä ja kokeissa. Autenttiseen materiaaliin, tiedon hakuun ja sen arviointiin sekä kannustavaan palautteeseen kiinnitetään erityistä huomiota.</p>"
+                  "_id": "1941612"
                 }
               },
               "arviointi": {
                 "otsikko": {
-                  "_id": "1941610",
-                  "fi": "Arviointi"
+                  "_id": "1941610"
                 },
                 "teksti": {
-                  "_id": "1941613",
-                  "fi": "<p>Arviointi perustuu jatkuvaan näyttöön sekä monipuolisiin arviointimenetelmiin, esimerkiksi kirjallisiin ja suullisiin kokeisiin, suulliseen ilmaisuun tai muihin näyttötapoihin. Oppimista tukevaa arviointia toteutetaan myös opiskelijan itsearvioinnin ja vertaisarvioinnin sekä arviointi- ja kehityskeskustelujen avulla. Kokeissa tai vastaavissa suositaan lähteiden ja apuvälineiden käyttöä. Kurssit arvioidaan asteikolla suoritettu–hylätty.</p>"
+                  "_id": "1941613"
                 }
               },
               "tehtava": null,
@@ -1439,34 +1352,27 @@
                   "koodiUri": "lukionkurssit_lvka1",
                   "koodiArvo": "LVKA1",
                   "lokalisoituKoodi": {
-                    "_id": "1939422",
-                    "fi": "LVKA1"
+                    "_id": "1939422"
                   },
                   "tyyppi": "PAKOLLINEN",
                   "nimi": {
-                    "_id": "1939421",
-                    "fi": "Kielitaito osana opiskelua ja muita elämänalueita",
-                    "sv": "Språkfärdighet som en del av studierna och andra livsområden"
+                    "_id": "1939421"
                   },
                   "kuvaus": null,
                   "tavoitteet": {
                     "otsikko": {
-                      "_id": "1939491",
-                      "fi": "Tavoitteet"
+                      "_id": "1939491"
                     },
                     "teksti": {
-                      "_id": "1939492",
-                      "fi": "<p>Kurssin tavoitteena on, että opiskelija</p>\n\n<p>• tekee yhdessä opettajan kanssa kurssin alussa arvion omista lähtökohdistaan ja erityisesti omista opiskelutaidoistaan</p>\n\n<p>• ottaa vastuun oman kielitaitonsa kehittämisestä</p>\n\n<p>• pystyy keskustelemaan kurssin aihepiirin liittyvistä teemoista sekä tuottamaan niistä kirjallisen esityksen.</p>"
+                      "_id": "1939492"
                     }
                   },
                   "keskeisetSisallot": {
                     "otsikko": {
-                      "_id": "1939429",
-                      "fi": "Keskeiset sisällöt"
+                      "_id": "1939429"
                     },
                     "teksti": {
-                      "_id": "1939490",
-                      "fi": "<p>• perusrakenteiden vahvistaminen sekä puheen ja kirjoittamisen käytänteiden harjoittelua</p>\n\n<p>• opiskeluun ja muihin itselle tärkeisiin elämänalueisiin liittyvä kirjallinen ja suullinen harjoittelu</p>\n\n<p>• oman esityksen tuottaminen ja muokkaaminen myös vertaispalautetta hyödyntäen</p>"
+                      "_id": "1939490"
                     }
                   },
                   "tavoitteetJaKeskeisetSisallot": null
@@ -1479,34 +1385,27 @@
                   "koodiUri": "lukionkurssit_lvka2",
                   "koodiArvo": "LVKA2",
                   "lokalisoituKoodi": {
-                    "_id": "1939494",
-                    "fi": "LVKA2"
+                    "_id": "1939494"
                   },
                   "tyyppi": "PAKOLLINEN",
                   "nimi": {
-                    "_id": "1939493",
-                    "fi": "Arkipäivän tilanteet",
-                    "sv": "Vardagssituationer"
+                    "_id": "1939493"
                   },
                   "kuvaus": null,
                   "tavoitteet": {
                     "otsikko": {
-                      "_id": "1939543",
-                      "fi": "Tavoitteet"
+                      "_id": "1939543"
                     },
                     "teksti": {
-                      "_id": "1939544",
-                      "fi": "<p>Kurssin tavoitteena on, että opiskelija</p>\n\n<p>• selviytyy erilaisista jokapäiväisistä kielenkäyttötilanteista</p>\n\n<p>• osaa tuottaa suullisesti kertomuksen, kuvauksen, ohjeen ja perustellun mielipiteen</p>\n\n<p>• puhuu ja kirjoittaa tilanteen mukaisesti</p>\n\n<p>• kehittää vuorovaikutustaitoja</p>\n\n<p>• osaa arvioida vertaisiaan.</p>"
+                      "_id": "1939544"
                     }
                   },
                   "keskeisetSisallot": {
                     "otsikko": {
-                      "_id": "1939541",
-                      "fi": "Keskeiset sisällöt"
+                      "_id": "1939541"
                     },
                     "teksti": {
-                      "_id": "1939542",
-                      "fi": "<p>• vuorovaikutus- ja asiointiharjoitukset erilaisissa kasvokkaisissa ja monimediaisissa viestintätilanteissa, esim. ostoksilla, pankissa, postissa, lääkärissä sekä liikenne-, majoitus- ja ateriapalveluita käytettäessä</p>\n\n<p>• erilaisia suullisia harjoituksia yksin ja ryhmässä</p>\n\n<p>• oman tuotoksen muokkaaminen palautetta hyödyntäen</p>"
+                      "_id": "1939542"
                     }
                   },
                   "tavoitteetJaKeskeisetSisallot": null
@@ -1519,34 +1418,27 @@
                   "koodiUri": "lukionkurssit_lvka3",
                   "koodiArvo": "LVKA3",
                   "lokalisoituKoodi": {
-                    "_id": "1939546",
-                    "fi": "LVKA3"
+                    "_id": "1939546"
                   },
                   "tyyppi": "PAKOLLINEN",
                   "nimi": {
-                    "_id": "1939545",
-                    "fi": "Mediat",
-                    "sv": "Medier"
+                    "_id": "1939545"
                   },
                   "kuvaus": null,
                   "tavoitteet": {
                     "otsikko": {
-                      "_id": "1939571",
-                      "fi": "Tavoitteet"
+                      "_id": "1939571"
                     },
                     "teksti": {
-                      "_id": "1939572",
-                      "fi": "<p>Kurssin tavoitteena on, että opiskelija</p>\n\n<p>• hallitsee perustiedot medioista ja osaa käyttää viestintävälineitä monipuolisesti</p>\n\n<p>• osaa etsiä tietoa erilaisista lähteistä</p>\n\n<p>• osaa hyödyntää tieto- ja viestintäteknologiaa opiskelussaan.</p>"
+                      "_id": "1939572"
                     }
                   },
                   "keskeisetSisallot": {
                     "otsikko": {
-                      "_id": "1939549",
-                      "fi": "Keskeiset sisällöt"
+                      "_id": "1939549"
                     },
                     "teksti": {
-                      "_id": "1939570",
-                      "fi": "<p>• suppea tutkielma tai projekti tai portfolio aiheesta, joka liittyy yhteiskuntatietouteen tai kult tuurintuntemukseen tai luonnontieteisiin</p>"
+                      "_id": "1939570"
                     }
                   },
                   "tavoitteetJaKeskeisetSisallot": null
@@ -1561,8 +1453,7 @@
               "koodiArvo": "LVAK",
               "koodiUri": "oppiaineetyleissivistava2_lvak",
               "nimi": {
-                "_id": "1939579",
-                "fi": "Lukiokoulutukseen valmistavassa koulutuksessa alkava kieli"
+                "_id": "1939579"
               },
               "koosteinen": false,
               "abstrakti": null,
@@ -1571,22 +1462,18 @@
               "soveltavaKurssiKuvaus": null,
               "tavoitteet": {
                 "otsikko": {
-                  "_id": "1939640",
-                  "fi": "Opetuksen tavoitteet"
+                  "_id": "1939640"
                 },
                 "teksti": {
-                  "_id": "1940148",
-                  "fi": "<p>Opetuksen päätavoitteena on tutustuttaa opiskelija uuteen lukiokoulutuksessa alkavaan kieleen, sen kielialueisiin ja kulttuureihin.</p>\n\n<p>Lisäksi tavoitteena on, että opiskelija</p>\n\n<p>• saa tuntuman kielen perussanastoon ja -rakenteisiin</p>\n\n<p>• selviytyy yksinkertaisista vuorovaikutustilanteista ja osaa kertoa itsestään ja arkielämästään</p>\n\n<p>• pystyy kirjoittamaan lyhyitä viestejä tutuissa arkielämän tilanteissa.</p>\n\n<p>Tavoitetasot</p>\n\n<p>• lukiokoulutukseen valmistavassa koulutuksessa alkava oppimäärä A1.1</p>\n\n<p> </p>\n\n<p><strong>Opiskeluympäristö ja työtavat</strong></p>\n\n<p>Opiskeluympäristön tulee antaa tilaisuuksia kokeilla ja löytää itselleen sopivia työskentelymuotoja. Erilaisia apuvälineitä kuten digitaalisia sanakirjoja ja lähdemateriaaleja voidaan käyttää tuntityöskentelyssä ja kokeissa. Autenttiseen materiaaliin, tiedon hakuun ja sen arviointiin sekä kannustavaan palautteeseen kiinnitetään erityistä huomiota.</p>"
+                  "_id": "1940148"
                 }
               },
               "arviointi": {
                 "otsikko": {
-                  "_id": "1939578",
-                  "fi": "Arviointi"
+                  "_id": "1939578"
                 },
                 "teksti": {
-                  "_id": "1940149",
-                  "fi": "<p>Arviointi perustuu jatkuvaan näyttöön sekä monipuolisiin arviointimenetelmiin, esimerkiksi kirjallisiin ja suullisiin kokeisiin, suulliseen ilmaisuun tai muihin näyttötapoihin. Oppimista tukevaa arviointia toteutetaan myös opiskelijan itsearvioinnin ja vertaisarvioinnin sekä arviointi- ja kehityskeskustelujen avulla. Kokeissa tai vastaavissa suositaan lähteiden ja apuvälineiden käyttöä. Kurssit arvioidaan asteikolla suoritettu–hylätty.</p>"
+                  "_id": "1940149"
                 }
               },
               "tehtava": null,
@@ -1600,34 +1487,27 @@
                   "koodiUri": "lukionkurssit_lvkb1",
                   "koodiArvo": "LVKB1",
                   "lokalisoituKoodi": {
-                    "_id": "1941300",
-                    "fi": "LVKB1"
+                    "_id": "1941300"
                   },
                   "tyyppi": "PAKOLLINEN",
                   "nimi": {
-                    "_id": "1941259",
-                    "fi": "Kieleen tutustuminen",
-                    "sv": "Introduktion i språket"
+                    "_id": "1941259"
                   },
                   "kuvaus": null,
                   "tavoitteet": {
                     "otsikko": {
-                      "_id": "1941305",
-                      "fi": "Tavoitteet"
+                      "_id": "1941305"
                     },
                     "teksti": {
-                      "_id": "1941306",
-                      "fi": "<p>Kurssin tavoitteena on, että opiskelija</p>\n\n<p>• oppii kielen äänteet, intonaatiota sekä perussanastoa ja -rakenteita</p>\n\n<p>• ymmärtää tuttavallista puhetta ja käyttää tavallisia puheilmauksia yleisissä arkipäivän tilanteissa</p>\n\n<p>• hahmottaa yksinkertaisen kirjoitetun viestin pääajatuksen ja osaa kirjoittaa yksinkertaisia viestejä.</p>"
+                      "_id": "1941306"
                     }
                   },
                   "keskeisetSisallot": {
                     "otsikko": {
-                      "_id": "1941303",
-                      "fi": "Keskeiset sisällöt"
+                      "_id": "1941303"
                     },
                     "teksti": {
-                      "_id": "1941304",
-                      "fi": "<p>• henkilötietojen ja itseä koskevien perustietojen antaminen</p>\n\n<p>• tervehdykset, keskustelun aloittaminen, kuulumisista kertominen, kysyminen ja vastaaminen</p>\n\n<p>• yksinkertaisten viestien lukeminen ja kirjoittaminen</p>"
+                      "_id": "1941304"
                     }
                   },
                   "tavoitteetJaKeskeisetSisallot": null
@@ -1640,34 +1520,27 @@
                   "koodiUri": "lukionkurssit_lvkb2",
                   "koodiArvo": "LVKB2",
                   "lokalisoituKoodi": {
-                    "_id": "1941308",
-                    "fi": "LVKB2"
+                    "_id": "1941308"
                   },
                   "tyyppi": "PAKOLLINEN",
                   "nimi": {
-                    "_id": "1941307",
-                    "fi": "Asioiminen ja harrastukset",
-                    "sv": "Vardagsärenden och fritid"
+                    "_id": "1941307"
                   },
                   "kuvaus": null,
                   "tavoitteet": {
                     "otsikko": {
-                      "_id": "1941343",
-                      "fi": "Tavoitteet"
+                      "_id": "1941343"
                     },
                     "teksti": {
-                      "_id": "1941344",
-                      "fi": "<p>Kurssin tavoitteena on, että opiskelija</p>\n\n<p>• oppii arkielämän keskeistä sanastoa ja ilmauksia</p>\n\n<p>• tutustuu yksinkertaisiin lauserakenteisiin ja teksteihin</p>\n\n<p>• oppii työskentelemään pareittain tai ryhmässä</p>\n\n<p>• oppii käyttämään kieltä erilaisissa sosiaalisissa tilanteissa.</p>"
+                      "_id": "1941344"
                     }
                   },
                   "keskeisetSisallot": {
                     "otsikko": {
-                      "_id": "1941341",
-                      "fi": "Keskeiset sisällöt"
+                      "_id": "1941341"
                     },
                     "teksti": {
-                      "_id": "1941342",
-                      "fi": "<p>• tiedustelujen tekoa, puhelinasiointia</p>\n\n<p>• erilaisten arkipäivän palvelujen käyttöä, kaupassa asiointia, liikennevälineissä käyttäytymistä</p>\n\n<p>• harrastuksiin ja vapaa-ajan viettoon liittyviä vuorovaikutustilanteita</p>\n\n<p>• helppojen tekstien lukua</p>"
+                      "_id": "1941342"
                     }
                   },
                   "tavoitteetJaKeskeisetSisallot": null
@@ -1680,34 +1553,27 @@
                   "koodiUri": "lukionkurssit_lvkb3",
                   "koodiArvo": "LVKB3",
                   "lokalisoituKoodi": {
-                    "_id": "1941346",
-                    "fi": "LVKB3"
+                    "_id": "1941346"
                   },
                   "tyyppi": "PAKOLLINEN",
                   "nimi": {
-                    "_id": "1941345",
-                    "fi": "Elinympäristö ja sosiaaliset verkostot",
-                    "sv": "Livsmiljö och sociala nätverk"
+                    "_id": "1941345"
                   },
                   "kuvaus": null,
                   "tavoitteet": {
                     "otsikko": {
-                      "_id": "1941371",
-                      "fi": "Tavoitteet"
+                      "_id": "1941371"
                     },
                     "teksti": {
-                      "_id": "1941372",
-                      "fi": "<p>Kurssin tavoitteena on, että opiskelija</p>\n\n<p>• oppii kirjallisesti ja suullisesti kertomaan elinympäristöstään, lähipiiristään ja ystävistään</p>\n\n<p>• oppii havainnoimaan kaksikielistä ympäristöä Suomessa</p>\n\n<p>• oppii tekemään yksinkertaista tiedonhakua kohdekielellä.</p>"
+                      "_id": "1941372"
                     }
                   },
                   "keskeisetSisallot": {
                     "otsikko": {
-                      "_id": "1941349",
-                      "fi": "Keskeiset sisällöt"
+                      "_id": "1941349"
                     },
                     "teksti": {
-                      "_id": "1941370",
-                      "fi": "<p>• tekstin ymmärtämisen ja tuottamisen harjoittelu</p>\n\n<p>• kaksikielisiin ilmiöihin tutustuminen erilaisissa ympäristöissä</p>\n\n<p>• opiskelijan elinympäristöstä kertova kirjallinen tai suullinen esitys</p>"
+                      "_id": "1941370"
                     }
                   },
                   "tavoitteetJaKeskeisetSisallot": null
@@ -1722,8 +1588,7 @@
               "koodiArvo": "AIAI6",
               "koodiUri": "oppiaineetyleissivistava2_aiai6",
               "nimi": {
-                "_id": "1941374",
-                "fi": "Opiskelijan oma äidinkieli"
+                "_id": "1941374"
               },
               "koosteinen": false,
               "abstrakti": null,
@@ -1732,22 +1597,18 @@
               "soveltavaKurssiKuvaus": null,
               "tavoitteet": {
                 "otsikko": {
-                  "_id": "1941375",
-                  "fi": "Opetuksen tavoitteet"
+                  "_id": "1941375"
                 },
                 "teksti": {
-                  "_id": "1941376",
-                  "fi": "<p>Opetuksen päätavoitteena on, että opiskelija ylläpitää ja kehittää oman äidinkielen taitoaan ja että opiskelija saa yleiskuvan kieliyhteisönsä kulttuuripiirteistä. </p>\n\n<p>Opiskelijan oman äidinkielen taito kartoitetaan ja tulosten perusteella laaditaan kullekin opiskelijalle henkilökohtainen opiskelusuunnitelma. Opiskelijalle tulee kurssien aikana tutuksi jokin oman maan kulttuuriteos.</p>\n\n<p><strong>Opiskeluympäristö ja työtavat</strong></p>\n\n<p>Opetus perustuu toiminnalliseen kielitaitokäsitykseen, jonka mukaan opiskelija käyttää äidinkieltään monipuolisesti omiin viestintätarpeisiinsa. Opiskelun aikana käytetään autenttista opiskelumateriaalia ja luonnollisia kielenkäyttötilanteita.</p>"
+                  "_id": "1941376"
                 }
               },
               "arviointi": {
                 "otsikko": {
-                  "_id": "1941373",
-                  "fi": "Arviointi"
+                  "_id": "1941373"
                 },
                 "teksti": {
-                  "_id": "1941377",
-                  "fi": "<p>Arviointi perustuu jatkuvaan näyttöön sekä monipuolisiin arviointimenetelmiin, esimerkiksi kirjallisiin ja suullisiin kokeisiin, suulliseen ilmaisuun tai muihin näyttötapoihin. Oppimista tukevaa arviointia toteutetaan myös opiskelijan itsearvioinnin ja vertaisarvioinnin sekä arviointi- ja kehityskeskustelujen avulla. Kurssit arvioidaan asteikolla suoritettu–hylätty.</p>"
+                  "_id": "1941377"
                 }
               },
               "tehtava": null,
@@ -1761,34 +1622,27 @@
                   "koodiUri": "lukionkurssit_lvmai1",
                   "koodiArvo": "LVMAI1",
                   "lokalisoituKoodi": {
-                    "_id": "1941379",
-                    "fi": "LVMAI1"
+                    "_id": "1941379"
                   },
                   "tyyppi": "PAKOLLINEN",
                   "nimi": {
-                    "_id": "1941378",
-                    "fi": "Kieli ja identiteetti",
-                    "sv": "Språk och identitet"
+                    "_id": "1941378"
                   },
                   "kuvaus": null,
                   "tavoitteet": {
                     "otsikko": {
-                      "_id": "1941464",
-                      "fi": "Tavoitteet"
+                      "_id": "1941464"
                     },
                     "teksti": {
-                      "_id": "1941465",
-                      "fi": "<p>Kurssin tavoitteena on, että opiskelija</p>\n\n<p>• oppii tuntemaan oman kielialueensa kehityksen vaiheita</p>\n\n<p>• arvostaa omaa kielellistä kulttuuriaan ja ymmärtää sen merkityksen itselleen ja tulevaisuudelleen</p>\n\n<p>• tuntee kielialueensa keskeisiä teoksia ja teemoja</p>\n\n<p>• ymmärtää kaksi- ja monikielisyyden merkityksen identiteetilleen ja omalle kehitykselleen.</p>"
+                      "_id": "1941465"
                     }
                   },
                   "keskeisetSisallot": {
                     "otsikko": {
-                      "_id": "1941462",
-                      "fi": "Keskeiset sisällöt"
+                      "_id": "1941462"
                     },
                     "teksti": {
-                      "_id": "1941463",
-                      "fi": "<p>• luetun ja kuullun ymmärtämisen harjoituksia autenttista materiaalia käyttäen (esimerkiksi elokuva, sanomalehtiartikkeli, kaunokirjallinen teos, uutiset)</p>\n\n<p>• johonkin oman kulttuuripiirin teokseen perehtyminen ja siitä kertominen suullisesti tai kirjallisesti</p>"
+                      "_id": "1941463"
                     }
                   },
                   "tavoitteetJaKeskeisetSisallot": null
@@ -1801,34 +1655,27 @@
                   "koodiUri": "lukionkurssit_lvmai2",
                   "koodiArvo": "LVMAI2",
                   "lokalisoituKoodi": {
-                    "_id": "1941467",
-                    "fi": "LVMAI2"
+                    "_id": "1941467"
                   },
                   "tyyppi": "PAKOLLINEN",
                   "nimi": {
-                    "_id": "1941466",
-                    "fi": "Kirjoittaminen ja nykykulttuuri",
-                    "sv": "Skrivande och modern kultur"
+                    "_id": "1941466"
                   },
                   "kuvaus": null,
                   "tavoitteet": {
                     "otsikko": {
-                      "_id": "1941492",
-                      "fi": "Tavoitteet"
+                      "_id": "1941492"
                     },
                     "teksti": {
-                      "_id": "1941493",
-                      "fi": "<p>Kurssin tavoitteena on, että opiskelija</p>\n\n<p>• tutustuu monipuolisesti kieliyhteisönsä nykykulttuuriin ja samalla kehittää oman äidinkielen kirjoittamisen taitojaan</p>\n\n<p>• pystyy ilmaisemaan itseään kirjallisesti ja suullisesti</p>\n\n<p>• tunnistaa tekstilajeja ja perehtyy oppiaineiden keskeisiin käsitteisiin omalla äidinkielellään.</p>"
+                      "_id": "1941493"
                     }
                   },
                   "keskeisetSisallot": {
                     "otsikko": {
-                      "_id": "1941490",
-                      "fi": "Keskeiset sisällöt"
+                      "_id": "1941490"
                     },
                     "teksti": {
-                      "_id": "1941491",
-                      "fi": "<p>• kieliyhteisön kulttuurisiin ilmiöihin tutustuminen autenttisen materiaalin avulla</p>\n\n<p>• kirjallisen referaatin tai analyysin laatiminen opiskelijan valitsemasta aiheesta</p>"
+                      "_id": "1941491"
                     }
                   },
                   "tavoitteetJaKeskeisetSisallot": null
@@ -1841,34 +1688,27 @@
                   "koodiUri": "lukionkurssit_lvmai3",
                   "koodiArvo": "LVMAI3",
                   "lokalisoituKoodi": {
-                    "_id": "1941495",
-                    "fi": "LVMAI3"
+                    "_id": "1941495"
                   },
                   "tyyppi": "PAKOLLINEN",
                   "nimi": {
-                    "_id": "1941494",
-                    "fi": "Puheviestinnän taitojen syventäminen",
-                    "sv": "Fördjupade färdigheter i muntlig kommunikation"
+                    "_id": "1941494"
                   },
                   "kuvaus": null,
                   "tavoitteet": {
                     "otsikko": {
-                      "_id": "1941530",
-                      "fi": "Tavoitteet"
+                      "_id": "1941530"
                     },
                     "teksti": {
-                      "_id": "1941531",
-                      "fi": "<p>Kurssin tavoitteena on, että opiskelija</p>\n\n<p>• kehittää ilmaisuvarmuuttaan esiintymistilanteissa ja ryhmätyöskentelyssä</p>\n\n<p>• pystyy arvioimaan puheviestinnän merkitystä ihmissuhteissa ja opiskelussa</p>\n\n<p>• opiskelijan ääntäminen ja intonaatio ovat luontevia.</p>"
+                      "_id": "1941531"
                     }
                   },
                   "keskeisetSisallot": {
                     "otsikko": {
-                      "_id": "1941498",
-                      "fi": "Keskeiset sisällöt"
+                      "_id": "1941498"
                     },
                     "teksti": {
-                      "_id": "1941499",
-                      "fi": "<p>• vuorovaikutustilanteiden ominaispiirteitä</p>\n\n<p>• erilaisia vuorovaikutus- ja vertaisarviointitilanteita (haastattelu, väittely, kommentointi)</p>\n\n<p>• suullisen esitelmän pitäminen, vertaispalautteen antaminen ja vastaanottaminen</p>"
+                      "_id": "1941499"
                     }
                   },
                   "tavoitteetJaKeskeisetSisallot": null
@@ -1886,8 +1726,7 @@
           "koodiArvo": "MLO",
           "koodiUri": "oppiaineetyleissivistava2_mlo",
           "nimi": {
-            "_id": "1943370",
-            "fi": "Matemaattiset ja luonnontieteelliset opinnot (vähintään 2 kurssia)"
+            "_id": "1943370"
           },
           "koosteinen": false,
           "abstrakti": null,
@@ -1896,22 +1735,18 @@
           "soveltavaKurssiKuvaus": null,
           "tavoitteet": {
             "otsikko": {
-              "_id": "1941535",
-              "fi": "Opetuksen tavoitteet"
+              "_id": "1941535"
             },
             "teksti": {
-              "_id": "1941536",
-              "fi": "<p>Matemaattisten ja luonnontieteellisten aineiden opinnoissa syvennetään perusopetuksen oppimäärään sisältyviä tietoja painottaen kyseisen tiedonalan käsitteiden ja sanaston hallintaa. Tiedollisesti varmistetaan perusopetuksen oppimäärän ydinasioiden osaaminen sekä valmistaudutaan lukiossa vaadittavaan opiskelutekniikkaan matematiikassa ja luonnontieteissä. Opintojen aikana arvioidaan minkä laajuinen oppimäärä matematiikassa, fysiikassa ja kemiassa on tarkoituksenmukainen opiskelijalle. </p>\n\n<p>Maantieteen ja biologian kurssi toteutetaan yhteistyössä suomi toisena kielenä -kurssien 3 ja 4 kanssa. Opintoja tulee eriyttää opiskelijoiden osaamien taitojen mukaan.</p>\n\n<p><strong>Opiskeluympäristö ja työtavat</strong></p>\n\n<p>Kielitietoiset työtavat matematiikassa liittyvät ohjeiden ja opetuspuheen avaamiseen ja sanallisten tehtävien purkamiseen. Kemiassa ja fysiikassa ne tarkoittavat käsitemäärittelyjen, selostusten ja muiden aineille tyypillisten tekstilajien (esim. oppikirjatekstien) harjoittelemista. Maantieteessä ja biologiassa kielitietoisia työtapoja ovat käsitemäärittelyharjoitukset karttojen, diagrammien ja taulukoiden tulkintaharjoitukset ja omien tekstien tuottaminen ohjatusti. </p>"
+              "_id": "1941536"
             }
           },
           "arviointi": {
             "otsikko": {
-              "_id": "1941532",
-              "fi": "Arviointi"
+              "_id": "1941532"
             },
             "teksti": {
-              "_id": "1941537",
-              "fi": "<p>Arvioinnissa otetaan huomioon opiskelijan lähtötaso ja valmiudet. Arvioinnissa käytetään monipuolisia arviointimenetelmiä. Opiskelijat oppivat tuntemaan lukiolle ominaiset arviointimenetelmät kuten kurssikokeet. Kurssit arvioidaan asteikolla suoritettu–hylätty.</p>"
+              "_id": "1941537"
             }
           },
           "tehtava": null,
@@ -1925,34 +1760,27 @@
               "koodiUri": "lukionkurssit_lvluma1",
               "koodiArvo": "LVLUMA1",
               "lokalisoituKoodi": {
-                "_id": "1941615",
-                "fi": "LVLUMA1"
+                "_id": "1941615"
               },
               "tyyppi": "PAKOLLINEN",
               "nimi": {
-                "_id": "1941614",
-                "fi": "Matematiikkaa, fysiikkaa ja kemiaa",
-                "sv": "Matematik, fysik och kemi"
+                "_id": "1941614"
               },
               "kuvaus": null,
               "tavoitteet": {
                 "otsikko": {
-                  "_id": "1941670",
-                  "fi": "Tavoitteet"
+                  "_id": "1941670"
                 },
                 "teksti": {
-                  "_id": "1941671",
-                  "fi": "<p>Kurssin tavoitteena on, että opiskelija</p>\n\n<p>• vahvistaa perusopetuksessa hankittuja matemaattisia taitojaan ja kertaa oppiaineiden keskeisiä käsitteitä</p>\n\n<p>• osaa valita osaamistasoaan vastaavat oppimäärät lukiossa.</p>"
+                  "_id": "1941671"
                 }
               },
               "keskeisetSisallot": {
                 "otsikko": {
-                  "_id": "1941618",
-                  "fi": "Keskeiset sisällöt"
+                  "_id": "1941618"
                 },
                 "teksti": {
-                  "_id": "1941619",
-                  "fi": "<p>• luvut ja laskutoimitukset, algebra, funktiot, geometria, todennäköisyys ja tilastot</p>\n\n<p>• liike ja voima, värähdys- ja aaltoliike, lämpö, sähkö, luonnon rakenteet</p>\n\n<p>• luonnon tutkimisen taitoja</p>"
+                  "_id": "1941619"
                 }
               },
               "tavoitteetJaKeskeisetSisallot": null
@@ -1965,34 +1793,27 @@
               "koodiUri": "lukionkurssit_lvluma2",
               "koodiArvo": "LVLUMA2",
               "lokalisoituKoodi": {
-                "_id": "1941673",
-                "fi": "LVLUMA2"
+                "_id": "1941673"
               },
               "tyyppi": "PAKOLLINEN",
               "nimi": {
-                "_id": "1941672",
-                "fi": "Biologiaa ja maantiedettä",
-                "sv": "Biologi och geografi"
+                "_id": "1941672"
               },
               "kuvaus": null,
               "tavoitteet": {
                 "otsikko": {
-                  "_id": "1941678",
-                  "fi": "Tavoitteet"
+                  "_id": "1941678"
                 },
                 "teksti": {
-                  "_id": "1941679",
-                  "fi": "<p>Kurssin tavoitteena on, että opiskelija</p>\n\n<p>• perehtyy oppiaineiden keskeisiin ilmiöihin ja niitä kuvaaviin käsitteisiin </p>\n\n<p>• tutustuu luonnon ja ympäristön erityispiirteisiin.</p>"
+                  "_id": "1941679"
                 }
               },
               "keskeisetSisallot": {
                 "otsikko": {
-                  "_id": "1941676",
-                  "fi": "Keskeiset sisällöt"
+                  "_id": "1941676"
                 },
                 "teksti": {
-                  "_id": "1941677",
-                  "fi": "<p>• biologian tutkimustaidot, luonto ja ekosysteemi, elämä ja evoluutio, ihminen, yhteinen ympäristö</p>\n\n<p>• maantieteelliset taidot, Suomen, Euroopan ja maailman jäsentäminen, yhteinen ympäristö</p>\n\n<p>• luonnon tutkimisen taitoja</p>"
+                  "_id": "1941677"
                 }
               },
               "tavoitteetJaKeskeisetSisallot": null
@@ -2007,8 +1828,7 @@
           "koodiArvo": "YHK",
           "koodiUri": "oppiaineetyleissivistava2_yhk",
           "nimi": {
-            "_id": "1943371",
-            "fi": "Yhteiskuntatietous ja kulttuurintuntemus (vähintään 2 kurssia)"
+            "_id": "1943371"
           },
           "koosteinen": false,
           "abstrakti": null,
@@ -2017,22 +1837,18 @@
           "soveltavaKurssiKuvaus": null,
           "tavoitteet": {
             "otsikko": {
-              "_id": "1941733",
-              "fi": "Opetuksen tavoitteet"
+              "_id": "1941733"
             },
             "teksti": {
-              "_id": "1941734",
-              "fi": "<p>Yhteiskuntatietouden ja kulttuurintuntemuksen kurssit syventävät opiskelijan tietoja suomalaisesta yhteiskunnasta ja antavat opiskelijalle työkaluja erilaisten yhteiskunnallisten ilmiöiden itsenäiseen arvioimiseen ja tutkimiseen. Opinnot liittyvät Suomen historiaan sekä sen eurooppalaisiin ja kansainvälisiin yhteyksiin. Kulttuurintuntemuksessa kiinnitetään huomiota kulttuurien monimuotoisuuteen ja monikerroksisuuteen. Kurssit syventävät perusopetuksen tietoja ja johdattavat opiskelijoita lukion yhteiskuntaopin ja historian kurssien tavoitteisiin ja sisältöihin. Opetuksessa harjaannutetaan yhteiskuntaopille ja historialle ominaisia opiskelu- ja tekstitaitoja.</p>\n\n<p><strong>Opiskeluympäristö ja työtavat</strong></p>\n\n<p>Kielitietoiset työtavat vahvistavat opiskelijoiden monilukutaitoa. Tekstilähtöinen lukemisen ja kirjoittamisen samanaikainen opiskelu, koevastausten ja itsearvioinnin harjoittelu, käsitemäärittely, omien sanastojen tekeminen, keskusteluharjoitukset ja erilaisten lähteiden pohjalta tehdyt päättelyharjoitukset ovat historiaan soveltuvia työtapoja. Taideaineiden työtavat ja opintokäynnit soveltuvat kulttuurintuntemuksen opintoihin. </p>"
+              "_id": "1941734"
             }
           },
           "arviointi": {
             "otsikko": {
-              "_id": "1941730",
-              "fi": "Arviointi"
+              "_id": "1941730"
             },
             "teksti": {
-              "_id": "1941735",
-              "fi": "<p>Arvioinnissa käytetään joustavia ja monipuolisia menetelmiä. Oppimispäiväkirjat, prosessitehtävät eri aiheista, esitelmät, referaatit, esseet ja pienoistutkielmat ovat yhteiskunta- ja kulttuurituntemukseen soveltuvia menetelmiä. Käsitteen määrittelytehtävät voivat olla osa oppimista tukevaa arviointia. Lukiolle tyypillisiä kurssikokeita käytetään oppimistehtävinä. Kurssit arvioidaan asteikolla suoritettu–hylätty.</p>"
+              "_id": "1941735"
             }
           },
           "tehtava": null,
@@ -2046,34 +1862,27 @@
               "koodiUri": "lukionkurssit_lvhy1",
               "koodiArvo": "LVHY1",
               "lokalisoituKoodi": {
-                "_id": "1941737",
-                "fi": "LVHY1"
+                "_id": "1941737"
               },
               "tyyppi": "PAKOLLINEN",
               "nimi": {
-                "_id": "1941736",
-                "fi": "Historian perusteita",
-                "sv": "Grunderna i historia"
+                "_id": "1941736"
               },
               "kuvaus": null,
               "tavoitteet": {
                 "otsikko": {
-                  "_id": "1941802",
-                  "fi": "Tavoitteet"
+                  "_id": "1941802"
                 },
                 "teksti": {
-                  "_id": "1941803",
-                  "fi": "<p>Kurssin tavoitteena on, että opiskelija</p>\n\n<p>• tuntee kulttuurin peruskäsitteitä</p>\n\n<p>• tuntee Euroopan ja maailman kulttuurien tärkeimpiä käännekohtia ja osaa suhteuttaa nykyajan ilmiöitä historialliseen kehitykseen</p>\n\n<p>• tuntee erilaisia syitä, jotka ovat johtaneet muuttoliikkeisiin – taloudelliset ja poliittiset syyt,konfliktit, ympäristölliset syyt</p>\n\n<p>• tuntee historialle ja kulttuurihistorialle ominaisia tekstilajeja.</p>"
+                  "_id": "1941803"
                 }
               },
               "keskeisetSisallot": {
                 "otsikko": {
-                  "_id": "1941800",
-                  "fi": "Keskeiset sisällöt"
+                  "_id": "1941800"
                 },
                 "teksti": {
-                  "_id": "1941801",
-                  "fi": "<p>• kulttuurihistorian kausia ja käännekohtia pääpiirteittäin keräily- ja pyyntikulttuurista jälkiteolliseen aikaan ja yksilöllistymiseen</p>\n\n<p>• muuttoliikkeet osana ihmiskunnan historiaa</p>\n\n<p>• historian tekstien lukeminen ja kirjoittaminen: käsitteiden avaaminen ja omien sanastojen tekeminen, tekstin rakennepiirteet, kuvien, karttojen ja tilastojen ymmärtäminen ja tulkitseminen eri sisältöjen yhteydessä</p>"
+                  "_id": "1941801"
                 }
               },
               "tavoitteetJaKeskeisetSisallot": null
@@ -2086,34 +1895,27 @@
               "koodiUri": "lukionkurssit_lvhy2",
               "koodiArvo": "LVHY2",
               "lokalisoituKoodi": {
-                "_id": "1941805",
-                "fi": "LVHY2"
+                "_id": "1941805"
               },
               "tyyppi": "PAKOLLINEN",
               "nimi": {
-                "_id": "1941804",
-                "fi": "Suomen yhteiskunta ja kulttuurit",
-                "sv": "Samhället och kulturerna i Finland"
+                "_id": "1941804"
               },
               "kuvaus": null,
               "tavoitteet": {
                 "otsikko": {
-                  "_id": "1941830",
-                  "fi": "Tavoitteet"
+                  "_id": "1941830"
                 },
                 "teksti": {
-                  "_id": "1941831",
-                  "fi": "<p>Kurssin tavoitteena on, että opiskelija</p>\n\n<p>• ymmärtää kulttuurien monimuotoisuutta sekä kulttuurienvälistä vuorovaikutusta ja saa sen myötä interkulttuurista kompetenssia</p>\n\n<p>• tuntee suomalaista yhteiskunta- ja talousjärjestelmää koskevia peruskäsitteitä, joiden avulla hän voi käsitellä ja arvioida yhteiskunnallista tietoa ja toimia aktiivisena kansalaisena</p>\n\n<p>• tuntee Suomen kieli- ja kulttuuriryhmiä ja niiden historiaa</p>\n\n<p>• oppii tuntemaan kansainvälisten suhteiden ja kansainvälisten järjestöjen toiminnan perusteet</p>\n\n<p>• osaa lukea ja tulkita yhteiskuntaopille ominaisia tiedon esittämistapoja ja tuottaa itse yhteiskuntaopille ominaisia tekstejä.</p>"
+                  "_id": "1941831"
                 }
               },
               "keskeisetSisallot": {
                 "otsikko": {
-                  "_id": "1941808",
-                  "fi": "Keskeiset sisällöt"
+                  "_id": "1941808"
                 },
                 "teksti": {
-                  "_id": "1941809",
-                  "fi": "<p>• valta ja vaikuttaminen: valta ja erilaiset vallankäytön muodot, suomalainen demokratia ja poliittinen järjestelmä ja aktiivinen kansalaisuus</p>\n\n<p>• kansalaisen taloustaito</p>\n\n<p>• oikeusvaltio: perusoikeudet, vallan kolmijako (-oppi) ja kansalaisuus</p>\n\n<p>• Suomen kulttuurihistoria ja kansallisvaltion rakentaminen 1800-luvulla</p>\n\n<p>• suomalaisia perinteitä ja tapakulttuuria sekä niiden muotoutuminen vuorovaikutuksessa muiden kulttuurien kanssa</p>\n\n<p>• Suomi osana Pohjoismaita, Eurooppaa ja maailmaa</p>\n\n<p>• moninainen Suomi: vähemmistöt Suomessa</p>\n\n<p>• yhteiskuntaan liittyvien käsitteiden avaaminen ja käsitteiden määrittelyharjoitukset kaikkiin sisältöihin liittyen</p>"
+                  "_id": "1941809"
                 }
               },
               "tavoitteetJaKeskeisetSisallot": null
@@ -2128,42 +1930,35 @@
           "koodiArvo": "OP",
           "koodiUri": "oppiaineetyleissivistava2_op",
           "nimi": {
-            "_id": "1943372",
-            "fi": "Opinto-ohjaus (vähintään 2 kurssia)"
+            "_id": "1943372"
           },
           "koosteinen": false,
           "abstrakti": null,
           "pakollinenKurssiKuvaus": {
-            "_id": "1943373",
-            "fi": "<p> </p>\n\n<p>Henkilökohtaisessa ohjauksessa opiskelijan kanssa keskustellaan opiskelijan opinnoista, koulutusvalinnoista sekä ammatti- ja uratoiveista. Henkilökohtaisessa ohjauksessa opintojen tavoitteet asetetaan yhdessä opiskelijan kanssa aikaisempien opintojen ja muutoin hankitun osaamisen pohjalta.</p>"
+            "_id": "1943373"
           },
           "syventavaKurssiKuvaus": null,
           "soveltavaKurssiKuvaus": null,
           "tavoitteet": {
             "otsikko": {
-              "_id": "1941835",
-              "fi": "Opetuksen tavoitteet"
+              "_id": "1941835"
             },
             "teksti": {
-              "_id": "1941838",
-              "fi": "<p>Opinto-ohjauksen tavoitteena on, että opiskelija </p>\n\n<p>• saa tietoa lukiokoulutukseen valmistavasta koulutuksesta ja siihen sisältyvistä valintamahdollisuuksista</p>\n\n<p>• oppii tuntemaan suomalaisen lukion erityispiirteet ja opiskelukulttuurin</p>\n\n<p>• muodostaa realistisen käsityksen lukioon pääsymahdollisuuksista, lukio-opiskelusta ja siihen sisältyvistä valintamahdollisuuksista</p>\n\n<p>• kehittää lukiokoulutuksessa tarvittavia opiskelutaitoja</p>\n\n<p>• oppii arvioimaan omia opintosuorituksiaan.</p>\n\n<p> </p>\n\n<p><strong>Opiskeluympäristö ja työtavat</strong></p>\n\n<p>Ohjauksessa otetaan huomioon opiskelijoiden aikaisemmin hankittu osaaminen ja henkilökohtaiset kiinnostuksen kohteet kytkemällä opittavat tiedot ja taidot opiskelijoille merkityksellisiin kokemuksiin ja toimintamuotoihin. Opiskelijoita ohjataan yksilöllisten tarpeiden mukaan.</p>\n\n<p>Opiskelijaa ohjataan ottamaan vastuuta omasta oppimisestaan ja oppimistavoitteiden suuntaisesta toiminnasta. Opiskelijoita aktivoidaan tekemään yhteistyötä ja soveltamaan yhteistoiminnallisia työtapoja. Ohjaustilanteissa kannustetaan opiskelijoita pohtimaan yhdessä opintoihin liittyviä asioita sekä tuomaan omia näkemyksiä ja kokemuksia yhteiseen keskusteluun. Tällä vahvistetaan opiskelijoiden keskinäistä yhteisymmärrystä. Vertaistuki ja ryhmän tuki ovat tärkeitä oppimisessa. </p>\n\n<p>Opiskeluympäristössä on opiskelutilojen ja -välineiden oltava sellaisia, että ne mahdollistavat monipuolisten opiskelumenetelmien ja työtapojen käytön. Opiskelijoita ohjataan hyödyntämään tehokkaasti uutta teknologiaa opintojen suunnittelussa, tiedonhaussa ja koulutuksen hakupalveluissa. Teknologisesti tuettujen opiskeluympäristöjen avulla voidaan toiminta laajentaa oppilaitoksen fyysisten rajojen ulkopuolelle. </p>"
+              "_id": "1941838"
             }
           },
           "arviointi": {
             "otsikko": {
-              "_id": "1941832",
-              "fi": "Arviointi"
+              "_id": "1941832"
             },
             "teksti": {
-              "_id": "1941839",
-              "fi": "<p>Opiskelijoiden itse- ja vertaisarviointeja hyödynnetään tehtäessä kokonaisarvioita opiskelijan opinnoissa suoriutumisesta ja motivoitumisesta lukiokoulutuksessa opiskeluun. Kurssit arvioidaan asteikolla suoritettu–hylätty.</p>"
+              "_id": "1941839"
             }
           },
           "tehtava": {
             "otsikko": null,
             "teksti": {
-              "_id": "1941837",
-              "fi": "<p>Ohjaustoiminnalla tuetaan opiskelijan opiskelua lukiokoulutukseen valmistavan koulutuksen kaikissa vaiheissa. Opinto-ohjaus auttaa opiskelijaa suunnittelemaan opintojaan ja tekemään omien tavoitteidensa mukaisia lukiokoulutusta koskevia valintoja ja ratkaisuja.</p>"
+              "_id": "1941837"
             }
           },
           "oppimaarat": [],
@@ -2176,34 +1971,27 @@
               "koodiUri": "lukionkurssit_lvop1",
               "koodiArvo": "LVOP1",
               "lokalisoituKoodi": {
-                "_id": "1941901",
-                "fi": "LVOP1"
+                "_id": "1941901"
               },
               "tyyppi": "PAKOLLINEN",
               "nimi": {
-                "_id": "1941900",
-                "fi": "Opinto-ohjaus 1",
-                "sv": "Studiehandledning 1"
+                "_id": "1941900"
               },
               "kuvaus": null,
               "tavoitteet": {
                 "otsikko": {
-                  "_id": "1941906",
-                  "fi": "Tavoitteet"
+                  "_id": "1941906"
                 },
                 "teksti": {
-                  "_id": "1941907",
-                  "fi": "<p>Kurssin tavoitteena on, että opiskelija</p>\n\n<p>• perehtyy suomalaiseen koulutusjärjestelmään ja erityisesti lukiokoulutukseen</p>\n\n<p>• oppii laatimaan henkilökohtaisen opiskelusuunnitelman sekä seuraamaan ja arvioimaan sen toteutumista</p>\n\n<p>• oppii käyttämään monipuolisesti tietolähteitä ja hakupalveluita opintojensa suunnittelussa ja jatkokoulutuspaikkojen haussa.</p>"
+                  "_id": "1941907"
                 }
               },
               "keskeisetSisallot": {
                 "otsikko": {
-                  "_id": "1941904",
-                  "fi": "Keskeiset sisällöt"
+                  "_id": "1941904"
                 },
                 "teksti": {
-                  "_id": "1941905",
-                  "fi": "<p>• suomalainen koulutusjärjestelmä</p>\n\n<p>• lukiokoulutukseen hakeutuminen</p>\n\n<p>• opiskelu kurssimuotoisessa lukiokoulutuksessa</p>\n\n<p>• opiskelijan aikaisemmat opinnot ja suomen kielen lähtötaso</p>\n\n<p>• lukiokoulutukseen valmistavan koulutuksen opintokokonaisuudet</p>\n\n<p>• perusopetuksen arvosanojen korottamistarpeet ja suorittamismahdollisuudet</p>\n\n<p>• lukiokoulutuksen kurssien suorittamismahdollisuudet</p>\n\n<p>• henkilökohtainen opiskelusuunnitelma</p>\n\n<p>• omien lukio-opintojen alustava suunnittelu</p>"
+                  "_id": "1941905"
                 }
               },
               "tavoitteetJaKeskeisetSisallot": null
@@ -2216,37 +2004,29 @@
               "koodiUri": "lukionkurssit_lvop2",
               "koodiArvo": "LVOP2",
               "lokalisoituKoodi": {
-                "_id": "1941962",
-                "fi": "LVOP2"
+                "_id": "1941962"
               },
               "tyyppi": "PAKOLLINEN",
               "nimi": {
-                "_id": "1941961",
-                "fi": "Opinto-ohjaus 2",
-                "sv": "Studiehandledning 2"
+                "_id": "1941961"
               },
               "kuvaus": {
-                "_id": "1941963",
-                "fi": "<p>Kurssilla opiskelija oppii arvioimaan omia oppimistapojaan. Opiskelijaa ohjataan tiedostamaan ja kokeilemaan myös muita oppimistapoja, joita hän voi hyödyntää opiskelussa. Opiskelija saa ohjauksen avulla välineitä tiedon hankkimiseen ja tuottamiseen sekä tiedon luotettavuuden arviointiin. Opiskelijaa ohjataan hyödyntämään opinnoissaan tieto- ja viestintäteknologiaa sekä kirjastojen tarjoamia palveluita. Opiskelija tottuu työskentelemään itsenäisesti mutta myös yhteistyössä muiden opiskelijoiden kanssa. Opiskelija ymmärtää, että kumuloituvien tietojen ja taitojen oppiminen vaatii pitkäjänteisyyttä.</p>\n\n<p>Henkilökohtaisessa ohjauksessa arvioidaan opiskelijan opiskelutaitojen kehittämistarpeita. Opiskelijan kanssa käydään läpi opiskeluun ja oppimiseen liittyviä mahdollisuuksia ja haasteita. Opiskelijaa kannustetaan laajentamaan ja syventämään opiskelumenetelmiään.</p>"
+                "_id": "1941963"
               },
               "tavoitteet": {
                 "otsikko": {
-                  "_id": "1941968",
-                  "fi": "Tavoitteet"
+                  "_id": "1941968"
                 },
                 "teksti": {
-                  "_id": "1941969",
-                  "fi": "<p>Kurssin tavoitteena on, että opiskelija</p>\n\n<p>• oppii arvioimaan omia oppimistapojaan </p>\n\n<p>• perehtyy lukiokoulutuksessa tarvittaviin opiskelutaitoihin ja erilaisiin oppimistapoihin </p>\n\n<p>• rohkaistuu kokeilemaan uusia työtapoja ja oppimismenetelmiä</p>\n\n<p>• ymmärtää oppimisen prosessuaalisen ja tavoitteellisen luonteen</p>\n\n<p>• toimii joustavasti ja kannustavasti vuorovaikutustilanteissa</p>\n\n<p>• ottaa vastuuta omasta oppimisestaan ja tietää miten siihen voi vaikuttaa.</p>"
+                  "_id": "1941969"
                 }
               },
               "keskeisetSisallot": {
                 "otsikko": {
-                  "_id": "1941966",
-                  "fi": "Keskeiset sisällöt"
+                  "_id": "1941966"
                 },
                 "teksti": {
-                  "_id": "1941967",
-                  "fi": "<p>• opiskelutaidot</p>\n\n<p>• tiedonhankintataidot ja monimediaisten oppimisympäristöjen hyödyntäminen</p>\n\n<p>• henkilökohtaisen opiskelusuunnitelman toteutumisen seuranta, arviointi ja ajantasaistaminen</p>\n\n<p>• yhteistoiminnallisuus ja vuorovaikutustaidot</p>\n\n<p>• itsearviointitaidot</p>\n\n<p>• oma-aloitteisuus ja tuen etsiminen opiskeluun liittyvissä ongelmatilanteissa</p>"
+                  "_id": "1941967"
                 }
               },
               "tavoitteetJaKeskeisetSisallot": null

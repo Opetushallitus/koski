@@ -2,21 +2,68 @@
   {
     "metadata": [
       {
+        "nimi": "Eurooppalainen identiteettilompakko",
+        "kuvaus": null,
+        "kieli": "FI"
+      },
+      {
+        "nimi": "EUDI plånbok",
+        "kuvaus": null,
+        "kieli": "SV"
+      },
+      {
+        "nimi": "EUDI Wallet",
+        "kuvaus": null,
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "omadataoauth2client_dvvdigilompakkopk",
+    "versio": 1,
+    "koodiArvo": "dvvdigilompakkopk"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "KOSKI OmaDataOAuth2 esimerkki-applikaatio",
+        "kuvaus": null,
+        "kieli": "FI"
+      },
+      {
+        "nimi": "KOSKI OmaDataOAuth2 esimerkki-applikaatio",
+        "kuvaus": null,
+        "kieli": "SV"
+      },
+      {
+        "nimi": "KOSKI OmaDataOAuth2 esimerkki-applikaatio",
+        "kuvaus": null,
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "omadataoauth2client_koskioauth2sampledevpk",
+    "versio": 1,
+    "koodiArvo": "koskioauth2sampledevpk"
+  },
+  {
+    "metadata": [
+      {
         "nimi": "OAuth2 debug client (fi)",
-        "kuvaus": "",
-        "lyhytNimi": "",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
         "nimi": "OAuth2 debug client (sv)",
-        "kuvaus": "",
-        "lyhytNimi": "",
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
         "nimi": "OAuth2 debug client (en)",
-        "kuvaus": "",
-        "lyhytNimi": "",
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
@@ -30,21 +77,43 @@
   {
     "metadata": [
       {
+        "nimi": "OAuth2 debug client 3 (fi)",
+        "kuvaus": null,
+        "kieli": "FI"
+      },
+      {
+        "nimi": "OAuth2 debug client 3 (sv)",
+        "kuvaus": null,
+        "kieli": "SV"
+      },
+      {
+        "nimi": "OAuth2 debug client 3 (en)",
+        "kuvaus": null,
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "omadataoauth2client_oauth2clientnologout",
+    "versio": 1,
+    "koodiArvo": "oauth2clientnologout"
+  },
+  {
+    "metadata": [
+      {
         "nimi": "OAuth2 debug client 2 (fi)",
-        "kuvaus": "",
-        "lyhytNimi": "",
+        "kuvaus": null,
         "kieli": "FI"
       },
       {
         "nimi": "OAuth2 debug client 2 (sv)",
-        "kuvaus": "",
-        "lyhytNimi": "",
+        "kuvaus": null,
         "kieli": "SV"
       },
       {
         "nimi": "OAuth2 debug client 2 (en)",
-        "kuvaus": "",
-        "lyhytNimi": "",
+        "kuvaus": null,
         "kieli": "EN"
       }
     ],
@@ -54,34 +123,6 @@
     "koodiUri": "omadataoauth2client_oauth2kaikkiclient",
     "versio": 1,
     "koodiArvo": "oauth2kaikkiclient"
-  },
-  {
-    "metadata": [
-      {
-        "nimi": "OAuth2 sample client (fi)",
-        "kuvaus": "",
-        "lyhytNimi": "",
-        "kieli": "FI"
-      },
-      {
-        "nimi": "OAuth2 sample client (sv)",
-        "kuvaus": "",
-        "lyhytNimi": "",
-        "kieli": "SV"
-      },
-      {
-        "nimi": "OAuth2 sample client (en)",
-        "kuvaus": "",
-        "lyhytNimi": "",
-        "kieli": "EN"
-      }
-    ],
-    "withinCodeElements": [],
-    "includesCodeElements": [],
-    "levelsWithCodeElements": [],
-    "koodiUri": "omadataoauth2client_oauth2sample",
-    "versio": 1,
-    "koodiArvo": "oauth2sample"
   },
   {
     "metadata": [
@@ -110,5 +151,80 @@
     "koodiUri": "omadataoauth2client_oauth2oph",
     "versio": 1,
     "koodiArvo": "oauth2oph"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "OAuth2 sample client (fi)",
+        "kuvaus": null,
+        "kieli": "FI"
+      },
+      {
+        "nimi": "OAuth2 sample client (sv)",
+        "kuvaus": null,
+        "kieli": "SV"
+      },
+      {
+        "nimi": "OAuth2 sample client (en)",
+        "kuvaus": null,
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "omadataoauth2client_oauth2sample",
+    "versio": 1,
+    "koodiArvo": "oauth2sample"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "OAuth2 sample no logout client (fi)",
+        "kuvaus": null,
+        "kieli": "FI"
+      },
+      {
+        "nimi": "OAuth2 sample no logout client (sv)",
+        "kuvaus": null,
+        "kieli": "SV"
+      },
+      {
+        "nimi": "OAuth2 sample no logout client (en)",
+        "kuvaus": null,
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "omadataoauth2client_omadataoauth2samplenologout",
+    "versio": 1,
+    "koodiArvo": "omadataoauth2samplenologout"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "Osaamispolku",
+        "kuvaus": null,
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Kompetensstigen",
+        "kuvaus": null,
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Competency Path",
+        "kuvaus": null,
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "omadataoauth2client_osaamispolkupk",
+    "versio": 1,
+    "koodiArvo": "osaamispolkupk"
   }
 ]
