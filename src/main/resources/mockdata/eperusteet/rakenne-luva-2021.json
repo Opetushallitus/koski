@@ -1,7 +1,7 @@
 {
   "id": 7823340,
   "globalVersion": {
-    "aikaleima": 1632993917636
+    "aikaleima": 1743674866883
   },
   "nimi": {
     "_id": "7938895",
@@ -26,9 +26,9 @@
   "siirtymaPaattyy": null,
   "voimassaoloLoppuu": null,
   "paatospvm": null,
-  "viimeisinJulkaisuAika": null,
+  "viimeisinJulkaisuAika": 1633026216267,
   "luotu": 1624016199888,
-  "muokattu": 1632993917652,
+  "muokattu": 1743667572967,
   "tila": "valmis",
   "tyyppi": "normaali",
   "koulutusvienti": false,
@@ -59,12 +59,14 @@
         {
           "id": 7824180,
           "nimi": {
+            "en": "Well-being competence",
             "fi": "Hyvinvointiosaaminen",
             "sv": "Kompetens för välbefinnande"
           },
           "koodi": {
             "id": 7824170,
             "nimi": {
+              "en": "Well-being competence",
               "fi": "Hyvinvointiosaaminen",
               "sv": "Kompetens för välbefinnande"
             },
@@ -81,6 +83,7 @@
           "perusteenOsa": {
             "osanTyyppi": "lukio_laajaalainen_osaaminen",
             "nimi": {
+              "en": "Well-being competence",
               "fi": "Hyvinvointiosaaminen",
               "sv": "Kompetens för välbefinnande"
             },
@@ -90,12 +93,14 @@
         {
           "id": 7824181,
           "nimi": {
+            "en": "Interaction competence",
             "fi": "Vuorovaikutusosaaminen",
             "sv": "Kommunikativ kompetens"
           },
           "koodi": {
             "id": 7824171,
             "nimi": {
+              "en": "Interaction competence",
               "fi": "Vuorovaikutusosaaminen",
               "sv": "Kommunikativ kompetens"
             },
@@ -112,6 +117,7 @@
           "perusteenOsa": {
             "osanTyyppi": "lukio_laajaalainen_osaaminen",
             "nimi": {
+              "en": "Interaction competence",
               "fi": "Vuorovaikutusosaaminen",
               "sv": "Kommunikativ kompetens"
             },
@@ -121,12 +127,14 @@
         {
           "id": 7824182,
           "nimi": {
+            "en": "Multidisciplinary and creative competence",
             "fi": "Monitieteinen ja luova osaaminen",
             "sv": "Tvärvetenskaplig och kreativ kompetens"
           },
           "koodi": {
             "id": 7824172,
             "nimi": {
+              "en": "Multidisciplinary and creative competence",
               "fi": "Monitieteinen ja luova osaaminen",
               "sv": "Tvärvetenskaplig och kreativ kompetens"
             },
@@ -143,6 +151,7 @@
           "perusteenOsa": {
             "osanTyyppi": "lukio_laajaalainen_osaaminen",
             "nimi": {
+              "en": "Multidisciplinary and creative competence",
               "fi": "Monitieteinen ja luova osaaminen",
               "sv": "Tvärvetenskaplig och kreativ kompetens"
             },
@@ -152,12 +161,14 @@
         {
           "id": 7824183,
           "nimi": {
+            "en": "Societal competence ",
             "fi": "Yhteiskunnallinen osaaminen",
             "sv": "Samhällelig kompetens"
           },
           "koodi": {
             "id": 7824173,
             "nimi": {
+              "en": "Societal competence ",
               "fi": "Yhteiskunnallinen osaaminen",
               "sv": "Samhällelig kompetens"
             },
@@ -174,6 +185,7 @@
           "perusteenOsa": {
             "osanTyyppi": "lukio_laajaalainen_osaaminen",
             "nimi": {
+              "en": "Societal competence ",
               "fi": "Yhteiskunnallinen osaaminen",
               "sv": "Samhällelig kompetens"
             },
@@ -183,12 +195,14 @@
         {
           "id": 7824184,
           "nimi": {
+            "en": "Ethical and environmental competence ",
             "fi": "Eettisyys ja ympäristöosaaminen",
             "sv": "Etisk kompetens och miljökompetens"
           },
           "koodi": {
             "id": 7824174,
             "nimi": {
+              "en": "Ethical and environmental competence ",
               "fi": "Eettisyys ja ympäristöosaaminen",
               "sv": "Etisk kompetens och miljökompetens"
             },
@@ -205,6 +219,7 @@
           "perusteenOsa": {
             "osanTyyppi": "lukio_laajaalainen_osaaminen",
             "nimi": {
+              "en": "Ethical and environmental competence ",
               "fi": "Eettisyys ja ympäristöosaaminen",
               "sv": "Etisk kompetens och miljökompetens"
             },
@@ -214,12 +229,14 @@
         {
           "id": 7824185,
           "nimi": {
+            "en": "Global and cultural competence",
             "fi": "Globaali- ja kulttuuriosaaminen",
             "sv": "Global och kulturell kompetens"
           },
           "koodi": {
             "id": 7824175,
             "nimi": {
+              "en": "Global and cultural competence",
               "fi": "Globaali- ja kulttuuriosaaminen",
               "sv": "Global och kulturell kompetens"
             },
@@ -236,6 +253,7 @@
           "perusteenOsa": {
             "osanTyyppi": "lukio_laajaalainen_osaaminen",
             "nimi": {
+              "en": "Global and cultural competence",
               "fi": "Globaali- ja kulttuuriosaaminen",
               "sv": "Global och kulturell kompetens"
             },
@@ -279,12 +297,16 @@
           {
             "id": 7823728,
             "nimi": {
-              "fi": "Perusopetuksessa alkanut kieli"
+              "en": "Language studies started in primary or lower secondary education",
+              "fi": "Perusopetuksessa alkanut kieli",
+              "sv": "Språk som inletts i den grundläggande utbildningen"
             },
             "koodi": {
               "id": 7840155,
               "nimi": {
-                "fi": "Perusopetuksessa alkanut kieli"
+                "en": "Language studies started in primary or lower secondary education",
+                "fi": "Perusopetuksessa alkanut kieli",
+                "sv": "Språk som inletts i den grundläggande utbildningen"
               },
               "arvo": "POAK",
               "uri": "oppiaineetjaoppimaaratlops2021_poak",
@@ -328,13 +350,15 @@
               {
                 "id": 7838044,
                 "nimi": {
-                  "fi": "Kielitaito osana opiskelua ja muita elämänalueita"
+                  "fi": "Kielitaito osana opiskelua ja muita elämänalueita",
+                  "sv": "Språkfärdighet som en del av studierna och andra livsområden"
                 },
                 "pakollinen": true,
                 "koodi": {
                   "id": 7840156,
                   "nimi": {
-                    "fi": "Kielitaito osana opiskelua ja muita elämänalueita"
+                    "fi": "Kielitaito osana opiskelua ja muita elämänalueita",
+                    "sv": "Språkfärdighet som en del av studierna och andra livsområden"
                   },
                   "arvo": "LVKA1",
                   "uri": "moduulikoodistolops2021_lvka1",
@@ -398,7 +422,8 @@
                 "perusteenOsa": {
                   "osanTyyppi": "lukio_moduuli",
                   "nimi": {
-                    "fi": "Kielitaito osana opiskelua ja muita elämänalueita"
+                    "fi": "Kielitaito osana opiskelua ja muita elämänalueita",
+                    "sv": "Språkfärdighet som en del av studierna och andra livsområden"
                   },
                   "meta": null
                 }
@@ -559,7 +584,9 @@
             "perusteenOsa": {
               "osanTyyppi": "lukio_oppiaine",
               "nimi": {
-                "fi": "Perusopetuksessa alkanut kieli"
+                "en": "Language studies started in primary or lower secondary education",
+                "fi": "Perusopetuksessa alkanut kieli",
+                "sv": "Språk som inletts i den grundläggande utbildningen"
               },
               "meta": null
             }
@@ -849,12 +876,16 @@
           {
             "id": 7838524,
             "nimi": {
-              "fi": "Opiskelijan oma äidinkieli"
+              "en": "Student's mother tongue",
+              "fi": "Opiskelijan oma äidinkieli",
+              "sv": "Den studerandes eget modersmål"
             },
             "koodi": {
               "id": 7864943,
               "nimi": {
-                "fi": "Opiskelijan oma äidinkieli"
+                "en": "Student's mother tongue",
+                "fi": "Opiskelijan oma äidinkieli",
+                "sv": "Den studerandes eget modersmål"
               },
               "arvo": "AIAI6",
               "uri": "oppiaineetjaoppimaaratlops2021_aiai6",
@@ -1108,7 +1139,9 @@
             "perusteenOsa": {
               "osanTyyppi": "lukio_oppiaine",
               "nimi": {
-                "fi": "Opiskelijan oma äidinkieli"
+                "en": "Student's mother tongue",
+                "fi": "Opiskelijan oma äidinkieli",
+                "sv": "Den studerandes eget modersmål"
               },
               "meta": null
             }
@@ -1164,12 +1197,14 @@
       {
         "id": 7823725,
         "nimi": {
+          "en": "Mother tongue and literature",
           "fi": "Äidinkieli ja kirjallisuus",
           "sv": "Modersmål och litteratur"
         },
         "koodi": {
           "id": 7834588,
           "nimi": {
+            "en": "Mother tongue and literature",
             "fi": "Äidinkieli ja kirjallisuus",
             "sv": "Modersmål och litteratur"
           },
@@ -1194,12 +1229,16 @@
           {
             "id": 7823726,
             "nimi": {
-              "fi": "Suomi toisena kielenä ja kirjallisuus"
+              "en": "Syllabus in Finnish as a second language and literature",
+              "fi": "Suomi toisena kielenä ja kirjallisuus",
+              "sv": "Finska som andraspråk och litteratur"
             },
             "koodi": {
               "id": 7834589,
               "nimi": {
-                "fi": "Suomi toisena kielenä ja kirjallisuus"
+                "en": "Syllabus in Finnish as a second language and literature",
+                "fi": "Suomi toisena kielenä ja kirjallisuus",
+                "sv": "Finska som andraspråk och litteratur"
               },
               "arvo": "AI6",
               "uri": "oppiaineetjaoppimaaratlops2021_ai6",
@@ -2219,7 +2258,9 @@
             "perusteenOsa": {
               "osanTyyppi": "lukio_oppiaine",
               "nimi": {
-                "fi": "Suomi toisena kielenä ja kirjallisuus"
+                "en": "Syllabus in Finnish as a second language and literature",
+                "fi": "Suomi toisena kielenä ja kirjallisuus",
+                "sv": "Finska som andraspråk och litteratur"
               },
               "meta": null
             }
@@ -2227,12 +2268,14 @@
           {
             "id": 7838525,
             "nimi": {
+              "en": "Syllabus in Swedish as a second language and literature",
               "fi": "Ruotsi toisena kielenä ja kirjallisuus",
               "sv": "Svenska som andraspråk och litteratur"
             },
             "koodi": {
               "id": 7865089,
               "nimi": {
+                "en": "Syllabus in Swedish as a second language and literature",
                 "fi": "Ruotsi toisena kielenä ja kirjallisuus",
                 "sv": "Svenska som andraspråk och litteratur"
               },
@@ -3250,6 +3293,7 @@
             "perusteenOsa": {
               "osanTyyppi": "lukio_oppiaine",
               "nimi": {
+                "en": "Syllabus in Swedish as a second language and literature",
                 "fi": "Ruotsi toisena kielenä ja kirjallisuus",
                 "sv": "Svenska som andraspråk och litteratur"
               },
@@ -3260,6 +3304,7 @@
         "perusteenOsa": {
           "osanTyyppi": "lukio_oppiaine",
           "nimi": {
+            "en": "Mother tongue and literature",
             "fi": "Äidinkieli ja kirjallisuus",
             "sv": "Modersmål och litteratur"
           },
@@ -3269,12 +3314,16 @@
       {
         "id": 7838521,
         "nimi": {
-          "fi": "Opinto-ohjaus"
+          "en": "Study and careers education",
+          "fi": "Opinto-ohjaus",
+          "sv": "Studiehandledning"
         },
         "koodi": {
           "id": 7840150,
           "nimi": {
-            "fi": "Opinto-ohjaus"
+            "en": "Study and careers education",
+            "fi": "Opinto-ohjaus",
+            "sv": "Studiehandledning"
           },
           "arvo": "OP",
           "uri": "oppiaineetjaoppimaaratlops2021_op",
@@ -3478,7 +3527,9 @@
         "perusteenOsa": {
           "osanTyyppi": "lukio_oppiaine",
           "nimi": {
-            "fi": "Opinto-ohjaus"
+            "en": "Study and careers education",
+            "fi": "Opinto-ohjaus",
+            "sv": "Studiehandledning"
           },
           "meta": null
         }
@@ -3486,12 +3537,16 @@
       {
         "id": 7838522,
         "nimi": {
-          "fi": "Matematiikka"
+          "en": "Mathematics",
+          "fi": "Matematiikka",
+          "sv": "Matematik"
         },
         "koodi": {
           "id": 7865433,
           "nimi": {
-            "fi": "Matematiikka"
+            "en": "Mathematics",
+            "fi": "Matematiikka",
+            "sv": "Matematik"
           },
           "arvo": "MA",
           "uri": "oppiaineetjaoppimaaratlops2021_ma",
@@ -3589,7 +3644,9 @@
         "perusteenOsa": {
           "osanTyyppi": "lukio_oppiaine",
           "nimi": {
-            "fi": "Matematiikka"
+            "en": "Mathematics",
+            "fi": "Matematiikka",
+            "sv": "Matematik"
           },
           "meta": null
         }
@@ -3597,12 +3654,16 @@
       {
         "id": 7838523,
         "nimi": {
-          "fi": "Historia"
+          "en": "History",
+          "fi": "Historia",
+          "sv": "Historia"
         },
         "koodi": {
           "id": 7865435,
           "nimi": {
-            "fi": "Historia"
+            "en": "History",
+            "fi": "Historia",
+            "sv": "Historia"
           },
           "arvo": "HI",
           "uri": "oppiaineetjaoppimaaratlops2021_hi",
@@ -3720,7 +3781,9 @@
         "perusteenOsa": {
           "osanTyyppi": "lukio_oppiaine",
           "nimi": {
-            "fi": "Historia"
+            "en": "History",
+            "fi": "Historia",
+            "sv": "Historia"
           },
           "meta": null
         }
@@ -3728,12 +3791,16 @@
       {
         "id": 7838526,
         "nimi": {
-          "fi": "Fysiikka"
+          "en": "Physics",
+          "fi": "Fysiikka",
+          "sv": "Fysik"
         },
         "koodi": {
           "id": 7865437,
           "nimi": {
-            "fi": "Fysiikka"
+            "en": "Physics",
+            "fi": "Fysiikka",
+            "sv": "Fysik"
           },
           "arvo": "FY",
           "uri": "oppiaineetjaoppimaaratlops2021_fy",
@@ -3841,7 +3908,9 @@
         "perusteenOsa": {
           "osanTyyppi": "lukio_oppiaine",
           "nimi": {
-            "fi": "Fysiikka"
+            "en": "Physics",
+            "fi": "Fysiikka",
+            "sv": "Fysik"
           },
           "meta": null
         }
@@ -3849,12 +3918,16 @@
       {
         "id": 7838527,
         "nimi": {
-          "fi": "Kemia"
+          "en": "Chemistry",
+          "fi": "Kemia",
+          "sv": "Kemi"
         },
         "koodi": {
           "id": 7865439,
           "nimi": {
-            "fi": "Kemia"
+            "en": "Chemistry",
+            "fi": "Kemia",
+            "sv": "Kemi"
           },
           "arvo": "KE",
           "uri": "oppiaineetjaoppimaaratlops2021_ke",
@@ -3962,7 +4035,9 @@
         "perusteenOsa": {
           "osanTyyppi": "lukio_oppiaine",
           "nimi": {
-            "fi": "Kemia"
+            "en": "Chemistry",
+            "fi": "Kemia",
+            "sv": "Kemi"
           },
           "meta": null
         }
@@ -3970,12 +4045,16 @@
       {
         "id": 7838528,
         "nimi": {
-          "fi": "Biologia"
+          "en": "Biology",
+          "fi": "Biologia",
+          "sv": "Biologi"
         },
         "koodi": {
           "id": 7865591,
           "nimi": {
-            "fi": "Biologia"
+            "en": "Biology",
+            "fi": "Biologia",
+            "sv": "Biologi"
           },
           "arvo": "BI",
           "uri": "oppiaineetjaoppimaaratlops2021_bi",
@@ -4083,7 +4162,9 @@
         "perusteenOsa": {
           "osanTyyppi": "lukio_oppiaine",
           "nimi": {
-            "fi": "Biologia"
+            "en": "Biology",
+            "fi": "Biologia",
+            "sv": "Biologi"
           },
           "meta": null
         }
@@ -4091,12 +4172,16 @@
       {
         "id": 7838529,
         "nimi": {
-          "fi": "Maantiede"
+          "en": "Geography",
+          "fi": "Maantiede",
+          "sv": "Geografi"
         },
         "koodi": {
           "id": 7865593,
           "nimi": {
-            "fi": "Maantiede"
+            "en": "Geography",
+            "fi": "Maantiede",
+            "sv": "Geografi"
           },
           "arvo": "GE",
           "uri": "oppiaineetjaoppimaaratlops2021_ge",
@@ -4204,7 +4289,9 @@
         "perusteenOsa": {
           "osanTyyppi": "lukio_oppiaine",
           "nimi": {
-            "fi": "Maantiede"
+            "en": "Geography",
+            "fi": "Maantiede",
+            "sv": "Geografi"
           },
           "meta": null
         }
@@ -4212,12 +4299,16 @@
       {
         "id": 7853560,
         "nimi": {
-          "fi": "Yhteiskuntaoppi"
+          "en": "Social studies",
+          "fi": "Yhteiskuntaoppi",
+          "sv": "Samhällslära"
         },
         "koodi": {
           "id": 7865595,
           "nimi": {
-            "fi": "Yhteiskuntaoppi"
+            "en": "Social studies",
+            "fi": "Yhteiskuntaoppi",
+            "sv": "Samhällslära"
           },
           "arvo": "YH",
           "uri": "oppiaineetjaoppimaaratlops2021_yh",
@@ -4372,7 +4463,9 @@
         "perusteenOsa": {
           "osanTyyppi": "lukio_oppiaine",
           "nimi": {
-            "fi": "Yhteiskuntaoppi"
+            "en": "Social studies",
+            "fi": "Yhteiskuntaoppi",
+            "sv": "Samhällslära"
           },
           "meta": null
         }
