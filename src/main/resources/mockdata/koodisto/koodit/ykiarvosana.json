@@ -2,10 +2,20 @@
   {
     "metadata": [
       {
-        "nimi": "1 (perustaso)",
+        "nimi": "1, perustaso",
         "kuvaus": "",
         "lyhytNimi": "",
         "kieli": "FI"
+      },
+      {
+        "nimi": null,
+        "kuvaus": null,
+        "kieli": "SV"
+      },
+      {
+        "nimi": null,
+        "kuvaus": null,
+        "kieli": "EN"
       }
     ],
     "withinCodeElements": [],
@@ -18,154 +28,20 @@
   {
     "metadata": [
       {
-        "nimi": "2 (perustaso)",
-        "kuvaus": "",
-        "lyhytNimi": "",
-        "kieli": "FI"
-      }
-    ],
-    "withinCodeElements": [],
-    "includesCodeElements": [],
-    "levelsWithCodeElements": [],
-    "koodiUri": "ykiarvosana_2",
-    "versio": 1,
-    "koodiArvo": "2"
-  },
-  {
-    "metadata": [
-      {
-        "nimi": "Alle 1 (hylätty)",
-        "kuvaus": "",
-        "lyhytNimi": "",
-        "kieli": "FI"
-      }
-    ],
-    "withinCodeElements": [],
-    "includesCodeElements": [],
-    "levelsWithCodeElements": [],
-    "koodiUri": "ykiarvosana_alle1",
-    "versio": 1,
-    "koodiArvo": "alle1"
-  },
-  {
-    "metadata": [
-      {
-        "nimi": "3 (keskitaso)",
-        "kuvaus": "",
-        "lyhytNimi": "",
-        "kieli": "FI"
-      }
-    ],
-    "withinCodeElements": [],
-    "includesCodeElements": [],
-    "levelsWithCodeElements": [],
-    "koodiUri": "ykiarvosana_3",
-    "versio": 1,
-    "koodiArvo": "3"
-  },
-  {
-    "metadata": [
-      {
-        "nimi": "4 (keskitaso)",
-        "kuvaus": "",
-        "lyhytNimi": "",
-        "kieli": "FI"
-      }
-    ],
-    "withinCodeElements": [],
-    "includesCodeElements": [],
-    "levelsWithCodeElements": [],
-    "koodiUri": "ykiarvosana_4",
-    "versio": 1,
-    "koodiArvo": "4"
-  },
-  {
-    "metadata": [
-      {
-        "nimi": "Alle 3 (hylätty)",
-        "kuvaus": "",
-        "lyhytNimi": "",
-        "kieli": "FI"
-      }
-    ],
-    "withinCodeElements": [],
-    "includesCodeElements": [],
-    "levelsWithCodeElements": [],
-    "koodiUri": "ykiarvosana_alle3",
-    "versio": 1,
-    "koodiArvo": "alle3"
-  },
-  {
-    "metadata": [
-      {
-        "nimi": "5 (ylin taso)",
-        "kuvaus": "",
-        "lyhytNimi": "",
-        "kieli": "FI"
-      }
-    ],
-    "withinCodeElements": [],
-    "includesCodeElements": [],
-    "levelsWithCodeElements": [],
-    "koodiUri": "ykiarvosana_5",
-    "versio": 1,
-    "koodiArvo": "5"
-  },
-  {
-    "metadata": [
-      {
-        "nimi": "6 (ylin taso)",
-        "kuvaus": "",
-        "lyhytNimi": "",
-        "kieli": "FI"
-      }
-    ],
-    "withinCodeElements": [],
-    "includesCodeElements": [],
-    "levelsWithCodeElements": [],
-    "koodiUri": "ykiarvosana_6",
-    "versio": 1,
-    "koodiArvo": "6"
-  },
-  {
-    "metadata": [
-      {
-        "nimi": "Alle 5 (hylätty)",
-        "kuvaus": "",
-        "lyhytNimi": "",
-        "kieli": "FI"
-      }
-    ],
-    "withinCodeElements": [],
-    "includesCodeElements": [],
-    "levelsWithCodeElements": [],
-    "koodiUri": "ykiarvosana_alle5",
-    "versio": 1,
-    "koodiArvo": "alle5"
-  },
-  {
-    "metadata": [
-      {
-        "nimi": "Ei voi arvioida",
-        "kuvaus": "",
-        "lyhytNimi": "",
-        "kieli": "FI"
-      }
-    ],
-    "withinCodeElements": [],
-    "includesCodeElements": [],
-    "levelsWithCodeElements": [],
-    "koodiUri": "ykiarvosana_9",
-    "versio": 1,
-    "koodiArvo": "9"
-  },
-  {
-    "metadata": [
-      {
         "nimi": "Keskeytetty",
         "kuvaus": "",
         "lyhytNimi": "",
         "kieli": "FI"
+      },
+      {
+        "nimi": null,
+        "kuvaus": null,
+        "kieli": "SV"
+      },
+      {
+        "nimi": null,
+        "kuvaus": null,
+        "kieli": "EN"
       }
     ],
     "withinCodeElements": [],
@@ -182,6 +58,16 @@
         "kuvaus": "",
         "lyhytNimi": "",
         "kieli": "FI"
+      },
+      {
+        "nimi": null,
+        "kuvaus": null,
+        "kieli": "SV"
+      },
+      {
+        "nimi": null,
+        "kuvaus": null,
+        "kieli": "EN"
       }
     ],
     "withinCodeElements": [],
@@ -190,5 +76,239 @@
     "koodiUri": "ykiarvosana_11",
     "versio": 1,
     "koodiArvo": "11"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "2, perustaso",
+        "kuvaus": "",
+        "lyhytNimi": "",
+        "kieli": "FI"
+      },
+      {
+        "nimi": null,
+        "kuvaus": null,
+        "kieli": "SV"
+      },
+      {
+        "nimi": null,
+        "kuvaus": null,
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "ykiarvosana_2",
+    "versio": 1,
+    "koodiArvo": "2"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "3, keskitaso",
+        "kuvaus": "",
+        "lyhytNimi": "",
+        "kieli": "FI"
+      },
+      {
+        "nimi": null,
+        "kuvaus": null,
+        "kieli": "SV"
+      },
+      {
+        "nimi": null,
+        "kuvaus": null,
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "ykiarvosana_3",
+    "versio": 1,
+    "koodiArvo": "3"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "4, keskitaso",
+        "kuvaus": "",
+        "lyhytNimi": "",
+        "kieli": "FI"
+      },
+      {
+        "nimi": null,
+        "kuvaus": null,
+        "kieli": "SV"
+      },
+      {
+        "nimi": null,
+        "kuvaus": null,
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "ykiarvosana_4",
+    "versio": 1,
+    "koodiArvo": "4"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "5, ylin taso",
+        "kuvaus": "",
+        "lyhytNimi": "",
+        "kieli": "FI"
+      },
+      {
+        "nimi": null,
+        "kuvaus": null,
+        "kieli": "SV"
+      },
+      {
+        "nimi": null,
+        "kuvaus": null,
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "ykiarvosana_5",
+    "versio": 1,
+    "koodiArvo": "5"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "6, ylin taso",
+        "kuvaus": "",
+        "lyhytNimi": "",
+        "kieli": "FI"
+      },
+      {
+        "nimi": null,
+        "kuvaus": null,
+        "kieli": "SV"
+      },
+      {
+        "nimi": null,
+        "kuvaus": null,
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "ykiarvosana_6",
+    "versio": 1,
+    "koodiArvo": "6"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "Ei voi arvioida",
+        "kuvaus": "",
+        "lyhytNimi": "",
+        "kieli": "FI"
+      },
+      {
+        "nimi": null,
+        "kuvaus": null,
+        "kieli": "SV"
+      },
+      {
+        "nimi": null,
+        "kuvaus": null,
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "ykiarvosana_9",
+    "versio": 1,
+    "koodiArvo": "9"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "Alle 1 (hylätty)",
+        "kuvaus": "",
+        "lyhytNimi": "",
+        "kieli": "FI"
+      },
+      {
+        "nimi": null,
+        "kuvaus": null,
+        "kieli": "SV"
+      },
+      {
+        "nimi": null,
+        "kuvaus": null,
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "ykiarvosana_alle1",
+    "versio": 1,
+    "koodiArvo": "alle1"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "Alle 3 (hylätty)",
+        "kuvaus": "",
+        "lyhytNimi": "",
+        "kieli": "FI"
+      },
+      {
+        "nimi": null,
+        "kuvaus": null,
+        "kieli": "SV"
+      },
+      {
+        "nimi": null,
+        "kuvaus": null,
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "ykiarvosana_alle3",
+    "versio": 1,
+    "koodiArvo": "alle3"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "Alle 5 (hylätty)",
+        "kuvaus": "",
+        "lyhytNimi": "",
+        "kieli": "FI"
+      },
+      {
+        "nimi": null,
+        "kuvaus": null,
+        "kieli": "SV"
+      },
+      {
+        "nimi": null,
+        "kuvaus": null,
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "ykiarvosana_alle5",
+    "versio": 1,
+    "koodiArvo": "alle5"
   }
 ]

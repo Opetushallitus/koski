@@ -36649,6 +36649,11 @@
         "codeElementUri": "oppilaitosnumero_01699",
         "codeElementVersion": 1,
         "passive": false
+      },
+      {
+        "codeElementUri": "oppilaitosnumero_03913",
+        "codeElementVersion": 1,
+        "passive": false
       }
     ],
     "includesCodeElements": [
