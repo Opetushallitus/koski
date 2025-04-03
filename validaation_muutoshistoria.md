@@ -1,5 +1,9 @@
 # Koskeen tallennettavien tietojen validaatiosäännöt
 
+## x.4.2025
+
+- Valtionhallinnon kielitutkintojen kielitaitojen ja osakokeiden arvosanojen on vastattava tutkintotasoa.
+
 ## 26.3.2025
 
 - Korjauksia maksuttomuusvalidaatioihin, mm. edellisen oppivelvollisuuslain aikaiseen perusopetuksen

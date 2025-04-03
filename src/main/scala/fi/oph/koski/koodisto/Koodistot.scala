@@ -125,6 +125,10 @@ object Koodistot {
     KoodistoAsetus("ykiarvosana"),
     KoodistoAsetus("ykisuorituksenosa"),
     KoodistoAsetus("ykitutkintotaso"),
+    KoodistoAsetus("vkttutkintotaso"),
+    KoodistoAsetus("vktkielitaito"),
+    KoodistoAsetus("vktosakoe"),
+    KoodistoAsetus("vktarvosana"),
   )
   val koskiKoodistot = koskiKoodistoAsetukset.map(_.toString)
 

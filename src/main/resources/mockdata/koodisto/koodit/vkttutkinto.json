@@ -1,0 +1,50 @@
+[
+  {
+    "metadata": [
+      {
+        "nimi": "Suullisen taidon tutkinto",
+        "kuvaus": "",
+        "lyhytNimi": "",
+        "kieli": "FI"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "vkttutkinto_suullinen",
+    "versio": 1,
+    "koodiArvo": "suullinen"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "Kirjallisen taidon tutkinto",
+        "kuvaus": "",
+        "lyhytNimi": "",
+        "kieli": "FI"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "vkttutkinto_kirjallinen",
+    "versio": 1,
+    "koodiArvo": "kirjallinen"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "Ymmärtämisen taidon tutkinto",
+        "kuvaus": "",
+        "lyhytNimi": "",
+        "kieli": "FI"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "vkttutkinto_ymmartaminen",
+    "versio": 1,
+    "koodiArvo": "ymmartaminen"
+  }
+]

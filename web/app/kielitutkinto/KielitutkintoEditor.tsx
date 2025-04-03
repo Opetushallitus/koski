@@ -1,8 +1,8 @@
 import React from 'react'
 import { useSchema } from '../appstate/constraints'
-import { TestIdLayer, TestIdRoot } from '../appstate/useTestId'
 import {
   EditorContainer,
+  hasPäätasonsuoritusOf,
   usePäätasonSuoritus
 } from '../components-v2/containers/EditorContainer'
 import { FormModel, useForm } from '../components-v2/forms/FormModel'
@@ -10,8 +10,10 @@ import { AdaptedOpiskeluoikeusEditorProps } from '../components-v2/interoperabil
 import { OpiskeluoikeusTitle } from '../components-v2/opiskeluoikeus/OpiskeluoikeusTitle'
 import { KielitutkinnonOpiskeluoikeudenOpiskeluoikeusjakso } from '../types/fi/oph/koski/schema/KielitutkinnonOpiskeluoikeudenOpiskeluoikeusjakso'
 import { KielitutkinnonOpiskeluoikeus } from '../types/fi/oph/koski/schema/KielitutkinnonOpiskeluoikeus'
+import { isValtionhallinnonKielitutkinnonSuoritus } from '../types/fi/oph/koski/schema/ValtionhallinnonKielitutkinnonSuoritus'
+import { isYleisenKielitutkinnonSuoritus } from '../types/fi/oph/koski/schema/YleisenKielitutkinnonSuoritus'
+import { ValtionhallinnonKielitutkintoEditor } from './ValtiohallinnonKielitutkintoEditor'
 import { YleinenKielitutkintoEditor } from './YleinenKielitutkintoEditor'
-import { YleinenKielitutkinto } from '../types/fi/oph/koski/schema/YleinenKielitutkinto'
 
 export type KielitutkintoEditorProps =
   AdaptedOpiskeluoikeusEditorProps<KielitutkinnonOpiskeluoikeus>
@@ -19,7 +21,7 @@ export type KielitutkintoEditorProps =
 export const KielitutkintoEditor: React.FC<KielitutkintoEditorProps> = (
   props
 ) => {
-  const opiskeluoikeusSchema = useSchema('IBOpiskeluoikeus')
+  const opiskeluoikeusSchema = useSchema('KielitutkinnonOpiskeluoikeus')
   const form = useForm(props.opiskeluoikeus, false, opiskeluoikeusSchema)
 
   return (
@@ -42,13 +44,6 @@ const KielitutkinnonPäätasonSuoritusEditor: React.FC<
   const organisaatio =
     opiskeluoikeus.oppilaitos || opiskeluoikeus.koulutustoimija
 
-  const overrides =
-    !form.editMode &&
-    opiskeluoikeus.suoritukset[0].koulutusmoduuli.$class ===
-      YleinenKielitutkinto.className
-      ? { opiskeluoikeudenTilaEditor: <></> } // Ei näytetä opiskeluoikeuden tilaa näyttötilassa
-      : null
-
   return (
     <EditorContainer
       form={form}
@@ -59,14 +54,28 @@ const KielitutkinnonPäätasonSuoritusEditor: React.FC<
         KielitutkinnonOpiskeluoikeudenOpiskeluoikeusjakso
       }
       testId={päätasonSuoritus.testId}
-      {...overrides}
+      opiskeluoikeudenTilaEditor={form.editMode ? null : <></>} // Piilota tilaeditori näyttökäyttöliittymästä
     >
-      <YleinenKielitutkintoEditor
-        form={form}
-        path={form.root.prop('suoritukset').at(0)}
-        päätasonSuoritus={päätasonSuoritus}
-        organisaatio={organisaatio}
-      />
+      {hasPäätasonsuoritusOf(
+        isYleisenKielitutkinnonSuoritus,
+        päätasonSuoritus
+      ) && (
+        <YleinenKielitutkintoEditor
+          form={form}
+          päätasonSuoritus={päätasonSuoritus}
+          organisaatio={organisaatio}
+        />
+      )}
+      {hasPäätasonsuoritusOf(
+        isValtionhallinnonKielitutkinnonSuoritus,
+        päätasonSuoritus
+      ) && (
+        <ValtionhallinnonKielitutkintoEditor
+          form={form}
+          päätasonSuoritus={päätasonSuoritus}
+          organisaatio={organisaatio}
+        />
+      )}
     </EditorContainer>
   )
 }

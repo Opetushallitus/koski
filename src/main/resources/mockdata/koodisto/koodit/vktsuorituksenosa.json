@@ -1,0 +1,66 @@
+[
+  {
+    "metadata": [
+      {
+        "nimi": "Tekstin ymmärtäminen",
+        "kuvaus": "",
+        "lyhytNimi": "",
+        "kieli": "FI"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "vktsuorituksenosa_tekstinymmartaminen",
+    "versio": 1,
+    "koodiArvo": "tekstinymmartaminen"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "Kirjoittaminen",
+        "kuvaus": "",
+        "lyhytNimi": "",
+        "kieli": "FI"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "vktsuorituksenosa_kirjoittaminen",
+    "versio": 1,
+    "koodiArvo": "kirjoittaminen"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "Puheen ymmärtäminen",
+        "kuvaus": "",
+        "lyhytNimi": "",
+        "kieli": "FI"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "vktsuorituksenosa_puheenymmartaminen",
+    "versio": 1,
+    "koodiArvo": "puheenymmartaminen"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "Puhuminen",
+        "kuvaus": "",
+        "lyhytNimi": "",
+        "kieli": "FI"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "vktsuorituksenosa_puhuminen",
+    "versio": 1,
+    "koodiArvo": "puhuminen"
+  }
+]

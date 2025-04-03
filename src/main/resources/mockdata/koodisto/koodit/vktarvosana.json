@@ -1,0 +1,66 @@
+[
+  {
+    "metadata": [
+      {
+        "nimi": "Tyydyttävä",
+        "kuvaus": "",
+        "lyhytNimi": "",
+        "kieli": "FI"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "vktarvosana_tyydyttava",
+    "versio": 1,
+    "koodiArvo": "tyydyttava"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "Hyvä",
+        "kuvaus": "",
+        "lyhytNimi": "",
+        "kieli": "FI"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "vktarvosana_hyva",
+    "versio": 1,
+    "koodiArvo": "hyva"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "Erinomainen",
+        "kuvaus": "",
+        "lyhytNimi": "",
+        "kieli": "FI"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "vktarvosana_erinomainen",
+    "versio": 1,
+    "koodiArvo": "erinomainen"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "Hylätty",
+        "kuvaus": "",
+        "lyhytNimi": "",
+        "kieli": "FI"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "vktarvosana_hylatty",
+    "versio": 1,
+    "koodiArvo": "hylatty"
+  }
+]

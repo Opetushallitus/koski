@@ -1,0 +1,50 @@
+[
+  {
+    "metadata": [
+      {
+        "nimi": "Suullinen kielitaito",
+        "kuvaus": "",
+        "lyhytNimi": "",
+        "kieli": "FI"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "vktkielitaito_suullinen",
+    "versio": 1,
+    "koodiArvo": "suullinen"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "Kirjallinen kielitaito",
+        "kuvaus": "",
+        "lyhytNimi": "",
+        "kieli": "FI"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "vktkielitaito_kirjallinen",
+    "versio": 1,
+    "koodiArvo": "kirjallinen"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "Ymmärtämisen kielitaito",
+        "kuvaus": "",
+        "lyhytNimi": "",
+        "kieli": "FI"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "vktkielitaito_ymmartaminen",
+    "versio": 1,
+    "koodiArvo": "ymmartaminen"
+  }
+]
