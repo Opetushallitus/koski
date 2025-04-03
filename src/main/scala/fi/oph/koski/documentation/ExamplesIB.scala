@@ -298,11 +298,33 @@ object ExamplesIB {
   ) = IBOppiaineenSuoritus(
     koulutusmoduuli = oppiaine,
     osasuoritukset = Some(kurssit.map { case (kurssi, kurssinArvosana, effort) =>
-      IBKurssinSuoritus(koulutusmoduuli = kurssi, arviointi = ibKurssinArviointi(kurssinArvosana, effort))
+      IBKurssinSuoritus(koulutusmoduuli = kurssi, arviointi = withNotCompletedKurssinArviointi(ibKurssinArviointi(kurssinArvosana, effort)))
     }),
-    arviointi = päättöarviointi,
+    arviointi = withNotCompletedArviointi(päättöarviointi),
     predictedArviointi = predictedArviointi,
   )
+
+  def withNotCompletedArviointi(arviointi: Option[List[IBOppiaineenArviointi]]): Option[List[IBOppiaineenArviointi]] = {
+    val as = arviointi.toList.flatten
+    if (as.isEmpty) None else {
+      val notCompletedArviointi = as
+        .head
+        .päivä
+        .map(_.minusDays(1))
+        .map(ibArviointi("O", _).toList.flatten)
+        .toList.flatten
+      Some(as ++ notCompletedArviointi)
+    }
+  }
+
+  def withNotCompletedKurssinArviointi(arviointi: Option[List[IBKurssinArviointi]]): Option[List[IBKurssinArviointi]] = {
+    val as = arviointi.toList.flatten
+    if (as.isEmpty) None else {
+      val pvm = as.head.päivä.minusDays(1)
+      val notCompletedArviointi = ibKurssinArviointi("O", päivä = pvm).toList.flatten
+      Some(as ++ notCompletedArviointi)
+    }
+  }
 
   def ibOppiaine(aine: String, taso: String, ryhmä: Int) = IBOppiaineMuu(
     tunniste = Koodistokoodiviite(koodistoUri = "oppiaineetib", koodiarvo = aine),
