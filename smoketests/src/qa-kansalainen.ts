@@ -35,7 +35,7 @@ const tryToLogin = async (page: Page) => {
   await click(page, "#continue-button");
 
   return (
-    (await textContent(page, ".header__name")) === "Demo Nordeas. 21.2.1981"
+    (await textContent(page, ".header__name")) === "Nordea Demos. 21.2.1981"
   );
 };
 
@@ -44,7 +44,7 @@ const runTest = async (): Promise<void> => {
     console.log(`Attempt ${i + 1}/${retryCount}`);
 
     const browser = await puppeteer.launch({
-      headless: true
+      headless: true,
     });
     const page = await browser.newPage();
     const resultOk = await tryToLogin(page);
