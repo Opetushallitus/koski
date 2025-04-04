@@ -13,7 +13,6 @@ class VipunenExport(val db: DB, schema: Schema) extends Logging with QueryMethod
       AS SELECT
         oppija_oid,
         master_oid,
-        linkitetyt_oidit,
         sukupuoli,
         syntymaaika,
         aidinkieli,

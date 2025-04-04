@@ -28,7 +28,7 @@ object RaportointiDatabase {
   // Jälkimmäinen arvo on skeemasta laskettu tunniste (kts. QueryMethods::getSchemaHash).
   // Testi nimeltä "Schema version has been updated" tarkastaa että versionumeroa päivitetään skeemamuutosten
   // myötä.
-  def schemaVersion: (Int, String) = (18,"7240b4dff8e46d5de792b104722851b1")
+  def schemaVersion: (Int, String) = (19,"dee9178ec27b5f24faeda176b0d0eca1")
 }
 
 class RaportointiDatabase(config: RaportointiDatabaseConfigBase) extends Logging with QueryMethods {
