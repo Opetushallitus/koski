@@ -23,7 +23,7 @@ const getKey = (token: PathToken): string | number =>
   isOptionalProp(token) ? token.key : token
 
 const getValueOrCreate = (t: any, token: PathToken): any =>
-  isOptionalProp(token) ? t?.[token.key] ?? token.onEmpty() : t?.[token]
+  isOptionalProp(token) ? (t?.[token.key] ?? token.onEmpty()) : t?.[token]
 
 export const get =
   <T>(...path: PathToken[]) =>

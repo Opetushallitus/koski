@@ -273,7 +273,6 @@ export class SuoritusjakoForm extends React.Component {
         tabIndex={-1}
         ref={(e) => (this.formSectionElem = e)}
       >
-
         <div className="suoritusjako-form__caption">
           <Text name={'jakolinkki-information-alku'} />
           <ul>

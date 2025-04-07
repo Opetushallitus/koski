@@ -1,4 +1,3 @@
- 
 import { NonEmptyArray } from 'fp-ts/lib/NonEmptyArray'
 import React, { useCallback, useMemo } from 'react'
 import { useAllowedStrings, useSchema } from '../../appstate/constraints'
@@ -181,7 +180,7 @@ export const UusiOpiskeluoikeudenTilaModal = <T extends Opiskeluoikeusjakso>(
     if (errors) {
       // onSubmitista ei tällä implementointihetkellä pitäisi tulla virheitä,
       // joten virheiden näyttämisen voi toteuttaa myöhemmin vasta kun sitä tarvitaan.
-       
+
       console.warn(
         'Käsittelemättömiä validointivirheitä UusiOpiskeluoikeudenTilaModalissa:',
         errors
