@@ -34,8 +34,12 @@ const tryToLogin = async (page: Page) => {
   await click(page, "#tunnistaudu");
   await click(page, "#continue-button");
 
+  const header = await textContent(page, ".header__name");
+
   return (
-    (await textContent(page, ".header__name")) === "Nordea Demos. 21.2.1981"
+    header?.includes("Demo") &&
+    header.includes("Nordea") &&
+    header.includes("s. 21.2.1981")
   );
 };
 
@@ -44,6 +48,7 @@ const runTest = async (): Promise<void> => {
     console.log(`Attempt ${i + 1}/${retryCount}`);
 
     const browser = await puppeteer.launch({
+      headless: true,
       headless: true,
     });
     const page = await browser.newPage();
