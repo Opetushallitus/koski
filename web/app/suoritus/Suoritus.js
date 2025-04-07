@@ -124,7 +124,6 @@ export const newSuoritusProto = (opiskeluoikeus, prototypeKey) => {
   ).oneOfPrototypes
   const selectedProto = prototypes.find((p) => p.key === prototypeKey)
   if (selectedProto === undefined) {
-     
     console.error(
       `newSuoritusProto(): Selected prototype "${prototypeKey}" not found, possible values: ${
         Array.isArray(prototypes)

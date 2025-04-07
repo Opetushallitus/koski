@@ -96,4 +96,5 @@ export const addDaysISO =
       )) ||
     undefined
 
-    export const ensureDate = (d: Date | number): Date => d instanceof Date ? d : new Date(d)
+export const ensureDate = (d: Date | number): Date =>
+  d instanceof Date ? d : new Date(d)

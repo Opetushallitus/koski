@@ -41,7 +41,8 @@ export const isVuosiluokkaTaiPerusopetuksenOppimäärä = (suoritus) =>
     suorituksenTyyppi(suoritus)
   )
 export const isYksilöllistetty = (suoritus) =>
-  modelData(suoritus, 'yksilöllistettyOppimäärä') || modelData(suoritus, 'rajattuOppimäärä')
+  modelData(suoritus, 'yksilöllistettyOppimäärä') ||
+  modelData(suoritus, 'rajattuOppimäärä')
 export const isPainotettu = (suoritus) =>
   modelData(suoritus, 'painotettuOpetus')
 export const isKorotus = (suoritus) => modelData(suoritus, 'korotus')

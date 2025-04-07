@@ -146,6 +146,7 @@ eslint:
 	cd web && npm run lint
 
 .PHONY: prettier
+prettier:
 	cd web && npm run prettier:check
 
 .PHONY: scalastyle

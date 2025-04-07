@@ -7,8 +7,9 @@ import { YleisenKielitutkinnonOsakokeenArviointi } from '../types/fi/oph/koski/s
 
 const YkiArvosanaOrder = ['11', '10', '9', '1', '2', '3', '4', '5', '6']
 
-const YkiArviointiOrd = Ord.contramap((a: YleisenKielitutkinnonOsakokeenArviointi) =>
-  YkiArvosanaOrder.indexOf(a.arvosana.koodiarvo)
+const YkiArviointiOrd = Ord.contramap(
+  (a: YleisenKielitutkinnonOsakokeenArviointi) =>
+    YkiArvosanaOrder.indexOf(a.arvosana.koodiarvo)
 )(number.Ord)
 
 export const ykiParasArvosana = flow(
