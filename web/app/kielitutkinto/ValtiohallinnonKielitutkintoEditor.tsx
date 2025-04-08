@@ -53,10 +53,7 @@ export const ValtionhallinnonKielitutkintoEditor: React.FC<
 
   return suoritus ? (
     <>
-      <ValtiohallinnonKielitutkinnonTiedot
-        päätasonSuoritus={suoritus}
-        tila={form.state.tila}
-      />
+      <ValtiohallinnonKielitutkinnonTiedot päätasonSuoritus={suoritus} />
 
       <Spacer />
 
@@ -86,19 +83,24 @@ export const ValtionhallinnonKielitutkintoEditor: React.FC<
 
 type ValtiohallinnonKielitutkinnonTiedotProps = {
   päätasonSuoritus: ValtionhallinnonKielitutkinnonSuoritus
-  tila: KielitutkinnonOpiskeluoikeudenTila
 }
 
 const ValtiohallinnonKielitutkinnonTiedot: React.FC<
   ValtiohallinnonKielitutkinnonTiedotProps
-> = ({ päätasonSuoritus, tila }) => (
+> = ({ päätasonSuoritus }) => (
   <KeyValueTable>
-    <KeyValueRow localizableLabel="Tutkinto">
+    <KeyValueRow localizableLabel="Tutkinnon taso">
       {t(päätasonSuoritus.koulutusmoduuli.tunniste.nimi)}
     </KeyValueRow>
     <KeyValueRow localizableLabel="Kieli">
       {t(päätasonSuoritus.koulutusmoduuli.kieli.nimi)}
     </KeyValueRow>
+    {päätasonSuoritus.koulutusmoduuli.tunniste.koodiarvo ===
+      'hyvajatyydyttava' && (
+      <KeyValueRow localizableLabel="Tutkintosuorituksen vastaanottaja">
+        {t(päätasonSuoritus.toimipiste.nimi)}
+      </KeyValueRow>
+    )}
   </KeyValueTable>
 )
 
