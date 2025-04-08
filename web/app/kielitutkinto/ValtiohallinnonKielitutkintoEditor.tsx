@@ -123,7 +123,7 @@ const kielitaitoToTableRow = ({
   osasuoritusIndex,
   form
 }: KielitaitoToTableRowParams): OsasuoritusRowData<
-  'Kielitaito' | 'Tutkintopäivä' | 'Arvosana'
+  'Tutkinto' | 'Tutkintopäivä' | 'Arvosana'
 > => {
   const osasuoritusPath = suoritusPath
     .prop('osasuoritukset')
@@ -137,7 +137,7 @@ const kielitaitoToTableRow = ({
     osasuoritusPath: suoritusPath.prop('osasuoritukset').optional(),
     expandable: true,
     columns: {
-      Kielitaito: (
+      Tutkinto: (
         <FormField
           form={form}
           path={osasuoritusPath.path('koulutusmoduuli.tunniste.nimi')}
