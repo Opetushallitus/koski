@@ -129,6 +129,8 @@ trait ValtionhallinnonKielitutkinnonKielitaidonSuoritus extends Suoritus with Va
   @KoodistoKoodiarvo("valtionhallinnonkielitaito")
   def tyyppi: Koodistokoodiviite
   def arviointi: Option[List[ValtionhallinnonKielitutkinnonArviointi]]
+
+  override def kesken: Boolean = !arviointi.exists(_.exists(_.hyväksytty))
 }
 
 trait ValtionhallinnonKielitutkinnonKielitaito extends Koulutusmoduuli {

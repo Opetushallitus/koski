@@ -237,10 +237,19 @@ object ExamplesKielitutkinto {
       }
 
       private def kielitaidonArviointi(osakokeidenArvosanat: List[String], pvm: LocalDate): Option[List[ValtionhallinnonKielitutkinnonArviointi]] =
-        if (osakokeidenArvosanat.contains("hylatty")) None else arviointi(osakokeidenArvosanat.head, pvm)
+        arviointi(Arviointi.huonoinArvosana(osakokeidenArvosanat), pvm)
 
       private def osakokeenArvosana(osakokeidenArvosanat: List[String], index: Int): String =
         osakokeidenArvosanat(index % osakokeidenArvosanat.length)
+    }
+
+    object Arviointi {
+      val arvosanajärjestys = List("hylatty", "tyydyttava", "hyva", "erinomainen")
+      implicit val order: Ordering[String] = Ordering.fromLessThan(
+        (a: String, b: String) => arvosanajärjestys.indexOf(a) < arvosanajärjestys.indexOf(b)
+      )
+
+      def huonoinArvosana(arvosanat: List[String]) = arvosanat.min
     }
   }
 
