@@ -34,6 +34,7 @@ import { CHARCODE_ADD, Icon } from '../texts/Icon'
 import { Trans } from '../texts/Trans'
 import { isEmptyModelObject } from '../../util/objects'
 import { PathToken } from '../../util/laxModify'
+import { useVirkailijaUser } from '../../appstate/user'
 
 export type EditorContainerProps<T extends Opiskeluoikeus> =
   CommonPropsWithChildren<{
@@ -55,6 +56,7 @@ export type EditorContainerProps<T extends Opiskeluoikeus> =
     suorituksetVahvistettu?: boolean
     lisätiedotContainer?: React.FC<any>
     opiskeluoikeudenTilaEditor?: React.ReactNode
+    hideOpiskeluoikeusVoimassaoloaika?: boolean
   }>
 
 export type ActivePäätasonSuoritus<
@@ -71,6 +73,7 @@ export type ActivePäätasonSuoritus<
 export const EditorContainer = <T extends Opiskeluoikeus>(
   props: EditorContainerProps<T>
 ) => {
+  const virkailija = useVirkailijaUser()
   useConfirmUnload(props.form.editMode && props.form.hasChanged)
 
   const opiskeluoikeudenTilaPath = useMemo(
@@ -148,14 +151,17 @@ export const EditorContainer = <T extends Opiskeluoikeus>(
   return (
     <article {...common(props, ['EditorContainer'])}>
       <TestIdLayer id="opiskeluoikeus">
-        <OpiskeluoikeusEditToolbar
-          opiskeluoikeus={props.form.state}
-          editMode={props.form.editMode}
-          invalidatable={props.invalidatable}
-          onStartEdit={props.form.startEdit}
-        />
-
-        <Spacer />
+        {(!props.hideOpiskeluoikeusVoimassaoloaika || virkailija) && (
+          <>
+            <OpiskeluoikeusEditToolbar
+              opiskeluoikeus={props.form.state}
+              editMode={props.form.editMode}
+              invalidatable={props.invalidatable}
+              onStartEdit={props.form.startEdit}
+            />
+            <Spacer />
+          </>
+        )}
 
         {props.opiskeluoikeudenTilaEditor || (
           <>

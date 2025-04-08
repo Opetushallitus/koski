@@ -67,6 +67,7 @@ const KielitutkinnonPäätasonSuoritusEditor: React.FC<
       }
       testId={päätasonSuoritus.testId}
       opiskeluoikeudenTilaEditor={form.editMode ? null : <></>} // Piilota tilaeditori näyttökäyttöliittymästä
+      hideOpiskeluoikeusVoimassaoloaika
     >
       {hasPäätasonsuoritusOf(
         isYleisenKielitutkinnonSuoritus,
