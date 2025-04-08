@@ -49,7 +49,6 @@ const runTest = async (): Promise<void> => {
 
     const browser = await puppeteer.launch({
       headless: true,
-      headless: true,
     });
     const page = await browser.newPage();
     const resultOk = await tryToLogin(page);
