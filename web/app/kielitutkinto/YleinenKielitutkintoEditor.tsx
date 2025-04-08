@@ -109,7 +109,7 @@ const YleisenKielitutkinnonOsanSuoritusEditor: React.FC<
   )
 }
 
-const getJaksonAlkupäivä = (
+export const getJaksonAlkupäivä = (
   tila: KielitutkinnonOpiskeluoikeudenTila,
   koodiarvo: string
 ): string | undefined =>

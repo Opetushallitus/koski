@@ -13,7 +13,12 @@ import { KielitutkinnonOpiskeluoikeus } from '../types/fi/oph/koski/schema/Kieli
 import { isValtionhallinnonKielitutkinnonSuoritus } from '../types/fi/oph/koski/schema/ValtionhallinnonKielitutkinnonSuoritus'
 import { isYleisenKielitutkinnonSuoritus } from '../types/fi/oph/koski/schema/YleisenKielitutkinnonSuoritus'
 import { ValtionhallinnonKielitutkintoEditor } from './ValtiohallinnonKielitutkintoEditor'
-import { YleinenKielitutkintoEditor } from './YleinenKielitutkintoEditor'
+import {
+  getJaksonAlkupäivä,
+  YleinenKielitutkintoEditor
+} from './YleinenKielitutkintoEditor'
+import { t } from '../i18n/i18n'
+import { ISO2FinnishDate } from '../date/date'
 
 export type KielitutkintoEditorProps =
   AdaptedOpiskeluoikeusEditorProps<KielitutkinnonOpiskeluoikeus>
@@ -24,11 +29,18 @@ export const KielitutkintoEditor: React.FC<KielitutkintoEditorProps> = (
   const opiskeluoikeusSchema = useSchema('KielitutkinnonOpiskeluoikeus')
   const form = useForm(props.opiskeluoikeus, false, opiskeluoikeusSchema)
 
+  const tutkinnonTyyppi = t(form.state.suoritukset[0].tyyppi.nimi)
+  const kieli = t(form.state.suoritukset[0].koulutusmoduuli.kieli.nimi)
+  const tutkintopäivä = ISO2FinnishDate(
+    getJaksonAlkupäivä(form.state.tila, 'lasna')
+  )
+
   return (
     <>
       <OpiskeluoikeusTitle
         opiskeluoikeus={form.state}
-        opiskeluoikeudenNimi="kielitutkinto"
+        opiskeluoikeudenNimi={`${tutkinnonTyyppi}, ${kieli}`}
+        pvmJaTila={tutkintopäivä}
       />
       <KielitutkinnonPäätasonSuoritusEditor {...props} form={form} />
     </>

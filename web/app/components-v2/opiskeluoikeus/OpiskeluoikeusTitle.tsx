@@ -24,6 +24,7 @@ export type OpiskeluoikeusTitleProps = CommonProps<{
   // Nämä propertyt ylikirjoittavat opiskeluoikeudesta oletuksena tulkittavat arvot:
   oppilaitos?: string
   opiskeluoikeudenNimi?: string
+  pvmJaTila?: string
 }>
 
 const join = (...as: Array<string | undefined>) => as.filter(nonNull).join(', ')
@@ -47,17 +48,18 @@ export const OpiskeluoikeusTitle = (props: OpiskeluoikeusTitleProps) => {
       ? yearFromIsoDateString(props.opiskeluoikeus.päättymispäivä)
       : undefined
 
-  const vuodet =
+  const vuodet = () =>
     vainYhdenPäättävänTilanVuosi ||
     formatYearRange(
       props.opiskeluoikeus.alkamispäivä,
       props.opiskeluoikeus.päättymispäivä
     )
 
-  const aikaväliJaTila = join(
-    vuodet,
-    t(viimeisinOpiskelujaksonTila(props.opiskeluoikeus.tila)?.nimi)
-  )
+  const aikaväliJaTila = () =>
+    join(
+      vuodet(),
+      t(viimeisinOpiskelujaksonTila(props.opiskeluoikeus.tila)?.nimi)
+    )
 
   const oid: string | undefined = (props.opiskeluoikeus as any).oid
 
@@ -79,7 +81,7 @@ export const OpiskeluoikeusTitle = (props: OpiskeluoikeusTitleProps) => {
         >
           <TestIdText id="nimi">
             {otsikkoteksti} {'('}
-            <Lowercase>{aikaväliJaTila}</Lowercase>
+            <Lowercase>{props.pvmJaTila || aikaväliJaTila()}</Lowercase>
             {')'}
           </TestIdText>
         </Column>
