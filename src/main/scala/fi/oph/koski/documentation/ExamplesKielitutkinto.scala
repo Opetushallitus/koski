@@ -141,7 +141,7 @@ object ExamplesKielitutkinto {
         toimipiste = OidOrganisaatio(MockOrganisaatiot.varsinaisSuomenKansanopistoToimipiste),
         vahvistus = if (osakokeidenArvosanat.contains("hylatty")) None else Some(Päivämäärävahvistus(
           päivä = arviointipäivä,
-          myöntäjäOrganisaatio = OidOrganisaatio(MockOrganisaatiot.helsinginKaupunki),
+          myöntäjäOrganisaatio = OidOrganisaatio(MockOrganisaatiot.varsinaisSuomenKansanopistoToimipiste),
         )),
         osasuoritukset = Some(kielitaidot.map {
           case "kirjallinen" => Kielitaidot.Kirjallinen.suoritus(arviointipäivä, osakokeidenArvosanat)
@@ -188,24 +188,27 @@ object ExamplesKielitutkinto {
           ValtionhallinnonKielitutkinnonKirjallisenKielitaidonSuoritus(
             koulutusmoduuli = ValtionhallinnonKielitutkinnonKirjallinenKielitaito(),
             osasuoritukset = Some(List(
-              osakoe("kirjoittaminen", osakokeenArvosana(osakokeidenArvosanat, 0), pvm),
-              osakoe("tekstinymmartaminen", osakokeenArvosana(osakokeidenArvosanat, 1), pvm),
+              osakoe("kirjoittaminen", List(
+                "hylatty",
+                osakokeenArvosana(osakokeidenArvosanat, 0),
+              ), pvm),
+              osakoe("tekstinymmartaminen", List(osakokeenArvosana(osakokeidenArvosanat, 1)), pvm),
             )),
             arviointi = kielitaidonArviointi(osakokeidenArvosanat, pvm),
           )
 
-        def osakoe(osakoe: String, arvosana: String, arviointiPäivä: LocalDate): ValtionhallinnonKielitutkinnonKirjallisenKielitaidonOsakokeenSuoritus =
+        def osakoe(osakoe: String, arvosanat: List[String], arviointiPäivä: LocalDate): ValtionhallinnonKielitutkinnonKirjallisenKielitaidonOsakokeenSuoritus =
           ValtionhallinnonKielitutkinnonKirjallisenKielitaidonOsakokeenSuoritus(
             koulutusmoduuli = osakoe match {
               case "kirjoittaminen" => ValtionhallinnonKirjoittamisenOsakoe()
               case "tekstinymmartaminen" => ValtionhallinnonTekstinYmmärtämisenOsakoe()
             },
-            arviointi = Some(List(
+            arviointi = Some(arvosanat.zipWithIndex.map { case (arvosana, index) =>
               ValtionhallinnonKielitutkinnonArviointi(
                 arvosana = Koodistokoodiviite(arvosana, "vktarvosana"),
-                päivä = arviointiPäivä,
+                päivä = arviointiPäivä.plusMonths(index),
               )
-            ))
+            }),
           )
       }
 

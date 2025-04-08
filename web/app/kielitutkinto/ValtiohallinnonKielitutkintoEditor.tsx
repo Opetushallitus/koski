@@ -34,6 +34,9 @@ import { Oppilaitos } from '../types/fi/oph/koski/schema/Oppilaitos'
 import { ValtionhallinnonKielitutkinnonKielitaidonSuoritus } from '../types/fi/oph/koski/schema/ValtionhallinnonKielitutkinnonKielitaidonSuoritus'
 import { ValtionhallinnonKielitutkinnonSuoritus } from '../types/fi/oph/koski/schema/ValtionhallinnonKielitutkinnonSuoritus'
 import { OsasuoritusOf } from '../util/schema'
+import { ValtionhallinnonKielitutkinnonKirjallisenKielitaidonOsakokeenSuoritus } from '../types/fi/oph/koski/schema/ValtionhallinnonKielitutkinnonKirjallisenKielitaidonOsakokeenSuoritus'
+import { ValtionhallinnonKielitutkinnonArviointi } from '../types/fi/oph/koski/schema/ValtionhallinnonKielitutkinnonArviointi'
+import { ISO2FinnishDate } from '../date/date'
 
 export type ValtionhallinnonKielitutkintoEditorProps = {
   form: FormModel<KielitutkinnonOpiskeluoikeus>
@@ -120,7 +123,7 @@ const kielitaitoToTableRow = ({
   osasuoritusIndex,
   form
 }: KielitaitoToTableRowParams): OsasuoritusRowData<
-  'Kielitaito' | 'Arviointipäivä' | 'Arvosana'
+  'Kielitaito' | 'Tutkintopäivä' | 'Arvosana'
 > => {
   const osasuoritusPath = suoritusPath
     .prop('osasuoritukset')
@@ -142,7 +145,7 @@ const kielitaitoToTableRow = ({
           testId="nimi"
         />
       ),
-      Arviointipäivä: (
+      Tutkintopäivä: (
         <FormField
           form={form}
           path={osasuoritusPath.path('arviointi')}
@@ -226,7 +229,7 @@ const osakoeToTableRow = ({
   osasuoritusIndex,
   form
 }: OsakoeToTableRowParams): OsasuoritusRowData<
-  'Osakoe' | 'Arviointipäivä' | 'Arvosana'
+  'Osakoe' | 'Tutkintopäivä' | 'Arvosana'
 > => {
   const osakoePath = kielitaidonSuoritusPath
     .prop('osasuoritukset')
@@ -238,7 +241,7 @@ const osakoeToTableRow = ({
     suoritusIndex,
     osasuoritusIndex,
     osasuoritusPath: kielitaidonSuoritusPath.prop('osasuoritukset').optional(),
-    expandable: false,
+    expandable: !!osakoe?.arviointi,
     columns: {
       Osakoe: (
         <FormField
@@ -248,7 +251,7 @@ const osakoeToTableRow = ({
           testId="nimi"
         />
       ),
-      Arviointipäivä: (
+      Tutkintopäivä: (
         <FormField
           form={form}
           path={osakoePath.path('arviointi')}
@@ -267,8 +270,37 @@ const osakoeToTableRow = ({
           }}
         />
       )
-    }
+    },
+    content: osakoe?.arviointi ? (
+      <OsakokeenArvioinnit arvioinnit={osakoe?.arviointi} />
+    ) : undefined
   }
+}
+
+type OsakokeenArvioinnitProps = {
+  arvioinnit: ValtionhallinnonKielitutkinnonArviointi[]
+}
+
+const OsakokeenArvioinnit: React.FC<OsakokeenArvioinnitProps> = ({
+  arvioinnit
+}) => {
+  const indentation = 4
+  return (
+    <>
+      <Spacer />
+      {arvioinnit.map((arviointi, index) => (
+        <KeyValueTable key={index}>
+          <KeyValueRow localizableLabel="Arvosana" indent={indentation}>
+            {t(arviointi.arvosana.nimi)}
+          </KeyValueRow>
+          <KeyValueRow localizableLabel="Arviointipäivä" indent={indentation}>
+            {ISO2FinnishDate(arviointi.päivä)}
+          </KeyValueRow>
+        </KeyValueTable>
+      ))}
+      <Spacer />
+    </>
+  )
 }
 
 const isCompletedSuoritus =
