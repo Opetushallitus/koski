@@ -25,7 +25,7 @@ import {
   OsasuoritusRowData,
   OsasuoritusTable
 } from '../components-v2/opiskeluoikeus/OsasuoritusTable'
-import { SuorituksenVahvistusField } from '../components-v2/opiskeluoikeus/SuorituksenVahvistus'
+import { SuorituksenVahvistus } from '../components-v2/opiskeluoikeus/SuorituksenVahvistus'
 import { t } from '../i18n/i18n'
 import { KielitutkinnonOpiskeluoikeudenTila } from '../types/fi/oph/koski/schema/KielitutkinnonOpiskeluoikeudenTila'
 import { KielitutkinnonOpiskeluoikeus } from '../types/fi/oph/koski/schema/KielitutkinnonOpiskeluoikeus'
@@ -60,10 +60,10 @@ export const ValtionhallinnonKielitutkintoEditor: React.FC<
 
       <Spacer />
 
-      <SuorituksenVahvistusField
-        form={form}
-        suoritusPath={päätasonSuoritus.path}
-        organisaatio={organisaatio}
+      <SuorituksenVahvistus
+        vahvistus={suoritus.vahvistus}
+        suoritettuText={t('Suoritettu')}
+        hideVahvistus
       />
 
       <Spacer />

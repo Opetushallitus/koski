@@ -1,25 +1,21 @@
 import React from 'react'
+import { ActivePäätasonSuoritus } from '../components-v2/containers/EditorContainer'
 import {
   KeyValueRow,
   KeyValueTable
 } from '../components-v2/containers/KeyValueTable'
-import {
-  FormModel,
-  FormOptic,
-  getValue
-} from '../components-v2/forms/FormModel'
+import { FormModel, getValue } from '../components-v2/forms/FormModel'
 import { Spacer } from '../components-v2/layout/Spacer'
+import { SuorituksenVahvistus } from '../components-v2/opiskeluoikeus/SuorituksenVahvistus'
 import { ISO2FinnishDate } from '../date/date'
 import { t } from '../i18n/i18n'
+import { KielitutkinnonOpiskeluoikeudenTila } from '../types/fi/oph/koski/schema/KielitutkinnonOpiskeluoikeudenTila'
 import { KielitutkinnonOpiskeluoikeus } from '../types/fi/oph/koski/schema/KielitutkinnonOpiskeluoikeus'
+import { Koulutustoimija } from '../types/fi/oph/koski/schema/Koulutustoimija'
+import { Oppilaitos } from '../types/fi/oph/koski/schema/Oppilaitos'
+import { YleisenKielitutkinnonOsakokeenSuoritus } from '../types/fi/oph/koski/schema/YleisenKielitutkinnonOsakokeenSuoritus'
 import { YleisenKielitutkinnonSuoritus } from '../types/fi/oph/koski/schema/YleisenKielitutkinnonSuoritus'
 import { ykiParasArvosana } from './yleinenKielitutkinto'
-import { SuorituksenVahvistusField } from '../components-v2/opiskeluoikeus/SuorituksenVahvistus'
-import { ActivePäätasonSuoritus } from '../components-v2/containers/EditorContainer'
-import { Oppilaitos } from '../types/fi/oph/koski/schema/Oppilaitos'
-import { Koulutustoimija } from '../types/fi/oph/koski/schema/Koulutustoimija'
-import { KielitutkinnonOpiskeluoikeudenTila } from '../types/fi/oph/koski/schema/KielitutkinnonOpiskeluoikeudenTila'
-import { YleisenKielitutkinnonOsakokeenSuoritus } from '../types/fi/oph/koski/schema/YleisenKielitutkinnonOsakokeenSuoritus'
 
 export type YleinenKielitutkintoEditorProps = {
   form: FormModel<KielitutkinnonOpiskeluoikeus>
@@ -45,10 +41,10 @@ export const YleinenKielitutkintoEditor: React.FC<
 
       <Spacer />
 
-      <SuorituksenVahvistusField
-        form={form}
-        suoritusPath={päätasonSuoritus.path}
-        organisaatio={organisaatio}
+      <SuorituksenVahvistus
+        vahvistus={suoritus.vahvistus}
+        suoritettuText={t('Suoritettu')}
+        hideVahvistus
       />
 
       <Spacer />

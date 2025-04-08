@@ -41,6 +41,7 @@ export type SuorituksenVahvistusFieldProps<
   organisaatio?: Oppilaitos | Koulutustoimija
   disableAdd?: boolean
   disableRemoval?: boolean
+  suoritettuText?: string
 }>
 
 export const SuorituksenVahvistusField = <
@@ -164,9 +165,14 @@ export const SuorituksenVahvistusEdit = <T extends Vahvistus>({
 
 type SuorituksenVahvistusProps = CommonPropsWithChildren<{
   vahvistus?: Vahvistus
+  suoritettuText?: string
+  keskenText?: string
+  hideVahvistus?: boolean
 }>
 
-const SuorituksenVahvistus: React.FC<SuorituksenVahvistusProps> = (props) => {
+export const SuorituksenVahvistus: React.FC<SuorituksenVahvistusProps> = (
+  props
+) => {
   const { vahvistus } = props
   const myöntäjäHenkilöt = useMemo(
     () =>
@@ -187,10 +193,12 @@ const SuorituksenVahvistus: React.FC<SuorituksenVahvistusProps> = (props) => {
     >
       <div className="SuorituksenVahvistus__status">
         <TestIdText id="status">
-          {vahvistus ? t('Suoritus valmis') : t('Suoritus kesken')}
+          {vahvistus
+            ? props.suoritettuText || t('Suoritus valmis')
+            : props.keskenText || t('Suoritus kesken')}
         </TestIdText>
       </div>
-      {vahvistus && (
+      {vahvistus && !props.hideVahvistus && (
         <>
           <div className="SuorituksenVahvistus__vahvistus">
             <TestIdText id="details">
