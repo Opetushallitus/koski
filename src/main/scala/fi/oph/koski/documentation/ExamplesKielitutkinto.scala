@@ -2,6 +2,7 @@ package fi.oph.koski.documentation
 
 import fi.oph.koski.henkilo.MockOppijat.asUusiOppija
 import fi.oph.koski.henkilo.{KoskiSpecificMockOppijat, LaajatOppijaHenkilöTiedot}
+import fi.oph.koski.koskiuser.MockUsers.varsinaisSuomiKoulutustoimija
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.schema._
 
@@ -139,9 +140,16 @@ object ExamplesKielitutkinto {
           kieli = Koodistokoodiviite(kieli, "kieli"),
         ),
         toimipiste = OidOrganisaatio(MockOrganisaatiot.varsinaisSuomenKansanopistoToimipiste),
-        vahvistus = if (osakokeidenArvosanat.contains("hylatty")) None else Some(Päivämäärävahvistus(
+        vahvistus = if (osakokeidenArvosanat.contains("hylatty")) None else Some(HenkilövahvistusValinnaisellaTittelilläJaValinnaisellaPaikkakunnalla(
           päivä = arviointipäivä,
           myöntäjäOrganisaatio = OidOrganisaatio(MockOrganisaatiot.varsinaisSuomenKansanopistoToimipiste),
+          myöntäjäHenkilöt = List(
+            OrganisaatiohenkilöValinnaisellaTittelillä(
+              nimi = "Vallu Vastaanottaja",
+              organisaatio = OidOrganisaatio(MockOrganisaatiot.varsinaisSuomenKansanopistoToimipiste),
+            )
+          ),
+          paikkakunta = Some(Koodistokoodiviite("853", "kunta")),
         )),
         osasuoritukset = Some(kielitaidot.map {
           case "kirjallinen" => Kielitaidot.Kirjallinen.suoritus(arviointipäivä, osakokeidenArvosanat)

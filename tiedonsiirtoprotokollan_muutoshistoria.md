@@ -1,4 +1,4 @@
-## x.4.2025
+## xx.4.2025
 
 - Lisätty kielitutkinnon opiskeluoikeuteen valtionhallinon kielitutkinnot
 

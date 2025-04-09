@@ -90,22 +90,31 @@ type ValtiohallinnonKielitutkinnonTiedotProps = {
 
 const ValtiohallinnonKielitutkinnonTiedot: React.FC<
   ValtiohallinnonKielitutkinnonTiedotProps
-> = ({ päätasonSuoritus }) => (
-  <KeyValueTable>
-    <KeyValueRow localizableLabel="Tutkinnon taso">
-      {t(päätasonSuoritus.koulutusmoduuli.tunniste.nimi)}
-    </KeyValueRow>
-    <KeyValueRow localizableLabel="Kieli">
-      {t(päätasonSuoritus.koulutusmoduuli.kieli.nimi)}
-    </KeyValueRow>
-    {päätasonSuoritus.koulutusmoduuli.tunniste.koodiarvo ===
-      'hyvajatyydyttava' && (
-      <KeyValueRow localizableLabel="Tutkintosuorituksen vastaanottaja">
-        {t(päätasonSuoritus.toimipiste.nimi)}
+> = ({ päätasonSuoritus }) => {
+  const vastaanottajat = päätasonSuoritus.vahvistus?.myöntäjäHenkilöt
+
+  return (
+    <KeyValueTable>
+      <KeyValueRow localizableLabel="Tutkinnon taso">
+        {t(päätasonSuoritus.koulutusmoduuli.tunniste.nimi)}
       </KeyValueRow>
-    )}
-  </KeyValueTable>
-)
+      <KeyValueRow localizableLabel="Kieli">
+        {t(päätasonSuoritus.koulutusmoduuli.kieli.nimi)}
+      </KeyValueRow>
+      {päätasonSuoritus.koulutusmoduuli.tunniste.koodiarvo ===
+        'hyvajatyydyttava' && (
+        <>
+          <KeyValueRow localizableLabel="Tutkintosuorituksen vastaanottaja">
+            {vastaanottajat && vastaanottajat.map((v) => v.nimi).join(', ')}
+          </KeyValueRow>
+          <KeyValueRow localizableLabel="Suorituspaikkakunta">
+            {t(päätasonSuoritus.vahvistus?.paikkakunta?.nimi)}
+          </KeyValueRow>
+        </>
+      )}
+    </KeyValueTable>
+  )
+}
 
 type KielitaitoToTableRowParams = {
   form: FormModel<KielitutkinnonOpiskeluoikeus>

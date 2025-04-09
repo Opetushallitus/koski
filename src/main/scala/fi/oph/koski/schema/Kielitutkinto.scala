@@ -102,7 +102,7 @@ case class ValtionhallinnonKielitutkinnonSuoritus(
   @Title("Koulutus")
   koulutusmoduuli: ValtionhallinnonKielitutkinto,
   toimipiste: OrganisaatioWithOid,
-  vahvistus: Option[Päivämäärävahvistus] = None,
+  vahvistus: Option[HenkilövahvistusValinnaisellaTittelilläJaValinnaisellaPaikkakunnalla] = None,
   override val osasuoritukset: Option[List[ValtionhallinnonKielitutkinnonKielitaidonSuoritus]],
   @KoodistoKoodiarvo("valtionhallinnonkielitutkinto")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("valtionhallinnonkielitutkinto", koodistoUri = "suorituksentyyppi"),
