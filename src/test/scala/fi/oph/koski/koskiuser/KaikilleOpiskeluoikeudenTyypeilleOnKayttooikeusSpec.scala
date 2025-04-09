@@ -7,7 +7,7 @@ import org.scalatest.matchers.should.Matchers
 
 class KaikilleOpiskeluoikeudenTyypeilleOnKayttooikeusSpec extends AnyFreeSpec with TestEnvironment with Matchers {
   "Kaikille opiskeluoikeuden tyypeille on määritelty Koskessa rooli" in {
-    OpiskeluoikeudenTyyppi.kaikkiTyypit.map(_.koodiarvo) should equal(Set(
+    OpiskeluoikeudenTyyppi.kaikkiTyypit(true).map(_.koodiarvo) should equal(Set(
       Rooli.AIKUISTENPERUSOPETUS,
       Rooli.AMMATILLINENKOULUTUS,
       Rooli.DIATUTKINTO,

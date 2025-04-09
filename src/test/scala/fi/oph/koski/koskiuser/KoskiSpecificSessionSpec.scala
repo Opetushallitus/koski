@@ -68,7 +68,7 @@ class KoskiSpecificSessionSpec
         createAndVerifySession("kalle", MockUsers.kalle.ldapUser)
       }
       "pääkäyttäjä" in {
-        val session = createAndVerifySession("pää", MockUsers.paakayttaja.ldapUser)
+        val session = createAndVerifySession("pää", MockUsers.paakayttaja.ldapUser, isRoot = true)
         session.hasGlobalReadAccess should be(true)
         session.isRoot should be(true)
         session.hasTiedonsiirronMitätöintiAccess(helsinginKaupunki, None)
@@ -153,7 +153,7 @@ class KoskiSpecificSessionSpec
     }
   }
 
-  private def createAndVerifySession(username: String, expected: DirectoryUser) = {
+  private def createAndVerifySession(username: String, expected: DirectoryUser, isRoot: Boolean = false) = {
     val authUser = AuthenticationUser.fromDirectoryUser(username, expected)
     val session = KoskiSpecificSession(authUser, req, käyttöoikeusRepository)
 
@@ -172,7 +172,7 @@ class KoskiSpecificSessionSpec
 
     val expectedAllowedOpiskeluoikeudenTyypit = expectedKäyttöoikeudet.flatMap(_.allowedOpiskeluoikeusTyypit)
     session.allowedOpiskeluoikeusTyypit should be(expectedAllowedOpiskeluoikeudenTyypit)
-    session.hasKoulutusmuotoRestrictions should be(expectedAllowedOpiskeluoikeudenTyypit != OpiskeluoikeudenTyyppi.kaikkiTyypit.map(_.koodiarvo))
+    session.hasKoulutusmuotoRestrictions should be(expectedAllowedOpiskeluoikeudenTyypit != OpiskeluoikeudenTyyppi.kaikkiTyypit(isRoot).map(_.koodiarvo))
     session
   }
 

@@ -2,7 +2,6 @@ package fi.oph.koski.documentation
 
 import fi.oph.koski.henkilo.MockOppijat.asUusiOppija
 import fi.oph.koski.henkilo.{KoskiSpecificMockOppijat, LaajatOppijaHenkilöTiedot}
-import fi.oph.koski.koskiuser.MockUsers.varsinaisSuomiKoulutustoimija
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.schema._
 

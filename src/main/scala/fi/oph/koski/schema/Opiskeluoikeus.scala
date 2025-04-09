@@ -150,6 +150,7 @@ trait Opiskeluoikeus extends Lähdejärjestelmällinen with OrganisaatioonLiitty
 
 object OpiskeluoikeudenTyyppi {
   private var tyypit: Set[Koodistokoodiviite] = Set()
+  private var rootUserTyypit: Set[Koodistokoodiviite] = Set()
 
   val aikuistenperusopetus = apply("aikuistenperusopetus")
   val ammatillinenkoulutus = apply("ammatillinenkoulutus")
@@ -170,15 +171,20 @@ object OpiskeluoikeudenTyyppi {
   val ebtutkinto = apply("ebtutkinto")
   val muukuinsaanneltykoulutus = apply("muukuinsaanneltykoulutus")
   val taiteenperusopetus = apply("taiteenperusopetus")
-  val kielitutkinto = apply("kielitutkinto")
+  val kielitutkinto = apply("kielitutkinto", vainGlobalUser = true)
 
-  private def apply(koodiarvo: String): Koodistokoodiviite = {
+  private def apply(koodiarvo: String, vainGlobalUser: Boolean = false): Koodistokoodiviite = {
     val tyyppi = Koodistokoodiviite(koodiarvo, "opiskeluoikeudentyyppi")
-    tyypit = tyypit + tyyppi
+    if (vainGlobalUser) {
+      rootUserTyypit += tyyppi
+    } else {
+      tyypit += tyyppi
+    }
     tyyppi
   }
 
-  def kaikkiTyypit: Set[Koodistokoodiviite] = tyypit
+  def kaikkiTyypit(isRootUser: Boolean): Set[Koodistokoodiviite] =
+    if (isRootUser) tyypit ++ rootUserTyypit else tyypit
 }
 
 trait KoskeenTallennettavaOpiskeluoikeus extends Opiskeluoikeus with LähdejärjestelmäkytkentäPurettavissa {
