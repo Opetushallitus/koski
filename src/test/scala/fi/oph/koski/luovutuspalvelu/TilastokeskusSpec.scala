@@ -87,7 +87,7 @@ class TilastokeskusSpec extends AnyFreeSpec with KoskiHttpSpec with Opiskeluoike
     }
 
     "Sivuttaa" in {
-      resetFixtures
+      resetFixtures()
       val total = kaikkiOppijat.length
       total should be > 0
       (3 to total by 9).foreach { pageSize =>
