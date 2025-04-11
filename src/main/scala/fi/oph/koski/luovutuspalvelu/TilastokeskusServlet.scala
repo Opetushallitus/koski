@@ -13,7 +13,7 @@ import fi.oph.koski.log._
 import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusQueryFilter.{NotSuorituksenTyyppi, Poistettu}
 import fi.oph.koski.opiskeluoikeus.{OpiskeluoikeusQueryContext, OpiskeluoikeusQueryFilter, QueryOppijaHenkilö}
 import fi.oph.koski.schema.Henkilö.Oid
-import fi.oph.koski.schema.SuorituksenTyyppi.{vstosaamismerkki, vstvapaatavoitteinenkoulutus}
+import fi.oph.koski.schema.SuorituksenTyyppi.{valtionhallinnonKielitutkinto, vstosaamismerkki, vstvapaatavoitteinenkoulutus, yleinenKielitutkinto}
 import fi.oph.koski.schema._
 import fi.oph.koski.servlet.{KoskiSpecificApiServlet, NoCache, ObservableSupport}
 import fi.oph.koski.util.SortOrder.Ascending
@@ -45,6 +45,8 @@ case class TilastokeskusQueryContext(request: HttpServletRequest)(implicit koski
   val extraFilters = List(
     NotSuorituksenTyyppi(vstvapaatavoitteinenkoulutus),
     NotSuorituksenTyyppi(vstosaamismerkki),
+    NotSuorituksenTyyppi(yleinenKielitutkinto),
+    NotSuorituksenTyyppi(valtionhallinnonKielitutkinto),
     Poistettu(false)
   )
 

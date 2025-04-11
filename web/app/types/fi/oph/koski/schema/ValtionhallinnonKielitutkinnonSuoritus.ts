@@ -3,7 +3,7 @@ import { LocalizedString } from './LocalizedString'
 import { ValtionhallinnonKielitutkinto } from './ValtionhallinnonKielitutkinto'
 import { OrganisaatioWithOid } from './OrganisaatioWithOid'
 import { ValtionhallinnonKielitutkinnonKielitaidonSuoritus } from './ValtionhallinnonKielitutkinnonKielitaidonSuoritus'
-import { Päivämäärävahvistus } from './Paivamaaravahvistus'
+import { HenkilövahvistusValinnaisellaTittelilläJaValinnaisellaPaikkakunnalla } from './HenkilovahvistusValinnaisellaTittelillaJaValinnaisellaPaikkakunnalla'
 
 /**
  * ValtionhallinnonKielitutkinnonSuoritus
@@ -20,7 +20,7 @@ export type ValtionhallinnonKielitutkinnonSuoritus = {
   koulutusmoduuli: ValtionhallinnonKielitutkinto
   toimipiste: OrganisaatioWithOid
   osasuoritukset?: Array<ValtionhallinnonKielitutkinnonKielitaidonSuoritus>
-  vahvistus?: Päivämäärävahvistus
+  vahvistus?: HenkilövahvistusValinnaisellaTittelilläJaValinnaisellaPaikkakunnalla
 }
 
 export const ValtionhallinnonKielitutkinnonSuoritus = (o: {
@@ -32,7 +32,7 @@ export const ValtionhallinnonKielitutkinnonSuoritus = (o: {
   koulutusmoduuli: ValtionhallinnonKielitutkinto
   toimipiste: OrganisaatioWithOid
   osasuoritukset?: Array<ValtionhallinnonKielitutkinnonKielitaidonSuoritus>
-  vahvistus?: Päivämäärävahvistus
+  vahvistus?: HenkilövahvistusValinnaisellaTittelilläJaValinnaisellaPaikkakunnalla
 }): ValtionhallinnonKielitutkinnonSuoritus => ({
   tyyppi: Koodistokoodiviite({
     koodiarvo: 'valtionhallinnonkielitutkinto',

@@ -139,9 +139,16 @@ object ExamplesKielitutkinto {
           kieli = Koodistokoodiviite(kieli, "kieli"),
         ),
         toimipiste = OidOrganisaatio(MockOrganisaatiot.varsinaisSuomenKansanopistoToimipiste),
-        vahvistus = if (osakokeidenArvosanat.contains("hylatty")) None else Some(Päivämäärävahvistus(
+        vahvistus = if (osakokeidenArvosanat.contains("hylatty")) None else Some(HenkilövahvistusValinnaisellaTittelilläJaValinnaisellaPaikkakunnalla(
           päivä = arviointipäivä,
-          myöntäjäOrganisaatio = OidOrganisaatio(MockOrganisaatiot.helsinginKaupunki),
+          myöntäjäOrganisaatio = OidOrganisaatio(MockOrganisaatiot.varsinaisSuomenKansanopistoToimipiste),
+          myöntäjäHenkilöt = List(
+            OrganisaatiohenkilöValinnaisellaTittelillä(
+              nimi = "Vallu Vastaanottaja",
+              organisaatio = OidOrganisaatio(MockOrganisaatiot.varsinaisSuomenKansanopistoToimipiste),
+            )
+          ),
+          paikkakunta = Some(Koodistokoodiviite("853", "kunta")),
         )),
         osasuoritukset = Some(kielitaidot.map {
           case "kirjallinen" => Kielitaidot.Kirjallinen.suoritus(arviointipäivä, osakokeidenArvosanat)
@@ -188,24 +195,27 @@ object ExamplesKielitutkinto {
           ValtionhallinnonKielitutkinnonKirjallisenKielitaidonSuoritus(
             koulutusmoduuli = ValtionhallinnonKielitutkinnonKirjallinenKielitaito(),
             osasuoritukset = Some(List(
-              osakoe("kirjoittaminen", osakokeenArvosana(osakokeidenArvosanat, 0), pvm),
-              osakoe("tekstinymmartaminen", osakokeenArvosana(osakokeidenArvosanat, 1), pvm),
+              osakoe("kirjoittaminen", List(
+                "hylatty",
+                osakokeenArvosana(osakokeidenArvosanat, 0),
+              ), pvm),
+              osakoe("tekstinymmartaminen", List(osakokeenArvosana(osakokeidenArvosanat, 1)), pvm),
             )),
             arviointi = kielitaidonArviointi(osakokeidenArvosanat, pvm),
           )
 
-        def osakoe(osakoe: String, arvosana: String, arviointiPäivä: LocalDate): ValtionhallinnonKielitutkinnonKirjallisenKielitaidonOsakokeenSuoritus =
+        def osakoe(osakoe: String, arvosanat: List[String], arviointiPäivä: LocalDate): ValtionhallinnonKielitutkinnonKirjallisenKielitaidonOsakokeenSuoritus =
           ValtionhallinnonKielitutkinnonKirjallisenKielitaidonOsakokeenSuoritus(
             koulutusmoduuli = osakoe match {
               case "kirjoittaminen" => ValtionhallinnonKirjoittamisenOsakoe()
               case "tekstinymmartaminen" => ValtionhallinnonTekstinYmmärtämisenOsakoe()
             },
-            arviointi = Some(List(
+            arviointi = Some(arvosanat.zipWithIndex.map { case (arvosana, index) =>
               ValtionhallinnonKielitutkinnonArviointi(
                 arvosana = Koodistokoodiviite(arvosana, "vktarvosana"),
-                päivä = arviointiPäivä,
+                päivä = arviointiPäivä.plusMonths(index),
               )
-            ))
+            }),
           )
       }
 
@@ -237,10 +247,19 @@ object ExamplesKielitutkinto {
       }
 
       private def kielitaidonArviointi(osakokeidenArvosanat: List[String], pvm: LocalDate): Option[List[ValtionhallinnonKielitutkinnonArviointi]] =
-        if (osakokeidenArvosanat.contains("hylatty")) None else arviointi(osakokeidenArvosanat.head, pvm)
+        arviointi(Arviointi.huonoinArvosana(osakokeidenArvosanat), pvm)
 
       private def osakokeenArvosana(osakokeidenArvosanat: List[String], index: Int): String =
         osakokeidenArvosanat(index % osakokeidenArvosanat.length)
+    }
+
+    object Arviointi {
+      val arvosanajärjestys = List("hylatty", "tyydyttava", "hyva", "erinomainen")
+      implicit val order: Ordering[String] = Ordering.fromLessThan(
+        (a: String, b: String) => arvosanajärjestys.indexOf(a) < arvosanajärjestys.indexOf(b)
+      )
+
+      def huonoinArvosana(arvosanat: List[String]) = arvosanat.min
     }
   }
 

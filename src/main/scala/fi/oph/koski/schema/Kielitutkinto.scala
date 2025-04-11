@@ -102,7 +102,7 @@ case class ValtionhallinnonKielitutkinnonSuoritus(
   @Title("Koulutus")
   koulutusmoduuli: ValtionhallinnonKielitutkinto,
   toimipiste: OrganisaatioWithOid,
-  vahvistus: Option[Päivämäärävahvistus] = None,
+  vahvistus: Option[HenkilövahvistusValinnaisellaTittelilläJaValinnaisellaPaikkakunnalla] = None,
   override val osasuoritukset: Option[List[ValtionhallinnonKielitutkinnonKielitaidonSuoritus]],
   @KoodistoKoodiarvo("valtionhallinnonkielitutkinto")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("valtionhallinnonkielitutkinto", koodistoUri = "suorituksentyyppi"),
@@ -129,6 +129,8 @@ trait ValtionhallinnonKielitutkinnonKielitaidonSuoritus extends Suoritus with Va
   @KoodistoKoodiarvo("valtionhallinnonkielitaito")
   def tyyppi: Koodistokoodiviite
   def arviointi: Option[List[ValtionhallinnonKielitutkinnonArviointi]]
+
+  override def kesken: Boolean = !arviointi.exists(_.exists(_.hyväksytty))
 }
 
 trait ValtionhallinnonKielitutkinnonKielitaito extends Koulutusmoduuli {

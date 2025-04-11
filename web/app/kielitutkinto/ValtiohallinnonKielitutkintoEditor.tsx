@@ -25,7 +25,7 @@ import {
   OsasuoritusRowData,
   OsasuoritusTable
 } from '../components-v2/opiskeluoikeus/OsasuoritusTable'
-import { SuorituksenVahvistusField } from '../components-v2/opiskeluoikeus/SuorituksenVahvistus'
+import { SuorituksenVahvistus } from '../components-v2/opiskeluoikeus/SuorituksenVahvistus'
 import { t } from '../i18n/i18n'
 import { KielitutkinnonOpiskeluoikeudenTila } from '../types/fi/oph/koski/schema/KielitutkinnonOpiskeluoikeudenTila'
 import { KielitutkinnonOpiskeluoikeus } from '../types/fi/oph/koski/schema/KielitutkinnonOpiskeluoikeus'
@@ -34,6 +34,9 @@ import { Oppilaitos } from '../types/fi/oph/koski/schema/Oppilaitos'
 import { ValtionhallinnonKielitutkinnonKielitaidonSuoritus } from '../types/fi/oph/koski/schema/ValtionhallinnonKielitutkinnonKielitaidonSuoritus'
 import { ValtionhallinnonKielitutkinnonSuoritus } from '../types/fi/oph/koski/schema/ValtionhallinnonKielitutkinnonSuoritus'
 import { OsasuoritusOf } from '../util/schema'
+import { ValtionhallinnonKielitutkinnonKirjallisenKielitaidonOsakokeenSuoritus } from '../types/fi/oph/koski/schema/ValtionhallinnonKielitutkinnonKirjallisenKielitaidonOsakokeenSuoritus'
+import { ValtionhallinnonKielitutkinnonArviointi } from '../types/fi/oph/koski/schema/ValtionhallinnonKielitutkinnonArviointi'
+import { ISO2FinnishDate } from '../date/date'
 
 export type ValtionhallinnonKielitutkintoEditorProps = {
   form: FormModel<KielitutkinnonOpiskeluoikeus>
@@ -53,17 +56,14 @@ export const ValtionhallinnonKielitutkintoEditor: React.FC<
 
   return suoritus ? (
     <>
-      <ValtiohallinnonKielitutkinnonTiedot
-        päätasonSuoritus={suoritus}
-        tila={form.state.tila}
-      />
+      <ValtiohallinnonKielitutkinnonTiedot päätasonSuoritus={suoritus} />
 
       <Spacer />
 
-      <SuorituksenVahvistusField
-        form={form}
-        suoritusPath={päätasonSuoritus.path}
-        organisaatio={organisaatio}
+      <SuorituksenVahvistus
+        vahvistus={suoritus.vahvistus}
+        suoritettuText={t('Suoritettu')}
+        hideVahvistus
       />
 
       <Spacer />
@@ -86,21 +86,35 @@ export const ValtionhallinnonKielitutkintoEditor: React.FC<
 
 type ValtiohallinnonKielitutkinnonTiedotProps = {
   päätasonSuoritus: ValtionhallinnonKielitutkinnonSuoritus
-  tila: KielitutkinnonOpiskeluoikeudenTila
 }
 
 const ValtiohallinnonKielitutkinnonTiedot: React.FC<
   ValtiohallinnonKielitutkinnonTiedotProps
-> = ({ päätasonSuoritus, tila }) => (
-  <KeyValueTable>
-    <KeyValueRow localizableLabel="Tutkinto">
-      {t(päätasonSuoritus.koulutusmoduuli.tunniste.nimi)}
-    </KeyValueRow>
-    <KeyValueRow localizableLabel="Kieli">
-      {t(päätasonSuoritus.koulutusmoduuli.kieli.nimi)}
-    </KeyValueRow>
-  </KeyValueTable>
-)
+> = ({ päätasonSuoritus }) => {
+  const vastaanottajat = päätasonSuoritus.vahvistus?.myöntäjäHenkilöt
+
+  return (
+    <KeyValueTable>
+      <KeyValueRow localizableLabel="Tutkinnon taso">
+        {t(päätasonSuoritus.koulutusmoduuli.tunniste.nimi)}
+      </KeyValueRow>
+      <KeyValueRow localizableLabel="Kieli">
+        {t(päätasonSuoritus.koulutusmoduuli.kieli.nimi)}
+      </KeyValueRow>
+      {päätasonSuoritus.koulutusmoduuli.tunniste.koodiarvo ===
+        'hyvajatyydyttava' && (
+        <>
+          <KeyValueRow localizableLabel="Tutkintosuorituksen vastaanottaja">
+            {vastaanottajat && vastaanottajat.map((v) => v.nimi).join(', ')}
+          </KeyValueRow>
+          <KeyValueRow localizableLabel="Suorituspaikkakunta">
+            {t(päätasonSuoritus.vahvistus?.paikkakunta?.nimi)}
+          </KeyValueRow>
+        </>
+      )}
+    </KeyValueTable>
+  )
+}
 
 type KielitaitoToTableRowParams = {
   form: FormModel<KielitutkinnonOpiskeluoikeus>
@@ -118,7 +132,7 @@ const kielitaitoToTableRow = ({
   osasuoritusIndex,
   form
 }: KielitaitoToTableRowParams): OsasuoritusRowData<
-  'Kielitaito' | 'Arviointipäivä' | 'Arvosana'
+  'Tutkinto' | 'Tutkintopäivä' | 'Arvosana'
 > => {
   const osasuoritusPath = suoritusPath
     .prop('osasuoritukset')
@@ -132,7 +146,7 @@ const kielitaitoToTableRow = ({
     osasuoritusPath: suoritusPath.prop('osasuoritukset').optional(),
     expandable: true,
     columns: {
-      Kielitaito: (
+      Tutkinto: (
         <FormField
           form={form}
           path={osasuoritusPath.path('koulutusmoduuli.tunniste.nimi')}
@@ -140,7 +154,7 @@ const kielitaitoToTableRow = ({
           testId="nimi"
         />
       ),
-      Arviointipäivä: (
+      Tutkintopäivä: (
         <FormField
           form={form}
           path={osasuoritusPath.path('arviointi')}
@@ -224,7 +238,7 @@ const osakoeToTableRow = ({
   osasuoritusIndex,
   form
 }: OsakoeToTableRowParams): OsasuoritusRowData<
-  'Osakoe' | 'Arviointipäivä' | 'Arvosana'
+  'Osakoe' | 'Tutkintopäivä' | 'Arvosana'
 > => {
   const osakoePath = kielitaidonSuoritusPath
     .prop('osasuoritukset')
@@ -236,7 +250,7 @@ const osakoeToTableRow = ({
     suoritusIndex,
     osasuoritusIndex,
     osasuoritusPath: kielitaidonSuoritusPath.prop('osasuoritukset').optional(),
-    expandable: false,
+    expandable: !!osakoe?.arviointi,
     columns: {
       Osakoe: (
         <FormField
@@ -246,7 +260,7 @@ const osakoeToTableRow = ({
           testId="nimi"
         />
       ),
-      Arviointipäivä: (
+      Tutkintopäivä: (
         <FormField
           form={form}
           path={osakoePath.path('arviointi')}
@@ -265,8 +279,37 @@ const osakoeToTableRow = ({
           }}
         />
       )
-    }
+    },
+    content: osakoe?.arviointi ? (
+      <OsakokeenArvioinnit arvioinnit={osakoe?.arviointi} />
+    ) : undefined
   }
+}
+
+type OsakokeenArvioinnitProps = {
+  arvioinnit: ValtionhallinnonKielitutkinnonArviointi[]
+}
+
+const OsakokeenArvioinnit: React.FC<OsakokeenArvioinnitProps> = ({
+  arvioinnit
+}) => {
+  const indentation = 4
+  return (
+    <>
+      <Spacer />
+      {arvioinnit.map((arviointi, index) => (
+        <KeyValueTable key={index}>
+          <KeyValueRow localizableLabel="Arvosana" indent={indentation}>
+            {t(arviointi.arvosana.nimi)}
+          </KeyValueRow>
+          <KeyValueRow localizableLabel="Arviointipäivä" indent={indentation}>
+            {ISO2FinnishDate(arviointi.päivä)}
+          </KeyValueRow>
+        </KeyValueTable>
+      ))}
+      <Spacer />
+    </>
+  )
 }
 
 const isCompletedSuoritus =

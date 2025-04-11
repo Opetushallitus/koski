@@ -1,13 +1,15 @@
 package fi.oph.koski.kielitutkinto
 
 import fi.oph.koski.api.misc.PutOpiskeluoikeusTestMethods
+import fi.oph.koski.db.PostgresDriverWithJsonSupport.api.actionBasedSQLInterpolation
+import fi.oph.koski.db.QueryMethods.runDbSync
 import fi.oph.koski.documentation.ExamplesKielitutkinto.Opiskeluoikeusjakso
 import fi.oph.koski.documentation.ExamplesKielitutkinto.YleisetKielitutkinnot.tutkinnonOsa
 import fi.oph.koski.documentation.{ExamplesKielitutkinto, ExamplesLukio}
 import fi.oph.koski.henkilo.{KoskiSpecificMockOppijat, LaajatOppijaHenkilöTiedot}
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.json.JsonSerializer
-import fi.oph.koski.koskiuser.{KoskiSpecificSession, MockUsers}
+import fi.oph.koski.koskiuser.{KoskiMockUser, KoskiSpecificSession, MockUsers}
 import fi.oph.koski.oppija.{HenkilönOpiskeluoikeusVersiot, OppijaServletOppijaAdder}
 import fi.oph.koski.schema._
 import fi.oph.koski.util.WithWarnings
@@ -36,8 +38,8 @@ class KielitutkintorekisteriSpec
 
     "pystyy kirjoittamaan kielitutkinnon opiskeluoikeuden" in { canWrite(kielitutkinnonOpiskeluoikeus) }
     "pystyy lukemaan kielitutkinnon opiskeluoikeuden" in { canRead(ExamplesKielitutkinto.exampleMockOppija) }
-    "ei pysty kirjoittamaan muita opiskeluoikeuksia" in { cannotWrite(lukionOpiskeluoikeus) }
-    "ei pysty lukemaan muita opiskeluoikeuksia" in { cannotRead(lukiolainen) }
+    "ei pysty kirjoittamaan muita opiskeluoikeuksia" in { cannotWrite(lukionOpiskeluoikeus, "Ei oikeuksia opiskeluoikeuden tyyppiin lukiokoulutus") }
+    "ei pysty lukemaan muita opiskeluoikeuksia" in { cannotRead(lukiolainen, s"Oppijaa ${lukiolainen.oid} ei löydy tai käyttäjällä ei ole oikeuksia tietojen katseluun.") }
   }
 
   "OPH-pääkäyttäjän käyttöoikeudella" - {
@@ -48,23 +50,20 @@ class KielitutkintorekisteriSpec
   }
 
   "Oppilaitoksen tavallisella palvelukäyttäjätunnuksella" - {
-    implicit val session: KoskiSpecificSession = MockUsers.jyväskylänNormaalikoulunPalvelukäyttäjä.toKoskiSpecificSession(KoskiApplicationForTests.käyttöoikeusRepository)
+    implicit val session: KoskiSpecificSession = MockUsers.varsinaisSuomiPalvelukäyttäjä.toKoskiSpecificSession(KoskiApplicationForTests.käyttöoikeusRepository)
+    val otherSession: KoskiSpecificSession = MockUsers.omniaPalvelukäyttäjä.toKoskiSpecificSession(KoskiApplicationForTests.käyttöoikeusRepository)
 
-    "ei pysty kirjoittamaan kielitutkinnon opiskeluoikeuden" in { cannotWrite(kielitutkinnonOpiskeluoikeus) }
-    "ei pysty lukemaan kielitutkinnon opiskeluoikeuden" in { cannotRead(ExamplesKielitutkinto.exampleMockOppija) }
+    "ei pysty kirjoittamaan kielitutkinnon opiskeluoikeuksia" in { cannotWrite(kielitutkinnonOpiskeluoikeus, "Ei oikeuksia opiskeluoikeuden tyyppiin kielitutkinto") }
+    "pystyy lukemaan oman organisaation kielitutkinnon opiskeluoikeuksia" in { canRead(ExamplesKielitutkinto.exampleMockOppija) }
+    "ei pysty lukemaan muiden kielitutkinnon opiskeluoikeuksia" in { cannotRead(ExamplesKielitutkinto.exampleMockOppija, s"Oppijaa ${ExamplesKielitutkinto.exampleMockOppija.oid} ei löydy tai käyttäjällä ei ole oikeuksia tietojen katseluun.")(otherSession) }
   }
 
   "Raportointikanta" - {
     "Kielitutkinnot eivät siirry raportointikantaan" in {
-      val oppija = KoskiSpecificMockOppijat.kielitutkinnonSuorittaja
-      implicit val session: KoskiSpecificSession = MockUsers.paakayttaja.toKoskiSpecificSession(KoskiApplicationForTests.käyttöoikeusRepository)
-      val rows = KoskiApplicationForTests
-        .opiskeluoikeusRepository
-        .findByOppija(oppija, useVirta = false, useYtr = false)
-        .getIgnoringWarnings
-        .toList
+      val raportointikanta = KoskiApplicationForTests.raportointiDatabase.db
+      val koulutusmuodot = runDbSync(raportointikanta, sql"select distinct koulutusmuoto from r_opiskeluoikeus".as[String])
 
-      rows should equal(List.empty)
+      koulutusmuodot should not contain OpiskeluoikeudenTyyppi.kielitutkinto.koodiarvo
     }
   }
 
@@ -301,14 +300,19 @@ class KielitutkintorekisteriSpec
   private def canWrite(data: JValue)(implicit session: KoskiSpecificSession): Unit =
     write(data) should matchPattern { case Right(_) => }
 
-  private def cannotWrite(data: JValue)(implicit session: KoskiSpecificSession): Unit =
-    write(data) should matchPattern { case Left(_) => }
+  private def cannotWrite(data: JValue, expectedError: String)(implicit session: KoskiSpecificSession): Unit =
+    write(data) should matchPattern { case Left(a) if isError(a, expectedError) => }
 
   private def canRead(oppija: LaajatOppijaHenkilöTiedot)(implicit session: KoskiSpecificSession): Unit =
     read(oppija) should matchPattern { case Right(_) => }
 
-  private def cannotRead(oppija: LaajatOppijaHenkilöTiedot)(implicit session: KoskiSpecificSession): Unit =
-    read(oppija) should matchPattern { case Left(_) => }
+  private def cannotRead(oppija: LaajatOppijaHenkilöTiedot, expectedError: String)(implicit session: KoskiSpecificSession): Unit =
+    read(oppija) should matchPattern { case Left(a) if isError(a, expectedError) => }
+
+  private def isError(a: Any, expectedMessage: String): Boolean = a match {
+    case s: HttpStatus => s.errorString.contains(expectedMessage)
+    case _ => false
+  }
 
   private def write(data: JValue)(implicit session: KoskiSpecificSession): Either[HttpStatus, HenkilönOpiskeluoikeusVersiot] =
     oppijaAdder.add(session, data, allowUpdate = true, requestDescription = "Test")
@@ -331,4 +335,5 @@ class KielitutkintorekisteriSpec
 
   def tag: universe.TypeTag[KielitutkinnonOpiskeluoikeus] = implicitly[reflect.runtime.universe.TypeTag[KielitutkinnonOpiskeluoikeus]]
   def defaultOpiskeluoikeus: KielitutkinnonOpiskeluoikeus = ExamplesKielitutkinto.YleisetKielitutkinnot.opiskeluoikeus(LocalDate.of(2025, 1, 1), "FI", "pt")
+  override def defaultUser: KoskiMockUser = MockUsers.paakayttaja
 }

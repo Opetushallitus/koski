@@ -122,8 +122,8 @@ object Käyttöoikeus {
     }
   }
 
-  def parseAllowedOpiskeluoikeudenTyypit(roolit: List[Palvelurooli], accessTypes: List[AccessType.Value]): Set[String] = {
-    val kaikkiOpiskeluoikeusTyypit = OpiskeluoikeudenTyyppi.kaikkiTyypit.map(_.koodiarvo)
+  def parseAllowedOpiskeluoikeudenTyypit(roolit: List[Palvelurooli], accessTypes: List[AccessType.Value], isRootUser: Boolean = false): Set[String] = {
+    val kaikkiOpiskeluoikeusTyypit = OpiskeluoikeudenTyyppi.kaikkiTyypit(isRootUser).map(_.koodiarvo)
     val kayttajanRoolit = unifyRoolit(roolit).filter(_.palveluName == "KOSKI").map(_.rooli.toLowerCase).toSet
     val opiskeluoikeudenTyyppiRajoituksia = kayttajanRoolit.intersect(kaikkiOpiskeluoikeusTyypit).nonEmpty
 
@@ -195,7 +195,7 @@ case class KäyttöoikeusGlobal(globalPalveluroolit: List[Palvelurooli]) extends
     case _ => Nil
   }
 
-  override lazy val allowedOpiskeluoikeusTyypit: Set[String] = Käyttöoikeus.parseAllowedOpiskeluoikeudenTyypit(globalPalveluroolit, globalAccessType)
+  override lazy val allowedOpiskeluoikeusTyypit: Set[String] = Käyttöoikeus.parseAllowedOpiskeluoikeudenTyypit(globalPalveluroolit, globalAccessType, isRootUser = true)
 }
 
 trait OrgKäyttöoikeus extends Käyttöoikeus {
