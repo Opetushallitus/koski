@@ -344,6 +344,14 @@ trait MahdollisestiAlkupäivällinenJakso extends DateContaining {
 
   def contains(d: LocalDate): Boolean =
     (alku.isEmpty || !d.isBefore(alku.get)) && (loppu.isEmpty || !d.isAfter(loppu.get))
+
+  def overlaps(j: MahdollisestiAlkupäivällinenJakso): Boolean =
+    j.alku.exists(contains) || j.loppu.exists(contains)
+}
+
+object MahdollisestiAlkupäivällinenJakso {
+  def overlap(as: List[MahdollisestiAlkupäivällinenJakso], bs: List[MahdollisestiAlkupäivällinenJakso]): Boolean =
+    as.exists(a => bs.exists(a.overlaps))
 }
 
 trait DateContaining {
@@ -375,6 +383,9 @@ object Aikajakso {
     alku = alku.getOrElse(LocalDate.MIN),
     loppu = loppu,
   )
+
+  def overlap(as: List[Aikajakso], bs: List[Aikajakso]): Boolean =
+    as.exists(a => bs.exists(a.contains))
 }
 
 trait Läsnäolojakso extends Alkupäivällinen {
