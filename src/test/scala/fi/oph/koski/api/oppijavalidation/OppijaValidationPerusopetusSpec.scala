@@ -540,7 +540,7 @@ class OppijaValidationPerusopetusSpec extends TutkinnonPerusteetTest[Perusopetuk
           makeOpiskeluoikeus(LocalDate.of(2024, 7, 1)).copy(
             lisätiedot = Some(PerusopetuksenOpiskeluoikeudenLisätiedot(
               toimintaAlueittainOpiskelu = Some(List(Aikajakso(alku = Some(toimintaAlueittainAlku), loppu = None))),
-              tukijaksot = Some(List(Tukijakso(alku = Some(tukijaksoAlku), loppu = None)))
+              tuenPäätöksenJaksot = Some(List(Tukijakso(alku = Some(tukijaksoAlku), loppu = None)))
             )
           ))
         }
@@ -582,7 +582,7 @@ class OppijaValidationPerusopetusSpec extends TutkinnonPerusteetTest[Perusopetuk
             ),
           ),
           lisätiedot = Some(PerusopetuksenOpiskeluoikeudenLisätiedot(
-            tukijaksot = Some(List(Tukijakso(alku = Some(tukijaksoAlku), loppu = None))),
+            tuenPäätöksenJaksot = Some(List(Tukijakso(alku = Some(tukijaksoAlku), loppu = None))),
             erityisenTuenPäätökset = Some(List(ErityisenTuenPäätös(alku = Some(erityisenTuenPäätösAlku), loppu = None, erityisryhmässä = None)))
           )
         ))
@@ -612,7 +612,7 @@ class OppijaValidationPerusopetusSpec extends TutkinnonPerusteetTest[Perusopetuk
         val oo = makeOpiskeluoikeus().copy(
           suoritukset = List(yhdeksännenLuokanSuoritus.copy(vahvistus = None, alkamispäivä = Some(LocalDate.of(2025, 7, 31)), osasuoritukset = Some(List(äidinkielenSuoritus.copy(rajattuOppimäärä = true))))),
           lisätiedot = Some(PerusopetuksenOpiskeluoikeudenLisätiedot(
-            tukijaksot = Some(List(Tukijakso(alku = Some(LocalDate.of(2025, 7, 31)), loppu = None))),
+            tuenPäätöksenJaksot = Some(List(Tukijakso(alku = Some(LocalDate.of(2025, 7, 31)), loppu = None))),
           ))
         )
 
@@ -635,7 +635,7 @@ class OppijaValidationPerusopetusSpec extends TutkinnonPerusteetTest[Perusopetuk
           ))
         }
         setupOppijaWithOpiskeluoikeus(oo.copy(lisätiedot = Some(PerusopetuksenOpiskeluoikeudenLisätiedot(
-          tukijaksot = Some(List(Tukijakso(alku = Some(tukijaksotVoimaan), loppu = None)))
+          tuenPäätöksenJaksot = Some(List(Tukijakso(alku = Some(tukijaksotVoimaan), loppu = None)))
         )))) {
           verifyResponseStatusOk()
         }
@@ -653,13 +653,13 @@ class OppijaValidationPerusopetusSpec extends TutkinnonPerusteetTest[Perusopetuk
           ),
           lisätiedot = Some(PerusopetuksenOpiskeluoikeudenLisätiedot(
             opetuksenJärjestäminenVammanSairaudenTaiRajoitteenPerusteella = Some(List(Aikajakso(alku = Some(alku), loppu = None))),
-            tukijaksot = Some(List(Tukijakso(alku = Some(alku), loppu = None)))
+            tuenPäätöksenJaksot = Some(List(Tukijakso(alku = Some(alku), loppu = None)))
           )
         ))
       }
       "Vaatii tukijakson eikä saa alkaa ennen voimaantulopäivää" in {
         val oo = makeOpiskeluoikeus(vammaSairausTaiRajoiteVoimaan.minusDays(1))
-        setupOppijaWithOpiskeluoikeus(oo.copy(lisätiedot = oo.lisätiedot.map(_.copy(tukijaksot = None)))) {
+        setupOppijaWithOpiskeluoikeus(oo.copy(lisätiedot = oo.lisätiedot.map(_.copy(tuenPäätöksenJaksot = None)))) {
           verifyResponseStatus(400,
             KoskiErrorCategory.badRequest.validation.date(
               "Opetuksen järjestäminen vamman, sairauden tai rajoitteen perusteella pitää sisältyä tukijaksoon: List(2026-07-31 – )"

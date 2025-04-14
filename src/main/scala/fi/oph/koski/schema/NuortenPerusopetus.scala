@@ -123,7 +123,7 @@ case class PerusopetuksenOpiskeluoikeudenLisätiedot(
   @Description("Kenttä käytössä 1.8.2025 alkaen.")
   @Description("Korvaa aiemman kentän erityisenTuenPäätökset.")
   @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))
-  tukijaksot: Option[List[Tukijakso]] = None,
+  tuenPäätöksenJaksot: Option[List[Tukijakso]] = None,
   @Description("Tehostetun tuen päätös alkamis- ja päättymispäivineen. Kentän puuttuminen tai null-arvo tulkitaan siten, että päätöstä ei ole tehty.")
   @Tooltip("Mahdollisen tehostetun tuen päätös päätöksen alkamis- ja päättymispäivät.")
   @OksaUri("tmpOKSAID511", "tehostettu tuki")
@@ -200,16 +200,16 @@ case class PerusopetuksenOpiskeluoikeudenLisätiedot(
   with PidennettyOppivelvollisuus
   with Ulkomaanaikajaksollinen
   with ToimintaAlueittainOpiskeleva
-  with Tukijaksollinen
-  with TukijaksollinenVanhatLisätiedot
+  with Tukipäätöksellinen
+  with TukipäätöksellinenVanhatLisätiedot
   with VammaSairausTaiRajoite
 {
   def kaikkiErityisenTuenPäätöstenAikajaksot: List[MahdollisestiAlkupäivällinenJakso] = {
     erityisenTuenPäätös.map(p => List(p)).getOrElse(List.empty) ++ erityisenTuenPäätökset.getOrElse(List.empty)
   }
 
-  def kaikkiTukijaksot: List[MahdollisestiAlkupäivällinenJakso] = {
-    tukijaksot.getOrElse(List.empty)
+  def kaikkiTuenPäätöksenJaksot: List[MahdollisestiAlkupäivällinenJakso] = {
+    tuenPäätöksenJaksot.getOrElse(List.empty)
   }
 }
 
