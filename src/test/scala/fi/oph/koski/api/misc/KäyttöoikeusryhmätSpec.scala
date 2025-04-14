@@ -276,7 +276,13 @@ class KäyttöoikeusryhmätSpec
     }
 
     "voi hakea ja katsella esiopetuksen opiskeluoikeuksia omassa organisaatiossa" in {
-      searchForNames(KoskiSpecificMockOppijat.eskari.etunimet, user) should equal(List(KoskiSpecificMockOppijat.eskari.etunimet + " " + KoskiSpecificMockOppijat.eskari.sukunimi, KoskiSpecificMockOppijat.eskariAikaisillaLisätiedoilla.etunimet + " " + KoskiSpecificMockOppijat.eskariAikaisillaLisätiedoilla.sukunimi))
+      searchForNames(KoskiSpecificMockOppijat.eskari.etunimet, user) should equal(
+        List(
+          KoskiSpecificMockOppijat.esikoululainen2025,
+          KoskiSpecificMockOppijat.eskari,
+          KoskiSpecificMockOppijat.eskariAikaisillaLisätiedoilla,
+        ).map(o => s"${o.etunimet} ${o.sukunimi}")
+      )
       authGet("api/oppija/" + KoskiSpecificMockOppijat.eskari.oid, user) {
         verifyResponseStatusOk()
       }

@@ -59,6 +59,24 @@ object ExamplesEsiopetus {
     lisätiedot = Some(lisätiedot)
   )
 
+  lazy val opiskeluoikeus2025 = EsiopetuksenOpiskeluoikeus(
+    oppilaitos = Some(jyväskylänNormaalikoulu),
+    koulutustoimija = None,
+    suoritukset = List(suoritus(perusteenDiaarinumero = "102/011/2014", tunniste = peruskoulunEsiopetuksenTunniste, toimipiste = jyväskylänNormaalikoulu)),
+    tila = NuortenPerusopetuksenOpiskeluoikeudenTila(
+      List(
+        NuortenPerusopetuksenOpiskeluoikeusjakso(date(2025, 8, 13), opiskeluoikeusLäsnä),
+        NuortenPerusopetuksenOpiskeluoikeusjakso(date(2026, 8, 3), opiskeluoikeusValmistunut)
+      )
+    ),
+    lisätiedot = Some(EsiopetuksenOpiskeluoikeudenLisätiedot(
+      tuenPäätöksenJaksot = Some(List(Tukijakso(
+        alku = Some(date(2025, 8, 13)),
+        loppu = Some(date(2026, 8, 3)),
+      ))),
+    )),
+  )
+
   lazy val opiskeluoikeusAikaisillaLisätiedoilla = EsiopetuksenOpiskeluoikeus(
     oppilaitos = Some(jyväskylänNormaalikoulu),
     koulutustoimija = None,
