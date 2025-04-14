@@ -802,7 +802,7 @@ class OppijaValidationEsiopetusSpec extends TutkinnonPerusteetTest[EsiopetuksenO
           tila = NuortenPerusopetuksenOpiskeluoikeudenTila(List(NuortenPerusopetuksenOpiskeluoikeusjakso(date(2026, 7, 31), opiskeluoikeusLäsnä))),
           lisätiedot = Some(EsiopetuksenOpiskeluoikeudenLisätiedot(
             varhennetunOppivelvollisuudenJaksot = Some(List(Aikajakso(alku = Some(alku), loppu = None))),
-            tukijaksot = Some(List(Tukijakso(alku = Some(alku), loppu = None))),
+            tuenPäätöksenJaksot = Some(List(Tukijakso(alku = Some(alku), loppu = None))),
           ))
         )
       }
@@ -819,7 +819,7 @@ class OppijaValidationEsiopetusSpec extends TutkinnonPerusteetTest[EsiopetuksenO
           ))
         }
 
-        val ooIlmanTukijaksoja = oo.copy(lisätiedot = oo.lisätiedot.map(_.copy(tukijaksot = None)))
+        val ooIlmanTukijaksoja = oo.copy(lisätiedot = oo.lisätiedot.map(_.copy(tuenPäätöksenJaksot = None)))
         setupOppijaWithOpiskeluoikeus(ooIlmanTukijaksoja) {
           verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.date(
             "Varhennetun oppivelvollisuuden jaksoissa on päiviä, joille ei ole tukijaksoa: List(2026-08-01 – )"
