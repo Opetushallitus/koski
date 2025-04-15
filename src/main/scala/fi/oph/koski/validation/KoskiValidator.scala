@@ -148,7 +148,7 @@ class KoskiValidator(
           validateOpiskeluoikeudenPäivämäärät(opiskeluoikeus),
           validatePäätasonSuoritustenStatus(opiskeluoikeus),
           validateOpiskeluoikeudenLisätiedot(opiskeluoikeus),
-          PerusopetuksenOpiskeluoikeusValidation.validatePerusopetuksenOpiskeluoikeus(opiskeluoikeus),
+          PerusopetuksenOpiskeluoikeusValidation.validatePerusopetuksenOpiskeluoikeus(config)(opiskeluoikeus),
           TiedonSiirrostaPuuttuvatSuorituksetValidation.validateEiSamaaAlkamispaivaa(opiskeluoikeus, koskiOpiskeluoikeudet),
           HttpStatus.fold(opiskeluoikeus.suoritukset.map(validateSuoritus(_, opiskeluoikeus, henkilö, Nil))),
           TilanAsettaminenKunVahvistettuSuoritusValidation.validateOpiskeluoikeus(opiskeluoikeus),
