@@ -111,16 +111,26 @@ const SuoritetutTutkinnot = () => {
                           <span>
                             {isSuoritetutTutkinnotKoskeenTallennettavaOpiskeluoikeus(
                               oo
-                            )
-                              ? `Opiskeluoikeuden oid: ${oo.oid}`
-                              : ''}
+                            ) ? (
+                              <>
+                                <Trans>{`Opiskeluoikeuden oid`}</Trans>
+                                {`: ${oo.oid}`}
+                              </>
+                            ) : (
+                              ''
+                            )}
                           </span>
                           <span>
-                            {isSuoritetutTutkinnotOpiskeluoikeus(oo)
-                              ? `Vahvistettu: ${oo.suoritukset.map(
+                            {isSuoritetutTutkinnotOpiskeluoikeus(oo) ? (
+                              <>
+                                <Trans>{`Vahvistus`}</Trans>
+                                {`: ${oo.suoritukset.map(
                                   (foo) => foo.vahvistus?.päivä
-                                )}`
-                              : ''}
+                                )}`}
+                              </>
+                            ) : (
+                              ''
+                            )}
                           </span>
                         </Flex>
                       </div>
