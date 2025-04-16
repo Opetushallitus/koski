@@ -1333,6 +1333,46 @@ class OppijaValidationPerusopetusSpec extends TutkinnonPerusteetTest[Perusopetuk
         }
       }
     }
+
+    "Pidennetty oppivelvollisuus toimii, jos toimitetaan tarvittavat tuen jaksot, joka on voimassa samaan aikaan" - {
+      "Erityisen tuen jaksot" in {
+        setupOppijaWithOpiskeluoikeus(makeOpiskeluoikeus(
+          pidennettyOppivelvollisuus = Some(Aikajakso(
+            alku = Some(date(2025, 8, 10)),
+            loppu = Some(date(2026, 7, 31)),
+          )),
+          vammainen = Some(List(Aikajakso(
+            alku = Some(date(2025, 8, 10)),
+            loppu = Some(date(2026, 7, 31)),
+          ))),
+          erityisenTuenPäätökset = Some(List(ErityisenTuenPäätös(
+            alku = Some(date(2025, 8, 10)),
+            loppu = Some(date(2026, 7, 31)),
+          ))),
+        )) {
+          verifyResponseStatusOk()
+        }
+      }
+
+      "Tuen päätöksen jaksot" in {
+        setupOppijaWithOpiskeluoikeus(makeOpiskeluoikeus(
+          pidennettyOppivelvollisuus = Some(Aikajakso(
+            alku = Some(date(2025, 8, 10)),
+            loppu = Some(date(2026, 7, 31)),
+          )),
+          vammainen = Some(List(Aikajakso(
+            alku = Some(date(2025, 8, 10)),
+            loppu = Some(date(2026, 7, 31)),
+          ))),
+          tuenPäätöksenJaksot = Some(List(Tukijakso(
+            alku = Some(date(2025, 8, 10)),
+            loppu = Some(date(2026, 7, 31)),
+          ))),
+        )) {
+          verifyResponseStatusOk()
+        }
+      }
+    }
   }
 
 

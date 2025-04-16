@@ -924,8 +924,14 @@ class KoskiValidator(
         val vammaisuusjaksotYhdistettynä = foldAikajaksot(lt.vammainen.getOrElse(List.empty))
         val vaikeastiVammaisuusjaksotYhdistettynä = foldAikajaksot(lt.vaikeastiVammainen.getOrElse(List.empty))
 
-        val erityisenTuenJaksotYhdistettynä =
-          yhdistäPäällekäisetJaPeräkkäisetMahdollisestiAlkupäivällisetAikajaksot(lt.kaikkiErityisenTuenPäätöstenAikajaksot)
+        val tuenPäätöksenJaksot = lt match {
+          case tp: Tukipäätöksellinen => tp.kaikkiTuenPäätöksenJaksot
+          case _ => List.empty
+        }
+        
+        val tuenJaksotYhdistettynä = yhdistäPäällekäisetJaPeräkkäisetMahdollisestiAlkupäivällisetAikajaksot(
+          lt.kaikkiErityisenTuenPäätöstenAikajaksot ++ tuenPäätöksenJaksot
+        )
 
         val pidennettyOppivelvollisuusEiPäätyEnnenkuinOpiskeluoikeusAlkaa =
           lt.pidennettyOppivelvollisuus.get.loppu.isEmpty ||
@@ -948,7 +954,7 @@ class KoskiValidator(
 
         val looginenTakaraja = List(lt.pidennettyOppivelvollisuus.get.loppu.getOrElse(LocalDate.MAX), opiskeluoikeudenPäättymispäivä.getOrElse(LocalDate.MAX)).min[LocalDate]
         val jokinErityisenTuenJaksoKokoPidennetynOppivelvollisuudenAjan =
-          erityisenTuenJaksotYhdistettynä.exists(j => {
+          tuenJaksotYhdistettynä.exists(j => {
             j.contains(lt.pidennettyOppivelvollisuus.get.alku) &&
               j.contains(lt.pidennettyOppivelvollisuus.get.loppu.getOrElse(looginenTakaraja))
           })
