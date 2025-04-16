@@ -592,7 +592,7 @@ class OppijaValidationPerusopetusSpec extends TutkinnonPerusteetTest[Perusopetuk
       "Tukea koskeva päätös ei saa alkaa ennen voimaantuloa" in {
         setupOppijaWithOpiskeluoikeus(makeOpiskeluoikeus(tukijaksoAlku = tukijaksotVoimaan.minusDays(1))) {
           verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.date(
-            "Tukijaksot -lisätiedon varhaisin sallittu voimassaolopäivä on 2025-08-01"
+            "Tuen päätöksen jakson varhaisin sallittu voimassaolopäivä on 1.8.2025"
           ))
         }
         setupOppijaWithOpiskeluoikeus(makeOpiskeluoikeus(tukijaksotVoimaan)) {
@@ -622,7 +622,7 @@ class OppijaValidationPerusopetusSpec extends TutkinnonPerusteetTest[Perusopetuk
           // Tarkistetaan että validaatiovirhe tulee jo siksi että tukea koskevaa päätöstä ei saa olla aiemmin
           verifyResponseStatus(400,
             KoskiErrorCategory.badRequest.validation.date(
-              "Tukijaksot -lisätiedon varhaisin sallittu voimassaolopäivä on 2025-08-01"
+              "Tuen päätöksen jakson varhaisin sallittu voimassaolopäivä on 1.8.2025"
             ))
         }
       }
@@ -1330,6 +1330,46 @@ class OppijaValidationPerusopetusSpec extends TutkinnonPerusteetTest[Perusopetuk
               "Vaikeasti vammaisuuden jakson viimeinen mahdollinen päättymispäivä on 31.7.2026."
             ),
           )
+        }
+      }
+    }
+
+    "Pidennetty oppivelvollisuus toimii, jos toimitetaan tarvittavat tuen jaksot, joka on voimassa samaan aikaan" - {
+      "Erityisen tuen jaksot" in {
+        setupOppijaWithOpiskeluoikeus(makeOpiskeluoikeus(
+          pidennettyOppivelvollisuus = Some(Aikajakso(
+            alku = Some(date(2025, 8, 10)),
+            loppu = Some(date(2026, 7, 31)),
+          )),
+          vammainen = Some(List(Aikajakso(
+            alku = Some(date(2025, 8, 10)),
+            loppu = Some(date(2026, 7, 31)),
+          ))),
+          erityisenTuenPäätökset = Some(List(ErityisenTuenPäätös(
+            alku = Some(date(2025, 8, 10)),
+            loppu = Some(date(2026, 7, 31)),
+          ))),
+        )) {
+          verifyResponseStatusOk()
+        }
+      }
+
+      "Tuen päätöksen jaksot" in {
+        setupOppijaWithOpiskeluoikeus(makeOpiskeluoikeus(
+          pidennettyOppivelvollisuus = Some(Aikajakso(
+            alku = Some(date(2025, 8, 10)),
+            loppu = Some(date(2026, 7, 31)),
+          )),
+          vammainen = Some(List(Aikajakso(
+            alku = Some(date(2025, 8, 10)),
+            loppu = Some(date(2026, 7, 31)),
+          ))),
+          tuenPäätöksenJaksot = Some(List(Tukijakso(
+            alku = Some(date(2025, 8, 10)),
+            loppu = Some(date(2026, 7, 31)),
+          ))),
+        )) {
+          verifyResponseStatusOk()
         }
       }
     }
