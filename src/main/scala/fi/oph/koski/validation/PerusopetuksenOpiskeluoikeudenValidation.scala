@@ -221,13 +221,13 @@ object PerusopetuksenOpiskeluoikeusValidation extends Logging {
   }
 
   private def validateVanhojenJaksokenttienPäättyminenSiirryttäessäUusiin(config: Config, oo: PerusopetuksenOpiskeluoikeus): HttpStatus = {
-    val rajapäivä = LocalDate.parse(config.getString("validaatiot.varhennettuOppivelvollisuusVoimaan"))
+    val validaatioVoimassa = LocalDate
+      .now()
+      .isEqualOrAfter(LocalDate.parse(
+        config.getString("validaatiot.esiJaPerusopetuksenVanhojenJaksojenPäättymispäivänValidaatiotAstuvatVoimaan")
+      ))
 
-    val validaatioVoimassa = if (Environment.isServerEnvironment(config)) {
-      LocalDate.now().isEqualOrAfter(rajapäivä)
-    } else {
-      true
-    }
+    val rajapäivä = LocalDate.parse(config.getString("validaatiot.varhennettuOppivelvollisuusVoimaan"))
 
     if (validaatioVoimassa) {
       val alkanutEnnenRajapäivää = oo.alkamispäivä.exists(_.isBefore(rajapäivä))
