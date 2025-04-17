@@ -35,7 +35,7 @@ app.use('/api/openid-api-test', openidApiTest)
 
 app.use('/api/healthcheck', healthCheck)
 
-app.get('*', (req: Request, res: Response) => {
+app.get('/{*splat}', (req: Request, res: Response) => {
   res.sendFile(
     path.resolve(
       path.dirname(fileURLToPath(import.meta.url)),
