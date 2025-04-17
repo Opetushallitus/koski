@@ -659,13 +659,14 @@ describe('Oppijataulukko', function () {
           return row[0]
         })
       ).to.deep.equal([
+        'Esikoululainen, Essi',
         'Eskari, Essi',
         'Eskari, Essi',
         'Kelalle, Useita',
         'Lisä-Eskari, Essiina',
         'Monia, Useita'
       ])
-      expect(page.opiskeluoikeudeTotal()).to.equal('5')
+      expect(page.opiskeluoikeudeTotal()).to.equal('6')
     })
   })
 

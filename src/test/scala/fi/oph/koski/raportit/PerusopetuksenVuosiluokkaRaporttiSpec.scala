@@ -53,7 +53,11 @@ class PerusopetuksenVuosiluokkaRaporttiSpec
     }
 
     "Tuottaa oikeat tiedot" in {
-      withLisätiedotFixture(KoskiSpecificMockOppijat.ysiluokkalainen, perusopetuksenOpiskeluoikeudenLisätiedot) {
+      withLisätiedotFixture(KoskiSpecificMockOppijat.ysiluokkalainen, perusopetuksenOpiskeluoikeudenLisätiedot.copy(
+        vammainen = None,
+        vaikeastiVammainen = None,
+        pidennettyOppivelvollisuus = None,
+      )) {
         val result = PerusopetuksenVuosiluokkaRaportti.buildRaportti(repository, Seq(MockOrganisaatiot.jyväskylänNormaalikoulu), LocalDate.of(2014, 8, 15), None, vuosiluokka = "8", t)
         val ynjevinOpiskeluoikeusOid = lastOpiskeluoikeus(KoskiSpecificMockOppijat.ysiluokkalainen.oid).oid.get
         val rivi = result.find(_.opiskeluoikeusOid == ynjevinOpiskeluoikeusOid)
@@ -195,7 +199,12 @@ class PerusopetuksenVuosiluokkaRaporttiSpec
       }
 
       "Ei tulosta päättötodistusta oppijoilla joilla ei ole yhdeksännen luokan opintoja" in {
-        withAdditionalSuoritukset(KoskiSpecificMockOppijat.vuosiluokkalainen, List(perusopetuksenOppimääränSuoritus), Some(perusopetuksenOpiskeluoikeudenLisätiedot.copy(vuosiluokkiinSitoutumatonOpetus = true))) {
+        withAdditionalSuoritukset(KoskiSpecificMockOppijat.vuosiluokkalainen, List(perusopetuksenOppimääränSuoritus), Some(perusopetuksenOpiskeluoikeudenLisätiedot.copy(
+          vuosiluokkiinSitoutumatonOpetus = true,
+          pidennettyOppivelvollisuus = None,
+          vammainen = None,
+          vaikeastiVammainen = None,
+        ))) {
           val result = PerusopetuksenVuosiluokkaRaportti.buildRaportti(repository, Seq(MockOrganisaatiot.jyväskylänNormaalikoulu), date(2016, 6, 1), None, "9", t)
           result.map(_.oppijaOid) shouldNot contain(KoskiSpecificMockOppijat.vuosiluokkalainen.oid)
         }
@@ -388,11 +397,11 @@ class PerusopetuksenVuosiluokkaRaporttiSpec
     ulkomailla = false,
     perusopetuksenAloittamistaLykatty = false,
     aloittanutEnnenOppivelvollisuutta = false,
-    pidennettyOppivelvollisuus = true,
+    pidennettyOppivelvollisuus = false,
     joustavaPerusopetus = true,
     vuosiluokkiinSitoutumatonOpetus = true,
     vammainen = false,
-    vaikeastiVammainen = true,
+    vaikeastiVammainen = false,
     sisäoppilaitosmainenMajoitus = true,
     koulukoti = true,
     erityisenTuenPaatosVoimassa = true,
