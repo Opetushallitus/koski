@@ -174,6 +174,14 @@ const useUiAdapterImpl = <T extends any[]>(
         const Editor: AdaptedOpiskeluoikeusEditor<any> | undefined =
           oo && opiskeluoikeusEditors[oo.tyyppi.koodiarvo]
 
+        if (
+          tyyppi === 'ammatillinenkoulutus' &&
+          oo?.suoritukset?.[0]?.tyyppi?.koodiarvo !==
+            'ammatillinentutkintoosittainen'
+        ) {
+          return undefined
+        }
+
         return Editor
           ? () => (
               <Editor
