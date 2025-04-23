@@ -174,10 +174,12 @@ const useUiAdapterImpl = <T extends any[]>(
         const Editor: AdaptedOpiskeluoikeusEditor<any> | undefined =
           oo && opiskeluoikeusEditors[oo.tyyppi.koodiarvo]
 
+        // TODO: päätason suorituksen tyyppichecki geneeriseksi opiskeluoikeusEditors
         if (
-          tyyppi === 'ammatillinenkoulutus' &&
-          oo?.suoritukset?.[0]?.tyyppi?.koodiarvo !==
-            'ammatillinentutkintoosittainen'
+          (tyyppi === 'ammatillinenkoulutus' &&
+            oo?.suoritukset?.[0]?.tyyppi?.koodiarvo !==
+              'ammatillinentutkintoosittainen') ||
+          localStorage.getItem('ammatillinen-v2') === null
         ) {
           return undefined
         }
