@@ -2,12 +2,14 @@ package fi.oph.koski.etk
 
 import fi.oph.koski.api.misc.OpiskeluoikeusTestMethodsAmmatillinen
 import fi.oph.koski.documentation.AmmatillinenExampleData
+import fi.oph.koski.documentation.AmmatillinenExampleData.kiipulanAmmattiopisto
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat._
 import fi.oph.koski.henkilo.OppijaHenkilö
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.koskiuser.MockUsers
 import fi.oph.koski.log.AuditLogTester
 import fi.oph.koski.raportointikanta.RaportointikantaTestMethods
+import fi.oph.koski.schema.SisältäväOpiskeluoikeus
 import fi.oph.koski.{DirtiesFixtures, KoskiHttpSpec}
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.should.Matchers
@@ -46,15 +48,17 @@ class ElaketurvakeskusSpec
       }
     }
     "Tutkintotietojen muodostaminen" - {
-      lazy val aineisto = {
+      def luoAineisto(vuosi: Int): EtkResponse = {
         val file = createFile()
-        val request = TutkintotietoRequest(date(2016, 1, 1), date(2016, 12, 31), 2016)
+        val request = TutkintotietoRequest(date(vuosi, 1, 1), date(vuosi, 12, 31), vuosi)
         val response = postFullRequest(request, file) {
           JsonSerializer.parse[EtkResponse](body)
         }
         file.delete
         response
       }
+
+      lazy val aineisto = luoAineisto(2016)
 
       "Aikaleima" in {
         aineisto.aikaleima shouldBe a[Timestamp]
@@ -138,6 +142,41 @@ class ElaketurvakeskusSpec
             Some(EtkViite(None, None, Some(eero.oid)))
           )
         ))
+      }
+      "Ei palauta ammatillisen kuoriopiskeluoikeutta, vaan sisällytetyn opiskeluoikeuden" in {
+        val uusiKuoriopiskeluoikeus = AmmatillinenExampleData.perustutkintoOpiskeluoikeusValmis()
+        val vanhaAineisto = aineisto
+
+        setupOppijaWithOpiskeluoikeus(uusiKuoriopiskeluoikeus, ammattilainen, authHeaders(MockUsers.paakayttaja) ++ jsonContent) {
+          verifyResponseStatusOk()
+
+          val kuoriopiskeluoikeus = lastOpiskeluoikeus(ammattilainen.oid)
+          val oppilaitos = kuoriopiskeluoikeus.oppilaitos.get
+
+          val sisällytettyOpiskeluoikeus = uusiKuoriopiskeluoikeus.copy(
+            oppilaitos = Some(kiipulanAmmattiopisto),
+            sisältyyOpiskeluoikeuteen = Some(SisältäväOpiskeluoikeus(
+              oppilaitos = oppilaitos,
+              oid = kuoriopiskeluoikeus.oid.get,
+            ))
+          )
+
+          putOppija(makeOppija(ammattilainen, List(sisällytettyOpiskeluoikeus)), authHeaders(MockUsers.paakayttaja) ++ jsonContent) {
+            verifyResponseStatusOk()
+
+            val sisällytettyOpiskeluoikeus = lastOpiskeluoikeus(ammattilainen.oid)
+            sisällytettyOpiskeluoikeus.oid should not equal kuoriopiskeluoikeus.oid
+
+            reloadRaportointikanta()
+            val uusiAineisto = luoAineisto(2016)
+            uusiAineisto.tutkinnot should not equal vanhaAineisto.tutkinnot
+            val opiskeluoikeusOidit = uusiAineisto.tutkinnot.flatMap(_.viite).flatMap(_.opiskeluoikeusOid)
+
+            // Testin pihvi
+            opiskeluoikeusOidit should contain(sisällytettyOpiskeluoikeus.oid.get)
+            opiskeluoikeusOidit should not contain kuoriopiskeluoikeus.oid.get
+          }
+        }
       }
     }
     "Auditlogit" - {
