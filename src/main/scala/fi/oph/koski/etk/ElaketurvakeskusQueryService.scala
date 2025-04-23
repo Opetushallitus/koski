@@ -76,7 +76,8 @@ case class EtkTutkintotietoRow(
         hetu = hetu,
         syntymäaika = syntymäaika.map(_.toLocalDate),
         sukunimi = sukunimi,
-        etunimet = etunimet
+        etunimet = etunimet,
+        sukupuoli = None,
       ),
       tutkinto = EtkTutkinto(
         tutkinnonTaso = Some(koulutusmuoto),

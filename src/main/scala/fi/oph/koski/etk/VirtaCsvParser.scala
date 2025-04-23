@@ -20,6 +20,7 @@ object VirtaCsvParser extends Logging {
   private val OpiskeluoikeudenAlkamispaivamaara = "OpiskeluoikeudenAlkamispaivamaara"
   private val suorituspaivamaara = "suorituspaivamaara"
   private val oppijanumero = "oppijanumero"
+  private val sukupuoli = "sukupuoli"
 
   def parse(source: BufferedSource): EtkResponse = {
     val csv = source.getLines.toList
@@ -63,7 +64,8 @@ object VirtaCsvParser extends Logging {
         hetu = fieldOpt(hetu),
         syntymäaika = fieldOpt(syntymaaika).map(LocalDate.parse),
         sukunimi = field(sukunimi),
-        etunimet = field(etunimet)
+        etunimet = field(etunimet),
+        sukupuoli = fieldOpt(sukupuoli).flatMap(EtkSukupuoli.fromVirta),
       ),
       tutkinto = EtkTutkinto(
         tutkinnonTaso = fieldOpt(tutkinnon_taso),

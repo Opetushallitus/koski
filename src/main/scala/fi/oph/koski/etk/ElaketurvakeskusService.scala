@@ -1,6 +1,7 @@
 package fi.oph.koski.etk
 
 import fi.oph.koski.config.KoskiApplication
+import fi.oph.koski.etk.EtkSukupuoli.EtkSukupuoli
 import fi.oph.koski.henkilo.{LaajatOppijaHenkilöTiedot, OpintopolkuHenkilöRepository}
 import fi.oph.koski.koskiuser.KoskiSpecificSession
 import fi.oph.koski.schema.Henkilö.Oid
@@ -28,12 +29,33 @@ class ElaketurvakeskusService(application: KoskiApplication) {
   }
 }
 
-case class EtkHenkilö(hetu: Option[String], syntymäaika: Option[LocalDate], sukunimi: String, etunimet: String) {
+case class EtkHenkilö(hetu: Option[String], syntymäaika: Option[LocalDate], sukunimi: String, etunimet: String, sukupuoli: Option[EtkSukupuoli]) {
   def täydennäHenkilötiedot(onr: OpintopolkuHenkilöRepository, oppijanumero: Option[String]): EtkHenkilö =
     oppijanumero match {
       case Some(oid) if hetu.isEmpty => onr.findByOid(oid).fold(this)(EtkHenkilö.apply)
       case _ => this
     }
+}
+
+object EtkSukupuoli extends Enumeration {
+  type EtkSukupuoli = Int
+  val mies: Int = 1
+  val nainen: Int = 2
+
+  def fromOppijanumerorekisteri(t: LaajatOppijaHenkilöTiedot): Option[EtkSukupuoli] =
+    t.sukupuoli match {
+      case Some("1") => Some(EtkSukupuoli.mies)
+      case Some("2") => Some(EtkSukupuoli.nainen)
+      case _ => None
+    }
+
+  def fromVirta(sukupuoli: String): Option[EtkSukupuoli] =
+    sukupuoli match {
+      case "1" => Some(EtkSukupuoli.mies)
+      case "2" => Some(EtkSukupuoli.nainen)
+      case _ => None
+    }
+
 }
 
 object EtkHenkilö {
@@ -42,6 +64,7 @@ object EtkHenkilö {
     syntymäaika = henkilö.syntymäaika,
     sukunimi = henkilö.sukunimi,
     etunimet = henkilö.etunimet,
+    sukupuoli = EtkSukupuoli.fromOppijanumerorekisteri(henkilö),
   )
 }
 

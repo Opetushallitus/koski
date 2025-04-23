@@ -1,9 +1,9 @@
 package fi.oph.koski.henkilo
 
-import java.time.{DateTimeException, LocalDate}
-
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 
+import java.time.{DateTimeException, LocalDate}
+import scala.util.Try
 import scala.util.matching.Regex
 
 object Hetu {
@@ -20,6 +20,11 @@ object Hetu {
   def birthday(hetu: String, century: Int): LocalDate = {
     LocalDate.of(century + hetu.slice(4, 6).toInt, hetu.slice(2, 4).toInt, hetu.slice(0, 2).toInt)
   }
+
+  def sukupuoli(hetu: String): Option[String] =
+    Try(hetu.substring(7, 10).toInt)
+      .toOption
+      .map(value => if (value % 2 == 0) "2" else "1") // Vastaavat sukupuoli-koodiston koodiarvoja
 
   def validFormat(hetu: String): Either[HttpStatus, String] = {
     hetuRegex.findFirstIn(hetu) match {

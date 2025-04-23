@@ -77,7 +77,7 @@ class ElaketurvakeskusSpec
       "Parsii csv:n datat" in {
         aineisto.tutkinnot.filter(_.henkilö.hetu.contains("021094-650K")).toSet should equal(Set(
           EtkTutkintotieto(
-            EtkHenkilö(Some("021094-650K"), Some(date(1989, 2, 1)), "Nenäkä", "Dtes Apu"),
+            EtkHenkilö(Some("021094-650K"), Some(date(1989, 2, 1)), "Nenäkä", "Dtes Apu", Some(EtkSukupuoli.mies)),
             EtkTutkinto(Some("alempikorkeakoulututkinto"), Some(date(2011, 8, 1)), Some(date(2016, 6, 19))),
             None
           )
@@ -85,7 +85,7 @@ class ElaketurvakeskusSpec
         val oid = "1.2.246.562.24.86863218011"
         aineisto.tutkinnot.filter(_.oid.contains(oid)).toSet should equal(Set(
           EtkTutkintotieto(
-            EtkHenkilö(None, Some(date(1988, 2, 2)), "Kai", "Betat Testitap"),
+            EtkHenkilö(None, Some(date(1988, 2, 2)), "Kai", "Betat Testitap", None),
             EtkTutkinto(Some("ylempiammattikorkeakoulututkinto"), Some(date(2015, 8, 1)), Some(date(2017, 6, 6))),
             Some(EtkViite(None, None, Some(oid))),
           )
@@ -96,7 +96,7 @@ class ElaketurvakeskusSpec
 
         aineisto.tutkinnot.filter(_.henkilö.hetu.contains(ammattilainen.hetu.get)).toSet should equal(Set(
           EtkTutkintotieto(
-            EtkHenkilö(ammattilainen.hetu, Some(date(1918, 6, 28)), ammattilainen.sukunimi, ammattilainen.etunimet),
+            EtkHenkilö(ammattilainen.hetu, Some(date(1918, 6, 28)), ammattilainen.sukunimi, ammattilainen.etunimet, None),
             EtkTutkinto(Some("ammatillinenperustutkinto"), Some(date(2012, 9, 1)), Some(date(2016, 5, 31))),
             Some(EtkViite(opiskeluoikeudenOid, Some(1), Some(ammattilainen.oid)))
           )
@@ -113,7 +113,7 @@ class ElaketurvakeskusSpec
         aineisto.tutkinnot.filter(_.henkilö.hetu.contains(etk18vSyntynytToukokuunViimeisenäPäivänä.hetu.get)).toSet should equal(Set(
           EtkTutkintotieto(
             EtkHenkilö(etk18vSyntynytToukokuunViimeisenäPäivänä.hetu, Some(date(1998, 5, 31)),
-              etk18vSyntynytToukokuunViimeisenäPäivänä.sukunimi, etk18vSyntynytToukokuunViimeisenäPäivänä.etunimet),
+              etk18vSyntynytToukokuunViimeisenäPäivänä.sukunimi, etk18vSyntynytToukokuunViimeisenäPäivänä.etunimet, None),
             EtkTutkinto(Some("ammatillinenperustutkinto"), Some(date(2012, 9, 1)), Some(date(2016, 5, 31))),
             Some(EtkViite(opiskeluoikeudenOid, Some(1), Some(etk18vSyntynytToukokuunViimeisenäPäivänä.oid)))
           )
@@ -124,7 +124,7 @@ class ElaketurvakeskusSpec
 
         aineisto.tutkinnot.filter(_.henkilö.hetu.contains(master.hetu.get)).toSet should equal(Set(
           EtkTutkintotieto(
-            EtkHenkilö(master.hetu, Some(date(1997, 10, 10)), master.sukunimi, master.etunimet),
+            EtkHenkilö(master.hetu, Some(date(1997, 10, 10)), master.sukunimi, master.etunimet, None),
             EtkTutkinto(Some("ammatillinenperustutkinto"), Some(date(2012, 9, 1)), Some(date(2016, 5, 31))),
             Some(EtkViite(opiskeluoikeudenOid, Some(1), Some(slave.henkilö.oid)))
           )
@@ -133,7 +133,7 @@ class ElaketurvakeskusSpec
       "Täydentää Virran hetuttomille riveille syntymäpäivän ja sukupuolen Oppijanumerorekisterin perusteella" in {
         aineisto.tutkinnot.filter(_.henkilö.hetu.contains(eero.hetu.get)).toSet should equal(Set(
           EtkTutkintotieto(
-            EtkHenkilö(eero.hetu, Some(date(1901, 1, 1)), eero.sukunimi, eero.etunimet),
+            EtkHenkilö(eero.hetu, Some(date(1901, 1, 1)), eero.sukunimi, eero.etunimet, Some(EtkSukupuoli.mies)),
             EtkTutkinto(Some("ammattikorkeakoulututkinto"), Some(date(2015, 8, 1)), Some(date(2017, 6, 6))),
             Some(EtkViite(None, None, Some(eero.oid)))
           )
