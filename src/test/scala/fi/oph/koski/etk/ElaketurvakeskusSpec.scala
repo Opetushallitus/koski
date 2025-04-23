@@ -82,11 +82,12 @@ class ElaketurvakeskusSpec
             None
           )
         ))
-        aineisto.tutkinnot.filter(_.oid.contains("1.2.246.562.24.86863218011")).toSet should equal(Set(
+        val oid = "1.2.246.562.24.86863218011"
+        aineisto.tutkinnot.filter(_.oid.contains(oid)).toSet should equal(Set(
           EtkTutkintotieto(
             EtkHenkilö(None, Some(date(1988, 2, 2)), "Kai", "Betat Testitap"),
             EtkTutkinto(Some("ylempiammattikorkeakoulututkinto"), Some(date(2015, 8, 1)), Some(date(2017, 6, 6))),
-            Some(EtkViite(None, None, Some("1.2.246.562.24.86863218011")))
+            Some(EtkViite(None, None, Some(oid))),
           )
         ))
       }
@@ -128,7 +129,15 @@ class ElaketurvakeskusSpec
             Some(EtkViite(opiskeluoikeudenOid, Some(1), Some(slave.henkilö.oid)))
           )
         ))
-
+      }
+      "Täydentää Virran hetuttomille riveille syntymäpäivän ja sukupuolen Oppijanumerorekisterin perusteella" in {
+        aineisto.tutkinnot.filter(_.henkilö.hetu.contains(eero.hetu.get)).toSet should equal(Set(
+          EtkTutkintotieto(
+            EtkHenkilö(eero.hetu, Some(date(1901, 1, 1)), eero.sukunimi, eero.etunimet),
+            EtkTutkinto(Some("ammattikorkeakoulututkinto"), Some(date(2015, 8, 1)), Some(date(2017, 6, 6))),
+            Some(EtkViite(None, None, Some(eero.oid)))
+          )
+        ))
       }
     }
     "Auditlogit" - {
@@ -177,7 +186,7 @@ class ElaketurvakeskusSpec
   val csvFilePath = "csv-tiedosto-testia-varten.csv"
 
   val mockCsv =
-    """|vuosi;korkeakoulu;hetu;syntymaaika;sukupuoli;oppijanumero;sukunimi;etunimet;tutkintokoodi;suorituspaivamaara;tutkinnon_taso;aloituspaivamaara;OpiskeluoikeudenAlkamispaivamaara
+    s"""|vuosi;korkeakoulu;hetu;syntymaaika;sukupuoli;oppijanumero;sukunimi;etunimet;tutkintokoodi;suorituspaivamaara;tutkinnon_taso;aloituspaivamaara;OpiskeluoikeudenAlkamispaivamaara
        |2016;01901;021094-650K;1989-02-01;1;;Nenäkä;Dtes Apu;612101;2016-06-19;2;2011-08-01;2011-08-01
        |2016;01901;281192-654S;1983-04-01;1;1.2.246.562.24.96616592932;Test;Testi Hy;612101;2016-05-31;2;2015-08-01;2015-08-01
        |2016;01901;061188-685J;1991-09-01;2;;Eespä;Eespä Jesta;612101;2016-01-31;2;2014-08-01;2014-08-01
@@ -187,7 +196,8 @@ class ElaketurvakeskusSpec
        |2016;01901;260977-606E;1993-01-02;4;;Sutjakast;Ftes Testitap;612101;2016-05-31;4;2014-08-01;2014-08-01
        |2016;01901;;1988-02-02;4;1.2.246.562.24.86863218011;Kai;Betat Testitap;612101;2017-06-06;3;2015-08-01;2015-08-01
        |2016;01901;;;4;1.2.246.562.24.86863218012;Pai;Ketat Testitap;612101;2017-06-06;1;2015-08-01;2015-08-01
-       |2016;02358;;;1;;Alho;Aapeli;682601;2018-08-31;;;""".stripMargin
+       |2016;02358;;;1;;Alho;Aapeli;682601;2018-08-31;;;
+       |2016;02358;;;;${eero.oid};;;612101;2017-06-06;1;2015-08-01;2015-08-01""".stripMargin
 
   def createLine(hetu: String = "", oid: String = ""): String =
     s"2016;01901;$hetu;1989-02-01;1;$oid;Nenäkä;Dtes Apu;612101;2016-06-19;2;2011-08-01;2011-08-01"
