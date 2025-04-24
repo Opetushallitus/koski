@@ -22,20 +22,25 @@ object VirtaCsvParser extends Logging {
   private val oppijanumero = "oppijanumero"
   private val sukupuoli = "sukupuoli"
 
-  def parse(source: BufferedSource): EtkResponse = {
+  def parse(source: BufferedSource): Option[EtkResponse] = {
     val csv = source.getLines.toList
-    val headLine = validateHeading(csv.head.split(separator))
-    val csvLegend = headLine.zipWithIndex.toMap
 
-    val vuosi = csv.drop(1).head.split(separator)(0).toInt
-    val tutkintotiedot = csv.drop(1).map(toEtkTutkintotieto(_, csvLegend, headLine.size))
+    if (csv.nonEmpty) {
+      val headLine = validateHeading(csv.head.split(separator))
+      val csvLegend = headLine.zipWithIndex.toMap
 
-     EtkResponse(
-      vuosi = vuosi,
-      tutkintojenLkm = tutkintotiedot.size,
-      tutkinnot = tutkintotiedot,
-      aikaleima = Timestamp.from(Instant.now)
-    )
+      val vuosi = csv.drop(1).head.split(separator)(0).toInt
+      val tutkintotiedot = csv.drop(1).map(toEtkTutkintotieto(_, csvLegend, headLine.size))
+
+      Some(EtkResponse(
+        vuosi = vuosi,
+        tutkintojenLkm = tutkintotiedot.size,
+        tutkinnot = tutkintotiedot,
+        aikaleima = Timestamp.from(Instant.now)
+      ))
+    } else {
+      None
+    }
   }
 
   private def validateHeading(headings: Array[String]) = {

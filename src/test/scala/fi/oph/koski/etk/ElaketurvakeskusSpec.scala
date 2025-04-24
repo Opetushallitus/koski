@@ -48,8 +48,8 @@ class ElaketurvakeskusSpec
       }
     }
     "Tutkintotietojen muodostaminen" - {
-      def luoAineisto(vuosi: Int): EtkResponse = {
-        val file = createFile()
+      def luoAineisto(vuosi: Int, virtaCsv: String = mockCsv): EtkResponse = {
+        val file = createFile(virtaCsv)
         val request = TutkintotietoRequest(date(vuosi, 1, 1), date(vuosi, 12, 31), vuosi)
         val response = postFullRequest(request, file) {
           JsonSerializer.parse[EtkResponse](body)
@@ -186,6 +186,10 @@ class ElaketurvakeskusSpec
             opiskeluoikeusOidit should not contain kuoriopiskeluoikeus.oid.get
           }
         }
+      }
+      "Aineiston voi luoda tyhjällä Virta-datalla" in {
+        val uusiAineisto = luoAineisto(2016, "")
+        uusiAineisto.tutkinnot.length should equal(5)
       }
     }
     "Auditlogit" - {
