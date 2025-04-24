@@ -11,6 +11,17 @@ import {
   BooleanEdit,
   BooleanView
 } from '../components-v2/opiskeluoikeus/BooleanField'
+import { FormListField } from '../components-v2/forms/FormListField'
+import {
+  AikajaksoEdit,
+  AikajaksoView
+} from '../components-v2/opiskeluoikeus/AikajaksoField'
+import { Aikajakso } from '../types/fi/oph/koski/schema/Aikajakso'
+import { ButtonGroup } from '../components-v2/containers/ButtonGroup'
+import { FlatButton } from '../components-v2/controls/FlatButton'
+import { t } from '../i18n/i18n'
+import { todayISODate } from '../date/date'
+import { append } from '../util/fp/arrays'
 
 interface AmmatillinenLisatiedotProps {
   form: FormModel<AmmatillinenOpiskeluoikeus>
@@ -35,6 +46,32 @@ export const AmmatillinenLisatiedot: React.FC<AmmatillinenLisatiedotProps> = ({
           edit={BooleanEdit}
           path={lisatiedotPath.prop('oikeusMaksuttomaanAsuntolapaikkaan')}
         />
+      </KeyValueRow>
+      <KeyValueRow localizableLabel={'Majoitus'}>
+        <FormListField
+          form={form}
+          view={AikajaksoView}
+          edit={AikajaksoEdit}
+          path={lisatiedotPath.prop('majoitus')}
+          editProps={{
+            createAikajakso: Aikajakso
+          }}
+          removable
+        />
+        {form.editMode && (
+          <ButtonGroup>
+            <FlatButton
+              onClick={() => {
+                form.updateAt(
+                  lisatiedotPath.prop('majoitus').valueOr([]),
+                  append(Aikajakso({ alku: todayISODate() }))
+                )
+              }}
+            >
+              {t('Lisää')}
+            </FlatButton>
+          </ButtonGroup>
+        )}
       </KeyValueRow>
     </KeyValueTable>
   )
