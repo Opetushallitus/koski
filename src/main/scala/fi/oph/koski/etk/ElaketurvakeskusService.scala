@@ -20,9 +20,11 @@ class ElaketurvakeskusService(application: KoskiApplication) {
     onr: OpintopolkuHenkilöRepository,
   )(implicit koskiSession: KoskiSpecificSession): Option[EtkResponse] = {
     val ammatilliset = request.map(queryService.ammatillisetPerustutkinnot)
-    val korkeakoulut = source.map(VirtaCsvParser.parse).map(_.täydennäHenkilötiedot(onr))
+    val korkeakoulut = source.flatMap(VirtaCsvParser.parse)
     val yhdistetty = (ammatilliset ++ korkeakoulut).reduceOption((a, b) => a.merge(b))
-    val response = yhdistetty.map(TutkintotiedotFormatter.format)
+    val response = yhdistetty
+      .map(_.täydennäHenkilötiedot(onr))
+      .map(TutkintotiedotFormatter.format)
 
     response.foreach(ElaketurvakeskusAuditLogger.auditLog(_, application))
     response
@@ -30,11 +32,20 @@ class ElaketurvakeskusService(application: KoskiApplication) {
 }
 
 case class EtkHenkilö(hetu: Option[String], syntymäaika: Option[LocalDate], sukunimi: String, etunimet: String, sukupuoli: Option[EtkSukupuoli]) {
-  def täydennäHenkilötiedot(onr: OpintopolkuHenkilöRepository, oppijanumero: Option[String]): EtkHenkilö =
-    oppijanumero match {
-      case Some(oid) if hetu.isEmpty => onr.findByOid(oid).fold(this)(EtkHenkilö.apply)
-      case _ => this
+  def täydennäHenkilötiedot(onr: OpintopolkuHenkilöRepository, oppijanumero: String): EtkHenkilö =
+    if (!tiedoissaPuutteita) this else {
+      onr.findByOid(oppijanumero).fold(this)(fillMissing)
     }
+
+  def tiedoissaPuutteita: Boolean = hetu.isEmpty || syntymäaika.isEmpty || sukupuoli.isEmpty
+
+  def fillMissing(tiedot: LaajatOppijaHenkilöTiedot): EtkHenkilö = copy(
+    hetu = List(hetu, tiedot.hetu).find(_.isDefined).flatten,
+    syntymäaika = List(syntymäaika, tiedot.syntymäaika).find(_.isDefined).flatten,
+    sukunimi = List(sukunimi, tiedot.sukunimi).find(_.nonEmpty).getOrElse(""),
+    etunimet = List(etunimet, tiedot.etunimet).find(_.nonEmpty).getOrElse(""),
+    sukupuoli = List(sukupuoli, EtkSukupuoli.fromOppijanumerorekisteri(tiedot)).find(_.isDefined).flatten,
+  )
 }
 
 object EtkSukupuoli extends Enumeration {
@@ -75,8 +86,13 @@ case class EtkViite(opiskeluoikeusOid: Option[String], opiskeluoikeusVersionumer
 case class EtkTutkintotieto(henkilö: EtkHenkilö, tutkinto: EtkTutkinto, viite: Option[EtkViite]) {
   def oid: Option[Oid] = viite.flatMap(_.oppijaOid)
 
-  def täydennäHenkilötiedot(onr: OpintopolkuHenkilöRepository): EtkTutkintotieto =
-    copy(henkilö = henkilö.täydennäHenkilötiedot(onr, viite.flatMap(_.oppijaOid)))
+  def täydennäHenkilötiedot(henkilötiedot: Map[String, LaajatOppijaHenkilöTiedot]): EtkTutkintotieto =
+    copy(henkilö = viite
+      .flatMap(_.oppijaOid)
+      .flatMap(henkilötiedot.get)
+      .map(henkilö.fillMissing)
+      .getOrElse(henkilö)
+    )
 }
 
 case class EtkResponse(vuosi: Int, aikaleima: Timestamp, tutkintojenLkm: Int, tutkinnot: List[EtkTutkintotieto]) {
@@ -91,7 +107,18 @@ case class EtkResponse(vuosi: Int, aikaleima: Timestamp, tutkintojenLkm: Int, tu
   }
 
   def täydennäHenkilötiedot(onr: OpintopolkuHenkilöRepository): EtkResponse = {
-    val täydennetytTiedot = tutkinnot.map(_.täydennäHenkilötiedot(onr))
+    val puutteelistenHenkilötietojenOidit = tutkinnot.flatMap { tutkinto =>
+      if (tutkinto.henkilö.tiedoissaPuutteita) {
+        tutkinto.viite.flatMap(_.oppijaOid).toList
+      } else {
+        List.empty
+      }
+    }
+    val henkilötiedot = puutteelistenHenkilötietojenOidit
+      .grouped(4000)
+      .map(onr.henkilöt.findMasterOppijat)
+      .fold(Map.empty)((a, b) => a ++ b)
+    val täydennetytTiedot = tutkinnot.map(_.täydennäHenkilötiedot(henkilötiedot))
     copy(tutkintojenLkm = täydennetytTiedot.size, tutkinnot = täydennetytTiedot)
   }
 

@@ -4,7 +4,7 @@ import fi.oph.koski.api.misc.OpiskeluoikeusTestMethodsAmmatillinen
 import fi.oph.koski.documentation.AmmatillinenExampleData
 import fi.oph.koski.documentation.AmmatillinenExampleData.kiipulanAmmattiopisto
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat._
-import fi.oph.koski.henkilo.OppijaHenkilö
+import fi.oph.koski.henkilo.{LaajatOppijaHenkilöTiedot, OppijaHenkilö}
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.koskiuser.MockUsers
 import fi.oph.koski.log.AuditLogTester
@@ -134,14 +134,23 @@ class ElaketurvakeskusSpec
           )
         ))
       }
-      "Täydentää Virran hetuttomille riveille syntymäpäivän ja sukupuolen Oppijanumerorekisterin perusteella" in {
-        aineisto.tutkinnot.filter(_.henkilö.hetu.contains(eero.hetu.get)).toSet should equal(Set(
-          EtkTutkintotieto(
-            EtkHenkilö(eero.hetu, Some(date(1901, 1, 1)), eero.sukunimi, eero.etunimet, Some(EtkSukupuoli.mies)),
-            EtkTutkinto(Some("ammattikorkeakoulututkinto"), Some(date(2015, 8, 1)), Some(date(2017, 6, 6))),
-            Some(EtkViite(None, None, Some(eero.oid)))
-          )
-        ))
+      "Syntymäajan ja sukupuolen täydennys Virta-dataan" - {
+        def testTäydennys(hlö: LaajatOppijaHenkilöTiedot) = {
+          aineisto.tutkinnot.filter(_.viite.exists(_.oppijaOid.contains(hlö.oid))).toSet should equal(Set(
+            EtkTutkintotieto(
+              EtkHenkilö(hlö),
+              EtkTutkinto(Some("ammattikorkeakoulututkinto"), Some(date(2015, 8, 1)), Some(date(2017, 6, 6))),
+              Some(EtkViite(None, None, Some(hlö.oid)))
+            )
+          ))
+        }
+
+        "Tiedot täydentyvät hetuttomille, kunhan heillä on oppijanumero" in {
+          testTäydennys(hetuton)
+        }
+        "Tiedot täydentyvät hetullisille, kunhan heillä on oppijanumero" in {
+          testTäydennys(eero)
+        }
       }
       "Ei palauta ammatillisen kuoriopiskeluoikeutta, vaan sisällytetyn opiskeluoikeuden" in {
         val uusiKuoriopiskeluoikeus = AmmatillinenExampleData.perustutkintoOpiskeluoikeusValmis()
@@ -236,7 +245,8 @@ class ElaketurvakeskusSpec
        |2016;01901;;1988-02-02;4;1.2.246.562.24.86863218011;Kai;Betat Testitap;612101;2017-06-06;3;2015-08-01;2015-08-01
        |2016;01901;;;4;1.2.246.562.24.86863218012;Pai;Ketat Testitap;612101;2017-06-06;1;2015-08-01;2015-08-01
        |2016;02358;;;1;;Alho;Aapeli;682601;2018-08-31;;;
-       |2016;02358;;;;${eero.oid};;;612101;2017-06-06;1;2015-08-01;2015-08-01""".stripMargin
+       |2016;02358;;;;${hetuton.oid};;;612101;2017-06-06;1;2015-08-01;2015-08-01
+       |2016;02358;010101-123N;;;${eero.oid};;;612101;2017-06-06;1;2015-08-01;2015-08-01""".stripMargin
 
   def createLine(hetu: String = "", oid: String = ""): String =
     s"2016;01901;$hetu;1989-02-01;1;$oid;Nenäkä;Dtes Apu;612101;2016-06-19;2;2011-08-01;2011-08-01"
