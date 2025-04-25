@@ -28,6 +28,7 @@ object SureAmmatillinenTutkinto {
       suoritukset = oo.suoritukset.collect {
         case s: AmmatillisenTutkinnonSuoritus => SureAmmatillisenTutkinnonSuoritus(s)
         case s: TelmaKoulutuksenSuoritus => SureTelmaKoulutuksenSuoritus(s)
+        case s: YhteisenTutkinnonOsanSuoritus => SureYhteisenTutkinnonOsanSuoritus(s)
       }
     )
 }
@@ -115,5 +116,58 @@ object SureTelmaKoulutuksenOsanSuoritus {
       tyyppi = s.tyyppi,
       koulutusmoduuli = s.koulutusmoduuli,
       arviointi = s.arviointi
+    )
+}
+
+@Title("Yhteisen tutkinnon suoritus")
+case class SureYhteisenTutkinnonOsanSuoritus(
+  @KoodistoKoodiarvo("ammatillisentutkinnonosa")
+  tyyppi: Koodistokoodiviite,
+  alkamispäivä: Option[LocalDate],
+  vahvistuspäivä: Option[LocalDate],
+  koulutusmoduuli: YhteinenTutkinnonOsa,
+  suorituskieli: Option[Koodistokoodiviite],
+  osasuoritukset: List[SureYhteisenTutkinnonOsanOsasuoritus],
+) extends SureAmmatillinenPäätasonSuoritus
+  with MahdollisestiSuorituskielellinen
+  with Vahvistuspäivällinen
+
+object SureYhteisenTutkinnonOsanSuoritus {
+  def apply(s: YhteisenTutkinnonOsanSuoritus): SureYhteisenTutkinnonOsanSuoritus = {
+    s match {
+      case ss: YhteisenAmmatillisenTutkinnonOsanSuoritus => SureYhteisenTutkinnonOsanSuoritus(
+        tyyppi = ss.tyyppi,
+        alkamispäivä = ss.alkamispäivä,
+        vahvistuspäivä = ss.vahvistus.map(_.päivä),
+        koulutusmoduuli = ss.koulutusmoduuli,
+        suorituskieli = ss.suorituskieli,
+        osasuoritukset = ss.osasuoritukset.toList.flatten.map(SureYhteisenTutkinnonOsanOsasuoritus.apply),
+      )
+      case ss: YhteisenOsittaisenAmmatillisenTutkinnonTutkinnonosanSuoritus => SureYhteisenTutkinnonOsanSuoritus(
+        tyyppi = ss.tyyppi,
+        alkamispäivä = ss.alkamispäivä,
+        vahvistuspäivä = ss.vahvistus.map(_.päivä),
+        koulutusmoduuli = ss.koulutusmoduuli,
+        suorituskieli = ss.suorituskieli,
+        osasuoritukset = ss.osasuoritukset.toList.flatten.map(SureYhteisenTutkinnonOsanOsasuoritus.apply),
+      )
+    }
+  }
+}
+
+@Title("Yhteisen tutkinnon osan osa-alueen suoritus")
+case class SureYhteisenTutkinnonOsanOsasuoritus(
+  @KoodistoKoodiarvo("ammatillisentutkinnonosanosaalue")
+  tyyppi: Koodistokoodiviite,
+  koulutusmoduuli: AmmatillisenTutkinnonOsanOsaAlue,
+  arviointi: Option[List[AmmatillinenArviointi]],
+) extends SureSuoritus
+
+object SureYhteisenTutkinnonOsanOsasuoritus {
+  def apply(s: YhteisenTutkinnonOsanOsaAlueenSuoritus): SureYhteisenTutkinnonOsanOsasuoritus =
+    SureYhteisenTutkinnonOsanOsasuoritus(
+      tyyppi = s.tyyppi,
+      koulutusmoduuli = s.koulutusmoduuli,
+      arviointi = s.arviointi,
     )
 }
