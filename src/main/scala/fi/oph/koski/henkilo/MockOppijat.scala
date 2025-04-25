@@ -76,12 +76,12 @@ class MockOppijat(
     kutsumanimi: Option[String] = None,
     turvakielto: Boolean = false,
     vanhaHetu: Option[String] = None,
-    sukupuoli: Option[String] = None,
     kotikunta: Option[String] = None,
     äidinkieli: Option[String] = Some("fi"),
     kuntahistoriaMock: OppijaHenkilöWithMasterInfo => OppijanKuntahistoria = MockOppijat.kuntahistoriaDefault
   ): LaajatOppijaHenkilöTiedot = {
     val syntymäaika = Hetu.century(hetu).map(century => Hetu.birthday(hetu, century))
+    val sukupuoli = Hetu.sukupuoli(hetu)
     oppija(
       suku, etu, hetu, oid, kutsumanimi, turvakielto, vanhaHetu, sukupuoli, kotikunta, äidinkieli, syntymäaika, kuntahistoriaMock)
   }

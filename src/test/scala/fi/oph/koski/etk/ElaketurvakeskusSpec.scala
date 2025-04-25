@@ -2,12 +2,14 @@ package fi.oph.koski.etk
 
 import fi.oph.koski.api.misc.OpiskeluoikeusTestMethodsAmmatillinen
 import fi.oph.koski.documentation.AmmatillinenExampleData
+import fi.oph.koski.documentation.AmmatillinenExampleData.kiipulanAmmattiopisto
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat._
-import fi.oph.koski.henkilo.OppijaHenkilö
+import fi.oph.koski.henkilo.{LaajatOppijaHenkilöTiedot, OppijaHenkilö}
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.koskiuser.MockUsers
 import fi.oph.koski.log.AuditLogTester
 import fi.oph.koski.raportointikanta.RaportointikantaTestMethods
+import fi.oph.koski.schema.SisältäväOpiskeluoikeus
 import fi.oph.koski.{DirtiesFixtures, KoskiHttpSpec}
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.should.Matchers
@@ -46,15 +48,17 @@ class ElaketurvakeskusSpec
       }
     }
     "Tutkintotietojen muodostaminen" - {
-      lazy val aineisto = {
-        val file = createFile()
-        val request = TutkintotietoRequest(date(2016, 1, 1), date(2016, 12, 31), 2016)
+      def luoAineisto(vuosi: Int, virtaCsv: String = mockCsv): EtkResponse = {
+        val file = createFile(virtaCsv)
+        val request = TutkintotietoRequest(date(vuosi, 1, 1), date(vuosi, 12, 31), vuosi)
         val response = postFullRequest(request, file) {
           JsonSerializer.parse[EtkResponse](body)
         }
         file.delete
         response
       }
+
+      lazy val aineisto = luoAineisto(2016)
 
       "Aikaleima" in {
         aineisto.aikaleima shouldBe a[Timestamp]
@@ -77,16 +81,17 @@ class ElaketurvakeskusSpec
       "Parsii csv:n datat" in {
         aineisto.tutkinnot.filter(_.henkilö.hetu.contains("021094-650K")).toSet should equal(Set(
           EtkTutkintotieto(
-            EtkHenkilö(Some("021094-650K"), Some(date(1989, 2, 1)), "Nenäkä", "Dtes Apu"),
+            EtkHenkilö(Some("021094-650K"), Some(date(1989, 2, 1)), "Nenäkä", "Dtes Apu", Some(EtkSukupuoli.mies)),
             EtkTutkinto(Some("alempikorkeakoulututkinto"), Some(date(2011, 8, 1)), Some(date(2016, 6, 19))),
             None
           )
         ))
-        aineisto.tutkinnot.filter(_.oid.contains("1.2.246.562.24.86863218011")).toSet should equal(Set(
+        val oid = "1.2.246.562.24.86863218011"
+        aineisto.tutkinnot.filter(_.oid.contains(oid)).toSet should equal(Set(
           EtkTutkintotieto(
-            EtkHenkilö(None, Some(date(1988, 2, 2)), "Kai", "Betat Testitap"),
+            EtkHenkilö(None, Some(date(1988, 2, 2)), "Kai", "Betat Testitap", None),
             EtkTutkinto(Some("ylempiammattikorkeakoulututkinto"), Some(date(2015, 8, 1)), Some(date(2017, 6, 6))),
-            Some(EtkViite(None, None, Some("1.2.246.562.24.86863218011")))
+            Some(EtkViite(None, None, Some(oid))),
           )
         ))
       }
@@ -95,7 +100,7 @@ class ElaketurvakeskusSpec
 
         aineisto.tutkinnot.filter(_.henkilö.hetu.contains(ammattilainen.hetu.get)).toSet should equal(Set(
           EtkTutkintotieto(
-            EtkHenkilö(ammattilainen.hetu, Some(date(1918, 6, 28)), ammattilainen.sukunimi, ammattilainen.etunimet),
+            EtkHenkilö(ammattilainen.hetu, Some(date(1918, 6, 28)), ammattilainen.sukunimi, ammattilainen.etunimet, None),
             EtkTutkinto(Some("ammatillinenperustutkinto"), Some(date(2012, 9, 1)), Some(date(2016, 5, 31))),
             Some(EtkViite(opiskeluoikeudenOid, Some(1), Some(ammattilainen.oid)))
           )
@@ -112,7 +117,7 @@ class ElaketurvakeskusSpec
         aineisto.tutkinnot.filter(_.henkilö.hetu.contains(etk18vSyntynytToukokuunViimeisenäPäivänä.hetu.get)).toSet should equal(Set(
           EtkTutkintotieto(
             EtkHenkilö(etk18vSyntynytToukokuunViimeisenäPäivänä.hetu, Some(date(1998, 5, 31)),
-              etk18vSyntynytToukokuunViimeisenäPäivänä.sukunimi, etk18vSyntynytToukokuunViimeisenäPäivänä.etunimet),
+              etk18vSyntynytToukokuunViimeisenäPäivänä.sukunimi, etk18vSyntynytToukokuunViimeisenäPäivänä.etunimet, None),
             EtkTutkinto(Some("ammatillinenperustutkinto"), Some(date(2012, 9, 1)), Some(date(2016, 5, 31))),
             Some(EtkViite(opiskeluoikeudenOid, Some(1), Some(etk18vSyntynytToukokuunViimeisenäPäivänä.oid)))
           )
@@ -123,12 +128,68 @@ class ElaketurvakeskusSpec
 
         aineisto.tutkinnot.filter(_.henkilö.hetu.contains(master.hetu.get)).toSet should equal(Set(
           EtkTutkintotieto(
-            EtkHenkilö(master.hetu, Some(date(1997, 10, 10)), master.sukunimi, master.etunimet),
+            EtkHenkilö(master.hetu, Some(date(1997, 10, 10)), master.sukunimi, master.etunimet, None),
             EtkTutkinto(Some("ammatillinenperustutkinto"), Some(date(2012, 9, 1)), Some(date(2016, 5, 31))),
             Some(EtkViite(opiskeluoikeudenOid, Some(1), Some(slave.henkilö.oid)))
           )
         ))
+      }
+      "Syntymäajan ja sukupuolen täydennys Virta-dataan" - {
+        def testTäydennys(hlö: LaajatOppijaHenkilöTiedot) = {
+          aineisto.tutkinnot.filter(_.viite.exists(_.oppijaOid.contains(hlö.oid))).toSet should equal(Set(
+            EtkTutkintotieto(
+              EtkHenkilö(hlö),
+              EtkTutkinto(Some("ammattikorkeakoulututkinto"), Some(date(2015, 8, 1)), Some(date(2017, 6, 6))),
+              Some(EtkViite(None, None, Some(hlö.oid)))
+            )
+          ))
+        }
 
+        "Tiedot täydentyvät hetuttomille, kunhan heillä on oppijanumero" in {
+          testTäydennys(hetuton)
+        }
+        "Tiedot täydentyvät hetullisille, kunhan heillä on oppijanumero" in {
+          testTäydennys(eero)
+        }
+      }
+      "Ei palauta ammatillisen kuoriopiskeluoikeutta, vaan sisällytetyn opiskeluoikeuden" in {
+        val uusiKuoriopiskeluoikeus = AmmatillinenExampleData.perustutkintoOpiskeluoikeusValmis()
+        val vanhaAineisto = aineisto
+
+        setupOppijaWithOpiskeluoikeus(uusiKuoriopiskeluoikeus, ammattilainen, authHeaders(MockUsers.paakayttaja) ++ jsonContent) {
+          verifyResponseStatusOk()
+
+          val kuoriopiskeluoikeus = lastOpiskeluoikeus(ammattilainen.oid)
+          val oppilaitos = kuoriopiskeluoikeus.oppilaitos.get
+
+          val sisällytettyOpiskeluoikeus = uusiKuoriopiskeluoikeus.copy(
+            oppilaitos = Some(kiipulanAmmattiopisto),
+            sisältyyOpiskeluoikeuteen = Some(SisältäväOpiskeluoikeus(
+              oppilaitos = oppilaitos,
+              oid = kuoriopiskeluoikeus.oid.get,
+            ))
+          )
+
+          putOppija(makeOppija(ammattilainen, List(sisällytettyOpiskeluoikeus)), authHeaders(MockUsers.paakayttaja) ++ jsonContent) {
+            verifyResponseStatusOk()
+
+            val sisällytettyOpiskeluoikeus = lastOpiskeluoikeus(ammattilainen.oid)
+            sisällytettyOpiskeluoikeus.oid should not equal kuoriopiskeluoikeus.oid
+
+            reloadRaportointikanta()
+            val uusiAineisto = luoAineisto(2016)
+            uusiAineisto.tutkinnot should not equal vanhaAineisto.tutkinnot
+            val opiskeluoikeusOidit = uusiAineisto.tutkinnot.flatMap(_.viite).flatMap(_.opiskeluoikeusOid)
+
+            // Testin pihvi
+            opiskeluoikeusOidit should contain(sisällytettyOpiskeluoikeus.oid.get)
+            opiskeluoikeusOidit should not contain kuoriopiskeluoikeus.oid.get
+          }
+        }
+      }
+      "Aineiston voi luoda tyhjällä Virta-datalla" in {
+        val uusiAineisto = luoAineisto(2016, "")
+        uusiAineisto.tutkinnot.length should equal(5)
       }
     }
     "Auditlogit" - {
@@ -177,7 +238,7 @@ class ElaketurvakeskusSpec
   val csvFilePath = "csv-tiedosto-testia-varten.csv"
 
   val mockCsv =
-    """|vuosi;korkeakoulu;hetu;syntymaaika;sukupuoli;oppijanumero;sukunimi;etunimet;tutkintokoodi;suorituspaivamaara;tutkinnon_taso;aloituspaivamaara;OpiskeluoikeudenAlkamispaivamaara
+    s"""|vuosi;korkeakoulu;hetu;syntymaaika;sukupuoli;oppijanumero;sukunimi;etunimet;tutkintokoodi;suorituspaivamaara;tutkinnon_taso;aloituspaivamaara;OpiskeluoikeudenAlkamispaivamaara
        |2016;01901;021094-650K;1989-02-01;1;;Nenäkä;Dtes Apu;612101;2016-06-19;2;2011-08-01;2011-08-01
        |2016;01901;281192-654S;1983-04-01;1;1.2.246.562.24.96616592932;Test;Testi Hy;612101;2016-05-31;2;2015-08-01;2015-08-01
        |2016;01901;061188-685J;1991-09-01;2;;Eespä;Eespä Jesta;612101;2016-01-31;2;2014-08-01;2014-08-01
@@ -187,7 +248,9 @@ class ElaketurvakeskusSpec
        |2016;01901;260977-606E;1993-01-02;4;;Sutjakast;Ftes Testitap;612101;2016-05-31;4;2014-08-01;2014-08-01
        |2016;01901;;1988-02-02;4;1.2.246.562.24.86863218011;Kai;Betat Testitap;612101;2017-06-06;3;2015-08-01;2015-08-01
        |2016;01901;;;4;1.2.246.562.24.86863218012;Pai;Ketat Testitap;612101;2017-06-06;1;2015-08-01;2015-08-01
-       |2016;02358;;;1;;Alho;Aapeli;682601;2018-08-31;;;""".stripMargin
+       |2016;02358;;;1;;Alho;Aapeli;682601;2018-08-31;;;
+       |2016;02358;;;;${hetuton.oid};;;612101;2017-06-06;1;2015-08-01;2015-08-01
+       |2016;02358;010101-123N;;;${eero.oid};;;612101;2017-06-06;1;2015-08-01;2015-08-01""".stripMargin
 
   def createLine(hetu: String = "", oid: String = ""): String =
     s"2016;01901;$hetu;1989-02-01;1;$oid;Nenäkä;Dtes Apu;612101;2016-06-19;2;2011-08-01;2011-08-01"

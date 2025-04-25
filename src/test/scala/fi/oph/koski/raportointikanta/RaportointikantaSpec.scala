@@ -57,7 +57,7 @@ class RaportointikantaSpec
         mockOppija.oid,
         mockOppija.oid,
         mockOppija.hetu,
-        None,
+        mockOppija.sukupuoli,
         Some(Date.valueOf("1901-01-01")),
         mockOppija.sukunimi,
         mockOppija.etunimet,

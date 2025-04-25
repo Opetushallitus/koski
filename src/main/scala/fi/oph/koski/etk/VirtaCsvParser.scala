@@ -20,21 +20,27 @@ object VirtaCsvParser extends Logging {
   private val OpiskeluoikeudenAlkamispaivamaara = "OpiskeluoikeudenAlkamispaivamaara"
   private val suorituspaivamaara = "suorituspaivamaara"
   private val oppijanumero = "oppijanumero"
+  private val sukupuoli = "sukupuoli"
 
-  def parse(source: BufferedSource): EtkResponse = {
+  def parse(source: BufferedSource): Option[EtkResponse] = {
     val csv = source.getLines.toList
-    val headLine = validateHeading(csv.head.split(separator))
-    val csvLegend = headLine.zipWithIndex.toMap
 
-    val vuosi = csv.drop(1).head.split(separator)(0).toInt
-    val tutkintotiedot = csv.drop(1).map(toEtkTutkintotieto(_, csvLegend, headLine.size))
+    if (csv.nonEmpty) {
+      val headLine = validateHeading(csv.head.split(separator))
+      val csvLegend = headLine.zipWithIndex.toMap
 
-     EtkResponse(
-      vuosi = vuosi,
-      tutkintojenLkm = tutkintotiedot.size,
-      tutkinnot = tutkintotiedot,
-      aikaleima = Timestamp.from(Instant.now)
-    )
+      val vuosi = csv.drop(1).head.split(separator)(0).toInt
+      val tutkintotiedot = csv.drop(1).map(toEtkTutkintotieto(_, csvLegend, headLine.size))
+
+      Some(EtkResponse(
+        vuosi = vuosi,
+        tutkintojenLkm = tutkintotiedot.size,
+        tutkinnot = tutkintotiedot,
+        aikaleima = Timestamp.from(Instant.now)
+      ))
+    } else {
+      None
+    }
   }
 
   private def validateHeading(headings: Array[String]) = {
@@ -63,7 +69,8 @@ object VirtaCsvParser extends Logging {
         hetu = fieldOpt(hetu),
         syntymäaika = fieldOpt(syntymaaika).map(LocalDate.parse),
         sukunimi = field(sukunimi),
-        etunimet = field(etunimet)
+        etunimet = field(etunimet),
+        sukupuoli = fieldOpt(sukupuoli).flatMap(EtkSukupuoli.fromVirta),
       ),
       tutkinto = EtkTutkinto(
         tutkinnonTaso = fieldOpt(tutkinnon_taso),

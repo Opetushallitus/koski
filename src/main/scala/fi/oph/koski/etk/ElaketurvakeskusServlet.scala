@@ -1,8 +1,8 @@
 package fi.oph.koski.etk
 
 import java.time.LocalDate
-
 import fi.oph.koski.config.KoskiApplication
+import fi.oph.koski.henkilo.OpintopolkuHenkilöRepository
 import fi.oph.koski.http.{JsonErrorMessage, KoskiErrorCategory}
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.koskiuser.RequiresVirkailijaOrPalvelukäyttäjä
@@ -18,6 +18,7 @@ import scala.collection.JavaConverters._
 class ElaketurvakeskusServlet(implicit val application: KoskiApplication) extends KoskiSpecificApiServlet with FileUploadSupport with RequiresVirkailijaOrPalvelukäyttäjä with Logging with NoCache {
 
   val elaketurvakeskusService = new ElaketurvakeskusService(application)
+  val oppijanumerorekisteri: OpintopolkuHenkilöRepository = application.henkilöRepository.opintopolku
 
   before() {
     callsOnlyFrom(application.config.getStringList("elaketurvakeskus.kutsutSallittuOsoitteesta").asScala.toList)
@@ -29,7 +30,7 @@ class ElaketurvakeskusServlet(implicit val application: KoskiApplication) extend
         val json = parseJson
         val file = parseFile
 
-        elaketurvakeskusService.tutkintotiedot(json, file) match {
+        elaketurvakeskusService.tutkintotiedot(json, file, oppijanumerorekisteri) match {
           case Some(response) => Right(response)
           case None => Left(KoskiErrorCategory.notFound.suoritustaEiLöydy(""))
         }

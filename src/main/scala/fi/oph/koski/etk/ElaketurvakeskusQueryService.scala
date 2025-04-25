@@ -14,7 +14,10 @@ class ElaketurvakeskusQueryService(val db: DB) extends QueryMethods {
 
   def ammatillisetPerustutkinnot(request: TutkintotietoRequest): EtkResponse = {
     val queryResult = ammatillisetPerustutkinnotAikajaksolta(request.alku, request.loppu)
-    val tutkintotiedot = queryResult.map(_.toTutkintotieto).toList
+    val kuoriopiskeluoikeuksienOidit = queryResult.flatMap(_.sisältyyOpiskeluoikeuteen).distinct
+    val tutkintotiedot = queryResult
+      .filterNot(row => kuoriopiskeluoikeuksienOidit.contains(row.opiskeluoikeus_oid))
+      .map(_.toTutkintotieto).toList
 
     EtkResponse(
       vuosi = request.vuosi,
@@ -27,7 +30,7 @@ class ElaketurvakeskusQueryService(val db: DB) extends QueryMethods {
   private def ammatillisetPerustutkinnotAikajaksolta(alku: LocalDate, loppu: LocalDate): Seq[EtkTutkintotietoRow] = {
     val alkuDate = Date.valueOf(alku)
     val loppuDate = Date.valueOf(loppu)
-    implicit val getResult = GetResult[EtkTutkintotietoRow](r => EtkTutkintotietoRow(r.<<,r.<<,r.<<,r.<<,r.<<,r.<<,r.<<,r.<<,r.<<,r.<<))
+    implicit val getResult = GetResult[EtkTutkintotietoRow](r => EtkTutkintotietoRow(r.<<,r.<<,r.<<,r.<<,r.<<,r.<<,r.<<,r.<<,r.<<,r.<<,r.<<))
     runDbSync(ammatillisetPerustutkinnotAikajaksolta(alkuDate, loppuDate).as[EtkTutkintotietoRow], timeout = 10.minutes)
   }
 
@@ -37,6 +40,7 @@ class ElaketurvakeskusQueryService(val db: DB) extends QueryMethods {
         oo.koulutusmuoto,
         oo.alkamispaiva,
         oo.paattymispaiva,
+        oo.sisaltyy_opiskeluoikeuteen_oid,
         h.hetu,
         h.syntymaaika,
         h.sukunimi,
@@ -50,7 +54,6 @@ class ElaketurvakeskusQueryService(val db: DB) extends QueryMethods {
         left join r_henkilo h on (h.oppija_oid = oo.oppija_oid)
       where
         oo.koulutusmuoto = 'ammatillinenkoulutus'
-        and oo.sisaltyy_opiskeluoikeuteen_oid is null
         and oo.viimeisin_tila = 'valmistunut'
         and ${alku} <= oo.paattymispaiva and oo.paattymispaiva <= ${loppu}
         and ps.suorituksen_tyyppi = 'ammatillinentutkinto'
@@ -63,6 +66,7 @@ case class EtkTutkintotietoRow(
   koulutusmuoto: String,
   alkamispaiva: Option[Date],
   paattymispaiva: Option[Date],
+  sisältyyOpiskeluoikeuteen: Option[String],
   hetu: Option[String],
   syntymäaika: Option[Date],
   sukunimi: String,
@@ -76,7 +80,8 @@ case class EtkTutkintotietoRow(
         hetu = hetu,
         syntymäaika = syntymäaika.map(_.toLocalDate),
         sukunimi = sukunimi,
-        etunimet = etunimet
+        etunimet = etunimet,
+        sukupuoli = None,
       ),
       tutkinto = EtkTutkinto(
         tutkinnonTaso = Some(koulutusmuoto),
