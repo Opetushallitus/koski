@@ -57,8 +57,10 @@ case class ValintalaskentaSuoritus(
   suoritustapa: Option[Koodistokoodiviite],
   vahvistus: Option[ValintalaskentaVahvistus],
   keskiarvo: Option[Double],
+  keskiarvoSisältääMukautettujaArvosanoja: Boolean,
   korotettuOpiskeluoikeusOid: Option[String],
   korotettuKeskiarvo: Option[Double],
+  korotettuKeskiarvoSisältääMukautettujaArvosanoja: Boolean,
   osasuoritukset: Seq[ValintalaskentaOsasuoritus],
 )
 
@@ -76,6 +78,10 @@ object ValintalaskentaSuoritus {
       case ss: MahdollisestiKeskiarvollinen => ss.keskiarvo
       case _ => None
     },
+    keskiarvoSisältääMukautettujaArvosanoja = s match {
+      case a: AmmatillisenTutkinnonOsittainenSuoritus => a.keskiarvoSisältääMukautettujaArvosanoja.getOrElse(false)
+      case _ => false
+    },
     korotettuOpiskeluoikeusOid = s match {
       case ss: AmmatillisenTutkinnonOsittainenSuoritus => ss.korotettuOpiskeluoikeusOid
       case _ => None
@@ -83,6 +89,10 @@ object ValintalaskentaSuoritus {
     korotettuKeskiarvo = s match {
       case ss: AmmatillisenTutkinnonOsittainenSuoritus => ss.korotettuKeskiarvo
       case _ => None
+    },
+    korotettuKeskiarvoSisältääMukautettujaArvosanoja = s match {
+      case a: AmmatillisenTutkinnonOsittainenSuoritus => a.korotettuKeskiarvoSisältääMukautettujaArvosanoja.getOrElse(false)
+      case _ => false
     },
     osasuoritukset = s.osasuoritukset.toList.flatten.map(ValintalaskentaOsasuoritus.apply),
   )
@@ -116,8 +126,6 @@ case class ValintalaskentaOsasuoritus(
   tyyppi: Koodistokoodiviite,
   koulutusmoduuli: ValintalaskentaOsasuorituksenKoulutusmoduuli,
   arviointi: Seq[ValintalaskentaArviointi],
-  keskiarvoSisältääMukautettujaArvosanoja: Boolean,
-  korotettuKeskiarvoSisältääMukautettujaArvosanoja: Boolean,
 )
 
 object ValintalaskentaOsasuoritus {
@@ -125,14 +133,6 @@ object ValintalaskentaOsasuoritus {
     tyyppi = os.tyyppi,
     koulutusmoduuli = ValintalaskentaOsasuorituksenKoulutusmoduuli(os.koulutusmoduuli),
     arviointi = os.arviointi.toList.flatten.map(ValintalaskentaArviointi.apply),
-    keskiarvoSisältääMukautettujaArvosanoja = os match {
-      case a: AmmatillisenTutkinnonOsittainenSuoritus => a.keskiarvoSisältääMukautettujaArvosanoja.getOrElse(false)
-      case _ => false
-    },
-    korotettuKeskiarvoSisältääMukautettujaArvosanoja = os match {
-      case a: AmmatillisenTutkinnonOsittainenSuoritus => a.korotettuKeskiarvoSisältääMukautettujaArvosanoja.getOrElse(false)
-      case _ => false
-    },
   )
 }
 
