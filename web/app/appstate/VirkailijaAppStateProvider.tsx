@@ -8,6 +8,7 @@ import { PerusteProvider } from './peruste'
 import { PreferencesProvider } from './preferences'
 import { UserProvider } from './user'
 import { OpiskeluoikeusProvider } from './opiskeluoikeus'
+import { OphThemeProvider } from '@opetushallitus/oph-design-system/theme'
 
 export type AppStateProviderProps = React.PropsWithChildren<{
   user: UserWithAccessRights
@@ -16,21 +17,23 @@ export type AppStateProviderProps = React.PropsWithChildren<{
 export const VirkailijaAppStateProvider: React.FC<AppStateProviderProps> = (
   props
 ) => (
-  <GlobalErrorProvider>
-    <UserProvider user={props.user} isKansalainen={false}>
-      <PerusteProvider>
-        <KoodistoProvider>
-          <OrganisaatioHierarkiaProvider>
-            <PreferencesProvider>
-              <ConstraintsProvider>
-                <OpiskeluoikeusProvider>
-                  {props.children}
-                </OpiskeluoikeusProvider>
-              </ConstraintsProvider>
-            </PreferencesProvider>
-          </OrganisaatioHierarkiaProvider>
-        </KoodistoProvider>
-      </PerusteProvider>
-    </UserProvider>
-  </GlobalErrorProvider>
+  <OphThemeProvider lang="fi" variant="oph">
+    <GlobalErrorProvider>
+      <UserProvider user={props.user} isKansalainen={false}>
+        <PerusteProvider>
+          <KoodistoProvider>
+            <OrganisaatioHierarkiaProvider>
+              <PreferencesProvider>
+                <ConstraintsProvider>
+                  <OpiskeluoikeusProvider>
+                    {props.children}
+                  </OpiskeluoikeusProvider>
+                </ConstraintsProvider>
+              </PreferencesProvider>
+            </OrganisaatioHierarkiaProvider>
+          </KoodistoProvider>
+        </PerusteProvider>
+      </UserProvider>
+    </GlobalErrorProvider>
+  </OphThemeProvider>
 )

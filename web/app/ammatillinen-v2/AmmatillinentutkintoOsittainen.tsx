@@ -11,6 +11,7 @@ import { UusiOpiskeluoikeusjakso } from '../components-v2/opiskeluoikeus/UusiOpi
 import { AmmatillinenOpiskeluoikeusjakso } from '../types/fi/oph/koski/schema/AmmatillinenOpiskeluoikeusjakso'
 import { useTree } from '../appstate/tree'
 import { AmmatillinenLisatiedot } from './AmmatillinenLisatiedot'
+import { OphButton } from '@opetushallitus/oph-design-system'
 
 const AmmatillinenTutkintoOsittainenEditor: React.FC<
   AdaptedOpiskeluoikeusEditorProps<AmmatillinenOpiskeluoikeus>
@@ -38,6 +39,7 @@ const AmmatillinenTutkintoOsittainenEditor: React.FC<
         createOpiskeluoikeusjakso={createAmmatillinenOpiskeluoikeusJakso}
         lisätiedotContainer={AmmatillinenLisatiedot}
       />
+      <OphButton>Hello</OphButton>
     </TreeNode>
   )
 }
