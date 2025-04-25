@@ -1,7 +1,7 @@
 // eslint-disable-next-line no-undef
 import './polyfills/polyfills.js'
 import React from 'react'
-import ReactDOM from 'react-dom'
+import { createRoot } from 'react-dom/client' // CHANGED
 import Bacon from 'baconjs'
 import {
   Error,
@@ -64,10 +64,12 @@ const domP = Bacon.combineWith(
 const canAccess = (user, location) =>
   user || noAccessControlPaths.find((p) => location.path.startsWith(p))
 
-// Render to DOM
-domP.onValue((component) =>
-  ReactDOM.render(component, document.getElementById('content'))
-)
+const container = document.getElementById('content')
+const root = createRoot(container)
+
+domP.onValue((component) => {
+  root.render(component)
+})
 
 titleKeyP.onValue((titleKey) => {
   const defaultTitle = t('Koski') + ' - ' + t('Opintopolku.fi')
