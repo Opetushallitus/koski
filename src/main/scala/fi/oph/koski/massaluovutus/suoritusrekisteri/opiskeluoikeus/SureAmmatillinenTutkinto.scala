@@ -1,8 +1,8 @@
 package fi.oph.koski.massaluovutus.suoritusrekisteri.opiskeluoikeus
 
 import fi.oph.koski.schema._
-import fi.oph.koski.schema.annotation.KoodistoKoodiarvo
-import fi.oph.scalaschema.annotation.{Description, Title}
+import fi.oph.koski.schema.annotation.{KoodistoKoodiarvo, KoodistoUri, Scale, Tooltip}
+import fi.oph.scalaschema.annotation.{Description, MaxValue, MinValue, OnlyWhen, Title}
 
 import java.time.LocalDate
 
@@ -46,6 +46,14 @@ case class SureAmmatillisenTutkinnonSuoritus(
   koulutusmoduuli: AmmatillinenTutkintoKoulutus,
   suorituskieli: Koodistokoodiviite,
   osasuoritukset: List[SureAmmatillisenTutkinnonOsasuoritus],
+  @Description("Tutkinnon suoritustapa (näyttö / ops / reformi). Ammatillisen perustutkinnon voi suorittaa joko opetussuunnitelmaperusteisesti tai näyttönä. Ammatillisen reformin (531/2017) mukaiset suoritukset välitetään suoritustavalla reformi. ")
+  @KoodistoUri("ammatillisentutkinnonsuoritustapa")
+  suoritustapa: Koodistokoodiviite,
+  @Title("Painotettu keskiarvo")
+  @MinValue(1)
+  @MaxValue(5)
+  @Scale(2)
+  keskiarvo: Option[Double],
 ) extends SureAmmatillinenPäätasonSuoritus
   with Suorituskielellinen
   with Vahvistuspäivällinen
@@ -59,6 +67,8 @@ object SureAmmatillisenTutkinnonSuoritus {
       koulutusmoduuli = s.koulutusmoduuli,
       suorituskieli = s.suorituskieli,
       osasuoritukset = s.osasuoritukset.toList.flatten.map(SureAmmatillisenTutkinnonOsasuoritus.apply),
+      suoritustapa = s.suoritustapa,
+      keskiarvo = s.keskiarvo,
     )
 }
 
