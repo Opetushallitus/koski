@@ -60,14 +60,6 @@ export const ValtionhallinnonKielitutkintoEditor: React.FC<
 
       <Spacer />
 
-      <SuorituksenVahvistus
-        vahvistus={suoritus.vahvistus}
-        suoritettuText={t('Suoritettu')}
-        hideVahvistus
-      />
-
-      <Spacer />
-
       <OsasuoritusTable
         editMode={form.editMode}
         rows={kielitaidonSuoritukset.map((_os, osasuoritusIndex) =>
