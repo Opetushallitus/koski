@@ -41,7 +41,6 @@ export type SuorituksenVahvistusFieldProps<
   organisaatio?: Oppilaitos | Koulutustoimija
   disableAdd?: boolean
   disableRemoval?: boolean
-  suoritettuText?: string
 }>
 
 export const SuorituksenVahvistusField = <
@@ -165,9 +164,6 @@ export const SuorituksenVahvistusEdit = <T extends Vahvistus>({
 
 type SuorituksenVahvistusProps = CommonPropsWithChildren<{
   vahvistus?: Vahvistus
-  suoritettuText?: string
-  keskenText?: string
-  hideVahvistus?: boolean
 }>
 
 export const SuorituksenVahvistus: React.FC<SuorituksenVahvistusProps> = (
@@ -193,12 +189,10 @@ export const SuorituksenVahvistus: React.FC<SuorituksenVahvistusProps> = (
     >
       <div className="SuorituksenVahvistus__status">
         <TestIdText id="status">
-          {vahvistus
-            ? props.suoritettuText || t('Suoritus valmis')
-            : props.keskenText || t('Suoritus kesken')}
+          {vahvistus ? t('Suoritus valmis') : t('Suoritus kesken')}
         </TestIdText>
       </div>
-      {vahvistus && !props.hideVahvistus && (
+      {vahvistus && (
         <>
           <div className="SuorituksenVahvistus__vahvistus">
             <TestIdText id="details">
