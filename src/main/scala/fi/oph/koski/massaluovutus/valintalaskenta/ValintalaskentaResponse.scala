@@ -126,6 +126,7 @@ case class ValintalaskentaOsasuoritus(
   tyyppi: Koodistokoodiviite,
   koulutusmoduuli: ValintalaskentaOsasuorituksenKoulutusmoduuli,
   arviointi: Seq[ValintalaskentaArviointi],
+  osasuoritukset: Option[Seq[ValintalaskentaOsasuoritus]],
 )
 
 object ValintalaskentaOsasuoritus {
@@ -133,6 +134,7 @@ object ValintalaskentaOsasuoritus {
     tyyppi = os.tyyppi,
     koulutusmoduuli = ValintalaskentaOsasuorituksenKoulutusmoduuli(os.koulutusmoduuli),
     arviointi = os.arviointi.toList.flatten.map(ValintalaskentaArviointi.apply),
+    osasuoritukset = os.osasuoritukset.map(_.map(ValintalaskentaOsasuoritus.apply)),
   )
 }
 
