@@ -91,4 +91,5 @@ case class AdditionalExports(
   preIBLukionModuulinSuoritus2019: PreIBLukionModuulinSuoritus2019,
   preIBLukionModuulinTaiPaikallisenOpintojaksonSuoritus2019: PreIBLukionModuulinTaiPaikallisenOpintojaksonSuoritus2019,
   ibTaso: IBTaso,
+  arviointiPäivämäärällä: ArviointiPäivämäärällä,
 )

@@ -1,6 +1,7 @@
 import * as A from 'fp-ts/Array'
 import { pipe } from 'fp-ts/lib/function'
 import * as O from 'fp-ts/Option'
+import * as Ord from 'fp-ts/Ord'
 import React from 'react'
 import { ActivePäätasonSuoritus } from '../components-v2/containers/EditorContainer'
 import {
@@ -25,18 +26,16 @@ import {
   OsasuoritusRowData,
   OsasuoritusTable
 } from '../components-v2/opiskeluoikeus/OsasuoritusTable'
-import { SuorituksenVahvistus } from '../components-v2/opiskeluoikeus/SuorituksenVahvistus'
+import { ISO2FinnishDate } from '../date/date'
 import { t } from '../i18n/i18n'
-import { KielitutkinnonOpiskeluoikeudenTila } from '../types/fi/oph/koski/schema/KielitutkinnonOpiskeluoikeudenTila'
 import { KielitutkinnonOpiskeluoikeus } from '../types/fi/oph/koski/schema/KielitutkinnonOpiskeluoikeus'
 import { Koulutustoimija } from '../types/fi/oph/koski/schema/Koulutustoimija'
 import { Oppilaitos } from '../types/fi/oph/koski/schema/Oppilaitos'
+import { ValtionhallinnonKielitutkinnonArviointi } from '../types/fi/oph/koski/schema/ValtionhallinnonKielitutkinnonArviointi'
 import { ValtionhallinnonKielitutkinnonKielitaidonSuoritus } from '../types/fi/oph/koski/schema/ValtionhallinnonKielitutkinnonKielitaidonSuoritus'
 import { ValtionhallinnonKielitutkinnonSuoritus } from '../types/fi/oph/koski/schema/ValtionhallinnonKielitutkinnonSuoritus'
+import { ArviointipäiväOrd } from '../util/arvioinnit'
 import { OsasuoritusOf } from '../util/schema'
-import { ValtionhallinnonKielitutkinnonKirjallisenKielitaidonOsakokeenSuoritus } from '../types/fi/oph/koski/schema/ValtionhallinnonKielitutkinnonKirjallisenKielitaidonOsakokeenSuoritus'
-import { ValtionhallinnonKielitutkinnonArviointi } from '../types/fi/oph/koski/schema/ValtionhallinnonKielitutkinnonArviointi'
-import { ISO2FinnishDate } from '../date/date'
 
 export type ValtionhallinnonKielitutkintoEditorProps = {
   form: FormModel<KielitutkinnonOpiskeluoikeus>
@@ -95,15 +94,13 @@ const ValtiohallinnonKielitutkinnonTiedot: React.FC<
       </KeyValueRow>
       {päätasonSuoritus.koulutusmoduuli.tunniste.koodiarvo ===
         'hyvajatyydyttava' && (
-        <>
-          <KeyValueRow localizableLabel="Tutkintosuorituksen vastaanottaja">
-            {vastaanottajat && vastaanottajat.map((v) => v.nimi).join(', ')}
-          </KeyValueRow>
-          <KeyValueRow localizableLabel="Suorituspaikkakunta">
-            {t(päätasonSuoritus.vahvistus?.paikkakunta?.nimi)}
-          </KeyValueRow>
-        </>
+        <KeyValueRow localizableLabel="Tutkintosuorituksen vastaanottaja">
+          {vastaanottajat && vastaanottajat.map((v) => v.nimi).join(', ')}
+        </KeyValueRow>
       )}
+      <KeyValueRow localizableLabel="Suorituspaikkakunta">
+        {t(päätasonSuoritus.vahvistus?.paikkakunta?.nimi)}
+      </KeyValueRow>
     </KeyValueTable>
   )
 }
@@ -286,19 +283,25 @@ const OsakokeenArvioinnit: React.FC<OsakokeenArvioinnitProps> = ({
   arvioinnit
 }) => {
   const indentation = 4
+
   return (
     <>
       <Spacer />
-      {arvioinnit.map((arviointi, index) => (
-        <KeyValueTable key={index}>
-          <KeyValueRow localizableLabel="Arvosana" indent={indentation}>
-            {t(arviointi.arvosana.nimi)}
-          </KeyValueRow>
-          <KeyValueRow localizableLabel="Arviointipäivä" indent={indentation}>
-            {ISO2FinnishDate(arviointi.päivä)}
-          </KeyValueRow>
-        </KeyValueTable>
-      ))}
+      {pipe(
+        arvioinnit,
+        A.sort(Ord.reverse(ArviointipäiväOrd)),
+        A.mapWithIndex((index, arviointi) => (
+          <KeyValueTable key={index}>
+            <KeyValueRow localizableLabel="Tutkintopäivä" indent={indentation}>
+              {ISO2FinnishDate(arviointi.päivä)}
+            </KeyValueRow>
+            <KeyValueRow localizableLabel="Arvosana" indent={indentation}>
+              {t(arviointi.arvosana.nimi)}
+            </KeyValueRow>
+          </KeyValueTable>
+        )),
+        A.intersperse(<Spacer />)
+      )}
       <Spacer />
     </>
   )

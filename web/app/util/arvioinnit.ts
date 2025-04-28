@@ -5,6 +5,7 @@ import * as number from 'fp-ts/number'
 import * as string from 'fp-ts/string'
 import { Arviointi } from '../types/fi/oph/koski/schema/Arviointi'
 import { pipe } from 'fp-ts/lib/function'
+import { ArviointiPäivämäärällä } from '../types/fi/oph/koski/schema/ArviointiPaivamaaralla'
 
 type ConsolidatedArviointi = {
   päivä: string
@@ -94,3 +95,7 @@ export const parasArviointiIndex = <T extends Arviointi>(
 export const viimeisinArviointi = <T extends Arviointi>(
   arvioinnit?: T[]
 ): T | undefined => pipe(arvioinnit || [], A.last, O.toUndefined)
+
+export const ArviointipäiväOrd = Ord.contramap(
+  (a: ArviointiPäivämäärällä) => a.päivä
+)(string.Ord)
