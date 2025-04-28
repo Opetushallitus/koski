@@ -62,6 +62,7 @@ import {
   minimimääräArvioitujaOsasuorituksia,
   taiteenPerusopetuksenSuorituksenNimi
 } from './tpoCommon'
+import { VirkailijaKansalainenContainer } from '../components-v2/containers/VirkailijaKansalainenContainer'
 
 export type TaiteenPerusopetusEditorProps =
   AdaptedOpiskeluoikeusEditorProps<TaiteenPerusopetuksenOpiskeluoikeus>
@@ -72,33 +73,14 @@ export const TaiteenPerusopetusEditor: React.FC<
   const opiskeluoikeusSchema = useSchema('TaiteenPerusopetuksenOpiskeluoikeus')
   const form = useForm(props.opiskeluoikeus, false, opiskeluoikeusSchema)
 
-  const { TreeNode: OpiskeluoikeusTreeNode, ...opiskeluoikeusTree } = useTree()
-  const kansalainenTaiSuoritusjako = useKansalainenTaiSuoritusjako()
-
   // Render
   return (
-    <>
-      {kansalainenTaiSuoritusjako ? (
-        <OpiskeluoikeusTreeNode>
-          <OpiskeluoikeusTitle
-            opiskeluoikeus={form.state}
-            opiskeluoikeudenNimi={tpoKoulutuksenNimi(form.state)}
-            tree={opiskeluoikeusTree}
-          />
-          {opiskeluoikeusTree.isOpen && (
-            <PäätasonSuoritusEditor {...props} form={form} />
-          )}
-        </OpiskeluoikeusTreeNode>
-      ) : (
-        <>
-          <OpiskeluoikeusTitle
-            opiskeluoikeus={form.state}
-            opiskeluoikeudenNimi={tpoKoulutuksenNimi(form.state)}
-          />
-          <PäätasonSuoritusEditor {...props} form={form} />
-        </>
-      )}
-    </>
+    <VirkailijaKansalainenContainer
+      opiskeluoikeus={form.state}
+      opiskeluoikeudenNimi={tpoKoulutuksenNimi(form.state)}
+    >
+      <PäätasonSuoritusEditor {...props} form={form} />
+    </VirkailijaKansalainenContainer>
   )
 }
 
