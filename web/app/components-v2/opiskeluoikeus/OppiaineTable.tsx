@@ -51,6 +51,7 @@ import { CHARCODE_REMOVE } from '../texts/Icon'
 import { ArvosanaEdit, koodiarvoOnly } from './ArvosanaField'
 import { OppiaineTableKurssiEditor } from './OppiaineTableKurssiEditor'
 import { OppiaineTableOppiaineEditor } from './OppiaineTableOppiaineEditor'
+import { formatLaajuus } from '../../util/laajuus'
 
 // Vain OppiaineTablen tukemat päätason suoritukset (tätä komponenttia tullaan myöhemmin käyttämään ainakin lukion näkymille)
 export type OppiaineTableOpiskeluoikeus = IBOpiskeluoikeus
@@ -680,6 +681,9 @@ const OppiaineDetails: React.FC<OppiaineTooltipProps> = ({ oppiaine, id }) => {
       : null,
     isIBOppiaineExtendedEssay(koulutus) ? ['Aihe', t(koulutus.aihe)] : null,
     isIBOppiaineLanguage(koulutus) ? ['Kieli', t(koulutus.kieli.nimi)] : null,
+    isIBOppiaineCAS(koulutus)
+      ? ['Laajuus', formatLaajuus(koulutus.laajuus)]
+      : null,
     isValinnaisuus(koulutus)
       ? ['Pakollinen', t(koulutus.pakollinen ? 'Kyllä' : 'Ei')]
       : null,

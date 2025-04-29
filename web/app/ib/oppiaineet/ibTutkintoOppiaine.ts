@@ -14,6 +14,7 @@ import { IBOppiaineTheoryOfKnowledge } from '../../types/fi/oph/koski/schema/IBO
 import { IBTheoryOfKnowledgeSuoritus } from '../../types/fi/oph/koski/schema/IBTheoryOfKnowledgeSuoritus'
 import { IBTutkinnonOppiaineenSuoritus } from '../../types/fi/oph/koski/schema/IBTutkinnonOppiaineenSuoritus'
 import { Koodistokoodiviite } from '../../types/fi/oph/koski/schema/Koodistokoodiviite'
+import { LaajuusTunneissa } from '../../types/fi/oph/koski/schema/LaajuusTunneissa'
 import { LocalizedString } from '../../types/fi/oph/koski/schema/LocalizedString'
 import {
   isIBOppiaineLanguageTunniste,
@@ -29,6 +30,11 @@ export type IBOppiaineenSuoritusProps = {
   ryhmä?: Koodistokoodiviite<'aineryhmaib'>
   taso?: Koodistokoodiviite<'oppiaineentasoib'>
   extendedEssay?: IBExtendedEssaySuoritusProps
+  cas?: IBCASOppiaineenSuoritusProps
+}
+
+export type IBCASOppiaineenSuoritusProps = {
+  laajuus?: LaajuusTunneissa
 }
 
 export const createIBTutkinnonOppiaine = (
@@ -81,11 +87,14 @@ const createIBOppiaineMuu = ({
     : null
 
 export const createIBCASSuoritus = (
-  arvosana: Koodistokoodiviite<'arviointiasteikkoib', 'S'>
+  arvosana: Koodistokoodiviite<'arviointiasteikkoib', 'S'>,
+  laajuus?: LaajuusTunneissa,
+  pakollinen?: boolean
 ): IBCASSuoritus =>
   IBCASSuoritus({
     koulutusmoduuli: IBOppiaineCAS({
-      pakollinen: true
+      pakollinen: !!pakollinen,
+      laajuus
     }),
     arviointi: [IBCASOppiaineenArviointi({ arvosana })]
   })
@@ -153,10 +162,12 @@ const createIBOppiaineTheoryOfKnowledge = ({
   })
 
 const createIBOppiaineCAS = ({
-  pakollinen
+  pakollinen,
+  cas
 }: IBOppiaineenSuoritusProps): IBOppiaineCAS =>
   IBOppiaineCAS({
-    pakollinen: !!pakollinen
+    pakollinen: !!pakollinen,
+    laajuus: cas?.laajuus
   })
 
 const createIBDBCoreSuoritus = (

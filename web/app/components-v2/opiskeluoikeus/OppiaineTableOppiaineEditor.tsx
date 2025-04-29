@@ -1,21 +1,24 @@
 import React from 'react'
 import { t } from '../../i18n/i18n'
+import { isIBAineRyhmäOppiaine } from '../../types/fi/oph/koski/schema/IBAineRyhmaOppiaine'
+import { isIBOppiaineCAS } from '../../types/fi/oph/koski/schema/IBOppiaineCAS'
 import { isIBOppiaineExtendedEssay } from '../../types/fi/oph/koski/schema/IBOppiaineExtendedEssay'
+import { isIBOppiaineLanguage } from '../../types/fi/oph/koski/schema/IBOppiaineLanguage'
+import { isIBTaso } from '../../types/fi/oph/koski/schema/IBTaso'
+import { isValinnaisuus } from '../../types/fi/oph/koski/schema/Valinnaisuus'
+import { koodiviiteId } from '../../util/koodisto'
+import { createLaajuusTunneissa } from '../../util/laajuus'
 import { PathToken, get } from '../../util/laxModify'
+import { DialogSelect } from '../../uusiopiskeluoikeus/components/DialogSelect'
 import { KeyValueRow, KeyValueTable } from '../containers/KeyValueTable'
 import { Modal, ModalBody, ModalFooter, ModalTitle } from '../containers/Modal'
+import { Checkbox } from '../controls/Checkbox'
 import { LocalizedTextEdit } from '../controls/LocalizedTestField'
 import { RaisedButton } from '../controls/RaisedButton'
-import { Select, useKoodistoOptions } from '../controls/Select'
+import { useKoodistoOptions } from '../controls/Select'
 import { FormModel } from '../forms/FormModel'
+import { LaajuusEdit } from './LaajuusField'
 import { Oppiaine, OppiaineTableOpiskeluoikeus } from './OppiaineTable'
-import { koodiviiteId } from '../../util/koodisto'
-import { DialogSelect } from '../../uusiopiskeluoikeus/components/DialogSelect'
-import { isIBOppiaineLanguage } from '../../types/fi/oph/koski/schema/IBOppiaineLanguage'
-import { isValinnaisuus } from '../../types/fi/oph/koski/schema/Valinnaisuus'
-import { Checkbox } from '../controls/Checkbox'
-import { isIBTaso } from '../../types/fi/oph/koski/schema/IBTaso'
-import { isIBAineRyhmäOppiaine } from '../../types/fi/oph/koski/schema/IBAineRyhmaOppiaine'
 
 type OppiaineTableOppiaineEditorProps = {
   form: FormModel<OppiaineTableOpiskeluoikeus>
@@ -100,6 +103,15 @@ export const OppiaineTableOppiaineEditor: React.FC<
                   form.set(...path, 'koulutusmoduuli', 'ryhmä')(opt?.value)
                 }
                 testId="kieli"
+              />
+            </KeyValueRow>
+          )}
+          {isIBOppiaineCAS(koulutus) && (
+            <KeyValueRow localizableLabel="Laajuus">
+              <LaajuusEdit
+                value={koulutus.laajuus}
+                onChange={form.set(...path, 'koulutusmoduuli', 'laajuus')}
+                createLaajuus={createLaajuusTunneissa}
               />
             </KeyValueRow>
           )}

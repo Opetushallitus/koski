@@ -53,6 +53,7 @@ import { UusiPreIB2015OppiaineDialog } from './dialogs/UusiPreIB2015OppiaineDial
 import { UusiPreIB2015OsasuoritusDialog } from './dialogs/UusiPreIB2015OsasuoritusDialog'
 import { UusiPreIB2019OppiaineDialog } from './dialogs/UusiPreIB2019OppiaineDialog'
 import { UusiPreIB2019OsasuoritusDialog } from './dialogs/UusiPreIB2019OsasuoritusDialog'
+import { VirkailijaKansalainenContainer } from '../components-v2/containers/VirkailijaKansalainenContainer'
 
 export type IBEditorProps = AdaptedOpiskeluoikeusEditorProps<IBOpiskeluoikeus>
 
@@ -61,13 +62,12 @@ export const IBEditor: React.FC<IBEditorProps> = (props) => {
   const form = useForm(props.opiskeluoikeus, false, opiskeluoikeusSchema)
 
   return (
-    <>
-      <OpiskeluoikeusTitle
-        opiskeluoikeus={form.state}
-        opiskeluoikeudenNimi={'ib-tutkinto'}
-      />
+    <VirkailijaKansalainenContainer
+      opiskeluoikeus={form.state}
+      opiskeluoikeudenNimi={'ib-tutkinto'}
+    >
       <IBPäätasonSuoritusEditor {...props} form={form} />
-    </>
+    </VirkailijaKansalainenContainer>
   )
 }
 
