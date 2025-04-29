@@ -4,6 +4,7 @@ import fi.oph.koski.schema.Opiskeluoikeus.OpiskeluoikeudenPäättymistila
 
 import java.time.{LocalDate, LocalDateTime}
 import fi.oph.koski.schema.annotation._
+import fi.oph.koski.util.FinnishDateFormat
 import fi.oph.scalaschema.annotation._
 import mojave.Traversal
 
@@ -347,6 +348,9 @@ trait MahdollisestiAlkupäivällinenJakso extends DateContaining {
 
   def overlaps(j: MahdollisestiAlkupäivällinenJakso): Boolean =
     j.alku.exists(contains) || j.loppu.exists(contains)
+
+  def toFinnishDateFormat: String = FinnishDateFormat.format(alku, loppu)
+  def toAikajakso: Aikajakso = Aikajakso(alku, loppu)
 }
 
 object MahdollisestiAlkupäivällinenJakso {
@@ -356,6 +360,7 @@ object MahdollisestiAlkupäivällinenJakso {
 
 trait DateContaining {
   def contains(date: LocalDate): Boolean
+  def toFinnishDateFormat: String
 }
 
 trait Jakso extends Alkupäivällinen with DateContaining {
@@ -370,6 +375,8 @@ trait Jakso extends Alkupäivällinen with DateContaining {
     contains(other.alku) || other.loppu.exists(contains) || other.contains(alku) || loppu.exists(other.contains)
 
   override def toString: String = s"$alku – ${loppu.getOrElse("")}"
+
+  def toFinnishDateFormat: String = FinnishDateFormat.format(Some(alku), loppu)
 }
 
 @Description("Aikajakson pituus (alku- ja loppupäivämäärä)")

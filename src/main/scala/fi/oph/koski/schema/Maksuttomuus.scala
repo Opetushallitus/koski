@@ -1,5 +1,7 @@
 package fi.oph.koski.schema
 
+import fi.oph.koski.util.FinnishDateFormat
+
 import java.time.LocalDate
 import fi.oph.scalaschema.annotation.Description
 
@@ -26,6 +28,8 @@ case class OikeuttaMaksuttomuuteenPidennetty (
   def contains(d: LocalDate): Boolean = !d.isBefore(alku) && !d.isAfter(loppu)
 
   override def toString: String = s"$alku – $loppu"
+
+  def toFinnishDateFormat: String = FinnishDateFormat.format(Some(alku), Some(loppu))
 }
 
 @Description("Laajennetun oppivelvollisuuden suoritus")

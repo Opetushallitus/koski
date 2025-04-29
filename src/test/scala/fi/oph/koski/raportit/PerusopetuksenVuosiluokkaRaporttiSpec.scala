@@ -57,6 +57,8 @@ class PerusopetuksenVuosiluokkaRaporttiSpec
         vammainen = None,
         vaikeastiVammainen = None,
         pidennettyOppivelvollisuus = None,
+        erityisenTuenPäätös = None,
+        erityisenTuenPäätökset = None,
       )) {
         val result = PerusopetuksenVuosiluokkaRaportti.buildRaportti(repository, Seq(MockOrganisaatiot.jyväskylänNormaalikoulu), LocalDate.of(2014, 8, 15), None, vuosiluokka = "8", t)
         val ynjevinOpiskeluoikeusOid = lastOpiskeluoikeus(KoskiSpecificMockOppijat.ysiluokkalainen.oid).oid.get
@@ -204,6 +206,8 @@ class PerusopetuksenVuosiluokkaRaporttiSpec
           pidennettyOppivelvollisuus = None,
           vammainen = None,
           vaikeastiVammainen = None,
+          erityisenTuenPäätös = None,
+          erityisenTuenPäätökset = None,
         ))) {
           val result = PerusopetuksenVuosiluokkaRaportti.buildRaportti(repository, Seq(MockOrganisaatiot.jyväskylänNormaalikoulu), date(2016, 6, 1), None, "9", t)
           result.map(_.oppijaOid) shouldNot contain(KoskiSpecificMockOppijat.vuosiluokkalainen.oid)
@@ -404,8 +408,8 @@ class PerusopetuksenVuosiluokkaRaporttiSpec
     vaikeastiVammainen = false,
     sisäoppilaitosmainenMajoitus = true,
     koulukoti = true,
-    erityisenTuenPaatosVoimassa = true,
-    erityisenTuenPaatosToimialueittain = true
+    erityisenTuenPaatosVoimassa = false,
+    erityisenTuenPaatosToimialueittain = false
   )
 
   val kahdeksannenLuokanLuokalleJääntiRow = defaultYnjeviExpectedKasiLuokkaRow.copy(

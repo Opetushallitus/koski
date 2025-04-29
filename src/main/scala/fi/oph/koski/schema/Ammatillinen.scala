@@ -1,10 +1,10 @@
 package fi.oph.koski.schema
 
 import java.time.{LocalDate, LocalDateTime}
-
 import fi.oph.koski.koskiuser.Rooli
 import fi.oph.scalaschema.annotation._
 import fi.oph.koski.schema.annotation._
+import fi.oph.koski.util.FinnishDateFormat
 import mojave._
 
 @Description("Ammatillisen koulutuksen opiskeluoikeus")
@@ -172,6 +172,7 @@ case class OpiskeluvalmiuksiaTukevienOpintojenJakso(
   kuvaus: LocalizedString
 ) extends DateContaining {
   def contains(d: LocalDate): Boolean = !d.isBefore(alku) && !d.isAfter(loppu)
+  def toFinnishDateFormat: String = FinnishDateFormat.format(Some(alku), Some(loppu))
 }
 
 @Description("Ks. tarkemmin ammatillisen opiskeluoikeuden tilat: [wiki](https://wiki.eduuni.fi/pages/viewpage.action?pageId=190612822#id-1.1.Ammatillistenopiskeluoikeuksienl%C3%A4sn%C3%A4olotiedotjaopiskeluoikeudenrahoitusmuodontiedot-Opiskeluoikeudentilat)")

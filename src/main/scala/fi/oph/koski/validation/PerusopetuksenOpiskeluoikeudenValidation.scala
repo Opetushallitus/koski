@@ -9,6 +9,7 @@ import fi.oph.koski.schema._
 import fi.oph.koski.util.ChainingSyntax.localDateOps
 import fi.oph.koski.util.DateOrdering.localDateOrdering
 import fi.oph.koski.util.FinnishDateFormat
+import fi.oph.koski.validation.PidennetynOppivelvollisuudenMuutoksenValidaatio.validateVanhojenJaksokenttienPäättyminenSiirryttäessäUusiin
 
 import java.time.LocalDate
 
@@ -22,7 +23,7 @@ object PerusopetuksenOpiskeluoikeusValidation extends Logging {
           validateNuortenPerusopetuksenOpiskeluoikeudenTila(poo),
           validateVuosiluokanAlkamispäivät(poo),
           validatePäätasonSuoritus(poo),
-          validateVanhojenJaksokenttienPäättyminenSiirryttäessäUusiin(config, poo),
+          validateVanhojenJaksokenttienPäättyminenSiirryttäessäUusiin(config, poo.alkamispäivä, poo.päättymispäivä, poo.lisätiedot),
         ) ++ poo.lisätiedot.toList.flatMap(lisätiedot => List(
           validateTuenJaksojenPäällekkäisyys(lisätiedot),
           validateOppivelvollisuudenPidennysjaksojenPäällekkäisyys(lisätiedot),
@@ -215,44 +216,6 @@ object PerusopetuksenOpiskeluoikeusValidation extends Logging {
       HttpStatus.validateNot(Aikajakso.overlap(pidennettyOppivelvollisuus, jaksot))(
         KoskiErrorCategory.badRequest.validation.date.erityisenTuenPäätös(s"Pidennetyn oppivelvollisuus ja opetuksen järjestäminen vamman, sairauden tai rajoitteen perusteella eivät saa olla ajallisesti päällekkäin")
       )
-    } else {
-      HttpStatus.ok
-    }
-  }
-
-  private def validateVanhojenJaksokenttienPäättyminenSiirryttäessäUusiin(config: Config, oo: PerusopetuksenOpiskeluoikeus): HttpStatus = {
-    val validaatioVoimassa = LocalDate
-      .now()
-      .isEqualOrAfter(LocalDate.parse(
-        config.getString("validaatiot.esiJaPerusopetuksenVanhojenJaksojenPäättymispäivänValidaatiotAstuvatVoimaan")
-      ))
-
-    val rajapäivä = LocalDate.parse(config.getString("validaatiot.varhennettuOppivelvollisuusVoimaan"))
-
-    if (validaatioVoimassa) {
-      val alkanutEnnenRajapäivää = oo.alkamispäivä.exists(_.isBefore(rajapäivä))
-      val jatkuuRajapäivänJälkeen = oo.päättymispäivä.exists(_.isEqualOrAfter(rajapäivä)) || oo.päättymispäivä.isEmpty
-
-      if (alkanutEnnenRajapäivää && jatkuuRajapäivänJälkeen) {
-        lazy val viimeinenPvmStr = FinnishDateFormat.format(rajapäivä.minusDays(1))
-        val oppivelvollisuudenPidennys = oo.lisätiedot.flatMap(_.pidennettyOppivelvollisuus)
-        val viimeisinVammaisuusjakso = oo.lisätiedot.toList.flatMap(_.vammainen.toList.flatten).sortBy(_.alku).lastOption
-        val viimeisinVaikeaVammaisuusjakso = oo.lisätiedot.toList.flatMap(_.vaikeastiVammainen.toList.flatten).sortBy(_.alku).lastOption
-
-        HttpStatus.fold(
-          HttpStatus.validateNot(oppivelvollisuudenPidennys.exists(_.contains(rajapäivä)))(
-            KoskiErrorCategory.badRequest.validation.date.pidennettyOppivelvollisuus(s"Pidennetyn oppivelvollisuuden viimeinen mahdollinen päättymispäivä on $viimeinenPvmStr. Merkitse kyseisen päivän jälkeiset jaksot 'opetuksen järjestämiseen vamman, sairauden tai rajoitteen perusteella' tai 'opiskelee toiminta-alueittain'.")
-          ),
-          HttpStatus.validateNot(viimeisinVammaisuusjakso.exists(_.contains(rajapäivä)))(
-            KoskiErrorCategory.badRequest.validation.date.vammaisuusjakso(s"Vammaisuuden jakson viimeinen mahdollinen päättymispäivä on $viimeinenPvmStr.")
-          ),
-          HttpStatus.validateNot(viimeisinVaikeaVammaisuusjakso.exists(_.contains(rajapäivä)))(
-            KoskiErrorCategory.badRequest.validation.date.vammaisuusjakso(s"Vaikeasti vammaisuuden jakson viimeinen mahdollinen päättymispäivä on $viimeinenPvmStr.")
-          ),
-        )
-      } else {
-        HttpStatus.ok
-      }
     } else {
       HttpStatus.ok
     }

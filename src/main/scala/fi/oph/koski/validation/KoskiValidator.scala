@@ -571,7 +571,6 @@ class KoskiValidator(
   }
 
   val tukijaksollisetValidoidaanTuotannossa = !Environment.isProdEnvironment(config) || !LocalDate.now().isBefore(LocalDate.parse(config.getString("validaatiot.tukijaksollisetValidoidaanTuotannossaAlkaen")))
-  val tukijaksollistenVanhojenTietojenViimeisetKäyttöpäivätValidoidaanTuotannossa = !Environment.isProdEnvironment(config) || LocalDate.now().isAfter(LocalDate.parse(config.getString("validaatiot.viimeisetKäyttöpäivätValidoidaanTuotannossaAlkaen")))
 
   private def validateOpiskeluoikeudenLisätiedot(opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus): HttpStatus = {
     HttpStatus.fold(
@@ -579,7 +578,6 @@ class KoskiValidator(
       validatePidennettyOppivelvollisuusAikarajastaAlkaen(opiskeluoikeus.lisätiedot, opiskeluoikeus.alkamispäivä, opiskeluoikeus.päättymispäivä),
       validateTuvaPerusopetusErityinenTukiJaVammaisuusAikarajastaAlkaen(opiskeluoikeus.lisätiedot),
       if (tukijaksollisetValidoidaanTuotannossa) validateTukijaksollinen(opiskeluoikeus.lisätiedot, opiskeluoikeus.alkamispäivä, opiskeluoikeus.päättymispäivä) else HttpStatus.ok,
-      if (tukijaksollistenVanhojenTietojenViimeisetKäyttöpäivätValidoidaanTuotannossa) validateTukijaksollistenVanhojenTietojenViimeisetKäyttöpäivät(opiskeluoikeus.lisätiedot) else HttpStatus.ok
     )
   }
 
@@ -652,49 +650,6 @@ class KoskiValidator(
           ))
         )
 
-      case _ => HttpStatus.ok
-    }
-  }
-
-  private def validateTukijaksollistenVanhojenTietojenViimeisetKäyttöpäivät(
-    lt: Option[OpiskeluoikeudenLisätiedot]
-  ): HttpStatus = {
-    val pidennetynOppivelvollisuudenViimeinenKäyttöpäivä = LocalDate.parse(config.getString("validaatiot.pidennetynOppivelvollisuudenViimeinenKäyttöpäivä"))
-    val vammaisuustietojenViimeinenKäyttöpäivä = LocalDate.parse(config.getString("validaatiot.vammaisuustietojenViimeinenKäyttöpäivä"))
-    val erityisenTuenPäätöstenViimeinenKäyttöpäivä = LocalDate.parse(config.getString("validaatiot.erityisenTuenPäätöstenViimeinenKäyttöpäivä"))
-
-    lt match {
-      case Some(lt: TukipäätöksellinenVanhatLisätiedot) =>
-        val pidennettyLiianPitkään = lt.pidennettyOppivelvollisuus match {
-          case Some(x) => x.alku.isAfter(pidennetynOppivelvollisuudenViimeinenKäyttöpäivä)
-          case _ => false
-        }
-        val vammaisuusLiianPitkään = lt.vammainen match {
-          case Some(xs) => xs.exists(x => x.alku.isAfter(vammaisuustietojenViimeinenKäyttöpäivä))
-          case _ => false
-        }
-        val vaikeastiVammaisuusLiianPitkään = lt.vaikeastiVammainen match {
-          case Some(xs) => xs.exists(x => x.alku.isAfter(vammaisuustietojenViimeinenKäyttöpäivä))
-          case _ => false
-        }
-        val erityisenTuenPäätösLiianPitkään = lt.erityisenTuenPäätökset match {
-          case Some(xs) => xs.exists(x => x.alku.exists(_.isAfter(erityisenTuenPäätöstenViimeinenKäyttöpäivä)))
-          case _ => false
-        }
-        HttpStatus.fold(
-          HttpStatus.validate(!pidennettyLiianPitkään)(KoskiErrorCategory.badRequest.validation.date(
-            s"Pidennetty oppivelvollisuus -lisätiedon viimeinen sallittu alkamispäivä on $pidennetynOppivelvollisuudenViimeinenKäyttöpäivä"
-          )),
-          HttpStatus.validate(!vammaisuusLiianPitkään)(KoskiErrorCategory.badRequest.validation.date(
-            s"Vammainen -lisätiedon viimeinen sallittu alkamispäivä on $vammaisuustietojenViimeinenKäyttöpäivä"
-          )),
-          HttpStatus.validate(!vaikeastiVammaisuusLiianPitkään)(KoskiErrorCategory.badRequest.validation.date(
-            s"Vaikeasti vammainen -lisätiedon viimeinen sallittu alkamispäivä on $vammaisuustietojenViimeinenKäyttöpäivä"
-          )),
-          HttpStatus.validate(!erityisenTuenPäätösLiianPitkään)(KoskiErrorCategory.badRequest.validation.date(
-            s"Erityisen tuen päätösten viimeinen sallittu alkamispäivä on $erityisenTuenPäätöstenViimeinenKäyttöpäivä"
-          ))
-        )
       case _ => HttpStatus.ok
     }
   }
@@ -1094,6 +1049,8 @@ class KoskiValidator(
     def contains(j: Aikajakso): Boolean = contains(SuljettuJakso(j))
 
     def contains(j: MahdollisestiAlkupäivällinenJakso): Boolean = contains(SuljettuJakso(j))
+
+    def toFinnishDateFormat: String = FinnishDateFormat.format(Some(alku), Some(loppu))
   }
 
   object SuljettuJakso {
