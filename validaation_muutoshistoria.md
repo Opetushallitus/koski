@@ -1,6 +1,16 @@
 # Koskeen tallennettavien tietojen validaatiosäännöt
 
-## x.4.2025
+## 30.4.2025
+
+- Esi- ja perusopetus:
+  - Erityisen tuen jakso ja tuen päätöksen jakso ei saa olla voimassa samaan aikaan
+  - 1.8.2026 alkaen: Jos opiskeluoikeus ei ole päättynyt ennen 1.8.2026, pidennetty oppivelvollisuus ja molemmat vammaisuusjaksot vaativat päättymispäivän, joka saa korkeintaan olla 31.7.2026
+- Esiopetus:
+  - Pidennetty oppivelvollisuus ja varhennetun oppivelvollisuuden jakso ei voi olla voimassa samaan aikaan
+- Perusopetus:
+  - Pidennettyy oppivelvollisuus ei voi olla päällekkäin "opetuksen järjestäminen vamman, sairauden tai rajoitteen perusteella" tai "opiskelee toiminta-alueittain" kanssa
+
+## 9.4.2025
 
 - Valtionhallinnon kielitutkintojen kielitaitojen ja osakokeiden arvosanojen on vastattava tutkintotasoa.
 
@@ -13,10 +23,11 @@
 ## 26.3.2025
 
 Lisätty uusia tietueita ja niiden käyttöönottoa koskevat validaatiot:
- * tukijaksojen voimaantulo ja erityisen tuen päätösten viimeinen voimassaolopäivä
- * toiminta-alueittain opiskelusta -lisätiedon voimaantulo
- * opetuksen järjestäminen vamman, sairauden tai toimintakyvyn rajoitteen perusteella ja vanhojen vammaisuustietojen viimeinen voimassaolopäivä
- * varhennetun oppivelvollisuuden voimaantulo ja pidennetyn oppivelvollisuuden viimeinen voimassaolopäivä
+
+- tukijaksojen voimaantulo ja erityisen tuen päätösten viimeinen voimassaolopäivä
+- toiminta-alueittain opiskelusta -lisätiedon voimaantulo
+- opetuksen järjestäminen vamman, sairauden tai toimintakyvyn rajoitteen perusteella ja vanhojen vammaisuustietojen viimeinen voimassaolopäivä
+- varhennetun oppivelvollisuuden voimaantulo ja pidennetyn oppivelvollisuuden viimeinen voimassaolopäivä
 
 ## 13.3.2025
 

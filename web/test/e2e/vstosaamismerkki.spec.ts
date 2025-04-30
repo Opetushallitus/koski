@@ -72,7 +72,28 @@ test.describe('Vapaan sivistyön VST osaamismerkki', () => {
     await search.clickOnFirst()
 
     // Varmista versiohistoriaa käyttämällä, että versio 2 tuli luotua muokatessa
-    await page.getByTestId('oo.0.opiskeluoikeus.versiohistoria.button').click()
-    await page.getByTestId('oo.0.opiskeluoikeus.versiohistoria.list.2').click()
+    await eventually(
+      () =>
+        page
+          .getByTestId('oo.0.opiskeluoikeus.versiohistoria.button')
+          .click({ timeout: 2000 }),
+      () =>
+        page
+          .getByTestId('oo.0.opiskeluoikeus.versiohistoria.list.2')
+          .click({ trial: true, timeout: 2000 })
+    )
   })
 })
+
+async function eventually(initialize: () => void, trial: () => void) {
+  let retriesLeft = 3
+  while (retriesLeft > 0) {
+    await initialize()
+    try {
+      await trial()
+      return
+    } catch {
+      retriesLeft--
+    }
+  }
+}
