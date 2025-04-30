@@ -1200,28 +1200,30 @@ class OppijaValidationPerusopetusSpec extends TutkinnonPerusteetTest[Perusopetuk
 
   "Opiskeluoikeudet oppivelvollisuuden pidennyksen ja tuen päätöksien muutosten siirtymäajan (1.8.2025 - 1.8.2026) yli" - {
     def makeOpiskeluoikeus(
+      alkamisvuosi: Int = 2024,
       tuenPäätöksenJaksot: Option[List[Tukijakso]] = None,
       erityisenTuenPäätökset: Option[List[ErityisenTuenPäätös]] = None,
       opetuksenJärjestäminenVammanSairaudenTaiRajoitteenPerusteella: Option[List[Aikajakso]] = None,
       pidennettyOppivelvollisuus: Option[Aikajakso] = None,
       vammainen: Option[List[Aikajakso]] = None,
       vaikeastiVammainen: Option[List[Aikajakso]] = None,
-    ) = PerusopetuksenOpiskeluoikeus(
+    ) = {
+      PerusopetuksenOpiskeluoikeus(
         oppilaitos = Some(jyväskylänNormaalikoulu),
         koulutustoimija = None,
         suoritukset = List(
           perusopetuksenOppimääränSuoritusKesken,
           kahdeksannenLuokanSuoritus.copy(
-            koulutusmoduuli = PerusopetuksenLuokkaAste(8, perusopetuksenDiaarinumero), luokka = "8C", alkamispäivä = Some(date(2024, 8, 1)),
-            vahvistus = vahvistusPaikkakunnalla(date(2025, 5, 30)),
+            koulutusmoduuli = PerusopetuksenLuokkaAste(8, perusopetuksenDiaarinumero), luokka = "8C", alkamispäivä = Some(date(alkamisvuosi, 8, 1)),
+            vahvistus = vahvistusPaikkakunnalla(date(alkamisvuosi + 1, 5, 30)),
           ),
           yhdeksännenLuokanSuoritus.copy(
-            koulutusmoduuli = PerusopetuksenLuokkaAste(9, perusopetuksenDiaarinumero), luokka = "9C", alkamispäivä = Some(date(2025, 8, 13)),
-            vahvistus = vahvistusPaikkakunnalla(date(2026, 5, 30)),
+            koulutusmoduuli = PerusopetuksenLuokkaAste(9, perusopetuksenDiaarinumero), luokka = "9C", alkamispäivä = Some(date(alkamisvuosi + 1, 8, 13)),
+            vahvistus = vahvistusPaikkakunnalla(date(alkamisvuosi + 2, 5, 30)),
           ),
         ),
         tila = NuortenPerusopetuksenOpiskeluoikeudenTila(List(
-          NuortenPerusopetuksenOpiskeluoikeusjakso(date(2024, 8, 1), opiskeluoikeusLäsnä)
+          NuortenPerusopetuksenOpiskeluoikeusjakso(date(alkamisvuosi, 8, 1), opiskeluoikeusLäsnä)
         )),
         lisätiedot = Some(PerusopetuksenOpiskeluoikeudenLisätiedot(
           tuenPäätöksenJaksot = tuenPäätöksenJaksot,
@@ -1231,7 +1233,8 @@ class OppijaValidationPerusopetusSpec extends TutkinnonPerusteetTest[Perusopetuk
           vammainen = vammainen,
           vaikeastiVammainen = vaikeastiVammainen,
         )),
-    )
+      )
+    }
 
     "Erityisen tuen päätökset eivät saa olla päällekkäin tuen päätöksen jaksojen kanssa" in {
       setupOppijaWithOpiskeluoikeus(makeOpiskeluoikeus(
@@ -1378,6 +1381,27 @@ class OppijaValidationPerusopetusSpec extends TutkinnonPerusteetTest[Perusopetuk
         )) {
           verifyResponseStatusOk()
         }
+      }
+    }
+
+    "Erityisen tuen jakso saa alkaa välillä 1.8.2025-31.8.2026 jos opiskeluoikeus alkaa alkaa samana päivänä samalla aikavälillä" in {
+      val aikajakso = Aikajakso(
+        alku = Some(date(2025, 8, 1)),
+        loppu = Some(date(2026, 8, 31)),
+      )
+
+      setupOppijaWithOpiskeluoikeus(makeOpiskeluoikeus(
+        alkamisvuosi = aikajakso.alku.getYear,
+        erityisenTuenPäätökset = Some(List(
+          ErityisenTuenPäätös(
+            alku = Some(aikajakso.alku),
+            loppu = aikajakso.loppu,
+          )
+        )),
+        pidennettyOppivelvollisuus = Some(aikajakso),
+        vammainen = Some(List(aikajakso)),
+      )) {
+        verifyResponseStatusOk()
       }
     }
   }

@@ -74,11 +74,13 @@ test.describe('Vapaan sivistyön VST osaamismerkki', () => {
     // Varmista versiohistoriaa käyttämällä, että versio 2 tuli luotua muokatessa
     await eventually(
       () =>
-        page.getByTestId('oo.0.opiskeluoikeus.versiohistoria.button').click(),
+        page
+          .getByTestId('oo.0.opiskeluoikeus.versiohistoria.button')
+          .click({ timeout: 2000 }),
       () =>
         page
           .getByTestId('oo.0.opiskeluoikeus.versiohistoria.list.2')
-          .click({ trial: true })
+          .click({ trial: true, timeout: 2000 })
     )
   })
 })
