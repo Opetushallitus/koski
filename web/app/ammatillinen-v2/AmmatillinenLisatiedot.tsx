@@ -10,7 +10,11 @@ import {
   KeyValueRow,
   KeyValueTable
 } from '../components-v2/containers/KeyValueTable'
-import { FormField } from '../components-v2/forms/FormField'
+import {
+  FieldEditorProps,
+  FieldViewerProps,
+  FormField
+} from '../components-v2/forms/FormField'
 import {
   BooleanEdit,
   BooleanView
@@ -18,19 +22,44 @@ import {
 import { FormListField } from '../components-v2/forms/FormListField'
 import {
   AikajaksoEdit,
-  AikajaksoView
+  AikajaksoLike,
+  AikajaksoView,
+  AikajaksoViewProps
 } from '../components-v2/opiskeluoikeus/AikajaksoField'
 import { Aikajakso } from '../types/fi/oph/koski/schema/Aikajakso'
 import { ButtonGroup } from '../components-v2/containers/ButtonGroup'
 import { FlatButton } from '../components-v2/controls/FlatButton'
-import { t } from '../i18n/i18n'
-import { todayISODate } from '../date/date'
+import { emptyLocalizedString, t } from '../i18n/i18n'
+import { ISO2FinnishDate, todayISODate } from '../date/date'
 import { append } from '../util/fp/arrays'
 import {
   emptyUlkomaanjakso,
   UlkomaanjaksoEdit,
   UlkomaanjaksoView
 } from '../components-v2/opiskeluoikeus/UlkomaanjaksoField'
+import { TestIdText } from '../appstate/useTestId'
+import { Hojks } from '../types/fi/oph/koski/schema/Hojks'
+import { CommonProps } from '../components-v2/CommonProps'
+import { EmptyObject } from '../util/objects'
+import { DateInput } from '../components-v2/controls/DateInput'
+import { KoodistoSelect } from '../components-v2/opiskeluoikeus/KoodistoSelect'
+import { Koodistokoodiviite } from '../types/fi/oph/koski/schema/Koodistokoodiviite'
+import { OsaAikaisuusJakso } from '../types/fi/oph/koski/schema/OsaAikaisuusJakso'
+import { NumberEditor } from '../editor/NumberEditor'
+import { NumberField } from '../components-v2/controls/NumberField'
+import { OpiskeluvalmiuksiaTukevienOpintojenJakso } from '../types/fi/oph/koski/schema/OpiskeluvalmiuksiaTukevienOpintojenJakso'
+import {
+  LocalizedTextEdit,
+  LocalizedTextView
+} from '../components-v2/controls/LocalizedTestField'
+import { LocalizedString } from '../types/fi/oph/koski/schema/LocalizedString'
+import {
+  emptyMaksuttomuuus,
+  MaksuttomuusEdit,
+  MaksuttomuusView
+} from '../components-v2/opiskeluoikeus/MaksuttomuusField'
+import { VapaanSivistystyönOpiskeluoikeudenLisätiedot } from '../types/fi/oph/koski/schema/VapaanSivistystyonOpiskeluoikeudenLisatiedot'
+import { Finnish } from '../types/fi/oph/koski/schema/Finnish'
 
 interface AmmatillinenLisatiedotProps {
   form: FormModel<AmmatillinenOpiskeluoikeus>
@@ -115,7 +144,7 @@ export const AmmatillinenLisatiedot: React.FC<AmmatillinenLisatiedotProps> = ({
         path={'vaativanErityisenTuenErityinenTehtävä'}
       />
 
-      <KeyValueRow localizableLabel="Ulkomaan jaksot" largeLabel>
+      <KeyValueRow localizableLabel="Ulkomaanjaksot" largeLabel>
         <FormListField
           form={form}
           path={lisatiedotPath.prop('ulkomaanjaksot')}
@@ -141,12 +170,397 @@ export const AmmatillinenLisatiedot: React.FC<AmmatillinenLisatiedotProps> = ({
         )}
       </KeyValueRow>
 
-      {/*TODO Hojks*/}
+      <KeyValueRow localizableLabel="Hojks" largeLabel>
+        {lisätiedot?.hojks ? (
+          <>
+            <FormField
+              form={form}
+              view={HojksView}
+              edit={HojksEdit}
+              path={lisatiedotPath.prop('hojks')}
+            />
+            {form.editMode && (
+              <ButtonGroup>
+                <FlatButton
+                  onClick={() =>
+                    form.updateAt(lisatiedotPath.prop('hojks'), () => undefined)
+                  }
+                >
+                  {t('Poista')}
+                </FlatButton>
+              </ButtonGroup>
+            )}
+          </>
+        ) : (
+          form.editMode && (
+            <ButtonGroup>
+              <FlatButton
+                onClick={() =>
+                  form.updateAt(lisatiedotPath.prop('hojks'), () => emptyHojks)
+                }
+              >
+                {t('Lisää')}
+              </FlatButton>
+            </ButtonGroup>
+          )
+        )}
+      </KeyValueRow>
 
       <AikajaksoRow
         localizableLabel={'Vaikeasti vammaisille järjestetty opetus'}
         path={'vaikeastiVammainen'}
       />
+
+      <AikajaksoRow
+        localizableLabel={'Vammainen ja avustaja'}
+        path={'vammainenJaAvustaja'}
+      />
+
+      <KeyValueRow localizableLabel="Osa-aikaisuusjaksot" largeLabel>
+        <FormListField
+          form={form}
+          view={OsaAikaisuusView}
+          edit={OsaAikaisuusEdit}
+          path={lisatiedotPath.prop('osaAikaisuusjaksot')}
+          removable
+        />
+        {form.editMode && (
+          <ButtonGroup>
+            <FlatButton
+              onClick={() => {
+                form.updateAt(
+                  lisatiedotPath.prop('osaAikaisuusjaksot').valueOr([]),
+                  append(emptyOsaAikausuus)
+                )
+              }}
+            >
+              {t('Lisää')}
+            </FlatButton>
+          </ButtonGroup>
+        )}
+      </KeyValueRow>
+
+      <KeyValueRow
+        localizableLabel="Opiskeluvalmiuksia tukevat opinnot"
+        largeLabel
+      >
+        <FormListField
+          form={form}
+          view={OpiskeluvalmiuksiaTuvkevienOpintojenJaksoView}
+          edit={OpiskeluvalmiuksiaTuvkevienOpintojenJaksoEdit}
+          path={lisatiedotPath.prop('opiskeluvalmiuksiaTukevatOpinnot')}
+          removable
+        />
+        {form.editMode && (
+          <ButtonGroup>
+            <FlatButton
+              onClick={() => {
+                form.updateAt(
+                  lisatiedotPath
+                    .prop('opiskeluvalmiuksiaTukevatOpinnot')
+                    .valueOr([]),
+                  append(emptyOpiskeluvalmiuksiaTuvkevienOpintojenJakso)
+                )
+              }}
+            >
+              {t('Lisää')}
+            </FlatButton>
+          </ButtonGroup>
+        )}
+      </KeyValueRow>
+
+      <KeyValueRow localizableLabel="Henkilöstökoulutus" largeLabel>
+        <FormField
+          form={form}
+          view={BooleanView}
+          edit={BooleanEdit}
+          path={lisatiedotPath.prop('henkilöstökoulutus')}
+        />
+      </KeyValueRow>
+
+      <AikajaksoRow
+        localizableLabel={'Vankilaopetuksessa'}
+        path={'vankilaopetuksessa'}
+      />
+
+      <KeyValueRow localizableLabel="Koulutusvienti" largeLabel>
+        <FormField
+          form={form}
+          view={BooleanView}
+          edit={BooleanEdit}
+          path={lisatiedotPath.prop('koulutusvienti')}
+        />
+      </KeyValueRow>
+
+      <KeyValueRow localizableLabel="Koulutuksen maksuttomuus" largeLabel>
+        <FormListField
+          form={form}
+          path={lisatiedotPath.prop('maksuttomuus')}
+          view={MaksuttomuusView}
+          edit={MaksuttomuusEdit}
+          testId="maksuttomuus"
+          removable
+        />
+        {form.editMode && (
+          <ButtonGroup>
+            <FlatButton
+              onClick={() => {
+                form.updateAt(
+                  lisatiedotPath.prop('maksuttomuus').valueOr([]),
+                  append(emptyMaksuttomuuus)
+                )
+              }}
+            >
+              {t('Lisää')}
+            </FlatButton>
+          </ButtonGroup>
+        )}
+      </KeyValueRow>
+
+      <AikajaksoRow
+        localizableLabel={'Oikeutta maksuttomuuteen pidennetty'}
+        path={'oikeuttaMaksuttomuuteenPidennetty'}
+      />
+
+      <KeyValueRow localizableLabel="JOTPA asianumero" largeLabel>
+        {form.editMode ? (
+          <KoodistoSelect
+            koodistoUri="jotpaasianumero"
+            addNewText={t('Ei valintaa')}
+            zeroValueOption
+            onSelect={(koodiviite) => {
+              form.updateAt(lisatiedotPath, (lisatiedot) => {
+                return {
+                  ...emptyLisatiedot,
+                  ...lisatiedot,
+                  jotpaAsianumero: koodiviite
+                }
+              })
+            }}
+            value={
+              getValue(lisatiedotPath.prop('jotpaAsianumero'))(form.state)
+                ?.koodiarvo
+            }
+            testId="jotpaasianumero"
+          />
+        ) : (
+          <LocalizedTextView
+            value={
+              getValue(lisatiedotPath.prop('jotpaAsianumero'))(form.state)?.nimi
+            }
+          />
+        )}
+      </KeyValueRow>
+
+      <KeyValueRow
+        localizableLabel="Siirtynyt tutkinnon uusiin perusteisiin"
+        largeLabel
+      >
+        <FormField
+          form={form}
+          view={BooleanView}
+          edit={BooleanEdit}
+          path={lisatiedotPath.prop('siirtynytUusiinTutkinnonPerusteisiin')}
+        />
+      </KeyValueRow>
     </KeyValueTable>
+  )
+}
+
+const HojksView = <T extends Hojks>({
+  value
+}: CommonProps<FieldViewerProps<T | undefined, EmptyObject>>) => {
+  return (
+    <div>
+      <TestIdText id="opetusryhmä">{t(value?.opetusryhmä.nimi)}</TestIdText>{' '}
+      {' - '}
+      <TestIdText id="alku">
+        {value?.alku && ISO2FinnishDate(value.alku)}
+      </TestIdText>{' '}
+      {' - '}
+      <TestIdText id="loppu">
+        {value?.loppu && ISO2FinnishDate(value.loppu)}
+      </TestIdText>
+    </div>
+  )
+}
+
+const emptyHojks: Hojks = Hojks({
+  opetusryhmä: Koodistokoodiviite({
+    koodiarvo: '',
+    koodistoUri: 'opetusryhma'
+  }),
+  alku: todayISODate()
+})
+
+const HojksEdit = ({
+  value,
+  onChange
+}: CommonProps<FieldEditorProps<Hojks | undefined, EmptyObject>>) => {
+  return (
+    <div>
+      <KoodistoSelect
+        koodistoUri={'opetusryhma'}
+        value={value?.opetusryhmä.koodiarvo}
+        onSelect={(
+          opetusryhmä: Koodistokoodiviite<'opetusryhma'> | undefined
+        ) => {
+          opetusryhmä && onChange({ ...emptyHojks, ...value, opetusryhmä })
+        }}
+        testId={'opetusryhmä'}
+      />
+      {' - '}
+      <DateInput
+        value={value?.alku}
+        onChange={(alku?: string) => {
+          alku && onChange({ ...emptyHojks, ...value, alku })
+        }}
+        testId="alku"
+      />{' '}
+      {' - '}
+      <DateInput
+        value={value?.loppu}
+        onChange={(loppu?: string) => {
+          loppu && onChange({ ...emptyHojks, ...value, loppu })
+        }}
+        testId="loppu"
+      />
+    </div>
+  )
+}
+
+const OsaAikaisuusView = <T extends OsaAikaisuusJakso>({
+  value
+}: CommonProps<FieldViewerProps<T | undefined, EmptyObject>>) => {
+  return (
+    <div>
+      <TestIdText id="alku">
+        {value?.alku && ISO2FinnishDate(value.alku)}
+      </TestIdText>{' '}
+      {' - '}
+      <TestIdText id="loppu">
+        {value?.loppu && ISO2FinnishDate(value.loppu)}
+      </TestIdText>
+      {' - '}
+      <TestIdText id="osaAikaisuus">{value?.osaAikaisuus}</TestIdText>
+      {'%'}
+    </div>
+  )
+}
+
+const emptyOsaAikausuus = OsaAikaisuusJakso({
+  alku: todayISODate(),
+  osaAikaisuus: 0
+})
+
+const OsaAikaisuusEdit = ({
+  value,
+  onChange
+}: FieldEditorProps<OsaAikaisuusJakso | undefined, EmptyObject>) => {
+  return (
+    <div>
+      <DateInput
+        value={value?.alku}
+        onChange={(alku?: string) => {
+          alku && onChange({ ...emptyOsaAikausuus, ...value, alku })
+        }}
+        testId="alku"
+      />
+      {' - '}
+      <DateInput
+        value={value?.loppu}
+        onChange={(loppu?: string) => {
+          loppu && onChange({ ...emptyOsaAikausuus, ...value, loppu })
+        }}
+        testId="loppu"
+      />
+      {' - '}
+      <NumberField
+        value={value?.osaAikaisuus}
+        onChange={(osaAikaisuus?: number) => {
+          osaAikaisuus &&
+            onChange({ ...emptyOsaAikausuus, ...value, osaAikaisuus })
+        }}
+      />
+      {'%'}
+    </div>
+  )
+}
+
+const OpiskeluvalmiuksiaTuvkevienOpintojenJaksoView = <
+  T extends OpiskeluvalmiuksiaTukevienOpintojenJakso
+>({
+  value
+}: CommonProps<FieldViewerProps<T | undefined, EmptyObject>>) => {
+  return (
+    <div>
+      <TestIdText id="alku">
+        {value?.alku && ISO2FinnishDate(value.alku)}
+      </TestIdText>{' '}
+      {' - '}
+      <TestIdText id="loppu">
+        {value?.loppu && ISO2FinnishDate(value.loppu)}
+      </TestIdText>
+      {' - '}
+      <TestIdText id="kuvaus">{t(value?.kuvaus)}</TestIdText>
+    </div>
+  )
+}
+
+const emptyOpiskeluvalmiuksiaTuvkevienOpintojenJakso =
+  OpiskeluvalmiuksiaTukevienOpintojenJakso({
+    alku: todayISODate(),
+    loppu: todayISODate(),
+    kuvaus: emptyLocalizedString
+  })
+
+const OpiskeluvalmiuksiaTuvkevienOpintojenJaksoEdit = ({
+  value,
+  onChange
+}: FieldEditorProps<
+  OpiskeluvalmiuksiaTukevienOpintojenJakso | undefined,
+  EmptyObject
+>) => {
+  return (
+    <div>
+      <DateInput
+        value={value?.alku}
+        onChange={(alku?: string) => {
+          alku &&
+            onChange({
+              ...emptyOpiskeluvalmiuksiaTuvkevienOpintojenJakso,
+              ...value,
+              alku
+            })
+        }}
+        testId="alku"
+      />
+      {' - '}
+      <DateInput
+        value={value?.loppu}
+        onChange={(loppu?: string) => {
+          loppu &&
+            onChange({
+              ...emptyOpiskeluvalmiuksiaTuvkevienOpintojenJakso,
+              ...value,
+              loppu
+            })
+        }}
+        testId="loppu"
+      />
+      {' - '}
+      <LocalizedTextEdit
+        value={value?.kuvaus}
+        onChange={(kuvaus?: LocalizedString) => {
+          kuvaus &&
+            onChange({
+              ...emptyOpiskeluvalmiuksiaTuvkevienOpintojenJakso,
+              ...value,
+              kuvaus
+            })
+        }}
+        testId="kuvaus"
+      />
+    </div>
   )
 }
