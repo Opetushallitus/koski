@@ -22,9 +22,7 @@ import {
 import { FormListField } from '../components-v2/forms/FormListField'
 import {
   AikajaksoEdit,
-  AikajaksoLike,
-  AikajaksoView,
-  AikajaksoViewProps
+  AikajaksoView
 } from '../components-v2/opiskeluoikeus/AikajaksoField'
 import { Aikajakso } from '../types/fi/oph/koski/schema/Aikajakso'
 import { ButtonGroup } from '../components-v2/containers/ButtonGroup'
@@ -45,7 +43,6 @@ import { DateInput } from '../components-v2/controls/DateInput'
 import { KoodistoSelect } from '../components-v2/opiskeluoikeus/KoodistoSelect'
 import { Koodistokoodiviite } from '../types/fi/oph/koski/schema/Koodistokoodiviite'
 import { OsaAikaisuusJakso } from '../types/fi/oph/koski/schema/OsaAikaisuusJakso'
-import { NumberEditor } from '../editor/NumberEditor'
 import { NumberField } from '../components-v2/controls/NumberField'
 import { OpiskeluvalmiuksiaTukevienOpintojenJakso } from '../types/fi/oph/koski/schema/OpiskeluvalmiuksiaTukevienOpintojenJakso'
 import {
@@ -58,8 +55,8 @@ import {
   MaksuttomuusEdit,
   MaksuttomuusView
 } from '../components-v2/opiskeluoikeus/MaksuttomuusField'
-import { VapaanSivistystyönOpiskeluoikeudenLisätiedot } from '../types/fi/oph/koski/schema/VapaanSivistystyonOpiskeluoikeudenLisatiedot'
-import { Finnish } from '../types/fi/oph/koski/schema/Finnish'
+import { IconButton } from '../components-v2/controls/IconButton'
+import { CHARCODE_REMOVE } from '../components-v2/texts/Icon'
 
 interface AmmatillinenLisatiedotProps {
   form: FormModel<AmmatillinenOpiskeluoikeus>
@@ -172,25 +169,12 @@ export const AmmatillinenLisatiedot: React.FC<AmmatillinenLisatiedotProps> = ({
 
       <KeyValueRow localizableLabel="Hojks" largeLabel>
         {lisätiedot?.hojks ? (
-          <>
-            <FormField
-              form={form}
-              view={HojksView}
-              edit={HojksEdit}
-              path={lisatiedotPath.prop('hojks')}
-            />
-            {form.editMode && (
-              <ButtonGroup>
-                <FlatButton
-                  onClick={() =>
-                    form.updateAt(lisatiedotPath.prop('hojks'), () => undefined)
-                  }
-                >
-                  {t('Poista')}
-                </FlatButton>
-              </ButtonGroup>
-            )}
-          </>
+          <FormField
+            form={form}
+            view={HojksView}
+            edit={HojksEdit}
+            path={lisatiedotPath.prop('hojks')}
+          />
         ) : (
           form.editMode && (
             <ButtonGroup>
@@ -398,32 +382,40 @@ const HojksEdit = ({
   onChange
 }: CommonProps<FieldEditorProps<Hojks | undefined, EmptyObject>>) => {
   return (
-    <div>
-      <KoodistoSelect
-        koodistoUri={'opetusryhma'}
-        value={value?.opetusryhmä.koodiarvo}
-        onSelect={(
-          opetusryhmä: Koodistokoodiviite<'opetusryhma'> | undefined
-        ) => {
-          opetusryhmä && onChange({ ...emptyHojks, ...value, opetusryhmä })
-        }}
-        testId={'opetusryhmä'}
-      />
-      {' - '}
-      <DateInput
-        value={value?.alku}
-        onChange={(alku?: string) => {
-          alku && onChange({ ...emptyHojks, ...value, alku })
-        }}
-        testId="alku"
-      />{' '}
-      {' - '}
-      <DateInput
-        value={value?.loppu}
-        onChange={(loppu?: string) => {
-          loppu && onChange({ ...emptyHojks, ...value, loppu })
-        }}
-        testId="loppu"
+    <div className="Removable">
+      <div className="MaksuttomuusEdit Removable__content">
+        <KoodistoSelect
+          koodistoUri={'opetusryhma'}
+          value={value?.opetusryhmä.koodiarvo}
+          onSelect={(
+            opetusryhmä: Koodistokoodiviite<'opetusryhma'> | undefined
+          ) => {
+            opetusryhmä && onChange({ ...emptyHojks, ...value, opetusryhmä })
+          }}
+          testId={'opetusryhmä'}
+        />
+        <span className="MaksuttomuusEdit__separator"> {' - '}</span>
+        <DateInput
+          value={value?.alku}
+          onChange={(alku?: string) => {
+            alku && onChange({ ...emptyHojks, ...value, alku })
+          }}
+          testId="alku"
+        />
+        <span className="MaksuttomuusEdit__separator"> {' - '}</span>
+        <DateInput
+          value={value?.loppu}
+          onChange={(loppu?: string) => {
+            loppu && onChange({ ...emptyHojks, ...value, loppu })
+          }}
+          testId="loppu"
+        />
+      </div>
+      <IconButton
+        charCode={CHARCODE_REMOVE}
+        label={t('Poista')}
+        onClick={() => onChange(undefined)}
+        size="input"
       />
     </div>
   )
@@ -458,7 +450,7 @@ const OsaAikaisuusEdit = ({
   onChange
 }: FieldEditorProps<OsaAikaisuusJakso | undefined, EmptyObject>) => {
   return (
-    <div>
+    <div className="MaksuttomuusEdit">
       <DateInput
         value={value?.alku}
         onChange={(alku?: string) => {
@@ -466,7 +458,7 @@ const OsaAikaisuusEdit = ({
         }}
         testId="alku"
       />
-      {' - '}
+      <span className="MaksuttomuusEdit__separator"> {' - '}</span>
       <DateInput
         value={value?.loppu}
         onChange={(loppu?: string) => {
@@ -474,7 +466,6 @@ const OsaAikaisuusEdit = ({
         }}
         testId="loppu"
       />
-      {' - '}
       <NumberField
         value={value?.osaAikaisuus}
         onChange={(osaAikaisuus?: number) => {
@@ -522,7 +513,7 @@ const OpiskeluvalmiuksiaTuvkevienOpintojenJaksoEdit = ({
   EmptyObject
 >) => {
   return (
-    <div>
+    <div className="MaksuttomuusEdit">
       <DateInput
         value={value?.alku}
         onChange={(alku?: string) => {
@@ -535,7 +526,7 @@ const OpiskeluvalmiuksiaTuvkevienOpintojenJaksoEdit = ({
         }}
         testId="alku"
       />
-      {' - '}
+      <span className="MaksuttomuusEdit__separator"> {' - '}</span>
       <DateInput
         value={value?.loppu}
         onChange={(loppu?: string) => {
@@ -548,7 +539,6 @@ const OpiskeluvalmiuksiaTuvkevienOpintojenJaksoEdit = ({
         }}
         testId="loppu"
       />
-      {' - '}
       <LocalizedTextEdit
         value={value?.kuvaus}
         onChange={(kuvaus?: LocalizedString) => {
@@ -560,6 +550,7 @@ const OpiskeluvalmiuksiaTuvkevienOpintojenJaksoEdit = ({
             })
         }}
         testId="kuvaus"
+        placeholder={t('Kuvaus')}
       />
     </div>
   )
