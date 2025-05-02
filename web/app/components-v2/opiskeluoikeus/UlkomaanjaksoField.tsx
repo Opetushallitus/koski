@@ -81,6 +81,7 @@ export const UlkomaanjaksoEdit: React.FC<UlkomaanjaksoEditProps> = ({
           value={value?.kuvaus}
           onChange={setKuvaus}
           testId="kuvaus"
+          placeholder={t('Kuvaus')}
         />
       </div>
     </TestIdLayer>

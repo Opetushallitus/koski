@@ -21,6 +21,7 @@ export type LocalizedTextEditProps = CommonProps<
   FieldEditorProps<LocalizedString, EmptyObject>
 > & {
   large?: boolean
+  placeholder?: string
 }
 
 export const LocalizedTextEdit: React.FC<LocalizedTextEditProps> = (props) => (
@@ -28,6 +29,7 @@ export const LocalizedTextEdit: React.FC<LocalizedTextEditProps> = (props) => (
     <TextEdit
       value={t(props.value)}
       large={props.large}
+      placeholder={props.placeholder}
       onChange={(text) =>
         props.onChange(
           text === undefined || text === '' ? undefined : localize(text)
