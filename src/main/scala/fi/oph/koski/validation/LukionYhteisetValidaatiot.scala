@@ -5,8 +5,8 @@ import fi.oph.koski.schema.{LukionOppiaineenOppimääränSuoritus2015, LukionOpp
 
 object LukionYhteisetValidaatiot {
 
-  // TOR-1921: yksittäisille oppilaitoksille sallittava lukion oppimäärän merkitseminen valmistuneeksi ilman laajuuksien validointia
-  private val oppilaitoksetIlmanLaajuudenValidointia = Seq("1.2.246.562.10.73692574509", "1.2.246.562.10.43886782945")
+  // TOR-1921, TOR-2352: yksittäisille oppilaitoksille sallittava lukion oppimäärän merkitseminen valmistuneeksi ilman laajuuksien validointia
+  private val oppilaitoksetIlmanLaajuudenValidointia = Seq("1.2.246.562.10.73692574509", "1.2.246.562.10.43886782945", "1.2.246.562.10.81017043621")
 
   def validateLukionPäätasonSuoritus(suoritus: Suoritus): HttpStatus = {
     suoritus match {
