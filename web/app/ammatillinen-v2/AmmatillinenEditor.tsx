@@ -29,6 +29,21 @@ import {
 } from '../components-v2/opiskeluoikeus/KoodistoField'
 import { Spacer } from '../components-v2/layout/Spacer'
 import { SuorituksenVahvistusField } from '../components-v2/opiskeluoikeus/SuorituksenVahvistus'
+import {
+  PerusteEdit,
+  PerusteView
+} from '../components-v2/opiskeluoikeus/PerusteField'
+import { AmmatillinenPäätasonSuoritus } from '../types/fi/oph/koski/schema/AmmatillinenPaatasonSuoritus'
+import { AmmatillisenTutkinnonOsittainenSuoritus } from '../types/fi/oph/koski/schema/AmmatillisenTutkinnonOsittainenSuoritus'
+import { FormListField } from '../components-v2/forms/FormListField'
+import { ButtonGroup } from '../components-v2/containers/ButtonGroup'
+import { FlatButton } from '../components-v2/controls/FlatButton'
+import { append } from '../util/fp/arrays'
+import { Koodistokoodiviite } from '../types/fi/oph/koski/schema/Koodistokoodiviite'
+import {
+  BooleanEdit,
+  BooleanView
+} from '../components-v2/opiskeluoikeus/BooleanField'
 
 export type AmmatillinenEditorProps =
   AdaptedOpiskeluoikeusEditorProps<AmmatillinenOpiskeluoikeus>
@@ -65,7 +80,10 @@ const AmmatillinenPäätasonSuoritusEditor: React.FC<
 
 const AmmatillisPääsuorituksenTiedot: React.FC<{
   form: FormModel<AmmatillinenOpiskeluoikeus>
-  päätasonSuoritus: ActivePäätasonSuoritus<AmmatillinenOpiskeluoikeus>
+  päätasonSuoritus: ActivePäätasonSuoritus<
+    AmmatillinenOpiskeluoikeus,
+    AmmatillisenTutkinnonOsittainenSuoritus
+  >
 }> = ({ form, päätasonSuoritus }) => {
   const path = päätasonSuoritus.path
 
@@ -75,7 +93,16 @@ const AmmatillisPääsuorituksenTiedot: React.FC<{
         <TestIdText id="koulutus">
           {/*TODO Koulutusmoduuli editor perustelinkillä*/}
           {t(päätasonSuoritus.suoritus.koulutusmoduuli.tunniste.nimi)}
-        </TestIdText>
+        </TestIdText>{' '}
+        {päätasonSuoritus.suoritus.koulutusmoduuli.tunniste.koodiarvo}{' '}
+        <FormField
+          form={form}
+          path={path.prop('koulutusmoduuli').prop('perusteenDiaarinumero')}
+          view={PerusteView}
+        />
+      </KeyValueRow>
+      <KeyValueRow localizableLabel="Suoritustapa">
+        {t(päätasonSuoritus.suoritus.suoritustapa.nimi)}
       </KeyValueRow>
       <KeyValueRow localizableLabel="Oppilaitos / toimipiste">
         <FormField
@@ -95,6 +122,43 @@ const AmmatillisPääsuorituksenTiedot: React.FC<{
           testId="suorituskieli"
         />
       </KeyValueRow>
+      <KeyValueRow localizableLabel="Tutkintonimike">
+        <FormListField
+          form={form}
+          view={KoodistoView}
+          edit={KoodistoEdit}
+          editProps={{ koodistoUri: 'tutkintonimikkeet' }}
+          path={path.prop('tutkintonimike')}
+          removable
+        />
+        {form.editMode && (
+          <ButtonGroup>
+            <FlatButton
+              onClick={() => {
+                form.updateAt(
+                  path.prop('tutkintonimike').valueOr([]),
+                  append(
+                    Koodistokoodiviite<'tutkintonimikkeet', string>({
+                      koodiarvo: '00000',
+                      koodistoUri: 'tutkintonimikkeet'
+                    })
+                  )
+                )
+              }}
+            >
+              {t('Lisää')}
+            </FlatButton>
+          </ButtonGroup>
+        )}
+      </KeyValueRow>
+      <KeyValueRow localizableLabel="Toinen tutkintonimike">
+        <FormField
+          form={form}
+          view={BooleanView}
+          edit={BooleanEdit}
+          path={path.prop('toinenTutkintonimike')}
+        />
+      </KeyValueRow>
       {/*TODO lisää rivejä tietomallissa?*/}
     </KeyValueTable>
   )
@@ -108,6 +172,10 @@ const AmmatillinenTutkintoOsittainenEditor: React.FC<
   const [päätasonSuoritus, setPäätasonSuoritus] = usePäätasonSuoritus(
     props.form
   )
+  const osittainenPäätasonSuoritus = päätasonSuoritus as ActivePäätasonSuoritus<
+    AmmatillinenOpiskeluoikeus,
+    AmmatillisenTutkinnonOsittainenSuoritus
+  >
 
   const organisaatio =
     props.opiskeluoikeus.oppilaitos || props.opiskeluoikeus.koulutustoimija
@@ -128,7 +196,7 @@ const AmmatillinenTutkintoOsittainenEditor: React.FC<
     >
       <AmmatillisPääsuorituksenTiedot
         form={props.form}
-        päätasonSuoritus={päätasonSuoritus}
+        päätasonSuoritus={osittainenPäätasonSuoritus}
       />
 
       <Spacer />
