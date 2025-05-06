@@ -6,7 +6,7 @@ import {
   EditorContainer,
   usePäätasonSuoritus
 } from '../components-v2/containers/EditorContainer'
-import { FormModel, useForm } from '../components-v2/forms/FormModel'
+import { FormModel, FormOptic, useForm } from '../components-v2/forms/FormModel'
 import { useSchema } from '../appstate/constraints'
 import { UusiOpiskeluoikeusjakso } from '../components-v2/opiskeluoikeus/UusiOpiskeluoikeudenTilaModal'
 import { AmmatillinenOpiskeluoikeusjakso } from '../types/fi/oph/koski/schema/AmmatillinenOpiskeluoikeusjakso'
@@ -18,7 +18,11 @@ import {
   KeyValueTable
 } from '../components-v2/containers/KeyValueTable'
 import { TestIdText } from '../appstate/useTestId'
-import { FormField } from '../components-v2/forms/FormField'
+import {
+  FieldEditorProps,
+  FieldViewerProps,
+  FormField
+} from '../components-v2/forms/FormField'
 import {
   OrganisaatioEdit,
   OrganisaatioView
@@ -44,6 +48,13 @@ import {
   BooleanEdit,
   BooleanView
 } from '../components-v2/opiskeluoikeus/BooleanField'
+import { Osaamisalajakso } from '../types/fi/oph/koski/schema/Osaamisalajakso'
+import { CommonProps } from '../components-v2/CommonProps'
+import { EmptyObject } from '../util/objects'
+import { ISO2FinnishDate } from '../date/date'
+import { DateInput } from '../components-v2/controls/DateInput'
+import { NumberField } from '../components-v2/controls/NumberField'
+import { KoodistoSelect } from '../components-v2/opiskeluoikeus/KoodistoSelect'
 
 export type AmmatillinenEditorProps =
   AdaptedOpiskeluoikeusEditorProps<AmmatillinenOpiskeluoikeus>
@@ -159,6 +170,35 @@ const AmmatillisPääsuorituksenTiedot: React.FC<{
           path={path.prop('toinenTutkintonimike')}
         />
       </KeyValueRow>
+      <KeyValueRow localizableLabel="Osaamisala">
+        <FormListField
+          form={form}
+          view={OsaamisalaView}
+          edit={OsaamisalaEdit}
+          path={path.prop('osaamisala')}
+          removable
+        />
+        {form.editMode && (
+          <ButtonGroup>
+            <FlatButton
+              onClick={() => {
+                form.updateAt(
+                  path.prop('osaamisala').valueOr([]),
+                  append<Osaamisalajakso>({
+                    $class: 'fi.oph.koski.schema.Osaamisalajakso',
+                    osaamisala: Koodistokoodiviite<'osaamisala', ''>({
+                      koodiarvo: '',
+                      koodistoUri: 'osaamisala'
+                    })
+                  })
+                )
+              }}
+            >
+              {t('Lisää')}
+            </FlatButton>
+          </ButtonGroup>
+        )}
+      </KeyValueRow>
       {/*TODO lisää rivejä tietomallissa?*/}
     </KeyValueTable>
   )
@@ -209,6 +249,82 @@ const AmmatillinenTutkintoOsittainenEditor: React.FC<
       />
     </EditorContainer>
   )
+}
+
+type OsaamisalajaksoReal = {
+  $class: 'fi.oph.koski.schema.Osaamisalajakso'
+  osaamisala: Koodistokoodiviite<'osaamisala', string>
+  alku?: string
+  loppu?: string
+}
+
+const isOsaamisalajaksoReal = (val: any): val is OsaamisalajaksoReal =>
+  val.$class === 'fi.oph.koski.schema.Osaamisalajakso'
+
+const OsaamisalaView = <T extends Osaamisalajakso>({
+  value
+}: CommonProps<FieldViewerProps<T | undefined, EmptyObject>>) => {
+  if (isOsaamisalajaksoReal(value)) {
+    return (
+      <>
+        <TestIdText id="alku">
+          {value?.alku && ISO2FinnishDate(value.alku)}
+        </TestIdText>{' '}
+        {' - '}
+        <TestIdText id="loppu">
+          {value?.loppu && ISO2FinnishDate(value.loppu)}
+        </TestIdText>
+        {' - '}
+        <TestIdText id="osaamisala">{t(value.osaamisala.nimi)}</TestIdText>
+      </>
+    )
+  } else return <TestIdText id="osaamisala">{t(value?.nimi)}</TestIdText>
+}
+
+const OsaamisalaEdit = ({
+  value,
+  onChange
+}: FieldEditorProps<Osaamisalajakso | undefined, EmptyObject>) => {
+  if (isOsaamisalajaksoReal(value)) {
+    return (
+      <div className="MaksuttomuusEdit" data-testid="osaamisala">
+        <KoodistoSelect
+          koodistoUri={'osaamisala'}
+          onSelect={(koodiviite) => {
+            koodiviite && onChange({ ...value, osaamisala: koodiviite })
+          }}
+          value={value.osaamisala.koodiarvo}
+          testId="osaamisala"
+        />
+        <span className="MaksuttomuusEdit__separator"> {' - '}</span>
+        <DateInput
+          value={value?.alku}
+          onChange={(alku?: string) => {
+            alku && onChange({ ...value, alku })
+          }}
+          testId="alku"
+        />
+        <span className="MaksuttomuusEdit__separator"> {' - '}</span>
+        <DateInput
+          value={value?.loppu}
+          onChange={(loppu?: string) => {
+            loppu && onChange({ ...value, loppu })
+          }}
+          testId="loppu"
+        />
+      </div>
+    )
+  } else
+    return (
+      <KoodistoSelect
+        koodistoUri={'osaamisala'}
+        onSelect={(koodiviite) => {
+          koodiviite && onChange(koodiviite)
+        }}
+        value={value?.koodiarvo}
+        testId="osaamisala"
+      />
+    )
 }
 
 export default AmmatillinenEditor
