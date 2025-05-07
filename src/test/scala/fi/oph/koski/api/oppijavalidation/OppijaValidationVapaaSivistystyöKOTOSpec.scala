@@ -112,6 +112,25 @@ class OppijaValidationVapaaSivistystyöKOTOSpec extends AnyFreeSpec with PutOpis
         verifyResponseStatus(400, ErrorMatcher.regex(KoskiErrorCategory.badRequest.validation.jsonSchema, ".*notAnyOf.*".r))
       }
     }
+
+    "Voi tallentaa duplikaatin opiskeluoikeuden kun edellinen on päättynyt" in {
+      setupOppijaWithOpiskeluoikeus(Koto2022.Opiskeluoikeus.suoritettu) {
+        verifyResponseStatusOk()
+      }
+      postOpiskeluoikeus(Koto2022.Opiskeluoikeus.keskeneräinen, defaultHenkilö) {
+        verifyResponseStatusOk()
+      }
+    }
+
+    "Ei voi tallentaa duplikaattia opiskeluoikeudesta" in {
+      val oo = Koto2022.Opiskeluoikeus.keskeneräinen
+      setupOppijaWithOpiskeluoikeus(oo) {
+        verifyResponseStatusOk()
+      }
+      postOpiskeluoikeus(oo, defaultHenkilö) {
+        verifyResponseStatus(409, KoskiErrorCategory.conflict.exists())
+      }
+    }
   }
 
   private def setupOppijaWithAndGetOpiskeluoikeus(oo: KoskeenTallennettavaOpiskeluoikeus): Opiskeluoikeus = setupOppijaWithOpiskeluoikeus(oo) {
