@@ -6,7 +6,7 @@ import {
   EditorContainer,
   usePäätasonSuoritus
 } from '../components-v2/containers/EditorContainer'
-import { FormModel, FormOptic, useForm } from '../components-v2/forms/FormModel'
+import { FormModel, useForm } from '../components-v2/forms/FormModel'
 import { useSchema } from '../appstate/constraints'
 import { UusiOpiskeluoikeusjakso } from '../components-v2/opiskeluoikeus/UusiOpiskeluoikeudenTilaModal'
 import { AmmatillinenOpiskeluoikeusjakso } from '../types/fi/oph/koski/schema/AmmatillinenOpiskeluoikeusjakso'
@@ -33,11 +33,7 @@ import {
 } from '../components-v2/opiskeluoikeus/KoodistoField'
 import { Spacer } from '../components-v2/layout/Spacer'
 import { SuorituksenVahvistusField } from '../components-v2/opiskeluoikeus/SuorituksenVahvistus'
-import {
-  PerusteEdit,
-  PerusteView
-} from '../components-v2/opiskeluoikeus/PerusteField'
-import { AmmatillinenPäätasonSuoritus } from '../types/fi/oph/koski/schema/AmmatillinenPaatasonSuoritus'
+import { PerusteView } from '../components-v2/opiskeluoikeus/PerusteField'
 import { AmmatillisenTutkinnonOsittainenSuoritus } from '../types/fi/oph/koski/schema/AmmatillisenTutkinnonOsittainenSuoritus'
 import { FormListField } from '../components-v2/forms/FormListField'
 import { ButtonGroup } from '../components-v2/containers/ButtonGroup'
@@ -51,10 +47,16 @@ import {
 import { Osaamisalajakso } from '../types/fi/oph/koski/schema/Osaamisalajakso'
 import { CommonProps } from '../components-v2/CommonProps'
 import { EmptyObject } from '../util/objects'
-import { ISO2FinnishDate } from '../date/date'
+import { ISO2FinnishDate, todayISODate } from '../date/date'
 import { DateInput } from '../components-v2/controls/DateInput'
-import { NumberField } from '../components-v2/controls/NumberField'
 import { KoodistoSelect } from '../components-v2/opiskeluoikeus/KoodistoSelect'
+import { DateEdit, DateView } from '../components-v2/controls/DateField'
+import { Järjestämismuotojakso } from '../types/fi/oph/koski/schema/Jarjestamismuotojakso'
+import { Oppisopimus } from '../types/fi/oph/koski/schema/Oppisopimus'
+import { isOppisopimuksellinenJärjestämismuoto } from '../types/fi/oph/koski/schema/OppisopimuksellinenJarjestamismuoto'
+import { JärjestämismuotoIlmanLisätietoja } from '../types/fi/oph/koski/schema/JarjestamismuotoIlmanLisatietoja'
+import { LocalizedTextEdit } from '../components-v2/controls/LocalizedTestField'
+import { Yritys } from '../types/fi/oph/koski/schema/Yritys'
 
 export type AmmatillinenEditorProps =
   AdaptedOpiskeluoikeusEditorProps<AmmatillinenOpiskeluoikeus>
@@ -199,6 +201,30 @@ const AmmatillisPääsuorituksenTiedot: React.FC<{
           </ButtonGroup>
         )}
       </KeyValueRow>
+      <KeyValueRow localizableLabel="Toinen osaamisala">
+        <FormField
+          form={form}
+          view={BooleanView}
+          edit={BooleanEdit}
+          path={path.prop('toinenOsaamisala')}
+        />
+      </KeyValueRow>
+      <KeyValueRow localizableLabel="Alkamispäivä">
+        <FormField
+          form={form}
+          view={DateView}
+          edit={DateEdit}
+          path={path.prop('alkamispäivä')}
+        />
+      </KeyValueRow>
+      <KeyValueRow localizableLabel="Järjestämismuodot">
+        <FormListField
+          form={form}
+          view={JärjestämismouotoView}
+          edit={JärjestämismouotoEdit}
+          path={path.prop('järjestämismuodot')}
+        />
+      </KeyValueRow>
       {/*TODO lisää rivejä tietomallissa?*/}
     </KeyValueTable>
   )
@@ -267,6 +293,8 @@ const OsaamisalaView = <T extends Osaamisalajakso>({
   if (isOsaamisalajaksoReal(value)) {
     return (
       <>
+        <TestIdText id="osaamisala">{t(value.osaamisala.nimi)}</TestIdText>
+        {' : '}
         <TestIdText id="alku">
           {value?.alku && ISO2FinnishDate(value.alku)}
         </TestIdText>{' '}
@@ -274,8 +302,6 @@ const OsaamisalaView = <T extends Osaamisalajakso>({
         <TestIdText id="loppu">
           {value?.loppu && ISO2FinnishDate(value.loppu)}
         </TestIdText>
-        {' - '}
-        <TestIdText id="osaamisala">{t(value.osaamisala.nimi)}</TestIdText>
       </>
     )
   } else return <TestIdText id="osaamisala">{t(value?.nimi)}</TestIdText>
@@ -296,7 +322,7 @@ const OsaamisalaEdit = ({
           value={value.osaamisala.koodiarvo}
           testId="osaamisala"
         />
-        <span className="MaksuttomuusEdit__separator"> {' - '}</span>
+        <span className="MaksuttomuusEdit__separator"> {' : '}</span>
         <DateInput
           value={value?.alku}
           onChange={(alku?: string) => {
@@ -325,6 +351,173 @@ const OsaamisalaEdit = ({
         testId="osaamisala"
       />
     )
+}
+
+const JärjestämismouotoView = <T extends Järjestämismuotojakso>({
+  value
+}: CommonProps<FieldViewerProps<T | undefined, EmptyObject>>) => {
+  return (
+    <>
+      <TestIdText id="alku">
+        {value?.alku && ISO2FinnishDate(value.alku)}
+      </TestIdText>
+      {' - '}
+      <TestIdText id="loppu">
+        {value?.loppu && ISO2FinnishDate(value.loppu)}
+      </TestIdText>
+      {' : '}
+      <TestIdText id="järjestämismouoto">
+        {t(value?.järjestämismuoto.tunniste.nimi)}
+      </TestIdText>
+      {isOppisopimuksellinenJärjestämismuoto(value?.järjestämismuoto) && (
+        <OppisopimusView value={value?.järjestämismuoto?.oppisopimus} />
+      )}
+    </>
+  )
+}
+
+const emptyJärjestämismuoto: Järjestämismuotojakso = {
+  alku: todayISODate(),
+  järjestämismuoto: {
+    $class: 'fi.oph.koski.schema.JärjestämismuotoIlmanLisätietoja',
+    tunniste: Koodistokoodiviite({
+      koodistoUri: 'jarjestamismuoto',
+      koodiarvo: ''
+    })
+  },
+  $class: 'fi.oph.koski.schema.Järjestämismuotojakso'
+}
+
+const JärjestämismouotoEdit = ({
+  value,
+  onChange
+}: FieldEditorProps<Järjestämismuotojakso | undefined, EmptyObject>) => {
+  return (
+    <>
+      <div className="MaksuttomuusEdit">
+        <DateInput
+          value={value?.alku}
+          onChange={(alku?: string) => {
+            alku && onChange({ ...emptyJärjestämismuoto, ...value, alku })
+          }}
+          testId="alku"
+        />
+        <span className="MaksuttomuusEdit__separator"> {' - '}</span>
+        <DateInput
+          value={value?.loppu}
+          onChange={(loppu?: string) => {
+            loppu && onChange({ ...emptyJärjestämismuoto, ...value, loppu })
+          }}
+          testId="loppu"
+        />
+        <span className="MaksuttomuusEdit__separator"> {' : '}</span>
+        <KoodistoSelect
+          koodistoUri={'jarjestamismuoto'}
+          value={value?.järjestämismuoto.tunniste.koodiarvo}
+          onSelect={(tunniste) =>
+            tunniste &&
+            onChange({
+              ...emptyJärjestämismuoto,
+              ...value,
+              järjestämismuoto: JärjestämismuotoIlmanLisätietoja({ tunniste })
+            })
+          }
+          testId="järjestämismuoto"
+        />
+      </div>
+      {isOppisopimuksellinenJärjestämismuoto(value?.järjestämismuoto) && (
+        <OppisopimusEdit
+          value={value?.järjestämismuoto.oppisopimus}
+          onChange={(oppisopimus) =>
+            oppisopimus &&
+            onChange({
+              ...value,
+              järjestämismuoto: {
+                ...value.järjestämismuoto,
+                $class:
+                  'fi.oph.koski.schema.OppisopimuksellinenJärjestämismuoto',
+                tunniste: Koodistokoodiviite({
+                  koodiarvo: '20',
+                  koodistoUri: 'jarjestamismuoto'
+                }),
+                oppisopimus
+              }
+            })
+          }
+        />
+      )}
+    </>
+  )
+}
+
+const OppisopimusView = <T extends Oppisopimus>({
+  value
+}: CommonProps<FieldViewerProps<T | undefined, EmptyObject>>) => {
+  return (
+    <KeyValueTable>
+      <KeyValueRow localizableLabel="Yritys">
+        {t(value?.työnantaja.nimi)}
+      </KeyValueRow>
+      <KeyValueRow localizableLabel="Y-tunnus">
+        {value?.työnantaja.yTunnus}
+      </KeyValueRow>
+      <KeyValueRow localizableLabel="Oppisopimuksen purkaminen">
+        <KeyValueTable>
+          <KeyValueRow localizableLabel="Päivä">
+            {ISO2FinnishDate(value?.oppisopimuksenPurkaminen?.päivä)}
+          </KeyValueRow>
+          <KeyValueRow localizableLabel="Purettu koeajalla">
+            <BooleanView
+              value={value?.oppisopimuksenPurkaminen?.purettuKoeajalla}
+            />
+          </KeyValueRow>
+        </KeyValueTable>
+      </KeyValueRow>
+    </KeyValueTable>
+  )
+}
+
+const OppisopimusEdit = ({
+  value,
+  onChange
+}: FieldEditorProps<Oppisopimus | undefined, EmptyObject>) => {
+  return (
+    <KeyValueTable>
+      <KeyValueRow localizableLabel="Yritys">
+        <LocalizedTextEdit
+          value={value?.työnantaja.nimi}
+          onChange={(nimi) =>
+            nimi &&
+            onChange(
+              Oppisopimus({
+                ...value,
+                työnantaja: Yritys({
+                  ...{ yTunnus: '' },
+                  ...value?.työnantaja,
+                  nimi
+                })
+              })
+            )
+          }
+        />
+      </KeyValueRow>
+      <KeyValueRow localizableLabel="Y-tunnus">
+        {value?.työnantaja.yTunnus}
+      </KeyValueRow>
+      <KeyValueRow localizableLabel="Oppisopimuksen purkaminen">
+        <KeyValueTable>
+          <KeyValueRow localizableLabel="Päivä">
+            {ISO2FinnishDate(value?.oppisopimuksenPurkaminen?.päivä)}
+          </KeyValueRow>
+          <KeyValueRow localizableLabel="Purettu koeajalla">
+            <BooleanView
+              value={value?.oppisopimuksenPurkaminen?.purettuKoeajalla}
+            />
+          </KeyValueRow>
+        </KeyValueTable>
+      </KeyValueRow>
+    </KeyValueTable>
+  )
 }
 
 export default AmmatillinenEditor
