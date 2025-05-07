@@ -129,7 +129,10 @@ class OppijaValidationLukioAlkamispäiväSpec
       "Sallitaan 2005 tai myöhemmin syntyneelle, jos on aiempi lukion opiskeluoikeus" in {
         setupOppijaWithOpiskeluoikeus(
           defaultOpiskeluoikeus.copy(
-            tila = LukionOpiskeluoikeudenTila(List(LukionOpiskeluoikeusjakso(aiempiAlkamispäivä, opiskeluoikeusLäsnä, Some(valtionosuusRahoitteinen))))
+            tila = LukionOpiskeluoikeudenTila(List(
+              LukionOpiskeluoikeusjakso(aiempiAlkamispäivä, opiskeluoikeusLäsnä, Some(valtionosuusRahoitteinen)),
+              LukionOpiskeluoikeusjakso(aiempiAlkamispäivä.plusDays(7), katsotaanEronneeksi, Some(valtionosuusRahoitteinen))
+            )),
           ).withLisääPuuttuvaMaksuttomuustieto,
           KoskiSpecificMockOppijat.vuonna2005SyntynytPeruskouluValmis2021
         ) {

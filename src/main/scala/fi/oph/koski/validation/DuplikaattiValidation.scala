@@ -34,6 +34,12 @@ object DuplikaattiValidation extends Logging {
       case _ => false
     }
 
+    lazy val isJotpa: Boolean =
+      opiskeluoikeus.suoritukset.forall {
+        case _: VapaanSivistystyönJotpaKoulutuksenSuoritus => true
+        case _ => false
+      }
+
     lazy val oppijanOpiskeluoikeudet = opiskeluoikeusRepository.findByOppija(
         tunnisteet = oppijanHenkilötiedot,
         useVirta = false,
@@ -108,6 +114,13 @@ object DuplikaattiValidation extends Logging {
       })
     }
 
+    def findConflictingOpiskeluoikeus(): Either[HttpStatus, Option[Opiskeluoikeus]] = {
+      oppijanMuutOpiskeluoikeudetSamaOppilaitosJaTyyppi.map(_.find {
+        case o: Opiskeluoikeus if !o.tila.opiskeluoikeusjaksot.last.opiskeluoikeusPäättynyt => true
+        case _ => false
+      })
+    }
+
     def findNuortenPerusopetuksessaUseitaKeskeneräisiäVuosiluokanSuorituksia(): Either[HttpStatus, Option[Opiskeluoikeus]] = {
       def getLuokkaAste(s: Suoritus) = s.koulutusmoduuli.tunniste.koodiarvo
       def getVuosiluokat(oo: Opiskeluoikeus) = oo.suoritukset.collect { case s: PerusopetuksenVuosiluokanSuoritus => s }
@@ -160,10 +173,15 @@ object DuplikaattiValidation extends Logging {
           throwIfConflictingExists(findConflictingPerusopetus, oo),
           throwIfConflictingExists(findNuortenPerusopetuksessaUseitaKeskeneräisiäVuosiluokanSuorituksia, oo),
         )
-      case oo: AmmatillinenOpiskeluoikeus if !isMuuAmmatillinenOpiskeluoikeus => throwIfConflictingExists(findConflictingAmmatillinen, oo, ignoreInProd = true)
+      case _: AmmatillinenOpiskeluoikeus if isMuuAmmatillinenOpiskeluoikeus => HttpStatus.ok
+      case oo: AmmatillinenOpiskeluoikeus => throwIfConflictingExists(findConflictingAmmatillinen, oo, ignoreInProd = true)
       case _: LukionOpiskeluoikeus if !isLukionOppimäärä => HttpStatus.ok
       case oo: LukionOpiskeluoikeus if isLukionOppimäärä => throwIfConflictingExists(findSamaOppilaitosJaTyyppiSamaanAikaan, oo, ignoreInProd = true)
-      case _ => HttpStatus.ok
+      case _: VapaanSivistystyönOpiskeluoikeus if isJotpa => HttpStatus.ok
+      case oo: VapaanSivistystyönOpiskeluoikeus => throwIfConflictingExists(findConflictingOpiskeluoikeus, oo, ignoreInProd = true)
+      case _: MuunKuinSäännellynKoulutuksenOpiskeluoikeus => HttpStatus.ok
+      case _: TaiteenPerusopetuksenOpiskeluoikeus => HttpStatus.ok
+      case oo: Opiskeluoikeus => throwIfConflictingExists(findConflictingOpiskeluoikeus, oo, ignoreInProd = true)
     }
   }
 
