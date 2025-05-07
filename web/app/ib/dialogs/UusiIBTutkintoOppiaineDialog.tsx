@@ -193,7 +193,7 @@ const IBTutkintoOppiaineForm: React.FC<IBTutkintoOppiaineFormProps> = ({
           />
         </label>
       )}
-      {(state as UusiIBTutkintoOppiaineState).cas.laajuus.visible && (
+      {(state as UusiIBTutkintoOppiaineState).cas?.laajuus.visible && (
         <label>
           {t('Laajuus')}
           <LaajuusEdit
