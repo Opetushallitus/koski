@@ -1,7 +1,6 @@
 package fi.oph.koski.validation
 
 import com.typesafe.config.Config
-import fi.oph.koski.config.Environment
 import fi.oph.koski.henkilo.LaajatOppijaHenkilöTiedot
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.koskiuser.KoskiSpecificSession
@@ -148,15 +147,9 @@ object DuplikaattiValidation extends Logging {
     }
 
     def throwIfConflictingExists(
-      isConflicting: () => Either[HttpStatus, Option[Opiskeluoikeus]],
-      oo: KoskeenTallennettavaOpiskeluoikeus,
-      ignoreInProd: Boolean = false): HttpStatus = {
-      def logWarning(conflicting: Opiskeluoikeus): Unit = logger.warn(s"Opiskeluoikeus jäisi kiinni duplikaattivalidaatioihin (${oo.getClass}, oppija: ${oppijanHenkilötiedot.oid}, ${oo.getClass}, konfliktoiva: ${conflicting.oid})")
+      isConflicting: () => Either[HttpStatus, Option[Opiskeluoikeus]]
+    ): HttpStatus = {
       isConflicting() match {
-        // Tuotantokäyttöönoton yhteydessä siivoa pois aiemmat validaatiot: vastaavanRinnakkaisenOpiskeluoikeudenLisääminenSallittu
-        case Right(Some(conflicting)) if Environment.isProdEnvironment(config) && ignoreInProd =>
-          logWarning(conflicting)
-          HttpStatus.ok
         case Right(Some(_)) =>
           KoskiErrorCategory.conflict.exists()
         case Right(None) => HttpStatus.ok
@@ -165,23 +158,23 @@ object DuplikaattiValidation extends Logging {
     }
 
     opiskeluoikeus match {
-      case oo: EsiopetuksenOpiskeluoikeus => throwIfConflictingExists(findSamaOppilaitosJaTyyppiSamaanAikaan, oo, ignoreInProd = true)
-      case oo: PerusopetukseenValmistavanOpetuksenOpiskeluoikeus => throwIfConflictingExists(findSamaOppilaitosJaTyyppiSamaanAikaan, oo, ignoreInProd = true)
-      case oo: AikuistenPerusopetuksenOpiskeluoikeus => throwIfConflictingExists(findConflictingAikuistenPerusopetus, oo, ignoreInProd = true)
-      case oo: PerusopetuksenOpiskeluoikeus =>
+      case _: EsiopetuksenOpiskeluoikeus => throwIfConflictingExists(findSamaOppilaitosJaTyyppiSamaanAikaan)
+      case _: PerusopetukseenValmistavanOpetuksenOpiskeluoikeus => throwIfConflictingExists(findSamaOppilaitosJaTyyppiSamaanAikaan)
+      case _: AikuistenPerusopetuksenOpiskeluoikeus => throwIfConflictingExists(findConflictingAikuistenPerusopetus)
+      case _: PerusopetuksenOpiskeluoikeus =>
         HttpStatus.fold(
-          throwIfConflictingExists(findConflictingPerusopetus, oo),
-          throwIfConflictingExists(findNuortenPerusopetuksessaUseitaKeskeneräisiäVuosiluokanSuorituksia, oo),
+          throwIfConflictingExists(findConflictingPerusopetus),
+          throwIfConflictingExists(findNuortenPerusopetuksessaUseitaKeskeneräisiäVuosiluokanSuorituksia),
         )
       case _: AmmatillinenOpiskeluoikeus if isMuuAmmatillinenOpiskeluoikeus => HttpStatus.ok
-      case oo: AmmatillinenOpiskeluoikeus => throwIfConflictingExists(findConflictingAmmatillinen, oo, ignoreInProd = true)
+      case _: AmmatillinenOpiskeluoikeus => throwIfConflictingExists(findConflictingAmmatillinen)
       case _: LukionOpiskeluoikeus if !isLukionOppimäärä => HttpStatus.ok
-      case oo: LukionOpiskeluoikeus if isLukionOppimäärä => throwIfConflictingExists(findSamaOppilaitosJaTyyppiSamaanAikaan, oo, ignoreInProd = true)
+      case _: LukionOpiskeluoikeus if isLukionOppimäärä => throwIfConflictingExists(findSamaOppilaitosJaTyyppiSamaanAikaan)
       case _: VapaanSivistystyönOpiskeluoikeus if isJotpa => HttpStatus.ok
-      case oo: VapaanSivistystyönOpiskeluoikeus => throwIfConflictingExists(findConflictingOpiskeluoikeus, oo, ignoreInProd = true)
+      case _: VapaanSivistystyönOpiskeluoikeus => throwIfConflictingExists(findConflictingOpiskeluoikeus)
       case _: MuunKuinSäännellynKoulutuksenOpiskeluoikeus => HttpStatus.ok
       case _: TaiteenPerusopetuksenOpiskeluoikeus => HttpStatus.ok
-      case oo: Opiskeluoikeus => throwIfConflictingExists(findConflictingOpiskeluoikeus, oo, ignoreInProd = true)
+      case _: Opiskeluoikeus => throwIfConflictingExists(findConflictingOpiskeluoikeus)
     }
   }
 
