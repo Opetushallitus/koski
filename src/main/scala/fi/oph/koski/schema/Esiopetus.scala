@@ -72,8 +72,6 @@ case class EsiopetuksenOpiskeluoikeudenLisätiedot(
   @Description("Korvaa aiemman kentän erityisenTuenPäätökset.")
   @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))
   tuenPäätöksenJaksot: Option[List[Tukijakso]] = None,
-  @Deprecated("Käytä korvaavaa kenttää tuenPäätöksenJaksot")
-  tukijaksot: Option[List[TyhjäTukijakso]] = None,
   @Description("Kenttä ei käytössä 1.9.2026 alkaen.")
   @Description("Onko oppija muu kuin vaikeimmin kehitysvammainen. Lista alku-loppu päivämääräpareja. Rahoituksen laskennassa käytettävä tieto.")
   @Tooltip("Tieto siitä, onko oppija muu kuin vaikeimmin kehitysvammainen (alku- ja loppupäivämäärät). Voi olla useita erillisiä jaksoja. Rahoituksen laskennassa käytettävä tieto.")

@@ -1,7 +1,3 @@
-## 8.5.2025
-
-- Palautettu placeholder-sisältö kentälle "tukijaksot" deprekoituna esi- ja perusopetuksen lisätietoihin
-
 ## 30.4.2025
 
 - Muutos 26.3.2025 lisättyyn esi- ja perusopetuksen tietomallimuutoksiin: "tukijaksot" uudelleennimetty muotoon "tuen päätöksen jaksot"

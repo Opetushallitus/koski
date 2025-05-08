@@ -124,8 +124,6 @@ case class PerusopetuksenOpiskeluoikeudenLisätiedot(
   @Description("Korvaa aiemman kentän erityisenTuenPäätökset.")
   @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))
   tuenPäätöksenJaksot: Option[List[Tukijakso]] = None,
-  @Deprecated("Käytä korvaavaa kenttää tuenPäätöksenJaksot")
-  tukijaksot: Option[List[TyhjäTukijakso]] = None,
   @Description("Tehostetun tuen päätös alkamis- ja päättymispäivineen. Kentän puuttuminen tai null-arvo tulkitaan siten, että päätöstä ei ole tehty.")
   @Tooltip("Mahdollisen tehostetun tuen päätös päätöksen alkamis- ja päättymispäivät.")
   @OksaUri("tmpOKSAID511", "tehostettu tuki")

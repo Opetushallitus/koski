@@ -93,8 +93,6 @@ trait VarhennettuOppivelvollisuus extends PidennettyOppivelvollisuus with Tukip�
 }
 
 trait Tukipäätöksellinen extends ErityisenTuenPäätöksiäSisältäväLisätieto {
-  @Deprecated("Käytä korvaavaa kenttää tuenPäätöksenJaksot")
-  def tukijaksot:  Option[List[TyhjäTukijakso]]
   def tuenPäätöksenJaksot:  Option[List[Tukijakso]]
   def kaikkiTuenPäätöksenJaksot: List[MahdollisestiAlkupäivällinenJakso]
 }

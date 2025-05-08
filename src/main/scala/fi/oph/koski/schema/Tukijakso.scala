@@ -13,6 +13,3 @@ case class Tukijakso(
   @Description("Jakson loppumispäivämäärä. Muoto YYYY-MM-DD")
   loppu: Option[LocalDate]
 ) extends MahdollisestiAlkupäivällinenJakso
-
-// Vain deprekoinnilla tehtyä rename-fiksiä varten.
-case class TyhjäTukijakso()
