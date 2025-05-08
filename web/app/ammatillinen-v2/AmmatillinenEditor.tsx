@@ -12,7 +12,7 @@ import { UusiOpiskeluoikeusjakso } from '../components-v2/opiskeluoikeus/UusiOpi
 import { AmmatillinenOpiskeluoikeusjakso } from '../types/fi/oph/koski/schema/AmmatillinenOpiskeluoikeusjakso'
 import { AmmatillinenLisatiedot } from './AmmatillinenLisatiedot'
 import { VirkailijaKansalainenContainer } from '../components-v2/containers/VirkailijaKansalainenContainer'
-import { t } from '../i18n/i18n'
+import { localize, t } from '../i18n/i18n'
 import {
   KeyValueRow,
   KeyValueTable
@@ -57,6 +57,7 @@ import { isOppisopimuksellinenJärjestämismuoto } from '../types/fi/oph/koski/s
 import { JärjestämismuotoIlmanLisätietoja } from '../types/fi/oph/koski/schema/JarjestamismuotoIlmanLisatietoja'
 import { LocalizedTextEdit } from '../components-v2/controls/LocalizedTestField'
 import { Yritys } from '../types/fi/oph/koski/schema/Yritys'
+import { TextEdit } from '../components-v2/controls/TextField'
 
 export type AmmatillinenEditorProps =
   AdaptedOpiskeluoikeusEditorProps<AmmatillinenOpiskeluoikeus>
@@ -425,9 +426,13 @@ const JärjestämismouotoEdit = ({
           testId="järjestämismuoto"
         />
       </div>
-      {isOppisopimuksellinenJärjestämismuoto(value?.järjestämismuoto) && (
+      {value?.järjestämismuoto.tunniste.koodiarvo === '20' && (
         <OppisopimusEdit
-          value={value?.järjestämismuoto.oppisopimus}
+          value={
+            isOppisopimuksellinenJärjestämismuoto(value?.järjestämismuoto)
+              ? value?.järjestämismuoto.oppisopimus
+              : undefined
+          }
           onChange={(oppisopimus) =>
             oppisopimus &&
             onChange({
@@ -477,6 +482,20 @@ const OppisopimusView = <T extends Oppisopimus>({
   )
 }
 
+const emptyYritys = Yritys({
+  nimi: localize(''),
+  yTunnus: ''
+})
+
+const emptyOppisopimus: Oppisopimus = Oppisopimus({
+  työnantaja: emptyYritys,
+  oppisopimuksenPurkaminen: {
+    $class: 'fi.oph.koski.schema.OppisopimuksenPurkaminen',
+    päivä: todayISODate(),
+    purettuKoeajalla: false
+  }
+})
+
 const OppisopimusEdit = ({
   value,
   onChange
@@ -492,7 +511,7 @@ const OppisopimusEdit = ({
               Oppisopimus({
                 ...value,
                 työnantaja: Yritys({
-                  ...{ yTunnus: '' },
+                  ...emptyYritys,
                   ...value?.työnantaja,
                   nimi
                 })
@@ -502,12 +521,42 @@ const OppisopimusEdit = ({
         />
       </KeyValueRow>
       <KeyValueRow localizableLabel="Y-tunnus">
-        {value?.työnantaja.yTunnus}
+        <TextEdit
+          value={value?.työnantaja.yTunnus}
+          onChange={(yTunnus) =>
+            yTunnus &&
+            onChange(
+              Oppisopimus({
+                ...value,
+                työnantaja: Yritys({
+                  ...emptyYritys,
+                  ...value?.työnantaja,
+                  yTunnus
+                })
+              })
+            )
+          }
+        />
       </KeyValueRow>
       <KeyValueRow localizableLabel="Oppisopimuksen purkaminen">
         <KeyValueTable>
           <KeyValueRow localizableLabel="Päivä">
             {ISO2FinnishDate(value?.oppisopimuksenPurkaminen?.päivä)}
+            <DateInput
+              value={value?.oppisopimuksenPurkaminen?.päivä}
+              onChange={(päivä) =>
+                päivä &&
+                onChange({
+                  ...emptyOppisopimus,
+                  ...value,
+                  oppisopimuksenPurkaminen: {
+                    ...emptyOppisopimus.oppisopimuksenPurkaminen,
+                    ...(value?.oppisopimuksenPurkaminen || {}),
+                    päivä
+                  }
+                })
+              }
+            />
           </KeyValueRow>
           <KeyValueRow localizableLabel="Purettu koeajalla">
             <BooleanView
