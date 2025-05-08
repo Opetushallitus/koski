@@ -132,7 +132,11 @@ object TypescriptTypes {
     val objProps = obj.properties
       .map(prop => toPropertyField(prop._1, prop._2, generic, options))
     val props = (metaProps ++ objProps).mkString(",\n")
-    s"{\n$props\n}"
+    if (props.isEmpty) {
+      s"object"
+    } else {
+      s"{\n$props\n}"
+    }
   }
 
   private def toPropertyField(
