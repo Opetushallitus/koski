@@ -63,7 +63,7 @@ class ValviraSpec extends AnyFreeSpec with KoskiHttpSpec with OpiskeluoikeusTest
     }
     "Palauttaa linkitettyjen oidien opinnot" in {
       putOpiskeluoikeus(AmmatillinenExampleData.sosiaaliJaTerveysalaOpiskeluoikeus(), KoskiSpecificMockOppijat.master) {
-        putOpiskeluoikeus(AmmatillinenExampleData.sosiaaliJaTerveysalaOpiskeluoikeusKesken(), KoskiSpecificMockOppijat.slave.henkilö) {
+        putOpiskeluoikeus(AmmatillinenExampleData.sosiaaliJaTerveysalaOpiskeluoikeusKesken(alkupäivä = LocalDate.of(2016, 8, 2)), KoskiSpecificMockOppijat.slave.henkilö) {
          getHetu(KoskiSpecificMockOppijat.master.hetu.get) {
            parseValviraOppija.opiskeluoikeudet.flatMap(_.suoritukset.map(_.koulutusmoduuli.tunniste.nimi.get.get("fi"))) should equal(
              List("Sosiaali- ja terveysalan perustutkinto", "Sosiaali- ja terveysalan perustutkinto")

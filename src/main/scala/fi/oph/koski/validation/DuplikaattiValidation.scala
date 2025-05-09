@@ -1,6 +1,5 @@
 package fi.oph.koski.validation
 
-import com.typesafe.config.Config
 import fi.oph.koski.henkilo.LaajatOppijaHenkilöTiedot
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.koskiuser.KoskiSpecificSession
@@ -20,7 +19,6 @@ object DuplikaattiValidation extends Logging {
      opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus,
      oppijanHenkilötiedot: LaajatOppijaHenkilöTiedot,
      opiskeluoikeusRepository: CompositeOpiskeluoikeusRepository,
-     config: Config
    ): HttpStatus = {
     lazy val isMuuAmmatillinenOpiskeluoikeus: Boolean =
       opiskeluoikeus.suoritukset.forall {
@@ -51,6 +49,8 @@ object DuplikaattiValidation extends Logging {
         .filterNot(samaOo(opiskeluoikeus, _))
         .filter(_.oppilaitos.map(_.oid) == opiskeluoikeus.oppilaitos.map(_.oid))
         .filter(_.tyyppi == opiskeluoikeus.tyyppi)
+        .filter(_.suoritukset.headOption.map(_.koulutusmoduuli.tunniste.koodiarvo) == opiskeluoikeus.suoritukset.headOption.map(_.koulutusmoduuli.tunniste.koodiarvo))
+        .filter(_.suoritukset.headOption.map(_.tyyppi.koodiarvo) == opiskeluoikeus.suoritukset.headOption.map(_.tyyppi.koodiarvo))
       )
 
     lazy val aiemminTallennettuOpiskeluoikeus = oppijanOpiskeluoikeudet.map(_.find(samaOo(opiskeluoikeus, _)))
@@ -106,9 +106,9 @@ object DuplikaattiValidation extends Logging {
     }
 
     def findConflictingAmmatillinen(): Either[HttpStatus, Option[Opiskeluoikeus]] = {
-      // sama diaarinumero ammatillisen tutkinnon suorituksilla ja päällekkäinen aikajakso mutta ei päättynyt
+      // Suoritus on kesken, tai sama diaarinumero ammatillisen tutkinnon suorituksilla ja päällekkäinen aikajakso
       oppijanMuutOpiskeluoikeudetSamaOppilaitosJaTyyppi.map(_.find {
-        case a: AmmatillinenOpiskeluoikeus if !a.tila.opiskeluoikeusjaksot.last.opiskeluoikeusPäättynyt => samaDiaarinumeroAmmatillinen(a) && päällekkäinenAikajakso(a)
+        case a: AmmatillinenOpiskeluoikeus => !a.tila.opiskeluoikeusjaksot.last.opiskeluoikeusPäättynyt || (samaDiaarinumeroAmmatillinen(a) && päällekkäinenAikajakso(a))
         case _ => false
       })
     }
