@@ -2,6 +2,7 @@ package fi.oph.koski.api.oppijavalidation
 
 import fi.oph.koski.KoskiHttpSpec
 import fi.oph.koski.api.misc.OpiskeluoikeusTestMethodsLukio
+import fi.oph.koski.documentation.ExamplesLukio2019
 import fi.oph.koski.documentation.ExamplesLukio2019.{oppiaineenOppimääräOpiskeluoikeus, oppiaineidenOppimäärienLukioDiplominSuoritus, oppiaineidenOppimäärienSuoritus}
 import fi.oph.koski.documentation.LukioExampleData.aikuistenOpetussuunnitelma
 import fi.oph.koski.http.KoskiErrorCategory
@@ -58,6 +59,27 @@ class OppijaValidationLukionOppiaineidenOppimaarat2019Spec extends TutkinnonPeru
     "Muiden lukio-opintojen suoritusten tallentaminen onnistuu" in {
       setupOppijaWithOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(oppiaineidenOppimäärienLukioDiplominSuoritus))) {
         verifyResponseStatusOk()
+      }
+    }
+  }
+
+  "Opiskeluoikeuksien duplikaatit" - {
+    "opiskeluoikeutta voi siirtää kahteen kertaan" - {
+      "kun opiskeluoikeus on valmistunut ja päivämäärät ovat päällekkäiset" in {
+        setupOppijaWithOpiskeluoikeus(defaultOpiskeluoikeus, defaultHenkilö) {
+          verifyResponseStatusOk()
+        }
+        postOppija(makeOppija(defaultHenkilö, List(defaultOpiskeluoikeus))) {
+          verifyResponseStatusOk()
+        }
+      }
+      "kun opiskeluoikeus on aktiivinen ja päivämäärät ovat päällekkäiset" in {
+        setupOppijaWithOpiskeluoikeus(ExamplesLukio2019.aktiivinenOppiaineenOppimääräOpiskeluoikeus, defaultHenkilö) {
+          verifyResponseStatusOk()
+        }
+        postOppija(makeOppija(defaultHenkilö, List(ExamplesLukio2019.aktiivinenOppiaineenOppimääräOpiskeluoikeus))) {
+          verifyResponseStatusOk()
+        }
       }
     }
   }

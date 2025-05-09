@@ -124,6 +124,7 @@ class LahdejarjestelmakytkennanPurkaminenSpec
     }
 
     "Terminaalitilan voi vaihtaa toiseksi terminaalitilaksi" in {
+      poistaOppijanOpiskeluoikeusDatat(oppija)
       val opiskeluoikeus = alustaPurettuOpiskeluoikeus
       val päivitettyOpiskeluoikeus = opiskeluoikeus.copy(
         tila = LukionOpiskeluoikeudenTila(
@@ -140,6 +141,7 @@ class LahdejarjestelmakytkennanPurkaminenSpec
     }
 
     "Hylkää tiedonsiirrot lähdejärjestelmästä, joilla yritetään päivittää purettua opiskeluoikeutta" in {
+      poistaOppijanOpiskeluoikeusDatat(oppija)
       val opiskeluoikeus = alustaPurettuOpiskeluoikeus
       val headers = authHeaders(MockUsers.jyväskylänNormaalikoulunPalvelukäyttäjä) ++ jsonContent
       val päivitettyOpiskeluoikeus = opiskeluoikeus.copy(

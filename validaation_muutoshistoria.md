@@ -1,5 +1,9 @@
 # Koskeen tallennettavien tietojen validaatiosäännöt
 
+## x.5.2025
+
+- Lukion oppimäärän opiskeluoikeuksissa ei enää sallita duplikaatteja.
+
 ## 30.4.2025
 
 - Esi- ja perusopetus:

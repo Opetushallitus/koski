@@ -1493,5 +1493,5 @@ object EuropeanSchoolOfHelsinkiExampleData {
     )))
   }
 
-  def suoritusVahvistus(päivä: LocalDate) = ExampleData.vahvistusPaikkakunnalla(päivä, europeanSchoolOfHelsinki, helsinki)
+  def suoritusVahvistus(päivä: LocalDate): Option[HenkilövahvistusPaikkakunnalla] = ExampleData.vahvistusPaikkakunnalla(päivä, europeanSchoolOfHelsinki, helsinki)
 }

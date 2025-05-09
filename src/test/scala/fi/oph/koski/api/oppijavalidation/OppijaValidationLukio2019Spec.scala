@@ -2,13 +2,15 @@ package fi.oph.koski.api.oppijavalidation
 
 import fi.oph.koski.KoskiHttpSpec
 import fi.oph.koski.api.misc.{OpiskeluoikeusTestMethodsLukio, PutOpiskeluoikeusTestMethods}
+import fi.oph.koski.documentation.AmmatillinenExampleData.primusLähdejärjestelmäId
 import fi.oph.koski.documentation.ExampleData._
 import fi.oph.koski.documentation.ExamplesLukio2019._
 import fi.oph.koski.documentation.Lukio2019ExampleData._
-import fi.oph.koski.documentation.LukioExampleData.opiskeluoikeusAktiivinen
+import fi.oph.koski.documentation.LukioExampleData.{opiskeluoikeusAktiivinen, opiskeluoikeusPäättynyt}
 import fi.oph.koski.documentation.{ExampleData, ExamplesLukio2019, Lukio2019ExampleData, LukioExampleData}
 import fi.oph.koski.http.ErrorMatcher.exact
 import fi.oph.koski.http.{ErrorMatcher, KoskiErrorCategory}
+import fi.oph.koski.koskiuser.MockUsers.jyväskylänNormaalikoulunPalvelukäyttäjä
 import fi.oph.koski.localization.LocalizedStringImplicits.str2localized
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.schema._
@@ -2034,6 +2036,62 @@ class OppijaValidationLukio2019Spec extends AnyFreeSpec with PutOpiskeluoikeusTe
               s"Moduulia BI1 ei voi siirtää oppiaineen/-määrän GE alle, koska se on oppiaineen/-määrän BI moduuli. Sallittuja GE-moduuleja ovat GE1, GE2, GE3, GE4."
             )
           )
+        }
+      }
+    }
+  }
+
+  "Opiskeluoikeuksien duplikaatit" - {
+
+    val lähdejärjestelmänId1 = Some(primusLähdejärjestelmäId("primus-yksi"))
+    val lähdejärjestelmänId2 = Some(primusLähdejärjestelmäId("primus-kaksi"))
+
+    "Samaa opiskeluoikeutta ei voi siirää kahteen kertaan" - {
+      "ilman tunnistetta" in {
+        setupOppijaWithOpiskeluoikeus(defaultOpiskeluoikeus, defaultHenkilö) {
+          verifyResponseStatusOk()
+        }
+        postOppija(makeOppija(defaultHenkilö, List(defaultOpiskeluoikeus))) {
+          verifyResponseStatus(409, KoskiErrorCategory.conflict.exists())
+        }
+      }
+      "eri lähdejärjestelmän id:llä" in {
+        setupOppijaWithOpiskeluoikeus(defaultOpiskeluoikeus.copy(lähdejärjestelmänId = lähdejärjestelmänId1), defaultHenkilö, headers = authHeaders(jyväskylänNormaalikoulunPalvelukäyttäjä) ++ jsonContent) {
+          verifyResponseStatusOk()
+        }
+        postOppija(makeOppija(defaultHenkilö, List(defaultOpiskeluoikeus.copy(lähdejärjestelmänId = lähdejärjestelmänId2))), headers = authHeaders(jyväskylänNormaalikoulunPalvelukäyttäjä) ++ jsonContent) {
+          verifyResponseStatus(409, KoskiErrorCategory.conflict.exists())
+        }
+      }
+      "vaikka päivämäärät ovat erilaiset (mutta päällekkäiset)" in {
+        val opiskeluoikeus = defaultOpiskeluoikeus.copy(
+          tila = LukionOpiskeluoikeudenTila(List(
+            LukionOpiskeluoikeusjakso(LocalDate.of(2020, 12, 1), opiskeluoikeusLäsnä, opintojenRahoitus = Some(ExampleData.valtionosuusRahoitteinen))
+          ))
+        )
+
+        setupOppijaWithOpiskeluoikeus(defaultOpiskeluoikeus, defaultHenkilö) {
+          verifyResponseStatusOk()
+        }
+        postOppija(makeOppija(defaultHenkilö, List(opiskeluoikeus))) {
+          verifyResponseStatus(409, KoskiErrorCategory.conflict.exists())
+        }
+      }
+    }
+    "opiskeluoikeutta voi siirtää kahteen kertaan" - {
+      "kun päivämäärät ovat erilaiset eivätkä mene päällekkäin" in {
+        val opiskeluoikeusMyöhemmin = defaultOpiskeluoikeus.copy(
+          tila = LukionOpiskeluoikeudenTila(List(
+            LukionOpiskeluoikeusjakso(alku = date(2022, 8, 1), tila = opiskeluoikeusAktiivinen, opintojenRahoitus = Some(ExampleData.valtionosuusRahoitteinen)),
+            LukionOpiskeluoikeusjakso(alku = date(2024, 8, 1), tila = opiskeluoikeusPäättynyt, opintojenRahoitus = Some(ExampleData.valtionosuusRahoitteinen))
+          ))
+        )
+
+        setupOppijaWithOpiskeluoikeus(defaultOpiskeluoikeus, defaultHenkilö) {
+          verifyResponseStatusOk()
+        }
+        postOppija(makeOppija(defaultHenkilö, List(opiskeluoikeusMyöhemmin))) {
+          verifyResponseStatusOk()
         }
       }
     }

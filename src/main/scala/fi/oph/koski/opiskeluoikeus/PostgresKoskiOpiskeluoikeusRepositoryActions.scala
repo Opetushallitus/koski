@@ -13,12 +13,9 @@ import fi.oph.koski.koskiuser.KoskiSpecificSession
 import fi.oph.koski.organisaatio.OrganisaatioRepository
 import fi.oph.koski.perustiedot.{OpiskeluoikeudenPerustiedot, PerustiedotSyncRepository}
 import fi.oph.koski.schema._
-import fi.oph.scalaschema.Serializer.format
 import org.json4s._
 import slick.dbio.Effect.{Read, Transactional, Write}
 import slick.dbio.{DBIOAction, NoStream}
-
-import java.time.LocalDate
 
 class PostgresKoskiOpiskeluoikeusRepositoryActions(
   val db: DB,
@@ -86,14 +83,10 @@ class PostgresKoskiOpiskeluoikeusRepositoryActions(
     findByIdentifierAction(identifier).flatMap {
       case Right(Nil) =>
         createAction(oppijaOid, opiskeluoikeus)
-      case Right(_) if !validationConfig.tarkastaOpiskeluoikeuksienDuplikaatit =>
-        createAction(oppijaOid, opiskeluoikeus)
       case Right(aiemmatSamaksiJonkinIdnPerusteellaTunnistetutOpiskeluoikeudet) if allowUpdate =>
         updateIfUnambiguousAiempiOpiskeluoikeusAction(oppijaOid, opiskeluoikeus, identifier, aiemmatSamaksiJonkinIdnPerusteellaTunnistetutOpiskeluoikeudet, allowDeleteCompleted, skipValidations)
-      case Right(aiemmatSamaksiJonkinIdnPerusteellaTunnistetutOpiskeluoikeudet) if vastaavanRinnakkaisenOpiskeluoikeudenLisääminenSallittu(opiskeluoikeus, aiemmatSamaksiJonkinIdnPerusteellaTunnistetutOpiskeluoikeudet) =>
-        createAction(oppijaOid, opiskeluoikeus)
       case Right(_) =>
-        DBIO.successful(Left(KoskiErrorCategory.conflict.exists("Vastaava opiskeluoikeus on jo olemassa.")))
+        createAction(oppijaOid, opiskeluoikeus)
       case Left(err) =>
         DBIO.successful(Left(err))
     }
@@ -117,68 +110,6 @@ class PostgresKoskiOpiskeluoikeusRepositoryActions(
       case _ =>
         DBIO.successful(Left(KoskiErrorCategory.conflict.löytyiEnemmänKuinYksiRivi(s"Löytyi enemmän kuin yksi rivi päivitettäväksi (${aiemmatSamaksiJonkinIdnPerusteellaTunnistetutOpiskeluoikeudet.map(_.oid)})")))
     }
-  }
-
-  private def vastaavanRinnakkaisenOpiskeluoikeudenLisääminenSallittu(
-    opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus,
-    aiemmatSamaksiJonkinIdnPerusteellaTunnistetutOpiskeluoikeudet: List[KoskiOpiskeluoikeusRow]
-  )(implicit user: KoskiSpecificSession): Boolean = {
-    lazy val aiempiOpiskeluoikeusPäättynyt = aiemmatSamaksiJonkinIdnPerusteellaTunnistetutOpiskeluoikeudet.exists(_.toOpiskeluoikeusUnsafe.tila.opiskeluoikeusjaksot.last.opiskeluoikeusPäättynyt)
-
-    opiskeluoikeus match {
-      case _: PerusopetuksenOpiskeluoikeus =>
-        true // Tarkistus tehdään jo validaatioiden yhteydessä
-      case _: MuunKuinSäännellynKoulutuksenOpiskeluoikeus =>
-        true
-      case _: TaiteenPerusopetuksenOpiskeluoikeus =>
-        true
-      case oo: VapaanSivistystyönOpiskeluoikeus =>
-        isJotpa(oo) || aiempiOpiskeluoikeusPäättynyt
-      case oo: AmmatillinenOpiskeluoikeus =>
-        isMuuAmmatillinenOpiskeluoikeus(oo) || (aiempiOpiskeluoikeusPäättynyt && isAmmatillinenJolleAiemmanOpiskeluoikeudenPäätyttyäRinnakkainenOpiskeluoikeusSallitaan(oo, aiemmatSamaksiJonkinIdnPerusteellaTunnistetutOpiskeluoikeudet))
-      case _ =>
-        aiempiOpiskeluoikeusPäättynyt
-    }
-  }
-
-  private def isMuuAmmatillinenOpiskeluoikeus(opiskeluoikeus: AmmatillinenOpiskeluoikeus): Boolean =
-    opiskeluoikeus.suoritukset.forall {
-      case _: MuunAmmatillisenKoulutuksenSuoritus => true
-      case _ => false
-    }
-
-  private def isJotpa(opiskeluoikeus: VapaanSivistystyönOpiskeluoikeus): Boolean =
-    opiskeluoikeus.suoritukset.forall {
-      case _: VapaanSivistystyönJotpaKoulutuksenSuoritus => true
-      case _ => false
-    }
-
-  private def isAmmatillinenJolleAiemmanOpiskeluoikeudenPäätyttyäRinnakkainenOpiskeluoikeusSallitaan(opiskeluoikeus: AmmatillinenOpiskeluoikeus, aiemmatSamaksiJonkinIdnPerusteellaTunnistetutOpiskeluoikeudet: List[KoskiOpiskeluoikeusRow]): Boolean = {
-    aiemmatSamaksiJonkinIdnPerusteellaTunnistetutOpiskeluoikeudet.exists(row => allowOpiskeluoikeusCreationOnConflict(opiskeluoikeus, row))
-  }
-
-  private def allowOpiskeluoikeusCreationOnConflict(oo: AmmatillinenOpiskeluoikeus, row: KoskiOpiskeluoikeusRow): Boolean = {
-    lazy val perusteenDiaarinumero: Option[String] = {
-      val value = (row.data \ "suoritukset")(0) \ "koulutusmoduuli" \ "perusteenDiaarinumero"
-      try {
-        Option(value.extract[String])
-      } catch {
-        case _: org.json4s.MappingException => None
-      }
-    }
-
-    // Jos oppilaitos ja perusteen diaarinumero ovat samat, ei sallita päällekkäisen opiskeluoikeuden luontia...
-    (!oo.oppilaitos.exists(_.oid == row.oppilaitosOid) || // Tänne ei pitäisi tulla eriävällä oppilaitoksella, mutta tulevien mahdollisten muutosten varalta tehdään tässä eksplisiittinen tarkastus
-      !oo.suoritukset
-        .collect { case s: AmmatillisenTutkinnonSuoritus => s }
-        .exists(s =>
-          s.koulutusmoduuli.perusteenDiaarinumero.isDefined &&
-            s.koulutusmoduuli.perusteenDiaarinumero == perusteenDiaarinumero
-
-        )) ||
-      // ...paitsi jos ne ovat toisistaan ajallisesti täysin erillään
-      !Aikajakso(oo.alkamispäivä.getOrElse(LocalDate.of(0, 1, 1)), oo.päättymispäivä)
-        .overlaps(Aikajakso(row.alkamispäivä.toLocalDate, row.päättymispäivä.map(_.toLocalDate)))
   }
 
   protected override def generateOid(oppija: OppijaHenkilöWithMasterInfo): String = {
