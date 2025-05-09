@@ -38,6 +38,7 @@ trait HealthCheck extends Logging {
     Subsystem.ValpasDatabase,
     Subsystem.PerustiedotIndex,
     Subsystem.TiedonsiirtoIndex,
+    Subsystem.Oppijanumerorekisteri,
   )
 
   val externalSystems: Seq[String] = List(
