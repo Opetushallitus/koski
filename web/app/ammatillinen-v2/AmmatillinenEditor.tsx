@@ -335,7 +335,7 @@ const OsaamisalaEdit = ({
 }: FieldEditorProps<Osaamisalajakso | undefined, EmptyObject>) => {
   if (isOsaamisalajaksoReal(value)) {
     return (
-      <div className="MaksuttomuusEdit" data-testid="osaamisala">
+      <div className="AikajaksoEdit" data-testid="osaamisala">
         <KoodistoSelect
           koodistoUri={'osaamisala'}
           onSelect={(koodiviite) => {
@@ -344,7 +344,7 @@ const OsaamisalaEdit = ({
           value={value.osaamisala.koodiarvo}
           testId="osaamisala"
         />
-        <span className="MaksuttomuusEdit__separator"> {' : '}</span>
+        <span className="AikajaksoEdit__separator"> {' : '}</span>
         <DateInput
           value={value?.alku}
           onChange={(alku?: string) => {
@@ -352,7 +352,7 @@ const OsaamisalaEdit = ({
           }}
           testId="alku"
         />
-        <span className="MaksuttomuusEdit__separator"> {' - '}</span>
+        <span className="AikajaksoEdit__separator"> {' - '}</span>
         <DateInput
           value={value?.loppu}
           onChange={(loppu?: string) => {
@@ -416,7 +416,7 @@ const JärjestämismouotoEdit = ({
 }: FieldEditorProps<Järjestämismuotojakso | undefined, EmptyObject>) => {
   return (
     <>
-      <div className="MaksuttomuusEdit">
+      <div className="AikajaksoEdit">
         <DateInput
           value={value?.alku}
           onChange={(alku?: string) => {
@@ -424,7 +424,7 @@ const JärjestämismouotoEdit = ({
           }}
           testId="alku"
         />
-        <span className="MaksuttomuusEdit__separator"> {' - '}</span>
+        <span className="AikajaksoEdit__separator"> {' - '}</span>
         <DateInput
           value={value?.loppu}
           onChange={(loppu?: string) => {
@@ -432,7 +432,7 @@ const JärjestämismouotoEdit = ({
           }}
           testId="loppu"
         />
-        <span className="MaksuttomuusEdit__separator"> {' : '}</span>
+        <span className="AikajaksoEdit__separator"> {' : '}</span>
         <KoodistoSelect
           koodistoUri={'jarjestamismuoto'}
           value={value?.järjestämismuoto.tunniste.koodiarvo}

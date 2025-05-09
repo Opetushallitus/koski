@@ -383,7 +383,7 @@ const HojksEdit = ({
 }: CommonProps<FieldEditorProps<Hojks | undefined, EmptyObject>>) => {
   return (
     <div className="Removable">
-      <div className="MaksuttomuusEdit Removable__content">
+      <div className="AikajaksoEdit Removable__content">
         <KoodistoSelect
           koodistoUri={'opetusryhma'}
           value={value?.opetusryhmä.koodiarvo}
@@ -394,7 +394,7 @@ const HojksEdit = ({
           }}
           testId={'opetusryhmä'}
         />
-        <span className="MaksuttomuusEdit__separator"> {' - '}</span>
+        <span className="AikajaksoEdit__separator"> {' - '}</span>
         <DateInput
           value={value?.alku}
           onChange={(alku?: string) => {
@@ -402,7 +402,7 @@ const HojksEdit = ({
           }}
           testId="alku"
         />
-        <span className="MaksuttomuusEdit__separator"> {' - '}</span>
+        <span className="AikajaksoEdit__separator"> {' - '}</span>
         <DateInput
           value={value?.loppu}
           onChange={(loppu?: string) => {
@@ -450,7 +450,7 @@ const OsaAikaisuusEdit = ({
   onChange
 }: FieldEditorProps<OsaAikaisuusJakso | undefined, EmptyObject>) => {
   return (
-    <div className="MaksuttomuusEdit">
+    <div className="AikajaksoEdit">
       <DateInput
         value={value?.alku}
         onChange={(alku?: string) => {
@@ -458,7 +458,7 @@ const OsaAikaisuusEdit = ({
         }}
         testId="alku"
       />
-      <span className="MaksuttomuusEdit__separator"> {' - '}</span>
+      <span className="AikajaksoEdit__separator"> {' - '}</span>
       <DateInput
         value={value?.loppu}
         onChange={(loppu?: string) => {
@@ -513,7 +513,7 @@ const OpiskeluvalmiuksiaTuvkevienOpintojenJaksoEdit = ({
   EmptyObject
 >) => {
   return (
-    <div className="MaksuttomuusEdit">
+    <div className="AikajaksoEdit">
       <DateInput
         value={value?.alku}
         onChange={(alku?: string) => {
@@ -526,7 +526,7 @@ const OpiskeluvalmiuksiaTuvkevienOpintojenJaksoEdit = ({
         }}
         testId="alku"
       />
-      <span className="MaksuttomuusEdit__separator"> {' - '}</span>
+      <span className="AikajaksoEdit__separator"> {' - '}</span>
       <DateInput
         value={value?.loppu}
         onChange={(loppu?: string) => {
