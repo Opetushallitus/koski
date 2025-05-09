@@ -67,6 +67,12 @@ import { IconButton } from '../components-v2/controls/IconButton'
 import { OsaamisenHankkimistapajakso } from '../types/fi/oph/koski/schema/OsaamisenHankkimistapajakso'
 import { isOppisopimuksellinenOsaamisenHankkimistapa } from '../types/fi/oph/koski/schema/OppisopimuksellinenOsaamisenHankkimistapa'
 import { OsaamisenHankkimistapaIlmanLisätietoja } from '../types/fi/oph/koski/schema/OsaamisenHankkimistapaIlmanLisatietoja'
+import { Työssäoppimisjakso } from '../types/fi/oph/koski/schema/Tyossaoppimisjakso'
+import { LaajuusOsaamispisteissä } from '../types/fi/oph/koski/schema/LaajuusOsaamispisteissa'
+import {
+  LaajuusEdit,
+  LaajuusView
+} from '../components-v2/opiskeluoikeus/LaajuusField'
 
 export type AmmatillinenEditorProps =
   AdaptedOpiskeluoikeusEditorProps<AmmatillinenOpiskeluoikeus>
@@ -265,6 +271,29 @@ const AmmatillisPääsuorituksenTiedot: React.FC<{
                 form.updateAt(
                   path.prop('osaamisenHankkimistavat').valueOr([]),
                   append(emptyOsaamisenHankkimistapa)
+                )
+              }}
+            >
+              {t('Lisää')}
+            </FlatButton>
+          </ButtonGroup>
+        )}
+      </KeyValueRow>
+      <KeyValueRow localizableLabel="Työssäoppimisjaksot">
+        <FormListField
+          form={form}
+          view={TyössäoppimisjaksoView}
+          edit={TyössäoppimisjaksoEdit}
+          path={path.prop('työssäoppimisjaksot')}
+          removable
+        />
+        {form.editMode && (
+          <ButtonGroup>
+            <FlatButton
+              onClick={() => {
+                form.updateAt(
+                  path.prop('työssäoppimisjaksot').valueOr([]),
+                  append(emptyTyössäoppimisjakso)
                 )
               }}
             >
@@ -761,6 +790,133 @@ const OsaamisenHankkimistapaEdit = ({
           }
         />
       )}
+    </>
+  )
+}
+
+const TyössäoppimisjaksoView = <T extends Työssäoppimisjakso>({
+  value
+}: CommonProps<FieldViewerProps<T | undefined, EmptyObject>>) => {
+  return (
+    <>
+      <TestIdText id="alku">
+        {value?.alku && ISO2FinnishDate(value.alku)}
+      </TestIdText>
+      {' - '}
+      <TestIdText id="loppu">
+        {value?.loppu && ISO2FinnishDate(value.loppu)}
+      </TestIdText>
+      <br />
+      {t(value?.paikkakunta.nimi) + ', ' + t(value?.maa.nimi)}
+      <KeyValueRow localizableLabel="Työssäoppimispaikka">
+        {t(value?.työssäoppimispaikka)}
+      </KeyValueRow>
+      <KeyValueRow localizableLabel="Työtehtävät">
+        {t(value?.työtehtävät)}
+      </KeyValueRow>
+      <KeyValueRow localizableLabel="Laajuus">
+        <LaajuusView value={value?.laajuus} />
+      </KeyValueRow>
+    </>
+  )
+}
+
+const emptyTyössäoppimisjakso: Työssäoppimisjakso = Työssäoppimisjakso({
+  alku: todayISODate(),
+  laajuus: LaajuusOsaamispisteissä({ arvo: 1 }),
+  paikkakunta: Koodistokoodiviite({
+    koodistoUri: 'kunta',
+    koodiarvo: '199'
+  }),
+  maa: Koodistokoodiviite({
+    koodistoUri: 'maatjavaltiot2',
+    koodiarvo: '999'
+  })
+})
+
+const TyössäoppimisjaksoEdit = ({
+  value,
+  onChange
+}: FieldEditorProps<Työssäoppimisjakso | undefined, EmptyObject>) => {
+  return (
+    <>
+      <div className="AikajaksoEdit">
+        <DateInput
+          value={value?.alku}
+          onChange={(alku?: string) => {
+            alku && onChange({ ...emptyTyössäoppimisjakso, ...value, alku })
+          }}
+          testId="alku"
+        />
+        <span className="AikajaksoEdit__separator"> {' - '}</span>
+        <DateInput
+          value={value?.loppu}
+          onChange={(loppu?: string) => {
+            loppu && onChange({ ...emptyTyössäoppimisjakso, ...value, loppu })
+          }}
+          testId="loppu"
+        />
+      </div>
+      <KeyValueRow localizableLabel="Paikkakunta">
+        <KoodistoSelect
+          koodistoUri="kunta"
+          value={value?.paikkakunta.koodiarvo}
+          onSelect={(paikkakunta) =>
+            paikkakunta &&
+            onChange({ ...emptyTyössäoppimisjakso, ...value, paikkakunta })
+          }
+          testId={'paikkakunta'}
+        />
+      </KeyValueRow>
+
+      <KeyValueRow localizableLabel="Maa">
+        <KoodistoSelect
+          koodistoUri="maatjavaltiot2"
+          value={value?.maa.koodiarvo}
+          onSelect={(maa) =>
+            maa && onChange({ ...emptyTyössäoppimisjakso, ...value, maa })
+          }
+          testId={'maa'}
+        />
+      </KeyValueRow>
+      <KeyValueRow localizableLabel="Työssäoppimispaikka">
+        <LocalizedTextEdit
+          value={value?.työssäoppimispaikka}
+          onChange={(työssäoppimispaikka) =>
+            onChange({
+              ...emptyTyössäoppimisjakso,
+              ...value,
+              työssäoppimispaikka
+            })
+          }
+        />
+      </KeyValueRow>
+      <KeyValueRow localizableLabel="Työtehtävät">
+        <LocalizedTextEdit
+          value={value?.työtehtävät}
+          onChange={(työtehtävät) =>
+            onChange({
+              ...emptyTyössäoppimisjakso,
+              ...value,
+              työtehtävät
+            })
+          }
+        />
+      </KeyValueRow>
+      <KeyValueRow localizableLabel="Laajuus">
+        <LaajuusEdit
+          value={value?.laajuus}
+          createLaajuus={(arvo) => LaajuusOsaamispisteissä({ arvo })}
+          onChange={(laajuus) =>
+            laajuus &&
+            onChange({
+              ...emptyTyössäoppimisjakso,
+              ...value,
+              laajuus
+            })
+          }
+        />
+      </KeyValueRow>
     </>
   )
 }
