@@ -64,6 +64,9 @@ import {
 } from '../types/fi/oph/koski/schema/OppisopimuksenPurkaminen'
 import { CHARCODE_REMOVE } from '../components-v2/texts/Icon'
 import { IconButton } from '../components-v2/controls/IconButton'
+import { OsaamisenHankkimistapajakso } from '../types/fi/oph/koski/schema/OsaamisenHankkimistapajakso'
+import { isOppisopimuksellinenOsaamisenHankkimistapa } from '../types/fi/oph/koski/schema/OppisopimuksellinenOsaamisenHankkimistapa'
+import { OsaamisenHankkimistapaIlmanLisätietoja } from '../types/fi/oph/koski/schema/OsaamisenHankkimistapaIlmanLisatietoja'
 
 export type AmmatillinenEditorProps =
   AdaptedOpiskeluoikeusEditorProps<AmmatillinenOpiskeluoikeus>
@@ -239,6 +242,29 @@ const AmmatillisPääsuorituksenTiedot: React.FC<{
                 form.updateAt(
                   path.prop('järjestämismuodot').valueOr([]),
                   append(emptyJärjestämismuoto)
+                )
+              }}
+            >
+              {t('Lisää')}
+            </FlatButton>
+          </ButtonGroup>
+        )}
+      </KeyValueRow>
+      <KeyValueRow localizableLabel="Osaamisen hankkimistapa">
+        <FormListField
+          form={form}
+          view={OsaamisenHankkimistapaView}
+          edit={OsaamisenHankkimistapaEdit}
+          path={path.prop('osaamisenHankkimistavat')}
+          removable
+        />
+        {form.editMode && (
+          <ButtonGroup>
+            <FlatButton
+              onClick={() => {
+                form.updateAt(
+                  path.prop('osaamisenHankkimistavat').valueOr([]),
+                  append(emptyOsaamisenHankkimistapa)
                 )
               }}
             >
@@ -628,6 +654,114 @@ const OppisopimuksenPurkaminenEdit = ({
         </ButtonGroup>
       )}
     </KeyValueRow>
+  )
+}
+
+const OsaamisenHankkimistapaView = <T extends OsaamisenHankkimistapajakso>({
+  value
+}: CommonProps<FieldViewerProps<T | undefined, EmptyObject>>) => {
+  return (
+    <>
+      <TestIdText id="alku">
+        {value?.alku && ISO2FinnishDate(value.alku)}
+      </TestIdText>
+      {' - '}
+      <TestIdText id="loppu">
+        {value?.loppu && ISO2FinnishDate(value.loppu)}
+      </TestIdText>
+      {' : '}
+      <TestIdText id="osaamisenHankkimistapa">
+        {t(value?.osaamisenHankkimistapa.tunniste.nimi)}
+      </TestIdText>
+      {isOppisopimuksellinenOsaamisenHankkimistapa(
+        value?.osaamisenHankkimistapa
+      ) && (
+        <OppisopimusView value={value?.osaamisenHankkimistapa?.oppisopimus} />
+      )}
+    </>
+  )
+}
+
+const emptyOsaamisenHankkimistapa: OsaamisenHankkimistapajakso =
+  OsaamisenHankkimistapajakso({
+    alku: todayISODate(),
+    osaamisenHankkimistapa: {
+      $class: 'fi.oph.koski.schema.OsaamisenHankkimistapaIlmanLisätietoja',
+      tunniste: Koodistokoodiviite({
+        koodistoUri: 'osaamisenhankkimistapa',
+        koodiarvo: ''
+      })
+    }
+  })
+
+const OsaamisenHankkimistapaEdit = ({
+  value,
+  onChange
+}: FieldEditorProps<OsaamisenHankkimistapajakso | undefined, EmptyObject>) => {
+  return (
+    <>
+      <div className="AikajaksoEdit">
+        <DateInput
+          value={value?.alku}
+          onChange={(alku?: string) => {
+            alku && onChange({ ...emptyOsaamisenHankkimistapa, ...value, alku })
+          }}
+          testId="alku"
+        />
+        <span className="AikajaksoEdit__separator"> {' - '}</span>
+        <DateInput
+          value={value?.loppu}
+          onChange={(loppu?: string) => {
+            loppu &&
+              onChange({ ...emptyOsaamisenHankkimistapa, ...value, loppu })
+          }}
+          testId="loppu"
+        />
+        <span className="AikajaksoEdit__separator"> {' : '}</span>
+        <KoodistoSelect
+          koodistoUri={'osaamisenhankkimistapa'}
+          value={value?.osaamisenHankkimistapa.tunniste.koodiarvo}
+          onSelect={(tunniste) =>
+            tunniste &&
+            onChange({
+              ...emptyOsaamisenHankkimistapa,
+              ...value,
+              osaamisenHankkimistapa: OsaamisenHankkimistapaIlmanLisätietoja({
+                tunniste
+              })
+            })
+          }
+          testId="osaamisenHankkimistapa"
+        />
+      </div>
+      {value?.osaamisenHankkimistapa.tunniste.koodiarvo === 'oppisopimus' && (
+        <OppisopimusEdit
+          value={
+            isOppisopimuksellinenOsaamisenHankkimistapa(
+              value?.osaamisenHankkimistapa
+            )
+              ? value?.osaamisenHankkimistapa.oppisopimus
+              : undefined
+          }
+          onChange={(oppisopimus) =>
+            oppisopimus &&
+            onChange({
+              ...value,
+              osaamisenHankkimistapa: {
+                ...value.osaamisenHankkimistapa,
+                $class:
+                  'fi.oph.koski.schema.OppisopimuksellinenOsaamisenHankkimistapa',
+                tunniste: Koodistokoodiviite({
+                  koodiarvo: 'oppisopimus',
+                  koodistoUri: 'osaamisenhankkimistapa'
+                }),
+                oppisopimus
+              }
+            })
+          }
+        />
+      )}
+    </>
   )
 }
 
