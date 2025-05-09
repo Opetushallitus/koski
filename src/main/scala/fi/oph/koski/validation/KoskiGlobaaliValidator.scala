@@ -4,15 +4,12 @@ import com.typesafe.config.Config
 import fi.oph.koski.fixture.ValidationTestContext
 import fi.oph.koski.henkilo.{LaajatOppijaHenkilöTiedot, OpintopolkuHenkilöFacade}
 
-import java.time.LocalDate
 import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.koskiuser.KoskiSpecificSession
 import fi.oph.koski.opiskeluoikeus.CompositeOpiskeluoikeusRepository
-import fi.oph.koski.raportointikanta.RaportointiDatabase
 import fi.oph.koski.schema._
 import fi.oph.koski.util.Timing
 import fi.oph.koski.valpas.opiskeluoikeusrepository.ValpasRajapäivätService
-import fi.oph.koski.valpas.oppija.ValpasOppijaLaajatTiedotService
 import fi.oph.koski.valpas.oppivelvollisuudestavapautus.ValpasOppivelvollisuudestaVapautusService
 
 // Tähän voi lisätä validointeja, joissa oppijan henkilöllisyys on jo tiedossa, minkä avulla voi tutkia
@@ -22,7 +19,7 @@ import fi.oph.koski.valpas.oppivelvollisuudestavapautus.ValpasOppivelvollisuudes
 // Globaalien validaatioiden lisäämisessä on syytä olla erittäin varovainen, sillä:
 // (1) voi syntyä tilanne, jossa jonkun muun oppilaitoksen väärin siirtämä opiskeluoikeus estää toista oppilaitosta
 // tallentamaan datansa oikein. Pahimmassa tapauksessa voi käydä niin, että jos opiskeluoikeudet ovat riippuvaisia
-// toisistaan ristiin, niin kumpaakaan ei voi tehdä muutoksia.
+// toisistaan ristiin, niin kumpaankaan ei voi tehdä muutoksia.
 // (2) voi syntyä yllättäviä suorituskykyheikennyksiä.
 //
 class KoskiGlobaaliValidator(
@@ -83,8 +80,7 @@ class KoskiGlobaaliValidator(
                 DuplikaattiValidation.validateDuplikaatit(
                   opiskeluoikeus,
                   h,
-                  opiskeluoikeusRepository,
-                  config
+                  opiskeluoikeusRepository
                 )
               case _ => HttpStatus.ok
             }
@@ -98,8 +94,6 @@ class KoskiGlobaaliValidator(
           }
           // TODO: Siirrä EB-ESH olemassaolovalidaatio tänne
           // TODO: Siirrä osaamismerkkien duplikaattivalidaatio tänne
-          // TODO: Siirrä "vastaavanRinnakkaisenOpiskeluoikeudenLisääminenSallittu"-metodista duplikaattivalidaatiot tänne, jotta toimivat myös lähdejärjestelmän id:llä
-          // TODO: Jos validaatiot osoittautuvat hitaiksi, koodaa ne SQL:llä (ainakin voimassaoloaikojen päällekkäisyyttä tutkivat validaatiot voinee tehdä SQL:llä kokonaan pienehköllä vaivalla)
         ))
       )
     }

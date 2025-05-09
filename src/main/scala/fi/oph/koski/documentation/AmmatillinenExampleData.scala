@@ -491,13 +491,13 @@ object AmmatillinenExampleData {
     )
   }
 
-  def sosiaaliJaTerveysalaOpiskeluoikeusKesken(oppilaitos: Oppilaitos = stadinAmmattiopisto, toimipiste: OrganisaatioWithOid = stadinToimipiste) = AmmatillinenOpiskeluoikeus(
-    arvioituPäättymispäivä = Some(date(2015, 5, 31)),
+  def sosiaaliJaTerveysalaOpiskeluoikeusKesken(oppilaitos: Oppilaitos = stadinAmmattiopisto, toimipiste: OrganisaatioWithOid = stadinToimipiste, alkupäivä: LocalDate = date(2012, 9, 1)) = AmmatillinenOpiskeluoikeus(
+    arvioituPäättymispäivä = Some(alkupäivä.plusYears(3)),
     oppilaitos = Some(oppilaitos),
     suoritukset = List(sosiaaliJaTerveysalanPerustutkinnonSuoritusKesken(toimipiste)),
     tila = AmmatillinenOpiskeluoikeudenTila(
       List(
-        AmmatillinenOpiskeluoikeusjakso(date(2012, 9, 1), opiskeluoikeusLäsnä, Some(Koodistokoodiviite("4", Some("Työnantajan kokonaan rahoittama"), "opintojenrahoitus", None)))
+        AmmatillinenOpiskeluoikeusjakso(alkupäivä, opiskeluoikeusLäsnä, Some(Koodistokoodiviite("4", Some("Työnantajan kokonaan rahoittama"), "opintojenrahoitus", None)))
       )
     ),
     lisätiedot = Some(opiskeluoikeudenLisätiedot)
