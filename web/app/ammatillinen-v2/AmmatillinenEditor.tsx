@@ -124,24 +124,6 @@ const AmmatillisPääsuorituksenTiedot: React.FC<{
       <KeyValueRow localizableLabel="Suoritustapa">
         {t(päätasonSuoritus.suoritus.suoritustapa.nimi)}
       </KeyValueRow>
-      <KeyValueRow localizableLabel="Oppilaitos / toimipiste">
-        <FormField
-          form={form}
-          path={path.prop('toimipiste')}
-          view={OrganisaatioView}
-          edit={OrganisaatioEdit}
-        />
-      </KeyValueRow>
-      <KeyValueRow localizableLabel="Suorituskieli">
-        <FormField
-          form={form}
-          path={path.prop('suorituskieli')}
-          view={KoodistoView}
-          edit={KoodistoEdit}
-          editProps={{ koodistoUri: 'kieli' }}
-          testId="suorituskieli"
-        />
-      </KeyValueRow>
       <KeyValueRow localizableLabel="Tutkintonimike">
         <FormListField
           form={form}
@@ -216,12 +198,30 @@ const AmmatillisPääsuorituksenTiedot: React.FC<{
           path={path.prop('toinenOsaamisala')}
         />
       </KeyValueRow>
+      <KeyValueRow localizableLabel="Oppilaitos / toimipiste">
+        <FormField
+          form={form}
+          path={path.prop('toimipiste')}
+          view={OrganisaatioView}
+          edit={OrganisaatioEdit}
+        />
+      </KeyValueRow>
       <KeyValueRow localizableLabel="Alkamispäivä">
         <FormField
           form={form}
           view={DateView}
           edit={DateEdit}
           path={path.prop('alkamispäivä')}
+        />
+      </KeyValueRow>
+      <KeyValueRow localizableLabel="Suorituskieli">
+        <FormField
+          form={form}
+          path={path.prop('suorituskieli')}
+          view={KoodistoView}
+          edit={KoodistoEdit}
+          editProps={{ koodistoUri: 'kieli' }}
+          testId="suorituskieli"
         />
       </KeyValueRow>
       <KeyValueRow localizableLabel="Järjestämismuodot">
