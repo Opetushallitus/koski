@@ -58,6 +58,12 @@ import { JärjestämismuotoIlmanLisätietoja } from '../types/fi/oph/koski/schem
 import { LocalizedTextEdit } from '../components-v2/controls/LocalizedTestField'
 import { Yritys } from '../types/fi/oph/koski/schema/Yritys'
 import { TextEdit } from '../components-v2/controls/TextField'
+import {
+  isOppisopimuksenPurkaminen,
+  OppisopimuksenPurkaminen
+} from '../types/fi/oph/koski/schema/OppisopimuksenPurkaminen'
+import { CHARCODE_REMOVE } from '../components-v2/texts/Icon'
+import { IconButton } from '../components-v2/controls/IconButton'
 
 export type AmmatillinenEditorProps =
   AdaptedOpiskeluoikeusEditorProps<AmmatillinenOpiskeluoikeus>
@@ -224,7 +230,22 @@ const AmmatillisPääsuorituksenTiedot: React.FC<{
           view={JärjestämismouotoView}
           edit={JärjestämismouotoEdit}
           path={path.prop('järjestämismuodot')}
+          removable
         />
+        {form.editMode && (
+          <ButtonGroup>
+            <FlatButton
+              onClick={() => {
+                form.updateAt(
+                  path.prop('järjestämismuodot').valueOr([]),
+                  append(emptyJärjestämismuoto)
+                )
+              }}
+            >
+              {t('Lisää')}
+            </FlatButton>
+          </ButtonGroup>
+        )}
       </KeyValueRow>
       {/*TODO lisää rivejä tietomallissa?*/}
     </KeyValueTable>
@@ -538,34 +559,75 @@ const OppisopimusEdit = ({
           }
         />
       </KeyValueRow>
-      <KeyValueRow localizableLabel="Oppisopimuksen purkaminen">
+      <OppisopimuksenPurkaminenEdit
+        value={value?.oppisopimuksenPurkaminen}
+        onChange={(oppisopimuksenPurkaminen) =>
+          onChange(
+            Oppisopimus({
+              ...emptyOppisopimus,
+              ...value,
+              oppisopimuksenPurkaminen
+            })
+          )
+        }
+      />
+    </KeyValueTable>
+  )
+}
+
+const OppisopimuksenPurkaminenEdit = ({
+  value,
+  onChange
+}: FieldEditorProps<OppisopimuksenPurkaminen | undefined, EmptyObject>) => {
+  return (
+    <KeyValueRow localizableLabel="Oppisopimuksen purkaminen">
+      {isOppisopimuksenPurkaminen(value) ? (
         <KeyValueTable>
           <KeyValueRow localizableLabel="Päivä">
-            {ISO2FinnishDate(value?.oppisopimuksenPurkaminen?.päivä)}
             <DateInput
-              value={value?.oppisopimuksenPurkaminen?.päivä}
+              value={value?.päivä}
               onChange={(päivä) =>
                 päivä &&
                 onChange({
-                  ...emptyOppisopimus,
+                  ...emptyOppisopimus.oppisopimuksenPurkaminen,
                   ...value,
-                  oppisopimuksenPurkaminen: {
-                    ...emptyOppisopimus.oppisopimuksenPurkaminen,
-                    ...(value?.oppisopimuksenPurkaminen || {}),
-                    päivä
-                  }
+                  päivä
                 })
               }
             />
           </KeyValueRow>
           <KeyValueRow localizableLabel="Purettu koeajalla">
-            <BooleanView
-              value={value?.oppisopimuksenPurkaminen?.purettuKoeajalla}
+            <BooleanEdit
+              value={value?.purettuKoeajalla}
+              onChange={(purettuKoeajalla) => {
+                if (purettuKoeajalla !== undefined) {
+                  onChange({
+                    ...emptyOppisopimus.oppisopimuksenPurkaminen,
+                    ...value,
+                    purettuKoeajalla
+                  })
+                }
+              }}
+            />
+            <IconButton
+              charCode={CHARCODE_REMOVE}
+              label={t('Poista')}
+              size="input"
+              onClick={() => onChange(undefined)}
+              testId="delete"
             />
           </KeyValueRow>
         </KeyValueTable>
-      </KeyValueRow>
-    </KeyValueTable>
+      ) : (
+        <ButtonGroup>
+          <FlatButton
+            onClick={() => onChange(emptyOppisopimus.oppisopimuksenPurkaminen)}
+          >
+            {t('Lisää')}
+          </FlatButton>
+        </ButtonGroup>
+      )}
+    </KeyValueRow>
   )
 }
 
