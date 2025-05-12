@@ -55,9 +55,9 @@ import { Järjestämismuotojakso } from '../types/fi/oph/koski/schema/Jarjestami
 import { Oppisopimus } from '../types/fi/oph/koski/schema/Oppisopimus'
 import { isOppisopimuksellinenJärjestämismuoto } from '../types/fi/oph/koski/schema/OppisopimuksellinenJarjestamismuoto'
 import { JärjestämismuotoIlmanLisätietoja } from '../types/fi/oph/koski/schema/JarjestamismuotoIlmanLisatietoja'
-import { LocalizedTextEdit } from '../components-v2/controls/LocalizedTestField'
+import { LocalizedTextEdit, LocalizedTextView } from '../components-v2/controls/LocalizedTestField'
 import { Yritys } from '../types/fi/oph/koski/schema/Yritys'
-import { TextEdit } from '../components-v2/controls/TextField'
+import { TextEdit, TextView } from '../components-v2/controls/TextField'
 import {
   isOppisopimuksenPurkaminen,
   OppisopimuksenPurkaminen
@@ -326,7 +326,62 @@ const AmmatillisPääsuorituksenTiedot: React.FC<{
           </ButtonGroup>
         )}
       </KeyValueRow>
-      {/*TODO lisää rivejä tietomallissa?*/}
+      <KeyValueRow localizableLabel="Todistuksella näkyvät lisätiedot">
+        <FormField
+          form={form}
+          view={LocalizedTextView}
+          edit={LocalizedTextEdit}
+          path={path.prop('todistuksellaNäkyvätLisätiedot')}
+        />
+      </KeyValueRow>
+      <KeyValueRow localizableLabel="Ryhmä">
+        <FormField
+          form={form}
+          view={TextView}
+          edit={TextEdit}
+          path={path.prop('ryhmä')}
+        />
+      </KeyValueRow>
+      <KeyValueRow localizableLabel="Painotettu keskiarvo">
+        <FormField
+          form={form}
+          view={TextView}
+          edit={TextEdit/*TODO numeron editointi rikki*/}
+          path={path.prop('keskiarvo')}
+        />
+      </KeyValueRow>
+      <KeyValueRow localizableLabel="Keskiarvo sisältää mukautettuja arvosanoja">
+        <FormField
+          form={form}
+          view={BooleanView}
+          edit={BooleanEdit}
+          path={path.prop('keskiarvoSisältääMukautettujaArvosanoja')}
+        />
+      </KeyValueRow>
+      <KeyValueRow localizableLabel="Korotetun suorituksen alkuperäinen opiskeluoikeus">
+        <FormField
+          form={form}
+          view={TextView}
+          edit={TextEdit}
+          path={path.prop('korotettuOpiskeluoikeusOid')}
+        />
+      </KeyValueRow>
+      <KeyValueRow localizableLabel="Korotettu painotettu keskiarvo">
+        <FormField
+          form={form}
+          view={TextView}
+          edit={TextEdit}
+          path={path.prop('korotettuKeskiarvo')}
+        />
+      </KeyValueRow>
+      <KeyValueRow localizableLabel="Korotus sisältää mukautettuja arvosanoja">
+        <FormField
+          form={form}
+          view={BooleanView}
+          edit={BooleanEdit}
+          path={path.prop('korotettuKeskiarvoSisältääMukautettujaArvosanoja')}
+        />
+      </KeyValueRow>
     </KeyValueTable>
   )
 }
