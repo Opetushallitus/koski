@@ -1,7 +1,6 @@
 package fi.oph.koski.healthcheck
 
 import cats.effect.IO
-import fi.oph.koski.cache.RefreshingCache.Params
 import fi.oph.koski.cache._
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.documentation.AmmatillinenExampleData._
@@ -220,11 +219,8 @@ trait HealthCheck extends Logging {
 }
 
 object HealthCheck {
-  def apply(application: KoskiApplication)(implicit cm: CacheManager): HealthCheck with Cached = {
-    CachingProxy[HealthCheck](
-      new RefreshingCache("HealthCheck", Params(15 seconds, maxSize = 10, refreshScatteringRatio = 0)),
-      new HealthChecker(application)
-    )
+  def apply(application: KoskiApplication)(implicit cm: CacheManager): HealthCheck = {
+    new HealthChecker(application)
   }
 }
 
