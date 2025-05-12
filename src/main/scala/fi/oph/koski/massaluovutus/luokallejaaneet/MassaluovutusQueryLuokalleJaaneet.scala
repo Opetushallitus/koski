@@ -37,7 +37,7 @@ trait MassaluovutusQueryLuokalleJaaneet extends MassaluovutusQueryParameters wit
 
   def forEachResult(application: KoskiApplication)(f: MassaluovutusQueryLuokalleJaaneetResult => Unit)(implicit user: KoskiSpecificSession): Either[String, Unit] = {
     val oppilaitosOids = application.organisaatioService.organisaationAlaisetOrganisaatiot(organisaatioOid.get)
-    val oids = haeLuokalleJäämisenSisältävätOpiskeluoikeusOidit(application.raportointiDatabase.db, oppilaitosOids)
+    val oids = haeOpiskeluoikeusOidit(application.raportointiDatabase.db, oppilaitosOids)
 
     oids.foreach { case (oppijaOid, opiskeluoikeusOid) =>
       application.historyRepository
@@ -56,7 +56,9 @@ trait MassaluovutusQueryLuokalleJaaneet extends MassaluovutusQueryParameters wit
                 f(result)
             }
           }
-          auditLog(oppijaOid)
+          if (result.matches.nonEmpty) {
+            auditLog(oppijaOid)
+          }
         }
     }
 
@@ -69,7 +71,7 @@ trait MassaluovutusQueryLuokalleJaaneet extends MassaluovutusQueryParameters wit
         && user.sensitiveDataAllowed(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))
       )
 
-  private def haeLuokalleJäämisenSisältävätOpiskeluoikeusOidit(raportointiDb: DB, oppilaitosOids: Seq[String]): Seq[(String, String)] =
+  private def haeOpiskeluoikeusOidit(raportointiDb: DB, oppilaitosOids: Seq[String]): Seq[(String, String)] =
     QueryMethods.runDbSync(raportointiDb, sql"""
       SELECT
         r_opiskeluoikeus.oppija_oid,
@@ -77,7 +79,6 @@ trait MassaluovutusQueryLuokalleJaaneet extends MassaluovutusQueryParameters wit
       FROM r_opiskeluoikeus
       JOIN r_paatason_suoritus ON r_paatason_suoritus.opiskeluoikeus_oid = r_opiskeluoikeus.opiskeluoikeus_oid
       WHERE koulutusmuoto = 'perusopetus'
-        AND jaa_luokalle
         AND oppilaitos_oid = any($oppilaitosOids)
       GROUP BY
         r_opiskeluoikeus.oppija_oid,
