@@ -73,6 +73,7 @@ import {
   LaajuusEdit,
   LaajuusView
 } from '../components-v2/opiskeluoikeus/LaajuusField'
+import { Koulutussopimusjakso } from '../types/fi/oph/koski/schema/Koulutussopimusjakso'
 
 export type AmmatillinenEditorProps =
   AdaptedOpiskeluoikeusEditorProps<AmmatillinenOpiskeluoikeus>
@@ -294,6 +295,29 @@ const AmmatillisPääsuorituksenTiedot: React.FC<{
                 form.updateAt(
                   path.prop('työssäoppimisjaksot').valueOr([]),
                   append(emptyTyössäoppimisjakso)
+                )
+              }}
+            >
+              {t('Lisää')}
+            </FlatButton>
+          </ButtonGroup>
+        )}
+      </KeyValueRow>
+      <KeyValueRow localizableLabel="Koulutussopimukset">
+        <FormListField
+          form={form}
+          view={KoulutusspomiusView}
+          edit={KoulutusspomiusEdit}
+          path={path.prop('koulutussopimukset')}
+          removable
+        />
+        {form.editMode && (
+          <ButtonGroup>
+            <FlatButton
+              onClick={() => {
+                form.updateAt(
+                  path.prop('koulutussopimukset').valueOr([]),
+                  append(emptyKoulutusspomius)
                 )
               }}
             >
@@ -913,6 +937,130 @@ const TyössäoppimisjaksoEdit = ({
               ...emptyTyössäoppimisjakso,
               ...value,
               laajuus
+            })
+          }
+        />
+      </KeyValueRow>
+    </>
+  )
+}
+
+const KoulutusspomiusView = <T extends Koulutussopimusjakso>({
+  value
+}: CommonProps<FieldViewerProps<T | undefined, EmptyObject>>) => {
+  return (
+    <>
+      <TestIdText id="alku">
+        {value?.alku && ISO2FinnishDate(value.alku)}
+      </TestIdText>
+      {' - '}
+      <TestIdText id="loppu">
+        {value?.loppu && ISO2FinnishDate(value.loppu)}
+      </TestIdText>
+      <br />
+      {t(value?.paikkakunta.nimi) + ', ' + t(value?.maa.nimi)}
+      <KeyValueRow localizableLabel="Työssäoppimispaikka">
+        {t(value?.työssäoppimispaikka)}
+      </KeyValueRow>
+      <KeyValueRow localizableLabel="Työssäoppimispaikan Y-tunnus">
+        {t(value?.työssäoppimispaikanYTunnus)}
+      </KeyValueRow>
+      <KeyValueRow localizableLabel="Työtehtävät">
+        {t(value?.työtehtävät)}
+      </KeyValueRow>
+    </>
+  )
+}
+
+const emptyKoulutusspomius: Koulutussopimusjakso = Koulutussopimusjakso({
+  alku: todayISODate(),
+  paikkakunta: Koodistokoodiviite({
+    koodistoUri: 'kunta',
+    koodiarvo: '199'
+  }),
+  maa: Koodistokoodiviite({
+    koodistoUri: 'maatjavaltiot2',
+    koodiarvo: '999'
+  })
+})
+
+const KoulutusspomiusEdit = ({
+  value,
+  onChange
+}: FieldEditorProps<Koulutussopimusjakso | undefined, EmptyObject>) => {
+  return (
+    <>
+      <div className="AikajaksoEdit">
+        <DateInput
+          value={value?.alku}
+          onChange={(alku?: string) => {
+            alku && onChange({ ...emptyKoulutusspomius, ...value, alku })
+          }}
+          testId="alku"
+        />
+        <span className="AikajaksoEdit__separator"> {' - '}</span>
+        <DateInput
+          value={value?.loppu}
+          onChange={(loppu?: string) => {
+            loppu && onChange({ ...emptyKoulutusspomius, ...value, loppu })
+          }}
+          testId="loppu"
+        />
+      </div>
+      <KeyValueRow localizableLabel="Paikkakunta">
+        <KoodistoSelect
+          koodistoUri="kunta"
+          value={value?.paikkakunta.koodiarvo}
+          onSelect={(paikkakunta) =>
+            paikkakunta &&
+            onChange({ ...emptyKoulutusspomius, ...value, paikkakunta })
+          }
+          testId={'paikkakunta'}
+        />
+      </KeyValueRow>
+
+      <KeyValueRow localizableLabel="Maa">
+        <KoodistoSelect
+          koodistoUri="maatjavaltiot2"
+          value={value?.maa.koodiarvo}
+          onSelect={(maa) =>
+            maa && onChange({ ...emptyKoulutusspomius, ...value, maa })
+          }
+          testId={'maa'}
+        />
+      </KeyValueRow>
+      <KeyValueRow localizableLabel="Työssäoppimispaikka">
+        <LocalizedTextEdit
+          value={value?.työssäoppimispaikka}
+          onChange={(työssäoppimispaikka) =>
+            onChange({
+              ...emptyKoulutusspomius,
+              ...value,
+              työssäoppimispaikka
+            })
+          }
+        />
+      </KeyValueRow>
+      <KeyValueRow localizableLabel="Työssäoppimispaikan Y-tunnus">
+        <TextEdit
+          value={value?.työssäoppimispaikanYTunnus}
+          onChange={(työssäoppimispaikanYTunnus) =>
+            onChange({
+              ...emptyKoulutusspomius,
+              ...value,
+              työssäoppimispaikanYTunnus
+            })
+          }
+        />
+      </KeyValueRow>
+      <KeyValueRow localizableLabel="Työtehtävät">
+        <LocalizedTextEdit
+          value={value?.työtehtävät}
+          onChange={(työtehtävät) =>
+            onChange({
+              ...emptyKoulutusspomius,
+              ...value,
+              työtehtävät
             })
           }
         />
