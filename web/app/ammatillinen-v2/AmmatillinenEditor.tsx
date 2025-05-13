@@ -6,7 +6,12 @@ import {
   EditorContainer,
   usePäätasonSuoritus
 } from '../components-v2/containers/EditorContainer'
-import { FormModel, useForm } from '../components-v2/forms/FormModel'
+import {
+  FormModel,
+  FormOptic,
+  getValue,
+  useForm
+} from '../components-v2/forms/FormModel'
 import { useSchema } from '../appstate/constraints'
 import { UusiOpiskeluoikeusjakso } from '../components-v2/opiskeluoikeus/UusiOpiskeluoikeudenTilaModal'
 import { AmmatillinenOpiskeluoikeusjakso } from '../types/fi/oph/koski/schema/AmmatillinenOpiskeluoikeusjakso'
@@ -55,7 +60,10 @@ import { Järjestämismuotojakso } from '../types/fi/oph/koski/schema/Jarjestami
 import { Oppisopimus } from '../types/fi/oph/koski/schema/Oppisopimus'
 import { isOppisopimuksellinenJärjestämismuoto } from '../types/fi/oph/koski/schema/OppisopimuksellinenJarjestamismuoto'
 import { JärjestämismuotoIlmanLisätietoja } from '../types/fi/oph/koski/schema/JarjestamismuotoIlmanLisatietoja'
-import { LocalizedTextEdit, LocalizedTextView } from '../components-v2/controls/LocalizedTestField'
+import {
+  LocalizedTextEdit,
+  LocalizedTextView
+} from '../components-v2/controls/LocalizedTestField'
 import { Yritys } from '../types/fi/oph/koski/schema/Yritys'
 import { TextEdit, TextView } from '../components-v2/controls/TextField'
 import {
@@ -75,6 +83,10 @@ import {
 } from '../components-v2/opiskeluoikeus/LaajuusField'
 import { Koulutussopimusjakso } from '../types/fi/oph/koski/schema/Koulutussopimusjakso'
 import { NumberField } from '../components-v2/controls/NumberField'
+import {
+  OsasuoritusRowData,
+  OsasuoritusTable
+} from '../components-v2/opiskeluoikeus/OsasuoritusTable'
 
 export type AmmatillinenEditorProps =
   AdaptedOpiskeluoikeusEditorProps<AmmatillinenOpiskeluoikeus>
@@ -430,8 +442,73 @@ const AmmatillinenTutkintoOsittainenEditor: React.FC<
         organisaatio={organisaatio}
         disableAdd={false /*TODO?*/}
       />
+
+      {/*TODO OpenAllButton*/}
+      <Spacer />
+
+      <OsasuoritusTable
+        editMode={props.form.editMode}
+        rows={
+          osittainenPäätasonSuoritus.suoritus.osasuoritukset
+            ?.map((s, originalIndex) => ({ s, originalIndex }))
+            .filter(({ s }) => s.tutkinnonOsanRyhmä?.koodiarvo === '1')
+            .map(({ s, originalIndex }) =>
+              ammatillisetTutkinnonOsatToTableRow({
+                suoritusIndex: osittainenPäätasonSuoritus.index,
+                osasuoritusIndex: originalIndex,
+                suoritusPath: osittainenPäätasonSuoritus.path,
+                form: props.form,
+                level: 0
+              })
+            ) || []
+        }
+      />
     </EditorContainer>
   )
+}
+
+interface OsasuoritusToTableRowParams {
+  suoritusIndex: number
+  osasuoritusIndex: number
+  suoritusPath: FormOptic<
+    AmmatillinenOpiskeluoikeus,
+    AmmatillisenTutkinnonOsittainenSuoritus
+  >
+  form: FormModel<AmmatillinenOpiskeluoikeus>
+  level: number
+}
+
+const ammatillisetTutkinnonOsatToTableRow = ({
+  suoritusIndex,
+  osasuoritusIndex,
+  suoritusPath,
+  form,
+  level
+}: OsasuoritusToTableRowParams): OsasuoritusRowData<
+  'Ammatilliset tutkinnon osat' | 'Laajuus' | 'Arvosana'
+> => {
+  const osasuoritusPath = suoritusPath
+    .prop('osasuoritukset')
+    .optional()
+    .at(osasuoritusIndex)
+  const osasuoritus = getValue(osasuoritusPath)(form.state)
+
+  return {
+    suoritusIndex,
+    osasuoritusIndex,
+    expandable: true,
+    columns: {
+      'Ammatilliset tutkinnon osat': (
+        <>{t(osasuoritus?.koulutusmoduuli.tunniste.nimi)}</>
+      ),
+      Laajuus: (
+        <>
+          {osasuoritus?.koulutusmoduuli.laajuus?.arvo}{' '}
+          {t(osasuoritus?.koulutusmoduuli.laajuus?.yksikkö.lyhytNimi)}
+        </>
+      )
+    }
+  }
 }
 
 type OsaamisalajaksoReal = {
