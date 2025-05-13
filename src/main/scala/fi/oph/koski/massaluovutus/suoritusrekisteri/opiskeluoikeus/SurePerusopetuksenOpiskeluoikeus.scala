@@ -52,6 +52,7 @@ case class SureNuortenPerusopetuksenOppimääränSuoritus(
   koulutusmoduuli: NuortenPerusopetus,
   vahvistuspäivä: Option[LocalDate],
   suorituskieli: Koodistokoodiviite,
+  osasuoritukset: Option[List[NuortenPerusopetuksenOppiaineenSuoritus]]
 ) extends SurePerusopetuksenPäätasonSuoritus
   with Suorituskielellinen
   with Vahvistuspäivällinen
@@ -63,6 +64,7 @@ object SureNuortenPerusopetuksenOppimääränSuoritus {
       koulutusmoduuli = s.koulutusmoduuli,
       vahvistuspäivä = s.vahvistus.map(_.päivä),
       suorituskieli = s.suorituskieli,
+      osasuoritukset = s.osasuoritukset.map(_.collect { case os: NuortenPerusopetuksenOppiaineenSuoritus => os }),
     )
 }
 
