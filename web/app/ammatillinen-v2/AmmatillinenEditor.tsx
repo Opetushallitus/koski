@@ -74,6 +74,7 @@ import {
   LaajuusView
 } from '../components-v2/opiskeluoikeus/LaajuusField'
 import { Koulutussopimusjakso } from '../types/fi/oph/koski/schema/Koulutussopimusjakso'
+import { NumberField } from '../components-v2/controls/NumberField'
 
 export type AmmatillinenEditorProps =
   AdaptedOpiskeluoikeusEditorProps<AmmatillinenOpiskeluoikeus>
@@ -346,7 +347,7 @@ const AmmatillisPääsuorituksenTiedot: React.FC<{
         <FormField
           form={form}
           view={TextView}
-          edit={TextEdit/*TODO numeron editointi rikki*/}
+          edit={NumberField}
           path={path.prop('keskiarvo')}
         />
       </KeyValueRow>
@@ -370,7 +371,7 @@ const AmmatillisPääsuorituksenTiedot: React.FC<{
         <FormField
           form={form}
           view={TextView}
-          edit={TextEdit}
+          edit={NumberField}
           path={path.prop('korotettuKeskiarvo')}
         />
       </KeyValueRow>
