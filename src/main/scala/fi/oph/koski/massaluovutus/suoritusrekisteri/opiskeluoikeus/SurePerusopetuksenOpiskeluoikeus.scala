@@ -34,16 +34,25 @@ object SurePerusopetuksenOpiskeluoikeus {
 sealed trait SurePerusopetuksenPäätasonSuoritus extends SureSuoritus with Suorituskielellinen
 
 object SurePerusopetuksenPäätasonSuoritus {
-  def apply(pts: PerusopetuksenPäätasonSuoritus): Option[SurePerusopetuksenPäätasonSuoritus] =
+
+  def apply(pts: PerusopetuksenPäätasonSuoritus): Option[SurePerusopetuksenPäätasonSuoritus] = {
+
+    lazy val is7tai8VuosiluokanSuoritus: Boolean = pts match {
+      case s: PerusopetuksenVuosiluokanSuoritus =>
+        s.koulutusmoduuli.tunniste.koodiarvo == "7" || s.koulutusmoduuli.tunniste.koodiarvo == "8"
+      case _ => false
+    }
+
     pts match {
       case s: NuortenPerusopetuksenOppimääränSuoritus =>
         Some(SureNuortenPerusopetuksenOppimääränSuoritus(s))
-      case s: PerusopetuksenVuosiluokanSuoritus if s.koulutusmoduuli.tunniste.koodiarvo == "9" =>
-        Some(SurePerusopetuksenYhdeksännenVuosiluokanSuoritus(s))
+      case s: PerusopetuksenVuosiluokanSuoritus if s.koulutusmoduuli.tunniste.koodiarvo == "9" || is7tai8VuosiluokanSuoritus =>
+        Some(SurePerusopetuksenYhdeksännenVuosiluokanSuoritus(s, !is7tai8VuosiluokanSuoritus))
       case s: NuortenPerusopetuksenOppiaineenOppimääränSuoritus =>
         Some(SureNuortenPerusopetuksenOppiaineenOppimääränSuoritus(s))
       case _ => None
     }
+  }
 }
 
 @Title("Oppimäärän suoritus")
@@ -85,7 +94,7 @@ case class SurePerusopetuksenYhdeksännenVuosiluokanSuoritus(
   with Vahvistuspäivällinen
 
 object SurePerusopetuksenYhdeksännenVuosiluokanSuoritus {
-  def apply(s: PerusopetuksenVuosiluokanSuoritus): SurePerusopetuksenYhdeksännenVuosiluokanSuoritus =
+  def apply(s: PerusopetuksenVuosiluokanSuoritus, lisääOsasuoritukset: Boolean): SurePerusopetuksenYhdeksännenVuosiluokanSuoritus =
     SurePerusopetuksenYhdeksännenVuosiluokanSuoritus(
       tyyppi = s.tyyppi,
       koulutusmoduuli = s.koulutusmoduuli,
@@ -93,7 +102,7 @@ object SurePerusopetuksenYhdeksännenVuosiluokanSuoritus {
       vahvistuspäivä = s.vahvistus.map(_.päivä),
       suorituskieli = s.suorituskieli,
       jääLuokalle = s.jääLuokalle,
-      osasuoritukset = s.osasuoritukset.map(_.collect { case os: NuortenPerusopetuksenOppiaineenSuoritus => os }),
+      osasuoritukset = if(lisääOsasuoritukset) s.osasuoritukset.map(_.collect { case os: NuortenPerusopetuksenOppiaineenSuoritus => os }) else None,
     )
 }
 
