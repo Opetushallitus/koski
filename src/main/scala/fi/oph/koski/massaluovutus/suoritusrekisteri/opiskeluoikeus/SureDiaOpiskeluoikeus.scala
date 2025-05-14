@@ -8,7 +8,7 @@ import fi.oph.scalaschema.annotation.Title
 
 import java.time.LocalDate
 
-@Title("DIA-tutkinto")
+@Title("DIA-tutkinnon opiskeluoikeus")
 case class SureDIAOpiskeluoikeus(
   @KoodistoKoodiarvo(OpiskeluoikeudenTyyppi.diatutkinto.koodiarvo)
   tyyppi: Koodistokoodiviite,

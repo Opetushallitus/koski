@@ -7,7 +7,7 @@ import fi.oph.scalaschema.annotation.Title
 
 import java.time.LocalDate
 
-@Title("EB-tutkinto")
+@Title("EB-tutkinnon opiskeluoikeus")
 case class SureEBOpiskeluoikeus(
   @KoodistoKoodiarvo(OpiskeluoikeudenTyyppi.ebtutkinto.koodiarvo)
   tyyppi: Koodistokoodiviite,

@@ -8,7 +8,7 @@ import fi.oph.scalaschema.annotation.Title
 
 import java.time.LocalDate
 
-@Title("International School")
+@Title("International school opiskeluoikeus")
 case class SureInternationalSchoolOpiskeluoikeus(
   @KoodistoKoodiarvo(OpiskeluoikeudenTyyppi.internationalschool.koodiarvo)
   tyyppi: Koodistokoodiviite,
@@ -36,7 +36,7 @@ object SureInternationalSchoolOpiskeluoikeus {
     }
 }
 
-@Title("Diploma-vuosiluokan suoritus")
+@Title("Diploma vuosiluokan suoritus")
 case class SureDiplomaVuosiluokanSuoritus(
   @KoodistoKoodiarvo("internationalschooldiplomavuosiluokka")
   tyyppi: Koodistokoodiviite,

@@ -6,7 +6,7 @@ import fi.oph.scalaschema.annotation.Title
 
 import java.time.LocalDate
 
-@Title("Vapaa sivistystyö")
+@Title("Vapaan sivistystyön opiskeluoikeus")
 case class SureVapaanSivistystyönOpiskeluoikeus(
   @KoodistoKoodiarvo(OpiskeluoikeudenTyyppi.vapaansivistystyonkoulutus.koodiarvo)
   tyyppi: Koodistokoodiviite,

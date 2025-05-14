@@ -7,7 +7,7 @@ import fi.oph.scalaschema.annotation.Title
 import java.time.LocalDate
 
 
-@Title("Tutkintokoulutukseen valmentava koulutus")
+@Title("Tutkintokoulutukseen valmentavan koulutuksen opiskeluoikeus")
 case class SureTutkintokoulutukseenValmentavanOpiskeluoikeus(
   @KoodistoKoodiarvo(OpiskeluoikeudenTyyppi.tuva.koodiarvo)
   tyyppi: Koodistokoodiviite,
@@ -32,7 +32,7 @@ object SureTutkintokoulutukseenValmentavanOpiskeluoikeus {
     )
 }
 
-@Title("TUVA-koulutuksen suoritus")
+@Title("Tutkintokoulutukseen valmentavan koulutuksen suoritustiedot")
 case class SureTutkintokoulutukseenValmentavanKoulutuksenSuoritus(
   tyyppi: Koodistokoodiviite,
   alkamispäivä: Option[LocalDate],

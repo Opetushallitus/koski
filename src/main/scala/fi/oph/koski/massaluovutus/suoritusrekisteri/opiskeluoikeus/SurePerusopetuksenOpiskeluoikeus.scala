@@ -6,7 +6,7 @@ import fi.oph.scalaschema.annotation.{Description, OnlyWhen, Title}
 
 import java.time.LocalDate
 
-@Title("Perusopetus")
+@Title("Perusopetuksen opiskeluoikeus")
 case class SurePerusopetuksenOpiskeluoikeus(
   @KoodistoKoodiarvo(OpiskeluoikeudenTyyppi.perusopetus.koodiarvo)
   tyyppi: Koodistokoodiviite,
@@ -55,7 +55,7 @@ object SurePerusopetuksenPäätasonSuoritus {
   }
 }
 
-@Title("Oppimäärän suoritus")
+@Title("Nuorten perusopetuksen oppimäärän suoritus")
 case class SureNuortenPerusopetuksenOppimääränSuoritus(
   tyyppi: Koodistokoodiviite,
   koulutusmoduuli: NuortenPerusopetus,
@@ -80,7 +80,7 @@ object SureNuortenPerusopetuksenOppimääränSuoritus {
     )
 }
 
-@Title("Yhdeksännen vuosiluokan suoritus")
+@Title("Perusopetuksen vuosiluokan suoritus")
 case class SurePerusopetuksenYhdeksännenVuosiluokanSuoritus(
   tyyppi: Koodistokoodiviite,
   koulutusmoduuli: PerusopetuksenLuokkaAste,
