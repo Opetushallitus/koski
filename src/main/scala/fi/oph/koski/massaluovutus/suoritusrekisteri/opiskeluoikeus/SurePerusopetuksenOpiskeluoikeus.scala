@@ -52,10 +52,12 @@ case class SureNuortenPerusopetuksenOppimääränSuoritus(
   koulutusmoduuli: NuortenPerusopetus,
   vahvistuspäivä: Option[LocalDate],
   suorituskieli: Koodistokoodiviite,
+  koulusivistyskieli: Option[List[Koodistokoodiviite]],
   osasuoritukset: Option[List[NuortenPerusopetuksenOppiaineenSuoritus]]
 ) extends SurePerusopetuksenPäätasonSuoritus
   with Suorituskielellinen
   with Vahvistuspäivällinen
+  with Koulusivistyskieli
 
 object SureNuortenPerusopetuksenOppimääränSuoritus {
   def apply(s: NuortenPerusopetuksenOppimääränSuoritus): SureNuortenPerusopetuksenOppimääränSuoritus =
@@ -64,6 +66,7 @@ object SureNuortenPerusopetuksenOppimääränSuoritus {
       koulutusmoduuli = s.koulutusmoduuli,
       vahvistuspäivä = s.vahvistus.map(_.päivä),
       suorituskieli = s.suorituskieli,
+      koulusivistyskieli = s.koulusivistyskieli,
       osasuoritukset = s.osasuoritukset.map(_.collect { case os: NuortenPerusopetuksenOppiaineenSuoritus => os }),
     )
 }
@@ -75,6 +78,7 @@ case class SurePerusopetuksenYhdeksännenVuosiluokanSuoritus(
   alkamispäivä: Option[LocalDate],
   vahvistuspäivä: Option[LocalDate],
   suorituskieli: Koodistokoodiviite,
+  jääLuokalle: Boolean,
   osasuoritukset: Option[List[NuortenPerusopetuksenOppiaineenSuoritus]],
 ) extends SurePerusopetuksenPäätasonSuoritus
   with Suorituskielellinen
@@ -88,6 +92,7 @@ object SurePerusopetuksenYhdeksännenVuosiluokanSuoritus {
       alkamispäivä = s.alkamispäivä,
       vahvistuspäivä = s.vahvistus.map(_.päivä),
       suorituskieli = s.suorituskieli,
+      jääLuokalle = s.jääLuokalle,
       osasuoritukset = s.osasuoritukset.map(_.collect { case os: NuortenPerusopetuksenOppiaineenSuoritus => os }),
     )
 }
@@ -135,6 +140,10 @@ case class SurePerusopetuksenOpiskeluoikeudenLisätiedot(
   @Description("Erityisen tuen päätökset alkamis- ja päättymispäivineen. Voi olla useita erillisiä jaksoja. Rahoituksen laskennassa käytettävä tieto.")
   @OksaUri("tmpOKSAID281", "henkilökohtainen opetuksen järjestämistä koskeva suunnitelma")
   erityisenTuenPäätökset: Option[List[SureErityisenTuenPäätös]] = None,
+
+  @Description("Oppilas on vuosiluokkiin sitomattomassa opetuksessa (kyllä/ei).")
+  @Title("Vuosiluokkiin sitomaton opetus")
+  vuosiluokkiinSitoutumatonOpetus: Boolean = false,
 )
 
 object SurePerusopetuksenOpiskeluoikeudenLisätiedot {
@@ -149,7 +158,8 @@ object SurePerusopetuksenOpiskeluoikeudenLisätiedot {
             Some(List(lt.erityisenTuenPäätös.get).map(SureErityisenTuenPäätös.apply))
           } else {
             None
-          }
+          },
+        vuosiluokkiinSitoutumatonOpetus = lt.vuosiluokkiinSitoutumatonOpetus
       ))
     } else {
       None
