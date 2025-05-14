@@ -41,20 +41,20 @@ case class SureOppivelvollisilleSuunnattuVapaanSivistystyönKoulutuksenSuoritus(
   @KoodistoKoodiarvo("vstoppivelvollisillesuunnattukoulutus")
   tyyppi: Koodistokoodiviite,
   alkamispäivä: Option[LocalDate],
-  vahvistuspäivä: Option[LocalDate],
+  vahvistus: Option[SureVahvistus],
   koulutusmoduuli: OppivelvollisilleSuunnattuVapaanSivistystyönKoulutus,
   suorituskieli: Koodistokoodiviite,
   osasuoritukset: List[SureOppivelvollisilleSuunnatunVapaanSivistystyönOsasuoritus],
 ) extends SureVapaanSivistystyönPäätasonSuoritus
   with Suorituskielellinen
-  with Vahvistuspäivällinen
+  with SureVahvistuksellinen
 
 object SureOppivelvollisilleSuunnattuVapaanSivistystyönKoulutuksenSuoritus {
   def apply(s: OppivelvollisilleSuunnattuVapaanSivistystyönKoulutuksenSuoritus): SureOppivelvollisilleSuunnattuVapaanSivistystyönKoulutuksenSuoritus =
     SureOppivelvollisilleSuunnattuVapaanSivistystyönKoulutuksenSuoritus(
       tyyppi = s.tyyppi,
       alkamispäivä = s.alkamispäivä,
-      vahvistuspäivä = s.vahvistus.map(_.päivä),
+      vahvistus = s.vahvistus.map(v => SureVahvistus(v.päivä)),
       koulutusmoduuli = s.koulutusmoduuli,
       suorituskieli = s.suorituskieli,
       osasuoritukset = s.osasuoritukset.toList.flatten.map {

@@ -49,18 +49,18 @@ case class SureAikuistenPerusopetuksenOppimääränSuoritus(
   @KoodistoKoodiarvo("aikuistenperusopetuksenoppimaara")
   tyyppi: Koodistokoodiviite,
   alkamispäivä: Option[LocalDate],
-  vahvistuspäivä: Option[LocalDate],
+  vahvistus: Option[SureVahvistus],
   koulutusmoduuli: AikuistenPerusopetus,
   suorituskieli: Koodistokoodiviite,
   osasuoritukset: List[AikuistenPerusopetuksenOppiaineenSuoritus],
-) extends SureAikuistenPerusopetuksenSuoritus
+) extends SureAikuistenPerusopetuksenSuoritus with SureVahvistuksellinen
 
 object SureAikuistenPerusopetuksenOppimääränSuoritus {
   def apply(s: AikuistenPerusopetuksenOppimääränSuoritus): SureAikuistenPerusopetuksenOppimääränSuoritus =
     SureAikuistenPerusopetuksenOppimääränSuoritus(
       tyyppi = s.tyyppi,
       alkamispäivä = s.alkamispäivä,
-      vahvistuspäivä = s.vahvistus.map(_.päivä),
+      vahvistus = s.vahvistus.map(v => SureVahvistus(v.päivä)),
       koulutusmoduuli = s.koulutusmoduuli,
       suorituskieli = s.suorituskieli,
       osasuoritukset = s.osasuoritukset.toList.flatten,
@@ -73,7 +73,7 @@ case class SureAikuistenPerusopetuksenOppiaineenOppimääränSuoritus(
   koulutusmoduuli: AikuistenPerusopetuksenOppiainenTaiEiTiedossaOppiaine,
   toimipiste: OrganisaatioWithOid,
   arviointi: Option[List[PerusopetuksenOppiaineenArviointi]] = None,
-  vahvistus: Option[HenkilövahvistusPaikkakunnalla] = None,
+  vahvistus: Option[SureVahvistus] = None,
   suoritustapa: Koodistokoodiviite,
   suorituskieli: Koodistokoodiviite,
   muutSuorituskielet: Option[List[Koodistokoodiviite]] = None,
@@ -81,7 +81,7 @@ case class SureAikuistenPerusopetuksenOppiaineenOppimääränSuoritus(
   osasuoritukset: Option[List[AikuistenPerusopetuksenKurssinTaiAlkuvaiheenKurssinSuoritus]] = None,
   @KoodistoKoodiarvo("perusopetuksenoppiaineenoppimaara")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("perusopetuksenoppiaineenoppimaara", koodistoUri = "suorituksentyyppi")
-) extends SureAikuistenPerusopetuksenSuoritus
+) extends SureAikuistenPerusopetuksenSuoritus with SureVahvistuksellinen
 
 object SureAikuistenPerusopetuksenOppiaineenOppimääränSuoritus {
   def apply(s: AikuistenPerusopetuksenOppiaineenOppimääränSuoritus): SureAikuistenPerusopetuksenOppiaineenOppimääränSuoritus =
@@ -89,7 +89,7 @@ object SureAikuistenPerusopetuksenOppiaineenOppimääränSuoritus {
       koulutusmoduuli = s.koulutusmoduuli,
       toimipiste = s.toimipiste,
       arviointi = s.arviointi,
-      vahvistus = s.vahvistus,
+      vahvistus = s.vahvistus.map(v => SureVahvistus(v.päivä)),
       suoritustapa = s.suoritustapa,
       suorituskieli = s.suorituskieli,
       muutSuorituskielet = s.muutSuorituskielet,

@@ -40,7 +40,7 @@ case class SureIBTutkinnonSuoritus(
   @KoodistoKoodiarvo("ibtutkinto")
   tyyppi: Koodistokoodiviite,
   alkamispäivä: Option[LocalDate],
-  vahvistuspäivä: Option[LocalDate],
+  vahvistus: Option[SureVahvistus],
   koulutusmoduuli: IBTutkinto,
   suorituskieli: Koodistokoodiviite,
   osasuoritukset: Option[List[SureIBTutkinnonOppiaine]],
@@ -50,14 +50,14 @@ case class SureIBTutkinnonSuoritus(
   lisäpisteet: Option[Koodistokoodiviite],
 ) extends SureSuoritus
   with Suorituskielellinen
-  with Vahvistuspäivällinen
+  with SureVahvistuksellinen
 
 object SureIBTutkinnonSuoritus {
   def apply(s: IBTutkinnonSuoritus): SureIBTutkinnonSuoritus =
     SureIBTutkinnonSuoritus(
       tyyppi = s.tyyppi,
       alkamispäivä = s.alkamispäivä,
-      vahvistuspäivä = s.vahvistus.map(_.päivä),
+      vahvistus = s.vahvistus.map(v => SureVahvistus(v.päivä)),
       koulutusmoduuli = s.koulutusmoduuli,
       suorituskieli = s.suorituskieli,
       osasuoritukset = s.osasuoritukset.map(_.flatMap {

@@ -41,13 +41,13 @@ case class SureDiplomaVuosiluokanSuoritus(
   @KoodistoKoodiarvo("internationalschooldiplomavuosiluokka")
   tyyppi: Koodistokoodiviite,
   alkamispäivä: Option[LocalDate],
-  vahvistuspäivä: Option[LocalDate],
+  vahvistus: Option[SureVahvistus],
   koulutusmoduuli: DiplomaLuokkaAste,
   suorituskieli: Koodistokoodiviite,
   osasuoritukset: List[SureDiplomaIBOppiaineenSuoritus],
 ) extends SureSuoritus
   with Suorituskielellinen
-  with Vahvistuspäivällinen
+  with SureVahvistuksellinen
 
 object SureDiplomaVuosiluokanSuoritus {
   def apply(s: DiplomaVuosiluokanSuoritus): Option[SureDiplomaVuosiluokanSuoritus] =
@@ -55,7 +55,7 @@ object SureDiplomaVuosiluokanSuoritus {
       SureDiplomaVuosiluokanSuoritus(
         tyyppi = s.tyyppi,
         alkamispäivä = s.alkamispäivä,
-        vahvistuspäivä = s.vahvistus.map(_.päivä),
+        vahvistus = s.vahvistus.map(v => SureVahvistus(v.päivä)),
         koulutusmoduuli = s.koulutusmoduuli,
         suorituskieli = s.suorituskieli,
         osasuoritukset = s.osasuoritukset.toList.flatten.map(SureDiplomaIBOppiaineenSuoritus.apply),

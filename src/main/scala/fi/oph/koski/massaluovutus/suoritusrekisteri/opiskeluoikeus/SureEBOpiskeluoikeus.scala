@@ -35,18 +35,18 @@ case class SureEBTutkinnonSuoritus(
   @KoodistoKoodiarvo("ebtutkinto")
   tyyppi: Koodistokoodiviite,
   alkamispäivä: Option[LocalDate],
-  vahvistuspäivä: Option[LocalDate],
+  vahvistus: Option[SureVahvistus],
   koulutusmoduuli: EBTutkinto,
   yleisarvosana: Option[Double],
   osasuoritukset: Option[List[SureEBTutkinnonOsasuoritus]],
-) extends SureSuoritus
+) extends SureSuoritus with SureVahvistuksellinen
 
 object SureEBTutkinnonSuoritus {
   def apply(pts: EBTutkinnonSuoritus): SureEBTutkinnonSuoritus =
     SureEBTutkinnonSuoritus(
       tyyppi = pts.tyyppi,
       alkamispäivä = pts.alkamispäivä,
-      vahvistuspäivä = pts.vahvistus.map(_.päivä),
+      vahvistus = pts.vahvistus.map(v => SureVahvistus(v.päivä)),
       koulutusmoduuli = pts.koulutusmoduuli,
       yleisarvosana = pts.yleisarvosana,
       osasuoritukset = pts.osasuoritukset.map(_.map(SureEBTutkinnonOsasuoritus.apply)),

@@ -2,7 +2,7 @@ package fi.oph.koski.massaluovutus.suoritusrekisteri.opiskeluoikeus
 
 import fi.oph.koski.schema._
 import fi.oph.koski.schema.annotation.KoodistoUri
-import fi.oph.scalaschema.annotation.{Description, Discriminator, Title}
+import fi.oph.scalaschema.annotation.{Description, Discriminator}
 
 import java.time.LocalDate
 
@@ -30,8 +30,11 @@ trait SureSuoritus {
   def koulutusmoduuli: Koulutusmoduuli
 }
 
-trait Vahvistuspäivällinen {
-  @Description("Tutkinnon tai tutkinnon osan vahvistettu suorituspäivämäärä, eli päivämäärä jolloin suoritus on hyväksyttyä todennettua osaamista. Muoto YYYY-MM-DD")
-  def vahvistuspäivä: Option[LocalDate]
-
+trait SureVahvistuksellinen {
+  def vahvistus: Option[SureVahvistus]
 }
+
+case class SureVahvistus (
+  @Description("Tutkinnon tai tutkinnon osan vahvistettu suorituspäivämäärä, eli päivämäärä jolloin suoritus on hyväksyttyä todennettua osaamista. Muoto YYYY-MM-DD")
+  päivä: LocalDate
+)

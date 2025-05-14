@@ -59,13 +59,13 @@ object SurePerusopetuksenPäätasonSuoritus {
 case class SureNuortenPerusopetuksenOppimääränSuoritus(
   tyyppi: Koodistokoodiviite,
   koulutusmoduuli: NuortenPerusopetus,
-  vahvistuspäivä: Option[LocalDate],
+  vahvistus: Option[SureVahvistus],
   suorituskieli: Koodistokoodiviite,
   koulusivistyskieli: Option[List[Koodistokoodiviite]],
   osasuoritukset: Option[List[NuortenPerusopetuksenOppiaineenSuoritus]]
 ) extends SurePerusopetuksenPäätasonSuoritus
   with Suorituskielellinen
-  with Vahvistuspäivällinen
+  with SureVahvistuksellinen
   with Koulusivistyskieli
 
 object SureNuortenPerusopetuksenOppimääränSuoritus {
@@ -73,7 +73,7 @@ object SureNuortenPerusopetuksenOppimääränSuoritus {
     SureNuortenPerusopetuksenOppimääränSuoritus(
       tyyppi = s.tyyppi,
       koulutusmoduuli = s.koulutusmoduuli,
-      vahvistuspäivä = s.vahvistus.map(_.päivä),
+      vahvistus = s.vahvistus.map(v => SureVahvistus(v.päivä)),
       suorituskieli = s.suorituskieli,
       koulusivistyskieli = s.koulusivistyskieli,
       osasuoritukset = s.osasuoritukset.map(_.collect { case os: NuortenPerusopetuksenOppiaineenSuoritus => os }),
@@ -85,13 +85,13 @@ case class SurePerusopetuksenYhdeksännenVuosiluokanSuoritus(
   tyyppi: Koodistokoodiviite,
   koulutusmoduuli: PerusopetuksenLuokkaAste,
   alkamispäivä: Option[LocalDate],
-  vahvistuspäivä: Option[LocalDate],
+  vahvistus: Option[SureVahvistus],
   suorituskieli: Koodistokoodiviite,
   jääLuokalle: Boolean,
   osasuoritukset: Option[List[NuortenPerusopetuksenOppiaineenSuoritus]],
 ) extends SurePerusopetuksenPäätasonSuoritus
   with Suorituskielellinen
-  with Vahvistuspäivällinen
+  with SureVahvistuksellinen
 
 object SurePerusopetuksenYhdeksännenVuosiluokanSuoritus {
   def apply(s: PerusopetuksenVuosiluokanSuoritus, lisääOsasuoritukset: Boolean): SurePerusopetuksenYhdeksännenVuosiluokanSuoritus =
@@ -99,7 +99,7 @@ object SurePerusopetuksenYhdeksännenVuosiluokanSuoritus {
       tyyppi = s.tyyppi,
       koulutusmoduuli = s.koulutusmoduuli,
       alkamispäivä = s.alkamispäivä,
-      vahvistuspäivä = s.vahvistus.map(_.päivä),
+      vahvistus = s.vahvistus.map(v => SureVahvistus(v.päivä)),
       suorituskieli = s.suorituskieli,
       jääLuokalle = s.jääLuokalle,
       osasuoritukset = if(lisääOsasuoritukset) s.osasuoritukset.map(_.collect { case os: NuortenPerusopetuksenOppiaineenSuoritus => os }) else None,
@@ -112,7 +112,7 @@ case class SureNuortenPerusopetuksenOppiaineenOppimääränSuoritus(
   koulutusmoduuli: NuortenPerusopetuksenOppiainenTaiEiTiedossaOppiaine,
   toimipiste: OrganisaatioWithOid,
   arviointi: Option[List[PerusopetuksenOppiaineenArviointi]] = None,
-  vahvistus: Option[HenkilövahvistusPaikkakunnalla] = None,
+  vahvistus: Option[SureVahvistus] = None,
   suoritustapa: Koodistokoodiviite,
   @Description("Luokka-asteen tunniste (1-9). Minkä vuosiluokan mukaisesta oppiainesuorituksesta on kyse.")
   @KoodistoUri("perusopetuksenluokkaaste")
@@ -123,7 +123,7 @@ case class SureNuortenPerusopetuksenOppiaineenOppimääränSuoritus(
   todistuksellaNäkyvätLisätiedot: Option[LocalizedString] = None,
   @KoodistoKoodiarvo("nuortenperusopetuksenoppiaineenoppimaara")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("nuortenperusopetuksenoppiaineenoppimaara", koodistoUri = "suorituksentyyppi")
-) extends SurePerusopetuksenPäätasonSuoritus
+) extends SurePerusopetuksenPäätasonSuoritus with SureVahvistuksellinen
 
 object SureNuortenPerusopetuksenOppiaineenOppimääränSuoritus {
   def apply(s: NuortenPerusopetuksenOppiaineenOppimääränSuoritus): SureNuortenPerusopetuksenOppiaineenOppimääränSuoritus =
@@ -131,7 +131,7 @@ object SureNuortenPerusopetuksenOppiaineenOppimääränSuoritus {
       koulutusmoduuli = s.koulutusmoduuli,
       toimipiste = s.toimipiste,
       arviointi = s.arviointi,
-      vahvistus = s.vahvistus,
+      vahvistus = s.vahvistus.map(v => SureVahvistus(v.päivä)),
       suoritustapa = s.suoritustapa,
       luokkaAste = s.luokkaAste,
       suorituskieli = s.suorituskieli,
