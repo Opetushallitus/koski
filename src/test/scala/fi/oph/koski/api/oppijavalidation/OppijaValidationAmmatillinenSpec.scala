@@ -1448,7 +1448,7 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
             verifyResponseStatusOk()
           }
 
-          val toinenOpiskeluoiekus = AmmatillinenOpiskeluoikeusTestData.päättynytOpiskeluoikeus(
+          val toinenOpiskeluoikeus = AmmatillinenOpiskeluoikeusTestData.päättynytOpiskeluoikeus(
             MockOrganisaatiot.stadinAmmattiopisto,
             koulutusKoodi = 331101,
             diaariNumero = "3000/011/2014",
@@ -1456,7 +1456,24 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
             päättymispäivä = LocalDate.of(2019, 7, 31)
           )
 
-          postOpiskeluoikeus(opiskeluoikeus = toinenOpiskeluoiekus) {
+          postOpiskeluoikeus(opiskeluoikeus = toinenOpiskeluoikeus) {
+            verifyResponseStatusOk()
+          }
+        }
+
+        "Duplikaatin tallennus onnistuu, vaikka edellisen opiskeluoikeuden suoritus on kesken, kunhan päivämäärät ovat erillään" in {
+          resetFixtures()
+          setupOppijaWithOpiskeluoikeus(opiskeluoikeus = makeOpiskeluoikeus(alkamispäivä = LocalDate.of(2019, 8, 1))) {
+            verifyResponseStatusOk()
+          }
+
+          val toinenOpiskeluoikeus = AmmatillinenOpiskeluoikeusTestData.päättynytOpiskeluoikeus(
+            MockOrganisaatiot.stadinAmmattiopisto,
+            alkamispäivä = LocalDate.of(2018, 2, 1),
+            päättymispäivä = LocalDate.of(2019, 7, 31)
+          )
+
+          postOpiskeluoikeus(opiskeluoikeus = toinenOpiskeluoikeus) {
             verifyResponseStatusOk()
           }
         }
@@ -1468,20 +1485,17 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
           testDuplicates(defaultOpiskeluoikeus.copy(suoritukset = List(ammatillisenTutkinnonOsittainenSuoritus)))
         }
 
-        "Duplikaatin tallennus onnistuu, kun edellisen opiskeluoikeuden suoritus on päättynyt ja päivämäärät ovatkin päällekkäiset" in {
+        "Duplikaatin tallennus onnistuu, kun edellisen opiskeluoikeuden suoritus on päättynyt ja päivämäärät eivät ole päällekkäiset" in {
           resetFixtures()
-          val opiskeluoikeus = AmmatillinenOpiskeluoikeusTestData.päättynytOpiskeluoikeus(
-            MockOrganisaatiot.stadinAmmattiopisto,
-            koulutusKoodi = 331101,
-            diaariNumero = "3000/011/2014",
-            alkamispäivä = LocalDate.of(2018, 1, 1),
-            päättymispäivä = LocalDate.of(2019, 7, 31)
-          ).copy(suoritukset = List(ammatillisenTutkinnonOsittainenSuoritus))
 
-          setupOppijaWithOpiskeluoikeus(opiskeluoikeus = opiskeluoikeus) {
+          setupOppijaWithOpiskeluoikeus(opiskeluoikeus = tutkinnonOsittainenSuoritusPäättynyt()) {
             verifyResponseStatusOk()
           }
-          postOpiskeluoikeus(opiskeluoikeus = opiskeluoikeus) {
+
+          postOpiskeluoikeus(opiskeluoikeus = tutkinnonOsittainenSuoritusPäättynyt(
+            alkamispäivä = LocalDate.of(2019, 8, 1),
+            päättymispäivä = LocalDate.of(2020, 7, 31)
+          )) {
             verifyResponseStatusOk()
           }
         }
@@ -1578,6 +1592,19 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
     AmmatillisenTutkinnonOsaaPienempiKokonaisuus(PaikallinenKoodi("htm", "Hoitotarpeen määrittäminen"), "Hoitotarpeen määrittäminen"),
     arviointi = Some(List(arviointiHyväksytty))
   )
+
+  def tutkinnonOsittainenSuoritusPäättynyt(
+    alkamispäivä: LocalDate = LocalDate.of(2018, 1, 1),
+    päättymispäivä: LocalDate = LocalDate.of(2019, 7, 31)
+  ): AmmatillinenOpiskeluoikeus = {
+    AmmatillinenOpiskeluoikeusTestData.päättynytOpiskeluoikeus(
+      MockOrganisaatiot.stadinAmmattiopisto,
+      koulutusKoodi = 331101,
+      diaariNumero = "3000/011/2014",
+      alkamispäivä = alkamispäivä,
+      päättymispäivä = päättymispäivä
+    ).copy(suoritukset = List(ammatillisenTutkinnonOsittainenSuoritus))
+  }
 
   def setupTutkinnonOsaSuoritus[A](tutkinnonOsaSuoritus: AmmatillisenTutkinnonOsanSuoritus, tutkinnonSuoritustapa: Koodistokoodiviite, henkilö: Henkilö = defaultHenkilö)(f: => A) = {
     setupTutkintoSuoritus(withTutkinnonOsaSuoritus(tutkinnonOsaSuoritus, tutkinnonSuoritustapa), henkilö)(f)
