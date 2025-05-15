@@ -121,13 +121,6 @@ object DuplikaattiValidation extends Logging {
       })
     }
 
-    def findConflictingOpiskeluoikeus(): Either[HttpStatus, Option[Opiskeluoikeus]] = {
-      oppijanMuutOpiskeluoikeudetSamaOppilaitosJaTyyppi.map(_.find {
-        case o: Opiskeluoikeus if !o.tila.opiskeluoikeusjaksot.last.opiskeluoikeusPäättynyt => true
-        case _ => false
-      })
-    }
-
     def findNuortenPerusopetuksessaUseitaKeskeneräisiäVuosiluokanSuorituksia(): Either[HttpStatus, Option[Opiskeluoikeus]] = {
       def getLuokkaAste(s: Suoritus) = s.koulutusmoduuli.tunniste.koodiarvo
       def getVuosiluokat(oo: Opiskeluoikeus) = oo.suoritukset.collect { case s: PerusopetuksenVuosiluokanSuoritus => s }
@@ -179,10 +172,10 @@ object DuplikaattiValidation extends Logging {
       case _: LukionOpiskeluoikeus if !isLukionOppimäärä => HttpStatus.ok
       case _: LukionOpiskeluoikeus if isLukionOppimäärä => throwIfConflictingExists(findSamaOppilaitosJaTyyppiSamaanAikaan)
       case _: VapaanSivistystyönOpiskeluoikeus if isJotpa => HttpStatus.ok
-      case _: VapaanSivistystyönOpiskeluoikeus => throwIfConflictingExists(findConflictingOpiskeluoikeus)
+      case _: VapaanSivistystyönOpiskeluoikeus => throwIfConflictingExists(findSamaOppilaitosJaTyyppiSamaanAikaan)
       case _: MuunKuinSäännellynKoulutuksenOpiskeluoikeus => HttpStatus.ok
       case _: TaiteenPerusopetuksenOpiskeluoikeus => HttpStatus.ok
-      case _: Opiskeluoikeus => throwIfConflictingExists(findConflictingOpiskeluoikeus)
+      case _: Opiskeluoikeus => throwIfConflictingExists(findSamaOppilaitosJaTyyppiSamaanAikaan)
     }
   }
 

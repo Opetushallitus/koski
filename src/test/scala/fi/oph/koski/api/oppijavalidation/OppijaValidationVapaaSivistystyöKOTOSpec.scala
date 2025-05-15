@@ -113,11 +113,17 @@ class OppijaValidationVapaaSivistystyöKOTOSpec extends AnyFreeSpec with PutOpis
       }
     }
 
-    "Voi tallentaa duplikaatin opiskeluoikeuden kun edellinen on päättynyt" in {
+    "Voi tallentaa duplikaatin opiskeluoikeuden kun opiskeluoikeuksien voimassaolon päivämäärät ovat erillään" in {
       setupOppijaWithOpiskeluoikeus(Koto2022.Opiskeluoikeus.suoritettu) {
         verifyResponseStatusOk()
       }
-      postOpiskeluoikeus(Koto2022.Opiskeluoikeus.keskeneräinen, defaultHenkilö) {
+
+      val keskeneräinenSuorituetunJälkeen = Koto2022.Opiskeluoikeus.keskeneräinen.copy(
+        tila = VapaanSivistystyönOpiskeluoikeudenTila(List(
+          OppivelvollisilleSuunnattuVapaanSivistystyönOpiskeluoikeusjakso(LocalDate.of(2023, 5, 2), opiskeluoikeusLäsnä)
+        ))
+      )
+      postOpiskeluoikeus(keskeneräinenSuorituetunJälkeen, defaultHenkilö) {
         verifyResponseStatusOk()
       }
     }
