@@ -1,6 +1,10 @@
 # Koskeen tallennettavien tietojen validaatiosäännöt
 
-## x.5.2025
+## 16.5.2025
+
+- Duplikaattiopiskeluoikeuksien validaatiossa ei sallita päällekkäisiä opiskeluoikeuksien voimassaolojen jaksoja. Validaation läpäisyyn ei enää riitä pelkästään se, että aiempi opiskeluoikeus on päättyneessä tilassa.
+
+## 13.5.2025
 
 - Lukion oppimäärän opiskeluoikeuksissa ei enää sallita duplikaatteja.
 
