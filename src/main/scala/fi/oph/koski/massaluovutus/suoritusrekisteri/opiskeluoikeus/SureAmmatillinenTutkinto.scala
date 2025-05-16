@@ -41,7 +41,7 @@ case class SureAmmatillisenTutkinnonSuoritus(
   @KoodistoKoodiarvo("ammatillinentutkinto")
   tyyppi: Koodistokoodiviite,
   alkamispäivä: Option[LocalDate],
-  vahvistuspäivä: Option[LocalDate],
+  vahvistus: Option[SureVahvistus],
   koulutusmoduuli: AmmatillinenTutkintoKoulutus,
   suorituskieli: Koodistokoodiviite,
   osasuoritukset: List[SureAmmatillisenTutkinnonOsasuoritus],
@@ -55,14 +55,14 @@ case class SureAmmatillisenTutkinnonSuoritus(
   keskiarvo: Option[Double],
 ) extends SureAmmatillinenPäätasonSuoritus
   with Suorituskielellinen
-  with Vahvistuspäivällinen
+  with SureVahvistuksellinen
 
 object SureAmmatillisenTutkinnonSuoritus {
   def apply(s: AmmatillisenTutkinnonSuoritus): SureAmmatillisenTutkinnonSuoritus =
     SureAmmatillisenTutkinnonSuoritus(
       tyyppi = s.tyyppi,
       alkamispäivä = s.alkamispäivä,
-      vahvistuspäivä = s.vahvistus.map(_.päivä),
+      vahvistus = s.vahvistus.map(v => SureVahvistus(v.päivä)),
       koulutusmoduuli = s.koulutusmoduuli,
       suorituskieli = s.suorituskieli,
       osasuoritukset = s.osasuoritukset.toList.flatten.map(SureAmmatillisenTutkinnonOsasuoritus.apply),
@@ -246,20 +246,20 @@ case class SureTelmaKoulutuksenSuoritus(
   @KoodistoKoodiarvo("telma")
   tyyppi: Koodistokoodiviite,
   alkamispäivä: Option[LocalDate],
-  vahvistuspäivä: Option[LocalDate],
+  vahvistus: Option[SureVahvistus],
   koulutusmoduuli: TelmaKoulutus,
   suorituskieli: Koodistokoodiviite,
   osasuoritukset: List[SureTelmaKoulutuksenOsanSuoritus],
 ) extends SureAmmatillinenPäätasonSuoritus
   with Suorituskielellinen
-  with Vahvistuspäivällinen
+  with SureVahvistuksellinen
 
 object SureTelmaKoulutuksenSuoritus {
   def apply(s: TelmaKoulutuksenSuoritus): SureTelmaKoulutuksenSuoritus =
     SureTelmaKoulutuksenSuoritus(
       tyyppi = s.tyyppi,
       alkamispäivä = s.alkamispäivä,
-      vahvistuspäivä = s.vahvistus.map(_.päivä),
+      vahvistus = s.vahvistus.map(v => SureVahvistus(v.päivä)),
       koulutusmoduuli = s.koulutusmoduuli,
       suorituskieli = s.suorituskieli,
       osasuoritukset = s.osasuoritukset.toList.flatten.map(SureTelmaKoulutuksenOsanSuoritus.apply),

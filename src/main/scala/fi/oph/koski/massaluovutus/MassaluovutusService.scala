@@ -4,6 +4,7 @@ import fi.oph.koski.cache.GlobalCacheManager._
 import fi.oph.koski.cache.{RefreshingCache, SingleValueCache}
 import fi.oph.koski.cloudwatch.CloudWatchMetricsService
 import fi.oph.koski.config.{KoskiApplication, KoskiInstance}
+import fi.oph.koski.executors.GlobalExecutionContext
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.koskiuser.KoskiSpecificSession
 import fi.oph.koski.log.Logging
@@ -16,7 +17,7 @@ import java.util.concurrent.TimeUnit
 import scala.concurrent.duration.{DurationInt, FiniteDuration}
 
 
-class MassaluovutusService(application: KoskiApplication) extends Logging {
+class MassaluovutusService(application: KoskiApplication) extends GlobalExecutionContext with Logging {
   val workerId: String = application.ecsMetadata.taskARN.getOrElse("local")
   val metrics: CloudWatchMetricsService = CloudWatchMetricsService(application.config)
   private val maxAllowedDatabaseReplayLag: Duration = application.config.getDuration("kyselyt.backpressureLimits.maxDatabaseReplayLag")
@@ -57,7 +58,6 @@ class MassaluovutusService(application: KoskiApplication) extends Logging {
   def hasWork: Boolean = queries.numberOfRunningQueries > 0 || queries.numberOfPendingQueries > 0
 
   def runNext(): Unit = {
-    import scala.concurrent.ExecutionContext.Implicits.global
     queries.takeNext.foreach { query =>
       query.getSession(application.käyttöoikeusRepository).fold {
         logger.error(s"Could not start query ${query.queryId} due to invalid session")

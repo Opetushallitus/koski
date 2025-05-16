@@ -8,7 +8,7 @@ import fi.oph.scalaschema.annotation.Title
 
 import java.time.LocalDate
 
-@Title("DIA-tutkinto")
+@Title("DIA-tutkinnon opiskeluoikeus")
 case class SureDIAOpiskeluoikeus(
   @KoodistoKoodiarvo(OpiskeluoikeudenTyyppi.diatutkinto.koodiarvo)
   tyyppi: Koodistokoodiviite,
@@ -40,20 +40,20 @@ case class SureDIATutkinnonSuoritus(
   @KoodistoKoodiarvo("diatutkintovaihe")
   tyyppi: Koodistokoodiviite,
   alkamispäivä: Option[LocalDate],
-  vahvistuspäivä: Option[LocalDate],
+  vahvistus: Option[SureVahvistus],
   koulutusmoduuli: DIATutkinto,
   suorituskieli: Koodistokoodiviite,
   osasuoritukset: List[SureDIAOppiaineenTutkintovaiheenSuoritus],
 ) extends SureSuoritus
   with Suorituskielellinen
-  with Vahvistuspäivällinen
+  with SureVahvistuksellinen
 
 object SureDIATutkinnonSuoritus {
   def apply(s: DIATutkinnonSuoritus): SureDIATutkinnonSuoritus =
     SureDIATutkinnonSuoritus(
       tyyppi = s.tyyppi,
       alkamispäivä = s.alkamispäivä,
-      vahvistuspäivä = s.vahvistus.map(_.päivä),
+      vahvistus = s.vahvistus.map(v => SureVahvistus(v.päivä)),
       koulutusmoduuli = s.koulutusmoduuli,
       suorituskieli = s.suorituskieli,
       osasuoritukset =

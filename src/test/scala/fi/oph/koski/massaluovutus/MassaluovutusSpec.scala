@@ -563,6 +563,10 @@ class MassaluovutusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers wit
 
       def tyyppi(v: JValue) = v \ "tyyppi" \ "koodiarvo"
       def suorituksenTunniste(v: JValue) = v \ "koulutusmoduuli" \ "tunniste" \ "koodiarvo"
+      def osasuoritustenMäärä(v: JValue) = v \ "osasuoritukset" match {
+        case JArray(list) => list.size
+        case _ => 0
+      }
       def viimeisinTila(v: JValue) = v \ "tila" \ "opiskeluoikeusjaksot" \ "tila" \ "koodiarvo" match {
         case JArray(list) => list.last
         case _ => JNothing
@@ -589,14 +593,28 @@ class MassaluovutusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers wit
         ))
       }
 
-      "Nuorten perusopetuksesta palautetaan vain perusopetuksen päättötodistus" in {
+      "Nuorten perusopetuksesta palautetaan perusopetuksen päättötodistus sekä 7., 8. ja 9. vuosiluokan suoritukset" in {
         extractStrings(
           getSuoritukset(Some("perusopetus")).filterNot(s => tyyppi(s).extract[String] == "nuortenperusopetuksenoppiaineenoppimaara"),
           suorituksenTunniste
         ) should equal(List(
           "201101", // Oppimäärän suoritus
-          "9", // Ysiluokka
+          "7",  // Vuosiluokkien suoritukset
+          "8",
+          "9",
         ))
+      }
+
+      "Perusopetuksen suorituksille palautetaan oikea määrä osasuorituksia" in {
+        val tunnisteetJaOsasuoritustenMäärät = getSuoritukset(Some("perusopetus"))
+          .filterNot(s => tyyppi(s).extract[String] == "nuortenperusopetuksenoppiaineenoppimaara")
+          .map(suoritus => suorituksenTunniste(suoritus).extract[String] -> osasuoritustenMäärä(suoritus))
+          .toMap
+
+        tunnisteetJaOsasuoritustenMäärät.get("7") shouldBe Some(0) // 7. vuosiluokan suoritus
+        tunnisteetJaOsasuoritustenMäärät.get("8") shouldBe Some(0) // 8. vuosiluokan suoritus
+        tunnisteetJaOsasuoritustenMäärät.get("9") shouldBe Some(0) // 9. vuosiluokan suoritus, voi myös sisältää osasuorituksia
+        tunnisteetJaOsasuoritustenMäärät.get("201101") shouldBe Some(23) // Oppimäärän suoritus
       }
 
       "Ammatillisesta koulutuksesta ei palautetaan vain kokonainen ammatillinen tutkinto ja telma" in {
@@ -765,6 +783,11 @@ class MassaluovutusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers wit
 
       def suorituksenTunniste(v: JValue) = v \ "koulutusmoduuli" \ "tunniste" \ "koodiarvo"
 
+      def osasuoritustenMäärä(v: JValue) = v \ "osasuoritukset" match {
+        case JArray(list) => list.size
+        case _ => 0
+      }
+
       def viimeisinTila(v: JValue) = v \ "tila" \ "opiskeluoikeusjaksot" \ "tila" \ "koodiarvo" match {
         case JArray(list) => list.last
         case _ => JNothing
@@ -791,14 +814,28 @@ class MassaluovutusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers wit
         ))
       }
 
-      "Nuorten perusopetuksesta palautetaan vain perusopetuksen päättötodistus" in {
+      "Nuorten perusopetuksesta palautetaan perusopetuksen päättötodistus sekä 7., 8. ja 9. vuosiluokan suoritukset" in {
         extractStrings(
           getSuoritukset(Some("perusopetus")).filterNot(s => tyyppi(s).extract[String] == "nuortenperusopetuksenoppiaineenoppimaara"),
           suorituksenTunniste
         ) should equal(List(
           "201101", // Oppimäärän suoritus
-          "9", // Ysiluokka
+          "7",  // Vuosiluokkien suoritukset
+          "8",
+          "9",
         ))
+      }
+
+      "Perusopetuksen suorituksille palautetaan oikea määrä osasuorituksia" in {
+        val tunnisteetJaOsasuoritustenMäärät = getSuoritukset(Some("perusopetus"))
+          .filterNot(s => tyyppi(s).extract[String] == "nuortenperusopetuksenoppiaineenoppimaara")
+          .map(suoritus => suorituksenTunniste(suoritus).extract[String] -> osasuoritustenMäärä(suoritus))
+          .toMap
+
+        tunnisteetJaOsasuoritustenMäärät.get("7") shouldBe Some(0) // 7. vuosiluokan suoritus
+        tunnisteetJaOsasuoritustenMäärät.get("8") shouldBe Some(0) // 8. vuosiluokan suoritus
+        tunnisteetJaOsasuoritustenMäärät.get("9") shouldBe Some(0) // 9. vuosiluokan suoritus, voi myös sisältää osasuorituksia
+        tunnisteetJaOsasuoritustenMäärät.get("201101") shouldBe Some(23) // Oppimäärän suoritus
       }
 
       "Ammatillisesta koulutuksesta ei palautetaan vain kokonainen ammatillinen tutkinto ja telma" in {

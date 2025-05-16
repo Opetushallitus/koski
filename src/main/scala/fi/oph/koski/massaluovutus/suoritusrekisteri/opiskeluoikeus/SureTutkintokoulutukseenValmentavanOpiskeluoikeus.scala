@@ -7,7 +7,7 @@ import fi.oph.scalaschema.annotation.Title
 import java.time.LocalDate
 
 
-@Title("Tutkintokoulutukseen valmentava koulutus")
+@Title("Tutkintokoulutukseen valmentavan koulutuksen opiskeluoikeus")
 case class SureTutkintokoulutukseenValmentavanOpiskeluoikeus(
   @KoodistoKoodiarvo(OpiskeluoikeudenTyyppi.tuva.koodiarvo)
   tyyppi: Koodistokoodiviite,
@@ -32,20 +32,20 @@ object SureTutkintokoulutukseenValmentavanOpiskeluoikeus {
     )
 }
 
-@Title("TUVA-koulutuksen suoritus")
+@Title("Tutkintokoulutukseen valmentavan koulutuksen suoritustiedot")
 case class SureTutkintokoulutukseenValmentavanKoulutuksenSuoritus(
   tyyppi: Koodistokoodiviite,
   alkamispäivä: Option[LocalDate],
-  vahvistuspäivä: Option[LocalDate],
+  vahvistus: Option[SureVahvistus],
   koulutusmoduuli:  TutkintokoulutukseenValmentavanKoulutus,
-) extends SureSuoritus
+) extends SureSuoritus with SureVahvistuksellinen
 
 object SureTutkintokoulutukseenValmentavanKoulutuksenSuoritus {
   def apply(s: TutkintokoulutukseenValmentavanKoulutuksenSuoritus): SureTutkintokoulutukseenValmentavanKoulutuksenSuoritus =
     SureTutkintokoulutukseenValmentavanKoulutuksenSuoritus(
       tyyppi = s.tyyppi,
       alkamispäivä = s.alkamispäivä,
-      vahvistuspäivä = s.vahvistus.map(_.päivä),
+      vahvistus = s.vahvistus.map(v => SureVahvistus(v.päivä)),
       koulutusmoduuli = s.koulutusmoduuli,
     )
 }
