@@ -26,6 +26,12 @@ object DuplikaattiValidation extends Logging {
         case _ => false
       }
 
+    lazy val isAmmatillisenTutkinnonSuoritus: Boolean =
+      opiskeluoikeus.suoritukset.forall {
+        case _: AmmatillisenTutkinnonSuoritus => true
+        case _ => false
+      }
+
     lazy val isLukionOppimäärä: Boolean = opiskeluoikeus.suoritukset.forall {
       case _: LukionOppimääränSuoritus2015 | _: LukionOppimääränSuoritus2019 => true
       case _ => false
@@ -55,13 +61,13 @@ object DuplikaattiValidation extends Logging {
 
     lazy val aiemminTallennettuOpiskeluoikeus = oppijanOpiskeluoikeudet.map(_.find(samaOo(opiskeluoikeus, _)))
 
-    def samaDiaarinumeroAmmatillinen(a: AmmatillinenOpiskeluoikeus): Boolean = {
+    def samaDiaarinumeroAmmatillinen(muuOpiskeluoikeus: AmmatillinenOpiskeluoikeus): Boolean = {
       def diaarinumerot = (oo: Opiskeluoikeus) => oo.suoritukset
         .collect { case s: AmmatillisenTutkinnonSuoritus => s }
         .flatMap(s => s.koulutusmoduuli.perusteenDiaarinumero)
 
       opiskeluoikeus match {
-        case x: AmmatillinenOpiskeluoikeus => diaarinumerot(x).intersect(diaarinumerot(a)).nonEmpty
+        case x: AmmatillinenOpiskeluoikeus => diaarinumerot(x).intersect(diaarinumerot(muuOpiskeluoikeus)).nonEmpty
         case _ => false
       }
     }
@@ -106,16 +112,11 @@ object DuplikaattiValidation extends Logging {
     }
 
     def findConflictingAmmatillinen(): Either[HttpStatus, Option[Opiskeluoikeus]] = {
-      // Suoritus on kesken, tai sama diaarinumero ammatillisen tutkinnon suorituksilla ja päällekkäinen aikajakso
+      // Sama diaarinumero ammatillisen tutkinnon suorituksilla ja päällekkäinen aikajakso
+      // tai päällekkäinen aikajakso esim ammatillisen tutkinnon osan suorituksilla
       oppijanMuutOpiskeluoikeudetSamaOppilaitosJaTyyppi.map(_.find {
-        case a: AmmatillinenOpiskeluoikeus => !a.tila.opiskeluoikeusjaksot.last.opiskeluoikeusPäättynyt || (samaDiaarinumeroAmmatillinen(a) && päällekkäinenAikajakso(a))
-        case _ => false
-      })
-    }
-
-    def findConflictingOpiskeluoikeus(): Either[HttpStatus, Option[Opiskeluoikeus]] = {
-      oppijanMuutOpiskeluoikeudetSamaOppilaitosJaTyyppi.map(_.find {
-        case o: Opiskeluoikeus if !o.tila.opiskeluoikeusjaksot.last.opiskeluoikeusPäättynyt => true
+        case a: AmmatillinenOpiskeluoikeus if isAmmatillisenTutkinnonSuoritus => samaDiaarinumeroAmmatillinen(a) && päällekkäinenAikajakso(a)
+        case a: AmmatillinenOpiskeluoikeus => päällekkäinenAikajakso(a)
         case _ => false
       })
     }
@@ -171,10 +172,10 @@ object DuplikaattiValidation extends Logging {
       case _: LukionOpiskeluoikeus if !isLukionOppimäärä => HttpStatus.ok
       case _: LukionOpiskeluoikeus if isLukionOppimäärä => throwIfConflictingExists(findSamaOppilaitosJaTyyppiSamaanAikaan)
       case _: VapaanSivistystyönOpiskeluoikeus if isJotpa => HttpStatus.ok
-      case _: VapaanSivistystyönOpiskeluoikeus => throwIfConflictingExists(findConflictingOpiskeluoikeus)
+      case _: VapaanSivistystyönOpiskeluoikeus => throwIfConflictingExists(findSamaOppilaitosJaTyyppiSamaanAikaan)
       case _: MuunKuinSäännellynKoulutuksenOpiskeluoikeus => HttpStatus.ok
       case _: TaiteenPerusopetuksenOpiskeluoikeus => HttpStatus.ok
-      case _: Opiskeluoikeus => throwIfConflictingExists(findConflictingOpiskeluoikeus)
+      case _: Opiskeluoikeus => throwIfConflictingExists(findSamaOppilaitosJaTyyppiSamaanAikaan)
     }
   }
 
