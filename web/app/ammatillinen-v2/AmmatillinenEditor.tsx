@@ -87,6 +87,7 @@ import {
   OsasuoritusRowData,
   OsasuoritusTable
 } from '../components-v2/opiskeluoikeus/OsasuoritusTable'
+import { OsasuoritusTables } from './OsasuoritusTables'
 
 export type AmmatillinenEditorProps =
   AdaptedOpiskeluoikeusEditorProps<AmmatillinenOpiskeluoikeus>
@@ -446,69 +447,12 @@ const AmmatillinenTutkintoOsittainenEditor: React.FC<
       {/*TODO OpenAllButton*/}
       <Spacer />
 
-      <OsasuoritusTable
-        editMode={props.form.editMode}
-        rows={
-          osittainenPäätasonSuoritus.suoritus.osasuoritukset
-            ?.map((s, originalIndex) => ({ s, originalIndex }))
-            .filter(({ s }) => s.tutkinnonOsanRyhmä?.koodiarvo === '1')
-            .map(({ s, originalIndex }) =>
-              ammatillisetTutkinnonOsatToTableRow({
-                suoritusIndex: osittainenPäätasonSuoritus.index,
-                osasuoritusIndex: originalIndex,
-                suoritusPath: osittainenPäätasonSuoritus.path,
-                form: props.form,
-                level: 0
-              })
-            ) || []
-        }
+      <OsasuoritusTables
+        form={props.form}
+        osittainenPäätasonSuoritus={osittainenPäätasonSuoritus}
       />
     </EditorContainer>
   )
-}
-
-interface OsasuoritusToTableRowParams {
-  suoritusIndex: number
-  osasuoritusIndex: number
-  suoritusPath: FormOptic<
-    AmmatillinenOpiskeluoikeus,
-    AmmatillisenTutkinnonOsittainenSuoritus
-  >
-  form: FormModel<AmmatillinenOpiskeluoikeus>
-  level: number
-}
-
-const ammatillisetTutkinnonOsatToTableRow = ({
-  suoritusIndex,
-  osasuoritusIndex,
-  suoritusPath,
-  form,
-  level
-}: OsasuoritusToTableRowParams): OsasuoritusRowData<
-  'Ammatilliset tutkinnon osat' | 'Laajuus' | 'Arvosana'
-> => {
-  const osasuoritusPath = suoritusPath
-    .prop('osasuoritukset')
-    .optional()
-    .at(osasuoritusIndex)
-  const osasuoritus = getValue(osasuoritusPath)(form.state)
-
-  return {
-    suoritusIndex,
-    osasuoritusIndex,
-    expandable: true,
-    columns: {
-      'Ammatilliset tutkinnon osat': (
-        <>{t(osasuoritus?.koulutusmoduuli.tunniste.nimi)}</>
-      ),
-      Laajuus: (
-        <>
-          {osasuoritus?.koulutusmoduuli.laajuus?.arvo}{' '}
-          {t(osasuoritus?.koulutusmoduuli.laajuus?.yksikkö.lyhytNimi)}
-        </>
-      )
-    }
-  }
 }
 
 type OsaamisalajaksoReal = {
