@@ -19,6 +19,7 @@ import {
 import { Finnish } from '../types/fi/oph/koski/schema/Finnish'
 import {
   OsasuoritusProperty,
+  OsasuoritusPropertyValue,
   OsasuoritusSubproperty
 } from '../components-v2/opiskeluoikeus/OsasuoritusProperty'
 import { FormField } from '../components-v2/forms/FormField'
@@ -30,9 +31,23 @@ import {
   BooleanEdit,
   BooleanView
 } from '../components-v2/opiskeluoikeus/BooleanField'
+import { OsittaisenAmmatillisenTutkinnonOsanSuoritus } from '../types/fi/oph/koski/schema/OsittaisenAmmatillisenTutkinnonOsanSuoritus'
 import {
-  OsittaisenAmmatillisenTutkinnonOsanSuoritus
-} from '../types/fi/oph/koski/schema/OsittaisenAmmatillisenTutkinnonOsanSuoritus'
+  isYhteisenOsittaisenAmmatillisenTutkinnonTutkinnonosanSuoritus,
+  YhteisenOsittaisenAmmatillisenTutkinnonTutkinnonosanSuoritus
+} from '../types/fi/oph/koski/schema/YhteisenOsittaisenAmmatillisenTutkinnonTutkinnonosanSuoritus'
+import {
+  OrganisaatioEdit,
+  OrganisaatioView
+} from '../components-v2/opiskeluoikeus/OrganisaatioField'
+import {
+  SuorituksenVahvistusEdit,
+  SuorituksenVahvistusView
+} from '../components-v2/opiskeluoikeus/SuorituksenVahvistus'
+import {
+  TunnustusEdit,
+  TunnustusView
+} from '../components-v2/opiskeluoikeus/TunnustusField'
 
 interface OsasuoritusTablesProps {
   form: FormModel<AmmatillinenOpiskeluoikeus>
@@ -164,9 +179,8 @@ const tutkinnonOsatToTableRow = <T extends string>({
     columns.Arvosana = <>{t(osasuoritus.arviointi?.[0]?.arvosana.nimi)}</>
   }
 
-  const content = (
-    <OsasuoritusProperties form={form} osasuoritusPath={osasuoritusPath} />
-  )
+  const content =
+    osasuoritus && OsasuoritusProperties({ form, osasuoritus, osasuoritusPath })
 
   return {
     suoritusIndex,
@@ -188,6 +202,7 @@ const hasArviointi = (suoritus: unknown): suoritus is WithArviointi => {
 
 type OsasuoritusPropertiesProps = {
   form: FormModel<AmmatillinenOpiskeluoikeus>
+  osasuoritus: OsittaisenAmmatillisenTutkinnonOsanSuoritus
   osasuoritusPath: FormOptic<
     AmmatillinenOpiskeluoikeus,
     OsittaisenAmmatillisenTutkinnonOsanSuoritus
@@ -196,23 +211,86 @@ type OsasuoritusPropertiesProps = {
 
 const OsasuoritusProperties = ({
   form,
+  osasuoritus,
   osasuoritusPath
 }: OsasuoritusPropertiesProps) => {
+  if (
+    isYhteisenOsittaisenAmmatillisenTutkinnonTutkinnonosanSuoritus(osasuoritus)
+  ) {
+    const yhteinenPath = osasuoritusPath as unknown as FormOptic<
+      AmmatillinenOpiskeluoikeus,
+      YhteisenOsittaisenAmmatillisenTutkinnonTutkinnonosanSuoritus
+    >
+    return (
+      <YhteisenOsittaisenAmmatillisenTutkinnonOsasuoritusProperties
+        form={form}
+        osasuoritusPath={yhteinenPath}
+      />
+    )
+  }
+}
+
+type YhteisenAmmatillisenTutkinnonOsasuoritusPropertiesProps = {
+  form: FormModel<AmmatillinenOpiskeluoikeus>
+  osasuoritusPath: FormOptic<
+    AmmatillinenOpiskeluoikeus,
+    YhteisenOsittaisenAmmatillisenTutkinnonTutkinnonosanSuoritus
+  >
+}
+
+const YhteisenOsittaisenAmmatillisenTutkinnonOsasuoritusProperties = ({
+  form,
+  osasuoritusPath
+}: YhteisenAmmatillisenTutkinnonOsasuoritusPropertiesProps) => {
   return (
     <>
       <OsasuoritusProperty label={'Pakollinen'}>
-        <FormField
-          form={form}
-          view={BooleanView}
-          edit={BooleanEdit}
-          path={osasuoritusPath.prop('pakollinen')}
-        />
+        <OsasuoritusPropertyValue>
+          <FormField
+            form={form}
+            view={BooleanView}
+            edit={BooleanEdit}
+            path={osasuoritusPath.prop('koulutusmoduuli').prop('pakollinen')}
+          />
+        </OsasuoritusPropertyValue>
+      </OsasuoritusProperty>
+      <OsasuoritusProperty label={'Oppilaitos / toimipiste'}>
+        <OsasuoritusPropertyValue>
+          <FormField
+            form={form}
+            path={osasuoritusPath.prop('toimipiste')}
+            view={OrganisaatioView}
+            edit={OrganisaatioEdit}
+          />
+        </OsasuoritusPropertyValue>
+      </OsasuoritusProperty>
+      <OsasuoritusProperty label={'Vahvistus'}>
+        <OsasuoritusPropertyValue>
+          <FormField
+            form={form}
+            path={osasuoritusPath.prop('vahvistus')}
+            view={SuorituksenVahvistusView}
+            edit={SuorituksenVahvistusEdit}
+          />
+        </OsasuoritusPropertyValue>
+      </OsasuoritusProperty>
+      <OsasuoritusProperty label={'Tunnustettu'}>
+        <OsasuoritusPropertyValue>
+          <FormField
+            form={form}
+            path={osasuoritusPath.prop('tunnustettu')}
+            view={TunnustusView /*TODO custom komponentti amikselle?*/}
+            edit={TunnustusEdit}
+          />
+        </OsasuoritusPropertyValue>
       </OsasuoritusProperty>
       <OsasuoritusProperty label={'Arviointi'}>
         <OsasuoritusSubproperty label={'Arvosana'}>
           <FormField
             form={form}
-            view={ParasArvosanaView}
+            view={
+              ParasArvosanaView /*TODO halutaanko pystyä editoimaan kaikki?*/
+            }
             edit={ParasArvosanaEdit}
             path={osasuoritusPath.prop('arviointi')}
           />
