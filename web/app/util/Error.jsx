@@ -58,6 +58,12 @@ const errorText = (error) => {
     error.jsonMessage[0].key.startsWith('badRequest.validation')
   )
     return extractValidationErrorText(error.jsonMessage[0])
+  else if (
+    error.httpStatus === 409 &&
+    error.jsonMessage &&
+    error.jsonMessage[0]
+  )
+    return extractValidationErrorText(error.jsonMessage[0])
   else if (error.httpStatus)
     return <Text name={'httpStatus.' + error.httpStatus} ignoreMissing={true} />
 }

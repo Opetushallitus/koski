@@ -30,7 +30,7 @@ describe('Useampi voimassa oleva opinto oikeus samassa oppilaitoksessa', functio
     )
     it('ei ole sallittu', function () {
       expect(page.getErrorMessage()).to.equal(
-        'Opiskeluoikeutta ei voida lisätä, koska oppijalla on jo vastaava opiskeluoikeus.'
+        'Vastaava opiskeluoikeus on jo olemassa.'
       )
     })
   })
@@ -57,7 +57,7 @@ describe('Useampi voimassa oleva opinto oikeus samassa oppilaitoksessa', functio
     )
     it('ei ole sallittu', function () {
       expect(page.getErrorMessage()).to.equal(
-        'Opiskeluoikeutta ei voida lisätä, koska oppijalla on jo vastaava opiskeluoikeus.'
+        'Vastaava opiskeluoikeus on jo olemassa.'
       )
     })
     describe('kun suoritustyyppi eroaa', function () {
