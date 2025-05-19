@@ -107,7 +107,9 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
     rajaaOVKelpoisiinOpiskeluoikeuksiin: Boolean = true,
     hakeutumisvalvontaTieto: HakeutumisvalvontaTieto.Value
   ): Seq[ValpasOppijaRow] = {
-    val keväänValmistumisjaksoAlku = rajapäivätService.keväänValmistumisjaksoAlku
+    throw new InternalError("Query disabled")
+
+/*    val keväänValmistumisjaksoAlku = rajapäivätService.keväänValmistumisjaksoAlku
     val keväänValmistumisjaksoLoppu = rajapäivätService.keväänValmistumisjaksoLoppu
     val keväänUlkopuolellaValmistumisjaksoAlku = rajapäivätService.keväänUlkopuolellaValmistumisjaksoAlku
     val tarkastelupäivä = rajapäivätService.tarkastelupäivä
@@ -1966,7 +1968,7 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
           onOikeusValvoaMaksuttomuutta = true,
         )
       }
-    }
+    }*/
   }
 
   def getOppivelvollisuusTiedot(hetut: Seq[String]): Seq[ValpasOppivelvollisuustiedotRow] = {

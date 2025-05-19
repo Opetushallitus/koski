@@ -243,7 +243,7 @@ class RaportointiDatabase(config: RaportointiDatabaseConfigBase) extends Logging
 
     kloonattavatTaulut.foreach { kloonaus =>
       val startTime = System.currentTimeMillis
-      val count = runDbSync(sql"""SELECT COUNT(*) FROM #${source.schema.name}.#${kloonaus.taulu}""".as[Long]).head
+      val count = runDbSync(sql"""SELECT COUNT(*) FROM #${source.schema.name}.#${kloonaus.taulu}""".as[Long], timeout = 20.minutes).head
       val batchCount = (count / BATCH_SIZE).ceil.toInt
       logger.info(s"Kopioidaan ${count} riviä ${source.schema.name}.${kloonaus.taulu} --> ${schema.name}.${kloonaus.taulu}")
 

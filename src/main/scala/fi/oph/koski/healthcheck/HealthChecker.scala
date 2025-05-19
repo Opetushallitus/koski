@@ -33,7 +33,7 @@ trait HealthCheck extends Logging {
 
   val internalSystems: Seq[String] = List(
     Subsystem.KoskiDatabase,
-    Subsystem.RaportointiDatabase,
+//    Subsystem.RaportointiDatabase,
     Subsystem.ValpasDatabase,
     Subsystem.PerustiedotIndex,
     Subsystem.TiedonsiirtoIndex,
