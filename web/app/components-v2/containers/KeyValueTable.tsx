@@ -44,7 +44,7 @@ export const KeyValueRow = (props: KeyValueRowProps) => {
 
   return props.children ? (
     <ColumnRow component="li" {...common(props, ['KeyValueRow'])}>
-      {props.indent && <Column span={props.indent} />}
+      {indent > 0 && <Column span={indent} />}
       <Column
         className="KeyValueRow__name"
         span={nameSpans}

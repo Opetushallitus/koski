@@ -45,9 +45,14 @@ import {
   SuorituksenVahvistusView
 } from '../components-v2/opiskeluoikeus/SuorituksenVahvistus'
 import {
+  OsaamisenTunnustusView,
   TunnustusEdit,
   TunnustusView
 } from '../components-v2/opiskeluoikeus/TunnustusField'
+import {
+  KeyValueRow,
+  KeyValueTable
+} from '../components-v2/containers/KeyValueTable'
 
 interface OsasuoritusTablesProps {
   form: FormModel<AmmatillinenOpiskeluoikeus>
@@ -279,22 +284,26 @@ const YhteisenOsittaisenAmmatillisenTutkinnonOsasuoritusProperties = ({
           <FormField
             form={form}
             path={osasuoritusPath.prop('tunnustettu')}
-            view={TunnustusView /*TODO custom komponentti amikselle?*/}
+            view={OsaamisenTunnustusView /*TODO custom komponentti amikselle?*/}
             edit={TunnustusEdit}
           />
         </OsasuoritusPropertyValue>
       </OsasuoritusProperty>
       <OsasuoritusProperty label={'Arviointi'}>
-        <OsasuoritusSubproperty label={'Arvosana'}>
-          <FormField
-            form={form}
-            view={
-              ParasArvosanaView /*TODO halutaanko pystyä editoimaan kaikki?*/
-            }
-            edit={ParasArvosanaEdit}
-            path={osasuoritusPath.prop('arviointi')}
-          />
-        </OsasuoritusSubproperty>
+        <OsasuoritusPropertyValue>
+          <KeyValueTable>
+            <KeyValueRow localizableLabel={'Arvosana'}>
+              <FormField
+                form={form}
+                view={
+                  ParasArvosanaView /*TODO halutaanko pystyä editoimaan kaikki?*/
+                }
+                edit={ParasArvosanaEdit}
+                path={osasuoritusPath.prop('arviointi')}
+              />
+            </KeyValueRow>
+          </KeyValueTable>
+        </OsasuoritusPropertyValue>
       </OsasuoritusProperty>
     </>
   )
