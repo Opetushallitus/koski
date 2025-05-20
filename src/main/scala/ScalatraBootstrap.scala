@@ -8,7 +8,7 @@ import fi.oph.koski.executors.GlobalExecutionContext
 import fi.oph.koski.fixture.FixtureServlet
 import fi.oph.koski.frontendvalvonta.{FrontendValvontaMode, FrontendValvontaRaportointiServlet}
 import fi.oph.koski.hakemuspalvelu.HakemuspalveluServlet
-import fi.oph.koski.healthcheck.{HealthCheckApiServlet, HealthCheckHtmlServlet}
+import fi.oph.koski.healthcheck.{HealthCheckApiServlet, HealthCheckHtmlServlet, ThreadDebugServlet}
 import fi.oph.koski.henkilo.HenkilötiedotServlet
 import fi.oph.koski.history.KoskiHistoryServlet
 import fi.oph.koski.jsonschemaviewer.JsonSchemaViewerHtmlServlet
@@ -100,6 +100,7 @@ class ScalatraBootstrap extends LifeCycle with Logging with Timing with GlobalEx
     mount("/koski/api/types", new TypeModelServlet)
     mount("/koski/api/elaketurvakeskus", new ElaketurvakeskusServlet)
     mount("/koski/api/healthcheck", new HealthCheckApiServlet)
+    mount("/koski/api/debug", new ThreadDebugServlet)
     mount("/koski/api/status", new StatusApiServlet)
     mount("/koski/api/henkilo", new HenkilötiedotServlet)
     mount("/koski/api/koodisto", new KoodistoServlet)
