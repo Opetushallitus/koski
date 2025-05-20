@@ -250,7 +250,8 @@ const formDataToVahvistus = <T extends AnyOrganisaatiohenkilö>(
       return HenkilövahvistusValinnaisellaPaikkakunnalla({
         päivä,
         paikkakunta,
-        myöntäjäOrganisaatio
+        myöntäjäOrganisaatio,
+        myöntäjäHenkilöt: myöntäjäHenkilöt as Organisaatiohenkilö[]
       })
     }
 

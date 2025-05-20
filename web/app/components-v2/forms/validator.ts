@@ -144,7 +144,7 @@ const validate = (
   path: string[]
 ): ValidationError[] => {
   if (isLocalizedString(data)) {
-    return validateLocalizationString(data, path)
+    return validateLocalizationString(data, constraint, path)
   } else if (isObjectConstraint(constraint)) {
     return validateObject(data, constraint, path)
   } else if (isArrayConstraint(constraint)) {
@@ -353,9 +353,15 @@ const validateRecord = (
 // LocalizationString
 const validateLocalizationString = (
   str: LocalizedString,
+  constraint: any,
   path: string[]
-): ValidationError[] =>
-  (str as any).fi || (str as any).sv || str.en ? [] : [emptyString(path)]
+): ValidationError[] => {
+  if ((str as any).fi || (str as any).sv || str.en) {
+    return []
+  } else {
+    return isOptionalConstraint(constraint) ? [] : [emptyString(path)]
+  }
+}
 
 // Error builders
 
