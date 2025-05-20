@@ -12,6 +12,9 @@ import { Removable } from '../controls/Removable'
 import { MultilineTextEdit } from '../controls/TextField'
 import { FieldErrors } from '../forms/FieldErrors'
 import { FieldEditorProps, FieldViewerProps } from '../forms/FormField'
+import { KeyValueRow, KeyValueTable } from '../containers/KeyValueTable'
+import { OsaamisenTunnustaminen } from '../../types/fi/oph/koski/schema/OsaamisenTunnustaminen'
+import { BooleanView } from './BooleanField'
 
 export type TunnustusViewProps<T extends SelitettyOsaamisenTunnustaminen> =
   CommonProps<FieldViewerProps<T, EmptyObject>>
@@ -78,5 +81,20 @@ export const TunnustusEdit = <
         <FieldErrors errors={props.errors} />
       </TestIdLayer>
     </div>
+  )
+}
+
+export const OsaamisenTunnustusView = (
+  props: CommonProps<FieldViewerProps<OsaamisenTunnustaminen, EmptyObject>>
+) => {
+  return (
+    <KeyValueTable>
+      <KeyValueRow localizableLabel="Selite">
+        {t(props.value?.selite) || '–'}
+      </KeyValueRow>
+      <KeyValueRow localizableLabel="Rahoituksen piirissä">
+        <BooleanView value={props.value?.rahoituksenPiirissä} />
+      </KeyValueRow>
+    </KeyValueTable>
   )
 }
