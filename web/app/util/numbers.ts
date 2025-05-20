@@ -1,7 +1,12 @@
 export const EPSILON = 0.000001
 
+const formatter = new Intl.NumberFormat('fi-FI', {
+  minimumFractionDigits: 0,
+  maximumFractionDigits: 2
+})
+
 export const formatNumber = (n: number): string =>
-  isFinite(n) ? `${n}`.replace('.', ',') : `–`
+  isFinite(n) ? `${formatter.format(n)}` : `–`
 
 export const sum = (as: number[]): number => as.reduce((a, n) => a + n, 0)
 
