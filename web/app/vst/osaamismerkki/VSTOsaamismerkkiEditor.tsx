@@ -24,6 +24,7 @@ import {
 import { Koodistokoodiviite } from '../../types/fi/oph/koski/schema/Koodistokoodiviite'
 import { todayISODate } from '../../date/date'
 import { KeyValueRow } from '../../components-v2/containers/KeyValueTable'
+import { HenkilövahvistusValinnaisellaPaikkakunnalla } from '../../types/fi/oph/koski/schema/HenkilovahvistusValinnaisellaPaikkakunnalla'
 
 export type VSTOsaamismerkkiEditor =
   VSTPäätasonSuoritusEditorProps<VapaanSivistystyönOsaamismerkinSuoritus>
@@ -93,6 +94,7 @@ export const VSTOsaamismerkkiEditor: React.FC<VSTOsaamismerkkiEditor> = ({
           organisaatio={organisaatio}
           disableAdd={suorituksenVahvistaminenEiMahdollista}
           disableRemoval={false}
+          vahvistusClass={HenkilövahvistusValinnaisellaPaikkakunnalla.className}
         />
         <Spacer />
       </EditorContainer>

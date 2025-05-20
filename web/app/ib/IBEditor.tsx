@@ -2,7 +2,7 @@ import { isEmpty } from 'fp-ts/lib/Array'
 import React, { useCallback, useMemo } from 'react'
 import { useSchema } from '../appstate/constraints'
 import { useKoodistoFiller } from '../appstate/koodisto'
-import { TestIdLayer, TestIdRoot, TestIdText } from '../appstate/useTestId'
+import { TestIdText } from '../appstate/useTestId'
 import {
   EditorContainer,
   usePäätasonSuoritus
@@ -11,7 +11,6 @@ import { RaisedButton } from '../components-v2/controls/RaisedButton'
 import { FormModel, useForm } from '../components-v2/forms/FormModel'
 import { AdaptedOpiskeluoikeusEditorProps } from '../components-v2/interoperability/useUiAdapter'
 import { Spacer } from '../components-v2/layout/Spacer'
-import { OpiskeluoikeusTitle } from '../components-v2/opiskeluoikeus/OpiskeluoikeusTitle'
 import {
   Oppiaine,
   OppiaineTable
@@ -54,6 +53,7 @@ import { UusiPreIB2015OsasuoritusDialog } from './dialogs/UusiPreIB2015Osasuorit
 import { UusiPreIB2019OppiaineDialog } from './dialogs/UusiPreIB2019OppiaineDialog'
 import { UusiPreIB2019OsasuoritusDialog } from './dialogs/UusiPreIB2019OsasuoritusDialog'
 import { VirkailijaKansalainenContainer } from '../components-v2/containers/VirkailijaKansalainenContainer'
+import { HenkilövahvistusPaikkakunnalla } from '../types/fi/oph/koski/schema/HenkilovahvistusPaikkakunnalla'
 
 export type IBEditorProps = AdaptedOpiskeluoikeusEditorProps<IBOpiskeluoikeus>
 
@@ -162,6 +162,7 @@ const IBPäätasonSuoritusEditor: React.FC<
         suoritusPath={päätasonSuoritus.path}
         organisaatio={organisaatio}
         disableAdd={!valmis}
+        vahvistusClass={HenkilövahvistusPaikkakunnalla.className}
       />
 
       <Spacer />
