@@ -364,7 +364,7 @@ const AmmatillisPääsuorituksenTiedot: React.FC<{
           path={path.prop('keskiarvo')}
         />
       </KeyValueRow>
-      <KeyValueRow localizableLabel="Keskiarvo sisältää mukautettuja arvosanoja">
+      <KeyValueRow localizableLabel="Sisältää mukautettuja arvosanoja">
         <FormField
           form={form}
           view={BooleanView}
