@@ -14,6 +14,7 @@ import {
 } from '../../../components-v2/opiskeluoikeus/ArvosanaField'
 import {
   OsasuoritusProperty,
+  OsasuoritusPropertyValue,
   OsasuoritusSubproperty
 } from '../../../components-v2/opiskeluoikeus/OsasuoritusProperty'
 import { todayISODate } from '../../../date/date'
@@ -33,13 +34,15 @@ export const VSTKoto2022KielitaitotasoProperty = <
   return arvioitu ? (
     <TestIdLayer id="arviointi">
       <OsasuoritusProperty label="Arviointi">
-        <FormListField
-          form={props.form}
-          path={props.path.prop('arviointi')}
-          view={VSTKoto2022KielitaitotasoView}
-          edit={VSTKoto2022KielitaitotasoEdit}
-          editProps={{ osasuoritus }}
-        />
+        <OsasuoritusPropertyValue>
+          <FormListField
+            form={props.form}
+            path={props.path.prop('arviointi')}
+            view={VSTKoto2022KielitaitotasoView}
+            edit={VSTKoto2022KielitaitotasoEdit}
+            editProps={{ osasuoritus }}
+          />
+        </OsasuoritusPropertyValue>
       </OsasuoritusProperty>
     </TestIdLayer>
   ) : null
