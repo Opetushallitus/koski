@@ -15,8 +15,10 @@ import fi.oph.koski.schema._
 import fi.oph.koski.userdirectory.Password
 import fi.oph.koski.util.Timing
 import fi.oph.koski.cas.CasClientException
+import fi.oph.koski.executors.Pools
 import org.json4s.JString
 
+import scala.concurrent.ExecutionContext.fromExecutor
 import scala.concurrent.duration.{DurationInt, FiniteDuration}
 import scala.language.postfixOps
 
@@ -24,6 +26,7 @@ trait HealthCheck extends Logging {
   private implicit val user = systemUser
   private implicit val accessType = AccessType.write
   private val oid = application.config.getString("healthcheck.oppija.oid")
+  private val activeThreadThreshold = application.config.getInt("healthcheck.activeThreadThreshold")
   private val koodistoPalvelu = KoodistoPalvelu.withoutCache(application.config)
   private val ePerusteet = application.ePerusteet
   private val monitoring = application.healthMonitoring
@@ -61,6 +64,8 @@ trait HealthCheck extends Logging {
   }
 
   def internalHealthcheck: HttpStatus = {
+    logStackTracesIfPoolGettingFull()
+
     val results = checkSystems(internalSystems)
     val status = HttpStatus.fold(results.values)
     if (status.isError) {
@@ -213,6 +218,31 @@ trait HealthCheck extends Logging {
       case Right(false) => KoskiErrorCategory.internalError.subcategory(key, s"healthcheck for $key failed")()
       case Right(true) => HttpStatus.ok
     }
+  }
+
+  def logStackTracesIfPoolGettingFull(): HttpStatus = {
+    import collection.JavaConverters._
+
+    val activeCount = Pools.globalPoolExecutor.getActiveCount
+
+    logger.info(s"Active threads: ${activeCount}. Threshold for outputting detailed stack traces is ${activeThreadThreshold}.")
+
+    if (activeCount > activeThreadThreshold) {
+      val traces = java.lang.Thread.getAllStackTraces.values.asScala
+      val nonParkedTraces =
+        traces
+          .map(_.toSeq.map(_.toString))
+          .filterNot(_.exists(_.contains("jdk.internal.misc.Unsafe.park")))
+          .map(_.mkString("\n    "))
+
+      logger.info(s"========== DEBUG STACK TRACES: globalPool active thread count has reached ${activeCount}, exceecing threshold of ${activeThreadThreshold}. Outputting stack traces of non-parked ${nonParkedTraces.size} threads out of total number of ${traces.size} threads.")
+
+      nonParkedTraces.foreach(trace =>
+        logger.info("========== DEBUG STACK TRACE\n    " + trace)
+      )
+    }
+
+    HttpStatus.ok
   }
 
   def application: KoskiApplication
