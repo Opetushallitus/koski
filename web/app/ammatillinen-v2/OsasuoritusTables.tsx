@@ -10,7 +10,7 @@ import {
   OsasuoritusRowData,
   OsasuoritusTable
 } from '../components-v2/opiskeluoikeus/OsasuoritusTable'
-import { t } from '../i18n/i18n'
+import { localize, t } from '../i18n/i18n'
 import { ActivePäätasonSuoritus } from '../components-v2/containers/EditorContainer'
 import {
   AmmatillinenArviointi,
@@ -22,7 +22,11 @@ import {
   OsasuoritusPropertyValue,
   OsasuoritusSubproperty
 } from '../components-v2/opiskeluoikeus/OsasuoritusProperty'
-import { FormField } from '../components-v2/forms/FormField'
+import {
+  FieldEditorProps,
+  FieldViewerProps,
+  FormField
+} from '../components-v2/forms/FormField'
 import {
   ParasArvosanaEdit,
   ParasArvosanaView
@@ -53,6 +57,17 @@ import {
   KeyValueRow,
   KeyValueTable
 } from '../components-v2/containers/KeyValueTable'
+import { FormListField } from '../components-v2/forms/FormListField'
+import { AmmatillisenTutkinnonOsanLisätieto } from '../types/fi/oph/koski/schema/AmmatillisenTutkinnonOsanLisatieto'
+import { CommonProps } from '../components-v2/CommonProps'
+import { EmptyObject } from '../util/objects'
+import { KoodistoSelect } from '../components-v2/opiskeluoikeus/KoodistoSelect'
+import { Koodistokoodiviite } from '../types/fi/oph/koski/schema/Koodistokoodiviite'
+import { LocalizedTextEdit } from '../components-v2/controls/LocalizedTestField'
+import { ButtonGroup } from '../components-v2/containers/ButtonGroup'
+import { FlatButton } from '../components-v2/controls/FlatButton'
+import { append } from '../util/fp/arrays'
+import { Näyttö } from '../types/fi/oph/koski/schema/Naytto'
 
 interface OsasuoritusTablesProps {
   form: FormModel<AmmatillinenOpiskeluoikeus>
@@ -289,6 +304,40 @@ const YhteisenOsittaisenAmmatillisenTutkinnonOsasuoritusProperties = ({
           />
         </OsasuoritusPropertyValue>
       </OsasuoritusProperty>
+      <OsasuoritusProperty label={'Lisätiedot'}>
+        <OsasuoritusPropertyValue>
+          <FormListField
+            removable
+            form={form}
+            view={LisätietoView}
+            edit={LisätietoEdit}
+            path={osasuoritusPath.prop('lisätiedot')}
+          />
+          {form.editMode && (
+            <ButtonGroup>
+              <FlatButton
+                onClick={() =>
+                  form.updateAt(
+                    osasuoritusPath.prop('lisätiedot').valueOr([]),
+                    append(emptyAmmatillisenTutkinnonOsanLisätieto)
+                  )
+                }
+              >
+                {t('Lisää')}
+              </FlatButton>
+            </ButtonGroup>
+          )}
+        </OsasuoritusPropertyValue>
+      </OsasuoritusProperty>
+      <OsasuoritusProperty label={'Näyttö'}>
+        <OsasuoritusPropertyValue>
+          <FormField
+            form={form}
+            view={NäyttöView}
+            path={osasuoritusPath.prop('näyttö')}
+          />
+        </OsasuoritusPropertyValue>
+      </OsasuoritusProperty>
       <OsasuoritusProperty label={'Arviointi'}>
         <OsasuoritusPropertyValue>
           <KeyValueTable>
@@ -306,5 +355,77 @@ const YhteisenOsittaisenAmmatillisenTutkinnonOsasuoritusProperties = ({
         </OsasuoritusPropertyValue>
       </OsasuoritusProperty>
     </>
+  )
+}
+
+const LisätietoView = ({
+  value
+}: CommonProps<
+  FieldViewerProps<AmmatillisenTutkinnonOsanLisätieto, EmptyObject>
+>) => {
+  return (
+    <>
+      <div>{t(value?.tunniste.nimi)}</div>
+      <div>{t(value?.kuvaus)}</div>
+    </>
+  )
+}
+
+const emptyAmmatillisenTutkinnonOsanLisätieto =
+  AmmatillisenTutkinnonOsanLisätieto({
+    tunniste: Koodistokoodiviite({
+      koodistoUri: 'ammatillisentutkinnonosanlisatieto',
+      koodiarvo: 'mukautettu'
+    }),
+    kuvaus: localize('')
+  })
+
+const LisätietoEdit = ({
+  value,
+  onChange
+}: FieldEditorProps<AmmatillisenTutkinnonOsanLisätieto, EmptyObject>) => {
+  return (
+    <>
+      <KoodistoSelect
+        koodistoUri={'ammatillisentutkinnonosanlisatieto'}
+        value={value?.tunniste.koodiarvo}
+        onSelect={(tunniste) =>
+          tunniste &&
+          onChange({
+            ...emptyAmmatillisenTutkinnonOsanLisätieto,
+            ...value,
+            tunniste
+          })
+        }
+        testId={'tunniste'}
+      />
+      <LocalizedTextEdit
+        value={value?.kuvaus}
+        onChange={(kuvaus) =>
+          kuvaus &&
+          onChange({
+            ...emptyAmmatillisenTutkinnonOsanLisätieto,
+            ...value,
+            kuvaus
+          })
+        }
+      />
+    </>
+  )
+}
+
+const NäyttöView = ({
+  value
+}: CommonProps<FieldViewerProps<Näyttö, EmptyObject>>) => {
+  return (
+    <KeyValueTable>
+      <KeyValueRow localizableLabel="Kuvaus">{t(value?.kuvaus)}</KeyValueRow>
+      <KeyValueRow localizableLabel={'Suorituspaikka'}>
+        {t(value?.suorituspaikka?.kuvaus)}
+      </KeyValueRow>
+      <KeyValueRow localizableLabel={'Työssäoppimisen yhteydessä'}>
+        <BooleanView value={value?.työssäoppimisenYhteydessä} />
+      </KeyValueRow>
+    </KeyValueTable>
   )
 }
