@@ -1400,13 +1400,37 @@ test.describe('Vapaa sivistystyö', () => {
         // Merkitse takaisin valmiiksi
         await vstOppijaPage.vahvistaSuoritusUudellaHenkilöllä(
           'Reijo',
-          'Rehtori',
-          '1.1.2023'
+          '1.1.2023',
+          'Rehtori'
         )
 
         await vstOppijaPage.tallennaVirheellisenä(
           'lessThanMinimumNumberOfItems: opiskeluoikeudet.0.tila.opiskeluoikeusjaksot'
         )
+      })
+
+      test('Suorituksen vahvistusta ilman titteliä ei voi lisätä', async ({
+        vstOppijaPage
+      }) => {
+        const vahvistaminen =
+          vstOppijaPage.$.suoritukset(0).suorituksenVahvistus
+
+        // Palauta keskeneräiseksi
+        expect(
+          await vahvistaminen.edit.merkitseKeskeneräiseksi.isDisabled()
+        ).toBeFalsy()
+        await vstOppijaPage.$.opiskeluoikeus.tila.edit.items(0).remove.click()
+        await vahvistaminen.edit.merkitseKeskeneräiseksi.click()
+
+        // Syötä vahvistuksen tiedot, paitsi ei titteliä
+        await vahvistaminen.edit.merkitseValmiiksi.click()
+        await vahvistaminen.edit.modal.date.set('1.1.2023')
+        const myöntäjät = vahvistaminen.edit.modal.organisaatiohenkilöt.edit
+        await myöntäjät.add.set('__NEW__')
+        const henkilö = myöntäjät.henkilö(0).newHenkilö
+        await henkilö.nimi.set('Keijo')
+
+        expect(vahvistaminen.edit.modal.submit.isDisabled()).toBeTruthy()
       })
     })
 
@@ -1529,8 +1553,8 @@ test.describe('Vapaa sivistystyö', () => {
         // Merkitse takaisin valmiiksi
         await vstOppijaPage.vahvistaSuoritusUudellaHenkilöllä(
           'Reijo',
-          'Rehtori',
-          '1.1.2023'
+          '1.1.2023',
+          'Rehtori'
         )
 
         await vstOppijaPage.tallennaVirheellisenä(
@@ -1734,8 +1758,8 @@ test.describe('Vapaa sivistystyö', () => {
         // Merkitse takaisin valmiiksi
         await vstOppijaPage.vahvistaSuoritusUudellaHenkilöllä(
           'Reijo',
-          'Rehtori',
-          '1.1.2023'
+          '1.1.2023',
+          'Rehtori'
         )
 
         await vstOppijaPage.tallennaVirheellisenä(
@@ -1936,8 +1960,8 @@ test.describe('Vapaa sivistystyö', () => {
         // Merkitse takaisin valmiiksi
         await vstOppijaPage.vahvistaSuoritusUudellaHenkilöllä(
           'Reijo',
-          'Rehtori',
-          '1.1.2023'
+          '1.1.2023',
+          'Rehtori'
         )
 
         await vstOppijaPage.tallenna()
@@ -2035,8 +2059,8 @@ test.describe('Vapaa sivistystyö', () => {
         // Merkitse takaisin valmiiksi
         await vstOppijaPage.vahvistaSuoritusUudellaHenkilöllä(
           'Reijo',
-          'Rehtori',
-          '1.1.2023'
+          '1.1.2023',
+          'Rehtori'
         )
 
         expect(
@@ -2095,8 +2119,8 @@ test.describe('Vapaa sivistystyö', () => {
         // Merkitse takaisin valmiiksi
         await vstOppijaPage.vahvistaSuoritusUudellaHenkilöllä(
           'Reijo',
-          'Rehtori',
-          '1.1.2023'
+          '1.1.2023',
+          'Rehtori'
         )
 
         await vstOppijaPage.tallennaVirheellisenä(
