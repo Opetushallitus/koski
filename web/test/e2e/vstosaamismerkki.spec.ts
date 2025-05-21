@@ -51,8 +51,8 @@ test.describe('Vapaan sivistyön VST osaamismerkki', () => {
     // Lisää vahvistus
     await vstOppijaPage.vahvistaSuoritusUudellaHenkilöllä(
       'Reijo',
-      'Rehtori',
-      '1.1.2024'
+      '1.1.2024',
+      'Rehtori'
     )
 
     // Vaihda tilan viimeinen päivä samaksi kuin arviointi- ja vahvistuspäivät
