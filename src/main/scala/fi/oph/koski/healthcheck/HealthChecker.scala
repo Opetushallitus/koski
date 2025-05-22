@@ -232,10 +232,10 @@ trait HealthCheck extends Logging {
       val nonParkedTraces =
         traces
           .map(_.toSeq.map(_.toString))
-          .filterNot(_.exists(_.contains("jdk.internal.misc.Unsafe.park")))
+          //.filterNot(_.exists(_.contains("jdk.internal.misc.Unsafe.park")))
           .map(_.mkString("\n    "))
 
-      logger.info(s"========== DEBUG STACK TRACES: globalPool active thread count has reached ${activeCount}, exceecing threshold of ${activeThreadThreshold}. Outputting stack traces of non-parked ${nonParkedTraces.size} threads out of total number of ${traces.size} threads.")
+      logger.info(s"========== DEBUG STACK TRACES: globalPool active thread count has reached ${activeCount}, exceecing threshold of ${activeThreadThreshold}. Outputting stack traces of ${nonParkedTraces.size} threads out of total number of ${traces.size} threads.")
 
       nonParkedTraces.foreach(trace =>
         logger.info("========== DEBUG STACK TRACE\n    " + trace)
