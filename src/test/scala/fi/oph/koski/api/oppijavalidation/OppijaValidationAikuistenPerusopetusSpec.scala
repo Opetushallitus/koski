@@ -271,6 +271,29 @@ class OppijaValidationAikuistenPerusopetusSpec
 
       duplikaattiaEiSallittu(defaultOpiskeluoikeus, opiskeluoikeus)
     }
+
+    "Vastaavan alkuvaiheen opiskeluoikeuden voi siirtää, kun päivämäärät eivät ole päällekkäin" in {
+      val opiskeluoikeusVoimassa = defaultOpiskeluoikeus.copy(
+        tila = AikuistenPerusopetuksenOpiskeluoikeudenTila(List(
+          AikuistenPerusopetuksenOpiskeluoikeusjakso(LocalDate.of(2020, 12, 1), opiskeluoikeusLäsnä, opintojenRahoitus = Some(valtionosuusRahoitteinen))
+        )),
+        suoritukset = List(aikuistenPerusopetuksenAlkuvaiheenSuoritus())
+      )
+      val opiskeluoikeusPäättynyt = defaultOpiskeluoikeus.copy(
+        tila = AikuistenPerusopetuksenOpiskeluoikeudenTila(List(
+          AikuistenPerusopetuksenOpiskeluoikeusjakso(LocalDate.of(2018, 12, 1), opiskeluoikeusLäsnä, opintojenRahoitus = Some(valtionosuusRahoitteinen)),
+          AikuistenPerusopetuksenOpiskeluoikeusjakso(LocalDate.of(2020, 11, 30), opiskeluoikeusKatsotaanEronneeksi, opintojenRahoitus = Some(valtionosuusRahoitteinen))
+        )),
+        suoritukset = List(aikuistenPerusopetuksenAlkuvaiheenSuoritus())
+      )
+
+      setupOppijaWithOpiskeluoikeus(opiskeluoikeusVoimassa, defaultHenkilö) {
+        verifyResponseStatusOk()
+      }
+      postOppija(makeOppija(defaultHenkilö, List(opiskeluoikeusPäättynyt))) {
+        verifyResponseStatusOk()
+      }
+    }
   }
 
   def duplikaattiaEiSallittu(oo1: AikuistenPerusopetuksenOpiskeluoikeus, oo2: AikuistenPerusopetuksenOpiskeluoikeus): Unit = {
