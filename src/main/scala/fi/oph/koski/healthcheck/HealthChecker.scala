@@ -21,6 +21,7 @@ import org.json4s.JString
 import scala.concurrent.ExecutionContext.fromExecutor
 import scala.concurrent.duration.{DurationInt, FiniteDuration}
 import scala.language.postfixOps
+import scala.util.Random
 
 trait HealthCheck extends Logging {
   private implicit val user = systemUser
@@ -220,14 +221,16 @@ trait HealthCheck extends Logging {
     }
   }
 
-  def logStackTracesIfPoolGettingFull(): HttpStatus = {
+  def logStackTracesIfPoolGettingFull(threshold: Int = activeThreadThreshold): HttpStatus = {
     import collection.JavaConverters._
 
     val activeCount = Pools.globalPoolExecutor.getActiveCount
 
-    logger.info(s"Active threads: ${activeCount}. Threshold for outputting detailed stack traces is ${activeThreadThreshold}.")
+    logger.info(s"Active threads: ${activeCount}. Threshold for outputting detailed stack traces is ${threshold}.")
 
-    if (activeCount > activeThreadThreshold) {
+    if (activeCount > threshold) {
+      val id = Random.alphanumeric.take(10).mkString
+
       val traces = java.lang.Thread.getAllStackTraces.values.asScala
       val nonParkedTraces =
         traces
@@ -235,10 +238,10 @@ trait HealthCheck extends Logging {
           //.filterNot(_.exists(_.contains("jdk.internal.misc.Unsafe.park")))
           .map(_.mkString("\n    "))
 
-      logger.info(s"========== DEBUG STACK TRACES: globalPool active thread count has reached ${activeCount}, exceecing threshold of ${activeThreadThreshold}. Outputting stack traces of ${nonParkedTraces.size} threads out of total number of ${traces.size} threads.")
+      logger.info(s"RunId:${id}: ========== DEBUG STACK TRACES: globalPool active thread count has reached ${activeCount}, exceecing threshold of ${threshold}. Outputting stack traces of ${nonParkedTraces.size} threads out of total number of ${traces.size} threads.")
 
       nonParkedTraces.foreach(trace =>
-        logger.info("========== DEBUG STACK TRACE\n    " + trace)
+        logger.info(s"RunId:${id}: ========== DEBUG STACK TRACE\n    " + trace)
       )
     }
 

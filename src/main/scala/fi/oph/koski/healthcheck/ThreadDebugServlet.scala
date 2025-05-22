@@ -16,7 +16,7 @@ class ThreadDebugServlet(implicit val application: KoskiApplication)
   get("/") {
     requireVirkailijaOrPalvelukäyttäjä
     if (session.hasRole(OPHPAAKAYTTAJA)) {
-      val status = application.healthCheck.logStackTracesIfPoolGettingFull()
+      val status = application.healthCheck.logStackTracesIfPoolGettingFull(-1)
       renderStatus(status)
     } else {
       haltWithStatus(KoskiErrorCategory.forbidden.kiellettyKäyttöoikeus("Vain pääkäyttäjä"))
