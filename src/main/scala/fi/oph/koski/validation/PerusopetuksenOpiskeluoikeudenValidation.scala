@@ -186,15 +186,6 @@ object PerusopetuksenOpiskeluoikeusValidation extends Logging {
     }
   }
 
-  def sisältääAikuistenPerusopetuksenOppimääränSuorituksen(oo: Opiskeluoikeus): Boolean = {
-    oo match {
-      case aipe: AikuistenPerusopetuksenOpiskeluoikeus
-      => aipe.suoritukset.map(_.tyyppi.koodiarvo).exists(Set("aikuistenperusopetuksenoppimaara").contains)
-      case _
-      => false
-    }
-  }
-
   private def validateTuenJaksojenPäällekkäisyys(tiedot: PerusopetuksenOpiskeluoikeudenLisätiedot): HttpStatus = {
     val erityisenTuenPäätökset = tiedot.erityisenTuenPäätökset.toList.flatten
     val tuenPäätöksenJaksot = tiedot.tuenPäätöksenJaksot.toList.flatten
