@@ -35,7 +35,7 @@ export const KeyValueRow = (props: KeyValueRowProps) => {
     ? { default: 8, small: 12, phone: 16 }
     : props.largeLabel
       ? { default: 8, small: 12, phone: 12 }
-      : { default: 4, small: 8, phone: 12 }
+      : { default: 6, small: 8, phone: 12 }
   const valueSpans = {
     default: 24 - nameSpans.default - indent,
     small: 24 - nameSpans.small - indent,
