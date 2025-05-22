@@ -1,7 +1,6 @@
 package fi.oph.koski.executors
 
 import java.util.concurrent.ThreadPoolExecutor
-
 import scala.concurrent.{ExecutionContext, ExecutionContextExecutor}
 
 /**
@@ -15,8 +14,10 @@ object Pools {
   val httpPool: ThreadPoolExecutor = NamedThreadPoolExecutor("http4s-blaze-client", httpThreads, httpThreads, 1000)
   val httpExecutionContext: ExecutionContextExecutor = ExecutionContext.fromExecutor(httpPool)
   val databasePoolName = "databasePool"
+
+  val globalPoolExecutor: ThreadPoolExecutor = NamedThreadPoolExecutor("globalPool", Pools.globalExecutionContextThreads, Pools.globalExecutionContextThreads, 1000)
   val globalExecutor: ExecutionContextExecutor = ExecutionContext.fromExecutor(
-    NamedThreadPoolExecutor("globalPool", Pools.globalExecutionContextThreads, Pools.globalExecutionContextThreads, 1000)
+    globalPoolExecutor
   )
   val databaseExecutor: ExecutionContextExecutor = ExecutionContext.fromExecutor(
     NamedThreadPoolExecutor(databasePoolName, Pools.globalExecutionContextThreads, Pools.globalExecutionContextThreads, 1000)
