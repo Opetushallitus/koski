@@ -222,8 +222,6 @@ trait HealthCheck extends Logging {
   }
 
   def logStackTracesIfPoolGettingFull(threshold: Int = activeThreadThreshold): HttpStatus = {
-    import collection.JavaConverters._
-
     val activeCount = Pools.globalPoolExecutor.getActiveCount
 
     logger.info(s"Active threads: ${activeCount}. Threshold for outputting detailed stack traces is ${threshold}.")
@@ -231,18 +229,15 @@ trait HealthCheck extends Logging {
     if (activeCount > threshold) {
       val id = Random.alphanumeric.take(10).mkString
 
-      val traces = java.lang.Thread.getAllStackTraces.values.asScala
-      val nonParkedTraces =
-        traces
-          .map(_.toSeq.map(_.toString))
-          //.filterNot(_.exists(_.contains("jdk.internal.misc.Unsafe.park")))
-          .map(_.mkString("\n    "))
+      val allStackTraces = java.lang.Thread.getAllStackTraces
 
-      logger.info(s"RunId:${id}: ========== DEBUG STACK TRACES: globalPool active thread count has reached ${activeCount}, exceecing threshold of ${threshold}. Outputting stack traces of ${nonParkedTraces.size} threads out of total number of ${traces.size} threads.")
+      logger.info(s"RunId:${id}: ========== DEBUG STACK TRACES: globalPool active thread count has reached ${activeCount}, exceeding threshold of ${threshold}. Outputting stack traces of ${allStackTraces.size}.")
 
-      nonParkedTraces.foreach(trace =>
-        logger.info(s"RunId:${id}: ========== DEBUG STACK TRACE\n    " + trace)
-      )
+      allStackTraces.forEach {
+        case(thread, stackTrace) =>
+          val trace = stackTrace.map(_.toString).mkString("\n    ")
+          logger.info(s"RunId:${id}: ========== DEBUG STACK TRACE thread:${thread.getName}\n    " + trace)
+      }
     }
 
     HttpStatus.ok
