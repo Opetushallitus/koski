@@ -1,5 +1,10 @@
 # Koskeen tallennettavien tietojen validaatiosäännöt
 
+## 22.5.2025
+
+- Ammatillisen osittaisen suorituksen opiskeluoikeus läpäisee duplikaattivalidaation, vaikka löytyy aiempi vastaava opiskeluoikeus, kunhan diaarinumerot ovat erit.
+- Aikuisten perusopetuksen duplikaattivalidaatio ei enää huomioi aiemman opiskeluoikeuden päättymistä, vaan tarkastelee vastaavien opiskeluoikeuksien voimassaolon päällekkäisyyttä.
+
 ## 16.5.2025
 
 - Duplikaattiopiskeluoikeuksien validaatiossa ei sallita päällekkäisiä opiskeluoikeuksien voimassaolojen jaksoja. Validaation läpäisyyn ei enää riitä pelkästään se, että aiempi opiskeluoikeus on päättyneessä tilassa.
