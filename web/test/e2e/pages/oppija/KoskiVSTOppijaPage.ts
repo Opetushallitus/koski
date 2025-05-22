@@ -68,14 +68,14 @@ export class KoskiVSTOppijaPage extends KoskiOppijaPageV2<
 
   async vahvistaSuoritusUudellaHenkilöllä(
     nimi: string,
-    titteli: string,
-    pvm: string
+    pvm: string,
+    titteli?: string
   ) {
     await vahvistaSuoritusUudellaHenkilöllä(
       this.$.suoritukset(this.suoritusIndex).suorituksenVahvistus,
       nimi,
-      titteli,
-      pvm
+      pvm,
+      titteli
     )
   }
 

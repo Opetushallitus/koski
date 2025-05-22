@@ -161,7 +161,7 @@ const useOrganisaatioHenkilöState = <T extends AnyOrganisaatiohenkilö>(
       props.value || [],
       A.modifyAt(index, (o) => ({
         ...o,
-        titteli: titteli ? localize(titteli) : undefined
+        titteli: titteli ? localize(titteli) : localize('')
       })),
       O.fold(
         () =>

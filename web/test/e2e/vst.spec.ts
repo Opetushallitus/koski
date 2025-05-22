@@ -1400,13 +1400,37 @@ test.describe('Vapaa sivistystyö', () => {
         // Merkitse takaisin valmiiksi
         await vstOppijaPage.vahvistaSuoritusUudellaHenkilöllä(
           'Reijo',
-          'Rehtori',
-          '1.1.2023'
+          '1.1.2023',
+          'Rehtori'
         )
 
         await vstOppijaPage.tallennaVirheellisenä(
           'lessThanMinimumNumberOfItems: opiskeluoikeudet.0.tila.opiskeluoikeusjaksot'
         )
+      })
+
+      test('Suorituksen vahvistusta ilman titteliä ei voi lisätä', async ({
+        vstOppijaPage
+      }) => {
+        const vahvistaminen =
+          vstOppijaPage.$.suoritukset(0).suorituksenVahvistus
+
+        // Palauta keskeneräiseksi
+        expect(
+          await vahvistaminen.edit.merkitseKeskeneräiseksi.isDisabled()
+        ).toBeFalsy()
+        await vstOppijaPage.$.opiskeluoikeus.tila.edit.items(0).remove.click()
+        await vahvistaminen.edit.merkitseKeskeneräiseksi.click()
+
+        // Syötä vahvistuksen tiedot, paitsi ei titteliä
+        await vahvistaminen.edit.merkitseValmiiksi.click()
+        await vahvistaminen.edit.modal.date.set('1.1.2023')
+        const myöntäjät = vahvistaminen.edit.modal.organisaatiohenkilöt.edit
+        await myöntäjät.add.set('__NEW__')
+        const henkilö = myöntäjät.henkilö(0).newHenkilö
+        await henkilö.nimi.set('Keijo')
+
+        expect(vahvistaminen.edit.modal.submit.isDisabled()).toBeTruthy()
       })
     })
 
@@ -1529,8 +1553,8 @@ test.describe('Vapaa sivistystyö', () => {
         // Merkitse takaisin valmiiksi
         await vstOppijaPage.vahvistaSuoritusUudellaHenkilöllä(
           'Reijo',
-          'Rehtori',
-          '1.1.2023'
+          '1.1.2023',
+          'Rehtori'
         )
 
         await vstOppijaPage.tallennaVirheellisenä(
@@ -1734,8 +1758,8 @@ test.describe('Vapaa sivistystyö', () => {
         // Merkitse takaisin valmiiksi
         await vstOppijaPage.vahvistaSuoritusUudellaHenkilöllä(
           'Reijo',
-          'Rehtori',
-          '1.1.2023'
+          '1.1.2023',
+          'Rehtori'
         )
 
         await vstOppijaPage.tallennaVirheellisenä(
@@ -1936,8 +1960,8 @@ test.describe('Vapaa sivistystyö', () => {
         // Merkitse takaisin valmiiksi
         await vstOppijaPage.vahvistaSuoritusUudellaHenkilöllä(
           'Reijo',
-          'Rehtori',
-          '1.1.2023'
+          '1.1.2023',
+          'Rehtori'
         )
 
         await vstOppijaPage.tallenna()
@@ -1990,6 +2014,49 @@ test.describe('Vapaa sivistystyö', () => {
         })
       })
 
+      test('Osasuorituksien laajuuksien desimaaliosat pyöristetään kahden desimaalin tarkkuudella', async ({
+        vstOppijaPage
+      }) => {
+        await poistaKaikkiOsasuoritukset(vstOppijaPage)
+        expect(await vstOppijaPage.osasuoritusOptions()).toEqual([
+          'Lisää osasuoritus'
+        ])
+
+        const osasuoritukset = ['Esimerkki 1', 'Esimerkki 2', 'Esimerkki 3']
+        const osasuoritustenLaajuudet = [20, 20.2, 21.155]
+        await foreachAsync(osasuoritukset)(async (nimi, i) => {
+          await vstOppijaPage.addNewOsasuoritus(nimi)
+
+          const osasuoritus = vstOppijaPage.osasuoritus(i)
+          expect(await osasuoritus.nimi()).toEqual(nimi)
+
+          await osasuoritus.setLaajuus(osasuoritustenLaajuudet[i])
+          expect(await osasuoritus.laajuus()).toEqual(
+            `${osasuoritustenLaajuudet[i]}`
+          )
+        })
+
+        expect(await vstOppijaPage.osasuoritusOptions()).toEqual([
+          'Lisää osasuoritus',
+          ...osasuoritukset
+        ])
+        expect(await vstOppijaPage.laajuudetYhteensä()).toEqual('61,36 op')
+
+        await vstOppijaPage.tallenna()
+
+        const osasuoritus0 = vstOppijaPage.osasuoritus(0)
+        expect(await osasuoritus0.nimi()).toEqual(osasuoritukset[0])
+        expect(await osasuoritus0.laajuus()).toEqual(`20 op`)
+
+        const osasuoritus1 = vstOppijaPage.osasuoritus(1)
+        expect(await osasuoritus1.nimi()).toEqual(osasuoritukset[1])
+        expect(await osasuoritus1.laajuus()).toEqual(`20,2 op`)
+
+        const osasuoritus2 = vstOppijaPage.osasuoritus(2)
+        expect(await osasuoritus2.nimi()).toEqual(osasuoritukset[2])
+        expect(await osasuoritus2.laajuus()).toEqual(`21,16 op`)
+      })
+
       test('Tilan muokkaaminen', async ({ vstOppijaPage }) => {
         const tila = vstOppijaPage.$.opiskeluoikeus.tila.edit
 
@@ -2035,8 +2102,8 @@ test.describe('Vapaa sivistystyö', () => {
         // Merkitse takaisin valmiiksi
         await vstOppijaPage.vahvistaSuoritusUudellaHenkilöllä(
           'Reijo',
-          'Rehtori',
-          '1.1.2023'
+          '1.1.2023',
+          'Rehtori'
         )
 
         expect(
@@ -2095,8 +2162,8 @@ test.describe('Vapaa sivistystyö', () => {
         // Merkitse takaisin valmiiksi
         await vstOppijaPage.vahvistaSuoritusUudellaHenkilöllä(
           'Reijo',
-          'Rehtori',
-          '1.1.2023'
+          '1.1.2023',
+          'Rehtori'
         )
 
         await vstOppijaPage.tallennaVirheellisenä(
