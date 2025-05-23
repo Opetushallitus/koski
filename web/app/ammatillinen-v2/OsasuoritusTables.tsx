@@ -71,6 +71,9 @@ import { NäytönSuorituspaikka } from '../types/fi/oph/koski/schema/NaytonSuori
 import { DateInput } from '../components-v2/controls/DateInput'
 import { NäytönSuoritusaika } from '../types/fi/oph/koski/schema/NaytonSuoritusaika'
 import { ISO2FinnishDate, todayISODate } from '../date/date'
+import { IconButton } from '../components-v2/controls/IconButton'
+import { CHARCODE_REMOVE } from '../components-v2/texts/Icon'
+import { NäytönArviointi } from '../types/fi/oph/koski/schema/NaytonArviointi'
 
 interface OsasuoritusTablesProps {
   form: FormModel<AmmatillinenOpiskeluoikeus>
@@ -248,6 +251,7 @@ const OsasuoritusProperties = ({
       <YhteisenOsittaisenAmmatillisenTutkinnonOsasuoritusProperties
         form={form}
         osasuoritusPath={yhteinenPath}
+        osasuoritus={osasuoritus}
       />
     )
   }
@@ -259,11 +263,13 @@ type YhteisenAmmatillisenTutkinnonOsasuoritusPropertiesProps = {
     AmmatillinenOpiskeluoikeus,
     YhteisenOsittaisenAmmatillisenTutkinnonTutkinnonosanSuoritus
   >
+  osasuoritus: YhteisenOsittaisenAmmatillisenTutkinnonTutkinnonosanSuoritus
 }
 
 const YhteisenOsittaisenAmmatillisenTutkinnonOsasuoritusProperties = ({
   form,
-  osasuoritusPath
+  osasuoritusPath,
+  osasuoritus
 }: YhteisenAmmatillisenTutkinnonOsasuoritusPropertiesProps) => {
   return (
     <>
@@ -332,17 +338,18 @@ const YhteisenOsittaisenAmmatillisenTutkinnonOsasuoritusProperties = ({
           )}
         </OsasuoritusPropertyValue>
       </OsasuoritusProperty>
-      <OsasuoritusProperty label={'Näyttö'}>
-        <OsasuoritusPropertyValue>
-          <FormField
-            form={form}
-            view={NäyttöView}
-            edit={NäyttöEdit}
-            path={osasuoritusPath.prop('näyttö')}
-          />
-          {/*TODO poisto nappi?*/}
-        </OsasuoritusPropertyValue>
-      </OsasuoritusProperty>
+      {(form.editMode || osasuoritus.näyttö) && (
+        <OsasuoritusProperty label={'Näyttö'}>
+          <OsasuoritusPropertyValue>
+            <FormField
+              form={form}
+              view={NäyttöView}
+              edit={NäyttöEdit}
+              path={osasuoritusPath.prop('näyttö')}
+            />
+          </OsasuoritusPropertyValue>
+        </OsasuoritusProperty>
+      )}
       <OsasuoritusProperty label={'Arviointi'}>
         <OsasuoritusPropertyValue>
           <KeyValueTable>
@@ -442,7 +449,7 @@ const NäyttöView = ({
       <KeyValueRow localizableLabel={'Haluaa todistuksen'}>
         <BooleanView value={value?.haluaaTodistuksen} />
       </KeyValueRow>
-      {/*TODO arvioinnit*/}
+      <NäytönArviointiView value={value?.arviointi} />
     </KeyValueTable>
   )
 }
@@ -466,109 +473,199 @@ const NäyttöEdit = ({
   value,
   onChange
 }: FieldEditorProps<Näyttö, EmptyObject>) => {
+  if (value === undefined) {
+    return (
+      <ButtonGroup>
+        <FlatButton onClick={() => onChange(emptyNäyttö)}>
+          {t('Lisää ammattiosaamisen näyttö')}
+        </FlatButton>
+      </ButtonGroup>
+    )
+  }
+
   return (
-    <KeyValueTable>
-      <KeyValueRow localizableLabel="Kuvaus">
-        <MultilineTextEdit
-          value={t(value?.kuvaus)}
-          onChange={(kuvaus) =>
-            kuvaus &&
-            onChange({ ...emptyNäyttö, ...value, kuvaus: localize(kuvaus) })
-          }
-        />
-      </KeyValueRow>
-      <KeyValueRow localizableLabel={'Suorituspaikka'}>
-        <KoodistoSelect
-          value={value?.suorituspaikka?.tunniste.koodiarvo}
-          koodistoUri={'ammatillisennaytonsuorituspaikka'}
-          onSelect={(tunniste) =>
-            tunniste &&
-            onChange({
-              ...emptyNäyttö,
-              ...value,
-              suorituspaikka: {
-                ...emptySuoritusPaikka,
-                ...value?.suorituspaikka,
-                tunniste
-              }
-            })
-          }
-          testId={'suorituspaikka'}
-        />
-        <LocalizedTextEdit
-          value={value?.suorituspaikka?.kuvaus}
-          onChange={(kuvaus) =>
-            kuvaus &&
-            onChange({
-              ...emptyNäyttö,
-              ...value,
-              suorituspaikka: {
-                ...emptySuoritusPaikka,
-                ...value?.suorituspaikka,
-                kuvaus
-              }
-            })
-          }
-        />
-      </KeyValueRow>
-      <KeyValueRow localizableLabel="Suoritusaika">
-        <div className="AikajaksoEdit">
-          <DateInput
-            value={value?.suoritusaika?.alku}
-            onChange={(alku?: string) => {
-              alku &&
+    <>
+      <KeyValueTable>
+        <KeyValueRow localizableLabel="Kuvaus">
+          <MultilineTextEdit
+            value={t(value?.kuvaus)}
+            onChange={(kuvaus) =>
+              kuvaus &&
+              onChange({ ...emptyNäyttö, ...value, kuvaus: localize(kuvaus) })
+            }
+          />
+        </KeyValueRow>
+        <KeyValueRow localizableLabel={'Suorituspaikka'}>
+          <KoodistoSelect
+            value={value?.suorituspaikka?.tunniste.koodiarvo}
+            koodistoUri={'ammatillisennaytonsuorituspaikka'}
+            onSelect={(tunniste) =>
+              tunniste &&
+              onChange({
+                ...emptyNäyttö,
+                ...value,
+                suorituspaikka: {
+                  ...emptySuoritusPaikka,
+                  ...value?.suorituspaikka,
+                  tunniste
+                }
+              })
+            }
+            testId={'suorituspaikka'}
+          />
+          <LocalizedTextEdit
+            value={value?.suorituspaikka?.kuvaus}
+            onChange={(kuvaus) =>
+              kuvaus &&
+              onChange({
+                ...emptyNäyttö,
+                ...value,
+                suorituspaikka: {
+                  ...emptySuoritusPaikka,
+                  ...value?.suorituspaikka,
+                  kuvaus
+                }
+              })
+            }
+          />
+        </KeyValueRow>
+        <KeyValueRow localizableLabel="Suoritusaika">
+          <div className="AikajaksoEdit">
+            <DateInput
+              value={value?.suoritusaika?.alku}
+              onChange={(alku?: string) => {
+                alku &&
+                  onChange({
+                    ...emptyNäyttö,
+                    ...value,
+                    suoritusaika: NäytönSuoritusaika({
+                      ...emptySuoritusaika,
+                      ...value?.suoritusaika,
+                      alku
+                    })
+                  })
+              }}
+              testId="alku"
+            />
+            <span className="AikajaksoEdit__separator"> {' - '}</span>
+            <DateInput
+              value={value?.suoritusaika?.loppu}
+              onChange={(loppu?: string) => {
+                loppu &&
+                  onChange({
+                    ...emptyNäyttö,
+                    ...value,
+                    suoritusaika: NäytönSuoritusaika({
+                      ...emptySuoritusaika,
+                      ...value?.suoritusaika,
+                      loppu
+                    })
+                  })
+              }}
+              testId="loppu"
+            />
+          </div>
+        </KeyValueRow>
+        <KeyValueRow localizableLabel={'Työssäoppimisen yhteydessä'}>
+          <BooleanEdit
+            value={value?.työssäoppimisenYhteydessä}
+            onChange={(työssäoppimisenYhteydessä) => {
+              if (työssäoppimisenYhteydessä !== undefined) {
                 onChange({
                   ...emptyNäyttö,
                   ...value,
-                  suoritusaika: NäytönSuoritusaika({
-                    ...emptySuoritusaika,
-                    ...value?.suoritusaika,
-                    alku
-                  })
+                  työssäoppimisenYhteydessä
                 })
+              }
             }}
-            testId="alku"
           />
-          <span className="AikajaksoEdit__separator"> {' - '}</span>
-          <DateInput
-            value={value?.suoritusaika?.loppu}
-            onChange={(loppu?: string) => {
-              loppu &&
-                onChange({
-                  ...emptyNäyttö,
-                  ...value,
-                  suoritusaika: NäytönSuoritusaika({
-                    ...emptySuoritusaika,
-                    ...value?.suoritusaika,
-                    loppu
-                  })
-                })
+        </KeyValueRow>
+        <KeyValueRow localizableLabel={'Haluaa todistuksen'}>
+          <BooleanEdit
+            value={value?.haluaaTodistuksen}
+            onChange={(haluaaTodistuksen) => {
+              if (haluaaTodistuksen !== undefined) {
+                onChange({ ...emptyNäyttö, ...value, haluaaTodistuksen })
+              }
             }}
-            testId="loppu"
           />
-        </div>
+        </KeyValueRow>
+        {/*TODO arvioinnit*/}
+        <NäytönArviointiEdit
+          value={value?.arviointi}
+          onChange={(arviointi) =>
+            arviointi && { ...emptyNäyttö, ...value, arviointi }
+          }
+        />
+      </KeyValueTable>
+      <IconButton
+        charCode={CHARCODE_REMOVE}
+        label={t('Poista')}
+        size="input"
+        onClick={() => onChange(undefined)}
+        testId="delete"
+      />
+    </>
+  )
+}
+
+const NäytönArviointiView = ({
+  value
+}: CommonProps<FieldViewerProps<NäytönArviointi, EmptyObject>>) => {
+  return (
+    <>
+      <KeyValueRow localizableLabel="Arvosana">
+        {t(value?.arvosana.nimi)}
       </KeyValueRow>
-      <KeyValueRow localizableLabel={'Työssäoppimisen yhteydessä'}>
-        <BooleanEdit
-          value={value?.työssäoppimisenYhteydessä}
-          onChange={(työssäoppimisenYhteydessä) => {
-            if (työssäoppimisenYhteydessä !== undefined) {
-              onChange({ ...emptyNäyttö, ...value, työssäoppimisenYhteydessä })
-            }
-          }}
+      <KeyValueRow localizableLabel="Arviointipäivä">
+        {ISO2FinnishDate(value?.päivä)}
+      </KeyValueRow>
+      <KeyValueRow localizableLabel="Arvioinnista päättäneet">
+        {value?.arvioinnistaPäättäneet?.map((a) => t(a.nimi)).join(', ')}
+      </KeyValueRow>
+      <KeyValueRow localizableLabel="Arviointikeskusteluun osallistuneet">
+        {value?.arviointikeskusteluunOsallistuneet
+          ?.map((a) => t(a.nimi))
+          .join(', ')}
+      </KeyValueRow>
+    </>
+  )
+}
+
+const emptyNätönArviointi: NäytönArviointi = NäytönArviointi({
+  päivä: todayISODate(),
+  arvosana: Koodistokoodiviite({
+    koodistoUri: 'arviointiasteikkoammatillinenhyvaksyttyhylatty',
+    koodiarvo: 'hyväksytty'
+  })
+})
+
+const NäytönArviointiEdit = ({
+  value,
+  onChange
+}: FieldEditorProps<NäytönArviointi, EmptyObject>) => {
+  return (
+    <>
+      <KeyValueRow localizableLabel="Arvosana">
+        {t(value?.arvosana.nimi)}
+        {/*TODO multi koodisto select*/}
+      </KeyValueRow>
+      <KeyValueRow localizableLabel="Arviointipäivä">
+        <DateInput
+          value={value?.päivä}
+          onChange={(päivä) =>
+            päivä && onChange({ ...emptyNätönArviointi, ...value, päivä })
+          }
         />
       </KeyValueRow>
-      <KeyValueRow localizableLabel={'Haluaa todistuksen'}>
-        <BooleanEdit
-          value={value?.haluaaTodistuksen}
-          onChange={(haluaaTodistuksen) => {
-            if (haluaaTodistuksen !== undefined) {
-              onChange({ ...emptyNäyttö, ...value, haluaaTodistuksen })
-            }
-          }}
-        />
+      <KeyValueRow localizableLabel="Arvioinnista päättäneet">
+        {value?.arvioinnistaPäättäneet?.map((a) => t(a.nimi)).join(', ')}
       </KeyValueRow>
-      {/*TODO arvioinnit*/}
-    </KeyValueTable>
+      <KeyValueRow localizableLabel="Arviointikeskusteluun osallistuneet">
+        {value?.arviointikeskusteluunOsallistuneet
+          ?.map((a) => t(a.nimi))
+          .join(', ')}
+      </KeyValueRow>
+    </>
   )
 }
