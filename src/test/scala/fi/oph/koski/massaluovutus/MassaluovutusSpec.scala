@@ -11,7 +11,7 @@ import fi.oph.koski.log.AuditLogTester
 import fi.oph.koski.massaluovutus.luokallejaaneet.{MassaluovutusQueryLuokalleJaaneet, MassaluovutusQueryLuokalleJaaneetJson}
 import fi.oph.koski.massaluovutus.organisaationopiskeluoikeudet.{MassaluovutusQueryOrganisaationOpiskeluoikeudet, MassaluovutusQueryOrganisaationOpiskeluoikeudetCsv, MassaluovutusQueryOrganisaationOpiskeluoikeudetJson, QueryOrganisaationOpiskeluoikeudetCsvDocumentation}
 import fi.oph.koski.massaluovutus.paallekkaisetopiskeluoikeudet.MassaluovutusQueryPaallekkaisetOpiskeluoikeudet
-import fi.oph.koski.massaluovutus.suoritusrekisteri.{SuoritusrekisteriMuuttuneetJalkeenQuery, SuoritusrekisteriOppijaOidsQuery}
+import fi.oph.koski.massaluovutus.suorituspalvelu.{SuorituspalveluMuuttuneetJalkeenQuery, SuorituspalveluOppijaOidsQuery}
 import fi.oph.koski.massaluovutus.valintalaskenta.ValintalaskentaQuery
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.raportit.RaportitService
@@ -469,7 +469,7 @@ class MassaluovutusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers wit
   "Suoritusrekisterikysely - aikarajan jälkeen muuttuneet" - {
     val user = MockUsers.paakayttaja
 
-    def getQuery(muuttuneetJälkeen: LocalDateTime) = SuoritusrekisteriMuuttuneetJalkeenQuery(
+    def getQuery(muuttuneetJälkeen: LocalDateTime) = SuorituspalveluMuuttuneetJalkeenQuery(
       muuttuneetJälkeen = muuttuneetJälkeen
     )
 
@@ -687,7 +687,7 @@ class MassaluovutusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers wit
     val user = MockUsers.paakayttaja
     val oppijaOids = (1 to 200).map(i => "1.2.246.562.24.00000000%03d".format(i))
 
-    def getQuery(oppijaOidit: Seq[String]) = SuoritusrekisteriOppijaOidsQuery(
+    def getQuery(oppijaOidit: Seq[String]) = SuorituspalveluOppijaOidsQuery(
       oppijaOids = oppijaOidit
     )
 
