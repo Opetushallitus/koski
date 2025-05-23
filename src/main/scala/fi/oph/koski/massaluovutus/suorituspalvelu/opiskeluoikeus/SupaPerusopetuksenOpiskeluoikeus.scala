@@ -1,4 +1,4 @@
-package fi.oph.koski.massaluovutus.suoritusrekisteri.opiskeluoikeus
+package fi.oph.koski.massaluovutus.suorituspalvelu.opiskeluoikeus
 
 import fi.oph.koski.schema._
 import fi.oph.koski.schema.annotation._
@@ -7,35 +7,35 @@ import fi.oph.scalaschema.annotation.{Description, OnlyWhen, Title}
 import java.time.LocalDate
 
 @Title("Perusopetuksen opiskeluoikeus")
-case class SurePerusopetuksenOpiskeluoikeus(
+case class SupaPerusopetuksenOpiskeluoikeus(
   @KoodistoKoodiarvo(OpiskeluoikeudenTyyppi.perusopetus.koodiarvo)
   tyyppi: Koodistokoodiviite,
   oid: String,
   koulutustoimija: Option[Koulutustoimija],
   oppilaitos: Option[Oppilaitos],
   tila: NuortenPerusopetuksenOpiskeluoikeudenTila,
-  suoritukset: List[SurePerusopetuksenPäätasonSuoritus],
-  lisätiedot: Option[SurePerusopetuksenOpiskeluoikeudenLisätiedot],
-) extends SureOpiskeluoikeus
+  suoritukset: List[SupaPerusopetuksenPäätasonSuoritus],
+  lisätiedot: Option[SupaPerusopetuksenOpiskeluoikeudenLisätiedot],
+) extends SupaOpiskeluoikeus
 
-object SurePerusopetuksenOpiskeluoikeus {
-  def apply(oo: PerusopetuksenOpiskeluoikeus): SurePerusopetuksenOpiskeluoikeus =
-    SurePerusopetuksenOpiskeluoikeus(
+object SupaPerusopetuksenOpiskeluoikeus {
+  def apply(oo: PerusopetuksenOpiskeluoikeus): SupaPerusopetuksenOpiskeluoikeus =
+    SupaPerusopetuksenOpiskeluoikeus(
       tyyppi = oo.tyyppi,
       oid = oo.oid.get,
       koulutustoimija = oo.koulutustoimija,
       oppilaitos = oo.oppilaitos,
       tila = oo.tila,
-      suoritukset = oo.suoritukset.flatMap(SurePerusopetuksenPäätasonSuoritus.apply),
-      lisätiedot = oo.lisätiedot.flatMap(SurePerusopetuksenOpiskeluoikeudenLisätiedot.apply),
+      suoritukset = oo.suoritukset.flatMap(SupaPerusopetuksenPäätasonSuoritus.apply),
+      lisätiedot = oo.lisätiedot.flatMap(SupaPerusopetuksenOpiskeluoikeudenLisätiedot.apply),
     )
 }
 
-sealed trait SurePerusopetuksenPäätasonSuoritus extends SureSuoritus with Suorituskielellinen
+sealed trait SupaPerusopetuksenPäätasonSuoritus extends SupaSuoritus with Suorituskielellinen
 
-object SurePerusopetuksenPäätasonSuoritus {
+object SupaPerusopetuksenPäätasonSuoritus {
 
-  def apply(pts: PerusopetuksenPäätasonSuoritus): Option[SurePerusopetuksenPäätasonSuoritus] = {
+  def apply(pts: PerusopetuksenPäätasonSuoritus): Option[SupaPerusopetuksenPäätasonSuoritus] = {
 
     lazy val is7tai8VuosiluokanSuoritus: Boolean = pts match {
       case s: PerusopetuksenVuosiluokanSuoritus =>
@@ -45,35 +45,35 @@ object SurePerusopetuksenPäätasonSuoritus {
 
     pts match {
       case s: NuortenPerusopetuksenOppimääränSuoritus =>
-        Some(SureNuortenPerusopetuksenOppimääränSuoritus(s))
+        Some(SupaNuortenPerusopetuksenOppimääränSuoritus(s))
       case s: PerusopetuksenVuosiluokanSuoritus if s.koulutusmoduuli.tunniste.koodiarvo == "9" || is7tai8VuosiluokanSuoritus =>
-        Some(SurePerusopetuksenYhdeksännenVuosiluokanSuoritus(s, !is7tai8VuosiluokanSuoritus))
+        Some(SupaPerusopetuksenYhdeksännenVuosiluokanSuoritus(s, !is7tai8VuosiluokanSuoritus))
       case s: NuortenPerusopetuksenOppiaineenOppimääränSuoritus =>
-        Some(SureNuortenPerusopetuksenOppiaineenOppimääränSuoritus(s))
+        Some(SupaNuortenPerusopetuksenOppiaineenOppimääränSuoritus(s))
       case _ => None
     }
   }
 }
 
 @Title("Nuorten perusopetuksen oppimäärän suoritus")
-case class SureNuortenPerusopetuksenOppimääränSuoritus(
+case class SupaNuortenPerusopetuksenOppimääränSuoritus(
   tyyppi: Koodistokoodiviite,
   koulutusmoduuli: NuortenPerusopetus,
-  vahvistus: Option[SureVahvistus],
+  vahvistus: Option[SupaVahvistus],
   suorituskieli: Koodistokoodiviite,
   koulusivistyskieli: Option[List[Koodistokoodiviite]],
   osasuoritukset: Option[List[NuortenPerusopetuksenOppiaineenSuoritus]]
-) extends SurePerusopetuksenPäätasonSuoritus
+) extends SupaPerusopetuksenPäätasonSuoritus
   with Suorituskielellinen
-  with SureVahvistuksellinen
+  with SupaVahvistuksellinen
   with Koulusivistyskieli
 
-object SureNuortenPerusopetuksenOppimääränSuoritus {
-  def apply(s: NuortenPerusopetuksenOppimääränSuoritus): SureNuortenPerusopetuksenOppimääränSuoritus =
-    SureNuortenPerusopetuksenOppimääränSuoritus(
+object SupaNuortenPerusopetuksenOppimääränSuoritus {
+  def apply(s: NuortenPerusopetuksenOppimääränSuoritus): SupaNuortenPerusopetuksenOppimääränSuoritus =
+    SupaNuortenPerusopetuksenOppimääränSuoritus(
       tyyppi = s.tyyppi,
       koulutusmoduuli = s.koulutusmoduuli,
-      vahvistus = s.vahvistus.map(v => SureVahvistus(v.päivä)),
+      vahvistus = s.vahvistus.map(v => SupaVahvistus(v.päivä)),
       suorituskieli = s.suorituskieli,
       koulusivistyskieli = s.koulusivistyskieli,
       osasuoritukset = s.osasuoritukset.map(_.collect { case os: NuortenPerusopetuksenOppiaineenSuoritus => os }),
@@ -81,25 +81,25 @@ object SureNuortenPerusopetuksenOppimääränSuoritus {
 }
 
 @Title("Perusopetuksen vuosiluokan suoritus")
-case class SurePerusopetuksenYhdeksännenVuosiluokanSuoritus(
+case class SupaPerusopetuksenYhdeksännenVuosiluokanSuoritus(
   tyyppi: Koodistokoodiviite,
   koulutusmoduuli: PerusopetuksenLuokkaAste,
   alkamispäivä: Option[LocalDate],
-  vahvistus: Option[SureVahvistus],
+  vahvistus: Option[SupaVahvistus],
   suorituskieli: Koodistokoodiviite,
   jääLuokalle: Boolean,
   osasuoritukset: Option[List[NuortenPerusopetuksenOppiaineenSuoritus]],
-) extends SurePerusopetuksenPäätasonSuoritus
+) extends SupaPerusopetuksenPäätasonSuoritus
   with Suorituskielellinen
-  with SureVahvistuksellinen
+  with SupaVahvistuksellinen
 
-object SurePerusopetuksenYhdeksännenVuosiluokanSuoritus {
-  def apply(s: PerusopetuksenVuosiluokanSuoritus, lisääOsasuoritukset: Boolean): SurePerusopetuksenYhdeksännenVuosiluokanSuoritus =
-    SurePerusopetuksenYhdeksännenVuosiluokanSuoritus(
+object SupaPerusopetuksenYhdeksännenVuosiluokanSuoritus {
+  def apply(s: PerusopetuksenVuosiluokanSuoritus, lisääOsasuoritukset: Boolean): SupaPerusopetuksenYhdeksännenVuosiluokanSuoritus =
+    SupaPerusopetuksenYhdeksännenVuosiluokanSuoritus(
       tyyppi = s.tyyppi,
       koulutusmoduuli = s.koulutusmoduuli,
       alkamispäivä = s.alkamispäivä,
-      vahvistus = s.vahvistus.map(v => SureVahvistus(v.päivä)),
+      vahvistus = s.vahvistus.map(v => SupaVahvistus(v.päivä)),
       suorituskieli = s.suorituskieli,
       jääLuokalle = s.jääLuokalle,
       osasuoritukset = if(lisääOsasuoritukset) s.osasuoritukset.map(_.collect { case os: NuortenPerusopetuksenOppiaineenSuoritus => os }) else None,
@@ -107,12 +107,12 @@ object SurePerusopetuksenYhdeksännenVuosiluokanSuoritus {
 }
 
 @Title("Nuorten perusopetuksen oppiaineen oppimäärän suoritus")
-case class SureNuortenPerusopetuksenOppiaineenOppimääränSuoritus(
+case class SupaNuortenPerusopetuksenOppiaineenOppimääränSuoritus(
   @Description("Päättötodistukseen liittyvät oppiaineen suoritukset.")
   koulutusmoduuli: NuortenPerusopetuksenOppiainenTaiEiTiedossaOppiaine,
   toimipiste: OrganisaatioWithOid,
   arviointi: Option[List[PerusopetuksenOppiaineenArviointi]] = None,
-  vahvistus: Option[SureVahvistus] = None,
+  vahvistus: Option[SupaVahvistus] = None,
   suoritustapa: Koodistokoodiviite,
   @Description("Luokka-asteen tunniste (1-9). Minkä vuosiluokan mukaisesta oppiainesuorituksesta on kyse.")
   @KoodistoUri("perusopetuksenluokkaaste")
@@ -123,15 +123,15 @@ case class SureNuortenPerusopetuksenOppiaineenOppimääränSuoritus(
   todistuksellaNäkyvätLisätiedot: Option[LocalizedString] = None,
   @KoodistoKoodiarvo("nuortenperusopetuksenoppiaineenoppimaara")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("nuortenperusopetuksenoppiaineenoppimaara", koodistoUri = "suorituksentyyppi")
-) extends SurePerusopetuksenPäätasonSuoritus with SureVahvistuksellinen
+) extends SupaPerusopetuksenPäätasonSuoritus with SupaVahvistuksellinen
 
-object SureNuortenPerusopetuksenOppiaineenOppimääränSuoritus {
-  def apply(s: NuortenPerusopetuksenOppiaineenOppimääränSuoritus): SureNuortenPerusopetuksenOppiaineenOppimääränSuoritus =
-    SureNuortenPerusopetuksenOppiaineenOppimääränSuoritus(
+object SupaNuortenPerusopetuksenOppiaineenOppimääränSuoritus {
+  def apply(s: NuortenPerusopetuksenOppiaineenOppimääränSuoritus): SupaNuortenPerusopetuksenOppiaineenOppimääränSuoritus =
+    SupaNuortenPerusopetuksenOppiaineenOppimääränSuoritus(
       koulutusmoduuli = s.koulutusmoduuli,
       toimipiste = s.toimipiste,
       arviointi = s.arviointi,
-      vahvistus = s.vahvistus.map(v => SureVahvistus(v.päivä)),
+      vahvistus = s.vahvistus.map(v => SupaVahvistus(v.päivä)),
       suoritustapa = s.suoritustapa,
       luokkaAste = s.luokkaAste,
       suorituskieli = s.suorituskieli,
@@ -142,29 +142,29 @@ object SureNuortenPerusopetuksenOppiaineenOppimääränSuoritus {
 }
 
 @Title("Perusopetuksen opiskeluoikeuden lisätiedot")
-case class SurePerusopetuksenOpiskeluoikeudenLisätiedot(
+case class SupaPerusopetuksenOpiskeluoikeudenLisätiedot(
   @Description("Kotiopetusjaksot huoltajan päätöksestä alkamis- ja päättymispäivineen. Kentän puuttuminen tai null-arvo tulkitaan siten, ettei oppilas ole kotiopetuksessa. Rahoituksen laskennassa käytettävä tieto.")
   kotiopetusjaksot: Option[List[Aikajakso]] = None,
 
   @Description("Erityisen tuen päätökset alkamis- ja päättymispäivineen. Voi olla useita erillisiä jaksoja. Rahoituksen laskennassa käytettävä tieto.")
   @OksaUri("tmpOKSAID281", "henkilökohtainen opetuksen järjestämistä koskeva suunnitelma")
-  erityisenTuenPäätökset: Option[List[SureErityisenTuenPäätös]] = None,
+  erityisenTuenPäätökset: Option[List[SupaErityisenTuenPäätös]] = None,
 
   @Description("Oppilas on vuosiluokkiin sitomattomassa opetuksessa (kyllä/ei).")
   @Title("Vuosiluokkiin sitomaton opetus")
   vuosiluokkiinSitoutumatonOpetus: Boolean = false,
 )
 
-object SurePerusopetuksenOpiskeluoikeudenLisätiedot {
-  def apply(lt: PerusopetuksenOpiskeluoikeudenLisätiedot): Option[SurePerusopetuksenOpiskeluoikeudenLisätiedot] =
+object SupaPerusopetuksenOpiskeluoikeudenLisätiedot {
+  def apply(lt: PerusopetuksenOpiskeluoikeudenLisätiedot): Option[SupaPerusopetuksenOpiskeluoikeudenLisätiedot] =
     if (lt.kotiopetusjaksot.exists(_.nonEmpty) || lt.erityisenTuenPäätös.isDefined || lt.erityisenTuenPäätökset.exists(_.nonEmpty)) {
-      Some(SurePerusopetuksenOpiskeluoikeudenLisätiedot(
+      Some(SupaPerusopetuksenOpiskeluoikeudenLisätiedot(
         kotiopetusjaksot = lt.kotiopetusjaksot,
         erityisenTuenPäätökset =
           if (lt.erityisenTuenPäätökset.isDefined) {
-            lt.erityisenTuenPäätökset.map(_.map(SureErityisenTuenPäätös.apply))
+            lt.erityisenTuenPäätökset.map(_.map(SupaErityisenTuenPäätös.apply))
           } else if (lt.erityisenTuenPäätös.isDefined) {
-            Some(List(lt.erityisenTuenPäätös.get).map(SureErityisenTuenPäätös.apply))
+            Some(List(lt.erityisenTuenPäätös.get).map(SupaErityisenTuenPäätös.apply))
           } else {
             None
           },
@@ -175,7 +175,7 @@ object SurePerusopetuksenOpiskeluoikeudenLisätiedot {
     }
 }
 
-case class SureErityisenTuenPäätös(
+case class SupaErityisenTuenPäätös(
   @Description("Jakson alkamispäivämäärä. Muoto YYYY-MM-DD")
   alku: Option[LocalDate],
   @Description("Jakson loppumispäivämäärä. Muoto YYYY-MM-DD")
@@ -189,9 +189,9 @@ Huom: toiminta-alue arviointeineen on kuvattu oppiaineen suorituksessa.""")
   opiskeleeToimintaAlueittain: Boolean = false,
 )
 
-object SureErityisenTuenPäätös {
-  def apply(s: ErityisenTuenPäätös): SureErityisenTuenPäätös =
-    SureErityisenTuenPäätös(
+object SupaErityisenTuenPäätös {
+  def apply(s: ErityisenTuenPäätös): SupaErityisenTuenPäätös =
+    SupaErityisenTuenPäätös(
       alku = s.alku,
       loppu = s.loppu,
       opiskeleeToimintaAlueittain = s.opiskeleeToimintaAlueittain,

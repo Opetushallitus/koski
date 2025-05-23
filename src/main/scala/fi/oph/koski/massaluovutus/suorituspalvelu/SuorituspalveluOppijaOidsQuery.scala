@@ -1,4 +1,4 @@
-package fi.oph.koski.massaluovutus.suoritusrekisteri
+package fi.oph.koski.massaluovutus.suorituspalvelu
 
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.plainAPI._
 import fi.oph.koski.db.{DB, QueryMethods}
@@ -9,17 +9,17 @@ import fi.oph.scalaschema.annotation.{Description, Title}
 
 import java.sql.Timestamp
 
-@Title("Suoritusrekisterin kysely oppijoiden perusteella")
-@Description("Palauttaa Suoritusrekisteriä varten räätälöidyt tiedot annettujen oppijoiden opiskeluoikeuksista.")
-@Description("Vastauksen skeema on taulukko <a href=\"/koski/json-schema-viewer/?schema=suoritusrekisteri-result.json\">SureResponse</a>-objekteja.")
-case class SuoritusrekisteriOppijaOidsQuery(
-  @EnumValues(Set("sure-oppijat"))
-  `type`: String = "sure-oppijat",
+@Title("Suorituspalvelun kysely oppijoiden perusteella")
+@Description("Palauttaa Suorituspalvelua varten räätälöidyt tiedot annettujen oppijoiden opiskeluoikeuksista.")
+@Description("Vastauksen skeema on taulukko <a href=\"/koski/json-schema-viewer/?schema=suorituspalvelu-result.json\">SupaResponse</a>-objekteja.")
+case class SuorituspalveluOppijaOidsQuery(
+  @EnumValues(Set("supa-oppijat"))
+  `type`: String = "supa-oppijat",
   @EnumValues(Set(QueryFormat.json))
   format: String = QueryFormat.json,
   @Description("Lista oppijoiden oideista, joiden tiedot haetaan")
   oppijaOids: Seq[String],
-) extends SuoritusrekisteriQuery {
+) extends SuorituspalveluQuery {
   def getOpiskeluoikeusIds(db: DB): Seq[(Int, Timestamp, String)] = {
     QueryMethods.runDbSync(
       db,
@@ -32,7 +32,7 @@ case class SuoritusrekisteriOppijaOidsQuery(
           FROM henkilo h
           WHERE h.oid = any($oppijaOids)
           )
-        AND opiskeluoikeus.koulutusmuoto = any(${SuoritusrekisteriQuery.opiskeluoikeudenTyypit})
+        AND opiskeluoikeus.koulutusmuoto = any(${SuorituspalveluQuery.opiskeluoikeudenTyypit})
       """.as[(Int, Timestamp, String)])
   }
 }
