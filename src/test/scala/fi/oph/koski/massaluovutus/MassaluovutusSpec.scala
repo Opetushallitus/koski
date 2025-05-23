@@ -466,7 +466,7 @@ class MassaluovutusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers wit
     }
   }
 
-  "Suoritusrekisterikysely - aikarajan jälkeen muuttuneet" - {
+  "Suorituspalvelukysely - aikarajan jälkeen muuttuneet" - {
     val user = MockUsers.paakayttaja
 
     def getQuery(muuttuneetJälkeen: LocalDateTime) = SuorituspalveluMuuttuneetJalkeenQuery(
@@ -510,7 +510,7 @@ class MassaluovutusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers wit
               (v \ "oppijaOid").extract[String],
               ((v \ "opiskeluoikeudet").extract[List[JObject]].last \ "oid").extract[String])).last match {
             case (oppijaOid, opiskeluoikeusOid) => AuditLogTester.verifyLastAuditLogMessage(Map(
-              "operation" -> "SUORITUSREKISTERI_OPISKELUOIKEUS_HAKU",
+              "operation" -> "SUORITUSPALVELU_OPISKELUOIKEUS_HAKU",
               "target" -> Map(
                 "oppijaHenkiloOid" -> oppijaOid,
                 "opiskeluoikeusOid" -> opiskeluoikeusOid,
@@ -683,7 +683,7 @@ class MassaluovutusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers wit
     }
   }
 
-  "Suoritusrekisterikysely - oppija-oideilla hakeminen" - {
+  "Suorituspalvelukysely - oppija-oideilla hakeminen" - {
     val user = MockUsers.paakayttaja
     val oppijaOids = (1 to 200).map(i => "1.2.246.562.24.00000000%03d".format(i))
 
@@ -728,7 +728,7 @@ class MassaluovutusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers wit
               (v \ "oppijaOid").extract[String],
               ((v \ "opiskeluoikeudet").extract[List[JObject]].last \ "oid").extract[String])).last match {
             case (oppijaOid, opiskeluoikeusOid) => AuditLogTester.verifyLastAuditLogMessage(Map(
-              "operation" -> "SUORITUSREKISTERI_OPISKELUOIKEUS_HAKU",
+              "operation" -> "SUORITUSPALVELU_OPISKELUOIKEUS_HAKU",
               "target" -> Map(
                 "oppijaHenkiloOid" -> oppijaOid,
                 "opiskeluoikeusOid" -> opiskeluoikeusOid,

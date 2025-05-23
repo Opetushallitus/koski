@@ -85,7 +85,7 @@ trait SuorituspalveluQuery extends MassaluovutusQueryParameters with Logging {
     AuditLog
       .log(
         KoskiAuditLogMessage(
-          KoskiOperation.SUORITUSREKISTERI_OPISKELUOIKEUS_HAKU,
+          KoskiOperation.SUORITUSPALVELU_OPISKELUOIKEUS_HAKU,
           user,
           Map(
             KoskiAuditLogMessageField.oppijaHenkiloOid -> oppijaOid,
