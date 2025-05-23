@@ -1,4 +1,4 @@
-package fi.oph.koski.massaluovutus.suoritusrekisteri.opiskeluoikeus
+package fi.oph.koski.massaluovutus.suorituspalvelu.opiskeluoikeus
 
 import fi.oph.koski.schema._
 import fi.oph.koski.schema.annotation.KoodistoKoodiarvo
@@ -8,79 +8,79 @@ import fi.oph.scalaschema.annotation.Title
 import java.time.LocalDate
 
 @Title("EB-tutkinnon opiskeluoikeus")
-case class SureEBOpiskeluoikeus(
+case class SupaEBOpiskeluoikeus(
   @KoodistoKoodiarvo(OpiskeluoikeudenTyyppi.ebtutkinto.koodiarvo)
   tyyppi: Koodistokoodiviite,
   oid: String,
   koulutustoimija: Option[Koulutustoimija],
   oppilaitos: Option[Oppilaitos],
   tila: EBOpiskeluoikeudenTila,
-  suoritukset: List[SureEBTutkinnonSuoritus],
-) extends SureOpiskeluoikeus
+  suoritukset: List[SupaEBTutkinnonSuoritus],
+) extends SupaOpiskeluoikeus
 
-object SureEBOpiskeluoikeus {
-  def apply(oo: EBOpiskeluoikeus): SureEBOpiskeluoikeus =
-    SureEBOpiskeluoikeus(
+object SupaEBOpiskeluoikeus {
+  def apply(oo: EBOpiskeluoikeus): SupaEBOpiskeluoikeus =
+    SupaEBOpiskeluoikeus(
       tyyppi = oo.tyyppi,
       oid = oo.oid.get,
       koulutustoimija = oo.koulutustoimija,
       oppilaitos = oo.oppilaitos,
       tila = oo.tila,
-      suoritukset = oo.suoritukset.map(SureEBTutkinnonSuoritus.apply),
+      suoritukset = oo.suoritukset.map(SupaEBTutkinnonSuoritus.apply),
     )
 }
 
 @Title("EB-tutkinnon suoritus")
-case class SureEBTutkinnonSuoritus(
+case class SupaEBTutkinnonSuoritus(
   @KoodistoKoodiarvo("ebtutkinto")
   tyyppi: Koodistokoodiviite,
   alkamispäivä: Option[LocalDate],
-  vahvistus: Option[SureVahvistus],
+  vahvistus: Option[SupaVahvistus],
   koulutusmoduuli: EBTutkinto,
   yleisarvosana: Option[Double],
-  osasuoritukset: Option[List[SureEBTutkinnonOsasuoritus]],
-) extends SureSuoritus with SureVahvistuksellinen
+  osasuoritukset: Option[List[SupaEBTutkinnonOsasuoritus]],
+) extends SupaSuoritus with SupaVahvistuksellinen
 
-object SureEBTutkinnonSuoritus {
-  def apply(pts: EBTutkinnonSuoritus): SureEBTutkinnonSuoritus =
-    SureEBTutkinnonSuoritus(
+object SupaEBTutkinnonSuoritus {
+  def apply(pts: EBTutkinnonSuoritus): SupaEBTutkinnonSuoritus =
+    SupaEBTutkinnonSuoritus(
       tyyppi = pts.tyyppi,
       alkamispäivä = pts.alkamispäivä,
-      vahvistus = pts.vahvistus.map(v => SureVahvistus(v.päivä)),
+      vahvistus = pts.vahvistus.map(v => SupaVahvistus(v.päivä)),
       koulutusmoduuli = pts.koulutusmoduuli,
       yleisarvosana = pts.yleisarvosana,
-      osasuoritukset = pts.osasuoritukset.map(_.map(SureEBTutkinnonOsasuoritus.apply)),
+      osasuoritukset = pts.osasuoritukset.map(_.map(SupaEBTutkinnonOsasuoritus.apply)),
     )
 }
 @Title("EB-tutkinnon osasuoritus")
-case class SureEBTutkinnonOsasuoritus(
+case class SupaEBTutkinnonOsasuoritus(
   @KoodistoKoodiarvo("ebtutkinnonosasuoritus")
   tyyppi: Koodistokoodiviite,
   koulutusmoduuli: SecondaryOppiaine,
-  osasuoritukset: List[SureEBOppiaineenFinalAlaosasuoritus],
-) extends SureSuoritus
+  osasuoritukset: List[SupaEBOppiaineenFinalAlaosasuoritus],
+) extends SupaSuoritus
 
-object SureEBTutkinnonOsasuoritus {
-  def apply (s: EBTutkinnonOsasuoritus): SureEBTutkinnonOsasuoritus =
-    SureEBTutkinnonOsasuoritus(
+object SupaEBTutkinnonOsasuoritus {
+  def apply (s: EBTutkinnonOsasuoritus): SupaEBTutkinnonOsasuoritus =
+    SupaEBTutkinnonOsasuoritus(
       tyyppi = s.tyyppi,
       koulutusmoduuli = s.koulutusmoduuli,
-      osasuoritukset = s.osasuoritukset.toList.flatten.flatMap(os => SureEBOppiaineenFinalAlaosasuoritus(os)),
+      osasuoritukset = s.osasuoritukset.toList.flatten.flatMap(os => SupaEBOppiaineenFinalAlaosasuoritus(os)),
     )
 }
 
 @Title("EB-oppiaineen Final-alaosasuoritus")
-case class SureEBOppiaineenFinalAlaosasuoritus(
+case class SupaEBOppiaineenFinalAlaosasuoritus(
   @KoodistoKoodiarvo("ebtutkinnonalaosasuoritus")
   tyyppi: Koodistokoodiviite,
   koulutusmoduuli: EBOppiaineKomponentti,
   arviointi: Option[List[Arviointi]],
-) extends SureSuoritus
+) extends SupaSuoritus
 
-object SureEBOppiaineenFinalAlaosasuoritus {
-  def apply(s: EBOppiaineenAlaosasuoritus): Option[SureEBOppiaineenFinalAlaosasuoritus] =
+object SupaEBOppiaineenFinalAlaosasuoritus {
+  def apply(s: EBOppiaineenAlaosasuoritus): Option[SupaEBOppiaineenFinalAlaosasuoritus] =
     when (s.koulutusmoduuli.tunniste.koodiarvo == "Final") {
-      SureEBOppiaineenFinalAlaosasuoritus(
+      SupaEBOppiaineenFinalAlaosasuoritus(
         tyyppi = s.tyyppi,
         koulutusmoduuli = s.koulutusmoduuli,
         arviointi = s.arviointi,
