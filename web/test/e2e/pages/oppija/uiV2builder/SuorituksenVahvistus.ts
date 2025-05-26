@@ -44,8 +44,8 @@ export const SuorituksenVahvistus = () => ({
 export const vahvistaSuoritusUudellaHenkilöllä = async (
   suoritusIds: BuiltSuorituksenVahvistus,
   nimi: string,
-  titteli: string,
-  pvm: string
+  pvm: string,
+  titteli?: string
 ) => {
   const vahvistus = suoritusIds.edit
   await vahvistus.merkitseValmiiksi.click()
@@ -57,7 +57,7 @@ export const vahvistaSuoritusUudellaHenkilöllä = async (
 
   const henkilö = myöntäjät.henkilö(0).newHenkilö
   await henkilö.nimi.set(nimi)
-  await henkilö.titteli.set(titteli)
+  if (titteli) await henkilö.titteli.set(titteli)
 
   await vahvistus.modal.submit.click()
 }

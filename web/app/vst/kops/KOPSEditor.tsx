@@ -23,6 +23,7 @@ import {
 } from '../common/types'
 import { AddKOPSOsasuoritus } from './AddKOPSOsasuoritus'
 import { kopsOsasuoritusToTableRow } from './KOPSOsasuoritusProperties'
+import { HenkilövahvistusValinnaisellaPaikkakunnalla } from '../../types/fi/oph/koski/schema/HenkilovahvistusValinnaisellaPaikkakunnalla'
 
 export type KOPSEditorProps =
   VSTPäätasonSuoritusEditorProps<OppivelvollisilleSuunnattuVapaanSivistystyönKoulutuksenSuoritus>
@@ -75,6 +76,7 @@ export const KOPSEditor: React.FC<KOPSEditorProps> = ({
           suoritusPath={päätasonSuoritus.path}
           organisaatio={organisaatio}
           disableAdd={suorituksenVahvistaminenEiMahdollista}
+          vahvistusClass={HenkilövahvistusValinnaisellaPaikkakunnalla.className}
         />
         <Spacer />
 

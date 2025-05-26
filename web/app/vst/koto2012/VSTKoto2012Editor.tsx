@@ -27,7 +27,6 @@ import { UusiOpiskeluoikeusjakso } from '../../components-v2/opiskeluoikeus/Uusi
 import { finnish } from '../../i18n/i18n'
 import { OppivelvollisilleSuunnattuMaahanmuuttajienKotoutumiskoulutuksenSuoritus } from '../../types/fi/oph/koski/schema/OppivelvollisilleSuunnattuMaahanmuuttajienKotoutumiskoulutuksenSuoritus'
 import { OppivelvollisilleSuunnattuVapaanSivistystyönOpiskeluoikeusjakso } from '../../types/fi/oph/koski/schema/OppivelvollisilleSuunnattuVapaanSivistystyonOpiskeluoikeusjakso'
-import { VSTKotoutumiskoulutuksenOsasuorituksenArviointi2022 } from '../../types/fi/oph/koski/schema/VSTKotoutumiskoulutuksenOsasuorituksenArviointi2022'
 import { isVapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenKieliopintojenSuoritus } from '../../types/fi/oph/koski/schema/VapaanSivistystyonMaahanmuuttajienKotoutumiskoulutuksenKieliopintojenSuoritus'
 import { isVapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenOhjauksenSuoritus } from '../../types/fi/oph/koski/schema/VapaanSivistystyonMaahanmuuttajienKotoutumiskoulutuksenOhjauksenSuoritus'
 import { isVapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenTyöelämäJaYhteiskuntataitojenOpintojenSuoritus } from '../../types/fi/oph/koski/schema/VapaanSivistystyonMaahanmuuttajienKotoutumiskoulutuksenTyoelamaJaYhteiskuntataitojenOpintojenSuoritus'
@@ -37,10 +36,7 @@ import { VapaanSivistystyönOpiskeluoikeusjakso } from '../../types/fi/oph/koski
 import { deleteAt } from '../../util/array'
 import { VSTLisatiedot } from '../common/VSTLisatiedot'
 import { VSTLaajuudetYhteensä } from '../common/VSTLaajuudetYhteensa'
-import {
-  createArviointi,
-  arviointienPuolestaVahvistettavissa
-} from '../common/arviointi'
+import { arviointienPuolestaVahvistettavissa } from '../common/arviointi'
 import { isCompletedKoto2012Osasuoritus } from '../common/osasuoritukset'
 import { ArviointiProperty } from '../common/propertyFields'
 import * as Suoritus from '../common/suoritusFields'
@@ -50,6 +46,7 @@ import { VSTKoto2012KieliProperties } from './VSTKoto2012KieliProperties'
 import { VSTKoto2012ValinnaisetProperties } from './valinnaiset/VSTKoto2012ValinnaisetProperties'
 import { VSTKoto2012YhteiskuntaJaTyoelamaosaaminenProperties } from './yhteiskuntajatyoelama/VSTKoto2012YhteiskuntaJaTyoelamaosaaminenProperties'
 import { OppivelvollisilleSuunnatunVapaanSivistystyönOpintokokonaisuudenArviointi } from '../../types/fi/oph/koski/schema/OppivelvollisilleSuunnatunVapaanSivistystyonOpintokokonaisuudenArviointi'
+import { HenkilövahvistusValinnaisellaPaikkakunnalla } from '../../types/fi/oph/koski/schema/HenkilovahvistusValinnaisellaPaikkakunnalla'
 
 export type VSTKoto2012EditorProps =
   VSTPäätasonSuoritusEditorProps<OppivelvollisilleSuunnattuMaahanmuuttajienKotoutumiskoulutuksenSuoritus>
@@ -97,6 +94,7 @@ export const VSTKoto2012Editor: React.FC<VSTKoto2012EditorProps> = ({
           suoritusPath={päätasonSuoritus.path}
           organisaatio={organisaatio}
           disableAdd={suorituksenVahvistaminenEiMahdollista}
+          vahvistusClass={HenkilövahvistusValinnaisellaPaikkakunnalla.className}
         />
         <Spacer />
 

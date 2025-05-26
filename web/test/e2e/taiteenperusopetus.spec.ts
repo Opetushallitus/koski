@@ -354,7 +354,7 @@ test.describe('Taiteen perusopetus', () => {
         expect(await vahvistusBtn.isDisabled()).toBe(false)
       })
 
-      test('Suorituksen vahvistus uudella henkilöllä', async ({
+      test('Suorituksen vahvistus uudella henkilöllä ilman titteliä', async ({
         taiteenPerusopetusPage: page
       }) => {
         await page.edit()
@@ -369,8 +369,8 @@ test.describe('Taiteen perusopetus', () => {
 
         await page.vahvistaSuoritusUudellaHenkilöllä(
           'Teemu Rex',
-          'rehtori',
-          '1.2.2021'
+          '1.2.2021',
+          undefined
         )
 
         expect(await page.suorituksenTila()).toEqual('SUORITUS VALMIS')
@@ -378,7 +378,7 @@ test.describe('Taiteen perusopetus', () => {
           'Vahvistus: 1.2.2021 Varsinais-Suomen kansanopisto'
         )
         expect(await page.suorituksenVahvistushenkilö(0)).toEqual(
-          'Teemu Rex (rehtori)'
+          'Teemu Rex'
         )
 
         await page.selectSuoritus(1)
@@ -398,8 +398,8 @@ test.describe('Taiteen perusopetus', () => {
 
         await page.vahvistaSuoritusUudellaHenkilöllä(
           'Amos Rex',
-          'rehtori',
-          '1.2.2021'
+          '1.2.2021',
+          'rehtori'
         )
         expect(await page.suorituksenTila()).toEqual('SUORITUS VALMIS')
 
@@ -431,8 +431,8 @@ test.describe('Taiteen perusopetus', () => {
         await page.setOsasuorituksenLaajuus(11.1)
         await page.vahvistaSuoritusUudellaHenkilöllä(
           'Amos Rex',
-          'rehtori',
-          '1.2.2021'
+          '1.2.2021',
+          'rehtori'
         )
 
         const ooTilaEditor = page.$.opiskeluoikeus.tila.edit
@@ -452,8 +452,8 @@ test.describe('Taiteen perusopetus', () => {
         await page.setOsasuorituksenLaajuus(11.1)
         await page.vahvistaSuoritusUudellaHenkilöllä(
           'Amos Rex',
-          'rehtori',
-          '1.2.2021'
+          '1.2.2021',
+          'rehtori'
         )
 
         await page.selectSuoritus(1)
