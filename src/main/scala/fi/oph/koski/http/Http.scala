@@ -27,8 +27,8 @@ import scala.xml.Elem
 
 object Http extends Logging {
   private implicit val ioPool: IORuntime = IORuntime(
-    compute = Pools.globalExecutor,
-    blocking = Pools.httpExecutionContext,
+    compute = Pools.httpComputeExecutor,
+    blocking = Pools.httpBlockingExecutor,
     scheduler = IORuntime.createDefaultScheduler()._1,
     shutdown = () => (), // Will live forever
     config = IORuntimeConfig()
@@ -41,7 +41,7 @@ object Http extends Logging {
   private def baseClient(name: String, configFn: ClientConfigFn): Client[IO] = {
     logger.info(s"Creating new pooled http client with $maxHttpConnections max total connections for $name")
     //  responseHeaderTimeout < requestTimeout < idleTimeout
-    val builder = BlazeClientBuilder[IO].withExecutionContext(ExecutionContext.fromExecutor(Pools.httpPool))
+    val builder = BlazeClientBuilder[IO].withExecutionContext(ExecutionContext.fromExecutor(Pools.httpBlockingExecutor))
       .withMaxTotalConnections(maxHttpConnections)
       .withMaxWaitQueueLimit(1024)
       .withConnectTimeout(15.seconds)
