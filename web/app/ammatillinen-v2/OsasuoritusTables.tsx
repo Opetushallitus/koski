@@ -66,7 +66,10 @@ import { ButtonGroup } from '../components-v2/containers/ButtonGroup'
 import { FlatButton } from '../components-v2/controls/FlatButton'
 import { append } from '../util/fp/arrays'
 import { Näyttö } from '../types/fi/oph/koski/schema/Naytto'
-import { MultilineTextEdit } from '../components-v2/controls/TextField'
+import {
+  MultilineTextEdit,
+  TextEdit
+} from '../components-v2/controls/TextField'
 import { NäytönSuorituspaikka } from '../types/fi/oph/koski/schema/NaytonSuorituspaikka'
 import { DateInput } from '../components-v2/controls/DateInput'
 import { NäytönSuoritusaika } from '../types/fi/oph/koski/schema/NaytonSuoritusaika'
@@ -74,6 +77,7 @@ import { ISO2FinnishDate, todayISODate } from '../date/date'
 import { IconButton } from '../components-v2/controls/IconButton'
 import { CHARCODE_REMOVE } from '../components-v2/texts/Icon'
 import { NäytönArviointi } from '../types/fi/oph/koski/schema/NaytonArviointi'
+import { NäytönArvioitsija } from '../types/fi/oph/koski/schema/NaytonArvioitsija'
 
 interface OsasuoritusTablesProps {
   form: FormModel<AmmatillinenOpiskeluoikeus>
@@ -620,6 +624,13 @@ const NäytönArviointiView = ({
       <KeyValueRow localizableLabel="Arviointipäivä">
         {ISO2FinnishDate(value?.päivä)}
       </KeyValueRow>
+      <KeyValueRow localizableLabel="Arvioijat">
+        {value?.arvioitsijat
+          ?.map(
+            (a) => a.nimi + (a.ntm ? ` (${t('näyttötutkintomestari')})` : '')
+          )
+          .join(', ')}
+      </KeyValueRow>
       <KeyValueRow localizableLabel="Arvioinnista päättäneet">
         {value?.arvioinnistaPäättäneet?.map((a) => t(a.nimi)).join(', ')}
       </KeyValueRow>
@@ -657,6 +668,84 @@ const NäytönArviointiEdit = ({
             päivä && onChange({ ...emptyNäytönArviointi, ...value, päivä })
           }
         />
+      </KeyValueRow>
+      <KeyValueRow localizableLabel="Arvioijat">
+        {value?.arvioitsijat?.map((a, index) => (
+          <>
+            <TextEdit
+              value={a.nimi}
+              onChange={(nimi) =>
+                nimi &&
+                value.arvioitsijat &&
+                onChange({
+                  ...emptyNäytönArviointi,
+                  ...value,
+                  arvioitsijat: [
+                    ...value.arvioitsijat.slice(0, index),
+                    NäytönArvioitsija({
+                      nimi,
+                      ntm: value.arvioitsijat[index].ntm
+                    }),
+                    ...value.arvioitsijat.slice(index + 1)
+                  ]
+                })
+              }
+            />
+            <BooleanEdit
+              label={t('Näyttötutkintomestari')}
+              onChange={(ntm) =>
+                ntm !== undefined &&
+                value.arvioitsijat &&
+                onChange({
+                  ...emptyNäytönArviointi,
+                  ...value,
+                  arvioitsijat: [
+                    ...value.arvioitsijat.slice(0, index),
+                    NäytönArvioitsija({
+                      ntm,
+                      nimi: value.arvioitsijat[index].nimi
+                    }),
+                    ...value.arvioitsijat.slice(index + 1)
+                  ]
+                })
+              }
+              value={a.ntm}
+            />
+            <IconButton
+              charCode={CHARCODE_REMOVE}
+              label={t('Poista')}
+              size="input"
+              onClick={() =>
+                value.arvioitsijat &&
+                onChange({
+                  ...emptyNäytönArviointi,
+                  ...value,
+                  arvioitsijat: [
+                    ...value.arvioitsijat.slice(0, index),
+                    ...value.arvioitsijat.slice(index + 1)
+                  ]
+                })
+              }
+              testId="delete"
+            />
+          </>
+        ))}
+        <ButtonGroup>
+          <FlatButton
+            onClick={() =>
+              onChange({
+                ...emptyNäytönArviointi,
+                ...value,
+                arvioitsijat: [
+                  ...(value?.arvioitsijat || []),
+                  NäytönArvioitsija({ nimi: '', ntm: false })
+                ]
+              })
+            }
+          >
+            {t('Lisää')}
+          </FlatButton>
+        </ButtonGroup>
       </KeyValueRow>
       <KeyValueRow localizableLabel="Arvioinnista päättäneet">
         {value?.arvioinnistaPäättäneet?.map((a, index) => (
