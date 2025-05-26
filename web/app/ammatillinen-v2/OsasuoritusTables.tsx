@@ -594,7 +594,7 @@ const NäyttöEdit = ({
         <NäytönArviointiEdit
           value={value?.arviointi}
           onChange={(arviointi) =>
-            arviointi && { ...emptyNäyttö, ...value, arviointi }
+            arviointi && onChange({ ...emptyNäyttö, ...value, arviointi })
           }
         />
       </KeyValueTable>
@@ -632,7 +632,7 @@ const NäytönArviointiView = ({
   )
 }
 
-const emptyNätönArviointi: NäytönArviointi = NäytönArviointi({
+const emptyNäytönArviointi: NäytönArviointi = NäytönArviointi({
   päivä: todayISODate(),
   arvosana: Koodistokoodiviite({
     koodistoUri: 'arviointiasteikkoammatillinenhyvaksyttyhylatty',
@@ -654,17 +654,125 @@ const NäytönArviointiEdit = ({
         <DateInput
           value={value?.päivä}
           onChange={(päivä) =>
-            päivä && onChange({ ...emptyNätönArviointi, ...value, päivä })
+            päivä && onChange({ ...emptyNäytönArviointi, ...value, päivä })
           }
         />
       </KeyValueRow>
       <KeyValueRow localizableLabel="Arvioinnista päättäneet">
-        {value?.arvioinnistaPäättäneet?.map((a) => t(a.nimi)).join(', ')}
+        {value?.arvioinnistaPäättäneet?.map((a, index) => (
+          <div className={'AikajaksoEdit'}>
+            <KoodistoSelect
+              koodistoUri={'ammatillisennaytonarvioinnistapaattaneet'}
+              value={a.koodiarvo}
+              onSelect={(val) =>
+                val &&
+                value.arvioinnistaPäättäneet &&
+                onChange({
+                  ...emptyNäytönArviointi,
+                  ...value,
+                  arvioinnistaPäättäneet: [
+                    ...value.arvioinnistaPäättäneet.slice(0, index),
+                    val,
+                    ...value.arvioinnistaPäättäneet.slice(index + 1)
+                  ]
+                })
+              }
+              testId={'ammatillisennaytonarvioinnistapaattaneet'}
+            />
+            <IconButton
+              charCode={CHARCODE_REMOVE}
+              label={t('Poista')}
+              size="input"
+              onClick={() =>
+                value.arvioinnistaPäättäneet &&
+                onChange({
+                  ...emptyNäytönArviointi,
+                  ...value,
+                  arvioinnistaPäättäneet: [
+                    ...value.arvioinnistaPäättäneet.slice(0, index),
+                    ...value.arvioinnistaPäättäneet.slice(index + 1)
+                  ]
+                })
+              }
+              testId="delete"
+            />
+          </div>
+        ))}
+        <KoodistoSelect
+          koodistoUri={'ammatillisennaytonarvioinnistapaattaneet'}
+          zeroValueOption
+          onSelect={(val) =>
+            val &&
+            onChange({
+              ...emptyNäytönArviointi,
+              ...value,
+              arvioinnistaPäättäneet: [
+                ...(value?.arvioinnistaPäättäneet || []),
+                val
+              ]
+            })
+          }
+          testId={'ammatillisennaytonarvioinnistapaattaneet-uusi'}
+        />
       </KeyValueRow>
       <KeyValueRow localizableLabel="Arviointikeskusteluun osallistuneet">
-        {value?.arviointikeskusteluunOsallistuneet
-          ?.map((a) => t(a.nimi))
-          .join(', ')}
+        {value?.arviointikeskusteluunOsallistuneet?.map((a, index) => (
+          <div className={'AikajaksoEdit'}>
+            <KoodistoSelect
+              koodistoUri={
+                'ammatillisennaytonarviointikeskusteluunosallistuneet'
+              }
+              value={a.koodiarvo}
+              onSelect={(val) =>
+                val &&
+                value.arviointikeskusteluunOsallistuneet &&
+                onChange({
+                  ...emptyNäytönArviointi,
+                  ...value,
+                  arviointikeskusteluunOsallistuneet: [
+                    ...value.arviointikeskusteluunOsallistuneet.slice(0, index),
+                    val,
+                    ...value.arviointikeskusteluunOsallistuneet.slice(index + 1)
+                  ]
+                })
+              }
+              testId={'ammatillisennaytonarviointikeskusteluunosallistuneet'}
+            />
+            <IconButton
+              charCode={CHARCODE_REMOVE}
+              label={t('Poista')}
+              size="input"
+              onClick={() =>
+                value.arviointikeskusteluunOsallistuneet &&
+                onChange({
+                  ...emptyNäytönArviointi,
+                  ...value,
+                  arviointikeskusteluunOsallistuneet: [
+                    ...value.arviointikeskusteluunOsallistuneet.slice(0, index),
+                    ...value.arviointikeskusteluunOsallistuneet.slice(index + 1)
+                  ]
+                })
+              }
+              testId="delete"
+            />
+          </div>
+        ))}
+        <KoodistoSelect
+          koodistoUri={'ammatillisennaytonarviointikeskusteluunosallistuneet'}
+          zeroValueOption
+          onSelect={(val) =>
+            val &&
+            onChange({
+              ...emptyNäytönArviointi,
+              ...value,
+              arviointikeskusteluunOsallistuneet: [
+                ...(value?.arviointikeskusteluunOsallistuneet || []),
+                val
+              ]
+            })
+          }
+          testId={'ammatillisennaytonarviointikeskusteluunosallistuneet-uusi'}
+        />
       </KeyValueRow>
     </>
   )
