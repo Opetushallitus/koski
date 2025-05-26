@@ -14,12 +14,16 @@ class OpintopolkuDirectoryClient(config: Config, casService: CasService) extends
   private val käyttöoikeusServiceClient = KäyttöoikeusServiceClient(config)
   private val oppijanumeroRekisteriClient = OppijanumeroRekisteriClient(config)
 
-  override def findUser(userid: String): Option[DirectoryUser] =
-    Http.runIO(käyttöoikeusServiceClient.findKäyttöoikeudetByUsername(userid).map {
+  override def findUser(userid: String): Option[DirectoryUser] = {
+    logger.info(s"START: findUser ${userid}")
+    val result = Http.runIO(käyttöoikeusServiceClient.findKäyttöoikeudetByUsername(userid).map {
       case List(käyttäjä) => Some(DirectoryClient.resolveKäyttöoikeudet(käyttäjä))
       case Nil => None
       case _ => throw new RuntimeException(s"More than 1 user found with username $userid")
     }).flatMap { case (oid: String, käyttöoikeudet: List[Käyttöoikeus]) => findKäyttäjä(oid, käyttöoikeudet) }
+    logger.info(s"END: findUser ${userid}")
+    result
+  }
 
   override def authenticate(userid: String, wrappedPassword: Password): Boolean =
     casService.authenticateVirkailija(userid, wrappedPassword)
