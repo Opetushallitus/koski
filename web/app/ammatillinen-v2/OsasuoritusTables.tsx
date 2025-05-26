@@ -647,7 +647,7 @@ const emptyNäytönArviointi: NäytönArviointi = NäytönArviointi({
   päivä: todayISODate(),
   arvosana: Koodistokoodiviite({
     koodistoUri: 'arviointiasteikkoammatillinenhyvaksyttyhylatty',
-    koodiarvo: 'hyväksytty'
+    koodiarvo: 'Hyväksytty'
   })
 })
 
