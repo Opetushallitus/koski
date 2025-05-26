@@ -56,7 +56,6 @@ import {
   KeyValueTable
 } from '../components-v2/containers/KeyValueTable'
 import { FormListField } from '../components-v2/forms/FormListField'
-import { AmmatillisenTutkinnonOsanLisätieto } from '../types/fi/oph/koski/schema/AmmatillisenTutkinnonOsanLisatieto'
 import { CommonProps } from '../components-v2/CommonProps'
 import { EmptyObject } from '../util/objects'
 import { KoodistoSelect } from '../components-v2/opiskeluoikeus/KoodistoSelect'
@@ -80,6 +79,11 @@ import { NäytönArviointi } from '../types/fi/oph/koski/schema/NaytonArviointi'
 import { NäytönArvioitsija } from '../types/fi/oph/koski/schema/NaytonArvioitsija'
 import { YhteisenTutkinnonOsanOsaAlueenSuoritus } from '../types/fi/oph/koski/schema/YhteisenTutkinnonOsanOsaAlueenSuoritus'
 import { OsaamisenTunnustaminen } from '../types/fi/oph/koski/schema/OsaamisenTunnustaminen'
+import {
+  emptyAmmatillisenTutkinnonOsanLisätieto,
+  LisätietoEdit,
+  LisätietoView
+} from './LisätietoField'
 
 interface OsasuoritusTablesProps {
   form: FormModel<AmmatillinenOpiskeluoikeus>
@@ -512,62 +516,6 @@ const YhteisenTutkinnonOsanOsaAlueenSuoritusProperties = ({
           </KeyValueTable>
         </OsasuoritusPropertyValue>
       </OsasuoritusProperty>
-    </>
-  )
-}
-
-const LisätietoView = ({
-  value
-}: CommonProps<
-  FieldViewerProps<AmmatillisenTutkinnonOsanLisätieto, EmptyObject>
->) => {
-  return (
-    <>
-      <div>{t(value?.tunniste.nimi)}</div>
-      <div className={'LisätietoKuvaus'}>{t(value?.kuvaus)}</div>
-    </>
-  )
-}
-
-const emptyAmmatillisenTutkinnonOsanLisätieto =
-  AmmatillisenTutkinnonOsanLisätieto({
-    tunniste: Koodistokoodiviite({
-      koodistoUri: 'ammatillisentutkinnonosanlisatieto',
-      koodiarvo: 'mukautettu'
-    }),
-    kuvaus: localize('')
-  })
-
-const LisätietoEdit = ({
-  value,
-  onChange
-}: FieldEditorProps<AmmatillisenTutkinnonOsanLisätieto, EmptyObject>) => {
-  return (
-    <>
-      <KoodistoSelect
-        koodistoUri={'ammatillisentutkinnonosanlisatieto'}
-        value={value?.tunniste.koodiarvo}
-        onSelect={(tunniste) =>
-          tunniste &&
-          onChange({
-            ...emptyAmmatillisenTutkinnonOsanLisätieto,
-            ...value,
-            tunniste
-          })
-        }
-        testId={'tunniste'}
-      />
-      <MultilineTextEdit
-        value={t(value?.kuvaus)}
-        onChange={(kuvaus) =>
-          kuvaus &&
-          onChange({
-            ...emptyAmmatillisenTutkinnonOsanLisätieto,
-            ...value,
-            kuvaus: localize(kuvaus)
-          })
-        }
-      />
     </>
   )
 }
