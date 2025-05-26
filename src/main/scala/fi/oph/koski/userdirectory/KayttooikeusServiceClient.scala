@@ -5,8 +5,9 @@ import com.typesafe.config.Config
 import fi.oph.koski.http.Http.{parseJson, _}
 import fi.oph.koski.http.{Http, ServiceConfig, VirkailijaHttpClient}
 import fi.oph.koski.json.Json4sHttp4s
-
 import cats.syntax.parallel._
+
+import scala.concurrent.duration.DurationInt
 
 case class KäyttöoikeusServiceClient(config: Config) {
   private val http = VirkailijaHttpClient(makeServiceConfig(config), "/kayttooikeus-service", true)
@@ -38,7 +39,7 @@ case class KäyttöoikeusServiceClient(config: Config) {
       .map(_.personOids.getOrElse(List.empty))
 
   def findKäyttöoikeudetByUsername(username: String): IO[List[HenkilönKäyttöoikeudet]] =
-    http.get(uri"/kayttooikeus-service/kayttooikeus/kayttaja?username=$username")(parseJson[List[HenkilönKäyttöoikeudet]])
+    http.get(uri"/kayttooikeus-service/kayttooikeus/kayttaja?username=$username", timeout = 30.seconds)(parseJson[List[HenkilönKäyttöoikeudet]])
 }
 
 case class KäyttöoikeusRyhmä(id: Int, nimi: KäyttöoikeusRyhmäDescriptions) {
