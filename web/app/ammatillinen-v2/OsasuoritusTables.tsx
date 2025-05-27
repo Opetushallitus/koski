@@ -34,6 +34,11 @@ import {
   OsittaisenAmmatillisenTutkinnonOsanKorkeakouluopintoSuoritus
 } from '../types/fi/oph/koski/schema/OsittaisenAmmatillisenTutkinnonOsanKorkeakouluopintoSuoritus'
 import { OsittaisenAmmatillisenTutkinnonOsanKorkeakouluopintoSuoritusProperties } from './OsittaisenAmmatillisenTutkinnonOsanKorkeakouluopintoSuoritusProperties'
+import {
+  isOsittaisenAmmatillisenTutkinnonOsanJatkoOpintovalmiuksiaTukevienOpintojenSuoritus,
+  OsittaisenAmmatillisenTutkinnonOsanJatkoOpintovalmiuksiaTukevienOpintojenSuoritus
+} from '../types/fi/oph/koski/schema/OsittaisenAmmatillisenTutkinnonOsanJatkoOpintovalmiuksiaTukevienOpintojenSuoritus'
+import { OsittaisenAmmatillisenTutkinnonOsanJatkoOpintovalmiuksiaTukevienOpintojenSuoritusProperties } from './OsittaisenAmmatillisenTutkinnonOsanJatkoOpintovalmiuksiaTukevienOpintojenSuoritusProperties'
 
 interface OsasuoritusTablesProps {
   form: FormModel<AmmatillinenOpiskeluoikeus>
@@ -239,6 +244,22 @@ const OsasuoritusProperties = ({
       <OsittaisenAmmatillisenTutkinnonOsanKorkeakouluopintoSuoritusProperties
         form={form}
         osasuoritusPath={korkeakouluPath}
+        osasuoritus={osasuoritus}
+      />
+    )
+  } else if (
+    isOsittaisenAmmatillisenTutkinnonOsanJatkoOpintovalmiuksiaTukevienOpintojenSuoritus(
+      osasuoritus
+    )
+  ) {
+    const jatkoPath = osasuoritusPath as unknown as FormOptic<
+      AmmatillinenOpiskeluoikeus,
+      OsittaisenAmmatillisenTutkinnonOsanJatkoOpintovalmiuksiaTukevienOpintojenSuoritus
+    >
+    return (
+      <OsittaisenAmmatillisenTutkinnonOsanJatkoOpintovalmiuksiaTukevienOpintojenSuoritusProperties
+        form={form}
+        osasuoritusPath={jatkoPath}
         osasuoritus={osasuoritus}
       />
     )

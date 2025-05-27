@@ -33,7 +33,9 @@ export const OsittaisenAmmatillisenTutkinnonOsanKorkeakouluopintoSuoritusPropert
                 osasuoritusIndex: index,
                 columns: {
                   'Osa-alue': t(s.koulutusmoduuli.tunniste.nimi),
-                  Laajuus: `${s.koulutusmoduuli.laajuus?.arvo} ${t(s.koulutusmoduuli.laajuus?.yksikkö.lyhytNimi)}`
+                  Laajuus:
+                    s.koulutusmoduuli.laajuus &&
+                    `${s.koulutusmoduuli.laajuus?.arvo} ${t(s.koulutusmoduuli.laajuus?.yksikkö.lyhytNimi)}`
                 },
                 content: (
                   <KorkeakouluopintojenSuoritusProperties
