@@ -463,6 +463,7 @@ describe("Oppijakohtainen näkymä 2/2", () => {
           tila: "Läsnä",
           maksuttomuus: ["1.6.2021– maksuton"],
           toimipiste: "Jyväskylän normaalikoulu",
+          ryhmä: "AH",
           alkamispäivä: "1.6.2021",
         }),
         historiaOpintoOikeus({
