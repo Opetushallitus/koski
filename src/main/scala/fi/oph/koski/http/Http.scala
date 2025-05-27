@@ -19,6 +19,7 @@ import org.typelevel.ci.CIString
 
 import java.net.URLEncoder
 import java.util.concurrent.TimeoutException
+import scala.concurrent.ExecutionContext
 import scala.concurrent.duration.{DurationInt, FiniteDuration}
 import scala.reflect.runtime.universe.TypeTag
 import scala.util.{Failure, Success, Try}
@@ -32,7 +33,7 @@ object Http extends Logging {
   private def baseClient(name: String, configFn: ClientConfigFn): Client[IO] = {
     logger.info(s"Creating new pooled http client with $maxHttpConnections max total connections for $name")
     //  responseHeaderTimeout < requestTimeout < idleTimeout
-    val builder = BlazeClientBuilder[IO]
+    val builder = BlazeClientBuilder[IO].withExecutionContext(ExecutionContext.fromExecutor(Pools.httpPool))
       .withMaxTotalConnections(maxHttpConnections)
       .withMaxWaitQueueLimit(1024)
       .withConnectTimeout(15.seconds)

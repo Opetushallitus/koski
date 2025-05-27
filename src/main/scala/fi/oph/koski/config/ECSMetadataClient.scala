@@ -40,7 +40,7 @@ class ECSMetadataClient(config: Config) {
   private val containerMetadataUri = sys.env.get("ECS_CONTAINER_METADATA_URI_V4")
   private val taskMetadataUri = containerMetadataUri.map(uri => s"$uri/task")
   private lazy val httpClient =
-    BlazeClientBuilder[IO]
+    BlazeClientBuilder[IO].withExecutionContext(ExecutionContext.fromExecutor(Pools.httpPool))
       .withMaxTotalConnections(1)
       .withMaxWaitQueueLimit(1024)
       .withConnectTimeout(10.seconds)

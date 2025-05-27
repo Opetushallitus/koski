@@ -11,6 +11,8 @@ object Pools {
   val jettyThreads = 250
   val globalExecutionContextThreads: Int = jettyThreads
   val httpThreads: Int = jettyThreads
+  val httpPool: ThreadPoolExecutor = NamedThreadPoolExecutor("http4s-blaze-client", httpThreads, httpThreads, 1000)
+  val httpExecutionContext: ExecutionContextExecutor = ExecutionContext.fromExecutor(httpPool)
   val databasePoolName = "databasePool"
 
   val globalPoolExecutor: ThreadPoolExecutor = NamedThreadPoolExecutor("globalPool", Pools.globalExecutionContextThreads, Pools.globalExecutionContextThreads, 1000)
