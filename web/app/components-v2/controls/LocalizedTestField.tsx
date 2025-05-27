@@ -29,8 +29,11 @@ export const LocalizedTextEdit: React.FC<LocalizedTextEditProps> = (props) => (
       value={t(props.value)}
       large={props.large}
       onChange={(text) =>
-        props.onChange(text === undefined ? undefined : localize(text))
+        props.onChange(
+          text === undefined || text === '' ? undefined : localize(text)
+        )
       }
+      testId={props.testId}
     />
   </TestIdText>
 )

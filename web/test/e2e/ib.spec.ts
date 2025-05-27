@@ -38,6 +38,7 @@ test.describe('IB', () => {
       const suoritus = ibOppijaPage.$.suoritukset(0)
       await expect(suoritus.koulutus.elem).toHaveText('Pre-IB')
       await expect(await suoritus.organisaatio.value()).toEqual('Ressun lukio')
+      await expect(await suoritus.ryhmä.value()).toEqual('AH')
       await expect(await suoritus.suorituskieli.value()).toEqual('englanti')
 
       const vahvistus = suoritus.suorituksenVahvistus.value
@@ -497,6 +498,7 @@ test.describe('IB', () => {
         await expect(await suoritus.organisaatio.value()).toEqual(
           'Ressun lukio'
         )
+        await expect(await suoritus.ryhmä.value()).toEqual('AH')
         await expect(await suoritus.suorituskieli.value()).toEqual('englanti')
         await expect(
           await suoritus.todistuksellaNäkyvätLisätiedot.value()
@@ -878,6 +880,7 @@ test.describe('IB', () => {
         await expect(await suoritus.organisaatio.value()).toEqual(
           'Ressun lukio'
         )
+        await expect(await suoritus.ryhmä.value()).toEqual('AH')
         await expect(await suoritus.suorituskieli.value()).toEqual('englanti')
         await expect(suoritus.theoryOfKnowledge.arvosana.viewer).toHaveText(
           'Excellent'
@@ -1220,6 +1223,64 @@ test.describe('IB', () => {
         const kurssi = ibOppijaPage.oppiaineryhmä(0).oppiaineet(0).kurssit(0)
         await kurssi.tunniste.click()
         await expect(kurssi.modal.laajuus.unit).toHaveText('op')
+      })
+    })
+
+    test.describe('Suorituksen ryhmän vaihtuminen', () => {
+      const oppijaOid = '1.2.246.562.24.00000000178'
+
+      test.beforeEach(async ({ oppijaPage, ibOppijaPage }) => {
+        await oppijaPage.goto(oppijaOid)
+        await ibOppijaPage.edit()
+      })
+
+      test('Voi lisätä ryhmän', async ({
+        ibOppijaPage,
+        page
+      }) => {
+        await ibOppijaPage.$.suoritukset(0).ryhmä.set('foo')
+        await ibOppijaPage.tallenna()
+        await expect(await ibOppijaPage.$.suoritukset(0).ryhmä.value()).toEqual('foo')
+      })
+
+      test('Voi tyhjentää ryhmän', async ({
+        ibOppijaPage
+      }) => {
+        await ibOppijaPage.$.suoritukset(0).ryhmä.set('')
+        await ibOppijaPage.tallenna()
+        await expect(
+          await ibOppijaPage.$.suoritukset(0).ryhmä.elem.isHidden()
+        ).toBeTruthy()
+      })
+    })
+
+    test.describe('Suorituksen todistuksellä näkyvien lisätietojen vaihtuminen', () => {
+      const oppijaOid = '1.2.246.562.24.00000000178'
+
+      test.beforeEach(async ({ oppijaPage, ibOppijaPage }) => {
+        await oppijaPage.goto(oppijaOid)
+        await ibOppijaPage.edit()
+      })
+
+      test('Voi lisätä todistuksella näkyvän lisätiedon', async ({
+        ibOppijaPage,
+        page
+      }) => {
+        await ibOppijaPage.$.suoritukset(0).todistuksellaNäkyvätLisätiedot.set('foo')
+        await ibOppijaPage.tallenna()
+        await expect(
+          await ibOppijaPage.$.suoritukset(0).todistuksellaNäkyvätLisätiedot.value()
+        ).toEqual('foo')
+      })
+
+      test('Voi tyhjentää todistuksella näkyvän lisätiedon', async ({
+        ibOppijaPage
+      }) => {
+        await ibOppijaPage.$.suoritukset(0).todistuksellaNäkyvätLisätiedot.set('')
+        await ibOppijaPage.tallenna()
+        await expect(
+          await ibOppijaPage.$.suoritukset(0).todistuksellaNäkyvätLisätiedot.elem.isHidden()
+        ).toBeTruthy()
       })
     })
   })

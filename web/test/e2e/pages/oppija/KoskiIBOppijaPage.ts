@@ -100,6 +100,7 @@ export const IBTestIds = {
   suoritukset: arrayOf({
     koulutus: Label,
     organisaatio: FormField(Label, Select),
+    ryhmä: FormField(Label, Input),
     suorituskieli: FormField(Label, Select),
     todistuksellaNäkyvätLisätiedot: FormField(Label, Input),
 

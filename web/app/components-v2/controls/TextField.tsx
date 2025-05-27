@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react'
-import { useTestId } from '../../appstate/useTestId'
+import { TestIdText, useTestId } from '../../appstate/useTestId'
 import { EmptyObject } from '../../types/EditorModels'
 import { common, CommonProps, cx } from '../CommonProps'
 import { FieldErrors } from '../forms/FieldErrors'
@@ -8,7 +8,9 @@ import { FieldEditorProps, FieldViewerProps } from '../forms/FormField'
 export type TextViewProps = CommonProps<FieldViewerProps<string, EmptyObject>>
 
 export const TextView: React.FC<TextViewProps> = (props) => (
-  <div {...common(props, ['TextView'])}>{props.value}</div>
+  <TestIdText {...common(props, ['TextView'])} id={props.testId}>
+    {props.value}
+  </TestIdText>
 )
 
 export type TextEditProps = CommonProps<
@@ -35,8 +37,10 @@ export const TextEdit: React.FC<TextEditProps> = (props) => {
     HTMLInputElement | HTMLTextAreaElement
   > = useCallback(
     (event) => {
-      setInternalValue(event.target.value)
-      onChange(event.target.value)
+      setInternalValue(
+        event.target.value === '' ? undefined : event.target.value
+      )
+      onChange(event.target.value === '' ? undefined : event.target.value)
     },
     [onChange]
   )
