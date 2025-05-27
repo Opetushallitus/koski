@@ -1,6 +1,7 @@
 package fi.oph.koski.koskiuser
 
 import fi.oph.koski.cache.{CacheManager, ExpiringCache, KeyValueCache}
+import fi.oph.koski.executors.Pools
 import fi.oph.koski.organisaatio.OrganisaatioRepository.VarhaiskasvatusToimipisteResult
 import fi.oph.koski.organisaatio.{OrganisaatioHierarkia, OrganisaatioRepository}
 import fi.oph.koski.userdirectory.DirectoryClient
@@ -70,6 +71,6 @@ class KäyttöoikeusRepository(organisaatioRepository: OrganisaatioRepository, d
     }
 
   private lazy val käyttöoikeusCache = new KeyValueCache[AuthenticationUser, Set[Käyttöoikeus]](
-    ExpiringCache("KäyttöoikeusRepository", 5.minutes, 100), haeKäyttöoikeudet
+    ExpiringCache("KäyttöoikeusRepository", 5.minutes, Pools.jettyThreads), haeKäyttöoikeudet
   )
 }
