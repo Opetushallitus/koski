@@ -45,6 +45,10 @@ import {
 import { OsasuoritusTable } from '../components-v2/opiskeluoikeus/OsasuoritusTable'
 import { AmmatillisenTutkinnonOsaaPienemmänKokonaisuudenSuoritusProperties } from './AmmatillisenTutkinnonOsaaPienemmänKokonaisuudenSuoritusProperties'
 import React from 'react'
+import {
+  KoodistoEdit,
+  KoodistoView
+} from '../components-v2/opiskeluoikeus/KoodistoField'
 
 type MuunOsittaisenAmmatillisenTutkinnonTutkinnonosanSuoritusPropertiesProps = {
   form: FormModel<AmmatillinenOpiskeluoikeus>
@@ -165,7 +169,22 @@ export const MuunOsittaisenAmmatillisenTutkinnonTutkinnonosanSuoritusProperties 
             </KeyValueTable>
           </OsasuoritusPropertyValue>
         </OsasuoritusProperty>
-        {/*TODO korotettu */}
+        {(form.editMode || osasuoritus.korotettu !== undefined) && (
+          <OsasuoritusProperty label={'Korotettu suoritus'}>
+            <OsasuoritusPropertyValue>
+              <FormField
+                form={form}
+                view={KoodistoView}
+                edit={KoodistoEdit}
+                editProps={{
+                  koodistoUri: 'ammatillisensuorituksenkorotus',
+                  zeroValueOption: true
+                }}
+                path={osasuoritusPath.prop('korotettu')}
+              />
+            </OsasuoritusPropertyValue>
+          </OsasuoritusProperty>
+        )}
         <OsasuoritusTable
           editMode={form.editMode}
           rows={

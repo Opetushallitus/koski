@@ -35,6 +35,7 @@ import React from 'react'
 import { FormModel, FormOptic } from '../components-v2/forms/FormModel'
 import { AmmatillinenOpiskeluoikeus } from '../types/fi/oph/koski/schema/AmmatillinenOpiskeluoikeus'
 import { YhteisenTutkinnonOsanOsaAlueenSuoritus } from '../types/fi/oph/koski/schema/YhteisenTutkinnonOsanOsaAlueenSuoritus'
+import { KoodistoEdit, KoodistoView } from '../components-v2/opiskeluoikeus/KoodistoField'
 
 type YhteisenTutkinnonOsanOsaAlueenSuoritusPropertiesProps = {
   form: FormModel<AmmatillinenOpiskeluoikeus>
@@ -134,6 +135,22 @@ export const YhteisenTutkinnonOsanOsaAlueenSuoritusProperties = ({
           </KeyValueTable>
         </OsasuoritusPropertyValue>
       </OsasuoritusProperty>
+      {(form.editMode || osasuoritus.korotettu !== undefined) && (
+        <OsasuoritusProperty label={'Korotettu suoritus'}>
+          <OsasuoritusPropertyValue>
+            <FormField
+              form={form}
+              view={KoodistoView}
+              edit={KoodistoEdit}
+              editProps={{
+                koodistoUri: 'ammatillisensuorituksenkorotus',
+                zeroValueOption: true
+              }}
+              path={osasuoritusPath.prop('korotettu')}
+            />
+          </OsasuoritusPropertyValue>
+        </OsasuoritusProperty>
+      )}
     </>
   )
 }
