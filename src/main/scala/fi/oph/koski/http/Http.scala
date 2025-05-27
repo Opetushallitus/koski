@@ -231,6 +231,7 @@ case class Http(root: String, client: Client[IO]) extends Logging {
     (request: Request[IO])
   : IO[ResultType] = {
     val httpLogger = HttpResponseLog(request, root + uriTemplate)
+    httpLogger.logRequestStart()
     client
       .run(request)
       .use { response =>
@@ -278,6 +279,12 @@ protected case class HttpResponseLog(request: Request[IO], uriTemplate: String) 
   def log(responseStatus: Status) {
     log(responseStatus.code.toString)
     HttpResponseMonitoring.record(request, uriTemplate, responseStatus.code, elapsedMillis)
+  }
+
+  def logRequestStart(): Unit = {
+    HttpResponseLog.logger.debug(
+      maskSensitiveInformation(s"${request.method} ${request.uri} START, active count: ${Pools.globalPoolExecutor.getActiveCount}")
+    )
   }
 
   def log(e: HttpStatusException) {
