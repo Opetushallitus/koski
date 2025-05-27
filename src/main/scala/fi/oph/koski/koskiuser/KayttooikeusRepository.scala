@@ -76,6 +76,6 @@ class KäyttöoikeusRepository(organisaatioRepository: OrganisaatioRepository, d
     }
 
   private lazy val käyttöoikeusCache = new KeyValueCache[AuthenticationUser, Set[Käyttöoikeus]](
-    ExpiringCache("KäyttöoikeusRepository", 5.minutes, 100), haeKäyttöoikeudet
+    ExpiringCache("KäyttöoikeusRepository", 5.minutes, Pools.jettyThreads), haeKäyttöoikeudet
   )
 }
