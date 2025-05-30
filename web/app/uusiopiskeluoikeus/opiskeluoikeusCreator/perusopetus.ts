@@ -122,7 +122,7 @@ const createOppiaineenKoulutusmoduuli = (
     return NuortenPerusopetuksenUskonto({
       tunniste: oppiaine,
       perusteenDiaarinumero: peruste.koodiarvo,
-      pakollinen: false // ???
+      pakollinen: true
     })
   } else if (isVieraanKielenOppiaine(oppiaine.koodiarvo)) {
     return (
@@ -130,7 +130,7 @@ const createOppiaineenKoulutusmoduuli = (
       NuortenPerusopetuksenVierasTaiToinenKotimainenKieli({
         tunniste: oppiaine,
         perusteenDiaarinumero: peruste.koodiarvo,
-        pakollinen: false, // ???
+        pakollinen: true,
         kieli: kieliaineenKieli
       })
     )
@@ -140,7 +140,7 @@ const createOppiaineenKoulutusmoduuli = (
       NuortenPerusopetuksenÄidinkieliJaKirjallisuus({
         tunniste: oppiaine,
         perusteenDiaarinumero: peruste.koodiarvo,
-        pakollinen: false, // ???
+        pakollinen: true,
         kieli: äidinkielenKieli
       })
     )
@@ -148,7 +148,7 @@ const createOppiaineenKoulutusmoduuli = (
     return MuuNuortenPerusopetuksenOppiaine({
       tunniste: oppiaine,
       perusteenDiaarinumero: peruste.koodiarvo,
-      pakollinen: false // ???
+      pakollinen: true
     })
   }
 }
