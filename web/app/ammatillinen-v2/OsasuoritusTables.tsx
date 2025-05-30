@@ -41,11 +41,16 @@ import {
 import { OsittaisenAmmatillisenTutkinnonOsanJatkoOpintovalmiuksiaTukevienOpintojenSuoritusProperties } from './OsittaisenAmmatillisenTutkinnonOsanJatkoOpintovalmiuksiaTukevienOpintojenSuoritusProperties'
 import { Select, useKoodistoOptions } from '../components-v2/controls/Select'
 import { Koodistokoodiviite } from '../types/fi/oph/koski/schema/Koodistokoodiviite'
-import { FieldViewerProps } from '../components-v2/forms/FormField'
+import {
+  FieldEditorProps,
+  FieldViewerProps
+} from '../components-v2/forms/FormField'
 import { CommonProps } from '../components-v2/CommonProps'
 import { EmptyObject } from '../util/objects'
 import { KeyValueRow } from '../components-v2/containers/KeyValueTable'
-import { ISO2FinnishDate } from '../date/date'
+import { ISO2FinnishDate, todayISODate } from '../date/date'
+import { DateInput } from '../components-v2/controls/DateInput'
+import { LocalizedTextEdit } from '../components-v2/controls/LocalizedTestField'
 
 interface OsasuoritusTablesProps {
   form: FormModel<AmmatillinenOpiskeluoikeus>
@@ -222,8 +227,64 @@ export const ArviointiView = ({
   )
 }
 
+const emptyArviointi: AmmatillinenArviointi = AmmatillinenArviointi({
+  päivä: todayISODate(),
+  arvosana: Koodistokoodiviite({
+    koodistoUri: 'arviointiasteikkoammatillinenhyvaksyttyhylatty',
+    koodiarvo: 'Hyväksytty'
+  })
+})
+
+export const ArviointiEdit = ({
+  value,
+  onChange
+}: FieldEditorProps<AmmatillinenArviointi, EmptyObject>) => {
+  return (
+    <>
+      <KeyValueRow localizableLabel="Arvosana">
+        <AmisArvosanaSelect
+          value={value?.arvosana}
+          onChange={(arvosana) =>
+            arvosana && onChange({ ...emptyArviointi, ...value, arvosana })
+          }
+        />
+      </KeyValueRow>
+      <KeyValueRow localizableLabel="Arviointipäivä">
+        <DateInput
+          value={value?.päivä}
+          onChange={(päivä) =>
+            päivä && onChange({ ...emptyArviointi, ...value, päivä })
+          }
+        />
+      </KeyValueRow>
+      <KeyValueRow localizableLabel="Arvioijat">
+        {/*TODO*/}
+        {value?.arvioitsijat?.map((a) => (
+          <>
+            {a.nimi}
+            <br />
+          </>
+        ))}
+      </KeyValueRow>
+      <KeyValueRow localizableLabel="Kuvaus">
+        <LocalizedTextEdit
+          value={value?.kuvaus}
+          onChange={(kuvaus) =>
+            onChange({ ...emptyArviointi, ...value, kuvaus })
+          }
+        />
+      </KeyValueRow>
+    </>
+  )
+}
+
 type AmisArvosanaSelectProps = {
-  value?: string
+  value?: Koodistokoodiviite<
+    | 'arviointiasteikkoammatillinenhyvaksyttyhylatty'
+    | 'arviointiasteikkoammatillinent1k3'
+    | 'arviointiasteikkoammatillinen15',
+    string
+  >
   onChange?: (
     value?: Koodistokoodiviite<
       | 'arviointiasteikkoammatillinenhyvaksyttyhylatty'
@@ -243,7 +304,7 @@ const AmisArvosanaSelect = ({ value, onChange }: AmisArvosanaSelectProps) => {
   return (
     <Select
       options={options}
-      value={value}
+      value={value && value.koodistoUri + '_' + value.koodiarvo}
       onChange={(a) => onChange && onChange(a?.value)}
       testId="arvosana"
     />
