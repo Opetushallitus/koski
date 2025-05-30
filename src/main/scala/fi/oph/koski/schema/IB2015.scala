@@ -15,8 +15,9 @@ case class PreIBSuoritus2015(
   override val osasuoritukset: Option[List[PreIBSuorituksenOsasuoritus2015]],
   todistuksellaNäkyvätLisätiedot: Option[LocalizedString] = None,
   @KoodistoKoodiarvo("preiboppimaara")
-  tyyppi: Koodistokoodiviite = Koodistokoodiviite("preiboppimaara", koodistoUri = "suorituksentyyppi")
-) extends IBPäätasonSuoritus with OppivelvollisuudenSuorittamiseenKelpaava
+  tyyppi: Koodistokoodiviite = Koodistokoodiviite("preiboppimaara", koodistoUri = "suorituksentyyppi"),
+  ryhmä: Option[String] = None
+) extends IBPäätasonSuoritus with OppivelvollisuudenSuorittamiseenKelpaava with Ryhmällinen
 
 @Title("Pre-IB-koulutus")
 @Description("Pre-IB-koulutuksen tunnistetiedot")
