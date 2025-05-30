@@ -197,7 +197,7 @@ export const MuunOsittaisenAmmatillisenTutkinnonTutkinnonosanSuoritusProperties 
                   Laajuus:
                     s.koulutusmoduuli.laajuus &&
                     `${s.koulutusmoduuli.laajuus?.arvo} ${t(s.koulutusmoduuli.laajuus?.yksikkö.lyhytNimi)}`,
-                  Arvosana: <ParasArvosanaView value={osasuoritus.arviointi} />
+                  Arvosana: <ParasArvosanaView value={s.arviointi} />
                 },
                 content: (
                   <AmmatillisenTutkinnonOsaaPienemmänKokonaisuudenSuoritusProperties
