@@ -39,6 +39,13 @@ import {
   OsittaisenAmmatillisenTutkinnonOsanJatkoOpintovalmiuksiaTukevienOpintojenSuoritus
 } from '../types/fi/oph/koski/schema/OsittaisenAmmatillisenTutkinnonOsanJatkoOpintovalmiuksiaTukevienOpintojenSuoritus'
 import { OsittaisenAmmatillisenTutkinnonOsanJatkoOpintovalmiuksiaTukevienOpintojenSuoritusProperties } from './OsittaisenAmmatillisenTutkinnonOsanJatkoOpintovalmiuksiaTukevienOpintojenSuoritusProperties'
+import { Select, useKoodistoOptions } from '../components-v2/controls/Select'
+import { Koodistokoodiviite } from '../types/fi/oph/koski/schema/Koodistokoodiviite'
+import { FieldViewerProps } from '../components-v2/forms/FormField'
+import { CommonProps } from '../components-v2/CommonProps'
+import { EmptyObject } from '../util/objects'
+import { KeyValueRow } from '../components-v2/containers/KeyValueTable'
+import { ISO2FinnishDate } from '../date/date'
 
 interface OsasuoritusTablesProps {
   form: FormModel<AmmatillinenOpiskeluoikeus>
@@ -189,6 +196,58 @@ type WithArviointi = {
 const hasArviointi = (suoritus: unknown): suoritus is WithArviointi => {
   const arviointi = (suoritus as any)?.arviointi
   return Array.isArray(arviointi) && isAmmatillinenArviointi(arviointi[0])
+}
+
+export const ArviointiView = ({
+  value
+}: CommonProps<FieldViewerProps<AmmatillinenArviointi, EmptyObject>>) => {
+  return (
+    <>
+      <KeyValueRow localizableLabel="Arvosana">
+        {t(value?.arvosana.nimi)}
+      </KeyValueRow>
+      <KeyValueRow localizableLabel="Arviointipäivä">
+        {ISO2FinnishDate(value?.päivä)}
+      </KeyValueRow>
+      <KeyValueRow localizableLabel="Arvioijat">
+        {value?.arvioitsijat?.map((a) => (
+          <>
+            {a.nimi}
+            <br />
+          </>
+        ))}
+      </KeyValueRow>
+      <KeyValueRow localizableLabel="Kuvaus">{t(value?.kuvaus)}</KeyValueRow>
+    </>
+  )
+}
+
+type AmisArvosanaSelectProps = {
+  value?: string
+  onChange?: (
+    value?: Koodistokoodiviite<
+      | 'arviointiasteikkoammatillinenhyvaksyttyhylatty'
+      | 'arviointiasteikkoammatillinent1k3'
+      | 'arviointiasteikkoammatillinen15',
+      string
+    >
+  ) => void
+}
+
+const AmisArvosanaSelect = ({ value, onChange }: AmisArvosanaSelectProps) => {
+  const options = useKoodistoOptions(
+    'arviointiasteikkoammatillinenhyvaksyttyhylatty',
+    'arviointiasteikkoammatillinent1k3',
+    'arviointiasteikkoammatillinen15'
+  )
+  return (
+    <Select
+      options={options}
+      value={value}
+      onChange={(a) => onChange && onChange(a?.value)}
+      testId="arvosana"
+    />
+  )
 }
 
 type OsasuoritusPropertiesProps = {
