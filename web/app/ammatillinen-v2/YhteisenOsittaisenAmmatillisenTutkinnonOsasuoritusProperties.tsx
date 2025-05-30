@@ -45,6 +45,7 @@ import {
 import { OsasuoritusTable } from '../components-v2/opiskeluoikeus/OsasuoritusTable'
 import { YhteisenTutkinnonOsanOsaAlueenSuoritusProperties } from './YhteisenTutkinnonOsanOsaAlueenSuoritusProperties'
 import React from 'react'
+import { ArviointiView } from './OsasuoritusTables'
 
 type YhteisenAmmatillisenTutkinnonOsasuoritusPropertiesProps = {
   form: FormModel<AmmatillinenOpiskeluoikeus>
@@ -150,18 +151,12 @@ export const YhteisenOsittaisenAmmatillisenTutkinnonOsasuoritusProperties = ({
       )}
       <OsasuoritusProperty label={'Arviointi'}>
         <OsasuoritusPropertyValue>
-          <KeyValueTable>
-            <KeyValueRow localizableLabel={'Arvosana'}>
-              <FormField
-                form={form}
-                view={
-                  ParasArvosanaView /*TODO halutaanko pystyä editoimaan kaikki?*/
-                }
-                edit={ParasArvosanaEdit}
-                path={osasuoritusPath.prop('arviointi')}
-              />
-            </KeyValueRow>
-          </KeyValueTable>
+          <FormListField
+            removable
+            form={form}
+            view={ArviointiView}
+            path={osasuoritusPath.prop('arviointi')}
+          />
         </OsasuoritusPropertyValue>
       </OsasuoritusProperty>
       <OsasuoritusTable
