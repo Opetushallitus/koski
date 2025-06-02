@@ -47,10 +47,19 @@ import {
 } from '../components-v2/forms/FormField'
 import { CommonProps } from '../components-v2/CommonProps'
 import { EmptyObject } from '../util/objects'
-import { KeyValueRow } from '../components-v2/containers/KeyValueTable'
+import {
+  KeyValueRow,
+  KeyValueTable
+} from '../components-v2/containers/KeyValueTable'
 import { ISO2FinnishDate, todayISODate } from '../date/date'
 import { DateInput } from '../components-v2/controls/DateInput'
 import { LocalizedTextEdit } from '../components-v2/controls/LocalizedTestField'
+import { TextEdit } from '../components-v2/controls/TextField'
+import { Arvioitsija } from '../types/fi/oph/koski/schema/Arvioitsija'
+import { FlatButton } from '../components-v2/controls/FlatButton'
+import { ButtonGroup } from '../components-v2/containers/ButtonGroup'
+import { CHARCODE_REMOVE } from '../components-v2/texts/Icon'
+import { IconButton } from '../components-v2/controls/IconButton'
 
 interface OsasuoritusTablesProps {
   form: FormModel<AmmatillinenOpiskeluoikeus>
@@ -227,7 +236,7 @@ export const ArviointiView = ({
   )
 }
 
-const emptyArviointi: AmmatillinenArviointi = AmmatillinenArviointi({
+export const emptyArviointi: AmmatillinenArviointi = AmmatillinenArviointi({
   päivä: todayISODate(),
   arvosana: Koodistokoodiviite({
     koodistoUri: 'arviointiasteikkoammatillinenhyvaksyttyhylatty',
@@ -258,13 +267,62 @@ export const ArviointiEdit = ({
         />
       </KeyValueRow>
       <KeyValueRow localizableLabel="Arvioijat">
-        {/*TODO*/}
-        {value?.arvioitsijat?.map((a) => (
-          <>
-            {a.nimi}
-            <br />
-          </>
+        {value?.arvioitsijat?.map((a, index) => (
+          <KeyValueTable>
+            <KeyValueRow localizableLabel="Nimi">
+              <TextEdit
+                value={a.nimi}
+                onChange={(nimi) =>
+                  nimi &&
+                  onChange({
+                    ...emptyArviointi,
+                    ...value,
+                    arvioitsijat: value.arvioitsijat
+                      ? [
+                          ...value.arvioitsijat.slice(0, index),
+                          Arvioitsija({ nimi }),
+                          ...value.arvioitsijat.slice(index + 1)
+                        ]
+                      : [Arvioitsija({ nimi })]
+                  })
+                }
+              />
+            </KeyValueRow>
+            <IconButton
+              charCode={CHARCODE_REMOVE}
+              label={t('Poista')}
+              size="input"
+              onClick={() =>
+                value.arvioitsijat &&
+                onChange({
+                  ...emptyArviointi,
+                  ...value,
+                  arvioitsijat: [
+                    ...value.arvioitsijat.slice(0, index),
+                    ...value.arvioitsijat.slice(index + 1)
+                  ]
+                })
+              }
+              testId="delete"
+            />
+          </KeyValueTable>
         ))}
+        <ButtonGroup>
+          <FlatButton
+            onClick={() =>
+              onChange({
+                ...emptyArviointi,
+                ...value,
+                arvioitsijat: [
+                  ...(value?.arvioitsijat || []),
+                  Arvioitsija({ nimi: '' })
+                ]
+              })
+            }
+          >
+            {t('Lisää uusi')}
+          </FlatButton>
+        </ButtonGroup>
       </KeyValueRow>
       <KeyValueRow localizableLabel="Kuvaus">
         <LocalizedTextEdit
