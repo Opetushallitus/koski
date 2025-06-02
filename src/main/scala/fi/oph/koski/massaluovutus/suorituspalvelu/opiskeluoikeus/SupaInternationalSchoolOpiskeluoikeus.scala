@@ -10,6 +10,7 @@ import java.time.LocalDate
 
 @Title("International school opiskeluoikeus")
 case class SupaInternationalSchoolOpiskeluoikeus(
+  oppijaOid: String,
   @KoodistoKoodiarvo(OpiskeluoikeudenTyyppi.internationalschool.koodiarvo)
   tyyppi: Koodistokoodiviite,
   oid: String,
@@ -20,9 +21,10 @@ case class SupaInternationalSchoolOpiskeluoikeus(
 ) extends SupaOpiskeluoikeus
 
 object SupaInternationalSchoolOpiskeluoikeus {
-  def apply(oo: InternationalSchoolOpiskeluoikeus): Option[SupaOpiskeluoikeus] =
+  def apply(oo: InternationalSchoolOpiskeluoikeus, oppijaOid: String): Option[SupaOpiskeluoikeus] =
     when(isValmistunut(oo)) {
       SupaInternationalSchoolOpiskeluoikeus(
+        oppijaOid = oppijaOid,
         tyyppi = oo.tyyppi,
         oid = oo.oid.get,
         koulutustoimija = oo.koulutustoimija,

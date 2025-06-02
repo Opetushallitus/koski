@@ -16,7 +16,7 @@ import fi.oph.koski.massaluovutus.valintalaskenta.ValintalaskentaQuery
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.raportit.RaportitService
 import fi.oph.koski.schema.KoskiSchema.strictDeserialization
-import fi.oph.koski.schema.{KoskeenTallennettavaOpiskeluoikeus, LocalizedString, PerusopetuksenVuosiluokanSuoritus}
+import fi.oph.koski.schema.{KoskeenTallennettavaOpiskeluoikeus, LocalizedString, OpiskeluoikeudenTyyppi, PerusopetuksenVuosiluokanSuoritus}
 import fi.oph.koski.util.Wait
 import fi.oph.koski.{KoskiApplicationForTests, KoskiHttpSpec}
 import fi.oph.scalaschema.Serializer.format
@@ -681,6 +681,35 @@ class MassaluovutusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers wit
       oppijat.length should equal(1)
       (oppijat.head \ "opiskeluoikeudet").extract[Seq[JObject]].length should equal(7)
     }
+
+    "Palauttaa myös master oid:n opiskeluoikeuden jos slave oid:n opiskeluoikeus on muuttunut" in {
+      poistaOppijanOpiskeluoikeusDatat(KoskiSpecificMockOppijat.slave.henkilö)
+      val tallennettuOo = createOrUpdate(KoskiSpecificMockOppijat.slave.henkilö, defaultOpiskeluoikeus)
+
+      val query = getQuery(tallennettuOo.aikaleima.get)
+      val queryId = addQuerySuccessfully(query, user) { response =>
+        response.status should equal(QueryState.pending)
+        response.queryId
+      }
+      val complete = waitForCompletion(queryId, user)
+
+      val jsonFiles = complete.files.map { file =>
+        verifyResultAndContent(file, user) {
+          JsonMethods.parse(response.body)
+        }
+      }
+
+      val oppijatJaOpiskeluoikeudenTyypit = (jsonFiles.head.extract[Seq[JObject]].head \ "opiskeluoikeudet")
+        .extract[Seq[JObject]]
+        .map(oo => (oo \ "oppijaOid").extract[String] -> (oo \ "tyyppi" \ "koodiarvo").extract[String])
+
+      oppijatJaOpiskeluoikeudenTyypit should contain(
+        KoskiSpecificMockOppijat.slave.henkilö.oid -> OpiskeluoikeudenTyyppi.ammatillinenkoulutus.koodiarvo
+      )
+      oppijatJaOpiskeluoikeudenTyypit should contain(
+        KoskiSpecificMockOppijat.master.oid -> OpiskeluoikeudenTyyppi.perusopetus.koodiarvo
+      )
+    }
   }
 
   "Suorituspalvelukysely - oppija-oideilla hakeminen" - {
@@ -925,6 +954,35 @@ class MassaluovutusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers wit
       }
 
       jsonFiles.head.extract[Seq[JObject]].length should equal(1)
+    }
+
+    "Palautetulla opiskeluoikeudella on sen oppijan oid, jolle opiskeluoikeus on tallennettu" in {
+      poistaOppijanOpiskeluoikeusDatat(KoskiSpecificMockOppijat.slave.henkilö)
+      createOrUpdate(KoskiSpecificMockOppijat.slave.henkilö, defaultOpiskeluoikeus)
+
+      val query = getQuery(Seq(KoskiSpecificMockOppijat.master.oid))
+      val queryId = addQuerySuccessfully(query, user) { response =>
+        response.status should equal(QueryState.pending)
+        response.queryId
+      }
+      val complete = waitForCompletion(queryId, user)
+
+      val jsonFiles = complete.files.map { file =>
+        verifyResultAndContent(file, user) {
+          JsonMethods.parse(response.body)
+        }
+      }
+
+      val oppijatJaOpiskeluoikeudenTyypit = (jsonFiles.head.extract[Seq[JObject]].head \ "opiskeluoikeudet")
+        .extract[Seq[JObject]]
+        .map(oo => (oo \ "oppijaOid").extract[String] -> (oo \ "tyyppi" \ "koodiarvo").extract[String])
+
+      oppijatJaOpiskeluoikeudenTyypit should contain(
+        KoskiSpecificMockOppijat.slave.henkilö.oid -> OpiskeluoikeudenTyyppi.ammatillinenkoulutus.koodiarvo
+      )
+      oppijatJaOpiskeluoikeudenTyypit should contain(
+        KoskiSpecificMockOppijat.master.oid -> OpiskeluoikeudenTyyppi.perusopetus.koodiarvo
+      )
     }
   }
 

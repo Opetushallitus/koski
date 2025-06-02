@@ -8,6 +8,7 @@ import java.time.LocalDate
 
 @Title("Vapaan sivistystyön opiskeluoikeus")
 case class SupaVapaanSivistystyönOpiskeluoikeus(
+  oppijaOid: String,
   @KoodistoKoodiarvo(OpiskeluoikeudenTyyppi.vapaansivistystyonkoulutus.koodiarvo)
   tyyppi: Koodistokoodiviite,
   oid: String,
@@ -20,8 +21,9 @@ case class SupaVapaanSivistystyönOpiskeluoikeus(
 trait SupaVapaanSivistystyönPäätasonSuoritus extends SupaSuoritus
 
 object SupaVapaanSivistystyönOpiskeluoikeus {
-  def apply(oo: VapaanSivistystyönOpiskeluoikeus): SupaVapaanSivistystyönOpiskeluoikeus =
+  def apply(oo: VapaanSivistystyönOpiskeluoikeus, oppijaOid: String): SupaVapaanSivistystyönOpiskeluoikeus =
     SupaVapaanSivistystyönOpiskeluoikeus(
+      oppijaOid = oppijaOid,
       tyyppi = oo.tyyppi,
       oid = oo.oid.get,
       koulutustoimija = oo.koulutustoimija,
