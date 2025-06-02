@@ -39,6 +39,12 @@ import {
   OsittaisenAmmatillisenTutkinnonOsanJatkoOpintovalmiuksiaTukevienOpintojenSuoritus
 } from '../types/fi/oph/koski/schema/OsittaisenAmmatillisenTutkinnonOsanJatkoOpintovalmiuksiaTukevienOpintojenSuoritus'
 import { OsittaisenAmmatillisenTutkinnonOsanJatkoOpintovalmiuksiaTukevienOpintojenSuoritusProperties } from './OsittaisenAmmatillisenTutkinnonOsanJatkoOpintovalmiuksiaTukevienOpintojenSuoritusProperties'
+import { FormField } from '../components-v2/forms/FormField'
+import {
+  LaajuusEdit,
+  LaajuusView
+} from '../components-v2/opiskeluoikeus/LaajuusField'
+import { LaajuusOsaamispisteissä } from '../types/fi/oph/koski/schema/LaajuusOsaamispisteissa'
 
 interface OsasuoritusTablesProps {
   form: FormModel<AmmatillinenOpiskeluoikeus>
@@ -160,10 +166,15 @@ const tutkinnonOsatToTableRow = <T extends string>({
   )
 
   columns.Laajuus = (
-    <>
-      {osasuoritus?.koulutusmoduuli.laajuus?.arvo}{' '}
-      {t(osasuoritus?.koulutusmoduuli.laajuus?.yksikkö.lyhytNimi)}
-    </>
+    <FormField
+      form={form}
+      view={LaajuusView}
+      edit={LaajuusEdit}
+      editProps={{
+        createLaajuus: (arvo) => LaajuusOsaamispisteissä({ arvo })
+      }}
+      path={osasuoritusPath.prop('koulutusmoduuli').prop('laajuus')}
+    />
   )
 
   if (hasArviointi(osasuoritus)) {

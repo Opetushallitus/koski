@@ -51,6 +51,8 @@ import {
 } from '../components-v2/opiskeluoikeus/KoodistoField'
 import { ArviointiEdit, ArviointiView, emptyArviointi } from './Arviointi'
 import { HenkilövahvistusValinnaisellaPaikkakunnalla } from '../types/fi/oph/koski/schema/HenkilovahvistusValinnaisellaPaikkakunnalla'
+import { LaajuusEdit, LaajuusView } from '../components-v2/opiskeluoikeus/LaajuusField'
+import { LaajuusOsaamispisteissä } from '../types/fi/oph/koski/schema/LaajuusOsaamispisteissa'
 
 type MuunOsittaisenAmmatillisenTutkinnonTutkinnonosanSuoritusPropertiesProps = {
   form: FormModel<AmmatillinenOpiskeluoikeus>
@@ -222,9 +224,20 @@ export const MuunOsittaisenAmmatillisenTutkinnonTutkinnonosanSuoritusProperties 
                 osasuoritusIndex: index,
                 columns: {
                   'Osa-alue': t(s.koulutusmoduuli.tunniste.nimi),
-                  Laajuus:
-                    s.koulutusmoduuli.laajuus &&
-                    `${s.koulutusmoduuli.laajuus?.arvo} ${t(s.koulutusmoduuli.laajuus?.yksikkö.lyhytNimi)}`,
+                  Laajuus: (
+                    <FormField
+                      form={form}
+                      view={LaajuusView}
+                      edit={LaajuusEdit}
+                      editProps={{
+                        createLaajuus: (arvo) =>
+                          LaajuusOsaamispisteissä({ arvo })
+                      }}
+                      path={osasuoritusPath
+                        .prop('koulutusmoduuli')
+                        .prop('laajuus')}
+                    />
+                  ),
                   Arvosana: <ParasArvosanaView value={s.arviointi} />
                 },
                 content: (
