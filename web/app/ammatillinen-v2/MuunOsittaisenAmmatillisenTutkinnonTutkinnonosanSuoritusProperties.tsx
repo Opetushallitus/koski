@@ -49,6 +49,7 @@ import {
   KoodistoEdit,
   KoodistoView
 } from '../components-v2/opiskeluoikeus/KoodistoField'
+import { ArviointiEdit, ArviointiView, emptyArviointi } from './Arviointi'
 
 type MuunOsittaisenAmmatillisenTutkinnonTutkinnonosanSuoritusPropertiesProps = {
   form: FormModel<AmmatillinenOpiskeluoikeus>
@@ -155,18 +156,27 @@ export const MuunOsittaisenAmmatillisenTutkinnonTutkinnonosanSuoritusProperties 
         )}
         <OsasuoritusProperty label={'Arviointi'}>
           <OsasuoritusPropertyValue>
-            <KeyValueTable>
-              <KeyValueRow localizableLabel={'Arvosana'}>
-                <FormField
-                  form={form}
-                  view={
-                    ParasArvosanaView /*TODO halutaanko pystyä editoimaan kaikki?*/
+            <FormListField
+              removable
+              form={form}
+              view={ArviointiView}
+              edit={ArviointiEdit}
+              path={osasuoritusPath.prop('arviointi')}
+            />
+            {form.editMode && (
+              <ButtonGroup>
+                <FlatButton
+                  onClick={() =>
+                    form.updateAt(
+                      osasuoritusPath.prop('arviointi').valueOr([]),
+                      append(emptyArviointi)
+                    )
                   }
-                  edit={ParasArvosanaEdit}
-                  path={osasuoritusPath.prop('arviointi')}
-                />
-              </KeyValueRow>
-            </KeyValueTable>
+                >
+                  {t('Lisää')}
+                </FlatButton>
+              </ButtonGroup>
+            )}
           </OsasuoritusPropertyValue>
         </OsasuoritusProperty>
         {(form.editMode || osasuoritus.korotettu !== undefined) && (
