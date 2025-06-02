@@ -88,6 +88,9 @@ import {
   OsasuoritusTable
 } from '../components-v2/opiskeluoikeus/OsasuoritusTable'
 import { OsasuoritusTables } from './OsasuoritusTables'
+import {
+  HenkilövahvistusValinnaisellaPaikkakunnalla
+} from '../types/fi/oph/koski/schema/HenkilovahvistusValinnaisellaPaikkakunnalla'
 
 export type AmmatillinenEditorProps =
   AdaptedOpiskeluoikeusEditorProps<AmmatillinenOpiskeluoikeus>
@@ -442,6 +445,7 @@ const AmmatillinenTutkintoOsittainenEditor: React.FC<
         suoritusPath={päätasonSuoritus.path}
         organisaatio={organisaatio}
         disableAdd={false /*TODO?*/}
+        vahvistusClass={HenkilövahvistusValinnaisellaPaikkakunnalla.className}
       />
 
       {/*TODO OpenAllButton*/}

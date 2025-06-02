@@ -46,6 +46,9 @@ import { OsasuoritusTable } from '../components-v2/opiskeluoikeus/OsasuoritusTab
 import { YhteisenTutkinnonOsanOsaAlueenSuoritusProperties } from './YhteisenTutkinnonOsanOsaAlueenSuoritusProperties'
 import React from 'react'
 import { ArviointiEdit, ArviointiView, emptyArviointi } from './Arviointi'
+import {
+  HenkilövahvistusValinnaisellaPaikkakunnalla
+} from '../types/fi/oph/koski/schema/HenkilovahvistusValinnaisellaPaikkakunnalla'
 
 type YhteisenAmmatillisenTutkinnonOsasuoritusPropertiesProps = {
   form: FormModel<AmmatillinenOpiskeluoikeus>
@@ -89,6 +92,10 @@ export const YhteisenOsittaisenAmmatillisenTutkinnonOsasuoritusProperties = ({
             path={osasuoritusPath.prop('vahvistus')}
             view={SuorituksenVahvistusView}
             edit={SuorituksenVahvistusEdit}
+            editProps={{
+              vahvistusClass:
+                HenkilövahvistusValinnaisellaPaikkakunnalla.className
+            }}
           />
         </OsasuoritusPropertyValue>
       </OsasuoritusProperty>
