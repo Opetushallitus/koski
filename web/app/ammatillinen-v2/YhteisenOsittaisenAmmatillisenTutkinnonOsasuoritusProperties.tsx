@@ -47,8 +47,10 @@ import { YhteisenTutkinnonOsanOsaAlueenSuoritusProperties } from './YhteisenTutk
 import React from 'react'
 import { ArviointiEdit, ArviointiView, emptyArviointi } from './Arviointi'
 import {
-  HenkilövahvistusValinnaisellaPaikkakunnalla
-} from '../types/fi/oph/koski/schema/HenkilovahvistusValinnaisellaPaikkakunnalla'
+  KoodistoEdit,
+  KoodistoView
+} from '../components-v2/opiskeluoikeus/KoodistoField'
+import { HenkilövahvistusValinnaisellaPaikkakunnalla } from '../types/fi/oph/koski/schema/HenkilovahvistusValinnaisellaPaikkakunnalla'
 
 type YhteisenAmmatillisenTutkinnonOsasuoritusPropertiesProps = {
   form: FormModel<AmmatillinenOpiskeluoikeus>
@@ -65,6 +67,19 @@ export const YhteisenOsittaisenAmmatillisenTutkinnonOsasuoritusProperties = ({
 }: YhteisenAmmatillisenTutkinnonOsasuoritusPropertiesProps) => {
   return (
     <>
+      {(form.editMode || osasuoritus.suorituskieli) && (
+        <OsasuoritusProperty label={'Suorituskieli'}>
+          <OsasuoritusPropertyValue>
+            <FormField
+              form={form}
+              view={KoodistoView}
+              edit={KoodistoEdit}
+              path={osasuoritusPath.prop('suorituskieli')}
+              editProps={{ koodistoUri: 'kieli', zeroValueOption: true }}
+            />
+          </OsasuoritusPropertyValue>
+        </OsasuoritusProperty>
+      )}
       <OsasuoritusProperty label={'Pakollinen'}>
         <OsasuoritusPropertyValue>
           <FormField
