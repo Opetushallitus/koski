@@ -48,6 +48,19 @@ export const YhteisenTutkinnonOsanOsaAlueenSuoritusProperties = ({
 }: YhteisenTutkinnonOsanOsaAlueenSuoritusPropertiesProps) => {
   return (
     <>
+      {(form.editMode || osasuoritus.suorituskieli) && (
+        <OsasuoritusProperty label={'Suorituskieli'}>
+          <OsasuoritusPropertyValue>
+            <FormField
+              form={form}
+              view={KoodistoView}
+              edit={KoodistoEdit}
+              path={osasuoritusPath.prop('suorituskieli')}
+              editProps={{ koodistoUri: 'kieli', zeroValueOption: true }}
+            />
+          </OsasuoritusPropertyValue>
+        </OsasuoritusProperty>
+      )}
       <OsasuoritusProperty label={'Pakollinen'}>
         <OsasuoritusPropertyValue>
           <FormField
