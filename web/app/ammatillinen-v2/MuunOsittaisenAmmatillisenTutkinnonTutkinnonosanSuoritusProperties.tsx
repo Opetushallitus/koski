@@ -50,6 +50,9 @@ import {
   KoodistoView
 } from '../components-v2/opiskeluoikeus/KoodistoField'
 import { ArviointiEdit, ArviointiView, emptyArviointi } from './Arviointi'
+import {
+  HenkilövahvistusValinnaisellaPaikkakunnalla
+} from '../types/fi/oph/koski/schema/HenkilovahvistusValinnaisellaPaikkakunnalla'
 
 type MuunOsittaisenAmmatillisenTutkinnonTutkinnonosanSuoritusPropertiesProps = {
   form: FormModel<AmmatillinenOpiskeluoikeus>
@@ -94,6 +97,10 @@ export const MuunOsittaisenAmmatillisenTutkinnonTutkinnonosanSuoritusProperties 
               path={osasuoritusPath.prop('vahvistus')}
               view={SuorituksenVahvistusView}
               edit={SuorituksenVahvistusEdit}
+              editProps={{
+                vahvistusClass:
+                  HenkilövahvistusValinnaisellaPaikkakunnalla.className
+              }}
             />
           </OsasuoritusPropertyValue>
         </OsasuoritusProperty>
