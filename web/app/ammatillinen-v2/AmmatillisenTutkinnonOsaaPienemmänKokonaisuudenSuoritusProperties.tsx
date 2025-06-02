@@ -21,15 +21,8 @@ import {
 import { ButtonGroup } from '../components-v2/containers/ButtonGroup'
 import { FlatButton } from '../components-v2/controls/FlatButton'
 import { append } from '../util/fp/arrays'
-import {
-  KeyValueRow,
-  KeyValueTable
-} from '../components-v2/containers/KeyValueTable'
-import {
-  ParasArvosanaEdit,
-  ParasArvosanaView
-} from '../components-v2/opiskeluoikeus/ArvosanaField'
 import React from 'react'
+import { ArviointiEdit, ArviointiView, emptyArviointi } from './Arviointi'
 
 type AmmatillisenTutkinnonOsaaPienemmänKokonaisuudenSuoritusPropertiesProps = {
   form: FormModel<AmmatillinenOpiskeluoikeus>
@@ -94,18 +87,27 @@ export const AmmatillisenTutkinnonOsaaPienemmänKokonaisuudenSuoritusProperties 
         )}
         <OsasuoritusProperty label={'Arviointi'}>
           <OsasuoritusPropertyValue>
-            <KeyValueTable>
-              <KeyValueRow localizableLabel={'Arvosana'}>
-                <FormField
-                  form={form}
-                  view={
-                    ParasArvosanaView /*TODO halutaanko pystyä editoimaan kaikki?*/
+            <FormListField
+              removable
+              form={form}
+              view={ArviointiView}
+              edit={ArviointiEdit}
+              path={osasuoritusPath.prop('arviointi')}
+            />
+            {form.editMode && (
+              <ButtonGroup>
+                <FlatButton
+                  onClick={() =>
+                    form.updateAt(
+                      osasuoritusPath.prop('arviointi').valueOr([]),
+                      append(emptyArviointi)
+                    )
                   }
-                  edit={ParasArvosanaEdit}
-                  path={osasuoritusPath.prop('arviointi')}
-                />
-              </KeyValueRow>
-            </KeyValueTable>
+                >
+                  {t('Lisää')}
+                </FlatButton>
+              </ButtonGroup>
+            )}
           </OsasuoritusPropertyValue>
         </OsasuoritusProperty>
       </>
