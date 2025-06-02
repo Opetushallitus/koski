@@ -45,11 +45,7 @@ import {
 import { OsasuoritusTable } from '../components-v2/opiskeluoikeus/OsasuoritusTable'
 import { YhteisenTutkinnonOsanOsaAlueenSuoritusProperties } from './YhteisenTutkinnonOsanOsaAlueenSuoritusProperties'
 import React from 'react'
-import {
-  ArviointiEdit,
-  ArviointiView,
-  emptyArviointi
-} from './OsasuoritusTables'
+import { ArviointiEdit, ArviointiView, emptyArviointi } from './Arviointi'
 
 type YhteisenAmmatillisenTutkinnonOsasuoritusPropertiesProps = {
   form: FormModel<AmmatillinenOpiskeluoikeus>
