@@ -32,16 +32,9 @@ import {
 } from './LisätietoField'
 import { ButtonGroup } from '../components-v2/containers/ButtonGroup'
 import { FlatButton } from '../components-v2/controls/FlatButton'
-import { append } from '../util/fp/arrays'
+import { append, deleteAt } from '../util/fp/arrays'
 import { NäyttöEdit, NäyttöView } from './Näyttö'
-import {
-  KeyValueRow,
-  KeyValueTable
-} from '../components-v2/containers/KeyValueTable'
-import {
-  ParasArvosanaEdit,
-  ParasArvosanaView
-} from '../components-v2/opiskeluoikeus/ArvosanaField'
+import { ParasArvosanaView } from '../components-v2/opiskeluoikeus/ArvosanaField'
 import { OsasuoritusTable } from '../components-v2/opiskeluoikeus/OsasuoritusTable'
 import { AmmatillisenTutkinnonOsaaPienemmänKokonaisuudenSuoritusProperties } from './AmmatillisenTutkinnonOsaaPienemmänKokonaisuudenSuoritusProperties'
 import React from 'react'
@@ -51,7 +44,10 @@ import {
 } from '../components-v2/opiskeluoikeus/KoodistoField'
 import { ArviointiEdit, ArviointiView, emptyArviointi } from './Arviointi'
 import { HenkilövahvistusValinnaisellaPaikkakunnalla } from '../types/fi/oph/koski/schema/HenkilovahvistusValinnaisellaPaikkakunnalla'
-import { LaajuusEdit, LaajuusView } from '../components-v2/opiskeluoikeus/LaajuusField'
+import {
+  LaajuusEdit,
+  LaajuusView
+} from '../components-v2/opiskeluoikeus/LaajuusField'
 import { LaajuusOsaamispisteissä } from '../types/fi/oph/koski/schema/LaajuusOsaamispisteissa'
 
 type MuunOsittaisenAmmatillisenTutkinnonTutkinnonosanSuoritusPropertiesProps = {
@@ -254,6 +250,14 @@ export const MuunOsittaisenAmmatillisenTutkinnonTutkinnonosanSuoritusProperties 
               }
             }) || []
           }
+          onRemove={(rowIndex) => {
+            form.updateAt(osasuoritusPath, (os) => {
+              return {
+                ...os,
+                osasuoritukset: deleteAt(os.osasuoritukset || [], rowIndex)
+              }
+            })
+          }}
         />
       </>
     )
