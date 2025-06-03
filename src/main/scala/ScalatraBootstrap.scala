@@ -4,7 +4,7 @@ import fi.oph.koski.documentation.{DocumentationApiServlet, DocumentationServlet
 import fi.oph.koski.editor.{EditorKooditServlet, EditorServlet}
 import fi.oph.koski.opensearch.OpenSearchServlet
 import fi.oph.koski.etk.ElaketurvakeskusServlet
-import fi.oph.koski.executors.GlobalExecutionContext
+import fi.oph.koski.executors.{GlobalExecutionContext, Pools}
 import fi.oph.koski.fixture.FixtureServlet
 import fi.oph.koski.frontendvalvonta.{FrontendValvontaMode, FrontendValvontaRaportointiServlet}
 import fi.oph.koski.hakemuspalvelu.HakemuspalveluServlet
@@ -16,6 +16,7 @@ import fi.oph.koski.kela.KelaServlet
 import fi.oph.koski.koskiuser._
 import fi.oph.koski.massaluovutus.MassaluovutusServlet
 import fi.oph.koski.localization.KoskiSpecificLocalizationServlet
+import fi.oph.koski.log.LogUtils.maskSensitiveInformation
 import fi.oph.koski.log.Logging
 import fi.oph.koski.luovutuspalvelu.{PalveluvaylaServlet, TilastokeskusServlet}
 import fi.oph.koski.migri.MigriServlet
@@ -59,10 +60,43 @@ import fi.oph.koski.ytl.YtlServlet
 import fi.oph.koski.ytr.download.{YtrDownloadService, YtrStatusServlet, YtrTestServlet}
 import fi.oph.koski.ytr.{YoTodistusServlet, YtrKoesuoritusApiServlet, YtrKoesuoritusServlet}
 
-import javax.servlet.ServletContext
+import javax.servlet.{FilterChain, FilterConfig, ServletContext, ServletRequest, ServletResponse}
 import org.scalatra._
 
+import javax.servlet.http.HttpServletRequest
 import scala.concurrent.Future
+
+class RequestStartLoggingFilter extends javax.servlet.Filter with Logging {
+  override def doFilter(
+                         request: ServletRequest,
+                         response: ServletResponse,
+                         chain: FilterChain
+                       ): Unit = {
+    request match {
+      case httpReq: HttpServletRequest =>
+        val rawHeader = httpReq.getHeader("X-Forwarded-For")
+        val clientIp = Option(rawHeader)
+          .map(_.split(",").head.trim)
+          .getOrElse(request.getRemoteAddr)
+
+        logger.info(maskSensitiveInformation(s"[START] ${clientIp} ${httpReq.getMethod} ${httpReq.getRequestURI}, active count: ${Pools.globalPoolExecutor.getActiveCount}"))
+        try {
+          chain.doFilter(request, response)
+        } catch {
+          case t: Throwable =>
+            logger.info(s"[ERROR] Filter or downstream failed: ${t.getMessage}")
+            throw t
+        } finally {
+          logger.info(maskSensitiveInformation(s"[END] ${clientIp} ${httpReq.getMethod} ${httpReq.getRequestURI}, active count: ${Pools.globalPoolExecutor.getActiveCount}"))
+        }
+      case _ =>
+        chain.doFilter(request, response)
+    }
+  }
+
+  override def init(filterConfig: FilterConfig): Unit = {}
+  override def destroy(): Unit = {}
+}
 
 class ScalatraBootstrap extends LifeCycle with Logging with Timing with GlobalExecutionContext {
   override def init(context: ServletContext): Unit = try {
@@ -220,6 +254,9 @@ class ScalatraBootstrap extends LifeCycle with Logging with Timing with GlobalEx
     }
 
     Futures.await(initTasks) // await for all initialization tasks to complete
+
+    context.addFilter("request-logger", new RequestStartLoggingFilter)
+      .addMappingForUrlPatterns(null, true, "/*")
 
     if (application.fixtureCreator.shouldUseFixtures) {
       context.mount(new FixtureServlet, "/koski/fixtures")
