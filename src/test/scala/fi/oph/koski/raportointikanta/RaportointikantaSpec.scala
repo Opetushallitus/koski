@@ -816,14 +816,18 @@ class RaportointikantaSpec
             )),
             tuenPäätöksenJaksot = Some(List(
               Tukijakso(Some(LocalDate.of(2017, 2, 28)), Some(LocalDate.of(2017, 4, 30)))
+            )),
+            opetuksenJärjestäminenVammanSairaudenTaiRajoitteenPerusteella = Some(List(
+              Aikajakso(LocalDate.of(2017, 3, 15), Some(LocalDate.of(2017, 4, 30)))
             ))
           ))
         )
         val aikajaksoRows = AikajaksoRowBuilder.buildROpiskeluoikeusAikajaksoRows(oid, opiskeluoikeus)
         aikajaksoRows should equal(Seq(
           ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2017-01-01"), Date.valueOf("2017-02-27"), "lasna", Date.valueOf("2017-01-01"), vaikeastiVammainen = true),
-          ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2017-02-28"), Date.valueOf("2017-03-31"), "lasna", Date.valueOf("2017-01-01"), vaikeastiVammainen = true, tuenPäätöksenJakso = true),
-          ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2017-04-01"), Date.valueOf("2017-04-30"), "lasna", Date.valueOf("2017-01-01"), tuenPäätöksenJakso = true),
+          ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2017-02-28"), Date.valueOf("2017-03-14"), "lasna", Date.valueOf("2017-01-01"), vaikeastiVammainen = true, tuenPäätöksenJakso = true),
+          ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2017-03-15"), Date.valueOf("2017-03-31"), "lasna", Date.valueOf("2017-01-01"), vaikeastiVammainen = true, tuenPäätöksenJakso = true, opetuksenJärjestäminenVammanSairaudenTaiRajoitteenPerusteella = true),
+          ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2017-04-01"), Date.valueOf("2017-04-30"), "lasna", Date.valueOf("2017-01-01"), tuenPäätöksenJakso = true, opetuksenJärjestäminenVammanSairaudenTaiRajoitteenPerusteella = true),
           ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2017-05-01"), Date.valueOf(AikajaksoRowBuilder.IndefiniteFuture), "lasna", Date.valueOf("2017-01-01"))
         ))
       }
