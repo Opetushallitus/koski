@@ -105,20 +105,6 @@ export const YhteisenOsittaisenAmmatillisenTutkinnonOsasuoritusProperties = ({
           />
         </OsasuoritusPropertyValue>
       </OsasuoritusProperty>
-      <OsasuoritusProperty label={'Vahvistus'}>
-        <OsasuoritusPropertyValue>
-          <FormField
-            form={form}
-            path={osasuoritusPath.prop('vahvistus')}
-            view={SuorituksenVahvistusView}
-            edit={SuorituksenVahvistusEdit}
-            editProps={{
-              vahvistusClass:
-                HenkilövahvistusValinnaisellaPaikkakunnalla.className
-            }}
-          />
-        </OsasuoritusPropertyValue>
-      </OsasuoritusProperty>
       {(form.editMode || osasuoritus.tunnustettu) && (
         <OsasuoritusProperty label={'Tunnustettu'}>
           <OsasuoritusPropertyValue>
