@@ -10,7 +10,7 @@ import {
   OsasuoritusRowData,
   OsasuoritusTable
 } from '../components-v2/opiskeluoikeus/OsasuoritusTable'
-import { t } from '../i18n/i18n'
+import { finnish, t } from '../i18n/i18n'
 import { ActivePäätasonSuoritus } from '../components-v2/containers/EditorContainer'
 import {
   AmmatillinenArviointi,
@@ -45,6 +45,10 @@ import {
   LaajuusView
 } from '../components-v2/opiskeluoikeus/LaajuusField'
 import { LaajuusOsaamispisteissä } from '../types/fi/oph/koski/schema/LaajuusOsaamispisteissa'
+import { KoodistoSelect } from '../components-v2/opiskeluoikeus/KoodistoSelect'
+import { YhteinenTutkinnonOsa } from '../types/fi/oph/koski/schema/YhteinenTutkinnonOsa'
+import { deleteAt } from '../util/fp/arrays'
+import { Koodistokoodiviite } from '../types/fi/oph/koski/schema/Koodistokoodiviite'
 
 interface OsasuoritusTablesProps {
   form: FormModel<AmmatillinenOpiskeluoikeus>
@@ -98,34 +102,76 @@ interface TableProps {
   ryhmä: string
 }
 
+const dummyRow = <T extends string>(
+  ryhmä: T
+): OsasuoritusRowData<T | 'Laajuus' | 'Arvosana'> => {
+  const columns: Partial<Record<'Laajuus' | 'Arvosana' | T, ReactNode>> = {}
+  columns[ryhmä] = null
+  columns.Laajuus = null
+  columns.Arvosana = null
+
+  return {
+    suoritusIndex: 0,
+    osasuoritusIndex: 0,
+    expandable: false,
+    columns
+  }
+}
+
 const TableForTutkinnonOsaRyhmä = ({
   form,
   osittainenPäätasonSuoritus,
   ryhmä
 }: TableProps) => {
+  const originalIndexMap: Record<number, number> = {}
+
+  const rows = osittainenPäätasonSuoritus.suoritus.osasuoritukset
+    ?.map((s, originalIndex) => ({ s, originalIndex }))
+    .filter(
+      ({ s }) =>
+        (s.tutkinnonOsanRyhmä?.nimi as Finnish | undefined)?.fi === ryhmä ||
+        (s.tutkinnonOsanRyhmä === undefined && ryhmä === 'Muut suoritukset')
+    )
+    .map(({ s, originalIndex }, rowIndex) => {
+      originalIndexMap[rowIndex] = originalIndex
+      return tutkinnonOsatToTableRow({
+        suoritusIndex: osittainenPäätasonSuoritus.index,
+        osasuoritusIndex: originalIndex,
+        suoritusPath: osittainenPäätasonSuoritus.path,
+        form,
+        level: 0,
+        tutkinnonOsaRyhmä: ryhmä
+      })
+    })
+
   return (
     <OsasuoritusTable
       editMode={form.editMode}
       rows={
-        osittainenPäätasonSuoritus.suoritus.osasuoritukset
-          ?.map((s, originalIndex) => ({ s, originalIndex }))
-          .filter(
-            ({ s }) =>
-              (s.tutkinnonOsanRyhmä?.nimi as Finnish | undefined)?.fi ===
-                ryhmä ||
-              (s.tutkinnonOsanRyhmä === undefined &&
-                ryhmä === 'Muut suoritukset')
-          )
-          .map(({ s, originalIndex }) =>
-            tutkinnonOsatToTableRow({
-              suoritusIndex: osittainenPäätasonSuoritus.index,
-              osasuoritusIndex: originalIndex,
-              suoritusPath: osittainenPäätasonSuoritus.path,
-              form,
-              level: 0,
-              tutkinnonOsaRyhmä: ryhmä
-            })
-          ) || []
+        (!rows || rows?.length === 0) && form.editMode
+          ? [dummyRow(ryhmä)] // Saadaan headeri näkymään editointimoodissa kun osasuorituksia ei ole
+          : rows || []
+      }
+      addNewOsasuoritusView={() => (
+        <NewAmisOsasuoritus
+          form={form}
+          ryhmä={ryhmä}
+          suoritusPath={osittainenPäätasonSuoritus.path}
+        />
+      )}
+      onRemove={
+        !rows || rows?.length === 0
+          ? undefined
+          : (rowIndex) =>
+              form.updateAt(osittainenPäätasonSuoritus.path, (pts) => {
+                return {
+                  ...pts,
+                  osasuoritukset: deleteAt(
+                    pts.osasuoritukset || [],
+                    originalIndexMap[rowIndex]
+                  )
+                }
+              })
       }
     />
   )
@@ -200,6 +246,87 @@ type WithArviointi = {
 const hasArviointi = (suoritus: unknown): suoritus is WithArviointi => {
   const arviointi = (suoritus as any)?.arviointi
   return Array.isArray(arviointi) && isAmmatillinenArviointi(arviointi[0])
+}
+
+// TODO hae constraints rajapinnasta, perusteesta, tjs...
+const yhteisenTutkinnonOsat = [
+  '101053',
+  '101054',
+  '101055',
+  '101056',
+  '106727',
+  '106728',
+  '106729',
+  '400012',
+  '400013',
+  '400014',
+  '600001',
+  '600002'
+]
+
+type YhteisenTutkinnonOsatTunniste = Koodistokoodiviite<
+  'tutkinnonosat',
+  | '101053'
+  | '101054'
+  | '101055'
+  | '101056'
+  | '106727'
+  | '106728'
+  | '106729'
+  | '400012'
+  | '400013'
+  | '400014'
+  | '600001'
+  | '600002'
+>
+
+const newYhteinenTutkinnonOsa = (tunniste: YhteisenTutkinnonOsatTunniste) => {
+  return YhteisenOsittaisenAmmatillisenTutkinnonTutkinnonosanSuoritus({
+    koulutusmoduuli: YhteinenTutkinnonOsa({ tunniste, pakollinen: true }),
+    tutkinnonOsanRyhmä: Koodistokoodiviite({
+      koodistoUri: 'ammatillisentutkinnonosanryhma',
+      koodiarvo: '2',
+      nimi: finnish('Yhteiset tutkinnon osat')
+    })
+  })
+}
+
+type NewAmisOsasuoritusProps = {
+  form: FormModel<AmmatillinenOpiskeluoikeus>
+  ryhmä: string
+  suoritusPath: FormOptic<
+    AmmatillinenOpiskeluoikeus,
+    AmmatillisenTutkinnonOsittainenSuoritus
+  >
+}
+
+const NewAmisOsasuoritus = ({
+  form,
+  ryhmä,
+  suoritusPath
+}: NewAmisOsasuoritusProps) => {
+  if (ryhmä === 'Yhteiset tutkinnon osat') {
+    return (
+      <>
+        <KoodistoSelect
+          addNewText={'Lisää tutkinnon osa'}
+          koodistoUri="tutkinnonosat"
+          format={(osa) => osa.koodiarvo + ' ' + t(osa.nimi)}
+          filter={(osa) => yhteisenTutkinnonOsat.includes(osa.koodiarvo)}
+          onSelect={(tunniste) => {
+            const yhteinenTunniste = tunniste as YhteisenTutkinnonOsatTunniste
+            tunniste &&
+              form.updateAt(
+                suoritusPath.prop('osasuoritukset').valueOr([]),
+                (a) => [...a, newYhteinenTutkinnonOsa(yhteinenTunniste)]
+              )
+          }}
+          testId="uusi-yhteinen-tutkinnonosa"
+        />
+      </>
+    )
+  }
+  return null
 }
 
 type OsasuoritusPropertiesProps = {
