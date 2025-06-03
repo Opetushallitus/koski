@@ -88,9 +88,8 @@ import {
   OsasuoritusTable
 } from '../components-v2/opiskeluoikeus/OsasuoritusTable'
 import { OsasuoritusTables } from './OsasuoritusTables'
-import {
-  HenkilövahvistusValinnaisellaPaikkakunnalla
-} from '../types/fi/oph/koski/schema/HenkilovahvistusValinnaisellaPaikkakunnalla'
+import { HenkilövahvistusValinnaisellaPaikkakunnalla } from '../types/fi/oph/koski/schema/HenkilovahvistusValinnaisellaPaikkakunnalla'
+import { OpenAllButton, useTree } from '../appstate/tree'
 
 export type AmmatillinenEditorProps =
   AdaptedOpiskeluoikeusEditorProps<AmmatillinenOpiskeluoikeus>
@@ -423,39 +422,44 @@ const AmmatillinenTutkintoOsittainenEditor: React.FC<
     seed: UusiOpiskeluoikeusjakso<AmmatillinenOpiskeluoikeusjakso>
   ) => AmmatillinenOpiskeluoikeusjakso(seed)
 
+  const { TreeNode, ...tree } = useTree()
+
   return (
-    <EditorContainer
-      form={props.form}
-      oppijaOid={props.oppijaOid}
-      invalidatable={props.invalidatable}
-      onChangeSuoritus={setPäätasonSuoritus}
-      testId={päätasonSuoritus.testId}
-      createOpiskeluoikeusjakso={createAmmatillinenOpiskeluoikeusJakso}
-      lisätiedotContainer={AmmatillinenLisatiedot}
-    >
-      <AmmatillisPääsuorituksenTiedot
+    <TreeNode>
+      <EditorContainer
         form={props.form}
-        päätasonSuoritus={osittainenPäätasonSuoritus}
-      />
+        oppijaOid={props.oppijaOid}
+        invalidatable={props.invalidatable}
+        onChangeSuoritus={setPäätasonSuoritus}
+        testId={päätasonSuoritus.testId}
+        createOpiskeluoikeusjakso={createAmmatillinenOpiskeluoikeusJakso}
+        lisätiedotContainer={AmmatillinenLisatiedot}
+      >
+        <AmmatillisPääsuorituksenTiedot
+          form={props.form}
+          päätasonSuoritus={osittainenPäätasonSuoritus}
+        />
 
-      <Spacer />
+        <Spacer />
 
-      <SuorituksenVahvistusField
-        form={props.form}
-        suoritusPath={päätasonSuoritus.path}
-        organisaatio={organisaatio}
-        disableAdd={false /*TODO?*/}
-        vahvistusClass={HenkilövahvistusValinnaisellaPaikkakunnalla.className}
-      />
+        <SuorituksenVahvistusField
+          form={props.form}
+          suoritusPath={päätasonSuoritus.path}
+          organisaatio={organisaatio}
+          disableAdd={false /*TODO?*/}
+          vahvistusClass={HenkilövahvistusValinnaisellaPaikkakunnalla.className}
+        />
 
-      {/*TODO OpenAllButton*/}
-      <Spacer />
+        <Spacer />
+        <OpenAllButton {...tree} />
+        <Spacer />
 
-      <OsasuoritusTables
-        form={props.form}
-        osittainenPäätasonSuoritus={osittainenPäätasonSuoritus}
-      />
-    </EditorContainer>
+        <OsasuoritusTables
+          form={props.form}
+          osittainenPäätasonSuoritus={osittainenPäätasonSuoritus}
+        />
+      </EditorContainer>
+    </TreeNode>
   )
 }
 
