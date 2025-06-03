@@ -10,8 +10,12 @@ import {
   YhteisenTutkinnonOsanOsaAlueenSuoritus
 } from '../types/fi/oph/koski/schema/YhteisenTutkinnonOsanOsaAlueenSuoritus'
 import { FormField } from '../components-v2/forms/FormField'
-import { LaajuusEdit, LaajuusView } from '../components-v2/opiskeluoikeus/LaajuusField'
+import {
+  LaajuusEdit,
+  LaajuusView
+} from '../components-v2/opiskeluoikeus/LaajuusField'
 import { LaajuusOsaamispisteissä } from '../types/fi/oph/koski/schema/LaajuusOsaamispisteissa'
+import { deleteAt } from '../util/fp/arrays'
 
 export type OsittaisenAmmatillisenTutkinnonOsanJatkoOpintovalmiuksiaTukevienOpintojenSuoritusPropertiesProps =
   {
@@ -64,6 +68,14 @@ export const OsittaisenAmmatillisenTutkinnonOsanJatkoOpintovalmiuksiaTukevienOpi
               }
             }) || []
           }
+          onRemove={(rowIndex) => {
+            form.updateAt(osasuoritusPath, (os) => {
+              return {
+                ...os,
+                osasuoritukset: deleteAt(os.osasuoritukset || [], rowIndex)
+              }
+            })
+          }}
         />
       </>
     )

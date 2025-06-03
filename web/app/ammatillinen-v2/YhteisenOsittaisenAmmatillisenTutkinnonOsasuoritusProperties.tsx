@@ -15,10 +15,6 @@ import {
   OrganisaatioView
 } from '../components-v2/opiskeluoikeus/OrganisaatioField'
 import {
-  SuorituksenVahvistusEdit,
-  SuorituksenVahvistusView
-} from '../components-v2/opiskeluoikeus/SuorituksenVahvistus'
-import {
   OsaamisenTunnustusView,
   TunnustusEdit
 } from '../components-v2/opiskeluoikeus/TunnustusField'
@@ -32,16 +28,9 @@ import {
 } from './LisätietoField'
 import { ButtonGroup } from '../components-v2/containers/ButtonGroup'
 import { FlatButton } from '../components-v2/controls/FlatButton'
-import { append } from '../util/fp/arrays'
+import { append, deleteAt } from '../util/fp/arrays'
 import { NäyttöEdit, NäyttöView } from './Näyttö'
-import {
-  KeyValueRow,
-  KeyValueTable
-} from '../components-v2/containers/KeyValueTable'
-import {
-  ParasArvosanaEdit,
-  ParasArvosanaView
-} from '../components-v2/opiskeluoikeus/ArvosanaField'
+import { ParasArvosanaView } from '../components-v2/opiskeluoikeus/ArvosanaField'
 import { OsasuoritusTable } from '../components-v2/opiskeluoikeus/OsasuoritusTable'
 import { YhteisenTutkinnonOsanOsaAlueenSuoritusProperties } from './YhteisenTutkinnonOsanOsaAlueenSuoritusProperties'
 import React from 'react'
@@ -50,7 +39,6 @@ import {
   KoodistoEdit,
   KoodistoView
 } from '../components-v2/opiskeluoikeus/KoodistoField'
-import { HenkilövahvistusValinnaisellaPaikkakunnalla } from '../types/fi/oph/koski/schema/HenkilovahvistusValinnaisellaPaikkakunnalla'
 import {
   LaajuusEdit,
   LaajuusView
@@ -225,6 +213,14 @@ export const YhteisenOsittaisenAmmatillisenTutkinnonOsasuoritusProperties = ({
             }
           }) || []
         }
+        onRemove={(rowIndex) => {
+          form.updateAt(osasuoritusPath, (os) => {
+            return {
+              ...os,
+              osasuoritukset: deleteAt(os.osasuoritukset || [], rowIndex)
+            }
+          })
+        }}
       />
     </>
   )
