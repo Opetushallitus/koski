@@ -1,7 +1,7 @@
 package fi.oph.koski.http
 
 import cats.effect.IO
-import cats.effect.unsafe.implicits.global
+import cats.effect.unsafe.{IORuntime, IORuntimeConfig}
 import fi.oph.koski.executors.Pools
 import fi.oph.koski.http.Http.{Decode, ParameterizedUriWrapper, UriInterpolator}
 import fi.oph.koski.http.RetryMiddleware.{DefaultBackoffPolicy, retryNonIdempotentRequests, withLoggedRetry}
@@ -25,6 +25,14 @@ import scala.util.{Failure, Success, Try}
 import scala.xml.Elem
 
 object Http extends Logging {
+  private implicit val ioPool: IORuntime = IORuntime(
+    compute = Pools.httpComputeExecutor,
+    blocking = Pools.httpBlockingExecutor,
+    scheduler = IORuntime.createDefaultScheduler()._1,
+    shutdown = () => (), // Will live forever
+    config = IORuntimeConfig()
+  )
+
   private val maxHttpConnections = Pools.httpThreads
 
   type ClientConfigFn = BlazeClientBuilder[IO] => BlazeClientBuilder[IO]
