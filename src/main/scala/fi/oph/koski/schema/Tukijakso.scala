@@ -1,8 +1,6 @@
 package fi.oph.koski.schema
 
-import fi.oph.koski.koskiuser.Rooli
-import fi.oph.koski.schema.annotation.{Deprecated, KoodistoUri, OksaUri, RedundantData, SensitiveData, Tooltip}
-import fi.oph.scalaschema.annotation.{Description, Title}
+import fi.oph.scalaschema.annotation.Description
 
 import java.time.LocalDate
 

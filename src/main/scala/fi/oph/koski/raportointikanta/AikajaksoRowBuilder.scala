@@ -175,6 +175,9 @@ object AikajaksoRowBuilder {
         },
         ulkomaanjakso = lisätietoVoimassaPäivänä {
           case l: UlkomaanaikajaksojaSisältävä => Some(l.kaikkiUlkomaanaikajaksot)
+        },
+        tuenPäätöksenJakso = lisätietoVoimassaPäivänä {
+          case l: Tukipäätöksellinen => Some(l.kaikkiTuenPäätöksenJaksot)
         }
       ))
       // Note: When adding something here, remember to update aikajaksojenAlkupäivät (below), too
@@ -327,6 +330,10 @@ object AikajaksoRowBuilder {
       .flatMap(päätös => päätös.alku.map(Aikajakso(_, päätös.loppu)))
   }
 
+  private def aikajaksotTukijaksoista(tukijaksot: Option[List[Tukijakso]]): List[Aikajakso] = {
+    tukijaksot.toList.flatten.flatMap(tukijakso => tukijakso.alku.map(Aikajakso(_, tukijakso.loppu)))
+  }
+
   private def aikajaksotTuvaErityisenTuenPäätöksistä(
     erityisenTuenPäätökset: Option[List[TuvaErityisenTuenPäätös]]
   ): List[Aikajakso] = {
@@ -379,7 +386,7 @@ object AikajaksoRowBuilder {
           pol.joustavaPerusopetus,
           pol.kotiopetus
         ).flatten ++ aikajaksotErityisenTuenPäätöksistä(pol.erityisenTuenPäätös, pol.erityisenTuenPäätökset) ++
-          pol.kaikkiUlkomaanaikajaksot
+          pol.kaikkiUlkomaanaikajaksot ++ aikajaksotTukijaksoista(pol.tuenPäätöksenJaksot)
       case poll: PerusopetuksenLisäopetuksenOpiskeluoikeudenLisätiedot =>
         toSeq(
           poll.sisäoppilaitosmainenMajoitus,

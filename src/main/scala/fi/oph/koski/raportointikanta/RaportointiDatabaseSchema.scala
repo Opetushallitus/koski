@@ -144,6 +144,7 @@ object RaportointiDatabaseSchema {
     val oikeuttaMaksuttomuuteenPidennetty = column[Boolean]("oikeutta_maksuttomuuteen_pidennetty")
     val kotiopetus = column[Boolean]("kotiopetus")
     val ulkomaanjakso = column[Boolean]("ulkomaanjakso")
+    val tuenPäätöksenJakso = column[Boolean]("tuen_paatoksen_jakso")
 
     def * = (
       opiskeluoikeusOid ::
@@ -179,6 +180,7 @@ object RaportointiDatabaseSchema {
       oikeuttaMaksuttomuuteenPidennetty ::
       kotiopetus ::
       ulkomaanjakso ::
+      tuenPäätöksenJakso ::
       id ::
       HNil
     ).mappedWith(Generic[ROpiskeluoikeusAikajaksoRow])
@@ -713,64 +715,65 @@ case class ROpiskeluoikeusRow(
 }
 
 case class RMitätöityOpiskeluoikeusRow(
-                                        opiskeluoikeusOid: String,
-                                        versionumero: Int,
-                                        aikaleima: Timestamp,
-                                        oppijaOid: String,
-                                        mitätöity: Option[LocalDate],
-                                        suostumusPeruttu: Option[LocalDate],
-                                        tyyppi: String,
-                                        päätasonSuoritusTyypit: List[String],
-                                        oppilaitosOid: Option[String],
-                                        oppilaitoksenNimi: Option[String],
-                                        koulutustoimijaOid: Option[String],
-                                        koulutustoimijanNimi: Option[String],
-                                      )
+  opiskeluoikeusOid: String,
+  versionumero: Int,
+  aikaleima: Timestamp,
+  oppijaOid: String,
+  mitätöity: Option[LocalDate],
+  suostumusPeruttu: Option[LocalDate],
+  tyyppi: String,
+  päätasonSuoritusTyypit: List[String],
+  oppilaitosOid: Option[String],
+  oppilaitoksenNimi: Option[String],
+  koulutustoimijaOid: Option[String],
+  koulutustoimijanNimi: Option[String],
+)
 
 case class ROrganisaatioHistoriaRow(
-                                     opiskeluoikeusOid: String,
-                                     oppilaitosOid: Option[String],
-                                     koulutustoimijaOid: Option[String],
-                                     alku: LocalDate,
-                                     loppu: LocalDate
-                                   )
+  opiskeluoikeusOid: String,
+  oppilaitosOid: Option[String],
+  koulutustoimijaOid: Option[String],
+  alku: LocalDate,
+  loppu: LocalDate
+)
 
 case class ROpiskeluoikeusAikajaksoRow(
-                                        opiskeluoikeusOid: String,
-                                        alku: Date,
-                                        loppu: Date,
-                                        tila: String,
-                                        tilaAlkanut: Date,
-                                        opiskeluoikeusPäättynyt: Boolean = false,
-                                        opintojenRahoitus: Option[String] = None,
-                                        erityisenKoulutusTehtävänJaksoTehtäväKoodiarvo: Option[String] = None,
-                                        ulkomainenVaihtoopiskelija: Boolean = false,
-                                        majoitus: Boolean = false,
-                                        majoitusetu: Boolean = false,
-                                        kuljetusetu: Boolean = false,
-                                        sisäoppilaitosmainenMajoitus: Boolean = false,
-                                        vaativanErityisenTuenYhteydessäJärjestettäväMajoitus: Boolean = false,
-                                        erityinenTuki: Boolean = false,
-                                        vaativanErityisenTuenErityinenTehtävä: Boolean = false,
-                                        hojks: Boolean = false,
-                                        vammainen: Boolean = false,
-                                        vaikeastiVammainen: Boolean = false,
-                                        vammainenJaAvustaja: Boolean = false,
-                                        osaAikaisuus: Byte = 100,
-                                        opiskeluvalmiuksiaTukevatOpinnot: Boolean = false,
-                                        vankilaopetuksessa: Boolean = false,
-                                        oppisopimusJossainPäätasonSuorituksessa: Boolean = false,
-                                        pidennettyOppivelvollisuus: Boolean = false,
-                                        joustavaPerusopetus: Boolean = false,
-                                        koulukoti: Boolean = false,
-                                        oppimääränSuorittaja: Boolean = false,
-                                        maksuton: Option[Boolean] = None,
-                                        maksullinen: Option[Boolean] = None,
-                                        oikeuttaMaksuttomuuteenPidennetty: Boolean = false,
-                                        kotiopetus: Boolean = false,
-                                        ulkomaanjakso: Boolean = false,
-                                        id: Long = 0
-                                      ) extends AikajaksoRow[ROpiskeluoikeusAikajaksoRow] {
+  opiskeluoikeusOid: String,
+  alku: Date,
+  loppu: Date,
+  tila: String,
+  tilaAlkanut: Date,
+  opiskeluoikeusPäättynyt: Boolean = false,
+  opintojenRahoitus: Option[String] = None,
+  erityisenKoulutusTehtävänJaksoTehtäväKoodiarvo: Option[String] = None,
+  ulkomainenVaihtoopiskelija: Boolean = false,
+  majoitus: Boolean = false,
+  majoitusetu: Boolean = false,
+  kuljetusetu: Boolean = false,
+  sisäoppilaitosmainenMajoitus: Boolean = false,
+  vaativanErityisenTuenYhteydessäJärjestettäväMajoitus: Boolean = false,
+  erityinenTuki: Boolean = false,
+  vaativanErityisenTuenErityinenTehtävä: Boolean = false,
+  hojks: Boolean = false,
+  vammainen: Boolean = false,
+  vaikeastiVammainen: Boolean = false,
+  vammainenJaAvustaja: Boolean = false,
+  osaAikaisuus: Byte = 100,
+  opiskeluvalmiuksiaTukevatOpinnot: Boolean = false,
+  vankilaopetuksessa: Boolean = false,
+  oppisopimusJossainPäätasonSuorituksessa: Boolean = false,
+  pidennettyOppivelvollisuus: Boolean = false,
+  joustavaPerusopetus: Boolean = false,
+  koulukoti: Boolean = false,
+  oppimääränSuorittaja: Boolean = false,
+  maksuton: Option[Boolean] = None,
+  maksullinen: Option[Boolean] = None,
+  oikeuttaMaksuttomuuteenPidennetty: Boolean = false,
+  kotiopetus: Boolean = false,
+  ulkomaanjakso: Boolean = false,
+  tuenPäätöksenJakso: Boolean = false,
+  id: Long = 0
+) extends AikajaksoRow[ROpiskeluoikeusAikajaksoRow] {
   def truncateToDates(start: Date, end: Date): ROpiskeluoikeusAikajaksoRow = this.copy(
     alku = if (alku.after(start)) alku else start,
     loppu = if (loppu.before(end)) loppu else end
