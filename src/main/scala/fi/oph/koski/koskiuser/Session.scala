@@ -200,7 +200,7 @@ class KoskiSpecificSession(
 object KoskiSpecificSession extends Logging {
   def apply(user: AuthenticationUser, request: RichRequest, käyttöoikeudet: KäyttöoikeusRepository): KoskiSpecificSession = {
     val activeCount = Pools.globalPoolExecutor.getActiveCount
-    if (activeCount > 200) {
+    if (activeCount > 100) {
       val trace = Thread.currentThread().getStackTrace.toList.map(_.toString).mkString("\n    ")
       logger.info(s"START: KoskiSpecificSession.apply ${user.username}, active count: ${activeCount}, thread: ${Thread.currentThread().getName}, stack trace:\n    ${trace}")
     } else {
