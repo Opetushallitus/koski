@@ -9,6 +9,7 @@ import java.time.LocalDate
 
 @Title("EB-tutkinnon opiskeluoikeus")
 case class SupaEBOpiskeluoikeus(
+  oppijaOid: String,
   @KoodistoKoodiarvo(OpiskeluoikeudenTyyppi.ebtutkinto.koodiarvo)
   tyyppi: Koodistokoodiviite,
   oid: String,
@@ -19,8 +20,9 @@ case class SupaEBOpiskeluoikeus(
 ) extends SupaOpiskeluoikeus
 
 object SupaEBOpiskeluoikeus {
-  def apply(oo: EBOpiskeluoikeus): SupaEBOpiskeluoikeus =
+  def apply(oo: EBOpiskeluoikeus, oppijaOid: String): SupaEBOpiskeluoikeus =
     SupaEBOpiskeluoikeus(
+      oppijaOid = oppijaOid,
       tyyppi = oo.tyyppi,
       oid = oo.oid.get,
       koulutustoimija = oo.koulutustoimija,

@@ -10,6 +10,7 @@ import java.time.LocalDate
 
 @Title("DIA-tutkinnon opiskeluoikeus")
 case class SupaDIAOpiskeluoikeus(
+  oppijaOid: String,
   @KoodistoKoodiarvo(OpiskeluoikeudenTyyppi.diatutkinto.koodiarvo)
   tyyppi: Koodistokoodiviite,
   oid: String,
@@ -20,9 +21,10 @@ case class SupaDIAOpiskeluoikeus(
 ) extends SupaOpiskeluoikeus
 
 object SupaDIAOpiskeluoikeus {
-  def apply(oo: DIAOpiskeluoikeus): Option[SupaDIAOpiskeluoikeus] =
+  def apply(oo: DIAOpiskeluoikeus, oppijaOid: String): Option[SupaDIAOpiskeluoikeus] =
     when (isValmistunut(oo)) {
       SupaDIAOpiskeluoikeus(
+        oppijaOid = oppijaOid,
         tyyppi = oo.tyyppi,
         oid = oo.oid.get,
         koulutustoimija = oo.koulutustoimija,

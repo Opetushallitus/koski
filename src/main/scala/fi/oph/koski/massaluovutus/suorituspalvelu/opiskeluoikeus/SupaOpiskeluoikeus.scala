@@ -7,6 +7,9 @@ import fi.oph.scalaschema.annotation.{Description, Discriminator}
 import java.time.LocalDate
 
 trait SupaOpiskeluoikeus {
+  @Description("Oppijan yksilöivä tunniste, jolla kyseinen opiskeluoikeus on tallennettu Koski-tietovarantoon.")
+  def oppijaOid: String
+
   @Description("Opiskeluoikeuden tyyppi, jolla erotellaan eri koulutusmuotoihin (perusopetus, lukio, ammatillinen...) liittyvät opiskeluoikeudet")
   @KoodistoUri("opiskeluoikeudentyyppi")
   @Discriminator

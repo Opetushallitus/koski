@@ -74,7 +74,7 @@ trait SuorituspalveluQuery extends MassaluovutusQueryParameters with Logging {
     val json = KoskiTables.KoskiOpiskeluoikeusTable.readAsJValue(row.data, row.oid, row.versionumero, row.aikaleima)
     application.validatingAndResolvingExtractor.extract[KoskeenTallennettavaOpiskeluoikeus](KoskiSchema.strictDeserialization)(json) match {
       case Right(oo: KoskeenTallennettavaOpiskeluoikeus) =>
-        SupaOpiskeluoikeusO(oo)
+        SupaOpiskeluoikeusO(oo, row.oppijaOid)
       case Left(errors) =>
         logger.warn(s"Error deserializing opiskeluoikeus: ${errors}")
         None

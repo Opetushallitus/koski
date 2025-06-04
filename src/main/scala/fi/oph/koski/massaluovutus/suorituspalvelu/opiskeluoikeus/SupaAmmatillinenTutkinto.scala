@@ -9,6 +9,7 @@ import java.time.LocalDate
 @Title("Ammatillinen opiskeluoikeus")
 @Description("Ammatillisen koulutuksen opiskeluoikeus")
 case class SupaAmmatillinenOpiskeluoikeus(
+  oppijaOid: String,
   @KoodistoKoodiarvo(OpiskeluoikeudenTyyppi.ammatillinenkoulutus.koodiarvo)
   tyyppi: Koodistokoodiviite,
   oid: String,
@@ -19,8 +20,9 @@ case class SupaAmmatillinenOpiskeluoikeus(
 ) extends SupaOpiskeluoikeus
 
 object SupaAmmatillinenTutkinto {
-  def apply(oo: AmmatillinenOpiskeluoikeus): SupaAmmatillinenOpiskeluoikeus =
+  def apply(oo: AmmatillinenOpiskeluoikeus, oppijaOid: String): SupaAmmatillinenOpiskeluoikeus =
     SupaAmmatillinenOpiskeluoikeus(
+      oppijaOid = oppijaOid,
       tyyppi = oo.tyyppi,
       oid = oo.oid.get,
       koulutustoimija = oo.koulutustoimija,
