@@ -199,7 +199,13 @@ class KoskiSpecificSession(
 
 object KoskiSpecificSession extends Logging {
   def apply(user: AuthenticationUser, request: RichRequest, käyttöoikeudet: KäyttöoikeusRepository): KoskiSpecificSession = {
-    logger.info(s"START: KoskiSpecificSession.apply ${user.username}, active count: ${Pools.globalPoolExecutor.getActiveCount}")
+    val activeCount = Pools.globalPoolExecutor.getActiveCount
+    if (activeCount > 200) {
+      val trace = Thread.currentThread().getStackTrace.toList.map(_.toString).mkString("\n    ")
+      logger.info(s"START: KoskiSpecificSession.apply ${user.username}, active count: ${activeCount}, thread: ${Thread.currentThread().getName}, stack trace:\n    ${trace}")
+    } else {
+      logger.info(s"START: KoskiSpecificSession.apply ${user.username}, active count: ${activeCount}")
+    }
     val result = new KoskiSpecificSession(user, UserLanguage.getLanguageFromCookie(request), LogUserContext.clientIpFromRequest(request), LogUserContext.userAgent(request), käyttöoikeudet.käyttäjänKäyttöoikeudet(user))
     logger.info(s"END: KoskiSpecificSession.apply ${user.username}, active count: ${Pools.globalPoolExecutor.getActiveCount}")
     result
