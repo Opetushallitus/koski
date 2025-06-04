@@ -74,14 +74,10 @@ class RequestStartLoggingFilter extends javax.servlet.Filter with Logging {
                        ): Unit = {
     request match {
       case httpReq: HttpServletRequest =>
-/*
         val rawHeader = httpReq.getHeader("X-Forwarded-For")
         val clientIp = Option(rawHeader)
           .map(_.split(",").head.trim)
           .getOrElse(request.getRemoteAddr)
-*/
-
-        val clientIp = request.getRemoteAddr
 
         logger.info(maskSensitiveInformation(s"[START] ${clientIp} ${httpReq.getMethod} ${httpReq.getRequestURI}, active count: ${Pools.globalPoolExecutor.getActiveCount}"))
         try {
