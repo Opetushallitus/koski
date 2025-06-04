@@ -225,6 +225,8 @@ const tutkinnonOsatToTableRow = <T extends string>({
 
   if (hasArviointi(osasuoritus)) {
     columns.Arvosana = <ParasArvosanaView value={osasuoritus.arviointi} />
+  } else {
+    columns.Arvosana = null
   }
 
   const content =

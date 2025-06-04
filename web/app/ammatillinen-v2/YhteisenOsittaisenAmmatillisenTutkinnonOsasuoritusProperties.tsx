@@ -31,7 +31,10 @@ import { FlatButton } from '../components-v2/controls/FlatButton'
 import { append, deleteAt } from '../util/fp/arrays'
 import { NäyttöEdit, NäyttöView } from './Näyttö'
 import { ParasArvosanaView } from '../components-v2/opiskeluoikeus/ArvosanaField'
-import { OsasuoritusTable } from '../components-v2/opiskeluoikeus/OsasuoritusTable'
+import {
+  OsasuoritusRow,
+  OsasuoritusTable
+} from '../components-v2/opiskeluoikeus/OsasuoritusTable'
 import { YhteisenTutkinnonOsanOsaAlueenSuoritusProperties } from './YhteisenTutkinnonOsanOsaAlueenSuoritusProperties'
 import React from 'react'
 import { ArviointiEdit, ArviointiView, emptyArviointi } from './Arviointi'
@@ -44,6 +47,11 @@ import {
   LaajuusView
 } from '../components-v2/opiskeluoikeus/LaajuusField'
 import { LaajuusOsaamispisteissä } from '../types/fi/oph/koski/schema/LaajuusOsaamispisteissa'
+import { KoodistoSelect } from '../components-v2/opiskeluoikeus/KoodistoSelect'
+import { Koodistokoodiviite } from '../types/fi/oph/koski/schema/Koodistokoodiviite'
+import { YhteisenTutkinnonOsanOsaAlueenSuoritus } from '../types/fi/oph/koski/schema/YhteisenTutkinnonOsanOsaAlueenSuoritus'
+import { AmmatillisenTutkinnonOsanOsaAlue } from '../types/fi/oph/koski/schema/AmmatillisenTutkinnonOsanOsaAlue'
+import { Column, ColumnRow } from '../components-v2/containers/Columns'
 
 type YhteisenAmmatillisenTutkinnonOsasuoritusPropertiesProps = {
   form: FormModel<AmmatillinenOpiskeluoikeus>
@@ -221,7 +229,86 @@ export const YhteisenOsittaisenAmmatillisenTutkinnonOsasuoritusProperties = ({
             }
           })
         }}
+        addNewOsasuoritusView={() => (
+          <ColumnRow indent={2}>
+            <Column span={12}>
+              <NewYhteisenTutkinnonOsanOsaAlueenSuoritus
+                form={form}
+                suoritusPath={osasuoritusPath}
+              />
+            </Column>
+          </ColumnRow>
+        )}
       />
     </>
   )
+}
+
+type NewYhteisenTutkinnonOsanOsaAlueenSuoritusProps = {
+  form: FormModel<AmmatillinenOpiskeluoikeus>
+  suoritusPath: FormOptic<
+    AmmatillinenOpiskeluoikeus,
+    YhteisenOsittaisenAmmatillisenTutkinnonTutkinnonosanSuoritus
+  >
+}
+
+const NewYhteisenTutkinnonOsanOsaAlueenSuoritus = ({
+  form,
+  suoritusPath
+}: NewYhteisenTutkinnonOsanOsaAlueenSuoritusProps) => {
+  return (
+    <KoodistoSelect
+      addNewText="Lisää tutkinnon osan osa-alue"
+      koodistoUri="ammatillisenoppiaineet"
+      format={(osa) => osa.koodiarvo + ' ' + t(osa.nimi)}
+      onSelect={(tunniste) => {
+        tunniste &&
+          form.updateAt(
+            suoritusPath.prop('osasuoritukset').valueOr([]),
+            (a) => [...a, newYhteisenOsanOsaAlueenSuoritus(tunniste)]
+          )
+      }}
+      testId="uusi-yhteinen-osan-osa-alue"
+    />
+  )
+}
+
+const newYhteisenOsanOsaAlueenSuoritus = (
+  tunniste: Koodistokoodiviite<'ammatillisenoppiaineet'>
+): YhteisenTutkinnonOsanOsaAlueenSuoritus => {
+  return YhteisenTutkinnonOsanOsaAlueenSuoritus({
+    koulutusmoduuli: newMahdollisestiKielillinenKoulutusmoduuli(tunniste)
+  })
+}
+
+const newMahdollisestiKielillinenKoulutusmoduuli = (
+  tunniste: Koodistokoodiviite<'ammatillisenoppiaineet'>
+): AmmatillisenTutkinnonOsanOsaAlue => {
+  return {
+    tunniste,
+    pakollinen: true,
+    $class:
+      'fi.oph.koski.schema.ValtakunnallinenAmmatillisenTutkinnonOsanOsaAlue'
+  } as AmmatillisenTutkinnonOsanOsaAlue
+}
+
+export const oppiaineToKielikoodistoMap: Record<string, string> = {
+  VK: 'kielivalikoima',
+  TK1: 'kielivalikoima',
+  TK2: 'kielivalikoima',
+  VVTK: 'kielivalikoima',
+  VVAI: 'kielivalikoima',
+  VVAI22: 'kielivalikoima',
+  VVVK: 'kielivalikoima',
+  AI: 'oppiaineaidinkielijakirjallisuus'
+}
+
+export type KielillinenKoulutusmoduuli = {
+  kieli: Koodistokoodiviite
+}
+
+export const isKielillinenKoulutusmoduuli = (
+  koulutusmoduuli: unknown
+): koulutusmoduuli is KielillinenKoulutusmoduuli => {
+  return (koulutusmoduuli as any)?.kieli !== undefined
 }
