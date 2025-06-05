@@ -1,6 +1,6 @@
 package fi.oph.koski.koskiuser
 
-import fi.oph.koski.executors.GlobalExecutionContext
+import fi.oph.koski.executors.{GlobalExecutionContext, Pools}
 import fi.oph.koski.henkilo.OppijaHenkilö
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.huoltaja.{Huollettava, HuollettavienHakuOnnistui}
@@ -197,9 +197,18 @@ class KoskiSpecificSession(
   Future(lähdeKäyttöoikeudet) // haetaan käyttöoikeudet toisessa säikeessä rinnakkain
 }
 
-object KoskiSpecificSession {
+object KoskiSpecificSession extends Logging {
   def apply(user: AuthenticationUser, request: RichRequest, käyttöoikeudet: KäyttöoikeusRepository): KoskiSpecificSession = {
-    new KoskiSpecificSession(user, UserLanguage.getLanguageFromCookie(request), LogUserContext.clientIpFromRequest(request), LogUserContext.userAgent(request), käyttöoikeudet.käyttäjänKäyttöoikeudet(user))
+    val activeCount = Pools.globalPoolExecutor.getActiveCount
+    if (activeCount > 100) {
+      val trace = Thread.currentThread().getStackTrace.toList.map(_.toString).mkString("\n    ")
+      logger.info(s"START: KoskiSpecificSession.apply ${user.username}, active count: ${activeCount}, thread: ${Thread.currentThread().getName}, stack trace:\n    ${trace}")
+    } else {
+      logger.info(s"START: KoskiSpecificSession.apply ${user.username}, active count: ${activeCount}")
+    }
+    val result = new KoskiSpecificSession(user, UserLanguage.getLanguageFromCookie(request), LogUserContext.clientIpFromRequest(request), LogUserContext.userAgent(request), käyttöoikeudet.käyttäjänKäyttöoikeudet(user))
+    logger.info(s"END: KoskiSpecificSession.apply ${user.username}, active count: ${Pools.globalPoolExecutor.getActiveCount}")
+    result
   }
 
   def huollettavaSession(huoltajaSession: KoskiSpecificSession, huollettava: OppijaHenkilö): KoskiSpecificSession = {

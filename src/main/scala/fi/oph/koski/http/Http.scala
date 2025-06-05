@@ -1,7 +1,7 @@
 package fi.oph.koski.http
 
 import cats.effect.IO
-import cats.effect.unsafe.{IORuntime, IORuntimeConfig}
+import cats.effect.unsafe.implicits.global
 import fi.oph.koski.executors.Pools
 import fi.oph.koski.http.Http.{Decode, ParameterizedUriWrapper, UriInterpolator}
 import fi.oph.koski.http.RetryMiddleware.{DefaultBackoffPolicy, retryNonIdempotentRequests, withLoggedRetry}
@@ -19,21 +19,12 @@ import org.typelevel.ci.CIString
 
 import java.net.URLEncoder
 import java.util.concurrent.TimeoutException
-import scala.concurrent.ExecutionContext
 import scala.concurrent.duration.{DurationInt, FiniteDuration}
 import scala.reflect.runtime.universe.TypeTag
 import scala.util.{Failure, Success, Try}
 import scala.xml.Elem
 
 object Http extends Logging {
-  private implicit val ioPool: IORuntime = IORuntime(
-    compute = Pools.globalExecutor,
-    blocking = Pools.httpExecutionContext,
-    scheduler = IORuntime.createDefaultScheduler()._1,
-    shutdown = () => (), // Will live forever
-    config = IORuntimeConfig()
-  )
-
   private val maxHttpConnections = Pools.httpThreads
 
   type ClientConfigFn = BlazeClientBuilder[IO] => BlazeClientBuilder[IO]
@@ -41,7 +32,7 @@ object Http extends Logging {
   private def baseClient(name: String, configFn: ClientConfigFn): Client[IO] = {
     logger.info(s"Creating new pooled http client with $maxHttpConnections max total connections for $name")
     //  responseHeaderTimeout < requestTimeout < idleTimeout
-    val builder = BlazeClientBuilder[IO].withExecutionContext(ExecutionContext.fromExecutor(Pools.httpPool))
+    val builder = BlazeClientBuilder[IO]
       .withMaxTotalConnections(maxHttpConnections)
       .withMaxWaitQueueLimit(1024)
       .withConnectTimeout(15.seconds)
@@ -231,6 +222,7 @@ case class Http(root: String, client: Client[IO]) extends Logging {
     (request: Request[IO])
   : IO[ResultType] = {
     val httpLogger = HttpResponseLog(request, root + uriTemplate)
+    httpLogger.logRequestStart()
     client
       .run(request)
       .use { response =>
@@ -278,6 +270,12 @@ protected case class HttpResponseLog(request: Request[IO], uriTemplate: String) 
   def log(responseStatus: Status) {
     log(responseStatus.code.toString)
     HttpResponseMonitoring.record(request, uriTemplate, responseStatus.code, elapsedMillis)
+  }
+
+  def logRequestStart(): Unit = {
+    HttpResponseLog.logger.debug(
+      maskSensitiveInformation(s"${request.method} ${request.uri} START, active count: ${Pools.globalPoolExecutor.getActiveCount}")
+    )
   }
 
   def log(e: HttpStatusException) {
