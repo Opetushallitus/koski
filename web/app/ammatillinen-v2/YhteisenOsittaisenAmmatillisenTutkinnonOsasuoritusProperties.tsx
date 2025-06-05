@@ -201,6 +201,9 @@ export const YhteisenOsittaisenAmmatillisenTutkinnonOsasuoritusProperties = ({
                       createLaajuus: (arvo) => LaajuusOsaamispisteissä({ arvo })
                     }}
                     path={osasuoritusPath
+                      .prop('osasuoritukset')
+                      .valueOr([])
+                      .at(index)
                       .prop('koulutusmoduuli')
                       .prop('laajuus')}
                   />

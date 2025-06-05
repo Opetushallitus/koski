@@ -230,6 +230,9 @@ export const MuunOsittaisenAmmatillisenTutkinnonTutkinnonosanSuoritusProperties 
                           LaajuusOsaamispisteissä({ arvo })
                       }}
                       path={osasuoritusPath
+                        .prop('osasuoritukset')
+                        .valueOr([])
+                        .at(index)
                         .prop('koulutusmoduuli')
                         .prop('laajuus')}
                     />
