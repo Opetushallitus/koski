@@ -296,7 +296,9 @@ object AikajaksoRowBuilder {
       majoitusetu = o.lisätiedot.exists(_.majoitusetu.exists(_.contains(päivä))),
       kuljetusetu = o.lisätiedot.exists(_.kuljetusetu.exists(_.contains(päivä))),
       sisäoppilaitosmainenMajoitus = o.lisätiedot.exists(_.sisäoppilaitosmainenMajoitus.exists(_.exists(_.contains(päivä)))),
-      koulukoti = o.lisätiedot.exists(_.koulukoti.exists(_.exists(_.contains(päivä))))
+      koulukoti = o.lisätiedot.exists(_.koulukoti.exists(_.exists(_.contains(päivä)))),
+      tuenPäätöksenJakso = o.lisätiedot.exists(_.tuenPäätöksenJaksot.exists(_.exists(_.contains(päivä)))),
+      varhennetunOppivelvollisuudenJakso = o.lisätiedot.exists(_.varhennetunOppivelvollisuudenJaksot.exists(_.exists(_.contains(päivä))))
     ))
     // Note: When adding something here, remember to update aikajaksojenAlkupäivät (below), too
   }
@@ -451,12 +453,14 @@ object AikajaksoRowBuilder {
           eol.vammainen,
           eol.vaikeastiVammainen,
           eol.sisäoppilaitosmainenMajoitus,
-          eol.koulukoti
+          eol.koulukoti,
+          eol.varhennetunOppivelvollisuudenJaksot
         ) ++ Seq(
           eol.pidennettyOppivelvollisuus,
           eol.majoitusetu,
           eol.kuljetusetu
-        ).flatten ++ aikajaksotErityisenTuenPäätöksistä(eol.erityisenTuenPäätös, eol.erityisenTuenPäätökset)
+        ).flatten ++ aikajaksotErityisenTuenPäätöksistä(eol.erityisenTuenPäätös, eol.erityisenTuenPäätökset) ++
+          aikajaksotTukijaksoista(eol.tuenPäätöksenJaksot)
       case vstol: VapaanSivistystyönOpiskeluoikeudenLisätiedot =>
         toSeq(
           vstol.maksuttomuus

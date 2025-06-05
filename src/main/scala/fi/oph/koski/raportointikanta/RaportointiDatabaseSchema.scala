@@ -212,10 +212,12 @@ object RaportointiDatabaseSchema {
     val kuljetusetu = column[Boolean]("kuljetusetu")
     val sisäoppilaitosmainenMajoitus = column[Boolean]("sisaoppilaitosmainen_majoitus")
     val koulukoti = column[Boolean]("koulukoti")
+    val tuenPäätöksenJakso = column[Boolean]("tuen_paatoksen_jakso")
+    val varhennetunOppivelvollisuudenJakso = column[Boolean]("varhennetun_oppivelvollisuuden_jakso")
     def * = (opiskeluoikeusOid, alku, loppu, tila, tilaAlkanut, opiskeluoikeusPäättynyt, pidennettyOppivelvollisuus, tukimuodot,
       erityisenTuenPäätös, erityisenTuenPäätösOpiskeleeToimintaAlueittain, erityisenTuenPäätösErityisryhmässä, erityisenTuenPäätösToteutuspaikka,
-      vammainen, vaikeastiVammainen, majoitusetu, kuljetusetu,
-      sisäoppilaitosmainenMajoitus, koulukoti) <> (EsiopetusOpiskeluoikeusAikajaksoRow.tupled, EsiopetusOpiskeluoikeusAikajaksoRow.unapply)
+      vammainen, vaikeastiVammainen, majoitusetu, kuljetusetu, sisäoppilaitosmainenMajoitus, koulukoti,
+      tuenPäätöksenJakso, varhennetunOppivelvollisuudenJakso) <> (EsiopetusOpiskeluoikeusAikajaksoRow.tupled, EsiopetusOpiskeluoikeusAikajaksoRow.unapply)
   }
   class EsiopetusOpiskeluoikeusAikajaksoTableTemp(tag: Tag) extends EsiopetusOpiskeluoikeusAikajaksoTable(tag, Temp)
   class EsiopetusOpiskeluoikeusAikajaksoConfidentialTable(tag: Tag) extends EsiopetusOpiskeluoikeusAikajaksoTable(tag, Confidential)
@@ -796,25 +798,27 @@ case class ROpiskeluoikeusAikajaksoRow(
 }
 
 case class EsiopetusOpiskeluoikeusAikajaksoRow(
-                                                opiskeluoikeusOid: String,
-                                                alku: Date,
-                                                loppu: Date,
-                                                tila: String,
-                                                tilaAlkanut: Date,
-                                                opiskeluoikeusPäättynyt: Boolean = false,
-                                                pidennettyOppivelvollisuus: Boolean = false,
-                                                tukimuodot: Option[String] = None,
-                                                erityisenTuenPäätös: Boolean = false,
-                                                erityisenTuenPäätösOpiskeleeToimintaAlueittain: Boolean = false,
-                                                erityisenTuenPäätösErityisryhmässä: Boolean = false,
-                                                erityisenTuenPäätösToteutuspaikka: Option[String] = None,
-                                                vammainen: Boolean = false,
-                                                vaikeastiVammainen: Boolean = false,
-                                                majoitusetu: Boolean = false,
-                                                kuljetusetu: Boolean = false,
-                                                sisäoppilaitosmainenMajoitus: Boolean = false,
-                                                koulukoti: Boolean = false
-                                              ) extends AikajaksoRow[EsiopetusOpiskeluoikeusAikajaksoRow] {
+  opiskeluoikeusOid: String,
+  alku: Date,
+  loppu: Date,
+  tila: String,
+  tilaAlkanut: Date,
+  opiskeluoikeusPäättynyt: Boolean = false,
+  pidennettyOppivelvollisuus: Boolean = false,
+  tukimuodot: Option[String] = None,
+  erityisenTuenPäätös: Boolean = false,
+  erityisenTuenPäätösOpiskeleeToimintaAlueittain: Boolean = false,
+  erityisenTuenPäätösErityisryhmässä: Boolean = false,
+  erityisenTuenPäätösToteutuspaikka: Option[String] = None,
+  vammainen: Boolean = false,
+  vaikeastiVammainen: Boolean = false,
+  majoitusetu: Boolean = false,
+  kuljetusetu: Boolean = false,
+  sisäoppilaitosmainenMajoitus: Boolean = false,
+  koulukoti: Boolean = false,
+  tuenPäätöksenJakso: Boolean = false,
+  varhennetunOppivelvollisuudenJakso: Boolean = false
+) extends AikajaksoRow[EsiopetusOpiskeluoikeusAikajaksoRow] {
   def withLoppu(d: Date): EsiopetusOpiskeluoikeusAikajaksoRow = this.copy(loppu = d)
 
   def withTilaAlkanut(d: Date): EsiopetusOpiskeluoikeusAikajaksoRow = this.copy(tilaAlkanut = d)
