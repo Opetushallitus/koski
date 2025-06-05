@@ -31,7 +31,10 @@ class TypeModelServlet(implicit val application: KoskiApplication)
   }
 
   get[GroupedKoodistot]("/koodisto/:koodistoUri") {
-    toGroupedKoodistoValues(getKooditFromRequestParams)
+    val localization: LocalizedHtml =
+      LocalizedHtml.get(session, application.koskiLocalizationRepository)
+
+    toGroupedKoodistoValues(localization, getKooditFromRequestParams)
   }
 
   get("/opiskeluoikeustyypit") {
@@ -56,16 +59,13 @@ class TypeModelServlet(implicit val application: KoskiApplication)
     }
   }
 
-  private def localization: LocalizedHtml =
-    LocalizedHtml.get(session, application.koskiLocalizationRepository)
-
   private def getKooditFromRequestParams: List[Koodistokoodiviite] =
     koodistojenKoodit(koodistotByString(params("koodistoUri")))
 
   private def koodistojenKoodit(koodistot: List[KoodistoViite]): List[Koodistokoodiviite] =
     koodistot.flatMap(application.koodistoViitePalvelu.getKoodistoKoodiViitteet)
 
-  private def toGroupedKoodistoValues(koodit: List[Koodistokoodiviite]): GroupedKoodistot =
+  private def toGroupedKoodistoValues(localization: LocalizedHtml, koodit: List[Koodistokoodiviite]): GroupedKoodistot =
     GroupedKoodistot(
       koodit.groupBy(viite => {
         KoodistoEnumModelBuilder
