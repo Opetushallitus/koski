@@ -47,7 +47,9 @@ case class EsiopetusRaportti(db: DB, organisaatioService: OrganisaatioService) e
       kuljetusetu = r.<<,
       sisäoppilaitosmainenMajoitus = r.<<,
       koulukoti = r.<<,
-      ostopalveluTaiPalveluseteli = r.<<
+      ostopalveluTaiPalveluseteli = r.<<,
+      tuenPäätöksenJakso = r.<<,
+      varhennetunOppivelvollisuudenJakso = r.<<
     )
   )
 
@@ -115,7 +117,9 @@ case class EsiopetusRaportti(db: DB, organisaatioService: OrganisaatioService) e
         kuljetusetu,
         sisaoppilaitosmainen_majoitus,
         koulukoti,
-        r_opiskeluoikeus.data -> 'järjestämismuoto' ->> 'koodiarvo'
+        r_opiskeluoikeus.data -> 'järjestämismuoto' ->> 'koodiarvo',
+        tuen_paatoksen_jakso,
+        varhennetun_oppivelvollisuuden_jakso
       from r_opiskeluoikeus
       join r_henkilo on r_henkilo.oppija_oid = r_opiskeluoikeus.oppija_oid
       join esiopetus_opiskeluoik_aikajakso aikajakso on aikajakso.opiskeluoikeus_oid = r_opiskeluoikeus.opiskeluoikeus_oid
@@ -194,7 +198,9 @@ case class EsiopetusRaportti(db: DB, organisaatioService: OrganisaatioService) e
     "kuljetusetu" -> Column(t.get("raportti-excel-kolumni-kuljetusetu")),
     "sisäoppilaitosmainenMajoitus" -> Column(t.get("raportti-excel-kolumni-sisäoppilaitosmainenMajoitus")),
     "koulukoti" -> Column(t.get("raportti-excel-kolumni-koulukoti")),
-    "ostopalveluTaiPalveluseteli" -> Column(t.get("raportti-excel-kolumni-ostopalveluTaiPalveluseteli"), comment = Some(t.get("raportti-excel-kolumni-ostopalveluTaiPalveluseteli-comment")))
+    "ostopalveluTaiPalveluseteli" -> Column(t.get("raportti-excel-kolumni-ostopalveluTaiPalveluseteli"), comment = Some(t.get("raportti-excel-kolumni-ostopalveluTaiPalveluseteli-comment"))),
+    "tuenPäätöksenJakso" -> Column(t.get("raportti-excel-kolumni-tuenPäätöksenJakso")),
+    "varhennetunOppivelvollisuudenJakso" -> Column(t.get("raportti-excel-kolumni-varhennetunOppivelvollisuudenJakso"))
   )
 }
 
@@ -230,5 +236,7 @@ case class EsiopetusRaporttiRow(
   kuljetusetu: Boolean,
   sisäoppilaitosmainenMajoitus: Boolean,
   koulukoti: Boolean,
-  ostopalveluTaiPalveluseteli: Option[String]
+  ostopalveluTaiPalveluseteli: Option[String],
+  tuenPäätöksenJakso: Boolean,
+  varhennetunOppivelvollisuudenJakso: Boolean
 )
