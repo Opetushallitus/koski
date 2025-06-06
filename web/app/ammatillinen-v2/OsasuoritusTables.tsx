@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react'
+import React, { ReactNode, useState } from 'react'
 import {
   FormModel,
   FormOptic,
@@ -49,6 +49,19 @@ import { KoodistoSelect } from '../components-v2/opiskeluoikeus/KoodistoSelect'
 import { YhteinenTutkinnonOsa } from '../types/fi/oph/koski/schema/YhteinenTutkinnonOsa'
 import { deleteAt } from '../util/fp/arrays'
 import { Koodistokoodiviite } from '../types/fi/oph/koski/schema/Koodistokoodiviite'
+import {
+  Modal,
+  ModalBody,
+  ModalFooter,
+  ModalTitle
+} from '../components-v2/containers/Modal'
+import { FlatButton } from '../components-v2/controls/FlatButton'
+import { Column, ColumnRow } from '../components-v2/containers/Columns'
+import { PaikallinenTutkinnonOsa } from '../types/fi/oph/koski/schema/PaikallinenTutkinnonOsa'
+import { PaikallinenKoodi } from '../types/fi/oph/koski/schema/PaikallinenKoodi'
+import { useKoodisto } from '../appstate/koodisto'
+import { TextEdit } from '../components-v2/controls/TextField'
+import { RaisedButton } from '../components-v2/controls/RaisedButton'
 
 interface OsasuoritusTablesProps {
   form: FormModel<AmmatillinenOpiskeluoikeus>
@@ -328,7 +341,112 @@ const NewAmisOsasuoritus = ({
       </>
     )
   }
-  return null
+  return (
+    <ColumnRow>
+      <Column span={12}>
+        <KoodistoSelect
+          koodistoUri={'tutkinnonosat'}
+          onSelect={() => {} /*TODO*/}
+          testId={'uusi-tutkinnonosa'}
+        />
+      </Column>
+      <Column span={6}>
+        <NewPaikallinen form={form} ryhmä={ryhmä} suoritusPath={suoritusPath} />
+      </Column>
+    </ColumnRow>
+  )
+}
+
+const newPaikallinenOsa = (
+  osa: string,
+  ryhmä: Koodistokoodiviite<'ammatillisentutkinnonosanryhma', '1' | '3' | '4'>
+): MuunOsittaisenAmmatillisenTutkinnonTutkinnonosanSuoritus => {
+  return MuunOsittaisenAmmatillisenTutkinnonTutkinnonosanSuoritus({
+    koulutusmoduuli: PaikallinenTutkinnonOsa({
+      tunniste: PaikallinenKoodi({ koodiarvo: osa, nimi: finnish(osa) }),
+      kuvaus: finnish(osa),
+      pakollinen: false
+    }),
+    tutkinnonOsanRyhmä: ryhmä
+  })
+}
+
+type NewPaikallinenProps = {
+  form: FormModel<AmmatillinenOpiskeluoikeus>
+  ryhmä: string
+  suoritusPath: FormOptic<
+    AmmatillinenOpiskeluoikeus,
+    AmmatillisenTutkinnonOsittainenSuoritus
+  >
+}
+
+const NewPaikallinen = ({ form, ryhmä, suoritusPath }: NewPaikallinenProps) => {
+  const [showModal, setShowModal] = useState(false)
+
+  const ryhmät = useKoodisto('ammatillisentutkinnonosanryhma')
+  const ryhmäKoodi =
+    ryhmät !== null
+      ? (ryhmät.find((r) => (r.koodiviite.nimi as Finnish).fi === ryhmä)
+          ?.koodiviite as Koodistokoodiviite<
+          'ammatillisentutkinnonosanryhma',
+          '1' | '3' | '4'
+        >)
+      : undefined
+
+  if (!ryhmäKoodi) {
+    return null
+  }
+
+  return (
+    <>
+      <FlatButton onClick={() => setShowModal(true)}>
+        {t('Lisää paikallinen tutkinnon osa')}
+      </FlatButton>
+      {showModal && (
+        <NewPaikallinenModal
+          onClose={() => setShowModal(false)}
+          onSubmit={(osa) => {
+            form.updateAt(
+              suoritusPath.prop('osasuoritukset').valueOr([]),
+              (o) => [...o, newPaikallinenOsa(osa, ryhmäKoodi)]
+            )
+          }}
+        />
+      )}
+    </>
+  )
+}
+
+type NewPaikallinenModalProps = {
+  onClose: () => void
+  onSubmit: (osa: string) => void
+}
+
+const NewPaikallinenModal = ({
+  onClose,
+  onSubmit
+}: NewPaikallinenModalProps) => {
+  const [osa, setOsa] = useState('')
+
+  return (
+    <Modal onClose={onClose}>
+      <ModalTitle>{t('Paikallisen tutkinnon osan lisäys')}</ModalTitle>
+      <ModalBody>
+        <label>
+          {t('Tutkinnon osan nimi')}
+          <TextEdit onChange={(o) => setOsa(o ? o : '')} value={osa} />
+        </label>
+      </ModalBody>
+      <ModalFooter>
+        <FlatButton onClick={onClose} testId="cancel">
+          {t('Peruuta')}
+        </FlatButton>
+        <RaisedButton onClick={() => onSubmit(osa)}>
+          {t('Lisää tutkinnon osa')}
+        </RaisedButton>
+      </ModalFooter>
+    </Modal>
+  )
 }
 
 type OsasuoritusPropertiesProps = {
