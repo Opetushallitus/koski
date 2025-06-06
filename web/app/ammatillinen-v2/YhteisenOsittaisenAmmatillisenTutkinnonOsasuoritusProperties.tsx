@@ -31,16 +31,14 @@ import { FlatButton } from '../components-v2/controls/FlatButton'
 import { append, deleteAt } from '../util/fp/arrays'
 import { NäyttöEdit, NäyttöView } from './Näyttö'
 import { ParasArvosanaView } from '../components-v2/opiskeluoikeus/ArvosanaField'
-import {
-  OsasuoritusRow,
-  OsasuoritusTable
-} from '../components-v2/opiskeluoikeus/OsasuoritusTable'
+import { OsasuoritusTable } from '../components-v2/opiskeluoikeus/OsasuoritusTable'
 import { YhteisenTutkinnonOsanOsaAlueenSuoritusProperties } from './YhteisenTutkinnonOsanOsaAlueenSuoritusProperties'
 import React from 'react'
 import { ArviointiEdit, ArviointiView, emptyArviointi } from './Arviointi'
 import {
   KoodistoEdit,
-  KoodistoView
+  KoodistoView,
+  KoodistoViewSpan
 } from '../components-v2/opiskeluoikeus/KoodistoField'
 import {
   LaajuusEdit,
@@ -187,11 +185,45 @@ export const YhteisenOsittaisenAmmatillisenTutkinnonOsasuoritusProperties = ({
         editMode={form.editMode}
         rows={
           osasuoritus.osasuoritukset?.map((s, index) => {
+            const kielillinenKoulutusmoduuliPath = osasuoritusPath
+              .prop('osasuoritukset')
+              .valueOr([])
+              .at(index)
+              .prop('koulutusmoduuli') as unknown as FormOptic<
+              AmmatillinenOpiskeluoikeus,
+              KielillinenKoulutusmoduuli
+            >
+
             return {
               suoritusIndex: 1,
               osasuoritusIndex: index,
               columns: {
-                'Osa-alue': t(s.koulutusmoduuli.tunniste.nimi),
+                'Osa-alue':
+                  oppiaineToKielikoodistoMap[
+                    s.koulutusmoduuli.tunniste.koodiarvo
+                  ] !== undefined ? (
+                    <>
+                      <span>
+                        {t(s.koulutusmoduuli.tunniste.nimi)}
+                        {', '}
+                      </span>
+                      <FormField
+                        form={form}
+                        view={KoodistoViewSpan}
+                        edit={KoodistoEdit}
+                        path={kielillinenKoulutusmoduuliPath.prop('kieli')}
+                        editProps={{
+                          koodistoUri:
+                            oppiaineToKielikoodistoMap[
+                              s.koulutusmoduuli.tunniste.koodiarvo
+                            ],
+                          zeroValueOption: true
+                        }}
+                      />
+                    </>
+                  ) : (
+                    t(s.koulutusmoduuli.tunniste.nimi)
+                  ),
                 Laajuus: (
                   <FormField
                     form={form}

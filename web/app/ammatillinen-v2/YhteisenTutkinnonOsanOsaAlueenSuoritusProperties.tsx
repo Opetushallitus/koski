@@ -59,25 +59,6 @@ export const YhteisenTutkinnonOsanOsaAlueenSuoritusProperties = ({
 
   return (
     <>
-      { //TODO näytä vain kielillisille aineille
-        <OsasuoritusProperty label={'Kieli'}>
-          <OsasuoritusPropertyValue>
-            <FormField
-              form={form}
-              view={KoodistoView}
-              edit={KoodistoEdit}
-              path={kielillinenKoulutusmoduuliPath.prop('kieli')}
-              editProps={{
-                koodistoUri:
-                  oppiaineToKielikoodistoMap[
-                    osasuoritus.koulutusmoduuli.tunniste.koodiarvo
-                  ],
-                zeroValueOption: true
-              }}
-            />
-          </OsasuoritusPropertyValue>
-        </OsasuoritusProperty>
-      }
       {(form.editMode || osasuoritus.suorituskieli) && (
         <OsasuoritusProperty label={'Suorituskieli'}>
           <OsasuoritusPropertyValue>
