@@ -62,6 +62,7 @@ import { PaikallinenKoodi } from '../types/fi/oph/koski/schema/PaikallinenKoodi'
 import { useKoodisto } from '../appstate/koodisto'
 import { TextEdit } from '../components-v2/controls/TextField'
 import { RaisedButton } from '../components-v2/controls/RaisedButton'
+import { MuuValtakunnallinenTutkinnonOsa } from '../types/fi/oph/koski/schema/MuuValtakunnallinenTutkinnonOsa'
 
 interface OsasuoritusTablesProps {
   form: FormModel<AmmatillinenOpiskeluoikeus>
@@ -320,6 +321,20 @@ const NewAmisOsasuoritus = ({
   ryhmä,
   suoritusPath
 }: NewAmisOsasuoritusProps) => {
+  const ryhmät = useKoodisto('ammatillisentutkinnonosanryhma')
+  const ryhmäKoodi =
+    ryhmät !== null
+      ? (ryhmät.find((r) => (r.koodiviite.nimi as Finnish).fi === ryhmä)
+          ?.koodiviite as Koodistokoodiviite<
+          'ammatillisentutkinnonosanryhma',
+          '1' | '3' | '4'
+        >)
+      : undefined
+
+  if (!ryhmäKoodi) {
+    return null
+  }
+
   if (ryhmä === 'Yhteiset tutkinnon osat') {
     return (
       <>
@@ -345,16 +360,41 @@ const NewAmisOsasuoritus = ({
     <ColumnRow>
       <Column span={12}>
         <KoodistoSelect
+          addNewText={'Lisää tutkinnon osa'}
           koodistoUri={'tutkinnonosat'}
-          onSelect={() => {} /*TODO*/}
-          testId={'uusi-tutkinnonosa'}
+          format={(osa) => osa.koodiarvo + ' ' + t(osa.nimi)}
+          onSelect={(osa) => {
+            osa &&
+              form.updateAt(
+                suoritusPath.prop('osasuoritukset').valueOr([]),
+                (a) => [...a, newMuuOsa(osa, ryhmäKoodi)]
+              )
+          }}
+          testId={'uusi-muu-tutkinnonosa'}
         />
       </Column>
       <Column span={6}>
-        <NewPaikallinen form={form} ryhmä={ryhmä} suoritusPath={suoritusPath} />
+        <NewPaikallinen
+          form={form}
+          ryhmäKoodi={ryhmäKoodi}
+          suoritusPath={suoritusPath}
+        />
       </Column>
     </ColumnRow>
   )
+}
+
+const newMuuOsa = (
+  osa: Koodistokoodiviite<'tutkinnonosat', string>,
+  ryhmä: Koodistokoodiviite<'ammatillisentutkinnonosanryhma', '1' | '3' | '4'>
+) => {
+  return MuunOsittaisenAmmatillisenTutkinnonTutkinnonosanSuoritus({
+    koulutusmoduuli: MuuValtakunnallinenTutkinnonOsa({
+      tunniste: osa,
+      pakollinen: false
+    }),
+    tutkinnonOsanRyhmä: ryhmä
+  })
 }
 
 const newPaikallinenOsa = (
@@ -373,29 +413,22 @@ const newPaikallinenOsa = (
 
 type NewPaikallinenProps = {
   form: FormModel<AmmatillinenOpiskeluoikeus>
-  ryhmä: string
+  ryhmäKoodi: Koodistokoodiviite<
+    'ammatillisentutkinnonosanryhma',
+    '1' | '3' | '4'
+  >
   suoritusPath: FormOptic<
     AmmatillinenOpiskeluoikeus,
     AmmatillisenTutkinnonOsittainenSuoritus
   >
 }
 
-const NewPaikallinen = ({ form, ryhmä, suoritusPath }: NewPaikallinenProps) => {
+const NewPaikallinen = ({
+  form,
+  ryhmäKoodi,
+  suoritusPath
+}: NewPaikallinenProps) => {
   const [showModal, setShowModal] = useState(false)
-
-  const ryhmät = useKoodisto('ammatillisentutkinnonosanryhma')
-  const ryhmäKoodi =
-    ryhmät !== null
-      ? (ryhmät.find((r) => (r.koodiviite.nimi as Finnish).fi === ryhmä)
-          ?.koodiviite as Koodistokoodiviite<
-          'ammatillisentutkinnonosanryhma',
-          '1' | '3' | '4'
-        >)
-      : undefined
-
-  if (!ryhmäKoodi) {
-    return null
-  }
 
   return (
     <>
