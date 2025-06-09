@@ -17,6 +17,7 @@ import {
 import { LaajuusOsaamispisteissä } from '../types/fi/oph/koski/schema/LaajuusOsaamispisteissa'
 import { deleteAt } from '../util/fp/arrays'
 import { hasAmmatillinenArviointi } from './OsasuoritusTables'
+import { ParasArvosanaView } from '../components-v2/opiskeluoikeus/ArvosanaField'
 
 export type OsittaisenAmmatillisenTutkinnonOsanJatkoOpintovalmiuksiaTukevienOpintojenSuoritusPropertiesProps =
   {
@@ -61,7 +62,8 @@ export const OsittaisenAmmatillisenTutkinnonOsanJatkoOpintovalmiuksiaTukevienOpi
                         .prop('koulutusmoduuli')
                         .prop('laajuus')}
                     />
-                  )
+                  ),
+                  Arvosana: <ParasArvosanaView value={s.arviointi} />
                 },
                 content: OsasuoritusProperties({
                   form,

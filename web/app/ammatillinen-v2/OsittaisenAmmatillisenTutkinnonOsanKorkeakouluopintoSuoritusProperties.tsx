@@ -26,6 +26,7 @@ import { PaikallinenKoodi } from '../types/fi/oph/koski/schema/PaikallinenKoodi'
 import { Column, ColumnRow } from '../components-v2/containers/Columns'
 import { KorkeakouluopintojenTutkinnonOsaaPienempiKokonaisuus } from '../types/fi/oph/koski/schema/KorkeakouluopintojenTutkinnonOsaaPienempiKokonaisuus'
 import { KorkeakouluopintojenSuoritus } from '../types/fi/oph/koski/schema/KorkeakouluopintojenSuoritus'
+import { ParasArvosanaView } from '../components-v2/opiskeluoikeus/ArvosanaField'
 
 export type OsittaisenAmmatillisenTutkinnonOsanKorkeakouluopintoSuoritusPropertiesProps =
   {
@@ -70,7 +71,8 @@ export const OsittaisenAmmatillisenTutkinnonOsanKorkeakouluopintoSuoritusPropert
                         .prop('koulutusmoduuli')
                         .prop('laajuus')}
                     />
-                  )
+                  ),
+                  Arvosana: <ParasArvosanaView value={s.arviointi} />
                 },
                 content: (
                   <KorkeakouluopintojenSuoritusProperties
