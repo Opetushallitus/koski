@@ -308,7 +308,7 @@ type YhteisenTutkinnonOsatTunniste = Koodistokoodiviite<
 
 const newYhteinenTutkinnonOsa = (tunniste: YhteisenTutkinnonOsatTunniste) => {
   return YhteisenOsittaisenAmmatillisenTutkinnonTutkinnonosanSuoritus({
-    koulutusmoduuli: YhteinenTutkinnonOsa({ tunniste, pakollinen: true }),
+    koulutusmoduuli: YhteinenTutkinnonOsa({ tunniste, pakollinen: false }),
     tutkinnonOsanRyhmä: Koodistokoodiviite({
       koodistoUri: 'ammatillisentutkinnonosanryhma',
       koodiarvo: '2',

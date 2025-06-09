@@ -4,7 +4,7 @@ import { OsittaisenAmmatillisenTutkinnonOsanJatkoOpintovalmiuksiaTukevienOpintoj
 import { localize, t } from '../i18n/i18n'
 import { OsasuoritusTable } from '../components-v2/opiskeluoikeus/OsasuoritusTable'
 import { YhteisenTutkinnonOsanOsaAlueenSuoritusProperties } from './YhteisenTutkinnonOsanOsaAlueenSuoritusProperties'
-import React from 'react'
+import React, { useState } from 'react'
 import {
   isYhteisenTutkinnonOsanOsaAlueenSuoritus,
   YhteisenTutkinnonOsanOsaAlueenSuoritus
@@ -49,6 +49,19 @@ import { ButtonGroup } from '../components-v2/containers/ButtonGroup'
 import { FlatButton } from '../components-v2/controls/FlatButton'
 import { ArviointiEdit, ArviointiView, emptyArviointi } from './Arviointi'
 import { YhteistenTutkinnonOsienOsaAlueidenTaiLukioOpintojenTaiMuidenOpintovalmiuksiaTukevienOpintojenOsasuoritus } from '../types/fi/oph/koski/schema/YhteistenTutkinnonOsienOsaAlueidenTaiLukioOpintojenTaiMuidenOpintovalmiuksiaTukevienOpintojenOsasuoritus'
+import { Column, ColumnRow } from '../components-v2/containers/Columns'
+import { KoodistoSelect } from '../components-v2/opiskeluoikeus/KoodistoSelect'
+import { newYhteisenOsanOsaAlueenSuoritus } from './YhteisenOsittaisenAmmatillisenTutkinnonOsasuoritusProperties'
+import {
+  Modal,
+  ModalBody,
+  ModalFooter,
+  ModalTitle
+} from '../components-v2/containers/Modal'
+import { TextEdit } from '../components-v2/controls/TextField'
+import { RaisedButton } from '../components-v2/controls/RaisedButton'
+import { PaikallinenLukionOpinto } from '../types/fi/oph/koski/schema/PaikallinenLukionOpinto'
+import { PaikallinenKoodi } from '../types/fi/oph/koski/schema/PaikallinenKoodi'
 
 export type OsittaisenAmmatillisenTutkinnonOsanJatkoOpintovalmiuksiaTukevienOpintojenSuoritusPropertiesProps =
   {
@@ -125,10 +138,142 @@ export const OsittaisenAmmatillisenTutkinnonOsanJatkoOpintovalmiuksiaTukevienOpi
             }
             return hasAmmatillinenArviointi(s)
           }}
+          addNewOsasuoritusView={() => (
+            <NewOsasuoritus form={form} suoritusPath={osasuoritusPath} />
+          )}
         />
       </>
     )
   }
+
+type NewOsasuoritusProps = {
+  form: FormModel<AmmatillinenOpiskeluoikeus>
+  suoritusPath: FormOptic<
+    AmmatillinenOpiskeluoikeus,
+    OsittaisenAmmatillisenTutkinnonOsanJatkoOpintovalmiuksiaTukevienOpintojenSuoritus
+  >
+}
+
+const NewOsasuoritus = ({ form, suoritusPath }: NewOsasuoritusProps) => {
+  return (
+    <ColumnRow indent={2}>
+      <Column span={12}>
+        <NewYhteisenTutkinnonOsanOsaAlueenSuoritus
+          form={form}
+          suoritusPath={suoritusPath}
+        />
+      </Column>
+      <Column span={6}>
+        <NewLukioOpinto form={form} suoritusPath={suoritusPath} />
+      </Column>
+    </ColumnRow>
+  )
+}
+
+type NewYhteisenTutkinnonOsanOsaAlueenSuoritusProps = {
+  form: FormModel<AmmatillinenOpiskeluoikeus>
+  suoritusPath: FormOptic<
+    AmmatillinenOpiskeluoikeus,
+    OsittaisenAmmatillisenTutkinnonOsanJatkoOpintovalmiuksiaTukevienOpintojenSuoritus
+  >
+}
+
+const NewYhteisenTutkinnonOsanOsaAlueenSuoritus = ({
+  form,
+  suoritusPath
+}: NewYhteisenTutkinnonOsanOsaAlueenSuoritusProps) => {
+  return (
+    <KoodistoSelect
+      addNewText="Lisää tutkinnon osan osa-alue"
+      koodistoUri="ammatillisenoppiaineet"
+      format={(osa) => osa.koodiarvo + ' ' + t(osa.nimi)}
+      onSelect={(tunniste) => {
+        tunniste &&
+          form.updateAt(
+            suoritusPath.prop('osasuoritukset').valueOr([]),
+            (a) => [...a, newYhteisenOsanOsaAlueenSuoritus(tunniste)]
+          )
+      }}
+      testId="uusi-yhteinen-osan-osa-alue"
+    />
+  )
+}
+
+const NewLukioOpinto = ({
+  form,
+  suoritusPath
+}: NewYhteisenTutkinnonOsanOsaAlueenSuoritusProps) => {
+  const [showModal, setShowModal] = useState(false)
+
+  return (
+    <>
+      <FlatButton onClick={() => setShowModal(true)}>
+        {t('Lisää lukio-opinto')}
+      </FlatButton>
+      {showModal && (
+        <NewLukioOpintoModal
+          onClose={() => setShowModal(false)}
+          onSubmit={(nimi, peruste) => {
+            form.updateAt(
+              suoritusPath.prop('osasuoritukset').valueOr([]),
+              (o) => [...o, newLukioOpinto(nimi, peruste)]
+            )
+          }}
+        />
+      )}
+    </>
+  )
+}
+
+const newLukioOpinto = (
+  nimi: string,
+  peruste: string
+): LukioOpintojenSuoritus => {
+  return LukioOpintojenSuoritus({
+    koulutusmoduuli: PaikallinenLukionOpinto({
+      tunniste: PaikallinenKoodi({ koodiarvo: nimi, nimi: localize(nimi) }),
+      kuvaus: localize(nimi),
+      perusteenDiaarinumero: peruste
+    })
+  })
+}
+
+type NewLukioOpintoModalProps = {
+  onClose: () => void
+  onSubmit: (nimi: string, peruste: string) => void
+}
+
+const NewLukioOpintoModal = ({
+  onClose,
+  onSubmit
+}: NewLukioOpintoModalProps) => {
+  const [nimi, setNimi] = useState('')
+  const [peruste, setPeruste] = useState('')
+
+  return (
+    <Modal onClose={onClose}>
+      <ModalTitle>{t('Lisää lukio-opinto')}</ModalTitle>
+      <ModalBody>
+        <label>
+          {t('Nimi')}
+          <TextEdit onChange={(n) => setNimi(n ? n : '')} value={nimi} />
+        </label>
+        <label>
+          {t('Peruste')}
+          <TextEdit onChange={(p) => setPeruste(p ? p : '')} />
+        </label>
+      </ModalBody>
+      <ModalFooter>
+        <FlatButton onClick={onClose} testId="cancel">
+          {t('Peruuta')}
+        </FlatButton>
+        <RaisedButton onClick={() => onSubmit(nimi, peruste)}>
+          {t('Lisää')}
+        </RaisedButton>
+      </ModalFooter>
+    </Modal>
+  )
+}
 
 type OsasuoritusPropertiesProps = {
   form: FormModel<AmmatillinenOpiskeluoikeus>

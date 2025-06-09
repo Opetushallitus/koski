@@ -51,6 +51,7 @@ import { YhteisenTutkinnonOsanOsaAlueenSuoritus } from '../types/fi/oph/koski/sc
 import { AmmatillisenTutkinnonOsanOsaAlue } from '../types/fi/oph/koski/schema/AmmatillisenTutkinnonOsanOsaAlue'
 import { Column, ColumnRow } from '../components-v2/containers/Columns'
 import { hasAmmatillinenArviointi } from './OsasuoritusTables'
+import { OsittaisenAmmatillisenTutkinnonOsanJatkoOpintovalmiuksiaTukevienOpintojenSuoritus } from '../types/fi/oph/koski/schema/OsittaisenAmmatillisenTutkinnonOsanJatkoOpintovalmiuksiaTukevienOpintojenSuoritus'
 
 type YhteisenAmmatillisenTutkinnonOsasuoritusPropertiesProps = {
   form: FormModel<AmmatillinenOpiskeluoikeus>
@@ -316,7 +317,7 @@ const NewYhteisenTutkinnonOsanOsaAlueenSuoritus = ({
   )
 }
 
-const newYhteisenOsanOsaAlueenSuoritus = (
+export const newYhteisenOsanOsaAlueenSuoritus = (
   tunniste: Koodistokoodiviite<'ammatillisenoppiaineet'>
 ): YhteisenTutkinnonOsanOsaAlueenSuoritus => {
   return YhteisenTutkinnonOsanOsaAlueenSuoritus({
@@ -329,7 +330,7 @@ const newMahdollisestiKielillinenKoulutusmoduuli = (
 ): AmmatillisenTutkinnonOsanOsaAlue => {
   return {
     tunniste,
-    pakollinen: true,
+    pakollinen: false,
     $class:
       'fi.oph.koski.schema.ValtakunnallinenAmmatillisenTutkinnonOsanOsaAlue'
   } as AmmatillisenTutkinnonOsanOsaAlue
