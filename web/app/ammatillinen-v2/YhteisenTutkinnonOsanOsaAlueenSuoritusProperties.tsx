@@ -32,10 +32,6 @@ import {
   KoodistoView
 } from '../components-v2/opiskeluoikeus/KoodistoField'
 import { ArviointiEdit, ArviointiView, emptyArviointi } from './Arviointi'
-import {
-  KielillinenKoulutusmoduuli,
-  oppiaineToKielikoodistoMap
-} from './YhteisenOsittaisenAmmatillisenTutkinnonOsasuoritusProperties'
 
 type YhteisenTutkinnonOsanOsaAlueenSuoritusPropertiesProps = {
   form: FormModel<AmmatillinenOpiskeluoikeus>
@@ -50,13 +46,6 @@ export const YhteisenTutkinnonOsanOsaAlueenSuoritusProperties = ({
   osasuoritusPath,
   osasuoritus
 }: YhteisenTutkinnonOsanOsaAlueenSuoritusPropertiesProps) => {
-  const kielillinenKoulutusmoduuliPath = osasuoritusPath.prop(
-    'koulutusmoduuli'
-  ) as unknown as FormOptic<
-    AmmatillinenOpiskeluoikeus,
-    KielillinenKoulutusmoduuli
-  >
-
   return (
     <>
       {(form.editMode || osasuoritus.suorituskieli) && (
