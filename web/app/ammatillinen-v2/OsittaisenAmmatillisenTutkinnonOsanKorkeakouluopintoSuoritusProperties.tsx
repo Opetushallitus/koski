@@ -1,9 +1,9 @@
 import { FormModel, FormOptic } from '../components-v2/forms/FormModel'
 import { AmmatillinenOpiskeluoikeus } from '../types/fi/oph/koski/schema/AmmatillinenOpiskeluoikeus'
 import { OsittaisenAmmatillisenTutkinnonOsanKorkeakouluopintoSuoritus } from '../types/fi/oph/koski/schema/OsittaisenAmmatillisenTutkinnonOsanKorkeakouluopintoSuoritus'
-import { t } from '../i18n/i18n'
+import { finnish, t } from '../i18n/i18n'
 import { OsasuoritusTable } from '../components-v2/opiskeluoikeus/OsasuoritusTable'
-import React from 'react'
+import React, { useState } from 'react'
 import { KorkeakouluopintojenSuoritusProperties } from './KorkeakouluopintojenSuoritusProperties'
 import { FormField } from '../components-v2/forms/FormField'
 import {
@@ -13,6 +13,19 @@ import {
 import { LaajuusOsaamispisteissä } from '../types/fi/oph/koski/schema/LaajuusOsaamispisteissa'
 import { deleteAt } from '../util/fp/arrays'
 import { hasAmmatillinenArviointi } from './OsasuoritusTables'
+import { FlatButton } from '../components-v2/controls/FlatButton'
+import {
+  Modal,
+  ModalBody,
+  ModalFooter,
+  ModalTitle
+} from '../components-v2/containers/Modal'
+import { TextEdit } from '../components-v2/controls/TextField'
+import { RaisedButton } from '../components-v2/controls/RaisedButton'
+import { PaikallinenKoodi } from '../types/fi/oph/koski/schema/PaikallinenKoodi'
+import { Column, ColumnRow } from '../components-v2/containers/Columns'
+import { KorkeakouluopintojenTutkinnonOsaaPienempiKokonaisuus } from '../types/fi/oph/koski/schema/KorkeakouluopintojenTutkinnonOsaaPienempiKokonaisuus'
+import { KorkeakouluopintojenSuoritus } from '../types/fi/oph/koski/schema/KorkeakouluopintojenSuoritus'
 
 export type OsittaisenAmmatillisenTutkinnonOsanKorkeakouluopintoSuoritusPropertiesProps =
   {
@@ -88,7 +101,95 @@ export const OsittaisenAmmatillisenTutkinnonOsanKorkeakouluopintoSuoritusPropert
             }
             return hasAmmatillinenArviointi(s)
           }}
+          addNewOsasuoritusView={() => (
+            <ColumnRow indent={2}>
+              <Column span={12}>
+                <NewKorkeakouluopintokokonaisuus
+                  form={form}
+                  suoritusPath={osasuoritusPath}
+                />
+              </Column>
+            </ColumnRow>
+          )}
         />
       </>
     )
   }
+
+type NewKorkeakouluopintokokonaisuusProps = {
+  form: FormModel<AmmatillinenOpiskeluoikeus>
+  suoritusPath: FormOptic<
+    AmmatillinenOpiskeluoikeus,
+    OsittaisenAmmatillisenTutkinnonOsanKorkeakouluopintoSuoritus
+  >
+}
+
+const NewKorkeakouluopintokokonaisuus = ({
+  form,
+  suoritusPath
+}: NewKorkeakouluopintokokonaisuusProps) => {
+  const [showModal, setShowModal] = useState(false)
+
+  return (
+    <>
+      <FlatButton onClick={() => setShowModal(true)}>
+        {t('Lisää korkeakouluopintokokonaisuus')}
+      </FlatButton>
+      {showModal && (
+        <NewKorkeakouluopintokokonaisuusModal
+          onClose={() => setShowModal(false)}
+          onSubmit={(nimi) => {
+            form.updateAt(
+              suoritusPath.prop('osasuoritukset').valueOr([]),
+              (o) => [...o, newKorkeakouluopintokokonaisuus(nimi)]
+            )
+          }}
+        />
+      )}
+    </>
+  )
+}
+
+type NewKorkeakouluopintokokonaisuusModalProps = {
+  onClose: () => void
+  onSubmit: (nimi: string) => void
+}
+
+const NewKorkeakouluopintokokonaisuusModal = ({
+  onClose,
+  onSubmit
+}: NewKorkeakouluopintokokonaisuusModalProps) => {
+  const [nimi, setNimi] = useState('')
+
+  return (
+    <Modal onClose={onClose}>
+      <ModalTitle>{t('Lisää korkeakouluopintokokonaisuus')}</ModalTitle>
+      <ModalBody>
+        <label>
+          {t('Nimi')}
+          <TextEdit onChange={(o) => setNimi(o ? o : '')} value={nimi} />
+        </label>
+      </ModalBody>
+      <ModalFooter>
+        <FlatButton onClick={onClose} testId="cancel">
+          {t('Peruuta')}
+        </FlatButton>
+        <RaisedButton onClick={() => onSubmit(nimi)}>{t('Lisää')}</RaisedButton>
+      </ModalFooter>
+    </Modal>
+  )
+}
+
+const newKorkeakouluopintokokonaisuus = (
+  nimi: string
+): KorkeakouluopintojenSuoritus => {
+  return KorkeakouluopintojenSuoritus({
+    koulutusmoduuli: KorkeakouluopintojenTutkinnonOsaaPienempiKokonaisuus({
+      tunniste: PaikallinenKoodi({
+        koodiarvo: nimi,
+        nimi: finnish(nimi)
+      }),
+      kuvaus: finnish(nimi)
+    })
+  })
+}
