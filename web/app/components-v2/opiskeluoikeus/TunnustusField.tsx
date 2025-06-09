@@ -66,7 +66,7 @@ export const TunnustusEdit = <
       <TestIdLayer id="tunnustettu.edit">
         {props.value === undefined ? (
           <FlatButton onClick={add} testId="add">
-            {t('lisää')}
+            {t('Lisää')}
           </FlatButton>
         ) : (
           <Removable onClick={remove}>
