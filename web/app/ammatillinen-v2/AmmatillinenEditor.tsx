@@ -6,12 +6,7 @@ import {
   EditorContainer,
   usePäätasonSuoritus
 } from '../components-v2/containers/EditorContainer'
-import {
-  FormModel,
-  FormOptic,
-  getValue,
-  useForm
-} from '../components-v2/forms/FormModel'
+import { FormModel, useForm } from '../components-v2/forms/FormModel'
 import { useSchema } from '../appstate/constraints'
 import { UusiOpiskeluoikeusjakso } from '../components-v2/opiskeluoikeus/UusiOpiskeluoikeudenTilaModal'
 import { AmmatillinenOpiskeluoikeusjakso } from '../types/fi/oph/koski/schema/AmmatillinenOpiskeluoikeusjakso'
@@ -83,13 +78,10 @@ import {
 } from '../components-v2/opiskeluoikeus/LaajuusField'
 import { Koulutussopimusjakso } from '../types/fi/oph/koski/schema/Koulutussopimusjakso'
 import { NumberField } from '../components-v2/controls/NumberField'
-import {
-  OsasuoritusRowData,
-  OsasuoritusTable
-} from '../components-v2/opiskeluoikeus/OsasuoritusTable'
 import { OsasuoritusTables } from './OsasuoritusTables'
 import { HenkilövahvistusValinnaisellaPaikkakunnalla } from '../types/fi/oph/koski/schema/HenkilovahvistusValinnaisellaPaikkakunnalla'
 import { OpenAllButton, useTree } from '../appstate/tree'
+import { AmisLaajuudetYhteensä } from './AmisLaajuudetYhteensä'
 
 export type AmmatillinenEditorProps =
   AdaptedOpiskeluoikeusEditorProps<AmmatillinenOpiskeluoikeus>
@@ -453,11 +445,11 @@ const AmmatillinenTutkintoOsittainenEditor: React.FC<
         <Spacer />
         <OpenAllButton {...tree} />
         <Spacer />
-
         <OsasuoritusTables
           form={props.form}
           osittainenPäätasonSuoritus={osittainenPäätasonSuoritus}
         />
+        <AmisLaajuudetYhteensä suoritus={osittainenPäätasonSuoritus.suoritus} />
       </EditorContainer>
     </TreeNode>
   )

@@ -158,6 +158,10 @@ const TableForTutkinnonOsaRyhmä = ({
       })
     })
 
+  if (!form.editMode && (!rows || rows.length === 0)) {
+    return null
+  }
+
   return (
     <OsasuoritusTable
       editMode={form.editMode}
