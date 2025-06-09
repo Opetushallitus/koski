@@ -2,7 +2,7 @@ package fi.oph.koski.raportit
 
 import fi.oph.koski.documentation.ExampleData.vahvistusPaikkakunnalla
 import fi.oph.koski.documentation.{PerusopetusExampleData, YleissivistavakoulutusExampleData}
-import fi.oph.koski.documentation.PerusopetusExampleData.{kahdeksannenLuokanSuoritus, perusopetuksenOppimääränSuoritus, seitsemännenLuokanLuokallejääntiSuoritus, yhdeksännenLuokanSuoritus}
+import fi.oph.koski.documentation.PerusopetusExampleData.{kahdeksannenLuokanSuoritus, perusopetuksenOppimääränSuoritus, seitsemännenLuokanLuokallejääntiSuoritus, seitsemännenLuokanSuoritus, yhdeksännenLuokanSuoritus}
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat.vuonna2005SyntynytEiOpiskeluoikeuksiaFikstuurissa
 import fi.oph.koski.henkilo.VerifiedHenkilöOid
 import fi.oph.koski.http.HttpStatus
@@ -15,7 +15,7 @@ import fi.oph.koski.log.AuditLogTester
 import fi.oph.koski.organisaatio.MockOrganisaatiot.jyväskylänNormaalikoulu
 import fi.oph.koski.raportit.perusopetus.{PerusopetuksenOppijamäärätAikajaksovirheetRaportti, PerusopetuksenOppijamäärätAikajaksovirheetRaporttiRow, PerusopetuksenOppijamäärätRaportti, PerusopetuksenOppijamäärätRaporttiRow}
 import fi.oph.koski.raportointikanta.RaportointikantaTestMethods
-import fi.oph.koski.schema.{Aikajakso, ErityisenTuenPäätös, Opiskeluoikeus, PerusopetuksenOpiskeluoikeudenLisätiedot, PerusopetuksenOpiskeluoikeus}
+import fi.oph.koski.schema.{Aikajakso, ErityisenTuenPäätös, Opiskeluoikeus, PerusopetuksenOpiskeluoikeudenLisätiedot, PerusopetuksenOpiskeluoikeus, Tukijakso}
 import org.scalatest.BeforeAndAfterAll
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.should.Matchers
@@ -23,6 +23,7 @@ import org.scalatest.matchers.should.Matchers
 class PerusopetuksenOppijamäärätRaporttiSpec extends AnyFreeSpec with Matchers with RaportointikantaTestMethods with BeforeAndAfterAll with DirtiesFixtures
 {
   private val raportointipäivä = date(2012, 1, 1)
+  private val tuenPäätöksenJaksonRaportointipäivä = date(2026, 8, 1)
 
   var rikkinäisetOpiskeluoikeusOidit: Seq[Opiskeluoikeus.Oid] = Seq()
 
@@ -42,6 +43,8 @@ class PerusopetuksenOppijamäärätRaporttiSpec extends AnyFreeSpec with Matcher
     eiRikkinäinäRaportoitavatTestiopiskeluoikeudet.map(create)
     rikkinäisetOpiskeluoikeusOidit = rikkinäisetTestiopiskeluoikeudet.map(create).map(_.getOrElse(throw new Error))
 
+    tuenPäätöksenJaksojenTestiopiskeluiokeudet.map(create)
+
     application.perustiedotIndexer.sync(refresh = true)
     reloadRaportointikanta
   }
@@ -52,6 +55,26 @@ class PerusopetuksenOppijamäärätRaporttiSpec extends AnyFreeSpec with Matcher
       ehjäPidennettyOppivelvollisuusTarvittavienTietojenKanssaOpiskeluoikeus,
       ehjäPelkkäErityinenTukiOpiskeluoikeus
     )
+
+  private val tuenPäätöksenJaksojenTestiopiskeluiokeudet = List(
+    tuenPäätöstenRaportilleOsuvaOpiskeluoikeus(
+      PerusopetuksenOpiskeluoikeudenLisätiedot(
+        tuenPäätöksenJaksot = Some(List(Tukijakso(Some(tuenPäätöksenJaksonRaportointipäivä), None))),
+        opetuksenJärjestäminenVammanSairaudenTaiRajoitteenPerusteella = Some(List(Aikajakso(tuenPäätöksenJaksonRaportointipäivä, None)))
+      )
+    ),
+    tuenPäätöstenRaportilleOsuvaOpiskeluoikeus(
+      PerusopetuksenOpiskeluoikeudenLisätiedot(
+        tuenPäätöksenJaksot = Some(List(Tukijakso(Some(tuenPäätöksenJaksonRaportointipäivä), None))),
+        toimintaAlueittainOpiskelu = Some(List(Aikajakso(tuenPäätöksenJaksonRaportointipäivä, None)))
+      )
+    ),
+    tuenPäätöstenRaportilleOsuvaOpiskeluoikeus(
+      PerusopetuksenOpiskeluoikeudenLisätiedot(
+        tuenPäätöksenJaksot = Some(List(Tukijakso(Some(tuenPäätöksenJaksonRaportointipäivä), None)))
+      )
+    )
+  )
 
   private val rikkinäisetTestiopiskeluoikeudet =
     List(
@@ -170,6 +193,23 @@ class PerusopetuksenOppijamäärätRaporttiSpec extends AnyFreeSpec with Matcher
     )
   }
 
+  private def tuenPäätöstenRaportilleOsuvaOpiskeluoikeus(
+    lisätiedot: PerusopetuksenOpiskeluoikeudenLisätiedot
+  ): PerusopetuksenOpiskeluoikeus = {
+    PerusopetusExampleData.opiskeluoikeus(
+      suoritukset = List(
+        seitsemännenLuokanSuoritus.copy(
+          alkamispäivä = Some(tuenPäätöksenJaksonRaportointipäivä),
+          vahvistus = None
+        ),
+      ),
+      alkamispäivä = tuenPäätöksenJaksonRaportointipäivä,
+      päättymispäivä = None
+    ).copy(
+      lisätiedot = Some(lisätiedot)
+    )
+  }
+
   private def raportointipäiväänOsuvaVammaisuustieto = Some(List(raportointipäiväänOsuvaAikajakso))
   private def raportointipäiväänOsuvaPidennettyOppivelvollisuus = Some(raportointipäiväänOsuvaAikajakso)
   private def raportointipäiväänOsuvaKotiopetustieto = Some(List(raportointipäiväänOsuvaAikajakso))
@@ -236,6 +276,9 @@ class PerusopetuksenOppijamäärätRaporttiSpec extends AnyFreeSpec with Matcher
         vieraskielisiä = 0,
         pidOppivelvollisuusEritTukiJaVaikeastiVammainen = 0,
         pidOppivelvollisuusEritTukiJaMuuKuinVaikeimminVammainen = 0,
+        tuenPäätöksenJakso = 0,
+        opetuksenJärjestäminenVammanSairaudenTaiRajoitteenPerusteella = 0,
+        toimintaAlueittainOpiskelu = 0,
         virheellisestiSiirrettyjaTukitietoja = 0,
         erityiselläTuella = 0,
         majoitusetu = 0,
@@ -254,6 +297,9 @@ class PerusopetuksenOppijamäärätRaporttiSpec extends AnyFreeSpec with Matcher
         vieraskielisiä = 1,
         pidOppivelvollisuusEritTukiJaVaikeastiVammainen = 1,
         pidOppivelvollisuusEritTukiJaMuuKuinVaikeimminVammainen = 1,
+        tuenPäätöksenJakso = 0,
+        opetuksenJärjestäminenVammanSairaudenTaiRajoitteenPerusteella = 0,
+        toimintaAlueittainOpiskelu = 0,
         virheellisestiSiirrettyjaTukitietoja = 0,
         erityiselläTuella = 2,
         majoitusetu = 1,
@@ -272,6 +318,9 @@ class PerusopetuksenOppijamäärätRaporttiSpec extends AnyFreeSpec with Matcher
         vieraskielisiä = 0,
         pidOppivelvollisuusEritTukiJaVaikeastiVammainen = 1 + ylimääräisetVaikeastiVammaisetLkm,
         pidOppivelvollisuusEritTukiJaMuuKuinVaikeimminVammainen = 0 + ylimääräisetMuuKuinVaikeastiVammaisetLkm,
+        tuenPäätöksenJakso = 0,
+        opetuksenJärjestäminenVammanSairaudenTaiRajoitteenPerusteella = 0,
+        toimintaAlueittainOpiskelu = 0,
         virheellisestiSiirrettyjaTukitietoja = 0 + rikkinäisetYlimääräisetLkm,
         erityiselläTuella = 1 + ylimääräisetErityiselläTuellaOpiskeluoikeudet,
         majoitusetu = 1,
@@ -290,6 +339,9 @@ class PerusopetuksenOppijamäärätRaporttiSpec extends AnyFreeSpec with Matcher
         vieraskielisiä = 1,
         pidOppivelvollisuusEritTukiJaVaikeastiVammainen = 2 + ylimääräisetVaikeastiVammaisetLkm,
         pidOppivelvollisuusEritTukiJaMuuKuinVaikeimminVammainen = 1 + ylimääräisetMuuKuinVaikeastiVammaisetLkm,
+        tuenPäätöksenJakso = 0,
+        opetuksenJärjestäminenVammanSairaudenTaiRajoitteenPerusteella = 0,
+        toimintaAlueittainOpiskelu = 0,
         virheellisestiSiirrettyjaTukitietoja = 0 + rikkinäisetYlimääräisetLkm,
         erityiselläTuella = 3 + ylimääräisetErityiselläTuellaOpiskeluoikeudet,
         majoitusetu = 2,
@@ -300,6 +352,37 @@ class PerusopetuksenOppijamäärätRaporttiSpec extends AnyFreeSpec with Matcher
         kotiopetus = 1 + ylimääräisetKotiopetusLkm
       )
     ))
+  }
+
+  "Perusopetuksen oppijamäärien raportti - tuen päätöksen jaksoja raportilla" in {
+    val rows = perusopetuksenOppijamäärätRaporttiBuilder
+      .build(Seq(jyväskylänNormaalikoulu), tuenPäätöksenJaksonRaportointipäivä, t)(session(defaultUser))
+      .rows.map(_.asInstanceOf[PerusopetuksenOppijamäärätRaporttiRow])
+      .filter(_.oppilaitosNimi.equals("Jyväskylän normaalikoulu"))
+
+    rows should contain (
+      PerusopetuksenOppijamäärätRaporttiRow(
+        oppilaitosNimi = "Jyväskylän normaalikoulu",
+        organisaatioOid = "1.2.246.562.10.14613773812",
+        opetuskieli = "ruotsi,suomi",
+        vuosiluokka = "7",
+        oppilaita = 5,
+        vieraskielisiä = 1,
+        pidOppivelvollisuusEritTukiJaVaikeastiVammainen = 0,
+        pidOppivelvollisuusEritTukiJaMuuKuinVaikeimminVammainen = 0,
+        tuenPäätöksenJakso = 3,
+        opetuksenJärjestäminenVammanSairaudenTaiRajoitteenPerusteella = 1,
+        toimintaAlueittainOpiskelu = 1,
+        virheellisestiSiirrettyjaTukitietoja = 0,
+        erityiselläTuella = 0,
+        majoitusetu = 0,
+        kuljetusetu = 0,
+        sisäoppilaitosmainenMajoitus = 0,
+        koulukoti = 0,
+        joustavaPerusopetus = 0,
+        kotiopetus = 0
+      )
+    )
   }
 
   "Perusopetuksen oppijamäärien raportti - ei useita rivejä vaikka kieliä olisi useampi" in {
