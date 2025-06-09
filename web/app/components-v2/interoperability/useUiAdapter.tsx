@@ -176,10 +176,11 @@ const useUiAdapterImpl = <T extends any[]>(
 
         // TODO: päätason suorituksen tyyppichecki geneeriseksi opiskeluoikeusEditors
         if (
-          (tyyppi === 'ammatillinenkoulutus' &&
-            oo?.suoritukset?.[0]?.tyyppi?.koodiarvo ===
-              'ammatillinentutkintoosittainen') &&
-          localStorage.getItem('ammatillinen-v2') === null
+          tyyppi === 'ammatillinenkoulutus' &&
+          oo?.suoritukset?.[0]?.tyyppi?.koodiarvo ===
+            'ammatillinentutkintoosittainen' &&
+          localStorage.getItem('ammatillinen-v2') === null &&
+          !new URLSearchParams(window.location.search).has('ammatillinen-v2')
         ) {
           return undefined
         }
