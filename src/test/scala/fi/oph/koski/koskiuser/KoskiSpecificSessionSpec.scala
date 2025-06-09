@@ -156,6 +156,7 @@ class KoskiSpecificSessionSpec
   private def createAndVerifySession(username: String, expected: DirectoryUser, isRoot: Boolean = false) = {
     val authUser = AuthenticationUser.fromDirectoryUser(username, expected)
     val session = KoskiSpecificSession(authUser, req, käyttöoikeusRepository)
+    session.prefetchKäyttöoikeudet()
 
     session.lang should be("fi")
     session.clientIp should be(InetAddress.getByName("10.1.2.3"))
