@@ -62,6 +62,7 @@ import { TextEdit } from '../components-v2/controls/TextField'
 import { RaisedButton } from '../components-v2/controls/RaisedButton'
 import { PaikallinenLukionOpinto } from '../types/fi/oph/koski/schema/PaikallinenLukionOpinto'
 import { PaikallinenKoodi } from '../types/fi/oph/koski/schema/PaikallinenKoodi'
+import { PaikallinenOpintovalmiuksiaTukevaOpinto } from '../types/fi/oph/koski/schema/PaikallinenOpintovalmiuksiaTukevaOpinto'
 
 export type OsittaisenAmmatillisenTutkinnonOsanJatkoOpintovalmiuksiaTukevienOpintojenSuoritusPropertiesProps =
   {
@@ -157,14 +158,20 @@ type NewOsasuoritusProps = {
 const NewOsasuoritus = ({ form, suoritusPath }: NewOsasuoritusProps) => {
   return (
     <ColumnRow indent={2}>
-      <Column span={12}>
+      <Column span={6}>
         <NewYhteisenTutkinnonOsanOsaAlueenSuoritus
           form={form}
           suoritusPath={suoritusPath}
         />
       </Column>
-      <Column span={6}>
+      <Column span={4}>
         <NewLukioOpinto form={form} suoritusPath={suoritusPath} />
+      </Column>
+      <Column span={6}>
+        <NewMuidenOpintovalmiuksiaTukevienOpintojenSuoritus
+          form={form}
+          suoritusPath={suoritusPath}
+        />
       </Column>
     </ColumnRow>
   )
@@ -270,6 +277,76 @@ const NewLukioOpintoModal = ({
         <RaisedButton onClick={() => onSubmit(nimi, peruste)}>
           {t('Lisää')}
         </RaisedButton>
+      </ModalFooter>
+    </Modal>
+  )
+}
+
+const NewMuidenOpintovalmiuksiaTukevienOpintojenSuoritus = ({
+  form,
+  suoritusPath
+}: NewOsasuoritusProps) => {
+  const [showModal, setShowModal] = useState(false)
+
+  return (
+    <>
+      <FlatButton onClick={() => setShowModal(true)}>
+        {t('Lisää muu opintovalmiuksia tukeva opinto')}
+      </FlatButton>
+      {showModal && (
+        <NewMuidenOpintovalmiuksiaTukevienOpintojenSuoritusModal
+          onClose={() => setShowModal(false)}
+          onSubmit={(nimi) => {
+            form.updateAt(
+              suoritusPath.prop('osasuoritukset').valueOr([]),
+              (o) => [
+                ...o,
+                newMuidenOpintovalmiuksiaTukevienOpintojenSuoritus(nimi)
+              ]
+            )
+          }}
+        />
+      )}
+    </>
+  )
+}
+
+const newMuidenOpintovalmiuksiaTukevienOpintojenSuoritus = (
+  nimi: string
+): MuidenOpintovalmiuksiaTukevienOpintojenSuoritus => {
+  return MuidenOpintovalmiuksiaTukevienOpintojenSuoritus({
+    koulutusmoduuli: PaikallinenOpintovalmiuksiaTukevaOpinto({
+      tunniste: PaikallinenKoodi({ koodiarvo: nimi, nimi: localize(nimi) }),
+      kuvaus: localize(nimi)
+    })
+  })
+}
+
+type NewMuidenOpintovalmiuksiaTukevienOpintojenSuoritusModalProps = {
+  onClose: () => void
+  onSubmit: (nimi: string) => void
+}
+
+const NewMuidenOpintovalmiuksiaTukevienOpintojenSuoritusModal = ({
+  onClose,
+  onSubmit
+}: NewMuidenOpintovalmiuksiaTukevienOpintojenSuoritusModalProps) => {
+  const [nimi, setNimi] = useState('')
+
+  return (
+    <Modal onClose={onClose}>
+      <ModalTitle>{t('Lisää muu opintovalmiuksia tukeva opinto')}</ModalTitle>
+      <ModalBody>
+        <label>
+          {t('Nimi')}
+          <TextEdit onChange={(n) => setNimi(n ? n : '')} value={nimi} />
+        </label>
+      </ModalBody>
+      <ModalFooter>
+        <FlatButton onClick={onClose} testId="cancel">
+          {t('Peruuta')}
+        </FlatButton>
+        <RaisedButton onClick={() => onSubmit(nimi)}>{t('Lisää')}</RaisedButton>
       </ModalFooter>
     </Modal>
   )
