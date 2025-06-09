@@ -49,6 +49,7 @@ import {
   LaajuusView
 } from '../components-v2/opiskeluoikeus/LaajuusField'
 import { LaajuusOsaamispisteissä } from '../types/fi/oph/koski/schema/LaajuusOsaamispisteissa'
+import { hasAmmatillinenArviointi } from './OsasuoritusTables'
 
 type MuunOsittaisenAmmatillisenTutkinnonTutkinnonosanSuoritusPropertiesProps = {
   form: FormModel<AmmatillinenOpiskeluoikeus>
@@ -253,6 +254,13 @@ export const MuunOsittaisenAmmatillisenTutkinnonTutkinnonosanSuoritusProperties 
               }
             }) || []
           }
+          completed={(rowIndex) => {
+            const s = (osasuoritus.osasuoritukset || [])[rowIndex]
+            if (s === undefined) {
+              return undefined
+            }
+            return hasAmmatillinenArviointi(s)
+          }}
           onRemove={(rowIndex) => {
             form.updateAt(osasuoritusPath, (os) => {
               return {

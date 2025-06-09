@@ -187,6 +187,14 @@ const TableForTutkinnonOsaRyhmä = ({
                 }
               })
       }
+      completed={(rowIndex) => {
+        const osasuoritus = (osittainenPäätasonSuoritus.suoritus
+          .osasuoritukset || [])[originalIndexMap[rowIndex]]
+        if (osasuoritus === undefined) {
+          return undefined
+        }
+        return hasAmmatillinenArviointi(osasuoritus)
+      }}
     />
   )
 }
@@ -237,7 +245,7 @@ const tutkinnonOsatToTableRow = <T extends string>({
     />
   )
 
-  if (hasArviointi(osasuoritus)) {
+  if (hasAmmatillinenArviointi(osasuoritus)) {
     columns.Arvosana = <ParasArvosanaView value={osasuoritus.arviointi} />
   } else {
     columns.Arvosana = null
@@ -259,7 +267,9 @@ type WithArviointi = {
   arviointi: AmmatillinenArviointi[]
 }
 
-const hasArviointi = (suoritus: unknown): suoritus is WithArviointi => {
+export const hasAmmatillinenArviointi = (
+  suoritus: unknown
+): suoritus is WithArviointi => {
   const arviointi = (suoritus as any)?.arviointi
   return Array.isArray(arviointi) && isAmmatillinenArviointi(arviointi[0])
 }

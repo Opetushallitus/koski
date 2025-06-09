@@ -50,6 +50,7 @@ import { Koodistokoodiviite } from '../types/fi/oph/koski/schema/Koodistokoodivi
 import { YhteisenTutkinnonOsanOsaAlueenSuoritus } from '../types/fi/oph/koski/schema/YhteisenTutkinnonOsanOsaAlueenSuoritus'
 import { AmmatillisenTutkinnonOsanOsaAlue } from '../types/fi/oph/koski/schema/AmmatillisenTutkinnonOsanOsaAlue'
 import { Column, ColumnRow } from '../components-v2/containers/Columns'
+import { hasAmmatillinenArviointi } from './OsasuoritusTables'
 
 type YhteisenAmmatillisenTutkinnonOsasuoritusPropertiesProps = {
   form: FormModel<AmmatillinenOpiskeluoikeus>
@@ -263,6 +264,13 @@ export const YhteisenOsittaisenAmmatillisenTutkinnonOsasuoritusProperties = ({
               osasuoritukset: deleteAt(os.osasuoritukset || [], rowIndex)
             }
           })
+        }}
+        completed={(rowIndex) => {
+          const s = (osasuoritus.osasuoritukset || [])[rowIndex]
+          if (s === undefined) {
+            return undefined
+          }
+          return hasAmmatillinenArviointi(s)
         }}
         addNewOsasuoritusView={() => (
           <ColumnRow indent={2}>

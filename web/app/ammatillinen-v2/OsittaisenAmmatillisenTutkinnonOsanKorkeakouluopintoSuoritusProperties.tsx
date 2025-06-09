@@ -12,6 +12,7 @@ import {
 } from '../components-v2/opiskeluoikeus/LaajuusField'
 import { LaajuusOsaamispisteissä } from '../types/fi/oph/koski/schema/LaajuusOsaamispisteissa'
 import { deleteAt } from '../util/fp/arrays'
+import { hasAmmatillinenArviointi } from './OsasuoritusTables'
 
 export type OsittaisenAmmatillisenTutkinnonOsanKorkeakouluopintoSuoritusPropertiesProps =
   {
@@ -76,12 +77,16 @@ export const OsittaisenAmmatillisenTutkinnonOsanKorkeakouluopintoSuoritusPropert
             form.updateAt(osasuoritusPath, (os) => {
               return {
                 ...os,
-                osasuoritukset: deleteAt(
-                  os.osasuoritukset || [],
-                  rowIndex
-                )
+                osasuoritukset: deleteAt(os.osasuoritukset || [], rowIndex)
               }
             })
+          }}
+          completed={(rowIndex) => {
+            const s = (osasuoritus.osasuoritukset || [])[rowIndex]
+            if (s === undefined) {
+              return undefined
+            }
+            return hasAmmatillinenArviointi(s)
           }}
         />
       </>
