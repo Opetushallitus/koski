@@ -79,7 +79,9 @@ class CasServlet()(implicit val application: KoskiApplication) extends Virkailij
     params.get("ticket") match {
       case Some(ticket) =>
         try {
-          val username = casService.validateVirkailijaServiceTicket(casVirkailijaServiceUrl, ticket)
+          val attributes = casService.validateVirkailijaServiceTicket(casVirkailijaServiceUrl, ticket)
+          val username = attributes.username
+          // TODO: Jos onnistui, lisää attribuuteista käyttöoikeudet käyttöoikeuscacheen
           DirectoryClientLogin.findUser(application.directoryClient, request, username) match {
             case Some(user) =>
               setUser(Right(user.copy(serviceTicket = Some(ticket))))

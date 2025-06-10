@@ -6,7 +6,7 @@ import fi.oph.koski.http.{Http, OpintopolkuCallerId}
 import fi.oph.koski.log.Logging
 import fi.oph.koski.userdirectory.Password
 import fi.oph.koski.cas.CasClient.Username
-import fi.oph.koski.cas.{CasAuthenticationException, CasClient, CasUser}
+import fi.oph.koski.cas.{CasAuthenticationException, CasClient, CasUser, VirkailijaAttributes}
 
 import scala.concurrent.duration.DurationInt
 
@@ -23,9 +23,12 @@ class CasService(config: Config) extends Logging {
     OpintopolkuCallerId.koski
   )
 
-  private val mockUsernameForAllVirkailijaTickets = {
+  private val mockAttributesForAllVirkailijaTickets = {
     if (Environment.isMockEnvironment(config) && config.hasPath("mock.casClient.usernameForAllVirkailijaTickets")) {
-      Some(config.getString("mock.casClient.usernameForAllVirkailijaTickets"))
+      Some(VirkailijaAttributes(
+        username = config.getString("mock.casClient.usernameForAllVirkailijaTickets"),
+        roles = List.empty
+      ))
     } else {
       None
     }
@@ -58,8 +61,8 @@ class CasService(config: Config) extends Logging {
     }
   }
 
-  def validateVirkailijaServiceTicket(url: String, ticket: String): Username = {
-    mockUsernameForAllVirkailijaTickets.getOrElse({
+  def validateVirkailijaServiceTicket(url: String, ticket: String): VirkailijaAttributes = {
+    mockAttributesForAllVirkailijaTickets.getOrElse({
       Http.runIO(
         casVirkailijaClient
           .validateServiceTicketWithVirkailijaUsername(url)(ticket)

@@ -39,8 +39,8 @@ class CasClient(casBaseUrl: Uri, client: Client[IO], callerId: String) extends L
     validateServiceTicket[OppijaAttributes](casBaseUrl, client, service, decodeOppijaAttributes)(serviceTicket)
   }
 
-  def validateServiceTicketWithVirkailijaUsername(service: String)(serviceTicket: ServiceTicket): IO[Username] = {
-    validateServiceTicket[Username](casBaseUrl, client, service, decodeVirkailijaUsername)(serviceTicket)
+  def validateServiceTicketWithVirkailijaUsername(service: String)(serviceTicket: ServiceTicket): IO[VirkailijaAttributes] = {
+    validateServiceTicket[VirkailijaAttributes](casBaseUrl, client, service, decodeVirkailijaUsername)(serviceTicket)
   }
 
   private def validateServiceTicket[R](casBaseUrl: Uri, client: Client[IO], service: String, responseHandler: Response[IO] => IO[R])(serviceTicket: ServiceTicket): IO[R] = {
@@ -125,7 +125,7 @@ class CasClient(casBaseUrl: Uri, client: Client[IO], callerId: String) extends L
         }
       }}
 
-  private val virkailijaServiceTicketDecoder: EntityDecoder[IO, Username] =
+  private val virkailijaServiceTicketDecoder: EntityDecoder[IO, VirkailijaAttributes] =
     textOrXmlDecoder
       .map(s => {
         logger.info(s"VIRKAILIJA SERVICE TICKET CONTENT: ${s}")
@@ -142,6 +142,7 @@ class CasClient(casBaseUrl: Uri, client: Client[IO], callerId: String) extends L
           }
         }
       }
+      .map(s => VirkailijaAttributes(username = s, roles = List.empty))
 
   private def casFailure[R](debugLabel: String, resp: Response[IO]): EitherT[IO, DecodeFailure, R] = {
     textOrXmlDecoder
@@ -164,8 +165,8 @@ class CasClient(casBaseUrl: Uri, client: Client[IO], callerId: String) extends L
   /**
    * Decode CAS Virkailija's service ticket validation response to username.
    */
-  def decodeVirkailijaUsername: Response[IO] => IO[Username] = { response =>
-    decodeCASResponse[Username](response, "username", virkailijaServiceTicketDecoder)
+  def decodeVirkailijaUsername: Response[IO] => IO[VirkailijaAttributes] = { response =>
+    decodeCASResponse[VirkailijaAttributes](response, "virkailija attributes", virkailijaServiceTicketDecoder)
   }
 
   private def decodeCASResponse[R](response: Response[IO], debugLabel: String, decoder: EntityDecoder[IO, R]): IO[R] = {
@@ -287,3 +288,9 @@ object FetchHelper {
 class CasClientException(message: String) extends RuntimeException(message)
 
 class CasAuthenticationException(message: String) extends CasClientException(message)
+
+
+case class VirkailijaAttributes(
+                                 username: String,
+                                 roles: List[String]
+)
