@@ -9,7 +9,7 @@ import {
   KeyValueRow,
   KeyValueTable
 } from '../components-v2/containers/KeyValueTable'
-import { t } from '../i18n/i18n'
+import { finnish, t } from '../i18n/i18n'
 import { ISO2FinnishDate, todayISODate } from '../date/date'
 import React from 'react'
 import { DateInput } from '../components-v2/controls/DateInput'
@@ -50,7 +50,8 @@ export const emptyArviointi: AmmatillinenArviointi = AmmatillinenArviointi({
   päivä: todayISODate(),
   arvosana: Koodistokoodiviite({
     koodistoUri: 'arviointiasteikkoammatillinenhyvaksyttyhylatty',
-    koodiarvo: 'Hyväksytty'
+    koodiarvo: 'Hyväksytty',
+    nimi: finnish('Hyväksytty')
   })
 })
 export const ArviointiEdit = ({
