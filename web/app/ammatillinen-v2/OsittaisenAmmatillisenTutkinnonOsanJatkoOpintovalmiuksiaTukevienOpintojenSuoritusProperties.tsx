@@ -35,8 +35,8 @@ import {
   KoodistoView
 } from '../components-v2/opiskeluoikeus/KoodistoField'
 import {
-  OsaamisenTunnustusView,
-  TunnustusEdit
+  OsaamisenTunnustusEdit,
+  OsaamisenTunnustusView
 } from '../components-v2/opiskeluoikeus/TunnustusField'
 import { OsaamisenTunnustaminen } from '../types/fi/oph/koski/schema/OsaamisenTunnustaminen'
 import { FormListField } from '../components-v2/forms/FormListField'
@@ -436,14 +436,12 @@ const LukionJaMuunOsasoritusProperties = ({
             <FormField
               form={form}
               path={osasuoritusPath.prop('tunnustettu')}
-              view={
-                OsaamisenTunnustusView /*TODO custom komponentti amikselle?*/
-              }
+              view={OsaamisenTunnustusView}
               editProps={{
                 createEmptyTunnustus: () =>
                   OsaamisenTunnustaminen({ selite: localize('') })
               }}
-              edit={TunnustusEdit}
+              edit={OsaamisenTunnustusEdit}
             />
           </OsasuoritusPropertyValue>
         </OsasuoritusProperty>

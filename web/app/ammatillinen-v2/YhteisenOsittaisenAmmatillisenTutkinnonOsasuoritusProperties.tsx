@@ -15,8 +15,8 @@ import {
   OrganisaatioView
 } from '../components-v2/opiskeluoikeus/OrganisaatioField'
 import {
-  OsaamisenTunnustusView,
-  TunnustusEdit
+  OsaamisenTunnustusEdit,
+  OsaamisenTunnustusView
 } from '../components-v2/opiskeluoikeus/TunnustusField'
 import { OsaamisenTunnustaminen } from '../types/fi/oph/koski/schema/OsaamisenTunnustaminen'
 import { localize, t } from '../i18n/i18n'
@@ -51,7 +51,6 @@ import { YhteisenTutkinnonOsanOsaAlueenSuoritus } from '../types/fi/oph/koski/sc
 import { AmmatillisenTutkinnonOsanOsaAlue } from '../types/fi/oph/koski/schema/AmmatillisenTutkinnonOsanOsaAlue'
 import { Column, ColumnRow } from '../components-v2/containers/Columns'
 import { hasAmmatillinenArviointi } from './OsasuoritusTables'
-import { OsittaisenAmmatillisenTutkinnonOsanJatkoOpintovalmiuksiaTukevienOpintojenSuoritus } from '../types/fi/oph/koski/schema/OsittaisenAmmatillisenTutkinnonOsanJatkoOpintovalmiuksiaTukevienOpintojenSuoritus'
 
 type YhteisenAmmatillisenTutkinnonOsasuoritusPropertiesProps = {
   form: FormModel<AmmatillinenOpiskeluoikeus>
@@ -107,14 +106,12 @@ export const YhteisenOsittaisenAmmatillisenTutkinnonOsasuoritusProperties = ({
             <FormField
               form={form}
               path={osasuoritusPath.prop('tunnustettu')}
-              view={
-                OsaamisenTunnustusView /*TODO custom komponentti amikselle?*/
-              }
+              view={OsaamisenTunnustusView}
               editProps={{
                 createEmptyTunnustus: () =>
                   OsaamisenTunnustaminen({ selite: localize('') })
               }}
-              edit={TunnustusEdit}
+              edit={OsaamisenTunnustusEdit}
             />
           </OsasuoritusPropertyValue>
         </OsasuoritusProperty>

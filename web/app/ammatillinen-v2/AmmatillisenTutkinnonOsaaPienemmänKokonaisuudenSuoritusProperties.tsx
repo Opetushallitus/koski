@@ -7,6 +7,7 @@ import {
 } from '../components-v2/opiskeluoikeus/OsasuoritusProperty'
 import { FormField } from '../components-v2/forms/FormField'
 import {
+  OsaamisenTunnustusEdit,
   OsaamisenTunnustusView,
   TunnustusEdit
 } from '../components-v2/opiskeluoikeus/TunnustusField'
@@ -63,14 +64,12 @@ export const AmmatillisenTutkinnonOsaaPienemmänKokonaisuudenSuoritusProperties 
               <FormField
                 form={form}
                 path={osasuoritusPath.prop('tunnustettu')}
-                view={
-                  OsaamisenTunnustusView /*TODO custom komponentti amikselle?*/
-                }
+                view={OsaamisenTunnustusView}
                 editProps={{
                   createEmptyTunnustus: () =>
                     OsaamisenTunnustaminen({ selite: localize('') })
                 }}
-                edit={TunnustusEdit}
+                edit={OsaamisenTunnustusEdit}
               />
             </OsasuoritusPropertyValue>
           </OsasuoritusProperty>

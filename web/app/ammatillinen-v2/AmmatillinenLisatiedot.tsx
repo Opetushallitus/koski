@@ -150,7 +150,6 @@ export const AmmatillinenLisatiedot: React.FC<AmmatillinenLisatiedotProps> = ({
           testId="ulkomaanjaksot"
           removable
         />
-        {/*TODO lisää placeholder / label tänne?*/}
         {form.editMode && (
           <ButtonGroup>
             <FlatButton

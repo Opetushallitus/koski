@@ -8,8 +8,8 @@ import {
   BooleanView
 } from '../components-v2/opiskeluoikeus/BooleanField'
 import {
-  OsaamisenTunnustusView,
-  TunnustusEdit
+  OsaamisenTunnustusEdit,
+  OsaamisenTunnustusView
 } from '../components-v2/opiskeluoikeus/TunnustusField'
 import { OsaamisenTunnustaminen } from '../types/fi/oph/koski/schema/OsaamisenTunnustaminen'
 import { localize, t } from '../i18n/i18n'
@@ -77,14 +77,12 @@ export const YhteisenTutkinnonOsanOsaAlueenSuoritusProperties = ({
             <FormField
               form={form}
               path={osasuoritusPath.prop('tunnustettu')}
-              view={
-                OsaamisenTunnustusView /*TODO custom komponentti amikselle?*/
-              }
+              view={OsaamisenTunnustusView}
               editProps={{
                 createEmptyTunnustus: () =>
                   OsaamisenTunnustaminen({ selite: localize('') })
               }}
-              edit={TunnustusEdit}
+              edit={OsaamisenTunnustusEdit}
             />
           </OsasuoritusPropertyValue>
         </OsasuoritusProperty>

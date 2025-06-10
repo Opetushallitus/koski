@@ -129,7 +129,6 @@ const AmmatillisPääsuorituksenTiedot: React.FC<{
     <KeyValueTable>
       <KeyValueRow localizableLabel="Koulutus">
         <TestIdText id="koulutus">
-          {/*TODO Koulutusmoduuli editor perustelinkillä*/}
           {t(päätasonSuoritus.suoritus.koulutusmoduuli.tunniste.nimi)}
         </TestIdText>{' '}
         {päätasonSuoritus.suoritus.koulutusmoduuli.tunniste.koodiarvo}{' '}
@@ -438,7 +437,7 @@ const AmmatillinenTutkintoOsittainenEditor: React.FC<
           form={props.form}
           suoritusPath={päätasonSuoritus.path}
           organisaatio={organisaatio}
-          disableAdd={false /*TODO?*/}
+          disableAdd={false}
           vahvistusClass={HenkilövahvistusValinnaisellaPaikkakunnalla.className}
         />
 
