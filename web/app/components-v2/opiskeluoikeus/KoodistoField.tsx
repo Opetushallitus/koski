@@ -33,7 +33,9 @@ export const KoodistoView = <T extends string>(props: KoodistoViewProps<T>) => {
   )
 }
 
-export const KoodistoViewSpan = <T extends string>(props: KoodistoViewProps<T>) => {
+export const KoodistoViewSpan = <T extends string>(
+  props: KoodistoViewProps<T>
+) => {
   const testId = useTestId(props.testId)
   return (
     <span {...common(props)} data-testid={testId}>

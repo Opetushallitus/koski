@@ -24,8 +24,8 @@ import { Koodistokoodiviite } from '../types/fi/oph/koski/schema/Koodistokoodivi
 import { Select, useKoodistoOptions } from '../components-v2/controls/Select'
 
 export const ArviointiView = ({
-                                value
-                              }: CommonProps<FieldViewerProps<AmmatillinenArviointi, EmptyObject>>) => {
+  value
+}: CommonProps<FieldViewerProps<AmmatillinenArviointi, EmptyObject>>) => {
   return (
     <>
       <KeyValueRow localizableLabel="Arvosana">
@@ -54,9 +54,9 @@ export const emptyArviointi: AmmatillinenArviointi = AmmatillinenArviointi({
   })
 })
 export const ArviointiEdit = ({
-                                value,
-                                onChange
-                              }: FieldEditorProps<AmmatillinenArviointi, EmptyObject>) => {
+  value,
+  onChange
+}: FieldEditorProps<AmmatillinenArviointi, EmptyObject>) => {
   return (
     <>
       <KeyValueRow localizableLabel="Arvosana">
@@ -88,10 +88,10 @@ export const ArviointiEdit = ({
                     ...value,
                     arvioitsijat: value.arvioitsijat
                       ? [
-                        ...value.arvioitsijat.slice(0, index),
-                        Arvioitsija({ nimi }),
-                        ...value.arvioitsijat.slice(index + 1)
-                      ]
+                          ...value.arvioitsijat.slice(0, index),
+                          Arvioitsija({ nimi }),
+                          ...value.arvioitsijat.slice(index + 1)
+                        ]
                       : [Arvioitsija({ nimi })]
                   })
                 }
