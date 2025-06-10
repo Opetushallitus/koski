@@ -127,7 +127,10 @@ class CasClient(casBaseUrl: Uri, client: Client[IO], callerId: String) extends L
 
   private val virkailijaServiceTicketDecoder: EntityDecoder[IO, Username] =
     textOrXmlDecoder
-      .map(s => Utility.trim(scala.xml.XML.loadString(s)))
+      .map(s => {
+        logger.info(s"VIRKAILIJA SERVICE TICKET CONTENT: ${s}")
+        Utility.trim(scala.xml.XML.loadString(s))
+      })
       .flatMapR[Username] { serviceResponse => {
           val user = (serviceResponse \ "authenticationSuccess" \ "user")
           user.length match {
