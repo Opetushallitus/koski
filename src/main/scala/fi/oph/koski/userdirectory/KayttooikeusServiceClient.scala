@@ -33,6 +33,9 @@ case class KäyttöoikeusServiceClient(config: Config) {
       }.map(_.flatten)
   }
 
+  def getPalvelut: IO[List[Palvelu]] =
+    http.get(uri"/kayttooikeus-service/palvelu")(parseJson[List[Palvelu]])
+
   def findKäyttöoikeusRyhmänHenkilöt(ryhmäId: Int): IO[List[String]] =
     http.get(uri"/kayttooikeus-service/kayttooikeusryhma/$ryhmäId/henkilot")(parseJson[KäyttöoikeusRyhmäHenkilöt])
       .map(_.personOids.getOrElse(List.empty))
@@ -52,3 +55,8 @@ case class HenkilönKäyttöoikeudet(oidHenkilo: String, organisaatiot: List[Org
 case class OrganisaatioJaKäyttöoikeudet(organisaatioOid: String, kayttooikeudet: List[PalveluJaOikeus])
 case class PalveluJaOikeus(palvelu: String, oikeus: String)
 case class KäyttöoikeusRooli(rooli: String)
+
+// Sisältää paljon muitakin kenttiä, esim. palvelun selväkielisen nimen eri kielillä, mutta niistä ei olla kiinnostuneita
+case class Palvelu(
+  name: String
+)
