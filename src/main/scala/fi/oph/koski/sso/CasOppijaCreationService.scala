@@ -8,10 +8,15 @@ import java.nio.charset.StandardCharsets
 import javax.servlet.http.HttpServletRequest
 
 class CasOppijaCreationService(henkilöRepository: HenkilöRepository) {
-  def findOrCreate(request: HttpServletRequest, validHetu: String) =
+  def findOrCreateByOidOrHetu(request: HttpServletRequest, tunnisteet: KansalaisenTunnisteet) = {
+    tunnisteet.oppijaOid.flatMap(oid => henkilöRepository.findByOid(oid))
+      .orElse(tunnisteet.hetu.flatMap(h => findOrCreate(request, h)))
+  }
+
+  def findOrCreate(request: HttpServletRequest, hetu: String) =
     henkilöRepository
-      .findByHetuOrCreateIfInYtrOrVirta(validHetu, nimitiedot(request))
-      .orElse(create(request, validHetu))
+      .findByHetuOrCreateIfInYtrOrVirta(hetu, nimitiedot(request))
+      .orElse(create(request, hetu))
 
   def create(request: HttpServletRequest, validHetu: String) =
     nimitiedot(request)
