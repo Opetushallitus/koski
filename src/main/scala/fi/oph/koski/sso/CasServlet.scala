@@ -52,11 +52,12 @@ class CasServlet()(implicit val application: KoskiApplication) extends Virkailij
               case Some(onSuccessRedirectUrl) => casOppijaServiceUrl + "?onSuccess=" + onSuccessRedirectUrl
               case None => casOppijaServiceUrl
             }
-            val hetu = casService.validateKansalainenServiceTicket(url, ticket)
-            oppijaCreation.findOrCreate(request, hetu) match {
+            val kansalaisenTunnisteet = casService.validateKansalainenServiceTicket(url, ticket)
+            oppijaCreation.findOrCreateByOidOrHetu(request, kansalaisenTunnisteet) match {
               case Some(oppija) =>
-                val huollettavat = application.huoltajaServiceVtj.getHuollettavat(hetu)
-                val user = AuthenticationUser(oppija.oid, oppija.oid, s"${oppija.etunimet} ${oppija.sukunimi}", serviceTicket = Some(ticket), kansalainen = true, huollettavat = Some(huollettavat))
+                val huollettavat = oppija.hetu.orElse(kansalaisenTunnisteet.hetu)
+                  .map(application.huoltajaServiceVtj.getHuollettavat)
+                val user = AuthenticationUser(oppija.oid, oppija.oid, s"${oppija.etunimet} ${oppija.sukunimi}", serviceTicket = Some(ticket), kansalainen = true, huollettavat = huollettavat)
                 koskiSessions.store(ticket, user, LogUserContext.clientIpFromRequest(request), LogUserContext.userAgent(request))
                 UserLanguage.setLanguageCookie(UserLanguage.getLanguageFromLDAP(user, application.directoryClient).getOrElse(UserLanguage.getLanguageFromCookie(request)), response)
                 setUser(Right(user))
