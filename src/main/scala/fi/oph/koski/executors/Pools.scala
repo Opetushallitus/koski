@@ -1,7 +1,5 @@
 package fi.oph.koski.executors
 
-import java.util.concurrent.ThreadPoolExecutor
-
 import scala.concurrent.{ExecutionContext, ExecutionContextExecutor}
 
 /**
@@ -12,8 +10,6 @@ object Pools {
   val jettyThreads = 250
   val globalExecutionContextThreads: Int = jettyThreads
   val httpThreads: Int = jettyThreads
-  val httpPool: ThreadPoolExecutor = NamedThreadPoolExecutor("http4s-blaze-client", httpThreads, httpThreads, 1000)
-  val httpExecutionContext: ExecutionContextExecutor = ExecutionContext.fromExecutor(httpPool)
   val databasePoolName = "databasePool"
   val globalExecutor: ExecutionContextExecutor = ExecutionContext.fromExecutor(
     NamedThreadPoolExecutor("globalPool", Pools.globalExecutionContextThreads, Pools.globalExecutionContextThreads, 1000)
@@ -21,4 +17,9 @@ object Pools {
   val databaseExecutor: ExecutionContextExecutor = ExecutionContext.fromExecutor(
     NamedThreadPoolExecutor(databasePoolName, Pools.globalExecutionContextThreads, Pools.globalExecutionContextThreads, 1000)
   )
+
+  // Own pools for the cats effect IO used by http4s. This avoids deadlocks, when http requests cannot get deadlocked when the global pool is full of threads
+  // waiting for the http requests to complete.
+  val httpComputeExecutor: ExecutionContextExecutor = ExecutionContext.fromExecutor(NamedForkJoinPoolExecutor("httpComputePool"))
+  val httpBlockingExecutor: ExecutionContextExecutor = ExecutionContext.fromExecutor(NamedThreadPoolExecutor("httpBlockingPool", Pools.httpThreads, Pools.httpThreads, 1000))
 }
