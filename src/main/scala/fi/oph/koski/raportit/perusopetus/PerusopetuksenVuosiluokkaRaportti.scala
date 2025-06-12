@@ -39,7 +39,7 @@ object PerusopetuksenVuosiluokkaRaportti extends VuosiluokkaRaporttiPaivalta wit
     val (pakollisetValtakunnalliset, valinnaisetValtakunnalliset) = valtakunnalliset.partition(isPakollinen)
     val (pakollisetPaikalliset, valinnaisetPaikalliset) = paikalliset.partition(isPakollinen)
     val kaikkiValinnaiset = valinnaisetPaikalliset.union(valinnaisetValtakunnalliset)
-    val voimassaOlevatErityisenTuenPäätökset = opiskeluoikeudenLisätiedot.map(lt => combineErityisenTuenPäätökset(lt.erityisenTuenPäätös, lt.erityisenTuenPäätökset).filter(erityisentuenPäätösvoimassaPaivalla(_, hakupaiva))).getOrElse(List.empty)
+    val voimassaOlevatErityisenTuenPäätökset = opiskeluoikeudenLisätiedot.map(lt => combineErityisenTuenPäätökset(lt.erityisenTuenPäätös, lt.erityisenTuenPäätökset).filter(mahdollisestiAlkupäivällinenJaksoVoimassaPäivällä(_, hakupaiva))).getOrElse(List.empty)
     val päätasonVahvistusPäivä = row.päätasonSuoritus.vahvistusPäivä
     val kotikunta = if (t.language == "sv") row.henkilo.kotikuntaNimiSv else row.henkilo.kotikuntaNimiFi
 
@@ -143,6 +143,9 @@ object PerusopetuksenVuosiluokkaRaportti extends VuosiluokkaRaporttiPaivalta wit
       koulukoti = opiskeluoikeudenLisätiedot.exists(_.koulukoti.exists(_.exists(aikajaksoVoimassaHakuPaivalla(_, hakupaiva)))),
       erityisenTuenPaatosVoimassa = voimassaOlevatErityisenTuenPäätökset.size > 0,
       erityisenTuenPaatosToimialueittain = voimassaOlevatErityisenTuenPäätökset.exists(_.opiskeleeToimintaAlueittain),
+      tuenPäätöksenJakso = opiskeluoikeudenLisätiedot.exists(_.tuenPäätöksenJaksot.exists(_.exists(mahdollisestiAlkupäivällinenJaksoVoimassaPäivällä(_, hakupaiva)))),
+      opetuksenJärjestäminenVammanSairaudenTaiRajoitteenPerusteella = opiskeluoikeudenLisätiedot.exists(_.opetuksenJärjestäminenVammanSairaudenTaiRajoitteenPerusteella.exists(_.exists(aikajaksoVoimassaHakuPaivalla(_, hakupaiva)))),
+      toimintaAlueittainOpiskelu = opiskeluoikeudenLisätiedot.exists(_.toimintaAlueittainOpiskelu.exists(_.exists(aikajaksoVoimassaHakuPaivalla(_, hakupaiva))))
     )
   }
 
@@ -177,12 +180,12 @@ object PerusopetuksenVuosiluokkaRaportti extends VuosiluokkaRaporttiPaivalta wit
     oppiaineidenSuoritukset.filter(s => koodistoKoodit.contains(s.koulutusmoduuliKoodiarvo)) match {
       case Nil => t.get("raportti-excel-default-value-oppiaine-puuttuu")
       case suoritukset@_ => suoritukset.map(
-        oppiaineenArvosanaJaYksilöllistettyTieto(_, päätasonVahvistusPäivä, t)
+        oppiaineenArvosanaJaYksilöllistettyTaiRajattuTieto(_, päätasonVahvistusPäivä, t)
       ).mkString(",")
     }
   }
 
-  private def oppiaineenArvosanaJaYksilöllistettyTieto(
+  private def oppiaineenArvosanaJaYksilöllistettyTaiRajattuTieto(
     osasuoritus: ROsasuoritusRow,
     päätasonVahvistusPäivä: Option[Date],
     t: LocalizationReader
@@ -192,15 +195,16 @@ object PerusopetuksenVuosiluokkaRaportti extends VuosiluokkaRaporttiPaivalta wit
     val viimeinenPäiväIlmanLaajuuksia = Date.valueOf(LocalDate.of(2020, 7, 31))
     if (päätasonVahvistusPäivä.exists(_.after(viimeinenPäiväIlmanLaajuuksia)) && osasuoritus.koulutusmoduuliPakollinen.getOrElse(false)) {
       val laajuus = osasuoritus.koulutusmoduuliLaajuusArvo.getOrElse(t.get("raportti-excel-default-value-laajuus-puuttuu"))
-      s"$arvosana${täppäIfYksilöllistetty(osasuoritus)} ${t.get("raportti-excel-default-value-laajuus")}: $laajuus"
+      s"$arvosana${täppäIfYksilöllistettyTaiRajattu(osasuoritus)} ${t.get("raportti-excel-default-value-laajuus")}: $laajuus"
     } else {
-      s"$arvosana${täppäIfYksilöllistetty(osasuoritus)}"
+      s"$arvosana${täppäIfYksilöllistettyTaiRajattu(osasuoritus)}"
     }
   }
 
-  private def täppäIfYksilöllistetty(osasuoritus: ROsasuoritusRow): String = {
+  private def täppäIfYksilöllistettyTaiRajattu(osasuoritus: ROsasuoritusRow): String = {
     val isYksilöllistetty = JsonSerializer.extract[Option[Boolean]](osasuoritus.data \ "yksilöllistettyOppimäärä").getOrElse(false)
-    if (isYksilöllistetty) "*" else ""
+    val isRajattu = JsonSerializer.extract[Option[Boolean]](osasuoritus.data \ "rajattuOppimäärä").getOrElse(false)
+    if (isYksilöllistetty || isRajattu) "*" else ""
   }
 
   private def getOppiaineenOppimäärä(koodistoKoodi: String, t: LocalizationReader)(osasuoritukset: Seq[ROsasuoritusRow]): String = {
@@ -269,10 +273,13 @@ object PerusopetuksenVuosiluokkaRaportti extends VuosiluokkaRaporttiPaivalta wit
     erityisenTuenPäätös.toList ++ erityisenTuenPäätökset.toList.flatten
   }
 
-  private def erityisentuenPäätösvoimassaPaivalla(päätös: ErityisenTuenPäätös, paiva: LocalDate): Boolean = {
-    (päätös.alku, päätös.loppu) match {
-      case (Some(alku), Some(loppu)) => !alku.isAfter(paiva) && !loppu.isBefore(paiva)
-      case (Some(alku), _) => !alku.isAfter(paiva)
+  private def mahdollisestiAlkupäivällinenJaksoVoimassaPäivällä(
+    jakso: MahdollisestiAlkupäivällinenJakso,
+    päivä: LocalDate
+  ): Boolean = {
+    (jakso.alku, jakso.loppu) match {
+      case (Some(alku), Some(loppu)) => !alku.isAfter(päivä) && !loppu.isBefore(päivä)
+      case (Some(alku), _) => !alku.isAfter(päivä)
       case _ => false
     }
   }
@@ -370,7 +377,10 @@ object PerusopetuksenVuosiluokkaRaportti extends VuosiluokkaRaporttiPaivalta wit
     "sisäoppilaitosmainenMajoitus" -> compactLisätiedotColumn(t.get("raportti-excel-kolumni-sisäoppilaitosmainenMajoitus"), t),
     "koulukoti" -> compactLisätiedotColumn(t.get("raportti-excel-kolumni-koulukoti"), t),
     "erityisenTuenPaatosVoimassa" -> CompactColumn(t.get("raportti-excel-kolumni-erityisenTuenPaatosVoimassa"), comment = Some(t.get("raportti-excel-kolumni-erityisenTuenPaatosVoimassa-comment"))),
-    "erityisenTuenPaatosToimialueittain" -> compactLisätiedotColumn(t.get("raportti-excel-kolumni-erityisenTuenPaatosToimialueittain"), t)
+    "erityisenTuenPaatosToimialueittain" -> compactLisätiedotColumn(t.get("raportti-excel-kolumni-erityisenTuenPaatosToimialueittain"), t),
+    "tuenPäätöksenJakso" -> compactLisätiedotColumn(t.get("raportti-excel-kolumni-tuenPäätöksenJakso"), t),
+    "opetuksenJärjestäminenVammanSairaudenTaiRajoitteenPerusteella" -> compactLisätiedotColumn(t.get("raportti-excel-kolumni-opetuksenJärjestäminenVammanSairaudenTaiRajoitteenPerusteella"), t),
+    "toimintaAlueittainOpiskelu" -> compactLisätiedotColumn(t.get("raportti-excel-kolumni-toimintaAlueittainOpiskelu"), t),
   )
 }
 
@@ -449,5 +459,8 @@ private[raportit] case class PerusopetusRow(
   sisäoppilaitosmainenMajoitus: Boolean,
   koulukoti: Boolean,
   erityisenTuenPaatosVoimassa: Boolean,
-  erityisenTuenPaatosToimialueittain: Boolean
+  erityisenTuenPaatosToimialueittain: Boolean,
+  tuenPäätöksenJakso: Boolean,
+  opetuksenJärjestäminenVammanSairaudenTaiRajoitteenPerusteella: Boolean,
+  toimintaAlueittainOpiskelu: Boolean
 )

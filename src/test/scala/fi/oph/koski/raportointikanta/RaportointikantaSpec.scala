@@ -813,13 +813,27 @@ class RaportointikantaSpec
           lisätiedot = Some(PerusopetuksenOpiskeluoikeudenLisätiedot(
             vaikeastiVammainen = Some(List(
               Aikajakso(LocalDate.of(2017, 1, 1), Some(LocalDate.of(2017, 3, 31)))
+            )),
+            tuenPäätöksenJaksot = Some(List(
+              Tukijakso(Some(LocalDate.of(2017, 2, 28)), Some(LocalDate.of(2017, 4, 30)))
+            )),
+            opetuksenJärjestäminenVammanSairaudenTaiRajoitteenPerusteella = Some(List(
+              Aikajakso(LocalDate.of(2017, 3, 15), Some(LocalDate.of(2017, 4, 30)))
+            )),
+            toimintaAlueittainOpiskelu = Some(List(
+              Aikajakso(LocalDate.of(2017, 3, 15), Some(LocalDate.of(2017, 4, 30)))
             ))
           ))
         )
         val aikajaksoRows = AikajaksoRowBuilder.buildROpiskeluoikeusAikajaksoRows(oid, opiskeluoikeus)
         aikajaksoRows should equal(Seq(
-          ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2017-01-01"), Date.valueOf("2017-03-31"), "lasna", Date.valueOf("2017-01-01"), vaikeastiVammainen = true),
-          ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2017-04-01"), Date.valueOf(AikajaksoRowBuilder.IndefiniteFuture), "lasna", Date.valueOf("2017-01-01"))
+          ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2017-01-01"), Date.valueOf("2017-02-27"), "lasna", Date.valueOf("2017-01-01"), vaikeastiVammainen = true),
+          ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2017-02-28"), Date.valueOf("2017-03-14"), "lasna", Date.valueOf("2017-01-01"), vaikeastiVammainen = true, tuenPäätöksenJakso = true),
+          ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2017-03-15"), Date.valueOf("2017-03-31"), "lasna", Date.valueOf("2017-01-01"),
+            vaikeastiVammainen = true, tuenPäätöksenJakso = true, opetuksenJärjestäminenVammanSairaudenTaiRajoitteenPerusteella = true, toimintaAlueittainOpiskelu = true),
+          ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2017-04-01"), Date.valueOf("2017-04-30"), "lasna", Date.valueOf("2017-01-01"),
+            tuenPäätöksenJakso = true, opetuksenJärjestäminenVammanSairaudenTaiRajoitteenPerusteella = true, toimintaAlueittainOpiskelu = true),
+          ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2017-05-01"), Date.valueOf(AikajaksoRowBuilder.IndefiniteFuture), "lasna", Date.valueOf("2017-01-01"))
         ))
       }
       "Erityisen koulutustehtävän jakso" in {
@@ -854,7 +868,9 @@ class RaportointikantaSpec
             majoitusetu = Some(Aikajakso(LocalDate.of(2000, 3, 3), None)),
             kuljetusetu = Some(aikajakso),
             sisäoppilaitosmainenMajoitus = Some(List(aikajakso, Aikajakso(LocalDate.of(2000, 3, 3), Some(LocalDate.of(2000, 4, 4))))),
-            koulukoti = Some(List(aikajakso))
+            koulukoti = Some(List(aikajakso)),
+            tuenPäätöksenJaksot = Some(List(Tukijakso(Some(LocalDate.of(2000, 3, 15)), None))),
+            varhennetunOppivelvollisuudenJaksot = Some(List(Aikajakso(LocalDate.of(2000, 3, 20), Some(LocalDate.of(2000, 4, 4)))))
           ))
         )
         val aikajaksoRows = AikajaksoRowBuilder.buildEsiopetusOpiskeluoikeusAikajaksoRows(oid, opiskeluoikeus)
@@ -863,8 +879,10 @@ class RaportointikantaSpec
           EsiopetusOpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2000-02-02"), Date.valueOf("2000-02-02"), "lasna", Date.valueOf("2000-01-01"), tukimuodot = Some("1;2"), pidennettyOppivelvollisuus = true, erityisenTuenPäätös = true, vammainen = true, vaikeastiVammainen = true, kuljetusetu = true, koulukoti = true, erityisenTuenPäätösOpiskeleeToimintaAlueittain = true, erityisenTuenPäätösErityisryhmässä = true, sisäoppilaitosmainenMajoitus = true),
           EsiopetusOpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2000-02-03"), Date.valueOf("2000-03-02"), "lasna", Date.valueOf("2000-01-01"), tukimuodot = Some("1;2"), erityisenTuenPäätös = true, erityisenTuenPäätösOpiskeleeToimintaAlueittain = true, erityisenTuenPäätösErityisryhmässä = true),
           EsiopetusOpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2000-03-03"), Date.valueOf("2000-03-03"), "lasna", Date.valueOf("2000-01-01"), tukimuodot = Some("1;2"), erityisenTuenPäätös = true, erityisenTuenPäätösOpiskeleeToimintaAlueittain = true, erityisenTuenPäätösErityisryhmässä = true, majoitusetu = true, sisäoppilaitosmainenMajoitus = true),
-          EsiopetusOpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2000-03-04"), Date.valueOf("2000-04-04"), "lasna", Date.valueOf("2000-01-01"), tukimuodot = Some("1;2"), majoitusetu = true, sisäoppilaitosmainenMajoitus = true),
-          EsiopetusOpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2000-04-05"), Date.valueOf(AikajaksoRowBuilder.IndefiniteFuture), "lasna", Date.valueOf("2000-01-01"), tukimuodot = Some("1;2"), majoitusetu = true)
+          EsiopetusOpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2000-03-04"), Date.valueOf("2000-03-14"), "lasna", Date.valueOf("2000-01-01"), tukimuodot = Some("1;2"), majoitusetu = true, sisäoppilaitosmainenMajoitus = true),
+          EsiopetusOpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2000-03-15"), Date.valueOf("2000-03-19"), "lasna", Date.valueOf("2000-01-01"), tukimuodot = Some("1;2"), majoitusetu = true, sisäoppilaitosmainenMajoitus = true, tuenPäätöksenJakso = true),
+          EsiopetusOpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2000-03-20"), Date.valueOf("2000-04-04"), "lasna", Date.valueOf("2000-01-01"), tukimuodot = Some("1;2"), majoitusetu = true, sisäoppilaitosmainenMajoitus = true, tuenPäätöksenJakso = true, varhennetunOppivelvollisuudenJakso = true),
+          EsiopetusOpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2000-04-05"), Date.valueOf(AikajaksoRowBuilder.IndefiniteFuture), "lasna", Date.valueOf("2000-01-01"), tukimuodot = Some("1;2"), majoitusetu = true, tuenPäätöksenJakso = true)
         ))
       }
       "Aikajaksot rajataan opiskeluoikeuden alku/loppupäivän väliin" in {

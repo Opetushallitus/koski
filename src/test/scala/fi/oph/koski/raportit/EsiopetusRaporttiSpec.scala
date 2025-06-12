@@ -84,6 +84,8 @@ class EsiopetusRaporttiSpec extends AnyFreeSpec with Matchers with Raportointika
         r.sisäoppilaitosmainenMajoitus should equal(true)
         r.koulukoti should equal(true)
         r.ostopalveluTaiPalveluseteli should equal(None)
+        r.tuenPäätöksenJakso should equal(false)
+        r.varhennetunOppivelvollisuudenJakso should equal(false)
       }
     }
 
