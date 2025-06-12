@@ -1,3 +1,12 @@
+function isReadyToResolveOpiskeluoikeus() {
+  return (
+    S('.opiskeluoikeuksientiedot > li > div.opiskeluoikeus').is(':visible') ||
+    S('.opiskeluoikeudet-list > li > div.opiskeluoikeus-container').is(
+      'visible'
+    )
+  )
+}
+
 function OpinnotPage() {
   function resolveOpiskeluoikeus(indexOrName, omatTiedot) {
     omatTiedot = omatTiedot || false
@@ -1548,7 +1557,11 @@ function LisääSuoritusDialog() {
       open: function (text) {
         return function () {
           if (!api.isVisible()) {
-            return seq(api.clickLink(text), wait.until(api.isVisible))()
+            return seq(
+              wait.untilVisible('.add-suoritus-link'),
+              api.clickLink(text),
+              wait.until(api.isVisible)
+            )()
           }
         }
       },
@@ -1568,7 +1581,7 @@ function LisääSuoritusDialog() {
           .then(click(buttonElem))
           .then(
             wait.until(function () {
-              return count() === prevCount + 1
+              return isReadyToResolveOpiskeluoikeus() && count() === prevCount + 1
             })
           )
       },
@@ -1700,6 +1713,13 @@ function Editor(elem) {
             return click(editButton)()
           }
         })
+        .then(
+          wait.until(
+            () =>
+              S('.paatasonsuoritus').is(':visible') &&
+              S('.suoritus-tabs').is(':visible')
+          )
+        )
         .then(KoskiPage().verifyNoError)
     },
     canSave: function () {
@@ -1708,11 +1728,18 @@ function Editor(elem) {
     getEditBarMessage: function () {
       return findSingle('#edit-bar .state-indicator')().text()
     },
-    saveChanges: seq(click(enabledSaveButton), KoskiPage().verifyNoError),
+    saveChanges: seq(
+      click(enabledSaveButton),
+      KoskiPage().verifyNoError,
+      wait.until(isReadyToResolveOpiskeluoikeus)
+    ),
     saveChangesAndWaitForSuccess: seq(
       click(enabledSaveButton),
       KoskiPage().verifyNoError,
-      wait.until(KoskiPage().isSavedLabelShown)
+      wait.until(
+        () =>
+          KoskiPage().isSavedLabelShown() && isReadyToResolveOpiskeluoikeus()
+      )
     ),
     saveChangesAndExpectError: seq(
       click(enabledSaveButton),

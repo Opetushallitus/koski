@@ -187,7 +187,9 @@ function KoskiPage() {
       return S('.opiskeluoikeudet-total .value').text().slice(2)
     },
     waitUntilOppijaSelected: function (oppija) {
-      return wait.until(api.isOppijaSelected(oppija))
+      return wait.until(
+        () => api.isOppijaSelected(oppija)() && isReadyToResolveOpiskeluoikeus()
+      )
     },
     waitUntilAnyOppijaSelected: function () {
       return wait.until(function () {

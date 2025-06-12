@@ -608,6 +608,7 @@ describe('Ammatillinen koulutus', function () {
           insertExample('ammatillinen - reformin mukainen perustutkinto.json'),
           page.openPage,
           page.oppijaHaku.searchAndSelect('020882-577H'),
+          wait.untilVisible('.expand-all'),
           click(findFirst('.expand-all'))
         )
 
