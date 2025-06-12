@@ -10,7 +10,12 @@ import fi.oph.koski.util.Timing
 import scala.concurrent.duration.DurationInt
 
 class KäyttöoikeusRepository(organisaatioRepository: OrganisaatioRepository, directoryClient: DirectoryClient)(implicit cacheInvalidator: CacheManager) extends Timing {
-  def käyttäjänKäyttöoikeudet(user: AuthenticationUser): Set[Käyttöoikeus] = käyttöoikeusCache(user)
+  def käyttäjänKäyttöoikeudet(user: AuthenticationUser): Set[Käyttöoikeus] = {
+    logger.info(s"START: käyttäjänKäyttöoikeudet ${user.username}, active count: ${Pools.globalPoolExecutor.getActiveCount}")
+    val result = käyttöoikeusCache(user)
+    logger.info(s"END: käyttäjänKäyttöoikeudet ${user.username}, active count: ${Pools.globalPoolExecutor.getActiveCount}")
+    result
+  }
 
   def käyttäjänOppilaitostyypit(user: AuthenticationUser): Set[String] = {
     val käyttöoikeudet: Set[Käyttöoikeus] = käyttöoikeusCache(user)

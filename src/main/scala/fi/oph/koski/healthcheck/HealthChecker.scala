@@ -15,15 +15,19 @@ import fi.oph.koski.schema._
 import fi.oph.koski.userdirectory.Password
 import fi.oph.koski.util.Timing
 import fi.oph.koski.cas.CasClientException
+import fi.oph.koski.executors.Pools
 import org.json4s.JString
 
+import scala.concurrent.ExecutionContext.fromExecutor
 import scala.concurrent.duration.{DurationInt, FiniteDuration}
 import scala.language.postfixOps
+import scala.util.Random
 
 trait HealthCheck extends Logging {
   private implicit val user = systemUser
   private implicit val accessType = AccessType.write
   private val oid = application.config.getString("healthcheck.oppija.oid")
+  private val activeThreadThreshold = application.config.getInt("healthcheck.activeThreadThreshold")
   private val koodistoPalvelu = KoodistoPalvelu.withoutCache(application.config)
   private val ePerusteet = application.ePerusteet
   private val monitoring = application.healthMonitoring
@@ -60,6 +64,8 @@ trait HealthCheck extends Logging {
   }
 
   def internalHealthcheck: HttpStatus = {
+    logStackTracesIfPoolGettingFull()
+
     val results = checkSystems(internalSystems)
     val status = HttpStatus.fold(results.values)
     if (status.isError) {
@@ -212,6 +218,29 @@ trait HealthCheck extends Logging {
       case Right(false) => KoskiErrorCategory.internalError.subcategory(key, s"healthcheck for $key failed")()
       case Right(true) => HttpStatus.ok
     }
+  }
+
+  def logStackTracesIfPoolGettingFull(threshold: Int = activeThreadThreshold): HttpStatus = {
+    import collection.JavaConverters._
+    val activeCount = Pools.globalPoolExecutor.getActiveCount
+
+    logger.info(s"Active threads: ${activeCount}. Threshold for outputting detailed stack traces is ${threshold}.")
+
+    if (activeCount > threshold) {
+      val id = Random.alphanumeric.take(10).mkString
+
+      val allStackTraces = java.lang.Thread.getAllStackTraces.asScala.toSeq.sortBy { case (thread, _) => thread.getName }
+
+      logger.info(s"RunId:${id}: ========== DEBUG STACK TRACES: globalPool active thread count has reached ${activeCount}, exceeding threshold of ${threshold}. Outputting stack traces of ${allStackTraces.size}.")
+
+      allStackTraces.foreach {
+        case(thread, stackTrace) =>
+          val trace = stackTrace.map(_.toString).mkString("\n    ")
+          logger.info(s"RunId:${id}: ========== DEBUG STACK TRACE thread:${thread.getName}\n    " + trace)
+      }
+    }
+
+    HttpStatus.ok
   }
 
   def application: KoskiApplication
