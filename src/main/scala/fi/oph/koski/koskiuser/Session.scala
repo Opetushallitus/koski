@@ -193,8 +193,9 @@ class KoskiSpecificSession(
   // käyttää myös muita kuin oman palvelunsa käyttöoikeuksia tarkoituksella.
   // Sessio luodaan aina uudestaan jokaisessa API-kutsussa, joten käyttöoikeudet voi tallentaa lazy val:iin eikä hakea ja filteröida aina uudestaan
   private lazy val käyttöoikeudet: Set[Käyttöoikeus] = Käyttöoikeus.withPalveluroolitFilter(lähdeKäyttöoikeudet, _.palveluName != "VALPAS")
-
-  Future(lähdeKäyttöoikeudet) // haetaan käyttöoikeudet toisessa säikeessä rinnakkain
+  def prefetchKäyttöoikeudet(): Unit = {
+    Future(lähdeKäyttöoikeudet)
+  }
 }
 
 object KoskiSpecificSession {
