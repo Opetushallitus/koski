@@ -10,3 +10,4 @@ TOR-2238 - lisätty Arvioinniton-kantaluokka, mutta itse skeeman rakenne ei ole 
 TOR-2047 - Muutettu vain tietomallin käliin vaikuttavaa osaa, ei vaikutusta koulutusjärjestelmiin
 TOR-2222 - lisätty tietomalliin traitteja, jolla ei ole toiminnallisia vaikutuksia
 TOR-2298 - Poistettu kommentti koodista
+OPHKOTO-29 - Kovakoodattu sähköposti kielitutkintojen virheiden ilmoittamiseen

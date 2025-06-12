@@ -5,7 +5,7 @@ import Atom from 'bacon.atom'
 import Http from '../../util/http'
 import { PuuttuvatTiedot } from './PuuttuvatTiedot'
 import Text from '../../i18n/Text'
-import { t } from '../../i18n/i18n'
+import { t, localize } from '../../i18n/i18n'
 import { modelData, modelItems, modelTitle } from '../../editor/EditorModel'
 import { flatMapArray, ift } from '../../util/util'
 import { Yhteystiedot } from './Yhteystiedot'
@@ -17,14 +17,23 @@ import {
 } from './RadioOption'
 import Checkbox from '../../components/Checkbox'
 
-const resolveResponsibleOrganization = (opiskeluoikeus) =>
-  modelData(opiskeluoikeus, 'tyyppi.koodiarvo') === 'ylioppilastutkinto'
+const resolveResponsibleOrganization = (opiskeluoikeus) => {
+  const opiskeluoikeudenTyyppi = modelData(opiskeluoikeus, 'tyyppi.koodiarvo')
+  return opiskeluoikeudenTyyppi === 'ylioppilastutkinto'
     ? R.assoc(
         'suoritus',
         modelTitle(opiskeluoikeus, 'suoritukset.0.tyyppi'),
         modelData(opiskeluoikeus, 'koulutustoimija')
       )
-    : modelData(opiskeluoikeus, 'oppilaitos')
+    : opiskeluoikeudenTyyppi === 'kielitutkinto'
+      ? kovakoodattuYhteystieto('Kielitutkinnot', 'kielitutkinnot')
+      : modelData(opiskeluoikeus, 'oppilaitos')
+}
+
+const kovakoodattuYhteystieto = (nimi, oid) => ({
+  oid,
+  nimi: localize(nimi)
+})
 
 const OppilaitosPicker = ({ oppilaitosAtom }) => {
   const selectableOrgTypes = ['OPPILAITOS', 'OPPISOPIMUSTOIMIPISTE']
