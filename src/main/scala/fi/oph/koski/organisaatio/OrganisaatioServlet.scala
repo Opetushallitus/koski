@@ -18,13 +18,20 @@ class OrganisaatioServlet(implicit val application: KoskiApplication) extends Ko
   }
 
   get("/sahkoposti-virheiden-raportointiin") {
-    renderEither[SähköpostiVirheidenRaportointiin](
-      params.get("organisaatio")
-        .toRight(KoskiErrorCategory.badRequest.queryParam.missing("Missing organisaatio"))
-        .flatMap(OrganisaatioOid.validateOrganisaatioOid)
-        .map(application.organisaatioRepository.findSähköpostiVirheidenRaportointiin)
-        .flatMap(_.toRight(KoskiErrorCategory.notFound()))
-    )
+    renderEither[SähköpostiVirheidenRaportointiin]({
+      val oid = params.get("organisaatio").toRight(KoskiErrorCategory.badRequest.queryParam.missing("Missing organisaatio"))
+      val specialCase = oid.flatMap {
+        application.organisaatioRepository
+          .findSähköpostiVirheidenRaportointiinSpecialCase(_, application.koskiLocalizationRepository)
+          .toRight(KoskiErrorCategory.notFound())
+      }
+      if (specialCase.isRight) specialCase else {
+          oid
+            .flatMap(OrganisaatioOid.validateOrganisaatioOid)
+            .map(application.organisaatioRepository.findSähköpostiVirheidenRaportointiin)
+            .flatMap(_.toRight(KoskiErrorCategory.notFound()))
+      }
+    })
   }
 
   private def query = params.get("query")
