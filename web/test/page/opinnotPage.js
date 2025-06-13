@@ -3,7 +3,8 @@ function isReadyToResolveOpiskeluoikeus() {
     S('.opiskeluoikeuksientiedot > li > div.opiskeluoikeus').is(':visible') ||
     S('.opiskeluoikeudet-list > li > div.opiskeluoikeus-container').is(
       'visible'
-    )
+    ) ||
+    S('.opiskeluoikeuksientiedot > li > article').is(':visible')
   )
 }
 
@@ -291,8 +292,11 @@ function OpinnotPage() {
             click(expanders),
             wait.forMilliseconds(10),
             wait.forAjax,
+            wait.until(isReadyToResolveOpiskeluoikeus),
             checkAndExpand
           )()
+        } else {
+          return wait.until(isReadyToResolveOpiskeluoikeus)()
         }
       }
       return checkAndExpand()
@@ -864,6 +868,7 @@ function TutkinnonOsat(groupId, base) {
         return Page(uusiTutkinnonOsaElement)
           .setInputValue('.dropdown, .autocomplete', hakusana)()
           .then(wait.forAjax)
+          .then(wait.until(isReadyToResolveOpiskeluoikeus))
       }
     },
     lisääKorkeakouluopintoja: function () {
@@ -1377,10 +1382,14 @@ function Opiskeluoikeudet() {
     },
     valitseOpiskeluoikeudenTyyppi: function (tyyppi) {
       return function () {
-        var tab = findSingle('.opiskeluoikeustyypit-nav .' + tyyppi)()
-        if (!tab.hasClass('selected')) {
-          return click(findSingle('a', tab))()
-        }
+        return wait.until(isReadyToResolveOpiskeluoikeus)().then(() => {
+          var tab = findSingle('.opiskeluoikeustyypit-nav .' + tyyppi)()
+          if (!tab.hasClass('selected')) {
+            return click(findSingle('a', tab))().then(
+              wait.until(isReadyToResolveOpiskeluoikeus)
+            )
+          }
+        })
       }
     },
     lisääOpiskeluoikeus: async function () {
