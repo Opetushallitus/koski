@@ -643,6 +643,7 @@ function AddOppijaPage() {
         }
       })()
       await click(modalButton)()
+      await eventually(isReadyToResolveOpiskeluoikeus)()
     },
     submitAndExpectSuccess: function (oppija, tutkinto) {
       tutkinto = tutkinto || 'Autoalan perustutkinto'
@@ -655,7 +656,7 @@ function AddOppijaPage() {
             wait.until(function () {
               return (
                 KoskiPage().getSelectedOppija().indexOf(oppija) >= 0 &&
-                isElementVisible('.paatasonsuoritus') &&
+                isReadyToResolveOpiskeluoikeus() &&
                 OpinnotPage().suoritusOnValittu(0, tutkinto)
               )
             }, timeoutMs)

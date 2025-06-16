@@ -286,6 +286,11 @@ function OpinnotPage() {
       return Editor(findSingle('.content-area')).isEditable()
     },
     expandAll: function () {
+      var expand = function () {
+        return wait.until(function() {
+          return expanders().is(':visible')
+        })().then(checkAndExpand)
+      }
       var checkAndExpand = function () {
         if (expanders().is(':visible')) {
           return seq(
@@ -299,7 +304,7 @@ function OpinnotPage() {
           return wait.until(isReadyToResolveOpiskeluoikeus)()
         }
       }
-      return checkAndExpand()
+      return expand()
       function expanders() {
         return S(
           '.foldable.collapsed>.toggle-expand:not(.disabled), tbody:not(.expanded) > tr > td > .toggle-expand:not(.disabled), a.expandable:not(.open)'
@@ -1717,11 +1722,8 @@ function Editor(elem) {
     edit: function () {
       return wait
         .until(api.isVisible)()
-        .then(function () {
-          if (isElementVisible(editButton)) {
-            return click(editButton)()
-          }
-        })
+        .then(wait.untilVisible(editButton))
+        .then(click(editButton))
         .then(
           wait.until(
             () =>

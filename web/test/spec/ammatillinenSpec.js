@@ -1121,7 +1121,8 @@ describe('Ammatillinen koulutus', function () {
             .propertyBySelector('.arvosana')
             .setValue('3', 1),
           editor.saveChanges,
-          wait.forAjax
+          wait.forAjax,
+          wait.until(isReadyToResolveOpiskeluoikeus)
         )
 
         it('näyttää oikeat tiedot', function () {
@@ -2579,7 +2580,7 @@ describe('Ammatillinen koulutus', function () {
         })
 
         describe('Lisääminen', function () {
-          before(lisääArviointi, lisääArviointi, opinnot.expandAll)
+          before(lisääArviointi, lisääArviointi)
 
           it('toimii', function () {
             expect(arviointi().getText()).to.include(
@@ -2739,215 +2740,222 @@ describe('Ammatillinen koulutus', function () {
         })
 
         it('näyttää tutkinnon osat', function () {
-          expect(
-            extractAsText(S('.ammatillisentutkinnonsuoritus > .osasuoritukset'))
-          ).to.equalIgnoreNewlines(
-            'Sulje kaikki\n' +
-            'Ammatilliset tutkinnon osat Laajuus (osp) Arvosana\n' +
-            'Kestävällä tavalla toimiminen 40 3\n' +
-            'Pakollinen kyllä\n' +
-            'Oppilaitos / toimipiste Stadin ammatti- ja aikuisopisto, Lehtikuusentien toimipaikka\n' +
-            'Vahvistus 31.5.2016 Reijo Reksi , rehtori\n' +
-            'Arviointi Arvosana 3\n' +
-            'Arviointipäivä 1.1.2015\n' +
-            'Ympäristön hoitaminen 35 3\n' +
-            'Pakollinen kyllä\n' +
-            'Oppilaitos / toimipiste Stadin ammatti- ja aikuisopisto, Lehtikuusentien toimipaikka\n' +
-            'Vahvistus 31.5.2016 Reijo Reksi , rehtori\n' +
-            'Näyttö\n' +
-            'Kuvaus Muksulan päiväkodin ympäristövaikutusten arvioiminen ja ympäristön kunnostustöiden tekeminen sekä mittauksien tekeminen ja näytteiden ottaminen\n' +
-            'Suorituspaikka Muksulan päiväkoti, Kaarinan kunta\n' +
-            'Suoritusaika 1.2.2016 — 1.2.2016\n' +
-            'Työssäoppimisen yhteydessä ei\n' +
-            'Arvosana 3\n' +
-            'Arviointipäivä 20.10.2014\n' +
-            'Arvioijat Jaana Arstila ( näyttötutkintomestari ) Pekka Saurmann ( näyttötutkintomestari ) Juhani Mykkänen\n' +
-            'Arviointikohteet Arviointikohde Arvosana\n' +
-            'Työprosessin hallinta 3\n' +
-            'Työmenetelmien, -välineiden ja materiaalin hallinta 2\n' +
-            'Työn perustana olevan tiedon hallinta 2\n' +
-            'Elinikäisen oppimisen avaintaidot 3\n' +
-            'Arvioinnista päättäneet Opettaja\n' +
-            'Arviointikeskusteluun osallistuneet Opettaja Itsenäinen ammatinharjoittaja\n' +
-            'Arviointi Arvosana 3\n' +
-            'Arviointipäivä 20.10.2014\n' +
-            'Uusiutuvien energialähteiden hyödyntäminen 15 3\n' +
-            'Pakollinen kyllä\n' +
-            'Oppilaitos / toimipiste Stadin ammatti- ja aikuisopisto, Lehtikuusentien toimipaikka\n' +
-            'Vahvistus 31.5.2016 Reijo Reksi , rehtori\n' +
-            'Arviointi Arvosana 3\n' +
-            'Arviointipäivä 20.10.2014\n' +
-            'Ulkoilureittien rakentaminen ja hoitaminen 15 3\n' +
-            'Pakollinen kyllä\n' +
-            'Oppilaitos / toimipiste Stadin ammatti- ja aikuisopisto, Lehtikuusentien toimipaikka\n' +
-            'Vahvistus 31.5.2016 Reijo Reksi , rehtori\n' +
-            'Arviointi Arvosana 3\n' +
-            'Arviointipäivä 20.10.2014\n' +
-            'Kulttuuriympäristöjen kunnostaminen ja hoitaminen 15 3\n' +
-            'Pakollinen kyllä\n' +
-            'Oppilaitos / toimipiste Stadin ammatti- ja aikuisopisto, Lehtikuusentien toimipaikka\n' +
-            'Vahvistus 31.5.2016 Reijo Reksi , rehtori\n' +
-            'Näyttö\n' +
-            'Kuvaus Sastamalan kunnan kulttuuriympäristöohjelmaan liittyvän Wanhan myllyn lähiympäristön kasvillisuuden kartoittamisen sekä ennallistamisen suunnittelu ja toteutus\n' +
-            'Suorituspaikka Sastamalan kunta\n' +
-            'Suoritusaika 1.3.2016 — 1.3.2016\n' +
-            'Työssäoppimisen yhteydessä ei\n' +
-            'Arvosana 3\n' +
-            'Arviointipäivä 20.10.2014\n' +
-            'Arvioijat Jaana Arstila ( näyttötutkintomestari ) Pekka Saurmann ( näyttötutkintomestari ) Juhani Mykkänen\n' +
-            'Arviointikohteet Arviointikohde Arvosana\n' +
-            'Työprosessin hallinta 3\n' +
-            'Työmenetelmien, -välineiden ja materiaalin hallinta 2\n' +
-            'Työn perustana olevan tiedon hallinta 2\n' +
-            'Elinikäisen oppimisen avaintaidot 3\n' +
-            'Arvioinnista päättäneet Opettaja\n' +
-            'Arviointikeskusteluun osallistuneet Opettaja Itsenäinen ammatinharjoittaja\n' +
-            'Arviointi Arvosana 3\n' +
-            'Arviointipäivä 20.10.2014\n' +
-            'Vesistöjen kunnostaminen ja hoitaminen 15 Hyväksytty\n' +
-            'Pakollinen kyllä\n' +
-            'Oppilaitos / toimipiste Stadin ammatti- ja aikuisopisto, Lehtikuusentien toimipaikka\n' +
-            'Vahvistus 31.5.2016 Reijo Reksi , rehtori\n' +
-            'Lisätiedot\n' +
-            'Muutos arviointiasteikossa\n' +
-            'Tutkinnon osa on koulutuksen järjestäjän päätöksellä arvioitu asteikolla hyväksytty/hylätty.\n' +
-            'Näyttö\n' +
-            'Kuvaus Uimarin järven tilan arviointi ja kunnostus\n' +
-            'Suorituspaikka Vesipojat Oy\n' +
-            'Suoritusaika 1.4.2016 — 1.4.2016\n' +
-            'Työssäoppimisen yhteydessä ei\n' +
-            'Arvosana 3\n' +
-            'Arviointipäivä 20.10.2014\n' +
-            'Arvioijat Jaana Arstila ( näyttötutkintomestari ) Pekka Saurmann ( näyttötutkintomestari ) Juhani Mykkänen\n' +
-            'Arviointikohteet Arviointikohde Arvosana\n' +
-            'Työprosessin hallinta 3\n' +
-            'Työmenetelmien, -välineiden ja materiaalin hallinta 2\n' +
-            'Työn perustana olevan tiedon hallinta 2\n' +
-            'Elinikäisen oppimisen avaintaidot 3\n' +
-            'Arvioinnista päättäneet Opettaja\n' +
-            'Arviointikeskusteluun osallistuneet Opettaja Itsenäinen ammatinharjoittaja\n' +
-            'Arviointi Arvosana Hyväksytty\n' +
-            'Arviointipäivä 20.10.2014\n' +
-            'Sulje kaikki\n' +
-            'Kokonaisuus Arvosana\n' +
-            'Hoitotarpeen määrittäminen Hyväksytty\n' +
-            'Kuvaus Hoitotarpeen määrittäminen\n' +
-            'Arviointi Arvosana Hyväksytty\n' +
-            'Arviointipäivä 20.3.2013\n' +
-            'Arvioijat Jaana Arstila Pekka Saurmann Juhani Mykkänen\n' +
-            'Yhteensä 135 / 135 osp\n' +
-            'Yhteiset tutkinnon osat Laajuus (osp) Arvosana\n' +
-            'Viestintä- ja vuorovaikutusosaaminen 11 3\n' +
-            'Pakollinen kyllä\n' +
-            'Oppilaitos / toimipiste Stadin ammatti- ja aikuisopisto, Lehtikuusentien toimipaikka\n' +
-            'Vahvistus 31.5.2016 Reijo Reksi , rehtori\n' +
-            'Arviointi Arvosana 3\n' +
-            'Arviointipäivä 20.10.2014\n' +
-            'Sulje kaikki\n' +
-            'Osa-alue Laajuus (osp) Arvosana\n' +
-            'Äidinkieli, Suomen kieli ja kirjallisuus 5 3\n' +
-            'Pakollinen kyllä\n' +
-            'Arviointi Arvosana 3\n' +
-            'Arviointipäivä 20.10.2014\n' +
-            'Äidinkieli, Suomen kieli ja kirjallisuus 3 3\n' +
-            'Pakollinen ei\n' +
-            'Arviointi Arvosana 3\n' +
-            'Arviointipäivä 20.10.2014\n' +
-            'Toinen kotimainen kieli, ruotsi, ruotsi 1 3\n' +
-            'Pakollinen kyllä\n' +
-            'Arviointi Arvosana 3\n' +
-            'Arviointipäivä 20.10.2014\n' +
-            'Vieraat kielet, englanti 2 3\n' +
-            'Pakollinen kyllä\n' +
-            'Arviointi Arvosana 3\n' +
-            'Arviointipäivä 20.10.2014\n' +
-            'Matemaattis-luonnontieteellinen osaaminen 12 3\n' +
-            'Pakollinen kyllä\n' +
-            'Oppilaitos / toimipiste Stadin ammatti- ja aikuisopisto, Lehtikuusentien toimipaikka\n' +
-            'Vahvistus 31.5.2016 Reijo Reksi , rehtori\n' +
-            'Lisätiedot\n' +
-            'Osaamisen arvioinnin mukauttaminen\n' +
-            'Tutkinnon osan ammattitaitovaatimuksia tai osaamistavoitteita ja osaamisen arviointia on mukautettu ammatillisesta peruskoulutuksesta annetun lain (630/1998, muutos 246/2015) 19 a tai 21 §:n perusteella\n' +
-            'Arviointi Arvosana 3\n' +
-            'Arviointipäivä 20.10.2014\n' +
-            'Sulje kaikki\n' +
-            'Osa-alue Laajuus (osp) Arvosana\n' +
-            'Matematiikka 3 3\n' +
-            'Kuvaus Matematiikan opinnot\n' +
-            'Pakollinen kyllä\n' +
-            'Arviointi Arvosana 3\n' +
-            'Arviointipäivä 20.10.2014\n' +
-            'Matematiikka 3 3\n' +
-            'Kuvaus Matematiikan opinnot\n' +
-            'Pakollinen ei\n' +
-            'Arviointi Arvosana 3\n' +
-            'Arviointipäivä 20.10.2014\n' +
-            'Fysiikka ja kemia 2 3\n' +
-            'Pakollinen kyllä\n' +
-            'Arviointi Arvosana 3\n' +
-            'Arviointipäivä 20.10.2014\n' +
-            'Fysiikka ja kemia 3 3\n' +
-            'Pakollinen ei\n' +
-            'Arviointi Arvosana 3\n' +
-            'Arviointipäivä 20.10.2014\n' +
-            'Tieto- ja viestintätekniikka sekä sen hyödyntäminen 1 3\n' +
-            'Pakollinen kyllä\n' +
-            'Alkamispäivä 1.1.2014\n' +
-            'Tunnustettu\n' +
-            'Tutkinnon osa Asennushitsaus\n' +
-            'Selite Tutkinnon osa on tunnustettu Kone- ja metallialan perustutkinnosta\n' +
-            'Rahoituksen piirissä ei\n' +
-            'Lisätiedot\n' +
-            'Osaamisen arvioinnin mukauttaminen\n' +
-            'Tutkinnon osan ammattitaitovaatimuksia tai osaamistavoitteita ja osaamisen arviointia on mukautettu ammatillisesta peruskoulutuksesta annetun lain (630/1998, muutos 246/2015) 19 a tai 21 §:n perusteella\n' +
-            'Arviointi Arvosana 3\n' +
-            'Arviointipäivä 1.1.2015\n' +
-            'Yhteiskunnassa ja työelämässä tarvittava osaaminen 8 3\n' +
-            'Pakollinen kyllä\n' +
-            'Oppilaitos / toimipiste Stadin ammatti- ja aikuisopisto, Lehtikuusentien toimipaikka\n' +
-            'Vahvistus 31.5.2016 Reijo Reksi , rehtori\n' +
-            'Arviointi Arvosana 3\n' +
-            'Arviointipäivä 20.10.2014\n' +
-            'Sulje kaikki\n' +
-            'Osa-alue Laajuus (osp) Arvosana\n' +
-            'Yhteiskuntatieto 8 3\n' +
-            'Kuvaus Yhteiskuntaopin opinnot\n' +
-            'Pakollinen kyllä\n' +
-            'Arviointi Arvosana 3\n' +
-            'Arviointipäivä 20.10.2014\n' +
-            'Sosiaalinen ja kulttuurinen osaaminen 7 3\n' +
-            'Pakollinen kyllä\n' +
-            'Oppilaitos / toimipiste Stadin ammatti- ja aikuisopisto, Lehtikuusentien toimipaikka\n' +
-            'Vahvistus 31.5.2016 Reijo Reksi , rehtori\n' +
-            'Arviointi Arvosana 3\n' +
-            'Arviointipäivä 20.10.2014\n' +
-            'Sulje kaikki\n' +
-            'Osa-alue Laajuus (osp) Arvosana\n' +
-            'Sosiaalitaito 7 3\n' +
-            'Kuvaus Vuorotaitovaikutuksen kurssi\n' +
-            'Pakollinen kyllä\n' +
-            'Arviointi Arvosana 3\n' +
-            'Arviointipäivä 20.10.2014\n' +
-            'Yhteensä 38 / 35 osp\n' +
-            'Vapaasti valittavat tutkinnon osat Laajuus (osp) Arvosana\n' +
-            'Sosiaalinen ja kulttuurinen osaaminen 5 3\n' +
-            'Kuvaus Sosiaalinen ja kulttuurinen osaaminen\n' +
-            'Pakollinen ei\n' +
-            'Oppilaitos / toimipiste Stadin ammatti- ja aikuisopisto, Lehtikuusentien toimipaikka\n' +
-            'Vahvistus 31.5.2016 Reijo Reksi , rehtori\n' +
-            'Arviointi Arvosana 3\n' +
-            'Arviointipäivä 20.10.2014\n' +
-            'Yhteensä 5 / 10 osp\n' +
-            'Tutkintoa yksilöllisesti laajentavat tutkinnon osat Laajuus (osp) Arvosana\n' +
-            'Matkailuenglanti 5 3\n' +
-            'Kuvaus Matkailuenglanti\n' +
-            'Pakollinen ei\n' +
-            'Oppilaitos / toimipiste Stadin ammatti- ja aikuisopisto, Lehtikuusentien toimipaikka\n' +
-            'Vahvistus 31.5.2016 Reijo Reksi , rehtori\n' +
-            'Arviointi Arvosana 3\n' +
-            'Arviointipäivä 20.10.2014\n' +
-            'Yhteensä 5 osp'
-          )
+          return wait.until(() => {
+            let text = extractAsText(
+              S('.ammatillisentutkinnonsuoritus > .osasuoritukset')
+            )
+            if (!(text.length > 0)) {
+              return false
+            }
+            expect(text).to.equalIgnoreNewlines(
+              'Sulje kaikki\n' +
+                'Ammatilliset tutkinnon osat Laajuus (osp) Arvosana\n' +
+                'Kestävällä tavalla toimiminen 40 3\n' +
+                'Pakollinen kyllä\n' +
+                'Oppilaitos / toimipiste Stadin ammatti- ja aikuisopisto, Lehtikuusentien toimipaikka\n' +
+                'Vahvistus 31.5.2016 Reijo Reksi , rehtori\n' +
+                'Arviointi Arvosana 3\n' +
+                'Arviointipäivä 1.1.2015\n' +
+                'Ympäristön hoitaminen 35 3\n' +
+                'Pakollinen kyllä\n' +
+                'Oppilaitos / toimipiste Stadin ammatti- ja aikuisopisto, Lehtikuusentien toimipaikka\n' +
+                'Vahvistus 31.5.2016 Reijo Reksi , rehtori\n' +
+                'Näyttö\n' +
+                'Kuvaus Muksulan päiväkodin ympäristövaikutusten arvioiminen ja ympäristön kunnostustöiden tekeminen sekä mittauksien tekeminen ja näytteiden ottaminen\n' +
+                'Suorituspaikka Muksulan päiväkoti, Kaarinan kunta\n' +
+                'Suoritusaika 1.2.2016 — 1.2.2016\n' +
+                'Työssäoppimisen yhteydessä ei\n' +
+                'Arvosana 3\n' +
+                'Arviointipäivä 20.10.2014\n' +
+                'Arvioijat Jaana Arstila ( näyttötutkintomestari ) Pekka Saurmann ( näyttötutkintomestari ) Juhani Mykkänen\n' +
+                'Arviointikohteet Arviointikohde Arvosana\n' +
+                'Työprosessin hallinta 3\n' +
+                'Työmenetelmien, -välineiden ja materiaalin hallinta 2\n' +
+                'Työn perustana olevan tiedon hallinta 2\n' +
+                'Elinikäisen oppimisen avaintaidot 3\n' +
+                'Arvioinnista päättäneet Opettaja\n' +
+                'Arviointikeskusteluun osallistuneet Opettaja Itsenäinen ammatinharjoittaja\n' +
+                'Arviointi Arvosana 3\n' +
+                'Arviointipäivä 20.10.2014\n' +
+                'Uusiutuvien energialähteiden hyödyntäminen 15 3\n' +
+                'Pakollinen kyllä\n' +
+                'Oppilaitos / toimipiste Stadin ammatti- ja aikuisopisto, Lehtikuusentien toimipaikka\n' +
+                'Vahvistus 31.5.2016 Reijo Reksi , rehtori\n' +
+                'Arviointi Arvosana 3\n' +
+                'Arviointipäivä 20.10.2014\n' +
+                'Ulkoilureittien rakentaminen ja hoitaminen 15 3\n' +
+                'Pakollinen kyllä\n' +
+                'Oppilaitos / toimipiste Stadin ammatti- ja aikuisopisto, Lehtikuusentien toimipaikka\n' +
+                'Vahvistus 31.5.2016 Reijo Reksi , rehtori\n' +
+                'Arviointi Arvosana 3\n' +
+                'Arviointipäivä 20.10.2014\n' +
+                'Kulttuuriympäristöjen kunnostaminen ja hoitaminen 15 3\n' +
+                'Pakollinen kyllä\n' +
+                'Oppilaitos / toimipiste Stadin ammatti- ja aikuisopisto, Lehtikuusentien toimipaikka\n' +
+                'Vahvistus 31.5.2016 Reijo Reksi , rehtori\n' +
+                'Näyttö\n' +
+                'Kuvaus Sastamalan kunnan kulttuuriympäristöohjelmaan liittyvän Wanhan myllyn lähiympäristön kasvillisuuden kartoittamisen sekä ennallistamisen suunnittelu ja toteutus\n' +
+                'Suorituspaikka Sastamalan kunta\n' +
+                'Suoritusaika 1.3.2016 — 1.3.2016\n' +
+                'Työssäoppimisen yhteydessä ei\n' +
+                'Arvosana 3\n' +
+                'Arviointipäivä 20.10.2014\n' +
+                'Arvioijat Jaana Arstila ( näyttötutkintomestari ) Pekka Saurmann ( näyttötutkintomestari ) Juhani Mykkänen\n' +
+                'Arviointikohteet Arviointikohde Arvosana\n' +
+                'Työprosessin hallinta 3\n' +
+                'Työmenetelmien, -välineiden ja materiaalin hallinta 2\n' +
+                'Työn perustana olevan tiedon hallinta 2\n' +
+                'Elinikäisen oppimisen avaintaidot 3\n' +
+                'Arvioinnista päättäneet Opettaja\n' +
+                'Arviointikeskusteluun osallistuneet Opettaja Itsenäinen ammatinharjoittaja\n' +
+                'Arviointi Arvosana 3\n' +
+                'Arviointipäivä 20.10.2014\n' +
+                'Vesistöjen kunnostaminen ja hoitaminen 15 Hyväksytty\n' +
+                'Pakollinen kyllä\n' +
+                'Oppilaitos / toimipiste Stadin ammatti- ja aikuisopisto, Lehtikuusentien toimipaikka\n' +
+                'Vahvistus 31.5.2016 Reijo Reksi , rehtori\n' +
+                'Lisätiedot\n' +
+                'Muutos arviointiasteikossa\n' +
+                'Tutkinnon osa on koulutuksen järjestäjän päätöksellä arvioitu asteikolla hyväksytty/hylätty.\n' +
+                'Näyttö\n' +
+                'Kuvaus Uimarin järven tilan arviointi ja kunnostus\n' +
+                'Suorituspaikka Vesipojat Oy\n' +
+                'Suoritusaika 1.4.2016 — 1.4.2016\n' +
+                'Työssäoppimisen yhteydessä ei\n' +
+                'Arvosana 3\n' +
+                'Arviointipäivä 20.10.2014\n' +
+                'Arvioijat Jaana Arstila ( näyttötutkintomestari ) Pekka Saurmann ( näyttötutkintomestari ) Juhani Mykkänen\n' +
+                'Arviointikohteet Arviointikohde Arvosana\n' +
+                'Työprosessin hallinta 3\n' +
+                'Työmenetelmien, -välineiden ja materiaalin hallinta 2\n' +
+                'Työn perustana olevan tiedon hallinta 2\n' +
+                'Elinikäisen oppimisen avaintaidot 3\n' +
+                'Arvioinnista päättäneet Opettaja\n' +
+                'Arviointikeskusteluun osallistuneet Opettaja Itsenäinen ammatinharjoittaja\n' +
+                'Arviointi Arvosana Hyväksytty\n' +
+                'Arviointipäivä 20.10.2014\n' +
+                'Sulje kaikki\n' +
+                'Kokonaisuus Arvosana\n' +
+                'Hoitotarpeen määrittäminen Hyväksytty\n' +
+                'Kuvaus Hoitotarpeen määrittäminen\n' +
+                'Arviointi Arvosana Hyväksytty\n' +
+                'Arviointipäivä 20.3.2013\n' +
+                'Arvioijat Jaana Arstila Pekka Saurmann Juhani Mykkänen\n' +
+                'Yhteensä 135 / 135 osp\n' +
+                'Yhteiset tutkinnon osat Laajuus (osp) Arvosana\n' +
+                'Viestintä- ja vuorovaikutusosaaminen 11 3\n' +
+                'Pakollinen kyllä\n' +
+                'Oppilaitos / toimipiste Stadin ammatti- ja aikuisopisto, Lehtikuusentien toimipaikka\n' +
+                'Vahvistus 31.5.2016 Reijo Reksi , rehtori\n' +
+                'Arviointi Arvosana 3\n' +
+                'Arviointipäivä 20.10.2014\n' +
+                'Sulje kaikki\n' +
+                'Osa-alue Laajuus (osp) Arvosana\n' +
+                'Äidinkieli, Suomen kieli ja kirjallisuus 5 3\n' +
+                'Pakollinen kyllä\n' +
+                'Arviointi Arvosana 3\n' +
+                'Arviointipäivä 20.10.2014\n' +
+                'Äidinkieli, Suomen kieli ja kirjallisuus 3 3\n' +
+                'Pakollinen ei\n' +
+                'Arviointi Arvosana 3\n' +
+                'Arviointipäivä 20.10.2014\n' +
+                'Toinen kotimainen kieli, ruotsi, ruotsi 1 3\n' +
+                'Pakollinen kyllä\n' +
+                'Arviointi Arvosana 3\n' +
+                'Arviointipäivä 20.10.2014\n' +
+                'Vieraat kielet, englanti 2 3\n' +
+                'Pakollinen kyllä\n' +
+                'Arviointi Arvosana 3\n' +
+                'Arviointipäivä 20.10.2014\n' +
+                'Matemaattis-luonnontieteellinen osaaminen 12 3\n' +
+                'Pakollinen kyllä\n' +
+                'Oppilaitos / toimipiste Stadin ammatti- ja aikuisopisto, Lehtikuusentien toimipaikka\n' +
+                'Vahvistus 31.5.2016 Reijo Reksi , rehtori\n' +
+                'Lisätiedot\n' +
+                'Osaamisen arvioinnin mukauttaminen\n' +
+                'Tutkinnon osan ammattitaitovaatimuksia tai osaamistavoitteita ja osaamisen arviointia on mukautettu ammatillisesta peruskoulutuksesta annetun lain (630/1998, muutos 246/2015) 19 a tai 21 §:n perusteella\n' +
+                'Arviointi Arvosana 3\n' +
+                'Arviointipäivä 20.10.2014\n' +
+                'Sulje kaikki\n' +
+                'Osa-alue Laajuus (osp) Arvosana\n' +
+                'Matematiikka 3 3\n' +
+                'Kuvaus Matematiikan opinnot\n' +
+                'Pakollinen kyllä\n' +
+                'Arviointi Arvosana 3\n' +
+                'Arviointipäivä 20.10.2014\n' +
+                'Matematiikka 3 3\n' +
+                'Kuvaus Matematiikan opinnot\n' +
+                'Pakollinen ei\n' +
+                'Arviointi Arvosana 3\n' +
+                'Arviointipäivä 20.10.2014\n' +
+                'Fysiikka ja kemia 2 3\n' +
+                'Pakollinen kyllä\n' +
+                'Arviointi Arvosana 3\n' +
+                'Arviointipäivä 20.10.2014\n' +
+                'Fysiikka ja kemia 3 3\n' +
+                'Pakollinen ei\n' +
+                'Arviointi Arvosana 3\n' +
+                'Arviointipäivä 20.10.2014\n' +
+                'Tieto- ja viestintätekniikka sekä sen hyödyntäminen 1 3\n' +
+                'Pakollinen kyllä\n' +
+                'Alkamispäivä 1.1.2014\n' +
+                'Tunnustettu\n' +
+                'Tutkinnon osa Asennushitsaus\n' +
+                'Selite Tutkinnon osa on tunnustettu Kone- ja metallialan perustutkinnosta\n' +
+                'Rahoituksen piirissä ei\n' +
+                'Lisätiedot\n' +
+                'Osaamisen arvioinnin mukauttaminen\n' +
+                'Tutkinnon osan ammattitaitovaatimuksia tai osaamistavoitteita ja osaamisen arviointia on mukautettu ammatillisesta peruskoulutuksesta annetun lain (630/1998, muutos 246/2015) 19 a tai 21 §:n perusteella\n' +
+                'Arviointi Arvosana 3\n' +
+                'Arviointipäivä 1.1.2015\n' +
+                'Yhteiskunnassa ja työelämässä tarvittava osaaminen 8 3\n' +
+                'Pakollinen kyllä\n' +
+                'Oppilaitos / toimipiste Stadin ammatti- ja aikuisopisto, Lehtikuusentien toimipaikka\n' +
+                'Vahvistus 31.5.2016 Reijo Reksi , rehtori\n' +
+                'Arviointi Arvosana 3\n' +
+                'Arviointipäivä 20.10.2014\n' +
+                'Sulje kaikki\n' +
+                'Osa-alue Laajuus (osp) Arvosana\n' +
+                'Yhteiskuntatieto 8 3\n' +
+                'Kuvaus Yhteiskuntaopin opinnot\n' +
+                'Pakollinen kyllä\n' +
+                'Arviointi Arvosana 3\n' +
+                'Arviointipäivä 20.10.2014\n' +
+                'Sosiaalinen ja kulttuurinen osaaminen 7 3\n' +
+                'Pakollinen kyllä\n' +
+                'Oppilaitos / toimipiste Stadin ammatti- ja aikuisopisto, Lehtikuusentien toimipaikka\n' +
+                'Vahvistus 31.5.2016 Reijo Reksi , rehtori\n' +
+                'Arviointi Arvosana 3\n' +
+                'Arviointipäivä 20.10.2014\n' +
+                'Sulje kaikki\n' +
+                'Osa-alue Laajuus (osp) Arvosana\n' +
+                'Sosiaalitaito 7 3\n' +
+                'Kuvaus Vuorotaitovaikutuksen kurssi\n' +
+                'Pakollinen kyllä\n' +
+                'Arviointi Arvosana 3\n' +
+                'Arviointipäivä 20.10.2014\n' +
+                'Yhteensä 38 / 35 osp\n' +
+                'Vapaasti valittavat tutkinnon osat Laajuus (osp) Arvosana\n' +
+                'Sosiaalinen ja kulttuurinen osaaminen 5 3\n' +
+                'Kuvaus Sosiaalinen ja kulttuurinen osaaminen\n' +
+                'Pakollinen ei\n' +
+                'Oppilaitos / toimipiste Stadin ammatti- ja aikuisopisto, Lehtikuusentien toimipaikka\n' +
+                'Vahvistus 31.5.2016 Reijo Reksi , rehtori\n' +
+                'Arviointi Arvosana 3\n' +
+                'Arviointipäivä 20.10.2014\n' +
+                'Yhteensä 5 / 10 osp\n' +
+                'Tutkintoa yksilöllisesti laajentavat tutkinnon osat Laajuus (osp) Arvosana\n' +
+                'Matkailuenglanti 5 3\n' +
+                'Kuvaus Matkailuenglanti\n' +
+                'Pakollinen ei\n' +
+                'Oppilaitos / toimipiste Stadin ammatti- ja aikuisopisto, Lehtikuusentien toimipaikka\n' +
+                'Vahvistus 31.5.2016 Reijo Reksi , rehtori\n' +
+                'Arviointi Arvosana 3\n' +
+                'Arviointipäivä 20.10.2014\n' +
+                'Yhteensä 5 osp'
+            )
+            return true
+          })
         })
       })
     })
@@ -2963,49 +2971,61 @@ describe('Ammatillinen koulutus', function () {
       it('näyttää opiskeluoikeuden tiedot', function () {
         expect(extractAsText(S('.opiskeluoikeuden-tiedot'))).to.equal(
           'Opiskeluoikeuden voimassaoloaika : 1.9.2016 — 1.5.2020 (arvioitu)\n' +
-          'Tila 1.9.2016 Läsnä (valtionosuusrahoitteinen koulutus)'
+            'Tila 1.9.2016 Läsnä (valtionosuusrahoitteinen koulutus)'
         )
       })
 
       it('näyttää suorituksen tiedot', function () {
-        expect(
-          extractAsText(
+        return wait.until(() => {
+          let text = extractAsText(
             S('.suoritus > .properties, .suoritus > .tila-vahvistus')
           )
-        ).to.equal(
-          'Koulutus Autoalan perustutkinto 351301 39/011/2014\n' +
-          'Suoritustapa Näyttötutkinto\n' +
-          'Oppilaitos / toimipiste Stadin ammatti- ja aikuisopisto, Lehtikuusentien toimipaikka\n' +
-          'Alkamispäivä 1.9.2016\n' +
-          'Suorituskieli suomi\n' +
-          'Suoritus kesken'
-        )
+          let expected =
+            'Koulutus Autoalan perustutkinto 351301 39/011/2014\n' +
+            'Suoritustapa Näyttötutkinto\n' +
+            'Oppilaitos / toimipiste Stadin ammatti- ja aikuisopisto, Lehtikuusentien toimipaikka\n' +
+            'Alkamispäivä 1.9.2016\n' +
+            'Suorituskieli suomi\n' +
+            'Suoritus kesken'
+          if (text !== expected) {
+            return false
+          }
+          expect(text).to.equal(expected)
+          return true
+        })()
       })
 
       it('näyttää tutkinnon osat', function () {
-        expect(extractAsText(S('.osasuoritukset'))).to.equalIgnoreNewlines(
-          'Sulje kaikki\n' +
-          'Tutkinnon osa Laajuus (osp) Arvosana\n' +
-          'Moottorin ja voimansiirron huolto ja korjaus 15 Hyväksytty\n' +
-          'Pakollinen ei\n' +
-          'Oppilaitos / toimipiste Stadin ammatti- ja aikuisopisto, Lehtikuusentien toimipaikka\n' +
-          'Vahvistus 31.5.2013 Reijo Reksi , rehtori\n' +
-          'Tunnustettu\n' +
-          'Tutkinnon osa Tunniste 11-22-33\n' +
-          'Nimi Moottorin korjaus\n' +
-          'Kuvaus Opiskelijan on - tunnettava jakopyörästön merkitys moottorin toiminnalle - osattava kytkeä moottorin testauslaite ja tulkita mittaustuloksen suhdetta valmistajan antamiin ohjearvoihin - osattava käyttää moottorikorjauksessa tarvittavia perustyökaluja - osattava suorittaa jakopään hammashihnan vaihto annettujen ohjeiden mukaisesti - tunnettava venttiilikoneiston merkitys moottorin toiminnan osana osatakseen mm. ottaa se huomioon jakopään huoltoja tehdessään - noudatettava sovittuja työaikoja\n' +
-          'Vahvistus 28.5.2002 Reijo Reksi\n' +
-          'Näyttö\n' +
-          'Kuvaus Moottorin korjaus\n' +
-          'Suorituspaikka Autokorjaamo Oy, Riihimäki\n' +
-          'Suoritusaika 20.4.2002 — 20.4.2002\n' +
-          'Työssäoppimisen yhteydessä ei\n' +
-          'Selite Tutkinnon osa on tunnustettu aiemmin suoritetusta autoalan perustutkinnon osasta (1.8.2000 nro 11/011/2000)\nRahoituksen piirissä ei\n' +
-          'Arviointi Arvosana Hyväksytty\n' +
-          'Arviointipäivä 20.3.2013\n' +
-          'Arvioijat Jaana Arstila Pekka Saurmann Juhani Mykkänen\n' +
-          'Yhteensä 15 osp'
-        )
+        return wait.until(() => {
+          let text = extractAsText(S('.osasuoritukset'))
+          let expected =
+            'Sulje kaikki\n' +
+            'Tutkinnon osa Laajuus (osp) Arvosana\n' +
+            'Moottorin ja voimansiirron huolto ja korjaus 15 Hyväksytty\n' +
+            'Pakollinen ei\n' +
+            'Oppilaitos / toimipiste Stadin ammatti- ja aikuisopisto, Lehtikuusentien toimipaikka\n' +
+            'Vahvistus 31.5.2013 Reijo Reksi , rehtori\n' +
+            'Tunnustettu\n' +
+            'Tutkinnon osa Tunniste 11-22-33\n' +
+            'Nimi Moottorin korjaus\n' +
+            'Kuvaus Opiskelijan on - tunnettava jakopyörästön merkitys moottorin toiminnalle - osattava kytkeä moottorin testauslaite ja tulkita mittaustuloksen suhdetta valmistajan antamiin ohjearvoihin - osattava käyttää moottorikorjauksessa tarvittavia perustyökaluja - osattava suorittaa jakopään hammashihnan vaihto annettujen ohjeiden mukaisesti - tunnettava venttiilikoneiston merkitys moottorin toiminnan osana osatakseen mm. ottaa se huomioon jakopään huoltoja tehdessään - noudatettava sovittuja työaikoja\n' +
+            'Vahvistus 28.5.2002 Reijo Reksi\n' +
+            'Näyttö\n' +
+            'Kuvaus Moottorin korjaus\n' +
+            'Suorituspaikka Autokorjaamo Oy, Riihimäki\n' +
+            'Suoritusaika 20.4.2002 — 20.4.2002\n' +
+            'Työssäoppimisen yhteydessä ei\n' +
+            'Selite Tutkinnon osa on tunnustettu aiemmin suoritetusta autoalan perustutkinnon osasta (1.8.2000 nro 11/011/2000)\nRahoituksen piirissä ei\n' +
+            'Arviointi Arvosana Hyväksytty\n' +
+            'Arviointipäivä 20.3.2013\n' +
+            'Arvioijat Jaana Arstila Pekka Saurmann Juhani Mykkänen\n' +
+            'Yhteensä 15 osp'
+          if (!(text.length > 0)) {
+            return false
+          }
+          expect(text).to.equalIgnoreNewlines(expected)
+          return true
+        })
       })
     })
 
@@ -3281,40 +3301,47 @@ describe('Ammatillinen koulutus', function () {
         })
 
         it('näyttää tutkinnon osat', function () {
-          expect(extractAsText(S('.osasuoritukset'))).to.equalIgnoreNewlines(
-            'Sulje kaikki Tutkinnon osa Arvosana\n' +
-            'Johtaminen ja henkilöstön kehittäminen Hyväksytty\n' +
-            'Pakollinen kyllä\n' +
-            'Oppilaitos / toimipiste Stadin ammatti- ja aikuisopisto, Lehtikuusentien toimipaikka\n' +
-            'Vahvistus 31.5.2016 Reijo Reksi , rehtori\n' +
-            'Arviointi Arvosana Hyväksytty\n' +
-            'Arviointipäivä 20.10.2014\n' +
-            'Asiakaspalvelu ja korjaamopalvelujen markkinointi Hyväksytty\n' +
-            'Pakollinen kyllä\n' +
-            'Oppilaitos / toimipiste Stadin ammatti- ja aikuisopisto, Lehtikuusentien toimipaikka\n' +
-            'Vahvistus 31.5.2016 Reijo Reksi , rehtori\n' +
-            'Arviointi Arvosana Hyväksytty\n' +
-            'Arviointipäivä 20.10.2014\n' +
-            'Työnsuunnittelu ja organisointi Hyväksytty\n' +
-            'Pakollinen kyllä\n' +
-            'Oppilaitos / toimipiste Stadin ammatti- ja aikuisopisto, Lehtikuusentien toimipaikka\n' +
-            'Vahvistus 31.5.2016 Reijo Reksi , rehtori\n' +
-            'Arviointi Arvosana Hyväksytty\n' +
-            'Arviointipäivä 20.10.2014\n' +
-            'Taloudellinen toiminta Hyväksytty\n' +
-            'Pakollinen kyllä\n' +
-            'Oppilaitos / toimipiste Stadin ammatti- ja aikuisopisto, Lehtikuusentien toimipaikka\n' +
-            'Vahvistus 31.5.2016 Reijo Reksi , rehtori\n' +
-            'Arviointi Arvosana Hyväksytty\n' +
-            'Arviointipäivä 20.10.2014\n' +
-            'Yrittäjyys Hyväksytty\n' +
-            'Pakollinen kyllä\n' +
-            'Oppilaitos / toimipiste Stadin ammatti- ja aikuisopisto, Lehtikuusentien toimipaikka\n' +
-            'Vahvistus 31.5.2016 Reijo Reksi , rehtori\n' +
-            'Arviointi Arvosana Hyväksytty\n' +
-            'Arviointipäivä 20.10.2014\n' +
-            'Yhteensä 0 osp'
-          )
+          return wait.until(() => {
+            let text = extractAsText(S('.osasuoritukset'))
+            if (!(text.length > 0)) {
+              return false
+            }
+            expect(text).to.equalIgnoreNewlines(
+              'Sulje kaikki Tutkinnon osa Arvosana\n' +
+                'Johtaminen ja henkilöstön kehittäminen Hyväksytty\n' +
+                'Pakollinen kyllä\n' +
+                'Oppilaitos / toimipiste Stadin ammatti- ja aikuisopisto, Lehtikuusentien toimipaikka\n' +
+                'Vahvistus 31.5.2016 Reijo Reksi , rehtori\n' +
+                'Arviointi Arvosana Hyväksytty\n' +
+                'Arviointipäivä 20.10.2014\n' +
+                'Asiakaspalvelu ja korjaamopalvelujen markkinointi Hyväksytty\n' +
+                'Pakollinen kyllä\n' +
+                'Oppilaitos / toimipiste Stadin ammatti- ja aikuisopisto, Lehtikuusentien toimipaikka\n' +
+                'Vahvistus 31.5.2016 Reijo Reksi , rehtori\n' +
+                'Arviointi Arvosana Hyväksytty\n' +
+                'Arviointipäivä 20.10.2014\n' +
+                'Työnsuunnittelu ja organisointi Hyväksytty\n' +
+                'Pakollinen kyllä\n' +
+                'Oppilaitos / toimipiste Stadin ammatti- ja aikuisopisto, Lehtikuusentien toimipaikka\n' +
+                'Vahvistus 31.5.2016 Reijo Reksi , rehtori\n' +
+                'Arviointi Arvosana Hyväksytty\n' +
+                'Arviointipäivä 20.10.2014\n' +
+                'Taloudellinen toiminta Hyväksytty\n' +
+                'Pakollinen kyllä\n' +
+                'Oppilaitos / toimipiste Stadin ammatti- ja aikuisopisto, Lehtikuusentien toimipaikka\n' +
+                'Vahvistus 31.5.2016 Reijo Reksi , rehtori\n' +
+                'Arviointi Arvosana Hyväksytty\n' +
+                'Arviointipäivä 20.10.2014\n' +
+                'Yrittäjyys Hyväksytty\n' +
+                'Pakollinen kyllä\n' +
+                'Oppilaitos / toimipiste Stadin ammatti- ja aikuisopisto, Lehtikuusentien toimipaikka\n' +
+                'Vahvistus 31.5.2016 Reijo Reksi , rehtori\n' +
+                'Arviointi Arvosana Hyväksytty\n' +
+                'Arviointipäivä 20.10.2014\n' +
+                'Yhteensä 0 osp'
+            )
+            return true
+          })
         })
       })
 
@@ -3409,8 +3436,7 @@ describe('Ammatillinen koulutus', function () {
         Authentication().logout,
         Authentication().login('stadin-vastuu'),
         page.openPage,
-        page.oppijaHaku.searchAndSelect('010101-123N'),
-        opinnot.expandAll
+        page.oppijaHaku.searchAndSelect('010101-123N')
       )
       it('piilotettu', function () {
         expect(isElementVisible(S('.lisätiedot'))).to.equal(false)
