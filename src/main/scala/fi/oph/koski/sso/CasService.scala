@@ -8,17 +8,13 @@ import fi.oph.koski.userdirectory.Password
 import fi.oph.koski.cas.CasClient.Username
 import fi.oph.koski.cas.{CasAuthenticationException, CasClient, CasUser}
 import fi.oph.koski.henkilo.Hetu
+import fi.oph.koski.sso.CasAttributes._
 
 import scala.concurrent.duration.DurationInt
 
-case class KansalaisenTunnisteet(hetu: Option[String], oppijaOid: Option[String])
+case class KansalaisenTunnisteet(hetu: Option[String], oppijaOid: Option[String], nimi: Option[String])
 
 class CasService(config: Config) extends Logging {
-  private val ATTRIBUTE_NAME_HETU = "nationalIdentificationNumber"
-  private val ATTRIBUTE_NAME_EIDAS_ID = "personIdentifier"
-  private val ATTRIBUTE_NAME_PERSON_OID = "personOid"
-
-
   private val casVirkailijaClient = new CasClient(
     config.getString("opintopolku.virkailija.url") + "/cas",
     Http.nonRetryingClient("cas.serviceticketvalidation.virkailija"),
@@ -46,8 +42,20 @@ class CasService(config: Config) extends Logging {
         .timeout(10.seconds)
     )
 
-    val hetuAttempt = oppijaAttributes.get(ATTRIBUTE_NAME_HETU).filter(_.nonEmpty)
-    val oppijaOidAttempt = oppijaAttributes.get(ATTRIBUTE_NAME_PERSON_OID).filter(_.nonEmpty)
+    def getOppijaAttribute(a: String): Option[String] = oppijaAttributes.get(a).map(_.trim).filter(_.nonEmpty)
+
+    val hetuAttempt = getOppijaAttribute(ATTRIBUTE_HETU)
+    val oppijaOidAttempt = getOppijaAttribute(ATTRIBUTE_PERSON_OID)
+
+    val etunimiAttempt = getOppijaAttribute(ATTRIBUTE_FIRST_NAME)
+      .orElse(getOppijaAttribute(ATTRIBUTE_FIRST_NAME_ALT))
+      .orElse(getOppijaAttribute(ATTRIBUTE_GIVEN_NAME))
+      .getOrElse("")
+    val sukunimiAttempt = getOppijaAttribute(ATTRIBUTE_SUKUNIMI)
+      .orElse(getOppijaAttribute(ATTRIBUTE_FAMILY_NAME))
+      .getOrElse("")
+    val kokonimiAttempt = Some(etunimiAttempt + " " + sukunimiAttempt).map(_.trim).filter(_.nonEmpty)
+      .orElse(getOppijaAttribute(ATTRIBUTE_DISPLAY_NAME))
 
     // Lue testiympäristöissä hetu eri kentästä tarvittaessa;
     //
@@ -62,13 +70,10 @@ class CasService(config: Config) extends Logging {
     // suomalaisena hetuna muun maan kansallista hetua.
     if (!Environment.isProdEnvironment(config) && hetuAttempt.isEmpty) {
       // Huom. tässä kentässä palautuu eIDAS-tunniste kun käytetään eIDAS-kirjautumista, joka ei ole validi hetu
-      val suomiFiHetuAttempt = oppijaAttributes
-        .get(ATTRIBUTE_NAME_EIDAS_ID)
-        .filter(_.nonEmpty)
-        .filter(h => Hetu.validFormat(h).isRight)
-      KansalaisenTunnisteet(suomiFiHetuAttempt, oppijaOidAttempt)
+      val suomiFiHetuAttempt = getOppijaAttribute(ATTRIBUTE_EIDAS_ID).filter(h => Hetu.validFormat(h).isRight)
+      KansalaisenTunnisteet(suomiFiHetuAttempt, oppijaOidAttempt, kokonimiAttempt)
     } else {
-      KansalaisenTunnisteet(hetuAttempt, oppijaOidAttempt)
+      KansalaisenTunnisteet(hetuAttempt, oppijaOidAttempt, kokonimiAttempt)
     }
   }
 
