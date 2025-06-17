@@ -25,7 +25,7 @@ const textContent = async (
   return text;
 };
 
-const tryToLogin = async (page: Page) => {
+const suomiFiLogin = async (page: Page) => {
   await page.goto("https://testiopintopolku.fi/koski");
 
   await click(page, ".login-button");
@@ -43,9 +43,29 @@ const tryToLogin = async (page: Page) => {
   );
 };
 
-const runTest = async (): Promise<void> => {
+const eIdasLogin = async (page: Page) => {
+  await page.goto("https://testiopintopolku.fi/koski");
+
+  await click(page, ".login-button");
+  await click(page, "#eidas_high");
+  await click(page, "#li_EE");
+  await click(page, "#continue-button");
+
+  const header = await textContent(page, ".header__name");
+
+  return (
+    header?.includes("Amir Testi") &&
+    header.includes("Aaltonen-Testi") &&
+    header.includes("s. 9.7.1972")
+  );
+};
+
+const runTest = async (
+  tryToLogin: (page: Page) => Promise<boolean | undefined>,
+  testName: string
+): Promise<void> => {
   for (let i = 0; i < retryCount; i++) {
-    console.log(`Attempt ${i + 1}/${retryCount}`);
+    console.log(`Attempt ${i + 1}/${retryCount} for ${testName}`);
 
     const browser = await puppeteer.launch({
       headless: true,
@@ -55,13 +75,18 @@ const runTest = async (): Promise<void> => {
     await browser.close();
 
     if (resultOk) {
-      console.log("Success!");
+      console.log(`Success for ${testName}!`);
       return;
     }
-    console.log("Failed!");
+    console.log(`Failed for ${testName}!`);
   }
-  console.log("Smoke test has failed.");
-  throw new Error("Smoke test failed");
+  console.log(`Smoke test has failed for ${testName}.`);
+  throw new Error(`Smoke test failed for ${testName}`);
 };
 
-runTest();
+const runTests = async (): Promise<void> => {
+  await runTest(suomiFiLogin, "suomi.fi login test");
+  await runTest(eIdasLogin, "eIDAS login test");
+}
+
+runTests();
