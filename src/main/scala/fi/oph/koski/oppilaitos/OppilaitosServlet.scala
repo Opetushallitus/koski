@@ -1,7 +1,7 @@
 package fi.oph.koski.oppilaitos
 
 import fi.oph.koski.config.KoskiApplication
-import fi.oph.koski.koskiuser.RequiresVirkailijaOrPalvelukäyttäjä
+import fi.oph.koski.koskiuser.{OoPtsMask, RequiresVirkailijaOrPalvelukäyttäjä}
 import fi.oph.koski.organisaatio.Oppilaitostyyppi._
 import fi.oph.koski.organisaatio.{OrganisaatioHierarkia, Organisaatiotyyppi}
 import fi.oph.koski.schema.{Koodistokoodiviite, OpiskeluoikeudenTyyppi}
@@ -43,7 +43,7 @@ class OppilaitosServlet(implicit val application: KoskiApplication) extends Kosk
       case loytyneetPoikkeustyypit => loytyneetPoikkeustyypit
     }).distinct
       .flatMap(t => application.koodistoViitePalvelu.validate("opiskeluoikeudentyyppi", t.koodiarvo))
-      .filter(t => session.allowedOpiskeluoikeusTyypit.contains(t.koodiarvo))
+      .filter(t => session.allowedOpiskeluoikeusTyypit.contains(OoPtsMask(t.koodiarvo)))
   }
 
   private def byOppilaitosTyyppi(organisaatiot: List[OrganisaatioHierarkia]) =

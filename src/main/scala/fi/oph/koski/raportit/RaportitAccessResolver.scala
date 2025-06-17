@@ -3,7 +3,7 @@ package fi.oph.koski.raportit
 import com.typesafe.config.Config
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.plainAPI._
-import fi.oph.koski.koskiuser.KoskiSpecificSession
+import fi.oph.koski.koskiuser.{KoskiSpecificSession, OoPtsMask}
 import fi.oph.koski.organisaatio.{OrganisaatioHierarkia, OrganisaatioRepository}
 import fi.oph.koski.raportit.tuva.TuvaPerusopetuksenOppijamäärätRaportti
 import fi.oph.koski.raportointikanta.RaportointiDatabase
@@ -40,7 +40,7 @@ case class RaportitAccessResolver(organisaatioRepository: OrganisaatioRepository
       .toSet
       .flatMap(raportinTyypitKoulutusmuodolle(_, isKoulutustoimija))
       .filter(checkRaporttiAccessIfAccessIsLimited(_))
-      .filter(raportti => session.allowedOpiskeluoikeusTyypit.contains(raportti.opiskeluoikeudenTyyppi))
+      .filter(raportti => session.allowedOpiskeluoikeusTyypit.contains(OoPtsMask(raportti.opiskeluoikeudenTyyppi)))
   }
 
   private def filterOppilaitosOidsByKoulutusmuoto(oppilaitosOids: Seq[String], koulutusmuoto: String): Seq[String] = {

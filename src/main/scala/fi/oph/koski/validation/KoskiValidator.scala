@@ -9,7 +9,7 @@ import fi.oph.koski.henkilo.HenkilöRepository
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.koodisto.KoodistoViitePalvelu
-import fi.oph.koski.koskiuser.{AccessType, KoskiSpecificSession}
+import fi.oph.koski.koskiuser.{AccessType, KoskiSpecificSession, OoPtsMask}
 import fi.oph.koski.opiskeluoikeus.KoskiOpiskeluoikeusRepository
 import fi.oph.koski.organisaatio.OrganisaatioRepository
 import fi.oph.koski.schema.Henkilö.Oid
@@ -496,14 +496,14 @@ class KoskiValidator(
 
   private def validateAccess(oo: Opiskeluoikeus)(implicit user: KoskiSpecificSession, accessType: AccessType.Value): HttpStatus = {
     HttpStatus.fold(
-      validateOpiskeluoikeudenTyypinAccess(oo.tyyppi.koodiarvo),
+      validateOpiskeluoikeudenTyypinAccess(OoPtsMask(oo.tyyppi.koodiarvo)),
       validateOrganisaatioAccess(oo)
     )
   }
 
-  private def validateOpiskeluoikeudenTyypinAccess(opiskeluoikeudenTyyppi: String)(implicit user: KoskiSpecificSession, accessType: AccessType.Value) =
-    HttpStatus.validate(user.allowedOpiskeluoikeusTyypit.contains(opiskeluoikeudenTyyppi)) {
-      KoskiErrorCategory.forbidden.opiskeluoikeudenTyyppi("Ei oikeuksia opiskeluoikeuden tyyppiin " + opiskeluoikeudenTyyppi)
+  private def validateOpiskeluoikeudenTyypinAccess(tyyppi: OoPtsMask)(implicit user: KoskiSpecificSession, accessType: AccessType.Value) =
+    HttpStatus.validate(user.allowedOpiskeluoikeusTyypit.contains(tyyppi)) {
+      KoskiErrorCategory.forbidden.opiskeluoikeudenTyyppi("Ei oikeuksia opiskeluoikeuden tyyppiin " + tyyppi)
     }
 
   private def validateOrganisaatioAccess(oo: Opiskeluoikeus)(implicit user: KoskiSpecificSession, accessType: AccessType.Value): HttpStatus = {

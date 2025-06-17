@@ -87,5 +87,4 @@ final class IteratorChainingOps[T](private val self: Iterator[T]) extends AnyVal
           throw new IndexOutOfBoundsException("Both iterators are empty")
         }
     }
-
 }
