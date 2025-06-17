@@ -4,7 +4,7 @@ import java.time.LocalDate
 import java.time.format.DateTimeParseException
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.http.KoskiErrorCategory
-import fi.oph.koski.koskiuser.RequiresVirkailijaOrPalvelukäyttäjä
+import fi.oph.koski.koskiuser.{OoPtsMask, RequiresVirkailijaOrPalvelukäyttäjä}
 import fi.oph.koski.localization.LocalizationReader
 import fi.oph.koski.log.KoskiAuditLogMessageField.hakuEhto
 import fi.oph.koski.log.KoskiOperation.OPISKELUOIKEUS_RAPORTTI
@@ -262,7 +262,7 @@ class RaportitServlet(implicit val application: KoskiApplication) extends KoskiS
   }
 
   private def requireOpiskeluoikeudenKayttooikeudet(opiskeluoikeudenTyyppiViite: Koodistokoodiviite) = {
-    if (!session.allowedOpiskeluoikeusTyypit.contains(opiskeluoikeudenTyyppiViite.koodiarvo)) {
+    if (!session.allowedOpiskeluoikeusTyypit.contains(OoPtsMask(opiskeluoikeudenTyyppiViite.koodiarvo))) {
       haltWithStatus(KoskiErrorCategory.forbidden.opiskeluoikeudenTyyppi())
     }
   }

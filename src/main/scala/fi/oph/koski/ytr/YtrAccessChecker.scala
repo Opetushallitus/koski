@@ -1,6 +1,6 @@
 package fi.oph.koski.ytr
 
-import fi.oph.koski.koskiuser.{AccessChecker, KoskiSpecificSession, KäyttöoikeusRepository}
+import fi.oph.koski.koskiuser.{AccessChecker, KoskiSpecificSession, KäyttöoikeusRepository, OoPtsMask}
 import fi.oph.koski.organisaatio.Oppilaitostyyppi._
 import fi.oph.koski.schema.OpiskeluoikeudenTyyppi
 
@@ -16,5 +16,5 @@ class YtrAccessChecker(käyttöoikeudet: KäyttöoikeusRepository) extends Acces
   }
 
   def hasGlobalAccess(user: KoskiSpecificSession): Boolean =
-    user.hasGlobalReadAccess || (user.hasGlobalKoulutusmuotoReadAccess && user.allowedOpiskeluoikeusTyypit.contains(OpiskeluoikeudenTyyppi.ylioppilastutkinto.koodiarvo))
+    user.hasGlobalReadAccess || (user.hasGlobalKoulutusmuotoReadAccess && user.allowedOpiskeluoikeusTyypit.contains(OoPtsMask(OpiskeluoikeudenTyyppi.ylioppilastutkinto.koodiarvo)))
 }
