@@ -674,6 +674,7 @@ function AddOppijaPage() {
             wait.until(function () {
               return (
                 KoskiPage().getSelectedOppija().indexOf(oppija) >= 0 &&
+                isReadyToResolveOpiskeluoikeus() &&
                 OpinnotPage().suoritusOnValittu(0, tutkinto)
               )
             }, timeoutMs)

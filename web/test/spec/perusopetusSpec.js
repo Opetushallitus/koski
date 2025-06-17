@@ -202,7 +202,6 @@ describe('Perusopetus', function () {
         opinnot.valitseSuoritus(undefined, '9. vuosiluokka')
       )
       describe('Kaikki tiedot näkyvissä', function () {
-        before(opinnot.expandAll)
         it('näyttää suorituksen tiedot', function () {
           expect(
             extractAsText(
@@ -779,7 +778,6 @@ describe('Perusopetus', function () {
           undefined,
           'Aikuisten perusopetuksen oppimäärän alkuvaihe'
         ),
-        opinnot.expandAll
       )
       it('näyttää suorituksen tiedot', function () {
         expect(
@@ -4334,7 +4332,6 @@ describe('Perusopetus', function () {
       page.oppijaHaku.searchAndSelect('110738-839L')
     )
     describe('Kaikki tiedot näkyvissä', function () {
-      before(opinnot.expandAll)
       it('näyttää opiskeluoikeuden tiedot', function () {
         expect(
           opinnot.opiskeluoikeudet.opiskeluoikeuksienOtsikot()
