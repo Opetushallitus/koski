@@ -1722,8 +1722,12 @@ function Editor(elem) {
     edit: function () {
       return wait
         .until(api.isVisible)()
-        .then(wait.untilVisible(editButton))
-        .then(click(editButton))
+        .then(wait.forMilliseconds(10))
+        .then(function () {
+          if (isElementVisible(editButton)) {
+            return click(editButton)()
+          }
+        })
         .then(
           wait.until(
             () =>
