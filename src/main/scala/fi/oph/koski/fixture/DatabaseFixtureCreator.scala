@@ -88,8 +88,8 @@ abstract class DatabaseFixtureCreator(application: KoskiApplication, opiskeluoik
 
     val errors: mutable.ListBuffer[String] = mutable.ListBuffer.empty
 
-    val result = opiskeluoikeudet.zipWithIndex.map { case ((henkilö, inputOo), index) =>
-      try {
+    val result = opiskeluoikeudet.zipWithIndex.flatMap {
+      case ((henkilö, inputOo), index) => try {
         val perustiedot = luoOpiskeluoikeudetJaPerustiedotOppijalle(fixtureSetName, allowUpdate, adder, henkilö, inputOo)
         perustiedot.fold(
           error => throw new Exception(s"Fikstuurin opiskeluoikeuden ${index + 1}/${opiskeluoikeudet.length} ($fixtureSetName: ${henkilö.sukunimi} ${henkilö.etunimet}, ${inputOo.tyyppi.koodiarvo}) luonti ei onnistu: $error"),
@@ -101,7 +101,7 @@ abstract class DatabaseFixtureCreator(application: KoskiApplication, opiskeluoik
           errors += e.getMessage
           Seq.empty
       }
-    }.flatten
+    }
 
     if (errors.nonEmpty) {
       throw new Exception(errors.mkString(",\n"))

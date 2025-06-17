@@ -520,7 +520,7 @@ object KoskiTables {
     }
 
     query
-      .filterIf(user.hasKoulutusmuotoRestrictions)(_.koulutusmuoto inSet user.allowedOpiskeluoikeusTyypit)
+      .filterIf(user.hasKoulutusmuotoRestrictions)(_.koulutusmuoto inSet user.allowedOpiskeluoikeusTyypit.map(_.opiskeluoikeus))
       .filterIf(!user.hasMitätöidytOpiskeluoikeudetAccess)(o => !o.mitätöity)
       .filterIf(!user.hasPoistetutOpiskeluoikeudetAccess)(o => !o.poistettu)
   }
@@ -533,7 +533,7 @@ object KoskiTables {
     }
 
     query
-      .filterIf(user.hasKoulutusmuotoRestrictions)(_.koulutusmuoto inSet user.allowedOpiskeluoikeusTyypit)
+      .filterIf(user.hasKoulutusmuotoRestrictions)(_.koulutusmuoto inSet user.allowedOpiskeluoikeusTyypit.map(_.opiskeluoikeus))
       .filterIf(!user.hasMitätöidytOpiskeluoikeudetAccess)(o => !o.mitätöity)
       .filterIf(!user.hasPoistetutOpiskeluoikeudetAccess)(o => !o.poistettu)
   }

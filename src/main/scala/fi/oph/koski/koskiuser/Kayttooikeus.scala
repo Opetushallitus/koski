@@ -1,7 +1,9 @@
 package fi.oph.koski.koskiuser
 
-import fi.oph.koski.koskiuser.Rooli.{_}
-import fi.oph.koski.schema.{Koulutustoimija, OpiskeluoikeudenTyyppi, OrganisaatioWithOid}
+import fi.oph.koski.koskiuser.Rooli._
+import fi.oph.koski.schema._
+
+import scala.language.{higherKinds, implicitConversions}
 
 object Rooli {
   type Role = String
@@ -85,9 +87,14 @@ object Rooli {
     GLOBAALI_LUKU_TAITEENPERUSOPETUS,
     GLOBAALI_LUKU_KIELITUTKINTO,
   )
+
+  def rooliPäätasonSuoritukseen(opiskeluoikeudenTyyppi: String, päätasonSuorituksenTyyppi: SuorituksenTyyppi.SuorituksenTyyppi): String =
+    s"$opiskeluoikeudenTyyppi${Käyttöoikeus.opiskeluoikeusPäätasonSuoritusErotin}${päätasonSuorituksenTyyppi.koodiarvo}".toUpperCase
 }
 
 object Käyttöoikeus {
+  val opiskeluoikeusPäätasonSuoritusErotin = "__"
+
   def withPalveluroolitFilter(käyttöoikeudet: Set[Käyttöoikeus], palvelurooliFilter: Palvelurooli => Boolean): Set[Käyttöoikeus] = {
     käyttöoikeudet.flatMap(withPalveluroolitFilter(palvelurooliFilter))
   }
@@ -122,19 +129,36 @@ object Käyttöoikeus {
     }
   }
 
-  def parseAllowedOpiskeluoikeudenTyypit(roolit: List[Palvelurooli], accessTypes: List[AccessType.Value], isRootUser: Boolean = false): Set[String] = {
-    val kaikkiOpiskeluoikeusTyypit = OpiskeluoikeudenTyyppi.kaikkiTyypit(isRootUser).map(_.koodiarvo)
-    val kayttajanRoolit = unifyRoolit(roolit).filter(_.palveluName == "KOSKI").map(_.rooli.toLowerCase).toSet
-    val opiskeluoikeudenTyyppiRajoituksia = kayttajanRoolit.intersect(kaikkiOpiskeluoikeusTyypit).nonEmpty
-
+  def parseAllowedOpiskeluoikeudenTyypit(roolit: List[Palvelurooli], accessTypes: List[AccessType.Value], isRootUser: Boolean = false): Set[OoPtsMask] = {
     if (!accessTypes.contains(AccessType.read)) {
       Set.empty
-    } else if (kayttajanRoolit.contains(KAIKKI_OPISKELUOIKEUS_TYYPIT.toLowerCase)) {
-      kaikkiOpiskeluoikeusTyypit
-    } else if (opiskeluoikeudenTyyppiRajoituksia) {
-      kayttajanRoolit.intersect(kaikkiOpiskeluoikeusTyypit)
     } else {
-      kaikkiOpiskeluoikeusTyypit
+      val käyttäjänRoolit = unifyRoolit(roolit)
+        .filter(_.palveluName == "KOSKI")
+        .map(_.rooli)
+
+      val käyttäjänOoPtsRoolit = käyttäjänRoolit
+        .map(OoPtsMask.apply)
+        .distinct
+
+      val kaikkiOpiskeluoikeudenTyypit = OpiskeluoikeudenTyyppi
+        .kaikkiTyypit(true)
+        .map(t => OoPtsMask(t.koodiarvo))
+        .toList
+
+      val tyypitJoihinKäyttöRajoitettu = käyttäjänOoPtsRoolit
+        .flatMap { rooli => kaikkiOpiskeluoikeudenTyypit.flatMap(rooli.intersect) }
+        .toSet
+
+      val oikeuksiaEiOleRajoitettuTiettyihinTyyppeihin = tyypitJoihinKäyttöRajoitettu.isEmpty
+
+      if (oikeuksiaEiOleRajoitettuTiettyihinTyyppeihin) {
+        OpiskeluoikeudenTyyppi
+          .kaikkiTyypit(isRootUser)
+          .map(t => OoPtsMask(t.koodiarvo))
+      } else {
+        tyypitJoihinKäyttöRajoitettu
+      }
     }
   }
 
@@ -175,7 +199,7 @@ object Käyttöoikeus {
 
 // this trait is intentionally left mostly blank to make it harder to accidentally mix global and organization-specific rights
 trait Käyttöoikeus {
-  def allowedOpiskeluoikeusTyypit: Set[String] = Set.empty
+  def allowedOpiskeluoikeusTyypit: Set[OoPtsMask] = Set.empty
 }
 
 case class KäyttöoikeusGlobal(globalPalveluroolit: List[Palvelurooli]) extends Käyttöoikeus {
@@ -195,7 +219,7 @@ case class KäyttöoikeusGlobal(globalPalveluroolit: List[Palvelurooli]) extends
     case _ => Nil
   }
 
-  override lazy val allowedOpiskeluoikeusTyypit: Set[String] = Käyttöoikeus.parseAllowedOpiskeluoikeudenTyypit(globalPalveluroolit, globalAccessType, isRootUser = true)
+  override lazy val allowedOpiskeluoikeusTyypit: Set[OoPtsMask] = Käyttöoikeus.parseAllowedOpiskeluoikeudenTyypit(globalPalveluroolit, globalAccessType, isRootUser = true)
 }
 
 trait OrgKäyttöoikeus extends Käyttöoikeus {
@@ -212,7 +236,7 @@ trait OrgKäyttöoikeus extends Käyttöoikeus {
     case _ => Nil
   }
 
-  override lazy val allowedOpiskeluoikeusTyypit: Set[String] = Käyttöoikeus.parseAllowedOpiskeluoikeudenTyypit(organisaatiokohtaisetPalveluroolit, organisaatioAccessType)
+  override lazy val allowedOpiskeluoikeusTyypit: Set[OoPtsMask] = Käyttöoikeus.parseAllowedOpiskeluoikeudenTyypit(organisaatiokohtaisetPalveluroolit, organisaatioAccessType)
 
   def globalAccessType: List[AccessType.Value] = Nil
   def globalPalveluroolit: List[Palvelurooli] = Nil
@@ -239,5 +263,59 @@ case class KäyttöoikeusViranomainen(globalPalveluroolit: List[Palvelurooli]) e
     Nil
   }
 
-  override lazy val allowedOpiskeluoikeusTyypit: Set[String] = Käyttöoikeus.parseAllowedOpiskeluoikeudenTyypit(globalPalveluroolit, globalAccessType)
+  override lazy val allowedOpiskeluoikeusTyypit: Set[OoPtsMask] = Käyttöoikeus.parseAllowedOpiskeluoikeudenTyypit(globalPalveluroolit, globalAccessType)
+}
+
+case class OoPtsMask(
+  opiskeluoikeus: String,
+  päätasonSuoritukset: Option[List[String]] = None // None = mikä tahansa päätason suoritus
+) {
+  override def toString: String = päätasonSuoritukset match {
+    case None => opiskeluoikeus
+    case Some(ptss) => s"$opiskeluoikeus: ${ptss.mkString(", ")}"
+  }
+
+  def intersects(other: OoPtsMask): Boolean =
+    intersect(other).isDefined
+
+  def intersect(other: OoPtsMask): Option[OoPtsMask] =
+    if (opiskeluoikeus != other.opiskeluoikeus) {
+      None
+    } else {
+      (päätasonSuoritukset, other.päätasonSuoritukset) match {
+        case (Some(a), Some(b)) => {
+          val ab = a.intersect(b)
+          if (ab.isEmpty) None else Some(copy(päätasonSuoritukset = Some(ab)))
+        }
+        case (Some(_), None) => Some(this)
+        case (None, Some(_)) => Some(other)
+        case (None, None) => Some(this)
+      }
+    }
+}
+
+object OoPtsMask {
+  def apply(rooli: String): OoPtsMask = {
+    val oo :: pts = rooli.toLowerCase.split(Käyttöoikeus.opiskeluoikeusPäätasonSuoritusErotin).toList
+    OoPtsMask(oo, pts.headOption.map(p => List(p)))
+  }
+
+  def apply(ooKoodiviite: Koodistokoodiviite): OoPtsMask = OoPtsMask(ooKoodiviite.koodiarvo)
+
+  def of(oo: Opiskeluoikeus): OoPtsMask =
+    OoPtsMask(
+      oo.tyyppi.koodiarvo,
+      Some(oo.suoritukset.map(_.tyyppi.koodiarvo))
+    )
+
+  def intersects(ts: Iterable[OoPtsMask], a: OoPtsMask): Boolean =
+    ts.exists(_.intersects(a))
+
+  implicit final def ooPtsMaskIterableOps[F[X] <: Iterable[X]](i: F[OoPtsMask]): OoPtsMaskIterableChainingOps[F] = new OoPtsMaskIterableChainingOps(i)
+
+  final class OoPtsMaskIterableChainingOps[F[X] <: Iterable[X]](private val self: F[OoPtsMask]) extends AnyVal {
+    def intersects(a: OoPtsMask): Boolean = OoPtsMask.intersects(self, a)
+
+    def toOpiskeluoikeudenTyypit: F[String] = self.map(_.opiskeluoikeus).asInstanceOf[F[String]]
+  }
 }

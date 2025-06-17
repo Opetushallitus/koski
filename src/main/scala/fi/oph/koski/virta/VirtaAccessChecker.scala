@@ -1,6 +1,6 @@
 package fi.oph.koski.virta
 
-import fi.oph.koski.koskiuser.{AccessChecker, KoskiSpecificSession, KäyttöoikeusRepository}
+import fi.oph.koski.koskiuser.{AccessChecker, KoskiSpecificSession, KäyttöoikeusRepository, OoPtsMask}
 import fi.oph.koski.organisaatio.Oppilaitostyyppi._
 import fi.oph.koski.schema.OpiskeluoikeudenTyyppi
 
@@ -16,5 +16,5 @@ class VirtaAccessChecker(käyttöoikeudet: KäyttöoikeusRepository) extends Acc
   }
 
   override def hasGlobalAccess(user: KoskiSpecificSession): Boolean =
-    user.hasGlobalReadAccess || (user.hasGlobalKoulutusmuotoReadAccess && user.allowedOpiskeluoikeusTyypit.contains(OpiskeluoikeudenTyyppi.korkeakoulutus.koodiarvo))
+    user.hasGlobalReadAccess || (user.hasGlobalKoulutusmuotoReadAccess && user.allowedOpiskeluoikeusTyypit.contains(OoPtsMask(OpiskeluoikeudenTyyppi.korkeakoulutus.koodiarvo)))
 }
