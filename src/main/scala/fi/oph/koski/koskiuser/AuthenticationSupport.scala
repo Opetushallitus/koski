@@ -1,17 +1,18 @@
 package fi.oph.koski.koskiuser
 
 import java.util.UUID
-
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
+import fi.oph.koski.json.JsonSerializer.writeWithRoot
 import fi.oph.koski.log._
-import fi.oph.koski.servlet.{BaseServlet, KoskiSpecificBaseServlet}
+import fi.oph.koski.servlet.BaseServlet
 import fi.oph.koski.sso.SSOSupport
 import fi.oph.koski.userdirectory.Password
+import org.scalatra.{Cookie, CookieOptions}
 import org.scalatra.auth.strategy.BasicAuthStrategy
 
-trait AuthenticationSupport extends BaseServlet with SSOSupport {
-  val realm = "Koski"
+import java.net.URLEncoder.encode
 
+trait AuthenticationSupport extends BaseServlet with SSOSupport {
   def application: UserAuthenticationContext
 
   def haltWithStatus(status: HttpStatus)
@@ -116,4 +117,15 @@ trait AuthenticationSupport extends BaseServlet with SSOSupport {
   }
 
   def createSession(user: AuthenticationUser): Session
+
+  def setCookie(cookieName: String, value: String): Unit = {
+    response.addCookie(Cookie(cookieName, encode(writeWithRoot(value), "UTF-8"))(
+      CookieOptions(
+        secure = isHttps,
+        path = "/",
+        maxAge = application.sessionTimeout.seconds,
+        httpOnly = true
+      )
+    ))
+  }
 }

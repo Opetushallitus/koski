@@ -1,24 +1,25 @@
 package fi.oph.koski.sso
 
-import fi.oph.koski.henkilo.HenkilöRepository
+import fi.oph.koski.henkilo.{HenkilöRepository, OppijaHenkilö}
 import fi.oph.koski.schema.{Nimitiedot, UusiHenkilö}
+import fi.oph.koski.sso.CasAttributes._
 import org.scalatra.servlet.ServletApiImplicits.enrichRequest
 
 import java.nio.charset.StandardCharsets
 import javax.servlet.http.HttpServletRequest
 
 class CasOppijaCreationService(henkilöRepository: HenkilöRepository) {
-  def findOrCreateByOidOrHetu(request: HttpServletRequest, tunnisteet: KansalaisenTunnisteet) = {
+  def findOrCreateByOidOrHetu(request: HttpServletRequest, tunnisteet: KansalaisenTunnisteet): Option[OppijaHenkilö] = {
     tunnisteet.oppijaOid.flatMap(oid => henkilöRepository.findByOid(oid))
       .orElse(tunnisteet.hetu.flatMap(h => findOrCreate(request, h)))
   }
 
-  def findOrCreate(request: HttpServletRequest, hetu: String) =
+  def findOrCreate(request: HttpServletRequest, hetu: String): Option[OppijaHenkilö] =
     henkilöRepository
       .findByHetuOrCreateIfInYtrOrVirta(hetu, nimitiedot(request))
       .orElse(create(request, hetu))
 
-  def create(request: HttpServletRequest, validHetu: String) =
+  def create(request: HttpServletRequest, validHetu: String): Option[OppijaHenkilö] =
     nimitiedot(request)
       .map(toUusiHenkilö(validHetu, _))
       .map(henkilöRepository
@@ -29,9 +30,9 @@ class CasOppijaCreationService(henkilöRepository: HenkilöRepository) {
 
   def nimitiedot(request: HttpServletRequest): Option[Nimitiedot] =
     for {
-      etunimet <- utf8Header(request, "FirstName")
-      kutsumanimi <- utf8Header(request, "givenName")
-      sukunimi <- utf8Header(request, "sn")
+      etunimet <- utf8Header(request, ATTRIBUTE_FIRST_NAME).orElse(utf8Header(request, ATTRIBUTE_FIRST_NAME_ALT))
+      kutsumanimi <- utf8Header(request, ATTRIBUTE_GIVEN_NAME)
+      sukunimi <- utf8Header(request, ATTRIBUTE_SUKUNIMI)
     } yield Nimitiedot(etunimet = etunimet, kutsumanimi = kutsumanimi, sukunimi = sukunimi)
 
   private def toUusiHenkilö(validHetu: String, nimitiedot: Nimitiedot) = UusiHenkilö(

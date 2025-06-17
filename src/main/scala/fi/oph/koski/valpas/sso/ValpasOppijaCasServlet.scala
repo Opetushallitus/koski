@@ -42,6 +42,11 @@ class ValpasOppijaCasServlet(implicit val application: KoskiApplication) extends
               redirectAfterLogin
 
             case None =>
+              val nimi = oppijaCreation.nimitiedot(request)
+                .map(n => n.etunimet + " " + n.sukunimi)
+                .filter(_.trim.nonEmpty)
+                .orElse(kansalaisenTunnisteet.nimi)
+              setCookie("valpasEiTietojaNimi", nimi.getOrElse(""))
               redirect(eiTietojaOpintopolussaSivu)
           }
         } catch {

@@ -114,7 +114,8 @@ class CasClient(casBaseUrl: Uri, client: Client[IO], callerId: String) extends L
         val attributes: NodeSeq = (serviceResponse \ "authenticationSuccess" \ "attributes")
 
         if (attributes.length > 0) {
-          DecodeResult.successT(List("mail", "clientName", "displayName", "givenName", "personOid", "personName", "firstName", "nationalIdentificationNumber",
+          DecodeResult.successT(List("mail", "clientName", "displayName", "givenName", "personOid", "personName",
+            "firstName", "sn", "familyName", "nationalIdentificationNumber",
             "impersonatorNationalIdentificationNumber", "impersonatorDisplayName", "personIdentifier")
             .map(key => (key, (attributes \ key).text))
             .toMap)

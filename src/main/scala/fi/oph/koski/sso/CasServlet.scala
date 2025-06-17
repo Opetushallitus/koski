@@ -63,7 +63,7 @@ class CasServlet()(implicit val application: KoskiApplication) extends Virkailij
                 setUser(Right(user))
                 redirect(onSuccess)
               case None =>
-                eiSuorituksia
+                eiSuorituksia(kansalaisenTunnisteet)
             }
           } catch {
             case e: Exception =>
@@ -119,13 +119,17 @@ class CasServlet()(implicit val application: KoskiApplication) extends Virkailij
     }
   }
 
-  private def eiSuorituksia = {
-    setNimitiedotCookie
+  private def eiSuorituksia(kansalaisenTunnisteet: KansalaisenTunnisteet) = {
+    setNimitiedotCookie(kansalaisenTunnisteet.nimi)
     redirect(onUserNotFound)
   }
 
-  private def setNimitiedotCookie = {
-    val name = oppijaCreation.nimitiedot(request).map(n => n.etunimet + " " + n.sukunimi)
-    response.addCookie(Cookie("eisuorituksia", encode(writeWithRoot(name), "UTF-8"))(CookieOptions(secure = isHttps, path = "/", maxAge = application.sessionTimeout.seconds, httpOnly = true)))
+  private def setNimitiedotCookie(altNimi: Option[String]): Unit = {
+    val nimi = oppijaCreation
+      .nimitiedot(request)
+      .map(n => n.etunimet + " " + n.sukunimi)
+      .filter(_.trim.nonEmpty)
+      .orElse(altNimi)
+    setCookie("koskiEiSuorituksiaNimi", nimi.getOrElse(""))
   }
 }
