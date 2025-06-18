@@ -407,7 +407,7 @@ Palautettavan JSON-rakenteen tietomallin dokumentaatio on
 
 Näillä kutsuilla haetaan henkilön oppija-data hetun tai oppija-oidin perusteella.
 
-Palautettavan JSON-rakenteen tietomallin dokumentaatio on [täällä](https://opintopolku.fi/koski/json-schema-viewer/?schema=migri-oppija-schema.json).
+Palautettavan JSON-rakenteen tietomallin dokumentaatio on <a href="/koski/json-schema-viewer/?schema=migri-oppija-schema.json">täällä</a>.
 
 ### Esimerkkipyynnöt
 

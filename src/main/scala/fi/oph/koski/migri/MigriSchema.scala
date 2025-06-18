@@ -83,6 +83,7 @@ case class MigriLukuvuosi_IlmoittautumisjaksonLukuvuosiMaksu(
 
 case class MigriSuoritus(
   koulutusmoduuli: MigriSuorituksenKoulutusmoduuli,
+  arviointi: Option[List[MigriArviointi]],
   vahvistus: Option[MigriVahvistus],
   suoritustapa: Option[Koodistokoodiviite],
   suorituskieli: Option[Koodistokoodiviite],
