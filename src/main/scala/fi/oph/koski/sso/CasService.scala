@@ -7,8 +7,12 @@ import fi.oph.koski.log.Logging
 import fi.oph.koski.userdirectory.Password
 import fi.oph.koski.cas.CasClient.Username
 import fi.oph.koski.cas.{CasAuthenticationException, CasClient, CasUser}
+import fi.oph.koski.henkilo.Hetu
+import fi.oph.koski.sso.CasAttributes._
 
 import scala.concurrent.duration.DurationInt
+
+case class KansalaisenTunnisteet(hetu: Option[String], oppijaOid: Option[String], nimi: Option[String])
 
 class CasService(config: Config) extends Logging {
   private val casVirkailijaClient = new CasClient(
@@ -31,14 +35,27 @@ class CasService(config: Config) extends Logging {
     }
   }
 
-  def validateKansalainenServiceTicket(url: String, ticket: String): String = {
+  def validateKansalainenServiceTicket(url: String, ticket: String): KansalaisenTunnisteet = {
     val oppijaAttributes = Http.runIO(
       casOppijaClient
         .validateServiceTicketWithOppijaAttributes(url)(ticket)
         .timeout(10.seconds)
     )
 
-    val hetuAttempt = oppijaAttributes("nationalIdentificationNumber")
+    def getOppijaAttribute(a: String): Option[String] = oppijaAttributes.get(a).map(_.trim).filter(_.nonEmpty)
+
+    val hetuAttempt = getOppijaAttribute(ATTRIBUTE_HETU)
+    val oppijaOidAttempt = getOppijaAttribute(ATTRIBUTE_PERSON_OID)
+
+    val etunimiAttempt = getOppijaAttribute(ATTRIBUTE_FIRST_NAME)
+      .orElse(getOppijaAttribute(ATTRIBUTE_FIRST_NAME_ALT))
+      .orElse(getOppijaAttribute(ATTRIBUTE_GIVEN_NAME))
+      .getOrElse("")
+    val sukunimiAttempt = getOppijaAttribute(ATTRIBUTE_SUKUNIMI)
+      .orElse(getOppijaAttribute(ATTRIBUTE_FAMILY_NAME))
+      .getOrElse("")
+    val kokonimiAttempt = Some(etunimiAttempt + " " + sukunimiAttempt).map(_.trim).filter(_.nonEmpty)
+      .orElse(getOppijaAttribute(ATTRIBUTE_DISPLAY_NAME))
 
     // Lue testiympäristöissä hetu eri kentästä tarvittaessa;
     //
@@ -52,9 +69,11 @@ class CasService(config: Config) extends Logging {
     // miten kansainväliset kirjautumiset tehdään ja missä vaiheessa ja millä tavalla varmistetaan, että ei esim. ikinä käsitellä
     // suomalaisena hetuna muun maan kansallista hetua.
     if (!Environment.isProdEnvironment(config) && hetuAttempt.isEmpty) {
-      oppijaAttributes("personIdentifier")
+      // Huom. tässä kentässä palautuu eIDAS-tunniste kun käytetään eIDAS-kirjautumista, joka ei ole validi hetu
+      val suomiFiHetuAttempt = getOppijaAttribute(ATTRIBUTE_EIDAS_ID).filter(h => Hetu.validFormat(h).isRight)
+      KansalaisenTunnisteet(suomiFiHetuAttempt, oppijaOidAttempt, kokonimiAttempt)
     } else {
-      hetuAttempt
+      KansalaisenTunnisteet(hetuAttempt, oppijaOidAttempt, kokonimiAttempt)
     }
   }
 

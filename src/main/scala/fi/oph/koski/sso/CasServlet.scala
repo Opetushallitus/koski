@@ -52,17 +52,18 @@ class CasServlet()(implicit val application: KoskiApplication) extends Virkailij
               case Some(onSuccessRedirectUrl) => casOppijaServiceUrl + "?onSuccess=" + onSuccessRedirectUrl
               case None => casOppijaServiceUrl
             }
-            val hetu = casService.validateKansalainenServiceTicket(url, ticket)
-            oppijaCreation.findOrCreate(request, hetu) match {
+            val kansalaisenTunnisteet = casService.validateKansalainenServiceTicket(url, ticket)
+            oppijaCreation.findOrCreateByOidOrHetu(request, kansalaisenTunnisteet) match {
               case Some(oppija) =>
-                val huollettavat = application.huoltajaServiceVtj.getHuollettavat(hetu)
-                val user = AuthenticationUser(oppija.oid, oppija.oid, s"${oppija.etunimet} ${oppija.sukunimi}", serviceTicket = Some(ticket), kansalainen = true, huollettavat = Some(huollettavat))
+                val huollettavat = oppija.hetu.orElse(kansalaisenTunnisteet.hetu)
+                  .map(application.huoltajaServiceVtj.getHuollettavat)
+                val user = AuthenticationUser(oppija.oid, oppija.oid, s"${oppija.etunimet} ${oppija.sukunimi}", serviceTicket = Some(ticket), kansalainen = true, huollettavat = huollettavat)
                 koskiSessions.store(ticket, user, LogUserContext.clientIpFromRequest(request), LogUserContext.userAgent(request))
                 UserLanguage.setLanguageCookie(UserLanguage.getLanguageFromLDAP(user, application.directoryClient).getOrElse(UserLanguage.getLanguageFromCookie(request)), response)
                 setUser(Right(user))
                 redirect(onSuccess)
               case None =>
-                eiSuorituksia
+                eiSuorituksia(kansalaisenTunnisteet)
             }
           } catch {
             case e: Exception =>
@@ -118,13 +119,17 @@ class CasServlet()(implicit val application: KoskiApplication) extends Virkailij
     }
   }
 
-  private def eiSuorituksia = {
-    setNimitiedotCookie
+  private def eiSuorituksia(kansalaisenTunnisteet: KansalaisenTunnisteet) = {
+    setNimitiedotCookie(kansalaisenTunnisteet.nimi)
     redirect(onUserNotFound)
   }
 
-  private def setNimitiedotCookie = {
-    val name = oppijaCreation.nimitiedot(request).map(n => n.etunimet + " " + n.sukunimi)
-    response.addCookie(Cookie("eisuorituksia", encode(writeWithRoot(name), "UTF-8"))(CookieOptions(secure = isHttps, path = "/", maxAge = application.sessionTimeout.seconds, httpOnly = true)))
+  private def setNimitiedotCookie(altNimi: Option[String]): Unit = {
+    val nimi = oppijaCreation
+      .nimitiedot(request)
+      .map(n => n.etunimet + " " + n.sukunimi)
+      .filter(_.trim.nonEmpty)
+      .orElse(altNimi)
+    setCookie("koskiEiSuorituksiaNimi", nimi.getOrElse(""))
   }
 }
