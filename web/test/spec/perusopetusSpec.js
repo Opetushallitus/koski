@@ -3227,7 +3227,13 @@ describe('Perusopetus', function () {
       after(timeout.resetDefaultWaitTime())
 
       it('Näytetään opintojen rahoitus-kenttä', function () {
-        expect(addOppija.rahoitusIsVisible()).to.equal(true)
+        return wait
+          .untilVisible(
+            '[data-testid="uusiOpiskeluoikeus.modal.opintojenRahoitus"'
+          )()
+          .then(() => {
+            expect(addOppija.rahoitusIsVisible()).to.equal(true)
+          })
       })
     })
 
