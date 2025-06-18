@@ -157,6 +157,13 @@ object ConvertMigriSchema {
             nimi = suoritus.koulutusmoduuli.nimi,
             laajuus = suoritus.koulutusmoduuli.getLaajuus
           ),
+          arviointi = suoritus.arviointi.map(_.map(a =>
+            MigriArviointi(
+              arvosana = convertKoodistoviite(a.arvosana),
+              hyväksytty = a.hyväksytty,
+              arviointiPäivä = a.arviointipäivä
+            )
+          )),
           vahvistus = suoritus.vahvistus.map(v => MigriVahvistus(päivä = v.päivä)),
           suoritustapa = suoritus match {
             case x: AmmatillisenTutkinnonOsittainenTaiKokoSuoritus => Some(x.suoritustapa)
