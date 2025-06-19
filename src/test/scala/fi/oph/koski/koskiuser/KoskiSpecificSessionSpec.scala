@@ -118,7 +118,7 @@ class KoskiSpecificSessionSpec
       }
       "viranomainen perusopetus" in {
         val session = createAndVerifySession("Pertti", MockUsers.perusopetusViranomainen.ldapUser)
-        val expectedOpiskeluoikeustyypit = Set(esiopetus, perusopetus, aikuistenperusopetus, perusopetuksenlisaopetus, perusopetukseenvalmistavaopetus, internationalschool, europeanschoolofhelsinki).map(_.koodiarvo)
+        val expectedOpiskeluoikeustyypit = Set(esiopetus, perusopetus, aikuistenperusopetus, perusopetuksenlisaopetus, perusopetukseenvalmistavaopetus, internationalschool, europeanschoolofhelsinki).map(OoPtsMask.apply)
         session.allowedOpiskeluoikeusTyypit should equal(expectedOpiskeluoikeustyypit)
       }
       "viranomainen toinen aste" in {
@@ -135,12 +135,12 @@ class KoskiSpecificSessionSpec
           internationalschool,
           europeanschoolofhelsinki,
           ebtutkinto
-        ).map(_.koodiarvo)
+        ).map(OoPtsMask.apply)
         session.allowedOpiskeluoikeusTyypit should equal(expectedOpiskeluoikeustyypit)
       }
       "viranomainen korkeakoulu" in {
         val session = createAndVerifySession("Kaisa", MockUsers.korkeakouluViranomainen.ldapUser)
-        session.allowedOpiskeluoikeusTyypit should equal(Set(OpiskeluoikeudenTyyppi.korkeakoulutus.koodiarvo))
+        session.allowedOpiskeluoikeusTyypit should equal(Set(OoPtsMask(OpiskeluoikeudenTyyppi.korkeakoulutus)))
       }
       "tilastokeskus saa arkaluontoisenkin datan" in {
         val session = createAndVerifySession("Teppo", MockUsers.tilastokeskusKäyttäjä.ldapUser)
@@ -172,7 +172,8 @@ class KoskiSpecificSessionSpec
 
     val expectedAllowedOpiskeluoikeudenTyypit = expectedKäyttöoikeudet.flatMap(_.allowedOpiskeluoikeusTyypit)
     session.allowedOpiskeluoikeusTyypit should be(expectedAllowedOpiskeluoikeudenTyypit)
-    session.hasKoulutusmuotoRestrictions should be(expectedAllowedOpiskeluoikeudenTyypit != OpiskeluoikeudenTyyppi.kaikkiTyypit(isRoot).map(_.koodiarvo))
+
+    session.hasKoulutusmuotoRestrictions should be(expectedAllowedOpiskeluoikeudenTyypit != OpiskeluoikeudenTyyppi.kaikkiTyypit(isRoot).map(t => OoPtsMask(t.koodiarvo)))
     session
   }
 
