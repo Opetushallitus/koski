@@ -287,9 +287,7 @@ function OpinnotPage() {
     },
     expandAll: function () {
       var expand = function () {
-        return wait.until(function() {
-          return expanders().is(':visible')
-        })().then(checkAndExpand)
+        return wait.forMilliseconds(10)().then(checkAndExpand)
       }
       var checkAndExpand = function () {
         if (expanders().is(':visible')) {
