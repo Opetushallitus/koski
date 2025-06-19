@@ -519,8 +519,11 @@ object KoskiTables {
       } yield oo
     }
 
+    val sallitutSuoritukset = user.allowedOpiskeluoikeusTyypit.flatMap(_.päätasonSuoritukset).flatten.toList
+
     query
       .filterIf(user.hasKoulutusmuotoRestrictions)(_.koulutusmuoto inSet user.allowedOpiskeluoikeusTyypit.map(_.opiskeluoikeus))
+      .filterIf(sallitutSuoritukset.nonEmpty)(_.suoritustyypit @& sallitutSuoritukset)
       .filterIf(!user.hasMitätöidytOpiskeluoikeudetAccess)(o => !o.mitätöity)
       .filterIf(!user.hasPoistetutOpiskeluoikeudetAccess)(o => !o.poistettu)
   }
@@ -532,8 +535,11 @@ object KoskiTables {
       YtrOpiskeluOikeudet.take(0)
     }
 
+    val sallitutSuoritukset = user.allowedOpiskeluoikeusTyypit.flatMap(_.päätasonSuoritukset).flatten.toList
+
     query
       .filterIf(user.hasKoulutusmuotoRestrictions)(_.koulutusmuoto inSet user.allowedOpiskeluoikeusTyypit.map(_.opiskeluoikeus))
+      .filterIf(sallitutSuoritukset.nonEmpty)(_.suoritustyypit @& sallitutSuoritukset)
       .filterIf(!user.hasMitätöidytOpiskeluoikeudetAccess)(o => !o.mitätöity)
       .filterIf(!user.hasPoistetutOpiskeluoikeudetAccess)(o => !o.poistettu)
   }
