@@ -4,6 +4,7 @@ import java.time.LocalDate
 import fi.oph.koski.opensearch.OpenSearch
 import fi.oph.koski.henkilo.TestingException
 import fi.oph.koski.http.KoskiErrorCategory
+import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.json.JsonSerializer.extract
 import fi.oph.koski.json.LegacyJsonSerialization.toJValue
 import fi.oph.koski.koskiuser.{AccessType, KoskiSpecificSession, KäyttöoikeusVarhaiskasvatusToimipiste}
@@ -213,11 +214,21 @@ class OpiskeluoikeudenPerustiedotRepository(
       )))
     }
 
-    if (session.hasKoulutusmuotoRestrictions) {
-      List(Map("terms" -> Map("tyyppi.koodiarvo" -> session.allowedOpiskeluoikeusTyypit))) ++ filters
+    val koulutusFilters: List[Map[String, Any]] = if (session.hasKoulutusmuotoRestrictions) {
+      List(OpenSearch.anyFilter(
+        session.allowedOpiskeluoikeusTyypit.toList.map { ooPts =>
+          val ooFilter = Map("term" -> Map("tyyppi.koodiarvo" -> ooPts.opiskeluoikeus))
+          val ptsFilter = ooPts.päätasonSuoritukset.map { ptss =>
+            OpenSearch.nestedFilter("suoritukset", Map("terms" -> Map("suoritukset.tyyppi.koodiarvo" -> ptss)))
+          }
+          OpenSearch.allFilter(List(ooFilter) ++ ptsFilter.toList)
+        }
+      ))
     } else {
-      filters
+      List.empty
     }
+
+    koulutusFilters ++ filters
   }
 
   private def mitätöityFilter: List[Map[String, Any]] = List(
