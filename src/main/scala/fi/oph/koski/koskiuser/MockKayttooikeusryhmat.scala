@@ -1,6 +1,7 @@
 package fi.oph.koski.koskiuser
 
 import fi.oph.koski.organisaatio.Opetushallitus
+import fi.oph.koski.schema.SuorituksenTyyppi
 import fi.oph.koski.userdirectory.{OrganisaatioJaKäyttöoikeudet, PalveluJaOikeus}
 
 object MockKäyttöoikeusryhmät {
@@ -50,5 +51,11 @@ object MockKäyttöoikeusryhmät {
       roolit.map(PalveluJaOikeus(palvelu, _))
     )
   }
+
+  def päätasonSuoritukseenRajoitettuKatselija(opiskeluoikeudenTyyppi: String, päätasonSuorituksenTyyppi: SuorituksenTyyppi.SuorituksenTyyppi) =
+    organisaatioKäyttäjä(Opetushallitus.organisaatioOid, List(
+      Rooli.OPHKATSELIJA,
+      Rooli.rooliPäätasonSuoritukseen(opiskeluoikeudenTyyppi, päätasonSuorituksenTyyppi)
+    ))
 
 }
