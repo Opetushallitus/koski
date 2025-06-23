@@ -2,7 +2,7 @@ package fi.oph.koski.healthcheck
 
 import cats.effect.IO
 import fi.oph.koski.cache._
-import fi.oph.koski.config.KoskiApplication
+import fi.oph.koski.config.{Environment, KoskiApplication}
 import fi.oph.koski.documentation.AmmatillinenExampleData._
 import fi.oph.koski.eperusteet.ERakenneOsa
 import fi.oph.koski.http._
@@ -15,12 +15,15 @@ import fi.oph.koski.schema._
 import fi.oph.koski.userdirectory.Password
 import fi.oph.koski.util.Timing
 import fi.oph.koski.cas.CasClientException
+import fi.oph.koski.executors.GlobalExecutionContext
+import fi.oph.koski.healthcheck.Subsystem._
 import org.json4s.JString
 
+import scala.collection.parallel.ExecutionContextTaskSupport
 import scala.concurrent.duration.{DurationInt, FiniteDuration}
 import scala.language.postfixOps
 
-trait HealthCheck extends Logging with Timing {
+class HealthChecker(val application: KoskiApplication) extends Logging with Timing with GlobalExecutionContext {
   private implicit val user = systemUser
   private implicit val accessType = AccessType.write
   private val oid = application.config.getString("healthcheck.oppija.oid")
@@ -31,21 +34,27 @@ trait HealthCheck extends Logging with Timing {
     application.validator.updateFieldsAndValidateAsJson(Oppija(OidHenkilö(oid), List(perustutkintoOpiskeluoikeusValmis())))
   }
 
-  val internalSystems: Seq[String] = List(
-    Subsystem.KoskiDatabase,
-    Subsystem.RaportointiDatabase,
-    Subsystem.ValpasDatabase,
-    Subsystem.PerustiedotIndex,
-    Subsystem.TiedonsiirtoIndex,
+  val internalSystems: Seq[Subsystem] = List(
+    KoskiDatabase,
+    RaportointiDatabase,
+    ValpasDatabase,
+    PerustiedotIndex,
+    TiedonsiirtoIndex,
+  ) ++ (
+    if (Environment.isUnitTestEnvironment(application.config)) {
+      List(MockSystemForTests)
+    } else {
+      List.empty
+    }
   )
 
-  val externalSystems: Seq[String] = List(
-    Subsystem.Oppijanumerorekisteri,
-    Subsystem.OpenSearch,
-    Subsystem.Koodistopalvelu,
-    Subsystem.Organisaatiopalvelu,
-    Subsystem.EPerusteet,
-    Subsystem.CAS,
+  val externalSystems: Seq[Subsystem] = List(
+    Oppijanumerorekisteri,
+    OpenSearch,
+    Koodistopalvelu,
+    Organisaatiopalvelu,
+    EPerusteet,
+    CAS,
   )
 
   def healthcheckWithExternalSystems: HttpStatus = {
@@ -69,31 +78,55 @@ trait HealthCheck extends Logging with Timing {
     status
   }
 
-  def checkSystems(systems: Seq[String]): Map[String, HttpStatus] =
-    systems
+  def checkSystems(systems: Seq[Subsystem]): Map[Subsystem, HttpStatus] = {
+    val systemsPar = systems
       .par
-      .map(system => system -> checkSystem(system))
+    systemsPar.tasksupport = new ExecutionContextTaskSupport(executor)
+
+    systemsPar
+      .map(system => system -> cachedCheckSystem(system))
       .toMap
       .seq
+  }
 
-  def checkSystem(system: String) = {
+  private val cachedCheckSystem: KeyValueCache[Subsystem, HttpStatus] =
+    KeyValueCache(new SeldomBlockingRefreshingCache("HealthChecker", SeldomBlockingRefreshingCache.Params(
+      // duration should be longer than the time between ALB healthchecks, otherwise every healthcheck call would block.
+      // refreshDuration should be shorter than the time between ALB healthchecks, in order to trigger background refresh often enough.
+      // As of writing this: ALB healthcheck interval is 30 seconds, and there are healthcheck calls from 3 availability zones.
+      duration = if (Environment.isUnitTestEnvironment(application.config)) { 3.seconds } else { 45.seconds },
+      refreshDuration = if (Environment.isUnitTestEnvironment(application.config)) { 1.seconds } else { 10.seconds },
+      maxSize = Subsystem.values.size,
+      executor = executor,
+      storeValuePredicate = {
+        case (_, value) => value == HttpStatus.ok
+      }
+    ))(application.cacheManager), checkSystem)
+
+  private def checkSystem(system: Subsystem): HttpStatus = {
     timed(s"${system}", 0) {
       system match {
-        case Subsystem.Oppijanumerorekisteri => oppijaCheck(findOrCreateOppija)
-        case Subsystem.OpenSearch => openSearchCheck(findOrCreateOppija)
-        case Subsystem.Koodistopalvelu => koodistopalveluCheck
-        case Subsystem.Organisaatiopalvelu => organisaatioPalveluCheck
-        case Subsystem.EPerusteet => ePerusteetCheck
-        case Subsystem.CAS => casCheck
-        case Subsystem.KoskiDatabase => assertTrue("koski database", application.masterDatabase.util.databaseIsOnline)
-        case Subsystem.RaportointiDatabase => assertTrue("raportointi database", application.raportointiDatabase.util.databaseIsOnline)
-        case Subsystem.ValpasDatabase => assertTrue("valpas database", application.valpasDatabase.util.databaseIsOnline)
-        case Subsystem.PerustiedotIndex => assertTrue("perustiedot index", application.perustiedotIndexer.index.isOnline)
-        case Subsystem.TiedonsiirtoIndex => assertTrue("tiedonsiirrot index", application.tiedonsiirtoService.index.isOnline)
-        case other: String => HttpStatus(404, List(ErrorDetail("invalid subsystem", JString(other))))
+        case Oppijanumerorekisteri => oppijaCheck(findOrCreateOppija)
+        case OpenSearch => openSearchCheck(findOrCreateOppija)
+        case Koodistopalvelu => koodistopalveluCheck
+        case Organisaatiopalvelu => organisaatioPalveluCheck
+        case EPerusteet => ePerusteetCheck
+        case CAS => casCheck
+        case KoskiDatabase => assertTrue("koski database", application.masterDatabase.util.databaseIsOnline)
+        case RaportointiDatabase => assertTrue("raportointi database", application.raportointiDatabase.util.databaseIsOnline)
+        case ValpasDatabase => assertTrue("valpas database", application.valpasDatabase.util.databaseIsOnline)
+        case PerustiedotIndex => assertTrue("perustiedot index", application.perustiedotIndexer.index.isOnline)
+        case TiedonsiirtoIndex => assertTrue("tiedonsiirrot index", application.tiedonsiirtoService.index.isOnline)
+        case MockSystemForTests => assertTrue("mock system for tests", {
+          mockSystemCounter -= 1
+
+          mockSystemCheckFunction(mockSystemCounter)
+        })
+        case other: Subsystem => HttpStatus(404, List(ErrorDetail("invalid subsystem", JString(other.toString))))
       }
     }
   }
+
 
   private def oppijaCheck(oppija: Either[HttpStatus, NimellinenHenkilö]): HttpStatus = oppija.left.getOrElse(HttpStatus.ok)
 
@@ -120,7 +153,7 @@ trait HealthCheck extends Logging with Timing {
     HttpStatus.fold(diaarinumerot.map(checkPeruste))
   }
 
-  private def logHealthStatus(status: scala.collection.Map[String, HttpStatus]): Unit = {
+  private def logHealthStatus(status: scala.collection.Map[Subsystem, HttpStatus]): Unit = {
     val payload = status
       .map(SubsystemHealthStatus.apply)
       .toSeq
@@ -217,13 +250,12 @@ trait HealthCheck extends Logging with Timing {
     }
   }
 
-  def application: KoskiApplication
-}
-
-object HealthCheck {
-  def apply(application: KoskiApplication)(implicit cm: CacheManager): HealthCheck = {
-    new HealthChecker(application)
+  def initializeMockSystem(initialCounterValue: Long, checkFunction: Long => Boolean): Unit = {
+    mockSystemCounter = initialCounterValue
+    mockSystemCheckFunction = checkFunction
   }
-}
+  def getMockSystemCounter: Long = mockSystemCounter
 
-class HealthChecker(val application: KoskiApplication) extends HealthCheck
+  private var mockSystemCounter: Long = 0
+  private var mockSystemCheckFunction: Long => Boolean = (_: Long) => true
+}

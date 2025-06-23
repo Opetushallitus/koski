@@ -1,6 +1,7 @@
 package fi.oph.koski.healthcheck
 
 import fi.oph.koski.config.KoskiApplication
+import fi.oph.koski.healthcheck.Subsystem.Subsystem
 import fi.oph.koski.log.Logging
 
 import java.net.InetAddress
@@ -8,7 +9,7 @@ import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
 class RadiatorService(application: KoskiApplication) extends Logging {
-  private val healthCheck: HealthCheck = application.healthCheck
+  private val healthCheck: HealthChecker = application.healthCheck
   private val monitoring: HealthMonitoring = application.healthMonitoring
 
   def getHealth: HealthDataResult = {
@@ -49,7 +50,7 @@ case class HealthDataResult(
 case class HealthDataEntry(
   timestamp: String,
   instance: String,
-  subsystem: String,
+  subsystem: Subsystem,
   operational: Boolean,
   external: Boolean,
   message: Option[String],
