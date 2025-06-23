@@ -66,7 +66,7 @@ class MuksRaporttiSpec
         suorituksenVahvistuspäivä = None,
         rahoitukset = "14",
         jotpaAsianumero = Some("01/5848/2023"),
-        yhteislaajuus = 10.0,
+        yhteislaajuus = 30.0,
       )
     }
 

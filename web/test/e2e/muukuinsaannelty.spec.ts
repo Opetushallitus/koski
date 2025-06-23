@@ -81,6 +81,7 @@ test.describe('Muu kuin säännelty koulutus', () => {
       const osasuoritus = 'Maalausvälineet'
       await muksOppijaPage.lisääUusiOsasuoritus(0, osasuoritus)
       await muksOppijaPage.setOsasuorituksenLaajuus(0, 6)
+      await muksOppijaPage.setOsasuorituksenArvosana(0, '5')
       await muksOppijaPage.tallenna()
     })
 

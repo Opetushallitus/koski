@@ -80,8 +80,6 @@ case class MuuKuinSäänneltyKoulutus(
 
 case class MuunKuinSäännellynKoulutuksenArviointi(
   @KoodistoUri("arviointiasteikkomuks")
-  @KoodistoKoodiarvo("hyvaksytty")
-  @KoodistoKoodiarvo("hylatty")
   arvosana: Koodistokoodiviite,
   arviointipäivä: Option[LocalDate],
 ) extends KoodistostaLöytyväArviointi {
@@ -91,7 +89,7 @@ case class MuunKuinSäännellynKoulutuksenArviointi(
 }
 
 object MuunKuinSäännellynKoulutuksenArviointi {
-  def hyväksytty(arvosana: Koodistokoodiviite): Boolean = arvosana.koodiarvo == "hyvaksytty"
+  def hyväksytty(arvosana: Koodistokoodiviite): Boolean = arvosana.koodiarvo != "hylatty"
 }
 
 case class MuunKuinSäännellynKoulutuksenOsasuoritus(

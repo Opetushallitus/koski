@@ -2,6 +2,146 @@
   {
     "metadata": [
       {
+        "nimi": "1",
+        "kuvaus": null,
+        "lyhytNimi": "1",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "1",
+        "kuvaus": null,
+        "lyhytNimi": "1",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "1",
+        "kuvaus": null,
+        "lyhytNimi": "1",
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "arviointiasteikkomuks_1",
+    "versio": 1,
+    "koodiArvo": "1"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "2",
+        "kuvaus": null,
+        "lyhytNimi": "2",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "2",
+        "kuvaus": null,
+        "lyhytNimi": "2",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "2",
+        "kuvaus": null,
+        "lyhytNimi": "2",
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "arviointiasteikkomuks_2",
+    "versio": 1,
+    "koodiArvo": "2"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "3",
+        "kuvaus": null,
+        "lyhytNimi": "3",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "3",
+        "kuvaus": null,
+        "lyhytNimi": "3",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "3",
+        "kuvaus": null,
+        "lyhytNimi": "3",
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "arviointiasteikkomuks_3",
+    "versio": 1,
+    "koodiArvo": "3"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "4",
+        "kuvaus": null,
+        "lyhytNimi": "4",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "4",
+        "kuvaus": null,
+        "lyhytNimi": "4",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "4",
+        "kuvaus": null,
+        "lyhytNimi": "4",
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "arviointiasteikkomuks_4",
+    "versio": 1,
+    "koodiArvo": "4"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "5",
+        "kuvaus": null,
+        "lyhytNimi": "5",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "5",
+        "kuvaus": null,
+        "lyhytNimi": "5",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "5",
+        "kuvaus": null,
+        "lyhytNimi": "5",
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "arviointiasteikkomuks_5",
+    "versio": 1,
+    "koodiArvo": "5"
+  },
+  {
+    "metadata": [
+      {
         "nimi": "Hylätty",
         "kuvaus": "",
         "lyhytNimi": "Hylätty",

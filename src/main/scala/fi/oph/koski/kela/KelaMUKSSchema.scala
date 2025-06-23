@@ -46,6 +46,7 @@ case class KelaMUKSPäätasonSuoritus(
   arviointi: Option[List[KelaMUKSArviointi]],
 ) extends Suoritus  {
   def withHyväksyntämerkinnälläKorvattuArvosana: KelaMUKSPäätasonSuoritus = copy(
+    arviointi = arviointi.map(_.map(_.withHyväksyntämerkinnälläKorvattuArvosana)),
     osasuoritukset = osasuoritukset.map(_.map(_.withHyväksyntämerkinnälläKorvattuArvosana)),
   )
 }

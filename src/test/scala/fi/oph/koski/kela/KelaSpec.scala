@@ -753,14 +753,33 @@ class KelaSpec
       päätasonSuoritus.koulutusmoduuli.opintokokonaisuus.koodiarvo shouldBe "1138"
       päätasonSuoritus.koulutusmoduuli.opintokokonaisuus.nimi shouldBe Some(schema.Finnish("Kuvallisen ilmaisun perusteet ja välineet"))
 
-      päätasonSuoritus.osasuoritukset shouldNot be(None)
-      päätasonSuoritus.osasuoritukset.get.length shouldBe 1
-      val osasuoritus = päätasonSuoritus.osasuoritukset.get.head
-      osasuoritus.koulutusmoduuli.tunniste.koodiarvo shouldBe "Maalaus"
-      osasuoritus.koulutusmoduuli.tunniste.nimi shouldBe Some(finnish("Maalaus"))
-      osasuoritus.arviointi.foreach(_.foreach(a => {
+      päätasonSuoritus.arviointi.foreach(_.foreach(a => {
         a.arvosana should be (None)
-        a.hyväksytty.isDefined should be (true)
+        a.hyväksytty should be (Some(true))
+      }))
+
+      päätasonSuoritus.osasuoritukset shouldNot be(None)
+      päätasonSuoritus.osasuoritukset.get.length shouldBe 3
+
+      val osasuoritusMaalaus = päätasonSuoritus.osasuoritukset.get.find(_.koulutusmoduuli.tunniste.koodiarvo == "Maalaus").get
+      osasuoritusMaalaus.koulutusmoduuli.tunniste.nimi shouldBe Some(finnish("Maalaus"))
+      osasuoritusMaalaus.arviointi.foreach(_.foreach(a => {
+        a.arvosana should be (None)
+        a.hyväksytty should be (Some(true))
+      }))
+
+      val osasuoritusGrafiikka = päätasonSuoritus.osasuoritukset.get.find(_.koulutusmoduuli.tunniste.koodiarvo == "Grafiikka").get
+      osasuoritusGrafiikka.koulutusmoduuli.tunniste.nimi shouldBe Some(finnish("Grafiikka"))
+      osasuoritusGrafiikka.arviointi.foreach(_.foreach(a => {
+        a.arvosana should be (None)
+        a.hyväksytty should be (Some(true))
+      }))
+
+      val osasuoritusValokuvaus = päätasonSuoritus.osasuoritukset.get.find(_.koulutusmoduuli.tunniste.koodiarvo == "Valokuvaus").get
+      osasuoritusValokuvaus.koulutusmoduuli.tunniste.nimi shouldBe Some(finnish("Valokuvaus"))
+      osasuoritusValokuvaus.arviointi.foreach(_.foreach(a => {
+        a.arvosana should be (None)
+        a.hyväksytty should be (Some(false))
       }))
     }
   }

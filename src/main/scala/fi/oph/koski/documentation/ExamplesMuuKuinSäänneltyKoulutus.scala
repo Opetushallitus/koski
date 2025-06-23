@@ -71,8 +71,20 @@ object ExamplesMuuKuinSäänneltyKoulutus {
       koulutusmoduuli = Koulutusmoduuli.kuvallinenIlmaisu,
       toimipiste = jatkuvaKoulutusOyOppilaitos,
       suorituskieli = suomenKieli,
+      arviointi = Some(List(Osasuoritus.Arviointi.arvosana())),
       osasuoritukset = Some(List(
-        Osasuoritus.maalaus(10.0, LocalDate.of(2023, 2, 1))
+        MuunKuinSäännellynKoulutuksenOsasuoritus(
+          koulutusmoduuli = Osasuoritus.Koulutusmoduuli.maalaus(10.0),
+          arviointi = Some(List(Osasuoritus.Arviointi.arvosana(arvosana = Osasuoritus.Arviointi.hyväksytty)))
+        ),
+        MuunKuinSäännellynKoulutuksenOsasuoritus(
+          koulutusmoduuli = Osasuoritus.Koulutusmoduuli.grafiikka(10.0),
+          arviointi = Some(List(Osasuoritus.Arviointi.arvosana()))
+        ),
+        MuunKuinSäännellynKoulutuksenOsasuoritus(
+          koulutusmoduuli = Osasuoritus.Koulutusmoduuli.valokuvaus(10.0),
+          arviointi = Some(List(Osasuoritus.Arviointi.arvosana(arvosana = Osasuoritus.Arviointi.hylätty)))
+        )
       ))
     )
 
@@ -83,11 +95,6 @@ object ExamplesMuuKuinSäänneltyKoulutus {
     }
 
     object Osasuoritus {
-      def maalaus(laajuus: Double, arviointiPvm: LocalDate): MuunKuinSäännellynKoulutuksenOsasuoritus = MuunKuinSäännellynKoulutuksenOsasuoritus(
-        koulutusmoduuli = Koulutusmoduuli.maalaus(laajuus),
-        arviointi = Some(List(Arviointi.hyväksytty(arviointiPvm))),
-      )
-
       object Koulutusmoduuli {
         def maalaus(laajuus: Double): MuunKuinSäännellynKoulutuksenOsasuorituksenKoulutusmoduuli = MuunKuinSäännellynKoulutuksenOsasuorituksenKoulutusmoduuli(
           kuvaus = finnish("Maalaus"),
@@ -97,11 +104,32 @@ object ExamplesMuuKuinSäänneltyKoulutus {
           ),
           laajuus = LaajuusTunneissa(laajuus),
         )
+
+        def grafiikka(laajuus: Double): MuunKuinSäännellynKoulutuksenOsasuorituksenKoulutusmoduuli = MuunKuinSäännellynKoulutuksenOsasuorituksenKoulutusmoduuli(
+          kuvaus = finnish("Grafiikka"),
+          tunniste = PaikallinenKoodi(
+            koodiarvo = "Grafiikka",
+            nimi = finnish("Grafiikka")
+          ),
+          laajuus = LaajuusTunneissa(laajuus),
+        )
+
+        def valokuvaus(laajuus: Double): MuunKuinSäännellynKoulutuksenOsasuorituksenKoulutusmoduuli = MuunKuinSäännellynKoulutuksenOsasuorituksenKoulutusmoduuli(
+          kuvaus = finnish("Valokuvaus"),
+          tunniste = PaikallinenKoodi(
+            koodiarvo = "Valokuvaus",
+            nimi = finnish("Valokuvaus")
+          ),
+          laajuus = LaajuusTunneissa(laajuus),
+        )
       }
 
       object Arviointi {
-        def hyväksytty(pvm: LocalDate): MuunKuinSäännellynKoulutuksenArviointi = MuunKuinSäännellynKoulutuksenArviointi(
-          arvosana = Koodistokoodiviite("hyvaksytty", "arviointiasteikkomuks"),
+        val hyväksytty = "hyvaksytty"
+        val hylätty = "hylatty"
+
+        def arvosana(arvosana: String = "5", pvm: LocalDate = LocalDate.of(2023, 2, 1)): MuunKuinSäännellynKoulutuksenArviointi = MuunKuinSäännellynKoulutuksenArviointi(
+          arvosana = Koodistokoodiviite(arvosana, "arviointiasteikkomuks"),
           arviointipäivä = Some(pvm),
         )
       }

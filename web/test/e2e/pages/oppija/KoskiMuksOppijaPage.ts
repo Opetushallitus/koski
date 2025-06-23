@@ -46,6 +46,15 @@ export class KoskiMuksOppijaPage extends KoskiOppijaPage {
       .getByTestId('number-editor')
   }
 
+  async setOsasuorituksenArvosana(index: number, arvo: string) {
+    await this.page
+      .getByTestId('arviointi-value')
+      .nth(index)
+      .getByTestId('koodisto-dropdown-multi-selection-input')
+      .click()
+    await this.page.getByRole('listitem', { name: arvo }).click()
+  }
+
   async merkitseSuoritusValmiiksi() {
     await this.merkitseSuoritusValmiiksiBtn.click()
     await this.merkitseValmiiksiDialogVahvistaBtn.click()

@@ -1,3 +1,7 @@
+## 24.6.2025
+
+- Muun kuin säännellyn koulutuksen suoritusten ja osasuoritusten arviointeihin sallittu kaikki arviointiasteikkomuks-koodiston koodit.
+
 ## 28.5.2025
 
 - Lisätty ryhmä-kenttä IB-tutkinnon ja Pre-IB-opintojen suorituksille.
