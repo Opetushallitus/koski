@@ -28,7 +28,6 @@ export const Checkbox: React.FC<CheckboxProps> = (props) => {
       <label
         htmlFor={id}
         onClick={() => {
-          console.log('label onClick')
           return props.onChange(!props.checked)
         }}
         data-testid={`${testId}.label`}

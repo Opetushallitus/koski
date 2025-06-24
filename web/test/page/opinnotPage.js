@@ -1,3 +1,14 @@
+function isReadyToResolveOpiskeluoikeus() {
+  return (
+    S('.opiskeluoikeuksientiedot > li > div.opiskeluoikeus').is(':visible') ||
+    S('.opiskeluoikeudet-list > li > div.opiskeluoikeus-container').is(
+      ':visible'
+    ) ||
+    S('.opiskeluoikeuksientiedot > li > article').is(':visible') ||
+    S('.varoitus').is(':visible')
+  )
+}
+
 function OpinnotPage() {
   function resolveOpiskeluoikeus(indexOrName, omatTiedot) {
     omatTiedot = omatTiedot || false
@@ -276,17 +287,23 @@ function OpinnotPage() {
       return Editor(findSingle('.content-area')).isEditable()
     },
     expandAll: function () {
+      var expand = function () {
+        return wait.forMilliseconds(50)().then(checkAndExpand)
+      }
       var checkAndExpand = function () {
         if (expanders().is(':visible')) {
           return seq(
             click(expanders),
-            wait.forMilliseconds(10),
+            wait.forMilliseconds(50),
             wait.forAjax,
+            wait.until(isReadyToResolveOpiskeluoikeus),
             checkAndExpand
           )()
+        } else {
+          return wait.until(isReadyToResolveOpiskeluoikeus)()
         }
       }
-      return checkAndExpand()
+      return expand()
       function expanders() {
         return S(
           '.foldable.collapsed>.toggle-expand:not(.disabled), tbody:not(.expanded) > tr > td > .toggle-expand:not(.disabled), a.expandable:not(.open)'
@@ -855,6 +872,7 @@ function TutkinnonOsat(groupId, base) {
         return Page(uusiTutkinnonOsaElement)
           .setInputValue('.dropdown, .autocomplete', hakusana)()
           .then(wait.forAjax)
+          .then(wait.until(isReadyToResolveOpiskeluoikeus))
       }
     },
     lisääKorkeakouluopintoja: function () {
@@ -1368,10 +1386,14 @@ function Opiskeluoikeudet() {
     },
     valitseOpiskeluoikeudenTyyppi: function (tyyppi) {
       return function () {
-        var tab = findSingle('.opiskeluoikeustyypit-nav .' + tyyppi)()
-        if (!tab.hasClass('selected')) {
-          return click(findSingle('a', tab))()
-        }
+        return wait.until(isReadyToResolveOpiskeluoikeus)().then(() => {
+          var tab = findSingle('.opiskeluoikeustyypit-nav .' + tyyppi)()
+          if (!tab.hasClass('selected')) {
+            return click(findSingle('a', tab))().then(
+              wait.until(isReadyToResolveOpiskeluoikeus)
+            )
+          }
+        })
       }
     },
     lisääOpiskeluoikeus: async function () {
@@ -1548,7 +1570,11 @@ function LisääSuoritusDialog() {
       open: function (text) {
         return function () {
           if (!api.isVisible()) {
-            return seq(api.clickLink(text), wait.until(api.isVisible))()
+            return seq(
+              wait.untilVisible('.add-suoritus-link'),
+              api.clickLink(text),
+              wait.until(api.isVisible)
+            )()
           }
         }
       },
@@ -1568,7 +1594,7 @@ function LisääSuoritusDialog() {
           .then(click(buttonElem))
           .then(
             wait.until(function () {
-              return count() === prevCount + 1
+              return isReadyToResolveOpiskeluoikeus() && count() === prevCount + 1
             })
           )
       },
@@ -1695,11 +1721,19 @@ function Editor(elem) {
     edit: function () {
       return wait
         .until(api.isVisible)()
+        .then(wait.forMilliseconds(10))
         .then(function () {
           if (isElementVisible(editButton)) {
             return click(editButton)()
           }
         })
+        .then(
+          wait.until(
+            () =>
+              S('.paatasonsuoritus').is(':visible') &&
+              S('.suoritus-tabs').is(':visible')
+          )
+        )
         .then(KoskiPage().verifyNoError)
     },
     canSave: function () {
@@ -1708,11 +1742,18 @@ function Editor(elem) {
     getEditBarMessage: function () {
       return findSingle('#edit-bar .state-indicator')().text()
     },
-    saveChanges: seq(click(enabledSaveButton), KoskiPage().verifyNoError),
+    saveChanges: seq(
+      click(enabledSaveButton),
+      KoskiPage().verifyNoError,
+      wait.until(isReadyToResolveOpiskeluoikeus)
+    ),
     saveChangesAndWaitForSuccess: seq(
       click(enabledSaveButton),
       KoskiPage().verifyNoError,
-      wait.until(KoskiPage().isSavedLabelShown)
+      wait.until(
+        () =>
+          KoskiPage().isSavedLabelShown() && isReadyToResolveOpiskeluoikeus()
+      )
     ),
     saveChangesAndExpectError: seq(
       click(enabledSaveButton),

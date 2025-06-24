@@ -32,6 +32,7 @@ function AddOppijaPage() {
     addNewOppija: function (username, hetu, oppijaData) {
       return function () {
         return prepareForNewOppija(username, hetu)()
+          .then(wait.forMilliseconds(50))
           .then(api.enterValidDataAmmatillinen(oppijaData))
           .then(api.submitAndExpectSuccess(hetu, (oppijaData || {}).tutkinto))
       }
@@ -592,12 +593,12 @@ function AddOppijaPage() {
     selectSuoritustyyppi: function (suoritustyyppi) {
       return suoritustyyppi
         ? selectValue('suoritustyyppi', suoritustyyppi)
-        : function () { }
+        : function () {}
     },
     selectSuoritustapa: function (suoritustapa) {
       return suoritustapa
         ? selectValue('suoritustapa', suoritustapa)
-        : function () { }
+        : function () {}
     },
     selectAloituspäivä: function (date) {
       return pageApi.setInputValue(
@@ -606,7 +607,7 @@ function AddOppijaPage() {
       )
     },
     selectOpiskeluoikeudenTila: function (tila) {
-      return tila ? selectValue('tila', tila) : function () { }
+      return tila ? selectValue('tila', tila) : function () {}
     },
     selectMaksuttomuus: function (index) {
       return eventually(async () => {
@@ -643,6 +644,11 @@ function AddOppijaPage() {
         }
       })()
       await click(modalButton)()
+      await eventually(() => {
+        if (!isReadyToResolveOpiskeluoikeus()) {
+          throw new Error('Opiskeluoikeus not ready')
+        }
+      })()
     },
     submitAndExpectSuccess: function (oppija, tutkinto) {
       tutkinto = tutkinto || 'Autoalan perustutkinto'
@@ -655,6 +661,7 @@ function AddOppijaPage() {
             wait.until(function () {
               return (
                 KoskiPage().getSelectedOppija().indexOf(oppija) >= 0 &&
+                isReadyToResolveOpiskeluoikeus() &&
                 OpinnotPage().suoritusOnValittu(0, tutkinto)
               )
             }, timeoutMs)
@@ -672,6 +679,7 @@ function AddOppijaPage() {
             wait.until(function () {
               return (
                 KoskiPage().getSelectedOppija().indexOf(oppija) >= 0 &&
+                isReadyToResolveOpiskeluoikeus() &&
                 OpinnotPage().suoritusOnValittu(0, tutkinto)
               )
             }, timeoutMs)
@@ -719,7 +727,7 @@ function AddOppijaPage() {
     selectOpintojenRahoitus: function (rahoitus) {
       return rahoitus
         ? selectValue('opintojenRahoitus', rahoitus)
-        : function () { }
+        : function () {}
     },
     opiskeluoikeudenTilat: function () {
       return selectOptions('tila')
@@ -747,7 +755,8 @@ function AddOppijaPage() {
     goBack: click(findSingle('h1 a')),
     selectFromDropdown,
     selectVarhaiskasvatusOrganisaationUlkopuolelta: function () {
-      return click(findSingle(
+      return click(
+        findSingle(
         '[data-testid="uusiOpiskeluoikeus.modal.hankintakoulutus.esiopetus.label"]',
       ))
     },

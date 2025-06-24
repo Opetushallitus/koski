@@ -19,7 +19,8 @@ describe('VALMA koulutus', function () {
       addOppija.submitAndExpectSuccess(
         'Tyhjä, Tero (230872-7258)',
         'Ammatilliseen koulutukseen valmentava koulutus (VALMA)'
-      )
+      ),
+      wait.forMilliseconds(50)
     )
 
     it('Lisätty opiskeluoikeus näytetään', function () {
@@ -47,7 +48,8 @@ describe('VALMA koulutus', function () {
       addOppija.submitAndExpectSuccess(
         'Tyhjä, Tero (230872-7258)',
         'Ammatilliseen koulutukseen valmentava koulutus (VALMA)'
-      )
+      ),
+      wait.forMilliseconds(50)
     )
 
     it('Lisätty opiskeluoikeus näytetään', function () {

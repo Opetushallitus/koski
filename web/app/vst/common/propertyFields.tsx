@@ -53,13 +53,15 @@ export const ArviointiProperty = <T extends VSTSuoritusArvioinnilla>(
   return arvioitu ? (
     <TestIdLayer id="arviointi">
       <OsasuoritusProperty label="Arviointi">
-        <FormListField
-          form={props.form}
-          path={props.path.prop('arviointi')}
-          view={VSTArviointiView}
-          edit={VSTArviointiEdit}
-          editProps={{ osasuoritus }}
-        />
+        <OsasuoritusPropertyValue>
+          <FormListField
+            form={props.form}
+            path={props.path.prop('arviointi')}
+            view={VSTArviointiView}
+            edit={VSTArviointiEdit}
+            editProps={{ osasuoritus }}
+          />
+        </OsasuoritusPropertyValue>
       </OsasuoritusProperty>
     </TestIdLayer>
   ) : null
