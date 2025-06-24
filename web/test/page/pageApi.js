@@ -123,7 +123,6 @@ function Page(mainElement) {
             var radioOption = _(input).find(function (item) {
               return $(item).prop('value') === value
             })
-            // eslint-disable-next-line no-use-before-define
             if (!option) throw new Error('Option ' + value + ' not found')
             S(radioOption).click()
             return click(S(radioOption))()

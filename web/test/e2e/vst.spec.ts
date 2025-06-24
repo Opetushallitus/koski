@@ -1,4 +1,3 @@
-/* eslint-disable mocha/no-identical-title */
 import { foreachAsync, repeatAsync } from '../util/iterating'
 import { expect as _expect, test } from './base'
 import { KoskiKansalainenPage } from './pages/kansalainen/KoskiKansalainenPage'
