@@ -7,6 +7,8 @@ import fi.oph.koski.servlet.NoCache
 import fi.oph.koski.valpas.servlet.ValpasApiServlet
 import fi.oph.koski.valpas.valpasuser.ValpasAuthenticationSupport
 
+import java.net.URLDecoder
+
 class ValpasBootstrapServlet(implicit val application: KoskiApplication) extends ValpasApiServlet with NoCache with ValpasAuthenticationSupport {
   get("/window-properties") {
     WindowProperties(
@@ -14,9 +16,14 @@ class ValpasBootstrapServlet(implicit val application: KoskiApplication) extends
       environment = Environment.currentEnvironment(application.config),
       opintopolkuVirkailijaUrl = application.config.getString("opintopolku.virkailija.url"),
       opintopolkuOppijaUrl = application.config.getString("opintopolku.oppija.url"),
-      oppijaRaamitUser = getUser.map(OppijaRaamitUser.apply).toOption,
+      oppijaRaamitUser = getUser.map(OppijaRaamitUser.apply).toOption.orElse(getUserWithNameFromCookie),
     )
   }
+
+  private def getUserWithNameFromCookie: Option[OppijaRaamitUser] = request.cookies.get("valpasEiTietojaNimi")
+    .map(c => URLDecoder.decode(c, "UTF-8"))
+    .map(_.replace("\"", ""))
+    .map(name => OppijaRaamitUser(name, ""))
 }
 
 case class WindowProperties(

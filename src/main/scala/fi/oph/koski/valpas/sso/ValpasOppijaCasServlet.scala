@@ -1,12 +1,10 @@
 package fi.oph.koski.valpas.sso
 
-import fi.oph.koski.config.{Environment, KoskiApplication}
+import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.henkilo.OppijaHenkilö
-import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.koskiuser.{AuthenticationUser, UserLanguage}
 import fi.oph.koski.log.LogUserContext
 import fi.oph.koski.servlet.NoCache
-import fi.oph.koski.sso.CasOppijaCreationService
 import fi.oph.koski.valpas.servlet.{ValpasApiServlet, ValpasBaseServlet}
 import fi.oph.koski.valpas.valpasuser.ValpasAuthenticationSupport
 
@@ -34,16 +32,21 @@ class ValpasOppijaCasServlet(implicit val application: KoskiApplication) extends
     params.get("ticket") match {
       case Some(ticket) =>
         try {
-          val hetu = casService.validateKansalainenServiceTicket(casValpasOppijaServiceUrl, ticket)
-          oppijaCreation.findOrCreate(request, hetu) match {
+          val kansalaisenTunnisteet = casService.validateKansalainenServiceTicket(casValpasOppijaServiceUrl, ticket)
+          oppijaCreation.findOrCreateByOidOrHetu(request, kansalaisenTunnisteet) match {
             case Some(oppija) =>
-              val user = toAuthenticationUser(oppija, hetu, Some(ticket))
+              val user = toAuthenticationUser(oppija, oppija.hetu.orElse(kansalaisenTunnisteet.hetu), Some(ticket))
               koskiSessions.store(ticket, user, LogUserContext.clientIpFromRequest(request), LogUserContext.userAgent(request))
               UserLanguage.setLanguageCookie(UserLanguage.getLanguageFromLDAP(user, directoryClient).getOrElse(UserLanguage.getLanguageFromCookie(request)), response)
               setUser(Right(user))
               redirectAfterLogin
 
             case None =>
+              val nimi = oppijaCreation.nimitiedot(request)
+                .map(n => n.etunimet + " " + n.sukunimi)
+                .filter(_.trim.nonEmpty)
+                .orElse(kansalaisenTunnisteet.nimi)
+              setCookie("valpasEiTietojaNimi", nimi.getOrElse(""))
               redirect(eiTietojaOpintopolussaSivu)
           }
         } catch {
@@ -63,7 +66,7 @@ class ValpasOppijaCasServlet(implicit val application: KoskiApplication) extends
       case Some(hetu) =>
         oppijaCreation.findOrCreate(request, hetu) match {
           case Some(oppija) =>
-            val user = toAuthenticationUser(oppija, hetu, None)
+            val user = toAuthenticationUser(oppija, Some(hetu), None)
             val mockAuthUser = localLogin(user, Some(langFromCookie.getOrElse("fi")))
             setUser(Right(mockAuthUser))
             redirectAfterLogin
@@ -73,15 +76,19 @@ class ValpasOppijaCasServlet(implicit val application: KoskiApplication) extends
     }
   }
 
-  private def toAuthenticationUser(oppija: OppijaHenkilö, hetu: String, serviceTicket: Option[String]): AuthenticationUser = {
-    val huollettavat = application.huoltajaServiceVtj.getHuollettavat(hetu)
+  private def toAuthenticationUser(
+    oppija: OppijaHenkilö,
+    hetu: Option[String],
+    serviceTicket: Option[String]
+  ): AuthenticationUser = {
+    val huollettavat = hetu.map(huoltajaServiceVtj.getHuollettavat)
     AuthenticationUser(
       oid = oppija.oid,
       username = oppija.oid,
       name = s"${oppija.etunimet} ${oppija.sukunimi}",
       serviceTicket = serviceTicket,
       kansalainen = true,
-      huollettavat = Some(huollettavat),
+      huollettavat = huollettavat
     )
   }
 }

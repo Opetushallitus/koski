@@ -122,8 +122,9 @@ case class Oppija(session: Option[KoskiSpecificSession], request: RichRequest, l
       .orElse(casUserFromCookie)
 
   private def casUserFromCookie: Option[CasUser] =
-    request.cookies.get("eisuorituksia")
+    request.cookies.get("koskiEiSuorituksiaNimi")
       .map(c => URLDecoder.decode(c, "UTF-8"))
+      .map(_.replace("\"", ""))
       .map(name => CasUser(name))
 
   override def toString: String = "oppija"

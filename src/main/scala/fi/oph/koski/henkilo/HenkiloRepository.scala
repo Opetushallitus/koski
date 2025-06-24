@@ -75,9 +75,9 @@ case class HenkilöRepository(
   ): Option[OppijaHenkilö] = {
     Hetu.validFormat(hetu) match {
       case Right(validHetu) =>
-        val tiedot = opintopolku.findByHetu(hetu)
-        if (tiedot.isDefined) {
-          tiedot
+        val kansalainen = opintopolku.findByHetu(hetu)
+        if (kansalainen.isDefined) {
+          kansalainen
         } else {
           val tarkistetaankoVirta = userForAccessChecks.isEmpty || userForAccessChecks.exists(virta.hasAccess)
           val tarkistetaankoYtr = userForAccessChecks.isEmpty || userForAccessChecks.exists(ytr.hasAccess)

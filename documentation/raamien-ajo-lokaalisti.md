@@ -17,5 +17,5 @@ Raameja voi tulla joskus tarve ajaa lokaalisti, esimerkiksi testattaessa raamien
 ## Oppija-raamien käynnistys lokaalisti
 
 1. Kloonaa https://github.com/Opetushallitus/oppija-raamit
-2. Aja komento `./run-local-virkailija-raamit.sh`
+2. Aja komento `./run-local-oppija-raamit.sh`
 3. Lisää Kosken VM-argumentteihin `-DoppijaRaamitProxy=http://localhost:8079`
