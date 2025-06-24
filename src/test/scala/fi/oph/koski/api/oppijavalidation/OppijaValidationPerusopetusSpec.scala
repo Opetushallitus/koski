@@ -577,18 +577,21 @@ class OppijaValidationPerusopetusSpec extends TutkinnonPerusteetTest[Perusopetuk
       val erityisenTuenPäätöstenViimeinenKäyttöpäivä = LocalDate.parse(KoskiApplicationForTests.config.getString("validaatiot.erityisenTuenPäätöstenViimeinenKäyttöpäivä"))
       def makeOpiskeluoikeus(
         tukijaksoAlku: LocalDate = tukijaksotVoimaan,
+        tukijaksoLoppu: Option[LocalDate] = None,
         erityisenTuenPäätösAlku: Option[LocalDate] = Some(erityisenTuenPäätöstenViimeinenKäyttöpäivä),
         erityisenTuenPäätösLoppu: Option[LocalDate] = None,
+        alkamispäivä: LocalDate = longTimeAgo
       ) = {
         defaultOpiskeluoikeus.copy(
           suoritukset = List(
-            yhdeksännenLuokanSuoritus,
+            yhdeksännenLuokanSuoritus.copy(alkamispäivä = Some(alkamispäivä), vahvistus = vahvistusPaikkakunnalla(alkamispäivä.plusYears(1))),
             päättötodistusToimintaAlueilla.copy(
-              vahvistus = vahvistusPaikkakunnalla(LocalDate.of(2024, 7, 1)),
+              vahvistus = vahvistusPaikkakunnalla(alkamispäivä.plusYears(1)),
             ),
           ),
+          tila = NuortenPerusopetuksenOpiskeluoikeudenTila(List(NuortenPerusopetuksenOpiskeluoikeusjakso(alkamispäivä, opiskeluoikeusLäsnä))),
           lisätiedot = Some(PerusopetuksenOpiskeluoikeudenLisätiedot(
-            tuenPäätöksenJaksot = Some(List(Tukijakso(alku = Some(tukijaksoAlku), loppu = None))),
+            tuenPäätöksenJaksot = Some(List(Tukijakso(alku = Some(tukijaksoAlku), loppu = tukijaksoLoppu))),
             erityisenTuenPäätökset = erityisenTuenPäätösAlku.map(alku => List(ErityisenTuenPäätös(alku = Some(alku), loppu = erityisenTuenPäätösLoppu, erityisryhmässä = None))),
           )
         ))
@@ -603,6 +606,24 @@ class OppijaValidationPerusopetusSpec extends TutkinnonPerusteetTest[Perusopetuk
           verifyResponseStatusOk()
         }
       }
+
+      "Tukea koskevan päätös saa alkaa ennen opiskeluoikeuden alkua" in {
+        val ap = LocalDate.of(2025, 8, 16)
+        setupOppijaWithOpiskeluoikeus(makeOpiskeluoikeus(tukijaksoAlku = ap.minusDays(15), erityisenTuenPäätösAlku = None, alkamispäivä = ap)) {
+          verifyResponseStatusOk()
+        }
+      }
+
+      "Tukea koskevan päätös ei saa päättyä ennen opiskeluoikeuden alkua" in {
+        val pp = LocalDate.of(2025, 8, 16)
+        setupOppijaWithOpiskeluoikeus(makeOpiskeluoikeus(tukijaksoAlku = pp.minusDays(15), tukijaksoLoppu = Some(pp), erityisenTuenPäätösAlku = None, alkamispäivä = pp.plusDays(1))) {
+          verifyResponseStatus(400,
+            KoskiErrorCategory.badRequest.validation.date(
+              "Tuen päätöksen jakso ei saa päättyä ennen opiskeluoikeuden alkua"
+            ))
+        }
+      }
+
       "Erityisen tuen päätökset eivät saa alkaa viimeisen käyttöpäivän jälkeen" in {
         val oo = makeOpiskeluoikeus(erityisenTuenPäätösAlku = Some(erityisenTuenPäätöstenViimeinenKäyttöpäivä.plusDays(2)))
         setupOppijaWithOpiskeluoikeus(oo) {
