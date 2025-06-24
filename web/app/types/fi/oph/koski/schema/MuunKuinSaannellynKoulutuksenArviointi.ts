@@ -8,19 +8,13 @@ import { LocalizedString } from './LocalizedString'
  */
 export type MuunKuinSäännellynKoulutuksenArviointi = {
   $class: 'fi.oph.koski.schema.MuunKuinSäännellynKoulutuksenArviointi'
-  arvosana: Koodistokoodiviite<
-    'arviointiasteikkomuks',
-    'hyvaksytty' | 'hylatty'
-  >
+  arvosana: Koodistokoodiviite<'arviointiasteikkomuks', string>
   arviointipäivä?: string
   hyväksytty?: boolean
 }
 
 export const MuunKuinSäännellynKoulutuksenArviointi = (o: {
-  arvosana: Koodistokoodiviite<
-    'arviointiasteikkomuks',
-    'hyvaksytty' | 'hylatty'
-  >
+  arvosana: Koodistokoodiviite<'arviointiasteikkomuks', string>
   arviointipäivä?: string
   hyväksytty?: boolean
 }): MuunKuinSäännellynKoulutuksenArviointi => ({
