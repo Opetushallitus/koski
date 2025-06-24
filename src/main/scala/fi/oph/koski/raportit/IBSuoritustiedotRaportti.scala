@@ -26,7 +26,7 @@ case class IBSuoritustiedotRaportti(repository: IBSuoritustiedotRaporttiReposito
       .suoritustiedot(oppilaitosOid, alku, loppu, osasuoritustenAikarajaus, raportinTyyppi.päätasonSuoritusTyyppi)
     val oppiaineetJaKurssit = opetettavatOppiaineetJaNiidenKurssit(_ => false, raportinTyyppi.isOppiaine, rows, t)
 
-    val oppiaineJaLisätiedotFuture = Future{
+    val oppiaineJaLisätiedotFuture = Future {
       DynamicDataSheet(
         title = t.get("raportti-excel-oppiaineet-sheet-name"),
         rows = rows.map(r => kaikkiOppiaineetVälilehtiRow(r, oppiaineetJaKurssit, alku, loppu, raportinTyyppi)),
@@ -76,6 +76,7 @@ case class IBSuoritustiedotRaportti(repository: IBSuoritustiedotRaporttiReposito
       opiskeluoikeudenPäättymispäivä = row.opiskeluoikeus.päättymispäivä.map(_.toLocalDate),
       rahoitukset = row.aikajaksot.flatMap(_.opintojenRahoitus).mkString(", "),
       rahoitusmuodotOk = rahoitusmuodotOk(row),
+      ryhmä = row.päätasonSuoritus.luokkaTaiRyhmä,
       maksuttomuus = lisätiedot.flatMap(_.maksuttomuus.map(ms => ms.filter(m => m.maksuton && m.overlaps(Aikajakso(alku, Some(loppu)))).map(_.toString).mkString(", "))).filter(_.nonEmpty),
       oikeuttaMaksuttomuuteenPidennetty = lisätiedot.flatMap(_.oikeuttaMaksuttomuuteenPidennetty.map(omps => omps.map(_.toString).mkString(", "))).filter(_.nonEmpty),
       pidennettyPäättymispäivä = lisätiedot.exists(_.pidennettyPäättymispäivä),
@@ -124,6 +125,7 @@ case class IBSuoritustiedotRaportti(repository: IBSuoritustiedotRaporttiReposito
     Column(t.get("raportti-excel-kolumni-opiskeluoikeudenPäättymispäivä")),
     Column(t.get("raportti-excel-kolumni-rahoitukset"), comment = Some(t.get("raportti-excel-kolumni-rahoitukset-comment"))),
     Column(t.get("raportti-excel-kolumni-rahoitusmuodot"), comment = Some(t.get("raportti-excel-kolumni-rahoitusmuodot-comment"))),
+    Column(t.get("raportti-excel-kolumni-ryhmä")),
     Column(t.get("raportti-excel-kolumni-maksuttomuus"), comment = Some(t.get("raportti-excel-kolumni-maksuttomuus-comment"))),
     Column(t.get("raportti-excel-kolumni-oikeuttaMaksuttomuuteenPidennetty"), comment = Some(t.get("raportti-excel-kolumni-oikeuttaMaksuttomuuteenPidennetty-comment"))),
     Column(t.get("raportti-excel-kolumni-pidennettyPäättymispäivä"), comment = Some(t.get("raportti-excel-kolumni-pidennettyPäättymispäivä-lukio-comment"))),
@@ -258,6 +260,7 @@ case class IBRaporttiRow(
   opiskeluoikeudenPäättymispäivä: Option[LocalDate],
   rahoitukset: String,
   rahoitusmuodotOk: Boolean,
+  ryhmä: Option[String],
   maksuttomuus: Option[String],
   oikeuttaMaksuttomuuteenPidennetty: Option[String],
   pidennettyPäättymispäivä: Boolean,

@@ -21,6 +21,7 @@ export type IBTutkinnonSuoritus = {
   extendedEssay?: IBExtendedEssaySuoritus
   creativityActionService?: IBCASSuoritus
   todistuksellaNäkyvätLisätiedot?: LocalizedString
+  ryhmä?: string
   lisäpisteet?: Koodistokoodiviite<'arviointiasteikkolisapisteetib', string>
   theoryOfKnowledge?: IBTheoryOfKnowledgeSuoritus
   koulutusmoduuli: IBTutkinto
@@ -36,6 +37,7 @@ export const IBTutkinnonSuoritus = (o: {
   extendedEssay?: IBExtendedEssaySuoritus
   creativityActionService?: IBCASSuoritus
   todistuksellaNäkyvätLisätiedot?: LocalizedString
+  ryhmä?: string
   lisäpisteet?: Koodistokoodiviite<'arviointiasteikkolisapisteetib', string>
   theoryOfKnowledge?: IBTheoryOfKnowledgeSuoritus
   koulutusmoduuli?: IBTutkinto

@@ -1722,7 +1722,8 @@ object ValpasOpiskeluoikeusExampleData {
     lisätiedot = Some(ExamplesEsiopetus.lisätiedot.copy(
       pidennettyOppivelvollisuus = None,
       vammainen = None,
-      vaikeastiVammainen = None
+      vaikeastiVammainen = None,
+      erityisenTuenPäätökset = None,
     ))
   )
 

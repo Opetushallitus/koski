@@ -1,4 +1,4 @@
-package fi.oph.koski.massaluovutus.suoritusrekisteri
+package fi.oph.koski.massaluovutus.suorituspalvelu
 
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.db.KoskiOpiskeluoikeusRowImplicits.getKoskiOpiskeluoikeusRow
@@ -7,7 +7,7 @@ import fi.oph.koski.db.{DB, KoskiOpiskeluoikeusRow, KoskiTables, QueryMethods}
 import fi.oph.koski.koskiuser.KoskiSpecificSession
 import fi.oph.koski.koskiuser.Rooli.{OPHKATSELIJA, OPHPAAKAYTTAJA}
 import fi.oph.koski.log._
-import fi.oph.koski.massaluovutus.suoritusrekisteri.opiskeluoikeus.SureOpiskeluoikeus
+import fi.oph.koski.massaluovutus.suorituspalvelu.opiskeluoikeus.SupaOpiskeluoikeus
 import fi.oph.koski.massaluovutus.{MassaluovutusQueryParameters, MassaluovutusQueryPriority, QueryResultWriter}
 import fi.oph.koski.schema.{KoskeenTallennettavaOpiskeluoikeus, KoskiSchema}
 
@@ -15,7 +15,7 @@ import java.sql.Timestamp
 import java.time.LocalDateTime
 import scala.concurrent.duration.DurationInt
 
-trait SuoritusrekisteriQuery extends MassaluovutusQueryParameters with Logging {
+trait SuorituspalveluQuery extends MassaluovutusQueryParameters with Logging {
   def getOpiskeluoikeusIds(db: DB): Seq[(Int, Timestamp, String)]
 
   override def priority: Int = MassaluovutusQueryPriority.high
@@ -26,21 +26,21 @@ trait SuoritusrekisteriQuery extends MassaluovutusQueryParameters with Logging {
 
     writer.predictFileCount(resultsByOppija.size / 100)
     resultsByOppija.grouped(100).zipWithIndex.foreach { case (oppijaResult, index) =>
-      val sureResponses = oppijaResult.map { case (oppija_oid, opiskeluoikeudet) =>
+      val supaResponses = oppijaResult.map { case (oppija_oid, opiskeluoikeudet) =>
         val latestTimestamp = opiskeluoikeudet.maxBy(_._2.toInstant)._2
         val db = selectDbByLag(application, latestTimestamp)
         val response = opiskeluoikeudet.flatMap(oo => getOpiskeluoikeus(application, db, oo._1))
         response.foreach { oo =>
           auditLog(oppija_oid, oo.oid)
         }
-        SureResponse(
+        SupaResponse(
           oppijaOid = oppija_oid,
           kaikkiOidit = application.henkilöRepository.findByOid(oppija_oid).get.kaikkiOidit,
           aikaleima = LocalDateTime.from(latestTimestamp.toLocalDateTime),
           opiskeluoikeudet = response
         )
       }
-      writer.putJson(s"$index", sureResponses)
+      writer.putJson(s"$index", supaResponses)
     }
     Right(())
   }
@@ -48,7 +48,7 @@ trait SuoritusrekisteriQuery extends MassaluovutusQueryParameters with Logging {
   override def queryAllowed(application: KoskiApplication)(implicit user: KoskiSpecificSession): Boolean =
     user.hasRole(OPHKATSELIJA) || user.hasRole(OPHPAAKAYTTAJA)
 
-  private def getOpiskeluoikeus(application: KoskiApplication, db: DB, id: Int): Option[SureOpiskeluoikeus] =
+  private def getOpiskeluoikeus(application: KoskiApplication, db: DB, id: Int): Option[SupaOpiskeluoikeus] =
     QueryMethods.runDbSync(
       db,
       sql"""
@@ -56,7 +56,7 @@ trait SuoritusrekisteriQuery extends MassaluovutusQueryParameters with Logging {
          FROM opiskeluoikeus
          WHERE id = $id
       """.as[KoskiOpiskeluoikeusRow]
-    ).headOption.flatMap(toSureOpiskeluoikeus(application))
+    ).headOption.flatMap(toSupaOpiskeluoikeus(application))
 
   private def selectDbByLag(application: KoskiApplication, opiskeluoikeusAikaleima: Timestamp): DB = {
     val safetyLimit = 15.seconds
@@ -70,11 +70,11 @@ trait SuoritusrekisteriQuery extends MassaluovutusQueryParameters with Logging {
     }
   }
 
-  private def toSureOpiskeluoikeus(application: KoskiApplication)(row: KoskiOpiskeluoikeusRow): Option[SureOpiskeluoikeus] = {
+  private def toSupaOpiskeluoikeus(application: KoskiApplication)(row: KoskiOpiskeluoikeusRow): Option[SupaOpiskeluoikeus] = {
     val json = KoskiTables.KoskiOpiskeluoikeusTable.readAsJValue(row.data, row.oid, row.versionumero, row.aikaleima)
     application.validatingAndResolvingExtractor.extract[KoskeenTallennettavaOpiskeluoikeus](KoskiSchema.strictDeserialization)(json) match {
       case Right(oo: KoskeenTallennettavaOpiskeluoikeus) =>
-        SureOpiskeluoikeusO(oo)
+        SupaOpiskeluoikeusO(oo, row.oppijaOid)
       case Left(errors) =>
         logger.warn(s"Error deserializing opiskeluoikeus: ${errors}")
         None
@@ -85,7 +85,7 @@ trait SuoritusrekisteriQuery extends MassaluovutusQueryParameters with Logging {
     AuditLog
       .log(
         KoskiAuditLogMessage(
-          KoskiOperation.SUORITUSREKISTERI_OPISKELUOIKEUS_HAKU,
+          KoskiOperation.SUORITUSPALVELU_OPISKELUOIKEUS_HAKU,
           user,
           Map(
             KoskiAuditLogMessageField.oppijaHenkiloOid -> oppijaOid,
@@ -95,7 +95,7 @@ trait SuoritusrekisteriQuery extends MassaluovutusQueryParameters with Logging {
       )
 }
 
-object SuoritusrekisteriQuery {
+object SuorituspalveluQuery {
   def opiskeluoikeudenTyypit: List[String] = List(
     "perusopetus",
     "aikuistenperusopetus",

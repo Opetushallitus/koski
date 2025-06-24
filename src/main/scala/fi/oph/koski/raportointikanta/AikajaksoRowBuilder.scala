@@ -175,6 +175,15 @@ object AikajaksoRowBuilder {
         },
         ulkomaanjakso = lisätietoVoimassaPäivänä {
           case l: UlkomaanaikajaksojaSisältävä => Some(l.kaikkiUlkomaanaikajaksot)
+        },
+        tuenPäätöksenJakso = lisätietoVoimassaPäivänä {
+          case l: Tukipäätöksellinen => Some(l.kaikkiTuenPäätöksenJaksot)
+        },
+        opetuksenJärjestäminenVammanSairaudenTaiRajoitteenPerusteella = lisätietoVoimassaPäivänä {
+          case l: VammaSairausTaiRajoite => l.opetuksenJärjestäminenVammanSairaudenTaiRajoitteenPerusteella
+        },
+        toimintaAlueittainOpiskelu = lisätietoVoimassaPäivänä {
+          case l: ToimintaAlueittainOpiskeleva => l.toimintaAlueittainOpiskelu
         }
       ))
       // Note: When adding something here, remember to update aikajaksojenAlkupäivät (below), too
@@ -287,7 +296,9 @@ object AikajaksoRowBuilder {
       majoitusetu = o.lisätiedot.exists(_.majoitusetu.exists(_.contains(päivä))),
       kuljetusetu = o.lisätiedot.exists(_.kuljetusetu.exists(_.contains(päivä))),
       sisäoppilaitosmainenMajoitus = o.lisätiedot.exists(_.sisäoppilaitosmainenMajoitus.exists(_.exists(_.contains(päivä)))),
-      koulukoti = o.lisätiedot.exists(_.koulukoti.exists(_.exists(_.contains(päivä))))
+      koulukoti = o.lisätiedot.exists(_.koulukoti.exists(_.exists(_.contains(päivä)))),
+      tuenPäätöksenJakso = o.lisätiedot.exists(_.tuenPäätöksenJaksot.exists(_.exists(_.contains(päivä)))),
+      varhennetunOppivelvollisuudenJakso = o.lisätiedot.exists(_.varhennetunOppivelvollisuudenJaksot.exists(_.exists(_.contains(päivä))))
     ))
     // Note: When adding something here, remember to update aikajaksojenAlkupäivät (below), too
   }
@@ -325,6 +336,10 @@ object AikajaksoRowBuilder {
   ): List[Aikajakso] = {
     (erityisenTuenPäätös.toList ++ erityisenTuenPäätökset.toList.flatten)
       .flatMap(päätös => päätös.alku.map(Aikajakso(_, päätös.loppu)))
+  }
+
+  private def aikajaksotTukijaksoista(tukijaksot: Option[List[Tukijakso]]): List[Aikajakso] = {
+    tukijaksot.toList.flatten.flatMap(tukijakso => tukijakso.alku.map(Aikajakso(_, tukijakso.loppu)))
   }
 
   private def aikajaksotTuvaErityisenTuenPäätöksistä(
@@ -371,7 +386,9 @@ object AikajaksoRowBuilder {
           pol.vammainen,
           pol.vaikeastiVammainen,
           pol.koulukoti,
-          pol.kotiopetusjaksot
+          pol.kotiopetusjaksot,
+          pol.opetuksenJärjestäminenVammanSairaudenTaiRajoitteenPerusteella,
+          pol.toimintaAlueittainOpiskelu
         ) ++ Seq(
           pol.majoitusetu,
           pol.kuljetusetu,
@@ -379,7 +396,7 @@ object AikajaksoRowBuilder {
           pol.joustavaPerusopetus,
           pol.kotiopetus
         ).flatten ++ aikajaksotErityisenTuenPäätöksistä(pol.erityisenTuenPäätös, pol.erityisenTuenPäätökset) ++
-          pol.kaikkiUlkomaanaikajaksot
+          pol.kaikkiUlkomaanaikajaksot ++ aikajaksotTukijaksoista(pol.tuenPäätöksenJaksot)
       case poll: PerusopetuksenLisäopetuksenOpiskeluoikeudenLisätiedot =>
         toSeq(
           poll.sisäoppilaitosmainenMajoitus,
@@ -436,12 +453,14 @@ object AikajaksoRowBuilder {
           eol.vammainen,
           eol.vaikeastiVammainen,
           eol.sisäoppilaitosmainenMajoitus,
-          eol.koulukoti
+          eol.koulukoti,
+          eol.varhennetunOppivelvollisuudenJaksot
         ) ++ Seq(
           eol.pidennettyOppivelvollisuus,
           eol.majoitusetu,
           eol.kuljetusetu
-        ).flatten ++ aikajaksotErityisenTuenPäätöksistä(eol.erityisenTuenPäätös, eol.erityisenTuenPäätökset)
+        ).flatten ++ aikajaksotErityisenTuenPäätöksistä(eol.erityisenTuenPäätös, eol.erityisenTuenPäätökset) ++
+          aikajaksotTukijaksoista(eol.tuenPäätöksenJaksot)
       case vstol: VapaanSivistystyönOpiskeluoikeudenLisätiedot =>
         toSeq(
           vstol.maksuttomuus

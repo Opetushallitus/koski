@@ -18,6 +18,7 @@ object ExamplesIB {
     toimipiste = ressunLukio,
     vahvistus = ExampleData.vahvistusPaikkakunnalla(org = ressunLukio, kunta = helsinki),
     suorituskieli = englanti,
+    ryhmä = Some("AH"),
     osasuoritukset = Some(List(
       preIBAineSuoritus(LukioExampleData.lukionÄidinkieli("AI1", pakollinen = true),List(
         (valtakunnallinenKurssi("ÄI1"), "8"), (valtakunnallinenKurssi("ÄI2"), "8"), (valtakunnallinenKurssi("ÄI3"), "8")
@@ -240,6 +241,7 @@ object ExamplesIB {
     toimipiste = ressunLukio,
     suorituskieli = englanti,
     vahvistus = vahvistus,
+    ryhmä = Some("AH"),
     osasuoritukset = Some(osasuoritukset(vainPredictedArviointi = predicted)),
     theoryOfKnowledge = Some(IBTheoryOfKnowledgeSuoritus(
       IBOppiaineTheoryOfKnowledge(), ibCoreArviointi("A"), osasuoritukset = Some(List(

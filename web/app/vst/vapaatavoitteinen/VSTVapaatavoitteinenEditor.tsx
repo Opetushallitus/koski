@@ -25,6 +25,7 @@ import {
 } from '../common/types'
 import { AddVapaatavoitteinenOsasuoritus } from './AddVapaatavoitteinenOsasuoritus'
 import { osasuoritusToTableRow } from './VSTVapaatavoitteinenProperties'
+import { HenkilövahvistusValinnaisellaPaikkakunnalla } from '../../types/fi/oph/koski/schema/HenkilovahvistusValinnaisellaPaikkakunnalla'
 
 export type VSTVapaatavoitteinenEditor =
   VSTPäätasonSuoritusEditorProps<VapaanSivistystyönVapaatavoitteisenKoulutuksenSuoritus>
@@ -83,6 +84,7 @@ export const VSTVapaatavoitteinenEditor: React.FC<
           organisaatio={organisaatio}
           disableAdd={suorituksenVahvistaminenEiMahdollista}
           disableRemoval={false}
+          vahvistusClass={HenkilövahvistusValinnaisellaPaikkakunnalla.className}
         />
         <Spacer />
 

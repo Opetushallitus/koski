@@ -21,7 +21,7 @@ export type FieldEditorProps<FieldValue, EditorProps> = EditorProps & {
   errors?: NEA.NonEmptyArray<ValidationError>
   value?: FieldValue | undefined
   index?: number
-  testId?: string | number
+  testId?: string
 }
 
 type ComponentType<T> =

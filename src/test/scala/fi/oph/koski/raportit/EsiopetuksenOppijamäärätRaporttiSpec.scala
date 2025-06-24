@@ -1,5 +1,6 @@
 package fi.oph.koski.raportit
 
+import fi.oph.koski.documentation.ExampleData.{opiskeluoikeusLäsnä, opiskeluoikeusValmistunut}
 import fi.oph.koski.documentation.ExamplesEsiopetus
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat.vuonna2005SyntynytEiOpiskeluoikeuksiaFikstuurissa
 import fi.oph.koski.henkilo.VerifiedHenkilöOid
@@ -13,7 +14,7 @@ import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.organisaatio.MockOrganisaatiot.{helsinginKaupunki, päiväkotiTouhula, tornionKaupunki}
 import fi.oph.koski.raportit.esiopetus.{EsiopetuksenOppijamäärätAikajaksovirheetRaportti, EsiopetuksenOppijamäärätAikajaksovirheetRaporttiRow, EsiopetuksenOppijamäärätRaportti, EsiopetuksenOppijamäärätRaporttiRow}
 import fi.oph.koski.raportointikanta.RaportointikantaTestMethods
-import fi.oph.koski.schema.{Aikajakso, ErityisenTuenPäätös, EsiopetuksenOpiskeluoikeudenLisätiedot, EsiopetuksenOpiskeluoikeus, Opiskeluoikeus}
+import fi.oph.koski.schema.{Aikajakso, ErityisenTuenPäätös, EsiopetuksenOpiskeluoikeudenLisätiedot, EsiopetuksenOpiskeluoikeus, NuortenPerusopetuksenOpiskeluoikeudenTila, NuortenPerusopetuksenOpiskeluoikeusjakso, Opiskeluoikeus, Tukijakso}
 import fi.oph.koski.schema.Organisaatio.Oid
 import org.scalatest.BeforeAndAfterAll
 import org.scalatest.freespec.AnyFreeSpec
@@ -31,6 +32,7 @@ class EsiopetuksenOppijamäärätRaporttiSpec
   private val oppilaitosOid = MockOrganisaatiot.jyväskylänNormaalikoulu
 
   private val raportointipäivä = date(2015, 1, 1)
+  private val tuenPäätöstenRaportointipäivä = date(2026, 8, 1)
 
   var rikkinäisetOpiskeluoikeusOidit: Seq[Opiskeluoikeus.Oid] = Seq()
 
@@ -50,6 +52,7 @@ class EsiopetuksenOppijamäärätRaporttiSpec
 
     ehjätTestiopiskeluoikeudet.map(create)
     rikkinäisetOpiskeluoikeusOidit = rikkinäisetTestiopiskeluoikeudet.map(create).map(_.getOrElse(throw new Error))
+    tuenPäätöstenTestiopiskeluoikeudet.map(create)
 
     application.perustiedotIndexer.sync(refresh = true)
     reloadRaportointikanta
@@ -70,6 +73,10 @@ class EsiopetuksenOppijamäärätRaporttiSpec
       rikkinäinenPelkkäVammaisuusOpiskeluoikeus,
       rikkinäinenPäällekäisetVammaisuudetOpiskeluoikeus,
     )
+
+  private val tuenPäätöstenTestiopiskeluoikeudet = List(
+    ehjäTuenPäätöksenJaksonOpiskeluoikeus
+  )
 
   private val ylimääräisetLkm = ehjätTestiopiskeluoikeudet.length + rikkinäisetTestiopiskeluoikeudet.length
   private val ylimääräisetErityiselläTuellaOpiskeluoikeudet = 6
@@ -140,6 +147,21 @@ class EsiopetuksenOppijamäärätRaporttiSpec
       )
     )
 
+  private def ehjäTuenPäätöksenJaksonOpiskeluoikeus: EsiopetuksenOpiskeluoikeus = {
+    ExamplesEsiopetus.opiskeluoikeus.copy(
+      tila = NuortenPerusopetuksenOpiskeluoikeudenTila(
+        List(
+          NuortenPerusopetuksenOpiskeluoikeusjakso(tuenPäätöstenRaportointipäivä, opiskeluoikeusLäsnä),
+          NuortenPerusopetuksenOpiskeluoikeusjakso(tuenPäätöstenRaportointipäivä.plusYears(1), opiskeluoikeusValmistunut)
+        )
+      ),
+      lisätiedot = Some(EsiopetuksenOpiskeluoikeudenLisätiedot(
+        tuenPäätöksenJaksot = Some(List(Tukijakso(Some(tuenPäätöstenRaportointipäivä), Some(tuenPäätöstenRaportointipäivä.plusYears(1))))),
+        varhennetunOppivelvollisuudenJaksot = Some(List(Aikajakso(tuenPäätöstenRaportointipäivä, Some(tuenPäätöstenRaportointipäivä.plusYears(1)))))
+      ))
+    )
+  }
+
   private def raportilleOsuvaOpiskeluoikeus(
     lisätiedot: EsiopetuksenOpiskeluoikeudenLisätiedot
   ): EsiopetuksenOpiskeluoikeus =
@@ -204,11 +226,35 @@ class EsiopetuksenOppijamäärätRaporttiSpec
       r.viisivuotiaitaEiPidennettyäOppivelvollisuutta should equal(0)
       r.pidOppivelvollisuusEritTukiJaVaikeastiVammainen should equal(0 + ylimääräisetVaikeastiVammaisetLkm)
       r.pidOppivelvollisuusEritTukiJaMuuKuinVaikeimminVammainen should equal(2 + ylimääräisetMuuKuinVaikeastiVammaisetLkm)
+      r.tuenPäätöksenJakso should equal(0)
+      r.varhennetunOppivelvollisuudenJakso should equal(0)
       r.virheellisestiSiirrettyjaTukitietoja should equal(0 + rikkinäisetYlimääräisetLkm)
       r.erityiselläTuella should equal(2 + ylimääräisetErityiselläTuellaOpiskeluoikeudet)
       r.majoitusetu should equal(3)
       r.kuljetusetu should equal(3)
       r.sisäoppilaitosmainenMajoitus should equal(3)
+    }
+
+    "Raportin kolumnit tuen päätöksen jakson raportointipäivänä" in {
+      lazy val r = findSingle(esiopetuksenOppijamäärätTuenPäätöksenJaksonRaportti)
+
+      r.oppilaitosNimi should equal("Jyväskylän normaalikoulu")
+      r.opetuskieli should equal("ruotsi,suomi")
+      r.esiopetusoppilaidenMäärä should equal(3)
+      r.vieraskielisiä should equal(0)
+      r.koulunesiopetuksessa should equal(3)
+      r.päiväkodinesiopetuksessa should equal(0)
+      r.viisivuotiaita should equal(0)
+      r.viisivuotiaitaEiPidennettyäOppivelvollisuutta should equal(0)
+      r.pidOppivelvollisuusEritTukiJaVaikeastiVammainen should equal(0)
+      r.pidOppivelvollisuusEritTukiJaMuuKuinVaikeimminVammainen should equal(0)
+      r.tuenPäätöksenJakso should equal(2)
+      r.varhennetunOppivelvollisuudenJakso should equal(1)
+      r.virheellisestiSiirrettyjaTukitietoja should equal(0)
+      r.erityiselläTuella should equal(0)
+      r.majoitusetu should equal(0)
+      r.kuljetusetu should equal(0)
+      r.sisäoppilaitosmainenMajoitus should equal(0)
     }
 
     "Haettu vuodelle, jona ei oppilaita" in {
@@ -254,6 +300,8 @@ class EsiopetuksenOppijamäärätRaporttiSpec
   private val esiopetuksenOppijamäärätRaporttiBuilder = EsiopetuksenOppijamäärätRaportti(application.raportointiDatabase.db, application.organisaatioService)
   private lazy val esiopetuksenOppijamäärätRaportti =
     esiopetuksenOppijamäärätRaporttiBuilder.build(List(oppilaitosOid), raportointipäivä, t)(session(defaultUser)).rows.map(_.asInstanceOf[EsiopetuksenOppijamäärätRaporttiRow])
+  private lazy val esiopetuksenOppijamäärätTuenPäätöksenJaksonRaportti =
+    esiopetuksenOppijamäärätRaporttiBuilder.build(List(oppilaitosOid), tuenPäätöstenRaportointipäivä, t)(session(defaultUser)).rows.map(_.asInstanceOf[EsiopetuksenOppijamäärätRaporttiRow])
   private lazy val esiopetuksenOppijamäärätIlmanOikeuksiaRaportti =
     esiopetuksenOppijamäärätRaporttiBuilder.build(List(oppilaitosOid), raportointipäivä, t)(session(tornioTallentaja)).rows.map(_.asInstanceOf[EsiopetuksenOppijamäärätRaporttiRow])
   private lazy val esiopetuksenOppijamäärätTyhjäVuosiRaportti =

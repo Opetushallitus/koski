@@ -1,12 +1,15 @@
-package fi.oph.koski.massaluovutus.suoritusrekisteri.opiskeluoikeus
+package fi.oph.koski.massaluovutus.suorituspalvelu.opiskeluoikeus
 
 import fi.oph.koski.schema._
 import fi.oph.koski.schema.annotation.KoodistoUri
-import fi.oph.scalaschema.annotation.{Description, Discriminator, Title}
+import fi.oph.scalaschema.annotation.{Description, Discriminator}
 
 import java.time.LocalDate
 
-trait SureOpiskeluoikeus {
+trait SupaOpiskeluoikeus {
+  @Description("Oppijan yksilöivä tunniste, jolla kyseinen opiskeluoikeus on tallennettu Koski-tietovarantoon.")
+  def oppijaOid: String
+
   @Description("Opiskeluoikeuden tyyppi, jolla erotellaan eri koulutusmuotoihin (perusopetus, lukio, ammatillinen...) liittyvät opiskeluoikeudet")
   @KoodistoUri("opiskeluoikeudentyyppi")
   @Discriminator
@@ -19,10 +22,10 @@ trait SureOpiskeluoikeus {
   @Description("Opiskeluoikeuden tila, joka muodostuu opiskeluoikeusjaksoista")
   def tila: OpiskeluoikeudenTila
   @Description("Opiskeluoikeuteen liittyvien tutkinto- ja muiden suoritusten tiedot")
-  def suoritukset: List[SureSuoritus]
+  def suoritukset: List[SupaSuoritus]
 }
 
-trait SureSuoritus {
+trait SupaSuoritus {
   @Description("Suorituksen tyyppi, jolla erotellaan eri koulutusmuotoihin (perusopetus, lukio, ammatillinen...) ja eri tasoihin (tutkinto, tutkinnon osa, kurssi, oppiaine...) liittyvät suoritukset")
   @KoodistoUri("suorituksentyyppi")
   @Discriminator
@@ -30,8 +33,11 @@ trait SureSuoritus {
   def koulutusmoduuli: Koulutusmoduuli
 }
 
-trait Vahvistuspäivällinen {
-  @Description("Tutkinnon tai tutkinnon osan vahvistettu suorituspäivämäärä, eli päivämäärä jolloin suoritus on hyväksyttyä todennettua osaamista. Muoto YYYY-MM-DD")
-  def vahvistuspäivä: Option[LocalDate]
-
+trait SupaVahvistuksellinen {
+  def vahvistus: Option[SupaVahvistus]
 }
+
+case class SupaVahvistus (
+  @Description("Tutkinnon tai tutkinnon osan vahvistettu suorituspäivämäärä, eli päivämäärä jolloin suoritus on hyväksyttyä todennettua osaamista. Muoto YYYY-MM-DD")
+  päivä: LocalDate
+)

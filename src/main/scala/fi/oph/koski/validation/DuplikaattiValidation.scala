@@ -1,14 +1,12 @@
 package fi.oph.koski.validation
 
-import com.typesafe.config.Config
-import fi.oph.koski.config.Environment
 import fi.oph.koski.henkilo.LaajatOppijaHenkilöTiedot
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.koskiuser.KoskiSpecificSession
 import fi.oph.koski.log.Logging
 import fi.oph.koski.opiskeluoikeus.CompositeOpiskeluoikeusRepository
 import fi.oph.koski.schema._
-import fi.oph.koski.validation.PerusopetuksenOpiskeluoikeusValidation.{sisältääAikuistenPerusopetuksenOppimääränSuorituksen, sisältääNuortenPerusopetuksenOppimääränTaiVuosiluokanSuorituksen}
+import fi.oph.koski.validation.PerusopetuksenOpiskeluoikeusValidation.sisältääNuortenPerusopetuksenOppimääränTaiVuosiluokanSuorituksen
 
 object DuplikaattiValidation extends Logging {
   def samaOo(oo1: Opiskeluoikeus, oo2: Opiskeluoikeus): Boolean = {
@@ -21,11 +19,27 @@ object DuplikaattiValidation extends Logging {
      opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus,
      oppijanHenkilötiedot: LaajatOppijaHenkilöTiedot,
      opiskeluoikeusRepository: CompositeOpiskeluoikeusRepository,
-     config: Config
    ): HttpStatus = {
     lazy val isMuuAmmatillinenOpiskeluoikeus: Boolean =
       opiskeluoikeus.suoritukset.forall {
         case _: MuunAmmatillisenKoulutuksenSuoritus => true
+        case _ => false
+      }
+
+    lazy val isAmmatillisenTutkinnonOsittainenTaiKokoSuoritus: Boolean =
+      opiskeluoikeus.suoritukset.forall {
+        case _: AmmatillisenTutkinnonOsittainenTaiKokoSuoritus => true
+        case _ => false
+      }
+
+    lazy val isLukionOppimäärä: Boolean = opiskeluoikeus.suoritukset.forall {
+      case _: LukionOppimääränSuoritus2015 | _: LukionOppimääränSuoritus2019 => true
+      case _ => false
+    }
+
+    lazy val isJotpa: Boolean =
+      opiskeluoikeus.suoritukset.forall {
+        case _: VapaanSivistystyönJotpaKoulutuksenSuoritus => true
         case _ => false
       }
 
@@ -41,22 +55,24 @@ object DuplikaattiValidation extends Logging {
         .filterNot(samaOo(opiskeluoikeus, _))
         .filter(_.oppilaitos.map(_.oid) == opiskeluoikeus.oppilaitos.map(_.oid))
         .filter(_.tyyppi == opiskeluoikeus.tyyppi)
+        .filter(_.suoritukset.headOption.map(_.koulutusmoduuli.tunniste.koodiarvo) == opiskeluoikeus.suoritukset.headOption.map(_.koulutusmoduuli.tunniste.koodiarvo))
+        .filter(_.suoritukset.headOption.map(_.tyyppi.koodiarvo) == opiskeluoikeus.suoritukset.headOption.map(_.tyyppi.koodiarvo))
       )
 
     lazy val aiemminTallennettuOpiskeluoikeus = oppijanOpiskeluoikeudet.map(_.find(samaOo(opiskeluoikeus, _)))
 
-    def samaDiaarinumeroAmmatillinen(a: AmmatillinenOpiskeluoikeus) = {
+    def samaDiaarinumeroAmmatillinen(muuOpiskeluoikeus: AmmatillinenOpiskeluoikeus): Boolean = {
       def diaarinumerot = (oo: Opiskeluoikeus) => oo.suoritukset
-        .collect { case s: AmmatillisenTutkinnonSuoritus => s }
+        .collect { case s: AmmatillisenTutkinnonOsittainenTaiKokoSuoritus => s }
         .flatMap(s => s.koulutusmoduuli.perusteenDiaarinumero)
 
       opiskeluoikeus match {
-        case x: AmmatillinenOpiskeluoikeus => diaarinumerot(x).intersect(diaarinumerot(a)).nonEmpty
+        case x: AmmatillinenOpiskeluoikeus => diaarinumerot(x).intersect(diaarinumerot(muuOpiskeluoikeus)).nonEmpty
         case _ => false
       }
     }
 
-    def päällekkäinenAikajakso(oo: Opiskeluoikeus) = {
+    def päällekkäinenAikajakso(oo: Opiskeluoikeus): Boolean = {
       Aikajakso(opiskeluoikeus.alkamispäivä, opiskeluoikeus.päättymispäivä)
         .overlaps(Aikajakso(oo.alkamispäivä, oo.päättymispäivä))
     }
@@ -67,18 +83,6 @@ object DuplikaattiValidation extends Logging {
 
     def findSamaOppilaitosJaTyyppiSamaanAikaan(): Either[HttpStatus, Option[Opiskeluoikeus]] = {
       oppijanMuutOpiskeluoikeudetSamaOppilaitosJaTyyppi.map(findPäällekkäinenAikajakso)
-    }
-
-    def findConflictingAikuistenPerusopetus(): Either[HttpStatus, Option[Opiskeluoikeus]] = {
-      val vertailtavatOot: Either[HttpStatus, Seq[Opiskeluoikeus]] = oppijanMuutOpiskeluoikeudetSamaOppilaitosJaTyyppi.map(_
-        .filter(sisältääAikuistenPerusopetuksenOppimääränSuorituksen(_) == sisältääAikuistenPerusopetuksenOppimääränSuorituksen(opiskeluoikeus))
-      )
-
-      if (sisältääAikuistenPerusopetuksenOppimääränSuorituksen(opiskeluoikeus)) {
-        vertailtavatOot.map(findPäällekkäinenAikajakso)
-      } else {
-        vertailtavatOot.map(_.find(_.päättymispäivä.isEmpty))
-      }
     }
 
     def findConflictingPerusopetus(): Either[HttpStatus, Option[Opiskeluoikeus]] = {
@@ -96,9 +100,12 @@ object DuplikaattiValidation extends Logging {
     }
 
     def findConflictingAmmatillinen(): Either[HttpStatus, Option[Opiskeluoikeus]] = {
-      // sama diaarinumero ja päällekkäinen aikajakso mutta ei päättynyt
+      // Sama diaarinumero ammatillisen tutkinnon osittaisilla tai koko suorituksilla ja päällekkäinen aikajakso
+      // tai päällekkäinen aikajakso muissa tapauksissa
       oppijanMuutOpiskeluoikeudetSamaOppilaitosJaTyyppi.map(_.find {
-        case a: AmmatillinenOpiskeluoikeus if !a.tila.opiskeluoikeusjaksot.last.opiskeluoikeusPäättynyt => samaDiaarinumeroAmmatillinen(a) && päällekkäinenAikajakso(a)
+        case a: AmmatillinenOpiskeluoikeus if isAmmatillisenTutkinnonOsittainenTaiKokoSuoritus =>
+          samaDiaarinumeroAmmatillinen(a) && päällekkäinenAikajakso(a)
+        case a: AmmatillinenOpiskeluoikeus => päällekkäinenAikajakso(a)
         case _ => false
       })
     }
@@ -130,15 +137,9 @@ object DuplikaattiValidation extends Logging {
     }
 
     def throwIfConflictingExists(
-      isConflicting: () => Either[HttpStatus, Option[Opiskeluoikeus]],
-      oo: KoskeenTallennettavaOpiskeluoikeus,
-      ignoreInProd: Boolean = false): HttpStatus = {
-      def logWarning(conflicting: Opiskeluoikeus): Unit = logger.warn(s"Opiskeluoikeus jäisi kiinni duplikaattivalidaatioihin (${oo.getClass}, oppija: ${oppijanHenkilötiedot.oid}, ${oo.getClass}, konfliktoiva: ${conflicting.oid})")
+      isConflicting: () => Either[HttpStatus, Option[Opiskeluoikeus]]
+    ): HttpStatus = {
       isConflicting() match {
-        // Tuotantokäyttöönoton yhteydessä siivoa pois aiemmat validaatiot: vastaavanRinnakkaisenOpiskeluoikeudenLisääminenSallittu
-        case Right(Some(conflicting)) if Environment.isProdEnvironment(config) && ignoreInProd =>
-          logWarning(conflicting)
-          HttpStatus.ok
         case Right(Some(_)) =>
           KoskiErrorCategory.conflict.exists()
         case Right(None) => HttpStatus.ok
@@ -147,16 +148,23 @@ object DuplikaattiValidation extends Logging {
     }
 
     opiskeluoikeus match {
-      case oo: EsiopetuksenOpiskeluoikeus => throwIfConflictingExists(findSamaOppilaitosJaTyyppiSamaanAikaan, oo, ignoreInProd = true)
-      case oo: PerusopetukseenValmistavanOpetuksenOpiskeluoikeus => throwIfConflictingExists(findSamaOppilaitosJaTyyppiSamaanAikaan, oo, ignoreInProd = true)
-      case oo: AikuistenPerusopetuksenOpiskeluoikeus => throwIfConflictingExists(findConflictingAikuistenPerusopetus, oo, ignoreInProd = true)
-      case oo: PerusopetuksenOpiskeluoikeus =>
+      case _: EsiopetuksenOpiskeluoikeus => throwIfConflictingExists(findSamaOppilaitosJaTyyppiSamaanAikaan)
+      case _: PerusopetukseenValmistavanOpetuksenOpiskeluoikeus => throwIfConflictingExists(findSamaOppilaitosJaTyyppiSamaanAikaan)
+      case _: AikuistenPerusopetuksenOpiskeluoikeus => throwIfConflictingExists(findSamaOppilaitosJaTyyppiSamaanAikaan)
+      case _: PerusopetuksenOpiskeluoikeus =>
         HttpStatus.fold(
-          throwIfConflictingExists(findConflictingPerusopetus, oo),
-          throwIfConflictingExists(findNuortenPerusopetuksessaUseitaKeskeneräisiäVuosiluokanSuorituksia, oo),
+          throwIfConflictingExists(findConflictingPerusopetus),
+          throwIfConflictingExists(findNuortenPerusopetuksessaUseitaKeskeneräisiäVuosiluokanSuorituksia),
         )
-      case oo: AmmatillinenOpiskeluoikeus if !isMuuAmmatillinenOpiskeluoikeus => throwIfConflictingExists(findConflictingAmmatillinen, oo, ignoreInProd = true)
-      case _ => HttpStatus.ok
+      case _: AmmatillinenOpiskeluoikeus if isMuuAmmatillinenOpiskeluoikeus => HttpStatus.ok
+      case _: AmmatillinenOpiskeluoikeus => throwIfConflictingExists(findConflictingAmmatillinen)
+      case _: LukionOpiskeluoikeus if !isLukionOppimäärä => HttpStatus.ok
+      case _: LukionOpiskeluoikeus if isLukionOppimäärä => throwIfConflictingExists(findSamaOppilaitosJaTyyppiSamaanAikaan)
+      case _: VapaanSivistystyönOpiskeluoikeus if isJotpa => HttpStatus.ok
+      case _: VapaanSivistystyönOpiskeluoikeus => throwIfConflictingExists(findSamaOppilaitosJaTyyppiSamaanAikaan)
+      case _: MuunKuinSäännellynKoulutuksenOpiskeluoikeus => HttpStatus.ok
+      case _: TaiteenPerusopetuksenOpiskeluoikeus => HttpStatus.ok
+      case _: Opiskeluoikeus => throwIfConflictingExists(findSamaOppilaitosJaTyyppiSamaanAikaan)
     }
   }
 

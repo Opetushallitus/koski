@@ -1,4 +1,4 @@
-package fi.oph.koski.massaluovutus.suoritusrekisteri.opiskeluoikeus
+package fi.oph.koski.massaluovutus.suorituspalvelu.opiskeluoikeus
 
 import fi.oph.koski.schema._
 import fi.oph.koski.schema.annotation.KoodistoKoodiarvo
@@ -7,73 +7,75 @@ import fi.oph.scalaschema.annotation.{Description, Title}
 
 import java.time.LocalDate
 
-@Title("Aikuisten perusopetus")
-case class SureAikuistenPerusopetuksenOpiskeluoikeus(
+@Title("Aikuisten perusopetuksen opiskeluoikeus")
+case class SupaAikuistenPerusopetuksenOpiskeluoikeus(
+  oppijaOid: String,
   @KoodistoKoodiarvo(OpiskeluoikeudenTyyppi.aikuistenperusopetus.koodiarvo)
   tyyppi: Koodistokoodiviite,
   oid: String,
   koulutustoimija: Option[Koulutustoimija],
   oppilaitos: Option[Oppilaitos],
   tila: AikuistenPerusopetuksenOpiskeluoikeudenTila,
-  suoritukset: List[SureAikuistenPerusopetuksenSuoritus],
-) extends SureOpiskeluoikeus
+  suoritukset: List[SupaAikuistenPerusopetuksenSuoritus],
+) extends SupaOpiskeluoikeus
 
-object SureAikuistenPerusopetuksenOpiskeluoikeus {
-  def apply(oo: AikuistenPerusopetuksenOpiskeluoikeus): SureAikuistenPerusopetuksenOpiskeluoikeus =
-    SureAikuistenPerusopetuksenOpiskeluoikeus(
+object SupaAikuistenPerusopetuksenOpiskeluoikeus {
+  def apply(oo: AikuistenPerusopetuksenOpiskeluoikeus, oppijaOid: String): SupaAikuistenPerusopetuksenOpiskeluoikeus =
+    SupaAikuistenPerusopetuksenOpiskeluoikeus(
+      oppijaOid = oppijaOid,
       tyyppi = oo.tyyppi,
       oid = oo.oid.get,
       koulutustoimija = oo.koulutustoimija,
       oppilaitos = oo.oppilaitos,
       tila = oo.tila,
-      suoritukset = oo.suoritukset.flatMap(SureAikuistenPerusopetuksenSuoritus.apply),
+      suoritukset = oo.suoritukset.flatMap(SupaAikuistenPerusopetuksenSuoritus.apply),
     )
 }
 
-sealed trait SureAikuistenPerusopetuksenSuoritus extends SureSuoritus
+sealed trait SupaAikuistenPerusopetuksenSuoritus extends SupaSuoritus
 
-object SureAikuistenPerusopetuksenSuoritus {
-  def apply(pts: AikuistenPerusopetuksenPäätasonSuoritus): Option[SureAikuistenPerusopetuksenSuoritus] =
+object SupaAikuistenPerusopetuksenSuoritus {
+  def apply(pts: AikuistenPerusopetuksenPäätasonSuoritus): Option[SupaAikuistenPerusopetuksenSuoritus] =
     pts match {
       case s: AikuistenPerusopetuksenOppimääränSuoritus =>
-        Some(SureAikuistenPerusopetuksenOppimääränSuoritus(s))
+        Some(SupaAikuistenPerusopetuksenOppimääränSuoritus(s))
       case s: AikuistenPerusopetuksenOppiaineenOppimääränSuoritus =>
-        Some(SureAikuistenPerusopetuksenOppiaineenOppimääränSuoritus(s))
+        Some(SupaAikuistenPerusopetuksenOppiaineenOppimääränSuoritus(s))
       case _ =>
         None
     }
 }
 
-@Title("Päättövaiheen suoritus")
-case class SureAikuistenPerusopetuksenOppimääränSuoritus(
+@Title("Aikuisten perusopetuksen oppimäärän suoritus")
+case class SupaAikuistenPerusopetuksenOppimääränSuoritus(
   @KoodistoKoodiarvo("aikuistenperusopetuksenoppimaara")
   tyyppi: Koodistokoodiviite,
   alkamispäivä: Option[LocalDate],
-  vahvistuspäivä: Option[LocalDate],
+  vahvistus: Option[SupaVahvistus],
   koulutusmoduuli: AikuistenPerusopetus,
   suorituskieli: Koodistokoodiviite,
   osasuoritukset: List[AikuistenPerusopetuksenOppiaineenSuoritus],
-) extends SureAikuistenPerusopetuksenSuoritus
+) extends SupaAikuistenPerusopetuksenSuoritus with SupaVahvistuksellinen
 
-object SureAikuistenPerusopetuksenOppimääränSuoritus {
-  def apply(s: AikuistenPerusopetuksenOppimääränSuoritus): SureAikuistenPerusopetuksenOppimääränSuoritus =
-    SureAikuistenPerusopetuksenOppimääränSuoritus(
+object SupaAikuistenPerusopetuksenOppimääränSuoritus {
+  def apply(s: AikuistenPerusopetuksenOppimääränSuoritus): SupaAikuistenPerusopetuksenOppimääränSuoritus =
+    SupaAikuistenPerusopetuksenOppimääränSuoritus(
       tyyppi = s.tyyppi,
       alkamispäivä = s.alkamispäivä,
-      vahvistuspäivä = s.vahvistus.map(_.päivä),
+      vahvistus = s.vahvistus.map(v => SupaVahvistus(v.päivä)),
       koulutusmoduuli = s.koulutusmoduuli,
       suorituskieli = s.suorituskieli,
       osasuoritukset = s.osasuoritukset.toList.flatten,
     )
 }
 
-@Title("Aineopintojen suoritus")
-case class SureAikuistenPerusopetuksenOppiaineenOppimääränSuoritus(
+@Title("Aikuisten perusopetuksen oppiaineen oppimäärän suoritus")
+case class SupaAikuistenPerusopetuksenOppiaineenOppimääränSuoritus(
   @Description("Päättötodistukseen liittyvät oppiaineen suoritukset.")
   koulutusmoduuli: AikuistenPerusopetuksenOppiainenTaiEiTiedossaOppiaine,
   toimipiste: OrganisaatioWithOid,
   arviointi: Option[List[PerusopetuksenOppiaineenArviointi]] = None,
-  vahvistus: Option[HenkilövahvistusPaikkakunnalla] = None,
+  vahvistus: Option[SupaVahvistus] = None,
   suoritustapa: Koodistokoodiviite,
   suorituskieli: Koodistokoodiviite,
   muutSuorituskielet: Option[List[Koodistokoodiviite]] = None,
@@ -81,15 +83,15 @@ case class SureAikuistenPerusopetuksenOppiaineenOppimääränSuoritus(
   osasuoritukset: Option[List[AikuistenPerusopetuksenKurssinTaiAlkuvaiheenKurssinSuoritus]] = None,
   @KoodistoKoodiarvo("perusopetuksenoppiaineenoppimaara")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("perusopetuksenoppiaineenoppimaara", koodistoUri = "suorituksentyyppi")
-) extends SureAikuistenPerusopetuksenSuoritus
+) extends SupaAikuistenPerusopetuksenSuoritus with SupaVahvistuksellinen
 
-object SureAikuistenPerusopetuksenOppiaineenOppimääränSuoritus {
-  def apply(s: AikuistenPerusopetuksenOppiaineenOppimääränSuoritus): SureAikuistenPerusopetuksenOppiaineenOppimääränSuoritus =
-    SureAikuistenPerusopetuksenOppiaineenOppimääränSuoritus(
+object SupaAikuistenPerusopetuksenOppiaineenOppimääränSuoritus {
+  def apply(s: AikuistenPerusopetuksenOppiaineenOppimääränSuoritus): SupaAikuistenPerusopetuksenOppiaineenOppimääränSuoritus =
+    SupaAikuistenPerusopetuksenOppiaineenOppimääränSuoritus(
       koulutusmoduuli = s.koulutusmoduuli,
       toimipiste = s.toimipiste,
       arviointi = s.arviointi,
-      vahvistus = s.vahvistus,
+      vahvistus = s.vahvistus.map(v => SupaVahvistus(v.päivä)),
       suoritustapa = s.suoritustapa,
       suorituskieli = s.suorituskieli,
       muutSuorituskielet = s.muutSuorituskielet,

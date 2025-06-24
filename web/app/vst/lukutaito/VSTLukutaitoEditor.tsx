@@ -23,6 +23,7 @@ import {
 } from '../common/types'
 import { AddLukutaitoOsasuoritus } from './AddLukutaitoOsasuoritus'
 import { osasuoritusToTableRow } from './VSTLukutaitoProperties'
+import { HenkilövahvistusValinnaisellaPaikkakunnalla } from '../../types/fi/oph/koski/schema/HenkilovahvistusValinnaisellaPaikkakunnalla'
 
 export type VSTLukutaitoEditorProps =
   VSTPäätasonSuoritusEditorProps<VapaanSivistystyönLukutaitokoulutuksenSuoritus>
@@ -70,6 +71,7 @@ export const VSTLukutaitoEditor: React.FC<VSTLukutaitoEditorProps> = ({
           suoritusPath={päätasonSuoritus.path}
           organisaatio={organisaatio}
           disableAdd={suorituksenVahvistaminenEiMahdollista}
+          vahvistusClass={HenkilövahvistusValinnaisellaPaikkakunnalla.className}
         />
         <Spacer />
 

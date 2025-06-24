@@ -41,14 +41,6 @@ export const YleinenKielitutkintoEditor: React.FC<
 
       <Spacer />
 
-      <SuorituksenVahvistus
-        vahvistus={suoritus.vahvistus}
-        suoritettuText={t('Suoritettu')}
-        hideVahvistus
-      />
-
-      <Spacer />
-
       <KeyValueTable>
         {suoritus.osasuoritukset?.map((os, index) => (
           <YleisenKielitutkinnonOsanSuoritusEditor osa={os} key={index} />

@@ -1,6 +1,29 @@
 # Koskeen tallennettavien tietojen validaatiosäännöt
 
-## x.4.2025
+## 22.5.2025
+
+- Ammatillisen osittaisen suorituksen opiskeluoikeus läpäisee duplikaattivalidaation, vaikka löytyy aiempi vastaava opiskeluoikeus, kunhan diaarinumerot ovat erit.
+- Aikuisten perusopetuksen duplikaattivalidaatio ei enää huomioi aiemman opiskeluoikeuden päättymistä, vaan tarkastelee vastaavien opiskeluoikeuksien voimassaolon päällekkäisyyttä.
+
+## 16.5.2025
+
+- Duplikaattiopiskeluoikeuksien validaatiossa ei sallita päällekkäisiä opiskeluoikeuksien voimassaolojen jaksoja. Validaation läpäisyyn ei enää riitä pelkästään se, että aiempi opiskeluoikeus on päättyneessä tilassa.
+
+## 13.5.2025
+
+- Lukion oppimäärän opiskeluoikeuksissa ei enää sallita duplikaatteja.
+
+## 30.4.2025
+
+- Esi- ja perusopetus:
+  - Erityisen tuen jakso ja tuen päätöksen jakso ei saa olla voimassa samaan aikaan
+  - 1.8.2026 alkaen: Jos opiskeluoikeus ei ole päättynyt ennen 1.8.2026, pidennetty oppivelvollisuus ja molemmat vammaisuusjaksot vaativat päättymispäivän, joka saa korkeintaan olla 31.7.2026
+- Esiopetus:
+  - Pidennetty oppivelvollisuus ja varhennetun oppivelvollisuuden jakso ei voi olla voimassa samaan aikaan
+- Perusopetus:
+  - Pidennettyy oppivelvollisuus ei voi olla päällekkäin "opetuksen järjestäminen vamman, sairauden tai rajoitteen perusteella" tai "opiskelee toiminta-alueittain" kanssa
+
+## 9.4.2025
 
 - Valtionhallinnon kielitutkintojen kielitaitojen ja osakokeiden arvosanojen on vastattava tutkintotasoa.
 
@@ -13,10 +36,11 @@
 ## 26.3.2025
 
 Lisätty uusia tietueita ja niiden käyttöönottoa koskevat validaatiot:
- * tukijaksojen voimaantulo ja erityisen tuen päätösten viimeinen voimassaolopäivä
- * toiminta-alueittain opiskelusta -lisätiedon voimaantulo
- * opetuksen järjestäminen vamman, sairauden tai toimintakyvyn rajoitteen perusteella ja vanhojen vammaisuustietojen viimeinen voimassaolopäivä
- * varhennetun oppivelvollisuuden voimaantulo ja pidennetyn oppivelvollisuuden viimeinen voimassaolopäivä
+
+- tukijaksojen voimaantulo ja erityisen tuen päätösten viimeinen voimassaolopäivä
+- toiminta-alueittain opiskelusta -lisätiedon voimaantulo
+- opetuksen järjestäminen vamman, sairauden tai toimintakyvyn rajoitteen perusteella ja vanhojen vammaisuustietojen viimeinen voimassaolopäivä
+- varhennetun oppivelvollisuuden voimaantulo ja pidennetyn oppivelvollisuuden viimeinen voimassaolopäivä
 
 ## 13.3.2025
 

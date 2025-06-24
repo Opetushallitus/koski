@@ -37,6 +37,7 @@ import { OsaamismerkkiKuva } from './osaamismerkki/OsaamismerkkiKuva'
 import { OsaamismerkkiTitle } from './osaamismerkki/OsaamismerkkiTitle'
 import { VSTOsaamismerkkiEditor } from './osaamismerkki/VSTOsaamismerkkiEditor'
 import { VSTVapaatavoitteinenEditor } from './vapaatavoitteinen/VSTVapaatavoitteinenEditor'
+import { VirkailijaKansalainenContainer } from '../components-v2/containers/VirkailijaKansalainenContainer'
 
 type VSTEditorProps =
   AdaptedOpiskeluoikeusEditorProps<VapaanSivistystyönOpiskeluoikeus>
@@ -108,55 +109,26 @@ export const VSTEditor: React.FC<VSTEditorProps> = (props) => {
     päätasonSuoritus
   )
 
-  const { TreeNode, ...tree } = useTree()
-  const kansalainenTaiSuoritusjako = useKansalainenTaiSuoritusjako()
-
   return (
-    <>
-      {kansalainenTaiSuoritusjako ? (
-        <TreeNode>
-          {osaamismerkki ? (
-            <OsaamismerkkiTitle
-              opiskeluoikeus={form.state}
-              opiskeluoikeudenNimi={vstNimi(form.state)}
-              kuva={<OsaamismerkkiKuva päätasonSuoritus={päätasonSuoritus} />}
-              tree={tree}
-            />
-          ) : (
-            <OpiskeluoikeusTitle
-              opiskeluoikeus={form.state}
-              opiskeluoikeudenNimi={vstNimi(form.state)}
-              tree={tree}
-            />
-          )}
-          {tree.isOpen && (
-            <PäätasonSuoritusEditor
-              editorProps={editorProps}
-              päätasonSuoritus={päätasonSuoritus}
-            />
-          )}
-        </TreeNode>
-      ) : (
-        <>
-          {osaamismerkki ? (
-            <OsaamismerkkiTitle
-              opiskeluoikeus={form.state}
-              opiskeluoikeudenNimi={vstNimi(form.state)}
-              kuva={<OsaamismerkkiKuva päätasonSuoritus={päätasonSuoritus} />}
-            />
-          ) : (
-            <OpiskeluoikeusTitle
-              opiskeluoikeus={form.state}
-              opiskeluoikeudenNimi={vstNimi(form.state)}
-            />
-          )}
-          <PäätasonSuoritusEditor
-            editorProps={editorProps}
-            päätasonSuoritus={päätasonSuoritus}
-          />
-        </>
-      )}
-    </>
+    <VirkailijaKansalainenContainer
+      opiskeluoikeus={form.state}
+      opiskeluoikeudenNimi={vstNimi(form.state)}
+      renderTitle={
+        osaamismerkki
+          ? (titleProps) => (
+              <OsaamismerkkiTitle
+                {...titleProps}
+                kuva={<OsaamismerkkiKuva päätasonSuoritus={päätasonSuoritus} />}
+              />
+            )
+          : undefined
+      }
+    >
+      <PäätasonSuoritusEditor
+        editorProps={editorProps}
+        päätasonSuoritus={päätasonSuoritus}
+      />
+    </VirkailijaKansalainenContainer>
   )
 }
 

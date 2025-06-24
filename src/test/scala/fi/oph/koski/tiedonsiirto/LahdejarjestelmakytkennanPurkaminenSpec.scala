@@ -60,12 +60,14 @@ class LahdejarjestelmakytkennanPurkaminenSpec
     val headers = authHeaders(MockUsers.varsinaisSuomiPalvelukäyttäjä) ++ jsonContent
 
     "Estä purkaminen tiedonsiirron avulla" in {
+      poistaOppijanOpiskeluoikeusDatat(oppija)
       putOpiskeluoikeus(opiskeluoikeusPurkamisella, oppija, headers) {
         verifyResponseStatus(403, KoskiErrorCategory.forbidden.lähdejärjestelmäkytkennänPurkaminenEiSallittu())
       }
     }
 
     "Puretun opiskeluoikeuden tietoja ei voi enää siirtää" in {
+      poistaOppijanOpiskeluoikeusDatat(oppija)
       val oid = purettavaVstOpiskeluoikeusOid
       puraKytkentä(oid, MockUsers.paakayttaja)
       putOpiskeluoikeus(defaultOpiskeluoikeus.copy(oid = Some(oid)), oppija, headers) {
@@ -124,6 +126,7 @@ class LahdejarjestelmakytkennanPurkaminenSpec
     }
 
     "Terminaalitilan voi vaihtaa toiseksi terminaalitilaksi" in {
+      poistaOppijanOpiskeluoikeusDatat(oppija)
       val opiskeluoikeus = alustaPurettuOpiskeluoikeus
       val päivitettyOpiskeluoikeus = opiskeluoikeus.copy(
         tila = LukionOpiskeluoikeudenTila(
@@ -140,6 +143,7 @@ class LahdejarjestelmakytkennanPurkaminenSpec
     }
 
     "Hylkää tiedonsiirrot lähdejärjestelmästä, joilla yritetään päivittää purettua opiskeluoikeutta" in {
+      poistaOppijanOpiskeluoikeusDatat(oppija)
       val opiskeluoikeus = alustaPurettuOpiskeluoikeus
       val headers = authHeaders(MockUsers.jyväskylänNormaalikoulunPalvelukäyttäjä) ++ jsonContent
       val päivitettyOpiskeluoikeus = opiskeluoikeus.copy(

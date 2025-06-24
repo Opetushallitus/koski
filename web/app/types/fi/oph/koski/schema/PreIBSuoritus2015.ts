@@ -16,6 +16,7 @@ export type PreIBSuoritus2015 = {
   tila?: Koodistokoodiviite<'suorituksentila', string>
   suorituskieli: Koodistokoodiviite<'kieli', string>
   todistuksellaNäkyvätLisätiedot?: LocalizedString
+  ryhmä?: string
   koulutusmoduuli: PreIBKoulutusmoduuli2015
   toimipiste: OrganisaatioWithOid
   osasuoritukset?: Array<PreIBSuorituksenOsasuoritus2015>
@@ -27,6 +28,7 @@ export const PreIBSuoritus2015 = (o: {
   tila?: Koodistokoodiviite<'suorituksentila', string>
   suorituskieli: Koodistokoodiviite<'kieli', string>
   todistuksellaNäkyvätLisätiedot?: LocalizedString
+  ryhmä?: string
   koulutusmoduuli?: PreIBKoulutusmoduuli2015
   toimipiste: OrganisaatioWithOid
   osasuoritukset?: Array<PreIBSuorituksenOsasuoritus2015>

@@ -4,8 +4,6 @@ import { useSchema } from '../appstate/constraints'
 import { useKoodistoFiller } from '../appstate/koodisto'
 import { assortedPreferenceType, usePreferences } from '../appstate/preferences'
 import { OpenAllButton, useTree } from '../appstate/tree'
-import { TestIdLayer, TestIdRoot } from '../appstate/useTestId'
-import { useKansalainenTaiSuoritusjako } from '../appstate/user'
 import { KansalainenOnly } from '../components-v2/access/KansalainenOnly'
 import { Column, ColumnRow } from '../components-v2/containers/Columns'
 import {
@@ -34,7 +32,6 @@ import {
   LaajuusView
 } from '../components-v2/opiskeluoikeus/LaajuusField'
 import { PäätasonSuorituksenSuostumuksenPeruminen } from '../components-v2/opiskeluoikeus/OpiskeluoikeudenSuostumuksenPeruminen'
-import { OpiskeluoikeusTitle } from '../components-v2/opiskeluoikeus/OpiskeluoikeusTitle'
 import {
   OsasuoritusRowData,
   OsasuoritusTable,
@@ -62,6 +59,8 @@ import {
   minimimääräArvioitujaOsasuorituksia,
   taiteenPerusopetuksenSuorituksenNimi
 } from './tpoCommon'
+import { VirkailijaKansalainenContainer } from '../components-v2/containers/VirkailijaKansalainenContainer'
+import { HenkilövahvistusValinnaisellaTittelilläJaValinnaisellaPaikkakunnalla } from '../types/fi/oph/koski/schema/HenkilovahvistusValinnaisellaTittelillaJaValinnaisellaPaikkakunnalla'
 
 export type TaiteenPerusopetusEditorProps =
   AdaptedOpiskeluoikeusEditorProps<TaiteenPerusopetuksenOpiskeluoikeus>
@@ -72,33 +71,14 @@ export const TaiteenPerusopetusEditor: React.FC<
   const opiskeluoikeusSchema = useSchema('TaiteenPerusopetuksenOpiskeluoikeus')
   const form = useForm(props.opiskeluoikeus, false, opiskeluoikeusSchema)
 
-  const { TreeNode: OpiskeluoikeusTreeNode, ...opiskeluoikeusTree } = useTree()
-  const kansalainenTaiSuoritusjako = useKansalainenTaiSuoritusjako()
-
   // Render
   return (
-    <>
-      {kansalainenTaiSuoritusjako ? (
-        <OpiskeluoikeusTreeNode>
-          <OpiskeluoikeusTitle
-            opiskeluoikeus={form.state}
-            opiskeluoikeudenNimi={tpoKoulutuksenNimi(form.state)}
-            tree={opiskeluoikeusTree}
-          />
-          {opiskeluoikeusTree.isOpen && (
-            <PäätasonSuoritusEditor {...props} form={form} />
-          )}
-        </OpiskeluoikeusTreeNode>
-      ) : (
-        <>
-          <OpiskeluoikeusTitle
-            opiskeluoikeus={form.state}
-            opiskeluoikeudenNimi={tpoKoulutuksenNimi(form.state)}
-          />
-          <PäätasonSuoritusEditor {...props} form={form} />
-        </>
-      )}
-    </>
+    <VirkailijaKansalainenContainer
+      opiskeluoikeus={form.state}
+      opiskeluoikeudenNimi={tpoKoulutuksenNimi(form.state)}
+    >
+      <PäätasonSuoritusEditor {...props} form={form} />
+    </VirkailijaKansalainenContainer>
   )
 }
 
@@ -282,6 +262,9 @@ const PäätasonSuoritusEditor: React.FC<
           organisaatio={organisaatio}
           disableAdd={
             !minimimääräArvioitujaOsasuorituksia(päätasonSuoritus.suoritus)
+          }
+          vahvistusClass={
+            HenkilövahvistusValinnaisellaTittelilläJaValinnaisellaPaikkakunnalla.className
           }
         />
         <Spacer />

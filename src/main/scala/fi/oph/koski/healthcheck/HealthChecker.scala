@@ -1,7 +1,6 @@
 package fi.oph.koski.healthcheck
 
 import cats.effect.IO
-import fi.oph.koski.cache.RefreshingCache.Params
 import fi.oph.koski.cache._
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.documentation.AmmatillinenExampleData._
@@ -21,7 +20,7 @@ import org.json4s.JString
 import scala.concurrent.duration.{DurationInt, FiniteDuration}
 import scala.language.postfixOps
 
-trait HealthCheck extends Logging {
+trait HealthCheck extends Logging with Timing {
   private implicit val user = systemUser
   private implicit val accessType = AccessType.write
   private val oid = application.config.getString("healthcheck.oppija.oid")
@@ -77,21 +76,24 @@ trait HealthCheck extends Logging {
       .toMap
       .seq
 
-  def checkSystem(system: String) =
-    system match {
-      case Subsystem.Oppijanumerorekisteri => oppijaCheck(findOrCreateOppija)
-      case Subsystem.OpenSearch => openSearchCheck(findOrCreateOppija)
-      case Subsystem.Koodistopalvelu => koodistopalveluCheck
-      case Subsystem.Organisaatiopalvelu => organisaatioPalveluCheck
-      case Subsystem.EPerusteet => ePerusteetCheck
-      case Subsystem.CAS => casCheck
-      case Subsystem.KoskiDatabase => assertTrue("koski database", application.masterDatabase.util.databaseIsOnline)
-      case Subsystem.RaportointiDatabase => assertTrue("raportointi database", application.raportointiDatabase.util.databaseIsOnline)
-      case Subsystem.ValpasDatabase => assertTrue("valpas database", application.valpasDatabase.util.databaseIsOnline)
-      case Subsystem.PerustiedotIndex => assertTrue("perustiedot index", application.perustiedotIndexer.index.isOnline)
-      case Subsystem.TiedonsiirtoIndex => assertTrue("tiedonsiirrot index", application.tiedonsiirtoService.index.isOnline)
-      case other: String => HttpStatus(404, List(ErrorDetail("invalid subsystem", JString(other))))
+  def checkSystem(system: String) = {
+    timed(s"${system}", 0) {
+      system match {
+        case Subsystem.Oppijanumerorekisteri => oppijaCheck(findOrCreateOppija)
+        case Subsystem.OpenSearch => openSearchCheck(findOrCreateOppija)
+        case Subsystem.Koodistopalvelu => koodistopalveluCheck
+        case Subsystem.Organisaatiopalvelu => organisaatioPalveluCheck
+        case Subsystem.EPerusteet => ePerusteetCheck
+        case Subsystem.CAS => casCheck
+        case Subsystem.KoskiDatabase => assertTrue("koski database", application.masterDatabase.util.databaseIsOnline)
+        case Subsystem.RaportointiDatabase => assertTrue("raportointi database", application.raportointiDatabase.util.databaseIsOnline)
+        case Subsystem.ValpasDatabase => assertTrue("valpas database", application.valpasDatabase.util.databaseIsOnline)
+        case Subsystem.PerustiedotIndex => assertTrue("perustiedot index", application.perustiedotIndexer.index.isOnline)
+        case Subsystem.TiedonsiirtoIndex => assertTrue("tiedonsiirrot index", application.tiedonsiirtoService.index.isOnline)
+        case other: String => HttpStatus(404, List(ErrorDetail("invalid subsystem", JString(other))))
+      }
     }
+  }
 
   private def oppijaCheck(oppija: Either[HttpStatus, NimellinenHenkilö]): HttpStatus = oppija.left.getOrElse(HttpStatus.ok)
 
@@ -219,11 +221,8 @@ trait HealthCheck extends Logging {
 }
 
 object HealthCheck {
-  def apply(application: KoskiApplication)(implicit cm: CacheManager): HealthCheck with Cached = {
-    CachingProxy[HealthCheck](
-      new RefreshingCache("HealthCheck", Params(15 seconds, maxSize = 10, refreshScatteringRatio = 0)),
-      new HealthChecker(application)
-    )
+  def apply(application: KoskiApplication)(implicit cm: CacheManager): HealthCheck = {
+    new HealthChecker(application)
   }
 }
 

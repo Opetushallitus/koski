@@ -62,6 +62,7 @@ import {
   useOppiaineTasoOptions
 } from './state/options'
 import { config } from '../util/config'
+import { TextEdit, TextView } from '../components-v2/controls/TextField'
 
 export type IBTutkintTiedotProps = {
   form: FormModel<IBOpiskeluoikeus>
@@ -89,6 +90,15 @@ export const IBPäätasonSuoritusTiedot: React.FC<IBTutkintTiedotProps> = ({
           path={path.prop('toimipiste')}
           view={OrganisaatioView}
           edit={OrganisaatioEdit}
+        />
+      </KeyValueRow>
+      <KeyValueRow localizableLabel="Ryhmä">
+        <FormField
+          form={form}
+          path={path.prop('ryhmä')}
+          view={TextView}
+          edit={TextEdit}
+          testId="ryhmä"
         />
       </KeyValueRow>
       <KeyValueRow localizableLabel="Suorituskieli">

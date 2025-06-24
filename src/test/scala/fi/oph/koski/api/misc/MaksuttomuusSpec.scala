@@ -66,6 +66,7 @@ class MaksuttomuusSpec extends AnyFreeSpec with OpiskeluoikeusTestMethodsAmmatil
     }
     "Ei saa siirtää jos lukion aiemman kuin 2019 opsin mukainen opiskeluoikeus on alkanut aiemmin kuin 1.1.2021" in {
       val alkamispäivä = date(2020, 12, 31)
+      mitätöiOppijanKaikkiOpiskeluoikeudet(KoskiSpecificMockOppijat.vuonna2004SyntynytPeruskouluValmis2021)
       putMaksuttomuus(
         List(
           Maksuttomuus(alkamispäivä, None, true)
@@ -470,16 +471,19 @@ class MaksuttomuusSpec extends AnyFreeSpec with OpiskeluoikeusTestMethodsAmmatil
       }
     }
     "Maksuttomuus-tiedon voi siirtää jos opiskeluoikeudella on s6-vuosiluokan suoritus, koska se tulkitaan 'lukiotason suoritukseksi'" in {
+      mitätöiOppijanKaikkiOpiskeluoikeudet(KoskiSpecificMockOppijat.vuonna2004SyntynytPeruskouluValmis2021)
       putOpiskeluoikeus(opiskeluoikeus.withSuoritukset(List(s6luokka)), KoskiSpecificMockOppijat.vuonna2004SyntynytPeruskouluValmis2021) {
         verifyResponseStatusOk()
       }
     }
     "Maksuttomuus-tiedon voi siirtää jos opiskeluoikeudella on s7-vuosiluokan suoritus, koska se tulkitaan 'lukiotason suoritukseksi'" in {
+      mitätöiOppijanKaikkiOpiskeluoikeudet(KoskiSpecificMockOppijat.vuonna2004SyntynytPeruskouluValmis2021)
       putOpiskeluoikeus(opiskeluoikeus.withSuoritukset(List(s7luokka)), KoskiSpecificMockOppijat.vuonna2004SyntynytPeruskouluValmis2021) {
         verifyResponseStatusOk()
       }
     }
     "Maksuttomuus-tietoa ei voi siirtää jos on pelkästään muun vuosiluokan suorituksia" in {
+      mitätöiOppijanKaikkiOpiskeluoikeudet(KoskiSpecificMockOppijat.vuonna2004SyntynytPeruskouluValmis2021)
       putOpiskeluoikeus(opiskeluoikeus.withSuoritukset(List(s4Luokka)), KoskiSpecificMockOppijat.vuonna2004SyntynytPeruskouluValmis2021) {
         verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation("Tieto koulutuksen maksuttomuudesta ei ole relevantti tässä opiskeluoikeudessa, sillä koulutus ei siirrettyjen tietojen perusteella kelpaa oppivelvollisuuden suorittamiseen (tarkista, että koulutuskoodi, käytetyn opetussuunnitelman perusteen diaarinumero, suorituksen tyyppi ja/tai suoritustapa ovat oikein)."))
       }
@@ -502,6 +506,7 @@ class MaksuttomuusSpec extends AnyFreeSpec with OpiskeluoikeusTestMethodsAmmatil
       }
     }
     "Maksuttomuus-tietoa ei voi siirtää jos on pelkästään muun vuosiluokan MYP-suorituksia" in {
+      mitätöiOppijanKaikkiOpiskeluoikeudet(KoskiSpecificMockOppijat.vuonna2004SyntynytPeruskouluValmis2021)
       putOpiskeluoikeus(opiskeluoikeus.withSuoritukset(List(ysiLuokka)), KoskiSpecificMockOppijat.vuonna2004SyntynytPeruskouluValmis2021) {
         verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation("Tieto koulutuksen maksuttomuudesta ei ole relevantti tässä opiskeluoikeudessa, sillä koulutus ei siirrettyjen tietojen perusteella kelpaa oppivelvollisuuden suorittamiseen (tarkista, että koulutuskoodi, käytetyn opetussuunnitelman perusteen diaarinumero, suorituksen tyyppi ja/tai suoritustapa ovat oikein)."))
       }

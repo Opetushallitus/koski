@@ -7,6 +7,7 @@ import fi.oph.koski.koskiuser.KoskiSpecificSession
 import fi.oph.koski.log.{Logging, TimedProxy}
 import fi.oph.koski.perustiedot.OpiskeluoikeudenPerustiedotRepository
 import fi.oph.koski.schema._
+import fi.oph.koski.util.Timing
 import fi.oph.koski.virta.VirtaHenkilöRepository
 import fi.oph.koski.ytr.YtrHenkilöRepository
 
@@ -36,7 +37,7 @@ case class HenkilöRepository(
   virta: HetuBasedHenkilöRepository,
   ytr: HetuBasedHenkilöRepository,
   perustiedotRepository: OpiskeluoikeudenPerustiedotRepository
-)(implicit cacheInvalidator: CacheManager) extends Logging {
+)(implicit cacheInvalidator: CacheManager) extends Logging with Timing {
 
   private val oidCache: KeyValueCache[HenkilöCacheKey, Option[LaajatOppijaHenkilöTiedot]] =
     KeyValueCache(new ExpiringCache("HenkilöRepository", ExpiringCache.Params(1.hour, maxSize = 100, storeValuePredicate = {
@@ -107,8 +108,14 @@ case class HenkilöRepository(
     }
   }
 
-  def findByOids(query: String)(implicit session: KoskiSpecificSession): List[LaajatOppijaHenkilöTiedot] =
-    opintopolku.findMastersByOids(perustiedotRepository.findOids(query))
+  def findByOids(query: String)(implicit session: KoskiSpecificSession): List[LaajatOppijaHenkilöTiedot] = {
+    val perustiedotResult = timed("searchHenkilötiedot:findByOids:perustiedotRepository.findOids", 0) {
+      perustiedotRepository.findOids(query)
+    }
+    timed("searchHenkilötiedot:findByOids:opintopolku.findMastersByOids", 0) {
+      opintopolku.findMastersByOids(perustiedotResult)
+    }
+  }
 
   def oppijaHenkilöToTäydellisetHenkilötiedot(henkilö: OppijaHenkilö): TäydellisetHenkilötiedot =
     opintopolku.oppijaHenkilöToTäydellisetHenkilötiedot(henkilö)

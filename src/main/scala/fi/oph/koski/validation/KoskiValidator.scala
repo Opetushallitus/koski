@@ -19,7 +19,7 @@ import fi.oph.koski.schema._
 import fi.oph.koski.suostumus.SuostumuksenPeruutusService
 import fi.oph.koski.tutkinto.Koulutustyyppi._
 import fi.oph.koski.util.DateOrdering.{localDateOptionOrdering, localDateOrdering}
-import fi.oph.koski.util.Timing
+import fi.oph.koski.util.{FinnishDateFormat, Timing}
 import fi.oph.koski.validation.DateValidation._
 import fi.oph.scalaschema.ExtractionContext
 import mojave._
@@ -148,7 +148,7 @@ class KoskiValidator(
           validateOpiskeluoikeudenPäivämäärät(opiskeluoikeus),
           validatePäätasonSuoritustenStatus(opiskeluoikeus),
           validateOpiskeluoikeudenLisätiedot(opiskeluoikeus),
-          PerusopetuksenOpiskeluoikeusValidation.validatePerusopetuksenOpiskeluoikeus(opiskeluoikeus),
+          PerusopetuksenOpiskeluoikeusValidation.validatePerusopetuksenOpiskeluoikeus(config)(opiskeluoikeus),
           TiedonSiirrostaPuuttuvatSuorituksetValidation.validateEiSamaaAlkamispaivaa(opiskeluoikeus, koskiOpiskeluoikeudet),
           HttpStatus.fold(opiskeluoikeus.suoritukset.map(validateSuoritus(_, opiskeluoikeus, henkilö, Nil))),
           TilanAsettaminenKunVahvistettuSuoritusValidation.validateOpiskeluoikeus(opiskeluoikeus),
@@ -166,6 +166,7 @@ class KoskiValidator(
           IBValidation.validateIbOpiskeluoikeus(config)(opiskeluoikeus),
           ToimintaAlueetValidation.validateToimintaAlueellinenOpiskeluoikeus(config)(opiskeluoikeus),
           KielitutkintoValidation.validateOpiskeluoikeus(opiskeluoikeus),
+          EsiopetusValidation.validateOpiskeluoikeus(config)(opiskeluoikeus),
         )
       } match {
         case HttpStatus.ok => Right(opiskeluoikeus)
@@ -570,7 +571,6 @@ class KoskiValidator(
   }
 
   val tukijaksollisetValidoidaanTuotannossa = !Environment.isProdEnvironment(config) || !LocalDate.now().isBefore(LocalDate.parse(config.getString("validaatiot.tukijaksollisetValidoidaanTuotannossaAlkaen")))
-  val tukijaksollistenVanhojenTietojenViimeisetKäyttöpäivätValidoidaanTuotannossa = !Environment.isProdEnvironment(config) || LocalDate.now().isAfter(LocalDate.parse(config.getString("validaatiot.viimeisetKäyttöpäivätValidoidaanTuotannossaAlkaen")))
 
   private def validateOpiskeluoikeudenLisätiedot(opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus): HttpStatus = {
     HttpStatus.fold(
@@ -578,15 +578,14 @@ class KoskiValidator(
       validatePidennettyOppivelvollisuusAikarajastaAlkaen(opiskeluoikeus.lisätiedot, opiskeluoikeus.alkamispäivä, opiskeluoikeus.päättymispäivä),
       validateTuvaPerusopetusErityinenTukiJaVammaisuusAikarajastaAlkaen(opiskeluoikeus.lisätiedot),
       if (tukijaksollisetValidoidaanTuotannossa) validateTukijaksollinen(opiskeluoikeus.lisätiedot, opiskeluoikeus.alkamispäivä, opiskeluoikeus.päättymispäivä) else HttpStatus.ok,
-      if (tukijaksollistenVanhojenTietojenViimeisetKäyttöpäivätValidoidaanTuotannossa) validateTukijaksollistenVanhojenTietojenViimeisetKäyttöpäivät(opiskeluoikeus.lisätiedot) else HttpStatus.ok
     )
   }
 
   private def validateTukijaksollinen(lisätiedot: Option[OpiskeluoikeudenLisätiedot], alkamispäivä: Option[LocalDate], päättymispäivä: Option[LocalDate]): HttpStatus = {
     lisätiedot match {
-      case Some(_: Tukijaksollinen) =>
+      case Some(_: Tukipäätöksellinen) =>
         HttpStatus.fold(
-          validateTukijaksot(lisätiedot, alkamispäivä, päättymispäivä),
+          validateTuenPäätöksenJaksot(lisätiedot, alkamispäivä, päättymispäivä),
           validateVarhennettuOppivelvollisuus(lisätiedot),
           validateVammaSairausTaiRajoite(lisätiedot),
           validatePäätösToimintaAlueittainOpiskelusta(lisätiedot),
@@ -595,31 +594,31 @@ class KoskiValidator(
     }
   }
 
-  private def validateTukijaksot(lisätiedot: Option[OpiskeluoikeudenLisätiedot], alku: Option[LocalDate], loppu: Option[LocalDate]): HttpStatus = {
+  private def validateTuenPäätöksenJaksot(lisätiedot: Option[OpiskeluoikeudenLisätiedot], alku: Option[LocalDate], loppu: Option[LocalDate]): HttpStatus = {
     val tukijaksotVoimaan = LocalDate.parse(config.getString("validaatiot.tukijaksotVoimaan"))
     lisätiedot match {
-      case Some(lt: Tukijaksollinen) =>
+      case Some(lt: Tukipäätöksellinen) =>
         val j = SuljettuJakso(Aikajakso(alku, loppu))
-        val tukijaksoSisältyyOpiskeluoikeuteen = lt.tukijaksot.forall(_.forall(a => j.contains(a)))
-        val tukijaksoEnnenVoimaantuloa = lt.tukijaksot match {
+        val tuenPäätöksenJaksoSisältyyOpiskeluoikeuteen = lt.tuenPäätöksenJaksot.forall(_.forall(a => j.contains(a)))
+        val tuenPäätöksenJaksoEnnenVoimaantuloa = lt.tuenPäätöksenJaksot match {
           case Some(xs) => xs.exists(x => x.alku.exists(_.isBefore(tukijaksotVoimaan)))
           case _ => false
         }
 
         HttpStatus.fold(
-          HttpStatus.validate(!tukijaksoEnnenVoimaantuloa)(KoskiErrorCategory.badRequest.validation.date(
-            s"Tukijaksot -lisätiedon varhaisin sallittu voimassaolopäivä on $tukijaksotVoimaan"
+          HttpStatus.validate(!tuenPäätöksenJaksoEnnenVoimaantuloa)(KoskiErrorCategory.badRequest.validation.date(
+            s"Tuen päätöksen jakson varhaisin sallittu voimassaolopäivä on ${FinnishDateFormat.format(tukijaksotVoimaan)}"
           )),
-          HttpStatus.validate(tukijaksoSisältyyOpiskeluoikeuteen)(KoskiErrorCategory.badRequest.validation.date(
-            s"Tukijakson pitää sisältyä opiskeluoikeuden aikajaksoon"
+          HttpStatus.validate(tuenPäätöksenJaksoSisältyyOpiskeluoikeuteen)(KoskiErrorCategory.badRequest.validation.date(
+            s"Tuen päätöksen jakson pitää sisältyä opiskeluoikeuden aikajaksoon"
           ))
         )
       case _ => HttpStatus.ok
     }
   }
 
-  private def tukijaksonUlkopuoliset(xs: Option[List[Aikajakso]], lt: Tukijaksollinen) = {
-    val yhdistetytTukijaksot: List[SuljettuJakso] = yhdistäPäällekäisetJaPeräkkäisetMahdollisestiAlkupäivällisetAikajaksot(lt.kaikkiTukijaksot)
+  private def tukijaksonUlkopuoliset(xs: Option[List[Aikajakso]], lt: Tukipäätöksellinen) = {
+    val yhdistetytTukijaksot: List[SuljettuJakso] = yhdistäPäällekäisetJaPeräkkäisetMahdollisestiAlkupäivällisetAikajaksot(lt.kaikkiTuenPäätöksenJaksot)
     xs.map(_.filterNot((aj: Aikajakso) => yhdistetytTukijaksot.exists((tj: SuljettuJakso) => tj.contains(aj))))
       .filter(_.nonEmpty) // palauta None jos lista on tyhjä
   }
@@ -651,49 +650,6 @@ class KoskiValidator(
           ))
         )
 
-      case _ => HttpStatus.ok
-    }
-  }
-
-  private def validateTukijaksollistenVanhojenTietojenViimeisetKäyttöpäivät(
-    lt: Option[OpiskeluoikeudenLisätiedot]
-  ): HttpStatus = {
-    val pidennetynOppivelvollisuudenViimeinenKäyttöpäivä = LocalDate.parse(config.getString("validaatiot.pidennetynOppivelvollisuudenViimeinenKäyttöpäivä"))
-    val vammaisuustietojenViimeinenKäyttöpäivä = LocalDate.parse(config.getString("validaatiot.vammaisuustietojenViimeinenKäyttöpäivä"))
-    val erityisenTuenPäätöstenViimeinenKäyttöpäivä = LocalDate.parse(config.getString("validaatiot.erityisenTuenPäätöstenViimeinenKäyttöpäivä"))
-
-    lt match {
-      case Some(lt: TukijaksollinenVanhatLisätiedot) =>
-        val pidennettyLiianPitkään = lt.pidennettyOppivelvollisuus match {
-          case Some(x) => x.alku.isAfter(pidennetynOppivelvollisuudenViimeinenKäyttöpäivä)
-          case _ => false
-        }
-        val vammaisuusLiianPitkään = lt.vammainen match {
-          case Some(xs) => xs.exists(x => x.alku.isAfter(vammaisuustietojenViimeinenKäyttöpäivä))
-          case _ => false
-        }
-        val vaikeastiVammaisuusLiianPitkään = lt.vaikeastiVammainen match {
-          case Some(xs) => xs.exists(x => x.alku.isAfter(vammaisuustietojenViimeinenKäyttöpäivä))
-          case _ => false
-        }
-        val erityisenTuenPäätösLiianPitkään = lt.erityisenTuenPäätökset match {
-          case Some(xs) => xs.exists(x => x.alku.exists(_.isAfter(erityisenTuenPäätöstenViimeinenKäyttöpäivä)))
-          case _ => false
-        }
-        HttpStatus.fold(
-          HttpStatus.validate(!pidennettyLiianPitkään)(KoskiErrorCategory.badRequest.validation.date(
-            s"Pidennetty oppivelvollisuus -lisätiedon viimeinen sallittu alkamispäivä on $pidennetynOppivelvollisuudenViimeinenKäyttöpäivä"
-          )),
-          HttpStatus.validate(!vammaisuusLiianPitkään)(KoskiErrorCategory.badRequest.validation.date(
-            s"Vammainen -lisätiedon viimeinen sallittu alkamispäivä on $vammaisuustietojenViimeinenKäyttöpäivä"
-          )),
-          HttpStatus.validate(!vaikeastiVammaisuusLiianPitkään)(KoskiErrorCategory.badRequest.validation.date(
-            s"Vaikeasti vammainen -lisätiedon viimeinen sallittu alkamispäivä on $vammaisuustietojenViimeinenKäyttöpäivä"
-          )),
-          HttpStatus.validate(!erityisenTuenPäätösLiianPitkään)(KoskiErrorCategory.badRequest.validation.date(
-            s"Erityisen tuen päätösten viimeinen sallittu alkamispäivä on $erityisenTuenPäätöstenViimeinenKäyttöpäivä"
-          ))
-        )
       case _ => HttpStatus.ok
     }
   }
@@ -923,8 +879,14 @@ class KoskiValidator(
         val vammaisuusjaksotYhdistettynä = foldAikajaksot(lt.vammainen.getOrElse(List.empty))
         val vaikeastiVammaisuusjaksotYhdistettynä = foldAikajaksot(lt.vaikeastiVammainen.getOrElse(List.empty))
 
-        val erityisenTuenJaksotYhdistettynä =
-          yhdistäPäällekäisetJaPeräkkäisetMahdollisestiAlkupäivällisetAikajaksot(lt.kaikkiErityisenTuenPäätöstenAikajaksot)
+        val tuenPäätöksenJaksot = lt match {
+          case tp: Tukipäätöksellinen => tp.kaikkiTuenPäätöksenJaksot
+          case _ => List.empty
+        }
+
+        val tuenJaksotYhdistettynä = yhdistäPäällekäisetJaPeräkkäisetMahdollisestiAlkupäivällisetAikajaksot(
+          lt.kaikkiErityisenTuenPäätöstenAikajaksot ++ tuenPäätöksenJaksot
+        )
 
         val pidennettyOppivelvollisuusEiPäätyEnnenkuinOpiskeluoikeusAlkaa =
           lt.pidennettyOppivelvollisuus.get.loppu.isEmpty ||
@@ -947,7 +909,7 @@ class KoskiValidator(
 
         val looginenTakaraja = List(lt.pidennettyOppivelvollisuus.get.loppu.getOrElse(LocalDate.MAX), opiskeluoikeudenPäättymispäivä.getOrElse(LocalDate.MAX)).min[LocalDate]
         val jokinErityisenTuenJaksoKokoPidennetynOppivelvollisuudenAjan =
-          erityisenTuenJaksotYhdistettynä.exists(j => {
+          tuenJaksotYhdistettynä.exists(j => {
             j.contains(lt.pidennettyOppivelvollisuus.get.alku) &&
               j.contains(lt.pidennettyOppivelvollisuus.get.loppu.getOrElse(looginenTakaraja))
           })
@@ -1087,6 +1049,8 @@ class KoskiValidator(
     def contains(j: Aikajakso): Boolean = contains(SuljettuJakso(j))
 
     def contains(j: MahdollisestiAlkupäivällinenJakso): Boolean = contains(SuljettuJakso(j))
+
+    def toFinnishDateFormat: String = FinnishDateFormat.format(Some(alku), Some(loppu))
   }
 
   object SuljettuJakso {
@@ -1171,10 +1135,10 @@ class KoskiValidator(
     val oppiaineenRajattuOppimääräVoimaan = LocalDate.parse(config.getString("validaatiot.oppiaineenRajattuOppimääräVoimaan"))
     val yksilöllistettyOppimääräViimeinenKäyttöpäivä = LocalDate.parse(config.getString("validaatiot.yksilöllistetynOppimääränViimeinenKäyttöpäivä"))
 
-    def sisältyyTukijaksoon(d: LocalDate): Boolean = {
+    def sisältyyTuenPäätöksenJaksoon(d: LocalDate): Boolean = {
       opiskeluoikeus.lisätiedot match {
-        case Some(x: PerusopetuksenOpiskeluoikeudenLisätiedot) if x.tukijaksot.nonEmpty =>
-          val tukijaksot = yhdistäPäällekäisetJaPeräkkäisetMahdollisestiAlkupäivällisetAikajaksot(x.kaikkiTukijaksot)
+        case Some(x: PerusopetuksenOpiskeluoikeudenLisätiedot) if x.tuenPäätöksenJaksot.nonEmpty =>
+          val tukijaksot = yhdistäPäällekäisetJaPeräkkäisetMahdollisestiAlkupäivällisetAikajaksot(x.kaikkiTuenPäätöksenJaksot)
           tukijaksot.exists(_.contains(d))
         case _ => false
       }
@@ -1187,7 +1151,7 @@ class KoskiValidator(
           suoritus.osasuoritusLista.map {
             case os: RajattavaOppimäärä if os.rajattuOppimäärä =>
               HttpStatus.validate(!vahvistuspvm.isBefore(oppiaineenRajattuOppimääräVoimaan))(KoskiErrorCategory.badRequest.validation.date(s"Tietoa rajattuOppimäärä ei saa siirtää ennen $oppiaineenRajattuOppimääräVoimaan alkaneelle suoritukselle"))
-              HttpStatus.validate(sisältyyTukijaksoon(vahvistuspvm))(KoskiErrorCategory.badRequest.validation.date(s"Tieto rajattuOppimäärä vaatii tukijakson suorituksen vahvistuspäivälle: $vahvistuspvm"))
+              HttpStatus.validate(sisältyyTuenPäätöksenJaksoon(vahvistuspvm))(KoskiErrorCategory.badRequest.validation.date(s"Tieto rajattuOppimäärä vaatii tukijakson suorituksen vahvistuspäivälle: $vahvistuspvm"))
             case os: RajattavaOppimäärä if os.yksilöllistettyOppimäärä =>
               HttpStatus.validate(vahvistuspvm.isBefore(yksilöllistettyOppimääräViimeinenKäyttöpäivä))(KoskiErrorCategory.badRequest.validation.date(s"Tietoa yksilöllistettyOppimäärä ei saa siirtää $yksilöllistettyOppimääräViimeinenKäyttöpäivä jälkeen alkaneelle suoritukselle"))
             case _ => HttpStatus.ok

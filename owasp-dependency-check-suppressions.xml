@@ -18,6 +18,11 @@
     <cve>CVE-2021-23926</cve>
     <cve>CVE-2022-26336</cve>
   </suppress>
+  <suppress until="2025-07-01Z">
+    <notes>Medium level issue, only affects reading of data, but we use the library for writing OOXML data.
+      Ticket for fixing the blocked upgrade path, see https://jira.eduuni.fi/browse/TOR-1373.</notes>
+    <cve>CVE-2025-31672</cve>
+  </suppress>
   <suppress>
     <notes>Suppress a false positive in the scalaz-core dependency.</notes>
     <packageUrl regex="true">^pkg:maven/org\.scalaz/scalaz\-core_2\.12@.*$</packageUrl>

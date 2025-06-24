@@ -13,6 +13,7 @@ import {
   DPCoreOppiaineet
 } from '../oppiaineet/ibTutkintoOppiaine'
 import { isIBOppiaineLanguageTunniste } from '../oppiaineet/tunnisteet'
+import { LaajuusTunneissa } from '../../types/fi/oph/koski/schema/LaajuusTunneissa'
 
 export type UusiIBTutkintoOppiaineState = {
   tunniste: DialogField<Koodistokoodiviite<'oppiaineetib'>>
@@ -27,6 +28,9 @@ export type UusiIBTutkintoOppiaineState = {
     taso: DialogField<Koodistokoodiviite<'oppiaineentasoib'>>
     pakollinen: DialogField<boolean>
     aihe: DialogField<LocalizedString>
+  }
+  cas: {
+    laajuus: DialogField<LaajuusTunneissa>
   }
   result: IBTutkinnonOppiaineenSuoritus | null
 }
@@ -78,6 +82,10 @@ export const useIBTutkintoOppiaineState = (
   const essayPakollinen = useDialogField<boolean>(true)
   const essayAihe = useDialogField<LocalizedString>(extendedEssaySelected)
 
+  const casLaajuus = useDialogField<LaajuusTunneissa>(
+    tunniste.value?.koodiarvo === 'CAS'
+  )
+
   const result = useMemo(
     () =>
       createIBTutkinnonOppiaine({
@@ -93,9 +101,13 @@ export const useIBTutkintoOppiaineState = (
           taso: essayTaso.value,
           pakollinen: essayPakollinen.value,
           aihe: essayAihe.value
+        },
+        cas: {
+          laajuus: casLaajuus.value
         }
       }),
     [
+      casLaajuus.value,
       essayAihe.value,
       essayKieli.value,
       essayPakollinen.value,
@@ -123,6 +135,9 @@ export const useIBTutkintoOppiaineState = (
       taso: essayTaso,
       pakollinen: essayPakollinen,
       aihe: essayAihe
+    },
+    cas: {
+      laajuus: casLaajuus
     },
     result
   }

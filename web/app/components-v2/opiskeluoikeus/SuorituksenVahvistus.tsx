@@ -2,7 +2,6 @@ import React, { useCallback, useMemo, useState } from 'react'
 import { TestIdLayer, TestIdText } from '../../appstate/useTestId'
 import { ISO2FinnishDate } from '../../date/date'
 import { t } from '../../i18n/i18n'
-import { HenkilövahvistusValinnaisellaTittelilläJaValinnaisellaPaikkakunnalla } from '../../types/fi/oph/koski/schema/HenkilovahvistusValinnaisellaTittelillaJaValinnaisellaPaikkakunnalla'
 import { Koulutustoimija } from '../../types/fi/oph/koski/schema/Koulutustoimija'
 import { Opiskeluoikeus } from '../../types/fi/oph/koski/schema/Opiskeluoikeus'
 import { Oppilaitos } from '../../types/fi/oph/koski/schema/Oppilaitos'
@@ -34,6 +33,7 @@ import { SuorituksenVahvistusModal } from './SuorituksenVahvistusModal'
 
 export type SuorituksenVahvistusFieldProps<
   T extends Opiskeluoikeus,
+  V extends Vahvistus,
   S extends PäätasonSuoritusOf<T> = PäätasonSuoritusOf<T>
 > = CommonProps<{
   form: FormModel<T>
@@ -41,14 +41,15 @@ export type SuorituksenVahvistusFieldProps<
   organisaatio?: Oppilaitos | Koulutustoimija
   disableAdd?: boolean
   disableRemoval?: boolean
-  suoritettuText?: string
+  vahvistusClass: ClassOf<V>
 }>
 
 export const SuorituksenVahvistusField = <
   T extends Opiskeluoikeus,
+  V extends Vahvistus,
   S extends PäätasonSuoritusOf<T> = PäätasonSuoritusOf<T>
 >(
-  props: SuorituksenVahvistusFieldProps<T, S>
+  props: SuorituksenVahvistusFieldProps<T, V, S>
 ): React.ReactElement => {
   const tila = viimeisinOpiskelujaksonTila(props.form.state.tila)
   const disableRemoval =
@@ -63,8 +64,7 @@ export const SuorituksenVahvistusField = <
       edit={SuorituksenVahvistusEdit}
       editProps={{
         organisaatio: props.organisaatio,
-        vahvistusClass:
-          HenkilövahvistusValinnaisellaTittelilläJaValinnaisellaPaikkakunnalla.className,
+        vahvistusClass: props.vahvistusClass,
         disableAdd: props.disableAdd,
         disableRemoval
       }}
@@ -165,9 +165,6 @@ export const SuorituksenVahvistusEdit = <T extends Vahvistus>({
 
 type SuorituksenVahvistusProps = CommonPropsWithChildren<{
   vahvistus?: Vahvistus
-  suoritettuText?: string
-  keskenText?: string
-  hideVahvistus?: boolean
 }>
 
 export const SuorituksenVahvistus: React.FC<SuorituksenVahvistusProps> = (
@@ -193,12 +190,10 @@ export const SuorituksenVahvistus: React.FC<SuorituksenVahvistusProps> = (
     >
       <div className="SuorituksenVahvistus__status">
         <TestIdText id="status">
-          {vahvistus
-            ? props.suoritettuText || t('Suoritus valmis')
-            : props.keskenText || t('Suoritus kesken')}
+          {vahvistus ? t('Suoritus valmis') : t('Suoritus kesken')}
         </TestIdText>
       </div>
-      {vahvistus && !props.hideVahvistus && (
+      {vahvistus && (
         <>
           <div className="SuorituksenVahvistus__vahvistus">
             <TestIdText id="details">

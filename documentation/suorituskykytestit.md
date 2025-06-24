@@ -11,6 +11,10 @@ Kosken testeissä testidata generoidaan automaattisesti testien yhteydessä. Dat
 
 ## Valpas testidata
 
+HUOM HUOM! Tämä ohje ei ole ajantasalla (2025-06): testidatan hallinta pitää rakentaa osin uudestaan muulla tavalla.
+Datat on päivitetty viimeksi keväällä 2022 täysin tämän ohjeen mukaisesti. Kesällä 2025 on tehty pieni päivitys samalla
+datan luontiskriptillä DVV:n testiaineistosta löytyville joillekin oppijoille.
+
 Koska Valppaassa oleellinen osa kokonaisuutta on haku- ja valintapalvelusta tuleva tieto, pitää testidatassa olla
 oppijoita, joilla on haku- ja valintatuloksia. Tätä varten tulee testidataa luoda niin, että oppijalla on Koskessa
 oppivelvollisuuden suorittamiseen liittyvä opiskeluoikeus (oppija löytyy Valppaasta) ja haku- ja valintapalvelussa
@@ -27,11 +31,16 @@ Vanha data on poistettava QA-ympäristöstä, ennen kuin datoja voidaan päivitt
 
 Kyselyssä `alkamispaiva`, `paattymispaiva` ja `luokka` -kentissä käytetty seuraavanlaisia arvoja:
 
-- `X` on opiskeluoikeuden alkamispäivä, joka on muotoa `YYYY-08-15`, on määritelty [opiskeluoikeuden luovaan koodiin](../src/test/scala/fi/oph/koski/perftest/ValpasOpiskeluoikeusInserterScenario.scala).
+    - `X` on opiskeluoikeuden alkamispäivä, joka on muotoa `YYYY-08-15`, on määritelty [opiskeluoikeuden luovaan koodiin](../src/test/scala/fi/oph/koski/perftest/ValpasOpiskeluoikeusInserterScenario.scala).
 - `Y` on opiskeluoikeuden päättymispäivä, joka on muotoa `YYYY-06-04`, on määritelty [opiskeluoikeuden luovaan koodiin](../src/test/scala/fi/oph/koski/perftest/ValpasOpiskeluoikeusInserterScenario.scala).
 - `Z` on opiskeluoikeuden luokka, joka on määritelty [opiskeluoikeuden luovaan koodiin](../src/test/scala/fi/oph/koski/perftest/ValpasOpiskeluoikeusInserterScenario.scala).
 
 Alkamis- ja päättymispäivä muodostavat yhdessä aikajakson. Esimerkiksi kauden `2021-2022` opiskeluoikeuksien aikajakso on `2021-08-05` - `2022-06-04`. Tarkista [opiskeluoikeuden luovasta koodista](../src/test/scala/fi/oph/koski/perftest/ValpasOpiskeluoikeusInserterScenario.scala) mitä arvoja kyselyssä on syytä käyttää.
+
+Huom! 2021-2022 datoje ei ole QA:lta poistettu, koska testiaineistoissa on tullut muutoksia. Eli 2021-2022 datat ovat edelleen QA:n tietokannassa.
+
+2025-05 on luotu uudet datat DVV:n pysyvästä testiaineistosta löytyville oppijoille päivämäärätiedoilla
+2024-08-15 - 2025-05-31 ja luokkatiedolla 9P, vain 3 eri oppilaitokseen.
 
 Ensin on hyvä asettaa kyselyn aikakatkaisu tarpeaksi suureksi, ettei kyselyä lopeteta aikakatkaisuun:
 ```sql
@@ -115,18 +124,3 @@ Kyselyn voi luoda ajamalla `node src/test/resources/valpas_qa_peruskoulujen_ja_o
 Tämän kyselyn tulos kopioidaan tiedostoon [valpas_qa_peruskoulujen_ja_oppijoiden_oidit.txt](../src/test/resources/valpas_qa_peruskoulujen_ja_oppijoiden_oidit.txt). Tiedosto sisältää joka rivillä ensin oppilaitoksen oidin ja sen jälkeen oppilaitoksesta haettavien oppijoiden oidit.
 
 Ilman näitä oppija-oideja jää Sure-rajapinnan listahaut testaamatta.
-
-### Kaiken datan näkyminen Valppaassa
-
-Koska Valpas perustuu pitkälti oppivelvollisuuteen, 18 vuoden jälkeen oppijoiden tietoja ei normaalisti näy Valppaassa.
-Testaamisen mahdollistamiseksi löytyy Valppaan konfiguraatioista seuraavat parametrit, jotka ovat QA ympäristössä
-asetettuna niin, että kaikkien oppijoiden pitäisi listautua Valppaassa ja sitä kautta heidän haku- ja
-valintapalvelussa olevat tiedot haetaan testien yhteydessä. QA:lla asetukset ovat:
-
-```
-valpas = {
-  rajapäivät {
-    lakiVoimassaVanhinSyntymäaika = "1800-01-01"
-    oppivelvollisuusLoppuuIkä = 218
-    maksuttomuusLoppuuIkä = 220
-```

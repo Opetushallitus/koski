@@ -1,6 +1,6 @@
-package fi.oph.koski.massaluovutus.suoritusrekisteri.opiskeluoikeus
+package fi.oph.koski.massaluovutus.suorituspalvelu.opiskeluoikeus
 
-import fi.oph.koski.massaluovutus.suoritusrekisteri.SureUtils.isValmistunut
+import fi.oph.koski.massaluovutus.suorituspalvelu.SupaUtils.isValmistunut
 import fi.oph.koski.schema._
 import fi.oph.koski.schema.annotation.KoodistoKoodiarvo
 import fi.oph.koski.util.Optional.when
@@ -8,73 +8,75 @@ import fi.oph.scalaschema.annotation.Title
 
 import java.time.LocalDate
 
-@Title("International School")
-case class SureInternationalSchoolOpiskeluoikeus(
+@Title("International school opiskeluoikeus")
+case class SupaInternationalSchoolOpiskeluoikeus(
+  oppijaOid: String,
   @KoodistoKoodiarvo(OpiskeluoikeudenTyyppi.internationalschool.koodiarvo)
   tyyppi: Koodistokoodiviite,
   oid: String,
   koulutustoimija: Option[Koulutustoimija],
   oppilaitos: Option[Oppilaitos],
   tila: InternationalSchoolOpiskeluoikeudenTila,
-  suoritukset: List[SureDiplomaVuosiluokanSuoritus],
-) extends SureOpiskeluoikeus
+  suoritukset: List[SupaDiplomaVuosiluokanSuoritus],
+) extends SupaOpiskeluoikeus
 
-object SureInternationalSchoolOpiskeluoikeus {
-  def apply(oo: InternationalSchoolOpiskeluoikeus): Option[SureOpiskeluoikeus] =
+object SupaInternationalSchoolOpiskeluoikeus {
+  def apply(oo: InternationalSchoolOpiskeluoikeus, oppijaOid: String): Option[SupaOpiskeluoikeus] =
     when(isValmistunut(oo)) {
-      SureInternationalSchoolOpiskeluoikeus(
+      SupaInternationalSchoolOpiskeluoikeus(
+        oppijaOid = oppijaOid,
         tyyppi = oo.tyyppi,
         oid = oo.oid.get,
         koulutustoimija = oo.koulutustoimija,
         oppilaitos = oo.oppilaitos,
         tila = oo.tila,
         suoritukset = oo.suoritukset.flatMap {
-          case s: DiplomaVuosiluokanSuoritus => SureDiplomaVuosiluokanSuoritus(s)
+          case s: DiplomaVuosiluokanSuoritus => SupaDiplomaVuosiluokanSuoritus(s)
           case _ => None
         }
       )
     }
 }
 
-@Title("Diploma-vuosiluokan suoritus")
-case class SureDiplomaVuosiluokanSuoritus(
+@Title("Diploma vuosiluokan suoritus")
+case class SupaDiplomaVuosiluokanSuoritus(
   @KoodistoKoodiarvo("internationalschooldiplomavuosiluokka")
   tyyppi: Koodistokoodiviite,
   alkamispäivä: Option[LocalDate],
-  vahvistuspäivä: Option[LocalDate],
+  vahvistus: Option[SupaVahvistus],
   koulutusmoduuli: DiplomaLuokkaAste,
   suorituskieli: Koodistokoodiviite,
-  osasuoritukset: List[SureDiplomaIBOppiaineenSuoritus],
-) extends SureSuoritus
+  osasuoritukset: List[SupaDiplomaIBOppiaineenSuoritus],
+) extends SupaSuoritus
   with Suorituskielellinen
-  with Vahvistuspäivällinen
+  with SupaVahvistuksellinen
 
-object SureDiplomaVuosiluokanSuoritus {
-  def apply(s: DiplomaVuosiluokanSuoritus): Option[SureDiplomaVuosiluokanSuoritus] =
+object SupaDiplomaVuosiluokanSuoritus {
+  def apply(s: DiplomaVuosiluokanSuoritus): Option[SupaDiplomaVuosiluokanSuoritus] =
     when (s.valmis && s.koulutusmoduuli.tunniste.koodiarvo == "12") {
-      SureDiplomaVuosiluokanSuoritus(
+      SupaDiplomaVuosiluokanSuoritus(
         tyyppi = s.tyyppi,
         alkamispäivä = s.alkamispäivä,
-        vahvistuspäivä = s.vahvistus.map(_.päivä),
+        vahvistus = s.vahvistus.map(v => SupaVahvistus(v.päivä)),
         koulutusmoduuli = s.koulutusmoduuli,
         suorituskieli = s.suorituskieli,
-        osasuoritukset = s.osasuoritukset.toList.flatten.map(SureDiplomaIBOppiaineenSuoritus.apply),
+        osasuoritukset = s.osasuoritukset.toList.flatten.map(SupaDiplomaIBOppiaineenSuoritus.apply),
       )
     }
 }
 
 @Title("Diploma-IB-oppiaineen suoritus")
-case class SureDiplomaIBOppiaineenSuoritus(
+case class SupaDiplomaIBOppiaineenSuoritus(
   @KoodistoKoodiarvo("internationalschooldiplomaoppiaine")
   @KoodistoKoodiarvo("internationalschoolcorerequirements")
   tyyppi: Koodistokoodiviite,
   koulutusmoduuli: Koulutusmoduuli,
   // TODO TOR-2154: Lisää predicted-arvosana, kunhan se on ensin toteutettu Diploma IB:n tietomalliin
-) extends SureSuoritus
+) extends SupaSuoritus
 
-object SureDiplomaIBOppiaineenSuoritus {
-  def apply(s: DiplomaIBOppiaineenSuoritus): SureDiplomaIBOppiaineenSuoritus =
-    SureDiplomaIBOppiaineenSuoritus(
+object SupaDiplomaIBOppiaineenSuoritus {
+  def apply(s: DiplomaIBOppiaineenSuoritus): SupaDiplomaIBOppiaineenSuoritus =
+    SupaDiplomaIBOppiaineenSuoritus(
       tyyppi = s.tyyppi,
       koulutusmoduuli = s.koulutusmoduuli,
     )

@@ -51,6 +51,7 @@ import { CHARCODE_REMOVE } from '../texts/Icon'
 import { ArvosanaEdit, koodiarvoOnly } from './ArvosanaField'
 import { OppiaineTableKurssiEditor } from './OppiaineTableKurssiEditor'
 import { OppiaineTableOppiaineEditor } from './OppiaineTableOppiaineEditor'
+import { formatLaajuus } from '../../util/laajuus'
 
 // Vain OppiaineTablen tukemat päätason suoritukset (tätä komponenttia tullaan myöhemmin käyttämään ainakin lukion näkymille)
 export type OppiaineTableOpiskeluoikeus = IBOpiskeluoikeus
@@ -268,10 +269,7 @@ const OppiaineRow = <T,>({
   onOppiaineArviointi,
   onDeleteKurssi
 }: OppiaineRowProps<T>) => {
-  const kurssit = oppiaine.osasuoritukset || []
-  const laajuusYhteensä = sum(
-    kurssit.map((k) => k.koulutusmoduuli.laajuus?.arvo || 1)
-  )
+  const laajuusYhteensä = useLaajuusYhteensä(oppiaine)
   const [
     addOsasuoritusDialogVisible,
     showAddOsasuoritusDialog,
@@ -320,7 +318,7 @@ const OppiaineRow = <T,>({
         </div>
         <OppiaineenKurssit
           form={form}
-          kurssit={kurssit}
+          kurssit={oppiaine.osasuoritukset || []}
           oppiaine={oppiaine}
           oppiainePath={oppiainePath}
           hidePaikallinenIndicator={hidePaikallinenIndicator}
@@ -680,6 +678,9 @@ const OppiaineDetails: React.FC<OppiaineTooltipProps> = ({ oppiaine, id }) => {
       : null,
     isIBOppiaineExtendedEssay(koulutus) ? ['Aihe', t(koulutus.aihe)] : null,
     isIBOppiaineLanguage(koulutus) ? ['Kieli', t(koulutus.kieli.nimi)] : null,
+    isIBOppiaineCAS(koulutus)
+      ? ['Laajuus', formatLaajuus(koulutus.laajuus)]
+      : null,
     isValinnaisuus(koulutus)
       ? ['Pakollinen', t(koulutus.pakollinen ? 'Kyllä' : 'Ei')]
       : null,
@@ -839,3 +840,13 @@ export const isKuvauksellinen = (
   isIBKurssi(koulutusmoduuli) ||
   isPaikallinenLukionKurssi2015(koulutusmoduuli) ||
   isLukionPaikallinenOpintojakso2019(koulutusmoduuli)
+
+const useLaajuusYhteensä = (oppiaine: Oppiaine) =>
+  useMemo(() => {
+    if (isIBOppiaineCAS(oppiaine.koulutusmoduuli)) {
+      return oppiaine.koulutusmoduuli.laajuus?.arvo
+    }
+
+    const kurssit = oppiaine.osasuoritukset || []
+    return sum(kurssit.map((k) => k.koulutusmoduuli.laajuus?.arvo || 1))
+  }, [oppiaine.koulutusmoduuli, oppiaine.osasuoritukset])

@@ -11,12 +11,12 @@ import fi.oph.koski.log.AuditLogTester
 import fi.oph.koski.massaluovutus.luokallejaaneet.{MassaluovutusQueryLuokalleJaaneet, MassaluovutusQueryLuokalleJaaneetJson}
 import fi.oph.koski.massaluovutus.organisaationopiskeluoikeudet.{MassaluovutusQueryOrganisaationOpiskeluoikeudet, MassaluovutusQueryOrganisaationOpiskeluoikeudetCsv, MassaluovutusQueryOrganisaationOpiskeluoikeudetJson, QueryOrganisaationOpiskeluoikeudetCsvDocumentation}
 import fi.oph.koski.massaluovutus.paallekkaisetopiskeluoikeudet.MassaluovutusQueryPaallekkaisetOpiskeluoikeudet
-import fi.oph.koski.massaluovutus.suoritusrekisteri.{SuoritusrekisteriMuuttuneetJalkeenQuery, SuoritusrekisteriOppijaOidsQuery}
+import fi.oph.koski.massaluovutus.suorituspalvelu.{SuorituspalveluMuuttuneetJalkeenQuery, SuorituspalveluOppijaOidsQuery}
 import fi.oph.koski.massaluovutus.valintalaskenta.ValintalaskentaQuery
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.raportit.RaportitService
 import fi.oph.koski.schema.KoskiSchema.strictDeserialization
-import fi.oph.koski.schema.{KoskeenTallennettavaOpiskeluoikeus, LocalizedString, PerusopetuksenVuosiluokanSuoritus}
+import fi.oph.koski.schema.{KoskeenTallennettavaOpiskeluoikeus, LocalizedString, OpiskeluoikeudenTyyppi, PerusopetuksenVuosiluokanSuoritus}
 import fi.oph.koski.util.Wait
 import fi.oph.koski.{KoskiApplicationForTests, KoskiHttpSpec}
 import fi.oph.scalaschema.Serializer.format
@@ -173,7 +173,7 @@ class MassaluovutusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers wit
         }
         val complete = waitForCompletion(queryId, user)
 
-        complete.files should have length 19
+        complete.files should have length 20
         complete.files.foreach(verifyResult(_, user))
 
         AuditLogTester.verifyLastAuditLogMessage(Map(
@@ -200,7 +200,7 @@ class MassaluovutusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers wit
         }
         val complete = waitForCompletion(queryId, user)
 
-        complete.files should have length 1
+        complete.files should have length 2
       }
     }
 
@@ -466,10 +466,10 @@ class MassaluovutusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers wit
     }
   }
 
-  "Suoritusrekisterikysely - aikarajan jälkeen muuttuneet" - {
+  "Suorituspalvelukysely - aikarajan jälkeen muuttuneet" - {
     val user = MockUsers.paakayttaja
 
-    def getQuery(muuttuneetJälkeen: LocalDateTime) = SuoritusrekisteriMuuttuneetJalkeenQuery(
+    def getQuery(muuttuneetJälkeen: LocalDateTime) = SuorituspalveluMuuttuneetJalkeenQuery(
       muuttuneetJälkeen = muuttuneetJälkeen
     )
 
@@ -510,7 +510,7 @@ class MassaluovutusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers wit
               (v \ "oppijaOid").extract[String],
               ((v \ "opiskeluoikeudet").extract[List[JObject]].last \ "oid").extract[String])).last match {
             case (oppijaOid, opiskeluoikeusOid) => AuditLogTester.verifyLastAuditLogMessage(Map(
-              "operation" -> "SUORITUSREKISTERI_OPISKELUOIKEUS_HAKU",
+              "operation" -> "SUORITUSPALVELU_OPISKELUOIKEUS_HAKU",
               "target" -> Map(
                 "oppijaHenkiloOid" -> oppijaOid,
                 "opiskeluoikeusOid" -> opiskeluoikeusOid,
@@ -563,6 +563,10 @@ class MassaluovutusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers wit
 
       def tyyppi(v: JValue) = v \ "tyyppi" \ "koodiarvo"
       def suorituksenTunniste(v: JValue) = v \ "koulutusmoduuli" \ "tunniste" \ "koodiarvo"
+      def osasuoritustenMäärä(v: JValue) = v \ "osasuoritukset" match {
+        case JArray(list) => list.size
+        case _ => 0
+      }
       def viimeisinTila(v: JValue) = v \ "tila" \ "opiskeluoikeusjaksot" \ "tila" \ "koodiarvo" match {
         case JArray(list) => list.last
         case _ => JNothing
@@ -589,14 +593,28 @@ class MassaluovutusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers wit
         ))
       }
 
-      "Nuorten perusopetuksesta palautetaan vain perusopetuksen päättötodistus" in {
+      "Nuorten perusopetuksesta palautetaan perusopetuksen päättötodistus sekä 7., 8. ja 9. vuosiluokan suoritukset" in {
         extractStrings(
           getSuoritukset(Some("perusopetus")).filterNot(s => tyyppi(s).extract[String] == "nuortenperusopetuksenoppiaineenoppimaara"),
           suorituksenTunniste
         ) should equal(List(
           "201101", // Oppimäärän suoritus
-          "9", // Ysiluokka
+          "7",  // Vuosiluokkien suoritukset
+          "8",
+          "9",
         ))
+      }
+
+      "Perusopetuksen suorituksille palautetaan oikea määrä osasuorituksia" in {
+        val tunnisteetJaOsasuoritustenMäärät = getSuoritukset(Some("perusopetus"))
+          .filterNot(s => tyyppi(s).extract[String] == "nuortenperusopetuksenoppiaineenoppimaara")
+          .map(suoritus => suorituksenTunniste(suoritus).extract[String] -> osasuoritustenMäärä(suoritus))
+          .toMap
+
+        tunnisteetJaOsasuoritustenMäärät.get("7") shouldBe Some(0) // 7. vuosiluokan suoritus
+        tunnisteetJaOsasuoritustenMäärät.get("8") shouldBe Some(0) // 8. vuosiluokan suoritus
+        tunnisteetJaOsasuoritustenMäärät.get("9") shouldBe Some(0) // 9. vuosiluokan suoritus, voi myös sisältää osasuorituksia
+        tunnisteetJaOsasuoritustenMäärät.get("201101") shouldBe Some(23) // Oppimäärän suoritus
       }
 
       "Ammatillisesta koulutuksesta ei palautetaan vain kokonainen ammatillinen tutkinto ja telma" in {
@@ -663,13 +681,42 @@ class MassaluovutusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers wit
       oppijat.length should equal(1)
       (oppijat.head \ "opiskeluoikeudet").extract[Seq[JObject]].length should equal(7)
     }
+
+    "Palauttaa myös master oid:n opiskeluoikeuden jos slave oid:n opiskeluoikeus on muuttunut" in {
+      poistaOppijanOpiskeluoikeusDatat(KoskiSpecificMockOppijat.slave.henkilö)
+      val tallennettuOo = createOrUpdate(KoskiSpecificMockOppijat.slave.henkilö, defaultOpiskeluoikeus)
+
+      val query = getQuery(tallennettuOo.aikaleima.get)
+      val queryId = addQuerySuccessfully(query, user) { response =>
+        response.status should equal(QueryState.pending)
+        response.queryId
+      }
+      val complete = waitForCompletion(queryId, user)
+
+      val jsonFiles = complete.files.map { file =>
+        verifyResultAndContent(file, user) {
+          JsonMethods.parse(response.body)
+        }
+      }
+
+      val oppijatJaOpiskeluoikeudenTyypit = (jsonFiles.head.extract[Seq[JObject]].head \ "opiskeluoikeudet")
+        .extract[Seq[JObject]]
+        .map(oo => (oo \ "oppijaOid").extract[String] -> (oo \ "tyyppi" \ "koodiarvo").extract[String])
+
+      oppijatJaOpiskeluoikeudenTyypit should contain(
+        KoskiSpecificMockOppijat.slave.henkilö.oid -> OpiskeluoikeudenTyyppi.ammatillinenkoulutus.koodiarvo
+      )
+      oppijatJaOpiskeluoikeudenTyypit should contain(
+        KoskiSpecificMockOppijat.master.oid -> OpiskeluoikeudenTyyppi.perusopetus.koodiarvo
+      )
+    }
   }
 
-  "Suoritusrekisterikysely - oppija-oideilla hakeminen" - {
+  "Suorituspalvelukysely - oppija-oideilla hakeminen" - {
     val user = MockUsers.paakayttaja
     val oppijaOids = (1 to 200).map(i => "1.2.246.562.24.00000000%03d".format(i))
 
-    def getQuery(oppijaOidit: Seq[String]) = SuoritusrekisteriOppijaOidsQuery(
+    def getQuery(oppijaOidit: Seq[String]) = SuorituspalveluOppijaOidsQuery(
       oppijaOids = oppijaOidit
     )
 
@@ -710,7 +757,7 @@ class MassaluovutusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers wit
               (v \ "oppijaOid").extract[String],
               ((v \ "opiskeluoikeudet").extract[List[JObject]].last \ "oid").extract[String])).last match {
             case (oppijaOid, opiskeluoikeusOid) => AuditLogTester.verifyLastAuditLogMessage(Map(
-              "operation" -> "SUORITUSREKISTERI_OPISKELUOIKEUS_HAKU",
+              "operation" -> "SUORITUSPALVELU_OPISKELUOIKEUS_HAKU",
               "target" -> Map(
                 "oppijaHenkiloOid" -> oppijaOid,
                 "opiskeluoikeusOid" -> opiskeluoikeusOid,
@@ -765,6 +812,11 @@ class MassaluovutusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers wit
 
       def suorituksenTunniste(v: JValue) = v \ "koulutusmoduuli" \ "tunniste" \ "koodiarvo"
 
+      def osasuoritustenMäärä(v: JValue) = v \ "osasuoritukset" match {
+        case JArray(list) => list.size
+        case _ => 0
+      }
+
       def viimeisinTila(v: JValue) = v \ "tila" \ "opiskeluoikeusjaksot" \ "tila" \ "koodiarvo" match {
         case JArray(list) => list.last
         case _ => JNothing
@@ -791,14 +843,28 @@ class MassaluovutusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers wit
         ))
       }
 
-      "Nuorten perusopetuksesta palautetaan vain perusopetuksen päättötodistus" in {
+      "Nuorten perusopetuksesta palautetaan perusopetuksen päättötodistus sekä 7., 8. ja 9. vuosiluokan suoritukset" in {
         extractStrings(
           getSuoritukset(Some("perusopetus")).filterNot(s => tyyppi(s).extract[String] == "nuortenperusopetuksenoppiaineenoppimaara"),
           suorituksenTunniste
         ) should equal(List(
           "201101", // Oppimäärän suoritus
-          "9", // Ysiluokka
+          "7",  // Vuosiluokkien suoritukset
+          "8",
+          "9",
         ))
+      }
+
+      "Perusopetuksen suorituksille palautetaan oikea määrä osasuorituksia" in {
+        val tunnisteetJaOsasuoritustenMäärät = getSuoritukset(Some("perusopetus"))
+          .filterNot(s => tyyppi(s).extract[String] == "nuortenperusopetuksenoppiaineenoppimaara")
+          .map(suoritus => suorituksenTunniste(suoritus).extract[String] -> osasuoritustenMäärä(suoritus))
+          .toMap
+
+        tunnisteetJaOsasuoritustenMäärät.get("7") shouldBe Some(0) // 7. vuosiluokan suoritus
+        tunnisteetJaOsasuoritustenMäärät.get("8") shouldBe Some(0) // 8. vuosiluokan suoritus
+        tunnisteetJaOsasuoritustenMäärät.get("9") shouldBe Some(0) // 9. vuosiluokan suoritus, voi myös sisältää osasuorituksia
+        tunnisteetJaOsasuoritustenMäärät.get("201101") shouldBe Some(23) // Oppimäärän suoritus
       }
 
       "Ammatillisesta koulutuksesta ei palautetaan vain kokonainen ammatillinen tutkinto ja telma" in {
@@ -888,6 +954,35 @@ class MassaluovutusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers wit
       }
 
       jsonFiles.head.extract[Seq[JObject]].length should equal(1)
+    }
+
+    "Palautetulla opiskeluoikeudella on sen oppijan oid, jolle opiskeluoikeus on tallennettu" in {
+      poistaOppijanOpiskeluoikeusDatat(KoskiSpecificMockOppijat.slave.henkilö)
+      createOrUpdate(KoskiSpecificMockOppijat.slave.henkilö, defaultOpiskeluoikeus)
+
+      val query = getQuery(Seq(KoskiSpecificMockOppijat.master.oid))
+      val queryId = addQuerySuccessfully(query, user) { response =>
+        response.status should equal(QueryState.pending)
+        response.queryId
+      }
+      val complete = waitForCompletion(queryId, user)
+
+      val jsonFiles = complete.files.map { file =>
+        verifyResultAndContent(file, user) {
+          JsonMethods.parse(response.body)
+        }
+      }
+
+      val oppijatJaOpiskeluoikeudenTyypit = (jsonFiles.head.extract[Seq[JObject]].head \ "opiskeluoikeudet")
+        .extract[Seq[JObject]]
+        .map(oo => (oo \ "oppijaOid").extract[String] -> (oo \ "tyyppi" \ "koodiarvo").extract[String])
+
+      oppijatJaOpiskeluoikeudenTyypit should contain(
+        KoskiSpecificMockOppijat.slave.henkilö.oid -> OpiskeluoikeudenTyyppi.ammatillinenkoulutus.koodiarvo
+      )
+      oppijatJaOpiskeluoikeudenTyypit should contain(
+        KoskiSpecificMockOppijat.master.oid -> OpiskeluoikeudenTyyppi.perusopetus.koodiarvo
+      )
     }
   }
 

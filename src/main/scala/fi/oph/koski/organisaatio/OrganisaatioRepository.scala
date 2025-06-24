@@ -6,6 +6,7 @@ import com.typesafe.config.Config
 import fi.oph.koski.cache._
 import fi.oph.koski.http.{ServiceConfig, VirkailijaHttpClient}
 import fi.oph.koski.koodisto.KoodistoViitePalvelu
+import fi.oph.koski.localization.LocalizationRepository
 import fi.oph.koski.log.Logging
 import fi.oph.koski.organisaatio.OrganisaatioRepository.VarhaiskasvatusToimipisteResult
 import fi.oph.koski.schema.Organisaatio.Oid
@@ -66,6 +67,16 @@ trait OrganisaatioRepository extends Logging {
   def findHierarkia(query: String): List[OrganisaatioHierarkia]
 
   def findSähköpostiVirheidenRaportointiin(oid: String): Option[SähköpostiVirheidenRaportointiin]
+
+  def findSähköpostiVirheidenRaportointiinSpecialCase(oid: String, loc: LocalizationRepository): Option[SähköpostiVirheidenRaportointiin] =
+    oid match {
+      case "kielitutkinnot" => Some(SähköpostiVirheidenRaportointiin(
+        organisaatioOid = Opetushallitus.organisaatioOid,
+        organisaationNimi = loc.get("Kielitutkinnot"),
+        email = "kielitutkinnot@oph.fi"
+      ))
+      case _ => None
+    }
 
   def findAllFlattened: List[OrganisaatioHierarkia] = OrganisaatioHierarkia.flatten(findAllHierarkiat)
   def findAllHierarkiat: List[OrganisaatioHierarkia]

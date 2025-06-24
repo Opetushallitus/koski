@@ -3,23 +3,32 @@ package fi.oph.koski.validation
 import com.typesafe.config.Config
 import fi.oph.koski.config.Environment
 import fi.oph.koski.documentation.PerusopetusExampleData.suoritustapaErityinenTutkinto
-import fi.oph.koski.henkilo.LaajatOppijaHenkilöTiedot
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
-import fi.oph.koski.koskiuser.KoskiSpecificSession
 import fi.oph.koski.log.Logging
-import fi.oph.koski.opiskeluoikeus.CompositeOpiskeluoikeusRepository
-import fi.oph.koski.schema.{Aikajakso, AikuistenPerusopetuksenOpiskeluoikeus, EsiopetuksenOpiskeluoikeus, KoskeenTallennettavaOpiskeluoikeus, NuortenPerusopetuksenOppiaineenOppimääränSuoritus, NuortenPerusopetuksenOppimääränSuoritus, Opiskeluoikeus, PerusopetukseenValmistavanOpetuksenOpiskeluoikeus, PerusopetuksenLisäopetuksenOpiskeluoikeus, PerusopetuksenOpiskeluoikeus, PerusopetuksenPäätasonSuoritus, PerusopetuksenVuosiluokanSuoritus}
+import fi.oph.koski.schema._
+import fi.oph.koski.util.ChainingSyntax.localDateOps
+import fi.oph.koski.util.DateOrdering.localDateOrdering
+import fi.oph.koski.util.FinnishDateFormat
+import fi.oph.koski.validation.PidennetynOppivelvollisuudenMuutoksenValidaatio.validateVanhojenJaksokenttienPäättyminenSiirryttäessäUusiin
+
+import java.time.LocalDate
 
 object PerusopetuksenOpiskeluoikeusValidation extends Logging {
-  def validatePerusopetuksenOpiskeluoikeus(
+  def validatePerusopetuksenOpiskeluoikeus(config: Config)(
     oo: Opiskeluoikeus
   ): HttpStatus = {
     oo match {
       case poo: PerusopetuksenOpiskeluoikeus => HttpStatus.fold(
-        List(validateNuortenPerusopetuksenOpiskeluoikeudenTila(poo),
+        List(
+          validateNuortenPerusopetuksenOpiskeluoikeudenTila(poo),
           validateVuosiluokanAlkamispäivät(poo),
-          validatePäätasonSuoritus(poo)
+          validatePäätasonSuoritus(poo),
+          validateVanhojenJaksokenttienPäättyminenSiirryttäessäUusiin(config, poo.alkamispäivä, poo.päättymispäivä, poo.lisätiedot),
+        ) ++ poo.lisätiedot.toList.flatMap(lisätiedot => List(
+          validateTuenJaksojenPäällekkäisyys(lisätiedot),
+          validateOppivelvollisuudenPidennysjaksojenPäällekkäisyys(lisätiedot),
         ))
+      )
       case _ => HttpStatus.ok
     }
   }
@@ -177,12 +186,29 @@ object PerusopetuksenOpiskeluoikeusValidation extends Logging {
     }
   }
 
-  def sisältääAikuistenPerusopetuksenOppimääränSuorituksen(oo: Opiskeluoikeus): Boolean = {
-    oo match {
-      case aipe: AikuistenPerusopetuksenOpiskeluoikeus
-      => aipe.suoritukset.map(_.tyyppi.koodiarvo).exists(Set("aikuistenperusopetuksenoppimaara").contains)
-      case _
-      => false
+  private def validateTuenJaksojenPäällekkäisyys(tiedot: PerusopetuksenOpiskeluoikeudenLisätiedot): HttpStatus = {
+    val erityisenTuenPäätökset = tiedot.erityisenTuenPäätökset.toList.flatten
+    val tuenPäätöksenJaksot = tiedot.tuenPäätöksenJaksot.toList.flatten
+
+    if (erityisenTuenPäätökset.nonEmpty && tuenPäätöksenJaksot.nonEmpty) {
+      HttpStatus.validateNot(MahdollisestiAlkupäivällinenJakso.overlap(erityisenTuenPäätökset, tuenPäätöksenJaksot))(
+        KoskiErrorCategory.badRequest.validation.date.erityisenTuenPäätös(s"Erityisen tuen päätöksen jakso ja tuen päätöksen jakso eivät saa olla päällekkäin")
+      )
+    } else {
+      HttpStatus.ok
+    }
+  }
+
+  private def validateOppivelvollisuudenPidennysjaksojenPäällekkäisyys(tiedot: PerusopetuksenOpiskeluoikeudenLisätiedot): HttpStatus = {
+    val pidennettyOppivelvollisuus = tiedot.pidennettyOppivelvollisuus.toList
+    val jaksot = tiedot.opetuksenJärjestäminenVammanSairaudenTaiRajoitteenPerusteella.toList.flatten
+
+    if (pidennettyOppivelvollisuus.nonEmpty && jaksot.nonEmpty) {
+      HttpStatus.validateNot(Aikajakso.overlap(pidennettyOppivelvollisuus, jaksot))(
+        KoskiErrorCategory.badRequest.validation.date.erityisenTuenPäätös(s"Pidennetyn oppivelvollisuus ja opetuksen järjestäminen vamman, sairauden tai rajoitteen perusteella eivät saa olla ajallisesti päällekkäin")
+      )
+    } else {
+      HttpStatus.ok
     }
   }
 }

@@ -5,9 +5,11 @@ import {
   hasPäätasonsuoritusOf,
   usePäätasonSuoritus
 } from '../components-v2/containers/EditorContainer'
+import { VirkailijaKansalainenContainer } from '../components-v2/containers/VirkailijaKansalainenContainer'
 import { FormModel, useForm } from '../components-v2/forms/FormModel'
 import { AdaptedOpiskeluoikeusEditorProps } from '../components-v2/interoperability/useUiAdapter'
-import { OpiskeluoikeusTitle } from '../components-v2/opiskeluoikeus/OpiskeluoikeusTitle'
+import { ISO2FinnishDate } from '../date/date'
+import { t } from '../i18n/i18n'
 import { KielitutkinnonOpiskeluoikeudenOpiskeluoikeusjakso } from '../types/fi/oph/koski/schema/KielitutkinnonOpiskeluoikeudenOpiskeluoikeusjakso'
 import { KielitutkinnonOpiskeluoikeus } from '../types/fi/oph/koski/schema/KielitutkinnonOpiskeluoikeus'
 import { isValtionhallinnonKielitutkinnonSuoritus } from '../types/fi/oph/koski/schema/ValtionhallinnonKielitutkinnonSuoritus'
@@ -17,8 +19,6 @@ import {
   getJaksonAlkupäivä,
   YleinenKielitutkintoEditor
 } from './YleinenKielitutkintoEditor'
-import { t } from '../i18n/i18n'
-import { ISO2FinnishDate } from '../date/date'
 
 export type KielitutkintoEditorProps =
   AdaptedOpiskeluoikeusEditorProps<KielitutkinnonOpiskeluoikeus>
@@ -36,14 +36,13 @@ export const KielitutkintoEditor: React.FC<KielitutkintoEditorProps> = (
   )
 
   return (
-    <>
-      <OpiskeluoikeusTitle
-        opiskeluoikeus={form.state}
-        opiskeluoikeudenNimi={`${tutkinnonTyyppi}, ${kieli}`}
-        pvmJaTila={tutkintopäivä}
-      />
+    <VirkailijaKansalainenContainer
+      opiskeluoikeus={form.state}
+      opiskeluoikeudenNimi={`${tutkinnonTyyppi}, ${kieli}`}
+      pvmJaTila={tutkintopäivä}
+    >
       <KielitutkinnonPäätasonSuoritusEditor {...props} form={form} />
-    </>
+    </VirkailijaKansalainenContainer>
   )
 }
 

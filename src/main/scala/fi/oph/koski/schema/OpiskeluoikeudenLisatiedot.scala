@@ -68,7 +68,7 @@ trait UlkomainenVaihtoopiskelija {
   def ulkomainenVaihtoopiskelija: Boolean
 }
 
-trait ToimintaAlueittainOpiskeleva extends Tukijaksollinen {
+trait ToimintaAlueittainOpiskeleva extends Tukipäätöksellinen {
   def toimintaAlueittainOpiskelu: Option[List[Aikajakso]]
 }
 
@@ -88,23 +88,23 @@ trait PidennettyOppivelvollisuus extends Vammainen with VaikeastiVammainen with 
   def pidennettyOppivelvollisuus: Option[Aikajakso]
 }
 
-trait VarhennettuOppivelvollisuus extends PidennettyOppivelvollisuus with Tukijaksollinen {
+trait VarhennettuOppivelvollisuus extends PidennettyOppivelvollisuus with Tukipäätöksellinen {
   def varhennetunOppivelvollisuudenJaksot: Option[List[Aikajakso]]
 }
 
-trait Tukijaksollinen extends ErityisenTuenPäätöksiäSisältäväLisätieto {
-  def tukijaksot:  Option[List[Tukijakso]]
-  def kaikkiTukijaksot: List[MahdollisestiAlkupäivällinenJakso]
+trait Tukipäätöksellinen extends ErityisenTuenPäätöksiäSisältäväLisätieto {
+  def tuenPäätöksenJaksot:  Option[List[Tukijakso]]
+  def kaikkiTuenPäätöksenJaksot: List[MahdollisestiAlkupäivällinenJakso]
 }
 
-trait TukijaksollinenVanhatLisätiedot {
+trait TukipäätöksellinenVanhatLisätiedot {
   def pidennettyOppivelvollisuus: Option[Aikajakso]
   def vammainen: Option[List[Aikajakso]]
   def vaikeastiVammainen: Option[List[Aikajakso]]
   def erityisenTuenPäätökset: Option[List[ErityisenTuenPäätös]]
 }
 
-trait VammaSairausTaiRajoite extends Tukijaksollinen with Vammainen with VaikeastiVammainen {
+trait VammaSairausTaiRajoite extends Tukipäätöksellinen with Vammainen with VaikeastiVammainen {
   def opetuksenJärjestäminenVammanSairaudenTaiRajoitteenPerusteella: Option[List[Aikajakso]]
 }
 

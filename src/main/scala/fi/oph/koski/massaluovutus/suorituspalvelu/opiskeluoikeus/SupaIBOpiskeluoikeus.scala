@@ -1,6 +1,6 @@
-package fi.oph.koski.massaluovutus.suoritusrekisteri.opiskeluoikeus
+package fi.oph.koski.massaluovutus.suorituspalvelu.opiskeluoikeus
 
-import fi.oph.koski.massaluovutus.suoritusrekisteri.SureUtils.isValmistunut
+import fi.oph.koski.massaluovutus.suorituspalvelu.SupaUtils.isValmistunut
 import fi.oph.koski.schema._
 import fi.oph.koski.schema.annotation.KoodistoKoodiarvo
 import fi.oph.koski.util.Optional.when
@@ -8,61 +8,63 @@ import fi.oph.scalaschema.annotation.Title
 
 import java.time.LocalDate
 
-@Title("IB-tutkinto")
-case class SureIBOpiskeluoikeus(
+@Title("IB-tutkinnon opiskeluoikeus")
+case class SupaIBOpiskeluoikeus(
+  oppijaOid: String,
   @KoodistoKoodiarvo(OpiskeluoikeudenTyyppi.ibtutkinto.koodiarvo)
   tyyppi: Koodistokoodiviite,
   oid: String,
   koulutustoimija: Option[Koulutustoimija],
   oppilaitos: Option[Oppilaitos],
   tila: LukionOpiskeluoikeudenTila,
-  suoritukset: List[SureIBTutkinnonSuoritus],
-) extends SureOpiskeluoikeus
+  suoritukset: List[SupaIBTutkinnonSuoritus],
+) extends SupaOpiskeluoikeus
 
-object SureIBOpiskeluoikeus {
-  def apply(oo: IBOpiskeluoikeus): Option[SureIBOpiskeluoikeus] =
+object SupaIBOpiskeluoikeus {
+  def apply(oo: IBOpiskeluoikeus, oppijaOid: String): Option[SupaIBOpiskeluoikeus] =
     when(isValmistunut(oo)) {
-      SureIBOpiskeluoikeus(
+      SupaIBOpiskeluoikeus(
+        oppijaOid = oppijaOid,
         tyyppi = oo.tyyppi,
         oid = oo.oid.get,
         koulutustoimija = oo.koulutustoimija,
         oppilaitos = oo.oppilaitos,
         tila = oo.tila,
         suoritukset = oo.suoritukset.collect {
-          case s: IBTutkinnonSuoritus => SureIBTutkinnonSuoritus(s)
+          case s: IBTutkinnonSuoritus => SupaIBTutkinnonSuoritus(s)
         }
       )
     }
 }
 
 @Title("IB-tutkinnon suoritus")
-case class SureIBTutkinnonSuoritus(
+case class SupaIBTutkinnonSuoritus(
   @KoodistoKoodiarvo("ibtutkinto")
   tyyppi: Koodistokoodiviite,
   alkamispäivä: Option[LocalDate],
-  vahvistuspäivä: Option[LocalDate],
+  vahvistus: Option[SupaVahvistus],
   koulutusmoduuli: IBTutkinto,
   suorituskieli: Koodistokoodiviite,
-  osasuoritukset: Option[List[SureIBTutkinnonOppiaine]],
+  osasuoritukset: Option[List[SupaIBTutkinnonOppiaine]],
   theoryOfKnowledgeSuoritus: Option[IBTheoryOfKnowledgeSuoritus],
   extendedEssay: Option[IBExtendedEssaySuoritus],
   creativityActionService: Option[IBCASSuoritus],
   lisäpisteet: Option[Koodistokoodiviite],
-) extends SureSuoritus
+) extends SupaSuoritus
   with Suorituskielellinen
-  with Vahvistuspäivällinen
+  with SupaVahvistuksellinen
 
-object SureIBTutkinnonSuoritus {
-  def apply(s: IBTutkinnonSuoritus): SureIBTutkinnonSuoritus =
-    SureIBTutkinnonSuoritus(
+object SupaIBTutkinnonSuoritus {
+  def apply(s: IBTutkinnonSuoritus): SupaIBTutkinnonSuoritus =
+    SupaIBTutkinnonSuoritus(
       tyyppi = s.tyyppi,
       alkamispäivä = s.alkamispäivä,
-      vahvistuspäivä = s.vahvistus.map(_.päivä),
+      vahvistus = s.vahvistus.map(v => SupaVahvistus(v.päivä)),
       koulutusmoduuli = s.koulutusmoduuli,
       suorituskieli = s.suorituskieli,
       osasuoritukset = s.osasuoritukset.map(_.flatMap {
-        case oppiaine: IBOppiaineenSuoritus => Some(SureIBOppiaineenSuoritus(oppiaine))
-        case oppiaine: IBDBCoreSuoritus => Some(SureIBDBCoreSuoritus(oppiaine))
+        case oppiaine: IBOppiaineenSuoritus => Some(SupaIBOppiaineenSuoritus(oppiaine))
+        case oppiaine: IBDBCoreSuoritus => Some(SupaIBDBCoreSuoritus(oppiaine))
         case _ => None
       }),
       theoryOfKnowledgeSuoritus = s.theoryOfKnowledge,
@@ -72,19 +74,19 @@ object SureIBTutkinnonSuoritus {
     )
 }
 
-trait SureIBTutkinnonOppiaine extends SureSuoritus
+trait SupaIBTutkinnonOppiaine extends SupaSuoritus
 
 @Title("IB-tutkinnon oppiaineen suoritus")
-case class SureIBOppiaineenSuoritus(
+case class SupaIBOppiaineenSuoritus(
   @KoodistoKoodiarvo("iboppiaine")
   tyyppi: Koodistokoodiviite,
   koulutusmoduuli: IBAineRyhmäOppiaine,
   predictedArviointi: Option[List[IBOppiaineenPredictedArviointi]],
-) extends SureIBTutkinnonOppiaine
+) extends SupaIBTutkinnonOppiaine
 
-object SureIBOppiaineenSuoritus {
-  def apply(s: IBOppiaineenSuoritus): SureIBOppiaineenSuoritus =
-    SureIBOppiaineenSuoritus(
+object SupaIBOppiaineenSuoritus {
+  def apply(s: IBOppiaineenSuoritus): SupaIBOppiaineenSuoritus =
+    SupaIBOppiaineenSuoritus(
       tyyppi = s.tyyppi,
       koulutusmoduuli = s.koulutusmoduuli,
       predictedArviointi = s.predictedArviointi,
@@ -92,16 +94,16 @@ object SureIBOppiaineenSuoritus {
 }
 
 @Title("IB-tutkinnon DP Core -oppiaineen suoritus")
-case class SureIBDBCoreSuoritus(
+case class SupaIBDBCoreSuoritus(
   @KoodistoKoodiarvo("ibcore")
   tyyppi: Koodistokoodiviite,
   koulutusmoduuli: IBDPCoreOppiaine,
   arviointi: Option[List[IBOppiaineenArviointi]] = None,
-) extends SureIBTutkinnonOppiaine
+) extends SupaIBTutkinnonOppiaine
 
-object SureIBDBCoreSuoritus {
-  def apply(s: IBDBCoreSuoritus): SureIBDBCoreSuoritus =
-    SureIBDBCoreSuoritus(
+object SupaIBDBCoreSuoritus {
+  def apply(s: IBDBCoreSuoritus): SupaIBDBCoreSuoritus =
+    SupaIBDBCoreSuoritus(
       tyyppi = s.tyyppi,
       koulutusmoduuli = s.koulutusmoduuli,
       arviointi = s.arviointi

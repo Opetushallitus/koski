@@ -12,7 +12,11 @@ export const isToimintaAlueittain = (suoritus) =>
       modelItems(
         suoritus.context.opiskeluoikeus,
         'lisätiedot.erityisenTuenPäätökset'
-      ).some((etp) => modelData(etp, 'opiskeleeToimintaAlueittain'))
+      ).some((etp) => modelData(etp, 'opiskeleeToimintaAlueittain')) ||
+      !!modelData(
+        suoritus.context.opiskeluoikeus,
+        'lisätiedot.toimintaAlueittainOpiskelu'
+      )
     : false
 
 export const isYsiluokka = (suoritus) => luokkaAste(suoritus) === '9'

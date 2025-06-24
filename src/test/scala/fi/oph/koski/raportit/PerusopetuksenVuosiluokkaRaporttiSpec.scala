@@ -53,13 +53,50 @@ class PerusopetuksenVuosiluokkaRaporttiSpec
     }
 
     "Tuottaa oikeat tiedot" in {
-      withLisätiedotFixture(KoskiSpecificMockOppijat.ysiluokkalainen, perusopetuksenOpiskeluoikeudenLisätiedot) {
+      withLisätiedotFixture(KoskiSpecificMockOppijat.ysiluokkalainen, perusopetuksenOpiskeluoikeudenLisätiedot.copy(
+        vammainen = None,
+        vaikeastiVammainen = None,
+        pidennettyOppivelvollisuus = None,
+        erityisenTuenPäätös = None,
+        erityisenTuenPäätökset = None,
+      )) {
         val result = PerusopetuksenVuosiluokkaRaportti.buildRaportti(repository, Seq(MockOrganisaatiot.jyväskylänNormaalikoulu), LocalDate.of(2014, 8, 15), None, vuosiluokka = "8", t)
         val ynjevinOpiskeluoikeusOid = lastOpiskeluoikeus(KoskiSpecificMockOppijat.ysiluokkalainen.oid).oid.get
         val rivi = result.find(_.opiskeluoikeusOid == ynjevinOpiskeluoikeusOid)
 
         rivi should equal(
           Some(ynjevinExpectedKasiLuokkaRowWithLisätiedot.copy(opiskeluoikeusOid = ynjevinOpiskeluoikeusOid))
+        )
+      }
+    }
+
+    "Tuottaa oikeat tiedot tuen päätöksen jaksolle" in {
+      addPerusopetus(
+        KoskiSpecificMockOppijat.lukioKesken,
+        createVuosiluokanSuoritus(Some(date(2026, 8, 1)), None)
+          .copy(osasuoritukset = Some(List(suoritus(oppiaine("HI", vuosiviikkotuntia(1)))
+            .copy(arviointi = arviointi(8), rajattuOppimäärä = true))))
+      )
+
+      val hakupäivä = LocalDate.of(2026, 8, 1)
+      withLisätiedotFixture(KoskiSpecificMockOppijat.lukioKesken, perusopetuksenOpiskeluoikeudenLisätiedot.copy(
+        majoitusetu = None,
+        joustavaPerusopetus = None,
+        vuosiluokkiinSitoutumatonOpetus = false,
+        vammainen = None,
+        vaikeastiVammainen = None,
+        pidennettyOppivelvollisuus = None,
+        erityisenTuenPäätös = None,
+        erityisenTuenPäätökset = None,
+        tuenPäätöksenJaksot = Some(List(Tukijakso(Some(hakupäivä), None))),
+        opetuksenJärjestäminenVammanSairaudenTaiRajoitteenPerusteella = Some(List(Aikajakso(hakupäivä, None))),
+      )) {
+        val result = PerusopetuksenVuosiluokkaRaportti.buildRaportti(repository, Seq(MockOrganisaatiot.jyväskylänNormaalikoulu), hakupäivä, None, vuosiluokka = "8", t)
+        val opiskeluoikeusOid = lastOpiskeluoikeus(KoskiSpecificMockOppijat.lukioKesken.oid).oid.get
+        val rivi = result.find(_.opiskeluoikeusOid == opiskeluoikeusOid)
+
+        rivi should equal(
+          Some(leilanRow.copy(opiskeluoikeusOid = opiskeluoikeusOid))
         )
       }
     }
@@ -195,7 +232,14 @@ class PerusopetuksenVuosiluokkaRaporttiSpec
       }
 
       "Ei tulosta päättötodistusta oppijoilla joilla ei ole yhdeksännen luokan opintoja" in {
-        withAdditionalSuoritukset(KoskiSpecificMockOppijat.vuosiluokkalainen, List(perusopetuksenOppimääränSuoritus), Some(perusopetuksenOpiskeluoikeudenLisätiedot.copy(vuosiluokkiinSitoutumatonOpetus = true))) {
+        withAdditionalSuoritukset(KoskiSpecificMockOppijat.vuosiluokkalainen, List(perusopetuksenOppimääränSuoritus), Some(perusopetuksenOpiskeluoikeudenLisätiedot.copy(
+          vuosiluokkiinSitoutumatonOpetus = true,
+          pidennettyOppivelvollisuus = None,
+          vammainen = None,
+          vaikeastiVammainen = None,
+          erityisenTuenPäätös = None,
+          erityisenTuenPäätökset = None,
+        ))) {
           val result = PerusopetuksenVuosiluokkaRaportti.buildRaportti(repository, Seq(MockOrganisaatiot.jyväskylänNormaalikoulu), date(2016, 6, 1), None, "9", t)
           result.map(_.oppijaOid) shouldNot contain(KoskiSpecificMockOppijat.vuosiluokkalainen.oid)
         }
@@ -379,6 +423,9 @@ class PerusopetuksenVuosiluokkaRaporttiSpec
     koulukoti = false,
     erityisenTuenPaatosVoimassa = false,
     erityisenTuenPaatosToimialueittain = false,
+    tuenPäätöksenJakso = false,
+    opetuksenJärjestäminenVammanSairaudenTaiRajoitteenPerusteella = false,
+    toimintaAlueittainOpiskelu = false
   )
 
   val ynjevinExpectedKasiLuokkaRowWithLisätiedot = defaultYnjeviExpectedKasiLuokkaRow.copy(
@@ -388,15 +435,15 @@ class PerusopetuksenVuosiluokkaRaporttiSpec
     ulkomailla = false,
     perusopetuksenAloittamistaLykatty = false,
     aloittanutEnnenOppivelvollisuutta = false,
-    pidennettyOppivelvollisuus = true,
+    pidennettyOppivelvollisuus = false,
     joustavaPerusopetus = true,
     vuosiluokkiinSitoutumatonOpetus = true,
     vammainen = false,
-    vaikeastiVammainen = true,
+    vaikeastiVammainen = false,
     sisäoppilaitosmainenMajoitus = true,
     koulukoti = true,
-    erityisenTuenPaatosVoimassa = true,
-    erityisenTuenPaatosToimialueittain = true
+    erityisenTuenPaatosVoimassa = false,
+    erityisenTuenPaatosToimialueittain = false
   )
 
   val kahdeksannenLuokanLuokalleJääntiRow = defaultYnjeviExpectedKasiLuokkaRow.copy(
@@ -467,6 +514,55 @@ class PerusopetuksenVuosiluokkaRaporttiSpec
     suorituksenVahvistuspaiva = "2016-06-04",
     voimassaolevatVuosiluokat = "",
     kayttaymisenArvio = ""
+  )
+
+  val leilanRow = defaultYnjeviExpectedKasiLuokkaRow.copy(
+    oppijaOid = KoskiSpecificMockOppijat.lukioKesken.oid,
+    hetu = KoskiSpecificMockOppijat.lukioKesken.hetu,
+    sukunimi = KoskiSpecificMockOppijat.lukioKesken.sukunimi,
+    etunimet = KoskiSpecificMockOppijat.lukioKesken.etunimet,
+    kotikunta = None,
+    luokka = Some("8C"),
+    opiskeluoikeudenAlkamispäivä = Some(date(2008, 1, 1)),
+    viimeisinTila = "lasna",
+    tilaHakupaivalla = "lasna",
+    suorituksenTila = "kesken",
+    suorituksenAlkamispaiva = "2026-08-01",
+    suorituksenVahvistuspaiva = "",
+    voimassaolevatVuosiluokat = "8",
+    aidinkieli = "Oppiaine puuttuu",
+    pakollisenAidinkielenOppimaara = "Oppiaine puuttuu",
+    kieliA1 = "Oppiaine puuttuu",
+    kieliA1Oppimaara = "Oppiaine puuttuu",
+    kieliB = "Oppiaine puuttuu",
+    kieliBOppimaara = "Oppiaine puuttuu",
+    aidinkielenomainenKieli = "Oppiaine puuttuu",
+    aidinkielenomainenKieliOppimaara = "Oppiaine puuttuu",
+    uskonto = "Oppiaine puuttuu",
+    historia = "8*", // * == rajattu oppimäärä
+    yhteiskuntaoppi = "Oppiaine puuttuu",
+    matematiikka = "Oppiaine puuttuu",
+    kemia = "Oppiaine puuttuu",
+    fysiikka = "Oppiaine puuttuu",
+    biologia = "Oppiaine puuttuu",
+    maantieto = "Oppiaine puuttuu",
+    musiikki = "Oppiaine puuttuu",
+    kuvataide = "Oppiaine puuttuu",
+    kotitalous = "Oppiaine puuttuu",
+    terveystieto = "Oppiaine puuttuu",
+    kasityo = "Oppiaine puuttuu",
+    liikunta = "Oppiaine puuttuu",
+    kayttaymisenArvio = "S",
+    paikallistenOppiaineidenKoodit = "",
+    pakollisetPaikalliset = "",
+    valinnaisetPaikalliset = "",
+    valinnaisetValtakunnalliset = "",
+    valinnaisetLaajuus_SuurempiKuin_2Vuosiviikkotuntia = "",
+    valinnaisetLaajuus_PienempiKuin_2Vuosiviikkotuntia = "",
+    numeroarviolliset_valinnaisetLaajuus_PienempiKuin_2Vuosiviikkotuntia = "",
+    valinnaisetEiLaajuutta = "",
+    tuenPäätöksenJakso = true,
+    opetuksenJärjestäminenVammanSairaudenTaiRajoitteenPerusteella = true,
   )
 
   private def insertTestData = {

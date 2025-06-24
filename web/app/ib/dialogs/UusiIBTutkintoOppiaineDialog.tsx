@@ -30,6 +30,8 @@ import {
   useKielivalikoimaOptions,
   useOppiaineTasoOptions
 } from '../state/options'
+import { LaajuusEdit } from '../../components-v2/opiskeluoikeus/LaajuusField'
+import { createLaajuusTunneissa } from '../../util/laajuus'
 
 export type UusiIBTutkintoOppiaineDialogProps = {
   organisaatioOid: string
@@ -188,6 +190,17 @@ const IBTutkintoOppiaineForm: React.FC<IBTutkintoOppiaineFormProps> = ({
             value={state.ryhmä.value && koodiviiteId(state.ryhmä.value)}
             onChange={(o) => state.ryhmä.set(o?.value)}
             testId="aineryhmä"
+          />
+        </label>
+      )}
+      {(state as UusiIBTutkintoOppiaineState).cas?.laajuus.visible && (
+        <label>
+          {t('Laajuus')}
+          <LaajuusEdit
+            value={(state as UusiIBTutkintoOppiaineState).cas.laajuus.value}
+            onChange={(state as UusiIBTutkintoOppiaineState).cas.laajuus.set}
+            createLaajuus={createLaajuusTunneissa}
+            testId="laajuus"
           />
         </label>
       )}

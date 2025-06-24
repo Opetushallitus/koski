@@ -259,7 +259,7 @@ export const usePäätasonSuoritus = <T extends Opiskeluoikeus>(
 }
 
 const defaultSuorituksenNimi = (s: Suoritus): LocalizedString =>
-  s.tyyppi.lyhytNimi || s.tyyppi.nimi || localize(s.tyyppi.koodiarvo)
+  s.tyyppi.nimi || localize(s.tyyppi.koodiarvo)
 
 export const hasPäätasonsuoritusOf = <
   T extends Opiskeluoikeus,

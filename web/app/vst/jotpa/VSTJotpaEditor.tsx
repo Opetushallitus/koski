@@ -1,6 +1,5 @@
 import React from 'react'
 import { OpenAllButton, useTree } from '../../appstate/tree'
-import { TestIdLayer } from '../../appstate/useTestId'
 import { EditorContainer } from '../../components-v2/containers/EditorContainer'
 import { FormOptic } from '../../components-v2/forms/FormModel'
 import { Spacer } from '../../components-v2/layout/Spacer'
@@ -25,6 +24,7 @@ import {
 } from '../common/types'
 import { AddJotpaOsasuoritus } from './AddJotpaOsasuoritus'
 import { osasuoritusToTableRow } from './VSTJotpaProperties'
+import { HenkilövahvistusValinnaisellaPaikkakunnalla } from '../../types/fi/oph/koski/schema/HenkilovahvistusValinnaisellaPaikkakunnalla'
 
 export type VSTJotpaEditorProps =
   VSTPäätasonSuoritusEditorProps<VapaanSivistystyönJotpaKoulutuksenSuoritus>
@@ -72,6 +72,7 @@ export const VSTJotpaEditor: React.FC<VSTJotpaEditorProps> = ({
           suoritusPath={päätasonSuoritus.path}
           organisaatio={organisaatio}
           disableAdd={suorituksenVahvistaminenEiMahdollista}
+          vahvistusClass={HenkilövahvistusValinnaisellaPaikkakunnalla.className}
         />
         <Spacer />
 
