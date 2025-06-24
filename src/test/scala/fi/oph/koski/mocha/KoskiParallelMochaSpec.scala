@@ -13,7 +13,9 @@ class KoskiParallelMochaSpec extends AnyFreeSpec with KoskiCommandLineSpec {
     val sharedJetty = new SharedJetty(KoskiApplicationForTests)
     sharedJetty.start()
     //specFiles parameter makes runner.html to only load given spec.js files
-    runTestCommand("mocha-chrome", Seq("scripts/mocha-chrome-test.sh", sharedJetty.baseUrl + s"/test/runner.html?specFiles=$specs"))
+    specs.foreach { spec =>
+      runTestCommand("mocha-chrome", Seq("scripts/mocha-chrome-test.sh", sharedJetty.baseUrl + s"/test/runner.html?specFiles=$spec"))
+    }
   }
 }
 
@@ -33,8 +35,7 @@ object SplitMochaSpecs {
       s"Runner $number executing ${filenamesForRunner.size} specs\n" +
       filenamesForRunner.mkString("\n")
     )
-
-    filenamesForRunner.mkString(",")
+    filenamesForRunner
   }
 
   private def divideSpecs(specs: Seq[String]) = specs
