@@ -1,5 +1,10 @@
 # Koskeen tallennettavien tietojen validaatiosäännöt
 
+
+## xx.6.2025
+
+- Duplikaattiopiskeluoikeuksien validaatiossa sallitaan päällekkäisten VST:n vapaatavoitteisten opiskeluoikeuksien tallentaminen, kunhan opintokokonaisuudet ovat erilaiset.
+
 ## 27.6.2025
 - Muutettu syksyllä voimaan tulevia tuen päätösten validaatioita; tuen päätös saa olla voimassa jo ennen opiskeluoikeuden alkua, mutta ei saa päättyä ennen opiskeluoikeuden alkua
 

@@ -166,6 +166,55 @@ class OppijaValidationVapaaSivistystyöVapaatavoitteinenSpec extends AnyFreeSpec
         }
       }
     }
+
+    "Duplikaatit opiskeluoikeudet" - {
+      "Vastaavaa opiskeluoikeutta ei voi lisätä kahdesti" in {
+        setupOppijaWithOpiskeluoikeus(VapaatavoitteinenOpiskeluoikeus, defaultHenkilö){
+          verifyResponseStatusOk()
+        }
+
+        postOpiskeluoikeus(VapaatavoitteinenOpiskeluoikeus, defaultHenkilö){
+          verifyResponseStatus(409, KoskiErrorCategory.conflict.exists())
+        }
+      }
+      "Vastaavan opiskeluoikeuden voi lisätä, kun opiskeluoikeuksien voimassaolot eivät ole ajallisesti päällekkäin" in {
+        val ooPäättynytMyöhemmin = VapaatavoitteinenOpiskeluoikeus.copy(
+          arvioituPäättymispäivä = Some(date(2022, 6, 1)),
+          tila = VapaanSivistystyönOpiskeluoikeudenTila(List(
+            VapaanSivistystyönVapaatavoitteisenKoulutuksenOpiskeluoikeusjakso(date(2022, 6, 1), opiskeluoikeusHyväksytystiSuoritettu)
+          ))
+        )
+
+        setupOppijaWithOpiskeluoikeus(ooPäättynytMyöhemmin, defaultHenkilö){
+          verifyResponseStatusOk()
+        }
+
+        // Päättynyt aiemmin
+        postOpiskeluoikeus(VapaatavoitteinenOpiskeluoikeus, defaultHenkilö){
+          verifyResponseStatusOk()
+        }
+      }
+      "Vastaavan opiskeluoikeuden voi lisätä, vaikka sen voimassaolo on ajallisesti päällekkäin, kun opintokokonaisuus on eri" in {
+        val ooSarjakuvailmaisu = VapaatavoitteinenOpiskeluoikeus.copy(
+          suoritukset = List(
+            suoritusVapaatavoitteinenKoulutus.copy(
+              koulutusmoduuli = VapaanSivistystyönVapaatavoitteinenKoulutus(
+                laajuus = Some(LaajuusOpintopisteissä(5)),
+                opintokokonaisuus = Some(Koodistokoodiviite("1139", None, "opintokokonaisuudet", Some(1)))
+              ),
+            )
+          )
+        )
+
+        setupOppijaWithOpiskeluoikeus(ooSarjakuvailmaisu, defaultHenkilö){
+          verifyResponseStatusOk()
+        }
+
+        postOpiskeluoikeus(VapaatavoitteinenOpiskeluoikeus, defaultHenkilö){
+          verifyResponseStatusOk()
+        }
+      }
+    }
   }
 
   private def setupOppijaWithAndGetOpiskeluoikeus(oo: VapaanSivistystyönOpiskeluoikeus): VapaanSivistystyönOpiskeluoikeus =

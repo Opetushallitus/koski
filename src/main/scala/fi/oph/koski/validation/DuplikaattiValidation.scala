@@ -43,6 +43,12 @@ object DuplikaattiValidation extends Logging {
         case _ => false
       }
 
+    lazy val isVstVapaatavoitteinen: Boolean =
+      opiskeluoikeus.suoritukset.forall {
+        case _: VapaanSivistystyönVapaatavoitteisenKoulutuksenSuoritus => true
+        case _ => false
+      }
+
     lazy val oppijanOpiskeluoikeudet = opiskeluoikeusRepository.findByOppija(
         tunnisteet = oppijanHenkilötiedot,
         useVirta = false,
@@ -110,6 +116,18 @@ object DuplikaattiValidation extends Logging {
       })
     }
 
+    def findConflictingVstVapaatavoitteinen(): Either[HttpStatus, Option[Opiskeluoikeus]] = {
+      def opintokokonaisuus(oo: Opiskeluoikeus): Option[Koodistokoodiviite] = oo.suoritukset.collectFirst {
+        case v: VapaanSivistystyönVapaatavoitteisenKoulutuksenSuoritus => v
+      }.flatMap(s => s.koulutusmoduuli.opintokokonaisuus)
+
+      oppijanMuutOpiskeluoikeudetSamaOppilaitosJaTyyppi.map(_.find {
+        case muuOo: VapaanSivistystyönOpiskeluoikeus =>
+          opintokokonaisuus(opiskeluoikeus).exists(ok => opintokokonaisuus(muuOo).exists(muuOk => ok.equals(muuOk))) && päällekkäinenAikajakso(muuOo)
+        case _ => false
+      })
+    }
+
     def findNuortenPerusopetuksessaUseitaKeskeneräisiäVuosiluokanSuorituksia(): Either[HttpStatus, Option[Opiskeluoikeus]] = {
       def getLuokkaAste(s: Suoritus) = s.koulutusmoduuli.tunniste.koodiarvo
       def getVuosiluokat(oo: Opiskeluoikeus) = oo.suoritukset.collect { case s: PerusopetuksenVuosiluokanSuoritus => s }
@@ -161,6 +179,7 @@ object DuplikaattiValidation extends Logging {
       case _: LukionOpiskeluoikeus if !isLukionOppimäärä => HttpStatus.ok
       case _: LukionOpiskeluoikeus if isLukionOppimäärä => throwIfConflictingExists(findSamaOppilaitosJaTyyppiSamaanAikaan)
       case _: VapaanSivistystyönOpiskeluoikeus if isJotpa => HttpStatus.ok
+      case _: VapaanSivistystyönOpiskeluoikeus if isVstVapaatavoitteinen => throwIfConflictingExists(findConflictingVstVapaatavoitteinen)
       case _: VapaanSivistystyönOpiskeluoikeus => throwIfConflictingExists(findSamaOppilaitosJaTyyppiSamaanAikaan)
       case _: MuunKuinSäännellynKoulutuksenOpiskeluoikeus => HttpStatus.ok
       case _: TaiteenPerusopetuksenOpiskeluoikeus => HttpStatus.ok
