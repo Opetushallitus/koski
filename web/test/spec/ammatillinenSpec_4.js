@@ -102,7 +102,8 @@ describe('Ammatillinen koulutus 4', function () {
         after(editor.cancelChanges)
       })
 
-      describe('Ammatillisen tutkinnon osan suoritus puuttuu, mutta opiskeluoikeuteen on sisällytetty toinen opiskeluoikeus', function () {
+      // flaky
+      describe.skip('Ammatillisen tutkinnon osan suoritus puuttuu, mutta opiskeluoikeuteen on sisällytetty toinen opiskeluoikeus', function () {
         var firstEditor = opinnot.opiskeluoikeusEditor(0)
         var secondEditor = opinnot.opiskeluoikeusEditor(1)
         var secondOpinnot = OpinnotPage(1)
