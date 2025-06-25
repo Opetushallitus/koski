@@ -14,7 +14,7 @@ trait HuollettavatRepository {
 
 object HuollettavatRepository {
   def apply(config: Config): HuollettavatRepository = {
-    if (Environment.isMockEnvironment(config) || config.getString("vtj.serviceUrl") == "mock") {
+    if (Environment.isMockEnvironment(config)) {
       new MockHuollettavatRepository
     } else {
       val vtjClient = VtjClient(config)
