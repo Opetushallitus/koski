@@ -702,6 +702,7 @@ describe('Omat tiedot', function () {
 
           describe('Kielen vaihto ruotsiin', function () {
             before(
+              wait.untilVisible(suoritusjako.changeLanguageButtonSwedish),
               click(suoritusjako.changeLanguageButtonSwedish),
               wait.forMilliseconds(150), // page reloads
               wait.until(function () {
@@ -723,6 +724,7 @@ describe('Omat tiedot', function () {
 
           describe('Kielen vaihto englantiin', function () {
             before(
+              wait.untilVisible(suoritusjako.changeLanguageButtonEnglish),
               click(suoritusjako.changeLanguageButtonEnglish),
               wait.forMilliseconds(150), // page reloads
               wait.until(function () {
@@ -1231,6 +1233,7 @@ describe('Omat tiedot', function () {
           wait.until(korhopankki.isReady),
           korhopankki.login('080154-770R'),
           wait.until(omattiedot.isVisible),
+          wait.forMilliseconds(50),
           SuoritusjakoPage().avaaOpiskeluoikeus(
             'Autoalan perustutkinto (2019—, läsnä)'
           )
@@ -1251,6 +1254,7 @@ describe('Omat tiedot', function () {
           wait.until(korhopankki.isReady),
           korhopankki.login('200994-834A'),
           wait.until(omattiedot.isVisible),
+          wait.forMilliseconds(50),
           SuoritusjakoPage().avaaOpiskeluoikeus(
             'Tieto- ja viestintätekniikan perustutkinto, koulutusvientikokeilu (2016—, läsnä)'
           )
@@ -1270,7 +1274,8 @@ describe('Omat tiedot', function () {
           etusivu.login(),
           wait.until(korhopankki.isReady),
           korhopankki.login('250390-680P'),
-          wait.until(omattiedot.isVisible)
+          wait.until(omattiedot.isVisible),
+          wait.forMilliseconds(50)
         )
         it('Näytetään varoitusteksti', function () {
           expect(omattiedot.nimi()).to.equal('Eivastaa Virtanen')
