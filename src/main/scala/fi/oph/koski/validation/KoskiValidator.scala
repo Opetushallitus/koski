@@ -598,10 +598,13 @@ class KoskiValidator(
     val tukijaksotVoimaan = LocalDate.parse(config.getString("validaatiot.tukijaksotVoimaan"))
     lisätiedot match {
       case Some(lt: Tukipäätöksellinen) =>
-        val j = SuljettuJakso(Aikajakso(alku, loppu))
-        val tuenPäätöksenJaksoSisältyyOpiskeluoikeuteen = lt.tuenPäätöksenJaksot.forall(_.forall(a => j.contains(a)))
+        val ooAikajakso = SuljettuJakso(Aikajakso(alku, loppu))
+        val tuenPäätöksenJaksoEiPäätyEnnenOpiskeluoikeudenAlkua =
+          lt.tuenPäätöksenJaksot.forall(_.forall { tukijakso =>
+            tukijakso.loppu.forall(!_.isBefore(ooAikajakso.alku))
+          })
         val tuenPäätöksenJaksoEnnenVoimaantuloa = lt.tuenPäätöksenJaksot match {
-          case Some(xs) => xs.exists(x => x.alku.exists(_.isBefore(tukijaksotVoimaan)))
+          case Some(tukijaksot) => tukijaksot.exists(j => j.alku.exists(_.isBefore(tukijaksotVoimaan)))
           case _ => false
         }
 
@@ -609,8 +612,8 @@ class KoskiValidator(
           HttpStatus.validate(!tuenPäätöksenJaksoEnnenVoimaantuloa)(KoskiErrorCategory.badRequest.validation.date(
             s"Tuen päätöksen jakson varhaisin sallittu voimassaolopäivä on ${FinnishDateFormat.format(tukijaksotVoimaan)}"
           )),
-          HttpStatus.validate(tuenPäätöksenJaksoSisältyyOpiskeluoikeuteen)(KoskiErrorCategory.badRequest.validation.date(
-            s"Tuen päätöksen jakson pitää sisältyä opiskeluoikeuden aikajaksoon"
+          HttpStatus.validate(tuenPäätöksenJaksoEiPäätyEnnenOpiskeluoikeudenAlkua)(KoskiErrorCategory.badRequest.validation.date(
+            s"Tuen päätöksen jakso ei saa päättyä ennen opiskeluoikeuden alkua"
           ))
         )
       case _ => HttpStatus.ok

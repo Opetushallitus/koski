@@ -1,5 +1,8 @@
 # Koskeen tallennettavien tietojen validaatiosäännöt
 
+## 27.6.2025
+- Muutettu syksyllä voimaan tulevia tuen päätösten validaatioita; tuen päätös saa olla voimassa jo ennen opiskeluoikeuden alkua, mutta ei saa päättyä ennen opiskeluoikeuden alkua
+
 ## 22.5.2025
 
 - Ammatillisen osittaisen suorituksen opiskeluoikeus läpäisee duplikaattivalidaation, vaikka löytyy aiempi vastaava opiskeluoikeus, kunhan diaarinumerot ovat erit.
