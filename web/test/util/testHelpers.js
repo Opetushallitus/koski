@@ -111,9 +111,9 @@ wait = {
   },
   forAjax: function () {
     return wait
-      .forMilliseconds(1)()
+      .forMilliseconds(50)()
       .then(wait.until(isNotLoading))
-      .then(wait.forMilliseconds(1))
+      .then(wait.forMilliseconds(50))
   },
   prepareForNavigation: function () {
     var frame = testFrame()

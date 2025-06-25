@@ -339,7 +339,9 @@ describe('Esiopetus', function () {
           )
 
           it('lisää nappi enabloituu', function () {
-            expect(addOppija.isEnabled()).to.equal(true)
+            return wait
+              .until(addOppija.isEnabled)()
+              .then(() => expect(addOppija.isEnabled()).to.equal(true))
           })
 
           describe('Kun painetaan Lisää-nappia', function () {
@@ -389,10 +391,8 @@ describe('Esiopetus', function () {
 
       before(
         click('.toggle-edit'),
-        opinnot.expandAll,
         kuvaus.setValue('Uusi kuvaus'),
         indexEditor.saveChanges,
-        opinnot.expandAll
       )
       it('Toimii', function () {
         expect(kuvaus.getValue()).to.equal('Uusi kuvaus')

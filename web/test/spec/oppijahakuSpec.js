@@ -173,7 +173,8 @@ describe('Oppijahaku', function () {
       openPage(
         '/koski/oppija/1.2.246.562.24.00000000001',
         page.isOppijaSelected('Eero')
-      )
+      ),
+      wait.until(isReadyToResolveOpiskeluoikeus)
     )
 
     it('Oppijan tiedot näytetään', function () {

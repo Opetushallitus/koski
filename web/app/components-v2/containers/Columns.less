@@ -26,10 +26,8 @@
 .generate-indents(@Columns-count);
 .generate-indents(@cols) when (@cols > 0) {
   .generate-indents(@cols - 1);
-  .ColumnRow-indent-@{cols} {
-    *:nth-child(1) {
-      grid-column-start: col-start (@cols + 1);
-    }
+  .ColumnRow-indent-@{cols} > .Column:first-child {
+    grid-column-start: col-start (@cols + 1);
   }
 }
 

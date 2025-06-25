@@ -1,4 +1,3 @@
-/* eslint-disable mocha/no-identical-title */
 import { Oppija } from '../../app/types/fi/oph/koski/schema/Oppija'
 import { Raw } from '../../app/util/schema'
 import { test, expect } from './base'

@@ -99,8 +99,8 @@ describe('Muu ammatillinen koulutus', function () {
           )
         })
 
-        it('Sallii kahden voimassaolevan opiskeluoikeuden lisäämisen samassa oppilaitoksessa', function (done) {
-          opinnot.opiskeluoikeudet
+        it('Sallii kahden voimassaolevan opiskeluoikeuden lisäämisen samassa oppilaitoksessa', function () {
+          return opinnot.opiskeluoikeudet
             .lisääOpiskeluoikeus()
             .then(addOppija.selectOppilaitos('Stadin ammatti- ja aikuisopisto'))
             .then(
@@ -127,12 +127,12 @@ describe('Muu ammatillinen koulutus', function () {
               )
             )
             .then(addOppija.submitModal)
+            .then(wait.until(isReadyToResolveOpiskeluoikeus))
             .then((_) =>
               expect(
                 opinnot.opiskeluoikeudet.opiskeluoikeuksienMäärä()
               ).to.equal(2)
             )
-            .then((_) => done())
         })
       })
 
@@ -159,7 +159,8 @@ describe('Muu ammatillinen koulutus', function () {
         before(
           editor.edit,
           opinnot.tutkinto('.täydentääTutkintoa').select('autoalan työnjohdon'),
-          editor.saveChangesAndWaitForSuccess
+          editor.saveChangesAndWaitForSuccess,
+          wait.forMilliseconds(50)
         )
 
         it('tutkinnon voi valita', function () {

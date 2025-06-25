@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react'
+import React, { ReactNode, useCallback } from 'react'
 import { useTree } from '../../appstate/tree'
 import { t } from '../../i18n/i18n'
 import { Opiskeluoikeus } from '../../types/fi/oph/koski/schema/Opiskeluoikeus'
@@ -53,17 +53,6 @@ export const OsasuoritusTable = <DATA_KEYS extends string, P>(
 ) => {
   const { editMode, onRemove, completed, rows } = props
 
-  const onRemoveCb = useCallback(
-    (index: number) => {
-      return () => {
-        if (onRemove !== undefined) {
-          onRemove(index)
-        }
-      }
-    },
-    [onRemove]
-  )
-
   const { addNewOsasuoritusView: AddNewOsasuoritusView } = props
   const newOsasuoritusIds = useNewItems(getRowId, props.rows)
 
@@ -82,7 +71,9 @@ export const OsasuoritusTable = <DATA_KEYS extends string, P>(
               expandable={row.expandable}
               skipExpandableColumn={skipExpandableColumn}
               completed={completed ? completed(index) : undefined}
-              onRemove={onRemoveCb(index)}
+              onRemove={
+                onRemove !== undefined ? () => onRemove(index) : undefined
+              }
             />
           </TestIdLayer>
         ))}

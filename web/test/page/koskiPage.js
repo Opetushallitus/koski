@@ -36,9 +36,9 @@ function KoskiPage() {
         name = query
       }
       return function () {
-        return OppijaHaku.search(query, name)().then(
-          OppijaHaku.selectOppija(name)
-        )
+        return OppijaHaku.search(query, name)()
+          .then(OppijaHaku.selectOppija(name))
+          .then(wait.forMilliseconds(50))
       }
     },
     getSearchResults: function () {
@@ -187,7 +187,9 @@ function KoskiPage() {
       return S('.opiskeluoikeudet-total .value').text().slice(2)
     },
     waitUntilOppijaSelected: function (oppija) {
-      return wait.until(api.isOppijaSelected(oppija))
+      return wait.until(
+        () => api.isOppijaSelected(oppija)() && isReadyToResolveOpiskeluoikeus()
+      )
     },
     waitUntilAnyOppijaSelected: function () {
       return wait.until(function () {

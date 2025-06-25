@@ -86,7 +86,8 @@ describe('EPerusteet', function () {
           )
         ),
         click(findFirst('.lisaa-opiskeluoikeusjakso-modal .vahvista')),
-        editor.saveChanges
+        editor.saveChanges,
+        wait.forMilliseconds(50)
       )
       it('linkki osoittaa oikeaan eperusteeseen', function () {
         expect(S('.diaarinumero a')[0].href).to.contain('2434073')

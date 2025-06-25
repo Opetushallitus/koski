@@ -29,7 +29,6 @@ describe('Ylioppilastutkinto', function () {
     })
 
     describe('Osasuoritukset', function () {
-      before(opinnot.expandAll)
 
       it('kaikki osasuoritukset näkyvissä', function () {
         expect(
@@ -73,7 +72,6 @@ describe('Ylioppilastutkinto', function () {
     })
 
     describe('Osasuoritukset', function () {
-      before(opinnot.expandAll)
 
       it('kaikki osasuoritukset näkyvissä', function () {
         expect(
@@ -88,7 +86,7 @@ describe('Ylioppilastutkinto', function () {
   })
 
   describe('Kypsyyskoe jne', function () {
-    before(page.oppijaHaku.searchAndSelect('120674-064R'), opinnot.expandAll)
+    before(page.oppijaHaku.searchAndSelect('120674-064R'))
 
     it('kaikki osasuoritukset näkyvissä', function () {
       expect(
@@ -109,7 +107,7 @@ describe('Ylioppilastutkinto', function () {
   })
 
   describe('Vanha reaalikoe', function () {
-    before(page.oppijaHaku.searchAndSelect('120872-781Y'), opinnot.expandAll)
+    before(page.oppijaHaku.searchAndSelect('120872-781Y'))
 
     it('kaikki osasuoritukset näkyvissä', function () {
       expect(
@@ -127,7 +125,7 @@ describe('Ylioppilastutkinto', function () {
   })
 
   describe('Kieli puuttuu oppilastiedoista', function () {
-    before(page.oppijaHaku.searchAndSelect('120674-064R'), opinnot.expandAll)
+    before(page.oppijaHaku.searchAndSelect('120674-064R'))
 
     it('kaikki osasuoritukset näkyvissä', function () {
       expect(

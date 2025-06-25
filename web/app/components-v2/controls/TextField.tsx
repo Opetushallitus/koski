@@ -7,11 +7,12 @@ import { FieldEditorProps, FieldViewerProps } from '../forms/FormField'
 
 export type TextViewProps = CommonProps<FieldViewerProps<string, EmptyObject>>
 
-export const TextView: React.FC<TextViewProps> = (props) => (
-  <TestIdText {...common(props, ['TextView'])} id={props.testId}>
-    {props.value}
-  </TestIdText>
-)
+export const TextView: React.FC<TextViewProps> = (props) =>
+  props.value ? (
+    <TestIdText {...common(props, ['TextView'])} id={props.testId}>
+      {props.value}
+    </TestIdText>
+  ) : null
 
 export type TextEditProps = CommonProps<
   FieldEditorProps<

@@ -61,7 +61,9 @@ describe('Ammatillisten koulutusten arviointiasteikko', function () {
       wait.until(korhopankki.isReady),
       korhopankki.login('140493-2798'),
       wait.until(omattiedot.isVisible),
-      opinnot.valitseOmatTiedotOpiskeluoikeus('Luonto- ja ympäristöalan')
+      wait.until(isReadyToResolveOpiskeluoikeus),
+      opinnot.valitseOmatTiedotOpiskeluoikeus('Luonto- ja ympäristöalan'),
+      wait.forMilliseconds(50)
     )
 
     it('ok', function () {
