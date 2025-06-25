@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletRequest
 
 class CasOppijaCreationService(henkilöRepository: HenkilöRepository) {
   def findOrCreateByOidOrHetu(request: HttpServletRequest, tunnisteet: KansalaisenTunnisteet): Option[OppijaHenkilö] = {
-    tunnisteet.oppijaOid.flatMap(oid => henkilöRepository.findByOid(oid))
+    tunnisteet.oppijaOid.flatMap(oid => henkilöRepository.findByOid(oid, findMasterIfSlaveOid = true))
       .orElse(tunnisteet.hetu.flatMap(h => findOrCreate(request, h)))
   }
 
