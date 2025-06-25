@@ -161,7 +161,10 @@ type AmisArvosanaSelectProps = {
     >
   ) => void
 }
-const AmisArvosanaSelect = ({ value, onChange }: AmisArvosanaSelectProps) => {
+export const AmisArvosanaSelect = ({
+  value,
+  onChange
+}: AmisArvosanaSelectProps) => {
   const options = useKoodistoOptions(
     'arviointiasteikkoammatillinenhyvaksyttyhylatty',
     'arviointiasteikkoammatillinent1k3',

@@ -32,6 +32,7 @@ import { Koodistokoodiviite } from '../types/fi/oph/koski/schema/Koodistokoodivi
 import { NäytönArvioitsija } from '../types/fi/oph/koski/schema/NaytonArvioitsija'
 import { CommonProps } from '../components-v2/CommonProps'
 import { NäytönSuorituspaikka } from '../types/fi/oph/koski/schema/NaytonSuorituspaikka'
+import { AmisArvosanaSelect } from './Arviointi'
 
 export const NäyttöView = ({
   value
@@ -193,7 +194,6 @@ export const NäyttöEdit = ({
             }}
           />
         </KeyValueRow>
-        {/*TODO arvioinnit*/}
         <NäytönArviointiEdit
           value={value?.arviointi}
           onChange={(arviointi) =>
@@ -254,8 +254,13 @@ const NäytönArviointiEdit = ({
   return (
     <>
       <KeyValueRow localizableLabel="Arvosana">
-        {t(value?.arvosana.nimi)}
-        {/*TODO multi koodisto select*/}
+        <AmisArvosanaSelect
+          value={value?.arvosana}
+          onChange={(arvosana) =>
+            arvosana &&
+            onChange({ ...emptyNäytönArviointi, ...value, arvosana })
+          }
+        />
       </KeyValueRow>
       <KeyValueRow localizableLabel="Arviointipäivä">
         <DateInput
