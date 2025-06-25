@@ -14,11 +14,11 @@ trait HuollettavatRepository {
 
 object HuollettavatRepository {
   def apply(config: Config): HuollettavatRepository = {
-    if (Environment.isProdEnvironment(config)) {
+    if (Environment.isMockEnvironment(config) || config.getString("vtj.serviceUrl") == "mock") {
+      new MockHuollettavatRepository
+    } else {
       val vtjClient = VtjClient(config)
       new RemoteHuollettavatRepositoryVTJ(vtjClient)
-    } else {
-      new MockHuollettavatRepository
     }
   }
 }
