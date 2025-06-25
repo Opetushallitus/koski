@@ -10,7 +10,7 @@ import fi.oph.koski.eperusteetvalidation.{EPerusteetFiller, EPerusteetLops2019Va
 import fi.oph.koski.executors.GlobalExecutionContext
 import fi.oph.koski.fixture.{FixtureCreator, ValidationTestContext}
 import fi.oph.koski.hakemuspalvelu.HakemuspalveluService
-import fi.oph.koski.healthcheck.{HealthCheck, HealthMonitoring}
+import fi.oph.koski.healthcheck.{HealthChecker, HealthMonitoring}
 import fi.oph.koski.henkilo.{HenkilöRepository, Hetu, KoskiHenkilöCache, OpintopolkuHenkilöFacade}
 import fi.oph.koski.history.{KoskiOpiskeluoikeusHistoryRepository, YtrOpiskeluoikeusHistoryRepository}
 import fi.oph.koski.huoltaja.{HuollettavatRepository, HuoltajaServiceVtj}
@@ -172,7 +172,7 @@ class KoskiApplication(
   lazy val koskiSessionRepository = new KoskiSessionRepository(masterDatabase.db, sessionTimeout)
   lazy val fixtureCreator = new FixtureCreator(this)
   lazy val tiedonsiirtoService = new TiedonsiirtoService(openSearch, organisaatioRepository, henkilöRepository, koodistoViitePalvelu, hetu)
-  lazy val healthCheck = HealthCheck(this)
+  lazy val healthCheck = new HealthChecker(this)
   lazy val scheduledTasks = new KoskiScheduledTasks(this)
   lazy val ipService = new IPService(masterDatabase.db)
   lazy val prometheusRepository = PrometheusRepository(config)

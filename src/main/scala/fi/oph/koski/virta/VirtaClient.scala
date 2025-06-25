@@ -2,7 +2,8 @@ package fi.oph.koski.virta
 
 import com.typesafe.config.Config
 import fi.oph.koski.config.{Environment, SecretsManager}
-import fi.oph.koski.healthcheck.{HealthMonitoring, Subsystem}
+import fi.oph.koski.healthcheck.HealthMonitoring
+import fi.oph.koski.healthcheck.Subsystem.Virta
 import fi.oph.koski.henkilo.Hetu
 import fi.oph.koski.http.Http._
 import fi.oph.koski.http.{Http, HttpConnectionException}
@@ -140,11 +141,11 @@ case class RemoteVirtaClient(config: VirtaConfig, healthMonitoring: Option[Healt
   private def performHaku(xmlBody: Elem): Option[Elem] = {
     try {
       val result = Some(runIO(http.post(uri"", soapEnvelope(xmlBody))(Http.Encoders.xml)(Http.parseXml)))
-      healthMonitoring.foreach(_.setSubsystemStatus(Subsystem.Virta, operational = true))
+      healthMonitoring.foreach(_.setSubsystemStatus(Virta, operational = true))
       result
     } catch {
       case e: Throwable =>
-        healthMonitoring.foreach(_.setSubsystemStatus(Subsystem.Virta, operational = false))
+        healthMonitoring.foreach(_.setSubsystemStatus(Virta, operational = false))
         throw e
     }
   }

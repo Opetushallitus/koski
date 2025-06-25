@@ -1,8 +1,8 @@
 package fi.oph.koski.valpas.hakukooste
 
 import com.typesafe.config.Config
-import fi.oph.koski.config.KoskiApplication
-import fi.oph.koski.healthcheck.{HealthMonitoring, Subsystem}
+import fi.oph.koski.healthcheck.HealthMonitoring
+import fi.oph.koski.healthcheck.Subsystem.Suoritusrekisteri
 import fi.oph.koski.http.Http.{StringToUriConverter, parseJsonWithDeserialize, unsafeRetryingClient}
 import fi.oph.koski.http.{Http, HttpException, HttpStatus, ServiceConfig, VirkailijaHttpClient}
 import fi.oph.koski.json.Json4sHttp4s.json4sEncoderOf
@@ -84,7 +84,7 @@ class SureHakukoosteService(
           timeout = totalTimeout
         )(encoder)(decoder)
           .map { response =>
-            healthMonitoring.setSubsystemStatus(Subsystem.Suoritusrekisteri, operational = response.isRight)
+            healthMonitoring.setSubsystemStatus(Suoritusrekisteri, operational = response.isRight)
             response
           }
           .handleError {
