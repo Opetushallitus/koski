@@ -3,6 +3,7 @@ package fi.oph.koski.api.misc
 import fi.oph.koski.db.KoskiTables
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.documentation.AmmatillinenExampleData._
+import fi.oph.koski.documentation.ExampleData.suomenKieli
 import fi.oph.koski.documentation.{AmmatillinenExampleData, ExamplesEsiopetus}
 import fi.oph.koski.fixture.AmmatillinenOpiskeluoikeusTestData
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
@@ -611,6 +612,39 @@ class KäyttöoikeusryhmätSpec
           opiskeluoikeustyypit = List("kielitutkinto"),
           päätasonsuoritustyypit = List("yleinenkielitutkinto", "valtionhallinnonkielitutkinto")
         )
+      }
+    }
+  }
+
+  "Organisaation käyttöoikeudet, mutta rajoitettu tiettyyn päätason suoritukseen" - {
+    "Käyttäjä voi kirjoittaa opiskeluoikeuden oikealla päätason suorituksella" in {
+      val oo = AmmatillinenOpiskeluoikeusTestData.opiskeluoikeus(
+        oppilaitosId = MockOrganisaatiot.stadinAmmattiopisto
+      ).copy(
+        suoritukset = List(
+          TelmaKoulutuksenSuoritus(
+            koulutusmoduuli = TelmaKoulutus(
+              perusteenDiaarinumero = Some("OPH-2659-2017"),
+            ),
+            toimipiste = Toimipiste(oid = MockOrganisaatiot.stadinAmmattiopisto),
+            suorituskieli = suomenKieli,
+            osasuoritukset = None,
+          )
+        )
+      )
+      val oppija = KoskiSpecificMockOppijat.telma
+      setupOppijaWithOpiskeluoikeus(oo, oppija, MockUsers.stadinTelma) {
+        verifyResponseStatusOk()
+      }
+    }
+
+    "Käyttäjä ei voi kirjoittaa opiskeluoikeutta, jossa on vääränlainen päätason suoritus" in {
+      val oo = AmmatillinenOpiskeluoikeusTestData.opiskeluoikeus( // <-- ei ole telma
+        oppilaitosId = MockOrganisaatiot.stadinAmmattiopisto
+      )
+      val oppija = KoskiSpecificMockOppijat.telma
+      setupOppijaWithOpiskeluoikeus(oo, oppija, MockUsers.stadinTelma) {
+        verifyResponseStatus(403, KoskiErrorCategory.forbidden.opiskeluoikeudenTyyppi("Ei oikeuksia opiskeluoikeuden tyyppiin ammatillinenkoulutus (ammatillinentutkinto)"))
       }
     }
   }

@@ -272,7 +272,7 @@ case class OoPtsMask(
 ) {
   override def toString: String = päätasonSuoritukset match {
     case None => opiskeluoikeus
-    case Some(ptss) => s"$opiskeluoikeus: ${ptss.mkString(", ")}"
+    case Some(ptss) => s"$opiskeluoikeus (${ptss.mkString(", ")})"
   }
 
   def intersects(other: OoPtsMask): Boolean =
