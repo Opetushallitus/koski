@@ -52,9 +52,9 @@ class KoskiSpecificSession(
   lazy val varhaiskasvatusKäyttöoikeudet: Set[KäyttöoikeusVarhaiskasvatusToimipiste] = käyttöoikeudet.collect { case k: KäyttöoikeusVarhaiskasvatusToimipiste => k }
   lazy val varhaiskasvatusKoulutustoimijat: Set[Oid] = varhaiskasvatusKäyttöoikeudet.map(_.koulutustoimija.oid)
   lazy val hasKoulutustoimijaVarhaiskasvatuksenJärjestäjäAccess: Boolean = varhaiskasvatusKäyttöoikeudet.nonEmpty
-  lazy val allowedOpiskeluoikeusTyypit: Set[OoPtsMask] = käyttöoikeudet.flatMap(_.allowedOpiskeluoikeusTyypit)
-  lazy val hasKoulutusmuotoRestrictions: Boolean = allowedOpiskeluoikeusTyypit != OpiskeluoikeudenTyyppi.kaikkiTyypit(isRoot).map(t => OoPtsMask(t.koodiarvo))
-  lazy val allowedPäätasonSuorituksenTyypit: Set[String] = allowedOpiskeluoikeusTyypit.flatMap(_.päätasonSuoritukset).flatten
+  lazy val allowedOpiskeluoikeudetJaPäätasonSuoritukset: Set[OoPtsMask] = käyttöoikeudet.flatMap(_.allowedOpiskeluoikeusTyypit)
+  lazy val hasKoulutusmuotoRestrictions: Boolean = allowedOpiskeluoikeudetJaPäätasonSuoritukset != OpiskeluoikeudenTyyppi.kaikkiTyypit(isRoot).map(t => OoPtsMask(t.koodiarvo))
+  lazy val allowedPäätasonSuorituksenTyypit: Set[String] = allowedOpiskeluoikeudetJaPäätasonSuoritukset.flatMap(_.päätasonSuoritukset).flatten
   lazy val hasPäätasonsuoritusRestrictions: Boolean = allowedPäätasonSuorituksenTyypit.nonEmpty
   lazy val kaikkiKäyttöoikeudet: Set[Käyttöoikeus] = käyttöoikeudet
 

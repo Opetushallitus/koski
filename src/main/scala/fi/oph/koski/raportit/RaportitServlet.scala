@@ -262,7 +262,7 @@ class RaportitServlet(implicit val application: KoskiApplication) extends KoskiS
   }
 
   private def requireOpiskeluoikeudenKayttooikeudet(opiskeluoikeudenTyyppiViite: Koodistokoodiviite) = {
-    if (!session.allowedOpiskeluoikeusTyypit.contains(OoPtsMask(opiskeluoikeudenTyyppiViite.koodiarvo))) {
+    if (!session.allowedOpiskeluoikeudetJaPäätasonSuoritukset.intersects(OoPtsMask(opiskeluoikeudenTyyppiViite.koodiarvo))) {
       haltWithStatus(KoskiErrorCategory.forbidden.opiskeluoikeudenTyyppi())
     }
   }

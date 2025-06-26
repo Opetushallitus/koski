@@ -99,7 +99,7 @@ class KoskiSpecificSessionSpec
       }
       "oppilaitos ei Koski-oikeuksia" in {
         val session = createAndVerifySession("Otto", MockUsers.eiOikkia.ldapUser)
-        session.allowedOpiskeluoikeusTyypit should be(empty)
+        session.allowedOpiskeluoikeudetJaPäätasonSuoritukset should be(empty)
         session.hasAnyReadAccess should be(false)
       }
       "kela suppeat oikeudet" in {
@@ -119,7 +119,7 @@ class KoskiSpecificSessionSpec
       "viranomainen perusopetus" in {
         val session = createAndVerifySession("Pertti", MockUsers.perusopetusViranomainen.ldapUser)
         val expectedOpiskeluoikeustyypit = Set(esiopetus, perusopetus, aikuistenperusopetus, perusopetuksenlisaopetus, perusopetukseenvalmistavaopetus, internationalschool, europeanschoolofhelsinki).map(OoPtsMask.apply)
-        session.allowedOpiskeluoikeusTyypit should equal(expectedOpiskeluoikeustyypit)
+        session.allowedOpiskeluoikeudetJaPäätasonSuoritukset should equal(expectedOpiskeluoikeustyypit)
       }
       "viranomainen toinen aste" in {
         val session = createAndVerifySession("Teuvo", MockUsers.toinenAsteViranomainen.ldapUser)
@@ -136,11 +136,11 @@ class KoskiSpecificSessionSpec
           europeanschoolofhelsinki,
           ebtutkinto
         ).map(OoPtsMask.apply)
-        session.allowedOpiskeluoikeusTyypit should equal(expectedOpiskeluoikeustyypit)
+        session.allowedOpiskeluoikeudetJaPäätasonSuoritukset should equal(expectedOpiskeluoikeustyypit)
       }
       "viranomainen korkeakoulu" in {
         val session = createAndVerifySession("Kaisa", MockUsers.korkeakouluViranomainen.ldapUser)
-        session.allowedOpiskeluoikeusTyypit should equal(Set(OoPtsMask(OpiskeluoikeudenTyyppi.korkeakoulutus)))
+        session.allowedOpiskeluoikeudetJaPäätasonSuoritukset should equal(Set(OoPtsMask(OpiskeluoikeudenTyyppi.korkeakoulutus)))
       }
       "tilastokeskus saa arkaluontoisenkin datan" in {
         val session = createAndVerifySession("Teppo", MockUsers.tilastokeskusKäyttäjä.ldapUser)
@@ -171,7 +171,7 @@ class KoskiSpecificSessionSpec
     session.globalViranomaisKäyttöoikeudet should be(expectedKäyttöoikeudet.collect { case k : KäyttöoikeusViranomainen => k})
 
     val expectedAllowedOpiskeluoikeudenTyypit = expectedKäyttöoikeudet.flatMap(_.allowedOpiskeluoikeusTyypit)
-    session.allowedOpiskeluoikeusTyypit should be(expectedAllowedOpiskeluoikeudenTyypit)
+    session.allowedOpiskeluoikeudetJaPäätasonSuoritukset should be(expectedAllowedOpiskeluoikeudenTyypit)
 
     session.hasKoulutusmuotoRestrictions should be(expectedAllowedOpiskeluoikeudenTyypit != OpiskeluoikeudenTyyppi.kaikkiTyypit(isRoot).map(t => OoPtsMask(t.koodiarvo)))
     session

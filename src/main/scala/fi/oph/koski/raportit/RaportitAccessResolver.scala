@@ -40,7 +40,7 @@ case class RaportitAccessResolver(organisaatioRepository: OrganisaatioRepository
       .toSet
       .flatMap(raportinTyypitKoulutusmuodolle(_, isKoulutustoimija))
       .filter(checkRaporttiAccessIfAccessIsLimited(_))
-      .filter(raportti => session.allowedOpiskeluoikeusTyypit.contains(OoPtsMask(raportti.opiskeluoikeudenTyyppi)))
+      .filter(raportti => session.allowedOpiskeluoikeudetJaPäätasonSuoritukset.intersects(OoPtsMask(raportti.opiskeluoikeudenTyyppi)))
   }
 
   private def filterOppilaitosOidsByKoulutusmuoto(oppilaitosOids: Seq[String], koulutusmuoto: String): Seq[String] = {
