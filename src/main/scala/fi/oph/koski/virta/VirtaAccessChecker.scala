@@ -16,5 +16,5 @@ class VirtaAccessChecker(käyttöoikeudet: KäyttöoikeusRepository) extends Acc
   }
 
   override def hasGlobalAccess(user: KoskiSpecificSession): Boolean =
-    user.hasGlobalReadAccess || (user.hasGlobalKoulutusmuotoReadAccess && user.allowedOpiskeluoikeusTyypit.contains(OoPtsMask(OpiskeluoikeudenTyyppi.korkeakoulutus.koodiarvo)))
+    user.hasGlobalReadAccess || (user.hasGlobalKoulutusmuotoReadAccess && user.allowedOpiskeluoikeudetJaPäätasonSuoritukset.intersects(OoPtsMask(OpiskeluoikeudenTyyppi.korkeakoulutus.koodiarvo)))
 }

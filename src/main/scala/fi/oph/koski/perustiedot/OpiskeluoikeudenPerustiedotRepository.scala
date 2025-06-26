@@ -216,7 +216,7 @@ class OpiskeluoikeudenPerustiedotRepository(
 
     val koulutusFilters: List[Map[String, Any]] = if (session.hasKoulutusmuotoRestrictions) {
       List(OpenSearch.anyFilter(
-        session.allowedOpiskeluoikeusTyypit.toList.map { ooPts =>
+        session.allowedOpiskeluoikeudetJaPäätasonSuoritukset.toList.map { ooPts =>
           val ooFilter = Map("term" -> Map("tyyppi.koodiarvo" -> ooPts.opiskeluoikeus))
           val ptsFilter = ooPts.päätasonSuoritukset.map { ptss =>
             OpenSearch.nestedFilter("suoritukset", Map("terms" -> Map("suoritukset.tyyppi.koodiarvo" -> ptss)))

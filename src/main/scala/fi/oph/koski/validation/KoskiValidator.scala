@@ -502,7 +502,7 @@ class KoskiValidator(
   }
 
   private def validateOpiskeluoikeudenTyypinAccess(tyyppi: OoPtsMask)(implicit user: KoskiSpecificSession, accessType: AccessType.Value) =
-    HttpStatus.validate(user.allowedOpiskeluoikeusTyypit.contains(tyyppi)) {
+    HttpStatus.validate(user.allowedOpiskeluoikeudetJaPäätasonSuoritukset.intersects(tyyppi)) {
       KoskiErrorCategory.forbidden.opiskeluoikeudenTyyppi("Ei oikeuksia opiskeluoikeuden tyyppiin " + tyyppi)
     }
 

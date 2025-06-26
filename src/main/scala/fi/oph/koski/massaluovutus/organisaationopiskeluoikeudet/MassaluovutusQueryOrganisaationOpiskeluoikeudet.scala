@@ -70,7 +70,7 @@ trait MassaluovutusQueryOrganisaationOpiskeluoikeudet extends MassaluovutusQuery
   def queryAllowed(application: KoskiApplication)(implicit user: KoskiSpecificSession): Boolean =
     user.hasGlobalReadAccess || (
       organisaatioOid.exists(user.organisationOids(AccessType.read).contains)
-        && koulutusmuoto.forall(k => user.allowedOpiskeluoikeusTyypit.contains(OoPtsMask(k)))
+        && koulutusmuoto.forall(k => user.allowedOpiskeluoikeudetJaPäätasonSuoritukset.intersects(OoPtsMask(k)))
         && user.sensitiveDataAllowed(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))
       )
 
@@ -177,7 +177,7 @@ trait MassaluovutusQueryOrganisaationOpiskeluoikeudet extends MassaluovutusQuery
     allowedKoulutusmuodotForUser(session).size == MassaluovutusQueryOrganisaationOpiskeluoikeudet.allowedKoulutusmuodot.size
 
   protected def allowedKoulutusmuodotForUser(session: KoskiSpecificSession): List[String] =
-    MassaluovutusQueryOrganisaationOpiskeluoikeudet.allowedKoulutusmuodot.intersect(session.allowedOpiskeluoikeusTyypit.toOpiskeluoikeudenTyypit).toList
+    MassaluovutusQueryOrganisaationOpiskeluoikeudet.allowedKoulutusmuodot.intersect(session.allowedOpiskeluoikeudetJaPäätasonSuoritukset.toOpiskeluoikeudenTyypit).toList
 }
 
 object MassaluovutusQueryOrganisaationOpiskeluoikeudet {

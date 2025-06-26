@@ -142,7 +142,7 @@ class TiedonsiirtoService(
       ))
       val filter = if (session.hasKoulutusmuotoRestrictions) {
         OpenSearch.allFilter(List(orgFilter, Map(
-          "terms" -> Map("koulutusmuoto" -> session.allowedOpiskeluoikeusTyypit)
+          "terms" -> Map("koulutusmuoto" -> session.allowedOpiskeluoikeudetJaPäätasonSuoritukset)
         )))
       } else {
         orgFilter
