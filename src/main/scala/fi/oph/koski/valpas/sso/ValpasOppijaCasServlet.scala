@@ -2,6 +2,7 @@ package fi.oph.koski.valpas.sso
 
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.henkilo.OppijaHenkilö
+import fi.oph.koski.huoltaja.HuollettavienHakuOnnistui
 import fi.oph.koski.koskiuser.{AuthenticationUser, UserLanguage}
 import fi.oph.koski.log.LogUserContext
 import fi.oph.koski.servlet.NoCache
@@ -82,13 +83,14 @@ class ValpasOppijaCasServlet(implicit val application: KoskiApplication) extends
     serviceTicket: Option[String]
   ): AuthenticationUser = {
     val huollettavat = hetu.map(huoltajaServiceVtj.getHuollettavat)
+      .getOrElse(HuollettavienHakuOnnistui(List.empty)) // Jos ei hetua, asetetaan tyhjä hakutulos
     AuthenticationUser(
       oid = oppija.oid,
       username = oppija.oid,
       name = s"${oppija.etunimet} ${oppija.sukunimi}",
       serviceTicket = serviceTicket,
       kansalainen = true,
-      huollettavat = huollettavat
+      huollettavat = Some(huollettavat)
     )
   }
 }

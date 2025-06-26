@@ -8,6 +8,7 @@ import fi.oph.koski.koskiuser.{AuthenticationUser, DirectoryClientLogin, KoskiSp
 import fi.oph.koski.log.LogUserContext
 import fi.oph.koski.servlet.{NoCache, VirkailijaHtmlServlet}
 import fi.oph.koski.cas.CasLogout
+import fi.oph.koski.huoltaja.HuollettavienHakuOnnistui
 import org.scalatra.{Cookie, CookieOptions}
 
 import java.net.URLEncoder.encode
@@ -57,7 +58,8 @@ class CasServlet()(implicit val application: KoskiApplication) extends Virkailij
               case Some(oppija) =>
                 val huollettavat = oppija.hetu.orElse(kansalaisenTunnisteet.hetu)
                   .map(application.huoltajaServiceVtj.getHuollettavat)
-                val user = AuthenticationUser(oppija.oid, oppija.oid, s"${oppija.etunimet} ${oppija.sukunimi}", serviceTicket = Some(ticket), kansalainen = true, huollettavat = huollettavat)
+                  .getOrElse(HuollettavienHakuOnnistui(List.empty)) // Jos ei hetua, asetetaan tyhjä hakutulos
+                val user = AuthenticationUser(oppija.oid, oppija.oid, s"${oppija.etunimet} ${oppija.sukunimi}", serviceTicket = Some(ticket), kansalainen = true, huollettavat = Some(huollettavat))
                 koskiSessions.store(ticket, user, LogUserContext.clientIpFromRequest(request), LogUserContext.userAgent(request))
                 UserLanguage.setLanguageCookie(UserLanguage.getLanguageFromLDAP(user, application.directoryClient).getOrElse(UserLanguage.getLanguageFromCookie(request)), response)
                 setUser(Right(user))
