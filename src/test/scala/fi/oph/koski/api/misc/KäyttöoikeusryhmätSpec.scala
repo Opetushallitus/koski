@@ -3,15 +3,19 @@ package fi.oph.koski.api.misc
 import fi.oph.koski.db.KoskiTables
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.documentation.AmmatillinenExampleData._
+import fi.oph.koski.documentation.ExampleData.suomenKieli
 import fi.oph.koski.documentation.{AmmatillinenExampleData, ExamplesEsiopetus}
 import fi.oph.koski.fixture.AmmatillinenOpiskeluoikeusTestData
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.http.KoskiErrorCategory
+import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.koskiuser.MockUsers.{korkeakouluViranomainen, perusopetusViranomainen, toinenAsteViranomainen, viranomainenGlobaaliKatselija}
-import fi.oph.koski.koskiuser.{KoskiSpecificSession, MockUser, MockUsers, UserWithPassword}
+import fi.oph.koski.koskiuser._
 import fi.oph.koski.organisaatio.MockOrganisaatiot
+import fi.oph.koski.perustiedot.OpiskeluoikeudenPerustiedotResponse
 import fi.oph.koski.schema._
 import fi.oph.koski.{DatabaseTestMethods, DirtiesFixtures, KoskiHttpSpec}
+import org.json4s.jackson.JsonMethods.parse
 import org.scalatest.freespec.AnyFreeSpec
 
 import java.time.LocalDate
@@ -490,6 +494,159 @@ class KäyttöoikeusryhmätSpec
 
   "Migri ei voi kutsua muita apeja" in {
     verifyMuidenApienKutsuminenEstetty(MockUsers.migriKäyttäjä)
+  }
+
+  "Globaalit lukuoikeudet, mutta rajattu tiettyyn päätason suoritukseen" - {
+    "Perustiedot-api: Näkee vain sallitun päätason suorituksen mukaiset opiskeluoikeudet" - {
+      def testPerustiedot(user: KoskiMockUser, opiskeluoikeustyypit: List[String], päätasonsuoritustyypit: List[String]) = {
+        authGet("api/opiskeluoikeus/perustiedot", user) {
+          verifyResponseStatusOk()
+          val tiedot = readPaginatedResponse[OpiskeluoikeudenPerustiedotResponse].tiedot
+          tiedot
+            .map(_.tyyppi.koodiarvo)
+            .distinct
+            .sorted should equal(opiskeluoikeustyypit.sorted)
+          tiedot
+            .flatMap(_.suoritukset)
+            .map(_.tyyppi.koodiarvo)
+            .distinct
+            .sorted should equal(päätasonsuoritustyypit.sorted)
+        }
+      }
+
+      "Yleinen kielitutkinto" in {
+        testPerustiedot(
+          user = MockUsers.yleisenKielitutkinnonKäyttäjä,
+          opiskeluoikeustyypit = List("kielitutkinto"),
+          päätasonsuoritustyypit = List("yleinenkielitutkinto")
+        )
+      }
+
+      "Valtionhallinnon kielitutkinto" in {
+        testPerustiedot(
+          user = MockUsers.valtionhallinnonKielitutkinnonKäyttäjä,
+          opiskeluoikeustyypit = List("kielitutkinto"),
+          päätasonsuoritustyypit = List("valtionhallinnonkielitutkinto")
+        )
+      }
+
+      "Yleinen kielitutkinto + valtionhallinnon kielitutkinto" in {
+        testPerustiedot(
+          user = MockUsers.ykiJaVktKäyttäjä,
+          opiskeluoikeustyypit = List("kielitutkinto"),
+          päätasonsuoritustyypit = List("yleinenkielitutkinto", "valtionhallinnonkielitutkinto")
+        )
+      }
+    }
+
+    "Vanhan käyttöliittymän oppija editor -api: käyttäjä näkee oppijalta vain sallitut päätason suoritukset" - {
+      def testEditorApi(user: MockUser, expectedWords: List[String], unexpectedWords: List[String]): Unit = {
+        authGet("api/editor/1.2.246.562.24.00000000177", user) {
+          verifyResponseStatusOk()
+          expectedWords.foreach { response.body should include (_) }
+          unexpectedWords.foreach { response.body should not include _ }
+        }
+      }
+
+      "Yleinen kielitutkinto" in {
+        testEditorApi(
+          user = MockUsers.yleisenKielitutkinnonKäyttäjä,
+          expectedWords = List("yleinenkielitutkinto"),
+          unexpectedWords = List("valtionhallinnonkielitutkinto")
+        )
+      }
+
+      "Valtionhallinnon kielitutkinto" in {
+        testEditorApi(
+          user = MockUsers.valtionhallinnonKielitutkinnonKäyttäjä,
+          expectedWords = List("valtionhallinnonkielitutkinto"),
+          unexpectedWords = List("yleinenkielitutkinto")
+        )
+      }
+
+      "Yleinen kielitutkinto + valtionhallinnon kielitutkinto" in {
+        testEditorApi(
+          user = MockUsers.ykiJaVktKäyttäjä,
+          expectedWords = List("yleinenkielitutkinto", "valtionhallinnonkielitutkinto"),
+          unexpectedWords = List()
+        )
+      }
+    }
+
+    "Uuden käyttöliittymän oppija-api: käyttäjä näkee oppijalta vain sallitut päätason suoritukset" - {
+      def testUi2OppijaApi(user: MockUser, opiskeluoikeustyypit: List[String], päätasonsuoritustyypit: List[String]) = {
+        authGet("api/oppija/1.2.246.562.24.00000000177/uiv2", user) {
+          verifyResponseStatusOk()
+          val oppija = JsonSerializer.extract[Oppija](parse(body))
+          oppija.opiskeluoikeudet
+            .map(_.tyyppi.koodiarvo)
+            .distinct
+            .sorted should equal(opiskeluoikeustyypit.sorted)
+          oppija.opiskeluoikeudet
+            .flatMap(_.suoritukset)
+            .map(_.tyyppi.koodiarvo)
+            .distinct
+            .sorted should equal(päätasonsuoritustyypit.sorted)
+        }
+      }
+
+      "Yleinen kielitutkinto" in {
+        testUi2OppijaApi(
+          user = MockUsers.yleisenKielitutkinnonKäyttäjä,
+          opiskeluoikeustyypit = List("kielitutkinto"),
+          päätasonsuoritustyypit = List("yleinenkielitutkinto")
+        )
+      }
+
+      "Valtionhallinnon kielitutkinto" in {
+        testUi2OppijaApi(
+          user = MockUsers.valtionhallinnonKielitutkinnonKäyttäjä,
+          opiskeluoikeustyypit = List("kielitutkinto"),
+          päätasonsuoritustyypit = List("valtionhallinnonkielitutkinto")
+        )
+      }
+
+      "Yleinen kielitutkinto + valtionhallinnon kielitutkinto" in {
+        testUi2OppijaApi(
+          user = MockUsers.ykiJaVktKäyttäjä,
+          opiskeluoikeustyypit = List("kielitutkinto"),
+          päätasonsuoritustyypit = List("yleinenkielitutkinto", "valtionhallinnonkielitutkinto")
+        )
+      }
+    }
+  }
+
+  "Organisaation käyttöoikeudet, mutta rajoitettu tiettyyn päätason suoritukseen" - {
+    "Käyttäjä voi kirjoittaa opiskeluoikeuden oikealla päätason suorituksella" in {
+      val oo = AmmatillinenOpiskeluoikeusTestData.opiskeluoikeus(
+        oppilaitosId = MockOrganisaatiot.stadinAmmattiopisto
+      ).copy(
+        suoritukset = List(
+          TelmaKoulutuksenSuoritus(
+            koulutusmoduuli = TelmaKoulutus(
+              perusteenDiaarinumero = Some("OPH-2659-2017"),
+            ),
+            toimipiste = Toimipiste(oid = MockOrganisaatiot.stadinAmmattiopisto),
+            suorituskieli = suomenKieli,
+            osasuoritukset = None,
+          )
+        )
+      )
+      val oppija = KoskiSpecificMockOppijat.telma
+      setupOppijaWithOpiskeluoikeus(oo, oppija, MockUsers.stadinTelma) {
+        verifyResponseStatusOk()
+      }
+    }
+
+    "Käyttäjä ei voi kirjoittaa opiskeluoikeutta, jossa on vääränlainen päätason suoritus" in {
+      val oo = AmmatillinenOpiskeluoikeusTestData.opiskeluoikeus( // <-- ei ole telma
+        oppilaitosId = MockOrganisaatiot.stadinAmmattiopisto
+      )
+      val oppija = KoskiSpecificMockOppijat.telma
+      setupOppijaWithOpiskeluoikeus(oo, oppija, MockUsers.stadinTelma) {
+        verifyResponseStatus(403, KoskiErrorCategory.forbidden.opiskeluoikeudenTyyppi("Ei oikeuksia opiskeluoikeuden tyyppiin ammatillinenkoulutus (ammatillinentutkinto)"))
+      }
+    }
   }
 
   private def verifyMuidenApienKutsuminenEstetty(user: MockUser) = {
