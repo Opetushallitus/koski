@@ -2,10 +2,10 @@ package fi.oph.koski.koskiuser
 
 import fi.oph.koski.koskiuser.AuthenticationUser.fromDirectoryUser
 import fi.oph.koski.koskiuser.MockKäyttöoikeusryhmät._
-import fi.oph.koski.koskiuser.Rooli.{KIELITUTKINTO, OPHKATSELIJA}
+import fi.oph.koski.koskiuser.Rooli.{AMMATILLINENKOULUTUS, KIELITUTKINTO, OPHKATSELIJA}
 import fi.oph.koski.organisaatio.MockOrganisaatiot._
 import fi.oph.koski.organisaatio.{MockOrganisaatiot, Opetushallitus}
-import fi.oph.koski.schema.SuorituksenTyyppi.{valtionhallinnonKielitutkinto, yleinenKielitutkinto}
+import fi.oph.koski.schema.SuorituksenTyyppi.{telma, valtionhallinnonKielitutkinto, yleinenKielitutkinto}
 import fi.oph.koski.userdirectory._
 
 import java.net.InetAddress
@@ -666,6 +666,19 @@ object MockUsers {
     )
   )
 
+  val stadinTelma = KoskiMockUser(
+    "stadin-telma",
+    "stadin-telma",
+    "1.2.246.562.10.53400745793",
+    List(
+      organisaationPäätasonSuoritukseenRajoitettuPäivittäjä(
+        MockOrganisaatiot.stadinAmmattiopisto,
+        AMMATILLINENKOULUTUS,
+        telma
+      )
+    )
+  )
+
   val users = List(
     kalle,
     pärre,
@@ -739,6 +752,7 @@ object MockUsers {
     yleisenKielitutkinnonKäyttäjä,
     valtionhallinnonKielitutkinnonKäyttäjä,
     ykiJaVktKäyttäjä,
+    stadinTelma,
   )
 }
 

@@ -496,7 +496,7 @@ class KoskiValidator(
 
   private def validateAccess(oo: Opiskeluoikeus)(implicit user: KoskiSpecificSession, accessType: AccessType.Value): HttpStatus = {
     HttpStatus.fold(
-      validateOpiskeluoikeudenTyypinAccess(OoPtsMask(oo.tyyppi.koodiarvo)),
+      validateOpiskeluoikeudenTyypinAccess(OoPtsMask.of(oo)),
       validateOrganisaatioAccess(oo)
     )
   }

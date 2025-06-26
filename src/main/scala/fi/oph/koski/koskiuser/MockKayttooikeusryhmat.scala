@@ -58,4 +58,10 @@ object MockKäyttöoikeusryhmät {
       Rooli.rooliPäätasonSuoritukseen(opiskeluoikeudenTyyppi, päätasonSuorituksenTyyppi)
     ))
 
+  def organisaationPäätasonSuoritukseenRajoitettuPäivittäjä(organisaatioOid: String, opiskeluoikeudenTyyppi: String, päätasonSuorituksenTyyppi: SuorituksenTyyppi.SuorituksenTyyppi) =
+    organisaatioKäyttäjä(organisaatioOid, List(
+      Rooli.READ_UPDATE,
+      Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT,
+      Rooli.rooliPäätasonSuoritukseen(opiskeluoikeudenTyyppi, päätasonSuorituksenTyyppi)
+    ))
 }
