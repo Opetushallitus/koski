@@ -1,6 +1,6 @@
 import * as $ from 'optics-ts'
 import React from 'react'
-import { TestIdLayer, useTestId } from '../../appstate/useTestId'
+import { TestIdLayer, TestIdText, useTestId } from '../../appstate/useTestId'
 import { t } from '../../i18n/i18n'
 import { SelitettyOsaamisenTunnustaminen } from '../../types/fi/oph/koski/schema/SelitettyOsaamisenTunnustaminen'
 import { VapaanSivistystyönOpintojenSuorituksenOsaamisenTunnustaminen } from '../../types/fi/oph/koski/schema/VapaanSivistystyonOpintojenSuorituksenOsaamisenTunnustaminen'
@@ -134,13 +134,15 @@ export const OsaamisenTunnustusView = (
   props: CommonProps<FieldViewerProps<OsaamisenTunnustaminen, EmptyObject>>
 ) => {
   return (
-    <KeyValueTable>
-      <KeyValueRow localizableLabel="Selite">
-        {t(props.value?.selite) || '–'}
-      </KeyValueRow>
-      <KeyValueRow localizableLabel="Rahoituksen piirissä">
-        <BooleanView value={props.value?.rahoituksenPiirissä} />
-      </KeyValueRow>
-    </KeyValueTable>
+    <TestIdLayer id="tunnustettu">
+      <KeyValueTable>
+        <KeyValueRow localizableLabel="Selite">
+          <TestIdText id="selite">{t(props.value?.selite) || '–'}</TestIdText>
+        </KeyValueRow>
+        <KeyValueRow localizableLabel="Rahoituksen piirissä">
+          <BooleanView value={props.value?.rahoituksenPiirissä} />
+        </KeyValueRow>
+      </KeyValueTable>
+    </TestIdLayer>
   )
 }
