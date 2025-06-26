@@ -2,6 +2,7 @@
 
 ## 27.6.2025
 - Muutettu syksyllä voimaan tulevia tuen päätösten validaatioita; tuen päätös saa olla voimassa jo ennen opiskeluoikeuden alkua, mutta ei saa päättyä ennen opiskeluoikeuden alkua
+- Jos perusopetuksen vuosiluokan vahvistetun suorituksen osasuorituksella on rajattu oppimäärä, osasuorituksen arvosana voi olla vain "S" tai "5" riippuen vuosiluokasta.
 
 ## 22.5.2025
 
