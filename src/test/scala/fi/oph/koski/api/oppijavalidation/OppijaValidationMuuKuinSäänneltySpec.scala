@@ -61,6 +61,51 @@ class OppijaValidationMuuKuinSäänneltySpec extends AnyFreeSpec with PutOpiskel
         }
       }
     }
+
+    "Duplikaatit opiskeluoikeudet" - {
+      "Vastaavaa opiskeluoikeutta ei voi lisätä kahdesti" in {
+        setupOppijaWithOpiskeluoikeus(ExamplesMuuKuinSäänneltyKoulutus.Opiskeluoikeus.kesken, defaultHenkilö){
+          verifyResponseStatusOk()
+        }
+
+        postOpiskeluoikeus(ExamplesMuuKuinSäänneltyKoulutus.Opiskeluoikeus.kesken, defaultHenkilö){
+          verifyResponseStatus(409, KoskiErrorCategory.conflict.exists())
+        }
+      }
+      "Vastaavan opiskeluoikeuden voi lisätä, kun opiskeluoikeuksien voimassaolot eivät ole ajallisesti päällekkäin" in {
+        setupOppijaWithOpiskeluoikeus(ExamplesMuuKuinSäänneltyKoulutus.Opiskeluoikeus.suoritettu, defaultHenkilö){
+          verifyResponseStatusOk()
+        }
+
+        val ooAlkaaMyöhemmin = ExamplesMuuKuinSäänneltyKoulutus.Opiskeluoikeus.kesken.copy(
+          tila = MuunKuinSäännellynKoulutuksenTila(List(
+            ExamplesMuuKuinSäänneltyKoulutus.Opiskeluoikeus.OpiskeluoikeudenJakso.läsnä(LocalDate.of(2023, 2, 2))
+          ))
+        )
+        postOpiskeluoikeus(ooAlkaaMyöhemmin, defaultHenkilö){
+          verifyResponseStatusOk()
+        }
+      }
+      "Vastaavan opiskeluoikeuden voi lisätä, vaikka sen voimassaolo on ajallisesti päällekkäin, kun opintokokonaisuus on eri" in {
+        val ooSarjakuvailmaisu = ExamplesMuuKuinSäänneltyKoulutus.Opiskeluoikeus.kesken.copy(
+          suoritukset = List(
+            ExamplesMuuKuinSäänneltyKoulutus.PäätasonSuoritus.suoritusIlmanOsasuorituksia.copy(
+              koulutusmoduuli = MuuKuinSäänneltyKoulutus(
+                opintokokonaisuus = Koodistokoodiviite("1139", None, "opintokokonaisuudet", Some(1))
+              )
+            )
+          )
+        )
+
+        setupOppijaWithOpiskeluoikeus(ooSarjakuvailmaisu, defaultHenkilö){
+          verifyResponseStatusOk()
+        }
+
+        postOpiskeluoikeus(ExamplesMuuKuinSäänneltyKoulutus.Opiskeluoikeus.kesken, defaultHenkilö){
+          verifyResponseStatusOk()
+        }
+      }
+    }
   }
 
   override def defaultOpiskeluoikeus: MuunKuinSäännellynKoulutuksenOpiskeluoikeus = ExamplesMuuKuinSäänneltyKoulutus.Opiskeluoikeus.kesken
