@@ -157,9 +157,33 @@ class OppijaValidationVapaaSivistystyöJotpaSpec extends AnyFreeSpec with PutOpi
       }
 
       "JOTPA-opiskeluoikeuksien luominen ja päivitys" - {
-        val keskeneräinenOoIlmanTunnistetietoja = ExamplesVapaaSivistystyöJotpa.Opiskeluoikeus.keskeneräinen
+        "Vastaavaa opiskeluoikeutta ei voi lisätä kahdesti" in {
+          setupOppijaWithOpiskeluoikeus(ExamplesVapaaSivistystyöJotpa.Opiskeluoikeus.keskeneräinen, defaultHenkilö){
+            verifyResponseStatusOk()
+          }
 
-        "JOTPAssa sallitaan samansisältöiset keskeneräiset opiskeluoikeudet" in {
+          postOpiskeluoikeus(ExamplesVapaaSivistystyöJotpa.Opiskeluoikeus.keskeneräinen, defaultHenkilö){
+            verifyResponseStatus(409, KoskiErrorCategory.conflict.exists())
+          }
+        }
+
+        "Vastaavan opiskeluoikeuden voi lisätä, kun opiskeluoikeuksien voimassaolot eivät ole ajallisesti päällekkäin" in {
+          setupOppijaWithOpiskeluoikeus(ExamplesVapaaSivistystyöJotpa.Opiskeluoikeus.suoritettu, defaultHenkilö){
+            verifyResponseStatusOk()
+          }
+
+          val ooAlkaaMyöhemmin = ExamplesVapaaSivistystyöJotpa.Opiskeluoikeus.keskeneräinen.copy(
+            tila = VapaanSivistystyönOpiskeluoikeudenTila(List(
+              VapaanSivistystyönJotpaKoulutuksenOpiskeluoikeusjakso(LocalDate.of(2023, 2, 2), opiskeluoikeusLäsnä, Some(rahoitusJotpa))
+            ))
+          )
+
+          postOpiskeluoikeus(ooAlkaaMyöhemmin, defaultHenkilö){
+            verifyResponseStatusOk()
+          }
+        }
+
+        "Vastaavan opiskeluoikeuden voi lisätä, vaikka sen voimassaolo on ajallisesti päällekkäin, kun opintokokonaisuus on eri" in {
           resetFixtures()
 
           var alkuperäinenOoCount = -1
@@ -171,12 +195,18 @@ class OppijaValidationVapaaSivistystyöJotpaSpec extends AnyFreeSpec with PutOpi
             alkuperäinenOoCount = oppija.opiskeluoikeudet.length
           }
 
-          postOpiskeluoikeus(keskeneräinenOoIlmanTunnistetietoja) {
+          postOpiskeluoikeus(ExamplesVapaaSivistystyöJotpa.Opiskeluoikeus.keskeneräinen) {
             verifyResponseStatusOk()
           }
 
-          // Toisen täsmälleen samanlaisen Jotpa-opiskeluoikeuden luominen oppijalle onnistuu
-          val toinenSamanlainenOo = postAndGetOpiskeluoikeus(keskeneräinenOoIlmanTunnistetietoja)
+          val keskeneräinenOoEriOpintokokonaisuus = ExamplesVapaaSivistystyöJotpa.Opiskeluoikeus.keskeneräinen.copy(
+            suoritukset = List(ExamplesVapaaSivistystyöJotpa.PäätasonSuoritus.juuriAloittanut.copy(
+              koulutusmoduuli = VapaanSivistystyönJotpaKoulutus(
+                opintokokonaisuus = Koodistokoodiviite("1139", None, "opintokokonaisuudet", Some(1)),
+              )
+            ))
+          )
+          val toinenSamanlainenOo = postAndGetOpiskeluoikeus(keskeneräinenOoEriOpintokokonaisuus)
 
           authGet("api/oppija/" + KoskiSpecificMockOppijat.eero.oid) {
             verifyResponseStatusOk()
@@ -185,7 +215,7 @@ class OppijaValidationVapaaSivistystyöJotpaSpec extends AnyFreeSpec with PutOpi
           }
 
           // Päivittäminen ilman tunnistetta epäonnistuu, koska on mahdotonta tunnistaa, kumpaa luoduista halutaan päivittää
-          putOpiskeluoikeus(keskeneräinenOoIlmanTunnistetietoja) {
+          putOpiskeluoikeus(ExamplesVapaaSivistystyöJotpa.Opiskeluoikeus.keskeneräinen) {
             verifyResponseStatus(409, Nil)
           }
 

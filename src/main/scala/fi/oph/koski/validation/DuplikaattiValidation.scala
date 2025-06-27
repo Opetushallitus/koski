@@ -118,12 +118,14 @@ object DuplikaattiValidation extends Logging {
 
     def findConflictingVstVapaatavoitteinen(): Either[HttpStatus, Option[Opiskeluoikeus]] = {
       def opintokokonaisuus(oo: Opiskeluoikeus): Option[Koodistokoodiviite] = oo.suoritukset.collectFirst {
-        case v: VapaanSivistystyönVapaatavoitteisenKoulutuksenSuoritus => v
-      }.flatMap(s => s.koulutusmoduuli.opintokokonaisuus)
+        case v: VapaanSivistystyönVapaatavoitteisenKoulutuksenSuoritus => v.koulutusmoduuli.opintokokonaisuus
+        case v: VapaanSivistystyönJotpaKoulutuksenSuoritus => Some(v.koulutusmoduuli.opintokokonaisuus)
+      }.flatten
 
       oppijanMuutOpiskeluoikeudetSamaOppilaitosJaTyyppi.map(_.find {
         case muuOo: VapaanSivistystyönOpiskeluoikeus =>
-          opintokokonaisuus(opiskeluoikeus).exists(ok => opintokokonaisuus(muuOo).exists(muuOk => ok.equals(muuOk))) && päällekkäinenAikajakso(muuOo)
+          opintokokonaisuus(opiskeluoikeus)
+            .exists(ok => opintokokonaisuus(muuOo).exists(muuOk => ok.equals(muuOk))) && päällekkäinenAikajakso(muuOo)
         case _ => false
       })
     }
@@ -178,8 +180,7 @@ object DuplikaattiValidation extends Logging {
       case _: AmmatillinenOpiskeluoikeus => throwIfConflictingExists(findConflictingAmmatillinen)
       case _: LukionOpiskeluoikeus if !isLukionOppimäärä => HttpStatus.ok
       case _: LukionOpiskeluoikeus if isLukionOppimäärä => throwIfConflictingExists(findSamaOppilaitosJaTyyppiSamaanAikaan)
-      case _: VapaanSivistystyönOpiskeluoikeus if isJotpa => HttpStatus.ok
-      case _: VapaanSivistystyönOpiskeluoikeus if isVstVapaatavoitteinen => throwIfConflictingExists(findConflictingVstVapaatavoitteinen)
+      case _: VapaanSivistystyönOpiskeluoikeus if isJotpa || isVstVapaatavoitteinen => throwIfConflictingExists(findConflictingVstVapaatavoitteinen)
       case _: VapaanSivistystyönOpiskeluoikeus => throwIfConflictingExists(findSamaOppilaitosJaTyyppiSamaanAikaan)
       case _: MuunKuinSäännellynKoulutuksenOpiskeluoikeus => HttpStatus.ok
       case _: TaiteenPerusopetuksenOpiskeluoikeus => HttpStatus.ok
