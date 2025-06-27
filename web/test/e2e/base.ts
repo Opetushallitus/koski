@@ -15,11 +15,13 @@ import { KoskiPerusopetusOppijaPage } from './pages/oppija/KoskiPerusopetusOppij
 import { KoskiTpoOppijaPage } from './pages/oppija/KoskiTpoOppijaPage'
 import { KoskiVSTOppijaPage } from './pages/oppija/KoskiVSTOppijaPage'
 import { KoskiIBOppijaPage } from './pages/oppija/KoskiIBOppijaPage'
+import { KoskiOppijaPageV2 } from './pages/oppija/KoskiOppijaPageV2'
 
 type Fixtures = {
   virkailijaLoginPage: VirkailijaLoginPage
   kansalainenLoginPage: KansalainenLoginPage
   oppijaPage: KoskiOppijaPage
+  oppijaPageV2: KoskiOppijaPageV2<any>
   muksOppijaPage: KoskiMuksOppijaPage
   eshOppijaPage: KoskiEshOppijaPage
   perusopetusOppijaPage: KoskiPerusopetusOppijaPage
@@ -52,6 +54,9 @@ export const test = base.extend<Fixtures>({
   },
   oppijaPage: async ({ page }, use) => {
     await use(new KoskiOppijaPage(page))
+  },
+  oppijaPageV2: async ({ page }, use) => {
+    await use(new KoskiOppijaPageV2(page, {}))
   },
   oppijaHaku: async ({ page }, use) => {
     await use(new KoskiOppijaHaku(page))

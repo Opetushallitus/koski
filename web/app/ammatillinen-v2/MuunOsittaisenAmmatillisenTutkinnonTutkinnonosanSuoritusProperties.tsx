@@ -164,6 +164,7 @@ export const MuunOsittaisenAmmatillisenTutkinnonTutkinnonosanSuoritusProperties 
               {form.editMode && (
                 <ButtonGroup>
                   <FlatButton
+                    testId="lisää-arviointi"
                     onClick={() =>
                       form.updateAt(
                         osasuoritusPath.prop('arviointi').valueOr([]),
