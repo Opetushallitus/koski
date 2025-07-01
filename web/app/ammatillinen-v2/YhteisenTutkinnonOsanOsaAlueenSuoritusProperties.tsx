@@ -32,6 +32,7 @@ import {
   KoodistoView
 } from '../components-v2/opiskeluoikeus/KoodistoField'
 import { ArviointiEdit, ArviointiView, emptyArviointi } from './Arviointi'
+import { TestIdLayer } from '../appstate/useTestId'
 
 type YhteisenTutkinnonOsanOsaAlueenSuoritusPropertiesProps = {
   form: FormModel<AmmatillinenOpiskeluoikeus>
@@ -128,27 +129,30 @@ export const YhteisenTutkinnonOsanOsaAlueenSuoritusProperties = ({
       )}
       <OsasuoritusProperty label={'Arviointi'}>
         <OsasuoritusPropertyValue>
-          <FormListField
-            removable
-            form={form}
-            view={ArviointiView}
-            edit={ArviointiEdit}
-            path={osasuoritusPath.prop('arviointi')}
-          />
-          {form.editMode && (
-            <ButtonGroup>
-              <FlatButton
-                onClick={() =>
-                  form.updateAt(
-                    osasuoritusPath.prop('arviointi').valueOr([]),
-                    append(emptyArviointi)
-                  )
-                }
-              >
-                {t('Lisää')}
-              </FlatButton>
-            </ButtonGroup>
-          )}
+          <TestIdLayer id="arviointi">
+            <FormListField
+              removable
+              form={form}
+              view={ArviointiView}
+              edit={ArviointiEdit}
+              path={osasuoritusPath.prop('arviointi')}
+            />
+            {form.editMode && (
+              <ButtonGroup>
+                <FlatButton
+                  testId="lisää-arviointi"
+                  onClick={() =>
+                    form.updateAt(
+                      osasuoritusPath.prop('arviointi').valueOr([]),
+                      append(emptyArviointi)
+                    )
+                  }
+                >
+                  {t('Lisää')}
+                </FlatButton>
+              </ButtonGroup>
+            )}
+          </TestIdLayer>
         </OsasuoritusPropertyValue>
       </OsasuoritusProperty>
       {(form.editMode || osasuoritus.korotettu !== undefined) && (

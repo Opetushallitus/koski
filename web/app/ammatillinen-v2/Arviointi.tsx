@@ -22,6 +22,7 @@ import { FlatButton } from '../components-v2/controls/FlatButton'
 import { LocalizedTextEdit } from '../components-v2/controls/LocalizedTestField'
 import { Koodistokoodiviite } from '../types/fi/oph/koski/schema/Koodistokoodiviite'
 import { Select, useKoodistoOptions } from '../components-v2/controls/Select'
+import { TestIdLayer, TestIdText } from '../appstate/useTestId'
 
 export const ArviointiView = ({
   value
@@ -29,18 +30,20 @@ export const ArviointiView = ({
   return (
     <>
       <KeyValueRow localizableLabel="Arvosana">
-        {t(value?.arvosana.nimi)}
+        <TestIdText id="arvosana">{t(value?.arvosana.nimi)}</TestIdText>
       </KeyValueRow>
       <KeyValueRow localizableLabel="Arviointipäivä">
         {ISO2FinnishDate(value?.päivä)}
       </KeyValueRow>
       <KeyValueRow localizableLabel="Arvioijat">
-        {value?.arvioitsijat?.map((a) => (
-          <>
-            {a.nimi}
-            <br />
-          </>
-        ))}
+        <TestIdLayer id="arvioijat">
+          {value?.arvioitsijat?.map((a) => (
+            <>
+              <TestIdText id="nimi">{a.nimi}</TestIdText>
+              <br />
+            </>
+          ))}
+        </TestIdLayer>
       </KeyValueRow>
       <KeyValueRow localizableLabel="Kuvaus">{t(value?.kuvaus)}</KeyValueRow>
     </>

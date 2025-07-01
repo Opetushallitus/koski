@@ -34,7 +34,7 @@ export const Tabs = <T,>(props: TabsProps<T>) => (
           </li>
         </TestIdLayer>
       ))}
-      <div className="Tabs__filler" />
+      <li className="Tabs__filler" />
     </ul>
   </nav>
 )

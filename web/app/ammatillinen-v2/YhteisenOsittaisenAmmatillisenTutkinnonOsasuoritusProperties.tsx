@@ -51,6 +51,7 @@ import { YhteisenTutkinnonOsanOsaAlueenSuoritus } from '../types/fi/oph/koski/sc
 import { AmmatillisenTutkinnonOsanOsaAlue } from '../types/fi/oph/koski/schema/AmmatillisenTutkinnonOsanOsaAlue'
 import { Column, ColumnRow } from '../components-v2/containers/Columns'
 import { hasAmmatillinenArviointi } from './OsasuoritusTables'
+import { TestIdLayer } from '../appstate/useTestId'
 
 type YhteisenAmmatillisenTutkinnonOsasuoritusPropertiesProps = {
   form: FormModel<AmmatillinenOpiskeluoikeus>
@@ -157,27 +158,30 @@ export const YhteisenOsittaisenAmmatillisenTutkinnonOsasuoritusProperties = ({
       )}
       <OsasuoritusProperty label={'Arviointi'}>
         <OsasuoritusPropertyValue>
-          <FormListField
-            removable
-            form={form}
-            view={ArviointiView}
-            edit={ArviointiEdit}
-            path={osasuoritusPath.prop('arviointi')}
-          />
-          {form.editMode && (
-            <ButtonGroup>
-              <FlatButton
-                onClick={() =>
-                  form.updateAt(
-                    osasuoritusPath.prop('arviointi').valueOr([]),
-                    append(emptyArviointi)
-                  )
-                }
-              >
-                {t('Lisää')}
-              </FlatButton>
-            </ButtonGroup>
-          )}
+          <TestIdLayer id="arviointi">
+            <FormListField
+              removable
+              form={form}
+              view={ArviointiView}
+              edit={ArviointiEdit}
+              path={osasuoritusPath.prop('arviointi')}
+            />
+            {form.editMode && (
+              <ButtonGroup>
+                <FlatButton
+                  testId="lisää-arviointi"
+                  onClick={() =>
+                    form.updateAt(
+                      osasuoritusPath.prop('arviointi').valueOr([]),
+                      append(emptyArviointi)
+                    )
+                  }
+                >
+                  {t('Lisää')}
+                </FlatButton>
+              </ButtonGroup>
+            )}
+          </TestIdLayer>
         </OsasuoritusPropertyValue>
       </OsasuoritusProperty>
       <OsasuoritusTable

@@ -45,6 +45,7 @@ import {
 } from '../components-v2/opiskeluoikeus/LaajuusField'
 import { LaajuusOsaamispisteissä } from '../types/fi/oph/koski/schema/LaajuusOsaamispisteissa'
 import { hasAmmatillinenArviointi } from './OsasuoritusTables'
+import { TestIdLayer } from '../appstate/useTestId'
 
 type MuunOsittaisenAmmatillisenTutkinnonTutkinnonosanSuoritusPropertiesProps = {
   form: FormModel<AmmatillinenOpiskeluoikeus>
@@ -152,27 +153,30 @@ export const MuunOsittaisenAmmatillisenTutkinnonTutkinnonosanSuoritusProperties 
         )}
         <OsasuoritusProperty label={'Arviointi'}>
           <OsasuoritusPropertyValue>
-            <FormListField
-              removable
-              form={form}
-              view={ArviointiView}
-              edit={ArviointiEdit}
-              path={osasuoritusPath.prop('arviointi')}
-            />
-            {form.editMode && (
-              <ButtonGroup>
-                <FlatButton
-                  onClick={() =>
-                    form.updateAt(
-                      osasuoritusPath.prop('arviointi').valueOr([]),
-                      append(emptyArviointi)
-                    )
-                  }
-                >
-                  {t('Lisää')}
-                </FlatButton>
-              </ButtonGroup>
-            )}
+            <TestIdLayer id="arviointi">
+              <FormListField
+                removable
+                form={form}
+                view={ArviointiView}
+                edit={ArviointiEdit}
+                path={osasuoritusPath.prop('arviointi')}
+              />
+              {form.editMode && (
+                <ButtonGroup>
+                  <FlatButton
+                    testId="lisää-arviointi"
+                    onClick={() =>
+                      form.updateAt(
+                        osasuoritusPath.prop('arviointi').valueOr([]),
+                        append(emptyArviointi)
+                      )
+                    }
+                  >
+                    {t('Lisää')}
+                  </FlatButton>
+                </ButtonGroup>
+              )}
+            </TestIdLayer>
           </OsasuoritusPropertyValue>
         </OsasuoritusProperty>
         {(form.editMode || osasuoritus.korotettu !== undefined) && (

@@ -63,6 +63,7 @@ import { RaisedButton } from '../components-v2/controls/RaisedButton'
 import { PaikallinenLukionOpinto } from '../types/fi/oph/koski/schema/PaikallinenLukionOpinto'
 import { PaikallinenKoodi } from '../types/fi/oph/koski/schema/PaikallinenKoodi'
 import { PaikallinenOpintovalmiuksiaTukevaOpinto } from '../types/fi/oph/koski/schema/PaikallinenOpintovalmiuksiaTukevaOpinto'
+import { TestIdLayer } from '../appstate/useTestId'
 
 export type OsittaisenAmmatillisenTutkinnonOsanJatkoOpintovalmiuksiaTukevienOpintojenSuoritusPropertiesProps =
   {
@@ -475,27 +476,30 @@ const LukionJaMuunOsasoritusProperties = ({
       )}
       <OsasuoritusProperty label={'Arviointi'}>
         <OsasuoritusPropertyValue>
-          <FormListField
-            removable
-            form={form}
-            view={ArviointiView}
-            edit={ArviointiEdit}
-            path={osasuoritusPath.prop('arviointi')}
-          />
-          {form.editMode && (
-            <ButtonGroup>
-              <FlatButton
-                onClick={() =>
-                  form.updateAt(
-                    osasuoritusPath.prop('arviointi').valueOr([]),
-                    append(emptyArviointi)
-                  )
-                }
-              >
-                {t('Lisää')}
-              </FlatButton>
-            </ButtonGroup>
-          )}
+          <TestIdLayer id="arviointi">
+            <FormListField
+              removable
+              form={form}
+              view={ArviointiView}
+              edit={ArviointiEdit}
+              path={osasuoritusPath.prop('arviointi')}
+            />
+            {form.editMode && (
+              <ButtonGroup>
+                <FlatButton
+                  testId="lisää-arviointi"
+                  onClick={() =>
+                    form.updateAt(
+                      osasuoritusPath.prop('arviointi').valueOr([]),
+                      append(emptyArviointi)
+                    )
+                  }
+                >
+                  {t('Lisää')}
+                </FlatButton>
+              </ButtonGroup>
+            )}
+          </TestIdLayer>
         </OsasuoritusPropertyValue>
       </OsasuoritusProperty>
       {isMuidenOpintovalmiuksiaTukevienOpintojenSuoritus(osasuoritus) &&
