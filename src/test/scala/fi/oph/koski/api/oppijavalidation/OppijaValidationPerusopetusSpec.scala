@@ -670,6 +670,58 @@ class OppijaValidationPerusopetusSpec extends TutkinnonPerusteetTest[Perusopetuk
           verifyResponseStatusOk()
         }
       }
+
+      "Rajatulle oppimäärälle sallitaan vain arvosana S kun 1. - 8. lk suoritus" in {
+        def makeSeiskaluokanRajattuOppimäärä(arvosana: String) = makeOpiskeluoikeus().copy(
+          suoritukset = List(
+            seitsemännenLuokanSuoritus.copy(
+              vahvistus = vahvistusPaikkakunnalla(tukijaksotVoimaan),
+              osasuoritukset = Some(List(äidinkielenSuoritus.copy(rajattuOppimäärä = true, arviointi = arviointi(arvosana, None, None))))
+            )
+          ),
+          lisätiedot = Some(PerusopetuksenOpiskeluoikeudenLisätiedot(
+            tuenPäätöksenJaksot = Some(List(Tukijakso(alku = Some(tukijaksotVoimaan), loppu = None)))
+          ))
+        )
+
+        setupOppijaWithOpiskeluoikeus(makeSeiskaluokanRajattuOppimäärä("5")) {
+          verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.date(
+            "Rajatulle oppimäärälle sallitaan vain arvosana S kun kyseessä on 1. - 8. lk suoritus"
+          ))
+        }
+
+        setupOppijaWithOpiskeluoikeus(makeSeiskaluokanRajattuOppimäärä("S")) {
+          verifyResponseStatusOk()
+        }
+      }
+
+      "Rajatulle oppimäärälle sallitaan vain arvosana 5 kun 9. lk suoritus" in {
+        def makeYsiluokanRajattuOppimäärä(arvosana: String) = {
+          val puukotetutSuoritukset = äidinkielenSuoritus.copy(rajattuOppimäärä = true, arviointi = arviointi(arvosana, None, None)) :: perusopetuksenOppimääränSuoritus.osasuoritusLista.tail.asInstanceOf[List[OppiaineenTaiToiminta_AlueenSuoritus]]
+          makeOpiskeluoikeus().copy(
+            suoritukset = List(
+              perusopetuksenOppimääränSuoritus.copy(
+                vahvistus = vahvistusPaikkakunnalla(tukijaksotVoimaan),
+                osasuoritukset = Some(puukotetutSuoritukset)
+              ),
+              yhdeksännenLuokanSuoritus
+            ),
+            lisätiedot = Some(PerusopetuksenOpiskeluoikeudenLisätiedot(
+              tuenPäätöksenJaksot = Some(List(Tukijakso(alku = Some(tukijaksotVoimaan), loppu = None)))
+            ))
+          )
+        }
+
+        setupOppijaWithOpiskeluoikeus(makeYsiluokanRajattuOppimäärä("S")) {
+          verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.date(
+            "Rajatulle oppimäärälle sallitaan vain arvosana 5 kun kyseessä on perusopetuksen oppimäärän suoritus"
+          ))
+        }
+
+        setupOppijaWithOpiskeluoikeus(makeYsiluokanRajattuOppimäärä("5")) {
+          verifyResponseStatusOk()
+        }
+      }
     }
     "Opetuksen järjestäminen vamman, sairauden tai toimintakyvyn rajoitteen perusteella" - {
       val vammaSairausTaiRajoiteVoimaan = LocalDate.parse(KoskiApplicationForTests.config.getString("validaatiot.vammaSairausTaiRajoiteVoimaan"))
