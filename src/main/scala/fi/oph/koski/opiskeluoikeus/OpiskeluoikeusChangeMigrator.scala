@@ -51,7 +51,8 @@ object OpiskeluoikeusChangeMigrator {
          _: AikuistenPerusopetuksenOppiaineenOppimääränSuoritus |
          _: EBTutkinnonSuoritus |
          _: EuropeanSchoolOfHelsinkiPäätasonSuoritus |
-         _: TaiteenPerusopetuksenPäätasonSuoritus => false
+         _: TaiteenPerusopetuksenPäätasonSuoritus |
+         _: IBPäätasonSuoritus => false
     case _ => true
   }
 

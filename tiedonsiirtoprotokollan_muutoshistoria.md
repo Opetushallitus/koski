@@ -4,6 +4,11 @@
 - Perusopetuksen opiskeluoikeudelle lisätty lisätieto tavoitekokonaisuuksittain opiskelu
 - Perusopetuksen vuosiluokan suorituksen osasuoritukselle lisätty kenttä luokkaAste
 
+## 1.7.2025
+
+- IB-tutkinnon opiskeluoikeuden päätason suoritusten poistaminen on mahdollistettu.
+  - Jatkossa IB-tutkinnon opiskeluoikeuden päivityksissä rajapintojen kautta tulee lähettää aina kaikki opiskeluoikeuteen kuuluvat päätason suoritukset, tai puuttuva suoritus tulkitaan poistetuksi.
+
 ## 24.6.2025
 
 - Muun kuin säännellyn koulutuksen suoritusten ja osasuoritusten arviointeihin sallittu kaikki arviointiasteikkomuks-koodiston koodit.

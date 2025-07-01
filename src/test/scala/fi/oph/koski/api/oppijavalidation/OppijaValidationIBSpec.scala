@@ -498,6 +498,23 @@ class OppijaValidationIBSpec extends AnyFreeSpec with KoskiHttpSpec with PutOpis
         }
       }
     }
+
+    "Suorituksen poistaminen" - {
+      "Onnistuu" in {
+        val tallennettuOpiskeluoikeusOid = setupOppijaWithOpiskeluoikeus(opiskeluoikeus) {
+          verifyResponseStatusOk()
+          readPutOppijaResponse
+        }.opiskeluoikeudet.head.oid
+
+        val opiskeluoikeusVainPreIb = opiskeluoikeus.copy(
+          oid = Some(tallennettuOpiskeluoikeusOid),
+          suoritukset = opiskeluoikeus.suoritukset.filterNot(_.tyyppi.koodiarvo == "ibtutkinto")
+        )
+
+        val oo = putAndGetOpiskeluoikeus(opiskeluoikeusVainPreIb)
+        oo.suoritukset.size should be (1)
+      }
+    }
   }
 
   private def opiskeluoikeusIBTutkinnollaWithOppiaineet(oppiaineet: List[IBOppiaineenSuoritus]) = {

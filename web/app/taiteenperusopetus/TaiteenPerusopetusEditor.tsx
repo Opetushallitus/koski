@@ -11,7 +11,6 @@ import {
   usePäätasonSuoritus
 } from '../components-v2/containers/EditorContainer'
 import { LocalizedTextView } from '../components-v2/controls/LocalizedTestField'
-import { RemoveArrayItemField } from '../components-v2/controls/RemoveArrayItemField'
 import { FormField } from '../components-v2/forms/FormField'
 import {
   FormModel,
@@ -61,6 +60,7 @@ import {
 } from './tpoCommon'
 import { VirkailijaKansalainenContainer } from '../components-v2/containers/VirkailijaKansalainenContainer'
 import { HenkilövahvistusValinnaisellaTittelilläJaValinnaisellaPaikkakunnalla } from '../types/fi/oph/koski/schema/HenkilovahvistusValinnaisellaTittelillaJaValinnaisellaPaikkakunnalla'
+import { RemovePaatasonSuoritus } from '../components-v2/opiskeluoikeus/RemovePaatasonSuoritus'
 
 export type TaiteenPerusopetusEditorProps =
   AdaptedOpiskeluoikeusEditorProps<TaiteenPerusopetuksenOpiskeluoikeus>
@@ -233,21 +233,11 @@ const PäätasonSuoritusEditor: React.FC<
         </KansalainenOnly>
 
         {form.state.suoritukset.length > 1 && (
-          <ColumnRow>
-            <Column span={24} align="right">
-              <RemoveArrayItemField
-                form={form}
-                path={form.root.prop('suoritukset')}
-                removeAt={päätasonSuoritus.index}
-                label="Poista suoritus"
-                onRemove={removePäätasonSuoritus}
-                confirmation={{
-                  confirm: 'Vahvista poisto, operaatiota ei voi peruuttaa',
-                  cancel: 'Peruuta poisto'
-                }}
-              />
-            </Column>
-          </ColumnRow>
+          <RemovePaatasonSuoritus
+            form={form}
+            päätasonSuoritus={päätasonSuoritus}
+            removePäätasonSuoritus={removePäätasonSuoritus}
+          />
         )}
 
         <TaiteenPerusopetuksenTiedot
