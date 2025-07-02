@@ -37,6 +37,8 @@ import { setInvalidationNotification } from '../components/InvalidationNotificat
 import { userP } from '../util/user'
 import { Varoitukset } from '../util/Varoitukset'
 
+window.__baconRenderedOids = new Set()
+
 Bacon.Observable.prototype.flatScan = function (seed, f) {
   let current = seed
   return this.flatMapConcat((next) =>
@@ -127,6 +129,9 @@ const deletePäätasonSuoritusE = deletePäätasonSuoritusBus
 const createState = (oppijaOid) => {
   const changeBus = Bacon.Bus()
   const editBus = Bacon.Bus()
+  const renderedBaconOpiskeluoikeusOidsBus = Bacon.Bus()
+  const renderedBaconOpiskeluoikeusOidsP =
+    renderedBaconOpiskeluoikeusOidsBus.toProperty()
   const saveChangesBus = Bacon.Bus()
   const cancelChangesBus = Bacon.Bus()
   const editingP = locationP
@@ -164,6 +169,7 @@ const createState = (oppijaOid) => {
     return Editor.setupContext(oppijaModel, {
       saveChangesBus,
       editBus,
+      renderedBaconOpiskeluoikeusOidsBus,
       changeBus,
       editorMapping
     })
@@ -285,7 +291,7 @@ const createState = (oppijaOid) => {
         .doError(decreaseLoading)
     }
   )
-  oppijaP.onValue()
+  oppijaP.onValue((v) => console.log('oppijaP', v))
 
   const stateP = oppijaP
     .map('.event')
@@ -306,13 +312,17 @@ const createState = (oppijaOid) => {
         : removeExitHook()
       if (state === 'saved') navigateWithQueryParams({ edit: undefined })
     })
+
+  stateP.onValue((v) => console.log('stateP', v))
+
   return {
     oppijaP,
     changeBus,
     editBus,
     saveChangesBus,
     cancelChangesBus,
-    stateP
+    stateP,
+    renderedBaconOpiskeluoikeusOidsP
   }
 }
 
@@ -322,7 +332,8 @@ const stateToContent = ({
   editBus,
   saveChangesBus,
   cancelChangesBus,
-  stateP
+  stateP,
+  renderedBaconOpiskeluoikeusOidsP
 }) =>
   oppijaP.map((oppija) => ({
     content: (
@@ -344,7 +355,8 @@ const stateToContent = ({
               editBus,
               saveChangesBus,
               cancelChangesBus,
-              stateP
+              stateP,
+              renderedBaconOpiskeluoikeusOidsP
             }}
           />
         </div>
@@ -355,7 +367,13 @@ const stateToContent = ({
 
 export class Oppija extends React.Component {
   render() {
-    const { oppija, saveChangesBus, cancelChangesBus, stateP } = this.props
+    const {
+      oppija,
+      saveChangesBus,
+      cancelChangesBus,
+      stateP,
+      renderedBaconOpiskeluoikeusOidsP
+    } = this.props
 
     const henkilö = modelLookup(oppija, 'henkilö')
     const hetu = modelTitle(henkilö, 'hetu')
@@ -453,7 +471,15 @@ export class Oppija extends React.Component {
             ) : null
           }
         </div>
-        <EditBar {...{ saveChangesBus, cancelChangesBus, stateP, oppija }} />
+        <EditBar
+          {...{
+            saveChangesBus,
+            cancelChangesBus,
+            stateP,
+            oppija,
+            renderedBaconOpiskeluoikeusOidsP
+          }}
+        />
         {doActionWhileMounted(
           globalSaveKeyEvent.filter(stateP.map((s) => s === 'dirty')),
           () => saveChangesBus.push()
@@ -494,7 +520,13 @@ const globalSaveKeyEvent = Bacon.fromEvent(window, 'keydown')
   )
   .doAction('.preventDefault')
 
-const EditBar = ({ stateP, saveChangesBus, cancelChangesBus, oppija }) => {
+const EditBar = ({
+  stateP,
+  saveChangesBus,
+  cancelChangesBus,
+  oppija,
+  renderedBaconOpiskeluoikeusOidsP
+}) => {
   const saveChanges = (e) => {
     e.preventDefault()
     saveChangesBus.push()
@@ -511,10 +543,16 @@ const EditBar = ({ stateP, saveChangesBus, cancelChangesBus, oppija }) => {
     ),
     edit: 'Ei tallentamattomia muutoksia'
   }
+  const editingOid = currentLocation().params.edit
   const messageP = stateP.decode(messageMap)
+  const visibilityP = Bacon.combineWith(
+    messageP,
+    renderedBaconOpiskeluoikeusOidsP,
+    (message, renderedOids) => message && renderedOids.has(editingOid)
+  )
   const classNameP = Bacon.combineAsArray(
     stateP,
-    messageP.map((msg) => (msg ? 'visible' : ''))
+    visibilityP.map((viz) => (viz ? 'visible' : ''))
   ).map(buildClassNames)
 
   return (

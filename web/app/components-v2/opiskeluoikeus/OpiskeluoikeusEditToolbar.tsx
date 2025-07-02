@@ -22,7 +22,7 @@ import { setInvalidationNotification } from '../../components/InvalidationNotifi
 
 export type OpiskeluoikeusEditToolbarProps = {
   opiskeluoikeus: Opiskeluoikeus
-  editMode: boolean
+  showEditButton: boolean
   invalidatable: boolean
   onStartEdit: () => void
 }
@@ -30,7 +30,7 @@ export type OpiskeluoikeusEditToolbarProps = {
 export const OpiskeluoikeusEditToolbar = (
   props: OpiskeluoikeusEditToolbarProps
 ) => {
-  const spans = props.editMode ? [12, 12] : [16, 8]
+  const spans = props.showEditButton ? [12, 12] : [16, 8]
   const opiskeluoikeusOid = getOpiskeluoikeusOid(props.opiskeluoikeus)
   const hasAnyInvalidateAccess = useVirkailijaUser()?.hasAnyInvalidateAccess
   const inVersiohistoria = useVersionumero() !== null
@@ -65,7 +65,7 @@ export const OpiskeluoikeusEditToolbar = (
             <PoistuVersiohistoriastaButton
               opiskeluoikeusOid={opiskeluoikeusOid}
             />
-          ) : !props.editMode ? (
+          ) : props.showEditButton ? (
             <RaisedButton onClick={props.onStartEdit} testId="edit">
               {t('Muokkaa')}
             </RaisedButton>

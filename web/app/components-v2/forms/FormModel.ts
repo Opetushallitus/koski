@@ -381,6 +381,7 @@ const reducer = <O>(
           : []
       }
     case 'cancel':
+      clearEditUrlQueryParam()
       return {
         ...state,
         editMode: EditMode.View,
@@ -389,6 +390,7 @@ const reducer = <O>(
         errors: []
       }
     case 'endEdit':
+      clearEditUrlQueryParam()
       return {
         ...state,
         data: action.value,
@@ -398,6 +400,7 @@ const reducer = <O>(
         errors: []
       }
     case 'setEditMode':
+      if (action.editMode !== EditMode.Edit) clearEditUrlQueryParam()
       return {
         ...state,
         editMode: action.editMode
@@ -477,4 +480,11 @@ const modifiesShape = <O extends object, T>(
     }
   }
   return false
+}
+
+const clearEditUrlQueryParam = () => {
+  const url = new URL(window.location.href)
+  url.searchParams.delete('edit')
+  window.history.pushState({}, '', url.toString())
+  window.dispatchEvent(new PopStateEvent('popstate'))
 }

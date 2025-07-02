@@ -30,7 +30,7 @@ export class Editor extends React.Component {
 
 Editor.setupContext = (
   model,
-  { editorMapping, changeBus, editBus, saveChangesBus, edit, path }
+  { editorMapping, changeBus, editBus, saveChangesBus, edit, path, renderedBaconOpiskeluoikeusOidsBus }
 ) => {
   if (!model.context) {
     if (!editorMapping) {
@@ -46,7 +46,8 @@ Editor.setupContext = (
       editBus,
       path: '',
       prototypes: model.prototypes,
-      editorMapping
+      editorMapping,
+      renderedBaconOpiskeluoikeusOidsBus
     })
   } else {
     if (!model.context.prototypes)
@@ -55,6 +56,7 @@ Editor.setupContext = (
     if (changeBus) model = addContext(model, { changeBus })
     if (saveChangesBus) model = addContext(model, { saveChangesBus })
     if (editBus) model = addContext(model, { editBus })
+    console.log('Context edit is', model.context.edit)
   }
   edit = !model.readOnly && parseBool(edit)
   if (edit !== model.context.edit) {

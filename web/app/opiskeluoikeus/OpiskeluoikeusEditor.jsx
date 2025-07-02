@@ -31,6 +31,7 @@ import { ArrayEditor } from '../editor/ArrayEditor'
 import { VirtaVirheetPopup } from '../virta/VirtaVirheetPopup.jsx'
 import { currentLocation, navigateTo } from '../util/location.js'
 import Atom from 'bacon.atom'
+import { useEffect } from 'react'
 
 export const excludedProperties = [
   'suoritukset',
@@ -44,6 +45,21 @@ export const excludedProperties = [
 ]
 
 export const OpiskeluoikeusEditor = ({ model }) => {
+  const opiskeluoikusOid = modelData(model, 'oid')
+  const bus = model.context.renderedBaconOpiskeluoikeusOidsBus
+  // Keep track of oids rendered by the bacon components, to only show the edit bar when such component is present.
+  useEffect(() => {
+    if(!bus) {
+      return
+    }
+    window.__baconRenderedOids.add(opiskeluoikusOid)
+    bus.push(new Set(window.__baconRenderedOids))
+    return () => {
+      window.__baconRenderedOids.delete(opiskeluoikusOid)
+      bus.push(new Set(window.__baconRenderedOids))
+    }
+  }, [opiskeluoikusOid])
+
   return (
     <TogglableEditor
       aria-label="Muokkaa opiskeluoikeutta"

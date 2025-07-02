@@ -1,5 +1,5 @@
 import { NonEmptyArray } from 'fp-ts/lib/NonEmptyArray'
-import React, { useCallback, useMemo, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { TestIdLayer, TestIdRoot } from '../../appstate/useTestId'
 import { localize, t } from '../../i18n/i18n'
 import { LocalizedString } from '../../types/fi/oph/koski/schema/LocalizedString'
@@ -70,11 +70,42 @@ export type ActivePäätasonSuoritus<
   testId: string
 }
 
+const useEditQueryParam = (): string | null => {
+  const get = () => new URLSearchParams(window.location.search).get('edit')
+  const [edit, setEdit] = React.useState(get)
+
+  React.useEffect(() => {
+    const onPopState = () => setEdit(get())
+    window.addEventListener('popstate', onPopState)
+    return () => window.removeEventListener('popstate', onPopState)
+  }, [])
+
+  return edit
+}
+
 export const EditorContainer = <T extends Opiskeluoikeus>(
   props: EditorContainerProps<T>
 ) => {
   const virkailija = useVirkailijaUser()
   useConfirmUnload(props.form.editMode && props.form.hasChanged)
+
+  const editQueryParam = useEditQueryParam()
+  useEffect(() => {
+    if (editQueryParam === props.form.state.oid && !props.form.editMode) {
+      props.form.startEdit()
+    }
+  }, [editQueryParam, props.form])
+
+  /*useEffect(() => {
+    if (!props.form.editMode) {
+      const url = new URL(window.location.href)
+      if (url.searchParams.get('edit') === props.form.state.oid) {
+        url.searchParams.delete('edit')
+        window.history.pushState({}, '', url.toString())
+        window.dispatchEvent(new PopStateEvent('popstate'))
+      }
+    }
+  }, [props.form.editMode, props.form.state.oid])*/
 
   const opiskeluoikeudenTilaPath = useMemo(
     () => props.form.root.prop('tila'),
@@ -155,9 +186,14 @@ export const EditorContainer = <T extends Opiskeluoikeus>(
           <>
             <OpiskeluoikeusEditToolbar
               opiskeluoikeus={props.form.state}
-              editMode={props.form.editMode}
+              showEditButton={!editQueryParam}
               invalidatable={props.invalidatable}
-              onStartEdit={props.form.startEdit}
+              onStartEdit={() => {
+                const url = new URL(window.location.href)
+                url.searchParams.set('edit', props.form.state?.oid || '')
+                window.history.pushState({}, '', url.toString())
+                window.dispatchEvent(new PopStateEvent('popstate'))
+              }}
             />
             <Spacer />
           </>
