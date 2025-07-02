@@ -1155,27 +1155,41 @@ class KoskiValidator(
     }
 
     suoritus match {
-      case s: PerusopetuksenPäätasonSuoritus if s.vahvistus.nonEmpty =>
-        val vahvistuspvm = s.vahvistus.get.päivä
-        HttpStatus.fold(
-          suoritus.osasuoritusLista.map {
+      case s: PerusopetuksenPäätasonSuoritus =>
+        val validoiRajatunArvosanat = HttpStatus.fold(
+          s.osasuoritusLista.map {
             case os: RajattavaOppimäärä if os.rajattuOppimäärä =>
-              HttpStatus.fold(
-                HttpStatus.validate(!vahvistuspvm.isBefore(oppiaineenRajattuOppimääräVoimaan))(KoskiErrorCategory.badRequest.validation.date(s"Tietoa rajattuOppimäärä ei saa siirtää ennen $oppiaineenRajattuOppimääräVoimaan alkaneelle suoritukselle")),
-                HttpStatus.validate(sisältyyTuenPäätöksenJaksoon(vahvistuspvm))(KoskiErrorCategory.badRequest.validation.date(s"Tieto rajattuOppimäärä vaatii tukijakson suorituksen vahvistuspäivälle: $vahvistuspvm")),
-                suoritus.koulutusmoduuli.tunniste.koodiarvo match {
-                  case "201101" =>
-                    HttpStatus.validate(vainSallittuArvosana(os, "5"))(KoskiErrorCategory.badRequest.validation.date(s"Rajatulle oppimäärälle sallitaan vain arvosana 5 kun kyseessä on perusopetuksen oppimäärän suoritus"))
-                  case "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" =>
-                    HttpStatus.validate(vainSallittuArvosana(os, "S"))(KoskiErrorCategory.badRequest.validation.date(s"Rajatulle oppimäärälle sallitaan vain arvosana S kun kyseessä on 1. - 8. lk suoritus"))
-                  case _ => HttpStatus.ok
-                }
-              )
-            case os: RajattavaOppimäärä if os.yksilöllistettyOppimäärä =>
-              HttpStatus.validate(vahvistuspvm.isBefore(yksilöllistettyOppimääräViimeinenKäyttöpäivä))(KoskiErrorCategory.badRequest.validation.date(s"Tietoa yksilöllistettyOppimäärä ei saa siirtää $yksilöllistettyOppimääräViimeinenKäyttöpäivä jälkeen alkaneelle suoritukselle"))
+              suoritus.koulutusmoduuli.tunniste.koodiarvo match {
+                case "201101" =>
+                  HttpStatus.validate(vainSallittuArvosana(os, "5"))(KoskiErrorCategory.badRequest.validation.date(s"Rajatulle oppimäärälle sallitaan vain arvosana 5 kun kyseessä on perusopetuksen oppimäärän suoritus"))
+                case "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" =>
+                  HttpStatus.validate(vainSallittuArvosana(os, "S"))(KoskiErrorCategory.badRequest.validation.date(s"Rajatulle oppimäärälle sallitaan vain arvosana S kun kyseessä on 1. - 8. lk suoritus"))
+                case _ => HttpStatus.ok
+              }
             case _ => HttpStatus.ok
           }
         )
+
+        val validoiRajatunPäivämäärät = s.vahvistus match {
+          case Some(vahvistus) =>
+            val vahvistuspvm = vahvistus.päivä
+            HttpStatus.fold(
+              s.osasuoritusLista.map {
+                case os: RajattavaOppimäärä if os.rajattuOppimäärä =>
+                  HttpStatus.fold(
+                    HttpStatus.validate(!vahvistuspvm.isBefore(oppiaineenRajattuOppimääräVoimaan))(KoskiErrorCategory.badRequest.validation.date(s"Tietoa rajattuOppimäärä ei saa siirtää ennen $oppiaineenRajattuOppimääräVoimaan alkaneelle suoritukselle")),
+                    HttpStatus.validate(sisältyyTuenPäätöksenJaksoon(vahvistuspvm))(KoskiErrorCategory.badRequest.validation.date(s"Tieto rajattuOppimäärä vaatii tukijakson suorituksen vahvistuspäivälle: $vahvistuspvm"))
+                  )
+                case os: RajattavaOppimäärä if os.yksilöllistettyOppimäärä =>
+                  HttpStatus.validate(vahvistuspvm.isBefore(yksilöllistettyOppimääräViimeinenKäyttöpäivä))(KoskiErrorCategory.badRequest.validation.date(s"Tietoa yksilöllistettyOppimäärä ei saa siirtää $yksilöllistettyOppimääräViimeinenKäyttöpäivä jälkeen alkaneelle suoritukselle"))
+                case _ => HttpStatus.ok
+              }
+            )
+          case None => HttpStatus.ok
+        }
+
+        HttpStatus.fold(validoiRajatunArvosanat, validoiRajatunPäivämäärät)
+
       case _ => HttpStatus.ok
     }
   }

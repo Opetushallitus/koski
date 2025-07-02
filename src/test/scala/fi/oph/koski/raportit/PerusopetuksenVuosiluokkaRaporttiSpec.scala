@@ -75,7 +75,7 @@ class PerusopetuksenVuosiluokkaRaporttiSpec
         KoskiSpecificMockOppijat.lukioKesken,
         createVuosiluokanSuoritus(Some(date(2026, 8, 1)), None)
           .copy(osasuoritukset = Some(List(suoritus(oppiaine("HI", vuosiviikkotuntia(1)))
-            .copy(arviointi = arviointi(8), rajattuOppimäärä = true))))
+            .copy(arviointi = arviointi("S", None, None), rajattuOppimäärä = true))))
       )
 
       val hakupäivä = LocalDate.of(2026, 8, 1)
@@ -96,7 +96,7 @@ class PerusopetuksenVuosiluokkaRaporttiSpec
         val rivi = result.find(_.opiskeluoikeusOid == opiskeluoikeusOid)
 
         rivi should equal(
-          Some(leilanRow.copy(opiskeluoikeusOid = opiskeluoikeusOid))
+          Some(leilanRow.copy(opiskeluoikeusOid = opiskeluoikeusOid, historia = "S*"))
         )
       }
     }
