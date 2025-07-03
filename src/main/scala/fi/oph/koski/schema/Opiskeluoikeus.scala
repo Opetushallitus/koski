@@ -1,5 +1,6 @@
 package fi.oph.koski.schema
 
+import fi.oph.koski.koskiuser.Palvelurooli
 import fi.oph.koski.schema.Opiskeluoikeus.OpiskeluoikeudenPäättymistila
 
 import java.time.{LocalDate, LocalDateTime}

@@ -43,7 +43,7 @@ class OppilaitosServlet(implicit val application: KoskiApplication) extends Kosk
       case loytyneetPoikkeustyypit => loytyneetPoikkeustyypit
     }).distinct
       .flatMap(t => application.koodistoViitePalvelu.validate("opiskeluoikeudentyyppi", t.koodiarvo))
-      .filter(t => session.allowedOpiskeluoikeudetJaPäätasonSuoritukset.intersects(OoPtsMask(t.koodiarvo)))
+      .filter(t => OoPtsMask.fromKoodistokoodiviite(t).exists(session.allowedOpiskeluoikeudetJaPäätasonSuoritukset.intersects))
   }
 
   private def byOppilaitosTyyppi(organisaatiot: List[OrganisaatioHierarkia]) =
