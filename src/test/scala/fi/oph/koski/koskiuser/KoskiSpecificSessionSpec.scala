@@ -118,7 +118,15 @@ class KoskiSpecificSessionSpec
       }
       "viranomainen perusopetus" in {
         val session = createAndVerifySession("Pertti", MockUsers.perusopetusViranomainen.ldapUser)
-        val expectedOpiskeluoikeustyypit = Set(esiopetus, perusopetus, aikuistenperusopetus, perusopetuksenlisaopetus, perusopetukseenvalmistavaopetus, internationalschool, europeanschoolofhelsinki).map(OoPtsMask.apply)
+        val expectedOpiskeluoikeustyypit = Set(
+          esiopetus,
+          perusopetus,
+          aikuistenperusopetus,
+          perusopetuksenlisaopetus,
+          perusopetukseenvalmistavaopetus,
+          internationalschool,
+          europeanschoolofhelsinki,
+        ).flatMap(OoPtsMask.fromKoodistokoodiviite)
         session.allowedOpiskeluoikeudetJaPäätasonSuoritukset should equal(expectedOpiskeluoikeustyypit)
       }
       "viranomainen toinen aste" in {
@@ -135,12 +143,14 @@ class KoskiSpecificSessionSpec
           internationalschool,
           europeanschoolofhelsinki,
           ebtutkinto
-        ).map(OoPtsMask.apply)
+        ).flatMap(OoPtsMask.fromKoodistokoodiviite)
         session.allowedOpiskeluoikeudetJaPäätasonSuoritukset should equal(expectedOpiskeluoikeustyypit)
       }
       "viranomainen korkeakoulu" in {
         val session = createAndVerifySession("Kaisa", MockUsers.korkeakouluViranomainen.ldapUser)
-        session.allowedOpiskeluoikeudetJaPäätasonSuoritukset should equal(Set(OoPtsMask(OpiskeluoikeudenTyyppi.korkeakoulutus)))
+        session.allowedOpiskeluoikeudetJaPäätasonSuoritukset should equal(Set(
+          OpiskeluoikeudenTyyppi.korkeakoulutus
+        ).flatMap(OoPtsMask.fromKoodistokoodiviite))
       }
       "tilastokeskus saa arkaluontoisenkin datan" in {
         val session = createAndVerifySession("Teppo", MockUsers.tilastokeskusKäyttäjä.ldapUser)

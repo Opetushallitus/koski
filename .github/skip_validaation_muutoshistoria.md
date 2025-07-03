@@ -6,3 +6,4 @@ TOR-2040 - validaation refaktorointi, ei toiminnallisia muutoksia
 TOR-2031 - validaatiota ei vielä kytketä päälle, vaan se vain lokittaa pt. 2
 TOR-2298 - lisätty validaatioon käyttöoikeustarkastus
 OPHKOTO-28 - Käyttöoikeuksien hienojakoistaminen
+OPHKOTO-28 - Bugikorjaus

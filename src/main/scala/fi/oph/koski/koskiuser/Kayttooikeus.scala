@@ -133,7 +133,7 @@ object Käyttöoikeus {
     if (!accessTypes.contains(AccessType.read)) {
       Set.empty
     } else {
-      val käyttäjänRoolit = unifyRoolit(roolit)
+      val käyttäjänRoolit = unifyRoolit(roolit, isRootUser)
         .filter(_.palveluName == "KOSKI")
 
       val käyttäjänOoPtsRoolit = käyttäjänRoolit
@@ -161,7 +161,7 @@ object Käyttöoikeus {
     }
   }
 
-  private def unifyRoolit(roolit: List[Palvelurooli]) = roolit flatMap {
+  private def unifyRoolit(roolit: List[Palvelurooli], isRootUser: Boolean): List[Palvelurooli] = roolit flatMap {
     case Palvelurooli("KOSKI", GLOBAALI_LUKU_PERUSOPETUS) => List(
       ESIOPETUS,
       PERUSOPETUS,
@@ -192,6 +192,7 @@ object Käyttöoikeus {
     case Palvelurooli("KOSKI", TAITEENPERUSOPETUS_HANKINTAKOULUTUS) => List(Palvelurooli(TAITEENPERUSOPETUS))
     case Palvelurooli("KOSKI", GLOBAALI_LUKU_KIELITUTKINTO) => List(Palvelurooli(KIELITUTKINTO))
     case Palvelurooli("KOSKI", KIELITUTKINTOREKISTERI) => List(Palvelurooli(KIELITUTKINTO))
+    case Palvelurooli("KOSKI", KAIKKI_OPISKELUOIKEUS_TYYPIT) => OpiskeluoikeudenTyyppi.kaikkiTyypit(isRootUser).map(t => Palvelurooli(t.koodiarvo.toUpperCase))
     case rooli => List(rooli)
   }
 }
