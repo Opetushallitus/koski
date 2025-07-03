@@ -1,12 +1,15 @@
-import { IBOppiaineCAS, isIBOppiaineCAS } from './IBOppiaineCAS'
 import {
-  IBOppiaineExtendedEssay,
-  isIBOppiaineExtendedEssay
-} from './IBOppiaineExtendedEssay'
+  IBDPCoreOppiaineCAS,
+  isIBDPCoreOppiaineCAS
+} from './IBDPCoreOppiaineCAS'
 import {
-  IBOppiaineTheoryOfKnowledge,
-  isIBOppiaineTheoryOfKnowledge
-} from './IBOppiaineTheoryOfKnowledge'
+  IBDPCoreOppiaineExtendedEssay,
+  isIBDPCoreOppiaineExtendedEssay
+} from './IBDPCoreOppiaineExtendedEssay'
+import {
+  IBDPCoreOppiaineTheoryOfKnowledge,
+  isIBDPCoreOppiaineTheoryOfKnowledge
+} from './IBDPCoreOppiaineTheoryOfKnowledge'
 
 /**
  * IBDPCoreOppiaine
@@ -14,11 +17,11 @@ import {
  * @see `fi.oph.koski.schema.IBDPCoreOppiaine`
  */
 export type IBDPCoreOppiaine =
-  | IBOppiaineCAS
-  | IBOppiaineExtendedEssay
-  | IBOppiaineTheoryOfKnowledge
+  | IBDPCoreOppiaineCAS
+  | IBDPCoreOppiaineExtendedEssay
+  | IBDPCoreOppiaineTheoryOfKnowledge
 
 export const isIBDPCoreOppiaine = (a: any): a is IBDPCoreOppiaine =>
-  isIBOppiaineCAS(a) ||
-  isIBOppiaineExtendedEssay(a) ||
-  isIBOppiaineTheoryOfKnowledge(a)
+  isIBDPCoreOppiaineCAS(a) ||
+  isIBDPCoreOppiaineExtendedEssay(a) ||
+  isIBDPCoreOppiaineTheoryOfKnowledge(a)
