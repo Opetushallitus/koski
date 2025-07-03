@@ -135,15 +135,14 @@ object Käyttöoikeus {
     } else {
       val käyttäjänRoolit = unifyRoolit(roolit)
         .filter(_.palveluName == "KOSKI")
-        .map(_.rooli)
 
       val käyttäjänOoPtsRoolit = käyttäjänRoolit
-        .map(OoPtsMask.apply)
+        .flatMap(OoPtsMask.fromPalvelurooli)
         .distinct
 
       val kaikkiOpiskeluoikeudenTyypit = OpiskeluoikeudenTyyppi
         .kaikkiTyypit(true)
-        .map(t => OoPtsMask(t.koodiarvo))
+        .flatMap(OoPtsMask.fromKoodistokoodiviite)
         .toList
 
       val tyypitJoihinKäyttöRajoitettu = käyttäjänOoPtsRoolit
@@ -155,7 +154,7 @@ object Käyttöoikeus {
       if (oikeuksiaEiOleRajoitettuTiettyihinTyyppeihin) {
         OpiskeluoikeudenTyyppi
           .kaikkiTyypit(isRootUser)
-          .map(t => OoPtsMask(t.koodiarvo))
+          .flatMap(OoPtsMask.fromKoodistokoodiviite)
       } else {
         tyypitJoihinKäyttöRajoitettu
       }
@@ -295,14 +294,23 @@ case class OoPtsMask(
 }
 
 object OoPtsMask {
-  def apply(rooli: String): OoPtsMask = {
-    val oo :: pts = rooli.toLowerCase.split(Käyttöoikeus.opiskeluoikeusPäätasonSuoritusErotin).toList
-    OoPtsMask(oo, pts.headOption.map(p => List(p)))
+  def fromPalvelurooli(palvelurooli: Palvelurooli): Option[OoPtsMask] = {
+    val oo :: pts = palvelurooli.rooli.toLowerCase.split(Käyttöoikeus.opiskeluoikeusPäätasonSuoritusErotin).toList
+    if (isOpiskeluoikeusrooli(oo)) {
+      Some(OoPtsMask(oo, pts.headOption.map(p => List(p))))
+    } else {
+      None
+    }
   }
 
-  def apply(ooKoodiviite: Koodistokoodiviite): OoPtsMask = OoPtsMask(ooKoodiviite.koodiarvo)
+  def fromKoodistokoodiviite(ooKoodiviite: Koodistokoodiviite): Option[OoPtsMask] =
+    if (ooKoodiviite.koodistoUri == "opiskeluoikeudentyyppi" && isOpiskeluoikeusrooli(ooKoodiviite.koodiarvo)) {
+      Some(OoPtsMask(ooKoodiviite.koodiarvo))
+    } else {
+      None
+    }
 
-  def of(oo: Opiskeluoikeus): OoPtsMask =
+  def fromOpiskeluoikeus(oo: Opiskeluoikeus): OoPtsMask =
     OoPtsMask(
       oo.tyyppi.koodiarvo,
       Some(oo.suoritukset.map(_.tyyppi.koodiarvo))
@@ -310,6 +318,8 @@ object OoPtsMask {
 
   def intersects(ts: Iterable[OoPtsMask], a: OoPtsMask): Boolean =
     ts.exists(_.intersects(a))
+
+  private def isOpiskeluoikeusrooli(rooli: String) = OpiskeluoikeudenTyyppi.kaikkiTyypit(true).exists(_.koodiarvo == rooli)
 
   implicit final def ooPtsMaskIterableOps[F[X] <: Iterable[X]](i: F[OoPtsMask]): OoPtsMaskIterableChainingOps[F] = new OoPtsMaskIterableChainingOps(i)
 
