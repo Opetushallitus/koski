@@ -52,6 +52,11 @@ import { ArvosanaEdit, koodiarvoOnly } from './ArvosanaField'
 import { OppiaineTableKurssiEditor } from './OppiaineTableKurssiEditor'
 import { OppiaineTableOppiaineEditor } from './OppiaineTableOppiaineEditor'
 import { formatLaajuus } from '../../util/laajuus'
+import { isIBDPCoreOppiaineExtendedEssay } from '../../types/fi/oph/koski/schema/IBDPCoreOppiaineExtendedEssay'
+import { isIBDPCoreOppiaineCAS } from '../../types/fi/oph/koski/schema/IBDPCoreOppiaineCAS'
+import { isIBDPCoreAineRyhmäOppiaine } from '../../types/fi/oph/koski/schema/IBDPCoreAineRyhmaOppiaine'
+import { isIBDPCoreOppiaineTheoryOfKnowledge } from '../../types/fi/oph/koski/schema/IBDPCoreOppiaineTheoryOfKnowledge'
+import { isIBDPCoreOppiaineLanguage } from '../../types/fi/oph/koski/schema/IBDPCoreOppiaineLanguage'
 
 // Vain OppiaineTablen tukemat päätason suoritukset (tätä komponenttia tullaan myöhemmin käyttämään ainakin lukion näkymille)
 export type OppiaineTableOpiskeluoikeus = IBOpiskeluoikeus
@@ -673,12 +678,35 @@ type OppiaineTooltipProps = {
 const OppiaineDetails: React.FC<OppiaineTooltipProps> = ({ oppiaine, id }) => {
   const koulutus = oppiaine.koulutusmoduuli
   const fields: string[][] = [
-    isIBOppiaineExtendedEssay(koulutus)
+    isIBDPCoreOppiaineExtendedEssay(koulutus) &&
+    isIBDPCoreAineRyhmäOppiaine(koulutus.aine)
       ? ['Aine', t(koulutus.aine.tunniste.nimi)]
       : null,
-    isIBOppiaineExtendedEssay(koulutus) ? ['Aihe', t(koulutus.aihe)] : null,
-    isIBOppiaineLanguage(koulutus) ? ['Kieli', t(koulutus.kieli.nimi)] : null,
-    isIBOppiaineCAS(koulutus)
+    isIBDPCoreOppiaineExtendedEssay(koulutus) &&
+    isIBDPCoreAineRyhmäOppiaine(koulutus.aine)
+      ? ['Aineen laajuus', formatLaajuus(koulutus.aine.laajuus)]
+      : null,
+    isIBDPCoreOppiaineExtendedEssay(koulutus) &&
+    isIBDPCoreAineRyhmäOppiaine(koulutus.aine) &&
+    koulutus.aine.taso
+      ? ['Aineen taso', t(koulutus.aine.taso.nimi)]
+      : null,
+    isIBDPCoreOppiaineExtendedEssay(koulutus) &&
+    isIBDPCoreOppiaineLanguage(koulutus.aine)
+      ? ['Aineen kieli', t(koulutus.aine.kieli.nimi)]
+      : null,
+    isIBDPCoreOppiaineExtendedEssay(koulutus) &&
+    isIBDPCoreAineRyhmäOppiaine(koulutus.aine)
+      ? ['Aineen ryhmä', t(koulutus.aine.ryhmä.nimi)]
+      : null,
+    isIBDPCoreOppiaineExtendedEssay(koulutus)
+      ? ['Aihe', t(koulutus.aihe)]
+      : null,
+    isIBOppiaineLanguage(koulutus) || isIBDPCoreOppiaineLanguage(koulutus)
+      ? ['Kieli', t(koulutus.kieli.nimi)]
+      : null,
+    isIBDPCoreOppiaineCAS(koulutus) ||
+    isIBDPCoreOppiaineTheoryOfKnowledge(koulutus)
       ? ['Laajuus', formatLaajuus(koulutus.laajuus)]
       : null,
     isValinnaisuus(koulutus)
@@ -687,14 +715,18 @@ const OppiaineDetails: React.FC<OppiaineTooltipProps> = ({ oppiaine, id }) => {
     isIBTaso(koulutus) && koulutus.taso
       ? ['Taso', t(koulutus.taso.nimi)]
       : null,
-    isIBAineRyhmäOppiaine(koulutus) ? ['Ryhmä', t(koulutus.ryhmä.nimi)] : null
+    isIBAineRyhmäOppiaine(koulutus) || isIBDPCoreAineRyhmäOppiaine(koulutus)
+      ? ['Ryhmä', t(koulutus.ryhmä.nimi)]
+      : null
   ].filter(nonNull)
 
   return A.isEmpty(fields) ? null : (
     <Details id={id}>
       <KeyValueTable>
-        {fields.map(([label, value]) => (
-          <KeyValueRow localizableLabel={label}>{value}</KeyValueRow>
+        {fields.map(([label, value], i) => (
+          <KeyValueRow key={`details-label-${i}`} localizableLabel={label}>
+            {value}
+          </KeyValueRow>
         ))}
       </KeyValueTable>
     </Details>
@@ -843,8 +875,14 @@ export const isKuvauksellinen = (
 
 const useLaajuusYhteensä = (oppiaine: Oppiaine) =>
   useMemo(() => {
-    if (isIBOppiaineCAS(oppiaine.koulutusmoduuli)) {
+    if (
+      isIBDPCoreOppiaineCAS(oppiaine.koulutusmoduuli) ||
+      isIBDPCoreOppiaineTheoryOfKnowledge(oppiaine.koulutusmoduuli)
+    ) {
       return oppiaine.koulutusmoduuli.laajuus?.arvo
+    }
+    if (isIBDPCoreOppiaineExtendedEssay(oppiaine.koulutusmoduuli)) {
+      return oppiaine.koulutusmoduuli.aine.laajuus?.arvo
     }
 
     const kurssit = oppiaine.osasuoritukset || []

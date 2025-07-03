@@ -1,13 +1,11 @@
 import React from 'react'
 import { t } from '../../i18n/i18n'
 import { isIBAineRyhmäOppiaine } from '../../types/fi/oph/koski/schema/IBAineRyhmaOppiaine'
-import { isIBOppiaineCAS } from '../../types/fi/oph/koski/schema/IBOppiaineCAS'
-import { isIBOppiaineExtendedEssay } from '../../types/fi/oph/koski/schema/IBOppiaineExtendedEssay'
 import { isIBOppiaineLanguage } from '../../types/fi/oph/koski/schema/IBOppiaineLanguage'
 import { isIBTaso } from '../../types/fi/oph/koski/schema/IBTaso'
 import { isValinnaisuus } from '../../types/fi/oph/koski/schema/Valinnaisuus'
 import { koodiviiteId } from '../../util/koodisto'
-import { createLaajuusTunneissa } from '../../util/laajuus'
+import { createLaajuusOpintopisteissä } from '../../util/laajuus'
 import { PathToken, get } from '../../util/laxModify'
 import { DialogSelect } from '../../uusiopiskeluoikeus/components/DialogSelect'
 import { KeyValueRow, KeyValueTable } from '../containers/KeyValueTable'
@@ -19,6 +17,10 @@ import { useKoodistoOptions } from '../controls/Select'
 import { FormModel } from '../forms/FormModel'
 import { LaajuusEdit } from './LaajuusField'
 import { Oppiaine, OppiaineTableOpiskeluoikeus } from './OppiaineTable'
+import { isIBDPCoreOppiaineExtendedEssay } from '../../types/fi/oph/koski/schema/IBDPCoreOppiaineExtendedEssay'
+import { isIBDPCoreOppiaineCAS } from '../../types/fi/oph/koski/schema/IBDPCoreOppiaineCAS'
+import { isIBDPCoreOppiaineTheoryOfKnowledge } from '../../types/fi/oph/koski/schema/IBDPCoreOppiaineTheoryOfKnowledge'
+import { isIBDPCoreOppiaineLanguage } from '../../types/fi/oph/koski/schema/IBDPCoreOppiaineLanguage'
 
 type OppiaineTableOppiaineEditorProps = {
   form: FormModel<OppiaineTableOpiskeluoikeus>
@@ -45,30 +47,97 @@ export const OppiaineTableOppiaineEditor: React.FC<
       </ModalTitle>
       <ModalBody>
         <KeyValueTable>
-          {isIBOppiaineExtendedEssay(koulutus) && (
-            <>
-              <KeyValueRow localizableLabel="Aine">
+          {isIBDPCoreOppiaineExtendedEssay(koulutus) && (
+            // Huom. tällä hetkellä aiheuttaa poikkeuksen tallennettaessa jos muokatessa vaihtaa kieliaineen muuhun aineeseen
+            <KeyValueRow localizableLabel="Aine">
+              <DialogSelect
+                options={tunnisteet}
+                value={koodiviiteId(koulutus.aine.tunniste)}
+                onChange={(opt) => {
+                  form.set(
+                    ...path,
+                    'koulutusmoduuli',
+                    'aine',
+                    'tunniste'
+                  )(opt?.value)
+                }}
+                testId="tunniste"
+              />
+            </KeyValueRow>
+          )}
+          {isIBDPCoreOppiaineExtendedEssay(koulutus) && (
+            <KeyValueRow localizableLabel="Laajuus">
+              <LaajuusEdit
+                value={koulutus.aine.laajuus}
+                onChange={form.set(
+                  ...path,
+                  'koulutusmoduuli',
+                  'aine',
+                  'laajuus'
+                )}
+                createLaajuus={createLaajuusOpintopisteissä}
+              />
+            </KeyValueRow>
+          )}
+          {isIBDPCoreOppiaineExtendedEssay(koulutus) && (
+            <KeyValueRow localizableLabel="Taso">
+              <DialogSelect
+                options={tasot}
+                value={koulutus.aine.taso && koodiviiteId(koulutus.aine.taso)}
+                onChange={(opt) =>
+                  form.set(
+                    ...path,
+                    'koulutusmoduuli',
+                    'aine',
+                    'taso'
+                  )(opt?.value)
+                }
+                testId="kieli"
+              />
+            </KeyValueRow>
+          )}
+          {isIBDPCoreOppiaineExtendedEssay(koulutus) &&
+            isIBDPCoreOppiaineLanguage(koulutus.aine) && (
+              <KeyValueRow localizableLabel="Kieli">
                 <DialogSelect
-                  options={tunnisteet}
-                  value={koodiviiteId(koulutus.aine.tunniste)}
+                  options={kielet}
+                  value={koodiviiteId(koulutus.aine.kieli)}
                   onChange={(opt) =>
                     form.set(
                       ...path,
                       'koulutusmoduuli',
                       'aine',
-                      'tunniste'
+                      'kieli'
                     )(opt?.value)
                   }
-                  testId="tunniste"
+                  testId="aine-kieli"
                 />
               </KeyValueRow>
-              <KeyValueRow localizableLabel="Aihe">
-                <LocalizedTextEdit
-                  value={koulutus.aihe}
-                  onChange={form.set(...path, 'koulutusmoduuli', 'aihe')}
-                />
-              </KeyValueRow>
-            </>
+            )}
+          {isIBDPCoreOppiaineExtendedEssay(koulutus) && (
+            <KeyValueRow localizableLabel="Ryhmä">
+              <DialogSelect
+                options={aineryhmät}
+                value={koodiviiteId(koulutus.aine.ryhmä)}
+                onChange={(opt) =>
+                  form.set(
+                    ...path,
+                    'koulutusmoduuli',
+                    'aine',
+                    'ryhmä'
+                  )(opt?.value)
+                }
+                testId="kieli"
+              />
+            </KeyValueRow>
+          )}
+          {isIBDPCoreOppiaineExtendedEssay(koulutus) && (
+            <KeyValueRow localizableLabel="Aihe">
+              <LocalizedTextEdit
+                value={koulutus.aihe}
+                onChange={form.set(...path, 'koulutusmoduuli', 'aihe')}
+              />
+            </KeyValueRow>
           )}
           {isIBOppiaineLanguage(koulutus) && (
             <KeyValueRow localizableLabel="Kieli">
@@ -106,12 +175,13 @@ export const OppiaineTableOppiaineEditor: React.FC<
               />
             </KeyValueRow>
           )}
-          {isIBOppiaineCAS(koulutus) && (
+          {(isIBDPCoreOppiaineCAS(koulutus) ||
+            isIBDPCoreOppiaineTheoryOfKnowledge(koulutus)) && (
             <KeyValueRow localizableLabel="Laajuus">
               <LaajuusEdit
                 value={koulutus.laajuus}
                 onChange={form.set(...path, 'koulutusmoduuli', 'laajuus')}
-                createLaajuus={createLaajuusTunneissa}
+                createLaajuus={createLaajuusOpintopisteissä}
               />
             </KeyValueRow>
           )}
