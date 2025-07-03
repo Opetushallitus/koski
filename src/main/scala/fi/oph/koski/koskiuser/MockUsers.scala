@@ -679,6 +679,19 @@ object MockUsers {
     )
   )
 
+  val kaksiTallentajaoikeutta = KoskiMockUser(
+    "tuplatallari",
+    "tuplatallari",
+    "1.2.246.562.10.53400745794",
+    Seq(OrganisaatioJaKäyttöoikeudet(jyväskylänNormaalikoulu, List(
+      PalveluJaOikeus("KOSKI", Rooli.READ_UPDATE),
+      PalveluJaOikeus("KOSKI", Rooli.READ_UPDATE_ESIOPETUS),
+      PalveluJaOikeus("KOSKI", Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT),
+      PalveluJaOikeus("KOSKI", Rooli.KAIKKI_OPISKELUOIKEUS_TYYPIT),
+      PalveluJaOikeus("KOSKI", Rooli.TIEDONSIIRRON_MITATOINTI)
+    )))
+  )
+
   val users = List(
     kalle,
     pärre,
@@ -753,6 +766,7 @@ object MockUsers {
     valtionhallinnonKielitutkinnonKäyttäjä,
     ykiJaVktKäyttäjä,
     stadinTelma,
+    kaksiTallentajaoikeutta,
   )
 }
 
