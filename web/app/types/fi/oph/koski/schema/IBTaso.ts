@@ -2,6 +2,14 @@ import {
   FitnessAndWellBeing,
   isFitnessAndWellBeing
 } from './FitnessAndWellBeing'
+import {
+  IBDPCoreOppiaineLanguage,
+  isIBDPCoreOppiaineLanguage
+} from './IBDPCoreOppiaineLanguage'
+import {
+  IBDPCoreOppiaineMuu,
+  isIBDPCoreOppiaineMuu
+} from './IBDPCoreOppiaineMuu'
 import { IBOppiaineLanguage, isIBOppiaineLanguage } from './IBOppiaineLanguage'
 import { IBOppiaineMuu, isIBOppiaineMuu } from './IBOppiaineMuu'
 import {
@@ -21,6 +29,8 @@ import { MuuDiplomaOppiaine, isMuuDiplomaOppiaine } from './MuuDiplomaOppiaine'
  */
 export type IBTaso =
   | FitnessAndWellBeing
+  | IBDPCoreOppiaineLanguage
+  | IBDPCoreOppiaineMuu
   | IBOppiaineLanguage
   | IBOppiaineMuu
   | InternationalSchoolMuuDiplomaOppiaine
@@ -29,6 +39,8 @@ export type IBTaso =
 
 export const isIBTaso = (a: any): a is IBTaso =>
   isFitnessAndWellBeing(a) ||
+  isIBDPCoreOppiaineLanguage(a) ||
+  isIBDPCoreOppiaineMuu(a) ||
   isIBOppiaineLanguage(a) ||
   isIBOppiaineMuu(a) ||
   isInternationalSchoolMuuDiplomaOppiaine(a) ||
