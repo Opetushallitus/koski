@@ -395,7 +395,7 @@ const ExtendedEssayFieldRows: React.FC<IBTutkinnonTiedotRowsProps> = ({
                 />
               ) : (
                 <TestIdText id="pakollinen">
-                  {state.pakollinen ? t('Pakollinen') : t('Valinnainen')}
+                  {state.pakollinen.value ? t('Pakollinen') : t('Valinnainen')}
                 </TestIdText>
               )}
             </KeyValueRow>

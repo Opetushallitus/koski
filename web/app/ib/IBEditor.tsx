@@ -159,7 +159,6 @@ const IBPäätasonSuoritusEditor: React.FC<
       testId={päätasonSuoritus.testId}
       {...addSuoritusProps}
     >
-
       {form.state.suoritukset.length > 1 && (
         <RemovePaatasonSuoritus
           form={form}

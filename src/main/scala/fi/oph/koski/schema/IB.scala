@@ -453,7 +453,9 @@ case class IBDPCoreOppiaineExtendedEssay(
   aine: IBDPCoreAineRyhmäOppiaine,
   aihe: LocalizedString,
   pakollinen: Boolean = true
-) extends IBDPCoreOppiaine with Laajuudeton
+) extends IBDPCoreOppiaine with Laajuudeton {
+  override def getLaajuus: Option[Laajuus] = aine.getLaajuus
+}
 
 @Title("Muu IB-oppiaine")
 case class IBDPCoreOppiaineMuu(
