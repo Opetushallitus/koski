@@ -22,16 +22,12 @@ export const Checkbox: React.FC<CheckboxProps> = (props) => {
         className="Checkbox__input"
         type="checkbox"
         checked={props.checked}
-        onChange={(_) => {}}
+        onChange={(_) => {
+          props.onChange(!props.checked)
+        }}
         data-testid={`${testId}.input`}
       />
-      <label
-        htmlFor={id}
-        onClick={() => {
-          return props.onChange(!props.checked)
-        }}
-        data-testid={`${testId}.label`}
-      >
+      <label htmlFor={id} data-testid={`${testId}.label`}>
         <span className="Checkbox__label">{t(props.label)}</span>
       </label>
     </div>
