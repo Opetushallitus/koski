@@ -130,7 +130,7 @@ trait ValtionhallinnonKielitutkinnonKielitaidonSuoritus extends Suoritus with Va
   def tyyppi: Koodistokoodiviite
   def arviointi: Option[List[ValtionhallinnonKielitutkinnonArviointi]]
 
-  override def kesken: Boolean = !arviointi.exists(_.exists(_.hyväksytty))
+  override def valmis: Boolean = arviointi.isDefined
 }
 
 trait ValtionhallinnonKielitutkinnonKielitaito extends Koulutusmoduuli {
@@ -187,7 +187,7 @@ trait ValtionhallinnonKielitutkinnonOsakokeenSuoritus extends Suoritus with Vahv
   def koulutusmoduuli: ValtionhallinnonKielitutkinnonOsakoe
   def arviointi: Option[List[ValtionhallinnonKielitutkinnonArviointi]]
 
-  override def valmis: Boolean = super.valmis && arviointi.exists(_.exists(_.hyväksytty))
+  override def valmis: Boolean = arviointi.isDefined
 }
 
 // Valtionhallinnon kielitutkinnon osakokeet
