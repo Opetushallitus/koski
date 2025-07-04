@@ -343,8 +343,8 @@ class OppijaValidationIBSpec extends AnyFreeSpec with KoskiHttpSpec with PutOpis
         filterIbTutkinto()(pts).copy(osasuoritukset = Some(os.toList))
 
       val extendedEssay = IBDBCoreSuoritus(
-        koulutusmoduuli = IBOppiaineExtendedEssay(
-          aine = IBOppiaineMuu(
+        koulutusmoduuli = IBDPCoreOppiaineExtendedEssay(
+          aine = IBDPCoreOppiaineMuu(
             tunniste = Koodistokoodiviite("BIO", "oppiaineetib"),
             ryhmä = Koodistokoodiviite("4", "aineryhmaib"),
           ),
@@ -352,9 +352,9 @@ class OppijaValidationIBSpec extends AnyFreeSpec with KoskiHttpSpec with PutOpis
         ),
       )
 
-      val theoryOfKnowledge = IBDBCoreSuoritus(koulutusmoduuli = IBOppiaineTheoryOfKnowledge())
+      val theoryOfKnowledge = IBDBCoreSuoritus(koulutusmoduuli = IBDPCoreOppiaineTheoryOfKnowledge(laajuus = Some(LaajuusOpintopisteissä(1))))
 
-      val casOppiaine = IBDBCoreSuoritus(koulutusmoduuli = IBOppiaineCAS())
+      val casOppiaine = IBDBCoreSuoritus(koulutusmoduuli = IBDPCoreOppiaineCAS(laajuus = Some(LaajuusOpintopisteissä(1))))
 
       "Ennen rajapäivää" - {
         "Laajuuden ilmoitus kursseina ok" in {
@@ -496,6 +496,23 @@ class OppijaValidationIBSpec extends AnyFreeSpec with KoskiHttpSpec with PutOpis
             }
           }
         }
+      }
+    }
+
+    "Suorituksen poistaminen" - {
+      "Onnistuu" in {
+        val tallennettuOpiskeluoikeusOid = setupOppijaWithOpiskeluoikeus(opiskeluoikeus) {
+          verifyResponseStatusOk()
+          readPutOppijaResponse
+        }.opiskeluoikeudet.head.oid
+
+        val opiskeluoikeusVainPreIb = opiskeluoikeus.copy(
+          oid = Some(tallennettuOpiskeluoikeusOid),
+          suoritukset = opiskeluoikeus.suoritukset.filterNot(_.tyyppi.koodiarvo == "ibtutkinto")
+        )
+
+        val oo = putAndGetOpiskeluoikeus(opiskeluoikeusVainPreIb)
+        oo.suoritukset.size should be (1)
       }
     }
   }

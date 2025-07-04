@@ -248,7 +248,11 @@ object ConvertMigriSchema {
                   case x: Valinnaisuus => Some(x.pakollinen)
                   case _ => None
                 },
-                laajuus = osasuoritus.koulutusmoduuli.getLaajuus
+                laajuus = osasuoritus.koulutusmoduuli.getLaajuus,
+                aine = osasuoritus.koulutusmoduuli match {
+                  case x: IBDPCoreOppiaineExtendedEssay => Some(x.aine)
+                  case _ => None
+                }
               ),
               arviointi = osasuoritus.arviointi.map(_.map(a =>
                 MigriArviointi(
@@ -298,7 +302,8 @@ object ConvertMigriSchema {
                       case x: Valinnaisuus => Some(x.pakollinen)
                       case _ => None
                     },
-                    laajuus = osasuorituksenOsasuoritus.koulutusmoduuli.getLaajuus
+                    laajuus = osasuorituksenOsasuoritus.koulutusmoduuli.getLaajuus,
+                    aine = None
                   ),
                   arviointi = osasuorituksenOsasuoritus.arviointi.map(_.map(a =>
                     MigriArviointi(
