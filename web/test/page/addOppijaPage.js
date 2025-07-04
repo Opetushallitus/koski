@@ -612,7 +612,7 @@ function AddOppijaPage() {
     selectMaksuttomuus: function (index) {
       return eventually(async () => {
         const selector =
-          '[data-testid="uusiOpiskeluoikeus.modal.maksuton"] .RadioButtons__option'
+          '[data-testid="uusiOpiskeluoikeus.modal.maksuton"] .RadioButtons__option > input'
         return click(S(selector)[index])()
       })
     },
@@ -757,8 +757,9 @@ function AddOppijaPage() {
     selectVarhaiskasvatusOrganisaationUlkopuolelta: function () {
       return click(
         findSingle(
-        '[data-testid="uusiOpiskeluoikeus.modal.hankintakoulutus.esiopetus.label"]',
-      ))
+          '[data-testid="uusiOpiskeluoikeus.modal.hankintakoulutus.esiopetus.label"]'
+        )
+      )
     },
     selectJärjestämismuoto: function (järjestämismuoto) {
       return selectValue(
