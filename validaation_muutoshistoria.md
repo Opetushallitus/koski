@@ -1,5 +1,8 @@
 # Koskeen tallennettavien tietojen validaatiosäännöt
 
+# 4.7.2025
+
+- Valtionhallinnon kielitutkintojen validaatiota muutettu niin, että osakoe tai taito todetaan valmiiksi, kunhan sillä on mikä tahansa arviointi (myös hylätty).
 
 ## 30.6.2025
 
@@ -7,6 +10,7 @@
   - Muutos koskee VST vapaatavoitteisten, VST Jotpan ja muun kuin säännellyn koulutuksen opiskeluoikeuksia.
 
 ## 27.6.2025
+
 - Muutettu syksyllä voimaan tulevia tuen päätösten validaatioita; tuen päätös saa olla voimassa jo ennen opiskeluoikeuden alkua, mutta ei saa päättyä ennen opiskeluoikeuden alkua
 - Jos perusopetuksen vuosiluokan vahvistetun suorituksen osasuorituksella on rajattu oppimäärä, osasuorituksen arvosana voi olla vain "S" tai "5" riippuen vuosiluokasta.
 

@@ -12,3 +12,4 @@ TOR-2222 - lisätty tietomalliin traitteja, jolla ei ole toiminnallisia vaikutuk
 TOR-2298 - Poistettu kommentti koodista
 OPHKOTO-29 - Kovakoodattu sähköposti kielitutkintojen virheiden ilmoittamiseen
 OPHKOTO-28 - Bugikorjaus
+OPHKOTO-17 - muutos vaikuttaa validointiin
