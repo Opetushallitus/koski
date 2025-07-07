@@ -1,3 +1,6 @@
+## 8.7.2025
+- Suoritettujen lukiodiplomien arvosanat ja tunnistetiedot lisätty lukion päätason suoritukselle
+
 ## 24.6.2025
 
 - Muun kuin säännellyn koulutuksen suoritusten ja osasuoritusten arviointeihin sallittu kaikki arviointiasteikkomuks-koodiston koodit.
