@@ -40,6 +40,7 @@ case class LukionOppimääränSuoritus2019(
   puhviKoe: Option[PuhviKoe2019] = None,
   @Description("Vahvistetussa lukion oppimäärän suorituksessa tulee olla suullisen kielitaidon kokeen suoritus niistä kielistä, joissa on suoritettu suullisen kielitaidon kokeen sisältävä valtakunnallinen moduuli. Nämä moduulit ovat ENA8, FIM8, FINA8, FINB16, RUA8, RUB16, RUÄ8, SMA8 ja VKA8.")
   suullisenKielitaidonKokeet: Option[List[SuullisenKielitaidonKoe2019]] = None,
+  lukiodiplomit2019: Option[List[LukiodiplominSuoritusJaArviointi]] = None,
   @Description("Oppiaineiden suoritukset")
   @Title("Oppiaineet")
   override val osasuoritukset: Option[List[LukionOppimääränOsasuoritus2019]],
@@ -74,6 +75,7 @@ case class LukionOppiaineidenOppimäärienSuoritus2019(
   puhviKoe: Option[PuhviKoe2019] = None,
   @Description("Arvioituun lukion kielioppiainesuoritukseen liittyen tulee aineopintosuorituksen päätasolta löytyä suullisen kielitaidon kokeen suoritus niistä kielistä, joissa on suoritettu suullisen kielitaidon kokeen sisältävä valtakunnallinen moduuli. Nämä moduulit ovat ENA8, FIM8, FINA8, FINB16, RUA8, RUB16, RUÄ8, SMA8 ja VKA8.")
   suullisenKielitaidonKokeet: Option[List[SuullisenKielitaidonKoe2019]] = None,
+  lukiodiplomit2019: Option[List[LukiodiplominSuoritusJaArviointi]] = None,
   @Description("Oppiaineiden suoritukset")
   @Title("Oppiaineet")
   override val osasuoritukset: Option[List[LukionOppimääränOsasuoritus2019]],
@@ -510,6 +512,29 @@ case class SuullisenKielitaidonKoe2019(
   taitotaso: Koodistokoodiviite,
   kuvaus: Option[LocalizedString],
   päivä: LocalDate
+) extends ArviointiPäivämäärällä with YleissivistävänKoulutuksenArviointi
+
+case class LukiodiplominSuoritusJaArviointi (
+  @KoodistoKoodiarvo("4")
+  @KoodistoKoodiarvo("5")
+  @KoodistoKoodiarvo("6")
+  @KoodistoKoodiarvo("7")
+  @KoodistoKoodiarvo("8")
+  @KoodistoKoodiarvo("9")
+  @KoodistoKoodiarvo("10")
+  arvosana: Koodistokoodiviite,
+  kuvaus: Option[LocalizedString],
+  päivä: LocalDate,
+  @KoodistoUri("lukionkurssit")
+  @KoodistoKoodiarvo("KOLD1")
+  @KoodistoKoodiarvo("KULD2")
+  @KoodistoKoodiarvo("KÄLD3")
+  @KoodistoKoodiarvo("LILD4")
+  @KoodistoKoodiarvo("MELD5")
+  @KoodistoKoodiarvo("MULD6")
+  @KoodistoKoodiarvo("TALD7")
+  @KoodistoKoodiarvo("TELD8")
+  tunniste: Koodistokoodiviite
 ) extends ArviointiPäivämäärällä with YleissivistävänKoulutuksenArviointi
 
 trait LukionOppiaineenArviointi2019 extends YleissivistävänKoulutuksenArviointi {
