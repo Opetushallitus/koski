@@ -1190,6 +1190,16 @@ test.describe('IB', () => {
           })
         })
       })
+
+      test.describe('Päätason suorituksen poistaminen', () => {
+        test('Päätason suorituksen voi poistaa', async({
+          ibOppijaPage
+        }) => {
+          await ibOppijaPage.getByTestId(`suoritukset.${ibOppijaPage.suoritusIndex}.button`).click()
+          await ibOppijaPage.getByTestId(`suoritukset.${ibOppijaPage.suoritusIndex}.confirm`).click()
+          await ibOppijaPage.tallenna()
+        })
+      })
     })
 
     test.describe('Laajuuden yksikön vaihtuminen', () => {

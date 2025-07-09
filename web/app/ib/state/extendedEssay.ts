@@ -1,11 +1,10 @@
-import { useCallback, useEffect, useMemo } from 'react'
+import { useEffect, useMemo } from 'react'
 import { ActivePäätasonSuoritus } from '../../components-v2/containers/EditorContainer'
 import {
   DialogField,
   useDialogField
 } from '../../components-v2/createdialog/DialogField'
 import { FormModel } from '../../components-v2/forms/FormModel'
-import { IBExtendedEssaySuoritus } from '../../types/fi/oph/koski/schema/IBExtendedEssaySuoritus'
 import { IBOpiskeluoikeus } from '../../types/fi/oph/koski/schema/IBOpiskeluoikeus'
 import { IBTutkinnonSuoritus } from '../../types/fi/oph/koski/schema/IBTutkinnonSuoritus'
 import { Koodistokoodiviite } from '../../types/fi/oph/koski/schema/Koodistokoodiviite'
@@ -62,37 +61,37 @@ export const useExtendedEssayState = (
     () => initial?.koulutusmoduuli.aihe
   )
 
-  const setSuoritus = useCallback(
-    (suoritus?: IBExtendedEssaySuoritus) => {
-      form.updateAt(päätasonSuoritus.path.prop('extendedEssay'), () => suoritus)
+  useEffect(
+    () => {
+      const suoritus =
+        createIBExtendedEssaySuoritus({
+          tunniste: aine.tunniste.value,
+          kieli: aine.kieli.value,
+          ryhmä: aine.ryhmä.value,
+          taso: aine.taso.value,
+          aihe: aihe.value,
+          pakollinen: aine.pakollinen.value,
+          arvosana: arvosana.value
+        }) || undefined
+
+      if (suoritus) {
+        form.updateAt(
+          päätasonSuoritus.path.prop('extendedEssay'),
+          () => suoritus
+        )
+      }
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    []
+    [
+      aihe.value,
+      aine.kieli.value,
+      aine.pakollinen.value,
+      aine.ryhmä.value,
+      aine.taso.value,
+      aine.tunniste.value,
+      arvosana.value
+    ]
   )
-
-  useEffect(() => {
-    const suoritus =
-      createIBExtendedEssaySuoritus({
-        tunniste: aine.tunniste.value,
-        kieli: aine.kieli.value,
-        ryhmä: aine.ryhmä.value,
-        taso: aine.taso.value,
-        aihe: aihe.value,
-        pakollinen: aine.pakollinen.value,
-        arvosana: arvosana.value
-      }) || undefined
-
-    setSuoritus(suoritus)
-  }, [
-    aihe.value,
-    aine.kieli.value,
-    aine.pakollinen.value,
-    aine.ryhmä.value,
-    aine.taso.value,
-    aine.tunniste.value,
-    arvosana.value,
-    setSuoritus
-  ])
 
   return useMemo(
     () => ({

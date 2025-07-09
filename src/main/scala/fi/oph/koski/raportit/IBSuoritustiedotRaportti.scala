@@ -343,7 +343,7 @@ object IBTutkinnonSuoritusRaportti extends IBSuoritustiedotRaporttiType {
   val typeName = "ibtutkinto"
   val päätasonSuoritusTyyppi: String = "ibtutkinto"
 
-  override def isOppiaine(osasuoritus: ROsasuoritusRow): Boolean = osasuoritus.suorituksenTyyppi == "iboppiaine"
+  override def isOppiaine(osasuoritus: ROsasuoritusRow): Boolean = osasuoritus.suorituksenTyyppi == "iboppiaine" || osasuoritus.suorituksenTyyppi == "ibcore"
 
   override def isKurssi(osasuoritus: ROsasuoritusRow): Boolean = osasuoritus.suorituksenTyyppi == "ibkurssi"
 }
