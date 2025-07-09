@@ -44,7 +44,7 @@ object ExamplesLukio2019 {
     omanÄidinkielenOpinnot = omanÄidinkielenOpinnotSaame,
     puhviKoe = puhviKoe,
     suullisenKielitaidonKokeet = Some(List(suullisenKielitaidonKoeEnglanti, suullisenKielitaidonKoeEspanja)),
-    lukiodiplomit2019 = Some(List(lukiodiplominSuoritus)),
+    lukiodiplomit2019 = Some(List(lukiodiplominSuoritus())),
     todistuksellaNäkyvätLisätiedot = Some("Osallistunut kansalliseen etäopetuskokeiluun"),
     osasuoritukset = Some(oppiaineSuorituksetJoissaMuitaSuorituksiaJaVastaavia),
     ryhmä = Some("AH")
@@ -417,8 +417,8 @@ object Lukio2019ExampleData {
     kuvaus = None
   ))
 
-  def lukiodiplominSuoritus = LukiodiplominSuoritusJaArviointi(
-    arvosana = Koodistokoodiviite("6", "arviointiasteikkoyleissivistava"),
+  def lukiodiplominSuoritus(arvosana: String = "6") = LukiodiplominSuoritusJaArviointi(
+    arvosana = Koodistokoodiviite(arvosana, "arviointiasteikkoyleissivistava"),
     kuvaus = None,
     päivä = LocalDate.of(2025, 8, 15),
     tunniste = Koodistokoodiviite("LILD4", "lukionkurssit"),
