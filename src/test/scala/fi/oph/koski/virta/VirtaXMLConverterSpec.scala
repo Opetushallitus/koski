@@ -27,7 +27,9 @@ class VirtaXMLConverterSpec extends AnyFreeSpec with TestEnvironment with Matche
   def suoritusWithOrganisaatio(
     organisaatio: Option[Elem],
     suoritusPvm: String = "2014-05-30",
-    luokittelu: Option[Int] = None
+    luokittelu: Option[Int] = None,
+    ilmanAinePätevyyksiä: Boolean = false,
+    ilmanOpePätevyyksiä: Boolean = false
   ): Elem = <virta:Opintosuoritus valtakunnallinenKoulutusmoduulitunniste="" opiskeluoikeusAvain="avopH1O1" opiskelijaAvain="avopH1" koulutusmoduulitunniste="Kul-49.3400" avain="1114935190">
     <virta:SuoritusPvm>{suoritusPvm}</virta:SuoritusPvm>
     <virta:Laajuus>
@@ -51,9 +53,17 @@ class VirtaXMLConverterSpec extends AnyFreeSpec with TestEnvironment with Matche
         <virta:Luokittelu>{luokittelu.get}</virta:Luokittelu>
       }
     }
-    <virta:Patevyys>kl</virta:Patevyys>
-    <virta:Patevyys>aj</virta:Patevyys>
-    <virta:Patevyys>ob</virta:Patevyys>
+    {
+      if (!ilmanAinePätevyyksiä) {
+        <virta:Patevyys>kl</virta:Patevyys>
+        <virta:Patevyys>aj</virta:Patevyys>
+      }
+    }
+    {
+      if (!ilmanOpePätevyyksiä) {
+        <virta:Patevyys>ob</virta:Patevyys>
+      }
+    }
     <virta:Patevyys>ll4</virta:Patevyys>
     <virta:Patevyys>12</virta:Patevyys>
   </virta:Opintosuoritus>
@@ -64,7 +74,9 @@ class VirtaXMLConverterSpec extends AnyFreeSpec with TestEnvironment with Matche
     organisaatio: Option[Elem],
     tilallinen: Boolean = true,
     päättynyt: Boolean = false,
-    luokittelu: Option[Int] = None
+    luokittelu: Option[Int] = None,
+    ilmanAinePätevyyksiä: Boolean = false,
+    ilmanOpePätevyyksiä: Boolean = false
   ): Elem = <virta:Opiskeluoikeudet>
     <virta:Opiskeluoikeus opiskelijaAvain="avopH1" avain="avopH1O1">
       <virta:AlkuPvm>2008-08-01</virta:AlkuPvm>
@@ -117,9 +129,17 @@ class VirtaXMLConverterSpec extends AnyFreeSpec with TestEnvironment with Matche
         <virta:Nimi kieli="fi">Nimi 2</virta:Nimi>
         <virta:Nimi kieli="sv">Nimi 2</virta:Nimi>
         <virta:Nimi kieli="en">Nimi 2</virta:Nimi>
-        <virta:Patevyys>ew</virta:Patevyys>
-        <virta:Patevyys>oa</virta:Patevyys>
-        <virta:Patevyys>ob</virta:Patevyys>
+        {
+          if (!ilmanAinePätevyyksiä) {
+            <virta:Patevyys>ew</virta:Patevyys>
+          }
+        }
+        {
+          if (!ilmanOpePätevyyksiä) {
+            <virta:Patevyys>oa</virta:Patevyys>
+            <virta:Patevyys>ob</virta:Patevyys>
+          }
+        }
         <virta:Patevyys>far</virta:Patevyys>
         <virta:Patevyys>16</virta:Patevyys>
       </virta:Jakso>
@@ -129,11 +149,11 @@ class VirtaXMLConverterSpec extends AnyFreeSpec with TestEnvironment with Matche
     </virta:Opiskeluoikeus>
   </virta:Opiskeluoikeudet>
 
-  def opiskeluoikeusSuorituksella(suoritusPvm: String = "2014-05-30"): Elem = <virta:Opiskelija avain="lut-student-xxx">
+  def opiskeluoikeusSuorituksella(suoritusPvm: String = "2014-05-30", ilmanAinePätevyyksiä: Boolean = false, ilmanOpePätevyyksiä: Boolean = false): Elem = <virta:Opiskelija avain="lut-student-xxx">
     <virta:Henkilotunnus>xxxxxx-xxxx</virta:Henkilotunnus>
-    {opiskeluoikeusWithOrganisaatio(None, tilallinen = false)}
+    {opiskeluoikeusWithOrganisaatio(None, tilallinen = false, ilmanAinePätevyyksiä = ilmanAinePätevyyksiä, ilmanOpePätevyyksiä = ilmanOpePätevyyksiä)}
     <virta:Opintosuoritukset>
-    {suoritusWithOrganisaatio(None, suoritusPvm)}
+    {suoritusWithOrganisaatio(None, suoritusPvm, luokittelu = None, ilmanAinePätevyyksiä = ilmanAinePätevyyksiä, ilmanOpePätevyyksiä = ilmanOpePätevyyksiä)}
     </virta:Opintosuoritukset>
   </virta:Opiskelija>
 
@@ -193,6 +213,20 @@ class VirtaXMLConverterSpec extends AnyFreeSpec with TestEnvironment with Matche
         val ainePatevyydet = oo.head.lisätiedot.flatMap(_.opetettavanAineenOpinnot.map(x => x.map(_.koodiarvo))).getOrElse(List())
         opettajanPatevyydet should equal(List("oa", "ob"))
         ainePatevyydet should equal(List("aj", "ew", "kl"))
+      }
+
+      "ainepätevyydet on None jos sopivia pätevyyksiä ei löydy" in {
+        val oo = converter.convertToOpiskeluoikeudet(opiskeluoikeusSuorituksella(ilmanAinePätevyyksiä = true))
+        oo should have size (1)
+        val ainePatevyydet = oo.head.lisätiedot.get.opetettavanAineenOpinnot
+        ainePatevyydet should equal(None)
+      }
+
+      "opettajan pätevyydet on None jos sopivia pätevyyksiä ei löydy" in {
+        val oo = converter.convertToOpiskeluoikeudet(opiskeluoikeusSuorituksella(ilmanOpePätevyyksiä = true))
+        oo should have size (1)
+        val opePatevyydet = oo.head.lisätiedot.get.opettajanPedagogisetOpinnot
+        opePatevyydet should equal(None)
       }
     }
 
