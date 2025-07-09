@@ -72,6 +72,10 @@ trait ToimintaAlueittainOpiskeleva extends Tukipäätöksellinen {
   def toimintaAlueittainOpiskelu: Option[List[Aikajakso]]
 }
 
+trait TavoitekokonaisuuksittainOpiskeleva extends Tukipäätöksellinen {
+  def tavoitekokonaisuuksittainOpiskelu: Option[List[Aikajakso]]
+}
+
 trait Vammainen {
   def vammainen: Option[List[Aikajakso]]
 }
