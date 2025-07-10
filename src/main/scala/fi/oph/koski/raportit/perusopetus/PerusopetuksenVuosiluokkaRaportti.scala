@@ -193,14 +193,27 @@ object PerusopetuksenVuosiluokkaRaportti extends VuosiluokkaRaporttiPaivalta wit
   ): String = {
     val arvosana = osasuoritus.arviointiArvosanaKoodiarvo
       .getOrElse(t.get("raportti-excel-default-value-arvosana-puuttuu"))
-    val maybeLuokkaAste = osasuoritus.luokkaAste.map(s => s"($s. luokka)")
+    val täppä = täppäIfYksilöllistettyTaiRajattu(osasuoritus)
+
     val viimeinenPäiväIlmanLaajuuksia = Date.valueOf(LocalDate.of(2020, 7, 31))
-    if (päätasonVahvistusPäivä.exists(_.after(viimeinenPäiväIlmanLaajuuksia)) && osasuoritus.koulutusmoduuliPakollinen.getOrElse(false)) {
-      val laajuus = osasuoritus.koulutusmoduuliLaajuusArvo.getOrElse(t.get("raportti-excel-default-value-laajuus-puuttuu"))
-      s"$arvosana${täppäIfYksilöllistettyTaiRajattu(osasuoritus)} ${t.get("raportti-excel-default-value-laajuus")}: $laajuus $maybeLuokkaAste"
+    val includeLaajuus = päätasonVahvistusPäivä.exists(_.after(viimeinenPäiväIlmanLaajuuksia)) &&
+      osasuoritus.koulutusmoduuliPakollinen.getOrElse(false)
+
+    val laajuus: Option[String] = if (includeLaajuus) {
+      osasuoritus.koulutusmoduuliLaajuusArvo.map { arvo =>
+        val yksikkö = osasuoritus.koulutusmoduuliLaajuusYksikkö.getOrElse("")
+        if (yksikkö.nonEmpty) s"$arvo $yksikkö" else s"$arvo"
+      }
     } else {
-      s"$arvosana${täppäIfYksilöllistettyTaiRajattu(osasuoritus)} $maybeLuokkaAste"
+      None
     }
+
+    val luokkaAste: Option[String] = osasuoritus.luokkaAste.map(s => s"$s.lk")
+
+    val lisätiedot = List(laajuus, luokkaAste).flatten
+    val lisätietoString = if (lisätiedot.nonEmpty) s" (${lisätiedot.mkString(", ")})" else ""
+
+    s"$arvosana$täppä$lisätietoString" // esim. "8 (Laajuus puuttuu, 7.lk)" tai "8* (3 ov, 7.lk)"
   }
 
   private def täppäIfYksilöllistettyTaiRajattu(osasuoritus: ROsasuoritusRow): String = {

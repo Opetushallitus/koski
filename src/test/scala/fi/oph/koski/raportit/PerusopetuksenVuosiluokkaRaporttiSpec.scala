@@ -74,8 +74,12 @@ class PerusopetuksenVuosiluokkaRaporttiSpec
       addPerusopetus(
         KoskiSpecificMockOppijat.lukioKesken,
         createVuosiluokanSuoritus(Some(date(2026, 8, 1)), None)
-          .copy(osasuoritukset = Some(List(suoritus(oppiaine("HI", vuosiviikkotuntia(1)))
-            .copy(arviointi = arviointi(8), rajattuOppimäärä = true))))
+          .copy(osasuoritukset = Some(List(
+            suoritus(oppiaine("HI", vuosiviikkotuntia(1)))
+              .copy(arviointi = arviointi(8), rajattuOppimäärä = true),
+            suoritus(oppiaine("KE", vuosiviikkotuntia(1)))
+              .copy(arviointi = arviointi(8), luokkaAste = perusopetuksenLuokkaAste("7"))
+            )))
       )
 
       val hakupäivä = LocalDate.of(2026, 8, 1)
@@ -544,7 +548,7 @@ class PerusopetuksenVuosiluokkaRaporttiSpec
     historia = "8*", // * == rajattu oppimäärä
     yhteiskuntaoppi = "Oppiaine puuttuu",
     matematiikka = "Oppiaine puuttuu",
-    kemia = "Oppiaine puuttuu",
+    kemia = "8 (7.lk)",
     fysiikka = "Oppiaine puuttuu",
     biologia = "Oppiaine puuttuu",
     maantieto = "Oppiaine puuttuu",
