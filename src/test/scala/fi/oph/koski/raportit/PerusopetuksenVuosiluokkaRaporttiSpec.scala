@@ -90,6 +90,7 @@ class PerusopetuksenVuosiluokkaRaporttiSpec
         erityisenTuenPäätökset = None,
         tuenPäätöksenJaksot = Some(List(Tukijakso(Some(hakupäivä), None))),
         opetuksenJärjestäminenVammanSairaudenTaiRajoitteenPerusteella = Some(List(Aikajakso(hakupäivä, None))),
+        tavoitekokonaisuuksittainOpiskelu = Some(List(Aikajakso(Some(hakupäivä), None)))
       )) {
         val result = PerusopetuksenVuosiluokkaRaportti.buildRaportti(repository, Seq(MockOrganisaatiot.jyväskylänNormaalikoulu), hakupäivä, None, vuosiluokka = "8", t)
         val opiskeluoikeusOid = lastOpiskeluoikeus(KoskiSpecificMockOppijat.lukioKesken.oid).oid.get
@@ -425,7 +426,8 @@ class PerusopetuksenVuosiluokkaRaporttiSpec
     erityisenTuenPaatosToimialueittain = false,
     tuenPäätöksenJakso = false,
     opetuksenJärjestäminenVammanSairaudenTaiRajoitteenPerusteella = false,
-    toimintaAlueittainOpiskelu = false
+    toimintaAlueittainOpiskelu = false,
+    tavoitekokonaisuuksittainOpiskelu = false
   )
 
   val ynjevinExpectedKasiLuokkaRowWithLisätiedot = defaultYnjeviExpectedKasiLuokkaRow.copy(
@@ -563,6 +565,7 @@ class PerusopetuksenVuosiluokkaRaporttiSpec
     valinnaisetEiLaajuutta = "",
     tuenPäätöksenJakso = true,
     opetuksenJärjestäminenVammanSairaudenTaiRajoitteenPerusteella = true,
+    tavoitekokonaisuuksittainOpiskelu = true,
   )
 
   private def insertTestData = {

@@ -145,7 +145,8 @@ object PerusopetuksenVuosiluokkaRaportti extends VuosiluokkaRaporttiPaivalta wit
       erityisenTuenPaatosToimialueittain = voimassaOlevatErityisenTuenPäätökset.exists(_.opiskeleeToimintaAlueittain),
       tuenPäätöksenJakso = opiskeluoikeudenLisätiedot.exists(_.tuenPäätöksenJaksot.exists(_.exists(mahdollisestiAlkupäivällinenJaksoVoimassaPäivällä(_, hakupaiva)))),
       opetuksenJärjestäminenVammanSairaudenTaiRajoitteenPerusteella = opiskeluoikeudenLisätiedot.exists(_.opetuksenJärjestäminenVammanSairaudenTaiRajoitteenPerusteella.exists(_.exists(aikajaksoVoimassaHakuPaivalla(_, hakupaiva)))),
-      toimintaAlueittainOpiskelu = opiskeluoikeudenLisätiedot.exists(_.toimintaAlueittainOpiskelu.exists(_.exists(aikajaksoVoimassaHakuPaivalla(_, hakupaiva))))
+      toimintaAlueittainOpiskelu = opiskeluoikeudenLisätiedot.exists(_.toimintaAlueittainOpiskelu.exists(_.exists(aikajaksoVoimassaHakuPaivalla(_, hakupaiva)))),
+      tavoitekokonaisuuksittainOpiskelu = opiskeluoikeudenLisätiedot.exists(_.tavoitekokonaisuuksittainOpiskelu.exists(_.exists(aikajaksoVoimassaHakuPaivalla(_, hakupaiva))))
     )
   }
 
@@ -382,6 +383,7 @@ object PerusopetuksenVuosiluokkaRaportti extends VuosiluokkaRaporttiPaivalta wit
     "tuenPäätöksenJakso" -> compactLisätiedotColumn(t.get("raportti-excel-kolumni-tuenPäätöksenJakso"), t),
     "opetuksenJärjestäminenVammanSairaudenTaiRajoitteenPerusteella" -> compactLisätiedotColumn(t.get("raportti-excel-kolumni-opetuksenJärjestäminenVammanSairaudenTaiRajoitteenPerusteella"), t),
     "toimintaAlueittainOpiskelu" -> compactLisätiedotColumn(t.get("raportti-excel-kolumni-toimintaAlueittainOpiskelu"), t),
+    "tavoitekokonaisuuksittainOpiskelu" -> compactLisätiedotColumn(t.get("raportti-excel-kolumni-tavoitekokonaisuuksittainOpiskelu"), t),
   )
 }
 
@@ -463,5 +465,6 @@ private[raportit] case class PerusopetusRow(
   erityisenTuenPaatosToimialueittain: Boolean,
   tuenPäätöksenJakso: Boolean,
   opetuksenJärjestäminenVammanSairaudenTaiRajoitteenPerusteella: Boolean,
-  toimintaAlueittainOpiskelu: Boolean
+  toimintaAlueittainOpiskelu: Boolean,
+  tavoitekokonaisuuksittainOpiskelu: Boolean,
 )
