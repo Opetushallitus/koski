@@ -192,12 +192,13 @@ object PerusopetuksenVuosiluokkaRaportti extends VuosiluokkaRaporttiPaivalta wit
   ): String = {
     val arvosana = osasuoritus.arviointiArvosanaKoodiarvo
       .getOrElse(t.get("raportti-excel-default-value-arvosana-puuttuu"))
+    val maybeLuokkaAste = osasuoritus.luokkaAste.map(s => s"($s. luokka)")
     val viimeinenPäiväIlmanLaajuuksia = Date.valueOf(LocalDate.of(2020, 7, 31))
     if (päätasonVahvistusPäivä.exists(_.after(viimeinenPäiväIlmanLaajuuksia)) && osasuoritus.koulutusmoduuliPakollinen.getOrElse(false)) {
       val laajuus = osasuoritus.koulutusmoduuliLaajuusArvo.getOrElse(t.get("raportti-excel-default-value-laajuus-puuttuu"))
-      s"$arvosana${täppäIfYksilöllistettyTaiRajattu(osasuoritus)} ${t.get("raportti-excel-default-value-laajuus")}: $laajuus"
+      s"$arvosana${täppäIfYksilöllistettyTaiRajattu(osasuoritus)} ${t.get("raportti-excel-default-value-laajuus")}: $laajuus $maybeLuokkaAste"
     } else {
-      s"$arvosana${täppäIfYksilöllistettyTaiRajattu(osasuoritus)}"
+      s"$arvosana${täppäIfYksilöllistettyTaiRajattu(osasuoritus)} $maybeLuokkaAste"
     }
   }
 
