@@ -74,8 +74,12 @@ class PerusopetuksenVuosiluokkaRaporttiSpec
       addPerusopetus(
         KoskiSpecificMockOppijat.lukioKesken,
         createVuosiluokanSuoritus(Some(date(2026, 8, 1)), None)
-          .copy(osasuoritukset = Some(List(suoritus(oppiaine("HI", vuosiviikkotuntia(1)))
-            .copy(arviointi = arviointi(8), rajattuOppimäärä = true))))
+          .copy(osasuoritukset = Some(List(
+            suoritus(oppiaine("HI", vuosiviikkotuntia(1)))
+              .copy(arviointi = arviointi(8), rajattuOppimäärä = true),
+            suoritus(oppiaine("KE", vuosiviikkotuntia(1)))
+              .copy(arviointi = arviointi(8), luokkaAste = perusopetuksenLuokkaAste("7"))
+            )))
       )
 
       val hakupäivä = LocalDate.of(2026, 8, 1)
@@ -90,6 +94,7 @@ class PerusopetuksenVuosiluokkaRaporttiSpec
         erityisenTuenPäätökset = None,
         tuenPäätöksenJaksot = Some(List(Tukijakso(Some(hakupäivä), None))),
         opetuksenJärjestäminenVammanSairaudenTaiRajoitteenPerusteella = Some(List(Aikajakso(hakupäivä, None))),
+        tavoitekokonaisuuksittainOpiskelu = Some(List(Aikajakso(Some(hakupäivä), None)))
       )) {
         val result = PerusopetuksenVuosiluokkaRaportti.buildRaportti(repository, Seq(MockOrganisaatiot.jyväskylänNormaalikoulu), hakupäivä, None, vuosiluokka = "8", t)
         val opiskeluoikeusOid = lastOpiskeluoikeus(KoskiSpecificMockOppijat.lukioKesken.oid).oid.get
@@ -120,10 +125,10 @@ class PerusopetuksenVuosiluokkaRaporttiSpec
         val oppijaOpiskeluoikeusOid = lastOpiskeluoikeus(KoskiSpecificMockOppijat.ysiluokkalainen.oid).oid.get
         val rivi = result.find(_.opiskeluoikeusOid == oppijaOpiskeluoikeusOid)
 
-        rivi.get.aidinkieli should equal("9 laajuus: 1.0")
+        rivi.get.aidinkieli should equal("9 (1.0 vvk)")
         rivi.get.kieliA2 should equal("Oppiaine puuttuu")
-        rivi.get.biologia should equal("9* laajuus: 1.0")
-        rivi.get.uskonto should equal("10 laajuus: 1.0")
+        rivi.get.biologia should equal("9* (1.0 vvk)")
+        rivi.get.uskonto should equal("10 (1.0 vvk)")
       }
     }
 
@@ -425,7 +430,8 @@ class PerusopetuksenVuosiluokkaRaporttiSpec
     erityisenTuenPaatosToimialueittain = false,
     tuenPäätöksenJakso = false,
     opetuksenJärjestäminenVammanSairaudenTaiRajoitteenPerusteella = false,
-    toimintaAlueittainOpiskelu = false
+    toimintaAlueittainOpiskelu = false,
+    tavoitekokonaisuuksittainOpiskelu = false
   )
 
   val ynjevinExpectedKasiLuokkaRowWithLisätiedot = defaultYnjeviExpectedKasiLuokkaRow.copy(
@@ -542,7 +548,7 @@ class PerusopetuksenVuosiluokkaRaporttiSpec
     historia = "8*", // * == rajattu oppimäärä
     yhteiskuntaoppi = "Oppiaine puuttuu",
     matematiikka = "Oppiaine puuttuu",
-    kemia = "Oppiaine puuttuu",
+    kemia = "8 (7.lk)",
     fysiikka = "Oppiaine puuttuu",
     biologia = "Oppiaine puuttuu",
     maantieto = "Oppiaine puuttuu",
@@ -563,6 +569,7 @@ class PerusopetuksenVuosiluokkaRaporttiSpec
     valinnaisetEiLaajuutta = "",
     tuenPäätöksenJakso = true,
     opetuksenJärjestäminenVammanSairaudenTaiRajoitteenPerusteella = true,
+    tavoitekokonaisuuksittainOpiskelu = true,
   )
 
   private def insertTestData = {

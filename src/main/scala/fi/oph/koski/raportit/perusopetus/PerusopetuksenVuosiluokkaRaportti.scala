@@ -145,7 +145,8 @@ object PerusopetuksenVuosiluokkaRaportti extends VuosiluokkaRaporttiPaivalta wit
       erityisenTuenPaatosToimialueittain = voimassaOlevatErityisenTuenPäätökset.exists(_.opiskeleeToimintaAlueittain),
       tuenPäätöksenJakso = opiskeluoikeudenLisätiedot.exists(_.tuenPäätöksenJaksot.exists(_.exists(mahdollisestiAlkupäivällinenJaksoVoimassaPäivällä(_, hakupaiva)))),
       opetuksenJärjestäminenVammanSairaudenTaiRajoitteenPerusteella = opiskeluoikeudenLisätiedot.exists(_.opetuksenJärjestäminenVammanSairaudenTaiRajoitteenPerusteella.exists(_.exists(aikajaksoVoimassaHakuPaivalla(_, hakupaiva)))),
-      toimintaAlueittainOpiskelu = opiskeluoikeudenLisätiedot.exists(_.toimintaAlueittainOpiskelu.exists(_.exists(aikajaksoVoimassaHakuPaivalla(_, hakupaiva))))
+      toimintaAlueittainOpiskelu = opiskeluoikeudenLisätiedot.exists(_.toimintaAlueittainOpiskelu.exists(_.exists(aikajaksoVoimassaHakuPaivalla(_, hakupaiva)))),
+      tavoitekokonaisuuksittainOpiskelu = opiskeluoikeudenLisätiedot.exists(_.tavoitekokonaisuuksittainOpiskelu.exists(_.exists(aikajaksoVoimassaHakuPaivalla(_, hakupaiva))))
     )
   }
 
@@ -190,15 +191,41 @@ object PerusopetuksenVuosiluokkaRaportti extends VuosiluokkaRaporttiPaivalta wit
     päätasonVahvistusPäivä: Option[Date],
     t: LocalizationReader
   ): String = {
+    def mapLaajuus(koodiarvo: Option[String]): String = koodiarvo match {
+      case Some("1") => "ov"
+      case Some("2") => "op"
+      case Some("3") => "vvk" // vuosiviikkotuntia
+      case Some("4") => "krs" // kurssia
+      case Some("5") => "t"   // tuntia
+      case Some("6") => "osp"
+      case Some("7") => "v"   // vuotta
+      case Some("8") => "vk"  // viikkoa
+      case _ => ""
+    }
+
     val arvosana = osasuoritus.arviointiArvosanaKoodiarvo
       .getOrElse(t.get("raportti-excel-default-value-arvosana-puuttuu"))
+    val täppä = täppäIfYksilöllistettyTaiRajattu(osasuoritus)
+
     val viimeinenPäiväIlmanLaajuuksia = Date.valueOf(LocalDate.of(2020, 7, 31))
-    if (päätasonVahvistusPäivä.exists(_.after(viimeinenPäiväIlmanLaajuuksia)) && osasuoritus.koulutusmoduuliPakollinen.getOrElse(false)) {
-      val laajuus = osasuoritus.koulutusmoduuliLaajuusArvo.getOrElse(t.get("raportti-excel-default-value-laajuus-puuttuu"))
-      s"$arvosana${täppäIfYksilöllistettyTaiRajattu(osasuoritus)} ${t.get("raportti-excel-default-value-laajuus")}: $laajuus"
+    val includeLaajuus = päätasonVahvistusPäivä.exists(_.after(viimeinenPäiväIlmanLaajuuksia)) &&
+      osasuoritus.koulutusmoduuliPakollinen.getOrElse(false)
+
+    val laajuus: Option[String] = if (includeLaajuus) {
+      osasuoritus.koulutusmoduuliLaajuusArvo.map { arvo =>
+        val yksikkö = mapLaajuus(osasuoritus.koulutusmoduuliLaajuusYksikkö)
+        if (yksikkö.nonEmpty) s"$arvo $yksikkö" else s"$arvo"
+      }
     } else {
-      s"$arvosana${täppäIfYksilöllistettyTaiRajattu(osasuoritus)}"
+      None
     }
+
+    val luokkaAste: Option[String] = osasuoritus.luokkaAste.map(s => s"$s.lk")
+
+    val lisätiedot = List(laajuus, luokkaAste).flatten
+    val lisätietoString = if (lisätiedot.nonEmpty) s" (${lisätiedot.mkString(", ")})" else ""
+
+    s"$arvosana$täppä$lisätietoString" // esim. "8 (Laajuus puuttuu, 7.lk)" tai "8* (3 ov, 7.lk)"
   }
 
   private def täppäIfYksilöllistettyTaiRajattu(osasuoritus: ROsasuoritusRow): String = {
@@ -381,6 +408,7 @@ object PerusopetuksenVuosiluokkaRaportti extends VuosiluokkaRaporttiPaivalta wit
     "tuenPäätöksenJakso" -> compactLisätiedotColumn(t.get("raportti-excel-kolumni-tuenPäätöksenJakso"), t),
     "opetuksenJärjestäminenVammanSairaudenTaiRajoitteenPerusteella" -> compactLisätiedotColumn(t.get("raportti-excel-kolumni-opetuksenJärjestäminenVammanSairaudenTaiRajoitteenPerusteella"), t),
     "toimintaAlueittainOpiskelu" -> compactLisätiedotColumn(t.get("raportti-excel-kolumni-toimintaAlueittainOpiskelu"), t),
+    "tavoitekokonaisuuksittainOpiskelu" -> compactLisätiedotColumn(t.get("raportti-excel-kolumni-tavoitekokonaisuuksittainOpiskelu"), t),
   )
 }
 
@@ -462,5 +490,6 @@ private[raportit] case class PerusopetusRow(
   erityisenTuenPaatosToimialueittain: Boolean,
   tuenPäätöksenJakso: Boolean,
   opetuksenJärjestäminenVammanSairaudenTaiRajoitteenPerusteella: Boolean,
-  toimintaAlueittainOpiskelu: Boolean
+  toimintaAlueittainOpiskelu: Boolean,
+  tavoitekokonaisuuksittainOpiskelu: Boolean,
 )
