@@ -185,8 +185,8 @@ object RaportointiDatabaseSchema {
       ulkomaanjakso ::
       tuenPäätöksenJakso ::
       opetuksenJärjestäminenVammanSairaudenTaiRajoitteenPerusteella ::
-      tavoitekokonaisuuksittainOpiskelu ::
       toimintaAlueittainOpiskelu ::
+      tavoitekokonaisuuksittainOpiskelu ::
       id ::
       HNil
     ).mappedWith(Generic[ROpiskeluoikeusAikajaksoRow])
