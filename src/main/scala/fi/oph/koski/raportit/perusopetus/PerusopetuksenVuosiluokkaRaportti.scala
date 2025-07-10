@@ -191,6 +191,18 @@ object PerusopetuksenVuosiluokkaRaportti extends VuosiluokkaRaporttiPaivalta wit
     päätasonVahvistusPäivä: Option[Date],
     t: LocalizationReader
   ): String = {
+    def mapKoodiarvoToAbbreviation(koodiarvo: Option[String]): String = koodiarvo match {
+      case Some("1") => "ov"
+      case Some("2") => "op"
+      case Some("3") => "vvk" // vuosiviikkotuntia
+      case Some("4") => "krs" // kurssia
+      case Some("5") => "t"   // tuntia
+      case Some("6") => "osp"
+      case Some("7") => "v"   // vuotta
+      case Some("8") => "vk"  // viikkoa
+      case _ => ""
+    }
+
     val arvosana = osasuoritus.arviointiArvosanaKoodiarvo
       .getOrElse(t.get("raportti-excel-default-value-arvosana-puuttuu"))
     val täppä = täppäIfYksilöllistettyTaiRajattu(osasuoritus)
@@ -201,7 +213,7 @@ object PerusopetuksenVuosiluokkaRaportti extends VuosiluokkaRaporttiPaivalta wit
 
     val laajuus: Option[String] = if (includeLaajuus) {
       osasuoritus.koulutusmoduuliLaajuusArvo.map { arvo =>
-        val yksikkö = osasuoritus.koulutusmoduuliLaajuusYksikkö.getOrElse("")
+        val yksikkö = mapKoodiarvoToAbbreviation(osasuoritus.koulutusmoduuliLaajuusYksikkö)
         if (yksikkö.nonEmpty) s"$arvo $yksikkö" else s"$arvo"
       }
     } else {
