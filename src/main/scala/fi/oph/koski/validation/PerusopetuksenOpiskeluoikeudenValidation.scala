@@ -60,14 +60,14 @@ object PerusopetuksenOpiskeluoikeusValidation extends Logging {
               case os: NuortenPerusopetuksenOppiaineenSuoritus =>
                 val vuosiluokka = vls.koulutusmoduuli.tunniste
                 os.luokkaAste match {
-                  case Some(la) if la == vuosiluokka =>
-                    Some(KoskiErrorCategory.badRequest.validation.date("Perusopetuksen oppiaineen suorituksen luokka-astetta ei saa siirtää sen ollessa sama kuin vuosiluokka"))
-                  case Some(_) =>
+                  case Some(la) =>
                     val relevantDates = Seq(Some(päättymispäivä), os.ensimmäinenArviointiPäivä).flatten
                     val periods = oo.lisätiedot.flatMap(_.tavoitekokonaisuuksittainOpiskelu).getOrElse(Seq.empty)
                     val dateCovered = relevantDates.exists(date => periods.exists(_.contains(date)))
                     if (!dateCovered) {
-                      Some(KoskiErrorCategory.badRequest.validation.date("Tavoitekokonaisuuksittain opiskelun aikajakso ei kata arviointipäivää tai päättymispäivää."))
+                      Some(KoskiErrorCategory.badRequest.validation.date("Perusopetuksen oppiaineen suorituksella on tavoitekokonaisuuksittain opiskeluun liittyvä tieto luokkaAste mutta ei tavoitekokonaisuuksittain opiskelun aikajaksoa, joka kattaisi arviointipäivän tai päättymispäivän."))
+                    } else if (la == vuosiluokka) {
+                      Some(KoskiErrorCategory.badRequest.validation.date("Perusopetuksen oppiaineen suorituksen tavoitekokonaisuuksittain opiskeluun liittyvää kenttä luokkaAste ei saa olla sama kuin vuosiluokka"))
                     } else { None }
                   case None => None
                 }
