@@ -63,6 +63,9 @@ describe('Lukiokoulutus2019', function () {
             'Taitotaso Yli C1.1\n' +
             'Kuvaus Puhetaito äidinkielen tasolla\n' +
             'Arviointipäivä 3.9.2019\n' +
+            'Lukiodiplomit Arvosana 6\n' +
+            'Arviointipäivä 15.8.2025\n' +
+            'Tunniste Liikunnan lukiodiplomi\n' +
             'Todistuksella näkyvät lisätiedot Osallistunut kansalliseen etäopetuskokeiluun\n' +
             'Ryhmä AH\n' +
             'Koulusivistyskieli suomi\n' +

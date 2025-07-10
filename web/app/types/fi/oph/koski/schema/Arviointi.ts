@@ -56,6 +56,10 @@ import {
   isKorkeakoulunPaikallinenArviointi
 } from './KorkeakoulunPaikallinenArviointi'
 import {
+  LukiodiplominSuoritusJaArviointi,
+  isLukiodiplominSuoritusJaArviointi
+} from './LukiodiplominSuoritusJaArviointi'
+import {
   LukionOmanÄidinkielenOpinnonOsasuorituksenArviointi,
   isLukionOmanÄidinkielenOpinnonOsasuorituksenArviointi
 } from './LukionOmanAidinkielenOpinnonOsasuorituksenArviointi'
@@ -235,6 +239,7 @@ export type Arviointi =
   | InternationalSchoolIBOppiaineenArviointi
   | KorkeakoulunKoodistostaLöytyväArviointi
   | KorkeakoulunPaikallinenArviointi
+  | LukiodiplominSuoritusJaArviointi
   | LukionOmanÄidinkielenOpinnonOsasuorituksenArviointi
   | LukionOmanÄidinkielenOpinnot
   | LukionOppiaineenArviointi
@@ -293,6 +298,7 @@ export const isArviointi = (a: any): a is Arviointi =>
   isInternationalSchoolIBOppiaineenArviointi(a) ||
   isKorkeakoulunKoodistostaLöytyväArviointi(a) ||
   isKorkeakoulunPaikallinenArviointi(a) ||
+  isLukiodiplominSuoritusJaArviointi(a) ||
   isLukionOmanÄidinkielenOpinnonOsasuorituksenArviointi(a) ||
   isLukionOmanÄidinkielenOpinnot(a) ||
   isLukionOppiaineenArviointi(a) ||

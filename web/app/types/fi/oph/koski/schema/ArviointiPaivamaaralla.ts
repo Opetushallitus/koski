@@ -12,6 +12,10 @@ import {
   isKorkeakoulunPaikallinenArviointi
 } from './KorkeakoulunPaikallinenArviointi'
 import {
+  LukiodiplominSuoritusJaArviointi,
+  isLukiodiplominSuoritusJaArviointi
+} from './LukiodiplominSuoritusJaArviointi'
+import {
   LukionOmanÄidinkielenOpinnonOsasuorituksenArviointi,
   isLukionOmanÄidinkielenOpinnonOsasuorituksenArviointi
 } from './LukionOmanAidinkielenOpinnonOsasuorituksenArviointi'
@@ -100,6 +104,7 @@ export type ArviointiPäivämäärällä =
   | IBKurssinArviointi
   | KorkeakoulunKoodistostaLöytyväArviointi
   | KorkeakoulunPaikallinenArviointi
+  | LukiodiplominSuoritusJaArviointi
   | LukionOmanÄidinkielenOpinnonOsasuorituksenArviointi
   | LukutaitokoulutuksenArviointi
   | MuunAmmatillisenKoulutuksenArviointi
@@ -127,6 +132,7 @@ export const isArviointiPäivämäärällä = (a: any): a is ArviointiPäivämä
   isIBKurssinArviointi(a) ||
   isKorkeakoulunKoodistostaLöytyväArviointi(a) ||
   isKorkeakoulunPaikallinenArviointi(a) ||
+  isLukiodiplominSuoritusJaArviointi(a) ||
   isLukionOmanÄidinkielenOpinnonOsasuorituksenArviointi(a) ||
   isLukutaitokoulutuksenArviointi(a) ||
   isMuunAmmatillisenKoulutuksenArviointi(a) ||
