@@ -572,72 +572,111 @@ class OppijaValidationPerusopetusSpec extends TutkinnonPerusteetTest[Perusopetuk
         }
       }
     }
+
     "Tukijaksot" - {
       val tukijaksotVoimaan = LocalDate.parse(KoskiApplicationForTests.config.getString("validaatiot.tukijaksotVoimaan"))
       val erityisenTuenPäätöstenViimeinenKäyttöpäivä = LocalDate.parse(KoskiApplicationForTests.config.getString("validaatiot.erityisenTuenPäätöstenViimeinenKäyttöpäivä"))
+
+      def tuenPäätöksenJaksot(alku: Option[LocalDate], loppu: Option[LocalDate]) = Some(List(Tukijakso(alku = alku, loppu = loppu)))
+      def erityisenTuenPäätökset(alku: Option[LocalDate], loppu: Option[LocalDate]) = Some(List(ErityisenTuenPäätös(alku = alku, loppu = loppu, erityisryhmässä = None)))
+
       def makeOpiskeluoikeus(
         tukijaksoAlku: LocalDate = tukijaksotVoimaan,
         tukijaksoLoppu: Option[LocalDate] = None,
         erityisenTuenPäätösAlku: Option[LocalDate] = Some(erityisenTuenPäätöstenViimeinenKäyttöpäivä),
         erityisenTuenPäätösLoppu: Option[LocalDate] = None,
         alkamispäivä: LocalDate = longTimeAgo
-      ) = {
-        defaultOpiskeluoikeus.copy(
+      ): PerusopetuksenOpiskeluoikeus = {
+        TuenPäätöksellinenBuilder(
+          ooAlku = alkamispäivä,
+          tuenPäätöksenJaksot = tuenPäätöksenJaksot(Some(tukijaksoAlku), tukijaksoLoppu),
+          erityisenTuenPäätökset = erityisenTuenPäätökset(erityisenTuenPäätösAlku, erityisenTuenPäätösLoppu),
           suoritukset = List(
             yhdeksännenLuokanSuoritus.copy(alkamispäivä = Some(alkamispäivä), vahvistus = vahvistusPaikkakunnalla(alkamispäivä.plusYears(1))),
             päättötodistusToimintaAlueilla.copy(
               vahvistus = vahvistusPaikkakunnalla(alkamispäivä.plusYears(1)),
             ),
-          ),
-          tila = NuortenPerusopetuksenOpiskeluoikeudenTila(List(NuortenPerusopetuksenOpiskeluoikeusjakso(alkamispäivä, opiskeluoikeusLäsnä))),
-          lisätiedot = Some(PerusopetuksenOpiskeluoikeudenLisätiedot(
-            tuenPäätöksenJaksot = Some(List(Tukijakso(alku = Some(tukijaksoAlku), loppu = tukijaksoLoppu))),
-            erityisenTuenPäätökset = erityisenTuenPäätösAlku.map(alku => List(ErityisenTuenPäätös(alku = Some(alku), loppu = erityisenTuenPäätösLoppu, erityisryhmässä = None))),
           )
-        ))
+        ).build
       }
+
       "Tukea koskeva päätös ei saa alkaa ennen voimaantuloa" in {
-        setupOppijaWithOpiskeluoikeus(makeOpiskeluoikeus(tukijaksoAlku = tukijaksotVoimaan.minusDays(1), erityisenTuenPäätösAlku = None)) {
+        val oo = TuenPäätöksellinenBuilder(
+          tuenPäätöksenJaksot = tuenPäätöksenJaksot(Some(tukijaksotVoimaan.minusDays(1)), None),
+        ).build
+
+        setupOppijaWithOpiskeluoikeus(oo) {
           verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.date(
             "Tuen päätöksen jakson varhaisin sallittu voimassaolopäivä on 1.8.2025"
           ))
         }
-        setupOppijaWithOpiskeluoikeus(makeOpiskeluoikeus(tukijaksoAlku = tukijaksotVoimaan, erityisenTuenPäätösAlku = None)) {
+
+        val oo2 = TuenPäätöksellinenBuilder(
+          tuenPäätöksenJaksot = tuenPäätöksenJaksot(Some(tukijaksotVoimaan), None),
+        ).build
+
+        setupOppijaWithOpiskeluoikeus(oo2) {
           verifyResponseStatusOk()
         }
       }
 
       "Tukea koskevan päätös saa alkaa ennen opiskeluoikeuden alkua" in {
-        val ap = LocalDate.of(2025, 8, 16)
-        setupOppijaWithOpiskeluoikeus(makeOpiskeluoikeus(tukijaksoAlku = ap.minusDays(15), erityisenTuenPäätösAlku = None, alkamispäivä = ap)) {
+        val ooAlku = tukijaksotVoimaan.plusDays(7)
+        val oo = TuenPäätöksellinenBuilder(
+          ooAlku =ooAlku,
+          tuenPäätöksenJaksot = tuenPäätöksenJaksot(Some(tukijaksotVoimaan), None),
+        ).withSuorituksetAlkaen(ooAlku).build
+
+        setupOppijaWithOpiskeluoikeus(oo) {
           verifyResponseStatusOk()
         }
       }
 
       "Tukea koskevan päätös ei saa päättyä ennen opiskeluoikeuden alkua" in {
-        val pp = LocalDate.of(2025, 8, 16)
-        setupOppijaWithOpiskeluoikeus(makeOpiskeluoikeus(tukijaksoAlku = pp.minusDays(15), tukijaksoLoppu = Some(pp), erityisenTuenPäätösAlku = None, alkamispäivä = pp.plusDays(1))) {
+        val ooAlku = tukijaksotVoimaan.plusDays(7)
+        val oo = TuenPäätöksellinenBuilder(
+          ooAlku = ooAlku,
+          tuenPäätöksenJaksot = tuenPäätöksenJaksot(Some(tukijaksotVoimaan), Some(ooAlku.minusDays(1))),
+        ).withSuorituksetAlkaen(ooAlku).build
+
+        setupOppijaWithOpiskeluoikeus(oo) {
           verifyResponseStatus(400,
             KoskiErrorCategory.badRequest.validation.date(
               "Tuen päätöksen jakso ei saa päättyä ennen opiskeluoikeuden alkua"
-            ))
+            )
+          )
         }
       }
 
       "Erityisen tuen päätökset eivät saa alkaa viimeisen käyttöpäivän jälkeen" in {
-        val oo = makeOpiskeluoikeus(erityisenTuenPäätösAlku = Some(erityisenTuenPäätöstenViimeinenKäyttöpäivä.plusDays(2)))
+        val ooAlku = tukijaksotVoimaan.plusDays(7)
+        val oo = TuenPäätöksellinenBuilder(
+          ooAlku = ooAlku,
+          erityisenTuenPäätökset = erityisenTuenPäätökset(
+            Some(erityisenTuenPäätöstenViimeinenKäyttöpäivä.minusDays(1)),
+            Some(erityisenTuenPäätöstenViimeinenKäyttöpäivä)
+          )
+        ).withSuorituksetAlkaen(ooAlku).build
+
         setupOppijaWithOpiskeluoikeus(oo) {
-          verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.date(
-            "Erityisen tuen päätöksen (2.9.2026-) viimeinen mahdollinen päättymispäivä on 31.8.2026."
-          ))
-        }
-        setupOppijaWithOpiskeluoikeus(makeOpiskeluoikeus(
-          erityisenTuenPäätösAlku = Some(erityisenTuenPäätöstenViimeinenKäyttöpäivä.minusDays(1)),
-          erityisenTuenPäätösLoppu = Some(erityisenTuenPäätöstenViimeinenKäyttöpäivä),
-        )) {
           verifyResponseStatusOk()
         }
+
+        val oo2 = TuenPäätöksellinenBuilder(
+          ooAlku = ooAlku,
+          erityisenTuenPäätökset = erityisenTuenPäätökset(
+            Some(erityisenTuenPäätöstenViimeinenKäyttöpäivä.plusDays(1)),
+            None
+          )
+        ).withSuorituksetAlkaen(ooAlku).build
+
+        setupOppijaWithOpiskeluoikeus(oo2) {
+          verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.date(
+            "Erityisen tuen päätöksen (1.9.2026-) viimeinen mahdollinen päättymispäivä on 31.8.2026."
+          ))
+        }
       }
+
       "Rajattua oppimäärä ei saa siirtää suoritukselle joka alkanut ennen 2025-08-01" in {
         val oo = makeOpiskeluoikeus().copy(
           suoritukset = List(yhdeksännenLuokanSuoritus.copy(vahvistus = None, alkamispäivä = Some(LocalDate.of(2025, 7, 31)), osasuoritukset = Some(List(äidinkielenSuoritus.copy(rajattuOppimäärä = true))))),
@@ -724,25 +763,57 @@ class OppijaValidationPerusopetusSpec extends TutkinnonPerusteetTest[Perusopetuk
       }
     }
 
+    case class TuenPäätöksellinenBuilder(
+      ooAlku: LocalDate = longTimeAgo,
+      tuenPäätöksenJaksot: Option[List[Tukijakso]] = None,
+      erityisenTuenPäätökset: Option[List[ErityisenTuenPäätös]] = None,
+      opetuksenJärjestäminenVammanSairaudenTaiRajoitteenPerusteella: Option[List[Aikajakso]] = None,
+      tavoitekokonaisuuksittainOpiskelu: Option[List[Aikajakso]] = None,
+      suoritukset: List[PerusopetuksenPäätasonSuoritus] = List(yhdeksännenLuokanSuoritus)
+    ) {
+      def withSuorituksetAlkaen(pvm: LocalDate) = copy(
+        suoritukset = List(
+          yhdeksännenLuokanSuoritus.copy(alkamispäivä = Some(pvm), vahvistus = vahvistusPaikkakunnalla(pvm.plusYears(1))),
+          päättötodistusToimintaAlueilla.copy(
+            vahvistus = vahvistusPaikkakunnalla(pvm.plusYears(1)),
+          ),
+        ),
+      )
+      def withLuokkaAsteSuoritus(luokkaAste: String, arviointiPvm: LocalDate): TuenPäätöksellinenBuilder = copy(
+        suoritukset = List(
+          kahdeksannenLuokanSuoritus.copy(
+            osasuoritukset = Some(List(
+              suoritus(oppiaine("HI", vuosiviikkotuntia(1)))
+                .copy(arviointi = arviointi(8), luokkaAste = perusopetuksenLuokkaAste(luokkaAste))
+            )),
+            vahvistus = vahvistusPaikkakunnalla(arviointiPvm)
+          )
+        )
+      )
+
+      def build: PerusopetuksenOpiskeluoikeus = {
+        defaultOpiskeluoikeus.copy(
+          tila = NuortenPerusopetuksenOpiskeluoikeudenTila(List(NuortenPerusopetuksenOpiskeluoikeusjakso(ooAlku, opiskeluoikeusLäsnä))),
+          suoritukset = suoritukset,
+          lisätiedot = Some(PerusopetuksenOpiskeluoikeudenLisätiedot(
+            tuenPäätöksenJaksot = tuenPäätöksenJaksot,
+            tavoitekokonaisuuksittainOpiskelu = tavoitekokonaisuuksittainOpiskelu,
+            opetuksenJärjestäminenVammanSairaudenTaiRajoitteenPerusteella = opetuksenJärjestäminenVammanSairaudenTaiRajoitteenPerusteella,
+            erityisenTuenPäätökset = erityisenTuenPäätökset
+          ))
+        )
+      }
+    }
+
     "Opetuksen järjestäminen vamman, sairauden tai toimintakyvyn rajoitteen perusteella" - {
       val vammaSairausTaiRajoiteVoimaan = LocalDate.parse(KoskiApplicationForTests.config.getString("validaatiot.vammaSairausTaiRajoiteVoimaan"))
-      def makeOpiskeluoikeus(alku: LocalDate = vammaSairausTaiRajoiteVoimaan) = {
-        defaultOpiskeluoikeus.copy(
-          suoritukset = List(
-            yhdeksännenLuokanSuoritus,
-            päättötodistusToimintaAlueilla.copy(
-              vahvistus = vahvistusPaikkakunnalla(LocalDate.of(2024, 7, 1)),
-            ),
-          ),
-          lisätiedot = Some(PerusopetuksenOpiskeluoikeudenLisätiedot(
-            opetuksenJärjestäminenVammanSairaudenTaiRajoitteenPerusteella = Some(List(Aikajakso(alku = Some(alku), loppu = None))),
-            tuenPäätöksenJaksot = Some(List(Tukijakso(alku = Some(alku), loppu = None)))
-          )
-        ))
-      }
+
       "Vaatii tukijakson eikä saa alkaa ennen voimaantulopäivää" in {
-        val oo = makeOpiskeluoikeus(vammaSairausTaiRajoiteVoimaan.minusDays(1))
-        setupOppijaWithOpiskeluoikeus(oo.copy(lisätiedot = oo.lisätiedot.map(_.copy(tuenPäätöksenJaksot = None)))) {
+        val invalidAlku = vammaSairausTaiRajoiteVoimaan.minusDays(1)
+
+        setupOppijaWithOpiskeluoikeus(TuenPäätöksellinenBuilder(
+          opetuksenJärjestäminenVammanSairaudenTaiRajoitteenPerusteella = Some(List(Aikajakso(alku = Some(invalidAlku), loppu = None)))
+        ).build) {
           verifyResponseStatus(400,
             KoskiErrorCategory.badRequest.validation.date(
               "Opetuksen järjestäminen vamman, sairauden tai rajoitteen perusteella pitää sisältyä tukijaksoon: List(2026-07-31 – )"
@@ -752,33 +823,25 @@ class OppijaValidationPerusopetusSpec extends TutkinnonPerusteetTest[Perusopetuk
             )
           )
         }
-        setupOppijaWithOpiskeluoikeus(makeOpiskeluoikeus()) {
+
+        setupOppijaWithOpiskeluoikeus(TuenPäätöksellinenBuilder(
+          opetuksenJärjestäminenVammanSairaudenTaiRajoitteenPerusteella = Some(List(Aikajakso(alku = Some(vammaSairausTaiRajoiteVoimaan), loppu = None))),
+          tuenPäätöksenJaksot = Some(List(Tukijakso(alku = Some(vammaSairausTaiRajoiteVoimaan), loppu = None)))
+        ).build) {
           verifyResponseStatusOk()
         }
       }
     }
 
     "Tavoitekokonaisuuksittain opiskelu" - {
-      val tavoitekokonaisuuksittainOpiskeluVoimaan = LocalDate.parse(KoskiApplicationForTests.config.getString("validaatiot.tavoitekokonaisuuksittainOpiskeluVoimaan"))
-
-      def makeOpiskeluoikeus(alku: LocalDate = tavoitekokonaisuuksittainOpiskeluVoimaan) = {
-        defaultOpiskeluoikeus.copy(
-          suoritukset = List(
-            yhdeksännenLuokanSuoritus,
-            päättötodistusToimintaAlueilla.copy(
-              vahvistus = vahvistusPaikkakunnalla(LocalDate.of(2024, 7, 1)),
-            ),
-          ),
-          lisätiedot = Some(PerusopetuksenOpiskeluoikeudenLisätiedot(
-            tavoitekokonaisuuksittainOpiskelu = Some(List(Aikajakso(alku = Some(alku), loppu = None))),
-            tuenPäätöksenJaksot = Some(List(Tukijakso(alku = Some(alku), loppu = None)))
-          )
-        ))
-      }
-
       "Vaatii tukijakson eikä saa alkaa ennen voimaantulopäivää" in {
-        val oo = makeOpiskeluoikeus(tavoitekokonaisuuksittainOpiskeluVoimaan.minusDays(1))
-        setupOppijaWithOpiskeluoikeus(oo.copy(lisätiedot = oo.lisätiedot.map(_.copy(tuenPäätöksenJaksot = None)))) {
+        val tavoitekokonaisuuksittainOpiskeluVoimaan = LocalDate.parse(KoskiApplicationForTests.config.getString("validaatiot.tavoitekokonaisuuksittainOpiskeluVoimaan"))
+
+        setupOppijaWithOpiskeluoikeus(
+          TuenPäätöksellinenBuilder(
+            tavoitekokonaisuuksittainOpiskelu = Some(List(Aikajakso(alku = Some(tavoitekokonaisuuksittainOpiskeluVoimaan.minusDays(1)), loppu = None)))
+          ).build
+        ) {
           verifyResponseStatus(400,
             KoskiErrorCategory.badRequest.validation.date(
               "Tavoitekokonaisuuksittain opiskelu -lisätiedon varhaisin sallittu voimassaolopäivä on 2025-08-01"
@@ -788,23 +851,27 @@ class OppijaValidationPerusopetusSpec extends TutkinnonPerusteetTest[Perusopetuk
             )
           )
         }
-        setupOppijaWithOpiskeluoikeus(makeOpiskeluoikeus()) {
+
+        setupOppijaWithOpiskeluoikeus(
+          TuenPäätöksellinenBuilder(
+            tavoitekokonaisuuksittainOpiskelu = Some(List(Aikajakso(alku = Some(tavoitekokonaisuuksittainOpiskeluVoimaan), loppu = None))),
+            tuenPäätöksenJaksot = Some(List(Tukijakso(alku = Some(tavoitekokonaisuuksittainOpiskeluVoimaan), loppu = None)))
+          ).build
+        ) {
           verifyResponseStatusOk()
         }
       }
 
       "Luokka-aste tiedon siirtäminen vaatii tavoitekokonaisuuksittain opiskelun aikajakson" in {
-        def oo(luokkaAste: String = "8") = makeOpiskeluoikeus(tavoitekokonaisuuksittainOpiskeluVoimaan).copy(
-          suoritukset = List(kahdeksannenLuokanSuoritus.copy(
-            osasuoritukset = Some(List(
-              suoritus(oppiaine("HI", vuosiviikkotuntia(1)))
-                .copy(arviointi = arviointi(8), luokkaAste = perusopetuksenLuokkaAste(luokkaAste))
-            )),
-            vahvistus = vahvistusPaikkakunnalla(date(2025, 9, 1)),
-          ))
-        )
+        val tavoitekokonaisuuksittainOpiskeluVoimaan = LocalDate.parse(KoskiApplicationForTests.config.getString("validaatiot.tavoitekokonaisuuksittainOpiskeluVoimaan"))
+        val arviointiPvm = date(2025, 9, 1)
 
-        setupOppijaWithOpiskeluoikeus(oo().copy(lisätiedot = oo().lisätiedot.map(_.copy(tavoitekokonaisuuksittainOpiskelu = None)))) {
+        val withLuokkaAste = TuenPäätöksellinenBuilder(
+          tuenPäätöksenJaksot = Some(List(Tukijakso(alku = Some(tavoitekokonaisuuksittainOpiskeluVoimaan), loppu = None))),
+          tavoitekokonaisuuksittainOpiskelu = Some(List(Aikajakso(alku = Some(tavoitekokonaisuuksittainOpiskeluVoimaan), loppu = Some(arviointiPvm.minusDays(1))))),
+        ).withLuokkaAsteSuoritus("8", arviointiPvm)
+
+        setupOppijaWithOpiskeluoikeus(withLuokkaAste.build) {
           verifyResponseStatus(400,
             KoskiErrorCategory.badRequest.validation.date(
               "Perusopetuksen oppiaineen suorituksella on tavoitekokonaisuuksittain opiskeluun liittyvä tieto luokkaAste mutta ei tavoitekokonaisuuksittain opiskelun aikajaksoa, joka kattaisi arviointipäivän tai päättymispäivän."
@@ -812,7 +879,9 @@ class OppijaValidationPerusopetusSpec extends TutkinnonPerusteetTest[Perusopetuk
           )
         }
 
-        setupOppijaWithOpiskeluoikeus(oo()) {
+        setupOppijaWithOpiskeluoikeus(withLuokkaAste.copy(
+          tavoitekokonaisuuksittainOpiskelu = Some(List(Aikajakso(alku = Some(tavoitekokonaisuuksittainOpiskeluVoimaan), loppu = None)))
+        ).build) {
           verifyResponseStatus(400,
             KoskiErrorCategory.badRequest.validation.date(
               "Perusopetuksen oppiaineen suorituksen tavoitekokonaisuuksittain opiskeluun liittyvää kenttä luokkaAste ei saa olla sama kuin vuosiluokka"
@@ -820,7 +889,12 @@ class OppijaValidationPerusopetusSpec extends TutkinnonPerusteetTest[Perusopetuk
           )
         }
 
-        setupOppijaWithOpiskeluoikeus(oo("7")) {
+        setupOppijaWithOpiskeluoikeus(
+          TuenPäätöksellinenBuilder(
+            tavoitekokonaisuuksittainOpiskelu = Some(List(Aikajakso(alku = Some(tavoitekokonaisuuksittainOpiskeluVoimaan), loppu = None))),
+            tuenPäätöksenJaksot = Some(List(Tukijakso(alku = Some(tavoitekokonaisuuksittainOpiskeluVoimaan), loppu = None)))
+          ).withLuokkaAsteSuoritus("7", arviointiPvm).build
+        ) {
           verifyResponseStatusOk()
         }
       }
