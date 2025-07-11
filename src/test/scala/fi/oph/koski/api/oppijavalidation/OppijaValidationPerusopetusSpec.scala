@@ -723,6 +723,7 @@ class OppijaValidationPerusopetusSpec extends TutkinnonPerusteetTest[Perusopetuk
         }
       }
     }
+
     "Opetuksen järjestäminen vamman, sairauden tai toimintakyvyn rajoitteen perusteella" - {
       val vammaSairausTaiRajoiteVoimaan = LocalDate.parse(KoskiApplicationForTests.config.getString("validaatiot.vammaSairausTaiRajoiteVoimaan"))
       def makeOpiskeluoikeus(alku: LocalDate = vammaSairausTaiRajoiteVoimaan) = {
@@ -756,6 +757,75 @@ class OppijaValidationPerusopetusSpec extends TutkinnonPerusteetTest[Perusopetuk
         }
       }
     }
+
+    "Tavoitekokonaisuuksittain opiskelu" - {
+      val tavoitekokonaisuuksittainOpiskeluVoimaan = LocalDate.parse(KoskiApplicationForTests.config.getString("validaatiot.tavoitekokonaisuuksittainOpiskeluVoimaan"))
+
+      def makeOpiskeluoikeus(alku: LocalDate = tavoitekokonaisuuksittainOpiskeluVoimaan) = {
+        defaultOpiskeluoikeus.copy(
+          suoritukset = List(
+            yhdeksännenLuokanSuoritus,
+            päättötodistusToimintaAlueilla.copy(
+              vahvistus = vahvistusPaikkakunnalla(LocalDate.of(2024, 7, 1)),
+            ),
+          ),
+          lisätiedot = Some(PerusopetuksenOpiskeluoikeudenLisätiedot(
+            tavoitekokonaisuuksittainOpiskelu = Some(List(Aikajakso(alku = Some(alku), loppu = None))),
+            tuenPäätöksenJaksot = Some(List(Tukijakso(alku = Some(alku), loppu = None)))
+          )
+        ))
+      }
+
+      "Vaatii tukijakson eikä saa alkaa ennen voimaantulopäivää" in {
+        val oo = makeOpiskeluoikeus(tavoitekokonaisuuksittainOpiskeluVoimaan.minusDays(1))
+        setupOppijaWithOpiskeluoikeus(oo.copy(lisätiedot = oo.lisätiedot.map(_.copy(tuenPäätöksenJaksot = None)))) {
+          verifyResponseStatus(400,
+            KoskiErrorCategory.badRequest.validation.date(
+              "Tavoitekokonaisuuksittain opiskelu -lisätiedon varhaisin sallittu voimassaolopäivä on 2025-08-01"
+            ),
+            KoskiErrorCategory.badRequest.validation.date(
+              "Tavoitekokonaisuuksittain opiskelun täytyy sisältyä tukijaksoon: List(2025-07-31 – )"
+            )
+          )
+        }
+        setupOppijaWithOpiskeluoikeus(makeOpiskeluoikeus()) {
+          verifyResponseStatusOk()
+        }
+      }
+
+      "Luokka-aste tiedon siirtäminen vaatii tavoitekokonaisuuksittain opiskelun aikajakson" in {
+        def oo(luokkaAste: String = "8") = makeOpiskeluoikeus(tavoitekokonaisuuksittainOpiskeluVoimaan).copy(
+          suoritukset = List(kahdeksannenLuokanSuoritus.copy(
+            osasuoritukset = Some(List(
+              suoritus(oppiaine("HI", vuosiviikkotuntia(1)))
+                .copy(arviointi = arviointi(8), luokkaAste = perusopetuksenLuokkaAste(luokkaAste))
+            )),
+            vahvistus = vahvistusPaikkakunnalla(date(2025, 9, 1)),
+          ))
+        )
+
+        setupOppijaWithOpiskeluoikeus(oo().copy(lisätiedot = oo().lisätiedot.map(_.copy(tavoitekokonaisuuksittainOpiskelu = None)))) {
+          verifyResponseStatus(400,
+            KoskiErrorCategory.badRequest.validation.date(
+              "Perusopetuksen oppiaineen suorituksella on tavoitekokonaisuuksittain opiskeluun liittyvä tieto luokkaAste mutta ei tavoitekokonaisuuksittain opiskelun aikajaksoa, joka kattaisi arviointipäivän tai päättymispäivän."
+            )
+          )
+        }
+
+        setupOppijaWithOpiskeluoikeus(oo()) {
+          verifyResponseStatus(400,
+            KoskiErrorCategory.badRequest.validation.date(
+              "Perusopetuksen oppiaineen suorituksen tavoitekokonaisuuksittain opiskeluun liittyvää kenttä luokkaAste ei saa olla sama kuin vuosiluokka"
+            )
+          )
+        }
+
+        setupOppijaWithOpiskeluoikeus(oo("7")) {
+          verifyResponseStatusOk()
+        }
+      }
+    }
+
     "Suorituksen vahvistuspäivä on ennen 1.8.2020" - {
       "Vuosiluokan suoritus" - {
         "Laajuutta ei vaadita pakollisilta oppiaineilta" in {
