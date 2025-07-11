@@ -146,6 +146,7 @@ object RaportointiDatabaseSchema {
     val ulkomaanjakso = column[Boolean]("ulkomaanjakso")
     val tuenPäätöksenJakso = column[Boolean]("tuen_paatoksen_jakso")
     val opetuksenJärjestäminenVammanSairaudenTaiRajoitteenPerusteella = column[Boolean]("opetus_vamman_sairauden_tai_rajoitteen_perusteella")
+    val tavoitekokonaisuuksittainOpiskelu = column[Boolean]("tavoitekokonaisuuksittain_opiskelu")
     val toimintaAlueittainOpiskelu = column[Boolean]("toiminta_alueittain_opiskelu")
 
     def * = (
@@ -185,6 +186,7 @@ object RaportointiDatabaseSchema {
       tuenPäätöksenJakso ::
       opetuksenJärjestäminenVammanSairaudenTaiRajoitteenPerusteella ::
       toimintaAlueittainOpiskelu ::
+      tavoitekokonaisuuksittainOpiskelu ::
       id ::
       HNil
     ).mappedWith(Generic[ROpiskeluoikeusAikajaksoRow])
@@ -293,6 +295,7 @@ object RaportointiDatabaseSchema {
     val näytönArviointiPäivä = column[Option[Date]]("nayton_arviointi_paiva")
     val tunnustettu = column[Boolean]("tunnustettu")
     val tunnustettuRahoituksenPiirissä = column[Boolean]("tunnustettu_rahoituksen_piirissa")
+    val luokkaAste = column[Option[String]]("luokka_aste", StringIdentifierType)
     val data = column[JValue]("data")
     val sisältyyOpiskeluoikeuteenOid = column[Option[String]]("sisaltyy_opiskeluoikeuteen_oid", StringIdentifierType)
     def * = (
@@ -321,6 +324,7 @@ object RaportointiDatabaseSchema {
       näytönArviointiPäivä ::
       tunnustettu ::
       tunnustettuRahoituksenPiirissä ::
+      luokkaAste ::
       data ::
       sisältyyOpiskeluoikeuteenOid ::
       HNil
@@ -780,6 +784,7 @@ case class ROpiskeluoikeusAikajaksoRow(
   tuenPäätöksenJakso: Boolean = false,
   opetuksenJärjestäminenVammanSairaudenTaiRajoitteenPerusteella: Boolean = false,
   toimintaAlueittainOpiskelu: Boolean = false,
+  tavoitekokonaisuuksittainOpiskelu: Boolean = false,
   id: Long = 0
 ) extends AikajaksoRow[ROpiskeluoikeusAikajaksoRow] {
   def truncateToDates(start: Date, end: Date): ROpiskeluoikeusAikajaksoRow = this.copy(
@@ -934,6 +939,7 @@ case class ROsasuoritusRow(
   näytönArviointiPäivä: Option[Date],
   tunnustettu: Boolean,
   tunnustettuRahoituksenPiirissä: Boolean,
+  luokkaAste: Option[String] = None,
   data: JValue,
   sisältyyOpiskeluoikeuteenOid: Option[String]
 ) extends RSuoritusRow {

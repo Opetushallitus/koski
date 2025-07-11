@@ -27,6 +27,7 @@ export type PerusopetuksenOpiskeluoikeudenLisätiedot = {
   erityisenTuenPäätökset?: Array<ErityisenTuenPäätös>
   aloittanutEnnenOppivelvollisuutta: boolean
   erityisenTuenPäätös?: ErityisenTuenPäätös
+  tavoitekokonaisuuksittainOpiskelu?: Array<Aikajakso>
   ulkomailla?: Aikajakso
   toimintaAlueittainOpiskelu?: Array<Aikajakso>
   tuenPäätöksenJaksot?: Array<Tukijakso>
@@ -55,6 +56,7 @@ export const PerusopetuksenOpiskeluoikeudenLisätiedot = (
     erityisenTuenPäätökset?: Array<ErityisenTuenPäätös>
     aloittanutEnnenOppivelvollisuutta?: boolean
     erityisenTuenPäätös?: ErityisenTuenPäätös
+    tavoitekokonaisuuksittainOpiskelu?: Array<Aikajakso>
     ulkomailla?: Aikajakso
     toimintaAlueittainOpiskelu?: Array<Aikajakso>
     tuenPäätöksenJaksot?: Array<Tukijakso>

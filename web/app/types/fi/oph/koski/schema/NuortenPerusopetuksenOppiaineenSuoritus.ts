@@ -13,6 +13,7 @@ export type NuortenPerusopetuksenOppiaineenSuoritus = {
   arviointi?: Array<PerusopetuksenOppiaineenArviointi>
   tyyppi: Koodistokoodiviite<'suorituksentyyppi', 'perusopetuksenoppiaine'>
   tila?: Koodistokoodiviite<'suorituksentila', string>
+  luokkaAste?: Koodistokoodiviite<'perusopetuksenluokkaaste', string>
   suorituskieli?: Koodistokoodiviite<'kieli', string>
   suoritustapa?: Koodistokoodiviite<
     'perusopetuksensuoritustapa',
@@ -28,6 +29,7 @@ export const NuortenPerusopetuksenOppiaineenSuoritus = (o: {
   arviointi?: Array<PerusopetuksenOppiaineenArviointi>
   tyyppi?: Koodistokoodiviite<'suorituksentyyppi', 'perusopetuksenoppiaine'>
   tila?: Koodistokoodiviite<'suorituksentila', string>
+  luokkaAste?: Koodistokoodiviite<'perusopetuksenluokkaaste', string>
   suorituskieli?: Koodistokoodiviite<'kieli', string>
   suoritustapa?: Koodistokoodiviite<
     'perusopetuksensuoritustapa',
