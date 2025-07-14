@@ -1362,6 +1362,8 @@ class KoskiValidator(
       case s: PerusopetuksenVuosiluokanSuoritus if s.koulutusmoduuli.tunniste.koodiarvo == "9" || s.jääLuokalle => true
       case _: PerusopetuksenVuosiluokanSuoritus
         if PerusopetuksenOpiskeluoikeusValidation.onVuosiluokkiinSitoutumatonOpetus(opiskeluoikeus) => true
+      case s: PerusopetuksenVuosiluokanSuoritus
+        if s.vahvistettu && PerusopetuksenOpiskeluoikeusValidation.tavoitekokonaisuuksittainOpiskeluVoimassa(opiskeluoikeus, suoritus.vahvistus.map(_.päivä).get) => true
       case s: LukionOppimääränSuoritus2019
       => osasuorituksetKunnossaLukio2019(s, opiskeluoikeus.oppilaitos.map(_.oid))
       case s: LukionOppiaineidenOppimäärienSuoritus2019 if opiskeluoikeus.asInstanceOf[LukionOpiskeluoikeus].oppimääräSuoritettu.getOrElse(false)
