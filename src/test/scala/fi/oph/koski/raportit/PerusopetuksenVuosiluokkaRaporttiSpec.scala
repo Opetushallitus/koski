@@ -71,39 +71,38 @@ class PerusopetuksenVuosiluokkaRaporttiSpec
     }
 
     "Tuottaa oikeat tiedot tuen päätöksen jaksolle" in {
-      addPerusopetus(
-        KoskiSpecificMockOppijat.lukioKesken,
+      val hakupäivä = LocalDate.of(2026, 8, 1)
+      val opiskeluoikeus = PerusopetusExampleData.opiskeluoikeus(suoritukset = List(
         createVuosiluokanSuoritus(Some(date(2026, 8, 1)), None)
           .copy(osasuoritukset = Some(List(
             suoritus(oppiaine("HI", vuosiviikkotuntia(1)))
               .copy(arviointi = arviointi(8), rajattuOppimäärä = true),
             suoritus(oppiaine("KE", vuosiviikkotuntia(1)))
-              .copy(arviointi = arviointi(8), luokkaAste = perusopetuksenLuokkaAste("7"))
-            )))
-      )
-
-      val hakupäivä = LocalDate.of(2026, 8, 1)
-      withLisätiedotFixture(KoskiSpecificMockOppijat.lukioKesken, perusopetuksenOpiskeluoikeudenLisätiedot.copy(
-        majoitusetu = None,
-        joustavaPerusopetus = None,
-        vuosiluokkiinSitoutumatonOpetus = false,
-        vammainen = None,
-        vaikeastiVammainen = None,
-        pidennettyOppivelvollisuus = None,
-        erityisenTuenPäätös = None,
-        erityisenTuenPäätökset = None,
-        tuenPäätöksenJaksot = Some(List(Tukijakso(Some(hakupäivä), None))),
-        opetuksenJärjestäminenVammanSairaudenTaiRajoitteenPerusteella = Some(List(Aikajakso(hakupäivä, None))),
-        tavoitekokonaisuuksittainOpiskelu = Some(List(Aikajakso(Some(hakupäivä), None)))
-      )) {
-        val result = PerusopetuksenVuosiluokkaRaportti.buildRaportti(repository, Seq(MockOrganisaatiot.jyväskylänNormaalikoulu), hakupäivä, None, vuosiluokka = "8", t)
-        val opiskeluoikeusOid = lastOpiskeluoikeus(KoskiSpecificMockOppijat.lukioKesken.oid).oid.get
-        val rivi = result.find(_.opiskeluoikeusOid == opiskeluoikeusOid)
-
-        rivi should equal(
-          Some(leilanRow.copy(opiskeluoikeusOid = opiskeluoikeusOid))
-        )
+              .copy(arviointi = arviointi(8, arviointipäivä = Some(hakupäivä)), luokkaAste = perusopetuksenLuokkaAste("7"))
+          )))
+      )).copy(
+        tila = opiskeluoikeusKesken,
+        lisätiedot = Some(PerusopetuksenOpiskeluoikeudenLisätiedot(
+          tuenPäätöksenJaksot = Some(List(Tukijakso(Some(hakupäivä), None))),
+          opetuksenJärjestäminenVammanSairaudenTaiRajoitteenPerusteella = Some(List(Aikajakso(hakupäivä, None))),
+          tavoitekokonaisuuksittainOpiskelu = Some(List(Aikajakso(Some(hakupäivä), None)))
+      )))
+      putOpiskeluoikeus(
+        opiskeluoikeus,
+        KoskiSpecificMockOppijat.lukioKesken
+      ) {
+        verifyResponseStatusOk()
       }
+
+      reloadRaportointikanta
+
+      val result = PerusopetuksenVuosiluokkaRaportti.buildRaportti(repository, Seq(MockOrganisaatiot.jyväskylänNormaalikoulu), hakupäivä, None, vuosiluokka = "8", t)
+      val opiskeluoikeusOid = lastOpiskeluoikeus(KoskiSpecificMockOppijat.lukioKesken.oid).oid.get
+      val rivi = result.find(_.opiskeluoikeusOid == opiskeluoikeusOid)
+
+      rivi should equal(
+        Some(leilanRow.copy(opiskeluoikeusOid = opiskeluoikeusOid))
+      )
     }
 
     "Ei näytetä laajuuksia kun päätason suorituksen arviointipäivä on 31.7.2020 tai ennen" in {
