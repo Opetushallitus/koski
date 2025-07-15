@@ -1,5 +1,8 @@
-## 8.7.2025
+## 16.7.2025
+
 - Suoritettujen lukiodiplomien arvosanat ja tunnistetiedot lisätty lukion päätason suoritukselle
+- Perusopetuksen opiskeluoikeudelle lisätty lisätieto tavoitekokonaisuuksittain opiskelu
+- Perusopetuksen vuosiluokan suorituksen osasuoritukselle lisätty kenttä luokkaAste
 
 ## 24.6.2025
 
