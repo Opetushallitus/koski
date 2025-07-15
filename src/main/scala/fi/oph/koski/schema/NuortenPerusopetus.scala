@@ -102,6 +102,8 @@ case class PerusopetuksenOpiskeluoikeudenLisätiedot(
   @Tooltip("Opiskeleeko oppilas toiminta-alueittain? Toiminta-alueittain opiskelussa oppilaalla on yksilöllistetty oppimäärä ja opetus järjestetty toiminta-alueittain. Tuolloin oppilaalla on aina tukea koskeva päätös. Oppilaan opetussuunnitelmaan kuuluvat toiminta-alueet ovat motoriset taidot, kieli ja kommunikaatio, sosiaaliset taidot, päivittäisten toimintojen taidot ja kognitiiviset taidot.")
   @Title("Opiskelee toiminta-alueittain")
   toimintaAlueittainOpiskelu: Option[List[Aikajakso]] = None,
+  @Title("Opiskelee tavoitekokonaisuuksittain")
+  tavoitekokonaisuuksittainOpiskelu: Option[List[Aikajakso]] = None,
   @KoodistoUri("perusopetuksentukimuoto")
   @Description("Oppilaan saamat laissa säädetyt tukimuodot.")
   @Tooltip("Oppilaan saamat laissa säädetyt tukimuodot. Voi olla useita.")
@@ -200,6 +202,7 @@ case class PerusopetuksenOpiskeluoikeudenLisätiedot(
   with PidennettyOppivelvollisuus
   with Ulkomaanaikajaksollinen
   with ToimintaAlueittainOpiskeleva
+  with TavoitekokonaisuuksittainOpiskeleva
   with Tukipäätöksellinen
   with TukipäätöksellinenVanhatLisätiedot
   with VammaSairausTaiRajoite
@@ -374,7 +377,12 @@ case class NuortenPerusopetuksenOppiaineenSuoritus(
   suorituskieli: Option[Koodistokoodiviite] = None,
   @KoodistoKoodiarvo("perusopetuksenoppiaine")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "perusopetuksenoppiaine", koodistoUri = "suorituksentyyppi"),
-  suoritustapa: Option[Koodistokoodiviite] = None
+  suoritustapa: Option[Koodistokoodiviite] = None,
+  @Description("Luokka-asteen tunniste (1-9). Minkä vuosiluokan mukaisesta oppiainesuorituksesta on kyse.")
+  @Tooltip("Minkä vuosiluokan mukaisesta oppiainesuorituksesta on kyse")
+  @Title("Luokka-aste")
+  @KoodistoUri("perusopetuksenluokkaaste")
+  luokkaAste: Option[Koodistokoodiviite] = None,
 ) extends PerusopetuksenOppiaineenSuoritus with OppiaineenTaiToiminta_AlueenSuoritus with Vahvistukseton with RajattavaOppimäärä with MahdollisestiSuorituskielellinen with SuoritustapanaMahdollisestiErityinenTutkinto
 
 trait OppiaineenOppimääränSuoritus

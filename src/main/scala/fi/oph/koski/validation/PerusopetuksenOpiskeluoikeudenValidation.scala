@@ -24,6 +24,7 @@ object PerusopetuksenOpiskeluoikeusValidation extends Logging {
           validateVuosiluokanAlkamispäivät(poo),
           validatePäätasonSuoritus(poo),
           validateVanhojenJaksokenttienPäättyminenSiirryttäessäUusiin(config, poo.alkamispäivä, poo.päättymispäivä, poo.lisätiedot),
+          validateTavoitekokonaisuuksittainOpiskeleva(poo)
         ) ++ poo.lisätiedot.toList.flatMap(lisätiedot => List(
           validateTuenJaksojenPäällekkäisyys(lisätiedot),
           validateOppivelvollisuudenPidennysjaksojenPäällekkäisyys(lisätiedot),
@@ -48,6 +49,35 @@ object PerusopetuksenOpiskeluoikeusValidation extends Logging {
         }
       case None => HttpStatus.ok
     }
+  }
+
+  def tavoitekokonaisuuksittainOpiskeluVoimassa(oo: KoskeenTallennettavaOpiskeluoikeus, pvm: LocalDate): Boolean = oo match {
+    case oo: PerusopetuksenOpiskeluoikeus =>
+      oo.lisätiedot.flatMap(_.tavoitekokonaisuuksittainOpiskelu).getOrElse(Seq.empty).exists(_.contains(pvm))
+  }
+
+  private def validateTavoitekokonaisuuksittainOpiskeleva(oo: PerusopetuksenOpiskeluoikeus): HttpStatus = {
+    val errors: Seq[HttpStatus] = oo.suoritukset.collect {
+      case vls: PerusopetuksenVuosiluokanSuoritus =>
+        vls.osasuoritukset.getOrElse(Seq.empty).flatMap {
+          case os: NuortenPerusopetuksenOppiaineenSuoritus =>
+            val vuosiluokka = vls.koulutusmoduuli.tunniste
+            os.luokkaAste match {
+              case Some(la) =>
+                val relevantDates = Seq(vls.vahvistus.map(_.päivä), os.ensimmäinenArviointiPäivä).flatten
+                val dateCovered = relevantDates.exists(d => tavoitekokonaisuuksittainOpiskeluVoimassa(oo, d))
+
+                if (!dateCovered) {
+                  Some(KoskiErrorCategory.badRequest.validation.date("Perusopetuksen oppiaineen suorituksella on tavoitekokonaisuuksittain opiskeluun liittyvä tieto luokkaAste mutta ei tavoitekokonaisuuksittain opiskelun aikajaksoa, joka kattaisi arviointipäivän tai päättymispäivän."))
+                } else if (la == vuosiluokka) {
+                  Some(KoskiErrorCategory.badRequest.validation.date("Perusopetuksen oppiaineen suorituksen tavoitekokonaisuuksittain opiskeluun liittyvää kenttä luokkaAste ei saa olla sama kuin vuosiluokka"))
+                } else { None }
+              case None => None
+            }
+          case _ => None
+        }
+    }.flatten
+    HttpStatus.fold(errors)
   }
 
   private def validateNuortenPerusopetuksenOpiskeluoikeudenTila(oo: PerusopetuksenOpiskeluoikeus) = {

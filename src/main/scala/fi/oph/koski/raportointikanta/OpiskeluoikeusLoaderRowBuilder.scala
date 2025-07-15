@@ -503,6 +503,10 @@ object OpiskeluoikeusLoaderRowBuilder extends Logging {
         case m: MahdollisestiTunnustettu => m.tunnustettuRahoituksenPiirissä
         case _ => false
       },
+      luokkaAste = os match {
+        case m: NuortenPerusopetuksenOppiaineenSuoritus => m.luokkaAste.map(_.koodiarvo)
+        case _ => None
+      },
       data = JsonManipulation.removeFields(data, fieldsToExcludeFromOsasuoritusJson),
       sisältyyOpiskeluoikeuteenOid = sisältyyOpiskeluoikeuteenOid
     ) +: os.osasuoritukset.getOrElse(List.empty).zipWithIndex.flatMap {

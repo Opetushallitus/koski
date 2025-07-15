@@ -1,5 +1,11 @@
 # Koskeen tallennettavien tietojen validaatiosäännöt
 
+## 16.7.2025
+
+- Perusopetuksen opiskeluoikeuden lisätieto tavoitekokonaisuuksittain opiskelu vaatii tuen päätöksen jakson
+- Perusopetuksen vuosiluokan suorituksen osasuoritukselle voi siirtää tiedon luokkaAste jos lisätieto
+  tavoitekokonaisuuksittain opiskelu on voimassa osasuorituksen arviointi- tai vuosiluokan vahvistuspäivänä
+
 # 4.7.2025
 
 - Valtionhallinnon kielitutkintojen validaatiota muutettu niin, että osakoe tai taito todetaan valmiiksi, kunhan sillä on mikä tahansa arviointi (myös hylätty).

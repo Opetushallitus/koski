@@ -589,6 +589,7 @@ class KoskiValidator(
           validateVarhennettuOppivelvollisuus(lisätiedot),
           validateVammaSairausTaiRajoite(lisätiedot),
           validatePäätösToimintaAlueittainOpiskelusta(lisätiedot),
+          validateTavoitekokonaisuuksittainOpiskelu(lisätiedot),
         )
       case _ => HttpStatus.ok
     }
@@ -714,6 +715,33 @@ class KoskiValidator(
           ),
           HttpStatus.validate(tukijaksonUlkopuollaOlevat.isEmpty)(KoskiErrorCategory.badRequest.validation.date(
             s"Toiminta-alueittain opiskelun täytyy sisältyä tukijaksoon: ${tukijaksonUlkopuollaOlevat.get}"
+          )),
+        )
+      case _ => HttpStatus.ok
+    }
+  }
+
+  private def validateTavoitekokonaisuuksittainOpiskelu(lisätiedot: Option[OpiskeluoikeudenLisätiedot]): HttpStatus = {
+    val tavoitekokonaisuuksittainOpiskeluVoimaan = LocalDate.parse(config.getString("validaatiot.tavoitekokonaisuuksittainOpiskeluVoimaan"))
+    lisätiedot match {
+      case Some(lt: TavoitekokonaisuuksittainOpiskeleva) =>
+        val tukijaksonUlkopuollaOlevat = tukijaksonUlkopuoliset(lt.tavoitekokonaisuuksittainOpiskelu, lt)
+
+        val aikaisinAlkamispäivä = findEnsimmäinenAlkamispäivä(lt.tavoitekokonaisuuksittainOpiskelu)
+
+        val tavoitekokonaisuuksittainenAlkaaLiianAikaisin = aikaisinAlkamispäivä match {
+          case Some(x) => x.isBefore(tavoitekokonaisuuksittainOpiskeluVoimaan)
+          case _ => false
+        }
+
+        HttpStatus.fold(
+          HttpStatus.validate(!tavoitekokonaisuuksittainenAlkaaLiianAikaisin)(
+            KoskiErrorCategory.badRequest.validation.date(
+              s"Tavoitekokonaisuuksittain opiskelu -lisätiedon varhaisin sallittu voimassaolopäivä on $tavoitekokonaisuuksittainOpiskeluVoimaan"
+            )
+          ),
+          HttpStatus.validate(tukijaksonUlkopuollaOlevat.isEmpty)(KoskiErrorCategory.badRequest.validation.date(
+            s"Tavoitekokonaisuuksittain opiskelun täytyy sisältyä tukijaksoon: ${tukijaksonUlkopuollaOlevat.get}"
           )),
         )
       case _ => HttpStatus.ok
@@ -1334,6 +1362,8 @@ class KoskiValidator(
       case s: PerusopetuksenVuosiluokanSuoritus if s.koulutusmoduuli.tunniste.koodiarvo == "9" || s.jääLuokalle => true
       case _: PerusopetuksenVuosiluokanSuoritus
         if PerusopetuksenOpiskeluoikeusValidation.onVuosiluokkiinSitoutumatonOpetus(opiskeluoikeus) => true
+      case s: PerusopetuksenVuosiluokanSuoritus
+        if s.vahvistettu && PerusopetuksenOpiskeluoikeusValidation.tavoitekokonaisuuksittainOpiskeluVoimassa(opiskeluoikeus, suoritus.vahvistus.map(_.päivä).get) => true
       case s: LukionOppimääränSuoritus2019
       => osasuorituksetKunnossaLukio2019(s, opiskeluoikeus.oppilaitos.map(_.oid))
       case s: LukionOppiaineidenOppimäärienSuoritus2019 if opiskeluoikeus.asInstanceOf[LukionOpiskeluoikeus].oppimääräSuoritettu.getOrElse(false)
