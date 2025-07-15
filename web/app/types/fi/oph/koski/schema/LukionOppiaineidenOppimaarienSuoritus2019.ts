@@ -2,6 +2,7 @@ import { Koodistokoodiviite } from './Koodistokoodiviite'
 import { LocalizedString } from './LocalizedString'
 import { SuullisenKielitaidonKoe2019 } from './SuullisenKielitaidonKoe2019'
 import { PuhviKoe2019 } from './PuhviKoe2019'
+import { LukiodiplominSuoritusJaArviointi } from './LukiodiplominSuoritusJaArviointi'
 import { LukionOppiaineidenOppimäärät2019 } from './LukionOppiaineidenOppimaarat2019'
 import { OrganisaatioWithOid } from './OrganisaatioWithOid'
 import { LukionOppimääränOsasuoritus2019 } from './LukionOppimaaranOsasuoritus2019'
@@ -21,6 +22,7 @@ export type LukionOppiaineidenOppimäärienSuoritus2019 = {
   puhviKoe?: PuhviKoe2019
   oppimäärä: Koodistokoodiviite<'lukionoppimaara', string>
   lukionOppimääräSuoritettu?: boolean
+  lukiodiplomit2019?: Array<LukiodiplominSuoritusJaArviointi>
   todistuksellaNäkyvätLisätiedot?: LocalizedString
   ryhmä?: string
   koulutusmoduuli: LukionOppiaineidenOppimäärät2019
@@ -37,6 +39,7 @@ export const LukionOppiaineidenOppimäärienSuoritus2019 = (o: {
   puhviKoe?: PuhviKoe2019
   oppimäärä: Koodistokoodiviite<'lukionoppimaara', string>
   lukionOppimääräSuoritettu?: boolean
+  lukiodiplomit2019?: Array<LukiodiplominSuoritusJaArviointi>
   todistuksellaNäkyvätLisätiedot?: LocalizedString
   ryhmä?: string
   koulutusmoduuli: LukionOppiaineidenOppimäärät2019
