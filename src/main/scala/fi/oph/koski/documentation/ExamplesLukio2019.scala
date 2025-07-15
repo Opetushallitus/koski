@@ -4,7 +4,7 @@ import java.time.LocalDate
 import java.time.LocalDate.{of => date}
 import fi.oph.koski.documentation.ExampleData._
 import fi.oph.koski.documentation.Lukio2019ExampleData._
-import fi.oph.koski.documentation.LukioExampleData.{aikuistenOpetussuunnitelma, nuortenOpetussuunnitelma, opiskeluoikeusAktiivinen, opiskeluoikeusPäättynyt, laajuus => _}
+import fi.oph.koski.documentation.LukioExampleData.{aikuistenOpetussuunnitelma, arviointi, nuortenOpetussuunnitelma, opiskeluoikeusAktiivinen, opiskeluoikeusPäättynyt, laajuus => _}
 import fi.oph.koski.documentation.YleissivistavakoulutusExampleData._
 import fi.oph.koski.henkilo.MockOppijat.asUusiOppija
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat.{uusiLukio, uusiLukionAineopiskelija}
@@ -44,6 +44,7 @@ object ExamplesLukio2019 {
     omanÄidinkielenOpinnot = omanÄidinkielenOpinnotSaame,
     puhviKoe = puhviKoe,
     suullisenKielitaidonKokeet = Some(List(suullisenKielitaidonKoeEnglanti, suullisenKielitaidonKoeEspanja)),
+    lukiodiplomit2019 = Some(List(lukiodiplominSuoritus())),
     todistuksellaNäkyvätLisätiedot = Some("Osallistunut kansalliseen etäopetuskokeiluun"),
     osasuoritukset = Some(oppiaineSuorituksetJoissaMuitaSuorituksiaJaVastaavia),
     ryhmä = Some("AH")
@@ -415,6 +416,13 @@ object Lukio2019ExampleData {
     päivä = date(2019, 8, 30),
     kuvaus = None
   ))
+
+  def lukiodiplominSuoritus(arvosana: String = "6") = LukiodiplominSuoritusJaArviointi(
+    arvosana = Koodistokoodiviite(arvosana, "arviointiasteikkoyleissivistava"),
+    kuvaus = None,
+    päivä = LocalDate.of(2025, 8, 15),
+    tunniste = Koodistokoodiviite("LILD4", "lukionkurssit"),
+  )
 
   def suullisenKielitaidonKoeEnglanti(): SuullisenKielitaidonKoe2019 = SuullisenKielitaidonKoe2019(
     kieli = Koodistokoodiviite("EN", Some("englanti"), "kielivalikoima", None),

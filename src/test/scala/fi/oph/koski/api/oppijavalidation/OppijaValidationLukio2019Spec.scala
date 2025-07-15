@@ -519,6 +519,19 @@ class OppijaValidationLukio2019Spec extends AnyFreeSpec with PutOpiskeluoikeusTe
         )
       }
     }
+
+    "Päätasolle tulevan lukiodiplomin suoritustiedoissa arvosana voi olla vain numeerinen" in {
+      setupOppijaWithOpiskeluoikeus(oppiaineenOppimääräOpiskeluoikeus.copy(suoritukset = List(oppimääränSuoritus.copy(
+        lukiodiplomit2019 = Some(List(lukiodiplominSuoritus("H"))),
+      )))) {
+        verifyResponseStatus(400)
+      }
+      setupOppijaWithOpiskeluoikeus(oppiaineenOppimääräOpiskeluoikeus.copy(suoritukset = List(oppimääränSuoritus.copy(
+        lukiodiplomit2019 = Some(List(lukiodiplominSuoritus("4"))),
+      )))) {
+        verifyResponseStatusOk()
+      }
+    }
   }
 
   "Suorituskieli" - {
