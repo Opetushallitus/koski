@@ -2097,6 +2097,7 @@
   "raportti-excel-kolumni-toimipisteNimi": "Toimipisteen nimi",
   "raportti-excel-kolumni-toimipisteOid": "Toimipisteen oid",
   "raportti-excel-kolumni-toimipisteOidit": "Toimipisteet",
+  "raportti-excel-kolumni-tavoitekokonaisuuksittainOpiskelu": "Tavoitekokonaisuuksittain opiskelu",
   "raportti-excel-kolumni-tukimuodot": "Tukimuodot",
   "raportti-excel-kolumni-tunnustettujaAmmatillisessaValmiistaTutkinnonOsistaLkm": "Tunnustettujen tutkinnon osien osuus valmiista ammatillisista tutkinnon osista, esim: 10 (joista 5 korotuksia)",
   "raportti-excel-kolumni-tunnustettujaPakollisiaJaTunnustettujaValtakunnallisia": "Tunnustettuja pakollisia ja valtakunnallisia opintopisteitä",
