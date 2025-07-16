@@ -2098,6 +2098,7 @@
   "raportti-excel-kolumni-toimipisteOid": "Toimipisteen oid",
   "raportti-excel-kolumni-toimipisteOidit": "Toimipisteet",
   "raportti-excel-kolumni-tavoitekokonaisuuksittainOpiskelu": "Tavoitekokonaisuuksittain opiskelu",
+  "raportti-excel-kolumni-tavoitekokonaisuuksittainOpiskelu-comment": "Oppilaat, joille löytyy opiskeluoikeuden lisätiedoista raportin tulostusparametreissa määritellylle päivälle osuva tavoitekokonaisuuksittain opiskelun jakso.",
   "raportti-excel-kolumni-tukimuodot": "Tukimuodot",
   "raportti-excel-kolumni-tunnustettujaAmmatillisessaValmiistaTutkinnonOsistaLkm": "Tunnustettujen tutkinnon osien osuus valmiista ammatillisista tutkinnon osista, esim: 10 (joista 5 korotuksia)",
   "raportti-excel-kolumni-tunnustettujaPakollisiaJaTunnustettujaValtakunnallisia": "Tunnustettuja pakollisia ja valtakunnallisia opintopisteitä",

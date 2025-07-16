@@ -69,9 +69,9 @@ object PerusopetuksenOpiskeluoikeusValidation extends Logging {
 
                 if (relevantDates.isEmpty) { None }
                 else if (!dateCovered) {
-                  Some(KoskiErrorCategory.badRequest.validation.date("Perusopetuksen oppiaineen suorituksella on tavoitekokonaisuuksittain opiskeluun liittyvä tieto luokkaAste mutta ei tavoitekokonaisuuksittain opiskelun aikajaksoa, joka kattaisi arviointipäivän tai päättymispäivän."))
+                  Some(KoskiErrorCategory.badRequest.validation.date(s"Perusopetuksen oppiaineen suorituksella on tavoitekokonaisuuksittain opiskeluun liittyvä tieto luokkaAste (${la.koodiarvo}) mutta ei tavoitekokonaisuuksittain opiskelun aikajaksoa, joka kattaisi vuosiluokan vahvistuspäivän tai suorituksen arviointipäivän."))
                 } else if (la == vuosiluokka) {
-                  Some(KoskiErrorCategory.badRequest.validation.date("Perusopetuksen oppiaineen suorituksen tavoitekokonaisuuksittain opiskeluun liittyvää kenttä luokkaAste ei saa olla sama kuin vuosiluokka"))
+                  Some(KoskiErrorCategory.badRequest.validation.date(s"Perusopetuksen oppiaineen suorituksen tavoitekokonaisuuksittain opiskeluun liittyvä kenttä luokkaAste ei saa olla sama kuin vuosiluokka (${vuosiluokka.koodiarvo})"))
                 } else { None }
               case None => None
             }

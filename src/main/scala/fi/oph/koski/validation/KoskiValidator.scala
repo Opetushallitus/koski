@@ -741,7 +741,7 @@ class KoskiValidator(
             )
           ),
           HttpStatus.validate(tukijaksonUlkopuollaOlevat.isEmpty)(KoskiErrorCategory.badRequest.validation.date(
-            s"Tavoitekokonaisuuksittain opiskelun täytyy sisältyä tukijaksoon: ${tukijaksonUlkopuollaOlevat.get}"
+            s"Tavoitekokonaisuuksittain opiskelun täytyy sisältyä tuen päätöksen jaksoon: ${tukijaksonUlkopuollaOlevat.get}"
           )),
         )
       case _ => HttpStatus.ok
