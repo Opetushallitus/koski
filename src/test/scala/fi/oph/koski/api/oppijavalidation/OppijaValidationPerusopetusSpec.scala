@@ -609,6 +609,17 @@ class OppijaValidationPerusopetusSpec extends TutkinnonPerusteetTest[Perusopetuk
             )
           )
         )
+        def withLuokkaAsteSuoritusWithoutVahvistus(luokkaAste: String): TuenPäätöksellinenBuilder = copy(
+          suoritukset = List(
+            kahdeksannenLuokanSuoritus.copy(
+              vahvistus = None,
+              osasuoritukset = Some(List(
+                suoritus(oppiaine("HI", vuosiviikkotuntia(1)))
+                  .copy(luokkaAste = perusopetuksenLuokkaAste(luokkaAste))
+              ))
+            )
+          )
+        )
 
         def build: PerusopetuksenOpiskeluoikeus = {
           defaultOpiskeluoikeus.copy(
@@ -856,7 +867,7 @@ class OppijaValidationPerusopetusSpec extends TutkinnonPerusteetTest[Perusopetuk
           }
         }
 
-        "Luokka-aste tiedon siirtäminen vaatii tavoitekokonaisuuksittain opiskelun aikajakson" in {
+        "Luokka-aste tiedon siirtäminen vaatii tavoitekokonaisuuksittain opiskelun aikajakson jos vahvistettu tai arvioitu" in {
           val tavoitekokonaisuuksittainOpiskeluVoimaan = LocalDate.parse(KoskiApplicationForTests.config.getString("validaatiot.tavoitekokonaisuuksittainOpiskeluVoimaan"))
           val arviointiPvm = date(2025, 9, 1)
 
@@ -889,6 +900,13 @@ class OppijaValidationPerusopetusSpec extends TutkinnonPerusteetTest[Perusopetuk
               tuenPäätöksenJaksot = tuenPäätöksenJaksot(alku = tavoitekokonaisuuksittainOpiskeluVoimaan)
             ).withLuokkaAsteSuoritus("7", arviointiPvm).build
           ) {
+            verifyResponseStatusOk()
+          }
+        }
+
+        "Luokka-aste tiedon voi siirtää ilman tavoitekokonaisuuksittain opiskelun aikajaksoja, jos ei ole vahvistusta eikä arviointia" in {
+          val withLuokkaAste = TuenPäätöksellinenBuilder().withLuokkaAsteSuoritusWithoutVahvistus("8")
+          setupOppijaWithOpiskeluoikeus(withLuokkaAste.build) {
             verifyResponseStatusOk()
           }
         }
