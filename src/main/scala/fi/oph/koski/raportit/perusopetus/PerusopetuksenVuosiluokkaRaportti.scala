@@ -130,6 +130,7 @@ object PerusopetuksenVuosiluokkaRaportti extends VuosiluokkaRaporttiPaivalta wit
       vahvistetutToimintaAlueidenSuoritukset = toimintaalueOsasuoritukset.filter(_.arviointiHyväksytty.getOrElse(false)).sortBy(_.koulutusmoduuliKoodiarvo).map(r => nimiJaKoodi(r, t)).mkString(","),
       majoitusetu = opiskeluoikeudenLisätiedot.exists(_.majoitusetu.exists(aikajaksoVoimassaHakuPaivalla(_, hakupaiva))),
       kuljetusetu = opiskeluoikeudenLisätiedot.exists(_.kuljetusetu.exists(aikajaksoVoimassaHakuPaivalla(_, hakupaiva))),
+      kotiopetus = opiskeluoikeudenLisätiedot.exists(oo => oneOfAikajaksoistaVoimassaHakuPaivalla(oo.kotiopetus, oo.kotiopetusjaksot, hakupaiva)),
       ulkomailla = opiskeluoikeudenLisätiedot.exists(oo => oneOfAikajaksoistaVoimassaHakuPaivalla(oo.ulkomailla, oo.ulkomaanjaksot, hakupaiva)),
       aloittanutEnnenOppivelvollisuutta = opiskeluoikeudenLisätiedot.exists(_.aloittanutEnnenOppivelvollisuutta),
       pidennettyOppivelvollisuus = opiskeluoikeudenLisätiedot.exists(_.pidennettyOppivelvollisuus.exists(aikajaksoVoimassaHakuPaivalla(_, hakupaiva))),
@@ -189,18 +190,6 @@ object PerusopetuksenVuosiluokkaRaportti extends VuosiluokkaRaporttiPaivalta wit
     päätasonVahvistusPäivä: Option[Date],
     t: LocalizationReader
   ): String = {
-    def mapLaajuus(koodiarvo: Option[String]): String = koodiarvo match {
-      case Some("1") => "ov"
-      case Some("2") => "op"
-      case Some("3") => "vvk" // vuosiviikkotuntia
-      case Some("4") => "krs" // kurssia
-      case Some("5") => "t"   // tuntia
-      case Some("6") => "osp"
-      case Some("7") => "v"   // vuotta
-      case Some("8") => "vk"  // viikkoa
-      case _ => ""
-    }
-
     val arvosana = osasuoritus.arviointiArvosanaKoodiarvo
       .getOrElse(t.get("raportti-excel-default-value-arvosana-puuttuu"))
     val täppä = täppäIfYksilöllistettyTaiRajattu(osasuoritus)
@@ -210,10 +199,7 @@ object PerusopetuksenVuosiluokkaRaportti extends VuosiluokkaRaporttiPaivalta wit
       osasuoritus.koulutusmoduuliPakollinen.getOrElse(false)
 
     val laajuus: Option[String] = if (includeLaajuus) {
-      osasuoritus.koulutusmoduuliLaajuusArvo.map { arvo =>
-        val yksikkö = mapLaajuus(osasuoritus.koulutusmoduuliLaajuusYksikkö)
-        if (yksikkö.nonEmpty) s"$arvo $yksikkö" else s"$arvo"
-      }
+      osasuoritus.koulutusmoduuliLaajuusArvo.map(_.toString)
     } else {
       None
     }
@@ -223,7 +209,7 @@ object PerusopetuksenVuosiluokkaRaportti extends VuosiluokkaRaporttiPaivalta wit
     val lisätiedot = List(laajuus, luokkaAste).flatten
     val lisätietoString = if (lisätiedot.nonEmpty) s" (${lisätiedot.mkString(", ")})" else ""
 
-    s"$arvosana$täppä$lisätietoString" // esim. "8 (Laajuus puuttuu, 7.lk)" tai "8* (3 ov, 7.lk)"
+    s"$arvosana$täppä$lisätietoString" // esim. "8 (Laajuus puuttuu, 7.lk)" tai "8* (3.0, 7.lk)" tai "(8* (3.0)"
   }
 
   private def täppäIfYksilöllistettyTaiRajattu(osasuoritus: ROsasuoritusRow): String = {
@@ -390,6 +376,7 @@ object PerusopetuksenVuosiluokkaRaportti extends VuosiluokkaRaporttiPaivalta wit
     "vahvistetutToimintaAlueidenSuoritukset" -> CompactColumn(t.get("raportti-excel-kolumni-vahvistetutToimintaAlueidenSuoritukset"), comment = Some(t.get("raportti-excel-kolumni-vahvistetutToimintaAlueidenSuoritukset-comment"))),
     "majoitusetu" -> compactLisätiedotColumn(t.get("raportti-excel-kolumni-majoitusetu"), t),
     "kuljetusetu" -> compactLisätiedotColumn(t.get("raportti-excel-kolumni-kuljetusetu"), t),
+    "kotiopetus" -> compactLisätiedotColumn(t.get("raportti-excel-kolumni-kotiopetus"), t),
     "ulkomailla" -> compactLisätiedotColumn(t.get("raportti-excel-kolumni-ulkomailla"), t),
     "aloittanutEnnenOppivelvollisuutta" -> compactLisätiedotColumn(t.get("raportti-excel-kolumni-aloittanutEnnenOppivelvollisuutta"), t),
     "pidennettyOppivelvollisuus" -> compactLisätiedotColumn(t.get("raportti-excel-kolumni-pidennettyOppivelvollisuus"), t),
@@ -471,6 +458,7 @@ private[raportit] case class PerusopetusRow(
   vahvistetutToimintaAlueidenSuoritukset: String,
   majoitusetu: Boolean,
   kuljetusetu: Boolean,
+  kotiopetus: Boolean,
   ulkomailla: Boolean,
   aloittanutEnnenOppivelvollisuutta: Boolean,
   pidennettyOppivelvollisuus: Boolean,

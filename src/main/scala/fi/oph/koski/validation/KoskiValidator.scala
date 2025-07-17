@@ -621,10 +621,20 @@ class KoskiValidator(
     }
   }
 
-  private def tukijaksonUlkopuoliset(xs: Option[List[Aikajakso]], lt: Tukipäätöksellinen) = {
-    val yhdistetytTukijaksot: List[SuljettuJakso] = yhdistäPäällekäisetJaPeräkkäisetMahdollisestiAlkupäivällisetAikajaksot(lt.kaikkiTuenPäätöksenJaksot)
-    xs.map(_.filterNot((aj: Aikajakso) => yhdistetytTukijaksot.exists((tj: SuljettuJakso) => tj.contains(aj))))
-      .filter(_.nonEmpty) // palauta None jos lista on tyhjä
+  private def sisältymättömätAikajaksot(
+    aikajaksotOpt: Option[List[Aikajakso]],
+    tukipäätöksellinen: Tukipäätöksellinen
+  ): Option[List[Aikajakso]] = {
+    val yhdistetytTukijaksot: List[SuljettuJakso] =
+      yhdistäPäällekäisetJaPeräkkäisetMahdollisestiAlkupäivällisetAikajaksot(tukipäätöksellinen.kaikkiTuenPäätöksenJaksot)
+
+    val sisältymättömät = aikajaksotOpt.map { aikajaksot =>
+      aikajaksot.filterNot { aikajakso =>
+        yhdistetytTukijaksot.exists(_.contains(aikajakso))
+      }
+    }
+
+    sisältymättömät.filter(_.nonEmpty) // Palauta None, jos lista on tyhjä
   }
 
   private def validateVammaSairausTaiRajoite(lisätiedot: Option[OpiskeluoikeudenLisätiedot]): HttpStatus = {
@@ -635,7 +645,7 @@ class KoskiValidator(
           lt.toimintaAlueittainOpiskelu.exists(_.exists(b => a.overlaps(b)))
         )).filter(_.nonEmpty)
 
-        val tukijaksonUlkopuolellaOlevat = tukijaksonUlkopuoliset(lt.opetuksenJärjestäminenVammanSairaudenTaiRajoitteenPerusteella, lt)
+        val sisältymättömätJaksot = sisältymättömätAikajaksot(lt.opetuksenJärjestäminenVammanSairaudenTaiRajoitteenPerusteella, lt)
 
         val alkaaLiianVarhain = lt.opetuksenJärjestäminenVammanSairaudenTaiRajoitteenPerusteella match {
           case Some(xs) => xs.exists(x => x.alku.isBefore(vammaSairausTaiRajoiteVoimaan))
@@ -646,8 +656,8 @@ class KoskiValidator(
           HttpStatus.validate(toimintaAlueittainenPäällekkäin.isEmpty)(KoskiErrorCategory.badRequest.validation.date(
             s"Opetuksen järjestäminen vamman, sairauden tai rajoitteen perusteella ei saa olla samaan aikaan kuin opiskelu toiminta-alueittain: ${toimintaAlueittainenPäällekkäin.get}"
           )),
-          HttpStatus.validate(tukijaksonUlkopuolellaOlevat.isEmpty)(KoskiErrorCategory.badRequest.validation.date(
-            s"Opetuksen järjestäminen vamman, sairauden tai rajoitteen perusteella pitää sisältyä tukijaksoon: ${tukijaksonUlkopuolellaOlevat.get}"
+          HttpStatus.validate(sisältymättömätJaksot.isEmpty)(KoskiErrorCategory.badRequest.validation.date(
+            s"Opetuksen järjestäminen vamman, sairauden tai rajoitteen perusteella (${sisältymättömätJaksot.get.mkString(",")}) pitää sisältyä tuen päätöksen jaksoon"
           )),
           HttpStatus.validate(!alkaaLiianVarhain)(KoskiErrorCategory.badRequest.validation.date(
             s"Opetuksen järjestäminen vamman, sairauden tai rajoitteen perusteella -lisätiedon varhaisin sallittu voimassaolopäivä on $vammaSairausTaiRajoiteVoimaan"
@@ -664,7 +674,7 @@ class KoskiValidator(
     val varhennettuOppivelvollisuusVoimaan = LocalDate.parse(config.getString("validaatiot.varhennettuOppivelvollisuusVoimaan"))
     lisätiedot match {
       case Some(lt: VarhennettuOppivelvollisuus) =>
-        val tukijaksonUlkopuolellaOlevat = tukijaksonUlkopuoliset(lt.varhennetunOppivelvollisuudenJaksot, lt)
+        val sisältymättömätJaksot = sisältymättömätAikajaksot(lt.varhennetunOppivelvollisuudenJaksot, lt)
 
         val aikaisinAlkamispäivä = findEnsimmäinenAlkamispäivä(lt.varhennetunOppivelvollisuudenJaksot)
 
@@ -678,9 +688,9 @@ class KoskiValidator(
               s"Varhennetun oppivelvollisuuden jaksot -lisätiedon varhaisin sallittu voimassaolopäivä on $varhennettuOppivelvollisuusVoimaan"
             )
           ),
-          HttpStatus.validate(tukijaksonUlkopuolellaOlevat.isEmpty)(
+          HttpStatus.validate(sisältymättömätJaksot.isEmpty)(
             KoskiErrorCategory.badRequest.validation.date(
-              s"Varhennetun oppivelvollisuuden jaksoissa on päiviä, joille ei ole tukijaksoa: ${tukijaksonUlkopuolellaOlevat.get}"
+              s"Varhennetun oppivelvollisuuden jaksoissa (${sisältymättömätJaksot.get.mkString(",")}) on päiviä, joille ei ole tuen päätöksen jaksoa"
             )
           )
         )
@@ -698,7 +708,7 @@ class KoskiValidator(
     val toimintaAlueittainJärjestettyVoimaan = LocalDate.parse(config.getString("validaatiot.toimintaAlueittainJärjestettyVoimaan"))
     lisätiedot match {
       case Some(lt: ToimintaAlueittainOpiskeleva) =>
-        val tukijaksonUlkopuollaOlevat = tukijaksonUlkopuoliset(lt.toimintaAlueittainOpiskelu, lt)
+        val sisältymättömätJaksot = sisältymättömätAikajaksot(lt.toimintaAlueittainOpiskelu, lt)
 
         val aikaisinAlkamispäivä = findEnsimmäinenAlkamispäivä(lt.toimintaAlueittainOpiskelu)
 
@@ -713,8 +723,8 @@ class KoskiValidator(
               s"Toiminta-alueittain opiskelu -lisätiedon varhaisin sallittu voimassaolopäivä on $toimintaAlueittainJärjestettyVoimaan"
             )
           ),
-          HttpStatus.validate(tukijaksonUlkopuollaOlevat.isEmpty)(KoskiErrorCategory.badRequest.validation.date(
-            s"Toiminta-alueittain opiskelun täytyy sisältyä tukijaksoon: ${tukijaksonUlkopuollaOlevat.get}"
+          HttpStatus.validate(sisältymättömätJaksot.isEmpty)(KoskiErrorCategory.badRequest.validation.date(
+            s"Toiminta-alueittain opiskelun (${sisältymättömätJaksot.get.mkString(",")}) täytyy sisältyä tuen päätöksen jaksoon"
           )),
         )
       case _ => HttpStatus.ok
@@ -725,7 +735,7 @@ class KoskiValidator(
     val tavoitekokonaisuuksittainOpiskeluVoimaan = LocalDate.parse(config.getString("validaatiot.tavoitekokonaisuuksittainOpiskeluVoimaan"))
     lisätiedot match {
       case Some(lt: TavoitekokonaisuuksittainOpiskeleva) =>
-        val tukijaksonUlkopuollaOlevat = tukijaksonUlkopuoliset(lt.tavoitekokonaisuuksittainOpiskelu, lt)
+        val tukijaksonUlkopuollaOlevat = sisältymättömätAikajaksot(lt.tavoitekokonaisuuksittainOpiskelu, lt)
 
         val aikaisinAlkamispäivä = findEnsimmäinenAlkamispäivä(lt.tavoitekokonaisuuksittainOpiskelu)
 
@@ -741,7 +751,7 @@ class KoskiValidator(
             )
           ),
           HttpStatus.validate(tukijaksonUlkopuollaOlevat.isEmpty)(KoskiErrorCategory.badRequest.validation.date(
-            s"Tavoitekokonaisuuksittain opiskelun täytyy sisältyä tukijaksoon: ${tukijaksonUlkopuollaOlevat.get}"
+            s"Tavoitekokonaisuuksittain opiskelun (${tukijaksonUlkopuollaOlevat.get.mkString(",")}) täytyy sisältyä tuen päätöksen jaksoon"
           )),
         )
       case _ => HttpStatus.ok

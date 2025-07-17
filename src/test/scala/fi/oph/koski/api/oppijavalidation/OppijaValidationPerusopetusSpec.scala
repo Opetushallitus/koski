@@ -563,7 +563,7 @@ class OppijaValidationPerusopetusSpec extends TutkinnonPerusteetTest[Perusopetuk
           val toimintaAlueittainJärjestettyVoimaan = LocalDate.parse(KoskiApplicationForTests.config.getString("validaatiot.toimintaAlueittainJärjestettyVoimaan"))
           setupOppijaWithOpiskeluoikeus(makeOpiskeluoikeusWithPäätösToimintaAlueittainOpiskelusta(toimintaAlueittainJärjestettyVoimaan, toimintaAlueittainJärjestettyVoimaan.plusDays(1))) {
             verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.date(
-              "Toiminta-alueittain opiskelun täytyy sisältyä tukijaksoon: List(2026-08-01 – )"
+              "Toiminta-alueittain opiskelun (2026-08-01 – ) täytyy sisältyä tuen päätöksen jaksoon"
             ))
           }
           setupOppijaWithOpiskeluoikeus(makeOpiskeluoikeusWithPäätösToimintaAlueittainOpiskelusta(toimintaAlueittainJärjestettyVoimaan, toimintaAlueittainJärjestettyVoimaan)) {
@@ -821,7 +821,7 @@ class OppijaValidationPerusopetusSpec extends TutkinnonPerusteetTest[Perusopetuk
           ).build) {
             verifyResponseStatus(400,
               KoskiErrorCategory.badRequest.validation.date(
-                "Opetuksen järjestäminen vamman, sairauden tai rajoitteen perusteella pitää sisältyä tukijaksoon: List(2026-07-31 – )"
+                "Opetuksen järjestäminen vamman, sairauden tai rajoitteen perusteella (2026-07-31 – ) pitää sisältyä tuen päätöksen jaksoon"
               ),
               KoskiErrorCategory.badRequest.validation.date(
                 "Opetuksen järjestäminen vamman, sairauden tai rajoitteen perusteella -lisätiedon varhaisin sallittu voimassaolopäivä on 2026-08-01"
@@ -852,7 +852,7 @@ class OppijaValidationPerusopetusSpec extends TutkinnonPerusteetTest[Perusopetuk
                 "Tavoitekokonaisuuksittain opiskelu -lisätiedon varhaisin sallittu voimassaolopäivä on 2025-08-01"
               ),
               KoskiErrorCategory.badRequest.validation.date(
-                "Tavoitekokonaisuuksittain opiskelun täytyy sisältyä tukijaksoon: List(2025-07-31 – )"
+                "Tavoitekokonaisuuksittain opiskelun (2025-07-31 – ) täytyy sisältyä tuen päätöksen jaksoon"
               )
             )
           }
@@ -879,7 +879,7 @@ class OppijaValidationPerusopetusSpec extends TutkinnonPerusteetTest[Perusopetuk
           setupOppijaWithOpiskeluoikeus(withLuokkaAste.build) {
             verifyResponseStatus(400,
               KoskiErrorCategory.badRequest.validation.date(
-                "Perusopetuksen oppiaineen suorituksella on tavoitekokonaisuuksittain opiskeluun liittyvä tieto luokkaAste mutta ei tavoitekokonaisuuksittain opiskelun aikajaksoa, joka kattaisi arviointipäivän tai päättymispäivän."
+                "Perusopetuksen oppiaineen suorituksella on tavoitekokonaisuuksittain opiskeluun liittyvä tieto luokkaAste (8) mutta ei tavoitekokonaisuuksittain opiskelun aikajaksoa, joka kattaisi vuosiluokan vahvistuspäivän tai suorituksen arviointipäivän."
               )
             )
           }
@@ -889,7 +889,7 @@ class OppijaValidationPerusopetusSpec extends TutkinnonPerusteetTest[Perusopetuk
           ).build) {
             verifyResponseStatus(400,
               KoskiErrorCategory.badRequest.validation.date(
-                "Perusopetuksen oppiaineen suorituksen tavoitekokonaisuuksittain opiskeluun liittyvää kenttä luokkaAste ei saa olla sama kuin vuosiluokka"
+                "Perusopetuksen oppiaineen suorituksen tavoitekokonaisuuksittain opiskeluun liittyvä kenttä luokkaAste ei saa olla sama kuin vuosiluokka (8)"
               )
             )
           }
