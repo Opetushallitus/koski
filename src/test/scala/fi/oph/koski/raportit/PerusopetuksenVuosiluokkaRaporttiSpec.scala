@@ -414,6 +414,7 @@ class PerusopetuksenVuosiluokkaRaporttiSpec
     vahvistetutToimintaAlueidenSuoritukset = "",
     majoitusetu = false,
     kuljetusetu = false,
+    kotiopetus = false,
     ulkomailla = false,
     aloittanutEnnenOppivelvollisuutta = false,
     pidennettyOppivelvollisuus = false,
@@ -434,6 +435,7 @@ class PerusopetuksenVuosiluokkaRaporttiSpec
   val ynjevinExpectedKasiLuokkaRowWithLisätiedot = defaultYnjeviExpectedKasiLuokkaRow.copy(
     majoitusetu = true,
     kuljetusetu = false,
+    kotiopetus = false,
     ulkomailla = false,
     aloittanutEnnenOppivelvollisuutta = false,
     pidennettyOppivelvollisuus = false,
