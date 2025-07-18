@@ -429,7 +429,8 @@
          <column autoUpdated="false" defaultValue="null" digits="0" id="33" name="tuen_paatoksen_jakso" nullable="false" remarks="" size="1" type="bool" typeCode="-7"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="34" name="opetus_vamman_sairauden_tai_rajoitteen_perusteella" nullable="false" remarks="" size="1" type="bool" typeCode="-7"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="35" name="toiminta_alueittain_opiskelu" nullable="false" remarks="" size="1" type="bool" typeCode="-7"/>
-         <column autoUpdated="true" defaultValue="nextval('r_opiskeluoikeus_aikajakso_id_seq'::regclass)" digits="0" id="36" name="id" nullable="false" remarks="" size="19" type="bigserial" typeCode="-5"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="36" name="tavoitekokonaisuuksittain_opiskelu" nullable="false" remarks="" size="1" type="bool" typeCode="-7"/>
+         <column autoUpdated="true" defaultValue="nextval('r_opiskeluoikeus_aikajakso_id_seq'::regclass)" digits="0" id="37" name="id" nullable="false" remarks="" size="19" type="bigserial" typeCode="-5"/>
          <primaryKey column="id" sequenceNumberInPK="1"/>
          <index name="r_opiskeluoikeus_aikajakso_pkey" unique="true">
             <column ascending="true" name="id"/>
@@ -525,7 +526,7 @@
             <column ascending="true" name="aikajakso_tyyppi"/>
          </index>
       </table>
-      <table name="r_osasuoritus" numRows="4908" remarks="" schema="public" type="TABLE">
+      <table name="r_osasuoritus" numRows="4910" remarks="" schema="public" type="TABLE">
          <column autoUpdated="false" defaultValue="null" digits="0" id="0" name="osasuoritus_id" nullable="false" remarks="" size="19" type="int8" typeCode="-5"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="ylempi_osasuoritus_id" nullable="true" remarks="" size="19" type="int8" typeCode="-5"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="paatason_suoritus_id" nullable="false" remarks="" size="19" type="int8" typeCode="-5"/>
@@ -551,8 +552,9 @@
          <column autoUpdated="false" defaultValue="null" digits="0" id="22" name="nayton_arviointi_paiva" nullable="true" remarks="" size="13" type="date" typeCode="91"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="23" name="tunnustettu" nullable="false" remarks="" size="1" type="bool" typeCode="-7"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="24" name="tunnustettu_rahoituksen_piirissa" nullable="false" remarks="" size="1" type="bool" typeCode="-7"/>
-         <column autoUpdated="false" defaultValue="null" digits="0" id="25" name="data" nullable="false" remarks="" size="2147483647" type="jsonb" typeCode="1111"/>
-         <column autoUpdated="false" defaultValue="null" digits="0" id="26" name="sisaltyy_opiskeluoikeuteen_oid" nullable="true" remarks="" size="2147483647" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="25" name="luokka_aste" nullable="true" remarks="" size="2147483647" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="26" name="data" nullable="false" remarks="" size="2147483647" type="jsonb" typeCode="1111"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="27" name="sisaltyy_opiskeluoikeuteen_oid" nullable="true" remarks="" size="2147483647" type="varchar" typeCode="12"/>
          <primaryKey column="osasuoritus_id" sequenceNumberInPK="1"/>
          <index name="r_osasuoritus_pkey" unique="true">
             <column ascending="true" name="osasuoritus_id"/>

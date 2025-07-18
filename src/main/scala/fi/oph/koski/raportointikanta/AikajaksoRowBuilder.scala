@@ -184,6 +184,9 @@ object AikajaksoRowBuilder {
         },
         toimintaAlueittainOpiskelu = lisätietoVoimassaPäivänä {
           case l: ToimintaAlueittainOpiskeleva => l.toimintaAlueittainOpiskelu
+        },
+        tavoitekokonaisuuksittainOpiskelu = lisätietoVoimassaPäivänä {
+          case l: TavoitekokonaisuuksittainOpiskeleva => l.tavoitekokonaisuuksittainOpiskelu
         }
       ))
       // Note: When adding something here, remember to update aikajaksojenAlkupäivät (below), too
@@ -388,7 +391,8 @@ object AikajaksoRowBuilder {
           pol.koulukoti,
           pol.kotiopetusjaksot,
           pol.opetuksenJärjestäminenVammanSairaudenTaiRajoitteenPerusteella,
-          pol.toimintaAlueittainOpiskelu
+          pol.toimintaAlueittainOpiskelu,
+          pol.tavoitekokonaisuuksittainOpiskelu
         ) ++ Seq(
           pol.majoitusetu,
           pol.kuljetusetu,

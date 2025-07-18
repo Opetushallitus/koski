@@ -279,14 +279,14 @@ class PerusopetuksenOppijamäärätRaporttiSpec extends AnyFreeSpec with Matcher
         tuenPäätöksenJakso = 0,
         opetuksenJärjestäminenVammanSairaudenTaiRajoitteenPerusteella = 0,
         toimintaAlueittainOpiskelu = 0,
+        tavoitekokonaisuuksittainOpiskelu = 0,
         virheellisestiSiirrettyjaTukitietoja = 0,
         erityiselläTuella = 0,
         majoitusetu = 0,
         kuljetusetu = 0,
         sisäoppilaitosmainenMajoitus = 0,
         koulukoti = 0,
-        joustavaPerusopetus = 0,
-        kotiopetus = 1
+        joustavaPerusopetus = 0
       ),
       PerusopetuksenOppijamäärätRaporttiRow(
         oppilaitosNimi = "Jyväskylän normaalikoulu",
@@ -300,6 +300,7 @@ class PerusopetuksenOppijamäärätRaporttiSpec extends AnyFreeSpec with Matcher
         tuenPäätöksenJakso = 0,
         opetuksenJärjestäminenVammanSairaudenTaiRajoitteenPerusteella = 0,
         toimintaAlueittainOpiskelu = 0,
+        tavoitekokonaisuuksittainOpiskelu = 0,
         virheellisestiSiirrettyjaTukitietoja = 0,
         erityiselläTuella = 2,
         majoitusetu = 1,
@@ -307,7 +308,6 @@ class PerusopetuksenOppijamäärätRaporttiSpec extends AnyFreeSpec with Matcher
         sisäoppilaitosmainenMajoitus = 1,
         koulukoti = 1,
         joustavaPerusopetus = 1,
-        kotiopetus = 0
       ),
       PerusopetuksenOppijamäärätRaporttiRow(
         oppilaitosNimi = "Jyväskylän normaalikoulu",
@@ -321,6 +321,7 @@ class PerusopetuksenOppijamäärätRaporttiSpec extends AnyFreeSpec with Matcher
         tuenPäätöksenJakso = 0,
         opetuksenJärjestäminenVammanSairaudenTaiRajoitteenPerusteella = 0,
         toimintaAlueittainOpiskelu = 0,
+        tavoitekokonaisuuksittainOpiskelu = 0,
         virheellisestiSiirrettyjaTukitietoja = 0 + rikkinäisetYlimääräisetLkm,
         erityiselläTuella = 1 + ylimääräisetErityiselläTuellaOpiskeluoikeudet,
         majoitusetu = 1,
@@ -328,7 +329,6 @@ class PerusopetuksenOppijamäärätRaporttiSpec extends AnyFreeSpec with Matcher
         sisäoppilaitosmainenMajoitus = 1,
         koulukoti = 1,
         joustavaPerusopetus = 1,
-        kotiopetus = 0 + ylimääräisetKotiopetusLkm
       ),
       PerusopetuksenOppijamäärätRaporttiRow(
         oppilaitosNimi = "Jyväskylän normaalikoulu",
@@ -342,6 +342,7 @@ class PerusopetuksenOppijamäärätRaporttiSpec extends AnyFreeSpec with Matcher
         tuenPäätöksenJakso = 0,
         opetuksenJärjestäminenVammanSairaudenTaiRajoitteenPerusteella = 0,
         toimintaAlueittainOpiskelu = 0,
+        tavoitekokonaisuuksittainOpiskelu = 0,
         virheellisestiSiirrettyjaTukitietoja = 0 + rikkinäisetYlimääräisetLkm,
         erityiselläTuella = 3 + ylimääräisetErityiselläTuellaOpiskeluoikeudet,
         majoitusetu = 2,
@@ -349,7 +350,6 @@ class PerusopetuksenOppijamäärätRaporttiSpec extends AnyFreeSpec with Matcher
         sisäoppilaitosmainenMajoitus = 2,
         koulukoti = 2,
         joustavaPerusopetus = 2,
-        kotiopetus = 1 + ylimääräisetKotiopetusLkm
       )
     ))
   }
@@ -373,6 +373,7 @@ class PerusopetuksenOppijamäärätRaporttiSpec extends AnyFreeSpec with Matcher
         tuenPäätöksenJakso = 3,
         opetuksenJärjestäminenVammanSairaudenTaiRajoitteenPerusteella = 1,
         toimintaAlueittainOpiskelu = 1,
+        tavoitekokonaisuuksittainOpiskelu = 0,
         virheellisestiSiirrettyjaTukitietoja = 0,
         erityiselläTuella = 0,
         majoitusetu = 0,
@@ -380,7 +381,6 @@ class PerusopetuksenOppijamäärätRaporttiSpec extends AnyFreeSpec with Matcher
         sisäoppilaitosmainenMajoitus = 0,
         koulukoti = 0,
         joustavaPerusopetus = 0,
-        kotiopetus = 0
       )
     )
   }

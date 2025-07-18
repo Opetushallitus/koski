@@ -36,7 +36,7 @@ class MigrationSpec extends AnyFreeSpec with Matchers with RaportointikantaTestM
       "Korjaa tämän testin md5-tarkastusluvut vasta kun olet varma siitä että nykyinen toteutus voidaan viedä eteenpäin." in {
       val dir = "./src/main/scala/fi/oph/koski/raportointikanta"
       val expectedChecksums = Map(
-        "AikajaksoRowBuilder.scala"                                 -> "aa4dd2641a1b005bf61a9066bc1022e",
+        "AikajaksoRowBuilder.scala"                                 -> "a5dffa8b6fb090736db7c999b2b0c119",
         "HenkiloLoader.scala"                                       -> "598b0ea4831e18f14837f4e96c4c2709",
         "KoodistoLoader.scala"                                      -> "86c90ec069d1c5ec5ee9faa65fb1399e",
         "KoskiEventBridgeClient.scala"                              -> "f8a09d358ebb3fe2ed4d8875ccccef12",
@@ -48,15 +48,15 @@ class MigrationSpec extends AnyFreeSpec with Matchers with RaportointikantaTestM
         "OrganisaatioHistoriaRowBuilder.scala"                      -> "7e586d9e273a5a4ee7beae257f22c7f4",
         "OrganisaatioLoader.scala"                                  -> "4f7ce51cb922dbc11e694ebe85ab3472",
         "PäivitettyOpiskeluoikeusLoader.scala"                      -> "500545bbe7ef47dedcfdc49580b536d2",
-        "RaportointiDatabase.scala"                                 -> "523f8c6fd585a8985be11ae431836bea",
+        "RaportointiDatabase.scala"                                 -> "156d52a85556a41353dfa67498effde1",
         "RaportointiDatabaseCustomFunctions.scala"                  -> "956f101d1219c49ac9134b72a30caf3a",
-        "RaportointiDatabaseSchema.scala"                           -> "61b4f0bd26cf96b5edd8b958c8b536e9",
+        "RaportointiDatabaseSchema.scala"                           -> "6fdb9a6879230d047f0c6a2e4d447ec9",
         "RaportointikantaService.scala"                             -> "a4cc105d423366b41e6dd4d2fcbec4a",
         "RaportointikantaStatusServlet.scala"                       -> "9fd6f796adfb2034cce0151b7330cd1a",
         "RaportointikantaTestServlet.scala"                         -> "d457be86e60dd84545378ae415236d26",
         "RaportointikantaTableQueries.scala"                        -> "f2f26c217992539c1e61dcbd031fc642",
         "TOPKSAmmatillinenRaporttiRowBuilder.scala"                 -> "a9c26a13385ff576810f3ef831240437",
-        "OpiskeluoikeusLoaderRowBuilder.scala"                      -> "676fde035c7733941b8767e96d818e06",
+        "OpiskeluoikeusLoaderRowBuilder.scala"                      -> "7736a9e94bfd7ffe5aa98b63cf1bf8d2",
         "IncrementalUpdateOpiskeluoikeusLoader.scala"               -> "46e03564ff69e78bc8fd2fa797c14d98",
         "FullReloadOpiskeluoikeusLoader.scala"                      -> "30f7e156d6d789b985c08b32b9aa197e",
         "VipunenExport.scala"                                       -> "e01d5a8dedee5127212210694624131f",

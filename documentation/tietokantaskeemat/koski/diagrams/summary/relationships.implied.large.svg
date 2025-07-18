@@ -287,14 +287,14 @@
 <text text-anchor="start" x="512.0516" y="-1441.3" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">name</text>
 <polygon fill="none" stroke="#000000" points="492.0516,-1412.2 492.0516,-1434.2 665.0516,-1434.2 665.0516,-1412.2 492.0516,-1412.2"/>
 <text text-anchor="start" x="512.0516" y="-1419.3" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">huollettavat_search_result</text>
-<polygon fill="#ffffff" stroke="transparent" points="492.0516,-1393.2 492.0516,-1412.2 559.0516,-1412.2 559.0516,-1393.2 492.0516,-1393.2"/>
-<polygon fill="none" stroke="#000000" points="492.0516,-1393.2 492.0516,-1412.2 559.0516,-1412.2 559.0516,-1393.2 492.0516,-1393.2"/>
+<polygon fill="#ffffff" stroke="transparent" points="492.0516,-1393.2 492.0516,-1412.2 556.0516,-1412.2 556.0516,-1393.2 492.0516,-1393.2"/>
+<polygon fill="none" stroke="#000000" points="492.0516,-1393.2 492.0516,-1412.2 556.0516,-1412.2 556.0516,-1393.2 492.0516,-1393.2"/>
 <text text-anchor="start" x="495.0516" y="-1399.3" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000"> &#160;</text>
-<polygon fill="#ffffff" stroke="transparent" points="559.0516,-1393.2 559.0516,-1412.2 625.0516,-1412.2 625.0516,-1393.2 559.0516,-1393.2"/>
-<polygon fill="none" stroke="#000000" points="559.0516,-1393.2 559.0516,-1412.2 625.0516,-1412.2 625.0516,-1393.2 559.0516,-1393.2"/>
-<text text-anchor="start" x="589.6621" y="-1399.3" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">7 rows</text>
-<polygon fill="#ffffff" stroke="transparent" points="625.0516,-1393.2 625.0516,-1412.2 665.0516,-1412.2 665.0516,-1393.2 625.0516,-1393.2"/>
-<polygon fill="none" stroke="#000000" points="625.0516,-1393.2 625.0516,-1412.2 665.0516,-1412.2 665.0516,-1393.2 625.0516,-1393.2"/>
+<polygon fill="#ffffff" stroke="transparent" points="556.0516,-1393.2 556.0516,-1412.2 626.0516,-1412.2 626.0516,-1393.2 556.0516,-1393.2"/>
+<polygon fill="none" stroke="#000000" points="556.0516,-1393.2 556.0516,-1412.2 626.0516,-1412.2 626.0516,-1393.2 556.0516,-1393.2"/>
+<text text-anchor="start" x="584.5472" y="-1399.3" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">56 rows</text>
+<polygon fill="#ffffff" stroke="transparent" points="626.0516,-1393.2 626.0516,-1412.2 665.0516,-1412.2 665.0516,-1393.2 626.0516,-1393.2"/>
+<polygon fill="none" stroke="#000000" points="626.0516,-1393.2 626.0516,-1412.2 665.0516,-1412.2 665.0516,-1393.2 626.0516,-1393.2"/>
 <text text-anchor="start" x="655.9378" y="-1399.3" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000"> &#160;</text>
 </a>
 </g>

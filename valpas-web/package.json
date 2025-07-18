@@ -87,7 +87,7 @@
     "copy-to-clipboard": "^3.3.3",
     "date-fns": "^4.1.0",
     "downloadjs": "^1.4.7",
-    "fp-ts": "^2.16.9",
+    "fp-ts": "^2.16.10",
     "react": "^19.1.0",
     "react-date-picker": "^11.0.0",
     "react-dom": "^19.1.0",

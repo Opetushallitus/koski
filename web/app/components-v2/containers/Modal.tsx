@@ -45,13 +45,13 @@ export const Modal: React.FC<ModalProps> = (props) => {
       <form
         {...common(props, ['Modal', isActive && 'Modal__active'])}
         {...modalProps}
-        onSubmit={stopPropagation}
+        onSubmit={(e) => e.preventDefault()}
         onKeyDown={onKeyDown}
         onClick={onClose}
         role="dialog"
         ref={ref}
       >
-        <div className="Modal__content" onClick={stopPropagation}>
+        <div className="Modal__content" onClick={(e) => e.stopPropagation()}>
           {props.children}
         </div>
       </form>
@@ -78,8 +78,3 @@ export const ModalFooter: React.FC<ModalFooterProps> = (props) => (
     <ButtonGroup>{props.children}</ButtonGroup>
   </section>
 )
-
-const stopPropagation: React.EventHandler<any> = (event) => {
-  event.preventDefault()
-  event.stopPropagation()
-}

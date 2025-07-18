@@ -25,14 +25,14 @@ case class PerusopetuksenOppijamäärätRaportti(db: DB, organisaatioService: Or
       tuenPäätöksenJakso = r.rs.getInt("tuenPäätöksenJakso"),
       opetuksenJärjestäminenVammanSairaudenTaiRajoitteenPerusteella = r.rs.getInt("opetuksenJärjestäminenVammanSairaudenTaiRajoitteenPerusteella"),
       toimintaAlueittainOpiskelu = r.rs.getInt("toimintaAlueittainOpiskelu"),
+      tavoitekokonaisuuksittainOpiskelu = r.rs.getInt("tavoitekokonaisuuksittainOpiskelu"),
       virheellisestiSiirrettyjaTukitietoja = r.rs.getInt("virheellisestiSiirrettyjaTukitietoja"),
       erityiselläTuella = r.rs.getInt("erityiselläTuella"),
       majoitusetu = r.rs.getInt("majoitusetu"),
       kuljetusetu = r.rs.getInt("kuljetusetu"),
       sisäoppilaitosmainenMajoitus = r.rs.getInt("sisäoppilaitosmainenMajoitus"),
       koulukoti = r.rs.getInt("koulukoti"),
-      joustavaPerusopetus = r.rs.getInt("joustava_perusopetus"),
-      kotiopetus = r.rs.getInt("kotiopetus")
+      joustavaPerusopetus = r.rs.getInt("joustava_perusopetus")
     )
   )
 
@@ -65,6 +65,7 @@ Some(sql"""
         count(distinct (case when not kotiopetus and tuen_paatoksen_jakso then oo.opiskeluoikeus_oid end)) as tuenPäätöksenJakso,
         count(distinct (case when not kotiopetus and opetus_vamman_sairauden_tai_rajoitteen_perusteella then oo.opiskeluoikeus_oid end)) as opetuksenJärjestäminenVammanSairaudenTaiRajoitteenPerusteella,
         count(distinct (case when not kotiopetus and toiminta_alueittain_opiskelu then oo.opiskeluoikeus_oid end)) as toimintaAlueittainOpiskelu,
+        count(distinct (case when not kotiopetus and tavoitekokonaisuuksittain_opiskelu then oo.opiskeluoikeus_oid end)) as tavoitekokonaisuuksittainOpiskelu,
         count(distinct (case when
 """),
 virheellisestiSiirrettyjäTukitietojaEhtoSqlPart,
@@ -75,8 +76,7 @@ Some(sql"""
         count(distinct (case when not kotiopetus and kuljetusetu then oo.opiskeluoikeus_oid end)) as kuljetusetu,
         count(distinct (case when not kotiopetus and sisaoppilaitosmainen_majoitus then oo.opiskeluoikeus_oid end)) as sisäoppilaitosmainenMajoitus,
         count(distinct (case when not kotiopetus and koulukoti then oo.opiskeluoikeus_oid end)) as koulukoti,
-        count(distinct (case when not kotiopetus and joustava_perusopetus then oo.opiskeluoikeus_oid end)) as joustava_perusopetus,
-        count(distinct (case when kotiopetus then oo.opiskeluoikeus_oid end)) as kotiopetus
+        count(distinct (case when not kotiopetus and joustava_perusopetus then oo.opiskeluoikeus_oid end)) as joustava_perusopetus
 """),
 fromJoinWhereSqlPart(oppilaitosOids, date),
 Some(sql"""
@@ -96,14 +96,14 @@ Some(sql"""
         sum(tuenPäätöksenJakso),
         sum(opetuksenJärjestäminenVammanSairaudenTaiRajoitteenPerusteella),
         sum(toimintaAlueittainOpiskelu),
+        sum(tavoitekokonaisuuksittainOpiskelu),
         sum(virheellisestiSiirrettyjaTukitietoja),
         sum(erityiselläTuella),
         sum(majoitusetu),
         sum(kuljetusetu),
         sum(sisäoppilaitosmainenMajoitus),
         sum(koulukoti),
-        sum(joustava_perusopetus),
-        sum(kotiopetus)
+        sum(joustava_perusopetus)
       from q
       group by oppilaitos_nimi, oppilaitos_oid
     ) select *
@@ -124,6 +124,7 @@ Some(sql"""
     "tuenPäätöksenJakso" -> Column(t.get("raportti-excel-kolumni-tuenPäätöksenJakso"), comment = Some(t.get("raportti-excel-kolumni-tuenPäätöksenJakso-comment"))),
     "opetuksenJärjestäminenVammanSairaudenTaiRajoitteenPerusteella" -> Column(t.get("raportti-excel-kolumni-opetuksenJärjestäminenVammanSairaudenTaiRajoitteenPerusteella"), comment = Some(t.get("raportti-excel-kolumni-opetuksenJärjestäminenVammanSairaudenTaiRajoitteenPerusteella-comment"))),
     "toimintaAlueittainOpiskelu" -> Column(t.get("raportti-excel-kolumni-toimintaAlueittainOpiskelu"), comment = Some(t.get("raportti-excel-kolumni-toimintaAlueittainOpiskelu-comment"))),
+    "tavoitekokonaisuuksittainOpiskelu" -> Column(t.get("raportti-excel-kolumni-tavoitekokonaisuuksittainOpiskelu"), comment = Some(t.get("raportti-excel-kolumni-tavoitekokonaisuuksittainOpiskelu-comment"))),
     "virheellisestiSiirrettyjaTukitietoja" -> Column(t.get("raportti-excel-kolumni-virheellisestiSiirrettyjaTukitietoja"), comment = Some(t.get("raportti-excel-kolumni-virheellisestiSiirrettyjaTukitietoja-comment"))),
     "erityiselläTuella" -> Column(t.get("raportti-excel-kolumni-erityiselläTuella"), comment = Some(t.get("raportti-excel-kolumni-erityiselläTuella-comment"))),
     "majoitusetu" -> Column(t.get("raportti-excel-kolumni-majoitusetu"), comment = Some(t.get("raportti-excel-kolumni-majoitusetu-comment"))),
@@ -131,7 +132,6 @@ Some(sql"""
     "sisäoppilaitosmainenMajoitus" -> Column(t.get("raportti-excel-kolumni-sisäoppilaitosmainenMajoitus"), comment = Some(t.get("raportti-excel-kolumni-sisäoppilaitosmainenMajoitus-comment"))),
     "koulukoti" -> Column(t.get("raportti-excel-kolumni-koulukoti"), comment = Some(t.get("raportti-excel-kolumni-koulukoti-comment"))),
     "joustavaPerusopetus" -> Column(t.get("raportti-excel-kolumni-joustavaPerusopetus"), comment = Some(t.get("raportti-excel-kolumni-joustavaPerusopetus-comment"))),
-    "kotiopetus" -> Column(t.get("raportti-excel-kolumni-kotiopetus"), comment = Some(t.get("raportti-excel-kolumni-kotiopetus-comment")))
   )
 }
 
@@ -147,6 +147,7 @@ case class PerusopetuksenOppijamäärätRaporttiRow(
   tuenPäätöksenJakso: Int,
   opetuksenJärjestäminenVammanSairaudenTaiRajoitteenPerusteella: Int,
   toimintaAlueittainOpiskelu: Int,
+  tavoitekokonaisuuksittainOpiskelu: Int,
   virheellisestiSiirrettyjaTukitietoja: Int,
   erityiselläTuella: Int,
   majoitusetu: Int,
@@ -154,5 +155,4 @@ case class PerusopetuksenOppijamäärätRaporttiRow(
   sisäoppilaitosmainenMajoitus: Int,
   koulukoti: Int,
   joustavaPerusopetus: Int,
-  kotiopetus: Int
 )

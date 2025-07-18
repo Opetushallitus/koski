@@ -1,4 +1,4 @@
-date=2025-06-09 15:03:52+0300
+date=2025-07-15 09:05:38+0300
 os=Mac OS X 15.5
 schemaspy-version=6.2.2
 schemaspy-build=6.2.2.41 2023-03-25 21:30:30
