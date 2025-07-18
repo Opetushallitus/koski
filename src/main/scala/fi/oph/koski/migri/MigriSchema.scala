@@ -164,7 +164,8 @@ case class MigriOsasuorituksenKoulutusmoduuli(
   oppimäärä: Option[Koodistokoodiviite],
   kieli: Option[Koodistokoodiviite],
   pakollinen: Option[Boolean],
-  laajuus: Option[Laajuus]
+  laajuus: Option[Laajuus],
+  aine: Option[IBDPCoreAineRyhmäOppiaine]
 )
 
 case class MigriArviointi(

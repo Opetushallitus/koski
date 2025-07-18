@@ -54,6 +54,9 @@ import { UusiPreIB2019OppiaineDialog } from './dialogs/UusiPreIB2019OppiaineDial
 import { UusiPreIB2019OsasuoritusDialog } from './dialogs/UusiPreIB2019OsasuoritusDialog'
 import { VirkailijaKansalainenContainer } from '../components-v2/containers/VirkailijaKansalainenContainer'
 import { HenkilövahvistusPaikkakunnalla } from '../types/fi/oph/koski/schema/HenkilovahvistusPaikkakunnalla'
+import { useRemovePäätasonSuoritus } from '../components-v2/forms/useRemovePaatasonSuoritus'
+import * as Eq from 'fp-ts/Eq'
+import { RemovePaatasonSuoritus } from '../components-v2/opiskeluoikeus/RemovePaatasonSuoritus'
 
 export type IBEditorProps = AdaptedOpiskeluoikeusEditorProps<IBOpiskeluoikeus>
 
@@ -138,6 +141,13 @@ const IBPäätasonSuoritusEditor: React.FC<
     }
   }, [form, fillNimet])
 
+  const removePäätasonSuoritus = useRemovePäätasonSuoritus(
+    form,
+    päätasonSuoritus.suoritus,
+    IBPäätasonSuoritusEq,
+    () => setPäätasonSuoritus(0)
+  )
+
   return (
     <EditorContainer
       form={form}
@@ -149,6 +159,14 @@ const IBPäätasonSuoritusEditor: React.FC<
       testId={päätasonSuoritus.testId}
       {...addSuoritusProps}
     >
+      {form.state.suoritukset.length > 1 && (
+        <RemovePaatasonSuoritus
+          form={form}
+          päätasonSuoritus={päätasonSuoritus}
+          removePäätasonSuoritus={removePäätasonSuoritus}
+        />
+      )}
+
       <IBPäätasonSuoritusTiedot
         form={form}
         päätasonSuoritus={päätasonSuoritus}
@@ -270,3 +288,9 @@ const useOsasuorituksetValmiit = (pts: IBPäätasonSuoritus): boolean =>
       return !!arviointi?.hyväksytty
     })
   }, [pts.osasuoritukset])
+
+const IBPäätasonSuoritusEq: Eq.Eq<IBPäätasonSuoritus> = {
+  equals(x, y) {
+    return x.$class === y.$class
+  }
+}

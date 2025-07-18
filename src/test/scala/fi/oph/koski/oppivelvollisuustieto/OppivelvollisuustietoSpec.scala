@@ -401,8 +401,8 @@ class OppivelvollisuustietoSpec
       "Jos suorittaa vain IB-tutkintoa, käytetään päättymispäivänä ikään perustuvaa päivää, koska Koskeen vahvistettu ib-suoritus ei päätä oppivelvollisuutta" - {
         "Vahvistuspäivä päättää molemmat aikaisemmin" in {
           clearAndInsert(master, ibTutkinto(ibTutkinnonVahvistus = Some(date(2021, 1, 1))).withLisääPuuttuvaMaksuttomuustieto)
-          clearAndInsert(slave1, ibTutkinto(alkamispäivä = date(2021, 1, 2), ibTutkinnonVahvistus = Some(date(2025, 1, 1))).withLisääPuuttuvaMaksuttomuustieto)
-          clearAndInsert(slave2, ibTutkinto(alkamispäivä = date(2025, 1, 2), ibTutkinnonVahvistus = None))
+          clearAndInsert(slave1, ibTutkinto(alkamispäivä = date(2021, 1, 2), ibTutkinnonVahvistus = Some(date(2024, 7, 30))).withLisääPuuttuvaMaksuttomuustieto)
+          clearAndInsert(slave2, ibTutkinto(alkamispäivä = date(2024, 7, 31), ibTutkinnonVahvistus = None).withLisääPuuttuvaMaksuttomuustieto)
           reloadRaportointikanta
           verifyTestiOidit(oppivelvollisuus = date(2021, 12, 31), maksuttomuus = date(2024, 12, 31))
         }

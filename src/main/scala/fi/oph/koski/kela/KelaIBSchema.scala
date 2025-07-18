@@ -35,11 +35,12 @@ case class KelaIBOpiskeluoikeus(
   )
 }
 
+@Title("IB-lukion päätason suoritus")
 case class KelaIBPäätasonSuoritus(
   koulutusmoduuli: KelaIBSuorituksenKoulutusmoduuli,
   toimipiste: Option[Toimipiste],
   vahvistus: Option[Vahvistus],
-  osasuoritukset: Option[List[KelaIBOsasuoritus]],
+  osasuoritukset: Option[List[KelaIBTutkinnonOppiaineenSuoritus]],
   tyyppi: schema.Koodistokoodiviite,
   theoryOfKnowledge: Option[IBTheoryOfKnowledgeSuoritus],
   extendedEssay: Option[IBExtendedEssaySuoritus],
@@ -59,21 +60,51 @@ case class KelaIBPäätasonSuoritus(
   )
 }
 
-@Title("IB-tutkinnon osasuoritus")
-case class KelaIBOsasuoritus(
+trait KelaIBTutkinnonOppiaineenSuoritus extends Osasuoritus {
+  def withHyväksyntämerkinnälläKorvattuArvosana: KelaIBTutkinnonOppiaineenSuoritus
+}
+
+@Title("IB-oppiaineen osasuoritus")
+case class KelaIBOppiaineenSuoritus(
   koulutusmoduuli: KelaIBOsasuorituksenKoulutusmoduuli,
   arviointi: Option[List[KelaIBOsasuorituksenArviointi]],
   predictedArviointi: Option[List[KelaIBOsasuorituksenArviointi]],
-  osasuoritukset: Option[List[KelaIBOsasuoritus]],
+  osasuoritukset: Option[List[KelaIBKurssinSuoritus]],
+  @KoodistoKoodiarvo("iboppiaine")
   tyyppi: schema.Koodistokoodiviite,
   tunnustettu: Option[OsaamisenTunnustaminen],
   suoritettuLukiodiplomina: Option[Boolean],
   suoritettuSuullisenaKielikokeena: Option[Boolean]
-) extends Osasuoritus {
-  def withHyväksyntämerkinnälläKorvattuArvosana: KelaIBOsasuoritus = copy(
+) extends KelaIBTutkinnonOppiaineenSuoritus {
+  def withHyväksyntämerkinnälläKorvattuArvosana: KelaIBOppiaineenSuoritus = copy(
     arviointi = arviointi.map(_.map(_.withHyväksyntämerkinnälläKorvattuArvosana)),
     predictedArviointi = predictedArviointi.map(_.map(_.withHyväksyntämerkinnälläKorvattuArvosana)),
     osasuoritukset = osasuoritukset.map(_.map(_.withHyväksyntämerkinnälläKorvattuArvosana)),
+  )
+}
+
+@Title("IB-lukion DP Core -suoritus")
+case class KelaIBDPCoreSuoritus(
+  koulutusmoduuli: KelaIBOsasuorituksenKoulutusmoduuli,
+  arviointi: Option[List[KelaIBOsasuorituksenArviointi]],
+  osasuoritukset: Option[List[KelaIBKurssinSuoritus]],
+  @KoodistoKoodiarvo("ibcore")
+  tyyppi: schema.Koodistokoodiviite,
+) extends KelaIBTutkinnonOppiaineenSuoritus {
+  def withHyväksyntämerkinnälläKorvattuArvosana: KelaIBDPCoreSuoritus = copy(
+    arviointi = arviointi.map(_.map(_.withHyväksyntämerkinnälläKorvattuArvosana)),
+    osasuoritukset = osasuoritukset.map(_.map(_.withHyväksyntämerkinnälläKorvattuArvosana)),
+  )
+}
+
+@Title("IB-kurssin suoritus")
+case class KelaIBKurssinSuoritus(
+  koulutusmoduuli: KelaIBOsasuorituksenKoulutusmoduuli,
+  arviointi: Option[List[KelaIBOsasuorituksenArviointi]] = None,
+  tyyppi: schema.Koodistokoodiviite
+) extends Osasuoritus {
+  def withHyväksyntämerkinnälläKorvattuArvosana: KelaIBKurssinSuoritus = copy(
+    arviointi = arviointi.map(_.map(_.withHyväksyntämerkinnälläKorvattuArvosana))
   )
 }
 
@@ -111,7 +142,7 @@ case class KelaIBOsasuorituksenKoulutusmoduuli(
 case class IBTheoryOfKnowledgeSuoritus(
   koulutusmoduuli: IBTheoryOfKnowledgeSuoritusKoulutusmoduuli,
   arviointi: Option[List[KelaIBOsasuorituksenArviointi]] = None,
-  osasuoritukset: Option[List[KelaIBOsasuoritus]],
+  osasuoritukset: Option[List[KelaIBOppiaineenSuoritus]],
   tyyppi: KelaKoodistokoodiviite
 ) {
   def withHyväksyntämerkinnälläKorvattuArvosana: IBTheoryOfKnowledgeSuoritus = copy(

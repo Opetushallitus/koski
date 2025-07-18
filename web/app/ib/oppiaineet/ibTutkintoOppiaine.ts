@@ -10,8 +10,6 @@ import { IBOppiaineenSuoritus } from '../../types/fi/oph/koski/schema/IBOppiaine
 import { IBOppiaineExtendedEssay } from '../../types/fi/oph/koski/schema/IBOppiaineExtendedEssay'
 import { IBOppiaineLanguage } from '../../types/fi/oph/koski/schema/IBOppiaineLanguage'
 import { IBOppiaineMuu } from '../../types/fi/oph/koski/schema/IBOppiaineMuu'
-import { IBOppiaineTheoryOfKnowledge } from '../../types/fi/oph/koski/schema/IBOppiaineTheoryOfKnowledge'
-import { IBTheoryOfKnowledgeSuoritus } from '../../types/fi/oph/koski/schema/IBTheoryOfKnowledgeSuoritus'
 import { IBTutkinnonOppiaineenSuoritus } from '../../types/fi/oph/koski/schema/IBTutkinnonOppiaineenSuoritus'
 import { Koodistokoodiviite } from '../../types/fi/oph/koski/schema/Koodistokoodiviite'
 import { LaajuusTunneissa } from '../../types/fi/oph/koski/schema/LaajuusTunneissa'
@@ -20,6 +18,13 @@ import {
   isIBOppiaineLanguageTunniste,
   isIBOppiaineMuuTunniste
 } from './tunnisteet'
+import { IBDPCoreOppiaineTheoryOfKnowledge } from '../../types/fi/oph/koski/schema/IBDPCoreOppiaineTheoryOfKnowledge'
+import { IBDPCoreOppiaineExtendedEssay } from '../../types/fi/oph/koski/schema/IBDPCoreOppiaineExtendedEssay'
+import { IBDPCoreAineRyhmäOppiaine } from '../../types/fi/oph/koski/schema/IBDPCoreAineRyhmaOppiaine'
+import { IBDPCoreOppiaineCAS } from '../../types/fi/oph/koski/schema/IBDPCoreOppiaineCAS'
+import { LaajuusOpintopisteissä } from '../../types/fi/oph/koski/schema/LaajuusOpintopisteissa'
+import { IBDPCoreOppiaineMuu } from '../../types/fi/oph/koski/schema/IBDPCoreOppiaineMuu'
+import { IBDPCoreOppiaineLanguage } from '../../types/fi/oph/koski/schema/IBDPCoreOppiaineLanguage'
 
 export const DPCoreOppiaineet = ['TOK', 'EE', 'CAS']
 
@@ -31,10 +36,15 @@ export type IBOppiaineenSuoritusProps = {
   taso?: Koodistokoodiviite<'oppiaineentasoib'>
   extendedEssay?: IBExtendedEssaySuoritusProps
   cas?: IBCASOppiaineenSuoritusProps
+  tok?: IBTOKOppiaineenSuoritusProps
 }
 
 export type IBCASOppiaineenSuoritusProps = {
-  laajuus?: LaajuusTunneissa
+  laajuus?: LaajuusOpintopisteissä
+}
+
+export type IBTOKOppiaineenSuoritusProps = {
+  laajuus?: LaajuusOpintopisteissä
 }
 
 export const createIBTutkinnonOppiaine = (
@@ -59,6 +69,12 @@ const createIBAineRyhmäOppiaine = (
 ): IBAineRyhmäOppiaine | null =>
   createIBOppiaineLanguage(props) || createIBOppiaineMuu(props)
 
+const createIBDPCoreAineRyhmäOppiaine = (
+  props: IBExtendedEssaySuoritusProps
+): IBDPCoreAineRyhmäOppiaine | null =>
+  createIBOppiaineLanguageForDPCore(props) ||
+  createIBOppiaineMuuForDPCore(props)
+
 const createIBOppiaineLanguage = ({
   tunniste,
   pakollinen,
@@ -76,6 +92,23 @@ const createIBOppiaineLanguage = ({
       })
     : null
 
+const createIBOppiaineLanguageForDPCore = ({
+  tunniste,
+  kieli,
+  ryhmä,
+  taso,
+  laajuus
+}: IBExtendedEssaySuoritusProps): IBDPCoreOppiaineLanguage | null =>
+  isIBOppiaineLanguageTunniste(tunniste) && kieli && ryhmä && taso
+    ? IBDPCoreOppiaineLanguage({
+        tunniste,
+        kieli,
+        ryhmä,
+        taso,
+        laajuus
+      })
+    : null
+
 const createIBOppiaineMuu = ({
   tunniste,
   pakollinen,
@@ -84,6 +117,16 @@ const createIBOppiaineMuu = ({
 }: IBOppiaineenSuoritusProps): IBOppiaineMuu | null =>
   isIBOppiaineMuuTunniste(tunniste) && ryhmä && taso
     ? IBOppiaineMuu({ tunniste, ryhmä, pakollinen: !!pakollinen, taso })
+    : null
+
+const createIBOppiaineMuuForDPCore = ({
+  tunniste,
+  ryhmä,
+  taso,
+  laajuus
+}: IBExtendedEssaySuoritusProps): IBDPCoreOppiaineMuu | null =>
+  isIBOppiaineMuuTunniste(tunniste) && ryhmä && taso
+    ? IBDPCoreOppiaineMuu({ tunniste, ryhmä, taso, laajuus })
     : null
 
 export const createIBCASSuoritus = (
@@ -105,6 +148,7 @@ export type IBExtendedEssaySuoritusProps = {
   ryhmä?: Koodistokoodiviite<'aineryhmaib'>
   taso?: Koodistokoodiviite<'oppiaineentasoib'>
   aihe?: LocalizedString
+  laajuus?: LaajuusOpintopisteissä
   pakollinen?: boolean
   arvosana?: Koodistokoodiviite<'arviointiasteikkocorerequirementsib'>
 }
@@ -134,38 +178,39 @@ const createIBOppiaineExtendedEssay = (
     : null
 }
 
+const createIBDPCoreOppiaineExtendedEssay = (
+  props: IBExtendedEssaySuoritusProps,
+  pakollinen: boolean | undefined
+): IBDPCoreOppiaineExtendedEssay | null => {
+  const aine = createIBDPCoreAineRyhmäOppiaine(props)
+  return aine && props.aihe
+    ? IBDPCoreOppiaineExtendedEssay({
+        aine,
+        aihe: props.aihe,
+        pakollinen: !!pakollinen
+      })
+    : null
+}
+
 const createIBCoreRequirementsArviointi = ({
   arvosana
 }: IBExtendedEssaySuoritusProps): IBCoreRequirementsArviointi | null =>
   arvosana ? IBCoreRequirementsArviointi({ arvosana }) : null
 
-export type IBCoreRequirementsArviointiProps = {
-  pakollinen?: boolean
-  arvosana?: Koodistokoodiviite<'arviointiasteikkocorerequirementsib'>
-}
-
-export const createIBTheoryOfKnowledgeSuoritus = (
-  props: IBCoreRequirementsArviointiProps
-): IBTheoryOfKnowledgeSuoritus | null => {
-  const koulutusmoduuli = createIBOppiaineTheoryOfKnowledge(props)
-  const arviointi = createIBCoreRequirementsArviointi(props)
-  return koulutusmoduuli && arviointi
-    ? IBTheoryOfKnowledgeSuoritus({ koulutusmoduuli, arviointi: [arviointi] })
-    : null
-}
-
-const createIBOppiaineTheoryOfKnowledge = ({
-  pakollinen
-}: IBCoreRequirementsArviointiProps): IBOppiaineTheoryOfKnowledge =>
-  IBOppiaineTheoryOfKnowledge({
-    pakollinen: !!pakollinen
+const createIBDPCoreOppiaineTheoryOfKnowledge = ({
+  pakollinen,
+  tok
+}: IBOppiaineenSuoritusProps): IBDPCoreOppiaineTheoryOfKnowledge =>
+  IBDPCoreOppiaineTheoryOfKnowledge({
+    pakollinen: !!pakollinen,
+    laajuus: tok?.laajuus
   })
 
-const createIBOppiaineCAS = ({
+const createIBDPCoreOppiaineCAS = ({
   pakollinen,
   cas
-}: IBOppiaineenSuoritusProps): IBOppiaineCAS =>
-  IBOppiaineCAS({
+}: IBOppiaineenSuoritusProps): IBDPCoreOppiaineCAS =>
+  IBDPCoreOppiaineCAS({
     pakollinen: !!pakollinen,
     laajuus: cas?.laajuus
   })
@@ -182,13 +227,16 @@ const createIBDPCoreOppiaine = (
 ): IBDPCoreOppiaine | null => {
   switch (props.tunniste?.koodiarvo) {
     case 'TOK':
-      return createIBOppiaineTheoryOfKnowledge(props)
+      return createIBDPCoreOppiaineTheoryOfKnowledge(props)
     case 'EE':
       return props.extendedEssay
-        ? createIBOppiaineExtendedEssay(props.extendedEssay)
+        ? createIBDPCoreOppiaineExtendedEssay(
+            props.extendedEssay,
+            props.pakollinen
+          )
         : null
     case 'CAS':
-      return createIBOppiaineCAS(props)
+      return createIBDPCoreOppiaineCAS(props)
     default:
       return null
   }
