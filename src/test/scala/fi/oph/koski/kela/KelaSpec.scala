@@ -274,7 +274,7 @@ class KelaSpec
         val suoritus = oppija.opiskeluoikeudet.head.suoritukset
           .collect { case s: KelaIBPäätasonSuoritus if s.koulutusmoduuli.tunniste.koodiarvo == "301102" => s }
           .head
-        val osasuoritus = suoritus.osasuoritukset.get.head
+        val osasuoritus = suoritus.osasuoritukset.get.head.asInstanceOf[KelaIBOppiaineenSuoritus]
         osasuoritus.predictedArviointi.get.head.päivä shouldBe Some(LocalDate.of(2016, 6, 4))
       }
     }
