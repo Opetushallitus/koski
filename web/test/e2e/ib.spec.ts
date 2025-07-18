@@ -1210,21 +1210,28 @@ test.describe('IB', () => {
         await ibOppijaPage.edit()
       })
 
-      test('Kursseja ennen 1.8.2025 alkaneelle opiskeluoikeudelle', async ({
-        ibOppijaPage
-      }) => {
-        const kurssi = ibOppijaPage.oppiaineryhmä(0).oppiaineet(0).kurssit(0)
-        await kurssi.tunniste.click()
-        await expect(kurssi.modal.laajuus.unit).toHaveText('kurssia')
-      })
-
-      test('Opintopisteitä 1.8.2025 alkaneelle opiskeluoikeudelle', async ({
+      test('Kursseja ennen 1.8.2024 alkaneelle opiskeluoikeudelle', async ({
         ibOppijaPage,
         page
       }) => {
         await ibOppijaPage.$.opiskeluoikeus.tila.edit
           .items(0)
-          .date.set('1.8.2025')
+          .date.set('31.7.2024')
+        await ibOppijaPage.tallenna()
+        await page.reload()
+        await ibOppijaPage.edit()
+        const kurssi = ibOppijaPage.oppiaineryhmä(0).oppiaineet(0).kurssit(0)
+        await kurssi.tunniste.click()
+        await expect(kurssi.modal.laajuus.unit).toHaveText('kurssia')
+      })
+
+      test('Opintopisteitä 1.8.2024 alkaneelle opiskeluoikeudelle', async ({
+        ibOppijaPage,
+        page
+      }) => {
+        await ibOppijaPage.$.opiskeluoikeus.tila.edit
+          .items(0)
+          .date.set('1.8.2024')
         await ibOppijaPage.tallenna()
 
         await page.reload()

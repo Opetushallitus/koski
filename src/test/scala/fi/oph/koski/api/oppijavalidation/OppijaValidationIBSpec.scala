@@ -303,8 +303,8 @@ class OppijaValidationIBSpec extends AnyFreeSpec with KoskiHttpSpec with PutOpis
       }
     }
 
-    "Muutokset IB-tutkinnon rakenteeseen 1.8.2025 alkaen" - {
-      val rajapäivä = LocalDate.of(2025, 8, 1)
+    "Muutokset IB-tutkinnon rakenteeseen 1.8.2024 alkaen" - {
+      val rajapäivä = LocalDate.of(2024, 8, 1)
 
       def createOpiskeluoikeusYhdelläKurssilla(
         alkamispäivä: LocalDate,
@@ -368,7 +368,7 @@ class OppijaValidationIBSpec extends AnyFreeSpec with KoskiHttpSpec with PutOpis
           val oo = createOpiskeluoikeusYhdelläKurssilla(rajapäivä.minusDays(1), LaajuusOpintopisteissä(1))
           setupOppijaWithOpiskeluoikeus(oo) {
             verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.laajuudet.osauoritusVääräLaajuus(
-              "Osasuorituksen laajuuden voi ilmoitettaa opintopisteissä vain 1.8.2025 tai myöhemmin alkaneille IB-tutkinnon opiskeluoikeuksille"
+              "Osasuorituksen laajuuden voi ilmoitettaa opintopisteissä vain 1.8.2024 tai myöhemmin alkaneille IB-tutkinnon opiskeluoikeuksille"
             ))
           }
         }
@@ -391,7 +391,7 @@ class OppijaValidationIBSpec extends AnyFreeSpec with KoskiHttpSpec with PutOpis
               val oo = createOpiskeluoikeusYhdelläKurssilla(rajapäivä.minusDays(1), LaajuusKursseissa(1), osasuorituksilla(extendedEssay))
               setupOppijaWithOpiskeluoikeus(oo) {
                 verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.rakenne.dpCoreDeprecated(
-                  "DP Core -oppiaineita ei voi siirtää osasuorituksena ennen 1.8.2025 alkaneelle IB-opiskeluoikeudelle"
+                  "DP Core -oppiaineita ei voi siirtää osasuorituksena ennen 1.8.2024 alkaneelle IB-opiskeluoikeudelle"
                 ))
               }
             }
@@ -400,7 +400,7 @@ class OppijaValidationIBSpec extends AnyFreeSpec with KoskiHttpSpec with PutOpis
               val oo = createOpiskeluoikeusYhdelläKurssilla(rajapäivä.minusDays(1), LaajuusKursseissa(1), osasuorituksilla(theoryOfKnowledge))
               setupOppijaWithOpiskeluoikeus(oo) {
                 verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.rakenne.dpCoreDeprecated(
-                  "DP Core -oppiaineita ei voi siirtää osasuorituksena ennen 1.8.2025 alkaneelle IB-opiskeluoikeudelle"
+                  "DP Core -oppiaineita ei voi siirtää osasuorituksena ennen 1.8.2024 alkaneelle IB-opiskeluoikeudelle"
                 ))
               }
             }
@@ -409,7 +409,7 @@ class OppijaValidationIBSpec extends AnyFreeSpec with KoskiHttpSpec with PutOpis
               val oo = createOpiskeluoikeusYhdelläKurssilla(rajapäivä.minusDays(1), LaajuusKursseissa(1), osasuorituksilla(casOppiaine))
               setupOppijaWithOpiskeluoikeus(oo) {
                 verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.rakenne.dpCoreDeprecated(
-                  "DP Core -oppiaineita ei voi siirtää osasuorituksena ennen 1.8.2025 alkaneelle IB-opiskeluoikeudelle"
+                  "DP Core -oppiaineita ei voi siirtää osasuorituksena ennen 1.8.2024 alkaneelle IB-opiskeluoikeudelle"
                 ))
               }
             }
@@ -422,7 +422,7 @@ class OppijaValidationIBSpec extends AnyFreeSpec with KoskiHttpSpec with PutOpis
           val oo = createOpiskeluoikeusYhdelläKurssilla(rajapäivä, LaajuusKursseissa(1))
           setupOppijaWithOpiskeluoikeus(oo) {
             verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.laajuudet.osauoritusVääräLaajuus(
-              "Osasuorituksen laajuus on ilmoitettava opintopisteissä 1.8.2025 tai myöhemmin alkaneille IB-tutkinnon opiskeluoikeuksille"
+              "Osasuorituksen laajuus on ilmoitettava opintopisteissä 1.8.2024 tai myöhemmin alkaneille IB-tutkinnon opiskeluoikeuksille"
             ))
           }
         }
@@ -446,7 +446,7 @@ class OppijaValidationIBSpec extends AnyFreeSpec with KoskiHttpSpec with PutOpis
             val oo = createOpiskeluoikeusYhdelläKurssilla(rajapäivä, LaajuusOpintopisteissä(1), filterIbTutkinto(extendedEssay = true))
             setupOppijaWithOpiskeluoikeus(oo) {
               verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.rakenne.dpCoreDeprecated(
-                "Extended Essay -suoritus on siirrettävä osasuorituksena 1.8.2025 tai myöhemmin alkaneelle IB-opiskeluoikeudelle"
+                "Extended Essay -suoritus on siirrettävä osasuorituksena 1.8.2024 tai myöhemmin alkaneelle IB-opiskeluoikeudelle"
               ))
             }
           }
@@ -455,7 +455,7 @@ class OppijaValidationIBSpec extends AnyFreeSpec with KoskiHttpSpec with PutOpis
             val oo = createOpiskeluoikeusYhdelläKurssilla(rajapäivä, LaajuusOpintopisteissä(1), filterIbTutkinto(theoryOfKnowledge = true))
             setupOppijaWithOpiskeluoikeus(oo) {
               verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.rakenne.dpCoreDeprecated(
-                "Theory of Knowledge -suoritus on siirrettävä osasuorituksena 1.8.2025 tai myöhemmin alkaneelle IB-opiskeluoikeudelle"
+                "Theory of Knowledge -suoritus on siirrettävä osasuorituksena 1.8.2024 tai myöhemmin alkaneelle IB-opiskeluoikeudelle"
               ))
             }
           }
@@ -464,7 +464,7 @@ class OppijaValidationIBSpec extends AnyFreeSpec with KoskiHttpSpec with PutOpis
             val oo = createOpiskeluoikeusYhdelläKurssilla(rajapäivä, LaajuusOpintopisteissä(1), filterIbTutkinto(cas = true))
             setupOppijaWithOpiskeluoikeus(oo) {
               verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.rakenne.dpCoreDeprecated(
-                "Creativity Action Service -suoritus on siirrettävä osasuorituksena 1.8.2025 tai myöhemmin alkaneelle IB-opiskeluoikeudelle"
+                "Creativity Action Service -suoritus on siirrettävä osasuorituksena 1.8.2024 tai myöhemmin alkaneelle IB-opiskeluoikeudelle"
               ))
             }
           }
@@ -473,7 +473,7 @@ class OppijaValidationIBSpec extends AnyFreeSpec with KoskiHttpSpec with PutOpis
             val oo = createOpiskeluoikeusYhdelläKurssilla(rajapäivä, LaajuusOpintopisteissä(1), filterIbTutkinto(lisäpisteet = true))
             setupOppijaWithOpiskeluoikeus(oo) {
               verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.rakenne.dpCoreDeprecated(
-                "Lisäpisteitä ei voi siirtää 1.8.2025 tai myöhemmin alkaneelle IB-opiskeluoikeudelle"
+                "Lisäpisteitä ei voi siirtää 1.8.2024 tai myöhemmin alkaneelle IB-opiskeluoikeudelle"
               ))
             }
           }
@@ -484,7 +484,7 @@ class OppijaValidationIBSpec extends AnyFreeSpec with KoskiHttpSpec with PutOpis
             val oo = createOpiskeluoikeusYhdelläKurssilla(rajapäivä, LaajuusOpintopisteissä(1), { _ => preIBSuoritus })
             setupOppijaWithOpiskeluoikeus(oo) {
               verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.rakenne(
-                "1.8.2025 tai myöhemmin alkaneelle IB-opiskeluoikeudelle voi siirtää vain vuoden 2019 opetussuunnitelman mukaisen pre-IB-suorituksen"
+                "1.8.2024 tai myöhemmin alkaneelle IB-opiskeluoikeudelle voi siirtää vain vuoden 2019 opetussuunnitelman mukaisen pre-IB-suorituksen"
               ))
             }
           }
