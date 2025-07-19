@@ -29,7 +29,7 @@
     "express": "^5.1.0",
     "express-rate-limit": "^7.5.0",
     "helmet": "^8.1.0",
-    "openid-client": "^6.4.2",
+    "openid-client": "^6.6.1",
     "undici": "^7.8.0",
     "uuid": "^11.1.0"
   },
