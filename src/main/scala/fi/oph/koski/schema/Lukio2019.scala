@@ -526,7 +526,7 @@ case class LukiodiplominSuoritusJaArviointi (
   arvosana: Koodistokoodiviite,
   kuvaus: Option[LocalizedString],
   päivä: LocalDate,
-  @KoodistoUri("lukionkurssit")
+  @KoodistoUri("moduulikoodistolops2021")
   @KoodistoKoodiarvo("KOLD1")
   @KoodistoKoodiarvo("KULD2")
   @KoodistoKoodiarvo("KÄLD3")

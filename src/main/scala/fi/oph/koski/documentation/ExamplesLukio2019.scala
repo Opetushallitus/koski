@@ -421,7 +421,7 @@ object Lukio2019ExampleData {
     arvosana = Koodistokoodiviite(arvosana, "arviointiasteikkoyleissivistava"),
     kuvaus = None,
     päivä = LocalDate.of(2025, 8, 15),
-    tunniste = Koodistokoodiviite("LILD4", "lukionkurssit"),
+    tunniste = Koodistokoodiviite("LILD4", "moduulikoodistolops2021"),
   )
 
   def suullisenKielitaidonKoeEnglanti(): SuullisenKielitaidonKoe2019 = SuullisenKielitaidonKoe2019(
