@@ -16,7 +16,7 @@ export type LukiodiplominSuoritusJaArviointi = {
   hyväksytty?: boolean
   kuvaus?: LocalizedString
   tunniste: Koodistokoodiviite<
-    'lukionkurssit',
+    'moduulikoodistolops2021',
     | 'KOLD1'
     | 'KULD2'
     | 'KÄLD3'
@@ -37,7 +37,7 @@ export const LukiodiplominSuoritusJaArviointi = (o: {
   hyväksytty?: boolean
   kuvaus?: LocalizedString
   tunniste: Koodistokoodiviite<
-    'lukionkurssit',
+    'moduulikoodistolops2021',
     | 'KOLD1'
     | 'KULD2'
     | 'KÄLD3'
