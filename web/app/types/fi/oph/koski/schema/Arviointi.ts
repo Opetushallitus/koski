@@ -27,6 +27,10 @@ import {
   isIBCASOppiaineenArviointi
 } from './IBCASOppiaineenArviointi'
 import {
+  IBCoreOppiaineenArviointi,
+  isIBCoreOppiaineenArviointi
+} from './IBCoreOppiaineenArviointi'
+import {
   IBCoreRequirementsArviointi,
   isIBCoreRequirementsArviointi
 } from './IBCoreRequirementsArviointi'
@@ -231,6 +235,7 @@ export type Arviointi =
   | EBTutkintoFinalMarkArviointi
   | EuropeanSchoolOfHelsinkiOsasuoritusArviointi
   | IBCASOppiaineenArviointi
+  | IBCoreOppiaineenArviointi
   | IBCoreRequirementsArviointi
   | IBKurssinArviointi
   | IBOppiaineenArviointi
@@ -290,6 +295,7 @@ export const isArviointi = (a: any): a is Arviointi =>
   isEBTutkintoFinalMarkArviointi(a) ||
   isEuropeanSchoolOfHelsinkiOsasuoritusArviointi(a) ||
   isIBCASOppiaineenArviointi(a) ||
+  isIBCoreOppiaineenArviointi(a) ||
   isIBCoreRequirementsArviointi(a) ||
   isIBKurssinArviointi(a) ||
   isIBOppiaineenArviointi(a) ||

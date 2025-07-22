@@ -2,7 +2,7 @@ import { IBAineRyhmäOppiaine } from '../../types/fi/oph/koski/schema/IBAineRyhm
 import { IBCASOppiaineenArviointi } from '../../types/fi/oph/koski/schema/IBCASOppiaineenArviointi'
 import { IBCASSuoritus } from '../../types/fi/oph/koski/schema/IBCASSuoritus'
 import { IBCoreRequirementsArviointi } from '../../types/fi/oph/koski/schema/IBCoreRequirementsArviointi'
-import { IBDBCoreSuoritus } from '../../types/fi/oph/koski/schema/IBDBCoreSuoritus'
+import { IBDPCoreSuoritus } from '../../types/fi/oph/koski/schema/IBDPCoreSuoritus'
 import { IBDPCoreOppiaine } from '../../types/fi/oph/koski/schema/IBDPCoreOppiaine'
 import { IBExtendedEssaySuoritus } from '../../types/fi/oph/koski/schema/IBExtendedEssaySuoritus'
 import { IBOppiaineCAS } from '../../types/fi/oph/koski/schema/IBOppiaineCAS'
@@ -50,7 +50,7 @@ export type IBTOKOppiaineenSuoritusProps = {
 export const createIBTutkinnonOppiaine = (
   props: IBOppiaineenSuoritusProps
 ): IBTutkinnonOppiaineenSuoritus | null =>
-  createIBDBCoreSuoritus(props) || createIBOppiaineenSuoritus(props)
+  createIBDPCoreSuoritus(props) || createIBOppiaineenSuoritus(props)
 
 const createIBOppiaineenSuoritus = (
   props: IBOppiaineenSuoritusProps
@@ -215,11 +215,11 @@ const createIBDPCoreOppiaineCAS = ({
     laajuus: cas?.laajuus
   })
 
-const createIBDBCoreSuoritus = (
+const createIBDPCoreSuoritus = (
   props: IBOppiaineenSuoritusProps
-): IBDBCoreSuoritus | null => {
+): IBDPCoreSuoritus | null => {
   const koulutusmoduuli = createIBDPCoreOppiaine(props)
-  return koulutusmoduuli ? IBDBCoreSuoritus({ koulutusmoduuli }) : null
+  return koulutusmoduuli ? IBDPCoreSuoritus({ koulutusmoduuli }) : null
 }
 
 const createIBDPCoreOppiaine = (

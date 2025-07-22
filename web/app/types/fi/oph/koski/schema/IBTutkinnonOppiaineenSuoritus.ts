@@ -1,4 +1,4 @@
-import { IBDBCoreSuoritus, isIBDBCoreSuoritus } from './IBDBCoreSuoritus'
+import { IBDPCoreSuoritus, isIBDPCoreSuoritus } from './IBDPCoreSuoritus'
 import {
   IBOppiaineenSuoritus,
   isIBOppiaineenSuoritus
@@ -10,10 +10,10 @@ import {
  * @see `fi.oph.koski.schema.IBTutkinnonOppiaineenSuoritus`
  */
 export type IBTutkinnonOppiaineenSuoritus =
-  | IBDBCoreSuoritus
+  | IBDPCoreSuoritus
   | IBOppiaineenSuoritus
 
 export const isIBTutkinnonOppiaineenSuoritus = (
   a: any
 ): a is IBTutkinnonOppiaineenSuoritus =>
-  isIBDBCoreSuoritus(a) || isIBOppiaineenSuoritus(a)
+  isIBDPCoreSuoritus(a) || isIBOppiaineenSuoritus(a)
