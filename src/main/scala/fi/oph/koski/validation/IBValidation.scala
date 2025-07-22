@@ -3,7 +3,7 @@ package fi.oph.koski.validation
 import com.typesafe.config.Config
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.opiskeluoikeus.CompositeOpiskeluoikeusRepository
-import fi.oph.koski.schema.{IBDBCoreSuoritus, IBKurssi, IBKurssinSuoritus, IBOpiskeluoikeus, IBOppiaineenArviointi, IBOppiaineenPredictedArviointi, IBOppiaineenSuoritus, IBPäätasonSuoritus, IBTutkinnonSuoritus, KoskeenTallennettavaOpiskeluoikeus, LaajuusKursseissa, LaajuusOpintopisteissä, LaajuusOsaamispisteissä, PreIBSuoritus2015}
+import fi.oph.koski.schema.{IBCASSuoritus, IBCoreOppiaineenArviointi, IBDBCoreSuoritus, IBDPCoreOppiaineCAS, IBDPCoreOppiaineExtendedEssay, IBDPCoreOppiaineTheoryOfKnowledge, IBExtendedEssaySuoritus, IBKurssi, IBKurssinSuoritus, IBOpiskeluoikeus, IBOppiaineenArviointi, IBOppiaineenPredictedArviointi, IBOppiaineenSuoritus, IBPäätasonSuoritus, IBTheoryOfKnowledgeSuoritus, IBTutkinnonSuoritus, KoskeenTallennettavaOpiskeluoikeus, LaajuusKursseissa, LaajuusOpintopisteissä, LaajuusOsaamispisteissä, PreIBSuoritus2015}
 import fi.oph.koski.util.ChainingSyntax._
 import fi.oph.koski.util.DateOrdering.localDateOrdering
 import fi.oph.koski.util.FinnishDateFormat
@@ -34,6 +34,7 @@ object IBValidation {
 
           HttpStatus.fold(
             List(validateIBKurssienLaajuusyksiköt(oo, varhaisinAlkamispäivä, rajapäivä)) ++
+            List(validateIBCoreSuoritustenArvioinnit(oo, varhaisinAlkamispäivä, rajapäivä)) ++
             ibTutkinto.map(validateCoreRequirements(_, varhaisinAlkamispäivä, rajapäivä)) ++
             oo.suoritukset.map(validatePreIB2019Suoritus(_, varhaisinAlkamispäivä, rajapäivä))
           )
@@ -95,6 +96,36 @@ object IBValidation {
         KoskiErrorCategory.badRequest.validation.laajuudet.osauoritusVääräLaajuus(s"Osasuorituksen laajuus on ilmoitettava opintopisteissä ${FinnishDateFormat.format(rajapäivä)} tai myöhemmin alkaneille IB-tutkinnon opiskeluoikeuksille")
       case _ => HttpStatus.ok
     }.getOrElse(HttpStatus.ok)
+
+  private def validateIBCoreSuoritustenArvioinnit(oo: IBOpiskeluoikeus, alkamispäivä: LocalDate, rajapäivä: LocalDate): HttpStatus = {
+    HttpStatus.fold(
+      oo.suoritukset
+        .flatMap(_.osasuoritukset.toList.flatten) // oppiaineet
+        .collect { case s: IBDBCoreSuoritus => s }
+        .map { kurssi => validateIBCoreSuorituksenArviointi(kurssi) }
+    )
+  }
+
+  private def validateIBCoreSuorituksenArviointi(s: IBDBCoreSuoritus): HttpStatus = {
+    val sallitutArvosanatTOKJaEE = Set("A", "B", "C", "D", "E", "P")
+    val sallitutArvosanatCAS = Set("1", "2", "3", "4", "5", "6", "7", "F", "O", "S")
+
+    val invalidGrades: Seq[String] = s.koulutusmoduuli match {
+      case _: IBDPCoreOppiaineTheoryOfKnowledge | _: IBDPCoreOppiaineExtendedEssay =>
+        s.arviointi.toSeq.flatten.map(_.arvosana.koodiarvo).filterNot(sallitutArvosanatTOKJaEE.contains)
+      case _: IBDPCoreOppiaineCAS =>
+        s.arviointi.toSeq.flatten.map(_.arvosana.koodiarvo).filterNot(sallitutArvosanatCAS.contains)
+      case _ => Seq.empty
+    }
+
+    if (invalidGrades.nonEmpty) {
+      KoskiErrorCategory.badRequest.validation.arviointi.epäsopivaArvosana(
+        s"IB Core suorituksella (${s.koulutusmoduuli.tunniste.koodiarvo}) on vääriä arvosanoja: ${invalidGrades.mkString(", ")}"
+      )
+    } else {
+      HttpStatus.ok
+    }
+  }
 
   private def predictedArvioinninVaatiminenVoimassa(config: Config): Boolean =
     Option(LocalDate.parse(config.getString("validaatiot.ibSuorituksenVahvistusVaatiiPredictedArvosanan")))
