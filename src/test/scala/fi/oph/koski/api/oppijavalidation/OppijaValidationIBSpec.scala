@@ -355,6 +355,7 @@ class OppijaValidationIBSpec extends AnyFreeSpec with KoskiHttpSpec with PutOpis
       val theoryOfKnowledge = IBDPCoreSuoritus(koulutusmoduuli = IBDPCoreOppiaineTheoryOfKnowledge(laajuus = Some(LaajuusOpintopisteissä(1))))
 
       val casOppiaine = IBDPCoreSuoritus(koulutusmoduuli = IBDPCoreOppiaineCAS(laajuus = Some(LaajuusOpintopisteissä(1))))
+      val casOppiaineArvioinnilla = IBDPCoreSuoritus(koulutusmoduuli = IBDPCoreOppiaineCAS(laajuus = Some(LaajuusOpintopisteissä(1))), arviointi = ibCoreOppiaineenArviointi("7"))
 
       "Ennen rajapäivää" - {
         "Laajuuden ilmoitus kursseina ok" in {
@@ -396,6 +397,22 @@ class OppijaValidationIBSpec extends AnyFreeSpec with KoskiHttpSpec with PutOpis
               }
             }
 
+            "Extended Essay sallii arvosanan A" in {
+              val oo = createOpiskeluoikeusYhdelläKurssilla(rajapäivä, LaajuusKursseissa(1), osasuorituksilla(extendedEssay.copy(arviointi = ibCoreOppiaineenArviointi("A"))))
+              setupOppijaWithOpiskeluoikeus(oo) {
+                verifyResponseStatusOk()
+              }
+            }
+
+            "Extended Essay ei salli arvosanaa 1" in {
+              val oo = createOpiskeluoikeusYhdelläKurssilla(rajapäivä, LaajuusKursseissa(1), osasuorituksilla(extendedEssay.copy(arviointi = ibCoreOppiaineenArviointi("1"))))
+              setupOppijaWithOpiskeluoikeus(oo) {
+                verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.arviointi.epäsopivaArvosana(
+                  "IB Core suorituksella (EE) on vääriä arvosanoja: 1"
+                ))
+              }
+            }
+
             "Theory of Knowledge ei voi siirtää osasuorituksena" in {
               val oo = createOpiskeluoikeusYhdelläKurssilla(rajapäivä.minusDays(1), LaajuusKursseissa(1), osasuorituksilla(theoryOfKnowledge))
               setupOppijaWithOpiskeluoikeus(oo) {
@@ -405,11 +422,43 @@ class OppijaValidationIBSpec extends AnyFreeSpec with KoskiHttpSpec with PutOpis
               }
             }
 
+            "Theory of Knowledge sallii arvosanan A" in {
+              val oo = createOpiskeluoikeusYhdelläKurssilla(rajapäivä, LaajuusKursseissa(1), osasuorituksilla(theoryOfKnowledge.copy(arviointi = ibCoreOppiaineenArviointi("A"))))
+              setupOppijaWithOpiskeluoikeus(oo) {
+                verifyResponseStatusOk()
+              }
+            }
+
+            "Theory of Knowledge ei salli arvosanaa 1" in {
+              val oo = createOpiskeluoikeusYhdelläKurssilla(rajapäivä, LaajuusKursseissa(1), osasuorituksilla(theoryOfKnowledge.copy(arviointi = ibCoreOppiaineenArviointi("1"))))
+              setupOppijaWithOpiskeluoikeus(oo) {
+                verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.arviointi.epäsopivaArvosana(
+                  "IB Core suorituksella (TOK) on vääriä arvosanoja: 1"
+                ))
+              }
+            }
+
             "CAS ei voi siirtää osasuorituksena" in {
               val oo = createOpiskeluoikeusYhdelläKurssilla(rajapäivä.minusDays(1), LaajuusKursseissa(1), osasuorituksilla(casOppiaine))
               setupOppijaWithOpiskeluoikeus(oo) {
                 verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.rakenne.dpCoreDeprecated(
                   "DP Core -oppiaineita ei voi siirtää osasuorituksena ennen 1.8.2024 alkaneelle IB-opiskeluoikeudelle"
+                ))
+              }
+            }
+
+            "CAS sallii arvosanan 1" in {
+              val oo = createOpiskeluoikeusYhdelläKurssilla(rajapäivä, LaajuusKursseissa(1), osasuorituksilla(casOppiaine.copy(arviointi = ibCoreOppiaineenArviointi("1"))))
+              setupOppijaWithOpiskeluoikeus(oo) {
+                verifyResponseStatusOk()
+              }
+            }
+
+            "CAS ei salli arvosanaa A" in {
+              val oo = createOpiskeluoikeusYhdelläKurssilla(rajapäivä, LaajuusKursseissa(1), osasuorituksilla(casOppiaine.copy(arviointi = ibCoreOppiaineenArviointi("A"))))
+              setupOppijaWithOpiskeluoikeus(oo) {
+                verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.arviointi.epäsopivaArvosana(
+                  "IB Core suorituksella (CAS) on vääriä arvosanoja: A"
                 ))
               }
             }
