@@ -120,7 +120,7 @@ case class IBDBCoreSuoritus(
   @Description("IB-lukion oppiaineen tunnistetiedot")
   @Title("Oppiaine")
   koulutusmoduuli: IBDPCoreOppiaine,
-  arviointi: Option[List[IBOppiaineenArviointi]] = None,
+  arviointi: Option[List[IBCoreOppiaineenArviointi]] = None,
   suorituskieli: Option[Koodistokoodiviite] = None,
   @Description("Oppiaineeseen kuuluvien kurssien suoritukset")
   @Title("Kurssit")
@@ -175,6 +175,24 @@ case class IBOppiaineenArviointi(
   @Hidden
   predicted: Option[Boolean] = None,
   @KoodistoUri("arviointiasteikkoib")
+  arvosana: Koodistokoodiviite,
+  @Description("Effort-arvosana, kuvaa opiskelijan tunnollisuutta, aktiivisuutta ja yritteliäisyyttä. Arvosteluasteikko: A = very good, B = good, C = needs improvement")
+  @KoodistoUri("effortasteikkoib")
+  @Deprecated("Effort-arvosanaa ei enää tallenneta KOSKI-tietovarantoon")
+  effort: Option[Koodistokoodiviite] = None,
+  @Description("Arviointipäivämäärä")
+  päivä: Option[LocalDate]
+) extends IBArviointi {
+  override def arviointipäivä: Option[LocalDate] = päivä
+}
+
+@Title("IB-Core oppiaineen arviointi")
+case class IBCoreOppiaineenArviointi(
+  @Description("Onko arvoitu arvosana vai ei, jos ei niin tarkoittaa IBOn vahvistamaa arvosanaa")
+  @Deprecated("Käytä IB-oppiaineen suorituksen predictedArviointi-kenttää")
+  @Hidden
+  predicted: Option[Boolean] = None,
+  @KoodistoUri("arviointiasteikkocorerequirementsib")
   arvosana: Koodistokoodiviite,
   @Description("Effort-arvosana, kuvaa opiskelijan tunnollisuutta, aktiivisuutta ja yritteliäisyyttä. Arvosteluasteikko: A = very good, B = good, C = needs improvement")
   @KoodistoUri("effortasteikkoib")

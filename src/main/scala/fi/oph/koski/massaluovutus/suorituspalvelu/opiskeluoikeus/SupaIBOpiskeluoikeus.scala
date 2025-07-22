@@ -98,7 +98,7 @@ case class SupaIBDBCoreSuoritus(
   @KoodistoKoodiarvo("ibcore")
   tyyppi: Koodistokoodiviite,
   koulutusmoduuli: IBDPCoreOppiaine,
-  arviointi: Option[List[IBOppiaineenArviointi]] = None,
+  arviointi: Option[List[IBCoreOppiaineenArviointi]] = None,
 ) extends SupaIBTutkinnonOppiaine
 
 object SupaIBDBCoreSuoritus {
