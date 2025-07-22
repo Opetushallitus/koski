@@ -1,5 +1,11 @@
 # Koskeen tallennettavien tietojen validaatiosäännöt
 
+## 22.7.2025
+
+- Lisätty validaatio IB-tutkinnon Core-oppiaineiden arvioinneille:
+    - Extended Essay & Theory of Knowledge voivat saada arvosanan "A", "B", "C", "D", "E" tai "P"
+    - CAS voi saada arvosanan "1", "2", "3", "4", "5", "6", "7", "F", "O" tai "S"
+
 ## 16.7.2025
 
 - Perusopetuksen opiskeluoikeuden lisätieto tavoitekokonaisuuksittain opiskelu vaatii tuen päätöksen jakson
