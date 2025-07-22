@@ -59,6 +59,7 @@ class KoodistotTest extends AnyFreeSpec with TestEnvironment with Matchers {
       "lahdejarjestelma_espoovarda",
       "lahdejarjestelma_espoovarda-1",
       "arviointiasteikkoib_fail",
+      "arviointiasteikkocorerequirementsib_fail",
       "suorituksentyyppi_lukionoppiaineidenoppimaarat2019",
       "suorituksentyyppi_lukionpaikallinenopintojakso2019",
       "suorituksentyyppi_lukionvaltakunnallinenmoduuli2019",

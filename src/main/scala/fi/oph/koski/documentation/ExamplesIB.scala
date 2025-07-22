@@ -366,6 +366,10 @@ object ExamplesIB {
     Some(List(IBCoreRequirementsArviointi(arvosana = Koodistokoodiviite(koodiarvo = arvosana, koodistoUri = "arviointiasteikkocorerequirementsib"), päivä = Some(päivä))))
   }
 
+  def ibCoreOppiaineenArviointi(arvosana: String, päivä: LocalDate = date(2016, 6, 4)): Some[List[IBCoreOppiaineenArviointi]] = {
+    Some(List(IBCoreOppiaineenArviointi(arvosana = Koodistokoodiviite(koodiarvo = arvosana, koodistoUri = "arviointiasteikkocorerequirementsib"), päivä = Some(päivä))))
+  }
+
   def ibKurssinArviointi(arvosana: String, effort: Option[String] = None, päivä: LocalDate = date(2016, 6, 4)): Some[List[IBKurssinArviointi]] =
     Some(List(IBKurssinArviointi(
       arvosana = Koodistokoodiviite(koodiarvo = arvosana,

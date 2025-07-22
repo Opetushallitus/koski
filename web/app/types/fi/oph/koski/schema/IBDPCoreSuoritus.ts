@@ -1,17 +1,17 @@
-import { IBOppiaineenArviointi } from './IBOppiaineenArviointi'
+import { IBCoreOppiaineenArviointi } from './IBCoreOppiaineenArviointi'
 import { Koodistokoodiviite } from './Koodistokoodiviite'
 import { LocalizedString } from './LocalizedString'
 import { IBDPCoreOppiaine } from './IBDPCoreOppiaine'
 import { IBKurssinSuoritus } from './IBKurssinSuoritus'
 
 /**
- * IBDBCoreSuoritus
+ * IBDPCoreSuoritus
  *
- * @see `fi.oph.koski.schema.IBDBCoreSuoritus`
+ * @see `fi.oph.koski.schema.IBDPCoreSuoritus`
  */
-export type IBDBCoreSuoritus = {
-  $class: 'fi.oph.koski.schema.IBDBCoreSuoritus'
-  arviointi?: Array<IBOppiaineenArviointi>
+export type IBDPCoreSuoritus = {
+  $class: 'fi.oph.koski.schema.IBDPCoreSuoritus'
+  arviointi?: Array<IBCoreOppiaineenArviointi>
   tyyppi: Koodistokoodiviite<'suorituksentyyppi', 'ibcore'>
   tila?: Koodistokoodiviite<'suorituksentila', string>
   suorituskieli?: Koodistokoodiviite<'kieli', string>
@@ -19,23 +19,23 @@ export type IBDBCoreSuoritus = {
   osasuoritukset?: Array<IBKurssinSuoritus>
 }
 
-export const IBDBCoreSuoritus = (o: {
-  arviointi?: Array<IBOppiaineenArviointi>
+export const IBDPCoreSuoritus = (o: {
+  arviointi?: Array<IBCoreOppiaineenArviointi>
   tyyppi?: Koodistokoodiviite<'suorituksentyyppi', 'ibcore'>
   tila?: Koodistokoodiviite<'suorituksentila', string>
   suorituskieli?: Koodistokoodiviite<'kieli', string>
   koulutusmoduuli: IBDPCoreOppiaine
   osasuoritukset?: Array<IBKurssinSuoritus>
-}): IBDBCoreSuoritus => ({
+}): IBDPCoreSuoritus => ({
   tyyppi: Koodistokoodiviite({
     koodiarvo: 'ibcore',
     koodistoUri: 'suorituksentyyppi'
   }),
-  $class: 'fi.oph.koski.schema.IBDBCoreSuoritus',
+  $class: 'fi.oph.koski.schema.IBDPCoreSuoritus',
   ...o
 })
 
-IBDBCoreSuoritus.className = 'fi.oph.koski.schema.IBDBCoreSuoritus' as const
+IBDPCoreSuoritus.className = 'fi.oph.koski.schema.IBDPCoreSuoritus' as const
 
-export const isIBDBCoreSuoritus = (a: any): a is IBDBCoreSuoritus =>
-  a?.$class === 'fi.oph.koski.schema.IBDBCoreSuoritus'
+export const isIBDPCoreSuoritus = (a: any): a is IBDPCoreSuoritus =>
+  a?.$class === 'fi.oph.koski.schema.IBDPCoreSuoritus'

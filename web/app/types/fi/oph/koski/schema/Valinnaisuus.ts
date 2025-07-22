@@ -26,6 +26,18 @@ import {
   AmmatillisenTutkinnonÄidinkieli,
   isAmmatillisenTutkinnonÄidinkieli
 } from './AmmatillisenTutkinnonAidinkieli'
+import {
+  IBDPCoreOppiaineCAS,
+  isIBDPCoreOppiaineCAS
+} from './IBDPCoreOppiaineCAS'
+import {
+  IBDPCoreOppiaineExtendedEssay,
+  isIBDPCoreOppiaineExtendedEssay
+} from './IBDPCoreOppiaineExtendedEssay'
+import {
+  IBDPCoreOppiaineTheoryOfKnowledge,
+  isIBDPCoreOppiaineTheoryOfKnowledge
+} from './IBDPCoreOppiaineTheoryOfKnowledge'
 import { IBKurssi, isIBKurssi } from './IBKurssi'
 import { IBOppiaineCAS, isIBOppiaineCAS } from './IBOppiaineCAS'
 import {
@@ -187,6 +199,9 @@ export type Valinnaisuus =
   | AmmatillisenTutkinnonVierasTaiToinenKotimainenKieli
   | AmmatillisenTutkinnonViestintäJaVuorovaikutusKielivalinnalla
   | AmmatillisenTutkinnonÄidinkieli
+  | IBDPCoreOppiaineCAS
+  | IBDPCoreOppiaineExtendedEssay
+  | IBDPCoreOppiaineTheoryOfKnowledge
   | IBKurssi
   | IBOppiaineCAS
   | IBOppiaineExtendedEssay
@@ -238,6 +253,9 @@ export const isValinnaisuus = (a: any): a is Valinnaisuus =>
   isAmmatillisenTutkinnonVierasTaiToinenKotimainenKieli(a) ||
   isAmmatillisenTutkinnonViestintäJaVuorovaikutusKielivalinnalla(a) ||
   isAmmatillisenTutkinnonÄidinkieli(a) ||
+  isIBDPCoreOppiaineCAS(a) ||
+  isIBDPCoreOppiaineExtendedEssay(a) ||
+  isIBDPCoreOppiaineTheoryOfKnowledge(a) ||
   isIBKurssi(a) ||
   isIBOppiaineCAS(a) ||
   isIBOppiaineExtendedEssay(a) ||

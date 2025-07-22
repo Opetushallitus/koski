@@ -31,7 +31,7 @@ import {
   useOppiaineTasoOptions
 } from '../state/options'
 import { LaajuusEdit } from '../../components-v2/opiskeluoikeus/LaajuusField'
-import { createLaajuusTunneissa } from '../../util/laajuus'
+import { createLaajuusOpintopisteissä } from '../../util/laajuus'
 
 export type UusiIBTutkintoOppiaineDialogProps = {
   organisaatioOid: string
@@ -73,6 +73,7 @@ export const UusiIBTutkintoOppiaineDialog: React.FC<
           ryhmät={ryhmät}
           tasot={tasot}
           onTunniste={onTunniste}
+          isExtendedEssayOppiaineForm={false}
         />
       </ModalBody>
       <ModalFooter>
@@ -100,6 +101,7 @@ type IBTutkintoOppiaineFormProps = {
   ryhmät: SelectOption<Koodistokoodiviite<'aineryhmaib'>>[] | null
   tasot: SelectOption<Koodistokoodiviite<'oppiaineentasoib'>>[] | null
   onTunniste: (o?: SelectOption<Koodistokoodiviite<'oppiaineetib'>>) => void
+  isExtendedEssayOppiaineForm: boolean | undefined
 }
 
 const IBTutkintoOppiaineForm: React.FC<IBTutkintoOppiaineFormProps> = ({
@@ -108,7 +110,8 @@ const IBTutkintoOppiaineForm: React.FC<IBTutkintoOppiaineFormProps> = ({
   kielet,
   ryhmät,
   tasot,
-  onTunniste
+  onTunniste,
+  isExtendedEssayOppiaineForm
 }) => {
   const onExtendedEssayTunniste = useCallback(
     (option?: SelectOption<Koodistokoodiviite<'oppiaineetib'>>) => {
@@ -144,6 +147,7 @@ const IBTutkintoOppiaineForm: React.FC<IBTutkintoOppiaineFormProps> = ({
               ryhmät={ryhmät}
               tasot={tasot}
               onTunniste={onExtendedEssayTunniste}
+              isExtendedEssayOppiaineForm={true}
             />
           </div>
           <label>
@@ -156,6 +160,20 @@ const IBTutkintoOppiaineForm: React.FC<IBTutkintoOppiaineFormProps> = ({
                 (state as UusiIBTutkintoOppiaineState).extendedEssay.aihe.set
               }
               testId="essayAihe"
+            />
+          </label>
+          <label>
+            {t('Laajuus')}
+            <LaajuusEdit
+              value={
+                (state as UusiIBTutkintoOppiaineState).extendedEssay.laajuus
+                  .value
+              }
+              onChange={
+                (state as UusiIBTutkintoOppiaineState).extendedEssay.laajuus.set
+              }
+              createLaajuus={createLaajuusOpintopisteissä}
+              testId="eelaajuus"
             />
           </label>
         </>
@@ -193,27 +211,52 @@ const IBTutkintoOppiaineForm: React.FC<IBTutkintoOppiaineFormProps> = ({
           />
         </label>
       )}
+      {/*{state.laajuus.visible && (*/}
+      {/*  <label>*/}
+      {/*    {t('Laajuus')}*/}
+      {/*    <LaajuusEdit*/}
+      {/*      value={state.laajuus.value}*/}
+      {/*      onChange={state.laajuus.set}*/}
+      {/*      createLaajuus={createLaajuusOpintopisteissä}*/}
+      {/*      testId="eelaajuus"*/}
+      {/*    />*/}
+      {/*  </label>*/}
+      {/*)}*/}
       {(state as UusiIBTutkintoOppiaineState).cas?.laajuus.visible && (
         <label>
           {t('Laajuus')}
           <LaajuusEdit
             value={(state as UusiIBTutkintoOppiaineState).cas.laajuus.value}
             onChange={(state as UusiIBTutkintoOppiaineState).cas.laajuus.set}
-            createLaajuus={createLaajuusTunneissa}
-            testId="laajuus"
+            createLaajuus={createLaajuusOpintopisteissä}
+            testId="caslaajuus"
           />
         </label>
       )}
-      {state.pakollinen.visible && (
+      {(state as UusiIBTutkintoOppiaineState).tok?.laajuus.visible && (
         <label>
-          <Checkbox
-            label={t('Pakollinen')}
-            checked={!!state.pakollinen.value}
-            onChange={state.pakollinen.set}
-            testId="pakollinen"
+          {t('Laajuus')}
+          <LaajuusEdit
+            value={(state as UusiIBTutkintoOppiaineState).tok.laajuus.value}
+            onChange={(state as UusiIBTutkintoOppiaineState).tok.laajuus.set}
+            createLaajuus={createLaajuusOpintopisteissä}
+            testId="toklaajuus"
           />
         </label>
       )}
+      {!isExtendedEssayOppiaineForm &&
+        (state as UusiIBTutkintoOppiaineState).pakollinen.visible && (
+          <label>
+            <Checkbox
+              label={t('Pakollinen')}
+              checked={
+                !!(state as UusiIBTutkintoOppiaineState).pakollinen.value
+              }
+              onChange={(state as UusiIBTutkintoOppiaineState).pakollinen.set}
+              testId="pakollinen"
+            />
+          </label>
+        )}
     </>
   )
 }

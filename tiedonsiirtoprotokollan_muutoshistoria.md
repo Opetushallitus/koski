@@ -4,6 +4,16 @@
 - Perusopetuksen opiskeluoikeudelle lisätty lisätieto tavoitekokonaisuuksittain opiskelu
 - Perusopetuksen vuosiluokan suorituksen osasuoritukselle lisätty kenttä luokkaAste
 
+## 4.7.2025
+
+- IB-tutkinnon opiskeluoikeuden päätason suoritusten poistaminen on mahdollistettu.
+  - Jatkossa IB-tutkinnon opiskeluoikeuden päivityksissä rajapintojen kautta tulee lähettää aina kaikki opiskeluoikeuteen kuuluvat päätason suoritukset, tai puuttuva suoritus tulkitaan poistetuksi.
+- IB-tutkinnon DP Core-suoritusten laajuudet muutettiin sallimaan vain opintopisteiden syöttämistä.
+  - Extended Essayn osalta laajuudet ilmoitetaan aineen tiedoissa.
+  - Theory of Knowledge -koulutusmoduulille lisätty valinnainen laajuus-kenttä.
+- Poistettiin duplikaatit pakollinen-kentät IB-tutkinnon DP Core -suorituksen Extended Essay -koulutusmoduulilta.
+  - Pakollinen-tieto siirretään koulutusmoduulin tiedoissa, duplikaatti kenttä poistettu aineiden tiedoista.
+
 ## 24.6.2025
 
 - Muun kuin säännellyn koulutuksen suoritusten ja osasuoritusten arviointeihin sallittu kaikki arviointiasteikkomuks-koodiston koodit.

@@ -13,7 +13,7 @@ import {
   DPCoreOppiaineet
 } from '../oppiaineet/ibTutkintoOppiaine'
 import { isIBOppiaineLanguageTunniste } from '../oppiaineet/tunnisteet'
-import { LaajuusTunneissa } from '../../types/fi/oph/koski/schema/LaajuusTunneissa'
+import { LaajuusOpintopisteissä } from '../../types/fi/oph/koski/schema/LaajuusOpintopisteissa'
 
 export type UusiIBTutkintoOppiaineState = {
   tunniste: DialogField<Koodistokoodiviite<'oppiaineetib'>>
@@ -26,11 +26,14 @@ export type UusiIBTutkintoOppiaineState = {
     kieli: DialogField<Koodistokoodiviite<'kielivalikoima'>>
     ryhmä: DialogField<Koodistokoodiviite<'aineryhmaib'>>
     taso: DialogField<Koodistokoodiviite<'oppiaineentasoib'>>
-    pakollinen: DialogField<boolean>
     aihe: DialogField<LocalizedString>
+    laajuus: DialogField<LaajuusOpintopisteissä>
   }
   cas: {
-    laajuus: DialogField<LaajuusTunneissa>
+    laajuus: DialogField<LaajuusOpintopisteissä>
+  }
+  tok: {
+    laajuus: DialogField<LaajuusOpintopisteissä>
   }
   result: IBTutkinnonOppiaineenSuoritus | null
 }
@@ -79,11 +82,16 @@ export const useIBTutkintoOppiaineState = (
   )
   const essayRyhmä = useDialogField<Koodistokoodiviite<'aineryhmaib'>>(true)
   const essayTaso = useDialogField<Koodistokoodiviite<'oppiaineentasoib'>>(true)
-  const essayPakollinen = useDialogField<boolean>(true)
   const essayAihe = useDialogField<LocalizedString>(extendedEssaySelected)
+  const essayLaajuus = useDialogField<LaajuusOpintopisteissä>(
+    extendedEssaySelected
+  )
 
-  const casLaajuus = useDialogField<LaajuusTunneissa>(
+  const casLaajuus = useDialogField<LaajuusOpintopisteissä>(
     tunniste.value?.koodiarvo === 'CAS'
+  )
+  const tokLaajuus = useDialogField<LaajuusOpintopisteissä>(
+    tunniste.value?.koodiarvo === 'TOK'
   )
 
   const result = useMemo(
@@ -99,18 +107,20 @@ export const useIBTutkintoOppiaineState = (
           kieli: essayKieli.value,
           ryhmä: essayRyhmä.value,
           taso: essayTaso.value,
-          pakollinen: essayPakollinen.value,
-          aihe: essayAihe.value
+          aihe: essayAihe.value,
+          laajuus: essayLaajuus.value
         },
         cas: {
           laajuus: casLaajuus.value
+        },
+        tok: {
+          laajuus: tokLaajuus.value
         }
       }),
     [
       casLaajuus.value,
       essayAihe.value,
       essayKieli.value,
-      essayPakollinen.value,
       essayRyhmä.value,
       essayTaso.value,
       essayTunniste.value,
@@ -118,7 +128,8 @@ export const useIBTutkintoOppiaineState = (
       pakollinen.value,
       ryhmä.value,
       taso.value,
-      tunniste.value
+      tunniste.value,
+      tokLaajuus.value
     ]
   )
 
@@ -133,11 +144,14 @@ export const useIBTutkintoOppiaineState = (
       kieli: essayKieli,
       ryhmä: essayRyhmä,
       taso: essayTaso,
-      pakollinen: essayPakollinen,
-      aihe: essayAihe
+      aihe: essayAihe,
+      laajuus: essayLaajuus
     },
     cas: {
       laajuus: casLaajuus
+    },
+    tok: {
+      laajuus: tokLaajuus
     },
     result
   }
