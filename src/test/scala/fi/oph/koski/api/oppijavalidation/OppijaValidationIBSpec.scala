@@ -342,7 +342,7 @@ class OppijaValidationIBSpec extends AnyFreeSpec with KoskiHttpSpec with PutOpis
       def osasuorituksilla(os: IBTutkinnonOppiaineenSuoritus*)(pts: IBTutkinnonSuoritus): IBTutkinnonSuoritus =
         filterIbTutkinto()(pts).copy(osasuoritukset = Some(os.toList))
 
-      val extendedEssay = IBDBCoreSuoritus(
+      val extendedEssay = IBDPCoreSuoritus(
         koulutusmoduuli = IBDPCoreOppiaineExtendedEssay(
           aine = IBDPCoreOppiaineMuu(
             tunniste = Koodistokoodiviite("BIO", "oppiaineetib"),
@@ -352,9 +352,9 @@ class OppijaValidationIBSpec extends AnyFreeSpec with KoskiHttpSpec with PutOpis
         ),
       )
 
-      val theoryOfKnowledge = IBDBCoreSuoritus(koulutusmoduuli = IBDPCoreOppiaineTheoryOfKnowledge(laajuus = Some(LaajuusOpintopisteissä(1))))
+      val theoryOfKnowledge = IBDPCoreSuoritus(koulutusmoduuli = IBDPCoreOppiaineTheoryOfKnowledge(laajuus = Some(LaajuusOpintopisteissä(1))))
 
-      val casOppiaine = IBDBCoreSuoritus(koulutusmoduuli = IBDPCoreOppiaineCAS(laajuus = Some(LaajuusOpintopisteissä(1))))
+      val casOppiaine = IBDPCoreSuoritus(koulutusmoduuli = IBDPCoreOppiaineCAS(laajuus = Some(LaajuusOpintopisteissä(1))))
 
       "Ennen rajapäivää" - {
         "Laajuuden ilmoitus kursseina ok" in {

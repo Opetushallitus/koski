@@ -64,7 +64,7 @@ object SupaIBTutkinnonSuoritus {
       suorituskieli = s.suorituskieli,
       osasuoritukset = s.osasuoritukset.map(_.flatMap {
         case oppiaine: IBOppiaineenSuoritus => Some(SupaIBOppiaineenSuoritus(oppiaine))
-        case oppiaine: IBDBCoreSuoritus => Some(SupaIBDBCoreSuoritus(oppiaine))
+        case oppiaine: IBDPCoreSuoritus => Some(SupaIBDPCoreSuoritus(oppiaine))
         case _ => None
       }),
       theoryOfKnowledgeSuoritus = s.theoryOfKnowledge,
@@ -94,16 +94,16 @@ object SupaIBOppiaineenSuoritus {
 }
 
 @Title("IB-tutkinnon DP Core -oppiaineen suoritus")
-case class SupaIBDBCoreSuoritus(
+case class SupaIBDPCoreSuoritus(
   @KoodistoKoodiarvo("ibcore")
   tyyppi: Koodistokoodiviite,
   koulutusmoduuli: IBDPCoreOppiaine,
   arviointi: Option[List[IBCoreOppiaineenArviointi]] = None,
 ) extends SupaIBTutkinnonOppiaine
 
-object SupaIBDBCoreSuoritus {
-  def apply(s: IBDBCoreSuoritus): SupaIBDBCoreSuoritus =
-    SupaIBDBCoreSuoritus(
+object SupaIBDPCoreSuoritus {
+  def apply(s: IBDPCoreSuoritus): SupaIBDPCoreSuoritus =
+    SupaIBDPCoreSuoritus(
       tyyppi = s.tyyppi,
       koulutusmoduuli = s.koulutusmoduuli,
       arviointi = s.arviointi

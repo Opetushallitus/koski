@@ -3,7 +3,7 @@ package fi.oph.koski.validation
 import com.typesafe.config.Config
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.opiskeluoikeus.CompositeOpiskeluoikeusRepository
-import fi.oph.koski.schema.{IBCASSuoritus, IBCoreOppiaineenArviointi, IBDBCoreSuoritus, IBDPCoreOppiaineCAS, IBDPCoreOppiaineExtendedEssay, IBDPCoreOppiaineTheoryOfKnowledge, IBExtendedEssaySuoritus, IBKurssi, IBKurssinSuoritus, IBOpiskeluoikeus, IBOppiaineenArviointi, IBOppiaineenPredictedArviointi, IBOppiaineenSuoritus, IBPäätasonSuoritus, IBTheoryOfKnowledgeSuoritus, IBTutkinnonSuoritus, KoskeenTallennettavaOpiskeluoikeus, LaajuusKursseissa, LaajuusOpintopisteissä, LaajuusOsaamispisteissä, PreIBSuoritus2015}
+import fi.oph.koski.schema.{IBCASSuoritus, IBCoreOppiaineenArviointi, IBDPCoreSuoritus, IBDPCoreOppiaineCAS, IBDPCoreOppiaineExtendedEssay, IBDPCoreOppiaineTheoryOfKnowledge, IBExtendedEssaySuoritus, IBKurssi, IBKurssinSuoritus, IBOpiskeluoikeus, IBOppiaineenArviointi, IBOppiaineenPredictedArviointi, IBOppiaineenSuoritus, IBPäätasonSuoritus, IBTheoryOfKnowledgeSuoritus, IBTutkinnonSuoritus, KoskeenTallennettavaOpiskeluoikeus, LaajuusKursseissa, LaajuusOpintopisteissä, LaajuusOsaamispisteissä, PreIBSuoritus2015}
 import fi.oph.koski.util.ChainingSyntax._
 import fi.oph.koski.util.DateOrdering.localDateOrdering
 import fi.oph.koski.util.FinnishDateFormat
@@ -101,12 +101,12 @@ object IBValidation {
     HttpStatus.fold(
       oo.suoritukset
         .flatMap(_.osasuoritukset.toList.flatten) // oppiaineet
-        .collect { case s: IBDBCoreSuoritus => s }
+        .collect { case s: IBDPCoreSuoritus => s }
         .map { kurssi => validateIBCoreSuorituksenArviointi(kurssi) }
     )
   }
 
-  private def validateIBCoreSuorituksenArviointi(s: IBDBCoreSuoritus): HttpStatus = {
+  private def validateIBCoreSuorituksenArviointi(s: IBDPCoreSuoritus): HttpStatus = {
     val sallitutArvosanatTOKJaEE = Set("A", "B", "C", "D", "E", "P")
     val sallitutArvosanatCAS = Set("1", "2", "3", "4", "5", "6", "7", "F", "O", "S")
 
@@ -149,7 +149,7 @@ object IBValidation {
       )
     } else {
       validate(
-        !pts.osasuoritukset.exists(_.exists(_.isInstanceOf[IBDBCoreSuoritus])),
+        !pts.osasuoritukset.exists(_.exists(_.isInstanceOf[IBDPCoreSuoritus])),
         s"DP Core -oppiaineita ei voi siirtää osasuorituksena ennen $dateString alkaneelle IB-opiskeluoikeudelle"
       )
     }

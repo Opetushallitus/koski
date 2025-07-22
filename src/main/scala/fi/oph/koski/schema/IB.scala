@@ -116,7 +116,7 @@ case class IBOppiaineenSuoritus(
 }
 
 @Title("IB-lukion DP Core -suoritus")
-case class IBDBCoreSuoritus(
+case class IBDPCoreSuoritus(
   @Description("IB-lukion oppiaineen tunnistetiedot")
   @Title("Oppiaine")
   koulutusmoduuli: IBDPCoreOppiaine,
