@@ -32,6 +32,12 @@ object DuplikaattiValidation extends Logging {
         case _ => false
       }
 
+    lazy val isAmmatillisenTutkinnonOsaaPienemmistäKokonaisuuksistaKoostuvaKoulutus: Boolean =
+      opiskeluoikeus.suoritukset.forall {
+        case _: TutkinnonOsaaPienemmistäKokonaisuuksistaKoostuvaSuoritus => true
+        case _ => false
+      }
+
     lazy val isLukionOppimäärä: Boolean = opiskeluoikeus.suoritukset.forall {
       case _: LukionOppimääränSuoritus2015 | _: LukionOppimääränSuoritus2019 => true
       case _ => false
@@ -111,6 +117,7 @@ object DuplikaattiValidation extends Logging {
       oppijanMuutOpiskeluoikeudetSamaOppilaitosJaTyyppi.map(_.find {
         case a: AmmatillinenOpiskeluoikeus if isAmmatillisenTutkinnonOsittainenTaiKokoSuoritus =>
           samaDiaarinumeroAmmatillinen(a) && päällekkäinenAikajakso(a)
+        case _: AmmatillinenOpiskeluoikeus if isAmmatillisenTutkinnonOsaaPienemmistäKokonaisuuksistaKoostuvaKoulutus => false
         case a: AmmatillinenOpiskeluoikeus => päällekkäinenAikajakso(a)
         case _ => false
       })
