@@ -122,6 +122,7 @@ export const useIBTutkintoOppiaineState = (
       essayAihe.value,
       essayKieli.value,
       essayRyhmä.value,
+      essayLaajuus.value,
       essayTaso.value,
       essayTunniste.value,
       kieli.value,
