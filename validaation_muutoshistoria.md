@@ -1,5 +1,9 @@
 # Koskeen tallennettavien tietojen validaatiosäännöt
 
+## 25.7.2025
+
+- Tutkinnon osaa pienemmistä kokonaisuuksista koostuville suorituksille sallitaan duplikaattiopiskeluoikeudet
+
 ## 22.7.2025
 
 - Lisätty validaatio IB-tutkinnon Core-oppiaineiden arvioinneille:

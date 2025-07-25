@@ -10,6 +10,13 @@ import fi.oph.koski.schema.LocalizedString.finnish
 import java.time.LocalDate.{of => date}
 
 class OppijaValidationAmmatillisenTutkinnonOsaaPienemmistäKokonaisuuksistaKoostuvaSuoritusSpec extends MuuAmmatillinenSpecification[TutkinnonOsaaPienemmistäKokonaisuuksistaKoostuvaSuoritus] {
+  "Sallitaan päällekkäiset" - {
+    "palautetaan 200" in {
+      setupOppijaWithOpiskeluoikeus(defaultOpiskeluoikeus, defaultHenkilö)(verifyResponseStatusOk())
+      postOpiskeluoikeus(defaultOpiskeluoikeus, defaultHenkilö)(verifyResponseStatusOk())
+    }
+  }
+
   "Osaamisen hankkimistapa, koulutussopimus, ryhmä" - {
     val suoritus = defaultPäätasonSuoritus.copy(
       osaamisenHankkimistavat = Some(List(OsaamisenHankkimistapajakso(date(2018,1,1), None, osaamisenHankkimistapaOppilaitos))),
