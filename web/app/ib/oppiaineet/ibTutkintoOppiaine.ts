@@ -187,7 +187,7 @@ const createIBDPCoreOppiaineExtendedEssay = (
     ? IBDPCoreOppiaineExtendedEssay({
         aine,
         aihe: props.aihe,
-        pakollinen: !!pakollinen
+        pakollinen: !!pakollinen,
       })
     : null
 }
