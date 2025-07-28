@@ -39,7 +39,6 @@ case class EsiopetusRaportti(db: DB, organisaatioService: OrganisaatioService) e
       sukunimi = r.<<,
       kotikunta = r.<<,
       pidennettyOppivelvollisuus = r.<<,
-      tukimuodot = r.<<,
       erityisenTuenPäätös = r.<<,
       vammainen = r.<<,
       vaikeastiVammainen = r.<<,
@@ -77,7 +76,7 @@ case class EsiopetusRaportti(db: DB, organisaatioService: OrganisaatioService) e
     val nykyinenKotikuntaText = t.get("nykyinen kotikunta on")
 
     SQLHelpers.concatMany(Some(sql"""
-      select
+      select distinct
         r_opiskeluoikeus.opiskeluoikeus_oid,
         lahdejarjestelma_koodiarvo,
         lahdejarjestelma_id,
@@ -109,7 +108,6 @@ case class EsiopetusRaportti(db: DB, organisaatioService: OrganisaatioService) e
       ),
       Some(sql"""
         pidennetty_oppivelvollisuus,
-        tukimuodot,
         erityisen_tuen_paatos,
         vammainen,
         vaikeasti_vammainen,
@@ -190,7 +188,6 @@ case class EsiopetusRaportti(db: DB, organisaatioService: OrganisaatioService) e
     "suorituksenVahvistuspäivä" -> Column(t.get("raportti-excel-kolumni-suorituksenVahvistuspaiva")),
     "yksilöity" -> Column(t.get("raportti-excel-kolumni-yksiloity")),
     "pidennettyOppivelvollisuus" -> Column(t.get("raportti-excel-kolumni-pidennettyOppivelvollisuus")),
-    "tukimuodot" -> Column(t.get("raportti-excel-kolumni-tukimuodot")),
     "erityisenTuenPäätös" -> Column(t.get("raportti-excel-kolumni-erityisenTuenPaatosVoimassa")),
     "vammainen" -> Column(t.get("raportti-excel-kolumni-vammainen")),
     "vaikeastiVammainen" -> Column(t.get("raportti-excel-kolumni-vaikeastiVammainen")),
@@ -228,7 +225,6 @@ case class EsiopetusRaporttiRow(
   suorituksenVahvistuspäivä: Option[LocalDate],
   yksilöity: Boolean,
   pidennettyOppivelvollisuus: Boolean,
-  tukimuodot: Option[String],
   erityisenTuenPäätös: Boolean,
   vammainen: Boolean,
   vaikeastiVammainen: Boolean,
