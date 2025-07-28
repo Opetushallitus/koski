@@ -32,9 +32,9 @@
   <dependencies>
     <!-- OPH internal deps -->
     <dependency>
-      <groupId>com.github.Opetushallitus</groupId>
+      <groupId>fi.vm.sade</groupId>
       <artifactId>auditlogger</artifactId>
-      <version>9af4229c97fadb2f81b53d62d78073d141ea9baa</version>
+      <version>9.2.6-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>com.github.Opetushallitus.java-utils</groupId>
