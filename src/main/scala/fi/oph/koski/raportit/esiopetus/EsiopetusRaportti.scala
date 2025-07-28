@@ -76,7 +76,7 @@ case class EsiopetusRaportti(db: DB, organisaatioService: OrganisaatioService) e
     val nykyinenKotikuntaText = t.get("nykyinen kotikunta on")
 
     SQLHelpers.concatMany(Some(sql"""
-      select
+      select distinct
         r_opiskeluoikeus.opiskeluoikeus_oid,
         lahdejarjestelma_koodiarvo,
         lahdejarjestelma_id,
