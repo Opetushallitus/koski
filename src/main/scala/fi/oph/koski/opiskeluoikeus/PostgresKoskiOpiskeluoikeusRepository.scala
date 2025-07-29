@@ -236,6 +236,8 @@ class PostgresKoskiOpiskeluoikeusRepository(
       FROM opiskeluoikeus
       WHERE oppija_oid = $oppijaOid
         AND koulutusmuoto = $koulutusmuoto
+        AND mitatoity IS NOT TRUE
+        AND poistettu IS NOT TRUE
   """.as[(String, Timestamp)])
       .toMap
       .mapValues(_.toLocalDateTime.toLocalDate)
