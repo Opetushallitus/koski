@@ -1235,6 +1235,7 @@ class KoskiValidator(
             case _ => HttpStatus.ok
           }
         )
+      case _ => HttpStatus.ok
     }
     HttpStatus.fold(päivämääräVirheet, arvosanaVirheet)
   }

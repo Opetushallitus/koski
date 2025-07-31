@@ -745,7 +745,7 @@ class OppijaValidationPerusopetusSpec extends TutkinnonPerusteetTest[Perusopetuk
       }
       "Rajattu oppimäärä vaatii tukea koskevan päätöksen" in {
         val oo = makeOpiskeluoikeus().copy(
-          suoritukset = List(yhdeksännenLuokanLuokallejääntiSuoritus.copy(vahvistus = vahvistusPaikkakunnalla(tukijaksotVoimaan), osasuoritukset = Some(List(äidinkielenSuoritus.copy(rajattuOppimäärä = true))))),
+          suoritukset = List(yhdeksännenLuokanLuokallejääntiSuoritus.copy(vahvistus = vahvistusPaikkakunnalla(tukijaksotVoimaan), osasuoritukset = Some(List(äidinkielenSuoritus.copy(arviointi = arviointi("H", None),rajattuOppimäärä = true))))),
           lisätiedot = None
         )
         setupOppijaWithOpiskeluoikeus(oo) {
@@ -760,7 +760,7 @@ class OppijaValidationPerusopetusSpec extends TutkinnonPerusteetTest[Perusopetuk
         }
       }
 
-      "Rajatulle oppimäärälle sallitaan vain arvosana S kun 1. - 8. lk suoritus" in {
+      "Rajatulle oppimäärälle sallitaan arvosanat S ja H vain kun kyseessä on 1. - 8. lk suoritus" in {
         def makeSeiskaluokanRajattuOppimäärä(arvosana: String) = makeOpiskeluoikeus().copy(
           suoritukset = List(
             seitsemännenLuokanSuoritus.copy(
@@ -775,11 +775,43 @@ class OppijaValidationPerusopetusSpec extends TutkinnonPerusteetTest[Perusopetuk
 
         setupOppijaWithOpiskeluoikeus(makeSeiskaluokanRajattuOppimäärä("5")) {
           verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.date(
-            "Rajatulle oppimäärälle sallitaan vain arvosana S kun kyseessä on 1. - 8. lk suoritus"
+            "Rajatulle oppimäärälle sallitaan arvosanat S ja H vain kun kyseessä on 1. - 8. lk suoritus"
           ))
         }
 
         setupOppijaWithOpiskeluoikeus(makeSeiskaluokanRajattuOppimäärä("S")) {
+          verifyResponseStatusOk()
+        }
+
+        setupOppijaWithOpiskeluoikeus(makeSeiskaluokanRajattuOppimäärä("H")) {
+          verifyResponseStatusOk()
+        }
+      }
+
+      "Rajatulle oppimäärälle sallitaan arvosanat S ja H kun kyseessä on 9lkn luokalle jäämis suoritus" in {
+        def makeYsiluokanLuokallejääntiRajattuOppimäärä(arvosana: String) = makeOpiskeluoikeus().copy(
+          suoritukset = List(
+            yhdeksännenLuokanLuokallejääntiSuoritus.copy(
+              vahvistus = vahvistusPaikkakunnalla(tukijaksotVoimaan),
+              osasuoritukset = Some(List(äidinkielenSuoritus.copy(rajattuOppimäärä = true, arviointi = arviointi(arvosana, None, None))))
+            )
+          ),
+          lisätiedot = Some(PerusopetuksenOpiskeluoikeudenLisätiedot(
+            tuenPäätöksenJaksot = tuenPäätöksenJaksot(alku = tukijaksotVoimaan)
+          ))
+        )
+
+        setupOppijaWithOpiskeluoikeus(makeYsiluokanLuokallejääntiRajattuOppimäärä("5")) {
+          verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.date(
+            "Rajatulle oppimäärälle sallitaan arvosanat S ja H vain kun kyseessä on 9. lk ja oppilas jää luokalle"
+          ))
+        }
+
+        setupOppijaWithOpiskeluoikeus(makeYsiluokanLuokallejääntiRajattuOppimäärä("S")) {
+          verifyResponseStatusOk()
+        }
+
+        setupOppijaWithOpiskeluoikeus(makeYsiluokanLuokallejääntiRajattuOppimäärä("H")) {
           verifyResponseStatusOk()
         }
       }
