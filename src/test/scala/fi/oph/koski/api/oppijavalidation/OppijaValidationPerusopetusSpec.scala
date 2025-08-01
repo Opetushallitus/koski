@@ -788,7 +788,7 @@ class OppijaValidationPerusopetusSpec extends TutkinnonPerusteetTest[Perusopetuk
         }
       }
 
-      "Rajatulle oppimäärälle sallitaan arvosanat S ja H kun kyseessä on 9lkn luokalle jäämis suoritus" in {
+      "Rajatulle oppimäärälle sallitaan arvosanat S ja H vain kun kyseessä on 9. lk ja oppilas jää luokalle" in {
         def makeYsiluokanLuokallejääntiRajattuOppimäärä(arvosana: String) = makeOpiskeluoikeus().copy(
           suoritukset = List(
             yhdeksännenLuokanLuokallejääntiSuoritus.copy(
