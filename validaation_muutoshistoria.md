@@ -1,5 +1,8 @@
 # Koskeen tallennettavien tietojen validaatiosäännöt
 
+## 31.7.2025
+- Rajatuille oppimäärille sallitaan arvosanat S ja H vuosiluokilla 1-9.
+
 ## 25.7.2025
 
 - Tutkinnon osaa pienemmistä kokonaisuuksista koostuville suorituksille sallitaan duplikaattiopiskeluoikeudet

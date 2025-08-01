@@ -1185,14 +1185,14 @@ class KoskiValidator(
       }
     }
 
-    def vainSallittuArvosana(os: Suoritus, arvosana: String): Boolean = {
+    def vainSallitutArvosanat(os: Suoritus, sallitutArvosanat: String*): Boolean = {
       val arvosanat = os.arviointi.toList.flatten.collect {
         case a: PerusopetuksenOppiaineenArviointi => a.arvosana.koodiarvo
       }
-      arvosanat.nonEmpty && arvosanat.forall(_ == arvosana)
+      arvosanat.nonEmpty && arvosanat.forall(sallitutArvosanat.contains)
     }
 
-    suoritus match {
+    val päivämääräVirheet = suoritus match {
       case s: PerusopetuksenPäätasonSuoritus if s.vahvistus.nonEmpty =>
         val vahvistuspvm = s.vahvistus.get.päivä
         HttpStatus.fold(
@@ -1201,13 +1201,6 @@ class KoskiValidator(
               HttpStatus.fold(
                 HttpStatus.validate(!vahvistuspvm.isBefore(oppiaineenRajattuOppimääräVoimaan))(KoskiErrorCategory.badRequest.validation.date(s"Tietoa rajattuOppimäärä ei saa siirtää ennen $oppiaineenRajattuOppimääräVoimaan alkaneelle suoritukselle")),
                 HttpStatus.validate(sisältyyTuenPäätöksenJaksoon(vahvistuspvm))(KoskiErrorCategory.badRequest.validation.date(s"Tieto rajattuOppimäärä vaatii tukijakson suorituksen vahvistuspäivälle: $vahvistuspvm")),
-                suoritus.koulutusmoduuli.tunniste.koodiarvo match {
-                  case "201101" =>
-                    HttpStatus.validate(vainSallittuArvosana(os, "5"))(KoskiErrorCategory.badRequest.validation.date(s"Rajatulle oppimäärälle sallitaan vain arvosana 5 kun kyseessä on perusopetuksen oppimäärän suoritus"))
-                  case "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" =>
-                    HttpStatus.validate(vainSallittuArvosana(os, "S"))(KoskiErrorCategory.badRequest.validation.date(s"Rajatulle oppimäärälle sallitaan vain arvosana S kun kyseessä on 1. - 8. lk suoritus"))
-                  case _ => HttpStatus.ok
-                }
               )
             case os: RajattavaOppimäärä if os.yksilöllistettyOppimäärä =>
               HttpStatus.validate(vahvistuspvm.isBefore(yksilöllistettyOppimääräViimeinenKäyttöpäivä))(KoskiErrorCategory.badRequest.validation.date(s"Tietoa yksilöllistettyOppimäärä ei saa siirtää $yksilöllistettyOppimääräViimeinenKäyttöpäivä jälkeen alkaneelle suoritukselle"))
@@ -1216,6 +1209,35 @@ class KoskiValidator(
         )
       case _ => HttpStatus.ok
     }
+
+    val arvosanaVirheet = suoritus match {
+      case s: NuortenPerusopetuksenOppiaineenOppimääränSuoritus if s.vahvistus.nonEmpty =>
+        HttpStatus.ok
+      case s: PerusopetuksenOppimääränSuoritus if s.vahvistus.nonEmpty =>
+        HttpStatus.fold(
+          suoritus.osasuoritusLista.map {
+            case os: RajattavaOppimäärä if os.rajattuOppimäärä =>
+              HttpStatus.validate(vainSallitutArvosanat(os, "5"))(KoskiErrorCategory.badRequest.validation.date(s"Rajatulle oppimäärälle sallitaan vain arvosana 5 kun kyseessä on perusopetuksen oppimäärän suoritus"))
+            case _ => HttpStatus.ok
+          }
+        )
+      case s: PerusopetuksenVuosiluokanSuoritus if s.vahvistus.nonEmpty =>
+        HttpStatus.fold(
+          suoritus.osasuoritusLista.map {
+            case os: RajattavaOppimäärä if os.rajattuOppimäärä =>
+              suoritus.koulutusmoduuli.tunniste.koodiarvo match {
+                case "9" if s.jääLuokalle =>
+                  HttpStatus.validate(vainSallitutArvosanat(os, "S", "H"))(KoskiErrorCategory.badRequest.validation.date(s"Rajatulle oppimäärälle sallitaan arvosanat S ja H vain kun kyseessä on 9. lk ja oppilas jää luokalle"))
+                case "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" =>
+                  HttpStatus.validate(vainSallitutArvosanat(os, "S", "H"))(KoskiErrorCategory.badRequest.validation.date(s"Rajatulle oppimäärälle sallitaan arvosanat S ja H vain kun kyseessä on 1. - 8. lk suoritus"))
+                case _ => HttpStatus.ok
+              }
+            case _ => HttpStatus.ok
+          }
+        )
+      case _ => HttpStatus.ok
+    }
+    HttpStatus.fold(päivämääräVirheet, arvosanaVirheet)
   }
 
   private def validateVahvistusAndPäättymispäiväDateOrder(suoritus: Suoritus, opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus, vahvistuspäivät: Option[LocalDate]): HttpStatus = {
