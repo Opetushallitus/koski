@@ -1,7 +1,7 @@
 # Koskeen tallennettavien tietojen validaatiosäännöt
 
 ## 31.7.2025
-- Yhdeksännelle luokalle jäävälle oppilaalle sallitaan S-arviointi rajatuissa oppimäärissä lukuvuositodistuksissa (vuosiluokat 1-9) sallitaan myös arvosana H
+- Rajatuille oppimäärille sallitaan arvosanat S ja H vuosiluokilla 1-9.
 
 ## 25.7.2025
 
