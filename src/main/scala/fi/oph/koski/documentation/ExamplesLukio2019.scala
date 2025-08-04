@@ -276,7 +276,8 @@ object Lukio2019ExampleData {
   def oppiaineenSuoritus(aine: LukionOppiaine2019): LukionOppiaineenSuoritus2019 = LukionOppiaineenSuoritus2019(
     koulutusmoduuli = aine,
     suorituskieli = None,
-    osasuoritukset = None
+    osasuoritukset = None,
+    arviointi = None
   )
 
   def matematiikka(matematiikka: String, laajuus: LaajuusOpintopisteissä) =
@@ -295,7 +296,19 @@ object Lukio2019ExampleData {
   def lukionUskonto(): LukionUskonto2019 =
     LukionUskonto2019(
       tunniste = Koodistokoodiviite(koodistoUri = "koskioppiaineetyleissivistava", koodiarvo = "KT"),
+      uskonnonOppimäärä = None
+    )
+  def lukionElämänkatsomustieto(laajuus: LaajuusOpintopisteissä): LukionUskonto2019 =
+    LukionUskonto2019(
+      tunniste = Koodistokoodiviite(koodistoUri = "koskioppiaineetyleissivistava", koodiarvo = "ET"),
       uskonnonOppimäärä = None,
+      laajuus = Some(laajuus)
+    )
+
+  def lukionElämänkatsomustieto(): LukionUskonto2019 =
+    LukionUskonto2019(
+      tunniste = Koodistokoodiviite(koodistoUri = "koskioppiaineetyleissivistava", koodiarvo = "ET"),
+      uskonnonOppimäärä = None
     )
 
   def lukionÄidinkieli(kieli: String, laajuus: LaajuusOpintopisteissä, pakollinen: Boolean) =

@@ -1,7 +1,8 @@
 package fi.oph.koski.validation
 
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
-import fi.oph.koski.schema.{LukionOppiaineenOppimääränSuoritus2015, LukionOppiaineidenOppimäärienSuoritus2019, Organisaatio, Suoritus}
+import fi.oph.koski.schema.annotation.KoodistoKoodiarvo
+import fi.oph.koski.schema.{LukionOppiaineenOppimääränSuoritus2015, LukionOppiaineidenOppimäärienSuoritus2019, LukionOppimääränSuoritus2015, LukionOppimääränSuoritus2019, Organisaatio, Suoritus}
 
 object LukionYhteisetValidaatiot {
 
@@ -26,5 +27,22 @@ object LukionYhteisetValidaatiot {
 
   def laajuusValidoitavaOppilaitoksessa(oppilaitosOid: Option[Organisaatio.Oid]): Boolean = {
     oppilaitosOid.isEmpty || oppilaitosOid.exists(oid => !oppilaitoksetIlmanLaajuudenValidointia.contains(oid))
+  }
+
+  def validatePäällekkäisetKTjaET(suoritus: Suoritus): HttpStatus = {
+    suoritus match {
+      case _: LukionOppimääränSuoritus2019 | _: LukionOppimääränSuoritus2015 =>
+        val koodiarvot = suoritus.osasuoritukset.getOrElse(Nil).map(_.koulutusmoduuli.tunniste.koodiarvo)
+        if (koodiarvot.contains("ET") && koodiarvot.contains("KT")) {
+          KoskiErrorCategory.badRequest.validation.rakenne.päällekkäisetETjaKTSuoritukset(
+            "Lukion oppimäärän suorituksessa ei voi olla sekä ET- että KT-oppiaineen suorituksia"
+          )
+        } else {
+          HttpStatus.ok
+        }
+
+      case _ =>
+        HttpStatus.ok
+    }
   }
 }

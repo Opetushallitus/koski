@@ -1163,6 +1163,7 @@ class KoskiValidator(
         :: Lukio2019VieraatKieletValidation.validate(suoritus, parent)
         :: Lukio2019ArvosanaValidation.validateOsasuoritus(suoritus)
         :: LukionYhteisetValidaatiot.validateLukionPäätasonSuoritus(suoritus)
+        :: LukionYhteisetValidaatiot.validatePäällekkäisetKTjaET(suoritus)
         :: LukioonValmistavanKoulutuksenValidaatiot.validateLukioonValmistava2019(suoritus)
         :: VapaaSivistystyöValidation.validateVapaanSivistystyönPäätasonSuoritus(config, henkilö, suoritus, opiskeluoikeus, VapaaSivistystyöValidation.vstJotpaAikaisinSallittuAlkamispäivä(config), henkilöRepository, koskiOpiskeluoikeudet)
         :: VSTKotoutumiskoulutus2022Validation.validate(suoritus)

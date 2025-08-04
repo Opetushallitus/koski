@@ -1,5 +1,8 @@
 # Koskeen tallennettavien tietojen validaatiosäännöt
 
+## 6.8.2025
+- Lukion oppimäärän opiskeluoikeudelle ei sallita KT ja ET suorituksia yhdessä
+
 ## 31.7.2025
 - Rajatuille oppimäärille sallitaan arvosanat S ja H vuosiluokilla 1-9.
 
