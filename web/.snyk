@@ -32,4 +32,11 @@ ignore:
     - ramda:
         reason: Ei korjausta olemassa
         expires: '2021-12-31T06:38:48.085Z'
+  SNYK-JS-CODEMIRROR-10494092:
+    - codemirror:
+        reason: ReDoS that is not really easy to trigger, since we don't use the editor to publish user created content to others. No patch for legacy codemirror version
+        expires: 2025-11-01T14:01:55.550Z
+    - "@skidding/react-codemirror@1.0.2 > codemirror@5.65.19":
+        reason: ReDoS that is not really easy to trigger, since we don't use the editor to publish user created content to others. No patch for legacy codemirror version
+        expires: 2025-11-01T14:01:55.550Z
 patch: {}
