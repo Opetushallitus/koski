@@ -307,7 +307,7 @@
          <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="alku" nullable="false" remarks="" size="13" type="date" typeCode="91"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="3" name="loppu" nullable="true" remarks="" size="13" type="date" typeCode="91"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="4" name="oppisopimus_oppimispaikan_y_tunnus" nullable="true" remarks="" size="2147483647" type="varchar" typeCode="12"/>
-         <column autoUpdated="false" defaultValue="null" digits="0" id="5" name="oppisopimus_purkamisen_paiva_purettu_koeajalla" nullable="true" remarks="" size="13" type="date" typeCode="91"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="5" name="oppisopimus_purkamisen_paiva" nullable="true" remarks="" size="13" type="date" typeCode="91"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="6" name="oppisopimus_purettu_koeajalla" nullable="true" remarks="" size="1" type="bool" typeCode="-7"/>
          <index name="r_koulutuksen_jarjestamismuot_opiskeluoikeus_oid_aikajakso__idx" unique="false">
             <column ascending="true" name="opiskeluoikeus_oid"/>
@@ -511,7 +511,7 @@
          <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="alku" nullable="false" remarks="" size="13" type="date" typeCode="91"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="3" name="loppu" nullable="true" remarks="" size="13" type="date" typeCode="91"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="4" name="oppisopimus_oppimispaikan_y_tunnus" nullable="true" remarks="" size="2147483647" type="varchar" typeCode="12"/>
-         <column autoUpdated="false" defaultValue="null" digits="0" id="5" name="oppisopimus_purkamisen_paiva_purettu_koeajalla" nullable="true" remarks="" size="13" type="date" typeCode="91"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="5" name="oppisopimus_purkamisen_paiva" nullable="true" remarks="" size="13" type="date" typeCode="91"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="6" name="oppisopimus_purettu_koeajalla" nullable="true" remarks="" size="1" type="bool" typeCode="-7"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="7" name="koulutussopimus_paikkakunta_koodiarvo" nullable="true" remarks="" size="2147483647" type="varchar" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="8" name="koulutussopimus_maa_koodiarvo" nullable="true" remarks="" size="2147483647" type="varchar" typeCode="12"/>
