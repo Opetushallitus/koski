@@ -636,7 +636,7 @@ class RAmmatillisenKoulutuksenJarjestamismuotoAikajaksoTable(tag: Tag, schema: S
   val alku = column[Date]("alku")
   val loppu = column[Option[Date]]("loppu")
   val oppisopimusOppimispaikanYTunnus = column[Option[String]]("oppisopimus_oppimispaikan_y_tunnus")
-  val oppisopimusPurkamisenPäivä = column[Option[Date]]("oppisopimus_purkamisen_paiva")
+  val oppisopimusPurkamisenPäivä = column[Option[Date]]("oppisopimus_purkamisen_paiva_purettu_koeajalla")
   val oppisopimusPurettuKoeajalla = column[Option[Boolean]]("oppisopimus_purettu_koeajalla")
 
   def * = (
@@ -656,7 +656,7 @@ class ROsaamisenHankkimistapaAikajaksoTable(tag: Tag, schema: Schema = Public) e
   val alku = column[Date]("alku")
   val loppu = column[Option[Date]]("loppu")
   val oppisopimusOppimispaikanYTunnus = column[Option[String]]("oppisopimus_oppimispaikan_y_tunnus")
-  val oppisopimusPurkamisenPäivä = column[Option[Date]]("oppisopimus_purkamisen_paiva")
+  val oppisopimusPurkamisenPäivä = column[Option[Date]]("oppisopimus_purkamisen_paiva_purettu_koeajalla")
   val oppisopimusPurettuKoeajalla = column[Option[Boolean]]("oppisopimus_purettu_koeajalla")
   val koulutussopimusPaikkakunta = column[Option[String]]("koulutussopimus_paikkakunta_koodiarvo")
   val koulutussopimusMaa = column[Option[String]]("koulutussopimus_maa_koodiarvo")
