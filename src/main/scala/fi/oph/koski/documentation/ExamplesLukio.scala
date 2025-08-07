@@ -499,6 +499,12 @@ object LukioExampleData {
       perusteenDiaarinumero = diaarinumero
     )
 
+  def lukionElämänkatsomustieto(diaarinumero: Option[String]): LukionUskonto2015 =
+    LukionUskonto2015(
+      tunniste = Koodistokoodiviite(koodistoUri = "koskioppiaineetyleissivistava", koodiarvo = "ET"),
+      uskonnonOppimäärä = None,
+      perusteenDiaarinumero = diaarinumero
+    )
   def lukionÄidinkieli(kieli: String, laajuus: LaajuusKursseissa, pakollinen: Boolean) =
     LukionÄidinkieliJaKirjallisuus2015(kieli = Koodistokoodiviite(koodiarvo = kieli, koodistoUri = "oppiaineaidinkielijakirjallisuus"), laajuus = Some(laajuus), pakollinen = pakollinen)
 

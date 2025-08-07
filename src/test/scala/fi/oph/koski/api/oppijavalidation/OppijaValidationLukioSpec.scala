@@ -1,6 +1,6 @@
 package fi.oph.koski.api.oppijavalidation
 
-import fi.oph.koski.KoskiHttpSpec
+import fi.oph.koski.{KoskiHttpSpec, schema}
 import fi.oph.koski.api.misc.TestMethodsLukio.päättötodistusSuoritus
 import fi.oph.koski.api.misc.OpiskeluoikeusTestMethodsLukio2015
 import fi.oph.koski.documentation.ExampleData._
@@ -11,7 +11,6 @@ import fi.oph.koski.http.{ErrorMatcher, KoskiErrorCategory}
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.schema._
 import junit.framework.Assert.assertEquals
-
 import java.time.LocalDate
 import java.time.LocalDate.{of => date}
 
@@ -82,6 +81,21 @@ class OppijaValidationLukioSpec extends TutkinnonPerusteetTest[LukionOpiskeluoik
   }
 
   "Kaksi samaa oppiainetta" - {
+    "ET ja KT 2015 -> HTTP 400" in {
+      val oo = lukionOpiskeluoikeus()
+      setupOppijaWithOpiskeluoikeus(
+        oo.withSuoritukset(suoritukset = List(
+          oo.suoritukset.head.withOsasuoritukset(Some(List(suoritus(lukionUskonto(diaarinumero = None)),suoritus(lukionElämänkatsomustieto(diaarinumero = None))),
+          )))
+        )
+      ) {
+        verifyResponseStatus(
+          400,
+          KoskiErrorCategory.badRequest.validation.rakenne.päällekkäisetETjaKTSuoritukset("Lukion oppimäärän suorituksessa ei voi olla sekä ET- että KT-oppiaineen suorituksia")
+        )
+      }
+    }
+
     "Identtisillä tiedoilla -> HTTP 400" in {
       setupOppijaWithOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(päättötodistusSuoritus.copy(osasuoritukset = Some(List(
         suoritus(LukioExampleData.lukionÄidinkieli("AI1", pakollinen = true)).copy(arviointi = arviointi("9")),

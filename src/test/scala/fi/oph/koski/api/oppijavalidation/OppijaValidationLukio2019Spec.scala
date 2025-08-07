@@ -6,7 +6,7 @@ import fi.oph.koski.documentation.AmmatillinenExampleData.primusLähdejärjestel
 import fi.oph.koski.documentation.ExampleData._
 import fi.oph.koski.documentation.ExamplesLukio2019._
 import fi.oph.koski.documentation.Lukio2019ExampleData._
-import fi.oph.koski.documentation.LukioExampleData.{opiskeluoikeusAktiivinen, opiskeluoikeusPäättynyt}
+import fi.oph.koski.documentation.LukioExampleData.{lukionOpiskeluoikeus, opiskeluoikeusAktiivinen, opiskeluoikeusPäättynyt}
 import fi.oph.koski.documentation.{ExampleData, ExamplesLukio2019, Lukio2019ExampleData, LukioExampleData}
 import fi.oph.koski.http.ErrorMatcher.exact
 import fi.oph.koski.http.{ErrorMatcher, KoskiErrorCategory}
@@ -267,6 +267,31 @@ class OppijaValidationLukio2019Spec extends AnyFreeSpec with PutOpiskeluoikeusTe
     "Opiskeluoikeutta ei voi merkitä valmistuneeksi, jos siinä ei ole yhtään osasuoritusta" in {
       setupOppijaWithOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(oppiaineidenOppimäärienSuoritus.copy(osasuoritukset = None)))) {
         verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.osasuoritusPuuttuu("""Lukion oppiaineiden oppimäärien suorituksen 2019 sisältävää opiskeluoikeutta ei voi merkitä valmiiksi ilman arvioitua oppiaineen osasuoritusta"""))
+      }
+    }
+    "ET ja KT 2019 -> HTTP 400" in {
+      setupOppijaWithOpiskeluoikeus(
+        lukionOpiskeluoikeus().copy(suoritukset = List(
+          oppimääränSuoritus.copy(osasuoritukset = Some(List(
+            Lukio2019ExampleData.oppiaineenSuoritus(Lukio2019ExampleData.lukionUskonto()).copy(
+              arviointi = Some(List(NumeerinenLukionOppiaineenArviointi2019(
+                arvosana = Koodistokoodiviite(koodiarvo = "7", koodistoUri = "arviointiasteikkoyleissivistava"),
+                päivä = Some(date(2025, 1, 1))
+              )))
+            ),
+            Lukio2019ExampleData.oppiaineenSuoritus(Lukio2019ExampleData.lukionElämänkatsomustieto()).copy(
+              arviointi = Some(List(NumeerinenLukionOppiaineenArviointi2019(
+                arvosana = Koodistokoodiviite(koodiarvo = "7", koodistoUri = "arviointiasteikkoyleissivistava"),
+                päivä = Some(date(2025, 1, 1))
+              )))
+            )
+          )))
+        ))
+      ) {
+        verifyResponseStatus(
+          400,
+          KoskiErrorCategory.badRequest.validation.rakenne.päällekkäisetETjaKTSuoritukset("Lukion oppimäärän suorituksessa ei voi olla sekä ET- että KT-oppiaineen suorituksia")
+        )
       }
     }
 
