@@ -24,6 +24,10 @@ import { RaisedButton } from '../controls/RaisedButton'
 import { FormField, Nothing } from '../forms/FormField'
 import { FormModel, useForm } from '../forms/FormModel'
 import { ValidationError } from '../forms/validator'
+import {
+  isRahoituksellinenOpiskeluoikeusjakso,
+  isRahoituksellinenOpiskeluoikeusjaksoClass
+} from '../../util/opiskeluoikeusjakso'
 
 export type UusiOpiskeluoikeudenTilaModalProps<T extends Opiskeluoikeusjakso> =
   CommonProps<{
@@ -61,10 +65,7 @@ const useInitialOpiskelujaksoForm = <T extends Opiskeluoikeusjakso>(
   opiskeluoikeusjaksoClass: ClassOf<T>
 ) =>
   useMemo<UusiOpiskeluoikeusjakso<T>>(() => {
-    if (
-      opiskeluoikeusjaksoClass ===
-      VapaanSivistystyönJotpaKoulutuksenOpiskeluoikeusjakso.className
-    ) {
+    if (isRahoituksellinenOpiskeluoikeusjaksoClass(opiskeluoikeusjaksoClass)) {
       return {
         alku: todayISODate(),
         tila: Koodistokoodiviite({
@@ -99,13 +100,15 @@ const OpiskeluoikeudenTilanRahoitusField = <T extends Opiskeluoikeusjakso>(
     () => [props.form.root.prop('opintojenRahoitus')],
     [props.form.root]
   )
-  const rahoitusKoodiarvot = useAllowedStrings(
+  const allowedRahoitusKoodiarvot = useAllowedStrings(
     props.opiskeluoikeusjaksoClass,
     'opintojenRahoitus.koodiarvo'
   )
   const rahoitus = useKoodisto(
     KOODISTOURI_OPINTOJENRAHOITUS,
-    rahoitusKoodiarvot
+    allowedRahoitusKoodiarvot && allowedRahoitusKoodiarvot?.length > 0
+      ? allowedRahoitusKoodiarvot
+      : undefined
   )?.map((k) => k.koodiviite)
 
   const opintojenRahoitusOptions = useMemo(
@@ -251,5 +254,11 @@ export const UusiOpiskeluoikeudenTilaModal = <T extends Opiskeluoikeusjakso>(
 // Utils
 
 const defaultTila = (cn: ClassOf<Opiskeluoikeusjakso>): string => 'lasna'
-const defaultOpintojenRahoitus = (cn: ClassOf<Opiskeluoikeusjakso>): string =>
-  '14'
+const defaultOpintojenRahoitus = (cn: ClassOf<Opiskeluoikeusjakso>): string => {
+  switch (cn) {
+    case 'fi.oph.koski.schema.VapaanSivistystyönJotpaKoulutuksenOpiskeluoikeusjakso':
+      return '14'
+    default:
+      return '1'
+  }
+}

@@ -27,3 +27,11 @@ export const isRahoituksellinenOpiskeluoikeusjakso = (
   isTutkintokoulutukseenValmentavanOpiskeluoikeusjakso(x) ||
   isVapaanSivistystyönJotpaKoulutuksenOpiskeluoikeusjakso(x) ||
   isLukionOpiskeluoikeusjakso(x)
+
+export const isRahoituksellinenOpiskeluoikeusjaksoClass = (
+  className: string
+): boolean => {
+  return isRahoituksellinenOpiskeluoikeusjakso({
+    $class: className
+  } as Opiskeluoikeusjakso)
+}

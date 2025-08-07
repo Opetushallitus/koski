@@ -152,8 +152,8 @@ export const OpiskeluoikeudenTilaEdit = <T extends OpiskeluoikeudenTila>(
                   />,
                   <div key="jakso">
                     <TestIdText id="tila">{t(jakso.tila.nimi)}</TestIdText>
-                    {isVapaanSivistystyönOpiskeluoikeusjakso(jakso) &&
-                      isRahoituksellinenOpiskeluoikeusjakso(jakso) && (
+                    {isRahoituksellinenOpiskeluoikeusjakso(jakso) &&
+                      jakso.opintojenRahoitus && (
                         <>
                           {' '}
                           <TestIdText id="rahoitus">
