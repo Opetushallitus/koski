@@ -1176,53 +1176,53 @@
 <g id="node19" class="node">
 <title>r_koulutuksen_jarjestamismuoto_ammatillinen</title>
 <g id="a_node19"><a xlink:href="../../tables/r_koulutuksen_jarjestamismuoto__e7f45a0d.html" xlink:title="r_koulutuksen_jarjestamismuoto_ammatillinen" target="_top">
-<polygon fill="#ffffff" stroke="transparent" points="44,-5258 44,-5458 469,-5458 469,-5258 44,-5258"/>
-<polygon fill="#f5f5f5" stroke="transparent" points="46.5,-5433 46.5,-5456 467.5,-5456 467.5,-5433 46.5,-5433"/>
-<polygon fill="none" stroke="#000000" points="46.5,-5433 46.5,-5456 467.5,-5456 467.5,-5433 46.5,-5433"/>
-<text text-anchor="start" x="51.5" y="-5441.6" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="11.00" fill="#000000">r_koulutuksen_jarjestamismuoto_ammatillinen</text>
-<text text-anchor="start" x="432.5437" y="-5441.1" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">[table]</text>
-<polygon fill="#ffffff" stroke="transparent" points="46.5,-5411 46.5,-5433 358.5,-5433 358.5,-5411 46.5,-5411"/>
-<polygon fill="none" stroke="#000000" points="46.5,-5411 46.5,-5433 358.5,-5433 358.5,-5411 46.5,-5411"/>
-<text text-anchor="start" x="66.5" y="-5418.1" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">opiskeluoikeus_oid</text>
-<polygon fill="none" stroke="#000000" points="358.5,-5411 358.5,-5433 467.5,-5433 467.5,-5411 358.5,-5411"/>
-<text text-anchor="start" x="361.0344" y="-5418.7" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">varchar[2147483647]</text>
-<polygon fill="#ffffff" stroke="transparent" points="46.5,-5389 46.5,-5411 358.5,-5411 358.5,-5389 46.5,-5389"/>
-<polygon fill="none" stroke="#000000" points="46.5,-5389 46.5,-5411 358.5,-5411 358.5,-5389 46.5,-5389"/>
-<text text-anchor="start" x="66.5" y="-5396.1" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">aikajakso_tyyppi</text>
-<polygon fill="none" stroke="#000000" points="358.5,-5389 358.5,-5411 467.5,-5411 467.5,-5389 358.5,-5389"/>
-<text text-anchor="start" x="361.0344" y="-5396.7" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">varchar[2147483647]</text>
-<polygon fill="#ffffff" stroke="transparent" points="46.5,-5367 46.5,-5389 358.5,-5389 358.5,-5367 46.5,-5367"/>
-<polygon fill="none" stroke="#000000" points="46.5,-5367 46.5,-5389 358.5,-5389 358.5,-5367 46.5,-5367"/>
-<text text-anchor="start" x="66.5" y="-5374.1" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">alku</text>
-<polygon fill="none" stroke="#000000" points="358.5,-5367 358.5,-5389 467.5,-5389 467.5,-5367 358.5,-5367"/>
-<text text-anchor="start" x="361.5" y="-5374.7" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">date[13]</text>
-<polygon fill="#ffffff" stroke="transparent" points="46.5,-5345 46.5,-5367 358.5,-5367 358.5,-5345 46.5,-5345"/>
-<polygon fill="none" stroke="#000000" points="46.5,-5345 46.5,-5367 358.5,-5367 358.5,-5345 46.5,-5345"/>
-<text text-anchor="start" x="66.5" y="-5352.1" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">loppu</text>
-<polygon fill="none" stroke="#000000" points="358.5,-5345 358.5,-5367 467.5,-5367 467.5,-5345 358.5,-5345"/>
-<text text-anchor="start" x="361.5" y="-5352.7" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">date[13]</text>
-<polygon fill="none" stroke="#000000" points="46.5,-5323 46.5,-5345 358.5,-5345 358.5,-5323 46.5,-5323"/>
-<text text-anchor="start" x="66.5" y="-5330.1" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">oppisopimus_oppimispaikan_y_tunnus</text>
-<polygon fill="none" stroke="#000000" points="358.5,-5323 358.5,-5345 467.5,-5345 467.5,-5323 358.5,-5323"/>
-<text text-anchor="start" x="361.0344" y="-5330.7" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">varchar[2147483647]</text>
-<polygon fill="none" stroke="#000000" points="46.5,-5301 46.5,-5323 358.5,-5323 358.5,-5301 46.5,-5301"/>
-<text text-anchor="start" x="66.5" y="-5308.1" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">oppisopimus_purkamisen_paiva_purettu_koeajalla</text>
-<polygon fill="none" stroke="#000000" points="358.5,-5301 358.5,-5323 467.5,-5323 467.5,-5301 358.5,-5301"/>
-<text text-anchor="start" x="361.5" y="-5308.7" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">date[13]</text>
-<polygon fill="none" stroke="#000000" points="46.5,-5279 46.5,-5301 358.5,-5301 358.5,-5279 46.5,-5279"/>
-<text text-anchor="start" x="66.5" y="-5286.1" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">oppisopimus_purettu_koeajalla</text>
-<polygon fill="none" stroke="#000000" points="358.5,-5279 358.5,-5301 467.5,-5301 467.5,-5279 358.5,-5279"/>
-<text text-anchor="start" x="361.5" y="-5286.7" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">bool[1]</text>
-<polygon fill="#ffffff" stroke="transparent" points="46.5,-5260 46.5,-5279 190.5,-5279 190.5,-5260 46.5,-5260"/>
-<polygon fill="none" stroke="#000000" points="46.5,-5260 46.5,-5279 190.5,-5279 190.5,-5260 46.5,-5260"/>
-<text text-anchor="start" x="49.5" y="-5266.1" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">&lt; 0</text>
-<polygon fill="#ffffff" stroke="transparent" points="190.5,-5260 190.5,-5279 358.5,-5279 358.5,-5260 190.5,-5260"/>
-<polygon fill="none" stroke="#000000" points="190.5,-5260 190.5,-5279 358.5,-5279 358.5,-5260 190.5,-5260"/>
-<text text-anchor="start" x="316.9956" y="-5266.1" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">24 rows</text>
-<polygon fill="#ffffff" stroke="transparent" points="358.5,-5260 358.5,-5279 467.5,-5279 467.5,-5260 358.5,-5260"/>
-<polygon fill="none" stroke="#000000" points="358.5,-5260 358.5,-5279 467.5,-5279 467.5,-5260 358.5,-5260"/>
-<text text-anchor="start" x="448.9053" y="-5266.1" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">0 &gt;</text>
-<polygon fill="none" stroke="#000000" stroke-width="2" points="45,-5259 45,-5457 468,-5457 468,-5259 45,-5259"/>
+<polygon fill="#ffffff" stroke="transparent" points="55.5,-5258 55.5,-5458 457.5,-5458 457.5,-5258 55.5,-5258"/>
+<polygon fill="#f5f5f5" stroke="transparent" points="57.5,-5433 57.5,-5456 455.5,-5456 455.5,-5433 57.5,-5433"/>
+<polygon fill="none" stroke="#000000" points="57.5,-5433 57.5,-5456 455.5,-5456 455.5,-5433 57.5,-5433"/>
+<text text-anchor="start" x="62.5" y="-5441.6" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="11.00" fill="#000000">r_koulutuksen_jarjestamismuoto_ammatillinen</text>
+<text text-anchor="start" x="420.5437" y="-5441.1" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">[table]</text>
+<polygon fill="#ffffff" stroke="transparent" points="57.5,-5411 57.5,-5433 346.5,-5433 346.5,-5411 57.5,-5411"/>
+<polygon fill="none" stroke="#000000" points="57.5,-5411 57.5,-5433 346.5,-5433 346.5,-5411 57.5,-5411"/>
+<text text-anchor="start" x="77.5" y="-5418.1" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">opiskeluoikeus_oid</text>
+<polygon fill="none" stroke="#000000" points="346.5,-5411 346.5,-5433 455.5,-5433 455.5,-5411 346.5,-5411"/>
+<text text-anchor="start" x="349.0344" y="-5418.7" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">varchar[2147483647]</text>
+<polygon fill="#ffffff" stroke="transparent" points="57.5,-5389 57.5,-5411 346.5,-5411 346.5,-5389 57.5,-5389"/>
+<polygon fill="none" stroke="#000000" points="57.5,-5389 57.5,-5411 346.5,-5411 346.5,-5389 57.5,-5389"/>
+<text text-anchor="start" x="77.5" y="-5396.1" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">aikajakso_tyyppi</text>
+<polygon fill="none" stroke="#000000" points="346.5,-5389 346.5,-5411 455.5,-5411 455.5,-5389 346.5,-5389"/>
+<text text-anchor="start" x="349.0344" y="-5396.7" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">varchar[2147483647]</text>
+<polygon fill="#ffffff" stroke="transparent" points="57.5,-5367 57.5,-5389 346.5,-5389 346.5,-5367 57.5,-5367"/>
+<polygon fill="none" stroke="#000000" points="57.5,-5367 57.5,-5389 346.5,-5389 346.5,-5367 57.5,-5367"/>
+<text text-anchor="start" x="77.5" y="-5374.1" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">alku</text>
+<polygon fill="none" stroke="#000000" points="346.5,-5367 346.5,-5389 455.5,-5389 455.5,-5367 346.5,-5367"/>
+<text text-anchor="start" x="349.5" y="-5374.7" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">date[13]</text>
+<polygon fill="#ffffff" stroke="transparent" points="57.5,-5345 57.5,-5367 346.5,-5367 346.5,-5345 57.5,-5345"/>
+<polygon fill="none" stroke="#000000" points="57.5,-5345 57.5,-5367 346.5,-5367 346.5,-5345 57.5,-5345"/>
+<text text-anchor="start" x="77.5" y="-5352.1" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">loppu</text>
+<polygon fill="none" stroke="#000000" points="346.5,-5345 346.5,-5367 455.5,-5367 455.5,-5345 346.5,-5345"/>
+<text text-anchor="start" x="349.5" y="-5352.7" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">date[13]</text>
+<polygon fill="none" stroke="#000000" points="57.5,-5323 57.5,-5345 346.5,-5345 346.5,-5323 57.5,-5323"/>
+<text text-anchor="start" x="77.5" y="-5330.1" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">oppisopimus_oppimispaikan_y_tunnus</text>
+<polygon fill="none" stroke="#000000" points="346.5,-5323 346.5,-5345 455.5,-5345 455.5,-5323 346.5,-5323"/>
+<text text-anchor="start" x="349.0344" y="-5330.7" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">varchar[2147483647]</text>
+<polygon fill="none" stroke="#000000" points="57.5,-5301 57.5,-5323 346.5,-5323 346.5,-5301 57.5,-5301"/>
+<text text-anchor="start" x="77.5" y="-5308.1" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">oppisopimus_purkamisen_paiva</text>
+<polygon fill="none" stroke="#000000" points="346.5,-5301 346.5,-5323 455.5,-5323 455.5,-5301 346.5,-5301"/>
+<text text-anchor="start" x="349.5" y="-5308.7" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">date[13]</text>
+<polygon fill="none" stroke="#000000" points="57.5,-5279 57.5,-5301 346.5,-5301 346.5,-5279 57.5,-5279"/>
+<text text-anchor="start" x="77.5" y="-5286.1" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">oppisopimus_purettu_koeajalla</text>
+<polygon fill="none" stroke="#000000" points="346.5,-5279 346.5,-5301 455.5,-5301 455.5,-5279 346.5,-5279"/>
+<text text-anchor="start" x="349.5" y="-5286.7" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">bool[1]</text>
+<polygon fill="#ffffff" stroke="transparent" points="57.5,-5260 57.5,-5279 190.5,-5279 190.5,-5260 57.5,-5260"/>
+<polygon fill="none" stroke="#000000" points="57.5,-5260 57.5,-5279 190.5,-5279 190.5,-5260 57.5,-5260"/>
+<text text-anchor="start" x="60.5" y="-5266.1" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">&lt; 0</text>
+<polygon fill="#ffffff" stroke="transparent" points="190.5,-5260 190.5,-5279 346.5,-5279 346.5,-5260 190.5,-5260"/>
+<polygon fill="none" stroke="#000000" points="190.5,-5260 190.5,-5279 346.5,-5279 346.5,-5260 190.5,-5260"/>
+<text text-anchor="start" x="304.9956" y="-5266.1" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">24 rows</text>
+<polygon fill="#ffffff" stroke="transparent" points="346.5,-5260 346.5,-5279 455.5,-5279 455.5,-5260 346.5,-5260"/>
+<polygon fill="none" stroke="#000000" points="346.5,-5260 346.5,-5279 455.5,-5279 455.5,-5260 346.5,-5260"/>
+<text text-anchor="start" x="436.9053" y="-5266.1" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">0 &gt;</text>
+<polygon fill="none" stroke="#000000" stroke-width="2" points="56.5,-5259 56.5,-5457 456.5,-5457 456.5,-5259 56.5,-5259"/>
 </a>
 </g>
 </g>
@@ -1777,65 +1777,65 @@
 <g id="node27" class="node">
 <title>r_osaamisen_hankkimistapa_ammatillinen</title>
 <g id="a_node27"><a xlink:href="../../tables/r_osaamisen_hankkimistapa_ammatillinen.html" xlink:title="r_osaamisen_hankkimistapa_ammatillinen" target="_top">
-<polygon fill="#ffffff" stroke="transparent" points="44,-7994 44,-8260 469,-8260 469,-7994 44,-7994"/>
-<polygon fill="#f5f5f5" stroke="transparent" points="46.5,-8235 46.5,-8258 467.5,-8258 467.5,-8235 46.5,-8235"/>
-<polygon fill="none" stroke="#000000" points="46.5,-8235 46.5,-8258 467.5,-8258 467.5,-8235 46.5,-8235"/>
-<text text-anchor="start" x="51.5" y="-8243.6" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="11.00" fill="#000000">r_osaamisen_hankkimistapa_ammatillinen</text>
-<text text-anchor="start" x="432.5437" y="-8243.1" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">[table]</text>
-<polygon fill="#ffffff" stroke="transparent" points="46.5,-8213 46.5,-8235 358.5,-8235 358.5,-8213 46.5,-8213"/>
-<polygon fill="none" stroke="#000000" points="46.5,-8213 46.5,-8235 358.5,-8235 358.5,-8213 46.5,-8213"/>
-<text text-anchor="start" x="66.5" y="-8220.1" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">opiskeluoikeus_oid</text>
-<polygon fill="none" stroke="#000000" points="358.5,-8213 358.5,-8235 467.5,-8235 467.5,-8213 358.5,-8213"/>
-<text text-anchor="start" x="361.0344" y="-8220.7" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">varchar[2147483647]</text>
-<polygon fill="#ffffff" stroke="transparent" points="46.5,-8191 46.5,-8213 358.5,-8213 358.5,-8191 46.5,-8191"/>
-<polygon fill="none" stroke="#000000" points="46.5,-8191 46.5,-8213 358.5,-8213 358.5,-8191 46.5,-8191"/>
-<text text-anchor="start" x="66.5" y="-8198.1" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">aikajakso_tyyppi</text>
-<polygon fill="none" stroke="#000000" points="358.5,-8191 358.5,-8213 467.5,-8213 467.5,-8191 358.5,-8191"/>
-<text text-anchor="start" x="361.0344" y="-8198.7" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">varchar[2147483647]</text>
-<polygon fill="#ffffff" stroke="transparent" points="46.5,-8169 46.5,-8191 358.5,-8191 358.5,-8169 46.5,-8169"/>
-<polygon fill="none" stroke="#000000" points="46.5,-8169 46.5,-8191 358.5,-8191 358.5,-8169 46.5,-8169"/>
-<text text-anchor="start" x="66.5" y="-8176.1" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">alku</text>
-<polygon fill="none" stroke="#000000" points="358.5,-8169 358.5,-8191 467.5,-8191 467.5,-8169 358.5,-8169"/>
-<text text-anchor="start" x="361.5" y="-8176.7" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">date[13]</text>
-<polygon fill="#ffffff" stroke="transparent" points="46.5,-8147 46.5,-8169 358.5,-8169 358.5,-8147 46.5,-8147"/>
-<polygon fill="none" stroke="#000000" points="46.5,-8147 46.5,-8169 358.5,-8169 358.5,-8147 46.5,-8147"/>
-<text text-anchor="start" x="66.5" y="-8154.1" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">loppu</text>
-<polygon fill="none" stroke="#000000" points="358.5,-8147 358.5,-8169 467.5,-8169 467.5,-8147 358.5,-8147"/>
-<text text-anchor="start" x="361.5" y="-8154.7" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">date[13]</text>
-<polygon fill="none" stroke="#000000" points="46.5,-8125 46.5,-8147 358.5,-8147 358.5,-8125 46.5,-8125"/>
-<text text-anchor="start" x="66.5" y="-8132.1" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">oppisopimus_oppimispaikan_y_tunnus</text>
-<polygon fill="none" stroke="#000000" points="358.5,-8125 358.5,-8147 467.5,-8147 467.5,-8125 358.5,-8125"/>
-<text text-anchor="start" x="361.0344" y="-8132.7" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">varchar[2147483647]</text>
-<polygon fill="none" stroke="#000000" points="46.5,-8103 46.5,-8125 358.5,-8125 358.5,-8103 46.5,-8103"/>
-<text text-anchor="start" x="66.5" y="-8110.1" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">oppisopimus_purkamisen_paiva_purettu_koeajalla</text>
-<polygon fill="none" stroke="#000000" points="358.5,-8103 358.5,-8125 467.5,-8125 467.5,-8103 358.5,-8103"/>
-<text text-anchor="start" x="361.5" y="-8110.7" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">date[13]</text>
-<polygon fill="none" stroke="#000000" points="46.5,-8081 46.5,-8103 358.5,-8103 358.5,-8081 46.5,-8081"/>
-<text text-anchor="start" x="66.5" y="-8088.1" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">oppisopimus_purettu_koeajalla</text>
-<polygon fill="none" stroke="#000000" points="358.5,-8081 358.5,-8103 467.5,-8103 467.5,-8081 358.5,-8081"/>
-<text text-anchor="start" x="361.5" y="-8088.7" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">bool[1]</text>
-<polygon fill="none" stroke="#000000" points="46.5,-8059 46.5,-8081 358.5,-8081 358.5,-8059 46.5,-8059"/>
-<text text-anchor="start" x="66.5" y="-8066.1" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">koulutussopimus_paikkakunta_koodiarvo</text>
-<polygon fill="none" stroke="#000000" points="358.5,-8059 358.5,-8081 467.5,-8081 467.5,-8059 358.5,-8059"/>
-<text text-anchor="start" x="361.0344" y="-8066.7" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">varchar[2147483647]</text>
-<polygon fill="none" stroke="#000000" points="46.5,-8037 46.5,-8059 358.5,-8059 358.5,-8037 46.5,-8037"/>
-<text text-anchor="start" x="66.5" y="-8044.1" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">koulutussopimus_maa_koodiarvo</text>
-<polygon fill="none" stroke="#000000" points="358.5,-8037 358.5,-8059 467.5,-8059 467.5,-8037 358.5,-8037"/>
-<text text-anchor="start" x="361.0344" y="-8044.7" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">varchar[2147483647]</text>
-<polygon fill="none" stroke="#000000" points="46.5,-8015 46.5,-8037 358.5,-8037 358.5,-8015 46.5,-8015"/>
-<text text-anchor="start" x="66.5" y="-8022.1" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">koulutussopimus_y_tunnus</text>
-<polygon fill="none" stroke="#000000" points="358.5,-8015 358.5,-8037 467.5,-8037 467.5,-8015 358.5,-8015"/>
-<text text-anchor="start" x="361.0344" y="-8022.7" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">varchar[2147483647]</text>
-<polygon fill="#ffffff" stroke="transparent" points="46.5,-7996 46.5,-8015 193.5,-8015 193.5,-7996 46.5,-7996"/>
-<polygon fill="none" stroke="#000000" points="46.5,-7996 46.5,-8015 193.5,-8015 193.5,-7996 46.5,-7996"/>
-<text text-anchor="start" x="49.5" y="-8002.1" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">&lt; 0</text>
-<polygon fill="#ffffff" stroke="transparent" points="193.5,-7996 193.5,-8015 358.5,-8015 358.5,-7996 193.5,-7996"/>
-<polygon fill="none" stroke="#000000" points="193.5,-7996 193.5,-8015 358.5,-8015 358.5,-7996 193.5,-7996"/>
-<text text-anchor="start" x="323.1105" y="-8002.1" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">9 rows</text>
-<polygon fill="#ffffff" stroke="transparent" points="358.5,-7996 358.5,-8015 467.5,-8015 467.5,-7996 358.5,-7996"/>
-<polygon fill="none" stroke="#000000" points="358.5,-7996 358.5,-8015 467.5,-8015 467.5,-7996 358.5,-7996"/>
-<text text-anchor="start" x="448.9053" y="-8002.1" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">0 &gt;</text>
-<polygon fill="none" stroke="#000000" stroke-width="2" points="45,-7995 45,-8259 468,-8259 468,-7995 45,-7995"/>
+<polygon fill="#ffffff" stroke="transparent" points="68,-7994 68,-8260 445,-8260 445,-7994 68,-7994"/>
+<polygon fill="#f5f5f5" stroke="transparent" points="70.5,-8235 70.5,-8258 443.5,-8258 443.5,-8235 70.5,-8235"/>
+<polygon fill="none" stroke="#000000" points="70.5,-8235 70.5,-8258 443.5,-8258 443.5,-8235 70.5,-8235"/>
+<text text-anchor="start" x="75.5" y="-8243.6" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="11.00" fill="#000000">r_osaamisen_hankkimistapa_ammatillinen</text>
+<text text-anchor="start" x="408.5437" y="-8243.1" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">[table]</text>
+<polygon fill="#ffffff" stroke="transparent" points="70.5,-8213 70.5,-8235 334.5,-8235 334.5,-8213 70.5,-8213"/>
+<polygon fill="none" stroke="#000000" points="70.5,-8213 70.5,-8235 334.5,-8235 334.5,-8213 70.5,-8213"/>
+<text text-anchor="start" x="90.5" y="-8220.1" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">opiskeluoikeus_oid</text>
+<polygon fill="none" stroke="#000000" points="334.5,-8213 334.5,-8235 443.5,-8235 443.5,-8213 334.5,-8213"/>
+<text text-anchor="start" x="337.0344" y="-8220.7" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">varchar[2147483647]</text>
+<polygon fill="#ffffff" stroke="transparent" points="70.5,-8191 70.5,-8213 334.5,-8213 334.5,-8191 70.5,-8191"/>
+<polygon fill="none" stroke="#000000" points="70.5,-8191 70.5,-8213 334.5,-8213 334.5,-8191 70.5,-8191"/>
+<text text-anchor="start" x="90.5" y="-8198.1" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">aikajakso_tyyppi</text>
+<polygon fill="none" stroke="#000000" points="334.5,-8191 334.5,-8213 443.5,-8213 443.5,-8191 334.5,-8191"/>
+<text text-anchor="start" x="337.0344" y="-8198.7" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">varchar[2147483647]</text>
+<polygon fill="#ffffff" stroke="transparent" points="70.5,-8169 70.5,-8191 334.5,-8191 334.5,-8169 70.5,-8169"/>
+<polygon fill="none" stroke="#000000" points="70.5,-8169 70.5,-8191 334.5,-8191 334.5,-8169 70.5,-8169"/>
+<text text-anchor="start" x="90.5" y="-8176.1" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">alku</text>
+<polygon fill="none" stroke="#000000" points="334.5,-8169 334.5,-8191 443.5,-8191 443.5,-8169 334.5,-8169"/>
+<text text-anchor="start" x="337.5" y="-8176.7" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">date[13]</text>
+<polygon fill="#ffffff" stroke="transparent" points="70.5,-8147 70.5,-8169 334.5,-8169 334.5,-8147 70.5,-8147"/>
+<polygon fill="none" stroke="#000000" points="70.5,-8147 70.5,-8169 334.5,-8169 334.5,-8147 70.5,-8147"/>
+<text text-anchor="start" x="90.5" y="-8154.1" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">loppu</text>
+<polygon fill="none" stroke="#000000" points="334.5,-8147 334.5,-8169 443.5,-8169 443.5,-8147 334.5,-8147"/>
+<text text-anchor="start" x="337.5" y="-8154.7" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">date[13]</text>
+<polygon fill="none" stroke="#000000" points="70.5,-8125 70.5,-8147 334.5,-8147 334.5,-8125 70.5,-8125"/>
+<text text-anchor="start" x="90.5" y="-8132.1" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">oppisopimus_oppimispaikan_y_tunnus</text>
+<polygon fill="none" stroke="#000000" points="334.5,-8125 334.5,-8147 443.5,-8147 443.5,-8125 334.5,-8125"/>
+<text text-anchor="start" x="337.0344" y="-8132.7" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">varchar[2147483647]</text>
+<polygon fill="none" stroke="#000000" points="70.5,-8103 70.5,-8125 334.5,-8125 334.5,-8103 70.5,-8103"/>
+<text text-anchor="start" x="90.5" y="-8110.1" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">oppisopimus_purkamisen_paiva</text>
+<polygon fill="none" stroke="#000000" points="334.5,-8103 334.5,-8125 443.5,-8125 443.5,-8103 334.5,-8103"/>
+<text text-anchor="start" x="337.5" y="-8110.7" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">date[13]</text>
+<polygon fill="none" stroke="#000000" points="70.5,-8081 70.5,-8103 334.5,-8103 334.5,-8081 70.5,-8081"/>
+<text text-anchor="start" x="90.5" y="-8088.1" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">oppisopimus_purettu_koeajalla</text>
+<polygon fill="none" stroke="#000000" points="334.5,-8081 334.5,-8103 443.5,-8103 443.5,-8081 334.5,-8081"/>
+<text text-anchor="start" x="337.5" y="-8088.7" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">bool[1]</text>
+<polygon fill="none" stroke="#000000" points="70.5,-8059 70.5,-8081 334.5,-8081 334.5,-8059 70.5,-8059"/>
+<text text-anchor="start" x="90.5" y="-8066.1" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">koulutussopimus_paikkakunta_koodiarvo</text>
+<polygon fill="none" stroke="#000000" points="334.5,-8059 334.5,-8081 443.5,-8081 443.5,-8059 334.5,-8059"/>
+<text text-anchor="start" x="337.0344" y="-8066.7" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">varchar[2147483647]</text>
+<polygon fill="none" stroke="#000000" points="70.5,-8037 70.5,-8059 334.5,-8059 334.5,-8037 70.5,-8037"/>
+<text text-anchor="start" x="90.5" y="-8044.1" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">koulutussopimus_maa_koodiarvo</text>
+<polygon fill="none" stroke="#000000" points="334.5,-8037 334.5,-8059 443.5,-8059 443.5,-8037 334.5,-8037"/>
+<text text-anchor="start" x="337.0344" y="-8044.7" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">varchar[2147483647]</text>
+<polygon fill="none" stroke="#000000" points="70.5,-8015 70.5,-8037 334.5,-8037 334.5,-8015 70.5,-8015"/>
+<text text-anchor="start" x="90.5" y="-8022.1" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">koulutussopimus_y_tunnus</text>
+<polygon fill="none" stroke="#000000" points="334.5,-8015 334.5,-8037 443.5,-8037 443.5,-8015 334.5,-8015"/>
+<text text-anchor="start" x="337.0344" y="-8022.7" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">varchar[2147483647]</text>
+<polygon fill="#ffffff" stroke="transparent" points="70.5,-7996 70.5,-8015 193.5,-8015 193.5,-7996 70.5,-7996"/>
+<polygon fill="none" stroke="#000000" points="70.5,-7996 70.5,-8015 193.5,-8015 193.5,-7996 70.5,-7996"/>
+<text text-anchor="start" x="73.5" y="-8002.1" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">&lt; 0</text>
+<polygon fill="#ffffff" stroke="transparent" points="193.5,-7996 193.5,-8015 334.5,-8015 334.5,-7996 193.5,-7996"/>
+<polygon fill="none" stroke="#000000" points="193.5,-7996 193.5,-8015 334.5,-8015 334.5,-7996 193.5,-7996"/>
+<text text-anchor="start" x="299.1105" y="-8002.1" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">9 rows</text>
+<polygon fill="#ffffff" stroke="transparent" points="334.5,-7996 334.5,-8015 443.5,-8015 443.5,-7996 334.5,-7996"/>
+<polygon fill="none" stroke="#000000" points="334.5,-7996 334.5,-8015 443.5,-8015 443.5,-7996 334.5,-7996"/>
+<text text-anchor="start" x="424.9053" y="-8002.1" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">0 &gt;</text>
+<polygon fill="none" stroke="#000000" stroke-width="2" points="69,-7995 69,-8259 444,-8259 444,-7995 69,-7995"/>
 </a>
 </g>
 </g>
