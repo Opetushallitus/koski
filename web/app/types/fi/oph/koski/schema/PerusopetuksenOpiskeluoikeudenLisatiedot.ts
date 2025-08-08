@@ -34,7 +34,7 @@ export type PerusopetuksenOpiskeluoikeudenLisätiedot = {
   vammainen?: Array<Aikajakso>
   tehostetunTuenPäätös?: TehostetunTuenPäätös
   tukimuodot?: Array<Koodistokoodiviite<'perusopetuksentukimuoto', string>>
-  vuosiluokkiinSitoutumatonOpetus: boolean
+  vuosiluokkiinSitoutumatonOpetus?: boolean
   sisäoppilaitosmainenMajoitus?: Array<Aikajakso>
   opetuksenJärjestäminenVammanSairaudenTaiRajoitteenPerusteella?: Array<Aikajakso>
 }
@@ -70,7 +70,6 @@ export const PerusopetuksenOpiskeluoikeudenLisätiedot = (
 ): PerusopetuksenOpiskeluoikeudenLisätiedot => ({
   aloittanutEnnenOppivelvollisuutta: false,
   $class: 'fi.oph.koski.schema.PerusopetuksenOpiskeluoikeudenLisätiedot',
-  vuosiluokkiinSitoutumatonOpetus: false,
   ...o
 })
 

@@ -53,7 +53,7 @@ class OppijaValidationPerusopetuksenVuosiluokkaSpec extends TutkinnonPerusteetTe
     setupOppijaWithOpiskeluoikeus(defaultOpiskeluoikeus.copy(
       suoritukset = List(PerusopetusExampleData.seitsemännenLuokanSuoritus.copy(osasuoritukset = None)),
       lisätiedot = Some(PerusopetuksenOpiskeluoikeudenLisätiedot(
-        vuosiluokkiinSitoutumatonOpetus = true
+        vuosiluokkiinSitoutumatonOpetus = Some(true)
       ))
     )) {
       verifyResponseStatusOk()
@@ -76,7 +76,7 @@ class OppijaValidationPerusopetuksenVuosiluokkaSpec extends TutkinnonPerusteetTe
     setupOppijaWithOpiskeluoikeus(defaultOpiskeluoikeus.copy(
       suoritukset = List(PerusopetusExampleData.seitsemännenLuokanSuoritus.copy(osasuoritukset = None)),
       lisätiedot = Some(PerusopetuksenOpiskeluoikeudenLisätiedot(
-        vuosiluokkiinSitoutumatonOpetus = false
+        vuosiluokkiinSitoutumatonOpetus = Some(false)
       ))
     )) {
       verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.oppiaineetPuuttuvat("Suorituksella ei ole osasuorituksena yhtään oppiainetta, vaikka sillä on vahvistus, eikä oppija ole vuosiluokkiin sitomattomassa opetuksessa (vuosiluokka 7)."))

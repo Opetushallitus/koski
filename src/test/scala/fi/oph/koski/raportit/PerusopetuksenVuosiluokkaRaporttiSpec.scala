@@ -100,9 +100,7 @@ class PerusopetuksenVuosiluokkaRaporttiSpec
       val opiskeluoikeusOid = lastOpiskeluoikeus(KoskiSpecificMockOppijat.lukioKesken.oid).oid.get
       val rivi = result.find(_.opiskeluoikeusOid == opiskeluoikeusOid)
 
-      rivi should equal(
-        Some(leilanRow.copy(opiskeluoikeusOid = opiskeluoikeusOid))
-      )
+      rivi should equal(Some(leilanRow.copy(opiskeluoikeusOid = opiskeluoikeusOid)))
     }
 
     "Ei näytetä laajuuksia kun päätason suorituksen arviointipäivä on 31.7.2020 tai ennen" in {
@@ -139,8 +137,9 @@ class PerusopetuksenVuosiluokkaRaporttiSpec
         val rivit = result.filter(_.opiskeluoikeusOid == ynjevinOpiskeluoikeusOid)
 
         rivit.length should equal(2)
-        rivit should contain(defaultYnjeviExpectedKasiLuokkaRow.copy(opiskeluoikeusOid = ynjevinOpiskeluoikeusOid))
-        rivit should contain(kahdeksannenLuokanLuokalleJääntiRow.copy(opiskeluoikeusOid = ynjevinOpiskeluoikeusOid))
+        rivit should contain(defaultYnjeviExpectedKasiLuokkaRow.copy(opiskeluoikeusOid = ynjevinOpiskeluoikeusOid, vuosiluokkiinSitoutumatonOpetus = None))
+        rivit should contain(kahdeksannenLuokanLuokalleJääntiRow.copy(opiskeluoikeusOid = ynjevinOpiskeluoikeusOid, vuosiluokkiinSitoutumatonOpetus = None))
+
       }
     }
 
@@ -193,7 +192,7 @@ class PerusopetuksenVuosiluokkaRaporttiSpec
         rivit.length should equal(1)
         val kaisanRivi = rivit.head
 
-        kaisanRivi should equal(kaisanPäättötodistusRow.copy(opiskeluoikeusOid = kaisanOpiskeluoikeusOid))
+        kaisanRivi should equal(kaisanPäättötodistusRow.copy(opiskeluoikeusOid = kaisanOpiskeluoikeusOid, vuosiluokkiinSitoutumatonOpetus = None))
       }
 
       "Jos oppilas on jäämässä luokalle käytetään yhdeksännen luokan vuosiluokka suoritusta" in {
@@ -202,7 +201,7 @@ class PerusopetuksenVuosiluokkaRaporttiSpec
           val opiskeluoikeusOid = getOpiskeluoikeudet(KoskiSpecificMockOppijat.vuosiluokkalainen.oid).find(_.tyyppi.koodiarvo == "perusopetus").get.oid.get
           val rows = result.filter(_.opiskeluoikeusOid == opiskeluoikeusOid)
           rows.length should equal(1)
-          rows.head should equal(yhdeksännenLuokanLuokalleJääntiRow.copy(opiskeluoikeusOid = opiskeluoikeusOid))
+          rows.head should equal(yhdeksännenLuokanLuokalleJääntiRow.copy(opiskeluoikeusOid = opiskeluoikeusOid, vuosiluokkiinSitoutumatonOpetus = None))
         }
       }
 
@@ -221,7 +220,7 @@ class PerusopetuksenVuosiluokkaRaporttiSpec
           val opiskeluoikeusOid = getOpiskeluoikeudet(KoskiSpecificMockOppijat.vuosiluokkalainen.oid).find(_.tyyppi.koodiarvo == "perusopetus").get.oid.get
           val rows = result.filter(_.opiskeluoikeusOid == opiskeluoikeusOid)
           rows.length should equal(1)
-          rows.head should equal(yhdeksännenLuokanLuokalleJääntiRow.copy(opiskeluoikeusOid = opiskeluoikeusOid, suorituksenTila = "kesken", suorituksenVahvistuspaiva = "", voimassaolevatVuosiluokat = "9"))
+          rows.head should equal(yhdeksännenLuokanLuokalleJääntiRow.copy(opiskeluoikeusOid = opiskeluoikeusOid, suorituksenTila = "kesken", suorituksenVahvistuspaiva = "", voimassaolevatVuosiluokat = "9", vuosiluokkiinSitoutumatonOpetus = None))
         }
       }
 
@@ -231,13 +230,13 @@ class PerusopetuksenVuosiluokkaRaporttiSpec
           val opiskeluoikeusOid = getOpiskeluoikeudet(KoskiSpecificMockOppijat.vuosiluokkalainen.oid).find(_.tyyppi.koodiarvo == "perusopetus").get.oid.get
           val rows = result.filter(_.opiskeluoikeusOid == opiskeluoikeusOid)
           rows.length should equal(1)
-          rows.head should equal(kaisanPäättötodistusRow.copy(opiskeluoikeusOid = opiskeluoikeusOid, oppijaOid = KoskiSpecificMockOppijat.vuosiluokkalainen.oid, hetu = KoskiSpecificMockOppijat.vuosiluokkalainen.hetu, sukunimi = KoskiSpecificMockOppijat.vuosiluokkalainen.sukunimi, etunimet = KoskiSpecificMockOppijat.vuosiluokkalainen.etunimet, viimeisinTila = "lasna", suorituksenTila = "kesken", suorituksenVahvistuspaiva = "", luokka = Some("9A,9C")))
+          rows.head should equal(kaisanPäättötodistusRow.copy(opiskeluoikeusOid = opiskeluoikeusOid, oppijaOid = KoskiSpecificMockOppijat.vuosiluokkalainen.oid, hetu = KoskiSpecificMockOppijat.vuosiluokkalainen.hetu, sukunimi = KoskiSpecificMockOppijat.vuosiluokkalainen.sukunimi, etunimet = KoskiSpecificMockOppijat.vuosiluokkalainen.etunimet, viimeisinTila = "lasna", suorituksenTila = "kesken", suorituksenVahvistuspaiva = "", luokka = Some("9A,9C"),vuosiluokkiinSitoutumatonOpetus = None))
         }
       }
 
       "Ei tulosta päättötodistusta oppijoilla joilla ei ole yhdeksännen luokan opintoja" in {
         withAdditionalSuoritukset(KoskiSpecificMockOppijat.vuosiluokkalainen, List(perusopetuksenOppimääränSuoritus), Some(perusopetuksenOpiskeluoikeudenLisätiedot.copy(
-          vuosiluokkiinSitoutumatonOpetus = true,
+          vuosiluokkiinSitoutumatonOpetus = Some(true),
           pidennettyOppivelvollisuus = None,
           vammainen = None,
           vaikeastiVammainen = None,
@@ -419,7 +418,7 @@ class PerusopetuksenVuosiluokkaRaporttiSpec
     aloittanutEnnenOppivelvollisuutta = false,
     pidennettyOppivelvollisuus = false,
     joustavaPerusopetus = false,
-    vuosiluokkiinSitoutumatonOpetus = false,
+    vuosiluokkiinSitoutumatonOpetus = Some(false),
     vammainen = false,
     vaikeastiVammainen = false,
     sisäoppilaitosmainenMajoitus = false,
@@ -440,7 +439,7 @@ class PerusopetuksenVuosiluokkaRaporttiSpec
     aloittanutEnnenOppivelvollisuutta = false,
     pidennettyOppivelvollisuus = false,
     joustavaPerusopetus = true,
-    vuosiluokkiinSitoutumatonOpetus = true,
+    vuosiluokkiinSitoutumatonOpetus = Some(true),
     vammainen = false,
     vaikeastiVammainen = false,
     sisäoppilaitosmainenMajoitus = true,
@@ -650,7 +649,7 @@ class PerusopetuksenVuosiluokkaRaporttiSpec
       ),
     )),
     joustavaPerusopetus = Some(voimassaolevaAikajakso),
-    vuosiluokkiinSitoutumatonOpetus = true,
+    vuosiluokkiinSitoutumatonOpetus = Some(true),
     vammainen = Some(List(voimassaolevaAikajakso.copy(
       loppu = Some(voimassaolevaAikajakso.alku.plusDays(10))
     ))),
