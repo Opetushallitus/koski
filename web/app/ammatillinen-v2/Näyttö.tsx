@@ -51,12 +51,6 @@ export const NäyttöView = ({
         {value?.suoritusaika?.loppu &&
           ISO2FinnishDate(value.suoritusaika.loppu)}
       </KeyValueRow>
-      <KeyValueRow localizableLabel={'Työssäoppimisen yhteydessä'}>
-        <BooleanView value={value?.työssäoppimisenYhteydessä} />
-      </KeyValueRow>
-      <KeyValueRow localizableLabel={'Haluaa todistuksen'}>
-        <BooleanView value={value?.haluaaTodistuksen} />
-      </KeyValueRow>
       <NäytönArviointiView value={value?.arviointi} />
     </KeyValueTable>
   )
@@ -170,30 +164,6 @@ export const NäyttöEdit = ({
             />
           </div>
         </KeyValueRow>
-        <KeyValueRow localizableLabel={'Työssäoppimisen yhteydessä'}>
-          <BooleanEdit
-            value={value?.työssäoppimisenYhteydessä}
-            onChange={(työssäoppimisenYhteydessä) => {
-              if (työssäoppimisenYhteydessä !== undefined) {
-                onChange({
-                  ...emptyNäyttö,
-                  ...value,
-                  työssäoppimisenYhteydessä
-                })
-              }
-            }}
-          />
-        </KeyValueRow>
-        <KeyValueRow localizableLabel={'Haluaa todistuksen'}>
-          <BooleanEdit
-            value={value?.haluaaTodistuksen}
-            onChange={(haluaaTodistuksen) => {
-              if (haluaaTodistuksen !== undefined) {
-                onChange({ ...emptyNäyttö, ...value, haluaaTodistuksen })
-              }
-            }}
-          />
-        </KeyValueRow>
         <NäytönArviointiEdit
           value={value?.arviointi}
           onChange={(arviointi) =>
@@ -231,11 +201,6 @@ const NäytönArviointiView = ({
       </KeyValueRow>
       <KeyValueRow localizableLabel="Arvioinnista päättäneet">
         {value?.arvioinnistaPäättäneet?.map((a) => t(a.nimi)).join(', ')}
-      </KeyValueRow>
-      <KeyValueRow localizableLabel="Arviointikeskusteluun osallistuneet">
-        {value?.arviointikeskusteluunOsallistuneet
-          ?.map((a) => t(a.nimi))
-          .join(', ')}
       </KeyValueRow>
     </>
   )
@@ -403,65 +368,6 @@ const NäytönArviointiEdit = ({
             })
           }
           testId={'ammatillisennaytonarvioinnistapaattaneet-uusi'}
-        />
-      </KeyValueRow>
-      <KeyValueRow localizableLabel="Arviointikeskusteluun osallistuneet">
-        {value?.arviointikeskusteluunOsallistuneet?.map((a, index) => (
-          <div className={'AikajaksoEdit'}>
-            <KoodistoSelect
-              koodistoUri={
-                'ammatillisennaytonarviointikeskusteluunosallistuneet'
-              }
-              value={a.koodiarvo}
-              onSelect={(val) =>
-                val &&
-                value.arviointikeskusteluunOsallistuneet &&
-                onChange({
-                  ...emptyNäytönArviointi,
-                  ...value,
-                  arviointikeskusteluunOsallistuneet: [
-                    ...value.arviointikeskusteluunOsallistuneet.slice(0, index),
-                    val,
-                    ...value.arviointikeskusteluunOsallistuneet.slice(index + 1)
-                  ]
-                })
-              }
-              testId={'ammatillisennaytonarviointikeskusteluunosallistuneet'}
-            />
-            <IconButton
-              charCode={CHARCODE_REMOVE}
-              label={t('Poista')}
-              size="input"
-              onClick={() =>
-                value.arviointikeskusteluunOsallistuneet &&
-                onChange({
-                  ...emptyNäytönArviointi,
-                  ...value,
-                  arviointikeskusteluunOsallistuneet: [
-                    ...value.arviointikeskusteluunOsallistuneet.slice(0, index),
-                    ...value.arviointikeskusteluunOsallistuneet.slice(index + 1)
-                  ]
-                })
-              }
-              testId="delete"
-            />
-          </div>
-        ))}
-        <KoodistoSelect
-          koodistoUri={'ammatillisennaytonarviointikeskusteluunosallistuneet'}
-          zeroValueOption
-          onSelect={(val) =>
-            val &&
-            onChange({
-              ...emptyNäytönArviointi,
-              ...value,
-              arviointikeskusteluunOsallistuneet: [
-                ...(value?.arviointikeskusteluunOsallistuneet || []),
-                val
-              ]
-            })
-          }
-          testId={'ammatillisennaytonarviointikeskusteluunosallistuneet-uusi'}
         />
       </KeyValueRow>
     </>
