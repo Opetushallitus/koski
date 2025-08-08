@@ -145,7 +145,7 @@ object ExamplesPerusopetus {
         joustavaPerusopetus = Some(Aikajakso(date(2017, 8, 15), Some(date(2024, 10, 18)))),
         kotiopetusjaksot = Some(List(Aikajakso(date(2017, 8, 15), Some(date(2024, 10, 18))), Aikajakso(date(2026, 7, 14), Some(date(2026, 10, 18))))),
         ulkomaanjaksot = Some(List(Aikajakso(date(2017, 8, 15), Some(date(2024, 10, 18))), Aikajakso(date(2027, 9, 16), Some(date(2028, 10, 2))))),
-        vuosiluokkiinSitoutumatonOpetus = true,
+        vuosiluokkiinSitoutumatonOpetus = Some(true),
         vammainen = Some(List(Aikajakso(date(2019, 8, 15), Some(date(2019, 9, 1))))),
         vaikeastiVammainen = Some(List(Aikajakso(date(2019, 9, 2), Some(date(2024, 10, 18))))),
         majoitusetu = Some(Aikajakso(date(2017, 8, 15), Some(date(2024, 10, 18)))),
