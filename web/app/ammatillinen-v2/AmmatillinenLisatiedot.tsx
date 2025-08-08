@@ -109,18 +109,6 @@ export const AmmatillinenLisatiedot: React.FC<AmmatillinenLisatiedotProps> = ({
 
   return (
     <KeyValueTable>
-      <KeyValueRow
-        localizableLabel="Oikeus maksuttomaan asuntolapaikkaan"
-        largeLabel
-      >
-        <FormField
-          form={form}
-          view={BooleanView}
-          edit={BooleanEdit}
-          path={lisatiedotPath.prop('oikeusMaksuttomaanAsuntolapaikkaan')}
-        />
-      </KeyValueRow>
-
       <AikajaksoRow localizableLabel={'Majoitus'} path={'majoitus'} />
       <AikajaksoRow
         localizableLabel={'Sisäoppilaitosmainen majoitus'}
