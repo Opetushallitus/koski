@@ -162,7 +162,7 @@ case class PerusopetuksenOpiskeluoikeudenLisätiedot(
   @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))
   @DefaultValue(false)
   @Title("Vuosiluokkiin sitomaton opetus")
-  vuosiluokkiinSitoutumatonOpetus: Boolean = false,
+  vuosiluokkiinSitoutumatonOpetus: Option[Boolean] = Some(false),
   @Description("Kenttä ei käytössä 1.9.2026 alkaen.")
   @Description("Onko oppija muu kuin vaikeimmin kehitysvammainen. Lista alku-loppu päivämääräpareja. Rahoituksen laskennassa käytettävä tieto.")
   @Tooltip("Tieto siitä, onko oppija muu kuin vaikeimmin kehitysvammainen (alku- ja loppupäivämäärät). Voi olla useita erillisiä jaksoja. Rahoituksen laskennassa käytettävä tieto.")

@@ -1200,9 +1200,49 @@ class OppijaValidationPerusopetusSpec extends TutkinnonPerusteetTest[Perusopetuk
     "Lisätiedoissa vuosiluokkiin sitoutumaton opetus -> HTTP 200" in {
       setupOppijaWithOpiskeluoikeus(oo.copy(
         lisätiedot = Some(PerusopetuksenOpiskeluoikeudenLisätiedot(
-          vuosiluokkiinSitoutumatonOpetus = true
+          vuosiluokkiinSitoutumatonOpetus = Some(true)
         ))
       )) {
+        verifyResponseStatusOk()
+      }
+    }
+    "VSOP 1.8.2025 jälkeen -> HTTP 400" in {
+      val start = date(2025, 8, 1)
+      val oo = defaultOpiskeluoikeus.copy(
+        tila = NuortenPerusopetuksenOpiskeluoikeudenTila(List(
+          NuortenPerusopetuksenOpiskeluoikeusjakso(start, opiskeluoikeusLäsnä)
+        )),
+        suoritukset = List(
+          yhdeksännenLuokanSuoritus.copy(alkamispäivä = Some(start), vahvistus = None)
+        ),
+        lisätiedot = Some(PerusopetuksenOpiskeluoikeudenLisätiedot(
+          vuosiluokkiinSitoutumatonOpetus = Some(true)
+        ))
+      )
+
+      setupOppijaWithOpiskeluoikeus(oo) {
+        verifyResponseStatus(
+          400,
+          KoskiErrorCategory.badRequest.validation.rakenne.vsopVirheelliselläpäivämäärällä()
+        )
+      }
+    }
+
+    "VSOP ennen 1.8.2025 -> HTTP 200" in {
+      val start = date(2025, 7, 31)
+      val oo = defaultOpiskeluoikeus.copy(
+        tila = NuortenPerusopetuksenOpiskeluoikeudenTila(List(
+          NuortenPerusopetuksenOpiskeluoikeusjakso(start, opiskeluoikeusLäsnä)
+        )),
+        suoritukset = List(
+          yhdeksännenLuokanSuoritus.copy(alkamispäivä = Some(start), vahvistus = None)
+        ),
+        lisätiedot = Some(PerusopetuksenOpiskeluoikeudenLisätiedot(
+          vuosiluokkiinSitoutumatonOpetus = Some(true)
+        ))
+      )
+
+      setupOppijaWithOpiskeluoikeus(oo) {
         verifyResponseStatusOk()
       }
     }

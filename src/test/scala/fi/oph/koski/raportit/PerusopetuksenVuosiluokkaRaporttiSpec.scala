@@ -237,7 +237,7 @@ class PerusopetuksenVuosiluokkaRaporttiSpec
 
       "Ei tulosta päättötodistusta oppijoilla joilla ei ole yhdeksännen luokan opintoja" in {
         withAdditionalSuoritukset(KoskiSpecificMockOppijat.vuosiluokkalainen, List(perusopetuksenOppimääränSuoritus), Some(perusopetuksenOpiskeluoikeudenLisätiedot.copy(
-          vuosiluokkiinSitoutumatonOpetus = true,
+          vuosiluokkiinSitoutumatonOpetus = Some(true),
           pidennettyOppivelvollisuus = None,
           vammainen = None,
           vaikeastiVammainen = None,
@@ -419,7 +419,7 @@ class PerusopetuksenVuosiluokkaRaporttiSpec
     aloittanutEnnenOppivelvollisuutta = false,
     pidennettyOppivelvollisuus = false,
     joustavaPerusopetus = false,
-    vuosiluokkiinSitoutumatonOpetus = false,
+    vuosiluokkiinSitoutumatonOpetus = Some(false),
     vammainen = false,
     vaikeastiVammainen = false,
     sisäoppilaitosmainenMajoitus = false,
@@ -440,7 +440,7 @@ class PerusopetuksenVuosiluokkaRaporttiSpec
     aloittanutEnnenOppivelvollisuutta = false,
     pidennettyOppivelvollisuus = false,
     joustavaPerusopetus = true,
-    vuosiluokkiinSitoutumatonOpetus = true,
+    vuosiluokkiinSitoutumatonOpetus = Some(true),
     vammainen = false,
     vaikeastiVammainen = false,
     sisäoppilaitosmainenMajoitus = true,
@@ -650,7 +650,7 @@ class PerusopetuksenVuosiluokkaRaporttiSpec
       ),
     )),
     joustavaPerusopetus = Some(voimassaolevaAikajakso),
-    vuosiluokkiinSitoutumatonOpetus = true,
+    vuosiluokkiinSitoutumatonOpetus = Some(true),
     vammainen = Some(List(voimassaolevaAikajakso.copy(
       loppu = Some(voimassaolevaAikajakso.alku.plusDays(10))
     ))),

@@ -181,7 +181,7 @@ class SensitiveAndRedundantDataFilterSpec extends AnyFreeSpec with TestEnvironme
     tehostetunTuenPäätös = Some(tehostetunTuenPäätös),
     tehostetunTuenPäätökset = Some(List(tehostetunTuenPäätös)),
     joustavaPerusopetus = Some(aikajakso),
-    vuosiluokkiinSitoutumatonOpetus = true,
+    vuosiluokkiinSitoutumatonOpetus = Some(true),
     vammainen = aikajaksot,
     vaikeastiVammainen = aikajaksot,
     majoitusetu = Some(aikajakso),

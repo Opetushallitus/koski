@@ -125,6 +125,7 @@ object KoskiErrorCategory {
         val duplikaattiOsasuoritus = subcategory("duplikaattiOsasuoritus", "Duplikaatti osasuoritus päätason suorituksella")
         val kaksiSamaaOppiainettaNumeroarvioinnilla = subcategory("kaksiSamaaOppiainettaNumeroarvioinnilla", "Kahdella saman oppiaineen suorituksella ei molemmilla voi olla numeerista arviointia")
         val luokkaAstePuuttuu = subcategory("luokkaAstePuuttuu", "Luokka-aste vaaditaan kun viimeisin arviointi on muuta kuin 'O'")
+        val vsopVirheelliselläpäivämäärällä = subcategory("vsopPäivämäärä", "VSOP Kenttää ei tule käyttää 31.7.2025 jälkeen aloittaneiden opiskelijoiden tiedoissa")
         val tunnisteenKoodiarvoaEiLöydyRakenteesta = subcategory("eriTutkintokoodit", "Suorituksen tunnisteen koodiarvo ei löydy tutkinnon rakenteesta")
         val deprekoituOsaamisenHankkimistapa = subcategory("deprekoituOsaamisenHankkimistapa", "Osaamisenhankkimistapaa oppisopimus ei voi tallentaa ilman y-tunnusta")
         val yhteiselläOsuudellaEiOsasuorituksia = subcategory("yhteiselläOsuudellaEiOsasuorituksia", "Tutkinnon yhteisellä osalla tulee olla osasuorituksia")
