@@ -84,15 +84,16 @@ export const OpiskeluoikeudenTilaView = <T extends OpiskeluoikeudenTila>(
                   </time>,
                   <React.Fragment key={`jakso_tila_lisatiedot_${index}`}>
                     <TestIdText id="tila">{t(jakso.tila.nimi)}</TestIdText>
-                    {isRahoituksellinenOpiskeluoikeusjakso(jakso) && (
-                      <>
-                        {' ('}
-                        <TestIdText id="rahoitus">
-                          {t(jakso.opintojenRahoitus?.nimi)}
-                        </TestIdText>
-                        {')'}
-                      </>
-                    )}
+                    {isRahoituksellinenOpiskeluoikeusjakso(jakso) &&
+                      jakso.opintojenRahoitus && (
+                        <>
+                          {' ('}
+                          <TestIdText id="rahoitus">
+                            {t(jakso.opintojenRahoitus.nimi)}
+                          </TestIdText>
+                          {')'}
+                        </>
+                      )}
                   </React.Fragment>
                 ]}
               </KeyColumnedValuesRow>
@@ -151,8 +152,8 @@ export const OpiskeluoikeudenTilaEdit = <T extends OpiskeluoikeudenTila>(
                   />,
                   <div key="jakso">
                     <TestIdText id="tila">{t(jakso.tila.nimi)}</TestIdText>
-                    {isVapaanSivistystyönOpiskeluoikeusjakso(jakso) &&
-                      isRahoituksellinenOpiskeluoikeusjakso(jakso) && (
+                    {isRahoituksellinenOpiskeluoikeusjakso(jakso) &&
+                      jakso.opintojenRahoitus && (
                         <>
                           {' '}
                           <TestIdText id="rahoitus">
