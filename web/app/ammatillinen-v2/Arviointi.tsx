@@ -21,7 +21,11 @@ import { ButtonGroup } from '../components-v2/containers/ButtonGroup'
 import { FlatButton } from '../components-v2/controls/FlatButton'
 import { LocalizedTextEdit } from '../components-v2/controls/LocalizedTestField'
 import { Koodistokoodiviite } from '../types/fi/oph/koski/schema/Koodistokoodiviite'
-import { Select, useKoodistoOptions } from '../components-v2/controls/Select'
+import {
+  Select,
+  useKoodistoOptions,
+  useKoodistoOptionsWithFormat
+} from '../components-v2/controls/Select'
 import { TestIdLayer, TestIdText } from '../appstate/useTestId'
 
 export const ArviointiView = ({
@@ -168,10 +172,13 @@ export const AmisArvosanaSelect = ({
   value,
   onChange
 }: AmisArvosanaSelectProps) => {
-  const options = useKoodistoOptions(
-    'arviointiasteikkoammatillinenhyvaksyttyhylatty',
-    'arviointiasteikkoammatillinent1k3',
-    'arviointiasteikkoammatillinen15'
+  const options = useKoodistoOptionsWithFormat(
+    [
+      'arviointiasteikkoammatillinenhyvaksyttyhylatty',
+      'arviointiasteikkoammatillinent1k3',
+      'arviointiasteikkoammatillinen15'
+    ],
+    (k) => k.koodiviite.koodiarvo
   )
   return (
     <Select

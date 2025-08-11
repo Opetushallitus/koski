@@ -7,7 +7,6 @@ import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import {
   KoodistokoodiviiteKoodistonNimellä,
   KoodistokoodiviiteKoodistonNimelläOrd,
-  useKoodisto,
   useKoodistot
 } from '../../appstate/koodisto'
 import { Peruste } from '../../appstate/peruste'
@@ -24,7 +23,7 @@ import { pluck } from '../../util/fp/objects'
 import { koodistokoodiviiteId, koodiviiteId } from '../../util/koodisto'
 import { clamp, sum } from '../../util/numbers'
 import { coerceForSort, textSearch } from '../../util/strings'
-import { CommonProps, common, cx } from '../CommonProps'
+import { common, CommonProps, cx } from '../CommonProps'
 import { Removable } from './Removable'
 import { Spinner } from '../texts/Spinner'
 import { PaikallinenKoodi } from '../../types/fi/oph/koski/schema/PaikallinenKoodi'
@@ -443,6 +442,17 @@ export const useKoodistoOptions = <T extends string>(
   return useMemo(
     () => (koodisto ? groupKoodistoToOptions(koodisto) : []),
     [koodisto]
+  ) as SelectOption<Koodistokoodiviite<T>>[]
+}
+
+export const useKoodistoOptionsWithFormat = <T extends string>(
+  koodistoUris: T[],
+  format: (koodi: KoodistokoodiviiteKoodistonNimellä) => string
+): SelectOption<Koodistokoodiviite<T>>[] => {
+  const koodisto = useKoodistot(...koodistoUris)
+  return useMemo(
+    () => (koodisto ? groupKoodistoToOptions(koodisto, undefined, format) : []),
+    [koodisto, format]
   ) as SelectOption<Koodistokoodiviite<T>>[]
 }
 
