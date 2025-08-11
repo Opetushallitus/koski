@@ -28,7 +28,6 @@ export default ({ oppijaOid, opiskeluoikeusTyypit, selectedIndex }) => {
         const tyyppi = opiskeluoikeus.tyyppi.koodiarvo
         postNewOppija(oppija)
           .doError(() => {
-            addingAtom.set(false)
             reject()
           })
           .onValue(() => {

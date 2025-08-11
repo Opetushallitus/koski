@@ -2127,6 +2127,7 @@ describe('Perusopetus 2', function () {
 
           describe('Toisen opiskeluoikeuden lisääminen (ammatillinen tutkinto)', function () {
             before(
+              page.oppijaHaku.searchAndSelect('230872-7258'),
               opinnot.opiskeluoikeudet.lisääOpiskeluoikeus,
               addOppija.selectOppilaitos('Omnia'),
               addOppija.selectOpiskeluoikeudenTyyppi('Ammatillinen koulutus'),

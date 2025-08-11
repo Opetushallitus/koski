@@ -36,6 +36,7 @@ describe('Useampi voimassa oleva opinto oikeus samassa oppilaitoksessa', functio
   })
   describe('ammatillisessa koulutuksessa', function () {
     before(
+      page.oppijaHaku.searchAndSelect('230872-7258'),
       opinnot.opiskeluoikeudet.lisääOpiskeluoikeus,
       addOppija.selectOppilaitos('Stadin ammatti- ja aikuisopisto'),
       addOppija.selectOpiskeluoikeudenTyyppi('Ammatillinen koulutus'),
@@ -62,6 +63,7 @@ describe('Useampi voimassa oleva opinto oikeus samassa oppilaitoksessa', functio
     })
     describe('kun suoritustyyppi eroaa', function () {
       before(
+        page.oppijaHaku.searchAndSelect('230872-7258'),
         opinnot.opiskeluoikeudet.lisääOpiskeluoikeus,
         addOppija.selectOppilaitos('Stadin ammatti- ja aikuisopisto'),
         addOppija.selectOpiskeluoikeudenTyyppi('Ammatillinen koulutus'),
