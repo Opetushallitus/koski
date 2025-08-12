@@ -11,15 +11,32 @@ import fi.oph.koski.oppija.HenkilönOpiskeluoikeusVersiot
 import fi.oph.koski.schema.KoskiSchema.strictDeserialization
 import fi.oph.koski.schema.{KoskeenTallennettavaOpiskeluoikeus, Opiskeluoikeus, PäätasonSuoritus}
 import fi.oph.koski.servlet.{KoskiSpecificApiServlet, NoCache}
+import fi.oph.koski.util.Timing
 import fi.oph.scalaschema.{ExtractionContext, SchemaValidatingExtractor}
 import fi.oph.scalaschema.extraction.ValidationError
 import org.json4s.JValue
 
-class OpiskeluoikeusServlet(implicit val application: KoskiApplication) extends KoskiSpecificApiServlet with RequiresVirkailijaOrPalvelukäyttäjä with Logging with NoCache {
+class OpiskeluoikeusServlet(implicit val application: KoskiApplication) extends KoskiSpecificApiServlet with RequiresVirkailijaOrPalvelukäyttäjä with Logging with NoCache with Timing {
+  override protected def timingThresholdMs: Int = 0
   get("/:oid") {
-    val result: Either[HttpStatus, KoskiOpiskeluoikeusRow] = application.opiskeluoikeusRepository.findByOid(getStringParam("oid"))(session)
-    result.map(oo => KoskiAuditLogMessage(OPISKELUOIKEUS_KATSOMINEN, session, Map(oppijaHenkiloOid -> oo.oppijaOid))).foreach(AuditLog.log)
-    renderEither[KoskeenTallennettavaOpiskeluoikeus](result.map(_.toOpiskeluoikeusUnsafe))
+    val mySession = timed("get-oo-by-oid-investigation:session", thresholdMs = 0) {
+      session
+    }
+    val result: Either[HttpStatus, KoskiOpiskeluoikeusRow] =
+      timed("get-oo-by-oid-investigation:application.opiskeluoikeusRepository.findByOid(getStringParam(\"oid\"))(session)", thresholdMs = 0) {
+        application.opiskeluoikeusRepository.findByOid(getStringParam("oid"))(mySession, investigate = true)
+      }
+
+
+    timed("get-oo-by-oid-investigation:auditlog", thresholdMs = 0) {
+      result.map(oo => KoskiAuditLogMessage(OPISKELUOIKEUS_KATSOMINEN, session, Map(oppijaHenkiloOid -> oo.oppijaOid))).foreach(AuditLog.log)
+    }
+
+    val unsafe = timed("get-oo-by-oid-investigation:result.map(_.toOpiskeluoikeusUnsafe)", thresholdMs = 0) {
+      result.map(_.toOpiskeluoikeusUnsafe)
+    }
+
+    renderEither[KoskeenTallennettavaOpiskeluoikeus](unsafe)
   }
 
   post("/:oid/:versionumero/delete-paatason-suoritus") {

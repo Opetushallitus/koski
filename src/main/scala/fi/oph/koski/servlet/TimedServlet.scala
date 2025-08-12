@@ -4,7 +4,9 @@ import fi.oph.koski.util.Timing
 import org.scalatra.ScalatraBase
 
 trait TimedServlet extends ScalatraBase with Timing {
-  private def timedAction(verb: String, path: String, action: => Any, threshold: Int = 100) = {
+  protected def timingThresholdMs: Int = 100
+
+  private def timedAction(verb: String, path: String, action: => Any, threshold: Int = timingThresholdMs) = {
     val blockname: String = verb + " " + request.getServletPath + path
     timed(blockname, thresholdMs = threshold)(action)
   }

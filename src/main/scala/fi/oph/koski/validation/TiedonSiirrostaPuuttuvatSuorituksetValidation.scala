@@ -32,7 +32,7 @@ object TiedonSiirrostaPuuttuvatSuorituksetValidation {
 
   private def aikaisemminTallennetuillaSuorituksilla(uusi: KoskeenTallennettavaOpiskeluoikeus, repository: KoskiOpiskeluoikeusRepository)(implicit user: KoskiSpecificSession) = {
     val aikaisemminTallennettuOpiskeluoikeus = uusi.oid
-      .map(repository.findByOid)
+      .map(oid => repository.findByOid(oid))
       .flatMap(_.map(_.toOpiskeluoikeusUnsafe(user)) match {
         case Right(vanha) => Some(vanha)
         case Left(_) => None

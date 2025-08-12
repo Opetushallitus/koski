@@ -13,8 +13,9 @@ import fi.oph.scalaschema.{Serializer, _}
 import org.json4s._
 import slick.jdbc.GetResult
 import slick.lifted.ProvenShape
+import fi.oph.koski.util.Timing
 
-object KoskiTables {
+object KoskiTables extends Timing {
 
   trait OpiskeluoikeusTable[T <: OpiskeluoikeusRow] extends Table[T] {
     def id: Rep[Int]
@@ -498,12 +499,26 @@ object KoskiTables {
 
   val Massaluovutukset = TableQuery[MassaluovutusTable]
 
-  def KoskiOpiskeluOikeudetWithAccessCheck(implicit user: KoskiSpecificSession): Query[KoskiOpiskeluoikeusTable, KoskiOpiskeluoikeusRow, Seq] = {
-    val query = if (user.hasGlobalReadAccess || user.hasGlobalKoulutusmuotoReadAccess) {
+  def KoskiOpiskeluOikeudetWithAccessCheck(implicit user: KoskiSpecificSession, investigate: Boolean = false): Query[KoskiOpiskeluoikeusTable, KoskiOpiskeluoikeusRow, Seq] = {
+    val hasGlobalReadAccess = timed(s"${if (investigate) "get-oo-by-oid-investigation:" else ""}user.hasGlobalReadAccess", thresholdMs = 0) {
+      user.hasGlobalReadAccess
+    }
+    val hasGlobalKoulutusmuotoReadAccess = timed(s"${if (investigate) "get-oo-by-oid-investigation:" else ""}user.hasGlobalKoulutusmuotoReadAccess", thresholdMs = 0) {
+      user.hasGlobalKoulutusmuotoReadAccess
+    }
+
+    val query = if (hasGlobalReadAccess || hasGlobalKoulutusmuotoReadAccess) {
       KoskiOpiskeluOikeudet
     } else {
-      val oppilaitosOidit = user.organisationOids(AccessType.read).toList
-      val varhaiskasvatusOikeudet = user.varhaiskasvatusKäyttöoikeudet.filter(_.organisaatioAccessType.contains(AccessType.read))
+      val oppilaitosOidit = timed(s"${if (investigate) "get-oo-by-oid-investigation:" else ""}user.organisationOids(AccessType.read).toList", thresholdMs = 0) {
+        user.organisationOids(AccessType.read).toList
+      }
+      val varhaiskasvatusOikeudet = timed(s"${if (investigate) "get-oo-by-oid-investigation:" else ""}user.varhaiskasvatusKäyttöoikeudet.filter(_.organisaatioAccessType.contains(AccessType.read))", thresholdMs = 0) {
+        user.varhaiskasvatusKäyttöoikeudet.filter(_.organisaatioAccessType.contains(AccessType.read))
+      }
+      val orgKäyttöoikeudet = timed(s"${if (investigate) "get-oo-by-oid-investigation:" else ""}user.orgKäyttöoikeudet", thresholdMs = 0) {
+        user.orgKäyttöoikeudet
+      }
 
       for {
         oo <- KoskiOpiskeluOikeudet
@@ -512,18 +527,44 @@ object KoskiTables {
            (oo.oppilaitosOid inSet varhaiskasvatusOikeudet.map(_.ulkopuolinenOrganisaatio.oid)) &&
              oo.koulutustoimijaOid.map(_ inSet varhaiskasvatusOikeudet.map(_.koulutustoimija.oid)).getOrElse(false) ||
           (oo.koulutusmuoto === OpiskeluoikeudenTyyppi.taiteenperusopetus.koodiarvo &&
-            oo.koulutustoimijaOid.map(_ inSet user.orgKäyttöoikeudet
+            oo.koulutustoimijaOid.map(_ inSet orgKäyttöoikeudet
               .filter(_.organisaatioAccessType.contains(AccessType.read))
               .flatMap(_.organisaatio.toKoulutustoimija).map(_.oid))
             )
       } yield oo
     }
 
+    val hasKoulutusmuotoRestrictions = if (investigate) {
+      timed("get-oo-by-oid-investigation:user.hasKoulutusmuotoRestrictions", thresholdMs = 0) {
+        user.hasKoulutusmuotoRestrictionsWithTiming
+      }
+    } else {
+      timed("user.hasKoulutusmuotoRestrictions", thresholdMs = 0) {
+        user.hasKoulutusmuotoRestrictions
+      }
+    }
+
+    val allowedOpiskeluoikeudet = timed(s"${if (investigate) "get-oo-by-oid-investigation:" else ""}user.allowedOpiskeluoikeudetJaPäätasonSuoritukset.map(_.opiskeluoikeus)", thresholdMs = 0) {
+      user.allowedOpiskeluoikeudetJaPäätasonSuoritukset.map(_.opiskeluoikeus)
+    }
+    val hasPäätasonsuoritusRestrictions = timed(s"${if (investigate) "get-oo-by-oid-investigation:" else ""}user.hasPäätasonsuoritusRestrictions", thresholdMs = 0) {
+      user.hasPäätasonsuoritusRestrictions
+    }
+    val allowedPäätasonSuorituksenTyypit = timed(s"${if (investigate) "get-oo-by-oid-investigation:" else ""}user.allowedPäätasonSuorituksenTyypit.toList", thresholdMs = 0) {
+      user.allowedPäätasonSuorituksenTyypit.toList
+    }
+    val hasMitätöidytOpiskeluoikeudetAccess = timed(s"${if (investigate) "get-oo-by-oid-investigation:" else ""}user.hasMitätöidytOpiskeluoikeudetAccess", thresholdMs = 0) {
+      user.hasMitätöidytOpiskeluoikeudetAccess
+    }
+    val hasPoistetutOpiskeluoikeudetAccess = timed(s"${if (investigate) "get-oo-by-oid-investigation:" else ""}user.hasPoistetutOpiskeluoikeudetAccess", thresholdMs = 0) {
+      user.hasPoistetutOpiskeluoikeudetAccess
+    }
+
     query
-      .filterIf(user.hasKoulutusmuotoRestrictions)(_.koulutusmuoto inSet user.allowedOpiskeluoikeudetJaPäätasonSuoritukset.map(_.opiskeluoikeus))
-      .filterIf(user.hasPäätasonsuoritusRestrictions)(_.suoritustyypit @& user.allowedPäätasonSuorituksenTyypit.toList)
-      .filterIf(!user.hasMitätöidytOpiskeluoikeudetAccess)(o => !o.mitätöity)
-      .filterIf(!user.hasPoistetutOpiskeluoikeudetAccess)(o => !o.poistettu)
+      .filterIf(hasKoulutusmuotoRestrictions)(_.koulutusmuoto inSet allowedOpiskeluoikeudet)
+      .filterIf(hasPäätasonsuoritusRestrictions)(_.suoritustyypit @& allowedPäätasonSuorituksenTyypit)
+      .filterIf(!hasMitätöidytOpiskeluoikeudetAccess)(o => !o.mitätöity)
+      .filterIf(!hasPoistetutOpiskeluoikeudetAccess)(o => !o.poistettu)
   }
 
   def YtrOpiskeluOikeudetWithAccessCheck(implicit user: KoskiSpecificSession): Query[YtrOpiskeluoikeusTable, YtrOpiskeluoikeusRow, Seq] = {

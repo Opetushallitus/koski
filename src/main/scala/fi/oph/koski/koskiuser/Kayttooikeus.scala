@@ -1,5 +1,6 @@
 package fi.oph.koski.koskiuser
 
+import fi.oph.koski.util.Timing
 import fi.oph.koski.koskiuser.Rooli._
 import fi.oph.koski.schema._
 
@@ -92,7 +93,7 @@ object Rooli {
     s"$opiskeluoikeudenTyyppi${Käyttöoikeus.opiskeluoikeusPäätasonSuoritusErotin}${päätasonSuorituksenTyyppi.koodiarvo}".toUpperCase
 }
 
-object Käyttöoikeus {
+object Käyttöoikeus extends Timing {
   val opiskeluoikeusPäätasonSuoritusErotin = "__"
 
   def withPalveluroolitFilter(käyttöoikeudet: Set[Käyttöoikeus], palvelurooliFilter: Palvelurooli => Boolean): Set[Käyttöoikeus] = {
@@ -133,30 +134,34 @@ object Käyttöoikeus {
     if (!accessTypes.contains(AccessType.read)) {
       Set.empty
     } else {
-      val käyttäjänRoolit = unifyRoolit(roolit, isRootUser)
-        .filter(_.palveluName == "KOSKI")
+      timed("parseAllowedOpiskeluoikeudenTyypit", thresholdMs = 0) {
+        val käyttäjänRoolit = unifyRoolit(roolit, isRootUser)
+          .filter(_.palveluName == "KOSKI")
 
-      val käyttäjänOoPtsRoolit = käyttäjänRoolit
-        .flatMap(OoPtsMask.fromPalvelurooli)
-        .distinct
+        logger.info("käyttäjänRoolit.size: " + käyttäjänRoolit.size)
+        
+        val käyttäjänOoPtsRoolit = käyttäjänRoolit
+          .flatMap(OoPtsMask.fromPalvelurooli)
+          .distinct
 
-      val kaikkiOpiskeluoikeudenTyypit = OpiskeluoikeudenTyyppi
-        .kaikkiTyypit(true)
-        .flatMap(OoPtsMask.fromKoodistokoodiviite)
-        .toList
-
-      val tyypitJoihinKäyttöRajoitettu = käyttäjänOoPtsRoolit
-        .flatMap { rooli => kaikkiOpiskeluoikeudenTyypit.flatMap(rooli.intersect) }
-        .toSet
-
-      val oikeuksiaEiOleRajoitettuTiettyihinTyyppeihin = tyypitJoihinKäyttöRajoitettu.isEmpty
-
-      if (oikeuksiaEiOleRajoitettuTiettyihinTyyppeihin) {
-        OpiskeluoikeudenTyyppi
-          .kaikkiTyypit(isRootUser)
+        val kaikkiOpiskeluoikeudenTyypit = OpiskeluoikeudenTyyppi
+          .kaikkiTyypit(true)
           .flatMap(OoPtsMask.fromKoodistokoodiviite)
-      } else {
-        tyypitJoihinKäyttöRajoitettu
+          .toList
+
+        val tyypitJoihinKäyttöRajoitettu = käyttäjänOoPtsRoolit
+          .flatMap { rooli => kaikkiOpiskeluoikeudenTyypit.flatMap(rooli.intersect) }
+          .toSet
+
+        val oikeuksiaEiOleRajoitettuTiettyihinTyyppeihin = tyypitJoihinKäyttöRajoitettu.isEmpty
+
+        if (oikeuksiaEiOleRajoitettuTiettyihinTyyppeihin) {
+          OpiskeluoikeudenTyyppi
+            .kaikkiTyypit(isRootUser)
+            .flatMap(OoPtsMask.fromKoodistokoodiviite)
+        } else {
+          tyypitJoihinKäyttöRajoitettu
+        }
       }
     }
   }

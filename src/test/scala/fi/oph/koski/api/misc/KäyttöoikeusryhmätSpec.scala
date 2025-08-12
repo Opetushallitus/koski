@@ -573,6 +573,29 @@ class KäyttöoikeusryhmätSpec
       }
     }
 
+    "Opiskeluoikeus-api: käyttäjä näkee oppijalta vain sallitut päätason suoritukset" - {
+      "Oo palautetaan, kun on sallittu päätason suoritustyyppi" in {
+        val opiskeluoikeusOid = getOpiskeluoikeudet(
+          KoskiSpecificMockOppijat.kielitutkinnonSuorittaja.oid
+        ).filter(_.suoritukset.exists(_.tyyppi.koodiarvo == "yleinenkielitutkinto")).head.oid.get
+
+        authGet(s"api/opiskeluoikeus/${opiskeluoikeusOid}", MockUsers.yleisenKielitutkinnonKäyttäjä) {
+          verifyResponseStatusOk()
+        }
+      }
+
+      "Palautetaan 404, kun on kielletty päätason suoritustyyppi" in {
+        val opiskeluoikeusOid = getOpiskeluoikeudet(
+          KoskiSpecificMockOppijat.kielitutkinnonSuorittaja.oid
+        ).filter(_.suoritukset.exists(_.tyyppi.koodiarvo == "valtionhallinnonkielitutkinto")).head.oid.get
+
+
+        authGet(s"api/opiskeluoikeus/${opiskeluoikeusOid}", MockUsers.yleisenKielitutkinnonKäyttäjä) {
+          verifyResponseStatus(404, KoskiErrorCategory.notFound.opiskeluoikeuttaEiLöydyTaiEiOikeuksia())
+        }
+      }
+    }
+
     "Uuden käyttöliittymän oppija-api: käyttäjä näkee oppijalta vain sallitut päätason suoritukset" - {
       def testUi2OppijaApi(user: MockUser, opiskeluoikeustyypit: List[String], päätasonsuoritustyypit: List[String]) = {
         authGet("api/oppija/1.2.246.562.24.00000000177/uiv2", user) {
