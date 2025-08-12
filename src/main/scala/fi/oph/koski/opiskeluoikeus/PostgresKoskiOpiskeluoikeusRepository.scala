@@ -3,6 +3,7 @@ package fi.oph.koski.opiskeluoikeus
 import fi.oph.koski.db.KoskiTables._
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.db._
+import fi.oph.koski.util.Timing
 import fi.oph.koski.henkilo._
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.koskiuser.KoskiSpecificSession
@@ -20,7 +21,7 @@ import java.time.LocalDate
 class PostgresKoskiOpiskeluoikeusRepository(
   val db: DB,
   actions: PostgresKoskiOpiskeluoikeusRepositoryActions
-) extends KoskiOpiskeluoikeusRepository with DatabaseExecutionContext with QueryMethods with Logging {
+) extends KoskiOpiskeluoikeusRepository with DatabaseExecutionContext with QueryMethods with Logging with Timing {
 
   override def filterOppijat[A <: HenkilönTunnisteet](oppijat: List[A])(implicit user: KoskiSpecificSession): List[A] = {
     val queryOppijaOids = sequence(oppijat.map { o =>
@@ -57,7 +58,22 @@ class PostgresKoskiOpiskeluoikeusRepository(
   }
 
   override def findByOid(oid: String)(implicit user: KoskiSpecificSession): Either[HttpStatus, KoskiOpiskeluoikeusRow] = withOidCheck(oid) {
-    withExistenceCheck(runDbSync(KoskiOpiskeluOikeudetWithAccessCheck.filter(_.oid === oid).result))
+    val query = timed("get-oo-by-oid-investigation:findByOid.query", thresholdMs = 0) {
+      KoskiOpiskeluOikeudetWithAccessCheck.filter(_.oid === oid)
+    }
+    val result = timed("get-oo-by-oid-investigation:findByOid.result", thresholdMs = 0) {
+      withExistenceCheck(runDbSync({
+        val result = query.result
+
+//        result.statements.head.grouped(2000).zipWithIndex.foreach { case (sql, index) =>
+//          logger.info(s"findByOid SQL($index)\n$sql")
+//        }
+
+        result
+      }))
+    }
+
+    result
   }
 
   override def findByOidIlmanKäyttöoikeustarkistusta(oid: String): Either[HttpStatus, KoskiOpiskeluoikeusRow] = withOidCheck(oid) {
@@ -147,7 +163,7 @@ class PostgresKoskiOpiskeluoikeusRepository(
     val tallennettavaOid = tallennettavaOpiskeluoikeus.flatMap(_.oid)
     val tallennettavaLähdejärjestelmänKoodiarvo = tallennettavaOpiskeluoikeus.flatMap(_.lähdejärjestelmänId).map(_.lähdejärjestelmä.koodiarvo)
     val tallennettavaLähdejärjestelmänId = tallennettavaOpiskeluoikeus.flatMap(_.lähdejärjestelmänId).flatMap(_.id)
-    
+
     val aiemmistaOpiskeluoikeuksista = runDbSync(
       sql"""
         with master as (
