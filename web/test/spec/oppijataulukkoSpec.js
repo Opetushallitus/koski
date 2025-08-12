@@ -104,17 +104,19 @@ describe('Oppijataulukko', function () {
       it('toimii', function () {
         expect(page.oppijataulukko.names()).to.deep.equal([
           'Amis, Antti',
+          'Ammatillinen-Osittainen, Raitsu',
           'Ammattilainen, Aarne',
           'Erityisoppilaitoksessa, Emppu',
           'Erityisoppilaitoksessa, Emppu',
           'Erityisoppilaitoksessa, Emppu Historia',
           'Korhonen, Korottaja',
           'Mastinen, Maarni',
+          'Osittainen, Outi',
           'Paallekkaisia, Pekka',
           'Rikkinäinen, Kela',
           'Tuleva-ammattilainen, Tuure'
         ])
-        expect(page.opiskeluoikeudeTotal()).to.equal('10')
+        expect(page.opiskeluoikeudeTotal()).to.equal('12')
       })
     })
 
@@ -211,7 +213,6 @@ describe('Oppijataulukko', function () {
           'Kurssikertyma, Valmistunut Aineopiskelija'
         ])
         expect(page.opiskeluoikeudeTotal()).to.equal('10')
-        
       })
     })
 
@@ -339,7 +340,7 @@ describe('Oppijataulukko', function () {
           'Tiedonsiirto, Tiina',
           'Toiminta, Tommi',
           'Tuleva-ammattilainen, Tuure',
-          'Tunnustettu, Teuvo',
+          'Tunnustettu, Teuvo'
         ])
         expect(page.opiskeluoikeudeTotal()).to.equal('121')
       })

@@ -34,17 +34,7 @@ case class TutkintoRakenneValidator(tutkintoRepository: TutkintoRepository, kood
           case Left(status) => status
           case Right(rakenteet) =>
             HttpStatus.fold {
-              val tuloksetOsaamisala = rakenteet.map(rakenne =>
-                validateOsaamisalat(tutkintoSuoritus.osaamisala.toList.flatten.map(_.osaamisala), rakenne)
-              )
-              val tuloksetTutkintonimike = rakenteet.map(rakenne =>
-                validateTutkintonimikkeet(tutkintoSuoritus.tutkintonimike.toList.flatten, rakenne)
-              )
-              if (tuloksetOsaamisala.exists(_.isOk) && tuloksetTutkintonimike.exists(_.isOk)) {
-                List(HttpStatus.ok)
-              } else {
-                tuloksetOsaamisala ++ tuloksetTutkintonimike
-              }
+              validateOsaamisalatJaTutkintonimikkeet(rakenteet, tutkintoSuoritus.osaamisala.toList.flatten.map(_.osaamisala), tutkintoSuoritus.tutkintonimike.toList.flatten)
             }.onSuccess(HttpStatus.fold(suoritus.osasuoritusLista.map {
               case osaSuoritus: AmmatillisenTutkinnonOsanSuoritus =>
                 HttpStatus.fold(osaSuoritus.koulutusmoduuli match {
@@ -81,19 +71,26 @@ case class TutkintoRakenneValidator(tutkintoRepository: TutkintoRepository, kood
         HttpStatus.justStatus(validateKoulutustyypitJaHaeRakenteet(n.tutkinto, Some(ammatillisetKoulutustyypit), Some(vaadittuPerusteenVoimassaolopäivä)))
       case suoritus: AikuistenPerusopetuksenOppimääränSuoritus =>
         HttpStatus.justStatus(validateKoulutustyypitJaHaeRakenteet(suoritus.koulutusmoduuli, Some(List(aikuistenPerusopetus)), Some(vaadittuPerusteenVoimassaolopäivä), Some(suoritus)))
-      case suoritus: AmmatillisenTutkinnonOsittainenSuoritus => HttpStatus.justStatus(validateKoulutustyypitJaHaeRakenteet(
-        suoritus.koulutusmoduuli,
-        Some(ammatillisetKoulutustyypit),
-        Some(vaadittuPerusteenVoimassaolopäivä),
-        Some(suoritus)
-      )).onSuccess(
-        HttpStatus.fold(
-          suoritus.osasuoritukset.toList.flatten.map {
-            case suoritus if suoritus.tunnustettu.isDefined => validateTutkinnonOsanTutkinto(suoritus, None)
-            case suoritus => validateTutkinnonOsanTutkinto(suoritus, Some(vaadittuPerusteenVoimassaolopäivä))
-          }
-        )
-      )
+      case suoritus: AmmatillisenTutkinnonOsittainenSuoritus =>
+        validateKoulutustyypitJaHaeRakenteet(
+          suoritus.koulutusmoduuli,
+          Some(ammatillisetKoulutustyypit),
+          Some(vaadittuPerusteenVoimassaolopäivä),
+          Some(suoritus)
+        ) match {
+          case Left(status) => status
+          case Right(rakenteet) =>
+            HttpStatus.fold {
+              validateOsaamisalatJaTutkintonimikkeet(rakenteet, suoritus.osaamisala.toList.flatten.map(_.osaamisala), suoritus.tutkintonimike.toList.flatten)
+            }.onSuccess(
+              HttpStatus.fold(
+                suoritus.osasuoritukset.toList.flatten.map {
+                  case suoritus if suoritus.tunnustettu.isDefined => validateTutkinnonOsanTutkinto(suoritus, None)
+                  case suoritus => validateTutkinnonOsanTutkinto(suoritus, Some(vaadittuPerusteenVoimassaolopäivä))
+                }
+              )
+            )
+        }
       case s: LukionPäätasonSuoritus2019 =>
         HttpStatus.justStatus(
           validateKoulutustyypitJaHaeRakenteet(s.koulutusmoduuli, Some(lukionKoulutustyypit), Some(vaadittuPerusteenVoimassaolopäivä))
@@ -230,6 +227,27 @@ case class TutkintoRakenneValidator(tutkintoRepository: TutkintoRepository, kood
       case None => Left(KoskiErrorCategory.badRequest.validation.rakenne.diaariPuuttuu())
       case Some(d) if (d.length < 1) || (d.length > 30) => Left(KoskiErrorCategory.badRequest.validation.rakenne.tuntematonDiaari("Diaarinumeron muoto on virheellinen: " + diaarinumero.get.take(30)))
       case Some(d) => Right(d)
+    }
+  }
+
+  private def validateOsaamisalatJaTutkintonimikkeet(
+    rakenteet: List[TutkintoRakenne],
+    osaamisalaKoodit: List[Koodistokoodiviite],
+    tutkintonimikkeet: List[Koodistokoodiviite]
+  ): HttpStatus = {
+    HttpStatus.fold {
+      val tuloksetOsaamisala = rakenteet.map { rakenne =>
+        validateOsaamisalat(osaamisalaKoodit, rakenne)
+      }
+      val tuloksetTutkintonimike = rakenteet.map { rakenne =>
+        validateTutkintonimikkeet(tutkintonimikkeet, rakenne)
+      }
+      if (tuloksetOsaamisala.exists(_.isOk) && tuloksetTutkintonimike.exists(_.isOk)) {
+        List(HttpStatus.ok)
+      }
+      else {
+        tuloksetOsaamisala ++ tuloksetTutkintonimike
+      }
     }
   }
 

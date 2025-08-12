@@ -1536,7 +1536,9 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
               ammatillisenTutkinnonOsittainenSuoritus.copy(
                 koulutusmoduuli = AmmatillinenTutkintoKoulutus(
                   Koodistokoodiviite("351301", None, "koulutus", None), Some("39/011/2014")
-                )
+                ),
+                osaamisala = Some(List(Osaamisalajakso(Koodistokoodiviite("1525", Some("Autokorinkorjauksen osaamisala"), "osaamisala", None)))),
+                tutkintonimike = Some(List(Koodistokoodiviite("10024", Some("Autokorinkorjaaja"), "tutkintonimikkeet", None))),
               )
             )
           )
@@ -1554,7 +1556,9 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
               ammatillisenTutkinnonOsittainenSuoritus.copy(
                 koulutusmoduuli = AmmatillinenTutkintoKoulutus(
                   Koodistokoodiviite("331101", None, "koulutus", None), Some("3000/011/2014")
-                )
+                ),
+                osaamisala = None,
+                tutkintonimike = None,
               )
             )
           )

@@ -414,9 +414,9 @@ describe('Ammatillinen koulutus 3', function () {
         ).to.equal(
           'Koulutus Luonto- ja ympäristöalan perustutkinto 361902 62/011/2014\n' +
           'Suoritustapa Ammatillinen perustutkinto\n' +
-          'Tutkintonimike Autokorinkorjaaja\n' +
+          'Tutkintonimike Ympäristönhoitaja\n' +
           'Toinen tutkintonimike kyllä\n' +
-          'Osaamisala Autokorinkorjauksen osaamisala\n' +
+          'Osaamisala Ympäristöalan osaamisala\n' +
           'Oppilaitos / toimipiste Stadin ammatti- ja aikuisopisto, Lehtikuusentien toimipaikka\n' +
           'Suorituskieli suomi\n' +
           'Järjestämismuodot 1.9.2012 — , Koulutuksen järjestäminen oppilaitosmuotoisena\n' +

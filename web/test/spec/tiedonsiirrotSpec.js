@@ -28,7 +28,7 @@ describe('Tiedonsiirrot', function () {
             'epävalidiHetu',
             'Tiedonsiirto, Tiina',
             'Stadin ammatti- ja aikuisopisto',
-            'Luonto- ja ympäristöalan perustutkintoAutokorinkorjauksen osaamisalaAutokorinkorjaaja',
+            'Luonto- ja ympäristöalan perustutkintoYmpäristöalan osaamisalaYmpäristönhoitaja',
             'virhe',
             'tiedot'
           ],
@@ -89,7 +89,7 @@ describe('Tiedonsiirrot', function () {
           'epävalidiHetu',
           'Tiedonsiirto, Tiina',
           'Stadin ammatti- ja aikuisopisto',
-          'Luonto- ja ympäristöalan perustutkintoAutokorinkorjauksen osaamisalaAutokorinkorjaaja',
+          'Luonto- ja ympäristöalan perustutkintoYmpäristöalan osaamisalaYmpäristönhoitaja',
           'Virheellinen muoto hetulla: epävalidiHetuvirhe',
           'tiedot'
         ],
@@ -181,7 +181,7 @@ describe('Tiedonsiirrot', function () {
               'epävalidiHetu',
               'Tiedonsiirto, Tiina',
               'Stadin ammatti- ja aikuisopisto',
-              'Luonto- ja ympäristöalan perustutkintoAutokorinkorjauksen osaamisalaAutokorinkorjaaja',
+              'Luonto- ja ympäristöalan perustutkintoYmpäristöalan osaamisalaYmpäristönhoitaja',
               'Virheellinen muoto hetulla: epävalidiHetuvirhe',
               'tiedot'
             ],
