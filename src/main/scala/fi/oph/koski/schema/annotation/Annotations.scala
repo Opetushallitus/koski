@@ -81,3 +81,5 @@ case class EnumValues(values: Set[String]) extends RepresentationalMetadata {
     throw new UnsupportedOperationException("EnumValues not supported for " + other)
   }
 }
+
+case class AllowKoulutustoimijaOidAsOppilaitos() extends RepresentationalMetadata

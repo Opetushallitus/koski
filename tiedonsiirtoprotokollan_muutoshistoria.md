@@ -1,7 +1,13 @@
+## x.8.2025
+
+- Salli valtionhallinnon kielitutkinnon erinomaisen tason siirto ilman oppilaitosta
+
 ## 27.8.2025
- - Lukion IBDPcore kursseille lisätty oma luokka joka sallii vain opintopisteet laajuutena
+
+- Lukion IBDPcore kursseille lisätty oma luokka joka sallii vain opintopisteet laajuutena
 
 ## 11.8.2025
+
 - Perusopetuksen lisätietojen vuosiluokkiin sitoutumaton opetus kenttä muutettu valinnaiseksi
 
 ## 16.7.2025
