@@ -1,4 +1,9 @@
 # Koskeen tallennettavien tietojen validaatiosäännöt
+
+## 14.8.2025
+
+- Salli valtionhallinnon kielitutkinnon erinomaisen tason siirto ilman oppilaitosta
+
 ## 11.8.2025
 - 1.8.2025 ja sen jälkeen alkaneille peruskoulun opiskeluoikeuksille ei sallita kenttää vuosiluokkiinSitoutumatonOpetus
 

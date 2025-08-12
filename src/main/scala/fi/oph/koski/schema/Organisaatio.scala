@@ -41,6 +41,13 @@ case class Koulutustoimija(
   kotipaikka: Option[Koodistokoodiviite] = None
 ) extends OrganisaatioWithOid with DefaultDescription {
   def toOppilaitos = None
+
+  def toTuntematonOppilaitos = Oppilaitos(
+    oid = oid,
+    nimi = nimi,
+    kotipaikka = kotipaikka,
+    oppilaitosnumero = Some(Koodistokoodiviite("00000", "oppilaitosnumero")), // 00000 = Tuntematon
+  )
 }
 
 @Description("Opintopolun organisaatiopalvelusta löytyvä oppilaitos-tyyppinen organisaatio")
