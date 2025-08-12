@@ -1,13 +1,21 @@
+## x.8.2025
+
+- Salli valtionhallinnon kielitutkinnon erinomaisen tason siirto ilman oppilaitosta
+
 ## 3.9.2025
- - nuorten peerusopetuksessa "toiminta alueittain opiskelu" ja "tavoitekokonaisuuksittain opiskelu" merkitty salassa pidettäväksi
+
+- nuorten peerusopetuksessa "toiminta alueittain opiskelu" ja "tavoitekokonaisuuksittain opiskelu" merkitty salassa pidettäväksi
 
 ## 2.9.2025
+
 - Lisätty uusi ammatillisen opiskeluoikeuden päätason suoritus: ammatillisen tutkinnon osa/osia useasta tutkinnosta
 
 ## 27.8.2025
- - Lukion IBDPcore kursseille lisätty oma luokka joka sallii vain opintopisteet laajuutena
+
+- Lukion IBDPcore kursseille lisätty oma luokka joka sallii vain opintopisteet laajuutena
 
 ## 11.8.2025
+
 - Perusopetuksen lisätietojen vuosiluokkiin sitoutumaton opetus kenttä muutettu valinnaiseksi
 
 ## 16.7.2025

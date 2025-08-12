@@ -19890,6 +19890,61 @@
         "organisaatiotyyppi_09"
       ],
       "ytunnus": "0187690-1"
+    },
+    {
+      "oid": "1.2.246.562.10.48587687889",
+      "alkuPvm": 1466640000000,
+      "parentOid": "1.2.246.562.10.00000000001",
+      "parentOidPath": "1.2.246.562.10.48587687889/1.2.246.562.10.00000000001",
+      "ytunnus": "2769790-1",
+      "toimipistekoodi": "",
+      "match": true,
+      "nimi": {
+        "fi": "Opetushallitus",
+        "sv": "Opetushallitus",
+        "en": "Opetushallitus"
+      },
+      "lyhytNimi": {
+        "fi": "Opetushallitus",
+        "sv": "Opetushallitus",
+        "en": "Opetushallitus"
+      },
+      "kieletUris": [
+        "oppilaitoksenopetuskieli_1#1",
+        "oppilaitoksenopetuskieli_1#2"
+      ],
+      "kotipaikkaUri": "kunta_091",
+      "children": [],
+      "status": "AKTIIVINEN",
+      "aliOrganisaatioMaara": 0,
+      "organisaatiotyypit": ["KOULUTUSTOIMIJA", "MUU_ORGANISAATIO"]
+    },
+    {
+      "oid": "1.2.246.562.10.27736566558",
+      "alkuPvm": 1704067200000,
+      "parentOid": "1.2.246.562.10.00000000001",
+      "parentOidPath": "1.2.246.562.10.27736566558/1.2.246.562.10.00000000001",
+      "toimipistekoodi": "",
+      "match": true,
+      "nimi": {
+        "fi": "Valtionhallinnon kielitutkinnot",
+        "sv": "Valtionhallinnon kielitutkinnot",
+        "en": "Valtionhallinnon kielitutkinnot"
+      },
+      "lyhytNimi": {
+        "fi": "Valtionhallinnon kielitutkinnot",
+        "sv": "Valtionhallinnon kielitutkinnot",
+        "en": "Valtionhallinnon kielitutkinnot"
+      },
+      "kieletUris": [
+        "oppilaitoksenopetuskieli_1#2",
+        "oppilaitoksenopetuskieli_2#2"
+      ],
+      "kotipaikkaUri": "kunta_999",
+      "children": [],
+      "status": "AKTIIVINEN",
+      "aliOrganisaatioMaara": 1,
+      "organisaatiotyypit": ["MUU_ORGANISAATIO"]
     }
   ]
 }

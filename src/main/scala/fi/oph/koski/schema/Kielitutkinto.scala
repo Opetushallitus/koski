@@ -1,7 +1,7 @@
 package fi.oph.koski.schema
 
 import fi.oph.koski.schema.LocalizedString.unlocalized
-import fi.oph.koski.schema.annotation.{KoodistoKoodiarvo, KoodistoUri}
+import fi.oph.koski.schema.annotation.{AllowKoulutustoimijaOidAsOppilaitos, KoodistoKoodiarvo, KoodistoUri}
 import fi.oph.scalaschema.annotation.{Description, Discriminator, MaxItems, MinItems, Title}
 
 import java.time.{LocalDate, LocalDateTime}
@@ -12,6 +12,7 @@ case class KielitutkinnonOpiskeluoikeus(
   oid: Option[String] = None,
   versionumero: Option[Int] = None,
   lähdejärjestelmänId: Option[LähdejärjestelmäId] = None,
+  @AllowKoulutustoimijaOidAsOppilaitos
   oppilaitos: Option[Oppilaitos] = None,
   koulutustoimija: Option[Koulutustoimija] = None,
   tila: KielitutkinnonOpiskeluoikeudenTila,
@@ -28,6 +29,11 @@ case class KielitutkinnonOpiskeluoikeus(
   override def sisältyyOpiskeluoikeuteen: Option[SisältäväOpiskeluoikeus] = None
 
   def lisätiedot: Option[OpiskeluoikeudenLisätiedot] = None
+
+  def isValtionhallinnonKielitutkinto: Boolean = suoritukset.exists {
+    case _: ValtionhallinnonKielitutkinnonSuoritus => true
+    case _ => false
+  }
 }
 
 case class KielitutkinnonOpiskeluoikeudenTila(
