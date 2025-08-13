@@ -264,7 +264,7 @@ class KelaSpec
         val oppija = JsonSerializer.parse[KelaOppija](body)
         val suoritus = oppija.opiskeluoikeudet.head.suoritukset.head.asInstanceOf[KelaAmmatillinenPäätasonSuoritus]
         val näyttöjenArviointipäivät = suoritus.osasuoritukset.get.flatMap(_.näyttö).map(_.arviointi.map(_.päivä))
-        näyttöjenArviointipäivät shouldBe List(Some(LocalDate.of(2014, 10, 20)))
+        näyttöjenArviointipäivät shouldBe List(Some(LocalDate.of(2014, 10, 20)), Some(LocalDate.of(2014, 10, 20)))
       }
     }
     "Palauttaa IB:n predicted grade -arvioinnin" in {

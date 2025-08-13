@@ -1088,12 +1088,12 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
         }
 
         "vaaditaan jos osittainen tutkinto valmis 1.1.2022 tai jälkeen" - {
-          "palautetaan HTTP 400" in setupAmmatillinenPäätasonSuoritus(ammatillisenTutkinnonOsittainenAutoalanSuoritus.copy(keskiarvo = None, vahvistus = vahvistus(date(2022, 1, 1))))(
+          "palautetaan HTTP 400" in setupAmmatillinenPäätasonSuoritus(ammatillisenTutkinnonOsittainenSuoritus.copy(keskiarvo = None, vahvistus = vahvistus(date(2022, 1, 1))))(
             verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.ammatillinen.valmiillaSuorituksellaPitääOllaKeskiarvo("Suorituksella pitää olla keskiarvo kun suoritus on valmis")))
         }
 
         "ei vaadita jos osittainen tutkinto valmis ennen 1.1.2022" - {
-          "palautetaan HTTP 200" in setupAmmatillinenPäätasonSuoritus(ammatillisenTutkinnonOsittainenAutoalanSuoritus.copy(keskiarvo = None, vahvistus = vahvistus(date(2021, 12, 31))))(
+          "palautetaan HTTP 200" in setupAmmatillinenPäätasonSuoritus(ammatillisenTutkinnonOsittainenSuoritus.copy(keskiarvo = None, vahvistus = vahvistus(date(2021, 12, 31))))(
             verifyResponseStatus(200))
         }
 
@@ -1535,10 +1535,10 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
             suoritukset = List(
               ammatillisenTutkinnonOsittainenSuoritus.copy(
                 koulutusmoduuli = AmmatillinenTutkintoKoulutus(
-                  Koodistokoodiviite("351301", None, "koulutus", None), Some("39/011/2014")
+                  Koodistokoodiviite("351301", None, "koulutus", None), Some("6/011/2015") // rakennevalidaatiota ohittava diaarinumero
                 ),
-                osaamisala = Some(List(Osaamisalajakso(Koodistokoodiviite("1525", Some("Autokorinkorjauksen osaamisala"), "osaamisala", None)))),
-                tutkintonimike = Some(List(Koodistokoodiviite("10024", Some("Autokorinkorjaaja"), "tutkintonimikkeet", None))),
+                osaamisala = None,
+                tutkintonimike = None
               )
             )
           )
@@ -1555,7 +1555,7 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
             suoritukset = List(
               ammatillisenTutkinnonOsittainenSuoritus.copy(
                 koulutusmoduuli = AmmatillinenTutkintoKoulutus(
-                  Koodistokoodiviite("331101", None, "koulutus", None), Some("3000/011/2014")
+                  Koodistokoodiviite("331101", None, "koulutus", None), Some("OPH-2524-2017") // rakennevalidaatiota ohittava diaarinumero
                 ),
                 osaamisala = None,
                 tutkintonimike = None,

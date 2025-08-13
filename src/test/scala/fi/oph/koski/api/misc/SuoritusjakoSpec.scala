@@ -521,7 +521,7 @@ class SuoritusjakoSpec extends AnyFreeSpec with SuoritusjakoTestMethods with Mat
 
       var secret: String = null
 
-      createSuoritusjako(json, "140493-2798"){
+      createSuoritusjako(json, "230297-6448"){
         verifyResponseStatusOk()
         secret = JsonSerializer.parse[Suoritusjako](response.body).secret
       }
@@ -533,13 +533,13 @@ class SuoritusjakoSpec extends AnyFreeSpec with SuoritusjakoTestMethods with Mat
       }
     }
 
-    "sisältää tiedot mukautetuista opinnoista kun jako on luotu ennen rajapäivää" in {
+    "sisältää tiedot mukautetuista opinnoista kun jako on luotu rajapäivän jälkeen" in {
       val json =
         """[{"oppilaitosOid":"1.2.246.562.10.52251087186","suorituksenTyyppi":"ammatillinentutkintoosittainen","koulutusmoduulinTunniste":"361902"}]"""
 
       var secret: String = null
 
-      createSuoritusjako(json, "140493-2798"){
+      createSuoritusjako(json, "230297-6448"){
         verifyResponseStatusOk()
         secret = JsonSerializer.parse[Suoritusjako](response.body).secret
       }
