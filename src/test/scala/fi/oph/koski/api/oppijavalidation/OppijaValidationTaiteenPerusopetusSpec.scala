@@ -1015,7 +1015,6 @@ class OppijaValidationTaiteenPerusopetusSpec
         Map("toimipiste" -> defaultOpiskeluoikeus.oppilaitos.get.oid), MockUsers.paakayttaja
       ).length
 
-
       // Peru suostumus käyttäjän omilla oikeuksilla
       val loginHeadersKansalainen = kansalainenLoginHeaders(KoskiSpecificMockOppijat.tyhjä.hetu)
       poistaSuostumusSuoritukselta(
@@ -1069,6 +1068,7 @@ class OppijaValidationTaiteenPerusopetusSpec
       // Opiskeluoikeus on poistunut oppija-listauksesta
       KoskiApplicationForTests.perustiedotIndexer.sync(true)
       val opiskeluoikeuksia = searchForPerustiedot(Map("toimipiste" -> oo.oppilaitos.get.oid))
+
       opiskeluoikeuksia.length should equal(opiskeluoikeuksiaEnnenPerumistaOpenSearchissa - 1)
     }
 
