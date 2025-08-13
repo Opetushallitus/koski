@@ -30,7 +30,7 @@ class StubAppender[T <: Serializable] protected (
 
 object StubLogs {
   private val logs: ListBuffer[Message] = ListBuffer.empty
-  val maxSize = 200
+  val maxSize = 400
 
   def clear(): Unit = synchronized {
     logs.clear()
