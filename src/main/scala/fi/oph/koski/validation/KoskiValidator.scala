@@ -323,9 +323,9 @@ class KoskiValidator(
       case ytrOo: YlioppilastutkinnonOpiskeluoikeus if ytrOo.oppilaitos.isEmpty =>
         // YO-tutkinnon opiskeluoikeudella ei ole oppilaitosta, koska sen myöntää koulutustoimijana toimiva ylioppilastutkintolautakunta
         Right(oo)
-      case kituOo: KielitutkinnonOpiskeluoikeus if kituOo.oppilaitos.isEmpty && kituOo.isValtionhallinnonKielitutkinto =>
-        // Valtionhallinnon kielitutkinnon suorituksella ei välttämättä ole oppilaitosta
-        // Tallennetaan Opetushallituksesta koulutustoimijana johdettu näennäisoppilaitos
+      case kituOo: KielitutkinnonOpiskeluoikeus if kituOo.oppilaitos.isEmpty && kituOo.isOphValtionhallinnonKielitutkinto =>
+        // Erinomaisen tason valtionhallinnon kielitutkinnon suorituksella ei välttämättä ole oppilaitosta.
+        // Tallennetaan silloin Opetushallituksesta koulutustoimijana johdettu näennäisoppilaitos.
         Right(kituOo.copy(oppilaitos = organisaatioRepository
           .getOrganisaatio(Opetushallitus.koulutustoimijaOid)
           .collect { case k: Koulutustoimija => k }
@@ -354,8 +354,8 @@ class KoskiValidator(
     case t: TaiteenPerusopetuksenOpiskeluoikeus if t.onHankintakoulutus => validateAndAddTaiteenPerusopetuksenKoulutustoimija(t)
     case ytrOo: YlioppilastutkinnonOpiskeluoikeus if ytrOo.oppilaitos.isEmpty && ytrOo.koulutustoimija.exists(_.oid == "1.2.246.562.10.43628088406") =>
       Right(oo)
-    case kituOo: KielitutkinnonOpiskeluoikeus if kituOo.isValtionhallinnonKielitutkinto =>
-      Right(kituOo.copy(koulutustoimija = kituOo.koulutustoimija.orElse(Some(Koulutustoimija(Opetushallitus.koulutustoimijaOid)))))
+    case kituOo: KielitutkinnonOpiskeluoikeus if kituOo.koulutustoimija.isEmpty && kituOo.isOphValtionhallinnonKielitutkinto =>
+      Right(kituOo.copy(koulutustoimija = organisaatioRepository.getOrganisaatio(Opetushallitus.koulutustoimijaOid).flatMap(_.toKoulutustoimija)))
     case _ => organisaatioRepository.findKoulutustoimijaForOppilaitos(oo.getOppilaitos) match {
       case Some(löydettyKoulutustoimija) =>
         oo.koulutustoimija.map(_.oid) match {
@@ -522,7 +522,7 @@ class KoskiValidator(
     oo match {
       case _: YlioppilastutkinnonOpiskeluoikeus =>
         validateOrganisaatioAccess(oo, oo.getOppilaitosOrKoulutusToimija)
-      case kituOo: KielitutkinnonOpiskeluoikeus if kituOo.isValtionhallinnonKielitutkinto =>
+      case kituOo: KielitutkinnonOpiskeluoikeus if kituOo.isOphValtionhallinnonKielitutkinto =>
         validateOrganisaatioAccess(oo, oo.getOppilaitosOrKoulutusToimija)
       case _ =>
         validateOrganisaatioAccess(oo, oo.getOppilaitos)
