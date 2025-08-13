@@ -30,8 +30,8 @@ case class KielitutkinnonOpiskeluoikeus(
 
   def lisätiedot: Option[OpiskeluoikeudenLisätiedot] = None
 
-  def isValtionhallinnonKielitutkinto: Boolean = suoritukset.exists {
-    case _: ValtionhallinnonKielitutkinnonSuoritus => true
+  def isOphValtionhallinnonKielitutkinto: Boolean = suoritukset.exists {
+    case s: ValtionhallinnonKielitutkinnonSuoritus if s.koulutusmoduuli.tunniste.koodiarvo == "erinomainen" => true
     case _ => false
   }
 }
