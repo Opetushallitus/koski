@@ -85,8 +85,35 @@ case class TutkintoRakenneValidator(tutkintoRepository: TutkintoRepository, kood
             }.onSuccess(
               HttpStatus.fold(
                 suoritus.osasuoritukset.toList.flatten.map {
-                  case suoritus if suoritus.tunnustettu.isDefined => validateTutkinnonOsanTutkinto(suoritus, None)
-                  case suoritus => validateTutkinnonOsanTutkinto(suoritus, Some(vaadittuPerusteenVoimassaolopäivä))
+                  case osaSuoritus: OsittaisenAmmatillisenTutkinnonOsanSuoritus =>
+                    HttpStatus.fold(osaSuoritus.koulutusmoduuli match {
+                      case osa: ValtakunnallinenTutkinnonOsa =>
+                        HttpStatus.fold {
+                          val tulokset = rakenteet.map(rakenne =>
+                            validateTutkinnonOsa(
+                              osaSuoritus,
+                              osa,
+                              rakenne,
+                              suoritus.suoritustapa,
+                              alkamispäiväLäsnä,
+                              vaadittuPerusteenVoimassaolopäivä,
+                              oo,
+                              suoritus
+                            )
+                          )
+                          if (tulokset.exists(_.isOk)) {
+                            List(HttpStatus.ok)
+                          } else {
+                            tulokset
+                          }
+                        }
+                      case osa: PaikallinenTutkinnonOsa =>
+                        HttpStatus.ok // vain OpsTutkinnonosatoteutukset validoidaan, muut sellaisenaan läpi, koska niiden rakennetta ei tunneta
+                      case osa: KorkeakouluopinnotTutkinnonOsa =>
+                        HttpStatus.ok
+                      case osa: JatkoOpintovalmiuksiaTukeviaOpintojaTutkinnonOsa =>
+                        HttpStatus.ok
+                    }, validateTutkintoField(suoritus, osaSuoritus))
                 }
               )
             )
@@ -150,7 +177,7 @@ case class TutkintoRakenneValidator(tutkintoRepository: TutkintoRepository, kood
     }
   }
 
-  private def validateTutkintoField(tutkintoSuoritus: AmmatillisenTutkinnonSuoritus, osaSuoritus: AmmatillisenTutkinnonOsanSuoritus) = (tutkintoSuoritus.koulutusmoduuli.perusteenDiaarinumero, osaSuoritus.tutkinto.flatMap(_.perusteenDiaarinumero)) match {
+  private def validateTutkintoField(tutkintoSuoritus: AmmatillisenTutkinnonOsittainenTaiKokoSuoritus, osaSuoritus: TutkinnonOsanSuoritus) = (tutkintoSuoritus.koulutusmoduuli.perusteenDiaarinumero, osaSuoritus.tutkinto.flatMap(_.perusteenDiaarinumero)) match {
     case (Some(tutkinnonDiaari), Some(osanDiaari)) if tutkinnonDiaari == osanDiaari =>
       KoskiErrorCategory.badRequest.validation.rakenne.samaTutkintokoodi(s"Tutkinnon osalle ${osaSuoritus.koulutusmoduuli.tunniste} on merkitty tutkinto, jossa on sama diaarinumero $tutkinnonDiaari kuin tutkinnon suorituksessa")
     case _ =>
@@ -284,7 +311,7 @@ case class TutkintoRakenneValidator(tutkintoRepository: TutkintoRepository, kood
   }
 
   private def validateTutkinnonOsa(
-    suoritus: AmmatillisenTutkinnonOsanSuoritus,
+    suoritus: TutkinnonOsanSuoritus,
     osa: ValtakunnallinenTutkinnonOsa,
     rakenne: TutkintoRakenne,
     suoritustapa: Koodistokoodiviite,
@@ -349,7 +376,7 @@ case class TutkintoRakenneValidator(tutkintoRepository: TutkintoRepository, kood
 
   private def findTutkintonimike(rakenne: TutkintoRakenne, tutkintonimikeKoodi: String) = rakenne.tutkintonimikkeet.find(_.koodiarvo == tutkintonimikeKoodi)
 
-  private def validateLaajuusJaOsaAlueet(suoritus: AmmatillisenTutkinnonOsanSuoritus, perusteenTutkinnonOsa: TutkinnonOsa, oo: KoskeenTallennettavaOpiskeluoikeus, ps: PäätasonSuoritus, rakenne: TutkintoRakenne):
+  private def validateLaajuusJaOsaAlueet(suoritus: TutkinnonOsanSuoritus, perusteenTutkinnonOsa: TutkinnonOsa, oo: KoskeenTallennettavaOpiskeluoikeus, ps: PäätasonSuoritus, rakenne: TutkintoRakenne):
   HttpStatus = {
     val laajuusValidaatioPäällä = config.getBoolean("validaatiot.ammatillinenEPerusteOsaAlueLaajuusValidaatio")
     val koodiValidaatioAlkaa = LocalDate.parse(config.getString("validaatiot.ammatillinenEPerusteOsaAlueKoodiValidaatioAlkaa"))

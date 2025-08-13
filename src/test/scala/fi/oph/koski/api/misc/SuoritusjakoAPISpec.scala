@@ -293,7 +293,7 @@ class SuoritusjakoAPISpec extends AnyFreeSpec with SuoritusjakoTestMethods with 
 
         var secret: String = null
 
-        createSuoritusjako(json, "140493-2798"){
+        createSuoritusjako(json, "230297-6448"){
           verifyResponseStatusOk()
           secret = JsonSerializer.parse[Suoritusjako](response.body).secret
         }
@@ -311,7 +311,7 @@ class SuoritusjakoAPISpec extends AnyFreeSpec with SuoritusjakoTestMethods with 
 
         var secret: String = null
 
-        createSuoritusjako(json, "140493-2798"){
+        createSuoritusjako(json, "230297-6448"){
           verifyResponseStatusOk()
           secret = JsonSerializer.parse[Suoritusjako](response.body).secret
         }

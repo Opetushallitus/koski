@@ -38,7 +38,7 @@ class SensitiveAndRedundantDataFilterSpec extends AnyFreeSpec with TestEnvironme
     roundtrip[PerusopetuksenLisäopetuksenOppiaineenSuoritus](perusopetuksenLisäopetuksenOppiaineenSuoritus).yksilöllistettyOppimäärä should equal(false)
     roundtrip[NuortenPerusopetuksenOppiaineenSuoritus](nuortenPerusopetuksenOppiaineenSuoritus).yksilöllistettyOppimäärä should equal(false)
 
-    val ammatillinenJossaVoisiOllaMukautettujaArvosanoja = lastOpiskeluoikeus(KoskiSpecificMockOppijat.ammatillisenOsittainenRapsa.oid, MockUsers.viranomainenGlobaaliKatselija)
+    val ammatillinenJossaVoisiOllaMukautettujaArvosanoja = lastOpiskeluoikeus(KoskiSpecificMockOppijat.osittainenammattitutkinto.oid, MockUsers.viranomainenGlobaaliKatselija)
     existsLisätietoMukautetustaArvioinnista(ammatillinenJossaVoisiOllaMukautettujaArvosanoja) should equal (false)
 
     val perusopetuksenOpiskeluoikeusJossaVoisiOllaToimintaAlueenSuoritus = lastOpiskeluoikeus(KoskiSpecificMockOppijat.toimintaAlueittainOpiskelija.oid, MockUsers.viranomainenGlobaaliKatselija)
@@ -69,7 +69,7 @@ class SensitiveAndRedundantDataFilterSpec extends AnyFreeSpec with TestEnvironme
     roundtrip[PerusopetuksenLisäopetuksenOppiaineenSuoritus](perusopetuksenLisäopetuksenOppiaineenSuoritus) should equal(perusopetuksenLisäopetuksenOppiaineenSuoritus)
     roundtrip[NuortenPerusopetuksenOppiaineenSuoritus](nuortenPerusopetuksenOppiaineenSuoritus) should equal(nuortenPerusopetuksenOppiaineenSuoritus)
 
-    val ammatillinenJossaVoisiOllaMukautettujaArvosanoja = lastOpiskeluoikeus(KoskiSpecificMockOppijat.ammatillisenOsittainenRapsa.oid, MockUsers.paakayttaja)
+    val ammatillinenJossaVoisiOllaMukautettujaArvosanoja = lastOpiskeluoikeus(KoskiSpecificMockOppijat.osittainenammattitutkinto.oid, MockUsers.paakayttaja)
     existsLisätietoMukautetustaArvioinnista(ammatillinenJossaVoisiOllaMukautettujaArvosanoja) should equal (true)
 
     val perusopetuksenOpiskeluoikeusJossaVoisiOllaToimintaAlueenSuoritus = lastOpiskeluoikeus(KoskiSpecificMockOppijat.toimintaAlueittainOpiskelija.oid, MockUsers.paakayttaja)
