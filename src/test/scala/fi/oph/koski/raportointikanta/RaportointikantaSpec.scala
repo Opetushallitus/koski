@@ -9,7 +9,7 @@ import fi.oph.koski.henkilo.{KoskiSpecificMockOppijat, LaajatOppijaHenkilöTiedo
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat.{master, masterEiKoskessa, turvakielto}
 import fi.oph.koski.json.{JsonFiles, JsonSerializer}
 import fi.oph.koski.koskiuser.MockUsers
-import fi.oph.koski.organisaatio.{MockOrganisaatiot, Organisaatiotyyppi}
+import fi.oph.koski.organisaatio.{MockOrganisaatiot, Organisaatiotyyppi, Tuntematon}
 import fi.oph.koski.raportointikanta.AikajaksoRowBuilder.AikajaksoTyyppi
 import fi.oph.koski.raportointikanta.OpiskeluoikeusLoader.isRaportointikantaanSiirrettäväOpiskeluoikeus
 import fi.oph.koski.schema.KoskiSchema.strictDeserialization
@@ -218,20 +218,22 @@ class RaportointikantaSpec
 
       mainRaportointiDb.runDbSync(mainRaportointiDb.ROrganisaatiot.result)
         .foreach { row: ROrganisaatioRow =>
-          val tyypit = row.organisaatiotyypit.split(',')
-          if (tyypit.contains(Organisaatiotyyppi.TOIMIPISTE)) {
-            verifyOrg(row.oppilaitos, Some(row.organisaatioOid))
-            verifyOrg(row.koulutustoimija, row.oppilaitos)
-          } else if (
-            tyypit.contains(Organisaatiotyyppi.OPPILAITOS) ||
-            tyypit.contains(Organisaatiotyyppi.VARHAISKASVATUKSEN_TOIMIPAIKKA) ||
-            tyypit.contains(Organisaatiotyyppi.OPPISOPIMUSTOIMIPISTE)
-          ) {
-            row.oppilaitos should equal(None)
-            verifyOrg(row.koulutustoimija, Some(row.organisaatioOid))
-          } else {
-            row.oppilaitos should equal(None)
-            row.koulutustoimija should equal(None)
+          if (row.organisaatioOid != Tuntematon.oppilaitosOid) {
+            val tyypit = row.organisaatiotyypit.split(',')
+            if (tyypit.contains(Organisaatiotyyppi.TOIMIPISTE)) {
+              verifyOrg(row.oppilaitos, Some(row.organisaatioOid))
+              verifyOrg(row.koulutustoimija, row.oppilaitos)
+            } else if (
+              tyypit.contains(Organisaatiotyyppi.OPPILAITOS) ||
+                tyypit.contains(Organisaatiotyyppi.VARHAISKASVATUKSEN_TOIMIPAIKKA) ||
+                tyypit.contains(Organisaatiotyyppi.OPPISOPIMUSTOIMIPISTE)
+            ) {
+              row.oppilaitos should equal(None)
+              verifyOrg(row.koulutustoimija, Some(row.organisaatioOid))
+            } else {
+              row.oppilaitos should equal(None)
+              row.koulutustoimija should equal(None)
+            }
           }
         }
     }

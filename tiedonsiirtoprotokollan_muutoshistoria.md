@@ -1,4 +1,9 @@
+## 14.8.2025
+
+- Salli valtionhallinnon kielitutkinnon erinomaisen tason siirto ilman oppilaitosta
+
 ## 11.8.2025
+
 - Perusopetuksen lisätietojen vuosiluokkiin sitoutumaton opetus kenttä muutettu valinnaiseksi
 
 ## 16.7.2025

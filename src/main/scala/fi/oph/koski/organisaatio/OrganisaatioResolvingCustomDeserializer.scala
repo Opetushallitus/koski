@@ -11,7 +11,7 @@ case class OrganisaatioResolvingCustomDeserializer(organisaatioRepository: Organ
       case Right(o: OrganisaatioWithOid) =>
         val c = Class.forName(schema.fullClassName)
         organisaatioRepository.getOrganisaatio(o.oid) match {
-          case Some(org) if (c == classOf[OidOrganisaatio] || c.isInstance(org)) =>
+          case Some(org) if c == classOf[OidOrganisaatio] || c.isInstance(org) =>
             Right(org)
           case Some(org) =>
             Left(List(ValidationError(cursor.path, cursor.json, OtherViolation("Organisaatio " + o.oid + " ei ole " + c.getSimpleName.toLowerCase + " vaan " + org.getClass.getSimpleName.toLowerCase, "vääränTyyppinenOrganisaatio"))))
