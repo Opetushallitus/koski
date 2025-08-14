@@ -75,7 +75,7 @@ object DuplikaattiValidation extends Logging {
 
     def samaDiaarinumeroAmmatillinen(muuOpiskeluoikeus: AmmatillinenOpiskeluoikeus): Boolean = {
       def diaarinumerot = (oo: Opiskeluoikeus) => oo.suoritukset
-        .collect { case s: AmmatillisenTutkinnonOsittainenTaiKokoSuoritus => s }
+        .collect { case s: AmmatillisenTutkinnonOsittainenTaiKokoTutkintoKolutuksenSuoritus => s }
         .flatMap(s => s.koulutusmoduuli.perusteenDiaarinumero)
 
       opiskeluoikeus match {

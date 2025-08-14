@@ -45,15 +45,15 @@ object AmmatillinenValidation {
 
   private def validateKeskiarvoOlemassaJosSuoritusOnValmis(ammatillinen: AmmatillinenOpiskeluoikeus, isKuoriopiskeluoikeus: Boolean) = {
     val keskiarvotOlemassa = ammatillinen.suoritukset.forall {
-      case s: AmmatillisenTutkinnonOsittainenTaiKokoSuoritus =>
+      case s: AmmatillisenTutkinnonOsittainenTaiKokoTutkintoKolutuksenSuoritus =>
         if (keskiarvoPakollinenVahvistuspäivänä(s, isKuoriopiskeluoikeus)) s.keskiarvo.isDefined else true
       case _ => true
     }
     if (keskiarvotOlemassa) HttpStatus.ok else KoskiErrorCategory.badRequest.validation.ammatillinen.valmiillaSuorituksellaPitääOllaKeskiarvo()
   }
 
-  private def keskiarvoPakollinenVahvistuspäivänä(s: AmmatillisenTutkinnonOsittainenTaiKokoSuoritus, isKuoriopiskeluoikeus: Boolean) = {
-    def valmistunutReforminTaiOpsinMukaan(a: AmmatillisenTutkinnonOsittainenTaiKokoSuoritus) = {
+  private def keskiarvoPakollinenVahvistuspäivänä(s: AmmatillisenTutkinnonOsittainenTaiKokoTutkintoKolutuksenSuoritus, isKuoriopiskeluoikeus: Boolean) = {
+    def valmistunutReforminTaiOpsinMukaan(a: AmmatillisenTutkinnonOsittainenTaiKokoTutkintoKolutuksenSuoritus) = {
       a.koulutusmoduuli.koulutustyyppi.contains(Koulutustyyppi.ammatillinenPerustutkinto) &&
         List("ops", "reformi").contains(a.suoritustapa.koodiarvo)
     }

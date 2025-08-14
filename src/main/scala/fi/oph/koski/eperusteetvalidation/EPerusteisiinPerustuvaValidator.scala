@@ -63,7 +63,7 @@ class EPerusteisiinPerustuvaValidator(
       }
     }
 
-    def validateTutkinnonosaSuoritukset(tutkinnonSuoritus: AmmatillisenTutkinnonOsittainenTaiKokoSuoritus, suoritukset: Option[List[TutkinnonOsanSuoritus]]) = {
+    def validateTutkinnonosaSuoritukset(tutkinnonSuoritus: AmmatillisenTutkinnonOsittainenTaiKokoTutkintoKolutuksenSuoritus, suoritukset: Option[List[TutkinnonOsanSuoritus]]) = {
       haeKoulutustyyppi(tutkinnonSuoritus.koulutusmoduuli.perusteenDiaarinumero.get)
         .map(tyyppi => tutkinnonSuoritus match {
           case tutkinnonSuoritus: AmmatillisenTutkinnonSuoritus => HttpStatus.fold(suoritukset.toList.flatten.map(s => validateTutkinnonosaSuoritus(tutkinnonSuoritus, s, tyyppi)))

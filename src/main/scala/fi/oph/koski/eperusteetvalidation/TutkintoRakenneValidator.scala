@@ -303,7 +303,7 @@ case class TutkintoRakenneValidator(tutkintoRepository: TutkintoRepository, kood
     }
   }
 
-  private def validateTutkinnonOsanTutkinto(suoritus: TutkinnonOsanSuoritus, vaadittuPerusteenVoimassaolopäivä: Option[LocalDate]) = {
+  private def validateTutkinnonOsanTutkinto(suoritus: MahdollisestiToiseenTutkintoonLiittyvä, vaadittuPerusteenVoimassaolopäivä: Option[LocalDate]) = {
     suoritus.tutkinto match {
       case Some(tutkinto) => HttpStatus.justStatus(validateKoulutustyypitJaHaeRakenteet(tutkinto, Some(ammatillisetKoulutustyypit), vaadittuPerusteenVoimassaolopäivä))
       case None => HttpStatus.ok
