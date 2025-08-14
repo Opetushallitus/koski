@@ -75,7 +75,7 @@ object ValpasOpiskeluoikeusExampleData {
 
     oppivelvollinenYsiluokkaKeskenKeväällä2021Opiskeluoikeus.copy(
       lisätiedot = Some(edellisetLisätiedot.copy(
-        vuosiluokkiinSitoutumatonOpetus = Some(true)
+        vuosiluokkiinSitoutumatonOpetus = true
       ))
     )
   }
@@ -264,7 +264,7 @@ object ValpasOpiskeluoikeusExampleData {
 
     valmistunutYsiluokkalainen.copy(
       lisätiedot = Some(edellisetLisätiedot.copy(
-        vuosiluokkiinSitoutumatonOpetus = Some(true)
+        vuosiluokkiinSitoutumatonOpetus = true
       ))
     )
   }

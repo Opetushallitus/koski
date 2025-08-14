@@ -154,7 +154,7 @@ case class SupaPerusopetuksenOpiskeluoikeudenLisätiedot(
 
   @Description("Oppilas on vuosiluokkiin sitomattomassa opetuksessa (kyllä/ei).")
   @Title("Vuosiluokkiin sitomaton opetus")
-  vuosiluokkiinSitoutumatonOpetus: Option[Boolean] = Some(false),
+  vuosiluokkiinSitoutumatonOpetus: Boolean = false,
 )
 
 object SupaPerusopetuksenOpiskeluoikeudenLisätiedot {

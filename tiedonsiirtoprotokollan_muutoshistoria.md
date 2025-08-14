@@ -1,6 +1,3 @@
-## 11.8.2025
-- Perusopetuksen lisätietojen vuosiluokkiin sitoutumaton opetus kenttä muutettu valinnaiseksi
-
 ## 16.7.2025
 
 - Suoritettujen lukiodiplomien arvosanat ja tunnistetiedot lisätty lukion päätason suoritukselle
