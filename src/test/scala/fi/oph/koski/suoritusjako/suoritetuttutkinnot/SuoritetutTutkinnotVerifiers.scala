@@ -114,7 +114,7 @@ trait SuoritetutTutkinnotVerifiers extends Matchers
 
   private def verifyAmmatillisenTutkinnonOsittainenTaiKokoSuoritus(
     actualSuoritus: SuoritetutTutkinnotAmmatillisenTutkinnonOsittainenTaiKokoSuoritus,
-    expectedSuoritusData: schema.AmmatillisenTutkinnonOsittainenTaiKokoSuoritus
+    expectedSuoritusData: schema.AmmatillisenTutkinnonOsittainenTaiKokoTutkintoKolutuksenSuoritus
   ): Unit = {
     actualSuoritus.koulutusmoduuli.tunniste.koodiarvo should equal(expectedSuoritusData.koulutusmoduuli.tunniste.koodiarvo)
 
