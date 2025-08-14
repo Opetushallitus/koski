@@ -548,7 +548,6 @@ class KäyttöoikeusryhmätSpec
         }
       }
 
-/*
       "Yleinen kielitutkinto" in {
         testEditorApi(
           user = MockUsers.yleisenKielitutkinnonKäyttäjä,
@@ -564,7 +563,6 @@ class KäyttöoikeusryhmätSpec
           unexpectedWords = List("yleinenkielitutkinto")
         )
       }
-*/
 
       "Yleinen kielitutkinto + valtionhallinnon kielitutkinto" in {
         testEditorApi(
@@ -592,7 +590,6 @@ class KäyttöoikeusryhmätSpec
         }
       }
 
-/*
       "Yleinen kielitutkinto" in {
         testUi2OppijaApi(
           user = MockUsers.yleisenKielitutkinnonKäyttäjä,
@@ -608,7 +605,6 @@ class KäyttöoikeusryhmätSpec
           päätasonsuoritustyypit = List("valtionhallinnonkielitutkinto")
         )
       }
-*/
 
       "Yleinen kielitutkinto + valtionhallinnon kielitutkinto" in {
         testUi2OppijaApi(
