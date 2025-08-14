@@ -663,9 +663,9 @@ object AmmatillinenExampleData {
       Koodistokoodiviite("361902", Some("Luonto- ja ympäristöalan perustutkinto"), "koulutus", None),
       Some("62/011/2014")
     ),
-    tutkintonimike = Some(List(Koodistokoodiviite("10024", Some("Autokorinkorjaaja"), "tutkintonimikkeet", None))),
+    tutkintonimike = Some(List(Koodistokoodiviite("10083", Some("Ympäristönhoitaja"), "tutkintonimikkeet", None))),
     toinenTutkintonimike = true,
-    osaamisala = Some(List(Osaamisalajakso(Koodistokoodiviite("1525", Some("Autokorinkorjauksen osaamisala"), "osaamisala", None)))),
+    osaamisala = Some(List(Osaamisalajakso(Koodistokoodiviite("1590", Some("Ympäristöalan osaamisala"), "osaamisala", None)))),
     toinenOsaamisala = false,
     suoritustapa = suoritustapaOps,
     järjestämismuodot = Some(List(Järjestämismuotojakso(date(2012, 9, 1), None, järjestämismuotoOppilaitos))),
@@ -685,9 +685,9 @@ object AmmatillinenExampleData {
       Koodistokoodiviite("361902", Some("Autoalan perustutkinto"), "koulutus", None),
       Some("62/011/2014")
     ),
-    tutkintonimike = Some(List(Koodistokoodiviite("10024", Some("Autokorinkorjaaja"), "tutkintonimikkeet", None))),
+    tutkintonimike = Some(List(Koodistokoodiviite("10083", Some("Ympäristönhoitaja"), "tutkintonimikkeet", None))),
     toinenTutkintonimike = true,
-    osaamisala = Some(List(Osaamisalajakso(Koodistokoodiviite("1525", Some("Autokorinkorjauksen osaamisala"), "osaamisala", None)))),
+    osaamisala = Some(List(Osaamisalajakso(Koodistokoodiviite("1590", Some("Ympäristöalan osaamisala"), "osaamisala", None)))),
     toinenOsaamisala = false,
     suoritustapa = suoritustapaReformi,
     järjestämismuodot = Some(List(Järjestämismuotojakso(date(2012, 9, 1), None, järjestämismuotoOppilaitos))),

@@ -69,18 +69,18 @@
         "koodistoVersio" : 1
       },
       "tutkintonimike" : [ {
-        "koodiarvo" : "10024",
+        "koodiarvo" : "10083",
         "nimi" : {
-          "fi" : "Autokorinkorjaaja"
+          "fi" : "Ympäristönhoitaja"
         },
         "koodistoUri" : "tutkintonimikkeet"
       } ],
       "toinenTutkintonimike" : true,
       "osaamisala" : [ {
         "osaamisala" : {
-          "koodiarvo" : "1525",
+          "koodiarvo" : "1590",
           "nimi" : {
-            "fi" : "Autokorinkorjauksen osaamisala"
+            "fi" : "Ympäristöalan osaamisala"
           },
           "koodistoUri" : "osaamisala"
         }
