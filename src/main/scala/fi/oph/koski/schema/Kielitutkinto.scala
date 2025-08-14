@@ -1,8 +1,8 @@
 package fi.oph.koski.schema
 
 import fi.oph.koski.schema.LocalizedString.unlocalized
-import fi.oph.koski.schema.annotation.{AllowKoulutustoimijaOidAsOppilaitos, KoodistoKoodiarvo, KoodistoUri}
-import fi.oph.scalaschema.annotation.{Description, Discriminator, MaxItems, MinItems, Title}
+import fi.oph.koski.schema.annotation.{KoodistoKoodiarvo, KoodistoUri}
+import fi.oph.scalaschema.annotation._
 
 import java.time.{LocalDate, LocalDateTime}
 
@@ -12,7 +12,6 @@ case class KielitutkinnonOpiskeluoikeus(
   oid: Option[String] = None,
   versionumero: Option[Int] = None,
   lähdejärjestelmänId: Option[LähdejärjestelmäId] = None,
-  @AllowKoulutustoimijaOidAsOppilaitos
   oppilaitos: Option[Oppilaitos] = None,
   koulutustoimija: Option[Koulutustoimija] = None,
   tila: KielitutkinnonOpiskeluoikeudenTila,

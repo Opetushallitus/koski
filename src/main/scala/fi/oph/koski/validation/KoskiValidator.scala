@@ -11,7 +11,7 @@ import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.koodisto.KoodistoViitePalvelu
 import fi.oph.koski.koskiuser.{AccessType, KoskiSpecificSession, OoPtsMask}
 import fi.oph.koski.opiskeluoikeus.KoskiOpiskeluoikeusRepository
-import fi.oph.koski.organisaatio.{Opetushallitus, OrganisaatioRepository}
+import fi.oph.koski.organisaatio.{Opetushallitus, OrganisaatioRepository, Tuntematon}
 import fi.oph.koski.schema.Henkilö.Oid
 import fi.oph.koski.schema.KoskiSchema.strictDeserialization
 import fi.oph.koski.schema.Opiskeluoikeus.koulutustoimijaTraversal
@@ -323,12 +323,10 @@ class KoskiValidator(
         // YO-tutkinnon opiskeluoikeudella ei ole oppilaitosta, koska sen myöntää koulutustoimijana toimiva ylioppilastutkintolautakunta
         Right(oo)
       case kituOo: KielitutkinnonOpiskeluoikeus if kituOo.oppilaitos.isEmpty && kituOo.isOphValtionhallinnonKielitutkinto =>
-        // Erinomaisen tason valtionhallinnon kielitutkinnon suorituksella ei välttämättä ole oppilaitosta.
-        // Tallennetaan silloin Opetushallituksesta koulutustoimijana johdettu näennäisoppilaitos.
+        // Erinomaisen tason valtionhallinnon kielitutkinnon suorituksella ei välttämättä ole oppilaitosta. Tallennetaan silloin tuntematon oppilaitos.
         Right(kituOo.copy(oppilaitos = organisaatioRepository
-          .getOrganisaatio(Opetushallitus.koulutustoimijaOid)
-          .collect { case k: Koulutustoimija => k }
-          .map(_.toTuntematonOppilaitos)
+          .getOrganisaatio(Tuntematon.oppilaitosOid)
+          .flatMap(_.toOppilaitos)
         ))
       case oo: KoskeenTallennettavaOpiskeluoikeus =>
         val oppilaitos: Either[HttpStatus, Oppilaitos] = oo.oppilaitos.map(Right(_)).getOrElse {
@@ -353,7 +351,7 @@ class KoskiValidator(
     case t: TaiteenPerusopetuksenOpiskeluoikeus if t.onHankintakoulutus => validateAndAddTaiteenPerusopetuksenKoulutustoimija(t)
     case ytrOo: YlioppilastutkinnonOpiskeluoikeus if ytrOo.oppilaitos.isEmpty && ytrOo.koulutustoimija.exists(_.oid == "1.2.246.562.10.43628088406") =>
       Right(oo)
-    case kituOo: KielitutkinnonOpiskeluoikeus if kituOo.koulutustoimija.isEmpty && kituOo.isOphValtionhallinnonKielitutkinto =>
+    case kituOo: KielitutkinnonOpiskeluoikeus if kituOo.oppilaitos.exists(_.oid == Tuntematon.oppilaitosOid) && kituOo.isOphValtionhallinnonKielitutkinto =>
       Right(kituOo.copy(koulutustoimija = organisaatioRepository.getOrganisaatio(Opetushallitus.koulutustoimijaOid).flatMap(_.toKoulutustoimija)))
     case _ => organisaatioRepository.findKoulutustoimijaForOppilaitos(oo.getOppilaitos) match {
       case Some(löydettyKoulutustoimija) =>
