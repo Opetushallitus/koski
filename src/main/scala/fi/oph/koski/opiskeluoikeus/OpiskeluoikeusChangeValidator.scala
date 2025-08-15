@@ -7,6 +7,7 @@ import fi.oph.koski.organisaatio.OrganisaatioRepository
 import fi.oph.koski.schema.{KoskeenTallennettavaOpiskeluoikeus, YlioppilastutkinnonOpiskeluoikeus}
 import fi.oph.koski.validation.DateValidation.validateOpiskeluoikeudenPäivämäärät
 import fi.oph.koski.validation.{AmmatillinenValidation, TaiteenPerusopetusValidation, TutkintokoulutukseenValmentavaKoulutusValidation}
+import fi.oph.koski.schema.{LukionOpiskeluoikeus, PäätasonSuoritus}
 
 import java.time.LocalDate
 
@@ -31,7 +32,8 @@ class OpiskeluoikeusChangeValidator(
           ePerusteetChangeValidator.validateVanhanOpiskeluoikeudenTapaukset(oldState, newState),
           TutkintokoulutukseenValmentavaKoulutusValidation.validateJärjestämislupaEiMuuttunut(oldState, newState),
           TaiteenPerusopetusValidation.validateHankintakoulutusEiMuuttunut(oldState, newState),
-          AmmatillinenValidation.validateKorotetunOpiskeluoikeudenLinkitysEiMuuttunut(oldState, newState)
+          AmmatillinenValidation.validateKorotetunOpiskeluoikeudenLinkitysEiMuuttunut(oldState, newState),
+          validateLukioEiMuutuAineopiskeluksi(oldState, newState)
         )
     }
   }
@@ -50,6 +52,19 @@ class OpiskeluoikeusChangeValidator(
     } else {
       HttpStatus.ok
     }
+  }
+  private def validateLukioEiMuutuAineopiskeluksi(oldState: KoskeenTallennettavaOpiskeluoikeus, newState: KoskeenTallennettavaOpiskeluoikeus): HttpStatus = (oldState, newState) match {
+    case (o: LukionOpiskeluoikeus, n: LukionOpiskeluoikeus) =>
+      def has(code: String)(xs: List[PäätasonSuoritus]) = xs.exists(_.tyyppi.koodiarvo == code)
+      val oldHasOppimaara   = has("lukionoppimaara")(o.suoritukset)
+      val newHasOppimaara   = has("lukionoppimaara")(n.suoritukset)
+      val newHasAineopinnot = has("lukionaineopinnot")(n.suoritukset)
+      if (oldHasOppimaara && newHasAineopinnot && !newHasOppimaara) {
+        KoskiErrorCategory.forbidden.kiellettyMuutos("Lukion oppimäärän opiskeluoikeutta ei voi muuttaa aineopiskeluksi")
+      } else {
+        HttpStatus.ok
+      }
+    case _ => HttpStatus.ok
   }
 
   private def validateOppilaitoksenMuutos(vanhaOpiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus, uusiOpiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus): HttpStatus = {
