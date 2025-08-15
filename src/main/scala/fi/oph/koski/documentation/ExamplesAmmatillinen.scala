@@ -779,3 +779,33 @@ object AmmatillinenOsittainenReformi {
     )
   )
 }
+
+object AmmatillinenOsittainenUseistaTutkinnoista {
+  lazy val osittainenPerustutkintoOpiskeluoikeus = AmmatillinenOpiskeluoikeus(
+    arvioituPäättymispäivä = Some(date(2024, 5, 31)),
+    oppilaitos = Some(stadinAmmattiopisto),
+    suoritukset = List(ammatillisenTutkinnonOsittainenUseastaTutkinnostaSuoritus),
+    tila = AmmatillinenOpiskeluoikeudenTila(
+      List(
+        AmmatillinenOpiskeluoikeusjakso(date(2022, 9, 1), opiskeluoikeusLäsnä, Some(ExampleData.valtionosuusRahoitteinen)),
+        AmmatillinenOpiskeluoikeusjakso(date(2024, 6, 4), opiskeluoikeusValmistunut, Some(ExampleData.valtionosuusRahoitteinen))
+      )
+    )
+  )
+
+  lazy val keskeneräinenOpiskeluoikeus = AmmatillinenPerustutkintoExample.osittainenPerustutkintoOpiskeluoikeus.copy(
+    arvioituPäättymispäivä = Some(date(2024, 5, 31)),
+    oppilaitos = Some(stadinAmmattiopisto),
+    suoritukset = List(ammatillisenTutkinnonOsittainenUseastaTutkinnostaSuoritus.copy(
+      vahvistus = None,
+      keskiarvo = None,
+      keskiarvoSisältääMukautettujaArvosanoja = None,
+      todistuksellaNäkyvätLisätiedot = None,
+    )),
+    tila = AmmatillinenOpiskeluoikeudenTila(
+      List(
+        AmmatillinenOpiskeluoikeusjakso(date(2022, 9, 1), opiskeluoikeusLäsnä, Some(ExampleData.valtionosuusRahoitteinen))
+      )
+    )
+  )
+}
