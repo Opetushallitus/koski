@@ -91,6 +91,8 @@ object KoskiSpecificMockOppijat {
   val erikoisammattitutkinto = koskiSpecificOppijat.oppija("Erikoinen", "Erja", "250989-419V")
   val reformitutkinto = koskiSpecificOppijat.oppija("Reformi", "Reijo", "251176-003P")
   val osittainenammattitutkinto = koskiSpecificOppijat.oppija("Osittainen", "Outi", "230297-6448")
+  val osittainenammattitutkintoUseastaTutkinnostaValmis = koskiSpecificOppijat.oppija("Osittainen-Useasta-Tutkinnosta-Valmis", "Jaina", "011007A1489")
+  val osittainenammattitutkintoUseastaTutkinnostaKesken = koskiSpecificOppijat.oppija("Osittainen-Useasta-Tutkinnosta-Kesken", "Jatta", "150507A1744")
   val ammatillisenOsittainenRapsa = koskiSpecificOppijat.oppija("Ammatillinen-Osittainen", "Raitsu", "140493-2798")
   val paikallinenTunnustettu = koskiSpecificOppijat.oppija("Tunnustettu", "Teuvo", "140176-449X")
   val tiedonsiirto = koskiSpecificOppijat.oppija("Tiedonsiirto", "Tiina", "270303-281N")

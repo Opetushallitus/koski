@@ -335,7 +335,9 @@ case class AmmatillisenTutkinnonOsittainenUseastaTutkinnostaSuoritus(
   korotettuOpiskeluoikeusOid: Option[String] = None,
   korotettuKeskiarvo: Option[Double] = None,
   korotettuKeskiarvoSisältääMukautettujaArvosanoja: Option[Boolean] = None
-) extends AmmatillisenTutkinnonOsaTaiOsia
+) extends AmmatillisenTutkinnonOsaTaiOsia {
+  override def osasuoritusLista: List[OsittaisenAmmatillisenTutkinnonOsanUseastaTutkinnostaSuoritus] = osasuoritukset.getOrElse(List.empty)
+}
 
 @Description("Oppija suorittaa yhtä tai useampaa tutkinnon osaa, eikä koko tutkintoa. Mikäli opiskelija suorittaa toista osaamisalaa tai tutkintonimikettä erillisessä opiskeluoikeudessa, välitään tieto tällöin tämän rakenteen kautta")
 @Title("Ammatillisen tutkinnon osa/osia")
@@ -500,11 +502,13 @@ trait TutkinnonOsanSuoritus extends Suoritus
   override def ryhmittelytekijä: Option[String] = tutkinnonOsanRyhmä.map(_.toString)
 }
 
-trait AmmatillisenTutkinnonOsanSuoritus extends TutkinnonOsanSuoritus with MahdollisestiToiseenTutkintoonLiittyvä {
+trait AmmatillisenTutkinnonOsanSuoritus extends MahdollisestiToiseenTutkintoonLiittyväTutkinnonOsanSuoritus {
   def toimipisteellä(toimipiste: OrganisaatioWithOid): AmmatillisenTutkinnonOsanSuoritus = lens[AmmatillisenTutkinnonOsanSuoritus].field[Option[OrganisaatioWithOid]]("toimipiste").set(this)(Some(toimipiste))
 }
 
-trait OsittaisenAmmatillisenTutkinnonOsanSuoritus extends TutkinnonOsanSuoritus with MahdollisestiToiseenTutkintoonLiittyvä
+trait OsittaisenAmmatillisenTutkinnonOsanSuoritus extends MahdollisestiToiseenTutkintoonLiittyväTutkinnonOsanSuoritus
+
+trait MahdollisestiToiseenTutkintoonLiittyväTutkinnonOsanSuoritus extends TutkinnonOsanSuoritus with MahdollisestiToiseenTutkintoonLiittyvä
 
 trait OsittaisenAmmatillisenTutkinnonOsanUseastaTutkinnostaSuoritus extends TutkinnonOsanSuoritus with ToiseenTutkintoonLiittyvä
 
