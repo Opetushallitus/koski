@@ -1,4 +1,6 @@
 # Koskeen tallennettavien tietojen validaatiosäännöt
+## 11.8.2025
+- 1.8.2025 ja sen jälkeen alkaneille peruskoulun opiskeluoikeuksille ei sallita kenttää vuosiluokkiinSitoutumatonOpetus
 
 ## 6.8.2025
 - Lukion oppimäärän opiskeluoikeudelle ei sallita KT ja ET suorituksia yhdessä
