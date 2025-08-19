@@ -24,7 +24,8 @@ object PerusopetuksenOpiskeluoikeusValidation extends Logging {
           validateVuosiluokanAlkamispäivät(poo),
           validatePäätasonSuoritus(poo),
           validateVanhojenJaksokenttienPäättyminenSiirryttäessäUusiin(config, poo.alkamispäivä, poo.päättymispäivä, poo.lisätiedot),
-          validateTavoitekokonaisuuksittainOpiskeleva(poo)
+          validateTavoitekokonaisuuksittainOpiskeleva(poo),
+          validateVuosiluokkiinSitoutumatonOpetusEiSallittu(config,poo)
         ) ++ poo.lisätiedot.toList.flatMap(lisätiedot => List(
           validateTuenJaksojenPäällekkäisyys(lisätiedot),
           validateOppivelvollisuudenPidennysjaksojenPäällekkäisyys(lisätiedot),
@@ -54,6 +55,22 @@ object PerusopetuksenOpiskeluoikeusValidation extends Logging {
   def tavoitekokonaisuuksittainOpiskeluVoimassa(oo: KoskeenTallennettavaOpiskeluoikeus, pvm: LocalDate): Boolean = oo match {
     case oo: PerusopetuksenOpiskeluoikeus =>
       oo.lisätiedot.flatMap(_.tavoitekokonaisuuksittainOpiskelu).getOrElse(Seq.empty).exists(_.contains(pvm))
+  }
+
+  def fillPerusopetuksenVuosiluokkiinSitoutumatonOpetus(config: Config)(oo: KoskeenTallennettavaOpiskeluoikeus): KoskeenTallennettavaOpiskeluoikeus = {
+    val lastAllowed = LocalDate.parse(config.getString("validaatiot.VSOPKentänViimeinenKäyttöpäivä"))
+    oo match {
+      case p: PerusopetuksenOpiskeluoikeus =>
+        val current = p.lisätiedot.flatMap(_.vuosiluokkiinSitoutumatonOpetus)
+        val normalized: Option[Boolean] = (p.alkamispäivä, current) match {
+          case (Some(d), Some(false)) if d.isAfter(lastAllowed) => None
+          case _                                                => current
+        }
+        p.copy(lisätiedot = p.lisätiedot.map(_.copy(
+          vuosiluokkiinSitoutumatonOpetus = normalized
+        )))
+      case other => other
+    }
   }
 
   private def validateTavoitekokonaisuuksittainOpiskeleva(oo: PerusopetuksenOpiskeluoikeus): HttpStatus = {
@@ -138,8 +155,26 @@ object PerusopetuksenOpiskeluoikeusValidation extends Logging {
   }
 
   def onVuosiluokkiinSitoutumatonOpetus(oo: KoskeenTallennettavaOpiskeluoikeus): Boolean = oo match {
-    case p: PerusopetuksenOpiskeluoikeus => p.lisätiedot.exists(_.vuosiluokkiinSitoutumatonOpetus)
+    case p: PerusopetuksenOpiskeluoikeus =>
+      p.lisätiedot.flatMap(_.vuosiluokkiinSitoutumatonOpetus).contains(true)
+    case _ => false
   }
+
+  def validateVuosiluokkiinSitoutumatonOpetusEiSallittu(config: Config, oo: KoskeenTallennettavaOpiskeluoikeus): HttpStatus = {
+    val lastAllowed = LocalDate.parse(config.getString("validaatiot.VSOPKentänViimeinenKäyttöpäivä"))
+    oo match {
+      case p: PerusopetuksenOpiskeluoikeus =>
+        if (
+          p.alkamispäivä.exists(_.isAfter(lastAllowed)) && p.lisätiedot.flatMap(_.vuosiluokkiinSitoutumatonOpetus).isDefined
+        ) {
+          KoskiErrorCategory.badRequest.validation.rakenne.vsopVirheelliselläpäivämäärällä()
+        }else{
+          HttpStatus.ok
+        }
+      case _ => HttpStatus.ok
+    }
+  }
+
 
   def filterDeprekoidutKentät(oo: KoskeenTallennettavaOpiskeluoikeus): KoskeenTallennettavaOpiskeluoikeus = {
     oo match {
