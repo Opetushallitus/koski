@@ -23,29 +23,29 @@ export type Peruste = Omit<
 >
 
 /**
- * Palauttaa annetun diaarinumeron mukaiset perusteet.
+ * Palauttaa annetun suoritustyypin mukaiset perusteet.
  */
-export function usePeruste(diaariNumero?: string): Peruste[] | null {
-  const perusteet = usePerusteet(diaariNumero)
+export function usePeruste(suoritustyyppi?: string): Peruste[] | null {
+  const perusteet = usePerusteet(suoritustyyppi)
 
   return useMemo(
     () =>
-      diaariNumero
-        ? perusteet[diaariNumero]
-          ? perusteet[diaariNumero]
+      suoritustyyppi
+        ? perusteet[suoritustyyppi]
+          ? perusteet[suoritustyyppi]
           : null
         : [],
-    [diaariNumero, perusteet]
+    [suoritustyyppi, perusteet]
   )
 }
 
 /**
- * Palauttaa annetun diaarinumeron mukaiset perusteet Select-komponentin käyttämässä muodossa.
+ * Palauttaa annetun suoritustyypin mukaiset perusteet Select-komponentin käyttämässä muodossa.
  */
 export function usePerusteSelectOptions(
-  diaarinumero?: string
+  suoritustyyppi?: string
 ): SelectOption<Peruste>[] {
-  const perusteet = usePeruste(diaarinumero)
+  const perusteet = usePeruste(suoritustyyppi)
   return useMemo(
     () => perusteet?.map(perusteToOption) || LoadingOptions,
     [perusteet]
@@ -53,35 +53,35 @@ export function usePerusteSelectOptions(
 }
 
 /**
- * Palauttaa yhden tai useamman diaarinumeron perusteet.
+ * Palauttaa yhden tai useamman suoritustyypin perusteet.
  *
  */
-const usePerusteet = (...diaariNumerot: Array<string | null | undefined>) => {
+const usePerusteet = (...suoritustyypit: Array<string | null | undefined>) => {
   const { perusteet, loadPerusteet } = useContext(PerusteContext)
 
   useEffect(() => {
-    loadPerusteet(diaariNumerot.filter(nonNull))
-  }, [diaariNumerot, loadPerusteet])
+    loadPerusteet(suoritustyypit.filter(nonNull))
+  }, [suoritustyypit, loadPerusteet])
 
   return useMemo(() => {
-    const k = diaariNumerot
+    const k = suoritustyypit
       .filter(nonNull)
-      .reduce<Record<string, Peruste[]>>((prev, diaarinumero) => {
-        const p = perusteet[diaarinumero]
+      .reduce<Record<string, Peruste[]>>((prev, suoritustyyppi) => {
+        const p = perusteet[suoritustyyppi]
         if (Array.isArray(p)) {
-          return { ...prev, [diaarinumero]: p }
+          return { ...prev, [suoritustyyppi]: p }
         }
         return { ...prev }
       }, {})
     return k
-  }, [diaariNumerot, perusteet])
+  }, [suoritustyypit, perusteet])
 }
 
 const Loading = Symbol('loading')
 
 export type PerusteContextValue = {
   readonly perusteet: PerusteRecord
-  readonly loadPerusteet: (diaarinumerot: string[]) => void
+  readonly loadPerusteet: (suoritustyypit: string[]) => void
 }
 
 const PerusteContext = React.createContext<PerusteContextValue>({
@@ -96,30 +96,30 @@ export type PerusteRecord = Record<string, Peruste[] | typeof Loading>
 class PerusteLoader {
   perusteet: PerusteRecord = {}
 
-  async loadPerusteet(diaarinumerot: string[]): Promise<boolean> {
-    const unfetchedDiaarinumerot = diaarinumerot.filter(
-      (dn) => !this.perusteet[dn]
+  async loadPerusteet(suoritustyypit: string[]): Promise<boolean> {
+    const unfetchedSuoritustyypit = suoritustyypit.filter(
+      (st) => !this.perusteet[st]
     )
-    if (A.isNonEmpty(unfetchedDiaarinumerot)) {
-      unfetchedDiaarinumerot.forEach((uri) => {
+    if (A.isNonEmpty(unfetchedSuoritustyypit)) {
+      unfetchedSuoritustyypit.forEach((uri) => {
         this.perusteet[uri] = Loading
       })
 
       const unfetchedPerusteet = await Promise.all(
-        unfetchedDiaarinumerot.map(async (dn) => {
-          const perusteRequest = await fetchPeruste(dn)
+        unfetchedSuoritustyypit.map(async (st) => {
+          const perusteResponse = await fetchPeruste(st)
           return {
-            diaarinumero: dn,
-            perusteRequest
+            suoritustyyppi: st,
+            perusteRequest: perusteResponse
           }
         })
       )
-      unfetchedPerusteet.forEach(({ perusteRequest, diaarinumero }) => {
+      unfetchedPerusteet.forEach(({ perusteRequest, suoritustyyppi }) => {
         if (E.isRight(perusteRequest)) {
           // @ts-expect-error TODO: Tyypitys kuntoon, fp-ts käyttöön
           this.perusteet = {
             ...this.perusteet,
-            [diaarinumero]: perusteRequest.right.data
+            [suoritustyyppi]: perusteRequest.right.data
           }
         }
       })

@@ -83,7 +83,7 @@ export const fetchKoodistot = (koodistoUris: string[]) =>
     apiGet<GroupedKoodistot>(apiUrl(`types/koodisto/${koodistoUris.join(',')}`))
   )
 
-export const fetchPeruste = (diaarinumero: string) =>
+export const fetchPeruste = (suoritustyyppi: string) =>
   handleExpiredSession(
     apiGet<
       Omit<
@@ -92,7 +92,7 @@ export const fetchPeruste = (diaarinumero: string) =>
       >
     >(
       apiUrl(
-        `tutkinnonperusteet/diaarinumerot/suorituksentyyppi/${diaarinumero}`
+        `tutkinnonperusteet/diaarinumerot/suorituksentyyppi/${suoritustyyppi}`
       )
     )
   )

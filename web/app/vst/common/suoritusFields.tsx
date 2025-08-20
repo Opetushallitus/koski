@@ -124,7 +124,7 @@ export const Peruste = <T extends VSTPäätasonSuoritusPerusteella>({
       view={PerusteView}
       edit={PerusteEdit}
       editProps={{
-        diaariNumero: suoritus.suoritus.tyyppi.koodiarvo
+        suorituksenTyyppi: suoritus.suoritus.tyyppi.koodiarvo
       }}
     />
   </KeyValueRow>
