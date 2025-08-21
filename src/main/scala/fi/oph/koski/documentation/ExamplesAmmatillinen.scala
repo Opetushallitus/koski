@@ -752,11 +752,29 @@ object AmmatillinenOldExamples {
 }
 
 object AmmatillinenOsittainenReformi {
+  lazy val opiskeluoikeus: AmmatillinenOpiskeluoikeus = AmmatillinenPerustutkintoExample.osittainenPerustutkintoOpiskeluoikeus.copy(
+    arvioituPäättymispäivä = Some(date(2020, 5, 31)),
+    tila = AmmatillinenOpiskeluoikeudenTila(List(
+      AmmatillinenOpiskeluoikeusjakso(date(2018, 1, 1), opiskeluoikeusLäsnä, Some(ExampleData.valtionosuusRahoitteinen))
+    )),
+    oppilaitos = Some(stadinAmmattiopisto),
+    suoritukset = AmmatillinenReforminMukainenPerustutkintoExample.opiskeluoikeus.suoritukset
+  )
   lazy val laaja = Oppija(
     Henkilö.withOid("1.2.246.562.24.00000000001"),
     List(
-      AmmatillinenPerustutkintoExample.osittainenPerustutkintoOpiskeluoikeus.copy(
-        suoritukset = List(AmmatillinenExampleData.ammatillisenTutkinnonOsittainenAutoalanSuoritus)
+      opiskeluoikeus
+    )
+  )
+
+  val opiskeluoikeusRapsa = AmmatillinenOpiskeluoikeus(
+    arvioituPäättymispäivä = Some(date(2015, 5, 31)),
+    oppilaitos = Some(stadinAmmattiopisto),
+    suoritukset = List(AmmatillinenExampleData.ammatillisenTutkinnonOsittainenSuoritusRapsa),
+    tila = AmmatillinenOpiskeluoikeudenTila(
+      List(
+        AmmatillinenOpiskeluoikeusjakso(date(2012, 9, 1), opiskeluoikeusLäsnä, Some(ExampleData.valtionosuusRahoitteinen)),
+        AmmatillinenOpiskeluoikeusjakso(date(2016, 6, 4), opiskeluoikeusValmistunut, Some(ExampleData.valtionosuusRahoitteinen))
       )
     )
   )

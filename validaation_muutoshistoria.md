@@ -1,4 +1,7 @@
 # Koskeen tallennettavien tietojen validaatiosäännöt
+## 20.8.2025
+- Lisätty ePeruste rakennevalidaatio myös ammatillisen osittaiseen tutkintoon
+
 ## 11.8.2025
 - 1.8.2025 ja sen jälkeen alkaneille peruskoulun opiskeluoikeuksille ei sallita kenttää vuosiluokkiinSitoutumatonOpetus
 

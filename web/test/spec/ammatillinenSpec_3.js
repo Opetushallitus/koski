@@ -422,6 +422,7 @@ describe('Ammatillinen koulutus 3', function () {
           'Järjestämismuodot 1.9.2012 — , Koulutuksen järjestäminen oppilaitosmuotoisena\n' +
           'Todistuksella näkyvät lisätiedot Suorittaa toista osaamisalaa\n' +
           'Painotettu keskiarvo 4,00\n' +
+          'Keskiarvo sisältää mukautettuja arvosanoja kyllä\n' +
           'Suoritus valmis Vahvistus : 4.6.2016 Reijo Reksi , rehtori'
         )
       })
@@ -434,6 +435,7 @@ describe('Ammatillinen koulutus 3', function () {
           'Pakollinen kyllä\n' +
           'Oppilaitos / toimipiste Stadin ammatti- ja aikuisopisto, Lehtikuusentien toimipaikka\n' +
           'Vahvistus 31.5.2016 Reijo Reksi , rehtori\n' +
+          'Lisätiedot\nOsaamisen arvioinnin mukauttaminen\nTutkinnon osan ammattitaitovaatimuksia tai osaamistavoitteita ja osaamisen arviointia on mukautettu ammatillisesta peruskoulutuksesta annetun lain (630/1998, muutos 246/2015) 19 a tai 21 §:n perusteella\n' +
           'Arviointi Arvosana 3\n' +
           'Arviointipäivä 20.10.2014\n' +
           'Yhteensä 35 / 135 osp'
@@ -696,7 +698,7 @@ describe('Ammatillinen koulutus 3', function () {
               editor.saveChanges
             )
             it('tallennus onnistuu', function () {
-              expect(page.isSavedLabelShown()).to.equal(true)
+              return page.verifyNoError()
             })
           })
         })

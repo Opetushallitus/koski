@@ -23,6 +23,7 @@ object AmmatillinenExampleData {
   val sosiaaliJaTerveysalanPerustutkinto: AmmatillinenTutkintoKoulutus = AmmatillinenTutkintoKoulutus(Koodistokoodiviite("371101", "koulutus"), Some("79/011/2014"))
   val tietoJaViestintäTekniikanPerustutkinto: AmmatillinenTutkintoKoulutus = AmmatillinenTutkintoKoulutus(Koodistokoodiviite("341101", "koulutus"), Some("OPH-1117-2019"))
   val virheellinenPuuteollisuudenPerustutkinto: AmmatillinenTutkintoKoulutus = AmmatillinenTutkintoKoulutus(Koodistokoodiviite("351741", "koulutus"), Some("OPH-992455-2017"))
+  val validaatoitaOhittavaKoulutusmoduuli: AmmatillinenTutkintoKoulutus = AmmatillinenTutkintoKoulutus(Koodistokoodiviite("351741", "koulutus"), Some("OPH-2524-2017"))
 
   val tutkinnonOsaaPienemmistäKokonaisuuksistaKoostuvaKoulutus: TutkinnonOsaaPienemmistäKokonaisuuksistaKoostuvaKoulutus = TutkinnonOsaaPienemmistäKokonaisuuksistaKoostuvaKoulutus(
     PaikallinenKoodi("KISI", "Kiinteistösihteerin koulutus ja tutkinto (KISI)"),
@@ -675,15 +676,20 @@ object AmmatillinenExampleData {
     alkamispäivä = None,
     toimipiste = stadinToimipiste,
     osasuoritukset = Some(List(
-      osittaisenTutkinnonTutkinnonOsanSuoritus(k3, ammatillisetTutkinnonOsat, "100432", "Ympäristön hoitaminen", 35)
+      osittaisenTutkinnonTutkinnonOsanSuoritus(k3, ammatillisetTutkinnonOsat, "100432", "Ympäristön hoitaminen", 35).copy(
+        lisätiedot = Some(List(lisätietoOsaamistavoitteet))
+      )
     )),
-    todistuksellaNäkyvätLisätiedot = Some("Suorittaa toista osaamisalaa")
+    todistuksellaNäkyvätLisätiedot = Some("Suorittaa toista osaamisalaa"),
+    keskiarvoSisältääMukautettujaArvosanoja = Some(true)
   )
 
-  def ammatillisenTutkinnonOsittainenAutoalanSuoritus = AmmatillisenTutkinnonOsittainenSuoritus(
+  def ammatillisenTutkinnonOsittainenAutoalanSuoritus: AmmatillisenTutkinnonSuoritus = AmmatillinenOsittainenReformi.opiskeluoikeus.suoritukset.head.asInstanceOf[AmmatillisenTutkinnonSuoritus]
+
+  def ammatillisenTutkinnonOsittainenSuoritusRapsa = AmmatillisenTutkinnonOsittainenSuoritus(
     koulutusmoduuli = AmmatillinenTutkintoKoulutus(
-      Koodistokoodiviite("361902", Some("Autoalan perustutkinto"), "koulutus", None),
-      Some("62/011/2014")
+      Koodistokoodiviite("361902", Some("Luonto- ja ympäristöalan perustutkinto"), "koulutus", None),
+      Some("6/011/2015") // rakennevalidaatiota ohittava diaarinumero
     ),
     tutkintonimike = Some(List(Koodistokoodiviite("10083", Some("Ympäristönhoitaja"), "tutkintonimikkeet", None))),
     toinenTutkintonimike = true,
@@ -904,7 +910,7 @@ object AmmatillinenExampleData {
 
   def ammatillisenTutkinnonOsittainenSuoritusKorotetuillaOsasuorituksilla() =
     AmmatillisenTutkinnonOsittainenSuoritus(
-      koulutusmoduuli = sosiaaliJaTerveysalanPerustutkinto,
+      koulutusmoduuli = validaatoitaOhittavaKoulutusmoduuli,
       suoritustapa = suoritustapaOps,
       järjestämismuodot = Some(List(
         Järjestämismuotojakso(date(2015, 1, 1), None, järjestämismuotoOppilaitos),
