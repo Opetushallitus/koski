@@ -128,6 +128,22 @@ export const fetchPerusteTutkinnonOsat = (
     )
   )
 
+export interface LisättäväOsanOsa {
+  koodiarvo: string
+}
+
+export const fetchPerusteTutkinnonOsanOsat = (
+  diaarinumero: string,
+  tutkinnonOsa: string
+) =>
+  handleExpiredSession(
+    apiGet<LisättäväOsanOsa[]>(
+      apiUrl(
+        `tutkinnonperusteet/tutkinnonosanosat/${encodeURIComponent(diaarinumero)}/${tutkinnonOsa}`
+      )
+    )
+  )
+
 export const fetchOppilaitoksenPerusteet = (
   oppilaitosOid: string,
   query?: string

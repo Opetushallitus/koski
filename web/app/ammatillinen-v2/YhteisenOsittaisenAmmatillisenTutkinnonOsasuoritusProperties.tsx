@@ -1,4 +1,8 @@
-import { FormModel, FormOptic } from '../components-v2/forms/FormModel'
+import {
+  FormModel,
+  FormOptic,
+  getValue
+} from '../components-v2/forms/FormModel'
 import { AmmatillinenOpiskeluoikeus } from '../types/fi/oph/koski/schema/AmmatillinenOpiskeluoikeus'
 import { YhteisenOsittaisenAmmatillisenTutkinnonTutkinnonosanSuoritus } from '../types/fi/oph/koski/schema/YhteisenOsittaisenAmmatillisenTutkinnonTutkinnonosanSuoritus'
 import {
@@ -52,6 +56,8 @@ import { AmmatillisenTutkinnonOsanOsaAlue } from '../types/fi/oph/koski/schema/A
 import { Column, ColumnRow } from '../components-v2/containers/Columns'
 import { hasAmmatillinenArviointi } from './OsasuoritusTables'
 import { TestIdLayer } from '../appstate/useTestId'
+import { useTutkinnonOsanOsat } from './useTutkinnonOsanOsat'
+import { AmmatillisenTutkinnonOsittainenSuoritus } from '../types/fi/oph/koski/schema/AmmatillisenTutkinnonOsittainenSuoritus'
 
 type YhteisenAmmatillisenTutkinnonOsasuoritusPropertiesProps = {
   form: FormModel<AmmatillinenOpiskeluoikeus>
@@ -280,6 +286,7 @@ export const YhteisenOsittaisenAmmatillisenTutkinnonOsasuoritusProperties = ({
               <NewYhteisenTutkinnonOsanOsaAlueenSuoritus
                 form={form}
                 suoritusPath={osasuoritusPath}
+                osasuoritus={osasuoritus}
               />
             </Column>
           </ColumnRow>
@@ -295,16 +302,28 @@ type NewYhteisenTutkinnonOsanOsaAlueenSuoritusProps = {
     AmmatillinenOpiskeluoikeus,
     YhteisenOsittaisenAmmatillisenTutkinnonTutkinnonosanSuoritus
   >
+  osasuoritus: YhteisenOsittaisenAmmatillisenTutkinnonTutkinnonosanSuoritus
 }
 
 const NewYhteisenTutkinnonOsanOsaAlueenSuoritus = ({
   form,
-  suoritusPath
+  suoritusPath,
+  osasuoritus
 }: NewYhteisenTutkinnonOsanOsaAlueenSuoritusProps) => {
+  const lisättävätOsat = useTutkinnonOsanOsat(
+    (form.state.suoritukset[0] as AmmatillisenTutkinnonOsittainenSuoritus)
+      .koulutusmoduuli.perusteenDiaarinumero || '',
+    osasuoritus.koulutusmoduuli.tunniste.koodiarvo
+  ).map((k) => k.koodiarvo)
+
   return (
     <KoodistoSelect
       addNewText="Lisää tutkinnon osan osa-alue"
       koodistoUri="ammatillisenoppiaineet"
+      filter={(oppiaine) =>
+        lisättävätOsat.length === 0 ||
+        lisättävätOsat.includes(oppiaine.koodiarvo)
+      }
       format={(osa) => osa.koodiarvo + ' ' + t(osa.nimi)}
       onSelect={(tunniste) => {
         tunniste &&

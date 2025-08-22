@@ -35,6 +35,13 @@ class TutkinnonPerusteetServlet(implicit val application: KoskiApplication) exte
     })
   }
 
+  get("/tutkinnonosanosat/*/:tutkinnonosa") {
+    val osanKoodi = params("tutkinnonosa")
+    val diaari = params("splat")
+
+    renderEither[List[TutkinnonOsanOsaAlue]](lisättävätOsanOsat(diaari, osanKoodi))
+  }
+
   get("/tutkinnonosat/ryhmat/*/:suoritustapa") {
     val ryhmät = application.koodistoViitePalvelu.getKoodistoKoodiViitteet(
       application.koodistoPalvelu.getLatestVersionRequired("ammatillisentutkinnonosanryhma")
@@ -84,6 +91,17 @@ class TutkinnonPerusteetServlet(implicit val application: KoskiApplication) exte
       osaToisestaTutkinnosta = voiLisätäTutkinnonOsanToisestaTutkinnosta,
       paikallinenOsa = määrittelemättömiä
     )
+  }
+
+  private def lisättävätOsanOsat(
+    diaari: String,
+    osanKoodi: String
+  ) = {
+    haeRakenne(diaari, None)
+      .map(rakenneOsat =>
+        rakenneOsat.flatMap
+        (_.tutkinnonOsat.filter(_.tunniste.koodiarvo == osanKoodi)
+          .flatMap(_.osaAlueet)))
   }
 
   private def isTelma(diaari: String) = {
