@@ -109,6 +109,25 @@ export const fetchPerusteTutkinnonOsaRyhmät = (
     )
   )
 
+export interface LisättävätTutkinnonOsat {
+  osat: Koodistokoodiviite[]
+}
+
+export const fetchPerusteTutkinnonOsat = (
+  diaarinumero: string,
+  tutkinnonOsanRyhmä: string
+) =>
+  handleExpiredSession(
+    apiGet<LisättävätTutkinnonOsat>(
+      apiUrl(
+        `tutkinnonperusteet/tutkinnonosat/${encodeURIComponent(diaarinumero)}`,
+        {
+          tutkinnonOsanRyhmä
+        }
+      )
+    )
+  )
+
 export const fetchOppilaitoksenPerusteet = (
   oppilaitosOid: string,
   query?: string

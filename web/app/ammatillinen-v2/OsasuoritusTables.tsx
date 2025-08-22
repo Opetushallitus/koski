@@ -64,6 +64,7 @@ import { TextEdit } from '../components-v2/controls/TextField'
 import { RaisedButton } from '../components-v2/controls/RaisedButton'
 import { MuuValtakunnallinenTutkinnonOsa } from '../types/fi/oph/koski/schema/MuuValtakunnallinenTutkinnonOsa'
 import { useTutkinnonOsaRyhmät } from './useTutkinnonOsaRyhmät'
+import { useTutkinnonOsat } from './useTutkinnonOsat'
 
 interface OsasuoritusTablesProps {
   form: FormModel<AmmatillinenOpiskeluoikeus>
@@ -363,6 +364,13 @@ const NewAmisOsasuoritus = ({
         >)
       : undefined
 
+  const lisättävätTutkinnonOsat = useTutkinnonOsat(
+    getValue(
+      suoritusPath.prop('koulutusmoduuli').prop('perusteenDiaarinumero')
+    )(form.state),
+    ryhmäKoodi?.koodiarvo
+  ).osat.map((k) => k.koodiarvo)
+
   if (!ryhmäKoodi) {
     return null
   }
@@ -374,7 +382,11 @@ const NewAmisOsasuoritus = ({
           addNewText={'Lisää tutkinnon osa'}
           koodistoUri="tutkinnonosat"
           format={(osa) => osa.koodiarvo + ' ' + t(osa.nimi)}
-          filter={(osa) => yhteisenTutkinnonOsat.includes(osa.koodiarvo)}
+          filter={(osa) =>
+            lisättävätTutkinnonOsat.length === 0
+              ? yhteisenTutkinnonOsat.includes(osa.koodiarvo)
+              : lisättävätTutkinnonOsat.includes(osa.koodiarvo)
+          }
           onSelect={(tunniste) => {
             const yhteinenTunniste = tunniste as YhteisenTutkinnonOsatTunniste
             tunniste &&
@@ -395,6 +407,10 @@ const NewAmisOsasuoritus = ({
           addNewText={'Lisää tutkinnon osa'}
           koodistoUri={'tutkinnonosat'}
           format={(osa) => osa.koodiarvo + ' ' + t(osa.nimi)}
+          filter={(osa) =>
+            lisättävätTutkinnonOsat.length === 0 ||
+            lisättävätTutkinnonOsat.includes(osa.koodiarvo)
+          }
           onSelect={(osa) => {
             osa &&
               form.updateAt(
