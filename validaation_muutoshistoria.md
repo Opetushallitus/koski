@@ -10,6 +10,14 @@
 ## 11.8.2025
 - 1.8.2025 ja sen jälkeen alkaneille peruskoulun opiskeluoikeuksille ei sallita kenttää vuosiluokkiinSitoutumatonOpetus
 
+## xx.xx.2025
+- Lisätty validaatioita uudelle päätason suoritukselle: ammatillisen tutkinnon osan/osien suoritus useasta tutkinnosta
+- Suorituksen osaamisaloja vastaavat tutkinnot on löydyttävä osasuorituksista.
+- Suorituksen tutkintonimikkeitä vastaavat tutkinnot on löydyttävä osasuorituksista.
+- Osasuorituksen tutkinnolla on oltava perusteen diaarinumero, jolle vastaava peruste on olemassa opiskeluoikeuden voimassaolon aikana.
+- Tunnustetun osasuorituksen tutkinnolla on oltava perusteen diaarinumero, jolle vastaava peruste on olemassa.
+- Osasuoritusten ja aliosasuoritusten rakenne ja laajuudet on oltava tutkintoa vastaavien perusteiden mukaiset.
+
 ## 6.8.2025
 - Lukion oppimäärän opiskeluoikeudelle ei sallita KT ja ET suorituksia yhdessä
 
