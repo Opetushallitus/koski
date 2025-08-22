@@ -97,6 +97,18 @@ export const fetchPeruste = (suoritustyyppi: string) =>
     )
   )
 
+export const fetchPerusteTutkinnonOsaRyhmät = (
+  diaarinumero: string,
+  suoritustapa: string
+) =>
+  handleExpiredSession(
+    apiGet<Koodistokoodiviite<'tutkinnonosaryhmä'>[]>(
+      apiUrl(
+        `tutkinnonperusteet/tutkinnonosat/ryhmat/${encodeURIComponent(diaarinumero)}/${suoritustapa}`
+      )
+    )
+  )
+
 export const fetchOppilaitoksenPerusteet = (
   oppilaitosOid: string,
   query?: string
