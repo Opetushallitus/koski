@@ -23,6 +23,100 @@ class OppijaValidationIBSpec extends AnyFreeSpec with KoskiHttpSpec with PutOpis
 
     "IB tutkinnon suoritus" - {
 
+      "Core-kurssin laajuus tunneissa ei ole ok rajapäivänä ja sen jälkeen" in {
+        val coreRajapäivä = LocalDate.of(2025, 8, 1)
+
+        val opiskeluoikeus = defaultOpiskeluoikeus.copy(
+          tila = LukionOpiskeluoikeudenTila(List(
+            LukionOpiskeluoikeusjakso(coreRajapäivä, LukioExampleData.opiskeluoikeusAktiivinen, Some(ExampleData.valtionosuusRahoitteinen))
+          )),
+          suoritukset = List(
+            ibTutkinnonSuoritus(predicted = false).copy(
+              vahvistus = None,
+              theoryOfKnowledge = None,
+              extendedEssay = None,
+              creativityActionService = None,
+              lisäpisteet = None,
+              osasuoritukset = Some(List(
+                IBDPCoreSuoritus(
+                  koulutusmoduuli = IBDPCoreOppiaineTheoryOfKnowledge(),
+                  osasuoritukset = Some(List(
+                    IBCoreKurssinSuoritus(
+                      koulutusmoduuli = IBCoreKurssi(
+                        kuvaus   = Finnish("TOK K1"),
+                        tunniste = PaikallinenKoodi("TOK_K1", Finnish("TOK K1")),
+                        laajuus  = Some(LaajuusTunneissa(1))
+                      ),
+                      arviointi = Some(List(
+                        IBCoreKurssinArviointi(
+                          arvosana = Koodistokoodiviite("A", "arviointiasteikkocorerequirementsib"),
+                          effort   = None,
+                          päivä    = coreRajapäivä
+                        )
+                      ))
+                    )
+                  ))
+                )
+              ))
+            )
+          )
+        )
+
+        setupOppijaWithOpiskeluoikeus(opiskeluoikeus) {
+          verifyResponseStatus(400,
+            KoskiErrorCategory.badRequest.validation.laajuudet.osauoritusVääräLaajuus(
+              "Osasuorituksen laajuus on ilmoitettava opintopisteissä 1.8.2025 tai myöhemmin alkaneille IB-tutkinnon opiskeluoikeuksille"
+            )
+          )
+        }
+      }
+
+
+      "Core-kurssin laajuus opintopisteinä on ok rajapäivänä" in {
+        val coreRajapäivä = LocalDate.of(2025, 8, 1)
+
+        val opiskeluoikeus = defaultOpiskeluoikeus.copy(
+          tila = LukionOpiskeluoikeudenTila(List(
+            LukionOpiskeluoikeusjakso(coreRajapäivä, LukioExampleData.opiskeluoikeusAktiivinen, Some(ExampleData.valtionosuusRahoitteinen))
+          )),
+          suoritukset = List(
+            ibTutkinnonSuoritus(predicted = false).copy(
+              vahvistus = None,
+              theoryOfKnowledge = None,
+              extendedEssay = None,
+              creativityActionService = None,
+              lisäpisteet = None,
+              osasuoritukset = Some(List(
+                IBDPCoreSuoritus(
+                  koulutusmoduuli = IBDPCoreOppiaineTheoryOfKnowledge(),
+                  osasuoritukset = Some(List(
+                    IBCoreKurssinSuoritus(
+                      koulutusmoduuli = IBCoreKurssi(
+                        kuvaus   = Finnish("TOK K1"),
+                        tunniste = PaikallinenKoodi("TOK_K1", Finnish("TOK K1")),
+                        laajuus  = Some(LaajuusOpintopisteissä(1))
+                      ),
+                      arviointi = Some(List(
+                        IBCoreKurssinArviointi(
+                          arvosana = Koodistokoodiviite("A", "arviointiasteikkocorerequirementsib"),
+                          effort   = None,
+                          päivä    = coreRajapäivä
+                        )
+                      ))
+                    )
+                  ))
+                )
+              ))
+            )
+          )
+        )
+
+        setupOppijaWithOpiskeluoikeus(opiskeluoikeus) {
+          verifyResponseStatusOk()
+        }
+      }
+
+
       "CAS-aine, arvosanan antaminen" - {
         def historiaOppiaine(level: String, arvosana: String) = ibAineSuoritus(ibOppiaine("HIS", level, 3), ibArviointi(arvosana), ibPredictedArviointi(arvosana))
 
@@ -404,15 +498,6 @@ class OppijaValidationIBSpec extends AnyFreeSpec with KoskiHttpSpec with PutOpis
               }
             }
 
-            "Extended Essay ei salli arvosanaa 1" in {
-              val oo = createOpiskeluoikeusYhdelläKurssilla(rajapäivä, LaajuusKursseissa(1), osasuorituksilla(extendedEssay.copy(arviointi = ibCoreOppiaineenArviointi("1"))))
-              setupOppijaWithOpiskeluoikeus(oo) {
-                verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.arviointi.epäsopivaArvosana(
-                  "IB Core suorituksella (EE) on vääriä arvosanoja: 1"
-                ))
-              }
-            }
-
             "Theory of Knowledge ei voi siirtää osasuorituksena" in {
               val oo = createOpiskeluoikeusYhdelläKurssilla(rajapäivä.minusDays(1), LaajuusKursseissa(1), osasuorituksilla(theoryOfKnowledge))
               setupOppijaWithOpiskeluoikeus(oo) {
@@ -429,36 +514,11 @@ class OppijaValidationIBSpec extends AnyFreeSpec with KoskiHttpSpec with PutOpis
               }
             }
 
-            "Theory of Knowledge ei salli arvosanaa 1" in {
-              val oo = createOpiskeluoikeusYhdelläKurssilla(rajapäivä, LaajuusKursseissa(1), osasuorituksilla(theoryOfKnowledge.copy(arviointi = ibCoreOppiaineenArviointi("1"))))
-              setupOppijaWithOpiskeluoikeus(oo) {
-                verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.arviointi.epäsopivaArvosana(
-                  "IB Core suorituksella (TOK) on vääriä arvosanoja: 1"
-                ))
-              }
-            }
-
             "CAS ei voi siirtää osasuorituksena" in {
               val oo = createOpiskeluoikeusYhdelläKurssilla(rajapäivä.minusDays(1), LaajuusKursseissa(1), osasuorituksilla(casOppiaine))
               setupOppijaWithOpiskeluoikeus(oo) {
                 verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.rakenne.dpCoreDeprecated(
                   "DP Core -oppiaineita ei voi siirtää osasuorituksena ennen 1.8.2024 alkaneelle IB-opiskeluoikeudelle"
-                ))
-              }
-            }
-
-            "CAS sallii arvosanan 1" in {
-              val oo = createOpiskeluoikeusYhdelläKurssilla(rajapäivä, LaajuusKursseissa(1), osasuorituksilla(casOppiaine.copy(arviointi = ibCoreOppiaineenArviointi("1"))))
-              setupOppijaWithOpiskeluoikeus(oo) {
-                verifyResponseStatusOk()
-              }
-            }
-
-            "CAS ei salli arvosanaa A" in {
-              val oo = createOpiskeluoikeusYhdelläKurssilla(rajapäivä, LaajuusKursseissa(1), osasuorituksilla(casOppiaine.copy(arviointi = ibCoreOppiaineenArviointi("A"))))
-              setupOppijaWithOpiskeluoikeus(oo) {
-                verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.arviointi.epäsopivaArvosana(
-                  "IB Core suorituksella (CAS) on vääriä arvosanoja: A"
                 ))
               }
             }

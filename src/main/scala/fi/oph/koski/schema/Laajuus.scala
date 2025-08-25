@@ -30,7 +30,7 @@ case class LaajuusOpintopisteissä(
   arvo: Double,
   @KoodistoKoodiarvo("2")
   yksikkö: Koodistokoodiviite = laajuusOpintopisteissä
-) extends LaajuusOpintopisteissäTaiKursseissa
+) extends LaajuusOpintopisteissäTaiKursseissa with LaajuusOpintopisteissäTaiTunneissa
 
 case class LaajuusVuosiviikkotunneissa(
   arvo: Double,
@@ -51,11 +51,13 @@ trait LaajuusVuosiviikkotunneissaTaiKursseissa extends Laajuus
 
 trait LaajuusVuosiviikkotunneissaTaiTunneissa extends Laajuus
 
+trait LaajuusOpintopisteissäTaiTunneissa extends Laajuus
+
 case class LaajuusTunneissa(
   arvo: Double,
   @KoodistoKoodiarvo("5")
   yksikkö: Koodistokoodiviite = laajuusTunneissa
-) extends LaajuusVuosiviikkotunneissaTaiTunneissa
+) extends LaajuusVuosiviikkotunneissaTaiTunneissa with LaajuusOpintopisteissäTaiTunneissa
 
 case class LaajuusOsaamispisteissä(
   arvo: Double,
@@ -68,3 +70,5 @@ case class LaajuusViikoissa(
   @KoodistoKoodiarvo("8")
   yksikkö: Koodistokoodiviite = laajuusViikoissa
 ) extends Laajuus
+
+
