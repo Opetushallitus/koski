@@ -1,4 +1,7 @@
 # Koskeen tallennettavien tietojen validaatiosäännöt
+## 27.8.2025
+ - Lisätty validaatio IB oppiaineen suoritusten laajuuksille. Uusille suorituksille ei sallita tunteja laajuudeksi
+ - Poistettiin arvosanojen validointi IBDPCore ossuorituksilta
 ## 20.8.2025
 - Lisätty ePeruste rakennevalidaatio myös ammatillisen osittaiseen tutkintoon
 

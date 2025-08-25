@@ -2,7 +2,7 @@ import { IBCoreOppiaineenArviointi } from './IBCoreOppiaineenArviointi'
 import { Koodistokoodiviite } from './Koodistokoodiviite'
 import { LocalizedString } from './LocalizedString'
 import { IBDPCoreOppiaine } from './IBDPCoreOppiaine'
-import { IBKurssinSuoritus } from './IBKurssinSuoritus'
+import { IBCoreKurssinSuoritus } from './IBCoreKurssinSuoritus'
 
 /**
  * IBDPCoreSuoritus
@@ -16,7 +16,7 @@ export type IBDPCoreSuoritus = {
   tila?: Koodistokoodiviite<'suorituksentila', string>
   suorituskieli?: Koodistokoodiviite<'kieli', string>
   koulutusmoduuli: IBDPCoreOppiaine
-  osasuoritukset?: Array<IBKurssinSuoritus>
+  osasuoritukset?: Array<IBCoreKurssinSuoritus>
 }
 
 export const IBDPCoreSuoritus = (o: {
@@ -25,7 +25,7 @@ export const IBDPCoreSuoritus = (o: {
   tila?: Koodistokoodiviite<'suorituksentila', string>
   suorituskieli?: Koodistokoodiviite<'kieli', string>
   koulutusmoduuli: IBDPCoreOppiaine
-  osasuoritukset?: Array<IBKurssinSuoritus>
+  osasuoritukset?: Array<IBCoreKurssinSuoritus>
 }): IBDPCoreSuoritus => ({
   tyyppi: Koodistokoodiviite({
     koodiarvo: 'ibcore',

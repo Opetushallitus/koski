@@ -6,6 +6,7 @@ import {
   AikuistenPerusopetuksenPaikallinenOppiaine,
   isAikuistenPerusopetuksenPaikallinenOppiaine
 } from './AikuistenPerusopetuksenPaikallinenOppiaine'
+import { IBCoreKurssi, isIBCoreKurssi } from './IBCoreKurssi'
 import { IBKurssi, isIBKurssi } from './IBKurssi'
 import {
   LukionPaikallinenOpintojakso2019,
@@ -88,6 +89,7 @@ import {
 export type StorablePreference =
   | AikuistenPerusopetuksenAlkuvaiheenPaikallinenOppiaine
   | AikuistenPerusopetuksenPaikallinenOppiaine
+  | IBCoreKurssi
   | IBKurssi
   | LukionPaikallinenOpintojakso2019
   | MuunKuinSäännellynKoulutuksenOsasuorituksenKoulutusmoduuli
@@ -111,6 +113,7 @@ export type StorablePreference =
 export const isStorablePreference = (a: any): a is StorablePreference =>
   isAikuistenPerusopetuksenAlkuvaiheenPaikallinenOppiaine(a) ||
   isAikuistenPerusopetuksenPaikallinenOppiaine(a) ||
+  isIBCoreKurssi(a) ||
   isIBKurssi(a) ||
   isLukionPaikallinenOpintojakso2019(a) ||
   isMuunKuinSäännellynKoulutuksenOsasuorituksenKoulutusmoduuli(a) ||

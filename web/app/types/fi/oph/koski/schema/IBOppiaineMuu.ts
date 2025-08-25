@@ -1,6 +1,6 @@
 import { Koodistokoodiviite } from './Koodistokoodiviite'
 import { LocalizedString } from './LocalizedString'
-import { LaajuusTunneissa } from './LaajuusTunneissa'
+import { LaajuusOpintopisteissäTaiTunneissa } from './LaajuusOpintopisteissaTaiTunneissa'
 
 /**
  * IB-lukion oppiaineen tunnistetiedot
@@ -11,7 +11,7 @@ export type IBOppiaineMuu = {
   $class: 'fi.oph.koski.schema.IBOppiaineMuu'
   pakollinen: boolean
   taso?: Koodistokoodiviite<'oppiaineentasoib', string>
-  laajuus?: LaajuusTunneissa
+  laajuus?: LaajuusOpintopisteissäTaiTunneissa
   ryhmä: Koodistokoodiviite<'aineryhmaib', string>
   tunniste: Koodistokoodiviite<
     'oppiaineetib',
@@ -50,7 +50,7 @@ export type IBOppiaineMuu = {
 export const IBOppiaineMuu = (o: {
   pakollinen: boolean
   taso?: Koodistokoodiviite<'oppiaineentasoib', string>
-  laajuus?: LaajuusTunneissa
+  laajuus?: LaajuusOpintopisteissäTaiTunneissa
   ryhmä: Koodistokoodiviite<'aineryhmaib', string>
   tunniste: Koodistokoodiviite<
     'oppiaineetib',

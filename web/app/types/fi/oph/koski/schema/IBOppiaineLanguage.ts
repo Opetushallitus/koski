@@ -1,6 +1,6 @@
 import { Koodistokoodiviite } from './Koodistokoodiviite'
 import { LocalizedString } from './LocalizedString'
-import { LaajuusTunneissa } from './LaajuusTunneissa'
+import { LaajuusOpintopisteissäTaiTunneissa } from './LaajuusOpintopisteissaTaiTunneissa'
 
 /**
  * IB-lukion oppiaineen tunnistetiedot
@@ -12,7 +12,7 @@ export type IBOppiaineLanguage = {
   pakollinen: boolean
   taso?: Koodistokoodiviite<'oppiaineentasoib', string>
   kieli: Koodistokoodiviite<'kielivalikoima', string>
-  laajuus?: LaajuusTunneissa
+  laajuus?: LaajuusOpintopisteissäTaiTunneissa
   ryhmä: Koodistokoodiviite<'aineryhmaib', string>
   tunniste: Koodistokoodiviite<'oppiaineetib', 'A' | 'A2' | 'B' | 'AB' | 'CLA'>
 }
@@ -21,7 +21,7 @@ export const IBOppiaineLanguage = (o: {
   pakollinen: boolean
   taso?: Koodistokoodiviite<'oppiaineentasoib', string>
   kieli: Koodistokoodiviite<'kielivalikoima', string>
-  laajuus?: LaajuusTunneissa
+  laajuus?: LaajuusOpintopisteissäTaiTunneissa
   ryhmä: Koodistokoodiviite<'aineryhmaib', string>
   tunniste: Koodistokoodiviite<'oppiaineetib', 'A' | 'A2' | 'B' | 'AB' | 'CLA'>
 }): IBOppiaineLanguage => ({
