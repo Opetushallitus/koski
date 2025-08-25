@@ -17,7 +17,6 @@ import {
 import { LaajuusOsaamispisteissä } from '../types/fi/oph/koski/schema/LaajuusOsaamispisteissa'
 import { append, deleteAt } from '../util/fp/arrays'
 import { hasAmmatillinenArviointi } from './OsasuoritusTables'
-import { ParasArvosanaView } from '../components-v2/opiskeluoikeus/ArvosanaField'
 import {
   isMuidenOpintovalmiuksiaTukevienOpintojenSuoritus,
   MuidenOpintovalmiuksiaTukevienOpintojenSuoritus
@@ -47,7 +46,13 @@ import {
 } from './LisätietoField'
 import { ButtonGroup } from '../components-v2/containers/ButtonGroup'
 import { FlatButton } from '../components-v2/controls/FlatButton'
-import { ArviointiEdit, ArviointiView, emptyArviointi } from './Arviointi'
+import {
+  AmisArvosanaInTableEdit,
+  AmisArvosanaInTableView,
+  ArviointiEdit,
+  ArviointiView,
+  emptyArviointi
+} from './Arviointi'
 import { YhteistenTutkinnonOsienOsaAlueidenTaiLukioOpintojenTaiMuidenOpintovalmiuksiaTukevienOpintojenOsasuoritus } from '../types/fi/oph/koski/schema/YhteistenTutkinnonOsienOsaAlueidenTaiLukioOpintojenTaiMuidenOpintovalmiuksiaTukevienOpintojenOsasuoritus'
 import { Column, ColumnRow } from '../components-v2/containers/Columns'
 import { KoodistoSelect } from '../components-v2/opiskeluoikeus/KoodistoSelect'
@@ -109,7 +114,18 @@ export const OsittaisenAmmatillisenTutkinnonOsanJatkoOpintovalmiuksiaTukevienOpi
                         .prop('laajuus')}
                     />
                   ),
-                  Arvosana: <ParasArvosanaView value={s.arviointi} />
+                  Arvosana: (
+                    <FormField
+                      form={form}
+                      view={AmisArvosanaInTableView}
+                      edit={AmisArvosanaInTableEdit}
+                      path={osasuoritusPath
+                        .prop('osasuoritukset')
+                        .valueOr([])
+                        .at(index)
+                        .prop('arviointi')}
+                    />
+                  )
                 },
                 content: (
                   <OsasuoritusProperties

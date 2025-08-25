@@ -23,10 +23,10 @@ import { LocalizedTextEdit } from '../components-v2/controls/LocalizedTestField'
 import { Koodistokoodiviite } from '../types/fi/oph/koski/schema/Koodistokoodiviite'
 import {
   Select,
-  useKoodistoOptions,
   useKoodistoOptionsWithFormat
 } from '../components-v2/controls/Select'
 import { TestIdLayer, TestIdText } from '../appstate/useTestId'
+import { parasArviointi } from '../util/arvioinnit'
 
 export const ArviointiView = ({
   value
@@ -34,7 +34,7 @@ export const ArviointiView = ({
   return (
     <>
       <KeyValueRow localizableLabel="Arvosana">
-        <TestIdText id="arvosana">{t(value?.arvosana.nimi)}</TestIdText>
+        <TestIdText id="arvosana">{value?.arvosana.koodiarvo}</TestIdText>
       </KeyValueRow>
       <KeyValueRow localizableLabel="Arviointipäivä">
         {ISO2FinnishDate(value?.päivä)}
@@ -186,6 +186,44 @@ export const AmisArvosanaSelect = ({
       value={value && value.koodistoUri + '_' + value.koodiarvo}
       onChange={(a) => onChange && onChange(a?.value)}
       testId="arvosana"
+    />
+  )
+}
+
+export const AmisArvosanaInTableView = ({
+  value
+}: CommonProps<FieldViewerProps<AmmatillinenArviointi[], EmptyObject>>) => {
+  const paras = parasArviointi(value)
+  return (
+    <TestIdText id="arvosana.value">
+      {paras ? t(paras.arvosana.koodiarvo) : '-'}
+    </TestIdText>
+  )
+}
+
+export const AmisArvosanaInTableEdit = ({
+  value,
+  onChange
+}: FieldEditorProps<AmmatillinenArviointi[], EmptyObject>) => {
+  const arviointi =
+    value && value.length > 0 ? value[value.length - 1] : undefined
+
+  return (
+    <AmisArvosanaSelect
+      value={arviointi && arviointi.arvosana}
+      onChange={(arvosana) => {
+        if (arvosana === undefined) {
+          return
+        }
+        if (value && arviointi) {
+          onChange([
+            ...value.slice(0, value.length - 1),
+            { ...arviointi, arvosana }
+          ])
+        } else {
+          onChange([{ ...emptyArviointi, arvosana }])
+        }
+      }}
     />
   )
 }

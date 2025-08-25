@@ -17,12 +17,12 @@ test.describe('Osittaisen ammatillisen tutkinnon uusi käyttöliittymä', () => 
 
 
     await expect(page.getByTestId('oo.0.suoritukset.0.osasuoritukset.0.laajuus.value')).toContainText('35 osp');
-    await expect(page.getByTestId('oo.0.suoritukset.0.osasuoritukset.0.arvosana.value')).toContainText('kiitettävä');
+    await expect(page.getByTestId('oo.0.suoritukset.0.osasuoritukset.0.arvosana.value')).toContainText('3');
 
     await page.getByRole('button', { name: 'Avaa kaikki' }).click();
 
     await expect(page.getByTestId('oo.0.suoritukset.0.osasuoritukset.0.properties.organisaatio.value')).toContainText('Stadin ammatti- ja aikuisopisto, Lehtikuusentien toimipaikka');
-    await expect(page.getByTestId('oo.0.suoritukset.0.osasuoritukset.0.properties.arviointi.0.arvosana')).toContainText('kiitettävä');
+    await expect(page.getByTestId('oo.0.suoritukset.0.osasuoritukset.0.properties.arviointi.0.arvosana')).toContainText('3');
 
     await expect(page.getByTestId('oo.0.suoritukset.0.yhteensa')).toContainText('35 osp');
 
