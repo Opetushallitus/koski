@@ -7,6 +7,7 @@ import fi.oph.koski.organisaatio.OrganisaatioRepository
 import fi.oph.koski.schema.{KoskeenTallennettavaOpiskeluoikeus, YlioppilastutkinnonOpiskeluoikeus}
 import fi.oph.koski.validation.DateValidation.validateOpiskeluoikeudenPäivämäärät
 import fi.oph.koski.validation.{AmmatillinenValidation, TaiteenPerusopetusValidation, TutkintokoulutukseenValmentavaKoulutusValidation}
+import fi.oph.koski.validation.LukionYhteisetValidaatiot.validateLukioJaAineopiskeluVaihto
 
 import java.time.LocalDate
 
@@ -31,6 +32,7 @@ class OpiskeluoikeusChangeValidator(
           ePerusteetChangeValidator.validateVanhanOpiskeluoikeudenTapaukset(oldState, newState),
           TutkintokoulutukseenValmentavaKoulutusValidation.validateJärjestämislupaEiMuuttunut(oldState, newState),
           TaiteenPerusopetusValidation.validateHankintakoulutusEiMuuttunut(oldState, newState),
+          validateLukioJaAineopiskeluVaihto(oldState, newState),
           AmmatillinenValidation.validateKorotetunOpiskeluoikeudenLinkitysEiMuuttunut(oldState, newState)
         )
     }

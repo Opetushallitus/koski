@@ -11,7 +11,7 @@ import fi.oph.koski.documentation.PerusopetusExampleData.{perusopetuksenOppimä�
 import fi.oph.koski.documentation.YleissivistavakoulutusExampleData.jyväskylänNormaalikoulu
 import fi.oph.koski.documentation._
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
-import fi.oph.koski.henkilo.KoskiSpecificMockOppijat.koululainen
+import fi.oph.koski.henkilo.KoskiSpecificMockOppijat.{koululainen, uusiLukio}
 import fi.oph.koski.http.{ErrorMatcher, KoskiErrorCategory}
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.koskiuser.MockUsers.{helsinginKaupunkiPalvelukäyttäjä, helsinkiTallentaja, kalle, paakayttaja, varsinaisSuomiKoulutustoimija, varsinaisSuomiPalvelukäyttäjä}
@@ -218,6 +218,25 @@ class OppijaUpdateSpec extends AnyFreeSpec with KoskiHttpSpec with Opiskeluoikeu
           verifyResponseStatus(403, KoskiErrorCategory.forbidden.kiellettyMuutos("Opiskeluoikeuden tyyppiä ei voi vaihtaa. Vanha tyyppi ammatillinenkoulutus. Uusi tyyppi lukiokoulutus."))
         }
       }
+
+      "Hylkää lukion oppimäärä aineopinnot muutos" in {
+        val oo = lastOpiskeluoikeus(KoskiSpecificMockOppijat.uusiLukio.oid).asInstanceOf[LukionOpiskeluoikeus]
+        val aineopSuoritus = ExamplesLukio2019.oppiaineenOppimääräOpiskeluoikeus.suoritukset.head.asInstanceOf[LukionOppiaineidenOppimäärienSuoritus2019].copy(toimipiste = oo.suoritukset.head.toimipiste)
+        val mutated = oo.copy(suoritukset = List(aineopSuoritus))
+        putOpiskeluoikeus(mutated,uusiLukio, headers = authHeaders() ++ jsonContent) {
+          verifyResponseStatus(403, KoskiErrorCategory.forbidden.kiellettyMuutos("Lukion oppimäärän opiskeluoikeutta ei voi muuttaa aineopiskeluksi."))
+        }
+      }
+
+      "Hylkää lukion aineopiskelija oppimäärä muutos" in {
+        val oo = lastOpiskeluoikeus(KoskiSpecificMockOppijat.uusiLukionAineopiskelija.oid).asInstanceOf[LukionOpiskeluoikeus]
+        val oppimaaraSuoritus = ExamplesLukio2019.opiskeluoikeus.suoritukset.head.asInstanceOf[LukionOppimääränSuoritus2019].copy(toimipiste = oo.suoritukset.head.toimipiste)
+        val mutated = oo.copy(suoritukset = List(oppimaaraSuoritus))
+        putOpiskeluoikeus(mutated, KoskiSpecificMockOppijat.uusiLukionAineopiskelija, headers = authHeaders() ++ jsonContent) {
+          verifyResponseStatus(403, KoskiErrorCategory.forbidden.kiellettyMuutos("Lukion aineopiskelijan opiskeluoikeutta ei voi muuttaa oppimääräksi."))
+        }
+      }
+
 
       "Mahdollistaa lähdejärjestelmä-id:n vaihtamisen (case: oppilaitos vaihtaa tietojärjestelmää)" in {
         val original: AmmatillinenOpiskeluoikeus = defaultOpiskeluoikeus.copy(lähdejärjestelmänId = Some(winnovaLähdejärjestelmäId("win-23352")))
