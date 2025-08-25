@@ -57,23 +57,20 @@ class PostgresKoskiOpiskeluoikeusRepository(
     runDbSync(query.result.map(rows => rows.sortBy(_.id).map(_.toOpiskeluoikeusUnsafe)))
   }
 
-  override def findByOid(oid: String)(implicit user: KoskiSpecificSession): Either[HttpStatus, KoskiOpiskeluoikeusRow] = withOidCheck(oid) {
-    val query = timed("get-oo-by-oid-investigation:findByOid.query", thresholdMs = 0) {
-      KoskiOpiskeluOikeudetWithAccessCheck.filter(_.oid === oid)
+  override def findByOid(oid: String)(implicit user: KoskiSpecificSession, investigate: Boolean): Either[HttpStatus, KoskiOpiskeluoikeusRow] = {
+    val oidCheck = timed(s"${if (investigate) "get-oo-by-oid-investigation:" else ""}withOidCheck[KoskiOpiskeluoikeusRow](oid)", thresholdMs = 0) {
+      withOidCheck[KoskiOpiskeluoikeusRow](oid) _
     }
-    val result = timed("get-oo-by-oid-investigation:findByOid.result", thresholdMs = 0) {
-      withExistenceCheck(runDbSync({
-        val result = query.result
+    oidCheck {
+      val query = timed(s"${if (investigate) "get-oo-by-oid-investigation:" else ""}findByOid.query", thresholdMs = 0) {
+        KoskiOpiskeluOikeudetWithAccessCheck.filter(_.oid === oid)
+      }
+      val result = timed(s"${if (investigate) "get-oo-by-oid-investigation:" else ""}findByOid.result", thresholdMs = 0) {
+        withExistenceCheck(runDbSync(query.result))
+      }
 
-//        result.statements.head.grouped(2000).zipWithIndex.foreach { case (sql, index) =>
-//          logger.info(s"findByOid SQL($index)\n$sql")
-//        }
-
-        result
-      }))
+      result
     }
-
-    result
   }
 
   override def findByOidIlmanKäyttöoikeustarkistusta(oid: String): Either[HttpStatus, KoskiOpiskeluoikeusRow] = withOidCheck(oid) {

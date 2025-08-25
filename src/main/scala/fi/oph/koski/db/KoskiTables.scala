@@ -499,24 +499,24 @@ object KoskiTables extends Timing {
 
   val Massaluovutukset = TableQuery[MassaluovutusTable]
 
-  def KoskiOpiskeluOikeudetWithAccessCheck(implicit user: KoskiSpecificSession): Query[KoskiOpiskeluoikeusTable, KoskiOpiskeluoikeusRow, Seq] = {
-    val hasGlobalReadAccess = timed("get-oo-by-oid-investigation:user.hasGlobalReadAccess", thresholdMs = 0) {
+  def KoskiOpiskeluOikeudetWithAccessCheck(implicit user: KoskiSpecificSession, investigate: Boolean = false): Query[KoskiOpiskeluoikeusTable, KoskiOpiskeluoikeusRow, Seq] = {
+    val hasGlobalReadAccess = timed(s"${if (investigate) "get-oo-by-oid-investigation:" else ""}user.hasGlobalReadAccess", thresholdMs = 0) {
       user.hasGlobalReadAccess
     }
-    val hasGlobalKoulutusmuotoReadAccess = timed("get-oo-by-oid-investigation:user.hasGlobalKoulutusmuotoReadAccess", thresholdMs = 0) {
+    val hasGlobalKoulutusmuotoReadAccess = timed(s"${if (investigate) "get-oo-by-oid-investigation:" else ""}user.hasGlobalKoulutusmuotoReadAccess", thresholdMs = 0) {
       user.hasGlobalKoulutusmuotoReadAccess
     }
 
     val query = if (hasGlobalReadAccess || hasGlobalKoulutusmuotoReadAccess) {
       KoskiOpiskeluOikeudet
     } else {
-      val oppilaitosOidit = timed("get-oo-by-oid-investigation:user.organisationOids(AccessType.read).toList", thresholdMs = 0) {
+      val oppilaitosOidit = timed(s"${if (investigate) "get-oo-by-oid-investigation:" else ""}user.organisationOids(AccessType.read).toList", thresholdMs = 0) {
         user.organisationOids(AccessType.read).toList
       }
-      val varhaiskasvatusOikeudet = timed("get-oo-by-oid-investigation:user.varhaiskasvatusKäyttöoikeudet.filter(_.organisaatioAccessType.contains(AccessType.read))", thresholdMs = 0) {
+      val varhaiskasvatusOikeudet = timed(s"${if (investigate) "get-oo-by-oid-investigation:" else ""}user.varhaiskasvatusKäyttöoikeudet.filter(_.organisaatioAccessType.contains(AccessType.read))", thresholdMs = 0) {
         user.varhaiskasvatusKäyttöoikeudet.filter(_.organisaatioAccessType.contains(AccessType.read))
       }
-      val orgKäyttöoikeudet = timed("get-oo-by-oid-investigation:user.orgKäyttöoikeudet", thresholdMs = 0) {
+      val orgKäyttöoikeudet = timed(s"${if (investigate) "get-oo-by-oid-investigation:" else ""}user.orgKäyttöoikeudet", thresholdMs = 0) {
         user.orgKäyttöoikeudet
       }
 
@@ -534,22 +534,22 @@ object KoskiTables extends Timing {
       } yield oo
     }
 
-    val hasKoulutusmuotoRestrictions = timed("get-oo-by-oid-investigation:user.hasKoulutusmuotoRestrictions", thresholdMs = 0) {
+    val hasKoulutusmuotoRestrictions = timed(s"${if (investigate) "get-oo-by-oid-investigation:" else ""}user.hasKoulutusmuotoRestrictions", thresholdMs = 0) {
       user.hasKoulutusmuotoRestrictions
     }
-    val allowedOpiskeluoikeudet = timed("get-oo-by-oid-investigation:user.allowedOpiskeluoikeudetJaPäätasonSuoritukset.map(_.opiskeluoikeus)", thresholdMs = 0) {
+    val allowedOpiskeluoikeudet = timed(s"${if (investigate) "get-oo-by-oid-investigation:" else ""}user.allowedOpiskeluoikeudetJaPäätasonSuoritukset.map(_.opiskeluoikeus)", thresholdMs = 0) {
       user.allowedOpiskeluoikeudetJaPäätasonSuoritukset.map(_.opiskeluoikeus)
     }
-    val hasPäätasonsuoritusRestrictions = timed("get-oo-by-oid-investigation:user.hasPäätasonsuoritusRestrictions", thresholdMs = 0) {
+    val hasPäätasonsuoritusRestrictions = timed(s"${if (investigate) "get-oo-by-oid-investigation:" else ""}user.hasPäätasonsuoritusRestrictions", thresholdMs = 0) {
       user.hasPäätasonsuoritusRestrictions
     }
-    val allowedPäätasonSuorituksenTyypit = timed("get-oo-by-oid-investigation:user.allowedPäätasonSuorituksenTyypit.toList", thresholdMs = 0) {
+    val allowedPäätasonSuorituksenTyypit = timed(s"${if (investigate) "get-oo-by-oid-investigation:" else ""}user.allowedPäätasonSuorituksenTyypit.toList", thresholdMs = 0) {
       user.allowedPäätasonSuorituksenTyypit.toList
     }
-    val hasMitätöidytOpiskeluoikeudetAccess = timed("get-oo-by-oid-investigation:user.hasMitätöidytOpiskeluoikeudetAccess", thresholdMs = 0) {
+    val hasMitätöidytOpiskeluoikeudetAccess = timed(s"${if (investigate) "get-oo-by-oid-investigation:" else ""}user.hasMitätöidytOpiskeluoikeudetAccess", thresholdMs = 0) {
       user.hasMitätöidytOpiskeluoikeudetAccess
     }
-    val hasPoistetutOpiskeluoikeudetAccess = timed("get-oo-by-oid-investigation:user.hasPoistetutOpiskeluoikeudetAccess", thresholdMs = 0) {
+    val hasPoistetutOpiskeluoikeudetAccess = timed(s"${if (investigate) "get-oo-by-oid-investigation:" else ""}user.hasPoistetutOpiskeluoikeudetAccess", thresholdMs = 0) {
       user.hasPoistetutOpiskeluoikeudetAccess
     }
 

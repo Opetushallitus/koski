@@ -23,7 +23,7 @@ class OpiskeluoikeusServlet(implicit val application: KoskiApplication) extends 
     }
     val result: Either[HttpStatus, KoskiOpiskeluoikeusRow] =
       timed("get-oo-by-oid-investigation:application.opiskeluoikeusRepository.findByOid(getStringParam(\"oid\"))(session)", thresholdMs = 0) {
-        application.opiskeluoikeusRepository.findByOid(getStringParam("oid"))(mySession)
+        application.opiskeluoikeusRepository.findByOid(getStringParam("oid"))(mySession, investigate = true)
       }
 
 
