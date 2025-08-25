@@ -30,7 +30,6 @@ import { ButtonGroup } from '../components-v2/containers/ButtonGroup'
 import { FlatButton } from '../components-v2/controls/FlatButton'
 import { append, deleteAt } from '../util/fp/arrays'
 import { NäyttöEdit, NäyttöView } from './Näyttö'
-import { ParasArvosanaView } from '../components-v2/opiskeluoikeus/ArvosanaField'
 import { OsasuoritusTable } from '../components-v2/opiskeluoikeus/OsasuoritusTable'
 import { AmmatillisenTutkinnonOsaaPienemmänKokonaisuudenSuoritusProperties } from './AmmatillisenTutkinnonOsaaPienemmänKokonaisuudenSuoritusProperties'
 import React from 'react'
@@ -38,7 +37,13 @@ import {
   KoodistoEdit,
   KoodistoView
 } from '../components-v2/opiskeluoikeus/KoodistoField'
-import { ArviointiEdit, ArviointiView, emptyArviointi } from './Arviointi'
+import {
+  AmisArvosanaInTableEdit,
+  AmisArvosanaInTableView,
+  ArviointiEdit,
+  ArviointiView,
+  emptyArviointi
+} from './Arviointi'
 import {
   LaajuusEdit,
   LaajuusView
@@ -221,7 +226,18 @@ export const MuunOsittaisenAmmatillisenTutkinnonTutkinnonosanSuoritusProperties 
                         .prop('laajuus')}
                     />
                   ),
-                  Arvosana: <ParasArvosanaView value={s.arviointi} />
+                  Arvosana: (
+                    <FormField
+                      form={form}
+                      view={AmisArvosanaInTableView}
+                      edit={AmisArvosanaInTableEdit}
+                      path={osasuoritusPath
+                        .prop('osasuoritukset')
+                        .valueOr([])
+                        .at(index)
+                        .prop('arviointi')}
+                    />
+                  )
                 },
                 content: (
                   <AmmatillisenTutkinnonOsaaPienemmänKokonaisuudenSuoritusProperties
