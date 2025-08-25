@@ -200,7 +200,7 @@ class MockOpintopolkuHenkilöFacadeWithDBSupport(val db: DB, hetu: Hetu, fixture
   extends MockOpintopolkuHenkilöFacade(hetu, fixtures)
     with QueryMethods {
   def findFromDb(oid: String): Option[LaajatOppijaHenkilöTiedot] = {
-    runQuery(KoskiOpiskeluOikeudetWithAccessCheck(systemUser).filter(_.oppijaOid === oid)).headOption.map { oppijaRow =>
+    runQuery(KoskiOpiskeluOikeudetWithAccessCheck (systemUser).filter(_.oppijaOid === oid)).headOption.map { oppijaRow =>
       LaajatOppijaHenkilöTiedot(oid, oid, oid, oid, Some(oid), None, None, None)
     }
   }
