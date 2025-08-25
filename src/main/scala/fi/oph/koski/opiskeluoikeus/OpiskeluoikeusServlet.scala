@@ -17,6 +17,7 @@ import fi.oph.scalaschema.extraction.ValidationError
 import org.json4s.JValue
 
 class OpiskeluoikeusServlet(implicit val application: KoskiApplication) extends KoskiSpecificApiServlet with RequiresVirkailijaOrPalvelukäyttäjä with Logging with NoCache with Timing {
+  override protected def timingThresholdMs: Int = 0
   get("/:oid") {
     val mySession = timed("get-oo-by-oid-investigation:session", thresholdMs = 0) {
       session
