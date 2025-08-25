@@ -3,6 +3,7 @@ package fi.oph.koski.api.oppijavalidation
 import fi.oph.koski.KoskiHttpSpec
 import fi.oph.koski.api.misc.PutOpiskeluoikeusTestMethods
 import fi.oph.koski.documentation.AmmatillinenExampleData._
+import fi.oph.koski.documentation.AmmatillinenOsittainenUseistaTutkinnoista
 import fi.oph.koski.documentation.ExampleData._
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.organisaatio.MockOrganisaatiot
@@ -43,6 +44,41 @@ class OppijaValidationAmmatillisenTutkinnonOsittainenUseastaTutkinnostaSuoritusS
       "palautetaan HTTP 200" in {
         setupOppijaWithOpiskeluoikeus(defaultOpiskeluoikeus) {
           verifyResponseStatusOk()
+        }
+      }
+    }
+
+    // Kopioitu soveltaen OppijaValidationAmmatillisenTutkinnonOsittainenSuoritusSpecistä
+    "Tutkinnon tila ja arviointi" - {
+      def copySuoritus(ap: Option[LocalDate] = None, vahvistus: Option[HenkilövahvistusValinnaisellaPaikkakunnalla] = None, keskiarvo: Option[Double] = None) = {
+        val alkamispäivä = ap.orElse(Some(longTimeAgo))
+        osittainenSuoritusKesken.copy(alkamispäivä = alkamispäivä, vahvistus = vahvistus, keskiarvo = keskiarvo)
+      }
+
+      def setupOppijWith(s: AmmatillisenTutkinnonOsittainenUseastaTutkinnostaSuoritus)(f: => Unit) = {
+        setupOppijaWithOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(s)))(f)
+      }
+
+      "Kun vahvistus puuttuu" - {
+        "palautetaan HTTP 200" in (setupOppijWith(copySuoritus()) (
+          verifyResponseStatusOk()
+        ))
+      }
+
+      "Kun vahvistus on annettu" - {
+        "palautetaan HTTP 200" in (setupOppijWith(copySuoritus(vahvistus = vahvistus(LocalDate.now), keskiarvo = Some(4.0))) (
+          verifyResponseStatusOk()
+        ))
+      }
+
+      "Suorituksen päivämäärät" - {
+        def päivämäärillä(alkamispäivä: String, vahvistuspäivä: String) = {
+          copySuoritus(ap = Some(LocalDate.parse(alkamispäivä)), vahvistus = vahvistus(LocalDate.parse(vahvistuspäivä)), keskiarvo = Some(4.0))
+        }
+
+        "Päivämäärät kunnossa" - {
+          "palautetaan HTTP 200"  in (setupOppijWith(päivämäärillä("2015-08-01", "2016-06-01"))(
+            verifyResponseStatusOk()))
         }
       }
     }
@@ -179,7 +215,7 @@ class OppijaValidationAmmatillisenTutkinnonOsittainenUseastaTutkinnostaSuoritusS
           osaamisala = None,
           tutkintonimike = None,
           osasuoritukset = Some(List(
-            osittaisenTutkinnonTutkinnonOsanUseastaTutkinnostaSuoritus(h2, ammatillisetTutkinnonOsat, "106945", "Ajoneuvon huoltotyöt", 20).copy(
+            osittaisenTutkinnonTutkinnonOsanUseastaTutkinnostaSuoritus(h2, ammatillisetTutkinnonOsat, "106945", "Ajoneuvon huoltotyöt", 25).copy(
               tutkinto = AmmatillinenTutkintoKoulutus(
                 Koodistokoodiviite("351301", Some(finnish("Ajoneuvoalan perustutkinto")), "koulutus", None),
                 perusteenDiaarinumero = None
@@ -197,7 +233,7 @@ class OppijaValidationAmmatillisenTutkinnonOsittainenUseastaTutkinnostaSuoritusS
           osaamisala = None,
           tutkintonimike = None,
           osasuoritukset = Some(List(
-            osittaisenTutkinnonTutkinnonOsanUseastaTutkinnostaSuoritus(h2, ammatillisetTutkinnonOsat, "106945", "Ajoneuvon huoltotyöt", 20).copy(
+            osittaisenTutkinnonTutkinnonOsanUseastaTutkinnostaSuoritus(h2, ammatillisetTutkinnonOsat, "106945", "Ajoneuvon huoltotyöt", 25).copy(
               tutkinto = AmmatillinenTutkintoKoulutus(
                 Koodistokoodiviite("351301", Some(finnish("Ajoneuvoalan perustutkinto")), "koulutus", None),
                 perusteenDiaarinumero = Some("liian pitkä diaarinumero lorem ipsum")
@@ -483,6 +519,36 @@ class OppijaValidationAmmatillisenTutkinnonOsittainenUseastaTutkinnostaSuoritusS
           ))
         )
         setupOppijaWithOpiskeluoikeus(makeOpiskeluoikeus(suoritus = suoritus)) {
+          verifyResponseStatusOk()
+        }
+      }
+    }
+
+    "Duplikaattiopiskeluoikeus" - {
+      "Ei voi lisätä vastaavaa opiskeluoikeutta samaan oppilaitokseen" in {
+        setupOppijaWithOpiskeluoikeus(defaultOpiskeluoikeus, defaultHenkilö) {
+          verifyResponseStatusOk()
+        }
+
+        postOppija(makeOppija(defaultHenkilö, List(defaultOpiskeluoikeus))) {
+          verifyResponseStatus(409, KoskiErrorCategory.conflict.exists())
+        }
+      }
+
+      "Vastaavaan opiskeluoikeuden voi lisätä samaan oppilaitokseen, kun se ei ole ajallisesti päällekkäin" in {
+        setupOppijaWithOpiskeluoikeus(AmmatillinenOsittainenUseistaTutkinnoista.osittainenPerustutkintoOpiskeluoikeus) {
+          verifyResponseStatusOk()
+        }
+
+        val myöhempiOpiskeluoikeus = AmmatillinenOsittainenUseistaTutkinnoista.osittainenPerustutkintoOpiskeluoikeus.copy(
+          arvioituPäättymispäivä = Some(date(2024, 12, 31)),
+          tila = AmmatillinenOpiskeluoikeudenTila(List(
+            AmmatillinenOpiskeluoikeusjakso(date(2024, 6, 5), opiskeluoikeusLäsnä, Some(valtionosuusRahoitteinen)),
+            AmmatillinenOpiskeluoikeusjakso(date(2024, 12, 31), opiskeluoikeusValmistunut, Some(valtionosuusRahoitteinen))
+          ))
+        )
+
+        postOppija(makeOppija(defaultHenkilö, List(myöhempiOpiskeluoikeus))) {
           verifyResponseStatusOk()
         }
       }
