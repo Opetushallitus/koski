@@ -66,13 +66,13 @@ type PerusteEditProps = CommonProps<
   FieldEditorProps<
     string | undefined,
     {
-      diaariNumero: string
+      suorituksenTyyppi: string
     }
   >
 >
 
 export const PerusteEdit: React.FC<PerusteEditProps> = (props) => {
-  const perusteet = usePeruste(props.diaariNumero)
+  const perusteet = usePeruste(props.suorituksenTyyppi)
   const mappedPerusteet: OptionList<string> = (perusteet || []).map((p) => ({
     key: p.koodiarvo,
     label: `${p.koodiarvo} ${t(p.nimi)}`,

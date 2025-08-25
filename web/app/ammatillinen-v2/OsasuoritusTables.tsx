@@ -63,6 +63,8 @@ import { useKoodisto } from '../appstate/koodisto'
 import { TextEdit } from '../components-v2/controls/TextField'
 import { RaisedButton } from '../components-v2/controls/RaisedButton'
 import { MuuValtakunnallinenTutkinnonOsa } from '../types/fi/oph/koski/schema/MuuValtakunnallinenTutkinnonOsa'
+import { useTutkinnonOsaRyhmät } from './useTutkinnonOsaRyhmät'
+import { useTutkinnonOsat } from './useTutkinnonOsat'
 
 interface OsasuoritusTablesProps {
   form: FormModel<AmmatillinenOpiskeluoikeus>
@@ -76,32 +78,43 @@ export const OsasuoritusTables = ({
   form,
   osittainenPäätasonSuoritus
 }: OsasuoritusTablesProps) => {
+  const perusteenRyhmät = useTutkinnonOsaRyhmät(
+    osittainenPäätasonSuoritus.suoritus.koulutusmoduuli.perusteenDiaarinumero ||
+      '',
+    osittainenPäätasonSuoritus.suoritus.suoritustapa.koodiarvo
+  )
+
   return (
     <>
       <TableForTutkinnonOsaRyhmä
         form={form}
         osittainenPäätasonSuoritus={osittainenPäätasonSuoritus}
         ryhmä="Yhteiset tutkinnon osat"
+        perusteenRyhmät={perusteenRyhmät}
       />
       <TableForTutkinnonOsaRyhmä
         form={form}
         osittainenPäätasonSuoritus={osittainenPäätasonSuoritus}
         ryhmä="Ammatilliset tutkinnon osat"
+        perusteenRyhmät={perusteenRyhmät}
       />
       <TableForTutkinnonOsaRyhmä
         form={form}
         osittainenPäätasonSuoritus={osittainenPäätasonSuoritus}
         ryhmä="Vapaasti valittavat tutkinnon osat"
+        perusteenRyhmät={perusteenRyhmät}
       />
       <TableForTutkinnonOsaRyhmä
         form={form}
         osittainenPäätasonSuoritus={osittainenPäätasonSuoritus}
         ryhmä="Tutkintoa yksilöllisesti laajentavat tutkinnon osat"
+        perusteenRyhmät={perusteenRyhmät}
       />
       <TableForTutkinnonOsaRyhmä
         form={form}
         osittainenPäätasonSuoritus={osittainenPäätasonSuoritus}
         ryhmä="Muut suoritukset"
+        perusteenRyhmät={perusteenRyhmät}
       />
     </>
   )
@@ -114,6 +127,7 @@ interface TableProps {
     AmmatillisenTutkinnonOsittainenSuoritus
   >
   ryhmä: string
+  perusteenRyhmät: Koodistokoodiviite<'tutkinnonosaryhmä'>[]
 }
 
 const dummyRow = <T extends string>(
@@ -135,7 +149,8 @@ const dummyRow = <T extends string>(
 const TableForTutkinnonOsaRyhmä = ({
   form,
   osittainenPäätasonSuoritus,
-  ryhmä
+  ryhmä,
+  perusteenRyhmät
 }: TableProps) => {
   const originalIndexMap: Record<number, number> = {}
 
@@ -158,7 +173,11 @@ const TableForTutkinnonOsaRyhmä = ({
       })
     })
 
-  if (!form.editMode && (!rows || rows.length === 0)) {
+  const ryhmäPerusteessa =
+    perusteenRyhmät.find((r) => (r.nimi as Finnish).fi === ryhmä) !==
+      undefined || perusteenRyhmät.length === 0
+
+  if (!ryhmäPerusteessa && (!rows || rows.length === 0)) {
     return null
   }
 
@@ -345,6 +364,13 @@ const NewAmisOsasuoritus = ({
         >)
       : undefined
 
+  const lisättävätTutkinnonOsat = useTutkinnonOsat(
+    getValue(
+      suoritusPath.prop('koulutusmoduuli').prop('perusteenDiaarinumero')
+    )(form.state),
+    ryhmäKoodi?.koodiarvo
+  ).osat.map((k) => k.koodiarvo)
+
   if (!ryhmäKoodi) {
     return null
   }
@@ -356,7 +382,11 @@ const NewAmisOsasuoritus = ({
           addNewText={'Lisää tutkinnon osa'}
           koodistoUri="tutkinnonosat"
           format={(osa) => osa.koodiarvo + ' ' + t(osa.nimi)}
-          filter={(osa) => yhteisenTutkinnonOsat.includes(osa.koodiarvo)}
+          filter={(osa) =>
+            lisättävätTutkinnonOsat.length === 0
+              ? yhteisenTutkinnonOsat.includes(osa.koodiarvo)
+              : lisättävätTutkinnonOsat.includes(osa.koodiarvo)
+          }
           onSelect={(tunniste) => {
             const yhteinenTunniste = tunniste as YhteisenTutkinnonOsatTunniste
             tunniste &&
@@ -377,6 +407,10 @@ const NewAmisOsasuoritus = ({
           addNewText={'Lisää tutkinnon osa'}
           koodistoUri={'tutkinnonosat'}
           format={(osa) => osa.koodiarvo + ' ' + t(osa.nimi)}
+          filter={(osa) =>
+            lisättävätTutkinnonOsat.length === 0 ||
+            lisättävätTutkinnonOsat.includes(osa.koodiarvo)
+          }
           onSelect={(osa) => {
             osa &&
               form.updateAt(

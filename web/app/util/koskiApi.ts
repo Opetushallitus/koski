@@ -83,7 +83,7 @@ export const fetchKoodistot = (koodistoUris: string[]) =>
     apiGet<GroupedKoodistot>(apiUrl(`types/koodisto/${koodistoUris.join(',')}`))
   )
 
-export const fetchPeruste = (diaarinumero: string) =>
+export const fetchPeruste = (suoritustyyppi: string) =>
   handleExpiredSession(
     apiGet<
       Omit<
@@ -92,7 +92,54 @@ export const fetchPeruste = (diaarinumero: string) =>
       >
     >(
       apiUrl(
-        `tutkinnonperusteet/diaarinumerot/suorituksentyyppi/${diaarinumero}`
+        `tutkinnonperusteet/diaarinumerot/suorituksentyyppi/${suoritustyyppi}`
+      )
+    )
+  )
+
+export const fetchPerusteTutkinnonOsaRyhmät = (
+  diaarinumero: string,
+  suoritustapa: string
+) =>
+  handleExpiredSession(
+    apiGet<Koodistokoodiviite<'tutkinnonosaryhmä'>[]>(
+      apiUrl(
+        `tutkinnonperusteet/tutkinnonosat/ryhmat/${encodeURIComponent(diaarinumero)}/${suoritustapa}`
+      )
+    )
+  )
+
+export interface LisättävätTutkinnonOsat {
+  osat: Koodistokoodiviite[]
+}
+
+export const fetchPerusteTutkinnonOsat = (
+  diaarinumero: string,
+  tutkinnonOsanRyhmä: string
+) =>
+  handleExpiredSession(
+    apiGet<LisättävätTutkinnonOsat>(
+      apiUrl(
+        `tutkinnonperusteet/tutkinnonosat/${encodeURIComponent(diaarinumero)}`,
+        {
+          tutkinnonOsanRyhmä
+        }
+      )
+    )
+  )
+
+export interface LisättäväOsanOsa {
+  koodiarvo: string
+}
+
+export const fetchPerusteTutkinnonOsanOsat = (
+  diaarinumero: string,
+  tutkinnonOsa: string
+) =>
+  handleExpiredSession(
+    apiGet<LisättäväOsanOsa[]>(
+      apiUrl(
+        `tutkinnonperusteet/tutkinnonosanosat/${encodeURIComponent(diaarinumero)}/${tutkinnonOsa}`
       )
     )
   )

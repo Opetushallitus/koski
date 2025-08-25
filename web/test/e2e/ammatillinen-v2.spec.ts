@@ -35,7 +35,6 @@ test.describe('Osittaisen ammatillisen tutkinnon uusi käyttöliittymä', () => 
     await page.getByTestId('oo.0.opiskeluoikeus.edit').click();
     await page.getByTestId('oo.0.suoritukset.0.uusi-yhteinen-tutkinnonosa.input').click();
     await page.getByTestId('oo.0.suoritukset.0.uusi-yhteinen-tutkinnonosa.options.101053.item').click();
-    await page.locator('section').filter({ hasText: '⧖Viestintä- ja' }).getByTestId('oo.0.suoritukset.0.osasuoritukset.0.expand').click();
     await page.getByTestId('oo.0.suoritukset.0.osasuoritukset.0.properties.uusi-yhteinen-osan-osa-alue.input').click();
     await page.getByTestId('oo.0.suoritukset.0.osasuoritukset.0.properties.uusi-yhteinen-osan-osa-alue.options.AI.item').click();
     await page.getByTestId('oo.0.suoritukset.0.osasuoritukset.0.properties.osasuoritukset.0.properties.arviointi.lisää-arviointi').click()
