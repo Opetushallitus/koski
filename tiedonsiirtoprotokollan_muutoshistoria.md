@@ -1,3 +1,6 @@
+## 2.9.2025
+- Lisätty uusi ammatillisen opiskeluoikeuden päätason suoritus: ammatillisen tutkinnon osa/osia useasta tutkinnosta
+
 ## 27.8.2025
  - Lukion IBDPcore kursseille lisätty oma luokka joka sallii vain opintopisteet laajuutena
 

@@ -2849,5 +2849,10 @@
   "Osakoe": "Osakoe",
   "Tutkinnon suorittamispaikka": "Tutkinnon suorittamispaikka",
   "Tuen päätöksen jaksot": "Tuen päätöksen jaksot",
-  "Kielitutkinnot": "Kielitutkinnot"
+  "Kielitutkinnot": "Kielitutkinnot",
+  "description:Tunniste ammatillisen tutkinnon osan/osien suoritukselle..." : "Tunniste ammatillisen tutkinnon osan/osien suoritukselle useasta tutkinnosta",
+  "description:Ammatillinen tutkinnon osa/osia useasta tutkinnosta" : "Ammatillinen tutkinnon osa/osia useasta tutkinnosta",
+  "tooltip:Ammatillisen tutkinnon osa/osia useammasta tutkinnosta...." : "Ammatillisen tutkinnon osa/osia useammasta tutkinnosta. Jokaisella tutkinnon osalla on erikseen tietona, mihin tutkintoon kyseinen suoritus liittyy.",
+  "description:Oppija suorittaa yhtä tutkinnon osaa..." : "Oppija suorittaa yhtä tutkinnon osaa toisesta tutkinnosta tai useampaa tutkinnon osaa toisista tutkinnoista."
+
 }

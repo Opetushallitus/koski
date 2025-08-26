@@ -173,7 +173,7 @@ class MassaluovutusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers wit
         }
         val complete = waitForCompletion(queryId, user)
 
-        complete.files should have length 20
+        complete.files should have length 22
         complete.files.foreach(verifyResult(_, user))
 
         AuditLogTester.verifyLastAuditLogMessage(Map(
@@ -272,7 +272,7 @@ class MassaluovutusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers wit
         }
         val complete = waitForCompletion(queryId, user)
 
-        complete.files should have length 19
+        complete.files should have length 21
         complete.files.foreach(verifyResult(_, user))
       }
 

@@ -300,16 +300,12 @@ case class Osaamisalajakso(
   loppu: Option[LocalDate] = None
 )
 
-//TODO
-@Description("Oppija suorittaa yhtä tai useampaa tutkinnon osaa toisesta tutkinnosta.")
+@Description("Oppija suorittaa yhtä tutkinnon osaa toisesta tutkinnosta tai useampaa tutkinnon osaa toisista tutkinnoista.")
 @Title("Ammatillisen tutkinnon osa/osia useasta tutkinnosta")
 @OnlyWhen("koulutusmoduuli/tunniste/koodiarvo", "ammatillinentutkintoosittainenuseastatutkinnosta")
 case class AmmatillisenTutkinnonOsittainenUseastaTutkinnostaSuoritus(
-  //TODO
   @Title("Koulutus")
-  //TODO
-  @Tooltip("Ammatillinen tutkinto, johon suoritettava tutkinnon osa kuuluu/suoritettavat tutkinnon osat kuuluvat.")
-  //TODO
+  @Tooltip("Ammatillisen tutkinnon osa/osia useammasta tutkinnosta. Jokaisella tutkinnon osalla on erikseen tietona, mihin tutkintoon kyseinen suoritus liittyy.")
   koulutusmoduuli: AmmatillinenOsaTaiOsiaUseastaTutkinnosta,
   suoritustapa: Koodistokoodiviite,
   override val tutkintonimike: Option[List[Koodistokoodiviite]] = None,
@@ -331,10 +327,7 @@ case class AmmatillisenTutkinnonOsittainenUseastaTutkinnostaSuoritus(
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("ammatillinentutkintoosittainen", "suorituksentyyppi"),
   ryhmä: Option[String] = None,
   keskiarvo: Option[Double] = None,
-  keskiarvoSisältääMukautettujaArvosanoja: Option[Boolean] = None,
-  korotettuOpiskeluoikeusOid: Option[String] = None,
-  korotettuKeskiarvo: Option[Double] = None,
-  korotettuKeskiarvoSisältääMukautettujaArvosanoja: Option[Boolean] = None
+  keskiarvoSisältääMukautettujaArvosanoja: Option[Boolean] = None
 ) extends AmmatillisenTutkinnonOsaTaiOsia {
   override def osasuoritusLista: List[OsittaisenAmmatillisenTutkinnonOsanUseastaTutkinnostaSuoritus] = osasuoritukset.getOrElse(List.empty)
 }
@@ -366,8 +359,22 @@ case class AmmatillisenTutkinnonOsittainenSuoritus(
   ryhmä: Option[String] = None,
   keskiarvo: Option[Double] = None,
   keskiarvoSisältääMukautettujaArvosanoja: Option[Boolean] = None,
+  @Title("Korotetun suorituksen alkuperäinen opiskeluoikeus")
+  @Description("Korotetun suorituksen alkuperäinen opiskeluoikeus")
   korotettuOpiskeluoikeusOid: Option[String] = None,
+  @Title("Korotettu painotettu keskiarvo")
+  @Tooltip("Ammatillisen tutkinnon osaamispistein painotettu korotettu keskiarvo.")
+  @OnlyWhen("suoritustapa/koodiarvo", "reformi")
+  @OnlyWhen("suoritustapa/koodiarvo", "ops")
+  @MinValue(1)
+  @MaxValue(5)
+  @Scale(2)
   korotettuKeskiarvo: Option[Double] = None,
+  @Title("Korotus sisältää mukautettuja arvosanoja")
+  @Tooltip("Korotettuun keskiarvoon sisältyy mukautettuja arvosanoja")
+  @OnlyWhen("suoritustapa/koodiarvo", "reformi")
+  @OnlyWhen("suoritustapa/koodiarvo", "ops")
+  @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT, Rooli.SUORITUSJAKO_KATSELIJA))
   korotettuKeskiarvoSisältääMukautettujaArvosanoja: Option[Boolean] = None
 ) extends AmmatillisenTutkinnonOsaTaiOsia with AmmatillisenTutkinnonOsittainenTaiKokoTutkintoKolutuksenSuoritus
 
@@ -414,23 +421,6 @@ trait AmmatillisenTutkinnonOsaTaiOsia extends AmmatillisenTutkinnonOsittainenTai
   @OnlyWhen("suoritustapa/koodiarvo","ops")
   @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT, Rooli.SUORITUSJAKO_KATSELIJA))
   def keskiarvoSisältääMukautettujaArvosanoja: Option[Boolean]
-  @Title("Korotetun suorituksen alkuperäinen opiskeluoikeus")
-  @Description("Korotetun suorituksen alkuperäinen opiskeluoikeus")
-  def korotettuOpiskeluoikeusOid: Option[String]
-  @Title("Korotettu painotettu keskiarvo")
-  @Tooltip("Ammatillisen tutkinnon osaamispistein painotettu korotettu keskiarvo.")
-  @OnlyWhen("suoritustapa/koodiarvo", "reformi")
-  @OnlyWhen("suoritustapa/koodiarvo", "ops")
-  @MinValue(1)
-  @MaxValue(5)
-  @Scale(2)
-  def korotettuKeskiarvo: Option[Double]
-  @Title("Korotus sisältää mukautettuja arvosanoja")
-  @Tooltip("Korotettuun keskiarvoon sisältyy mukautettuja arvosanoja")
-  @OnlyWhen("suoritustapa/koodiarvo", "reformi")
-  @OnlyWhen("suoritustapa/koodiarvo", "ops")
-  @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT, Rooli.SUORITUSJAKO_KATSELIJA))
-  def korotettuKeskiarvoSisältääMukautettujaArvosanoja: Option[Boolean]
 }
 
 trait MahdollisestiKeskiarvollinen {
@@ -870,11 +860,10 @@ case class Koulutussopimusjakso(
   työtehtävät: Option[LocalizedString]
 ) extends Oppimisjakso
 
-//TODO
 @Title("Ammatillinen tutkinnon osa/osia useasta tutkinnosta")
 @Description("Ammatillinen tutkinnon osa/osia useasta tutkinnosta")
 case class AmmatillinenOsaTaiOsiaUseastaTutkinnosta(
-  @Description("TODO")
+  @Description("Tunniste ammatillisen tutkinnon osan/osien suoritukselle useasta tutkinnosta")
   @KoodistoUri("suorituksentyyppi")
   @KoodistoKoodiarvo("ammatillinentutkintoosittainenuseastatutkinnosta")
   tunniste: Koodistokoodiviite = Koodistokoodiviite("ammatillinentutkintoosittainenuseastatutkinnosta", koodistoUri = "suorituksentyyppi")
