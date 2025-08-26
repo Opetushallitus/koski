@@ -19,6 +19,10 @@ import {
   isAmmatillisenTutkinnonOsittainenSuoritus
 } from './AmmatillisenTutkinnonOsittainenSuoritus'
 import {
+  AmmatillisenTutkinnonOsittainenUseastaTutkinnostaSuoritus,
+  isAmmatillisenTutkinnonOsittainenUseastaTutkinnostaSuoritus
+} from './AmmatillisenTutkinnonOsittainenUseastaTutkinnostaSuoritus'
+import {
   AmmatillisenTutkinnonSuoritus,
   isAmmatillisenTutkinnonSuoritus
 } from './AmmatillisenTutkinnonSuoritus'
@@ -248,6 +252,7 @@ export type Arvioinniton =
   | AmmatillisenTutkinnonOsanJatkoOpintovalmiuksiaTukevienOpintojenSuoritus
   | AmmatillisenTutkinnonOsanKorkeakouluopintoSuoritus
   | AmmatillisenTutkinnonOsittainenSuoritus
+  | AmmatillisenTutkinnonOsittainenUseastaTutkinnostaSuoritus
   | AmmatillisenTutkinnonSuoritus
   | DIAOppiaineenTutkintovaiheenSuoritus
   | DIAOppiaineenValmistavanVaiheenSuoritus
@@ -313,6 +318,7 @@ export const isArvioinniton = (a: any): a is Arvioinniton =>
   ) ||
   isAmmatillisenTutkinnonOsanKorkeakouluopintoSuoritus(a) ||
   isAmmatillisenTutkinnonOsittainenSuoritus(a) ||
+  isAmmatillisenTutkinnonOsittainenUseastaTutkinnostaSuoritus(a) ||
   isAmmatillisenTutkinnonSuoritus(a) ||
   isDIAOppiaineenTutkintovaiheenSuoritus(a) ||
   isDIAOppiaineenValmistavanVaiheenSuoritus(a) ||
