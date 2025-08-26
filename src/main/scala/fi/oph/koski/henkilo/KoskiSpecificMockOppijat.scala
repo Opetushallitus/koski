@@ -91,8 +91,6 @@ object KoskiSpecificMockOppijat {
   val erikoisammattitutkinto = koskiSpecificOppijat.oppija("Erikoinen", "Erja", "250989-419V")
   val reformitutkinto = koskiSpecificOppijat.oppija("Reformi", "Reijo", "251176-003P")
   val osittainenammattitutkinto = koskiSpecificOppijat.oppija("Osittainen", "Outi", "230297-6448")
-  val osittainenammattitutkintoUseastaTutkinnostaValmis = koskiSpecificOppijat.oppija("Osittainen-Useasta-Tutkinnosta-Valmis", "Jaina", "011007A1489")
-  val osittainenammattitutkintoUseastaTutkinnostaKesken = koskiSpecificOppijat.oppija("Osittainen-Useasta-Tutkinnosta-Kesken", "Jatta", "150507A1744")
   val ammatillisenOsittainenRapsa = koskiSpecificOppijat.oppija("Ammatillinen-Osittainen", "Raitsu", "140493-2798")
   val paikallinenTunnustettu = koskiSpecificOppijat.oppija("Tunnustettu", "Teuvo", "140176-449X")
   val tiedonsiirto = koskiSpecificOppijat.oppija("Tiedonsiirto", "Tiina", "270303-281N")
@@ -378,6 +376,9 @@ object KoskiSpecificMockOppijat {
 
   val pelkkäYo2021 = koskiSpecificOppijat.oppija("Pelkkä YO", "Koski", "300805A847D", syntymäaika = Some(LocalDate.of(2005,8,30)),kotikunta = Some("091"))
   val esikoululainen2025 = koskiSpecificOppijat.oppija("Esikoululainen", "Essi", "171118A6061")
+
+  val osittainenAmmattitutkintoUseastaTutkinnostaValmis = koskiSpecificOppijat.oppija("Osittainen-Useasta-Tutkinnosta-Valmis", "Jaina", "011007A1489")
+  val osittainenAmmattitutkintoUseastaTutkinnostaKesken = koskiSpecificOppijat.oppija("Osittainen-Useasta-Tutkinnosta-Kesken", "Jatta", "150507A1744")
 
   def defaultOppijat = koskiSpecificOppijat.getOppijat
   def defaultKuntahistoriat: mutable.Map[String, Seq[OppijanumerorekisteriKotikuntahistoriaRow]] = koskiSpecificOppijat.getKuntahistoriat

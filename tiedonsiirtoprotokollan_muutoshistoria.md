@@ -1,3 +1,6 @@
+## xx.xx.2025
+- Lisätty uusi ammatillisen opiskeluoikeuden päätason suoritus: ammatillisen tutkinnon osa/osia useasta tutkinnosta
+
 ## 11.8.2025
 - Perusopetuksen lisätietojen vuosiluokkiin sitoutumaton opetus kenttä muutettu valinnaiseksi
 
