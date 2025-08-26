@@ -541,7 +541,7 @@ class KäyttöoikeusryhmätSpec
 
     "Vanhan käyttöliittymän oppija editor -api: käyttäjä näkee oppijalta vain sallitut päätason suoritukset" - {
       def testEditorApi(user: MockUser, expectedWords: List[String], unexpectedWords: List[String]): Unit = {
-        authGet("api/editor/1.2.246.562.24.00000000179", user) {
+        authGet("api/editor/1.2.246.562.24.00000000177", user) {
           verifyResponseStatusOk()
           expectedWords.foreach { response.body should include (_) }
           unexpectedWords.foreach { response.body should not include _ }
@@ -575,7 +575,7 @@ class KäyttöoikeusryhmätSpec
 
     "Uuden käyttöliittymän oppija-api: käyttäjä näkee oppijalta vain sallitut päätason suoritukset" - {
       def testUi2OppijaApi(user: MockUser, opiskeluoikeustyypit: List[String], päätasonsuoritustyypit: List[String]) = {
-        authGet("api/oppija/1.2.246.562.24.00000000179/uiv2", user) {
+        authGet("api/oppija/1.2.246.562.24.00000000177/uiv2", user) {
           verifyResponseStatusOk()
           val oppija = JsonSerializer.extract[Oppija](parse(body))
           oppija.opiskeluoikeudet

@@ -287,11 +287,11 @@ class LukioRaporttiSpec extends AnyFreeSpec with Matchers with RaportointikantaT
         val raportti = LukioRaportti(repository, t)
           .buildRaportti(jyväskylänNormaalikoulu, date(2012, 1, 1), date(2016, 1, 1), osasuoritustenAikarajaus = false, Some(kotikuntaPvm))
 
-        val rivi = raportti.head.rows.find(_(oppijaOidCol) == "1.2.246.562.24.00000000153").get
+        val rivi = raportti.head.rows.find(_(oppijaOidCol) == "1.2.246.562.24.00000000151").get
         val kotikuntaOppiaineJaLisätiedot = rivi(kotikuntaCol)
 
         val oppiaineKohtaisetKotikunnat = raportti.tail.flatMap { sheet =>
-          val rivi = sheet.rows.find(_.head == "1.2.246.562.24.00000000153")
+          val rivi = sheet.rows.find(_.head == "1.2.246.562.24.00000000151")
           rivi.map(_(4))
         }
 
