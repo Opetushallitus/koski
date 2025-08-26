@@ -40,7 +40,7 @@ class CompositeOpiskeluoikeusRepository(main: KoskiOpiskeluoikeusRepository, vir
     found1 ++ found2 ++ found3
   }
 
-  def findByOid(oid: String)(implicit user: KoskiSpecificSession): Either[HttpStatus, KoskiOpiskeluoikeusRow] =
+  def findByOid(oid: String)(implicit user: KoskiSpecificSession, investigate: Boolean = false): Either[HttpStatus, KoskiOpiskeluoikeusRow] =
     main.findByOid(oid)
 
   def createOrUpdate(
@@ -155,7 +155,8 @@ class CompositeOpiskeluoikeusRepository(main: KoskiOpiskeluoikeusRepository, vir
   def puraLähdejärjestelmäkytkentä
     (opiskeluoikeusOid: String, henkilöRepostory: HenkilöRepository)
     (implicit user: KoskiSpecificSession)
-  : Either[HttpStatus, CreateOrUpdateResult] =
+  : Either[HttpStatus, CreateOrUpdateResult] = {
+    implicit val investigate: Boolean = false
     for {
       opiskeluoikeusRow <- findByOid(opiskeluoikeusOid)
       _hasAccess        <- Either.cond(
@@ -176,6 +177,7 @@ class CompositeOpiskeluoikeusRepository(main: KoskiOpiskeluoikeusRepository, vir
                             skipValidations = true
                           )
     } yield result
+  }
 
   private def purettuOpiskeluoikeus(oo: KoskeenTallennettavaOpiskeluoikeus): Either[HttpStatus, KoskeenTallennettavaOpiskeluoikeus] = {
     import mojave._

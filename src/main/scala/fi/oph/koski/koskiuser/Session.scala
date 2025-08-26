@@ -10,6 +10,7 @@ import fi.oph.koski.log.{LogUserContext, Loggable, Logging}
 import fi.oph.koski.organisaatio.Opetushallitus
 import fi.oph.koski.schema.Organisaatio.Oid
 import fi.oph.koski.schema.{OpiskeluoikeudenTyyppi, Organisaatio, OrganisaatioWithOid}
+import fi.oph.koski.util.Timing
 import org.scalatra.servlet.RichRequest
 
 import java.net.InetAddress
@@ -47,13 +48,40 @@ class KoskiSpecificSession(
   clientIp: InetAddress,
   userAgent: String,
   lähdeKäyttöoikeudet: => Set[Käyttöoikeus]
-) extends Session(user, lang, clientIp, userAgent)  with SensitiveDataAllowed with GlobalExecutionContext {
+) extends Session(user, lang, clientIp, userAgent)  with SensitiveDataAllowed with GlobalExecutionContext with Timing {
 
   lazy val varhaiskasvatusKäyttöoikeudet: Set[KäyttöoikeusVarhaiskasvatusToimipiste] = käyttöoikeudet.collect { case k: KäyttöoikeusVarhaiskasvatusToimipiste => k }
   lazy val varhaiskasvatusKoulutustoimijat: Set[Oid] = varhaiskasvatusKäyttöoikeudet.map(_.koulutustoimija.oid)
   lazy val hasKoulutustoimijaVarhaiskasvatuksenJärjestäjäAccess: Boolean = varhaiskasvatusKäyttöoikeudet.nonEmpty
   lazy val allowedOpiskeluoikeudetJaPäätasonSuoritukset: Set[OoPtsMask] = käyttöoikeudet.flatMap(_.allowedOpiskeluoikeusTyypit)
+  def allowedOpiskeluoikeudetJaPäätasonSuorituksetWithTiming: Set[OoPtsMask] = {
+    val käyttöoikeudet = timed("get-oo-by-oid-investigation:this.käyttöoikeudet", thresholdMs = 0) {
+      this.käyttöoikeudetWithTiming
+    }
+    val result = timed("get-oo-by-oid-investigation:käyttöoikeudet.flatMap(_.allowedOpiskeluoikeusTyypit)", thresholdMs = 0) {
+      käyttöoikeudet.flatMap(_.allowedOpiskeluoikeusTyypit)
+    }
+    result
+  }
   lazy val hasKoulutusmuotoRestrictions: Boolean = allowedOpiskeluoikeudetJaPäätasonSuoritukset != OpiskeluoikeudenTyyppi.kaikkiTyypit(isRoot).map(t => OoPtsMask(t.koodiarvo))
+  def hasKoulutusmuotoRestrictionsWithTiming: Boolean = {
+    val allowed = timed("get-oo-by-oid-investigation:allowedOpiskeluoikeudetJaPäätasonSuorituksetWithTiming", thresholdMs = 0) {
+      allowedOpiskeluoikeudetJaPäätasonSuorituksetWithTiming
+    }
+    val isRoot = timed("get-oo-by-oid-investigation:this.isRoot", thresholdMs = 0) {
+      this.isRoot
+    }
+    val kaikkiTyypit = timed("get-oo-by-oid-investigation:OpiskeluoikeudenTyyppi.kaikkiTyypit(isRoot)", thresholdMs = 0) {
+      OpiskeluoikeudenTyyppi.kaikkiTyypit(isRoot)
+    }
+    val kaikkiTyypitMasks = timed("get-oo-by-oid-investigation:kaikkiTyypit.map(t => OoPtsMask(t.koodiarvo))", thresholdMs = 0) {
+      kaikkiTyypit.map(t => OoPtsMask(t.koodiarvo))
+    }
+    val result = timed("get-oo-by-oid-investigation:allowed != kaikkiTyypitMasks", thresholdMs = 0) {
+      allowed != kaikkiTyypitMasks
+    }
+    result
+  }
   lazy val allowedPäätasonSuorituksenTyypit: Set[String] = allowedOpiskeluoikeudetJaPäätasonSuoritukset.flatMap(_.päätasonSuoritukset).flatten
   lazy val hasPäätasonsuoritusRestrictions: Boolean = allowedPäätasonSuorituksenTyypit.nonEmpty
   lazy val kaikkiKäyttöoikeudet: Set[Käyttöoikeus] = käyttöoikeudet
@@ -195,6 +223,18 @@ class KoskiSpecificSession(
   // käyttää myös muita kuin oman palvelunsa käyttöoikeuksia tarkoituksella.
   // Sessio luodaan aina uudestaan jokaisessa API-kutsussa, joten käyttöoikeudet voi tallentaa lazy val:iin eikä hakea ja filteröida aina uudestaan
   private lazy val käyttöoikeudet: Set[Käyttöoikeus] = Käyttöoikeus.withPalveluroolitFilter(lähdeKäyttöoikeudet, _.palveluName != "VALPAS")
+  private def käyttöoikeudetWithTiming: Set[Käyttöoikeus] = {
+    val lähdeKäyttöoikeudet = timed("get-oo-by-oid-investigation:this.lähdeKäyttöoikeudet", thresholdMs = 0) {
+      this.lähdeKäyttöoikeudet
+    }
+
+    logger.info("lähdeKäyttöoikeudet size: " + lähdeKäyttöoikeudet.size)
+
+    val result = timed("get-oo-by-oid-investigation:Käyttöoikeus.withPalveluroolitFilter(lähdeKäyttöoikeudet, _.palveluName != \"VALPAS\")", thresholdMs = 0) {
+      Käyttöoikeus.withPalveluroolitFilter(lähdeKäyttöoikeudet, _.palveluName != "VALPAS")
+    }
+    result
+  }
   def prefetchKäyttöoikeudet(): Unit = {
     Future(lähdeKäyttöoikeudet)
   }
