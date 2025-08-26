@@ -1,8 +1,4 @@
-import {
-  FormModel,
-  FormOptic,
-  getValue
-} from '../components-v2/forms/FormModel'
+import { FormModel, FormOptic } from '../components-v2/forms/FormModel'
 import { AmmatillinenOpiskeluoikeus } from '../types/fi/oph/koski/schema/AmmatillinenOpiskeluoikeus'
 import { YhteisenOsittaisenAmmatillisenTutkinnonTutkinnonosanSuoritus } from '../types/fi/oph/koski/schema/YhteisenOsittaisenAmmatillisenTutkinnonTutkinnonosanSuoritus'
 import {
@@ -34,11 +30,16 @@ import { ButtonGroup } from '../components-v2/containers/ButtonGroup'
 import { FlatButton } from '../components-v2/controls/FlatButton'
 import { append, deleteAt } from '../util/fp/arrays'
 import { NäyttöEdit, NäyttöView } from './Näyttö'
-import { ParasArvosanaView } from '../components-v2/opiskeluoikeus/ArvosanaField'
 import { OsasuoritusTable } from '../components-v2/opiskeluoikeus/OsasuoritusTable'
 import { YhteisenTutkinnonOsanOsaAlueenSuoritusProperties } from './YhteisenTutkinnonOsanOsaAlueenSuoritusProperties'
 import React from 'react'
-import { ArviointiEdit, ArviointiView, emptyArviointi } from './Arviointi'
+import {
+  AmisArvosanaInTableEdit,
+  AmisArvosanaInTableView,
+  ArviointiEdit,
+  ArviointiView,
+  emptyArviointi
+} from './Arviointi'
 import {
   KoodistoEdit,
   KoodistoView,
@@ -249,7 +250,18 @@ export const YhteisenOsittaisenAmmatillisenTutkinnonOsasuoritusProperties = ({
                       .prop('laajuus')}
                   />
                 ),
-                Arvosana: <ParasArvosanaView value={s.arviointi} />
+                Arvosana: (
+                  <FormField
+                    form={form}
+                    view={AmisArvosanaInTableView}
+                    edit={AmisArvosanaInTableEdit}
+                    path={osasuoritusPath
+                      .prop('osasuoritukset')
+                      .valueOr([])
+                      .at(index)
+                      .prop('arviointi')}
+                  />
+                )
               },
               content: (
                 <YhteisenTutkinnonOsanOsaAlueenSuoritusProperties

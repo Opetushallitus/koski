@@ -17,7 +17,6 @@ import {
   isAmmatillinenArviointi
 } from '../types/fi/oph/koski/schema/AmmatillinenArviointi'
 import { Finnish } from '../types/fi/oph/koski/schema/Finnish'
-import { ParasArvosanaView } from '../components-v2/opiskeluoikeus/ArvosanaField'
 import { OsittaisenAmmatillisenTutkinnonOsanSuoritus } from '../types/fi/oph/koski/schema/OsittaisenAmmatillisenTutkinnonOsanSuoritus'
 import {
   isYhteisenOsittaisenAmmatillisenTutkinnonTutkinnonosanSuoritus,
@@ -65,6 +64,7 @@ import { RaisedButton } from '../components-v2/controls/RaisedButton'
 import { MuuValtakunnallinenTutkinnonOsa } from '../types/fi/oph/koski/schema/MuuValtakunnallinenTutkinnonOsa'
 import { useTutkinnonOsaRyhmät } from './useTutkinnonOsaRyhmät'
 import { useTutkinnonOsat } from './useTutkinnonOsat'
+import { AmisArvosanaInTableEdit, AmisArvosanaInTableView } from './Arviointi'
 
 interface OsasuoritusTablesProps {
   form: FormModel<AmmatillinenOpiskeluoikeus>
@@ -269,7 +269,16 @@ const tutkinnonOsatToTableRow = <T extends string>({
   )
 
   if (hasAmmatillinenArviointi(osasuoritus)) {
-    columns.Arvosana = <ParasArvosanaView value={osasuoritus.arviointi} />
+    columns.Arvosana = (
+      <FormField
+        form={form}
+        view={AmisArvosanaInTableView}
+        edit={AmisArvosanaInTableEdit}
+        path={(
+          osasuoritusPath as FormOptic<AmmatillinenOpiskeluoikeus, any>
+        ).prop('arviointi')}
+      />
+    )
   } else {
     columns.Arvosana = null
   }
