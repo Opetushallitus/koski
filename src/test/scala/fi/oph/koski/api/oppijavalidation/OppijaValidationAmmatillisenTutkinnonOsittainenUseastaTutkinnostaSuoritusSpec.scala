@@ -524,6 +524,26 @@ class OppijaValidationAmmatillisenTutkinnonOsittainenUseastaTutkinnostaSuoritusS
       }
     }
 
+    "Tutkinnon osan ryhmät" - {
+      "Tutkinnon osan ryhmä ei voi olla tyhjä reformin mukaiselle suoritukselle" in {
+        val suoritus = osittainenSuoritusKesken.copy(
+          osaamisala = None,
+          tutkintonimike = None,
+          osasuoritukset = Some(List(
+            osittaisenTutkinnonTutkinnonOsanUseastaTutkinnostaSuoritus(h2, ryhmä = None, "106945", "Ajoneuvon huoltotyöt", 25).copy(
+              tutkinto = AmmatillinenTutkintoKoulutus(
+                Koodistokoodiviite("351301", Some(finnish("Ajoneuvoalan perustutkinto")), "koulutus", None),
+                perusteenDiaarinumero = Some("OPH-5410-2021")
+              )
+            )
+          ))
+        )
+        setupOppijaWithOpiskeluoikeus(makeOpiskeluoikeus(suoritus = suoritus)) {
+          verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.rakenne.tutkinnonOsanRyhmäPuuttuu("Tutkinnonosalta tutkinnonosat/106945 puuttuu tutkinnonosan ryhmä, joka on pakollinen ammatillisen perustutkinnon tutkinnonosille."))
+        }
+      }
+    }
+
     "Duplikaattiopiskeluoikeus" - {
       "Ei voi lisätä vastaavaa opiskeluoikeutta samaan oppilaitokseen" in {
         setupOppijaWithOpiskeluoikeus(defaultOpiskeluoikeus, defaultHenkilö) {

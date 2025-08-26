@@ -44,9 +44,9 @@ class EPerusteisiinPerustuvaValidator(
   }
 
   def validateTutkinnonosanRyhmä(suoritus: Suoritus, vaadittuPerusteenVoimassaolopäivä: LocalDate): HttpStatus = {
-    def validateTutkinnonosaSuoritus(tutkinnonSuoritus: AmmatillisenTutkinnonSuoritus, suoritus: TutkinnonOsanSuoritus, koulutustyyppi: Koulutustyyppi): HttpStatus = {
+    def validateTutkinnonosaSuoritus(suoritustapa: Koodistokoodiviite, suoritus: TutkinnonOsanSuoritus, koulutustyyppi: Koulutustyyppi): HttpStatus = {
       if (ammatillisenPerustutkinnonTyypit.contains(koulutustyyppi)) {
-        if (tutkinnonSuoritus.suoritustapa.koodiarvo == "ops" || tutkinnonSuoritus.suoritustapa.koodiarvo == "reformi") {
+        if (suoritustapa.koodiarvo == "ops" || suoritustapa.koodiarvo == "reformi") {
           // OPS- tai reformi -suoritustapa => vaaditaan ryhmittely
           suoritus.tutkinnonOsanRyhmä
             .map(_ => HttpStatus.ok)
@@ -66,7 +66,8 @@ class EPerusteisiinPerustuvaValidator(
     def validateTutkinnonosaSuoritukset(tutkinnonSuoritus: AmmatillisenTutkinnonOsittainenTaiKokoTutkintoKolutuksenSuoritus, suoritukset: Option[List[TutkinnonOsanSuoritus]]) = {
       haeKoulutustyyppi(tutkinnonSuoritus.koulutusmoduuli.perusteenDiaarinumero.get)
         .map(tyyppi => tutkinnonSuoritus match {
-          case tutkinnonSuoritus: AmmatillisenTutkinnonSuoritus => HttpStatus.fold(suoritukset.toList.flatten.map(s => validateTutkinnonosaSuoritus(tutkinnonSuoritus, s, tyyppi)))
+          // TODO: osittainen suoritus mukaan tässä?
+          case tutkinnonSuoritus: AmmatillisenTutkinnonSuoritus => HttpStatus.fold(suoritukset.toList.flatten.map(s => validateTutkinnonosaSuoritus(tutkinnonSuoritus.suoritustapa, s, tyyppi)))
           case _ => HttpStatus.ok
         })
         .getOrElse {
@@ -78,6 +79,13 @@ class EPerusteisiinPerustuvaValidator(
     suoritus match {
       case s: AmmatillisenTutkinnonSuoritus => validateTutkinnonosaSuoritukset(s, s.osasuoritukset)
       case s: AmmatillisenTutkinnonOsittainenSuoritus => validateTutkinnonosaSuoritukset(s, s.osasuoritukset)
+      case s: AmmatillisenTutkinnonOsittainenUseastaTutkinnostaSuoritus => HttpStatus.fold(
+        s.osasuoritusLista.flatMap { os =>
+          os.tutkinto.perusteenDiaarinumero
+            .flatMap(haeKoulutustyyppi)
+            .map(tyyppi => validateTutkinnonosaSuoritus(s.suoritustapa, os, tyyppi))
+        }
+      )
       case _ => HttpStatus.ok
     }
   }

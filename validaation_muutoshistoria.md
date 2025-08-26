@@ -13,6 +13,7 @@
 - Tunnustetun osasuorituksen tutkinnolla on oltava perusteen diaarinumero, jolle vastaava peruste on olemassa.
 - Osasuoritusten ja aliosasuoritusten rakenne ja laajuudet on oltava tutkintoa vastaavien perusteiden mukaiset.
 - Duplikaattivalidaatio: samaan oppilaitokseen ei voi lisätä päällekkäistä opiskeluoikeutta ammatillisen tutkinnon osan/osien suoritukselle useasta tutkinnosta.
+- Lisää validaatio tutkinnon osan ryhmille ammatillisen tutkinnon osan/osien suoritukselle useasta tutkinnosta.
 
 ## 6.8.2025
 - Lukion oppimäärän opiskeluoikeudelle ei sallita KT ja ET suorituksia yhdessä
