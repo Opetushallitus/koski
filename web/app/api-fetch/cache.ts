@@ -1,14 +1,14 @@
 import * as E from 'fp-ts/Either'
 import { pipe } from 'fp-ts/lib/function'
 import * as O from 'fp-ts/Option'
-import { ApiFailure, ApiSuccess } from './apiFetch'
+import { ApiFailure, ApiResponse, ApiSuccess } from './apiFetch'
 
 export type ApiCache<T, S> = {
   contains: (key: S) => boolean
-  get: (key: S) => O.Option<ApiSuccess<T>>
-  getOnlyFresh: (key: S) => O.Option<ApiSuccess<T>>
-  set: (key: S, value: ApiSuccess<T>) => void
-  map: <U>(key: S, fn: (value: ApiSuccess<T>) => U) => O.Option<U>
+  get: (key: S) => O.Option<ApiResponse<T>>
+  getOnlyFresh: (key: S) => O.Option<ApiResponse<T>>
+  set: (key: S, value: ApiResponse<T>) => void
+  map: <U>(key: S, fn: (value: ApiResponse<T>) => U) => O.Option<U>
   clear: (key: S) => void
   clearAll: () => void
   addChangeListener: (listener: ApiCacheChangeListener) => () => void
@@ -19,7 +19,7 @@ export type ApiCacheChangeListener = () => void
 export const createPreferLocalCache = <T, S extends any[]>(
   _fn: (...args: S) => Promise<E.Either<ApiFailure, ApiSuccess<T>>>
 ): ApiCache<T, S> => {
-  const cachedValues: Record<string, ApiSuccess<T>> = {}
+  const cachedValues: Record<string, ApiResponse<T>> = {}
   const keyToString = (key: S) => JSON.stringify(key)
   const get = (key: S) => O.fromNullable(cachedValues[keyToString(key)])
   let listeners: ApiCacheChangeListener[] = []
