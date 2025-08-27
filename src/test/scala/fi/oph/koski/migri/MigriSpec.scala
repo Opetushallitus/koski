@@ -267,6 +267,34 @@ class MigriSpec extends AnyFreeSpec with KoskiHttpSpec with OpiskeluoikeusTestMe
     }
   }
 
+  "Palauttaa ammatillisen tutkinnon osan/osien suorituksen useasta tutkinnosta" in {
+    verifyResponseContent(osittainenAmmattitutkintoUseastaTutkinnostaKesken.oid, user) { migriOppija =>
+      migriOppija.opiskeluoikeudet.length shouldBe 1
+      migriOppija.opiskeluoikeudet.head.suoritukset.length shouldBe 1
+      migriOppija.opiskeluoikeudet.head.lisätiedot.get.majoitus.get.length shouldBe 1
+
+      val suoritus = migriOppija.opiskeluoikeudet.head.suoritukset.head
+      suoritus.koulutusmoduuli.tunniste.koodiarvo shouldBe "ammatillinentutkintoosittainenuseastatutkinnosta"
+      suoritus.koulutusmoduuli.tunniste.koodistoUri shouldBe Some("suorituksentyyppi")
+      suoritus.tyyppi.koodiarvo shouldBe "ammatillinentutkintoosittainen"
+
+      val tutkinnonOsat = suoritus.osasuoritukset.get
+      tutkinnonOsat.length shouldBe 7
+      tutkinnonOsat.flatMap(_.arviointi).flatten.foreach(a => {
+        a.hyväksytty shouldBe true
+        a.arviointiPäivä.isDefined shouldBe true
+      })
+      tutkinnonOsat.flatMap(_.tutkinto).length shouldBe 7
+
+      val tutkinnonOsanOsaAlueet = tutkinnonOsat.flatMap(_.osasuoritukset).flatten
+      tutkinnonOsanOsaAlueet.length shouldBe 15
+      tutkinnonOsanOsaAlueet.flatMap(_.arviointi).flatten.foreach(a => {
+        a.hyväksytty shouldBe true
+        a.arviointiPäivä.isDefined shouldBe true
+      })
+    }
+  }
+
   private def postOid[A](oid: String, user: MockUser)(f: => A): A = {
     post(
       "api/luovutuspalvelu/migri/oid",

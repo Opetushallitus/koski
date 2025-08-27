@@ -790,7 +790,10 @@ object AmmatillinenOsittainenUseistaTutkinnoista {
         AmmatillinenOpiskeluoikeusjakso(date(2022, 9, 1), opiskeluoikeusLäsnä, Some(ExampleData.valtionosuusRahoitteinen)),
         AmmatillinenOpiskeluoikeusjakso(date(2024, 6, 4), opiskeluoikeusValmistunut, Some(ExampleData.valtionosuusRahoitteinen))
       )
-    )
+    ),
+    lisätiedot = Some(AmmatillisenOpiskeluoikeudenLisätiedot(
+      majoitus = Some(List(Aikajakso(date(2022, 9, 1), Some(date(2023, 9, 1)))))
+    ))
   )
 
   lazy val keskeneräinenOpiskeluoikeus = AmmatillinenPerustutkintoExample.osittainenPerustutkintoOpiskeluoikeus.copy(
@@ -806,6 +809,9 @@ object AmmatillinenOsittainenUseistaTutkinnoista {
       List(
         AmmatillinenOpiskeluoikeusjakso(date(2022, 9, 1), opiskeluoikeusLäsnä, Some(ExampleData.valtionosuusRahoitteinen))
       )
-    )
+    ),
+    lisätiedot = Some(AmmatillisenOpiskeluoikeudenLisätiedot(
+      majoitus = Some(List(Aikajakso(date(2022, 9, 1), None)))
+    ))
   )
 }

@@ -41,6 +41,7 @@ object ConvertMigriSchema {
   private def migriäKiinnostavaPäätasonSuoritus(suoritus: PäätasonSuoritus)= suoritus match {
     case _: AikuistenPerusopetuksenOppimääränSuoritus |
          _: AmmatillisenTutkinnonOsittainenSuoritus |
+         _: AmmatillisenTutkinnonOsittainenUseastaTutkinnostaSuoritus |
          _: AmmatillisenTutkinnonSuoritus |
          _: DIAValmistavanVaiheenSuoritus |
          _: DIATutkinnonSuoritus |
@@ -264,6 +265,19 @@ object ConvertMigriSchema {
               tyyppi = osasuoritus.tyyppi,
               tutkinnonOsanRyhmä = osasuoritus match {
                 case s: TutkinnonOsanSuoritus => s.tutkinnonOsanRyhmä
+                case _ => None
+              },
+              tutkinto = osasuoritus match {
+                case s: ToiseenTutkintoonLiittyvä => Some(
+                  MigriSuorituksenKoulutusmoduuli(
+                    convertKoodistoviite(s.tutkinto.tunniste), None, s.tutkinto.nimi, None
+                  )
+                )
+                case s: MahdollisestiToiseenTutkintoonLiittyvä => s.tutkinto.map(t =>
+                  MigriSuorituksenKoulutusmoduuli(
+                    convertKoodistoviite(t.tunniste), None, t.nimi, None
+                  )
+                )
                 case _ => None
               },
               tunnustettu = osasuoritus match {
