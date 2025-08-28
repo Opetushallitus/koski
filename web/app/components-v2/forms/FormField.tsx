@@ -154,7 +154,7 @@ export const FormField = <
       form.validate()
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [form, path]
+    [form.updateAt, form.validate, path]
   )
 
   useEffect(() => {

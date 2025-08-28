@@ -64,7 +64,8 @@ export const useKoodistot = <T extends string>(
 
   useEffect(() => {
     loadKoodistot(koodistoUris.filter(nonNull))
-  }, [koodistoUris, loadKoodistot])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [String(koodistoUris), loadKoodistot])
 
   return useMemo(() => {
     const k = koodistoUris
@@ -76,7 +77,8 @@ export const useKoodistot = <T extends string>(
             : []) as KoodistokoodiviiteKoodistonNimellä<T>[]
       )
     return A.isNonEmpty(k) ? k : null
-  }, [koodistoUris, koodistot])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [String(koodistoUris), koodistot])
 }
 
 /**
