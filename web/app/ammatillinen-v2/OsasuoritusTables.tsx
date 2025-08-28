@@ -267,7 +267,12 @@ const tutkinnonOsatToTableRow = <T extends string>({
     />
   )
 
-  if (hasAmmatillinenArviointi(osasuoritus)) {
+  if (
+    isYhteisenOsittaisenAmmatillisenTutkinnonTutkinnonosanSuoritus(
+      osasuoritus
+    ) ||
+    isMuunOsittaisenAmmatillisenTutkinnonTutkinnonosanSuoritus(osasuoritus)
+  ) {
     columns.Arvosana = (
       <FormField
         form={form}
