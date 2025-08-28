@@ -165,16 +165,10 @@ object ExamplesKielitutkinto {
           kieli = Koodistokoodiviite(kieli, "kieli"),
         ),
         toimipiste = organisaatio,
-        vahvistus = if (osakokeidenArvosanat.contains("hylatty")) None else Some(HenkilövahvistusValinnaisellaTittelilläJaValinnaisellaPaikkakunnalla(
+        vahvistus = if (osakokeidenArvosanat.contains("hylatty")) None else Some(PäivämäärävahvistusPaikkakunnalla(
           päivä = viimeisinArviointipäivä,
           myöntäjäOrganisaatio = organisaatio,
-          myöntäjäHenkilöt = List(
-            OrganisaatiohenkilöValinnaisellaTittelillä(
-              nimi = "Vallu Vastaanottaja",
-              organisaatio = organisaatio,
-            )
-          ),
-          paikkakunta = Some(Koodistokoodiviite("853", "kunta")),
+          paikkakunta = Koodistokoodiviite("853", "kunta"),
         )),
         osasuoritukset = Some(osasuoritukset),
       )
