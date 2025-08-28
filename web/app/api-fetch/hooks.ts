@@ -63,9 +63,9 @@ export const useApiWithParams = <T, P extends any[]>(
  *
  * Hook palauttaa listan tehdyistä ja mahdollisesti käynnissä olevista kutsuista.
  * Kutsujan vastuu on yhdistää itse listasta saadut datat ja/tai virheet kutsupaikallaan.
- * 
+ *
  * Esimerkki:
-  
+
   const numberFetches = useApiSequence(
     fetchPhoneNumberForName,
     ["Alice", "Bob", "Celestia"],
@@ -86,7 +86,7 @@ export const useApiWithParams = <T, P extends any[]>(
     () => A.flatten(numberFetches.filter(isSuccess).map((r) => r.data)),
     [numberFetches]
   )
-  
+
  *
  */
 export const useApiSequence = <T, P extends any[], S>(
@@ -156,7 +156,7 @@ export const useCacheWithParams = <T, P extends any[]>(
       pipe(
         O.fromNullable(params),
         O.chain(cache.get),
-        O.map(pluck('data')),
+        O.map(E.map(pluck('data'))),
         O.getOrElseW(() => null)
       ),
     [cache.get, params, cacheChangeTrigger] // eslint-disable-line react-hooks/exhaustive-deps
@@ -196,14 +196,20 @@ export const useApiMethod = <T, P extends any[]>(
     async (...args: P) => {
       const fresh = cache?.getOnlyFresh(args) || O.none
       if (O.isSome(fresh)) {
-        setState({ state: 'success', ...fresh.value })
-        return E.right(fresh.value)
+        pipe(
+          fresh.value,
+          E.map((right) => setState({ state: 'success', ...right })),
+          E.mapLeft((left) => setState({ state: 'error', ...left }))
+        )
+        return fresh.value
       }
 
       setState({ state: 'loading' })
-      cache?.map(args, (previous) =>
-        setState({ state: 'reloading', ...previous })
-      )
+      cache?.map(args, (previous) => {
+        if (E.isRight(previous)) {
+          setState({ state: 'reloading', ...previous.right })
+        }
+      })
       return pipe(
         await fetchFn(...args),
         E.map((result) => {
@@ -211,10 +217,13 @@ export const useApiMethod = <T, P extends any[]>(
             state: 'success',
             ...result
           })
-          cache?.set(args, result)
+          cache?.set(args, E.right(result))
           return result
         }),
         E.mapLeft((error) => {
+          if (error.status === 404) {
+            cache?.set(args, E.left(error))
+          }
           setState({
             state: 'error',
             ...error

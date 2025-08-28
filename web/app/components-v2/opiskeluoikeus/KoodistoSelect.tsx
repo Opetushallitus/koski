@@ -35,7 +35,8 @@ export function KoodistoSelect<T extends string>(
   props: KoodistoSelectProps<T>
 ) {
   const koodisto = useKoodisto(props.koodistoUri, props.koodiarvot)
-  const { filter, zeroValueOption } = props
+  const { filter, zeroValueOption, format } = props
+
   const options: OptionList<Koodistokoodiviite<T>> = useMemo(() => {
     const koodistoOptions = pipe(
       koodisto || [],
@@ -47,7 +48,7 @@ export function KoodistoSelect<T extends string>(
       })),
       A.filter((entry) => (filter ? filter(entry.value) : true)),
       mapOptionLabels((option) =>
-        option.value && props.format ? props.format(option.value) : option.label
+        option.value && format ? format(option.value) : option.label
       )
     )
 
@@ -58,7 +59,7 @@ export function KoodistoSelect<T extends string>(
     }
 
     return zeroValueOption ? [zeroValue, ...koodistoOptions] : koodistoOptions
-  }, [koodisto, zeroValueOption, filter, props])
+  }, [koodisto, zeroValueOption, filter, format])
 
   const { onSelect } = props
   const onChangeCB = useCallback(

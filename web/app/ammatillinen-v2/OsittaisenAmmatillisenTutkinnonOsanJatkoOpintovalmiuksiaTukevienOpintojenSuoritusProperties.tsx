@@ -156,9 +156,11 @@ export const OsittaisenAmmatillisenTutkinnonOsanJatkoOpintovalmiuksiaTukevienOpi
             }
             return hasAmmatillinenArviointi(s)
           }}
-          addNewOsasuoritusView={() => (
-            <NewOsasuoritus form={form} suoritusPath={osasuoritusPath} />
-          )}
+          addNewOsasuoritusView={NewOsasuoritus}
+          addNewOsasuoritusViewProps={{
+            form,
+            suoritusPath: osasuoritusPath
+          }}
         />
       </>
     )
