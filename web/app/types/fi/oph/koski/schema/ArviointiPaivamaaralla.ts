@@ -2,6 +2,10 @@ import {
   AmmatillinenArviointi,
   isAmmatillinenArviointi
 } from './AmmatillinenArviointi'
+import {
+  IBCoreKurssinArviointi,
+  isIBCoreKurssinArviointi
+} from './IBCoreKurssinArviointi'
 import { IBKurssinArviointi, isIBKurssinArviointi } from './IBKurssinArviointi'
 import {
   KorkeakoulunKoodistostaLöytyväArviointi,
@@ -101,6 +105,7 @@ import {
  */
 export type ArviointiPäivämäärällä =
   | AmmatillinenArviointi
+  | IBCoreKurssinArviointi
   | IBKurssinArviointi
   | KorkeakoulunKoodistostaLöytyväArviointi
   | KorkeakoulunPaikallinenArviointi
@@ -129,6 +134,7 @@ export type ArviointiPäivämäärällä =
 
 export const isArviointiPäivämäärällä = (a: any): a is ArviointiPäivämäärällä =>
   isAmmatillinenArviointi(a) ||
+  isIBCoreKurssinArviointi(a) ||
   isIBKurssinArviointi(a) ||
   isKorkeakoulunKoodistostaLöytyväArviointi(a) ||
   isKorkeakoulunPaikallinenArviointi(a) ||

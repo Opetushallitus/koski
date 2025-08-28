@@ -124,7 +124,7 @@ case class IBDPCoreSuoritus(
   suorituskieli: Option[Koodistokoodiviite] = None,
   @Description("Oppiaineeseen kuuluvien kurssien suoritukset")
   @Title("Kurssit")
-  override val osasuoritukset: Option[List[IBKurssinSuoritus]] = None,
+  override val osasuoritukset: Option[List[IBCoreKurssinSuoritus]] = None,
   @KoodistoKoodiarvo("ibcore")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "ibcore", koodistoUri = "suorituksentyyppi")
 ) extends IBTutkinnonOppiaineenSuoritus
@@ -246,6 +246,38 @@ case class IBCASOppiaineenArviointi(
   override def arviointipäivä: Option[LocalDate] = päivä
 }
 
+@Title("IB-Core-kurssin suoritus")
+case class IBCoreKurssinSuoritus(
+  koulutusmoduuli: IBCoreKurssi,
+  arviointi: Option[List[IBCoreKurssinArviointi]] = None, suorituskieli: Option[Koodistokoodiviite] = None,
+  @KoodistoKoodiarvo("ibcorekurssi")
+  tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "ibcorekurssi", koodistoUri = "suorituksentyyppi"),
+) extends IBSuoritus with KurssinSuoritus
+
+@Title("IB-Core-kurssin arviointi")
+case class IBCoreKurssinArviointi(
+  @KoodistoUri("arviointiasteikkocorerequirementsib")
+  arvosana: Koodistokoodiviite,
+  @Description("Effort-arvosana, kuvaa opiskelijan tunnollisuutta, aktiivisuutta ja yritteliäisyyttä. Arvosteluasteikko: A = very good, B = good, C = needs improvement")
+  @KoodistoUri("effortasteikkoib")
+  effort: Option[Koodistokoodiviite] = None,
+  päivä: LocalDate
+) extends IBArviointi with ArviointiPäivämäärällä
+
+@Title("IB Core -kurssi")
+@Description("IB-lukion DP Core -kurssin tunnistetiedot")
+case class IBCoreKurssi(
+  kuvaus: LocalizedString,
+  @OksaUri("tmpOKSAID873", "kurssi")
+  @FlattenInUI
+  tunniste: PaikallinenKoodi,
+  @Discriminator
+  pakollinen: Boolean = true,
+  override val laajuus: Option[LaajuusOpintopisteissä]
+) extends KoulutusmoduuliValinnainenLaajuus with Valinnaisuus with StorablePreference {
+  def nimi: LocalizedString = tunniste.nimi
+}
+
 @Title("IB-kurssin suoritus")
 case class IBKurssinSuoritus(
   koulutusmoduuli: IBKurssi,
@@ -264,7 +296,7 @@ case class IBKurssi(
   tunniste: PaikallinenKoodi,
   @Discriminator
   pakollinen: Boolean = true,
-  @Description("1.8.2025 alkaen laajuus tallennetaan opintopisteissä. Sitä ennen alkaneisiin opiskeluoikeuksiin tallennetaan kursseina.")
+  @Description("1.8.2024 alkaen laajuus tallennetaan opintopisteissä. Sitä ennen alkaneisiin opiskeluoikeuksiin tallennetaan kursseina.")
   override val laajuus: Option[LaajuusOpintopisteissäTaiKursseissa]
 ) extends KoulutusmoduuliValinnainenLaajuus with Valinnaisuus with PreIBKurssi2015 with StorablePreference {
   def nimi: LocalizedString = tunniste.nimi
@@ -382,7 +414,8 @@ trait MuuOppiaineIB extends IBOppiaine {
 case class IBOppiaineMuu(
   @Description("IB-lukion oppiaineen tunnistetiedot")
   tunniste: Koodistokoodiviite,
-  laajuus: Option[LaajuusTunneissa] = None,
+  @Description("Laajuus ennen 1.8.2024 ilmoitetaan tunneissa. Sen jälkeen opintopisteissä")
+  laajuus: Option[LaajuusOpintopisteissäTaiTunneissa] = None,
   @Description("Oppiaineen taso (Higher Level (HL) tai Standard Level (SL)")
   taso: Option[Koodistokoodiviite] = None,
   @Description("Oppiaineen aineryhmä (1-6)")
@@ -392,17 +425,18 @@ case class IBOppiaineMuu(
 
 @Title("IB-kielioppiaine")
 case class IBOppiaineLanguage(
-  @Description("IB-lukion kielioppiaineen tunnistetiedot")
-  tunniste: Koodistokoodiviite,
-  laajuus: Option[LaajuusTunneissa],
-  @Description("Oppiaineen taso (Higher Level (HL) tai Standard Level (SL)")
-  taso: Option[Koodistokoodiviite],
-  @Discriminator
-  @Description("Mikä kieli on kyseessä")
-  kieli: Koodistokoodiviite,
-  @Description("Oppiaineen aineryhmä (1-6)")
-  ryhmä: Koodistokoodiviite,
-  pakollinen: Boolean = true
+ @Description("IB-lukion kielioppiaineen tunnistetiedot")
+ tunniste: Koodistokoodiviite,
+ @Description("Laajuus ennen 1.8.2024 ilmoitetaan tunneissa. Sen jälkeen opintopisteissä")
+ laajuus: Option[LaajuusOpintopisteissäTaiTunneissa],
+ @Description("Oppiaineen taso (Higher Level (HL) tai Standard Level (SL)")
+ taso: Option[Koodistokoodiviite],
+ @Discriminator
+ @Description("Mikä kieli on kyseessä")
+ kieli: Koodistokoodiviite,
+ @Description("Oppiaineen aineryhmä (1-6)")
+ ryhmä: Koodistokoodiviite,
+ pakollinen: Boolean = true
 ) extends IBAineRyhmäOppiaine with KieliOppiaineIB
 
 trait IBCoreElementOppiaine extends IBOppiaine with Valinnaisuus

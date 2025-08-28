@@ -1111,6 +1111,31 @@
   {
     "metadata": [
       {
+        "nimi": "IB-lukion Core kurssi",
+        "kuvaus": null,
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Kurs i IB-gymnasium",
+        "kuvaus": null,
+        "kieli": "SV"
+      },
+      {
+        "nimi": "IB upper secondary education course",
+        "kuvaus": null,
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "suorituksentyyppi_ibcorekurssi",
+    "versio": 1,
+    "koodiArvo": "ibcorekurssi"
+  },
+  {
+    "metadata": [
+      {
         "nimi": "IB-lukion oppiaine",
         "kuvaus": null,
         "kieli": "FI"

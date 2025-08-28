@@ -1,3 +1,6 @@
+## 27.8.2025
+ - Lukion IBDPcore kursseille lisätty oma luokka joka sallii vain opintopisteet laajuutena
+
 ## 11.8.2025
 - Perusopetuksen lisätietojen vuosiluokkiin sitoutumaton opetus kenttä muutettu valinnaiseksi
 
