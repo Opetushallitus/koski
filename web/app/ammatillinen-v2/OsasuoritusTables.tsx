@@ -189,13 +189,12 @@ const TableForTutkinnonOsaRyhmä = ({
           ? [dummyRow(ryhmä)] // Saadaan headeri näkymään editointimoodissa kun osasuorituksia ei ole
           : rows || []
       }
-      addNewOsasuoritusView={() => (
-        <NewAmisOsasuoritus
-          form={form}
-          ryhmä={ryhmä}
-          suoritusPath={osittainenPäätasonSuoritus.path}
-        />
-      )}
+      addNewOsasuoritusView={NewAmisOsasuoritus}
+      addNewOsasuoritusViewProps={{
+        form,
+        ryhmä,
+        suoritusPath: osittainenPäätasonSuoritus.path
+      }}
       onRemove={
         !rows || rows?.length === 0
           ? undefined

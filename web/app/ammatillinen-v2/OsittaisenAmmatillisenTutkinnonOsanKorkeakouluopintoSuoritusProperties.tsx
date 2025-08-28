@@ -114,16 +114,8 @@ export const OsittaisenAmmatillisenTutkinnonOsanKorkeakouluopintoSuoritusPropert
             }
             return hasAmmatillinenArviointi(s)
           }}
-          addNewOsasuoritusView={() => (
-            <ColumnRow indent={2}>
-              <Column span={12}>
-                <NewKorkeakouluopintokokonaisuus
-                  form={form}
-                  suoritusPath={osasuoritusPath}
-                />
-              </Column>
-            </ColumnRow>
-          )}
+          addNewOsasuoritusView={NewKorkeakouluopintokokonaisuus}
+          addNewOsasuoritusViewProps={{ form, suoritusPath: osasuoritusPath }}
         />
       </>
     )
@@ -144,22 +136,24 @@ const NewKorkeakouluopintokokonaisuus = ({
   const [showModal, setShowModal] = useState(false)
 
   return (
-    <>
-      <FlatButton onClick={() => setShowModal(true)}>
-        {t('Lisää korkeakouluopintokokonaisuus')}
-      </FlatButton>
-      {showModal && (
-        <NewKorkeakouluopintokokonaisuusModal
-          onClose={() => setShowModal(false)}
-          onSubmit={(nimi) => {
-            form.updateAt(
-              suoritusPath.prop('osasuoritukset').valueOr([]),
-              (o) => [...o, newKorkeakouluopintokokonaisuus(nimi)]
-            )
-          }}
-        />
-      )}
-    </>
+    <ColumnRow indent={2}>
+      <Column span={12}>
+        <FlatButton onClick={() => setShowModal(true)}>
+          {t('Lisää korkeakouluopintokokonaisuus')}
+        </FlatButton>
+        {showModal && (
+          <NewKorkeakouluopintokokonaisuusModal
+            onClose={() => setShowModal(false)}
+            onSubmit={(nimi) => {
+              form.updateAt(
+                suoritusPath.prop('osasuoritukset').valueOr([]),
+                (o) => [...o, newKorkeakouluopintokokonaisuus(nimi)]
+              )
+            }}
+          />
+        )}
+      </Column>
+    </ColumnRow>
   )
 }
 

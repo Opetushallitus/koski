@@ -292,17 +292,12 @@ export const YhteisenOsittaisenAmmatillisenTutkinnonOsasuoritusProperties = ({
           }
           return hasAmmatillinenArviointi(s)
         }}
-        addNewOsasuoritusView={() => (
-          <ColumnRow indent={2}>
-            <Column span={12}>
-              <NewYhteisenTutkinnonOsanOsaAlueenSuoritus
-                form={form}
-                suoritusPath={osasuoritusPath}
-                osasuoritus={osasuoritus}
-              />
-            </Column>
-          </ColumnRow>
-        )}
+        addNewOsasuoritusView={NewYhteisenTutkinnonOsanOsaAlueenSuoritus}
+        addNewOsasuoritusViewProps={{
+          form,
+          suoritusPath: osasuoritusPath,
+          osasuoritus
+        }}
       />
     </>
   )
@@ -329,23 +324,27 @@ const NewYhteisenTutkinnonOsanOsaAlueenSuoritus = ({
   ).map((k) => k.koodiarvo)
 
   return (
-    <KoodistoSelect
-      addNewText="Lisää tutkinnon osan osa-alue"
-      koodistoUri="ammatillisenoppiaineet"
-      filter={(oppiaine) =>
-        lisättävätOsat.length === 0 ||
-        lisättävätOsat.includes(oppiaine.koodiarvo)
-      }
-      format={(osa) => osa.koodiarvo + ' ' + t(osa.nimi)}
-      onSelect={(tunniste) => {
-        tunniste &&
-          form.updateAt(
-            suoritusPath.prop('osasuoritukset').valueOr([]),
-            (a) => [...a, newYhteisenOsanOsaAlueenSuoritus(tunniste)]
-          )
-      }}
-      testId="uusi-yhteinen-osan-osa-alue"
-    />
+    <ColumnRow indent={2}>
+      <Column span={12}>
+        <KoodistoSelect
+          addNewText="Lisää tutkinnon osan osa-alue"
+          koodistoUri="ammatillisenoppiaineet"
+          filter={(oppiaine) =>
+            lisättävätOsat.length === 0 ||
+            lisättävätOsat.includes(oppiaine.koodiarvo)
+          }
+          format={(osa) => osa.koodiarvo + ' ' + t(osa.nimi)}
+          onSelect={(tunniste) => {
+            tunniste &&
+              form.updateAt(
+                suoritusPath.prop('osasuoritukset').valueOr([]),
+                (a) => [...a, newYhteisenOsanOsaAlueenSuoritus(tunniste)]
+              )
+          }}
+          testId="uusi-yhteinen-osan-osa-alue"
+        />
+      </Column>
+    </ColumnRow>
   )
 }
 
