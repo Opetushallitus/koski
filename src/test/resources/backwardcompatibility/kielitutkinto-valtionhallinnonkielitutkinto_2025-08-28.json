@@ -43,13 +43,7 @@
         },
         "myöntäjäOrganisaatio" : {
           "oid" : "1.2.246.562.10.27736566558"
-        },
-        "myöntäjäHenkilöt" : [ {
-          "nimi" : "Vallu Vastaanottaja",
-          "organisaatio" : {
-            "oid" : "1.2.246.562.10.27736566558"
-          }
-        } ]
+        }
       },
       "osasuoritukset" : [ {
         "koulutusmoduuli" : {
