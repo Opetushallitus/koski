@@ -18,6 +18,10 @@ import {
   Päivämäärävahvistus,
   isPäivämäärävahvistus
 } from './Paivamaaravahvistus'
+import {
+  PäivämäärävahvistusPaikkakunnalla,
+  isPäivämäärävahvistusPaikkakunnalla
+} from './PaivamaaravahvistusPaikkakunnalla'
 
 /**
  * Vahvistus
@@ -30,10 +34,12 @@ export type Vahvistus =
   | HenkilövahvistusValinnaisellaTittelilläJaValinnaisellaPaikkakunnalla
   | Organisaatiovahvistus
   | Päivämäärävahvistus
+  | PäivämäärävahvistusPaikkakunnalla
 
 export const isVahvistus = (a: any): a is Vahvistus =>
   isHenkilövahvistusPaikkakunnalla(a) ||
   isHenkilövahvistusValinnaisellaPaikkakunnalla(a) ||
   isHenkilövahvistusValinnaisellaTittelilläJaValinnaisellaPaikkakunnalla(a) ||
   isOrganisaatiovahvistus(a) ||
-  isPäivämäärävahvistus(a)
+  isPäivämäärävahvistus(a) ||
+  isPäivämäärävahvistusPaikkakunnalla(a)
