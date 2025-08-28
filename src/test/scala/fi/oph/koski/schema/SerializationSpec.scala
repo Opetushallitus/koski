@@ -89,6 +89,9 @@ class SerializationSpec extends AnyFreeSpec with TestEnvironment with Matchers w
                    _: VSTKotoutumiskoulutuksenAlaosasuoritus2022 => true
               case _: SecondaryLowerOppiaineenSuoritus |
                    _: SecondaryUpperOppiaineenSuoritus => true
+              case _: ValtionhallinnonKielitutkinnonKirjallisenKielitaidonOsakokeenSuoritus |
+                   _: ValtionhallinnonKielitutkinnonSuullisenKielitaidonOsakokeenSuoritus |
+                   _: ValtionhallinnonKielitutkinnonYmmärtämisenKielitaidonOsakokeenSuoritus => true
               case _ => false
             }
 

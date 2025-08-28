@@ -16,6 +16,7 @@ import { OmatTiedotOpiskeluoikeus } from './OmatTiedotOpiskeluoikeus'
 import { useKansalainenUiAdapter } from '../components-v2/interoperability/useUiAdapter'
 import { t } from '../i18n/i18n'
 import { TestIdLayer, TestIdRoot } from '../appstate/useTestId'
+import { groupBy } from 'fp-ts/lib/ReadonlyNonEmptyArray'
 
 export const OmatTiedotEditor = ({ model }) => {
   const oppijaOid = modelData(model, 'henkilö.oid')
@@ -25,6 +26,16 @@ export const OmatTiedotEditor = ({ model }) => {
   const osaamismerkit = oppilaitokset.flatMap((oppilaitos) =>
     modelItems(oppilaitos, 'opiskeluoikeudet').filter(
       onOsaamismerkinOpiskeluoikeus
+    )
+  )
+
+  const oppilaitoksettomatOpiskeluoikeudet = Object.entries(
+    groupBy((a) => modelTitle(a, 'suoritukset.0.tyyppi'))(
+      oppilaitokset.flatMap((oppilaitos) =>
+        modelItems(oppilaitos, 'opiskeluoikeudet').filter(
+          onOppilaitoksetonOpiskeluoikeus
+        )
+      )
     )
   )
 
@@ -40,6 +51,33 @@ export const OmatTiedotEditor = ({ model }) => {
               uiAdapter={uiAdapter}
             />
           ))}
+          <TestIdRoot id="oppilaitoksettomat-opiskeluoikeudet">
+            {oppilaitoksettomatOpiskeluoikeudet.map(
+              ([title, opiskeluoikeudet], index) => (
+                <div className="oppilaitos-container" key={index}>
+                  <h2 className="oppilaitos-title">{title}</h2>
+                  <ul className="opiskeluoikeudet-list">
+                    {opiskeluoikeudet.map(
+                      (opiskeluoikeus, opiskeluoikeusIndex) => (
+                        <li key={opiskeluoikeusIndex}>
+                          <TestIdLayer id={opiskeluoikeusIndex}>
+                            <div className="opiskeluoikeus-container">
+                              <OpiskeluoikeusEditor
+                                opiskeluoikeus={opiskeluoikeus}
+                                oppijaOid={oppijaOid}
+                                uiAdapter={uiAdapter}
+                                testId={opiskeluoikeusIndex}
+                              />
+                            </div>
+                          </TestIdLayer>
+                        </li>
+                      )
+                    )}
+                  </ul>
+                </div>
+              )
+            )}
+          </TestIdRoot>
           {osaamismerkit.length > 0 ? (
             <TestIdRoot id="osaamismerkit">
               <div className="oppilaitos-container">
@@ -78,9 +116,22 @@ const onOsaamismerkinOpiskeluoikeus = (opiskeluoikeus) => {
   return suoritustyyppi === 'vstosaamismerkki'
 }
 
+const onOppilaitoksetonOpiskeluoikeus = (opiskeluoikeus) => {
+  const oppilaitosnumero = modelData(
+    opiskeluoikeus,
+    'oppilaitos.oppilaitosnumero.koodiarvo'
+  )
+  const koulutustoimijaOid = modelData(opiskeluoikeus, 'koulutustoimija.oid')
+  return (
+    !oppilaitosnumero?.match(/\d+/) &&
+    koulutustoimijaOid == '1.2.246.562.10.48587687889' // Opetushallitus
+  )
+}
+
 const Oppilaitokset = ({ oppilaitos, oppijaOid, uiAdapter }) => {
   const opiskeluoikeudet = modelItems(oppilaitos, 'opiskeluoikeudet').filter(
-    (oo) => !onOsaamismerkinOpiskeluoikeus(oo)
+    (oo) =>
+      !onOsaamismerkinOpiskeluoikeus(oo) && !onOppilaitoksetonOpiskeluoikeus(oo)
   )
   return opiskeluoikeudet.length > 0 ? (
     <TestIdRoot id="oo">
@@ -89,31 +140,46 @@ const Oppilaitokset = ({ oppilaitos, oppijaOid, uiAdapter }) => {
           {modelTitle(oppilaitos, 'oppilaitos')}
         </h2>
         <ul className="opiskeluoikeudet-list">
-          {opiskeluoikeudet.map((opiskeluoikeus, opiskeluoikeusIndex) => {
-            const Editor = uiAdapter.getOpiskeluoikeusEditor(opiskeluoikeus)
-            return (
-              <TestIdLayer id={opiskeluoikeusIndex}>
-                {Editor ? (
-                  <li key={opiskeluoikeusIndex}>
-                    <div className="opiskeluoikeus-container">
-                      <Editor key={opiskeluoikeusIndex} />
-                    </div>
-                  </li>
-                ) : (
-                  <li key={opiskeluoikeusIndex}>
-                    <Opiskeluoikeus
-                      opiskeluoikeus={opiskeluoikeus}
-                      oppijaOid={oppijaOid}
-                    />
-                  </li>
-                )}
-              </TestIdLayer>
-            )
-          })}
+          {opiskeluoikeudet.map((opiskeluoikeus, opiskeluoikeusIndex) => (
+            <OpiskeluoikeusEditor
+              key={opiskeluoikeusIndex}
+              opiskeluoikeus={opiskeluoikeus}
+              oppijaOid={oppijaOid}
+              uiAdapter={uiAdapter}
+              testId={opiskeluoikeusIndex}
+            />
+          ))}
         </ul>
       </div>
     </TestIdRoot>
   ) : null
+}
+
+const OpiskeluoikeusEditor = ({
+  opiskeluoikeus,
+  oppijaOid,
+  uiAdapter,
+  testId
+}) => {
+  const Editor = uiAdapter.getOpiskeluoikeusEditor(opiskeluoikeus)
+  return (
+    <TestIdLayer id={testId}>
+      {Editor ? (
+        <li key={testId}>
+          <div className="opiskeluoikeus-container">
+            <Editor key={testId} />
+          </div>
+        </li>
+      ) : (
+        <li key={testId}>
+          <Opiskeluoikeus
+            opiskeluoikeus={opiskeluoikeus}
+            oppijaOid={oppijaOid}
+          />
+        </li>
+      )}
+    </TestIdLayer>
+  )
 }
 
 const Osaamismerkki = ({ opiskeluoikeus, opiskeluoikeusIndex, uiAdapter }) => {

@@ -1,0 +1,184 @@
+{
+  "henkilö" : {
+    "hetu" : "160586-873P",
+    "etunimet" : "Kielitutkinto",
+    "kutsumanimi" : "Kielitutkinto",
+    "sukunimi" : "Suorittaja"
+  },
+  "opiskeluoikeudet" : [ {
+    "tila" : {
+      "opiskeluoikeusjaksot" : [ {
+        "alku" : "2011-01-01",
+        "tila" : {
+          "koodiarvo" : "lasna",
+          "koodistoUri" : "koskiopiskeluoikeudentila"
+        }
+      }, {
+        "alku" : "2011-04-02",
+        "tila" : {
+          "koodiarvo" : "hyvaksytystisuoritettu",
+          "koodistoUri" : "koskiopiskeluoikeudentila"
+        }
+      } ]
+    },
+    "suoritukset" : [ {
+      "koulutusmoduuli" : {
+        "tunniste" : {
+          "koodiarvo" : "erinomainen",
+          "koodistoUri" : "vkttutkintotaso"
+        },
+        "kieli" : {
+          "koodiarvo" : "FI",
+          "koodistoUri" : "kieli"
+        }
+      },
+      "toimipiste" : {
+        "oid" : "1.2.246.562.10.27736566558"
+      },
+      "vahvistus" : {
+        "päivä" : "2011-04-02",
+        "paikkakunta" : {
+          "koodiarvo" : "853",
+          "koodistoUri" : "kunta"
+        },
+        "myöntäjäOrganisaatio" : {
+          "oid" : "1.2.246.562.10.27736566558"
+        }
+      },
+      "osasuoritukset" : [ {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "kirjallinen",
+            "koodistoUri" : "vktkielitaito"
+          }
+        },
+        "tyyppi" : {
+          "koodiarvo" : "valtionhallinnonkielitaito",
+          "koodistoUri" : "suorituksentyyppi"
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "erinomainen",
+            "koodistoUri" : "vktarvosana"
+          },
+          "päivä" : "2011-04-02",
+          "hyväksytty" : true
+        } ],
+        "osasuoritukset" : [ {
+          "tyyppi" : {
+            "koodiarvo" : "valtionhallinnonkielitutkinnonosakoe",
+            "koodistoUri" : "suorituksentyyppi"
+          },
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "kirjoittaminen",
+              "koodistoUri" : "vktosakoe"
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "hylatty",
+              "koodistoUri" : "vktarvosana"
+            },
+            "päivä" : "2011-03-02",
+            "hyväksytty" : false
+          }, {
+            "arvosana" : {
+              "koodiarvo" : "erinomainen",
+              "koodistoUri" : "vktarvosana"
+            },
+            "päivä" : "2011-04-02",
+            "hyväksytty" : true
+          } ]
+        }, {
+          "tyyppi" : {
+            "koodiarvo" : "valtionhallinnonkielitutkinnonosakoe",
+            "koodistoUri" : "suorituksentyyppi"
+          },
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "tekstinymmartaminen",
+              "koodistoUri" : "vktosakoe"
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "erinomainen",
+              "koodistoUri" : "vktarvosana"
+            },
+            "päivä" : "2011-03-02",
+            "hyväksytty" : true
+          } ]
+        } ]
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "suullinen",
+            "koodistoUri" : "vktkielitaito"
+          }
+        },
+        "tyyppi" : {
+          "koodiarvo" : "valtionhallinnonkielitaito",
+          "koodistoUri" : "suorituksentyyppi"
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "erinomainen",
+            "koodistoUri" : "vktarvosana"
+          },
+          "päivä" : "2011-03-02",
+          "hyväksytty" : true
+        } ],
+        "osasuoritukset" : [ {
+          "tyyppi" : {
+            "koodiarvo" : "valtionhallinnonkielitutkinnonosakoe",
+            "koodistoUri" : "suorituksentyyppi"
+          },
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "puhuminen",
+              "koodistoUri" : "vktosakoe"
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "erinomainen",
+              "koodistoUri" : "vktarvosana"
+            },
+            "päivä" : "2011-03-02",
+            "hyväksytty" : true
+          } ]
+        }, {
+          "tyyppi" : {
+            "koodiarvo" : "valtionhallinnonkielitutkinnonosakoe",
+            "koodistoUri" : "suorituksentyyppi"
+          },
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "puheenymmartaminen",
+              "koodistoUri" : "vktosakoe"
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "erinomainen",
+              "koodistoUri" : "vktarvosana"
+            },
+            "päivä" : "2011-03-02",
+            "hyväksytty" : true
+          } ]
+        } ]
+      } ],
+      "tyyppi" : {
+        "koodiarvo" : "valtionhallinnonkielitutkinto",
+        "koodistoUri" : "suorituksentyyppi"
+      }
+    } ],
+    "tyyppi" : {
+      "koodiarvo" : "kielitutkinto",
+      "koodistoUri" : "opiskeluoikeudentyyppi"
+    },
+    "alkamispäivä" : "2011-01-01",
+    "päättymispäivä" : "2011-04-02"
+  } ]
+}
