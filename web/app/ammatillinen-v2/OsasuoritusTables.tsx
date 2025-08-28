@@ -1,4 +1,4 @@
-import React, { ReactNode, useState } from 'react'
+import React, { ReactNode, useCallback, useState } from 'react'
 import {
   FormModel,
   FormOptic,
@@ -377,7 +377,26 @@ const NewAmisOsasuoritus = ({
       suoritusPath.prop('koulutusmoduuli').prop('perusteenDiaarinumero')
     )(form.state),
     ryhmäKoodi?.koodiarvo
-  ).osat.map((k) => k.koodiarvo)
+  )
+
+  // Näiden memoizeaaminen parantaa KoodistoSelectin suorituskykyä huomattavasti
+  const format = useCallback((osa) => osa.koodiarvo + ' ' + t(osa.nimi), [])
+  const yhteisetFilter = useCallback(
+    (osa) => {
+      const osat = lisättävätTutkinnonOsat.osat.map((o) => o.koodiarvo)
+      return osat.length === 0
+        ? yhteisenTutkinnonOsat.includes(osa.koodiarvo)
+        : osat.includes(osa.koodiarvo)
+    },
+    [lisättävätTutkinnonOsat]
+  )
+  const ammatillisetFilter = useCallback(
+    (osa) => {
+      const osat = lisättävätTutkinnonOsat.osat.map((o) => o.koodiarvo)
+      return osat.length === 0 || osat.includes(osa.koodiarvo)
+    },
+    [lisättävätTutkinnonOsat]
+  )
 
   if (!ryhmäKoodi) {
     return null
@@ -389,12 +408,8 @@ const NewAmisOsasuoritus = ({
         <KoodistoSelect
           addNewText={'Lisää tutkinnon osa'}
           koodistoUri="tutkinnonosat"
-          format={(osa) => osa.koodiarvo + ' ' + t(osa.nimi)}
-          filter={(osa) =>
-            lisättävätTutkinnonOsat.length === 0
-              ? yhteisenTutkinnonOsat.includes(osa.koodiarvo)
-              : lisättävätTutkinnonOsat.includes(osa.koodiarvo)
-          }
+          format={format}
+          filter={yhteisetFilter}
           onSelect={(tunniste) => {
             const yhteinenTunniste = tunniste as YhteisenTutkinnonOsatTunniste
             tunniste &&
@@ -414,11 +429,8 @@ const NewAmisOsasuoritus = ({
         <KoodistoSelect
           addNewText={'Lisää tutkinnon osa'}
           koodistoUri={'tutkinnonosat'}
-          format={(osa) => osa.koodiarvo + ' ' + t(osa.nimi)}
-          filter={(osa) =>
-            lisättävätTutkinnonOsat.length === 0 ||
-            lisättävätTutkinnonOsat.includes(osa.koodiarvo)
-          }
+          format={format}
+          filter={ammatillisetFilter}
           onSelect={(osa) => {
             osa &&
               form.updateAt(
