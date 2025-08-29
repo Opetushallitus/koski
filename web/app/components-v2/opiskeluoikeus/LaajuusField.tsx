@@ -60,7 +60,7 @@ export const LaajuusEdit = <T extends Laajuus>(props: LaajuusEditProps<T>) => {
   const fillNimi = useKoodistoFiller()
   const { onChange, createLaajuus } = props
   const onChangeCB = useCallback(
-    (arvo: number) => onChange(createLaajuus(arvo)),
+    (arvo?: number) => arvo && onChange(createLaajuus(arvo)),
     [createLaajuus, onChange]
   )
 

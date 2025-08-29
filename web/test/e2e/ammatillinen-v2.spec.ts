@@ -41,6 +41,13 @@ test.describe('Osittaisen ammatillisen tutkinnon uusi käyttöliittymä', () => 
     await oppijaPageV2.tallenna()
   })
 
+  test('Keskiarvon poistaminen onnistuuu', async ({page, oppijaPage, oppijaPageV2}) => {
+    await oppijaPage.goto('1.2.246.562.24.00000000056?ammatillinen-v2=true')
+    await page.getByTestId('oo.0.opiskeluoikeus.edit').click();
+    await page.getByTestId('oo.0.suoritukset.0.painotettu-keskiarvo.edit.input').clear()
+    await oppijaPageV2.tallenna()
+  })
+
   test('Opintojakson poistaminen ja lisääminen rahoituksella onnistuu', async ({ page, oppijaPage, oppijaPageV2 }) => {
     await oppijaPage.goto('1.2.246.562.24.00000000055?ammatillinen-v2=true')
 

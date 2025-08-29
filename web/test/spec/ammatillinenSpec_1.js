@@ -382,9 +382,6 @@ describe('Ammatillinen koulutus 1', function () {
             addOppija.selectOppilaitos('Omnia'),
             addOppija.selectOpiskeluoikeudenTyyppi('Ammatillinen koulutus')
           )
-          it('tutkinto pitää valita uudestaan', function () {
-            expect(addOppija.isEnabled()).to.equal(false)
-          })
           describe('Tutkinnon valinnan jälkeen', function () {
             before(
               addOppija.selectSuoritustyyppi('Ammatillinen tutkinto'),

@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useCallback } from 'react'
 import { TestIdText, useTestId } from '../../appstate/useTestId'
 import { EmptyObject } from '../../types/EditorModels'
 import { common, CommonProps, cx } from '../CommonProps'
@@ -30,17 +30,11 @@ export type TextEditProps = CommonProps<
 export const TextEdit: React.FC<TextEditProps> = (props) => {
   const testId = useTestId(props.testId, 'input')
 
-  const [internalValue, setInternalValue] = useState(props.value)
-  useEffect(() => setInternalValue(props.value), [props.value])
-
-  const { onChange } = props
+  const { onChange, value } = props
   const onChangeCB: React.ChangeEventHandler<
     HTMLInputElement | HTMLTextAreaElement
   > = useCallback(
     (event) => {
-      setInternalValue(
-        event.target.value === '' ? undefined : event.target.value
-      )
       onChange(event.target.value === '' ? undefined : event.target.value)
     },
     [onChange]
@@ -60,7 +54,7 @@ export const TextEdit: React.FC<TextEditProps> = (props) => {
           disabled={props.disabled}
           data-testid={testId}
         >
-          {internalValue}
+          {value || ''}
         </textarea>
       ) : (
         <input
@@ -69,7 +63,7 @@ export const TextEdit: React.FC<TextEditProps> = (props) => {
             props.errors && 'TextEdit__input--error'
           )}
           placeholder={props.placeholder}
-          value={internalValue}
+          value={value || ''}
           onChange={onChangeCB}
           autoFocus={props.autoFocus}
           disabled={props.disabled}
