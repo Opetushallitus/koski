@@ -9,6 +9,7 @@ export type BooleanViewProps = CommonProps<
   FieldViewerProps<
     boolean | undefined,
     {
+      hideFalse?: boolean
       trueText?: string
       falseText?: string
     }
@@ -21,13 +22,18 @@ export const BooleanView: React.FC<BooleanViewProps> = ({
   falseText,
   testId,
   value,
+  hideFalse,
   ...rest
-}) =>
-  value === undefined ? null : (
+}) => {
+  if (hideFalse && value === false) {
+    return null
+  }
+  return value === undefined ? null : (
     <TestIdText id={testId} {...rest}>
       {value ? trueText || t('Kyllä') : falseText || t('Ei')}
     </TestIdText>
   )
+}
 
 export type BooleanEditProps = CommonProps<
   FieldEditorProps<
