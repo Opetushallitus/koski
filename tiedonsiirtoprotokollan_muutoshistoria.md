@@ -1,3 +1,6 @@
+## 29.8.2025
+Nuorten perusopetuksen luokkaAste kenttä sallitaan @onlywhen -merkinnällä, jos lisätiedoissa on VSOP merkintä.
+
 ## 27.8.2025
  - Lukion IBDPcore kursseille lisätty oma luokka joka sallii vain opintopisteet laajuutena
 

@@ -1,4 +1,8 @@
 # Koskeen tallennettavien tietojen validaatiosäännöt
+
+## 29.8.2025
+ - Poistettiin päällekkäinen validointi validateSuoritustenLuokkaAsteet, koska luokkaAsteen sallittavuus määritellään skeemassa @OnlyWhen-ehdoilla.
+ - Kevennettiin validaatiota niin että luokka-aste merkinnät on sallittu vsop merkityille suorituksille
 ## 27.8.2025
  - Lisätty validaatio IB oppiaineen suoritusten laajuuksille. Uusille suorituksille ei sallita tunteja laajuudeksi
  - Poistettiin arvosanojen validointi IBDPCore ossuorituksilta
