@@ -351,6 +351,7 @@ const AmmatillisPääsuorituksenTiedot: React.FC<{
       </KeyValueRow>
       <KeyValueRow localizableLabel="Painotettu keskiarvo">
         <FormField
+          testId={'painotettu-keskiarvo'}
           form={form}
           view={TextView}
           edit={NumberField}

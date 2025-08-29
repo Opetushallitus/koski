@@ -1,10 +1,10 @@
-import React, { useCallback, useEffect, useState } from 'react'
-import { CommonProps, cx, common } from '../CommonProps'
+import React, { useCallback } from 'react'
+import { common, CommonProps, cx } from '../CommonProps'
 import { useTestId } from '../../appstate/useTestId'
 
 export type NumberFieldProps = CommonProps<{
   value?: number
-  onChange: (text: number) => void
+  onChange: (text?: number) => void
   hasErrors?: boolean
   testId?: string | number
 }>
@@ -12,25 +12,19 @@ export type NumberFieldProps = CommonProps<{
 export const NumberField: React.FC<NumberFieldProps> = (props) => {
   const testId = useTestId(props.testId, 'input')
 
-  const [internalValue, setInternalValue] = useState(props.value?.toString())
-  useEffect(() => setInternalValue(props.value?.toString()), [props.value])
-
-  const { onChange } = props
+  const { onChange, value } = props
   const onChangeCB: React.ChangeEventHandler<HTMLInputElement> = useCallback(
     (event) => {
-      setInternalValue(event.target.value)
-      const value = parseFloat(event.target.value)
-      if (Number.isFinite(value)) {
-        onChange(value)
+      if (event.target.value === '') {
+        onChange(undefined)
+      }
+      const number = parseFloat(event.target.value)
+      if (Number.isFinite(number)) {
+        onChange(number)
       }
     },
     [onChange]
   )
-
-  const onBlurCB = useCallback(() => {
-    const value = parseFloat(internalValue || '')
-    onChange(Number.isFinite(value) ? value : 0)
-  }, [internalValue, onChange])
 
   return (
     <div {...common(props, ['NumberField'])}>
@@ -40,9 +34,8 @@ export const NumberField: React.FC<NumberFieldProps> = (props) => {
           props.hasErrors && 'NumberField__input--error'
         )}
         type="number"
-        value={internalValue}
+        value={value ? value.toString() : ''}
         onChange={onChangeCB}
-        onBlur={onBlurCB}
         data-testid={testId}
       />
     </div>
