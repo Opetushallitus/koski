@@ -1628,7 +1628,7 @@ class KoskiValidator(
       }
   }
 
-  private def validateSuoritustenLuokkaAsteet(opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus): HttpStatus = HttpStatus.fold(
+  private def validateSuoritustenLuokkaAsteet(opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus): HttpStatus =
     opiskeluoikeus match {
       case oo: PerusopetuksenOpiskeluoikeus =>
         val nuortenPerusopetuksenErityinenTutkintoSuoritukset = oo.suoritukset.collect({ case s: NuortenPerusopetuksenOppiaineenOppimääränSuoritus => s }).filter(_.suoritustapa.koodiarvo == "erityinentutkinto")
@@ -1644,7 +1644,6 @@ class KoskiValidator(
         }
       case _ => HttpStatus.ok
     }
-  )
 
   private def validateOppiaineet(suoritus: Suoritus) = suoritus match {
     case _: NuortenPerusopetuksenOppiaineenOppimääränSuoritus | _: AikuistenPerusopetuksenOppiaineenOppimääränSuoritus | _: LukionOppiaineenOppimääränSuoritus2015 =>

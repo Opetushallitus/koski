@@ -1,4 +1,7 @@
 # Koskeen tallennettavien tietojen validaatiosäännöt
+
+## 29.8.2025
+ - Kevennettiin validaatiota niin että luokka-astemerkinnät on sallittu nuorten perusopetuksen oppiaineen oppimäärässä VSOP-merkityille suorituksille
 ## 27.8.2025
  - Lisätty validaatio IB oppiaineen suoritusten laajuuksille. Uusille suorituksille ei sallita tunteja laajuudeksi
  - Poistettiin arvosanojen validointi IBDPCore ossuorituksilta

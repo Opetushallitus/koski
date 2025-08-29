@@ -413,6 +413,7 @@ case class NuortenPerusopetuksenOppiaineenOppimääränSuoritus(
   @Title("Luokka-aste")
   @KoodistoUri("perusopetuksenluokkaaste")
   @OnlyWhen("suoritustapa/koodiarvo", "erityinentutkinto")
+  @OnlyWhen("../../lisätiedot/vuosiluokkiinSitoutumatonOpetus", true)
   luokkaAste: Option[Koodistokoodiviite] = None,
   suorituskieli: Koodistokoodiviite,
   muutSuorituskielet: Option[List[Koodistokoodiviite]] = None,
