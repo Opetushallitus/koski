@@ -244,6 +244,9 @@ export const AmmatillinenLisatiedot: React.FC<AmmatillinenLisatiedotProps> = ({
         <FormField
           form={form}
           view={BooleanView}
+          viewProps={{
+            hideFalse: true
+          }}
           edit={BooleanEdit}
           path={lisatiedotPath.prop('henkilöstökoulutus')}
         />
@@ -258,6 +261,9 @@ export const AmmatillinenLisatiedot: React.FC<AmmatillinenLisatiedotProps> = ({
         <FormField
           form={form}
           view={BooleanView}
+          viewProps={{
+            hideFalse: true
+          }}
           edit={BooleanEdit}
           path={lisatiedotPath.prop('koulutusvienti')}
         />
@@ -330,6 +336,9 @@ export const AmmatillinenLisatiedot: React.FC<AmmatillinenLisatiedotProps> = ({
         <FormField
           form={form}
           view={BooleanView}
+          viewProps={{
+            hideFalse: true
+          }}
           edit={BooleanEdit}
           path={lisatiedotPath.prop('siirtynytUusiinTutkinnonPerusteisiin')}
         />
