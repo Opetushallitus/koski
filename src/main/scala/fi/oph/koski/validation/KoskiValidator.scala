@@ -192,6 +192,7 @@ class KoskiValidator(
       .flatMap(lipsuTarvittaessa(ePerusteetValidator.validateKoulutustyypinLöytyminenAmmatillisissa))
       .flatMap(lipsuTarvittaessa(MaksuttomuusValidation.validateAndFillJaksot))
       .map(ePerusteetFiller.fillPerusteenNimi)
+      .map(ePerusteetFiller.fillTutkinnonOsanRyhmät)
       .map(fillLaajuudet)
       .map(fillVieraatKielet)
       .map(clearVahvistukset)

@@ -210,6 +210,29 @@ class OppijaValidationAmmatillisenTutkinnonOsittainenUseastaTutkinnostaSuoritusS
     }
 
     "Tutkinnon osan tutkinto" - {
+      "Tutkinnon osan tutkinnon perusteen nimi täydennetään diaarinumeron perusteella" in {
+        val suoritus = osittainenSuoritusKesken.copy(
+          osaamisala = None,
+          tutkintonimike = None,
+          osasuoritukset = Some(List(
+            osittaisenTutkinnonTutkinnonOsanUseastaTutkinnostaSuoritus(h2, ammatillisetTutkinnonOsat, "106945", "Ajoneuvon huoltotyöt", 25).copy(
+              tutkinto = AmmatillinenTutkintoKoulutus(
+                Koodistokoodiviite("351301", Some(finnish("Ajoneuvoalan perustutkinto")), "koulutus", None),
+                perusteenDiaarinumero = Some("OPH-5410-2021"),
+                perusteenNimi = None
+              )
+            )
+          ))
+        )
+
+        val oo = setupOppijaWithAndGetOpiskeluoikeus(makeOpiskeluoikeus(suoritus = suoritus))
+        oo.suoritukset.head match {
+          case s: AmmatillisenTutkinnonOsittainenUseastaTutkinnostaSuoritus =>
+            s.osasuoritusLista.size shouldBe 1
+            s.osasuoritusLista.head.tutkinto.perusteenNimi.get.get("fi") shouldBe "Ajoneuvoalan perustutkinto"
+        }
+      }
+
       "Tutkinnon osan tutkintoa ei voi siirtää ilman diaarinumeroa" in {
         val suoritus = osittainenSuoritusKesken.copy(
           osaamisala = None,
@@ -520,6 +543,50 @@ class OppijaValidationAmmatillisenTutkinnonOsittainenUseastaTutkinnostaSuoritusS
         )
         setupOppijaWithOpiskeluoikeus(makeOpiskeluoikeus(suoritus = suoritus)) {
           verifyResponseStatusOk()
+        }
+      }
+    }
+
+    "Tutkinnon osan ryhmä" - {
+      "Täydennetään yhteisen tutkinnon osan ryhmä automaattisesti tallennuksessa" in {
+        val suoritus = osittainenSuoritusKesken.copy(
+          osaamisala = None,
+          tutkintonimike = None,
+          osasuoritukset = Some(List(
+            yhteisenOsittaisenTutkinnonTutkinnonOsanUseastaTutkinnostaSuoritus(h2, None, "106728", "Matemaattis-luonnontieteellinen osaaminen", 12)
+          ))
+        )
+
+        val oo = setupOppijaWithAndGetOpiskeluoikeus(makeOpiskeluoikeus(suoritus = suoritus))
+        oo.suoritukset.length shouldBe 1
+        oo.suoritukset.foreach {
+          case s: AmmatillisenTutkinnonOsittainenUseastaTutkinnostaSuoritus =>
+            s.osasuoritusLista.length shouldBe 1
+            s.osasuoritusLista.foreach {
+              case os: YhteisenOsittaisenAmmatillisenTutkinnonTutkinnonosanUseastaTutkinnostaSuoritus =>
+                os.tutkinnonOsanRyhmä shouldBe yhteisetTutkinnonOsat
+            }
+        }
+      }
+
+      "Ei täydennetä muun tutkinnon osan ryhmää automaattisesti tallennuksessa ja sallitaan tyhjä tutkinnon osan ryhmä" in {
+        val suoritus = osittainenSuoritusKesken.copy(
+          osaamisala = None,
+          tutkintonimike = None,
+          osasuoritukset = Some(List(
+            osittaisenTutkinnonTutkinnonOsanUseastaTutkinnostaSuoritus(h2, None, "106945", "Ajoneuvon huoltotyöt", 25)
+          ))
+        )
+
+        val oo = setupOppijaWithAndGetOpiskeluoikeus(makeOpiskeluoikeus(suoritus = suoritus))
+        oo.suoritukset.length shouldBe 1
+        oo.suoritukset.foreach {
+          case s: AmmatillisenTutkinnonOsittainenUseastaTutkinnostaSuoritus =>
+            s.osasuoritusLista.length shouldBe 1
+            s.osasuoritusLista.foreach {
+              case os: MuunOsittaisenAmmatillisenTutkinnonTutkinnonosanUseastaTutkinnostaSuoritus =>
+                os.tutkinnonOsanRyhmä shouldBe None
+            }
         }
       }
     }
