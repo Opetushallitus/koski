@@ -96,4 +96,53 @@ class OppijaValidationNuortenPerusopetuksenOppiaineenOppimaaraSpec extends Tutki
       }
     }
   }
+
+  "luokka-aste sallitaan oppimäärän opiskeluoikeuksille, joilla on VSOP true" - {
+    "voi lisätä" in {
+      val vsop = defaultOpiskeluoikeus.copy(
+        lisätiedot = Some(PerusopetuksenOpiskeluoikeudenLisätiedot(vuosiluokkiinSitoutumatonOpetus = Some(true))),
+        suoritukset = List(NuortenPerusopetuksenOppiaineenOppimääränSuoritus(koulutusmoduuli = MuuNuortenPerusopetuksenOppiaine(tunniste = Koodistokoodiviite("MA", "koskioppiaineetyleissivistava"),
+          perusteenDiaarinumero = Some("104/011/2014")),
+            toimipiste = jyväskylänNormaalikoulu,
+            arviointi = PerusopetusExampleData.arviointi(9),
+            luokkaAste = perusopetuksenLuokkaAste("4"),
+            suoritustapa = PerusopetusExampleData.suoritustapaKoulutus,
+            vahvistus = None,
+            suorituskieli = suomenKieli
+          )
+        )
+      )
+      setupOppijaWithOpiskeluoikeus(vsop) {
+        verifyResponseStatus(200)
+      }
+    }
+  }
+
+  "luokka-aste sallitaan opiskeluoikeuksille, joilla suoritustapa on erityinentutkinto" - {
+    "voi lisätä" in {
+      val vsop = defaultOpiskeluoikeus.copy(
+        lisätiedot = Some(PerusopetuksenOpiskeluoikeudenLisätiedot(
+          vuosiluokkiinSitoutumatonOpetus = Some(false)
+        )),
+        suoritukset = List(
+          NuortenPerusopetuksenOppiaineenOppimääränSuoritus(
+            koulutusmoduuli = MuuNuortenPerusopetuksenOppiaine(
+              tunniste = Koodistokoodiviite("MA", "koskioppiaineetyleissivistava"),
+              perusteenDiaarinumero = Some("104/011/2014")
+            ),
+            toimipiste = jyväskylänNormaalikoulu,
+            arviointi = PerusopetusExampleData.arviointi(9),
+            luokkaAste = perusopetuksenLuokkaAste("4"),
+            suoritustapa = Koodistokoodiviite("erityinentutkinto", "perusopetuksensuoritustapa"),
+            vahvistus = None,
+            suorituskieli = suomenKieli
+          )
+        )
+      )
+      setupOppijaWithOpiskeluoikeus(vsop) {
+        verifyResponseStatus(200)
+      }
+    }
+  }
+
 }
