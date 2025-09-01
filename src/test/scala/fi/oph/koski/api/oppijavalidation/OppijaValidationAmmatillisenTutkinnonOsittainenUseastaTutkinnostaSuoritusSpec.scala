@@ -536,11 +536,11 @@ class OppijaValidationAmmatillisenTutkinnonOsittainenUseastaTutkinnostaSuoritusS
       }
 
       "Vastaavaan opiskeluoikeuden voi lisätä samaan oppilaitokseen, kun se ei ole ajallisesti päällekkäin" in {
-        setupOppijaWithOpiskeluoikeus(AmmatillinenOsittainenUseistaTutkinnoista.osittainenPerustutkintoOpiskeluoikeus) {
+        setupOppijaWithOpiskeluoikeus(AmmatillinenOsittainenUseistaTutkinnoista.valmisUseastaTutkinnostaOpiskeluoikeus) {
           verifyResponseStatusOk()
         }
 
-        val myöhempiOpiskeluoikeus = AmmatillinenOsittainenUseistaTutkinnoista.osittainenPerustutkintoOpiskeluoikeus.copy(
+        val myöhempiOpiskeluoikeus = AmmatillinenOsittainenUseistaTutkinnoista.valmisUseastaTutkinnostaOpiskeluoikeus.copy(
           arvioituPäättymispäivä = Some(date(2024, 12, 31)),
           tila = AmmatillinenOpiskeluoikeudenTila(List(
             AmmatillinenOpiskeluoikeusjakso(date(2024, 6, 5), opiskeluoikeusLäsnä, Some(valtionosuusRahoitteinen)),

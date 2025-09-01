@@ -137,7 +137,10 @@ const oppijaToTableData =
         // Viimeisin oppivelvollisuuden suorittamiseen kelpaava opiskeluoikeus
         päättymispäiväValue(oo),
         viimeisinTilaValue(oo),
-        nullableKoulutustyyppiValue(oo?.suorituksenTyyppi),
+        nullableKoulutustyyppiValue(
+          oo?.suorituksenTyyppi,
+          oo?.koulutusmoduulinTunniste,
+        ),
         nullableValue(getLocalizedMaybe(oo?.toimipiste)),
         // Oppivelvollisuuden keskeytys
         oppivelvollisuudenKeskeytysValue(oppija.oppivelvollisuudenKeskeytys),

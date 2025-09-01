@@ -148,6 +148,8 @@ const OpiskeluhistoriaOpinto = ({
   const nimi = opiskeluoikeus.tarkasteltavaPäätasonSuoritus
     ? suorituksenTyyppiToKoulutustyyppi(
         opiskeluoikeus.tarkasteltavaPäätasonSuoritus.suorituksenTyyppi,
+        opiskeluoikeus.tarkasteltavaPäätasonSuoritus.koulutusmoduuli.tunniste
+          .koodiarvo,
       )
     : t("Opiskeluoikeus")
 

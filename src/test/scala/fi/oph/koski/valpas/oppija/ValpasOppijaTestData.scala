@@ -1387,6 +1387,25 @@ object ValpasOppijaTestData {
       ),
     ),
     (
+      ValpasMockOppijat.valmistunutAmiksenOsittainenUseastaTutkinnosta,
+      List(
+        ExpectedData(
+          ValpasOpiskeluoikeusExampleData.ammattikouluValmistunutOsittainenUseastaTutkinnostaOpiskeluoikeus,
+          onHakeutumisValvottavaOpiskeluoikeus = false,
+          onHakeutumisvalvovaOppilaitos = false,
+          onSuorittamisvalvovaOppilaitos = true,
+          perusopetuksenJälkeinenTiedot = Some(ExpectedDataPerusopetuksenJälkeinenTiedot("valmistunut", "valmistunut")),
+        ),
+        ExpectedData(
+          ValpasOpiskeluoikeusExampleData.valmistunutYsiluokkalainenSaksalainenKoulu,
+          onHakeutumisValvottavaOpiskeluoikeus = false,
+          onHakeutumisvalvovaOppilaitos = false,
+          onSuorittamisvalvovaOppilaitos = false,
+          perusopetusTiedot = Some(ExpectedDataPerusopetusTiedot("valmistunut", "valmistunut")),
+        ),
+      ),
+    ),
+    (
       ValpasMockOppijat.lukionAineOpinnotJaAmmatillisia,
       List(ExpectedData( // Ei todellisuudessa suorittamisvalvottava, mutta haluttiin näkyville käyttäliittymään vuonna 2025
         ValpasOpiskeluoikeusExampleData.lukionAineopintojenOpiskeluoikeusAlkaa2021Syksyllä(None),

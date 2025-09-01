@@ -5,6 +5,7 @@ export type Suorituksentyyppi = KoodistoKoodiviite<"suorituksentyyppi", string>
 
 export const suorituksenTyyppiToKoulutustyyppi = (
   tyyppi: Suorituksentyyppi,
+  koulutusmoduulinTunniste?: string,
 ): string => {
   if (tyyppi.koodiarvo === "valma") {
     return t("koulutustyyppi_valma")
@@ -29,6 +30,12 @@ export const suorituksenTyyppiToKoulutustyyppi = (
     return t("koulutustyyppi_aikuistenperusopetus")
   } else if (tyyppi.koodiarvo === "tuvakoulutuksensuoritus") {
     return t("koulutustyyppi_tuva")
+  } else if (
+    !!koulutusmoduulinTunniste &&
+    koulutusmoduulinTunniste ===
+      "ammatillinentutkintoosittainenuseastatutkinnosta"
+  ) {
+    return t("koulutustyyppi_ammatillinenosittainenuseastatutkinnosta")
   } else {
     return getLocalizedMaybe(tyyppi.nimi) || tyyppi.koodiarvo
   }
