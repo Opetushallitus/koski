@@ -132,6 +132,12 @@ object AuditLogMockData extends Logging {
       raw = rawAuditlog("dataAccess", "varda")
     ),
     MockData(
+      studentOid = KoskiSpecificMockOppijat.eskari.oid,
+      time = "2026-01-12T20:31:32.104+03",
+      organizationOid = List(MockOrganisaatiot.jyväskylänYliopisto),
+      raw = rawAuditlog("readData", "kitu")
+    ),
+    MockData(
       studentOid = KoskiSpecificMockOppijat.ammattilainen.oid,
       time = "2001-01-12T20:31:32.104+03",
       organizationOid = List("self"),

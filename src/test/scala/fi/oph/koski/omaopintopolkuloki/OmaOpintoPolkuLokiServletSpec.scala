@@ -26,9 +26,9 @@ class OmaOpintoPolkuLokiServletSpec extends AnyFreeSpec with Matchers with Koski
         List(MockOrganisaatiot.ressunLukio)
       ))
     }
-    "Näytetään Vardasta peräisin olevia auditlogeja" in {
+    "Näytetään Vardasta ja kielitutkintorekisteristä peräisin olevia auditlogeja" in {
       auditlogs(KoskiSpecificMockOppijat.eskari).map(_.organizations.map(_.oid)) should contain theSameElementsAs(List(
-        List(MockOrganisaatiot.päiväkotiTouhula)
+        List(MockOrganisaatiot.päiväkotiTouhula), List(MockOrganisaatiot.jyväskylänYliopisto)
       ))
     }
     "Näytetään YTR_OPISKELUOIKEUS_KATSOMINEN- ja MUUTOSHISTORIA_KATSOMINEN -auditlogeja" in {
