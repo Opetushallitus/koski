@@ -1,7 +1,7 @@
 package fi.oph.koski.eperusteetvalidation
 
 import fi.oph.koski.koodisto.KoodistoViitePalvelu
-import fi.oph.koski.schema.{KoskeenTallennettavaOpiskeluoikeus, Koulutus, Koulutusmoduuli, PäätasonSuoritus}
+import fi.oph.koski.schema.{Koodistokoodiviite, KoskeenTallennettavaOpiskeluoikeus, Koulutus, Koulutusmoduuli, PäätasonSuoritus}
 import fi.oph.koski.tutkinto.Koulutustyyppi.Koulutustyyppi
 import fi.oph.koski.tutkinto.TutkintoRepository
 import mojave._
@@ -10,6 +10,7 @@ class EPerusteetValidationUtils(
   tutkintoRepository: TutkintoRepository,
   koodistoViitePalvelu: KoodistoViitePalvelu
 ) {
+  val yhteinenTutkinnonOsanRyhmä = Koodistokoodiviite("2", "ammatillisentutkinnonosanryhma")
 
   def haeKoulutustyyppi(diaarinumero: String): Option[Koulutustyyppi] =
   // Lue koulutustyyppi aina uusimmasta perusteesta. Käytännössä samalla diaarinumerolla

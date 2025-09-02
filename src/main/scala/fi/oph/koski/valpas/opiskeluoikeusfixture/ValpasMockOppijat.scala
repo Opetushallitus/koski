@@ -1,6 +1,5 @@
 package fi.oph.koski.valpas.opiskeluoikeusfixture
 
-import fi.oph.koski.henkilo.KoskiSpecificMockOppijat.koskiSpecificOppijat
 import fi.oph.koski.henkilo.{MockOppijat, OppijanKuntahistoria, OppijanumerorekisteriKotikuntahistoriaRow}
 import fi.oph.koski.valpas.valpasuser.ValpasMockUsers
 
@@ -253,6 +252,9 @@ object ValpasMockOppijat {
     kutsumanimi = Some("Kutsu"),
     kotikunta = Some("091"),
   )
+
+  val valmistunutAmiksenOsittainenUseastaTutkinnosta = valpasOppijat.oppijaSyntymäaikaHetusta("Amis-valmistunut-osittainen-useasta-tutkinnosta", "Valpas", "110205A632C", kotikunta = Some("624"))
+  val valmistunutAmiksenOsittainenUseastaTutkinnostaUusiOo = valpasOppijat.oppijaSyntymäaikaHetusta("Amis-valmistunut-osittainen-useasta-tutkinnosta-ja-uusi-opiskeluoikeus", "Valpas", "250405A616H", kotikunta = Some("624"))
 
   def defaultOppijat = valpasOppijat.getOppijat
   def defaultKuntahistoriat = valpasOppijat.getKuntahistoriat

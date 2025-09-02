@@ -15,6 +15,10 @@ import {
   isAmmatillisenTutkinnonOsittainenSuoritus
 } from './AmmatillisenTutkinnonOsittainenSuoritus'
 import {
+  AmmatillisenTutkinnonOsittainenUseastaTutkinnostaSuoritus,
+  isAmmatillisenTutkinnonOsittainenUseastaTutkinnostaSuoritus
+} from './AmmatillisenTutkinnonOsittainenUseastaTutkinnostaSuoritus'
+import {
   AmmatillisenTutkinnonSuoritus,
   isAmmatillisenTutkinnonSuoritus
 } from './AmmatillisenTutkinnonSuoritus'
@@ -215,6 +219,7 @@ export type PäätasonSuoritus =
   | AikuistenPerusopetuksenOppiaineenOppimääränSuoritus
   | AikuistenPerusopetuksenOppimääränSuoritus
   | AmmatillisenTutkinnonOsittainenSuoritus
+  | AmmatillisenTutkinnonOsittainenUseastaTutkinnostaSuoritus
   | AmmatillisenTutkinnonSuoritus
   | DIATutkinnonSuoritus
   | DIAValmistavanVaiheenSuoritus
@@ -270,6 +275,7 @@ export const isPäätasonSuoritus = (a: any): a is PäätasonSuoritus =>
   isAikuistenPerusopetuksenOppiaineenOppimääränSuoritus(a) ||
   isAikuistenPerusopetuksenOppimääränSuoritus(a) ||
   isAmmatillisenTutkinnonOsittainenSuoritus(a) ||
+  isAmmatillisenTutkinnonOsittainenUseastaTutkinnostaSuoritus(a) ||
   isAmmatillisenTutkinnonSuoritus(a) ||
   isDIATutkinnonSuoritus(a) ||
   isDIAValmistavanVaiheenSuoritus(a) ||

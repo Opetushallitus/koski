@@ -142,6 +142,7 @@ case class MigriOsasuoritus(
   arviointi: Option[List[MigriArviointi]],
   tyyppi: Koodistokoodiviite,
   tutkinnonOsanRyhmä: Option[Koodistokoodiviite],
+  tutkinto: Option[MigriSuorituksenKoulutusmoduuli],
   tunnustettu: Option[MigriOsaamisenTunnustaminen],
   lisätiedot: Option[List[AmmatillisenTutkinnonOsanLisätieto]], //vain jos lisätiedoissta löytyy koodiarvo "mukautettu"
   osasuoritukset: Option[List[MigriOsasuorituksenOsasuoritus]],

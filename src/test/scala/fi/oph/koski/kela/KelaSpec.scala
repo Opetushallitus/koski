@@ -1022,6 +1022,44 @@ class KelaSpec
     }
   }
 
+  "Palauttaa ammatillisen tutkinnon osan/osien suorituksen useasta tutkinnosta" in {
+    postHetu(KoskiSpecificMockOppijat.osittainenAmmattitutkintoUseastaTutkinnostaValmis.hetu.get, user = MockUsers.kelaLaajatOikeudet) {
+      verifyResponseStatusOk()
+
+      val oppija = JsonSerializer.parse[KelaOppija](body)
+      val osittainenUseastaTutkinnostaOpiskeluoikeus = oppija.opiskeluoikeudet collect {
+        case x: KelaAmmatillinenOpiskeluoikeus => x
+      }
+      osittainenUseastaTutkinnostaOpiskeluoikeus.length shouldBe 1
+      osittainenUseastaTutkinnostaOpiskeluoikeus.head.suoritukset.length shouldBe 1
+      val osittainenUseastaTutkinnostaSuoritus = osittainenUseastaTutkinnostaOpiskeluoikeus.head.suoritukset.head
+      osittainenUseastaTutkinnostaOpiskeluoikeus.head.lisätiedot.get.majoitus.get.nonEmpty shouldBe true
+
+      osittainenUseastaTutkinnostaSuoritus.koulutusmoduuli.tunniste.koodiarvo shouldBe "ammatillinentutkintoosittainenuseastatutkinnosta"
+      osittainenUseastaTutkinnostaSuoritus.koulutusmoduuli.tunniste.koodistoUri shouldBe Some("suorituksentyyppi")
+      osittainenUseastaTutkinnostaSuoritus.tyyppi.koodiarvo shouldBe "ammatillinentutkintoosittainen"
+      osittainenUseastaTutkinnostaSuoritus.vahvistus.nonEmpty shouldBe true
+
+      val tutkinnonOsat = osittainenUseastaTutkinnostaSuoritus.osasuoritukset.getOrElse(List.empty)
+      tutkinnonOsat.length shouldBe 7
+      tutkinnonOsat.flatMap(_.tutkinto).length shouldBe 7
+      tutkinnonOsat.flatMap(_.tutkinto.flatMap(_.perusteenDiaarinumero)).length shouldBe 7
+      tutkinnonOsat.flatMap(_.arviointi).flatten.length shouldBe 7
+      tutkinnonOsat.flatMap(os => os.arviointi.getOrElse(List.empty)).foreach(a => {
+        a.arvosana should be (None)
+        a.hyväksytty.isDefined shouldBe true
+      })
+
+      val tutkinnonOsienOsaAlueet = tutkinnonOsat.flatMap(_.osasuoritukset.getOrElse(List.empty))
+      tutkinnonOsienOsaAlueet.length shouldBe 15
+      tutkinnonOsienOsaAlueet.flatMap(_.arviointi).flatten.length shouldBe 15
+      tutkinnonOsienOsaAlueet.flatMap(os => os.arviointi.getOrElse(List.empty)).foreach(a => {
+        a.arvosana should be (None)
+        a.hyväksytty.isDefined shouldBe true
+      })
+    }
+  }
+
   private def getHetu[A](hetu: String, user: MockUser = MockUsers.kelaSuppeatOikeudet)(f: => A)= {
     authGet(s"kela/$hetu", user)(f)
   }

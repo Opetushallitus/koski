@@ -43,6 +43,10 @@ import {
   isAmmatillisenTutkinnonOsittainenSuoritus
 } from './AmmatillisenTutkinnonOsittainenSuoritus'
 import {
+  AmmatillisenTutkinnonOsittainenUseastaTutkinnostaSuoritus,
+  isAmmatillisenTutkinnonOsittainenUseastaTutkinnostaSuoritus
+} from './AmmatillisenTutkinnonOsittainenUseastaTutkinnostaSuoritus'
+import {
   AmmatillisenTutkinnonSuoritus,
   isAmmatillisenTutkinnonSuoritus
 } from './AmmatillisenTutkinnonSuoritus'
@@ -265,6 +269,10 @@ import {
   MuunOsittaisenAmmatillisenTutkinnonTutkinnonosanSuoritus,
   isMuunOsittaisenAmmatillisenTutkinnonTutkinnonosanSuoritus
 } from './MuunOsittaisenAmmatillisenTutkinnonTutkinnonosanSuoritus'
+import {
+  MuunOsittaisenAmmatillisenTutkinnonTutkinnonosanUseastaTutkinnostaSuoritus,
+  isMuunOsittaisenAmmatillisenTutkinnonTutkinnonosanUseastaTutkinnostaSuoritus
+} from './MuunOsittaisenAmmatillisenTutkinnonTutkinnonosanUseastaTutkinnostaSuoritus'
 import {
   NuortenPerusopetuksenOppiaineenOppimääränSuoritus,
   isNuortenPerusopetuksenOppiaineenOppimääränSuoritus
@@ -612,6 +620,10 @@ import {
   isYhteisenOsittaisenAmmatillisenTutkinnonTutkinnonosanSuoritus
 } from './YhteisenOsittaisenAmmatillisenTutkinnonTutkinnonosanSuoritus'
 import {
+  YhteisenOsittaisenAmmatillisenTutkinnonTutkinnonosanUseastaTutkinnostaSuoritus,
+  isYhteisenOsittaisenAmmatillisenTutkinnonTutkinnonosanUseastaTutkinnostaSuoritus
+} from './YhteisenOsittaisenAmmatillisenTutkinnonTutkinnonosanUseastaTutkinnostaSuoritus'
+import {
   YhteisenTutkinnonOsanOsaAlueenSuoritus,
   isYhteisenTutkinnonOsanOsaAlueenSuoritus
 } from './YhteisenTutkinnonOsanOsaAlueenSuoritus'
@@ -649,6 +661,7 @@ export type Suoritus =
   | AmmatillisenTutkinnonOsanJatkoOpintovalmiuksiaTukevienOpintojenSuoritus
   | AmmatillisenTutkinnonOsanKorkeakouluopintoSuoritus
   | AmmatillisenTutkinnonOsittainenSuoritus
+  | AmmatillisenTutkinnonOsittainenUseastaTutkinnostaSuoritus
   | AmmatillisenTutkinnonSuoritus
   | DIAOppiaineenTutkintovaiheenOsasuorituksenSuoritus
   | DIAOppiaineenTutkintovaiheenSuoritus
@@ -707,6 +720,7 @@ export type Suoritus =
   | MuunKuinSäännellynKoulutuksenOsasuoritus
   | MuunKuinSäännellynKoulutuksenPäätasonSuoritus
   | MuunOsittaisenAmmatillisenTutkinnonTutkinnonosanSuoritus
+  | MuunOsittaisenAmmatillisenTutkinnonTutkinnonosanUseastaTutkinnostaSuoritus
   | NuortenPerusopetuksenOppiaineenOppimääränSuoritus
   | NuortenPerusopetuksenOppiaineenSuoritus
   | NuortenPerusopetuksenOppiaineenSuoritusValmistavassaOpetuksessa
@@ -795,6 +809,7 @@ export type Suoritus =
   | VapaanSivistystyönVapaatavoitteisenKoulutuksenSuoritus
   | YhteisenAmmatillisenTutkinnonOsanSuoritus
   | YhteisenOsittaisenAmmatillisenTutkinnonTutkinnonosanSuoritus
+  | YhteisenOsittaisenAmmatillisenTutkinnonTutkinnonosanUseastaTutkinnostaSuoritus
   | YhteisenTutkinnonOsanOsaAlueenSuoritus
   | YleisenKielitutkinnonOsakokeenSuoritus
   | YleisenKielitutkinnonSuoritus
@@ -815,6 +830,7 @@ export const isSuoritus = (a: any): a is Suoritus =>
   ) ||
   isAmmatillisenTutkinnonOsanKorkeakouluopintoSuoritus(a) ||
   isAmmatillisenTutkinnonOsittainenSuoritus(a) ||
+  isAmmatillisenTutkinnonOsittainenUseastaTutkinnostaSuoritus(a) ||
   isAmmatillisenTutkinnonSuoritus(a) ||
   isDIAOppiaineenTutkintovaiheenOsasuorituksenSuoritus(a) ||
   isDIAOppiaineenTutkintovaiheenSuoritus(a) ||
@@ -875,6 +891,9 @@ export const isSuoritus = (a: any): a is Suoritus =>
   isMuunKuinSäännellynKoulutuksenOsasuoritus(a) ||
   isMuunKuinSäännellynKoulutuksenPäätasonSuoritus(a) ||
   isMuunOsittaisenAmmatillisenTutkinnonTutkinnonosanSuoritus(a) ||
+  isMuunOsittaisenAmmatillisenTutkinnonTutkinnonosanUseastaTutkinnostaSuoritus(
+    a
+  ) ||
   isNuortenPerusopetuksenOppiaineenOppimääränSuoritus(a) ||
   isNuortenPerusopetuksenOppiaineenSuoritus(a) ||
   isNuortenPerusopetuksenOppiaineenSuoritusValmistavassaOpetuksessa(a) ||
@@ -995,6 +1014,9 @@ export const isSuoritus = (a: any): a is Suoritus =>
   isVapaanSivistystyönVapaatavoitteisenKoulutuksenSuoritus(a) ||
   isYhteisenAmmatillisenTutkinnonOsanSuoritus(a) ||
   isYhteisenOsittaisenAmmatillisenTutkinnonTutkinnonosanSuoritus(a) ||
+  isYhteisenOsittaisenAmmatillisenTutkinnonTutkinnonosanUseastaTutkinnostaSuoritus(
+    a
+  ) ||
   isYhteisenTutkinnonOsanOsaAlueenSuoritus(a) ||
   isYleisenKielitutkinnonOsakokeenSuoritus(a) ||
   isYleisenKielitutkinnonSuoritus(a) ||

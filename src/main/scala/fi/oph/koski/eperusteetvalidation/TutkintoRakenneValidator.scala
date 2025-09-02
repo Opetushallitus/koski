@@ -118,6 +118,66 @@ case class TutkintoRakenneValidator(tutkintoRepository: TutkintoRepository, kood
               )
             )
         }
+      case suoritus: AmmatillisenTutkinnonOsittainenUseastaTutkinnostaSuoritus =>
+        if (suoritus.osasuoritusLista.nonEmpty) {
+          val diaarinumerot = suoritus.osasuoritusLista.flatMap(_.tutkinto.perusteenDiaarinumero).distinct
+          val kaikkiRakenteet = diaarinumerot.flatMap(diaarinumero => tutkintoRepository.findPerusteRakenteet(diaarinumero, Some(vaadittuPerusteenVoimassaolopäivä)))
+          HttpStatus.fold(
+            suoritus.osaamisala.toList.flatten.map(o => validateOsaamisala(o.osaamisala, kaikkiRakenteet))
+              ++ suoritus.tutkintonimike.toList.flatten.map(t => validateTutkintonimike(t, kaikkiRakenteet))
+              ++ suoritus.osasuoritusLista.map {
+                case os if os.tunnustettu.isDefined => validateTutkinnonOsanTutkinto(os, None)
+                case os => validateTutkinnonOsanTutkinto(os, Some(vaadittuPerusteenVoimassaolopäivä))
+              }
+          ).onSuccess(
+            HttpStatus.fold(
+              suoritus
+                .osasuoritusLista
+                // Suodata pois vapaavalintaiset tai yksilöllisesti tutkintoa laajentavat osat, ei validoida rakennetta
+                .filterNot(os => os.tutkinnonOsanRyhmä.exists(ryhmä => List("3", "4").contains(ryhmä.koodiarvo)))
+                .flatMap { os => os.koulutusmoduuli match {
+                  case osa: ValtakunnallinenTutkinnonOsa =>
+                    val tutkinnonRakenteet = os.tunnustettu match {
+                      case None => os.tutkinto.perusteenDiaarinumero.map(d => tutkintoRepository.findPerusteRakenteet(d, Some(vaadittuPerusteenVoimassaolopäivä)))
+                      case Some(_) => os.tutkinto.perusteenDiaarinumero.map(d => tutkintoRepository.findPerusteRakenteet(d, None))
+                    }
+
+                    val tulokset = tutkinnonRakenteet.getOrElse(List.empty)
+                      .filter(r => os.tutkinto.perusteenDiaarinumero.contains(r.diaarinumero))
+                      .map { rakenne =>
+                        val suoritusTapaJaRakenne = rakenne.findSuoritustapaJaRakenne(suoritus.suoritustapa)
+                          .orElse {
+                            // Jos reformin mukainen suoritus, mutta vastaavan suoritustavan mukaista rakennetta ei löydy, päätellään toinen suoritustapa
+                            if (suoritus.suoritustapa == Suoritustapa.reformi) rakenne.koulutustyyppi match {
+                              case Koulutustyyppi.ammattitutkinto | Koulutustyyppi.erikoisammattitutkinto => rakenne.findSuoritustapaJaRakenne(Suoritustapa.naytto)
+                              case k if Koulutustyyppi.ammatillisenPerustutkinnonTyypit.contains(k) => rakenne.findSuoritustapaJaRakenne(Suoritustapa.ops)
+                              case _ => None
+                            } else None
+                          }
+
+                        suoritusTapaJaRakenne match {
+                          case Some(suoritustapaJaRakenne) =>
+                            findTutkinnonOsa(suoritustapaJaRakenne, osa.tunniste) match {
+                              case None =>
+                                KoskiErrorCategory.badRequest.validation.rakenne.tuntematonTutkinnonOsa(s"Tutkinnon osa ${osa.tunniste} ei löydy tutkintorakenteesta opiskeluoikeuden voimassaoloaikana voimassaolleelle perusteelle ${rakenne.diaarinumero} (${rakenne.id})")
+                              case Some(tutkinnonOsa) =>
+                                validateLaajuusJaOsaAlueet(os, tutkinnonOsa, oo, suoritus, rakenne)
+                            }
+                          case None =>
+                            KoskiErrorCategory.badRequest.validation.rakenne.suoritustapaaEiLöydyRakenteesta(s"Suoritustapaa ei löydy tutkinnon rakenteesta opiskeluoikeuden voimassaoloaikana voimassaolleelle perusteelle ${rakenne.diaarinumero} (${rakenne.id})")
+                        }
+                      }
+                    if (tulokset.exists(_.isOk)) {
+                      List(HttpStatus.ok)
+                    } else {
+                      tulokset
+                    }
+                  case _ => List(HttpStatus.ok)
+                }
+              }
+            )
+          )
+        } else HttpStatus.ok
       case s: LukionPäätasonSuoritus2019 =>
         HttpStatus.justStatus(
           validateKoulutustyypitJaHaeRakenteet(s.koulutusmoduuli, Some(lukionKoulutustyypit), Some(vaadittuPerusteenVoimassaolopäivä))
@@ -177,7 +237,10 @@ case class TutkintoRakenneValidator(tutkintoRepository: TutkintoRepository, kood
     }
   }
 
-  private def validateTutkintoField(tutkintoSuoritus: AmmatillisenTutkinnonOsittainenTaiKokoSuoritus, osaSuoritus: TutkinnonOsanSuoritus) = (tutkintoSuoritus.koulutusmoduuli.perusteenDiaarinumero, osaSuoritus.tutkinto.flatMap(_.perusteenDiaarinumero)) match {
+  private def validateTutkintoField(
+    tutkintoSuoritus: AmmatillisenTutkinnonOsittainenTaiKokoTutkintoKolutuksenSuoritus,
+    osaSuoritus: MahdollisestiToiseenTutkintoonLiittyväTutkinnonOsanSuoritus
+  ): HttpStatus = (tutkintoSuoritus.koulutusmoduuli.perusteenDiaarinumero, osaSuoritus.tutkinto.flatMap(_.perusteenDiaarinumero)) match {
     case (Some(tutkinnonDiaari), Some(osanDiaari)) if tutkinnonDiaari == osanDiaari =>
       KoskiErrorCategory.badRequest.validation.rakenne.samaTutkintokoodi(s"Tutkinnon osalle ${osaSuoritus.koulutusmoduuli.tunniste} on merkitty tutkinto, jossa on sama diaarinumero $tutkinnonDiaari kuin tutkinnon suorituksessa")
     case _ =>
@@ -303,15 +366,31 @@ case class TutkintoRakenneValidator(tutkintoRepository: TutkintoRepository, kood
     }
   }
 
-  private def validateTutkinnonOsanTutkinto(suoritus: TutkinnonOsanSuoritus, vaadittuPerusteenVoimassaolopäivä: Option[LocalDate]) = {
+  private def validateOsaamisala(osaamisala: Koodistokoodiviite, rakenteet: List[TutkintoRakenne]): HttpStatus = {
+    HttpStatus.validate(rakenteet.exists(rakenne => findOsaamisala(rakenne, osaamisala.koodiarvo).nonEmpty))(
+      KoskiErrorCategory.badRequest.validation.rakenne.tuntematonOsaamisala(s"Osaamisalalle ${osaamisala.koodiarvo} ei löydy tutkintorakenteesta opiskeluoikeuden voimassaoloaikana voimassaollutta perustetta.")
+    )
+  }
+
+  private def validateTutkintonimike(tutkintonimike: Koodistokoodiviite, rakenteet: List[TutkintoRakenne]): HttpStatus = {
+    HttpStatus.validate(rakenteet.exists(rakenne => findTutkintonimike(rakenne, tutkintonimike.koodiarvo).nonEmpty))(
+      KoskiErrorCategory.badRequest.validation.rakenne.tuntematonTutkintonimike(s"Tutkintonimikkeelle ${tutkintonimike.nimi.map(_.get("fi")).getOrElse("Tuntematon nimi")}(${tutkintonimike.koodiarvo}) ei löydy tutkintorakenteesta opiskeluoikeuden voimassaoloaikana voimassaollutta perustetta.")
+    )
+  }
+
+  private def validateTutkinnonOsanTutkinto(suoritus: MahdollisestiToiseenTutkintoonLiittyvä, vaadittuPerusteenVoimassaolopäivä: Option[LocalDate]) = {
     suoritus.tutkinto match {
       case Some(tutkinto) => HttpStatus.justStatus(validateKoulutustyypitJaHaeRakenteet(tutkinto, Some(ammatillisetKoulutustyypit), vaadittuPerusteenVoimassaolopäivä))
       case None => HttpStatus.ok
     }
   }
 
+  private def validateTutkinnonOsanTutkinto(suoritus: ToiseenTutkintoonLiittyvä, vaadittuPerusteenVoimassaolopäivä: Option[LocalDate]) = {
+    HttpStatus.justStatus(validateKoulutustyypitJaHaeRakenteet(suoritus.tutkinto, Some(ammatillisetKoulutustyypit), vaadittuPerusteenVoimassaolopäivä))
+  }
+
   private def validateTutkinnonOsa(
-    suoritus: TutkinnonOsanSuoritus,
+    suoritus: MahdollisestiToiseenTutkintoonLiittyväTutkinnonOsanSuoritus,
     osa: ValtakunnallinenTutkinnonOsa,
     rakenne: TutkintoRakenne,
     suoritustapa: Koodistokoodiviite,

@@ -1,9 +1,22 @@
 # Koskeen tallennettavien tietojen validaatiosäännöt
+
+## 2.9.2025
+- Lisätty validaatioita uudelle päätason suoritukselle: ammatillisen tutkinnon osan/osien suoritus useasta tutkinnosta.
+- Suorituksen osaamisaloja vastaavat tutkinnot on löydyttävä osasuorituksista.
+- Suorituksen tutkintonimikkeitä vastaavat tutkinnot on löydyttävä osasuorituksista.
+- Osasuorituksen tutkinnolla on oltava perusteen diaarinumero, jolle vastaava peruste on olemassa opiskeluoikeuden voimassaolon aikana.
+- Tunnustetun osasuorituksen tutkinnolla on oltava perusteen diaarinumero, jolle vastaava peruste on olemassa.
+- Osasuoritusten ja aliosasuoritusten rakenne ja laajuudet on oltava tutkintoa vastaavien perusteiden mukaiset.
+- Duplikaattivalidaatio: samaan oppilaitokseen ei voi lisätä päällekkäistä opiskeluoikeutta ammatillisen tutkinnon osan/osien suoritukselle useasta tutkinnosta.
+- Tutkinnon osan ryhmä täydennetään tallennettaessa automaattisesti yhteisille tutkinnon osan suorituksille.
+
 ## 2.9.2025
 - Korjattu perusopetuksen yksilöllistetyn oppimäärän validaatiota siten, että suorituksen voi vahvistaa vielä viimeisenä yksilöllistetyn oppimäärän käyttöpäivänä.
+
 ## 27.8.2025
  - Lisätty validaatio IB oppiaineen suoritusten laajuuksille. Uusille suorituksille ei sallita tunteja laajuudeksi
  - Poistettiin arvosanojen validointi IBDPCore ossuorituksilta
+
 ## 20.8.2025
 - Lisätty ePeruste rakennevalidaatio myös ammatillisen osittaiseen tutkintoon
 

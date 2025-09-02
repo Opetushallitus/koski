@@ -36,7 +36,12 @@ export const nullableDateValue = (date: ISODate | undefined): Value => ({
 
 export const nullableKoulutustyyppiValue = (
   tyyppi: Suorituksentyyppi | undefined,
-): Value => nullableValue(tyyppi && suorituksenTyyppiToKoulutustyyppi(tyyppi))
+  koulutusmoduulinTunniste?: string,
+): Value =>
+  nullableValue(
+    tyyppi &&
+      suorituksenTyyppiToKoulutustyyppi(tyyppi, koulutusmoduulinTunniste),
+  )
 
 export const oppijanNimiValue =
   (urlBackRef: keyof OppijaPathBackRefs) =>

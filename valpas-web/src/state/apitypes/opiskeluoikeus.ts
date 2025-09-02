@@ -79,7 +79,16 @@ export type OikeuttaMaksuttomuuteenPidennetty = {
   loppu: ISODate
 }
 
+export type KoodiViite = {
+  koodiarvo: string
+}
+
+export type Koulutusmoduuli = {
+  tunniste: KoodiViite
+}
+
 export type PäätasonSuoritus = {
+  koulutusmoduuli: Koulutusmoduuli
   toimipiste: Toimipiste
   ryhmä?: string
   suorituksenTyyppi: Suorituksentyyppi

@@ -3,7 +3,7 @@ package fi.oph.koski.valpas
 import java.time.LocalDate.{of => date}
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.schema.{Finnish, Koodistokoodiviite}
-import fi.oph.koski.valpas.opiskeluoikeusrepository.{ValpasHenkilöLaajatTiedot, ValpasOpiskeluoikeus, ValpasOpiskeluoikeusLaajatTiedot, ValpasOpiskeluoikeusPerusopetusLaajatTiedot, ValpasOppijaLaajatTiedot, ValpasOppilaitos, ValpasOppivelvollinenOppijaLaajatTiedot, ValpasPäätasonSuoritus, ValpasToimipiste}
+import fi.oph.koski.valpas.opiskeluoikeusrepository.{ValpasHenkilöLaajatTiedot, ValpasKoulutusmoduuli, ValpasOpiskeluoikeus, ValpasOpiskeluoikeusLaajatTiedot, ValpasOpiskeluoikeusPerusopetusLaajatTiedot, ValpasOppilaitos, ValpasOppivelvollinenOppijaLaajatTiedot, ValpasPäätasonSuoritus, ValpasToimipiste}
 import fi.oph.koski.valpas.oppija.{ValpasAccessResolver, ValpasErrorCategory}
 import fi.oph.koski.valpas.valpasuser.ValpasRooli
 
@@ -117,6 +117,7 @@ class ValpasAccessResolverSpec extends ValpasTestBase {
     oid : ValpasOpiskeluoikeus.Oid,
     opiskeluoikeudenTyyppi: String = "lukiokoulutus",
     suorituksenTyyppi: String = "lukionoppimaara",
+    koulutusmoduulinTunniste: String = "309902",
     oppilaitosOid:  ValpasOppilaitos.Oid,
     onHakeutumisValvottava: Boolean = false,
     onSuorittamisValvottava: Boolean = false
@@ -145,6 +146,9 @@ class ValpasAccessResolverSpec extends ValpasTestBase {
     oppivelvollisuudenSuorittamiseenKelpaava = true,
     päätasonSuoritukset = Seq(
       ValpasPäätasonSuoritus(
+        koulutusmoduuli = ValpasKoulutusmoduuli(
+          tunniste = Koodistokoodiviite(koulutusmoduulinTunniste, "koulutus")
+        ),
         toimipiste = ValpasToimipiste(
           oid = oppilaitosOid,
           nimi = Finnish("Oppilaitoksen nimi")
