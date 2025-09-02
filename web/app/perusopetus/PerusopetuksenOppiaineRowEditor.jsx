@@ -115,7 +115,7 @@ export class PerusopetuksenOppiaineRowEditor extends React.Component {
             </td>
           )}
           {edit && (
-            <td>
+            <td className="remove-row">
               <a className="remove-value" onClick={() => pushRemoval(model)} />
             </td>
           )}
