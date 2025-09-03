@@ -1,7 +1,7 @@
 {
   "id": 1573363,
   "globalVersion": {
-    "aikaleima": 1743673450277
+    "aikaleima": 1744102656559
   },
   "nimi": {
     "_id": "2055825",
@@ -56,9 +56,9 @@
   "siirtymaPaattyy": null,
   "voimassaoloLoppuu": null,
   "paatospvm": 1450303200000,
-  "viimeisinJulkaisuAika": 1633018845598,
+  "viimeisinJulkaisuAika": 1743673450277,
   "luotu": 1463732545010,
-  "muokattu": 1743667696339,
+  "muokattu": 1744102651072,
   "tila": "valmis",
   "tyyppi": "normaali",
   "koulutusvienti": false,

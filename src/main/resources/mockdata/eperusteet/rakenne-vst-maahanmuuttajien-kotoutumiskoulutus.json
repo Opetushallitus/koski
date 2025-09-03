@@ -48,7 +48,9 @@
         "esikatseltavissa": false,
         "voimassaoloAlkaa": 1328047200000,
         "voimassaoloLoppuu": null,
-        "_perusteprojekti": null
+        "_perusteprojekti": null,
+        "julkisivuJarjestysNro": null,
+        "piilotaJulkisivulta": null
       },
       "tavoite": {
         "_id": "7679026",

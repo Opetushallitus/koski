@@ -1,7 +1,7 @@
 {
   "id": 1372910,
   "globalVersion": {
-    "aikaleima": 1743674811563
+    "aikaleima": 1744102625626
   },
   "nimi": {
     "_id": "1431924",
@@ -60,9 +60,9 @@
   "siirtymaPaattyy": null,
   "voimassaoloLoppuu": null,
   "paatospvm": 1445896800000,
-  "viimeisinJulkaisuAika": 1633018035978,
+  "viimeisinJulkaisuAika": 1744017468899,
   "luotu": 1449736763749,
-  "muokattu": 1743667776630,
+  "muokattu": 1744102608527,
   "tila": "valmis",
   "tyyppi": "normaali",
   "koulutusvienti": false,
