@@ -14,22 +14,22 @@
   "koulutukset": [
     {
       "nimi": {
+        "fi": "Lukutaitokoulutus oppivelvollisille",
+        "sv": "Litteracitetsutbildning för läropliktiga"
+      },
+      "koulutuskoodiArvo": "999911",
+      "koulutuskoodiUri": "koulutus_999911",
+      "koulutusalakoodi": null,
+      "opintoalakoodi": null
+    },
+    {
+      "nimi": {
         "en": " Liberal adult education",
         "fi": "Vapaan sivistystyön koulutus",
         "sv": "Fritt bildningsarbete "
       },
       "koulutuskoodiArvo": "099999",
       "koulutuskoodiUri": "koulutus_099999",
-      "koulutusalakoodi": null,
-      "opintoalakoodi": null
-    },
-    {
-      "nimi": {
-        "fi": "Lukutaitokoulutus oppivelvollisille",
-        "sv": "Litteracitetsutbildning för läropliktiga"
-      },
-      "koulutuskoodiArvo": "999911",
-      "koulutuskoodiUri": "koulutus_999911",
       "koulutusalakoodi": null,
       "opintoalakoodi": null
     }
@@ -73,7 +73,9 @@
         "esikatseltavissa": false,
         "voimassaoloAlkaa": 1533070800000,
         "voimassaoloLoppuu": null,
-        "_perusteprojekti": null
+        "_perusteprojekti": null,
+        "julkisivuJarjestysNro": null,
+        "piilotaJulkisivulta": null
       },
       "tavoite": {
         "_id": "7675561",
