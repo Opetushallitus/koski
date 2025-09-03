@@ -2,6 +2,56 @@
   {
     "metadata": [
       {
+        "nimi": "Applies critical thinking and problem-solving skills",
+        "kuvaus": null,
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Applies critical thinking and problem-solving skills",
+        "kuvaus": null,
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Applies critical thinking and problem-solving skills",
+        "kuvaus": null,
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "europeanschoolofhelsinkiprimarylapsialaoppimisalue_appliescriticalthinkingandproblemsolvingskills",
+    "versio": 1,
+    "koodiArvo": "Applies critical thinking and problem-solving skills"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "Assesses his/her progress realistically",
+        "kuvaus": null,
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Assesses his/her progress realistically",
+        "kuvaus": null,
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Assesses his/her progress realistically",
+        "kuvaus": null,
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "europeanschoolofhelsinkiprimarylapsialaoppimisalue_assesseshisherprogressrealistically",
+    "versio": 1,
+    "koodiArvo": "Assesses his/her progress realistically"
+  },
+  {
+    "metadata": [
+      {
         "nimi": "Cooperates with others",
         "kuvaus": null,
         "kieli": "FI"
@@ -77,6 +127,31 @@
   {
     "metadata": [
       {
+        "nimi": "Enjoys engaging in learning",
+        "kuvaus": null,
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Enjoys engaging in learning",
+        "kuvaus": null,
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Enjoys engaging in learning",
+        "kuvaus": null,
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "europeanschoolofhelsinkiprimarylapsialaoppimisalue_enjoysengaginginlearning",
+    "versio": 1,
+    "koodiArvo": "Enjoys engaging in learning"
+  },
+  {
+    "metadata": [
+      {
         "nimi": "Evaluates own progress",
         "kuvaus": null,
         "kieli": "FI"
@@ -98,6 +173,56 @@
     "koodiUri": "europeanschoolofhelsinkiprimarylapsialaoppimisalue_evaluatesownprogress",
     "versio": 1,
     "koodiArvo": "Evaluates own progress"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "Focuses and sustains attention",
+        "kuvaus": null,
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Focuses and sustains attention",
+        "kuvaus": null,
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Focuses and sustains attention",
+        "kuvaus": null,
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "europeanschoolofhelsinkiprimarylapsialaoppimisalue_focusesandsustainsattention",
+    "versio": 1,
+    "koodiArvo": "Focuses and sustains attention"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "Is developing appropriate learning habits",
+        "kuvaus": null,
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Is developing appropriate learning habits",
+        "kuvaus": null,
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Is developing appropriate learning habits",
+        "kuvaus": null,
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "europeanschoolofhelsinkiprimarylapsialaoppimisalue_isdevelopingappropriatelearninghabits",
+    "versio": 1,
+    "koodiArvo": "Is developing appropriate learning habits"
   },
   {
     "metadata": [
@@ -152,6 +277,56 @@
   {
     "metadata": [
       {
+        "nimi": "Is achieving well in relation to his/her ability",
+        "kuvaus": null,
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Is achieving well in relation to his/her ability",
+        "kuvaus": null,
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Is achieving well in relation to his/her ability",
+        "kuvaus": null,
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "europeanschoolofhelsinkiprimarylapsialaoppimisalue_lsachievingwellinrelationtohisherability",
+    "versio": 1,
+    "koodiArvo": "Is achieving well in relation to his/her ability"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "Makes connections across subjects",
+        "kuvaus": null,
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Makes connections across subjects",
+        "kuvaus": null,
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Makes connections across subjects",
+        "kuvaus": null,
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "europeanschoolofhelsinkiprimarylapsialaoppimisalue_makesconnectionsacrosssubjects",
+    "versio": 1,
+    "koodiArvo": "Makes connections across subjects"
+  },
+  {
+    "metadata": [
+      {
         "nimi": "Manages and expresses own feelings",
         "kuvaus": null,
         "kieli": "FI"
@@ -198,6 +373,31 @@
     "koodiUri": "europeanschoolofhelsinkiprimarylapsialaoppimisalue_persevereswithdifficulttasks",
     "versio": 1,
     "koodiArvo": "Perseveres with difficult tasks"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "Persists with increasingly challenging tasks",
+        "kuvaus": null,
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Persists with increasingly challenging tasks",
+        "kuvaus": null,
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Persists with increasingly challenging tasks",
+        "kuvaus": null,
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "europeanschoolofhelsinkiprimarylapsialaoppimisalue_persistswithincreasinglychallengingtasks",
+    "versio": 1,
+    "koodiArvo": "Persists with increasingly challenging tasks"
   },
   {
     "metadata": [

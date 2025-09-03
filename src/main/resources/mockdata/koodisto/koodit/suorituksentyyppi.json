@@ -14,7 +14,7 @@
         "kieli": "SV"
       },
       {
-        "nimi": "Introductory phase to basic education for adults course",
+        "nimi": "Course in preparatory instruction for lower secondary education for adults",
         "kuvaus": "",
         "lyhytNimi": "",
         "kieli": "EN"
@@ -46,7 +46,7 @@
         "kieli": "SV"
       },
       {
-        "nimi": "Introductory phase to basic education for adults subject",
+        "nimi": "Subject in preparatory instruction for lower secondary education for adults",
         "kuvaus": null,
         "kieli": "EN"
       }
@@ -77,7 +77,7 @@
         "kieli": "SV"
       },
       {
-        "nimi": "Basic education for adults course",
+        "nimi": "Course in preparatory instruction and lower secondary education for adults",
         "kuvaus": null,
         "kieli": "EN"
       }
@@ -110,7 +110,7 @@
         "kieli": "SV"
       },
       {
-        "nimi": "Basic education for adults subject",
+        "nimi": "Subject in preparatory instruction and lower secondary education for adults",
         "kuvaus": "",
         "lyhytNimi": "",
         "kieli": "EN"
@@ -142,7 +142,7 @@
         "kieli": "SV"
       },
       {
-        "nimi": "Basic education for adults syllabus",
+        "nimi": "Preparatory instruction and lower secondary education for adults syllabus",
         "kuvaus": null,
         "kieli": "EN"
       }
@@ -173,7 +173,7 @@
         "kieli": "SV"
       },
       {
-        "nimi": "Introductory phase to basic education for adults  syllabus",
+        "nimi": "Preparatory instruction for lower secondary education for adults syllabus",
         "kuvaus": null,
         "kieli": "EN"
       }
@@ -342,6 +342,31 @@
     "koodiUri": "suorituksentyyppi_ammatillinentutkintoosittainen",
     "versio": 1,
     "koodiArvo": "ammatillinentutkintoosittainen"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "Ammatillinen tutkinto osittainen useasta tutkinnosta",
+        "kuvaus": null,
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Ammatillinen tutkinto osittainen useasta tutkinnosta",
+        "kuvaus": null,
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Ammatillinen tutkinto osittainen useasta tutkinnosta",
+        "kuvaus": null,
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "suorituksentyyppi_ammatillinentutkintoosittainenuseastatutkinnosta",
+    "versio": 1,
+    "koodiArvo": "ammatillinentutkintoosittainenuseastatutkinnosta"
   },
   {
     "metadata": [
@@ -1086,31 +1111,6 @@
   {
     "metadata": [
       {
-        "nimi": "IB-lukion kurssi",
-        "kuvaus": null,
-        "kieli": "FI"
-      },
-      {
-        "nimi": "Kurs i IB-gymnasium",
-        "kuvaus": null,
-        "kieli": "SV"
-      },
-      {
-        "nimi": "IB upper secondary education course",
-        "kuvaus": null,
-        "kieli": "EN"
-      }
-    ],
-    "withinCodeElements": [],
-    "includesCodeElements": [],
-    "levelsWithCodeElements": [],
-    "koodiUri": "suorituksentyyppi_ibkurssi",
-    "versio": 1,
-    "koodiArvo": "ibkurssi"
-  },
-  {
-    "metadata": [
-      {
         "nimi": "IB-lukion Core kurssi",
         "kuvaus": null,
         "kieli": "FI"
@@ -1132,6 +1132,31 @@
     "koodiUri": "suorituksentyyppi_ibcorekurssi",
     "versio": 1,
     "koodiArvo": "ibcorekurssi"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "IB-lukion kurssi",
+        "kuvaus": null,
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Kurs i IB-gymnasium",
+        "kuvaus": null,
+        "kieli": "SV"
+      },
+      {
+        "nimi": "IB upper secondary education course",
+        "kuvaus": null,
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "suorituksentyyppi_ibkurssi",
+    "versio": 1,
+    "koodiArvo": "ibkurssi"
   },
   {
     "metadata": [
@@ -1668,7 +1693,7 @@
         "kieli": "SV"
       },
       {
-        "nimi": null,
+        "nimi": "Individual subject syllabi",
         "kuvaus": null,
         "kieli": "EN"
       }
@@ -2171,7 +2196,7 @@
         "kieli": "SV"
       },
       {
-        "nimi": "Basic education for youth subject syllabus",
+        "nimi": "Subject syllabus in comprehensive school education",
         "kuvaus": null,
         "kieli": "EN"
       }
@@ -2321,7 +2346,7 @@
         "kieli": "SV"
       },
       {
-        "nimi": "Basic education subject",
+        "nimi": "Subject in comprehensive school education",
         "kuvaus": null,
         "kieli": "EN"
       }
@@ -2346,7 +2371,7 @@
         "kieli": "SV"
       },
       {
-        "nimi": "Basic education Subject syllabus",
+        "nimi": "Subject syllabus in comprehensive school education",
         "kuvaus": null,
         "kieli": "EN"
       }
@@ -2373,7 +2398,7 @@
         "kieli": "SV"
       },
       {
-        "nimi": null,
+        "nimi": "Studies in a subject in comprehensive school education as a part of preparatory education",
         "kuvaus": null,
         "kieli": "EN"
       }
@@ -2398,7 +2423,7 @@
         "kieli": "SV"
       },
       {
-        "nimi": "Basic education syllabus",
+        "nimi": "Comprehensive school education syllabus",
         "kuvaus": null,
         "kieli": "EN"
       }
@@ -2423,7 +2448,7 @@
         "kieli": "SV"
       },
       {
-        "nimi": "Basic education Sphere of activity ",
+        "nimi": "Sphere of activity in comprehensive school education ",
         "kuvaus": null,
         "kieli": "EN"
       }
@@ -2450,7 +2475,7 @@
         "kieli": "SV"
       },
       {
-        "nimi": "Basic education class",
+        "nimi": "Comprehensive school class",
         "kuvaus": "",
         "lyhytNimi": "",
         "kieli": "EN"
@@ -3065,6 +3090,81 @@
     "koodiUri": "suorituksentyyppi_valmakoulutuksenosa",
     "versio": 1,
     "koodiArvo": "valmakoulutuksenosa"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "Valtionhallinnon kielitutkinnon kielitaito",
+        "kuvaus": null,
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Valtionhallinnon kielitutkinnon kielitaito",
+        "kuvaus": null,
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Valtionhallinnon kielitutkinnon kielitaito",
+        "kuvaus": null,
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "suorituksentyyppi_valtionhallinnonkielitaito",
+    "versio": 1,
+    "koodiArvo": "valtionhallinnonkielitaito"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "Valtionhallinnon kielitutkinnon osakoe",
+        "kuvaus": null,
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Valtionhallinnon kielitutkinnon osakoe",
+        "kuvaus": null,
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Valtionhallinnon kielitutkinnon osakoe",
+        "kuvaus": null,
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "suorituksentyyppi_valtionhallinnonkielitutkinnonosakoe",
+    "versio": 1,
+    "koodiArvo": "valtionhallinnonkielitutkinnonosakoe"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "Valtionhallinnon kielitutkinto",
+        "kuvaus": null,
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Valtionhallinnon kielitutkinto",
+        "kuvaus": null,
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Valtionhallinnon kielitutkinto",
+        "kuvaus": null,
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "suorituksentyyppi_valtionhallinnonkielitutkinto",
+    "versio": 1,
+    "koodiArvo": "valtionhallinnonkielitutkinto"
   },
   {
     "metadata": [
@@ -3883,105 +3983,5 @@
     "koodiUri": "suorituksentyyppi_ylioppilastutkinto",
     "versio": 1,
     "koodiArvo": "ylioppilastutkinto"
-  },
-  {
-    "metadata": [
-      {
-        "nimi": "Valtionhallinnon kielitutkinto",
-        "kuvaus": null,
-        "kieli": "FI"
-      },
-      {
-        "nimi": "Valtionhallinnon kielitutkinto",
-        "kuvaus": null,
-        "kieli": "SV"
-      },
-      {
-        "nimi": "Valtionhallinnon kielitutkinto",
-        "kuvaus": null,
-        "kieli": "EN"
-      }
-    ],
-    "withinCodeElements": [],
-    "includesCodeElements": [],
-    "levelsWithCodeElements": [],
-    "koodiUri": "suorituksentyyppi_valtionhallinnonkielitutkinto",
-    "versio": 1,
-    "koodiArvo": "valtionhallinnonkielitutkinto"
-  },
-  {
-    "metadata": [
-      {
-        "nimi": "Valtionhallinnon kielitutkinnon kielitaito",
-        "kuvaus": null,
-        "kieli": "FI"
-      },
-      {
-        "nimi": "Valtionhallinnon kielitutkinnon kielitaito",
-        "kuvaus": null,
-        "kieli": "SV"
-      },
-      {
-        "nimi": "Valtionhallinnon kielitutkinnon kielitaito",
-        "kuvaus": null,
-        "kieli": "EN"
-      }
-    ],
-    "withinCodeElements": [],
-    "includesCodeElements": [],
-    "levelsWithCodeElements": [],
-    "koodiUri": "suorituksentyyppi_valtionhallinnonkielitaito",
-    "versio": 1,
-    "koodiArvo": "valtionhallinnonkielitaito"
-  },
-  {
-    "metadata": [
-      {
-        "nimi": "Valtionhallinnon kielitutkinnon osakoe",
-        "kuvaus": null,
-        "kieli": "FI"
-      },
-      {
-        "nimi": "Valtionhallinnon kielitutkinnon osakoe",
-        "kuvaus": null,
-        "kieli": "SV"
-      },
-      {
-        "nimi": "Valtionhallinnon kielitutkinnon osakoe",
-        "kuvaus": null,
-        "kieli": "EN"
-      }
-    ],
-    "withinCodeElements": [],
-    "includesCodeElements": [],
-    "levelsWithCodeElements": [],
-    "koodiUri": "suorituksentyyppi_valtionhallinnonkielitutkinnonosakoe",
-    "versio": 1,
-    "koodiArvo": "valtionhallinnonkielitutkinnonosakoe"
-  },
-  {
-    "metadata": [
-      {
-        "nimi": "Ammatillinen tutkinto osittainen useasta tutkinnosta",
-        "kuvaus": null,
-        "kieli": "FI"
-      },
-      {
-        "nimi": "Ammatillinen tutkinto osittainen useasta tutkinnosta",
-        "kuvaus": null,
-        "kieli": "SV"
-      },
-      {
-        "nimi": "Ammatillinen tutkinto osittainen useasta tutkinnosta",
-        "kuvaus": null,
-        "kieli": "EN"
-      }
-    ],
-    "withinCodeElements": [],
-    "includesCodeElements": [],
-    "levelsWithCodeElements": [],
-    "koodiUri": "suorituksentyyppi_ammatillinentutkintoosittainenuseastatutkinnosta",
-    "versio": 1,
-    "koodiArvo": "ammatillinentutkintoosittainenuseastatutkinnosta"
   }
 ]

@@ -14,8 +14,9 @@
         "kieli": "SV"
       },
       {
-        "nimi": null,
+        "nimi": "1",
         "kuvaus": null,
+        "lyhytNimi": "1",
         "kieli": "EN"
       }
     ],
@@ -47,8 +48,9 @@
         "kieli": "SV"
       },
       {
-        "nimi": null,
+        "nimi": "2",
         "kuvaus": null,
+        "lyhytNimi": "2",
         "kieli": "EN"
       }
     ],
@@ -80,8 +82,9 @@
         "kieli": "SV"
       },
       {
-        "nimi": null,
+        "nimi": "3",
         "kuvaus": null,
+        "lyhytNimi": "3",
         "kieli": "EN"
       }
     ],
@@ -113,8 +116,9 @@
         "kieli": "SV"
       },
       {
-        "nimi": null,
+        "nimi": "4",
         "kuvaus": null,
+        "lyhytNimi": "4",
         "kieli": "EN"
       }
     ],
@@ -146,8 +150,9 @@
         "kieli": "SV"
       },
       {
-        "nimi": null,
+        "nimi": "5",
         "kuvaus": null,
+        "lyhytNimi": "5",
         "kieli": "EN"
       }
     ],
@@ -181,6 +186,7 @@
       {
         "nimi": "approbatur",
         "kuvaus": null,
+        "lyhytNimi": "A",
         "kieli": "EN"
       }
     ],
@@ -212,8 +218,9 @@
         "kieli": "SV"
       },
       {
-        "nimi": null,
+        "nimi": "Grade not in use",
         "kuvaus": null,
+        "lyhytNimi": "Not in use",
         "kieli": "EN"
       }
     ],
@@ -280,6 +287,7 @@
       {
         "nimi": "cum laude approbatur",
         "kuvaus": null,
+        "lyhytNimi": "C",
         "kieli": "EN"
       }
     ],
@@ -313,6 +321,7 @@
       {
         "nimi": "eximia cum laude approbatur",
         "kuvaus": null,
+        "lyhytNimi": "E",
         "kieli": "EN"
       }
     ],
@@ -340,12 +349,13 @@
       {
         "nimi": "goda insikter",
         "kuvaus": "",
-        "lyhytNimi": "",
+        "lyhytNimi": "GI",
         "kieli": "SV"
       },
       {
-        "nimi": "good",
+        "nimi": "good  knowledge",
         "kuvaus": null,
+        "lyhytNimi": "GK",
         "kieli": "EN"
       }
     ],
@@ -373,12 +383,13 @@
       {
         "nimi": "godkänd",
         "kuvaus": "",
-        "lyhytNimi": "",
+        "lyhytNimi": "GODK",
         "kieli": "SV"
       },
       {
         "nimi": "pass/accepted",
         "kuvaus": null,
+        "lyhytNimi": "ACPT",
         "kieli": "EN"
       }
     ],
@@ -455,6 +466,7 @@
       {
         "nimi": "laudatur",
         "kuvaus": null,
+        "lyhytNimi": "L",
         "kieli": "EN"
       }
     ],
@@ -488,6 +500,7 @@
       {
         "nimi": "magna cum laude approbatur",
         "kuvaus": null,
+        "lyhytNimi": "M",
         "kieli": "EN"
       }
     ],
@@ -521,6 +534,7 @@
       {
         "nimi": "non sine laude approbatur",
         "kuvaus": null,
+        "lyhytNimi": "N",
         "kieli": "EN"
       }
     ],

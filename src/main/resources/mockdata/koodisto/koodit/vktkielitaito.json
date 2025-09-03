@@ -2,26 +2,20 @@
   {
     "metadata": [
       {
-        "nimi": "Suullinen taito",
-        "kuvaus": "",
-        "lyhytNimi": "",
-        "kieli": "FI"
-      }
-    ],
-    "withinCodeElements": [],
-    "includesCodeElements": [],
-    "levelsWithCodeElements": [],
-    "koodiUri": "vktkielitaito_suullinen",
-    "versio": 1,
-    "koodiArvo": "suullinen"
-  },
-  {
-    "metadata": [
-      {
         "nimi": "Kirjallinen taito",
         "kuvaus": "",
         "lyhytNimi": "",
         "kieli": "FI"
+      },
+      {
+        "nimi": "Förmåga att använda språket i skrift ",
+        "kuvaus": null,
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Written skills",
+        "kuvaus": null,
+        "kieli": "EN"
       }
     ],
     "withinCodeElements": [],
@@ -34,10 +28,46 @@
   {
     "metadata": [
       {
+        "nimi": "Suullinen taito",
+        "kuvaus": "",
+        "lyhytNimi": "",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Förmåga att använda språket i tal ",
+        "kuvaus": null,
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Oral skills",
+        "kuvaus": null,
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "vktkielitaito_suullinen",
+    "versio": 1,
+    "koodiArvo": "suullinen"
+  },
+  {
+    "metadata": [
+      {
         "nimi": "Ymmärtämisen taito",
         "kuvaus": "",
         "lyhytNimi": "",
         "kieli": "FI"
+      },
+      {
+        "nimi": "Förmåga att förstå språket",
+        "kuvaus": null,
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Comprehension skills",
+        "kuvaus": null,
+        "kieli": "EN"
       }
     ],
     "withinCodeElements": [],

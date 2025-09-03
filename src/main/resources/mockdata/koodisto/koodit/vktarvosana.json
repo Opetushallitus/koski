@@ -2,42 +2,20 @@
   {
     "metadata": [
       {
-        "nimi": "Tyydyttävä",
-        "kuvaus": "",
-        "lyhytNimi": "",
-        "kieli": "FI"
-      }
-    ],
-    "withinCodeElements": [],
-    "includesCodeElements": [],
-    "levelsWithCodeElements": [],
-    "koodiUri": "vktarvosana_tyydyttava",
-    "versio": 1,
-    "koodiArvo": "tyydyttava"
-  },
-  {
-    "metadata": [
-      {
-        "nimi": "Hyvä",
-        "kuvaus": "",
-        "lyhytNimi": "",
-        "kieli": "FI"
-      }
-    ],
-    "withinCodeElements": [],
-    "includesCodeElements": [],
-    "levelsWithCodeElements": [],
-    "koodiUri": "vktarvosana_hyva",
-    "versio": 1,
-    "koodiArvo": "hyva"
-  },
-  {
-    "metadata": [
-      {
         "nimi": "Erinomainen",
         "kuvaus": "",
         "lyhytNimi": "",
         "kieli": "FI"
+      },
+      {
+        "nimi": "Utmärkt",
+        "kuvaus": null,
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Excellent",
+        "kuvaus": null,
+        "kieli": "EN"
       }
     ],
     "withinCodeElements": [],
@@ -54,6 +32,16 @@
         "kuvaus": "",
         "lyhytNimi": "",
         "kieli": "FI"
+      },
+      {
+        "nimi": "Underkänd",
+        "kuvaus": null,
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Fail",
+        "kuvaus": null,
+        "kieli": "EN"
       }
     ],
     "withinCodeElements": [],
@@ -62,5 +50,57 @@
     "koodiUri": "vktarvosana_hylatty",
     "versio": 1,
     "koodiArvo": "hylatty"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "Hyvä",
+        "kuvaus": "",
+        "lyhytNimi": "",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "God",
+        "kuvaus": null,
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Good",
+        "kuvaus": null,
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "vktarvosana_hyva",
+    "versio": 1,
+    "koodiArvo": "hyva"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "Tyydyttävä",
+        "kuvaus": "",
+        "lyhytNimi": "",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Nöjaktig",
+        "kuvaus": null,
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Satisfactory",
+        "kuvaus": null,
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "vktarvosana_tyydyttava",
+    "versio": 1,
+    "koodiArvo": "tyydyttava"
   }
 ]

@@ -77,6 +77,34 @@
   {
     "metadata": [
       {
+        "nimi": "Communication",
+        "kuvaus": null,
+        "lyhytNimi": "Communication",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Communication",
+        "kuvaus": null,
+        "lyhytNimi": "Communication",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Communication",
+        "kuvaus": null,
+        "lyhytNimi": "Communication",
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "europeanschoolofhelsinkiprimaryalaoppimisalue_communication",
+    "versio": 1,
+    "koodiArvo": "Communication"
+  },
+  {
+    "metadata": [
+      {
         "nimi": "Composing",
         "kuvaus": null,
         "kieli": "FI"
@@ -102,6 +130,34 @@
   {
     "metadata": [
       {
+        "nimi": "Creation",
+        "kuvaus": null,
+        "lyhytNimi": "Creation",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Creation",
+        "kuvaus": null,
+        "lyhytNimi": "Creation",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Creation",
+        "kuvaus": null,
+        "lyhytNimi": "Creation",
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "europeanschoolofhelsinkiprimaryalaoppimisalue_creation",
+    "versio": 1,
+    "koodiArvo": "Creation"
+  },
+  {
+    "metadata": [
+      {
         "nimi": "Data handling",
         "kuvaus": null,
         "kieli": "FI"
@@ -123,6 +179,34 @@
     "koodiUri": "europeanschoolofhelsinkiprimaryalaoppimisalue_datahandling",
     "versio": 1,
     "koodiArvo": "Data handling"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "Digital Competence",
+        "kuvaus": null,
+        "lyhytNimi": "Digital Competence",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Digital Competence",
+        "kuvaus": null,
+        "lyhytNimi": "Digital Competence",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Digital Competence",
+        "kuvaus": null,
+        "lyhytNimi": "Digital Competence",
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "europeanschoolofhelsinkiprimaryalaoppimisalue_digitalcompetence",
+    "versio": 1,
+    "koodiArvo": "Digital Competence"
   },
   {
     "metadata": [
@@ -198,6 +282,90 @@
     "koodiUri": "europeanschoolofhelsinkiprimaryalaoppimisalue_individualactivities",
     "versio": 1,
     "koodiArvo": "Individual activities"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "Interpretation",
+        "kuvaus": null,
+        "lyhytNimi": "Interpretation",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Interpretation",
+        "kuvaus": null,
+        "lyhytNimi": "Interpretation",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Interpretation",
+        "kuvaus": null,
+        "lyhytNimi": "Interpretation",
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "europeanschoolofhelsinkiprimaryalaoppimisalue_interpretation",
+    "versio": 1,
+    "koodiArvo": "Interpretation"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "Interpretation and Evaluation",
+        "kuvaus": null,
+        "lyhytNimi": "Interpretation and Evaluation",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Interpretation and Evaluation",
+        "kuvaus": null,
+        "lyhytNimi": "Interpretation and Evaluation",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Interpretation and Evaluation",
+        "kuvaus": null,
+        "lyhytNimi": "Interpretation and Evaluation",
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "europeanschoolofhelsinkiprimaryalaoppimisalue_interpretationandevaluation",
+    "versio": 1,
+    "koodiArvo": "Interpretation and Evaluation"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "Knowledge and Comprehension",
+        "kuvaus": null,
+        "lyhytNimi": "Knowledge and Comprehension",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Knowledge and Comprehension",
+        "kuvaus": null,
+        "lyhytNimi": "Knowledge and Comprehension",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Knowledge and Comprehension",
+        "kuvaus": null,
+        "lyhytNimi": "Knowledge and Comprehension",
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "europeanschoolofhelsinkiprimaryalaoppimisalue_knowledgeandcomprehension",
+    "versio": 1,
+    "koodiArvo": "Knowledge and Comprehension"
   },
   {
     "metadata": [
@@ -302,6 +470,34 @@
   {
     "metadata": [
       {
+        "nimi": "Methods",
+        "kuvaus": null,
+        "lyhytNimi": "Methods",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Methods",
+        "kuvaus": null,
+        "lyhytNimi": "Methods",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Methods",
+        "kuvaus": null,
+        "lyhytNimi": "Methods",
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "europeanschoolofhelsinkiprimaryalaoppimisalue_methods",
+    "versio": 1,
+    "koodiArvo": "Methods"
+  },
+  {
+    "metadata": [
+      {
         "nimi": "Music making & performing",
         "kuvaus": null,
         "kieli": "FI"
@@ -348,6 +544,34 @@
     "koodiUri": "europeanschoolofhelsinkiprimaryalaoppimisalue_numbersnumbersystem",
     "versio": 1,
     "koodiArvo": "Numbers & Number system"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "Perception",
+        "kuvaus": null,
+        "lyhytNimi": "Perception",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Perception",
+        "kuvaus": null,
+        "lyhytNimi": "Perception",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Perception",
+        "kuvaus": null,
+        "lyhytNimi": "Perception",
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "europeanschoolofhelsinkiprimaryalaoppimisalue_perception",
+    "versio": 1,
+    "koodiArvo": "Perception"
   },
   {
     "metadata": [
@@ -473,6 +697,34 @@
     "koodiUri": "europeanschoolofhelsinkiprimaryalaoppimisalue_religiouseducation",
     "versio": 1,
     "koodiArvo": "Religious Education"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "Religious Education and Ethics",
+        "kuvaus": null,
+        "lyhytNimi": "",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Religious Education and Ethics",
+        "kuvaus": null,
+        "lyhytNimi": "",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Religious Education and Ethics",
+        "kuvaus": null,
+        "lyhytNimi": "",
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "europeanschoolofhelsinkiprimaryalaoppimisalue_religiouseducationandethics",
+    "versio": 1,
+    "koodiArvo": "Religious Education and Ethics"
   },
   {
     "metadata": [

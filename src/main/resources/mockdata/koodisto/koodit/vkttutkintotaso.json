@@ -2,26 +2,20 @@
   {
     "metadata": [
       {
-        "nimi": "Hyvä ja tyydyttävä",
-        "kuvaus": "",
-        "lyhytNimi": "",
-        "kieli": "FI"
-      }
-    ],
-    "withinCodeElements": [],
-    "includesCodeElements": [],
-    "levelsWithCodeElements": [],
-    "koodiUri": "vkttutkintotaso_hyvajatyydyttava",
-    "versio": 1,
-    "koodiArvo": "hyvajatyydyttava"
-  },
-  {
-    "metadata": [
-      {
         "nimi": "Erinomainen",
         "kuvaus": "",
         "lyhytNimi": "",
         "kieli": "FI"
+      },
+      {
+        "nimi": "Utmärkt",
+        "kuvaus": null,
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Excellent",
+        "kuvaus": null,
+        "kieli": "EN"
       }
     ],
     "withinCodeElements": [],
@@ -30,5 +24,31 @@
     "koodiUri": "vkttutkintotaso_erinomainen",
     "versio": 1,
     "koodiArvo": "erinomainen"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "Hyvä ja tyydyttävä",
+        "kuvaus": "",
+        "lyhytNimi": "",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "God och nöjaktig",
+        "kuvaus": null,
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Good and satisfactory",
+        "kuvaus": null,
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "vkttutkintotaso_hyvajatyydyttava",
+    "versio": 1,
+    "koodiArvo": "hyvajatyydyttava"
   }
 ]

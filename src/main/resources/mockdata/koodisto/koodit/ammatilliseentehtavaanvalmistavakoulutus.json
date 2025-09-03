@@ -2,31 +2,6 @@
   {
     "metadata": [
       {
-        "nimi": "Ammattilentäjän tehtävä helikopteri-toiminnassa",
-        "kuvaus": null,
-        "kieli": "FI"
-      },
-      {
-        "nimi": "ammattilentäjän tehtävä helikopteri-toiminnassa",
-        "kuvaus": null,
-        "kieli": "SV"
-      },
-      {
-        "nimi": "ammattilentäjän tehtävä helikopteri-toiminnassa",
-        "kuvaus": null,
-        "kieli": "EN"
-      }
-    ],
-    "withinCodeElements": [],
-    "includesCodeElements": [],
-    "levelsWithCodeElements": [],
-    "koodiUri": "ammatilliseentehtavaanvalmistavakoulutus_004",
-    "versio": 1,
-    "koodiArvo": "4"
-  },
-  {
-    "metadata": [
-      {
         "nimi": "Ansio- ja liikennelentäjä",
         "kuvaus": "Ansio- ja liikennelentäjän tehtäviin valmistava koulutus",
         "lyhytNimi": "",
@@ -104,5 +79,30 @@
     "koodiUri": "ammatilliseentehtavaanvalmistavakoulutus_3",
     "versio": 1,
     "koodiArvo": "3"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "Ammattilentäjän tehtävä helikopteri-toiminnassa",
+        "kuvaus": null,
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Ammattilentäjän tehtävä helikopteri-toiminnassa",
+        "kuvaus": null,
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Ammattilentäjän tehtävä helikopteri-toiminnassa",
+        "kuvaus": null,
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "ammatilliseentehtavaanvalmistavakoulutus_4",
+    "versio": 1,
+    "koodiArvo": "4"
   }
 ]
