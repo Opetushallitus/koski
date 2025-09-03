@@ -8,7 +8,7 @@ import { Suoritus } from '../../types/fi/oph/koski/schema/Suoritus'
 import { saveOpiskeluoikeus } from '../../util/koskiApi'
 import {
   PäätasonSuoritusOf,
-  mergeOpiskeluoikeusVersionumero
+  mergeOpiskeluoikeusVersionumeroAndRefetch
 } from '../../util/opiskeluoikeus'
 import { päätasonSuoritusPath } from '../../util/optics'
 import { OpiskeluoikeusjaksoOf } from '../../util/schema'
@@ -92,7 +92,7 @@ export const EditorContainer = <T extends Opiskeluoikeus>(
   const onSave = useCallback(() => {
     props.form.save(
       saveOpiskeluoikeus(props.oppijaOid),
-      mergeOpiskeluoikeusVersionumero
+      mergeOpiskeluoikeusVersionumeroAndRefetch
     )
   }, [props.form, props.oppijaOid])
 

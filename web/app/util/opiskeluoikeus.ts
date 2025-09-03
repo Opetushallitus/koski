@@ -3,6 +3,8 @@ import { Koodistokoodiviite } from '../types/fi/oph/koski/schema/Koodistokoodivi
 import { isKorkeakoulunOpiskeluoikeus } from '../types/fi/oph/koski/schema/KorkeakoulunOpiskeluoikeus'
 import { Opiskeluoikeus } from '../types/fi/oph/koski/schema/Opiskeluoikeus'
 import { isYlioppilastutkinnonOpiskeluoikeus } from '../types/fi/oph/koski/schema/YlioppilastutkinnonOpiskeluoikeus'
+import { fetchOpiskeluoikeus } from './koskiApi'
+import { isRight } from 'fp-ts/Either'
 
 export type PäätasonSuoritusOf<T extends Opiskeluoikeus> = T['suoritukset'][0]
 
@@ -11,6 +13,30 @@ export const mergeOpiskeluoikeusVersionumero =
   (oo: T): T => {
     const oid = (oo as any)?.oid as string | undefined
     const versio = oid && update.opiskeluoikeudet.find((o) => o.oid === oid)
+    return versio
+      ? {
+          ...oo,
+          versionumero: versio.versionumero
+        }
+      : oo
+  }
+
+export const mergeOpiskeluoikeusVersionumeroAndRefetch =
+  <T extends Opiskeluoikeus>(update: HenkilönOpiskeluoikeusVersiot) =>
+  async (oo: T): Promise<T> => {
+    const oid = (oo as any)?.oid as string | undefined
+    const versio = oid && update.opiskeluoikeudet.find((o) => o.oid === oid)
+
+    // Haetaan opiskeluoikeus uudestaan jotta saadaan backendista täydennetyt kentät
+    const refetchedOo =
+      oid && versio
+        ? await fetchOpiskeluoikeus(oid, versio.versionumero)
+        : undefined
+
+    if (refetchedOo && isRight(refetchedOo)) {
+      return refetchedOo.right.data as T
+    }
+
     return versio
       ? {
           ...oo,
