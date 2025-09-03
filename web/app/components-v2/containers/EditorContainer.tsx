@@ -54,6 +54,7 @@ export type EditorContainerProps<T extends Opiskeluoikeus> =
     suorituksenLisäys?: string | LocalizedString
     onCreateSuoritus?: () => void
     suorituksetVahvistettu?: boolean
+    additionalOpiskeluoikeusFields?: React.FC<any>
     lisätiedotContainer?: React.FC<any>
     opiskeluoikeudenTilaEditor?: React.ReactNode
     hideOpiskeluoikeusVoimassaoloaika?: boolean
@@ -146,7 +147,10 @@ export const EditorContainer = <T extends Opiskeluoikeus>(
     [props]
   )
 
-  const { lisätiedotContainer: LisätiedotContainer } = props
+  const {
+    lisätiedotContainer: LisätiedotContainer,
+    additionalOpiskeluoikeusFields: AdditionalOpiskeluoikeusFields
+  } = props
 
   return (
     <article {...common(props, ['EditorContainer'])}>
@@ -184,6 +188,9 @@ export const EditorContainer = <T extends Opiskeluoikeus>(
           path={opiskeluoikeudenOrganisaatiohistoriaPath}
           view={OrganisaatiohistoriaView}
         />
+        {AdditionalOpiskeluoikeusFields && (
+          <AdditionalOpiskeluoikeusFields form={props.form} />
+        )}
         <Spacer />
         {LisätiedotContainer !== undefined &&
           (props.form.editMode ||

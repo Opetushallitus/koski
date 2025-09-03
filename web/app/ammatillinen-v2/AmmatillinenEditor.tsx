@@ -82,6 +82,7 @@ import { OsasuoritusTables } from './OsasuoritusTables'
 import { HenkilövahvistusValinnaisellaPaikkakunnalla } from '../types/fi/oph/koski/schema/HenkilovahvistusValinnaisellaPaikkakunnalla'
 import { OpenAllButton, useTree } from '../appstate/tree'
 import { AmisLaajuudetYhteensä } from './AmisLaajuudetYhteensä'
+import { SisältyyOpiskeluoikeuteen } from './SisältyyOpiskeluoikeuteen'
 
 export type AmmatillinenEditorProps =
   AdaptedOpiskeluoikeusEditorProps<AmmatillinenOpiskeluoikeus>
@@ -426,6 +427,7 @@ const AmmatillinenTutkintoOsittainenEditor: React.FC<
         testId={päätasonSuoritus.testId}
         createOpiskeluoikeusjakso={createAmmatillinenOpiskeluoikeusJakso}
         lisätiedotContainer={AmmatillinenLisatiedot}
+        additionalOpiskeluoikeusFields={SisältyyOpiskeluoikeuteen}
       >
         <AmmatillisPääsuorituksenTiedot
           form={props.form}
