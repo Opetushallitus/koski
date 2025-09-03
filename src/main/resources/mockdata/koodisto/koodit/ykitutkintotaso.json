@@ -8,12 +8,12 @@
         "kieli": "FI"
       },
       {
-        "nimi": null,
+        "nimi": "Mellannivå",
         "kuvaus": null,
         "kieli": "SV"
       },
       {
-        "nimi": null,
+        "nimi": "Intermediate level",
         "kuvaus": null,
         "kieli": "EN"
       }
@@ -34,12 +34,12 @@
         "kieli": "FI"
       },
       {
-        "nimi": null,
+        "nimi": "Grundnivå",
         "kuvaus": null,
         "kieli": "SV"
       },
       {
-        "nimi": null,
+        "nimi": "Basic level",
         "kuvaus": null,
         "kieli": "EN"
       }
@@ -60,12 +60,12 @@
         "kieli": "FI"
       },
       {
-        "nimi": null,
+        "nimi": "Högsta nivå",
         "kuvaus": null,
         "kieli": "SV"
       },
       {
-        "nimi": null,
+        "nimi": "Advanced level",
         "kuvaus": null,
         "kieli": "EN"
       }

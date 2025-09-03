@@ -643,6 +643,34 @@
   {
     "metadata": [
       {
+        "nimi": "Optire",
+        "kuvaus": null,
+        "lyhytNimi": "Optire",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Optire",
+        "kuvaus": null,
+        "lyhytNimi": "Optire",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Optire",
+        "kuvaus": null,
+        "lyhytNimi": "Optire",
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "lahdejarjestelma_optire",
+    "versio": 1,
+    "koodiArvo": "optire"
+  },
+  {
+    "metadata": [
+      {
         "nimi": "Päikky",
         "kuvaus": null,
         "kieli": "FI"

@@ -874,6 +874,34 @@
   {
     "metadata": [
       {
+        "nimi": "filipino",
+        "kuvaus": null,
+        "lyhytNimi": "filipino",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "filipino",
+        "kuvaus": null,
+        "lyhytNimi": "filipino",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Filipino",
+        "kuvaus": null,
+        "lyhytNimi": "Filipino",
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "kielivalikoima_fil-1",
+    "versio": 1,
+    "koodiArvo": "FIL"
+  },
+  {
+    "metadata": [
+      {
         "nimi": "ranska",
         "kuvaus": "ranska",
         "lyhytNimi": "ranska",
@@ -984,6 +1012,34 @@
     "koodiUri": "kielivalikoima_fr",
     "versio": 1,
     "koodiArvo": "FR"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "gudžarati",
+        "kuvaus": null,
+        "lyhytNimi": "gudžarati",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "gujarati",
+        "kuvaus": null,
+        "lyhytNimi": "gujarati",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Gujarati",
+        "kuvaus": null,
+        "lyhytNimi": "Gujarati",
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "kielivalikoima_gu",
+    "versio": 1,
+    "koodiArvo": "GU"
   },
   {
     "metadata": [
@@ -1425,6 +1481,34 @@
   {
     "metadata": [
       {
+        "nimi": "kurmandži",
+        "kuvaus": null,
+        "lyhytNimi": "kurmandži",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "nordkurdiska",
+        "kuvaus": null,
+        "lyhytNimi": "nordkurdiska",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Kurmanji",
+        "kuvaus": null,
+        "lyhytNimi": "Kurmanji",
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "kielivalikoima_kmr",
+    "versio": 1,
+    "koodiArvo": "KMR"
+  },
+  {
+    "metadata": [
+      {
         "nimi": "kannada",
         "kuvaus": "kannada",
         "lyhytNimi": "kannada",
@@ -1666,6 +1750,34 @@
   {
     "metadata": [
       {
+        "nimi": "lingala",
+        "kuvaus": null,
+        "lyhytNimi": "lingala",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "lingala",
+        "kuvaus": null,
+        "lyhytNimi": "lingala",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Lingala",
+        "kuvaus": null,
+        "lyhytNimi": "Lingala",
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "kielivalikoima_ln",
+    "versio": 1,
+    "koodiArvo": "LN"
+  },
+  {
+    "metadata": [
+      {
         "nimi": "liettua",
         "kuvaus": "liettua",
         "lyhytNimi": "liettua",
@@ -1806,6 +1918,62 @@
   {
     "metadata": [
       {
+        "nimi": "mandinka ",
+        "kuvaus": null,
+        "lyhytNimi": "mandinka ",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "mandinka",
+        "kuvaus": null,
+        "lyhytNimi": "mandinka",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Mandinka",
+        "kuvaus": null,
+        "lyhytNimi": "Mandinka",
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "kielivalikoima_mnk",
+    "versio": 1,
+    "koodiArvo": "MNK"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "marathi",
+        "kuvaus": null,
+        "lyhytNimi": "marathi",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "marathi",
+        "kuvaus": null,
+        "lyhytNimi": "marathi",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Marathi",
+        "kuvaus": null,
+        "lyhytNimi": "Marathi",
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "kielivalikoima_mr",
+    "versio": 1,
+    "koodiArvo": "MR"
+  },
+  {
+    "metadata": [
+      {
         "nimi": "malaiji",
         "kuvaus": null,
         "lyhytNimi": "malaiji",
@@ -1914,6 +2082,34 @@
     "koodiUri": "kielivalikoima_no",
     "versio": 1,
     "koodiArvo": "NO"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "pandžabi",
+        "kuvaus": "pandžabi",
+        "lyhytNimi": "pandžabi",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "panjabi",
+        "kuvaus": "panjabi",
+        "lyhytNimi": "panjabi",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Punjabi, Panjabi",
+        "kuvaus": "Punjabi, Panjabi",
+        "lyhytNimi": "Punjabi, Panjabi",
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "kielivalikoima_pa",
+    "versio": 1,
+    "koodiArvo": "PA"
   },
   {
     "metadata": [

@@ -12,7 +12,7 @@
         "kieli": "SV"
       },
       {
-        "nimi": null,
+        "nimi": "Bachelor’s degree from a university of applied sciences",
         "kuvaus": null,
         "kieli": "EN"
       }
@@ -45,7 +45,7 @@
         "kieli": "SV"
       },
       {
-        "nimi": null,
+        "nimi": "Continuing education",
         "kuvaus": null,
         "kieli": "EN"
       }
@@ -77,13 +77,13 @@
         "kieli": "FI"
       },
       {
-        "nimi": "Behörighetsutbildning",
+        "nimi": "Behörighetsgivande utbildning",
         "kuvaus": "",
         "lyhytNimi": "",
         "kieli": "SV"
       },
       {
-        "nimi": null,
+        "nimi": "Qualification training",
         "kuvaus": null,
         "kieli": "EN"
       }
@@ -121,7 +121,7 @@
         "kieli": "SV"
       },
       {
-        "nimi": null,
+        "nimi": "Specialisation studies",
         "kuvaus": null,
         "kieli": "EN"
       }
@@ -148,13 +148,13 @@
         "kieli": "FI"
       },
       {
-        "nimi": "Öppna studier",
+        "nimi": "Studier vid öppna universitetet",
         "kuvaus": "",
         "lyhytNimi": "",
         "kieli": "SV"
       },
       {
-        "nimi": null,
+        "nimi": "Open university studies",
         "kuvaus": null,
         "kieli": "EN"
       }
@@ -180,19 +180,19 @@
   {
     "metadata": [
       {
-        "nimi": "Opettajan pedagogiset opinnot",
+        "nimi": "Erilliset opettajankoulutuksen opinnot",
         "kuvaus": "Opiskeluoikeuden tyyppi on opettajan pedagogiset opinnot, kun oppija suorittaa opettajan pedagogisia opintoja erillisopintoina.",
         "lyhytNimi": "",
         "kieli": "FI"
       },
       {
-        "nimi": "Pedagogiska studier för lärare",
+        "nimi": "Separata pedagogiska studier för lärare",
         "kuvaus": "",
         "lyhytNimi": "",
         "kieli": "SV"
       },
       {
-        "nimi": "-",
+        "nimi": "Separate teacher education studies",
         "kuvaus": null,
         "kieli": "EN"
       }
@@ -225,7 +225,7 @@
         "kieli": "SV"
       },
       {
-        "nimi": null,
+        "nimi": "Vocational teacher education",
         "kuvaus": null,
         "kieli": "EN"
       }
@@ -252,13 +252,13 @@
         "kieli": "FI"
       },
       {
-        "nimi": "Utbildning av läroavtalsformat",
+        "nimi": "Lärlingsliknande utbildning",
         "kuvaus": "",
         "lyhytNimi": "",
         "kieli": "SV"
       },
       {
-        "nimi": null,
+        "nimi": "Apprenticeship-type training",
         "kuvaus": null,
         "kieli": "EN"
       }
@@ -290,13 +290,13 @@
         "kieli": "FI"
       },
       {
-        "nimi": "Handledande utbildning",
+        "nimi": "Förberedande utbildning",
         "kuvaus": "",
         "lyhytNimi": "",
         "kieli": "SV"
       },
       {
-        "nimi": null,
+        "nimi": "Preparatory education",
         "kuvaus": null,
         "kieli": "EN"
       }
@@ -328,13 +328,13 @@
         "kieli": "FI"
       },
       {
-        "nimi": "Särskild rätt",
+        "nimi": "Separat studierätt",
         "kuvaus": "",
         "lyhytNimi": "",
         "kieli": "SV"
       },
       {
-        "nimi": null,
+        "nimi": "Separate right to study",
         "kuvaus": null,
         "kieli": "EN"
       }
@@ -372,7 +372,7 @@
         "kieli": "SV"
       },
       {
-        "nimi": null,
+        "nimi": "Specialisation education",
         "kuvaus": null,
         "kieli": "EN"
       }
@@ -403,7 +403,7 @@
         "kieli": "SV"
       },
       {
-        "nimi": null,
+        "nimi": "Lower university degree",
         "kuvaus": null,
         "kieli": "EN"
       }
@@ -430,12 +430,12 @@
         "kieli": "FI"
       },
       {
-        "nimi": null,
+        "nimi": "Studiesamarbete med andra än högskolor",
         "kuvaus": null,
         "kieli": "SV"
       },
       {
-        "nimi": null,
+        "nimi": "Educational cooperation with non-higher education institutions",
         "kuvaus": null,
         "kieli": "EN"
       }
@@ -471,7 +471,7 @@
         "kieli": "SV"
       },
       {
-        "nimi": null,
+        "nimi": "Master’s degree from a university of applied sciences",
         "kuvaus": null,
         "kieli": "EN"
       }
@@ -502,7 +502,7 @@
         "kieli": "SV"
       },
       {
-        "nimi": null,
+        "nimi": "Master’s degree from a university of applied sciences",
         "kuvaus": null,
         "kieli": "EN"
       }
@@ -535,7 +535,7 @@
         "kieli": "SV"
       },
       {
-        "nimi": null,
+        "nimi": "Specialist medical and dental training",
         "kuvaus": null,
         "kieli": "EN"
       }
@@ -566,7 +566,7 @@
         "kieli": "SV"
       },
       {
-        "nimi": null,
+        "nimi": "Licentiate degree",
         "kuvaus": null,
         "kieli": "EN"
       }
@@ -597,7 +597,7 @@
         "kieli": "SV"
       },
       {
-        "nimi": null,
+        "nimi": "Doctoral degree",
         "kuvaus": null,
         "kieli": "EN"
       }
@@ -624,13 +624,13 @@
         "kieli": "FI"
       },
       {
-        "nimi": "Inhemsk studerandemobilitet",
+        "nimi": "Inhemskt studentutbyte",
         "kuvaus": "",
         "lyhytNimi": "",
         "kieli": "SV"
       },
       {
-        "nimi": null,
+        "nimi": "National student exchange",
         "kuvaus": null,
         "kieli": "EN"
       }
@@ -668,7 +668,7 @@
         "kieli": "SV"
       },
       {
-        "nimi": null,
+        "nimi": "International exchange",
         "kuvaus": null,
         "kieli": "EN"
       }
