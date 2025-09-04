@@ -98,11 +98,13 @@ case class PerusopetuksenOpiskeluoikeudenLisätiedot(
   @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))
   opetuksenJärjestäminenVammanSairaudenTaiRajoitteenPerusteella: Option[List[Aikajakso]] = None,
   @Description("Kenttä käytössä 1.8.2026 alkaen.")
-  @Description("""Oppilaalla päätös opiskelun järjestämisestä toiminta-alueittain. Tällöin oppilaalla on rajattu oppimäärä ja opetus järjestetty toiminta-alueittain. Oppilaalla on aina tukea koskeva päätös. Oppilaan opetussuunnitelmaan kuuluvat toiminta-alueet ovat motoriset taidot, kieli ja kommunikaatio, sosiaaliset taidot, päivittäisten toimintojen taidot ja kognitiiviset taidot. Huom: toiminta-alue arviointeineen on kuvattu oppiaineen suorituksessa.""")
+  @Description("Oppilaalla päätös opiskelun järjestämisestä toiminta-alueittain. Tällöin oppilaalla on rajattu oppimäärä ja opetus järjestetty toiminta-alueittain. Oppilaalla on aina tukea koskeva päätös. Oppilaan opetussuunnitelmaan kuuluvat toiminta-alueet ovat motoriset taidot, kieli ja kommunikaatio, sosiaaliset taidot, päivittäisten toimintojen taidot ja kognitiiviset taidot. Huom: toiminta-alue arviointeineen on kuvattu oppiaineen suorituksessa.")
   @Tooltip("Opiskeleeko oppilas toiminta-alueittain? Toiminta-alueittain opiskelussa oppilaalla on yksilöllistetty oppimäärä ja opetus järjestetty toiminta-alueittain. Tuolloin oppilaalla on aina tukea koskeva päätös. Oppilaan opetussuunnitelmaan kuuluvat toiminta-alueet ovat motoriset taidot, kieli ja kommunikaatio, sosiaaliset taidot, päivittäisten toimintojen taidot ja kognitiiviset taidot.")
   @Title("Opiskelee toiminta-alueittain")
+  @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))
   toimintaAlueittainOpiskelu: Option[List[Aikajakso]] = None,
   @Title("Opiskelee tavoitekokonaisuuksittain")
+  @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))
   tavoitekokonaisuuksittainOpiskelu: Option[List[Aikajakso]] = None,
   @KoodistoUri("perusopetuksentukimuoto")
   @Description("Oppilaan saamat laissa säädetyt tukimuodot.")
@@ -381,6 +383,7 @@ case class NuortenPerusopetuksenOppiaineenSuoritus(
   @Tooltip("Minkä vuosiluokan mukaisesta oppiainesuorituksesta on kyse")
   @Title("Luokka-aste")
   @KoodistoUri("perusopetuksenluokkaaste")
+  @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT, Rooli.SUORITUSJAKO_KATSELIJA))
   luokkaAste: Option[Koodistokoodiviite] = None,
 ) extends PerusopetuksenOppiaineenSuoritus with OppiaineenTaiToiminta_AlueenSuoritus with Vahvistukseton with RajattavaOppimäärä with MahdollisestiSuorituskielellinen with SuoritustapanaMahdollisestiErityinenTutkinto
 
