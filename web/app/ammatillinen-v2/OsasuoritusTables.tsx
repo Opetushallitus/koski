@@ -84,6 +84,18 @@ export const OsasuoritusTables = ({
     osittainenPäätasonSuoritus.suoritus.suoritustapa.koodiarvo
   )
 
+  // Jos kyseessä esim. erikoisammattitutkinto, niin niputetaan kaikki ryhmät yhteen.
+  if (perusteenRyhmät.length === 0) {
+    return (
+      <TableForTutkinnonOsaRyhmä
+        form={form}
+        osittainenPäätasonSuoritus={osittainenPäätasonSuoritus}
+        ryhmä={'Tutkinnon osat'}
+        perusteenRyhmät={perusteenRyhmät}
+      />
+    )
+  }
+
   return (
     <>
       <TableForTutkinnonOsaRyhmä
@@ -159,6 +171,7 @@ const TableForTutkinnonOsaRyhmä = ({
     .filter(
       ({ s }) =>
         (s.tutkinnonOsanRyhmä?.nimi as Finnish | undefined)?.fi === ryhmä ||
+        ryhmä === 'Tutkinnon osat' ||
         (s.tutkinnonOsanRyhmä === undefined && ryhmä === 'Muut suoritukset')
     )
     .map(({ s, originalIndex }, rowIndex) => {
@@ -369,13 +382,19 @@ const NewAmisOsasuoritus = ({
 }: NewAmisOsasuoritusProps) => {
   const ryhmät = useKoodisto('ammatillisentutkinnonosanryhma')
   const ryhmäKoodi =
-    ryhmät !== null
+    (ryhmät !== null
       ? (ryhmät.find((r) => (r.koodiviite.nimi as Finnish).fi === ryhmä)
-          ?.koodiviite as Koodistokoodiviite<
-          'ammatillisentutkinnonosanryhma',
-          '1' | '3' | '4'
-        >)
-      : undefined
+          ?.koodiviite as
+          | Koodistokoodiviite<
+              'ammatillisentutkinnonosanryhma',
+              '1' | '3' | '4'
+            >
+          | undefined)
+      : undefined) ||
+    Koodistokoodiviite({
+      koodiarvo: '1',
+      koodistoUri: 'ammatillisentutkinnonosanryhma'
+    }) // fallbackaa Ammatillisen tutkinnon osiin jos kuuluu "muuhun" ryhmään
 
   const lisättävätTutkinnonOsat = useTutkinnonOsat(
     getValue(
@@ -402,10 +421,6 @@ const NewAmisOsasuoritus = ({
     },
     [lisättävätTutkinnonOsat]
   )
-
-  if (!ryhmäKoodi) {
-    return null
-  }
 
   if (ryhmä === 'Yhteiset tutkinnon osat') {
     return (
