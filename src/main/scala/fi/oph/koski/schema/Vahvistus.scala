@@ -46,6 +46,14 @@ case class Päivämäärävahvistus(
   def myöntäjäHenkilöt = Nil
 }
 
+case class PäivämäärävahvistusPaikkakunnalla(
+  päivä: LocalDate,
+  paikkakunta: Koodistokoodiviite,
+  myöntäjäOrganisaatio: Organisaatio
+) extends VahvistusPaikkakunnalla {
+  def myöntäjäHenkilöt = Nil
+}
+
 @Description("Suorituksen vahvistus organisaatio- ja henkilötiedoilla")
 case class HenkilövahvistusPaikkakunnalla(
   päivä: LocalDate,

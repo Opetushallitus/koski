@@ -1,6 +1,13 @@
 # Koskeen tallennettavien tietojen validaatiosäännöt
 
+## x.8.2025
+
+- Valtionhallinnon kielitutkinnon:
+  - Salli erinomaisen tason siirto ilman oppilaitosta
+  - Salli samantyyppisen tutkinnon siirto saman opiskeluoikeuden sisällä useampaan kertaan
+
 ## 2.9.2025
+
 - Lisätty validaatioita uudelle päätason suoritukselle: ammatillisen tutkinnon osan/osien suoritus useasta tutkinnosta.
 - Suorituksen osaamisaloja vastaavat tutkinnot on löydyttävä osasuorituksista.
 - Suorituksen tutkintonimikkeitä vastaavat tutkinnot on löydyttävä osasuorituksista.
@@ -11,22 +18,33 @@
 - Tutkinnon osan ryhmä täydennetään tallennettaessa automaattisesti yhteisille tutkinnon osan suorituksille.
 
 ## 2.9.2025
+
 - Korjattu perusopetuksen yksilöllistetyn oppimäärän validaatiota siten, että suorituksen voi vahvistaa vielä viimeisenä yksilöllistetyn oppimäärän käyttöpäivänä.
 
 ## 27.8.2025
- - Lisätty validaatio IB oppiaineen suoritusten laajuuksille. Uusille suorituksille ei sallita tunteja laajuudeksi
- - Poistettiin arvosanojen validointi IBDPCore ossuorituksilta
+
+- Lisätty validaatio IB oppiaineen suoritusten laajuuksille. Uusille suorituksille ei sallita tunteja laajuudeksi
+- Poistettiin arvosanojen validointi IBDPCore ossuorituksilta
+
+## 27.8.2025
+
+- Lisätty validaatio IB oppiaineen suoritusten laajuuksille. Uusille suorituksille ei sallita tunteja laajuudeksi
+- Poistettiin arvosanojen validointi IBDPCore ossuorituksilta
 
 ## 20.8.2025
+
 - Lisätty ePeruste rakennevalidaatio myös ammatillisen osittaiseen tutkintoon
 
 ## 11.8.2025
+
 - 1.8.2025 ja sen jälkeen alkaneille peruskoulun opiskeluoikeuksille ei sallita kenttää vuosiluokkiinSitoutumatonOpetus
 
 ## 6.8.2025
+
 - Lukion oppimäärän opiskeluoikeudelle ei sallita KT ja ET suorituksia yhdessä
 
 ## 31.7.2025
+
 - Rajatuille oppimäärille sallitaan arvosanat S ja H vuosiluokilla 1-9.
 
 ## 25.7.2025
@@ -36,8 +54,8 @@
 ## 22.7.2025
 
 - Lisätty validaatio IB-tutkinnon Core-oppiaineiden arvioinneille:
-    - Extended Essay & Theory of Knowledge voivat saada arvosanan "A", "B", "C", "D", "E" tai "P"
-    - CAS voi saada arvosanan "1", "2", "3", "4", "5", "6", "7", "F", "O" tai "S"
+  - Extended Essay & Theory of Knowledge voivat saada arvosanan "A", "B", "C", "D", "E" tai "P"
+  - CAS voi saada arvosanan "1", "2", "3", "4", "5", "6", "7", "F", "O" tai "S"
 
 ## 16.7.2025
 

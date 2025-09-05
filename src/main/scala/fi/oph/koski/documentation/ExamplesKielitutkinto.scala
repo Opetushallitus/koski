@@ -3,6 +3,7 @@ package fi.oph.koski.documentation
 import fi.oph.koski.henkilo.MockOppijat.asUusiOppija
 import fi.oph.koski.henkilo.{KoskiSpecificMockOppijat, LaajatOppijaHenkilöTiedot}
 import fi.oph.koski.organisaatio.MockOrganisaatiot
+import fi.oph.koski.organisaatio.MockOrganisaatiot.ValtionhallinnonKielitutkinnotOrg
 import fi.oph.koski.schema._
 import fi.oph.koski.util.DateOrdering.localDateOrdering
 
@@ -18,6 +19,14 @@ object ExamplesKielitutkinto {
       "kielitutkinto - yleinen kielitutkinto",
       "Vanhemman rakenteen mukainen yleisen kielitutkinnon suoritus (sisältää yleisarvosanan)",
       Oppija(exampleHenkilö.copy(hetu = "160586-873P"), Seq(YleisetKielitutkinnot.opiskeluoikeus(LocalDate.of(2011, 1, 1), "FI", "kt"))),
+    ),
+    Example(
+      "kielitutkinto - valtionhallinnon kielitutkinto",
+      "",
+      Oppija(
+        exampleHenkilö.copy(hetu = "160586-873P"),
+        Seq(ValtionhallinnonKielitutkinnot.Opiskeluoikeus.valmis(LocalDate.of(2011, 1, 1), "FI", List("kirjallinen", "suullinen"), "erinomainen"))
+      ),
     )
   )
 
@@ -145,22 +154,21 @@ object ExamplesKielitutkinto {
         .map(_.päivä)
         .max
 
+      val organisaatio = tutkintotaso match {
+        case "erinomainen" => OidOrganisaatio(ValtionhallinnonKielitutkinnotOrg.organisaatio)
+        case _ => OidOrganisaatio(MockOrganisaatiot.varsinaisSuomenKansanopistoToimipiste)
+      }
+
       ValtionhallinnonKielitutkinnonSuoritus(
         koulutusmoduuli = ValtionhallinnonKielitutkinto(
           tunniste = Koodistokoodiviite(tutkintotaso, "vkttutkintotaso"),
           kieli = Koodistokoodiviite(kieli, "kieli"),
         ),
-        toimipiste = OidOrganisaatio(MockOrganisaatiot.varsinaisSuomenKansanopistoToimipiste),
-        vahvistus = if (osakokeidenArvosanat.contains("hylatty")) None else Some(HenkilövahvistusValinnaisellaTittelilläJaValinnaisellaPaikkakunnalla(
+        toimipiste = organisaatio,
+        vahvistus = if (osakokeidenArvosanat.contains("hylatty")) None else Some(PäivämäärävahvistusPaikkakunnalla(
           päivä = viimeisinArviointipäivä,
-          myöntäjäOrganisaatio = OidOrganisaatio(MockOrganisaatiot.varsinaisSuomenKansanopistoToimipiste),
-          myöntäjäHenkilöt = List(
-            OrganisaatiohenkilöValinnaisellaTittelillä(
-              nimi = "Vallu Vastaanottaja",
-              organisaatio = OidOrganisaatio(MockOrganisaatiot.varsinaisSuomenKansanopistoToimipiste),
-            )
-          ),
-          paikkakunta = Some(Koodistokoodiviite("853", "kunta")),
+          myöntäjäOrganisaatio = organisaatio,
+          paikkakunta = Koodistokoodiviite("853", "kunta"),
         )),
         osasuoritukset = Some(osasuoritukset),
       )
