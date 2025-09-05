@@ -137,6 +137,7 @@ trait ValtionhallinnonKielitutkinnonKielitaidonSuoritus extends Suoritus with Va
   def arviointi: Option[List[ValtionhallinnonKielitutkinnonArviointi]]
 
   override def valmis: Boolean = arviointi.isDefined
+  override def salliDuplikaatit = true
 }
 
 trait ValtionhallinnonKielitutkinnonKielitaito extends Koulutusmoduuli {
