@@ -90,6 +90,14 @@ export const suoritusTitle = (suoritus) => {
   const title = modelTitle(
     tutkinnonNimi(modelLookup(suoritus, 'koulutusmoduuli'), true)
   )
+
+  if (
+    modelData(suoritus, 'koulutusmoduuli.tunniste').koodiarvo ===
+    'ammatillinentutkintoosittainenuseastatutkinnosta'
+  ) {
+    return title
+  }
+
   switch (suorituksenTyyppi(suoritus)) {
     case 'ammatillinentutkintoosittainen':
       return title + t(', osittainen')
