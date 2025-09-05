@@ -65,6 +65,18 @@ import { MuuValtakunnallinenTutkinnonOsa } from '../types/fi/oph/koski/schema/Mu
 import { useTutkinnonOsaRyhmät } from './useTutkinnonOsaRyhmät'
 import { useTutkinnonOsat } from './useTutkinnonOsat'
 import { AmisArvosanaInTableEdit, AmisArvosanaInTableView } from './Arviointi'
+import { AmmatillisenTutkinnonOsittainenUseastaTutkinnostaSuoritus } from '../types/fi/oph/koski/schema/AmmatillisenTutkinnonOsittainenUseastaTutkinnostaSuoritus'
+import {
+  isYhteisenOsittaisenAmmatillisenTutkinnonTutkinnonosanUseastaTutkinnostaSuoritus,
+  YhteisenOsittaisenAmmatillisenTutkinnonTutkinnonosanUseastaTutkinnostaSuoritus
+} from '../types/fi/oph/koski/schema/YhteisenOsittaisenAmmatillisenTutkinnonTutkinnonosanUseastaTutkinnostaSuoritus'
+import {
+  isMuunOsittaisenAmmatillisenTutkinnonTutkinnonosanUseastaTutkinnostaSuoritus,
+  MuunOsittaisenAmmatillisenTutkinnonTutkinnonosanUseastaTutkinnostaSuoritus
+} from '../types/fi/oph/koski/schema/MuunOsittaisenAmmatillisenTutkinnonTutkinnonosanUseastaTutkinnostaSuoritus'
+import { OsittaisenAmmatillisenTutkinnonOsanUseastaTutkinnostaSuoritus } from '../types/fi/oph/koski/schema/OsittaisenAmmatillisenTutkinnonOsanUseastaTutkinnostaSuoritus'
+import { YhteisenOsittaisenAmmatillisenTutkinnonUseastaTutkinnostaOsasuoritusProperties } from './YhteisenOsittaisenAmmatillisenTutkinnonUseastaTutkinnostaOsasuoritusProperties'
+import { MuunOsittaisenAmmatillisenTutkinnonUseastaTutkinnostaTutkinnonosanSuoritusProperties } from './MuunOsittaisenAmmatillisenTutkinnonUseastaTutkinnostaTutkinnonosanSuoritusProperties'
 
 interface OsasuoritusTablesProps {
   form: FormModel<AmmatillinenOpiskeluoikeus>
@@ -127,6 +139,49 @@ export const OsasuoritusTables = ({
         osittainenPäätasonSuoritus={osittainenPäätasonSuoritus}
         ryhmä="Muut suoritukset"
         perusteenRyhmät={perusteenRyhmät}
+      />
+    </>
+  )
+}
+
+interface OsasuoritusTablesUseastaTutkinnostaProps {
+  form: FormModel<AmmatillinenOpiskeluoikeus>
+  osittainenPäätasonSuoritus: ActivePäätasonSuoritus<
+    AmmatillinenOpiskeluoikeus,
+    AmmatillisenTutkinnonOsittainenUseastaTutkinnostaSuoritus
+  >
+}
+
+export const OsasuoritusTablesUseastaTutkinnosta = ({
+  form,
+  osittainenPäätasonSuoritus
+}: OsasuoritusTablesUseastaTutkinnostaProps) => {
+  return (
+    <>
+      <TableForTutkinnonOsaRyhmäUseastaTutkinnosta
+        form={form}
+        osittainenPäätasonSuoritus={osittainenPäätasonSuoritus}
+        ryhmä="Yhteiset tutkinnon osat"
+      />
+      <TableForTutkinnonOsaRyhmäUseastaTutkinnosta
+        form={form}
+        osittainenPäätasonSuoritus={osittainenPäätasonSuoritus}
+        ryhmä="Ammatilliset tutkinnon osat"
+      />
+      <TableForTutkinnonOsaRyhmäUseastaTutkinnosta
+        form={form}
+        osittainenPäätasonSuoritus={osittainenPäätasonSuoritus}
+        ryhmä="Vapaasti valittavat tutkinnon osat"
+      />
+      <TableForTutkinnonOsaRyhmäUseastaTutkinnosta
+        form={form}
+        osittainenPäätasonSuoritus={osittainenPäätasonSuoritus}
+        ryhmä="Tutkintoa yksilöllisesti laajentavat tutkinnon osat"
+      />
+      <TableForTutkinnonOsaRyhmäUseastaTutkinnosta
+        form={form}
+        osittainenPäätasonSuoritus={osittainenPäätasonSuoritus}
+        ryhmä="Muut suoritukset"
       />
     </>
   )
@@ -234,6 +289,80 @@ const TableForTutkinnonOsaRyhmä = ({
   )
 }
 
+interface TableUseastaTutkinnostaProps {
+  form: FormModel<AmmatillinenOpiskeluoikeus>
+  osittainenPäätasonSuoritus: ActivePäätasonSuoritus<
+    AmmatillinenOpiskeluoikeus,
+    AmmatillisenTutkinnonOsittainenUseastaTutkinnostaSuoritus
+  >
+  ryhmä: string
+}
+
+const TableForTutkinnonOsaRyhmäUseastaTutkinnosta = ({
+  form,
+  osittainenPäätasonSuoritus,
+  ryhmä
+}: TableUseastaTutkinnostaProps) => {
+  const originalIndexMap: Record<number, number> = {}
+
+  const rows = osittainenPäätasonSuoritus.suoritus.osasuoritukset
+    ?.map((s, originalIndex) => ({ s, originalIndex }))
+    .filter(
+      ({ s }) =>
+        (s.tutkinnonOsanRyhmä?.nimi as Finnish | undefined)?.fi === ryhmä ||
+        ryhmä === 'Tutkinnon osat' ||
+        (s.tutkinnonOsanRyhmä === undefined && ryhmä === 'Muut suoritukset')
+    )
+    .map(({ s, originalIndex }, rowIndex) => {
+      originalIndexMap[rowIndex] = originalIndex
+      return tutkinnonOsatUseastaTutkinnostaToTableRow({
+        suoritusIndex: osittainenPäätasonSuoritus.index,
+        osasuoritusIndex: originalIndex,
+        suoritusPath: osittainenPäätasonSuoritus.path,
+        form,
+        level: 0,
+        tutkinnonOsaRyhmä: ryhmä
+      })
+    })
+
+  if (!rows || rows.length === 0) {
+    return null
+  }
+
+  return (
+    <OsasuoritusTable
+      editMode={form.editMode}
+      rows={
+        (!rows || rows?.length === 0) && form.editMode
+          ? [dummyRow(ryhmä)] // Saadaan headeri näkymään editointimoodissa kun osasuorituksia ei ole
+          : rows || []
+      }
+      onRemove={
+        !rows || rows?.length === 0
+          ? undefined
+          : (rowIndex) =>
+              form.updateAt(osittainenPäätasonSuoritus.path, (pts) => {
+                return {
+                  ...pts,
+                  osasuoritukset: deleteAt(
+                    pts.osasuoritukset || [],
+                    originalIndexMap[rowIndex]
+                  )
+                }
+              })
+      }
+      completed={(rowIndex) => {
+        const osasuoritus = (osittainenPäätasonSuoritus.suoritus
+          .osasuoritukset || [])[originalIndexMap[rowIndex]]
+        if (osasuoritus === undefined) {
+          return undefined
+        }
+        return hasAmmatillinenArviointi(osasuoritus)
+      }}
+    />
+  )
+}
+
 interface OsasuoritusToTableRowParams<T extends string> {
   suoritusIndex: number
   osasuoritusIndex: number
@@ -302,6 +431,80 @@ const tutkinnonOsatToTableRow = <T extends string>({
 
   const content =
     osasuoritus && OsasuoritusProperties({ form, osasuoritus, osasuoritusPath })
+
+  return {
+    suoritusIndex,
+    osasuoritusIndex,
+    expandable: true,
+    columns,
+    content
+  }
+}
+
+interface OsasuoritusUseastaTutkinnostaToTableRowParams<T extends string> {
+  suoritusIndex: number
+  osasuoritusIndex: number
+  suoritusPath: FormOptic<
+    AmmatillinenOpiskeluoikeus,
+    AmmatillisenTutkinnonOsittainenUseastaTutkinnostaSuoritus
+  >
+  form: FormModel<AmmatillinenOpiskeluoikeus>
+  level: number
+  tutkinnonOsaRyhmä: T
+}
+
+const tutkinnonOsatUseastaTutkinnostaToTableRow = <T extends string>({
+  suoritusIndex,
+  osasuoritusIndex,
+  suoritusPath,
+  form,
+  level,
+  tutkinnonOsaRyhmä
+}: OsasuoritusUseastaTutkinnostaToTableRowParams<T>): OsasuoritusRowData<
+  T | 'Laajuus' | 'Arvosana'
+> => {
+  const osasuoritusPath = suoritusPath
+    .prop('osasuoritukset')
+    .optional()
+    .at(osasuoritusIndex)
+  const osasuoritus = getValue(osasuoritusPath)(form.state)
+
+  const columns: Partial<Record<'Laajuus' | 'Arvosana' | T, ReactNode>> = {}
+
+  columns[tutkinnonOsaRyhmä] = (
+    <>{t(osasuoritus?.koulutusmoduuli.tunniste.nimi)}</>
+  )
+
+  columns.Laajuus = (
+    <FormField
+      form={form}
+      view={LaajuusView}
+      edit={LaajuusEdit}
+      editProps={{
+        createLaajuus: (arvo) => LaajuusOsaamispisteissä({ arvo })
+      }}
+      path={osasuoritusPath.prop('koulutusmoduuli').prop('laajuus')}
+    />
+  )
+
+  columns.Arvosana = (
+    <FormField
+      form={form}
+      view={AmisArvosanaInTableView}
+      edit={AmisArvosanaInTableEdit}
+      path={(
+        osasuoritusPath as FormOptic<AmmatillinenOpiskeluoikeus, any>
+      ).prop('arviointi')}
+    />
+  )
+
+  const content =
+    osasuoritus &&
+    OsasuoritusUseastaTutkinnostaProperties({
+      form,
+      osasuoritus,
+      osasuoritusPath
+    })
 
   return {
     suoritusIndex,
@@ -639,6 +842,55 @@ const OsasuoritusProperties = ({
       <OsittaisenAmmatillisenTutkinnonOsanJatkoOpintovalmiuksiaTukevienOpintojenSuoritusProperties
         form={form}
         osasuoritusPath={jatkoPath}
+        osasuoritus={osasuoritus}
+      />
+    )
+  }
+}
+
+type OsasuoritusUseastaTutkinnostaPropertiesProps = {
+  form: FormModel<AmmatillinenOpiskeluoikeus>
+  osasuoritus: OsittaisenAmmatillisenTutkinnonOsanUseastaTutkinnostaSuoritus
+  osasuoritusPath: FormOptic<
+    AmmatillinenOpiskeluoikeus,
+    OsittaisenAmmatillisenTutkinnonOsanUseastaTutkinnostaSuoritus
+  >
+}
+
+const OsasuoritusUseastaTutkinnostaProperties = ({
+  form,
+  osasuoritus,
+  osasuoritusPath
+}: OsasuoritusUseastaTutkinnostaPropertiesProps) => {
+  if (
+    isYhteisenOsittaisenAmmatillisenTutkinnonTutkinnonosanUseastaTutkinnostaSuoritus(
+      osasuoritus
+    )
+  ) {
+    const yhteinenPath = osasuoritusPath as unknown as FormOptic<
+      AmmatillinenOpiskeluoikeus,
+      YhteisenOsittaisenAmmatillisenTutkinnonTutkinnonosanUseastaTutkinnostaSuoritus
+    >
+    return (
+      <YhteisenOsittaisenAmmatillisenTutkinnonUseastaTutkinnostaOsasuoritusProperties
+        form={form}
+        osasuoritusPath={yhteinenPath}
+        osasuoritus={osasuoritus}
+      />
+    )
+  } else if (
+    isMuunOsittaisenAmmatillisenTutkinnonTutkinnonosanUseastaTutkinnostaSuoritus(
+      osasuoritus
+    )
+  ) {
+    const muunPath = osasuoritusPath as unknown as FormOptic<
+      AmmatillinenOpiskeluoikeus,
+      MuunOsittaisenAmmatillisenTutkinnonTutkinnonosanUseastaTutkinnostaSuoritus
+    >
+    return (
+      <MuunOsittaisenAmmatillisenTutkinnonUseastaTutkinnostaTutkinnonosanSuoritusProperties
+        form={form}
+        osasuoritusPath={muunPath}
         osasuoritus={osasuoritus}
       />
     )
