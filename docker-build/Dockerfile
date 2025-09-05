@@ -1,5 +1,5 @@
 # Voit päivittää imagen komennolla ./update-openjdk.sh
-FROM adoptopenjdk/openjdk11:jdk-11.0.26_4-alpine-slim@sha256:5ab2a129d1054f0300b4bfb4f6b298af1be4e746d9b9b0ac680ef21cfc652948
+FROM adoptopenjdk/openjdk11:jdk-11.0.27_6-alpine-slim@sha256:3a2290b904dfdc743751e5ee1b4e304169b703f738b039b80f257fcc4762d83a
 
 ARG KOSKI_VERSION
 ARG PROMETHEUS_JMX_EXPORTER_VERSION="1.3.0"
