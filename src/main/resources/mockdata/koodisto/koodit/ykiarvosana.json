@@ -8,12 +8,12 @@
         "kieli": "FI"
       },
       {
-        "nimi": null,
+        "nimi": "1, grundnivå",
         "kuvaus": null,
         "kieli": "SV"
       },
       {
-        "nimi": null,
+        "nimi": "1, basic level",
         "kuvaus": null,
         "kieli": "EN"
       }
@@ -34,12 +34,12 @@
         "kieli": "FI"
       },
       {
-        "nimi": null,
+        "nimi": "Avbrytits",
         "kuvaus": null,
         "kieli": "SV"
       },
       {
-        "nimi": null,
+        "nimi": "Interrupted",
         "kuvaus": null,
         "kieli": "EN"
       }
@@ -60,12 +60,12 @@
         "kieli": "FI"
       },
       {
-        "nimi": null,
+        "nimi": "Fusk",
         "kuvaus": null,
         "kieli": "SV"
       },
       {
-        "nimi": null,
+        "nimi": "Fraud",
         "kuvaus": null,
         "kieli": "EN"
       }
@@ -86,12 +86,12 @@
         "kieli": "FI"
       },
       {
-        "nimi": null,
+        "nimi": "2, grundnivå",
         "kuvaus": null,
         "kieli": "SV"
       },
       {
-        "nimi": null,
+        "nimi": "2, basic level",
         "kuvaus": null,
         "kieli": "EN"
       }
@@ -112,12 +112,12 @@
         "kieli": "FI"
       },
       {
-        "nimi": null,
+        "nimi": "3, mellannivå",
         "kuvaus": null,
         "kieli": "SV"
       },
       {
-        "nimi": null,
+        "nimi": "3, intermediate level",
         "kuvaus": null,
         "kieli": "EN"
       }
@@ -138,12 +138,12 @@
         "kieli": "FI"
       },
       {
-        "nimi": null,
+        "nimi": "4, mellannivå",
         "kuvaus": null,
         "kieli": "SV"
       },
       {
-        "nimi": null,
+        "nimi": "4, intermediate level",
         "kuvaus": null,
         "kieli": "EN"
       }
@@ -164,12 +164,12 @@
         "kieli": "FI"
       },
       {
-        "nimi": null,
+        "nimi": "5, högsta nivå",
         "kuvaus": null,
         "kieli": "SV"
       },
       {
-        "nimi": null,
+        "nimi": "5, advanced level",
         "kuvaus": null,
         "kieli": "EN"
       }
@@ -190,12 +190,12 @@
         "kieli": "FI"
       },
       {
-        "nimi": null,
+        "nimi": "6, högsta nivå",
         "kuvaus": null,
         "kieli": "SV"
       },
       {
-        "nimi": null,
+        "nimi": "6, advanced level",
         "kuvaus": null,
         "kieli": "EN"
       }
@@ -210,18 +210,18 @@
   {
     "metadata": [
       {
-        "nimi": "Ei voi arvioida",
+        "nimi": "Ei voida arvostella",
         "kuvaus": "",
         "lyhytNimi": "",
         "kieli": "FI"
       },
       {
-        "nimi": null,
+        "nimi": "Kan inte bedömas",
         "kuvaus": null,
         "kieli": "SV"
       },
       {
-        "nimi": null,
+        "nimi": "Cannot be assessed",
         "kuvaus": null,
         "kieli": "EN"
       }
@@ -242,12 +242,12 @@
         "kieli": "FI"
       },
       {
-        "nimi": null,
+        "nimi": "Under 1 (underkänd)",
         "kuvaus": null,
         "kieli": "SV"
       },
       {
-        "nimi": null,
+        "nimi": "Below 1 (fail)",
         "kuvaus": null,
         "kieli": "EN"
       }
@@ -268,12 +268,12 @@
         "kieli": "FI"
       },
       {
-        "nimi": null,
+        "nimi": "Under 3 (underkänd)",
         "kuvaus": null,
         "kieli": "SV"
       },
       {
-        "nimi": null,
+        "nimi": "Below 3 (fail)",
         "kuvaus": null,
         "kieli": "EN"
       }
@@ -294,12 +294,12 @@
         "kieli": "FI"
       },
       {
-        "nimi": null,
+        "nimi": "Under 5 (underkänd)",
         "kuvaus": null,
         "kieli": "SV"
       },
       {
-        "nimi": null,
+        "nimi": "Below 5 (fail)",
         "kuvaus": null,
         "kieli": "EN"
       }

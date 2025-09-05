@@ -84,7 +84,7 @@
   "suorittaneenOsaaminen": null,
   "perusteenAikataulut": [
     {
-      "id": 7534991,
+      "id": 7534990,
       "peruste": {
         "id": 7534950,
         "nimi": {
@@ -99,15 +99,17 @@
         "esikatseltavissa": false,
         "voimassaoloAlkaa": 1659301200000,
         "voimassaoloLoppuu": null,
-        "_perusteprojekti": null
+        "_perusteprojekti": null,
+        "julkisivuJarjestysNro": null,
+        "piilotaJulkisivulta": null
       },
       "tavoite": {
-        "_id": "7534935",
-        "_tunniste": "e2ae199a-9e87-46db-9e8a-ffe55c9f365e",
-        "fi": "Peruste astuu voimaan"
+        "_id": "7534934",
+        "_tunniste": "bc81169b-f996-4b50-bde8-2e6985502978",
+        "fi": "Peruste luotu"
       },
-      "tapahtuma": "tavoite",
-      "tapahtumapaiva": 1659301200000,
+      "tapahtuma": "luominen",
+      "tapahtumapaiva": 1610688369525,
       "julkinen": false
     },
     {
@@ -126,7 +128,9 @@
         "esikatseltavissa": false,
         "voimassaoloAlkaa": 1659301200000,
         "voimassaoloLoppuu": null,
-        "_perusteprojekti": null
+        "_perusteprojekti": null,
+        "julkisivuJarjestysNro": null,
+        "piilotaJulkisivulta": null
       },
       "tavoite": {
         "_id": "7792500",
@@ -138,7 +142,7 @@
       "julkinen": false
     },
     {
-      "id": 7534990,
+      "id": 7534991,
       "peruste": {
         "id": 7534950,
         "nimi": {
@@ -153,15 +157,17 @@
         "esikatseltavissa": false,
         "voimassaoloAlkaa": 1659301200000,
         "voimassaoloLoppuu": null,
-        "_perusteprojekti": null
+        "_perusteprojekti": null,
+        "julkisivuJarjestysNro": null,
+        "piilotaJulkisivulta": null
       },
       "tavoite": {
-        "_id": "7534934",
-        "_tunniste": "bc81169b-f996-4b50-bde8-2e6985502978",
-        "fi": "Peruste luotu"
+        "_id": "7534935",
+        "_tunniste": "e2ae199a-9e87-46db-9e8a-ffe55c9f365e",
+        "fi": "Peruste astuu voimaan"
       },
-      "tapahtuma": "luominen",
-      "tapahtumapaiva": 1610688369525,
+      "tapahtuma": "tavoite",
+      "tapahtumapaiva": 1659301200000,
       "julkinen": false
     }
   ],

@@ -55,7 +55,9 @@
         "esikatseltavissa": false,
         "voimassaoloAlkaa": 1627765200000,
         "voimassaoloLoppuu": null,
-        "_perusteprojekti": null
+        "_perusteprojekti": null,
+        "julkisivuJarjestysNro": null,
+        "piilotaJulkisivulta": null
       },
       "tavoite": {
         "_id": "7512431",
@@ -82,7 +84,9 @@
         "esikatseltavissa": false,
         "voimassaoloAlkaa": 1627765200000,
         "voimassaoloLoppuu": null,
-        "_perusteprojekti": null
+        "_perusteprojekti": null,
+        "julkisivuJarjestysNro": null,
+        "piilotaJulkisivulta": null
       },
       "tavoite": {
         "_id": "7512432",
@@ -109,7 +113,9 @@
         "esikatseltavissa": false,
         "voimassaoloAlkaa": 1627765200000,
         "voimassaoloLoppuu": null,
-        "_perusteprojekti": null
+        "_perusteprojekti": null,
+        "julkisivuJarjestysNro": null,
+        "piilotaJulkisivulta": null
       },
       "tavoite": {
         "_id": "7512430",
