@@ -269,7 +269,14 @@ export class Oppijataulukko extends React.Component {
                       <td className="koulutus">
                         <ul className="cell-listing">
                           {opiskeluoikeus.suoritukset.map((suoritus, j) => (
-                            <li key={j}>{t(suoritus.tyyppi.nimi)}</li>
+                            <li key={j}>
+                              {t(
+                                suoritus.koulutusmoduuli.tunniste.koodiarvo ===
+                                  'ammatillinentutkintoosittainenuseastatutkinnosta'
+                                  ? suoritus.koulutusmoduuli.tunniste.nimi
+                                  : suoritus.tyyppi.nimi
+                              )}
+                            </li>
                           ))}
                         </ul>
                       </td>
