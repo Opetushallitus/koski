@@ -1,3 +1,6 @@
+## 3.9.2025
+ - nuorten peerusopetuksessa "toiminta alueittain opiskelu" ja "tavoitekokonaisuuksittain opiskelu" merkitty salassa pidettäväksi
+
 ## 2.9.2025
 - Lisätty uusi ammatillisen opiskeluoikeuden päätason suoritus: ammatillisen tutkinnon osa/osia useasta tutkinnosta
 
