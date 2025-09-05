@@ -178,11 +178,8 @@ const useUiAdapterImpl = <T extends any[]>(
           const isOsittainen =
             oo?.suoritukset?.[0]?.tyyppi?.koodiarvo ===
             'ammatillinentutkintoosittainen'
-          const hasFeatureFlag =
-            localStorage.getItem('ammatillinen-v2') !== null ||
-            new URLSearchParams(window.location.search).has('ammatillinen-v2')
 
-          if (!isOsittainen || (isOsittainen && !hasFeatureFlag)) {
+          if (!isOsittainen) {
             return undefined
           }
         }
