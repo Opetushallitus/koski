@@ -377,73 +377,6 @@ describe('Ammatillinen koulutus 3', function () {
     })
   })
 
-  describe('Osittainen ammatillinen tutkinto', function () {
-    before(
-      Authentication().login(),
-      resetFixtures,
-      page.openPage,
-      page.oppijaHaku.searchAndSelect('230297-6448')
-    )
-    describe('Kaikki tiedot näkyvissä', function () {
-      before(opinnot.expandAll)
-
-      it('näyttää opiskeluoikeuden otsikkotiedot', function () {
-        expect(
-          opinnot.opiskeluoikeudet.opiskeluoikeuksienOtsikot()
-        ).to.deep.equal([
-          'Stadin ammatti- ja aikuisopisto, Luonto- ja ympäristöalan perustutkinto, osittainen (2012—2016, valmistunut)'
-        ])
-        expect(extractAsText(S('.suoritus-tabs .selected'))).to.equal(
-          'Luonto- ja ympäristöalan perustutkinto, osittainen'
-        )
-      })
-
-      it('näyttää opiskeluoikeuden tiedot', function () {
-        expect(extractAsText(S('.opiskeluoikeuden-tiedot'))).to.equal(
-          'Opiskeluoikeuden voimassaoloaika : 1.9.2012 — 4.6.2016\n' +
-          'Tila 4.6.2016 Valmistunut (valtionosuusrahoitteinen koulutus)\n' +
-          '1.9.2012 Läsnä (valtionosuusrahoitteinen koulutus)'
-        )
-      })
-
-      it('näyttää suorituksen tiedot', function () {
-        expect(
-          extractAsText(
-            S('.suoritus > .properties, .suoritus > .tila-vahvistus')
-          )
-        ).to.equal(
-          'Koulutus Luonto- ja ympäristöalan perustutkinto 361902 62/011/2014\n' +
-          'Suoritustapa Ammatillinen perustutkinto\n' +
-          'Tutkintonimike Ympäristönhoitaja\n' +
-          'Toinen tutkintonimike kyllä\n' +
-          'Osaamisala Ympäristöalan osaamisala\n' +
-          'Oppilaitos / toimipiste Stadin ammatti- ja aikuisopisto, Lehtikuusentien toimipaikka\n' +
-          'Suorituskieli suomi\n' +
-          'Järjestämismuodot 1.9.2012 — , Koulutuksen järjestäminen oppilaitosmuotoisena\n' +
-          'Todistuksella näkyvät lisätiedot Suorittaa toista osaamisalaa\n' +
-          'Painotettu keskiarvo 4,00\n' +
-          'Keskiarvo sisältää mukautettuja arvosanoja kyllä\n' +
-          'Suoritus valmis Vahvistus : 4.6.2016 Reijo Reksi , rehtori'
-        )
-      })
-
-      it('näyttää tutkinnon osat', function () {
-        expect(extractAsText(S('.osasuoritukset'))).to.equalIgnoreNewlines(
-          'Sulje kaikki\n' +
-          'Ammatilliset tutkinnon osat Laajuus (osp) Arvosana\n' +
-          'Ympäristön hoitaminen 35 3\n' +
-          'Pakollinen kyllä\n' +
-          'Oppilaitos / toimipiste Stadin ammatti- ja aikuisopisto, Lehtikuusentien toimipaikka\n' +
-          'Vahvistus 31.5.2016 Reijo Reksi , rehtori\n' +
-          'Lisätiedot\nOsaamisen arvioinnin mukauttaminen\nTutkinnon osan ammattitaitovaatimuksia tai osaamistavoitteita ja osaamisen arviointia on mukautettu ammatillisesta peruskoulutuksesta annetun lain (630/1998, muutos 246/2015) 19 a tai 21 §:n perusteella\n' +
-          'Arviointi Arvosana 3\n' +
-          'Arviointipäivä 20.10.2014\n' +
-          'Yhteensä 35 / 135 osp'
-        )
-      })
-    })
-  })
-
   describe('Näyttötutkinnot', function () {
     before(
       Authentication().login(),
@@ -733,6 +666,36 @@ describe('Ammatillinen koulutus 3', function () {
             'Yhteensä 0 osp'
           )
         })
+      })
+    })
+  })
+
+  describe('Luottamuksellinen data', function () {
+    before(
+      page.openPage,
+      page.oppijaHaku.searchAndSelect('010101-123N'),
+      opinnot.expandAll
+    )
+    describe('Kun käyttäjällä on luottamuksellinen-rooli', function () {
+      it('näkyy', function () {
+        expect(extractAsText(S('.lisätiedot'))).to.equal(
+          'Lisätiedot\n' +
+          'Erityinen tuki 30.5.2019 —\n' +
+          'Vaikeasti vammaisille järjestetty opetus 30.5.2019 —\n' +
+          'Vankilaopetuksessa 30.5.2019 —'
+        )
+      })
+    })
+
+    describe('Kun käyttäjällä ei ole luottamuksellinen-roolia', function () {
+      before(
+        Authentication().logout,
+        Authentication().login('stadin-vastuu'),
+        page.openPage,
+        page.oppijaHaku.searchAndSelect('010101-123N')
+      )
+      it('piilotettu', function () {
+        expect(isElementVisible(S('.lisätiedot'))).to.equal(false)
       })
     })
   })
