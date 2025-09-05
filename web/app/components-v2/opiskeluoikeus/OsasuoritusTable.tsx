@@ -63,7 +63,10 @@ export const OsasuoritusTable = <DATA_KEYS extends string, P>(
       {rows[0] && <OsasuoritusHeader row={rows[0]} editMode={editMode} />}
       <TestIdLayer id="osasuoritukset">
         {rows.map((row, index) => (
-          <TestIdLayer key={index} id={index}>
+          <TestIdLayer
+            key={row.osasuoritusIndex ? row.osasuoritusIndex : index}
+            id={row.osasuoritusIndex ? row.osasuoritusIndex : index}
+          >
             <OsasuoritusRow
               editMode={editMode}
               row={row}

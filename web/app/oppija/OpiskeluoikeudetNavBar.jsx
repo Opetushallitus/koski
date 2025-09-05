@@ -172,5 +172,21 @@ const koulutuksenNimi = (opiskeluoikeus) => {
 
     return `${oppimääräStr} (${taiteenala})`
   }
+
+  if (tyyppi === 'ammatillinenkoulutus') {
+    const koulutusmoduulinTunniste = modelData(
+      opiskeluoikeus,
+      'suoritukset.0.koulutusmoduuli.tunniste.koodiarvo'
+    )
+    if (
+      koulutusmoduulinTunniste ===
+      'ammatillinentutkintoosittainenuseastatutkinnosta'
+    ) {
+      return t(
+        modelData(opiskeluoikeus, 'suoritukset.0.koulutusmoduuli.tunniste.nimi')
+      )
+    }
+  }
+
   return modelTitle(opiskeluoikeus, 'suoritukset.0.tyyppi')
 }
