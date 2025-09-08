@@ -2,6 +2,7 @@ package fi.oph.koski.organisaatio
 
 import fi.oph.koski.log.Logging
 import fi.oph.koski.schema._
+import fi.oph.koski.schema.annotation.AllowKoulutustoimijaOidAsOppilaitos
 import fi.oph.scalaschema._
 import fi.oph.scalaschema.extraction.{CustomDeserializer, OtherViolation, ValidationError}
 
@@ -11,8 +12,10 @@ case class OrganisaatioResolvingCustomDeserializer(organisaatioRepository: Organ
       case Right(o: OrganisaatioWithOid) =>
         val c = Class.forName(schema.fullClassName)
         organisaatioRepository.getOrganisaatio(o.oid) match {
-          case Some(org) if (c == classOf[OidOrganisaatio] || c.isInstance(org)) =>
+          case Some(org) if c == classOf[OidOrganisaatio] || c.isInstance(org) =>
             Right(org)
+          case Some(org) if org.isInstanceOf[Koulutustoimija] && metadata.exists(_.isInstanceOf[AllowKoulutustoimijaOidAsOppilaitos]) =>
+            Right(org.asInstanceOf[Koulutustoimija].toTuntematonOppilaitos)
           case Some(org) =>
             Left(List(ValidationError(cursor.path, cursor.json, OtherViolation("Organisaatio " + o.oid + " ei ole " + c.getSimpleName.toLowerCase + " vaan " + org.getClass.getSimpleName.toLowerCase, "vääränTyyppinenOrganisaatio"))))
           case None =>
