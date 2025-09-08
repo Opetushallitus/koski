@@ -22,10 +22,12 @@ import { DialogSelect } from '../components/DialogSelect'
 import {
   createAmmatilliseenTehtäväänValmistavaKoulutus,
   createPaikallinenMuuAmmatillinenKoulutus,
-  createTutkinnonOsaaPienemmistäKokonaisuuksistaKoostuvaKoulutus
+  createTutkinnonOsaaPienemmistäKokonaisuuksistaKoostuvaKoulutus,
+  AmmatillisenOsittaisenUseastaTutkinnostaSuorituksenTyyppi
 } from '../opiskeluoikeusCreator/ammatillinenTutkinto'
 import { useAmmatillisenTutkinnonSuoritustapa } from '../state/ammatillisenTutkinnonSuoritustapa'
 import { UusiOpiskeluoikeusDialogState } from '../state/state'
+import { Finnish } from '../../types/fi/oph/koski/schema/Finnish'
 
 export const AmmatillinenKoulutusFields = (props: SuoritusFieldsProps) => {
   const tutkinnot = useTutkinnot(props.state)
@@ -50,6 +52,8 @@ export const AmmatillinenKoulutusFields = (props: SuoritusFieldsProps) => {
         {t('Suoritustyyppi')}
         <DialogPäätasonSuoritusSelect
           state={props.state}
+          extraOptions={extraOptions}
+          default="ammatillinentutkinto"
           testId="suoritustyyppi"
         />
       </label>
@@ -223,3 +227,19 @@ const muuAmmatillinenKoulutusOptions: SelectOption<MuuAmmatillinenKoulutusmoduul
       label: t('Ammatilliseen tehtävään valmistava koulutus')
     }
   ]
+
+const extraOptions: Array<
+  SelectOption<Koodistokoodiviite<'suorituksentyyppi'>>
+> = [
+  {
+    key: `suorituksentyyppi_${AmmatillisenOsittaisenUseastaTutkinnostaSuorituksenTyyppi}`,
+    label: 'Ammatillisen tutkinnon osa/osia useasta tutkinnosta',
+    value: Koodistokoodiviite({
+      koodiarvo: AmmatillisenOsittaisenUseastaTutkinnostaSuorituksenTyyppi,
+      koodistoUri: 'suorituksentyyppi',
+      nimi: Finnish({
+        fi: 'Ammatillisen tutkinnon osa/osia useasta tutkinnosta'
+      })
+    })
+  }
+]

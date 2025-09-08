@@ -65,7 +65,7 @@ const createIBPäätasonSuoritus = (
         suorituskieli,
         toimipiste: toToimipiste(organisaatio)
       })
-    case UIPreIb2019PäätuorituksenTyyppi:
+    case UIPreIb2019PääsuorituksenTyyppi:
       return PreIBSuoritus2019({
         suorituskieli,
         toimipiste: toToimipiste(organisaatio)
@@ -75,15 +75,4 @@ const createIBPäätasonSuoritus = (
   }
 }
 
-// Hack, joka tarvitaan koska 2015- ja 2019-mallisilla Pre-IB-suorituksilla on sama suorituksen tyyppi.
-// Käyttöliittymässä leikitään että uudemman suorituksen tyyppi olisi 'preiboppimaara2019',
-// mutta se mäpätään takaisin oikeaksi opiskeluoikeutta luotaessa.
-export const UIPreIb2019PäätuorituksenTyyppi = 'preiboppimaara2019'
-export const hackSuoritusMappingForPreIB2019 = (
-  cs: SuoritusClass[]
-): SuoritusClass[] =>
-  cs.map((cn) =>
-    cn.className === PreIBSuoritus2019.className
-      ? { ...cn, tyyppi: UIPreIb2019PäätuorituksenTyyppi }
-      : cn
-  )
+export const UIPreIb2019PääsuorituksenTyyppi = 'preiboppimaara2019'
