@@ -77,8 +77,17 @@ test.describe('Osittaisen ammatillisen tutkinnon useasta tutkinnosta käyttölii
     await expect(page.getByTestId('oo.0.opiskeluoikeus.tila.value.items.1.rahoitus')).toContainText('Valtionosuusrahoitteinen koulutus')
 
     await expect(page.getByTestId('oo.0.suoritukset.0.koulutus')).toContainText('Ammatillisen tutkinnon osa/osia useasta tutkinnosta');
+    await expect(page.getByTestId('oo.0.suoritukset.0.suoritustapa')).toContainText('Reformin mukainen näyttö');
+    await expect(page.getByTestId('oo.0.suoritukset.0.0.tutkintonimike.value')).toContainText('Automekaanikko');
     await expect(page.getByTestId('oo.0.suoritukset.0.0.osaamisala')).toContainText('Ajoneuvotekniikan osaamisala');
     await expect(page.getByTestId('oo.0.suoritukset.0.organisaatio.value')).toContainText('Stadin ammatti- ja aikuisopisto, Lehtikuusentien toimipaikka');
+    await expect(page.getByTestId('oo.0.suoritukset.0.suorituskieli.value')).toContainText('suomi');
+    await expect(page.getByTestId('oo.0.suoritukset.0.0.järjestämismuoto')).toContainText('Koulutuksen järjestäminen oppilaitosmuotoisena');
+    await expect(page.getByTestId('oo.0.suoritukset.0.todistuksellaNäkyvätLisätiedot.value')).toContainText('Suorittaa toista osaamisalaa');
+
+    await expect(page.getByTestId('oo.0.suoritukset.0.suorituksenVahvistus.value.status')).toContainText('Suoritus valmis');
+    await expect(page.getByTestId('oo.0.suoritukset.0.suorituksenVahvistus.value.details')).toContainText('Vahvistus: 31.5.2024 Stadin ammatti- ja aikuisopisto');
+    await expect(page.getByTestId('oo.0.suoritukset.0.suorituksenVahvistus.value.henkilö.0')).toContainText('Reijo Reksi (rehtori)');
 
     await expect(page.getByTestId('oo.0.suoritukset.0.osasuoritukset.4.laajuus.value')).toContainText('11 osp');
     await expect(page.getByTestId('oo.0.suoritukset.0.osasuoritukset.4.arvosana.value')).toContainText('2');
@@ -92,9 +101,31 @@ test.describe('Osittaisen ammatillisen tutkinnon useasta tutkinnosta käyttölii
 
     await expect(page.getByTestId('oo.0.suoritukset.0.osasuoritukset.4.properties.osasuoritukset.0.laajuus.value')).toContainText('4 osp');
     await expect(page.getByTestId('oo.0.suoritukset.0.osasuoritukset.4.properties.osasuoritukset.0.arvosana.value')).toContainText('3');
-    await expect(page.getByTestId('oo.0.suoritukset.0.osasuoritukset.4.properties.osasuoritukset.0.arvosana.value')).toContainText('3');
 
     await expect(page.getByTestId('oo.0.suoritukset.0.yhteensa')).toContainText('187 osp');
+  })
 
+  test('Sallii luoda uuden opiskeluoikeuden', async ({ page, uusiOppijaPage }) => {
+    await uusiOppijaPage.goTo('110205A134A')
+
+    // Oppijan tiedot
+    await page.getByTestId('uusiOpiskeluoikeus.oppija.etunimet.input').click();
+    await page.getByTestId('uusiOpiskeluoikeus.oppija.etunimet.input').fill('Ossi')
+    await page.getByTestId('uusiOpiskeluoikeus.oppija.sukunimi.input').click();
+    await page.getByTestId('uusiOpiskeluoikeus.oppija.sukunimi.input').fill('Osittainen-useasta-tutkinnosta')
+    // Oppilaitos
+    await page.getByTestId('uusiOpiskeluoikeus.modal.oppilaitos.input').click();
+    await page.getByTestId('uusiOpiskeluoikeus.modal.oppilaitos.input').fill('Stadin ammatti')
+    await page.getByTestId('uusiOpiskeluoikeus.modal.oppilaitos.options.1.2.246.562.10.52251087186.item').click()
+    // Opiskeluoikeuden ja suorituksen valinta
+    await page.getByTestId('uusiOpiskeluoikeus.modal.opiskeluoikeus.input').click()
+    await page.getByTestId('uusiOpiskeluoikeus.modal.opiskeluoikeus.options.opiskeluoikeudentyyppi_ammatillinenkoulutus.item').click()
+    await page.getByTestId('uusiOpiskeluoikeus.modal.suoritustyyppi.input').click()
+    await page.getByTestId('uusiOpiskeluoikeus.modal.suoritustyyppi.options.suorituksentyyppi_ammatillinentutkintoosittainenuseastatutkinnosta.item').click()
+    await page.getByTestId('uusiOpiskeluoikeus.modal.suoritustapa.input').click()
+    await page.getByTestId('uusiOpiskeluoikeus.modal.suoritustapa.options.ammatillisentutkinnonsuoritustapa_reformi.item').click()
+
+    await uusiOppijaPage.submitAndExpectSuccess()
+    await expect(page.getByTestId('oo.0.opiskeluoikeus.nimi')).toContainText('Stadin ammatti- ja aikuisopisto, ammatillisen tutkinnon osa/osia useasta tutkinnosta')
   })
 })

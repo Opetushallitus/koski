@@ -431,7 +431,9 @@ const AmmatillisenOsittaisenUseastaTutkinnostaSuorituksenTiedot: React.FC<{
         </TestIdText>{' '}
       </KeyValueRow>
       <KeyValueRow localizableLabel="Suoritustapa">
-        {t(päätasonSuoritus.suoritus.suoritustapa.nimi)}
+        <TestIdText id="suoritustapa">
+          {t(päätasonSuoritus.suoritus.suoritustapa.nimi)}
+        </TestIdText>
       </KeyValueRow>
       <KeyValueRow localizableLabel="Tutkintonimike">
         <FormListField
@@ -441,6 +443,7 @@ const AmmatillisenOsittaisenUseastaTutkinnostaSuorituksenTiedot: React.FC<{
           editProps={{ koodistoUri: 'tutkintonimikkeet' }}
           path={path.prop('tutkintonimike')}
           removable
+          testId="tutkintonimike"
         />
         {form.editMode && (
           <ButtonGroup>
@@ -631,6 +634,7 @@ const AmmatillisenOsittaisenUseastaTutkinnostaSuorituksenTiedot: React.FC<{
           view={LocalizedTextView}
           edit={LocalizedTextEdit}
           path={path.prop('todistuksellaNäkyvätLisätiedot')}
+          testId="todistuksellaNäkyvätLisätiedot"
         />
       </KeyValueRow>
       <KeyValueRow localizableLabel="Ryhmä">
@@ -861,7 +865,7 @@ const JärjestämismouotoView = <T extends Järjestämismuotojakso>({
         {value?.loppu && ISO2FinnishDate(value.loppu)}
       </TestIdText>
       {' : '}
-      <TestIdText id="järjestämismouoto">
+      <TestIdText id="järjestämismuoto">
         {t(value?.järjestämismuoto.tunniste.nimi)}
       </TestIdText>
       {isOppisopimuksellinenJärjestämismuoto(value?.järjestämismuoto) && (
