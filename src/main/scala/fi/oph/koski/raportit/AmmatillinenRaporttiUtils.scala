@@ -50,6 +50,8 @@ object AmmatillinenRaporttiUtils {
 
   val isVahvistusPäivällinen: ROsasuoritusRow => Boolean = osasuoritus => osasuoritus.vahvistusPäivä.isDefined
 
+  val isHyväksytty: ROsasuoritusRow => Boolean = _.arviointiHyväksytty.contains(true)
+
   val tunnustetut: Seq[ROsasuoritusRow] => Seq[ROsasuoritusRow] = osasuoritukset => osasuoritukset.filter(os => os.tunnustettu)
 
   val valinnaiset: Seq[ROsasuoritusRow] => Seq[ROsasuoritusRow] = osasuoritukset => osasuoritukset.filterNot(isPakollinen)

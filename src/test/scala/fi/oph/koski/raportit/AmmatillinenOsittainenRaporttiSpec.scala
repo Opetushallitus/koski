@@ -121,7 +121,7 @@ class AmmatillinenOsittainenRaporttiSpec
     viimeisinOpiskeluoikeudenTilaAikajaksonLopussa = "lasna",
     opintojenRahoitukset = "1",
     suoritettujenOpintojenYhteislaajuus = "112.0",
-    valmiitAmmatillisetTutkinnonOsatLkm = "3",
+    valmiitAmmatillisetTutkinnonOsatLkm = "9",
     näyttöjäAmmatillisessaValmiistaTutkinnonOsistaLkm = "1",
     tunnustettujaAmmatillisessaValmiistaTutkinnonOsistaLkm = "2",
     rahoituksenPiirissäAmmatillisistaTunnustetuistaTutkinnonOsistaLkm = "1",
