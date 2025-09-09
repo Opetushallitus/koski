@@ -6,12 +6,12 @@ import fi.oph.koski.koskiuser.KoskiSpecificSession
 import fi.oph.koski.localization.LocalizationReader
 import fi.oph.koski.organisaatio.OrganisaatioHierarkia
 import fi.oph.koski.raportit.aikuistenperusopetus._
-import fi.oph.koski.raportit.esiopetus.{EsiopetuksenOppijamäärätAikajaksovirheetRaportti, EsiopetuksenOppijamäärätRaportti}
+import fi.oph.koski.raportit.esiopetus.{EsiopetuksenOppijamäärätRaportti}
 import fi.oph.koski.raportit.lukio.LukioOppiaineenOppimaaranKurssikertymat.{AikuistenOppimäärä, NuortenOppimäärä}
 import fi.oph.koski.raportit.lukio._
 import fi.oph.koski.raportit.lukio.lops2021._
 import fi.oph.koski.raportit.muks.MuunKuinSaannellynKoulutuksenRaportti
-import fi.oph.koski.raportit.perusopetus.{PerusopetuksenOppijamäärätAikajaksovirheetRaportti, PerusopetuksenOppijamäärätRaportti, PerusopetuksenRaportitRepository, PerusopetuksenVuosiluokkaRaportti}
+import fi.oph.koski.raportit.perusopetus.{PerusopetuksenOppijamäärätRaportti, PerusopetuksenRaportitRepository, PerusopetuksenVuosiluokkaRaportti}
 import fi.oph.koski.raportit.tuva.{TuvaPerusopetuksenOppijamäärätAikajaksovirheetRaportti, TuvaPerusopetuksenOppijamäärätRaportti, TuvaSuoritustiedotRaportti}
 import fi.oph.koski.raportit.vst.JatkuvanOppimisenVapaanSivistystyonRaportti
 import fi.oph.koski.schema.LocalizedString
@@ -34,7 +34,6 @@ class RaportitService(application: KoskiApplication) {
   private val muuammatillinenRaportti = MuuAmmatillinenRaporttiBuilder(raportointiDatabase.db)
   private val topksAmmatillinenRaportti = TOPKSAmmatillinenRaporttiBuilder(raportointiDatabase.db)
   private val esiopetuksenOppijamäärätRaportti = EsiopetuksenOppijamäärätRaportti(raportointiDatabase.db, application.organisaatioService)
-  private val esiopetuksenOppijamäärätAikajaksovirheetRaportti = EsiopetuksenOppijamäärätAikajaksovirheetRaportti(raportointiDatabase.db, application.organisaatioService)
   private val aikuistenPerusopetuksenOppijamäärätRaportti = AikuistenPerusopetuksenOppijamäärätRaportti(raportointiDatabase.db, application.organisaatioService)
   private val aikuistenPerusopetuksenOppimääränKurssikertymätRaportti = AikuistenPerusopetuksenOppimääränKurssikertymät(raportointiDatabase.db)
   private val aikuistenPerusopetuksenOppimääränArvioinnitRaportti = AikuistenPerusopetuksenOppimääräArvioinnit(raportointiDatabase.db)
@@ -44,7 +43,6 @@ class RaportitService(application: KoskiApplication) {
   private val aikuistenPerusopetuksenOpiskeluoikeudenUlkopuolisetRaportti = AikuistenPerusopetuksenOpiskeluoikeudenUlkopuolisetKurssit(raportointiDatabase.db)
   private val aikuistenPerusopetuksenEriVuonnaKorotetutKurssitRaportti = AikuistenPerusopetuksenEriVuonnaKorotetutKurssit(raportointiDatabase.db)
   private val perusopetuksenOppijamäärätRaportti = PerusopetuksenOppijamäärätRaportti(raportointiDatabase.db, application.organisaatioService)
-  private val perusopetuksenOppijamäärätAikajaksovirheetRaportti = PerusopetuksenOppijamäärätAikajaksovirheetRaportti(raportointiDatabase.db, application.organisaatioService)
   private val perusopetuksenLisäopetuksenOppijamäärätRaportti = PerusopetuksenLisäopetusOppijamäärätRaportti(raportointiDatabase.db, application.organisaatioService)
   private val ibSuoritustiedotRepository = IBSuoritustiedotRaporttiRepository(raportointiDatabase.db)
   private val perusopetukseenValmistavanRepository = PerusopetukseenValmistavanRaportitRepository(raportointiDatabase.db)
@@ -278,7 +276,6 @@ class RaportitService(application: KoskiApplication) {
     OppilaitosRaporttiResponse(
       sheets = Seq(
         esiopetuksenOppijamäärätRaportti.build(oppilaitosOids, request.paiva, t),
-        esiopetuksenOppijamäärätAikajaksovirheetRaportti.build(oppilaitosOids, request.paiva, t),
         DocumentationSheet(t.get("raportti-excel-ohjeet-sheet-name"), t.get("raportti-excel-aikajaksovirheet-ohje-body"))
       ),
       workbookSettings = WorkbookSettings(t.get("raportti-excel-esiopetus-vos-title"), Some(request.password)),
@@ -327,7 +324,6 @@ class RaportitService(application: KoskiApplication) {
     OppilaitosRaporttiResponse(
       sheets = Seq(
         perusopetuksenOppijamäärätRaportti.build(oppilaitosOids, request.paiva, t),
-        perusopetuksenOppijamäärätAikajaksovirheetRaportti.build(oppilaitosOids, request.paiva, t),
         DocumentationSheet(t.get("raportti-excel-ohjeet-sheet-name"), t.get("raportti-excel-aikajaksovirheet-ohje-body"))
       ),
       workbookSettings = WorkbookSettings(t.get("raportti-excel-perusopetus-vos-title"), Some(request.password)),
