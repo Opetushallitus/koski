@@ -835,7 +835,7 @@ object AmmatillinenExampleData {
         tunnustettu = Some(tunnustettu),
         arviointi = Some(List(arviointi(h2).copy(päivä = date(2015, 1, 1))))
       ),
-      osittaisenTutkinnonTutkinnonOsanUseastaTutkinnostaSuoritus(h2, ammatillisetTutkinnonOsat, "106877", "Alustan korjaustyöt", 15),
+      osittaisenTutkinnonTutkinnonOsanUseastaTutkinnostaSuoritus(h2, None, "106877", "Alustan korjaustyöt", 15),
       osittaisenTutkinnonTutkinnonOsanUseastaTutkinnostaSuoritus(k3, vapaavalintaisetTutkinnonOsat, "106878", "Jarrujen korjaus", 10).copy(
         tunnustettu = Some(tunnustettu.copy(rahoituksenPiirissä = true)),
         osasuoritukset = Some(List(
