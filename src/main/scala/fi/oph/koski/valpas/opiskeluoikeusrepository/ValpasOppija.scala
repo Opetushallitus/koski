@@ -4,7 +4,7 @@ import cats.Monoid
 import fi.oph.koski.henkilo.LaajatOppijaHenkilöTiedot
 import fi.oph.koski.koodisto.KoodistoViitePalvelu
 import fi.oph.koski.schema.annotation.KoodistoUri
-import fi.oph.koski.schema.{Koodistokoodiviite, LocalizedString, Maksuttomuus, OikeuttaMaksuttomuuteenPidennetty}
+import fi.oph.koski.schema.{KoodiViite, Koodistokoodiviite, LocalizedString, Maksuttomuus, OikeuttaMaksuttomuuteenPidennetty}
 import fi.oph.koski.valpas.hakukooste._
 import fi.oph.koski.valpas.kuntailmoitus.ValpasKuntailmoitusService
 import fi.oph.koski.valpas.opiskeluoikeusrepository.ValpasOppilaitos.Oid
@@ -359,7 +359,12 @@ case class ValpasOpiskeluoikeusMuuOpetusLaajatTiedot(
   näytäMuunaPerusopetuksenJälkeisenäOpintona: Option[Boolean],
 ) extends ValpasOpiskeluoikeusTiedot
 
+case class ValpasKoulutusmoduuli(
+  tunniste: KoodiViite
+)
+
 case class ValpasPäätasonSuoritus(
+  koulutusmoduuli: ValpasKoulutusmoduuli,
   toimipiste: ValpasToimipiste,
   ryhmä: Option[String],
   @KoodistoUri("suorituksentyyppi")

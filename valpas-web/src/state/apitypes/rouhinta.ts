@@ -34,6 +34,7 @@ export type RouhintaOppivelvollinen = {
 
 export type RouhintaOpiskeluoikeus = {
   suorituksenTyyppi: Suorituksentyyppi
+  koulutusmoduulinTunniste: string
   päättymispäivä?: ISODate
   viimeisinTila: KoodistoKoodiviite
   toimipiste: LocalizedString

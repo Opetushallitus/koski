@@ -165,11 +165,12 @@ describe('Oppijataulukko', function () {
           'Koulutusvientiläinen, Amis',
           'Mastinen, Maarni',
           'Osittainen, Outi',
+          'Osittainen-Useasta-Tutkinnosta-Valmis, Jaina',
           'Rikkinäinen, Kela',
           'Telmanen, Tuula',
           'Valviralle, Veera'
         ])
-        expect(page.opiskeluoikeudeTotal()).to.equal('15')
+        expect(page.opiskeluoikeudeTotal()).to.equal('16')
       })
     })
 

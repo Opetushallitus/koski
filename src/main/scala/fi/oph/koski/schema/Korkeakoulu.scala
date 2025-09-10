@@ -68,7 +68,7 @@ case class KorkeakoulunOpiskeluoikeudenLisätiedot(
   @KoodistoUri("virtapatevyys")
   opettajanPedagogisetOpinnot: Option[List[Koodistokoodiviite]],
   @Title("Opetettavan aineen opinnot")
-  @InfoDescription("opettajan kelpoisuuden määritelmä")
+  @InfoDescription("opetettavan aineen kelpoisuuden määritelmä")
   @KoodistoUri("virtapatevyys")
   opetettavanAineenOpinnot: Option[List[Koodistokoodiviite]],
 ) extends OpiskeluoikeudenLisätiedot {

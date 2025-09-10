@@ -779,3 +779,89 @@ object AmmatillinenOsittainenReformi {
     )
   )
 }
+
+object AmmatillinenOsittainenUseistaTutkinnoista {
+  lazy val valmisUseastaTutkinnostaOpiskeluoikeus = AmmatillinenOpiskeluoikeus(
+    arvioituPäättymispäivä = Some(date(2024, 5, 31)),
+    oppilaitos = Some(stadinAmmattiopisto),
+    suoritukset = List(ammatillisenTutkinnonOsittainenUseastaTutkinnostaSuoritus),
+    tila = AmmatillinenOpiskeluoikeudenTila(
+      List(
+        AmmatillinenOpiskeluoikeusjakso(date(2022, 9, 1), opiskeluoikeusLäsnä, Some(ExampleData.valtionosuusRahoitteinen)),
+        AmmatillinenOpiskeluoikeusjakso(date(2024, 6, 4), opiskeluoikeusValmistunut, Some(ExampleData.valtionosuusRahoitteinen))
+      )
+    ),
+    lisätiedot = Some(AmmatillisenOpiskeluoikeudenLisätiedot(
+      majoitus = Some(List(Aikajakso(date(2022, 9, 1), Some(date(2023, 9, 1)))))
+    ))
+  )
+
+  lazy val keskeneräinenUseastaTutkinnostaOpiskeluoikeus = AmmatillinenPerustutkintoExample.osittainenPerustutkintoOpiskeluoikeus.copy(
+    arvioituPäättymispäivä = Some(date(2024, 5, 31)),
+    oppilaitos = Some(stadinAmmattiopisto),
+    suoritukset = List(ammatillisenTutkinnonOsittainenUseastaTutkinnostaSuoritus.copy(
+      vahvistus = None,
+      keskiarvo = None,
+      keskiarvoSisältääMukautettujaArvosanoja = None,
+      todistuksellaNäkyvätLisätiedot = None,
+    )),
+    tila = AmmatillinenOpiskeluoikeudenTila(
+      List(
+        AmmatillinenOpiskeluoikeusjakso(date(2022, 9, 1), opiskeluoikeusLäsnä, Some(ExampleData.valtionosuusRahoitteinen))
+      )
+    ),
+    lisätiedot = Some(AmmatillisenOpiskeluoikeudenLisätiedot(
+      majoitus = Some(List(Aikajakso(date(2022, 9, 1), None)))
+    ))
+  )
+
+  lazy val valppaaseenValmisUseastaTutkinnostaOpiskeluoikeus = {
+    val tutkinto = AmmatillinenTutkintoKoulutus(
+      Koodistokoodiviite("457305", Some("Autoalan työnjohdon erikoisammattitutkinto"), "koulutus", None),
+      Some("40/011/2001")
+    )
+
+    AmmatillinenOpiskeluoikeus(
+      arvioituPäättymispäivä = Some(date(2020, 5, 31)),
+      oppilaitos = Some(stadinAmmattiopisto),
+      suoritukset = List(ammatillisenTutkinnonOsittainenUseastaTutkinnostaSuoritus.copy(
+        osaamisala = None,
+        tutkintonimike = None,
+        järjestämismuodot = Some(List(Järjestämismuotojakso(date(2019, 9, 1), None, järjestämismuotoOppilaitos))),
+        vahvistus = vahvistus(date(2021, 9, 2), stadinAmmattiopisto, Some(helsinki)),
+        osasuoritukset = Some(List(
+          osittaisenTutkinnonTutkinnonOsanUseastaTutkinnostaSuoritus(h2, ammatillisetTutkinnonOsat, "104052", "Johtaminen ja henkilöstön kehittäminen", 25).copy(
+            tutkinto = tutkinto,
+            arviointi = Some(List(arviointi(h2).copy(päivä = date(2021, 9, 1)))),
+            vahvistus = vahvistusValinnaisellaTittelillä(date(2021, 9, 1), stadinAmmattiopisto)
+          ),
+          osittaisenTutkinnonTutkinnonOsanUseastaTutkinnostaSuoritus(h2, ammatillisetTutkinnonOsat, "104053", "Asiakaspalvelu ja korjaamopalvelujen markkinointi", 15).copy(
+            tutkinto = tutkinto,
+            arviointi = Some(List(arviointi(h2).copy(päivä = date(2021, 9, 1)))),
+            vahvistus = vahvistusValinnaisellaTittelillä(date(2021, 9, 1), stadinAmmattiopisto)
+          ),
+          osittaisenTutkinnonTutkinnonOsanUseastaTutkinnostaSuoritus(k3, ammatillisetTutkinnonOsat, "104054", "Työnsuunnittelu ja organisointi", 10).copy(
+            tutkinto = tutkinto,
+            arviointi = Some(List(arviointi(h2).copy(päivä = date(2021, 9, 1)))),
+            vahvistus = vahvistusValinnaisellaTittelillä(date(2021, 9, 1), stadinAmmattiopisto)
+          ),
+          osittaisenTutkinnonTutkinnonOsanUseastaTutkinnostaSuoritus(k3, ammatillisetTutkinnonOsat, "104059", "Yrittäjyys", 10).copy(
+            tutkinto = tutkinto,
+            arviointi = Some(List(arviointi(h2).copy(päivä = date(2021, 9, 1)))),
+            vahvistus = vahvistusValinnaisellaTittelillä(date(2021, 9, 1), stadinAmmattiopisto)
+          )
+        ))
+      )),
+      tila = AmmatillinenOpiskeluoikeudenTila(
+        List(
+          AmmatillinenOpiskeluoikeusjakso(date(2019, 9, 1), opiskeluoikeusLäsnä, Some(ExampleData.valtionosuusRahoitteinen)),
+          AmmatillinenOpiskeluoikeusjakso(date(2021, 9, 2), opiskeluoikeusValmistunut, Some(ExampleData.valtionosuusRahoitteinen))
+        )
+      ),
+      lisätiedot = Some(AmmatillisenOpiskeluoikeudenLisätiedot(
+        majoitus = Some(List(Aikajakso(date(2019, 9, 1), Some(date(2021, 9, 2))))),
+        maksuttomuus = Some(List(Maksuttomuus(date(2019, 9, 1), Some(date(2021, 9, 2)), maksuton = false)))
+      ))
+    )
+  }
+}

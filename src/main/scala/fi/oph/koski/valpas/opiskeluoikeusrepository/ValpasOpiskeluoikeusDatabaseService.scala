@@ -1172,6 +1172,11 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
         SELECT
           jsonb_build_array(
             jsonb_build_object(
+              'koulutusmoduuli', jsonb_build_object(
+                'tunniste', jsonb_build_object(
+                  'koodiarvo', pts.koulutusmoduuli_koodiarvo
+                )
+              ),
               'suorituksenTyyppi', jsonb_build_object(
                 'koodiarvo', pts.suorituksen_tyyppi,
                 'koodistoUri', 'suorituksentyyppi'
@@ -1358,6 +1363,11 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
       CROSS JOIN LATERAL (
         SELECT jsonb_agg(
           jsonb_build_object(
+            'koulutusmoduuli', jsonb_build_object(
+              'tunniste', jsonb_build_object(
+                'koodiarvo', pts.koulutusmoduuli_koodiarvo
+              )
+            ),
             'suorituksenTyyppi', jsonb_build_object(
               'koodiarvo', pts.suorituksen_tyyppi,
               'koodistoUri', 'suorituksentyyppi'
@@ -1581,6 +1591,11 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
       CROSS JOIN LATERAL (
         SELECT jsonb_agg(
           jsonb_build_object(
+            'koulutusmoduuli', jsonb_build_object(
+              'tunniste', jsonb_build_object(
+                'koodiarvo', pts.koulutusmoduuli_koodiarvo
+              )
+            ),
             'suorituksenTyyppi', jsonb_build_object(
               'koodiarvo', pts.suorituksen_tyyppi,
               'koodistoUri', 'suorituksentyyppi'
@@ -1694,6 +1709,11 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
         CROSS JOIN LATERAL (
           SELECT jsonb_agg(
             jsonb_build_object(
+              'koulutusmoduuli', jsonb_build_object(
+                'tunniste', jsonb_build_object(
+                  'koodiarvo', pts.koulutusmoduuli_koodiarvo
+                )
+              ),
               'suorituksenTyyppi', jsonb_build_object(
                 'koodiarvo', pts.suorituksen_tyyppi,
                 'koodistoUri', 'suorituksentyyppi'
@@ -1800,6 +1820,11 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
       CROSS JOIN LATERAL (
         SELECT jsonb_agg(
           jsonb_build_object(
+            'koulutusmoduuli', jsonb_build_object(
+              'tunniste', jsonb_build_object(
+                'koodiarvo', pts.koulutusmoduuli_koodiarvo
+              )
+            ),
             'suorituksenTyyppi', jsonb_build_object(
               'koodiarvo', pts.suorituksen_tyyppi,
               'koodistoUri', 'suorituksentyyppi'

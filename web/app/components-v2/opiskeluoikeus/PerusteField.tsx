@@ -1,5 +1,6 @@
 import React from 'react'
 import {
+  createPreferLocalCache,
   mapError,
   mapInitial,
   mapLoading,
@@ -31,14 +32,18 @@ export const PerusteView: React.FC<PerusteViewProps> = (props) => {
   )
 }
 
+const cache = createPreferLocalCache(fetchPerustelinkki)
+
 export const PerusteViewLink: React.FC<{ diaarinumero: string }> = ({
   diaarinumero
 }) => {
   const { TreeNode, ...tree } = useTree()
 
-  const perustelinkkiResponse = useApiWithParams(fetchPerustelinkki, [
-    diaarinumero
-  ])
+  const perustelinkkiResponse = useApiWithParams(
+    fetchPerustelinkki,
+    [diaarinumero],
+    cache
+  )
 
   return (
     <TreeNode>

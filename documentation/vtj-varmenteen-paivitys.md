@@ -39,6 +39,10 @@ Tilaamista varten tarvitaan seuraavat tiedot:
 * Voimaantulopäivämäärä: noin 3 viikkoa ennen edellisen sertifikaatin vanhenemista
 * Äsken luotu CSR-tiedosto
 
+Varmenne toimitetaan turvapostilla sähköpostiin. Lisäksi pitää vielä erikseen (tai ainakin 2024 piti) pyytää heitä luvittamaan ko. varmenne VTJkysely-palveluun. Heiltä saatu ohjeistus alla:
+
+> Varmenteen luvittamista varten teidän tulee toimittaa uusien varmenteiden julkinen osa VTJkysely-rajapinnan sähköpostiin vtjkysely-rajapinta@dvv.fi luvitusta varten. Laittakaa varmenteiden tiedostonimen loppuun .txt jotta varmenteet eivät jää kiinni sähköpostifiltteriin.
+
 ## Keystore
 
 Kun varmenne on saapunut sähköpostiin, selvitä missä muodossa se tuli. Jos kyse on .der-muodosta, muunna varmenne .pem-muotoon:

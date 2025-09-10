@@ -750,7 +750,7 @@ class OppijaValidationPerusopetusSpec extends TutkinnonPerusteetTest[Perusopetuk
         )
         setupOppijaWithOpiskeluoikeus(oo) {
           verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.date(
-            "Tieto rajattuOppimäärä vaatii tukijakson suorituksen vahvistuspäivälle: 2025-08-01"
+            "Tieto rajattuOppimäärä vaatii tuen päätöksen jakson suorituksen vahvistuspäivälle: 2025-08-01"
           ))
         }
         setupOppijaWithOpiskeluoikeus(oo.copy(lisätiedot = Some(PerusopetuksenOpiskeluoikeudenLisätiedot(

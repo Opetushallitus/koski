@@ -99,7 +99,7 @@ export type FormModel<O extends object> = {
    */
   readonly save: <T>(
     api: (data: O) => Promise<ApiResponse<T>>,
-    merge: (response: T) => (data: O) => O
+    merge: (response: T) => (data: O) => Promise<O>
   ) => void
 
   /**
@@ -226,7 +226,7 @@ export const useForm = <O extends object>(
   const save: FormModelProp<'save'> = useCallback(
     async <T>(
       api: (data: O) => Promise<ApiResponse<T>>,
-      merge: (response: T) => (data: O) => O
+      merge: (response: T) => (data: O) => Promise<O>
     ) => {
       if (editMode) {
         clearErrors()
@@ -236,7 +236,8 @@ export const useForm = <O extends object>(
           await api(data),
           tap(async (response) => {
             await storeDeferredPreferences()
-            dispatch({ type: 'endEdit', value: merge(response.data)(data) })
+            const refetechedOo = await merge(response.data)(data)
+            dispatch({ type: 'endEdit', value: refetechedOo })
           }),
           tapLeft((errorResponse) => {
             setEditMode(EditMode.Edit)

@@ -108,6 +108,8 @@ describe('Perusopetus 1', function () {
               editor.edit,
               tilaJaVahvistus.merkitseValmiiksi,
               opinnot.tilaJaVahvistus.lisääVahvistus(future),
+              // Oppiaineella yksilöllistetty oppimäärä, jota ei voi enää lisätä 31.8.2026 jälkeen
+              opinnot.oppiaineet.oppiaine('BI').poista(),
               editor.saveChanges
             )
 

@@ -165,6 +165,8 @@ const oppijaToTableData =
           {
             value: koulutustyyppi(
               opiskeluoikeus.tarkasteltavaPäätasonSuoritus?.suorituksenTyyppi,
+              opiskeluoikeus.tarkasteltavaPäätasonSuoritus?.koulutusmoduuli
+                .tunniste.koodiarvo,
             ),
           },
           tila(tiedot.tarkastelupäivänKoskiTila),
@@ -183,8 +185,13 @@ const oppijaToTableData =
     })
   }
 
-const koulutustyyppi = (tyyppi?: Suorituksentyyppi): string =>
-  tyyppi === undefined ? "" : suorituksenTyyppiToKoulutustyyppi(tyyppi)
+const koulutustyyppi = (
+  tyyppi?: Suorituksentyyppi,
+  koulutusmoduulinTunniste?: string,
+): string =>
+  tyyppi === undefined
+    ? ""
+    : suorituksenTyyppiToKoulutustyyppi(tyyppi, koulutusmoduulinTunniste)
 
 const tila = (tila: KoskiOpiskeluoikeudenTila): Value => ({
   value: tilaString(tila),

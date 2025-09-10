@@ -12,7 +12,7 @@ import fi.oph.koski.localization.LocalizationReader
 import fi.oph.koski.log.AuditLogTester
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.organisaatio.MockOrganisaatiot.{helsinginKaupunki, päiväkotiTouhula, tornionKaupunki}
-import fi.oph.koski.raportit.esiopetus.{EsiopetuksenOppijamäärätAikajaksovirheetRaportti, EsiopetuksenOppijamäärätAikajaksovirheetRaporttiRow, EsiopetuksenOppijamäärätRaportti, EsiopetuksenOppijamäärätRaporttiRow}
+import fi.oph.koski.raportit.esiopetus.{EsiopetuksenOppijamäärätRaportti, EsiopetuksenOppijamäärätRaporttiRow}
 import fi.oph.koski.raportointikanta.RaportointikantaTestMethods
 import fi.oph.koski.schema.{Aikajakso, ErityisenTuenPäätös, EsiopetuksenOpiskeluoikeudenLisätiedot, EsiopetuksenOpiskeluoikeus, NuortenPerusopetuksenOpiskeluoikeudenTila, NuortenPerusopetuksenOpiskeluoikeusjakso, Opiskeluoikeus, Tukijakso}
 import fi.oph.koski.schema.Organisaatio.Oid
@@ -228,7 +228,6 @@ class EsiopetuksenOppijamäärätRaporttiSpec
       r.pidOppivelvollisuusEritTukiJaMuuKuinVaikeimminVammainen should equal(2 + ylimääräisetMuuKuinVaikeastiVammaisetLkm)
       r.tuenPäätöksenJakso should equal(0)
       r.varhennetunOppivelvollisuudenJakso should equal(0)
-      r.virheellisestiSiirrettyjaTukitietoja should equal(0 + rikkinäisetYlimääräisetLkm)
       r.erityiselläTuella should equal(2 + ylimääräisetErityiselläTuellaOpiskeluoikeudet)
       r.majoitusetu should equal(3)
       r.kuljetusetu should equal(3)
@@ -250,7 +249,6 @@ class EsiopetuksenOppijamäärätRaporttiSpec
       r.pidOppivelvollisuusEritTukiJaMuuKuinVaikeimminVammainen should equal(0)
       r.tuenPäätöksenJakso should equal(2)
       r.varhennetunOppivelvollisuudenJakso should equal(1)
-      r.virheellisestiSiirrettyjaTukitietoja should equal(0)
       r.erityiselläTuella should equal(0)
       r.majoitusetu should equal(0)
       r.kuljetusetu should equal(0)
@@ -326,34 +324,6 @@ class EsiopetuksenOppijamäärätRaporttiSpec
       case r: EsiopetuksenOppijamäärätRaporttiRow => r
     }.toList
   }
-
-  "Esiopetuksen oppijamäärien raportti - aikajaksovirheet" - {
-
-    "Raportin kolumnit" in {
-      val r = findRows(esiopetuksenOppijamäärätAikajaksovirheetRaportti)
-      r.length should be(rikkinäisetYlimääräisetLkm)
-
-      val expectedRows: Seq[EsiopetuksenOppijamäärätAikajaksovirheetRaporttiRow] =
-        rikkinäisetOpiskeluoikeusOidit.map(opiskeluoikeusOid =>
-          EsiopetuksenOppijamäärätAikajaksovirheetRaporttiRow(
-            oppilaitosNimi = "Jyväskylän normaalikoulu",
-            oppijaOid = vuonna2005SyntynytEiOpiskeluoikeuksiaFikstuurissa.oid,
-            opiskeluoikeusOid = opiskeluoikeusOid
-          )
-      ).sortBy(_.opiskeluoikeusOid)
-
-      r should be(expectedRows)
-    }
-  }
-
-  private def findRows(rows: Seq[EsiopetuksenOppijamäärätAikajaksovirheetRaporttiRow]) = {
-    val found = rows.filter(_.oppilaitosNimi.equals("Jyväskylän normaalikoulu"))
-    found
-  }
-
-  private val esiopetuksenOppijamäärätAikajaksovirheetRaporttiBuilder = EsiopetuksenOppijamäärätAikajaksovirheetRaportti(application.raportointiDatabase.db, application.organisaatioService)
-  private lazy val esiopetuksenOppijamäärätAikajaksovirheetRaportti =
-    esiopetuksenOppijamäärätAikajaksovirheetRaporttiBuilder.build(List(oppilaitosOid), raportointipäivä, t)(session(defaultUser)).rows.map(_.asInstanceOf[EsiopetuksenOppijamäärätAikajaksovirheetRaporttiRow])
 
   private def session(user: KoskiMockUser): KoskiSpecificSession = user.toKoskiSpecificSession(application.käyttöoikeusRepository)
 }

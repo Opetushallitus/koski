@@ -31,7 +31,6 @@ export type OrganisaatioEditProps<T extends Organisaatio> = CommonProps<
     T,
     {
       include?: Organisaatio[]
-      organisaatiotyypit?: string[]
     }
   >
 >

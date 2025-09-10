@@ -1,7 +1,7 @@
 package fi.oph.koski.schema
 
 import fi.oph.koski.schema.LocalizedString.unlocalized
-import fi.oph.koski.schema.annotation.{KoodistoKoodiarvo, KoodistoUri}
+import fi.oph.koski.schema.annotation.{AllowKoulutustoimijaOidAsOppilaitos, KoodistoKoodiarvo, KoodistoUri}
 import fi.oph.scalaschema.annotation.{Description, Discriminator, MaxItems, MinItems, Title}
 
 import java.time.{LocalDate, LocalDateTime}
@@ -12,6 +12,7 @@ case class KielitutkinnonOpiskeluoikeus(
   oid: Option[String] = None,
   versionumero: Option[Int] = None,
   lähdejärjestelmänId: Option[LähdejärjestelmäId] = None,
+  @AllowKoulutustoimijaOidAsOppilaitos
   oppilaitos: Option[Oppilaitos] = None,
   koulutustoimija: Option[Koulutustoimija] = None,
   tila: KielitutkinnonOpiskeluoikeudenTila,
@@ -28,6 +29,11 @@ case class KielitutkinnonOpiskeluoikeus(
   override def sisältyyOpiskeluoikeuteen: Option[SisältäväOpiskeluoikeus] = None
 
   def lisätiedot: Option[OpiskeluoikeudenLisätiedot] = None
+
+  def isOphValtionhallinnonKielitutkinto: Boolean = suoritukset.exists {
+    case s: ValtionhallinnonKielitutkinnonSuoritus if s.koulutusmoduuli.tunniste.koodiarvo == "erinomainen" => true
+    case _ => false
+  }
 }
 
 case class KielitutkinnonOpiskeluoikeudenTila(
@@ -102,7 +108,7 @@ case class ValtionhallinnonKielitutkinnonSuoritus(
   @Title("Koulutus")
   koulutusmoduuli: ValtionhallinnonKielitutkinto,
   toimipiste: OrganisaatioWithOid,
-  vahvistus: Option[HenkilövahvistusValinnaisellaTittelilläJaValinnaisellaPaikkakunnalla] = None,
+  vahvistus: Option[PäivämäärävahvistusPaikkakunnalla] = None,
   override val osasuoritukset: Option[List[ValtionhallinnonKielitutkinnonKielitaidonSuoritus]],
   @KoodistoKoodiarvo("valtionhallinnonkielitutkinto")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("valtionhallinnonkielitutkinto", koodistoUri = "suorituksentyyppi"),
@@ -131,6 +137,7 @@ trait ValtionhallinnonKielitutkinnonKielitaidonSuoritus extends Suoritus with Va
   def arviointi: Option[List[ValtionhallinnonKielitutkinnonArviointi]]
 
   override def valmis: Boolean = arviointi.isDefined
+  override def salliDuplikaatit = true
 }
 
 trait ValtionhallinnonKielitutkinnonKielitaito extends Koulutusmoduuli {

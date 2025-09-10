@@ -147,6 +147,8 @@ const oppijatiedotToTableRow =
           nullableDateValue(tiedot.oppija.henkilö.syntymäaika),
           nullableKoulutustyyppiValue(
             oo.tarkasteltavaPäätasonSuoritus?.suorituksenTyyppi,
+            oo.tarkasteltavaPäätasonSuoritus?.koulutusmoduuli.tunniste
+              .koodiarvo,
           ),
           nullableDateValue(oo.perusopetuksenJälkeinenTiedot?.alkamispäivä),
           nullableDateValue(oo.perusopetuksenJälkeinenTiedot?.päättymispäivä),

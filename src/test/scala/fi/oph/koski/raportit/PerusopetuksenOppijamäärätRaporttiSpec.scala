@@ -13,7 +13,7 @@ import fi.oph.koski.koskiuser.KoskiMockUser
 import fi.oph.koski.localization.LocalizationReader
 import fi.oph.koski.log.AuditLogTester
 import fi.oph.koski.organisaatio.MockOrganisaatiot.jyväskylänNormaalikoulu
-import fi.oph.koski.raportit.perusopetus.{PerusopetuksenOppijamäärätAikajaksovirheetRaportti, PerusopetuksenOppijamäärätAikajaksovirheetRaporttiRow, PerusopetuksenOppijamäärätRaportti, PerusopetuksenOppijamäärätRaporttiRow}
+import fi.oph.koski.raportit.perusopetus.{PerusopetuksenOppijamäärätRaportti, PerusopetuksenOppijamäärätRaporttiRow}
 import fi.oph.koski.raportointikanta.RaportointikantaTestMethods
 import fi.oph.koski.schema.{Aikajakso, ErityisenTuenPäätös, Opiskeluoikeus, PerusopetuksenOpiskeluoikeudenLisätiedot, PerusopetuksenOpiskeluoikeus, Tukijakso}
 import org.scalatest.BeforeAndAfterAll
@@ -280,7 +280,6 @@ class PerusopetuksenOppijamäärätRaporttiSpec extends AnyFreeSpec with Matcher
         opetuksenJärjestäminenVammanSairaudenTaiRajoitteenPerusteella = 0,
         toimintaAlueittainOpiskelu = 0,
         tavoitekokonaisuuksittainOpiskelu = 0,
-        virheellisestiSiirrettyjaTukitietoja = 0,
         erityiselläTuella = 0,
         majoitusetu = 0,
         kuljetusetu = 0,
@@ -301,7 +300,6 @@ class PerusopetuksenOppijamäärätRaporttiSpec extends AnyFreeSpec with Matcher
         opetuksenJärjestäminenVammanSairaudenTaiRajoitteenPerusteella = 0,
         toimintaAlueittainOpiskelu = 0,
         tavoitekokonaisuuksittainOpiskelu = 0,
-        virheellisestiSiirrettyjaTukitietoja = 0,
         erityiselläTuella = 2,
         majoitusetu = 1,
         kuljetusetu = 1,
@@ -322,7 +320,6 @@ class PerusopetuksenOppijamäärätRaporttiSpec extends AnyFreeSpec with Matcher
         opetuksenJärjestäminenVammanSairaudenTaiRajoitteenPerusteella = 0,
         toimintaAlueittainOpiskelu = 0,
         tavoitekokonaisuuksittainOpiskelu = 0,
-        virheellisestiSiirrettyjaTukitietoja = 0 + rikkinäisetYlimääräisetLkm,
         erityiselläTuella = 1 + ylimääräisetErityiselläTuellaOpiskeluoikeudet,
         majoitusetu = 1,
         kuljetusetu = 1,
@@ -343,7 +340,6 @@ class PerusopetuksenOppijamäärätRaporttiSpec extends AnyFreeSpec with Matcher
         opetuksenJärjestäminenVammanSairaudenTaiRajoitteenPerusteella = 0,
         toimintaAlueittainOpiskelu = 0,
         tavoitekokonaisuuksittainOpiskelu = 0,
-        virheellisestiSiirrettyjaTukitietoja = 0 + rikkinäisetYlimääräisetLkm,
         erityiselläTuella = 3 + ylimääräisetErityiselläTuellaOpiskeluoikeudet,
         majoitusetu = 2,
         kuljetusetu = 2,
@@ -374,7 +370,6 @@ class PerusopetuksenOppijamäärätRaporttiSpec extends AnyFreeSpec with Matcher
         opetuksenJärjestäminenVammanSairaudenTaiRajoitteenPerusteella = 1,
         toimintaAlueittainOpiskelu = 1,
         tavoitekokonaisuuksittainOpiskelu = 0,
-        virheellisestiSiirrettyjaTukitietoja = 0,
         erityiselläTuella = 0,
         majoitusetu = 0,
         kuljetusetu = 0,
@@ -395,26 +390,4 @@ class PerusopetuksenOppijamäärätRaporttiSpec extends AnyFreeSpec with Matcher
   private lazy val perusopetuksenOppijamäärätRaportti = perusopetuksenOppijamäärätRaporttiBuilder
     .build(Seq(jyväskylänNormaalikoulu), raportointipäivä, t)(session(defaultUser))
     .rows.map(_.asInstanceOf[PerusopetuksenOppijamäärätRaporttiRow])
-
-  "Perusopetuksen oppijamäärien raportti - aikajaksovirheet" in {
-    val rows = perusopetuksenOppijamäärätAikajaksovirheetRaportti.filter(_.oppilaitosNimi.equals("Jyväskylän normaalikoulu"))
-    rows.length should be(rikkinäisetYlimääräisetLkm)
-
-    val expectedRows: Seq[PerusopetuksenOppijamäärätAikajaksovirheetRaporttiRow] =
-      rikkinäisetOpiskeluoikeusOidit.toList.map(opiskeluoikeusOid =>
-        PerusopetuksenOppijamäärätAikajaksovirheetRaporttiRow(
-          oppilaitosNimi = "Jyväskylän normaalikoulu",
-          organisaatioOid = "1.2.246.562.10.14613773812",
-          oppijaOid = vuonna2005SyntynytEiOpiskeluoikeuksiaFikstuurissa.oid,
-          opiskeluoikeusOid = opiskeluoikeusOid
-        )
-      ).sortBy(_.opiskeluoikeusOid)
-
-    rows.toList should equal(expectedRows)
-  }
-
-  private val perusopetuksenOppijamäärätAikajaksovirheetRaporttiBuilder = PerusopetuksenOppijamäärätAikajaksovirheetRaportti(application.raportointiDatabase.db, application.organisaatioService)
-  private lazy val perusopetuksenOppijamäärätAikajaksovirheetRaportti = perusopetuksenOppijamäärätAikajaksovirheetRaporttiBuilder
-    .build(Seq(jyväskylänNormaalikoulu), raportointipäivä, t)(session(defaultUser))
-    .rows.map(_.asInstanceOf[PerusopetuksenOppijamäärätAikajaksovirheetRaporttiRow])
 }

@@ -267,6 +267,11 @@ class ValpasOpiskeluoikeusDatabaseFixtureCreator(application: KoskiApplication) 
     (ValpasMockOppijat.lukioOpinnotAmmattitutkinnonJalkeen, ValpasOpiskeluoikeusExampleData.lukionOpiskeluoikeus(LocalDate.of(2021, 9, 6)).withLisääPuuttuvaMaksuttomuustieto),
     (ValpasMockOppijat.muuttanutUlkomailleEnnen7vIkää, ValpasOpiskeluoikeusExampleData.oppivelvollinenYsiluokkaKeskenKeväällä2021Opiskeluoikeus),
     (ValpasMockOppijat.oppijaTyhjälläKotikunnalla, ValpasOpiskeluoikeusExampleData.oppivelvollinenYsiluokkaKeskenKeväällä2021Opiskeluoikeus),
+    (ValpasMockOppijat.valmistunutAmiksenOsittainenUseastaTutkinnosta, ValpasOpiskeluoikeusExampleData.valmistunutYsiluokkalainenSaksalainenKoulu),
+    (ValpasMockOppijat.valmistunutAmiksenOsittainenUseastaTutkinnosta, ValpasOpiskeluoikeusExampleData.ammattikouluValmistunutOsittainenUseastaTutkinnostaOpiskeluoikeus),
+    (ValpasMockOppijat.valmistunutAmiksenOsittainenUseastaTutkinnostaUusiOo, ValpasOpiskeluoikeusExampleData.valmistunutYsiluokkalainenSaksalainenKoulu),
+    (ValpasMockOppijat.valmistunutAmiksenOsittainenUseastaTutkinnostaUusiOo, ValpasOpiskeluoikeusExampleData.ammattikouluValmistunutOsittainenUseastaTutkinnostaOpiskeluoikeus),
+    (ValpasMockOppijat.valmistunutAmiksenOsittainenUseastaTutkinnostaUusiOo, ValpasOpiskeluoikeusExampleData.ammattikouluAlkaaOmnia(ValpasOpiskeluoikeusExampleData.ammattikouluValmistunutOsittainenUseastaTutkinnostaOpiskeluoikeus.päättymispäivä.get))
   )
 
   protected def secondBatchOpiskeluOikeudet: List[(OppijaHenkilö, KoskeenTallennettavaOpiskeluoikeus)] = List(

@@ -205,6 +205,16 @@ class HslSpec extends AnyFreeSpec with KoskiHttpSpec with OpiskeluoikeusTestMeth
         validateKoulutussopimukset(opiskeluoikeudet.head)
       }
     }
+
+    "Palauttaa ammatillisen tutkinnon osan/osien suorituksen useasta tutkinnosta" - {
+      KoskiApplicationForTests.mydataRepository.create(osittainenAmmattitutkintoUseastaTutkinnostaKesken.oid, "hsl")
+      postHsl(MockUsers.hslKäyttäjä, osittainenAmmattitutkintoUseastaTutkinnostaKesken.hetu.get) {
+        verifyResponseStatusOk()
+        val actualJson = parseOpintoOikeudetJson()
+        val opiskeluoikeudet = (actualJson \ "opiskeluoikeudet").children
+        opiskeluoikeudet should have size 1
+      }
+    }
   }
 
   "korkeakoulun opiskeluoikeuden lisätiedot" in {

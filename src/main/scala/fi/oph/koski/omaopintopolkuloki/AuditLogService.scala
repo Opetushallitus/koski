@@ -50,7 +50,8 @@ class AuditLogService(val application: KoskiApplication) extends Logging with My
           |  contains (#rawEntry, :suoritusjako_katsominen) or
           |  contains (#rawEntry, :suoritusjako_katsominen_suoritetut_tutkinnot) or
           |  contains (#rawEntry, :suoritusjako_katsominen_aktiiviset_ja_paattyneet_opinnot) or
-          |  contains (#rawEntry, :varda_service))
+          |  contains (#rawEntry, :varda_service) or
+          |  contains (#rawEntry, :kitu_service))
           |  """.stripMargin)
       .expressionAttributeNames(Map("#rawEntry" -> "raw").asJava)
       .expressionAttributeValues({
@@ -67,6 +68,7 @@ class AuditLogService(val application: KoskiApplication) extends Logging with My
         valueMap.put(":oauth2_katsominen_suoritetut_tutkinnot", AttributeValue.builder.s("\"OAUTH2_KATSOMINEN_SUORITETUT_TUTKINNOT\"").build)
         valueMap.put(":oauth2_katsominen_aktiiviset_ja_paattyneet_opinnot", AttributeValue.builder.s("\"OAUTH2_KATSOMINEN_AKTIIVISET_JA_PAATTYNEET_OPINNOT\"").build)
         valueMap.put(":varda_service", AttributeValue.builder.s("\"varda\"").build)
+        valueMap.put(":kitu_service", AttributeValue.builder.s("\"kitu\"").build)
         valueMap
       })
 

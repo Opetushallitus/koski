@@ -192,6 +192,8 @@ class KoskiSpecificDatabaseFixtureCreator(application: KoskiApplication) extends
       (KoskiSpecificMockOppijat.erikoisammattitutkinto, AmmattitutkintoExample.opiskeluoikeus),
       (KoskiSpecificMockOppijat.reformitutkinto, ReforminMukainenErikoisammattitutkintoExample.opiskeluoikeus),
       (KoskiSpecificMockOppijat.osittainenammattitutkinto, AmmatillinenPerustutkintoExample.osittainenPerustutkintoOpiskeluoikeus),
+      (KoskiSpecificMockOppijat.osittainenAmmattitutkintoUseastaTutkinnostaValmis, AmmatillinenOsittainenUseistaTutkinnoista.valmisUseastaTutkinnostaOpiskeluoikeus),
+      (KoskiSpecificMockOppijat.osittainenAmmattitutkintoUseastaTutkinnostaKesken, AmmatillinenOsittainenUseistaTutkinnoista.keskeneräinenUseastaTutkinnostaOpiskeluoikeus),
       (KoskiSpecificMockOppijat.ammatillisenOsittainenRapsa,AmmatillinenOsittainenReformi.opiskeluoikeusRapsa),
       (KoskiSpecificMockOppijat.paikallinenTunnustettu, AmmatillinenPerustutkintoExample.tunnustettuPaikallinenTutkinnonOsaOpiskeluoikeus),
       (KoskiSpecificMockOppijat.tiedonsiirto, AmmatillinenOpiskeluoikeusTestData.lähdejärjestelmällinenOpiskeluoikeus),

@@ -26,9 +26,9 @@ object DuplikaattiValidation extends Logging {
         case _ => false
       }
 
-    lazy val isAmmatillisenTutkinnonOsittainenTaiKokoSuoritus: Boolean =
+    lazy val isAmmatillisenTutkinnonOsittainenTaiKokoTutkintoKoulutuksenSuoritus: Boolean =
       opiskeluoikeus.suoritukset.forall {
-        case _: AmmatillisenTutkinnonOsittainenTaiKokoSuoritus => true
+        case _: AmmatillisenTutkinnonOsittainenTaiKokoTutkintoKolutuksenSuoritus => true
         case _ => false
       }
 
@@ -75,7 +75,7 @@ object DuplikaattiValidation extends Logging {
 
     def samaDiaarinumeroAmmatillinen(muuOpiskeluoikeus: AmmatillinenOpiskeluoikeus): Boolean = {
       def diaarinumerot = (oo: Opiskeluoikeus) => oo.suoritukset
-        .collect { case s: AmmatillisenTutkinnonOsittainenTaiKokoSuoritus => s }
+        .collect { case s: AmmatillisenTutkinnonOsittainenTaiKokoTutkintoKolutuksenSuoritus => s }
         .flatMap(s => s.koulutusmoduuli.perusteenDiaarinumero)
 
       opiskeluoikeus match {
@@ -115,7 +115,7 @@ object DuplikaattiValidation extends Logging {
       // Sama diaarinumero ammatillisen tutkinnon osittaisilla tai koko suorituksilla ja päällekkäinen aikajakso
       // tai päällekkäinen aikajakso muissa tapauksissa
       oppijanMuutOpiskeluoikeudetSamaOppilaitosJaTyyppi.map(_.find {
-        case a: AmmatillinenOpiskeluoikeus if isAmmatillisenTutkinnonOsittainenTaiKokoSuoritus =>
+        case a: AmmatillinenOpiskeluoikeus if isAmmatillisenTutkinnonOsittainenTaiKokoTutkintoKoulutuksenSuoritus =>
           samaDiaarinumeroAmmatillinen(a) && päällekkäinenAikajakso(a)
         case _: AmmatillinenOpiskeluoikeus if isAmmatillisenTutkinnonOsaaPienemmistäKokonaisuuksistaKoostuvaKoulutus => false
         case a: AmmatillinenOpiskeluoikeus => päällekkäinenAikajakso(a)

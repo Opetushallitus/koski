@@ -39,6 +39,12 @@ class EPerusteetFiller(
           s.copy(tutkinto = s.tutkinto.copy(perusteenNimi = s.tutkinto.perusteenDiaarinumero.flatMap(diaarinumero => perusteenNimi(diaarinumero, Some(oo.getVaadittuPerusteenVoimassaolopäivä)))))
         case s: AmmatillisenTutkinnonOsittainenSuoritus =>
           s.copy(koulutusmoduuli = s.koulutusmoduuli.copy(perusteenNimi = s.koulutusmoduuli.perusteenDiaarinumero.flatMap(diaarinumero => perusteenNimi(diaarinumero, Some(oo.getVaadittuPerusteenVoimassaolopäivä)))))
+        case s: AmmatillisenTutkinnonOsittainenUseastaTutkinnostaSuoritus =>
+          s.withOsasuoritukset(s.osasuoritukset.map(oss => oss.map {
+            case os: YhteisenOsittaisenAmmatillisenTutkinnonTutkinnonosanUseastaTutkinnostaSuoritus => os.copy(tutkinto = os.tutkinto.copy(perusteenNimi = os.tutkinto.perusteenDiaarinumero.flatMap(diaarinumero => perusteenNimi(diaarinumero, if(os.tunnustettu.isDefined) None else Some(oo.getVaadittuPerusteenVoimassaolopäivä)))))
+            case os: MuunOsittaisenAmmatillisenTutkinnonTutkinnonosanUseastaTutkinnostaSuoritus => os.copy(tutkinto = os.tutkinto.copy(perusteenNimi = os.tutkinto.perusteenDiaarinumero.flatMap(diaarinumero => perusteenNimi(diaarinumero, if(os.tunnustettu.isDefined) None else Some(oo.getVaadittuPerusteenVoimassaolopäivä)))))
+            case os => os
+          }))
         case s: TutkinnonOsaaPienemmistäKokonaisuuksistaKoostuvaSuoritus =>
           s.withOsasuoritukset(s.osasuoritukset.map(_.map {
             case os: PaikalliseenTutkinnonOsaanLiittyvänTutkinnonOsaaPienemmänKokonaisuudenSuoritus =>
@@ -69,5 +75,22 @@ class EPerusteetFiller(
       .headOption
       .map(_.nimi)
       .flatMap(LocalizedString.sanitize)
+  }
+
+  def fillTutkinnonOsanRyhmät(opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus): KoskeenTallennettavaOpiskeluoikeus = opiskeluoikeus match {
+    case oo: AmmatillinenOpiskeluoikeus => oo.withSuoritukset(
+      oo.suoritukset.map {
+        case s: AmmatillisenTutkinnonOsittainenUseastaTutkinnostaSuoritus => s.withOsasuoritukset(
+          s.osasuoritukset.map(oss => oss.map {
+            case os: YhteisenOsittaisenAmmatillisenTutkinnonTutkinnonosanUseastaTutkinnostaSuoritus => os.copy(
+              tutkinnonOsanRyhmä = os.tutkinnonOsanRyhmä.orElse(Some(yhteinenTutkinnonOsanRyhmä))
+            )
+            case os => os
+          })
+        )
+        case s => s
+      }
+    )
+    case oo => oo
   }
 }

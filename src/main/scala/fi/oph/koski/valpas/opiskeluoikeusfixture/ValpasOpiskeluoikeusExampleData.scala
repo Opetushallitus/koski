@@ -703,6 +703,9 @@ object ValpasOpiskeluoikeusExampleData {
     )
   )
 
+  def ammattikouluValmistunutOsittainenUseastaTutkinnostaOpiskeluoikeus: AmmatillinenOpiskeluoikeus =
+    AmmatillinenOsittainenUseistaTutkinnoista.valppaaseenValmisUseastaTutkinnostaOpiskeluoikeus
+
   def ammattikouluEronnutOpiskeluoikeus = AmmattitutkintoExample.opiskeluoikeus.copy(
     arvioituPäättymispäivä = Some(date(2023, 5, 31)),
     tila = AmmatillinenOpiskeluoikeudenTila(List(

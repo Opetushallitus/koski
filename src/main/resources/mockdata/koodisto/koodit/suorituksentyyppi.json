@@ -3958,5 +3958,30 @@
     "koodiUri": "suorituksentyyppi_valtionhallinnonkielitutkinnonosakoe",
     "versio": 1,
     "koodiArvo": "valtionhallinnonkielitutkinnonosakoe"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "Ammatillinen tutkinto osittainen useasta tutkinnosta",
+        "kuvaus": null,
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Ammatillinen tutkinto osittainen useasta tutkinnosta",
+        "kuvaus": null,
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Ammatillinen tutkinto osittainen useasta tutkinnosta",
+        "kuvaus": null,
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "suorituksentyyppi_ammatillinentutkintoosittainenuseastatutkinnosta",
+    "versio": 1,
+    "koodiArvo": "ammatillinentutkintoosittainenuseastatutkinnosta"
   }
 ]
