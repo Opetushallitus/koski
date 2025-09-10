@@ -28,4 +28,9 @@
     <packageUrl regex="true">^pkg:maven/org\.scalaz/scalaz\-core_2\.12@.*$</packageUrl>
     <cve>CVE-2022-2393</cve>
   </suppress>
+  <suppress>
+    <notes>JLine 2.14.6 is a transitive dependency of scala-compiler and is only used at compile-time.</notes>
+    <cpe>cpe:2.3:a:jline:jline:2.14.6:*:*:*:*:*:*:*</cpe>
+    <cve>CVE-2023-50572</cve>
+  </suppress>
 </suppressions>
