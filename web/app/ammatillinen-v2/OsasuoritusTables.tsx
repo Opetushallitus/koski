@@ -77,6 +77,14 @@ import {
 import { OsittaisenAmmatillisenTutkinnonOsanUseastaTutkinnostaSuoritus } from '../types/fi/oph/koski/schema/OsittaisenAmmatillisenTutkinnonOsanUseastaTutkinnostaSuoritus'
 import { YhteisenOsittaisenAmmatillisenTutkinnonUseastaTutkinnostaOsasuoritusProperties } from './YhteisenOsittaisenAmmatillisenTutkinnonUseastaTutkinnostaOsasuoritusProperties'
 import { MuunOsittaisenAmmatillisenTutkinnonUseastaTutkinnostaTutkinnonosanSuoritusProperties } from './MuunOsittaisenAmmatillisenTutkinnonUseastaTutkinnostaTutkinnonosanSuoritusProperties'
+import { DialogSelect } from '../uusiopiskeluoikeus/components/DialogSelect'
+import { AmmatillinenTutkintoKoulutus } from '../types/fi/oph/koski/schema/AmmatillinenTutkintoKoulutus'
+import {
+  tutkintoKey,
+  useTutkinnot
+} from '../uusiopiskeluoikeus/opiskeluoikeusSpecificFields/AmmatillinenKoulutusFields'
+import { OrganisaatioHierarkia } from '../types/fi/oph/koski/organisaatio/OrganisaatioHierarkia'
+import { TutkintoPeruste } from '../types/fi/oph/koski/tutkinto/TutkintoPeruste'
 
 interface OsasuoritusTablesProps {
   form: FormModel<AmmatillinenOpiskeluoikeus>
@@ -310,7 +318,6 @@ const TableForTutkinnonOsaRyhmäUseastaTutkinnosta = ({
     .filter(
       ({ s }) =>
         (s.tutkinnonOsanRyhmä?.nimi as Finnish | undefined)?.fi === ryhmä ||
-        ryhmä === 'Tutkinnon osat' ||
         (s.tutkinnonOsanRyhmä === undefined && ryhmä === 'Muut suoritukset')
     )
     .map(({ s, originalIndex }, rowIndex) => {
@@ -325,10 +332,6 @@ const TableForTutkinnonOsaRyhmäUseastaTutkinnosta = ({
       })
     })
 
-  if (!rows || rows.length === 0) {
-    return null
-  }
-
   return (
     <OsasuoritusTable
       editMode={form.editMode}
@@ -337,6 +340,12 @@ const TableForTutkinnonOsaRyhmäUseastaTutkinnosta = ({
           ? [dummyRow(ryhmä)] // Saadaan headeri näkymään editointimoodissa kun osasuorituksia ei ole
           : rows || []
       }
+      addNewOsasuoritusView={NewAmisOsasuoritusToiseenTutkintoon}
+      addNewOsasuoritusViewProps={{
+        form,
+        ryhmä,
+        suoritusPath: osittainenPäätasonSuoritus.path
+      }}
       onRemove={
         !rows || rows?.length === 0
           ? undefined
@@ -472,7 +481,11 @@ const tutkinnonOsatUseastaTutkinnostaToTableRow = <T extends string>({
   const columns: Partial<Record<'Laajuus' | 'Arvosana' | T, ReactNode>> = {}
 
   columns[tutkinnonOsaRyhmä] = (
-    <>{t(osasuoritus?.koulutusmoduuli.tunniste.nimi)}</>
+    <span
+      data-testid={`suoritus.${suoritusIndex}.osasuoritus.${osasuoritusIndex}.nimi`}
+    >
+      {t(osasuoritus?.koulutusmoduuli.tunniste.nimi)}
+    </span>
   )
 
   columns.Laajuus = (
@@ -675,6 +688,48 @@ const NewAmisOsasuoritus = ({
   )
 }
 
+type NewAmisOsasuoritusToiseenTutkintoonProps = {
+  form: FormModel<AmmatillinenOpiskeluoikeus>
+  ryhmä: string
+  suoritusPath: FormOptic<
+    AmmatillinenOpiskeluoikeus,
+    AmmatillisenTutkinnonOsittainenUseastaTutkinnostaSuoritus
+  >
+}
+
+const NewAmisOsasuoritusToiseenTutkintoon = ({
+  form,
+  ryhmä,
+  suoritusPath
+}: NewAmisOsasuoritusToiseenTutkintoonProps) => {
+  const ryhmät = useKoodisto('ammatillisentutkinnonosanryhma')
+  const ryhmäKoodi =
+    (ryhmät !== null
+      ? (ryhmät.find((r) => (r.koodiviite.nimi as Finnish).fi === ryhmä)
+          ?.koodiviite as
+          | Koodistokoodiviite<
+              'ammatillisentutkinnonosanryhma',
+              '1' | '3' | '4'
+            >
+          | undefined)
+      : undefined) || undefined
+
+  if (ryhmä === 'Yhteiset tutkinnon osat') {
+    return <></>
+  }
+  return (
+    <ColumnRow>
+      <Column span={6}>
+        <NewPaikallinenToisestaTutkinnosta
+          form={form}
+          ryhmäKoodi={ryhmäKoodi}
+          suoritusPath={suoritusPath}
+        />
+      </Column>
+    </ColumnRow>
+  )
+}
+
 const newMuuOsa = (
   osa: Koodistokoodiviite<'tutkinnonosat', string>,
   ryhmä: Koodistokoodiviite<'ammatillisentutkinnonosanryhma', '1' | '3' | '4'>
@@ -700,6 +755,31 @@ const newPaikallinenOsa = (
     }),
     tutkinnonOsanRyhmä: ryhmä
   })
+}
+
+const newPaikallinenOsaToisestaTutkinnosta = (
+  tutkinto: TutkintoPeruste,
+  osa: string,
+  ryhmä?: Koodistokoodiviite<'ammatillisentutkinnonosanryhma', '1' | '3' | '4'>
+): MuunOsittaisenAmmatillisenTutkinnonTutkinnonosanUseastaTutkinnostaSuoritus => {
+  return MuunOsittaisenAmmatillisenTutkinnonTutkinnonosanUseastaTutkinnostaSuoritus(
+    {
+      koulutusmoduuli: PaikallinenTutkinnonOsa({
+        tunniste: PaikallinenKoodi({ koodiarvo: osa, nimi: finnish(osa) }),
+        kuvaus: finnish(osa),
+        pakollinen: false
+      }),
+      tutkinto: AmmatillinenTutkintoKoulutus({
+        tunniste: Koodistokoodiviite({
+          koodiarvo: tutkinto.tutkintoKoodi,
+          koodistoUri: 'koulutus'
+        }),
+        perusteenDiaarinumero: tutkinto.diaarinumero,
+        perusteenNimi: tutkinto.nimi
+      }),
+      tutkinnonOsanRyhmä: ryhmä
+    }
+  )
 }
 
 type NewPaikallinenProps = {
@@ -734,6 +814,62 @@ const NewPaikallinen = ({
               suoritusPath.prop('osasuoritukset').valueOr([]),
               (o) => [...o, newPaikallinenOsa(osa, ryhmäKoodi)]
             )
+            setShowModal(false)
+          }}
+        />
+      )}
+    </>
+  )
+}
+
+type NewPaikallinenToisestaTutkinnostaProps = {
+  form: FormModel<AmmatillinenOpiskeluoikeus>
+  ryhmäKoodi?: Koodistokoodiviite<
+    'ammatillisentutkinnonosanryhma',
+    '1' | '3' | '4'
+  >
+  suoritusPath: FormOptic<
+    AmmatillinenOpiskeluoikeus,
+    AmmatillisenTutkinnonOsittainenUseastaTutkinnostaSuoritus
+  >
+}
+
+const NewPaikallinenToisestaTutkinnosta = ({
+  form,
+  ryhmäKoodi,
+  suoritusPath
+}: NewPaikallinenToisestaTutkinnostaProps) => {
+  const [showModal, setShowModal] = useState(false)
+
+  return (
+    <>
+      <FlatButton
+        testId={
+          ryhmäKoodi
+            ? `lisaa-paikallinen-osa-${ryhmäKoodi?.koodiarvo}`
+            : 'lisaa-paikallinen-osa-muut'
+        }
+        onClick={() => setShowModal(true)}
+      >
+        {t('Lisää paikallinen tutkinnon osa')}
+      </FlatButton>
+      {showModal && (
+        <NewPaikallinenToisestaTutkinnostaModal
+          oppilaitos={OrganisaatioHierarkia({
+            oid: '1.2.246.562.10.52251087186',
+            aktiivinen: true,
+            nimi: finnish('Stadin ammattiopisto')
+          })}
+          onClose={() => setShowModal(false)}
+          onSubmit={(tutkinto, osa) => {
+            form.updateAt(
+              suoritusPath.prop('osasuoritukset').valueOr([]),
+              (o) => [
+                ...o,
+                newPaikallinenOsaToisestaTutkinnosta(tutkinto, osa, ryhmäKoodi)
+              ]
+            )
+            setShowModal(false)
           }}
         />
       )}
@@ -766,6 +902,66 @@ const NewPaikallinenModal = ({
           {t('Peruuta')}
         </FlatButton>
         <RaisedButton onClick={() => onSubmit(osa)}>
+          {t('Lisää tutkinnon osa')}
+        </RaisedButton>
+      </ModalFooter>
+    </Modal>
+  )
+}
+
+type NewPaikallinenToisestaTutkinnostaModalProps = {
+  oppilaitos?: OrganisaatioHierarkia
+  onClose: () => void
+  onSubmit: (tutkinto: TutkintoPeruste, osa: string) => void
+}
+
+const NewPaikallinenToisestaTutkinnostaModal = ({
+  oppilaitos,
+  onClose,
+  onSubmit
+}: NewPaikallinenToisestaTutkinnostaModalProps) => {
+  const [osa, setOsa] = useState('')
+  const [tutkinto, setTutkinto] = useState<TutkintoPeruste | undefined>(
+    undefined
+  )
+  const tutkinnot = useTutkinnot(oppilaitos)
+
+  return (
+    <Modal onClose={onClose}>
+      <ModalTitle>{t('Paikallisen tutkinnon osan lisäys')}</ModalTitle>
+      <ModalBody>
+        <label>
+          {t('Tutkinto')}
+          <DialogSelect
+            options={tutkinnot.options}
+            value={tutkinto && tutkintoKey(tutkinto)}
+            onChange={(opt) => setTutkinto(opt?.value)}
+            onSearch={tutkinnot.setQuery}
+            testId="tutkinto"
+          />
+        </label>
+        <label>
+          {t('Tutkinnon osan nimi')}
+          <TextEdit
+            testId="paikallisen-osan-nimi"
+            onChange={(o) => setOsa(o ? o : '')}
+            value={osa}
+          />
+        </label>
+      </ModalBody>
+      <ModalFooter>
+        <FlatButton onClick={onClose} testId="cancel">
+          {t('Peruuta')}
+        </FlatButton>
+        <RaisedButton
+          disabled={tutkinto === undefined || osa === ''}
+          onClick={() => {
+            if (tutkinto) {
+              onSubmit(tutkinto, osa)
+            }
+          }}
+          testId="confirm"
+        >
           {t('Lisää tutkinnon osa')}
         </RaisedButton>
       </ModalFooter>

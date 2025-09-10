@@ -26,11 +26,11 @@ import {
   AmmatillisenOsittaisenUseastaTutkinnostaSuorituksenTyyppi
 } from '../opiskeluoikeusCreator/ammatillinenTutkinto'
 import { useAmmatillisenTutkinnonSuoritustapa } from '../state/ammatillisenTutkinnonSuoritustapa'
-import { UusiOpiskeluoikeusDialogState } from '../state/state'
 import { Finnish } from '../../types/fi/oph/koski/schema/Finnish'
+import { OrganisaatioHierarkia } from '../../types/fi/oph/koski/organisaatio/OrganisaatioHierarkia'
 
 export const AmmatillinenKoulutusFields = (props: SuoritusFieldsProps) => {
-  const tutkinnot = useTutkinnot(props.state)
+  const tutkinnot = useTutkinnot(props.state.oppilaitos.value)
   const suoritustavat = useAmmatillisenTutkinnonSuoritustapa(props.state)
 
   const onTOPKS = useCallback(
@@ -103,14 +103,12 @@ export const AmmatillinenKoulutusFields = (props: SuoritusFieldsProps) => {
   )
 }
 
-const useTutkinnot = (state: UusiOpiskeluoikeusDialogState) => {
+export const useTutkinnot = (oppilaitos?: OrganisaatioHierarkia) => {
   const [query, setQuery] = useState<string>()
 
   const tutkinnot = useApiWithParams(
     fetchOppilaitoksenPerusteet,
-    state.oppilaitos.value !== undefined
-      ? [state.oppilaitos.value?.oid, query]
-      : undefined
+    oppilaitos !== undefined ? [oppilaitos.oid, query] : undefined
   )
 
   const options = useMemo(
@@ -133,7 +131,7 @@ const useTutkinnot = (state: UusiOpiskeluoikeusDialogState) => {
   return { options, setQuery }
 }
 
-const tutkintoKey = (tutkinto: TutkintoPeruste): string =>
+export const tutkintoKey = (tutkinto: TutkintoPeruste): string =>
   `${tutkinto.tutkintoKoodi}_${tutkinto.diaarinumero}`
 
 const MuuAmmatillinenKoulutusFields = (props: SuoritusFieldsProps) => {
