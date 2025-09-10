@@ -1164,7 +1164,7 @@ class KoskiValidator(
         :: validateArviointienOlemassaolo(suoritus, opiskeluoikeus)
         :: validateLaajuus(suoritus)
         :: validateNuortenPerusopetuksenPakollistenOppiaineidenLaajuus(suoritus, opiskeluoikeus)
-        :: validateSuoritustenLuokkaAsteet(suoritus, opiskeluoikeus)
+        :: validateSuoritustenLuokkaAsteet(opiskeluoikeus)
         :: validateOppiaineet(suoritus)
         :: validatePäiväkodinEsiopetus(suoritus, opiskeluoikeus)
         :: ePerusteetValidator.validateTutkinnonosanRyhmä(suoritus, opiskeluoikeus.getVaadittuPerusteenVoimassaolopäivä)
@@ -1641,16 +1641,7 @@ class KoskiValidator(
       }
   }
 
-  private def validateSuoritustenLuokkaAsteet(suoritus: Suoritus, opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus): HttpStatus = HttpStatus.fold(
-    suoritus match {
-      case s: NuortenPerusopetuksenOppiaineenOppimääränSuoritus =>
-        if (s.luokkaAste.isDefined && s.suoritustapa.koodiarvo == "koulutus") {
-          KoskiErrorCategory.badRequest.validation.tila.nuortenPerusopetuksenLuokkaAsteIlmanErityistäTutkintoa("""Luokka-aste voi olla valittuna vain nuorten perusopetuksen suorituksille, jos suoritustavaksi on valittu erityinen tutkinto""")
-        } else {
-          HttpStatus.ok
-        }
-      case _ => HttpStatus.ok
-    },
+  private def validateSuoritustenLuokkaAsteet(opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus): HttpStatus =
     opiskeluoikeus match {
       case oo: PerusopetuksenOpiskeluoikeus =>
         val nuortenPerusopetuksenErityinenTutkintoSuoritukset = oo.suoritukset.collect({ case s: NuortenPerusopetuksenOppiaineenOppimääränSuoritus => s }).filter(_.suoritustapa.koodiarvo == "erityinentutkinto")
@@ -1666,7 +1657,6 @@ class KoskiValidator(
         }
       case _ => HttpStatus.ok
     }
-  )
 
   private def validateOppiaineet(suoritus: Suoritus) = suoritus match {
     case _: NuortenPerusopetuksenOppiaineenOppimääränSuoritus | _: AikuistenPerusopetuksenOppiaineenOppimääränSuoritus | _: LukionOppiaineenOppimääränSuoritus2015 =>
