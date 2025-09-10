@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <suppressions xmlns="https://jeremylong.github.io/DependencyCheck/dependency-suppression.1.3.xsd">
-  <suppress until="2025-08-18Z">
+  <suppress until="2025-12-01Z">
     <notes>DOS-issue in a transitive dependency of Spring Boot, for which no fix is yet available via Spring Boot.</notes>
     <cve>CVE-2025-53864</cve>
   </suppress>
