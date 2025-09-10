@@ -37,6 +37,16 @@
       <version>9.2.6-SNAPSHOT</version>
     </dependency>
     <dependency>
+      <groupId>co.fs2</groupId>
+      <artifactId>fs2-core_2.12</artifactId>
+      <version>3.12.2</version>
+    </dependency>
+    <dependency>
+      <groupId>co.fs2</groupId>
+      <artifactId>fs2-io_2.12</artifactId>
+      <version>3.12.2</version>
+    </dependency>
+    <dependency>
       <groupId>com.github.Opetushallitus.java-utils</groupId>
       <artifactId>oid-generator</artifactId>
       <version>f324e2c5168ef4cd68d08520294300a707adb833</version>
