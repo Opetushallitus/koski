@@ -48,6 +48,7 @@ export const mergeOpiskeluoikeusVersionumeroAndRefetch =
 export const isTerminaalitila = (tila: Koodistokoodiviite): boolean =>
   [
     'eronnut',
+    'katsotaaneronneeksi',
     'valmistunut',
     'peruutettu',
     'keskeytynyt',
