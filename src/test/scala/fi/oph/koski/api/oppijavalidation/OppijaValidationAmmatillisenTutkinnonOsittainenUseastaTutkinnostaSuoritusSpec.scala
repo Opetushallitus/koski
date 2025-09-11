@@ -142,7 +142,7 @@ class OppijaValidationAmmatillisenTutkinnonOsittainenUseastaTutkinnostaSuoritusS
         )
 
         setupOppijaWithOpiskeluoikeus(makeOpiskeluoikeus(suoritus = suoritus)) {
-          verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.rakenne.tuntematonOsaamisala("Osaamisalalle 1008 ei löydy tutkintorakenteesta opiskeluoikeuden voimassaoloaikana voimassaollutta perustetta."))
+          verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.rakenne.tuntematonOsaamisala("Osaamisalaa Ajoneuvotekniikan osaamisala(1008) ei löydy opiskeluoikeudelle määritellystä perusteesta."))
         }
       }
     }
@@ -204,7 +204,7 @@ class OppijaValidationAmmatillisenTutkinnonOsittainenUseastaTutkinnostaSuoritusS
           ))
         )
         setupOppijaWithOpiskeluoikeus(makeOpiskeluoikeus(suoritus = suoritus)) {
-          verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.rakenne.tuntematonTutkintonimike("Tutkintonimikkeelle Automaalari(10025) ei löydy tutkintorakenteesta opiskeluoikeuden voimassaoloaikana voimassaollutta perustetta."))
+          verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.rakenne.tuntematonTutkintonimike("Tutkintonimikettä Automaalari(10025) ei löydy opiskeluoikeudelle määritellystä perusteesta."))
         }
       }
     }
@@ -304,7 +304,7 @@ class OppijaValidationAmmatillisenTutkinnonOsittainenUseastaTutkinnostaSuoritusS
           )
         )
         setupOppijaWithOpiskeluoikeus(makeOpiskeluoikeus(suoritus = suoritus)) {
-          verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.rakenne.tuntematonTutkinnonOsa("Tutkinnon osa tutkinnonosat/101050 ei löydy tutkintorakenteesta opiskeluoikeuden voimassaoloaikana voimassaolleelle perusteelle OPH-5410-2021 (7614470)"))
+          verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.rakenne.tuntematonTutkinnonOsa("Tutkinnon osa Yritystoiminnan suunnittelu(101050) ei löydy tutkintorakenteesta perusteelle OPH-5410-2021 (7614470)"))
         }
       }
 
@@ -440,7 +440,7 @@ class OppijaValidationAmmatillisenTutkinnonOsittainenUseastaTutkinnostaSuoritusS
           ))
         )
         setupOppijaWithOpiskeluoikeus(makeOpiskeluoikeus(suoritus = suoritus)) {
-          verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.rakenne.tuntematonTutkinnonOsa("Tutkinnon osa tutkinnonosat/101050 ei löydy tutkintorakenteesta opiskeluoikeuden voimassaoloaikana voimassaolleelle perusteelle OPH-5410-2021 (7614470)"))
+          verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.rakenne.tuntematonTutkinnonOsa("Tutkinnon osa Yritystoiminnan suunnittelu(101050) ei löydy tutkintorakenteesta perusteelle OPH-5410-2021 (7614470)"))
         }
       }
 
@@ -509,7 +509,7 @@ class OppijaValidationAmmatillisenTutkinnonOsittainenUseastaTutkinnostaSuoritusS
           ))
         )
         setupOppijaWithOpiskeluoikeus(makeOpiskeluoikeus(suoritus = suoritus)) {
-          verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.rakenne.tuntematonTutkinnonOsa("Tutkinnon osa tutkinnonosat/106945 ei löydy tutkintorakenteesta opiskeluoikeuden voimassaoloaikana voimassaolleelle perusteelle 62/011/2014 (33827)"))
+          verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.rakenne.tuntematonTutkinnonOsa("Tutkinnon osa Ajoneuvon huoltotyöt(106945) ei löydy tutkintorakenteesta perusteelle 62/011/2014 (33827)"))
         }
       }
 

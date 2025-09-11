@@ -159,12 +159,12 @@ case class TutkintoRakenneValidator(tutkintoRepository: TutkintoRepository, kood
                           case Some(suoritustapaJaRakenne) =>
                             findTutkinnonOsa(suoritustapaJaRakenne, osa.tunniste) match {
                               case None =>
-                                KoskiErrorCategory.badRequest.validation.rakenne.tuntematonTutkinnonOsa(s"Tutkinnon osa ${osa.tunniste} ei löydy tutkintorakenteesta opiskeluoikeuden voimassaoloaikana voimassaolleelle perusteelle ${rakenne.diaarinumero} (${rakenne.id})")
+                                KoskiErrorCategory.badRequest.validation.rakenne.tuntematonTutkinnonOsa(s"Tutkinnon osa ${osa.tunniste.nimi.map(_.get("fi")).getOrElse("")}(${osa.tunniste.koodiarvo}) ei löydy tutkintorakenteesta perusteelle ${rakenne.diaarinumero} (${rakenne.id})")
                               case Some(tutkinnonOsa) =>
                                 validateLaajuusJaOsaAlueet(os, tutkinnonOsa, oo, suoritus, rakenne)
                             }
                           case None =>
-                            KoskiErrorCategory.badRequest.validation.rakenne.suoritustapaaEiLöydyRakenteesta(s"Suoritustapaa ei löydy tutkinnon rakenteesta opiskeluoikeuden voimassaoloaikana voimassaolleelle perusteelle ${rakenne.diaarinumero} (${rakenne.id})")
+                            KoskiErrorCategory.badRequest.validation.rakenne.suoritustapaaEiLöydyRakenteesta(s"Suoritustapaa ei löydy tutkinnon rakenteesta perusteelle ${rakenne.diaarinumero} (${rakenne.id})")
                         }
                       }
                     if (tulokset.exists(_.isOk)) {
@@ -368,13 +368,13 @@ case class TutkintoRakenneValidator(tutkintoRepository: TutkintoRepository, kood
 
   private def validateOsaamisala(osaamisala: Koodistokoodiviite, rakenteet: List[TutkintoRakenne]): HttpStatus = {
     HttpStatus.validate(rakenteet.exists(rakenne => findOsaamisala(rakenne, osaamisala.koodiarvo).nonEmpty))(
-      KoskiErrorCategory.badRequest.validation.rakenne.tuntematonOsaamisala(s"Osaamisalalle ${osaamisala.koodiarvo} ei löydy tutkintorakenteesta opiskeluoikeuden voimassaoloaikana voimassaollutta perustetta.")
+      KoskiErrorCategory.badRequest.validation.rakenne.tuntematonOsaamisala(s"Osaamisalaa ${osaamisala.nimi.map(_.get("fi")).getOrElse("")}(${osaamisala.koodiarvo}) ei löydy opiskeluoikeudelle määritellystä perusteesta.")
     )
   }
 
   private def validateTutkintonimike(tutkintonimike: Koodistokoodiviite, rakenteet: List[TutkintoRakenne]): HttpStatus = {
     HttpStatus.validate(rakenteet.exists(rakenne => findTutkintonimike(rakenne, tutkintonimike.koodiarvo).nonEmpty))(
-      KoskiErrorCategory.badRequest.validation.rakenne.tuntematonTutkintonimike(s"Tutkintonimikkeelle ${tutkintonimike.nimi.map(_.get("fi")).getOrElse("Tuntematon nimi")}(${tutkintonimike.koodiarvo}) ei löydy tutkintorakenteesta opiskeluoikeuden voimassaoloaikana voimassaollutta perustetta.")
+      KoskiErrorCategory.badRequest.validation.rakenne.tuntematonTutkintonimike(s"Tutkintonimikettä ${tutkintonimike.nimi.map(_.get("fi")).getOrElse("")}(${tutkintonimike.koodiarvo}) ei löydy opiskeluoikeudelle määritellystä perusteesta.")
     )
   }
 
