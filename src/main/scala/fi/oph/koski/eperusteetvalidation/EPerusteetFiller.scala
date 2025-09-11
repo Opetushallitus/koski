@@ -82,9 +82,8 @@ class EPerusteetFiller(
       oo.suoritukset.map {
         case s: AmmatillisenTutkinnonOsittainenUseastaTutkinnostaSuoritus => s.withOsasuoritukset(
           s.osasuoritukset.map(oss => oss.map {
-            case os: YhteisenOsittaisenAmmatillisenTutkinnonTutkinnonosanUseastaTutkinnostaSuoritus => os.copy(
-              tutkinnonOsanRyhmä = os.tutkinnonOsanRyhmä.orElse(Some(yhteinenTutkinnonOsanRyhmä))
-            )
+            case os: YhteisenOsittaisenAmmatillisenTutkinnonTutkinnonosanUseastaTutkinnostaSuoritus if os.tutkinnonOsanRyhmä.isEmpty =>
+              os.copy(tutkinnonOsanRyhmä = yhteinenTutkinnonOsanRyhmä)
             case os => os
           })
         )
