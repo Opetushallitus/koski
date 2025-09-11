@@ -766,6 +766,7 @@ const AmmatillinenTutkintoOsittainenUseastaTutkinnostaEditor: React.FC<
         <Spacer />
         <OsasuoritusTablesUseastaTutkinnosta
           form={props.form}
+          oppilaitosOid={organisaatio?.oid}
           osittainenPäätasonSuoritus={osittainenUseastaTutkinnostaSuoritus}
         />
         <AmisLaajuudetYhteensä

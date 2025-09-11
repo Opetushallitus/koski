@@ -107,8 +107,9 @@ export const MuunOsittaisenAmmatillisenTutkinnonUseastaTutkinnostaTutkinnonosanS
         <OsasuoritusProperty label={'Tutkinto'}>
           <OsasuoritusPropertyValue>
             <TestIdText id="tutkintoNimi">
-              {t(osasuoritus.tutkinto.perusteenNimi)}
-            </TestIdText>{' '}
+              {t(osasuoritus.tutkinto.tunniste.nimi)}
+            </TestIdText>
+            {` (${osasuoritus.tutkinto.tunniste.koodiarvo}) `}
             <FormField
               form={form}
               path={osasuoritusPath
