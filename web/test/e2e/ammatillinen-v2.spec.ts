@@ -193,4 +193,37 @@ test.describe('Osittaisen ammatillisen tutkinnon useasta tutkinnosta käyttölii
     await expect(page.getByTestId('oo.0.suoritukset.0.osasuoritukset.7.properties.organisaatio.value')).toContainText('–')
     await expect(page.getByTestId('oo.0.suoritukset.0.osasuoritukset.7.properties.arviointi.0.arvosana')).toContainText('3')
   })
+
+  test('Sallii luoda uuden ammatillisen tutkinnon osan', async ({ fixtures, page, oppijaPage, oppijaPageV2 }) => {
+    fixtures.reset() // Resetoi, koska luotamme testId:issä osasuoritusten taulukkoindeksiin
+
+    await oppijaPage.goto('1.2.246.562.24.00000000182')
+    await page.getByTestId('oo.0.opiskeluoikeus.edit').click()
+
+    // Avaa modaali
+    await page.getByTestId('oo.0.suoritukset.0.lisaa-muu-tutkinnon-osa-1').click()
+    // Syötä paikallisen tutkinnon osan tutkinto ja nimi modaalissa
+    await page.getByTestId('oo.0.suoritukset.0.modal.tutkinto.input').click()
+    await page.getByTestId('oo.0.suoritukset.0.modal.tutkinto.input').fill('auto')
+    await page.getByTestId('oo.0.suoritukset.0.modal.tutkinto.options.351301_39/011/2014.item').click()
+    await page.getByTestId('oo.0.suoritukset.0.modal.uusi-muu-tutkinnonosa.input').click()
+    await page.getByTestId('oo.0.suoritukset.0.modal.uusi-muu-tutkinnonosa.options.100021.item').click()
+    await page.getByTestId('oo.0.suoritukset.0.modal.confirm').click()
+    // Syötä laajuus ja arvosana
+    await page.getByTestId('oo.0.suoritukset.0.osasuoritukset.7.laajuus.edit.input').click()
+    await page.getByTestId('oo.0.suoritukset.0.osasuoritukset.7.laajuus.edit.input').fill('30')
+    await page.getByTestId('oo.0.suoritukset.0.osasuoritukset.7.arvosana.input').click()
+    await page.getByTestId('oo.0.suoritukset.0.osasuoritukset.7.arvosana.options.Arviointiasteikko ammatillinen T1-K3.arviointiasteikkoammatillinent1k3_2.item').click()
+
+    await oppijaPageV2.tallenna()
+
+    // Syötetyt tiedot rendataan oikein
+    await expect(page.getByTestId('suoritus.0.osasuoritus.7.nimi')).toContainText('Ruiskumaalaustyöt')
+    await expect(page.getByTestId('oo.0.suoritukset.0.osasuoritukset.7.laajuus.value')).toContainText('30 osp')
+    await expect(page.getByTestId('oo.0.suoritukset.0.osasuoritukset.7.arvosana.value')).toContainText('2')
+    await expect(page.getByTestId('oo.0.suoritukset.0.osasuoritukset.7.properties.tutkintoNimi')).toContainText('Ajoneuvoalan perustutkinto')
+    await expect(page.getByTestId('oo.0.suoritukset.0.osasuoritukset.7.properties.peruste.value')).toContainText('39/011/2014')
+    await expect(page.getByTestId('oo.0.suoritukset.0.osasuoritukset.7.properties.organisaatio.value')).toContainText('–')
+    await expect(page.getByTestId('oo.0.suoritukset.0.osasuoritukset.7.properties.arviointi.0.arvosana')).toContainText('2')
+  })
 })
