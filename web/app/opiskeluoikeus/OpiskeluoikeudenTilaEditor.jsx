@@ -162,10 +162,12 @@ export const onLopputila = (tila) => {
   const koodi = modelData(tila).koodiarvo
   const terminaalitilat = [
     'eronnut',
+    'katsotaaneronneeksi',
     'valmistunut',
     'peruutettu',
     'keskeytynyt',
-    'hyvaksytystisuoritettu'
+    'hyvaksytystisuoritettu',
+    'paattynyt'
   ]
   return terminaalitilat.includes(koodi)
 }
