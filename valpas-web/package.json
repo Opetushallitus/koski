@@ -93,9 +93,15 @@
     "react": "^19.1.0",
     "react-calendar": "^6.0.0",
     "react-date-picker": "^11.0.0",
+<<<<<<< HEAD
     "react-dom": "^19.1.0",
     "react-router-dom": "^5.3.4",
     "regenerator-runtime": "^0.14.1"
   },
   "packageManager": "pnpm@10.2.0+sha512.0d27364e0139c6aadeed65ada153135e0ca96c8da42123bd50047f961339dc7a758fc2e944b428f52be570d1bd3372455c1c65fa2e7aa0bfbf931190f9552001"
+=======
+    "react-dom": "^19.1.1",
+    "react-router-dom": "^5.3.4"
+  }
+>>>>>>> 54e57bbca (fix: upgrade react-dom from 19.1.0 to 19.1.1)
 }
