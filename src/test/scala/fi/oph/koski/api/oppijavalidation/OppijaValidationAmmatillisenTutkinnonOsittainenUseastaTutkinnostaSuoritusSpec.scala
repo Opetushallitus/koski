@@ -565,6 +565,7 @@ class OppijaValidationAmmatillisenTutkinnonOsittainenUseastaTutkinnostaSuoritusS
             s.osasuoritusLista.foreach {
               case os: YhteisenOsittaisenAmmatillisenTutkinnonTutkinnonosanUseastaTutkinnostaSuoritus =>
                 os.tutkinnonOsanRyhmä shouldBe yhteisetTutkinnonOsat
+                os.tutkinnonOsanRyhmä.flatMap(_.nimi).isDefined shouldBe (true)
             }
         }
       }
