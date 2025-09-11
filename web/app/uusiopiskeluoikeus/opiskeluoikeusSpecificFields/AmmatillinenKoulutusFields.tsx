@@ -27,10 +27,9 @@ import {
 } from '../opiskeluoikeusCreator/ammatillinenTutkinto'
 import { useAmmatillisenTutkinnonSuoritustapa } from '../state/ammatillisenTutkinnonSuoritustapa'
 import { Finnish } from '../../types/fi/oph/koski/schema/Finnish'
-import { OrganisaatioHierarkia } from '../../types/fi/oph/koski/organisaatio/OrganisaatioHierarkia'
 
 export const AmmatillinenKoulutusFields = (props: SuoritusFieldsProps) => {
-  const tutkinnot = useTutkinnot(props.state.oppilaitos.value)
+  const tutkinnot = useTutkinnot(props.state.oppilaitos.value?.oid)
   const suoritustavat = useAmmatillisenTutkinnonSuoritustapa(props.state)
 
   const onTOPKS = useCallback(
@@ -103,12 +102,12 @@ export const AmmatillinenKoulutusFields = (props: SuoritusFieldsProps) => {
   )
 }
 
-export const useTutkinnot = (oppilaitos?: OrganisaatioHierarkia) => {
+export const useTutkinnot = (oppilaitosOid?: string) => {
   const [query, setQuery] = useState<string>()
 
   const tutkinnot = useApiWithParams(
     fetchOppilaitoksenPerusteet,
-    oppilaitos !== undefined ? [oppilaitos.oid, query] : undefined
+    oppilaitosOid !== undefined ? [oppilaitosOid, query] : undefined
   )
 
   const options = useMemo(
