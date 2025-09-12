@@ -1,6 +1,10 @@
 # Koskeen tallennettavien tietojen validaatiosäännöt
 
-## x.8.2025
+## 12.9.2025
+
+- Korjaus kielitutkintojen duplikaattien tunnistamiseen: eri kielen tai tutkintotason suoritukset lasketaan erillisiksi
+
+## 10.9.2025
 
 - Valtionhallinnon kielitutkinnon:
   - Salli erinomaisen tason siirto ilman oppilaitosta
@@ -20,7 +24,7 @@
 ## 2.9.2025
 
 - Korjattu perusopetuksen yksilöllistetyn oppimäärän validaatiota siten, että suorituksen voi vahvistaa vielä viimeisenä yksilöllistetyn oppimäärän käyttöpäivänä.
-- 
+-
 ## 29.8.2025
  - Kevennettiin validaatiota niin että luokka-astemerkinnät on sallittu nuorten perusopetuksen oppiaineen oppimäärässä VSOP-merkityille suorituksille
 
