@@ -5,7 +5,7 @@ import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.koskiuser.KoskiSpecificSession
 import fi.oph.koski.log.Logging
 import fi.oph.koski.opiskeluoikeus.CompositeOpiskeluoikeusRepository
-import fi.oph.koski.schema._
+import fi.oph.koski.schema.{KielitutkinnonPäätasonSuoritus, _}
 import fi.oph.koski.validation.PerusopetuksenOpiskeluoikeusValidation.sisältääNuortenPerusopetuksenOppimääränTaiVuosiluokanSuorituksen
 
 object DuplikaattiValidation extends Logging {
@@ -129,6 +129,11 @@ object DuplikaattiValidation extends Logging {
       case v: MuunKuinSäännellynKoulutuksenPäätasonSuoritus => Some(v.koulutusmoduuli.opintokokonaisuus)
     }.flatten
 
+    def kielitutkinnonTasoJaKieli(oo: Opiskeluoikeus): Option[(String, String)] = oo.suoritukset.collectFirst {
+      case v: YleisenKielitutkinnonSuoritus => (v.koulutusmoduuli.tunniste.koodiarvo, v.koulutusmoduuli.kieli.koodiarvo)
+      case v: ValtionhallinnonKielitutkinnonSuoritus => (v.koulutusmoduuli.tunniste.koodiarvo, v.koulutusmoduuli.kieli.koodiarvo)
+    }
+
     def findConflictingVstOpintokokonaisuudella(): Either[HttpStatus, Option[Opiskeluoikeus]] = {
       oppijanMuutOpiskeluoikeudetSamaOppilaitosJaTyyppi.map(_.find {
         case muuOo: VapaanSivistystyönOpiskeluoikeus =>
@@ -173,6 +178,15 @@ object DuplikaattiValidation extends Logging {
       }
     }
 
+    def findConflictingKielitutkinto(): Either[HttpStatus, Option[Opiskeluoikeus]] = {
+      oppijanMuutOpiskeluoikeudetSamaOppilaitosJaTyyppi.map(_.find {
+        case muuOo: KielitutkinnonOpiskeluoikeus =>
+          kielitutkinnonTasoJaKieli(opiskeluoikeus)
+            .exists(ok => kielitutkinnonTasoJaKieli(muuOo).exists(muuOk => ok.equals(muuOk))) && päällekkäinenAikajakso(muuOo)
+        case _ => false
+      })
+    }
+
     def throwIfConflictingExists(
       isConflicting: () => Either[HttpStatus, Option[Opiskeluoikeus]]
     ): HttpStatus = {
@@ -201,6 +215,7 @@ object DuplikaattiValidation extends Logging {
       case _: VapaanSivistystyönOpiskeluoikeus => throwIfConflictingExists(findSamaOppilaitosJaTyyppiSamaanAikaan)
       case _: MuunKuinSäännellynKoulutuksenOpiskeluoikeus => throwIfConflictingExists(findConflictingMuks)
       case _: TaiteenPerusopetuksenOpiskeluoikeus => HttpStatus.ok
+      case _: KielitutkinnonOpiskeluoikeus => throwIfConflictingExists(findConflictingKielitutkinto)
       case _: Opiskeluoikeus => throwIfConflictingExists(findSamaOppilaitosJaTyyppiSamaanAikaan)
     }
   }
