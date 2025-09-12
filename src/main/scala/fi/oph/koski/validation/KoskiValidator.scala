@@ -1265,17 +1265,33 @@ class KoskiValidator(
     }
   }
 
-  private def validateDuplicates(suoritukset: Seq[Suoritus]) = {
-    HttpStatus.fold(suoritukset
+  //This is the spot
+  private def validateDuplicates(suoritukset: Seq[Suoritus]): HttpStatus = {
+    val groups = suoritukset
       .filterNot(_.salliDuplikaatit)
-      .groupBy(osasuoritus => (osasuoritus.koulutusmoduuli.identiteetti, osasuoritus.ryhmittelytekijä))
-      .collect { case (group, osasuoritukset) if osasuoritukset.length > 1 => group }
-      .map { case (tutkinnonOsa, ryhmä) =>
-        val ryhmänKuvaus = ryhmä.map(r => " ryhmässä " + r).getOrElse("")
-        KoskiErrorCategory.badRequest.validation.rakenne.duplikaattiOsasuoritus(s"Osasuoritus ${tutkinnonOsa} esiintyy useammin kuin kerran" + ryhmänKuvaus)
+      .groupBy(s => (s.koulutusmoduuli.identiteetti, s.ryhmittelytekijä))
+
+    HttpStatus.fold(
+      groups.collect {
+        case ((tutkinnonOsa, ryhma), osasuoritukset) if osasuoritukset.length > 1 &&
+          !duplikaatitEriLuokkaAsteilla(osasuoritukset) =>
+          val ryhmanKuvaus = ryhma.map(r => " ryhmässä " + r).getOrElse("")
+          KoskiErrorCategory.badRequest.validation.rakenne.duplikaattiOsasuoritus(
+            s"Osasuoritus $tutkinnonOsa esiintyy useammin kuin kerran$ryhmanKuvaus"
+          )
       }
     )
   }
+
+  private def duplikaatitEriLuokkaAsteilla(osasuoritukset: Seq[Suoritus]): Boolean = {
+    val nuortenOppiaineet = osasuoritukset.collect { case s: NuortenPerusopetuksenOppiaineenSuoritus => s }
+    if (nuortenOppiaineet.size != osasuoritukset.size) return false
+    val allPakollisia = nuortenOppiaineet.forall(_.koulutusmoduuli.pakollinen == true)
+    if (!allPakollisia) return false
+    val withLuokka = nuortenOppiaineet.count(_.luokkaAste.isDefined)
+    withLuokka >= nuortenOppiaineet.size - 1
+  }
+
 
   private def validateAlkamispäivä(suoritus: Suoritus): HttpStatus = {
     lazy val virhe = KoskiErrorCategory.badRequest.validation.tila.alkamispäiväPuuttuu("Suoritukselle " + suorituksenTunniste(suoritus) + " ei ole merkitty alkamispäivää")
