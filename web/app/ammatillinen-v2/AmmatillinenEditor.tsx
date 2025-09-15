@@ -78,18 +78,13 @@ import {
 } from '../components-v2/opiskeluoikeus/LaajuusField'
 import { Koulutussopimusjakso } from '../types/fi/oph/koski/schema/Koulutussopimusjakso'
 import { NumberField } from '../components-v2/controls/NumberField'
-import {
-  OsasuoritusTables,
-  OsasuoritusTablesUseastaTutkinnosta
-} from './OsasuoritusTables'
+import { OsasuoritusTables } from './OsasuoritusTables'
 import { HenkilövahvistusValinnaisellaPaikkakunnalla } from '../types/fi/oph/koski/schema/HenkilovahvistusValinnaisellaPaikkakunnalla'
 import { OpenAllButton, useTree } from '../appstate/tree'
 import { AmisLaajuudetYhteensä } from './AmisLaajuudetYhteensä'
 import { SisältyyOpiskeluoikeuteen } from './SisältyyOpiskeluoikeuteen'
-import {
-  AmmatillisenTutkinnonOsittainenUseastaTutkinnostaSuoritus,
-  isAmmatillisenTutkinnonOsittainenUseastaTutkinnostaSuoritus
-} from '../types/fi/oph/koski/schema/AmmatillisenTutkinnonOsittainenUseastaTutkinnostaSuoritus'
+import { isAmmatillisenTutkinnonOsittainenUseastaTutkinnostaSuoritus } from '../types/fi/oph/koski/schema/AmmatillisenTutkinnonOsittainenUseastaTutkinnostaSuoritus'
+import { AmmatillinenTutkintoOsittainenUseastaTutkinnostaEditor } from './ammatillinen-osittainen-useasta-tutkinnosta/AmmatillinenTutkintoOsittainenUseastaTutkinnostaEditor'
 
 export type AmmatillinenEditorProps =
   AdaptedOpiskeluoikeusEditorProps<AmmatillinenOpiskeluoikeus>
@@ -333,8 +328,8 @@ const AmmatillisenOsittaisenSuorituksenTiedot: React.FC<{
       <KeyValueRow localizableLabel="Koulutussopimukset">
         <FormListField
           form={form}
-          view={KoulutusspomiusView}
-          edit={KoulutusspomiusEdit}
+          view={KoulutussopimusView}
+          edit={KoulutussopimusEdit}
           path={path.prop('koulutussopimukset')}
           removable
         />
@@ -344,7 +339,7 @@ const AmmatillisenOsittaisenSuorituksenTiedot: React.FC<{
               onClick={() => {
                 form.updateAt(
                   path.prop('koulutussopimukset').valueOr([]),
-                  append(emptyKoulutusspomius)
+                  append(emptyKoulutussopimus)
                 )
               }}
             >
@@ -414,241 +409,6 @@ const AmmatillisenOsittaisenSuorituksenTiedot: React.FC<{
   )
 }
 
-const AmmatillisenOsittaisenUseastaTutkinnostaSuorituksenTiedot: React.FC<{
-  form: FormModel<AmmatillinenOpiskeluoikeus>
-  päätasonSuoritus: ActivePäätasonSuoritus<
-    AmmatillinenOpiskeluoikeus,
-    AmmatillisenTutkinnonOsittainenUseastaTutkinnostaSuoritus
-  >
-}> = ({ form, päätasonSuoritus }) => {
-  const path = päätasonSuoritus.path
-
-  return (
-    <KeyValueTable>
-      <KeyValueRow localizableLabel="Koulutus">
-        <TestIdText id="koulutus">
-          {t(päätasonSuoritus.suoritus.koulutusmoduuli.tunniste.nimi)}
-        </TestIdText>{' '}
-      </KeyValueRow>
-      <KeyValueRow localizableLabel="Suoritustapa">
-        <TestIdText id="suoritustapa">
-          {t(päätasonSuoritus.suoritus.suoritustapa.nimi)}
-        </TestIdText>
-      </KeyValueRow>
-      <KeyValueRow localizableLabel="Tutkintonimike">
-        <FormListField
-          form={form}
-          view={KoodistoView}
-          edit={KoodistoEdit}
-          editProps={{ koodistoUri: 'tutkintonimikkeet' }}
-          path={path.prop('tutkintonimike')}
-          removable
-          testId="tutkintonimike"
-        />
-        {form.editMode && (
-          <ButtonGroup>
-            <FlatButton
-              onClick={() => {
-                form.updateAt(
-                  path.prop('tutkintonimike').valueOr([]),
-                  append(
-                    Koodistokoodiviite<'tutkintonimikkeet', string>({
-                      koodiarvo: '00000',
-                      koodistoUri: 'tutkintonimikkeet'
-                    })
-                  )
-                )
-              }}
-            >
-              {t('Lisää')}
-            </FlatButton>
-          </ButtonGroup>
-        )}
-      </KeyValueRow>
-      <KeyValueRow localizableLabel="Toinen tutkintonimike">
-        <FormField
-          form={form}
-          view={BooleanView}
-          edit={BooleanEdit}
-          path={path.prop('toinenTutkintonimike')}
-        />
-      </KeyValueRow>
-      <KeyValueRow localizableLabel="Osaamisala">
-        <FormListField
-          form={form}
-          view={OsaamisalaView}
-          edit={OsaamisalaEdit}
-          path={path.prop('osaamisala')}
-          removable
-        />
-        {form.editMode && (
-          <ButtonGroup>
-            <FlatButton
-              onClick={() => {
-                form.updateAt(
-                  path.prop('osaamisala').valueOr([]),
-                  append<Osaamisalajakso>({
-                    $class: 'fi.oph.koski.schema.Osaamisalajakso',
-                    osaamisala: Koodistokoodiviite<'osaamisala', ''>({
-                      koodiarvo: '',
-                      koodistoUri: 'osaamisala'
-                    })
-                  })
-                )
-              }}
-            >
-              {t('Lisää')}
-            </FlatButton>
-          </ButtonGroup>
-        )}
-      </KeyValueRow>
-      <KeyValueRow localizableLabel="Toinen osaamisala">
-        <FormField
-          form={form}
-          view={BooleanView}
-          edit={BooleanEdit}
-          path={path.prop('toinenOsaamisala')}
-        />
-      </KeyValueRow>
-      <KeyValueRow localizableLabel="Oppilaitos / toimipiste">
-        <FormField
-          form={form}
-          path={path.prop('toimipiste')}
-          view={OrganisaatioView}
-          edit={OrganisaatioEdit}
-        />
-      </KeyValueRow>
-      <KeyValueRow localizableLabel="Alkamispäivä">
-        <FormField
-          form={form}
-          view={DateView}
-          edit={DateEdit}
-          path={path.prop('alkamispäivä')}
-        />
-      </KeyValueRow>
-      <KeyValueRow localizableLabel="Suorituskieli">
-        <FormField
-          form={form}
-          path={path.prop('suorituskieli')}
-          view={KoodistoView}
-          edit={KoodistoEdit}
-          editProps={{ koodistoUri: 'kieli' }}
-          testId="suorituskieli"
-        />
-      </KeyValueRow>
-      <KeyValueRow localizableLabel="Järjestämismuodot">
-        <FormListField
-          form={form}
-          view={JärjestämismouotoView}
-          edit={JärjestämismouotoEdit}
-          path={path.prop('järjestämismuodot')}
-          removable
-        />
-        {form.editMode && (
-          <ButtonGroup>
-            <FlatButton
-              onClick={() => {
-                form.updateAt(
-                  path.prop('järjestämismuodot').valueOr([]),
-                  append(emptyJärjestämismuoto)
-                )
-              }}
-            >
-              {t('Lisää')}
-            </FlatButton>
-          </ButtonGroup>
-        )}
-      </KeyValueRow>
-      <KeyValueRow localizableLabel="Osaamisen hankkimistapa">
-        <FormListField
-          form={form}
-          view={OsaamisenHankkimistapaView}
-          edit={OsaamisenHankkimistapaEdit}
-          path={path.prop('osaamisenHankkimistavat')}
-          removable
-        />
-        {form.editMode && (
-          <ButtonGroup>
-            <FlatButton
-              onClick={() => {
-                form.updateAt(
-                  path.prop('osaamisenHankkimistavat').valueOr([]),
-                  append(emptyOsaamisenHankkimistapa)
-                )
-              }}
-            >
-              {t('Lisää')}
-            </FlatButton>
-          </ButtonGroup>
-        )}
-      </KeyValueRow>
-      <KeyValueRow localizableLabel="Työssäoppimisjaksot">
-        <FormListField
-          form={form}
-          view={TyössäoppimisjaksoView}
-          edit={TyössäoppimisjaksoEdit}
-          path={path.prop('työssäoppimisjaksot')}
-          removable
-        />
-        {form.editMode && (
-          <ButtonGroup>
-            <FlatButton
-              onClick={() => {
-                form.updateAt(
-                  path.prop('työssäoppimisjaksot').valueOr([]),
-                  append(emptyTyössäoppimisjakso)
-                )
-              }}
-            >
-              {t('Lisää')}
-            </FlatButton>
-          </ButtonGroup>
-        )}
-      </KeyValueRow>
-      <KeyValueRow localizableLabel="Koulutussopimukset">
-        <FormListField
-          form={form}
-          view={KoulutusspomiusView}
-          edit={KoulutusspomiusEdit}
-          path={path.prop('koulutussopimukset')}
-          removable
-        />
-        {form.editMode && (
-          <ButtonGroup>
-            <FlatButton
-              onClick={() => {
-                form.updateAt(
-                  path.prop('koulutussopimukset').valueOr([]),
-                  append(emptyKoulutusspomius)
-                )
-              }}
-            >
-              {t('Lisää')}
-            </FlatButton>
-          </ButtonGroup>
-        )}
-      </KeyValueRow>
-      <KeyValueRow localizableLabel="Todistuksella näkyvät lisätiedot">
-        <FormField
-          form={form}
-          view={LocalizedTextView}
-          edit={LocalizedTextEdit}
-          path={path.prop('todistuksellaNäkyvätLisätiedot')}
-          testId="todistuksellaNäkyvätLisätiedot"
-        />
-      </KeyValueRow>
-      <KeyValueRow localizableLabel="Ryhmä">
-        <FormField
-          form={form}
-          view={TextView}
-          edit={TextEdit}
-          path={path.prop('ryhmä')}
-        />
-      </KeyValueRow>
-    </KeyValueTable>
-  )
-}
-
 const AmmatillinenTutkintoOsittainenEditor: React.FC<
   AmmatillinenEditorProps & {
     form: FormModel<AmmatillinenOpiskeluoikeus>
@@ -711,72 +471,6 @@ const AmmatillinenTutkintoOsittainenEditor: React.FC<
   )
 }
 
-const AmmatillinenTutkintoOsittainenUseastaTutkinnostaEditor: React.FC<
-  AmmatillinenEditorProps & {
-    form: FormModel<AmmatillinenOpiskeluoikeus>
-  }
-> = (props) => {
-  const [päätasonSuoritus, setPäätasonSuoritus] = usePäätasonSuoritus(
-    props.form
-  )
-  const osittainenUseastaTutkinnostaSuoritus =
-    päätasonSuoritus as ActivePäätasonSuoritus<
-      AmmatillinenOpiskeluoikeus,
-      AmmatillisenTutkinnonOsittainenUseastaTutkinnostaSuoritus
-    >
-
-  const organisaatio =
-    props.opiskeluoikeus.oppilaitos || props.opiskeluoikeus.koulutustoimija
-
-  const createAmmatillinenOpiskeluoikeusJakso = (
-    seed: UusiOpiskeluoikeusjakso<AmmatillinenOpiskeluoikeusjakso>
-  ) => AmmatillinenOpiskeluoikeusjakso(seed)
-
-  const { TreeNode, ...tree } = useTree()
-
-  return (
-    <TreeNode>
-      <EditorContainer
-        form={props.form}
-        oppijaOid={props.oppijaOid}
-        invalidatable={props.invalidatable}
-        onChangeSuoritus={setPäätasonSuoritus}
-        testId={päätasonSuoritus.testId}
-        createOpiskeluoikeusjakso={createAmmatillinenOpiskeluoikeusJakso}
-        lisätiedotContainer={AmmatillinenLisatiedot}
-        additionalOpiskeluoikeusFields={SisältyyOpiskeluoikeuteen}
-        suorituksenNimi={(suoritus) =>
-          localize(t(suoritus.koulutusmoduuli.tunniste.nimi))
-        }
-      >
-        <AmmatillisenOsittaisenUseastaTutkinnostaSuorituksenTiedot
-          form={props.form}
-          päätasonSuoritus={osittainenUseastaTutkinnostaSuoritus}
-        />
-        <Spacer />
-        <SuorituksenVahvistusField
-          form={props.form}
-          suoritusPath={päätasonSuoritus.path}
-          organisaatio={organisaatio}
-          disableAdd={false}
-          vahvistusClass={HenkilövahvistusValinnaisellaPaikkakunnalla.className}
-        />
-        <Spacer />
-        <OpenAllButton {...tree} />
-        <Spacer />
-        <OsasuoritusTablesUseastaTutkinnosta
-          form={props.form}
-          oppilaitosOid={organisaatio?.oid}
-          osittainenPäätasonSuoritus={osittainenUseastaTutkinnostaSuoritus}
-        />
-        <AmisLaajuudetYhteensä
-          suoritus={osittainenUseastaTutkinnostaSuoritus.suoritus}
-        />
-      </EditorContainer>
-    </TreeNode>
-  )
-}
-
 type OsaamisalajaksoReal = {
   $class: 'fi.oph.koski.schema.Osaamisalajakso'
   osaamisala: Koodistokoodiviite<'osaamisala', string>
@@ -787,7 +481,7 @@ type OsaamisalajaksoReal = {
 const isOsaamisalajaksoReal = (val: any): val is OsaamisalajaksoReal =>
   val.$class === 'fi.oph.koski.schema.Osaamisalajakso'
 
-const OsaamisalaView = <T extends Osaamisalajakso>({
+export const OsaamisalaView = <T extends Osaamisalajakso>({
   value
 }: CommonProps<FieldViewerProps<T | undefined, EmptyObject>>) => {
   if (isOsaamisalajaksoReal(value)) {
@@ -807,7 +501,7 @@ const OsaamisalaView = <T extends Osaamisalajakso>({
   } else return <TestIdText id="osaamisala">{t(value?.nimi)}</TestIdText>
 }
 
-const OsaamisalaEdit = ({
+export const OsaamisalaEdit = ({
   value,
   onChange
 }: FieldEditorProps<Osaamisalajakso | undefined, EmptyObject>) => {
@@ -853,7 +547,7 @@ const OsaamisalaEdit = ({
     )
 }
 
-const JärjestämismouotoView = <T extends Järjestämismuotojakso>({
+export const JärjestämismouotoView = <T extends Järjestämismuotojakso>({
   value
 }: CommonProps<FieldViewerProps<T | undefined, EmptyObject>>) => {
   return (
@@ -876,7 +570,7 @@ const JärjestämismouotoView = <T extends Järjestämismuotojakso>({
   )
 }
 
-const emptyJärjestämismuoto: Järjestämismuotojakso = {
+export const emptyJärjestämismuoto: Järjestämismuotojakso = {
   alku: todayISODate(),
   järjestämismuoto: {
     $class: 'fi.oph.koski.schema.JärjestämismuotoIlmanLisätietoja',
@@ -888,7 +582,7 @@ const emptyJärjestämismuoto: Järjestämismuotojakso = {
   $class: 'fi.oph.koski.schema.Järjestämismuotojakso'
 }
 
-const JärjestämismouotoEdit = ({
+export const JärjestämismouotoEdit = ({
   value,
   onChange
 }: FieldEditorProps<Järjestämismuotojakso | undefined, EmptyObject>) => {
@@ -1109,7 +803,9 @@ const OppisopimuksenPurkaminenEdit = ({
   )
 }
 
-const OsaamisenHankkimistapaView = <T extends OsaamisenHankkimistapajakso>({
+export const OsaamisenHankkimistapaView = <
+  T extends OsaamisenHankkimistapajakso
+>({
   value
 }: CommonProps<FieldViewerProps<T | undefined, EmptyObject>>) => {
   return (
@@ -1134,7 +830,7 @@ const OsaamisenHankkimistapaView = <T extends OsaamisenHankkimistapajakso>({
   )
 }
 
-const emptyOsaamisenHankkimistapa: OsaamisenHankkimistapajakso =
+export const emptyOsaamisenHankkimistapa: OsaamisenHankkimistapajakso =
   OsaamisenHankkimistapajakso({
     alku: todayISODate(),
     osaamisenHankkimistapa: {
@@ -1146,7 +842,7 @@ const emptyOsaamisenHankkimistapa: OsaamisenHankkimistapajakso =
     }
   })
 
-const OsaamisenHankkimistapaEdit = ({
+export const OsaamisenHankkimistapaEdit = ({
   value,
   onChange
 }: FieldEditorProps<OsaamisenHankkimistapajakso | undefined, EmptyObject>) => {
@@ -1217,7 +913,7 @@ const OsaamisenHankkimistapaEdit = ({
   )
 }
 
-const TyössäoppimisjaksoView = <T extends Työssäoppimisjakso>({
+export const TyössäoppimisjaksoView = <T extends Työssäoppimisjakso>({
   value
 }: CommonProps<FieldViewerProps<T | undefined, EmptyObject>>) => {
   return (
@@ -1244,7 +940,7 @@ const TyössäoppimisjaksoView = <T extends Työssäoppimisjakso>({
   )
 }
 
-const emptyTyössäoppimisjakso: Työssäoppimisjakso = Työssäoppimisjakso({
+export const emptyTyössäoppimisjakso: Työssäoppimisjakso = Työssäoppimisjakso({
   alku: todayISODate(),
   laajuus: LaajuusOsaamispisteissä({ arvo: 1 }),
   paikkakunta: Koodistokoodiviite({
@@ -1257,7 +953,7 @@ const emptyTyössäoppimisjakso: Työssäoppimisjakso = Työssäoppimisjakso({
   })
 })
 
-const TyössäoppimisjaksoEdit = ({
+export const TyössäoppimisjaksoEdit = ({
   value,
   onChange
 }: FieldEditorProps<Työssäoppimisjakso | undefined, EmptyObject>) => {
@@ -1344,7 +1040,7 @@ const TyössäoppimisjaksoEdit = ({
   )
 }
 
-const KoulutusspomiusView = <T extends Koulutussopimusjakso>({
+export const KoulutussopimusView = <T extends Koulutussopimusjakso>({
   value
 }: CommonProps<FieldViewerProps<T | undefined, EmptyObject>>) => {
   return (
@@ -1371,7 +1067,7 @@ const KoulutusspomiusView = <T extends Koulutussopimusjakso>({
   )
 }
 
-const emptyKoulutusspomius: Koulutussopimusjakso = Koulutussopimusjakso({
+export const emptyKoulutussopimus: Koulutussopimusjakso = Koulutussopimusjakso({
   alku: todayISODate(),
   paikkakunta: Koodistokoodiviite({
     koodistoUri: 'kunta',
@@ -1383,7 +1079,7 @@ const emptyKoulutusspomius: Koulutussopimusjakso = Koulutussopimusjakso({
   })
 })
 
-const KoulutusspomiusEdit = ({
+export const KoulutussopimusEdit = ({
   value,
   onChange
 }: FieldEditorProps<Koulutussopimusjakso | undefined, EmptyObject>) => {
@@ -1393,7 +1089,7 @@ const KoulutusspomiusEdit = ({
         <DateInput
           value={value?.alku}
           onChange={(alku?: string) => {
-            alku && onChange({ ...emptyKoulutusspomius, ...value, alku })
+            alku && onChange({ ...emptyKoulutussopimus, ...value, alku })
           }}
           testId="alku"
         />
@@ -1401,7 +1097,7 @@ const KoulutusspomiusEdit = ({
         <DateInput
           value={value?.loppu}
           onChange={(loppu?: string) => {
-            loppu && onChange({ ...emptyKoulutusspomius, ...value, loppu })
+            loppu && onChange({ ...emptyKoulutussopimus, ...value, loppu })
           }}
           testId="loppu"
         />
@@ -1412,7 +1108,7 @@ const KoulutusspomiusEdit = ({
           value={value?.paikkakunta.koodiarvo}
           onSelect={(paikkakunta) =>
             paikkakunta &&
-            onChange({ ...emptyKoulutusspomius, ...value, paikkakunta })
+            onChange({ ...emptyKoulutussopimus, ...value, paikkakunta })
           }
           testId={'paikkakunta'}
         />
@@ -1423,7 +1119,7 @@ const KoulutusspomiusEdit = ({
           koodistoUri="maatjavaltiot2"
           value={value?.maa.koodiarvo}
           onSelect={(maa) =>
-            maa && onChange({ ...emptyKoulutusspomius, ...value, maa })
+            maa && onChange({ ...emptyKoulutussopimus, ...value, maa })
           }
           testId={'maa'}
         />
@@ -1433,7 +1129,7 @@ const KoulutusspomiusEdit = ({
           value={value?.työssäoppimispaikka}
           onChange={(työssäoppimispaikka) =>
             onChange({
-              ...emptyKoulutusspomius,
+              ...emptyKoulutussopimus,
               ...value,
               työssäoppimispaikka
             })
@@ -1445,7 +1141,7 @@ const KoulutusspomiusEdit = ({
           value={value?.työssäoppimispaikanYTunnus}
           onChange={(työssäoppimispaikanYTunnus) =>
             onChange({
-              ...emptyKoulutusspomius,
+              ...emptyKoulutussopimus,
               ...value,
               työssäoppimispaikanYTunnus
             })
@@ -1457,7 +1153,7 @@ const KoulutusspomiusEdit = ({
           value={value?.työtehtävät}
           onChange={(työtehtävät) =>
             onChange({
-              ...emptyKoulutusspomius,
+              ...emptyKoulutussopimus,
               ...value,
               työtehtävät
             })

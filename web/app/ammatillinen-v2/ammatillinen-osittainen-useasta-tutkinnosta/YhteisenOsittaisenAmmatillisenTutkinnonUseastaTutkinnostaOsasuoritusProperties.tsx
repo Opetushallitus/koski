@@ -1,36 +1,36 @@
-import { FormModel, FormOptic } from '../components-v2/forms/FormModel'
-import { AmmatillinenOpiskeluoikeus } from '../types/fi/oph/koski/schema/AmmatillinenOpiskeluoikeus'
+import { FormModel, FormOptic } from '../../components-v2/forms/FormModel'
+import { AmmatillinenOpiskeluoikeus } from '../../types/fi/oph/koski/schema/AmmatillinenOpiskeluoikeus'
 import {
   OsasuoritusProperty,
   OsasuoritusPropertyValue
-} from '../components-v2/opiskeluoikeus/OsasuoritusProperty'
-import { FormField } from '../components-v2/forms/FormField'
+} from '../../components-v2/opiskeluoikeus/OsasuoritusProperty'
+import { FormField } from '../../components-v2/forms/FormField'
 import {
   BooleanEdit,
   BooleanView
-} from '../components-v2/opiskeluoikeus/BooleanField'
+} from '../../components-v2/opiskeluoikeus/BooleanField'
 import {
   OrganisaatioEdit,
   OrganisaatioView
-} from '../components-v2/opiskeluoikeus/OrganisaatioField'
+} from '../../components-v2/opiskeluoikeus/OrganisaatioField'
 import {
   OsaamisenTunnustusEdit,
   OsaamisenTunnustusView
-} from '../components-v2/opiskeluoikeus/TunnustusField'
-import { OsaamisenTunnustaminen } from '../types/fi/oph/koski/schema/OsaamisenTunnustaminen'
-import { localize, t } from '../i18n/i18n'
-import { FormListField } from '../components-v2/forms/FormListField'
+} from '../../components-v2/opiskeluoikeus/TunnustusField'
+import { OsaamisenTunnustaminen } from '../../types/fi/oph/koski/schema/OsaamisenTunnustaminen'
+import { localize, t } from '../../i18n/i18n'
+import { FormListField } from '../../components-v2/forms/FormListField'
 import {
   emptyAmmatillisenTutkinnonOsanLisätieto,
   LisätietoEdit,
   LisätietoView
-} from './LisätietoField'
-import { ButtonGroup } from '../components-v2/containers/ButtonGroup'
-import { FlatButton } from '../components-v2/controls/FlatButton'
-import { append, deleteAt } from '../util/fp/arrays'
-import { NäyttöEdit, NäyttöView } from './Näyttö'
-import { OsasuoritusTable } from '../components-v2/opiskeluoikeus/OsasuoritusTable'
-import { YhteisenTutkinnonOsanOsaAlueenSuoritusProperties } from './YhteisenTutkinnonOsanOsaAlueenSuoritusProperties'
+} from '../LisätietoField'
+import { ButtonGroup } from '../../components-v2/containers/ButtonGroup'
+import { FlatButton } from '../../components-v2/controls/FlatButton'
+import { append, deleteAt } from '../../util/fp/arrays'
+import { NäyttöEdit, NäyttöView } from '../Näyttö'
+import { OsasuoritusTable } from '../../components-v2/opiskeluoikeus/OsasuoritusTable'
+import { YhteisenTutkinnonOsanOsaAlueenSuoritusProperties } from '../YhteisenTutkinnonOsanOsaAlueenSuoritusProperties'
 import React from 'react'
 import {
   AmisArvosanaInTableEdit,
@@ -38,28 +38,28 @@ import {
   ArviointiEdit,
   ArviointiView,
   emptyArviointi
-} from './Arviointi'
+} from '../Arviointi'
 import {
   KoodistoEdit,
   KoodistoView,
   KoodistoViewSpan
-} from '../components-v2/opiskeluoikeus/KoodistoField'
+} from '../../components-v2/opiskeluoikeus/KoodistoField'
 import {
   LaajuusEdit,
   LaajuusView
-} from '../components-v2/opiskeluoikeus/LaajuusField'
-import { LaajuusOsaamispisteissä } from '../types/fi/oph/koski/schema/LaajuusOsaamispisteissa'
-import { KoodistoSelect } from '../components-v2/opiskeluoikeus/KoodistoSelect'
-import { Koodistokoodiviite } from '../types/fi/oph/koski/schema/Koodistokoodiviite'
-import { YhteisenTutkinnonOsanOsaAlueenSuoritus } from '../types/fi/oph/koski/schema/YhteisenTutkinnonOsanOsaAlueenSuoritus'
-import { AmmatillisenTutkinnonOsanOsaAlue } from '../types/fi/oph/koski/schema/AmmatillisenTutkinnonOsanOsaAlue'
-import { Column, ColumnRow } from '../components-v2/containers/Columns'
-import { hasAmmatillinenArviointi } from './OsasuoritusTables'
-import { TestIdLayer, TestIdText } from '../appstate/useTestId'
-import { useTutkinnonOsanOsat } from './useTutkinnonOsanOsat'
-import { AmmatillisenTutkinnonOsittainenSuoritus } from '../types/fi/oph/koski/schema/AmmatillisenTutkinnonOsittainenSuoritus'
-import { YhteisenOsittaisenAmmatillisenTutkinnonTutkinnonosanUseastaTutkinnostaSuoritus } from '../types/fi/oph/koski/schema/YhteisenOsittaisenAmmatillisenTutkinnonTutkinnonosanUseastaTutkinnostaSuoritus'
-import { PerusteView } from '../components-v2/opiskeluoikeus/PerusteField'
+} from '../../components-v2/opiskeluoikeus/LaajuusField'
+import { LaajuusOsaamispisteissä } from '../../types/fi/oph/koski/schema/LaajuusOsaamispisteissa'
+import { KoodistoSelect } from '../../components-v2/opiskeluoikeus/KoodistoSelect'
+import { Koodistokoodiviite } from '../../types/fi/oph/koski/schema/Koodistokoodiviite'
+import { YhteisenTutkinnonOsanOsaAlueenSuoritus } from '../../types/fi/oph/koski/schema/YhteisenTutkinnonOsanOsaAlueenSuoritus'
+import { AmmatillisenTutkinnonOsanOsaAlue } from '../../types/fi/oph/koski/schema/AmmatillisenTutkinnonOsanOsaAlue'
+import { Column, ColumnRow } from '../../components-v2/containers/Columns'
+import { hasAmmatillinenArviointi } from '../OsasuoritusTables'
+import { TestIdLayer, TestIdText } from '../../appstate/useTestId'
+import { useTutkinnonOsanOsat } from '../useTutkinnonOsanOsat'
+import { AmmatillisenTutkinnonOsittainenSuoritus } from '../../types/fi/oph/koski/schema/AmmatillisenTutkinnonOsittainenSuoritus'
+import { YhteisenOsittaisenAmmatillisenTutkinnonTutkinnonosanUseastaTutkinnostaSuoritus } from '../../types/fi/oph/koski/schema/YhteisenOsittaisenAmmatillisenTutkinnonTutkinnonosanUseastaTutkinnostaSuoritus'
+import { PerusteView } from '../../components-v2/opiskeluoikeus/PerusteField'
 
 type YhteisenAmmatillisenTutkinnonOsasuoritusUseastaTutkinnostaPropertiesProps =
   {
