@@ -58,7 +58,7 @@ import { FlatButton } from '../components-v2/controls/FlatButton'
 import { Column, ColumnRow } from '../components-v2/containers/Columns'
 import { PaikallinenTutkinnonOsa } from '../types/fi/oph/koski/schema/PaikallinenTutkinnonOsa'
 import { PaikallinenKoodi } from '../types/fi/oph/koski/schema/PaikallinenKoodi'
-import { useKoodisto } from '../appstate/koodisto'
+import { useKoodisto, useKoodistoFiller } from '../appstate/koodisto'
 import { TextEdit } from '../components-v2/controls/TextField'
 import { RaisedButton } from '../components-v2/controls/RaisedButton'
 import { MuuValtakunnallinenTutkinnonOsa } from '../types/fi/oph/koski/schema/MuuValtakunnallinenTutkinnonOsa'
@@ -919,6 +919,7 @@ const NewYhteinenTutkinnonOsaTutkinnolla = ({
   suoritusPath
 }: NewYhteinenTutkinnonOsaTutkinnollaProps) => {
   const [showModal, setShowModal] = useState(false)
+  const fillNimet = useKoodistoFiller()
 
   return (
     <>
@@ -933,13 +934,13 @@ const NewYhteinenTutkinnonOsaTutkinnolla = ({
           oppilaitosOid={oppilaitosOid}
           ryhmäKoodiArvo={'2'}
           onClose={() => setShowModal(false)}
-          onSubmit={(tutkinto, tunniste) => {
+          onSubmit={async (tutkinto, tunniste) => {
+            const osasuoritus = await fillNimet(
+              newYhteinenTutkinnonOsaTutkinnolla(tutkinto, tunniste)
+            )
             form.updateAt(
               suoritusPath.prop('osasuoritukset').valueOr([]),
-              (a) => [
-                ...a,
-                newYhteinenTutkinnonOsaTutkinnolla(tutkinto, tunniste)
-              ]
+              (a) => [...a, osasuoritus]
             )
             setShowModal(false)
           }}
@@ -969,6 +970,7 @@ const NewMuuTutkinnonOsaTutkinnolla = ({
   suoritusPath
 }: NewMuuTutkinnonOsaTutkinnollaProps) => {
   const [showModal, setShowModal] = useState(false)
+  const fillNimet = useKoodistoFiller()
 
   return (
     <>
@@ -987,13 +989,13 @@ const NewMuuTutkinnonOsaTutkinnolla = ({
           oppilaitosOid={oppilaitosOid}
           ryhmäKoodiArvo={ryhmäKoodi?.koodiarvo}
           onClose={() => setShowModal(false)}
-          onSubmit={(tutkinto, tunniste) => {
+          onSubmit={async (tutkinto, tunniste) => {
+            const osasuoritus = await fillNimet(
+              newMuuTutkinnonOsaTutkinnolla(tutkinto, tunniste, ryhmäKoodi)
+            )
             form.updateAt(
               suoritusPath.prop('osasuoritukset').valueOr([]),
-              (a) => [
-                ...a,
-                newMuuTutkinnonOsaTutkinnolla(tutkinto, tunniste, ryhmäKoodi)
-              ]
+              (a) => [...a, osasuoritus]
             )
             setShowModal(false)
           }}
@@ -1023,6 +1025,7 @@ const NewPaikallinenOsaTutkinnolla = ({
   suoritusPath
 }: NewPaikallinenOsaTutkinnollaProps) => {
   const [showModal, setShowModal] = useState(false)
+  const fillNimet = useKoodistoFiller()
 
   return (
     <>
@@ -1040,13 +1043,13 @@ const NewPaikallinenOsaTutkinnolla = ({
         <NewPaikallinenOsaTutkinnollaModal
           oppilaitosOid={oppilaitosOid}
           onClose={() => setShowModal(false)}
-          onSubmit={(tutkinto, osa) => {
+          onSubmit={async (tutkinto, osa) => {
+            const osasuoritus = await fillNimet(
+              newPaikallinenOsaTutkinnolla(tutkinto, osa, ryhmäKoodi)
+            )
             form.updateAt(
               suoritusPath.prop('osasuoritukset').valueOr([]),
-              (o) => [
-                ...o,
-                newPaikallinenOsaTutkinnolla(tutkinto, osa, ryhmäKoodi)
-              ]
+              (o) => [...o, osasuoritus]
             )
             setShowModal(false)
           }}
