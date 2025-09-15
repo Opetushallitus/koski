@@ -1134,7 +1134,7 @@ const NewYhteinenTutkinnonOsaTutkinnollaModal = ({
   return (
     <Modal onClose={onClose}>
       <ModalTitle>{t('Tutkinnon osan lisäys')}</ModalTitle>
-      <ModalBody>
+      <ModalBody className={'osasuoritus-tutkinto-select-modal'}>
         <label>
           {t('Tutkinto')}
           <DialogSelect
@@ -1148,6 +1148,8 @@ const NewYhteinenTutkinnonOsaTutkinnollaModal = ({
             testId="tutkinto"
           />
         </label>
+        <Spacer />
+        <Spacer />
         <KoodistoSelect
           addNewText={'Lisää tutkinnon osa'}
           koodistoUri="tutkinnonosat"
@@ -1229,7 +1231,7 @@ const NewMuuTutkinnonOsaTutkinnollaModal = ({
   return (
     <Modal onClose={onClose}>
       <ModalTitle>{t('Tutkinnon osan lisäys')}</ModalTitle>
-      <ModalBody>
+      <ModalBody className={'osasuoritus-tutkinto-select-modal'}>
         <label>
           {t('Tutkinto')}
           <DialogSelect
@@ -1243,6 +1245,8 @@ const NewMuuTutkinnonOsaTutkinnollaModal = ({
             testId="tutkinto"
           />
         </label>
+        <Spacer />
+        <Spacer />
         <KoodistoSelect
           addNewText={'Lisää tutkinnon osa'}
           koodistoUri="tutkinnonosat"
@@ -1295,7 +1299,7 @@ const NewPaikallinenOsaTutkinnollaModal = ({
   return (
     <Modal onClose={onClose}>
       <ModalTitle>{t('Paikallisen tutkinnon osan lisäys')}</ModalTitle>
-      <ModalBody>
+      <ModalBody className={'osasuoritus-tutkinto-select-modal'}>
         <label>
           {t('Tutkinto')}
           <DialogSelect
@@ -1306,6 +1310,8 @@ const NewPaikallinenOsaTutkinnollaModal = ({
             testId="tutkinto"
           />
         </label>
+        <Spacer />
+        <Spacer />
         <label>
           {t('Tutkinnon osan nimi')}
           <TextEdit
