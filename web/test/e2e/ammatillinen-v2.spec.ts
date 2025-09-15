@@ -1,5 +1,6 @@
 import { expect, test } from './base'
-import { virkailija } from './setup/auth'
+import { getVirkailijaSession, kansalainen, virkailija } from './setup/auth'
+import { KoskiFixtures } from './fixtures/KoskiFixtures'
 
 test.describe('Osittaisen ammatillisen tutkinnon uusi käyttöliittymä', () => {
   test.use({ storageState: virkailija('kalle') })
@@ -64,14 +65,14 @@ test.describe('Osittaisen ammatillisen tutkinnon uusi käyttöliittymä', () => 
   })
 })
 
-test.describe('Osittaisen ammatillisen tutkinnon useasta tutkinnosta käyttöliittymä', () => {
+test.describe('Osittaisen ammatillisen tutkinnon useasta tutkinnosta virkailijan käyttöliittymä', () => {
   test.use({ storageState: virkailija('kalle') })
 
   test.beforeAll(async ({ fixtures }) => {
     await fixtures.reset()
   })
 
-  test('Renderöi osittaisen suorituksen useasta tutkinnosta tiedot', async ({ page, oppijaPage }) => {
+  test('Renderöi osittaisen suorituksen useasta tutkinnosta tiedot virkailijan käyttöliittymässä', async ({ page, oppijaPage }) => {
     await oppijaPage.goto('1.2.246.562.24.00000000182')
     await expect(page.getByTestId('oo.0.opiskeluoikeus.nimi')).toContainText('Stadin ammatti- ja aikuisopisto, ammatillisen tutkinnon osa/osia useasta tutkinnosta')
     await expect(page.getByTestId('oo.0.opiskeluoikeus.tila.value.items.1.rahoitus')).toContainText('Valtionosuusrahoitteinen koulutus')
@@ -225,5 +226,82 @@ test.describe('Osittaisen ammatillisen tutkinnon useasta tutkinnosta käyttölii
     await expect(page.getByTestId('oo.0.suoritukset.0.osasuoritukset.7.properties.peruste.value')).toContainText('39/011/2014')
     await expect(page.getByTestId('oo.0.suoritukset.0.osasuoritukset.7.properties.organisaatio.value')).toContainText('–')
     await expect(page.getByTestId('oo.0.suoritukset.0.osasuoritukset.7.properties.arviointi.0.arvosana')).toContainText('2')
+  })
+})
+
+test.describe('Osittaisen ammatillisen tutkinnon useasta tutkinnosta kansalaisen näkymä', () => {
+  test.beforeAll(async ({ browser }, testInfo) => {
+    // Pakotetaan fixture-reset käyttämään virkailijan istuntoa
+    const virkailijaSessionPath = await getVirkailijaSession(
+      testInfo,
+      'kalle',
+      'kalle'
+    )
+    const ctx = await browser.newContext({
+      storageState: virkailijaSessionPath
+    })
+    const page = await ctx.newPage()
+    await new KoskiFixtures(page).reset()
+  })
+  test.use({ storageState: kansalainen('011007A1489') })
+
+  test('Renderöi osittaisen suorituksen useasta tutkinnosta tiedot kansalaiselle', async ({ page, kansalainenPage }) => {
+    await kansalainenPage.goto()
+
+    await expect(page.locator('.header__heading')).toContainText('Opintoni')
+    await expect(page.getByTestId('oo.0.opiskeluoikeus.nimi')).toContainText('Ammatillisen tutkinnon osa/osia useasta tutkinnosta')
+
+    await page.locator('.OpiskeluoikeusTitle__expand').click()
+
+    // Opiskeluoikeuden tiedot
+    await expect(page.getByTestId('oo.0.opiskeluoikeus.tila.value.items.0.tila')).toContainText('Valmistunut')
+    await expect(page.getByTestId('oo.0.opiskeluoikeus.tila.value.items.0.rahoitus')).toContainText('Valtionosuusrahoitteinen koulutus')
+    await expect(page.getByTestId('oo.0.opiskeluoikeus.tila.value.items.1.tila')).toContainText('Läsnä')
+
+    // Opiskeluoikeuden lisätiedot
+    await page.getByTestId('oo.0.opiskeluoikeus.lisätiedotButton').click()
+    await expect(page.getByTestId('oo.0.opiskeluoikeus.lisätiedot.0.alku')).toContainText('1.9.2022')
+    await expect(page.getByTestId('oo.0.opiskeluoikeus.lisätiedot.0.loppu')).toContainText('1.9.2023')
+
+    // Suorituksen tiedot
+    await expect(page.getByTestId('oo.0.suoritukset.0.koulutus')).toContainText('Ammatillisen tutkinnon osa/osia useasta tutkinnosta')
+    await expect(page.getByTestId('oo.0.suoritukset.0.suoritustapa')).toContainText('Reformin mukainen näyttö')
+    await expect(page.getByTestId('oo.0.suoritukset.0.0.tutkintonimike.value')).toContainText('Automekaanikko')
+    await expect(page.getByTestId('oo.0.suoritukset.0.0.osaamisala')).toContainText('Ajoneuvotekniikan osaamisala')
+    await expect(page.getByTestId('oo.0.suoritukset.0.organisaatio.value')).toContainText('Stadin ammatti- ja aikuisopisto, Lehtikuusentien toimipaikka')
+    await expect(page.getByTestId('oo.0.suoritukset.0.suorituskieli.value')).toContainText('suomi')
+    await expect(page.getByTestId('oo.0.suoritukset.0.0.alku')).toContainText('1.9.2022')
+    await expect(page.getByTestId('oo.0.suoritukset.0.0.järjestämismuoto')).toContainText('Koulutuksen järjestäminen oppilaitosmuotoisena')
+    await expect(page.getByTestId('oo.0.suoritukset.0.todistuksellaNäkyvätLisätiedot.value')).toContainText('Suorittaa toista osaamisalaa')
+
+    // Tutkinnon osat
+    await expect(page.getByTestId('oo.0.suoritukset.0.osasuoritukset.4.laajuus.value')).toContainText('11 osp')
+    await expect(page.getByTestId('oo.0.suoritukset.0.osasuoritukset.4.arvosana.value')).toContainText('2')
+
+    await page.getByTestId('oo.0.suoritukset.0.osasuoritukset.4.expand').click()
+
+    await expect(page.getByTestId('oo.0.suoritukset.0.osasuoritukset.4.properties.organisaatio.value')).toContainText('Stadin ammatti- ja aikuisopisto, Lehtikuusentien toimipaikka')
+    await expect(page.getByTestId('oo.0.suoritukset.0.osasuoritukset.4.properties.tutkintoNimi')).toContainText('Ajoneuvoalan perustutkinto')
+    await expect(page.getByTestId('oo.0.suoritukset.0.osasuoritukset.4.properties.peruste.value')).toContainText('OPH-5410-2021')
+    await expect(page.getByTestId('oo.0.suoritukset.0.osasuoritukset.4.properties.arviointi.0.arvosana')).toContainText('2')
+
+    // Osan osa-alueet:
+    await expect(page.getByTestId('oo.0.suoritukset.0.osasuoritukset.4.properties.osasuoritukset.0.laajuus.value')).toContainText('4 osp')
+    await expect(page.getByTestId('oo.0.suoritukset.0.osasuoritukset.4.properties.osasuoritukset.0.arvosana.value')).toContainText('3')
+
+    await page.getByTestId('oo.0.suoritukset.0.osasuoritukset.4.properties.osasuoritukset.0.expand').click()
+    await expect(page.getByTestId('oo.0.suoritukset.0.osasuoritukset.4.properties.osasuoritukset.0.properties.arviointi.0.arvosana')).toContainText('3')
+
+    // Laajuudet
+    await expect(page.getByTestId('oo.0.suoritukset.0.yhteensa')).toContainText('187 osp')
+  })
+
+  test('Sivulla ei saavutettavuusvirheitä', async ({
+    kansalainenPage,
+    makeAxeBuilder
+  }) => {
+    await kansalainenPage.goto()
+    const accessibilityScanResults = await makeAxeBuilder().analyze()
+    expect(accessibilityScanResults.violations).toEqual([])
   })
 })
