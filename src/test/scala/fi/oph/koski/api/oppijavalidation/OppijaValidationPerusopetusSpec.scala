@@ -5,7 +5,7 @@ import fi.oph.koski.api.misc.OpiskeluoikeusTestMethodsPerusopetus
 import fi.oph.koski.documentation.AmmatillinenExampleData.primusLähdejärjestelmäId
 import fi.oph.koski.documentation.ExampleData._
 import fi.oph.koski.documentation.{ExamplesEsiopetus, ExamplesPerusopetus}
-import fi.oph.koski.documentation.ExamplesEsiopetus.osaAikainenErityisopetus
+import fi.oph.koski.documentation.ExamplesEsiopetus.{lisätiedot, osaAikainenErityisopetus}
 import fi.oph.koski.documentation.ExamplesPerusopetus.toimintaAlueenSuoritus
 import fi.oph.koski.documentation.OsaAikainenErityisopetusExampleData._
 import fi.oph.koski.documentation.PerusopetusExampleData._
@@ -78,6 +78,36 @@ class OppijaValidationPerusopetusSpec extends TutkinnonPerusteetTest[Perusopetuk
           verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.rakenne.duplikaattiOsasuoritus("Osasuoritus (koskioppiaineetyleissivistava/AI,oppiaineaidinkielijakirjallisuus/AI1) esiintyy useammin kuin kerran ryhmässä pakolliset"))
         }
       }
+      "Kaksi suoritusta eri vuosiluokilla -> HTTP 200" in {
+        setupOppijaWithOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(yhdeksännenLuokanSuoritus, päättötodistusSuoritus.copy(osasuoritukset = Some(List(
+          suoritus(äidinkieli("AI1")). copy(luokkaAste = perusopetuksenLuokkaAste("1"), arviointi = arviointi(8)),
+          suoritus(äidinkieli("AI1")). copy(luokkaAste = perusopetuksenLuokkaAste("2"), arviointi = arviointi(7))
+        )))))) {
+          verifyResponseStatusOk()
+        }
+      }
+
+      "Kaksi suoritusta samoilla vuosiluokilla -> HTTP 400" in {
+        setupOppijaWithOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(yhdeksännenLuokanSuoritus, päättötodistusSuoritus.copy(osasuoritukset = Some(List(
+          suoritus(äidinkieli("AI1")). copy(luokkaAste = perusopetuksenLuokkaAste("1"), arviointi = arviointi(7)),
+          suoritus(äidinkieli("AI1")). copy(luokkaAste = perusopetuksenLuokkaAste("1"), arviointi = arviointi(7))
+        )))))) {
+          verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.rakenne.duplikaattiOsasuoritus("Osasuoritus (koskioppiaineetyleissivistava/AI,oppiaineaidinkielijakirjallisuus/AI1) esiintyy useammin kuin kerran ryhmässä pakolliset"))
+        }
+      }
+
+      "Kaksi suoritusta, vain toiselta puuttuu luokka-aste -> HTTP 200" in {
+        setupOppijaWithOpiskeluoikeus(
+          defaultOpiskeluoikeus.copy(suoritukset = List(
+            yhdeksännenLuokanSuoritus,
+            päättötodistusSuoritus.copy(osasuoritukset = Some(List(
+              suoritus(äidinkieli("AI1")).copy(luokkaAste = perusopetuksenLuokkaAste("1"), arviointi = arviointi(8)),
+              suoritus(äidinkieli("AI1")).copy(luokkaAste = None, arviointi = arviointi(7))
+            )))
+          ))
+        ) { verifyResponseStatusOk() }
+      }
+
       "Eri kielivalinnalla -> HTTP 200" in {
         setupOppijaWithOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(yhdeksännenLuokanSuoritus, päättötodistusSuoritus.copy(osasuoritukset = Some(List(
           suoritus(äidinkieli("AI1")).copy(arviointi = arviointi(9)),

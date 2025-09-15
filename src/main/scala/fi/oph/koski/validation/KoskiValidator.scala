@@ -1265,16 +1265,32 @@ class KoskiValidator(
     }
   }
 
-  private def validateDuplicates(suoritukset: Seq[Suoritus]) = {
-    HttpStatus.fold(suoritukset
+  private def validateDuplicates(suoritukset: Seq[Suoritus]): HttpStatus = {
+    val groups = suoritukset
       .filterNot(_.salliDuplikaatit)
-      .groupBy(osasuoritus => (osasuoritus.koulutusmoduuli.identiteetti, osasuoritus.ryhmittelytekijä))
-      .collect { case (group, osasuoritukset) if osasuoritukset.length > 1 => group }
-      .map { case (tutkinnonOsa, ryhmä) =>
-        val ryhmänKuvaus = ryhmä.map(r => " ryhmässä " + r).getOrElse("")
-        KoskiErrorCategory.badRequest.validation.rakenne.duplikaattiOsasuoritus(s"Osasuoritus ${tutkinnonOsa} esiintyy useammin kuin kerran" + ryhmänKuvaus)
+      .groupBy(s => (s.koulutusmoduuli.identiteetti, s.ryhmittelytekijä))
+    HttpStatus.fold(
+      groups.collect {
+        case ((tutkinnonOsa, ryhma), osasuoritukset) if osasuoritukset.length > 1 &&
+          !perusopetuksenOppiaineessaEiSamojaLuokkaAsteita(osasuoritukset) =>
+          val ryhmanKuvaus = ryhma.map(r => " ryhmässä " + r).getOrElse("")
+          KoskiErrorCategory.badRequest.validation.rakenne.duplikaattiOsasuoritus(
+            s"Osasuoritus $tutkinnonOsa esiintyy useammin kuin kerran$ryhmanKuvaus"
+          )
       }
     )
+  }
+
+  private def perusopetuksenOppiaineessaEiSamojaLuokkaAsteita(osasuoritukset: Seq[Suoritus]): Boolean = {
+    val perusopetusOppiaineet = osasuoritukset.collect { case s: NuortenPerusopetuksenOppiaineenSuoritus => s}
+    val (withLuokkaAste, withoutLuokkaAste) = perusopetusOppiaineet.partition(_.luokkaAste.isDefined)
+    if (withoutLuokkaAste.size > 1) return false
+
+    if (!osasuoritukset.forall(_.isInstanceOf[NuortenPerusopetuksenOppiaineenSuoritus])) return false
+    if (!perusopetusOppiaineet.forall(_.koulutusmoduuli.pakollinen == true)) return false
+
+    val luokkaAsteKoodit = withLuokkaAste.flatMap(_.luokkaAste.map(_.koodiarvo))
+    luokkaAsteKoodit.distinct.size == luokkaAsteKoodit.size
   }
 
   private def validateAlkamispäivä(suoritus: Suoritus): HttpStatus = {
