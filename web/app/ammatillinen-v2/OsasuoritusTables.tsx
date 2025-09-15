@@ -79,12 +79,9 @@ import { YhteisenOsittaisenAmmatillisenTutkinnonUseastaTutkinnostaOsasuoritusPro
 import { MuunOsittaisenAmmatillisenTutkinnonUseastaTutkinnostaTutkinnonosanSuoritusProperties } from './MuunOsittaisenAmmatillisenTutkinnonUseastaTutkinnostaTutkinnonosanSuoritusProperties'
 import { DialogSelect } from '../uusiopiskeluoikeus/components/DialogSelect'
 import { AmmatillinenTutkintoKoulutus } from '../types/fi/oph/koski/schema/AmmatillinenTutkintoKoulutus'
-import {
-  tutkintoKey,
-  useTutkinnot
-} from '../uusiopiskeluoikeus/opiskeluoikeusSpecificFields/AmmatillinenKoulutusFields'
 import { TutkintoPeruste } from '../types/fi/oph/koski/tutkinto/TutkintoPeruste'
 import { Spacer } from '../components-v2/layout/Spacer'
+import { tutkintoKey, useTutkinnot } from './useTutkinnot'
 
 interface OsasuoritusTablesProps {
   form: FormModel<AmmatillinenOpiskeluoikeus>
