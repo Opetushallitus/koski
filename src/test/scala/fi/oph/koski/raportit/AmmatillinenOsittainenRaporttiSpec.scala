@@ -72,8 +72,14 @@ class AmmatillinenOsittainenRaporttiSpec
         val rows = testiHenkilöRaporttiRows(alku = date(2014, 1, 1), loppu = date(2014, 12, 31), osasuoritustenAikarajaus = true)
         rows.map(_.suoritettujenOpintojenYhteislaajuus) should equal(List("92.0"))
       }
+      "Arvioitu tutkinnon osa lasketaan valmiiksi riippumatta vahvistuksesta" in {
+        val rivit = testiHenkilöRaporttiRows(alku = date(2012, 1, 1), loppu = date(2016, 12, 31), osasuoritustenAikarajaus = false, hetu = "140493-2798")
+        rivit.length should equal(1)
+        val r = rivit.head
+        r.valmiitAmmatillisetTutkinnonOsatLkm should equal("9")
+        r.suoritetutAmmatillisetTutkinnonOsatYhteislaajuus should equal("89.0")
+      }
     }
-
     "Ei näytetä riviä näyttötutkintoon valmistavalle koulutukselle, jos sen parina oleva pääsuoritus ei ole osittainen" in {
       val rivit = testiHenkilöRaporttiRows(alku = date(2016, 1, 1), loppu = date(2016, 5, 30), osasuoritustenAikarajaus = false, hetu = KoskiSpecificMockOppijat.erikoisammattitutkinto.hetu.get)
 
@@ -82,7 +88,6 @@ class AmmatillinenOsittainenRaporttiSpec
 
     "Korotetut suoritukset" in {
       val rivit = testiHenkilöRaporttiRows(alku = date(2016, 1, 1), loppu = date(2016, 5, 30), osasuoritustenAikarajaus = false, KoskiSpecificMockOppijat.ammattilainen.hetu.get)
-
       rivit.head.suoritettujenOpintojenYhteislaajuus should equal("2.0 (2.0)")
       rivit.head.valmiitAmmatillisetTutkinnonOsatLkm should equal("1 (1)")
       rivit.head.näyttöjäAmmatillisessaValmiistaTutkinnonOsistaLkm should equal ("1 (1)")
