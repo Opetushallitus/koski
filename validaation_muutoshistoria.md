@@ -1,5 +1,9 @@
 # Koskeen tallennettavien tietojen validaatiosäännöt
 
+## 19.9.2025
+
+- Salli kielitutkinnon opiskeluoikeudelle sama alku- ja päättymispäivämäärä.
+
 ## 18.9.2025
  - Lisätty validaatio nuorten perusopetuksen oppiaineiden luokka-asteille
    - Sallitaan useampi pakollisen saman oppiaineen suoritus eri luokka-asteilla ja yksi luokka-asteeton suoritus

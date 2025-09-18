@@ -2,7 +2,7 @@ package fi.oph.koski.validation
 
 import java.time.LocalDate
 import fi.oph.koski.http.{ErrorCategory, HttpStatus, KoskiErrorCategory}
-import fi.oph.koski.schema.{KoskeenTallennettavaOpiskeluoikeus, Opiskeluoikeusjakso, YlioppilastutkinnonOpiskeluoikeus}
+import fi.oph.koski.schema.{KoskeenTallennettavaOpiskeluoikeus, KoskiPäällekkäisenPäivämääränSallivaOpiskeluoikeusjakso, Opiskeluoikeusjakso, YlioppilastutkinnonOpiskeluoikeus}
 
 object DateValidation {
   type NamedDates = (String, Iterable[LocalDate])
@@ -16,10 +16,14 @@ object DateValidation {
   def validateJaksotDateOrder(name: String, jaksot: Iterable[Opiskeluoikeusjakso], errorCategory: ErrorCategory): HttpStatus = {
     HttpStatus.fold(jaksot.zip(jaksot.drop(1)).map { case (jakso1, jakso2) =>
       val compared = jakso1.alku.compareTo(jakso2.alku)
-      if (compared == 0) {
-        HttpStatus.validate(jakso2.tila.koodiarvo == "mitatoity")(errorCategory(s"${name}: ${jakso1.tila.koodiarvo} ${jakso1.alku} ei voi olla samalla päivämäärällä kuin ${jakso2.tila.koodiarvo} ${jakso2.alku}"))
+      if (List(jakso1, jakso2).exists(_.isInstanceOf[KoskiPäällekkäisenPäivämääränSallivaOpiskeluoikeusjakso])) {
+        HttpStatus.validate(compared <= 0)(errorCategory(s"${name}: ${jakso1.alku} on oltava aiempi kuin ${jakso2.alku}"))
       } else {
-        HttpStatus.validate(compared < 0)(errorCategory(s"${name}: ${jakso1.alku} on oltava aiempi kuin ${jakso2.alku}"))
+        if (compared == 0) {
+          HttpStatus.validate(jakso2.tila.koodiarvo == "mitatoity")(errorCategory(s"${name}: ${jakso1.tila.koodiarvo} ${jakso1.alku} ei voi olla samalla päivämäärällä kuin ${jakso2.tila.koodiarvo} ${jakso2.alku}"))
+        } else {
+          HttpStatus.validate(compared < 0)(errorCategory(s"${name}: ${jakso1.alku} on oltava aiempi kuin ${jakso2.alku}"))
+        }
       }
     })
   }
