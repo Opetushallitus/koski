@@ -154,10 +154,7 @@ object ExamplesKielitutkinto {
         .map(_.päivä)
         .max
 
-      val organisaatio = tutkintotaso match {
-        case "erinomainen" => OidOrganisaatio(ValtionhallinnonKielitutkinnotOrg.organisaatio)
-        case _ => OidOrganisaatio(MockOrganisaatiot.varsinaisSuomenKansanopistoToimipiste)
-      }
+      val organisaatio = OidOrganisaatio(ValtionhallinnonKielitutkinnotOrg.organisaatio)
 
       ValtionhallinnonKielitutkinnonSuoritus(
         koulutusmoduuli = ValtionhallinnonKielitutkinto(
