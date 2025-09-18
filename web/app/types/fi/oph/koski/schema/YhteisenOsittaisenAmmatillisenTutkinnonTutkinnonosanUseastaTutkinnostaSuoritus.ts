@@ -8,7 +8,6 @@ import { OsaamisenTunnustaminen } from './OsaamisenTunnustaminen'
 import { OrganisaatioWithOid } from './OrganisaatioWithOid'
 import { YhteisenTutkinnonOsanOsaAlueenSuoritus } from './YhteisenTutkinnonOsanOsaAlueenSuoritus'
 import { AmmatillinenTutkintoKoulutus } from './AmmatillinenTutkintoKoulutus'
-import { HenkilövahvistusValinnaisellaTittelillä } from './HenkilovahvistusValinnaisellaTittelilla'
 
 /**
  * Ammatilliseen tutkintoon liittyvän yhteisen tutkinnonosan suoritus
@@ -34,7 +33,6 @@ export type YhteisenOsittaisenAmmatillisenTutkinnonTutkinnonosanUseastaTutkinnos
     >
     osasuoritukset?: Array<YhteisenTutkinnonOsanOsaAlueenSuoritus>
     tutkinto: AmmatillinenTutkintoKoulutus
-    vahvistus?: HenkilövahvistusValinnaisellaTittelillä
   }
 
 export const YhteisenOsittaisenAmmatillisenTutkinnonTutkinnonosanUseastaTutkinnostaSuoritus =
@@ -55,7 +53,6 @@ export const YhteisenOsittaisenAmmatillisenTutkinnonTutkinnonosanUseastaTutkinno
     >
     osasuoritukset?: Array<YhteisenTutkinnonOsanOsaAlueenSuoritus>
     tutkinto: AmmatillinenTutkintoKoulutus
-    vahvistus?: HenkilövahvistusValinnaisellaTittelillä
   }): YhteisenOsittaisenAmmatillisenTutkinnonTutkinnonosanUseastaTutkinnostaSuoritus => ({
     tyyppi: Koodistokoodiviite({
       koodiarvo: 'ammatillisentutkinnonosa',

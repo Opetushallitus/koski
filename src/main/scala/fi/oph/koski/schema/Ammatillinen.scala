@@ -623,7 +623,6 @@ case class YhteisenOsittaisenAmmatillisenTutkinnonTutkinnonosanUseastaTutkinnost
   tutkinnonOsanRyhmä: Option[Koodistokoodiviite] = None,
   toimipiste: Option[OrganisaatioWithOid],
   arviointi: Option[List[AmmatillinenArviointi]] = None,
-  vahvistus: Option[HenkilövahvistusValinnaisellaTittelillä] = None,
   override val alkamispäivä: Option[LocalDate] = None,
   tunnustettu: Option[OsaamisenTunnustaminen] = None,
   override val lisätiedot: Option[List[AmmatillisenTutkinnonOsanLisätieto]] = None,
@@ -635,6 +634,7 @@ case class YhteisenOsittaisenAmmatillisenTutkinnonTutkinnonosanUseastaTutkinnost
 ) extends OsittaisenAmmatillisenTutkinnonOsanUseastaTutkinnostaSuoritus
   with MahdollisestiToimipisteellinen
   with YhteisenTutkinnonOsanSuoritus {
+  override def vahvistus: Option[HenkilövahvistusValinnaisellaTittelillä] = None
   override def withLisätiedot(lisätiedot: Option[List[AmmatillisenTutkinnonOsanLisätieto]]): YhteisenOsittaisenAmmatillisenTutkinnonTutkinnonosanUseastaTutkinnostaSuoritus =
     shapeless.lens[YhteisenOsittaisenAmmatillisenTutkinnonTutkinnonosanUseastaTutkinnostaSuoritus].field[Option[List[AmmatillisenTutkinnonOsanLisätieto]]]("lisätiedot").set(this)(lisätiedot)
 }
@@ -650,7 +650,6 @@ case class MuunOsittaisenAmmatillisenTutkinnonTutkinnonosanUseastaTutkinnostaSuo
   tutkinnonOsanRyhmä: Option[Koodistokoodiviite] = None,
   toimipiste: Option[OrganisaatioWithOid],
   arviointi: Option[List[AmmatillinenArviointi]] = None,
-  vahvistus: Option[HenkilövahvistusValinnaisellaTittelillä] = None,
   override val alkamispäivä: Option[LocalDate] = None,
   tunnustettu: Option[OsaamisenTunnustaminen] = None,
   lisätiedot: Option[List[AmmatillisenTutkinnonOsanLisätieto]] = None,
@@ -662,6 +661,7 @@ case class MuunOsittaisenAmmatillisenTutkinnonTutkinnonosanUseastaTutkinnostaSuo
 ) extends OsittaisenAmmatillisenTutkinnonOsanUseastaTutkinnostaSuoritus
   with MahdollisestiToimipisteellinen
   with Korotuksellinen {
+  override def vahvistus: Option[HenkilövahvistusValinnaisellaTittelillä] = None
   override def withLisätiedot(lisätiedot: Option[List[AmmatillisenTutkinnonOsanLisätieto]]): MuunOsittaisenAmmatillisenTutkinnonTutkinnonosanUseastaTutkinnostaSuoritus =
     shapeless.lens[MuunOsittaisenAmmatillisenTutkinnonTutkinnonosanUseastaTutkinnostaSuoritus].field[Option[List[AmmatillisenTutkinnonOsanLisätieto]]]("lisätiedot").set(this)(lisätiedot)
 }

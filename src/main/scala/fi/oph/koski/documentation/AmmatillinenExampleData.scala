@@ -351,8 +351,7 @@ object AmmatillinenExampleData {
       suorituskieli = None,
       alkamispäivä = None,
       toimipiste = Some(stadinToimipiste),
-      arviointi = Some(List(AmmatillinenArviointi(arvosana = arvosana, date(2014, 10, 20)))),
-      vahvistus = vahvistusValinnaisellaTittelillä(date(2016, 5, 31), stadinAmmattiopisto)
+      arviointi = Some(List(AmmatillinenArviointi(arvosana = arvosana, date(2014, 10, 20))))
     )
   }
 
@@ -366,8 +365,7 @@ object AmmatillinenExampleData {
       suorituskieli = None,
       alkamispäivä = None,
       toimipiste = Some(stadinToimipiste),
-      arviointi = Some(List(AmmatillinenArviointi(arvosana = arvosana, date(2014, 10, 20)))),
-      vahvistus = vahvistusValinnaisellaTittelillä(date(2016, 5, 31), stadinAmmattiopisto)
+      arviointi = Some(List(AmmatillinenArviointi(arvosana = arvosana, date(2014, 10, 20))))
     )
   }
 

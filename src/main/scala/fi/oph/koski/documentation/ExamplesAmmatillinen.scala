@@ -832,23 +832,19 @@ object AmmatillinenOsittainenUseistaTutkinnoista {
         osasuoritukset = Some(List(
           osittaisenTutkinnonTutkinnonOsanUseastaTutkinnostaSuoritus(h2, ammatillisetTutkinnonOsat, "104052", "Johtaminen ja henkilöstön kehittäminen", 25).copy(
             tutkinto = tutkinto,
-            arviointi = Some(List(arviointi(h2).copy(päivä = date(2021, 9, 1)))),
-            vahvistus = vahvistusValinnaisellaTittelillä(date(2021, 9, 1), stadinAmmattiopisto)
+            arviointi = Some(List(arviointi(h2).copy(päivä = date(2021, 9, 1))))
           ),
           osittaisenTutkinnonTutkinnonOsanUseastaTutkinnostaSuoritus(h2, ammatillisetTutkinnonOsat, "104053", "Asiakaspalvelu ja korjaamopalvelujen markkinointi", 15).copy(
             tutkinto = tutkinto,
-            arviointi = Some(List(arviointi(h2).copy(päivä = date(2021, 9, 1)))),
-            vahvistus = vahvistusValinnaisellaTittelillä(date(2021, 9, 1), stadinAmmattiopisto)
+            arviointi = Some(List(arviointi(h2).copy(päivä = date(2021, 9, 1))))
           ),
           osittaisenTutkinnonTutkinnonOsanUseastaTutkinnostaSuoritus(k3, ammatillisetTutkinnonOsat, "104054", "Työnsuunnittelu ja organisointi", 10).copy(
             tutkinto = tutkinto,
-            arviointi = Some(List(arviointi(h2).copy(päivä = date(2021, 9, 1)))),
-            vahvistus = vahvistusValinnaisellaTittelillä(date(2021, 9, 1), stadinAmmattiopisto)
+            arviointi = Some(List(arviointi(h2).copy(päivä = date(2021, 9, 1))))
           ),
           osittaisenTutkinnonTutkinnonOsanUseastaTutkinnostaSuoritus(k3, ammatillisetTutkinnonOsat, "104059", "Yrittäjyys", 10).copy(
             tutkinto = tutkinto,
-            arviointi = Some(List(arviointi(h2).copy(päivä = date(2021, 9, 1)))),
-            vahvistus = vahvistusValinnaisellaTittelillä(date(2021, 9, 1), stadinAmmattiopisto)
+            arviointi = Some(List(arviointi(h2).copy(päivä = date(2021, 9, 1))))
           )
         ))
       )),
