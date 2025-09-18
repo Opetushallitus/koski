@@ -174,10 +174,8 @@ const createAmmatillinenPäätasonSuoritus = (
         toimipiste: toToimipiste(organisaatio)
       })
     case AmmatillisenOsittaisenUseastaTutkinnostaSuorituksenTyyppi:
-      if (!suoritustapa) return undefined
       return AmmatillisenTutkinnonOsittainenUseastaTutkinnostaSuoritus({
         suorituskieli,
-        suoritustapa,
         toimipiste: toToimipiste(organisaatio)
       })
 

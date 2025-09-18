@@ -123,8 +123,6 @@ test.describe('Osittaisen ammatillisen tutkinnon useasta tutkinnosta virkailijan
     await page.getByTestId('uusiOpiskeluoikeus.modal.opiskeluoikeus.options.opiskeluoikeudentyyppi_ammatillinenkoulutus.item').click()
     await page.getByTestId('uusiOpiskeluoikeus.modal.suoritustyyppi.input').click()
     await page.getByTestId('uusiOpiskeluoikeus.modal.suoritustyyppi.options.suorituksentyyppi_ammatillinentutkintoosittainenuseastatutkinnosta.item').click()
-    await page.getByTestId('uusiOpiskeluoikeus.modal.suoritustapa.input').click()
-    await page.getByTestId('uusiOpiskeluoikeus.modal.suoritustapa.options.ammatillisentutkinnonsuoritustapa_reformi.item').click()
 
     await uusiOppijaPage.submitAndExpectSuccess()
     await expect(page.getByTestId('oo.0.opiskeluoikeus.nimi')).toContainText('Stadin ammatti- ja aikuisopisto, ammatillisen tutkinnon osa/osia useasta tutkinnosta')

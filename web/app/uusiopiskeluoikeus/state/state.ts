@@ -227,8 +227,7 @@ export const useUusiOpiskeluoikeusDialogState =
     >(
       päätasonSuoritukseksiValittu(
         'ammatillinentutkinto',
-        'ammatillinentutkintoosittainen',
-        'ammatillinentutkintoosittainenuseastatutkinnosta'
+        'ammatillinentutkintoosittainen'
       )
     )
 

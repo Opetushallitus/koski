@@ -307,7 +307,8 @@ case class AmmatillisenTutkinnonOsittainenUseastaTutkinnostaSuoritus(
   @Title("Koulutus")
   @Tooltip("Ammatillisen tutkinnon osa/osia useammasta tutkinnosta. Jokaisella tutkinnon osalla on erikseen tietona, mihin tutkintoon kyseinen suoritus liittyy.")
   koulutusmoduuli: AmmatillinenOsaTaiOsiaUseastaTutkinnosta,
-  suoritustapa: Koodistokoodiviite,
+  @KoodistoKoodiarvo("reformi")
+  suoritustapa: Koodistokoodiviite = Koodistokoodiviite("ammatillisentutkinnonsuoritustapa", koodistoUri = "reformi"),
   override val tutkintonimike: Option[List[Koodistokoodiviite]] = None,
   override val toinenTutkintonimike: Boolean = false,
   override val osaamisala: Option[List[Osaamisalajakso]] = None,
