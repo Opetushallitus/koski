@@ -134,7 +134,7 @@ test.describe('Osittaisen ammatillisen tutkinnon useasta tutkinnosta virkailijan
     await page.getByTestId('oo.0.opiskeluoikeus.edit').click()
 
     // Avaa modaali
-    await page.getByTestId('oo.0.suoritukset.0.lisaa-paikallinen-osa-1').click()
+    await page.getByTestId('oo.0.suoritukset.0.lisaa-paikallinen-osa').click()
     // Syötä paikallisen tutkinnon osan tutkinto ja nimi modaalissa
     await page.getByTestId('oo.0.suoritukset.0.modal.tutkinto.input').click()
     await page.getByTestId('oo.0.suoritukset.0.modal.tutkinto.input').fill('auto')
@@ -200,7 +200,7 @@ test.describe('Osittaisen ammatillisen tutkinnon useasta tutkinnosta virkailijan
     await page.getByTestId('oo.0.opiskeluoikeus.edit').click()
 
     // Avaa modaali
-    await page.getByTestId('oo.0.suoritukset.0.lisaa-muu-tutkinnon-osa-1').click()
+    await page.getByTestId('oo.0.suoritukset.0.lisaa-ammatillisen-tutkinnon-osa').click()
     // Syötä paikallisen tutkinnon osan tutkinto ja nimi modaalissa
     await page.getByTestId('oo.0.suoritukset.0.modal.tutkinto.input').click()
     await page.getByTestId('oo.0.suoritukset.0.modal.tutkinto.input').fill('auto')

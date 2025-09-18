@@ -647,8 +647,6 @@ case class MuunOsittaisenAmmatillisenTutkinnonTutkinnonosanUseastaTutkinnostaSuo
   tutkinto: AmmatillinenTutkintoKoulutus,
   @Description("Tieto siitä mihin tutkinnon osan ryhmään osan suoritus (Ammatilliset tutkinnon osat, Yhteiset tutkinnon osat, Vapaavalintaiset tutkinnon osat, Tutkintoa yksilöllisesti laajentavat tutkinnon osat) kuuluu")
   @KoodistoKoodiarvo("1") // Ammatilliset tutkinnon osat
-  @KoodistoKoodiarvo("3") // Vapaavalintaiset tutkinnon osat
-  @KoodistoKoodiarvo("4") // Tutkintoa yksilöllisesti laajentavat tutkinnon osat
   tutkinnonOsanRyhmä: Option[Koodistokoodiviite] = None,
   toimipiste: Option[OrganisaatioWithOid],
   arviointi: Option[List[AmmatillinenArviointi]] = None,

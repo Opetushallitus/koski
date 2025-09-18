@@ -31,7 +31,7 @@ export type MuunOsittaisenAmmatillisenTutkinnonTutkinnonosanUseastaTutkinnostaSu
     toimipiste?: OrganisaatioWithOid
     tutkinnonOsanRyhmä?: Koodistokoodiviite<
       'ammatillisentutkinnonosanryhma',
-      '1' | '3' | '4'
+      '1'
     >
     osasuoritukset?: Array<AmmatillisenTutkinnonOsaaPienemmänKokonaisuudenSuoritus>
     tutkinto: AmmatillinenTutkintoKoulutus
@@ -53,7 +53,7 @@ export const MuunOsittaisenAmmatillisenTutkinnonTutkinnonosanUseastaTutkinnostaS
     toimipiste?: OrganisaatioWithOid
     tutkinnonOsanRyhmä?: Koodistokoodiviite<
       'ammatillisentutkinnonosanryhma',
-      '1' | '3' | '4'
+      '1'
     >
     osasuoritukset?: Array<AmmatillisenTutkinnonOsaaPienemmänKokonaisuudenSuoritus>
     tutkinto: AmmatillinenTutkintoKoulutus

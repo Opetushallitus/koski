@@ -836,7 +836,7 @@ object AmmatillinenExampleData {
         arviointi = Some(List(arviointi(h2).copy(päivä = date(2015, 1, 1))))
       ),
       osittaisenTutkinnonTutkinnonOsanUseastaTutkinnostaSuoritus(h2, None, "106877", "Alustan korjaustyöt", 15),
-      osittaisenTutkinnonTutkinnonOsanUseastaTutkinnostaSuoritus(k3, vapaavalintaisetTutkinnonOsat, "106878", "Jarrujen korjaus", 10).copy(
+      osittaisenTutkinnonTutkinnonOsanUseastaTutkinnostaSuoritus(k3, ammatillisetTutkinnonOsat, "106878", "Jarrujen korjaus", 10).copy(
         tunnustettu = Some(tunnustettu.copy(rahoituksenPiirissä = true)),
         osasuoritukset = Some(List(
           AmmatillisenTutkinnonOsaaPienemmänKokonaisuudenSuoritus(
@@ -845,7 +845,7 @@ object AmmatillinenExampleData {
           )
         ))
       ),
-      osittaisenTutkinnonTutkinnonOsanUseastaTutkinnostaSuoritus(k3, yksilöllisestiLaajentavatTutkinnonOsat, "106879", "Sähköjärjestelmän kunnon määrittäminen", 100).copy(näyttö = Some(
+      osittaisenTutkinnonTutkinnonOsanUseastaTutkinnostaSuoritus(k3, None, "106879", "Sähköjärjestelmän kunnon määrittäminen", 100).copy(näyttö = Some(
         näyttö(date(2016, 2, 1), "Muksulan päiväkodin auton sähköjärjestelmän kunnon määrittämisen\ntekeminen sekä mittauksien tekeminen ja näytteiden ottaminen", "Muksulan päiväkoti, Kaarinan kunta", Some(näytönArviointi)))
       ),
       yhteisenOsittaisenTutkinnonTutkinnonOsanUseastaTutkinnostaSuoritus(h2, yhteisetTutkinnonOsat, "106727", "Viestintä- ja vuorovaikutusosaaminen", 11).copy(

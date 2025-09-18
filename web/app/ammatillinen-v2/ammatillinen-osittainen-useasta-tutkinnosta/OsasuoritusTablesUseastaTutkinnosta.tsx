@@ -90,24 +90,6 @@ export const OsasuoritusTablesUseastaTutkinnosta = ({
         osittainenPäätasonSuoritus={osittainenPäätasonSuoritus}
         ryhmä="Ammatilliset tutkinnon osat"
       />
-      <TableForTutkinnonOsaRyhmäUseastaTutkinnosta
-        form={form}
-        oppilaitosOid={oppilaitosOid}
-        osittainenPäätasonSuoritus={osittainenPäätasonSuoritus}
-        ryhmä="Vapaasti valittavat tutkinnon osat"
-      />
-      <TableForTutkinnonOsaRyhmäUseastaTutkinnosta
-        form={form}
-        oppilaitosOid={oppilaitosOid}
-        osittainenPäätasonSuoritus={osittainenPäätasonSuoritus}
-        ryhmä="Tutkintoa yksilöllisesti laajentavat tutkinnon osat"
-      />
-      <TableForTutkinnonOsaRyhmäUseastaTutkinnosta
-        form={form}
-        oppilaitosOid={oppilaitosOid}
-        osittainenPäätasonSuoritus={osittainenPäätasonSuoritus}
-        ryhmä="Muut suoritukset"
-      />
     </>
   )
 }
@@ -135,7 +117,8 @@ const TableForTutkinnonOsaRyhmäUseastaTutkinnosta = ({
     .filter(
       ({ s }) =>
         (s.tutkinnonOsanRyhmä?.nimi as Finnish | undefined)?.fi === ryhmä ||
-        (s.tutkinnonOsanRyhmä === undefined && ryhmä === 'Muut suoritukset')
+        (s.tutkinnonOsanRyhmä === undefined &&
+          ryhmä === 'Ammatilliset tutkinnon osat')
     )
     .map(({ s, originalIndex }, rowIndex) => {
       originalIndexMap[rowIndex] = originalIndex
@@ -333,18 +316,6 @@ const NewAmisOsasuoritusTutkinnolla = ({
   ryhmä,
   suoritusPath
 }: NewAmisOsasuoritusTutkinnollaProps) => {
-  const ryhmät = useKoodisto('ammatillisentutkinnonosanryhma')
-  const ryhmäKoodi =
-    (ryhmät !== null
-      ? (ryhmät.find((r) => (r.koodiviite.nimi as Finnish).fi === ryhmä)
-          ?.koodiviite as
-          | Koodistokoodiviite<
-              'ammatillisentutkinnonosanryhma',
-              '1' | '3' | '4'
-            >
-          | undefined)
-      : undefined) || undefined
-
   if (ryhmä === 'Yhteiset tutkinnon osat') {
     return (
       <ColumnRow>
@@ -364,7 +335,6 @@ const NewAmisOsasuoritusTutkinnolla = ({
         <NewMuuTutkinnonOsaTutkinnolla
           form={form}
           oppilaitosOid={oppilaitosOid}
-          ryhmäKoodi={ryhmäKoodi}
           suoritusPath={suoritusPath}
         />
       </Column>
@@ -372,7 +342,6 @@ const NewAmisOsasuoritusTutkinnolla = ({
         <NewPaikallinenOsaTutkinnolla
           form={form}
           oppilaitosOid={oppilaitosOid}
-          ryhmäKoodi={ryhmäKoodi}
           suoritusPath={suoritusPath}
         />
       </Column>
@@ -429,10 +398,6 @@ const NewYhteinenTutkinnonOsaTutkinnolla = ({
 type NewMuuTutkinnonOsaTutkinnollaProps = {
   form: FormModel<AmmatillinenOpiskeluoikeus>
   oppilaitosOid?: string
-  ryhmäKoodi?: Koodistokoodiviite<
-    'ammatillisentutkinnonosanryhma',
-    '1' | '3' | '4'
-  >
   suoritusPath: FormOptic<
     AmmatillinenOpiskeluoikeus,
     AmmatillisenTutkinnonOsittainenUseastaTutkinnostaSuoritus
@@ -442,7 +407,6 @@ type NewMuuTutkinnonOsaTutkinnollaProps = {
 const NewMuuTutkinnonOsaTutkinnolla = ({
   form,
   oppilaitosOid,
-  ryhmäKoodi,
   suoritusPath
 }: NewMuuTutkinnonOsaTutkinnollaProps) => {
   const [showModal, setShowModal] = useState(false)
@@ -451,11 +415,7 @@ const NewMuuTutkinnonOsaTutkinnolla = ({
   return (
     <>
       <FlatButton
-        testId={
-          ryhmäKoodi
-            ? `lisaa-muu-tutkinnon-osa-${ryhmäKoodi?.koodiarvo}`
-            : 'lisaa-muu-osa'
-        }
+        testId="lisaa-ammatillisen-tutkinnon-osa"
         onClick={() => setShowModal(true)}
       >
         {t('Lisää tutkinnon osa')}
@@ -463,11 +423,10 @@ const NewMuuTutkinnonOsaTutkinnolla = ({
       {showModal && (
         <NewMuuTutkinnonOsaTutkinnollaModal
           oppilaitosOid={oppilaitosOid}
-          ryhmäKoodiArvo={ryhmäKoodi?.koodiarvo}
           onClose={() => setShowModal(false)}
           onSubmit={async (tutkinto, tunniste) => {
             const osasuoritus = await fillNimet(
-              newMuuTutkinnonOsaTutkinnolla(tutkinto, tunniste, ryhmäKoodi)
+              newMuuTutkinnonOsaTutkinnolla(tutkinto, tunniste)
             )
             form.updateAt(
               suoritusPath.prop('osasuoritukset').valueOr([]),
@@ -484,10 +443,6 @@ const NewMuuTutkinnonOsaTutkinnolla = ({
 type NewPaikallinenOsaTutkinnollaProps = {
   form: FormModel<AmmatillinenOpiskeluoikeus>
   oppilaitosOid?: string
-  ryhmäKoodi?: Koodistokoodiviite<
-    'ammatillisentutkinnonosanryhma',
-    '1' | '3' | '4'
-  >
   suoritusPath: FormOptic<
     AmmatillinenOpiskeluoikeus,
     AmmatillisenTutkinnonOsittainenUseastaTutkinnostaSuoritus
@@ -497,7 +452,6 @@ type NewPaikallinenOsaTutkinnollaProps = {
 const NewPaikallinenOsaTutkinnolla = ({
   form,
   oppilaitosOid,
-  ryhmäKoodi,
   suoritusPath
 }: NewPaikallinenOsaTutkinnollaProps) => {
   const [showModal, setShowModal] = useState(false)
@@ -506,11 +460,7 @@ const NewPaikallinenOsaTutkinnolla = ({
   return (
     <>
       <FlatButton
-        testId={
-          ryhmäKoodi
-            ? `lisaa-paikallinen-osa-${ryhmäKoodi?.koodiarvo}`
-            : 'lisaa-paikallinen-osa-muut'
-        }
+        testId="lisaa-paikallinen-osa"
         onClick={() => setShowModal(true)}
       >
         {t('Lisää paikallinen tutkinnon osa')}
@@ -521,7 +471,7 @@ const NewPaikallinenOsaTutkinnolla = ({
           onClose={() => setShowModal(false)}
           onSubmit={async (tutkinto, osa) => {
             const osasuoritus = await fillNimet(
-              newPaikallinenOsaTutkinnolla(tutkinto, osa, ryhmäKoodi)
+              newPaikallinenOsaTutkinnolla(tutkinto, osa)
             )
             form.updateAt(
               suoritusPath.prop('osasuoritukset').valueOr([]),
@@ -632,7 +582,6 @@ const NewYhteinenTutkinnonOsaTutkinnollaModal = ({
 
 type NewMuuTutkinnonOsaTutkinnollaModalProps = {
   oppilaitosOid?: string
-  ryhmäKoodiArvo?: string
   onClose: () => void
   onSubmit: (
     tutkinto: TutkintoPeruste,
@@ -642,7 +591,6 @@ type NewMuuTutkinnonOsaTutkinnollaModalProps = {
 
 const NewMuuTutkinnonOsaTutkinnollaModal = ({
   oppilaitosOid,
-  ryhmäKoodiArvo,
   onClose,
   onSubmit
 }: NewMuuTutkinnonOsaTutkinnollaModalProps) => {
@@ -655,7 +603,7 @@ const NewMuuTutkinnonOsaTutkinnollaModal = ({
   const tutkinnot = useTutkinnot(oppilaitosOid)
   const lisättävätTutkinnonOsat = useTutkinnonOsat(
     tutkinto?.diaarinumero,
-    ryhmäKoodiArvo ? ryhmäKoodiArvo : '1' // jos ryhmä on tyhjä, feikkaa se tulosten suodattamiseksi
+    '1' // Ammatillisen tutkinnon osan ryhmä
   ).osat.map((o) => o.koodiarvo)
 
   // Näiden memoizeaaminen parantaa KoodistoSelectin suorituskykyä huomattavasti
@@ -810,11 +758,7 @@ const newYhteinenTutkinnonOsaTutkinnolla = (
 
 const newMuuTutkinnonOsaTutkinnolla = (
   tutkinto: TutkintoPeruste,
-  tunniste: Koodistokoodiviite<'tutkinnonosat', string>,
-  ryhmäKoodi?: Koodistokoodiviite<
-    'ammatillisentutkinnonosanryhma',
-    '1' | '3' | '4'
-  >
+  tunniste: Koodistokoodiviite<'tutkinnonosat', string>
 ) => {
   return MuunOsittaisenAmmatillisenTutkinnonTutkinnonosanUseastaTutkinnostaSuoritus(
     {
@@ -830,15 +774,17 @@ const newMuuTutkinnonOsaTutkinnolla = (
         perusteenDiaarinumero: tutkinto.diaarinumero,
         perusteenNimi: tutkinto.nimi
       }),
-      tutkinnonOsanRyhmä: ryhmäKoodi
+      tutkinnonOsanRyhmä: Koodistokoodiviite({
+        koodiarvo: '1', // Ammatillisen tutkinnon osan ryhmä
+        koodistoUri: 'ammatillisentutkinnonosanryhma'
+      })
     }
   )
 }
 
 const newPaikallinenOsaTutkinnolla = (
   tutkinto: TutkintoPeruste,
-  osa: string,
-  ryhmä?: Koodistokoodiviite<'ammatillisentutkinnonosanryhma', '1' | '3' | '4'>
+  osa: string
 ): MuunOsittaisenAmmatillisenTutkinnonTutkinnonosanUseastaTutkinnostaSuoritus => {
   return MuunOsittaisenAmmatillisenTutkinnonTutkinnonosanUseastaTutkinnostaSuoritus(
     {
@@ -855,7 +801,10 @@ const newPaikallinenOsaTutkinnolla = (
         perusteenDiaarinumero: tutkinto.diaarinumero,
         perusteenNimi: tutkinto.nimi
       }),
-      tutkinnonOsanRyhmä: ryhmä
+      tutkinnonOsanRyhmä: Koodistokoodiviite({
+        koodiarvo: '1', // Ammatillisen tutkinnon osan ryhmä
+        koodistoUri: 'ammatillisentutkinnonosanryhma'
+      })
     }
   )
 }
