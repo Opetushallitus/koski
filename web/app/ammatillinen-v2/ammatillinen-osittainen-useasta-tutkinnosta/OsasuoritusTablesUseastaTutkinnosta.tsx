@@ -561,16 +561,15 @@ const NewYhteinenTutkinnonOsaTutkinnollaModal = ({
   const lisättävätTutkinnonOsat = useTutkinnonOsat(
     tutkinto?.diaarinumero,
     ryhmäKoodiArvo
-  )
+  ).osat.map((o) => o.koodiarvo)
 
   // Näiden memoizeaaminen parantaa KoodistoSelectin suorituskykyä huomattavasti
   const format = useCallback((osa) => osa.koodiarvo + ' ' + t(osa.nimi), [])
   const yhteisetFilter = useCallback(
     (osa) => {
-      const osat = lisättävätTutkinnonOsat.osat.map((o) => o.koodiarvo)
-      return osat.length === 0
-        ? yhteisenTutkinnonOsat.includes(osa.koodiarvo)
-        : osat.includes(osa.koodiarvo)
+      return lisättävätTutkinnonOsat.length === 0
+        ? false
+        : lisättävätTutkinnonOsat.includes(osa.koodiarvo)
     },
     [lisättävätTutkinnonOsat]
   )
@@ -600,6 +599,7 @@ const NewYhteinenTutkinnonOsaTutkinnollaModal = ({
           format={format}
           value={tunniste?.koodiarvo}
           filter={yhteisetFilter}
+          zeroValueOption={lisättävätTutkinnonOsat.length === 0}
           onSelect={(tutkinnonOsa) => {
             const yhteinenTunniste =
               tutkinnonOsa as YhteisenTutkinnonOsatTunniste
@@ -656,18 +656,16 @@ const NewMuuTutkinnonOsaTutkinnollaModal = ({
   const lisättävätTutkinnonOsat = useTutkinnonOsat(
     tutkinto?.diaarinumero,
     ryhmäKoodiArvo ? ryhmäKoodiArvo : '1' // jos ryhmä on tyhjä, feikkaa se tulosten suodattamiseksi
-  )
+  ).osat.map((o) => o.koodiarvo)
 
   // Näiden memoizeaaminen parantaa KoodistoSelectin suorituskykyä huomattavasti
   const format = useCallback((osa) => osa.koodiarvo + ' ' + t(osa.nimi), [])
   const ammatillisetFilter = useCallback(
     (osa) => {
-      const osat = lisättävätTutkinnonOsat.osat.map((o) => o.koodiarvo)
-      return (
-        osat.length === 0 ||
-        (osat.includes(osa.koodiarvo) &&
-          !yhteisenTutkinnonOsat.includes(osa.koodiarvo))
-      )
+      return lisättävätTutkinnonOsat.length === 0
+        ? false
+        : lisättävätTutkinnonOsat.includes(osa.koodiarvo) &&
+            !yhteisenTutkinnonOsat.includes(osa.koodiarvo)
     },
     [lisättävätTutkinnonOsat]
   )
@@ -697,6 +695,7 @@ const NewMuuTutkinnonOsaTutkinnollaModal = ({
           format={format}
           value={tunniste?.koodiarvo}
           filter={ammatillisetFilter}
+          zeroValueOption={lisättävätTutkinnonOsat.length === 0}
           onSelect={(tutkinnonOsa) => tutkinnonOsa && setTunniste(tutkinnonOsa)}
           testId="uusi-muu-tutkinnonosa"
         />
