@@ -948,25 +948,33 @@ class KoskiValidator(
           opiskeluoikeudenAlkamispäivä.isEmpty ||
           !lt.pidennettyOppivelvollisuus.get.loppu.get.isBefore(opiskeluoikeudenAlkamispäivä.get)
 
+        val tukijaksotVoimaan = LocalDate.parse(config.getString("validaatiot.tukijaksotVoimaan"))
+        val pidennettyJakso = lt.pidennettyOppivelvollisuus.get
+        val pidennettyOverlapsUudenMallinAjanjakson = pidennettyJakso.loppu match {
+          case Some(l) => !l.isBefore(tukijaksotVoimaan)
+          case None    => true // avoin jakso ulottuu varmasti yli voimaantulopäivän
+        }
+        val vaadiVammaisuusJaksot = !pidennettyOverlapsUudenMallinAjanjakson
+
         val jokinVammaisuusjaksoKokoPidennetynOppivelvollisuudenAjan =
-          kaikkiVammaisuusjaksotYhdistettynä.exists(j => j.contains(lt.pidennettyOppivelvollisuus.get))
+          kaikkiVammaisuusjaksotYhdistettynä.exists(j => j.contains(pidennettyJakso))
 
         val kaikkiVammaisuusjaksotOsuvatPidennettyynOppivelvollisuuteen =
-          kaikkiVammaisuusjaksotYhdistettynä.forall(j => lt.pidennettyOppivelvollisuus.get.contains(j))
+          kaikkiVammaisuusjaksotYhdistettynä.forall(j => pidennettyJakso.contains(j))
 
         val viimeinenVammaisuusjaksoPäättyyOikeinPidennetynOppivelvollisuudenPäättyessä =
-          lt.pidennettyOppivelvollisuus.get.loppu.isEmpty ||
-          vammaisuusjaksotYhdistettynä.exists(_.loppu == lt.pidennettyOppivelvollisuus.get.loppu) ||
-          vaikeastiVammaisuusjaksotYhdistettynä.exists(_.loppu == lt.pidennettyOppivelvollisuus.get.loppu)
+          pidennettyJakso.loppu.isEmpty ||
+          vammaisuusjaksotYhdistettynä.exists(_.loppu == pidennettyJakso.loppu) ||
+          vaikeastiVammaisuusjaksotYhdistettynä.exists(_.loppu == pidennettyJakso.loppu)
 
         val eiPäällekäisiäEriVammaisuustyypinJaksoja =
           !vammaisuusjaksotYhdistettynä.exists(vj => vaikeastiVammaisuusjaksotYhdistettynä.exists(_.overlaps(vj)))
 
-        val looginenTakaraja = List(lt.pidennettyOppivelvollisuus.get.loppu.getOrElse(LocalDate.MAX), opiskeluoikeudenPäättymispäivä.getOrElse(LocalDate.MAX)).min[LocalDate]
+        val looginenTakaraja = List(pidennettyJakso.loppu.getOrElse(LocalDate.MAX), opiskeluoikeudenPäättymispäivä.getOrElse(LocalDate.MAX)).min[LocalDate]
         val jokinErityisenTuenJaksoKokoPidennetynOppivelvollisuudenAjan =
           tuenJaksotYhdistettynä.exists(j => {
-            j.contains(lt.pidennettyOppivelvollisuus.get.alku) &&
-              j.contains(lt.pidennettyOppivelvollisuus.get.loppu.getOrElse(looginenTakaraja))
+            j.contains(pidennettyJakso.alku) &&
+              j.contains(pidennettyJakso.loppu.getOrElse(looginenTakaraja))
           })
 
         HttpStatus.fold(
@@ -975,21 +983,27 @@ class KoskiValidator(
               "Pidennetty oppivelvollisuusjakso ei voi loppua ennen opiskeluoikeuden alkua"
             )
           ),
-          HttpStatus.validate(jokinVammaisuusjaksoKokoPidennetynOppivelvollisuudenAjan)(
-            KoskiErrorCategory.badRequest.validation.date.vammaisuusjakso(
-              "Oppivelvollisuuden pidennyksessä on päiviä, joina ei ole voimassaolevaa vammaisuusjaksoa"
+          if (vaadiVammaisuusJaksot)
+            HttpStatus.validate(jokinVammaisuusjaksoKokoPidennetynOppivelvollisuudenAjan)(
+              KoskiErrorCategory.badRequest.validation.date.vammaisuusjakso(
+                "Oppivelvollisuuden pidennyksessä on päiviä, joina ei ole voimassaolevaa vammaisuusjaksoa"
+              )
             )
-          ),
-          HttpStatus.validate(kaikkiVammaisuusjaksotOsuvatPidennettyynOppivelvollisuuteen)(
-            KoskiErrorCategory.badRequest.validation.date.vammaisuusjakso(
-              "Jokin vammaisuusjaksoista on pidennetyn oppivelvollisuuden ulkopuolella"
+          else HttpStatus.ok,
+          if (vaadiVammaisuusJaksot)
+            HttpStatus.validate(kaikkiVammaisuusjaksotOsuvatPidennettyynOppivelvollisuuteen)(
+              KoskiErrorCategory.badRequest.validation.date.vammaisuusjakso(
+                "Jokin vammaisuusjaksoista on pidennetyn oppivelvollisuuden ulkopuolella"
+              )
             )
-          ),
-          HttpStatus.validate(viimeinenVammaisuusjaksoPäättyyOikeinPidennetynOppivelvollisuudenPäättyessä)(
-            KoskiErrorCategory.badRequest.validation.date.vammaisuusjakso(
-              "Viimeisimmän vammaisuusjakson päättymispäivä ei ole sama kuin pidennetyn oppivelvollisuuden määritelty päättymispäivä"
+          else HttpStatus.ok,
+          if (vaadiVammaisuusJaksot)
+            HttpStatus.validate(viimeinenVammaisuusjaksoPäättyyOikeinPidennetynOppivelvollisuudenPäättyessä)(
+              KoskiErrorCategory.badRequest.validation.date.vammaisuusjakso(
+                "Viimeisimmän vammaisuusjakson päättymispäivä ei ole sama kuin pidennetyn oppivelvollisuuden määritelty päättymispäivä"
+              )
             )
-          ),
+          else HttpStatus.ok,
           HttpStatus.validate(eiPäällekäisiäEriVammaisuustyypinJaksoja)(
             KoskiErrorCategory.badRequest.validation.date.vammaisuusjakso(
               "Vaikeasti vammaisuuden ja muun kuin vaikeasti vammaisuuden aikajaksot eivät voi olla voimassa samana päivänä"

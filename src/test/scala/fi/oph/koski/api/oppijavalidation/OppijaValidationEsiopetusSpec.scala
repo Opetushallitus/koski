@@ -948,6 +948,30 @@ class OppijaValidationEsiopetusSpec extends TutkinnonPerusteetTest[EsiopetuksenO
     }
   }
 
+  "Pidennetty oppivelvollisuus 1.8.2025 jälkeen ilman vammaisuusjaksoja, mutta tuen päätöksen jaksolla -> HTTP 200" in {
+    val pidennetty = Aikajakso(
+      alku = Some(date(2025, 8, 1)),
+      loppu = Some(date(2026, 5, 29)),
+    )
+    val tukijakso = Tukijakso(
+      alku = Some(date(2025, 8, 1)),
+      loppu = Some(date(2026, 5, 29)),
+    )
+
+    val oo = defaultOpiskeluoikeus.copy(
+      lisätiedot = Some(EsiopetuksenOpiskeluoikeudenLisätiedot(
+        pidennettyOppivelvollisuus = Some(pidennetty),
+        tuenPäätöksenJaksot = Some(List(tukijakso)),
+        vammainen = None,
+        vaikeastiVammainen = None,
+      ))
+    )
+
+    setupOppijaWithOpiskeluoikeus(oo) {
+      verifyResponseStatusOk()
+    }
+  }
+
   "Opiskeluoikeudet oppivelvollisuuden pidennyksen ja tuen päätöksien muutosten siirtymäajan (1.8.2025 - 1.8.2026) yli" - {
     def makeOpiskeluoikeus(
       tuenPäätöksenJaksot: Option[List[Tukijakso]] = None,
