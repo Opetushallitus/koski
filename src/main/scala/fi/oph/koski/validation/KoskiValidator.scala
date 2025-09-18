@@ -324,7 +324,7 @@ class KoskiValidator(
         // YO-tutkinnon opiskeluoikeudella ei ole oppilaitosta, koska sen myöntää koulutustoimijana toimiva ylioppilastutkintolautakunta
         Right(oo)
       case kituOo: KielitutkinnonOpiskeluoikeus if kituOo.oppilaitos.isEmpty && kituOo.isOphValtionhallinnonKielitutkinto =>
-        // Erinomaisen tason valtionhallinnon kielitutkinnon suorituksella ei välttämättä ole oppilaitosta.
+        // Valtionhallinnon kielitutkinnon suorituksella ei välttämättä ole oppilaitosta.
         // Tallennetaan silloin Opetushallituksesta koulutustoimijana johdettu näennäisoppilaitos.
         Right(kituOo.copy(oppilaitos = organisaatioRepository
           .getOrganisaatio(Opetushallitus.koulutustoimijaOid)

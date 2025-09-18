@@ -1,5 +1,9 @@
 # Koskeen tallennettavien tietojen validaatiosäännöt
 
+## 18.9.2025
+
+- Salli Valtionhallinnon kielitutkinnot -organisaation käyttö myös valtionkielitutkintojen hyvän ja tyydyttävän taitotason suorituksille.
+
 ## 12.9.2025
 
 - Korjaus kielitutkintojen duplikaattien tunnistamiseen: eri kielen tai tutkintotason suoritukset lasketaan erillisiksi
