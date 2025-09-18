@@ -187,6 +187,7 @@ export const AmmatillisenOsittaisenUseastaTutkinnostaSuorituksenTiedot: React.FC
         <FormField
           form={form}
           view={BooleanView}
+          viewProps={{ hideFalse: true }}
           edit={BooleanEdit}
           path={path.prop('toinenTutkintonimike')}
         />
@@ -224,6 +225,7 @@ export const AmmatillisenOsittaisenUseastaTutkinnostaSuorituksenTiedot: React.FC
         <FormField
           form={form}
           view={BooleanView}
+          viewProps={{ hideFalse: true }}
           edit={BooleanEdit}
           path={path.prop('toinenOsaamisala')}
         />

@@ -81,7 +81,7 @@ export const OsasuoritusTable = <DATA_KEYS extends string, P>(
           </TestIdLayer>
         ))}
       </TestIdLayer>
-      <Spacer />
+      {editMode && <Spacer />}
       {editMode && AddNewOsasuoritusView && (
         // @ts-expect-error React.JSX.IntristicAttributes virhe
         <AddNewOsasuoritusView {...(props.addNewOsasuoritusViewProps || {})} />
