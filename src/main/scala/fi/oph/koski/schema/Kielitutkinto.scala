@@ -153,6 +153,7 @@ case class ValtionhallinnonKielitutkinnonSuullisenKielitaidonSuoritus(
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("valtionhallinnonkielitaito", koodistoUri = "suorituksentyyppi"),
   arviointi: Option[List[ValtionhallinnonKielitutkinnonArviointi]] = None,
   override val osasuoritukset: Option[List[ValtionhallinnonKielitutkinnonSuullisenKielitaidonOsakokeenSuoritus]],
+  override val alkamispäivä: Option[LocalDate] = None
 ) extends ValtionhallinnonKielitutkinnonKielitaidonSuoritus
 
 case class ValtionhallinnonKielitutkinnonKirjallisenKielitaidonSuoritus(
@@ -161,6 +162,7 @@ case class ValtionhallinnonKielitutkinnonKirjallisenKielitaidonSuoritus(
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("valtionhallinnonkielitaito", koodistoUri = "suorituksentyyppi"),
   arviointi: Option[List[ValtionhallinnonKielitutkinnonArviointi]] = None,
   override val osasuoritukset: Option[List[ValtionhallinnonKielitutkinnonKirjallisenKielitaidonOsakokeenSuoritus]],
+  override val alkamispäivä: Option[LocalDate] = None
 ) extends ValtionhallinnonKielitutkinnonKielitaidonSuoritus
 
 case class ValtionhallinnonKielitutkinnonYmmärtämisenKielitaidonSuoritus(
@@ -169,6 +171,7 @@ case class ValtionhallinnonKielitutkinnonYmmärtämisenKielitaidonSuoritus(
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("valtionhallinnonkielitaito", koodistoUri = "suorituksentyyppi"),
   arviointi: Option[List[ValtionhallinnonKielitutkinnonArviointi]] = None,
   override val osasuoritukset: Option[List[ValtionhallinnonKielitutkinnonYmmärtämisenKielitaidonOsakokeenSuoritus]],
+  override val alkamispäivä: Option[LocalDate] = None
 ) extends ValtionhallinnonKielitutkinnonKielitaidonSuoritus
 
 case class ValtionhallinnonKielitutkinnonSuullinenKielitaito(
@@ -204,6 +207,7 @@ case class ValtionhallinnonKielitutkinnonSuullisenKielitaidonOsakokeenSuoritus(
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("valtionhallinnonkielitutkinnonosakoe", "suorituksentyyppi"),
   koulutusmoduuli: ValtionhallinnonSuullisenKielitaidonOsakoe,
   arviointi: Option[List[ValtionhallinnonKielitutkinnonArviointi]],
+  override val alkamispäivä: Option[LocalDate] = None
 ) extends ValtionhallinnonKielitutkinnonOsakokeenSuoritus
 
 case class ValtionhallinnonKielitutkinnonKirjallisenKielitaidonOsakokeenSuoritus(
@@ -211,6 +215,7 @@ case class ValtionhallinnonKielitutkinnonKirjallisenKielitaidonOsakokeenSuoritus
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("valtionhallinnonkielitutkinnonosakoe", "suorituksentyyppi"),
   koulutusmoduuli: ValtionhallinnonKirjallisenKielitaidonOsakoe,
   arviointi: Option[List[ValtionhallinnonKielitutkinnonArviointi]],
+  override val alkamispäivä: Option[LocalDate] = None
 ) extends ValtionhallinnonKielitutkinnonOsakokeenSuoritus
 
 case class ValtionhallinnonKielitutkinnonYmmärtämisenKielitaidonOsakokeenSuoritus(
@@ -218,6 +223,7 @@ case class ValtionhallinnonKielitutkinnonYmmärtämisenKielitaidonOsakokeenSuori
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("valtionhallinnonkielitutkinnonosakoe", "suorituksentyyppi"),
   koulutusmoduuli: ValtionhallinnonYmmärtämisenKielitaidonOsakoe,
   arviointi: Option[List[ValtionhallinnonKielitutkinnonArviointi]],
+  override val alkamispäivä: Option[LocalDate] = None
 ) extends ValtionhallinnonKielitutkinnonOsakokeenSuoritus
 
 trait ValtionhallinnonKielitutkinnonOsakoe extends Koulutusmoduuli {

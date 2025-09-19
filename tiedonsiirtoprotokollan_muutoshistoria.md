@@ -1,3 +1,7 @@
+## 22.9.2025
+
+- Lisätty aloituspäivä valtionhallinnon kielitutkinnon kielitaitojen suorituksille.
+
 ## 19.9.2025
 
 - Rajoitettu ammatillisen tutkinnon osan/osien useasta tutkinnosta suoritustapaa vain reformiin.

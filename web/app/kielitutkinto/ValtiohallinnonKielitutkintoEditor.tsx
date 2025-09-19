@@ -36,6 +36,7 @@ import { ValtionhallinnonKielitutkinnonKielitaidonSuoritus } from '../types/fi/o
 import { ValtionhallinnonKielitutkinnonSuoritus } from '../types/fi/oph/koski/schema/ValtionhallinnonKielitutkinnonSuoritus'
 import { ArviointipäiväOrd } from '../util/arvioinnit'
 import { OsasuoritusOf } from '../util/schema'
+import { DateView } from '../components-v2/controls/DateField'
 
 export type ValtionhallinnonKielitutkintoEditorProps = {
   form: FormModel<KielitutkinnonOpiskeluoikeus>
@@ -111,7 +112,7 @@ const kielitaitoToTableRow = ({
   osasuoritusIndex,
   form
 }: KielitaitoToTableRowParams): OsasuoritusRowData<
-  'Tutkinto' | 'Tutkintopäivä' | 'Arvosana'
+  'Tutkinto' | 'Tutkintopäivä' | 'Arviointipäivä' | 'Arvosana'
 > => {
   const osasuoritusPath = suoritusPath
     .prop('osasuoritukset')
@@ -136,9 +137,17 @@ const kielitaitoToTableRow = ({
       Tutkintopäivä: (
         <FormField
           form={form}
+          path={osasuoritusPath.path('alkamispäivä')}
+          view={DateView}
+          testId="tutkintopäivä"
+        />
+      ),
+      Arviointipäivä: (
+        <FormField
+          form={form}
           path={osasuoritusPath.path('arviointi')}
           view={ParasArvosanaPäiväView}
-          testId="nimi"
+          testId="arviointipäivä"
         />
       ),
       Arvosana: (
@@ -217,7 +226,7 @@ const osakoeToTableRow = ({
   osasuoritusIndex,
   form
 }: OsakoeToTableRowParams): OsasuoritusRowData<
-  'Osakoe' | 'Tutkintopäivä' | 'Arvosana'
+  'Osakoe' | 'Tutkintopäivä' | 'Arviointipäivä' | 'Arvosana'
 > => {
   const osakoePath = kielitaidonSuoritusPath
     .prop('osasuoritukset')
@@ -240,6 +249,13 @@ const osakoeToTableRow = ({
         />
       ),
       Tutkintopäivä: (
+        <FormField
+          form={form}
+          path={osakoePath.path('alkamispäivä')}
+          view={DateView}
+        />
+      ),
+      Arviointipäivä: (
         <FormField
           form={form}
           path={osakoePath.path('arviointi')}
@@ -282,7 +298,7 @@ const OsakokeenArvioinnit: React.FC<OsakokeenArvioinnitProps> = ({
         A.sort(Ord.reverse(ArviointipäiväOrd)),
         A.mapWithIndex((index, arviointi) => (
           <KeyValueTable key={index}>
-            <KeyValueRow localizableLabel="Tutkintopäivä" indent={indentation}>
+            <KeyValueRow localizableLabel="Arviointipäivä" indent={indentation}>
               {ISO2FinnishDate(arviointi.päivä)}
             </KeyValueRow>
             <KeyValueRow localizableLabel="Arvosana" indent={indentation}>
