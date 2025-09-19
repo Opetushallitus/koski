@@ -36,7 +36,7 @@ trait AuthenticationSupport extends BaseServlet with SSOSupport {
         val authUser: Either[HttpStatus, AuthenticationUser] = userFromCookie match {
           case Right(user) => Right(user)
           case Left(SessionStatusExpiredKansalainen) => Left(KoskiErrorCategory.unauthorized.notAuthenticated())
-          case Left(_) => userFromBasicAuth
+          case Left(_) => Left(KoskiErrorCategory.unauthorized.notAuthenticated())
         }
         setUser(authUser)
         authUser
