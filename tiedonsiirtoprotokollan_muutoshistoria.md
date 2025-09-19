@@ -1,4 +1,4 @@
-## x.8.2025
+## 19.8.2025
 
 - Salli valtionhallinnon kielitutkinnon erinomaisen tason siirto ilman oppilaitosta
 

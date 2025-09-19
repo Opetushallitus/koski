@@ -333,6 +333,8 @@ trait KoskiLomanSallivaLaajaOpiskeluoikeusjakso extends KoskiLaajaOpiskeluoikeus
   def tila: Koodistokoodiviite
 }
 
+trait KoskiPäällekkäisenPäivämääränSallivaOpiskeluoikeusjakso extends KoskiOpiskeluoikeusjakso
+
 trait Alkupäivällinen {
   @Description("Jakson alkamispäivämäärä. Muoto YYYY-MM-DD")
   def alku: LocalDate

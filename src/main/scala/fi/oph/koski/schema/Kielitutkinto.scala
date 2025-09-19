@@ -48,7 +48,7 @@ case class KielitutkinnonOpiskeluoikeudenOpiskeluoikeusjakso(
   @KoodistoKoodiarvo("paattynyt")
   @KoodistoKoodiarvo("mitatoity")
   tila: Koodistokoodiviite,
-) extends KoskiOpiskeluoikeusjakso
+) extends KoskiPäällekkäisenPäivämääränSallivaOpiskeluoikeusjakso
 
 trait KielitutkinnonPäätasonSuoritus extends KoskeenTallennettavaPäätasonSuoritus
 
