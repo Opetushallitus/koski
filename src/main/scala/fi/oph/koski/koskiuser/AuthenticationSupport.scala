@@ -5,7 +5,7 @@ import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.json.JsonSerializer.writeWithRoot
 import fi.oph.koski.log._
 import fi.oph.koski.servlet.BaseServlet
-import fi.oph.koski.sso.SSOSupport
+import fi.oph.koski.sso.{KoskiUserCookie, SSOSupport}
 import fi.oph.koski.userdirectory.Password
 import org.scalatra.{Cookie, CookieOptions}
 import org.scalatra.auth.strategy.BasicAuthStrategy
@@ -20,10 +20,11 @@ trait AuthenticationSupport extends BaseServlet with SSOSupport {
   def setUser(user: Either[HttpStatus, AuthenticationUser]): Either[HttpStatus, AuthenticationUser] = {
     request.setAttribute("authUser", user)
     user.right.toOption.filter(_.serviceTicket.isDefined).foreach { user =>
+      val cookie = KoskiUserCookie(serviceTicket = user.serviceTicket.get, kansalainen = user.kansalainen)
       if (user.kansalainen) {
-        setKansalaisCookie(user.copy(huollettavat = None))
+        setKansalaisCookie(cookie)
       } else {
-        setUserCookie(user)
+        setUserCookie(cookie)
       }
     }
     user
@@ -45,14 +46,14 @@ trait AuthenticationSupport extends BaseServlet with SSOSupport {
 
 
   private def userFromCookie: Either[SessionStatus, AuthenticationUser] = {
-    def getUser(authUser: Option[AuthenticationUser]): Either[SessionStatus, AuthenticationUser] =
-      authUser.flatMap(_.serviceTicket).map(ticket => (ticket, application.koskiSessionRepository.getUserByTicket(ticket))) match {
+    def getUser(cookie: Option[KoskiUserCookie]): Either[SessionStatus, AuthenticationUser] =
+      cookie.map(_.serviceTicket).map(ticket => (ticket, application.koskiSessionRepository.getUserByTicket(ticket))) match {
         case Some((_, Some(usr))) => Right(usr)
         case Some((ticket, None)) =>
           removeUserCookie
           setUser(Left(KoskiErrorCategory.unauthorized.notAuthenticated())) // <- to prevent getLogger call from causing recursive calls here
           defaultLogger.warn("User not found by ticket " + ticket)
-          if (authUser.exists(_.kansalainen)) Left(SessionStatusExpiredKansalainen) else Left(SessionStatusExpiredVirkailija)
+          if (cookie.exists(_.kansalainen)) Left(SessionStatusExpiredKansalainen) else Left(SessionStatusExpiredVirkailija)
         case _ => Left(SessionStatusNoSession)
       }
 

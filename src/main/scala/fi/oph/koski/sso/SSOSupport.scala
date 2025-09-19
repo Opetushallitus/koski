@@ -1,12 +1,12 @@
 package fi.oph.koski.sso
 
-import java.net.{URI, URLDecoder, URLEncoder}
 import com.typesafe.config.Config
 import fi.oph.koski.json.JsonSerializer
-import fi.oph.koski.koskiuser.{AuthenticationUser, UserAuthenticationContext, UserLanguage}
+import fi.oph.koski.koskiuser.{UserAuthenticationContext, UserLanguage}
 import fi.oph.koski.log.Logging
 import org.scalatra.{Cookie, CookieOptions, ScalatraBase}
 
+import java.net.{URI, URLDecoder, URLEncoder}
 import scala.collection.JavaConverters._
 
 trait SSOSupport extends ScalatraBase with Logging {
@@ -31,26 +31,28 @@ trait SSOSupport extends ScalatraBase with Logging {
 
   private def removeCookie(name: String, domain: String = "") = response.addCookie(Cookie(name, "")(CookieOptions(domain = domain, secure = isHttps, path = "/", maxAge = 0, httpOnly = true)))
 
-  def setUserCookie(user: AuthenticationUser) = {
-    setCookie("koskiUser", user)
+  def setUserCookie(cookie: KoskiUserCookie) = {
+    setCookie("koskiUser", cookie)
     removeCookie("koskiOppija")
   }
 
-  def setKansalaisCookie(user: AuthenticationUser) = {
-    cookieDomains.foreach(cookieDomain => setCookie("koskiOppija", user, domain = cookieDomain))
+  def setKansalaisCookie(cookie: KoskiUserCookie) = {
+    cookieDomains.foreach(cookieDomain => setCookie("koskiOppija", cookie, domain = cookieDomain))
     removeCookie("koskiUser")
   }
 
-  private def setCookie(name: String, user: AuthenticationUser, domain: String = "") =
+  private def setCookie(name: String, user: KoskiUserCookie, domain: String = "") =
     response.addCookie(Cookie(name, URLEncoder.encode(JsonSerializer.writeWithRoot(user), "UTF-8"))(CookieOptions(domain = domain, secure = isHttps, path = "/", maxAge = application.sessionTimeout.seconds, httpOnly = true)))
 
-  def getUserCookie: Option[AuthenticationUser] = getAuthCookie("koskiUser")
-  def getKansalaisCookie: Option[AuthenticationUser] = getAuthCookie("koskiOppija")
+  def getUserCookie: Option[KoskiUserCookie] = getAuthCookie("koskiUser")
 
-  def getAuthCookie(name: String): Option[AuthenticationUser] = { val cookie = Option(request.getCookies).toList.flatten.find(_.getName == name)
-    cookie.map(_.getValue).map(c => URLDecoder.decode(c, "UTF-8")).flatMap( json =>
+  def getKansalaisCookie: Option[KoskiUserCookie] = getAuthCookie("koskiOppija")
+
+  def getAuthCookie(name: String): Option[KoskiUserCookie] = {
+    val cookie = Option(request.getCookies).toList.flatten.find(_.getName == name)
+    cookie.map(_.getValue).map(c => URLDecoder.decode(c, "UTF-8")).flatMap(json =>
       try {
-        Some(JsonSerializer.parse[AuthenticationUser](json))
+        Some(JsonSerializer.parse[KoskiUserCookie](json))
       } catch {
         case e: Exception =>
           removeUserCookie
@@ -152,4 +154,9 @@ object SSOConfigurationOverride {
     overrides.get(key).getOrElse(config.getString(key))
   }
 }
+
+case class KoskiUserCookie(
+  serviceTicket: String,
+  kansalainen: Boolean
+)
 
