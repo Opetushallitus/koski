@@ -65,7 +65,7 @@ export const AmmatillinenKoulutusFields = (props: SuoritusFieldsProps) => {
               tutkintoKey(props.state.tutkinto.value)
             }
             onChange={(opt) => props.state.tutkinto.set(opt?.value)}
-            onSearch={tutkinnot.setQuery}
+            onSearch={tutkinnot.setDebounceQuery}
             testId="tutkinto"
           />
         </label>

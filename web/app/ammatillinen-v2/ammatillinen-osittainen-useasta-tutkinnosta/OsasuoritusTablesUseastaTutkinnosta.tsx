@@ -537,7 +537,7 @@ const NewYhteinenTutkinnonOsaTutkinnollaModal = ({
               setTutkinto(opt?.value)
               setTunniste(undefined)
             }}
-            onSearch={tutkinnot.setQuery}
+            onSearch={tutkinnot.setDebounceQuery}
             testId="tutkinto"
           />
         </label>
@@ -631,7 +631,7 @@ const NewMuuTutkinnonOsaTutkinnollaModal = ({
               setTutkinto(opt?.value)
               setTunniste(undefined)
             }}
-            onSearch={tutkinnot.setQuery}
+            onSearch={tutkinnot.setDebounceQuery}
             testId="tutkinto"
           />
         </label>
@@ -697,7 +697,7 @@ const NewPaikallinenOsaTutkinnollaModal = ({
             options={tutkinnot.options}
             value={tutkinto && tutkintoKey(tutkinto)}
             onChange={(opt) => setTutkinto(opt?.value)}
-            onSearch={tutkinnot.setQuery}
+            onSearch={tutkinnot.setDebounceQuery}
             testId="tutkinto"
           />
         </label>

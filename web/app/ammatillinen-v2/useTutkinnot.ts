@@ -8,11 +8,15 @@ import { useMemo, useState } from 'react'
 import { t } from '../i18n/i18n'
 import { SelectOption } from '../components-v2/controls/Select'
 import { TutkintoPeruste } from '../types/fi/oph/koski/tutkinto/TutkintoPeruste'
+import { useDebounce } from '../util/useDebounce'
 
 const cache = createPreferLocalCache(fetchOppilaitoksenPerusteet)
 
 export const useTutkinnot = (oppilaitosOid?: string) => {
   const [query, setQuery] = useState<string>()
+  const [text, setDebounceQuery] = useState<string>()
+
+  useDebounce(200, (inputText) => setQuery(inputText), [text])
 
   const tutkinnot = useApiWithParams(
     fetchOppilaitoksenPerusteet,
@@ -37,7 +41,7 @@ export const useTutkinnot = (oppilaitosOid?: string) => {
     [tutkinnot]
   )
 
-  return { options, setQuery }
+  return { options, setDebounceQuery }
 }
 
 export const tutkintoKey = (tutkinto: TutkintoPeruste): string =>
