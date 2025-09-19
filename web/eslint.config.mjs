@@ -1,122 +1,126 @@
-import { fixupConfigRules, fixupPluginRules } from '@eslint/compat'
-import reactPlugin from 'eslint-plugin-react'
-import mochaPlugin from 'eslint-plugin-mocha'
-import typescriptEslint from '@typescript-eslint/eslint-plugin'
-import globals from 'globals'
-import tsParser from '@typescript-eslint/parser'
-import path from 'node:path'
-import { fileURLToPath } from 'node:url'
-import js from '@eslint/js'
-import { FlatCompat } from '@eslint/eslintrc'
-import eslint from '@eslint/js'
-import tseslint from 'typescript-eslint'
+// eslint.config.mjs
+import { FlatCompat } from "@eslint/eslintrc"
+import { fixupConfigRules } from "@eslint/compat"
+
+import reactPlugin from "eslint-plugin-react"
+import mochaPlugin from "eslint-plugin-mocha"
+import tsParser from "@typescript-eslint/parser"
+import js from "@eslint/js"
+import tseslint from "typescript-eslint"
+import globals from "globals"
+
+import path from "node:path"
+import { fileURLToPath } from "node:url"
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
-const compat = new FlatCompat({
-  baseDirectory: __dirname,
-  recommendedConfig: js.configs.recommended,
-  allConfig: js.configs.all
-})
+
+// Bridge for old-style "extends" configs
+const compat = new FlatCompat({ baseDirectory: __dirname })
 
 export default [
-  ...fixupConfigRules(compat.extends('plugin:react-hooks/recommended')),
-  eslint.configs.recommended,
-  reactPlugin.configs.flat.recommended,
-  mochaPlugin.configs.flat.recommended,
+  // Core ESLint recommended rules
+  js.configs.recommended,
+
+  // TypeScript ESLint recommended rules
   ...tseslint.configs.recommended,
+
+  // React + React Hooks via compat (no flat exports yet)
+  ...fixupConfigRules(compat.extends("plugin:react/recommended")),
+  ...fixupConfigRules(compat.extends("plugin:react-hooks/recommended")),
+
   {
     languageOptions: {
       globals: {
         ...globals.browser,
         ...globals.node,
         ...globals.mocha,
-        __webpack_nonce__: true
+        __webpack_nonce__: true,
       },
-
       parser: tsParser,
-      ecmaVersion: 6,
-      sourceType: 'module',
-
+      ecmaVersion: 2022,
+      sourceType: "module",
       parserOptions: {
         ecmaFeatures: {
           jsx: true,
-          experimentalObjectRestSpread: true
-        }
-      }
+          experimentalObjectRestSpread: true,
+        },
+      },
     },
 
     settings: {
       react: {
-        version: 'detect'
-      }
+        version: "detect",
+      },
     },
 
     rules: {
-      'no-undef': 'warn',
-      'no-var': 'off',
-      'no-unreachable': 'error',
-      'no-console': 'off',
-      'no-warning-comments': 'off',
-      'no-unused-vars': 'off',
-      'react/jsx-no-undef': 'warn',
-      'react/jsx-uses-react': 'warn',
-      'react/jsx-uses-vars': 'warn',
-      'react/jsx-no-literals': 'warn',
-      'react/no-unknown-property': 'warn',
-      'react/react-in-jsx-scope': 'warn',
+      // General
+      "no-undef": "warn",
+      "no-var": "off",
+      "no-unreachable": "error",
+      "no-console": "off",
+      "no-warning-comments": "off",
+      "no-unused-vars": "off",
+      "array-callback-return": "off",
+      eqeqeq: "warn",
+      "no-shadow": "off",
+      "prefer-spread": "warn",
+      "prefer-regex-literals": "off",
 
-      'react/self-closing-comp': [
-        'warn',
-        {
-          component: true,
-          html: false
-        }
-      ],
+      // React
+      "react/jsx-no-undef": "warn",
+      "react/jsx-uses-react": "warn",
+      "react/jsx-uses-vars": "warn",
+      "react/jsx-no-literals": "warn",
+      "react/no-unknown-property": "warn",
+      "react/react-in-jsx-scope": "warn",
+      "react/self-closing-comp": ["warn", { component: true, html: false }],
+      "react/jsx-wrap-multilines": "warn",
+      "react/prop-types": "off",
+      "react/display-name": "off",
+      "react/jsx-key": "off",
+      "react/no-string-refs": "off",
+      "react/no-render-return-value": "off",
 
-      'react/jsx-wrap-multilines': 'warn',
-      'react/prop-types': 'off',
-      'react/display-name': 'off',
-      'react/jsx-key': 'off',
-      'react/no-string-refs': 'off',
-      'array-callback-return': 'off',
-      'react/no-render-return-value': 'off',
-      'prefer-regex-literals': 'off',
-      eqeqeq: 'warn',
-      'no-shadow': 'off',
-      'prefer-spread': 'warn',
-      '@typescript-eslint/no-shadow': 'warn',
-      '@typescript-eslint/no-explicit-any': 'off',
-      '@typescript-eslint/no-unused-vars': 'off',
-      '@typescript-eslint/ban-ts-comment': 'off',
-      '@typescript-eslint/no-empty-function': 'off',
-      '@typescript-eslint/no-unnecessary-type-constraint': 'warn',
-      '@typescript-eslint/ban-types': 'off',
-      '@typescript-eslint/no-unused-expressions': 'off'
-    }
+      // TypeScript
+      "@typescript-eslint/no-shadow": "warn",
+      "@typescript-eslint/no-explicit-any": "off",
+      "@typescript-eslint/no-unused-vars": "off",
+      "@typescript-eslint/ban-ts-comment": "off",
+      "@typescript-eslint/no-empty-function": "off",
+      "@typescript-eslint/no-unnecessary-type-constraint": "warn",
+      "@typescript-eslint/ban-types": "off",
+      "@typescript-eslint/no-unused-expressions": "off",
+    },
   },
-  {
-    files: ['**/*.ts', '**/*.tsx'],
 
-    rules: {
-      'no-undef': 'off'
-    }
-  },
+  // TypeScript-specific overrides
   {
-    files: ['test/**/*'],
+    files: ["**/*.ts", "**/*.tsx"],
     rules: {
-      'no-unused-vars': 'off', // Mochan takia
-      'no-undef': 'off', // Mochan takia
-      'no-var': 'off', // Mochan takia
-      camelcase: 'off',
-      'no-shadow': 'warn', // Mochan takia
-      'no-extend-native': 'off', // Mochan takia
-      'mocha/no-mocha-arrows': 'off',
-      'mocha/max-top-level-suites': 'off',
-      'mocha/consistent-spacing-between-blocks': 'off',
-      'mocha/no-setup-in-describe': 'off',
-      'mocha/no-sibling-hooks': 'off',
-      'mocha/no-identical-title': 'off'
-    }
-  }
+      "no-undef": "off",
+    },
+  },
+
+  // Test overrides (Mocha)
+  {
+    files: ["test/**/*"],
+    rules: {
+      "no-unused-vars": "off",
+      "no-undef": "off",
+      "no-var": "off",
+      camelcase: "off",
+      "no-shadow": "warn",
+      "no-extend-native": "off",
+
+      // Mocha-specific
+      "mocha/no-mocha-arrows": "off",
+      "mocha/max-top-level-suites": "off",
+      "mocha/consistent-spacing-between-blocks": "off",
+      "mocha/no-setup-in-describe": "off",
+      "mocha/no-sibling-hooks": "off",
+      "mocha/no-identical-title": "off",
+    },
+  },
 ]
