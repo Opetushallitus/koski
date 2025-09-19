@@ -25,7 +25,8 @@ import { TutkinnonOsaaPienemmistäKokonaisuuksistaKoostuvaSuoritus } from '../..
 import { ValmaKoulutuksenSuoritus } from '../../types/fi/oph/koski/schema/ValmaKoulutuksenSuoritus'
 import { ValmaKoulutus } from '../../types/fi/oph/koski/schema/ValmaKoulutus'
 import { TutkintoPeruste } from '../../types/fi/oph/koski/tutkinto/TutkintoPeruste'
-import { maksuttomuuslisätiedot, toOppilaitos, toToimipiste } from './utils'
+import { toOppilaitos, toToimipiste } from './utils'
+import { AmmatillisenTutkinnonOsittainenUseastaTutkinnostaSuoritus } from '../../types/fi/oph/koski/schema/AmmatillisenTutkinnonOsittainenUseastaTutkinnostaSuoritus'
 
 export const createAmmatillinenOpiskeluoikeus = (
   suorituksenTyyppi: Koodistokoodiviite<'suorituksentyyppi'>,
@@ -172,6 +173,12 @@ const createAmmatillinenPäätasonSuoritus = (
         suorituskieli,
         toimipiste: toToimipiste(organisaatio)
       })
+    case AmmatillisenOsittaisenUseastaTutkinnostaSuorituksenTyyppi:
+      return AmmatillisenTutkinnonOsittainenUseastaTutkinnostaSuoritus({
+        suorituskieli,
+        toimipiste: toToimipiste(organisaatio)
+      })
+
     default:
       return undefined
   }
@@ -215,3 +222,6 @@ export const createTutkinnonOsaaPienemmistäKokonaisuuksistaKoostuvaKoulutus = (
     }),
     kuvaus: Finnish({ fi: kuvaus })
   })
+
+export const AmmatillisenOsittaisenUseastaTutkinnostaSuorituksenTyyppi =
+  'ammatillinentutkintoosittainenuseastatutkinnosta'

@@ -41,11 +41,11 @@ export const ArviointiView = ({
       </KeyValueRow>
       <KeyValueRow localizableLabel="Arvioijat">
         <TestIdLayer id="arvioijat">
-          {value?.arvioitsijat?.map((a) => (
-            <>
-              <TestIdText id="nimi">{a.nimi}</TestIdText>
+          {value?.arvioitsijat?.map((a, index) => (
+            <div key={`arvioijat.${a.nimi}`}>
+              <TestIdText id={`nimi.${index}`}>{a.nimi}</TestIdText>
               <br />
-            </>
+            </div>
           ))}
         </TestIdLayer>
       </KeyValueRow>
@@ -85,7 +85,7 @@ export const ArviointiEdit = ({
       </KeyValueRow>
       <KeyValueRow localizableLabel="Arvioijat">
         {value?.arvioitsijat?.map((a, index) => (
-          <KeyValueTable>
+          <KeyValueTable key={`arvioijat.edit.${a.nimi}`}>
             <KeyValueRow localizableLabel="Nimi">
               <TextEdit
                 value={a.nimi}

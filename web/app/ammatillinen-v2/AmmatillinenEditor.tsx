@@ -83,6 +83,8 @@ import { HenkilövahvistusValinnaisellaPaikkakunnalla } from '../types/fi/oph/ko
 import { OpenAllButton, useTree } from '../appstate/tree'
 import { AmisLaajuudetYhteensä } from './AmisLaajuudetYhteensä'
 import { SisältyyOpiskeluoikeuteen } from './SisältyyOpiskeluoikeuteen'
+import { isAmmatillisenTutkinnonOsittainenUseastaTutkinnostaSuoritus } from '../types/fi/oph/koski/schema/AmmatillisenTutkinnonOsittainenUseastaTutkinnostaSuoritus'
+import { AmmatillinenTutkintoOsittainenUseastaTutkinnostaEditor } from './ammatillinen-osittainen-useasta-tutkinnosta/AmmatillinenTutkintoOsittainenUseastaTutkinnostaEditor'
 
 export type AmmatillinenEditorProps =
   AdaptedOpiskeluoikeusEditorProps<AmmatillinenOpiskeluoikeus>
@@ -102,11 +104,15 @@ const AmmatillinenEditor: React.FC<AmmatillinenEditorProps> = (props) => {
 }
 
 const suorituksenNimi = (oo: AmmatillinenOpiskeluoikeus): string => {
-  if (oo.suoritukset[0].tyyppi.koodiarvo === 'ammatillinentutkintoosittainen')
+  if (
+    oo.suoritukset[0].tyyppi.koodiarvo === 'ammatillinentutkintoosittainen' &&
+    oo.suoritukset[0].koulutusmoduuli.tunniste.koodiarvo !==
+      'ammatillinentutkintoosittainenuseastatutkinnosta'
+  ) {
     return (
       t(oo.suoritukset[0].koulutusmoduuli.tunniste.nimi) + t(', osittainen')
     )
-  else return t(oo.suoritukset[0].koulutusmoduuli.tunniste.nimi)
+  } else return t(oo.suoritukset[0].koulutusmoduuli.tunniste.nimi)
 }
 
 const AmmatillinenPäätasonSuoritusEditor: React.FC<
@@ -114,10 +120,18 @@ const AmmatillinenPäätasonSuoritusEditor: React.FC<
     form: FormModel<AmmatillinenOpiskeluoikeus>
   }
 > = (props) => {
-  return <AmmatillinenTutkintoOsittainenEditor {...props} />
+  if (
+    isAmmatillisenTutkinnonOsittainenUseastaTutkinnostaSuoritus(
+      props.form.state.suoritukset[0]
+    )
+  ) {
+    return <AmmatillinenTutkintoOsittainenUseastaTutkinnostaEditor {...props} />
+  } else {
+    return <AmmatillinenTutkintoOsittainenEditor {...props} />
+  }
 }
 
-const AmmatillisPääsuorituksenTiedot: React.FC<{
+const AmmatillisenOsittaisenSuorituksenTiedot: React.FC<{
   form: FormModel<AmmatillinenOpiskeluoikeus>
   päätasonSuoritus: ActivePäätasonSuoritus<
     AmmatillinenOpiskeluoikeus,
@@ -175,6 +189,7 @@ const AmmatillisPääsuorituksenTiedot: React.FC<{
         <FormField
           form={form}
           view={BooleanView}
+          viewProps={{ hideFalse: true }}
           edit={BooleanEdit}
           path={path.prop('toinenTutkintonimike')}
         />
@@ -212,6 +227,7 @@ const AmmatillisPääsuorituksenTiedot: React.FC<{
         <FormField
           form={form}
           view={BooleanView}
+          viewProps={{ hideFalse: true }}
           edit={BooleanEdit}
           path={path.prop('toinenOsaamisala')}
         />
@@ -314,8 +330,8 @@ const AmmatillisPääsuorituksenTiedot: React.FC<{
       <KeyValueRow localizableLabel="Koulutussopimukset">
         <FormListField
           form={form}
-          view={KoulutusspomiusView}
-          edit={KoulutusspomiusEdit}
+          view={KoulutussopimusView}
+          edit={KoulutussopimusEdit}
           path={path.prop('koulutussopimukset')}
           removable
         />
@@ -325,7 +341,7 @@ const AmmatillisPääsuorituksenTiedot: React.FC<{
               onClick={() => {
                 form.updateAt(
                   path.prop('koulutussopimukset').valueOr([]),
-                  append(emptyKoulutusspomius)
+                  append(emptyKoulutussopimus)
                 )
               }}
             >
@@ -429,7 +445,7 @@ const AmmatillinenTutkintoOsittainenEditor: React.FC<
         lisätiedotContainer={AmmatillinenLisatiedot}
         additionalOpiskeluoikeusFields={SisältyyOpiskeluoikeuteen}
       >
-        <AmmatillisPääsuorituksenTiedot
+        <AmmatillisenOsittaisenSuorituksenTiedot
           form={props.form}
           päätasonSuoritus={osittainenPäätasonSuoritus}
         />
@@ -467,7 +483,7 @@ type OsaamisalajaksoReal = {
 const isOsaamisalajaksoReal = (val: any): val is OsaamisalajaksoReal =>
   val.$class === 'fi.oph.koski.schema.Osaamisalajakso'
 
-const OsaamisalaView = <T extends Osaamisalajakso>({
+export const OsaamisalaView = <T extends Osaamisalajakso>({
   value
 }: CommonProps<FieldViewerProps<T | undefined, EmptyObject>>) => {
   if (isOsaamisalajaksoReal(value)) {
@@ -487,7 +503,7 @@ const OsaamisalaView = <T extends Osaamisalajakso>({
   } else return <TestIdText id="osaamisala">{t(value?.nimi)}</TestIdText>
 }
 
-const OsaamisalaEdit = ({
+export const OsaamisalaEdit = ({
   value,
   onChange
 }: FieldEditorProps<Osaamisalajakso | undefined, EmptyObject>) => {
@@ -533,7 +549,7 @@ const OsaamisalaEdit = ({
     )
 }
 
-const JärjestämismouotoView = <T extends Järjestämismuotojakso>({
+export const JärjestämismouotoView = <T extends Järjestämismuotojakso>({
   value
 }: CommonProps<FieldViewerProps<T | undefined, EmptyObject>>) => {
   return (
@@ -546,7 +562,7 @@ const JärjestämismouotoView = <T extends Järjestämismuotojakso>({
         {value?.loppu && ISO2FinnishDate(value.loppu)}
       </TestIdText>
       {' : '}
-      <TestIdText id="järjestämismouoto">
+      <TestIdText id="järjestämismuoto">
         {t(value?.järjestämismuoto.tunniste.nimi)}
       </TestIdText>
       {isOppisopimuksellinenJärjestämismuoto(value?.järjestämismuoto) && (
@@ -556,7 +572,7 @@ const JärjestämismouotoView = <T extends Järjestämismuotojakso>({
   )
 }
 
-const emptyJärjestämismuoto: Järjestämismuotojakso = {
+export const emptyJärjestämismuoto: Järjestämismuotojakso = {
   alku: todayISODate(),
   järjestämismuoto: {
     $class: 'fi.oph.koski.schema.JärjestämismuotoIlmanLisätietoja',
@@ -568,7 +584,7 @@ const emptyJärjestämismuoto: Järjestämismuotojakso = {
   $class: 'fi.oph.koski.schema.Järjestämismuotojakso'
 }
 
-const JärjestämismouotoEdit = ({
+export const JärjestämismouotoEdit = ({
   value,
   onChange
 }: FieldEditorProps<Järjestämismuotojakso | undefined, EmptyObject>) => {
@@ -789,7 +805,9 @@ const OppisopimuksenPurkaminenEdit = ({
   )
 }
 
-const OsaamisenHankkimistapaView = <T extends OsaamisenHankkimistapajakso>({
+export const OsaamisenHankkimistapaView = <
+  T extends OsaamisenHankkimistapajakso
+>({
   value
 }: CommonProps<FieldViewerProps<T | undefined, EmptyObject>>) => {
   return (
@@ -814,7 +832,7 @@ const OsaamisenHankkimistapaView = <T extends OsaamisenHankkimistapajakso>({
   )
 }
 
-const emptyOsaamisenHankkimistapa: OsaamisenHankkimistapajakso =
+export const emptyOsaamisenHankkimistapa: OsaamisenHankkimistapajakso =
   OsaamisenHankkimistapajakso({
     alku: todayISODate(),
     osaamisenHankkimistapa: {
@@ -826,7 +844,7 @@ const emptyOsaamisenHankkimistapa: OsaamisenHankkimistapajakso =
     }
   })
 
-const OsaamisenHankkimistapaEdit = ({
+export const OsaamisenHankkimistapaEdit = ({
   value,
   onChange
 }: FieldEditorProps<OsaamisenHankkimistapajakso | undefined, EmptyObject>) => {
@@ -897,7 +915,7 @@ const OsaamisenHankkimistapaEdit = ({
   )
 }
 
-const TyössäoppimisjaksoView = <T extends Työssäoppimisjakso>({
+export const TyössäoppimisjaksoView = <T extends Työssäoppimisjakso>({
   value
 }: CommonProps<FieldViewerProps<T | undefined, EmptyObject>>) => {
   return (
@@ -924,7 +942,7 @@ const TyössäoppimisjaksoView = <T extends Työssäoppimisjakso>({
   )
 }
 
-const emptyTyössäoppimisjakso: Työssäoppimisjakso = Työssäoppimisjakso({
+export const emptyTyössäoppimisjakso: Työssäoppimisjakso = Työssäoppimisjakso({
   alku: todayISODate(),
   laajuus: LaajuusOsaamispisteissä({ arvo: 1 }),
   paikkakunta: Koodistokoodiviite({
@@ -937,7 +955,7 @@ const emptyTyössäoppimisjakso: Työssäoppimisjakso = Työssäoppimisjakso({
   })
 })
 
-const TyössäoppimisjaksoEdit = ({
+export const TyössäoppimisjaksoEdit = ({
   value,
   onChange
 }: FieldEditorProps<Työssäoppimisjakso | undefined, EmptyObject>) => {
@@ -1024,7 +1042,7 @@ const TyössäoppimisjaksoEdit = ({
   )
 }
 
-const KoulutusspomiusView = <T extends Koulutussopimusjakso>({
+export const KoulutussopimusView = <T extends Koulutussopimusjakso>({
   value
 }: CommonProps<FieldViewerProps<T | undefined, EmptyObject>>) => {
   return (
@@ -1051,7 +1069,7 @@ const KoulutusspomiusView = <T extends Koulutussopimusjakso>({
   )
 }
 
-const emptyKoulutusspomius: Koulutussopimusjakso = Koulutussopimusjakso({
+export const emptyKoulutussopimus: Koulutussopimusjakso = Koulutussopimusjakso({
   alku: todayISODate(),
   paikkakunta: Koodistokoodiviite({
     koodistoUri: 'kunta',
@@ -1063,7 +1081,7 @@ const emptyKoulutusspomius: Koulutussopimusjakso = Koulutussopimusjakso({
   })
 })
 
-const KoulutusspomiusEdit = ({
+export const KoulutussopimusEdit = ({
   value,
   onChange
 }: FieldEditorProps<Koulutussopimusjakso | undefined, EmptyObject>) => {
@@ -1073,7 +1091,7 @@ const KoulutusspomiusEdit = ({
         <DateInput
           value={value?.alku}
           onChange={(alku?: string) => {
-            alku && onChange({ ...emptyKoulutusspomius, ...value, alku })
+            alku && onChange({ ...emptyKoulutussopimus, ...value, alku })
           }}
           testId="alku"
         />
@@ -1081,7 +1099,7 @@ const KoulutusspomiusEdit = ({
         <DateInput
           value={value?.loppu}
           onChange={(loppu?: string) => {
-            loppu && onChange({ ...emptyKoulutusspomius, ...value, loppu })
+            loppu && onChange({ ...emptyKoulutussopimus, ...value, loppu })
           }}
           testId="loppu"
         />
@@ -1092,7 +1110,7 @@ const KoulutusspomiusEdit = ({
           value={value?.paikkakunta.koodiarvo}
           onSelect={(paikkakunta) =>
             paikkakunta &&
-            onChange({ ...emptyKoulutusspomius, ...value, paikkakunta })
+            onChange({ ...emptyKoulutussopimus, ...value, paikkakunta })
           }
           testId={'paikkakunta'}
         />
@@ -1103,7 +1121,7 @@ const KoulutusspomiusEdit = ({
           koodistoUri="maatjavaltiot2"
           value={value?.maa.koodiarvo}
           onSelect={(maa) =>
-            maa && onChange({ ...emptyKoulutusspomius, ...value, maa })
+            maa && onChange({ ...emptyKoulutussopimus, ...value, maa })
           }
           testId={'maa'}
         />
@@ -1113,7 +1131,7 @@ const KoulutusspomiusEdit = ({
           value={value?.työssäoppimispaikka}
           onChange={(työssäoppimispaikka) =>
             onChange({
-              ...emptyKoulutusspomius,
+              ...emptyKoulutussopimus,
               ...value,
               työssäoppimispaikka
             })
@@ -1125,7 +1143,7 @@ const KoulutusspomiusEdit = ({
           value={value?.työssäoppimispaikanYTunnus}
           onChange={(työssäoppimispaikanYTunnus) =>
             onChange({
-              ...emptyKoulutusspomius,
+              ...emptyKoulutussopimus,
               ...value,
               työssäoppimispaikanYTunnus
             })
@@ -1137,7 +1155,7 @@ const KoulutusspomiusEdit = ({
           value={value?.työtehtävät}
           onChange={(työtehtävät) =>
             onChange({
-              ...emptyKoulutusspomius,
+              ...emptyKoulutussopimus,
               ...value,
               työtehtävät
             })

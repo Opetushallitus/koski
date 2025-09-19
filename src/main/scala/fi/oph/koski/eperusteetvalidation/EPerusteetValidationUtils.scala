@@ -10,7 +10,7 @@ class EPerusteetValidationUtils(
   tutkintoRepository: TutkintoRepository,
   koodistoViitePalvelu: KoodistoViitePalvelu
 ) {
-  val yhteinenTutkinnonOsanRyhmä = Koodistokoodiviite("2", "ammatillisentutkinnonosanryhma")
+  lazy val yhteinenTutkinnonOsanRyhmä = koodistoViitePalvelu.validate(Koodistokoodiviite("2", "ammatillisentutkinnonosanryhma"))
 
   def haeKoulutustyyppi(diaarinumero: String): Option[Koulutustyyppi] =
   // Lue koulutustyyppi aina uusimmasta perusteesta. Käytännössä samalla diaarinumerolla

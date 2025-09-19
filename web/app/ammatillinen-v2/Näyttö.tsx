@@ -237,7 +237,7 @@ const NäytönArviointiEdit = ({
       </KeyValueRow>
       <KeyValueRow localizableLabel="Arvioijat">
         {value?.arvioitsijat?.map((a, index) => (
-          <>
+          <div key={`nayton.arvioijat.${a.nimi}`}>
             <TextEdit
               value={a.nimi}
               onChange={(nimi) =>
@@ -294,7 +294,7 @@ const NäytönArviointiEdit = ({
               }
               testId="delete"
             />
-          </>
+          </div>
         ))}
         <ButtonGroup>
           <FlatButton
@@ -315,7 +315,10 @@ const NäytönArviointiEdit = ({
       </KeyValueRow>
       <KeyValueRow localizableLabel="Arvioinnista päättäneet">
         {value?.arvioinnistaPäättäneet?.map((a, index) => (
-          <div className={'AikajaksoEdit'}>
+          <div
+            className={'AikajaksoEdit'}
+            key={`nayton.arvioinnista.paattaneet.${a.nimi}`}
+          >
             <KoodistoSelect
               koodistoUri={'ammatillisennaytonarvioinnistapaattaneet'}
               value={a.koodiarvo}

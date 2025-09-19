@@ -31,7 +31,10 @@ export type AmmatillisenTutkinnonOsittainenUseastaTutkinnostaSuoritus = {
   suorituskieli: Koodistokoodiviite<'kieli', string>
   toinenOsaamisala: boolean
   keskiarvoSisältääMukautettujaArvosanoja?: boolean
-  suoritustapa: Koodistokoodiviite<'ammatillisentutkinnonsuoritustapa', string>
+  suoritustapa: Koodistokoodiviite<
+    'ammatillisentutkinnonsuoritustapa',
+    'reformi'
+  >
   todistuksellaNäkyvätLisätiedot?: LocalizedString
   koulutussopimukset?: Array<Koulutussopimusjakso>
   ryhmä?: string
@@ -58,7 +61,10 @@ export const AmmatillisenTutkinnonOsittainenUseastaTutkinnostaSuoritus = (o: {
   suorituskieli: Koodistokoodiviite<'kieli', string>
   toinenOsaamisala?: boolean
   keskiarvoSisältääMukautettujaArvosanoja?: boolean
-  suoritustapa: Koodistokoodiviite<'ammatillisentutkinnonsuoritustapa', string>
+  suoritustapa?: Koodistokoodiviite<
+    'ammatillisentutkinnonsuoritustapa',
+    'reformi'
+  >
   todistuksellaNäkyvätLisätiedot?: LocalizedString
   koulutussopimukset?: Array<Koulutussopimusjakso>
   ryhmä?: string
@@ -76,6 +82,10 @@ export const AmmatillisenTutkinnonOsittainenUseastaTutkinnostaSuoritus = (o: {
     koodistoUri: 'suorituksentyyppi'
   }),
   toinenOsaamisala: false,
+  suoritustapa: Koodistokoodiviite({
+    koodiarvo: 'reformi',
+    koodistoUri: 'ammatillisentutkinnonsuoritustapa'
+  }),
   koulutusmoduuli: AmmatillinenOsaTaiOsiaUseastaTutkinnosta({
     tunniste: Koodistokoodiviite({
       koodiarvo: 'ammatillinentutkintoosittainenuseastatutkinnosta',

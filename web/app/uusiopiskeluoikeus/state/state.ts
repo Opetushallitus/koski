@@ -18,12 +18,16 @@ import { OpiskeluoikeusClass } from '../../types/fi/oph/koski/typemodel/Opiskelu
 import * as C from '../../util/constraints'
 import { fetchOpiskeluoikeusClassMapping } from '../../util/koskiApi'
 import { createOpiskeluoikeus } from '../opiskeluoikeusCreator'
-import { hackSuoritusMappingForPreIB2019 } from '../opiskeluoikeusCreator/ibTutkinto'
 import {
   isVieraanKielenOppiaine,
   isÄidinkielenOppiaine
 } from '../opiskeluoikeusCreator/yleissivistavat'
 import { opiskeluoikeudenLisätiedotClass } from './opiskeluoikeudenLisätiedotClass'
+import { SuoritusClass } from '../../types/fi/oph/koski/typemodel/SuoritusClass'
+import { PreIBSuoritus2019 } from '../../types/fi/oph/koski/schema/PreIBSuoritus2019'
+import { AmmatillisenTutkinnonOsittainenUseastaTutkinnostaSuoritus } from '../../types/fi/oph/koski/schema/AmmatillisenTutkinnonOsittainenUseastaTutkinnostaSuoritus'
+import { AmmatillisenOsittaisenUseastaTutkinnostaSuorituksenTyyppi } from '../opiskeluoikeusCreator/ammatillinenTutkinto'
+import { UIPreIb2019PääsuorituksenTyyppi } from '../opiskeluoikeusCreator/ibTutkinto'
 
 export type UusiOpiskeluoikeusDialogState = {
   hankintakoulutus: DialogField<Hankintakoulutus>
@@ -76,7 +80,7 @@ export const useUusiOpiskeluoikeusDialogState =
     const ooMapping = isSuccess(ooMappingCall) ? ooMappingCall.data : undefined
     const suoritusMapping = useMemo(
       () =>
-        hackSuoritusMappingForPreIB2019(
+        hackSuoritusMappingKunSamatSuorituksenTyypit(
           (ooMapping || []).flatMap((oo) => oo.suoritukset)
         ),
       [ooMapping]
@@ -204,7 +208,7 @@ export const useUusiOpiskeluoikeusDialogState =
     const osaamismerkki =
       useDialogField<Koodistokoodiviite<'osaamismerkit'>>(true)
 
-    // Ammattikoulutun tutkinto
+    // Ammatillisen koulutuksen tutkinto
     !!päätasonSuoritus.value &&
       ['ammatillinentutkinto', 'ammatillinentutkintoosittainen'].includes(
         päätasonSuoritus.value?.koodiarvo
@@ -422,3 +426,23 @@ export const opiskeluoikeustyyppiToClassNames = (
     ? ooMapping.find((c) => c.tyyppi === tyyppi)
     : undefined
 }
+
+// Hack, joka tarvitaan koska joillain uusilla suorituksilla on samat suorituksen tyypit (Pre-IB ja ammatillisen osittainen suoritus useasta tutkinnosta).
+// Käyttöliittymässä leikitään että uudemman suorituksen tyyppi olisi 'preiboppimaara2019' tai 'ammatillinentutkintoosittainenuseastatutkinnosta',
+// mutta se mäpätään takaisin oikeaksi opiskeluoikeutta luotaessa.
+const hackSuoritusMappingKunSamatSuorituksenTyypit = (
+  cs: SuoritusClass[]
+): SuoritusClass[] =>
+  cs.map((cn) => {
+    if (cn.className === PreIBSuoritus2019.className) {
+      return { ...cn, tyyppi: UIPreIb2019PääsuorituksenTyyppi }
+    } else if (
+      cn.className ===
+      AmmatillisenTutkinnonOsittainenUseastaTutkinnostaSuoritus.className
+    ) {
+      return {
+        ...cn,
+        tyyppi: AmmatillisenOsittaisenUseastaTutkinnostaSuorituksenTyyppi
+      }
+    } else return cn
+  })

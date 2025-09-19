@@ -1,6 +1,5 @@
 import React, { useCallback, useMemo, useState } from 'react'
 import { SuoritusFieldsProps } from '.'
-import { isSuccess, useApiWithParams } from '../../api-fetch'
 import { useKoodisto } from '../../appstate/koodisto'
 import {
   SelectOption,
@@ -13,22 +12,22 @@ import {
 import { t } from '../../i18n/i18n'
 import { isAmmatilliseenTehtäväänValmistavaKoulutus } from '../../types/fi/oph/koski/schema/AmmatilliseenTehtavaanValmistavaKoulutus'
 import { Koodistokoodiviite } from '../../types/fi/oph/koski/schema/Koodistokoodiviite'
-import { TutkintoPeruste } from '../../types/fi/oph/koski/tutkinto/TutkintoPeruste'
 import { koodistokoodiviiteId } from '../../util/koodisto'
-import { fetchOppilaitoksenPerusteet } from '../../util/koskiApi'
 import { DialogPäätasonSuoritusSelect } from '../components/DialogPaatasonSuoritusSelect'
 import { DialogPerusteSelect } from '../components/DialogPerusteSelect'
 import { DialogSelect } from '../components/DialogSelect'
 import {
   createAmmatilliseenTehtäväänValmistavaKoulutus,
   createPaikallinenMuuAmmatillinenKoulutus,
-  createTutkinnonOsaaPienemmistäKokonaisuuksistaKoostuvaKoulutus
+  createTutkinnonOsaaPienemmistäKokonaisuuksistaKoostuvaKoulutus,
+  AmmatillisenOsittaisenUseastaTutkinnostaSuorituksenTyyppi
 } from '../opiskeluoikeusCreator/ammatillinenTutkinto'
 import { useAmmatillisenTutkinnonSuoritustapa } from '../state/ammatillisenTutkinnonSuoritustapa'
-import { UusiOpiskeluoikeusDialogState } from '../state/state'
+import { Finnish } from '../../types/fi/oph/koski/schema/Finnish'
+import { tutkintoKey, useTutkinnot } from '../../ammatillinen-v2/useTutkinnot'
 
 export const AmmatillinenKoulutusFields = (props: SuoritusFieldsProps) => {
-  const tutkinnot = useTutkinnot(props.state)
+  const tutkinnot = useTutkinnot(props.state.oppilaitos.value?.oid)
   const suoritustavat = useAmmatillisenTutkinnonSuoritustapa(props.state)
 
   const onTOPKS = useCallback(
@@ -50,6 +49,8 @@ export const AmmatillinenKoulutusFields = (props: SuoritusFieldsProps) => {
         {t('Suoritustyyppi')}
         <DialogPäätasonSuoritusSelect
           state={props.state}
+          extraOptions={extraOptions}
+          default="ammatillinentutkinto"
           testId="suoritustyyppi"
         />
       </label>
@@ -64,7 +65,7 @@ export const AmmatillinenKoulutusFields = (props: SuoritusFieldsProps) => {
               tutkintoKey(props.state.tutkinto.value)
             }
             onChange={(opt) => props.state.tutkinto.set(opt?.value)}
-            onSearch={tutkinnot.setQuery}
+            onSearch={tutkinnot.setDebounceQuery}
             testId="tutkinto"
           />
         </label>
@@ -98,39 +99,6 @@ export const AmmatillinenKoulutusFields = (props: SuoritusFieldsProps) => {
     </>
   )
 }
-
-const useTutkinnot = (state: UusiOpiskeluoikeusDialogState) => {
-  const [query, setQuery] = useState<string>()
-
-  const tutkinnot = useApiWithParams(
-    fetchOppilaitoksenPerusteet,
-    state.oppilaitos.value !== undefined
-      ? [state.oppilaitos.value?.oid, query]
-      : undefined
-  )
-
-  const options = useMemo(
-    () =>
-      isSuccess(tutkinnot)
-        ? tutkinnot.data
-            .map(
-              (k) =>
-                ({
-                  key: tutkintoKey(k),
-                  value: k,
-                  label: `${k.tutkintoKoodi} ${t(k.nimi)} (${k.diaarinumero})`
-                }) satisfies SelectOption<TutkintoPeruste>
-            )
-            .sort((a, b) => a.key.localeCompare(b.key))
-        : [],
-    [tutkinnot]
-  )
-
-  return { options, setQuery }
-}
-
-const tutkintoKey = (tutkinto: TutkintoPeruste): string =>
-  `${tutkinto.tutkintoKoodi}_${tutkinto.diaarinumero}`
 
 const MuuAmmatillinenKoulutusFields = (props: SuoritusFieldsProps) => {
   const [koulutusmoduuli, setKoulutusmoduuli] =
@@ -223,3 +191,19 @@ const muuAmmatillinenKoulutusOptions: SelectOption<MuuAmmatillinenKoulutusmoduul
       label: t('Ammatilliseen tehtävään valmistava koulutus')
     }
   ]
+
+const extraOptions: Array<
+  SelectOption<Koodistokoodiviite<'suorituksentyyppi'>>
+> = [
+  {
+    key: `suorituksentyyppi_${AmmatillisenOsittaisenUseastaTutkinnostaSuorituksenTyyppi}`,
+    label: 'Ammatillisen tutkinnon osa/osia useasta tutkinnosta',
+    value: Koodistokoodiviite({
+      koodiarvo: AmmatillisenOsittaisenUseastaTutkinnostaSuorituksenTyyppi,
+      koodistoUri: 'suorituksentyyppi',
+      nimi: Finnish({
+        fi: 'Ammatillisen tutkinnon osa/osia useasta tutkinnosta'
+      })
+    })
+  }
+]

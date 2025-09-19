@@ -142,7 +142,7 @@ interface TableProps {
   perusteenRyhmät: Koodistokoodiviite<'tutkinnonosaryhmä'>[]
 }
 
-const dummyRow = <T extends string>(
+export const dummyRow = <T extends string>(
   ryhmä: T
 ): OsasuoritusRowData<T | 'Laajuus' | 'Arvosana'> => {
   const columns: Partial<Record<'Laajuus' | 'Arvosana' | T, ReactNode>> = {}
@@ -324,7 +324,7 @@ export const hasAmmatillinenArviointi = (
 }
 
 // TODO hae constraints rajapinnasta, perusteesta, tjs...
-const yhteisenTutkinnonOsat = [
+export const yhteisenTutkinnonOsat = [
   '101053',
   '101054',
   '101055',
@@ -339,7 +339,7 @@ const yhteisenTutkinnonOsat = [
   '600002'
 ]
 
-type YhteisenTutkinnonOsatTunniste = Koodistokoodiviite<
+export type YhteisenTutkinnonOsatTunniste = Koodistokoodiviite<
   'tutkinnonosat',
   | '101053'
   | '101054'
@@ -531,6 +531,7 @@ const NewPaikallinen = ({
               suoritusPath.prop('osasuoritukset').valueOr([]),
               (o) => [...o, newPaikallinenOsa(osa, ryhmäKoodi)]
             )
+            setShowModal(false)
           }}
         />
       )}

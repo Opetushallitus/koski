@@ -26,13 +26,9 @@ export const useAmmatillisenTutkinnonSuoritustapa = (
     cache
   )
 
-  return useMemo(
-    () =>
-      isSuccess(optionsForTutkinto)
-        ? optionsForTutkinto.data.map(koodiviiteToOption)
-        : allOptions
-          ? groupKoodistoToOptions(allOptions)
-          : [],
-    [allOptions, optionsForTutkinto]
-  )
+  return isSuccess(optionsForTutkinto)
+    ? optionsForTutkinto.data.map(koodiviiteToOption)
+    : allOptions
+      ? groupKoodistoToOptions(allOptions)
+      : []
 }
