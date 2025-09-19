@@ -1,6 +1,8 @@
-## 19.8.2025
+## 19.9.2025
 
-- Salli valtionhallinnon kielitutkinnon erinomaisen tason siirto ilman oppilaitosta
+- Rajoitettu ammatillisen tutkinnon osan/osien useasta tutkinnosta suoritustapaa vain reformiin.
+- Rajoitettu ammatillisen tutkinnon osan/osien useasta tutkinnosta tutkinnon osien ryhmät vain yhteisiin tai ammatillisen tutkinnon osiin.
+- Poistettu vahvistettu-rakenne ammatillisen tutkinnon osan/osien useasta tutkinnosta osasuorituksilta.
 
 ## 3.9.2025
 
@@ -13,6 +15,10 @@
 ## 27.8.2025
 
 - Lukion IBDPcore kursseille lisätty oma luokka joka sallii vain opintopisteet laajuutena
+
+## 19.8.2025
+
+- Salli valtionhallinnon kielitutkinnon erinomaisen tason siirto ilman oppilaitosta
 
 ## 11.8.2025
 
