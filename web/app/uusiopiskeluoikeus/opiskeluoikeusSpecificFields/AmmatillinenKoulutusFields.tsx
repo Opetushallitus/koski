@@ -197,12 +197,12 @@ const extraOptions: Array<
 > = [
   {
     key: `suorituksentyyppi_${AmmatillisenOsittaisenUseastaTutkinnostaSuorituksenTyyppi}`,
-    label: 'Ammatillisen tutkinnon osa/osia useasta tutkinnosta',
+    label: 'Ammatillisen tutkinnon osia useasta tutkinnosta',
     value: Koodistokoodiviite({
       koodiarvo: AmmatillisenOsittaisenUseastaTutkinnostaSuorituksenTyyppi,
       koodistoUri: 'suorituksentyyppi',
       nimi: Finnish({
-        fi: 'Ammatillisen tutkinnon osa/osia useasta tutkinnosta'
+        fi: 'Ammatillisen tutkinnon osia useasta tutkinnosta'
       })
     })
   }
