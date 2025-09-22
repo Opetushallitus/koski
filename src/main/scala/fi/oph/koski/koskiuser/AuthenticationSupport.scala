@@ -34,13 +34,17 @@ trait AuthenticationSupport extends BaseServlet with SSOSupport {
     Option(request.getAttribute("authUser").asInstanceOf[Either[HttpStatus, AuthenticationUser]]) match {
       case Some(user) => user
       case _ =>
-        val authUser: Either[HttpStatus, AuthenticationUser] = userFromCookie match {
-          case Right(user) => Right(user)
-          case Left(SessionStatusExpiredKansalainen) => Left(KoskiErrorCategory.unauthorized.notAuthenticated())
-          case Left(_) => Left(KoskiErrorCategory.unauthorized.notAuthenticated())
-        }
-        setUser(authUser)
-        authUser
+        val user = authenticateUser
+        setUser(user)
+        user
+    }
+  }
+
+  def authenticateUser: Either[HttpStatus, AuthenticationUser] = {
+    userFromCookie match {
+      case Right(user) => Right(user)
+      case Left(SessionStatusExpiredKansalainen) => Left(KoskiErrorCategory.unauthorized.notAuthenticated())
+      case Left(_) => Left(KoskiErrorCategory.unauthorized.notAuthenticated())
     }
   }
 
@@ -64,14 +68,6 @@ trait AuthenticationSupport extends BaseServlet with SSOSupport {
     }
   }
 
-  private def userFromBasicAuth: Either[HttpStatus, AuthenticationUser] = {
-    val basicAuthRequest = new BasicAuthStrategy.BasicAuthRequest(request)
-    if (basicAuthRequest.isBasicAuth && basicAuthRequest.providesAuth) {
-      tryLogin(basicAuthRequest.username, basicAuthRequest.password)
-    } else {
-      Left(KoskiErrorCategory.unauthorized.notAuthenticated())
-    }
-  }
 
   def isAuthenticated = getUser.isRight
 
