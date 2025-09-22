@@ -1556,6 +1556,7 @@
   "raportti-excel-arvioinnit-sheet-name": "Arvioinnit",
   "raportti-excel-default-value-aikuistenperusopetuksenoppimaara": "Aikuisten perusopetuksen oppimäärä",
   "raportti-excel-default-value-ammatillisenosia": "Ammatillisen tutkinnon osa/osia",
+  "raportti-excel-default-value-ammatillisenosia-useasta-tutkinnosta": "Ammatillisen tutkinnon osia useasta tutkinnosta",
   "raportti-excel-default-value-ammatillisensuoritus": "Ammatillisen tutkinnon suoritus",
   "raportti-excel-default-value-arvosana": "Arvosana",
   "raportti-excel-default-value-arvosana-puuttuu": "Arvosana puuttuu",

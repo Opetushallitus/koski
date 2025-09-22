@@ -294,6 +294,8 @@ object PaallekkaisetOpiskeluoikeudet extends Logging {
       case (_, ("aikuistenperusopetuksenoppimaara", _)) => t.get("raportti-excel-default-value-aikuistenperusopetuksenoppimaara")
       case (_, ("aikuistenperusopetuksenoppimaaranalkuvaihe", _)) => t.get("raportti-excel-default-value-aikuistenperusopetuksenoppimaara")
       case (_, ("perusopetuksenoppiaineenoppimaara", _)) => t.get("raportti-excel-default-value-perusopetuksenaineopiskelija")
+      case (_, ("ammatillinentutkintoosittainen", koulutusmoduuli)) if koulutusmoduuli == "ammatillinentutkintoosittainenuseastatutkinnosta" =>
+        t.get("raportti-excel-default-value-ammatillisenosia-useasta-tutkinnosta")
       case (_, ("ammatillinentutkintoosittainen", _)) => t.get("raportti-excel-default-value-ammatillisenosia")
       case (_, ("ammatillinentutkinto", _)) => t.get("raportti-excel-default-value-ammatillisensuoritus")
       case (acc, ("nayttotutkintoonvalmistavakoulutus", _)) if acc == t.get("raportti-excel-default-value-ammatillisenosia") => acc
