@@ -2679,6 +2679,7 @@
   "Tutkinnon osa": "Tutkinnon osa",
   "Tutkinnon osaa pienemmän kokonaisuuden lisäys": "Tutkinnon osaa pienemmän kokonaisuuden lisäys",
   "Tutkinnon osaa pienemmän kokonaisuuden nimi": "Tutkinnon osaa pienemmän kokonaisuuden nimi",
+  "Tutkinnon osan lisäys": "Tutkinnon osan lisäys",
   "Tutkinnon osan lisäys toisesta tutkinnosta": "Tutkinnon osan lisäys toisesta tutkinnosta",
   "Tutkinnon osan nimi": "Tutkinnon osan nimi",
   "Tutkinnon osan osa-alueen nimi": "Tutkinnon osan osa-alueen nimi",
@@ -2851,10 +2852,10 @@
   "Tutkinnon suorittamispaikka": "Tutkinnon suorittamispaikka",
   "Tuen päätöksen jaksot": "Tuen päätöksen jaksot",
   "Kielitutkinnot": "Kielitutkinnot",
-  "description:Tunniste ammatillisen tutkinnon osan/osien suoritukselle...": "Tunniste ammatillisen tutkinnon osan/osien suoritukselle useasta tutkinnosta",
-  "description:Ammatillinen tutkinnon osa/osia useasta tutkinnosta": "Ammatillinen tutkinnon osa/osia useasta tutkinnosta",
-  "tooltip:Ammatillisen tutkinnon osa/osia useammasta tutkinnosta....": "Ammatillisen tutkinnon osa/osia useammasta tutkinnosta. Jokaisella tutkinnon osalla on erikseen tietona, mihin tutkintoon kyseinen suoritus liittyy.",
-  "description:Oppija suorittaa yhtä tutkinnon osaa...": "Oppija suorittaa yhtä tutkinnon osaa toisesta tutkinnosta tai useampaa tutkinnon osaa toisista tutkinnoista.",
+  "tooltip:Ammatillisen tutkinnon osia useasta tutkinnosta...." : "Ammatillisen tutkinnon osia useasta tutkinnosta. Jokaisella tutkinnon osalla on erikseen tietona, mihin tutkintoon kyseinen suoritus liittyy.",
+  "description:Tunniste ammatillisen tutkinnon osien suoritukselle..." : "Tunniste ammatillisen tutkinnon osien suoritukselle useasta tutkinnosta",
+  "description:Ammatillisen tutkinnon osia useasta tutkinnosta" : "Ammatillisen tutkinnon osia useasta tutkinnosta",
+  "description:Oppija suorittaa tutkinnon osia useista..." : "Oppija suorittaa tutkinnon osia useista tutkinnoista.",
   "Suorituspaikkakunta": "Suorituspaikkakunta",
   "Avaa opiskeluoikeus": "Avaa opiskeluoikeus"
 }

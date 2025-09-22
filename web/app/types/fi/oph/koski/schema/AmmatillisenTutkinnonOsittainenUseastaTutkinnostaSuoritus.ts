@@ -3,7 +3,7 @@ import { Koodistokoodiviite } from './Koodistokoodiviite'
 import { LocalizedString } from './LocalizedString'
 import { Koulutussopimusjakso } from './Koulutussopimusjakso'
 import { Työssäoppimisjakso } from './Tyossaoppimisjakso'
-import { AmmatillinenOsaTaiOsiaUseastaTutkinnosta } from './AmmatillinenOsaTaiOsiaUseastaTutkinnosta'
+import { AmmatillinenOsiaUseastaTutkinnosta } from './AmmatillinenOsiaUseastaTutkinnosta'
 import { OrganisaatioWithOid } from './OrganisaatioWithOid'
 import { OsittaisenAmmatillisenTutkinnonOsanUseastaTutkinnostaSuoritus } from './OsittaisenAmmatillisenTutkinnonOsanUseastaTutkinnostaSuoritus'
 import { OsaamisenHankkimistapajakso } from './OsaamisenHankkimistapajakso'
@@ -12,7 +12,7 @@ import { HenkilövahvistusValinnaisellaPaikkakunnalla } from './Henkilovahvistus
 
 /**
  * Laajennetun oppivelvollisuuden suoritus
- * Oppija suorittaa yhtä tutkinnon osaa toisesta tutkinnosta tai useampaa tutkinnon osaa toisista tutkinnoista.
+ * Oppija suorittaa tutkinnon osia useista tutkinnoista.
  *
  * @see `fi.oph.koski.schema.AmmatillisenTutkinnonOsittainenUseastaTutkinnostaSuoritus`
  */
@@ -39,7 +39,7 @@ export type AmmatillisenTutkinnonOsittainenUseastaTutkinnostaSuoritus = {
   koulutussopimukset?: Array<Koulutussopimusjakso>
   ryhmä?: string
   työssäoppimisjaksot?: Array<Työssäoppimisjakso>
-  koulutusmoduuli: AmmatillinenOsaTaiOsiaUseastaTutkinnosta
+  koulutusmoduuli: AmmatillinenOsiaUseastaTutkinnosta
   toimipiste: OrganisaatioWithOid
   osasuoritukset?: Array<OsittaisenAmmatillisenTutkinnonOsanUseastaTutkinnostaSuoritus>
   osaamisenHankkimistavat?: Array<OsaamisenHankkimistapajakso>
@@ -69,7 +69,7 @@ export const AmmatillisenTutkinnonOsittainenUseastaTutkinnostaSuoritus = (o: {
   koulutussopimukset?: Array<Koulutussopimusjakso>
   ryhmä?: string
   työssäoppimisjaksot?: Array<Työssäoppimisjakso>
-  koulutusmoduuli?: AmmatillinenOsaTaiOsiaUseastaTutkinnosta
+  koulutusmoduuli?: AmmatillinenOsiaUseastaTutkinnosta
   toimipiste: OrganisaatioWithOid
   osasuoritukset?: Array<OsittaisenAmmatillisenTutkinnonOsanUseastaTutkinnostaSuoritus>
   osaamisenHankkimistavat?: Array<OsaamisenHankkimistapajakso>
@@ -86,7 +86,7 @@ export const AmmatillisenTutkinnonOsittainenUseastaTutkinnostaSuoritus = (o: {
     koodiarvo: 'reformi',
     koodistoUri: 'ammatillisentutkinnonsuoritustapa'
   }),
-  koulutusmoduuli: AmmatillinenOsaTaiOsiaUseastaTutkinnosta({
+  koulutusmoduuli: AmmatillinenOsiaUseastaTutkinnosta({
     tunniste: Koodistokoodiviite({
       koodiarvo: 'ammatillinentutkintoosittainenuseastatutkinnosta',
       koodistoUri: 'suorituksentyyppi'

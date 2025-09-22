@@ -74,10 +74,10 @@ test.describe('Osittaisen ammatillisen tutkinnon useasta tutkinnosta virkailijan
 
   test('Renderöi osittaisen suorituksen useasta tutkinnosta tiedot virkailijan käyttöliittymässä', async ({ page, oppijaPage }) => {
     await oppijaPage.goto('1.2.246.562.24.00000000182')
-    await expect(page.getByTestId('oo.0.opiskeluoikeus.nimi')).toContainText('Stadin ammatti- ja aikuisopisto, ammatillisen tutkinnon osa/osia useasta tutkinnosta')
+    await expect(page.getByTestId('oo.0.opiskeluoikeus.nimi')).toContainText('Stadin ammatti- ja aikuisopisto, ammatillisen tutkinnon osia useasta tutkinnosta')
     await expect(page.getByTestId('oo.0.opiskeluoikeus.tila.value.items.1.rahoitus')).toContainText('Valtionosuusrahoitteinen koulutus')
 
-    await expect(page.getByTestId('oo.0.suoritukset.0.koulutus')).toContainText('Ammatillisen tutkinnon osa/osia useasta tutkinnosta')
+    await expect(page.getByTestId('oo.0.suoritukset.0.koulutus')).toContainText('Ammatillisen tutkinnon osia useasta tutkinnosta')
     await expect(page.getByTestId('oo.0.suoritukset.0.suoritustapa')).toContainText('Reformin mukainen näyttö')
     await expect(page.getByTestId('oo.0.suoritukset.0.0.tutkintonimike.value')).toContainText('Automekaanikko')
     await expect(page.getByTestId('oo.0.suoritukset.0.0.osaamisala')).toContainText('Ajoneuvotekniikan osaamisala')
@@ -125,7 +125,7 @@ test.describe('Osittaisen ammatillisen tutkinnon useasta tutkinnosta virkailijan
     await page.getByTestId('uusiOpiskeluoikeus.modal.suoritustyyppi.options.suorituksentyyppi_ammatillinentutkintoosittainenuseastatutkinnosta.item').click()
 
     await uusiOppijaPage.submitAndExpectSuccess()
-    await expect(page.getByTestId('oo.0.opiskeluoikeus.nimi')).toContainText('Stadin ammatti- ja aikuisopisto, ammatillisen tutkinnon osa/osia useasta tutkinnosta')
+    await expect(page.getByTestId('oo.0.opiskeluoikeus.nimi')).toContainText('Stadin ammatti- ja aikuisopisto, ammatillisen tutkinnon osia useasta tutkinnosta')
   })
 
   test('Sallii luoda uuden paikallisen tutkinnon osan', async ({ fixtures, page, oppijaPage, oppijaPageV2 }) => {
@@ -247,7 +247,7 @@ test.describe('Osittaisen ammatillisen tutkinnon useasta tutkinnosta kansalaisen
     await kansalainenPage.goto()
 
     await expect(page.locator('.header__heading')).toContainText('Opintoni')
-    await expect(page.getByTestId('oo.0.opiskeluoikeus.nimi')).toContainText('Ammatillisen tutkinnon osa/osia useasta tutkinnosta')
+    await expect(page.getByTestId('oo.0.opiskeluoikeus.nimi')).toContainText('Ammatillisen tutkinnon osia useasta tutkinnosta')
 
     await page.locator('.OpiskeluoikeusTitle__expand').click()
 
@@ -262,7 +262,7 @@ test.describe('Osittaisen ammatillisen tutkinnon useasta tutkinnosta kansalaisen
     await expect(page.getByTestId('oo.0.opiskeluoikeus.lisätiedot.0.loppu')).toContainText('1.9.2023')
 
     // Suorituksen tiedot
-    await expect(page.getByTestId('oo.0.suoritukset.0.koulutus')).toContainText('Ammatillisen tutkinnon osa/osia useasta tutkinnosta')
+    await expect(page.getByTestId('oo.0.suoritukset.0.koulutus')).toContainText('Ammatillisen tutkinnon osia useasta tutkinnosta')
     await expect(page.getByTestId('oo.0.suoritukset.0.suoritustapa')).toContainText('Reformin mukainen näyttö')
     await expect(page.getByTestId('oo.0.suoritukset.0.0.tutkintonimike.value')).toContainText('Automekaanikko')
     await expect(page.getByTestId('oo.0.suoritukset.0.0.osaamisala')).toContainText('Ajoneuvotekniikan osaamisala')

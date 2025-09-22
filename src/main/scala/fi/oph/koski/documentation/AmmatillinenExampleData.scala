@@ -814,7 +814,7 @@ object AmmatillinenExampleData {
   )
 
   def ammatillisenTutkinnonOsittainenUseastaTutkinnostaSuoritus = AmmatillisenTutkinnonOsittainenUseastaTutkinnostaSuoritus(
-    koulutusmoduuli = AmmatillinenOsaTaiOsiaUseastaTutkinnosta(Koodistokoodiviite("ammatillinentutkintoosittainenuseastatutkinnosta", "suorituksentyyppi")),
+    koulutusmoduuli = AmmatillinenOsiaUseastaTutkinnosta(Koodistokoodiviite("ammatillinentutkintoosittainenuseastatutkinnosta", "suorituksentyyppi")),
     tutkintonimike = Some(List(
       Koodistokoodiviite("10066", Some("Automekaanikko"), "tutkintonimikkeet", None)
     )),

@@ -300,13 +300,13 @@ case class Osaamisalajakso(
   loppu: Option[LocalDate] = None
 )
 
-@Description("Oppija suorittaa yhtä tutkinnon osaa toisesta tutkinnosta tai useampaa tutkinnon osaa toisista tutkinnoista.")
-@Title("Ammatillisen tutkinnon osa/osia useasta tutkinnosta")
+@Description("Oppija suorittaa tutkinnon osia useista tutkinnoista.")
+@Title("Ammatillisen tutkinnon osia useasta tutkinnosta")
 @OnlyWhen("koulutusmoduuli/tunniste/koodiarvo", "ammatillinentutkintoosittainenuseastatutkinnosta")
 case class AmmatillisenTutkinnonOsittainenUseastaTutkinnostaSuoritus(
   @Title("Koulutus")
-  @Tooltip("Ammatillisen tutkinnon osa/osia useammasta tutkinnosta. Jokaisella tutkinnon osalla on erikseen tietona, mihin tutkintoon kyseinen suoritus liittyy.")
-  koulutusmoduuli: AmmatillinenOsaTaiOsiaUseastaTutkinnosta,
+  @Tooltip("Ammatillisen tutkinnon osia useasta tutkinnosta. Jokaisella tutkinnon osalla on erikseen tietona, mihin tutkintoon kyseinen suoritus liittyy.")
+  koulutusmoduuli: AmmatillinenOsiaUseastaTutkinnosta,
   @KoodistoKoodiarvo("reformi")
   suoritustapa: Koodistokoodiviite = Koodistokoodiviite("ammatillisentutkinnonsuoritustapa", koodistoUri = "reformi"),
   override val tutkintonimike: Option[List[Koodistokoodiviite]] = None,
@@ -859,10 +859,10 @@ case class Koulutussopimusjakso(
   työtehtävät: Option[LocalizedString]
 ) extends Oppimisjakso
 
-@Title("Ammatillinen tutkinnon osa/osia useasta tutkinnosta")
-@Description("Ammatillinen tutkinnon osa/osia useasta tutkinnosta")
-case class AmmatillinenOsaTaiOsiaUseastaTutkinnosta(
-  @Description("Tunniste ammatillisen tutkinnon osan/osien suoritukselle useasta tutkinnosta")
+@Title("Ammatillisen tutkinnon osia useasta tutkinnosta")
+@Description("Ammatillisen tutkinnon osia useasta tutkinnosta")
+case class AmmatillinenOsiaUseastaTutkinnosta(
+  @Description("Tunniste ammatillisen tutkinnon osien suoritukselle useasta tutkinnosta")
   @KoodistoUri("suorituksentyyppi")
   @KoodistoKoodiarvo("ammatillinentutkintoosittainenuseastatutkinnosta")
   tunniste: Koodistokoodiviite = Koodistokoodiviite("ammatillinentutkintoosittainenuseastatutkinnosta", koodistoUri = "suorituksentyyppi")
