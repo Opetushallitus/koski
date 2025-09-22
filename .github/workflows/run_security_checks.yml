@@ -5,135 +5,75 @@ on:
   workflow_dispatch:
 env:
   DOCKER_BUILDKIT: 1
+
 jobs:
-  run_owasp_and_snyk:
-    name: Run owasp and snyk
-    runs-on: ubuntu-22.04
+  build:
+    name: Build
+    runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-      - name: Set up Java 11
-        uses: actions/setup-java@v3
+      - name: Run Trivy on Koski
+        uses: aquasecurity/trivy-action@master
         with:
-          java-version: "11"
-          architecture: "x64"
-          distribution: "zulu"
+          scan-type: fs
+          scan-ref: .
+          exit-code: 1
+          scanners: vuln
+          trivyignores: .trivyignore
+          format: json
+          output: trivy-report.json
+          severity: 'CRITICAL,HIGH'
+          skip-dirs: 'src/main/resources/mockdata,src/test,target'
 
-      - name: Setup Node
-        uses: actions/setup-node@v3
-        with:
-          node-version: "22.14.0"
-
-      - name: Get Date
-        id: get-date
+      - name: Summarize new CVEs
+        if: failure()
+        id: summarize
         run: |
-          echo "datetime=$(/bin/date -u "+%Y%m%d%H")" >> $GITHUB_OUTPUT
-        shell: bash
+          {
+            echo 'cves<<EOF'
+            jq -r '
+              [.Results[]
+               | select(.Vulnerabilities != null)
+               | {target: .Target, vulns: [
+                   .Vulnerabilities[]
+                   | "- <\(.PrimaryURL)|\(.VulnerabilityID)> [\(.Severity)] (\(.PkgName) \(.InstalledVersion))"
+                 ]}
+              ]
+              | group_by(.target)
+              | .[]
+              | (.[0].target),
+                (map(.vulns) | add | unique | join("\n")),
+                ""
+            ' trivy-report.json
+            echo 'EOF'
+          } >> $GITHUB_OUTPUT
 
-      - name: Restore cached Maven dependencies
-        uses: actions/cache/restore@v3
-        with:
-          path: ~/.m2/repository
-          # Using datetime in cache key as OWASP database may change, without the pom changing
-          key: ${{ runner.os }}-maven-${{ steps.get-date.outputs.datetime }}-${{ hashFiles('**/pom.xml') }}
-          restore-keys: |
-            ${{ runner.os }}-maven-${{ steps.get-date.outputs.datetime }}
-            ${{ runner.os }}-maven-
-
-      - name: Cache Node modules
-        uses: actions/cache@v3
-        with:
-          path: ~/.npm
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-node-
-
-      - name: Run OWASP Koski pom.xml
-        id: owasp-koski
-        uses: nick-fields/retry@v3
-        with:
-          max_attempts: 5
-          # max_attempts: 5
-          timeout_minutes: 10
-          retry_wait_seconds: 1800
-          retry_on_exit_code: 99
-          command: |
-            mvn dependency-check:check -P owasp -DnvdApiKey=${{secrets.NVD_NIST_GOV_API_KEY}} --batch-mode | tee owasp-output.log
-            STATUS="${PIPESTATUS[0]}"
-
-            if [ "$STATUS" != "0" ]; then
-              EOF=$(dd if=/dev/urandom bs=15 count=1 status=none | base64)
-              echo "errors<<$EOF" >> $GITHUB_OUTPUT
-              grep "\[ERROR\]" owasp-output.log >> $GITHUB_OUTPUT
-              echo "$EOF" >> $GITHUB_OUTPUT
-
-              if grep -q "One or more dependencies were identified with vulnerabilities" owasp-output.log; then
-                exit $STATUS
-              else
-                exit 99
-              fi
-            fi
-
-      - name: Archive OWASP Koski pom.xml results
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: owasp-report-koski
-          path: target/dependency-check-report.html
-
-      - name: Run OWASP OAuth2 Java sample pom.xml
-        id: owasp-oauth2-java-sample
-        uses: nick-fields/retry@v3
-        with:
-          max_attempts: 5
-          # max_attempts: 5
-          timeout_minutes: 10
-          retry_wait_seconds: 1800
-          retry_on_exit_code: 99
-          command: |
-            cd omadata-oauth2-sample/java
-            mvn dependency-check:check -P owasp -DnvdApiKey=${{secrets.NVD_NIST_GOV_API_KEY}} --batch-mode | tee owasp-output.log
-            STATUS="${PIPESTATUS[0]}"
-
-            if [ "$STATUS" != "0" ]; then
-              EOF=$(dd if=/dev/urandom bs=15 count=1 status=none | base64)
-              echo "errors<<$EOF" >> $GITHUB_OUTPUT
-              grep "\[ERROR\]" owasp-output.log >> $GITHUB_OUTPUT
-              echo "$EOF" >> $GITHUB_OUTPUT
-
-              if grep -q "One or more dependencies were identified with vulnerabilities" owasp-output.log; then
-                exit $STATUS
-              else
-                exit 99
-              fi
-            fi
-
-      - name: Archive OWASP OAuth2 Java sample pom.xml results
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: owasp-report-oauth2-java-sample
-          path: omadata-oauth2-sample/java/target/dependency-check-report.html
-
-      - name: Cache Maven dependencies
-        uses: actions/cache/save@v3
-        if: always()
-        with:
-          path: ~/.m2/repository
-          key: ${{ runner.os }}-maven-${{ steps.get-date.outputs.datetime }}-${{ hashFiles('**/pom.xml') }}
-
-      - name: Run snyk
-        id: snyk
-        env:
-          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-        run: |
-          make snyk
-
-      - name: Report failure
+      - name: Report to Slack
+        if: failure()
         uses: ravsamhq/notify-slack-action@95a35215cdf7ab510d2cdd20ae94f342d212a1a1
-        if: ${{ failure() }}
         with:
           status: ${{ job.status }}
-          message_format: "{emoji} *{workflow}* {status_message} in <{repo_url}|{repo}@{branch}> on <{commit_url}|{commit_sha}>\n\n${{ steps.owasp.outputs.errors }}"
+          message_format: |
+            {emoji} *{workflow}* {status_message}
+
+            *New vulnerabilities found* in <{repo_url}|{repo}>
+
+            ${{ steps.summarize.outputs.cves }}
+
+            <https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}|See full report in logs>
+            <https://trivy.util.yleiskayttoiset.opintopolku.fi/koski.html|See current status (use vpn)>
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL_PROD_ALERTS }}
+
+      - name: Run Trivy (full HTML report)
+        if: always()
+        uses: aquasecurity/trivy-action@master
+        with:
+          scan-type: fs
+          scan-ref: .
+          scanners: vuln
+          format: table
+          skip-dirs: 'src/main/resources/mockdata,src/test,target'
+          exit-code: 0
