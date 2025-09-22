@@ -1,7 +1,7 @@
+import { ValtionhallinnonKielitutkinnonArviointi } from './ValtionhallinnonKielitutkinnonArviointi'
 import { Koodistokoodiviite } from './Koodistokoodiviite'
 import { LocalizedString } from './LocalizedString'
 import { ValtionhallinnonYmmärtämisenKielitaidonOsakoe } from './ValtionhallinnonYmmartamisenKielitaidonOsakoe'
-import { ValtionhallinnonKielitutkinnonArviointi } from './ValtionhallinnonKielitutkinnonArviointi'
 
 /**
  * ValtionhallinnonKielitutkinnonYmmärtämisenKielitaidonOsakokeenSuoritus
@@ -11,31 +11,33 @@ import { ValtionhallinnonKielitutkinnonArviointi } from './ValtionhallinnonKieli
 export type ValtionhallinnonKielitutkinnonYmmärtämisenKielitaidonOsakokeenSuoritus =
   {
     $class: 'fi.oph.koski.schema.ValtionhallinnonKielitutkinnonYmmärtämisenKielitaidonOsakokeenSuoritus'
+    arviointi?: Array<ValtionhallinnonKielitutkinnonArviointi>
     tyyppi: Koodistokoodiviite<
       'suorituksentyyppi',
       'valtionhallinnonkielitutkinnonosakoe'
     >
-    koulutusmoduuli: ValtionhallinnonYmmärtämisenKielitaidonOsakoe
-    arviointi?: Array<ValtionhallinnonKielitutkinnonArviointi>
     tila?: Koodistokoodiviite<'suorituksentila', string>
+    alkamispäivä?: string
+    koulutusmoduuli: ValtionhallinnonYmmärtämisenKielitaidonOsakoe
   }
 
 export const ValtionhallinnonKielitutkinnonYmmärtämisenKielitaidonOsakokeenSuoritus =
   (o: {
+    arviointi?: Array<ValtionhallinnonKielitutkinnonArviointi>
     tyyppi?: Koodistokoodiviite<
       'suorituksentyyppi',
       'valtionhallinnonkielitutkinnonosakoe'
     >
-    koulutusmoduuli: ValtionhallinnonYmmärtämisenKielitaidonOsakoe
-    arviointi?: Array<ValtionhallinnonKielitutkinnonArviointi>
     tila?: Koodistokoodiviite<'suorituksentila', string>
+    alkamispäivä?: string
+    koulutusmoduuli: ValtionhallinnonYmmärtämisenKielitaidonOsakoe
   }): ValtionhallinnonKielitutkinnonYmmärtämisenKielitaidonOsakokeenSuoritus => ({
-    $class:
-      'fi.oph.koski.schema.ValtionhallinnonKielitutkinnonYmmärtämisenKielitaidonOsakokeenSuoritus',
     tyyppi: Koodistokoodiviite({
       koodiarvo: 'valtionhallinnonkielitutkinnonosakoe',
       koodistoUri: 'suorituksentyyppi'
     }),
+    $class:
+      'fi.oph.koski.schema.ValtionhallinnonKielitutkinnonYmmärtämisenKielitaidonOsakokeenSuoritus',
     ...o
   })
 
