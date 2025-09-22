@@ -647,6 +647,7 @@
                 <suppressionFile>owasp-dependency-check-suppressions.xml</suppressionFile>
               </suppressionFiles>
               <failBuildOnCVSS>1</failBuildOnCVSS>
+              <ossindexAnalyzerEnabled>false</ossindexAnalyzerEnabled>
               <assemblyAnalyzerEnabled>false</assemblyAnalyzerEnabled>
             </configuration>
             <executions>

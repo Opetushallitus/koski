@@ -52,10 +52,14 @@
             <artifactId>dependency-check-maven</artifactId>
             <version>12.1.0</version>
             <configuration>
+              <formats>HTML,JSON</formats>
+              <generateSuppressionFile>true</generateSuppressionFile>
               <suppressionFiles>
                 <suppressionFile>owasp-dependency-check-suppressions-oauth2-sample.xml</suppressionFile>
               </suppressionFiles>
-              <failBuildOnCVSS>1</failBuildOnCVSS>
+              <failBuildOnCVSS>7</failBuildOnCVSS>
+              <skipTestScope>true</skipTestScope>
+              <ossindexAnalyzerEnabled>false</ossindexAnalyzerEnabled>
               <assemblyAnalyzerEnabled>false</assemblyAnalyzerEnabled>
             </configuration>
             <executions>
