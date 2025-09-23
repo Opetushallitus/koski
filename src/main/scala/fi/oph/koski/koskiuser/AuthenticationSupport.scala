@@ -1,16 +1,17 @@
 package fi.oph.koski.koskiuser
 
-import java.util.UUID
+import fi.oph.koski.config.Environment
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.json.JsonSerializer.writeWithRoot
 import fi.oph.koski.log._
 import fi.oph.koski.servlet.BaseServlet
 import fi.oph.koski.sso.{KoskiUserCookie, SSOSupport}
 import fi.oph.koski.userdirectory.Password
-import org.scalatra.{Cookie, CookieOptions}
 import org.scalatra.auth.strategy.BasicAuthStrategy
+import org.scalatra.{Cookie, CookieOptions}
 
 import java.net.URLEncoder.encode
+import java.util.UUID
 
 trait AuthenticationSupport extends BaseServlet with SSOSupport {
   def application: UserAuthenticationContext
@@ -44,6 +45,7 @@ trait AuthenticationSupport extends BaseServlet with SSOSupport {
     userFromCookie match {
       case Right(user) => Right(user)
       case Left(SessionStatusExpiredKansalainen) => Left(KoskiErrorCategory.unauthorized.notAuthenticated())
+      case Left(_) if Environment.isUnitTestEnvironment(application.config) || Environment.isLocalDevelopmentEnvironment(application.config) => userFromBasicAuth
       case Left(_) => Left(KoskiErrorCategory.unauthorized.notAuthenticated())
     }
   }
@@ -68,6 +70,14 @@ trait AuthenticationSupport extends BaseServlet with SSOSupport {
     }
   }
 
+  def userFromBasicAuth: Either[HttpStatus, AuthenticationUser] = {
+    val basicAuthRequest = new BasicAuthStrategy.BasicAuthRequest(request)
+    if (basicAuthRequest.isBasicAuth && basicAuthRequest.providesAuth) {
+      tryLogin(basicAuthRequest.username, basicAuthRequest.password)
+    } else {
+      Left(KoskiErrorCategory.unauthorized.notAuthenticated())
+    }
+  }
 
   def isAuthenticated = getUser.isRight
 
