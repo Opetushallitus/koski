@@ -17,8 +17,29 @@ import org.json4s.JValue
 
 class OpiskeluoikeusServlet(implicit val application: KoskiApplication) extends KoskiSpecificApiServlet with RequiresVirkailijaOrPalvelukäyttäjä with Logging with NoCache {
   get("/:oid") {
-    val result: Either[HttpStatus, KoskiOpiskeluoikeusRow] = application.opiskeluoikeusRepository.findByOid(getStringParam("oid"))(session)
-    result.map(oo => KoskiAuditLogMessage(OPISKELUOIKEUS_KATSOMINEN, session, Map(oppijaHenkiloOid -> oo.oppijaOid))).foreach(AuditLog.log)
+    val mySession = session
+
+    val käyttöoikeudetSize = mySession.kaikkiKäyttöoikeudet.size
+    logger.info(s"Käyttäjällä ${mySession.user.oid} on $käyttöoikeudetSize käyttöoikeutta")
+
+    val sizeGroup = käyttöoikeudetSize match {
+      case n if n == 0 => "0"
+      case n if n == 1 => "1"
+      case n if n < 5 => "<5"
+      case n if n < 10 => "<10"
+      case n if n < 100 => "<100"
+      case n if n < 200 => "<200"
+      case n if n < 500 => "<500"
+      case n if n < 1000 => "<1000"
+      case n if n < 5000 => "<5000"
+      case n if n < 10000 => "<10000"
+      case _ => ">=10000"
+    }
+
+    val result: Either[HttpStatus, KoskiOpiskeluoikeusRow] = timed(s"findByOid, käyttöoikeuksia ${sizeGroup}", thresholdMs = 0) {
+      application.opiskeluoikeusRepository.findByOid(getStringParam("oid"))(mySession)
+    }
+    result.map(oo => KoskiAuditLogMessage(OPISKELUOIKEUS_KATSOMINEN, mySession, Map(oppijaHenkiloOid -> oo.oppijaOid))).foreach(AuditLog.log)
     renderEither[KoskeenTallennettavaOpiskeluoikeus](result.map(_.toOpiskeluoikeusUnsafe))
   }
 
