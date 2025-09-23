@@ -11,7 +11,7 @@ import fi.oph.koski.schema.Henkilö
 import fi.oph.koski.servlet.{KoskiSpecificApiServlet, NoCache, ObservableSupport}
 import org.json4s.JsonAST.JValue
 
-class KelaServlet(implicit val application: KoskiApplication) extends KoskiSpecificApiServlet with RequiresKela with NoCache with ObservableSupport {
+class KelaServlet(implicit val application: KoskiApplication) extends KoskiSpecificApiServlet with RequiresKela with LuovutuspalveluAuthenticationSupport with NoCache with ObservableSupport {
   val kelaService = new KelaService(application)
 
   post("/hetu") {

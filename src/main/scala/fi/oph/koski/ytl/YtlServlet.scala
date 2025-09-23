@@ -11,7 +11,7 @@ import org.json4s.JsonAST.JValue
 
 import java.time.Instant
 
-class YtlServlet(implicit val application: KoskiApplication) extends KoskiSpecificApiServlet with RequiresYtl with NoCache with ObservableSupport {
+class YtlServlet(implicit val application: KoskiApplication) extends KoskiSpecificApiServlet with RequiresYtl with LuovutuspalveluAuthenticationSupport with NoCache with ObservableSupport {
   val ytlService = new YtlService(application)
 
   post("/oppijat") {

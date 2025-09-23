@@ -1,0 +1,40 @@
+package fi.oph.koski.luovutuspalvelu.v2clientlist
+
+import com.typesafe.config.Config
+import fi.oph.koski.config.{Environment, SecretsManager}
+import fi.oph.koski.json.JsonSerializer
+
+trait LuovutuspalveluV2ClientListService {
+  def getClientList: List[LuovutuspalveluClient]
+}
+
+class MockLuovutuspalveluV2ClientListService extends LuovutuspalveluV2ClientListService {
+  private val mockClientListJson = """[{"subjectDn": "CN=oa2-dev.koski-luovutuspalvelu-test-certs.testiopintopolku.fi", "ips": ["0.0.0.0"],  "user": "koskioauth2sampledevpk"}, {"subjectDn":"CN=migri", "ips":["0.0.0.0"], "user": "Migri"}]"""
+  private val mockClientList = JsonSerializer.parse[List[LuovutuspalveluClient]](mockClientListJson)
+  override def getClientList: List[LuovutuspalveluClient] = {
+    mockClientList
+  }
+}
+
+class RemoteLuovutuspalveluV2ClientListService extends LuovutuspalveluV2ClientListService {
+  private val secretsManagerClient = new SecretsManager
+
+  private val clientList = secretsManagerClient.getStructuredSecret[List[LuovutuspalveluClient]]("luovutuspalvelu-v2-clientList")
+
+  override def getClientList: List[LuovutuspalveluClient] = {
+    clientList
+  }
+
+}
+
+object LuovutuspalveluV2ClientListService {
+  def apply(config: Config): LuovutuspalveluV2ClientListService = {
+    if (Environment.isServerEnvironment(config) && Environment.usesAwsSecretsManager) {
+      new RemoteLuovutuspalveluV2ClientListService
+    } else {
+      new MockLuovutuspalveluV2ClientListService
+    }
+  }
+}
+
+case class LuovutuspalveluClient(subjectDn: String, ips: List[String], user: String, xroadSecurityServer: Option[Boolean])
