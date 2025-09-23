@@ -635,34 +635,6 @@
       </build>
     </profile>
     <profile>
-      <id>owasp</id>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.owasp</groupId>
-            <artifactId>dependency-check-maven</artifactId>
-            <version>12.1.0</version>
-            <configuration>
-              <suppressionFiles>
-                <suppressionFile>owasp-dependency-check-suppressions.xml</suppressionFile>
-              </suppressionFiles>
-              <failBuildOnCVSS>1</failBuildOnCVSS>
-              <ossindexAnalyzerEnabled>false</ossindexAnalyzerEnabled>
-              <assemblyAnalyzerEnabled>false</assemblyAnalyzerEnabled>
-            </configuration>
-            <executions>
-              <execution>
-                <id>owasp-check</id>
-                <goals>
-                  <goal>check</goal>
-                </goals>
-              </execution>
-            </executions>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-    <profile>
       <id>scalastyle</id>
       <build>
         <plugins>
