@@ -92,7 +92,7 @@
     "prettier": "3.5.3",
     "puppeteer": "^24.6.1",
     "q": "^1.5.1",
-    "snyk": "^1.1296.2",
+    "snyk": "^1.1297.3",
     "style-loader": "^4.0.0",
     "swc-loader": "^0.2.6",
     "ts-loader": "^9.5.2",
