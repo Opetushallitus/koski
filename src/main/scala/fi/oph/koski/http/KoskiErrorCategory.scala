@@ -238,6 +238,7 @@ object KoskiErrorCategory {
         val alkuperäinenOsasuoritusEiVastaava = subcategory("alkuperäinenOsasuoritusEiVastaava", "Korotuksen suorituksella on osasuorituksia tai aliosasuorituksia joille ei löydy vastaavaa alkuperäisestä opiskeluoikeudesta")
         val korotuksenLaajuus = subcategory("korotuksenLaajuus", "Korotetun osasuorituksen laajuus ei vastaa sen aliosasuoritusten laajuutta")
         val liikaaSamojaTutkinnonOsia = subcategory("liikaaSamojaTutkinnonOsia", "Samalla tutkinnon osan koodilla ei voi olla enempää korotuksia kuin alkuperäisellä opiskeluoikeudella on suorituksia")
+        val paikallinenMuuAmmatillinenRajapäivänJälkeen = subcategory("paikallinenMuuAmmatillinenRajapäivänJälkeen", "Paikallinen muun ammatillisen koulutuksen opiskeluoikeus ei voi alkaa siirtymäajan päättymispäivän 31.12.2028 jälkeen")
       }
       val ammatillinen = new Ammatillinen
 

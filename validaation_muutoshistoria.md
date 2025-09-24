@@ -1,5 +1,9 @@
 # Koskeen tallennettavien tietojen validaatiosäännöt
 
+## xx.xx.2025
+
+- Estä siirtymäajan päättymispäivän 31.12.2028 jälkeen alkavien paikallisten muun ammatillisen koulutuksen opiskeluoikeuksien tallennus.
+
 ## 19.9.2025
 
 - Salli kielitutkinnon opiskeluoikeudelle sama alku- ja päättymispäivämäärä.
