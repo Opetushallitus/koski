@@ -1,6 +1,6 @@
 package fi.oph.koski.massaluovutus.suorituspalvelu.opiskeluoikeus
 
-import fi.oph.koski.schema._
+import fi.oph.koski.schema.{OsittaisenAmmatillisenTutkinnonOsanSuoritus, _}
 import fi.oph.koski.schema.annotation.{KoodistoKoodiarvo, KoodistoUri, Scale, Tooltip}
 import fi.oph.scalaschema.annotation.{Description, MaxValue, MinValue, OnlyWhen, Title}
 
@@ -31,6 +31,7 @@ object SupaAmmatillinenTutkinto {
       suoritukset = oo.suoritukset.collect {
         case s: AmmatillisenTutkinnonSuoritus => SupaAmmatillisenTutkinnonSuoritus(s)
         case s: TelmaKoulutuksenSuoritus => SupaTelmaKoulutuksenSuoritus(s)
+        case s: AmmatillisenTutkinnonOsittainenSuoritus => SupaAmmatillisenTutkinnonOsittainenSuoritus(s)
       }
     )
 }
@@ -78,6 +79,43 @@ trait SupaAmmatillisenTutkinnonOsasuoritus {
   def tyyppi: Koodistokoodiviite
   def koulutusmoduuli: AmmatillisenTutkinnonOsa
   def arviointi: Option[List[AmmatillinenArviointi]]
+}
+
+
+//Taso koulutus
+@Title("Ammatillisen tutkinnon suoritus osittainen")
+@Description("Suoritettavan ammatillisen tutkinnon tiedot")
+case class SupaAmmatillisenTutkinnonOsittainenSuoritus(
+  @KoodistoKoodiarvo("ammatillinentutkintoosittainen") //tarkista
+  tyyppi: Koodistokoodiviite,
+  alkamispäivä: Option[LocalDate],
+  vahvistus: Option[SupaVahvistus],
+  koulutusmoduuli: AmmatillinenTutkintoKoulutus,
+  suorituskieli: Koodistokoodiviite,
+  osasuoritukset: List[SupaAmmatillisenTutkinnonOsasuoritus],
+  @Description("Tutkinnon suoritustapa (näyttö / ops / reformi). Ammatillisen perustutkinnon voi suorittaa joko opetussuunnitelmaperusteisesti tai näyttönä. Ammatillisen reformin (531/2017) mukaiset suoritukset välitetään suoritustavalla reformi. ")
+  @KoodistoUri("ammatillisentutkinnonsuoritustapa")
+  suoritustapa: Koodistokoodiviite,
+  @Title("Painotettu keskiarvo")
+  @MinValue(1)
+  @MaxValue(5)
+  @Scale(2)
+  keskiarvo: Option[Double]) extends SupaAmmatillinenPäätasonSuoritus
+    with Suorituskielellinen
+    with SupaVahvistuksellinen
+
+object SupaAmmatillisenTutkinnonOsittainenSuoritus {
+  def apply(s: AmmatillisenTutkinnonOsittainenSuoritus): SupaAmmatillisenTutkinnonOsittainenSuoritus =
+    SupaAmmatillisenTutkinnonOsittainenSuoritus(
+      tyyppi = s.tyyppi,
+      alkamispäivä = s.alkamispäivä,
+      vahvistus = s.vahvistus.map(v => SupaVahvistus(v.päivä)),
+      koulutusmoduuli = s.koulutusmoduuli,
+      suorituskieli = s.suorituskieli,
+      osasuoritukset = s.osasuoritukset.toList.flatten.map(SupaOsittaisenAmmatillisenTutkinnonOsanSuoritusmapper.apply),
+      suoritustapa = s.suoritustapa,
+      keskiarvo = s.keskiarvo
+    )
 }
 
 @Title("Yhteisten tutkinnon osien osa-alueita, lukio-opintoja tai muita jatko-opintovalmiuksia tukevia opintoja")
@@ -135,6 +173,15 @@ case class SupaYhteisenTutkinnonOsanOsaAlueenSuoritus(
   tyyppi: Koodistokoodiviite,
   koulutusmoduuli: AmmatillisenTutkinnonOsanOsaAlue,
   arviointi: Option[List[AmmatillinenArviointi]],
+) extends SupaYhteistenTutkinnonOsienOsaAlueidenTaiLukioOpintojenTaiMuidenOpintovalmiuksiaTukevienOpintojenOsasuoritus
+
+@Title("osittaisen tutkinnon osan osa-alueen suoritus")
+@Description("osittaisen tutkinnon osan osa-alueen suorituksen tiedot")
+case class SupaOsittaisenTutkinnonOsanSuoritus(
+  @KoodistoKoodiarvo("ammatillisentutkinnonosanosaalue")
+  tyyppi: Koodistokoodiviite,
+  koulutusmoduuli: AmmatillisenTutkinnonOsanOsaAlue,
+  arviointi: Option[List[AmmatillinenArviointi]]
 ) extends SupaYhteistenTutkinnonOsienOsaAlueidenTaiLukioOpintojenTaiMuidenOpintovalmiuksiaTukevienOpintojenOsasuoritus
 
 object SupaYhteisenTutkinnonOsanOsaAlueenSuoritus {
@@ -206,6 +253,42 @@ case class SupaYhteisenAmmatillisenTutkinnonOsanSuoritus(
   arviointi: Option[List[AmmatillinenArviointi]],
   osasuoritukset: List[SupaYhteisenTutkinnonOsanOsaAlueenSuoritus],
 ) extends SupaAmmatillisenTutkinnonOsasuoritus
+
+private object SupaOsittaisenAmmatillisenTutkinnonOsanSuoritusmapper {
+  def apply(s: OsittaisenAmmatillisenTutkinnonOsanSuoritus): SupaAmmatillisenTutkinnonOsasuoritus = s match {
+    case ss: YhteisenOsittaisenAmmatillisenTutkinnonTutkinnonosanSuoritus =>
+      SupaYhteisenAmmatillisenTutkinnonOsanSuoritus(
+        tyyppi = ss.tyyppi,
+        koulutusmoduuli = ss.koulutusmoduuli,
+        arviointi = ss.arviointi,
+        osasuoritukset = ss.osasuoritukset.toList.flatten.map(SupaYhteisenTutkinnonOsanOsaAlueenSuoritus.apply)
+      )
+
+    case ss: MuunOsittaisenAmmatillisenTutkinnonTutkinnonosanSuoritus =>
+      SupaMuunAmmatillisenTutkinnonOsanSuoritus(
+        tyyppi = ss.tyyppi,
+        koulutusmoduuli = ss.koulutusmoduuli,
+        arviointi = ss.arviointi,
+        osasuoritukset = ss.osasuoritukset.toList.flatten.map(SupaAmmatillisenTutkinnonOsaaPienemmänKokonaisuudenSuoritus.apply)
+      )
+
+    case ss: OsittaisenAmmatillisenTutkinnonOsanJatkoOpintovalmiuksiaTukevienOpintojenSuoritus =>
+      SupaAmmatillisenTutkinnonOsanJatkoOpintovalmiuksiaTukevienOpintojenSuoritus(
+        tyyppi = ss.tyyppi,
+        koulutusmoduuli = ss.koulutusmoduuli,
+        arviointi = None,
+        osasuoritukset = ss.osasuoritukset.toList.flatten.map(SupaYhteistenTutkinnonOsienOsaAlueidenTaiLukioOpintojenTaiMuidenOpintovalmiuksiaTukevienOpintojenOsasuoritus.apply)
+      )
+
+    case ss: OsittaisenAmmatillisenTutkinnonOsanKorkeakouluopintoSuoritus =>
+      SupaAmmatillisenTutkinnonOsanKorkeakouluopintoSuoritus(
+        tyyppi = ss.tyyppi,
+        koulutusmoduuli = ss.koulutusmoduuli,
+        arviointi = None,
+        osasuoritukset = ss.osasuoritukset.toList.flatten.map(SupaKorkeakouluopintojenSuoritus.apply)
+      )
+  }
+}
 
 object SupaAmmatillisenTutkinnonOsasuoritus {
   def apply(s: AmmatillisenTutkinnonOsanSuoritus): SupaAmmatillisenTutkinnonOsasuoritus = {
