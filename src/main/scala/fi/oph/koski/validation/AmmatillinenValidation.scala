@@ -26,7 +26,8 @@ object AmmatillinenValidation {
           validateKorotuksenAlkuperäinenOpiskeluoikeus(ammatillinen, henkilö, koskiOpiskeluoikeudet),
           validateOpiskeluoikeudenArvionnit(ammatillinen),
           validateTutkinnonUusiinPerusteisiinSiirtyminen(ammatillinen),
-          validatePaikallinenMuuAmmatillinenKoulutusRajapäivänJälkeen(config, ammatillinen)
+          validatePaikallinenMuuAmmatillinenKoulutusRajapäivänJälkeen(config, ammatillinen),
+          validateAikajaksotVosUudistuksenRajapäivänJälkeen(config, ammatillinen)
         )
       case _ => HttpStatus.ok
     }
@@ -412,7 +413,7 @@ object AmmatillinenValidation {
   }
 
   private def validatePaikallinenMuuAmmatillinenKoulutusRajapäivänJälkeen(config: Config, oo: AmmatillinenOpiskeluoikeus): HttpStatus = {
-    val viimeinenSallittuAlkamispäivä = LocalDate.parse(config.getString("validaatiot.paikallinenMuuAmmatillinenKoulutusViimeinenAloituspaiva"))
+    val viimeinenSallittuAlkamispäivä = LocalDate.parse(config.getString("validaatiot.paikallinenMuuAmmatillinenKoulutusViimeinenAloituspäivä"))
     val onPaikallinenMuuAmmatillinenKoulutus = oo.suoritukset
       .map(_.koulutusmoduuli)
       .exists {
@@ -425,5 +426,18 @@ object AmmatillinenValidation {
     HttpStatus.validate(!onPaikallinenMuuAmmatillinenKoulutus || !onAlkamispäiväRajapäivänJälkeen){
       KoskiErrorCategory.badRequest.validation.ammatillinen.paikallinenMuuAmmatillinenRajapäivänJälkeen()
     }
+  }
+
+  private def validateAikajaksotVosUudistuksenRajapäivänJälkeen(config: Config, oo: AmmatillinenOpiskeluoikeus): HttpStatus = {
+    val viimeinenSallittuJaksonPäivä = LocalDate.parse(config.getString("validaatiot.ammatillinenVosUudistuksenAikajaksojenViimeinenKayttöpäivä"))
+
+    val opiskeluvalmiuksiaTukevatOpinnotJaksoJatkuuRajapäivänJälkeen = oo.lisätiedot
+      .flatMap(_.opiskeluvalmiuksiaTukevatOpinnot)
+      .getOrElse(List.empty)
+      .exists(jakso => jakso.loppu.isAfter(viimeinenSallittuJaksonPäivä))
+
+   HttpStatus.validate(!opiskeluvalmiuksiaTukevatOpinnotJaksoJatkuuRajapäivänJälkeen){
+     KoskiErrorCategory.badRequest.validation.ammatillinen.lisätietoRajapäivänJälkeen("Opiskeluvalmiuksia tukevien opintojen")()
+   }
   }
 }

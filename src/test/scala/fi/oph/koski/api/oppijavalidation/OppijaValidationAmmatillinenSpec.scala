@@ -16,6 +16,7 @@ import fi.oph.koski.koskiuser.MockUsers.{jyväskylänNormaalikoulunPalvelukäytt
 import fi.oph.koski.koskiuser.{AccessType, KoskiSpecificSession}
 import fi.oph.koski.localization.LocalizedStringImplicits._
 import fi.oph.koski.organisaatio.MockOrganisaatiot
+import fi.oph.koski.schema.LocalizedString.finnish
 import fi.oph.koski.schema._
 import fi.oph.koski.validation.KoskiValidator
 import fi.oph.koski.{KoskiApplicationForTests, KoskiHttpSpec}
@@ -1106,6 +1107,38 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
           "palautetaan HTTP 200" in setupAmmatillinenPäätasonSuoritus(valmisSuoritusKeskiarvolla.copy(keskiarvo = None, vahvistus = vahvistus(date(2018, 1, 14))))(
             verifyResponseStatus(200)
           )
+        }
+      }
+    }
+
+    "Lisätiedot" - {
+      "Opiskeluvalmiuksia tukevien opintojen jakso päättyy ennen 1.1.2026" in {
+        setupOppijaWithOpiskeluoikeus(defaultOpiskeluoikeus.copy(
+          lisätiedot = Some(AmmatillisenOpiskeluoikeudenLisätiedot(
+            opiskeluvalmiuksiaTukevatOpinnot = Some(List(OpiskeluvalmiuksiaTukevienOpintojenJakso(date(2025, 1, 1), date(2025, 12, 31), finnish("foo"))))
+          ))
+        )){
+          verifyResponseStatusOk()
+        }
+      }
+
+      "Opiskeluvalmiuksia tukevien opintojen jakso jatkuu 1.1.2026 tai sen jälkeen" in {
+        setupOppijaWithOpiskeluoikeus(defaultOpiskeluoikeus.copy(
+          lisätiedot = Some(AmmatillisenOpiskeluoikeudenLisätiedot(
+            opiskeluvalmiuksiaTukevatOpinnot = Some(List(OpiskeluvalmiuksiaTukevienOpintojenJakso(date(2025, 1, 1), date(2026, 1, 1), finnish("foo"))))
+          ))
+        )){
+          verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.ammatillinen.lisätietoRajapäivänJälkeen("Opiskeluvalmiuksia tukevien opintojen")())
+        }
+      }
+
+      "Opiskeluvalmiuksia tukevien opintojen jakso alkaa 1.1.2026 tai sen jälkeen" in {
+        setupOppijaWithOpiskeluoikeus(defaultOpiskeluoikeus.copy(
+          lisätiedot = Some(AmmatillisenOpiskeluoikeudenLisätiedot(
+            opiskeluvalmiuksiaTukevatOpinnot = Some(List(OpiskeluvalmiuksiaTukevienOpintojenJakso(date(2026, 1, 2), date(2026, 12, 31), finnish("foo"))))
+          ))
+        )){
+          verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.ammatillinen.lisätietoRajapäivänJälkeen("Opiskeluvalmiuksia tukevien opintojen")())
         }
       }
     }
