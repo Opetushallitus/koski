@@ -1,0 +1,24 @@
+# Suppress vulnerabilities for multiple Jetty dependencies
+CVE-2024-8184
+CVE-2024-6763
+
+# General suppressions
+CVE-2023-4586
+CVE-2023-44487
+CVE-2021-32816
+
+# Medium-level issues in org.apache.xmlbeans:xmlbeans (via poi-ooxml:3.17)
+# See https://jira.eduuni.fi/browse/TOR-1373
+CVE-2019-12415
+CVE-2021-23926
+CVE-2022-26336
+
+# Medium-level issue in OOXML writing, upgrade blocked
+# See https://jira.eduuni.fi/browse/TOR-1373
+CVE-2025-31672
+
+# False positive in scalaz-core dependency
+CVE-2022-2393
+
+# JLine 2.14.6 (transitive dep of scala-compiler, only used at compile time)
+CVE-2023-50572
