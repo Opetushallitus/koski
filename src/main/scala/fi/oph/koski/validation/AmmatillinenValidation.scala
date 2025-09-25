@@ -454,7 +454,9 @@ object AmmatillinenValidation {
 
     HttpStatus.fold(
       validateOpiskeluValmiuksiaTukevienOpintojenJaksot,
-      validateAikajaksot(oo.lisätiedot.flatMap(_.erityinenTuki), "Erityisen tuen")
+      validateAikajaksot(oo.lisätiedot.flatMap(_.erityinenTuki), "Erityisen tuen"),
+      validateAikajaksot(oo.lisätiedot.flatMap(_.vaikeastiVammainen), "Vaikeasti vammaisen"),
+      validateAikajaksot(oo.lisätiedot.flatMap(_.vammainenJaAvustaja), "Vammaisen ja avustajan")
     )
   }
 }

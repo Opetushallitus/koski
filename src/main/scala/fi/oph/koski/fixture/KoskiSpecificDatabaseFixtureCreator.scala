@@ -391,7 +391,6 @@ object AmmatillinenOpiskeluoikeusTestData {
       lisätiedot = Some(AmmatillisenOpiskeluoikeudenLisätiedot(
         hojks = None,
         vaativanErityisenTuenErityinenTehtävä = Some(List(Aikajakso(alkamispäivä, None))),
-        vaikeastiVammainen = Some(List(Aikajakso(alkamispäivä, None))),
         vankilaopetuksessa = Some(List(Aikajakso(alkamispäivä, None)))
       )),
     )
@@ -422,7 +421,6 @@ object AmmatillinenOpiskeluoikeusTestData {
       )),
       lisätiedot = Some(AmmatillisenOpiskeluoikeudenLisätiedot(
         hojks = None,
-        vaikeastiVammainen = Some(List(Aikajakso(alkamispäivä, None))),
         vankilaopetuksessa = Some(List(Aikajakso(alkamispäivä, None)))
       )),
     )
@@ -448,7 +446,6 @@ object AmmatillinenOpiskeluoikeusTestData {
       )),
       lisätiedot = Some(AmmatillisenOpiskeluoikeudenLisätiedot(
         hojks = None,
-        vaikeastiVammainen = Some(List(Aikajakso(alkamispäivä, None))),
         vankilaopetuksessa = Some(List(Aikajakso(alkamispäivä, None)))
       )),
     )

@@ -3,6 +3,10 @@
 ## xx.xx.2025
 
 - Estä siirtymäajan päättymispäivän 31.12.2028 jälkeen alkavien paikallisten muun ammatillisen koulutuksen opiskeluoikeuksien tallennus.
+- Estä siirtymäajan päättymispäivän 31.12.2025 jälkeen alkavat tai jatkuvat ammatillisen koulutuksen opiskeluoikeuden seuraavien lisätietojen aikajaksot:
+  - Erityinen tuki
+  - Vaikeasti vammainen
+  - Vammainen ja avustaja
 
 ## 19.9.2025
 
