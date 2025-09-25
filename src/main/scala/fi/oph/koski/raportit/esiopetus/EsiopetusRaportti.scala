@@ -149,7 +149,7 @@ case class EsiopetusRaportti(db: DB, organisaatioService: OrganisaatioService) e
 
   private def käyttäjänOrganisaatioOidit(implicit u: KoskiSpecificSession) = u.organisationOids(AccessType.read).toSeq
 
-  private def käyttäjänKoulutustoimijaOidit(implicit u: KoskiSpecificSession) = u.varhaiskasvatusKäyttöoikeudet.toSeq
+  private def käyttäjänKoulutustoimijaOidit(implicit u: KoskiSpecificSession) = u.varhaiskasvatuksenOstopalvelukäyttöoikeudet.toSeq
     .filter(_.organisaatioAccessType.contains(AccessType.read))
     .map(_.koulutustoimija.oid)
 

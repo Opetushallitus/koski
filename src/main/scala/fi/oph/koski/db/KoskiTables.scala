@@ -503,14 +503,17 @@ object KoskiTables {
       KoskiOpiskeluOikeudet
     } else {
       val oppilaitosOidit = user.organisationOids(AccessType.read).toList
-      val varhaiskasvatusOikeudet = user.varhaiskasvatusKäyttöoikeudet.filter(_.organisaatioAccessType.contains(AccessType.read))
+      val varhaiskasvatusOstopalveluoikeudet = user.varhaiskasvatuksenOstopalvelukäyttöoikeudet.filter(_.organisaatioAccessType.contains(AccessType.read))
 
       for {
         oo <- KoskiOpiskeluOikeudet
         if (oo.oppilaitosOid inSet oppilaitosOidit) ||
            (oo.sisältäväOpiskeluoikeusOppilaitosOid inSet oppilaitosOidit) ||
-           (oo.oppilaitosOid inSet varhaiskasvatusOikeudet.map(_.ulkopuolinenOrganisaatio.oid)) &&
-             oo.koulutustoimijaOid.map(_ inSet varhaiskasvatusOikeudet.map(_.koulutustoimija.oid)).getOrElse(false) ||
+           // TODO: TOR-2412: Pitäisikö katsoa myös, että opiskeluoikeus on ostopalvelutyyppinen, vai riittääkö tämä?
+           //  Voiko luottaa validaatiohin, että ei ole pystytty luomaan tälle koulutustoimijalle ei-ostopalvelu-opiskeluoikeutta
+           //  toisen koulutustoimijan alaiseen oppilaitokseen?
+           ((oo.koulutusmuoto === OpiskeluoikeudenTyyppi.esiopetus.koodiarvo) &&
+             oo.koulutustoimijaOid.map(_ inSet varhaiskasvatusOstopalveluoikeudet.map(_.koulutustoimija.oid)).getOrElse(false)) ||
           (oo.koulutusmuoto === OpiskeluoikeudenTyyppi.taiteenperusopetus.koodiarvo &&
             oo.koulutustoimijaOid.map(_ inSet user.orgKäyttöoikeudet
               .filter(_.organisaatioAccessType.contains(AccessType.read))

@@ -7,7 +7,7 @@ import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.json.JsonSerializer.extract
 import fi.oph.koski.json.LegacyJsonSerialization.toJValue
-import fi.oph.koski.koskiuser.{AccessType, KoskiSpecificSession, KäyttöoikeusVarhaiskasvatusToimipiste}
+import fi.oph.koski.koskiuser.{AccessType, KoskiSpecificSession}
 import fi.oph.koski.log.Logging
 import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusQueryFilter._
 import fi.oph.koski.opiskeluoikeus.{OpiskeluoikeusQueryFilter, OpiskeluoikeusQueryService}
@@ -199,12 +199,16 @@ class OpiskeluoikeudenPerustiedotRepository(
     val filters = if (session.hasGlobalReadAccess || session.hasGlobalKoulutusmuotoReadAccess) {
       Nil
     } else {
-      val varhaiskasvatusOikeudet: Set[KäyttöoikeusVarhaiskasvatusToimipiste] = session.varhaiskasvatusKäyttöoikeudet.filter(_.organisaatioAccessType.contains(AccessType.read))
+      val varhaiskasvatusOikeudet = session.varhaiskasvatuksenOstopalvelukäyttöoikeudet.filter(_.organisaatioAccessType.contains(AccessType.read))
+
       List(OpenSearch.anyFilter(List(
         Map("terms" -> Map("sisältyyOpiskeluoikeuteen.oppilaitos.oid" -> session.organisationOids(AccessType.read))),
         Map("terms" -> Map("oppilaitos.oid" -> session.organisationOids(AccessType.read))),
         OpenSearch.allFilter(List(
-          Map("terms" -> Map("oppilaitos.oid" -> varhaiskasvatusOikeudet.map(_.ulkopuolinenOrganisaatio.oid))),
+          // TODO: TOR-2412: korvaa toimipisteiden tarkistus tässä opiskeluoikeuden tyypin tarkistuksella.
+          //  Mutta luultavasti pitää tutkia myös, että on ostopalvelutyyppinen, mikä tieto puuttuu toistaiseksi OpenSearch indekseistä?
+          //  vai riittäisikö koulutustoimijan tarkistaminen?
+          Map("terms" -> Map("oppilaitos.oid" -> varhaiskasvatusOikeudet.flatMap(_.kaikkiToimipaikat))),
           Map("terms" -> Map("koulutustoimija.oid" -> varhaiskasvatusOikeudet.map(_.koulutustoimija.oid)))
         )),
         OpenSearch.allFilter(List(

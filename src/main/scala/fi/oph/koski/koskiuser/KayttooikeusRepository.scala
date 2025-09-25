@@ -48,27 +48,21 @@ class KäyttöoikeusRepository(organisaatioRepository: OrganisaatioRepository, d
       käyttöoikeus.copy(organisaatio = org.toOrganisaatio, juuri = org.oid == käyttöoikeus.organisaatio.oid, oppilaitostyyppi = org.oppilaitostyyppi)
     }
 
-    val hierarkianUlkopuolisetOikeudet = organisaatioHierarkia.toList.flatMap(hierarkianUlkopuolisetKäyttöoikeudet(käyttöoikeus, _)).filterNot { käyttöoikeus =>
-      käyttöoikeudet.exists(_.organisaatio.oid == käyttöoikeus.ulkopuolinenOrganisaatio.oid)
-    }
+    lazy val kaikkiToimipisteet = organisaatioRepository.findAllVarhaiskasvatusToimipisteet
 
-    käyttöoikeudet ++ hierarkianUlkopuolisetOikeudet
+    val varhaiskasvatuksenOstopalvelukäyttöoikeudet = organisaatioHierarkia.filter(_.varhaiskasvatuksenJärjestäjä).toList.flatMap(_.toKoulutustoimija.toList)
+      .map(koulutustoimija =>
+        KäyttöoikeusVarhaiskasvatuksenOstopalveluihinMuistaOrganisaatioista(
+          koulutustoimija = koulutustoimija,
+          organisaatiokohtaisetPalveluroolit = käyttöoikeus.organisaatiokohtaisetPalveluroolit,
+          varhaiskasvatusToimipisteet = kaikkiToimipisteet.filter(_.varhaiskasvatuksenOrganisaatioTyyppi).map(_.organisaatio.oid).toSet,
+          kaikkiToimipaikat = kaikkiToimipisteet.map(_.organisaatio.oid).toSet
+          // TODO: TOR-241: Tarvitaanko myös tieto siitä, mitkä ovat omia ja mitkä toisissa koulutustoimijoissa?
+        )
+      )
+
+    käyttöoikeudet ++ varhaiskasvatuksenOstopalvelukäyttöoikeudet
   }
-
-  private def hierarkianUlkopuolisetKäyttöoikeudet(k: KäyttöoikeusOrg, organisaatioHierarkia: OrganisaatioHierarkia) =
-    if (organisaatioHierarkia.varhaiskasvatuksenJärjestäjä && organisaatioHierarkia.toKoulutustoimija.isDefined) {
-      organisaatioRepository.findAllVarhaiskasvatusToimipisteet.map {
-        case v: VarhaiskasvatusToimipisteResult =>
-          KäyttöoikeusVarhaiskasvatusToimipiste(
-            koulutustoimija = organisaatioHierarkia.toKoulutustoimija.get,
-            ulkopuolinenOrganisaatio = v.organisaatio.toOidOrganisaatio,
-            organisaatiokohtaisetPalveluroolit = k.organisaatiokohtaisetPalveluroolit,
-            onVarhaiskasvatuksenToimipiste = v.varhaiskasvatuksenOrganisaatioTyyppi
-          )
-      }
-    } else {
-      Nil
-    }
 
   private lazy val käyttöoikeusCache = new KeyValueCache[AuthenticationUser, Set[Käyttöoikeus]](
     ExpiringCache("KäyttöoikeusRepository", 5.minutes, Pools.jettyThreads), haeKäyttöoikeudet
