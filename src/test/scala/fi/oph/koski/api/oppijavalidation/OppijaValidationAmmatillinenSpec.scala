@@ -1116,7 +1116,9 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
         setupOppijaWithOpiskeluoikeus(defaultOpiskeluoikeus.copy(
           lisätiedot = Some(AmmatillisenOpiskeluoikeudenLisätiedot(
             opiskeluvalmiuksiaTukevatOpinnot = Some(List(OpiskeluvalmiuksiaTukevienOpintojenJakso(date(2025, 1, 1), date(2025, 12, 31), finnish("foo")))),
-            erityinenTuki = Some(List(Aikajakso(date(2025, 1, 1), Some(date(2025, 12, 31)))))
+            erityinenTuki = Some(List(Aikajakso(date(2025, 1, 1), Some(date(2025, 12, 31))))),
+            vaikeastiVammainen = Some(List(Aikajakso(date(2025, 1, 1), Some(date(2025, 12, 31))))),
+            vammainenJaAvustaja = Some(List(Aikajakso(date(2025, 1, 1), Some(date(2025, 12, 31)))))
           ))
         )){
           verifyResponseStatusOk()
@@ -1127,13 +1129,17 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
         setupOppijaWithOpiskeluoikeus(defaultOpiskeluoikeus.copy(
           lisätiedot = Some(AmmatillisenOpiskeluoikeudenLisätiedot(
             opiskeluvalmiuksiaTukevatOpinnot = Some(List(OpiskeluvalmiuksiaTukevienOpintojenJakso(date(2025, 1, 1), date(2026, 1, 1), finnish("foo")))),
-            erityinenTuki = Some(List(Aikajakso(date(2025, 1, 1), Some(date(2026, 1, 1)))))
+            erityinenTuki = Some(List(Aikajakso(date(2025, 1, 1), Some(date(2026, 1, 1))))),
+            vaikeastiVammainen = Some(List(Aikajakso(date(2025, 1, 1), Some(date(2026, 1, 1))))),
+            vammainenJaAvustaja = Some(List(Aikajakso(date(2025, 1, 1), Some(date(2026, 1, 1)))))
           ))
         )){
           verifyResponseStatus(
             400,
             KoskiErrorCategory.badRequest.validation.ammatillinen.lisätietoRajapäivänJälkeen("Opiskeluvalmiuksia tukevien opintojen")(),
-            KoskiErrorCategory.badRequest.validation.ammatillinen.lisätietoRajapäivänJälkeen("Erityisen tuen")()
+            KoskiErrorCategory.badRequest.validation.ammatillinen.lisätietoRajapäivänJälkeen("Erityisen tuen")(),
+            KoskiErrorCategory.badRequest.validation.ammatillinen.lisätietoRajapäivänJälkeen("Vaikeasti vammaisen")(),
+            KoskiErrorCategory.badRequest.validation.ammatillinen.lisätietoRajapäivänJälkeen("Vammaisen ja avustajan")()
           )
         }
       }
@@ -1142,13 +1148,17 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
         setupOppijaWithOpiskeluoikeus(defaultOpiskeluoikeus.copy(
           lisätiedot = Some(AmmatillisenOpiskeluoikeudenLisätiedot(
             opiskeluvalmiuksiaTukevatOpinnot = Some(List(OpiskeluvalmiuksiaTukevienOpintojenJakso(date(2026, 1, 2), date(2026, 12, 31), finnish("foo")))),
-            erityinenTuki = Some(List(Aikajakso(date(2026, 1, 2), Some(date(2026, 12, 31)))))
+            erityinenTuki = Some(List(Aikajakso(date(2026, 1, 2), Some(date(2026, 12, 31))))),
+            vaikeastiVammainen = Some(List(Aikajakso(date(2026, 1, 2), Some(date(2026, 12, 31))))),
+            vammainenJaAvustaja = Some(List(Aikajakso(date(2026, 1, 2), Some(date(2026, 12, 31)))))
           ))
         )){
           verifyResponseStatus(
             400,
             KoskiErrorCategory.badRequest.validation.ammatillinen.lisätietoRajapäivänJälkeen("Opiskeluvalmiuksia tukevien opintojen")(),
-            KoskiErrorCategory.badRequest.validation.ammatillinen.lisätietoRajapäivänJälkeen("Erityisen tuen")()
+            KoskiErrorCategory.badRequest.validation.ammatillinen.lisätietoRajapäivänJälkeen("Erityisen tuen")(),
+            KoskiErrorCategory.badRequest.validation.ammatillinen.lisätietoRajapäivänJälkeen("Vaikeasti vammaisen")(),
+            KoskiErrorCategory.badRequest.validation.ammatillinen.lisätietoRajapäivänJälkeen("Vammaisen ja avustajan")()
           )
         }
       }
@@ -1156,10 +1166,17 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
       "VOS-uudistukseen 2025 liittyvien lisätietojen aikajaksot jatkuvat ilman määriteltyä päättymispäivää" in {
         setupOppijaWithOpiskeluoikeus(defaultOpiskeluoikeus.copy(
           lisätiedot = Some(AmmatillisenOpiskeluoikeudenLisätiedot(
-            erityinenTuki = Some(List(Aikajakso(date(2024, 1, 1), None)))
+            erityinenTuki = Some(List(Aikajakso(date(2024, 1, 1), None))),
+            vaikeastiVammainen = Some(List(Aikajakso(date(2024, 1, 1), None))),
+            vammainenJaAvustaja = Some(List(Aikajakso(date(2024, 1, 1), None)))
           ))
         )){
-          verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.ammatillinen.lisätietoRajapäivänJälkeen("Erityisen tuen")())
+          verifyResponseStatus(
+            400,
+            KoskiErrorCategory.badRequest.validation.ammatillinen.lisätietoRajapäivänJälkeen("Erityisen tuen")(),
+            KoskiErrorCategory.badRequest.validation.ammatillinen.lisätietoRajapäivänJälkeen("Vaikeasti vammaisen")(),
+            KoskiErrorCategory.badRequest.validation.ammatillinen.lisätietoRajapäivänJälkeen("Vammaisen ja avustajan")()
+          )
         }
       }
     }
