@@ -1,5 +1,6 @@
 package fi.oph.koski.validation
 
+import com.typesafe.config.Config
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.koskiuser.KoskiSpecificSession
 import fi.oph.koski.opiskeluoikeus.KoskiOpiskeluoikeusRepository
@@ -9,7 +10,7 @@ import fi.oph.koski.tutkinto.Koulutustyyppi
 import java.time.LocalDate
 
 object AmmatillinenValidation {
-  def validateAmmatillinenOpiskeluoikeus(
+  def validateAmmatillinenOpiskeluoikeus(config: Config)(
     opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus,
     henkilö: Option[Henkilö],
     koskiOpiskeluoikeudet: KoskiOpiskeluoikeusRepository
@@ -25,6 +26,8 @@ object AmmatillinenValidation {
           validateKorotuksenAlkuperäinenOpiskeluoikeus(ammatillinen, henkilö, koskiOpiskeluoikeudet),
           validateOpiskeluoikeudenArvionnit(ammatillinen),
           validateTutkinnonUusiinPerusteisiinSiirtyminen(ammatillinen),
+          validatePaikallinenMuuAmmatillinenKoulutusRajapäivänJälkeen(config, ammatillinen),
+          validateAikajaksotVosUudistuksenRajapäivänJälkeen(config, ammatillinen)
         )
       case _ => HttpStatus.ok
     }
@@ -407,5 +410,53 @@ object AmmatillinenValidation {
     HttpStatus.validate(!siirtynytUusiinTutkinnonPerusteisiin || katsotaanEronneeksi) {
       KoskiErrorCategory.badRequest.validation.tila.eiPäättävääTilaa("Opiskeluoikeudella, jonka lisätiedoissa on merkintä 'siirtynyt uusiin tutkinnon perusteisiin', pitää päättyä tilaan 'katsotaan eronneeksi'.")
     }
+  }
+
+  private def validatePaikallinenMuuAmmatillinenKoulutusRajapäivänJälkeen(config: Config, oo: AmmatillinenOpiskeluoikeus): HttpStatus = {
+    val viimeinenSallittuAlkamispäivä = LocalDate.parse(config.getString("validaatiot.paikallinenMuuAmmatillinenKoulutusViimeinenAloituspäivä"))
+    val onPaikallinenMuuAmmatillinenKoulutus = oo.suoritukset
+      .map(_.koulutusmoduuli)
+      .exists {
+        case _: PaikallinenMuuAmmatillinenKoulutus => true
+        case _ => false
+      }
+
+    val onAlkamispäiväRajapäivänJälkeen = oo.alkamispäivä.exists(ap => ap.isAfter(viimeinenSallittuAlkamispäivä))
+
+    HttpStatus.validate(!onPaikallinenMuuAmmatillinenKoulutus || !onAlkamispäiväRajapäivänJälkeen){
+      KoskiErrorCategory.badRequest.validation.ammatillinen.paikallinenMuuAmmatillinenRajapäivänJälkeen()
+    }
+  }
+
+  private def validateAikajaksotVosUudistuksenRajapäivänJälkeen(config: Config, oo: AmmatillinenOpiskeluoikeus): HttpStatus = {
+    val viimeinenSallittuJaksonPäivä = LocalDate.parse(config.getString("validaatiot.ammatillinenVosUudistuksenAikajaksojenViimeinenKayttöpäivä"))
+    val rajapäivänJälkeinenAika = Aikajakso(viimeinenSallittuJaksonPäivä.plusDays(1), None)
+
+    def validateOpiskeluValmiuksiaTukevienOpintojenJaksot: HttpStatus = {
+      val jaksoPäättyyRajapäivänJälkeen = oo.lisätiedot
+        .flatMap(_.opiskeluvalmiuksiaTukevatOpinnot)
+        .getOrElse(List.empty)
+        .exists(jakso => jakso.loppu.isAfter(viimeinenSallittuJaksonPäivä))
+
+      HttpStatus.validate(!jaksoPäättyyRajapäivänJälkeen) {
+        KoskiErrorCategory.badRequest.validation.ammatillinen.lisätietoRajapäivänJälkeen("Opiskeluvalmiuksia tukevien opintojen")()
+      }
+    }
+
+    def validateAikajaksot(jaksot: Option[List[Aikajakso]], jaksonNimiVirheilmoitukseen: String): HttpStatus = {
+      val jaksoPäättyyRajapäivänJälkeen = jaksot.getOrElse(List.empty)
+        .exists(jakso => jakso.overlaps(rajapäivänJälkeinenAika))
+
+      HttpStatus.validate(!jaksoPäättyyRajapäivänJälkeen) {
+        KoskiErrorCategory.badRequest.validation.ammatillinen.lisätietoRajapäivänJälkeen(jaksonNimiVirheilmoitukseen)()
+      }
+    }
+
+    HttpStatus.fold(
+      validateOpiskeluValmiuksiaTukevienOpintojenJaksot,
+      validateAikajaksot(oo.lisätiedot.flatMap(_.erityinenTuki), "Erityisen tuen"),
+      validateAikajaksot(oo.lisätiedot.flatMap(_.vaikeastiVammainen), "Vaikeasti vammaisen"),
+      validateAikajaksot(oo.lisätiedot.flatMap(_.vammainenJaAvustaja), "Vammaisen ja avustajan")
+    )
   }
 }

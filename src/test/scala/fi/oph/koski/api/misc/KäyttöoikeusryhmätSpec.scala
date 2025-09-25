@@ -368,9 +368,7 @@ class KäyttöoikeusryhmätSpec
     "ei näe luottamuksellista dataa" in {
       authGet("api/oppija/" + KoskiSpecificMockOppijat.eero.oid, viranomainenGlobaaliKatselija) {
         verifyResponseStatusOk()
-        suppeaSensitiveDataPiilotettu()
-        laajaSensitiveDataPiilotettu()
-        erittäinSensitiveDataPiilotettu()
+        kaikkiSensitiveDataPiilotettu()
       }
     }
 
@@ -689,23 +687,14 @@ class KäyttöoikeusryhmätSpec
 
   private lazy val expectedAikajakso = Some(List(Aikajakso(LocalDate.of(2019, 5, 30), None)))
 
-  private def suppeaSensitiveDataNäkyy(oos: Seq[Opiskeluoikeus] = readOppija.opiskeluoikeudet) = readLisätiedot(oos).vankilaopetuksessa should equal(expectedAikajakso)
-  private def suppeaSensitiveDataPiilotettu(oos: Seq[Opiskeluoikeus] = readOppija.opiskeluoikeudet) = readLisätiedot(oos).vankilaopetuksessa should equal(None)
-  private def laajaSensitiveDataNäkyy(oos: Seq[Opiskeluoikeus] = readOppija.opiskeluoikeudet) = readLisätiedot(oos).erityinenTuki should equal(expectedAikajakso)
-  private def laajaSensitiveDataPiilotettu(oos: Seq[Opiskeluoikeus] = readOppija.opiskeluoikeudet) = readLisätiedot(oos).erityinenTuki should equal(None)
-  private def erittäinSensitiveDataPiilotettu(oos: Seq[Opiskeluoikeus] = readOppija.opiskeluoikeudet) = readLisätiedot(oos).vaikeastiVammainen should equal(None)
-  private def erittäinSensitiveDataNäkyy(oos: Seq[Opiskeluoikeus] = readOppija.opiskeluoikeudet) = readLisätiedot(oos).vaikeastiVammainen should equal(expectedAikajakso)
-
   private def kaikkiSensitiveDataNäkyy(oos: Seq[Opiskeluoikeus] = readOppija.opiskeluoikeudet) = {
-    suppeaSensitiveDataNäkyy(oos)
-    laajaSensitiveDataNäkyy(oos)
-    erittäinSensitiveDataNäkyy(oos)
+    readLisätiedot(oos).vankilaopetuksessa should equal(expectedAikajakso)
+    readLisätiedot(oos).vaativanErityisenTuenErityinenTehtävä should equal(expectedAikajakso)
   }
 
   private def kaikkiSensitiveDataPiilotettu(oos: Seq[Opiskeluoikeus] = readOppija.opiskeluoikeudet) = {
-    suppeaSensitiveDataPiilotettu(oos)
-    laajaSensitiveDataPiilotettu(oos)
-    erittäinSensitiveDataPiilotettu(oos)
+    readLisätiedot(oos).vankilaopetuksessa should equal(None)
+    readLisätiedot(oos).vaativanErityisenTuenErityinenTehtävä should equal(None)
   }
 
   private def readLisätiedot(opiskeluoikeudet: Seq[Opiskeluoikeus]) = opiskeluoikeudet.head.lisätiedot.get.asInstanceOf[AmmatillisenOpiskeluoikeudenLisätiedot]
