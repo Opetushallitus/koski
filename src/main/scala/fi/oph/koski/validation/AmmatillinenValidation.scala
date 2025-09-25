@@ -430,14 +430,31 @@ object AmmatillinenValidation {
 
   private def validateAikajaksotVosUudistuksenRajapäivänJälkeen(config: Config, oo: AmmatillinenOpiskeluoikeus): HttpStatus = {
     val viimeinenSallittuJaksonPäivä = LocalDate.parse(config.getString("validaatiot.ammatillinenVosUudistuksenAikajaksojenViimeinenKayttöpäivä"))
+    val rajapäivänJälkeinenAika = Aikajakso(viimeinenSallittuJaksonPäivä.plusDays(1), None)
 
-    val opiskeluvalmiuksiaTukevatOpinnotJaksoJatkuuRajapäivänJälkeen = oo.lisätiedot
-      .flatMap(_.opiskeluvalmiuksiaTukevatOpinnot)
-      .getOrElse(List.empty)
-      .exists(jakso => jakso.loppu.isAfter(viimeinenSallittuJaksonPäivä))
+    def validateOpiskeluValmiuksiaTukevienOpintojenJaksot: HttpStatus = {
+      val jaksoPäättyyRajapäivänJälkeen = oo.lisätiedot
+        .flatMap(_.opiskeluvalmiuksiaTukevatOpinnot)
+        .getOrElse(List.empty)
+        .exists(jakso => jakso.loppu.isAfter(viimeinenSallittuJaksonPäivä))
 
-   HttpStatus.validate(!opiskeluvalmiuksiaTukevatOpinnotJaksoJatkuuRajapäivänJälkeen){
-     KoskiErrorCategory.badRequest.validation.ammatillinen.lisätietoRajapäivänJälkeen("Opiskeluvalmiuksia tukevien opintojen")()
-   }
+      HttpStatus.validate(!jaksoPäättyyRajapäivänJälkeen) {
+        KoskiErrorCategory.badRequest.validation.ammatillinen.lisätietoRajapäivänJälkeen("Opiskeluvalmiuksia tukevien opintojen")()
+      }
+    }
+
+    def validateAikajaksot(jaksot: Option[List[Aikajakso]], jaksonNimiVirheilmoitukseen: String): HttpStatus = {
+      val jaksoPäättyyRajapäivänJälkeen = jaksot.getOrElse(List.empty)
+        .exists(jakso => jakso.overlaps(rajapäivänJälkeinenAika))
+
+      HttpStatus.validate(!jaksoPäättyyRajapäivänJälkeen) {
+        KoskiErrorCategory.badRequest.validation.ammatillinen.lisätietoRajapäivänJälkeen(jaksonNimiVirheilmoitukseen)()
+      }
+    }
+
+    HttpStatus.fold(
+      validateOpiskeluValmiuksiaTukevienOpintojenJaksot,
+      validateAikajaksot(oo.lisätiedot.flatMap(_.erityinenTuki), "Erityisen tuen")
+    )
   }
 }
