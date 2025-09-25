@@ -135,8 +135,7 @@
             "nimi" : {
               "fi" : "Korjauksen haltuunotto"
             },
-            "koodistoUri" : "tutkinnonosat",
-            "koodistoVersio" : 1
+            "koodistoUri" : "tutkinnonosat"
           },
           "pakollinen" : true
         },
@@ -328,8 +327,7 @@
             "nimi" : {
               "fi" : "Ajoneuvon vianmääritys"
             },
-            "koodistoUri" : "tutkinnonosat",
-            "koodistoVersio" : 1
+            "koodistoUri" : "tutkinnonosat"
           },
           "pakollinen" : true
         },
@@ -391,8 +389,7 @@
             "nimi" : {
               "fi" : "Teknisenä asiantuntijana toiminen"
             },
-            "koodistoUri" : "tutkinnonosat",
-            "koodistoVersio" : 1
+            "koodistoUri" : "tutkinnonosat"
           },
           "pakollinen" : true
         },
@@ -454,8 +451,7 @@
             "nimi" : {
               "fi" : "Testaus ja kilpailutoiminta"
             },
-            "koodistoUri" : "tutkinnonosat",
-            "koodistoVersio" : 1
+            "koodistoUri" : "tutkinnonosat"
           },
           "pakollinen" : true
         },
@@ -517,9 +513,9 @@
       }
     } ],
     "lisätiedot" : {
-      "oikeusMaksuttomaanAsuntolapaikkaan" : false,
       "erityinenTuki" : [ {
-        "alku" : "2018-01-01"
+        "alku" : "2018-01-01",
+        "loppu" : "2025-12-31"
       } ],
       "vaativanErityisenTuenErityinenTehtävä" : [ {
         "alku" : "2018-01-01"
@@ -532,6 +528,5 @@
       "koodistoUri" : "opiskeluoikeudentyyppi"
     },
     "alkamispäivä" : "2018-01-01"
-  } ],
-  "ignoreKoskiValidator" : true
+  } ]
 }

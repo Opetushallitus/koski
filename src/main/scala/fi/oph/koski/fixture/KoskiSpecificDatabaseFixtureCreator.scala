@@ -390,7 +390,7 @@ object AmmatillinenOpiskeluoikeusTestData {
       tila = AmmatillinenOpiskeluoikeudenTila(List(AmmatillinenOpiskeluoikeusjakso(alkamispäivä, ExampleData.opiskeluoikeusLäsnä, Some(ExampleData.valtionosuusRahoitteinen)))),
       lisätiedot = Some(AmmatillisenOpiskeluoikeudenLisätiedot(
         hojks = None,
-        erityinenTuki = Some(List(Aikajakso(alkamispäivä, None))),
+        vaativanErityisenTuenErityinenTehtävä = Some(List(Aikajakso(alkamispäivä, None))),
         vaikeastiVammainen = Some(List(Aikajakso(alkamispäivä, None))),
         vankilaopetuksessa = Some(List(Aikajakso(alkamispäivä, None)))
       )),
@@ -422,7 +422,6 @@ object AmmatillinenOpiskeluoikeusTestData {
       )),
       lisätiedot = Some(AmmatillisenOpiskeluoikeudenLisätiedot(
         hojks = None,
-        erityinenTuki = Some(List(Aikajakso(alkamispäivä, None))),
         vaikeastiVammainen = Some(List(Aikajakso(alkamispäivä, None))),
         vankilaopetuksessa = Some(List(Aikajakso(alkamispäivä, None)))
       )),
@@ -449,7 +448,6 @@ object AmmatillinenOpiskeluoikeusTestData {
       )),
       lisätiedot = Some(AmmatillisenOpiskeluoikeudenLisätiedot(
         hojks = None,
-        erityinenTuki = Some(List(Aikajakso(alkamispäivä, None))),
         vaikeastiVammainen = Some(List(Aikajakso(alkamispäivä, None))),
         vankilaopetuksessa = Some(List(Aikajakso(alkamispäivä, None)))
       )),
