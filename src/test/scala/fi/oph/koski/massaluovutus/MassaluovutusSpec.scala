@@ -579,6 +579,7 @@ class MassaluovutusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers wit
         ) should equal(List(
           "aikuistenperusopetuksenoppimaara",
           "ammatillinentutkinto",
+          "ammatillinentutkintoosittainen",
           "diatutkintovaihe",
           "ebtutkinto",
           "ibtutkinto",
@@ -623,6 +624,7 @@ class MassaluovutusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers wit
           tyyppi
         ) should equal(List(
           "ammatillinentutkinto",
+          "ammatillinentutkintoosittainen",
           "telma"
         ))
       }
@@ -829,6 +831,7 @@ class MassaluovutusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers wit
         ) should equal(List(
           "aikuistenperusopetuksenoppimaara",
           "ammatillinentutkinto",
+          "ammatillinentutkintoosittainen",
           "diatutkintovaihe",
           "ebtutkinto",
           "ibtutkinto",
@@ -873,6 +876,7 @@ class MassaluovutusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers wit
           tyyppi
         ) should equal(List(
           "ammatillinentutkinto",
+          "ammatillinentutkintoosittainen",
           "telma"
         ))
       }
