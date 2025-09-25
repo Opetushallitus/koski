@@ -120,10 +120,10 @@ object Käyttöoikeus {
         val filteredRoolit = globalPalveluroolit.filter(palvelurooliFilter)
         if (filteredRoolit.isEmpty) Set.empty else Set(KäyttöoikeusViranomainen(filteredRoolit))
       }
-      case KäyttöoikeusVarhaiskasvatuksenOstopalveluihinMuistaOrganisaatioista(koulutustoimija, ulkopuolinenOrganisaatio, organisaatiokohtaisetPalveluroolit, onVarhaiskasvatuksenToimipiste) =>
+      case KäyttöoikeusVarhaiskasvatuksenOstopalveluihinMuistaOrganisaatioista(koulutustoimija, organisaatiokohtaisetPalveluroolit, varhaiskasvatusToimipaikat, kaikkiToimipisteet) =>
       {
         val filteredRoolit = organisaatiokohtaisetPalveluroolit.filter(palvelurooliFilter)
-        if (filteredRoolit.isEmpty) Set.empty else Set(KäyttöoikeusVarhaiskasvatuksenOstopalveluihinMuistaOrganisaatioista(koulutustoimija, ulkopuolinenOrganisaatio, filteredRoolit, onVarhaiskasvatuksenToimipiste))
+        if (filteredRoolit.isEmpty) Set.empty else Set(KäyttöoikeusVarhaiskasvatuksenOstopalveluihinMuistaOrganisaatioista(koulutustoimija, filteredRoolit, varhaiskasvatusToimipaikat, kaikkiToimipisteet))
       }
       case _ => Set.empty
     }
@@ -244,9 +244,9 @@ trait OrgKäyttöoikeus extends Käyttöoikeus {
 
 case class KäyttöoikeusVarhaiskasvatuksenOstopalveluihinMuistaOrganisaatioista(
   ostavaKoulutustoimija: Koulutustoimija,
-  ulkopuolinenOrganisaatio: OrganisaatioWithOid,
   organisaatiokohtaisetPalveluroolit: List[Palvelurooli],
-  onVarhaiskasvatuksenToimipiste: Boolean
+  ostajanUlkopuolisetVarhaiskasvatusToimipisteet: Set[Organisaatio.Oid],
+  ostajanUlkopuolisetVarhaiskasvatusToimipaikat: Set[Organisaatio.Oid]
 ) extends OrgKäyttöoikeus
 
 case class KäyttöoikeusOrg(
