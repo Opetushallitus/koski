@@ -8,9 +8,9 @@ import fi.oph.koski.log.KoskiAuditLogMessageField.hakuEhto
 import fi.oph.koski.log.KoskiOperation.OPISKELUOIKEUS_RAPORTTI
 import fi.oph.koski.log.{AuditLog, KoskiAuditLogMessage, Logging}
 import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusQueryContext
-import fi.oph.koski.organisaatio.MockOrganisaatiot
+import fi.oph.koski.organisaatio.{MockOrganisaatiot, OrganisaatioRepository}
 import fi.oph.koski.massaluovutus.MassaluovutusUtils.{QueryResourceManager, defaultOrganisaatio, generatePassword}
-import fi.oph.koski.massaluovutus.{QueryFormat, QueryMeta, MassaluovutusQueryParameters, QueryResultWriter}
+import fi.oph.koski.massaluovutus.{MassaluovutusQueryParameters, QueryFormat, QueryMeta, QueryResultWriter}
 import fi.oph.koski.raportit.{AikajaksoRaporttiRequest, RaportitService}
 import fi.oph.koski.schema.Organisaatio
 import fi.oph.koski.schema.annotation.EnumValues
@@ -67,7 +67,7 @@ case class MassaluovutusQueryPaallekkaisetOpiskeluoikeudet(
     }
 
   override def queryAllowed(application: KoskiApplication)(implicit user: KoskiSpecificSession): Boolean =
-    user.hasGlobalReadAccess || organisaatioOid.exists(user.hasRaporttiReadAccess)
+    user.hasGlobalReadAccess || organisaatioOid.exists(oid => user.hasRaporttiReadAccess(oid))
 
   override def fillAndValidate(implicit user: KoskiSpecificSession): Either[HttpStatus, MassaluovutusQueryPaallekkaisetOpiskeluoikeudet] =
     for {
