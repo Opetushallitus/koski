@@ -239,6 +239,7 @@ object KoskiErrorCategory {
         val korotuksenLaajuus = subcategory("korotuksenLaajuus", "Korotetun osasuorituksen laajuus ei vastaa sen aliosasuoritusten laajuutta")
         val liikaaSamojaTutkinnonOsia = subcategory("liikaaSamojaTutkinnonOsia", "Samalla tutkinnon osan koodilla ei voi olla enempää korotuksia kuin alkuperäisellä opiskeluoikeudella on suorituksia")
         val paikallinenMuuAmmatillinenRajapäivänJälkeen = subcategory("paikallinenMuuAmmatillinenRajapäivänJälkeen", "Paikallinen muun ammatillisen koulutuksen opiskeluoikeus ei voi alkaa siirtymäajan päättymispäivän 31.12.2028 jälkeen")
+        val lomaTilaRajapäivänJälkeen = subcategory("lomaTilaRajapäivänJälkeen", "Ammatillisen koulutuksen opiskeluoikeuden loma-tila ei voi olla voimassa rajapäivän 31.12.2025 jälkeen")
         def lisätietoRajapäivänJälkeen(lisätiedonNimi: String) = subcategory("lisätietoRajapäivänJälkeen", s"$lisätiedonNimi aikajakso ei voi päättyä rajapäivän 31.12.2025 jälkeen")
       }
       val ammatillinen = new Ammatillinen

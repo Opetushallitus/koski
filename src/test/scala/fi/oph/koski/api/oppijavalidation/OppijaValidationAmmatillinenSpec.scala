@@ -1,6 +1,7 @@
 package fi.oph.koski.api.oppijavalidation
 
 import com.typesafe.config.Config
+import com.typesafe.config.ConfigValueFactory.fromAnyRef
 import fi.oph.koski.api.misc.OpiskeluoikeusTestMethodsAmmatillinen
 import fi.oph.koski.documentation.AmmatillinenExampleData._
 import fi.oph.koski.documentation.AmmatillinenOldExamples.muunAmmatillisenTutkinnonOsanSuoritus
@@ -12,18 +13,17 @@ import fi.oph.koski.fixture.AmmatillinenOpiskeluoikeusTestData
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.http.{ErrorMatcher, HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.json.JsonSerializer
-import fi.oph.koski.koskiuser.MockUsers.{jyväskylänNormaalikoulunPalvelukäyttäjä, stadinAmmattiopistoPalvelukäyttäjä}
+import fi.oph.koski.koskiuser.MockUsers.stadinAmmattiopistoPalvelukäyttäjä
 import fi.oph.koski.koskiuser.{AccessType, KoskiSpecificSession}
 import fi.oph.koski.localization.LocalizedStringImplicits._
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.schema.LocalizedString.finnish
 import fi.oph.koski.schema._
-import fi.oph.koski.validation.KoskiValidator
+import fi.oph.koski.validation.{AmmatillinenValidation, KoskiValidator}
 import fi.oph.koski.{KoskiApplicationForTests, KoskiHttpSpec}
 
 import java.time.LocalDate
 import java.time.LocalDate.{of => date}
-import scala.collection.immutable.List
 
 class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[AmmatillinenOpiskeluoikeus] with KoskiHttpSpec with OpiskeluoikeusTestMethodsAmmatillinen {
   "Ammatillisen koulutuksen opiskeluoikeuden lisääminen" - {
@@ -1107,6 +1107,118 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
           "palautetaan HTTP 200" in setupAmmatillinenPäätasonSuoritus(valmisSuoritusKeskiarvolla.copy(keskiarvo = None, vahvistus = vahvistus(date(2018, 1, 14))))(
             verifyResponseStatus(200)
           )
+        }
+      }
+
+      "Loma-tila ja VOS-uudistus 2025" - {
+        "Loma-tilan voi siirtää, jos se päättyy ennen 1.1.2026" in {
+          setupOppijaWithOpiskeluoikeus(defaultOpiskeluoikeus.copy(
+            tila = AmmatillinenOpiskeluoikeudenTila(List(
+              AmmatillinenOpiskeluoikeusjakso(longTimeAgo, opiskeluoikeusLäsnä, Some(valtionosuusRahoitteinen)),
+              AmmatillinenOpiskeluoikeusjakso(date(2024, 9, 1), opiskeluoikeusLoma, Some(valtionosuusRahoitteinen)),
+              AmmatillinenOpiskeluoikeusjakso(date(2024, 12, 31), opiskeluoikeusLäsnä, Some(valtionosuusRahoitteinen)),
+              AmmatillinenOpiskeluoikeusjakso(date(2025, 9, 1), opiskeluoikeusLoma, Some(valtionosuusRahoitteinen)),
+              AmmatillinenOpiskeluoikeusjakso(date(2026, 1, 1), opiskeluoikeusLäsnä, Some(valtionosuusRahoitteinen)),
+            ))
+          )){
+            verifyResponseStatusOk()
+          }
+        }
+        "Loma-tilaa ei voi siirtää, jos se jatkuu 1.1.2026 tai sen jälkeen" in {
+          setupOppijaWithOpiskeluoikeus(defaultOpiskeluoikeus.copy(
+            tila = AmmatillinenOpiskeluoikeudenTila(List(
+              AmmatillinenOpiskeluoikeusjakso(longTimeAgo, opiskeluoikeusLäsnä, Some(valtionosuusRahoitteinen)),
+              AmmatillinenOpiskeluoikeusjakso(date(2024, 9, 1), opiskeluoikeusLoma, Some(valtionosuusRahoitteinen)),
+              AmmatillinenOpiskeluoikeusjakso(date(2025, 1, 1), opiskeluoikeusLäsnä, Some(valtionosuusRahoitteinen)),
+              AmmatillinenOpiskeluoikeusjakso(date(2025, 9, 1), opiskeluoikeusLoma, Some(valtionosuusRahoitteinen)),
+              AmmatillinenOpiskeluoikeusjakso(date(2026, 1, 2), opiskeluoikeusLäsnä, Some(valtionosuusRahoitteinen))
+            ))
+          )){
+            verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.ammatillinen.lomaTilaRajapäivänJälkeen())
+          }
+        }
+        "Sellaista loma-tilaa ei voi tallentaa, joka alkaa 1.1.2026 tai sen jälkeen ja jatkuu toistaiseksi" in {
+          setupOppijaWithOpiskeluoikeus(defaultOpiskeluoikeus.copy(
+            tila = AmmatillinenOpiskeluoikeudenTila(List(
+              AmmatillinenOpiskeluoikeusjakso(longTimeAgo, opiskeluoikeusLäsnä, Some(valtionosuusRahoitteinen)),
+              AmmatillinenOpiskeluoikeusjakso(date(2024, 9, 1), opiskeluoikeusLoma, Some(valtionosuusRahoitteinen)),
+              AmmatillinenOpiskeluoikeusjakso(date(2025, 1, 1), opiskeluoikeusLäsnä, Some(valtionosuusRahoitteinen)),
+              AmmatillinenOpiskeluoikeusjakso(date(2026, 1, 1), opiskeluoikeusLoma, Some(valtionosuusRahoitteinen))
+            ))
+          )){
+            verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.ammatillinen.lomaTilaRajapäivänJälkeen())
+          }
+        }
+        "Sellaista loma-tilaa ei voi tallentaa, joka alkaa 1.1.2026 tai sen jälkeen ja päättyy myöhemmin" in {
+          setupOppijaWithOpiskeluoikeus(defaultOpiskeluoikeus.copy(
+            tila = AmmatillinenOpiskeluoikeudenTila(List(
+              AmmatillinenOpiskeluoikeusjakso(longTimeAgo, opiskeluoikeusLäsnä, Some(valtionosuusRahoitteinen)),
+              AmmatillinenOpiskeluoikeusjakso(date(2024, 9, 1), opiskeluoikeusLoma, Some(valtionosuusRahoitteinen)),
+              AmmatillinenOpiskeluoikeusjakso(date(2025, 1, 1), opiskeluoikeusLäsnä, Some(valtionosuusRahoitteinen)),
+              AmmatillinenOpiskeluoikeusjakso(date(2026, 1, 1), opiskeluoikeusLoma, Some(valtionosuusRahoitteinen)),
+              AmmatillinenOpiskeluoikeusjakso(date(2026, 1, 10), opiskeluoikeusLäsnä, Some(valtionosuusRahoitteinen))
+            ))
+          )){
+            verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.ammatillinen.lomaTilaRajapäivänJälkeen())
+          }
+        }
+        "Loma-tila saa olla viimeisin voimassa oleva tila ennen rajapäivää" in {
+          // Loma-tilan viimeinen käyttöpäivä on tänään
+          val config = KoskiApplicationForTests.config.withValue("validaatiot.ammatillinenVosUudistuksenAikajaksojenViimeinenKayttöpäivä", fromAnyRef(LocalDate.now.toString))
+
+          val oo = defaultOpiskeluoikeus.copy(
+            tila = AmmatillinenOpiskeluoikeudenTila(List(
+              AmmatillinenOpiskeluoikeusjakso(longTimeAgo, opiskeluoikeusLäsnä, Some(valtionosuusRahoitteinen)),
+              AmmatillinenOpiskeluoikeusjakso(date(2024, 9, 1), opiskeluoikeusLoma, Some(valtionosuusRahoitteinen)),
+              AmmatillinenOpiskeluoikeusjakso(date(2025, 1, 1), opiskeluoikeusLäsnä, Some(valtionosuusRahoitteinen)),
+              AmmatillinenOpiskeluoikeusjakso(date(2025, 8, 1), opiskeluoikeusLoma, Some(valtionosuusRahoitteinen))
+            ))
+          )
+
+          val res = AmmatillinenValidation.validateAmmatillinenOpiskeluoikeus(config)(oo, None, KoskiApplicationForTests.possu)(KoskiSpecificSession.systemUser)
+          res shouldBe HttpStatus.ok
+        }
+        "Loma-tila ei saa olla viimeisin voimassa oleva tila rajapäivänä tai sen jälkeen" in {
+          // Loma-tilan viimeinen käyttöpäivä ollut eilen
+          val config = KoskiApplicationForTests.config.withValue("validaatiot.ammatillinenVosUudistuksenAikajaksojenViimeinenKayttöpäivä", fromAnyRef(LocalDate.now.minusDays(1).toString))
+
+          val oo = defaultOpiskeluoikeus.copy(
+            tila = AmmatillinenOpiskeluoikeudenTila(List(
+              AmmatillinenOpiskeluoikeusjakso(longTimeAgo, opiskeluoikeusLäsnä, Some(valtionosuusRahoitteinen)),
+              AmmatillinenOpiskeluoikeusjakso(date(2024, 9, 1), opiskeluoikeusLoma, Some(valtionosuusRahoitteinen)),
+              AmmatillinenOpiskeluoikeusjakso(date(2025, 1, 1), opiskeluoikeusLäsnä, Some(valtionosuusRahoitteinen)),
+              AmmatillinenOpiskeluoikeusjakso(date(2025, 8, 1), opiskeluoikeusLoma, Some(valtionosuusRahoitteinen))
+            ))
+          )
+
+          val res = AmmatillinenValidation.validateAmmatillinenOpiskeluoikeus(config)(oo, None, KoskiApplicationForTests.possu)(KoskiSpecificSession.systemUser)
+          res shouldBe KoskiErrorCategory.badRequest.validation.ammatillinen.lomaTilaRajapäivänJälkeen()
+        }
+        "Loma-tilan validaatio toimii vaikka opiskeluoikeudella on vain yksi tila (loma)" in {
+          // Loma-tilan viimeinen käyttöpäivä on tänään
+          val config = KoskiApplicationForTests.config.withValue("validaatiot.ammatillinenVosUudistuksenAikajaksojenViimeinenKayttöpäivä", fromAnyRef(LocalDate.now.toString))
+
+          val oo = defaultOpiskeluoikeus.copy(
+            tila = AmmatillinenOpiskeluoikeudenTila(List(
+              AmmatillinenOpiskeluoikeusjakso(longTimeAgo, opiskeluoikeusLoma, Some(valtionosuusRahoitteinen))
+            ))
+          )
+
+          val res = AmmatillinenValidation.validateAmmatillinenOpiskeluoikeus(config)(oo, None, KoskiApplicationForTests.possu)(KoskiSpecificSession.systemUser)
+          res shouldBe HttpStatus.ok
+        }
+        "Loma-tilan validaatio toimii vaikka opiskeluoikeudella on vain yksi tila (läsnä)" in {
+          // Loma-tilan viimeinen käyttöpäivä on tänään
+          val config = KoskiApplicationForTests.config.withValue("validaatiot.ammatillinenVosUudistuksenAikajaksojenViimeinenKayttöpäivä", fromAnyRef(LocalDate.now.toString))
+
+          val oo = defaultOpiskeluoikeus.copy(
+            tila = AmmatillinenOpiskeluoikeudenTila(List(
+              AmmatillinenOpiskeluoikeusjakso(longTimeAgo, opiskeluoikeusLäsnä, Some(valtionosuusRahoitteinen))
+            ))
+          )
+
+          val res = AmmatillinenValidation.validateAmmatillinenOpiskeluoikeus(config)(oo, None, KoskiApplicationForTests.possu)(KoskiSpecificSession.systemUser)
+          res shouldBe HttpStatus.ok
         }
       }
     }
