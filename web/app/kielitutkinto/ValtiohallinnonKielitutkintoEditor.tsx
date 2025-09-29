@@ -2,14 +2,17 @@ import * as A from 'fp-ts/Array'
 import { pipe } from 'fp-ts/lib/function'
 import * as O from 'fp-ts/Option'
 import * as Ord from 'fp-ts/Ord'
+import * as string from 'fp-ts/string'
 import React from 'react'
+import { CommonProps } from '../components-v2/CommonProps'
 import { ActivePäätasonSuoritus } from '../components-v2/containers/EditorContainer'
 import {
   KeyValueRow,
   KeyValueTable
 } from '../components-v2/containers/KeyValueTable'
+import { DateView } from '../components-v2/controls/DateField'
 import { LocalizedTextView } from '../components-v2/controls/LocalizedTestField'
-import { FormField } from '../components-v2/forms/FormField'
+import { FieldViewerProps, FormField } from '../components-v2/forms/FormField'
 import {
   FormModel,
   FormOptic,
@@ -28,6 +31,7 @@ import {
 } from '../components-v2/opiskeluoikeus/OsasuoritusTable'
 import { ISO2FinnishDate } from '../date/date'
 import { t } from '../i18n/i18n'
+import { EmptyObject } from '../types/EditorModels'
 import { KielitutkinnonOpiskeluoikeus } from '../types/fi/oph/koski/schema/KielitutkinnonOpiskeluoikeus'
 import { Koulutustoimija } from '../types/fi/oph/koski/schema/Koulutustoimija'
 import { Oppilaitos } from '../types/fi/oph/koski/schema/Oppilaitos'
@@ -36,7 +40,6 @@ import { ValtionhallinnonKielitutkinnonKielitaidonSuoritus } from '../types/fi/o
 import { ValtionhallinnonKielitutkinnonSuoritus } from '../types/fi/oph/koski/schema/ValtionhallinnonKielitutkinnonSuoritus'
 import { ArviointipäiväOrd } from '../util/arvioinnit'
 import { OsasuoritusOf } from '../util/schema'
-import { DateView } from '../components-v2/controls/DateField'
 
 export type ValtionhallinnonKielitutkintoEditorProps = {
   form: FormModel<KielitutkinnonOpiskeluoikeus>
@@ -137,8 +140,8 @@ const kielitaitoToTableRow = ({
       Tutkintopäivä: (
         <FormField
           form={form}
-          path={osasuoritusPath.path('alkamispäivä')}
-          view={DateView}
+          path={osasuoritusPath.path('osasuoritukset')}
+          view={ViimeisinTutkintopäiväView}
           testId="tutkintopäivä"
         />
       ),
@@ -327,3 +330,30 @@ const isCompletedSuoritus =
       O.map((a) => a.arvosana.koodiarvo !== 'hylatty'),
       O.getOrElse(() => false)
     )
+
+// Tutkintopäivä viewer
+
+const ValtionhallinnonKielitutkinnonKielitaidonSuoritusOrd = Ord.contramap(
+  (a: ValtionhallinnonKielitutkinnonKielitaidonSuoritus) =>
+    a.alkamispäivä || '9999-99-99'
+)(string.Ord)
+
+export type ViimeisinTutkintopäiväViewProps = CommonProps<
+  FieldViewerProps<
+    ValtionhallinnonKielitutkinnonKielitaidonSuoritus[],
+    EmptyObject
+  >
+>
+
+export const ViimeisinTutkintopäiväView: React.FC<
+  ViimeisinTutkintopäiväViewProps
+> = (props) => {
+  const viimeisinOsakoe = pipe(
+    props.value || [],
+    A.sort(ValtionhallinnonKielitutkinnonKielitaidonSuoritusOrd),
+    A.last,
+    O.toUndefined
+  )
+
+  return <DateView value={viimeisinOsakoe?.alkamispäivä} />
+}
