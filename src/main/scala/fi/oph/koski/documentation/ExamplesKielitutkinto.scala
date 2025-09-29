@@ -231,6 +231,7 @@ object ExamplesKielitutkinto {
               case "kirjoittaminen" => ValtionhallinnonKirjoittamisenOsakoe()
               case "tekstinymmartaminen" => ValtionhallinnonTekstinYmmärtämisenOsakoe()
             },
+            alkamispäivä = Some(arviointiPäivä),
             arviointi = Some(arvosanat.zipWithIndex.map { case (arvosana, index) =>
               ValtionhallinnonKielitutkinnonArviointi(
                 arvosana = Koodistokoodiviite(arvosana, "vktarvosana"),
