@@ -16,11 +16,12 @@ Uutta varmennetta haetaan DVV:n portaalissa https://asiointi.dvv.fi/ asiointiluv
 Kehittäjää tarvitaan avaimen ja CSR-tiedoston luomista varten.
 
 ```
-openssl genrsa -aes256 -out varmenne_key.pem 4096 # Laita avain talteen 1Passwordiin
+openssl genrsa -aes256 -out varmenne_key.pem 4096
 openssl rsa -in varmenne_key.pem -pubout -out varmenne_pubkey.pem
 openssl req -new -sha256 -key varmenne_key.pem -out varmenne.csr
 ```
-Varmista että avain on tallessa 1Passwordissa mutta ei jää työasemalle lojumaan!
+
+Varmista että luodut tiedostot sekä passphrase ovat tallessa mutta eivät jää työasemalle lojumaan.
 
 Kun CSR-tiedosto on olemassa, siirrytään asiointipalveluun.
 
