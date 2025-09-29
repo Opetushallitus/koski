@@ -435,7 +435,7 @@ class KoskiValidator(
     }
   }
   private def inferVarhaiskasvatuksenKoulutustoimija(user: KoskiSpecificSession) = {
-    user.varhaiskasvatusKäyttöoikeudet.map(_.koulutustoimija.oid).toList match {
+    user.varhaiskasvatuksenOstopalvelukäyttöoikeudet.map(_.ostavaKoulutustoimija.oid).toList match {
       case koulutustoimijaOid :: Nil =>
         organisaatioRepository.getOrganisaatio(koulutustoimijaOid)
           .flatMap(_.toKoulutustoimija)

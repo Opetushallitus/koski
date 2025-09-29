@@ -49,9 +49,9 @@ class KoskiSpecificSession(
   lähdeKäyttöoikeudet: => Set[Käyttöoikeus]
 ) extends Session(user, lang, clientIp, userAgent)  with SensitiveDataAllowed with GlobalExecutionContext {
 
-  lazy val varhaiskasvatusKäyttöoikeudet: Set[KäyttöoikeusVarhaiskasvatusToimipiste] = käyttöoikeudet.collect { case k: KäyttöoikeusVarhaiskasvatusToimipiste => k }
-  lazy val varhaiskasvatusKoulutustoimijat: Set[Oid] = varhaiskasvatusKäyttöoikeudet.map(_.koulutustoimija.oid)
-  lazy val hasKoulutustoimijaVarhaiskasvatuksenJärjestäjäAccess: Boolean = varhaiskasvatusKäyttöoikeudet.nonEmpty
+  lazy val varhaiskasvatuksenOstopalvelukäyttöoikeudet: Set[KäyttöoikeusVarhaiskasvatuksenOstopalveluihinMuistaOrganisaatioista] = käyttöoikeudet.collect { case k: KäyttöoikeusVarhaiskasvatuksenOstopalveluihinMuistaOrganisaatioista => k }
+  lazy val varhaiskasvatusKoulutustoimijat: Set[Oid] = varhaiskasvatuksenOstopalvelukäyttöoikeudet.map(_.ostavaKoulutustoimija.oid)
+  lazy val hasKoulutustoimijaVarhaiskasvatuksenJärjestäjäAccess: Boolean = varhaiskasvatuksenOstopalvelukäyttöoikeudet.nonEmpty
   lazy val allowedOpiskeluoikeudetJaPäätasonSuoritukset: Set[OoPtsMask] = käyttöoikeudet.flatMap(_.allowedOpiskeluoikeusTyypit)
   lazy val hasKoulutusmuotoRestrictions: Boolean = allowedOpiskeluoikeudetJaPäätasonSuoritukset != OpiskeluoikeudenTyyppi.kaikkiTyypit(isRoot).map(t => OoPtsMask(t.koodiarvo))
   lazy val allowedPäätasonSuorituksenTyypit: Set[String] = allowedOpiskeluoikeudetJaPäätasonSuoritukset.flatMap(_.päätasonSuoritukset).flatten
@@ -66,11 +66,11 @@ class KoskiSpecificSession(
 
   def hasRaporttiReadAccess(organisaatio: Organisaatio.Oid): Boolean = {
     hasReadAccess(organisaatio, None) ||
-      varhaiskasvatusKäyttöoikeudet
+      varhaiskasvatuksenOstopalvelukäyttöoikeudet
         .filter(_.onVarhaiskasvatuksenToimipiste)
         .exists(oikeus =>
            oikeus.ulkopuolinenOrganisaatio.oid == organisaatio &&
-             hasReadAccess(organisaatio, Some(oikeus.koulutustoimija.oid))
+             hasReadAccess(organisaatio, Some(oikeus.ostavaKoulutustoimija.oid))
         )
   }
 
@@ -110,8 +110,8 @@ class KoskiSpecificSession(
   // KoskiSpecificAuthenticationSupport.requireVirkailijaOrPalvelukäyttäjä -metodiin
 
   def hasVarhaiskasvatusAccess(koulutustoimijaOid: Organisaatio.Oid, organisaatioOid: Organisaatio.Oid, accessType: AccessType.Value): Boolean = {
-    val oikeudet: Set[KäyttöoikeusVarhaiskasvatusToimipiste] = varhaiskasvatusKäyttöoikeudet.filter(_.organisaatioAccessType.contains(accessType))
-    globalAccess.contains(accessType) || oikeudet.exists { case KäyttöoikeusVarhaiskasvatusToimipiste(koulutustoimija, organisaatio, _, _) =>
+    val oikeudet: Set[KäyttöoikeusVarhaiskasvatuksenOstopalveluihinMuistaOrganisaatioista] = varhaiskasvatuksenOstopalvelukäyttöoikeudet.filter(_.organisaatioAccessType.contains(accessType))
+    globalAccess.contains(accessType) || oikeudet.exists { case KäyttöoikeusVarhaiskasvatuksenOstopalveluihinMuistaOrganisaatioista(koulutustoimija, organisaatio, _, _) =>
       koulutustoimijaOid == koulutustoimija.oid && organisaatioOid == organisaatio.oid
     }
   }

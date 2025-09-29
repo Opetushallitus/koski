@@ -38,29 +38,40 @@ class KäyttöoikeusRepository(organisaatioRepository: OrganisaatioRepository, d
 
   private def organisaatioKäyttöoikeudet(username: String, käyttöoikeus: KäyttöoikeusOrg) = {
     val organisaatioHierarkia = organisaatioRepository.getOrganisaatioHierarkia(käyttöoikeus.organisaatio.oid)
+
+    val suoratKäyttöoikeudetKokoHierarkianOrganisaatioille: List[KäyttöoikeusOrg] =
+      duplikoiKäyttöoikeusKaikilleHierarkianSisältämilleOrganisaatioille(username, käyttöoikeus, organisaatioHierarkia)
+
+    val hierarkianUlkopuolisetOikeudet = organisaatioHierarkia.toList.flatMap(hierarkianUlkopuolisetKäyttöoikeudet(käyttöoikeus, _)).filterNot { käyttöoikeus =>
+      suoratKäyttöoikeudetKokoHierarkianOrganisaatioille.exists(_.organisaatio.oid == käyttöoikeus.ulkopuolinenOrganisaatio.oid)
+    }
+
+    suoratKäyttöoikeudetKokoHierarkianOrganisaatioille ++ hierarkianUlkopuolisetOikeudet
+  }
+
+  private def duplikoiKäyttöoikeusKaikilleHierarkianSisältämilleOrganisaatioille(
+    username: String,
+    käyttöoikeus: KäyttöoikeusOrg,
+    organisaatioHierarkia: Option[OrganisaatioHierarkia]
+  ): List[KäyttöoikeusOrg] = {
     val flattened = OrganisaatioHierarkia.flatten(organisaatioHierarkia.toList)
 
     if (flattened.isEmpty) {
       logger.warn(s"Käyttäjän $username käyttöoikeus $käyttöoikeus kohdistuu organisaatioon ${käyttöoikeus.organisaatio.oid}, jota ei löydy")
     }
 
-    val käyttöoikeudet = flattened.map { org =>
+    flattened.map { org =>
       käyttöoikeus.copy(organisaatio = org.toOrganisaatio, juuri = org.oid == käyttöoikeus.organisaatio.oid, oppilaitostyyppi = org.oppilaitostyyppi)
     }
-
-    val hierarkianUlkopuolisetOikeudet = organisaatioHierarkia.toList.flatMap(hierarkianUlkopuolisetKäyttöoikeudet(käyttöoikeus, _)).filterNot { käyttöoikeus =>
-      käyttöoikeudet.exists(_.organisaatio.oid == käyttöoikeus.ulkopuolinenOrganisaatio.oid)
-    }
-
-    käyttöoikeudet ++ hierarkianUlkopuolisetOikeudet
   }
+
 
   private def hierarkianUlkopuolisetKäyttöoikeudet(k: KäyttöoikeusOrg, organisaatioHierarkia: OrganisaatioHierarkia) =
     if (organisaatioHierarkia.varhaiskasvatuksenJärjestäjä && organisaatioHierarkia.toKoulutustoimija.isDefined) {
       organisaatioRepository.findAllVarhaiskasvatusToimipisteet.map {
         case v: VarhaiskasvatusToimipisteResult =>
-          KäyttöoikeusVarhaiskasvatusToimipiste(
-            koulutustoimija = organisaatioHierarkia.toKoulutustoimija.get,
+          KäyttöoikeusVarhaiskasvatuksenOstopalveluihinMuistaOrganisaatioista(
+            ostavaKoulutustoimija = organisaatioHierarkia.toKoulutustoimija.get,
             ulkopuolinenOrganisaatio = v.organisaatio.toOidOrganisaatio,
             organisaatiokohtaisetPalveluroolit = k.organisaatiokohtaisetPalveluroolit,
             onVarhaiskasvatuksenToimipiste = v.varhaiskasvatuksenOrganisaatioTyyppi
