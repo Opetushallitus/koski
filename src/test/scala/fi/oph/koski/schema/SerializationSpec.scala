@@ -67,7 +67,9 @@ class SerializationSpec extends AnyFreeSpec with TestEnvironment with Matchers w
                    _: OsittaisenAmmatillisenTutkinnonOsanKorkeakouluopintoSuoritus |
                    _: OsittaisenAmmatillisenTutkinnonOsanJatkoOpintovalmiuksiaTukevienOpintojenSuoritus |
                    _: MuunOsittaisenAmmatillisenTutkinnonTutkinnonosanSuoritus |
-                   _: YhteisenOsittaisenAmmatillisenTutkinnonTutkinnonosanSuoritus => true
+                   _: YhteisenOsittaisenAmmatillisenTutkinnonTutkinnonosanSuoritus |
+                   _: MuunOsittaisenAmmatillisenTutkinnonTutkinnonosanUseastaTutkinnostaSuoritus |
+                   _: YhteisenOsittaisenAmmatillisenTutkinnonTutkinnonosanUseastaTutkinnostaSuoritus => true
               case s: YhteisenAmmatillisenTutkinnonOsanSuoritus =>  s.osasuoritukset.toList.flatten.exists(_.näyttö.isDefined)
               case s: YhteisenTutkinnonOsanOsaAlueenSuoritus => s.näyttö.isDefined
               case s: DIASuoritus => s.koulutusmoduuli.isInstanceOf[DIAOppiaine]
