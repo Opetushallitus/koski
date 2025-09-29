@@ -22,3 +22,16 @@ CVE-2022-2393
 
 # JLine 2.14.6 (transitive dep of scala-compiler, only used at compile time)
 CVE-2023-50572
+
+# Suppressed: nth-check 1.0.2
+# This is a transitive dependency via PostCSS/CSS tooling.
+# The issue is a ReDoS in regex evaluation, but usage is limited to OAuth2 sample code.
+CVE-2021-3803
+
+# Suppressed: spring-security-core 6.5.3
+# Trivy flags this as HIGH, but our usage is limited to OAuth2 sample code.
+CVE-2025-41248
+
+# Suppressed: spring-core 6.2.10
+# Trivy flags this as HIGH, but our usage is limited to OAuth2 sample code
+CVE-2025-41249
