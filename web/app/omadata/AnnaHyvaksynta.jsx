@@ -1,5 +1,6 @@
 import React from 'baret'
 import Text from '../i18n/Text'
+import { t } from '../i18n/i18n'
 import(/* webpackChunkName: "styles" */ '../style/main.less')
 
 export default ({ memberName, onAcceptClick, logoutURL }) => (
@@ -93,7 +94,7 @@ export default ({ memberName, onAcceptClick, logoutURL }) => (
           <Text name="Lisätietoja Opetushallituksen suorittamasta tietojen käsittelystä saat Opintopolku-palvelusta" />
         </p>
         <p>
-          <a href="https://opintopolku.fi/wp/tietosuojaseloste/koski-palvelun-tietosuojaseloste/">
+          <a href={t('tietosuojaseloste-link')}>
             <Text name="KOSKI-palvelun tietosuojaseloste Opintopolku-sivustolla" />
           </a>
         </p>

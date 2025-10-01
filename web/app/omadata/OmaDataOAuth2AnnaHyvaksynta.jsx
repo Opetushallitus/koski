@@ -97,10 +97,7 @@ const AcceptanceParagraphs = ({ durationInMin, clientId }) => {
         <Text name="Lisätietoja Opetushallituksen suorittamasta tietojen käsittelystä saat Opintopolku-palvelusta" />
       </p>
       <p>
-        <a
-          href="https://opintopolku.fi/wp/tietosuojaseloste/koski-palvelun-tietosuojaseloste/"
-          target="_blank"
-        >
+        <a href={t('tietosuojaseloste-link')} target="_blank">
           <Text name="KOSKI-palvelun tietosuojaseloste Opintopolku-sivustolla" />
         </a>
       </p>
