@@ -1275,21 +1275,39 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
         }
       }
 
-      "VOS-uudistukseen 2025 liittyvien lisätietojen aikajaksot jatkuvat ilman määriteltyä päättymispäivää" in {
-        setupOppijaWithOpiskeluoikeus(defaultOpiskeluoikeus.copy(
+      "VOS-uudistukseen 2025 liittyvien lisätietojen aikajaksot jatkuvat ilman määriteltyä päättymispäivää ennen rajapäivää" in {
+        val config = KoskiApplicationForTests.config.withValue("validaatiot.ammatillinenVosUudistuksenAikajaksojenViimeinenKayttöpäivä", fromAnyRef(LocalDate.now.toString))
+
+        val oo = defaultOpiskeluoikeus.copy(
           lisätiedot = Some(AmmatillisenOpiskeluoikeudenLisätiedot(
             erityinenTuki = Some(List(Aikajakso(date(2024, 1, 1), None))),
             vaikeastiVammainen = Some(List(Aikajakso(date(2024, 1, 1), None))),
             vammainenJaAvustaja = Some(List(Aikajakso(date(2024, 1, 1), None)))
           ))
-        )){
-          verifyResponseStatus(
-            400,
-            KoskiErrorCategory.badRequest.validation.ammatillinen.lisätietoRajapäivänJälkeen("Erityisen tuen")(),
-            KoskiErrorCategory.badRequest.validation.ammatillinen.lisätietoRajapäivänJälkeen("Vaikeasti vammaisen")(),
-            KoskiErrorCategory.badRequest.validation.ammatillinen.lisätietoRajapäivänJälkeen("Vammaisen ja avustajan")()
-          )
-        }
+        )
+
+        val res = AmmatillinenValidation.validateAmmatillinenOpiskeluoikeus(config)(oo, None, KoskiApplicationForTests.possu)(KoskiSpecificSession.systemUser)
+        res shouldBe HttpStatus.ok
+      }
+
+      "VOS-uudistukseen 2025 liittyvien lisätietojen aikajaksot jatkuvat ilman määriteltyä päättymispäivää rajapäivän jälkeen" in {
+        val config = KoskiApplicationForTests.config.withValue("validaatiot.ammatillinenVosUudistuksenAikajaksojenViimeinenKayttöpäivä", fromAnyRef(LocalDate.now.minusDays(1).toString))
+
+        val oo = defaultOpiskeluoikeus.copy(
+          lisätiedot = Some(AmmatillisenOpiskeluoikeudenLisätiedot(
+            erityinenTuki = Some(List(Aikajakso(date(2024, 1, 1), None))),
+            vaikeastiVammainen = Some(List(Aikajakso(date(2024, 1, 1), None))),
+            vammainenJaAvustaja = Some(List(Aikajakso(date(2024, 1, 1), None)))
+          ))
+        )
+
+        val res = AmmatillinenValidation.validateAmmatillinenOpiskeluoikeus(config)(oo, None, KoskiApplicationForTests.possu)(KoskiSpecificSession.systemUser)
+        res shouldBe HttpStatus(
+          400,
+          KoskiErrorCategory.badRequest.validation.ammatillinen.lisätietoRajapäivänJälkeen("Erityisen tuen")().errors ++
+          KoskiErrorCategory.badRequest.validation.ammatillinen.lisätietoRajapäivänJälkeen("Vaikeasti vammaisen")().errors ++
+          KoskiErrorCategory.badRequest.validation.ammatillinen.lisätietoRajapäivänJälkeen("Vammaisen ja avustajan")().errors
+        )
       }
     }
 

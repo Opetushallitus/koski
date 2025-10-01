@@ -438,7 +438,6 @@ object AmmatillinenValidation {
   ): HttpStatus = {
     val viimeinenSallittuJaksonPäivä = LocalDate.parse(config.getString("validaatiot.ammatillinenVosUudistuksenAikajaksojenViimeinenKayttöpäivä"))
     val rajapäivänJälkeinenPäivä = viimeinenSallittuJaksonPäivä.plusDays(1)
-    val rajapäivänJälkeinenAika = Aikajakso(rajapäivänJälkeinenPäivä, None)
 
     def validateOpiskeluValmiuksiaTukevienOpintojenJaksot: HttpStatus = {
       val jaksoPäättyyRajapäivänJälkeen = oo.lisätiedot
@@ -453,7 +452,10 @@ object AmmatillinenValidation {
 
     def validateAikajaksot(jaksot: Option[List[Aikajakso]], jaksonNimiVirheilmoitukseen: String): HttpStatus = {
       val jaksoPäättyyRajapäivänJälkeen = jaksot.getOrElse(List.empty)
-        .exists(jakso => jakso.overlaps(rajapäivänJälkeinenAika))
+        .exists(jakso =>
+          (jakso.loppu.isEmpty && LocalDate.now.isAfter(viimeinenSallittuJaksonPäivä)) ||
+            (jakso.loppu.isDefined && jakso.loppu.exists(l => l.isAfter(viimeinenSallittuJaksonPäivä)))
+        )
 
       HttpStatus.validate(!jaksoPäättyyRajapäivänJälkeen) {
         KoskiErrorCategory.badRequest.validation.ammatillinen.lisätietoRajapäivänJälkeen(jaksonNimiVirheilmoitukseen)()
