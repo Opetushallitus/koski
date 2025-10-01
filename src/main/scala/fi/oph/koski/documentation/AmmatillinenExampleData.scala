@@ -351,7 +351,7 @@ object AmmatillinenExampleData {
       suorituskieli = None,
       alkamispäivä = None,
       toimipiste = Some(stadinToimipiste),
-      arviointi = Some(List(AmmatillinenArviointi(arvosana = arvosana, date(2014, 10, 20))))
+      arviointi = Some(List(AmmatillinenArviointi(arvosana = arvosana, date(2024, 1, 1))))
     )
   }
 
@@ -365,7 +365,7 @@ object AmmatillinenExampleData {
       suorituskieli = None,
       alkamispäivä = None,
       toimipiste = Some(stadinToimipiste),
-      arviointi = Some(List(AmmatillinenArviointi(arvosana = arvosana, date(2014, 10, 20))))
+      arviointi = Some(List(AmmatillinenArviointi(arvosana = arvosana, date(2024, 1, 1))))
     )
   }
 
@@ -824,55 +824,57 @@ object AmmatillinenExampleData {
     suoritustapa = suoritustapaReformi,
     järjestämismuodot = Some(List(Järjestämismuotojakso(date(2022, 9, 1), None, järjestämismuotoOppilaitos))),
     suorituskieli = suomenKieli,
-    keskiarvo = Some(4.0),
+    keskiarvo = None,
     vahvistus = vahvistus(date(2024, 5, 31), stadinAmmattiopisto, Some(helsinki)),
     alkamispäivä = None,
     toimipiste = stadinToimipiste,
     osasuoritukset = Some(List(
       osittaisenTutkinnonTutkinnonOsanUseastaTutkinnostaSuoritus(h2, ammatillisetTutkinnonOsat, "106945", "Ajoneuvon huoltotyöt", 25).copy(
         tunnustettu = Some(tunnustettu),
-        arviointi = Some(List(arviointi(h2).copy(päivä = date(2015, 1, 1))))
+        arviointi = Some(List(arviointi(h2).copy(päivä = date(2024, 1, 1))))
       ),
       osittaisenTutkinnonTutkinnonOsanUseastaTutkinnostaSuoritus(h2, None, "106877", "Alustan korjaustyöt", 15),
       osittaisenTutkinnonTutkinnonOsanUseastaTutkinnostaSuoritus(k3, ammatillisetTutkinnonOsat, "106878", "Jarrujen korjaus", 10).copy(
         tunnustettu = Some(tunnustettu.copy(rahoituksenPiirissä = true)),
         osasuoritukset = Some(List(
           AmmatillisenTutkinnonOsaaPienemmänKokonaisuudenSuoritus(
-            AmmatillisenTutkinnonOsaaPienempiKokonaisuus(PaikallinenKoodi("jkj", "Joku korjausjuttu"), "Joku korjausjuttu"),
-            arviointi = Some(List(arviointiHyväksytty))
+            AmmatillisenTutkinnonOsaaPienempiKokonaisuus(PaikallinenKoodi("pk", "Paikallinen tutkinnon osa"), "Paikallinen tutkinnon osa"),
+            arviointi = Some(List(arviointiHyväksytty.copy(päivä = date(2024, 1, 1))))
           )
         ))
       ),
-      osittaisenTutkinnonTutkinnonOsanUseastaTutkinnostaSuoritus(k3, None, "106879", "Sähköjärjestelmän kunnon määrittäminen", 100).copy(näyttö = Some(
-        näyttö(date(2016, 2, 1), "Muksulan päiväkodin auton sähköjärjestelmän kunnon määrittämisen\ntekeminen sekä mittauksien tekeminen ja näytteiden ottaminen", "Muksulan päiväkoti, Kaarinan kunta", Some(näytönArviointi)))
+      osittaisenTutkinnonTutkinnonOsanUseastaTutkinnostaSuoritus(k3, None, "106879", "Sähköjärjestelmän kunnon määrittäminen", 15).copy(
+        näyttö = Some(
+          näyttö(date(2024, 1, 1), "Muksulan päiväkodin auton sähköjärjestelmän kunnon määrittämisen\ntekeminen sekä mittauksien tekeminen ja näytteiden ottaminen", "Muksulan päiväkoti, Kaarinan kunta", Some(näytönArviointi.copy(päivä = date(2024, 1, 1))))
+        )
       ),
       yhteisenOsittaisenTutkinnonTutkinnonOsanUseastaTutkinnostaSuoritus(h2, yhteisetTutkinnonOsat, "106727", "Viestintä- ja vuorovaikutusosaaminen", 11).copy(
         osasuoritukset = Some(List(
-          YhteisenTutkinnonOsanOsaAlueenSuoritus(koulutusmoduuli = AmmatillisenTutkinnonViestintäJaVuorovaikutusKielivalinnalla(Koodistokoodiviite("VVAI22", "ammatillisenoppiaineet"), kieli = Koodistokoodiviite("FI", "kielivalikoima"), pakollinen = true, laajuus = Some(LaajuusOsaamispisteissä(4))), arviointi = Some(List(arviointiKiitettävä))),
-          YhteisenTutkinnonOsanOsaAlueenSuoritus(koulutusmoduuli = AmmatillisenTutkinnonViestintäJaVuorovaikutusKielivalinnalla(Koodistokoodiviite("VVAI22", "ammatillisenoppiaineet"), kieli = Koodistokoodiviite("FI", "kielivalikoima"), pakollinen = false, laajuus = Some(LaajuusOsaamispisteissä(3))), arviointi = Some(List(arviointiKiitettävä))),
-          YhteisenTutkinnonOsanOsaAlueenSuoritus(koulutusmoduuli = AmmatillisenTutkinnonViestintäJaVuorovaikutusKielivalinnalla(Koodistokoodiviite("VVTK", "ammatillisenoppiaineet"), kieli = Koodistokoodiviite("EN", "kielivalikoima"), pakollinen = true, Some(LaajuusOsaamispisteissä(1))), arviointi = Some(List(arviointiKiitettävä))),
-          YhteisenTutkinnonOsanOsaAlueenSuoritus(koulutusmoduuli = AmmatillisenTutkinnonViestintäJaVuorovaikutusKielivalinnalla(Koodistokoodiviite("VVTK", "ammatillisenoppiaineet"), kieli = Koodistokoodiviite("EN", "kielivalikoima"), pakollinen = false, Some(LaajuusOsaamispisteissä(3))), arviointi = Some(List(arviointiKiitettävä)))
+          YhteisenTutkinnonOsanOsaAlueenSuoritus(koulutusmoduuli = AmmatillisenTutkinnonViestintäJaVuorovaikutusKielivalinnalla(Koodistokoodiviite("VVAI22", "ammatillisenoppiaineet"), kieli = Koodistokoodiviite("FI", "kielivalikoima"), pakollinen = true, laajuus = Some(LaajuusOsaamispisteissä(4))), arviointi = Some(List(arviointiKiitettävä.copy(päivä = date(2024, 1, 1))))),
+          YhteisenTutkinnonOsanOsaAlueenSuoritus(koulutusmoduuli = AmmatillisenTutkinnonViestintäJaVuorovaikutusKielivalinnalla(Koodistokoodiviite("VVAI22", "ammatillisenoppiaineet"), kieli = Koodistokoodiviite("FI", "kielivalikoima"), pakollinen = false, laajuus = Some(LaajuusOsaamispisteissä(3))), arviointi = Some(List(arviointiKiitettävä.copy(päivä = date(2024, 1, 1))))),
+          YhteisenTutkinnonOsanOsaAlueenSuoritus(koulutusmoduuli = AmmatillisenTutkinnonViestintäJaVuorovaikutusKielivalinnalla(Koodistokoodiviite("VVTK", "ammatillisenoppiaineet"), kieli = Koodistokoodiviite("EN", "kielivalikoima"), pakollinen = true, Some(LaajuusOsaamispisteissä(1))), arviointi = Some(List(arviointiKiitettävä.copy(päivä = date(2024, 1, 1))))),
+          YhteisenTutkinnonOsanOsaAlueenSuoritus(koulutusmoduuli = AmmatillisenTutkinnonViestintäJaVuorovaikutusKielivalinnalla(Koodistokoodiviite("VVTK", "ammatillisenoppiaineet"), kieli = Koodistokoodiviite("EN", "kielivalikoima"), pakollinen = false, Some(LaajuusOsaamispisteissä(3))), arviointi = Some(List(arviointiKiitettävä.copy(päivä = date(2024, 1, 1)))))
         ))),
       yhteisenOsittaisenTutkinnonTutkinnonOsanUseastaTutkinnostaSuoritus(k3, yhteisetTutkinnonOsat, "106728", "Matemaattis-luonnontieteellinen osaaminen", 12).copy(
         lisätiedot = Some(List(lisätietoOsaamistavoitteet)),
         tunnustettu = Some(tunnustettu.copy(rahoituksenPiirissä = true)),
         osasuoritukset = Some(List(
-          YhteisenTutkinnonOsanOsaAlueenSuoritus(koulutusmoduuli = PaikallinenAmmatillisenTutkinnonOsanOsaAlue(PaikallinenKoodi("MLMA", "Matematiikka"), "Matematiikan opinnot", pakollinen = true, Some(LaajuusOsaamispisteissä(4))), arviointi = Some(List(arviointiKiitettävä))),
-          YhteisenTutkinnonOsanOsaAlueenSuoritus(koulutusmoduuli = PaikallinenAmmatillisenTutkinnonOsanOsaAlue(PaikallinenKoodi("MLMA", "Matematiikka"), "Matematiikan opinnot", pakollinen = false, Some(LaajuusOsaamispisteissä(3))), arviointi = Some(List(arviointiKiitettävä))),
-          YhteisenTutkinnonOsanOsaAlueenSuoritus(koulutusmoduuli = ValtakunnallinenAmmatillisenTutkinnonOsanOsaAlue(Koodistokoodiviite("MLFK", "ammatillisenoppiaineet"), pakollinen = true, Some(LaajuusOsaamispisteissä(2))), arviointi = Some(List(arviointiKiitettävä))).copy(
+          YhteisenTutkinnonOsanOsaAlueenSuoritus(koulutusmoduuli = PaikallinenAmmatillisenTutkinnonOsanOsaAlue(PaikallinenKoodi("MLMA", "Matematiikka"), "Matematiikan opinnot", pakollinen = true, Some(LaajuusOsaamispisteissä(4))), arviointi = Some(List(arviointiKiitettävä.copy(päivä = date(2024, 1, 1))))),
+          YhteisenTutkinnonOsanOsaAlueenSuoritus(koulutusmoduuli = PaikallinenAmmatillisenTutkinnonOsanOsaAlue(PaikallinenKoodi("MLMA", "Matematiikka"), "Matematiikan opinnot", pakollinen = false, Some(LaajuusOsaamispisteissä(3))), arviointi = Some(List(arviointiKiitettävä.copy(päivä = date(2024, 1, 1))))),
+          YhteisenTutkinnonOsanOsaAlueenSuoritus(koulutusmoduuli = ValtakunnallinenAmmatillisenTutkinnonOsanOsaAlue(Koodistokoodiviite("MLFK", "ammatillisenoppiaineet"), pakollinen = true, Some(LaajuusOsaamispisteissä(2))), arviointi = Some(List(arviointiKiitettävä.copy(päivä = date(2024, 1, 1))))).copy(
             tunnustettu = Some(tunnustettu)
           ),
-          YhteisenTutkinnonOsanOsaAlueenSuoritus(koulutusmoduuli = ValtakunnallinenAmmatillisenTutkinnonOsanOsaAlue(Koodistokoodiviite("MLFK", "ammatillisenoppiaineet"), pakollinen = false, Some(LaajuusOsaamispisteissä(3))), arviointi = Some(List(arviointiKiitettävä)))
+          YhteisenTutkinnonOsanOsaAlueenSuoritus(koulutusmoduuli = ValtakunnallinenAmmatillisenTutkinnonOsanOsaAlue(Koodistokoodiviite("MLFK", "ammatillisenoppiaineet"), pakollinen = false, Some(LaajuusOsaamispisteissä(3))), arviointi = Some(List(arviointiKiitettävä.copy(päivä = date(2024, 1, 1)))))
         ))
       ),
       yhteisenOsittaisenTutkinnonTutkinnonOsanUseastaTutkinnostaSuoritus(h2, yhteisetTutkinnonOsat, "106729", "Yhteiskunta- ja työelämäosaaminen", 14).copy(
         osasuoritukset = Some(List(
-          YhteisenTutkinnonOsanOsaAlueenSuoritus(koulutusmoduuli = ValtakunnallinenAmmatillisenTutkinnonOsanOsaAlue(Koodistokoodiviite("YTYK", "ammatillisenoppiaineet"), pakollinen = true, laajuus = Some(LaajuusOsaamispisteissä(2))), arviointi = Some(List(arviointiKiitettävä))),
-          YhteisenTutkinnonOsanOsaAlueenSuoritus(koulutusmoduuli = ValtakunnallinenAmmatillisenTutkinnonOsanOsaAlue(Koodistokoodiviite("YTYK", "ammatillisenoppiaineet"), pakollinen = false, laajuus = Some(LaajuusOsaamispisteissä(3))), arviointi = Some(List(arviointiKiitettävä))),
-          YhteisenTutkinnonOsanOsaAlueenSuoritus(koulutusmoduuli = ValtakunnallinenAmmatillisenTutkinnonOsanOsaAlue(Koodistokoodiviite("YTTT", "ammatillisenoppiaineet"), pakollinen = true, laajuus = Some(LaajuusOsaamispisteissä(2))), arviointi = Some(List(arviointiKiitettävä))),
-          YhteisenTutkinnonOsanOsaAlueenSuoritus(koulutusmoduuli = ValtakunnallinenAmmatillisenTutkinnonOsanOsaAlue(Koodistokoodiviite("YTTT", "ammatillisenoppiaineet"), pakollinen = false, laajuus = Some(LaajuusOsaamispisteissä(3))), arviointi = Some(List(arviointiKiitettävä))),
-          YhteisenTutkinnonOsanOsaAlueenSuoritus(koulutusmoduuli = ValtakunnallinenAmmatillisenTutkinnonOsanOsaAlue(Koodistokoodiviite("YTKK", "ammatillisenoppiaineet"), pakollinen = true, laajuus = Some(LaajuusOsaamispisteissä(1))), arviointi = Some(List(arviointiKiitettävä))),
-          YhteisenTutkinnonOsanOsaAlueenSuoritus(koulutusmoduuli = ValtakunnallinenAmmatillisenTutkinnonOsanOsaAlue(Koodistokoodiviite("YTKK", "ammatillisenoppiaineet"), pakollinen = false, laajuus = Some(LaajuusOsaamispisteissä(3))), arviointi = Some(List(arviointiKiitettävä)))
+          YhteisenTutkinnonOsanOsaAlueenSuoritus(koulutusmoduuli = ValtakunnallinenAmmatillisenTutkinnonOsanOsaAlue(Koodistokoodiviite("YTYK", "ammatillisenoppiaineet"), pakollinen = true, laajuus = Some(LaajuusOsaamispisteissä(2))), arviointi = Some(List(arviointiKiitettävä.copy(päivä = date(2024, 1, 1))))),
+          YhteisenTutkinnonOsanOsaAlueenSuoritus(koulutusmoduuli = ValtakunnallinenAmmatillisenTutkinnonOsanOsaAlue(Koodistokoodiviite("YTYK", "ammatillisenoppiaineet"), pakollinen = false, laajuus = Some(LaajuusOsaamispisteissä(3))), arviointi = Some(List(arviointiKiitettävä.copy(päivä = date(2024, 1, 1))))),
+          YhteisenTutkinnonOsanOsaAlueenSuoritus(koulutusmoduuli = ValtakunnallinenAmmatillisenTutkinnonOsanOsaAlue(Koodistokoodiviite("YTTT", "ammatillisenoppiaineet"), pakollinen = true, laajuus = Some(LaajuusOsaamispisteissä(2))), arviointi = Some(List(arviointiKiitettävä.copy(päivä = date(2024, 1, 1))))),
+          YhteisenTutkinnonOsanOsaAlueenSuoritus(koulutusmoduuli = ValtakunnallinenAmmatillisenTutkinnonOsanOsaAlue(Koodistokoodiviite("YTTT", "ammatillisenoppiaineet"), pakollinen = false, laajuus = Some(LaajuusOsaamispisteissä(3))), arviointi = Some(List(arviointiKiitettävä.copy(päivä = date(2024, 1, 1))))),
+          YhteisenTutkinnonOsanOsaAlueenSuoritus(koulutusmoduuli = ValtakunnallinenAmmatillisenTutkinnonOsanOsaAlue(Koodistokoodiviite("YTKK", "ammatillisenoppiaineet"), pakollinen = true, laajuus = Some(LaajuusOsaamispisteissä(1))), arviointi = Some(List(arviointiKiitettävä.copy(päivä = date(2024, 1, 1))))),
+          YhteisenTutkinnonOsanOsaAlueenSuoritus(koulutusmoduuli = ValtakunnallinenAmmatillisenTutkinnonOsanOsaAlue(Koodistokoodiviite("YTKK", "ammatillisenoppiaineet"), pakollinen = false, laajuus = Some(LaajuusOsaamispisteissä(3))), arviointi = Some(List(arviointiKiitettävä.copy(päivä = date(2024, 1, 1)))))
         ))),
     )),
     todistuksellaNäkyvätLisätiedot = Some("Suorittaa toista osaamisalaa")

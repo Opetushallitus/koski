@@ -29,7 +29,9 @@ object ExamplesAmmatillinen {
     Example("ammatillinen - reformi useita tutkinnon osia", "Useita tutkinnon osia suorittanut oppija", AmmatillinenOsittainenReformi.laaja),
     Example("ammatillinen - tunnustettu", "Tutkinnon osa tunnustettu aiemmin suoritetusta paikallisen tutkinnon osasta", AmmatillinenPerustutkintoExample.tunnustettuPaikallinenTutkinnonOsa),
     Example("ammatillinen - sisältyy toisen oppilaitoksen opiskeluoikeuteen", "Toisen oppilaitoksen opiskeluoikeuteen sisältyvä opiskeluoikeus", AmmatillinenPerustutkintoExample.sisältyvä, statusCode = 400),
-    Example("ammatillinen - lisätiedot", "Opiskeluoikeus, johon liitetty kaikki mahdolliset opiskeluoikeuden lisätiedot", LisätiedotExample.example)
+    Example("ammatillinen - lisätiedot", "Opiskeluoikeus, johon liitetty kaikki mahdolliset opiskeluoikeuden lisätiedot", LisätiedotExample.example),
+    Example("ammatillinen - osittainen suoritus useasta tutkinnosta", "Oppija on suorittamassa ammatillisen tutkinnon osia useasta tutkinnosta", AmmatillinenOsittainenUseistaTutkinnoista.keskenExample),
+    Example("ammatillinen - valmistunut osittainen suoritus useasta tutkinnosta", "Oppija on suorittanut ammatillisen tutkinnon osia useasta tutkinnosta", AmmatillinenOsittainenUseistaTutkinnoista.valmisExample),
   )
 }
 
@@ -781,6 +783,16 @@ object AmmatillinenOsittainenReformi {
 }
 
 object AmmatillinenOsittainenUseistaTutkinnoista {
+  lazy val valmisExample: Oppija = Oppija(
+    exampleHenkilö,
+    List(valmisUseastaTutkinnostaOpiskeluoikeus)
+  )
+
+  lazy val keskenExample: Oppija = Oppija(
+    exampleHenkilö,
+    List(keskeneräinenUseastaTutkinnostaOpiskeluoikeus)
+  )
+
   lazy val valmisUseastaTutkinnostaOpiskeluoikeus = AmmatillinenOpiskeluoikeus(
     arvioituPäättymispäivä = Some(date(2024, 5, 31)),
     oppilaitos = Some(stadinAmmattiopisto),

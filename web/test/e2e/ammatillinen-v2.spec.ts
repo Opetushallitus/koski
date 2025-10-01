@@ -103,7 +103,7 @@ test.describe('Osittaisen ammatillisen tutkinnon useasta tutkinnosta virkailijan
     await expect(page.getByTestId('oo.0.suoritukset.0.osasuoritukset.4.properties.osasuoritukset.0.laajuus.value')).toContainText('4 osp')
     await expect(page.getByTestId('oo.0.suoritukset.0.osasuoritukset.4.properties.osasuoritukset.0.arvosana.value')).toContainText('3')
 
-    await expect(page.getByTestId('oo.0.suoritukset.0.yhteensa')).toContainText('187 osp')
+    await expect(page.getByTestId('oo.0.suoritukset.0.yhteensa')).toContainText('102 osp')
   })
 
   test('Sallii luoda uuden opiskeluoikeuden', async ({ page, uusiOppijaPage }) => {
@@ -291,7 +291,7 @@ test.describe('Osittaisen ammatillisen tutkinnon useasta tutkinnosta kansalaisen
     await expect(page.getByTestId('oo.0.suoritukset.0.osasuoritukset.4.properties.osasuoritukset.0.properties.arviointi.0.arvosana')).toContainText('3')
 
     // Laajuudet
-    await expect(page.getByTestId('oo.0.suoritukset.0.yhteensa')).toContainText('187 osp')
+    await expect(page.getByTestId('oo.0.suoritukset.0.yhteensa')).toContainText('102 osp')
   })
 
   test('Sivulla ei saavutettavuusvirheitä', async ({
