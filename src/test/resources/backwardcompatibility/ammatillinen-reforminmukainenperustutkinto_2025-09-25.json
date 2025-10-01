@@ -806,7 +806,8 @@
     } ],
     "lisätiedot" : {
       "erityinenTuki" : [ {
-        "alku" : "2018-01-01"
+        "alku" : "2018-01-01",
+        "loppu" : "2025-12-31"
       } ],
       "vaativanErityisenTuenErityinenTehtävä" : [ {
         "alku" : "2018-01-01"
@@ -819,6 +820,5 @@
       "koodistoUri" : "opiskeluoikeudentyyppi"
     },
     "alkamispäivä" : "2018-01-01"
-  } ],
-  "ignoreKoskiValidator" : true
+  } ]
 }

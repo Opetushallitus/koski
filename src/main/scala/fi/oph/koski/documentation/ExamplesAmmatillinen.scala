@@ -91,7 +91,7 @@ object ReforminMukainenErikoisammattitutkintoExample {
     )),
     lisätiedot = Some(AmmatillisenOpiskeluoikeudenLisätiedot(
       hojks = None,
-      erityinenTuki = Some(List(Aikajakso(date(2018, 1, 1), None))),
+      erityinenTuki = Some(List(Aikajakso(date(2018, 1, 1), Some(date(2025, 12, 31))))),
       vaativanErityisenTuenErityinenTehtävä = Some(List(Aikajakso(date(2018,1,1), None)))
     )),
     oppilaitos = Some(stadinAmmattiopisto),
@@ -336,7 +336,7 @@ object AmmatillinenReforminMukainenPerustutkintoExample {
     )),
     lisätiedot = Some(AmmatillisenOpiskeluoikeudenLisätiedot(
       hojks = None,
-      erityinenTuki = Some(List(Aikajakso(date(2018, 1, 1), None))),
+      erityinenTuki = Some(List(Aikajakso(date(2018, 1, 1), Some(date(2025, 12, 31))))),
       vaativanErityisenTuenErityinenTehtävä = Some(List(Aikajakso(date(2018,1,1), None)))
     )),
     oppilaitos = Some(stadinAmmattiopisto),

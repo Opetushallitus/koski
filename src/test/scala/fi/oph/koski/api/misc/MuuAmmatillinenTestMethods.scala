@@ -31,7 +31,7 @@ trait MuuAmmatillinenTestMethods[T <: AmmatillinenPäätasonSuoritus] extends Pu
     putOppija(makeOppija(henkilö, List(JsonSerializer.serializeWithRoot(opiskeluoikeus))), headers)(f)
   }
 
-  private def makeOpiskeluoikeus(alkamispäivä: LocalDate = longTimeAgo) = AmmatillinenOpiskeluoikeus(
+  protected def makeOpiskeluoikeus(alkamispäivä: LocalDate = longTimeAgo) = AmmatillinenOpiskeluoikeus(
     tila = AmmatillinenOpiskeluoikeudenTila(List(AmmatillinenOpiskeluoikeusjakso(alkamispäivä, opiskeluoikeusLäsnä, Some(valtionosuusRahoitteinen)))),
     oppilaitos = Some(Oppilaitos(MockOrganisaatiot.stadinAmmattiopisto)),
     suoritukset = List(defaultPäätasonSuoritus)

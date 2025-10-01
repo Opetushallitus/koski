@@ -680,8 +680,7 @@ describe('Ammatillinen koulutus 3', function () {
       it('näkyy', function () {
         expect(extractAsText(S('.lisätiedot'))).to.equal(
           'Lisätiedot\n' +
-          'Erityinen tuki 30.5.2019 —\n' +
-          'Vaikeasti vammaisille järjestetty opetus 30.5.2019 —\n' +
+          'Vaativan erityisen tuen erityinen tehtävä 30.5.2019 —\n' +
           'Vankilaopetuksessa 30.5.2019 —'
         )
       })

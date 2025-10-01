@@ -1,5 +1,15 @@
 # Koskeen tallennettavien tietojen validaatiosäännöt
 
+## 30.9.2025
+
+- Estä siirtymäajan päättymispäivän 31.12.2028 jälkeen alkavien paikallisten muun ammatillisen koulutuksen opiskeluoikeuksien tallennus.
+- Estä rajapäivän 31.12.2025 jälkeen alkavat tai jatkuvat ammatillisen koulutuksen opiskeluoikeuden seuraavien lisätietojen aikajaksot:
+  - Erityinen tuki
+  - Vaikeasti vammainen
+  - Vammainen ja avustaja
+- Loma-tila ei voi olla voimassa rajapäivän 31.12.2025 jälkeen ammatillisen koulutuksen opiskeluoikeuksille.
+  - Toistaiseksi voimassa olevan, ennen rajapäivää alkavan, loma-tilan tallentaminen aiheuttaa validaatiovirheen vasta rajapäivän jälkeen.
+
 ## 19.9.2025
 
 - Salli kielitutkinnon opiskeluoikeudelle sama alku- ja päättymispäivämäärä.
