@@ -465,28 +465,40 @@ object AmmatillinenValidation {
     def validateLomaTilat(tilat: List[AmmatillinenOpiskeluoikeusjakso]): HttpStatus = {
       /**
        * Käy läpi opiskeluoikeuden tilat rekursiivisesti varhaisimmasta viimeisimpään.
-       * Palauttaa false, jos loma-tila on voimassa rajapäivän jälkeen.
+       * Palauttaa validaatiovirheen, jos loma-tila on voimassa rajapäivän jälkeen.
        * Loma-tila on sallittu viimeisimpänä voimassa olevan tilana, kunnes rajapäivä ylitetään kalenteriajassa.
        */
       @tailrec
-      def isLomaTilaPäättynytEnnenRajapäivää(
+      def validateLomaPäättynytEnnenRajapäivää(
         tila: AmmatillinenOpiskeluoikeusjakso,
         loputTilat: List[AmmatillinenOpiskeluoikeusjakso]
-      ): Boolean = (tila, loputTilat) match {
+      ): HttpStatus = (tila, loputTilat) match {
         case (tila, Nil) if tila.tila.koodiarvo == "loma" =>
-          tila.alku.isBefore(rajapäivänJälkeinenPäivä) && LocalDate.now.isBefore(rajapäivänJälkeinenPäivä)
-        case (_, Nil) => true
-        case (tila, seuraavaTila :: loput) if tila.tila.koodiarvo == "loma" =>
-          if (tila.alku.isBefore(rajapäivänJälkeinenPäivä) && !seuraavaTila.alku.isAfter(rajapäivänJälkeinenPäivä)) {
-            isLomaTilaPäättynytEnnenRajapäivää(seuraavaTila, loput)
-          } else {
-            false
+          val lomaAlkaaEnnenRajapäivää = tila.alku.isBefore(rajapäivänJälkeinenPäivä)
+          val nykyhetkiOnEnnenRajapäivää = LocalDate.now.isBefore(rajapäivänJälkeinenPäivä)
+
+          HttpStatus.validate(lomaAlkaaEnnenRajapäivää && nykyhetkiOnEnnenRajapäivää) {
+            KoskiErrorCategory.badRequest.validation.ammatillinen.lomaTilaRajapäivänJälkeen()
           }
-        case (_, seuraavaTila :: loput) => isLomaTilaPäättynytEnnenRajapäivää(seuraavaTila, loput)
+        case (_, Nil) =>
+          HttpStatus.ok
+        case (tila, seuraavaTila :: loput) if tila.tila.koodiarvo == "loma" =>
+          val lomaAlkaaEnnenRajapäivää = tila.alku.isBefore(rajapäivänJälkeinenPäivä)
+          val lomaPäättyyEnnenRajapäivää = !seuraavaTila.alku.isAfter(rajapäivänJälkeinenPäivä)
+
+          if (lomaAlkaaEnnenRajapäivää && lomaPäättyyEnnenRajapäivää) {
+            validateLomaPäättynytEnnenRajapäivää(seuraavaTila, loput)
+          } else {
+            KoskiErrorCategory.badRequest.validation.ammatillinen.lomaTilaRajapäivänJälkeen()
+          }
+        case (_, seuraavaTila :: loput) =>
+          validateLomaPäättynytEnnenRajapäivää(seuraavaTila, loput)
       }
 
-      HttpStatus.validate(tilat.isEmpty || isLomaTilaPäättynytEnnenRajapäivää(tilat.head, tilat.tail)){
-        KoskiErrorCategory.badRequest.validation.ammatillinen.lomaTilaRajapäivänJälkeen()
+      if (tilat.nonEmpty) {
+        validateLomaPäättynytEnnenRajapäivää(tilat.head, tilat.tail)
+      } else {
+        HttpStatus.ok
       }
     }
 
