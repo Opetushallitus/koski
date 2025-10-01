@@ -453,7 +453,8 @@ object AmmatillinenValidation {
     def validateAikajaksot(jaksot: Option[List[Aikajakso]], jaksonNimiVirheilmoitukseen: String): HttpStatus = {
       val jaksoPäättyyRajapäivänJälkeen = jaksot.getOrElse(List.empty)
         .exists(jakso =>
-          (jakso.loppu.isEmpty && LocalDate.now.isAfter(viimeinenSallittuJaksonPäivä)) ||
+          jakso.alku.isAfter(viimeinenSallittuJaksonPäivä) ||
+            (jakso.loppu.isEmpty && LocalDate.now.isAfter(viimeinenSallittuJaksonPäivä)) ||
             (jakso.loppu.isDefined && jakso.loppu.exists(l => l.isAfter(viimeinenSallittuJaksonPäivä)))
         )
 
