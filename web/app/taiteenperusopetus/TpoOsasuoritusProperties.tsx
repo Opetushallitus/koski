@@ -72,6 +72,7 @@ export const TpoOsasuoritusProperties: React.FC<
               path={viimeisinArviointiPath.prop('päivä')}
               view={DateView}
               edit={DateEdit}
+              editProps={{ align: 'right' }}
               testId={`${props.testId}.arvostelunPvm`}
             />
           </OsasuoritusSubproperty>

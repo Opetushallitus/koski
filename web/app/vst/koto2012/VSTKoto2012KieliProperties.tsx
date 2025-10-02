@@ -68,6 +68,7 @@ export const VSTKoto2012KieliProperties: React.FC<
             path={arviointiPath.prop('päivä')}
             view={DateView}
             edit={DateEdit}
+            editProps={{ align: 'right' }}
           />
         </OsasuoritusPropertyValue>
       </OsasuoritusProperty>

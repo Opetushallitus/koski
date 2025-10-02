@@ -161,6 +161,7 @@ export const SuorituksenVahvistusModal = <
             path={pvmPath}
             view={DateView}
             edit={DateEdit}
+            editProps={{ align: 'right' }}
           />
         </Label>
 

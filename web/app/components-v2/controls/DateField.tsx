@@ -12,6 +12,7 @@ import { EmptyObject } from '../../util/objects'
 import { common, CommonProps, cx } from '../CommonProps'
 import {
   PositionalPopup,
+  PositionalPopupAlign,
   PositionalPopupHolder
 } from '../containers/PositionalPopup'
 import { FieldErrors } from '../forms/FieldErrors'
@@ -46,7 +47,9 @@ export type DateEditProps = CommonProps<
       max?: string
     }
   >
->
+> & {
+  align?: PositionalPopupAlign
+}
 
 export const DateEdit: React.FC<DateEditProps> = (props) => {
   const {
@@ -86,7 +89,7 @@ export const DateEdit: React.FC<DateEditProps> = (props) => {
             onClick={toggleDayPicker}
             data-testid={buttonId}
           />
-          <PositionalPopup open={datePickerVisible}>
+          <PositionalPopup align={props.align} open={datePickerVisible}>
             <DayPickerInput
               initialMonth={date}
               onDayClick={onDayClick}

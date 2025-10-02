@@ -6,6 +6,7 @@
   right: 0;
   margin: 0 !important;
   padding: (@v-padding * 3) @h-padding !important;
+  overflow-y: auto;
 
   display: flex;
   justify-content: center;
@@ -16,7 +17,6 @@
   .Modal__content {
     background: white;
     max-width: 90%;
-    max-height: 90vh;
     min-width: 500px;
     box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.2);
   }
@@ -39,8 +39,14 @@
 
 .ModalBody {
   padding: @padding;
-  max-height: calc(100vh - 200px);
-  overflow-y: auto;
+  overflow-y: visible;
+
+  .Select__optionListContainer {
+    position: absolute;
+    right: 0;
+    top: 32px;
+    width: inherit;
+  }
 }
 
 .ModalFooter {
