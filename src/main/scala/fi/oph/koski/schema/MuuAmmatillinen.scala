@@ -72,7 +72,7 @@ case class AmmatilliseenTehtäväänValmistavaKoulutus(
   kuvaus: Option[LocalizedString]
 ) extends KoodistostaLöytyväKoulutusmoduuli with MuuAmmatillinenKoulutus
 
-@Description("Paikallisten muun ammatillisen koulutuksen opiskeluoikeuksien siirtymäaika päättyy 31.8.2028. Siirtymäajan jälkeen alkavien uusien opiskeluoikeuksien tallentaminen on estetty.")
+@Description("Muun kuin ammatilliseen tehtäävän valmistavan muun ammatillisen koulutuksen järjestäminen päättyy 31.12.2028.")
 case class PaikallinenMuuAmmatillinenKoulutus(
   tunniste: PaikallinenKoodi,
   laajuus: Option[LaajuusKaikkiYksiköt],

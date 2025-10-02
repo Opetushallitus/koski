@@ -3,7 +3,7 @@ import { LaajuusKaikkiYksiköt } from './LaajuusKaikkiYksikot'
 import { LocalizedString } from './LocalizedString'
 
 /**
- * Paikallisten muun ammatillisen koulutuksen opiskeluoikeuksien siirtymäaika päättyy 31.8.2028. Siirtymäajan jälkeen alkavien uusien opiskeluoikeuksien tallentaminen on estetty.
+ * Muun kuin ammatilliseen tehtäävän valmistavan muun ammatillisen koulutuksen järjestäminen päättyy 31.12.2028.
  *
  * @see `fi.oph.koski.schema.PaikallinenMuuAmmatillinenKoulutus`
  */
