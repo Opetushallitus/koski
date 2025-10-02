@@ -89,6 +89,7 @@ class KoskiSpecificSession(
   def hasMigriAccess: Boolean = globalViranomaisKäyttöoikeudet.flatMap(_.globalPalveluroolit).contains(Palvelurooli("KOSKI", MIGRI))
   def hasKelaAccess: Boolean = !globalViranomaisKäyttöoikeudet.flatMap(_.globalPalveluroolit).intersect(Set(Palvelurooli("KOSKI", LUOTTAMUKSELLINEN_KELA_LAAJA), Palvelurooli("KOSKI", LUOTTAMUKSELLINEN_KELA_SUPPEA))).isEmpty
   def hasYtlAccess: Boolean = globalViranomaisKäyttöoikeudet.flatMap(_.globalPalveluroolit).contains(Palvelurooli("KOSKI", YTL))
+  def hasSdgAccess: Boolean = globalKäyttöoikeudet.exists(_.globalPalveluroolit.contains(Palvelurooli("KOSKI", SDG)))
 
   // OAuth2-käyttäjillä on oikeudet tiettyihin OAuth2-scopeihin, siksi käsittely poikkeaa muista luovutuspalvelukäyttäjistä, jotka ovat viranomaisia.
   def hasSomeOmaDataOAuth2Access: Boolean = {

@@ -603,6 +603,15 @@ object MockUsers {
     )))
   )
 
+  val kehaSdgKäyttäjä = KoskiMockUser(
+    "SDG",
+    "Saleria",
+    "1.2.246.562.24.42013142058",
+    Seq(OrganisaatioJaKäyttöoikeudet(Opetushallitus.organisaatioOid, List(
+      PalveluJaOikeus("KOSKI", Rooli.SDG)
+    )))
+  )
+
   val kielitutkintorekisteriKäyttäjä = KoskiMockUser(
     "Kielitutkintorekisteri",
     "kitu",
@@ -750,6 +759,7 @@ object MockUsers {
     varsinaisSuomiHankintakoulutusOppilaitosTallentaja,
     ytlKäyttäjä,
     vktKäyttäjä,
+    kehaSdgKäyttäjä,
     hakemuspalveluKäyttäjä,
     xssHyökkääjä,
     muuKuinSäänneltyKoulutusYritys,
