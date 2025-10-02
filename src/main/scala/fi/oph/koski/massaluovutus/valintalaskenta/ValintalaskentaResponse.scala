@@ -80,6 +80,8 @@ object ValintalaskentaSuoritus {
     },
     keskiarvoSisältääMukautettujaArvosanoja = s match {
       case a: AmmatillisenTutkinnonOsittainenSuoritus => a.keskiarvoSisältääMukautettujaArvosanoja.getOrElse(false)
+      case a: AmmatillisenTutkinnonSuoritus => a.keskiarvoSisältääMukautettujaArvosanoja.getOrElse(false)
+      case a: AmmatillisenTutkinnonOsittainenUseastaTutkinnostaSuoritus => a.keskiarvoSisältääMukautettujaArvosanoja.getOrElse(false)
       case _ => false
     },
     korotettuOpiskeluoikeusOid = s match {
