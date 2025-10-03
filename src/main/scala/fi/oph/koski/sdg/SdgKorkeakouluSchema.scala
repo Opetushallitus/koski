@@ -1,7 +1,7 @@
 package fi.oph.koski.sdg
 
 import fi.oph.koski.schema
-import fi.oph.koski.schema.{Koodistokoodiviite, PaikallinenKoodi}
+import fi.oph.koski.schema.{Koodistokoodiviite, KorkeakoulunArviointi, KorkeakoulunOpintojakso, Oppilaitos}
 import fi.oph.koski.schema.annotation.KoodistoKoodiarvo
 import fi.oph.scalaschema.annotation.Title
 
@@ -72,11 +72,11 @@ object SdgKorkeakoulunOpiskeluoikeus {
               s.toimipiste.nimi,
               s.toimipiste.kotipaikka
             )),
-            tyyppi = s.tyyppi
+            tyyppi = s.tyyppi,
+            osasuoritukset = s.osasuoritukset.map(_.map(SdgKorkeakoulunOpintojaksonSuoritus.fromKoskiSchema))
           )
       },
     tyyppi = kk.tyyppi,
-    luokittelu = kk.luokittelu
   )
 }
 
@@ -90,7 +90,6 @@ case class SdgKorkeakoulunOpiskeluoikeus(
   suoritukset: List[SdgKorkeakoulututkinnonSuoritus],
   @KoodistoKoodiarvo(schema.OpiskeluoikeudenTyyppi.korkeakoulutus.koodiarvo)
   tyyppi: schema.Koodistokoodiviite,
-  luokittelu: Option[List[Koodistokoodiviite]],
 ) extends SdgOpiskeluoikeus {
 
   override def withSuoritukset(suoritukset: List[Suoritus]): SdgOpiskeluoikeus =
@@ -99,13 +98,14 @@ case class SdgKorkeakoulunOpiskeluoikeus(
     )
 }
 
-@Title("Korkeakoulututkinnon päätason suoritus")
+@Title("Korkeakoulututkinnon suoritus")
 case class SdgKorkeakoulututkinnonSuoritus(
   koulutusmoduuli: SdgKorkeakoulututkinto,
   @KoodistoKoodiarvo("korkeakoulututkinto")
   tyyppi: schema.Koodistokoodiviite,
   vahvistus: Option[Vahvistus],
   toimipiste: Option[Toimipiste],
+  osasuoritukset: Option[List[SdgKorkeakoulunOpintojaksonSuoritus]]
 ) extends Suoritus
 
 case class SdgKorkeakoulunOpiskeluoikeudenLisätiedot(
@@ -140,3 +140,29 @@ case class SdgKorkeakoulututkinto(
   koulutustyyppi: Option[Koodistokoodiviite],
   virtaNimi: Option[schema.LocalizedString]
 ) extends SuorituksenKoulutusmoduuli
+
+@Title("Korkeakoulun opintojakson suoritus")
+case class SdgKorkeakoulunOpintojaksonSuoritus(
+  @Title("Opintojakso")
+  koulutusmoduuli: KorkeakoulunOpintojakso,
+  toimipiste: Oppilaitos,
+  arviointi: Option[List[KorkeakoulunArviointi]],
+  suorituskieli: Option[Koodistokoodiviite],
+  @Title("Sisältyvät opintojaksot")
+  osasuoritukset: Option[List[SdgKorkeakoulunOpintojaksonSuoritus]] = None,
+  @KoodistoKoodiarvo("korkeakoulunopintojakso")
+  tyyppi: Koodistokoodiviite
+)
+
+
+object SdgKorkeakoulunOpintojaksonSuoritus {
+  def fromKoskiSchema(k: schema.KorkeakoulunOpintojaksonSuoritus): SdgKorkeakoulunOpintojaksonSuoritus =
+    SdgKorkeakoulunOpintojaksonSuoritus(
+      koulutusmoduuli = k.koulutusmoduuli,
+      toimipiste = k.toimipiste,
+      arviointi = k.arviointi,
+      suorituskieli = k.suorituskieli,
+      osasuoritukset = k.osasuoritukset.map(_.map(fromKoskiSchema)),
+      tyyppi = k.tyyppi
+    )
+}
