@@ -1,7 +1,7 @@
 package fi.oph.koski.sdg
 
 import fi.oph.koski.schema
-import fi.oph.koski.schema.Koodistokoodiviite
+import fi.oph.koski.schema.{Koodistokoodiviite, Oppilaitos}
 import fi.oph.koski.schema.annotation.{KoodistoUri, Representative}
 import fi.oph.scalaschema.annotation.{Discriminator, SyntheticProperty, Title}
 import fi.oph.scalaschema.{ClassSchema, SchemaToJson}
@@ -89,13 +89,6 @@ trait Suoritus {
 
   def toimipiste: Option[Toimipiste]
 }
-
-case class Oppilaitos(
-  oid: String,
-  oppilaitosnumero: Option[schema.Koodistokoodiviite],
-  nimi: Option[schema.LocalizedString],
-  kotipaikka: Option[Koodistokoodiviite]
-)
 
 case class Koulutustoimija(
   oid: String,
