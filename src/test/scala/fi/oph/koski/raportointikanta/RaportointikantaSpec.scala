@@ -61,6 +61,7 @@ class RaportointikantaSpec
         Some(Date.valueOf("1901-01-01")),
         mockOppija.sukunimi,
         mockOppija.etunimet,
+        mockOppija.kutsumanimi,
         Some("fi"),
         None,
         false,
@@ -81,6 +82,7 @@ class RaportointikantaSpec
         Some(Date.valueOf("1980-03-08")),
         mockOppija.sukunimi,
         mockOppija.etunimet,
+        mockOppija.kutsumanimi,
         Some("fi"),
         None,
         false,
@@ -103,6 +105,7 @@ class RaportointikantaSpec
         Some(Date.valueOf("2006-01-01")),
         mockOppija.sukunimi,
         mockOppija.etunimet,
+        mockOppija.kutsumanimi,
         Some("fi"),
         None,
         false,
@@ -118,8 +121,8 @@ class RaportointikantaSpec
       val slaveOppija = KoskiSpecificMockOppijat.slaveMasterEiKoskessa.henkilö
       val henkilot = mainRaportointiDb.runDbSync(mainRaportointiDb.RHenkilöt.filter(_.hetu === slaveOppija.hetu.get).result).toSet
       henkilot should equal(Set(
-        RHenkilöRow(slaveOppija.oid, masterEiKoskessa.oid, masterEiKoskessa.hetu, None, Some(Date.valueOf("1966-03-27")), masterEiKoskessa.sukunimi, masterEiKoskessa.etunimet, None, None, false, Some("179"), Some("Jyväskylä"), Some("Jyväskylä"), true),
-        RHenkilöRow(masterEiKoskessa.oid, masterEiKoskessa.oid, masterEiKoskessa.hetu, None, Some(Date.valueOf("1966-03-27")), masterEiKoskessa.sukunimi, masterEiKoskessa.etunimet, None, None, false, Some("179"), Some("Jyväskylä"), Some("Jyväskylä"), true)
+        RHenkilöRow(slaveOppija.oid, masterEiKoskessa.oid, masterEiKoskessa.hetu, None, Some(Date.valueOf("1966-03-27")), masterEiKoskessa.sukunimi, masterEiKoskessa.kutsumanimi ,masterEiKoskessa.etunimet, None, None, false, Some("179"), Some("Jyväskylä"), Some("Jyväskylä"), true),
+        RHenkilöRow(masterEiKoskessa.oid, masterEiKoskessa.oid, masterEiKoskessa.hetu, None, Some(Date.valueOf("1966-03-27")), masterEiKoskessa.sukunimi, masterEiKoskessa.etunimet, masterEiKoskessa.kutsumanimi, None, None, false, Some("179"), Some("Jyväskylä"), Some("Jyväskylä"), true)
       ))
     }
     "Organisaatiot on ladattu" in {
