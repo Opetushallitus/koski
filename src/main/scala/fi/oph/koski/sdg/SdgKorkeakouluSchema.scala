@@ -1,7 +1,7 @@
 package fi.oph.koski.sdg
 
 import fi.oph.koski.schema
-import fi.oph.koski.schema.{Koodistokoodiviite, KorkeakoulunArviointi, KorkeakoulunOpintojakso, Oppilaitos}
+import fi.oph.koski.schema.{Koodistokoodiviite, KorkeakoulunArviointi, KorkeakoulunOpintojakso, Koulutustoimija, Oppilaitos}
 import fi.oph.koski.schema.annotation.KoodistoKoodiarvo
 import fi.oph.scalaschema.annotation.Title
 
@@ -9,22 +9,8 @@ import java.time.LocalDate
 
 object SdgKorkeakoulunOpiskeluoikeus {
   def fromKoskiSchema(kk: schema.KorkeakoulunOpiskeluoikeus) = SdgKorkeakoulunOpiskeluoikeus(
-    oppilaitos = kk.oppilaitos.map(ol =>
-      Oppilaitos(
-        ol.oid,
-        ol.oppilaitosnumero,
-        ol.nimi,
-        ol.kotipaikka
-      )
-    ),
-    koulutustoimija = kk.koulutustoimija.map(kt =>
-      Koulutustoimija(
-        kt.oid,
-        kt.nimi,
-        kt.yTunnus,
-        kt.kotipaikka
-      )
-    ),
+    oppilaitos = kk.oppilaitos,
+    koulutustoimija = kk.koulutustoimija,
     päättymispäivä = kk.päättymispäivä,
     tila = SdgOpiskeluoikeudenTila(
       kk.tila.opiskeluoikeusjaksot.map(kkt =>
@@ -153,7 +139,6 @@ case class SdgKorkeakoulunOpintojaksonSuoritus(
   @KoodistoKoodiarvo("korkeakoulunopintojakso")
   tyyppi: Koodistokoodiviite
 )
-
 
 object SdgKorkeakoulunOpintojaksonSuoritus {
   def fromKoskiSchema(k: schema.KorkeakoulunOpintojaksonSuoritus): SdgKorkeakoulunOpintojaksonSuoritus =
