@@ -101,6 +101,7 @@ export const VSTKoto2022KielitaitotasoEdit = (
               })
             )
           }
+          align="right"
         />
       </OsasuoritusSubproperty>
     </>

@@ -149,6 +149,7 @@ export const OppiaineTableKurssiEditor: React.FC<
                   <DateEdit
                     value={arviointi.päivä}
                     onChange={form.set(...path, ...arviointipäiväPath(index))}
+                    align="right"
                   />
                 </KeyValueRow>
               </>

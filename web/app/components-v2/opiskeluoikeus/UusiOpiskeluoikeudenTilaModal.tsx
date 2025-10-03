@@ -208,6 +208,7 @@ export const UusiOpiskeluoikeudenTilaModal = <T extends Opiskeluoikeusjakso>(
             path={päivämääräPath}
             view={DateView}
             edit={DateEdit}
+            editProps={{ align: 'right' }}
           />
         </Label>
 
