@@ -436,8 +436,9 @@ object AmmatillinenValidation {
     config: Config,
     oo: AmmatillinenOpiskeluoikeus
   ): HttpStatus = {
-    val viimeinenSallittuJaksonPäivä = LocalDate.parse(config.getString("validaatiot.ammatillinenVosUudistuksenAikajaksojenViimeinenKayttöpäivä"))
+    val viimeinenSallittuJaksonPäivä = LocalDate.parse(config.getString("validaatiot.ammatillinenVosUudistuksenAikajaksojenViimeinenKäyttöpäivä"))
     val rajapäivänJälkeinenPäivä = viimeinenSallittuJaksonPäivä.plusDays(1)
+    val isValidaatiotAstuneetVoimaan = LocalDate.now().isAfter(viimeinenSallittuJaksonPäivä)
 
     def validateOpiskeluValmiuksiaTukevienOpintojenJaksot: HttpStatus = {
       val jaksoPäättyyRajapäivänJälkeen = oo.lisätiedot
@@ -503,12 +504,14 @@ object AmmatillinenValidation {
       }
     }
 
-    HttpStatus.fold(
-      validateOpiskeluValmiuksiaTukevienOpintojenJaksot,
-      validateAikajaksot(oo.lisätiedot.flatMap(_.erityinenTuki), "Erityisen tuen"),
-      validateAikajaksot(oo.lisätiedot.flatMap(_.vaikeastiVammainen), "Vaikeasti vammaisen"),
-      validateAikajaksot(oo.lisätiedot.flatMap(_.vammainenJaAvustaja), "Vammaisen ja avustajan"),
-      validateLomaTilat(oo.tila.opiskeluoikeusjaksot)
-    )
+    if (isValidaatiotAstuneetVoimaan) {
+      HttpStatus.fold(
+        validateOpiskeluValmiuksiaTukevienOpintojenJaksot,
+        validateAikajaksot(oo.lisätiedot.flatMap(_.erityinenTuki), "Erityisen tuen"),
+        validateAikajaksot(oo.lisätiedot.flatMap(_.vaikeastiVammainen), "Vaikeasti vammaisen"),
+        validateAikajaksot(oo.lisätiedot.flatMap(_.vammainenJaAvustaja), "Vammaisen ja avustajan"),
+        validateLomaTilat(oo.tila.opiskeluoikeusjaksot)
+      )
+    } else HttpStatus.ok
   }
 }
