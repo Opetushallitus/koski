@@ -78,6 +78,7 @@ object HenkilöLoader extends Logging {
       syntymäaika = oppija.syntymäaika.orElse(oppija.hetu.flatMap(Hetu.toBirthday)).map(Date.valueOf),
       sukunimi = oppija.sukunimi,
       etunimet = oppija.etunimet,
+      kutsumanimi = oppija.kutsumanimi,
       aidinkieli = oppija.äidinkieli,
       kansalaisuus = oppija.kansalaisuus.filter(_.nonEmpty).map(_.sorted.mkString(",")),
       turvakielto = oppija.turvakielto,
