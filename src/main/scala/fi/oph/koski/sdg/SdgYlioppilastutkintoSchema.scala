@@ -1,6 +1,7 @@
 package fi.oph.koski.sdg
 
 import fi.oph.koski.schema
+import fi.oph.koski.schema.Koodistokoodiviite
 import fi.oph.koski.schema.annotation.KoodistoKoodiarvo
 import fi.oph.scalaschema.annotation.{Description, Title}
 
@@ -10,9 +11,9 @@ object SdgYlioppilastutkinnonOpiskeluoikeus {
     oppilaitos = yo.oppilaitos.map(ol =>
       Oppilaitos(
         ol.oid,
-        ol.oppilaitosnumero.map(SdgKoodistokoodiviite.fromKoskiSchema),
+        ol.oppilaitosnumero,
         ol.nimi,
-        ol.kotipaikka.map(SdgKoodistokoodiviite.fromKoskiSchema)
+        ol.kotipaikka
       )
     ),
     koulutustoimija = yo.koulutustoimija.map(kt =>
@@ -20,26 +21,24 @@ object SdgYlioppilastutkinnonOpiskeluoikeus {
         kt.oid,
         kt.nimi,
         kt.yTunnus,
-        kt.kotipaikka.map(SdgKoodistokoodiviite.fromKoskiSchema)
+        kt.kotipaikka
       )
     ),
     tila = SdgOpiskeluoikeudenTila(
       yo.tila.opiskeluoikeusjaksot.map(yot =>
         SdgOpiskeluoikeusjakso(
           yot.alku,
-          SdgKoodistokoodiviite.fromKoskiSchema(yot.tila),
+          yot.tila,
           None
         )
       )
     ),
     suoritukset = yo.suoritukset.map(s => SdgYlioppilastutkinnonPäätasonSuoritus(
-      SdgYlioppilastutkinnonSuorituksenKoulutusmoduuli(
-        SdgKoodistokoodiviite.fromKoskiSchema(s.koulutusmoduuli.tunniste)
-      ),
+      SdgYlioppilastutkinnonSuorituksenKoulutusmoduuli(s.koulutusmoduuli.tunniste),
       Some(Toimipiste(
         s.toimipiste.oid,
         s.toimipiste.nimi,
-        s.toimipiste.kotipaikka.map(SdgKoodistokoodiviite.fromKoskiSchema)
+        s.toimipiste.kotipaikka
       )),
       vahvistus = s.vahvistus.map(v => Vahvistus(v.päivä)),
       tyyppi = s.tyyppi,
@@ -78,6 +77,6 @@ case class SdgYlioppilastutkinnonPäätasonSuoritus(
 ) extends Suoritus
 
 case class SdgYlioppilastutkinnonSuorituksenKoulutusmoduuli(
-  tunniste: SdgKoodistokoodiviite,
+  tunniste: Koodistokoodiviite,
 ) extends SuorituksenKoulutusmoduuli
 

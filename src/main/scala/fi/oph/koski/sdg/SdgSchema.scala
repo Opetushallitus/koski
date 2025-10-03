@@ -1,6 +1,7 @@
 package fi.oph.koski.sdg
 
 import fi.oph.koski.schema
+import fi.oph.koski.schema.Koodistokoodiviite
 import fi.oph.koski.schema.annotation.{KoodistoUri, Representative}
 import fi.oph.scalaschema.annotation.{Discriminator, SyntheticProperty, Title}
 import fi.oph.scalaschema.{ClassSchema, SchemaToJson}
@@ -14,6 +15,9 @@ object SdgSchema {
 
   val schemassaTuetutOpiskeluoikeustyypit: List[String] = List(
     schema.OpiskeluoikeudenTyyppi.korkeakoulutus.koodiarvo,
+    schema.OpiskeluoikeudenTyyppi.diatutkinto.koodiarvo,
+    schema.OpiskeluoikeudenTyyppi.ebtutkinto.koodiarvo,
+    schema.OpiskeluoikeudenTyyppi.ylioppilastutkinto.koodiarvo
   )
 }
 
@@ -86,56 +90,18 @@ trait Suoritus {
   def toimipiste: Option[Toimipiste]
 }
 
-trait SdgKoodiViite {
-  def koodiarvo: String
-}
-
-@Title("Koodistokoodiviite")
-case class SdgKoodistokoodiviite(
-  koodiarvo: String,
-  nimi: Option[schema.LocalizedString],
-  lyhytNimi: Option[schema.LocalizedString],
-  koodistoUri: Option[String],
-  koodistoVersio: Option[Int]
-) extends SdgKoodiViite
-
-object SdgKoodistokoodiviite {
-  def fromKoskiSchema(kv: schema.Koodistokoodiviite) = SdgKoodistokoodiviite(
-    kv.koodiarvo,
-    kv.nimi,
-    kv.lyhytNimi,
-    Some(kv.koodistoUri),
-    kv.koodistoVersio
-  )
-}
-
-@Title("Paikallinen koodi")
-case class SdgPaikallinenKoodi(
-  koodiarvo: String,
-  nimi: schema.LocalizedString,
-  koodistoUri: Option[String]
-) extends SdgKoodiViite
-
-object SdgPaikallinenKoodi {
-  def fromKoskiSchema(kv: schema.PaikallinenKoodi) = SdgPaikallinenKoodi(
-    kv.koodiarvo,
-    kv.nimi,
-    kv.koodistoUri
-  )
-}
-
 case class Oppilaitos(
   oid: String,
-  oppilaitosnumero: Option[SdgKoodistokoodiviite],
+  oppilaitosnumero: Option[schema.Koodistokoodiviite],
   nimi: Option[schema.LocalizedString],
-  kotipaikka: Option[SdgKoodistokoodiviite]
+  kotipaikka: Option[Koodistokoodiviite]
 )
 
 case class Koulutustoimija(
   oid: String,
   nimi: Option[schema.LocalizedString],
   yTunnus: Option[String],
-  kotipaikka: Option[SdgKoodistokoodiviite]
+  kotipaikka: Option[Koodistokoodiviite]
 )
 
 @Title("Opiskeluoikeuden tila")
@@ -147,8 +113,8 @@ case class SdgOpiskeluoikeudenTila(
 @Title("Opiskeluoikeusjakso")
 case class SdgOpiskeluoikeusjakso(
   alku: LocalDate,
-  tila: SdgKoodistokoodiviite,
-  opintojenRahoitus: Option[SdgKoodistokoodiviite]
+  tila: Koodistokoodiviite,
+  opintojenRahoitus: Option[Koodistokoodiviite]
 )
 
 @Title("Opiskeluoikeuden lisätiedot")
@@ -156,27 +122,27 @@ trait SdgOpiskeluoikeudenLisätiedot
 
 
 trait SuorituksenKoulutusmoduuli {
-  def tunniste: SdgKoodiViite
+  def tunniste: Koodistokoodiviite
 }
 
 trait SuorituksenKooditettuKoulutusmoduuli extends SuorituksenKoulutusmoduuli {
-  def tunniste: SdgKoodistokoodiviite
+  def tunniste: Koodistokoodiviite
 }
 
 @Title("Päätason suoritus")
 case class SdgPäätasonSuoritus(
   koulutusmoduuli: SdgPäätasonKoulutusmoduuli,
-  suorituskieli: SdgKoodistokoodiviite,
-  tyyppi: schema.Koodistokoodiviite,
+  suorituskieli: Koodistokoodiviite,
+  tyyppi: Koodistokoodiviite,
   vahvistus: Option[Vahvistus],
   toimipiste: Option[Toimipiste]
 ) extends Suoritus
 
 @Title("Päätason koulutusmoduuli")
 case class SdgPäätasonKoulutusmoduuli(
-  tunniste: SdgKoodistokoodiviite,
+  tunniste: Koodistokoodiviite,
   perusteenDiaarinumero: Option[String],
-  koulutustyyppi: Option[SdgKoodistokoodiviite],
+  koulutustyyppi: Option[Koodistokoodiviite],
 ) extends SuorituksenKooditettuKoulutusmoduuli
 
 case class Vahvistus(päivä: LocalDate)
@@ -184,5 +150,5 @@ case class Vahvistus(päivä: LocalDate)
 case class Toimipiste(
   oid: String,
   nimi: Option[schema.LocalizedString] = None,
-  kotipaikka: Option[SdgKoodistokoodiviite] = None
+  kotipaikka: Option[Koodistokoodiviite] = None
 )

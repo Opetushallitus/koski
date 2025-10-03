@@ -49,6 +49,9 @@ class SdgService(application: KoskiApplication) extends GlobalExecutionContext w
         opiskeluoikeus.withSuoritukset(
           opiskeluoikeus.suoritukset
             .filter(josYOTutkintoNiinVahvistettu)
+            .filter(josYOTutkintoNiinVahvistettu)
+            .filter(josEBTutkintoNiinVahvistettu)
+            .filter(josDIATutkintoNiinVahvistettu)
         )
       }.filter(_.suoritukset.nonEmpty)
   }
@@ -56,6 +59,24 @@ class SdgService(application: KoskiApplication) extends GlobalExecutionContext w
   private def josYOTutkintoNiinVahvistettu(s: Suoritus): Boolean = {
     s match {
       case s: SdgYlioppilastutkinnonPäätasonSuoritus
+      => s.vahvistus.isDefined
+      case _
+      => true
+    }
+  }
+
+  private def josEBTutkintoNiinVahvistettu(s: Suoritus): Boolean = {
+    s match {
+      case s: SdgEBTutkinnonOpiskeluoikeus
+      => s.vahvistus.isDefined
+      case _
+      => true
+    }
+  }
+
+  private def josDIATutkintoNiinVahvistettu(s: Suoritus): Boolean = {
+    s match {
+      case s: SdgDIAOpiskeluoikeus
       => s.vahvistus.isDefined
       case _
       => true
