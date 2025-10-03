@@ -1,0 +1,41 @@
+package fi.oph.koski.sdg
+
+import fi.oph.koski.schema
+import fi.oph.koski.schema.{Koodistokoodiviite, Koulutustoimija, Oppilaitos}
+import fi.oph.koski.schema.annotation.KoodistoKoodiarvo
+import fi.oph.scalaschema.annotation.Title
+
+@Title("EB-tutkinnon opiskeluoikeus")
+case class SdgEBTutkinnonOpiskeluoikeus(
+  oid: Option[String],
+  versionumero: Option[Int],
+  oppilaitos: Option[Oppilaitos],
+  koulutustoimija: Option[Koulutustoimija],
+  tila: SdgOpiskeluoikeudenTila,
+  suoritukset: List[SdgEBTutkinnonPäätasonSuoritus],
+  @KoodistoKoodiarvo(schema.OpiskeluoikeudenTyyppi.ebtutkinto.koodiarvo)
+  tyyppi: schema.Koodistokoodiviite,
+) extends SdgKoskeenTallennettavaOpiskeluoikeus {
+
+  override def lisätiedot: Option[SdgOpiskeluoikeudenLisätiedot] = None
+
+  override def withSuoritukset(suoritukset: List[Suoritus]): SdgKoskeenTallennettavaOpiskeluoikeus =
+    this.copy(
+      suoritukset = suoritukset.collect { case s: SdgEBTutkinnonPäätasonSuoritus => s }
+    )
+}
+
+@Title("EB-tutkinnon päätason suoritus")
+case class SdgEBTutkinnonPäätasonSuoritus(
+  koulutusmoduuli: SdgEBTutkinnonKoulutusmoduuli,
+  vahvistus: Option[Vahvistus],
+  toimipiste: Option[Toimipiste],
+  @KoodistoKoodiarvo("ebtutkinto")
+  tyyppi: schema.Koodistokoodiviite,
+) extends Suoritus
+
+case class SdgEBTutkinnonKoulutusmoduuli(
+  tunniste: Koodistokoodiviite,
+  curriculum: Koodistokoodiviite,
+  koulutustyyppi: Option[Koodistokoodiviite]
+) extends SuorituksenKooditettuKoulutusmoduuli
