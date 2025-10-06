@@ -491,6 +491,7 @@ test.describe('IB', () => {
       })
 
       test('Pre-IB 2019:n suorituksen tiedot näkyvissä', async ({
+        page,
         ibOppijaPage
       }) => {
         const suoritus = ibOppijaPage.$.suoritukset(0)
@@ -509,6 +510,11 @@ test.describe('IB', () => {
         await expect(vahvistus.henkilö(0).elem).toHaveText(
           'Reijo Reksi (rehtori)'
         )
+
+        await expect(page.getByTestId('oo.0.suoritukset.0.omanÄidinkielenOpinnot.arvosana')).toContainText('hyvä')
+        await expect(page.getByTestId('oo.0.suoritukset.0.date.value')).toContainText('4.9.2021')
+        await expect(page.getByTestId('oo.0.suoritukset.0.omanÄidinkielenOpinnot.kieli')).toContainText('saame, lappi')
+        await expect(page.getByTestId('oo.0.suoritukset.0.laajuus.value')).toContainText('3 op')
       })
 
       test('Pre-IB 2019:n oppiaineiden ja kurssien arvosanat näytetään', async ({
