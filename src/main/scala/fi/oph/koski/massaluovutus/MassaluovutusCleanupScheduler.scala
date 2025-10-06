@@ -33,6 +33,7 @@ class MassaluovutusCleanupScheduler(application: KoskiApplication) extends Loggi
 
   private def runAsWorkerIfWorkersMissing(): Unit = {
     val instances = application.ecsMetadata.currentlyRunningKoskiInstances
+    // TODO: TOR-2400: Tämä tuskin toimii, eihän instances.size voi koskaan olla pienempi kuin 1, jos concurrency==1?
     if (instances.size < concurrency && !MassaluovutusUtils.isQueryWorker(application, concurrency)) {
       logger.warn("Query worker is missing. Promoting this instance to process the queue.")
       application.scheduledTasks.restartMassaluovutusScheduler()

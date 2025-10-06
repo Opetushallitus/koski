@@ -98,7 +98,7 @@ backtest:
 	fi.oph.koski.frontendvalvonta,fi.oph.koski.tiedonsiirto,\
 	fi.oph.koski.typemodel,fi.oph.koski.suoritusjako,fi.oph.koski.suoritusjako.suoritetuttutkinnot,fi.oph.koski.suoritusjako.aktiivisetjapaattyneetopinnot,\
 	fi.oph.koski.massaluovutus,fi.oph.koski.omadataoauth2.unit,fi.oph.koski.omadataoauth2.e2e,\
-	fi.oph.koski.kielitutkinto"
+	fi.oph.koski.kielitutkinto,fi.oph.koski.todistus"
 
 .PHONY: backtestnonmock
 backtestnonmock:
