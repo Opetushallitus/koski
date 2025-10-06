@@ -512,9 +512,13 @@ test.describe('IB', () => {
         )
 
         await expect(page.getByTestId('oo.0.suoritukset.0.omanÄidinkielenOpinnot.arvosana')).toContainText('hyvä')
-        await expect(page.getByTestId('oo.0.suoritukset.0.date.value')).toContainText('4.9.2021')
+        await expect(page.getByTestId('oo.0.suoritukset.0.omanÄidinkielenOpinnot.arviointipäivä.value')).toContainText('4.9.2021')
         await expect(page.getByTestId('oo.0.suoritukset.0.omanÄidinkielenOpinnot.kieli')).toContainText('saame, lappi')
         await expect(page.getByTestId('oo.0.suoritukset.0.laajuus.value')).toContainText('3 op')
+
+        await expect(page.getByTestId('oo.0.suoritukset.0.puhviKoe.arvosana')).toContainText('tyydyttävä')
+        await expect(page.getByTestId('oo.0.suoritukset.0.puhviKoe.kuvaus.value')).toContainText('Puhvikokeen kuvaus lorem ipsum dolor sit amet')
+        await expect(page.getByTestId('oo.0.suoritukset.0.puhviKoe.päivä.value')).toContainText('30.8.2019')
       })
 
       test('Pre-IB 2019:n oppiaineiden ja kurssien arvosanat näytetään', async ({

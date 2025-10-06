@@ -514,7 +514,7 @@ const PreIB2019TiedotRows: React.FC<PreIB2019TiedotRowsProps> = ({
         form={form}
         päätasonSuoritus={päätasonSuoritus}
       />
-      <KeyValueRow localizableLabel="Toisen asteen puheviestintätaitojen päättökoe"></KeyValueRow>
+      <PreIB2019PuhviKoeRows form={form} päätasonSuoritus={päätasonSuoritus} />
       <KeyValueRow localizableLabel="Suullisen kielitaidon kokeet"></KeyValueRow>
     </>
   )
@@ -599,6 +599,60 @@ const PreIB2019OmanÄidinkielenOpinnotRows: React.FC<
             view={LaajuusView}
             edit={LaajuusOpintopisteissäEdit}
             testId="omanÄidinkielenOpinnot.laajuus"
+          />
+        </KeyValueRow>
+      </KeyValueTable>
+    </KeyValueRow>
+  )
+}
+
+const PreIB2019PuhviKoeRows: React.FC<PreIB2019TiedotRowsProps> = ({
+  form,
+  päätasonSuoritus
+}) => {
+  const path = päätasonSuoritus.path
+
+  return (
+    <KeyValueRow localizableLabel="Toisen asteen puheviestintätaitojen päättökoe">
+      <KeyValueTable>
+        <KeyValueRow localizableLabel="Arvosana" innerKeyValueTable>
+          {form.editMode ? (
+            <KoodistoSelect
+              koodistoUri={'arviointiasteikkoyleissivistava'}
+              filter={(tunniste) => tunniste.koodiarvo !== 'O'}
+              onSelect={(koodiviite) => {
+                koodiviite &&
+                  form.set(
+                    ...päätasonSuoritus.pathTokens,
+                    ...['puhviKoe', 'arvosana']
+                  )(koodiviite)
+              }}
+              value={päätasonSuoritus.suoritus.puhviKoe?.arvosana.koodiarvo}
+              testId="puhviKoe.arvosana"
+            />
+          ) : (
+            <TestIdText id="puhviKoe.arvosana">
+              {t(päätasonSuoritus.suoritus.puhviKoe?.arvosana.nimi)}
+            </TestIdText>
+          )}
+        </KeyValueRow>
+        <KeyValueRow localizableLabel="Kuvaus" innerKeyValueTable>
+          <FormField
+            form={form}
+            view={LocalizedTextView}
+            edit={LocalizedTextEdit}
+            testId="puhviKoe.kuvaus"
+            path={path.prop('puhviKoe').optional().prop('kuvaus')}
+          />
+        </KeyValueRow>
+        <KeyValueRow localizableLabel="Päivä" innerKeyValueTable>
+          <FormField
+            form={form}
+            testId="puhviKoe.päivä"
+            view={DateView}
+            edit={DateEdit}
+            editProps={{ align: 'right' }}
+            path={path.prop('puhviKoe').optional().prop('päivä')}
           />
         </KeyValueRow>
       </KeyValueTable>

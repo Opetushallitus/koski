@@ -9,6 +9,7 @@ import fi.oph.koski.documentation.YleissivistavakoulutusExampleData._
 import fi.oph.koski.henkilo.MockOppijat.asUusiOppija
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat.{uusiLukio, uusiLukionAineopiskelija}
 import fi.oph.koski.localization.LocalizedStringImplicits.str2localized
+import fi.oph.koski.schema.LocalizedString.finnish
 import fi.oph.koski.schema._
 
 object ExamplesLukio2019 {
@@ -427,7 +428,7 @@ object Lukio2019ExampleData {
   def puhviKoe(): Some[PuhviKoe2019] = Some(PuhviKoe2019(
     arvosana = Koodistokoodiviite(koodiarvo = "7", koodistoUri = "arviointiasteikkoyleissivistava"),
     päivä = date(2019, 8, 30),
-    kuvaus = None
+    kuvaus = Some(finnish("Puhvikokeen kuvaus lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris commodo mauris nec erat fringilla, in sagittis elit ullamcorper. Vestibulum fringilla."))
   ))
 
   def lukiodiplominSuoritus(arvosana: String = "6") = LukiodiplominSuoritusJaArviointi(
