@@ -245,6 +245,7 @@ const AmmatillisenOsittaisenSuorituksenTiedot: React.FC<{
           form={form}
           view={DateView}
           edit={DateEdit}
+          editProps={{ align: 'right' }}
           path={path.prop('alkamispäivä')}
         />
       </KeyValueRow>
@@ -533,6 +534,7 @@ export const OsaamisalaEdit = ({
             loppu && onChange({ ...value, loppu })
           }}
           testId="loppu"
+          align="right"
         />
       </div>
     )

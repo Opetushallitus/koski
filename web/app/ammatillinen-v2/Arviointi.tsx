@@ -81,6 +81,7 @@ export const ArviointiEdit = ({
           onChange={(päivä) =>
             päivä && onChange({ ...emptyArviointi, ...value, päivä })
           }
+          align="right"
         />
       </KeyValueRow>
       <KeyValueRow localizableLabel="Arvioijat">

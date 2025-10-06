@@ -10,6 +10,7 @@ import { t } from '../../i18n/i18n'
 import { cx } from '../CommonProps'
 import {
   PositionalPopup,
+  PositionalPopupAlign,
   PositionalPopupHolder
 } from '../containers/PositionalPopup'
 import { IconButton } from './IconButton'
@@ -21,6 +22,8 @@ export type DateInputProps = {
   min?: string
   max?: string
   testId?: string
+} & {
+  align?: PositionalPopupAlign
 }
 
 export const DateInput: React.FC<DateInputProps> = (props) => {
@@ -56,7 +59,7 @@ export const DateInput: React.FC<DateInputProps> = (props) => {
           onClick={toggleDayPicker}
           data-testid={buttonId}
         />
-        <PositionalPopup open={datePickerVisible}>
+        <PositionalPopup align={props.align} open={datePickerVisible}>
           <DayPickerInput
             initialMonth={date}
             onDayClick={onDayClick}

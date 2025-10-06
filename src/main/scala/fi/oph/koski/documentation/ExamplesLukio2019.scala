@@ -405,7 +405,7 @@ object Lukio2019ExampleData {
 
   def omanÄidinkielenOpinnotSaame(): Some[LukionOmanÄidinkielenOpinnot] = Some(LukionOmanÄidinkielenOpinnot(
     arvosana = Koodistokoodiviite(koodiarvo = "8", koodistoUri = "arviointiasteikkoyleissivistava"),
-    arviointipäivä = None,
+    arviointipäivä = Some(date(2021, 9, 4)),
     kieli = Kielivalikoima.saame,
     laajuus = LaajuusOpintopisteissä(3),
     osasuoritukset = omanÄidinkielenOpintojenOsasuoritukset(Koodistokoodiviite("SE", "kieli"), List("OÄI1", "OÄI2", "OÄI3"))
