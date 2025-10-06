@@ -14,8 +14,9 @@ case class HetuRequest(hetu: String)
 class SdgServlet(implicit val application: KoskiApplication) extends KoskiSpecificApiServlet with RequiresSdg with NoCache {
   post("/hetu") {
     val ophKatselijaUser = KoskiSpecificSession.ophKatselijaUser(request)
+    val includeOsasuoritukset = params.getAs[Boolean]("includeOsasuoritukset").getOrElse(false)
     withJsonBody { json =>
-      renderEither(extractAndValidateHetu(json).flatMap(hetu => application.sdgService.findOppijaByHetu(hetu)(ophKatselijaUser)))
+      renderEither(extractAndValidateHetu(json).flatMap(hetu => application.sdgService.findOppijaByHetu(hetu, includeOsasuoritukset)(ophKatselijaUser)))
     }()
   }
 

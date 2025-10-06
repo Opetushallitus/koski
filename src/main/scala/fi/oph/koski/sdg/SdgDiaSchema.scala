@@ -33,7 +33,13 @@ case class SdgDIATutkinnonSuoritus(
   vahvistus: Option[Vahvistus],
   @KoodistoKoodiarvo("diatutkintovaihe")
   tyyppi: schema.Koodistokoodiviite,
-) extends Suoritus
+  osasuoritukset: Option[List[Osasuoritus]]
+) extends Suoritus {
+  override def withOsasuoritukset(os: Option[List[Osasuoritus]]): SdgDIATutkinnonSuoritus =
+    this.copy(
+      osasuoritukset = os
+    )
+}
 
 case class SdgDIATutkinto(
   tunniste: Koodistokoodiviite

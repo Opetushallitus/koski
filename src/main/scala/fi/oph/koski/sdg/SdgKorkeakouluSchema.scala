@@ -92,7 +92,12 @@ case class SdgKorkeakoulututkinnonSuoritus(
   vahvistus: Option[Vahvistus],
   toimipiste: Option[Toimipiste],
   osasuoritukset: Option[List[SdgKorkeakoulunOpintojaksonSuoritus]]
-) extends Suoritus
+) extends Suoritus {
+  override def withOsasuoritukset(os: Option[List[Osasuoritus]]): SdgKorkeakoulututkinnonSuoritus =
+    this.copy(osasuoritukset = os.map(_.collect {
+      case s: SdgKorkeakoulunOpintojaksonSuoritus => s
+    }))
+}
 
 case class SdgKorkeakoulunOpiskeluoikeudenLisätiedot(
   virtaOpiskeluoikeudenTyyppi: Option[Koodistokoodiviite],
@@ -138,7 +143,7 @@ case class SdgKorkeakoulunOpintojaksonSuoritus(
   osasuoritukset: Option[List[SdgKorkeakoulunOpintojaksonSuoritus]] = None,
   @KoodistoKoodiarvo("korkeakoulunopintojakso")
   tyyppi: Koodistokoodiviite
-)
+) extends Osasuoritus
 
 object SdgKorkeakoulunOpintojaksonSuoritus {
   def fromKoskiSchema(k: schema.KorkeakoulunOpintojaksonSuoritus): SdgKorkeakoulunOpintojaksonSuoritus =

@@ -14,36 +14,39 @@ class SdgService(application: KoskiApplication) extends GlobalExecutionContext w
     Some(SdgKorkeakoulunOpiskeluoikeus.fromKoskiSchema)
   )
 
-  def findOppija(oppijaOid: String)
-    (implicit koskiSession: KoskiSpecificSession): Either[HttpStatus, SdgOppija] = {
-
-    val sdgOppija = opiskeluoikeusFacade.haeOpiskeluoikeudet(oppijaOid, SdgSchema.schemassaTuetutOpiskeluoikeustyypit, useDownloadedYtr = true)
-      .map(teePalautettavaSdgOppija)
-
-    sdgOppija
-  }
-
-  def findOppijaByHetu(hetu: String)
+  def findOppijaByHetu(hetu: String, includeOsasuoritukset: Boolean)
     (implicit koskiSession: KoskiSpecificSession): Either[HttpStatus, SdgOppija] = {
 
     val oppijaResult = application.opintopolkuHenkilöFacade.findOppijaByHetu(hetu)
 
     oppijaResult match {
-      case Some(o) => findOppija(o.oid)
+      case Some(o) => findPalautettavaOppija(o.oid, includeOsasuoritukset)
       case None => Left(KoskiErrorCategory.notFound.oppijaaEiLöydyHetulla())
     }
   }
 
-  private def teePalautettavaSdgOppija(
-    rawOppija: RawOppija[SdgOpiskeluoikeus]
-  ): SdgOppija = {
-    SdgOppija(
-      henkilö = Henkilo.fromOppijaHenkilö(rawOppija.henkilö),
-      opiskeluoikeudet = suodataPalautettavat(rawOppija.opiskeluoikeudet).toList
-    )
+
+  def findPalautettavaOppija(
+    oppijaOid: String,
+    includeOsasuoritukset: Boolean
+  )
+    (implicit koskiSession: KoskiSpecificSession): Either[HttpStatus, SdgOppija] = {
+
+    val sdgOppija = opiskeluoikeusFacade.haeOpiskeluoikeudet(oppijaOid, SdgSchema.schemassaTuetutOpiskeluoikeustyypit, useDownloadedYtr = true)
+      .map(rawOppija => SdgOppija(
+        henkilö = Henkilo.fromOppijaHenkilö(rawOppija.henkilö),
+        opiskeluoikeudet = suodataPalautettavatSuoritukset(rawOppija.opiskeluoikeudet, includeOsasuoritukset)
+          .toList
+      ))
+
+    sdgOppija
   }
 
-  private def suodataPalautettavat(opiskeluoikeudet: Seq[SdgOpiskeluoikeus]): Seq[SdgOpiskeluoikeus] = {
+
+  private def suodataPalautettavatSuoritukset(
+    opiskeluoikeudet: Seq[SdgOpiskeluoikeus],
+    includeOsasuoritukset: Boolean
+  ): Seq[SdgOpiskeluoikeus] = {
     opiskeluoikeudet
       .map { opiskeluoikeus =>
         opiskeluoikeus.withSuoritukset(
@@ -52,6 +55,11 @@ class SdgService(application: KoskiApplication) extends GlobalExecutionContext w
             .filter(josYOTutkintoNiinVahvistettu)
             .filter(josEBTutkintoNiinVahvistettu)
             .filter(josDIATutkintoNiinVahvistettu)
+            .map { suoritus =>
+              if (includeOsasuoritukset) suoritus
+              else suoritus.withOsasuoritukset(None)
+            }
+
         )
       }.filter(_.suoritukset.nonEmpty)
   }

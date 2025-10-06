@@ -1,7 +1,7 @@
 package fi.oph.koski.sdg
 
 import fi.oph.koski.schema
-import fi.oph.koski.schema.{Koodistokoodiviite, Koulutustoimija, Oppilaitos}
+import fi.oph.koski.schema.{Koodistokoodiviite, Koulutustoimija, Oppilaitos, YlioppilasTutkinnonKoe}
 import fi.oph.koski.schema.annotation.KoodistoKoodiarvo
 import fi.oph.scalaschema.annotation.{Description, Title}
 
@@ -42,6 +42,7 @@ object SdgYlioppilastutkinnonOpiskeluoikeus {
       )),
       vahvistus = s.vahvistus.map(v => Vahvistus(v.päivä)),
       tyyppi = s.tyyppi,
+      osasuoritukset = s.osasuoritukset.map(_.map(SdgYlioppilastutkinnonOsasuoritus.fromKoskiSchema))
     )),
     tyyppi = yo.tyyppi
   )
@@ -74,9 +75,25 @@ case class SdgYlioppilastutkinnonPäätasonSuoritus(
   toimipiste: Option[Toimipiste],
   vahvistus: Option[Vahvistus],
   tyyppi: schema.Koodistokoodiviite,
-) extends Suoritus
+  osasuoritukset: Option[List[SdgYlioppilastutkinnonOsasuoritus]]
+) extends Suoritus {
+  override def withOsasuoritukset(os: Option[List[Osasuoritus]]): SdgYlioppilastutkinnonPäätasonSuoritus =
+    this.copy(osasuoritukset = os.map(_.collect {
+      case s: SdgYlioppilastutkinnonOsasuoritus => s
+    }))
+}
 
 case class SdgYlioppilastutkinnonSuorituksenKoulutusmoduuli(
   tunniste: Koodistokoodiviite,
 ) extends SuorituksenKoulutusmoduuli
+
+@Title("Ylioppilastutkinnon koe")
+case class SdgYlioppilastutkinnonOsasuoritus(
+  koulutusmoduuli: YlioppilasTutkinnonKoe
+) extends Osasuoritus
+
+object SdgYlioppilastutkinnonOsasuoritus {
+  def fromKoskiSchema(k: schema.YlioppilastutkinnonKokeenSuoritus): SdgYlioppilastutkinnonOsasuoritus =
+    SdgYlioppilastutkinnonOsasuoritus(koulutusmoduuli = k.koulutusmoduuli)
+}
 

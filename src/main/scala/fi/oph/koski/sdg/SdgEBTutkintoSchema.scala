@@ -32,7 +32,11 @@ case class SdgEBTutkinnonPäätasonSuoritus(
   toimipiste: Option[Toimipiste],
   @KoodistoKoodiarvo("ebtutkinto")
   tyyppi: schema.Koodistokoodiviite,
-) extends Suoritus
+  osasuoritukset: Option[List[Osasuoritus]]
+) extends Suoritus {
+  override def withOsasuoritukset(os: Option[List[Osasuoritus]]): SdgEBTutkinnonPäätasonSuoritus =
+    this.copy(osasuoritukset = os)
+}
 
 case class SdgEBTutkinnonKoulutusmoduuli(
   tunniste: Koodistokoodiviite,

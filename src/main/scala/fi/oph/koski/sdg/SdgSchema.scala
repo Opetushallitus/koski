@@ -89,7 +89,13 @@ trait Suoritus {
   def vahvistus: Option[Vahvistus]
 
   def toimipiste: Option[Toimipiste]
+
+  def osasuoritukset: Option[List[Osasuoritus]]
+
+  def withOsasuoritukset(os: Option[List[Osasuoritus]]): Suoritus
 }
+
+trait Osasuoritus
 
 @Title("Opiskeluoikeuden tila")
 case class SdgOpiskeluoikeudenTila(
@@ -115,22 +121,6 @@ trait SuorituksenKoulutusmoduuli {
 trait SuorituksenKooditettuKoulutusmoduuli extends SuorituksenKoulutusmoduuli {
   def tunniste: Koodistokoodiviite
 }
-
-@Title("Päätason suoritus")
-case class SdgPäätasonSuoritus(
-  koulutusmoduuli: SdgPäätasonKoulutusmoduuli,
-  suorituskieli: Koodistokoodiviite,
-  tyyppi: Koodistokoodiviite,
-  vahvistus: Option[Vahvistus],
-  toimipiste: Option[Toimipiste]
-) extends Suoritus
-
-@Title("Päätason koulutusmoduuli")
-case class SdgPäätasonKoulutusmoduuli(
-  tunniste: Koodistokoodiviite,
-  perusteenDiaarinumero: Option[String],
-  koulutustyyppi: Option[Koodistokoodiviite],
-) extends SuorituksenKooditettuKoulutusmoduuli
 
 case class Vahvistus(päivä: LocalDate)
 
