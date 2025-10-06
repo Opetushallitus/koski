@@ -21,6 +21,7 @@ object SdgSchema {
   )
 }
 
+@Title("Oppija")
 case class SdgOppija(
   henkilö: Henkilo,
   opiskeluoikeudet: List[SdgOpiskeluoikeus]
