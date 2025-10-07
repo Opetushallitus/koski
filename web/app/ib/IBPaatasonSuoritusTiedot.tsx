@@ -90,6 +90,7 @@ import { DateInput } from '../components-v2/controls/DateInput'
 import { SuullisenKielitaidonKoe2019 } from '../types/fi/oph/koski/schema/SuullisenKielitaidonKoe2019'
 import { LaajuusOpintopisteissä } from '../types/fi/oph/koski/schema/LaajuusOpintopisteissa'
 import { LukionOmanÄidinkielenOpinnot } from '../types/fi/oph/koski/schema/LukionOmanAidinkielenOpinnot'
+import { PuhviKoe2019 } from '../types/fi/oph/koski/schema/PuhviKoe2019'
 
 const preIB2019SuullisenKielitaidonTaitotasot: string[] = [
   'alle_A1.1',
@@ -110,6 +111,9 @@ type PreIBSuullisenKielitaidonKoe2019Arvosana = Koodistokoodiviite<
   'arviointiasteikkoyleissivistava',
   '4' | '5' | '6' | '7' | '8' | '9' | '10' | 'S' | 'H'
 >
+
+type PreIBPuhviKoe2019Arvosana = PreIBSuullisenKielitaidonKoe2019Arvosana
+
 type PreIBSuullisenKielitaidonKoe2019Taitotaso = Koodistokoodiviite<
   'arviointiasteikkokehittyvankielitaidontasot',
   | 'alle_A1.1'
@@ -724,55 +728,82 @@ const PreIB2019PuhviKoeRows: React.FC<PreIB2019TiedotRowsProps> = ({
   päätasonSuoritus
 }) => {
   const path = päätasonSuoritus.path
+  const puhviKoeEiSyötetty = päätasonSuoritus.suoritus.puhviKoe === undefined
+  const [showModal, setShowModal] = useState(false)
+  const removePuhviKoe = () => {
+    form.set(...päätasonSuoritus.pathTokens, ...['puhviKoe'])(undefined)
+  }
 
-  return (
+  if (!form.editMode && puhviKoeEiSyötetty) {
+    return null
+  }
+  return form.editMode && puhviKoeEiSyötetty ? (
     <KeyValueRow localizableLabel="Toisen asteen puheviestintätaitojen päättökoe">
-      <KeyValueTable>
-        <KeyValueRow localizableLabel="Arvosana" innerKeyValueTable>
-          {form.editMode ? (
-            <KoodistoSelect
-              koodistoUri={'arviointiasteikkoyleissivistava'}
-              format={(koodiviite) =>
-                koodiviite.koodiarvo + ' ' + t(koodiviite.nimi)
-              }
-              filter={(koodiviite) => koodiviite.koodiarvo !== 'O'}
-              onSelect={(koodiviite) => {
-                koodiviite &&
-                  form.set(
-                    ...päätasonSuoritus.pathTokens,
-                    ...['puhviKoe', 'arvosana']
-                  )(koodiviite)
-              }}
-              value={päätasonSuoritus.suoritus.puhviKoe?.arvosana.koodiarvo}
-              testId="puhviKoe.arvosana"
+      <FlatButton onClick={() => setShowModal(true)}>
+        {t('Lisää toisen asteen puheviestintätaitojen päättökoe')}
+      </FlatButton>
+      {showModal && (
+        <NewPuhviKoeModal
+          onClose={() => setShowModal(false)}
+          onSubmit={(arvosana, päivä) =>
+            form.set(
+              ...päätasonSuoritus.pathTokens,
+              ...['puhviKoe']
+            )(createPuhviKoe2019(arvosana, päivä))
+          }
+        />
+      )}
+    </KeyValueRow>
+  ) : (
+    <KeyValueRow localizableLabel="Toisen asteen puheviestintätaitojen päättökoe">
+      <Removable isRemovable={form.editMode} onClick={removePuhviKoe}>
+        <KeyValueTable>
+          <KeyValueRow localizableLabel="Arvosana" innerKeyValueTable>
+            {form.editMode ? (
+              <KoodistoSelect
+                koodistoUri={'arviointiasteikkoyleissivistava'}
+                format={(koodiviite) =>
+                  koodiviite.koodiarvo + ' ' + t(koodiviite.nimi)
+                }
+                filter={(koodiviite) => koodiviite.koodiarvo !== 'O'}
+                onSelect={(koodiviite) => {
+                  koodiviite &&
+                    form.set(
+                      ...päätasonSuoritus.pathTokens,
+                      ...['puhviKoe', 'arvosana']
+                    )(koodiviite)
+                }}
+                value={päätasonSuoritus.suoritus.puhviKoe?.arvosana.koodiarvo}
+                testId="puhviKoe.arvosana"
+              />
+            ) : (
+              <TestIdText id="puhviKoe.arvosana">
+                {päätasonSuoritus.suoritus.puhviKoe?.arvosana.koodiarvo}{' '}
+                {t(päätasonSuoritus.suoritus.puhviKoe?.arvosana.nimi)}
+              </TestIdText>
+            )}
+          </KeyValueRow>
+          <KeyValueRow localizableLabel="Kuvaus" innerKeyValueTable>
+            <FormField
+              form={form}
+              view={LocalizedTextView}
+              edit={LocalizedTextEdit}
+              testId="puhviKoe.kuvaus"
+              path={path.prop('puhviKoe').optional().prop('kuvaus')}
             />
-          ) : (
-            <TestIdText id="puhviKoe.arvosana">
-              {päätasonSuoritus.suoritus.puhviKoe?.arvosana.koodiarvo}{' '}
-              {t(päätasonSuoritus.suoritus.puhviKoe?.arvosana.nimi)}
-            </TestIdText>
-          )}
-        </KeyValueRow>
-        <KeyValueRow localizableLabel="Kuvaus" innerKeyValueTable>
-          <FormField
-            form={form}
-            view={LocalizedTextView}
-            edit={LocalizedTextEdit}
-            testId="puhviKoe.kuvaus"
-            path={path.prop('puhviKoe').optional().prop('kuvaus')}
-          />
-        </KeyValueRow>
-        <KeyValueRow localizableLabel="Päivä" innerKeyValueTable>
-          <FormField
-            form={form}
-            testId="puhviKoe.päivä"
-            view={DateView}
-            edit={DateEdit}
-            editProps={{ align: 'right' }}
-            path={path.prop('puhviKoe').optional().prop('päivä')}
-          />
-        </KeyValueRow>
-      </KeyValueTable>
+          </KeyValueRow>
+          <KeyValueRow localizableLabel="Päivä" innerKeyValueTable>
+            <FormField
+              form={form}
+              testId="puhviKoe.päivä"
+              view={DateView}
+              edit={DateEdit}
+              editProps={{ align: 'right' }}
+              path={path.prop('puhviKoe').optional().prop('päivä')}
+            />
+          </KeyValueRow>
+        </KeyValueTable>
+      </Removable>
     </KeyValueRow>
   )
 }
@@ -1026,7 +1057,6 @@ const NewOmanÄidinkielenOpinnotModal = ({
             format={(koodiviite) =>
               koodiviite.koodiarvo + ' ' + t(koodiviite.nimi)
             }
-            filter={(koodiviite) => koodiviite.koodiarvo !== 'O'}
             onSelect={(koodiviite) => {
               koodiviite &&
                 setArvosana(
@@ -1085,6 +1115,69 @@ const NewOmanÄidinkielenOpinnotModal = ({
           testId="confirm"
         >
           {t('Lisää täydentävät oman äidinkielen opinnot')}
+        </RaisedButton>
+      </ModalFooter>
+    </Modal>
+  )
+}
+
+type NewPuhviKoeModalProps = {
+  onClose: () => void
+  onSubmit: (arvosana: PreIBPuhviKoe2019Arvosana, päivä: string) => void
+}
+
+const NewPuhviKoeModal = ({ onClose, onSubmit }: NewPuhviKoeModalProps) => {
+  const [arvosana, setArvosana] = useState<
+    PreIBPuhviKoe2019Arvosana | undefined
+  >(undefined)
+  const [päivä, setPäivä] = useState<string | undefined>(undefined)
+
+  return (
+    <Modal onClose={onClose}>
+      <ModalTitle>
+        {t('Toisen asteen puheviestintätaitojen päättökokeen lisäys')}
+      </ModalTitle>
+      <ModalBody>
+        <label>
+          {t('Arvosana')}
+          <KoodistoSelect
+            koodistoUri={'arviointiasteikkoyleissivistava'}
+            format={(koodiviite) =>
+              koodiviite.koodiarvo + ' ' + t(koodiviite.nimi)
+            }
+            filter={(koodiviite) => koodiviite.koodiarvo !== 'O'}
+            onSelect={(koodiviite) => {
+              koodiviite && setArvosana(koodiviite as PreIBPuhviKoe2019Arvosana)
+            }}
+            value={arvosana ? arvosana.koodiarvo : undefined}
+            testId={'puhviKoe.modal.arvosana'}
+          />
+        </label>
+        <label>
+          {t('Päivä')}
+          <DateInput
+            value={päivä}
+            onChange={(date) => setPäivä(date)}
+            testId={'puhviKoe.modal.päivä'}
+          />
+        </label>
+        <Spacer />
+      </ModalBody>
+      <ModalFooter>
+        <FlatButton onClick={onClose} testId="cancel">
+          {t('Peruuta')}
+        </FlatButton>
+        <RaisedButton
+          disabled={[arvosana, päivä].includes(undefined)}
+          onClick={() => {
+            if (arvosana !== undefined && päivä !== undefined) {
+              onSubmit(arvosana, päivä)
+              onClose()
+            }
+          }}
+          testId="confirm"
+        >
+          {t('Lisää toisen asteen puheviestintätaitojen päättökoe')}
         </RaisedButton>
       </ModalFooter>
     </Modal>
@@ -1212,6 +1305,7 @@ const createSuullisenKielitaidonKoe2019 = (
 ): SuullisenKielitaidonKoe2019 => {
   return SuullisenKielitaidonKoe2019({ päivä, arvosana, taitotaso, kieli })
 }
+
 const createLukionOmanÄidinkielenOpinnot = (
   arvosana: PreIBOmanÄidinkielenOpinnot2019Arvosana,
   kieli: Koodistokoodiviite<'kielivalikoima'>,
@@ -1223,6 +1317,16 @@ const createLukionOmanÄidinkielenOpinnot = (
     arviointipäivä: arviointipäivä,
     laajuus,
     kieli
+  })
+}
+
+const createPuhviKoe2019 = (
+  arvosana: PreIBPuhviKoe2019Arvosana,
+  päivä: string
+): PuhviKoe2019 => {
+  return PuhviKoe2019({
+    arvosana,
+    päivä
   })
 }
 
