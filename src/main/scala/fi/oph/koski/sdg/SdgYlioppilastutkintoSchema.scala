@@ -1,7 +1,7 @@
 package fi.oph.koski.sdg
 
 import fi.oph.koski.schema
-import fi.oph.koski.schema.{Koodistokoodiviite, Koulutustoimija, Oppilaitos, YlioppilasTutkinnonKoe}
+import fi.oph.koski.schema.{Koodistokoodiviite, Koulutustoimija, Opiskeluoikeusjakso, Oppilaitos, YlioppilasTutkinnonKoe, YlioppilastutkinnonOpiskeluoikeudenTila}
 import fi.oph.koski.schema.annotation.KoodistoKoodiarvo
 import fi.oph.scalaschema.annotation.{Description, Title}
 
@@ -24,16 +24,8 @@ object SdgYlioppilastutkinnonOpiskeluoikeus {
         kt.kotipaikka
       )
     ),
-    tila = SdgOpiskeluoikeudenTila(
-      yo.tila.opiskeluoikeusjaksot.map(yot =>
-        SdgOpiskeluoikeusjakso(
-          yot.alku,
-          yot.tila,
-          None
-        )
-      )
-    ),
-    suoritukset = yo.suoritukset.map(s => SdgYlioppilastutkinnonPäätasonSuoritus(
+    tila = yo.tila,
+    suoritukset = yo.suoritukset.map(s => SdgYlioppilastutkinnonSuoritus(
       SdgYlioppilastutkinnonSuorituksenKoulutusmoduuli(s.koulutusmoduuli.tunniste),
       Some(Toimipiste(
         s.toimipiste.oid,
@@ -54,8 +46,8 @@ case class SdgYlioppilastutkinnonOpiskeluoikeus(
   oid: Option[String],
   oppilaitos: Option[Oppilaitos],
   koulutustoimija: Option[Koulutustoimija],
-  tila: SdgOpiskeluoikeudenTila,
-  suoritukset: List[SdgYlioppilastutkinnonPäätasonSuoritus],
+  tila: YlioppilastutkinnonOpiskeluoikeudenTila,
+  suoritukset: List[SdgYlioppilastutkinnonSuoritus],
   @KoodistoKoodiarvo(schema.OpiskeluoikeudenTyyppi.ylioppilastutkinto.koodiarvo)
   tyyppi: schema.Koodistokoodiviite,
   versionumero: Option[Int] = None
@@ -65,19 +57,19 @@ case class SdgYlioppilastutkinnonOpiskeluoikeus(
 
   override def withSuoritukset(suoritukset: List[Suoritus]): SdgOpiskeluoikeus =
     this.copy(
-      suoritukset = suoritukset.collect { case s: SdgYlioppilastutkinnonPäätasonSuoritus => s }
+      suoritukset = suoritukset.collect { case s: SdgYlioppilastutkinnonSuoritus => s }
     )
 }
 
 @Title("Ylioppilastutkinnon suoritus")
-case class SdgYlioppilastutkinnonPäätasonSuoritus(
+case class SdgYlioppilastutkinnonSuoritus(
   koulutusmoduuli: SdgYlioppilastutkinnonSuorituksenKoulutusmoduuli,
   toimipiste: Option[Toimipiste],
   vahvistus: Option[Vahvistus],
   tyyppi: schema.Koodistokoodiviite,
   osasuoritukset: Option[List[SdgYlioppilastutkinnonOsasuoritus]]
 ) extends Suoritus {
-  override def withOsasuoritukset(os: Option[List[Osasuoritus]]): SdgYlioppilastutkinnonPäätasonSuoritus =
+  override def withOsasuoritukset(os: Option[List[Osasuoritus]]): SdgYlioppilastutkinnonSuoritus =
     this.copy(osasuoritukset = os.map(_.collect {
       case s: SdgYlioppilastutkinnonOsasuoritus => s
     }))

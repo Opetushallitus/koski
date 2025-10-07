@@ -1,7 +1,7 @@
 package fi.oph.koski.sdg
 
 import fi.oph.koski.schema
-import fi.oph.koski.schema.{Koodistokoodiviite, KorkeakoulunArviointi, KorkeakoulunOpintojakso, Koulutustoimija, Oppilaitos}
+import fi.oph.koski.schema.{Koodistokoodiviite, KorkeakoulunArviointi, KorkeakoulunOpintojakso, KorkeakoulunOpiskeluoikeudenTila, Koulutustoimija, Opiskeluoikeusjakso, Oppilaitos}
 import fi.oph.koski.schema.annotation.KoodistoKoodiarvo
 import fi.oph.scalaschema.annotation.Title
 
@@ -12,15 +12,7 @@ object SdgKorkeakoulunOpiskeluoikeus {
     oppilaitos = kk.oppilaitos,
     koulutustoimija = kk.koulutustoimija,
     päättymispäivä = kk.päättymispäivä,
-    tila = SdgOpiskeluoikeudenTila(
-      kk.tila.opiskeluoikeusjaksot.map(kkt =>
-        SdgOpiskeluoikeusjakso(
-          kkt.alku,
-          kkt.tila,
-          None
-        )
-      )
-    ),
+    tila = kk.tila,
     lisätiedot = kk.lisätiedot.map(lisätiedot => SdgKorkeakoulunOpiskeluoikeudenLisätiedot(
       virtaOpiskeluoikeudenTyyppi = lisätiedot.virtaOpiskeluoikeudenTyyppi,
       lukukausiIlmoittautuminen = lisätiedot.lukukausiIlmoittautuminen.map(kkl =>
@@ -71,13 +63,12 @@ case class SdgKorkeakoulunOpiskeluoikeus(
   oppilaitos: Option[Oppilaitos],
   koulutustoimija: Option[Koulutustoimija],
   override val päättymispäivä: Option[LocalDate],
-  tila: SdgOpiskeluoikeudenTila,
+  tila: KorkeakoulunOpiskeluoikeudenTila,
   lisätiedot: Option[SdgKorkeakoulunOpiskeluoikeudenLisätiedot],
   suoritukset: List[SdgKorkeakoulututkinnonSuoritus],
   @KoodistoKoodiarvo(schema.OpiskeluoikeudenTyyppi.korkeakoulutus.koodiarvo)
   tyyppi: schema.Koodistokoodiviite,
 ) extends SdgOpiskeluoikeus {
-
   override def withSuoritukset(suoritukset: List[Suoritus]): SdgOpiskeluoikeus =
     this.copy(
       suoritukset = suoritukset.collect { case s: SdgKorkeakoulututkinnonSuoritus => s }

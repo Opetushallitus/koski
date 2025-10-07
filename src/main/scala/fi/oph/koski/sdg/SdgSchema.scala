@@ -1,7 +1,7 @@
 package fi.oph.koski.sdg
 
 import fi.oph.koski.schema
-import fi.oph.koski.schema.{Koodistokoodiviite, Koulutustoimija, Oppilaitos}
+import fi.oph.koski.schema.{Koodistokoodiviite, Koulutustoimija, Opiskeluoikeusjakso, OpiskeluoikeudenTila, Oppilaitos}
 import fi.oph.koski.schema.annotation.{KoodistoUri, Representative}
 import fi.oph.scalaschema.annotation.{Discriminator, SyntheticProperty, Title}
 import fi.oph.scalaschema.{ClassSchema, SchemaToJson}
@@ -62,7 +62,7 @@ trait SdgOpiskeluoikeus {
   @SyntheticProperty
   def päättymispäivä: Option[LocalDate] = schema.Opiskeluoikeus.päättymispäivä(this.tyyppi.koodiarvo, this.tila.opiskeluoikeusjaksot.map(j => (j.alku, j.tila.koodiarvo)))
 
-  def tila: SdgOpiskeluoikeudenTila
+  def tila: OpiskeluoikeudenTila
 
   def lisätiedot: Option[SdgOpiskeluoikeudenLisätiedot]
 
@@ -96,19 +96,6 @@ trait Suoritus {
 }
 
 trait Osasuoritus
-
-@Title("Opiskeluoikeuden tila")
-case class SdgOpiskeluoikeudenTila(
-  @Representative
-  opiskeluoikeusjaksot: List[SdgOpiskeluoikeusjakso]
-)
-
-@Title("Opiskeluoikeusjakso")
-case class SdgOpiskeluoikeusjakso(
-  alku: LocalDate,
-  tila: Koodistokoodiviite,
-  opintojenRahoitus: Option[Koodistokoodiviite]
-)
 
 @Title("Opiskeluoikeuden lisätiedot")
 trait SdgOpiskeluoikeudenLisätiedot

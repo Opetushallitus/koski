@@ -1,7 +1,7 @@
 package fi.oph.koski.sdg
 
 import fi.oph.koski.schema
-import fi.oph.koski.schema.{Koodistokoodiviite, Koulutustoimija, Oppilaitos}
+import fi.oph.koski.schema.{Koodistokoodiviite, Koulutustoimija, Oppilaitos, DIAOpiskeluoikeudenTila}
 import fi.oph.koski.schema.annotation.KoodistoKoodiarvo
 import fi.oph.scalaschema.annotation.Title
 
@@ -11,7 +11,7 @@ case class SdgDIAOpiskeluoikeus(
   versionumero: Option[Int],
   oppilaitos: Option[Oppilaitos],
   koulutustoimija: Option[Koulutustoimija],
-  tila: SdgOpiskeluoikeudenTila,
+  tila: DIAOpiskeluoikeudenTila,
   suoritukset: List[SdgDIATutkinnonSuoritus],
   @KoodistoKoodiarvo(schema.OpiskeluoikeudenTyyppi.diatutkinto.koodiarvo)
   tyyppi: schema.Koodistokoodiviite,

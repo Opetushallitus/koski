@@ -66,7 +66,7 @@ class SdgService(application: KoskiApplication) extends GlobalExecutionContext w
 
   private def josYOTutkintoNiinVahvistettu(s: Suoritus): Boolean = {
     s match {
-      case s: SdgYlioppilastutkinnonPäätasonSuoritus
+      case s: SdgYlioppilastutkinnonSuoritus
       => s.vahvistus.isDefined
       case _
       => true
