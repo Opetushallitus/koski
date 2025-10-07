@@ -72,6 +72,7 @@ import {
   LaajuusOpintopisteissäEdit,
   LaajuusView
 } from '../components-v2/opiskeluoikeus/LaajuusField'
+import { Spacer } from '../components-v2/layout/Spacer'
 
 export type IBTutkintTiedotProps = {
   form: FormModel<IBOpiskeluoikeus>
@@ -515,7 +516,10 @@ const PreIB2019TiedotRows: React.FC<PreIB2019TiedotRowsProps> = ({
         päätasonSuoritus={päätasonSuoritus}
       />
       <PreIB2019PuhviKoeRows form={form} päätasonSuoritus={päätasonSuoritus} />
-      <KeyValueRow localizableLabel="Suullisen kielitaidon kokeet"></KeyValueRow>
+      <PreIB2019SuullisenKielitaidonKokeetRows
+        form={form}
+        päätasonSuoritus={päätasonSuoritus}
+      />
     </>
   )
 }
@@ -657,6 +661,150 @@ const PreIB2019PuhviKoeRows: React.FC<PreIB2019TiedotRowsProps> = ({
         </KeyValueRow>
       </KeyValueTable>
     </KeyValueRow>
+  )
+}
+
+const PreIB2019SuullisenKielitaidonKokeetRows: React.FC<
+  PreIB2019TiedotRowsProps
+> = ({ form, päätasonSuoritus }) => {
+  return (
+    <KeyValueRow localizableLabel="Suullisen kielitaidon kokeet">
+      {päätasonSuoritus.suoritus.suullisenKielitaidonKokeet?.map(
+        (koe, index) => {
+          return (
+            <div key={`suullisenkielitaidonkoe.${index}`}>
+              <PreIB2019SuullisenKielitaidonKoeRows
+                form={form}
+                päätasonSuoritus={päätasonSuoritus}
+                index={index}
+              />
+              <Spacer />
+            </div>
+          )
+        }
+      )}
+    </KeyValueRow>
+  )
+}
+
+type PreIB2019SuullisenKielitaidonKoeRowsProps = PreIB2019TiedotRowsProps & {
+  index: number
+}
+
+const PreIB2019SuullisenKielitaidonKoeRows: React.FC<
+  PreIB2019SuullisenKielitaidonKoeRowsProps
+> = ({ form, päätasonSuoritus, index }) => {
+  const path = päätasonSuoritus.path
+
+  return (
+    <KeyValueTable>
+      <KeyValueRow localizableLabel="Kieli" innerKeyValueTable>
+        {form.editMode ? (
+          <KoodistoSelect
+            koodistoUri={'kielivalikoima'}
+            onSelect={(koodiviite) => {
+              koodiviite &&
+                form.set(
+                  ...päätasonSuoritus.pathTokens,
+                  ...['suullisenKielitaidonKokeet', index, 'kieli']
+                )(koodiviite)
+            }}
+            value={
+              päätasonSuoritus.suoritus.suullisenKielitaidonKokeet?.at(index)
+                ?.kieli.koodiarvo
+            }
+            testId={`suullisenKielitaidonKokeet.${index}.kieli`}
+          />
+        ) : (
+          <TestIdText id={`suullisenKielitaidonKokeet.${index}.kieli`}>
+            {t(
+              päätasonSuoritus.suoritus.suullisenKielitaidonKokeet?.at(index)
+                ?.kieli.nimi
+            )}
+          </TestIdText>
+        )}
+      </KeyValueRow>
+      <KeyValueRow localizableLabel="Arvosana" innerKeyValueTable>
+        {form.editMode ? (
+          <KoodistoSelect
+            koodistoUri={'arviointiasteikkoyleissivistava'}
+            filter={(tunniste) => tunniste.koodiarvo !== 'O'}
+            onSelect={(koodiviite) => {
+              koodiviite &&
+                form.set(
+                  ...päätasonSuoritus.pathTokens,
+                  ...['suullisenKielitaidonKokeet', index, 'arvosana']
+                )(koodiviite)
+            }}
+            value={
+              päätasonSuoritus.suoritus.suullisenKielitaidonKokeet?.at(index)
+                ?.arvosana.koodiarvo
+            }
+            testId={`suullisenKielitaidonKokeet.${index}.arvosana`}
+          />
+        ) : (
+          <TestIdText id={`suullisenKielitaidonKokeet.${index}.arvosana`}>
+            {t(
+              päätasonSuoritus.suoritus.suullisenKielitaidonKokeet?.at(index)
+                ?.arvosana.nimi
+            )}
+          </TestIdText>
+        )}
+      </KeyValueRow>
+      <KeyValueRow localizableLabel="Taitotaso" innerKeyValueTable>
+        {form.editMode ? (
+          <KoodistoSelect
+            koodistoUri={'arviointiasteikkokehittyvankielitaidontasot'}
+            onSelect={(koodiviite) => {
+              koodiviite &&
+                form.set(
+                  ...päätasonSuoritus.pathTokens,
+                  ...['suullisenKielitaidonKokeet', index, 'taitotaso']
+                )(koodiviite)
+            }}
+            value={
+              päätasonSuoritus.suoritus.suullisenKielitaidonKokeet?.at(index)
+                ?.taitotaso.koodiarvo
+            }
+            testId={`suullisenKielitaidonKokeet.${index}.taitotaso`}
+          />
+        ) : (
+          <TestIdText id={`suullisenKielitaidonKokeet.${index}.taitotaso`}>
+            {t(
+              päätasonSuoritus.suoritus.suullisenKielitaidonKokeet?.at(index)
+                ?.taitotaso.nimi
+            )}
+          </TestIdText>
+        )}
+      </KeyValueRow>
+      <KeyValueRow localizableLabel="Kuvaus" innerKeyValueTable>
+        <FormField
+          form={form}
+          view={LocalizedTextView}
+          edit={LocalizedTextEdit}
+          testId={`suullisenKielitaidonKokeet.${index}.kuvaus`}
+          path={path
+            .prop('suullisenKielitaidonKokeet')
+            .optional()
+            .at(index)
+            .prop('kuvaus')}
+        />
+      </KeyValueRow>
+      <KeyValueRow localizableLabel="Päivä" innerKeyValueTable>
+        <FormField
+          form={form}
+          testId={`suullisenKielitaidonKokeet.${index}.päivä`}
+          view={DateView}
+          edit={DateEdit}
+          editProps={{ align: 'right' }}
+          path={path
+            .prop('suullisenKielitaidonKokeet')
+            .optional()
+            .at(index)
+            .prop('päivä')}
+        />
+      </KeyValueRow>
+    </KeyValueTable>
   )
 }
 
