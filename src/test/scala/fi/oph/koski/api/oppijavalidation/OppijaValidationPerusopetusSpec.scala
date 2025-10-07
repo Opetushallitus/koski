@@ -1315,6 +1315,86 @@ class OppijaValidationPerusopetusSpec extends TutkinnonPerusteetTest[Perusopetuk
       }
     }
 
+    "VSOP true vahvistus ennen 1.8.2025 -> HTTP 200" in {
+      val start = date(2024, 1, 1)
+      val seiskaluokanSuoritus = defaultOpiskeluoikeus.copy(
+        lähdejärjestelmänId = Some(primusLähdejärjestelmäId("primus-30405321")),
+        suoritukset = List(
+          seitsemännenLuokanSuoritus.copy(
+            alkamispäivä = Some(LocalDate.of(2024, 1, 1)),
+            vahvistus = Some(HenkilövahvistusPaikkakunnalla(
+              LocalDate.of(2024, 1, 1), jyväskylä, jyväskylänNormaalikoulu,
+              List(Organisaatiohenkilö("Reijo Reksi", "rehtori", jyväskylänNormaalikoulu))
+            )),
+            osasuoritukset = Some(List(
+              NuortenPerusopetuksenOppiaineenSuoritus(
+                koulutusmoduuli = MuuNuortenPerusopetuksenOppiaine(
+                  tunniste = Koodistokoodiviite("LI", koodistoUri = "koskioppiaineetyleissivistava"),
+                  laajuus = Some(LaajuusVuosiviikkotunneissa(2.0))
+                ),
+                arviointi = Some(List(PerusopetuksenOppiaineenArviointi(9, Some(LocalDate.of(2024, 1, 1))))),
+                suorituskieli = None,
+                suoritustapa = None,
+                luokkaAste = Some(Koodistokoodiviite("8", koodistoUri = "perusopetuksenluokkaaste"))
+              )
+            ))
+          )
+        )
+      )
+      val oo = defaultOpiskeluoikeus.copy(
+        tila = NuortenPerusopetuksenOpiskeluoikeudenTila(List(
+          NuortenPerusopetuksenOpiskeluoikeusjakso(start, opiskeluoikeusLäsnä)
+        )),
+        lisätiedot = Some(PerusopetuksenOpiskeluoikeudenLisätiedot(
+          vuosiluokkiinSitoutumatonOpetus = Some(true)
+        )),
+        suoritukset = seiskaluokanSuoritus.suoritukset
+      )
+
+      setupOppijaWithOpiskeluoikeus(oo) {
+        verifyResponseStatusOk()
+      }
+    }
+
+    "VSOP true vahvistus jälkeen 1.8.2025 -> HTTP 400" in {
+      val start = date(2025, 1, 1)
+      val seiskaluokanSuoritus = defaultOpiskeluoikeus.copy(
+        suoritukset = List(
+          seitsemännenLuokanSuoritus.copy(
+            alkamispäivä = Some(LocalDate.of(2025, 1, 1)),
+            vahvistus = Some(HenkilövahvistusPaikkakunnalla(
+              LocalDate.of(2025, 9, 9), jyväskylä, jyväskylänNormaalikoulu,
+              List(Organisaatiohenkilö("Reijo Reksi", "rehtori", jyväskylänNormaalikoulu))
+            )),
+            osasuoritukset = Some(List(
+              NuortenPerusopetuksenOppiaineenSuoritus(
+                koulutusmoduuli = MuuNuortenPerusopetuksenOppiaine(
+                  tunniste = Koodistokoodiviite("LI", koodistoUri = "koskioppiaineetyleissivistava"),
+                  laajuus = Some(LaajuusVuosiviikkotunneissa(2.0))
+                ),
+                arviointi = Some(List(PerusopetuksenOppiaineenArviointi(9, Some(LocalDate.of(2024, 1, 1))))),
+                suorituskieli = None,
+                suoritustapa = None,
+                luokkaAste = Some(Koodistokoodiviite("8", koodistoUri = "perusopetuksenluokkaaste"))
+              )
+            ))
+          )
+        )
+      )
+      val oo = defaultOpiskeluoikeus.copy(
+        tila = NuortenPerusopetuksenOpiskeluoikeudenTila(List(
+          NuortenPerusopetuksenOpiskeluoikeusjakso(start, opiskeluoikeusLäsnä)
+        )),
+        lisätiedot = Some(PerusopetuksenOpiskeluoikeudenLisätiedot(
+          vuosiluokkiinSitoutumatonOpetus = Some(true)
+        )),
+        suoritukset = seiskaluokanSuoritus.suoritukset
+      )
+      setupOppijaWithOpiskeluoikeus(oo) {
+        verifyResponseStatus(
+          400)
+      }
+    }
     "Opiskelija ollut valmistuessa kotiopetuksessa -> HTTP 200" in {
       setupOppijaWithOpiskeluoikeus(oo.copy(
         suoritukset = List(päättötodistusSuoritus.copy(
