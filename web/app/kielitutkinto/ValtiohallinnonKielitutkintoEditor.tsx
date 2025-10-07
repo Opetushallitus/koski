@@ -38,8 +38,9 @@ import { Oppilaitos } from '../types/fi/oph/koski/schema/Oppilaitos'
 import { ValtionhallinnonKielitutkinnonArviointi } from '../types/fi/oph/koski/schema/ValtionhallinnonKielitutkinnonArviointi'
 import { ValtionhallinnonKielitutkinnonKielitaidonSuoritus } from '../types/fi/oph/koski/schema/ValtionhallinnonKielitutkinnonKielitaidonSuoritus'
 import { ValtionhallinnonKielitutkinnonSuoritus } from '../types/fi/oph/koski/schema/ValtionhallinnonKielitutkinnonSuoritus'
-import { ArviointipäiväOrd } from '../util/arvioinnit'
+import { ArviointipäiväOrd, parasArviointi } from '../util/arvioinnit'
 import { OsasuoritusOf } from '../util/schema'
+import { notUndefined } from '../util/util'
 
 export type ValtionhallinnonKielitutkintoEditorProps = {
   form: FormModel<KielitutkinnonOpiskeluoikeus>
@@ -141,7 +142,7 @@ const kielitaitoToTableRow = ({
         <FormField
           form={form}
           path={osasuoritusPath.path('osasuoritukset')}
-          view={ViimeisinTutkintopäiväView}
+          view={TutkintopäiväTodistuksellaView}
           testId="tutkintopäivä"
         />
       ),
@@ -333,27 +334,36 @@ const isCompletedSuoritus =
 
 // Tutkintopäivä viewer
 
-const ValtionhallinnonKielitutkinnonKielitaidonSuoritusOrd = Ord.contramap(
-  (a: ValtionhallinnonKielitutkinnonKielitaidonSuoritus) =>
-    a.alkamispäivä || '9999-99-99'
-)(string.Ord)
-
 export type ViimeisinTutkintopäiväViewProps = CommonProps<
   FieldViewerProps<
-    ValtionhallinnonKielitutkinnonKielitaidonSuoritus[],
+    OsasuoritusOf<ValtionhallinnonKielitutkinnonKielitaidonSuoritus>[],
     EmptyObject
   >
 >
 
-export const ViimeisinTutkintopäiväView: React.FC<
+export const TutkintopäiväTodistuksellaView: React.FC<
   ViimeisinTutkintopäiväViewProps
 > = (props) => {
-  const viimeisinOsakoe = pipe(
+  const parasArvosana = pipe(
     props.value || [],
-    A.sort(ValtionhallinnonKielitutkinnonKielitaidonSuoritusOrd),
+    A.flatMap((ok) => ok.arviointi || []),
+    parasArviointi,
+    (arviointi) => arviointi?.arvosana
+  )
+
+  const tutkintopäivä = pipe(
+    props.value || [],
+    A.filter(
+      (ok) =>
+        ok.arviointi?.find((arv) => arv.arvosana === parasArvosana) !==
+        undefined
+    ),
+    A.map((ok) => ok.alkamispäivä),
+    A.filter(notUndefined),
+    A.sort(string.Ord),
     A.last,
     O.toUndefined
   )
 
-  return <DateView value={viimeisinOsakoe?.alkamispäivä} />
+  return <DateView value={tutkintopäivä} />
 }
