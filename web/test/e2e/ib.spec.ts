@@ -519,6 +519,18 @@ test.describe('IB', () => {
         await expect(page.getByTestId('oo.0.suoritukset.0.puhviKoe.arvosana')).toContainText('tyydyttävä')
         await expect(page.getByTestId('oo.0.suoritukset.0.puhviKoe.kuvaus.value')).toContainText('Puhvikokeen kuvaus lorem ipsum dolor sit amet')
         await expect(page.getByTestId('oo.0.suoritukset.0.puhviKoe.päivä.value')).toContainText('30.8.2019')
+
+        await expect(page.getByTestId('oo.0.suoritukset.0.suullisenKielitaidonKokeet.0.kieli')).toContainText('englanti')
+        await expect(page.getByTestId('oo.0.suoritukset.0.suullisenKielitaidonKokeet.0.arvosana')).toContainText('kohtalainen')
+        await expect(page.getByTestId('oo.0.suoritukset.0.suullisenKielitaidonKokeet.0.taitotaso')).toContainText('B1.1')
+        await expect(page.getByTestId('oo.0.suoritukset.0.suullisenKielitaidonKokeet.0.kuvaus.value')).toContainText('Englannin suullisen kielitaidon koe lorem ipsum dolor sit amet')
+        await expect(page.getByTestId('oo.0.suoritukset.0.suullisenKielitaidonKokeet.0.päivä.value')).toContainText('3.9.2019')
+
+        await expect(page.getByTestId('oo.0.suoritukset.0.suullisenKielitaidonKokeet.1.kieli')).toContainText('espanja')
+        await expect(page.getByTestId('oo.0.suoritukset.0.suullisenKielitaidonKokeet.1.arvosana')).toContainText('hyväksytty')
+        await expect(page.getByTestId('oo.0.suoritukset.0.suullisenKielitaidonKokeet.1.taitotaso')).toContainText('Yli C1.1')
+        await expect(page.getByTestId('oo.0.suoritukset.0.suullisenKielitaidonKokeet.1.kuvaus.value')).toContainText('Puhetaito äidinkielen tasolla')
+        await expect(page.getByTestId('oo.0.suoritukset.0.suullisenKielitaidonKokeet.1.päivä.value')).toContainText('3.9.2019')
       })
 
       test('Pre-IB 2019:n oppiaineiden ja kurssien arvosanat näytetään', async ({

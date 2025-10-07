@@ -442,7 +442,7 @@ object Lukio2019ExampleData {
     kieli = Koodistokoodiviite("EN", Some("englanti"), "kielivalikoima", None),
     arvosana = Koodistokoodiviite("6", "arviointiasteikkoyleissivistava"),
     taitotaso = Koodistokoodiviite(koodiarvo = "B1.1", koodistoUri = "arviointiasteikkokehittyvankielitaidontasot"),
-    kuvaus = None,
+    kuvaus = Some(finnish("Englannin suullisen kielitaidon koe lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris commodo mauris nec erat fringilla, in sagittis elit ullamcorper. Vestibulum fringilla.")),
     päivä = date(2019, 9, 3)
   )
 
