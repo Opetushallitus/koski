@@ -130,7 +130,7 @@ export const IBLisätiedot: React.FC<IBLisätiedotProps> = ({ form }) => {
         )}
       </KeyValueRow>
 
-      <KeyValueRow localizableLabel="Ulkomaan jaksot" largeLabel>
+      <KeyValueRow localizableLabel="Ulkomaanjaksot" largeLabel>
         <FormListField
           form={form}
           path={path.prop('ulkomaanjaksot')}

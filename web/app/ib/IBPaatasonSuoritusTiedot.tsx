@@ -69,6 +69,7 @@ import {
 } from '../types/fi/oph/koski/schema/PreIBSuoritus2019'
 import { DateEdit, DateView } from '../components-v2/controls/DateField'
 import {
+  LaajuusEdit,
   LaajuusOpintopisteissäEdit,
   LaajuusView
 } from '../components-v2/opiskeluoikeus/LaajuusField'
@@ -87,6 +88,8 @@ import {
 import { RaisedButton } from '../components-v2/controls/RaisedButton'
 import { DateInput } from '../components-v2/controls/DateInput'
 import { SuullisenKielitaidonKoe2019 } from '../types/fi/oph/koski/schema/SuullisenKielitaidonKoe2019'
+import { LaajuusOpintopisteissä } from '../types/fi/oph/koski/schema/LaajuusOpintopisteissa'
+import { LukionOmanÄidinkielenOpinnot } from '../types/fi/oph/koski/schema/LukionOmanAidinkielenOpinnot'
 
 const preIB2019SuullisenKielitaidonTaitotasot: string[] = [
   'alle_A1.1',
@@ -121,6 +124,11 @@ type PreIBSuullisenKielitaidonKoe2019Taitotaso = Koodistokoodiviite<
   | 'B2.2'
   | 'C1.1'
   | 'yli_C1.1'
+>
+
+type PreIBOmanÄidinkielenOpinnot2019Arvosana = Koodistokoodiviite<
+  'arviointiasteikkoyleissivistava',
+  'O' | 'S' | 'H' | '4' | '5' | '6' | '7' | '8' | '9' | '10'
 >
 
 export type IBTutkintTiedotProps = {
@@ -577,91 +585,136 @@ const PreIB2019OmanÄidinkielenOpinnotRows: React.FC<
   PreIB2019TiedotRowsProps
 > = ({ form, päätasonSuoritus }) => {
   const path = päätasonSuoritus.path
+  const omanÄidinkielenOpinnotEiSyötetty =
+    päätasonSuoritus.suoritus.omanÄidinkielenOpinnot === undefined
+  const [showModal, setShowModal] = useState(false)
+  const removeOmanÄidinkielenOpinnot = () => {
+    form.set(
+      ...päätasonSuoritus.pathTokens,
+      ...['omanÄidinkielenOpinnot']
+    )(undefined)
+  }
 
-  return (
+  if (!form.editMode && omanÄidinkielenOpinnotEiSyötetty) {
+    return null
+  }
+
+  return form.editMode && omanÄidinkielenOpinnotEiSyötetty ? (
     <KeyValueRow localizableLabel="Oman äidinkielen opinnot">
-      <KeyValueTable>
-        <KeyValueRow localizableLabel="Arvosana" innerKeyValueTable>
-          {form.editMode ? (
-            <KoodistoSelect
-              koodistoUri={'arviointiasteikkoyleissivistava'}
-              format={(koodiviite) =>
-                koodiviite.koodiarvo + ' ' + t(koodiviite.nimi)
-              }
-              onSelect={(koodiviite) => {
-                koodiviite &&
-                  form.set(
-                    ...päätasonSuoritus.pathTokens,
-                    ...['omanÄidinkielenOpinnot', 'arvosana']
-                  )(koodiviite)
-              }}
-              value={
-                päätasonSuoritus.suoritus.omanÄidinkielenOpinnot?.arvosana
-                  .koodiarvo
-              }
-              testId="omanÄidinkielenOpinnot.arvosana"
+      <FlatButton onClick={() => setShowModal(true)}>
+        {t('Lisää täydentävät oman äidinkielen opinnot')}
+      </FlatButton>
+      {showModal && (
+        <NewOmanÄidinkielenOpinnotModal
+          onClose={() => setShowModal(false)}
+          onSubmit={(arvosana, kieli, laajuus, arviointipäivä) =>
+            form.set(
+              ...päätasonSuoritus.pathTokens,
+              ...['omanÄidinkielenOpinnot']
+            )(
+              createLukionOmanÄidinkielenOpinnot(
+                arvosana,
+                kieli,
+                laajuus,
+                arviointipäivä
+              )
+            )
+          }
+        />
+      )}
+    </KeyValueRow>
+  ) : (
+    <KeyValueRow localizableLabel="Oman äidinkielen opinnot">
+      <Removable
+        isRemovable={form.editMode}
+        onClick={removeOmanÄidinkielenOpinnot}
+      >
+        <KeyValueTable>
+          <KeyValueRow localizableLabel="Arvosana" innerKeyValueTable>
+            {form.editMode ? (
+              <KoodistoSelect
+                koodistoUri={'arviointiasteikkoyleissivistava'}
+                format={(koodiviite) =>
+                  koodiviite.koodiarvo + ' ' + t(koodiviite.nimi)
+                }
+                onSelect={(koodiviite) => {
+                  koodiviite &&
+                    form.set(
+                      ...päätasonSuoritus.pathTokens,
+                      ...['omanÄidinkielenOpinnot', 'arvosana']
+                    )(koodiviite)
+                }}
+                value={
+                  päätasonSuoritus.suoritus.omanÄidinkielenOpinnot?.arvosana
+                    .koodiarvo
+                }
+                testId="omanÄidinkielenOpinnot.arvosana"
+              />
+            ) : (
+              <TestIdText id="omanÄidinkielenOpinnot.arvosana">
+                {
+                  päätasonSuoritus.suoritus.omanÄidinkielenOpinnot?.arvosana
+                    .koodiarvo
+                }{' '}
+                {t(
+                  päätasonSuoritus.suoritus.omanÄidinkielenOpinnot?.arvosana
+                    .nimi
+                )}
+              </TestIdText>
+            )}
+          </KeyValueRow>
+          <KeyValueRow localizableLabel="Arviointipäivä" innerKeyValueTable>
+            <FormField
+              form={form}
+              testId="omanÄidinkielenOpinnot.arviointipäivä"
+              view={DateView}
+              edit={DateEdit}
+              editProps={{ align: 'right' }}
+              path={path
+                .prop('omanÄidinkielenOpinnot')
+                .optional()
+                .prop('arviointipäivä')}
             />
-          ) : (
-            <TestIdText id="omanÄidinkielenOpinnot.arvosana">
-              {
-                päätasonSuoritus.suoritus.omanÄidinkielenOpinnot?.arvosana
-                  .koodiarvo
-              }{' '}
-              {t(
-                päätasonSuoritus.suoritus.omanÄidinkielenOpinnot?.arvosana.nimi
-              )}
-            </TestIdText>
-          )}
-        </KeyValueRow>
-        <KeyValueRow localizableLabel="Arviointipäivä" innerKeyValueTable>
-          <FormField
-            form={form}
-            testId="omanÄidinkielenOpinnot.arviointipäivä"
-            view={DateView}
-            edit={DateEdit}
-            editProps={{ align: 'right' }}
-            path={path
-              .prop('omanÄidinkielenOpinnot')
-              .optional()
-              .prop('arviointipäivä')}
-          />
-        </KeyValueRow>
-        <KeyValueRow localizableLabel="Kieli" innerKeyValueTable>
-          {form.editMode ? (
-            <KoodistoSelect
-              koodistoUri={'kielivalikoima'}
-              onSelect={(koodiviite) => {
-                koodiviite &&
-                  form.set(
-                    ...päätasonSuoritus.pathTokens,
-                    ...['omanÄidinkielenOpinnot', 'kieli']
-                  )(koodiviite)
-              }}
-              value={
-                päätasonSuoritus.suoritus.omanÄidinkielenOpinnot?.kieli
-                  .koodiarvo
-              }
-              testId="omanÄidinkielenOpinnot.kieli"
+          </KeyValueRow>
+          <KeyValueRow localizableLabel="Kieli" innerKeyValueTable>
+            {form.editMode ? (
+              <KoodistoSelect
+                koodistoUri={'kielivalikoima'}
+                onSelect={(koodiviite) => {
+                  koodiviite &&
+                    form.set(
+                      ...päätasonSuoritus.pathTokens,
+                      ...['omanÄidinkielenOpinnot', 'kieli']
+                    )(koodiviite)
+                }}
+                value={
+                  päätasonSuoritus.suoritus.omanÄidinkielenOpinnot?.kieli
+                    .koodiarvo
+                }
+                testId="omanÄidinkielenOpinnot.kieli"
+              />
+            ) : (
+              <TestIdText id="omanÄidinkielenOpinnot.kieli">
+                {t(
+                  päätasonSuoritus.suoritus.omanÄidinkielenOpinnot?.kieli.nimi
+                )}
+              </TestIdText>
+            )}
+          </KeyValueRow>
+          <KeyValueRow localizableLabel="Laajuus" innerKeyValueTable>
+            <FormField
+              form={form}
+              path={path
+                .prop('omanÄidinkielenOpinnot')
+                .optional()
+                .prop('laajuus')}
+              view={LaajuusView}
+              edit={LaajuusOpintopisteissäEdit}
+              testId="omanÄidinkielenOpinnot.laajuus"
             />
-          ) : (
-            <TestIdText id="omanÄidinkielenOpinnot.kieli">
-              {t(päätasonSuoritus.suoritus.omanÄidinkielenOpinnot?.kieli.nimi)}
-            </TestIdText>
-          )}
-        </KeyValueRow>
-        <KeyValueRow localizableLabel="Laajuus" innerKeyValueTable>
-          <FormField
-            form={form}
-            path={path
-              .prop('omanÄidinkielenOpinnot')
-              .optional()
-              .prop('laajuus')}
-            view={LaajuusView}
-            edit={LaajuusOpintopisteissäEdit}
-            testId="omanÄidinkielenOpinnot.laajuus"
-          />
-        </KeyValueRow>
-      </KeyValueTable>
+          </KeyValueRow>
+        </KeyValueTable>
+      </Removable>
     </KeyValueRow>
   )
 }
@@ -933,6 +986,111 @@ const PreIB2019SuullisenKielitaidonKoeRows: React.FC<
   )
 }
 
+type NewOmanÄidinkielenOpinnotModalProps = {
+  onClose: () => void
+  onSubmit: (
+    arvosana: PreIBOmanÄidinkielenOpinnot2019Arvosana,
+    kieli: Koodistokoodiviite<'kielivalikoima'>,
+    laajuus: LaajuusOpintopisteissä,
+    arviointipäivä?: string
+  ) => void
+}
+
+const NewOmanÄidinkielenOpinnotModal = ({
+  onClose,
+  onSubmit
+}: NewOmanÄidinkielenOpinnotModalProps) => {
+  const [arvosana, setArvosana] = useState<
+    PreIBOmanÄidinkielenOpinnot2019Arvosana | undefined
+  >(undefined)
+  const [arviointipäivä, setArviointipäivä] = useState<string | undefined>(
+    undefined
+  )
+  const [kieli, setKieli] = useState<
+    Koodistokoodiviite<'kielivalikoima'> | undefined
+  >(undefined)
+  const [laajuus, setLaajuus] = useState<LaajuusOpintopisteissä | undefined>(
+    undefined
+  )
+
+  return (
+    <Modal onClose={onClose}>
+      <ModalTitle>
+        {t('Täydentävien oman äidinkielen opintojen lisäys')}
+      </ModalTitle>
+      <ModalBody>
+        <label>
+          {t('Arvosana')}
+          <KoodistoSelect
+            koodistoUri={'arviointiasteikkoyleissivistava'}
+            format={(koodiviite) =>
+              koodiviite.koodiarvo + ' ' + t(koodiviite.nimi)
+            }
+            filter={(koodiviite) => koodiviite.koodiarvo !== 'O'}
+            onSelect={(koodiviite) => {
+              koodiviite &&
+                setArvosana(
+                  koodiviite as PreIBOmanÄidinkielenOpinnot2019Arvosana
+                )
+            }}
+            value={arvosana ? arvosana.koodiarvo : undefined}
+            testId={'omanÄidinkielenOpinnot.modal.arvosana'}
+          />
+        </label>
+        <label>
+          {t('Arviointipäivä')}
+          <DateInput
+            value={arviointipäivä}
+            onChange={(date) => setArviointipäivä(date)}
+            testId={'omanÄidinkielenOpinnot.modal.päivä'}
+          />
+        </label>
+        <label>
+          {t('Kieli')}
+          <KoodistoSelect
+            koodistoUri={'kielivalikoima'}
+            onSelect={(koodiviite) => {
+              koodiviite && setKieli(koodiviite)
+            }}
+            value={kieli ? kieli.koodiarvo : undefined}
+            testId={'omanÄidinkielenOpinnot.modal.kieli'}
+          />
+        </label>
+        <label>
+          {t('Laajuus')}
+          <LaajuusEdit
+            value={laajuus}
+            onChange={(value) => setLaajuus(value)}
+            createLaajuus={(value) => LaajuusOpintopisteissä({ arvo: value })}
+          />
+        </label>
+        <Spacer />
+      </ModalBody>
+      <ModalFooter>
+        <FlatButton onClick={onClose} testId="cancel">
+          {t('Peruuta')}
+        </FlatButton>
+        <RaisedButton
+          disabled={[arvosana, kieli, laajuus].includes(undefined)}
+          onClick={() => {
+            if (
+              arvosana !== undefined &&
+              kieli !== undefined &&
+              laajuus !== undefined
+            ) {
+              onSubmit(arvosana, kieli, laajuus, arviointipäivä)
+              onClose()
+            }
+          }}
+          testId="confirm"
+        >
+          {t('Lisää täydentävät oman äidinkielen opinnot')}
+        </RaisedButton>
+      </ModalFooter>
+    </Modal>
+  )
+}
+
 type NewSuullisenKielitaidonKoeModalProps = {
   onClose: () => void
   onSubmit: (
@@ -1053,6 +1211,19 @@ const createSuullisenKielitaidonKoe2019 = (
   päivä: string
 ): SuullisenKielitaidonKoe2019 => {
   return SuullisenKielitaidonKoe2019({ päivä, arvosana, taitotaso, kieli })
+}
+const createLukionOmanÄidinkielenOpinnot = (
+  arvosana: PreIBOmanÄidinkielenOpinnot2019Arvosana,
+  kieli: Koodistokoodiviite<'kielivalikoima'>,
+  laajuus: LaajuusOpintopisteissä,
+  arviointipäivä?: string
+): LukionOmanÄidinkielenOpinnot => {
+  return LukionOmanÄidinkielenOpinnot({
+    arvosana,
+    arviointipäivä: arviointipäivä,
+    laajuus,
+    kieli
+  })
 }
 
 const coreOppiaineidenTietomallinMuuttumisenRajapäivä =
