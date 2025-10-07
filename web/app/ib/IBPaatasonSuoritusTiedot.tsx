@@ -1,5 +1,5 @@
 import { isNonEmpty } from 'fp-ts/lib/Array'
-import React, { useCallback, useMemo } from 'react'
+import React, { useCallback, useMemo, useState } from 'react'
 import { TestIdLayer, TestIdText } from '../appstate/useTestId'
 import {
   ActivePäätasonSuoritus,
@@ -73,6 +73,55 @@ import {
   LaajuusView
 } from '../components-v2/opiskeluoikeus/LaajuusField'
 import { Spacer } from '../components-v2/layout/Spacer'
+import { Removable } from '../components-v2/controls/Removable'
+import { pipe } from 'fp-ts/function'
+import * as A from 'fp-ts/Array'
+import * as O from 'fp-ts/Option'
+import { FlatButton } from '../components-v2/controls/FlatButton'
+import {
+  Modal,
+  ModalBody,
+  ModalFooter,
+  ModalTitle
+} from '../components-v2/containers/Modal'
+import { RaisedButton } from '../components-v2/controls/RaisedButton'
+import { DateInput } from '../components-v2/controls/DateInput'
+import { SuullisenKielitaidonKoe2019 } from '../types/fi/oph/koski/schema/SuullisenKielitaidonKoe2019'
+
+const preIB2019SuullisenKielitaidonTaitotasot: string[] = [
+  'alle_A1.1',
+  'A1.1',
+  'A1.2',
+  'A1.3',
+  'A2.1',
+  'A2.2',
+  'B1.1',
+  'B1.2',
+  'B2.1',
+  'B2.2',
+  'C1.1',
+  'yli_C1.1'
+]
+
+type PreIBSuullisenKielitaidonKoe2019Arvosana = Koodistokoodiviite<
+  'arviointiasteikkoyleissivistava',
+  '4' | '5' | '6' | '7' | '8' | '9' | '10' | 'S' | 'H'
+>
+type PreIBSuullisenKielitaidonKoe2019Taitotaso = Koodistokoodiviite<
+  'arviointiasteikkokehittyvankielitaidontasot',
+  | 'alle_A1.1'
+  | 'A1.1'
+  | 'A1.2'
+  | 'A1.3'
+  | 'A2.1'
+  | 'A2.2'
+  | 'B1.1'
+  | 'B1.2'
+  | 'B2.1'
+  | 'B2.2'
+  | 'C1.1'
+  | 'yli_C1.1'
+>
 
 export type IBTutkintTiedotProps = {
   form: FormModel<IBOpiskeluoikeus>
@@ -536,6 +585,9 @@ const PreIB2019OmanÄidinkielenOpinnotRows: React.FC<
           {form.editMode ? (
             <KoodistoSelect
               koodistoUri={'arviointiasteikkoyleissivistava'}
+              format={(koodiviite) =>
+                koodiviite.koodiarvo + ' ' + t(koodiviite.nimi)
+              }
               onSelect={(koodiviite) => {
                 koodiviite &&
                   form.set(
@@ -551,6 +603,10 @@ const PreIB2019OmanÄidinkielenOpinnotRows: React.FC<
             />
           ) : (
             <TestIdText id="omanÄidinkielenOpinnot.arvosana">
+              {
+                päätasonSuoritus.suoritus.omanÄidinkielenOpinnot?.arvosana
+                  .koodiarvo
+              }{' '}
               {t(
                 päätasonSuoritus.suoritus.omanÄidinkielenOpinnot?.arvosana.nimi
               )}
@@ -623,7 +679,10 @@ const PreIB2019PuhviKoeRows: React.FC<PreIB2019TiedotRowsProps> = ({
           {form.editMode ? (
             <KoodistoSelect
               koodistoUri={'arviointiasteikkoyleissivistava'}
-              filter={(tunniste) => tunniste.koodiarvo !== 'O'}
+              format={(koodiviite) =>
+                koodiviite.koodiarvo + ' ' + t(koodiviite.nimi)
+              }
+              filter={(koodiviite) => koodiviite.koodiarvo !== 'O'}
               onSelect={(koodiviite) => {
                 koodiviite &&
                   form.set(
@@ -636,6 +695,7 @@ const PreIB2019PuhviKoeRows: React.FC<PreIB2019TiedotRowsProps> = ({
             />
           ) : (
             <TestIdText id="puhviKoe.arvosana">
+              {päätasonSuoritus.suoritus.puhviKoe?.arvosana.koodiarvo}{' '}
               {t(päätasonSuoritus.suoritus.puhviKoe?.arvosana.nimi)}
             </TestIdText>
           )}
@@ -667,21 +727,74 @@ const PreIB2019PuhviKoeRows: React.FC<PreIB2019TiedotRowsProps> = ({
 const PreIB2019SuullisenKielitaidonKokeetRows: React.FC<
   PreIB2019TiedotRowsProps
 > = ({ form, päätasonSuoritus }) => {
+  const [showModal, setShowModal] = useState(false)
+  const removeAt = (index: number) => () => {
+    pipe(
+      päätasonSuoritus.suoritus.suullisenKielitaidonKokeet || [],
+      A.deleteAt(index),
+      O.fold(
+        () =>
+          console.error(
+            `Could not remove at ${index}, original array:`,
+            päätasonSuoritus.suoritus.suullisenKielitaidonKokeet
+          ),
+        (kokeet) =>
+          form.set(
+            ...päätasonSuoritus.pathTokens,
+            ...['suullisenKielitaidonKokeet']
+          )(kokeet)
+      )
+    )
+  }
+
   return (
     <KeyValueRow localizableLabel="Suullisen kielitaidon kokeet">
       {päätasonSuoritus.suoritus.suullisenKielitaidonKokeet?.map(
         (koe, index) => {
           return (
             <div key={`suullisenkielitaidonkoe.${index}`}>
-              <PreIB2019SuullisenKielitaidonKoeRows
-                form={form}
-                päätasonSuoritus={päätasonSuoritus}
-                index={index}
-              />
-              <Spacer />
+              <Removable isRemovable={form.editMode} onClick={removeAt(index)}>
+                <PreIB2019SuullisenKielitaidonKoeRows
+                  form={form}
+                  päätasonSuoritus={päätasonSuoritus}
+                  index={index}
+                />
+                <Spacer />
+              </Removable>
             </div>
           )
         }
+      )}
+      {form.editMode && (
+        <>
+          <FlatButton onClick={() => setShowModal(true)}>
+            {t('Lisää suullisen kielitaidon koe')}
+          </FlatButton>
+          <Spacer />
+        </>
+      )}
+      {showModal && (
+        <NewSuullisenKielitaidonKoeModal
+          onClose={() => setShowModal(false)}
+          onSubmit={(kieli, arvosana, taitotaso, päivä) =>
+            pipe(
+              päätasonSuoritus.suoritus.suullisenKielitaidonKokeet || [],
+              A.append(
+                createSuullisenKielitaidonKoe2019(
+                  kieli,
+                  arvosana,
+                  taitotaso,
+                  päivä
+                )
+              ),
+              (kokeet) =>
+                form.set(
+                  ...päätasonSuoritus.pathTokens,
+                  ...['suullisenKielitaidonKokeet']
+                )(kokeet)
+            )
+          }
+        />
       )}
     </KeyValueRow>
   )
@@ -728,7 +841,10 @@ const PreIB2019SuullisenKielitaidonKoeRows: React.FC<
         {form.editMode ? (
           <KoodistoSelect
             koodistoUri={'arviointiasteikkoyleissivistava'}
-            filter={(tunniste) => tunniste.koodiarvo !== 'O'}
+            format={(koodiviite) =>
+              koodiviite.koodiarvo + ' ' + t(koodiviite.nimi)
+            }
+            filter={(koodiviite) => koodiviite.koodiarvo !== 'O'}
             onSelect={(koodiviite) => {
               koodiviite &&
                 form.set(
@@ -744,6 +860,10 @@ const PreIB2019SuullisenKielitaidonKoeRows: React.FC<
           />
         ) : (
           <TestIdText id={`suullisenKielitaidonKokeet.${index}.arvosana`}>
+            {
+              päätasonSuoritus.suoritus.suullisenKielitaidonKokeet?.at(index)
+                ?.arvosana.koodiarvo
+            }{' '}
             {t(
               päätasonSuoritus.suoritus.suullisenKielitaidonKokeet?.at(index)
                 ?.arvosana.nimi
@@ -755,6 +875,11 @@ const PreIB2019SuullisenKielitaidonKoeRows: React.FC<
         {form.editMode ? (
           <KoodistoSelect
             koodistoUri={'arviointiasteikkokehittyvankielitaidontasot'}
+            filter={(koodiviite) =>
+              preIB2019SuullisenKielitaidonTaitotasot.includes(
+                koodiviite.koodiarvo
+              )
+            }
             onSelect={(koodiviite) => {
               koodiviite &&
                 form.set(
@@ -806,6 +931,128 @@ const PreIB2019SuullisenKielitaidonKoeRows: React.FC<
       </KeyValueRow>
     </KeyValueTable>
   )
+}
+
+type NewSuullisenKielitaidonKoeModalProps = {
+  onClose: () => void
+  onSubmit: (
+    kieli: Koodistokoodiviite<'kielivalikoima'>,
+    arvosana: PreIBSuullisenKielitaidonKoe2019Arvosana,
+    taitotaso: PreIBSuullisenKielitaidonKoe2019Taitotaso,
+    päivä: string
+  ) => void
+}
+
+const NewSuullisenKielitaidonKoeModal = ({
+  onClose,
+  onSubmit
+}: NewSuullisenKielitaidonKoeModalProps) => {
+  const [kieli, setKieli] = useState<
+    Koodistokoodiviite<'kielivalikoima'> | undefined
+  >(undefined)
+  const [arvosana, setArvosana] = useState<
+    PreIBSuullisenKielitaidonKoe2019Arvosana | undefined
+  >(undefined)
+  const [taitotaso, setTaitotaso] = useState<
+    PreIBSuullisenKielitaidonKoe2019Taitotaso | undefined
+  >(undefined)
+  const [päivä, setPäivä] = useState<string | undefined>(undefined)
+
+  return (
+    <Modal onClose={onClose}>
+      <ModalTitle>{t('Suullisen kielitaidon kokeen lisäys')}</ModalTitle>
+      <ModalBody>
+        <label>
+          {t('Kieli')}
+          <KoodistoSelect
+            koodistoUri={'kielivalikoima'}
+            onSelect={(koodiviite) => {
+              koodiviite && setKieli(koodiviite)
+            }}
+            value={kieli ? kieli.koodiarvo : undefined}
+            testId={'suullisenKielitaidonKokeet.modal.kieli'}
+          />
+        </label>
+        <label>
+          {t('Arvosana')}
+          <KoodistoSelect
+            koodistoUri={'arviointiasteikkoyleissivistava'}
+            format={(koodiviite) =>
+              koodiviite.koodiarvo + ' ' + t(koodiviite.nimi)
+            }
+            filter={(koodiviite) => koodiviite.koodiarvo !== 'O'}
+            onSelect={(koodiviite) => {
+              koodiviite &&
+                setArvosana(
+                  koodiviite as PreIBSuullisenKielitaidonKoe2019Arvosana
+                )
+            }}
+            value={arvosana ? arvosana.koodiarvo : undefined}
+            testId={'suullisenKielitaidonKokeet.modal.arvosana'}
+          />
+        </label>
+        <label>
+          {t('Taitotaso')}
+          <KoodistoSelect
+            koodistoUri={'arviointiasteikkokehittyvankielitaidontasot'}
+            filter={(koodiviite) =>
+              preIB2019SuullisenKielitaidonTaitotasot.includes(
+                koodiviite.koodiarvo
+              )
+            }
+            onSelect={(koodiviite) => {
+              koodiviite &&
+                setTaitotaso(
+                  koodiviite as PreIBSuullisenKielitaidonKoe2019Taitotaso
+                )
+            }}
+            value={taitotaso ? taitotaso.koodiarvo : undefined}
+            testId={'suullisenKielitaidonKokeet.modal.taitotaso'}
+          />
+        </label>
+        <label>
+          {t('Päivä')}
+          <DateInput
+            value={päivä}
+            onChange={(date) => setPäivä(date)}
+            testId={'suullisenKielitaidonKokeet.modal.päivä'}
+          />
+        </label>
+        <Spacer />
+      </ModalBody>
+      <ModalFooter>
+        <FlatButton onClick={onClose} testId="cancel">
+          {t('Peruuta')}
+        </FlatButton>
+        <RaisedButton
+          disabled={[kieli, arvosana, taitotaso, päivä].includes(undefined)}
+          onClick={() => {
+            if (
+              kieli !== undefined &&
+              arvosana !== undefined &&
+              taitotaso !== undefined &&
+              päivä !== undefined
+            ) {
+              onSubmit(kieli, arvosana, taitotaso, päivä)
+              onClose()
+            }
+          }}
+          testId="confirm"
+        >
+          {t('Lisää suullisen kielitaidon koe')}
+        </RaisedButton>
+      </ModalFooter>
+    </Modal>
+  )
+}
+
+const createSuullisenKielitaidonKoe2019 = (
+  kieli: Koodistokoodiviite<'kielivalikoima'>,
+  arvosana: PreIBSuullisenKielitaidonKoe2019Arvosana,
+  taitotaso: PreIBSuullisenKielitaidonKoe2019Taitotaso,
+  päivä: string
+): SuullisenKielitaidonKoe2019 => {
+  return SuullisenKielitaidonKoe2019({ päivä, arvosana, taitotaso, kieli })
 }
 
 const coreOppiaineidenTietomallinMuuttumisenRajapäivä =
