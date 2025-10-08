@@ -41,7 +41,7 @@ export class KoskiTpoOppijaPage extends KoskiOppijaPageV2<
     return oo.value(this.editMode)
   }
 
-  async osasuoritusProperty(key: 'arvosana' | 'date' | 'tunnustettu') {
+  async osasuoritusProperty(key: 'arvosana' | 'arvostelunPvm' | 'tunnustettu') {
     return this.$.suoritukset(this.suoritusIndex)
       .osasuoritukset(this.osasuoritusIndex)
       .properties[key].value(this.editMode)
@@ -146,7 +146,7 @@ const TaiteenPerusopetusTestIds = {
       nimi: FormField(Label),
       properties: {
         arvosana: FormField(Label),
-        date: FormField(Label),
+        arvostelunPvm: FormField(Label),
         tunnustettu: FormField(Label, Tunnustettu)
       },
       delete: Button

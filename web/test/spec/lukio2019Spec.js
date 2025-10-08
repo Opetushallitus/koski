@@ -40,6 +40,7 @@ describe('Lukiokoulutus2019', function () {
             'Oppilaitos / toimipiste Jyväskylän normaalikoulu\n' +
             'Opetuskieli suomi\n' +
             'Lukion oppimäärää täydentävät oman äidinkielen opinnot Arvosana 8\n' +
+            'Arviointipäivä 4.9.2021\n' +
             'Kieli saame, lappi\n' +
             'Laajuus 3 op\n' +
             'Osasuoritukset Kurssi Suorituskieli Arviointi\n' +
@@ -53,10 +54,12 @@ describe('Lukiokoulutus2019', function () {
             'Laajuus 1 op pohjoissaame Arvosana O\n' +
             'Arviointipäivä 30.8.2019\n' +
             'Puhvi-koe Arvosana 7\n' +
+            'Kuvaus Puhvikokeen kuvaus lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris commodo mauris nec erat fringilla, in sagittis elit ullamcorper. Vestibulum fringilla.\n' +
             'Arviointipäivä 30.8.2019\n' +
             'Suullisen kielitaidon kokeet Kieli englanti\n' +
             'Arvosana 6\n' +
             'Taitotaso B1.1\n' +
+            'Kuvaus Englannin suullisen kielitaidon koe lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris commodo mauris nec erat fringilla, in sagittis elit ullamcorper. Vestibulum fringilla.\n' +
             'Arviointipäivä 3.9.2019\n' +
             'Kieli espanja\n' +
             'Arvosana S\n' +
