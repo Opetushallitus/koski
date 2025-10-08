@@ -18,6 +18,7 @@ import { Select, useKoodistoOptions } from '../components-v2/controls/Select'
 import { FormField } from '../components-v2/forms/FormField'
 import { FormModel, getValue } from '../components-v2/forms/FormModel'
 import {
+  ArvosanaEdit,
   koodiarvoAndNimi,
   ParasArvosanaEdit,
   ParasArvosanaView
@@ -40,7 +41,7 @@ import {
   OrganisaatioEdit,
   OrganisaatioView
 } from '../components-v2/opiskeluoikeus/OrganisaatioField'
-import { t } from '../i18n/i18n'
+import { emptyLocalizedString, t } from '../i18n/i18n'
 import { Arviointi } from '../types/fi/oph/koski/schema/Arviointi'
 import { IBKurssinArviointi } from '../types/fi/oph/koski/schema/IBKurssinArviointi'
 import { IBKurssinSuoritus } from '../types/fi/oph/koski/schema/IBKurssinSuoritus'
@@ -99,6 +100,8 @@ import { LukionOmanÄidinkielenOpintojenOsasuoritus } from '../types/fi/oph/kosk
 import { parasArviointi } from '../util/arvioinnit'
 import { ISO2FinnishDate } from '../date/date'
 import { OsaamisenTunnustusView } from '../components-v2/opiskeluoikeus/TunnustusField'
+import { PathToken } from '../util/laxModify'
+import { OsaamisenTunnustaminen } from '../types/fi/oph/koski/schema/OsaamisenTunnustaminen'
 
 const preIB2019SuullisenKielitaidonTaitotasot: string[] = [
   'alle_A1.1',
@@ -768,8 +771,13 @@ const OmanÄidinkielenOpintojenKurssit: React.FC<PreIB2019TiedotRowsProps> = ({
                   return (
                     <OmanÄidinkielenOpintojenKurssi
                       form={form}
-                      päätasonSuoritus={päätasonSuoritus}
                       osasuoritus={os}
+                      osasuoritusPath={[
+                        ...päätasonSuoritus.pathTokens,
+                        'omanÄidinkielenOpinnot',
+                        'osasuoritukset',
+                        index
+                      ]}
                       index={index}
                       tooltipId={osasuoritusId}
                       key={osasuoritusId}
@@ -785,23 +793,26 @@ const OmanÄidinkielenOpintojenKurssit: React.FC<PreIB2019TiedotRowsProps> = ({
   )
 }
 
-type OmanÄidinkielenOpintojenKurssiProps = PreIB2019TiedotRowsProps & {
+type OmanÄidinkielenOpintojenKurssiProps = {
+  form: FormModel<IBOpiskeluoikeus>
   osasuoritus: LukionOmanÄidinkielenOpintojenOsasuoritus
+  osasuoritusPath: PathToken[]
   index: number
   tooltipId: string
 }
 
 const OmanÄidinkielenOpintojenKurssi: React.FC<
   OmanÄidinkielenOpintojenKurssiProps
-> = ({ form, päätasonSuoritus, osasuoritus, index, tooltipId }) => {
+> = ({ form, osasuoritus, osasuoritusPath, index, tooltipId }) => {
   const [tooltipVisible, openTooltip, closeTooltip] = useBooleanState(false)
+  const [editModalVisible, openEditModal, closeEditModal] =
+    useBooleanState(false)
 
-  console.log('osasuoritus', osasuoritus)
   return (
     <div className="Kurssi">
       <button
-        className="Kurssi__tunniste"
-        // onClick={form.editMode ? openEditModal : openTooltip}
+        className={`Kurssi__tunniste${form.editMode ? ' Kurssi__clickable' : ''}`}
+        onClick={form.editMode ? openEditModal : undefined}
         onTouchStart={openTooltip}
         onMouseEnter={openTooltip}
         onMouseLeave={closeTooltip}
@@ -861,6 +872,14 @@ const OmanÄidinkielenOpintojenKurssi: React.FC<
             )}
           </KeyValueTable>
         </Details>
+      )}
+      {editModalVisible && (
+        <EditOmanÄidinkielenOpintojenOsasuoritusModal
+          form={form}
+          osasuoritus={osasuoritus}
+          osasuoritusPath={osasuoritusPath}
+          onClose={closeEditModal}
+        />
       )}
     </div>
   )
@@ -1260,6 +1279,110 @@ const NewOmanÄidinkielenOpinnotModal = ({
           testId="confirm"
         >
           {t('Lisää täydentävät oman äidinkielen opinnot')}
+        </RaisedButton>
+      </ModalFooter>
+    </Modal>
+  )
+}
+
+type EditOmanÄidinkielenOpintojenOsasuoritusModalProps = {
+  form: FormModel<IBOpiskeluoikeus>
+  osasuoritus: LukionOmanÄidinkielenOpintojenOsasuoritus
+  osasuoritusPath: PathToken[]
+  onClose: () => void
+}
+
+const EditOmanÄidinkielenOpintojenOsasuoritusModal = ({
+  form,
+  osasuoritus,
+  osasuoritusPath,
+  onClose
+}: EditOmanÄidinkielenOpintojenOsasuoritusModalProps) => {
+  return (
+    <Modal onClose={onClose}>
+      <ModalTitle>{`${t(osasuoritus.koulutusmoduuli.tunniste.koodiarvo)} ${t(osasuoritus.koulutusmoduuli.tunniste.nimi)}`}</ModalTitle>
+      <ModalBody>
+        <KeyValueRow localizableLabel="Laajuus">
+          <LaajuusEdit
+            value={osasuoritus.koulutusmoduuli.laajuus}
+            onChange={form.set(
+              ...osasuoritusPath,
+              ...['koulutusmoduuli', 'laajuus']
+            )}
+            createLaajuus={(value) => LaajuusOpintopisteissä({ arvo: value })}
+          />
+        </KeyValueRow>
+        {(osasuoritus.arviointi || []).map((arviointi, index) => (
+          <>
+            <KeyValueRow localizableLabel="Arvosana" innerKeyValueTable>
+              <ArvosanaEdit
+                suoritusClassName={osasuoritus.$class}
+                value={arviointi}
+                onChange={form.set(...osasuoritusPath, ...['arviointi', index])}
+              />
+            </KeyValueRow>
+            <KeyValueRow localizableLabel="Arviointipäivä" innerKeyValueTable>
+              <DateEdit
+                value={arviointi.päivä}
+                onChange={form.set(
+                  ...osasuoritusPath,
+                  ...['arviointi', index, 'päivä']
+                )}
+                align="right"
+              />
+            </KeyValueRow>
+          </>
+        ))}
+        <KeyValueRow localizableLabel="Suorituskieli">
+          <KoodistoSelect
+            inlineOptions
+            koodistoUri="kieli"
+            onSelect={form.set(...osasuoritusPath, 'suorituskieli')}
+            value={osasuoritus.suorituskieli?.koodiarvo}
+            testId="suorituskieli"
+          />
+        </KeyValueRow>
+        <KeyValueRow localizableLabel="Osaamisen tunnustaminen">
+          {osasuoritus.tunnustettu ? (
+            <fieldset>
+              <LocalizedTextEdit
+                large
+                value={osasuoritus.tunnustettu.selite}
+                onChange={form.set(...osasuoritusPath, 'tunnustettu', 'selite')}
+              />
+              <Checkbox
+                checked={osasuoritus.tunnustettu.rahoituksenPiirissä}
+                onChange={form.set(
+                  ...osasuoritusPath,
+                  'tunnustettu',
+                  'rahoituksenPiirissä'
+                )}
+                label="Rahoituksen piirissä"
+                testId="rahoituksenPiirissä"
+              />
+            </fieldset>
+          ) : (
+            <FlatButton
+              onClick={() =>
+                form.set(
+                  ...osasuoritusPath,
+                  'tunnustettu'
+                )(
+                  OsaamisenTunnustaminen({
+                    selite: emptyLocalizedString
+                  })
+                )
+              }
+            >
+              {t('Lisää osaamisen tunnustaminen')}
+            </FlatButton>
+          )}
+        </KeyValueRow>
+        <Spacer />
+      </ModalBody>
+      <ModalFooter>
+        <RaisedButton onClick={onClose} testId="confirm">
+          {t('Sulje')}
         </RaisedButton>
       </ModalFooter>
     </Modal>
