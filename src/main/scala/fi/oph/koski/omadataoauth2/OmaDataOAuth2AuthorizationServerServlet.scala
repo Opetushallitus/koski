@@ -1,7 +1,7 @@
 package fi.oph.koski.omadataoauth2
 
 import fi.oph.koski.config.KoskiApplication
-import fi.oph.koski.koskiuser.RequiresOmaDataOAuth2
+import fi.oph.koski.koskiuser.{LuovutuspalveluAuthenticationSupport, RequiresOmaDataOAuth2}
 import fi.oph.koski.log.Logging
 import fi.oph.koski.omadataoauth2.OmaDataOAuth2Security.challengeFromVerifier
 import fi.oph.koski.servlet.{KoskiSpecificApiServlet, NoCache}
@@ -14,7 +14,7 @@ import java.time.temporal.ChronoUnit
 
 class OmaDataOAuth2AuthorizationServerServlet(implicit val application: KoskiApplication)
   extends KoskiSpecificApiServlet
-    with Logging with ContentEncodingSupport with NoCache with FormSupport with I18nSupport with RequiresOmaDataOAuth2 with OmaDataOAuth2ServletSupport {
+    with Logging with ContentEncodingSupport with NoCache with FormSupport with I18nSupport with RequiresOmaDataOAuth2 with LuovutuspalveluAuthenticationSupport with OmaDataOAuth2ServletSupport {
 
   // in: auth code yms. OAuth2 headerit
   // out: access token, jos käyttäjällä oikeudet kyseiseen authorization codeen
