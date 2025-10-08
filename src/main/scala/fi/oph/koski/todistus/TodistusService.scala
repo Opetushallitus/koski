@@ -30,35 +30,31 @@ class TodistusService(application: KoskiApplication) extends Logging {
 
 trait CertificateResponse {
   @Discriminator
-  def status: String
+  def state: String
 }
 
 // TODO: TOR-2400: Tarvittavat lisätilat monivaiheista luontia, debuggausta yms. varten
 
-case class CertificateNotStarted(
-  @EnumValue("NOT_STARTED")
-  status: String = "NOT_STARTED",
-) extends CertificateResponse
-
-case class CertificateInProgress(
-  @EnumValue("IN_PROGRESS")
-  status: String = "IN_PROGRESS",
-  requestedTime: ZonedDateTime,
+case class CertificateQueued(
+  @EnumValue("QUEUED")
+  state: String = "QUEUED",
 ) extends CertificateResponse
 
 case class CertificateCompleted(
   @EnumValue("COMPLETED")
-  status: String = "COMPLETED",
+  state: String = "COMPLETED",
   requestedTime: ZonedDateTime,
   completionTime: ZonedDateTime,
   @RedundantData // Piilotetaan S3-url loppukäyttäjiltä
-  certificateUrl: String,
+  rawUrl: String,
+  @RedundantData // Piilotetaan S3-url loppukäyttäjiltä
+  signedUrl: String,
 ) extends CertificateResponse
 
 trait CertificateError extends CertificateResponse {
   @SyntheticProperty
   @EnumValue("ERROR")
-  def status: String = "ERROR"
+  def state: String = "ERROR"
   @Discriminator
-  def errorReason: String
+  def error: String
 }
