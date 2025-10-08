@@ -31,7 +31,11 @@ import {
   KoodistoView
 } from '../components-v2/opiskeluoikeus/KoodistoField'
 import { KoodistoSelect } from '../components-v2/opiskeluoikeus/KoodistoSelect'
-import { OppiaineenKurssit } from '../components-v2/opiskeluoikeus/OppiaineTable'
+import {
+  Details,
+  OppiaineenKurssit,
+  SuorituksenTilaIcon
+} from '../components-v2/opiskeluoikeus/OppiaineTable'
 import {
   OrganisaatioEdit,
   OrganisaatioView
@@ -91,6 +95,10 @@ import { SuullisenKielitaidonKoe2019 } from '../types/fi/oph/koski/schema/Suulli
 import { LaajuusOpintopisteissä } from '../types/fi/oph/koski/schema/LaajuusOpintopisteissa'
 import { LukionOmanÄidinkielenOpinnot } from '../types/fi/oph/koski/schema/LukionOmanAidinkielenOpinnot'
 import { PuhviKoe2019 } from '../types/fi/oph/koski/schema/PuhviKoe2019'
+import { LukionOmanÄidinkielenOpintojenOsasuoritus } from '../types/fi/oph/koski/schema/LukionOmanAidinkielenOpintojenOsasuoritus'
+import { parasArviointi } from '../util/arvioinnit'
+import { ISO2FinnishDate } from '../date/date'
+import { OsaamisenTunnustusView } from '../components-v2/opiskeluoikeus/TunnustusField'
 
 const preIB2019SuullisenKielitaidonTaitotasot: string[] = [
   'alle_A1.1',
@@ -717,9 +725,144 @@ const PreIB2019OmanÄidinkielenOpinnotRows: React.FC<
               testId="omanÄidinkielenOpinnot.laajuus"
             />
           </KeyValueRow>
+          {päätasonSuoritus.suoritus.omanÄidinkielenOpinnot?.osasuoritukset && (
+            <KeyValueRow localizableLabel={'Osasuoritukset'} innerKeyValueTable>
+              <OmanÄidinkielenOpintojenKurssit
+                form={form}
+                päätasonSuoritus={päätasonSuoritus}
+              />
+            </KeyValueRow>
+          )}
         </KeyValueTable>
       </Removable>
     </KeyValueRow>
+  )
+}
+
+const OmanÄidinkielenOpintojenKurssit: React.FC<PreIB2019TiedotRowsProps> = ({
+  form,
+  päätasonSuoritus
+}) => {
+  return (
+    <table className="OppiaineTable">
+      <thead>
+        <tr>
+          <th></th>
+          <th>{t('Kurssit')}</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td className="OppiaineRow__icon">
+            {päätasonSuoritus.suoritus.omanÄidinkielenOpinnot && (
+              <SuorituksenTilaIcon
+                suoritus={päätasonSuoritus.suoritus.omanÄidinkielenOpinnot}
+              />
+            )}
+          </td>
+          <td className="OppiaineRow__oppiaine">
+            <div className="OppiaineRow__kurssit">
+              {päätasonSuoritus.suoritus.omanÄidinkielenOpinnot?.osasuoritukset?.map(
+                (os, index) => {
+                  const osasuoritusId = `omanÄidinkielenOpinnot-${os.koulutusmoduuli.tunniste.koodiarvo}-${index}`
+                  return (
+                    <OmanÄidinkielenOpintojenKurssi
+                      form={form}
+                      päätasonSuoritus={päätasonSuoritus}
+                      osasuoritus={os}
+                      index={index}
+                      tooltipId={osasuoritusId}
+                      key={osasuoritusId}
+                    />
+                  )
+                }
+              )}
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  )
+}
+
+type OmanÄidinkielenOpintojenKurssiProps = PreIB2019TiedotRowsProps & {
+  osasuoritus: LukionOmanÄidinkielenOpintojenOsasuoritus
+  index: number
+  tooltipId: string
+}
+
+const OmanÄidinkielenOpintojenKurssi: React.FC<
+  OmanÄidinkielenOpintojenKurssiProps
+> = ({ form, päätasonSuoritus, osasuoritus, index, tooltipId }) => {
+  const [tooltipVisible, openTooltip, closeTooltip] = useBooleanState(false)
+
+  console.log('osasuoritus', osasuoritus)
+  return (
+    <div className="Kurssi">
+      <button
+        className="Kurssi__tunniste"
+        // onClick={form.editMode ? openEditModal : openTooltip}
+        onTouchStart={openTooltip}
+        onMouseEnter={openTooltip}
+        onMouseLeave={closeTooltip}
+        onFocus={openTooltip}
+        onBlur={closeTooltip}
+        aria-describedby={tooltipId}
+      >
+        <TestIdText id={`omanÄidinkielenOpinnot.${index}.osasuoritus`}>
+          {osasuoritus.koulutusmoduuli.tunniste.koodiarvo}
+        </TestIdText>
+      </button>
+      <div className="Kurssi__arvosana">
+        <TestIdText id={`omanÄidinkielenOpinnot.${index}.arvosana`}>
+          {osasuoritus.arviointi
+            ? parasArviointi(osasuoritus.arviointi as Arviointi[])?.arvosana
+                .koodiarvo
+            : '–'}
+        </TestIdText>
+      </div>
+      {tooltipVisible && (
+        <Details id={tooltipId}>
+          <KeyValueTable>
+            <KeyValueRow localizableLabel="Nimi">
+              {t(osasuoritus.koulutusmoduuli.tunniste.nimi)}
+            </KeyValueRow>
+            <KeyValueRow localizableLabel="Laajuus">
+              {osasuoritus.koulutusmoduuli.laajuus?.arvo}{' '}
+              {t(osasuoritus.koulutusmoduuli.laajuus?.yksikkö.nimi)}
+            </KeyValueRow>
+            <KeyValueRow localizableLabel="Suorituskieli">
+              {t(osasuoritus.suorituskieli?.nimi)}
+            </KeyValueRow>
+            {osasuoritus.arviointi && (
+              <KeyValueRow localizableLabel="Arviointi">
+                {osasuoritus.arviointi.map((arviointi, arviointiIndex) => (
+                  <KeyValueTable key={arviointiIndex}>
+                    <KeyValueRow localizableLabel="Arvosana" innerKeyValueTable>
+                      {`${arviointi.arvosana.koodiarvo} (${t(arviointi.arvosana.nimi)})`}
+                    </KeyValueRow>
+                    <KeyValueRow
+                      localizableLabel="Arviointipäivä"
+                      innerKeyValueTable
+                    >
+                      {ISO2FinnishDate(arviointi.päivä)}
+                    </KeyValueRow>
+                  </KeyValueTable>
+                ))}
+              </KeyValueRow>
+            )}
+            {osasuoritus.tunnustettu && (
+              <KeyValueRow localizableLabel="Tunnustettu">
+                <OsaamisenTunnustusView
+                  value={osasuoritus.tunnustettu}
+                  index={index}
+                />
+              </KeyValueRow>
+            )}
+          </KeyValueTable>
+        </Details>
+      )}
+    </div>
   )
 }
 
@@ -836,16 +979,18 @@ const PreIB2019SuullisenKielitaidonKokeetRows: React.FC<
       {päätasonSuoritus.suoritus.suullisenKielitaidonKokeet?.map(
         (koe, index) => {
           return (
-            <div key={`suullisenkielitaidonkoe.${index}`}>
-              <Removable isRemovable={form.editMode} onClick={removeAt(index)}>
-                <PreIB2019SuullisenKielitaidonKoeRows
-                  form={form}
-                  päätasonSuoritus={päätasonSuoritus}
-                  index={index}
-                />
-                <Spacer />
-              </Removable>
-            </div>
+            <Removable
+              isRemovable={form.editMode}
+              onClick={removeAt(index)}
+              key={`suullisenkielitaidonkoe.${index}`}
+            >
+              <PreIB2019SuullisenKielitaidonKoeRows
+                form={form}
+                päätasonSuoritus={päätasonSuoritus}
+                index={index}
+              />
+              <Spacer />
+            </Removable>
           )
         }
       )}

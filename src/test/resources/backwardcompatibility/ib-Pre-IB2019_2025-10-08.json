@@ -336,7 +336,29 @@
             },
             "päivä" : "2019-08-30",
             "hyväksytty" : false
-          } ]
+          } ],
+          "tunnustettu" : {
+            "osaaminen" : {
+              "koulutusmoduuli" : {
+                "tunniste" : {
+                  "koodiarvo" : "100238",
+                  "nimi" : {
+                    "fi" : "Asennushitsaus"
+                  },
+                  "koodistoUri" : "tutkinnonosat"
+                },
+                "pakollinen" : true
+              },
+              "tyyppi" : {
+                "koodiarvo" : "ammatillisentutkinnonosa",
+                "koodistoUri" : "suorituksentyyppi"
+              }
+            },
+            "selite" : {
+              "fi" : "Tutkinnon osa on tunnustettu Kone- ja metallialan perustutkinnosta"
+            },
+            "rahoituksenPiirissä" : false
+          }
         } ],
         "hyväksytty" : true
       },

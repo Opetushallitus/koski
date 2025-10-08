@@ -57,6 +57,7 @@ import { isIBDPCoreOppiaineCAS } from '../../types/fi/oph/koski/schema/IBDPCoreO
 import { isIBDPCoreAineRyhmäOppiaine } from '../../types/fi/oph/koski/schema/IBDPCoreAineRyhmaOppiaine'
 import { isIBDPCoreOppiaineTheoryOfKnowledge } from '../../types/fi/oph/koski/schema/IBDPCoreOppiaineTheoryOfKnowledge'
 import { isIBDPCoreOppiaineLanguage } from '../../types/fi/oph/koski/schema/IBDPCoreOppiaineLanguage'
+import { LukionOmanÄidinkielenOpinnot } from '../../types/fi/oph/koski/schema/LukionOmanAidinkielenOpinnot'
 
 // Vain OppiaineTablen tukemat päätason suoritukset (tätä komponenttia tullaan myöhemmin käyttämään ainakin lukion näkymille)
 export type OppiaineTableOpiskeluoikeus = IBOpiskeluoikeus
@@ -653,10 +654,10 @@ export const Kurssi: React.FC<KurssiProps> = ({
 }
 
 type SuorituksenTilaIconProps = {
-  suoritus: Suoritus
+  suoritus: Suoritus | LukionOmanÄidinkielenOpinnot
 }
 
-const SuorituksenTilaIcon: React.FC<SuorituksenTilaIconProps> = ({
+export const SuorituksenTilaIcon: React.FC<SuorituksenTilaIconProps> = ({
   suoritus
 }) =>
   isValinnanMahdollisuus(suoritus) ? null : suoritusValmis(suoritus) ? (
@@ -816,7 +817,7 @@ const KurssiDetails: React.FC<KurssiTooltipProps> = ({ kurssi, id }) => (
   </Details>
 )
 
-const Details: React.FC<React.PropsWithChildren<{ id: string }>> = ({
+export const Details: React.FC<React.PropsWithChildren<{ id: string }>> = ({
   id,
   children
 }) => {
