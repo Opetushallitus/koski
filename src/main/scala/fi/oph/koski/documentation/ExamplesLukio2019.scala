@@ -409,16 +409,28 @@ object Lukio2019ExampleData {
     arviointipäivä = Some(date(2021, 9, 4)),
     kieli = Kielivalikoima.saame,
     laajuus = LaajuusOpintopisteissä(3),
-    osasuoritukset = omanÄidinkielenOpintojenOsasuoritukset(Koodistokoodiviite("SE", "kieli"), List("OÄI1", "OÄI2", "OÄI3"))
+    osasuoritukset = Some(omanÄidinkielenOpintojenOsasuoritukset(
+      Koodistokoodiviite("SE", "kieli"),
+      List("OÄI1", "OÄI2")
+    ) ++ omanÄidinkielenOpintojenOsasuoritukset(
+      Koodistokoodiviite("SE", "kieli"),
+      List("OÄI3"),
+      Some(AmmatillinenExampleData.tunnustettu)
+    ))
   ))
 
-  def omanÄidinkielenOpintojenOsasuoritukset(kieli: Koodistokoodiviite, tunnisteet: List[String]): Option[List[LukionOmanÄidinkielenOpintojenOsasuoritus]] =
-    Some(tunnisteet.map(tunniste => LukionOmanÄidinkielenOpintojenOsasuoritus(
+  def omanÄidinkielenOpintojenOsasuoritukset(
+    kieli: Koodistokoodiviite,
+    tunnisteet: List[String],
+    tunnustettu: Option[OsaamisenTunnustaminen] = None
+  ): List[LukionOmanÄidinkielenOpintojenOsasuoritus] =
+    tunnisteet.map(tunniste => LukionOmanÄidinkielenOpintojenOsasuoritus(
       koulutusmoduuli = omanÄidinkielenOpintoKoulutusmoduuli(tunniste),
       tyyppi = Koodistokoodiviite(koodiarvo = "lukionvaltakunnallinenmoduuli", koodistoUri = "suorituksentyyppi"),
       suorituskieli = Some(kieli),
-      arviointi = Some(List(LukionOmanÄidinkielenOpinnonOsasuorituksenArviointi(Koodistokoodiviite("O", "arviointiasteikkoyleissivistava"), LocalDate.of(2019, 8, 30))))
-    )))
+      arviointi = Some(List(LukionOmanÄidinkielenOpinnonOsasuorituksenArviointi(Koodistokoodiviite("O", "arviointiasteikkoyleissivistava"), LocalDate.of(2019, 8, 30)))),
+      tunnustettu = tunnustettu
+    ))
 
   def omanÄidinkielenOpintoKoulutusmoduuli(tunniste: String): LukionOmanÄidinkielenOpinto = LukionOmanÄidinkielenOpinto(
     tunniste = Koodistokoodiviite(koodiarvo = tunniste, koodistoUri = "moduulikoodistolops2021"),
