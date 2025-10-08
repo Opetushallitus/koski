@@ -37,10 +37,10 @@ OAuth2-rajapinnassa on käytössä:
   </dd>
   <dt>(5) Mutual TLS (mTLS) -client-sertifikaatin tunnistetieto</dt>
   <dd>
-    Subject distinguished name, subject dn. 
-    <br/>Tekniset speksit varmenteelle ovat samat kuin viranomaisrajapinnoissa. Ne on dokumentoitu sivun 
-    <a href="{{var:virkailijaBaseUrl}}/json-schema-viewerdokumentaatio/rajapinnat/luovutuspalvelu">{{var:virkailijaBaseUrl}}/json-schema-viewerdokumentaatio/rajapinnat/luovutuspalvelu</a>
-    alussa.    
+    Subject distinguished name, subject dn.
+    <br/>Tekniset speksit varmenteelle ovat samat kuin viranomaisrajapinnoissa. Ne on dokumentoitu sivun
+    <a href="{{var:virkailijaBaseUrl}}/dokumentaatio/rajapinnat/luovutuspalvelu">{{var:virkailijaBaseUrl}}/dokumentaatio/rajapinnat/luovutuspalvelu</a>
+    alussa.
     <br/>Tämä voi olla eri testiympäristössä ja tuotannossa.
   </dd>
   <dt>(6) Kumppanin palvelun ip-osoitteet</dt>
