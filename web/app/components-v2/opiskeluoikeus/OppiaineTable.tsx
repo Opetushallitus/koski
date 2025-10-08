@@ -305,7 +305,7 @@ const OppiaineRow = <T,>({
       <td className="OppiaineRow__oppiaine">
         <div className="OppiaineRow__nimi">
           <button
-            className="Oppiaine__tunniste"
+            className={`Oppiaine__tunniste${form.editMode ? ' Oppiaine__clickable' : ''}`}
             onClick={form.editMode ? openEditModal : openTooltip}
             onTouchStart={openTooltip}
             onMouseEnter={openTooltip}
@@ -598,7 +598,7 @@ export const Kurssi: React.FC<KurssiProps> = ({
   return (
     <div className="Kurssi">
       <button
-        className="Kurssi__tunniste"
+        className={`Kurssi__tunniste${form.editMode ? ' Kurssi__clickable' : ''}`}
         onClick={form.editMode ? openEditModal : openTooltip}
         onTouchStart={openTooltip}
         onMouseEnter={openTooltip}
