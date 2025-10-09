@@ -57,6 +57,7 @@ jobs:
           image: ${{ steps.login-deployment.outputs.registry }}/koski:${{ inputs.commithash }}
 
       - name: Get AppSpec template
+        if: inputs.environment == 'prod'
         run: |
           aws ssm get-parameter --name /koski/appspec-template --output text --query 'Parameter.Value' > appspec.json
 
