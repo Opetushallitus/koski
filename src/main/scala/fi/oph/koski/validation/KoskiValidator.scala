@@ -1191,11 +1191,12 @@ class KoskiValidator(
     val oppiaineenRajattuOppimääräVoimaan = LocalDate.parse(config.getString("validaatiot.oppiaineenRajattuOppimääräVoimaan"))
     val yksilöllistettyOppimääräViimeinenKäyttöpäivä = LocalDate.parse(config.getString("validaatiot.yksilöllistetynOppimääränViimeinenKäyttöpäivä"))
 
-    def sisältyyTuenPäätöksenJaksoon(d: LocalDate): Boolean = {
+    def sisältyyTuenJaksoon(d: LocalDate): Boolean = {
       opiskeluoikeus.lisätiedot match {
-        case Some(x: PerusopetuksenOpiskeluoikeudenLisätiedot) if x.tuenPäätöksenJaksot.nonEmpty =>
+        case Some(x: PerusopetuksenOpiskeluoikeudenLisätiedot) if (x.tuenPäätöksenJaksot.nonEmpty || x.erityisenTuenPäätökset.nonEmpty)=>
           val tukijaksot = yhdistäPäällekäisetJaPeräkkäisetMahdollisestiAlkupäivällisetAikajaksot(x.kaikkiTuenPäätöksenJaksot)
-          tukijaksot.exists(_.contains(d))
+          val erityisenTuenJaksot = yhdistäPäällekäisetJaPeräkkäisetMahdollisestiAlkupäivällisetAikajaksot(x.kaikkiErityisenTuenPäätöstenAikajaksot)
+          erityisenTuenJaksot.exists(_.contains(d)) || tukijaksot.exists(_.contains(d))
         case _ => false
       }
     }
@@ -1215,7 +1216,7 @@ class KoskiValidator(
             case os: RajattavaOppimäärä if os.rajattuOppimäärä =>
               HttpStatus.fold(
                 HttpStatus.validate(!vahvistuspvm.isBefore(oppiaineenRajattuOppimääräVoimaan))(KoskiErrorCategory.badRequest.validation.date(s"Tietoa rajattuOppimäärä ei saa siirtää ennen $oppiaineenRajattuOppimääräVoimaan alkaneelle suoritukselle")),
-                HttpStatus.validate(sisältyyTuenPäätöksenJaksoon(vahvistuspvm))(KoskiErrorCategory.badRequest.validation.date(s"Tieto rajattuOppimäärä vaatii tuen päätöksen jakson suorituksen vahvistuspäivälle: $vahvistuspvm")),
+                HttpStatus.validate(sisältyyTuenJaksoon(vahvistuspvm))(KoskiErrorCategory.badRequest.validation.date(s"Tieto rajattuOppimäärä vaatii tuen päätöksen jakson suorituksen vahvistuspäivälle: $vahvistuspvm")),
               )
             case os: RajattavaOppimäärä if os.yksilöllistettyOppimäärä =>
               HttpStatus.validate(vahvistuspvm.isBefore(yksilöllistettyOppimääräViimeinenKäyttöpäivä.plusDays(1)))(KoskiErrorCategory.badRequest.validation.date(s"Tietoa yksilöllistettyOppimäärä ei saa siirtää $yksilöllistettyOppimääräViimeinenKäyttöpäivä jälkeen alkaneelle suoritukselle"))
