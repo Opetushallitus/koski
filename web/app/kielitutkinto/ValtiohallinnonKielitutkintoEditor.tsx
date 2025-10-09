@@ -348,15 +348,16 @@ export const TutkintopäiväTodistuksellaView: React.FC<
     props.value || [],
     A.flatMap((ok) => ok.arviointi || []),
     parasArviointi,
-    (arviointi) => arviointi?.arvosana
+    (arviointi) => arviointi?.arvosana?.koodiarvo
   )
 
   const tutkintopäivä = pipe(
     props.value || [],
     A.filter(
       (ok) =>
-        ok.arviointi?.find((arv) => arv.arvosana === parasArvosana) !==
-        undefined
+        ok.arviointi?.find(
+          (arv) => arv.arvosana.koodiarvo === parasArvosana
+        ) !== undefined
     ),
     A.map((ok) => ok.alkamispäivä),
     A.filter(notUndefined),

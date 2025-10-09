@@ -333,7 +333,7 @@ class KoskiSpecificDatabaseFixtureCreator(application: KoskiApplication) extends
       (KoskiSpecificMockOppijat.kielitutkinnonSuorittaja, ExamplesKielitutkinto.YleisetKielitutkinnot.opiskeluoikeus(LocalDate.of(2023, 11, 17), "SV", "pt")),
       (KoskiSpecificMockOppijat.kielitutkinnonSuorittaja, ExamplesKielitutkinto.ValtionhallinnonKielitutkinnot.Opiskeluoikeus.valmis(LocalDate.of(2020, 9, 10), "FI", List("kirjallinen", "suullinen"), "hyvajatyydyttava")),
       (KoskiSpecificMockOppijat.kielitutkinnonSuorittaja, ExamplesKielitutkinto.ValtionhallinnonKielitutkinnot.Opiskeluoikeus.valmis(LocalDate.of(2022, 8, 12), "FI", List("kirjallinen"), "erinomainen")),
-      (KoskiSpecificMockOppijat.kielitutkinnonSuorittaja, ExamplesKielitutkinto.ValtionhallinnonKielitutkinnot.Opiskeluoikeus.keskeneräinen(LocalDate.of(2022, 8, 12), "SV", List("kirjallinen"), "hyvajatyydyttava")),
+      (KoskiSpecificMockOppijat.kielitutkinnonSuorittaja, ExamplesKielitutkinto.ValtionhallinnonKielitutkinnot.Opiskeluoikeus.epäonnistuneestiUusittu(LocalDate.of(2022, 8, 12), "SV", List("kirjallinen"), "hyvajatyydyttava")),
       (KoskiSpecificMockOppijat.keskeneräinenIbTutkinto, ExamplesIB.keskeneräinenIbTutkintoOpiskeluoikeus(LocalDate.of(2025, 7, 30))),
       (KoskiSpecificMockOppijat.esikoululainen2025, ExamplesEsiopetus.opiskeluoikeus2025),
     )
