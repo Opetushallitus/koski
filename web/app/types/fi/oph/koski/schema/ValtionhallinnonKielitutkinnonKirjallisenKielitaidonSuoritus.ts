@@ -15,6 +15,7 @@ export type ValtionhallinnonKielitutkinnonKirjallisenKielitaidonSuoritus = {
   tyyppi: Koodistokoodiviite<'suorituksentyyppi', 'valtionhallinnonkielitaito'>
   tila?: Koodistokoodiviite<'suorituksentila', string>
   alkamispäivä?: string
+  tutkintopäiväTodistuksella?: string
   koulutusmoduuli: ValtionhallinnonKielitutkinnonKirjallinenKielitaito
   osasuoritukset?: Array<ValtionhallinnonKielitutkinnonKirjallisenKielitaidonOsakokeenSuoritus>
 }
@@ -28,6 +29,7 @@ export const ValtionhallinnonKielitutkinnonKirjallisenKielitaidonSuoritus = (
     >
     tila?: Koodistokoodiviite<'suorituksentila', string>
     alkamispäivä?: string
+    tutkintopäiväTodistuksella?: string
     koulutusmoduuli?: ValtionhallinnonKielitutkinnonKirjallinenKielitaito
     osasuoritukset?: Array<ValtionhallinnonKielitutkinnonKirjallisenKielitaidonOsakokeenSuoritus>
   } = {}

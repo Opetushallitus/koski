@@ -141,7 +141,7 @@ const kielitaitoToTableRow = ({
       Tutkintopäivä: (
         <FormField
           form={form}
-          path={osasuoritusPath.path('alkamispäivä')}
+          path={osasuoritusPath.path('tutkintopäiväTodistuksella')}
           view={DateView}
           testId="tutkintopäivä"
         />

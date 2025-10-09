@@ -112,7 +112,8 @@
           } ],
           "alkamispäivä" : "2011-03-02"
         } ],
-        "alkamispäivä" : "2011-03-02"
+        "alkamispäivä" : "2011-03-02",
+        "tutkintopäiväTodistuksella" : "2011-03-02"
       }, {
         "koulutusmoduuli" : {
           "tunniste" : {
