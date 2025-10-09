@@ -61,7 +61,7 @@ jobs:
           aws ssm get-parameter --name /koski/appspec-template --output text --query 'Parameter.Value' > appspec.json
 
       - name: Deploy using ECS
-        if: inputs.environment == 'dev'
+        if: inputs.environment == 'dev' || inputs.environment == 'qa'
         uses: aws-actions/amazon-ecs-deploy-task-definition@v2
         with:
           task-definition: ${{ steps.task-def.outputs.task-definition }}
@@ -70,7 +70,7 @@ jobs:
           wait-for-service-stability: true
 
       - name: Deploy using CodeDeploy
-        if: inputs.environment == 'qa' || inputs.environment == 'prod'
+        if: inputs.environment == 'prod'
         uses: aws-actions/amazon-ecs-deploy-task-definition@v2
         with:
           task-definition: ${{ steps.task-def.outputs.task-definition }}
