@@ -14,3 +14,4 @@ OPHKOTO-29 - Kovakoodattu sähköposti kielitutkintojen virheiden ilmoittamiseen
 OPHKOTO-28 - Bugikorjaus
 OPHKOTO-17 - muutos vaikuttaa validointiin
 OPHKOTO-17 - muutos vaikuttaa validointiin
+OPHKOTO-57 - lisätty synteettinen kenttä, ei vaikuta tiedonsiirtoon

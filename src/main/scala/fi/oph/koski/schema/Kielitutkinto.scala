@@ -2,7 +2,8 @@ package fi.oph.koski.schema
 
 import fi.oph.koski.schema.LocalizedString.unlocalized
 import fi.oph.koski.schema.annotation.{AllowKoulutustoimijaOidAsOppilaitos, KoodistoKoodiarvo, KoodistoUri}
-import fi.oph.scalaschema.annotation.{Description, Discriminator, MaxItems, MinItems, Title}
+import fi.oph.koski.util.DateOrdering.localDateOrdering
+import fi.oph.scalaschema.annotation.{Description, Discriminator, MaxItems, MinItems, SyntheticProperty, Title}
 
 import java.time.{LocalDate, LocalDateTime}
 
@@ -138,6 +139,25 @@ trait ValtionhallinnonKielitutkinnonKielitaidonSuoritus extends Suoritus with Va
 
   override def valmis: Boolean = arviointi.isDefined
   override def salliDuplikaatit = true
+
+  @SyntheticProperty
+  def tutkintopäiväTodistuksella: Option[LocalDate] =
+    arviointi.flatMap { arviointi =>
+      if (arviointi.nonEmpty) {
+        val tutkinnonArvosana = arviointi
+          .max(ValtionhallinnonKielitutkinnonArviointi.ordering)
+          .arvosana
+        val tutkinnonArvosananMukaisetOsasuoritukset = osasuoritukset
+          .toList
+          .flatten
+          .filter(_.arviointi.exists(_.exists(_.arvosana == tutkinnonArvosana)))
+        val osakokeidenTutkintopäivät = tutkinnonArvosananMukaisetOsasuoritukset
+          .flatMap(_.alkamispäivä)
+        if (osakokeidenTutkintopäivät.nonEmpty) Some(osakokeidenTutkintopäivät.max) else None
+      } else {
+        None
+      }
+    }
 }
 
 trait ValtionhallinnonKielitutkinnonKielitaito extends Koulutusmoduuli {
@@ -176,17 +196,17 @@ case class ValtionhallinnonKielitutkinnonYmmärtämisenKielitaidonSuoritus(
 
 case class ValtionhallinnonKielitutkinnonSuullinenKielitaito(
   @KoodistoKoodiarvo("suullinen")
-  tunniste: Koodistokoodiviite = Koodistokoodiviite("suullinen", "vktkielitaito")
+  tunniste: Koodistokoodiviite = Koodistokoodiviite("suullinen", "vktkielitaito"),
 ) extends ValtionhallinnonKielitutkinnonKielitaito
 
 case class ValtionhallinnonKielitutkinnonKirjallinenKielitaito(
   @KoodistoKoodiarvo("kirjallinen")
-  tunniste: Koodistokoodiviite = Koodistokoodiviite("kirjallinen", "vktkielitaito")
+  tunniste: Koodistokoodiviite = Koodistokoodiviite("kirjallinen", "vktkielitaito"),
 ) extends ValtionhallinnonKielitutkinnonKielitaito
 
 case class ValtionhallinnonKielitutkinnonYmmärtämisenKielitaito(
   @KoodistoKoodiarvo("ymmartaminen")
-  tunniste: Koodistokoodiviite = Koodistokoodiviite("ymmartaminen", "vktkielitaito")
+  tunniste: Koodistokoodiviite = Koodistokoodiviite("ymmartaminen", "vktkielitaito"),
 ) extends ValtionhallinnonKielitutkinnonKielitaito
 
 // Valtionhallinnon kielitutkinnon osakoe
@@ -266,4 +286,10 @@ case class ValtionhallinnonKielitutkinnonArviointi(
   override def arvioitsijat: Option[List[Arvioitsija]] = None
   override def hyväksytty: Boolean = arvosana.koodiarvo != "hylatty"
   override def arvosanaKirjaimin: LocalizedString = arvosana.nimi.getOrElse(unlocalized(arvosana.koodiarvo))
+}
+
+object ValtionhallinnonKielitutkinnonArviointi {
+  private val order = List("hylatty", "tyydyttava", "hyva", "erinomainen")
+  val ordering: Ordering[ValtionhallinnonKielitutkinnonArviointi] =
+    Ordering.fromLessThan[ValtionhallinnonKielitutkinnonArviointi]((a, b) => order.indexOf(a.arvosana.koodiarvo) - order.indexOf(b.arvosana.koodiarvo) < 0)
 }
