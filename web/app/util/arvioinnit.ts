@@ -22,11 +22,13 @@ const suoritusmerkinnät: Record<string, string> = {
 const hylkäysmerkinnät: Record<string, string> = {
   arviointiasteikkovst: 'Hylätty',
   arviointiasteikkotaiteenperusopetus: 'hylatty',
-  arviointiasteikkoyleissivistava: 'H'
+  arviointiasteikkoyleissivistava: 'H',
+  vktarvosana: 'hylatty'
 }
 
 const arvosanajärjestykset: Record<string, string[]> = {
-  arviointiasteikkoib: ['O', 'F', 'S', '1', '2', '3', '4', '5', '6', '7']
+  arviointiasteikkoib: ['O', 'F', 'S', '1', '2', '3', '4', '5', '6', '7'],
+  vktarvosana: ['tyydyttava', 'hyva', 'erinomainen']
 }
 
 const isSuoritusmerkintä = (arviointi: ConsolidatedArviointi): boolean =>

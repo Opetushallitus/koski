@@ -112,26 +112,46 @@ object ExamplesKielitutkinto {
         )
       }
 
-      def keskeneräinen(tutkintopäivä: LocalDate, kieli: String, kielitaidot: List[String], tutkintotaso: String): KielitutkinnonOpiskeluoikeus = {
+      def epäonnistuneestiUusittu(tutkintopäivä: LocalDate, kieli: String, kielitaidot: List[String], tutkintotaso: String): KielitutkinnonOpiskeluoikeus = {
         val arviointipäivä = tutkintopäivä.plusDays(60)
+        val pts = päätasonSuoritus(
+          kielitaidot,
+          tutkintotaso,
+          kieli,
+          arviointipäivä,
+          osakokeidenArvosanat = tutkintotaso match {
+            case "erinomainen" => List("erinomainen", "hylatty")
+            case "hyvajatyydyttava" => List("tyydyttava", "hylatty")
+          },
+        )
+
+        val uusinnat = tutkintotaso match {
+          case "erinomainen" => List()
+          case "hyvajatyydyttava" => päätasonSuoritus(
+            kielitaidot,
+            tutkintotaso,
+            kieli,
+            arviointipäivä.plusDays(90),
+            osakokeidenArvosanat = List("hylatty", "hylatty")
+          ).osasuoritukset.get
+        }
+
+        val kielitaidonSuoritukset = pts.osasuoritukset.get.zip(uusinnat).map { case (alkup, uusinta) =>
+          import mojave._
+          shapeless
+            .lens[ValtionhallinnonKielitutkinnonKielitaidonSuoritus]
+            .field[Option[List[Suoritus]]]("osasuoritukset")
+            .set(alkup)(Some(alkup.osasuoritukset.getOrElse(List()) ++ uusinta.osasuoritukset.getOrElse(List())))
+        }
+
         KielitutkinnonOpiskeluoikeus(
           tila = KielitutkinnonOpiskeluoikeudenTila(
             opiskeluoikeusjaksot = List(
               Opiskeluoikeusjakso.tutkintopäivä(tutkintopäivä),
+              Opiskeluoikeusjakso.valmis(pts.vahvistus.get.päivä),
             )
           ),
-          suoritukset = List(
-            päätasonSuoritus(
-              kielitaidot,
-              tutkintotaso,
-              kieli,
-              arviointipäivä,
-              osakokeidenArvosanat = tutkintotaso match {
-                case "erinomainen" => List("erinomainen", "hylatty")
-                case "hyvajatyydyttava" => List("tyydyttava", "hylatty")
-              },
-            )
-          )
+          suoritukset = List(pts.copy(osasuoritukset = Some(kielitaidonSuoritukset)))
         )
       }
     }
@@ -162,7 +182,7 @@ object ExamplesKielitutkinto {
           kieli = Koodistokoodiviite(kieli, "kieli"),
         ),
         toimipiste = organisaatio,
-        vahvistus = if (osakokeidenArvosanat.contains("hylatty")) None else Some(PäivämäärävahvistusPaikkakunnalla(
+        vahvistus = Some(PäivämäärävahvistusPaikkakunnalla(
           päivä = viimeisinArviointipäivä,
           myöntäjäOrganisaatio = organisaatio,
           paikkakunta = Koodistokoodiviite("853", "kunta"),
