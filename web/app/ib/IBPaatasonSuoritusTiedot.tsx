@@ -102,6 +102,8 @@ import { ISO2FinnishDate } from '../date/date'
 import { OsaamisenTunnustusView } from '../components-v2/opiskeluoikeus/TunnustusField'
 import { PathToken } from '../util/laxModify'
 import { OsaamisenTunnustaminen } from '../types/fi/oph/koski/schema/OsaamisenTunnustaminen'
+import { IconButton } from '../components-v2/controls/IconButton'
+import { CHARCODE_REMOVE } from '../components-v2/texts/Icon'
 
 const preIB2019SuullisenKielitaidonTaitotasot: string[] = [
   'alle_A1.1',
@@ -602,6 +604,9 @@ const PreIB2019OmanÄidinkielenOpinnotRows: React.FC<
   const path = päätasonSuoritus.path
   const omanÄidinkielenOpinnotEiSyötetty =
     päätasonSuoritus.suoritus.omanÄidinkielenOpinnot === undefined
+  const onOsasuorituksia =
+    päätasonSuoritus.suoritus.omanÄidinkielenOpinnot?.osasuoritukset &&
+    päätasonSuoritus.suoritus.omanÄidinkielenOpinnot?.osasuoritukset.length > 0
   const [showModal, setShowModal] = useState(false)
   const removeOmanÄidinkielenOpinnot = () => {
     form.set(
@@ -728,7 +733,7 @@ const PreIB2019OmanÄidinkielenOpinnotRows: React.FC<
               testId="omanÄidinkielenOpinnot.laajuus"
             />
           </KeyValueRow>
-          {päätasonSuoritus.suoritus.omanÄidinkielenOpinnot?.osasuoritukset && (
+          {onOsasuorituksia && (
             <KeyValueRow localizableLabel={'Osasuoritukset'} innerKeyValueTable>
               <OmanÄidinkielenOpintojenKurssit
                 form={form}
@@ -771,6 +776,7 @@ const OmanÄidinkielenOpintojenKurssit: React.FC<PreIB2019TiedotRowsProps> = ({
                   return (
                     <OmanÄidinkielenOpintojenKurssi
                       form={form}
+                      päätasonSuoritus={päätasonSuoritus}
                       osasuoritus={os}
                       osasuoritusPath={[
                         ...päätasonSuoritus.pathTokens,
@@ -793,8 +799,7 @@ const OmanÄidinkielenOpintojenKurssit: React.FC<PreIB2019TiedotRowsProps> = ({
   )
 }
 
-type OmanÄidinkielenOpintojenKurssiProps = {
-  form: FormModel<IBOpiskeluoikeus>
+type OmanÄidinkielenOpintojenKurssiProps = PreIB2019TiedotRowsProps & {
   osasuoritus: LukionOmanÄidinkielenOpintojenOsasuoritus
   osasuoritusPath: PathToken[]
   index: number
@@ -803,7 +808,14 @@ type OmanÄidinkielenOpintojenKurssiProps = {
 
 const OmanÄidinkielenOpintojenKurssi: React.FC<
   OmanÄidinkielenOpintojenKurssiProps
-> = ({ form, osasuoritus, osasuoritusPath, index, tooltipId }) => {
+> = ({
+  form,
+  päätasonSuoritus,
+  osasuoritus,
+  osasuoritusPath,
+  index,
+  tooltipId
+}) => {
   const [tooltipVisible, openTooltip, closeTooltip] = useBooleanState(false)
   const [editModalVisible, openEditModal, closeEditModal] =
     useBooleanState(false)
@@ -824,6 +836,23 @@ const OmanÄidinkielenOpintojenKurssi: React.FC<
           {osasuoritus.koulutusmoduuli.tunniste.koodiarvo}
         </TestIdText>
       </button>
+      {form.editMode && (
+        <IconButton
+          charCode={CHARCODE_REMOVE}
+          label={t('Poista')}
+          size="input"
+          onClick={removeAt(
+            päätasonSuoritus.suoritus.omanÄidinkielenOpinnot?.osasuoritukset,
+            form,
+            [
+              ...päätasonSuoritus.pathTokens,
+              ...['omanÄidinkielenOpinnot', 'osasuoritukset']
+            ],
+            index
+          )}
+          testId="delete"
+        />
+      )}
       <div className="Kurssi__arvosana">
         <TestIdText id={`omanÄidinkielenOpinnot.${index}.arvosana`}>
           {osasuoritus.arviointi
@@ -974,24 +1003,6 @@ const PreIB2019SuullisenKielitaidonKokeetRows: React.FC<
   PreIB2019TiedotRowsProps
 > = ({ form, päätasonSuoritus }) => {
   const [showModal, setShowModal] = useState(false)
-  const removeAt = (index: number) => () => {
-    pipe(
-      päätasonSuoritus.suoritus.suullisenKielitaidonKokeet || [],
-      A.deleteAt(index),
-      O.fold(
-        () =>
-          console.error(
-            `Could not remove at ${index}, original array:`,
-            päätasonSuoritus.suoritus.suullisenKielitaidonKokeet
-          ),
-        (kokeet) =>
-          form.set(
-            ...päätasonSuoritus.pathTokens,
-            ...['suullisenKielitaidonKokeet']
-          )(kokeet)
-      )
-    )
-  }
 
   return (
     <KeyValueRow localizableLabel="Suullisen kielitaidon kokeet">
@@ -1000,7 +1011,15 @@ const PreIB2019SuullisenKielitaidonKokeetRows: React.FC<
           return (
             <Removable
               isRemovable={form.editMode}
-              onClick={removeAt(index)}
+              onClick={removeAt(
+                päätasonSuoritus.suoritus.suullisenKielitaidonKokeet,
+                form,
+                [
+                  ...päätasonSuoritus.pathTokens,
+                  ...['suullisenKielitaidonKokeet']
+                ],
+                index
+              )}
               key={`suullisenkielitaidonkoe.${index}`}
             >
               <PreIB2019SuullisenKielitaidonKoeRows
@@ -1597,6 +1616,25 @@ const createPuhviKoe2019 = (
     päivä
   })
 }
+
+const removeAt =
+  (
+    arr: any[] | undefined,
+    form: FormModel<IBOpiskeluoikeus>,
+    path: PathToken[],
+    index: number
+  ) =>
+  () => {
+    pipe(
+      arr || [],
+      A.deleteAt(index),
+      O.fold(
+        () =>
+          console.error(`Could not remove at ${index}, original array:`, arr),
+        (newArray) => form.set(...path)(newArray)
+      )
+    )
+  }
 
 const coreOppiaineidenTietomallinMuuttumisenRajapäivä =
   config().rajapäivät.ibLaajuusOpintopisteinäAlkaen
