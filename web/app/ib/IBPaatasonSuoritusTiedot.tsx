@@ -1,4 +1,3 @@
-import { isNonEmpty } from 'fp-ts/lib/Array'
 import React, { useCallback, useMemo, useState } from 'react'
 import { TestIdLayer, TestIdText } from '../appstate/useTestId'
 import {
@@ -82,6 +81,8 @@ import { Spacer } from '../components-v2/layout/Spacer'
 import { Removable } from '../components-v2/controls/Removable'
 import { pipe } from 'fp-ts/function'
 import * as A from 'fp-ts/Array'
+import * as Ord from 'fp-ts/Ord'
+import * as S from 'fp-ts/string'
 import * as O from 'fp-ts/Option'
 import { FlatButton } from '../components-v2/controls/FlatButton'
 import {
@@ -104,6 +105,10 @@ import { PathToken } from '../util/laxModify'
 import { OsaamisenTunnustaminen } from '../types/fi/oph/koski/schema/OsaamisenTunnustaminen'
 import { IconButton } from '../components-v2/controls/IconButton'
 import { CHARCODE_REMOVE } from '../components-v2/texts/Icon'
+import { useKoodistoOfConstraint } from '../appstate/koodisto'
+import { useChildSchema } from '../appstate/constraints'
+import { LukionOmanÄidinkielenOpinto } from '../types/fi/oph/koski/schema/LukionOmanAidinkielenOpinto'
+import { LukionOmanÄidinkielenOpinnonOsasuorituksenArviointi } from '../types/fi/oph/koski/schema/LukionOmanAidinkielenOpinnonOsasuorituksenArviointi'
 
 const preIB2019SuullisenKielitaidonTaitotasot: string[] = [
   'alle_A1.1',
@@ -119,6 +124,10 @@ const preIB2019SuullisenKielitaidonTaitotasot: string[] = [
   'C1.1',
   'yli_C1.1'
 ]
+
+type PreIBOmanÄidinkielenOpinto = LukionOmanÄidinkielenOpinto['tunniste']
+type PreIBOmanÄidinkielenOpintoOsasuorituksenArvosana =
+  LukionOmanÄidinkielenOpinnonOsasuorituksenArviointi['arvosana']
 
 type PreIBSuullisenKielitaidonKoe2019Arvosana = Koodistokoodiviite<
   'arviointiasteikkoyleissivistava',
@@ -350,7 +359,7 @@ const TheoryOfKnowledgeRows: React.FC<IBTutkinnonTiedotRowsProps> = ({
             />
           </KeyValueRow>
           <KeyValueRow localizableLabel="Kurssit" innerKeyValueTable>
-            {isNonEmpty(kurssit) || form.editMode ? (
+            {A.isNonEmpty(kurssit) || form.editMode ? (
               <>
                 <OppiaineenKurssit
                   form={form}
@@ -607,7 +616,11 @@ const PreIB2019OmanÄidinkielenOpinnotRows: React.FC<
   const onOsasuorituksia =
     päätasonSuoritus.suoritus.omanÄidinkielenOpinnot?.osasuoritukset &&
     päätasonSuoritus.suoritus.omanÄidinkielenOpinnot?.osasuoritukset.length > 0
-  const [showModal, setShowModal] = useState(false)
+  const [
+    showLisääOmanÄidinkielenOpinnotModal,
+    setShowLisääOmanÄidinkielenOpinnotModal
+  ] = useState(false)
+  const [showLisääKurssiModal, setShowLisääKurssiModal] = useState(false)
   const removeOmanÄidinkielenOpinnot = () => {
     form.set(
       ...päätasonSuoritus.pathTokens,
@@ -621,12 +634,12 @@ const PreIB2019OmanÄidinkielenOpinnotRows: React.FC<
 
   return form.editMode && omanÄidinkielenOpinnotEiSyötetty ? (
     <KeyValueRow localizableLabel="Oman äidinkielen opinnot">
-      <FlatButton onClick={() => setShowModal(true)}>
+      <FlatButton onClick={() => setShowLisääOmanÄidinkielenOpinnotModal(true)}>
         {t('Lisää täydentävät oman äidinkielen opinnot')}
       </FlatButton>
-      {showModal && (
+      {showLisääOmanÄidinkielenOpinnotModal && (
         <NewOmanÄidinkielenOpinnotModal
-          onClose={() => setShowModal(false)}
+          onClose={() => setShowLisääOmanÄidinkielenOpinnotModal(false)}
           onSubmit={(arvosana, kieli, laajuus, arviointipäivä) =>
             form.set(
               ...päätasonSuoritus.pathTokens,
@@ -741,6 +754,43 @@ const PreIB2019OmanÄidinkielenOpinnotRows: React.FC<
               />
             </KeyValueRow>
           )}
+          {form.editMode && (
+            <KeyValueRow innerKeyValueTable>
+              <FlatButton onClick={() => setShowLisääKurssiModal(true)}>
+                {t('Lisää osasuoritus')}
+              </FlatButton>
+              <Spacer />
+            </KeyValueRow>
+          )}
+          {showLisääKurssiModal && (
+            <NewOmanÄidinkielenOpintojenKurssiModal
+              olemassaOlevatModuulit={
+                päätasonSuoritus.suoritus.omanÄidinkielenOpinnot?.osasuoritukset?.map(
+                  (os) => os.koulutusmoduuli.tunniste.koodiarvo
+                ) || []
+              }
+              onClose={() => setShowLisääKurssiModal(false)}
+              onSubmit={(koulutusmoduuli, arvosana, arviointipäivä, kieli) =>
+                pipe(
+                  päätasonSuoritus.suoritus.omanÄidinkielenOpinnot
+                    ?.osasuoritukset || [],
+                  A.append(
+                    createLukionOmanÄidinkielenOpinnotOsasuoritus(
+                      koulutusmoduuli,
+                      arvosana,
+                      arviointipäivä,
+                      kieli
+                    )
+                  ),
+                  (osasuoritukset) =>
+                    form.set(
+                      ...päätasonSuoritus.pathTokens,
+                      ...['omanÄidinkielenOpinnot', 'osasuoritukset']
+                    )(osasuoritukset)
+                )
+              }
+            />
+          )}
         </KeyValueTable>
       </Removable>
     </KeyValueRow>
@@ -751,6 +801,12 @@ const OmanÄidinkielenOpintojenKurssit: React.FC<PreIB2019TiedotRowsProps> = ({
   form,
   päätasonSuoritus
 }) => {
+  const osasuoritukset =
+    päätasonSuoritus.suoritus.omanÄidinkielenOpinnot?.osasuoritukset || []
+  const osasuorituksetSorted = useMemo(() => {
+    return A.sort(osasuoritusOrd)(osasuoritukset)
+  }, [osasuoritukset])
+
   return (
     <table className="OppiaineTable">
       <thead>
@@ -770,27 +826,26 @@ const OmanÄidinkielenOpintojenKurssit: React.FC<PreIB2019TiedotRowsProps> = ({
           </td>
           <td className="OppiaineRow__oppiaine">
             <div className="OppiaineRow__kurssit">
-              {päätasonSuoritus.suoritus.omanÄidinkielenOpinnot?.osasuoritukset?.map(
-                (os, index) => {
-                  const osasuoritusId = `omanÄidinkielenOpinnot-${os.koulutusmoduuli.tunniste.koodiarvo}-${index}`
-                  return (
-                    <OmanÄidinkielenOpintojenKurssi
-                      form={form}
-                      päätasonSuoritus={päätasonSuoritus}
-                      osasuoritus={os}
-                      osasuoritusPath={[
-                        ...päätasonSuoritus.pathTokens,
-                        'omanÄidinkielenOpinnot',
-                        'osasuoritukset',
-                        index
-                      ]}
-                      index={index}
-                      tooltipId={osasuoritusId}
-                      key={osasuoritusId}
-                    />
-                  )
-                }
-              )}
+              {osasuorituksetSorted.map((os) => {
+                const index = osasuoritukset.indexOf(os)
+                const osasuoritusId = `omanÄidinkielenOpinnot-${os.koulutusmoduuli.tunniste.koodiarvo}-${index}`
+                return (
+                  <OmanÄidinkielenOpintojenKurssi
+                    form={form}
+                    päätasonSuoritus={päätasonSuoritus}
+                    osasuoritus={os}
+                    osasuoritusPath={[
+                      ...päätasonSuoritus.pathTokens,
+                      'omanÄidinkielenOpinnot',
+                      'osasuoritukset',
+                      index
+                    ]}
+                    index={index}
+                    tooltipId={osasuoritusId}
+                    key={osasuoritusId}
+                  />
+                )
+              })}
             </div>
           </td>
         </tr>
@@ -1304,6 +1359,153 @@ const NewOmanÄidinkielenOpinnotModal = ({
   )
 }
 
+type NewOmanÄidinkielenOpintojenKurssiModalProps = {
+  olemassaOlevatModuulit: string[]
+  onClose: () => void
+  onSubmit: (
+    koulutusmoduuli: LukionOmanÄidinkielenOpinto,
+    arvosana?: PreIBOmanÄidinkielenOpintoOsasuorituksenArvosana,
+    arviointipäivä?: string,
+    kieli?: Koodistokoodiviite<'kieli'>
+  ) => void
+}
+
+const NewOmanÄidinkielenOpintojenKurssiModal = ({
+  olemassaOlevatModuulit,
+  onClose,
+  onSubmit
+}: NewOmanÄidinkielenOpintojenKurssiModalProps) => {
+  const omanÄidinkielenKurssit =
+    useKoodistoOfConstraint(
+      useChildSchema(LukionOmanÄidinkielenOpinto.className, 'tunniste')
+    ) || []
+  const omanÄidinkielenKurssinArvosanat =
+    useKoodistoOfConstraint(
+      useChildSchema(
+        LukionOmanÄidinkielenOpintojenOsasuoritus.className,
+        'arviointi.[].arvosana'
+      )
+    ) || []
+
+  const [kurssi, setKurssi] = useState<PreIBOmanÄidinkielenOpinto | undefined>(
+    undefined
+  )
+  const [laajuus, setLaajuus] = useState<LaajuusOpintopisteissä | undefined>(
+    undefined
+  )
+  const [kieli, setKieli] = useState<Koodistokoodiviite<'kieli'> | undefined>(
+    undefined
+  )
+  const [arvosana, setArvosana] = useState<
+    PreIBOmanÄidinkielenOpintoOsasuorituksenArvosana | undefined
+  >(undefined)
+  const [arviointipäivä, setArviointipäivä] = useState<string | undefined>(
+    undefined
+  )
+
+  return (
+    <Modal onClose={onClose}>
+      <ModalTitle>{t('Lisää osasuoritus')}</ModalTitle>
+      <ModalBody>
+        <label>
+          {t('Kurssi')}
+          <KoodistoSelect
+            koodistoUri={'moduulikoodistolops2021'}
+            koodiarvot={omanÄidinkielenKurssit.map(
+              (m) => m.koodiviite.koodiarvo
+            )}
+            filter={(koodiviite) =>
+              !olemassaOlevatModuulit.includes(koodiviite.koodiarvo)
+            }
+            format={(koodiviite) =>
+              koodiviite.koodiarvo + ' ' + t(koodiviite.nimi)
+            }
+            onSelect={(koodiviite) => {
+              koodiviite && setKurssi(koodiviite as PreIBOmanÄidinkielenOpinto)
+            }}
+            value={kurssi ? kurssi.koodiarvo : undefined}
+            testId={'omanÄidinkielenOpinnot.kurssimodal.moduuli'}
+          />
+        </label>
+        <label>
+          {t('Laajuus')}
+          <LaajuusEdit
+            value={laajuus}
+            onChange={(value) => setLaajuus(value)}
+            createLaajuus={(value) => LaajuusOpintopisteissä({ arvo: value })}
+          />
+        </label>
+        <label>
+          {t('Arvosana')}
+          <KoodistoSelect
+            koodistoUri={'arviointiasteikkoyleissivistava'}
+            koodiarvot={omanÄidinkielenKurssinArvosanat.map(
+              (m) => m.koodiviite.koodiarvo
+            )}
+            format={(koodiviite) =>
+              koodiviite.koodiarvo + ' ' + t(koodiviite.nimi)
+            }
+            onSelect={(koodiviite) => {
+              koodiviite &&
+                setArvosana(
+                  koodiviite as PreIBOmanÄidinkielenOpintoOsasuorituksenArvosana
+                )
+            }}
+            value={arvosana ? arvosana.koodiarvo : undefined}
+            testId={'omanÄidinkielenOpinnot.kurssimodal.arvosana'}
+          />
+        </label>
+        <label>
+          {t('Arviointipäivä')}
+          <DateInput
+            value={arviointipäivä}
+            onChange={(date) => setArviointipäivä(date)}
+            testId={'omanÄidinkielenOpinnot.kurssimodal.päivä'}
+          />
+        </label>
+        <label>
+          {t('Kieli')}
+          <KoodistoSelect
+            koodistoUri={'kieli'}
+            onSelect={(koodiviite) => {
+              koodiviite && setKieli(koodiviite)
+            }}
+            value={kieli ? kieli.koodiarvo : undefined}
+            testId={'omanÄidinkielenOpinnot.kurssimodal.kieli'}
+          />
+        </label>
+        <Spacer />
+      </ModalBody>
+      <ModalFooter>
+        <FlatButton onClick={onClose} testId="cancel">
+          {t('Peruuta')}
+        </FlatButton>
+        <RaisedButton
+          disabled={
+            [kurssi, laajuus].includes(undefined) ||
+            (!!arvosana && !arviointipäivä) ||
+            (!arvosana && !!arviointipäivä)
+          }
+          onClick={() => {
+            if (kurssi !== undefined && laajuus !== undefined) {
+              onSubmit(
+                LukionOmanÄidinkielenOpinto({ tunniste: kurssi, laajuus }),
+                arvosana,
+                arviointipäivä,
+                kieli
+              )
+              onClose()
+            }
+          }}
+          testId="confirm"
+        >
+          {t('Lisää')}
+        </RaisedButton>
+      </ModalFooter>
+    </Modal>
+  )
+}
+
 type EditOmanÄidinkielenOpintojenOsasuoritusModalProps = {
   form: FormModel<IBOpiskeluoikeus>
   osasuoritus: LukionOmanÄidinkielenOpintojenOsasuoritus
@@ -1319,7 +1521,7 @@ const EditOmanÄidinkielenOpintojenOsasuoritusModal = ({
 }: EditOmanÄidinkielenOpintojenOsasuoritusModalProps) => {
   return (
     <Modal onClose={onClose}>
-      <ModalTitle>{`${t(osasuoritus.koulutusmoduuli.tunniste.koodiarvo)} ${t(osasuoritus.koulutusmoduuli.tunniste.nimi)}`}</ModalTitle>
+      <ModalTitle>{`${osasuoritus.koulutusmoduuli.tunniste.koodiarvo} ${t(osasuoritus.koulutusmoduuli.tunniste.nimi)}`}</ModalTitle>
       <ModalBody>
         <KeyValueRow localizableLabel="Laajuus">
           <LaajuusEdit
@@ -1332,15 +1534,23 @@ const EditOmanÄidinkielenOpintojenOsasuoritusModal = ({
           />
         </KeyValueRow>
         {(osasuoritus.arviointi || []).map((arviointi, index) => (
-          <>
-            <KeyValueRow localizableLabel="Arvosana" innerKeyValueTable>
+          <div
+            key={`${osasuoritus.koulutusmoduuli.tunniste.koodiarvo}.arviointi.${index}`}
+          >
+            <KeyValueRow
+              localizableLabel="Arvosana"
+              innerKeyValueTable={(osasuoritus.arviointi || []).length > 1}
+            >
               <ArvosanaEdit
                 suoritusClassName={osasuoritus.$class}
                 value={arviointi}
                 onChange={form.set(...osasuoritusPath, ...['arviointi', index])}
               />
             </KeyValueRow>
-            <KeyValueRow localizableLabel="Arviointipäivä" innerKeyValueTable>
+            <KeyValueRow
+              localizableLabel="Arviointipäivä"
+              innerKeyValueTable={(osasuoritus.arviointi || []).length > 1}
+            >
               <DateEdit
                 value={arviointi.päivä}
                 onChange={form.set(
@@ -1350,7 +1560,7 @@ const EditOmanÄidinkielenOpintojenOsasuoritusModal = ({
                 align="right"
               />
             </KeyValueRow>
-          </>
+          </div>
         ))}
         <KeyValueRow localizableLabel="Suorituskieli">
           <KoodistoSelect
@@ -1607,6 +1817,27 @@ const createLukionOmanÄidinkielenOpinnot = (
   })
 }
 
+const createLukionOmanÄidinkielenOpinnotOsasuoritus = (
+  koulutusmoduuli: LukionOmanÄidinkielenOpinto,
+  arvosana?: PreIBOmanÄidinkielenOpintoOsasuorituksenArvosana,
+  arviointipäivä?: string,
+  kieli?: Koodistokoodiviite<'kieli'>
+): LukionOmanÄidinkielenOpintojenOsasuoritus => {
+  return LukionOmanÄidinkielenOpintojenOsasuoritus({
+    koulutusmoduuli,
+    arviointi:
+      arvosana && arviointipäivä
+        ? [
+            LukionOmanÄidinkielenOpinnonOsasuorituksenArviointi({
+              arvosana,
+              päivä: arviointipäivä
+            })
+          ]
+        : undefined,
+    suorituskieli: kieli
+  })
+}
+
 const createPuhviKoe2019 = (
   arvosana: PreIBPuhviKoe2019Arvosana,
   päivä: string
@@ -1635,6 +1866,13 @@ const removeAt =
       )
     )
   }
+
+const osasuoritusOrd = Ord.contramap<
+  string,
+  LukionOmanÄidinkielenOpintojenOsasuoritus
+>((osasuoritus: LukionOmanÄidinkielenOpintojenOsasuoritus) => {
+  return osasuoritus.koulutusmoduuli.tunniste.koodiarvo
+})(S.Ord)
 
 const coreOppiaineidenTietomallinMuuttumisenRajapäivä =
   config().rajapäivät.ibLaajuusOpintopisteinäAlkaen
