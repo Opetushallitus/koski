@@ -110,52 +110,16 @@ import { useChildSchema } from '../appstate/constraints'
 import { LukionOmanÄidinkielenOpinto } from '../types/fi/oph/koski/schema/LukionOmanAidinkielenOpinto'
 import { LukionOmanÄidinkielenOpinnonOsasuorituksenArviointi } from '../types/fi/oph/koski/schema/LukionOmanAidinkielenOpinnonOsasuorituksenArviointi'
 
-const preIB2019SuullisenKielitaidonTaitotasot: string[] = [
-  'alle_A1.1',
-  'A1.1',
-  'A1.2',
-  'A1.3',
-  'A2.1',
-  'A2.2',
-  'B1.1',
-  'B1.2',
-  'B2.1',
-  'B2.2',
-  'C1.1',
-  'yli_C1.1'
-]
-
+type PreIBOmanÄidinkielenOpinnot2019Arvosana =
+  LukionOmanÄidinkielenOpinnot['arvosana']
 type PreIBOmanÄidinkielenOpinto = LukionOmanÄidinkielenOpinto['tunniste']
 type PreIBOmanÄidinkielenOpintoOsasuorituksenArvosana =
   LukionOmanÄidinkielenOpinnonOsasuorituksenArviointi['arvosana']
-
-type PreIBSuullisenKielitaidonKoe2019Arvosana = Koodistokoodiviite<
-  'arviointiasteikkoyleissivistava',
-  '4' | '5' | '6' | '7' | '8' | '9' | '10' | 'S' | 'H'
->
-
-type PreIBPuhviKoe2019Arvosana = PreIBSuullisenKielitaidonKoe2019Arvosana
-
-type PreIBSuullisenKielitaidonKoe2019Taitotaso = Koodistokoodiviite<
-  'arviointiasteikkokehittyvankielitaidontasot',
-  | 'alle_A1.1'
-  | 'A1.1'
-  | 'A1.2'
-  | 'A1.3'
-  | 'A2.1'
-  | 'A2.2'
-  | 'B1.1'
-  | 'B1.2'
-  | 'B2.1'
-  | 'B2.2'
-  | 'C1.1'
-  | 'yli_C1.1'
->
-
-type PreIBOmanÄidinkielenOpinnot2019Arvosana = Koodistokoodiviite<
-  'arviointiasteikkoyleissivistava',
-  'O' | 'S' | 'H' | '4' | '5' | '6' | '7' | '8' | '9' | '10'
->
+type PreIBSuullisenKielitaidonKoe2019Arvosana =
+  SuullisenKielitaidonKoe2019['arvosana']
+type PreIBPuhviKoe2019Arvosana = PuhviKoe2019['arvosana']
+type PreIBSuullisenKielitaidonKoe2019Taitotaso =
+  SuullisenKielitaidonKoe2019['taitotaso']
 
 export type IBTutkintTiedotProps = {
   form: FormModel<IBOpiskeluoikeus>
@@ -801,8 +765,12 @@ const OmanÄidinkielenOpintojenKurssit: React.FC<PreIB2019TiedotRowsProps> = ({
   form,
   päätasonSuoritus
 }) => {
-  const osasuoritukset =
-    päätasonSuoritus.suoritus.omanÄidinkielenOpinnot?.osasuoritukset || []
+  const osasuoritukset = useMemo(() => {
+    return (
+      päätasonSuoritus.suoritus.omanÄidinkielenOpinnot?.osasuoritukset || []
+    )
+  }, [päätasonSuoritus.suoritus.omanÄidinkielenOpinnot?.osasuoritukset])
+
   const osasuorituksetSorted = useMemo(() => {
     return A.sort(osasuoritusOrd)(osasuoritukset)
   }, [osasuoritukset])
@@ -974,6 +942,11 @@ const PreIB2019PuhviKoeRows: React.FC<PreIB2019TiedotRowsProps> = ({
   päätasonSuoritus
 }) => {
   const path = päätasonSuoritus.path
+  const arvosanat =
+    useKoodistoOfConstraint(
+      useChildSchema(PuhviKoe2019.className, 'arvosana')
+    ) || []
+
   const puhviKoeEiSyötetty = päätasonSuoritus.suoritus.puhviKoe === undefined
   const [showModal, setShowModal] = useState(false)
   const removePuhviKoe = () => {
@@ -1011,7 +984,9 @@ const PreIB2019PuhviKoeRows: React.FC<PreIB2019TiedotRowsProps> = ({
                 format={(koodiviite) =>
                   koodiviite.koodiarvo + ' ' + t(koodiviite.nimi)
                 }
-                filter={(koodiviite) => koodiviite.koodiarvo !== 'O'}
+                koodiarvot={arvosanat.map(
+                  (arvosana) => arvosana.koodiviite.koodiarvo
+                )}
                 onSelect={(koodiviite) => {
                   koodiviite &&
                     form.set(
@@ -1130,6 +1105,14 @@ const PreIB2019SuullisenKielitaidonKoeRows: React.FC<
   PreIB2019SuullisenKielitaidonKoeRowsProps
 > = ({ form, päätasonSuoritus, index }) => {
   const path = päätasonSuoritus.path
+  const taitotasot =
+    useKoodistoOfConstraint(
+      useChildSchema(SuullisenKielitaidonKoe2019.className, 'taitotaso')
+    ) || []
+  const arvosanat =
+    useKoodistoOfConstraint(
+      useChildSchema(SuullisenKielitaidonKoe2019.className, 'arvosana')
+    ) || []
 
   return (
     <KeyValueTable>
@@ -1166,7 +1149,9 @@ const PreIB2019SuullisenKielitaidonKoeRows: React.FC<
             format={(koodiviite) =>
               koodiviite.koodiarvo + ' ' + t(koodiviite.nimi)
             }
-            filter={(koodiviite) => koodiviite.koodiarvo !== 'O'}
+            koodiarvot={arvosanat.map(
+              (arvosana) => arvosana.koodiviite.koodiarvo
+            )}
             onSelect={(koodiviite) => {
               koodiviite &&
                 form.set(
@@ -1197,11 +1182,9 @@ const PreIB2019SuullisenKielitaidonKoeRows: React.FC<
         {form.editMode ? (
           <KoodistoSelect
             koodistoUri={'arviointiasteikkokehittyvankielitaidontasot'}
-            filter={(koodiviite) =>
-              preIB2019SuullisenKielitaidonTaitotasot.includes(
-                koodiviite.koodiarvo
-              )
-            }
+            koodiarvot={taitotasot.map(
+              (taitotaso) => taitotaso.koodiviite.koodiarvo
+            )}
             onSelect={(koodiviite) => {
               koodiviite &&
                 form.set(
@@ -1624,6 +1607,11 @@ type NewPuhviKoeModalProps = {
 }
 
 const NewPuhviKoeModal = ({ onClose, onSubmit }: NewPuhviKoeModalProps) => {
+  const arvosanat =
+    useKoodistoOfConstraint(
+      useChildSchema(PuhviKoe2019.className, 'arvosana')
+    ) || []
+
   const [arvosana, setArvosana] = useState<
     PreIBPuhviKoe2019Arvosana | undefined
   >(undefined)
@@ -1642,7 +1630,7 @@ const NewPuhviKoeModal = ({ onClose, onSubmit }: NewPuhviKoeModalProps) => {
             format={(koodiviite) =>
               koodiviite.koodiarvo + ' ' + t(koodiviite.nimi)
             }
-            filter={(koodiviite) => koodiviite.koodiarvo !== 'O'}
+            koodiarvot={arvosanat.map((a) => a.koodiviite.koodiarvo)}
             onSelect={(koodiviite) => {
               koodiviite && setArvosana(koodiviite as PreIBPuhviKoe2019Arvosana)
             }}
@@ -1695,6 +1683,15 @@ const NewSuullisenKielitaidonKoeModal = ({
   onClose,
   onSubmit
 }: NewSuullisenKielitaidonKoeModalProps) => {
+  const taitotasot =
+    useKoodistoOfConstraint(
+      useChildSchema(SuullisenKielitaidonKoe2019.className, 'taitotaso')
+    ) || []
+  const arvosanat =
+    useKoodistoOfConstraint(
+      useChildSchema(SuullisenKielitaidonKoe2019.className, 'arvosana')
+    ) || []
+
   const [kieli, setKieli] = useState<
     Koodistokoodiviite<'kielivalikoima'> | undefined
   >(undefined)
@@ -1728,7 +1725,7 @@ const NewSuullisenKielitaidonKoeModal = ({
             format={(koodiviite) =>
               koodiviite.koodiarvo + ' ' + t(koodiviite.nimi)
             }
-            filter={(koodiviite) => koodiviite.koodiarvo !== 'O'}
+            koodiarvot={arvosanat.map((a) => a.koodiviite.koodiarvo)}
             onSelect={(koodiviite) => {
               koodiviite &&
                 setArvosana(
@@ -1743,11 +1740,7 @@ const NewSuullisenKielitaidonKoeModal = ({
           {t('Taitotaso')}
           <KoodistoSelect
             koodistoUri={'arviointiasteikkokehittyvankielitaidontasot'}
-            filter={(koodiviite) =>
-              preIB2019SuullisenKielitaidonTaitotasot.includes(
-                koodiviite.koodiarvo
-              )
-            }
+            koodiarvot={taitotasot.map((tt) => tt.koodiviite.koodiarvo)}
             onSelect={(koodiviite) => {
               koodiviite &&
                 setTaitotaso(
