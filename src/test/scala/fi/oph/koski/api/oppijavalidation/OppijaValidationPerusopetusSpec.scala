@@ -6,7 +6,7 @@ import fi.oph.koski.documentation.AmmatillinenExampleData.primusLähdejärjestel
 import fi.oph.koski.documentation.ExampleData._
 import fi.oph.koski.documentation.{ExamplesEsiopetus, ExamplesPerusopetus}
 import fi.oph.koski.documentation.ExamplesEsiopetus.{lisätiedot, osaAikainenErityisopetus}
-import fi.oph.koski.documentation.ExamplesPerusopetus.toimintaAlueenSuoritus
+import fi.oph.koski.documentation.ExamplesPerusopetus.{erityisenTuenPäätös, toimintaAlueenSuoritus}
 import fi.oph.koski.documentation.OsaAikainenErityisopetusExampleData._
 import fi.oph.koski.documentation.PerusopetusExampleData._
 import fi.oph.koski.documentation.YleissivistavakoulutusExampleData.{helsinginMedialukio, jyväskylänNormaalikoulu, ressunLukio}
@@ -815,6 +815,19 @@ class OppijaValidationPerusopetusSpec extends TutkinnonPerusteetTest[Perusopetuk
 
         setupOppijaWithOpiskeluoikeus(makeSeiskaluokanRajattuOppimäärä("H")) {
           verifyResponseStatusOk()
+        }
+      }
+
+      "Rajatun oppimäärän suorituksen saa siirtää suoritukselle joka on alkanut ennen 31.8.2026" in {
+        val oo = makeOpiskeluoikeus().copy(
+          suoritukset = List(seitsemännenLuokanSuoritus.copy(vahvistus = Some(HenkilövahvistusPaikkakunnalla(LocalDate.of(2025, 10, 11), jyväskylä, jyväskylänNormaalikoulu, List(Organisaatiohenkilö("Reijo Reksi", "rehtori", jyväskylänNormaalikoulu)))), alkamispäivä = Some(LocalDate.of(2025, 10, 9)), osasuoritukset = Some(List(äidinkielenSuoritus.copy(rajattuOppimäärä = true, arviointi = hyväksytty))))),
+          lisätiedot = Some(PerusopetuksenOpiskeluoikeudenLisätiedot(
+            erityisenTuenPäätökset = erityisenTuenPäätökset(alku = LocalDate.of(2025, 10, 9), loppu = LocalDate.of(2025,10,31)),
+          ))
+        )
+
+        setupOppijaWithOpiskeluoikeus(oo) {
+          verifyResponseStatus(200)
         }
       }
 

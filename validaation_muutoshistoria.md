@@ -1,4 +1,6 @@
 # Koskeen tallennettavien tietojen validaatiosäännöt
+## 14.10.2025
+ - Rajatulle oppimäärälle Sallittu vaihtoehtoisesti erityisen tuen jakso.
 
 ## 13.10.2025
  - Sallitaan vuosiluokan suoritukseen luokka-aste, joka on eri kuin suorituksen luokka-aste, kun vuosiluokan vahvistus on ennen 31.7.2025 ja oppilaalla on lisätiedoissa vuosiluokkiinSitoutumatonOpetus.
