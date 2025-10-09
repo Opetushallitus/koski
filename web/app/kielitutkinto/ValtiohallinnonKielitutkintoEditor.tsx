@@ -141,8 +141,8 @@ const kielitaitoToTableRow = ({
       Tutkintopäivä: (
         <FormField
           form={form}
-          path={osasuoritusPath.path('osasuoritukset')}
-          view={TutkintopäiväTodistuksellaView}
+          path={osasuoritusPath.path('alkamispäivä')}
+          view={DateView}
           testId="tutkintopäivä"
         />
       ),
@@ -331,40 +331,3 @@ const isCompletedSuoritus =
       O.map((a) => a.arvosana.koodiarvo !== 'hylatty'),
       O.getOrElse(() => false)
     )
-
-// Tutkintopäivä viewer
-
-export type ViimeisinTutkintopäiväViewProps = CommonProps<
-  FieldViewerProps<
-    OsasuoritusOf<ValtionhallinnonKielitutkinnonKielitaidonSuoritus>[],
-    EmptyObject
-  >
->
-
-export const TutkintopäiväTodistuksellaView: React.FC<
-  ViimeisinTutkintopäiväViewProps
-> = (props) => {
-  const parasArvosana = pipe(
-    props.value || [],
-    A.flatMap((ok) => ok.arviointi || []),
-    parasArviointi,
-    (arviointi) => arviointi?.arvosana?.koodiarvo
-  )
-
-  const tutkintopäivä = pipe(
-    props.value || [],
-    A.filter(
-      (ok) =>
-        ok.arviointi?.find(
-          (arv) => arv.arvosana.koodiarvo === parasArvosana
-        ) !== undefined
-    ),
-    A.map((ok) => ok.alkamispäivä),
-    A.filter(notUndefined),
-    A.sort(string.Ord),
-    A.last,
-    O.toUndefined
-  )
-
-  return <DateView value={tutkintopäivä} />
-}

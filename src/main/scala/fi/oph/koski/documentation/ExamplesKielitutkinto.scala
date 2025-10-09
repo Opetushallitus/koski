@@ -206,6 +206,7 @@ object ExamplesKielitutkinto {
               osakoe("puheenymmartaminen", osakokeenArvosana(osakokeidenArvosanat, 1), pvm),
             )),
             arviointi =  kielitaidonArviointi(osakokeidenArvosanat, pvm),
+            alkamispäivä = Some(pvm),
           )
 
         def osakoe(osakoe: String, arvosana: String, arviointiPäivä: LocalDate): ValtionhallinnonKielitutkinnonSuullisenKielitaidonOsakokeenSuoritus =
@@ -233,15 +234,15 @@ object ExamplesKielitutkinto {
             osakoe("tekstinymmartaminen", List(osakokeenArvosana(osakokeidenArvosanat, 1)), pvm),
           )
 
-          val viimeisinArviointipäivä = osasuoritukset
+          val arviointipäivät = osasuoritukset
             .flatMap(_.arviointi.toList.flatten)
             .map(_.päivä)
-            .max
 
           ValtionhallinnonKielitutkinnonKirjallisenKielitaidonSuoritus(
             koulutusmoduuli = ValtionhallinnonKielitutkinnonKirjallinenKielitaito(),
             osasuoritukset = Some(osasuoritukset),
-            arviointi = kielitaidonArviointi(osakokeidenArvosanat, viimeisinArviointipäivä),
+            arviointi = kielitaidonArviointi(osakokeidenArvosanat, arviointipäivät.max),
+            alkamispäivä = Some(arviointipäivät.min),
           )
         }
 
@@ -270,6 +271,7 @@ object ExamplesKielitutkinto {
               osakoe("puheenymmartaminen", osakokeenArvosana(osakokeidenArvosanat, 1), pvm),
             )),
             arviointi = kielitaidonArviointi(osakokeidenArvosanat, pvm),
+            alkamispäivä = Some(pvm),
           )
 
 
