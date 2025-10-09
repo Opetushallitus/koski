@@ -24,7 +24,7 @@ object PerusopetuksenOpiskeluoikeusValidation extends Logging {
           validateVuosiluokanAlkamispäivät(poo),
           validatePäätasonSuoritus(poo),
           validateVanhojenJaksokenttienPäättyminenSiirryttäessäUusiin(config, poo.alkamispäivä, poo.päättymispäivä, poo.lisätiedot),
-          validateTavoitekokonaisuuksittainOpiskeleva(poo),
+          validateTavoitekokonaisuuksittainOpiskeleva(config,poo),
           validateVuosiluokkiinSitoutumatonOpetusEiSallittu(config,poo)
         ) ++ poo.lisätiedot.toList.flatMap(lisätiedot => List(
           validateTuenJaksojenPäällekkäisyys(lisätiedot),
@@ -73,23 +73,25 @@ object PerusopetuksenOpiskeluoikeusValidation extends Logging {
     }
   }
 
-  private def validateTavoitekokonaisuuksittainOpiskeleva(oo: PerusopetuksenOpiskeluoikeus): HttpStatus = {
+  private def validateTavoitekokonaisuuksittainOpiskeleva(config: Config, oo: PerusopetuksenOpiskeluoikeus): HttpStatus = {
+    val cutoff = LocalDate.parse(config.getString("validaatiot.VSOPKentänViimeinenKäyttöpäivä"))
+    val vsopOn = oo.lisätiedot.flatMap(_.vuosiluokkiinSitoutumatonOpetus).contains(true)
     val errors: Seq[HttpStatus] = oo.suoritukset.collect {
       case vls: PerusopetuksenVuosiluokanSuoritus =>
+        val vuosiluokka = vls.koulutusmoduuli.tunniste
+        val vahvistuspäivä = vls.vahvistus.map(_.päivä)
         vls.osasuoritukset.getOrElse(Seq.empty).flatMap {
           case os: NuortenPerusopetuksenOppiaineenSuoritus =>
-            val vuosiluokka = vls.koulutusmoduuli.tunniste
             os.luokkaAste match {
               case Some(la) =>
-                val relevantDates = Seq(vls.vahvistus.map(_.päivä), os.ensimmäinenArviointiPäivä).flatten
-                val dateCovered = relevantDates.exists(d => tavoitekokonaisuuksittainOpiskeluVoimassa(oo, d))
-
-                if (relevantDates.isEmpty) { None }
-                else if (!dateCovered) {
+                val vahvistuksenpäiväys = Seq(vahvistuspäivä, os.ensimmäinenArviointiPäivä).flatten
+                val tavoitekokonaisuusosuujaksolle = vahvistuspäivä.exists(d => tavoitekokonaisuuksittainOpiskeluVoimassa(oo, d))
+                if (vahvistuspäivä.isEmpty || (vsopOn && vahvistuspäivä.exists(p => !p.isAfter(cutoff)))) { None }
+                else if (!tavoitekokonaisuusosuujaksolle ) {
                   Some(KoskiErrorCategory.badRequest.validation.date(s"Perusopetuksen oppiaineen suorituksella on tavoitekokonaisuuksittain opiskeluun liittyvä tieto luokkaAste (${la.koodiarvo}) mutta ei tavoitekokonaisuuksittain opiskelun aikajaksoa, joka kattaisi vuosiluokan vahvistuspäivän tai suorituksen arviointipäivän."))
                 } else if (la == vuosiluokka) {
                   Some(KoskiErrorCategory.badRequest.validation.date(s"Perusopetuksen oppiaineen suorituksen tavoitekokonaisuuksittain opiskeluun liittyvä kenttä luokkaAste ei saa olla sama kuin vuosiluokka (${vuosiluokka.koodiarvo})"))
-                } else { None }
+                } else{ None }
               case None => None
             }
           case _ => None
