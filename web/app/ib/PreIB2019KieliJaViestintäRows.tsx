@@ -19,7 +19,7 @@ import {
   LaajuusOpintopisteissäEdit,
   LaajuusView
 } from '../components-v2/opiskeluoikeus/LaajuusField'
-import { Spacer } from '../components-v2/layout/Spacer'
+import { Spacer, SpacerLine } from '../components-v2/layout/Spacer'
 import { UusiOmanÄidinkielenOpintojenKurssiModal } from './dialogs/UusiOmanÄidinkielenOpintojenKurssiModal'
 import { pipe } from 'fp-ts/function'
 import * as A from 'fp-ts/Array'
@@ -116,167 +116,178 @@ const PreIB2019OmanÄidinkielenOpinnotRows: React.FC<
   }
 
   return form.editMode && omanÄidinkielenOpinnotEiSyötetty ? (
-    <KeyValueRow localizableLabel="Oman äidinkielen opinnot">
-      <FlatButton onClick={() => setShowLisääOmanÄidinkielenOpinnotModal(true)}>
-        {t('Lisää täydentävät oman äidinkielen opinnot')}
-      </FlatButton>
-      {showLisääOmanÄidinkielenOpinnotModal && (
-        <UusiOmanÄidinkielenOpinnotModal
-          onClose={() => setShowLisääOmanÄidinkielenOpinnotModal(false)}
-          onSubmit={(arvosana, kieli, laajuus, arviointipäivä) =>
-            form.set(
-              ...päätasonSuoritus.pathTokens,
-              ...['omanÄidinkielenOpinnot']
-            )(
-              createLukionOmanÄidinkielenOpinnot(
-                arvosana,
-                kieli,
-                laajuus,
-                arviointipäivä
-              )
-            )
-          }
-        />
-      )}
-    </KeyValueRow>
-  ) : (
-    <KeyValueRow localizableLabel="Oman äidinkielen opinnot">
-      <Removable
-        isRemovable={form.editMode}
-        onClick={removeOmanÄidinkielenOpinnot}
-      >
-        <KeyValueTable>
-          <KeyValueRow localizableLabel="Arvosana" innerKeyValueTable>
-            {form.editMode ? (
-              <KoodistoSelect
-                koodistoUri={'arviointiasteikkoyleissivistava'}
-                format={(koodiviite) =>
-                  koodiviite.koodiarvo + ' ' + t(koodiviite.nimi)
-                }
-                onSelect={(koodiviite) => {
-                  koodiviite &&
-                    form.set(
-                      ...päätasonSuoritus.pathTokens,
-                      ...['omanÄidinkielenOpinnot', 'arvosana']
-                    )(koodiviite)
-                }}
-                value={
-                  päätasonSuoritus.suoritus.omanÄidinkielenOpinnot?.arvosana
-                    .koodiarvo
-                }
-                testId="omanÄidinkielenOpinnot.arvosana"
-              />
-            ) : (
-              <TestIdText id="omanÄidinkielenOpinnot.arvosana">
-                {
-                  päätasonSuoritus.suoritus.omanÄidinkielenOpinnot?.arvosana
-                    .koodiarvo
-                }{' '}
-                {t(
-                  päätasonSuoritus.suoritus.omanÄidinkielenOpinnot?.arvosana
-                    .nimi
-                )}
-              </TestIdText>
-            )}
-          </KeyValueRow>
-          <KeyValueRow localizableLabel="Arviointipäivä" innerKeyValueTable>
-            <FormField
-              form={form}
-              testId="omanÄidinkielenOpinnot.arviointipäivä"
-              view={DateView}
-              edit={DateEdit}
-              editProps={{ align: 'right' }}
-              path={path
-                .prop('omanÄidinkielenOpinnot')
-                .optional()
-                .prop('arviointipäivä')}
-            />
-          </KeyValueRow>
-          <KeyValueRow localizableLabel="Kieli" innerKeyValueTable>
-            {form.editMode ? (
-              <KoodistoSelect
-                koodistoUri={'kielivalikoima'}
-                onSelect={(koodiviite) => {
-                  koodiviite &&
-                    form.set(
-                      ...päätasonSuoritus.pathTokens,
-                      ...['omanÄidinkielenOpinnot', 'kieli']
-                    )(koodiviite)
-                }}
-                value={
-                  päätasonSuoritus.suoritus.omanÄidinkielenOpinnot?.kieli
-                    .koodiarvo
-                }
-                testId="omanÄidinkielenOpinnot.kieli"
-              />
-            ) : (
-              <TestIdText id="omanÄidinkielenOpinnot.kieli">
-                {t(
-                  päätasonSuoritus.suoritus.omanÄidinkielenOpinnot?.kieli.nimi
-                )}
-              </TestIdText>
-            )}
-          </KeyValueRow>
-          <KeyValueRow localizableLabel="Laajuus" innerKeyValueTable>
-            <FormField
-              form={form}
-              path={path
-                .prop('omanÄidinkielenOpinnot')
-                .optional()
-                .prop('laajuus')}
-              view={LaajuusView}
-              edit={LaajuusOpintopisteissäEdit}
-              testId="omanÄidinkielenOpinnot.laajuus"
-            />
-          </KeyValueRow>
-          {onOsasuorituksia && (
-            <KeyValueRow localizableLabel={'Osasuoritukset'} innerKeyValueTable>
-              <OmanÄidinkielenOpintojenKurssit
-                form={form}
-                päätasonSuoritus={päätasonSuoritus}
-              />
-            </KeyValueRow>
-          )}
-          {form.editMode && (
-            <KeyValueRow innerKeyValueTable>
-              <FlatButton onClick={() => setShowLisääKurssiModal(true)}>
-                {t('Lisää osasuoritus')}
-              </FlatButton>
-              <Spacer />
-            </KeyValueRow>
-          )}
-          {showLisääKurssiModal && (
-            <UusiOmanÄidinkielenOpintojenKurssiModal
-              olemassaOlevatModuulit={
-                päätasonSuoritus.suoritus.omanÄidinkielenOpinnot?.osasuoritukset?.map(
-                  (os) => os.koulutusmoduuli.tunniste.koodiarvo
-                ) || []
-              }
-              onClose={() => setShowLisääKurssiModal(false)}
-              onSubmit={(koulutusmoduuli, arvosana, arviointipäivä, kieli) =>
-                pipe(
-                  päätasonSuoritus.suoritus.omanÄidinkielenOpinnot
-                    ?.osasuoritukset || [],
-                  A.append(
-                    createLukionOmanÄidinkielenOpinnotOsasuoritus(
-                      koulutusmoduuli,
-                      arvosana,
-                      arviointipäivä,
-                      kieli
-                    )
-                  ),
-                  (osasuoritukset) =>
-                    form.set(
-                      ...päätasonSuoritus.pathTokens,
-                      ...['omanÄidinkielenOpinnot', 'osasuoritukset']
-                    )(osasuoritukset)
+    <>
+      <SpacerLine />
+      <KeyValueRow localizableLabel="Oman äidinkielen opinnot">
+        <FlatButton
+          onClick={() => setShowLisääOmanÄidinkielenOpinnotModal(true)}
+        >
+          {t('Lisää täydentävät oman äidinkielen opinnot')}
+        </FlatButton>
+        {showLisääOmanÄidinkielenOpinnotModal && (
+          <UusiOmanÄidinkielenOpinnotModal
+            onClose={() => setShowLisääOmanÄidinkielenOpinnotModal(false)}
+            onSubmit={(arvosana, kieli, laajuus, arviointipäivä) =>
+              form.set(
+                ...päätasonSuoritus.pathTokens,
+                ...['omanÄidinkielenOpinnot']
+              )(
+                createLukionOmanÄidinkielenOpinnot(
+                  arvosana,
+                  kieli,
+                  laajuus,
+                  arviointipäivä
                 )
-              }
-            />
-          )}
-        </KeyValueTable>
-      </Removable>
-    </KeyValueRow>
+              )
+            }
+          />
+        )}
+      </KeyValueRow>
+    </>
+  ) : (
+    <>
+      <SpacerLine />
+      <KeyValueRow localizableLabel="Oman äidinkielen opinnot">
+        <Removable
+          isRemovable={form.editMode}
+          onClick={removeOmanÄidinkielenOpinnot}
+        >
+          <KeyValueTable>
+            <KeyValueRow localizableLabel="Arvosana" innerKeyValueTable>
+              {form.editMode ? (
+                <KoodistoSelect
+                  koodistoUri={'arviointiasteikkoyleissivistava'}
+                  format={(koodiviite) =>
+                    koodiviite.koodiarvo + ' ' + t(koodiviite.nimi)
+                  }
+                  onSelect={(koodiviite) => {
+                    koodiviite &&
+                      form.set(
+                        ...päätasonSuoritus.pathTokens,
+                        ...['omanÄidinkielenOpinnot', 'arvosana']
+                      )(koodiviite)
+                  }}
+                  value={
+                    päätasonSuoritus.suoritus.omanÄidinkielenOpinnot?.arvosana
+                      .koodiarvo
+                  }
+                  testId="omanÄidinkielenOpinnot.arvosana"
+                />
+              ) : (
+                <TestIdText id="omanÄidinkielenOpinnot.arvosana">
+                  {
+                    päätasonSuoritus.suoritus.omanÄidinkielenOpinnot?.arvosana
+                      .koodiarvo
+                  }{' '}
+                  {t(
+                    päätasonSuoritus.suoritus.omanÄidinkielenOpinnot?.arvosana
+                      .nimi
+                  )}
+                </TestIdText>
+              )}
+            </KeyValueRow>
+            <KeyValueRow localizableLabel="Arviointipäivä" innerKeyValueTable>
+              <FormField
+                form={form}
+                testId="omanÄidinkielenOpinnot.arviointipäivä"
+                view={DateView}
+                edit={DateEdit}
+                editProps={{ align: 'right' }}
+                path={path
+                  .prop('omanÄidinkielenOpinnot')
+                  .optional()
+                  .prop('arviointipäivä')}
+              />
+            </KeyValueRow>
+            <KeyValueRow localizableLabel="Kieli" innerKeyValueTable>
+              {form.editMode ? (
+                <KoodistoSelect
+                  koodistoUri={'kielivalikoima'}
+                  onSelect={(koodiviite) => {
+                    koodiviite &&
+                      form.set(
+                        ...päätasonSuoritus.pathTokens,
+                        ...['omanÄidinkielenOpinnot', 'kieli']
+                      )(koodiviite)
+                  }}
+                  value={
+                    päätasonSuoritus.suoritus.omanÄidinkielenOpinnot?.kieli
+                      .koodiarvo
+                  }
+                  testId="omanÄidinkielenOpinnot.kieli"
+                />
+              ) : (
+                <TestIdText id="omanÄidinkielenOpinnot.kieli">
+                  {t(
+                    päätasonSuoritus.suoritus.omanÄidinkielenOpinnot?.kieli.nimi
+                  )}
+                </TestIdText>
+              )}
+            </KeyValueRow>
+            <KeyValueRow localizableLabel="Laajuus" innerKeyValueTable>
+              <FormField
+                form={form}
+                path={path
+                  .prop('omanÄidinkielenOpinnot')
+                  .optional()
+                  .prop('laajuus')}
+                view={LaajuusView}
+                edit={LaajuusOpintopisteissäEdit}
+                testId="omanÄidinkielenOpinnot.laajuus"
+              />
+            </KeyValueRow>
+            {onOsasuorituksia && (
+              <KeyValueRow
+                localizableLabel={'Osasuoritukset'}
+                innerKeyValueTable
+              >
+                <OmanÄidinkielenOpintojenKurssit
+                  form={form}
+                  päätasonSuoritus={päätasonSuoritus}
+                />
+              </KeyValueRow>
+            )}
+            {form.editMode && (
+              <KeyValueRow innerKeyValueTable>
+                <FlatButton onClick={() => setShowLisääKurssiModal(true)}>
+                  {t('Lisää osasuoritus')}
+                </FlatButton>
+                <Spacer />
+              </KeyValueRow>
+            )}
+            {showLisääKurssiModal && (
+              <UusiOmanÄidinkielenOpintojenKurssiModal
+                olemassaOlevatModuulit={
+                  päätasonSuoritus.suoritus.omanÄidinkielenOpinnot?.osasuoritukset?.map(
+                    (os) => os.koulutusmoduuli.tunniste.koodiarvo
+                  ) || []
+                }
+                onClose={() => setShowLisääKurssiModal(false)}
+                onSubmit={(koulutusmoduuli, arvosana, arviointipäivä, kieli) =>
+                  pipe(
+                    päätasonSuoritus.suoritus.omanÄidinkielenOpinnot
+                      ?.osasuoritukset || [],
+                    A.append(
+                      createLukionOmanÄidinkielenOpinnotOsasuoritus(
+                        koulutusmoduuli,
+                        arvosana,
+                        arviointipäivä,
+                        kieli
+                      )
+                    ),
+                    (osasuoritukset) =>
+                      form.set(
+                        ...päätasonSuoritus.pathTokens,
+                        ...['omanÄidinkielenOpinnot', 'osasuoritukset']
+                      )(osasuoritukset)
+                  )
+                }
+              />
+            )}
+          </KeyValueTable>
+        </Removable>
+      </KeyValueRow>
+    </>
   )
 }
 
@@ -476,75 +487,81 @@ const PreIB2019PuhviKoeRows: React.FC<PreIB2019KieliJaViestintäRowsProps> = ({
     return null
   }
   return form.editMode && puhviKoeEiSyötetty ? (
-    <KeyValueRow localizableLabel="Toisen asteen puheviestintätaitojen päättökoe">
-      <FlatButton onClick={() => setShowModal(true)}>
-        {t('Lisää toisen asteen puheviestintätaitojen päättökoe')}
-      </FlatButton>
-      {showModal && (
-        <UusiPuhviKoeModal
-          onClose={() => setShowModal(false)}
-          onSubmit={(arvosana, päivä) =>
-            form.set(
-              ...päätasonSuoritus.pathTokens,
-              ...['puhviKoe']
-            )(createPuhviKoe2019(arvosana, päivä))
-          }
-        />
-      )}
-    </KeyValueRow>
+    <>
+      <SpacerLine />
+      <KeyValueRow localizableLabel="Toisen asteen puheviestintätaitojen päättökoe">
+        <FlatButton onClick={() => setShowModal(true)}>
+          {t('Lisää toisen asteen puheviestintätaitojen päättökoe')}
+        </FlatButton>
+        {showModal && (
+          <UusiPuhviKoeModal
+            onClose={() => setShowModal(false)}
+            onSubmit={(arvosana, päivä) =>
+              form.set(
+                ...päätasonSuoritus.pathTokens,
+                ...['puhviKoe']
+              )(createPuhviKoe2019(arvosana, päivä))
+            }
+          />
+        )}
+      </KeyValueRow>
+    </>
   ) : (
-    <KeyValueRow localizableLabel="Toisen asteen puheviestintätaitojen päättökoe">
-      <Removable isRemovable={form.editMode} onClick={removePuhviKoe}>
-        <KeyValueTable>
-          <KeyValueRow localizableLabel="Arvosana" innerKeyValueTable>
-            {form.editMode ? (
-              <KoodistoSelect
-                koodistoUri={'arviointiasteikkoyleissivistava'}
-                format={(koodiviite) =>
-                  koodiviite.koodiarvo + ' ' + t(koodiviite.nimi)
-                }
-                koodiarvot={arvosanat.map(
-                  (arvosana) => arvosana.koodiviite.koodiarvo
-                )}
-                onSelect={(koodiviite) => {
-                  koodiviite &&
-                    form.set(
-                      ...päätasonSuoritus.pathTokens,
-                      ...['puhviKoe', 'arvosana']
-                    )(koodiviite)
-                }}
-                value={päätasonSuoritus.suoritus.puhviKoe?.arvosana.koodiarvo}
-                testId="puhviKoe.arvosana"
+    <>
+      <SpacerLine />
+      <KeyValueRow localizableLabel="Toisen asteen puheviestintätaitojen päättökoe">
+        <Removable isRemovable={form.editMode} onClick={removePuhviKoe}>
+          <KeyValueTable>
+            <KeyValueRow localizableLabel="Arvosana" innerKeyValueTable>
+              {form.editMode ? (
+                <KoodistoSelect
+                  koodistoUri={'arviointiasteikkoyleissivistava'}
+                  format={(koodiviite) =>
+                    koodiviite.koodiarvo + ' ' + t(koodiviite.nimi)
+                  }
+                  koodiarvot={arvosanat.map(
+                    (arvosana) => arvosana.koodiviite.koodiarvo
+                  )}
+                  onSelect={(koodiviite) => {
+                    koodiviite &&
+                      form.set(
+                        ...päätasonSuoritus.pathTokens,
+                        ...['puhviKoe', 'arvosana']
+                      )(koodiviite)
+                  }}
+                  value={päätasonSuoritus.suoritus.puhviKoe?.arvosana.koodiarvo}
+                  testId="puhviKoe.arvosana"
+                />
+              ) : (
+                <TestIdText id="puhviKoe.arvosana">
+                  {päätasonSuoritus.suoritus.puhviKoe?.arvosana.koodiarvo}{' '}
+                  {t(päätasonSuoritus.suoritus.puhviKoe?.arvosana.nimi)}
+                </TestIdText>
+              )}
+            </KeyValueRow>
+            <KeyValueRow localizableLabel="Kuvaus" innerKeyValueTable>
+              <FormField
+                form={form}
+                view={LocalizedTextView}
+                edit={LocalizedTextEdit}
+                testId="puhviKoe.kuvaus"
+                path={path.prop('puhviKoe').optional().prop('kuvaus')}
               />
-            ) : (
-              <TestIdText id="puhviKoe.arvosana">
-                {päätasonSuoritus.suoritus.puhviKoe?.arvosana.koodiarvo}{' '}
-                {t(päätasonSuoritus.suoritus.puhviKoe?.arvosana.nimi)}
-              </TestIdText>
-            )}
-          </KeyValueRow>
-          <KeyValueRow localizableLabel="Kuvaus" innerKeyValueTable>
-            <FormField
-              form={form}
-              view={LocalizedTextView}
-              edit={LocalizedTextEdit}
-              testId="puhviKoe.kuvaus"
-              path={path.prop('puhviKoe').optional().prop('kuvaus')}
-            />
-          </KeyValueRow>
-          <KeyValueRow localizableLabel="Päivä" innerKeyValueTable>
-            <FormField
-              form={form}
-              testId="puhviKoe.päivä"
-              view={DateView}
-              edit={DateEdit}
-              editProps={{ align: 'right' }}
-              path={path.prop('puhviKoe').optional().prop('päivä')}
-            />
-          </KeyValueRow>
-        </KeyValueTable>
-      </Removable>
-    </KeyValueRow>
+            </KeyValueRow>
+            <KeyValueRow localizableLabel="Päivä" innerKeyValueTable>
+              <FormField
+                form={form}
+                testId="puhviKoe.päivä"
+                view={DateView}
+                edit={DateEdit}
+                editProps={{ align: 'right' }}
+                path={path.prop('puhviKoe').optional().prop('päivä')}
+              />
+            </KeyValueRow>
+          </KeyValueTable>
+        </Removable>
+      </KeyValueRow>
+    </>
   )
 }
 
@@ -554,65 +571,70 @@ const PreIB2019SuullisenKielitaidonKokeetRows: React.FC<
   const [showModal, setShowModal] = useState(false)
 
   return (
-    <KeyValueRow localizableLabel="Suullisen kielitaidon kokeet">
-      {päätasonSuoritus.suoritus.suullisenKielitaidonKokeet?.map(
-        (koe, index) => {
-          return (
-            <Removable
-              isRemovable={form.editMode}
-              onClick={removeAt(
-                päätasonSuoritus.suoritus.suullisenKielitaidonKokeet,
-                form,
-                [
-                  ...päätasonSuoritus.pathTokens,
-                  ...['suullisenKielitaidonKokeet']
-                ],
-                index
-              )}
-              key={`suullisenkielitaidonkoe.${index}`}
-            >
-              <PreIB2019SuullisenKielitaidonKoeRows
-                form={form}
-                päätasonSuoritus={päätasonSuoritus}
-                index={index}
-              />
-              <Spacer />
-            </Removable>
-          )
-        }
-      )}
-      {form.editMode && (
-        <>
-          <FlatButton onClick={() => setShowModal(true)}>
-            {t('Lisää suullisen kielitaidon koe')}
-          </FlatButton>
-          <Spacer />
-        </>
-      )}
-      {showModal && (
-        <UusiSuullisenKielitaidonKoeModal
-          onClose={() => setShowModal(false)}
-          onSubmit={(kieli, arvosana, taitotaso, päivä) =>
-            pipe(
-              päätasonSuoritus.suoritus.suullisenKielitaidonKokeet || [],
-              A.append(
-                createSuullisenKielitaidonKoe2019(
-                  kieli,
-                  arvosana,
-                  taitotaso,
-                  päivä
-                )
-              ),
-              (kokeet) =>
-                form.set(
-                  ...päätasonSuoritus.pathTokens,
-                  ...['suullisenKielitaidonKokeet']
-                )(kokeet)
+    <>
+      {A.isNonEmpty(
+        päätasonSuoritus.suoritus.suullisenKielitaidonKokeet || []
+      ) && <SpacerLine />}
+      <KeyValueRow localizableLabel="Suullisen kielitaidon kokeet">
+        {päätasonSuoritus.suoritus.suullisenKielitaidonKokeet?.map(
+          (koe, index) => {
+            return (
+              <Removable
+                isRemovable={form.editMode}
+                onClick={removeAt(
+                  päätasonSuoritus.suoritus.suullisenKielitaidonKokeet,
+                  form,
+                  [
+                    ...päätasonSuoritus.pathTokens,
+                    ...['suullisenKielitaidonKokeet']
+                  ],
+                  index
+                )}
+                key={`suullisenkielitaidonkoe.${index}`}
+              >
+                <PreIB2019SuullisenKielitaidonKoeRows
+                  form={form}
+                  päätasonSuoritus={päätasonSuoritus}
+                  index={index}
+                />
+                <SpacerLine />
+              </Removable>
             )
           }
-        />
-      )}
-    </KeyValueRow>
+        )}
+        {form.editMode && (
+          <>
+            <FlatButton onClick={() => setShowModal(true)}>
+              {t('Lisää suullisen kielitaidon koe')}
+            </FlatButton>
+            <Spacer />
+          </>
+        )}
+        {showModal && (
+          <UusiSuullisenKielitaidonKoeModal
+            onClose={() => setShowModal(false)}
+            onSubmit={(kieli, arvosana, taitotaso, päivä) =>
+              pipe(
+                päätasonSuoritus.suoritus.suullisenKielitaidonKokeet || [],
+                A.append(
+                  createSuullisenKielitaidonKoe2019(
+                    kieli,
+                    arvosana,
+                    taitotaso,
+                    päivä
+                  )
+                ),
+                (kokeet) =>
+                  form.set(
+                    ...päätasonSuoritus.pathTokens,
+                    ...['suullisenKielitaidonKokeet']
+                  )(kokeet)
+              )
+            }
+          />
+        )}
+      </KeyValueRow>
+    </>
   )
 }
 
