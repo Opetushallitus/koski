@@ -35,7 +35,7 @@ import fi.oph.koski.suoritetuttutkinnot.SuoritetutTutkinnotService
 import fi.oph.koski.suoritusjako.{SuoritusjakoRepository, SuoritusjakoRepositoryV2, SuoritusjakoService, SuoritusjakoServiceV2}
 import fi.oph.koski.suostumus.SuostumuksenPeruutusService
 import fi.oph.koski.tiedonsiirto.{IPService, TiedonsiirtoService}
-import fi.oph.koski.todistus.TodistusService
+import fi.oph.koski.todistus.{TodistusCleanupScheduler, TodistusRepository, TodistusResultRepository, TodistusScheduler, TodistusService}
 import fi.oph.koski.tutkinto.TutkintoRepository
 import fi.oph.koski.userdirectory.DirectoryClient
 import fi.oph.koski.validation.{KoskiGlobaaliValidator, KoskiValidator, ValidatingAndResolvingExtractor}
@@ -228,6 +228,12 @@ class KoskiApplication(
   lazy val omaDataOAuth2Service = new OmaDataOAuth2Service(omaDataOAuth2Repository, this)
 
   lazy val todistusService = new TodistusService(this)
+  lazy val todistusRepository = new TodistusRepository(
+    masterDatabase.db,
+    ecsMetadata.taskARN.getOrElse("local")
+  )
+  lazy val todistusScheduler: TodistusScheduler = new TodistusScheduler(this)
+  lazy val todistusCleanupScheduler: TodistusCleanupScheduler = new TodistusCleanupScheduler(this)
 
   def init(): Future[Any] = {
     AuditLog.startHeartbeat()
