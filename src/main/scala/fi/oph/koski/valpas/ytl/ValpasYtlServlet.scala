@@ -1,6 +1,7 @@
 package fi.oph.koski.valpas.ytl
 
 import fi.oph.koski.config.KoskiApplication
+import fi.oph.koski.koskiuser.LuovutuspalveluAuthenticationSupport
 import fi.oph.koski.servlet.NoCache
 import fi.oph.koski.util.ChainingSyntax._
 import fi.oph.koski.valpas.log.ValpasAuditLog.auditLogOppivelvollisuusrekisteriLuovutus
@@ -8,7 +9,7 @@ import fi.oph.koski.valpas.servlet.ValpasApiServlet
 import fi.oph.koski.valpas.valpasuser.RequiresValpasYtlSession
 import fi.oph.koski.ytl.YtlRequest
 
-class ValpasYtlServlet(implicit val application: KoskiApplication) extends ValpasApiServlet with NoCache with RequiresValpasYtlSession {
+class ValpasYtlServlet(implicit val application: KoskiApplication) extends ValpasApiServlet with NoCache with LuovutuspalveluAuthenticationSupport with RequiresValpasYtlSession {
   private val ytlService = new ValpasYtlService(application)
 
   post("/oppijat") {

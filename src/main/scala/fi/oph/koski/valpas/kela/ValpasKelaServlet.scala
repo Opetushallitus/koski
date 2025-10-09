@@ -4,6 +4,7 @@ import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.henkilo.Hetu
 import fi.oph.koski.http.{HttpStatus, JsonErrorMessage}
 import fi.oph.koski.json.JsonSerializer
+import fi.oph.koski.koskiuser.LuovutuspalveluAuthenticationSupport
 import fi.oph.koski.schema.Henkilö
 import fi.oph.koski.servlet.NoCache
 import fi.oph.koski.util.ChainingSyntax._
@@ -13,7 +14,7 @@ import fi.oph.koski.valpas.servlet.ValpasApiServlet
 import fi.oph.koski.valpas.valpasuser.RequiresValpasKelaSession
 import org.json4s.JsonAST.JValue
 
-class ValpasKelaServlet(implicit val application: KoskiApplication) extends ValpasApiServlet with NoCache with RequiresValpasKelaSession {
+class ValpasKelaServlet(implicit val application: KoskiApplication) extends ValpasApiServlet with NoCache with LuovutuspalveluAuthenticationSupport with RequiresValpasKelaSession {
   private lazy val valpasKelaService = new ValpasKelaService(application)
 
   post("/hetu") {

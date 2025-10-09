@@ -2,7 +2,7 @@ package fi.oph.koski.omadataoauth2
 
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.http.HttpStatus
-import fi.oph.koski.koskiuser.{KoskiSpecificSession, RequiresOmaDataOAuth2}
+import fi.oph.koski.koskiuser.{KoskiSpecificSession, LuovutuspalveluAuthenticationSupport, RequiresOmaDataOAuth2}
 import fi.oph.koski.log.KoskiAuditLogMessageField.{omaDataKumppani, omaDataOAuth2Scope, oppijaHenkiloOid}
 import fi.oph.koski.log.KoskiOperation.{OAUTH2_KATSOMINEN_AKTIIVISET_JA_PAATTYNEET_OPINNOT, OAUTH2_KATSOMINEN_KAIKKI_TIEDOT, OAUTH2_KATSOMINEN_SUORITETUT_TUTKINNOT}
 import fi.oph.koski.log.{AuditLog, KoskiAuditLogMessage, KoskiOperation, Logging}
@@ -14,7 +14,7 @@ import java.time.format.DateTimeFormatter
 import scala.reflect.runtime.universe.TypeTag
 
 class OmaDataOAuth2ResourceServerServlet(implicit val application: KoskiApplication) extends KoskiSpecificApiServlet
-  with Logging with ContentEncodingSupport with NoCache with RequiresOmaDataOAuth2 {
+  with Logging with ContentEncodingSupport with NoCache with LuovutuspalveluAuthenticationSupport with RequiresOmaDataOAuth2 {
   // in: access token
   // out: data, jos käyttäjällä oikeudet kyseiseen access tokeniin.
   //      TAI OAuth2-protokollan mukainen virheilmoitus
