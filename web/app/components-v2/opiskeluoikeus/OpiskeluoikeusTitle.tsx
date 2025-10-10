@@ -34,12 +34,14 @@ export const OpiskeluoikeusTitle = (props: OpiskeluoikeusTitleProps) => {
     props.opiskeluoikeudenNimi ||
     t(props.opiskeluoikeus.suoritukset[0]?.tyyppi.nimi)
 
+  const keepCapitalized = props.opiskeluoikeus.tyyppi.koodiarvo === 'ibtutkinto'
+
   const kansalainenTaiSuoritusjako = useKansalainenTaiSuoritusjako()
   const otsikkoteksti = kansalainenTaiSuoritusjako
     ? koulutuksenNimi
     : join(
         props.oppilaitos || t(props.opiskeluoikeus.oppilaitos?.nimi),
-        uncapitalize(koulutuksenNimi)
+        keepCapitalized ? koulutuksenNimi : uncapitalize(koulutuksenNimi)
       )
 
   const vainYhdenPäättävänTilanVuosi =
