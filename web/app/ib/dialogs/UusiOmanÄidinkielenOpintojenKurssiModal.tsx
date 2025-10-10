@@ -88,7 +88,7 @@ export const UusiOmanÄidinkielenOpintojenKurssiModal = ({
               koodiviite && setKurssi(koodiviite as PreIBOmanÄidinkielenOpinto)
             }}
             value={kurssi ? kurssi.koodiarvo : undefined}
-            testId={'omanÄidinkielenOpinnot.kurssimodal.moduuli'}
+            testId={'koulutusmoduuli'}
           />
         </label>
         <label>
@@ -116,7 +116,7 @@ export const UusiOmanÄidinkielenOpintojenKurssiModal = ({
                 )
             }}
             value={arvosana ? arvosana.koodiarvo : undefined}
-            testId={'omanÄidinkielenOpinnot.kurssimodal.arvosana'}
+            testId={'arvosana'}
           />
         </label>
         <label>
@@ -124,7 +124,7 @@ export const UusiOmanÄidinkielenOpintojenKurssiModal = ({
           <DateInput
             value={arviointipäivä}
             onChange={(date) => setArviointipäivä(date)}
-            testId={'omanÄidinkielenOpinnot.kurssimodal.päivä'}
+            testId={'päivä'}
           />
         </label>
         <label>
@@ -135,7 +135,7 @@ export const UusiOmanÄidinkielenOpintojenKurssiModal = ({
               koodiviite && setKieli(koodiviite)
             }}
             value={kieli ? kieli.koodiarvo : undefined}
-            testId={'omanÄidinkielenOpinnot.kurssimodal.kieli'}
+            testId={'kieli'}
           />
         </label>
         <Spacer />

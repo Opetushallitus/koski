@@ -50,7 +50,7 @@ export const UusiPuhviKoeModal = ({ onClose, onSubmit }: UusiPuhviKoeModal) => {
               koodiviite && setArvosana(koodiviite as PreIBPuhviKoe2019Arvosana)
             }}
             value={arvosana ? arvosana.koodiarvo : undefined}
-            testId={'puhviKoe.modal.arvosana'}
+            testId={'arvosana'}
           />
         </label>
         <label>
@@ -58,7 +58,7 @@ export const UusiPuhviKoeModal = ({ onClose, onSubmit }: UusiPuhviKoeModal) => {
           <DateInput
             value={päivä}
             onChange={(date) => setPäivä(date)}
-            testId={'puhviKoe.modal.päivä'}
+            testId={'päivä'}
           />
         </label>
         <Spacer />

@@ -38,8 +38,8 @@ export const DateInput: React.FC<DateInputProps> = (props) => {
     inputKey
   } = useDateEditState(props)
 
-  const inputId = useTestId('input')
-  const buttonId = useTestId('button')
+  const inputId = useTestId(props.testId ? `${props.testId}.input` : 'input')
+  const buttonId = useTestId(props.testId ? `${props.testId}.button` : 'button')
 
   return (
     <div className="DateEdit__field">
