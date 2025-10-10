@@ -66,7 +66,7 @@ export const UusiSuullisenKielitaidonKoeModal = ({
               koodiviite && setKieli(koodiviite)
             }}
             value={kieli ? kieli.koodiarvo : undefined}
-            testId={'suullisenKielitaidonKokeet.modal.kieli'}
+            testId={'kieli'}
           />
         </label>
         <label>
@@ -84,7 +84,7 @@ export const UusiSuullisenKielitaidonKoeModal = ({
                 )
             }}
             value={arvosana ? arvosana.koodiarvo : undefined}
-            testId={'suullisenKielitaidonKokeet.modal.arvosana'}
+            testId={'arvosana'}
           />
         </label>
         <label>
@@ -99,7 +99,7 @@ export const UusiSuullisenKielitaidonKoeModal = ({
                 )
             }}
             value={taitotaso ? taitotaso.koodiarvo : undefined}
-            testId={'suullisenKielitaidonKokeet.modal.taitotaso'}
+            testId={'taitotaso'}
           />
         </label>
         <label>
@@ -107,7 +107,7 @@ export const UusiSuullisenKielitaidonKoeModal = ({
           <DateInput
             value={päivä}
             onChange={(date) => setPäivä(date)}
-            testId={'suullisenKielitaidonKokeet.modal.päivä'}
+            testId={'päivä'}
           />
         </label>
         <Spacer />

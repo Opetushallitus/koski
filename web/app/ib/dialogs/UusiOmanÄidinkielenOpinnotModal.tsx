@@ -63,7 +63,7 @@ export const UusiOmanÄidinkielenOpinnotModal = ({
                 )
             }}
             value={arvosana ? arvosana.koodiarvo : undefined}
-            testId={'omanÄidinkielenOpinnot.modal.arvosana'}
+            testId={'arvosana'}
           />
         </label>
         <label>
@@ -71,7 +71,7 @@ export const UusiOmanÄidinkielenOpinnotModal = ({
           <DateInput
             value={arviointipäivä}
             onChange={(date) => setArviointipäivä(date)}
-            testId={'omanÄidinkielenOpinnot.modal.päivä'}
+            testId={'päivä'}
           />
         </label>
         <label>
@@ -82,7 +82,7 @@ export const UusiOmanÄidinkielenOpinnotModal = ({
               koodiviite && setKieli(koodiviite)
             }}
             value={kieli ? kieli.koodiarvo : undefined}
-            testId={'omanÄidinkielenOpinnot.modal.kieli'}
+            testId={'kieli'}
           />
         </label>
         <label>

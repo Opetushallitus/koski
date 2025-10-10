@@ -92,6 +92,7 @@ export const EditOmanÄidinkielenOpintojenOsasuoritusModal = ({
           {osasuoritus.tunnustettu ? (
             <fieldset>
               <LocalizedTextEdit
+                testId={'tunnustus.selite'}
                 large
                 value={osasuoritus.tunnustettu.selite}
                 onChange={form.set(...osasuoritusPath, 'tunnustettu', 'selite')}
@@ -104,11 +105,12 @@ export const EditOmanÄidinkielenOpintojenOsasuoritusModal = ({
                   'rahoituksenPiirissä'
                 )}
                 label="Rahoituksen piirissä"
-                testId="rahoituksenPiirissä"
+                testId="tunnustus.rahoituksenPiirissä"
               />
             </fieldset>
           ) : (
             <FlatButton
+              testId={'tunnustus'}
               onClick={() =>
                 form.set(
                   ...osasuoritusPath,

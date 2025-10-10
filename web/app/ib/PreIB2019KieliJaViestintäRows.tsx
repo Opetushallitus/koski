@@ -120,6 +120,7 @@ const PreIB2019OmanÄidinkielenOpinnotRows: React.FC<
       <SpacerLine />
       <KeyValueRow localizableLabel="Oman äidinkielen opinnot">
         <FlatButton
+          testId="omanÄidinkielenOpinnot.lisää"
           onClick={() => setShowLisääOmanÄidinkielenOpinnotModal(true)}
         >
           {t('Lisää täydentävät oman äidinkielen opinnot')}
@@ -151,6 +152,7 @@ const PreIB2019OmanÄidinkielenOpinnotRows: React.FC<
         <Removable
           isRemovable={form.editMode}
           onClick={removeOmanÄidinkielenOpinnot}
+          testId="omanÄidinkielenOpinnot"
         >
           <KeyValueTable>
             <KeyValueRow localizableLabel="Arvosana" innerKeyValueTable>
@@ -249,7 +251,10 @@ const PreIB2019OmanÄidinkielenOpinnotRows: React.FC<
             )}
             {form.editMode && (
               <KeyValueRow innerKeyValueTable>
-                <FlatButton onClick={() => setShowLisääKurssiModal(true)}>
+                <FlatButton
+                  testId="omanÄidinkielenOpinnot.lisääOsasuoritus"
+                  onClick={() => setShowLisääKurssiModal(true)}
+                >
                   {t('Lisää osasuoritus')}
                 </FlatButton>
                 <Spacer />
@@ -403,7 +408,7 @@ const OmanÄidinkielenOpintojenKurssi: React.FC<
             ],
             index
           )}
-          testId="delete"
+          testId={`omanÄidinkielenOpinnot.${index}.delete`}
         />
       )}
       <div className="Kurssi__arvosana">
@@ -418,27 +423,37 @@ const OmanÄidinkielenOpintojenKurssi: React.FC<
         <Details id={tooltipId}>
           <KeyValueTable>
             <KeyValueRow localizableLabel="Nimi">
-              {t(osasuoritus.koulutusmoduuli.tunniste.nimi)}
+              <TestIdText id="nimi">
+                {t(osasuoritus.koulutusmoduuli.tunniste.nimi)}
+              </TestIdText>
             </KeyValueRow>
             <KeyValueRow localizableLabel="Laajuus">
-              {osasuoritus.koulutusmoduuli.laajuus?.arvo}{' '}
-              {t(osasuoritus.koulutusmoduuli.laajuus?.yksikkö.nimi)}
+              <TestIdText id="laajuus">
+                {osasuoritus.koulutusmoduuli.laajuus?.arvo}{' '}
+                {t(osasuoritus.koulutusmoduuli.laajuus?.yksikkö.nimi)}
+              </TestIdText>
             </KeyValueRow>
             <KeyValueRow localizableLabel="Suorituskieli">
-              {t(osasuoritus.suorituskieli?.nimi)}
+              <TestIdText id="suorituskieli">
+                {t(osasuoritus.suorituskieli?.nimi)}
+              </TestIdText>
             </KeyValueRow>
             {osasuoritus.arviointi && (
               <KeyValueRow localizableLabel="Arviointi">
                 {osasuoritus.arviointi.map((arviointi, arviointiIndex) => (
                   <KeyValueTable key={arviointiIndex}>
                     <KeyValueRow localizableLabel="Arvosana" innerKeyValueTable>
-                      {`${arviointi.arvosana.koodiarvo} (${t(arviointi.arvosana.nimi)})`}
+                      <TestIdText id={`arvosana.${arviointiIndex}`}>
+                        {`${arviointi.arvosana.koodiarvo} (${t(arviointi.arvosana.nimi)})`}
+                      </TestIdText>
                     </KeyValueRow>
                     <KeyValueRow
                       localizableLabel="Arviointipäivä"
                       innerKeyValueTable
                     >
-                      {ISO2FinnishDate(arviointi.päivä)}
+                      <TestIdText id={`arviointipäivä.${arviointiIndex}`}>
+                        {ISO2FinnishDate(arviointi.päivä)}
+                      </TestIdText>
                     </KeyValueRow>
                   </KeyValueTable>
                 ))}
@@ -490,7 +505,7 @@ const PreIB2019PuhviKoeRows: React.FC<PreIB2019KieliJaViestintäRowsProps> = ({
     <>
       <SpacerLine />
       <KeyValueRow localizableLabel="Toisen asteen puheviestintätaitojen päättökoe">
-        <FlatButton onClick={() => setShowModal(true)}>
+        <FlatButton onClick={() => setShowModal(true)} testId="puhviKoe.lisää">
           {t('Lisää toisen asteen puheviestintätaitojen päättökoe')}
         </FlatButton>
         {showModal && (
@@ -510,7 +525,11 @@ const PreIB2019PuhviKoeRows: React.FC<PreIB2019KieliJaViestintäRowsProps> = ({
     <>
       <SpacerLine />
       <KeyValueRow localizableLabel="Toisen asteen puheviestintätaitojen päättökoe">
-        <Removable isRemovable={form.editMode} onClick={removePuhviKoe}>
+        <Removable
+          isRemovable={form.editMode}
+          onClick={removePuhviKoe}
+          testId="puhviKoe"
+        >
           <KeyValueTable>
             <KeyValueRow localizableLabel="Arvosana" innerKeyValueTable>
               {form.editMode ? (
@@ -590,7 +609,8 @@ const PreIB2019SuullisenKielitaidonKokeetRows: React.FC<
                   ],
                   index
                 )}
-                key={`suullisenkielitaidonkoe.${index}`}
+                key={`suullisenKielitaidonKoe.${index}`}
+                testId={`suullisenKielitaidonKoe.${index}`}
               >
                 <PreIB2019SuullisenKielitaidonKoeRows
                   form={form}
@@ -604,7 +624,10 @@ const PreIB2019SuullisenKielitaidonKokeetRows: React.FC<
         )}
         {form.editMode && (
           <>
-            <FlatButton onClick={() => setShowModal(true)}>
+            <FlatButton
+              onClick={() => setShowModal(true)}
+              testId="suullisenKielitaidonKoe.lisää"
+            >
               {t('Lisää suullisen kielitaidon koe')}
             </FlatButton>
             <Spacer />
