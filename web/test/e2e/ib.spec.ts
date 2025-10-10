@@ -1,5 +1,6 @@
 import { expect, test } from './base'
-import { virkailija } from './setup/auth'
+import { getVirkailijaSession, kansalainen, virkailija } from './setup/auth'
+import { KoskiFixtures } from './fixtures/KoskiFixtures'
 
 test.describe('IB', () => {
   test.use({ storageState: virkailija('kalle') })
@@ -491,6 +492,7 @@ test.describe('IB', () => {
       })
 
       test('Pre-IB 2019:n suorituksen tiedot näkyvissä', async ({
+        page,
         ibOppijaPage
       }) => {
         const suoritus = ibOppijaPage.$.suoritukset(0)
@@ -509,116 +511,40 @@ test.describe('IB', () => {
         await expect(vahvistus.henkilö(0).elem).toHaveText(
           'Reijo Reksi (rehtori)'
         )
+
+        await expect(page.getByTestId('oo.0.suoritukset.0.omanÄidinkielenOpinnot.arvosana')).toContainText('8 hyvä')
+        await expect(page.getByTestId('oo.0.suoritukset.0.omanÄidinkielenOpinnot.arviointipäivä.value')).toContainText('4.9.2021')
+        await expect(page.getByTestId('oo.0.suoritukset.0.omanÄidinkielenOpinnot.kieli')).toContainText('saame, lappi')
+        await expect(page.getByTestId('oo.0.suoritukset.0.laajuus.value')).toContainText('3 op')
+
+        await expect(page.getByTestId('oo.0.suoritukset.0.omanÄidinkielenOpinnot.0.osasuoritus')).toContainText('OÄI1')
+        await expect(page.getByTestId('oo.0.suoritukset.0.omanÄidinkielenOpinnot.0.arvosana')).toContainText('O')
+        await expect(page.getByTestId('oo.0.suoritukset.0.omanÄidinkielenOpinnot.1.osasuoritus')).toContainText('OÄI2')
+        await expect(page.getByTestId('oo.0.suoritukset.0.omanÄidinkielenOpinnot.1.arvosana')).toContainText('O')
+        await expect(page.getByTestId('oo.0.suoritukset.0.omanÄidinkielenOpinnot.2.osasuoritus')).toContainText('OÄI3')
+        await expect(page.getByTestId('oo.0.suoritukset.0.omanÄidinkielenOpinnot.2.arvosana')).toContainText('O')
+
+        await expect(page.getByTestId('oo.0.suoritukset.0.puhviKoe.arvosana')).toContainText('7 tyydyttävä')
+        await expect(page.getByTestId('oo.0.suoritukset.0.puhviKoe.kuvaus.value')).toContainText('Puhvikokeen kuvaus lorem ipsum dolor sit amet')
+        await expect(page.getByTestId('oo.0.suoritukset.0.puhviKoe.päivä.value')).toContainText('30.8.2019')
+
+        await expect(page.getByTestId('oo.0.suoritukset.0.suullisenKielitaidonKokeet.0.kieli')).toContainText('englanti')
+        await expect(page.getByTestId('oo.0.suoritukset.0.suullisenKielitaidonKokeet.0.arvosana')).toContainText('6 kohtalainen')
+        await expect(page.getByTestId('oo.0.suoritukset.0.suullisenKielitaidonKokeet.0.taitotaso')).toContainText('B1.1')
+        await expect(page.getByTestId('oo.0.suoritukset.0.suullisenKielitaidonKokeet.0.kuvaus.value')).toContainText('Englannin suullisen kielitaidon koe lorem ipsum dolor sit amet')
+        await expect(page.getByTestId('oo.0.suoritukset.0.suullisenKielitaidonKokeet.0.päivä.value')).toContainText('3.9.2019')
+
+        await expect(page.getByTestId('oo.0.suoritukset.0.suullisenKielitaidonKokeet.1.kieli')).toContainText('espanja')
+        await expect(page.getByTestId('oo.0.suoritukset.0.suullisenKielitaidonKokeet.1.arvosana')).toContainText('S hyväksytty')
+        await expect(page.getByTestId('oo.0.suoritukset.0.suullisenKielitaidonKokeet.1.taitotaso')).toContainText('Yli C1.1')
+        await expect(page.getByTestId('oo.0.suoritukset.0.suullisenKielitaidonKokeet.1.kuvaus.value')).toContainText('Puhetaito äidinkielen tasolla')
+        await expect(page.getByTestId('oo.0.suoritukset.0.suullisenKielitaidonKokeet.1.päivä.value')).toContainText('3.9.2019')
       })
 
       test('Pre-IB 2019:n oppiaineiden ja kurssien arvosanat näytetään', async ({
         ibOppijaPage
       }) => {
-        await ibOppijaPage.testOppiaineryhmät({
-          oppiaineet: [
-            {
-              nimi: 'Äidinkieli ja kirjallisuus, Suomen kieli ja kirjallisuus',
-              arvosana: '9',
-              kurssit: [
-                { tunniste: 'ÄI1', arvosana: '8', laajuus: 2 },
-                { tunniste: 'ÄI2', arvosana: '8', laajuus: 2 }
-              ]
-            },
-            {
-              nimi: 'Matematiikka, lyhyt oppimäärä',
-              arvosana: '10',
-              kurssit: [
-                { tunniste: 'MAB2', arvosana: '10', laajuus: 2 },
-                { tunniste: 'MAB3', arvosana: '10', laajuus: 2 }
-              ]
-            },
-            {
-              nimi: 'Uskonto/Elämänkatsomustieto',
-              arvosana: '9',
-              kurssit: [{ tunniste: 'UK1', arvosana: '9', laajuus: 2 }]
-            },
-            {
-              nimi: 'Liikunta',
-              arvosana: '8',
-              kurssit: [
-                { tunniste: 'LI2', arvosana: '8', laajuus: 2 },
-                {
-                  tunniste: 'LITT1',
-                  paikallinen: true,
-                  arvosana: 'S',
-                  laajuus: 1
-                }
-              ]
-            },
-            {
-              nimi: 'Fysiikka',
-              arvosana: '8',
-              kurssit: []
-            },
-            {
-              nimi: 'Kemia',
-              arvosana: '7',
-              kurssit: [{ tunniste: 'KE1', arvosana: '6', laajuus: 2 }]
-            },
-            {
-              nimi: 'A-kieli, englanti',
-              arvosana: '9',
-              kurssit: [
-                { tunniste: 'ENA1', arvosana: '10', laajuus: 2 },
-                { tunniste: 'ENA2', arvosana: '9', laajuus: 2 }
-              ]
-            },
-            {
-              nimi: 'A-kieli, espanja',
-              arvosana: '6',
-              kurssit: [
-                { tunniste: 'VKA1', arvosana: '6', laajuus: 2 },
-                { tunniste: 'VKA2', arvosana: '7', laajuus: 2 }
-              ]
-            },
-            {
-              nimi: 'Tanssi ja liike',
-              arvosana: '6',
-              kurssit: [
-                {
-                  tunniste: 'ITT234',
-                  paikallinen: true,
-                  arvosana: '6',
-                  laajuus: 1
-                },
-                {
-                  tunniste: 'ITT235',
-                  paikallinen: true,
-                  arvosana: '7',
-                  laajuus: 1
-                }
-              ]
-            },
-            {
-              nimi: 'Muut suoritukset',
-              kurssit: [
-                { tunniste: 'RUB11', arvosana: '6', laajuus: 2 },
-                { tunniste: 'VKAAB31', arvosana: '6', laajuus: 2 },
-                { tunniste: 'ÄI1', arvosana: '7', laajuus: 2 }
-              ]
-            },
-            {
-              nimi: 'Lukiodiplomit',
-              kurssit: [{ tunniste: 'KULD2', arvosana: '9', laajuus: 2 }]
-            },
-            {
-              nimi: 'Teemaopinnot',
-              kurssit: [
-                {
-                  tunniste: 'HAI765',
-                  paikallinen: true,
-                  arvosana: 'S',
-                  laajuus: 1
-                }
-              ]
-            }
-          ]
-        })
+        await ibOppijaPage.testOppiaineryhmät(preIb2019OppiaineetJaKurssit)
       })
     })
 
@@ -836,6 +762,194 @@ test.describe('IB', () => {
             await uusiOppiaine.delete.button.click()
             await expect(uusiOppiaine.nimi.elem).not.toBeAttached()
           })
+        })
+      })
+
+      test.describe('Oman äidinkielen opintojen muokkaus', () => {
+        test('Oman äidinkielen opintojen muokkaus', async ({ page, ibOppijaPage }) => {
+          await page.getByTestId('oo.0.suoritukset.0.omanÄidinkielenOpinnot.arvosana.input').click()
+          await page.getByTestId('oo.0.suoritukset.0.omanÄidinkielenOpinnot.arvosana.options.10.item').click()
+          await page.getByTestId('oo.0.suoritukset.0.omanÄidinkielenOpinnot.arviointipäivä.edit.edit.input').click()
+          await page.getByTestId('oo.0.suoritukset.0.omanÄidinkielenOpinnot.arviointipäivä.edit.edit.input').fill('10.10.2025')
+          await page.getByTestId('oo.0.suoritukset.0.omanÄidinkielenOpinnot.kieli.input').click()
+          await page.getByTestId('oo.0.suoritukset.0.omanÄidinkielenOpinnot.kieli.options.ET.item').click()
+          await page.getByTestId('oo.0.suoritukset.0.laajuus.edit.input').click()
+          await page.getByTestId('oo.0.suoritukset.0.laajuus.edit.input').fill('12')
+
+          await ibOppijaPage.tallenna()
+
+          await expect(page.getByTestId('oo.0.suoritukset.0.omanÄidinkielenOpinnot.arvosana')).toContainText('10 erinomainen')
+          await expect(page.getByTestId('oo.0.suoritukset.0.omanÄidinkielenOpinnot.arviointipäivä.value')).toContainText('10.10.2025')
+          await expect(page.getByTestId('oo.0.suoritukset.0.omanÄidinkielenOpinnot.kieli')).toContainText('viro, eesti')
+          await expect(page.getByTestId('oo.0.suoritukset.0.laajuus.value')).toContainText('12 op')
+        })
+
+        test('Oman äidinkielen opintojen kurssin muokkaus', async ({ page, ibOppijaPage }) => {
+          await page.getByTestId('oo.0.suoritukset.0.omanÄidinkielenOpinnot.1.osasuoritus').click()
+
+          await page.getByTestId('oo.0.suoritukset.0.modal.laajuus.edit.input').click()
+          await page.getByTestId('oo.0.suoritukset.0.modal.laajuus.edit.input').fill('9')
+          await page.getByTestId('oo.0.suoritukset.0.modal.arvosana.edit.input').click()
+          await page.getByTestId('oo.0.suoritukset.0.modal.arvosana.edit.options.arviointiasteikkoyleissivistava_10.item').click()
+          await page.getByTestId('oo.0.suoritukset.0.modal.date.edit.input').click()
+          await page.getByTestId('oo.0.suoritukset.0.modal.date.edit.input').fill('10.10.2025')
+          await page.getByTestId('oo.0.suoritukset.0.modal.suorituskieli.input').click()
+          await page.getByTestId('oo.0.suoritukset.0.modal.suorituskieli.options.ET.item').click()
+          await page.getByTestId('oo.0.suoritukset.0.modal.tunnustus').click()
+          await page.getByTestId('oo.0.suoritukset.0.modal.tunnustus.selite.input').click()
+          await page.getByTestId('oo.0.suoritukset.0.modal.tunnustus.selite.input').fill('Tunnustettu suoritus')
+          await page.getByTestId('oo.0.suoritukset.0.modal.tunnustus.rahoituksenPiirissä.label').click()
+
+          await page.getByTestId('oo.0.suoritukset.0.modal.confirm').click()
+          await ibOppijaPage.tallenna()
+
+          await page.getByTestId('oo.0.suoritukset.0.omanÄidinkielenOpinnot.1.osasuoritus').click()
+
+          await expect(page.getByTestId('oo.0.suoritukset.0.nimi')).toContainText('Vuorovaikutus 1')
+          await expect(page.getByTestId('oo.0.suoritukset.0.laajuus')).toContainText('9 opintopistettä')
+          await expect(page.getByTestId('oo.0.suoritukset.0.suorituskieli')).toContainText('viro')
+          await expect(page.getByTestId('oo.0.suoritukset.0.arvosana.0')).toContainText('10 (erinomainen)')
+          await expect(page.getByTestId('oo.0.suoritukset.0.arviointipäivä.0')).toContainText('10.10.2025')
+          await expect(page.getByTestId('oo.0.suoritukset.0.tunnustettu.selite')).toContainText('Tunnustettu suoritus')
+          await expect(page.getByTestId('oo.0.suoritukset.0.tunnustettu.rahoituksenPiirissä')).toContainText('Kyllä')
+        })
+        test('Oman äidinkielen opintojen kurssin poistaminen ja lisääminen', async ({ page, ibOppijaPage }) => {
+          // Poistetaan kurssi OÄI2
+          await expect(page.getByTestId('oo.0.suoritukset.0.omanÄidinkielenOpinnot.1.osasuoritus')).toContainText('OÄI2')
+          await page.getByTestId('oo.0.suoritukset.0.omanÄidinkielenOpinnot.1.delete').click()
+
+          await ibOppijaPage.tallenna()
+
+          await expect(page.getByTestId('oo.0.suoritukset.0.omanÄidinkielenOpinnot.1.osasuoritus')).toContainText('OÄI3')
+
+          // Lisätään kurssi OÄI2 takaisin
+          await ibOppijaPage.edit()
+          await page.getByTestId('oo.0.suoritukset.0.omanÄidinkielenOpinnot.lisääOsasuoritus').click()
+
+          await page.getByTestId('oo.0.suoritukset.0.modal.koulutusmoduuli.input').click()
+          await page.getByTestId('oo.0.suoritukset.0.modal.koulutusmoduuli.options.OÄI2.item').click()
+          await page.getByTestId('oo.0.suoritukset.0.modal.laajuus.edit.input').click()
+          await page.getByTestId('oo.0.suoritukset.0.modal.laajuus.edit.input').fill('2')
+          await page.getByTestId('oo.0.suoritukset.0.modal.arvosana.input').click()
+          await page.getByTestId('oo.0.suoritukset.0.modal.arvosana.options.8.item').click()
+          await page.getByTestId('oo.0.suoritukset.0.modal.päivä.input').click()
+          await page.getByTestId('oo.0.suoritukset.0.modal.päivä.input').fill('10.10.2025')
+          await page.getByTestId('oo.0.suoritukset.0.modal.kieli.input').click()
+          await page.getByTestId('oo.0.suoritukset.0.modal.kieli.options.ET.item').click()
+          await page.getByTestId('oo.0.suoritukset.0.modal.confirm').click()
+
+          await ibOppijaPage.tallenna()
+
+          await expect(page.getByTestId('oo.0.suoritukset.0.omanÄidinkielenOpinnot.2.osasuoritus')).toContainText('OÄI2')
+          await expect(page.getByTestId('oo.0.suoritukset.0.omanÄidinkielenOpinnot.2.arvosana')).toContainText('8')
+        })
+        test('Oman äidinkielen opintojen poistaminen ja lisääminen', async ({ page, ibOppijaPage }) => {
+          await page.getByTestId('oo.0.suoritukset.0.omanÄidinkielenOpinnot.delete').click()
+          await ibOppijaPage.tallenna()
+          await ibOppijaPage.edit()
+          await page.getByTestId('oo.0.suoritukset.0.omanÄidinkielenOpinnot.lisää').click()
+
+          await page.getByTestId('oo.0.suoritukset.0.modal.arvosana.input').click()
+          await page.getByTestId('oo.0.suoritukset.0.modal.arvosana.options.10.item').click()
+          await page.getByTestId('oo.0.suoritukset.0.modal.päivä.input').click()
+          await page.getByTestId('oo.0.suoritukset.0.modal.päivä.input').fill('10.10.2025')
+          await page.getByTestId('oo.0.suoritukset.0.modal.kieli.input').click()
+          await page.getByTestId('oo.0.suoritukset.0.modal.kieli.options.ET.item').click()
+          await page.getByTestId('oo.0.suoritukset.0.modal.laajuus.edit.input').click()
+          await page.getByTestId('oo.0.suoritukset.0.modal.laajuus.edit.input').fill('5')
+          await page.getByTestId('oo.0.suoritukset.0.modal.confirm').click()
+
+          await ibOppijaPage.tallenna()
+
+          await expect(page.getByTestId('oo.0.suoritukset.0.omanÄidinkielenOpinnot.arvosana')).toContainText('10 erinomainen')
+          await expect(page.getByTestId('oo.0.suoritukset.0.omanÄidinkielenOpinnot.arviointipäivä.value')).toContainText('10.10.2025')
+          await expect(page.getByTestId('oo.0.suoritukset.0.omanÄidinkielenOpinnot.kieli')).toContainText('viro, eesti')
+          await expect(page.getByTestId('oo.0.suoritukset.0.laajuus.value')).toContainText('5 op')
+        })
+      })
+
+      test.describe('Puhvi-kokeen muokkaus', () => {
+        test('Puhvi-kokeen muokkaaminen', async ({ page, ibOppijaPage }) => {
+          await page.getByTestId('oo.0.suoritukset.0.puhviKoe.arvosana.input').click()
+          await page.getByTestId('oo.0.suoritukset.0.puhviKoe.arvosana.options.S.item').click()
+          await page.getByTestId('oo.0.suoritukset.0.puhviKoe.kuvaus.edit.input').click()
+          await page.getByTestId('oo.0.suoritukset.0.puhviKoe.kuvaus.edit.input').fill('Puhvi-kokeen kuvaus')
+          await page.getByTestId('oo.0.suoritukset.0.puhviKoe.päivä.edit.edit.input').click()
+          await page.getByTestId('oo.0.suoritukset.0.puhviKoe.päivä.edit.edit.input').fill('10.10.2025')
+
+          await ibOppijaPage.tallenna()
+
+          await expect(page.getByTestId('oo.0.suoritukset.0.puhviKoe.arvosana')).toContainText('S hyväksytty')
+          await expect(page.getByTestId('oo.0.suoritukset.0.puhviKoe.kuvaus.value')).toContainText('Puhvi-kokeen kuvaus')
+          await expect(page.getByTestId('oo.0.suoritukset.0.puhviKoe.päivä.value')).toContainText('10.10.2025')
+        })
+
+        test('Puhvi-kokeen poistaminen ja lisääminen', async ({ page, ibOppijaPage }) => {
+          await page.getByTestId('oo.0.suoritukset.0.puhviKoe.delete').click()
+          await ibOppijaPage.tallenna()
+
+          await ibOppijaPage.edit()
+          await page.getByTestId('oo.0.suoritukset.0.puhviKoe.lisää').click()
+
+          await page.getByTestId('oo.0.suoritukset.0.modal.arvosana.input').click()
+          await page.getByTestId('oo.0.suoritukset.0.modal.arvosana.options.10.item').click()
+          await page.getByTestId('oo.0.suoritukset.0.modal.päivä.input').click()
+          await page.getByTestId('oo.0.suoritukset.0.modal.päivä.input').fill('10.10.2025')
+
+          await page.getByTestId('oo.0.suoritukset.0.modal.confirm').click()
+          await ibOppijaPage.tallenna()
+
+          await expect(page.getByTestId('oo.0.suoritukset.0.puhviKoe.arvosana')).toContainText('10 erinomainen')
+          await expect(page.getByTestId('oo.0.suoritukset.0.puhviKoe.päivä.value')).toContainText('10.10.2025')
+        })
+      })
+
+      test.describe('Suullisten kielitaidon kokeiden muokkaaminen', () => {
+        test('Suullisen kielitaidon kokeen muokkaaminen', async ({ page, ibOppijaPage }) => {
+          await page.getByTestId('oo.0.suoritukset.0.suullisenKielitaidonKokeet.1.kieli.input').click()
+          await page.getByTestId('oo.0.suoritukset.0.suullisenKielitaidonKokeet.1.kieli.options.CA.item').click()
+          await page.getByTestId('oo.0.suoritukset.0.suullisenKielitaidonKokeet.1.arvosana.input').click()
+          await page.getByTestId('oo.0.suoritukset.0.suullisenKielitaidonKokeet.1.arvosana.options.10.item').click()
+          await page.getByTestId('oo.0.suoritukset.0.suullisenKielitaidonKokeet.1.taitotaso.input').click()
+          await page.getByTestId('oo.0.suoritukset.0.suullisenKielitaidonKokeet.1.taitotaso.options.C1.1.item').click()
+          await page.getByTestId('oo.0.suoritukset.0.suullisenKielitaidonKokeet.1.kuvaus.edit.input').click()
+          await page.getByTestId('oo.0.suoritukset.0.suullisenKielitaidonKokeet.1.kuvaus.edit.input').fill('Virheetön ääntäminen')
+          await page.getByTestId('oo.0.suoritukset.0.suullisenKielitaidonKokeet.1.päivä.edit.edit.input').click()
+          await page.getByTestId('oo.0.suoritukset.0.suullisenKielitaidonKokeet.1.päivä.edit.edit.input').fill('10.10.2025')
+
+          await ibOppijaPage.tallenna()
+
+          await expect(page.getByTestId('oo.0.suoritukset.0.suullisenKielitaidonKokeet.1.kieli')).toContainText('katalaani')
+          await expect(page.getByTestId('oo.0.suoritukset.0.suullisenKielitaidonKokeet.1.arvosana')).toContainText('10 erinomainen')
+          await expect(page.getByTestId('oo.0.suoritukset.0.suullisenKielitaidonKokeet.1.taitotaso')).toContainText('C1.1')
+          await expect(page.getByTestId('oo.0.suoritukset.0.suullisenKielitaidonKokeet.1.kuvaus.value')).toContainText('Virheetön ääntäminen')
+          await expect(page.getByTestId('oo.0.suoritukset.0.suullisenKielitaidonKokeet.1.päivä.value')).toContainText('10.10.2025')
+        })
+
+        test('Suullisen kielitaidon kokeen poistaminen ja lisääminen', async ({ page, ibOppijaPage }) => {
+          await page.getByTestId('oo.0.suoritukset.0.suullisenKielitaidonKoe.0.delete').click()
+          await ibOppijaPage.tallenna()
+          await expect(page.getByTestId('oo.0.suoritukset.0.suullisenKielitaidonKokeet.0.kieli')).not.toContainText('englanti')
+
+          await ibOppijaPage.edit()
+          await page.getByTestId('oo.0.suoritukset.0.suullisenKielitaidonKoe.lisää').click()
+
+          await page.getByTestId('oo.0.suoritukset.0.modal.kieli.input').click()
+          await page.getByTestId('oo.0.suoritukset.0.modal.kieli.options.DA.item').click()
+          await page.getByTestId('oo.0.suoritukset.0.modal.arvosana.input').click()
+          await page.getByTestId('oo.0.suoritukset.0.modal.arvosana.options.10.item').click()
+          await page.getByTestId('oo.0.suoritukset.0.modal.taitotaso.input').click()
+          await page.getByTestId('oo.0.suoritukset.0.modal.taitotaso.options.yli_C1.1.item').click()
+          await page.getByTestId('oo.0.suoritukset.0.modal.päivä.input').click()
+          await page.getByTestId('oo.0.suoritukset.0.modal.päivä.input').fill('10.10.2025')
+
+          await page.getByTestId('oo.0.suoritukset.0.modal.confirm').click()
+          await ibOppijaPage.tallenna()
+
+          await expect(page.getByTestId('oo.0.suoritukset.0.suullisenKielitaidonKokeet.1.kieli')).toContainText('tanska')
+          await expect(page.getByTestId('oo.0.suoritukset.0.suullisenKielitaidonKokeet.1.arvosana')).toContainText('10 erinomainen')
+          await expect(page.getByTestId('oo.0.suoritukset.0.suullisenKielitaidonKokeet.1.taitotaso')).toContainText('Yli C1.1')
+          await expect(page.getByTestId('oo.0.suoritukset.0.suullisenKielitaidonKokeet.1.päivä.value')).toContainText('10.10.2025')
         })
       })
     })
@@ -1302,3 +1416,187 @@ test.describe('IB', () => {
     })
   })
 })
+
+test.describe('IB kansalaisen käyttöliittymä', () => {
+
+  test.describe('Pre-IB 2019 kansalaisen näkymä', () => {
+    test.beforeAll(async ({ browser }, testInfo) => {
+      // Pakotetaan fixture-reset käyttämään virkailijan istuntoa
+      const virkailijaSessionPath = await getVirkailijaSession(
+        testInfo,
+        'kalle',
+        'kalle'
+      )
+      const ctx = await browser.newContext({
+        storageState: virkailijaSessionPath
+      })
+      const page = await ctx.newPage()
+      await new KoskiFixtures(page).reset()
+    })
+    test.use({ storageState: kansalainen('180300A8736') })
+
+    test('Renderöi PreIB2019-suorituksen tiedot kansalaiselle', async ({ page, kansalainenPage, ibOppijaPage }) => {
+      await kansalainenPage.goto()
+
+      await expect(page.locator('.header__heading')).toContainText('Opintoni')
+      await expect(page.getByTestId('oo.0.opiskeluoikeus.nimi')).toContainText('IB-tutkinto')
+
+      await page.locator('.OpiskeluoikeusTitle__expand').click()
+
+      // Opiskeluoikeuden tiedot
+      await expect(page.getByTestId('oo.0.opiskeluoikeus.tila.value.items.0.tila')).toContainText('Valmistunut')
+      await expect(page.getByTestId('oo.0.opiskeluoikeus.tila.value.items.0.rahoitus')).toContainText('Valtionosuusrahoitteinen koulutus')
+      await expect(page.getByTestId('oo.0.opiskeluoikeus.tila.value.items.1.tila')).toContainText('Läsnä')
+
+      // Suorituksen tiedot
+      await expect(page.getByTestId('oo.0.suoritukset.0.koulutus')).toContainText('Pre-IB 2019')
+      await expect(page.getByTestId('oo.0.suoritukset.0.organisaatio.value')).toContainText('Ressun lukio')
+      await expect(page.getByTestId('oo.0.suoritukset.0.ryhmä.value')).toContainText('AH')
+      await expect(page.getByTestId('oo.0.suoritukset.0.suorituskieli.value')).toContainText('englanti')
+
+      await expect(page.getByTestId('oo.0.suoritukset.0.omanÄidinkielenOpinnot.arvosana')).toContainText('8 hyvä')
+      await expect(page.getByTestId('oo.0.suoritukset.0.omanÄidinkielenOpinnot.arviointipäivä.value')).toContainText('4.9.2021')
+      await expect(page.getByTestId('oo.0.suoritukset.0.omanÄidinkielenOpinnot.kieli')).toContainText('saame, lappi')
+      await expect(page.getByTestId('oo.0.suoritukset.0.laajuus.value')).toContainText('3 op')
+      await expect(page.getByTestId('oo.0.suoritukset.0.omanÄidinkielenOpinnot.0.osasuoritus')).toContainText('OÄI1')
+      await expect(page.getByTestId('oo.0.suoritukset.0.omanÄidinkielenOpinnot.1.osasuoritus')).toContainText('OÄI2')
+      await expect(page.getByTestId('oo.0.suoritukset.0.omanÄidinkielenOpinnot.2.osasuoritus')).toContainText('OÄI3')
+
+      await expect(page.getByTestId('oo.0.suoritukset.0.puhviKoe.arvosana')).toContainText('7 tyydyttävä')
+      await expect(page.getByTestId('oo.0.suoritukset.0.puhviKoe.kuvaus.value')).toContainText('Puhvikokeen kuvaus')
+      await expect(page.getByTestId('oo.0.suoritukset.0.puhviKoe.päivä.value')).toContainText('30.8.2019')
+
+      await expect(page.getByTestId('oo.0.suoritukset.0.suullisenKielitaidonKokeet.0.kieli')).toContainText('englanti')
+      await expect(page.getByTestId('oo.0.suoritukset.0.suullisenKielitaidonKokeet.0.arvosana')).toContainText('6 kohtalainen')
+      await expect(page.getByTestId('oo.0.suoritukset.0.suullisenKielitaidonKokeet.0.taitotaso')).toContainText('B1.1')
+      await expect(page.getByTestId('oo.0.suoritukset.0.suullisenKielitaidonKokeet.0.kuvaus.value')).toContainText('Englannin suullisen kielitaidon koe lorem ipsum dolor sit amet')
+      await expect(page.getByTestId('oo.0.suoritukset.0.suullisenKielitaidonKokeet.0.päivä.value')).toContainText('3.9.2019')
+
+      await expect(page.getByTestId('oo.0.suoritukset.0.suullisenKielitaidonKokeet.1.kieli')).toContainText('espanja')
+      await expect(page.getByTestId('oo.0.suoritukset.0.suullisenKielitaidonKokeet.1.arvosana')).toContainText('S hyväksytty')
+      await expect(page.getByTestId('oo.0.suoritukset.0.suullisenKielitaidonKokeet.1.taitotaso')).toContainText('Yli C1.1')
+      await expect(page.getByTestId('oo.0.suoritukset.0.suullisenKielitaidonKokeet.1.kuvaus.value')).toContainText('Puhetaito äidinkielen tasolla')
+      await expect(page.getByTestId('oo.0.suoritukset.0.suullisenKielitaidonKokeet.1.päivä.value')).toContainText('3.9.2019')
+
+      await expect(page.getByTestId('oo.0.suoritukset.0.todistuksellaNäkyvätLisätiedot.value')).toContainText('Suorittanut etäopetuskokeiluna')
+
+      await ibOppijaPage.testOppiaineryhmät(preIb2019OppiaineetJaKurssit)
+    })
+
+    test('Pre-IB 2019 -sivulla ei saavutettavuusvirheitä', async ({
+      kansalainenPage,
+      makeAxeBuilder
+    }) => {
+      await kansalainenPage.goto()
+      const accessibilityScanResults = await makeAxeBuilder().analyze()
+      expect(accessibilityScanResults.violations).toEqual([])
+    })
+  })
+})
+
+
+const preIb2019OppiaineetJaKurssit = {
+  oppiaineet: [
+    {
+      nimi: 'Äidinkieli ja kirjallisuus, Suomen kieli ja kirjallisuus',
+      arvosana: '9',
+      kurssit: [
+        { tunniste: 'ÄI1', arvosana: '8', laajuus: 2 },
+        { tunniste: 'ÄI2', arvosana: '8', laajuus: 2 }
+      ]
+    },
+    {
+      nimi: 'Matematiikka, lyhyt oppimäärä',
+      arvosana: '10',
+      kurssit: [
+        { tunniste: 'MAB2', arvosana: '10', laajuus: 2 },
+        { tunniste: 'MAB3', arvosana: '10', laajuus: 2 }
+      ]
+    },
+    {
+      nimi: 'Uskonto/Elämänkatsomustieto',
+      arvosana: '9',
+      kurssit: [{ tunniste: 'UK1', arvosana: '9', laajuus: 2 }]
+    },
+    {
+      nimi: 'Liikunta',
+      arvosana: '8',
+      kurssit: [
+        { tunniste: 'LI2', arvosana: '8', laajuus: 2 },
+        {
+          tunniste: 'LITT1',
+          paikallinen: true,
+          arvosana: 'S',
+          laajuus: 1
+        }
+      ]
+    },
+    {
+      nimi: 'Fysiikka',
+      arvosana: '8',
+      kurssit: []
+    },
+    {
+      nimi: 'Kemia',
+      arvosana: '7',
+      kurssit: [{ tunniste: 'KE1', arvosana: '6', laajuus: 2 }]
+    },
+    {
+      nimi: 'A-kieli, englanti',
+      arvosana: '9',
+      kurssit: [
+        { tunniste: 'ENA1', arvosana: '10', laajuus: 2 },
+        { tunniste: 'ENA2', arvosana: '9', laajuus: 2 }
+      ]
+    },
+    {
+      nimi: 'A-kieli, espanja',
+      arvosana: '6',
+      kurssit: [
+        { tunniste: 'VKA1', arvosana: '6', laajuus: 2 },
+        { tunniste: 'VKA2', arvosana: '7', laajuus: 2 }
+      ]
+    },
+    {
+      nimi: 'Tanssi ja liike',
+      arvosana: '6',
+      kurssit: [
+        {
+          tunniste: 'ITT234',
+          paikallinen: true,
+          arvosana: '6',
+          laajuus: 1
+        },
+        {
+          tunniste: 'ITT235',
+          paikallinen: true,
+          arvosana: '7',
+          laajuus: 1
+        }
+      ]
+    },
+    {
+      nimi: 'Muut suoritukset',
+      kurssit: [
+        { tunniste: 'RUB11', arvosana: '6', laajuus: 2 },
+        { tunniste: 'VKAAB31', arvosana: '6', laajuus: 2 },
+        { tunniste: 'ÄI1', arvosana: '7', laajuus: 2 }
+      ]
+    },
+    {
+      nimi: 'Lukiodiplomit',
+      kurssit: [{ tunniste: 'KULD2', arvosana: '9', laajuus: 2 }]
+    },
+    {
+      nimi: 'Teemaopinnot',
+      kurssit: [
+        {
+          tunniste: 'HAI765',
+          paikallinen: true,
+          arvosana: 'S',
+          laajuus: 1
+        }
+      ]
+    }
+  ]
+}

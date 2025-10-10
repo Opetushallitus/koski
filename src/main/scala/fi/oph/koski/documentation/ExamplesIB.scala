@@ -78,9 +78,9 @@ object ExamplesIB {
     toimipiste = ressunLukio,
     vahvistus = ExampleData.vahvistusPaikkakunnalla(org = ressunLukio, kunta = helsinki),
     suorituskieli = englanti,
-    omanÄidinkielenOpinnot = Lukio2019ExampleData.omanÄidinkielenOpinnotSaame,
-    puhviKoe = Lukio2019ExampleData.puhviKoe,
-    suullisenKielitaidonKokeet = Some(List(Lukio2019ExampleData.suullisenKielitaidonKoeEnglanti, Lukio2019ExampleData.suullisenKielitaidonKoeEspanja)),
+    omanÄidinkielenOpinnot = Lukio2019ExampleData.omanÄidinkielenOpinnotSaame(),
+    puhviKoe = Lukio2019ExampleData.puhviKoe(),
+    suullisenKielitaidonKokeet = Some(List(Lukio2019ExampleData.suullisenKielitaidonKoeEnglanti(), Lukio2019ExampleData.suullisenKielitaidonKoeEspanja())),
     ryhmä = Some("AH"),
     todistuksellaNäkyvätLisätiedot = Some("Suorittanut etäopetuskokeiluna"),
     osasuoritukset = Some(List(

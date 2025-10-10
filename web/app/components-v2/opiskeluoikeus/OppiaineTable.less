@@ -31,6 +31,7 @@
 .OppiaineRow {
   &__icon {
     font-family: FontAwesome;
+    width: 15px;
   }
 
   &__nimi {
@@ -85,6 +86,11 @@
   .IconButton {
     margin-right: @baseline;
   }
+}
+
+.Oppiaine__clickable:hover,
+.Kurssi__clickable:hover {
+  cursor: pointer;
 }
 
 .KurssiDetails {

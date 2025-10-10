@@ -6,8 +6,14 @@ import { isPäätasonSuoritus } from '../types/fi/oph/koski/schema/PaatasonSuori
 import { isPaikallinenKoodi } from '../types/fi/oph/koski/schema/PaikallinenKoodi'
 import { Suoritus } from '../types/fi/oph/koski/schema/Suoritus'
 import { parasArviointi } from './arvioinnit'
+import {
+  isLukionOmanÄidinkielenOpinnot,
+  LukionOmanÄidinkielenOpinnot
+} from '../types/fi/oph/koski/schema/LukionOmanAidinkielenOpinnot'
 
-export const suoritusValmis = (suoritus: Suoritus) => {
+export const suoritusValmis = (
+  suoritus: Suoritus | LukionOmanÄidinkielenOpinnot
+) => {
   if (isPäätasonSuoritus(suoritus)) {
     const vahvistuspäivä = suoritus.vahvistus?.päivä
     return vahvistuspäivä && isInPast(vahvistuspäivä)
@@ -16,6 +22,8 @@ export const suoritusValmis = (suoritus: Suoritus) => {
     isMahdollisestiArvioinniton(suoritus)
   ) {
     return true
+  } else if (isLukionOmanÄidinkielenOpinnot(suoritus)) {
+    return suoritus.arviointipäivä ? isInPast(suoritus.arviointipäivä) : true
   } else {
     const arviointi =
       suoritus.arviointi && parasArviointi(suoritus.arviointi as Arviointi[])

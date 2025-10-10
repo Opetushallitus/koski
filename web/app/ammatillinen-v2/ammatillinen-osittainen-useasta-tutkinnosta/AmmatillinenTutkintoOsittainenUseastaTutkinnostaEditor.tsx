@@ -243,6 +243,7 @@ export const AmmatillisenOsittaisenUseastaTutkinnostaSuorituksenTiedot: React.FC
           form={form}
           view={DateView}
           edit={DateEdit}
+          editProps={{ align: 'right' }}
           path={path.prop('alkamispäivä')}
         />
       </KeyValueRow>

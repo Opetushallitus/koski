@@ -73,7 +73,7 @@ export const TpoOsasuoritusProperties: React.FC<
               view={DateView}
               edit={DateEdit}
               editProps={{ align: 'right' }}
-              testId={`${props.testId}.arvostelunPvm`}
+              testId={'arvostelunPvm'}
             />
           </OsasuoritusSubproperty>
         </OsasuoritusProperty>

@@ -1,6 +1,6 @@
-import { isNonEmpty } from 'fp-ts/lib/Array'
 import React, { useCallback, useMemo } from 'react'
 import { TestIdLayer, TestIdText } from '../appstate/useTestId'
+import { t } from '../i18n/i18n'
 import {
   ActivePäätasonSuoritus,
   hasPäätasonsuoritusOf
@@ -36,7 +36,6 @@ import {
   OrganisaatioEdit,
   OrganisaatioView
 } from '../components-v2/opiskeluoikeus/OrganisaatioField'
-import { t } from '../i18n/i18n'
 import { Arviointi } from '../types/fi/oph/koski/schema/Arviointi'
 import { IBKurssinArviointi } from '../types/fi/oph/koski/schema/IBKurssinArviointi'
 import { IBKurssinSuoritus } from '../types/fi/oph/koski/schema/IBKurssinSuoritus'
@@ -63,6 +62,9 @@ import {
 } from './state/options'
 import { config } from '../util/config'
 import { TextEdit, TextView } from '../components-v2/controls/TextField'
+import { isPreIBSuoritus2019 } from '../types/fi/oph/koski/schema/PreIBSuoritus2019'
+import * as A from 'fp-ts/Array'
+import { PreIB2019KieliJaViestintäRows } from './PreIB2019KieliJaViestintäRows'
 
 export type IBTutkintTiedotProps = {
   form: FormModel<IBOpiskeluoikeus>
@@ -116,6 +118,12 @@ export const IBPäätasonSuoritusTiedot: React.FC<IBTutkintTiedotProps> = ({
           form={form}
           päätasonSuoritus={päätasonSuoritus}
           alkamispäivä={alkamispäivä}
+        />
+      )}
+      {hasPäätasonsuoritusOf(isPreIBSuoritus2019, päätasonSuoritus) && (
+        <PreIB2019KieliJaViestintäRows
+          form={form}
+          päätasonSuoritus={päätasonSuoritus}
         />
       )}
       <KeyValueRow localizableLabel="Todistuksella näkyvät lisätiedot">
@@ -263,7 +271,7 @@ const TheoryOfKnowledgeRows: React.FC<IBTutkinnonTiedotRowsProps> = ({
             />
           </KeyValueRow>
           <KeyValueRow localizableLabel="Kurssit" innerKeyValueTable>
-            {isNonEmpty(kurssit) || form.editMode ? (
+            {A.isNonEmpty(kurssit) || form.editMode ? (
               <>
                 <OppiaineenKurssit
                   form={form}
