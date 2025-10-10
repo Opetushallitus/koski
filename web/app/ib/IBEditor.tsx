@@ -67,7 +67,7 @@ export const IBEditor: React.FC<IBEditorProps> = (props) => {
   return (
     <VirkailijaKansalainenContainer
       opiskeluoikeus={form.state}
-      opiskeluoikeudenNimi={'ib-tutkinto'}
+      opiskeluoikeudenNimi={t('IB-tutkinto')}
     >
       <IBPäätasonSuoritusEditor {...props} form={form} />
     </VirkailijaKansalainenContainer>

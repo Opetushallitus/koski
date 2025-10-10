@@ -1,5 +1,6 @@
 import { expect, test } from './base'
-import { virkailija } from './setup/auth'
+import { getVirkailijaSession, kansalainen, virkailija } from './setup/auth'
+import { KoskiFixtures } from './fixtures/KoskiFixtures'
 
 test.describe('IB', () => {
   test.use({ storageState: virkailija('kalle') })
@@ -543,111 +544,7 @@ test.describe('IB', () => {
       test('Pre-IB 2019:n oppiaineiden ja kurssien arvosanat näytetään', async ({
         ibOppijaPage
       }) => {
-        await ibOppijaPage.testOppiaineryhmät({
-          oppiaineet: [
-            {
-              nimi: 'Äidinkieli ja kirjallisuus, Suomen kieli ja kirjallisuus',
-              arvosana: '9',
-              kurssit: [
-                { tunniste: 'ÄI1', arvosana: '8', laajuus: 2 },
-                { tunniste: 'ÄI2', arvosana: '8', laajuus: 2 }
-              ]
-            },
-            {
-              nimi: 'Matematiikka, lyhyt oppimäärä',
-              arvosana: '10',
-              kurssit: [
-                { tunniste: 'MAB2', arvosana: '10', laajuus: 2 },
-                { tunniste: 'MAB3', arvosana: '10', laajuus: 2 }
-              ]
-            },
-            {
-              nimi: 'Uskonto/Elämänkatsomustieto',
-              arvosana: '9',
-              kurssit: [{ tunniste: 'UK1', arvosana: '9', laajuus: 2 }]
-            },
-            {
-              nimi: 'Liikunta',
-              arvosana: '8',
-              kurssit: [
-                { tunniste: 'LI2', arvosana: '8', laajuus: 2 },
-                {
-                  tunniste: 'LITT1',
-                  paikallinen: true,
-                  arvosana: 'S',
-                  laajuus: 1
-                }
-              ]
-            },
-            {
-              nimi: 'Fysiikka',
-              arvosana: '8',
-              kurssit: []
-            },
-            {
-              nimi: 'Kemia',
-              arvosana: '7',
-              kurssit: [{ tunniste: 'KE1', arvosana: '6', laajuus: 2 }]
-            },
-            {
-              nimi: 'A-kieli, englanti',
-              arvosana: '9',
-              kurssit: [
-                { tunniste: 'ENA1', arvosana: '10', laajuus: 2 },
-                { tunniste: 'ENA2', arvosana: '9', laajuus: 2 }
-              ]
-            },
-            {
-              nimi: 'A-kieli, espanja',
-              arvosana: '6',
-              kurssit: [
-                { tunniste: 'VKA1', arvosana: '6', laajuus: 2 },
-                { tunniste: 'VKA2', arvosana: '7', laajuus: 2 }
-              ]
-            },
-            {
-              nimi: 'Tanssi ja liike',
-              arvosana: '6',
-              kurssit: [
-                {
-                  tunniste: 'ITT234',
-                  paikallinen: true,
-                  arvosana: '6',
-                  laajuus: 1
-                },
-                {
-                  tunniste: 'ITT235',
-                  paikallinen: true,
-                  arvosana: '7',
-                  laajuus: 1
-                }
-              ]
-            },
-            {
-              nimi: 'Muut suoritukset',
-              kurssit: [
-                { tunniste: 'RUB11', arvosana: '6', laajuus: 2 },
-                { tunniste: 'VKAAB31', arvosana: '6', laajuus: 2 },
-                { tunniste: 'ÄI1', arvosana: '7', laajuus: 2 }
-              ]
-            },
-            {
-              nimi: 'Lukiodiplomit',
-              kurssit: [{ tunniste: 'KULD2', arvosana: '9', laajuus: 2 }]
-            },
-            {
-              nimi: 'Teemaopinnot',
-              kurssit: [
-                {
-                  tunniste: 'HAI765',
-                  paikallinen: true,
-                  arvosana: 'S',
-                  laajuus: 1
-                }
-              ]
-            }
-          ]
-        })
+        await ibOppijaPage.testOppiaineryhmät(preIb2019OppiaineetJaKurssit)
       })
     })
 
@@ -1519,3 +1416,187 @@ test.describe('IB', () => {
     })
   })
 })
+
+test.describe('IB kansalaisen käyttöliittymä', () => {
+
+  test.describe('Pre-IB 2019 kansalaisen näkymä', () => {
+    test.beforeAll(async ({ browser }, testInfo) => {
+      // Pakotetaan fixture-reset käyttämään virkailijan istuntoa
+      const virkailijaSessionPath = await getVirkailijaSession(
+        testInfo,
+        'kalle',
+        'kalle'
+      )
+      const ctx = await browser.newContext({
+        storageState: virkailijaSessionPath
+      })
+      const page = await ctx.newPage()
+      await new KoskiFixtures(page).reset()
+    })
+    test.use({ storageState: kansalainen('180300A8736') })
+
+    test('Renderöi PreIB2019-suorituksen tiedot kansalaiselle', async ({ page, kansalainenPage, ibOppijaPage }) => {
+      await kansalainenPage.goto()
+
+      await expect(page.locator('.header__heading')).toContainText('Opintoni')
+      await expect(page.getByTestId('oo.0.opiskeluoikeus.nimi')).toContainText('IB-tutkinto')
+
+      await page.locator('.OpiskeluoikeusTitle__expand').click()
+
+      // Opiskeluoikeuden tiedot
+      await expect(page.getByTestId('oo.0.opiskeluoikeus.tila.value.items.0.tila')).toContainText('Valmistunut')
+      await expect(page.getByTestId('oo.0.opiskeluoikeus.tila.value.items.0.rahoitus')).toContainText('Valtionosuusrahoitteinen koulutus')
+      await expect(page.getByTestId('oo.0.opiskeluoikeus.tila.value.items.1.tila')).toContainText('Läsnä')
+
+      // Suorituksen tiedot
+      await expect(page.getByTestId('oo.0.suoritukset.0.koulutus')).toContainText('Pre-IB 2019')
+      await expect(page.getByTestId('oo.0.suoritukset.0.organisaatio.value')).toContainText('Ressun lukio')
+      await expect(page.getByTestId('oo.0.suoritukset.0.ryhmä.value')).toContainText('AH')
+      await expect(page.getByTestId('oo.0.suoritukset.0.suorituskieli.value')).toContainText('englanti')
+
+      await expect(page.getByTestId('oo.0.suoritukset.0.omanÄidinkielenOpinnot.arvosana')).toContainText('8 hyvä')
+      await expect(page.getByTestId('oo.0.suoritukset.0.omanÄidinkielenOpinnot.arviointipäivä.value')).toContainText('4.9.2021')
+      await expect(page.getByTestId('oo.0.suoritukset.0.omanÄidinkielenOpinnot.kieli')).toContainText('saame, lappi')
+      await expect(page.getByTestId('oo.0.suoritukset.0.laajuus.value')).toContainText('3 op')
+      await expect(page.getByTestId('oo.0.suoritukset.0.omanÄidinkielenOpinnot.0.osasuoritus')).toContainText('OÄI1')
+      await expect(page.getByTestId('oo.0.suoritukset.0.omanÄidinkielenOpinnot.1.osasuoritus')).toContainText('OÄI2')
+      await expect(page.getByTestId('oo.0.suoritukset.0.omanÄidinkielenOpinnot.2.osasuoritus')).toContainText('OÄI3')
+
+      await expect(page.getByTestId('oo.0.suoritukset.0.puhviKoe.arvosana')).toContainText('7 tyydyttävä')
+      await expect(page.getByTestId('oo.0.suoritukset.0.puhviKoe.kuvaus.value')).toContainText('Puhvikokeen kuvaus')
+      await expect(page.getByTestId('oo.0.suoritukset.0.puhviKoe.päivä.value')).toContainText('30.8.2019')
+
+      await expect(page.getByTestId('oo.0.suoritukset.0.suullisenKielitaidonKokeet.0.kieli')).toContainText('englanti')
+      await expect(page.getByTestId('oo.0.suoritukset.0.suullisenKielitaidonKokeet.0.arvosana')).toContainText('6 kohtalainen')
+      await expect(page.getByTestId('oo.0.suoritukset.0.suullisenKielitaidonKokeet.0.taitotaso')).toContainText('B1.1')
+      await expect(page.getByTestId('oo.0.suoritukset.0.suullisenKielitaidonKokeet.0.kuvaus.value')).toContainText('Englannin suullisen kielitaidon koe lorem ipsum dolor sit amet')
+      await expect(page.getByTestId('oo.0.suoritukset.0.suullisenKielitaidonKokeet.0.päivä.value')).toContainText('3.9.2019')
+
+      await expect(page.getByTestId('oo.0.suoritukset.0.suullisenKielitaidonKokeet.1.kieli')).toContainText('espanja')
+      await expect(page.getByTestId('oo.0.suoritukset.0.suullisenKielitaidonKokeet.1.arvosana')).toContainText('S hyväksytty')
+      await expect(page.getByTestId('oo.0.suoritukset.0.suullisenKielitaidonKokeet.1.taitotaso')).toContainText('Yli C1.1')
+      await expect(page.getByTestId('oo.0.suoritukset.0.suullisenKielitaidonKokeet.1.kuvaus.value')).toContainText('Puhetaito äidinkielen tasolla')
+      await expect(page.getByTestId('oo.0.suoritukset.0.suullisenKielitaidonKokeet.1.päivä.value')).toContainText('3.9.2019')
+
+      await expect(page.getByTestId('oo.0.suoritukset.0.todistuksellaNäkyvätLisätiedot.value')).toContainText('Suorittanut etäopetuskokeiluna')
+
+      await ibOppijaPage.testOppiaineryhmät(preIb2019OppiaineetJaKurssit)
+    })
+
+    test('Pre-IB 2019 -sivulla ei saavutettavuusvirheitä', async ({
+      kansalainenPage,
+      makeAxeBuilder
+    }) => {
+      await kansalainenPage.goto()
+      const accessibilityScanResults = await makeAxeBuilder().analyze()
+      expect(accessibilityScanResults.violations).toEqual([])
+    })
+  })
+})
+
+
+const preIb2019OppiaineetJaKurssit = {
+  oppiaineet: [
+    {
+      nimi: 'Äidinkieli ja kirjallisuus, Suomen kieli ja kirjallisuus',
+      arvosana: '9',
+      kurssit: [
+        { tunniste: 'ÄI1', arvosana: '8', laajuus: 2 },
+        { tunniste: 'ÄI2', arvosana: '8', laajuus: 2 }
+      ]
+    },
+    {
+      nimi: 'Matematiikka, lyhyt oppimäärä',
+      arvosana: '10',
+      kurssit: [
+        { tunniste: 'MAB2', arvosana: '10', laajuus: 2 },
+        { tunniste: 'MAB3', arvosana: '10', laajuus: 2 }
+      ]
+    },
+    {
+      nimi: 'Uskonto/Elämänkatsomustieto',
+      arvosana: '9',
+      kurssit: [{ tunniste: 'UK1', arvosana: '9', laajuus: 2 }]
+    },
+    {
+      nimi: 'Liikunta',
+      arvosana: '8',
+      kurssit: [
+        { tunniste: 'LI2', arvosana: '8', laajuus: 2 },
+        {
+          tunniste: 'LITT1',
+          paikallinen: true,
+          arvosana: 'S',
+          laajuus: 1
+        }
+      ]
+    },
+    {
+      nimi: 'Fysiikka',
+      arvosana: '8',
+      kurssit: []
+    },
+    {
+      nimi: 'Kemia',
+      arvosana: '7',
+      kurssit: [{ tunniste: 'KE1', arvosana: '6', laajuus: 2 }]
+    },
+    {
+      nimi: 'A-kieli, englanti',
+      arvosana: '9',
+      kurssit: [
+        { tunniste: 'ENA1', arvosana: '10', laajuus: 2 },
+        { tunniste: 'ENA2', arvosana: '9', laajuus: 2 }
+      ]
+    },
+    {
+      nimi: 'A-kieli, espanja',
+      arvosana: '6',
+      kurssit: [
+        { tunniste: 'VKA1', arvosana: '6', laajuus: 2 },
+        { tunniste: 'VKA2', arvosana: '7', laajuus: 2 }
+      ]
+    },
+    {
+      nimi: 'Tanssi ja liike',
+      arvosana: '6',
+      kurssit: [
+        {
+          tunniste: 'ITT234',
+          paikallinen: true,
+          arvosana: '6',
+          laajuus: 1
+        },
+        {
+          tunniste: 'ITT235',
+          paikallinen: true,
+          arvosana: '7',
+          laajuus: 1
+        }
+      ]
+    },
+    {
+      nimi: 'Muut suoritukset',
+      kurssit: [
+        { tunniste: 'RUB11', arvosana: '6', laajuus: 2 },
+        { tunniste: 'VKAAB31', arvosana: '6', laajuus: 2 },
+        { tunniste: 'ÄI1', arvosana: '7', laajuus: 2 }
+      ]
+    },
+    {
+      nimi: 'Lukiodiplomit',
+      kurssit: [{ tunniste: 'KULD2', arvosana: '9', laajuus: 2 }]
+    },
+    {
+      nimi: 'Teemaopinnot',
+      kurssit: [
+        {
+          tunniste: 'HAI765',
+          paikallinen: true,
+          arvosana: 'S',
+          laajuus: 1
+        }
+      ]
+    }
+  ]
+}
