@@ -373,6 +373,7 @@ object RaportointiDatabaseSchema {
     val syntymäaika = column[Option[Date]]("syntymaaika")
     val sukunimi = column[String]("sukunimi")
     val etunimet = column[String]("etunimet")
+    val kutsumanimi = column[String]("kutsumanimi")
     val äidinkieli = column[Option[String]]("aidinkieli", StringIdentifierType)
     val kansalaisuus = column[Option[String]]("kansalaisuus", StringIdentifierType)
     val turvakielto = column[Boolean]("turvakielto")
@@ -380,7 +381,7 @@ object RaportointiDatabaseSchema {
     val kotikuntaNimiFi = column[Option[String]]("kotikunta_nimi_fi")
     val kotikuntaNimiSv = column[Option[String]]("kotikunta_nimi_sv")
     val yksiloity = column[Boolean]("yksiloity")
-    def * = (oppijaOid, masterOid, hetu, sukupuoli, syntymäaika, sukunimi, etunimet, äidinkieli, kansalaisuus, turvakielto, kotikunta, kotikuntaNimiFi, kotikuntaNimiSv, yksiloity) <> (RHenkilöRow.tupled, RHenkilöRow.unapply)
+    def * = (oppijaOid, masterOid, hetu, sukupuoli, syntymäaika, sukunimi, etunimet, kutsumanimi, äidinkieli, kansalaisuus, turvakielto, kotikunta, kotikuntaNimiFi, kotikuntaNimiSv, yksiloity) <> (RHenkilöRow.tupled, RHenkilöRow.unapply)
   }
   class RHenkilöTableTemp(tag: Tag) extends RHenkilöTable(tag, Temp)
   class RHenkilöConfidentialTable(tag: Tag) extends RHenkilöTable(tag, Confidential)
@@ -985,6 +986,7 @@ case class RHenkilöRow(
                         syntymäaika: Option[Date],
                         sukunimi: String,
                         etunimet: String,
+                        kutsumanimi: String,
                         aidinkieli: Option[String],
                         kansalaisuus: Option[String],
                         turvakielto: Boolean,

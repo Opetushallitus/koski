@@ -37,7 +37,7 @@ class MigrationSpec extends AnyFreeSpec with Matchers with RaportointikantaTestM
       val dir = "./src/main/scala/fi/oph/koski/raportointikanta"
       val expectedChecksums = Map(
         "AikajaksoRowBuilder.scala"                                 -> "a5dffa8b6fb090736db7c999b2b0c119",
-        "HenkiloLoader.scala"                                       -> "598b0ea4831e18f14837f4e96c4c2709",
+        "HenkiloLoader.scala"                                       -> "f4859d357500b77712f02c89b08b6a3c",
         "KoodistoLoader.scala"                                      -> "86c90ec069d1c5ec5ee9faa65fb1399e",
         "KoskiEventBridgeClient.scala"                              -> "f8a09d358ebb3fe2ed4d8875ccccef12",
         "LoaderUtils.scala"                                         -> "38d31b4d1cfa5e3892083bb39f7f0047",
@@ -48,9 +48,9 @@ class MigrationSpec extends AnyFreeSpec with Matchers with RaportointikantaTestM
         "OrganisaatioHistoriaRowBuilder.scala"                      -> "7e586d9e273a5a4ee7beae257f22c7f4",
         "OrganisaatioLoader.scala"                                  -> "4f7ce51cb922dbc11e694ebe85ab3472",
         "PäivitettyOpiskeluoikeusLoader.scala"                      -> "500545bbe7ef47dedcfdc49580b536d2",
-        "RaportointiDatabase.scala"                                 -> "14cd53364ee78048aa4ea54078b371d0",
+        "RaportointiDatabase.scala"                                 -> "39560aec3b65f226e56bbdc636f5989b",
         "RaportointiDatabaseCustomFunctions.scala"                  -> "956f101d1219c49ac9134b72a30caf3a",
-        "RaportointiDatabaseSchema.scala"                           -> "8872e4022026546d180669a2adb76789",
+        "RaportointiDatabaseSchema.scala"                           -> "93bb1adbbf20cbeeb8cd4f2d88832f47",
         "RaportointikantaService.scala"                             -> "a4cc105d423366b41e6dd4d2fcbec4a",
         "RaportointikantaStatusServlet.scala"                       -> "9fd6f796adfb2034cce0151b7330cd1a",
         "RaportointikantaTestServlet.scala"                         -> "d457be86e60dd84545378ae415236d26",
