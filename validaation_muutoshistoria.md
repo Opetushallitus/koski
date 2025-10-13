@@ -1,5 +1,8 @@
 # Koskeen tallennettavien tietojen validaatiosäännöt
 
+## 13.10.2025
+ - Sallitaan vuosiluokan suoritukseen luokka-aste, joka on eri kuin suorituksen luokka-aste, kun vuosiluokan vahvistus on ennen 31.7.2025 ja oppilaalla on lisätiedoissa vuosiluokkiinSitoutumatonOpetus.
+
 ## 3.10.2025
 
 - Edelliset ammatillisen koulutuksen opiskeluoikeuden lisätietojen aikajaksojen sekä loma-tilan validaatiot astuvat voimaan vasta 1.1.2026.
