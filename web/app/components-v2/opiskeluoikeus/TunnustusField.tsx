@@ -140,7 +140,10 @@ export const OsaamisenTunnustusView = (
           <TestIdText id="selite">{t(props.value?.selite) || '–'}</TestIdText>
         </KeyValueRow>
         <KeyValueRow localizableLabel="Rahoituksen piirissä">
-          <BooleanView value={props.value?.rahoituksenPiirissä} />
+          <BooleanView
+            testId="rahoituksenPiirissä"
+            value={props.value?.rahoituksenPiirissä}
+          />
         </KeyValueRow>
       </KeyValueTable>
     </TestIdLayer>

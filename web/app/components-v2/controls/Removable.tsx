@@ -7,6 +7,7 @@ import { IconButton } from './IconButton'
 export type RemovableProps = CommonPropsWithChildren<{
   isRemovable?: boolean // default true
   onClick: React.MouseEventHandler<HTMLButtonElement>
+  testId?: string
 }>
 
 export const Removable: React.FC<RemovableProps> = (props) =>
@@ -22,7 +23,7 @@ export const Removable: React.FC<RemovableProps> = (props) =>
         label={t('Poista')}
         size="input"
         onClick={props.onClick}
-        testId="delete"
+        testId={props.testId ? `${props.testId}.delete` : 'delete'}
       />
     </div>
   )

@@ -9,6 +9,7 @@ import fi.oph.koski.documentation.YleissivistavakoulutusExampleData._
 import fi.oph.koski.henkilo.MockOppijat.asUusiOppija
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat.{uusiLukio, uusiLukionAineopiskelija}
 import fi.oph.koski.localization.LocalizedStringImplicits.str2localized
+import fi.oph.koski.schema.LocalizedString.finnish
 import fi.oph.koski.schema._
 
 object ExamplesLukio2019 {
@@ -405,19 +406,31 @@ object Lukio2019ExampleData {
 
   def omanÄidinkielenOpinnotSaame(): Some[LukionOmanÄidinkielenOpinnot] = Some(LukionOmanÄidinkielenOpinnot(
     arvosana = Koodistokoodiviite(koodiarvo = "8", koodistoUri = "arviointiasteikkoyleissivistava"),
-    arviointipäivä = None,
+    arviointipäivä = Some(date(2021, 9, 4)),
     kieli = Kielivalikoima.saame,
     laajuus = LaajuusOpintopisteissä(3),
-    osasuoritukset = omanÄidinkielenOpintojenOsasuoritukset(Koodistokoodiviite("SE", "kieli"), List("OÄI1", "OÄI2", "OÄI3"))
+    osasuoritukset = Some(omanÄidinkielenOpintojenOsasuoritukset(
+      Koodistokoodiviite("SE", "kieli"),
+      List("OÄI1", "OÄI2")
+    ) ++ omanÄidinkielenOpintojenOsasuoritukset(
+      Koodistokoodiviite("SE", "kieli"),
+      List("OÄI3"),
+      Some(AmmatillinenExampleData.tunnustettu)
+    ))
   ))
 
-  def omanÄidinkielenOpintojenOsasuoritukset(kieli: Koodistokoodiviite, tunnisteet: List[String]): Option[List[LukionOmanÄidinkielenOpintojenOsasuoritus]] =
-    Some(tunnisteet.map(tunniste => LukionOmanÄidinkielenOpintojenOsasuoritus(
+  def omanÄidinkielenOpintojenOsasuoritukset(
+    kieli: Koodistokoodiviite,
+    tunnisteet: List[String],
+    tunnustettu: Option[OsaamisenTunnustaminen] = None
+  ): List[LukionOmanÄidinkielenOpintojenOsasuoritus] =
+    tunnisteet.map(tunniste => LukionOmanÄidinkielenOpintojenOsasuoritus(
       koulutusmoduuli = omanÄidinkielenOpintoKoulutusmoduuli(tunniste),
       tyyppi = Koodistokoodiviite(koodiarvo = "lukionvaltakunnallinenmoduuli", koodistoUri = "suorituksentyyppi"),
       suorituskieli = Some(kieli),
-      arviointi = Some(List(LukionOmanÄidinkielenOpinnonOsasuorituksenArviointi(Koodistokoodiviite("O", "arviointiasteikkoyleissivistava"), LocalDate.of(2019, 8, 30))))
-    )))
+      arviointi = Some(List(LukionOmanÄidinkielenOpinnonOsasuorituksenArviointi(Koodistokoodiviite("O", "arviointiasteikkoyleissivistava"), LocalDate.of(2019, 8, 30)))),
+      tunnustettu = tunnustettu
+    ))
 
   def omanÄidinkielenOpintoKoulutusmoduuli(tunniste: String): LukionOmanÄidinkielenOpinto = LukionOmanÄidinkielenOpinto(
     tunniste = Koodistokoodiviite(koodiarvo = tunniste, koodistoUri = "moduulikoodistolops2021"),
@@ -427,7 +440,7 @@ object Lukio2019ExampleData {
   def puhviKoe(): Some[PuhviKoe2019] = Some(PuhviKoe2019(
     arvosana = Koodistokoodiviite(koodiarvo = "7", koodistoUri = "arviointiasteikkoyleissivistava"),
     päivä = date(2019, 8, 30),
-    kuvaus = None
+    kuvaus = Some(finnish("Puhvikokeen kuvaus lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris commodo mauris nec erat fringilla, in sagittis elit ullamcorper. Vestibulum fringilla."))
   ))
 
   def lukiodiplominSuoritus(arvosana: String = "6") = LukiodiplominSuoritusJaArviointi(
@@ -441,7 +454,7 @@ object Lukio2019ExampleData {
     kieli = Koodistokoodiviite("EN", Some("englanti"), "kielivalikoima", None),
     arvosana = Koodistokoodiviite("6", "arviointiasteikkoyleissivistava"),
     taitotaso = Koodistokoodiviite(koodiarvo = "B1.1", koodistoUri = "arviointiasteikkokehittyvankielitaidontasot"),
-    kuvaus = None,
+    kuvaus = Some(finnish("Englannin suullisen kielitaidon koe lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris commodo mauris nec erat fringilla, in sagittis elit ullamcorper. Vestibulum fringilla.")),
     päivä = date(2019, 9, 3)
   )
 

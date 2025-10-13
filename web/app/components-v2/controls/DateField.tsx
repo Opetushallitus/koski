@@ -24,7 +24,7 @@ import { IconButton } from './IconButton'
 export type DateViewProps = CommonProps<FieldViewerProps<string, EmptyObject>>
 
 export const DateView: React.FC<DateViewProps> = (props) => {
-  const testId = useTestId('date.value')
+  const testId = useTestId(props.testId ? props.testId : 'date.value')
   const formattedDate = useMemo(
     () => (props.value ? ISO2FinnishDate(props.value) : '–'),
     [props.value]
