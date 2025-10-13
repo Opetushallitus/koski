@@ -108,6 +108,7 @@ export const UusiSuullisenKielitaidonKoeModal = ({
             value={päivä}
             onChange={(date) => setPäivä(date)}
             testId={'päivä'}
+            align="right"
           />
         </label>
         <Spacer />

@@ -72,6 +72,7 @@ export const UusiOmanÄidinkielenOpinnotModal = ({
             value={arviointipäivä}
             onChange={(date) => setArviointipäivä(date)}
             testId={'päivä'}
+            align="right"
           />
         </label>
         <label>

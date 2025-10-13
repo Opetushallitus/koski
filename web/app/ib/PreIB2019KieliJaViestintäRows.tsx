@@ -588,12 +588,16 @@ const PreIB2019SuullisenKielitaidonKokeetRows: React.FC<
   PreIB2019KieliJaViestintäRowsProps
 > = ({ form, päätasonSuoritus }) => {
   const [showModal, setShowModal] = useState(false)
+  const suullisenKielitaidonKokeetLkm = (
+    päätasonSuoritus.suoritus.suullisenKielitaidonKokeet || []
+  ).length
+  const eiOleViimeinenKoeListassa = (index: number) => {
+    return index + 1 < suullisenKielitaidonKokeetLkm
+  }
 
   return (
     <>
-      {A.isNonEmpty(
-        päätasonSuoritus.suoritus.suullisenKielitaidonKokeet || []
-      ) && <SpacerLine />}
+      {(form.editMode || suullisenKielitaidonKokeetLkm > 0) && <SpacerLine />}
       <KeyValueRow localizableLabel="Suullisen kielitaidon kokeet">
         {päätasonSuoritus.suoritus.suullisenKielitaidonKokeet?.map(
           (koe, index) => {
@@ -617,20 +621,20 @@ const PreIB2019SuullisenKielitaidonKokeetRows: React.FC<
                   päätasonSuoritus={päätasonSuoritus}
                   index={index}
                 />
-                <SpacerLine />
+                {eiOleViimeinenKoeListassa(index) && <SpacerLine />}
               </Removable>
             )
           }
         )}
         {form.editMode && (
           <>
+            {suullisenKielitaidonKokeetLkm > 0 && <SpacerLine />}
             <FlatButton
               onClick={() => setShowModal(true)}
               testId="suullisenKielitaidonKoe.lisää"
             >
               {t('Lisää suullisen kielitaidon koe')}
             </FlatButton>
-            <Spacer />
           </>
         )}
         {showModal && (
@@ -657,6 +661,7 @@ const PreIB2019SuullisenKielitaidonKokeetRows: React.FC<
           />
         )}
       </KeyValueRow>
+      {(form.editMode || suullisenKielitaidonKokeetLkm > 0) && <SpacerLine />}
     </>
   )
 }
