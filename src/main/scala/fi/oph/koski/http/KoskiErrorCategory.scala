@@ -241,6 +241,7 @@ object KoskiErrorCategory {
         val paikallinenMuuAmmatillinenRajapäivänJälkeen = subcategory("paikallinenMuuAmmatillinenRajapäivänJälkeen", "Paikallinen muun ammatillisen koulutuksen opiskeluoikeus ei voi alkaa siirtymäajan päättymispäivän 31.12.2028 jälkeen")
         val lomaTilaRajapäivänJälkeen = subcategory("lomaTilaRajapäivänJälkeen", "Ammatillisen koulutuksen opiskeluoikeuden loma-tila ei voi olla voimassa 31.12.2025 jälkeen")
         def lisätietoRajapäivänJälkeen(lisätiedonNimi: String) = subcategory("lisätietoRajapäivänJälkeen", s"$lisätiedonNimi aikajakso ei voi päättyä 31.12.2025 jälkeen")
+        val henkilöstökoulutusRajapäivänJälkeen = subcategory("henkilöstökoulutusRajapäivänJälkeen", "Henkilöstökoulutus-tietoa ei voi lisätä 31.12.2025 jälkeen alkavaan opiskeluoikeuteen")
       }
       val ammatillinen = new Ammatillinen
 
