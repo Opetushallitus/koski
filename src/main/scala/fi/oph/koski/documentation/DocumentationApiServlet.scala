@@ -15,6 +15,7 @@ import fi.oph.koski.migri.MigriSchema
 import fi.oph.koski.massaluovutus.{QueryDocumentation, QueryResponse}
 import fi.oph.koski.omadataoauth2.{OmaDataOAuth2AktiivisetJaPäättyneetOpiskeluoikeudet, OmaDataOAuth2Documentation, OmaDataOAuth2KaikkiOpiskeluoikeudet, OmaDataOAuth2SuoritetutTutkinnot}
 import fi.oph.koski.schema.KoskiSchema
+import fi.oph.koski.sdg.SdgSchema
 import fi.oph.koski.servlet.{KoskiSpecificApiServlet, NoCache}
 import fi.oph.koski.suoritusjako.{AktiivisetJaPäättyneetOpinnotOppijaJakolinkillä, SuoritetutTutkinnotOppijaJakolinkillä}
 import fi.oph.koski.valpas.kela.ValpasKelaSchema
@@ -80,6 +81,10 @@ class DocumentationApiServlet(application: KoskiApplication) extends KoskiSpecif
 
   get("/vkt-oppija-schema.json") {
     VktSchema.schemaJson
+  }
+
+  get("/sdg-oppija-schema.json") {
+    SdgSchema.schemaJson
   }
 
   get("/ytl-oppija-schema.json") {

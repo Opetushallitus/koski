@@ -31,6 +31,7 @@ object Rooli {
   val MIGRI = "MIGRI"
   val YTL = "YTL"
   val VKT = "VKT"
+  val SDG = "SDG"
   val HAKEMUSPALVELU_API = "HAKEMUSPALVELU_API"
   val HSL = "HSL"
   val SUOMIFI = "SUOMIFI"

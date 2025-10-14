@@ -35,6 +35,7 @@ import fi.oph.koski.pulssi.{PulssiHtmlServlet, PulssiServlet}
 import fi.oph.koski.raamit.RaamiProxyServlet
 import fi.oph.koski.raportit.RaportitServlet
 import fi.oph.koski.raportointikanta.{RaportointikantaService, RaportointikantaStatusServlet, RaportointikantaTestServlet}
+import fi.oph.koski.sdg.SdgServlet
 import fi.oph.koski.servlet._
 import fi.oph.koski.sso.{CasServlet, LocalLoginServlet, SSOConfig}
 import fi.oph.koski.suoritusjako.{SuoritusjakoServlet, SuoritusjakoServletV2, SuoritusjakoServletV3}
@@ -132,6 +133,9 @@ class ScalatraBootstrap extends LifeCycle with Logging with Timing with GlobalEx
     mount("/koski/api/luovutuspalvelu/kela", new KelaServlet)
     mount("/koski/api/luovutuspalvelu/migri", new MigriServlet)
     mount("/koski/api/luovutuspalvelu/ytl", new YtlServlet)
+    if (!Environment.isProdEnvironment(application.config)) {
+      mount("/koski/api/luovutuspalvelu/keha/sdg", new SdgServlet)
+    }
     mount("/koski/api/palveluvayla", new PalveluvaylaServlet)
     mount("/koski/api/luovutuspalvelu/haku", new TilastokeskusServlet)
     mount("/koski/api/omadata", new MyDataServlet)
