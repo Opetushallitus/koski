@@ -139,7 +139,6 @@ object AmmatillinenExampleData {
     Some(kuvaus),
     Some(NäytönSuorituspaikka(Koodistokoodiviite("1", Some("työpaikka"), "ammatillisennaytonsuorituspaikka", Some(1)), paikka)),
     Some(NäytönSuoritusaika(päivä, päivä)),
-    false,
     arviointi
   )
 

@@ -486,7 +486,7 @@ trait TutkinnonOsanSuoritus extends Suoritus
   @Description("Suoritukseen liittyvän näytön tiedot")
   @Tooltip("Tutkinnon tai koulutuksen osan suoritukseen kuuluvan ammattiosaamisen näytön tiedot.")
   @ComplexObject
-  def näyttö: Option[Näyttö]
+  def näyttö: Option[NäyttöBase]
   def suorituskieli: Option[Koodistokoodiviite]
   @KoodistoKoodiarvo("ammatillisentutkinnonosa")
   def tyyppi: Koodistokoodiviite
@@ -564,10 +564,8 @@ case class MuunOsittaisenAmmatillisenTutkinnonTutkinnonosanSuoritus(
   näyttö: Option[Näyttö] = None,
   override val osasuoritukset: Option[List[AmmatillisenTutkinnonOsaaPienemmänKokonaisuudenSuoritus]] = None,
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("ammatillisentutkinnonosa", koodistoUri = "suorituksentyyppi"),
-  korotettu: Option[Koodistokoodiviite] = None
 ) extends OsittaisenAmmatillisenTutkinnonOsanSuoritus
-  with MahdollisestiToimipisteellinen
-  with Korotuksellinen {
+  with MahdollisestiToimipisteellinen {
   override def withLisätiedot(lisätiedot: Option[List[AmmatillisenTutkinnonOsanLisätieto]]): MuunOsittaisenAmmatillisenTutkinnonTutkinnonosanSuoritus =
     shapeless.lens[MuunOsittaisenAmmatillisenTutkinnonTutkinnonosanSuoritus].field[Option[List[AmmatillisenTutkinnonOsanLisätieto]]]("lisätiedot").set(this)(lisätiedot)
 }
@@ -658,10 +656,8 @@ case class MuunOsittaisenAmmatillisenTutkinnonTutkinnonosanUseastaTutkinnostaSuo
   näyttö: Option[Näyttö] = None,
   override val osasuoritukset: Option[List[AmmatillisenTutkinnonOsaaPienemmänKokonaisuudenSuoritus]] = None,
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("ammatillisentutkinnonosa", koodistoUri = "suorituksentyyppi"),
-  korotettu: Option[Koodistokoodiviite] = None
 ) extends OsittaisenAmmatillisenTutkinnonOsanUseastaTutkinnostaSuoritus
-  with MahdollisestiToimipisteellinen
-  with Korotuksellinen {
+  with MahdollisestiToimipisteellinen {
   override def vahvistus: Option[HenkilövahvistusValinnaisellaTittelillä] = None
   override def withLisätiedot(lisätiedot: Option[List[AmmatillisenTutkinnonOsanLisätieto]]): MuunOsittaisenAmmatillisenTutkinnonTutkinnonosanUseastaTutkinnostaSuoritus =
     shapeless.lens[MuunOsittaisenAmmatillisenTutkinnonTutkinnonosanUseastaTutkinnostaSuoritus].field[Option[List[AmmatillisenTutkinnonOsanLisätieto]]]("lisätiedot").set(this)(lisätiedot)
@@ -1240,6 +1236,12 @@ case class AmmatillisenTutkinnonOsanLisätieto(
   @Description("Lisätiedon kuvaus siinä muodossa, kuin se näytetään todistuksella")
   kuvaus: LocalizedString
 )
+sealed trait NäyttöBase {
+  def kuvaus: Option[LocalizedString]
+  def suorituspaikka: Option[NäytönSuorituspaikka]
+  def suoritusaika: Option[NäytönSuoritusaika]
+  def arviointi: Option[NäytönArviointi]
+}
 
 @Description("Tutkinnon tai koulutuksen osan suoritukseen kuuluvan ammattiosaamisen näytön tiedot.")
 case class Näyttö(
@@ -1251,20 +1253,29 @@ case class Näyttö(
   suorituspaikka: Option[NäytönSuorituspaikka],
   @Description("Näyttötilaisuuden ajankohta")
   suoritusaika: Option[NäytönSuoritusaika],
+  @Description("Näytön arvioinnin lisätiedot")
+  @Tooltip("Näytön arviointitiedot (arvosana, arviointipäivä, arvioinnista päättäneet, arviointikeskusteluun osallistuneet)")
+  @FlattenInUI
+  arviointi: Option[NäytönArviointi],
+) extends NäyttöBase
+
+@Description("Näyttö, jossa mukana työssäoppimisen tieto ja todistus-halukkuus.")
+case class NäyttöLaajennettu(
+  @MultiLineString(5)
+  kuvaus: Option[LocalizedString],
+  suorituspaikka: Option[NäytönSuorituspaikka],
+  suoritusaika: Option[NäytönSuoritusaika],
+  @FlattenInUI
+  arviointi: Option[NäytönArviointi],
   @Description("Onko näyttö suoritettu työssäoppimisen yhteydessä (true/false)")
   @Tooltip("Onko näyttö suoritettu työssäoppimisen yhteydessä?")
   @DefaultValue(false)
   @HiddenWhen("../../../suoritustapa/koodiarvo", "reformi")
   työssäoppimisenYhteydessä: Boolean = false,
-  @Description("Näytön arvioinnin lisätiedot")
-  @Tooltip("Näytön arviointitiedot (arvosana, arviointipäivä, arvioinnista päättäneet, arviointikeskusteluun osallistuneet)")
-  @FlattenInUI
-  arviointi: Option[NäytönArviointi],
   @Description("Halutaanko näytöstä erillinen todistus. Puuttuva arvo tulkitaan siten, että halukkuutta ei tiedetä")
   @HiddenWhen("../../../suoritustapa/koodiarvo", "reformi")
   haluaaTodistuksen: Option[Boolean] = None
-)
-
+) extends NäyttöBase
 @Description("Ammatillisen näytön suorituspaikka")
 case class NäytönSuorituspaikka(
   @Description("Suorituspaikan tyyppi 1-numeroisella koodilla")

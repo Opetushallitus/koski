@@ -67,8 +67,7 @@ case class SupaOsittaisenYhteisenAmmatillisenTutkinnonOsanSuoritus(
 case class SupaOsittaisenMuunAmmatillisenTutkinnonOsanSuoritus(
   tyyppi: Koodistokoodiviite,
   koulutusmoduuli: AmmatillisenTutkinnonOsa,
-  arviointi: Option[List[AmmatillinenArviointi]],
-  korotettu: Option[Koodistokoodiviite]
+  arviointi: Option[List[AmmatillinenArviointi]]
 ) extends SupaOsittaisenAmmatillisenTutkinnonOsanSuoritus
 
 @Title("Yhteisten tutkinnon osien osa-alueita, lukio-opintoja tai muita jatko-opintovalmiuksia tukevia opintoja")
@@ -160,8 +159,7 @@ private object SupaOsittaisenAmmatillisenTutkinnonOsanSuoritusmapper {
       SupaOsittaisenMuunAmmatillisenTutkinnonOsanSuoritus(
         tyyppi = ss.tyyppi,
         koulutusmoduuli = ss.koulutusmoduuli,
-        arviointi = ss.arviointi,
-        korotettu = ss.korotettu
+        arviointi = ss.arviointidd
       )
 
     case ss: OsittaisenAmmatillisenTutkinnonOsanJatkoOpintovalmiuksiaTukevienOpintojenSuoritus =>
