@@ -1,7 +1,6 @@
 package fi.oph.koski.sdg
 
 import fi.oph.koski.schema
-import fi.oph.koski.schema.{Koodistokoodiviite, Koulutustoimija, Oppilaitos, DIAOpiskeluoikeudenTila}
 import fi.oph.koski.schema.annotation.KoodistoKoodiarvo
 import fi.oph.scalaschema.annotation.Title
 
@@ -9,9 +8,9 @@ import fi.oph.scalaschema.annotation.Title
 case class SdgDIAOpiskeluoikeus(
   oid: Option[String],
   versionumero: Option[Int],
-  oppilaitos: Option[Oppilaitos],
-  koulutustoimija: Option[Koulutustoimija],
-  tila: DIAOpiskeluoikeudenTila,
+  oppilaitos: Option[schema.Oppilaitos],
+  koulutustoimija: Option[schema.Koulutustoimija],
+  tila: schema.DIAOpiskeluoikeudenTila,
   suoritukset: List[SdgDIATutkinnonSuoritus],
   @KoodistoKoodiarvo(schema.OpiskeluoikeudenTyyppi.diatutkinto.koodiarvo)
   tyyppi: schema.Koodistokoodiviite,
@@ -22,15 +21,20 @@ case class SdgDIAOpiskeluoikeus(
     )
 }
 
-
+// valmistava dia mukaan
 @Title("DIA-tutkinnon suoritus")
 case class SdgDIATutkinnonSuoritus(
-  koulutusmoduuli: schema.Koulutusmoduuli,
+  koulutusmoduuli: schema.DIATutkinto,
   toimipiste: Option[Toimipiste],
   vahvistus: Option[Vahvistus],
   @KoodistoKoodiarvo("diatutkintovaihe")
   tyyppi: schema.Koodistokoodiviite,
-  osasuoritukset: Option[List[SdgDIAOppiaineenTutkintovaiheenSuoritus]]
+  osasuoritukset: Option[List[SdgDIAOppiaineenTutkintovaiheenSuoritus]],
+  suorituskieli: schema.Koodistokoodiviite,
+  kokonaispistemäärä: Option[Int] = None,
+  lukukausisuoritustenKokonaispistemäärä: Option[Int] = None,
+  tutkintoaineidenKokonaispistemäärä: Option[Int] = None,
+  kokonaispistemäärästäJohdettuKeskiarvo: Option[Double] = None,
 ) extends Suoritus {
   override def withOsasuoritukset(os: Option[List[Osasuoritus]]): SdgDIATutkinnonSuoritus =
     this.copy(
@@ -42,8 +46,8 @@ case class SdgDIATutkinnonSuoritus(
 
 case class SdgDIAOppiaineenTutkintovaiheenSuoritus(
   koulutusmoduuli: schema.DIAOppiaine,
-  suorituskieli: Option[Koodistokoodiviite] = None,
+  suorituskieli: Option[schema.Koodistokoodiviite] = None,
   koetuloksenNelinkertainenPistemäärä: Option[Int] = None,
   @KoodistoKoodiarvo("diaoppiaine")
-  tyyppi: Koodistokoodiviite
+  tyyppi: schema.Koodistokoodiviite
 ) extends Osasuoritus

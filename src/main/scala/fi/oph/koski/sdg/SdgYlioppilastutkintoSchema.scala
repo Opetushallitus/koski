@@ -1,7 +1,6 @@
 package fi.oph.koski.sdg
 
 import fi.oph.koski.schema
-import fi.oph.koski.schema.{Koodistokoodiviite, Koulutustoimija, Opiskeluoikeusjakso, Oppilaitos, YlioppilasTutkinnonKoe, YlioppilastutkinnonOpiskeluoikeudenTila}
 import fi.oph.koski.schema.annotation.KoodistoKoodiarvo
 import fi.oph.scalaschema.annotation.{Description, Title}
 
@@ -9,7 +8,7 @@ object SdgYlioppilastutkinnonOpiskeluoikeus {
   def fromKoskiSchema(yo: schema.YlioppilastutkinnonOpiskeluoikeus): SdgOpiskeluoikeus = SdgYlioppilastutkinnonOpiskeluoikeus(
     oid = yo.oid,
     oppilaitos = yo.oppilaitos.map(ol =>
-      Oppilaitos(
+      schema.Oppilaitos(
         ol.oid,
         ol.oppilaitosnumero,
         ol.nimi,
@@ -17,7 +16,7 @@ object SdgYlioppilastutkinnonOpiskeluoikeus {
       )
     ),
     koulutustoimija = yo.koulutustoimija.map(kt =>
-      Koulutustoimija(
+      schema.Koulutustoimija(
         kt.oid,
         kt.nimi,
         kt.yTunnus,
@@ -34,7 +33,8 @@ object SdgYlioppilastutkinnonOpiskeluoikeus {
       )),
       vahvistus = s.vahvistus.map(v => Vahvistus(v.päivä)),
       tyyppi = s.tyyppi,
-      osasuoritukset = s.osasuoritukset.map(_.map(SdgYlioppilastutkinnonOsasuoritus.fromKoskiSchema))
+      osasuoritukset = s.osasuoritukset.map(_.map(SdgYlioppilastutkinnonOsasuoritus.fromKoskiSchema)),
+      koulusivistyskieli = s.koulusivistyskieli
     )),
     tyyppi = yo.tyyppi
   )
@@ -44,9 +44,9 @@ object SdgYlioppilastutkinnonOpiskeluoikeus {
 @Description("Ylioppilastutkinnon opiskeluoikeus")
 case class SdgYlioppilastutkinnonOpiskeluoikeus(
   oid: Option[String],
-  oppilaitos: Option[Oppilaitos],
-  koulutustoimija: Option[Koulutustoimija],
-  tila: YlioppilastutkinnonOpiskeluoikeudenTila,
+  oppilaitos: Option[schema.Oppilaitos],
+  koulutustoimija: Option[schema.Koulutustoimija],
+  tila: schema.YlioppilastutkinnonOpiskeluoikeudenTila,
   suoritukset: List[SdgYlioppilastutkinnonSuoritus],
   @KoodistoKoodiarvo(schema.OpiskeluoikeudenTyyppi.ylioppilastutkinto.koodiarvo)
   tyyppi: schema.Koodistokoodiviite,
@@ -60,10 +60,11 @@ case class SdgYlioppilastutkinnonOpiskeluoikeus(
 
 @Title("Ylioppilastutkinnon suoritus")
 case class SdgYlioppilastutkinnonSuoritus(
-  koulutusmoduuli: schema.Koulutusmoduuli,
+  koulutusmoduuli: schema.Ylioppilastutkinto,
   toimipiste: Option[Toimipiste],
   vahvistus: Option[Vahvistus],
   tyyppi: schema.Koodistokoodiviite,
+  koulusivistyskieli: Option[List[schema.Koodistokoodiviite]],
   osasuoritukset: Option[List[SdgYlioppilastutkinnonOsasuoritus]]
 ) extends Suoritus {
   override def withOsasuoritukset(os: Option[List[Osasuoritus]]): SdgYlioppilastutkinnonSuoritus =
@@ -72,17 +73,18 @@ case class SdgYlioppilastutkinnonSuoritus(
     }))
 }
 
-case class SdgYlioppilastutkinnonSuorituksenKoulutusmoduuli(
-  tunniste: Koodistokoodiviite,
-) extends SuorituksenKoulutusmoduuli
 
 @Title("Ylioppilastutkinnon koe")
 case class SdgYlioppilastutkinnonOsasuoritus(
-  koulutusmoduuli: YlioppilasTutkinnonKoe
+  koulutusmoduuli: schema.YlioppilasTutkinnonKoe,
+  arviointi: Option[List[schema.YlioppilaskokeenArviointi]],
+  tyyppi: schema.Koodistokoodiviite,
+  tutkintokerta: schema.YlioppilastutkinnonTutkintokerta,
 ) extends Osasuoritus
 
 object SdgYlioppilastutkinnonOsasuoritus {
   def fromKoskiSchema(k: schema.YlioppilastutkinnonKokeenSuoritus): SdgYlioppilastutkinnonOsasuoritus =
-    SdgYlioppilastutkinnonOsasuoritus(koulutusmoduuli = k.koulutusmoduuli)
+    SdgYlioppilastutkinnonOsasuoritus(
+      koulutusmoduuli = k.koulutusmoduuli, arviointi = k.arviointi, tyyppi = k.tyyppi, tutkintokerta = k.tutkintokerta)
 }
 
