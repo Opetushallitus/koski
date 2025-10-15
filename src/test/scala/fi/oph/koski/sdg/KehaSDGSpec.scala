@@ -106,6 +106,16 @@ class KehaSDGSpec
 
         response.henkilö.hetu should equal(KoskiSpecificMockOppijat.ylioppilasUusiApi.hetu)
         response.opiskeluoikeudet.map(_.tyyppi.koodiarvo) should equal(List("ylioppilastutkinto"))
+        response.opiskeluoikeudet.flatMap(_.suoritukset.map(_.tyyppi.koodiarvo)) should equal(List("ylioppilastutkinto"))
+
+        val koodiarvot =
+          for {
+            oo <- response.opiskeluoikeudet.asInstanceOf[List[SdgYlioppilastutkinnonOpiskeluoikeus]]
+            suoritus <- oo.suoritukset
+            osasuoritus <- suoritus.osasuoritukset.getOrElse(Nil)
+          } yield osasuoritus.koulutusmoduuli.tunniste.koodiarvo
+
+        koodiarvot should equal(List("EA", "EA", "EA", "YH", "YH", "YH", "N", "N", "N", "A", "A", "A", "A"))
       }
     }
   }
