@@ -159,7 +159,7 @@ private object SupaOsittaisenAmmatillisenTutkinnonOsanSuoritusmapper {
       SupaOsittaisenMuunAmmatillisenTutkinnonOsanSuoritus(
         tyyppi = ss.tyyppi,
         koulutusmoduuli = ss.koulutusmoduuli,
-        arviointi = ss.arviointidd
+        arviointi = ss.arviointi
       )
 
     case ss: OsittaisenAmmatillisenTutkinnonOsanJatkoOpintovalmiuksiaTukevienOpintojenSuoritus =>
