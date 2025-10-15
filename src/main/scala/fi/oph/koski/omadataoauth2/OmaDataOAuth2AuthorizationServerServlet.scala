@@ -14,13 +14,14 @@ import java.time.temporal.ChronoUnit
 
 class OmaDataOAuth2AuthorizationServerServlet(implicit val application: KoskiApplication)
   extends KoskiSpecificApiServlet
-    with Logging with ContentEncodingSupport with NoCache with FormSupport with I18nSupport with RequiresOmaDataOAuth2 with OmaDataOAuth2ServletSupport {
+    with Logging with ContentEncodingSupport with NoCache with FormSupport with I18nSupport with RequiresOmaDataOAuth2
+    with OmaDataOAuth2ServletSupport with ConvertErrorsToOAuth2Format {
 
   // in: auth code yms. OAuth2 headerit
   // out: access token, jos käyttäjällä oikeudet kyseiseen authorization codeen
   //        TAI OAuth2-protokollan mukainen virheilmoitus (
   post("/") {
-    val result: AccessTokenResponse = validate(AccessTokenRequest.formAccessTokenRequest)(
+    val result: OAuth2Response = validate(AccessTokenRequest.formAccessTokenRequest)(
       (errors: Seq[(String, String)]) => {
         val validationError = OmaDataOAuth2Error(OmaDataOAuth2ErrorType.invalid_request, errors.map { case (a, b) => s"${a}: ${b}" }.mkString(";"))
 
@@ -43,7 +44,7 @@ class OmaDataOAuth2AuthorizationServerServlet(implicit val application: KoskiApp
               allowedScopes = koskiSession.omaDataOAuth2Scopes
             ) match {
               case Left(error) => error.getAccessTokenErrorResponse
-              case Right(accessTokenInfo: AccessTokenInfo) => AccessTokenSuccessResponse(
+              case Right(accessTokenInfo: AccessTokenInfo) => OAuth2AccessTokenSuccessResponse(
                 access_token = accessTokenInfo.accessToken,
                 token_type = "Bearer",
                 expires_in = Instant.now().until(accessTokenInfo.expirationTime, ChronoUnit.SECONDS)
@@ -96,22 +97,22 @@ case class AccessTokenRequest(
   client_id: String
 )
 
-trait AccessTokenResponse {
+trait OAuth2Response {
   def httpStatus: Int
 }
 
-case class AccessTokenSuccessResponse(
+case class OAuth2AccessTokenSuccessResponse(
   access_token: String,
   token_type: String,
   expires_in: Long
-) extends AccessTokenResponse {
+) extends OAuth2Response {
   val httpStatus = 200
 }
 
-case class AccessTokenErrorResponse(
+case class OAuth2ErrorResponse(
   error: String,
   error_description: Option[String],
   error_uri: Option[String]
-) extends AccessTokenResponse {
+) extends OAuth2Response {
   val httpStatus = 400
 }

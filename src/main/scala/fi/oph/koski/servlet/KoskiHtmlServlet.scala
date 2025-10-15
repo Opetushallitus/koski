@@ -2,14 +2,14 @@ package fi.oph.koski.servlet
 
 import fi.oph.koski.html.Raamit
 import fi.oph.koski.http.HttpStatus
-import fi.oph.koski.koskiuser.KoskiSpecificAuthenticationSupport
+import fi.oph.koski.koskiuser.KoskiCookieAndBasicAuthenticationSupport
 import fi.oph.koski.log.Logging
 import fi.oph.koski.util.XML
 
 import java.net.{URI, URL}
 import scala.xml.Elem
 
-trait KoskiHtmlServlet extends HtmlServlet with KoskiSpecificAuthenticationSupport with Logging {
+trait KoskiHtmlServlet extends HtmlServlet with KoskiCookieAndBasicAuthenticationSupport with Logging {
 
   def renderStatus(status: HttpStatus): Unit = {
     // Generoi nonce tässä virheilmoitussivua varten erikseen, koska virhetilanteissa voidaan päätyä rendaamaan

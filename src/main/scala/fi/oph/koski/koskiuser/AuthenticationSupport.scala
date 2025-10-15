@@ -1,16 +1,17 @@
 package fi.oph.koski.koskiuser
 
-import java.util.UUID
+import fi.oph.koski.config.Environment
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.json.JsonSerializer.writeWithRoot
 import fi.oph.koski.log._
 import fi.oph.koski.servlet.BaseServlet
 import fi.oph.koski.sso.{KoskiUserCookie, SSOSupport}
 import fi.oph.koski.userdirectory.Password
-import org.scalatra.{Cookie, CookieOptions}
 import org.scalatra.auth.strategy.BasicAuthStrategy
+import org.scalatra.{Cookie, CookieOptions}
 
 import java.net.URLEncoder.encode
+import java.util.UUID
 
 trait AuthenticationSupport extends BaseServlet with SSOSupport {
   def application: UserAuthenticationContext
@@ -34,18 +35,15 @@ trait AuthenticationSupport extends BaseServlet with SSOSupport {
     Option(request.getAttribute("authUser").asInstanceOf[Either[HttpStatus, AuthenticationUser]]) match {
       case Some(user) => user
       case _ =>
-        val authUser: Either[HttpStatus, AuthenticationUser] = userFromCookie match {
-          case Right(user) => Right(user)
-          case Left(SessionStatusExpiredKansalainen) => Left(KoskiErrorCategory.unauthorized.notAuthenticated())
-          case Left(_) => userFromBasicAuth
-        }
-        setUser(authUser)
-        authUser
+        val user = authenticateUser
+        setUser(user)
+        user
     }
   }
 
+  def authenticateUser: Either[HttpStatus, AuthenticationUser]
 
-  private def userFromCookie: Either[SessionStatus, AuthenticationUser] = {
+  def userFromCookie: Either[SessionStatus, AuthenticationUser] = {
     def getUser(cookie: Option[KoskiUserCookie]): Either[SessionStatus, AuthenticationUser] =
       cookie.map(_.serviceTicket).map(ticket => (ticket, application.koskiSessionRepository.getUserByTicket(ticket))) match {
         case Some((_, Some(usr))) => Right(usr)
@@ -64,7 +62,7 @@ trait AuthenticationSupport extends BaseServlet with SSOSupport {
     }
   }
 
-  private def userFromBasicAuth: Either[HttpStatus, AuthenticationUser] = {
+  def userFromBasicAuth: Either[HttpStatus, AuthenticationUser] = {
     val basicAuthRequest = new BasicAuthStrategy.BasicAuthRequest(request)
     if (basicAuthRequest.isBasicAuth && basicAuthRequest.providesAuth) {
       tryLogin(basicAuthRequest.username, basicAuthRequest.password)

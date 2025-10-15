@@ -7,7 +7,7 @@ import fi.oph.koski.servlet.{KoskiSpecificApiServlet, JsonBodySnatcher, NoCache}
 
 import scala.util.Try
 
-class LocalLoginServlet(implicit val application: UserAuthenticationContext) extends KoskiSpecificApiServlet with KoskiSpecificAuthenticationSupport with KoskiSpecificSSOSupport with NoCache {
+class LocalLoginServlet(implicit val application: UserAuthenticationContext) extends KoskiSpecificApiServlet with KoskiCookieAndBasicAuthenticationSupport with KoskiSpecificSSOSupport with NoCache {
   post("/") {
     def loginRequestInBody = JsonBodySnatcher.getJsonBody(request).right.toOption flatMap { json =>
       Try(JsonSerializer.extract[Login](json)).toOption

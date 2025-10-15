@@ -19,6 +19,7 @@ import fi.oph.koski.koskiuser._
 import fi.oph.koski.massaluovutus.{MassaluovutusCleanupScheduler, MassaluovutusScheduler, MassaluovutusService}
 import fi.oph.koski.localization.{KoskiLocalizationConfig, LocalizationRepository}
 import fi.oph.koski.log.{AuditLog, Logging, TimedProxy}
+import fi.oph.koski.luovutuspalvelu.v2clientlist.LuovutuspalveluV2ClientListService
 import fi.oph.koski.mydata.{MyDataRepository, MyDataService}
 import fi.oph.koski.omadataoauth2.{OmaDataOAuth2Repository, OmaDataOAuth2Service}
 import fi.oph.koski.omattiedot.HuoltajaService
@@ -77,6 +78,7 @@ class KoskiApplication(
   lazy val organisaatioRepository = OrganisaatioRepository(config, koodistoViitePalvelu)
   lazy val organisaatioService = new OrganisaatioService(this)
   lazy val directoryClient = DirectoryClient(config, casService)
+  lazy val luovutuspalveluV2ClientListService = LuovutuspalveluV2ClientListService(config)
   lazy val ePerusteet = EPerusteetRepository.apply(config)
   lazy val tutkintoRepository = TutkintoRepository(ePerusteet, koodistoViitePalvelu)
   lazy val oppilaitosRepository = OppilaitosRepository(config, organisaatioRepository)

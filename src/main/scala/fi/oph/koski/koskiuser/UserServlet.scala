@@ -3,7 +3,7 @@ package fi.oph.koski.koskiuser
 import fi.oph.koski.schema.Organisaatio.Oid
 import fi.oph.koski.servlet.{KoskiSpecificApiServlet, NoCache}
 
-class UserServlet(implicit val application: UserAuthenticationContext) extends KoskiSpecificApiServlet with KoskiSpecificAuthenticationSupport with NoCache {
+class UserServlet(implicit val application: UserAuthenticationContext) extends KoskiSpecificApiServlet with KoskiCookieAndBasicAuthenticationSupport with NoCache {
   get("/") {
     renderEither[UserWithAccessRights](getUser.right.map { user =>
       koskiSessionOption.map { session => {

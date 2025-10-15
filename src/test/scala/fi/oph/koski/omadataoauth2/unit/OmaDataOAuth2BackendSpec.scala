@@ -110,7 +110,7 @@ class OmaDataOAuth2BackendSpec
           redirectUri = Some(invalidRedirectUri)
         ) {
           verifyResponseStatus(400)
-          val result = JsonSerializer.parse[AccessTokenErrorResponse](response.body)
+          val result = JsonSerializer.parse[OAuth2ErrorResponse](response.body)
           result.error should be("invalid_request")
           result.error_description.get should include("Attempted use of non-matching redirect_uri")
         }
@@ -128,7 +128,7 @@ class OmaDataOAuth2BackendSpec
           redirectUri = Some(invalidRedirectUri)
         ) {
           verifyResponseStatus(400)
-          val result = JsonSerializer.parse[AccessTokenErrorResponse](response.body)
+          val result = JsonSerializer.parse[OAuth2ErrorResponse](response.body)
           result.error should be("invalid_request")
           result.error_description.get should include("Attempted use of non-matching redirect_uri")
         }
@@ -140,7 +140,7 @@ class OmaDataOAuth2BackendSpec
           redirectUri = Some(validRedirectUri)
         ) {
           verifyResponseStatus(400)
-          val result = JsonSerializer.parse[AccessTokenErrorResponse](response.body)
+          val result = JsonSerializer.parse[OAuth2ErrorResponse](response.body)
           result.error should be("invalid_request")
           result.error_description.get should include("Code not found or it has expired")
         }
@@ -160,7 +160,7 @@ class OmaDataOAuth2BackendSpec
           grantType = None
         ) {
           verifyResponseStatus(400)
-          val result = JsonSerializer.parse[AccessTokenErrorResponse](response.body)
+          val result = JsonSerializer.parse[OAuth2ErrorResponse](response.body)
           result.error should be("invalid_request")
           result.error_description.get should include("grant_type is required")
         }
@@ -177,7 +177,7 @@ class OmaDataOAuth2BackendSpec
           grantType = Some("ei_tuettu")
         ) {
           verifyResponseStatus(400)
-          val result = JsonSerializer.parse[AccessTokenErrorResponse](response.body)
+          val result = JsonSerializer.parse[OAuth2ErrorResponse](response.body)
           result.error should be("invalid_request")
           result.error_description.get should include("grant_type must be one of 'authorization_code'")
         }
@@ -197,7 +197,7 @@ class OmaDataOAuth2BackendSpec
           clientId = None
         ) {
           verifyResponseStatus(400)
-          val result = JsonSerializer.parse[AccessTokenErrorResponse](response.body)
+          val result = JsonSerializer.parse[OAuth2ErrorResponse](response.body)
           result.error should be("invalid_request")
           result.error_description.get should include("client_id is required")
         }
@@ -230,7 +230,7 @@ class OmaDataOAuth2BackendSpec
           clientId = Some(user.username)
         ) {
           verifyResponseStatus(400)
-          val result = JsonSerializer.parse[AccessTokenErrorResponse](response.body)
+          val result = JsonSerializer.parse[OAuth2ErrorResponse](response.body)
           result.error should be("invalid_client")
           result.error_description.get should include("unregistered client oauth2clienteirek")
         }
@@ -251,7 +251,7 @@ class OmaDataOAuth2BackendSpec
           clientId = Some(vääräUser.username)
         ) {
           verifyResponseStatus(400)
-          val result = JsonSerializer.parse[AccessTokenErrorResponse](response.body)
+          val result = JsonSerializer.parse[OAuth2ErrorResponse](response.body)
           result.error should be("invalid_client")
           result.error_description.get should include("unregistered client oauth2clienteirek")
         }
@@ -270,7 +270,7 @@ class OmaDataOAuth2BackendSpec
           redirectUri = Some(validRedirectUri)
         ) {
           verifyResponseStatus(400)
-          val result = JsonSerializer.parse[AccessTokenErrorResponse](response.body)
+          val result = JsonSerializer.parse[OAuth2ErrorResponse](response.body)
           result.error should be("invalid_scope")
           result.error_description.get should include(s"scope=HENKILOTIEDOT_HETU exceeds the rights granted to the client ${validClientId}")
         }
@@ -287,7 +287,7 @@ class OmaDataOAuth2BackendSpec
           redirectUri = Some(validRedirectUri)
         ) {
           verifyResponseStatus(400)
-          val result = JsonSerializer.parse[AccessTokenErrorResponse](response.body)
+          val result = JsonSerializer.parse[OAuth2ErrorResponse](response.body)
           result.error should be("invalid_scope")
           result.error_description.get should include(s"scope=HENKILOTIEDOT_HETU exceeds the rights granted to the client ${validClientId}")
         }
@@ -300,7 +300,7 @@ class OmaDataOAuth2BackendSpec
           redirectUri = Some(validRedirectUri)
         ) {
           verifyResponseStatus(400)
-          val result = JsonSerializer.parse[AccessTokenErrorResponse](response.body)
+          val result = JsonSerializer.parse[OAuth2ErrorResponse](response.body)
           result.error should be("invalid_scope")
           result.error_description.get should include(s"scope=HENKILOTIEDOT_HETU exceeds the rights granted to the client ${validClientId}")
         }
@@ -319,7 +319,7 @@ class OmaDataOAuth2BackendSpec
           redirectUri = Some(validRedirectUri)
         ) {
           verifyResponseStatus(400)
-          val result = JsonSerializer.parse[AccessTokenErrorResponse](response.body)
+          val result = JsonSerializer.parse[OAuth2ErrorResponse](response.body)
           result.error should be("invalid_request")
           result.error_description.get should include("code is required")
         }
@@ -336,7 +336,7 @@ class OmaDataOAuth2BackendSpec
           redirectUri = Some(validRedirectUri)
         ) {
           verifyResponseStatus(400)
-          val result = JsonSerializer.parse[AccessTokenErrorResponse](response.body)
+          val result = JsonSerializer.parse[OAuth2ErrorResponse](response.body)
           result.error should be("invalid_request")
           result.error_description.get should include("Code not found or it has expired")
         }
@@ -356,7 +356,7 @@ class OmaDataOAuth2BackendSpec
           redirectUri = Some(invalidRedirectUri)
         ) {
           verifyResponseStatus(400)
-          val result = JsonSerializer.parse[AccessTokenErrorResponse](response.body)
+          val result = JsonSerializer.parse[OAuth2ErrorResponse](response.body)
           result.error should be("invalid_request")
           result.error_description.get should include("Attempted use of non-matching redirect_uri")
         }
@@ -369,7 +369,7 @@ class OmaDataOAuth2BackendSpec
           redirectUri = Some(validRedirectUri)
         ) {
           verifyResponseStatus(400)
-          val result = JsonSerializer.parse[AccessTokenErrorResponse](response.body)
+          val result = JsonSerializer.parse[OAuth2ErrorResponse](response.body)
           result.error should be("invalid_request")
           result.error_description.get should include("Code not found or it has expired")
         }
@@ -407,7 +407,7 @@ class OmaDataOAuth2BackendSpec
           redirectUri = Some(validRedirectUri)
         ) {
           verifyResponseStatus(400)
-          val result = JsonSerializer.parse[AccessTokenErrorResponse](response.body)
+          val result = JsonSerializer.parse[OAuth2ErrorResponse](response.body)
           result.error should be("invalid_request")
           result.error_description.get should include("Code not found or it has expired")
         }
@@ -434,7 +434,7 @@ class OmaDataOAuth2BackendSpec
             redirectUri = Some(validRedirectUri)
           ) {
             verifyResponseStatus(400)
-            val result = JsonSerializer.parse[AccessTokenErrorResponse](response.body)
+            val result = JsonSerializer.parse[OAuth2ErrorResponse](response.body)
             result.error should be("invalid_request")
             result.error_description.get should include("Attempted authorization code reuse")
           }
@@ -459,7 +459,7 @@ class OmaDataOAuth2BackendSpec
             redirectUri = Some(validRedirectUri)
           ) {
             verifyResponseStatus(400)
-            val result = JsonSerializer.parse[AccessTokenErrorResponse](response.body)
+            val result = JsonSerializer.parse[OAuth2ErrorResponse](response.body)
             result.error should be("invalid_request")
             result.error_description.get should include("Attempted authorization code reuse")
           }
@@ -471,7 +471,7 @@ class OmaDataOAuth2BackendSpec
             redirectUri = Some(validRedirectUri)
           ) {
             verifyResponseStatus(400)
-            val result = JsonSerializer.parse[AccessTokenErrorResponse](response.body)
+            val result = JsonSerializer.parse[OAuth2ErrorResponse](response.body)
             result.error should be("invalid_request")
             result.error_description.get should include("Code not found or it has expired")
           }
@@ -487,7 +487,7 @@ class OmaDataOAuth2BackendSpec
             redirectUri = Some(validRedirectUri)
           ) {
             verifyResponseStatusOk()
-            JsonSerializer.parse[AccessTokenSuccessResponse](response.body).access_token
+            JsonSerializer.parse[OAuth2AccessTokenSuccessResponse](response.body).access_token
           }
 
           postAuthorizationServerClientIdFromUsername(
@@ -497,14 +497,14 @@ class OmaDataOAuth2BackendSpec
             redirectUri = Some(validRedirectUri)
           ) {
             verifyResponseStatus(400)
-            val result = JsonSerializer.parse[AccessTokenErrorResponse](response.body)
+            val result = JsonSerializer.parse[OAuth2ErrorResponse](response.body)
             result.error should be("invalid_request")
             result.error_description.get should include("Attempted authorization code reuse")
           }
 
           postResourceServer(token) {
             verifyResponseStatus(400)
-            val result = JsonSerializer.parse[AccessTokenErrorResponse](response.body)
+            val result = JsonSerializer.parse[OAuth2ErrorResponse](response.body)
             result.error should be("invalid_request")
             result.error_description.get should include("Access token not found or it has expired")
           }
@@ -524,7 +524,7 @@ class OmaDataOAuth2BackendSpec
           redirectUri = Some(validRedirectUri)
         ) {
           verifyResponseStatus(400)
-          val result = JsonSerializer.parse[AccessTokenErrorResponse](response.body)
+          val result = JsonSerializer.parse[OAuth2ErrorResponse](response.body)
           result.error should be("invalid_request")
           result.error_description.get should include("code_verifier is required")
         }
@@ -543,7 +543,7 @@ class OmaDataOAuth2BackendSpec
           redirectUri = Some(validRedirectUri)
         ) {
           verifyResponseStatus(400)
-          val result = JsonSerializer.parse[AccessTokenErrorResponse](response.body)
+          val result = JsonSerializer.parse[OAuth2ErrorResponse](response.body)
           result.error should be("invalid_request")
           result.error_description.get should include("Attempted use of invalid code_verifier")
         }
@@ -562,7 +562,7 @@ class OmaDataOAuth2BackendSpec
           redirectUri = Some(validRedirectUri)
         ) {
           verifyResponseStatus(400)
-          val result = JsonSerializer.parse[AccessTokenErrorResponse](response.body)
+          val result = JsonSerializer.parse[OAuth2ErrorResponse](response.body)
           result.error should be("invalid_request")
           result.error_description.get should include("Attempted use of invalid code_verifier")
         }
@@ -574,7 +574,7 @@ class OmaDataOAuth2BackendSpec
           redirectUri = Some(validRedirectUri)
         ) {
           verifyResponseStatus(400)
-          val result = JsonSerializer.parse[AccessTokenErrorResponse](response.body)
+          val result = JsonSerializer.parse[OAuth2ErrorResponse](response.body)
           result.error should be("invalid_request")
           result.error_description.get should include("Code not found or it has expired")
         }
@@ -638,7 +638,7 @@ class OmaDataOAuth2BackendSpec
       // Yritä käyttää
       postResourceServer(token) {
         verifyResponseStatus(400)
-        val result = JsonSerializer.parse[AccessTokenErrorResponse](response.body)
+        val result = JsonSerializer.parse[OAuth2ErrorResponse](response.body)
         result.error should be("invalid_scope")
         result.error_description.get should include("scope=HENKILOTIEDOT_KAIKKI_TIEDOT exceeds the rights granted to the client oauth2client")
       }
@@ -660,7 +660,7 @@ class OmaDataOAuth2BackendSpec
       // Yritä käyttää
       postResourceServer(token) {
         verifyResponseStatus(400)
-        val result = JsonSerializer.parse[AccessTokenErrorResponse](response.body)
+        val result = JsonSerializer.parse[OAuth2ErrorResponse](response.body)
         result.error should be("invalid_request")
         result.error_description.get should include("Access token not found or it has expired")
       }
@@ -682,7 +682,7 @@ class OmaDataOAuth2BackendSpec
       // Yritä käyttää
       postResourceServer(token) {
         verifyResponseStatus(400)
-        val result = JsonSerializer.parse[AccessTokenErrorResponse](response.body)
+        val result = JsonSerializer.parse[OAuth2ErrorResponse](response.body)
         result.error should be("invalid_scope")
         result.error_description.get should include("scope=HENKILOTIEDOT_SYNTYMAAIKA HENKILOTIEDOT_NIMI OPISKELUOIKEUDET_SUORITETUT_TUTKINNOT OPISKELUOIKEUDET_EI_ENAA_OLEMASSA contains unknown scopes (OPISKELUOIKEUDET_EI_ENAA_OLEMASSA))")
       }

@@ -5,7 +5,7 @@ import fi.oph.koski.frontendvalvonta.FrontendValvontaMode
 import fi.oph.koski.html.{EiRaameja, Raamit, Virkailija}
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.koodisto.{Koodisto, KoodistoKoodiMetadata}
-import fi.oph.koski.koskiuser.KoskiSpecificAuthenticationSupport
+import fi.oph.koski.koskiuser.KoskiCookieAndBasicAuthenticationSupport
 import fi.oph.koski.schema.{Henkilö, LocalizedString, OsaamisenTunnustaminen}
 import fi.oph.koski.servlet.VirkailijaHtmlServlet
 import fi.oph.scalaschema.ClassSchema
@@ -15,7 +15,7 @@ import scala.Function.const
 import scala.xml.NodeSeq
 
 class DocumentationServlet(implicit val application: KoskiApplication)
-  extends ScalatraServlet with VirkailijaHtmlServlet with KoskiSpecificAuthenticationSupport with KoodistoFinder {
+  extends ScalatraServlet with VirkailijaHtmlServlet with KoskiCookieAndBasicAuthenticationSupport with KoodistoFinder {
 
   val koodistoPalvelu = application.koodistoPalvelu
 

@@ -14,7 +14,7 @@ import java.time.format.DateTimeFormatter
 import scala.reflect.runtime.universe.TypeTag
 
 class OmaDataOAuth2ResourceServerServlet(implicit val application: KoskiApplication) extends KoskiSpecificApiServlet
-  with Logging with ContentEncodingSupport with NoCache with RequiresOmaDataOAuth2 {
+  with Logging with ContentEncodingSupport with NoCache with RequiresOmaDataOAuth2 with ConvertErrorsToOAuth2Format {
   // in: access token
   // out: data, jos käyttäjällä oikeudet kyseiseen access tokeniin.
   //      TAI OAuth2-protokollan mukainen virheilmoitus
@@ -100,7 +100,7 @@ class OmaDataOAuth2ResourceServerServlet(implicit val application: KoskiApplicat
     error.getAccessTokenErrorResponse
   }
 
-  private def renderErrorWithStatus(errorResult: AccessTokenErrorResponse, status: Int): Unit = {
+  private def renderErrorWithStatus(errorResult: OAuth2ErrorResponse, status: Int): Unit = {
     response.setStatus(status)
     renderObject(errorResult)
   }

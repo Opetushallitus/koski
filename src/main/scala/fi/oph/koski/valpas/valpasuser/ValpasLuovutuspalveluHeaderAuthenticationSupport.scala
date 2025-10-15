@@ -1,0 +1,5 @@
+package fi.oph.koski.valpas.valpasuser
+
+import fi.oph.koski.koskiuser.LuovutuspalveluHeaderAuthenticationSupport
+
+trait ValpasLuovutuspalveluHeaderAuthenticationSupport extends ValpasAuthenticationSupport with LuovutuspalveluHeaderAuthenticationSupport

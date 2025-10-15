@@ -4,13 +4,13 @@ import java.time.LocalDate
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.http.{HttpStatus, JsonErrorMessage, KoskiErrorCategory}
 import fi.oph.koski.json.JsonSerializer
-import fi.oph.koski.koskiuser.{KoskiSpecificAuthenticationSupport, Palvelurooli, Rooli}
+import fi.oph.koski.koskiuser.{KoskiCookieAndBasicAuthenticationSupport, Palvelurooli, Rooli}
 import fi.oph.koski.schema.Henkilö
 import fi.oph.koski.schema.Henkilö.Oid
 import fi.oph.koski.servlet.{KoskiSpecificApiServlet, NoCache}
 import org.json4s.JValue
 
-class OppivelvollisuustietoServlet(implicit val application: KoskiApplication) extends KoskiSpecificApiServlet with KoskiSpecificAuthenticationSupport with NoCache {
+class OppivelvollisuustietoServlet(implicit val application: KoskiApplication) extends KoskiSpecificApiServlet with KoskiCookieAndBasicAuthenticationSupport with NoCache {
 
   before() {
     requirePalvelurooli(Palvelurooli(Rooli.OPPIVELVOLLISUUSTIETO_RAJAPINTA))

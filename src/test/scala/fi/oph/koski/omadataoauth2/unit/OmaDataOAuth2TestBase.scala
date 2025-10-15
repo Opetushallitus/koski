@@ -4,7 +4,7 @@ import fi.oph.koski.KoskiHttpSpec
 import fi.oph.koski.henkilo.{KoskiSpecificMockOppijat, LaajatOppijaHenkilöTiedot}
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.koskiuser.{KoskiMockUser, MockUsers}
-import fi.oph.koski.omadataoauth2.{AccessTokenSuccessResponse, ChallengeAndVerifier, OmaDataOAuth2Security}
+import fi.oph.koski.omadataoauth2.{OAuth2AccessTokenSuccessResponse, ChallengeAndVerifier, OmaDataOAuth2Security}
 import org.http4s.Uri
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.should.Matchers
@@ -120,7 +120,7 @@ class OmaDataOAuth2TestBase extends AnyFreeSpec with KoskiHttpSpec with Matchers
       redirectUri = Some(validRedirectUri)
     ) {
       verifyResponseStatusOk()
-      JsonSerializer.parse[AccessTokenSuccessResponse](response.body).access_token
+      JsonSerializer.parse[OAuth2AccessTokenSuccessResponse](response.body).access_token
     }
     token
   }

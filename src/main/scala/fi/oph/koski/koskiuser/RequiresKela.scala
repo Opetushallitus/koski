@@ -1,8 +1,16 @@
 package fi.oph.koski.koskiuser
 
-import fi.oph.koski.http.KoskiErrorCategory
+import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 
-trait RequiresKela extends KoskiSpecificAuthenticationSupport with HasKoskiSpecificSession {
+trait RequiresKela extends KoskiSpecificAuthenticationSupport with CookieAndBasicAuthAuthenticationSupport
+  with LuovutuspalveluHeaderAuthenticationSupport with HasKoskiSpecificSession {
+
+  // TODO Poista Kela UI
+  override def authenticateUser: Either[HttpStatus, AuthenticationUser] = {
+    super[CookieAndBasicAuthAuthenticationSupport].authenticateUser
+      .left.flatMap(_ => super[LuovutuspalveluHeaderAuthenticationSupport].authenticateUser)
+  }
+
   implicit def session: KoskiSpecificSession = koskiSessionOption.get
 
   before() {

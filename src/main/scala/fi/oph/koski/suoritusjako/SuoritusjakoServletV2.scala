@@ -4,7 +4,7 @@ package fi.oph.koski.suoritusjako
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.editor.{EditorApiServlet, EditorModel}
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
-import fi.oph.koski.koskiuser.{KoskiSpecificAuthenticationSupport, KoskiSpecificSession}
+import fi.oph.koski.koskiuser.{KoskiCookieAndBasicAuthenticationSupport, KoskiSpecificSession}
 import fi.oph.koski.log.Logging
 import fi.oph.koski.schema.KoskiSchema.strictDeserialization
 import fi.oph.koski.schema._
@@ -13,8 +13,8 @@ import org.json4s.JValue
 
 import scala.reflect.runtime.universe.TypeTag
 
-class SuoritusjakoServletV2(implicit val application: KoskiApplication) extends EditorApiServlet with KoskiSpecificAuthenticationSupport with Logging with NoCache {
-  
+class SuoritusjakoServletV2(implicit val application: KoskiApplication) extends EditorApiServlet with KoskiCookieAndBasicAuthenticationSupport with Logging with NoCache {
+
   post("/editor") {
     implicit val suoritusjakoUser = KoskiSpecificSession.suoritusjakoKatsominenUser(request)
     renderEither(

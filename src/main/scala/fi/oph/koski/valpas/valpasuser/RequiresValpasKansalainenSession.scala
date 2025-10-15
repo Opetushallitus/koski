@@ -2,7 +2,7 @@ package fi.oph.koski.valpas.valpasuser
 
 import fi.oph.koski.http.KoskiErrorCategory
 
-trait RequiresValpasKansalainenSession extends ValpasAuthenticationSupport with HasValpasSession {
+trait RequiresValpasKansalainenSession extends ValpasCookieAndBasicAuthAuthenticationSupport with HasValpasSession {
   implicit def session: ValpasSession = koskiSessionOption.get
 
   before() {

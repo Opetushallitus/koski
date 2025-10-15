@@ -7,7 +7,7 @@ import fi.oph.koski.koskiuser.SessionStatusExpiredVirkailija
 import fi.oph.koski.servlet.NoCache
 import fi.oph.koski.valpas.servlet.ValpasApiServlet
 
-class ValpasLogoutServlet(implicit val application: KoskiApplication) extends ValpasApiServlet with NoCache with ValpasAuthenticationSupport {
+class ValpasLogoutServlet(implicit val application: KoskiApplication) extends ValpasApiServlet with NoCache with ValpasCookieAndBasicAuthAuthenticationSupport {
   get("/") {
     logger.info("Logged out")
 

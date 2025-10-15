@@ -92,8 +92,8 @@ case class OmaDataOAuth2Error(
     HttpStatus(400, List(ErrorDetail(key = errorType.errorType, errorDescription)))
   }
 
-  def getAccessTokenErrorResponse: AccessTokenErrorResponse = {
-    AccessTokenErrorResponse(
+  def getAccessTokenErrorResponse: OAuth2ErrorResponse = {
+    OAuth2ErrorResponse(
       errorType.toString,
       Some(s"${errorId}: ${errorDescription}"),
       None
