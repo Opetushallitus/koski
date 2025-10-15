@@ -1,7 +1,6 @@
 package fi.oph.koski.sdg
 
 import fi.oph.koski.schema
-import fi.oph.koski.schema.{Koodistokoodiviite, KorkeakoulunArviointi, KorkeakoulunOpintojakso, KorkeakoulunOpiskeluoikeudenTila, Koulutustoimija, Opiskeluoikeusjakso, Oppilaitos}
 import fi.oph.koski.schema.annotation.KoodistoKoodiarvo
 import fi.oph.scalaschema.annotation.Title
 
@@ -56,10 +55,10 @@ object SdgKorkeakoulunOpiskeluoikeus {
 
 @Title("Korkeakoulun opiskeluoikeus")
 case class SdgKorkeakoulunOpiskeluoikeus(
-  oppilaitos: Option[Oppilaitos],
-  koulutustoimija: Option[Koulutustoimija],
+  oppilaitos: Option[schema.Oppilaitos],
+  koulutustoimija: Option[schema.Koulutustoimija],
   override val päättymispäivä: Option[LocalDate],
-  tila: KorkeakoulunOpiskeluoikeudenTila,
+  tila: schema.KorkeakoulunOpiskeluoikeudenTila,
   lisätiedot: Option[SdgKorkeakoulunOpiskeluoikeudenLisätiedot],
   suoritukset: List[SdgKorkeakoulututkinnonSuoritus],
   @KoodistoKoodiarvo(schema.OpiskeluoikeudenTyyppi.korkeakoulutus.koodiarvo)
@@ -87,7 +86,7 @@ case class SdgKorkeakoulututkinnonSuoritus(
 }
 
 case class SdgKorkeakoulunOpiskeluoikeudenLisätiedot(
-  virtaOpiskeluoikeudenTyyppi: Option[Koodistokoodiviite],
+  virtaOpiskeluoikeudenTyyppi: Option[schema.Koodistokoodiviite],
   lukukausiIlmoittautuminen: Option[SdgLukukausi_Ilmoittautuminen],
 ) extends SdgOpiskeluoikeudenLisätiedot
 
@@ -100,7 +99,7 @@ case class SdgLukukausi_Ilmoittautuminen(
 case class SdgLukukausi_Ilmoittautumisjakso(
   alku: LocalDate,
   loppu: Option[LocalDate],
-  tila: Koodistokoodiviite,
+  tila: schema.Koodistokoodiviite,
   ylioppilaskunnanJäsen: Option[Boolean],
   maksetutLukuvuosimaksut: Option[SdgLukuvuosi_IlmoittautumisjaksonLukuvuosiMaksu]
 )
@@ -114,22 +113,22 @@ case class SdgLukuvuosi_IlmoittautumisjaksonLukuvuosiMaksu(
 
 @Title("Korkeakoulututkinto")
 case class SdgKorkeakoulututkinto(
-  tunniste: Koodistokoodiviite,
-  koulutustyyppi: Option[Koodistokoodiviite],
+  tunniste: schema.Koodistokoodiviite,
+  koulutustyyppi: Option[schema.Koodistokoodiviite],
   virtaNimi: Option[schema.LocalizedString]
 ) extends SuorituksenKoulutusmoduuli
 
 @Title("Korkeakoulun opintojakson suoritus")
 case class SdgKorkeakoulunOpintojaksonSuoritus(
   @Title("Opintojakso")
-  koulutusmoduuli: KorkeakoulunOpintojakso,
-  toimipiste: Oppilaitos,
-  arviointi: Option[List[KorkeakoulunArviointi]],
-  suorituskieli: Option[Koodistokoodiviite],
+  koulutusmoduuli: schema.KorkeakoulunOpintojakso,
+  toimipiste: schema.Oppilaitos,
+  arviointi: Option[List[schema.KorkeakoulunArviointi]],
+  suorituskieli: Option[schema.Koodistokoodiviite],
   @Title("Sisältyvät opintojaksot")
   osasuoritukset: Option[List[SdgKorkeakoulunOpintojaksonSuoritus]] = None,
   @KoodistoKoodiarvo("korkeakoulunopintojakso")
-  tyyppi: Koodistokoodiviite
+  tyyppi: schema.Koodistokoodiviite
 ) extends Osasuoritus
 
 object SdgKorkeakoulunOpintojaksonSuoritus {

@@ -62,6 +62,7 @@ class SdgService(application: KoskiApplication) extends GlobalExecutionContext w
       }.filter(_.suoritukset.nonEmpty)
   }
 
+  // SÄILYTETÄÄN: vain vahvistetut YO:t mukaan
   private def josYOTutkintoNiinVahvistettu(s: Suoritus): Boolean = {
     s match {
       case s: SdgYlioppilastutkinnonSuoritus

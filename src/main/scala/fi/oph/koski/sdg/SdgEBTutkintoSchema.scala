@@ -1,7 +1,6 @@
 package fi.oph.koski.sdg
 
 import fi.oph.koski.schema
-import fi.oph.koski.schema.{Koodistokoodiviite, Koulutustoimija, Oppilaitos, EBOpiskeluoikeudenTila}
 import fi.oph.koski.schema.annotation.KoodistoKoodiarvo
 import fi.oph.scalaschema.annotation.Title
 
@@ -9,9 +8,9 @@ import fi.oph.scalaschema.annotation.Title
 case class SdgEBTutkinnonOpiskeluoikeus(
   oid: Option[String],
   versionumero: Option[Int],
-  oppilaitos: Option[Oppilaitos],
-  koulutustoimija: Option[Koulutustoimija],
-  tila: EBOpiskeluoikeudenTila,
+  oppilaitos: Option[schema.Oppilaitos],
+  koulutustoimija: Option[schema.Koulutustoimija],
+  tila: schema.EBOpiskeluoikeudenTila,
   suoritukset: List[SdgEBTutkinnonPäätasonSuoritus],
   @KoodistoKoodiarvo(schema.OpiskeluoikeudenTyyppi.ebtutkinto.koodiarvo)
   tyyppi: schema.Koodistokoodiviite,
@@ -24,7 +23,7 @@ case class SdgEBTutkinnonOpiskeluoikeus(
 
 @Title("EB-tutkinnon päätason suoritus")
 case class SdgEBTutkinnonPäätasonSuoritus(
-  koulutusmoduuli: schema.Koulutusmoduuli,
+  koulutusmoduuli: schema.EBTutkinto,
   vahvistus: Option[Vahvistus],
   toimipiste: Option[Toimipiste],
   @KoodistoKoodiarvo("ebtutkinto")
