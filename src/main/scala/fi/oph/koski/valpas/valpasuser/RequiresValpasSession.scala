@@ -1,9 +1,9 @@
 package fi.oph.koski.valpas.valpasuser
 
 import fi.oph.koski.http.KoskiErrorCategory
-import fi.oph.koski.koskiuser.{HasSession, KoskiSpecificAuthenticationSupport, KoskiSpecificSession, Palvelurooli, Session}
+import fi.oph.koski.koskiuser.Palvelurooli
 
-trait RequiresValpasSession extends ValpasAuthenticationSupport with HasValpasSession {
+trait RequiresValpasSession extends ValpasCookieAndBasicAuthAuthenticationSupport with HasValpasSession {
   implicit def session: ValpasSession = koskiSessionOption.get
 
   before() {

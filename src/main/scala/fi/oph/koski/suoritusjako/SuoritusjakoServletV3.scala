@@ -2,14 +2,14 @@ package fi.oph.koski.suoritusjako
 
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.json.JsonSerializer
-import fi.oph.koski.koskiuser.KoskiSpecificAuthenticationSupport
+import fi.oph.koski.koskiuser.{KoskiCookieAndBasicAuthenticationSupport}
 import fi.oph.koski.log.Logging
 import fi.oph.koski.servlet.{KoskiSpecificApiServlet, NoCache}
 import org.json4s.JValue
 
 class SuoritusjakoServletV3(implicit val application: KoskiApplication)
   extends KoskiSpecificApiServlet
-    with KoskiSpecificAuthenticationSupport
+    with KoskiCookieAndBasicAuthenticationSupport
     with Logging
     with NoCache {
 

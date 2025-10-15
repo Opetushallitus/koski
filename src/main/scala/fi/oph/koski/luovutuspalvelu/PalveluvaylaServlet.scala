@@ -1,6 +1,6 @@
 package fi.oph.koski.luovutuspalvelu
 
-import fi.oph.koski.config.{Environment, KoskiApplication}
+import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.koskiuser.RequiresSuomiFiOrHsl

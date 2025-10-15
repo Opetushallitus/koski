@@ -2,7 +2,7 @@ package fi.oph.koski.koskiuser
 
 import fi.oph.koski.http.KoskiErrorCategory
 
-trait RequiresVkt extends KoskiSpecificAuthenticationSupport {
+trait RequiresVkt extends KoskiCookieAndBasicAuthenticationSupport {
   implicit def koskiSession: KoskiSpecificSession = koskiSessionOption.get
 
   before() {

@@ -1,0 +1,3 @@
+package fi.oph.koski.koskiuser
+
+trait KoskiLuovutuspalveluHeaderAuthenticationSupport extends KoskiSpecificAuthenticationSupport with LuovutuspalveluHeaderAuthenticationSupport

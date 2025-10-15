@@ -1,0 +1,3 @@
+package fi.oph.koski.koskiuser
+
+trait KoskiCookieAndBasicAuthenticationSupport extends KoskiSpecificAuthenticationSupport with CookieAndBasicAuthAuthenticationSupport

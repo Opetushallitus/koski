@@ -2,7 +2,7 @@ package fi.oph.koski.ytr.download
 
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.db.{KoskiTables, QueryMethods}
-import fi.oph.koski.koskiuser.{AccessType, KoskiSpecificAuthenticationSupport, KoskiSpecificSession, RequiresVirkailijaOrPalvelukäyttäjä}
+import fi.oph.koski.koskiuser.{AccessType, KoskiCookieAndBasicAuthenticationSupport, KoskiSpecificSession, RequiresVirkailijaOrPalvelukäyttäjä}
 import fi.oph.koski.servlet.{KoskiSpecificApiServlet, NoCache}
 import fi.oph.koski.sso.KoskiSpecificSSOSupport
 import slick.dbio.DBIO
@@ -11,7 +11,7 @@ import org.json4s.JsonAST.{JBool, JObject}
 
 import java.time.LocalDate
 
-class YtrTestServlet(implicit val application: KoskiApplication) extends KoskiSpecificApiServlet with KoskiSpecificAuthenticationSupport with KoskiSpecificSSOSupport with RequiresVirkailijaOrPalvelukäyttäjä with NoCache with QueryMethods {
+class YtrTestServlet(implicit val application: KoskiApplication) extends KoskiSpecificApiServlet with KoskiCookieAndBasicAuthenticationSupport with KoskiSpecificSSOSupport with RequiresVirkailijaOrPalvelukäyttäjä with NoCache with QueryMethods {
   val db = application.masterDatabase.db
 
   private val downloadService = application.ytrDownloadService

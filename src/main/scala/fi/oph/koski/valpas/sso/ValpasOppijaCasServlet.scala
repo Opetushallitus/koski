@@ -7,9 +7,9 @@ import fi.oph.koski.koskiuser.{AuthenticationUser, UserLanguage}
 import fi.oph.koski.log.LogUserContext
 import fi.oph.koski.servlet.NoCache
 import fi.oph.koski.valpas.servlet.{ValpasApiServlet, ValpasBaseServlet}
-import fi.oph.koski.valpas.valpasuser.ValpasAuthenticationSupport
+import fi.oph.koski.valpas.valpasuser.ValpasCookieAndBasicAuthAuthenticationSupport
 
-class ValpasOppijaCasServlet(implicit val application: KoskiApplication) extends ValpasApiServlet with ValpasBaseServlet with ValpasAuthenticationSupport with NoCache {
+class ValpasOppijaCasServlet(implicit val application: KoskiApplication) extends ValpasApiServlet with ValpasBaseServlet with ValpasCookieAndBasicAuthAuthenticationSupport with NoCache {
   private val koskiSessions = application.koskiSessionRepository
   private val casService = application.casService
   private val oppijaCreation = application.casOppijaCreationService

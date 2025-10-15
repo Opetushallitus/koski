@@ -1,7 +1,7 @@
 package fi.oph.koski.omadataoauth2
 
 import fi.oph.koski.config.KoskiApplication
-import fi.oph.koski.koskiuser.{KoskiSpecificAuthenticationSupport, RequiresKansalainen}
+import fi.oph.koski.koskiuser.{KoskiCookieAndBasicAuthenticationSupport, RequiresKansalainen}
 import fi.oph.koski.log.Logging
 import fi.oph.koski.schema.LocalizedString
 import fi.oph.koski.servlet.{KoskiSpecificApiServlet, LanguageSupport, NoCache}
@@ -9,7 +9,7 @@ import org.scalatra.ContentEncodingSupport
 
 
 class OmaDataOAuth2ResourceOwnerServlet(implicit val application: KoskiApplication)
-  extends KoskiSpecificApiServlet with KoskiSpecificAuthenticationSupport with Logging with ContentEncodingSupport with NoCache with LanguageSupport with OmaDataOAuth2ServletSupport with RequiresKansalainen {
+  extends KoskiSpecificApiServlet with KoskiCookieAndBasicAuthenticationSupport with Logging with ContentEncodingSupport with NoCache with LanguageSupport with OmaDataOAuth2ServletSupport with RequiresKansalainen {
 
   get("/client-details/:client_id") {
     val clientId = params("client_id")

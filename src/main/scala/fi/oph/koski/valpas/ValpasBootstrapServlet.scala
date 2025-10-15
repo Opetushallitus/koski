@@ -5,11 +5,11 @@ import fi.oph.koski.koskiuser.AuthenticationUser
 import fi.oph.koski.schema.LocalizedString
 import fi.oph.koski.servlet.NoCache
 import fi.oph.koski.valpas.servlet.ValpasApiServlet
-import fi.oph.koski.valpas.valpasuser.ValpasAuthenticationSupport
+import fi.oph.koski.valpas.valpasuser.ValpasCookieAndBasicAuthAuthenticationSupport
 
 import java.net.URLDecoder
 
-class ValpasBootstrapServlet(implicit val application: KoskiApplication) extends ValpasApiServlet with NoCache with ValpasAuthenticationSupport {
+class ValpasBootstrapServlet(implicit val application: KoskiApplication) extends ValpasApiServlet with NoCache with ValpasCookieAndBasicAuthAuthenticationSupport {
   get("/window-properties") {
     WindowProperties(
       valpasLocalizationMap = application.valpasLocalizationRepository.localizations,

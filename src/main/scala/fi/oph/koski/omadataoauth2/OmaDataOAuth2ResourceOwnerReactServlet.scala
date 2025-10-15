@@ -2,12 +2,12 @@ package fi.oph.koski.omadataoauth2
 
 import fi.oph.koski.config.{Environment, KoskiApplication}
 import fi.oph.koski.frontendvalvonta.FrontendValvontaMode
-import fi.oph.koski.koskiuser.{KoskiSpecificAuthenticationSupport, UserLanguage}
+import fi.oph.koski.koskiuser.{KoskiCookieAndBasicAuthenticationSupport, UserLanguage}
 import fi.oph.koski.servlet.{OmaOpintopolkuSupport, OppijaHtmlServlet}
 import org.scalatra.{MatchedRoute, ScalatraServlet}
 
 class OmaDataOAuth2ResourceOwnerReactServlet(implicit val application: KoskiApplication) extends ScalatraServlet
-  with OppijaHtmlServlet with KoskiSpecificAuthenticationSupport with OmaOpintopolkuSupport with OmaDataOAuth2ServletSupport with OmaDataOAuth2Config {
+  with OppijaHtmlServlet with KoskiCookieAndBasicAuthenticationSupport with OmaOpintopolkuSupport with OmaDataOAuth2ServletSupport with OmaDataOAuth2Config {
 
   val allowFrameAncestors: Boolean = !Environment.isServerEnvironment(application.config)
   val frontendValvontaMode: FrontendValvontaMode.FrontendValvontaMode =

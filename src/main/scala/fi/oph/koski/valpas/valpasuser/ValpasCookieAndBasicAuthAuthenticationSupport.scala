@@ -1,0 +1,5 @@
+package fi.oph.koski.valpas.valpasuser
+
+import fi.oph.koski.koskiuser.CookieAndBasicAuthAuthenticationSupport
+
+trait ValpasCookieAndBasicAuthAuthenticationSupport extends ValpasAuthenticationSupport with CookieAndBasicAuthAuthenticationSupport
