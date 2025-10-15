@@ -290,6 +290,7 @@ case class DIAOppiaineenTutkintovaiheenNumeerinenArviointi(
   lasketaanKokonaispistemäärään: Boolean = true
 ) extends DIATutkintovaiheenArviointi
 
+@Title("DIA-oppiaineen tutkintovaiheen suoritusmerkintä arviointi")
 case class DIAOppiaineenTutkintovaiheenSuoritusmerkintäArviointi(
   @KoodistoKoodiarvo("S")
   arvosana: Koodistokoodiviite,
