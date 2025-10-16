@@ -8,12 +8,16 @@ import fi.oph.koski.schema.{KielitutkinnonOpiskeluoikeus, Opiskeluoikeus, Suorit
 import fi.oph.koski.schema.KoskiSchema.strictDeserialization
 import fi.oph.koski.util.Wait
 import fi.oph.koski.{KoskiApplicationForTests, KoskiHttpSpec}
+import org.apache.pdfbox.pdmodel.PDDocument
+import org.apache.pdfbox.text.PDFTextStripper
 import org.json4s.jackson.JsonMethods
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.{BeforeAndAfterAll, BeforeAndAfterEach}
 
+import java.io.ByteArrayInputStream
 import java.net.URL
+import java.nio.file.{Files, Paths}
 import java.time.{Duration, LocalDate}
 
 class TodistusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers with BeforeAndAfterAll with BeforeAndAfterEach with PutOpiskeluoikeusTestMethods[KielitutkinnonOpiskeluoikeus] {
@@ -208,7 +212,41 @@ class TodistusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers with Bef
     }
   }
 
+  "Allekirjoitetun todistuksen saa ladattua sen valmistuttua" in {
+    val lang = "fi"
+    val hetu = KoskiSpecificMockOppijat.kielitutkinnonSuorittaja.hetu.get
+    val oppijaOid = KoskiSpecificMockOppijat.kielitutkinnonSuorittaja.oid
+    val opiskeluoikeusOid = getVahvistettuKielitutkinnonOpiskeluoikeus(oppijaOid).flatMap(_.oid).get
 
+    val req = TodistusGenerateRequest(oppijaOid, opiskeluoikeusOid, lang)
+
+    val todistusJob = addGenerateJobSuccessfully(req, hetu) { todistusJob =>
+      todistusJob.state should equal(TodistusState.QUEUED)
+      todistusJob
+    }
+
+    val completedJob = waitForCompletion(todistusJob.id, hetu)
+
+    completedJob.error should be(None)
+    // completedJob.opiskeluoikeusVersionumero should be(1) // TODO: TOR-2400
+    // completedJob.oppijaHenkilötiedotHash should be Some("foo")  // TODO: TOR-2400
+    // completedJob.completedAt should not be empty // TODO: TOR-2400
+    // completedJob.startedAt should not be empty // TODO: TOR-2400
+    // completedJob.worker should not be empty // TODO: TOR-2400
+
+    verifyResultAndContent(s"/api/todistus/download/${todistusJob.id}", hetu) {
+      val pdfBytes = response.getContentBytes()
+
+      // Files.write(Paths.get(s"todistus-${todistusJob.id}.pdf"), pdfBytes)
+
+      val pdfStream = new ByteArrayInputStream(pdfBytes)
+
+      val document = PDDocument.load(pdfStream)
+      val pdfText = new PDFTextStripper().getText(document)
+      assert(pdfText.contains("Läpi meni!"))
+      document.close()
+    }
+  }
 
   // TODO: TOR-2400 testejä:
   //  - huollettavan todistukset
@@ -262,18 +300,18 @@ class TodistusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers with Bef
     }
   }
 
-  def getResult[T](url: String, user: UserWithPassword)(f: => T): T = {
+  def getResult[T](url: String, hetu: String)(f: => T): T = {
     val rootUrl = KoskiApplicationForTests.config.getString("koski.root.url")
-    get(url.replace(rootUrl, ""), headers = authHeaders(user))(f)
+    get(url.replace(rootUrl, ""), headers = kansalainenLoginHeaders(hetu))(f)
   }
 
-  def verifyResult(url: String, user: UserWithPassword): Unit =
-    getResult(url, user) {
+  def verifyResult(url: String, hetu: String): Unit =
+    getResult(url, hetu) {
       verifyResponseStatus(302) // 302: Found (redirect)
     }
 
-  def verifyResultAndContent[T](url: String, user: UserWithPassword)(f: => T): T = {
-    val location = new URL(getResult(url, user) {
+  def verifyResultAndContent[T](url: String, hetu: String)(f: => T): T = {
+    val location = new URL(getResult(url, hetu) {
       verifyResponseStatus(302) // 302: Found (redirect)
       response.header("Location")
     })

@@ -11,8 +11,6 @@ CREATE TABLE todistus_job (
     "started_at" timestamp with time zone,
     "completed_at" timestamp with time zone,
     "worker" text,
-    "raw_s3_object_key" text,
-    "signed_s3_object_key" text,
     "error" text
 );
 
