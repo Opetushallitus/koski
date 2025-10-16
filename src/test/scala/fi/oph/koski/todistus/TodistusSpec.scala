@@ -244,6 +244,10 @@ class TodistusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers with Bef
       val document = PDDocument.load(pdfStream)
       val pdfText = new PDFTextStripper().getText(document)
       assert(pdfText.contains("Läpi meni!"))
+
+      // TODO: TOR-2400
+      // - tarkista, että pdf:ssä on validi allekirjoitus
+      // - tarkista, että pdf:n sisältö vastaa myös graafisesti renderöitynä odotettua (marginaalit, sivumäärä jne.)
       document.close()
     }
   }
