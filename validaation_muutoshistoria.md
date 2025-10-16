@@ -1,4 +1,16 @@
 # Koskeen tallennettavien tietojen validaatiosäännöt
+
+## 20.10.2025
+
+- Päivitetty seuraavien ammatillisen koulutuksen opiskeluoikeuksien lisätietojen validaatiota:
+  - Opiskeluvalmiuksia tukevat opinnot
+  - Erityinen tuki
+  - Vaikeasti vammainen
+  - Vammainen ja avustaja
+- Rajapäivän 31.12.2025 jälkeen alkavat lisätietojen aikajaksot on estetty.
+  - Rajapäivänä tai sitä ennen alkavien jaksojen on sallittu jatkua rajapäivän jälkeen.
+- Opiskeluoikeuksille, jotka alkavat 31.12.2025 jälkeen on estetty kyseisten lisätietojen siirtäminen kokonaan.
+
 ## 20.10.2025
 
 - Ammatillisiin opiskeluoikeuksiin, jotka alkavat 31.12.2025 jälkeen, ei voi merkitä lisätietoa henkilöstökoulutus.

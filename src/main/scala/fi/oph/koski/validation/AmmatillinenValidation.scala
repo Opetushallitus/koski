@@ -440,27 +440,19 @@ object AmmatillinenValidation {
     val rajapäivänJälkeinenPäivä = viimeinenSallittuJaksonPäivä.plusDays(1)
     val isValidaatiotAstuneetVoimaan = LocalDate.now().isAfter(viimeinenSallittuJaksonPäivä)
 
-    def validateOpiskeluValmiuksiaTukevienOpintojenJaksot: HttpStatus = {
-      val jaksoPäättyyRajapäivänJälkeen = oo.lisätiedot
-        .flatMap(_.opiskeluvalmiuksiaTukevatOpinnot)
-        .getOrElse(List.empty)
-        .exists(jakso => jakso.loppu.isAfter(viimeinenSallittuJaksonPäivä))
+    def validateAikajaksot(jaksot: Option[List[Alkupäivällinen]], jaksonNimiVirheilmoitukseen: String): HttpStatus = {
+      val ooAlkaaViimeisenKäyttöpäivänJälkeen = oo.alkamispäivä.exists(alkamispäivä => alkamispäivä.isAfter(viimeinenSallittuJaksonPäivä))
+      val eiJaksoaOlemassa = jaksot.getOrElse(List.empty).isEmpty
+      val jaksoAlkaaEnnenRajapäivää = jaksot.getOrElse(List.empty).exists(jakso => jakso.alku.isBefore(rajapäivänJälkeinenPäivä))
 
-      HttpStatus.validate(!jaksoPäättyyRajapäivänJälkeen) {
-        KoskiErrorCategory.badRequest.validation.ammatillinen.lisätietoRajapäivänJälkeen("Opiskeluvalmiuksia tukevien opintojen")()
-      }
-    }
-
-    def validateAikajaksot(jaksot: Option[List[Aikajakso]], jaksonNimiVirheilmoitukseen: String): HttpStatus = {
-      val jaksoPäättyyRajapäivänJälkeen = jaksot.getOrElse(List.empty)
-        .exists(jakso =>
-          jakso.alku.isAfter(viimeinenSallittuJaksonPäivä) ||
-            (jakso.loppu.isEmpty && LocalDate.now.isAfter(viimeinenSallittuJaksonPäivä)) ||
-            (jakso.loppu.isDefined && jakso.loppu.exists(l => l.isAfter(viimeinenSallittuJaksonPäivä)))
-        )
-
-      HttpStatus.validate(!jaksoPäättyyRajapäivänJälkeen) {
-        KoskiErrorCategory.badRequest.validation.ammatillinen.lisätietoRajapäivänJälkeen(jaksonNimiVirheilmoitukseen)()
+      if (ooAlkaaViimeisenKäyttöpäivänJälkeen) {
+        HttpStatus.validate(eiJaksoaOlemassa) {
+          KoskiErrorCategory.badRequest.validation.ammatillinen.lisätietoRajapäivänJälkeen(jaksonNimiVirheilmoitukseen)()
+        }
+      } else {
+        HttpStatus.validate(jaksoAlkaaEnnenRajapäivää) {
+          KoskiErrorCategory.badRequest.validation.ammatillinen.lisätietoRajapäivänJälkeen(jaksonNimiVirheilmoitukseen)()
+        }
       }
     }
 
@@ -506,7 +498,7 @@ object AmmatillinenValidation {
 
     if (isValidaatiotAstuneetVoimaan) {
       HttpStatus.fold(
-        validateOpiskeluValmiuksiaTukevienOpintojenJaksot,
+        validateAikajaksot(oo.lisätiedot.flatMap(_.opiskeluvalmiuksiaTukevatOpinnot), "Opiskeluvalmiuksia tukevien opintojen"),
         validateAikajaksot(oo.lisätiedot.flatMap(_.erityinenTuki), "Erityisen tuen"),
         validateAikajaksot(oo.lisätiedot.flatMap(_.vaikeastiVammainen), "Vaikeasti vammaisen"),
         validateAikajaksot(oo.lisätiedot.flatMap(_.vammainenJaAvustaja), "Vammaisen ja avustajan"),
