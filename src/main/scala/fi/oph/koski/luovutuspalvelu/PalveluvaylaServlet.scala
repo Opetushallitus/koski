@@ -102,3 +102,15 @@ class PalveluvaylaServlet(implicit val application: KoskiApplication) extends So
   private def localizedStringToXml(s: LocalizedString) =
     s.values.map { case (k, v) => <x>{v}</x>.copy(label = k) }
 }
+
+object PalveluvaylaServlet {
+  def extractXRoadClient(soap: Elem): Option[String] = {
+    for {
+      objectType <- (soap \\ "Envelope" \\ "Header" \\ "client").headOption.flatMap(_.attribute("http://x-road.eu/xsd/identifiers", "objectType"))
+      xRoadInstance <- (soap \\ "Envelope" \\ "Header" \\ "client" \\ "xRoadInstance").headOption.map(_.text)
+      memberClass <- (soap \\ "Envelope" \\ "Header" \\ "client" \\ "memberClass").headOption.map(_.text)
+      memberCode <- (soap \\ "Envelope" \\ "Header" \\ "client" \\ "memberCode").headOption.map(_.text)
+      subsystemCode <- (soap \\ "Envelope" \\ "Header" \\ "client" \\ "subsystemCode").headOption.map(_.text)
+    } yield s"${objectType}:${xRoadInstance}/${memberClass}/${memberCode}/${subsystemCode}"
+  }
+}

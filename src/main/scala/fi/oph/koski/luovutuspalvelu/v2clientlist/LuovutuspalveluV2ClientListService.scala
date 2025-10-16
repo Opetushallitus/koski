@@ -44,4 +44,4 @@ object LuovutuspalveluV2ClientListService {
   }
 }
 
-case class LuovutuspalveluClient(subjectDn: String, ips: List[String], user: String, xroadSecurityServer: Option[Boolean])
+case class LuovutuspalveluClient(subjectDn: String, ips: List[String], user: String)
