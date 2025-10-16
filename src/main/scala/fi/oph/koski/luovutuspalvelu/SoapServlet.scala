@@ -15,7 +15,12 @@ trait SoapServlet extends KoskiSpecificApiServlet {
   }
 
   def xmlBody: Either[HttpStatus, Elem] = try {
-    Right(scala.xml.XML.loadString(request.body))
+    val parsedXml = Option(request.getAttribute("koski.parsedXml").asInstanceOf[Elem]).getOrElse {
+      val elem = scala.xml.XML.loadString(request.body)
+      request.setAttribute("koski.parsedXml", elem)
+      elem
+    }
+    Right(parsedXml)
   } catch {
     case NonFatal(e) =>
       Left(KoskiErrorCategory.badRequest.format.xml(e.getMessage))
