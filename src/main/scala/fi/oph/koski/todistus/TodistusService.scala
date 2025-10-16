@@ -6,9 +6,13 @@ import fi.oph.koski.koskiuser.KoskiSpecificSession
 import fi.oph.koski.log.Logging
 import fi.oph.koski.schema.{KielitutkinnonOpiskeluoikeus, KoskeenTallennettavaOpiskeluoikeus, YleisenKielitutkinnonSuoritus}
 import fi.oph.koski.schema.annotation.RedundantData
+import fi.oph.koski.todistus.BucketType.BucketType
 import fi.oph.koski.todistus.TodistusLanguage.TodistusLanguage
 import fi.oph.koski.todistus.TodistusState.TodistusState
+import fi.oph.koski.util.{ClasspathResource, Resource, TryWithLogging}
+import software.amazon.awssdk.http.ContentStreamProvider
 
+import java.nio.file.Path
 import java.io.OutputStream
 import java.time.LocalDateTime
 import java.util.UUID
@@ -19,9 +23,11 @@ class TodistusService(application: KoskiApplication) extends Logging {
   private val resultRepository = new TodistusResultRepository(application.config)
   private val todistusRepository: TodistusJobRepository = application.todistusRepository
 
+  lazy val mockTodistusResource: Resource = new ClasspathResource("/mockdata/todistus")
+
   def currentStatus(req: TodistusIdRequest)(implicit user: KoskiSpecificSession): Either[HttpStatus, TodistusJob] = {
     todistusRepository
-      .get(UUID.fromString(req.id))
+      .get(req.id)
       .toRight(KoskiErrorCategory.notFound())
   }
 
@@ -73,16 +79,16 @@ class TodistusService(application: KoskiApplication) extends Logging {
     } yield yleisenKielitutkinnonVahvistettuOpiskeluoikeus
   }
 
-  def downloadCertificate(req: TodistusJob, output: OutputStream)(implicit user: KoskiSpecificSession): Unit = {
-    // TODO: TOR-2400: Hae tiedosto, tai ehkä ennemmin presigned s3 URL?
-    // resultRepository.fooBar...
-  }
-
   def cancelAllMyJobs(reason: String): Boolean = todistusRepository.setRunningJobsFailed(reason)
 
   def truncate(): Int = todistusRepository.truncate
 
   def hasNext: Boolean = todistusRepository.numberOfQueuedJobs > 0
+
+  def getDownloadUrl(bucketType: BucketType, job: TodistusJob): Either[HttpStatus, String] =
+    TryWithLogging(logger, {
+      resultRepository.getPresignedDownloadUrl(bucketType, job.id)
+    }).left.map(t => KoskiErrorCategory.badRequest(s"Tiedostoa ei löydy tai tapahtui virhe sen jakamisessa"))
 
   def cleanup(koskiInstances: Seq[KoskiInstance]): Unit = {
     val instanceArns = koskiInstances.map(_.taskArn)
@@ -94,13 +100,30 @@ class TodistusService(application: KoskiApplication) extends Logging {
       }
   }
 
-  def hasWork: Boolean = todistusRepository.numberOfMyRunningJobs > 0 || todistusRepository.numberOfQueuedJobs > 0
+  def hasWork: Boolean = {
+    todistusRepository.numberOfMyRunningJobs > 0 || todistusRepository.numberOfQueuedJobs > 0
+  }
 
   def runNext(): Unit = {
     todistusRepository.takeNext.foreach { todistus =>
       logStart(todistus)
 
-      // TODO: TOR-2400: Toteuta
+      // TODO: TOR-2400 oikea toteutus
+
+      todistusRepository.updateState(todistus.id, TodistusState.GENERATING_RAW_PDF, TodistusState.SAVING_RAW_PDF)
+
+      mockTodistusResource.getInputStream("mock-todistus-raw.pdf").foreach(is =>
+        resultRepository.putStream(BucketType.RAW, todistus.id, ContentStreamProvider.fromInputStream(is))
+      )
+
+      todistusRepository.updateState(todistus.id, TodistusState.SAVING_RAW_PDF, TodistusState.STAMPING_PDF)
+      todistusRepository.updateState(todistus.id, TodistusState.STAMPING_PDF, TodistusState.SAVING_STAMPED_PDF)
+
+      mockTodistusResource.getInputStream("mock-todistus-stamped.pdf").foreach(is =>
+        resultRepository.putStream(BucketType.STAMPED, todistus.id, ContentStreamProvider.fromInputStream(is))
+      )
+
+      todistusRepository.updateState(todistus.id, TodistusState.SAVING_STAMPED_PDF, TodistusState.COMPLETED)
 
       logEnd(todistus)
     }
@@ -128,10 +151,13 @@ object TodistusState {
   val SAVING_STAMPED_PDF = "SAVING_STAMPED_PDF"
   val COMPLETED = "COMPLETED"
   val ERROR = "ERROR"
+  // TODO: TOR-2400: Olisiko parempi vaan poistaa koko rivi ja tiedostot S3:sta? Riippuu siitä, miten siivousprosessi halutaan toteuttaa.
+  val QUEUD_FOR_EXPIRE = "QUEUD_FOR_EXPIRE" // voi merkitä tämän, kun halutaan, että todistus poistetaan.
+  val EXPIRED = "EXPIRED"// esim. siivousprosessi voi asettaa tämän, jos todistus on syystä tai toisesta vanhentunut (esim. oo mitätöity, tiedosto poistettu S3:sta tilan säästämiseksi tai muusta syystä jne.)
 
   val runningStates: Set[String] = Set(GENERATING_RAW_PDF, SAVING_RAW_PDF, STAMPING_PDF, SAVING_STAMPED_PDF)
 
-  val * : Set[String] = Set(QUEUED, GENERATING_RAW_PDF, SAVING_RAW_PDF, STAMPING_PDF, SAVING_STAMPED_PDF, COMPLETED, ERROR)
+  val * : Set[String] = Set(QUEUED, GENERATING_RAW_PDF, SAVING_RAW_PDF, STAMPING_PDF, SAVING_STAMPED_PDF, COMPLETED, ERROR, QUEUD_FOR_EXPIRE, EXPIRED)
 }
 
 object TodistusLanguage {
@@ -168,9 +194,5 @@ case class TodistusJob(
   completedAt: Option[LocalDateTime] = None,
   @RedundantData // Piilotetaan loppukäyttäjiltä
   worker: Option[String] = None,
-  @RedundantData // Piilotetaan loppukäyttäjiltä
-  rawS3ObjectKey: Option[String] = None,
-  @RedundantData // Piilotetaan loppukäyttäjiltä
-  signedS3ObjectKey: Option[String] = None,
   error: Option[String] = None
 )

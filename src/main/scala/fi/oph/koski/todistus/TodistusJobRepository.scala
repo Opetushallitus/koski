@@ -7,15 +7,13 @@ import fi.oph.koski.koskiuser.Rooli.OPHPAAKAYTTAJA
 import fi.oph.koski.log.Logging
 import slick.jdbc.GetResult
 
-import java.util.UUID
-
 class TodistusJobRepository(val db: DB, workerId: String) extends QueryMethods with Logging with DatabaseConverters {
 
-  def get(id: UUID)(implicit user: KoskiSpecificSession): Option[TodistusJob] = {
+  def get(id: String)(implicit user: KoskiSpecificSession): Option[TodistusJob] = {
     runDbSync(sql"""
       SELECT *
       FROM todistus_job
-      WHERE id = ${id.toString}::uuid
+      WHERE id = ${id}::uuid
         AND (user_oid = ${user.oid} OR ${user.hasRole(OPHPAAKAYTTAJA)})
       """.as[TodistusJob]
     ).headOption
@@ -26,10 +24,9 @@ class TodistusJobRepository(val db: DB, workerId: String) extends QueryMethods w
       runDbSync(sql"""
       INSERT INTO todistus_job(id, user_oid, oppija_oid, opiskeluoikeus_oid, language,
                           opiskeluoikeus_versionumero, oppija_henkilotiedot_hash, state,
-                          created_at, started_at, completed_at, worker, raw_s3_object_key,
-                          signed_s3_object_key, error)
+                          created_at, started_at, completed_at, worker, error)
       VALUES (
-        ${todistusJob.id.toString}::uuid,
+        ${todistusJob.id}::uuid,
         ${todistusJob.userOid},
         ${todistusJob.oppijaOid},
         ${todistusJob.opiskeluoikeusOid},
@@ -41,8 +38,6 @@ class TodistusJobRepository(val db: DB, workerId: String) extends QueryMethods w
         ${todistusJob.startedAt.map(java.sql.Timestamp.valueOf)},
         ${todistusJob.completedAt.map(java.sql.Timestamp.valueOf)},
         ${todistusJob.worker},
-        ${todistusJob.rawS3ObjectKey},
-        ${todistusJob.signedS3ObjectKey},
         ${todistusJob.error}
       )
       RETURNING *
@@ -53,11 +48,11 @@ class TodistusJobRepository(val db: DB, workerId: String) extends QueryMethods w
     }
   }
 
-  def updateState(id: UUID, startState: String, state: String): Option[TodistusJob] = {
+  def updateState(id: String, startState: String, state: String): Option[TodistusJob] = {
     runDbSync(sql"""
       UPDATE todistus_job
       SET state = $state
-      WHERE id = ${id.toString}::uuid AND
+      WHERE id = ${id}::uuid AND
         state = $startState
       RETURNING *
       """.as[TodistusJob]).headOption
@@ -133,8 +128,6 @@ class TodistusJobRepository(val db: DB, workerId: String) extends QueryMethods w
       startedAt = Option(r.rs.getTimestamp("started_at")).map(_.toLocalDateTime),
       completedAt = Option(r.rs.getTimestamp("completed_at")).map(_.toLocalDateTime),
       worker = Option(r.rs.getString("worker")),
-      rawS3ObjectKey = Option(r.rs.getString("raw_s3_object_key")),
-      signedS3ObjectKey = Option(r.rs.getString("signed_s3_object_key")),
       error = Option(r.rs.getString("error"))
     )
   })

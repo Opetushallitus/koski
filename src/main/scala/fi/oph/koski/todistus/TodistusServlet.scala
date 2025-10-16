@@ -8,7 +8,6 @@ import fi.oph.koski.log.KoskiOperation.{KoskiOperation, TODISTUKSEN_LATAAMINEN, 
 import fi.oph.koski.servlet.{KoskiSpecificApiServlet, NoCache}
 import fi.oph.koski.util.ChainingSyntax._
 
-
 class TodistusServlet(implicit val application: KoskiApplication)
   extends KoskiSpecificApiServlet
     with NoCache
@@ -40,15 +39,15 @@ class TodistusServlet(implicit val application: KoskiApplication)
   }
 
   get("/download/:id") {
-    // TODO: TOR-2400: S3 presigned URLien käyttö
-    getIdRequest.flatMap(service.currentStatus) match {
-      case Right(todistus: TodistusJob) if todistus.state == "COMPLETED" =>
+    (getIdRequest.flatMap(service.currentStatus) match {
+      case Right(todistusJob: TodistusJob) if todistusJob.state == "COMPLETED" =>
         mkAuditLog(session, TODISTUKSEN_LATAAMINEN)
         contentType = "application/pdf"
-        service.downloadCertificate(todistus, response.getOutputStream)
+        service.getDownloadUrl(BucketType.STAMPED, todistusJob)
       case _ =>
-        renderStatus(KoskiErrorCategory.unavailable.todistus.notCompleteOrNoAccess())
-    }
+        Left(KoskiErrorCategory.unavailable.todistus.notCompleteOrNoAccess())
+    })
+      .fold(renderStatus, redirect)
   }
 
   private def getIdRequest: Either[HttpStatus, TodistusIdRequest] =
