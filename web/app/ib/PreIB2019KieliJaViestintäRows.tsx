@@ -20,13 +20,10 @@ import {
   LaajuusView
 } from '../components-v2/opiskeluoikeus/LaajuusField'
 import { Spacer, SpacerLine } from '../components-v2/layout/Spacer'
-import { UusiOmanÄidinkielenOpintojenKurssiModal } from './dialogs/UusiOmanÄidinkielenOpintojenKurssiModal'
+import { UusiOmanÄidinkielenOpintojenModuuliModal } from './dialogs/UusiOmanÄidinkielenOpintojenModuuliModal'
 import { pipe } from 'fp-ts/function'
 import * as A from 'fp-ts/Array'
-import {
-  Details,
-  SuorituksenTilaIcon
-} from '../components-v2/opiskeluoikeus/OppiaineTable'
+import { Details } from '../components-v2/opiskeluoikeus/OppiaineTable'
 import { LukionOmanÄidinkielenOpintojenOsasuoritus } from '../types/fi/oph/koski/schema/LukionOmanAidinkielenOpintojenOsasuoritus'
 import { PathToken } from '../util/laxModify'
 import { useBooleanState } from '../util/useBooleanState'
@@ -103,7 +100,7 @@ const PreIB2019OmanÄidinkielenOpinnotRows: React.FC<
     showLisääOmanÄidinkielenOpinnotModal,
     setShowLisääOmanÄidinkielenOpinnotModal
   ] = useState(false)
-  const [showLisääKurssiModal, setShowLisääKurssiModal] = useState(false)
+  const [showLisääModuuliModal, setShowLisääModuuliModal] = useState(false)
   const removeOmanÄidinkielenOpinnot = () => {
     form.set(
       ...päätasonSuoritus.pathTokens,
@@ -239,11 +236,8 @@ const PreIB2019OmanÄidinkielenOpinnotRows: React.FC<
               />
             </KeyValueRow>
             {onOsasuorituksia && (
-              <KeyValueRow
-                localizableLabel={'Osasuoritukset'}
-                innerKeyValueTable
-              >
-                <OmanÄidinkielenOpintojenKurssit
+              <KeyValueRow localizableLabel={'Moduulit'} innerKeyValueTable>
+                <OmanÄidinkielenOpintojenModuulit
                   form={form}
                   päätasonSuoritus={päätasonSuoritus}
                 />
@@ -253,21 +247,21 @@ const PreIB2019OmanÄidinkielenOpinnotRows: React.FC<
               <KeyValueRow innerKeyValueTable>
                 <FlatButton
                   testId="omanÄidinkielenOpinnot.lisääOsasuoritus"
-                  onClick={() => setShowLisääKurssiModal(true)}
+                  onClick={() => setShowLisääModuuliModal(true)}
                 >
-                  {t('Lisää osasuoritus')}
+                  {t('Lisää moduuli')}
                 </FlatButton>
                 <Spacer />
               </KeyValueRow>
             )}
-            {showLisääKurssiModal && (
-              <UusiOmanÄidinkielenOpintojenKurssiModal
+            {showLisääModuuliModal && (
+              <UusiOmanÄidinkielenOpintojenModuuliModal
                 olemassaOlevatModuulit={
                   päätasonSuoritus.suoritus.omanÄidinkielenOpinnot?.osasuoritukset?.map(
                     (os) => os.koulutusmoduuli.tunniste.koodiarvo
                   ) || []
                 }
-                onClose={() => setShowLisääKurssiModal(false)}
+                onClose={() => setShowLisääModuuliModal(false)}
                 onSubmit={(koulutusmoduuli, arvosana, arviointipäivä, kieli) =>
                   pipe(
                     päätasonSuoritus.suoritus.omanÄidinkielenOpinnot
@@ -296,7 +290,7 @@ const PreIB2019OmanÄidinkielenOpinnotRows: React.FC<
   )
 }
 
-const OmanÄidinkielenOpintojenKurssit: React.FC<
+const OmanÄidinkielenOpintojenModuulit: React.FC<
   PreIB2019KieliJaViestintäRowsProps
 > = ({ form, päätasonSuoritus }) => {
   const osasuoritukset = useMemo(() => {
@@ -311,28 +305,15 @@ const OmanÄidinkielenOpintojenKurssit: React.FC<
 
   return (
     <table className="OppiaineTable">
-      <thead>
-        <tr>
-          <th></th>
-          <th>{t('Kurssit')}</th>
-        </tr>
-      </thead>
       <tbody>
         <tr>
-          <td className="OppiaineRow__icon">
-            {päätasonSuoritus.suoritus.omanÄidinkielenOpinnot && (
-              <SuorituksenTilaIcon
-                suoritus={päätasonSuoritus.suoritus.omanÄidinkielenOpinnot}
-              />
-            )}
-          </td>
           <td className="OppiaineRow__oppiaine">
             <div className="OppiaineRow__kurssit">
               {osasuorituksetSorted.map((os) => {
                 const index = osasuoritukset.indexOf(os)
                 const osasuoritusId = `omanÄidinkielenOpinnot-${os.koulutusmoduuli.tunniste.koodiarvo}-${index}`
                 return (
-                  <OmanÄidinkielenOpintojenKurssi
+                  <OmanÄidinkielenOpintojenModuuli
                     form={form}
                     päätasonSuoritus={päätasonSuoritus}
                     osasuoritus={os}
@@ -356,7 +337,7 @@ const OmanÄidinkielenOpintojenKurssit: React.FC<
   )
 }
 
-type OmanÄidinkielenOpintojenKurssiProps =
+type OmanÄidinkielenOpintojenModuuliProps =
   PreIB2019KieliJaViestintäRowsProps & {
     osasuoritus: LukionOmanÄidinkielenOpintojenOsasuoritus
     osasuoritusPath: PathToken[]
@@ -364,8 +345,8 @@ type OmanÄidinkielenOpintojenKurssiProps =
     tooltipId: string
   }
 
-const OmanÄidinkielenOpintojenKurssi: React.FC<
-  OmanÄidinkielenOpintojenKurssiProps
+const OmanÄidinkielenOpintojenModuuli: React.FC<
+  OmanÄidinkielenOpintojenModuuliProps
 > = ({
   form,
   päätasonSuoritus,
