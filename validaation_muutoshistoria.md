@@ -2,6 +2,10 @@
 ## 14.10.2025
  - Rajatulle oppimäärälle Sallittu vaihtoehtoisesti erityisen tuen jakso.
 
+## 14.10.2025
+
+- Ammatillisiin opiskeluoikeuksiin, jotka alkavat 31.12.2025 jälkeen, ei voi merkitä lisätietoa henkilöstökoulutus.
+
 ## 13.10.2025
  - Sallitaan vuosiluokan suoritukseen luokka-aste, joka on eri kuin suorituksen luokka-aste, kun vuosiluokan vahvistus on ennen 31.7.2025 ja oppilaalla on lisätiedoissa vuosiluokkiinSitoutumatonOpetus.
 

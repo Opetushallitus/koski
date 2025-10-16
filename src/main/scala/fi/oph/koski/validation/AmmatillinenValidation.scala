@@ -28,7 +28,8 @@ object AmmatillinenValidation {
           validateOpiskeluoikeudenArvionnit(ammatillinen),
           validateTutkinnonUusiinPerusteisiinSiirtyminen(ammatillinen),
           validatePaikallinenMuuAmmatillinenKoulutusRajapäivänJälkeen(config, ammatillinen),
-          validateAikajaksotJaTilatVosUudistuksenRajapäivänJälkeen(config, ammatillinen)
+          validateAikajaksotJaTilatVosUudistuksenRajapäivänJälkeen(config, ammatillinen),
+          validateHenkilöstökoulutusVosUudistuksenRajapäivänJälkeen(config, ammatillinen)
         )
       case _ => HttpStatus.ok
     }
@@ -417,15 +418,14 @@ object AmmatillinenValidation {
     config: Config,
     oo: AmmatillinenOpiskeluoikeus
   ): HttpStatus = {
-    val viimeinenSallittuAlkamispäivä = LocalDate.parse(config.getString("validaatiot.paikallinenMuuAmmatillinenKoulutusViimeinenAloituspäivä"))
+    lazy val viimeinenSallittuAlkamispäivä = LocalDate.parse(config.getString("validaatiot.paikallinenMuuAmmatillinenKoulutusViimeinenAloituspäivä"))
+    lazy val onAlkamispäiväRajapäivänJälkeen = oo.alkamispäivä.exists(ap => ap.isAfter(viimeinenSallittuAlkamispäivä))
     val onPaikallinenMuuAmmatillinenKoulutus = oo.suoritukset
       .map(_.koulutusmoduuli)
       .exists {
         case _: PaikallinenMuuAmmatillinenKoulutus => true
         case _ => false
       }
-
-    val onAlkamispäiväRajapäivänJälkeen = oo.alkamispäivä.exists(ap => ap.isAfter(viimeinenSallittuAlkamispäivä))
 
     HttpStatus.validate(!onPaikallinenMuuAmmatillinenKoulutus || !onAlkamispäiväRajapäivänJälkeen){
       KoskiErrorCategory.badRequest.validation.ammatillinen.paikallinenMuuAmmatillinenRajapäivänJälkeen()
@@ -513,5 +513,18 @@ object AmmatillinenValidation {
         validateLomaTilat(oo.tila.opiskeluoikeusjaksot)
       )
     } else HttpStatus.ok
+  }
+
+  private def validateHenkilöstökoulutusVosUudistuksenRajapäivänJälkeen(
+    config: Config,
+    oo: AmmatillinenOpiskeluoikeus
+  ): HttpStatus = {
+    lazy val viimeinenSallittuAlkamispäivä = LocalDate.parse(config.getString("validaatiot.ammatillinenVosUudistuksenAikajaksojenViimeinenKäyttöpäivä"))
+    lazy val onAlkamispäiväRajapäivänJälkeen = oo.alkamispäivä.exists(ap => ap.isAfter(viimeinenSallittuAlkamispäivä))
+    val onHenkilöstökoulutus = oo.lisätiedot.exists(_.henkilöstökoulutus)
+
+    HttpStatus.validate(!onHenkilöstökoulutus || !onAlkamispäiväRajapäivänJälkeen){
+      KoskiErrorCategory.badRequest.validation.ammatillinen.henkilöstökoulutusRajapäivänJälkeen()
+    }
   }
 }
