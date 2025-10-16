@@ -23,7 +23,7 @@ import {
   PreIBOmanÄidinkielenOpintoOsasuorituksenArvosana
 } from '../PreIB2019KieliJaViestintäRows'
 
-export type UusiOmanÄidinkielenOpintojenKurssiModalProps = {
+export type UusiOmanÄidinkielenOpintojenModuuliModalProps = {
   olemassaOlevatModuulit: string[]
   onClose: () => void
   onSubmit: (
@@ -34,16 +34,16 @@ export type UusiOmanÄidinkielenOpintojenKurssiModalProps = {
   ) => void
 }
 
-export const UusiOmanÄidinkielenOpintojenKurssiModal = ({
+export const UusiOmanÄidinkielenOpintojenModuuliModal = ({
   olemassaOlevatModuulit,
   onClose,
   onSubmit
-}: UusiOmanÄidinkielenOpintojenKurssiModalProps) => {
-  const omanÄidinkielenKurssit =
+}: UusiOmanÄidinkielenOpintojenModuuliModalProps) => {
+  const moduuliOptions =
     useKoodistoOfConstraint(
       useChildSchema(LukionOmanÄidinkielenOpinto.className, 'tunniste')
     ) || []
-  const omanÄidinkielenKurssinArvosanat =
+  const arvosanaOptions =
     useKoodistoOfConstraint(
       useChildSchema(
         LukionOmanÄidinkielenOpintojenOsasuoritus.className,
@@ -51,9 +51,9 @@ export const UusiOmanÄidinkielenOpintojenKurssiModal = ({
       )
     ) || []
 
-  const [kurssi, setKurssi] = useState<PreIBOmanÄidinkielenOpinto | undefined>(
-    undefined
-  )
+  const [moduuli, setModuuli] = useState<
+    PreIBOmanÄidinkielenOpinto | undefined
+  >(undefined)
   const [laajuus, setLaajuus] = useState<LaajuusOpintopisteissä | undefined>(
     undefined
   )
@@ -69,15 +69,13 @@ export const UusiOmanÄidinkielenOpintojenKurssiModal = ({
 
   return (
     <Modal onClose={onClose}>
-      <ModalTitle>{t('Lisää osasuoritus')}</ModalTitle>
+      <ModalTitle>{t('Lisää moduuli')}</ModalTitle>
       <ModalBody>
         <label>
-          {t('Kurssi')}
+          {t('Moduuli')}
           <KoodistoSelect
             koodistoUri={'moduulikoodistolops2021'}
-            koodiarvot={omanÄidinkielenKurssit.map(
-              (m) => m.koodiviite.koodiarvo
-            )}
+            koodiarvot={moduuliOptions.map((m) => m.koodiviite.koodiarvo)}
             filter={(koodiviite) =>
               !olemassaOlevatModuulit.includes(koodiviite.koodiarvo)
             }
@@ -85,9 +83,9 @@ export const UusiOmanÄidinkielenOpintojenKurssiModal = ({
               koodiviite.koodiarvo + ' ' + t(koodiviite.nimi)
             }
             onSelect={(koodiviite) => {
-              koodiviite && setKurssi(koodiviite as PreIBOmanÄidinkielenOpinto)
+              koodiviite && setModuuli(koodiviite as PreIBOmanÄidinkielenOpinto)
             }}
-            value={kurssi ? kurssi.koodiarvo : undefined}
+            value={moduuli ? moduuli.koodiarvo : undefined}
             testId={'koulutusmoduuli'}
           />
         </label>
@@ -103,9 +101,7 @@ export const UusiOmanÄidinkielenOpintojenKurssiModal = ({
           {t('Arvosana')}
           <KoodistoSelect
             koodistoUri={'arviointiasteikkoyleissivistava'}
-            koodiarvot={omanÄidinkielenKurssinArvosanat.map(
-              (m) => m.koodiviite.koodiarvo
-            )}
+            koodiarvot={arvosanaOptions.map((m) => m.koodiviite.koodiarvo)}
             format={(koodiviite) =>
               koodiviite.koodiarvo + ' ' + t(koodiviite.nimi)
             }
@@ -147,14 +143,14 @@ export const UusiOmanÄidinkielenOpintojenKurssiModal = ({
         </FlatButton>
         <RaisedButton
           disabled={
-            [kurssi, laajuus].includes(undefined) ||
+            [moduuli, laajuus].includes(undefined) ||
             (!!arvosana && !arviointipäivä) ||
             (!arvosana && !!arviointipäivä)
           }
           onClick={() => {
-            if (kurssi !== undefined && laajuus !== undefined) {
+            if (moduuli !== undefined && laajuus !== undefined) {
               onSubmit(
-                LukionOmanÄidinkielenOpinto({ tunniste: kurssi, laajuus }),
+                LukionOmanÄidinkielenOpinto({ tunniste: moduuli, laajuus }),
                 arvosana,
                 arviointipäivä,
                 kieli

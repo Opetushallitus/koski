@@ -784,7 +784,7 @@ test.describe('IB', () => {
           await expect(page.getByTestId('oo.0.suoritukset.0.laajuus.value')).toContainText('12 op')
         })
 
-        test('Oman äidinkielen opintojen kurssin muokkaus', async ({ page, ibOppijaPage }) => {
+        test('Oman äidinkielen opintojen moduulin muokkaus', async ({ page, ibOppijaPage }) => {
           await page.getByTestId('oo.0.suoritukset.0.omanÄidinkielenOpinnot.1.osasuoritus').click()
 
           await page.getByTestId('oo.0.suoritukset.0.modal.laajuus.edit.input').click()
@@ -813,7 +813,7 @@ test.describe('IB', () => {
           await expect(page.getByTestId('oo.0.suoritukset.0.tunnustettu.selite')).toContainText('Tunnustettu suoritus')
           await expect(page.getByTestId('oo.0.suoritukset.0.tunnustettu.rahoituksenPiirissä')).toContainText('Kyllä')
         })
-        test('Oman äidinkielen opintojen kurssin poistaminen ja lisääminen', async ({ page, ibOppijaPage }) => {
+        test('Oman äidinkielen opintojen moduulin poistaminen ja lisääminen', async ({ page, ibOppijaPage }) => {
           // Poistetaan kurssi OÄI2
           await expect(page.getByTestId('oo.0.suoritukset.0.omanÄidinkielenOpinnot.1.osasuoritus')).toContainText('OÄI2')
           await page.getByTestId('oo.0.suoritukset.0.omanÄidinkielenOpinnot.1.delete').click()
