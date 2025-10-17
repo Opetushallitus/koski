@@ -243,11 +243,7 @@ class KoskiValidator(
       case lukutaito: VapaanSivistystyönLukutaitokoulutuksenSuoritus =>
         laajuusYlimpienOsasuoritustenLaajuuksista(lukutaito, yhteislaajuus, l => LaajuusOpintopisteissä(l))
       case tuva: TutkintokoulutukseenValmentavanKoulutuksenPäätasonSuoritus =>
-        TutkintokoulutukseenValmentavaKoulutusValidation.validateLaajuusRajapäivääEnnenTaiJälkeen(
-          config,
-          () => laajuusYlimpienOsasuoritustenLaajuuksista(tuva, yhteislaajuus, l => LaajuusViikoissa(l)),
-          () => laajuusYlimpienOsasuoritustenLaajuuksista(tuva, yhteislaajuusHyväksytyt, l => LaajuusViikoissa(l))
-        )
+        laajuusYlimpienOsasuoritustenLaajuuksista(tuva, yhteislaajuusHyväksytyt, l => LaajuusViikoissa(l))
       case _ => suoritus
     }
   }
@@ -1344,11 +1340,7 @@ class KoskiValidator(
           suoritus.koulutusmoduuli match {
             case _: LaajuuttaEiValidoida => HttpStatus.ok
             case _: TutkintokoulutukseenValmentavanKoulutus | _: TutkintokoulutukseenValmentavanKoulutuksenValinnaisenKoulutusosa =>
-              TutkintokoulutukseenValmentavaKoulutusValidation.validateLaajuusRajapäivääEnnenTaiJälkeen(
-                config,
-                () => validateLaajuus(laajuus, osasuoritustenLaajuudet),
-                () => validateLaajuus(laajuus, osasuoritustenLaajuudetHyväksytty)
-              )
+              validateLaajuus(laajuus, osasuoritustenLaajuudetHyväksytty)
             case _ =>
               validateLaajuus(laajuus, osasuoritustenLaajuudet)
           }
