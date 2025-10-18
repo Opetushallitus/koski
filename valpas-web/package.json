@@ -83,7 +83,7 @@
     "typescript": "^5.8.3"
   },
   "dependencies": {
-    "bem-ts": "^0.14.0",
+    "bem-ts": "^0.15.0",
     "copy-to-clipboard": "^3.3.3",
     "date-fns": "^4.1.0",
     "downloadjs": "^1.4.7",
