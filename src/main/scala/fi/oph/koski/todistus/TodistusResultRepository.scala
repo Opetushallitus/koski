@@ -13,6 +13,7 @@ import software.amazon.awssdk.services.s3.model.{CreateBucketRequest, GetObjectR
 import software.amazon.awssdk.services.s3.presigner.S3Presigner
 import software.amazon.awssdk.services.s3.presigner.model.GetObjectPresignRequest
 
+import java.io.InputStream
 import java.net.URI
 import java.nio.file.Path
 import java.time.Duration
@@ -45,6 +46,10 @@ class TodistusResultRepository(config: Config) extends Logging {
   }
 
   // TODO: TOR-2400: Toteuta tiedostokirjoitukset ja lukemiset S3:sta
+
+  def getStream(bucketType: BucketType, id: String, contentType: String = "application/pdf"): InputStream = {
+    s3.getObject(buildGetRequest(bucketType, id, contentType))
+  }
 
   def putStream(bucketType: BucketType, id: String, provider: ContentStreamProvider, contentType: String = "application/pdf"): Unit = {
     val key = objectKey(bucketType, id)
@@ -113,6 +118,16 @@ class TodistusResultRepository(config: Config) extends Logging {
         "todistusJobId" -> id
       }))
       .build()
+
+
+  private def buildGetRequest(bucketType: BucketType, id: String, contentType: String): GetObjectRequest = {
+    val key = objectKey(bucketType, id)
+    GetObjectRequest.builder()
+      .bucket(bucketName(bucketType))
+      .key(key)
+      .responseContentType(contentType)
+      .build()
+  }
 
   private def bucketName(bucketType: BucketType): String = bucketType match {
     case BucketType.RAW => rawBucketName

@@ -9,11 +9,11 @@ import fi.oph.koski.schema.annotation.RedundantData
 import fi.oph.koski.todistus.BucketType.BucketType
 import fi.oph.koski.todistus.TodistusLanguage.TodistusLanguage
 import fi.oph.koski.todistus.TodistusState.TodistusState
+import fi.oph.koski.todistus.swisscomclient.SwisscomClient
 import fi.oph.koski.util.{ClasspathResource, Resource, TryWithLogging}
 import software.amazon.awssdk.http.ContentStreamProvider
 
-import java.nio.file.Path
-import java.io.OutputStream
+import java.io.InputStream
 import java.time.LocalDateTime
 import java.util.UUID
 
@@ -22,6 +22,8 @@ class TodistusService(application: KoskiApplication) extends Logging {
 
   private val resultRepository = new TodistusResultRepository(application.config)
   private val todistusRepository: TodistusJobRepository = application.todistusRepository
+
+  private val swisscomClient: SwisscomClient = application.swisscomClient
 
   lazy val mockTodistusResource: Resource = new ClasspathResource("/mockdata/todistus")
 
@@ -119,9 +121,25 @@ class TodistusService(application: KoskiApplication) extends Logging {
       todistusRepository.updateState(todistus.id, TodistusState.SAVING_RAW_PDF, TodistusState.STAMPING_PDF)
       todistusRepository.updateState(todistus.id, TodistusState.STAMPING_PDF, TodistusState.SAVING_STAMPED_PDF)
 
-      mockTodistusResource.getInputStream("mock-todistus-stamped.pdf").foreach(is =>
+      // Lue tallennettu raw PDF
+      val rawInputStream: InputStream = resultRepository.getStream(BucketType.RAW, todistus.id)
+
+      // TODO: TOR-2400: Toistaiseksi vain verrataan, että luettu vastaa tallennettua.
+      val rawExpectedInputStream = mockTodistusResource.getInputStream("mock-todistus-raw.pdf").get
+      val rawBytes = rawInputStream.readAllBytes()
+      val rawExpectedBytes = rawExpectedInputStream.readAllBytes()
+      assert(rawBytes.sameElements(rawExpectedBytes), "Raw PDF bytes do not match expected bytes")
+
+
+      // TODO: TOR-2400: Korvaa oikealla allekirjoittamisella, toistaiseksi vain käsin allekirjoitettu versio kirjoitetaan S3:een:
+      mockTodistusResource.getInputStream("mock-todistus-stamped.pdf").foreach(is => {
+        swisscomClient.signWithStaticCertificate(is, new java.io.ByteArrayOutputStream())
+      })
+
+      // TODO: TOR-2400: Korvaa oikealla allekirjoittamisella, toistaiseksi vain käsin allekirjoitettu versio kirjoitetaan S3:een:
+      mockTodistusResource.getInputStream("mock-todistus-stamped.pdf").foreach(is => {
         resultRepository.putStream(BucketType.STAMPED, todistus.id, ContentStreamProvider.fromInputStream(is))
-      )
+      })
 
       todistusRepository.updateState(todistus.id, TodistusState.SAVING_STAMPED_PDF, TodistusState.COMPLETED)
 
