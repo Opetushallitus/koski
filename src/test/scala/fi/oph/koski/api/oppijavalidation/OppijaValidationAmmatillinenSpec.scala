@@ -1259,6 +1259,15 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
     "Lisätiedot" - {
       "VOS-uudistukseen 2025 liittyvät lisätietojen aikajaksot, kun validaatio on voimassa" - {
         "Opiskeluoikeus joka alkaa viimeisenä käyttöpäivänä tai sitä ennen" - {
+          "Ei VOS-uudistukseen liittyviä jaksoja" in {
+            // Validaatio on voimassa:
+            val config = KoskiApplicationForTests.config.withValue("validaatiot.ammatillinenVosUudistuksenAikajaksojenViimeinenKäyttöpäivä", fromAnyRef(LocalDate.now.minusDays(1).toString))
+            val oo = defaultOpiskeluoikeus.copy(
+              lisätiedot = None
+            )
+            val res = AmmatillinenValidation.validateAmmatillinenOpiskeluoikeus(config)(oo, None, KoskiApplicationForTests.possu)(KoskiSpecificSession.systemUser)
+            res shouldBe HttpStatus.ok
+          }
           "Jakso alkaa ja päättyy viimeisenä käyttöpäivänä tai sitä ennen" in {
             // Validaatio on voimassa:
             val config = KoskiApplicationForTests.config.withValue("validaatiot.ammatillinenVosUudistuksenAikajaksojenViimeinenKäyttöpäivä", fromAnyRef(LocalDate.now.minusDays(1).toString))
@@ -1315,6 +1324,15 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
           }
         }
         "Opiskeluoikeus alkaa viimeisen käyttöpäivän jälkeen" - {
+          "Ei VOS-uudistukseen liittyviä jaksoja" in {
+            // Validaatio on voimassa:
+            val config = KoskiApplicationForTests.config.withValue("validaatiot.ammatillinenVosUudistuksenAikajaksojenViimeinenKäyttöpäivä", fromAnyRef(LocalDate.now.minusDays(1).toString))
+            val oo = makeOpiskeluoikeus(alkamispäivä = LocalDate.now()).copy(
+              lisätiedot = None
+            )
+            val res = AmmatillinenValidation.validateAmmatillinenOpiskeluoikeus(config)(oo, None, KoskiApplicationForTests.possu)(KoskiSpecificSession.systemUser)
+            res shouldBe HttpStatus.ok
+          }
           "Jakso alkaa ja päättyy viimeisenä käyttöpäivänä tai sitä ennen" in {
             // Validaatio on voimassa:
             val config = KoskiApplicationForTests.config.withValue("validaatiot.ammatillinenVosUudistuksenAikajaksojenViimeinenKäyttöpäivä", fromAnyRef(LocalDate.now.minusDays(1).toString))

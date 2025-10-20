@@ -112,4 +112,4 @@ case class PerusopetukseenValmistavanOpetuksenOpiskeluoikeudenTila(
 case class PerusopetukseenValmistavanOpetuksenOpiskeluoikeusJakso(
   alku: LocalDate,
   tila: Koodistokoodiviite
-) extends KoskiLomanSallivaLaajaOpiskeluoikeusjakso
+) extends KoskiLomanSallivaOpiskeluoikeusjakso with KoskiLaajaOpiskeluoikeusjakso

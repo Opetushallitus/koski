@@ -2,6 +2,7 @@ package fi.oph.koski.api.oppijavalidation
 
 import com.typesafe.config.Config
 import com.typesafe.config.ConfigValueFactory.fromAnyRef
+import fi.oph.koski.documentation.ExampleData.{opiskeluoikeusLoma, opiskeluoikeusLäsnä, valtionosuusRahoitteinen}
 import fi.oph.koski.documentation.ExamplesTutkintokoulutukseenValmentavaKoulutus._
 import fi.oph.koski.documentation.{ExampleData, LukioExampleData}
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
@@ -23,6 +24,14 @@ class OppijaValidationTutkintokoulutukseenValmentavaKoulutusSpec extends Tutkinn
   def tag = implicitly[reflect.runtime.universe.TypeTag[TutkintokoulutukseenValmentavanOpiskeluoikeus]]
 
   override val defaultHenkilö: UusiHenkilö = asUusiOppija(KoskiSpecificMockOppijat.tuva)
+
+  def defaultOpiskeluoikeusAlkamispäivällä(alkamispäivä: LocalDate) = defaultOpiskeluoikeus.copy(
+    tila = TutkintokoulutukseenValmentavanOpiskeluoikeudenTila(
+      opiskeluoikeusjaksot = List(
+        tuvaOpiskeluOikeusjakso(alkamispäivä, "lasna")
+      )
+    )
+  )
 
   val session: KoskiSpecificSession = KoskiSpecificSession.systemUser
   val accessType = AccessType.write
@@ -428,34 +437,34 @@ class OppijaValidationTutkintokoulutukseenValmentavaKoulutusSpec extends Tutkinn
         }
         täydennettyKoulutustyyppi shouldBe Some("40")
       }
-    }
 
-    "Katsotaan eronneeksi tilaan päättyneellä opiskeluoikeudella ei saa olla arvioimattomia osasuorituksia" in {
-      val oo = tuvaOpiskeluOikeusValmistunut.copy(
-        tila = tuvaTilaKatsotaanEronneeksi,
-        suoritukset = List(
-          tuvaPäätasonSuoritus(laajuus = Some(12)).copy(
-            vahvistus = None,
-            osasuoritukset = Some(
-              List(
-                tuvaKoulutuksenMuunOsanSuoritus(
-                  koulutusmoduuli = tuvaAmmatillisenKoulutuksenOpinnot(laajuus = Some(1)),
-                  arviointiPäivä = Some(date(2021, 10, 1)),
-                  koodistoviite = "tuvaammatillinenkoulutus"
-                ),
-                tuvaKoulutuksenMuunOsanSuoritus(
-                  koulutusmoduuli = tuvaLukiokoulutuksenOpinnot(laajuus = Some(1)),
-                  arviointiPäivä = None,
-                  koodistoviite = "tuvalukiokoulutus"
-                ).copy(
-                  tunnustettu = Some(
-                    OsaamisenTunnustaminen(
-                      osaaminen = Some(
-                        LukioExampleData.kurssisuoritus(
-                          LukioExampleData.valtakunnallinenKurssi("ENA1")
-                        ).copy(arviointi = LukioExampleData.numeerinenArviointi(8))
-                      ),
-                      selite = finnish("Tunnustettu lukion kurssi")
+      "Katsotaan eronneeksi tilaan päättyneellä opiskeluoikeudella ei saa olla arvioimattomia osasuorituksia" in {
+        val oo = tuvaOpiskeluOikeusValmistunut.copy(
+          tila = tuvaTilaKatsotaanEronneeksi,
+          suoritukset = List(
+            tuvaPäätasonSuoritus(laajuus = Some(12)).copy(
+              vahvistus = None,
+              osasuoritukset = Some(
+                List(
+                  tuvaKoulutuksenMuunOsanSuoritus(
+                    koulutusmoduuli = tuvaAmmatillisenKoulutuksenOpinnot(laajuus = Some(1)),
+                    arviointiPäivä = Some(date(2021, 10, 1)),
+                    koodistoviite = "tuvaammatillinenkoulutus"
+                  ),
+                  tuvaKoulutuksenMuunOsanSuoritus(
+                    koulutusmoduuli = tuvaLukiokoulutuksenOpinnot(laajuus = Some(1)),
+                    arviointiPäivä = None,
+                    koodistoviite = "tuvalukiokoulutus"
+                  ).copy(
+                    tunnustettu = Some(
+                      OsaamisenTunnustaminen(
+                        osaaminen = Some(
+                          LukioExampleData.kurssisuoritus(
+                            LukioExampleData.valtakunnallinenKurssi("ENA1")
+                          ).copy(arviointi = LukioExampleData.numeerinenArviointi(8))
+                        ),
+                        selite = finnish("Tunnustettu lukion kurssi")
+                      )
                     )
                   )
                 )
@@ -463,13 +472,13 @@ class OppijaValidationTutkintokoulutukseenValmentavaKoulutusSpec extends Tutkinn
             )
           )
         )
-      )
 
-      setupOppijaWithOpiskeluoikeus(oo, henkilö = tuvaHenkilöValmis, headers = authHeaders(stadinAmmattiopistoJaOppisopimuskeskusTallentaja) ++ jsonContent) {
-        verifyResponseStatus(400,
-          KoskiErrorCategory.badRequest.validation.tila.eronneeksiKatsotunOpiskeluoikeudenArvioinnit(
-            "Katsotaan eronneeksi -tilaan päättyvällä opiskeluoikeudella ei saa olla osasuorituksia, joista puuttuu arviointi"
-          ))
+        setupOppijaWithOpiskeluoikeus(oo, henkilö = tuvaHenkilöValmis, headers = authHeaders(stadinAmmattiopistoJaOppisopimuskeskusTallentaja) ++ jsonContent) {
+          verifyResponseStatus(400,
+            KoskiErrorCategory.badRequest.validation.tila.eronneeksiKatsotunOpiskeluoikeudenArvioinnit(
+              "Katsotaan eronneeksi -tilaan päättyvällä opiskeluoikeudella ei saa olla osasuorituksia, joista puuttuu arviointi"
+            ))
+        }
       }
     }
 
@@ -565,6 +574,63 @@ class OppijaValidationTutkintokoulutukseenValmentavaKoulutusSpec extends Tutkinn
           )
         }
       }
+
+      "Loma-tilan voi siirtää, jos se päättyy viimeisenä käyttöpäivänä tai sitä aiemmin, kun validaatio on voimassa" in {
+        // Validaatio on voimassa:
+        val config = KoskiApplicationForTests.config.withValue("validaatiot.ammatillinenVosUudistuksenAikajaksojenViimeinenKäyttöpäivä", fromAnyRef(LocalDate.now.minusDays(1).toString))
+
+        val oo = defaultOpiskeluoikeus.copy(
+          tila = TutkintokoulutukseenValmentavanOpiskeluoikeudenTila(List(
+            TutkintokoulutukseenValmentavanOpiskeluoikeusjakso(date(2021, 8, 1), opiskeluoikeusLäsnä, Some(valtionosuusRahoitteinen)),
+            TutkintokoulutukseenValmentavanOpiskeluoikeusjakso(date(2024, 9, 1), opiskeluoikeusLoma, Some(valtionosuusRahoitteinen)),
+            TutkintokoulutukseenValmentavanOpiskeluoikeusjakso(date(2024, 12, 31), opiskeluoikeusLäsnä, Some(valtionosuusRahoitteinen)),
+            TutkintokoulutukseenValmentavanOpiskeluoikeusjakso(date(2025, 9, 1), opiskeluoikeusLoma, Some(valtionosuusRahoitteinen)),
+            TutkintokoulutukseenValmentavanOpiskeluoikeusjakso(date(2025, 10, 3), opiskeluoikeusLäsnä, Some(valtionosuusRahoitteinen)),
+          )),
+          lisätiedot = None
+        )
+
+        val res = mockKoskiValidator(config).updateFieldsAndValidateAsJson(Oppija(tuvaHenkilöValmis, List(oo)))(session, accessType)
+        res.isRight shouldBe true
+      }
+
+      "Loma-tilaa ei voi siirtää, jos se jatkuu viimeisen käyttöpäivän jälkeen, kun validaatio on voimassa" in {
+        // Validaatio on voimassa:
+        val config = KoskiApplicationForTests.config.withValue("validaatiot.ammatillinenVosUudistuksenAikajaksojenViimeinenKäyttöpäivä", fromAnyRef(LocalDate.now.minusDays(1).toString))
+
+        val oo = defaultOpiskeluoikeus.copy(
+          tila = TutkintokoulutukseenValmentavanOpiskeluoikeudenTila(List(
+            TutkintokoulutukseenValmentavanOpiskeluoikeusjakso(date(2021, 8, 1), opiskeluoikeusLäsnä, Some(valtionosuusRahoitteinen)),
+            TutkintokoulutukseenValmentavanOpiskeluoikeusjakso(date(2024, 9, 1), opiskeluoikeusLoma, Some(valtionosuusRahoitteinen)),
+            TutkintokoulutukseenValmentavanOpiskeluoikeusjakso(date(2025, 1, 1), opiskeluoikeusLäsnä, Some(valtionosuusRahoitteinen)),
+            TutkintokoulutukseenValmentavanOpiskeluoikeusjakso(date(2025, 9, 1), opiskeluoikeusLoma, Some(valtionosuusRahoitteinen)),
+            TutkintokoulutukseenValmentavanOpiskeluoikeusjakso(date(2099, 1, 2), opiskeluoikeusLäsnä, Some(valtionosuusRahoitteinen))
+          )),
+          lisätiedot = None
+        )
+
+        val res = mockKoskiValidator(config).updateFieldsAndValidateAsJson(Oppija(tuvaHenkilöValmis, List(oo)))(session, accessType)
+        res.left.get shouldBe KoskiErrorCategory.badRequest.validation.ammatillinen.lomaTilaRajapäivänJälkeen()
+      }
+
+      "Loma-tilan voi siirtää, vaikka se jatkuu viimeisen käyttöpäivän jälkeen, kun validaatio ei ole vielä voimassa" in {
+        // Validaatio ei vielä voimassa:
+        val config = KoskiApplicationForTests.config.withValue("validaatiot.ammatillinenVosUudistuksenAikajaksojenViimeinenKäyttöpäivä", fromAnyRef(LocalDate.now.toString))
+
+        val oo = defaultOpiskeluoikeus.copy(
+          tila = TutkintokoulutukseenValmentavanOpiskeluoikeudenTila(List(
+            TutkintokoulutukseenValmentavanOpiskeluoikeusjakso(date(2021, 8, 1), opiskeluoikeusLäsnä, Some(valtionosuusRahoitteinen)),
+            TutkintokoulutukseenValmentavanOpiskeluoikeusjakso(date(2024, 9, 1), opiskeluoikeusLoma, Some(valtionosuusRahoitteinen)),
+            TutkintokoulutukseenValmentavanOpiskeluoikeusjakso(date(2025, 1, 1), opiskeluoikeusLäsnä, Some(valtionosuusRahoitteinen)),
+            TutkintokoulutukseenValmentavanOpiskeluoikeusjakso(date(2025, 9, 1), opiskeluoikeusLoma, Some(valtionosuusRahoitteinen)),
+            TutkintokoulutukseenValmentavanOpiskeluoikeusjakso(date(2099, 1, 2), opiskeluoikeusLäsnä, Some(valtionosuusRahoitteinen))
+          )),
+          lisätiedot = None
+        )
+
+        val res = mockKoskiValidator(config).updateFieldsAndValidateAsJson(Oppija(tuvaHenkilöValmis, List(oo)))(session, accessType)
+        res.isRight shouldBe true
+      }
     }
 
     "Deserialisointi osaa päätellä skeeman ja täydentää optionaaliset @DefaultValuella annotoidut kentät, jos niiltä puuttuu arvo" in {
@@ -579,7 +645,8 @@ class OppijaValidationTutkintokoulutukseenValmentavaKoulutusSpec extends Tutkinn
       lisätiedot.koulutusvienti should equal(Some(false))
     }
 
-    "Erityisen tuen ja vammaisuuden jaksot perusopetuksen järjestämisluvalla" - {
+    "Lisätiedot" - {
+      "Erityisen tuen ja vammaisuuden jaksot perusopetuksen järjestämisluvalla" - {
       val alku = LocalDate.of(2021, 8, 5)
 
       val opiskeluoikeus = tuvaOpiskeluOikeusEiValmistunut
@@ -733,28 +800,137 @@ class OppijaValidationTutkintokoulutukseenValmentavaKoulutusSpec extends Tutkinn
         implicit val session: KoskiSpecificSession = KoskiSpecificSession.systemUser
         implicit val accessType = AccessType.write
 
-        val config = KoskiApplicationForTests.config.withValue("validaatiot.pidennetynOppivelvollisuudenYmsValidaatiotAstuvatVoimaan", fromAnyRef(LocalDate.now().plusDays(voimaanastumispäivänOffsetTästäPäivästä).toString))
+        val config = KoskiApplicationForTests.config.withValue("validaatiot.pidennetynOppivelvollisuudenYmsValidaatiotAstuvatVoimaan", fromAnyRef(LocalDate.now.plusDays(voimaanastumispäivänOffsetTästäPäivästä).toString))
 
         mockKoskiValidator(config).updateFieldsAndValidateAsJson(oppija)
       }
 
-      def mockKoskiValidator(config: Config) = {
-        new KoskiValidator(
-          KoskiApplicationForTests.organisaatioRepository,
-          KoskiApplicationForTests.possu,
-          KoskiApplicationForTests.henkilöRepository,
-          KoskiApplicationForTests.ePerusteetValidator,
-          KoskiApplicationForTests.ePerusteetLops2019Validator,
-          KoskiApplicationForTests.ePerusteetFiller,
-          KoskiApplicationForTests.validatingAndResolvingExtractor,
-          KoskiApplicationForTests.suostumuksenPeruutusService,
-          KoskiApplicationForTests.koodistoViitePalvelu,
-          config,
-          KoskiApplicationForTests.validationContext,
-        )
-      }
-
     }
+      "Ammatillisen koulutuksen VOS-uudistukseen 2025 liittyvät lisätietojen aikajaksot, kun validaatio on voimassa" - {
+        "Opiskeluoikeus joka alkaa viimeisenä käyttöpäivänä tai sitä ennen" - {
+          "Jakso puuttuu kokonaan, alkaa ennen viimeistä käyttöpäivää tai ajoittuu kokonaan ennen viimeistä käyttöpäivää" in {
+            // Validaatio on voimassa:
+            val config = KoskiApplicationForTests.config.withValue("validaatiot.ammatillinenVosUudistuksenAikajaksojenViimeinenKäyttöpäivä", fromAnyRef(LocalDate.now.minusDays(1).toString))
+
+            val oo = defaultOpiskeluoikeus.copy(
+              lisätiedot = Some(TutkintokoulutukseenValmentavanOpiskeluoikeudenAmmatillisenLuvanLisätiedot(
+                erityinenTuki = None,
+                vaikeastiVammainen = Some(List(Aikajakso(date(2025, 1, 1), None))),
+                vammainenJaAvustaja = Some(List(Aikajakso(date(2025, 1, 1), Some(date(2025, 10, 2)))))
+              ))
+            )
+
+            val res = mockKoskiValidator(config).updateFieldsAndValidateAsJson(Oppija(tuvaHenkilöValmis, List(oo)))(session, accessType)
+            res.isRight shouldBe true
+          }
+          "Jakso alkaa viimeisen käyttöpäivän jälkeen" in {
+            // Validaatio on voimassa:
+            val config = KoskiApplicationForTests.config.withValue("validaatiot.ammatillinenVosUudistuksenAikajaksojenViimeinenKäyttöpäivä", fromAnyRef(LocalDate.now.minusDays(1).toString))
+
+            val oo = defaultOpiskeluoikeus.copy(
+              lisätiedot = Some(TutkintokoulutukseenValmentavanOpiskeluoikeudenAmmatillisenLuvanLisätiedot(
+                erityinenTuki = Some(List(Aikajakso(date(2099, 1, 2), None))),
+                vaikeastiVammainen = Some(List(Aikajakso(date(2099, 1, 2), Some(date(2099, 12, 31))))),
+                vammainenJaAvustaja = Some(List(Aikajakso(date(2099, 1, 2), Some(date(2099, 12, 31)))))
+              ))
+            )
+
+            val res = mockKoskiValidator(config).updateFieldsAndValidateAsJson(Oppija(tuvaHenkilöValmis, List(oo)))(session, accessType)
+            res.left.get shouldBe HttpStatus(
+              400,
+              KoskiErrorCategory.badRequest.validation.ammatillinen.lisätietoRajapäivänJälkeen("Erityisen tuen")().errors ++
+                KoskiErrorCategory.badRequest.validation.ammatillinen.lisätietoRajapäivänJälkeen("Vaikeasti vammaisen")().errors ++
+                KoskiErrorCategory.badRequest.validation.ammatillinen.lisätietoRajapäivänJälkeen("Vammaisen ja avustajan")().errors
+            )
+          }
+        }
+        "Opiskeluoikeus alkaa viimeisen käyttöpäivän jälkeen" - {
+          "Ei VOS-uudistukseen liittyviä lisätietoja" in {
+            // Validaatio on voimassa:
+            val config = KoskiApplicationForTests.config.withValue("validaatiot.ammatillinenVosUudistuksenAikajaksojenViimeinenKäyttöpäivä", fromAnyRef(LocalDate.now.minusDays(1).toString))
+
+            val oo = defaultOpiskeluoikeusAlkamispäivällä(LocalDate.now).copy(
+              lisätiedot = None
+            )
+
+            val res = mockKoskiValidator(config).updateFieldsAndValidateAsJson(Oppija(tuvaHenkilöValmis, List(oo)))(session, accessType)
+            res.isRight shouldBe true
+          }
+          "Lisätietojen siirtäminen on estetty" in {
+            // Validaatio on voimassa:
+            val config = KoskiApplicationForTests.config.withValue("validaatiot.ammatillinenVosUudistuksenAikajaksojenViimeinenKäyttöpäivä", fromAnyRef(LocalDate.now.minusDays(1).toString))
+
+            val oo = defaultOpiskeluoikeusAlkamispäivällä(LocalDate.now).copy(
+              lisätiedot = Some(TutkintokoulutukseenValmentavanOpiskeluoikeudenAmmatillisenLuvanLisätiedot(
+                erityinenTuki = Some(List(Aikajakso(date(2025, 1, 1), Some(date(2025, 10, 1))))),
+                vaikeastiVammainen = Some(List(Aikajakso(date(2025, 1, 1), Some(date(2099, 12, 31))))),
+                vammainenJaAvustaja = Some(List(Aikajakso(date(2099, 1, 2), Some(date(2099, 12, 31)))))
+              ))
+            )
+
+            val res = mockKoskiValidator(config).updateFieldsAndValidateAsJson(Oppija(tuvaHenkilöValmis, List(oo)))(session, accessType)
+            res.left.get shouldBe HttpStatus(
+              400,
+              KoskiErrorCategory.badRequest.validation.ammatillinen.lisätietoRajapäivänJälkeen("Erityisen tuen")().errors ++
+                KoskiErrorCategory.badRequest.validation.ammatillinen.lisätietoRajapäivänJälkeen("Vaikeasti vammaisen")().errors ++
+                KoskiErrorCategory.badRequest.validation.ammatillinen.lisätietoRajapäivänJälkeen("Vammaisen ja avustajan")().errors
+            )
+          }
+        }
+      }
+      "Ammatillisen koulutuksen VOS-uudistukseen 2025 liittyvät lisätietojen aikajaksot, kun validaatio ei ole vielä voimassa" - {
+        "Opiskeluoikeus joka alkaa viimeisenä käyttöpäivänä tai sitä ennen" - {
+          "Jakso alkaa viimeisen käyttöpäivän jälkeen" in {
+            // Validaatio ei vielä voimassa:
+            val config = KoskiApplicationForTests.config.withValue("validaatiot.ammatillinenVosUudistuksenAikajaksojenViimeinenKäyttöpäivä", fromAnyRef(LocalDate.now.toString))
+
+            val oo = defaultOpiskeluoikeus.copy(
+              lisätiedot = Some(TutkintokoulutukseenValmentavanOpiskeluoikeudenAmmatillisenLuvanLisätiedot(
+                erityinenTuki = Some(List(Aikajakso(date(2099, 1, 2), None))),
+                vaikeastiVammainen = Some(List(Aikajakso(date(2099, 1, 2), Some(date(2099, 12, 31))))),
+                vammainenJaAvustaja = Some(List(Aikajakso(date(2099, 1, 2), Some(date(2099, 12, 31)))))
+              ))
+            )
+
+            val res = mockKoskiValidator(config).updateFieldsAndValidateAsJson(Oppija(tuvaHenkilöValmis, List(oo)))(session, accessType)
+            res.isRight shouldBe true
+          }
+        }
+        "Opiskeluoikeus alkaa viimeisen käyttöpäivän jälkeen" - {
+          "Jakso alkaa viimeisen käyttöpäivän jälkeen" in {
+            // Validaatio ei vielä voimassa:
+            val config = KoskiApplicationForTests.config.withValue("validaatiot.ammatillinenVosUudistuksenAikajaksojenViimeinenKäyttöpäivä", fromAnyRef(LocalDate.now.toString))
+
+            val oo = defaultOpiskeluoikeusAlkamispäivällä(date(2099, 1, 1)).copy(
+              lisätiedot = Some(TutkintokoulutukseenValmentavanOpiskeluoikeudenAmmatillisenLuvanLisätiedot(
+                erityinenTuki = Some(List(Aikajakso(date(2099, 1, 2), None))),
+                vaikeastiVammainen = Some(List(Aikajakso(date(2099, 1, 2), Some(date(2099, 12, 31))))),
+                vammainenJaAvustaja = Some(List(Aikajakso(date(2099, 1, 2), Some(date(2099, 12, 31)))))
+              ))
+            )
+
+            val res = mockKoskiValidator(config).updateFieldsAndValidateAsJson(Oppija(tuvaHenkilöValmis, List(oo)))(session, accessType)
+            res.isRight shouldBe true
+          }
+        }
+      }
+    }
+  }
+
+  def mockKoskiValidator(config: Config) = {
+    new KoskiValidator(
+      KoskiApplicationForTests.organisaatioRepository,
+      KoskiApplicationForTests.possu,
+      KoskiApplicationForTests.henkilöRepository,
+      KoskiApplicationForTests.ePerusteetValidator,
+      KoskiApplicationForTests.ePerusteetLops2019Validator,
+      KoskiApplicationForTests.ePerusteetFiller,
+      KoskiApplicationForTests.validatingAndResolvingExtractor,
+      KoskiApplicationForTests.suostumuksenPeruutusService,
+      KoskiApplicationForTests.koodistoViitePalvelu,
+      config,
+      KoskiApplicationForTests.validationContext,
+    )
   }
 
   override def defaultOpiskeluoikeus: TutkintokoulutukseenValmentavanOpiskeluoikeus = tuvaOpiskeluOikeusValmistunut

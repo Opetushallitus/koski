@@ -6,21 +6,27 @@ import fi.oph.koski.http.KoskiErrorCategory.badRequest.validation.laajuudet._
 import fi.oph.koski.http.KoskiErrorCategory.badRequest.validation.tila.tuvaSuorituksenOpiskeluoikeidenTilaVääräKoodiarvo
 import fi.oph.koski.schema._
 
+import java.time.LocalDate
+
 object TutkintokoulutukseenValmentavaKoulutusValidation {
 
   def validateOpiskeluoikeus(oo: KoskeenTallennettavaOpiskeluoikeus): HttpStatus =
     HttpStatus.fold(oo.tila.opiskeluoikeusjaksot.map(validateOpiskeluoikeusjaksonRahoitusmuoto))
 
   def validateTuvaSuoritus(config: Config, suoritus: Suoritus, opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus): HttpStatus = {
-    suoritus match {
-      case suoritus: TutkintokoulutukseenValmentavanKoulutuksenSuoritus =>
-        HttpStatus.fold(
-          validateTuvaSuorituksenLaajuusJaRakenne(suoritus, opiskeluoikeus),
-          validateTuvaSallitutOpiskeluoikeudenTilat(opiskeluoikeus),
-          validateTuvaSuorituksenOpiskeluoikeudenTila(opiskeluoikeus)
-        )
-      case _ =>
-        HttpStatus.ok
+    opiskeluoikeus match {
+      case oo: TutkintokoulutukseenValmentavanOpiskeluoikeus =>
+        suoritus match {
+          case suoritus: TutkintokoulutukseenValmentavanKoulutuksenSuoritus =>
+            HttpStatus.fold(
+              validateTuvaSuorituksenLaajuusJaRakenne(suoritus, opiskeluoikeus),
+              validateTuvaSallitutOpiskeluoikeudenTilat(opiskeluoikeus),
+              validateTuvaSuorituksenOpiskeluoikeudenTila(opiskeluoikeus),
+              validateAikajaksotJaTilatAmmatillisenVosUudistuksenRajapäivänJälkeen(config, oo)
+            )
+        case _ => HttpStatus.ok
+      }
+      case _ => HttpStatus.ok
     }
   }
 
@@ -150,5 +156,26 @@ object TutkintokoulutukseenValmentavaKoulutusValidation {
         }
       case _ => HttpStatus.ok
     }
+  }
+
+  private def validateAikajaksotJaTilatAmmatillisenVosUudistuksenRajapäivänJälkeen(
+    config: Config,
+    oo: TutkintokoulutukseenValmentavanOpiskeluoikeus
+  ): HttpStatus = {
+    val viimeinenSallittuJaksonPäivä = LocalDate.parse(config.getString("validaatiot.ammatillinenVosUudistuksenAikajaksojenViimeinenKäyttöpäivä"))
+    val isValidaatiotAstuneetVoimaan = LocalDate.now().isAfter(viimeinenSallittuJaksonPäivä)
+    val lisätiedot = oo.lisätiedot.flatMap {
+      case l: TutkintokoulutukseenValmentavanOpiskeluoikeudenAmmatillisenLuvanLisätiedot => Some(l)
+      case _ => None
+    }
+
+    if (isValidaatiotAstuneetVoimaan) {
+      HttpStatus.fold(
+        AmmatillinenValidation.validateAikajaksot(viimeinenSallittuJaksonPäivä, oo, lisätiedot.flatMap(_.erityinenTuki), "Erityisen tuen"),
+        AmmatillinenValidation.validateAikajaksot(viimeinenSallittuJaksonPäivä, oo, lisätiedot.flatMap(_.vaikeastiVammainen), "Vaikeasti vammaisen"),
+        AmmatillinenValidation.validateAikajaksot(viimeinenSallittuJaksonPäivä, oo, lisätiedot.flatMap(_.vammainenJaAvustaja), "Vammaisen ja avustajan"),
+        AmmatillinenValidation.validateLomaTilat(viimeinenSallittuJaksonPäivä, oo.tila.opiskeluoikeusjaksot)
+      )
+    } else HttpStatus.ok
   }
 }

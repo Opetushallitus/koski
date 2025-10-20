@@ -328,7 +328,7 @@ trait KoskiLaajaOpiskeluoikeusjakso extends KoskiOpiskeluoikeusjakso {
   def tila: Koodistokoodiviite
 }
 
-trait KoskiLomanSallivaLaajaOpiskeluoikeusjakso extends KoskiLaajaOpiskeluoikeusjakso {
+trait KoskiLomanSallivaOpiskeluoikeusjakso extends KoskiOpiskeluoikeusjakso {
   @KoodistoKoodiarvo("loma")
   def tila: Koodistokoodiviite
 }
