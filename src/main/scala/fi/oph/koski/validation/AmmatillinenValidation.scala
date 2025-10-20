@@ -453,14 +453,14 @@ object AmmatillinenValidation {
   def validateAikajaksot(viimeinenSallittuJaksonPäivä: LocalDate, oo: Opiskeluoikeus, jaksot: Option[List[Alkupäivällinen]], jaksonNimiVirheilmoitukseen: String): HttpStatus = {
     val ooAlkaaViimeisenKäyttöpäivänJälkeen = oo.alkamispäivä.exists(alkamispäivä => alkamispäivä.isAfter(viimeinenSallittuJaksonPäivä))
     val eiJaksoaOlemassa = jaksot.getOrElse(List.empty).isEmpty
-    val jaksoAlkaaEnnenRajapäivää = jaksot.getOrElse(List.empty).exists(jakso => jakso.alku.isBefore(viimeinenSallittuJaksonPäivä.plusDays(1)))
+    val jaksotAlkavatEnnenRajapäivää = jaksot.getOrElse(List.empty).forall(jakso => jakso.alku.isBefore(viimeinenSallittuJaksonPäivä.plusDays(1)))
 
     if (ooAlkaaViimeisenKäyttöpäivänJälkeen) {
       HttpStatus.validate(eiJaksoaOlemassa) {
         KoskiErrorCategory.badRequest.validation.ammatillinen.lisätietoRajapäivänJälkeenAlkavaOpiskeluoikeus(jaksonNimiVirheilmoitukseen)()
       }
     } else {
-      HttpStatus.validate(eiJaksoaOlemassa || jaksoAlkaaEnnenRajapäivää) {
+      HttpStatus.validate(eiJaksoaOlemassa || jaksotAlkavatEnnenRajapäivää) {
         KoskiErrorCategory.badRequest.validation.ammatillinen.lisätietoAlkaaRajapäivänJälkeen(jaksonNimiVirheilmoitukseen)()
       }
     }

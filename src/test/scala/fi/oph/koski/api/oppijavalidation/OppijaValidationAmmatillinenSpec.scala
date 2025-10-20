@@ -1322,6 +1322,40 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
                 KoskiErrorCategory.badRequest.validation.ammatillinen.lisätietoAlkaaRajapäivänJälkeen("Vammaisen ja avustajan")().errors
             )
           }
+          "Useita jaksoja joista osa alkaa ennen viimeistä käyttöpäivää ja osa sen jälkeen" in {
+            // Validaatio on voimassa:
+            val config = KoskiApplicationForTests.config.withValue("validaatiot.ammatillinenVosUudistuksenAikajaksojenViimeinenKäyttöpäivä", fromAnyRef(LocalDate.now.minusDays(1).toString))
+
+            val oo = defaultOpiskeluoikeus.copy(
+              lisätiedot = Some(AmmatillisenOpiskeluoikeudenLisätiedot(
+                opiskeluvalmiuksiaTukevatOpinnot = Some(List(
+                  OpiskeluvalmiuksiaTukevienOpintojenJakso(date(2025, 1, 2), date(2025, 10, 2), finnish("foo")),
+                  OpiskeluvalmiuksiaTukevienOpintojenJakso(date(2099, 1, 2), date(2099, 12, 31), finnish("foo"))
+                )),
+                erityinenTuki = Some(List(
+                  Aikajakso(date(2025, 1, 2), Some(date(2025, 10, 2))),
+                  Aikajakso(date(2099, 1, 2), None)
+                )),
+                vaikeastiVammainen = Some(List(
+                  Aikajakso(date(2025, 1, 2), Some(date(2025, 10, 2))),
+                  Aikajakso(date(2099, 1, 2), Some(date(2099, 12, 31)))
+                )),
+                vammainenJaAvustaja = Some(List(
+                  Aikajakso(date(2025, 1, 2), Some(date(2025, 10, 2))),
+                  Aikajakso(date(2099, 1, 2), Some(date(2099, 12, 31)))
+                ))
+              ))
+            )
+
+            val res = AmmatillinenValidation.validateAmmatillinenOpiskeluoikeus(config)(oo, None, KoskiApplicationForTests.possu)(KoskiSpecificSession.systemUser)
+            res shouldBe HttpStatus(
+              400,
+              KoskiErrorCategory.badRequest.validation.ammatillinen.lisätietoAlkaaRajapäivänJälkeen("Opiskeluvalmiuksia tukevien opintojen")().errors ++
+                KoskiErrorCategory.badRequest.validation.ammatillinen.lisätietoAlkaaRajapäivänJälkeen("Erityisen tuen")().errors ++
+                KoskiErrorCategory.badRequest.validation.ammatillinen.lisätietoAlkaaRajapäivänJälkeen("Vaikeasti vammaisille järjestetyn opetuksen")().errors ++
+                KoskiErrorCategory.badRequest.validation.ammatillinen.lisätietoAlkaaRajapäivänJälkeen("Vammaisen ja avustajan")().errors
+            )
+          }
         }
         "Opiskeluoikeus alkaa viimeisen käyttöpäivän jälkeen" - {
           "Ei VOS-uudistukseen liittyviä jaksoja" in {
