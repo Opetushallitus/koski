@@ -1396,37 +1396,64 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
       }
 
       "VOS-uudistukseen 2025 liittyät henkilöstökoulutus-tiedon validaatiot" - {
-        "Henkilöstökoulutus-lisätiedon voi siirtää ennen rajapäivää alkavissa opiskeluoikeuksissa" in {
-          val oo = makeOpiskeluoikeus(date(2025, 12, 31)).copy(
-            lisätiedot = Some(AmmatillisenOpiskeluoikeudenLisätiedot(
-              henkilöstökoulutus = true
-            ))
-          )
+        "Kun validaatio on voimassa" - {
+          "Henkilöstökoulutus-lisätiedon voi siirtää ennen rajapäivää alkavissa opiskeluoikeuksissa" in {
+            // Validaatio on voimassa:
+            val config = KoskiApplicationForTests.config.withValue("validaatiot.ammatillinenVosUudistuksenAikajaksojenViimeinenKäyttöpäivä", fromAnyRef(LocalDate.now.minusDays(1).toString))
 
-          val res = AmmatillinenValidation.validateAmmatillinenOpiskeluoikeus(KoskiApplicationForTests.config)(oo, None, KoskiApplicationForTests.possu)(KoskiSpecificSession.systemUser)
-          res shouldBe HttpStatus.ok
+            val oo = makeOpiskeluoikeus(date(2025, 10, 19)).copy(
+              lisätiedot = Some(AmmatillisenOpiskeluoikeudenLisätiedot(
+                henkilöstökoulutus = true
+              ))
+            )
+
+            val res = AmmatillinenValidation.validateAmmatillinenOpiskeluoikeus(config)(oo, None, KoskiApplicationForTests.possu)(KoskiSpecificSession.systemUser)
+            res shouldBe HttpStatus.ok
+          }
+
+          "Henkilöstökoulutus-lisätietoa ei voi siirtää rajapäivän jälkeen alkavissa opiskeluoikeuksissa" in {
+            // Validaatio on voimassa:
+            val config = KoskiApplicationForTests.config.withValue("validaatiot.ammatillinenVosUudistuksenAikajaksojenViimeinenKäyttöpäivä", fromAnyRef(LocalDate.now.minusDays(1).toString))
+
+            val oo = makeOpiskeluoikeus(date(2099, 1, 1)).copy(
+              lisätiedot = Some(AmmatillisenOpiskeluoikeudenLisätiedot(
+                henkilöstökoulutus = true
+              ))
+            )
+
+            val res = AmmatillinenValidation.validateAmmatillinenOpiskeluoikeus(config)(oo, None, KoskiApplicationForTests.possu)(KoskiSpecificSession.systemUser)
+            res shouldBe KoskiErrorCategory.badRequest.validation.ammatillinen.henkilöstökoulutusRajapäivänJälkeen()
+          }
+
+          "Henkilöstökoulutus-lisätiedon voi edelleen siirtää falsena rajapäivän jälkeen alkavissa opiskeluoikeuksissa" in {
+            // Validaatio on voimassa:
+            val config = KoskiApplicationForTests.config.withValue("validaatiot.ammatillinenVosUudistuksenAikajaksojenViimeinenKäyttöpäivä", fromAnyRef(LocalDate.now.minusDays(1).toString))
+
+            val oo = makeOpiskeluoikeus(date(2099, 1, 1)).copy(
+              lisätiedot = Some(AmmatillisenOpiskeluoikeudenLisätiedot(
+                henkilöstökoulutus = false
+              ))
+            )
+
+            val res = AmmatillinenValidation.validateAmmatillinenOpiskeluoikeus(KoskiApplicationForTests.config)(oo, None, KoskiApplicationForTests.possu)(KoskiSpecificSession.systemUser)
+            res shouldBe HttpStatus.ok
+          }
         }
 
-        "Henkilöstökoulutus-lisätietoa ei voi siirtää rajapäivän jälkeen alkavissa opiskeluoikeuksissa" in {
-          val oo = makeOpiskeluoikeus(date(2026, 1, 1)).copy(
-            lisätiedot = Some(AmmatillisenOpiskeluoikeudenLisätiedot(
-              henkilöstökoulutus = true
-            ))
-          )
+        "Kun validaatio ei ole vielä voimassa" - {
+          "Henkilöstökoulutus-lisätiedon voi nyt siirtää rajapäivän jälkeen alkavissa opiskeluoikeuksissa" in {
+            // Validaatio ei ole vielä voimassa:
+            val config = KoskiApplicationForTests.config.withValue("validaatiot.ammatillinenVosUudistuksenAikajaksojenViimeinenKäyttöpäivä", fromAnyRef(LocalDate.now.toString))
 
-          val res = AmmatillinenValidation.validateAmmatillinenOpiskeluoikeus(KoskiApplicationForTests.config)(oo, None, KoskiApplicationForTests.possu)(KoskiSpecificSession.systemUser)
-          res shouldBe KoskiErrorCategory.badRequest.validation.ammatillinen.henkilöstökoulutusRajapäivänJälkeen()
-        }
+            val oo = makeOpiskeluoikeus(date(2099, 1, 1)).copy(
+              lisätiedot = Some(AmmatillisenOpiskeluoikeudenLisätiedot(
+                henkilöstökoulutus = true
+              ))
+            )
 
-        "Henkilöstökoulutus-lisätiedon voi edelleen siirtää falsena rajapäivän jälkeen alkavissa opiskeluoikeuksissa" in {
-          val oo = makeOpiskeluoikeus(date(2026, 1, 1)).copy(
-            lisätiedot = Some(AmmatillisenOpiskeluoikeudenLisätiedot(
-              henkilöstökoulutus = false
-            ))
-          )
-
-          val res = AmmatillinenValidation.validateAmmatillinenOpiskeluoikeus(KoskiApplicationForTests.config)(oo, None, KoskiApplicationForTests.possu)(KoskiSpecificSession.systemUser)
-          res shouldBe HttpStatus.ok
+            val res = AmmatillinenValidation.validateAmmatillinenOpiskeluoikeus(config)(oo, None, KoskiApplicationForTests.possu)(KoskiSpecificSession.systemUser)
+            res shouldBe HttpStatus.ok
+          }
         }
       }
     }

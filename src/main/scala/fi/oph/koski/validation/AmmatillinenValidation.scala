@@ -520,11 +520,14 @@ object AmmatillinenValidation {
     oo: AmmatillinenOpiskeluoikeus
   ): HttpStatus = {
     lazy val viimeinenSallittuAlkamispäivä = LocalDate.parse(config.getString("validaatiot.ammatillinenVosUudistuksenAikajaksojenViimeinenKäyttöpäivä"))
-    lazy val onAlkamispäiväRajapäivänJälkeen = oo.alkamispäivä.exists(ap => ap.isAfter(viimeinenSallittuAlkamispäivä))
-    val onHenkilöstökoulutus = oo.lisätiedot.exists(_.henkilöstökoulutus)
+    lazy val onAlkamispäiväEnnenRajapäivää = oo.alkamispäivä.exists(ap => ap.isBefore(viimeinenSallittuAlkamispäivä.plusDays(1)))
+    val eiOleHenkilöstökoulutusta = !oo.lisätiedot.exists(_.henkilöstökoulutus)
+    val isValidaatiotAstuneetVoimaan = LocalDate.now().isAfter(viimeinenSallittuAlkamispäivä)
 
-    HttpStatus.validate(!onHenkilöstökoulutus || !onAlkamispäiväRajapäivänJälkeen){
-      KoskiErrorCategory.badRequest.validation.ammatillinen.henkilöstökoulutusRajapäivänJälkeen()
-    }
+    if (isValidaatiotAstuneetVoimaan) {
+      HttpStatus.validate(eiOleHenkilöstökoulutusta || onAlkamispäiväEnnenRajapäivää){
+        KoskiErrorCategory.badRequest.validation.ammatillinen.henkilöstökoulutusRajapäivänJälkeen()
+      }
+    } else HttpStatus.ok
   }
 }
