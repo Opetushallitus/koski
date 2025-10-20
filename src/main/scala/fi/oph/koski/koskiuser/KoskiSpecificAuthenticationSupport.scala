@@ -18,8 +18,22 @@ trait KoskiSpecificAuthenticationSupport extends AuthenticationSupport with Kosk
         if (!session.hasPalvelurooli(_.palveluName == "KOSKI")) {
           haltWithStatus(KoskiErrorCategory.forbidden.kiellettyKäyttöoikeus("Ei sallittu ilman Koski-palvelun käyttöoikeuksia"))
         }
-        if (session.hasHSLAccess || session.hasSuomiFiAccess || session.hasTilastokeskusAccess || session.hasKelaAccess || session.hasYtlAccess || session.hasValviraAccess || session.hasMigriAccess || session.hasSomeOmaDataOAuth2Access) {
-          haltWithStatus(KoskiErrorCategory.forbidden.kiellettyKäyttöoikeus("Ei sallittu luovutuspalvelukäyttöoikeuksilla"))
+        if (
+          session.hasHSLAccess ||
+            session.hasSuomiFiAccess ||
+            session.hasTilastokeskusAccess ||
+            session.hasKelaAccess ||
+            session.hasYtlAccess ||
+            session.hasValviraAccess ||
+            session.hasMigriAccess ||
+            session.hasSomeOmaDataOAuth2Access ||
+            session.hasSdgAccess
+        ) {
+          haltWithStatus(
+            KoskiErrorCategory.forbidden.kiellettyKäyttöoikeus(
+              "Ei sallittu luovutuspalvelukäyttöoikeuksilla"
+            )
+          )
         }
         user
       case Left(error) =>
