@@ -443,7 +443,7 @@ object AmmatillinenValidation {
       HttpStatus.fold(
         validateAikajaksot(viimeinenSallittuJaksonPäivä, oo, oo.lisätiedot.flatMap(_.opiskeluvalmiuksiaTukevatOpinnot), "Opiskeluvalmiuksia tukevien opintojen"),
         validateAikajaksot(viimeinenSallittuJaksonPäivä, oo, oo.lisätiedot.flatMap(_.erityinenTuki), "Erityisen tuen"),
-        validateAikajaksot(viimeinenSallittuJaksonPäivä, oo, oo.lisätiedot.flatMap(_.vaikeastiVammainen), "Vaikeasti vammaisen"),
+        validateAikajaksot(viimeinenSallittuJaksonPäivä, oo, oo.lisätiedot.flatMap(_.vaikeastiVammainen), "Vaikeasti vammaisille järjestetyn opetuksen"),
         validateAikajaksot(viimeinenSallittuJaksonPäivä, oo, oo.lisätiedot.flatMap(_.vammainenJaAvustaja), "Vammaisen ja avustajan"),
         validateLomaTilat(viimeinenSallittuJaksonPäivä, oo.tila.opiskeluoikeusjaksot)
       )
@@ -457,11 +457,11 @@ object AmmatillinenValidation {
 
     if (ooAlkaaViimeisenKäyttöpäivänJälkeen) {
       HttpStatus.validate(eiJaksoaOlemassa) {
-        KoskiErrorCategory.badRequest.validation.ammatillinen.lisätietoRajapäivänJälkeen(jaksonNimiVirheilmoitukseen)()
+        KoskiErrorCategory.badRequest.validation.ammatillinen.lisätietoRajapäivänJälkeenAlkavaOpiskeluoikeus(jaksonNimiVirheilmoitukseen)()
       }
     } else {
       HttpStatus.validate(eiJaksoaOlemassa || jaksoAlkaaEnnenRajapäivää) {
-        KoskiErrorCategory.badRequest.validation.ammatillinen.lisätietoRajapäivänJälkeen(jaksonNimiVirheilmoitukseen)()
+        KoskiErrorCategory.badRequest.validation.ammatillinen.lisätietoAlkaaRajapäivänJälkeen(jaksonNimiVirheilmoitukseen)()
       }
     }
   }

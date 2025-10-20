@@ -172,7 +172,7 @@ object TutkintokoulutukseenValmentavaKoulutusValidation {
     if (isValidaatiotAstuneetVoimaan) {
       HttpStatus.fold(
         AmmatillinenValidation.validateAikajaksot(viimeinenSallittuJaksonPäivä, oo, lisätiedot.flatMap(_.erityinenTuki), "Erityisen tuen"),
-        AmmatillinenValidation.validateAikajaksot(viimeinenSallittuJaksonPäivä, oo, lisätiedot.flatMap(_.vaikeastiVammainen), "Vaikeasti vammaisen"),
+        AmmatillinenValidation.validateAikajaksot(viimeinenSallittuJaksonPäivä, oo, lisätiedot.flatMap(_.vaikeastiVammainen), "Vaikeasti vammaisille järjestetyn opetuksen"),
         AmmatillinenValidation.validateAikajaksot(viimeinenSallittuJaksonPäivä, oo, lisätiedot.flatMap(_.vammainenJaAvustaja), "Vammaisen ja avustajan"),
         AmmatillinenValidation.validateLomaTilat(viimeinenSallittuJaksonPäivä, oo.tila.opiskeluoikeusjaksot)
       )

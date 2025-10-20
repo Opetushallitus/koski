@@ -1316,10 +1316,10 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
             val res = AmmatillinenValidation.validateAmmatillinenOpiskeluoikeus(config)(oo, None, KoskiApplicationForTests.possu)(KoskiSpecificSession.systemUser)
             res shouldBe HttpStatus(
               400,
-              KoskiErrorCategory.badRequest.validation.ammatillinen.lisätietoRajapäivänJälkeen("Opiskeluvalmiuksia tukevien opintojen")().errors ++
-                KoskiErrorCategory.badRequest.validation.ammatillinen.lisätietoRajapäivänJälkeen("Erityisen tuen")().errors ++
-                KoskiErrorCategory.badRequest.validation.ammatillinen.lisätietoRajapäivänJälkeen("Vaikeasti vammaisen")().errors ++
-                KoskiErrorCategory.badRequest.validation.ammatillinen.lisätietoRajapäivänJälkeen("Vammaisen ja avustajan")().errors
+              KoskiErrorCategory.badRequest.validation.ammatillinen.lisätietoAlkaaRajapäivänJälkeen("Opiskeluvalmiuksia tukevien opintojen")().errors ++
+                KoskiErrorCategory.badRequest.validation.ammatillinen.lisätietoAlkaaRajapäivänJälkeen("Erityisen tuen")().errors ++
+                KoskiErrorCategory.badRequest.validation.ammatillinen.lisätietoAlkaaRajapäivänJälkeen("Vaikeasti vammaisille järjestetyn opetuksen")().errors ++
+                KoskiErrorCategory.badRequest.validation.ammatillinen.lisätietoAlkaaRajapäivänJälkeen("Vammaisen ja avustajan")().errors
             )
           }
         }
@@ -1349,10 +1349,10 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
             val res = AmmatillinenValidation.validateAmmatillinenOpiskeluoikeus(config)(oo, None, KoskiApplicationForTests.possu)(KoskiSpecificSession.systemUser)
             res shouldBe HttpStatus(
               400,
-              KoskiErrorCategory.badRequest.validation.ammatillinen.lisätietoRajapäivänJälkeen("Opiskeluvalmiuksia tukevien opintojen")().errors ++
-                KoskiErrorCategory.badRequest.validation.ammatillinen.lisätietoRajapäivänJälkeen("Erityisen tuen")().errors ++
-                KoskiErrorCategory.badRequest.validation.ammatillinen.lisätietoRajapäivänJälkeen("Vaikeasti vammaisen")().errors ++
-                KoskiErrorCategory.badRequest.validation.ammatillinen.lisätietoRajapäivänJälkeen("Vammaisen ja avustajan")().errors
+              KoskiErrorCategory.badRequest.validation.ammatillinen.lisätietoRajapäivänJälkeenAlkavaOpiskeluoikeus("Opiskeluvalmiuksia tukevien opintojen")().errors ++
+                KoskiErrorCategory.badRequest.validation.ammatillinen.lisätietoRajapäivänJälkeenAlkavaOpiskeluoikeus("Erityisen tuen")().errors ++
+                KoskiErrorCategory.badRequest.validation.ammatillinen.lisätietoRajapäivänJälkeenAlkavaOpiskeluoikeus("Vaikeasti vammaisille järjestetyn opetuksen")().errors ++
+                KoskiErrorCategory.badRequest.validation.ammatillinen.lisätietoRajapäivänJälkeenAlkavaOpiskeluoikeus("Vammaisen ja avustajan")().errors
             )
           }
           "Jakso alkaa viimeisenä käyttöpäivänä tai sitä ennen ja päättyy viimeisen käyttöpäivän jälkeen tai jatkuu toistaiseksi" in {
@@ -1371,10 +1371,10 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
             val res = AmmatillinenValidation.validateAmmatillinenOpiskeluoikeus(config)(oo, None, KoskiApplicationForTests.possu)(KoskiSpecificSession.systemUser)
             res shouldBe HttpStatus(
               400,
-              KoskiErrorCategory.badRequest.validation.ammatillinen.lisätietoRajapäivänJälkeen("Opiskeluvalmiuksia tukevien opintojen")().errors ++
-                KoskiErrorCategory.badRequest.validation.ammatillinen.lisätietoRajapäivänJälkeen("Erityisen tuen")().errors ++
-                KoskiErrorCategory.badRequest.validation.ammatillinen.lisätietoRajapäivänJälkeen("Vaikeasti vammaisen")().errors ++
-                KoskiErrorCategory.badRequest.validation.ammatillinen.lisätietoRajapäivänJälkeen("Vammaisen ja avustajan")().errors
+              KoskiErrorCategory.badRequest.validation.ammatillinen.lisätietoRajapäivänJälkeenAlkavaOpiskeluoikeus("Opiskeluvalmiuksia tukevien opintojen")().errors ++
+                KoskiErrorCategory.badRequest.validation.ammatillinen.lisätietoRajapäivänJälkeenAlkavaOpiskeluoikeus("Erityisen tuen")().errors ++
+                KoskiErrorCategory.badRequest.validation.ammatillinen.lisätietoRajapäivänJälkeenAlkavaOpiskeluoikeus("Vaikeasti vammaisille järjestetyn opetuksen")().errors ++
+                KoskiErrorCategory.badRequest.validation.ammatillinen.lisätietoRajapäivänJälkeenAlkavaOpiskeluoikeus("Vammaisen ja avustajan")().errors
             )
           }
           "Jakso alkaa viimeisen käyttöpäivän jälkeen" in {
@@ -1393,10 +1393,10 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
             val res = AmmatillinenValidation.validateAmmatillinenOpiskeluoikeus(config)(oo, None, KoskiApplicationForTests.possu)(KoskiSpecificSession.systemUser)
             res shouldBe HttpStatus(
               400,
-              KoskiErrorCategory.badRequest.validation.ammatillinen.lisätietoRajapäivänJälkeen("Opiskeluvalmiuksia tukevien opintojen")().errors ++
-                KoskiErrorCategory.badRequest.validation.ammatillinen.lisätietoRajapäivänJälkeen("Erityisen tuen")().errors ++
-                KoskiErrorCategory.badRequest.validation.ammatillinen.lisätietoRajapäivänJälkeen("Vaikeasti vammaisen")().errors ++
-                KoskiErrorCategory.badRequest.validation.ammatillinen.lisätietoRajapäivänJälkeen("Vammaisen ja avustajan")().errors
+              KoskiErrorCategory.badRequest.validation.ammatillinen.lisätietoRajapäivänJälkeenAlkavaOpiskeluoikeus("Opiskeluvalmiuksia tukevien opintojen")().errors ++
+                KoskiErrorCategory.badRequest.validation.ammatillinen.lisätietoRajapäivänJälkeenAlkavaOpiskeluoikeus("Erityisen tuen")().errors ++
+                KoskiErrorCategory.badRequest.validation.ammatillinen.lisätietoRajapäivänJälkeenAlkavaOpiskeluoikeus("Vaikeasti vammaisille järjestetyn opetuksen")().errors ++
+                KoskiErrorCategory.badRequest.validation.ammatillinen.lisätietoRajapäivänJälkeenAlkavaOpiskeluoikeus("Vammaisen ja avustajan")().errors
             )
           }
         }
@@ -1738,7 +1738,10 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
           }
         }
         "loma -tilalta vaaditaan opintojen rahoitus" in {
-          setupOppijaWithOpiskeluoikeus(defaultOpiskeluoikeus.copy(tila = AmmatillinenOpiskeluoikeudenTila(List(AmmatillinenOpiskeluoikeusjakso(longTimeAgo, opiskeluoikeusLoma))))) {
+          setupOppijaWithOpiskeluoikeus(defaultOpiskeluoikeus.copy(tila = AmmatillinenOpiskeluoikeudenTila(List(
+            AmmatillinenOpiskeluoikeusjakso(longTimeAgo, opiskeluoikeusLoma),
+            AmmatillinenOpiskeluoikeusjakso(date(2016, 1, 1), opiskeluoikeusLäsnä, Some(valtionosuusRahoitteinen))
+          )))) {
             verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.tilaltaPuuttuuRahoitusmuoto("Opiskeluoikeuden tilalta loma puuttuu rahoitusmuoto"))
           }
         }

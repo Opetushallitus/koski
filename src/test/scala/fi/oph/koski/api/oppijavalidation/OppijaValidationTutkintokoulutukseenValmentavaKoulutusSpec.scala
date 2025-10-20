@@ -60,7 +60,17 @@ class OppijaValidationTutkintokoulutukseenValmentavaKoulutusSpec extends Tutkinn
       }
 
       "jaksolla pitää olla rahoitusmuoto kun tila on loma" in {
-        setupOppijaWithOpiskeluoikeus(ilmanRahoitusta(tuvaOpiskeluOikeusLoma, tuvaTilaLoma).copy(
+        val oo = tuvaOpiskeluOikeusLoma.copy(
+          tila = TutkintokoulutukseenValmentavanOpiskeluoikeudenTila(
+            opiskeluoikeusjaksot = List(
+              tuvaOpiskeluOikeusjakso(date(2021, 8, 1), "lasna"),
+              tuvaOpiskeluOikeusjakso(date(2022, 8, 1), "loma").copy(opintojenRahoitus = None),
+              tuvaOpiskeluOikeusjakso(date(2025, 10, 19), "lasna")
+            )
+          )
+        )
+
+        setupOppijaWithOpiskeluoikeus(oo.copy(
           järjestämislupa = Koodistokoodiviite("ammatillinen", "tuvajarjestamislupa")
         ), henkilö = tuvaHenkilöValmis, headers = authHeaders(stadinAmmattiopistoJaOppisopimuskeskusTallentaja) ++ jsonContent) {
           verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.tilaltaPuuttuuRahoitusmuoto())
@@ -838,9 +848,9 @@ class OppijaValidationTutkintokoulutukseenValmentavaKoulutusSpec extends Tutkinn
             val res = mockKoskiValidator(config).updateFieldsAndValidateAsJson(Oppija(tuvaHenkilöValmis, List(oo)))(session, accessType)
             res.left.get shouldBe HttpStatus(
               400,
-              KoskiErrorCategory.badRequest.validation.ammatillinen.lisätietoRajapäivänJälkeen("Erityisen tuen")().errors ++
-                KoskiErrorCategory.badRequest.validation.ammatillinen.lisätietoRajapäivänJälkeen("Vaikeasti vammaisen")().errors ++
-                KoskiErrorCategory.badRequest.validation.ammatillinen.lisätietoRajapäivänJälkeen("Vammaisen ja avustajan")().errors
+              KoskiErrorCategory.badRequest.validation.ammatillinen.lisätietoAlkaaRajapäivänJälkeen("Erityisen tuen")().errors ++
+                KoskiErrorCategory.badRequest.validation.ammatillinen.lisätietoAlkaaRajapäivänJälkeen("Vaikeasti vammaisille järjestetyn opetuksen")().errors ++
+                KoskiErrorCategory.badRequest.validation.ammatillinen.lisätietoAlkaaRajapäivänJälkeen("Vammaisen ja avustajan")().errors
             )
           }
         }
@@ -871,9 +881,9 @@ class OppijaValidationTutkintokoulutukseenValmentavaKoulutusSpec extends Tutkinn
             val res = mockKoskiValidator(config).updateFieldsAndValidateAsJson(Oppija(tuvaHenkilöValmis, List(oo)))(session, accessType)
             res.left.get shouldBe HttpStatus(
               400,
-              KoskiErrorCategory.badRequest.validation.ammatillinen.lisätietoRajapäivänJälkeen("Erityisen tuen")().errors ++
-                KoskiErrorCategory.badRequest.validation.ammatillinen.lisätietoRajapäivänJälkeen("Vaikeasti vammaisen")().errors ++
-                KoskiErrorCategory.badRequest.validation.ammatillinen.lisätietoRajapäivänJälkeen("Vammaisen ja avustajan")().errors
+              KoskiErrorCategory.badRequest.validation.ammatillinen.lisätietoRajapäivänJälkeenAlkavaOpiskeluoikeus("Erityisen tuen")().errors ++
+                KoskiErrorCategory.badRequest.validation.ammatillinen.lisätietoRajapäivänJälkeenAlkavaOpiskeluoikeus("Vaikeasti vammaisille järjestetyn opetuksen")().errors ++
+                KoskiErrorCategory.badRequest.validation.ammatillinen.lisätietoRajapäivänJälkeenAlkavaOpiskeluoikeus("Vammaisen ja avustajan")().errors
             )
           }
         }

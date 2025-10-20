@@ -138,12 +138,6 @@ object ExamplesTutkintokoulutukseenValmentavaKoulutus {
       tuvaOpiskeluOikeusjakso(date(2022, 8, 1), "katsotaaneronneeksi")
     )
   )
-  lazy val tuvaTilaLoma = TutkintokoulutukseenValmentavanOpiskeluoikeudenTila(
-    opiskeluoikeusjaksot = List(
-      tuvaOpiskeluOikeusjakso(date(2021, 8, 1), "lasna"),
-      tuvaOpiskeluOikeusjakso(date(2022, 8, 1), "loma")
-    )
-  )
 
   lazy val stadinAmmattiopisto: Oppilaitos = Oppilaitos(MockOrganisaatiot.stadinAmmattiopisto, Some(Koodistokoodiviite("10105", None, "oppilaitosnumero", None)), Some("Stadin ammattiopisto"))
   lazy val lähdePrimus = Koodistokoodiviite("primus", Some("Primus"), "lahdejarjestelma", Some(1))
@@ -266,7 +260,7 @@ object ExamplesTutkintokoulutukseenValmentavaKoulutus {
         nimi = Some(Finnish(fi = "Helsingin kaupunki"))
       )
     ),
-    tila = tuvaTilaLäsnä.copy(opiskeluoikeusjaksot = List(tuvaOpiskeluOikeusjakso(LocalDate.of(2020, 1, 1), "loma"))),
+    tila = tuvaTilaLäsnä.copy(opiskeluoikeusjaksot = List(tuvaOpiskeluOikeusjakso(LocalDate.of(2020, 1, 1), "loma"), tuvaOpiskeluOikeusjakso(LocalDate.of(2025, 10, 20), "lasna"))),
     järjestämislupa = Koodistokoodiviite("lukio", "tuvajarjestamislupa"),
     organisaatiohistoria = Some(opiskeluoikeudenOrganisaatioHistoria),
     suoritukset = List(
