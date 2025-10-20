@@ -1,4 +1,9 @@
 # Koskeen tallennettavien tietojen validaatiosäännöt
+## 20.10.2025
+
+- Ammatillisiin opiskeluoikeuksiin, jotka alkavat 31.12.2025 jälkeen, ei voi merkitä lisätietoa henkilöstökoulutus.
+  - Validaatio astuu voimaan 1.1.2026.
+
 ## 14.10.2025
  - Rajatulle oppimäärälle Sallittu vaihtoehtoisesti erityisen tuen jakso.
 
