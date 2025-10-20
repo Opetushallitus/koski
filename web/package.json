@@ -52,7 +52,7 @@
     "@eslint/compat": "^1.2.8",
     "@eslint/eslintrc": "^3.3.1",
     "@eslint/js": "^9.24.0",
-    "@playwright/test": "^1.51.1",
+    "@playwright/test": "^1.56.1",
     "@swc/core": "^1.11.21",
     "@types/downloadjs": "^1.4.6",
     "@types/js-cookie": "^3.0.6",
