@@ -607,8 +607,11 @@ object MockUsers {
     "SDG",
     "Saleria",
     "1.2.246.562.24.42013142058",
-    Seq(OrganisaatioJaKäyttöoikeudet(Opetushallitus.organisaatioOid, List(
-      PalveluJaOikeus("KOSKI", Rooli.SDG)
+    Seq(OrganisaatioJaKäyttöoikeudet(MockOrganisaatiot.keha, List(
+      PalveluJaOikeus("KOSKI", Rooli.SDG),
+      PalveluJaOikeus("KOSKI", Rooli.GLOBAALI_LUKU_PERUSOPETUS),
+      PalveluJaOikeus("KOSKI", Rooli.GLOBAALI_LUKU_TOINEN_ASTE),
+      PalveluJaOikeus("KOSKI", Rooli.GLOBAALI_LUKU_KORKEAKOULU),
     )))
   )
 
