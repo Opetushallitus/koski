@@ -37,7 +37,7 @@ class OppijaValidationAmmatillisenTutkinnonOsittainenUseastaTutkinnostaSuoritusS
   )
 
   def osittainenSuoritusKesken: AmmatillisenTutkinnonOsittainenUseastaTutkinnostaSuoritus = ammatillisenTutkinnonOsittainenUseastaTutkinnostaSuoritus
-    .copy(vahvistus = None, keskiarvo = None)
+    .copy(vahvistus = None)
 
   "Ammatillisen koulutuksen opiskeluoikeuden lisääminen" - {
     "Valideilla tiedoilla" - {
@@ -52,7 +52,7 @@ class OppijaValidationAmmatillisenTutkinnonOsittainenUseastaTutkinnostaSuoritusS
     "Tutkinnon tila ja arviointi" - {
       def copySuoritus(ap: Option[LocalDate] = None, vahvistus: Option[HenkilövahvistusValinnaisellaPaikkakunnalla] = None, keskiarvo: Option[Double] = None) = {
         val alkamispäivä = ap.orElse(Some(longTimeAgo))
-        osittainenSuoritusKesken.copy(alkamispäivä = alkamispäivä, vahvistus = vahvistus, keskiarvo = keskiarvo)
+        osittainenSuoritusKesken.copy(alkamispäivä = alkamispäivä, vahvistus = vahvistus)
       }
 
       def setupOppijWith(s: AmmatillisenTutkinnonOsittainenUseastaTutkinnostaSuoritus)(f: => Unit) = {
@@ -83,137 +83,9 @@ class OppijaValidationAmmatillisenTutkinnonOsittainenUseastaTutkinnostaSuoritusS
       }
     }
 
-    "Osaamisaloilla" - {
-      "Voi syöttää ilman osaamisalaa" in {
-        val suoritus = osittainenSuoritusKesken.copy(
-          osaamisala = None
-        )
-        setupOppijaWithOpiskeluoikeus(makeOpiskeluoikeus(suoritus = suoritus)) {
-          verifyResponseStatusOk()
-        }
-      }
-
-      "Voi syöttää osaamisalan, kun ei ole osasuorituksia" in {
-        val suoritus = osittainenSuoritusKesken.copy(
-          osaamisala = Some(List(Osaamisalajakso(Koodistokoodiviite("1008", Some(finnish("Ajoneuvotekniikan osaamisala")), "osaamisala", None)))),
-          osasuoritukset = None,
-        )
-        setupOppijaWithOpiskeluoikeus(makeOpiskeluoikeus(suoritus = suoritus)) {
-          verifyResponseStatusOk()
-        }
-      }
-
-      "Voi syöttää osaamisalan, kun löytyy jokin osaamisalaa vastaava tutkinto osasuorituksista" in {
-        val suoritus = osittainenSuoritusKesken.copy(
-          osaamisala = Some(List(Osaamisalajakso(Koodistokoodiviite("1008", Some(finnish("Ajoneuvotekniikan osaamisala")), "osaamisala", None)))),
-          osasuoritukset = Some(List(
-            osittaisenTutkinnonTutkinnonOsanUseastaTutkinnostaSuoritus(h2, ammatillisetTutkinnonOsat, "106945", "Ajoneuvon huoltotyöt", 25).copy(
-              tutkinto = AmmatillinenTutkintoKoulutus(
-                Koodistokoodiviite("351301", Some(finnish("Ajoneuvoalan perustutkinto")), "koulutus", None),
-                Some("OPH-5410-2021")
-              )
-            ),
-            osittaisenTutkinnonTutkinnonOsanUseastaTutkinnostaSuoritus(h2, ammatillisetTutkinnonOsat, "100431", "Kestävällä tavalla toimiminen", 40).copy(
-              tutkinto = AmmatillinenTutkintoKoulutus(
-                Koodistokoodiviite("361902", Some(finnish("Luonto- ja ympäristöalan perustutkinto")), "koulutus", None),
-                Some("62/011/2014")
-              )
-            )
-          ))
-        )
-
-        setupOppijaWithOpiskeluoikeus(makeOpiskeluoikeus(suoritus = suoritus)) {
-          verifyResponseStatusOk()
-        }
-      }
-
-      "Ei voi syöttää osaamisalaa, kun osaamisalaa vastaavaa tutkintoa ei löydy osasuorituksista" in {
-        val suoritus = osittainenSuoritusKesken.copy(
-          osaamisala = Some(List(Osaamisalajakso(Koodistokoodiviite("1008", Some(finnish("Ajoneuvotekniikan osaamisala")), "osaamisala", None)))),
-          tutkintonimike = None,
-          osasuoritukset = Some(List(
-            osittaisenTutkinnonTutkinnonOsanUseastaTutkinnostaSuoritus(h2, ammatillisetTutkinnonOsat, "100431", "Kestävällä tavalla toimiminen", 40).copy(
-              tutkinto = AmmatillinenTutkintoKoulutus(
-                Koodistokoodiviite("361902", Some(finnish("Luonto- ja ympäristöalan perustutkinto")), "koulutus", None),
-                Some("62/011/2014")
-              )
-            )
-          ))
-        )
-
-        setupOppijaWithOpiskeluoikeus(makeOpiskeluoikeus(suoritus = suoritus)) {
-          verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.rakenne.tuntematonOsaamisala("Osaamisalaa Ajoneuvotekniikan osaamisala(1008) ei löydy opiskeluoikeudelle määritellystä perusteesta."))
-        }
-      }
-    }
-
-    "Tutkintonimikkeillä" - {
-      "Voi syöttää ilman tutkintonimikkeitä" in {
-        val suoritus = osittainenSuoritusKesken.copy(
-          tutkintonimike = None
-        )
-        setupOppijaWithOpiskeluoikeus(makeOpiskeluoikeus(suoritus = suoritus)) {
-          verifyResponseStatusOk()
-        }
-      }
-
-      "Voi syöttää tutkintonimikkeen, kun ei ole osasuorituksia" in {
-        val suoritus = osittainenSuoritusKesken.copy(
-          tutkintonimike = Some(List(Koodistokoodiviite("10025", Some(finnish("Automaalari")), "tutkintonimikkeet", None))),
-          osasuoritukset = None
-        )
-        setupOppijaWithOpiskeluoikeus(makeOpiskeluoikeus(suoritus = suoritus)) {
-          verifyResponseStatusOk()
-        }
-      }
-
-      "Voi syöttää tutkintonimikkeen, kun nimikettä vastaava tutkinto löytyy" in {
-        val suoritus = osittainenSuoritusKesken.copy(
-          tutkintonimike = Some(List(Koodistokoodiviite("10025", Some(finnish("Automaalari")), "tutkintonimikkeet", None))),
-          osasuoritukset = Some(List(
-            osittaisenTutkinnonTutkinnonOsanUseastaTutkinnostaSuoritus(h2, ammatillisetTutkinnonOsat, "106945", "Ajoneuvon huoltotyöt", 25).copy(
-              tutkinto = AmmatillinenTutkintoKoulutus(
-                Koodistokoodiviite("351301", Some(finnish("Ajoneuvoalan perustutkinto")), "koulutus", None),
-                Some("OPH-5410-2021")
-              )
-            ),
-            osittaisenTutkinnonTutkinnonOsanUseastaTutkinnostaSuoritus(h2, ammatillisetTutkinnonOsat, "100431", "Kestävällä tavalla toimiminen", 40).copy(
-              tutkinto = AmmatillinenTutkintoKoulutus(
-                Koodistokoodiviite("361902", Some(finnish("Luonto- ja ympäristöalan perustutkinto")), "koulutus", None),
-                Some("62/011/2014")
-              )
-            )
-          ))
-        )
-        setupOppijaWithOpiskeluoikeus(makeOpiskeluoikeus(suoritus = suoritus)) {
-          verifyResponseStatusOk()
-        }
-      }
-
-      "Ei voi syöttää tutkintonimikettä, jota vastaavaa tutkintoa ei löydy" in {
-        val suoritus = osittainenSuoritusKesken.copy(
-          osaamisala = None,
-          tutkintonimike = Some(List(Koodistokoodiviite("10025", Some(finnish("Automaalari")), "tutkintonimikkeet", None))),
-          osasuoritukset = Some(List(
-            osittaisenTutkinnonTutkinnonOsanUseastaTutkinnostaSuoritus(h2, ammatillisetTutkinnonOsat, "100431", "Kestävällä tavalla toimiminen", 40).copy(
-              tutkinto = AmmatillinenTutkintoKoulutus(
-                Koodistokoodiviite("361902", Some(finnish("Luonto- ja ympäristöalan perustutkinto")), "koulutus", None),
-                Some("62/011/2014")
-              )
-            )
-          ))
-        )
-        setupOppijaWithOpiskeluoikeus(makeOpiskeluoikeus(suoritus = suoritus)) {
-          verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.rakenne.tuntematonTutkintonimike("Tutkintonimikettä Automaalari(10025) ei löydy opiskeluoikeudelle määritellystä perusteesta."))
-        }
-      }
-    }
-
     "Tutkinnon osan tutkinto" - {
       "Tutkinnon osan tutkinnon perusteen nimi täydennetään diaarinumeron perusteella" in {
         val suoritus = osittainenSuoritusKesken.copy(
-          osaamisala = None,
-          tutkintonimike = None,
           osasuoritukset = Some(List(
             osittaisenTutkinnonTutkinnonOsanUseastaTutkinnostaSuoritus(h2, ammatillisetTutkinnonOsat, "106945", "Ajoneuvon huoltotyöt", 25).copy(
               tutkinto = AmmatillinenTutkintoKoulutus(
@@ -235,8 +107,6 @@ class OppijaValidationAmmatillisenTutkinnonOsittainenUseastaTutkinnostaSuoritusS
 
       "Tutkinnon osan tutkintoa ei voi siirtää ilman diaarinumeroa" in {
         val suoritus = osittainenSuoritusKesken.copy(
-          osaamisala = None,
-          tutkintonimike = None,
           osasuoritukset = Some(List(
             osittaisenTutkinnonTutkinnonOsanUseastaTutkinnostaSuoritus(h2, ammatillisetTutkinnonOsat, "106945", "Ajoneuvon huoltotyöt", 25).copy(
               tutkinto = AmmatillinenTutkintoKoulutus(
@@ -253,8 +123,6 @@ class OppijaValidationAmmatillisenTutkinnonOsittainenUseastaTutkinnostaSuoritusS
 
       "Tutkinnon osan tutkintoa ei voi siirtää vääränmuotoisella diaarinumerolla" in {
         val suoritus = osittainenSuoritusKesken.copy(
-          osaamisala = None,
-          tutkintonimike = None,
           osasuoritukset = Some(List(
             osittaisenTutkinnonTutkinnonOsanUseastaTutkinnostaSuoritus(h2, ammatillisetTutkinnonOsat, "106945", "Ajoneuvon huoltotyöt", 25).copy(
               tutkinto = AmmatillinenTutkintoKoulutus(
@@ -271,8 +139,6 @@ class OppijaValidationAmmatillisenTutkinnonOsittainenUseastaTutkinnostaSuoritusS
 
       "Tutkinnon osan tutkintoa ei voi siirtää vääräntyyppisellä perusteella" in {
         val suoritus = osittainenSuoritusKesken.copy(
-          osaamisala = None,
-          tutkintonimike = None,
           osasuoritukset = Some(List(
             osittaisenTutkinnonTutkinnonOsanUseastaTutkinnostaSuoritus(h2, ammatillisetTutkinnonOsat, "106945", "Ajoneuvon huoltotyöt", 25).copy(
               tutkinto = AmmatillinenTutkintoKoulutus(
@@ -290,8 +156,6 @@ class OppijaValidationAmmatillisenTutkinnonOsittainenUseastaTutkinnostaSuoritusS
 
       "Ei voi syöttää väärää tutkinnon osaa" in {
         val suoritus = osittainenSuoritusKesken.copy(
-          osaamisala = None,
-          tutkintonimike = None,
           osasuoritukset = Some(List(
             // Tutkinnon osa väärästä perusteesta
             osittaisenTutkinnonTutkinnonOsanUseastaTutkinnostaSuoritus(h2, ammatillisetTutkinnonOsat, "101050", "Yritystoiminnan suunnittelu", 15).copy(
@@ -310,8 +174,6 @@ class OppijaValidationAmmatillisenTutkinnonOsittainenUseastaTutkinnostaSuoritusS
 
       "Ei voi syöttää tutkinnon osaa väärällä laajuudella" in {
         val suoritus = osittainenSuoritusKesken.copy(
-          osaamisala = None,
-          tutkintonimike = None,
           osasuoritukset = Some(List(
             // Tutkinnon osalla liian pieni laajuus
             osittaisenTutkinnonTutkinnonOsanUseastaTutkinnostaSuoritus(h2, ammatillisetTutkinnonOsat, "106945", "Ajoneuvon huoltotyöt", 1).copy(
@@ -329,8 +191,6 @@ class OppijaValidationAmmatillisenTutkinnonOsittainenUseastaTutkinnostaSuoritusS
 
       "Ei voi syöttää väärää tutkinnon osan osa-aluetta" in {
         val suoritus = osittainenSuoritusKesken.copy(
-          osaamisala = None,
-          tutkintonimike = None,
           osasuoritukset = Some(List(
             yhteisenOsittaisenTutkinnonTutkinnonOsanUseastaTutkinnostaSuoritus(h2, yhteisetTutkinnonOsat, "106728", "Matemaattis-luonnontieteellinen osaaminen", 12).copy(
               tutkinto = AmmatillinenTutkintoKoulutus(
@@ -357,8 +217,6 @@ class OppijaValidationAmmatillisenTutkinnonOsittainenUseastaTutkinnostaSuoritusS
 
       "Ei voi syöttää tutkinnon osan osa-aluetta liian pienellä laajuudella" in {
         val suoritus = osittainenSuoritusKesken.copy(
-          osaamisala = None,
-          tutkintonimike = None,
           osasuoritukset = Some(List(
             yhteisenOsittaisenTutkinnonTutkinnonOsanUseastaTutkinnostaSuoritus(h2, yhteisetTutkinnonOsat, "106728", "Matemaattis-luonnontieteellinen osaaminen", 12).copy(
               tutkinto = AmmatillinenTutkintoKoulutus(
@@ -380,8 +238,6 @@ class OppijaValidationAmmatillisenTutkinnonOsittainenUseastaTutkinnostaSuoritusS
     "Tunnustettu tutkinnon osan tutkinto" - {
       "Voi syöttää tunnustetun tutkinnon osan" in {
         val suoritus = osittainenSuoritusKesken.copy(
-          tutkintonimike = None,
-          osaamisala = None,
           osasuoritukset = Some(List(
             osittaisenTutkinnonTutkinnonOsanUseastaTutkinnostaSuoritus(h2, ammatillisetTutkinnonOsat, "106945", "Ajoneuvon huoltotyöt", 25).copy(
               tunnustettu = Some(OsaamisenTunnustaminen(
@@ -402,8 +258,6 @@ class OppijaValidationAmmatillisenTutkinnonOsittainenUseastaTutkinnostaSuoritusS
 
       "Ei voi syöttää tunnustettua tutkinnon osaa liian pienellä laajuudella" in {
         val suoritus = osittainenSuoritusKesken.copy(
-          tutkintonimike = None,
-          osaamisala = None,
           osasuoritukset = Some(List(
             osittaisenTutkinnonTutkinnonOsanUseastaTutkinnostaSuoritus(h2, ammatillisetTutkinnonOsat, "106945", "Ajoneuvon huoltotyöt", 1).copy(
               tunnustettu = Some(OsaamisenTunnustaminen(
@@ -424,8 +278,6 @@ class OppijaValidationAmmatillisenTutkinnonOsittainenUseastaTutkinnostaSuoritusS
 
       "Ei voi syöttää tutkintoon kuulumatonta tunnustettua tutkinnon osaa" in {
         val suoritus = osittainenSuoritusKesken.copy(
-          tutkintonimike = None,
-          osaamisala = None,
           osasuoritukset = Some(List(
             osittaisenTutkinnonTutkinnonOsanUseastaTutkinnostaSuoritus(h2, ammatillisetTutkinnonOsat, "101050", "Yritystoiminnan suunnittelu", 15).copy(
               tunnustettu = Some(OsaamisenTunnustaminen(
@@ -446,8 +298,6 @@ class OppijaValidationAmmatillisenTutkinnonOsittainenUseastaTutkinnostaSuoritusS
 
       "Voi syöttää tunnustetun tutkinnon osan vanhentuneesta perusteesta" in {
         val suoritus = osittainenSuoritusKesken.copy(
-          tutkintonimike = None,
-          osaamisala = None,
           osasuoritukset = Some(List(
             osittaisenTutkinnonTutkinnonOsanUseastaTutkinnostaSuoritus(h2, ammatillisetTutkinnonOsat, "101050", "Yritystoiminnan suunnittelu", 15).copy(
               tunnustettu = Some(OsaamisenTunnustaminen(
@@ -469,8 +319,6 @@ class OppijaValidationAmmatillisenTutkinnonOsittainenUseastaTutkinnostaSuoritusS
 
       "Ei voi syöttää tunnustetun tutkinnon osaa liian pienellä laajuudella" in {
         val suoritus = osittainenSuoritusKesken.copy(
-          tutkintonimike = None,
-          osaamisala = None,
           osasuoritukset = Some(List(
             // Liian pieni laajuus läpäisee validaation näyttö-suoritustavan mukaisen rakenteen perusteella, jossa laajuutta ei ole rajoitettu
             // Emme tiedä minkä suoritustavan mukaan tutkinnon osa on suoritettu, joten riittää kun läpäisemme validaation millä tahansa rakenteella
@@ -493,8 +341,6 @@ class OppijaValidationAmmatillisenTutkinnonOsittainenUseastaTutkinnostaSuoritusS
 
       "Ei voi syöttää tutkintoon kuulumatonta tutkinnon osaa vanhentuneelle perusteelle" in {
         val suoritus = osittainenSuoritusKesken.copy(
-          tutkintonimike = None,
-          osaamisala = None,
           osasuoritukset = Some(List(
             osittaisenTutkinnonTutkinnonOsanUseastaTutkinnostaSuoritus(h2, ammatillisetTutkinnonOsat, "106945", "Ajoneuvon huoltotyöt", 25).copy(
               tunnustettu = Some(OsaamisenTunnustaminen(
@@ -515,8 +361,6 @@ class OppijaValidationAmmatillisenTutkinnonOsittainenUseastaTutkinnostaSuoritusS
 
       "Vanhentuneen perusteen mukainen tunnustetun tutkinnon osan osa-alue läpäisee validaation ilman virheitä" in {
         val suoritus = osittainenSuoritusKesken.copy(
-          osaamisala = None,
-          tutkintonimike = None,
           osasuoritukset = Some(List(
             yhteisenOsittaisenTutkinnonTutkinnonOsanUseastaTutkinnostaSuoritus(h2, yhteisetTutkinnonOsat, "101054", "Matemaattis-luonnontieteellinen osaaminen", 12).copy(
               tunnustettu = Some(OsaamisenTunnustaminen(
@@ -550,8 +394,6 @@ class OppijaValidationAmmatillisenTutkinnonOsittainenUseastaTutkinnostaSuoritusS
     "Tutkinnon osan ryhmä" - {
       "Täydennetään yhteisen tutkinnon osan ryhmä automaattisesti tallennuksessa" in {
         val suoritus = osittainenSuoritusKesken.copy(
-          osaamisala = None,
-          tutkintonimike = None,
           osasuoritukset = Some(List(
             yhteisenOsittaisenTutkinnonTutkinnonOsanUseastaTutkinnostaSuoritus(h2, None, "106728", "Matemaattis-luonnontieteellinen osaaminen", 12)
           ))
@@ -572,8 +414,6 @@ class OppijaValidationAmmatillisenTutkinnonOsittainenUseastaTutkinnostaSuoritusS
 
       "Ei täydennetä muun tutkinnon osan ryhmää automaattisesti tallennuksessa ja sallitaan tyhjä tutkinnon osan ryhmä" in {
         val suoritus = osittainenSuoritusKesken.copy(
-          osaamisala = None,
-          tutkintonimike = None,
           osasuoritukset = Some(List(
             osittaisenTutkinnonTutkinnonOsanUseastaTutkinnostaSuoritus(h2, None, "106945", "Ajoneuvon huoltotyöt", 25)
           ))

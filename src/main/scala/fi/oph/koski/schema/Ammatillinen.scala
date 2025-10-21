@@ -597,25 +597,27 @@ case class YhteisenOsittaisenAmmatillisenTutkinnonTutkinnonosanSuoritus(
 @Title("Muun tutkinnon osan suoritus")
 @OnlyWhen("../../tyyppi/koodiarvo", "ammatillinentutkintoosittainen") // Tarvitaan jotta osaamisen tunnustamisen suoritus deserialisoituu
 case class MuunOsittaisenAmmatillisenTutkinnonTutkinnonosanSuoritus(
-  koulutusmoduuli: MuuKuinYhteinenTutkinnonOsa,
-  tutkinto: Option[AmmatillinenTutkintoKoulutus] = None,
-  @Description("Tieto siitä mihin tutkinnon osan ryhmään osan suoritus (Ammatilliset tutkinnon osat, Yhteiset tutkinnon osat, Vapaavalintaiset tutkinnon osat, Tutkintoa yksilöllisesti laajentavat tutkinnon osat) kuuluu")
-  @KoodistoKoodiarvo("1") // Ammatilliset tutkinnon osat
-  @KoodistoKoodiarvo("3") // Vapaavalintaiset tutkinnon osat
-  @KoodistoKoodiarvo("4") // Tutkintoa yksilöllisesti laajentavat tutkinnon osat
-  tutkinnonOsanRyhmä: Option[Koodistokoodiviite] = None,
-  toimipiste: Option[OrganisaatioWithOid],
-  arviointi: Option[List[AmmatillinenArviointi]] = None,
-  vahvistus: Option[HenkilövahvistusValinnaisellaTittelillä] = None,
-  override val alkamispäivä: Option[LocalDate] = None,
-  tunnustettu: Option[OsaamisenTunnustaminen] = None,
-  lisätiedot: Option[List[AmmatillisenTutkinnonOsanLisätieto]] = None,
-  suorituskieli: Option[Koodistokoodiviite] = None,
-  näyttö: Option[Näyttö] = None,
-  override val osasuoritukset: Option[List[AmmatillisenTutkinnonOsaaPienemmänKokonaisuudenSuoritus]] = None,
-  tyyppi: Koodistokoodiviite = Koodistokoodiviite("ammatillisentutkinnonosa", koodistoUri = "suorituksentyyppi"),
+ koulutusmoduuli: MuuKuinYhteinenTutkinnonOsa,
+ tutkinto: Option[AmmatillinenTutkintoKoulutus] = None,
+ @Description("Tieto siitä mihin tutkinnon osan ryhmään osan suoritus (Ammatilliset tutkinnon osat, Yhteiset tutkinnon osat, Vapaavalintaiset tutkinnon osat, Tutkintoa yksilöllisesti laajentavat tutkinnon osat) kuuluu")
+ @KoodistoKoodiarvo("1") // Ammatilliset tutkinnon osat
+ @KoodistoKoodiarvo("3") // Vapaavalintaiset tutkinnon osat
+ @KoodistoKoodiarvo("4") // Tutkintoa yksilöllisesti laajentavat tutkinnon osat
+ tutkinnonOsanRyhmä: Option[Koodistokoodiviite] = None,
+ toimipiste: Option[OrganisaatioWithOid],
+ arviointi: Option[List[AmmatillinenArviointi]] = None,
+ vahvistus: Option[HenkilövahvistusValinnaisellaTittelillä] = None,
+ override val alkamispäivä: Option[LocalDate] = None,
+ tunnustettu: Option[OsaamisenTunnustaminen] = None,
+ lisätiedot: Option[List[AmmatillisenTutkinnonOsanLisätieto]] = None,
+ suorituskieli: Option[Koodistokoodiviite] = None,
+ näyttö: Option[Näyttö] = None,
+ override val osasuoritukset: Option[List[AmmatillisenTutkinnonOsaaPienemmänKokonaisuudenSuoritus]] = None,
+ tyyppi: Koodistokoodiviite = Koodistokoodiviite("ammatillisentutkinnonosa", koodistoUri = "suorituksentyyppi"),
+ korotettu: Option[Koodistokoodiviite] = None
 ) extends OsittaisenAmmatillisenTutkinnonOsanSuoritus
-  with MahdollisestiToimipisteellinen {
+  with MahdollisestiToimipisteellinen
+  with Korotuksellinen {
   override def withLisätiedot(lisätiedot: Option[List[AmmatillisenTutkinnonOsanLisätieto]]): MuunOsittaisenAmmatillisenTutkinnonTutkinnonosanSuoritus =
     shapeless.lens[MuunOsittaisenAmmatillisenTutkinnonTutkinnonosanSuoritus].field[Option[List[AmmatillisenTutkinnonOsanLisätieto]]]("lisätiedot").set(this)(lisätiedot)
 }
@@ -1135,21 +1137,23 @@ case class KorkeakouluopintojenSuoritus(
 @Title("Yhteisen tutkinnon osan osa-alueen suoritus")
 @Description("Yhteisen tutkinnon osan osa-alueen suorituksen tiedot")
 case class YhteisenTutkinnonOsanOsaAlueenSuoritus(
-  @Title("Osa-alue")
-  @Description("Ammatillisen tutkinnon osan osa-alueen (vieras tai toinen kotimainen kieli, äidinkieli, paikallinen tutkinnon osan osa-alue, valtakunnallinen tutkinnon osan osa-alue) tunnistetiedot")
-  koulutusmoduuli: AmmatillisenTutkinnonOsanOsaAlue,
-  arviointi: Option[List[AmmatillinenArviointi]] = None,
-  override val alkamispäivä: Option[LocalDate] = None,
-  @Description("Jos osa-alue on suoritettu osaamisen tunnustamisena, syötetään tänne osaamisen tunnustamiseen liittyvät lisätiedot")
-  @ComplexObject
-  tunnustettu: Option[OsaamisenTunnustaminen] = None,
-  lisätiedot: Option[List[AmmatillisenTutkinnonOsanLisätieto]] = None,
-  suorituskieli: Option[Koodistokoodiviite] = None,
-  @ComplexObject
-  @OnlyWhen("../../../../suoritustapa/koodiarvo","reformi")
-  näyttö: Option[Näyttö] = None,
-  @KoodistoKoodiarvo("ammatillisentutkinnonosanosaalue")
-  tyyppi: Koodistokoodiviite = Koodistokoodiviite("ammatillisentutkinnonosanosaalue", "suorituksentyyppi"),
+ @Title("Osa-alue")
+ @Description("Ammatillisen tutkinnon osan osa-alueen (vieras tai toinen kotimainen kieli, äidinkieli, paikallinen tutkinnon osan osa-alue, valtakunnallinen tutkinnon osan osa-alue) tunnistetiedot")
+ koulutusmoduuli: AmmatillisenTutkinnonOsanOsaAlue,
+ arviointi: Option[List[AmmatillinenArviointi]] = None,
+ override val alkamispäivä: Option[LocalDate] = None,
+ @Description("Jos osa-alue on suoritettu osaamisen tunnustamisena, syötetään tänne osaamisen tunnustamiseen liittyvät lisätiedot")
+ @ComplexObject
+ tunnustettu: Option[OsaamisenTunnustaminen] = None,
+ lisätiedot: Option[List[AmmatillisenTutkinnonOsanLisätieto]] = None,
+ suorituskieli: Option[Koodistokoodiviite] = None,
+ @ComplexObject
+ @OnlyWhen("../../../../suoritustapa/koodiarvo","reformi")
+ näyttö: Option[Näyttö] = None,
+ @KoodistoKoodiarvo("ammatillisentutkinnonosanosaalue")
+ tyyppi: Koodistokoodiviite = Koodistokoodiviite("ammatillisentutkinnonosanosaalue", "suorituksentyyppi"),
+ @OnlyWhen("../../../../tyyppi/koodiarvo","ammatillinentutkintoosittainen")
+ korotettu: Option[Koodistokoodiviite] = None
 ) extends Suoritus
   with Vahvistukseton
   with MahdollisestiSuorituskielellinen
@@ -1158,7 +1162,8 @@ case class YhteisenTutkinnonOsanOsaAlueenSuoritus(
   with YhteistenTutkinnonOsienOsaAlueidenTaiLukioOpintojenTaiMuidenOpintovalmiuksiaTukevienOpintojenOsasuoritus
   with TutkinnonOsaaPienemmistäKokonaisuuksistaKoostuvanSuorituksenOsasuoritus
   with MuuAmmatillinenOsasuoritus
-  with AmmatillisenTutkinnonOsanLisätiedollinen {
+  with AmmatillisenTutkinnonOsanLisätiedollinen
+  with Korotuksellinen {
   override def withLisätiedot(lisätiedot: Option[List[AmmatillisenTutkinnonOsanLisätieto]]): YhteisenTutkinnonOsanOsaAlueenSuoritus =
     shapeless.lens[YhteisenTutkinnonOsanOsaAlueenSuoritus].field[Option[List[AmmatillisenTutkinnonOsanLisätieto]]]("lisätiedot").set(this)(lisätiedot)
   override def osasuoritusLista: List[Suoritus] = List()
