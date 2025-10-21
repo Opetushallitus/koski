@@ -1315,8 +1315,12 @@ case class NäyttöAmmatillinenOsottainenUseastaTutkinnosta(
 case class Näyttö(
   @MultiLineString(5)
   kuvaus: Option[LocalizedString],
+  @Tooltip("Näytön suorituspaikka (suorituspaikan tyyppi ja nimi).")
   suorituspaikka: Option[NäytönSuorituspaikka],
+  @Description("Näyttötilaisuuden ajankohta")
   suoritusaika: Option[NäytönSuoritusaika],
+  @Description("Näytön arvioinnin lisätiedot")
+  @Tooltip("Näytön arviointitiedot (arvosana, arviointipäivä, arvioinnista päättäneet, arviointikeskusteluun osallistuneet)")
   @FlattenInUI
   arviointi: Option[NäytönArviointi],
   @Description("Onko näyttö suoritettu työssäoppimisen yhteydessä (true/false)")
@@ -1328,6 +1332,7 @@ case class Näyttö(
   @HiddenWhen("../../../suoritustapa/koodiarvo", "reformi")
   haluaaTodistuksen: Option[Boolean] = None
 ) extends NäyttöBase
+
 @Description("Ammatillisen näytön suorituspaikka")
 case class NäytönSuorituspaikka(
   @Description("Suorituspaikan tyyppi 1-numeroisella koodilla")
