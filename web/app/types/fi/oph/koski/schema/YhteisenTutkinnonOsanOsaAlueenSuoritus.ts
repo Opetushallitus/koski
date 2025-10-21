@@ -23,6 +23,7 @@ export type YhteisenTutkinnonOsanOsaAlueenSuoritus = {
   alkamispäivä?: string
   suorituskieli?: Koodistokoodiviite<'kieli', string>
   lisätiedot?: Array<AmmatillisenTutkinnonOsanLisätieto>
+  korotettu?: Koodistokoodiviite<'ammatillisensuorituksenkorotus', string>
   koulutusmoduuli: AmmatillisenTutkinnonOsanOsaAlue
   tunnustettu?: OsaamisenTunnustaminen
 }
@@ -38,6 +39,7 @@ export const YhteisenTutkinnonOsanOsaAlueenSuoritus = (o: {
   alkamispäivä?: string
   suorituskieli?: Koodistokoodiviite<'kieli', string>
   lisätiedot?: Array<AmmatillisenTutkinnonOsanLisätieto>
+  korotettu?: Koodistokoodiviite<'ammatillisensuorituksenkorotus', string>
   koulutusmoduuli: AmmatillisenTutkinnonOsanOsaAlue
   tunnustettu?: OsaamisenTunnustaminen
 }): YhteisenTutkinnonOsanOsaAlueenSuoritus => ({
