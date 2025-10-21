@@ -625,7 +625,7 @@ class OppijaValidationTutkintokoulutukseenValmentavaKoulutusSpec extends Tutkinn
 
       "Loma-tilan voi siirtää, vaikka se jatkuu viimeisen käyttöpäivän jälkeen, kun validaatio ei ole vielä voimassa" in {
         // Validaatio ei vielä voimassa:
-        val config = KoskiApplicationForTests.config.withValue("validaatiot.ammatillinenVosUudistuksenAikajaksojenViimeinenKäyttöpäivä", fromAnyRef(LocalDate.now.toString))
+        val config = KoskiApplicationForTests.config.withValue("validaatiot.ammatillinenVosUudistuksenAikajaksojenViimeinenKäyttöpäivä", fromAnyRef(LocalDate.now.plusDays(1).toString))
 
         val oo = defaultOpiskeluoikeus.copy(
           tila = TutkintokoulutukseenValmentavanOpiskeluoikeudenTila(List(
@@ -892,7 +892,7 @@ class OppijaValidationTutkintokoulutukseenValmentavaKoulutusSpec extends Tutkinn
         "Opiskeluoikeus joka alkaa viimeisenä käyttöpäivänä tai sitä ennen" - {
           "Jakso alkaa viimeisen käyttöpäivän jälkeen" in {
             // Validaatio ei vielä voimassa:
-            val config = KoskiApplicationForTests.config.withValue("validaatiot.ammatillinenVosUudistuksenAikajaksojenViimeinenKäyttöpäivä", fromAnyRef(LocalDate.now.toString))
+            val config = KoskiApplicationForTests.config.withValue("validaatiot.ammatillinenVosUudistuksenAikajaksojenViimeinenKäyttöpäivä", fromAnyRef(LocalDate.now.plusDays(1).toString))
 
             val oo = defaultOpiskeluoikeus.copy(
               lisätiedot = Some(TutkintokoulutukseenValmentavanOpiskeluoikeudenAmmatillisenLuvanLisätiedot(
@@ -909,7 +909,7 @@ class OppijaValidationTutkintokoulutukseenValmentavaKoulutusSpec extends Tutkinn
         "Opiskeluoikeus alkaa viimeisen käyttöpäivän jälkeen" - {
           "Jakso alkaa viimeisen käyttöpäivän jälkeen" in {
             // Validaatio ei vielä voimassa:
-            val config = KoskiApplicationForTests.config.withValue("validaatiot.ammatillinenVosUudistuksenAikajaksojenViimeinenKäyttöpäivä", fromAnyRef(LocalDate.now.toString))
+            val config = KoskiApplicationForTests.config.withValue("validaatiot.ammatillinenVosUudistuksenAikajaksojenViimeinenKäyttöpäivä", fromAnyRef(LocalDate.now.plusDays(1).toString))
 
             val oo = defaultOpiskeluoikeusAlkamispäivällä(date(2099, 1, 1)).copy(
               lisätiedot = Some(TutkintokoulutukseenValmentavanOpiskeluoikeudenAmmatillisenLuvanLisätiedot(
