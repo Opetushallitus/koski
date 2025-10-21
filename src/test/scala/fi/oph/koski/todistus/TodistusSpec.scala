@@ -3,7 +3,7 @@ package fi.oph.koski.todistus
 import fi.oph.koski.api.misc.PutOpiskeluoikeusTestMethods
 import fi.oph.koski.documentation.ExamplesKielitutkinto
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
-import fi.oph.koski.koskiuser.{MockUsers, UserWithPassword}
+import fi.oph.koski.koskiuser.MockUsers
 import fi.oph.koski.schema.{KielitutkinnonOpiskeluoikeus, Opiskeluoikeus, Suoritus, YleisenKielitutkinnonSuoritus}
 import fi.oph.koski.schema.KoskiSchema.strictDeserialization
 import fi.oph.koski.util.Wait
@@ -17,7 +17,6 @@ import org.scalatest.{BeforeAndAfterAll, BeforeAndAfterEach}
 
 import java.io.ByteArrayInputStream
 import java.net.URL
-import java.nio.file.{Files, Paths}
 import java.time.{Duration, LocalDate}
 
 class TodistusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers with BeforeAndAfterAll with BeforeAndAfterEach with PutOpiskeluoikeusTestMethods[KielitutkinnonOpiskeluoikeus] {
