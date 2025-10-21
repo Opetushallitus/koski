@@ -170,7 +170,7 @@ case class OpiskeluvalmiuksiaTukevienOpintojenJakso(
   @Description("Opiskeluvalmiuksia tukevien opintojen vapaamuotoinen kuvaus.")
   @Tooltip("Opiskeluvalmiuksia tukevien opintojen vapaamuotoinen kuvaus.")
   kuvaus: LocalizedString
-) extends DateContaining {
+) extends Alkupäivällinen with DateContaining {
   def contains(d: LocalDate): Boolean = !d.isBefore(alku) && !d.isAfter(loppu)
   def toFinnishDateFormat: String = FinnishDateFormat.format(Some(alku), Some(loppu))
 }
@@ -188,7 +188,7 @@ case class AmmatillinenOpiskeluoikeusjakso(
   tila: Koodistokoodiviite,
   @Description("Opintojen rahoitus")
   override val opintojenRahoitus: Option[Koodistokoodiviite] = None
-) extends KoskiLomanSallivaLaajaOpiskeluoikeusjakso
+) extends KoskiLomanSallivaOpiskeluoikeusjakso with KoskiLaajaOpiskeluoikeusjakso
 
 @Description("Suoritettavan näyttötutkintoon valmistavan koulutuksen tiedot")
 case class NäyttötutkintoonValmistavanKoulutuksenSuoritus(

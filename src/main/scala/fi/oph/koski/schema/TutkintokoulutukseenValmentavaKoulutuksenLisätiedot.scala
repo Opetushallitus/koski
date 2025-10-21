@@ -28,7 +28,7 @@ case class TutkintokoulutukseenValmentavanOpiskeluoikeudenAmmatillisenLuvanLisä
   @Tooltip("Vaativan erityisen tuen yhteydessä järjestettävä majoitus (aloitus- ja loppupäivä). Voi olla useita erillisiä jaksoja. Rahoituksen laskennassa käytettävä tieto.")
   @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))
   vaativanErityisenTuenYhteydessäJärjestettäväMajoitus: Option[List[Aikajakso]] = None,
-  @Description("Tieto siitä että oppija on erityisopetuksessa, aloituspäivä ja loppupäivä. Lista alku-loppu päivämääräpareja. Rahoituksen laskennassa käytettävä tieto.")
+  @Description("Tieto siitä että oppija on erityisopetuksessa, aloituspäivä ja loppupäivä. Lista alku-loppu päivämääräpareja. Rahoituksen laskennassa käytettävä tieto. Kenttä ei ole käytössä 1.1.2026 alkaen.")
   @Tooltip("Tieto siitä että oppija on erityisopetuksessa. Merkitään erityisopetuksen alku- ja loppupäivä. Voi olla useita erillisiä jaksoja. Rahoituksen laskennassa käytettävä tieto.")
   @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))
   erityinenTuki: Option[List[Aikajakso]] = None,
@@ -38,12 +38,12 @@ case class TutkintokoulutukseenValmentavanOpiskeluoikeudenAmmatillisenLuvanLisä
   vaativanErityisenTuenErityinenTehtävä: Option[List[Aikajakso]] = None,
   @Description("Rahoituksen laskennassa käytettävä tieto.")
   ulkomaanjaksot: Option[List[Ulkomaanjakso]] = None,
-  @Description("Osallistuuko oppija vaikeasti vammaisille järjestettyyn opetukseen. Lista alku-loppu päivämääräpareja. Rahoituksen laskennassa käytettävä tieto.")
+  @Description("Osallistuuko oppija vaikeasti vammaisille järjestettyyn opetukseen. Lista alku-loppu päivämääräpareja. Rahoituksen laskennassa käytettävä tieto. Kenttä ei ole käytössä 1.1.2026 alkaen.")
   @Tooltip("Tieto siitä, osallistuuko oppija vaikeasti vammaisille järjestettyyn opetukseen (alku- ja loppupäivä). Voi olla useita erillisiä jaksoja. Rahoituksen laskennassa käytettävä tieto.")
   @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))
   @Title("Vaikeasti vammaisille järjestetty opetus")
   vaikeastiVammainen: Option[List[Aikajakso]] = None,
-  @Description("Onko oppija vammainen ja hänellä on avustaja. Lista alku-loppu päivämääräpareja. Rahoituksen laskennassa käytettävä tieto")
+  @Description("Onko oppija vammainen ja hänellä on avustaja. Lista alku-loppu päivämääräpareja. Rahoituksen laskennassa käytettävä tieto. Kenttä ei ole käytössä 1.1.2026 alkaen.")
   @Tooltip("Onko oppija vammainen ja hänellä on avustaja (alku- ja loppupäivä). Voit olla useita erillisiä jaksoja. Rahoituksen laskennassa käytettävä tieto")
   @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))
   vammainenJaAvustaja: Option[List[Aikajakso]] = None,

@@ -73,6 +73,7 @@ case class TutkintokoulutukseenValmentavanOpiskeluoikeudenTila(
 
 case class TutkintokoulutukseenValmentavanOpiskeluoikeusjakso(
   alku: LocalDate,
+  @Description("Loma-tila ei ole käytössä 1.1.2026 alkaen.")
   // Eronnut-tila on sallittu siksi, että tuotantoon ehti livahtaa väärää dataa. Tilan jatkokäyttö on
   // estetty validaatiolla.
   @KoodistoKoodiarvo("eronnut")
@@ -88,7 +89,7 @@ case class TutkintokoulutukseenValmentavanOpiskeluoikeusjakso(
   @KoodistoKoodiarvo("6")
   @KoodistoKoodiarvo("10")
   override val opintojenRahoitus: Option[Koodistokoodiviite] = None
-) extends KoskiOpiskeluoikeusjakso
+) extends KoskiLomanSallivaOpiskeluoikeusjakso
 
 trait TutkintokoulutukseenValmentavanKoulutuksenPäätasonSuoritus
   extends KoskeenTallennettavaPäätasonSuoritus

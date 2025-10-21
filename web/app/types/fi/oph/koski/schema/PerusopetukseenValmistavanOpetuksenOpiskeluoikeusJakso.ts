@@ -11,7 +11,6 @@ export type PerusopetukseenValmistavanOpetuksenOpiskeluoikeusJakso = {
   alku: string
   tila: Koodistokoodiviite<
     'koskiopiskeluoikeudentila',
-    | 'loma'
     | 'eronnut'
     | 'peruutettu'
     | 'katsotaaneronneeksi'
@@ -19,6 +18,7 @@ export type PerusopetukseenValmistavanOpetuksenOpiskeluoikeusJakso = {
     | 'mitatoity'
     | 'valiaikaisestikeskeytynyt'
     | 'valmistunut'
+    | 'loma'
   >
 }
 
@@ -26,7 +26,6 @@ export const PerusopetukseenValmistavanOpetuksenOpiskeluoikeusJakso = (o: {
   alku: string
   tila: Koodistokoodiviite<
     'koskiopiskeluoikeudentila',
-    | 'loma'
     | 'eronnut'
     | 'peruutettu'
     | 'katsotaaneronneeksi'
@@ -34,6 +33,7 @@ export const PerusopetukseenValmistavanOpetuksenOpiskeluoikeusJakso = (o: {
     | 'mitatoity'
     | 'valiaikaisestikeskeytynyt'
     | 'valmistunut'
+    | 'loma'
   >
 }): PerusopetukseenValmistavanOpetuksenOpiskeluoikeusJakso => ({
   $class:

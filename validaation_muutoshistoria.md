@@ -1,4 +1,31 @@
 # Koskeen tallennettavien tietojen validaatiosäännöt
+
+## 20.10.2025
+
+Ammatillisen koulutuksen opiskeluoikeuden validaatiot
+
+- Päivitetty seuraavien ammatillisen koulutuksen opiskeluoikeuksien lisätietojen validaatiota:
+  - Opiskeluvalmiuksia tukevat opinnot
+  - Erityinen tuki
+  - Vaikeasti vammainen
+  - Vammainen ja avustaja
+- Rajapäivän 31.12.2025 jälkeen alkavat lisätietojen aikajaksot on estetty.
+  - 31.12.2025 tai sitä ennen alkavien jaksojen on sallittu jatkua rajapäivän jälkeen.
+- Opiskeluoikeuksille, jotka alkavat 31.12.2025 jälkeen, on estetty kyseisten lisätietojen siirtäminen kokonaan.
+
+Tutkintokoulutukseen valmistavan koulutuksen opiskeluoikeuden validaatiot
+
+- Ammatillisen koulutuksen järjestämisluvalla oleville TUVA-opiskeluoikeuksille on kytketty päälle ammatillisen koulutuksen VOS-uudistukseen liittyvät validaatiot.
+    - Validaatiot astuvat voimaan 1.1.2026.
+    - Validaatiot koskevat opiskeluoikeuden loma-tilaa sekä seuraavia lisätietoja:
+        - Erityinen tuki
+        - Vaikeasti vammainen
+        - Vammainen ja avustaja
+- Loma-tila ei voi olla voimassa rajapäivän 31.12.2025 jälkeen.
+- Rajapäivän 31.12.2025 jälkeen alkavat yllä mainittujen lisätietojen aikajaksot on estetty.
+    - 31.12.2025 tai sitä ennen alkavien jaksojen on sallittu jatkua rajapäivän jälkeen.
+- TUVA-opiskeluoikeuksille, jotka alkavat 31.12.2025 jälkeen, on estetty kyseisten lisätietojen siirtäminen kokonaan.
+
 ## 20.10.2025
 
 - Ammatillisiin opiskeluoikeuksiin, jotka alkavat 31.12.2025 jälkeen, ei voi merkitä lisätietoa henkilöstökoulutus.

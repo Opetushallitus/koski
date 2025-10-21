@@ -35,6 +35,17 @@
               "koodiarvo" : "1",
               "koodistoUri" : "opintojenrahoitus"
             }
+          },
+          {
+            "alku": "2025-10-20",
+            "tila": {
+              "koodiarvo": "lasna",
+              "koodistoUri": "koskiopiskeluoikeudentila"
+            },
+            "opintojenRahoitus" : {
+              "koodiarvo" : "1",
+              "koodistoUri" : "opintojenrahoitus"
+            }
           }
         ]
       },

@@ -12,7 +12,6 @@ export type AmmatillinenOpiskeluoikeusjakso = {
   alku: string
   tila: Koodistokoodiviite<
     'koskiopiskeluoikeudentila',
-    | 'loma'
     | 'eronnut'
     | 'peruutettu'
     | 'katsotaaneronneeksi'
@@ -20,6 +19,7 @@ export type AmmatillinenOpiskeluoikeusjakso = {
     | 'mitatoity'
     | 'valiaikaisestikeskeytynyt'
     | 'valmistunut'
+    | 'loma'
   >
   opintojenRahoitus?: Koodistokoodiviite<'opintojenrahoitus', string>
 }
@@ -28,7 +28,6 @@ export const AmmatillinenOpiskeluoikeusjakso = (o: {
   alku: string
   tila: Koodistokoodiviite<
     'koskiopiskeluoikeudentila',
-    | 'loma'
     | 'eronnut'
     | 'peruutettu'
     | 'katsotaaneronneeksi'
@@ -36,6 +35,7 @@ export const AmmatillinenOpiskeluoikeusjakso = (o: {
     | 'mitatoity'
     | 'valiaikaisestikeskeytynyt'
     | 'valmistunut'
+    | 'loma'
   >
   opintojenRahoitus?: Koodistokoodiviite<'opintojenrahoitus', string>
 }): AmmatillinenOpiskeluoikeusjakso => ({

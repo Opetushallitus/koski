@@ -769,7 +769,8 @@ object ValpasOpiskeluoikeusExampleData {
     arvioituPäättymispäivä = Some(date(2023, 5, 31)),
     tila = AmmatillinenOpiskeluoikeudenTila(List(
       AmmatillinenOpiskeluoikeusjakso(date(2021, 8, 1), opiskeluoikeusLäsnä, Some(ExampleData.valtionosuusRahoitteinen)),
-      AmmatillinenOpiskeluoikeusjakso(date(2021, 8, 2), opiskeluoikeusLoma, Some(ExampleData.valtionosuusRahoitteinen))
+      AmmatillinenOpiskeluoikeusjakso(date(2021, 8, 2), opiskeluoikeusLoma, Some(ExampleData.valtionosuusRahoitteinen)),
+      AmmatillinenOpiskeluoikeusjakso(date(2025, 10, 20), opiskeluoikeusLäsnä, Some(ExampleData.valtionosuusRahoitteinen))
     )),
     lisätiedot = Some(AmmatillisenOpiskeluoikeudenLisätiedot(
       hojks = None,
