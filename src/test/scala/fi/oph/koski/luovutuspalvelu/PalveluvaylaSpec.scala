@@ -33,8 +33,43 @@ class PalveluvaylaSpec extends AnyFreeSpec with KoskiHttpSpec with Opiskeluoikeu
       }
     }
 
+    "Vaatii Suomi:fi X-Road clientin (Luovutuspalvelu V2)" in {
+      postSuomiFiRekisteritiedotWithInvalidXRoadClient(KoskiSpecificMockOppijat.ylioppilas.hetu.get) {
+        verifySOAPError("forbidden.kiellettyKäyttöoikeus", "Ei sallittu näillä käyttöoikeuksilla")
+      }
+    }
+
     "palauttaa oppilaan tiedot hetun perusteella - vain osa opiskeluoikeuden kentistä mukana" in {
       postSuomiFiRekisteritiedot(MockUsers.suomiFiKäyttäjä, KoskiSpecificMockOppijat.ylioppilas.hetu.get) {
+        verifyResponseStatusOk()
+        AuditLogTester.verifyLastAuditLogMessage(Map("operation" -> "KANSALAINEN_SUOMIFI_KATSOMINEN"))
+        val oppilaitokset = (soapResponse() \ "Body" \ "suomiFiRekisteritiedotResponse" \ "oppilaitokset").head
+        oppilaitokset shouldEqual Utility.trim(
+          <oppilaitokset>
+            <oppilaitos>
+              <nimi>
+                <fi>Helsingin medialukio</fi>
+                <sv>Helsingin medialukio</sv>
+                <en>Helsingin medialukio</en>
+              </nimi>
+              <opiskeluoikeudet>
+                <opiskeluoikeus>
+                  <nimi>
+                    <fi>Ylioppilastutkinto</fi>
+                    <sv>Studentexamen</sv>
+                    <en>Matriculation Examination</en>
+                  </nimi>
+                </opiskeluoikeus>
+              </opiskeluoikeudet>
+            </oppilaitos>
+          </oppilaitokset>
+        )
+      }
+    }
+
+    "Toimii myös Luovutuspalvelu V2:lla" in {
+      // TODO muuta kaikki testit käyttämään Luovutuspalvelu V2:sta kun basicAuth poistuu käytöstä
+      postSuomiFiRekisteritiedot(MockUsers.suomiFiKäyttäjä, KoskiSpecificMockOppijat.ylioppilas.hetu.get, useLuovutuspalveluV2 = true) {
         verifyResponseStatusOk()
         AuditLogTester.verifyLastAuditLogMessage(Map("operation" -> "KANSALAINEN_SUOMIFI_KATSOMINEN"))
         val oppilaitokset = (soapResponse() \ "Body" \ "suomiFiRekisteritiedotResponse" \ "oppilaitokset").head
@@ -163,8 +198,19 @@ class PalveluvaylaSpec extends AnyFreeSpec with KoskiHttpSpec with Opiskeluoikeu
     soapResponse() \ "Body" \ "suomiFiRekisteritiedotResponse"
   }
 
-  private def postSuomiFiRekisteritiedot[A](user: MockUser, hetu: String)(fn: => A): A = {
-    post("api/palveluvayla/suomi-fi-rekisteritiedot", body = soapRequest(hetu), headers = authHeaders(user) ++ Map(("Content-type" -> "text/xml")))(fn)
+  private def mockSecurityServerHeader = Map(
+    "x-amzn-mtls-clientcert-subject" -> "CN=liityntapalvelin",
+    "X-Forwarded-For" -> "0.0.0.0"
+  )
+
+  private def postSuomiFiRekisteritiedot[A](user: MockUser, hetu: String, useLuovutuspalveluV2: Boolean = false)(fn: => A): A = {
+    post("api/palveluvayla/suomi-fi-rekisteritiedot", body = soapRequest(hetu),
+      headers = (if (useLuovutuspalveluV2) mockSecurityServerHeader else authHeaders(user)) ++ Map(("Content-type" -> "text/xml")))(fn)
+  }
+
+  private def postSuomiFiRekisteritiedotWithInvalidXRoadClient[A](hetu: String)(fn: => A): A = {
+    post("api/palveluvayla/suomi-fi-rekisteritiedot", body = soapRequestWithHSLClient(hetu),
+      headers = mockSecurityServerHeader ++ Map("Content-type" -> "text/xml"))(fn)
   }
 
   private def verifySOAPError(faultstring: String, message: String): Unit = {
@@ -181,13 +227,41 @@ class PalveluvaylaSpec extends AnyFreeSpec with KoskiHttpSpec with Opiskeluoikeu
     <SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xrd="http://x-road.eu/xsd/xroad.xsd" xmlns:id="http://x-road.eu/xsd/identifiers">
       <SOAP-ENV:Header>
         <xrd:client id:objectType="SUBSYSTEM">
-          <id:xRoadInstance>FI</id:xRoadInstance>
+          <id:xRoadInstance>FI-TEST</id:xRoadInstance>
           <id:memberClass>GOV</id:memberClass>
           <id:memberCode>0245437-2</id:memberCode>
           <id:subsystemCode>ServiceViewClient</id:subsystemCode>
         </xrd:client>
         <xrd:service id:objectType="SERVICE">
-          <id:xRoadInstance>FI</id:xRoadInstance>
+          <id:xRoadInstance>FI-TEST</id:xRoadInstance>
+          <id:memberClass>GOV</id:memberClass>
+          <id:memberCode>000000-1</id:memberCode>
+          <id:subsystemCode>TestSystem</id:subsystemCode>
+          <id:serviceCode>testService</id:serviceCode>
+        </xrd:service>
+        <xrd:protocolVersion>4.0</xrd:protocolVersion>
+        <xrd:id></xrd:id>
+        <xrd:userId></xrd:userId>
+      </SOAP-ENV:Header>
+      <SOAP-ENV:Body>
+        <ns1:suomiFiRekisteritiedot xmlns:ns1="http://docs.koski-xroad.fi/producer">
+          <ns1:hetu>{hetu}</ns1:hetu>
+        </ns1:suomiFiRekisteritiedot>
+      </SOAP-ENV:Body>
+    </SOAP-ENV:Envelope>.toString()
+
+  private def soapRequestWithHSLClient(hetu: String) =
+    <SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xrd="http://x-road.eu/xsd/xroad.xsd" xmlns:id="http://x-road.eu/xsd/identifiers">
+      <SOAP-ENV:Header>
+        <xro:client id:objectType="SUBSYSTEM">
+          <id:xRoadInstance>FI-TEST</id:xRoadInstance>
+          <id:memberClass>GOV</id:memberClass>
+          <id:memberCode>000000-1</id:memberCode>
+          <id:subsystemCode>TestSystem</id:subsystemCode>
+          <id:subsystemCode>testService</id:subsystemCode>
+        </xro:client>
+        <xrd:service id:objectType="SERVICE">
+          <id:xRoadInstance>FI-TEST</id:xRoadInstance>
           <id:memberClass>GOV</id:memberClass>
           <id:memberCode>000000-1</id:memberCode>
           <id:subsystemCode>TestSystem</id:subsystemCode>
