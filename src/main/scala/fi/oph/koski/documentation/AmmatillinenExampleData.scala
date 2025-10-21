@@ -814,16 +814,9 @@ object AmmatillinenExampleData {
 
   def ammatillisenTutkinnonOsittainenUseastaTutkinnostaSuoritus = AmmatillisenTutkinnonOsittainenUseastaTutkinnostaSuoritus(
     koulutusmoduuli = AmmatillinenOsiaUseastaTutkinnosta(Koodistokoodiviite("ammatillinentutkintoosittainenuseastatutkinnosta", "suorituksentyyppi")),
-    tutkintonimike = Some(List(
-      Koodistokoodiviite("10066", Some("Automekaanikko"), "tutkintonimikkeet", None)
-    )),
-    osaamisala = Some(List(
-      Osaamisalajakso(Koodistokoodiviite("1008", Some("Ajoneuvotekniikan osaamisala"), "osaamisala", None))
-    )),
     suoritustapa = suoritustapaReformi,
     järjestämismuodot = Some(List(Järjestämismuotojakso(date(2022, 9, 1), None, järjestämismuotoOppilaitos))),
     suorituskieli = suomenKieli,
-    keskiarvo = None,
     vahvistus = vahvistus(date(2024, 5, 31), stadinAmmattiopisto, Some(helsinki)),
     alkamispäivä = None,
     toimipiste = stadinToimipiste,

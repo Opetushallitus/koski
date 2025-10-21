@@ -92,7 +92,6 @@ case class SupaOsittaisenYhteisenTutkinnonOsanOsaAlueenSuoritus(
   tyyppi: Koodistokoodiviite,
   koulutusmoduuli: AmmatillisenTutkinnonOsanOsaAlue,
   arviointi: Option[List[AmmatillinenArviointi]],
-  korotettu: Option[Koodistokoodiviite]
 ) extends SupaOsittaisenJatkovalmiudetOsasuoritus
 
 @Title("Muiden opintovalmiuksia tukevien opintojen suoritus")
@@ -141,7 +140,6 @@ object SupaOsittaisenYhteisenTutkinnonOsanOsaAlueenSuoritus {
       tyyppi = s.tyyppi,
       koulutusmoduuli = s.koulutusmoduuli,
       arviointi = s.arviointi,
-      korotettu = s.korotettu
     )
 }
 
