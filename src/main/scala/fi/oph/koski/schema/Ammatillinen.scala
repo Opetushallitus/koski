@@ -678,7 +678,7 @@ case class YhteisenOsittaisenAmmatillisenTutkinnonTutkinnonosanUseastaTutkinnost
   tunnustettu: Option[OsaamisenTunnustaminen] = None,
   override val lisätiedot: Option[List[AmmatillisenTutkinnonOsanLisätieto]] = None,
   suorituskieli: Option[Koodistokoodiviite] = None,
-  näyttö: Option[Näyttö] = None,
+  näyttö: Option[NäyttöAmmatillinenOsottainenUseastaTutkinnosta] = None,
   @Title("Osa-alueet")
   override val osasuoritukset: Option[List[YhteisenTutkinnonOsanOsaAlueenSuoritus]] = None,
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("ammatillisentutkinnonosa", koodistoUri = "suorituksentyyppi"),
@@ -1296,7 +1296,7 @@ sealed trait NäyttöBase {
 }
 
 @Description("Tutkinnon tai koulutuksen osan suoritukseen kuuluvan ammattiosaamisen näytön tiedot.")
-case class Näyttö(
+case class NäyttöAmmatillinenOsottainenUseastaTutkinnosta(
   @Description("Vapaamuotoinen kuvaus suoritetusta näytöstä")
   @Tooltip("Vapaamuotoinen kuvaus suoritetusta näytöstä")
   @MultiLineString(5)
@@ -1312,7 +1312,7 @@ case class Näyttö(
 ) extends NäyttöBase
 
 @Description("Näyttö, jossa mukana työssäoppimisen tieto ja todistus-halukkuus.")
-case class NäyttöLaajennettu(
+case class Näyttö(
   @MultiLineString(5)
   kuvaus: Option[LocalizedString],
   suorituspaikka: Option[NäytönSuorituspaikka],
