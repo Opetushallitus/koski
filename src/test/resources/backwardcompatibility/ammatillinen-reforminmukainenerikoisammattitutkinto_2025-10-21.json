@@ -313,7 +313,8 @@
               "koodistoUri" : "ammatillisennaytonarviointikeskusteluunosallistuneet"
             } ],
             "hyväksytty" : true
-          }
+          },
+          "työssäoppimisenYhteydessä" : false
         },
         "tyyppi" : {
           "koodiarvo" : "ammatillisentutkinnonosa",

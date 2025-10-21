@@ -205,7 +205,8 @@
               "suoritusaika" : {
                 "alku" : "2002-04-20",
                 "loppu" : "2002-04-20"
-              }
+              },
+              "työssäoppimisenYhteydessä" : false
             },
             "tyyppi" : {
               "koodiarvo" : "ammatillisentutkinnonosa",

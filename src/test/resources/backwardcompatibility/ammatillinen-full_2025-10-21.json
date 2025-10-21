@@ -352,7 +352,8 @@
               "koodistoUri" : "ammatillisennaytonarviointikeskusteluunosallistuneet"
             } ],
             "hyväksytty" : true
-          }
+          },
+          "työssäoppimisenYhteydessä" : false
         },
         "tyyppi" : {
           "koodiarvo" : "ammatillisentutkinnonosa",
@@ -449,7 +450,8 @@
           "suoritusaika" : {
             "alku" : "2013-05-20",
             "loppu" : "2013-05-20"
-          }
+          },
+          "työssäoppimisenYhteydessä" : false
         },
         "tyyppi" : {
           "koodiarvo" : "ammatillisentutkinnonosa",
@@ -544,7 +546,8 @@
           "suoritusaika" : {
             "alku" : "2013-04-01",
             "loppu" : "2013-04-01"
-          }
+          },
+          "työssäoppimisenYhteydessä" : false
         },
         "tyyppi" : {
           "koodiarvo" : "ammatillisentutkinnonosa",
@@ -639,7 +642,8 @@
           "suoritusaika" : {
             "alku" : "2014-10-20",
             "loppu" : "2014-10-20"
-          }
+          },
+          "työssäoppimisenYhteydessä" : false
         },
         "tyyppi" : {
           "koodiarvo" : "ammatillisentutkinnonosa",
@@ -754,7 +758,8 @@
           "suoritusaika" : {
             "alku" : "2015-04-01",
             "loppu" : "2015-04-01"
-          }
+          },
+          "työssäoppimisenYhteydessä" : false
         },
         "tyyppi" : {
           "koodiarvo" : "ammatillisentutkinnonosa",

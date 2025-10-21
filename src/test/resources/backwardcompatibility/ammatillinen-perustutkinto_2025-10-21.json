@@ -475,7 +475,8 @@
               "koodistoUri" : "ammatillisennaytonarviointikeskusteluunosallistuneet"
             } ],
             "hyväksytty" : true
-          }
+          },
+          "työssäoppimisenYhteydessä" : false
         },
         "tyyppi" : {
           "koodiarvo" : "ammatillisentutkinnonosa",
@@ -845,7 +846,8 @@
               "koodistoUri" : "ammatillisennaytonarviointikeskusteluunosallistuneet"
             } ],
             "hyväksytty" : true
-          }
+          },
+          "työssäoppimisenYhteydessä" : false
         },
         "tyyppi" : {
           "koodiarvo" : "ammatillisentutkinnonosa",
@@ -1061,7 +1063,8 @@
               "koodistoUri" : "ammatillisennaytonarviointikeskusteluunosallistuneet"
             } ],
             "hyväksytty" : true
-          }
+          },
+          "työssäoppimisenYhteydessä" : false
         },
         "osasuoritukset" : [ {
           "koulutusmoduuli" : {

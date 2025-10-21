@@ -283,7 +283,8 @@
               "koodistoUri" : "ammatillisennaytonarviointikeskusteluunosallistuneet"
             } ],
             "hyväksytty" : true
-          }
+          },
+          "työssäoppimisenYhteydessä" : false
         },
         "tyyppi" : {
           "koodiarvo" : "ammatillisentutkinnonosa",
@@ -478,7 +479,8 @@
               "koodistoUri" : "ammatillisennaytonarviointikeskusteluunosallistuneet"
             } ],
             "hyväksytty" : true
-          }
+          },
+          "työssäoppimisenYhteydessä" : false
         },
         "tyyppi" : {
           "koodiarvo" : "ammatillisentutkinnonosa",
@@ -583,7 +585,8 @@
             "suoritusaika" : {
               "alku" : "2023-05-18",
               "loppu" : "2023-05-18"
-            }
+            },
+            "työssäoppimisenYhteydessä" : false
           },
           "tyyppi" : {
             "koodiarvo" : "ammatillisentutkinnonosanosaalue",

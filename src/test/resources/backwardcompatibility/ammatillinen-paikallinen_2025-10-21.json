@@ -150,7 +150,8 @@
           "suoritusaika" : {
             "alku" : "2013-05-20",
             "loppu" : "2013-05-20"
-          }
+          },
+          "työssäoppimisenYhteydessä" : false
         },
         "tyyppi" : {
           "koodiarvo" : "ammatillisentutkinnonosa",

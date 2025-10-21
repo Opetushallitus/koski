@@ -1,7 +1,7 @@
-import { NäytönArviointi } from './NaytonArviointi'
-import { NäytönSuorituspaikka } from './NaytonSuorituspaikka'
 import { LocalizedString } from './LocalizedString'
+import { NäytönSuorituspaikka } from './NaytonSuorituspaikka'
 import { NäytönSuoritusaika } from './NaytonSuoritusaika'
+import { NäytönArviointi } from './NaytonArviointi'
 
 /**
  * Tutkinnon tai koulutuksen osan suoritukseen kuuluvan ammattiosaamisen näytön tiedot.
@@ -10,28 +10,20 @@ import { NäytönSuoritusaika } from './NaytonSuoritusaika'
  */
 export type Näyttö = {
   $class: 'fi.oph.koski.schema.Näyttö'
-  arviointi?: NäytönArviointi
-  suorituspaikka?: NäytönSuorituspaikka
-  haluaaTodistuksen?: boolean
-  työssäoppimisenYhteydessä: boolean
   kuvaus?: LocalizedString
+  suorituspaikka?: NäytönSuorituspaikka
   suoritusaika?: NäytönSuoritusaika
+  arviointi?: NäytönArviointi
 }
 
 export const Näyttö = (
   o: {
-    arviointi?: NäytönArviointi
-    suorituspaikka?: NäytönSuorituspaikka
-    haluaaTodistuksen?: boolean
-    työssäoppimisenYhteydessä?: boolean
     kuvaus?: LocalizedString
+    suorituspaikka?: NäytönSuorituspaikka
     suoritusaika?: NäytönSuoritusaika
+    arviointi?: NäytönArviointi
   } = {}
-): Näyttö => ({
-  työssäoppimisenYhteydessä: false,
-  $class: 'fi.oph.koski.schema.Näyttö',
-  ...o
-})
+): Näyttö => ({ $class: 'fi.oph.koski.schema.Näyttö', ...o })
 
 Näyttö.className = 'fi.oph.koski.schema.Näyttö' as const
 
