@@ -18,10 +18,7 @@ import { HenkilövahvistusValinnaisellaPaikkakunnalla } from './Henkilovahvistus
 export type AmmatillisenTutkinnonOsittainenUseastaTutkinnostaSuoritus = {
   $class: 'fi.oph.koski.schema.AmmatillisenTutkinnonOsittainenUseastaTutkinnostaSuoritus'
   järjestämismuodot?: Array<Järjestämismuotojakso>
-  tyyppi: Koodistokoodiviite<
-    'suorituksentyyppi',
-    'ammatillinentutkintoosittainen'
-  >
+  tyyppi: Koodistokoodiviite<'suorituksentyyppi', string>
   tila?: Koodistokoodiviite<'suorituksentila', string>
   alkamispäivä?: string
   suorituskieli: Koodistokoodiviite<'kieli', string>
@@ -42,10 +39,7 @@ export type AmmatillisenTutkinnonOsittainenUseastaTutkinnostaSuoritus = {
 
 export const AmmatillisenTutkinnonOsittainenUseastaTutkinnostaSuoritus = (o: {
   järjestämismuodot?: Array<Järjestämismuotojakso>
-  tyyppi?: Koodistokoodiviite<
-    'suorituksentyyppi',
-    'ammatillinentutkintoosittainen'
-  >
+  tyyppi: Koodistokoodiviite<'suorituksentyyppi', string>
   tila?: Koodistokoodiviite<'suorituksentila', string>
   alkamispäivä?: string
   suorituskieli: Koodistokoodiviite<'kieli', string>
@@ -63,10 +57,6 @@ export const AmmatillisenTutkinnonOsittainenUseastaTutkinnostaSuoritus = (o: {
   osaamisenHankkimistavat?: Array<OsaamisenHankkimistapajakso>
   vahvistus?: HenkilövahvistusValinnaisellaPaikkakunnalla
 }): AmmatillisenTutkinnonOsittainenUseastaTutkinnostaSuoritus => ({
-  tyyppi: Koodistokoodiviite({
-    koodiarvo: 'ammatillinentutkintoosittainen',
-    koodistoUri: 'suorituksentyyppi'
-  }),
   suoritustapa: Koodistokoodiviite({
     koodiarvo: 'reformi',
     koodistoUri: 'ammatillisentutkinnonsuoritustapa'

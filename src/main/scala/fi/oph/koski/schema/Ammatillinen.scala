@@ -324,7 +324,7 @@ case class AmmatillisenTutkinnonOsittainenUseastaTutkinnostaSuoritus(
   todistuksellaNäkyvätLisätiedot: Option[LocalizedString] = None,
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("ammatillinentutkintoosittainen", "suorituksentyyppi"),
   ryhmä: Option[String] = None,
-) extends AmmatillisenTutkinnonOsaTaiOsiaKeskiarvollinen {
+) extends AmmatillisenTutkinnonOsittainenSuoritusErilliselläOpiskeluoikeudella {
   override def osasuoritusLista: List[OsittaisenAmmatillisenTutkinnonOsanUseastaTutkinnostaSuoritus] = osasuoritukset.getOrElse(List.empty)
 }
 
@@ -374,7 +374,7 @@ case class AmmatillisenTutkinnonOsittainenSuoritus(
   korotettuKeskiarvoSisältääMukautettujaArvosanoja: Option[Boolean] = None
 ) extends AmmatillisenTutkinnonOsaTaiOsia with AmmatillisenTutkinnonOsittainenTaiKokoTutkintoKolutuksenSuoritus with AmmatillisentutkinnonOsaTaiOsiaErilliselläOpiskeluoikeudella
 
-trait AmmatillisentutkinnonOsaTaiOsiaErilliselläOpiskeluoikeudella extends AmmatillinenTutkinnonOsiaUseammastaTutkinnosta {
+trait AmmatillisentutkinnonOsaTaiOsiaErilliselläOpiskeluoikeudella extends AmmatillisenTutkinnonOsittainenTaiKokoSuoritus {
   def tutkintonimike: Option[List[Koodistokoodiviite]]
   @Tooltip("Suoritettava osaamisala. Voi olla useampia eri jaksoissa.")
   @Description("Onko kyse uuden tutkintonimikkeen suorituksesta liittyen aiemmin suoritettuun tutkintoon.")
@@ -402,7 +402,7 @@ trait AmmatillisentutkinnonOsaTaiOsiaErilliselläOpiskeluoikeudella extends Amma
   def keskiarvoSisältääMukautettujaArvosanoja: Option[Boolean]
 }
 
-trait AmmatillisenTutkinnonOsaTaiOsia extends AmmatillisenTutkinnonOsittainenTaiKokoSuoritus {
+trait AmmatillisenTutkinnonOsaTaiOsia extends AmmatillisenTutkinnonOsittainenSuoritusErilliselläOpiskeluoikeudella {
   def suoritustapa: Koodistokoodiviite
   @Tooltip("Tutkintonimike/-nimikkeet, joiden suorittamiseen tutkinnon osat voivat johtaa.")
   def vahvistus: Option[HenkilövahvistusValinnaisellaPaikkakunnalla]
@@ -468,23 +468,6 @@ trait AmmatillisenTutkinnonOsittainenTaiKokoSuoritus extends AmmatillinenPääta
   def suoritustapa: Koodistokoodiviite
 }
 trait AmmatillisenTutkinnonOsittainenSuoritusErilliselläOpiskeluoikeudella extends AmmatillinenPäätasonSuoritus
-  with Toimipisteellinen
-  with Arvioinniton
-  with Ryhmällinen
-  with Tutkintonimikkeellinen
-  with Osaamisalallinen
-  with OppivelvollisuudenSuorittamiseenKelpaava
-  with Järjestämismuodollinen
-  with OsaamisenHankkimistavallinen
-{
-  @Description("Tutkinnon suoritustapa (näyttö / ops / reformi). Ammatillisen perustutkinnon voi suorittaa joko opetussuunnitelmaperusteisesti tai näyttönä. Ammatillisen reformin (531/2017) mukaiset suoritukset välitetään suoritustavalla reformi. ")
-  @OksaUri("tmpOKSAID141", "ammatillisen koulutuksen järjestämistapa")
-  @KoodistoUri("ammatillisentutkinnonsuoritustapa")
-  @ReadOnly("Suoritustapaa ei tyypillisesti vaihdeta suorituksen luonnin jälkeen")
-  def suoritustapa: Koodistokoodiviite
-}
-
-trait AmmatillinenTutkinnonOsiaUseammastaTutkinnosta extends AmmatillisenTutkinnonOsittainenTaiKokoSuoritus
   with Toimipisteellinen
   with Arvioinniton
   with Ryhmällinen
