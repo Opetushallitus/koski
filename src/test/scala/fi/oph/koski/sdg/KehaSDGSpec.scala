@@ -38,7 +38,7 @@ class KehaSDGSpec
     "Ammatillinen tulee läpi osasuorituksineen" in {
       postHetu(KoskiSpecificMockOppijat.ammattilainen.hetu.get) {
         verifyResponseStatusOk()
-        val response = JsonSerializer.parse[SdgOppija](body)
+        val response = JsonSerializer.parse[Oppija](body)
 
         response.henkilö.hetu should equal(KoskiSpecificMockOppijat.ammattilainen.hetu)
         response.opiskeluoikeudet.map(_.tyyppi.koodiarvo) should equal(List("ammatillinenkoulutus"))
@@ -50,7 +50,7 @@ class KehaSDGSpec
     "Ammatillisen osa/osia tulee läpi" in {
       postHetu(KoskiSpecificMockOppijat.osittainenammattitutkinto.hetu.get) {
         verifyResponseStatusOk()
-        val response = JsonSerializer.parse[SdgOppija](body)
+        val response = JsonSerializer.parse[Oppija](body)
 
         response.henkilö.hetu should equal(KoskiSpecificMockOppijat.osittainenammattitutkinto.hetu)
         response.opiskeluoikeudet.map(_.tyyppi.koodiarvo) should equal(List("ammatillinenkoulutus"))
@@ -61,7 +61,7 @@ class KehaSDGSpec
     "Ammatillisen osia useasta tutkinnosta tulee läpi" in {
       postHetu(KoskiSpecificMockOppijat.osittainenAmmattitutkintoUseastaTutkinnostaValmis.hetu.get) {
         verifyResponseStatusOk()
-        val response = JsonSerializer.parse[SdgOppija](body)
+        val response = JsonSerializer.parse[Oppija](body)
 
         response.henkilö.hetu should equal(KoskiSpecificMockOppijat.osittainenAmmattitutkintoUseastaTutkinnostaValmis.hetu)
         response.opiskeluoikeudet.map(_.tyyppi.koodiarvo) should equal(List("ammatillinenkoulutus"))
@@ -72,7 +72,7 @@ class KehaSDGSpec
     "Korkeakoulu tulee läpi" in {
       postHetu(KoskiSpecificMockOppijat.dippainssi.hetu.get) {
         verifyResponseStatusOk()
-        val response = JsonSerializer.parse[SdgOppija](body)
+        val response = JsonSerializer.parse[Oppija](body)
 
         response.henkilö.hetu should equal(KoskiSpecificMockOppijat.dippainssi.hetu)
         response.opiskeluoikeudet.map(_.tyyppi.koodiarvo) should equal(List("korkeakoulutus"))
@@ -82,7 +82,7 @@ class KehaSDGSpec
     "EB tulee läpi" in {
       postHetu(KoskiSpecificMockOppijat.europeanSchoolOfHelsinki.hetu.get) {
         verifyResponseStatusOk()
-        val response = JsonSerializer.parse[SdgOppija](body)
+        val response = JsonSerializer.parse[Oppija](body)
 
         response.henkilö.hetu should equal(KoskiSpecificMockOppijat.europeanSchoolOfHelsinki.hetu)
         response.opiskeluoikeudet.map(_.tyyppi.koodiarvo) should equal(List("ebtutkinto"))
@@ -92,7 +92,7 @@ class KehaSDGSpec
     "DIA tulee läpi" in {
       postHetu(KoskiSpecificMockOppijat.dia.hetu.get) {
         verifyResponseStatusOk()
-        val response = JsonSerializer.parse[SdgOppija](body)
+        val response = JsonSerializer.parse[Oppija](body)
 
         response.henkilö.hetu should equal(KoskiSpecificMockOppijat.dia.hetu)
         response.opiskeluoikeudet.map(_.tyyppi.koodiarvo) should equal(List("diatutkinto"))
@@ -102,7 +102,7 @@ class KehaSDGSpec
     "YO tulee läpi" in {
       postHetu(KoskiSpecificMockOppijat.ylioppilasUusiApi.hetu.get) {
         verifyResponseStatusOk()
-        val response = JsonSerializer.parse[SdgOppija](body)
+        val response = JsonSerializer.parse[Oppija](body)
 
         response.henkilö.hetu should equal(KoskiSpecificMockOppijat.ylioppilasUusiApi.hetu)
         response.opiskeluoikeudet.map(_.tyyppi.koodiarvo) should equal(List("ylioppilastutkinto"))
@@ -110,13 +110,36 @@ class KehaSDGSpec
 
         val koodiarvot =
           for {
-            oo <- response.opiskeluoikeudet.asInstanceOf[List[SdgYlioppilastutkinnonOpiskeluoikeus]]
+            oo <- response.opiskeluoikeudet.asInstanceOf[List[YlioppilastutkinnonOpiskeluoikeus]]
             suoritus <- oo.suoritukset
             osasuoritus <- suoritus.osasuoritukset.getOrElse(Nil)
           } yield osasuoritus.koulutusmoduuli.tunniste.koodiarvo
 
         koodiarvot should equal(List("EA", "EA", "EA", "YH", "YH", "YH", "N", "N", "N", "A", "A", "A", "A"))
       }
+    }
+
+
+    "Lukio tulee läpi" in {
+      postHetu(KoskiSpecificMockOppijat.lukiolainen.hetu.get) {
+        verifyResponseStatusOk()
+
+        val response = JsonSerializer.parse[Oppija](body)
+
+        response.henkilö.hetu should equal(KoskiSpecificMockOppijat.lukiolainen.hetu)
+        response.opiskeluoikeudet.map(_.tyyppi.koodiarvo) should equal(List("lukiokoulutus"))
+      }
+    }
+
+    "Lukio ei paljasta tunnustettu-kenttää mutta tunnustettuBoolean tulee läpi" in {
+      postHetu(KoskiSpecificMockOppijat.lukiolainen.hetu.get) {
+        verifyResponseStatusOk()
+
+        body should not include ("\"tunnustettu\"")
+        body should include("\"tunnustettuBoolean\":true")
+        body should include("\"tunnustettuBoolean\":false")
+      }
+
     }
   }
 

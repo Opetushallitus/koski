@@ -8,14 +8,14 @@ import fi.oph.koski.log._
 import fi.oph.koski.suoritusjako.common.{OpiskeluoikeusFacade, RawOppija}
 
 class SdgService(application: KoskiApplication) extends GlobalExecutionContext with Logging {
-  private val opiskeluoikeusFacade = new OpiskeluoikeusFacade[SdgOpiskeluoikeus](
+  private val opiskeluoikeusFacade = new OpiskeluoikeusFacade[Opiskeluoikeus](
     application,
-    Some(SdgYlioppilastutkinnonOpiskeluoikeus.fromKoskiSchema),
-    Some(SdgKorkeakoulunOpiskeluoikeus.fromKoskiSchema)
+    Some(YlioppilastutkinnonOpiskeluoikeus.fromKoskiSchema),
+    Some(KorkeakoulunOpiskeluoikeus.fromKoskiSchema)
   )
 
   def findOppijaByHetu(hetu: String, includeOsasuoritukset: Boolean)
-    (implicit koskiSession: KoskiSpecificSession): Either[HttpStatus, SdgOppija] = {
+    (implicit koskiSession: KoskiSpecificSession): Either[HttpStatus, Oppija] = {
 
     val oppijaResult = application.opintopolkuHenkilöFacade.findOppijaByHetu(hetu)
 
@@ -29,10 +29,10 @@ class SdgService(application: KoskiApplication) extends GlobalExecutionContext w
     oppijaOid: String,
     includeOsasuoritukset: Boolean
   )
-    (implicit koskiSession: KoskiSpecificSession): Either[HttpStatus, SdgOppija] = {
+    (implicit koskiSession: KoskiSpecificSession): Either[HttpStatus, Oppija] = {
 
     val sdgOppija = opiskeluoikeusFacade.haeOpiskeluoikeudet(oppijaOid, SdgSchema.schemassaTuetutOpiskeluoikeustyypit, useDownloadedYtr = true)
-      .map(rawOppija => SdgOppija(
+      .map(rawOppija => Oppija(
         henkilö = Henkilo.fromOppijaHenkilö(rawOppija.henkilö),
         opiskeluoikeudet = suodataPalautettavatSuoritukset(rawOppija.opiskeluoikeudet, includeOsasuoritukset)
           .toList
@@ -43,9 +43,9 @@ class SdgService(application: KoskiApplication) extends GlobalExecutionContext w
 
 
   private def suodataPalautettavatSuoritukset(
-    opiskeluoikeudet: Seq[SdgOpiskeluoikeus],
+    opiskeluoikeudet: Seq[Opiskeluoikeus],
     includeOsasuoritukset: Boolean
-  ): Seq[SdgOpiskeluoikeus] = {
+  ): Seq[Opiskeluoikeus] = {
     opiskeluoikeudet
       .map { opiskeluoikeus =>
         opiskeluoikeus.withSuoritukset(
@@ -65,7 +65,7 @@ class SdgService(application: KoskiApplication) extends GlobalExecutionContext w
   // SÄILYTETÄÄN: vain vahvistetut YO:t mukaan
   private def josYOTutkintoNiinVahvistettu(s: Suoritus): Boolean = {
     s match {
-      case s: SdgYlioppilastutkinnonSuoritus
+      case s: YlioppilastutkinnonSuoritus
       => s.vahvistus.isDefined
       case _
       => true
@@ -74,7 +74,7 @@ class SdgService(application: KoskiApplication) extends GlobalExecutionContext w
 
   private def josEBTutkintoNiinVahvistettu(s: Suoritus): Boolean = {
     s match {
-      case s: SdgEBTutkinnonOpiskeluoikeus
+      case s: EBTutkinnonOpiskeluoikeus
       => s.vahvistus.isDefined
       case _
       => true
@@ -83,7 +83,7 @@ class SdgService(application: KoskiApplication) extends GlobalExecutionContext w
 
   private def josDIATutkintoNiinVahvistettu(s: Suoritus): Boolean = {
     s match {
-      case s: SdgDIAOpiskeluoikeus
+      case s: DIAOpiskeluoikeus
       => s.vahvistus.isDefined
       case _
       => true
