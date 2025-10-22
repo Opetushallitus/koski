@@ -1,8 +1,9 @@
 package fi.oph.koski.json
 
 import fi.oph.koski.schema.KoskiSchema.schemaFactory
+import fi.oph.koski.schema.policy.SerializationPolicy
 import fi.oph.scalaschema.extraction.ValidationError
-import fi.oph.scalaschema.{SchemaValidatingExtractor, _}
+import fi.oph.scalaschema._
 import org.json4s.JValue
 import org.json4s.jackson.JsonMethods
 
@@ -33,7 +34,16 @@ object JsonSerializer {
   }
 
   def serialize[T: TypeTag](obj: T, includeClassReferences: Boolean = false)(implicit user: SensitiveDataAllowed): JValue = {
-    Serializer.serialize(obj, SensitiveAndRedundantDataFilter(user).serializationContext.copy(includeClassReferences = includeClassReferences))
+    val baseCtx = SensitiveAndRedundantDataFilter(user).serializationContext.copy(includeClassReferences = includeClassReferences)
+
+    val filteredCtx = baseCtx.copy(
+      propertyProcessor = (cls, prop) => {
+        val processed = baseCtx.propertyProcessor(cls, prop)
+        processed.filterNot(p => SerializationPolicy.shouldOmit(p.metadata))
+      }
+    )
+
+    Serializer.serialize(obj, filteredCtx)
   }
 
   def serialize(obj: Any, schema: Schema)(implicit user: SensitiveDataAllowed): JValue = {

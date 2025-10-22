@@ -1,8 +1,9 @@
 package fi.oph.koski.sdg
 
+import fi.oph.koski.schema.filter.SchemaFilters.applySerializationPolicy
 import fi.oph.koski.schema
 import fi.oph.koski.schema.{Koodistokoodiviite, Koulutustoimija, Opiskeluoikeusjakso, OpiskeluoikeudenTila, Oppilaitos}
-import fi.oph.koski.schema.annotation.{KoodistoUri, Representative}
+import fi.oph.koski.schema.annotation.{DeserializeOnly, KoodistoUri}
 import fi.oph.scalaschema.annotation.{Discriminator, SyntheticProperty, Title}
 import fi.oph.scalaschema.{ClassSchema, SchemaToJson}
 import org.json4s.JValue
@@ -10,8 +11,11 @@ import org.json4s.JValue
 import java.time.LocalDate
 
 object SdgSchema {
-  lazy val schemaJson: JValue =
-    SchemaToJson.toJsonSchema(schema.KoskiSchema.createSchema(classOf[SdgOppija]).asInstanceOf[ClassSchema])
+  lazy val schemaJson: JValue = {
+    val rawSchema = schema.KoskiSchema.createSchema(classOf[Oppija]).asInstanceOf[ClassSchema]
+    val publicSchema = applySerializationPolicy(rawSchema).asInstanceOf[ClassSchema]
+    SchemaToJson.toJsonSchema(publicSchema)
+  }
 
   val schemassaTuetutOpiskeluoikeustyypit: List[String] = List(
     schema.OpiskeluoikeudenTyyppi.korkeakoulutus.koodiarvo,
