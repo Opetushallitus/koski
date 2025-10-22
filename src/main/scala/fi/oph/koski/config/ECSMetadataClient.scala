@@ -95,6 +95,8 @@ class MockEcsService extends EcsService {
 
 class RemoteEcsService(config: Config) extends EcsService with Logging {
   val client: EcsClient = EcsClient.create()
+  // TODO: TOR-2400: Tämä on geneerinen metadata client, ei pitäisi olla kysely-konffeista riippuvaa sisältöä. Mieluummin vielä pura koko
+  // riippuvuus AWS:n tällaisesta tutkailusta, korvaa tietokantaan perustuvalla ratkaisulla.
   val cluster: String = config.getString("kyselyt.ecs.cluster")
   val koskiServiceName: String = config.getString("kyselyt.ecs.service")
 
