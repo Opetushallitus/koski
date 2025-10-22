@@ -592,6 +592,15 @@ class OmaDataOAuth2BackendSpec
       }
     }
 
+    "voi kutsua luovutuspalvelu v2 headereilla, kun on käyttöoikeudet" in {
+      val pkce = createChallengeAndVerifier
+      val token = createAuthorizationAndToken(validKansalainen, pkce)
+
+      postResourceServerWithLuovutuspalveluV2Headers(token) {
+        verifyResponseStatusOk()
+      }
+    }
+
     "tekee audit log -merkinnän" in {
       val pkce = createChallengeAndVerifier
       val token = createAuthorizationAndToken(validKansalainen, pkce)
@@ -1206,6 +1215,15 @@ class OmaDataOAuth2BackendSpec
   private def postResourceServer[T](token: String, user: KoskiMockUser = validPalvelukäyttäjä)(f: => T): T = {
     val tokenHeaders = Map("X-Auth" -> s"Bearer ${token}")
     post(uri = "api/omadata-oauth2/resource-server", headers = authHeaders(user) ++ tokenHeaders)(f)
+  }
+
+  private def postResourceServerWithLuovutuspalveluV2Headers[T](token: String)(f: => T): T = {
+    val headers = Map(
+      "Authorization" -> s"Bearer ${token}",
+      "x-amzn-mtls-clientcert-subject" -> "CN=oauth2client",
+      "X-Forwarded-For" -> "0.0.0.0"
+    )
+    post(uri = "api/omadata-oauth2/resource-server", headers = headers)(f)
   }
 }
 

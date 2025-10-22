@@ -11,13 +11,18 @@ trait ConvertErrorsToOAuth2Format extends KoskiSpecificApiServlet {
   // Mäpätään mm. luovutuspalvelu-flowsta tulevat errorit OAuth2 formaatiksi
   override def renderStatus(status: HttpStatus): Unit = {
     response.setStatus(status.statusCode)
-    val oAuthError = OAuth2ErrorResponse("invalid_client", Some(status.errors.map {
-      _.message match {
-        case JString(s) => s
-        case j => compact(JsonMethods.render(j))
-      }
-    }.mkString(";")), None)
-    render(oAuthError)
+    // Ei muuteta erroreita nginx luovutuspalvelulle
+    if (request.header("Authorization").exists(_.startsWith("Basic "))) {
+      render(status.errors)
+    } else {
+      val oAuthError = OAuth2ErrorResponse("invalid_client", Some(status.errors.map {
+        _.message match {
+          case JString(s) => s
+          case j => compact(JsonMethods.render(j))
+        }
+      }.mkString(";")), None)
+      render(oAuthError)
+    }
   }
 
 }

@@ -14,7 +14,8 @@ class MockLuovutuspalveluV2ClientListService extends LuovutuspalveluV2ClientList
       |{"subjectDn": "CN=oa2-dev.koski-luovutuspalvelu-test-certs.testiopintopolku.fi", "ips": ["0.0.0.0"],  "user": "koskioauth2sampledevpk"},
       |{"subjectDn":"CN=migri", "ips":["0.0.0.0"], "user": "Migri"},
       |{"subjectDn":"CN=kela", "ips":["0.0.0.0"], "user": "Laaja"},
-      |{"subjectDn":"CN=omadataoauth2sample", "ips":["0.0.0.0"], "user": "omadataoauth2sample"}
+      |{"subjectDn":"CN=omadataoauth2sample", "ips":["0.0.0.0"], "user": "omadataoauth2sample"},
+      |{"subjectDn":"CN=oauth2client", "ips":["0.0.0.0"], "user": "oauth2client"}
       |]""".stripMargin
   private val mockClientList = JsonSerializer.parse[List[LuovutuspalveluClient]](mockClientListJson)
   override def getClientList: List[LuovutuspalveluClient] = {
