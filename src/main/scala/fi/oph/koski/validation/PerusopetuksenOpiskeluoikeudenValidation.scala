@@ -82,20 +82,16 @@ object PerusopetuksenOpiskeluoikeusValidation extends Logging {
         val vahvistuspäivä = vls.vahvistus.map(_.päivä)
         vls.osasuoritukset.getOrElse(Seq.empty).flatMap {
           case os: NuortenPerusopetuksenOppiaineenSuoritus =>
-            val vuosiluokka = vls.koulutusmoduuli.tunniste
             os.luokkaAste match {
               case Some(la) =>
-                val paivat = Seq(vahvistuspäivä, os.ensimmäinenArviointiPäivä).flatten
-                val osuuJaksolle = paivat.exists(d => tavoitekokonaisuuksittainOpiskeluVoimassa(oo, d))
-                if (vsopOn && paivat.exists(p => !p.isAfter(cutoff))) {
-                  None
-                } else if (!osuuJaksolle)
-                {Some(KoskiErrorCategory.badRequest.validation.date(s"Perusopetuksen oppiaineen suorituksella on tavoitekokonaisuuksittain opiskeluun liittyvä tieto luokkaAste (${la.koodiarvo}) mutta ei tavoitekokonaisuuksittain opiskelun aikajaksoa, joka kattaisi vuosiluokan vahvistuspäivän tai suorituksen arviointipäivän."))
-                } else if (la == vuosiluokka)
-                {Some(KoskiErrorCategory.badRequest.validation.date(s"Perusopetuksen oppiaineen suorituksen tavoitekokonaisuuksittain opiskeluun liittyvä kenttä luokkaAste ei saa olla sama kuin vuosiluokka (${vuosiluokka.koodiarvo})"))
-                } else {
-                  None
-                }
+                val vahvistuksenpäiväys = Seq(vahvistuspäivä, os.ensimmäinenArviointiPäivä).flatten
+                val tavoitekokonaisuusosuujaksolle = vahvistuspäivä.exists(d => tavoitekokonaisuuksittainOpiskeluVoimassa(oo, d))
+                if (vahvistuspäivä.isEmpty || (vsopOn && vahvistuspäivä.exists(p => !p.isAfter(cutoff)))) { None }
+                else if (!tavoitekokonaisuusosuujaksolle ) {
+                  Some(KoskiErrorCategory.badRequest.validation.date(s"Perusopetuksen oppiaineen suorituksella on tavoitekokonaisuuksittain opiskeluun liittyvä tieto luokkaAste (${la.koodiarvo}) mutta ei tavoitekokonaisuuksittain opiskelun aikajaksoa, joka kattaisi vuosiluokan vahvistuspäivän tai suorituksen arviointipäivän."))
+                } else if (la == vuosiluokka) {
+                  Some(KoskiErrorCategory.badRequest.validation.date(s"Perusopetuksen oppiaineen suorituksen tavoitekokonaisuuksittain opiskeluun liittyvä kenttä luokkaAste ei saa olla sama kuin vuosiluokka (${vuosiluokka.koodiarvo})"))
+                } else{ None }
               case None => None
             }
           case _ => None

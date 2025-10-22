@@ -35,7 +35,7 @@ Tutkintokoulutukseen valmistavan koulutuksen opiskeluoikeuden validaatiot
  - Rajatulle oppimäärälle Sallittu vaihtoehtoisesti erityisen tuen jakso.
 
 ## 13.10.2025
- - Sallitaan vuosiluokan suoritukseen luokka-aste, joka on eri kuin suorituksen luokka-aste, kun vuosiluokan vahvistus tai arviointi on ennen 31.7.2025 ja oppilaalla on lisätiedoissa vuosiluokkiinSitoutumatonOpetus.
+ - Sallitaan vuosiluokan suoritukseen luokka-aste, joka on eri kuin suorituksen luokka-aste, kun vuosiluokan vahvistus on ennen 31.7.2025 ja oppilaalla on lisätiedoissa vuosiluokkiinSitoutumatonOpetus.
 
 ## 3.10.2025
 
