@@ -950,8 +950,8 @@ class OmaDataOAuth2BackendSpec
         val fullOoData = getOpiskeluoikeudet(oppija.oid, MockUsers.kalle)
           .find(_.tyyppi.koodiarvo == schema.OpiskeluoikeudenTyyppi.perusopetus.koodiarvo)
           .get
-        expectedOoData.lisätiedot.map(_.asInstanceOf[PerusopetuksenOpiskeluoikeudenLisätiedot]).map(_.vuosiluokkiinSitoutumatonOpetus) should be(Some(false))
-        fullOoData.lisätiedot.map(_.asInstanceOf[PerusopetuksenOpiskeluoikeudenLisätiedot]).map(_.vuosiluokkiinSitoutumatonOpetus) should be(Some(true))
+        expectedOoData.lisätiedot.map(_.asInstanceOf[PerusopetuksenOpiskeluoikeudenLisätiedot]).flatMap(_.vuosiluokkiinSitoutumatonOpetus) should be(None)
+        fullOoData.lisätiedot.map(_.asInstanceOf[PerusopetuksenOpiskeluoikeudenLisätiedot]).flatMap(_.vuosiluokkiinSitoutumatonOpetus) should be(Some(true))
 
         val scope = "HENKILOTIEDOT_SYNTYMAAIKA HENKILOTIEDOT_NIMI OPISKELUOIKEUDET_KAIKKI_TIEDOT"
 

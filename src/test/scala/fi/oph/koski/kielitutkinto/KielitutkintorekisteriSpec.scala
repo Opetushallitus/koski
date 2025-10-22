@@ -38,7 +38,7 @@ class KielitutkintorekisteriSpec
 
     "pystyy kirjoittamaan kielitutkinnon opiskeluoikeuden" in { canWrite(kielitutkinnonOpiskeluoikeus) }
     "pystyy lukemaan kielitutkinnon opiskeluoikeuden" in { canRead(ExamplesKielitutkinto.exampleMockOppija) }
-    "ei pysty kirjoittamaan muita opiskeluoikeuksia" in { cannotWrite(lukionOpiskeluoikeus, "Ei oikeuksia opiskeluoikeuden tyyppiin lukiokoulutus") }
+    "ei pysty kirjoittamaan muita opiskeluoikeuksia" in { cannotWrite(lukionOpiskeluoikeus, "Ei oikeuksia opiskeluoikeuden tyyppiin lukiokoulutus (lukionoppimaara)") }
     "ei pysty lukemaan muita opiskeluoikeuksia" in { cannotRead(lukiolainen, s"Oppijaa ${lukiolainen.oid} ei löydy tai käyttäjällä ei ole oikeuksia tietojen katseluun.") }
   }
 
@@ -53,7 +53,7 @@ class KielitutkintorekisteriSpec
     implicit val session: KoskiSpecificSession = MockUsers.varsinaisSuomiPalvelukäyttäjä.toKoskiSpecificSession(KoskiApplicationForTests.käyttöoikeusRepository)
     val otherSession: KoskiSpecificSession = MockUsers.omniaPalvelukäyttäjä.toKoskiSpecificSession(KoskiApplicationForTests.käyttöoikeusRepository)
 
-    "ei pysty kirjoittamaan kielitutkinnon opiskeluoikeuksia" in { cannotWrite(kielitutkinnonOpiskeluoikeus, "Ei oikeuksia opiskeluoikeuden tyyppiin kielitutkinto") }
+    "ei pysty kirjoittamaan kielitutkinnon opiskeluoikeuksia" in { cannotWrite(kielitutkinnonOpiskeluoikeus, "Ei oikeuksia opiskeluoikeuden tyyppiin kielitutkinto (yleinenkielitutkinto)") }
     "pystyy lukemaan oman organisaation kielitutkinnon opiskeluoikeuksia" in { canRead(ExamplesKielitutkinto.exampleMockOppija) }
     "ei pysty lukemaan muiden kielitutkinnon opiskeluoikeuksia" in { cannotRead(ExamplesKielitutkinto.exampleMockOppija, s"Oppijaa ${ExamplesKielitutkinto.exampleMockOppija.oid} ei löydy tai käyttäjällä ei ole oikeuksia tietojen katseluun.")(otherSession) }
   }

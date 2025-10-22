@@ -63,7 +63,7 @@ prettier-format-mock-data:
 
 .PHONY: localizationtest
 localizationtest:
-	mvn $(mvn_opts) -DargLine="$(mvn_argline)" test -DwildcardSuites="fi.oph.koski.inenvironmentlocalization"
+	mvn $(mvn_opts) -DargLine="$(mvn_argline)" test -DmembersOnlySuites="fi.oph.koski.inenvironmentlocalization"
 
 .PHONY: testresults
 testresults:
@@ -79,7 +79,7 @@ js-unit-test-watch:
 
 .PHONY: backtest
 backtest:
-	mvn $(mvn_opts) -DargLine="$(mvn_argline)" test -DwildcardSuites="\
+	mvn $(mvn_opts) -DargLine="$(mvn_argline)" test -DmembersOnlySuites="\
 	fi.oph.koski.cache,fi.oph.koski.editor,fi.oph.koski.environment,\
 	fi.oph.koski.etk,fi.oph.koski.hakemuspalvelu,fi.oph.koski.henkilo,fi.oph.koski.http,\
 	fi.oph.koski.integrationtest,fi.oph.koski.json,fi.oph.koski.kela,fi.oph.koski.koodisto,\
@@ -89,22 +89,24 @@ backtest:
 	fi.oph.koski.opiskeluoikeus,fi.oph.koski.oppilaitos,fi.oph.koski.oppivelvollisuustieto,\
 	fi.oph.koski.organisaatio,fi.oph.koski.perftest,fi.oph.koski.raportit,\
 	fi.oph.koski.raportointikanta,fi.oph.koski.schedule,fi.oph.koski.schema,\
-	fi.oph.koski.sso,fi.oph.koski.sure,fi.oph.koski.tools,\
-	fi.oph.koski.userdirectory,fi.oph.koski.util,fi.oph.koski.valpas,\
+	fi.oph.koski.sso,fi.oph.koski.sure,fi.oph.koski.tools,fi.oph.koski.userdirectory,fi.oph.koski.util,\
+	fi.oph.koski.valpas,fi.oph.koski.valpas.hakeutumisvalvonta,fi.oph.koski.valpas.kuntailmoitus,\
+	fi.oph.koski.valpas.oppija,fi.oph.koski.valpas.oppivelvollisuudenkeskeytys,fi.oph.koski.valpas.suorittamisenvalvonta,\
 	fi.oph.koski.valvira,fi.oph.koski.versioning,fi.oph.koski.virta,fi.oph.koski.sdg,fi.oph.koski.vkt,fi.oph.koski.vtj,\
-	fi.oph.koski.ytl,fi.oph.koski.ytr,fi.oph.koski.ytl,fi.oph.koski.meta,\
-	fi.oph.koski.ytl,fi.oph.koski.api,fi.oph.koski.frontendvalvonta,fi.oph.koski.tiedonsiirto,\
-	fi.oph.koski.typemodel,fi.oph.koski.suoritusjako,fi.oph.koski.suoritusjako.suoritetuttutkinnot,\
+	fi.oph.koski.ytl,fi.oph.koski.ytr,fi.oph.koski.ytr.download,fi.oph.koski.ytl,fi.oph.koski.meta,\
+	fi.oph.koski.ytl,fi.oph.koski.api.misc,fi.oph.koski.api.oppijaupdate,fi.oph.koski.api.oppijavalidation,fi.oph.koski.api.suostumus,\
+	fi.oph.koski.frontendvalvonta,fi.oph.koski.tiedonsiirto,\
+	fi.oph.koski.typemodel,fi.oph.koski.suoritusjako,fi.oph.koski.suoritusjako.suoritetuttutkinnot,fi.oph.koski.suoritusjako.aktiivisetjapaattyneetopinnot,\
 	fi.oph.koski.massaluovutus,fi.oph.koski.omadataoauth2.unit,fi.oph.koski.omadataoauth2.e2e,\
 	fi.oph.koski.kielitutkinto"
 
 .PHONY: backtestnonmock
 backtestnonmock:
-	mvn $(mvn_opts) -DargLine="$(mvn_argline)" test -DwildcardSuites="fi.oph.koski.nonmockloginsecurity"
+	mvn $(mvn_opts) -DargLine="$(mvn_argline)" test -DmembersOnlySuites="fi.oph.koski.nonmockloginsecurity"
 
 .PHONY: fronttest
 fronttest:
-	mvn $(mvn_opts) -DargLine="$(mvn_argline)" test -DwildcardSuites="fi.oph.koski.mocha" -DtagsToExlude="parallelmocha"
+	mvn $(mvn_opts) -DargLine="$(mvn_argline)" test -DmembersOnlySuites="fi.oph.koski.mocha" -DtagsToExlude="parallelmocha"
 
 .PHONY: integrationtest
 integrationtest:
