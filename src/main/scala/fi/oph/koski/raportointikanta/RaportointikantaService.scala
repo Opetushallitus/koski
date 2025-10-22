@@ -161,7 +161,7 @@ class RaportointikantaService(application: KoskiApplication) extends Logging {
     eventBridgeClient.putEvents(
       EventBridgeEvent(tietokantaUpload, Map("event" -> "start-upload", "uploadTarget" -> "LampiVipunenRaportointikanta")),
       EventBridgeEvent(tietokantaUpload, Map("event" -> "start-upload", "uploadTarget" -> "LampiRaportointikantaConfidential")),
-      EventBridgeEvent(tietokantaUpload, Map("event" -> "start-upload", "uploadTarget" -> "LampiValpas")),
+      EventBridgeEvent(tietokantaUpload, Map("event" -> "start-upload", "uploadTarget" -> "LampiVipunenValpas")),
       EventBridgeEvent(tietokantaUpload, Map("event" -> "start-upload", "uploadTarget" -> "VipunenValpas"))
     )
     logger.info("Successfully sent start-upload events.")
