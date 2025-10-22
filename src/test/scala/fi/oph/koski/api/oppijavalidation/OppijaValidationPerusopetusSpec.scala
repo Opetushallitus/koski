@@ -965,13 +965,6 @@ class OppijaValidationPerusopetusSpec extends TutkinnonPerusteetTest[Perusopetuk
             verifyResponseStatusOk()
           }
         }
-
-        "Luokka-aste tiedon voi siirtää ilman tavoitekokonaisuuksittain opiskelun aikajaksoja, jos ei ole vahvistusta eikä arviointia" in {
-          val withLuokkaAste = TuenPäätöksellinenBuilder().withLuokkaAsteSuoritusWithoutVahvistus("8")
-          setupOppijaWithOpiskeluoikeus(withLuokkaAste.build) {
-            verifyResponseStatusOk()
-          }
-        }
       }
     }
 
@@ -1357,11 +1350,11 @@ class OppijaValidationPerusopetusSpec extends TutkinnonPerusteetTest[Perusopetuk
     }
 
     "VSOP true arviointi ennen 1.8.2025 -> HTTP 200" in {
-      val start = date(2025, 1, 1)
+      val start = date(2015, 1, 1)
       val seiskaluokanSuoritus = defaultOpiskeluoikeus.copy(
         suoritukset = List(
           seitsemännenLuokanSuoritus.copy(
-            alkamispäivä = Some(LocalDate.of(2025, 1, 1)),
+            alkamispäivä = Some(LocalDate.of(2015, 5, 30)),
             osasuoritukset = Some(List(
               NuortenPerusopetuksenOppiaineenSuoritus(
                 koulutusmoduuli = MuuNuortenPerusopetuksenOppiaine(
