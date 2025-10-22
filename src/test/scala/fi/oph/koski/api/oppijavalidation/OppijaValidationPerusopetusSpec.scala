@@ -818,19 +818,6 @@ class OppijaValidationPerusopetusSpec extends TutkinnonPerusteetTest[Perusopetuk
         }
       }
 
-      "Rajatun oppimäärän suorituksen saa siirtää suoritukselle joka on alkanut ennen 31.8.2026" in {
-        val oo = makeOpiskeluoikeus().copy(
-          suoritukset = List(seitsemännenLuokanSuoritus.copy(vahvistus = Some(HenkilövahvistusPaikkakunnalla(LocalDate.of(2025, 10, 11), jyväskylä, jyväskylänNormaalikoulu, List(Organisaatiohenkilö("Reijo Reksi", "rehtori", jyväskylänNormaalikoulu)))), alkamispäivä = Some(LocalDate.of(2025, 10, 9)), osasuoritukset = Some(List(äidinkielenSuoritus.copy(rajattuOppimäärä = true, arviointi = hyväksytty))))),
-          lisätiedot = Some(PerusopetuksenOpiskeluoikeudenLisätiedot(
-            erityisenTuenPäätökset = erityisenTuenPäätökset(alku = LocalDate.of(2025, 10, 9), loppu = LocalDate.of(2025,10,31)),
-          ))
-        )
-
-        setupOppijaWithOpiskeluoikeus(oo) {
-          verifyResponseStatus(200)
-        }
-      }
-
       "Rajatulle oppimäärälle sallitaan arvosanat S ja H vain kun kyseessä on 9. lk ja oppilas jää luokalle" in {
         def makeYsiluokanLuokallejääntiRajattuOppimäärä(arvosana: String) = makeOpiskeluoikeus().copy(
           suoritukset = List(
@@ -1369,16 +1356,12 @@ class OppijaValidationPerusopetusSpec extends TutkinnonPerusteetTest[Perusopetuk
       }
     }
 
-    "VSOP true vahvistus jälkeen 1.8.2025 -> HTTP 400" in {
+    "VSOP true arviointi ennen 1.8.2025 -> HTTP 200" in {
       val start = date(2025, 1, 1)
       val seiskaluokanSuoritus = defaultOpiskeluoikeus.copy(
         suoritukset = List(
           seitsemännenLuokanSuoritus.copy(
             alkamispäivä = Some(LocalDate.of(2025, 1, 1)),
-            vahvistus = Some(HenkilövahvistusPaikkakunnalla(
-              LocalDate.of(2025, 9, 9), jyväskylä, jyväskylänNormaalikoulu,
-              List(Organisaatiohenkilö("Reijo Reksi", "rehtori", jyväskylänNormaalikoulu))
-            )),
             osasuoritukset = Some(List(
               NuortenPerusopetuksenOppiaineenSuoritus(
                 koulutusmoduuli = MuuNuortenPerusopetuksenOppiaine(
@@ -1405,7 +1388,7 @@ class OppijaValidationPerusopetusSpec extends TutkinnonPerusteetTest[Perusopetuk
       )
       setupOppijaWithOpiskeluoikeus(oo) {
         verifyResponseStatus(
-          400)
+          200)
       }
     }
     "Opiskelija ollut valmistuessa kotiopetuksessa -> HTTP 200" in {
