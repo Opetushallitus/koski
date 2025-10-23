@@ -5,7 +5,7 @@ import { OpiskeluoikeudenOrganisaatiohistoria } from './OpiskeluoikeudenOrganisa
 import { SisältäväOpiskeluoikeus } from './SisaltavaOpiskeluoikeus'
 import { Koulutustoimija } from './Koulutustoimija'
 import { AmmatillisenOpiskeluoikeudenLisätiedot } from './AmmatillisenOpiskeluoikeudenLisatiedot'
-import { AmmatillinenPäätasonSuoritus } from './AmmatillinenPaatasonSuoritus'
+import { AmmatillinenPäätasonsuoritusLike } from './AmmatillinenPaatasonsuoritusLike'
 import { LähdejärjestelmäId } from './LahdejarjestelmaId'
 import { LähdejärjestelmäkytkennänPurkaminen } from './LahdejarjestelmakytkennanPurkaminen'
 import { Oppilaitos } from './Oppilaitos'
@@ -26,7 +26,7 @@ export type AmmatillinenOpiskeluoikeus = {
   koulutustoimija?: Koulutustoimija
   lisätiedot?: AmmatillisenOpiskeluoikeudenLisätiedot
   versionumero?: number
-  suoritukset: Array<AmmatillinenPäätasonSuoritus>
+  suoritukset: Array<AmmatillinenPäätasonsuoritusLike>
   aikaleima?: string
   päättymispäivä?: string
   lähdejärjestelmänId?: LähdejärjestelmäId
@@ -50,7 +50,7 @@ export const AmmatillinenOpiskeluoikeus = (
     koulutustoimija?: Koulutustoimija
     lisätiedot?: AmmatillisenOpiskeluoikeudenLisätiedot
     versionumero?: number
-    suoritukset?: Array<AmmatillinenPäätasonSuoritus>
+    suoritukset?: Array<AmmatillinenPäätasonsuoritusLike>
     aikaleima?: string
     päättymispäivä?: string
     lähdejärjestelmänId?: LähdejärjestelmäId
