@@ -43,7 +43,8 @@ export const handleError = (error) => {
 
 const extractValidationErrorText = (error) => {
   if (typeof error === 'string') return error
-  if (Array.isArray(error)) return error.map((e) => extractValidationErrorText(e))
+  if (Array.isArray(error))
+    return error.map((e) => extractValidationErrorText(e))
   if (error.error) return extractValidationErrorText(error.error)
   else if (error.message) return extractValidationErrorText(error.message)
   else return t('httpStatus.400')
@@ -65,9 +66,14 @@ const errorText = (error) => {
         msg.key.startsWith('badRequest.validation')
       )
     )
-  }
-  else if (
+  } else if (
     error.httpStatus === 409 &&
+    error.jsonMessage &&
+    error.jsonMessage[0]
+  )
+    return extractValidationErrorText(error.jsonMessage[0])
+  else if (
+    error.httpStatus === 403 &&
     error.jsonMessage &&
     error.jsonMessage[0]
   )
