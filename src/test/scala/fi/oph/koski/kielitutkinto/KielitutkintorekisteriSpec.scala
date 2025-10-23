@@ -268,7 +268,7 @@ class KielitutkintorekisteriSpec
         }
       }
 
-      "Ei voi siirtää arviointia kielitaidolle, jos osakoe on hylätty" in {
+      "Voidaan siirtää arviointia kielitaidolle, myös jos osakoe on hylätty" in {
         val invalidOo = opiskeluoikeus.copy(
           suoritukset = opiskeluoikeus.suoritukset.map {
             case pts: ValtionhallinnonKielitutkinnonSuoritus => pts.copy(
@@ -284,14 +284,7 @@ class KielitutkintorekisteriSpec
         )
 
         postOpiskeluoikeus(invalidOo) {
-          verifyResponseStatus(400,
-            KoskiErrorCategory.badRequest.validation.tila.keskeneräinenOsasuoritus(
-              "Valmiiksi merkityllä suorituksella vkttutkintotaso/hyvajatyydyttava on keskeneräinen osasuoritus vktosakoe/kirjoittaminen"
-            ),
-            KoskiErrorCategory.badRequest.validation.tila.keskeneräinenOsasuoritus(
-              "Valmiiksi merkityllä suorituksella vktkielitaito/kirjallinen on keskeneräinen osasuoritus vktosakoe/kirjoittaminen"
-            ),
-          )
+          verifyResponseStatusOk()
         }
       }
     }
