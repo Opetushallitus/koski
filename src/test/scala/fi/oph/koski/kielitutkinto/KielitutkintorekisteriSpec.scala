@@ -227,6 +227,7 @@ class KielitutkintorekisteriSpec
             case pts: ValtionhallinnonKielitutkinnonSuoritus => pts.copy(
               osasuoritukset = pts.osasuoritukset.map(_.map {
                 case kielitaito: ValtionhallinnonKielitutkinnonKirjallisenKielitaidonSuoritus => kielitaito.copy(
+                  alkamispäivä = Some(arviointipäivä),
                   arviointi = ExamplesKielitutkinto.ValtionhallinnonKielitutkinnot.Kielitaidot.arviointi("erinomainen", arviointipäivä)
                 )
               })
@@ -248,6 +249,7 @@ class KielitutkintorekisteriSpec
               osasuoritukset = pts.osasuoritukset.map(_.map {
                 case kielitaito: ValtionhallinnonKielitutkinnonKirjallisenKielitaidonSuoritus => kielitaito.copy(
                   osasuoritukset = kielitaito.osasuoritukset.map(_.map(_.copy(
+                    alkamispäivä = Some(arviointipäivä),
                     arviointi = ExamplesKielitutkinto.ValtionhallinnonKielitutkinnot.Kielitaidot.arviointi("erinomainen", arviointipäivä)
                   )))
                 )
@@ -275,6 +277,7 @@ class KielitutkintorekisteriSpec
               osasuoritukset = pts.osasuoritukset.map(_.map {
                 case kielitaito: ValtionhallinnonKielitutkinnonKirjallisenKielitaidonSuoritus => kielitaito.copy(
                   osasuoritukset = kielitaito.osasuoritukset.map(_.map(_.copy(
+                    alkamispäivä = Some(arviointipäivä),
                     arviointi = ExamplesKielitutkinto.ValtionhallinnonKielitutkinnot.Kielitaidot.arviointi("hylatty", arviointipäivä)
                   )))
                 )
