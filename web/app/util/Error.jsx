@@ -43,7 +43,7 @@ export const handleError = (error) => {
 
 const extractValidationErrorText = (error) => {
   if (typeof error === 'string') return error
-  if (Array.isArray(error)) return extractValidationErrorText(error[0])
+  if (Array.isArray(error)) return error.map((e) => extractValidationErrorText(e))
   if (error.error) return extractValidationErrorText(error.error)
   else if (error.message) return extractValidationErrorText(error.message)
   else return t('httpStatus.400')
@@ -56,8 +56,16 @@ const errorText = (error) => {
     error.jsonMessage &&
     error.jsonMessage[0] &&
     error.jsonMessage[0].key.startsWith('badRequest.validation')
-  )
-    return extractValidationErrorText(error.jsonMessage[0])
+  ) {
+    if (error.jsonMessage.length === 1) {
+      return extractValidationErrorText(error.jsonMessage[0])
+    }
+    return extractValidationErrorText(
+      error.jsonMessage.filter((msg) =>
+        msg.key.startsWith('badRequest.validation')
+      )
+    )
+  }
   else if (
     error.httpStatus === 409 &&
     error.jsonMessage &&
@@ -69,7 +77,8 @@ const errorText = (error) => {
 }
 
 export const Error = ({ error }) => {
-  const showError = errorText(error) && !isTopLevel(error)
+  const errorMessage = errorText(error)
+  const showError = errorMessage && !isTopLevel(error)
   if (showError) {
     console.log('render error', error)
   }
@@ -80,10 +89,18 @@ export const Error = ({ error }) => {
         {ift(
           showAtom,
           <span>
-            <span className="error-text" data-testid="error">
-              {errorText(error)}
-            </span>
             <a onClick={() => showAtom.set(false)}>{'✕'}</a>
+            <span className="error-text" data-testid="error">
+              {Array.isArray(errorMessage) ? (
+                <ul>
+                  {errorMessage.map((msg, i) => (
+                    <li key={`error-${i}`}>{msg}</li>
+                  ))}
+                </ul>
+              ) : (
+                errorMessage
+              )}
+            </span>
           </span>
         )}
       </div>
