@@ -40,7 +40,7 @@ object AmmatillinenValidation {
     def tutkinnonOsaOlemassa(a: AmmatillisenTutkinnonOsittainenTaiKokoSuoritus) = if (a.osasuoritukset.isDefined) a.osasuoritukset.get.exists(os => os.valmis) else false
 
     val keskiarvotVainKunSallittu = ammatillinen.suoritukset.forall {
-      case s: AmmatillisenTutkinnonOsittainenTaiKokoSuoritus =>
+      case s: AmmatillisenTutkinnonOsittainenTaiKokoTutkintoKolutuksenSuoritus =>
         if (s.keskiarvo.isDefined) s.valmis || (katsotaanEronneeksi(ammatillinen) && tutkinnonOsaOlemassa(s)) else true
       case _ => true
     }

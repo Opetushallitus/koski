@@ -43,7 +43,6 @@ object HslAmmatillinenOpiskeluoikeus {
     )
 }
 
-
 @Title("Ammatillisen opiskeluoikeuden päätason suoritus")
 case class HslAmmatillinenPäätasonSuoritus(
   tyyppi: Koodistokoodiviite,
@@ -65,7 +64,6 @@ object HslAmmatillinenPäätasonSuoritus {
     )
   }
 }
-
 case class HslOsaamisenHankkimistapajakso(
   alku: LocalDate,
   loppu: Option[LocalDate],
