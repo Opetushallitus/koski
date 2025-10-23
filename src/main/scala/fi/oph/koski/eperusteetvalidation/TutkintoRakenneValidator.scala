@@ -122,14 +122,6 @@ case class TutkintoRakenneValidator(tutkintoRepository: TutkintoRepository, kood
         if (suoritus.osasuoritusLista.nonEmpty) {
           val diaarinumerot = suoritus.osasuoritusLista.flatMap(_.tutkinto.perusteenDiaarinumero).distinct
           val kaikkiRakenteet = diaarinumerot.flatMap(diaarinumero => tutkintoRepository.findPerusteRakenteet(diaarinumero, Some(vaadittuPerusteenVoimassaolopäivä)))
-          HttpStatus.fold(
-            suoritus.osaamisala.toList.flatten.map(o => validateOsaamisala(o.osaamisala, kaikkiRakenteet))
-              ++ suoritus.tutkintonimike.toList.flatten.map(t => validateTutkintonimike(t, kaikkiRakenteet))
-              ++ suoritus.osasuoritusLista.map {
-                case os if os.tunnustettu.isDefined => validateTutkinnonOsanTutkinto(os, None)
-                case os => validateTutkinnonOsanTutkinto(os, Some(vaadittuPerusteenVoimassaolopäivä))
-              }
-          ).onSuccess(
             HttpStatus.fold(
               suoritus
                 .osasuoritusLista
@@ -176,7 +168,6 @@ case class TutkintoRakenneValidator(tutkintoRepository: TutkintoRepository, kood
                 }
               }
             )
-          )
         } else HttpStatus.ok
       case s: LukionPäätasonSuoritus2019 =>
         HttpStatus.justStatus(

@@ -471,8 +471,6 @@ trait AmmatillisenTutkinnonOsittainenSuoritusErilliselläOpiskeluoikeudella exte
   with Toimipisteellinen
   with Arvioinniton
   with Ryhmällinen
-  with Tutkintonimikkeellinen
-  with Osaamisalallinen
   with OppivelvollisuudenSuorittamiseenKelpaava
   with Järjestämismuodollinen
   with OsaamisenHankkimistavallinen
