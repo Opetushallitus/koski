@@ -180,7 +180,7 @@ jobs:
             fi.oph.koski.oppilaitos, \
             fi.oph.koski.organisaatio, \
             fi.oph.koski.typemodel, \
-            fi.oph.koski.omadataoauth2.unit \
+            fi.oph.koski.omadataoauth2.unit, \
             fi.oph.koski.kielitutkinto
 
   run_backend_tests_other_2:
@@ -194,7 +194,12 @@ jobs:
         with:
           suites: |
             fi.oph.koski.raportit, \
-            fi.oph.koski.valpas
+            fi.oph.koski.valpas, \
+            fi.oph.koski.valpas.hakeutumisvalvonta, \
+            fi.oph.koski.valpas.kuntailmoitus, \
+            fi.oph.koski.valpas.oppija, \
+            fi.oph.koski.valpas.oppivelvollisuudenkeskeytys, \
+            fi.oph.koski.valpas.suorittamisenvalvonta
 
   run_backend_tests_other_3:
     name: Backend (other 3/4)
@@ -236,11 +241,12 @@ jobs:
             fi.oph.koski.vtj, \
             fi.oph.koski.ytl, \
             fi.oph.koski.ytr, \
-            fi.oph.koski.ytl, \
+            fi.oph.koski.ytr.download, \
             fi.oph.koski.meta, \
             fi.oph.koski.frontendvalvonta, \
             fi.oph.koski.tiedonsiirto, \
             fi.oph.koski.suoritusjako, \
+            fi.oph.koski.suoritusjako.aktiivisetjapaattyneetopinnot, \
             fi.oph.koski.suoritusjako.suoritetuttutkinnot
 
   run_frontend_tests:
