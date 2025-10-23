@@ -1,5 +1,5 @@
 import { AmmatillinenArviointi } from './AmmatillinenArviointi'
-import { Näyttö } from './Naytto'
+import { NäyttöAmmatillinenOsottainenUseastaTutkinnosta } from './NayttoAmmatillinenOsottainenUseastaTutkinnosta'
 import { Koodistokoodiviite } from './Koodistokoodiviite'
 import { LocalizedString } from './LocalizedString'
 import { AmmatillisenTutkinnonOsanLisätieto } from './AmmatillisenTutkinnonOsanLisatieto'
@@ -18,7 +18,7 @@ export type YhteisenOsittaisenAmmatillisenTutkinnonTutkinnonosanUseastaTutkinnos
   {
     $class: 'fi.oph.koski.schema.YhteisenOsittaisenAmmatillisenTutkinnonTutkinnonosanUseastaTutkinnostaSuoritus'
     arviointi?: Array<AmmatillinenArviointi>
-    näyttö?: Näyttö
+    näyttö?: NäyttöAmmatillinenOsottainenUseastaTutkinnosta
     tyyppi: Koodistokoodiviite<'suorituksentyyppi', 'ammatillisentutkinnonosa'>
     tila?: Koodistokoodiviite<'suorituksentila', string>
     alkamispäivä?: string
@@ -38,7 +38,7 @@ export type YhteisenOsittaisenAmmatillisenTutkinnonTutkinnonosanUseastaTutkinnos
 export const YhteisenOsittaisenAmmatillisenTutkinnonTutkinnonosanUseastaTutkinnostaSuoritus =
   (o: {
     arviointi?: Array<AmmatillinenArviointi>
-    näyttö?: Näyttö
+    näyttö?: NäyttöAmmatillinenOsottainenUseastaTutkinnosta
     tyyppi?: Koodistokoodiviite<'suorituksentyyppi', 'ammatillisentutkinnonosa'>
     tila?: Koodistokoodiviite<'suorituksentila', string>
     alkamispäivä?: string

@@ -4,7 +4,7 @@ import { LocalizedString } from './LocalizedString'
 import { NäytönSuoritusaika } from './NaytonSuoritusaika'
 
 /**
- * Tutkinnon tai koulutuksen osan suoritukseen kuuluvan ammattiosaamisen näytön tiedot.
+ * Näyttö, jossa mukana työssäoppimisen tieto ja todistus-halukkuus.
  *
  * @see `fi.oph.koski.schema.Näyttö`
  */

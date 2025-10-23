@@ -24,7 +24,6 @@ export type MuunOsittaisenAmmatillisenTutkinnonTutkinnonosanUseastaTutkinnostaSu
     alkamispäivä?: string
     suorituskieli?: Koodistokoodiviite<'kieli', string>
     lisätiedot?: Array<AmmatillisenTutkinnonOsanLisätieto>
-    korotettu?: Koodistokoodiviite<'ammatillisensuorituksenkorotus', string>
     koulutusmoduuli: MuuKuinYhteinenTutkinnonOsa
     tunnustettu?: OsaamisenTunnustaminen
     toimipiste?: OrganisaatioWithOid
@@ -45,7 +44,6 @@ export const MuunOsittaisenAmmatillisenTutkinnonTutkinnonosanUseastaTutkinnostaS
     alkamispäivä?: string
     suorituskieli?: Koodistokoodiviite<'kieli', string>
     lisätiedot?: Array<AmmatillisenTutkinnonOsanLisätieto>
-    korotettu?: Koodistokoodiviite<'ammatillisensuorituksenkorotus', string>
     koulutusmoduuli: MuuKuinYhteinenTutkinnonOsa
     tunnustettu?: OsaamisenTunnustaminen
     toimipiste?: OrganisaatioWithOid
