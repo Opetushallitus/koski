@@ -107,8 +107,11 @@ object OppijaEditorModel extends Timing {
     (primary, secondary, trinary)
   }
 
-  def ammatillisenSuoritustenJärjestysKriteeri(s: AmmatillinenPäätasonSuoritus): Int = {
-    s.alkamispäivä.map(a => -a.toEpochDay.toInt).getOrElse(0)
+  def ammatillisenSuoritustenJärjestysKriteeri(s: AmmatillinenPäätasonsuoritusLike): Int = s match {
+    case a: AmmatillinenPäätasonSuoritus =>
+      a.alkamispäivä.map(a => -a.toEpochDay.toInt).getOrElse(0)
+    case _ =>
+      Int.MaxValue
   }
 
   def ibSuoritustenJärjestysKriteeri(s : IBPäätasonSuoritus): Int = {
