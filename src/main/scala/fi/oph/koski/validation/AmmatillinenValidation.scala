@@ -176,7 +176,7 @@ object AmmatillinenValidation {
     oldState: KoskeenTallennettavaOpiskeluoikeus,
     newState: KoskeenTallennettavaOpiskeluoikeus
   ): HttpStatus = {
-    def getKorotettuOpiskeluoikeusOid(s: AmmatillinenPäätasonSuoritus): Option[String] = s match {
+    def getKorotettuOpiskeluoikeusOid(s: AmmatillinenPäätasonsuoritusLike): Option[String] = s match {
       case s: AmmatillisenTutkinnonOsittainenSuoritus => s.korotettuOpiskeluoikeusOid
       case _ => None
     }

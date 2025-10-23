@@ -79,13 +79,9 @@ test.describe('Osittaisen ammatillisen tutkinnon useasta tutkinnosta virkailijan
 
     await expect(page.getByTestId('oo.0.suoritukset.0.koulutus')).toContainText('Ammatillisen tutkinnon osia useasta tutkinnosta')
     await expect(page.getByTestId('oo.0.suoritukset.0.suoritustapa')).toContainText('Reformin mukainen näyttö')
-    await expect(page.getByTestId('oo.0.suoritukset.0.0.tutkintonimike.value')).toContainText('Automekaanikko')
-    await expect(page.getByTestId('oo.0.suoritukset.0.0.osaamisala')).toContainText('Ajoneuvotekniikan osaamisala')
     await expect(page.getByTestId('oo.0.suoritukset.0.organisaatio.value')).toContainText('Stadin ammatti- ja aikuisopisto, Lehtikuusentien toimipaikka')
     await expect(page.getByTestId('oo.0.suoritukset.0.suorituskieli.value')).toContainText('suomi')
-    await expect(page.getByTestId('oo.0.suoritukset.0.0.järjestämismuoto')).toContainText('Koulutuksen järjestäminen oppilaitosmuotoisena')
     await expect(page.getByTestId('oo.0.suoritukset.0.todistuksellaNäkyvätLisätiedot.value')).toContainText('Suorittaa toista osaamisalaa')
-
     await expect(page.getByTestId('oo.0.suoritukset.0.suorituksenVahvistus.value.status')).toContainText('Suoritus valmis')
     await expect(page.getByTestId('oo.0.suoritukset.0.suorituksenVahvistus.value.details')).toContainText('Vahvistus: 31.5.2024 Stadin ammatti- ja aikuisopisto')
     await expect(page.getByTestId('oo.0.suoritukset.0.suorituksenVahvistus.value.henkilö.0')).toContainText('Reijo Reksi (rehtori)')
@@ -264,13 +260,8 @@ test.describe('Osittaisen ammatillisen tutkinnon useasta tutkinnosta kansalaisen
     // Suorituksen tiedot
     await expect(page.getByTestId('oo.0.suoritukset.0.koulutus')).toContainText('Ammatillisen tutkinnon osia useasta tutkinnosta')
     await expect(page.getByTestId('oo.0.suoritukset.0.suoritustapa')).toContainText('Reformin mukainen näyttö')
-    await expect(page.getByTestId('oo.0.suoritukset.0.0.tutkintonimike.value')).toContainText('Automekaanikko')
-    await expect(page.getByTestId('oo.0.suoritukset.0.0.osaamisala')).toContainText('Ajoneuvotekniikan osaamisala')
     await expect(page.getByTestId('oo.0.suoritukset.0.organisaatio.value')).toContainText('Stadin ammatti- ja aikuisopisto, Lehtikuusentien toimipaikka')
     await expect(page.getByTestId('oo.0.suoritukset.0.suorituskieli.value')).toContainText('suomi')
-    await expect(page.getByTestId('oo.0.suoritukset.0.0.alku')).toContainText('1.9.2022')
-    await expect(page.getByTestId('oo.0.suoritukset.0.0.järjestämismuoto')).toContainText('Koulutuksen järjestäminen oppilaitosmuotoisena')
-    await expect(page.getByTestId('oo.0.suoritukset.0.todistuksellaNäkyvätLisätiedot.value')).toContainText('Suorittaa toista osaamisalaa')
 
     // Tutkinnon osat
     await expect(page.getByTestId('oo.0.suoritukset.0.osasuoritukset.4.laajuus.value')).toContainText('11 osp')

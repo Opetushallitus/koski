@@ -4,7 +4,7 @@ import { OrganisaatioHierarkia } from '../../types/fi/oph/koski/organisaatio/Org
 import { AmmatillinenOpiskeluoikeudenTila } from '../../types/fi/oph/koski/schema/AmmatillinenOpiskeluoikeudenTila'
 import { AmmatillinenOpiskeluoikeus } from '../../types/fi/oph/koski/schema/AmmatillinenOpiskeluoikeus'
 import { AmmatillinenOpiskeluoikeusjakso } from '../../types/fi/oph/koski/schema/AmmatillinenOpiskeluoikeusjakso'
-import { AmmatillinenPäätasonSuoritus } from '../../types/fi/oph/koski/schema/AmmatillinenPaatasonSuoritus'
+import { AmmatillinenPäätasonsuoritusLike } from '../../types/fi/oph/koski/schema/AmmatillinenPaatasonsuoritusLike'
 import { AmmatillinenTutkintoKoulutus } from '../../types/fi/oph/koski/schema/AmmatillinenTutkintoKoulutus'
 import { AmmatilliseenTehtäväänValmistavaKoulutus } from '../../types/fi/oph/koski/schema/AmmatilliseenTehtavaanValmistavaKoulutus'
 import { AmmatillisenOpiskeluoikeudenLisätiedot } from '../../types/fi/oph/koski/schema/AmmatillisenOpiskeluoikeudenLisatiedot'
@@ -114,7 +114,7 @@ const createAmmatillinenPäätasonSuoritus = (
   tutkinto?: TutkintoPeruste,
   peruste?: Peruste,
   tutkinnonOsaaPienemmistäKokonaisuuksistaKoostuvaKoulutus?: TutkinnonOsaaPienemmistäKokonaisuuksistaKoostuvaKoulutus
-): AmmatillinenPäätasonSuoritus | undefined => {
+): AmmatillinenPäätasonsuoritusLike | undefined => {
   switch (suorituksenTyyppi.koodiarvo) {
     case 'ammatillinentutkintoosittainen':
       if (!tutkinto || !suoritustapa) return undefined
