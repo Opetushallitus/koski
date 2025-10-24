@@ -1,8 +1,9 @@
 package fi.oph.koski.json
 
 import fi.oph.koski.schema.KoskiSchema.schemaFactory
+import fi.oph.koski.schema.policy.SerializationPolicy
 import fi.oph.scalaschema.extraction.ValidationError
-import fi.oph.scalaschema.{SchemaValidatingExtractor, _}
+import fi.oph.scalaschema._
 import org.json4s.JValue
 import org.json4s.jackson.JsonMethods
 

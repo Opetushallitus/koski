@@ -44,6 +44,13 @@ case class InfoLinkUrl(url: String) extends RepresentationalMetadata
 /* Numeric field should be rendered using this scale */
 case class Scale(numberOfDigits: Int) extends RepresentationalMetadata
 
+/**
+ * Marks a field to be deserialized only so they won't appear in output JSON nor generated JSON Schemas
+ */
+case class DeserializeOnly() extends RepresentationalMetadata {
+  override def appendMetadataToJsonSchema(obj: JObject): JObject = obj
+}
+
 case class EnumValues(values: Set[String]) extends RepresentationalMetadata {
   override def applyMetadata(o: ObjectWithMetadata[_], schemaFactory: SchemaFactory): ObjectWithMetadata[_] = {
     val metadata = o match {
