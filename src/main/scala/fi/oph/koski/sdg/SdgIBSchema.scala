@@ -132,9 +132,9 @@ case class PreIBSuoritus2019(
   toimipiste: Option[Toimipiste],
   vahvistus: Option[Vahvistus],
   suorituskieli: schema.Koodistokoodiviite,
-  omanÄidinkielenOpinnot: Option[LukionOmanÄidinkielenOpinnot] = None, // TODO osasuorituksista tunnustettu booleaniksi, tila pois, SAMA LUKIO 2019:aan
-  puhviKoe: Option[LukionArviointi], // TODO KUVAUS POIS, MYÖS LUKIO 2019
-  suullisenKielitaidonKokeet: Option[List[SuullisenKielitaidonKoe2019]] = None, // TODO KUVAUS POIS, MYÖS LUKIO 2019
+  omanÄidinkielenOpinnot: Option[LukionOmanÄidinkielenOpinnot] = None,
+  puhviKoe: Option[LukionArviointi],
+  suullisenKielitaidonKokeet: Option[List[SuullisenKielitaidonKoe2019]] = None,
   osasuoritukset: Option[List[PreIBSuorituksenOsasuoritus2019]],
   @KoodistoKoodiarvo("preiboppimaara")
   tyyppi: schema.Koodistokoodiviite,
@@ -195,8 +195,8 @@ case class MuidenLukioOpintojenPreIBSuoritus2019(
   tyyppi: schema.Koodistokoodiviite
 ) extends PreIBSuorituksenOsasuoritus2019
 
-trait PreIBLukioOpintojenOsasuoritus
-trait PreIBMuidenLukioOpintojenOsasuoritus2019
+trait PreIBLukioOpintojenOsasuoritus extends WithTunnustettuBoolean
+trait PreIBMuidenLukioOpintojenOsasuoritus2019 extends WithTunnustettuBoolean
 
 @Title("Pre-IB lukion moduulin suoritus oppiaineissa 2019")
 @OnlyWhen("../../tyyppi/koodiarvo", "lukionoppiaine")
@@ -207,7 +207,7 @@ case class PreIBLukionModuulinSuoritusOppiaineissa2019(
   suorituskieli: Option[schema.Koodistokoodiviite],
   tyyppi: schema.Koodistokoodiviite,
   tunnustettu: Option[schema.OsaamisenTunnustaminen]
-) extends PreIBLukioOpintojenOsasuoritus with WithTunnustettuBoolean
+) extends PreIBLukioOpintojenOsasuoritus
 
 @Title("Pre-IB lukion paikallisen opintojakson suoritus 2019")
 case class PreIBLukionPaikallisenOpintojaksonSuoritus2019(
@@ -219,7 +219,6 @@ case class PreIBLukionPaikallisenOpintojaksonSuoritus2019(
   tunnustettu: Option[schema.OsaamisenTunnustaminen]
 ) extends PreIBLukioOpintojenOsasuoritus
   with PreIBMuidenLukioOpintojenOsasuoritus2019
-  with WithTunnustettuBoolean
 
 @Title("Pre-IB lukion moduulin suoritus muissa opinnoissa 2019")
 @OnlyWhen("../../tyyppi/koodiarvo", "lukionmuuopinto")
@@ -230,4 +229,3 @@ case class PreIBLukionModuulinSuoritusMuissaOpinnoissa2019(
   tyyppi: schema.Koodistokoodiviite,
   tunnustettu: Option[schema.OsaamisenTunnustaminen]
 ) extends PreIBMuidenLukioOpintojenOsasuoritus2019
-  with WithTunnustettuBoolean

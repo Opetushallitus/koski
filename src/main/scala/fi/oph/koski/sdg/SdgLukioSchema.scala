@@ -2,7 +2,7 @@ package fi.oph.koski.sdg
 
 import fi.oph.koski.schema
 import fi.oph.koski.schema.annotation.{KoodistoKoodiarvo, KoodistoUri}
-import fi.oph.scalaschema.annotation.{NotWhen, OnlyWhen, Title}
+import fi.oph.scalaschema.annotation.{NotWhen, OnlyWhen, SkipSerialization, Title}
 
 import java.time.LocalDate
 
@@ -35,7 +35,7 @@ case class LukionOppimääränSuoritus2015(
   toimipiste: Option[Toimipiste],
   vahvistus: Option[Vahvistus] = None,
   suorituskieli: schema.Koodistokoodiviite,
-  omanÄidinkielenOpinnot: Option[schema.OmanÄidinkielenOpinnotLaajuusKursseina] = None,
+  omanÄidinkielenOpinnot: Option[LukionOmanÄidinkielenOpinnot],
   @Title("Oppiaineet")
   osasuoritukset: Option[List[LukionOppimääränOsasuoritus2015]],
   @KoodistoKoodiarvo("lukionoppimaara")
@@ -70,9 +70,9 @@ case class MuidenLukioOpintojenSuoritus2015(
   osasuoritukset: Option[List[LukionOsasuoritus2015]]
 ) extends LukionOppimääränOsasuoritus2015
 
-trait LukionOsasuoritus2015
+trait LukionOsasuoritus2015 extends WithTunnustettuBoolean
 
-@Title("Lukion kurssi 2015")
+@Title("Lukion kurssin suoritus")
 case class LukionKurssinSuoritus2015(
   koulutusmoduuli: schema.LukionKurssi2015,
   arviointi: Option[List[LukionArviointi]] = None,
@@ -83,7 +83,6 @@ case class LukionKurssinSuoritus2015(
   suoritettuSuullisenaKielikokeena: Option[Boolean] = None,
   tunnustettu: Option[schema.OsaamisenTunnustaminen]
 ) extends LukionOsasuoritus2015
-  with WithTunnustettuBoolean
 
 @Title("Lukion oppimäärän suoritus 2019")
 @OnlyWhen("koulutusmoduuli/perusteenDiaarinumero", "OPH-2263-2019")
@@ -98,9 +97,9 @@ case class LukionOppimääränSuoritus2019(
   suorituskieli: schema.Koodistokoodiviite,
   @Title("Lukion oppimäärää täydentävät oman äidinkielen opinnot")
   omanÄidinkielenOpinnot: Option[schema.LukionOmanÄidinkielenOpinnot],
-  puhviKoe: Option[schema.PuhviKoe2019],
-  suullisenKielitaidonKokeet: Option[List[schema.SuullisenKielitaidonKoe2019]],
-  lukiodiplomit2019: Option[List[schema.LukiodiplominSuoritusJaArviointi]],
+  puhviKoe: Option[LukionArviointi],
+  suullisenKielitaidonKokeet: Option[List[SuullisenKielitaidonKoe2019]],
+  lukiodiplomit2019: Option[List[LukionArviointi]],
   osasuoritukset: Option[List[LukionOppimääränOsasuoritus2019]],
   @KoodistoKoodiarvo("lukionoppimaara")
   tyyppi: schema.Koodistokoodiviite,
@@ -125,7 +124,7 @@ case class LukionOppiaineenSuoritus2019(
   tyyppi: schema.Koodistokoodiviite
 ) extends LukionOppimääränOsasuoritus2019
 
-trait LukionOppiaineenOsasuoritus2019
+trait LukionOppiaineenOsasuoritus2019 extends WithTunnustettuBoolean
 
 @Title("Muiden lukion opintojen suoritus 2019")
 case class MuidenLukioOpintojenSuoritus2019(
@@ -133,9 +132,9 @@ case class MuidenLukioOpintojenSuoritus2019(
   tyyppi: schema.Koodistokoodiviite,
   koulutusmoduuli: schema.MuutSuorituksetTaiVastaavat2019,
   osasuoritukset: Option[List[MuidenLukioOpintojenOsasuoritus2019]]
-) extends LukionOppimääränOsasuoritus2019 // EI TILAA mUUTEN KAIKKI
+) extends LukionOppimääränOsasuoritus2019
 
-trait MuidenLukioOpintojenOsasuoritus2019
+trait MuidenLukioOpintojenOsasuoritus2019 extends WithTunnustettuBoolean
 
 @Title("Lukion moduulin suoritus oppiaineissa 2019")
 @OnlyWhen("../../tyyppi/koodiarvo", "lukionoppiaine")
@@ -147,7 +146,7 @@ case class LukionModuulinSuoritusOppiaineissa2019(
   @KoodistoKoodiarvo("lukionvaltakunnallinenmoduuli")
   tyyppi: schema.Koodistokoodiviite,
   tunnustettu: Option[schema.OsaamisenTunnustaminen]
-) extends LukionOppiaineenOsasuoritus2019 with WithTunnustettuBoolean
+) extends LukionOppiaineenOsasuoritus2019
 
 @Title("Lukion moduulin suoritus muissa opinnoissa 2019")
 case class LukionModuulinSuoritusMuissaOpinnoissa2019(
@@ -156,7 +155,7 @@ case class LukionModuulinSuoritusMuissaOpinnoissa2019(
   suorituskieli: Option[schema.Koodistokoodiviite],
   tyyppi: schema.Koodistokoodiviite,
   tunnustettu: Option[schema.OsaamisenTunnustaminen]
-) extends MuidenLukioOpintojenOsasuoritus2019 with WithTunnustettuBoolean
+) extends MuidenLukioOpintojenOsasuoritus2019
 
 @Title("Lukion paikallisen opintojakson suoritus 2019")
 case class LukionPaikallisenOpintojaksonSuoritus2019(
@@ -169,7 +168,6 @@ case class LukionPaikallisenOpintojaksonSuoritus2019(
   tunnustettu: Option[schema.OsaamisenTunnustaminen]
 ) extends LukionOppiaineenOsasuoritus2019
   with MuidenLukioOpintojenOsasuoritus2019
-  with WithTunnustettuBoolean
 
 case class LukionArviointi (
   arvosana: schema.Koodistokoodiviite,

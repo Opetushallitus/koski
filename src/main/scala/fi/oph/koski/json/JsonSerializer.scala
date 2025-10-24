@@ -34,16 +34,7 @@ object JsonSerializer {
   }
 
   def serialize[T: TypeTag](obj: T, includeClassReferences: Boolean = false)(implicit user: SensitiveDataAllowed): JValue = {
-    val baseCtx = SensitiveAndRedundantDataFilter(user).serializationContext.copy(includeClassReferences = includeClassReferences)
-
-    val filteredCtx = baseCtx.copy(
-      propertyProcessor = (cls, prop) => {
-        val processed = baseCtx.propertyProcessor(cls, prop)
-        processed.filterNot(p => SerializationPolicy.shouldOmit(p.metadata))
-      }
-    )
-
-    Serializer.serialize(obj, filteredCtx)
+    Serializer.serialize(obj, SensitiveAndRedundantDataFilter(user).serializationContext.copy(includeClassReferences = includeClassReferences))
   }
 
   def serialize(obj: Any, schema: Schema)(implicit user: SensitiveDataAllowed): JValue = {
