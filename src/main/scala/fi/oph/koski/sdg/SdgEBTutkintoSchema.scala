@@ -7,57 +7,57 @@ import fi.oph.scalaschema.annotation.Title
 import java.time.LocalDate
 
 @Title("EB-tutkinnon opiskeluoikeus")
-case class SdgEBTutkinnonOpiskeluoikeus(
+case class EBTutkinnonOpiskeluoikeus(
   oid: Option[String],
   versionumero: Option[Int],
   oppilaitos: Option[schema.Oppilaitos],
   koulutustoimija: Option[schema.Koulutustoimija],
-  tila: schema.EBOpiskeluoikeudenTila,
-  suoritukset: List[SdgEBTutkinnonPäätasonSuoritus],
+  tila: OpiskeluoikeudenTila,
+  suoritukset: List[EBTutkinnonPäätasonSuoritus],
   @KoodistoKoodiarvo(schema.OpiskeluoikeudenTyyppi.ebtutkinto.koodiarvo)
   tyyppi: schema.Koodistokoodiviite,
-) extends SdgKoskeenTallennettavaOpiskeluoikeus {
-  override def withSuoritukset(suoritukset: List[Suoritus]): SdgKoskeenTallennettavaOpiskeluoikeus =
+) extends Opiskeluoikeus {
+  override def withSuoritukset(suoritukset: List[Suoritus]): EBTutkinnonOpiskeluoikeus =
     this.copy(
-      suoritukset = suoritukset.collect { case s: SdgEBTutkinnonPäätasonSuoritus => s }
+      suoritukset = suoritukset.collect { case s: EBTutkinnonPäätasonSuoritus => s }
     )
 }
 
 @Title("EB-tutkinnon suoritus")
-case class SdgEBTutkinnonPäätasonSuoritus(
+case class EBTutkinnonPäätasonSuoritus(
   koulutusmoduuli: schema.EBTutkinto,
   vahvistus: Option[Vahvistus],
   toimipiste: Option[Toimipiste],
   @KoodistoKoodiarvo("ebtutkinto")
   tyyppi: schema.Koodistokoodiviite,
-  osasuoritukset: Option[List[SdgEBTutkinnonOsasuoritus]],
+  osasuoritukset: Option[List[EBTutkinnonOsasuoritus]],
   yleisarvosana: Option[Double]
 ) extends Suoritus {
-  override def withOsasuoritukset(os: Option[List[Osasuoritus]]): SdgEBTutkinnonPäätasonSuoritus =
-    this.copy(osasuoritukset = os.map(_.collect { case s: SdgEBTutkinnonOsasuoritus => s }))
+  override def withOsasuoritukset(os: Option[List[Osasuoritus]]): EBTutkinnonPäätasonSuoritus =
+    this.copy(osasuoritukset = os.map(_.collect { case s: EBTutkinnonOsasuoritus => s }))
 }
 
 @Title("EB-tutkinnon osasuoritus")
-case class SdgEBTutkinnonOsasuoritus(
+case class EBTutkinnonOsasuoritus(
   @Title("Oppiaine")
   koulutusmoduuli: schema.SecondaryOppiaine,
   @KoodistoKoodiarvo("ebtutkinnonosasuoritus")
   tyyppi: schema.Koodistokoodiviite,
   suorituskieli: schema.Koodistokoodiviite,
-  osasuoritukset: Option[List[SdgEBOppiaineenAlaosasuoritus]] = None
+  osasuoritukset: Option[List[EBOppiaineenAlaosasuoritus]] = None
 ) extends Osasuoritus
 
 @Title("EB-oppiaineen alaosasuoritus")
-case class SdgEBOppiaineenAlaosasuoritus(
+case class EBOppiaineenAlaosasuoritus(
   @Title("Arviointikomponentti")
   koulutusmoduuli: schema.EBOppiaineKomponentti,
-  arviointi: Option[List[SdgEBTutkintoFinalMarkArviointi]] = None,
+  arviointi: Option[List[EBTutkintoFinalMarkArviointi]] = None,
   @KoodistoKoodiarvo("ebtutkinnonalaosasuoritus")
   tyyppi: schema.Koodistokoodiviite
 ) extends Osasuoritus
 
 @Title("EB-tutkinnon Final Mark -arviointi")
-case class SdgEBTutkintoFinalMarkArviointi(
+case class EBTutkintoFinalMarkArviointi(
   arvosana: schema.Koodistokoodiviite,
   päivä: Option[LocalDate],
 )
