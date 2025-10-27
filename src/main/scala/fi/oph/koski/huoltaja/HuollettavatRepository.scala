@@ -17,7 +17,7 @@ object HuollettavatRepository {
     if (Environment.isMockEnvironment(config) || config.getString("vtj.serviceUrl") == "mock") {
       new MockHuollettavatRepository
     } else {
-      val vtjClient = VtjClient(config)
+      val vtjClient = VtjClientBuilder.build(config)
       new RemoteHuollettavatRepositoryVTJ(vtjClient)
     }
   }
