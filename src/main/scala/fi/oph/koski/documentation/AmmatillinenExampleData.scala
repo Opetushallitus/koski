@@ -24,6 +24,7 @@ object AmmatillinenExampleData {
   val tietoJaViestintäTekniikanPerustutkinto: AmmatillinenTutkintoKoulutus = AmmatillinenTutkintoKoulutus(Koodistokoodiviite("341101", "koulutus"), Some("OPH-1117-2019"))
   val virheellinenPuuteollisuudenPerustutkinto: AmmatillinenTutkintoKoulutus = AmmatillinenTutkintoKoulutus(Koodistokoodiviite("351741", "koulutus"), Some("OPH-992455-2017"))
   val validaatoitaOhittavaKoulutusmoduuli: AmmatillinenTutkintoKoulutus = AmmatillinenTutkintoKoulutus(Koodistokoodiviite("351741", "koulutus"), Some("OPH-2524-2017"))
+  val liikunnanJaValmennuksenAmmattitutkinto: AmmatillinenTutkintoKoulutus = AmmatillinenTutkintoKoulutus(Koodistokoodiviite("384248", "koulutus"), Some("OPH-1161-2018"))
 
   val tutkinnonOsaaPienemmistäKokonaisuuksistaKoostuvaKoulutus: TutkinnonOsaaPienemmistäKokonaisuuksistaKoostuvaKoulutus = TutkinnonOsaaPienemmistäKokonaisuuksistaKoostuvaKoulutus(
     PaikallinenKoodi("KISI", "Kiinteistösihteerin koulutus ja tutkinto (KISI)"),
@@ -51,6 +52,7 @@ object AmmatillinenExampleData {
   def puuteollisuudenPerustutkinnonSuoritus(toimipiste: OrganisaatioWithOid = stadinToimipiste): AmmatillisenTutkinnonSuoritus = ammatillinenTutkintoSuoritus(puuteollisuudenPerustutkinto, toimipiste)
   def tietoJaViestintäTekniikanPerustutkinnonSuoritus(toimipiste: OrganisaatioWithOid = stadinToimipiste): AmmatillisenTutkinnonSuoritus = ammatillinenTutkintoSuoritus(tietoJaViestintäTekniikanPerustutkinto, toimipiste)
   def virheellinenPuuteollisuudenPerustutkinnonSuoritus(toimipiste: OrganisaatioWithOid = stadinToimipiste): AmmatillisenTutkinnonSuoritus = ammatillinenTutkintoSuoritus(virheellinenPuuteollisuudenPerustutkinto, toimipiste)
+  def liikunnanJaValmennuksenAmmattitutkinnonSuoritus(toimipiste: OrganisaatioWithOid = stadinToimipiste): AmmatillisenTutkinnonSuoritus = ammatillinenTutkintoSuoritus(liikunnanJaValmennuksenAmmattitutkinto, toimipiste).copy(suoritustapa = suoritustapaReformi)
 
   def kiinteistösihteerinTutkinnonOsaaPienempiMuuAmmatillinenKokonaisuus(toimipiste: OrganisaatioWithOid = stadinToimipiste): TutkinnonOsaaPienemmistäKokonaisuuksistaKoostuvaSuoritus =
     tutkinnonOsaaPienempienKokonaisuuksienSuoritus(
@@ -1052,4 +1054,6 @@ object AmmatillinenExampleData {
       suoritukset = List(näyttötutkinnonSuoritus, näyttötutkintoonValmistavaSuoritus)
     )
   }
+
+  def ammatillinenOpiskeluoikeusLiikunnanJaValmennuksenAmmattitutkinto = opiskeluoikeus(tutkinto = liikunnanJaValmennuksenAmmattitutkinnonSuoritus())
 }

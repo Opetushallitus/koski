@@ -1998,6 +1998,15 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
             verifyResponseStatusOk()
           }
         }
+
+        "Duplikaatin tallennus onnistuu, kun perusteen diaarinumeron perusteella duplikaatti on erikseen sallittu" in {
+          setupOppijaWithOpiskeluoikeus(ammatillinenOpiskeluoikeusLiikunnanJaValmennuksenAmmattitutkinto){
+            verifyResponseStatusOk()
+          }
+          postOpiskeluoikeus(ammatillinenOpiskeluoikeusLiikunnanJaValmennuksenAmmattitutkinto){
+            verifyResponseStatusOk()
+          }
+        }
       }
     }
 

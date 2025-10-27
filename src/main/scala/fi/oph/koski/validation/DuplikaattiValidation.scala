@@ -1,14 +1,17 @@
 package fi.oph.koski.validation
 
+import com.typesafe.config.Config
 import fi.oph.koski.henkilo.LaajatOppijaHenkilöTiedot
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.koskiuser.KoskiSpecificSession
 import fi.oph.koski.log.Logging
 import fi.oph.koski.opiskeluoikeus.CompositeOpiskeluoikeusRepository
-import fi.oph.koski.schema.{KielitutkinnonPäätasonSuoritus, _}
+import fi.oph.koski.schema._
 import fi.oph.koski.validation.PerusopetuksenOpiskeluoikeusValidation.sisältääNuortenPerusopetuksenOppimääränTaiVuosiluokanSuorituksen
+import scala.collection.JavaConverters._
 
 object DuplikaattiValidation extends Logging {
+
   def samaOo(oo1: Opiskeluoikeus, oo2: Opiskeluoikeus): Boolean = {
     val samaOid = oo2.oid.isDefined && oo2.oid == oo1.oid
     val samaLähdejärjestelmänId = oo2.lähdejärjestelmänId.isDefined && oo2.lähdejärjestelmänId == oo1.lähdejärjestelmänId
@@ -19,6 +22,7 @@ object DuplikaattiValidation extends Logging {
      opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus,
      oppijanHenkilötiedot: LaajatOppijaHenkilöTiedot,
      opiskeluoikeusRepository: CompositeOpiskeluoikeusRepository,
+     config: Config
    ): HttpStatus = {
     lazy val isMuuAmmatillinenOpiskeluoikeus: Boolean =
       opiskeluoikeus.suoritukset.forall {
@@ -74,12 +78,16 @@ object DuplikaattiValidation extends Logging {
     lazy val aiemminTallennettuOpiskeluoikeus = oppijanOpiskeluoikeudet.map(_.find(samaOo(opiskeluoikeus, _)))
 
     def samaDiaarinumeroAmmatillinen(muuOpiskeluoikeus: AmmatillinenOpiskeluoikeus): Boolean = {
-      def diaarinumerot = (oo: Opiskeluoikeus) => oo.suoritukset
+      val duplikaatinSallivatAmmatillisenKoulutuksenPerusteenDiaarinumerot: Seq[String] =
+        config.getStringList("validaatiot.duplikaatinSallivatAmmatillisenKoulutuksenPerusteenDiaarinumerot").asScala
+
+      def diaarinumerot(oo: Opiskeluoikeus): List[String] = oo.suoritukset
         .collect { case s: AmmatillisenTutkinnonOsittainenTaiKokoTutkintoKolutuksenSuoritus => s }
         .flatMap(s => s.koulutusmoduuli.perusteenDiaarinumero)
 
       opiskeluoikeus match {
-        case x: AmmatillinenOpiskeluoikeus => diaarinumerot(x).intersect(diaarinumerot(muuOpiskeluoikeus)).nonEmpty
+        case oo: AmmatillinenOpiskeluoikeus if diaarinumerot(oo).intersect(duplikaatinSallivatAmmatillisenKoulutuksenPerusteenDiaarinumerot).nonEmpty => false
+        case oo: AmmatillinenOpiskeluoikeus => diaarinumerot(oo).intersect(diaarinumerot(muuOpiskeluoikeus)).nonEmpty
         case _ => false
       }
     }

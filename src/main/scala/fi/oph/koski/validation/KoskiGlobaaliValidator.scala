@@ -80,7 +80,8 @@ class KoskiGlobaaliValidator(
                 DuplikaattiValidation.validateDuplikaatit(
                   opiskeluoikeus,
                   h,
-                  opiskeluoikeusRepository
+                  opiskeluoikeusRepository,
+                  config
                 )
               case _ => HttpStatus.ok
             }
