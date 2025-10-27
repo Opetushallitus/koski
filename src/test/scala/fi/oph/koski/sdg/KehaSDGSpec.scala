@@ -118,6 +118,29 @@ class KehaSDGSpec
         koodiarvot should equal(List("EA", "EA", "EA", "YH", "YH", "YH", "N", "N", "N", "A", "A", "A", "A"))
       }
     }
+
+
+    "Lukio tulee läpi" in {
+      postHetu(KoskiSpecificMockOppijat.lukiolainen.hetu.get) {
+        verifyResponseStatusOk()
+
+        val response = JsonSerializer.parse[Oppija](body)
+
+        response.henkilö.hetu should equal(KoskiSpecificMockOppijat.lukiolainen.hetu)
+        response.opiskeluoikeudet.map(_.tyyppi.koodiarvo) should equal(List("lukiokoulutus"))
+      }
+    }
+
+    "Lukio ei paljasta tunnustettu-kenttää mutta tunnustettuBoolean tulee läpi" in {
+      postHetu(KoskiSpecificMockOppijat.lukiolainen.hetu.get) {
+        verifyResponseStatusOk()
+
+        body should not include ("\"tunnustettu\"")
+        body should include("\"tunnustettuBoolean\":true")
+        body should include("\"tunnustettuBoolean\":false")
+      }
+
+    }
   }
 
   private def postHetu[A](hetu: String, user: MockUser = MockUsers.kehaSdgKäyttäjä)(f: => A): A = {
