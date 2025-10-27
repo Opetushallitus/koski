@@ -49,15 +49,6 @@ export default ({ location, user }) => {
           (path, loc) => loc.startsWith(path)
         )}
       </li>
-      {user.hasKelaUiAccess && <KelaNavLink location={location} />}
     </ul>
   )
 }
-
-const KelaNavLink = ({ location }) => (
-  <li>
-    {naviLink('/koski/kela', 'Kela', location.path, '', (path, loc) =>
-      loc.startsWith(path)
-    )}
-  </li>
-)
