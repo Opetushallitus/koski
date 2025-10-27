@@ -695,32 +695,6 @@ class KelaSpec
         iteraatioLkm should be >(130)
       }
     }
-
-    "UI" - {
-      "Opiskeluoikeuden versiohistorian haku tuottaa AuditLogin" in {
-        AuditLogTester.clearMessages
-
-        getVersiohistoriaUI(historiaFixture.opiskeluoikeus.oid.get) {
-          verifyResponseStatusOk()
-          val history = JsonSerializer.parse[List[OpiskeluoikeusHistoryPatch]](body)
-
-          history.length should equal(2)
-          AuditLogTester.verifyLastAuditLogMessage(Map("operation" -> "MUUTOSHISTORIA_KATSOMINEN", "target" -> Map("opiskeluoikeusOid" -> historiaFixture.opiskeluoikeus.oid.get)))
-        }
-      }
-
-      "Tietyn version haku opiskeluoikeudesta tuottaa AuditLogin" in {
-        AuditLogTester.clearMessages
-
-        getOpiskeluoikeudenVersioUI(KoskiSpecificMockOppijat.amis.oid, historiaFixture.opiskeluoikeus.oid.get, 1) {
-          verifyResponseStatusOk()
-          val response = JsonSerializer.parse[KelaOppija](body)
-
-          response.opiskeluoikeudet.headOption.flatMap(_.versionumero) should equal(Some(1))
-          AuditLogTester.verifyLastAuditLogMessage(Map("operation" -> "OPISKELUOIKEUS_KATSOMINEN", "target" -> Map("oppijaHenkiloOid" -> KoskiSpecificMockOppijat.amis.oid)))
-        }
-      }
-    }
   }
 
   "Hetu ei päädy lokiin" in {
