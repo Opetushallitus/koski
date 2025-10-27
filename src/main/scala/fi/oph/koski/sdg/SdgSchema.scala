@@ -1,17 +1,17 @@
 package fi.oph.koski.sdg
 
 import fi.oph.koski.schema
-import fi.oph.koski.schema.{Koodistokoodiviite, Koulutustoimija, Opiskeluoikeusjakso, OpiskeluoikeudenTila, Oppilaitos}
-import fi.oph.koski.schema.annotation.{KoodistoUri, Representative}
-import fi.oph.scalaschema.annotation.{Discriminator, SyntheticProperty, Title}
+import fi.oph.koski.schema.annotation.{KoodistoUri}
+import fi.oph.scalaschema.annotation.{Discriminator, SkipSerialization, SyntheticProperty, Title}
 import fi.oph.scalaschema.{ClassSchema, SchemaToJson}
 import org.json4s.JValue
 
 import java.time.LocalDate
 
 object SdgSchema {
-  lazy val schemaJson: JValue =
-    SchemaToJson.toJsonSchema(schema.KoskiSchema.createSchema(classOf[SdgOppija]).asInstanceOf[ClassSchema])
+  lazy val schemaJson: JValue = {
+    SchemaToJson.toJsonSchema(schema.KoskiSchema.createSchema(classOf[Oppija]).asInstanceOf[ClassSchema])
+  }
 
   val schemassaTuetutOpiskeluoikeustyypit: List[String] = List(
     schema.OpiskeluoikeudenTyyppi.korkeakoulutus.koodiarvo,
@@ -19,13 +19,15 @@ object SdgSchema {
     schema.OpiskeluoikeudenTyyppi.ebtutkinto.koodiarvo,
     schema.OpiskeluoikeudenTyyppi.ylioppilastutkinto.koodiarvo,
     schema.OpiskeluoikeudenTyyppi.ammatillinenkoulutus.koodiarvo,
+    schema.OpiskeluoikeudenTyyppi.lukiokoulutus.koodiarvo,
+    schema.OpiskeluoikeudenTyyppi.ibtutkinto.koodiarvo,
   )
 }
 
 @Title("Oppija")
-case class SdgOppija(
+case class Oppija(
   henkilö: Henkilo,
-  opiskeluoikeudet: List[SdgOpiskeluoikeus]
+  opiskeluoikeudet: List[Opiskeluoikeus]
 )
 
 case class Henkilo(
@@ -48,29 +50,45 @@ object Henkilo {
   )
 }
 
-trait SdgOpiskeluoikeus {
-  def oppilaitos: Option[Oppilaitos]
-  def koulutustoimija: Option[Koulutustoimija]
+trait Opiskeluoikeus {
+  def oppilaitos: Option[schema.Oppilaitos]
+  def koulutustoimija: Option[schema.Koulutustoimija]
   def suoritukset: List[Suoritus]
 
   @KoodistoUri("opiskeluoikeudentyyppi")
   @Discriminator
   def tyyppi: schema.Koodistokoodiviite
 
+  def tila: GenericOpiskeluoikeudenTila
+
   @SyntheticProperty
   def alkamispäivä: Option[LocalDate] = schema.Opiskeluoikeus.alkamispäivä(this.tyyppi.koodiarvo, this.tila.opiskeluoikeusjaksot.map(_.alku))
 
   @SyntheticProperty
   def päättymispäivä: Option[LocalDate] = schema.Opiskeluoikeus.päättymispäivä(this.tyyppi.koodiarvo, this.tila.opiskeluoikeusjaksot.map(j => (j.alku, j.tila.koodiarvo)))
-  def tila: OpiskeluoikeudenTila
-  def withSuoritukset(suoritukset: List[Suoritus]): SdgOpiskeluoikeus
+
+  def withSuoritukset(suoritukset: List[Suoritus]): Opiskeluoikeus
 }
 
-trait SdgKoskeenTallennettavaOpiskeluoikeus extends SdgOpiskeluoikeus {
-  def oid: Option[String]
-
-  def versionumero: Option[Int]
+trait GenericOpiskeluoikeudenTila {
+  def opiskeluoikeusjaksot: List[GenericOpiskeluoikeusjakso]
 }
+
+trait GenericOpiskeluoikeusjakso {
+  def alku: LocalDate
+  def tila: schema.Koodistokoodiviite
+}
+
+case class Opiskeluoikeusjakso(
+  alku: LocalDate,
+  @KoodistoUri("koskiopiskeluoikeudentila")
+  tila: schema.Koodistokoodiviite
+) extends GenericOpiskeluoikeusjakso
+
+@Title("Opiskeluoikeuden tila")
+case class OpiskeluoikeudenTila(
+  opiskeluoikeusjaksot: List[Opiskeluoikeusjakso]
+) extends GenericOpiskeluoikeudenTila
 
 trait Suoritus {
   def koulutusmoduuli: schema.Koulutusmoduuli
@@ -92,22 +110,22 @@ trait Osasuoritus
 @Title("Opiskeluoikeuden lisätiedot")
 trait SdgOpiskeluoikeudenLisätiedot
 
-
 trait SuorituksenKoulutusmoduuli {
-  def tunniste: Koodistokoodiviite
+  def tunniste: schema.Koodistokoodiviite
 }
 
 case class Vahvistus(päivä: LocalDate)
 
-object Toimipiste {
-  def fromOrganisaatioWithOid(o: schema.OrganisaatioWithOid) = Toimipiste(
-    oid = o.oid,
-    nimi = o.nimi,
-    kotipaikka = o.kotipaikka
-  )
-}
 case class Toimipiste(
   oid: String,
   nimi: Option[schema.LocalizedString] = None,
-  kotipaikka: Option[Koodistokoodiviite] = None
+  kotipaikka: Option[schema.Koodistokoodiviite] = None
 )
+
+trait WithTunnustettuBoolean {
+  @SkipSerialization
+  def tunnustettu: Option[schema.OsaamisenTunnustaminen]
+
+  @SyntheticProperty
+  def tunnustettuBoolean: Boolean = tunnustettu.nonEmpty
+}
