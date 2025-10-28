@@ -383,21 +383,6 @@ class OppijaValidationIBSpec extends AnyFreeSpec with KoskiHttpSpec with PutOpis
       def osasuorituksilla(os: IBTutkinnonOppiaineenSuoritus*)(pts: IBTutkinnonSuoritus): IBTutkinnonSuoritus =
         filterIbTutkinto()(pts).copy(osasuoritukset = Some(os.toList))
 
-      val extendedEssay = IBDPCoreSuoritus(
-        koulutusmoduuli = IBDPCoreOppiaineExtendedEssay(
-          aine = IBDPCoreOppiaineMuu(
-            tunniste = Koodistokoodiviite("BIO", "oppiaineetib"),
-            ryhmä = Koodistokoodiviite("4", "aineryhmaib"),
-          ),
-          aihe = Finnish("Torakoiden jalostus"),
-        ),
-      )
-
-      val theoryOfKnowledge = IBDPCoreSuoritus(koulutusmoduuli = IBDPCoreOppiaineTheoryOfKnowledge(laajuus = Some(LaajuusOpintopisteissä(1))))
-
-      val casOppiaine = IBDPCoreSuoritus(koulutusmoduuli = IBDPCoreOppiaineCAS(laajuus = Some(LaajuusOpintopisteissä(1))))
-      val casOppiaineArvioinnilla = IBDPCoreSuoritus(koulutusmoduuli = IBDPCoreOppiaineCAS(laajuus = Some(LaajuusOpintopisteissä(1))), arviointi = ibCoreOppiaineenArviointi("7"))
-
       "Ennen rajapäivää" - {
         "Laajuuden ilmoitus kursseina ok" in {
           val oo = createOpiskeluoikeusYhdelläKurssilla(rajapäivä.minusDays(1), LaajuusKursseissa(1))
@@ -430,7 +415,7 @@ class OppijaValidationIBSpec extends AnyFreeSpec with KoskiHttpSpec with PutOpis
 
           "Osasuorituksina" - {
             "Extended Essay ei voi siirtää osasuorituksena" in {
-              val oo = createOpiskeluoikeusYhdelläKurssilla(rajapäivä.minusDays(1), LaajuusKursseissa(1), osasuorituksilla(extendedEssay))
+              val oo = createOpiskeluoikeusYhdelläKurssilla(rajapäivä.minusDays(1), LaajuusKursseissa(1), osasuorituksilla(extendedEssayDPCore))
               setupOppijaWithOpiskeluoikeus(oo) {
                 verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.rakenne.dpCoreDeprecated(
                   "DP Core -oppiaineita ei voi siirtää osasuorituksena ennen 1.8.2024 alkaneelle IB-opiskeluoikeudelle"
@@ -439,14 +424,14 @@ class OppijaValidationIBSpec extends AnyFreeSpec with KoskiHttpSpec with PutOpis
             }
 
             "Extended Essay sallii arvosanan A" in {
-              val oo = createOpiskeluoikeusYhdelläKurssilla(rajapäivä, LaajuusKursseissa(1), osasuorituksilla(extendedEssay.copy(arviointi = ibCoreOppiaineenArviointi("A"))))
+              val oo = createOpiskeluoikeusYhdelläKurssilla(rajapäivä, LaajuusKursseissa(1), osasuorituksilla(extendedEssayDPCore.copy(arviointi = ibCoreOppiaineenArviointi("A"))))
               setupOppijaWithOpiskeluoikeus(oo) {
                 verifyResponseStatusOk()
               }
             }
 
             "Theory of Knowledge ei voi siirtää osasuorituksena" in {
-              val oo = createOpiskeluoikeusYhdelläKurssilla(rajapäivä.minusDays(1), LaajuusKursseissa(1), osasuorituksilla(theoryOfKnowledge))
+              val oo = createOpiskeluoikeusYhdelläKurssilla(rajapäivä.minusDays(1), LaajuusKursseissa(1), osasuorituksilla(theoryOfKnowledgeDPCore))
               setupOppijaWithOpiskeluoikeus(oo) {
                 verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.rakenne.dpCoreDeprecated(
                   "DP Core -oppiaineita ei voi siirtää osasuorituksena ennen 1.8.2024 alkaneelle IB-opiskeluoikeudelle"
@@ -455,14 +440,14 @@ class OppijaValidationIBSpec extends AnyFreeSpec with KoskiHttpSpec with PutOpis
             }
 
             "Theory of Knowledge sallii arvosanan A" in {
-              val oo = createOpiskeluoikeusYhdelläKurssilla(rajapäivä, LaajuusKursseissa(1), osasuorituksilla(theoryOfKnowledge.copy(arviointi = ibCoreOppiaineenArviointi("A"))))
+              val oo = createOpiskeluoikeusYhdelläKurssilla(rajapäivä, LaajuusKursseissa(1), osasuorituksilla(theoryOfKnowledgeDPCore.copy(arviointi = ibCoreOppiaineenArviointi("A"))))
               setupOppijaWithOpiskeluoikeus(oo) {
                 verifyResponseStatusOk()
               }
             }
 
             "CAS ei voi siirtää osasuorituksena" in {
-              val oo = createOpiskeluoikeusYhdelläKurssilla(rajapäivä.minusDays(1), LaajuusKursseissa(1), osasuorituksilla(casOppiaine))
+              val oo = createOpiskeluoikeusYhdelläKurssilla(rajapäivä.minusDays(1), LaajuusKursseissa(1), osasuorituksilla(casOppiaineDPCore))
               setupOppijaWithOpiskeluoikeus(oo) {
                 verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.rakenne.dpCoreDeprecated(
                   "DP Core -oppiaineita ei voi siirtää osasuorituksena ennen 1.8.2024 alkaneelle IB-opiskeluoikeudelle"
@@ -492,7 +477,7 @@ class OppijaValidationIBSpec extends AnyFreeSpec with KoskiHttpSpec with PutOpis
 
         "Core Requirements" - {
           "DP Core -oppiaineet voi siirtää osasuorituksina" in {
-            val oo = createOpiskeluoikeusYhdelläKurssilla(rajapäivä, LaajuusKursseissa(1), osasuorituksilla(extendedEssay, theoryOfKnowledge, casOppiaine))
+            val oo = createOpiskeluoikeusYhdelläKurssilla(rajapäivä, LaajuusKursseissa(1), osasuorituksilla(extendedEssayDPCore, theoryOfKnowledgeDPCore, casOppiaineDPCore))
             setupOppijaWithOpiskeluoikeus(oo) {
               verifyResponseStatusOk()
             }

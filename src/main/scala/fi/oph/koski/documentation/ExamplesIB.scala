@@ -64,7 +64,7 @@ object ExamplesIB {
       MuidenLukioOpintojenSuoritus2015(
         koulutusmoduuli = MuuLukioOpinto2015(Koodistokoodiviite("TO", "lukionmuutopinnot")),
         osasuoritukset = Some(List(
-          kurssisuoritus(soveltavaKurssi("MTA", "Monitieteinen ajattelu", "Monitieteisen ajattelun kurssi")).copy(arviointi = sanallinenArviointi("S", päivä = date(2016, 6, 8)))
+          kurssisuoritus(soveltavaKurssi("MTA", "Monitieteinen ajattelu", "Monitieteisen ajattelun kurssi"), Some(true)).copy(arviointi = sanallinenArviointi("S", päivä = date(2016, 6, 8)))
         )),
         arviointi = arviointi("S")
       )
@@ -426,6 +426,74 @@ object ExamplesIB {
 
   val opiskeluoikeusPreIB2019 = opiskeluoikeus.copy(
     suoritukset = List(preIBSuoritus2019)
+  )
+
+  val ibCoreKurssinSuoritus = IBCoreKurssinSuoritus(
+    koulutusmoduuli = IBCoreKurssi(
+      kuvaus   = Finnish("IB Core kurssin suoritus"),
+      tunniste = PaikallinenKoodi("PK", Finnish("Paikallinen koodi")),
+      laajuus  = Some(LaajuusOpintopisteissä(1))
+    ),
+    arviointi = Some(List(
+      IBCoreKurssinArviointi(
+        arvosana = Koodistokoodiviite("A", "arviointiasteikkocorerequirementsib"),
+        effort   = None,
+        päivä    = LocalDate.of(2025, 8, 1)
+      )
+    ))
+  )
+
+  val extendedEssayDPCore = IBDPCoreSuoritus(
+    koulutusmoduuli = IBDPCoreOppiaineExtendedEssay(
+      aine = IBDPCoreOppiaineMuu(
+        tunniste = Koodistokoodiviite("BIO", "oppiaineetib"),
+        ryhmä = Koodistokoodiviite("4", "aineryhmaib"),
+        laajuus = Some(LaajuusOpintopisteissä(1))
+      ),
+      aihe = Finnish("Torakoiden jalostus"),
+    ),
+    osasuoritukset = Some(List(ibCoreKurssinSuoritus))
+  )
+
+  val theoryOfKnowledgeDPCore = IBDPCoreSuoritus(
+    koulutusmoduuli = IBDPCoreOppiaineTheoryOfKnowledge(laajuus = Some(LaajuusOpintopisteissä(1))),
+    osasuoritukset = Some(List(ibCoreKurssinSuoritus))
+  )
+
+  val casOppiaineDPCore = IBDPCoreSuoritus(
+    koulutusmoduuli = IBDPCoreOppiaineCAS(laajuus = Some(LaajuusOpintopisteissä(1))),
+    arviointi = ibCoreOppiaineenArviointi("A"),
+    osasuoritukset = Some(List(ibCoreKurssinSuoritus))
+  )
+
+  val ibTutkinnonOpiskeluoikeusDPCoreOsasuorituksilla = IBOpiskeluoikeus(
+    oppilaitos = Some(ressunLukio),
+    tila = LukionOpiskeluoikeudenTila(
+      List(
+        LukionOpiskeluoikeusjakso(date(2025, 8, 1), LukioExampleData.opiskeluoikeusAktiivinen, Some(ExampleData.valtionosuusRahoitteinen))
+      )
+    ),
+    suoritukset = List(IBTutkinnonSuoritus(
+      toimipiste = ressunLukio,
+      suorituskieli = englanti,
+      ryhmä = Some("AH"),
+      osasuoritukset = Some(List(
+        extendedEssayDPCore,
+        theoryOfKnowledgeDPCore,
+        casOppiaineDPCore,
+        ibAineSuoritus(
+          ibKieli("A", "FI", standardLevel, 1),
+          ibArviointi("4"),
+          ibPredictedArviointi("4"),
+          List(
+            (ibKurssi("FIN_S1", "A Finnish standard level 1"), "4", Some("B")),
+            (ibKurssi("FIN_S2", "A Finnish standard level 2"), "4", Some("B")),
+          ))
+      )),
+      theoryOfKnowledge = None,
+      extendedEssay = None,
+      creativityActionService = None
+    ))
   )
 
   val examples = List(
