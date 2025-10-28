@@ -296,6 +296,75 @@ class KelaSpec
         actualOppiaine.kieli.map(_.koodiarvo) should equal(Some(expectedOppiaine.kieli.koodiarvo))
       }
     }
+    "Palauttaa IB-tutkinnon suorituksen osasuoritukset mukaanlukien core-osasuoritukset" in {
+      setupOppijaWithOpiskeluoikeus(ExamplesIB.ibTutkinnonOpiskeluoikeusDPCoreOsasuorituksilla, KoskiSpecificMockOppijat.eiKoskessa) {
+        verifyResponseStatusOk()
+      }
+
+      postHetu(KoskiSpecificMockOppijat.eiKoskessa.hetu.get, user = MockUsers.kelaLaajatOikeudet) {
+        verifyResponseStatusOk()
+        val oppija = JsonSerializer.parse[KelaOppija](body)
+        val suoritus = oppija.opiskeluoikeudet.head.suoritukset
+          .collect { case s: KelaIBPäätasonSuoritus if s.tyyppi.koodiarvo == "ibtutkinto" => s }
+          .head
+        val osasuoritukset = suoritus.osasuoritukset.getOrElse(List.empty)
+        val aliosasuoritukset = osasuoritukset.flatMap(_.osasuoritukset).flatten
+
+        osasuoritukset.length shouldBe 4
+        aliosasuoritukset.length shouldBe 5
+
+        val cas = osasuoritukset.find(_.koulutusmoduuli.tunniste.koodiarvo == "CAS")
+        cas.isDefined shouldBe true
+        cas.get.koulutusmoduuli.laajuus.get.arvo shouldBe 1
+        cas.get.koulutusmoduuli.pakollinen shouldBe Some(true)
+        cas.get.arviointi.get.head.arvosana shouldBe None
+        cas.get.arviointi.get.head.hyväksytty shouldBe Some(true)
+        cas.get.osasuoritukset.get.head.arviointi.get.head.arvosana shouldBe None
+        cas.get.osasuoritukset.get.head.arviointi.get.head.hyväksytty shouldBe Some(true)
+
+        val ee = osasuoritukset.find(_.koulutusmoduuli.tunniste.koodiarvo == "EE")
+        ee.isDefined shouldBe true
+        ee.get.koulutusmoduuli.pakollinen shouldBe Some(true)
+        ee.get.koulutusmoduuli.aine.get.tunniste.koodiarvo shouldBe "BIO"
+        ee.get.koulutusmoduuli.aine.get.ryhmä.koodiarvo shouldBe "4"
+        ee.get.koulutusmoduuli.aine.get.laajuus.get.arvo shouldBe 1
+        ee.get.arviointi shouldBe None
+
+        val tok = osasuoritukset.find(_.koulutusmoduuli.tunniste.koodiarvo == "TOK")
+        tok.isDefined shouldBe true
+        tok.get.koulutusmoduuli.laajuus.get.arvo shouldBe 1
+        tok.get.koulutusmoduuli.pakollinen shouldBe Some(true)
+      }
+    }
+    "Palauttaa Pre-IB 2015 suorituksen osasuoritukset" in {
+      postHetu(KoskiSpecificMockOppijat.ibFinal.hetu.get, user = MockUsers.kelaLaajatOikeudet) {
+        verifyResponseStatusOk()
+        val oppija = JsonSerializer.parse[KelaOppija](body)
+        val suoritus = oppija.opiskeluoikeudet.head.suoritukset
+          .collect { case s: KelaIBPäätasonSuoritus if s.koulutusmoduuli.tunniste.koodiarvo == "preiboppimaara" => s }
+          .head
+        val osasuoritukset = suoritus.osasuoritukset.getOrElse(List.empty)
+        val aliosasuoritukset = osasuoritukset.flatMap(_.osasuoritukset).flatten
+
+        osasuoritukset.length shouldBe 21
+        aliosasuoritukset.length shouldBe 32
+        aliosasuoritukset.exists(_.suoritettuLukiodiplomina.contains(true)) shouldBe true
+      }
+    }
+    "Palauttaa Pre-IB 2019 suorituksen osasuoritukset" in {
+      postHetu(KoskiSpecificMockOppijat.ibPreIB2019.hetu.get, user = MockUsers.kelaLaajatOikeudet) {
+        verifyResponseStatusOk()
+        val oppija = JsonSerializer.parse[KelaOppija](body)
+        val suoritus = oppija.opiskeluoikeudet.head.suoritukset
+          .collect { case s: KelaIBPäätasonSuoritus if s.koulutusmoduuli.tunniste.koodiarvo == "preiboppimaara2019" => s }
+          .head
+        val osasuoritukset = suoritus.osasuoritukset.getOrElse(List.empty)
+        val aliosasuoritukset = osasuoritukset.flatMap(_.osasuoritukset).flatten
+
+        osasuoritukset.length shouldBe 12
+        aliosasuoritukset.length shouldBe 19
+      }
+    }
   }
 
   "Usean oppijan rajapinta" - {
