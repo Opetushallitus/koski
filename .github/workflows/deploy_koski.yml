@@ -56,14 +56,8 @@ jobs:
           container-name: KoskiContainer
           image: ${{ steps.login-deployment.outputs.registry }}/koski:${{ inputs.commithash }}
 
-      - name: Get AppSpec template
-        if: inputs.environment == 'prod' #TODO remove this step when luovutuspalvelu v2 infra is deployed
-        run: |
-          aws ssm get-parameter --name /koski/appspec-template --output text --query 'Parameter.Value' > appspec.json
-
       - name: Deploy using ECS
         id: ecs-deploy
-        if: inputs.environment == 'dev' || inputs.environment == 'qa' #TODO add prod (or remove the whole if:) when luovutuspalvelu v2 infra is deployed
         uses: aws-actions/amazon-ecs-deploy-task-definition@v2
         with:
           task-definition: ${{ steps.task-def.outputs.task-definition }}
@@ -73,7 +67,6 @@ jobs:
 
       - name: Verify ECS deployment
         id: verify-ecs-deployment
-        if: inputs.environment == 'dev' || inputs.environment == 'qa' #TODO add prod (or remove the whole if:) when luovutuspalvelu v2 infra is deployed
         run: |
           CURRENT_TASK_DEF_ARN=$(aws ecs describe-services --cluster koski-cluster --services koski-v2 --query services[0].deployments[0].taskDefinition | jq -r ".")
           NEW_TASK_DEF_ARN=${{ steps.ecs-deploy.outputs.task-definition-arn }}
@@ -83,18 +76,6 @@ jobs:
             echo "Deployment failed."
             exit 1
           fi
-
-      - name: Deploy using CodeDeploy
-        if: inputs.environment == 'prod' #TODO remove this step when luovutuspalvelu v2 infra is deployed
-        uses: aws-actions/amazon-ecs-deploy-task-definition@v2
-        with:
-          task-definition: ${{ steps.task-def.outputs.task-definition }}
-          service: koski
-          cluster: koski-cluster
-          wait-for-service-stability: true
-          codedeploy-appspec: appspec.json
-          codedeploy-application: koski
-          codedeploy-deployment-group: koski-deployment-group
 
       - name: Get raportointikanta-loader loader task definition ARN
         id: get-raportointikanta-loader-taskdef-arn
