@@ -1,5 +1,10 @@
 # Koskeen tallennettavien tietojen validaatiosäännöt
 
+## 27.10.2025
+
+- Lisää valkolista diaarinumeroista ammatillisen koulutuksen duplikaattiopiskeluoikeuksien validaation ohittamiseen.
+  - Tällä hetkellä valkolistattu koulutus on OPH-1161-2018 (Liikunnan ja valmennuksen ammattitutkinto).
+
 ## 20.10.2025
 
 Ammatillisen koulutuksen opiskeluoikeuden validaatiot
