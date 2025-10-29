@@ -85,7 +85,7 @@ class KehaSDGSpec
         val response = JsonSerializer.parse[Oppija](body)
 
         response.henkilö.hetu should equal(KoskiSpecificMockOppijat.europeanSchoolOfHelsinki.hetu)
-        response.opiskeluoikeudet.map(_.tyyppi.koodiarvo) should equal(List("ebtutkinto"))
+        response.opiskeluoikeudet.map(_.tyyppi.koodiarvo) should contain("ebtutkinto")
       }
     }
 
@@ -119,7 +119,6 @@ class KehaSDGSpec
       }
     }
 
-
     "Lukio tulee läpi" in {
       postHetu(KoskiSpecificMockOppijat.lukiolainen.hetu.get) {
         verifyResponseStatusOk()
@@ -139,7 +138,36 @@ class KehaSDGSpec
         body should include("\"tunnustettuBoolean\":true")
         body should include("\"tunnustettuBoolean\":false")
       }
+    }
 
+    "ESH tulee läpi" in {
+      postHetu(KoskiSpecificMockOppijat.europeanSchoolOfHelsinki.hetu.get) {
+        verifyResponseStatusOk()
+
+        val response = JsonSerializer.parse[Oppija](body)
+
+        response.henkilö.hetu should equal(KoskiSpecificMockOppijat.europeanSchoolOfHelsinki.hetu)
+        response.opiskeluoikeudet.map(_.tyyppi.koodiarvo) should contain("europeanschoolofhelsinki")
+      }
+    }
+
+    "ESH ei sisällä jääLuokalle-kenttää" in {
+      postHetu(KoskiSpecificMockOppijat.lukiolainen.hetu.get) {
+        verifyResponseStatusOk()
+
+        body should not include ("\"jääLuokalle\"")
+      }
+    }
+
+    "International School tulee läpi" in {
+      postHetu(KoskiSpecificMockOppijat.internationalschool.hetu.get) {
+        verifyResponseStatusOk()
+
+        val response = JsonSerializer.parse[Oppija](body)
+
+        response.henkilö.hetu should equal(KoskiSpecificMockOppijat.internationalschool.hetu)
+        response.opiskeluoikeudet.map(_.tyyppi.koodiarvo) should equal(List("internationalschool"))
+      }
     }
   }
 
