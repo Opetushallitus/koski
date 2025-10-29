@@ -7,7 +7,6 @@ import scala.reflect.runtime.universe._
 import com.amazonaws.secretsmanager.caching.SecretCache
 import fi.oph.koski.log.{Logging, NotLoggable}
 
-
 case class DatabaseConnectionConfig(
   host: String,
   port: Int,
@@ -22,6 +21,11 @@ class SecretsManager extends SecretCache with Logging {
   def getStructuredSecret[T: TypeTag](secretId: String): T = {
     logger.debug(s"Searching for secret $secretId")
     JsonSerializer.extract[T](parse(getSecretString(secretId)), ignoreExtras = true)
+  }
+
+  def getPlainSecret(secretId: String): String = {
+    logger.debug(s"Fetching plain secret $secretId")
+    getSecretString(secretId).stripPrefix("\"").stripSuffix("\"")
   }
 
   def getSecretId(secretName: String, envVar: String): String = {
