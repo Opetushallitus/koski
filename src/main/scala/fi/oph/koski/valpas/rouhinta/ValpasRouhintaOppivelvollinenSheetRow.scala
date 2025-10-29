@@ -80,7 +80,7 @@ object ValpasRouhintaOppivelvollinenSheetRow {
       case "vst" => t.get("koulutustyyppi_vst")
       case s: String if s.startsWith("ib") || s.startsWith("preib") => t.get("koulutustyyppi_ib")
       case s: String if s.startsWith("internationalschool") => t.get("koulutustyyppi_internationalschool")
-      case s: String if s.startsWith("europeanschoolofhelsinki") => t.get("koulutustyyppi_europeanschoolofhelsinki")
+      case s: String if s.startsWith("europeanschoolofhelsinki") => t.get("koulutustyyppi_europeanschool")
       case s: String if s.startsWith("dia") => t.get("koulutustyyppi_dia")
       case "perusopetuksenvuosiluokka" => t.get("koulutustyyppi_perusopetus")
       case s: String if s.startsWith("aikuistenperusopetuksen") => t.get("koulutustyyppi_aikuistenperusopetus")
