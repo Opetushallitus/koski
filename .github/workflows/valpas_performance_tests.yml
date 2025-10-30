@@ -24,10 +24,7 @@ jobs:
           architecture: "x64"
           distribution: "zulu"
 
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v4
-        with:
-          version: 10.20.0
+      - uses: ./.github/actions/setup_pnpm_cache
 
       - name: Setup Node
         uses: actions/setup-node@v4
@@ -84,10 +81,7 @@ jobs:
           architecture: "x64"
           distribution: "zulu"
 
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v4
-        with:
-          version: 10.20.0
+      - uses: ./.github/actions/setup_pnpm_cache
 
       - name: Setup Node
         uses: actions/setup-node@v4
