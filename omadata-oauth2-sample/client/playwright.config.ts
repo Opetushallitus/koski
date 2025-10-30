@@ -83,7 +83,7 @@ export default defineConfig({
   /* Run your local dev server before starting the tests */
   webServer: [
     {
-      command: `KOSKI_BACKEND_HOST=${process.env.KOSKI_BACKEND_HOST || process.env.CI ? `http://172.17.0.1:${process.env.KOSKI_BACKEND_PORT || "7021"}` : `http://${getMyIp()}:${process.env.KOSKI_BACKEND_PORT || "7021"}`} npm run ${process.env.CI ? "start-luovutuspalvelu" : "build-and-start-luovutuspalvelu"}`,
+      command: `KOSKI_BACKEND_HOST=${process.env.KOSKI_BACKEND_HOST || process.env.CI ? `http://172.17.0.1:${process.env.KOSKI_BACKEND_PORT || "7021"}` : `http://${getMyIp()}:${process.env.KOSKI_BACKEND_PORT || "7021"}`} pnpm run ${process.env.CI ? "start-luovutuspalvelu" : "build-and-start-luovutuspalvelu"}`,
       url: "https://localhost:7022/koski-luovutuspalvelu/healthcheck/proxy",
       reuseExistingServer: !process.env.CI,
       stdout: "pipe",
@@ -92,7 +92,7 @@ export default defineConfig({
       ignoreHTTPSErrors: true,
     },
     {
-      command: `KOSKI_BACKEND_HOST=${process.env.KOSKI_BACKEND_HOST || process.env.CI ? `http://172.17.0.1:${process.env.KOSKI_BACKEND_PORT || "7021"}` : `http://${getMyIp()}:${process.env.KOSKI_BACKEND_PORT || "7021"}`} npm run start-server`,
+      command: `KOSKI_BACKEND_HOST=${process.env.KOSKI_BACKEND_HOST || process.env.CI ? `http://172.17.0.1:${process.env.KOSKI_BACKEND_PORT || "7021"}` : `http://${getMyIp()}:${process.env.KOSKI_BACKEND_PORT || "7021"}`} pnpm run start-server`,
       url: "http://localhost:7051/api/healthcheck",
       reuseExistingServer: !process.env.CI,
       stdout: "pipe",
@@ -100,7 +100,7 @@ export default defineConfig({
       timeout: 2 * 60 * 1000,
     },
     {
-      command: `KOSKI_BACKEND_HOST=${process.env.KOSKI_BACKEND_HOST || process.env.CI ? `http://172.17.0.1:${process.env.KOSKI_BACKEND_PORT || "7021"}` : `http://${getMyIp()}:${process.env.KOSKI_BACKEND_PORT || "7021"}`} npm run start`,
+      command: `KOSKI_BACKEND_HOST=${process.env.KOSKI_BACKEND_HOST || process.env.CI ? `http://172.17.0.1:${process.env.KOSKI_BACKEND_PORT || "7021"}` : `http://${getMyIp()}:${process.env.KOSKI_BACKEND_PORT || "7021"}`} pnpm run start`,
       url: "http://localhost:7050",
       reuseExistingServer: !process.env.CI,
       stdout: "pipe",
@@ -108,7 +108,7 @@ export default defineConfig({
       timeout: 2 * 60 * 1000,
     },
     {
-      command: `JAVA_HOME=${process.env.CI ? process.env.JAVA_HOME_23_X64 : process.env.JAVA_HOME} KOSKI_BACKEND_HOST=${process.env.KOSKI_BACKEND_HOST || process.env.CI ? `http://172.17.0.1:${process.env.KOSKI_BACKEND_PORT || "7021"}` : `http://${getMyIp()}:${process.env.KOSKI_BACKEND_PORT || "7021"}`} npm run start-java-sample`,
+      command: `JAVA_HOME=${process.env.CI ? process.env.JAVA_HOME_23_X64 : process.env.JAVA_HOME} KOSKI_BACKEND_HOST=${process.env.KOSKI_BACKEND_HOST || process.env.CI ? `http://172.17.0.1:${process.env.KOSKI_BACKEND_PORT || "7021"}` : `http://${getMyIp()}:${process.env.KOSKI_BACKEND_PORT || "7021"}`} pnpm run start-java-sample`,
       url: "http://localhost:7052",
       reuseExistingServer: !process.env.CI,
       stdout: "pipe",

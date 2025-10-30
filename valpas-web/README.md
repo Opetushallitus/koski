@@ -13,26 +13,26 @@
 ```
 nvm install
 nvm use
-npm install
+pnpm install --frozen-lockfile
 ```
 
 ## Kehitys
 
-- `npm start` kääntää lähdekoodin, jää kuuntelemaan muutoksia ja kopioi tiedostot ../target/webapp/ -hakemistoon
+- `pnpm start` kääntää lähdekoodin, jää kuuntelemaan muutoksia ja kopioi tiedostot ../target/webapp/ -hakemistoon
   Koskessa hostaamista varten. Kun Koski on käynnissä, löytyy Valpas:
   - Virkailijan näkymä: http://localhost:7021/valpas/virkailija
   - Oppijan näkymä: http://localhost:7021/valpas
-- `npm test` ajaa kaikki testit
-  - `npm run test:unit` ajaa vain
-  - `npm run test:integration` ajaa vain integraatiotestit (polun `test/integrationtests` alla olevat testit, jotka vaativan backendin)
-  - `npm run test:integration:debug -- -t "Näyttää listan oppijoista European School of Helsingille"` ajaa vain hakuehtoon sopivat testit
+- `pnpm test` ajaa kaikki testit
+  - `pnpm run test:unit` ajaa vain
+  - `pnpm run test:integration` ajaa vain integraatiotestit (polun `test/integrationtests` alla olevat testit, jotka vaativan backendin)
+  - `pnpm run test:integration:debug -- -t "Näyttää listan oppijoista European School of Helsingille"` ajaa vain hakuehtoon sopivat testit
   - `env SHOW_BROWSER=true npx jest --config jest.integrationtests.config.js test/integrationtests/kansalainen.test.ts` ajaa yhden testitiedoston avoimessa selaimessa
-- `npm run build:local` kääntää lähdekoodit kansioon `./dist-nonce` asetuksilla, joissa backend löytyy localhostista, ja kopioi
+- `pnpm run build:local` kääntää lähdekoodit kansioon `./dist-nonce` asetuksilla, joissa backend löytyy localhostista, ja kopioi
   sisällön tarpeellisin muutoksin Koskessa hostaamista varten ../target/webapp/ -hakemistoon.
-- `npm run build:prod` kääntää tuotantoversion
-- `npm run lint` tarkastaa koodin tyypitykset ja formatoinnin
-- `npm run fix` korjaa formatointivirheet
-- `npm run clean` tyhjentää Parcelin välimuistin ja käännöskansiot. Aja jos kääntäminen sekoilee esim. rebasen jälkeen.
+- `pnpm run build:prod` kääntää tuotantoversion
+- `pnpm run lint` tarkastaa koodin tyypitykset ja formatoinnin
+- `pnpm run fix` korjaa formatointivirheet
+- `pnpm run clean` tyhjentää Parcelin välimuistin ja käännöskansiot. Aja jos kääntäminen sekoilee esim. rebasen jälkeen.
 
 ### Hakemistorakenne
 
@@ -53,14 +53,14 @@ Valpas käyttää Koskea backendinä.
 
 Yksikkötestit sisältävät frontendin React-komponenttien, apukirjastojen, tilanhallinnan yms. testit ja ne voidaan ajaa ilman backendiä.
 
-Voit ajaa yksikkötestit komennolla `npm run test:unit`.
+Voit ajaa yksikkötestit komennolla `pnpm run test:unit`.
 
 ### Integraatiotestit
 
 Integraatiotestejä varten pitää Koski-backendin olla pystyssä (oletuksena `localhost:7021`) tai testit pitää käynnistää ajamalla `ValpasFrontSpec.scala`.
-Jos backend on valmiiksi ajossa, voi testit ajaa komennolla `npm run test:integration`.
+Jos backend on valmiiksi ajossa, voi testit ajaa komennolla `pnpm run test:integration`.
 
-Testit ajetaan headless-selaimessa. Jos haluat selainikkunan näkyviin, aja testit komennolla `npm run test:integration:debug`
+Testit ajetaan headless-selaimessa. Jos haluat selainikkunan näkyviin, aja testit komennolla `pnpm run test:integration:debug`
 
 ## Käyttäjätunnukset
 
@@ -76,7 +76,7 @@ https://github.com/Opetushallitus/koski/blob/master/documentation/raamien-ajo-lo
 Tämän jälkeen Valpas-buildin saa käyttämään Kosken hostaamia raameja:
 
 ```
-npm run start:raamit
+pnpm run start:raamit
 ```
 
 ## CAS-kirjautumisen testaaminen lokaalisti
@@ -95,4 +95,4 @@ Lisää **.env** -tiedostoon seuraava rivi:
 OPINTOPOLKU_VIRKAILIJA_URL=https://virkailija.untuvaopintopolku.fi
 ```
 
-Parcel ei välttämättä tajua ympäristömuuttujien vaihtuneen. Korjaa ongelma ajamalla `npm run clean`, joka tyhjentää välimuistin.
+Parcel ei välttämättä tajua ympäristömuuttujien vaihtuneen. Korjaa ongelma ajamalla `pnpm run clean`, joka tyhjentää välimuistin.
