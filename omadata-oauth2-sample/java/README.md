@@ -11,7 +11,7 @@ että [koski-luovutuspalvelu](https://github.com/Opetushallitus/koski-luovutuspa
 
 Tämän jälkeen luovutuspalvelun, voi käynnistää:
 
-    /omadata-oauth2-sample/client % npm run build-and-start-luovutuspalvelu
+    /omadata-oauth2-sample/client % pnpm run build-and-start-luovutuspalvelu
 
 Tämän varsinen esimerkki-applikaatio frontti & backend käynnistetään terminaalissa:
 

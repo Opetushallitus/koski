@@ -9,7 +9,7 @@
   },
   "engines": {
     "node": "22.14.0",
-    "npm": "9||10"
+    "pnpm": "10.20.0"
   },
   "dependencies": {
     "@skidding/react-codemirror": "^1.0.2",
@@ -119,6 +119,8 @@
     "typecheck": "tsc --noEmit --project tsconfig.json",
     "prettier:check": "prettier --check app",
     "prettier:fix": "prettier --write app",
-    "prettier:tests:fix": "prettier --write test"
-  }
+    "prettier:tests:fix": "prettier --write test",
+    "preinstall": "node -e \"if(!process.env.npm_execpath.includes(\\\"pnpm\\\")){console.error(\\\"❌ Please use pnpm\\\");process.exit(1)}\""
+  },
+  "packageManager": "pnpm@10.20.0"
 }

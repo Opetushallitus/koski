@@ -12,19 +12,20 @@
     "start:watch": "concurrently npm:start npm:lint:types:watch",
     "start:raamit": "node autoclear.js --dev-raamit && VIRKAILIJA_RAAMIT_HOST=true OPPIJA_RAAMIT_HOST=true PUBLIC_URL=/valpas node watch.mjs",
     "start:integration": "node autoclear.js --integration && PUBLIC_URL=/valpas node watch.mjs",
-    "test": "npm run test:unit && npm run test:integration",
+    "test": "pnpm run test:unit && pnpm run test:integration",
     "test:unit": "node autoclear.js --unittest && jest --runInBand src",
-    "test:integration": "npm run build:local && jest --config jest.integrationtests.config.js --runInBand test/integrationtests",
-    "test:integration:debug": "npm run build:local && SHOW_BROWSER=true jest --config jest.integrationtests.config.js --runInBand test/integrationtests",
+    "test:integration": "pnpm run build:local && jest --config jest.integrationtests.config.js --runInBand test/integrationtests",
+    "test:integration:debug": "pnpm run build:local && SHOW_BROWSER=true jest --config jest.integrationtests.config.js --runInBand test/integrationtests",
     "build:local": "node autoclear.js && PUBLIC_URL=/valpas parcel build src/index.html --public-url /valpas/assets --dist-dir dist-nonce --no-scope-hoist && node postbuild-exec.mjs",
     "build:prod": "node autoclear.js --prod && PUBLIC_URL=/valpas parcel build src/index.html --public-url /valpas/assets --dist-dir dist-nonce --no-scope-hoist && node postbuild-exec.mjs",
-    "lint": "npm run lint:types && npm run lint:problems",
+    "lint": "pnpm run lint:types && pnpm run lint:problems",
     "lint:types": "tsc --noEmit",
     "lint:types:watch": "tsc --noEmit --watch --preserveWatchOutput",
     "lint:problems": "eslint \"{src,test}/**/*.{js,jsx,ts,tsx}\"",
-    "fix": "npm run fix:format",
+    "fix": "pnpm run fix:format",
     "fix:format": "eslint \"{src,test}/**/*.{js,jsx,ts,tsx}\" --fix",
-    "clean": "jest --clearCache && rm -rf dist && rm -rf dist-nonce && rm -rf ../target/webapp/koski/valpas && rm -rf .parcel-cache"
+    "clean": "jest --clearCache && rm -rf dist && rm -rf dist-nonce && rm -rf ../target/webapp/koski/valpas && rm -rf .parcel-cache",
+    "preinstall": "node -e \"if(!process.env.npm_execpath.includes(\\\"pnpm\\\")){console.error(\\\"❌ Please use pnpm\\\");process.exit(1)}\""
   },
   "repository": {
     "type": "git",
@@ -89,8 +90,11 @@
     "downloadjs": "^1.4.7",
     "fp-ts": "^2.16.10",
     "react": "^19.1.0",
+    "react-calendar": "^6.0.0",
     "react-date-picker": "^11.0.0",
     "react-dom": "^19.1.0",
-    "react-router-dom": "^5.3.4"
-  }
+    "react-router-dom": "^5.3.4",
+    "regenerator-runtime": "^0.14.1"
+  },
+  "packageManager": "pnpm@10.20.0"
 }
