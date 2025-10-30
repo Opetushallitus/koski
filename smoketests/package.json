@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "qa:kansalainen": "ts-node src/qa-kansalainen.ts"
+    "qa:kansalainen": "ts-node src/qa-kansalainen.ts",
+    "preinstall": "node -e \"if(!process.env.npm_execpath.includes(\\\"pnpm\\\")){console.error(\\\"❌ Please use pnpm\\\");process.exit(1)}\""
   },
   "author": "",
   "license": "ISC",
@@ -12,5 +13,6 @@
     "puppeteer": "^24.12.1",
     "ts-node": "^10.9.2",
     "typescript": "^5.8.3"
-  }
+  },
+  "packageManager": "pnpm@10.20.0"
 }
