@@ -1,8 +1,12 @@
 runs:
   using: composite
   steps:
+    - name: Setup pnpm
+      uses: pnpm/action-setup@v4
+      with:
+        version: 10.20.0
     - name: Setup Node
-      uses: actions/setup-node@v3
+      uses: actions/setup-node@v4
       with:
         node-version: "22.14.0"
 
@@ -17,7 +21,7 @@ runs:
     - name: Cache Node modules
       uses: actions/cache@v3
       with:
-        path: ~/.npm
+        path: ~/.pnpm-store
         key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
         restore-keys: |
           ${{ runner.os }}-node-
