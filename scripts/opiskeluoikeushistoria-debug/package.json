@@ -5,11 +5,13 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "preinstall": "node -e \"if(!process.env.npm_execpath.includes(\\\"pnpm\\\")){console.error(\\\"❌ Please use pnpm\\\");process.exit(1)}\""
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "jsonpatch": "^3.1.0"
-  }
+  },
+  "packageManager": "pnpm@10.20.0"
 }
