@@ -19,10 +19,7 @@ jobs:
       contents: read
     steps:
       - uses: actions/checkout@v4
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v4
-        with:
-          version: 10.20.0
+      - uses: ./.github/actions/setup_pnpm_cache
       - uses: actions/setup-node@v4
         with:
           node-version-file: "omadata-oauth2-sample/.nvmrc"
@@ -39,10 +36,7 @@ jobs:
       contents: read
     steps:
       - uses: actions/checkout@v4
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v4
-        with:
-          version: 10.20.0
+      - uses: ./.github/actions/setup_pnpm_cache
       - uses: actions/setup-node@v4
         with:
           node-version-file: "omadata-oauth2-sample/.nvmrc"
