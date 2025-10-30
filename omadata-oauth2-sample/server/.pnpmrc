@@ -1,0 +1,9 @@
+# Deterministic installs
+frozen-lockfile=true
+
+# Avoid too-fresh packages (stability)
+minimum-release-age=3d
+
+# Disable postinstall scripts except for explicitly allowed
+ignore-scripts=true
+allowed-scripts=esbuild core-js
