@@ -1,25 +1,15 @@
 /* eslint-disable @typescript-eslint/no-require-imports */
 process.env.CHROME_PATH = require('puppeteer').executablePath()
-process.on('unhandledRejection', (reason, promise) => {
-  console.error(reason)
-  process.exit(1)
-})
 
-const { exec } = require('child_process')
 
-// setInterval(function () {
-//   exec('../scripts/cpuhogs.sh', function (err, stdout, stderr) {
-//     console.log(stderr)
-//     console.log(stdout)
-//   })
-//   exec('../scripts/memhogs.sh', function (err, stdout, stderr) {
-//     console.log(stderr)
-//     console.log(stdout)
-//   })
-//   exec('../scripts/filehogs.sh', function (err, stdout, stderr) {
-//     console.log(stderr)
-//     console.log(stdout)
-//   })
-// }, 60000)
+process.on("unhandledRejection", (reason) => {
+  console.error(reason);
+  process.exit(1);
+});
 
-require('mocha-chrome/cli.js')
+const { spawnSync } = require("child_process");
+
+const args = process.argv.slice(2);
+spawnSync("node", ["node_modules/mocha-chrome/cli.js", ...args], {
+  stdio: "inherit",
+});
