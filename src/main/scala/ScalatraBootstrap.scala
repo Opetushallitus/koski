@@ -42,6 +42,7 @@ import fi.oph.koski.suoritusjako.{SuoritusjakoServlet, SuoritusjakoServletV2, Su
 import fi.oph.koski.suostumus.SuostumuksenPeruutusServlet
 import fi.oph.koski.sure.SureServlet
 import fi.oph.koski.tiedonsiirto.TiedonsiirtoServlet
+import fi.oph.koski.todistus.TodistusServlet
 import fi.oph.koski.tutkinto.TutkinnonPerusteetServlet
 import fi.oph.koski.typemodel.{LocalDevOnlyTypeModelServlet, TypeModelServlet}
 import fi.oph.koski.util.{Futures, Timing}
@@ -144,6 +145,11 @@ class ScalatraBootstrap extends LifeCycle with Logging with Timing with GlobalEx
     mount("/koski/api/massaluovutus", new MassaluovutusServlet)
     mount("/koski/api/vkt", new VktServlet)
     mount("/koski/api/hakemuspalvelu", new HakemuspalveluServlet)
+
+    if (!Environment.isProdEnvironment(application.config)) {
+      // TODO: TOR-2400: Ei vielä tuotantoon
+      mount("/koski/api/todistus", new TodistusServlet)
+    }
     mount("/koski/omadata", new MyDataReactServlet)
     mount("/koski/koesuoritus", new YtrKoesuoritusServlet)
     mount("/koski/api/yotodistus", new YoTodistusServlet)

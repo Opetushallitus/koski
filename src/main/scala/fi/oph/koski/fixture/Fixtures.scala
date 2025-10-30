@@ -31,7 +31,7 @@ class FixtureCreator(application: KoskiApplication) extends Logging with QueryMe
   def defaultOppijat: List[OppijaHenkilöWithMasterInfo] = currentFixtureState.defaultOppijat
   def defaultKuntahistoriat: mutable.Map[String, Seq[OppijanumerorekisteriKotikuntahistoriaRow]] = currentFixtureState.defaultKuntahistoriat
   def defaultTurvakieltoKuntahistoriat: mutable.Map[String, Seq[OppijanumerorekisteriKotikuntahistoriaRow]] = currentFixtureState.defaultTurvakieltoKuntahistoriat
-  
+
   def resetFixtures(
     fixtureState: FixtureState = koskiSpecificFixtureState,
     reloadRaportointikanta: Boolean = false,
@@ -61,6 +61,7 @@ class FixtureCreator(application: KoskiApplication) extends Logging with QueryMe
       application.päivitetytOpiskeluoikeudetJono.poistaKaikki()
       opiskeluoikeushistoriaErrorRepository.truncate
       application.massaluovutusService.truncate()
+      application.todistusService.truncate()
       yoTodistusService.reset()
 
       if (reloadYtrData || fixtureNameHasChanged) {
