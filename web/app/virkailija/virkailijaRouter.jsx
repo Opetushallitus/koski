@@ -18,7 +18,6 @@ import {
 } from '../dokumentaatio/Dokumentaatio'
 import { onlyIfHasReadAccess } from './accessCheck'
 import { raportitContentP } from '../raportit/Raportit'
-import { kelaVirkailijaP } from '../kela/KelaVirkailija'
 
 export const routeP = locationP
   .flatMapLatest(({ path, queryString, params, hash }) => {
@@ -63,8 +62,6 @@ export const routeP = locationP
       path === '/koski/dokumentaatio/rajapinnat/palveluvayla-omadata'
     ) {
       return dokumentaatioPalveluväyläOmadataP()
-    } else if (path.includes('koski/kela')) {
-      return kelaVirkailijaP(path)
     } else if (path.includes('/koski/dokumentaatio/rajapinnat/massaluovutus')) {
       return dokumentaatioKyselytP(path)
     } else if (path.includes('/koski/dokumentaatio/rajapinnat/oauth2')) {
