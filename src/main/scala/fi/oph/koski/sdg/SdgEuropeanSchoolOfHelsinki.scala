@@ -25,25 +25,25 @@ trait EuropeanSchoolOfHelsinkiPäätasonSuoritus extends Suoritus
 
 // VAIN S5 MUKAAN
 @Title("Secondary Lower -vuosiluokan suoritus")
-case class SecondaryLowerVuosiluokanSuoritus(
+case class SdgSecondaryLowerVuosiluokanSuoritus(
   koulutusmoduuli: schema.SecondaryLowerLuokkaAste,
   alkamispäivä: Option[LocalDate] = None,
   toimipiste: Option[Toimipiste],
   vahvistus: Option[Vahvistus],
   @KoodistoKoodiarvo("europeanschoolofhelsinkivuosiluokkasecondarylower")
   tyyppi: schema.Koodistokoodiviite,
-  osasuoritukset: Option[List[SecondaryLowerOppiaineenSuoritus]] = None
+  osasuoritukset: Option[List[SdgSecondaryLowerOppiaineenSuoritus]] = None
 ) extends EuropeanSchoolOfHelsinkiPäätasonSuoritus {
-  override def withOsasuoritukset(os: Option[List[Osasuoritus]]): SecondaryLowerVuosiluokanSuoritus =
+  override def withOsasuoritukset(os: Option[List[Osasuoritus]]): SdgSecondaryLowerVuosiluokanSuoritus =
     this.copy(
       osasuoritukset = os.map(_.collect{
-        case s: SecondaryLowerOppiaineenSuoritus => s
+        case s: SdgSecondaryLowerOppiaineenSuoritus => s
       })
     )
 }
 
 @Title("Secondary Upper -vuosiluokan suoritus")
-case class SecondaryUpperVuosiluokanSuoritus(
+case class SdgSecondaryUpperVuosiluokanSuoritus(
   koulutusmoduuli: schema.SecondaryUpperLuokkaAste,
   alkamispäivä: Option[LocalDate] = None,
   toimipiste: Option[Toimipiste],
@@ -52,7 +52,7 @@ case class SecondaryUpperVuosiluokanSuoritus(
   tyyppi: schema.Koodistokoodiviite,
   osasuoritukset: Option[List[SecondaryUpperOppiaineenSuoritus]] = None
 ) extends EuropeanSchoolOfHelsinkiPäätasonSuoritus {
-  override def withOsasuoritukset(os: Option[List[Osasuoritus]]): SecondaryUpperVuosiluokanSuoritus =
+  override def withOsasuoritukset(os: Option[List[Osasuoritus]]): SdgSecondaryUpperVuosiluokanSuoritus =
     this.copy(
       osasuoritukset = os.map(_.collect{
         case s: SecondaryUpperOppiaineenSuoritus => s
@@ -60,10 +60,10 @@ case class SecondaryUpperVuosiluokanSuoritus(
     )
 }
 
-case class SecondaryLowerOppiaineenSuoritus(
+case class SdgSecondaryLowerOppiaineenSuoritus(
   @Title("Oppiaine")
   koulutusmoduuli: schema.SecondaryOppiaine,
-  arviointi: Option[List[SecondaryNumericalMarkArviointi]] = None,
+  arviointi: Option[List[SdgSecondaryNumericalMarkArviointi]] = None,
   @KoodistoKoodiarvo("europeanschoolofhelsinkiosasuoritussecondarylower")
   tyyppi: schema.Koodistokoodiviite,
   suorituskieli: schema.Koodistokoodiviite
@@ -72,40 +72,40 @@ case class SecondaryLowerOppiaineenSuoritus(
 trait SecondaryUpperOppiaineenSuoritus extends Osasuoritus
 
 @OnlyWhen("../../koulutusmoduuli/tunniste/koodiarvo", "S6")
-case class SecondaryUpperOppiaineenSuoritusS6(
+case class SdgSecondaryUpperOppiaineenSuoritusS6(
   @Title("Oppiaine")
   koulutusmoduuli: schema.SecondaryOppiaine,
-  arviointi: Option[List[SecondaryNumericalMarkArviointi]] = None,
+  arviointi: Option[List[SdgSecondaryNumericalMarkArviointi]] = None,
   @KoodistoKoodiarvo("europeanschoolofhelsinkiosasuorituss6")
   tyyppi: schema.Koodistokoodiviite,
   suorituskieli: schema.Koodistokoodiviite,
 ) extends SecondaryUpperOppiaineenSuoritus
 
-case class SecondaryNumericalMarkArviointi(
+case class SdgSecondaryNumericalMarkArviointi(
   @KoodistoUri("arviointiasteikkoeuropeanschoolofhelsinkinumericalmark")
   arvosana: schema.Koodistokoodiviite,
   päivä: Option[LocalDate],
 )
 
 @OnlyWhen("../../koulutusmoduuli/tunniste/koodiarvo", "S7")
-case class SecondaryUpperOppiaineenSuoritusS7(
+case class SdgSecondaryUpperOppiaineenSuoritusS7(
   @Title("Oppiaine")
   koulutusmoduuli: schema.SecondaryOppiaine,
   @KoodistoKoodiarvo("europeanschoolofhelsinkiosasuorituss7")
   tyyppi: schema.Koodistokoodiviite,
   suorituskieli: schema.Koodistokoodiviite,
-  osasuoritukset: Option[List[S7OppiaineenAlaosasuoritus]] = None
+  osasuoritukset: Option[List[SdgS7OppiaineenAlaosasuoritus]] = None
 ) extends SecondaryUpperOppiaineenSuoritus
 
-case class S7OppiaineenAlaosasuoritus(
+case class SdgS7OppiaineenAlaosasuoritus(
   @Title("Arviointikomponentti")
   koulutusmoduuli: schema.S7OppiaineKomponentti,
-  arviointi: Option[List[SecondaryS7PreliminaryMarkArviointi]] = None,
+  arviointi: Option[List[SdgSecondaryS7PreliminaryMarkArviointi]] = None,
   @KoodistoKoodiarvo("europeanschoolofhelsinkialaosasuorituss7")
   tyyppi: schema.Koodistokoodiviite
 ) extends Osasuoritus
 
-case class SecondaryS7PreliminaryMarkArviointi(
+case class SdgSecondaryS7PreliminaryMarkArviointi(
   @KoodistoUri("arviointiasteikkoeuropeanschoolofhelsinkis7preliminarymark")
   arvosana: schema.Koodistokoodiviite,
   päivä: Option[LocalDate],
