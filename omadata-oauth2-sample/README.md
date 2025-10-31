@@ -17,12 +17,12 @@ että [koski-luovutuspalvelu](https://github.com/Opetushallitus/koski-luovutuspa
 
 Lisäksi pitää olla ajettuna:
 
-    /omadata-oauth2-sample/server % npm install
-    /omadata-oauth2-sample/client % npm install
+    /omadata-oauth2-sample/server % pnpm install --frozen-lockfile
+    /omadata-oauth2-sample/client % pnpm install --frozen-lockfile
 
 Tämän jälkeen tarvittavat palvelut, mukaanlukien luovutuspalvelun, voi käynnistää:
 
-    /omadata-oauth2-sample/client % npm run start-with-server-and-luovutuspalvelu
+    /omadata-oauth2-sample/client % pnpm run start-with-server-and-luovutuspalvelu
 
 Koko putken rakenne:
 
@@ -53,7 +53,7 @@ Em. koko putki -osuuden lisäksi pitää olla ajettuna:
 
 Testien käynnistys:
 
-    npm run playwright:test
+    pnpm run playwright:test
 
 Ks. muut playwright-skriptit, esim. debug-moodi [package.json](client/package.json).
 

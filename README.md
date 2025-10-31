@@ -122,7 +122,7 @@ Esim. IntelliJ IDEAn Scala-kääntäjän konfiguraatio kannattaa asettaa seuraav
 
 ## Buildi ja ajaminen
 
-Kosken buildiin kuuluu frontin buildaus (npm ja webpack) ja serverin buildaus Mavenilla. Tätä helpottamaan on otettu käyttöön `make`, jonka avulla eri taskit on helppo suorittaa. Katso [Makefile](Makefile)-tiedosto.
+Kosken buildiin kuuluu frontin buildaus (pnpm ja webpack) ja serverin buildaus Mavenilla. Tätä helpottamaan on otettu käyttöön `make`, jonka avulla eri taskit on helppo suorittaa. Katso [Makefile](Makefile)-tiedosto.
 
 Buildaa koko systeemi
 
@@ -299,9 +299,9 @@ make fronttest
 ### Integraatiotestit
 
 Integraatiotestejä varten pitää Koski-backendin olla pystyssä (oletuksena `localhost:7021`) tai testit pitää käynnistää ajamalla `KoskiFrontSpec.scala`.
-Jos backend on valmiiksi ajossa, voi testit ajaa komennolla `npm run playwright:test`.
+Jos backend on valmiiksi ajossa, voi testit ajaa komennolla `pnpm run playwright:test`.
 
-Testit ajetaan headless-selaimessa. Jos haluat selainikkunan näkyviin, aja testit komennolla `npm run playwright:test:debug`
+Testit ajetaan headless-selaimessa. Jos haluat selainikkunan näkyviin, aja testit komennolla `pnpm run playwright:test:debug`
 
 ### Integraatiotestit OmaDataOAuth2
 

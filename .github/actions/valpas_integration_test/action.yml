@@ -20,6 +20,6 @@ runs:
         timeout_minutes: 45
         command: |
           cd valpas-web
-          npm ci
+          pnpm install --frozen-lockfile
           cd ..
           make valpas-fronttest-${{ inputs.index }}

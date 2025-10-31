@@ -13,9 +13,9 @@
     "@types/react-dom": "^18.3.6",
     "@typescript-eslint/eslint-plugin": "^8.30.1",
     "@typescript-eslint/parser": "^8.30.1",
-    "eslint": "^9.27.0",
     "eslint-config-prettier": "^10.1.2",
     "eslint-plugin-prettier": "^5.2.6",
+    "eslint-plugin-react": "^5.2.0",
     "eslint-plugin-react-hooks": "^5.2.0",
     "http-proxy-middleware": "^3.0.5",
     "npm-run-all": "^4.1.5",
@@ -27,30 +27,31 @@
     "typescript": "^4.9.5"
   },
   "scripts": {
-    "start": "FORCE_COLOR=true npm run start-react-scripts | cat",
+    "start": "FORCE_COLOR=true pnpm run start-react-scripts | cat",
     "start-react-scripts": "react-scripts start",
-    "start-with-server": "npm-run-all --parallel start-server start",
-    "start-with-server-and-luovutuspalvelu": "npm-run-all --parallel build-and-start-luovutuspalvelu start-server start",
-    "start-with-server-and-luovutuspalvelu-and-java-sample": "npm-run-all --parallel build-and-start-luovutuspalvelu start-server start start-java-sample",
-    "start-with-server-and-luovutuspalvelu-no-logout": "NOLOGOUT=nologout npm-run-all --parallel build-and-start-luovutuspalvelu start-server start",
-    "start-server": "NODE_EXTRA_CA_CERTS=../../koski-luovutuspalvelu/proxy/test/testca/certs/root-ca.crt CLIENT_ID=omadataoauth2sample${NOLOGOUT} ENABLE_LOCAL_MTLS=true RESOURCE_ENDPOINT_URL=https://localhost:7022/koski/api/omadata-oauth2/resource-server npm run --prefix ../server start",
-    "build-and-start-luovutuspalvelu": "KOSKI_BACKEND_HOST=${KOSKI_BACKEND_HOST:-http://$(node scripts/getmyip.js):7021} CLIENT_USERNAME=omadataoauth2sample${NOLOGOUT} CLIENT_PASSWORD=omadataoauth2sample${NOLOGOUT} npm run --prefix ../../koski-luovutuspalvelu/proxy local",
-    "start-luovutuspalvelu": "KOSKI_BACKEND_HOST=${KOSKI_BACKEND_HOST:-http://$(node scripts/getmyip.js):7021} CLIENT_USERNAME=omadataoauth2sample${NOLOGOUT} CLIENT_PASSWORD=omadataoauth2sample${NOLOGOUT} npm run --prefix ../../koski-luovutuspalvelu/proxy start",
-    "start-java-sample-and-luovutuspalvelu": "npm-run-all --parallel build-and-start-luovutuspalvelu start-java-sample",
+    "start-with-server": "pnpm -r run --parallel start-server start",
+    "start-with-server-and-luovutuspalvelu": "pnpm -r run --parallel build-and-start-luovutuspalvelu start-server start",
+    "start-with-server-and-luovutuspalvelu-and-java-sample": "pnpm -r run --parallel build-and-start-luovutuspalvelu start-server start start-java-sample",
+    "start-with-server-and-luovutuspalvelu-no-logout": "NOLOGOUT=nologout pnpm -r run --parallel build-and-start-luovutuspalvelu start-server start",
+    "start-server": "NODE_EXTRA_CA_CERTS=../../koski-luovutuspalvelu/proxy/test/testca/certs/root-ca.crt CLIENT_ID=omadataoauth2sample${NOLOGOUT} ENABLE_LOCAL_MTLS=true RESOURCE_ENDPOINT_URL=https://localhost:7022/koski/api/omadata-oauth2/resource-server pnpm run --prefix ../server start",
+    "build-and-start-luovutuspalvelu": "KOSKI_BACKEND_HOST=${KOSKI_BACKEND_HOST:-http://$(node scripts/getmyip.js):7021} CLIENT_USERNAME=omadataoauth2sample${NOLOGOUT} CLIENT_PASSWORD=omadataoauth2sample${NOLOGOUT} pnpm run --prefix ../../koski-luovutuspalvelu/proxy local",
+    "start-luovutuspalvelu": "KOSKI_BACKEND_HOST=${KOSKI_BACKEND_HOST:-http://$(node scripts/getmyip.js):7021} CLIENT_USERNAME=omadataoauth2sample${NOLOGOUT} CLIENT_PASSWORD=omadataoauth2sample${NOLOGOUT} pnpm run --prefix ../../koski-luovutuspalvelu/proxy start",
+    "start-java-sample-and-luovutuspalvelu": "pnpm -r run --parallel build-and-start-luovutuspalvelu start-java-sample",
     "start-java-sample": "cd ../java && KOSKI_BACKEND_HOST=${KOSKI_BACKEND_HOST:-http://$(node ../client/scripts/getmyip.js):7021} ./mvnw spring-boot:run",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "lint": "npm run lint:types && npm run lint:problems",
+    "lint": "pnpm run lint:types && pnpm run lint:problems",
     "lint:types": "tsc --noEmit",
     "lint:types:watch": "tsc --noEmit --watch --preserveWatchOutput",
     "lint:problems": "eslint",
-    "fix": "npm run fix:format",
+    "fix": "pnpm run fix:format",
     "fix:format": "eslint --fix",
-    "playwright:test": "DEBUG='pw:webserver' npx playwright test",
-    "playwright:test:debug": "DEBUG='pw:webserver pw:api' npx playwright test --headed",
-    "playwright:test:trace": "DEBUG='pw:webserver pw:api' npx playwright test --trace on && npx playwright show-report",
-    "playwright:codegen": "npx playwright codegen"
+    "playwright:test": "DEBUG='pw:webserver' pnpm exec playwright test",
+    "playwright:test:debug": "DEBUG='pw:webserver pw:api' pnpm exec playwright test --headed",
+    "playwright:test:trace": "DEBUG='pw:webserver pw:api' pnpm exec playwright test --trace on && pnpm exec playwright show-report",
+    "playwright:codegen": "pnpm exec playwright codegen",
+    "preinstall": "node -e \"if(!process.env.npm_execpath.includes(\\\"pnpm\\\")){console.error(\\\"❌ Please use pnpm\\\");process.exit(1)}\""
   },
   "browserslist": {
     "production": [
@@ -65,13 +66,15 @@
     ]
   },
   "engines": {
-    "node": ">=22"
+    "node": ">=22",
+    "pnpm": ">=10"
   },
   "devDependencies": {
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
     "@eslint/compat": "^1.2.8",
     "@eslint/eslintrc": "^3.3.1",
     "@eslint/js": "^9.24.0",
+    "eslint": "^8.57.0",
     "eslint-plugin-jest": "^28.11.0"
   }
 }

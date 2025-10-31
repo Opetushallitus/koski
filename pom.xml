@@ -492,28 +492,29 @@
         <version>3.5.0</version>
         <executions>
           <execution>
-            <id>koski - npm ci</id>
+            <id>koski - pnpm install</id>
             <goals>
               <goal>exec</goal>
             </goals>
             <phase>generate-resources</phase>
             <configuration>
               <workingDirectory>web</workingDirectory>
-              <executable>npm</executable>
+              <executable>pnpm</executable>
               <arguments>
-                <argument>ci</argument>
+                <argument>install</argument>
+                <argument>--frozen-lockfile</argument>
               </arguments>
             </configuration>
           </execution>
           <execution>
-            <id>koski - npm build</id>
+            <id>koski - pnpm build</id>
             <goals>
               <goal>exec</goal>
             </goals>
             <phase>generate-resources</phase>
             <configuration>
               <workingDirectory>web</workingDirectory>
-              <executable>npm</executable>
+              <executable>pnpm</executable>
               <arguments>
                 <argument>run</argument>
                 <argument>build:prod</argument>
@@ -521,28 +522,29 @@
             </configuration>
           </execution>
           <execution>
-            <id>valpas - npm ci</id>
+            <id>valpas - pnpm install</id>
             <goals>
               <goal>exec</goal>
             </goals>
             <phase>generate-resources</phase>
             <configuration>
               <workingDirectory>valpas-web</workingDirectory>
-              <executable>npm</executable>
+              <executable>pnpm</executable>
               <arguments>
-                <argument>ci</argument>
+                <argument>install</argument>
+                <argument>--frozen-lockfile</argument>
               </arguments>
             </configuration>
           </execution>
           <execution>
-            <id>valpas - npm build</id>
+            <id>valpas - pnpm build</id>
             <goals>
               <goal>exec</goal>
             </goals>
             <phase>generate-resources</phase>
             <configuration>
               <workingDirectory>valpas-web</workingDirectory>
-              <executable>npm</executable>
+              <executable>pnpm</executable>
               <arguments>
                 <argument>run</argument>
                 <argument>build:prod</argument>
