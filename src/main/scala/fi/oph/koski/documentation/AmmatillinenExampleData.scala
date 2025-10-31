@@ -143,7 +143,7 @@ object AmmatillinenExampleData {
     arviointi
   )
 
-  def näyttöAmmatillinenOSittainen(päivä: LocalDate, kuvaus: String, paikka: String, arviointi: Option[NäytönArviointi] = None) = NäyttöAmmatillinenOsittainen(
+  def näyttöAmmatillinenOsittainen(päivä: LocalDate, kuvaus: String, paikka: String, arviointi: Option[NäytönArviointi] = None) = NäyttöAmmatillinenOsittainen(
     Some(kuvaus),
     Some(NäytönSuorituspaikka(Koodistokoodiviite("1", Some("työpaikka"), "ammatillisennaytonsuorituspaikka", Some(1)), paikka)),
     Some(NäytönSuoritusaika(päivä, päivä)),
@@ -844,7 +844,7 @@ object AmmatillinenExampleData {
       ),
       osittaisenTutkinnonTutkinnonOsanUseastaTutkinnostaSuoritus(k3, None, "106879", "Sähköjärjestelmän kunnon määrittäminen", 15).copy(
         näyttö = Some(
-          näyttöAmmatillinenOSittainen(date(2024, 1, 1), "Muksulan päiväkodin auton sähköjärjestelmän kunnon määrittämisen\ntekeminen sekä mittauksien tekeminen ja näytteiden ottaminen", "Muksulan päiväkoti, Kaarinan kunta", Some(näytönArviointi.copy(päivä = date(2024, 1, 1))))
+          näyttöAmmatillinenOsittainen(date(2024, 1, 1), "Muksulan päiväkodin auton sähköjärjestelmän kunnon määrittämisen\ntekeminen sekä mittauksien tekeminen ja näytteiden ottaminen", "Muksulan päiväkoti, Kaarinan kunta", Some(näytönArviointi.copy(päivä = date(2024, 1, 1))))
         )
       ),
       yhteisenOsittaisenTutkinnonTutkinnonOsanUseastaTutkinnostaSuoritus(h2, yhteisetTutkinnonOsat, "106727", "Viestintä- ja vuorovaikutusosaaminen", 11).copy(
