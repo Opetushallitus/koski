@@ -24,21 +24,8 @@ runs:
       uses: actions/setup-node@v4
       with:
         node-version: "22.14.0"
-    - name: Set up Java 11
-      if: steps.lookup.outputs.cache-hit != 'true'
-      uses: actions/setup-java@v3
-      with:
-        java-version: "11"
-        architecture: "x64"
-        distribution: "zulu"
-    - name: Cache Maven packages
-      if: steps.lookup.outputs.cache-hit != 'true'
-      uses: actions/cache@v3
-      with:
-        path: ~/.m2/repository
-        key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
-        restore-keys: |
-          ${{ runner.os }}-maven-
+    - if: steps.lookup.outputs.cache-hit != 'true'
+      uses: ./.github/actions/setup_java_11
     - name: Build Koski app + tests
       if: steps.lookup.outputs.cache-hit != 'true'
       env:
