@@ -39,14 +39,6 @@ runs:
         key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
         restore-keys: |
           ${{ runner.os }}-maven-
-    - name: Cache Node modules
-      if: steps.lookup.outputs.cache-hit != 'true'
-      uses: actions/cache@v3
-      with:
-        path: ~/.pnpm-store
-        key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-        restore-keys: |
-          ${{ runner.os }}-node-
     - name: Build Koski app + tests
       if: steps.lookup.outputs.cache-hit != 'true'
       env:
