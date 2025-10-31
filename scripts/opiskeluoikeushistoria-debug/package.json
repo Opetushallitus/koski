@@ -13,5 +13,7 @@
   "dependencies": {
     "jsonpatch": "^3.1.0"
   },
-  "packageManager": "pnpm@10.20.0"
+  "engines": {
+    "pnpm": ">=10"
+  }
 }
