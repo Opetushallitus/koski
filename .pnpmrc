@@ -1,4 +1,4 @@
 frozen-lockfile=true
 minimum-release-age=3d
 ignore-scripts=true
-allowed-scripts=esbuild core-js
+allowed-scripts=esbuild
