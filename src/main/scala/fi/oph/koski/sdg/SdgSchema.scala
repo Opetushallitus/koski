@@ -21,6 +21,8 @@ object SdgSchema {
     schema.OpiskeluoikeudenTyyppi.ammatillinenkoulutus.koodiarvo,
     schema.OpiskeluoikeudenTyyppi.lukiokoulutus.koodiarvo,
     schema.OpiskeluoikeudenTyyppi.ibtutkinto.koodiarvo,
+    schema.OpiskeluoikeudenTyyppi.europeanschoolofhelsinki.koodiarvo,
+    schema.OpiskeluoikeudenTyyppi.internationalschool.koodiarvo,
   )
 }
 
