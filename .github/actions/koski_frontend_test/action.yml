@@ -14,7 +14,7 @@ runs:
     - name: "🔨 Setup backend and databases"
       uses: ./.github/actions/setup_backend
 
-    - name: pnpm install --frozen-lockfile
+    - name: Install js deps
       run: cd web && pnpm install --frozen-lockfile
       shell: bash
 
