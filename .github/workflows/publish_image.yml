@@ -48,23 +48,8 @@ jobs:
         run: |
           echo "image-exists=$(docker manifest inspect $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG > /dev/null 2>&1 ; echo $?)" >> $GITHUB_OUTPUT
 
-      - name: Cache Maven packages
-        uses: actions/cache@v3
-        if: steps.check-image.outputs.image-exists != '0'
-        with:
-          path: ~/.m2/repository
-          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
-          restore-keys: |
-            ${{ runner.os }}-maven-
-
-      - name: Set up Java 11
-        uses: actions/setup-java@v4
-        if: steps.check-image.outputs.image-exists != '0'
-        with:
-          java-version: "11"
-          architecture: "x64"
-          distribution: "zulu"
-          cache: "maven"
+      - if: steps.check-image.outputs.image-exists != '0'
+        uses: ./.github/actions/setup_java_11
 
       - name: Setup settings.xml
         uses: s4u/maven-settings-action@v2.8.0
