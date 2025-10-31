@@ -813,8 +813,6 @@ object AmmatillinenOsittainenUseistaTutkinnoista {
     oppilaitos = Some(stadinAmmattiopisto),
     suoritukset = List(ammatillisenTutkinnonOsittainenUseastaTutkinnostaSuoritus.copy(
       vahvistus = None,
-      keskiarvo = None,
-      keskiarvoSisältääMukautettujaArvosanoja = None,
       todistuksellaNäkyvätLisätiedot = None,
     )),
     tila = AmmatillinenOpiskeluoikeudenTila(
@@ -837,9 +835,6 @@ object AmmatillinenOsittainenUseistaTutkinnoista {
       arvioituPäättymispäivä = Some(date(2020, 5, 31)),
       oppilaitos = Some(stadinAmmattiopisto),
       suoritukset = List(ammatillisenTutkinnonOsittainenUseastaTutkinnostaSuoritus.copy(
-        osaamisala = None,
-        tutkintonimike = None,
-        järjestämismuodot = Some(List(Järjestämismuotojakso(date(2019, 9, 1), None, järjestämismuotoOppilaitos))),
         vahvistus = vahvistus(date(2021, 9, 2), stadinAmmattiopisto, Some(helsinki)),
         osasuoritukset = Some(List(
           osittaisenTutkinnonTutkinnonOsanUseastaTutkinnostaSuoritus(h2, ammatillisetTutkinnonOsat, "104052", "Johtaminen ja henkilöstön kehittäminen", 25).copy(

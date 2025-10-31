@@ -152,7 +152,7 @@ case class Hojks(
 case class Näyttö(
   suorituspaikka: Option[NäytönSuorituspaikka],
   suoritusaika: Option[NäytönSuoritusaika],
-  työssäoppimisenYhteydessä: Boolean,
+  työssäoppimisenYhteydessä: Option[Boolean],
   arviointi: Option[NäytönArviointi],
 ) {
   def withHyväksyntämerkinnälläKorvattuArvosana: Näyttö = copy(arviointi = arviointi.map(_.withHyväksyntämerkinnälläKorvattuArvosana))

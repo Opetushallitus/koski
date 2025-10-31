@@ -145,6 +145,13 @@ object AmmatillinenExampleData {
     arviointi
   )
 
+  def näyttöAmmatillinenOsittainen(päivä: LocalDate, kuvaus: String, paikka: String, arviointi: Option[NäytönArviointi] = None) = NäyttöAmmatillinenOsittainen(
+    Some(kuvaus),
+    Some(NäytönSuorituspaikka(Koodistokoodiviite("1", Some("työpaikka"), "ammatillisennaytonsuorituspaikka", Some(1)), paikka)),
+    Some(NäytönSuoritusaika(päivä, päivä)),
+    arviointi
+  )
+
   lazy val suoritustapaNäyttö = Koodistokoodiviite("naytto", Some("Näyttö"), None, "ammatillisentutkinnonsuoritustapa", Some(1))
   lazy val suoritustapaOps = Koodistokoodiviite("ops", Some("Ammatillinen perustutkinto"), "ammatillisentutkinnonsuoritustapa", Some(1))
   lazy val suoritustapaReformi = Koodistokoodiviite("reformi", Some("Ammatillinen perustutkinto"), "ammatillisentutkinnonsuoritustapa", Some(1))
@@ -817,16 +824,8 @@ object AmmatillinenExampleData {
 
   def ammatillisenTutkinnonOsittainenUseastaTutkinnostaSuoritus = AmmatillisenTutkinnonOsittainenUseastaTutkinnostaSuoritus(
     koulutusmoduuli = AmmatillinenOsiaUseastaTutkinnosta(Koodistokoodiviite("ammatillinentutkintoosittainenuseastatutkinnosta", "suorituksentyyppi")),
-    tutkintonimike = Some(List(
-      Koodistokoodiviite("10066", Some("Automekaanikko"), "tutkintonimikkeet", None)
-    )),
-    osaamisala = Some(List(
-      Osaamisalajakso(Koodistokoodiviite("1008", Some("Ajoneuvotekniikan osaamisala"), "osaamisala", None))
-    )),
     suoritustapa = suoritustapaReformi,
-    järjestämismuodot = Some(List(Järjestämismuotojakso(date(2022, 9, 1), None, järjestämismuotoOppilaitos))),
     suorituskieli = suomenKieli,
-    keskiarvo = None,
     vahvistus = vahvistus(date(2024, 5, 31), stadinAmmattiopisto, Some(helsinki)),
     alkamispäivä = None,
     toimipiste = stadinToimipiste,
@@ -847,7 +846,7 @@ object AmmatillinenExampleData {
       ),
       osittaisenTutkinnonTutkinnonOsanUseastaTutkinnostaSuoritus(k3, None, "106879", "Sähköjärjestelmän kunnon määrittäminen", 15).copy(
         näyttö = Some(
-          näyttö(date(2024, 1, 1), "Muksulan päiväkodin auton sähköjärjestelmän kunnon määrittämisen\ntekeminen sekä mittauksien tekeminen ja näytteiden ottaminen", "Muksulan päiväkoti, Kaarinan kunta", Some(näytönArviointi.copy(päivä = date(2024, 1, 1))))
+          näyttöAmmatillinenOsittainen(date(2024, 1, 1), "Muksulan päiväkodin auton sähköjärjestelmän kunnon määrittämisen\ntekeminen sekä mittauksien tekeminen ja näytteiden ottaminen", "Muksulan päiväkoti, Kaarinan kunta", Some(näytönArviointi.copy(päivä = date(2024, 1, 1))))
         )
       ),
       yhteisenOsittaisenTutkinnonTutkinnonOsanUseastaTutkinnostaSuoritus(h2, yhteisetTutkinnonOsat, "106727", "Viestintä- ja vuorovaikutusosaaminen", 11).copy(

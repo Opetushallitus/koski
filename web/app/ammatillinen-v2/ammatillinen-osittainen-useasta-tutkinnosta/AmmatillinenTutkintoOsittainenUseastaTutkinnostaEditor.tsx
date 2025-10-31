@@ -153,83 +153,6 @@ export const AmmatillisenOsittaisenUseastaTutkinnostaSuorituksenTiedot: React.FC
           {t(päätasonSuoritus.suoritus.suoritustapa.nimi)}
         </TestIdText>
       </KeyValueRow>
-      <KeyValueRow localizableLabel="Tutkintonimike">
-        <FormListField
-          form={form}
-          view={KoodistoView}
-          edit={KoodistoEdit}
-          editProps={{ koodistoUri: 'tutkintonimikkeet' }}
-          path={path.prop('tutkintonimike')}
-          removable
-          testId="tutkintonimike"
-        />
-        {form.editMode && (
-          <ButtonGroup>
-            <FlatButton
-              onClick={() => {
-                form.updateAt(
-                  path.prop('tutkintonimike').valueOr([]),
-                  append(
-                    Koodistokoodiviite<'tutkintonimikkeet', string>({
-                      koodiarvo: '00000',
-                      koodistoUri: 'tutkintonimikkeet'
-                    })
-                  )
-                )
-              }}
-            >
-              {t('Lisää')}
-            </FlatButton>
-          </ButtonGroup>
-        )}
-      </KeyValueRow>
-      <KeyValueRow localizableLabel="Toinen tutkintonimike">
-        <FormField
-          form={form}
-          view={BooleanView}
-          viewProps={{ hideFalse: true }}
-          edit={BooleanEdit}
-          path={path.prop('toinenTutkintonimike')}
-        />
-      </KeyValueRow>
-      <KeyValueRow localizableLabel="Osaamisala">
-        <FormListField
-          form={form}
-          view={OsaamisalaView}
-          edit={OsaamisalaEdit}
-          path={path.prop('osaamisala')}
-          removable
-        />
-        {form.editMode && (
-          <ButtonGroup>
-            <FlatButton
-              onClick={() => {
-                form.updateAt(
-                  path.prop('osaamisala').valueOr([]),
-                  append<Osaamisalajakso>({
-                    $class: 'fi.oph.koski.schema.Osaamisalajakso',
-                    osaamisala: Koodistokoodiviite<'osaamisala', ''>({
-                      koodiarvo: '',
-                      koodistoUri: 'osaamisala'
-                    })
-                  })
-                )
-              }}
-            >
-              {t('Lisää')}
-            </FlatButton>
-          </ButtonGroup>
-        )}
-      </KeyValueRow>
-      <KeyValueRow localizableLabel="Toinen osaamisala">
-        <FormField
-          form={form}
-          view={BooleanView}
-          viewProps={{ hideFalse: true }}
-          edit={BooleanEdit}
-          path={path.prop('toinenOsaamisala')}
-        />
-      </KeyValueRow>
       <KeyValueRow localizableLabel="Oppilaitos / toimipiste">
         <FormField
           form={form}
@@ -257,29 +180,6 @@ export const AmmatillisenOsittaisenUseastaTutkinnostaSuorituksenTiedot: React.FC
           testId="suorituskieli"
         />
       </KeyValueRow>
-      <KeyValueRow localizableLabel="Järjestämismuodot">
-        <FormListField
-          form={form}
-          view={JärjestämismouotoView}
-          edit={JärjestämismouotoEdit}
-          path={path.prop('järjestämismuodot')}
-          removable
-        />
-        {form.editMode && (
-          <ButtonGroup>
-            <FlatButton
-              onClick={() => {
-                form.updateAt(
-                  path.prop('järjestämismuodot').valueOr([]),
-                  append(emptyJärjestämismuoto)
-                )
-              }}
-            >
-              {t('Lisää')}
-            </FlatButton>
-          </ButtonGroup>
-        )}
-      </KeyValueRow>
       <KeyValueRow localizableLabel="Osaamisen hankkimistapa">
         <FormListField
           form={form}
@@ -295,29 +195,6 @@ export const AmmatillisenOsittaisenUseastaTutkinnostaSuorituksenTiedot: React.FC
                 form.updateAt(
                   path.prop('osaamisenHankkimistavat').valueOr([]),
                   append(emptyOsaamisenHankkimistapa)
-                )
-              }}
-            >
-              {t('Lisää')}
-            </FlatButton>
-          </ButtonGroup>
-        )}
-      </KeyValueRow>
-      <KeyValueRow localizableLabel="Työssäoppimisjaksot">
-        <FormListField
-          form={form}
-          view={TyössäoppimisjaksoView}
-          edit={TyössäoppimisjaksoEdit}
-          path={path.prop('työssäoppimisjaksot')}
-          removable
-        />
-        {form.editMode && (
-          <ButtonGroup>
-            <FlatButton
-              onClick={() => {
-                form.updateAt(
-                  path.prop('työssäoppimisjaksot').valueOr([]),
-                  append(emptyTyössäoppimisjakso)
                 )
               }}
             >

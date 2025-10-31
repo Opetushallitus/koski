@@ -1,3 +1,9 @@
+## 30.10.2025
+Poistettu ammatillinen tutkinnon osa/osia useammasta tutkinnosta tietomallista seuraavat kentät: järjestämismuodot,
+työssäoppimisjaksot, tutkintonimike, toinenTutkintonimike, osaamisala, toinenOsaamisala, keskiarvo ja keskiarvo Sisältää Mukautettuja Arvosanoja.
+
+Osasuorituksista korotettu ja osasuoritusten näyttöjen tiedoista työssäoppimisenyhteydessä ja haluaaTodistuksen
+
 ## 22.9.2025
 
 - Lisätty aloituspäivä valtionhallinnon kielitutkinnon kielitaitojen suorituksille.

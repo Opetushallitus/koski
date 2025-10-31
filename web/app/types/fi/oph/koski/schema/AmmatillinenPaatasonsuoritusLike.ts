@@ -32,11 +32,11 @@ import {
 } from './ValmaKoulutuksenSuoritus'
 
 /**
- * AmmatillinenPäätasonSuoritus
+ * AmmatillinenPäätasonsuoritusLike
  *
- * @see `fi.oph.koski.schema.AmmatillinenPäätasonSuoritus`
+ * @see `fi.oph.koski.schema.AmmatillinenPäätasonsuoritusLike`
  */
-export type AmmatillinenPäätasonSuoritus =
+export type AmmatillinenPäätasonsuoritusLike =
   | AmmatillisenTutkinnonOsittainenSuoritus
   | AmmatillisenTutkinnonOsittainenUseastaTutkinnostaSuoritus
   | AmmatillisenTutkinnonSuoritus
@@ -46,9 +46,9 @@ export type AmmatillinenPäätasonSuoritus =
   | TutkinnonOsaaPienemmistäKokonaisuuksistaKoostuvaSuoritus
   | ValmaKoulutuksenSuoritus
 
-export const isAmmatillinenPäätasonSuoritus = (
+export const isAmmatillinenPäätasonsuoritusLike = (
   a: any
-): a is AmmatillinenPäätasonSuoritus =>
+): a is AmmatillinenPäätasonsuoritusLike =>
   isAmmatillisenTutkinnonOsittainenSuoritus(a) ||
   isAmmatillisenTutkinnonOsittainenUseastaTutkinnostaSuoritus(a) ||
   isAmmatillisenTutkinnonSuoritus(a) ||

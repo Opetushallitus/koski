@@ -30,7 +30,7 @@ object HslAmmatillinenOpiskeluoikeus {
       oid = oo.oid.getOrElse(""),
       oppilaitos = oo.oppilaitos,
       tila = HslOpiskeluoikeudenTila.apply(oo.tila),
-      suoritukset = oo.suoritukset.map(HslAmmatillinenPäätasonSuoritus.apply),
+      suoritukset = oo.suoritukset.map(HslAmmatillinenPäätasonSuoritus.fromLike),
       lisätiedot = oo.lisätiedot.map(HslDefaultOpiskeluoikeudenLisätiedot.apply),
       arvioituPäättymispäivä = oo.arvioituPäättymispäivä,
       aikaleima = oo.aikaleima,
@@ -42,7 +42,6 @@ object HslAmmatillinenOpiskeluoikeus {
       sisältyyOpiskeluoikeuteen = oo.sisältyyOpiskeluoikeuteen
     )
 }
-
 
 @Title("Ammatillisen opiskeluoikeuden päätason suoritus")
 case class HslAmmatillinenPäätasonSuoritus(
@@ -63,6 +62,28 @@ object HslAmmatillinenPäätasonSuoritus {
       koulutussopimukset = s.koulutussopimukset.map(y => y.map(HslKoulutussopimusjakso.apply)),
       osaamisenHankkimistavat = None,
     )
+  }
+  def fromLike(s: AmmatillinenPäätasonsuoritusLike): HslAmmatillinenPäätasonSuoritus = s match {
+    case a: AmmatillinenPäätasonSuoritus => apply(a)
+    case _ =>
+      val koulutussopimuksetOpt =
+        s match {
+          case ks: Koulutussopimuksellinen =>
+            ks.koulutussopimukset.map(_.map(HslKoulutussopimusjakso.apply))
+          case _ => None
+        }
+
+      val osaamisenHankkimistavatOpt =
+        s match {
+          case oh: OsaamisenHankkimistavallinen =>
+            oh.osaamisenHankkimistavat.map(_.map(HslOsaamisenHankkimistapajakso.apply))
+          case _ => None
+        }
+      HslAmmatillinenPäätasonSuoritus(
+        tyyppi = s.tyyppi,
+        osaamisenHankkimistavat = osaamisenHankkimistavatOpt,
+        koulutussopimukset = koulutussopimuksetOpt
+      )
   }
 }
 
