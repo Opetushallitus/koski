@@ -282,14 +282,19 @@ class TodistusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers with Bef
       )
       app.todistusService.addRawForUnitTests(activeJob)
 
-      // Odota cleanup-schedulerin käynnistymistä
-      Thread.sleep(6000) // cleanupInterval on 5s
+      try {
+        // Odota cleanup-schedulerin käynnistymistä
+        Thread.sleep(6000) // cleanupInterval on 5s
 
-      // Varmista että jobin tila ei ole muuttunut
-      val jobAfterCleanup = app.todistusService.getFromDbForUnitTests(activeJob.id).get
-      jobAfterCleanup.state should equal(TodistusState.GENERATING_RAW_PDF)
-      jobAfterCleanup.worker should equal(Some(activeWorkerId))
-      jobAfterCleanup.attempts should equal(Some(1)) // Ei ole kasvanut
+        // Varmista että jobin tila ei ole muuttunut
+        val jobAfterCleanup = app.todistusService.getFromDbForUnitTests(activeJob.id).get
+        jobAfterCleanup.state should equal(TodistusState.GENERATING_RAW_PDF)
+        jobAfterCleanup.worker should equal(Some(activeWorkerId))
+        jobAfterCleanup.attempts should equal(Some(1)) // Ei ole kasvanut
+      } finally {
+        // Siivoa: merkitse job valmiiksi jotta afterEach ei jää odottamaan
+        app.todistusRepository.updateState(activeJob.id, TodistusState.GENERATING_RAW_PDF, TodistusState.COMPLETED)
+      }
     }
 
     "Uudelleenkäynnistää orpo-jobin (attempts < 3) ja ajaa sen loppuun" in {
