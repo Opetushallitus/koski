@@ -86,6 +86,10 @@ class TodistusService(application: KoskiApplication) extends Logging {
 
   def truncate(): Int = todistusRepository.truncate
 
+  def addRawForUnitTests(job: TodistusJob): TodistusJob = todistusRepository.addRawForUnitTests(job)
+
+  def getFromDbForUnitTests(id: String): Option[TodistusJob] = todistusRepository.getFromDbForUnitTests(id)
+
   def hasNext: Boolean = todistusRepository.numberOfQueuedJobs > 0
 
   def getDownloadUrl(bucketType: BucketType, job: TodistusJob): Either[HttpStatus, String] =
@@ -100,11 +104,12 @@ class TodistusService(application: KoskiApplication) extends Logging {
     todistusRepository
       .findOrphanedJobs(instanceArns)
       .foreach { todistus =>
-        if (todistus.attempts < maxAttempts) {
-          logger.info(s"Uudelleenkäynnistetään orpo todistus ${todistus.id} (yritys ${todistus.attempts}/${maxAttempts})")
+        val attemptsCount = todistus.attempts.getOrElse(0)
+        if (attemptsCount < maxAttempts) {
+          logger.info(s"Uudelleenkäynnistetään orpo todistus ${todistus.id} (yritys ${attemptsCount}/${maxAttempts})")
           todistusRepository.requeueJob(todistus.id)
         } else {
-          val errorMessage = s"Todistuksen luonti epäonnistui ${todistus.attempts} yrityksen jälkeen"
+          val errorMessage = s"Todistuksen luonti epäonnistui ${attemptsCount} yrityksen jälkeen"
           logger.warn(s"Orpo todistus ${todistus.id}: ${errorMessage}")
           todistusRepository.setJobFailed(todistus.id, errorMessage)
         }
@@ -226,6 +231,6 @@ case class TodistusJob(
   @RedundantData // Piilotetaan loppukäyttäjiltä
   worker: Option[String] = None,
   @RedundantData // Piilotetaan loppukäyttäjiltä
-  attempts: Int = 0,
+  attempts: Option[Int] = Some(0),
   error: Option[String] = None
 )

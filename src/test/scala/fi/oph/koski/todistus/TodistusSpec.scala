@@ -17,7 +17,7 @@ import org.scalatest.{BeforeAndAfterAll, BeforeAndAfterEach}
 
 import java.io.ByteArrayInputStream
 import java.net.URL
-import java.time.{Duration, LocalDate}
+import java.time.{Duration, LocalDate, LocalDateTime}
 
 class TodistusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers with BeforeAndAfterAll with BeforeAndAfterEach with PutOpiskeluoikeusTestMethods[KielitutkinnonOpiskeluoikeus] {
   def tag = implicitly[reflect.runtime.universe.TypeTag[KielitutkinnonOpiskeluoikeus]]
@@ -255,13 +255,66 @@ class TodistusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers with Bef
     }
   }
 
+  "Orpojen todistusjobien uudelleenkäynnistys" - {
+    "Uudelleenkäynnistää orpo-jobin (attempts < 3) ja ajaa sen loppuun" in {
+      val lang = "fi"
+      val hetu = KoskiSpecificMockOppijat.kielitutkinnonSuorittaja.hetu.get
+      val oppijaOid = KoskiSpecificMockOppijat.kielitutkinnonSuorittaja.oid
+      val opiskeluoikeusOid = getVahvistettuKielitutkinnonOpiskeluoikeus(oppijaOid).flatMap(_.oid).get
+
+      val orphanJob = createOrphanJob(oppijaOid, opiskeluoikeusOid, lang, attempts = 1)
+
+      val completedJob = waitForCompletion(orphanJob.id, hetu)
+      val completedJobFromDb = app.todistusService.getFromDbForUnitTests(orphanJob.id).get
+
+      completedJob.state should equal(TodistusState.COMPLETED)
+      completedJobFromDb.attempts.get should be > orphanJob.attempts.get
+      completedJob.error should be(None)
+    }
+
+    "Siirtää orpo-jobin (attempts >= 3) ERROR-tilaan" in {
+      val lang = "fi"
+      val hetu = KoskiSpecificMockOppijat.kielitutkinnonSuorittaja.hetu.get
+      val oppijaOid = KoskiSpecificMockOppijat.kielitutkinnonSuorittaja.oid
+      val opiskeluoikeusOid = getVahvistettuKielitutkinnonOpiskeluoikeus(oppijaOid).flatMap(_.oid).get
+
+      val orphanJob = createOrphanJob(oppijaOid, opiskeluoikeusOid, lang, attempts = 3)
+
+      val errorJob = waitForError(orphanJob.id, hetu)
+      val errorJobFromDb = app.todistusService.getFromDbForUnitTests(orphanJob.id).get
+
+      errorJob.state should equal(TodistusState.ERROR)
+      errorJobFromDb.error should not be empty
+      errorJobFromDb.error.get should include("epäonnistui 3 yrityksen jälkeen")
+    }
+
+    "Käsittelee sekä uudelleenkäynnistettävät että ERROR-tilaan siirrettävät orpo-jobit oikein" in {
+      val lang = "fi"
+      val hetu = KoskiSpecificMockOppijat.kielitutkinnonSuorittaja.hetu.get
+      val oppijaOid = KoskiSpecificMockOppijat.kielitutkinnonSuorittaja.oid
+      val opiskeluoikeusOid = getVahvistettuKielitutkinnonOpiskeluoikeus(oppijaOid).flatMap(_.oid).get
+
+      val restartableOrphan = createOrphanJob(oppijaOid, opiskeluoikeusOid, lang, attempts = 1)
+      val failableOrphan = createOrphanJob(oppijaOid, opiskeluoikeusOid, lang, attempts = 3)
+
+      val completedJob = waitForCompletion(restartableOrphan.id, hetu)
+      val errorJob = waitForError(failableOrphan.id, hetu)
+
+      val completedJobFromDb = app.todistusService.getFromDbForUnitTests(restartableOrphan.id).get
+      val errorJobFromDb = app.todistusService.getFromDbForUnitTests(failableOrphan.id).get
+
+      completedJob.state should equal(TodistusState.COMPLETED)
+      completedJobFromDb.attempts.get should be > restartableOrphan.attempts.get
+      errorJob.state should equal(TodistusState.ERROR)
+      errorJobFromDb.error should not be empty
+    }
+  }
+
   // TODO: TOR-2400 testejä:
   //  - huollettavan todistukset
   //  - käyttöoikeudet: ei pääse toisen oppijan todistuksiin tai niiden tilaan
   //  - käyttöoikeudet: OPH pääkäyttäjä pääsee kaikkien oppijoiden todistuksiin
-  //  - uuden skedulerin herääminen, jos vanha kontti kuollut
   //  - yritys tehdä todistusta muusta kuin sallitun tyyppisestä valmistuneesta opiskeluoikeudesta epäonnistuu
-  //  - keskenjääneiden töiden automaattinen peruutus ja uudelleenyritykset (3x) toimivat
   //  - töiden cancelointi toimii
   //  - debug-rajapinta vain pääkäyttäjille: voi hakea myös allekirjoittamattoman todistuksen
   //  - Todistuksen ulkonäkö säilyy samana, eli marginaalit, fontit jne. eivät muutu (joku kuvavertailu tarvitaan?)
@@ -351,6 +404,37 @@ class TodistusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers with Bef
       TodistusState.SAVING_STAMPED_PDF,
       TodistusState.COMPLETED
     )
+
+  def waitForError(id: String, hetu: String): TodistusJob = {
+    var lastResponse: Option[TodistusJob] = None
+    Wait.until {
+      getStatusSuccessfully(id, hetu) { response =>
+        lastResponse = Some(response)
+        response.state == TodistusState.ERROR
+      }
+    }
+    lastResponse.get
+  }
+
+  def createOrphanJob(oppijaOid: String, opiskeluoikeusOid: String, language: String, attempts: Int): TodistusJob = {
+    val orphanJob = TodistusJob(
+      id = java.util.UUID.randomUUID().toString,
+      userOid = oppijaOid,
+      oppijaOid = oppijaOid,
+      opiskeluoikeusOid = opiskeluoikeusOid,
+      language = language,
+      opiskeluoikeusVersionumero = Some(1),
+      oppijaHenkilötiedotHash = Some("test-hash"),
+      state = TodistusState.GENERATING_RAW_PDF,
+      createdAt = LocalDateTime.now(),
+      startedAt = Some(LocalDateTime.now()),
+      completedAt = None,
+      worker = Some("dead-worker-id"),
+      attempts = Some(attempts),
+      error = None
+    )
+    app.todistusService.addRawForUnitTests(orphanJob)
+  }
 
   def parsedResponse: TodistusJob = {
     verifyResponseStatusOk()

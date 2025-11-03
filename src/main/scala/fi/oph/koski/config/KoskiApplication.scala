@@ -236,7 +236,8 @@ class KoskiApplication(
   lazy val todistusService = new TodistusService(this)
   lazy val todistusRepository = new TodistusJobRepository(
     masterDatabase.db,
-    ecsMetadata.taskARN.getOrElse("local")
+    ecsMetadata.taskARN.getOrElse("local"),
+    config
   )
   lazy val todistusScheduler: TodistusScheduler = new TodistusScheduler(this)
   lazy val todistusCleanupScheduler: TodistusCleanupScheduler = new TodistusCleanupScheduler(this)
