@@ -39,16 +39,19 @@ class LuovutuspalveluV2Spec extends AnyFreeSpec with KoskiHttpSpec {
 
   def mockLuovutuspalveluV2KelaHeader: Headers = Map(
     "x-amzn-mtls-clientcert-subject" -> "CN=kela",
+    "x-amzn-mtls-clientcert-serial-number" -> "123",
     "X-Forwarded-For" -> "0.0.0.0"
   )
 
   def mockLuovutuspalveluV2KelaInvalidIpHeader: Headers = Map(
     "x-amzn-mtls-clientcert-subject" -> "CN=kela",
+    "x-amzn-mtls-clientcert-serial-number" -> "123",
     "X-Forwarded-For" -> "255.255.255.255"
   )
 
   def mockLuovutuspalveluV2InvalidHeader: Headers = Map(
     "x-amzn-mtls-clientcert-subject" -> "CN=example.com",
+    "x-amzn-mtls-clientcert-serial-number" -> "123",
     "X-Forwarded-For" -> "0.0.0.0"
   )
 }

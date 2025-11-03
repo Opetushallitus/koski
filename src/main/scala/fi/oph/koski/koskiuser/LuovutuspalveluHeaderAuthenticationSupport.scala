@@ -10,9 +10,10 @@ trait LuovutuspalveluHeaderAuthenticationSupport extends AuthenticationSupport {
     request.header("x-amzn-mtls-clientcert-subject").map(
       subjectDnHeader =>
         for {
+          serial <- request.header("x-amzn-mtls-clientcert-serial-number").toRight(KoskiErrorCategory.internalError())
           client <- clientList.find(_.subjectDn == subjectDnHeader).toRight {
             // Use defaultLogger to prevent recursion, since we don't have a user yet
-            defaultLogger.warn(s"Luovutuspalvelu presented with unknown client certificate ${subjectDnHeader}")
+            defaultLogger.warn(s"Luovutuspalvelu presented with unknown client certificate $subjectDnHeader ($serial)")
             KoskiErrorCategory.unauthorized("Tuntematon varmenne")
           }
           _ <- Either.cond(client.ips.contains(request.remoteAddress), (), {
@@ -22,7 +23,11 @@ trait LuovutuspalveluHeaderAuthenticationSupport extends AuthenticationSupport {
           user <- DirectoryClientLogin
             .findUser(application.directoryClient, request, client.user)
             .toRight(KoskiErrorCategory.unauthorized.loginFail())
-        } yield user
+        } yield {
+          defaultLogger.info(s"Luovutuspalvelu client certificate $subjectDnHeader ($serial) mapped to user ${user.username}")
+          user
+        }
     ).getOrElse(userFromBasicAuth)
   }
 }
+
