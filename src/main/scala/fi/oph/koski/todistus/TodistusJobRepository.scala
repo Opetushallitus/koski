@@ -24,7 +24,7 @@ class TodistusJobRepository(val db: DB, workerId: String) extends QueryMethods w
       runDbSync(sql"""
       INSERT INTO todistus_job(id, user_oid, oppija_oid, opiskeluoikeus_oid, language,
                           opiskeluoikeus_versionumero, oppija_henkilotiedot_hash, state,
-                          created_at, started_at, completed_at, worker, error)
+                          created_at, started_at, completed_at, worker, attempts, error)
       VALUES (
         ${todistusJob.id}::uuid,
         ${todistusJob.userOid},
@@ -38,6 +38,7 @@ class TodistusJobRepository(val db: DB, workerId: String) extends QueryMethods w
         ${todistusJob.startedAt.map(java.sql.Timestamp.valueOf)},
         ${todistusJob.completedAt.map(java.sql.Timestamp.valueOf)},
         ${todistusJob.worker},
+        ${todistusJob.attempts},
         ${todistusJob.error}
       )
       RETURNING *
@@ -64,7 +65,8 @@ class TodistusJobRepository(val db: DB, workerId: String) extends QueryMethods w
       SET
         state = 'GENERATING_RAW_PDF',
         worker = $workerId,
-        started_at = now()
+        started_at = now(),
+        attempts = attempts + 1
       WHERE id IN (
         SELECT id
         FROM todistus_job
@@ -75,6 +77,27 @@ class TodistusJobRepository(val db: DB, workerId: String) extends QueryMethods w
       RETURNING *
       """.as[TodistusJob]).headOption
   }
+
+  def requeueJob(id: String): Boolean =
+    runDbSync(
+      sql"""
+      UPDATE todistus_job
+      SET
+        state = ${TodistusState.QUEUED},
+        worker = NULL
+      WHERE id = ${id}::uuid
+      """.asUpdate) != 0
+
+  def setJobFailed(id: String, error: String): Boolean =
+    runDbSync(
+      sql"""
+      UPDATE todistus_job
+      SET
+        state = ${TodistusState.ERROR},
+        error = $error,
+        completed_at = now()
+      WHERE id = ${id}::uuid
+      """.asUpdate) != 0
 
   def setRunningJobsFailed(error: String): Boolean =
     runDbSync(
@@ -128,6 +151,7 @@ class TodistusJobRepository(val db: DB, workerId: String) extends QueryMethods w
       startedAt = Option(r.rs.getTimestamp("started_at")).map(_.toLocalDateTime),
       completedAt = Option(r.rs.getTimestamp("completed_at")).map(_.toLocalDateTime),
       worker = Option(r.rs.getString("worker")),
+      attempts = r.rs.getInt("attempts"),
       error = Option(r.rs.getString("error"))
     )
   })

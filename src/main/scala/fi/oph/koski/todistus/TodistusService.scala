@@ -95,11 +95,19 @@ class TodistusService(application: KoskiApplication) extends Logging {
 
   def cleanup(koskiInstances: Seq[KoskiInstance]): Unit = {
     val instanceArns = koskiInstances.map(_.taskArn)
+    val maxAttempts = 3
 
     todistusRepository
       .findOrphanedJobs(instanceArns)
       .foreach { todistus =>
-        // TODO: TOR-2400: Uudelleenkäynnistä, jos ei ole jo yritetty turhan monta kertaa
+        if (todistus.attempts < maxAttempts) {
+          logger.info(s"Uudelleenkäynnistetään orpo todistus ${todistus.id} (yritys ${todistus.attempts}/${maxAttempts})")
+          todistusRepository.requeueJob(todistus.id)
+        } else {
+          val errorMessage = s"Todistuksen luonti epäonnistui ${todistus.attempts} yrityksen jälkeen"
+          logger.warn(s"Orpo todistus ${todistus.id}: ${errorMessage}")
+          todistusRepository.setJobFailed(todistus.id, errorMessage)
+        }
       }
   }
 
@@ -217,5 +225,7 @@ case class TodistusJob(
   completedAt: Option[LocalDateTime] = None,
   @RedundantData // Piilotetaan loppukäyttäjiltä
   worker: Option[String] = None,
+  @RedundantData // Piilotetaan loppukäyttäjiltä
+  attempts: Int = 0,
   error: Option[String] = None
 )
