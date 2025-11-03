@@ -337,37 +337,46 @@ object Oppivelvollisuustiedot {
               (syntymaaika + interval '#$oppivelvollisuusLoppuuIka year' - interval '1 day')::date,
               -- Jos oppija on muuttanut Suomesta ennen kuin hän täyttää 7v, "oppivelvollisuus" alkaa ja päättyy samana päivänä, muuten ulkoimaille muutto päättää oppivelvollisuuden
               case when nykyinen_kotikunta_ulkomailla_alkaen.pvm is not null then greatest(oppivelvollisuus_alkaa.pvm, nykyinen_kotikunta_ulkomailla_alkaen.pvm) end
-              )
-            as oppivelvollisuusVoimassaAsti,
+          )::date as oppivelvollisuusVoimassaAsti,
 
           -- Huom! Osa samasta logiikasta on myös Scala-koodina ValpasRajapäivätService-luokassa. Varmista muutosten jälkeen,
           -- että logiikka säilyy samana.
-          greatest(
-            maksuttomuuden_pidennysjakso.loppu,
+          (
             case
               when amis_ja_lukio_samaan_aikaan and ylioppilastutkinnon_vahvistus_paiva is not null and ammattitutkinnon_vahvistus_paiva is not null then least(
-                oppivelvollisuudesta_vapautus,
-                dia_tutkinnon_vahvistuspaiva,
-                ebtutkinto_toisen_asteen_vahvistus_paiva,
-                greatest(ylioppilastutkinnon_vahvistus_paiva, ammattitutkinnon_vahvistus_paiva),
-                #${s.name}.vuodenViimeinenPaivamaara(syntymaaika + interval '#$maksuttomuusLoppuuIka year'))
+                oppivelvollisuudesta_vapautus + (interval '1 day' * maksuttomuutta_pidennetty_yhteensa_vanha_laki),
+                dia_tutkinnon_vahvistuspaiva + (interval '1 day' * maksuttomuutta_pidennetty_yhteensa_vanha_laki),
+                ebtutkinto_toisen_asteen_vahvistus_paiva + (interval '1 day' * maksuttomuutta_pidennetty_yhteensa_vanha_laki),
+                greatest(ylioppilastutkinnon_vahvistus_paiva, ammattitutkinnon_vahvistus_paiva) + (interval '1 day' * maksuttomuutta_pidennetty_yhteensa_vanha_laki),
+                greatest(
+                  maksuttomuuden_pidennysjakso.loppu,
+                  #${s.name}.vuodenViimeinenPaivamaara(syntymaaika + interval '#$maksuttomuusLoppuuIka year') + (interval '1 day' * maksuttomuutta_pidennetty_yhteensa_vanha_laki)
+                )
+              )
 
              when amis_ja_lukio_samaan_aikaan then least(
-                oppivelvollisuudesta_vapautus,
-                dia_tutkinnon_vahvistuspaiva,
-                ebtutkinto_toisen_asteen_vahvistus_paiva,
-                #${s.name}.vuodenViimeinenPaivamaara(syntymaaika + interval '#$maksuttomuusLoppuuIka year'))
+                oppivelvollisuudesta_vapautus + (interval '1 day' * maksuttomuutta_pidennetty_yhteensa_vanha_laki),
+                dia_tutkinnon_vahvistuspaiva + (interval '1 day' * maksuttomuutta_pidennetty_yhteensa_vanha_laki),
+                ebtutkinto_toisen_asteen_vahvistus_paiva + (interval '1 day' * maksuttomuutta_pidennetty_yhteensa_vanha_laki),
+                greatest(
+                  maksuttomuuden_pidennysjakso.loppu,
+                  #${s.name}.vuodenViimeinenPaivamaara(syntymaaika + interval '#$maksuttomuusLoppuuIka year') + (interval '1 day' * maksuttomuutta_pidennetty_yhteensa_vanha_laki)
+                )
+              )
 
               else least(
-                oppivelvollisuudesta_vapautus,
-                dia_tutkinnon_vahvistuspaiva,
-                ebtutkinto_toisen_asteen_vahvistus_paiva,
-                ylioppilastutkinnon_vahvistus_paiva,
-                ammattitutkinnon_vahvistus_paiva,
-                #${s.name}.vuodenViimeinenPaivamaara(syntymaaika + interval '#$maksuttomuusLoppuuIka year'))
-            end + (interval '1 day' * maksuttomuutta_pidennetty_yhteensa_vanha_laki)
+                oppivelvollisuudesta_vapautus + (interval '1 day' * maksuttomuutta_pidennetty_yhteensa_vanha_laki),
+                dia_tutkinnon_vahvistuspaiva + (interval '1 day' * maksuttomuutta_pidennetty_yhteensa_vanha_laki),
+                ebtutkinto_toisen_asteen_vahvistus_paiva + (interval '1 day' * maksuttomuutta_pidennetty_yhteensa_vanha_laki),
+                ylioppilastutkinnon_vahvistus_paiva + (interval '1 day' * maksuttomuutta_pidennetty_yhteensa_vanha_laki),
+                ammattitutkinnon_vahvistus_paiva + (interval '1 day' * maksuttomuutta_pidennetty_yhteensa_vanha_laki),
+                greatest(
+                  maksuttomuuden_pidennysjakso.loppu,
+                  #${s.name}.vuodenViimeinenPaivamaara(syntymaaika + interval '#$maksuttomuusLoppuuIka year') + (interval '1 day' * maksuttomuutta_pidennetty_yhteensa_vanha_laki)
+                )
+              )
+            end
           )::date as oikeusKoulutuksenMaksuttomuuteenVoimassaAsti,
-
           kotikunta_suomessa_alkaen.pvm as kotikuntaSuomessaAlkaen
 
         from

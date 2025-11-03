@@ -541,7 +541,7 @@ class OppivelvollisuustietoSpec
       }
       "Muuttanut ulkomaille ennen 7v, mutta opiskeluoikeus on (teoreettisesti) olemassa -> oppivelvollisuus päättyy samana päivänä kuin alkaa" in {
         resetValpasMockData
-        val result = queryOids("1.2.246.562.24.00000000184")
+        val result = queryOids("1.2.246.562.24.00000000185")
         result.head.oppivelvollisuusVoimassaAsti shouldBe date(2012, 9, 1)
       }
     }

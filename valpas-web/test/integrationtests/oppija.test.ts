@@ -71,7 +71,7 @@ const opiskeluoikeusIntSchoolPerusopetusPath = oppijaPath.href("/virkailija", {
 const opiskeluoikeusEuropeanSchoolPerusopetusPath = oppijaPath.href(
   "/virkailija",
   {
-    oppijaOid: "1.2.246.562.24.00000000171",
+    oppijaOid: "1.2.246.562.24.00000000172",
   },
 )
 
@@ -234,7 +234,7 @@ describe("Oppijakohtainen näkymä 1/2", () => {
       "valpas-jkl-normaali",
     )
     await mainHeadingEquals("ESH-s4-jälkeen-s5-aloittanut Valpas (200305A594S)")
-    await secondaryHeadingEquals("Oppija 1.2.246.562.24.00000000171")
+    await secondaryHeadingEquals("Oppija 1.2.246.562.24.00000000172")
     await oppivelvollisuustiedotEquals(
       oppivelvollisuustiedot({
         opiskelutilanne: "Kyllä",

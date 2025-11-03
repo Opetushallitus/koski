@@ -1287,6 +1287,18 @@ object ValpasOppijaTestData {
       )
     ),
     (
+      ValpasMockOppijat.maksuttomuuttaPidennettyValmistunut,
+      List(
+        ExpectedData(
+          ValpasOpiskeluoikeusExampleData.ammattikouluMaksuttomuuttaPidennetty,
+          onHakeutumisValvottavaOpiskeluoikeus = false,
+          onHakeutumisvalvovaOppilaitos = false,
+          onSuorittamisvalvovaOppilaitos = true,
+          perusopetuksenJälkeinenTiedot = Some(ExpectedDataPerusopetuksenJälkeinenTiedot("voimassa", "lasna")),
+        ),
+      )
+    ),
+    (
       ValpasMockOppijat.amisEronnutUusiKelpaamatonOpiskeluoikeusPerusopetukseenValmistavassa,
       List(
         ExpectedData(
