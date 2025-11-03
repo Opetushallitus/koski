@@ -256,6 +256,42 @@ class TodistusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers with Bef
   }
 
   "Orpojen todistusjobien uudelleenkäynnistys" - {
+    "Ei koske aktiivisesti ajossa olevaan jobiin" in {
+      val lang = "fi"
+      val hetu = KoskiSpecificMockOppijat.kielitutkinnonSuorittaja.hetu.get
+      val oppijaOid = KoskiSpecificMockOppijat.kielitutkinnonSuorittaja.oid
+      val opiskeluoikeusOid = getVahvistettuKielitutkinnonOpiskeluoikeus(oppijaOid).flatMap(_.oid).get
+
+      // Luo job oikealla workerIdllä (tämän instanssin workerId)
+      val activeWorkerId = app.todistusService.workerId
+      val activeJob = TodistusJob(
+        id = java.util.UUID.randomUUID().toString,
+        userOid = oppijaOid,
+        oppijaOid = oppijaOid,
+        opiskeluoikeusOid = opiskeluoikeusOid,
+        language = lang,
+        opiskeluoikeusVersionumero = Some(1),
+        oppijaHenkilötiedotHash = Some("test-hash"),
+        state = TodistusState.GENERATING_RAW_PDF,
+        createdAt = LocalDateTime.now(),
+        startedAt = Some(LocalDateTime.now()),
+        completedAt = None,
+        worker = Some(activeWorkerId),
+        attempts = Some(1),
+        error = None
+      )
+      app.todistusService.addRawForUnitTests(activeJob)
+
+      // Odota cleanup-schedulerin käynnistymistä
+      Thread.sleep(6000) // cleanupInterval on 5s
+
+      // Varmista että jobin tila ei ole muuttunut
+      val jobAfterCleanup = app.todistusService.getFromDbForUnitTests(activeJob.id).get
+      jobAfterCleanup.state should equal(TodistusState.GENERATING_RAW_PDF)
+      jobAfterCleanup.worker should equal(Some(activeWorkerId))
+      jobAfterCleanup.attempts should equal(Some(1)) // Ei ole kasvanut
+    }
+
     "Uudelleenkäynnistää orpo-jobin (attempts < 3) ja ajaa sen loppuun" in {
       val lang = "fi"
       val hetu = KoskiSpecificMockOppijat.kielitutkinnonSuorittaja.hetu.get
