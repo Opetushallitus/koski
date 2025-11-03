@@ -284,7 +284,7 @@ class TodistusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers with Bef
 
       try {
         // Odota cleanup-schedulerin käynnistymistä
-        Thread.sleep(6000) // cleanupInterval on 5s
+        Thread.sleep(3000) // cleanupInterval on 2s
 
         // Varmista että jobin tila ei ole muuttunut
         val jobAfterCleanup = app.todistusService.getFromDbForUnitTests(activeJob.id).get
