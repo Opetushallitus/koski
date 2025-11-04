@@ -19,10 +19,10 @@ import {
   yhteisenTutkinnonOsat,
   YhteisenTutkinnonOsatTunniste
 } from '../OsasuoritusTables'
-import { useKoodisto, useKoodistoFiller } from '../../appstate/koodisto'
+import { useKoodistoFiller } from '../../appstate/koodisto'
 import { Koodistokoodiviite } from '../../types/fi/oph/koski/schema/Koodistokoodiviite'
 import { Column, ColumnRow } from '../../components-v2/containers/Columns'
-import { finnish, t } from '../../i18n/i18n'
+import { localize, t } from '../../i18n/i18n'
 import { FormField } from '../../components-v2/forms/FormField'
 import {
   LaajuusEdit,
@@ -745,7 +745,7 @@ const newYhteinenTutkinnonOsaTutkinnolla = (
       tutkinnonOsanRyhmä: Koodistokoodiviite({
         koodistoUri: 'ammatillisentutkinnonosanryhma',
         koodiarvo: '2',
-        nimi: finnish('Yhteiset tutkinnon osat')
+        nimi: localize(t('Yhteiset tutkinnon osat'))
       })
     }
   )
@@ -784,8 +784,8 @@ const newPaikallinenOsaTutkinnolla = (
   return MuunOsittaisenAmmatillisenTutkinnonTutkinnonosanUseastaTutkinnostaSuoritus(
     {
       koulutusmoduuli: PaikallinenTutkinnonOsa({
-        tunniste: PaikallinenKoodi({ koodiarvo: osa, nimi: finnish(osa) }),
-        kuvaus: finnish(osa),
+        tunniste: PaikallinenKoodi({ koodiarvo: osa, nimi: localize(osa) }),
+        kuvaus: localize(osa),
         pakollinen: false
       }),
       tutkinto: AmmatillinenTutkintoKoulutus({

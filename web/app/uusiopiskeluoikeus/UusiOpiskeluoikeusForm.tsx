@@ -109,7 +109,7 @@ export const UusiOpiskeluoikeusForm = (props: UusiOpiskeluoikeusFormProps) => {
 
       {state.aloituspäivä.visible && (
         <label>
-          {'Aloituspäivä'}
+          {t('Aloituspäivä')}
           <DateEdit
             value={state.aloituspäivä.value}
             onChange={state.aloituspäivä.set}
