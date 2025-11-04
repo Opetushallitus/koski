@@ -5,7 +5,7 @@ import java.time.LocalDate
 import fi.oph.koski.schema.annotation._
 import fi.oph.koski.schema
 
-case class InternationalSchoolOpiskeluoikeus(
+case class SdgInternationalSchoolOpiskeluoikeus(
   oid: Option[String] = None,
   oppilaitos: Option[schema.Oppilaitos] = None,
   koulutustoimija: Option[schema.Koulutustoimija] = None,
@@ -22,26 +22,26 @@ case class InternationalSchoolOpiskeluoikeus(
 
 trait InternationalSchoolVuosiluokanSuoritus extends Suoritus
 
-case class MYPVuosiluokanSuoritus(
+case class SdgMYPVuosiluokanSuoritus(
   koulutusmoduuli: schema.MYPLuokkaAste,
   @Tooltip("Vuosiluokan alkamispäivä")
   alkamispäivä: Option[LocalDate] = None,
-  toimipiste: Option[Toimipiste],
-  vahvistus: Option[Vahvistus], // vain päivä
+  toimipiste: Option[SdgToimipiste],
+  vahvistus: Option[SdgVahvistus], // vain päivä
   suorituskieli: schema.Koodistokoodiviite,
   @KoodistoKoodiarvo("internationalschoolmypvuosiluokka")
   tyyppi: schema.Koodistokoodiviite,
-  osasuoritukset: Option[List[MYPOppiaineenSuoritus]] = None // vain 10 koodiarvolla mukaan
+  osasuoritukset: Option[List[SdgMYPOppiaineenSuoritus]] = None // vain 10 koodiarvolla mukaan
 ) extends InternationalSchoolVuosiluokanSuoritus {
-  override def withOsasuoritukset(os: Option[List[Osasuoritus]]): MYPVuosiluokanSuoritus =
+  override def withOsasuoritukset(os: Option[List[Osasuoritus]]): SdgMYPVuosiluokanSuoritus =
     this.copy(
       osasuoritukset = os.map(_.collect{
-        case s: MYPOppiaineenSuoritus => s
+        case s: SdgMYPOppiaineenSuoritus => s
       })
     )
 }
 
-case class MYPOppiaineenSuoritus(
+case class SdgMYPOppiaineenSuoritus(
   koulutusmoduuli: schema.MYPOppiaine,
   arviointi: Option[List[schema.MYPArviointi]] = None,
   suorituskieli: Option[schema.Koodistokoodiviite] = None,
@@ -49,18 +49,18 @@ case class MYPOppiaineenSuoritus(
   tyyppi: schema.Koodistokoodiviite
 ) extends Osasuoritus
 
-case class DiplomaVuosiluokanSuoritus(
+case class SdgDiplomaVuosiluokanSuoritus(
   koulutusmoduuli: schema.DiplomaLuokkaAste,
   @Tooltip("Vuosiluokan alkamispäivä")
   alkamispäivä: Option[LocalDate] = None,
-  toimipiste: Option[Toimipiste],
-  vahvistus: Option[Vahvistus],
+  toimipiste: Option[SdgToimipiste],
+  vahvistus: Option[SdgVahvistus],
   suorituskieli: schema.Koodistokoodiviite,
   @KoodistoKoodiarvo("internationalschooldiplomavuosiluokka")
   tyyppi: schema.Koodistokoodiviite,
   osasuoritukset: Option[List[DiplomaIBOppiaineenSuoritus]] = None
 ) extends InternationalSchoolVuosiluokanSuoritus {
-  override def withOsasuoritukset(os: Option[List[Osasuoritus]]): DiplomaVuosiluokanSuoritus =
+  override def withOsasuoritukset(os: Option[List[Osasuoritus]]): SdgDiplomaVuosiluokanSuoritus =
     this.copy(
       osasuoritukset = os.map(_.collect{
         case s: DiplomaIBOppiaineenSuoritus => s
@@ -70,7 +70,7 @@ case class DiplomaVuosiluokanSuoritus(
 
 trait DiplomaIBOppiaineenSuoritus extends Osasuoritus
 
-case class DiplomaOppiaineenSuoritus(
+case class SdgDiplomaOppiaineenSuoritus(
   koulutusmoduuli: schema.InternationalSchoolIBOppiaine,
   arviointi: Option[List[schema.DiplomaArviointi]] = None,
   suorituskieli: Option[schema.Koodistokoodiviite] = None,
@@ -78,7 +78,7 @@ case class DiplomaOppiaineenSuoritus(
   tyyppi: schema.Koodistokoodiviite
 ) extends DiplomaIBOppiaineenSuoritus
 
-case class DiplomaCoreRequirementsOppiaineenSuoritus(
+case class SdgDiplomaCoreRequirementsOppiaineenSuoritus(
   koulutusmoduuli: schema.DiplomaCoreRequirementsOppiaine,
   arviointi: Option[List[schema.InternationalSchoolCoreRequirementsArviointi]] = None, // deprekoitu predicted pois
   suorituskieli: Option[schema.Koodistokoodiviite] = None,

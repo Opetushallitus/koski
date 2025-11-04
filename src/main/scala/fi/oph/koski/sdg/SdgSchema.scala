@@ -10,7 +10,7 @@ import java.time.LocalDate
 
 object SdgSchema {
   lazy val schemaJson: JValue = {
-    SchemaToJson.toJsonSchema(schema.KoskiSchema.createSchema(classOf[Oppija]).asInstanceOf[ClassSchema])
+    SchemaToJson.toJsonSchema(schema.KoskiSchema.createSchema(classOf[SdgOppija]).asInstanceOf[ClassSchema])
   }
 
   val schemassaTuetutOpiskeluoikeustyypit: List[String] = List(
@@ -27,12 +27,12 @@ object SdgSchema {
 }
 
 @Title("Oppija")
-case class Oppija(
-  henkilö: Henkilo,
+case class SdgOppija(
+  henkilö: SdgHenkilo,
   opiskeluoikeudet: List[Opiskeluoikeus]
 )
 
-case class Henkilo(
+case class SdgHenkilo(
   oid: String,
   hetu: Option[String],
   syntymäaika: Option[LocalDate],
@@ -41,8 +41,8 @@ case class Henkilo(
   kutsumanimi: String
 )
 
-object Henkilo {
-  def fromOppijaHenkilö(oppijaHenkilö: fi.oph.koski.henkilo.OppijaHenkilö) = Henkilo(
+object SdgHenkilo {
+  def fromOppijaHenkilö(oppijaHenkilö: fi.oph.koski.henkilo.OppijaHenkilö) = SdgHenkilo(
     oid = oppijaHenkilö.oid,
     hetu = oppijaHenkilö.hetu,
     syntymäaika = oppijaHenkilö.syntymäaika,
@@ -81,7 +81,7 @@ trait GenericOpiskeluoikeusjakso {
   def tila: schema.Koodistokoodiviite
 }
 
-case class Opiskeluoikeusjakso(
+case class SdgOpiskeluoikeusjakso(
   alku: LocalDate,
   @KoodistoUri("koskiopiskeluoikeudentila")
   tila: schema.Koodistokoodiviite
@@ -89,7 +89,7 @@ case class Opiskeluoikeusjakso(
 
 @Title("Opiskeluoikeuden tila")
 case class OpiskeluoikeudenTila(
-  opiskeluoikeusjaksot: List[Opiskeluoikeusjakso]
+  opiskeluoikeusjaksot: List[SdgOpiskeluoikeusjakso]
 ) extends GenericOpiskeluoikeudenTila
 
 trait Suoritus {
@@ -98,9 +98,9 @@ trait Suoritus {
   @Discriminator
   def tyyppi: schema.Koodistokoodiviite
 
-  def vahvistus: Option[Vahvistus]
+  def vahvistus: Option[SdgVahvistus]
 
-  def toimipiste: Option[Toimipiste]
+  def toimipiste: Option[SdgToimipiste]
 
   def osasuoritukset: Option[List[Osasuoritus]]
 
@@ -116,9 +116,9 @@ trait SuorituksenKoulutusmoduuli {
   def tunniste: schema.Koodistokoodiviite
 }
 
-case class Vahvistus(päivä: LocalDate)
+case class SdgVahvistus(päivä: LocalDate)
 
-case class Toimipiste(
+case class SdgToimipiste(
   oid: String,
   nimi: Option[schema.LocalizedString] = None,
   kotipaikka: Option[schema.Koodistokoodiviite] = None

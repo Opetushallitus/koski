@@ -5,7 +5,7 @@ import fi.oph.koski.schema.annotation.KoodistoKoodiarvo
 import fi.oph.scalaschema.annotation.Title
 
 @Title("DIA-tutkinnon opiskeluoikeus")
-case class DIAOpiskeluoikeus(
+case class SdgDIAOpiskeluoikeus(
   oid: Option[String],
   versionumero: Option[Int],
   oppilaitos: Option[schema.Oppilaitos],
@@ -15,67 +15,67 @@ case class DIAOpiskeluoikeus(
   @KoodistoKoodiarvo(schema.OpiskeluoikeudenTyyppi.diatutkinto.koodiarvo)
   tyyppi: schema.Koodistokoodiviite,
 ) extends Opiskeluoikeus {
-  override def withSuoritukset(suoritukset: List[Suoritus]): DIAOpiskeluoikeus =
+  override def withSuoritukset(suoritukset: List[Suoritus]): SdgDIAOpiskeluoikeus =
     this.copy(
-      suoritukset = suoritukset.collect { case s: DIATutkinnonSuoritus => s }
+      suoritukset = suoritukset.collect { case s: DiaPäätasonSuoritus => s }
     )
 }
 
 trait DiaPäätasonSuoritus extends Suoritus
 
 @Title("DIA-tutkinnon suoritus")
-case class DIATutkinnonSuoritus(
+case class SdgDIATutkinnonSuoritus(
   koulutusmoduuli: schema.DIATutkinto,
-  toimipiste: Option[Toimipiste],
-  vahvistus: Option[Vahvistus],
+  toimipiste: Option[SdgToimipiste],
+  vahvistus: Option[SdgVahvistus],
   @KoodistoKoodiarvo("diatutkintovaihe")
   tyyppi: schema.Koodistokoodiviite,
-  osasuoritukset: Option[List[DIAOppiaineenTutkintovaiheenSuoritus]],
+  osasuoritukset: Option[List[SdgDIAOppiaineenTutkintovaiheenSuoritus]],
   suorituskieli: schema.Koodistokoodiviite,
   kokonaispistemäärä: Option[Int],
   lukukausisuoritustenKokonaispistemäärä: Option[Int],
   tutkintoaineidenKokonaispistemäärä: Option[Int],
   kokonaispistemäärästäJohdettuKeskiarvo: Option[Double],
 ) extends DiaPäätasonSuoritus {
-  override def withOsasuoritukset(os: Option[List[Osasuoritus]]): DIATutkinnonSuoritus =
+  override def withOsasuoritukset(os: Option[List[Osasuoritus]]): SdgDIATutkinnonSuoritus =
     this.copy(
       osasuoritukset = os.map(_.collect{
-        case s: DIAOppiaineenTutkintovaiheenSuoritus => s
+        case s: SdgDIAOppiaineenTutkintovaiheenSuoritus => s
       })
     )
 }
 
-// DIAssa vain vahvistetut vipu: pitää löytyä vahvistettu DIA-tutkinnon suoritus, valmistavalla ei väliä
+// TODO: DIAssa vain vahvistetut vipu: pitää löytyä vahvistettu DIA-tutkinnon suoritus, valmistavalla ei väliä
 @Title("DIA valmistavan vaiheen suoritus")
-case class DIAValmistavanVaiheenSuoritus(
-  koulutusmoduuli: schema.DIAValmistavaVaihe,
-  toimipiste: Option[Toimipiste],
-  vahvistus: Option[Vahvistus],
+case class SdgDIAValmistavanVaiheenSuoritus(
+  koulutusmoduuli: schema.DIAValmistavaVaihe = schema.DIAValmistavaVaihe(),
+  toimipiste: Option[SdgToimipiste],
+  vahvistus: Option[SdgVahvistus],
   suorituskieli: schema.Koodistokoodiviite,
-  osasuoritukset: Option[List[DIAOppiaineenValmistavanVaiheenSuoritus]],
+  osasuoritukset: Option[List[SdgDIAOppiaineenValmistavanVaiheenSuoritus]],
   @KoodistoKoodiarvo("diavalmistavavaihe")
   tyyppi: schema.Koodistokoodiviite
 ) extends DiaPäätasonSuoritus {
-  override def withOsasuoritukset(os: Option[List[Osasuoritus]]): DIAValmistavanVaiheenSuoritus =
+  override def withOsasuoritukset(os: Option[List[Osasuoritus]]): SdgDIAValmistavanVaiheenSuoritus =
     this.copy(
       osasuoritukset = os.map(_.collect{
-        case s: DIAOppiaineenValmistavanVaiheenSuoritus => s
+        case s: SdgDIAOppiaineenValmistavanVaiheenSuoritus => s
       })
     )
 }
 
 @Title("DIA-oppiaineen valmistavan vaiheen suoritus")
-case class DIAOppiaineenValmistavanVaiheenSuoritus(
+case class SdgDIAOppiaineenValmistavanVaiheenSuoritus(
   @Title("Oppiaine")
   koulutusmoduuli: schema.DIAOppiaine,
   suorituskieli: Option[schema.Koodistokoodiviite] = None,
-  osasuoritukset: Option[List[DIAOppiaineenValmistavanVaiheenLukukaudenSuoritus]],
+  osasuoritukset: Option[List[SdgDIAOppiaineenValmistavanVaiheenLukukaudenSuoritus]],
   @KoodistoKoodiarvo("diaoppiaine")
   tyyppi: schema.Koodistokoodiviite
 ) extends Osasuoritus
 
 @Title("DIA-oppiaineen valmistavan vaiheen lukukauden suoritus")
-case class DIAOppiaineenValmistavanVaiheenLukukaudenSuoritus(
+case class SdgDIAOppiaineenValmistavanVaiheenLukukaudenSuoritus(
   koulutusmoduuli: schema.DIAOppiaineenValmistavanVaiheenLukukausi,
   arviointi: Option[List[schema.DIAOppiaineenValmistavanVaiheenLukukaudenArviointi]],
   @KoodistoKoodiarvo("diaoppiaineenvalmistavanvaiheenlukukaudensuoritus")
@@ -83,19 +83,19 @@ case class DIAOppiaineenValmistavanVaiheenLukukaudenSuoritus(
 )
 
 @Title("DIA-oppiaineen tutkintovaiheen suoritus")
-case class DIAOppiaineenTutkintovaiheenSuoritus(
+case class SdgDIAOppiaineenTutkintovaiheenSuoritus(
   koulutusmoduuli: schema.DIAOppiaine,
   suorituskieli: Option[schema.Koodistokoodiviite],
   koetuloksenNelinkertainenPistemäärä: Option[Int],
   vastaavuustodistuksenTiedot: Option[schema.DIAVastaavuustodistuksenTiedot],
   @KoodistoKoodiarvo("diaoppiaine")
   tyyppi: schema.Koodistokoodiviite,
-  osasuoritukset: Option[List[DIAOppiaineenTutkintovaiheenOsasuorituksenSuoritus]],
+  osasuoritukset: Option[List[SdgDIAOppiaineenTutkintovaiheenOsasuorituksenSuoritus]],
 ) extends Osasuoritus
 
 
 @Title("DIA-oppiaineen tutkintovaiheen osasuorituksen suoritus")
-case class DIAOppiaineenTutkintovaiheenOsasuorituksenSuoritus(
+case class SdgDIAOppiaineenTutkintovaiheenOsasuorituksenSuoritus(
   koulutusmoduuli: schema.DIAOppiaineenTutkintovaiheenOsasuoritus,
   arviointi: Option[List[schema.DIATutkintovaiheenArviointi]],
   @KoodistoKoodiarvo("diaoppiaineentutkintovaiheenosasuorituksensuoritus")

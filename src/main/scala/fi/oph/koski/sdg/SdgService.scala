@@ -10,12 +10,12 @@ import fi.oph.koski.suoritusjako.common.{OpiskeluoikeusFacade, RawOppija}
 class SdgService(application: KoskiApplication) extends GlobalExecutionContext with Logging {
   private val opiskeluoikeusFacade = new OpiskeluoikeusFacade[Opiskeluoikeus](
     application,
-    Some(YlioppilastutkinnonOpiskeluoikeus.fromKoskiSchema),
-    Some(KorkeakoulunOpiskeluoikeus.fromKoskiSchema)
+    Some(SdgYlioppilastutkinnonOpiskeluoikeus.fromKoskiSchema),
+    Some(SdgKorkeakoulunOpiskeluoikeus.fromKoskiSchema)
   )
 
   def findOppijaByHetu(hetu: String, includeOsasuoritukset: Boolean)
-    (implicit koskiSession: KoskiSpecificSession): Either[HttpStatus, Oppija] = {
+    (implicit koskiSession: KoskiSpecificSession): Either[HttpStatus, SdgOppija] = {
 
     val oppijaResult = application.opintopolkuHenkilöFacade.findOppijaByHetu(hetu)
 
@@ -29,11 +29,11 @@ class SdgService(application: KoskiApplication) extends GlobalExecutionContext w
     oppijaOid: String,
     includeOsasuoritukset: Boolean
   )
-    (implicit koskiSession: KoskiSpecificSession): Either[HttpStatus, Oppija] = {
+    (implicit koskiSession: KoskiSpecificSession): Either[HttpStatus, SdgOppija] = {
 
     val sdgOppija = opiskeluoikeusFacade.haeOpiskeluoikeudet(oppijaOid, SdgSchema.schemassaTuetutOpiskeluoikeustyypit, useDownloadedYtr = true)
-      .map(rawOppija => Oppija(
-        henkilö = Henkilo.fromOppijaHenkilö(rawOppija.henkilö),
+      .map(rawOppija => SdgOppija(
+        henkilö = SdgHenkilo.fromOppijaHenkilö(rawOppija.henkilö),
         opiskeluoikeudet = suodataPalautettavatSuoritukset(rawOppija.opiskeluoikeudet, includeOsasuoritukset)
           .toList
       ))

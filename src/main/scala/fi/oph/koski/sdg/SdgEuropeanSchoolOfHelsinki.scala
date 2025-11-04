@@ -6,7 +6,7 @@ import fi.oph.koski.schema.annotation._
 import fi.oph.scalaschema.annotation._
 
 @Title("European School of Helsinki -opiskeluoikeus")
-case class EuropeanSchoolOfHelsinkiOpiskeluoikeus(
+case class SdgEuropeanSchoolOfHelsinkiOpiskeluoikeus(
   oid: Option[String] = None,
   oppilaitos: Option[schema.Oppilaitos] = None,
   koulutustoimija: Option[schema.Koulutustoimija] = None,
@@ -28,8 +28,8 @@ trait EuropeanSchoolOfHelsinkiPäätasonSuoritus extends Suoritus
 case class SdgSecondaryLowerVuosiluokanSuoritus(
   koulutusmoduuli: schema.SecondaryLowerLuokkaAste,
   alkamispäivä: Option[LocalDate] = None,
-  toimipiste: Option[Toimipiste],
-  vahvistus: Option[Vahvistus],
+  toimipiste: Option[SdgToimipiste],
+  vahvistus: Option[SdgVahvistus],
   @KoodistoKoodiarvo("europeanschoolofhelsinkivuosiluokkasecondarylower")
   tyyppi: schema.Koodistokoodiviite,
   osasuoritukset: Option[List[SdgSecondaryLowerOppiaineenSuoritus]] = None
@@ -46,8 +46,8 @@ case class SdgSecondaryLowerVuosiluokanSuoritus(
 case class SdgSecondaryUpperVuosiluokanSuoritus(
   koulutusmoduuli: schema.SecondaryUpperLuokkaAste,
   alkamispäivä: Option[LocalDate] = None,
-  toimipiste: Option[Toimipiste],
-  vahvistus: Option[Vahvistus],
+  toimipiste: Option[SdgToimipiste],
+  vahvistus: Option[SdgVahvistus],
   @KoodistoKoodiarvo("europeanschoolofhelsinkivuosiluokkasecondaryupper")
   tyyppi: schema.Koodistokoodiviite,
   osasuoritukset: Option[List[SecondaryUpperOppiaineenSuoritus]] = None

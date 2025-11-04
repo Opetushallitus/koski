@@ -6,29 +6,29 @@ import fi.oph.scalaschema.annotation.Title
 
 import java.time.LocalDate
 
-object KorkeakoulunOpiskeluoikeus {
-  def fromKoskiSchema(kk: schema.KorkeakoulunOpiskeluoikeus) = KorkeakoulunOpiskeluoikeus(
+object SdgKorkeakoulunOpiskeluoikeus {
+  def fromKoskiSchema(kk: schema.KorkeakoulunOpiskeluoikeus) = SdgKorkeakoulunOpiskeluoikeus(
     oppilaitos = kk.oppilaitos,
     koulutustoimija = kk.koulutustoimija,
     päättymispäivä = kk.päättymispäivä,
-    tila = KorkeakoulunOpiskeluoikeudenTila(
-      opiskeluoikeusjaksot = kk.tila.opiskeluoikeusjaksot.map(j => KorkeakoulunOpiskeluoikeusjakso(
+    tila = SdgKorkeakoulunOpiskeluoikeudenTila(
+      opiskeluoikeusjaksot = kk.tila.opiskeluoikeusjaksot.map(j => SdgKorkeakoulunOpiskeluoikeusjakso(
         tila = j.tila,
         alku = j.alku
       ))
     ),
-    lisätiedot = kk.lisätiedot.map(lisätiedot => KorkeakoulunOpiskeluoikeudenLisätiedot(
+    lisätiedot = kk.lisätiedot.map(lisätiedot => SdgKorkeakoulunOpiskeluoikeudenLisätiedot(
       virtaOpiskeluoikeudenTyyppi = lisätiedot.virtaOpiskeluoikeudenTyyppi,
       lukukausiIlmoittautuminen = lisätiedot.lukukausiIlmoittautuminen.map(kkl =>
-        Lukukausi_Ilmoittautuminen(
+        SdgLukukausi_Ilmoittautuminen(
           kkl.ilmoittautumisjaksot.map(kkilj =>
-            Lukukausi_Ilmoittautumisjakso(
+            SdgLukukausi_Ilmoittautumisjakso(
               alku = kkilj.alku,
               loppu = kkilj.loppu,
               tila = kkilj.tila,
               ylioppilaskunnanJäsen = kkilj.ylioppilaskunnanJäsen,
               maksetutLukuvuosimaksut = kkilj.maksetutLukuvuosimaksut.map(kklvm =>
-                Lukuvuosi_IlmoittautumisjaksonLukuvuosiMaksu(
+                SdgLukuvuosi_IlmoittautumisjaksonLukuvuosiMaksu(
                   kklvm.maksettu,
                   kklvm.summa,
                   kklvm.apuraha
@@ -42,16 +42,16 @@ object KorkeakoulunOpiskeluoikeus {
     suoritukset = kk.suoritukset
       .collect {
         case s: schema.KorkeakoulututkinnonSuoritus =>
-          KorkeakoulututkinnonSuoritus(
+          SdgKorkeakoulututkinnonSuoritus(
             koulutusmoduuli = s.koulutusmoduuli,
-            vahvistus = s.vahvistus.map(v => Vahvistus(v.päivä)),
-            toimipiste = Some(Toimipiste(
+            vahvistus = s.vahvistus.map(v => SdgVahvistus(v.päivä)),
+            toimipiste = Some(SdgToimipiste(
               s.toimipiste.oid,
               s.toimipiste.nimi,
               s.toimipiste.kotipaikka
             )),
             tyyppi = s.tyyppi,
-            osasuoritukset = s.osasuoritukset.map(_.map(KorkeakoulunOpintojaksonSuoritus.fromKoskiSchema))
+            osasuoritukset = s.osasuoritukset.map(_.map(SdgKorkeakoulunOpintojaksonSuoritus.fromKoskiSchema))
           )
       },
     tyyppi = kk.tyyppi,
@@ -59,27 +59,27 @@ object KorkeakoulunOpiskeluoikeus {
 }
 
 @Title("Korkeakoulun opiskeluoikeus")
-case class KorkeakoulunOpiskeluoikeus(
+case class SdgKorkeakoulunOpiskeluoikeus(
   oppilaitos: Option[schema.Oppilaitos],
   koulutustoimija: Option[schema.Koulutustoimija],
   override val päättymispäivä: Option[LocalDate],
-  tila: KorkeakoulunOpiskeluoikeudenTila,
-  lisätiedot: Option[KorkeakoulunOpiskeluoikeudenLisätiedot],
-  suoritukset: List[KorkeakoulututkinnonSuoritus],
+  tila: SdgKorkeakoulunOpiskeluoikeudenTila,
+  lisätiedot: Option[SdgKorkeakoulunOpiskeluoikeudenLisätiedot],
+  suoritukset: List[SdgKorkeakoulututkinnonSuoritus],
   @KoodistoKoodiarvo(schema.OpiskeluoikeudenTyyppi.korkeakoulutus.koodiarvo)
   tyyppi: schema.Koodistokoodiviite,
 ) extends Opiskeluoikeus {
   override def withSuoritukset(suoritukset: List[Suoritus]): Opiskeluoikeus =
     this.copy(
-      suoritukset = suoritukset.collect { case s: KorkeakoulututkinnonSuoritus => s }
+      suoritukset = suoritukset.collect { case s: SdgKorkeakoulututkinnonSuoritus => s }
     )
 }
 
-case class KorkeakoulunOpiskeluoikeudenTila(
-  opiskeluoikeusjaksot: List[KorkeakoulunOpiskeluoikeusjakso]
+case class SdgKorkeakoulunOpiskeluoikeudenTila(
+  opiskeluoikeusjaksot: List[SdgKorkeakoulunOpiskeluoikeusjakso]
 ) extends GenericOpiskeluoikeudenTila
 
-case class KorkeakoulunOpiskeluoikeusjakso(
+case class SdgKorkeakoulunOpiskeluoikeusjakso(
   alku: LocalDate,
   @KoodistoUri("virtaopiskeluoikeudentila")
   tila: schema.Koodistokoodiviite
@@ -89,69 +89,69 @@ case class KorkeakoulunOpiskeluoikeusjakso(
 }
 
 @Title("Korkeakoulututkinnon suoritus")
-case class KorkeakoulututkinnonSuoritus(
+case class SdgKorkeakoulututkinnonSuoritus(
   koulutusmoduuli: schema.Korkeakoulututkinto,
   @KoodistoKoodiarvo("korkeakoulututkinto")
   tyyppi: schema.Koodistokoodiviite,
-  vahvistus: Option[Vahvistus],
-  toimipiste: Option[Toimipiste],
-  osasuoritukset: Option[List[KorkeakoulunOpintojaksonSuoritus]]
+  vahvistus: Option[SdgVahvistus],
+  toimipiste: Option[SdgToimipiste],
+  osasuoritukset: Option[List[SdgKorkeakoulunOpintojaksonSuoritus]]
 ) extends Suoritus {
-  override def withOsasuoritukset(os: Option[List[Osasuoritus]]): KorkeakoulututkinnonSuoritus =
+  override def withOsasuoritukset(os: Option[List[Osasuoritus]]): SdgKorkeakoulututkinnonSuoritus =
     this.copy(osasuoritukset = os.map(_.collect {
-      case s: KorkeakoulunOpintojaksonSuoritus => s
+      case s: SdgKorkeakoulunOpintojaksonSuoritus => s
     }))
 }
 
-case class KorkeakoulunOpiskeluoikeudenLisätiedot(
+case class SdgKorkeakoulunOpiskeluoikeudenLisätiedot(
   virtaOpiskeluoikeudenTyyppi: Option[schema.Koodistokoodiviite],
-  lukukausiIlmoittautuminen: Option[Lukukausi_Ilmoittautuminen],
+  lukukausiIlmoittautuminen: Option[SdgLukukausi_Ilmoittautuminen],
 ) extends SdgOpiskeluoikeudenLisätiedot
 
 @Title("Lukukausi-ilmoittautuminen")
-case class Lukukausi_Ilmoittautuminen(
-  ilmoittautumisjaksot: List[Lukukausi_Ilmoittautumisjakso]
+case class SdgLukukausi_Ilmoittautuminen(
+  ilmoittautumisjaksot: List[SdgLukukausi_Ilmoittautumisjakso]
 )
 
 @Title("Lukukausi-ilmoittautumisjakso")
-case class Lukukausi_Ilmoittautumisjakso(
+case class SdgLukukausi_Ilmoittautumisjakso(
   alku: LocalDate,
   loppu: Option[LocalDate],
   tila: schema.Koodistokoodiviite,
   ylioppilaskunnanJäsen: Option[Boolean],
-  maksetutLukuvuosimaksut: Option[Lukuvuosi_IlmoittautumisjaksonLukuvuosiMaksu]
+  maksetutLukuvuosimaksut: Option[SdgLukuvuosi_IlmoittautumisjaksonLukuvuosiMaksu]
 )
 
 @Title("Lukukausi-ilmoittautumisjakson lukuvuosimaksutiedot")
-case class Lukuvuosi_IlmoittautumisjaksonLukuvuosiMaksu(
+case class SdgLukuvuosi_IlmoittautumisjaksonLukuvuosiMaksu(
   maksettu: Option[Boolean],
   summa: Option[Int],
   apuraha: Option[Int]
 )
 
 @Title("Korkeakoulututkinto")
-case class Korkeakoulututkinto(
+case class SdgKorkeakoulututkinto(
   tunniste: schema.Koodistokoodiviite,
   koulutustyyppi: Option[schema.Koodistokoodiviite],
   virtaNimi: Option[schema.LocalizedString]
 ) extends SuorituksenKoulutusmoduuli
 
 @Title("Korkeakoulun opintojakson suoritus")
-case class KorkeakoulunOpintojaksonSuoritus(
+case class SdgKorkeakoulunOpintojaksonSuoritus(
   @Title("Opintojakso")
   koulutusmoduuli: schema.KorkeakoulunOpintojakso,
   toimipiste: schema.Oppilaitos,
   arviointi: Option[List[schema.KorkeakoulunArviointi]],
   suorituskieli: Option[schema.Koodistokoodiviite],
   @Title("Sisältyvät opintojaksot")
-  osasuoritukset: Option[List[KorkeakoulunOpintojaksonSuoritus]] = None,
+  osasuoritukset: Option[List[SdgKorkeakoulunOpintojaksonSuoritus]] = None,
   @KoodistoKoodiarvo("korkeakoulunopintojakso")
   tyyppi: schema.Koodistokoodiviite
 ) extends Osasuoritus
 
-object KorkeakoulunOpintojaksonSuoritus {
-  def fromKoskiSchema(k: schema.KorkeakoulunOpintojaksonSuoritus): KorkeakoulunOpintojaksonSuoritus =
-    KorkeakoulunOpintojaksonSuoritus(
+object SdgKorkeakoulunOpintojaksonSuoritus {
+  def fromKoskiSchema(k: schema.KorkeakoulunOpintojaksonSuoritus): SdgKorkeakoulunOpintojaksonSuoritus =
+    SdgKorkeakoulunOpintojaksonSuoritus(
       koulutusmoduuli = k.koulutusmoduuli,
       toimipiste = k.toimipiste,
       arviointi = k.arviointi,
