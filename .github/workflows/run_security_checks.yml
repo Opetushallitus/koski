@@ -16,6 +16,10 @@ jobs:
 
       - uses: ./.github/actions/setup_pnpm_cache
 
+      - name: Run pnpm install
+        run: pnpm install --recursive --frozen-lockfile
+        shell: bash
+
       - name: Run Trivy on Koski
         uses: aquasecurity/trivy-action@master
         with:
