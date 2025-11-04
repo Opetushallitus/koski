@@ -47,6 +47,7 @@
   "AmmatillinenOsittainenSuoritustietojenTarkistus-example": "Raportti pohjautuu edellisen päivän tietoihin, eli tietojen päivitys KOSKI-tietovarantoon ei näy välittömästi raportilla. Raportin lataaminen voi viedä viisikin minuuttia.",
   "AmmatillinenOsittainenSuoritustietojenTarkistus-short-description": "Raportti sisältää sellaiset ammatillisen koulutuksen opiskeluoikeudet, joissa päätason suoritus on tutkinnon osa tai osia, valitulla aikajaksolla sekä näihin liittyvien osasuoritusten tiedot erilaisina summalukuina tietojen oikeellisuuden tarkistamista varten. Raportti pohjautuu edellisen päivän tietoihin, eli tietojen päivitys KOSKI-tietovarantoon ei näy välittömästi raportilla. Raportin lataaminen voi viedä viisikin minuuttia.",
   "Ammatilliseen tehtävään valmistava koulutus": "Ammatilliseen tehtävään valmistava koulutus",
+  "Ammatillisen tutkinnon osia useasta tutkinnosta" : "Ammatillisen tutkinnon osia useasta tutkinnosta",
   "Ammatilliset tutkinnon osat": "Ammatilliset tutkinnon osat",
   "Ammatillisista opiskeluoikeuksista tiedot osa-aikaisuusjaksoista sekä oppisopimuksista ja koulutussopimuksista": "Ammatillisista opiskeluoikeuksista tiedot osa-aikaisuusjaksoista sekä oppisopimuksista ja koulutussopimuksista",
   "Ammattiosaamisen näyttö": "Ammattiosaamisen näyttö",

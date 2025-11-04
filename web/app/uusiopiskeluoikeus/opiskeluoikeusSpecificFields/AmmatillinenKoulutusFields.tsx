@@ -9,7 +9,7 @@ import {
   PaikallinenKoulutus,
   PaikallinenKoulutusFields
 } from '../../components-v2/opiskeluoikeus/PaikallinenKoulutusFields'
-import { t } from '../../i18n/i18n'
+import { localize, t } from '../../i18n/i18n'
 import { isAmmatilliseenTehtäväänValmistavaKoulutus } from '../../types/fi/oph/koski/schema/AmmatilliseenTehtavaanValmistavaKoulutus'
 import { Koodistokoodiviite } from '../../types/fi/oph/koski/schema/Koodistokoodiviite'
 import { koodistokoodiviiteId } from '../../util/koodisto'
@@ -197,13 +197,11 @@ const extraOptions: Array<
 > = [
   {
     key: `suorituksentyyppi_${AmmatillisenOsittaisenUseastaTutkinnostaSuorituksenTyyppi}`,
-    label: 'Ammatillisen tutkinnon osia useasta tutkinnosta',
+    label: t('Ammatillisen tutkinnon osia useasta tutkinnosta'),
     value: Koodistokoodiviite({
       koodiarvo: AmmatillisenOsittaisenUseastaTutkinnostaSuorituksenTyyppi,
       koodistoUri: 'suorituksentyyppi',
-      nimi: Finnish({
-        fi: 'Ammatillisen tutkinnon osia useasta tutkinnosta'
-      })
+      nimi: localize(t('Ammatillisen tutkinnon osia useasta tutkinnosta'))
     })
   }
 ]
