@@ -1,7 +1,7 @@
 package fi.oph.koski.sdg
 
 import fi.oph.koski.config.KoskiApplication
-import fi.oph.koski.henkilo.{HenkilöOid, Hetu}
+import fi.oph.koski.henkilo.Hetu
 import fi.oph.koski.http.{HttpStatus, JsonErrorMessage, KoskiErrorCategory}
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.koskiuser.{KoskiSpecificSession, RequiresSdg}
@@ -11,17 +11,23 @@ import org.json4s.JValue
 
 case class HetuRequest(hetu: String)
 
+case class SdgQueryParams(withOsasuoritukset: Boolean = false, onlyVahvistetut: Boolean = false)
+
 class SdgServlet(implicit val application: KoskiApplication) extends KoskiSpecificApiServlet with RequiresSdg with NoCache {
   post("/hetu") {
     val ophKatselijaUser = KoskiSpecificSession.ophKatselijaUser(request)
-    val includeOsasuoritukset = params.getAs[Boolean]("includeOsasuoritukset").getOrElse(false)
+
+    val withOsasuoritukset = params.getAs[Boolean]("withOsasuoritukset").getOrElse(false)
+    val onlyVahvistetut = params.getAs[Boolean]("vainVahvistetut").getOrElse(false)
+
+    val queryParams = SdgQueryParams(withOsasuoritukset, onlyVahvistetut)
 
     withJsonBody { json =>
       val result = for {
         hetu <- extractAndValidateHetu(json)
-        oppija <- application.sdgService.findOppijaByHetu(hetu, includeOsasuoritukset)(ophKatselijaUser)
+        oppija <- application.sdgService.findOppijaByHetu(hetu, queryParams)(ophKatselijaUser)
       } yield {
-        auditLog(oppija.henkilö.oid)
+        logOppijaAccess(oppija.henkilö.oid)
         oppija
       }
 
@@ -34,7 +40,7 @@ class SdgServlet(implicit val application: KoskiApplication) extends KoskiSpecif
       .left.map(errors => KoskiErrorCategory.badRequest.validation.jsonSchema(JsonErrorMessage(errors)))
       .flatMap(req => Hetu.validFormat(req.hetu))
 
-  private def auditLog(oppijaOid: String)(implicit user: KoskiSpecificSession): Unit =
+  private def logOppijaAccess(oppijaOid: String)(implicit user: KoskiSpecificSession): Unit =
     AuditLog
       .log(
         KoskiAuditLogMessage(

@@ -5,7 +5,7 @@ import fi.oph.koski.executors.GlobalExecutionContext
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.koskiuser.KoskiSpecificSession
 import fi.oph.koski.log._
-import fi.oph.koski.suoritusjako.common.{OpiskeluoikeusFacade, RawOppija}
+import fi.oph.koski.suoritusjako.common.{OpiskeluoikeusFacade}
 
 class SdgService(application: KoskiApplication) extends GlobalExecutionContext with Logging {
   private val opiskeluoikeusFacade = new OpiskeluoikeusFacade[Opiskeluoikeus](
@@ -14,76 +14,59 @@ class SdgService(application: KoskiApplication) extends GlobalExecutionContext w
     Some(SdgKorkeakoulunOpiskeluoikeus.fromKoskiSchema)
   )
 
-  def findOppijaByHetu(hetu: String, includeOsasuoritukset: Boolean)
+  def findOppijaByHetu(hetu: String, queryParams: SdgQueryParams)
     (implicit koskiSession: KoskiSpecificSession): Either[HttpStatus, SdgOppija] = {
 
     val oppijaResult = application.opintopolkuHenkilöFacade.findOppijaByHetu(hetu)
 
     oppijaResult match {
-      case Some(o) => findPalautettavaOppija(o.oid, includeOsasuoritukset)
+      case Some(o) => findPalautettavaOppija(o.oid, queryParams)
       case None => Left(KoskiErrorCategory.notFound.oppijaaEiLöydyHetulla())
     }
   }
 
-  def findPalautettavaOppija(
+  private def findPalautettavaOppija(
     oppijaOid: String,
-    includeOsasuoritukset: Boolean
+    queryParams: SdgQueryParams
   )
     (implicit koskiSession: KoskiSpecificSession): Either[HttpStatus, SdgOppija] = {
 
     val sdgOppija = opiskeluoikeusFacade.haeOpiskeluoikeudet(oppijaOid, SdgSchema.schemassaTuetutOpiskeluoikeustyypit, useDownloadedYtr = true)
       .map(rawOppija => SdgOppija(
         henkilö = SdgHenkilo.fromOppijaHenkilö(rawOppija.henkilö),
-        opiskeluoikeudet = suodataPalautettavatSuoritukset(rawOppija.opiskeluoikeudet, includeOsasuoritukset)
+        opiskeluoikeudet = suodataPalautettavatSuoritukset(rawOppija.opiskeluoikeudet, queryParams)
           .toList
       ))
 
     sdgOppija
   }
 
-
   private def suodataPalautettavatSuoritukset(
     opiskeluoikeudet: Seq[Opiskeluoikeus],
-    includeOsasuoritukset: Boolean
+    queryParams: SdgQueryParams
   ): Seq[Opiskeluoikeus] = {
     opiskeluoikeudet
       .map { opiskeluoikeus =>
-        opiskeluoikeus.withSuoritukset(
-          opiskeluoikeus.suoritukset
-            .filter(josYOTutkintoNiinVahvistettu)
-            .filter(josEBTutkintoNiinVahvistettu)
-            .filter(josDIATutkintoNiinVahvistettu)
-            .map { suoritus =>
-              if (includeOsasuoritukset) suoritus
-              else suoritus.withOsasuoritukset(None)
+        val suoritukset = opiskeluoikeus.suoritukset
+          .filter(josYOTutkintoNiinVahvistettu)
+          .filter(suoritus => !queryParams.onlyVahvistetut || suoritus.vahvistus.isDefined)
+          .map { suoritus =>
+            if (queryParams.withOsasuoritukset) {
+              suoritus
             }
+            else {
+              suoritus.withOsasuoritukset(None)
+            }
+          }
 
-        )
-      }.filter(_.suoritukset.nonEmpty)
+        opiskeluoikeus.withSuoritukset(suoritukset)
+      }
+      .filter(_.suoritukset.nonEmpty)
   }
 
-  // SÄILYTETÄÄN: vain vahvistetut YO:t mukaan
   private def josYOTutkintoNiinVahvistettu(s: Suoritus): Boolean = {
     s match {
-      case s: YlioppilastutkinnonSuoritus
-      => s.vahvistus.isDefined
-      case _
-      => true
-    }
-  }
-
-  private def josEBTutkintoNiinVahvistettu(s: Suoritus): Boolean = {
-    s match {
-      case s: EBTutkinnonOpiskeluoikeus
-      => s.vahvistus.isDefined
-      case _
-      => true
-    }
-  }
-
-  private def josDIATutkintoNiinVahvistettu(s: Suoritus): Boolean = {
-    s match {
-      case s: DIAOpiskeluoikeus
+      case s: SdgYlioppilastutkinnonSuoritus
       => s.vahvistus.isDefined
       case _
       => true
