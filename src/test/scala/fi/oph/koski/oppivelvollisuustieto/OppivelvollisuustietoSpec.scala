@@ -13,7 +13,7 @@ import fi.oph.koski.henkilo.KoskiSpecificMockOppijat._
 import fi.oph.koski.raportointikanta.{RaportointiDatabase, RaportointikantaTestMethods}
 import fi.oph.koski.henkilo.{KoskiSpecificMockOppijat, OppijaHenkilö}
 import fi.oph.koski.schema._
-import fi.oph.koski.valpas.opiskeluoikeusfixture.FixtureUtil
+import fi.oph.koski.valpas.opiskeluoikeusfixture.{FixtureUtil, ValpasMockOppijat}
 import fi.oph.koski.{DirtiesFixtures, KoskiApplicationForTests, KoskiHttpSpec}
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.should.Matchers
@@ -534,15 +534,17 @@ class OppivelvollisuustietoSpec
     "Oppivelvollisuuden ja maksuttomuuden päättely kuntahistorian perusteella (Valpas fixturella)" - {
       lazy val resetValpasMockData = FixtureUtil.resetMockData(defaultKoskiApplication)
 
-      "Ulkoimaille muutto päättää oppivelvollisuuden" in {
+      "Ulkomaille muutto päättää oppivelvollisuuden ja oikeuden maksuttomuuteen" in {
         resetValpasMockData
-        val result = queryOids("1.2.246.562.24.00000000088")
+        val result = queryOids(ValpasMockOppijat.muuttanutUlkomaille.oid)
         result.head.oppivelvollisuusVoimassaAsti shouldBe date(2023, 1, 1)
+        result.head.oikeusMaksuttomaanKoulutukseenVoimassaAsti shouldBe date(2023, 1, 1)
       }
-      "Muuttanut ulkomaille ennen 7v, mutta opiskeluoikeus on (teoreettisesti) olemassa -> oppivelvollisuus päättyy samana päivänä kuin alkaa" in {
+      "Muuttanut ulkomaille ennen 7v, mutta opiskeluoikeus on (teoreettisesti) olemassa -> oppivelvollisuus päättyy samana päivänä kuin alkaa, lisäksi oikeus maksuttomuuteen päättyy ulkomaille muuttoon" in {
         resetValpasMockData
-        val result = queryOids("1.2.246.562.24.00000000185")
+        val result = queryOids(ValpasMockOppijat.muuttanutUlkomailleEnnen7vIkää.oid)
         result.head.oppivelvollisuusVoimassaAsti shouldBe date(2012, 9, 1)
+        result.head.oikeusMaksuttomaanKoulutukseenVoimassaAsti shouldBe date(2010, 10, 1)
       }
     }
   }

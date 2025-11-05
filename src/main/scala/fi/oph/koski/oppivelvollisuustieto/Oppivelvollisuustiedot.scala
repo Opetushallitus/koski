@@ -351,7 +351,8 @@ object Oppivelvollisuustiedot {
                 greatest(
                   maksuttomuuden_pidennysjakso.loppu,
                   #${s.name}.vuodenViimeinenPaivamaara(syntymaaika + interval '#$maksuttomuusLoppuuIka year') + (interval '1 day' * maksuttomuutta_pidennetty_yhteensa_vanha_laki)
-                )
+                ),
+                nykyinen_kotikunta_ulkomailla_alkaen.pvm
               )
 
              when amis_ja_lukio_samaan_aikaan then least(
@@ -361,7 +362,8 @@ object Oppivelvollisuustiedot {
                 greatest(
                   maksuttomuuden_pidennysjakso.loppu,
                   #${s.name}.vuodenViimeinenPaivamaara(syntymaaika + interval '#$maksuttomuusLoppuuIka year') + (interval '1 day' * maksuttomuutta_pidennetty_yhteensa_vanha_laki)
-                )
+                ),
+                nykyinen_kotikunta_ulkomailla_alkaen.pvm
               )
 
               else least(
@@ -373,7 +375,8 @@ object Oppivelvollisuustiedot {
                 greatest(
                   maksuttomuuden_pidennysjakso.loppu,
                   #${s.name}.vuodenViimeinenPaivamaara(syntymaaika + interval '#$maksuttomuusLoppuuIka year') + (interval '1 day' * maksuttomuutta_pidennetty_yhteensa_vanha_laki)
-                )
+                ),
+                nykyinen_kotikunta_ulkomailla_alkaen.pvm
               )
             end
           )::date as oikeusKoulutuksenMaksuttomuuteenVoimassaAsti,
