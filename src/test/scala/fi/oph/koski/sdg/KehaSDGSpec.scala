@@ -6,6 +6,7 @@ import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.koskiuser.{MockUser, MockUsers}
 import fi.oph.koski.log.AuditLogTester
+import fi.oph.koski.schema.OpiskeluoikeudenTyyppi
 import fi.oph.koski.ytr.MockYtrClient
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.should.Matchers
@@ -26,160 +27,148 @@ class KehaSDGSpec
     MockYtrClient.reset()
   }
 
-  "Keha SDG rajapinta" - {
-    "Yhden oppijan hakeminen onnistuu ja tuottaa auditlog viestin" in {
-      AuditLogTester.clearMessages
-      postHetu(KoskiSpecificMockOppijat.amis.hetu.get) {
-        verifyResponseStatusOk()
-        AuditLogTester.verifyLastAuditLogMessage(Map("operation" -> "SDG_OPISKELUOIKEUS_HAKU", "target" -> Map("oppijaHenkiloOid" -> KoskiSpecificMockOppijat.amis.oid)))
-      }
+  "Yhden oppijan hakeminen onnistuu ja tuottaa auditlog viestin" in {
+    AuditLogTester.clearMessages
+    postHetu(KoskiSpecificMockOppijat.amis.hetu.get) {
+      verifyResponseStatusOk()
+      AuditLogTester.verifyLastAuditLogMessage(Map("operation" -> "SDG_OPISKELUOIKEUS_HAKU", "target" -> Map("oppijaHenkiloOid" -> KoskiSpecificMockOppijat.amis.oid)))
     }
+  }
 
-    "Ammatillinen tulee läpi osasuorituksineen" in {
-      postHetu(KoskiSpecificMockOppijat.ammattilainen.hetu.get) {
+  "Tuetut opiskeluoikeus- ja suoritustyypit tulevat läpi" in {
+    val tuetutTyypit = List(
+      (OpiskeluoikeudenTyyppi.ammatillinenkoulutus, classOf[SdgAmmatillisenTutkinnonSuoritus], KoskiSpecificMockOppijat.ammattilainen),
+      (OpiskeluoikeudenTyyppi.ammatillinenkoulutus, classOf[SdgAmmatillisenTutkinnonOsittainenUseastaTutkinnostaSuoritus], KoskiSpecificMockOppijat.osittainenAmmattitutkintoUseastaTutkinnostaValmis),
+      (OpiskeluoikeudenTyyppi.ammatillinenkoulutus, classOf[SdgAmmatillisenTutkinnonOsaTaiOsia], KoskiSpecificMockOppijat.osittainenammattitutkinto),
+      (OpiskeluoikeudenTyyppi.diatutkinto, classOf[SdgDIATutkinnonSuoritus], KoskiSpecificMockOppijat.dia),
+      (OpiskeluoikeudenTyyppi.diatutkinto, classOf[SdgDIAValmistavanVaiheenSuoritus], KoskiSpecificMockOppijat.dia),
+      (OpiskeluoikeudenTyyppi.ebtutkinto, classOf[SdgEBTutkinnonPäätasonSuoritus], KoskiSpecificMockOppijat.europeanSchoolOfHelsinki),
+      (OpiskeluoikeudenTyyppi.europeanschoolofhelsinki, classOf[SdgSecondaryLowerVuosiluokanSuoritus], KoskiSpecificMockOppijat.europeanSchoolOfHelsinki),
+      (OpiskeluoikeudenTyyppi.europeanschoolofhelsinki, classOf[SdgSecondaryUpperVuosiluokanSuoritus], KoskiSpecificMockOppijat.europeanSchoolOfHelsinki),
+      (OpiskeluoikeudenTyyppi.ibtutkinto, classOf[SdgIBTutkinnonSuoritus], KoskiSpecificMockOppijat.ibFinal),
+      (OpiskeluoikeudenTyyppi.ibtutkinto, classOf[SdgPreIBSuoritus2015], KoskiSpecificMockOppijat.ibFinal),
+      (OpiskeluoikeudenTyyppi.ibtutkinto, classOf[SdgPreIBSuoritus2019], KoskiSpecificMockOppijat.ibPreIB2019),
+      (OpiskeluoikeudenTyyppi.korkeakoulutus, classOf[SdgKorkeakoulututkinnonSuoritus], KoskiSpecificMockOppijat.dippainssi),
+      (OpiskeluoikeudenTyyppi.lukiokoulutus, classOf[SdgLukionOppimääränSuoritus2015], KoskiSpecificMockOppijat.lukiolainen),
+      (OpiskeluoikeudenTyyppi.lukiokoulutus, classOf[SdgLukionOppimääränSuoritus2019], KoskiSpecificMockOppijat.uusiLukio),
+      (OpiskeluoikeudenTyyppi.ylioppilastutkinto, classOf[SdgYlioppilastutkinnonSuoritus], KoskiSpecificMockOppijat.ylioppilas),
+    )
+
+    tuetutTyypit.foreach { case ( ooTyyppi, expectedSuoritusClass, oppija) =>
+      postHetu(oppija.hetu.get) {
         verifyResponseStatusOk()
-        val response = JsonSerializer.parse[Oppija](body)
+        val response = JsonSerializer.parse[SdgOppija](body)
 
-        response.henkilö.hetu should equal(KoskiSpecificMockOppijat.ammattilainen.hetu)
-        response.opiskeluoikeudet.map(_.tyyppi.koodiarvo) should equal(List("ammatillinenkoulutus"))
-        response.opiskeluoikeudet.flatMap(_.suoritukset.map(_.tyyppi.koodiarvo)) should equal(List("ammatillinentutkinto"))
-        response.opiskeluoikeudet.flatMap(_.suoritukset.map(_.osasuoritukset.size)) should equal(List(1))
-      }
-    }
-
-    "Ammatillisen osa/osia tulee läpi" in {
-      postHetu(KoskiSpecificMockOppijat.osittainenammattitutkinto.hetu.get) {
-        verifyResponseStatusOk()
-        val response = JsonSerializer.parse[Oppija](body)
-
-        response.henkilö.hetu should equal(KoskiSpecificMockOppijat.osittainenammattitutkinto.hetu)
-        response.opiskeluoikeudet.map(_.tyyppi.koodiarvo) should equal(List("ammatillinenkoulutus"))
-        response.opiskeluoikeudet.flatMap(_.suoritukset.map(_.tyyppi.koodiarvo)) should equal(List("ammatillinentutkintoosittainen"))
-      }
-    }
-
-    "Ammatillisen osia useasta tutkinnosta tulee läpi" in {
-      postHetu(KoskiSpecificMockOppijat.osittainenAmmattitutkintoUseastaTutkinnostaValmis.hetu.get) {
-        verifyResponseStatusOk()
-        val response = JsonSerializer.parse[Oppija](body)
-
-        response.henkilö.hetu should equal(KoskiSpecificMockOppijat.osittainenAmmattitutkintoUseastaTutkinnostaValmis.hetu)
-        response.opiskeluoikeudet.map(_.tyyppi.koodiarvo) should equal(List("ammatillinenkoulutus"))
-        response.opiskeluoikeudet.flatMap(_.suoritukset.map(_.koulutusmoduuli.tunniste.koodiarvo)) should equal(List("ammatillinentutkintoosittainenuseastatutkinnosta"))
-      }
-    }
-
-    "Korkeakoulu tulee läpi" in {
-      postHetu(KoskiSpecificMockOppijat.dippainssi.hetu.get) {
-        verifyResponseStatusOk()
-        val response = JsonSerializer.parse[Oppija](body)
-
-        response.henkilö.hetu should equal(KoskiSpecificMockOppijat.dippainssi.hetu)
-        response.opiskeluoikeudet.map(_.tyyppi.koodiarvo) should equal(List("korkeakoulutus"))
-      }
-    }
-
-    "EB tulee läpi" in {
-      postHetu(KoskiSpecificMockOppijat.europeanSchoolOfHelsinki.hetu.get) {
-        verifyResponseStatusOk()
-        val response = JsonSerializer.parse[Oppija](body)
-
-        response.henkilö.hetu should equal(KoskiSpecificMockOppijat.europeanSchoolOfHelsinki.hetu)
-        response.opiskeluoikeudet.map(_.tyyppi.koodiarvo) should contain("ebtutkinto")
-      }
-    }
-
-    "DIA tulee läpi" in {
-      postHetu(KoskiSpecificMockOppijat.dia.hetu.get) {
-        verifyResponseStatusOk()
-        val response = JsonSerializer.parse[Oppija](body)
-
-        response.henkilö.hetu should equal(KoskiSpecificMockOppijat.dia.hetu)
-        response.opiskeluoikeudet.map(_.tyyppi.koodiarvo) should equal(List("diatutkinto"))
-      }
-    }
-
-    "YO tulee läpi" in {
-      postHetu(KoskiSpecificMockOppijat.ylioppilasUusiApi.hetu.get) {
-        verifyResponseStatusOk()
-        val response = JsonSerializer.parse[Oppija](body)
-
-        response.henkilö.hetu should equal(KoskiSpecificMockOppijat.ylioppilasUusiApi.hetu)
-        response.opiskeluoikeudet.map(_.tyyppi.koodiarvo) should equal(List("ylioppilastutkinto"))
-        response.opiskeluoikeudet.flatMap(_.suoritukset.map(_.tyyppi.koodiarvo)) should equal(List("ylioppilastutkinto"))
-
-        val koodiarvot =
-          for {
-            oo <- response.opiskeluoikeudet.asInstanceOf[List[YlioppilastutkinnonOpiskeluoikeus]]
-            suoritus <- oo.suoritukset
-            osasuoritus <- suoritus.osasuoritukset.getOrElse(Nil)
-          } yield osasuoritus.koulutusmoduuli.tunniste.koodiarvo
-
-        koodiarvot should equal(List("EA", "EA", "EA", "YH", "YH", "YH", "N", "N", "N", "A", "A", "A", "A"))
-      }
-    }
-
-    "Lukio tulee läpi" in {
-      postHetu(KoskiSpecificMockOppijat.lukiolainen.hetu.get) {
-        verifyResponseStatusOk()
-
-        val response = JsonSerializer.parse[Oppija](body)
-
-        response.henkilö.hetu should equal(KoskiSpecificMockOppijat.lukiolainen.hetu)
-        response.opiskeluoikeudet.map(_.tyyppi.koodiarvo) should equal(List("lukiokoulutus"))
-      }
-    }
-
-    "Lukio ei paljasta tunnustettu-kenttää mutta tunnustettuBoolean tulee läpi" in {
-      postHetu(KoskiSpecificMockOppijat.lukiolainen.hetu.get) {
-        verifyResponseStatusOk()
-
-        body should not include ("\"tunnustettu\"")
-        body should include("\"tunnustettuBoolean\":true")
-        body should include("\"tunnustettuBoolean\":false")
-      }
-    }
-
-    "ESH tulee läpi" in {
-      postHetu(KoskiSpecificMockOppijat.europeanSchoolOfHelsinki.hetu.get) {
-        verifyResponseStatusOk()
-
-        val response = JsonSerializer.parse[Oppija](body)
-
-        response.henkilö.hetu should equal(KoskiSpecificMockOppijat.europeanSchoolOfHelsinki.hetu)
-        response.opiskeluoikeudet.map(_.tyyppi.koodiarvo) should contain("europeanschoolofhelsinki")
-      }
-    }
-
-    "ESH ei sisällä jääLuokalle-kenttää" in {
-      postHetu(KoskiSpecificMockOppijat.lukiolainen.hetu.get) {
-        verifyResponseStatusOk()
-
-        body should not include ("\"jääLuokalle\"")
-      }
-    }
-
-    "International School tulee läpi" in {
-      postHetu(KoskiSpecificMockOppijat.internationalschool.hetu.get) {
-        verifyResponseStatusOk()
-
-        val response = JsonSerializer.parse[Oppija](body)
-
-        response.henkilö.hetu should equal(KoskiSpecificMockOppijat.internationalschool.hetu)
-        response.opiskeluoikeudet.map(_.tyyppi.koodiarvo) should equal(List("internationalschool"))
+        response.opiskeluoikeudet.find(oo =>
+          oo.tyyppi == ooTyyppi &&
+            oo.suoritukset.exists(expectedSuoritusClass.isInstance)
+        ).getOrElse(
+          fail(s"Oppijalta ${oppija.oid} ei löydy suoritusta ${expectedSuoritusClass.getSimpleName}")
+        )
       }
     }
   }
 
-  private def postHetu[A](hetu: String, user: MockUser = MockUsers.kehaSdgKäyttäjä)(f: => A): A = {
+  "Rajapinnan parametrit" in {
+    val hetu = KoskiSpecificMockOppijat.ammattilainen.hetu.get
+
+    val paramCombinations = List(
+      (true, false),
+      (false, false),
+      (true, true),
+      (false, true)
+    )
+
+    paramCombinations.foreach { case (withOsasuoritukset, onlyVahvistetut) =>
+      withClue(
+        s"withOsasuoritukset=$withOsasuoritukset, onlyVahvistetut=$onlyVahvistetut"
+      ) {
+        postHetu(hetu, withOsasuoritukset, onlyVahvistetut) {
+          verifyResponseStatusOk()
+          val response = JsonSerializer.parse[SdgOppija](body)
+
+          val oo = response.opiskeluoikeudet.find(oo =>
+            oo.suoritukset.exists(_.tyyppi.koodiarvo == "ammatillinentutkinto")
+          ).getOrElse(
+            fail(s"Opiskeluoikeutta jolla ammatillinentutkinto ei löydy")
+          )
+
+          if (withOsasuoritukset && oo.suoritukset.forall {
+            _.osasuoritukset.isEmpty
+          }) {
+            fail("Osasuorituksia ei löydy yhdeltäkään suoritukselta (testidatassa pitäisi olla)")
+          }
+
+          if (!withOsasuoritukset && oo.suoritukset.exists(s =>
+            s.osasuoritukset.exists(_.nonEmpty))) {
+            fail("Osasuorituksia mukana vaikkei pitäisi")
+          }
+
+          if (onlyVahvistetut && oo.suoritukset.exists(_.vahvistus.isEmpty)) {
+            fail("Vahvistamaton suoritus mukana vaikka onlyVahvistetut=t")
+          }
+
+          if (!onlyVahvistetut && oo.suoritukset.forall(_.vahvistus.isEmpty)) {
+            fail("Vahvistamaton suoritus puuttuu (testidatassa pitäisi olla)")
+          }
+        }
+      }
+    }
+  }
+
+  "Lukio ei paljasta tunnustettu-kenttää mutta tunnustettuBoolean tulee läpi" in {
+    getOppija(KoskiSpecificMockOppijat.lukiolainen.oid) {
+      verifyResponseStatusOk()
+      body should include ("\"tunnustettu\"")
+    }
+
+    postHetu(KoskiSpecificMockOppijat.lukiolainen.hetu.get) {
+      verifyResponseStatusOk()
+      body should not include ("\"tunnustettu\"")
+      body should include("\"tunnustettuBoolean\":true")
+      body should include("\"tunnustettuBoolean\":false")
+    }
+  }
+
+  "ESH ei sisällä jääLuokalle-kenttää" in {
+    getOppija(KoskiSpecificMockOppijat.lukiolainen.oid) {
+      verifyResponseStatusOk()
+      body should include ("\"jääLuokalle\"")
+    }
+    postHetu(KoskiSpecificMockOppijat.lukiolainen.hetu.get) {
+      verifyResponseStatusOk()
+      body should not include ("\"jääLuokalle\"")
+    }
+  }
+
+  private def postHetu[A](
+    hetu: String,
+    withOsasuoritukset: Boolean = true,
+    onlyVahvistetut: Boolean = false,
+    user: MockUser = MockUsers.kehaSdgKäyttäjä
+  )(f: => A): A = {
+    val url =
+      s"api/luovutuspalvelu/keha/sdg/hetu?withOsasuoritukset=$withOsasuoritukset&onlyVahvistetut=$onlyVahvistetut"
+
     post(
-      "api/luovutuspalvelu/keha/sdg/hetu?includeOsasuoritukset=true",
+      url,
       JsonSerializer.writeWithRoot(KehaSdgRequest(hetu)),
       headers = authHeaders(user) ++ jsonContent
     )(f)
   }
 
+  private def getOppija[A](
+    oppijaOid: String,
+    user: MockUser = MockUsers.ophkatselija
+  )(f: => A): A = {
+    val url =
+      s"api/oppija/$oppijaOid"
 
+    get(
+      url,
+      headers = authHeaders(user) ++ jsonContent
+    )(f)
+  }
 }
 
 case class KehaSdgRequest(hetu: String)

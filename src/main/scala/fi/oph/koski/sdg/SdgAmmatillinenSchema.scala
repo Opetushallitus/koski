@@ -31,9 +31,9 @@ case class SdgAmmatillisenTutkinnonSuoritus(
   koulutusmoduuli: SdgAmmatillinenTutkintoKoulutus,
   @KoodistoKoodiarvo("ammatillinentutkinto")
   tyyppi: schema.Koodistokoodiviite,
-  vahvistus: Option[Vahvistus],
+  vahvistus: Option[SdgVahvistus],
   suorituskieli: schema.Koodistokoodiviite,
-  toimipiste: Option[Toimipiste],
+  toimipiste: Option[SdgToimipiste],
   suoritustapa: schema.Koodistokoodiviite,
   osaamisala: Option[List[schema.Osaamisalajakso]],
   tutkintonimike: Option[List[schema.Koodistokoodiviite]],
@@ -54,8 +54,8 @@ case class SdgAmmatillisenTutkinnonOsaTaiOsia(
   toinenTutkintonimike: Boolean,
   osaamisala: Option[List[schema.Osaamisalajakso]],
   toinenOsaamisala: Boolean,
-  toimipiste: Option[Toimipiste],
-  vahvistus: Option[Vahvistus],
+  toimipiste: Option[SdgToimipiste],
+  vahvistus: Option[SdgVahvistus],
   suorituskieli: schema.Koodistokoodiviite,
   @Title("Tutkinnon osat")
   osasuoritukset: Option[List[AmmatillisenTutkinnonOsasuoritus]] = None,
@@ -80,8 +80,8 @@ case class SdgAmmatillisenTutkinnonOsittainenUseastaTutkinnostaSuoritus(
   toinenTutkintonimike: Boolean,
   osaamisala: Option[List[schema.Osaamisalajakso]],
   toinenOsaamisala: Boolean,
-  toimipiste: Option[Toimipiste],
-  vahvistus: Option[Vahvistus],
+  toimipiste: Option[SdgToimipiste],
+  vahvistus: Option[SdgVahvistus],
   suorituskieli: schema.Koodistokoodiviite,
   @Title("Tutkinnon osat")
   osasuoritukset: Option[List[OsittaisenAmmatillisenTutkinnonOsanUseastaTutkinnostaSuoritus]],
@@ -102,12 +102,14 @@ trait OsittaisenAmmatillisenTutkinnonOsanUseastaTutkinnostaSuoritus extends Osas
 case class SdgYhteisenTutkinnonOsanSuoritus(
   koulutusmoduuli: schema.AmmatillisenTutkinnonOsa,
   tutkinto: Option[schema.AmmatillinenTutkintoKoulutus],
+  @KoodistoKoodiarvo("2") // Yhteiset tutkinnon osat
   tutkinnonOsanRyhmä: Option[schema.Koodistokoodiviite],
   arviointi: Option[List[SdgAmmatillinenArviointi]],
   tunnustettu: Option[schema.OsaamisenTunnustaminen],
   @Title("Osa-alueet")
   osasuoritukset: Option[List[SdgYhteisenTutkinnonOsanOsaAlueenSuoritus]] = None,
   suorituskieli: Option[schema.Koodistokoodiviite],
+  @KoodistoKoodiarvo("ammatillisentutkinnonosa")
   tyyppi: schema.Koodistokoodiviite
 ) extends AmmatillisenTutkinnonOsasuoritus
   with OsittaisenAmmatillisenTutkinnonOsanUseastaTutkinnostaSuoritus
@@ -116,6 +118,9 @@ case class SdgYhteisenTutkinnonOsanSuoritus(
 case class MuunTutkinnonOsanSuoritus(
   koulutusmoduuli: schema.AmmatillisenTutkinnonOsa,
   tutkinto: Option[schema.AmmatillinenTutkintoKoulutus],
+  @KoodistoKoodiarvo("1") // Ammatilliset tutkinnon osat
+  @KoodistoKoodiarvo("3") // Vapaavalintaiset tutkinnon osat
+  @KoodistoKoodiarvo("4") // Tutkintoa yksilöllisesti laajentavat tutkinnon osat
   tutkinnonOsanRyhmä: Option[schema.Koodistokoodiviite],
   arviointi: Option[List[SdgAmmatillinenArviointi]],
   tunnustettu: Option[schema.OsaamisenTunnustaminen],
@@ -125,8 +130,10 @@ case class MuunTutkinnonOsanSuoritus(
   with OsittaisenAmmatillisenTutkinnonOsanUseastaTutkinnostaSuoritus
 
 @Title("Korkeakouluopintoja")
+@OnlyWhen("../../suoritustapa/koodiarvo", "reformi")
 case class SdgAmmatillinenKorkeakouluopintoja(
   koulutusmoduuli: schema.AmmatillisenTutkinnonOsa,
+  @KoodistoKoodiarvo("1") // Ammatilliset tutkinnon osat
   tutkinnonOsanRyhmä: Option[schema.Koodistokoodiviite],
   osasuoritukset: Option[List[SdgAmmatillinenKorkeakouluopintojenSuoritus]],
   tyyppi: schema.Koodistokoodiviite
