@@ -486,86 +486,7 @@
           </execution>
         </executions>
       </plugin>
-      <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>exec-maven-plugin</artifactId>
-        <version>3.5.0</version>
-        <executions>
-          <execution>
-            <id>koski - npm ci</id>
-            <goals>
-              <goal>exec</goal>
-            </goals>
-            <phase>generate-resources</phase>
-            <configuration>
-              <workingDirectory>web</workingDirectory>
-              <executable>npm</executable>
-              <arguments>
-                <argument>ci</argument>
-              </arguments>
-            </configuration>
-          </execution>
-          <execution>
-            <id>koski - npm build</id>
-            <goals>
-              <goal>exec</goal>
-            </goals>
-            <phase>generate-resources</phase>
-            <configuration>
-              <workingDirectory>web</workingDirectory>
-              <executable>npm</executable>
-              <arguments>
-                <argument>run</argument>
-                <argument>build:prod</argument>
-              </arguments>
-            </configuration>
-          </execution>
-          <execution>
-            <id>valpas - npm ci</id>
-            <goals>
-              <goal>exec</goal>
-            </goals>
-            <phase>generate-resources</phase>
-            <configuration>
-              <workingDirectory>valpas-web</workingDirectory>
-              <executable>npm</executable>
-              <arguments>
-                <argument>ci</argument>
-              </arguments>
-            </configuration>
-          </execution>
-          <execution>
-            <id>valpas - npm build</id>
-            <goals>
-              <goal>exec</goal>
-            </goals>
-            <phase>generate-resources</phase>
-            <configuration>
-              <workingDirectory>valpas-web</workingDirectory>
-              <executable>npm</executable>
-              <arguments>
-                <argument>run</argument>
-                <argument>build:prod</argument>
-              </arguments>
-            </configuration>
-          </execution>
-          <execution>
-            <id>Create buildversion.txt</id>
-            <phase>generate-resources</phase>
-            <goals>
-              <goal>exec</goal>
-            </goals>
-            <configuration>
-              <executable>bash</executable>
-              <commandlineArgs>scripts/create-buildversion.sh
-                ${basedir}/target/webapp/buildversion.txt ${project.version}</commandlineArgs>
-            </configuration>
-          </execution>
-        </executions>
-        <configuration>
-          <classpathScope>test</classpathScope>
-        </configuration>
-      </plugin>
+      <!-- Frontend builds moved to 'frontend' profile -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
@@ -666,6 +587,96 @@
                 </goals>
               </execution>
             </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    <profile>
+      <id>frontend</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>exec-maven-plugin</artifactId>
+            <version>3.5.0</version>
+            <executions>
+              <execution>
+                <id>koski - npm ci</id>
+                <goals>
+                  <goal>exec</goal>
+                </goals>
+                <phase>generate-resources</phase>
+                <configuration>
+                  <workingDirectory>web</workingDirectory>
+                  <executable>npm</executable>
+                  <arguments>
+                    <argument>ci</argument>
+                  </arguments>
+                </configuration>
+              </execution>
+              <execution>
+                <id>koski - npm build</id>
+                <goals>
+                  <goal>exec</goal>
+                </goals>
+                <phase>generate-resources</phase>
+                <configuration>
+                  <workingDirectory>web</workingDirectory>
+                  <executable>npm</executable>
+                  <arguments>
+                    <argument>run</argument>
+                    <argument>build:prod</argument>
+                  </arguments>
+                </configuration>
+              </execution>
+              <execution>
+                <id>valpas - npm ci</id>
+                <goals>
+                  <goal>exec</goal>
+                </goals>
+                <phase>generate-resources</phase>
+                <configuration>
+                  <workingDirectory>valpas-web</workingDirectory>
+                  <executable>npm</executable>
+                  <arguments>
+                    <argument>ci</argument>
+                  </arguments>
+                </configuration>
+              </execution>
+              <execution>
+                <id>valpas - npm build</id>
+                <goals>
+                  <goal>exec</goal>
+                </goals>
+                <phase>generate-resources</phase>
+                <configuration>
+                  <workingDirectory>valpas-web</workingDirectory>
+                  <executable>npm</executable>
+                  <arguments>
+                    <argument>run</argument>
+                    <argument>build:prod</argument>
+                  </arguments>
+                </configuration>
+              </execution>
+              <execution>
+                <id>Create buildversion.txt</id>
+                <phase>generate-resources</phase>
+                <goals>
+                  <goal>exec</goal>
+                </goals>
+                <configuration>
+                  <executable>bash</executable>
+                  <commandlineArgs>scripts/create-buildversion.sh
+                    ${basedir}/target/webapp/buildversion.txt ${project.version}</commandlineArgs>
+                </configuration>
+              </execution>
+            </executions>
+            <configuration>
+              <classpathScope>test</classpathScope>
+            </configuration>
           </plugin>
         </plugins>
       </build>
