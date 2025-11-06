@@ -99,7 +99,8 @@ object KoskiAuditLogMessageField extends Enumeration {
   juuriOrganisaatio,
   omaDataKumppani,
   omaDataOAuth2Scope,
-  suorituksenTyyppi = Value
+  suorituksenTyyppi,
+  todistusId = Value
 }
 
 object KoskiOperation extends Enumeration {
@@ -143,7 +144,9 @@ object KoskiOperation extends Enumeration {
   OAUTH2_KATSOMINEN_KAIKKI_TIEDOT,
   OAUTH2_KATSOMINEN_SUORITETUT_TUTKINNOT,
   OAUTH2_KATSOMINEN_AKTIIVISET_JA_PAATTYNEET_OPINNOT,
-  SDG_OPISKELUOIKEUS_HAKU = Value
+  SDG_OPISKELUOIKEUS_HAKU,
+  TODISTUKSEN_LUONTI,
+  TODISTUKSEN_LATAAMINEN = Value
 }
 
 private class KoskiAuditLogOperation(op: KoskiOperation) extends AuditLogOperation(op)
