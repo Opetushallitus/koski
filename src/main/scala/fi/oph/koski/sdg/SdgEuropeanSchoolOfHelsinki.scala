@@ -60,6 +60,7 @@ case class SdgSecondaryUpperVuosiluokanSuoritus(
     )
 }
 
+@Title("Secondary lower oppiaineen suoritus")
 case class SdgSecondaryLowerOppiaineenSuoritus(
   @Title("Oppiaine")
   koulutusmoduuli: schema.SecondaryOppiaine,
@@ -71,6 +72,7 @@ case class SdgSecondaryLowerOppiaineenSuoritus(
 
 trait SecondaryUpperOppiaineenSuoritus extends Osasuoritus
 
+@Title("Secondary upper oppiaineen suoritus S6")
 @OnlyWhen("../../koulutusmoduuli/tunniste/koodiarvo", "S6")
 case class SdgSecondaryUpperOppiaineenSuoritusS6(
   @Title("Oppiaine")
@@ -81,6 +83,7 @@ case class SdgSecondaryUpperOppiaineenSuoritusS6(
   suorituskieli: schema.Koodistokoodiviite,
 ) extends SecondaryUpperOppiaineenSuoritus
 
+@Title("Secondary numerical mark arviointi")
 case class SdgSecondaryNumericalMarkArviointi(
   @KoodistoUri("arviointiasteikkoeuropeanschoolofhelsinkinumericalmark")
   arvosana: schema.Koodistokoodiviite,
@@ -88,6 +91,7 @@ case class SdgSecondaryNumericalMarkArviointi(
 )
 
 @OnlyWhen("../../koulutusmoduuli/tunniste/koodiarvo", "S7")
+@Title("Secondary upper oppiaineen suoritus S7")
 case class SdgSecondaryUpperOppiaineenSuoritusS7(
   @Title("Oppiaine")
   koulutusmoduuli: schema.SecondaryOppiaine,
@@ -97,6 +101,7 @@ case class SdgSecondaryUpperOppiaineenSuoritusS7(
   osasuoritukset: Option[List[SdgS7OppiaineenAlaosasuoritus]] = None
 ) extends SecondaryUpperOppiaineenSuoritus
 
+@Title("S7 oppiaineen alaosasuoritus")
 case class SdgS7OppiaineenAlaosasuoritus(
   @Title("Arviointikomponentti")
   koulutusmoduuli: schema.S7OppiaineKomponentti,
@@ -105,6 +110,7 @@ case class SdgS7OppiaineenAlaosasuoritus(
   tyyppi: schema.Koodistokoodiviite
 ) extends Osasuoritus
 
+@Title("Secondary S7 preliminary mark arviointi")
 case class SdgSecondaryS7PreliminaryMarkArviointi(
   @KoodistoUri("arviointiasteikkoeuropeanschoolofhelsinkis7preliminarymark")
   arvosana: schema.Koodistokoodiviite,

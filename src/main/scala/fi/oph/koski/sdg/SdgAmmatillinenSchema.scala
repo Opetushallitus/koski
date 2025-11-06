@@ -212,16 +212,19 @@ case class SdgAmmatillinenTutkintoKoulutus(
   override def nimi = tunniste.nimi.getOrElse(unlocalized(tunniste.koodiarvo))
 }
 
+@Title("Osaamisen hankkimistapa")
 case class SdgOsaamisenHankkimistapa (
   tunniste: schema.Koodistokoodiviite,
 )
 
+@Title("Osaamisen hankkimistapajakso")
 case class SdgOsaamisenHankkimistapajakso(
   alku: LocalDate,
   loppu: Option[LocalDate],
   osaamisenHankkimistapa: SdgOsaamisenHankkimistapa
 )
 
+@Title("Koulutussopimusjakso")
 case class SdgKoulutussopimusjakso(
   alku: LocalDate,
   loppu: Option[LocalDate],
