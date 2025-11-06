@@ -75,10 +75,12 @@ case class SdgKorkeakoulunOpiskeluoikeus(
     )
 }
 
+@Title("Korkeakoulun opiskeluoikeuden tila")
 case class SdgKorkeakoulunOpiskeluoikeudenTila(
   opiskeluoikeusjaksot: List[SdgKorkeakoulunOpiskeluoikeusjakso]
 ) extends GenericOpiskeluoikeudenTila
 
+@Title("Korkeakoulun opiskeluoikeusjakso")
 case class SdgKorkeakoulunOpiskeluoikeusjakso(
   alku: LocalDate,
   @KoodistoUri("virtaopiskeluoikeudentila")
@@ -103,6 +105,7 @@ case class SdgKorkeakoulututkinnonSuoritus(
     }))
 }
 
+@Title("Korkeakoulun opiskeluoikeuden lisätiedot")
 case class SdgKorkeakoulunOpiskeluoikeudenLisätiedot(
   virtaOpiskeluoikeudenTyyppi: Option[schema.Koodistokoodiviite],
   lukukausiIlmoittautuminen: Option[SdgLukukausi_Ilmoittautuminen],

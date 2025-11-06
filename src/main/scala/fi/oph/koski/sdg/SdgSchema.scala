@@ -32,6 +32,7 @@ case class SdgOppija(
   opiskeluoikeudet: List[Opiskeluoikeus]
 )
 
+@Title("Henkilo")
 case class SdgHenkilo(
   oid: String,
   hetu: Option[String],
@@ -81,6 +82,7 @@ trait GenericOpiskeluoikeusjakso {
   def tila: schema.Koodistokoodiviite
 }
 
+@Title("Opiskeluoikeusjakso")
 case class SdgOpiskeluoikeusjakso(
   alku: LocalDate,
   @KoodistoUri("koskiopiskeluoikeudentila")
@@ -116,8 +118,10 @@ trait SuorituksenKoulutusmoduuli {
   def tunniste: schema.Koodistokoodiviite
 }
 
+@Title("Vahvistus")
 case class SdgVahvistus(päivä: LocalDate)
 
+@Title("Toimipiste")
 case class SdgToimipiste(
   oid: String,
   nimi: Option[schema.LocalizedString] = None,

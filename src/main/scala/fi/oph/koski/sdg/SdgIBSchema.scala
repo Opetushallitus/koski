@@ -24,7 +24,7 @@ case class SdgIBOpiskeluoikeus(
 
 trait IBPäätasonSuoritus extends Suoritus
 
-@Title("IB-koulutuksen suoritus")
+@Title("IB tutkinnon suoritus")
 case class SdgIBTutkinnonSuoritus(
   koulutusmoduuli: schema.IBTutkinto = schema.IBTutkinto(),
   toimipiste: Option[SdgToimipiste],
@@ -59,6 +59,7 @@ case class SdgIBOppiaineenSuoritus(
   tyyppi: schema.Koodistokoodiviite
 ) extends IBTutkinnonOppiaineenSuoritus
 
+@Title("IB kurssin suoritus")
 case class SdgIBKurssinSuoritus(
   koulutusmoduuli: schema.IBKurssi,
   arviointi: Option[List[SdgLukionArviointi]] = None,
@@ -77,7 +78,7 @@ case class SdgIBDPCoreSuoritus(
   tyyppi: schema.Koodistokoodiviite
 ) extends IBTutkinnonOppiaineenSuoritus
 
-@Title("IB-Core-kurssin suoritus")
+@Title("IB Core kurssin suoritus")
 case class SdgIBCoreKurssinSuoritus(
   koulutusmoduuli: schema.IBCoreKurssi,
   arviointi: Option[List[SdgLukionArviointi]] = None,
@@ -86,6 +87,7 @@ case class SdgIBCoreKurssinSuoritus(
   tyyppi: schema.Koodistokoodiviite
 )
 
+@Title("Pre IB suoritus 2015")
 case class SdgPreIBSuoritus2015(
   @Title("Koulutus")
   koulutusmoduuli: schema.PreIBKoulutusmoduuli2015,
@@ -106,6 +108,7 @@ case class SdgPreIBSuoritus2015(
 
 trait PreIBSuorituksenOsasuoritus2015 extends Osasuoritus
 
+@Title("Pre IB oppiaineen suoritus 2015")
 case class SdgPreIBOppiaineenSuoritus2015(
   @Title("Oppiaine")
   koulutusmoduuli: schema.PreIBOppiaine2015,
@@ -117,6 +120,7 @@ case class SdgPreIBOppiaineenSuoritus2015(
   tyyppi: schema.Koodistokoodiviite
 ) extends PreIBSuorituksenOsasuoritus2015
 
+@Title("Pre IB kurssin suoritus 2015")
 case class SdgPreIBKurssinSuoritus2015(
   koulutusmoduuli: schema.PreIBKurssi2015,
   arviointi: Option[List[SdgLukionArviointi]] = None,
@@ -125,6 +129,7 @@ case class SdgPreIBKurssinSuoritus2015(
   tyyppi: schema.Koodistokoodiviite
 ) extends PreIBSuorituksenOsasuoritus2015
 
+@Title("Pre IB suoritus 2019")
 @OnlyWhen("koulutusmoduuli/tunniste/koodiarvo", "preiboppimaara2019")
 case class SdgPreIBSuoritus2019(
   @Title("Koulutus")
@@ -147,6 +152,7 @@ case class SdgPreIBSuoritus2019(
     )
 }
 
+@Title("Lukion oman äidinkielen opinnot")
 case class SdgLukionOmanÄidinkielenOpinnot(
   arvosana: schema.Koodistokoodiviite,
   arviointipäivä: Option[LocalDate],
@@ -155,6 +161,7 @@ case class SdgLukionOmanÄidinkielenOpinnot(
   osasuoritukset: Option[List[SdgLukionOmanÄidinkielenOpintojenOsasuoritus]],
 )
 
+@Title("Lukion oman äidinkielen opintojen osasuoritus")
 case class SdgLukionOmanÄidinkielenOpintojenOsasuoritus (
   tyyppi: schema.Koodistokoodiviite,
   @Title("Kurssi")
@@ -165,6 +172,7 @@ case class SdgLukionOmanÄidinkielenOpintojenOsasuoritus (
   tunnustettu: Option[schema.OsaamisenTunnustaminen]
 ) extends WithTunnustettuBoolean
 
+@Title("Suullisen kielitaidon koe 2019")
 case class SdgSuullisenKielitaidonKoe2019(
   @KoodistoUri("kielivalikoima")
   kieli: schema.Koodistokoodiviite,
@@ -176,6 +184,7 @@ case class SdgSuullisenKielitaidonKoe2019(
 
 trait PreIBSuorituksenOsasuoritus2019 extends Osasuoritus
 
+@Title("Lukion oppiaineen Pre IB suoritus 2019")
 case class SdgLukionOppiaineenPreIBSuoritus2019(
   @Title("Oppiaine")
   koulutusmoduuli: schema.PreIBLukionOppiaine2019,
@@ -187,6 +196,7 @@ case class SdgLukionOppiaineenPreIBSuoritus2019(
   tyyppi: schema.Koodistokoodiviite
 ) extends PreIBSuorituksenOsasuoritus2019
 
+@Title("Muiden lukio opintojen Pre IB suoritus 2019")
 case class SdgMuidenLukioOpintojenPreIBSuoritus2019(
   @Title("Oppiaine")
   koulutusmoduuli: schema.PreIBMuutSuorituksetTaiVastaavat2019,
@@ -198,7 +208,7 @@ case class SdgMuidenLukioOpintojenPreIBSuoritus2019(
 trait PreIBLukioOpintojenOsasuoritus extends WithTunnustettuBoolean
 trait PreIBMuidenLukioOpintojenOsasuoritus2019 extends WithTunnustettuBoolean
 
-@Title("Pre-IB lukion moduulin suoritus oppiaineissa 2019")
+@Title("Pre IB lukion moduulin suoritus oppiaineissa 2019")
 @OnlyWhen("../../tyyppi/koodiarvo", "lukionoppiaine")
 case class SdgPreIBLukionModuulinSuoritusOppiaineissa2019(
   @Title("Osasuoritus")
@@ -209,7 +219,7 @@ case class SdgPreIBLukionModuulinSuoritusOppiaineissa2019(
   tunnustettu: Option[schema.OsaamisenTunnustaminen]
 ) extends PreIBLukioOpintojenOsasuoritus
 
-@Title("Pre-IB lukion paikallisen opintojakson suoritus 2019")
+@Title("Pre IB lukion paikallisen opintojakson suoritus 2019")
 case class SdgPreIBLukionPaikallisenOpintojaksonSuoritus2019(
   koulutusmoduuli: schema.PreIBPaikallinenOpintojakso2019,
   arviointi: Option[List[SdgLukionArviointi]] = None,
@@ -220,7 +230,7 @@ case class SdgPreIBLukionPaikallisenOpintojaksonSuoritus2019(
 ) extends PreIBLukioOpintojenOsasuoritus
   with PreIBMuidenLukioOpintojenOsasuoritus2019
 
-@Title("Pre-IB lukion moduulin suoritus muissa opinnoissa 2019")
+@Title("Pre IB lukion moduulin suoritus muissa opinnoissa 2019")
 @OnlyWhen("../../tyyppi/koodiarvo", "lukionmuuopinto")
 case class SdgPreIBLukionModuulinSuoritusMuissaOpinnoissa2019(
   koulutusmoduuli: schema.PreIBLukionModuuliMuissaOpinnoissa2019,

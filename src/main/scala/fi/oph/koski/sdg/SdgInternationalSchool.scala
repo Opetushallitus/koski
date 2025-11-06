@@ -1,10 +1,11 @@
 package fi.oph.koski.sdg
 
 import java.time.LocalDate
-
 import fi.oph.koski.schema.annotation._
 import fi.oph.koski.schema
+import fi.oph.scalaschema.annotation.Title
 
+@Title("International school opiskeluoikeus")
 case class SdgInternationalSchoolOpiskeluoikeus(
   oid: Option[String] = None,
   oppilaitos: Option[schema.Oppilaitos] = None,
@@ -22,6 +23,7 @@ case class SdgInternationalSchoolOpiskeluoikeus(
 
 trait InternationalSchoolVuosiluokanSuoritus extends Suoritus
 
+@Title("MYP vuosiluokan suoritus")
 case class SdgMYPVuosiluokanSuoritus(
   koulutusmoduuli: schema.MYPLuokkaAste,
   @Tooltip("Vuosiluokan alkamispäivä")
@@ -41,6 +43,7 @@ case class SdgMYPVuosiluokanSuoritus(
     )
 }
 
+@Title("MYP oppiaineen suoritus")
 case class SdgMYPOppiaineenSuoritus(
   koulutusmoduuli: schema.MYPOppiaine,
   arviointi: Option[List[schema.MYPArviointi]] = None,
@@ -49,6 +52,7 @@ case class SdgMYPOppiaineenSuoritus(
   tyyppi: schema.Koodistokoodiviite
 ) extends Osasuoritus
 
+@Title("Diploma vuosiluokan suoritus")
 case class SdgDiplomaVuosiluokanSuoritus(
   koulutusmoduuli: schema.DiplomaLuokkaAste,
   @Tooltip("Vuosiluokan alkamispäivä")
@@ -70,6 +74,7 @@ case class SdgDiplomaVuosiluokanSuoritus(
 
 trait DiplomaIBOppiaineenSuoritus extends Osasuoritus
 
+@Title("Diploma oppiaineen suoritus")
 case class SdgDiplomaOppiaineenSuoritus(
   koulutusmoduuli: schema.InternationalSchoolIBOppiaine,
   arviointi: Option[List[schema.DiplomaArviointi]] = None,
@@ -78,6 +83,7 @@ case class SdgDiplomaOppiaineenSuoritus(
   tyyppi: schema.Koodistokoodiviite
 ) extends DiplomaIBOppiaineenSuoritus
 
+@Title("Diploma core requirements oppiaineen suoritus")
 case class SdgDiplomaCoreRequirementsOppiaineenSuoritus(
   koulutusmoduuli: schema.DiplomaCoreRequirementsOppiaine,
   arviointi: Option[List[schema.InternationalSchoolCoreRequirementsArviointi]] = None, // deprekoitu predicted pois

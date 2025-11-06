@@ -25,7 +25,7 @@ case class SdgLukioOpiskeluoikeus(
 
 trait SdgLukionPäätasonSuoritus extends Suoritus
 
-@Title("Lukion oppimäärä 2015")
+@Title("Lukion oppimäärän suoritus 2015")
 @NotWhen("koulutusmoduuli/perusteenDiaarinumero", List("OPH-2263-2019", "OPH-2267-2019"))
 case class SdgLukionOppimääränSuoritus2015(
   koulutusmoduuli: schema.LukionOppimäärä,
@@ -51,6 +51,7 @@ case class SdgLukionOppimääränSuoritus2015(
 
 trait LukionOppimääränOsasuoritus2015 extends Osasuoritus
 
+@Title("Lukion oppiaineen suoritus 2015")
 case class SdgLukionOppiaineenSuoritus2015(
   koulutusmoduuli: schema.LukionOppiaine2015,
   arviointi: Option[List[SdgLukionArviointi]] = None,
@@ -61,6 +62,7 @@ case class SdgLukionOppiaineenSuoritus2015(
   tyyppi: schema.Koodistokoodiviite
 ) extends LukionOppimääränOsasuoritus2015
 
+@Title("Muiden lukio opintojen suoritus 2015")
 case class SdgMuidenLukioOpintojenSuoritus2015(
   @KoodistoKoodiarvo("lukionmuuopinto")
   tyyppi: schema.Koodistokoodiviite,
@@ -72,7 +74,7 @@ case class SdgMuidenLukioOpintojenSuoritus2015(
 
 trait LukionOsasuoritus2015 extends WithTunnustettuBoolean
 
-@Title("Lukion kurssin suoritus")
+@Title("Lukion kurssin suoritus 2015")
 case class SdgLukionKurssinSuoritus2015(
   koulutusmoduuli: schema.LukionKurssi2015,
   arviointi: Option[List[SdgLukionArviointi]] = None,
@@ -114,7 +116,7 @@ case class SdgLukionOppimääränSuoritus2019(
 
 trait LukionOppimääränOsasuoritus2019 extends Osasuoritus
 
-@Title("Lukion oppiaine 2019")
+@Title("Lukion oppiaineen suoritus 2019")
 case class SdgLukionOppiaineenSuoritus2019(
   koulutusmoduuli: schema.LukionOppiaine2019,
   arviointi: Option[List[SdgLukionArviointi]],
@@ -169,6 +171,7 @@ case class SdgLukionPaikallisenOpintojaksonSuoritus2019(
 ) extends LukionOppiaineenOsasuoritus2019
   with MuidenLukioOpintojenOsasuoritus2019
 
+@Title("Lukion arviointi")
 case class SdgLukionArviointi (
   arvosana: schema.Koodistokoodiviite,
   päivä: Option[LocalDate]

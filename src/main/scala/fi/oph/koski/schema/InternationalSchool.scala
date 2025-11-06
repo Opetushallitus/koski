@@ -200,12 +200,14 @@ trait DiplomaLuokkaAste extends InternationalSchoolLuokkaAste {
   def tunniste: Koodistokoodiviite
 }
 
+@Title("IB Diploma luokka-aste")
 case class IBDiplomaLuokkaAste(
   @KoodistoKoodiarvo("ib")
   diplomaType: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "ib", koodistoUri = "internationalschooldiplomatype"),
   tunniste: Koodistokoodiviite
 ) extends DiplomaLuokkaAste
 
+@Title("ISH Diploma luokka-aste")
 case class ISHDiplomaLuokkaAste(
   @KoodistoKoodiarvo("ish")
   diplomaType: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "ish", koodistoUri = "internationalschooldiplomatype"),
