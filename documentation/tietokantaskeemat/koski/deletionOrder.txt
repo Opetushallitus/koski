@@ -2,6 +2,7 @@ ytr_paivitetty_opiskeluoikeus
 ytr_opiskeluoikeushistoria_virheet
 ytr_download_status
 ytr_alkuperainen_data
+todistus_job
 schema_version
 preferences
 poistettu_opiskeluoikeus
