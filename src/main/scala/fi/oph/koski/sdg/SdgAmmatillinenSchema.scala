@@ -8,7 +8,7 @@ import fi.oph.scalaschema.annotation.{OnlyWhen, Title}
 import java.time.LocalDate
 
 @Title("Ammatillisten opintojen opiskeluoikeus")
-case class AmmatillinenOpiskeluoikeus(
+case class SdgAmmatillinenOpiskeluoikeus(
   oid: Option[String],
   oppilaitos: Option[schema.Oppilaitos],
   koulutustoimija: Option[schema.Koulutustoimija],
@@ -17,7 +17,7 @@ case class AmmatillinenOpiskeluoikeus(
   @KoodistoKoodiarvo("ammatillinenkoulutus")
   tyyppi: schema.Koodistokoodiviite,
 ) extends Opiskeluoikeus {
-  override def withSuoritukset(suoritukset: List[Suoritus]): AmmatillinenOpiskeluoikeus = {
+  override def withSuoritukset(suoritukset: List[Suoritus]): SdgAmmatillinenOpiskeluoikeus = {
     this.copy (
       suoritukset = suoritukset.collect { case s: AmmatillinenPäätasonSuoritus => s }
     )
@@ -115,7 +115,7 @@ case class SdgYhteisenTutkinnonOsanSuoritus(
   with OsittaisenAmmatillisenTutkinnonOsanUseastaTutkinnostaSuoritus
 
 @Title("Muun tutkinnon osan suoritus")
-case class MuunTutkinnonOsanSuoritus(
+case class SdgMuunTutkinnonOsanSuoritus(
   koulutusmoduuli: schema.AmmatillisenTutkinnonOsa,
   tutkinto: Option[schema.AmmatillinenTutkintoKoulutus],
   @KoodistoKoodiarvo("1") // Ammatilliset tutkinnon osat
