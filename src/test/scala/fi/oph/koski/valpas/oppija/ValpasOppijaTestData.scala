@@ -712,6 +712,61 @@ object ValpasOppijaTestData {
         )
       )
     ),
+    (ValpasMockOppijat.ulkomailleAlle18vuotiaanaMuuttanutJaAlle18vuotiaanaPalannut,
+      List(
+        ExpectedData(
+          ValpasOpiskeluoikeusExampleData.oppivelvollinenYsiluokkaKeskenKeväällä2021Opiskeluoikeus,
+          onHakeutumisValvottavaOpiskeluoikeus = true,
+          onHakeutumisvalvovaOppilaitos = true,
+          onSuorittamisvalvovaOppilaitos = false,
+          perusopetusTiedot = Some(ExpectedDataPerusopetusTiedot("voimassa", "lasna")),
+        )
+      )
+    ),
+    (ValpasMockOppijat.ulkomailleAlle18vuotiaanaMuuttanutJaYli18vuotiaanaPalannut,
+      List(
+        ExpectedData(
+          ValpasOpiskeluoikeusExampleData.oppivelvollinenYsiluokkaKeskenKeväällä2021Opiskeluoikeus,
+          onHakeutumisValvottavaOpiskeluoikeus = true,
+          onHakeutumisvalvovaOppilaitos = true,
+          onSuorittamisvalvovaOppilaitos = false,
+          perusopetusTiedot = Some(ExpectedDataPerusopetusTiedot("voimassa", "lasna")),
+        )
+      )
+    ),
+    (ValpasMockOppijat.ulkomailleYli18vuotiaanaMuuttanutJaYli18vuotiaanaPalannut,
+      List(
+        ExpectedData(
+          ValpasOpiskeluoikeusExampleData.oppivelvollinenYsiluokkaKeskenKeväällä2021Opiskeluoikeus,
+          onHakeutumisValvottavaOpiskeluoikeus = true,
+          onHakeutumisvalvovaOppilaitos = true,
+          onSuorittamisvalvovaOppilaitos = false,
+          perusopetusTiedot = Some(ExpectedDataPerusopetusTiedot("voimassa", "lasna")),
+        )
+      )
+    ),
+    (ValpasMockOppijat.ulkomailleAlle18vuotiaanaMuuttanutJaYli20vuotiaanaPalannut,
+      List(
+        ExpectedData(
+          ValpasOpiskeluoikeusExampleData.oppivelvollinenYsiluokkaKeskenKeväällä2021Opiskeluoikeus,
+          onHakeutumisValvottavaOpiskeluoikeus = true,
+          onHakeutumisvalvovaOppilaitos = true,
+          onSuorittamisvalvovaOppilaitos = false,
+          perusopetusTiedot = Some(ExpectedDataPerusopetusTiedot("voimassa", "lasna")),
+        )
+      )
+    ),
+    (ValpasMockOppijat.ulkomailleYli18vuotiaanaMuuttanutJaYli20vuotiaanaPalannut,
+      List(
+        ExpectedData(
+          ValpasOpiskeluoikeusExampleData.oppivelvollinenYsiluokkaKeskenKeväällä2021Opiskeluoikeus,
+          onHakeutumisValvottavaOpiskeluoikeus = true,
+          onHakeutumisvalvovaOppilaitos = true,
+          onSuorittamisvalvovaOppilaitos = false,
+          perusopetusTiedot = Some(ExpectedDataPerusopetusTiedot("voimassa", "lasna")),
+        )
+      )
+    ),
   ).sortBy(item => (item._1.sukunimi, item._1.etunimet))
 
   // Jyväskylän normaalikoulusta löytyvät näytettävät hakeutumisvelvolliset aakkosjärjestyksessä, tutkittaessa syksyn rajapäivän jälkeen
@@ -1097,6 +1152,61 @@ object ValpasOppijaTestData {
       )
     ),
     (ValpasMockOppijat.muuttanutUlkomaille,
+      List(
+        ExpectedData(
+          ValpasOpiskeluoikeusExampleData.oppivelvollinenYsiluokkaKeskenKeväällä2021Opiskeluoikeus,
+          onHakeutumisValvottavaOpiskeluoikeus = true,
+          onHakeutumisvalvovaOppilaitos = true,
+          onSuorittamisvalvovaOppilaitos = false,
+          perusopetusTiedot = Some(ExpectedDataPerusopetusTiedot("voimassa", "lasna")),
+        )
+      )
+    ),
+    (ValpasMockOppijat.ulkomailleAlle18vuotiaanaMuuttanutJaAlle18vuotiaanaPalannut,
+      List(
+        ExpectedData(
+          ValpasOpiskeluoikeusExampleData.oppivelvollinenYsiluokkaKeskenKeväällä2021Opiskeluoikeus,
+          onHakeutumisValvottavaOpiskeluoikeus = true,
+          onHakeutumisvalvovaOppilaitos = true,
+          onSuorittamisvalvovaOppilaitos = false,
+          perusopetusTiedot = Some(ExpectedDataPerusopetusTiedot("voimassa", "lasna")),
+        )
+      )
+    ),
+    (ValpasMockOppijat.ulkomailleAlle18vuotiaanaMuuttanutJaYli18vuotiaanaPalannut,
+      List(
+        ExpectedData(
+          ValpasOpiskeluoikeusExampleData.oppivelvollinenYsiluokkaKeskenKeväällä2021Opiskeluoikeus,
+          onHakeutumisValvottavaOpiskeluoikeus = true,
+          onHakeutumisvalvovaOppilaitos = true,
+          onSuorittamisvalvovaOppilaitos = false,
+          perusopetusTiedot = Some(ExpectedDataPerusopetusTiedot("voimassa", "lasna")),
+        )
+      )
+    ),
+    (ValpasMockOppijat.ulkomailleYli18vuotiaanaMuuttanutJaYli18vuotiaanaPalannut,
+      List(
+        ExpectedData(
+          ValpasOpiskeluoikeusExampleData.oppivelvollinenYsiluokkaKeskenKeväällä2021Opiskeluoikeus,
+          onHakeutumisValvottavaOpiskeluoikeus = true,
+          onHakeutumisvalvovaOppilaitos = true,
+          onSuorittamisvalvovaOppilaitos = false,
+          perusopetusTiedot = Some(ExpectedDataPerusopetusTiedot("voimassa", "lasna")),
+        )
+      )
+    ),
+    (ValpasMockOppijat.ulkomailleAlle18vuotiaanaMuuttanutJaYli20vuotiaanaPalannut,
+      List(
+        ExpectedData(
+          ValpasOpiskeluoikeusExampleData.oppivelvollinenYsiluokkaKeskenKeväällä2021Opiskeluoikeus,
+          onHakeutumisValvottavaOpiskeluoikeus = true,
+          onHakeutumisvalvovaOppilaitos = true,
+          onSuorittamisvalvovaOppilaitos = false,
+          perusopetusTiedot = Some(ExpectedDataPerusopetusTiedot("voimassa", "lasna")),
+        )
+      )
+    ),
+    (ValpasMockOppijat.ulkomailleYli18vuotiaanaMuuttanutJaYli20vuotiaanaPalannut,
       List(
         ExpectedData(
           ValpasOpiskeluoikeusExampleData.oppivelvollinenYsiluokkaKeskenKeväällä2021Opiskeluoikeus,
