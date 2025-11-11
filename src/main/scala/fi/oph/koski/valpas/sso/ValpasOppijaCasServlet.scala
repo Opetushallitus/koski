@@ -82,8 +82,7 @@ class ValpasOppijaCasServlet(implicit val application: KoskiApplication) extends
     hetu: Option[String],
     serviceTicket: Option[String]
   ): AuthenticationUser = {
-    val huollettavat = hetu.map(huoltajaServiceVtj.getHuollettavat)
-      .getOrElse(HuollettavienHakuOnnistui(List.empty)) // Jos ei hetua, asetetaan tyhjä hakutulos
+    val huollettavat = huoltajaServiceVtj.getHuollettavat(oppija)
     AuthenticationUser(
       oid = oppija.oid,
       username = oppija.oid,

@@ -1,20 +1,25 @@
 package fi.oph.koski.huoltaja
 
-import fi.oph.koski.henkilo.HenkilöRepository
+import fi.oph.koski.henkilo.{HenkilöRepository, OppijaHenkilö}
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.log.Logging
 
 class HuoltajaServiceVtj(henkilöRepository: HenkilöRepository, huollettavatRepository: HuollettavatRepository) extends Logging {
-  def getHuollettavat(hetu: String): HuollettavatSearchResult = try {
-    huollettavatRepository.getHuollettavat(hetu).map(_.flatMap(oiditHuollettaville)) match {
-      case Right(huollettavat) =>
-        HuollettavienHakuOnnistui(huollettavat)
-      case Left(error) =>
-        logger.error(s"Huollettavien haku epäonnistui. ${error.toString}")
-        HuollettavienHakuEpäonnistui(KoskiErrorCategory.unavailable.huollettavat())
+  def getHuollettavat(oppija: OppijaHenkilö): HuollettavatSearchResult = try {
+    oppija.hetu match {
+      case Some(_) =>
+        huollettavatRepository.getHuollettavat(oppija).map(_.flatMap(oiditHuollettaville)) match {
+          case Right(huollettavat) =>
+            HuollettavienHakuOnnistui(huollettavat)
+          case Left(error) =>
+            logger.error(s"Huollettavien haku epäonnistui. ${error.toString}")
+            HuollettavienHakuEpäonnistui(KoskiErrorCategory.unavailable.huollettavat())
+        }
+      case None =>
+        logger.info(s"Oppijalle ${oppija.oid} ei löydy hetua, asetetaan tyhjä hakutulos huollettaville")
+        HuollettavienHakuOnnistui(List.empty)
     }
-  }
-  catch {
+  } catch {
     case e: Exception =>
       logger.error(s"Huollettavien haku epäonnistui. ${e.toString}")
       HuollettavienHakuEpäonnistui(KoskiErrorCategory.unavailable.huollettavat())

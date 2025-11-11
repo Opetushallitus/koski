@@ -36,7 +36,7 @@ class CasServlet()(implicit val application: KoskiApplication) extends Virkailij
         case Some(hetu) =>
           oppijaCreation.findOrCreate(request, hetu) match {
             case Some(oppija) =>
-              val huollettavat = application.huoltajaServiceVtj.getHuollettavat(hetu)
+              val huollettavat = application.huoltajaServiceVtj.getHuollettavat(oppija)
               val user = AuthenticationUser(oppija.oid, oppija.oid, s"${oppija.etunimet} ${oppija.sukunimi}", None, kansalainen = true, huollettavat = Some(huollettavat))
               val mockAuthUser =  localLogin(user, Some(langFromCookie.getOrElse(langFromDomain)))
               setUser(Right(mockAuthUser))
@@ -56,10 +56,9 @@ class CasServlet()(implicit val application: KoskiApplication) extends Virkailij
             val kansalaisenTunnisteet = casService.validateKansalainenServiceTicket(url, ticket)
             oppijaCreation.findOrCreateByOidOrHetu(request, kansalaisenTunnisteet) match {
               case Some(oppija) =>
-                val huollettavat = oppija.hetu.orElse(kansalaisenTunnisteet.hetu)
+                val huollettavat = Some(oppija)
                   .map(application.huoltajaServiceVtj.getHuollettavat)
-                  .getOrElse(HuollettavienHakuOnnistui(List.empty)) // Jos ei hetua, asetetaan tyhjä hakutulos
-                val user = AuthenticationUser(oppija.oid, oppija.oid, s"${oppija.etunimet} ${oppija.sukunimi}", serviceTicket = Some(ticket), kansalainen = true, huollettavat = Some(huollettavat))
+                val user = AuthenticationUser(oppija.oid, oppija.oid, s"${oppija.etunimet} ${oppija.sukunimi}", serviceTicket = Some(ticket), kansalainen = true, huollettavat = huollettavat)
                 koskiSessions.store(ticket, user, LogUserContext.clientIpFromRequest(request), LogUserContext.userAgent(request))
                 UserLanguage.setLanguageCookie(UserLanguage.getLanguageFromLDAP(user, application.directoryClient).getOrElse(UserLanguage.getLanguageFromCookie(request)), response)
                 setUser(Right(user))
