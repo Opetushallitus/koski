@@ -215,6 +215,7 @@ case class IBSuoritustiedotRaportti(repository: IBSuoritustiedotRaporttiReposito
               case IBTutkinnonSuoritusRaportti => kurssi.osasuoritusRow.koulutusmoduuliLaajuusArvo.orElse(Some(1.0))
               case _ => kurssi.osasuoritusRow.koulutusmoduuliLaajuusArvo
             },
+            laajuusYksikköNimi = kurssi.osasuoritusRow.koulutusModuulinLaajuusYksikköNimi,
             tunnustettu = kurssi.osasuoritusRow.tunnustettu,
             korotettuEriVuonna = kurssi.osasuoritusRow.korotettuEriVuonna
           ).toStringLokalisoitu(t)
@@ -296,27 +297,62 @@ case class IBModuulinTiedot(
   kurssinTyyppi: Option[LocalizedString],
   arvosana: Option[String],
   laajuus: Option[Double],
+  laajuusYksikköNimi: Option[LocalizedString],
   tunnustettu: Boolean,
   korotettuEriVuonna: Boolean
 ) {
   def toStringLokalisoitu(t: LocalizationReader): String = {
-    List(
-      pakollinen.map { p =>
-        if (p) t.get("raportti-excel-default-value-pakollinen").capitalize
-        else t.get("raportti-excel-default-value-vapaavalintainen").capitalize
-      }.orElse(
-        Some(kurssinTyyppi.map(_.get(t.language)).getOrElse(t.get("raportti-excel-default-value-ei-tyyppiä")).capitalize)
-      ),
-      Some(arvosana
-        .map(s"${t.get("raportti-excel-default-value-arvosana")} " + _)
+    val eiKurssiaLabel = t.get("raportti-excel-default-value-kurssia")
+
+    val yksikkö = laajuusYksikköNimi
+      .flatMap(_.get(t.language) match {
+        case s if s.nonEmpty => Some(s)
+        case _ => None
+      })
+      .getOrElse(eiKurssiaLabel)
+
+    val pakollisuusStr = pakollinen
+      .map { p =>
+        val key =
+          if (p) "raportti-excel-default-value-pakollinen"
+          else "raportti-excel-default-value-vapaavalintainen"
+        t.get(key).capitalize
+      }
+      .orElse {
+        Some(
+          kurssinTyyppi
+            .map(_.get(t.language))
+            .getOrElse(t.get("raportti-excel-default-value-ei-tyyppiä"))
+            .capitalize
+        )
+      }
+
+    val arvosanaStr = Some(
+      arvosana
+        .map(a => s"${t.get("raportti-excel-default-value-arvosana")} $a")
         .getOrElse(t.get("raportti-excel-default-value-ei-arvosanaa"))
-      ),
-      Some(laajuus
-        .map(s"${t.get("raportti-excel-default-value-laajuus").capitalize} " + _)
+    )
+
+    val laajuusStr = Some {
+      val base = laajuus
+        .map(l => s"${t.get("raportti-excel-default-value-laajuus").capitalize} $l")
         .getOrElse(t.get("raportti-excel-default-value-laajuus-puuttuu"))
-      ),
-      if (tunnustettu) Some(t.get("raportti-excel-default-value-tunnustettu")) else None,
+
+      s"$base $yksikkö"
+    }
+
+    val tunnustettuStr =
+      if (tunnustettu) Some(t.get("raportti-excel-default-value-tunnustettu")) else None
+
+    val korotettuStr =
       if (korotettuEriVuonna) Some(t.get("raportti-excel-default-value-korotettuEriVuonna")) else None
+
+    List(
+      pakollisuusStr,
+      arvosanaStr,
+      laajuusStr,
+      tunnustettuStr,
+      korotettuStr
     ).flatten.mkString(", ")
   }
 }

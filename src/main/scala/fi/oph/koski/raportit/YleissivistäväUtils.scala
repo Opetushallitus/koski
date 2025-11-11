@@ -44,10 +44,24 @@ case class YleissivistäväOppiaineenTiedot(suoritus: RSuoritusRow, osasuorituks
     if (hylättyjenLaajuus > 0) f" (${t.get("raportti-excel-default-value-joista")} $hylättyjenLaajuus%.1f ${t.get("raportti-excel-default-value-hylättyjä")})" else ""
 
   def toStringLokalisoitu(t: LocalizationReader): String = {
-    suoritus
-      .arviointiArvosanaKoodiarvo
-      .map(a => f"${t.get("raportti-excel-default-value-arvosana")} $a, $laajuus%.1f ${suorituksenLaajuusYksikkö.map(_.get(t.language)).getOrElse(t.get("raportti-excel-default-value-kurssia"))}${hylätytKurssitStr(t)}${luokkaAste.map(l => s", ${l.get(t.language)}").getOrElse("")}")
-      .getOrElse(t.get("raportti-excel-default-value-ei-arvosanaa"))
+    suoritus.arviointiArvosanaKoodiarvo.map { arvosana =>
+      val arvosanaLabel = t.get("raportti-excel-default-value-arvosana")
+      val eiKurssiaLabel = t.get("raportti-excel-default-value-kurssia")
+
+      val yksikkö = suorituksenLaajuusYksikkö
+        .map(_.get(t.language))
+        .getOrElse(eiKurssiaLabel)
+
+      val luokka = luokkaAste
+        .map(l => s", ${l.get(t.language)}")
+        .getOrElse("")
+
+      val laajuusStr = f"$laajuus%.1f"
+
+      s"$arvosanaLabel $arvosana, $laajuusStr $yksikkö${hylätytKurssitStr(t)}$luokka"
+    }.getOrElse {
+      t.get("raportti-excel-default-value-ei-arvosanaa")
+    }
   }
 }
 
