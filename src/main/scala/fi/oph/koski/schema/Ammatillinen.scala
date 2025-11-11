@@ -304,6 +304,8 @@ case class Osaamisalajakso(
 @Title("Ammatillisen tutkinnon osia useasta tutkinnosta")
 @OnlyWhen("koulutusmoduuli/tunniste/koodiarvo", "ammatillinentutkintoosittainenuseastatutkinnosta")
 case class AmmatillisenTutkinnonOsittainenUseastaTutkinnostaSuoritus(
+  @Title("Koulutus")
+  @Tooltip("Ammatillisen tutkinnon osia useasta tutkinnosta. Jokaisella tutkinnon osalla on erikseen tietona, mihin tutkintoon kyseinen suoritus liittyy.")
   koulutusmoduuli: AmmatillinenOsiaUseastaTutkinnosta,
   @KoodistoUri("ammatillisentutkinnonsuoritustapa")
   @KoodistoKoodiarvo("reformi")
@@ -339,14 +341,25 @@ case class AmmatillisenTutkinnonOsittainenSuoritus(
   @Tooltip("Ammatillinen tutkinto, johon suoritettava tutkinnon osa kuuluu/suoritettavat tutkinnon osat kuuluvat.")
   koulutusmoduuli: AmmatillinenTutkintoKoulutus,
   suoritustapa: Koodistokoodiviite,
+  @Tooltip("Tutkintonimike/-nimikkeet, joiden suorittamiseen tutkinnon osat voivat johtaa.")
   override val tutkintonimike: Option[List[Koodistokoodiviite]] = None,
+  @Description("Onko kyse uuden tutkintonimikkeen suorituksesta liittyen aiemmin suoritettuun tutkintoon.")
+  @Tooltip("Onko kyse uuden tutkintonimikkeen suorituksesta liittyen aiemmin suoritettuun tutkintoon.")
+  @DefaultValue(false)
   toinenTutkintonimike: Boolean = false,
+  @Tooltip("Suoritettava osaamisala. Voi olla useampia eri jaksoissa.")
   override val osaamisala: Option[List[Osaamisalajakso]] = None,
+  @Description("Onko kyse uuden osaamisalan suorituksesta liittyen aiemmin suoritettuun tutkintoon.")
+  @Tooltip("Onko kyse uuden osaamisalan suorituksesta liittyen aiemmin suoritettuun tutkintoon.")
+  @DefaultValue(false)
   toinenOsaamisala: Boolean = false,
   toimipiste: OrganisaatioWithOid,
   override val alkamispäivä: Option[LocalDate] = None,
   vahvistus: Option[HenkilövahvistusValinnaisellaPaikkakunnalla] = None,
   suorituskieli: Koodistokoodiviite,
+  @Description("Koulutuksen järjestämismuoto. Oppilaitosmuotoinen tai - oppisopimuskoulutus. Mikäli kyseessä on ammatillisen reformin mukainen suoritus, käytetään rakennetta osaamisenHankkimistapa tämän sijaan.")
+  @Tooltip("Koulutuksen järjestämismuoto jaksotietona (alku- ja loppupäivämäärä). Oppilaitosmuotoinen tai oppisopimuskoulutus. Voi olla useita erillisiä jaksoja. Mikäli kyseessä on ammatillisen reformin mukainen suoritus, käytetään kenttää 'Osaamisen hankkimistavat' tämän sijaan.")
+  @OksaUri("tmpOKSAID140", "koulutuksen järjestämismuoto")
   järjestämismuodot: Option[List[Järjestämismuotojakso]] = None,
   osaamisenHankkimistavat: Option[List[OsaamisenHankkimistapajakso]] = None,
   työssäoppimisjaksot: Option[List[Työssäoppimisjakso]] = None,
@@ -1215,6 +1228,7 @@ case class AmmatillisenTutkinnonOsanLisätieto(
   kuvaus: LocalizedString
 )
 
+@Description("Tutkinnon tai koulutuksen osan suoritukseen kuuluvan ammattiosaamisen näytön tiedot.")
 trait NäyttöLike {
   @Description("Vapaamuotoinen kuvaus suoritetusta näytöstä")
   @Tooltip("Vapaamuotoinen kuvaus suoritetusta näytöstä")
@@ -1230,24 +1244,15 @@ trait NäyttöLike {
   def arviointi: Option[NäytönArviointi]
 }
 
-@Description("Tutkinnon tai koulutuksen osan suoritukseen kuuluvan ammattiosaamisen näytön tiedot.")
 case class Näyttö(
-  @Description("Vapaamuotoinen kuvaus suoritetusta näytöstä")
-  @Tooltip("Vapaamuotoinen kuvaus suoritetusta näytöstä")
-  @MultiLineString(5)
   kuvaus: Option[LocalizedString],
-  @Tooltip("Näytön suorituspaikka (suorituspaikan tyyppi ja nimi).")
   suorituspaikka: Option[NäytönSuorituspaikka],
-  @Description("Näyttötilaisuuden ajankohta")
   suoritusaika: Option[NäytönSuoritusaika],
   @Description("Onko näyttö suoritettu työssäoppimisen yhteydessä (true/false)")
   @Tooltip("Onko näyttö suoritettu työssäoppimisen yhteydessä?")
   @DefaultValue(false)
   @HiddenWhen("../../../suoritustapa/koodiarvo", "reformi")
   työssäoppimisenYhteydessä: Boolean = false,
-  @Description("Näytön arvioinnin lisätiedot")
-  @Tooltip("Näytön arviointitiedot (arvosana, arviointipäivä, arvioinnista päättäneet, arviointikeskusteluun osallistuneet)")
-  @FlattenInUI
   arviointi: Option[NäytönArviointi],
   @Description("Halutaanko näytöstä erillinen todistus. Puuttuva arvo tulkitaan siten, että halukkuutta ei tiedetä")
   @HiddenWhen("../../../suoritustapa/koodiarvo", "reformi")
@@ -1255,17 +1260,9 @@ case class Näyttö(
 ) extends NäyttöLike
 
 case class NäyttöAmmatillinenOsittainen(
- @Description("Vapaamuotoinen kuvaus suoritetusta näytöstä")
- @Tooltip("Vapaamuotoinen kuvaus suoritetusta näytöstä")
- @MultiLineString(5)
  kuvaus: Option[LocalizedString],
- @Tooltip("Näytön suorituspaikka (suorituspaikan tyyppi ja nimi).")
  suorituspaikka: Option[NäytönSuorituspaikka],
- @Description("Näyttötilaisuuden ajankohta")
  suoritusaika: Option[NäytönSuoritusaika],
- @Description("Näytön arvioinnin lisätiedot")
- @Tooltip("Näytön arviointitiedot (arvosana, arviointipäivä, arvioinnista päättäneet, arviointikeskusteluun osallistuneet)")
- @FlattenInUI
  arviointi: Option[NäytönArviointi],
 ) extends NäyttöLike
 

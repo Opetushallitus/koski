@@ -49,7 +49,7 @@ export type AmmatillisenTutkinnonOsittainenSuoritus = {
 
 export const AmmatillisenTutkinnonOsittainenSuoritus = (o: {
   korotettuKeskiarvoSisältääMukautettujaArvosanoja?: boolean
-  toinenTutkintonimike: boolean
+  toinenTutkintonimike?: boolean
   järjestämismuodot?: Array<Järjestämismuotojakso>
   tutkintonimike?: Array<Koodistokoodiviite<'tutkintonimikkeet', string>>
   tyyppi?: Koodistokoodiviite<
@@ -60,7 +60,7 @@ export const AmmatillisenTutkinnonOsittainenSuoritus = (o: {
   tila?: Koodistokoodiviite<'suorituksentila', string>
   alkamispäivä?: string
   suorituskieli: Koodistokoodiviite<'kieli', string>
-  toinenOsaamisala: boolean
+  toinenOsaamisala?: boolean
   keskiarvoSisältääMukautettujaArvosanoja?: boolean
   korotettuOpiskeluoikeusOid?: string
   korotettuKeskiarvo?: number
@@ -76,10 +76,12 @@ export const AmmatillisenTutkinnonOsittainenSuoritus = (o: {
   osaamisala?: Array<Osaamisalajakso>
   vahvistus?: HenkilövahvistusValinnaisellaPaikkakunnalla
 }): AmmatillisenTutkinnonOsittainenSuoritus => ({
+  toinenTutkintonimike: false,
   tyyppi: Koodistokoodiviite({
     koodiarvo: 'ammatillinentutkintoosittainen',
     koodistoUri: 'suorituksentyyppi'
   }),
+  toinenOsaamisala: false,
   $class: 'fi.oph.koski.schema.AmmatillisenTutkinnonOsittainenSuoritus',
   ...o
 })

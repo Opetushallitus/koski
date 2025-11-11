@@ -4,7 +4,7 @@ import { NäytönSuoritusaika } from './NaytonSuoritusaika'
 import { NäytönArviointi } from './NaytonArviointi'
 
 /**
- * NäyttöAmmatillinenOsittainen
+ * Tutkinnon tai koulutuksen osan suoritukseen kuuluvan ammattiosaamisen näytön tiedot.
  *
  * @see `fi.oph.koski.schema.NäyttöAmmatillinenOsittainen`
  */
