@@ -73,7 +73,7 @@ class TodistusService(application: KoskiApplication) extends Logging {
         logJononTilanne()
         Right(job)
       case Left(error) =>
-        logSkedulointiEpäonnistui(uusiJobId, req)
+        logSkedulointiEpäonnistui(uusiJobId, req, error)
         logJononTilanne()
         Left(error)
     }
@@ -305,9 +305,9 @@ class TodistusService(application: KoskiApplication) extends Logging {
     logger.info(s"Todistuksia jonossa:$queued käsittelyssä:$running")
   }
 
-  private def logSkedulointiEpäonnistui(uusiJobId: String, req: TodistusGenerateRequest)(implicit user: KoskiSpecificSession): Unit = {
+  private def logSkedulointiEpäonnistui(uusiJobId: String, req: TodistusGenerateRequest, status: HttpStatus)(implicit user: KoskiSpecificSession): Unit = {
     val konteksti = teeKonteksti(uusiJobId, "EI TIEDOSSA", req.opiskeluoikeusOid, req.language, user.user.oid)
-    logger.error(s"Jonoon lisäys epäonnistui, $konteksti")
+    logger.error(s"Jonoon lisäys epäonnistui, $konteksti: ${status.toString}")
   }
 
   private def logGenerointiAlkaa(todistus: TodistusJob): Unit = {
