@@ -380,6 +380,12 @@ object KoskiErrorCategory {
     val raportit = subcategory("raportit", "Raportit eivät ole juuri nyt käytettävissä. Yritä myöhemmin uudelleen.")
     val huollettavat = subcategory("huollettavat", "Huollettavien opintotietoja ei juuri nyt saada haettua. Yritä myöhemmin uudelleen.")
 
+    object todistus {
+      val notCompleteOrNoAccess = subcategory("notCompleteOrNoAccess", "Todistusta ei ole vielä luotu tai käyttäjällä ei ole oikeuksia todistuksen lataamiseen.")
+      val opiskeluoikeusMitatoity = subcategory("opiskeluoikeusMitatoity", "Todistusta ei voi ladata, koska opiskeluoikeus on mitätöity.")
+      val stampingError = subcategory("stampingError", "Tapahtui virhe todistuksen leimauksessa.")
+    }
+
     object yoTodistus {
       val notCompleteOrNoAccess = subcategory("notComplete", "Todistusta ei ole vielä luotu tai käyttäjällä ei ole oikeuksia todistuksen lataamiseen.")
     }
