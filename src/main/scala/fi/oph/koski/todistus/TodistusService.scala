@@ -87,7 +87,13 @@ class TodistusService(application: KoskiApplication) extends Logging {
 
   private def haeOppijaOiditJoihinKansalaisellaOnOikeudet(implicit user: KoskiSpecificSession): Either[HttpStatus, Set[String]] = {
     for {
-      huollettavat <- user.huollettavat.map(_.flatMap(_.oid).toList)
+      huollettavat <- user.huollettavat.map(_.flatMap(_.oid).toList).fold(
+        s => {
+          logger.warn(s"Huollettavien haku epäonnistui. Tehdään oletus, että huollettavia ei ole. ${s.toString}")
+          Right(List.empty[String])
+        },
+        Right(_)
+      )
       kaikkiPääOppijaOiditJoihinOikeus = user.oid :: huollettavat
       henkilöt = kaikkiPääOppijaOiditJoihinOikeus.flatMap(oid => application.henkilöRepository.findByOid(oid).toList)
       kaikkiHenkilöOiditJoihinOikeus = henkilöt.flatMap(h => h.oid :: h.linkitetytOidit).toSet
