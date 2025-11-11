@@ -201,22 +201,6 @@ export const MuunOsittaisenAmmatillisenTutkinnonUseastaTutkinnostaTutkinnonosanS
             </TestIdLayer>
           </OsasuoritusPropertyValue>
         </OsasuoritusProperty>
-        {(form.editMode || osasuoritus.korotettu !== undefined) && (
-          <OsasuoritusProperty label={'Korotettu suoritus'}>
-            <OsasuoritusPropertyValue>
-              <FormField
-                form={form}
-                view={KoodistoView}
-                edit={KoodistoEdit}
-                editProps={{
-                  koodistoUri: 'ammatillisensuorituksenkorotus',
-                  zeroValueOption: true
-                }}
-                path={osasuoritusPath.prop('korotettu')}
-              />
-            </OsasuoritusPropertyValue>
-          </OsasuoritusProperty>
-        )}
         <OsasuoritusTable
           editMode={form.editMode}
           rows={

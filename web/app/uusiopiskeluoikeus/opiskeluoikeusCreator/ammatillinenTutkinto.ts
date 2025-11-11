@@ -27,6 +27,23 @@ import { ValmaKoulutus } from '../../types/fi/oph/koski/schema/ValmaKoulutus'
 import { TutkintoPeruste } from '../../types/fi/oph/koski/tutkinto/TutkintoPeruste'
 import { toOppilaitos, toToimipiste } from './utils'
 import { AmmatillisenTutkinnonOsittainenUseastaTutkinnostaSuoritus } from '../../types/fi/oph/koski/schema/AmmatillisenTutkinnonOsittainenUseastaTutkinnostaSuoritus'
+import { AmmatillinenOsiaUseastaTutkinnosta } from '../../types/fi/oph/koski/schema/AmmatillinenOsiaUseastaTutkinnosta'
+
+const SUORITUSTAPA_REFORMI = Koodistokoodiviite<
+  'ammatillisentutkinnonsuoritustapa',
+  'reformi'
+>({
+  koodiarvo: 'reformi' as const,
+  koodistoUri: 'ammatillisentutkinnonsuoritustapa' as const
+})
+
+const TYYPPI_OSITTAINEN = Koodistokoodiviite<
+  'suorituksentyyppi',
+  'ammatillinentutkintoosittainen'
+>({
+  koodiarvo: 'ammatillinentutkintoosittainen' as const,
+  koodistoUri: 'suorituksentyyppi' as const
+})
 
 export const createAmmatillinenOpiskeluoikeus = (
   suorituksenTyyppi: Koodistokoodiviite<'suorituksentyyppi'>,
@@ -122,7 +139,9 @@ const createAmmatillinenPäätasonSuoritus = (
         koulutusmoduuli: createAmmatillinenTutkintoKoulutus(tutkinto),
         suorituskieli,
         suoritustapa,
-        toimipiste: toToimipiste(organisaatio)
+        toimipiste: toToimipiste(organisaatio),
+        toinenTutkintonimike: false,
+        toinenOsaamisala: false
       })
     case 'ammatillinentutkinto':
       if (!tutkinto || !suoritustapa) return undefined
@@ -175,8 +194,10 @@ const createAmmatillinenPäätasonSuoritus = (
       })
     case AmmatillisenOsittaisenUseastaTutkinnostaSuorituksenTyyppi:
       return AmmatillisenTutkinnonOsittainenUseastaTutkinnostaSuoritus({
+        koulutusmoduuli: AmmatillinenOsiaUseastaTutkinnosta({}),
         suorituskieli,
-        toimipiste: toToimipiste(organisaatio)
+        toimipiste: toToimipiste(organisaatio),
+        suoritustapa: SUORITUSTAPA_REFORMI
       })
 
     default:

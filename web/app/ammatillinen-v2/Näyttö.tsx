@@ -2,7 +2,6 @@ import {
   FieldEditorProps,
   FieldViewerProps
 } from '../components-v2/forms/FormField'
-import { Näyttö } from '../types/fi/oph/koski/schema/Naytto'
 import { EmptyObject } from '../util/objects'
 import { ButtonGroup } from '../components-v2/containers/ButtonGroup'
 import { FlatButton } from '../components-v2/controls/FlatButton'
@@ -19,10 +18,7 @@ import { KoodistoSelect } from '../components-v2/opiskeluoikeus/KoodistoSelect'
 import { LocalizedTextEdit } from '../components-v2/controls/LocalizedTestField'
 import { DateInput } from '../components-v2/controls/DateInput'
 import { NäytönSuoritusaika } from '../types/fi/oph/koski/schema/NaytonSuoritusaika'
-import {
-  BooleanEdit,
-  BooleanView
-} from '../components-v2/opiskeluoikeus/BooleanField'
+import { BooleanEdit } from '../components-v2/opiskeluoikeus/BooleanField'
 import { IconButton } from '../components-v2/controls/IconButton'
 import { CHARCODE_REMOVE } from '../components-v2/texts/Icon'
 import React from 'react'
@@ -33,10 +29,12 @@ import { NäytönArvioitsija } from '../types/fi/oph/koski/schema/NaytonArvioits
 import { CommonProps } from '../components-v2/CommonProps'
 import { NäytönSuorituspaikka } from '../types/fi/oph/koski/schema/NaytonSuorituspaikka'
 import { AmisArvosanaSelect } from './Arviointi'
+import { NäyttöAmmatillinenOsittainen } from '../types/fi/oph/koski/schema/NayttoAmmatillinenOsittainen'
 
+type NType = NäyttöAmmatillinenOsittainen
 export const NäyttöView = ({
   value
-}: CommonProps<FieldViewerProps<Näyttö, EmptyObject>>) => {
+}: CommonProps<FieldViewerProps<NType, EmptyObject>>) => {
   return (
     <KeyValueTable>
       <KeyValueRow localizableLabel="Kuvaus">{t(value?.kuvaus)}</KeyValueRow>
@@ -55,26 +53,31 @@ export const NäyttöView = ({
     </KeyValueTable>
   )
 }
-const emptyNäyttö: Näyttö = Näyttö({})
-const emptySuoritusaika: NäytönSuoritusaika = NäytönSuoritusaika({
-  alku: todayISODate(),
-  loppu: todayISODate()
-})
-const emptySuoritusPaikka: NäytönSuorituspaikka = NäytönSuorituspaikka({
-  tunniste: Koodistokoodiviite({
-    koodistoUri: 'ammatillisennaytonsuorituspaikka',
-    koodiarvo: 'työpaikka'
-  }),
-  kuvaus: localize('')
-})
+const mkEmptyNäyttö = (): NType => ({}) as NType
+
+const mkEmptySuoritusaika = (): NäytönSuoritusaika =>
+  NäytönSuoritusaika({
+    alku: todayISODate(),
+    loppu: todayISODate()
+  })
+
+const mkEmptySuoritusPaikka = (): NäytönSuorituspaikka =>
+  NäytönSuorituspaikka({
+    tunniste: Koodistokoodiviite({
+      koodistoUri: 'ammatillisennaytonsuorituspaikka',
+      koodiarvo: 'työpaikka'
+    }),
+    kuvaus: localize('')
+  })
+
 export const NäyttöEdit = ({
   value,
   onChange
-}: FieldEditorProps<Näyttö, EmptyObject>) => {
+}: FieldEditorProps<NType, EmptyObject>) => {
   if (value === undefined) {
     return (
       <ButtonGroup>
-        <FlatButton onClick={() => onChange(emptyNäyttö)}>
+        <FlatButton onClick={() => onChange(mkEmptyNäyttö())}>
           {t('Lisää ammattiosaamisen näyttö')}
         </FlatButton>
       </ButtonGroup>
@@ -88,8 +91,7 @@ export const NäyttöEdit = ({
           <MultilineTextEdit
             value={t(value?.kuvaus)}
             onChange={(kuvaus) =>
-              kuvaus &&
-              onChange({ ...emptyNäyttö, ...value, kuvaus: localize(kuvaus) })
+              kuvaus && onChange({ ...value, kuvaus: localize(kuvaus) })
             }
           />
         </KeyValueRow>
@@ -100,11 +102,9 @@ export const NäyttöEdit = ({
             onSelect={(tunniste) =>
               tunniste &&
               onChange({
-                ...emptyNäyttö,
                 ...value,
                 suorituspaikka: {
-                  ...emptySuoritusPaikka,
-                  ...value?.suorituspaikka,
+                  ...(value?.suorituspaikka ?? mkEmptySuoritusPaikka()),
                   tunniste
                 }
               })
@@ -116,11 +116,9 @@ export const NäyttöEdit = ({
             onChange={(kuvaus) =>
               kuvaus &&
               onChange({
-                ...emptyNäyttö,
                 ...value,
                 suorituspaikka: {
-                  ...emptySuoritusPaikka,
-                  ...value?.suorituspaikka,
+                  ...(value?.suorituspaikka ?? mkEmptySuoritusPaikka()),
                   kuvaus
                 }
               })
@@ -134,13 +132,11 @@ export const NäyttöEdit = ({
               onChange={(alku?: string) => {
                 alku &&
                   onChange({
-                    ...emptyNäyttö,
                     ...value,
-                    suoritusaika: NäytönSuoritusaika({
-                      ...emptySuoritusaika,
-                      ...value?.suoritusaika,
+                    suoritusaika: {
+                      ...(value?.suoritusaika ?? mkEmptySuoritusaika()),
                       alku
-                    })
+                    } as NäytönSuoritusaika
                   })
               }}
               testId="alku"
@@ -151,13 +147,11 @@ export const NäyttöEdit = ({
               onChange={(loppu?: string) => {
                 loppu &&
                   onChange({
-                    ...emptyNäyttö,
                     ...value,
-                    suoritusaika: NäytönSuoritusaika({
-                      ...emptySuoritusaika,
-                      ...value?.suoritusaika,
+                    suoritusaika: {
+                      ...(value?.suoritusaika ?? mkEmptySuoritusaika()),
                       loppu
-                    })
+                    } as NäytönSuoritusaika
                   })
               }}
               testId="loppu"
@@ -167,7 +161,7 @@ export const NäyttöEdit = ({
         <NäytönArviointiEdit
           value={value?.arviointi}
           onChange={(arviointi) =>
-            arviointi && onChange({ ...emptyNäyttö, ...value, arviointi })
+            arviointi && onChange({ ...value, arviointi })
           }
         />
       </KeyValueTable>
@@ -223,7 +217,7 @@ const NäytönArviointiEdit = ({
           value={value?.arvosana}
           onChange={(arvosana) =>
             arvosana &&
-            onChange({ ...emptyNäytönArviointi, ...value, arvosana })
+            onChange({ ...(value ?? emptyNäytönArviointi), arvosana })
           }
         />
       </KeyValueRow>
@@ -231,7 +225,7 @@ const NäytönArviointiEdit = ({
         <DateInput
           value={value?.päivä}
           onChange={(päivä) =>
-            päivä && onChange({ ...emptyNäytönArviointi, ...value, päivä })
+            päivä && onChange({ ...(value ?? emptyNäytönArviointi), päivä })
           }
         />
       </KeyValueRow>

@@ -64,24 +64,6 @@
         "koodistoUri" : "ammatillisentutkinnonsuoritustapa",
         "koodistoVersio" : 1
       },
-      "tutkintonimike" : [ {
-        "koodiarvo" : "10066",
-        "nimi" : {
-          "fi" : "Automekaanikko"
-        },
-        "koodistoUri" : "tutkintonimikkeet"
-      } ],
-      "toinenTutkintonimike" : false,
-      "osaamisala" : [ {
-        "osaamisala" : {
-          "koodiarvo" : "1008",
-          "nimi" : {
-            "fi" : "Ajoneuvotekniikan osaamisala"
-          },
-          "koodistoUri" : "osaamisala"
-        }
-      } ],
-      "toinenOsaamisala" : false,
       "toimipiste" : {
         "oid" : "1.2.246.562.10.42456023292",
         "nimi" : {
@@ -131,19 +113,6 @@
         },
         "koodistoUri" : "kieli"
       },
-      "järjestämismuodot" : [ {
-        "alku" : "2022-09-01",
-        "järjestämismuoto" : {
-          "tunniste" : {
-            "koodiarvo" : "10",
-            "nimi" : {
-              "fi" : "Oppilaitosmuotoinen"
-            },
-            "koodistoUri" : "jarjestamismuoto",
-            "koodistoVersio" : 1
-          }
-        }
-      } ],
       "osasuoritukset" : [ {
         "koulutusmoduuli" : {
           "tunniste" : {
@@ -485,7 +454,6 @@
             "alku" : "2024-01-01",
             "loppu" : "2024-01-01"
           },
-          "työssäoppimisenYhteydessä" : false,
           "arviointi" : {
             "arvosana" : {
               "koodiarvo" : "3",
