@@ -39,4 +39,52 @@ class VtjParserSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers {
     paluuKoodi.koodi should equal("0000")
     paluuKoodi.arvo should equal("Haku onnistui")
   }
+
+  "Hetun muutos- ja passivointitilanteet parsitaan oikein" - {
+    val currentHetu = "010101-123A"
+
+    "Kun VTJ vastauksessa on eri hetu, palautetaan uusi hetu" in {
+      val xml =
+        <VTJHenkiloVastaussanoma>
+          <Henkilo>
+            <Henkilotunnus>120202-999X</Henkilotunnus>
+          </Henkilo>
+        </VTJHenkiloVastaussanoma>
+
+      val uusi = VtjParser.parseNewHetuFromResponse(xml, currentHetu)
+      uusi should equal(Some("120202-999X"))
+    }
+
+    "Kun VTJ vastauksessa on sama hetu, palautetaan None (ei muutos)" in {
+      val xml =
+        <VTJHenkiloVastaussanoma>
+          <Henkilo>
+            <Henkilotunnus>010101-123A</Henkilotunnus>
+          </Henkilo>
+        </VTJHenkiloVastaussanoma>
+
+      val uusi = VtjParser.parseNewHetuFromResponse(xml, currentHetu)
+      uusi should equal(None)
+    }
+
+    "Kun VTJ vastauksessa ei ole hetua, palautetaan None (passivoitu henkilö)" in {
+      val xml =
+        <VTJHenkiloVastaussanoma>
+          <Henkilo></Henkilo>
+        </VTJHenkiloVastaussanoma>
+
+      val uusi = VtjParser.parseNewHetuFromResponse(xml, currentHetu)
+      uusi should equal(None)
+    }
+
+    "Kun VTJ vastauksessa Henkilo-elementti puuttuu, palautetaan None (virheellinen data)" in {
+      val xml =
+        <VTJHenkiloVastaussanoma>
+          <EiHenkiloa/>
+        </VTJHenkiloVastaussanoma>
+
+      val uusi = VtjParser.parseNewHetuFromResponse(xml, currentHetu)
+      uusi should equal(None)
+    }
+  }
 }

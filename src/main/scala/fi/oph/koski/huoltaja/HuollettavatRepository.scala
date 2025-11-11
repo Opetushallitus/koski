@@ -3,13 +3,13 @@ package fi.oph.koski.huoltaja
 import com.typesafe.config.Config
 import fi.oph.koski.config.Environment
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat._
-import fi.oph.koski.henkilo.LaajatOppijaHenkilöTiedot
+import fi.oph.koski.henkilo.{LaajatOppijaHenkilöTiedot, OppijaHenkilö}
 import fi.oph.koski.http._
 import fi.oph.koski.log.Logging
 import fi.oph.koski.valpas.opiskeluoikeusfixture.ValpasMockHuollettavatRepository
 
 trait HuollettavatRepository {
-  def getHuollettavat(huoltajaHetu: String): Either[HttpStatus, List[VtjHuollettavaHenkilö]]
+  def getHuollettavat(oppija: OppijaHenkilö): Either[HttpStatus, List[VtjHuollettavaHenkilö]]
 }
 
 object HuollettavatRepository {
@@ -24,22 +24,42 @@ object HuollettavatRepository {
 }
 
 class RemoteHuollettavatRepositoryVTJ(val vtjClient: VtjClient) extends HuollettavatRepository with Logging {
-  def getHuollettavat(huoltajanHetu: String): Either[HttpStatus, List[VtjHuollettavaHenkilö]] = {
+
+  def getHuollettavat(oppija: OppijaHenkilö): Either[HttpStatus, List[VtjHuollettavaHenkilö]] = {
+    val huoltajanHetu = oppija.hetu.get
+
     val response = vtjClient.getVtjResponse(huoltajanHetu, loppukayttaja = huoltajanHetu)
     val paluukoodi = VtjParser.parsePaluukoodiFromVtjResponse(response)
-    paluukoodi.koodi match {
-      case "0000" | "0018" => Right(VtjParser.parseHuollettavatFromVtjResponse(response))
-      case "0001" | "0006" => Left(KoskiErrorCategory.unavailable.huollettavat())
-      case _ =>
-        logger.error("Tuntematon paluukoodi VTJ vastauksessa: " + response.toString())
+    val koodi = Option(paluukoodi.koodi).getOrElse("")
+
+    koodi match {
+      case "0000" | "0018" =>
+        logger.debug(s"VTJ-huollettavat kysely onnistui, oppija ${oppija.oid}")
+        Right(VtjParser.parseHuollettavatFromVtjResponse(response))
+
+      case "0001" | "0006" =>
+        logger.info(s"VTJ-huollettavat kyselyn paluukoodi on $koodi oppijalle ${oppija.oid}")
+        Left(KoskiErrorCategory.notFound.huoltajaaEiLöydyHetulla())
+
+      case "0002" =>
+        val hasNewHetu = VtjParser.parseNewHetuFromResponse(response, huoltajanHetu).nonEmpty
+        if (hasNewHetu)
+          logger.info(s"VTJ-huollettavat kyselyn mukaan hetu on vaihtunut (paluukoodi $koodi).")
+        else
+          logger.info(s"VTJ-huollettavat kyselyn mukaan henkilö on passivoitu (paluukoodi $koodi).")
         Left(KoskiErrorCategory.unavailable.huollettavat())
+
+      case _ =>
+        logger.warn(s"VTJ-huollettavat: tuntematon paluukoodi $koodi (oppija ${oppija.oid}).")
+        Left(KoskiErrorCategory.internalError())
     }
   }
 }
 
 class MockHuollettavatRepository extends HuollettavatRepository {
-  override def getHuollettavat(huoltajaHetu: String): Either[HttpStatus, List[VtjHuollettavaHenkilö]] = {
-    ValpasMockHuollettavatRepository.getHuollettavat(huoltajaHetu) match {
+  override def getHuollettavat(oppija: OppijaHenkilö): Either[HttpStatus, List[VtjHuollettavaHenkilö]] = {
+    val huoltajaHetu = oppija.hetu.get
+    ValpasMockHuollettavatRepository.getHuollettavat(oppija) match {
       case Some(l) =>
         Right(l)
 

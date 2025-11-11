@@ -7,9 +7,9 @@ import scala.xml.Elem
 class VtjXmlParsingException(message: String) extends Exception(message)
 
 object VtjParser extends Logging {
-  def parseHuollettavatFromVtjResponse(xmlElem: Elem): List[VtjHuollettavaHenkilö] = {
+  def parseHuollettavatFromVtjResponse(response: Elem): List[VtjHuollettavaHenkilö] = {
     try {
-      xmlElem
+      response
         .toList
         .flatMap(_ \\ "Henkilo" \ "Huollettava")
         .map(x =>
@@ -29,9 +29,9 @@ object VtjParser extends Logging {
 
   case class VtjPaluukoodi(koodi: String, arvo: String)
 
-  def parsePaluukoodiFromVtjResponse(xmlElem: Elem): VtjPaluukoodi = {
+  def parsePaluukoodiFromVtjResponse(response: Elem): VtjPaluukoodi = {
     try {
-      val paluukoodi = xmlElem \\ "Paluukoodi"
+      val paluukoodi = response \\ "Paluukoodi"
       VtjPaluukoodi(
         koodi = (paluukoodi \ "@koodi").text,
         arvo = paluukoodi.text
@@ -41,5 +41,10 @@ object VtjParser extends Logging {
         logger.error(e)("Failed to parse VTJ response")
         throw new VtjXmlParsingException(s"Failed to parse Paluukoodi from VTJ response")
     }
+  }
+
+  def parseNewHetuFromResponse(response: Elem, currentHetu: String): Option[String] = {
+    val hetus = (response \\ "Henkilo" \\ "Henkilotunnus").map(_.text.trim)
+    hetus.find(ht => ht.nonEmpty && ht != currentHetu)
   }
 }
