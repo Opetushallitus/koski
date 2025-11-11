@@ -56,6 +56,12 @@ case class IBSuoritustiedotRaportti(repository: IBSuoritustiedotRaporttiReposito
     val lisätiedot = JsonSerializer.extract[Option[LukionOpiskeluoikeudenLisätiedot]](row.opiskeluoikeus.data \ "lisätiedot")
     val kurssit = row.osasuoritukset.filter(raportinTyyppi.isKurssi)
 
+    val preibSuoritusOlemassa =
+      row.päätasonSuorituksetAll.exists(s => s.suorituksenTyyppi.startsWith("preiboppimaara"))
+
+    val ibTutkintoOlemassa =
+      row.päätasonSuorituksetAll.exists(_.suorituksenTyyppi == "ibtutkinto")
+
     IBRaporttiRow(
       opiskeluoikeusOid = row.opiskeluoikeus.opiskeluoikeusOid,
       lähdejärjestelmä = lähdejärjestelmänId.map(_.lähdejärjestelmä.koodiarvo),
@@ -65,6 +71,9 @@ case class IBSuoritustiedotRaportti(repository: IBSuoritustiedotRaporttiReposito
       lähdejärjestelmänId = lähdejärjestelmänId.flatMap(_.id),
       aikaleima = row.opiskeluoikeus.aikaleima.toLocalDateTime.toLocalDate,
       yksiloity = row.henkilo.yksiloity,
+      preibSuoritusOlemassa = preibSuoritusOlemassa,
+      ibTutkintoOlemassa = ibTutkintoOlemassa,
+      suorituksenVahvistuspäivä = row.päätasonSuoritus.vahvistusPäivä.map(_.toLocalDate),
       oppijaOid = row.opiskeluoikeus.oppijaOid,
       hetu = row.henkilo.hetu,
       sukunimi = row.henkilo.sukunimi,
@@ -114,6 +123,9 @@ case class IBSuoritustiedotRaportti(repository: IBSuoritustiedotRaporttiReposito
     Column(t.get("raportti-excel-kolumni-lähdejärjestelmänId")),
     Column(t.get("raportti-excel-kolumni-päivitetty"), comment = Some(t.get("raportti-excel-kolumni-päivitetty-comment"))),
     Column(t.get("raportti-excel-kolumni-yksiloity"), comment = Some(t.get("raportti-excel-kolumni-yksiloity-comment"))),
+    Column(t.get("raportti-excel-kolumni-preibSuoritusOlemassa")),
+    Column(t.get("raportti-excel-kolumni-ibTutkintoOlemassa")),
+    Column(t.get("raportti-excel-kolumni-suorituksenVahvistuspäivä")),
     Column(t.get("raportti-excel-kolumni-oppijaOid")),
     Column(t.get("raportti-excel-kolumni-hetu")),
     Column(t.get("raportti-excel-kolumni-sukunimi")),
@@ -240,7 +252,6 @@ case class IBSuoritustiedotRaportti(repository: IBSuoritustiedotRaporttiReposito
 
   }
 }
-
 case class IBRaporttiRow(
   opiskeluoikeusOid: String,
   lähdejärjestelmä: Option[String],
@@ -250,6 +261,9 @@ case class IBRaporttiRow(
   lähdejärjestelmänId: Option[String],
   aikaleima: LocalDate,
   yksiloity: Boolean,
+  preibSuoritusOlemassa: Boolean,
+  ibTutkintoOlemassa: Boolean,
+  suorituksenVahvistuspäivä: Option[LocalDate],
   oppijaOid: String,
   hetu: Option[String],
   sukunimi: String,
@@ -302,20 +316,14 @@ case class IBModuulinTiedot(
   korotettuEriVuonna: Boolean
 ) {
   def toStringLokalisoitu(t: LocalizationReader): String = {
-    val eiKurssiaLabel = t.get("raportti-excel-default-value-kurssia")
-
-    val yksikkö = laajuusYksikköNimi
-      .flatMap(_.get(t.language) match {
-        case s if s.nonEmpty => Some(s)
-        case _ => None
-      })
-      .getOrElse(eiKurssiaLabel)
-
     val pakollisuusStr = pakollinen
       .map { p =>
         val key =
-          if (p) "raportti-excel-default-value-pakollinen"
-          else "raportti-excel-default-value-vapaavalintainen"
+          if (p) {
+            "raportti-excel-default-value-pakollinen"
+          } else {
+            "raportti-excel-default-value-vapaavalintainen"
+          }
         t.get(key).capitalize
       }
       .orElse {
@@ -332,6 +340,15 @@ case class IBModuulinTiedot(
         .map(a => s"${t.get("raportti-excel-default-value-arvosana")} $a")
         .getOrElse(t.get("raportti-excel-default-value-ei-arvosanaa"))
     )
+
+    val eiKurssiaLabel = t.get("raportti-excel-default-value-kurssia")
+
+    val yksikkö = laajuusYksikköNimi
+      .flatMap(_.get(t.language) match {
+        case s if s.nonEmpty => Some(s)
+        case _ => None
+      })
+      .getOrElse(eiKurssiaLabel)
 
     val laajuusStr = Some {
       val base = laajuus
