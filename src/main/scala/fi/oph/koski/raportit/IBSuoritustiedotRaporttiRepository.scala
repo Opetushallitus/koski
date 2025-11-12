@@ -29,7 +29,7 @@ case class IBSuoritustiedotRaporttiRepository(
     päätasonSuorituksenTyyppi: String
   ): Seq[IBRaporttiRows] = {
 
-    val opiskeluoikeusAikajaksotPaatasonsuorituksetTunnisteet = opiskeluoikeusAikajaksotPaatasonSuorituksetResult(oppilaitosOid, alku, loppu, päätasonSuorituksenTyyppi)
+    val opiskeluoikeusAikajaksotPaatasonsuorituksetTunnisteet = opiskeluoikeusAikajaksotPaatasonSuorituksetResult(oppilaitosOid, alku, loppu)
 
     val opiskeluoikeusOids = opiskeluoikeusAikajaksotPaatasonsuorituksetTunnisteet.map(_.opiskeluoikeusOid)
     val opiskeluoikeudet = runDbSync(ROpiskeluoikeudet.filter(_.opiskeluoikeusOid inSet opiskeluoikeusOids).result, timeout = defaultTimeout)
@@ -38,7 +38,18 @@ case class IBSuoritustiedotRaporttiRepository(
     val aikajaksot = runDbSync(ROpiskeluoikeusAikajaksot.filter(_.id inSet aikajaksoIds).result, timeout = defaultTimeout).groupBy(_.opiskeluoikeusOid)
 
     val paatasonSuoritusIds = opiskeluoikeusAikajaksotPaatasonsuorituksetTunnisteet.flatMap(_.päätasonSuoritusIds)
-    val paatasonSuoritukset = runDbSync(RPäätasonSuoritukset.filter(_.päätasonSuoritusId inSet paatasonSuoritusIds).result, timeout = defaultTimeout).groupBy(_.opiskeluoikeusOid)
+
+    val paatasonSuorituksetAll = runDbSync(
+      RPäätasonSuoritukset
+        .filter(_.päätasonSuoritusId inSet paatasonSuoritusIds)
+        .result,
+      timeout = defaultTimeout
+    ).groupBy(_.opiskeluoikeusOid)
+
+    val paatasonSuorituksetPerTyyppi: Map[OpiskeluoikeusOid, Seq[RPäätasonSuoritusRow]] =
+      paatasonSuorituksetAll.map { case (k, v) =>
+        k -> v.filter(_.suorituksenTyyppi == päätasonSuorituksenTyyppi)
+      }
 
     val osasuoritukset = runDbSync(ROsasuoritukset.filter(_.päätasonSuoritusId inSet paatasonSuoritusIds).result, timeout = defaultTimeout)
       .filter(osasuoritus => !osasuoritustenAikarajaus || arvioituAikavälillä(alku, loppu)(osasuoritus))
@@ -47,7 +58,7 @@ case class IBSuoritustiedotRaporttiRepository(
     val henkilot = runDbSync(RHenkilöt.filter(_.oppijaOid inSet opiskeluoikeudet.map(_.oppijaOid).distinct).result, timeout = defaultTimeout).groupBy(_.oppijaOid).mapValues(_.head)
 
     opiskeluoikeudet.foldLeft[Seq[IBRaporttiRows]](Seq.empty) {
-      combineOpiskeluoikeusWith(_, _, aikajaksot, paatasonSuoritukset, osasuoritukset, henkilot)
+      combineOpiskeluoikeusWith(_, _, aikajaksot, paatasonSuorituksetPerTyyppi, paatasonSuorituksetAll, osasuoritukset, henkilot)
     }
   }
 
@@ -56,6 +67,7 @@ case class IBSuoritustiedotRaporttiRepository(
     opiskeluoikeus: ROpiskeluoikeusRow,
     aikajaksot: Map[OpiskeluoikeusOid, Seq[ROpiskeluoikeusAikajaksoRow]],
     paatasonSuoritukset: Map[OpiskeluoikeusOid, Seq[RPäätasonSuoritusRow]],
+    paatasonSuorituksetAll: Map[OpiskeluoikeusOid, Seq[RPäätasonSuoritusRow]],
     osasuoritukset: Map[PäätasonSuoritusId, Seq[ROsasuoritusRow]],
     henkilot: Map[OppijaOid, RHenkilöRow],
   ): Seq[IBRaporttiRows] = {
@@ -65,6 +77,7 @@ case class IBSuoritustiedotRaporttiRepository(
         henkilot(opiskeluoikeus.oppijaOid),
         aikajaksot.getOrElse(opiskeluoikeus.opiskeluoikeusOid, Nil).sortBy(_.alku)(sqlDateOrdering),
         paatasonsuoritus,
+        paatasonSuorituksetAll.getOrElse(opiskeluoikeus.opiskeluoikeusOid, Nil),
         osasuoritukset.getOrElse(paatasonsuoritus.päätasonSuoritusId, Nil)
       )
     ) ++ acc
@@ -73,15 +86,14 @@ case class IBSuoritustiedotRaporttiRepository(
   private def opiskeluoikeusAikajaksotPaatasonSuorituksetResult(
     oppilaitos: String,
     alku: LocalDate,
-    loppu: LocalDate,
-    päätasonSuorituksenTyyppi: String
+    loppu: LocalDate
   ): Vector[IBRaporttiDbResultRow] = {
     import fi.oph.koski.db.PostgresDriverWithJsonSupport.plainAPI._
     implicit val getResult = GetResult[IBRaporttiDbResultRow](r =>
       IBRaporttiDbResultRow(r.<<, r.<<, r.<<)
     )
     runDbSync(opiskeluoikeusAikajaksotPaatasonSuorituksetQuery(
-      oppilaitos, alku, loppu, päätasonSuorituksenTyyppi
+      oppilaitos, alku, loppu
     ).as[IBRaporttiDbResultRow], timeout = defaultTimeout)
   }
 
@@ -89,7 +101,6 @@ case class IBSuoritustiedotRaporttiRepository(
     oppilaitos: String,
     alku: LocalDate,
     loppu: LocalDate,
-    päätasonSuorituksenTyyppi: String
   ): SQLActionBuilder = {
     sql"""
      select
@@ -104,7 +115,6 @@ case class IBSuoritustiedotRaporttiRepository(
     where
       oo.oppilaitos_oid = $oppilaitos and
       oo.koulutusmuoto = 'ibtutkinto' and
-      pts.suorituksen_tyyppi = $päätasonSuorituksenTyyppi and
       aikaj.alku <= $loppu and
       aikaj.loppu >= $alku
     group by oo.opiskeluoikeus_oid"""
@@ -122,5 +132,6 @@ case class IBRaporttiRows(
   henkilo: RHenkilöRow,
   aikajaksot: Seq[ROpiskeluoikeusAikajaksoRow],
   päätasonSuoritus: RPäätasonSuoritusRow,
+  päätasonSuorituksetAll: Seq[RPäätasonSuoritusRow],
   osasuoritukset: Seq[ROsasuoritusRow],
 ) extends YleissivistäväRaporttiRows
