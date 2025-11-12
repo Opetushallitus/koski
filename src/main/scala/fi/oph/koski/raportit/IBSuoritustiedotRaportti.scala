@@ -59,7 +59,7 @@ case class IBSuoritustiedotRaportti(repository: IBSuoritustiedotRaporttiReposito
     val preibSuoritusOlemassa =
       row.päätasonSuorituksetAll.exists(s => s.suorituksenTyyppi.startsWith("preiboppimaara"))
 
-    val ibTutkintoOlemassa =
+    val ibKoulutuksenSuoritusOlemassa =
       row.päätasonSuorituksetAll.exists(_.suorituksenTyyppi == "ibtutkinto")
 
     IBRaporttiRow(
@@ -72,8 +72,7 @@ case class IBSuoritustiedotRaportti(repository: IBSuoritustiedotRaporttiReposito
       aikaleima = row.opiskeluoikeus.aikaleima.toLocalDateTime.toLocalDate,
       yksiloity = row.henkilo.yksiloity,
       preibSuoritusOlemassa = preibSuoritusOlemassa,
-      ibTutkintoOlemassa = ibTutkintoOlemassa,
-      suorituksenVahvistuspäivä = row.päätasonSuoritus.vahvistusPäivä.map(_.toLocalDate),
+      ibKoulutuksenSuoritusOlemassa = ibKoulutuksenSuoritusOlemassa,
       oppijaOid = row.opiskeluoikeus.oppijaOid,
       hetu = row.henkilo.hetu,
       sukunimi = row.henkilo.sukunimi,
@@ -82,7 +81,11 @@ case class IBSuoritustiedotRaportti(repository: IBSuoritustiedotRaporttiReposito
       opiskeluoikeudenViimeisinTila = row.opiskeluoikeus.viimeisinTila,
       opiskeluoikeudenTilatAikajaksonAikana = removeContinuousSameTila(row.aikajaksot).map(_.tila).mkString(", "),
       päätasonSuoritukset = row.päätasonSuoritus.koulutusModuulistaKäytettäväNimi(t.language),
+      päätasonSuorituksenVahvistuspäivä = row.päätasonSuoritus.vahvistusPäivä.map(_.toLocalDate),
       opiskeluoikeudenPäättymispäivä = row.opiskeluoikeus.päättymispäivä.map(_.toLocalDate),
+      opintojenLaajuusyksikkö = row.osasuoritukset.collectFirst {
+        case os: ROsasuoritusRow if os.koulutusModuulinLaajuusYksikköNimi.isDefined => os.koulutusModuulinLaajuusYksikköNimi.get
+      },
       rahoitukset = row.aikajaksot.flatMap(_.opintojenRahoitus).mkString(", "),
       ryhmä = row.päätasonSuoritus.luokkaTaiRyhmä,
       maksuttomuus = lisätiedot.flatMap(_.maksuttomuus.map(ms => ms.filter(m => m.maksuton && m.overlaps(Aikajakso(alku, Some(loppu)))).map(_.toString).mkString(", "))).filter(_.nonEmpty),
@@ -123,8 +126,7 @@ case class IBSuoritustiedotRaportti(repository: IBSuoritustiedotRaporttiReposito
     Column(t.get("raportti-excel-kolumni-päivitetty"), comment = Some(t.get("raportti-excel-kolumni-päivitetty-comment"))),
     Column(t.get("raportti-excel-kolumni-yksiloity"), comment = Some(t.get("raportti-excel-kolumni-yksiloity-comment"))),
     Column(t.get("raportti-excel-kolumni-preibSuoritusOlemassa")),
-    Column(t.get("raportti-excel-kolumni-ibTutkintoOlemassa")),
-    Column(t.get("raportti-excel-kolumni-suorituksenVahvistuspäivä")),
+    Column(t.get("raportti-excel-kolumni-ibKoulutuksenSuoritusOlemassa")),
     Column(t.get("raportti-excel-kolumni-oppijaOid")),
     Column(t.get("raportti-excel-kolumni-hetu")),
     Column(t.get("raportti-excel-kolumni-sukunimi")),
@@ -133,7 +135,9 @@ case class IBSuoritustiedotRaportti(repository: IBSuoritustiedotRaporttiReposito
     Column(t.get("raportti-excel-kolumni-viimeisinTila"), comment = Some(t.get("raportti-excel-kolumni-viimeisinTila-comment"))),
     Column(t.get("raportti-excel-kolumni-kaikkiTilat"), comment = Some(t.get("raportti-excel-kolumni-kaikkiTilat-comment"))),
     Column(t.get("raportti-excel-kolumni-koulutusmoduuliNimet")),
+    Column(t.get("raportti-excel-kolumni-päätasonSuorituksenVahvistuspäivä")),
     Column(t.get("raportti-excel-kolumni-opiskeluoikeudenPäättymispäivä")),
+    Column(t.get("raportti-excel-kolumni-opintojenLaajuusyksikkö")),
     Column(t.get("raportti-excel-kolumni-rahoitukset"), comment = Some(t.get("raportti-excel-kolumni-rahoitukset-comment"))),
     Column(t.get("raportti-excel-kolumni-ryhmä")),
     Column(t.get("raportti-excel-kolumni-maksuttomuus"), comment = Some(t.get("raportti-excel-kolumni-maksuttomuus-comment"))),
@@ -260,8 +264,7 @@ case class IBRaporttiRow(
   aikaleima: LocalDate,
   yksiloity: Boolean,
   preibSuoritusOlemassa: Boolean,
-  ibTutkintoOlemassa: Boolean,
-  suorituksenVahvistuspäivä: Option[LocalDate],
+  ibKoulutuksenSuoritusOlemassa: Boolean,
   oppijaOid: String,
   hetu: Option[String],
   sukunimi: String,
@@ -270,7 +273,9 @@ case class IBRaporttiRow(
   opiskeluoikeudenViimeisinTila: Option[String],
   opiskeluoikeudenTilatAikajaksonAikana: String,
   päätasonSuoritukset: Option[String],
+  päätasonSuorituksenVahvistuspäivä: Option[LocalDate],
   opiskeluoikeudenPäättymispäivä: Option[LocalDate],
+  opintojenLaajuusyksikkö: Option[LocalizedString],
   rahoitukset: String,
   ryhmä: Option[String],
   maksuttomuus: Option[String],

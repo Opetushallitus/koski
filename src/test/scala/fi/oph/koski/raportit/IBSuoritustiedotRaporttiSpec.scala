@@ -10,6 +10,7 @@ import fi.oph.koski.localization.LocalizationReader
 import fi.oph.koski.log.AuditLogTester
 import fi.oph.koski.organisaatio.MockOrganisaatiot.ressunLukio
 import fi.oph.koski.raportointikanta.RaportointikantaTestMethods
+import fi.oph.koski.schema.Finnish
 import org.scalatest.BeforeAndAfterAll
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.should.Matchers
@@ -85,8 +86,7 @@ class IBSuoritustiedotRaporttiSpec extends AnyFreeSpec with Matchers with Raport
           "Päivitetty" -> LocalDate.now,
           "Yksilöity" -> true,
           "PreIB-suoritus olemassa" -> true,
-          "IB-tutkinto olemassa" -> true,
-          "Suorituksen vahvistuspäivä" -> None,
+          "IB-koulutuksen suoritus olemassa" -> true,
           "Oppijan oid" -> ibPredicted.oid,
           "hetu" -> ibPredicted.hetu,
           "Sukunimi" -> ibPredicted.sukunimi,
@@ -95,7 +95,9 @@ class IBSuoritustiedotRaporttiSpec extends AnyFreeSpec with Matchers with Raport
           "Viimeisin opiskeluoikeuden tila" -> Some("lasna"),
           "Opiskeluoikeuden tilat aikajakson aikana" -> "lasna",
           "Päätason suoritusten nimet" -> Some("IB-tutkinto (International Baccalaureate)"),
+          "Päätason suorituksen vahvistuspäivä" -> None,
           "Opiskeluoikeuden päättymispäivä" -> None,
+          "Opintojen laajuusyksikkö" -> None,
           "Rahoitukset" -> "1",
           "Ryhmä" -> Some("AH"),
           "Maksuttomuus" -> None,
@@ -135,8 +137,7 @@ class IBSuoritustiedotRaporttiSpec extends AnyFreeSpec with Matchers with Raport
           "Päivitetty" -> LocalDate.now,
           "Yksilöity" -> true,
           "PreIB-suoritus olemassa" -> true,
-          "IB-tutkinto olemassa" -> true,
-          "Suorituksen vahvistuspäivä" -> Some(LocalDate.parse("2016-06-04")),
+          "IB-koulutuksen suoritus olemassa" -> true,
           "Oppijan oid" -> ibPredicted.oid,
           "hetu" -> ibPredicted.hetu,
           "Sukunimi" -> ibPredicted.sukunimi,
@@ -145,7 +146,9 @@ class IBSuoritustiedotRaporttiSpec extends AnyFreeSpec with Matchers with Raport
           "Viimeisin opiskeluoikeuden tila" -> Some("lasna"),
           "Opiskeluoikeuden tilat aikajakson aikana" -> "lasna",
           "Päätason suoritusten nimet" -> Some("Pre-IB"),
+          "Päätason suorituksen vahvistuspäivä" -> Some(LocalDate.of(2016, 6, 4)),
           "Opiskeluoikeuden päättymispäivä" -> None,
+          "Opintojen laajuusyksikkö" -> Some(Finnish("kurssia",Some("kurser"),Some("course units"))),
           "Rahoitukset" -> "1",
           "Ryhmä" -> Some("AH"),
           "Maksuttomuus" -> None,
@@ -205,8 +208,7 @@ class IBSuoritustiedotRaporttiSpec extends AnyFreeSpec with Matchers with Raport
           "Opiskeluoikeuden tunniste lähdejärjestelmässä" -> None,
           "Päivitetty" -> LocalDate.now,
           "PreIB-suoritus olemassa" -> true,
-          "IB-tutkinto olemassa" -> false,
-          "Suorituksen vahvistuspäivä" -> Some(LocalDate.parse("2016-06-04")),
+          "IB-koulutuksen suoritus olemassa" -> false,
           "Yksilöity" -> true,
           "Oppijan oid" -> ibPreIB2019.oid,
           "hetu" -> ibPreIB2019.hetu,
@@ -216,7 +218,9 @@ class IBSuoritustiedotRaporttiSpec extends AnyFreeSpec with Matchers with Raport
           "Viimeisin opiskeluoikeuden tila" -> Some("valmistunut"),
           "Opiskeluoikeuden tilat aikajakson aikana" -> "lasna, valmistunut",
           "Päätason suoritusten nimet" -> Some("Pre-IB 2019"),
+          "Päätason suorituksen vahvistuspäivä" -> Some(LocalDate.of(2016, 6, 4)),
           "Opiskeluoikeuden päättymispäivä" -> Some(LocalDate.of(2016, 6, 4)),
+          "Opintojen laajuusyksikkö" -> Some(Finnish("opintopistettä",Some("studiepoäng"),Some("ECTS credits"))),
           "Rahoitukset" -> "1, 1",
           "Ryhmä" -> Some("AH"),
           "Maksuttomuus" -> None,
