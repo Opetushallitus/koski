@@ -14,8 +14,8 @@ runs:
     - name: "🔨 Setup backend and databases"
       uses: ./.github/actions/setup_backend
 
-    - name: npm ci
-      run: cd web && npm ci
+    - name: Install js deps
+      run: cd web && pnpm install --frozen-lockfile
       shell: bash
 
     - name: Run frontend tests

@@ -23,33 +23,14 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Set up Java 11
-        uses: actions/setup-java@v3
-        with:
-          java-version: "11"
-          architecture: "x64"
-          distribution: "zulu"
+      - uses: ./.github/actions/setup_java_11
+
+      - uses: ./.github/actions/setup_pnpm_cache
 
       - name: Setup Node
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: "22.14.0"
-
-      - name: Cache Maven packages
-        uses: actions/cache@v3
-        with:
-          path: ~/.m2/repository
-          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
-          restore-keys: |
-            ${{ runner.os }}-maven-
-
-      - name: Cache Node modules
-        uses: actions/cache@v3
-        with:
-          path: ~/.npm
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-node-
 
       - name: Build
         run: mvn test-compile
@@ -75,33 +56,14 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Set up Java 11
-        uses: actions/setup-java@v3
-        with:
-          java-version: "11"
-          architecture: "x64"
-          distribution: "zulu"
+      - uses: ./.github/actions/setup_java_11
+
+      - uses: ./.github/actions/setup_pnpm_cache
 
       - name: Setup Node
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: "22.14.0"
-
-      - name: Cache Maven packages
-        uses: actions/cache@v3
-        with:
-          path: ~/.m2/repository
-          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
-          restore-keys: |
-            ${{ runner.os }}-maven-
-
-      - name: Cache Node modules
-        uses: actions/cache@v3
-        with:
-          path: ~/.npm
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-node-
 
       - name: Build
         run: mvn test-compile
@@ -127,33 +89,14 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Set up Java 11
-        uses: actions/setup-java@v3
-        with:
-          java-version: "11"
-          architecture: "x64"
-          distribution: "zulu"
+      - uses: ./.github/actions/setup_java_11
+
+      - uses: ./.github/actions/setup_pnpm_cache
 
       - name: Setup Node
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: "22.14.0"
-
-      - name: Cache Maven packages
-        uses: actions/cache@v3
-        with:
-          path: ~/.m2/repository
-          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
-          restore-keys: |
-            ${{ runner.os }}-maven-
-
-      - name: Cache Node modules
-        uses: actions/cache@v3
-        with:
-          path: ~/.npm
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-node-
 
       - name: Build
         run: mvn test-compile
@@ -179,33 +122,14 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Set up Java 11
-        uses: actions/setup-java@v3
-        with:
-          java-version: "11"
-          architecture: "x64"
-          distribution: "zulu"
+      - uses: ./.github/actions/setup_java_11
+
+      - uses: ./.github/actions/setup_pnpm_cache
 
       - name: Setup Node
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: "22.14.0"
-
-      - name: Cache Maven packages
-        uses: actions/cache@v3
-        with:
-          path: ~/.m2/repository
-          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
-          restore-keys: |
-            ${{ runner.os }}-maven-
-
-      - name: Cache Node modules
-        uses: actions/cache@v3
-        with:
-          path: ~/.npm
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-node-
 
       - name: Build
         run: mvn test-compile
@@ -235,33 +159,14 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Set up Java 11
-        uses: actions/setup-java@v3
-        with:
-          java-version: "11"
-          architecture: "x64"
-          distribution: "zulu"
+      - uses: ./.github/actions/setup_java_11
+
+      - uses: ./.github/actions/setup_pnpm_cache
 
       - name: Setup Node
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: "22.14.0"
-
-      - name: Cache Maven packages
-        uses: actions/cache@v3
-        with:
-          path: ~/.m2/repository
-          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
-          restore-keys: |
-            ${{ runner.os }}-maven-
-
-      - name: Cache Node modules
-        uses: actions/cache@v3
-        with:
-          path: ~/.npm
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-node-
 
       - name: Build
         run: mvn test-compile

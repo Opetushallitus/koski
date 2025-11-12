@@ -16,6 +16,8 @@ jobs:
         with:
           node-version: "22.14.0"
 
+      - uses: ./.github/actions/setup_pnpm_cache
+
       - name: Install dependencies
         uses: nick-fields/retry@v3
         with:
@@ -24,10 +26,10 @@ jobs:
           retry_wait_seconds: 120
           command: |
             cd smoketests
-            npm ci
+            pnpm install --frozen-lockfile
 
       - name: Test kansalaisen näkymä testiopintopolussa
-        run: cd smoketests && npm run qa:kansalainen
+        run: cd smoketests && pnpm run qa:kansalainen
 
       - name: Report failure
         uses: ravsamhq/notify-slack-action@95a35215cdf7ab510d2cdd20ae94f342d212a1a1

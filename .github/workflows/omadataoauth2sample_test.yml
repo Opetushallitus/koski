@@ -19,14 +19,15 @@ jobs:
       contents: read
     steps:
       - uses: actions/checkout@v4
+      - uses: ./.github/actions/setup_pnpm_cache
       - uses: actions/setup-node@v4
         with:
           node-version-file: "omadata-oauth2-sample/.nvmrc"
-          cache: "npm"
-          cache-dependency-path: "omadata-oauth2-sample/client/package-lock.json"
-      - run: cd omadata-oauth2-sample/client && npm ci
-      - run: cd omadata-oauth2-sample/client && npm run lint
-      - run: cd omadata-oauth2-sample/client && npm run build
+          cache: "pnpm"
+          cache-dependency-path: "omadata-oauth2-sample/client/pnpm-lock.yaml"
+      - run: cd omadata-oauth2-sample/client && pnpm install --frozen-lockfile
+      - run: cd omadata-oauth2-sample/client && pnpm run lint
+      - run: cd omadata-oauth2-sample/client && pnpm run build
         # TODO add test step when there are tests
   test-server:
     name: OAuth2 server
@@ -35,14 +36,15 @@ jobs:
       contents: read
     steps:
       - uses: actions/checkout@v4
+      - uses: ./.github/actions/setup_pnpm_cache
       - uses: actions/setup-node@v4
         with:
           node-version-file: "omadata-oauth2-sample/.nvmrc"
-          cache: "npm"
-          cache-dependency-path: "omadata-oauth2-sample/server/package-lock.json"
-      - run: cd omadata-oauth2-sample/server && npm ci
-      - run: cd omadata-oauth2-sample/server && npm run lint
-      - run: cd omadata-oauth2-sample/server && npm run build
+          cache: "pnpm"
+          cache-dependency-path: "omadata-oauth2-sample/server/pnpm-lock.yaml"
+      - run: cd omadata-oauth2-sample/server && pnpm install --frozen-lockfile
+      - run: cd omadata-oauth2-sample/server && pnpm run lint
+      - run: cd omadata-oauth2-sample/server && pnpm run build
       # TODO add test step when there are tests
   test-e2e:
    name: OAuth2 E2E ${{matrix.shardIndex}}/${{matrix.shardTotal}}

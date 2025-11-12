@@ -17,7 +17,7 @@ const readFileNeverFail = (filepath) => readFile(filepath).catch(() => "none")
 
 const getCurrentBranch = () => run("git rev-parse --abbrev-ref HEAD")
 const getGitRootDir = () => run("git rev-parse --show-toplevel")
-const clearCache = () => run("npm run clean")
+const clearCache = () => run("pnpm run clean")
 
 const getVersionPath = async () =>
   join(await getGitRootDir(), "valpas-web", ".last-build")

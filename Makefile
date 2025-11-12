@@ -40,11 +40,11 @@ build-snapshot-image: build
 
 .PHONY: front
 front: logdir
-	cd web && npm ci && npm run build:prod
+	cd web && pnpm install --frozen-lockfile && pnpm run build:prod
 
 .PHONY: watch
 watch:
-	cd web && npm run watch
+	cd web && pnpm run watch
 
 .PHONY: watch-prod
 watch-prod:
@@ -71,11 +71,11 @@ testresults:
 
 .PHONY: js-unit-test
 js-unit-test:
-	cd web && npm run unit-test
+	cd web && pnpm run unit-test
 
 .PHONY: js-unit-test-watch
 js-unit-test-watch:
-	cd web && npm run unit-test-watch
+	cd web && pnpm run unit-test-watch
 
 .PHONY: backtest
 backtest:
@@ -145,11 +145,11 @@ view-db-docs:
 
 .PHONY: eslint
 eslint:
-	cd web && npm run lint
+	cd web && pnpm run lint
 
 .PHONY: prettier
 prettier:
-	cd web && npm run prettier:check
+	cd web && pnpm run prettier:check
 
 .PHONY: scalastyle
 scalastyle:
@@ -169,7 +169,7 @@ owaspresults:
 # TODO: omadata-oauth2-sample/client, vaatii isompia päivityksiä saada läpi (pitäisi poistaa create-react-app yms.)
 .PHONY: snyk
 snyk: # javascript dependency vulnerability check
-	mvn generate-resources # to download correct node/npm version
+	mvn generate-resources # to download correct node/pnpm version
 	node web/node_modules/snyk/dist/cli/index.js test web valpas-web omadata-oauth2-sample/server
 
 .PHONY: checkdoc_validation

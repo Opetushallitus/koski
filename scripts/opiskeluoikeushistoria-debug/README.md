@@ -5,7 +5,7 @@ Tällä työkalulla voit selvitellä tarkemmin, mikä kohta patchissa on rikki j
 
 ## 1. Asennus
 
-`npm install`
+`pnpm install`
 
 ## 2. Tutkittavan datan lisäys
 
@@ -27,7 +27,7 @@ Korvaa tuloksella tiedoston `historia.jsons` sisältö.
 
 ## 3. Debuggaus
 
-Aja `npm start`
+Aja `pnpm start`
 
 Vastaus on jotain tämän tyylistä:
 
