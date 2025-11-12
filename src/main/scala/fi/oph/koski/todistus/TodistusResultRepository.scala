@@ -91,7 +91,7 @@ class TodistusResultRepository(config: Config) extends Logging {
       .map(_ => Unit)
   }
 
-  def getPresignedDownloadUrl(bucketType: BucketType, id: String): String = {
+  def getPresignedDownloadUrl(bucketType: BucketType, filename: String, id: String): String = {
     val key = objectKey(bucketType, id)
     val awsPresigner = S3Presigner.builder().region(region)
     val presigner = (if (useAWS) {
@@ -105,6 +105,7 @@ class TodistusResultRepository(config: Config) extends Logging {
     val objectRequest = GetObjectRequest.builder()
       .bucket(bucketName(bucketType))
       .key(key)
+      .responseContentDisposition(s"""attachment; filename="$filename"""")
       .build()
 
     val presignRequest = GetObjectPresignRequest.builder()

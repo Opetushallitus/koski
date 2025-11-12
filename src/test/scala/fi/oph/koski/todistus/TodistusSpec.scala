@@ -358,7 +358,7 @@ class TodistusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers with Bef
         completedJob.state should equal(TodistusState.COMPLETED)
 
         // Huollettava itse yrittää ladata todistuksen
-        verifyResult(s"/api/todistus/download/${todistusJob.id}", huollettavanHetu)
+        verifyDownloadResult(s"/api/todistus/download/${todistusJob.id}", huollettavanHetu)
       }
     }
   }
@@ -403,10 +403,33 @@ class TodistusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers with Bef
     completedJob.worker should be(None)
     completedJobFromDb.worker should be(Some("local"))
 
-    verifyResultAndContent(s"/api/todistus/download/${todistusJob.id}", hetu) {
+    // Testaa suora lataus (kansalainen)
+    verifyDownloadResultAndContent(s"/api/todistus/download/${todistusJob.id}", hetu) {
       val pdfBytes = response.getContentBytes()
 
-      // Files.write(Paths.get(s"todistus-${todistusJob.id}.pdf"), pdfBytes)
+      val pdfStream = new ByteArrayInputStream(pdfBytes)
+
+      val document = PDDocument.load(pdfStream)
+      val pdfText = new PDFTextStripper().getText(document)
+      assert(pdfText.contains("Läpi meni!"))
+
+      val signerName = document.getLastSignatureDictionary.getName()
+      signerName should be("TEST Signer")
+
+      // Varmista että Content-Type on oikea
+      response.header("Content-Type") should include("application/pdf")
+      // Varmista että Content-Disposition on asetettu
+      response.header("Content-Disposition") should include("attachment")
+      response.header("Content-Disposition") should include("filename")
+      // Varmista että tiedostonimi on lokalisoitu oikein (yki-todistus-fi.pdf)
+      response.header("Content-Disposition") should include("yki-todistus-fi.pdf")
+
+      document.close()
+    }
+
+    // Testaa presigned URL lataus (OPH-pääkäyttäjä)
+    verifyPresignedResultAndContent(s"/api/todistus/download-presigned/${todistusJob.id}") {
+      val pdfBytes = response.getContentBytes()
 
       val pdfStream = new ByteArrayInputStream(pdfBytes)
 
@@ -454,6 +477,31 @@ class TodistusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers with Bef
   }
 
   "Todistuksen latauksen käyttöoikeudet" - {
+    "Kansalainen ei voi käyttää presigned URL endpointtiä" in {
+      val lang = "fi"
+      val hetu = KoskiSpecificMockOppijat.kielitutkinnonSuorittaja.hetu.get
+      val oppijaOid = KoskiSpecificMockOppijat.kielitutkinnonSuorittaja.oid
+      val opiskeluoikeusOid = getVahvistettuKielitutkinnonOpiskeluoikeus(oppijaOid).flatMap(_.oid).get
+
+      val req = TodistusGenerateRequest(opiskeluoikeusOid, lang)
+
+      val todistusJob = addGenerateJobSuccessfully(req, hetu) { todistusJob =>
+        todistusJob.state should equal(TodistusState.QUEUED)
+        todistusJob
+      }
+
+      val completedJob = waitForCompletion(todistusJob.id, hetu)
+      completedJob.state should equal(TodistusState.COMPLETED)
+
+      // Kansalainen yrittää käyttää presigned URL endpointtiä - pitäisi estää
+      getResult(s"/api/todistus/download-presigned/${todistusJob.id}", hetu) {
+        verifyResponseStatus(403) // Forbidden
+      }
+
+      // Varmista että normaali download toimii
+      verifyDownloadResult(s"/api/todistus/download/${todistusJob.id}", hetu)
+    }
+
     "Kansalainen ei pääse lataamaan toisen oppijan todistusta" in {
       val lang = "fi"
       val todistuksenOmistajaHetu = KoskiSpecificMockOppijat.kielitutkinnonSuorittaja.hetu.get
@@ -472,7 +520,7 @@ class TodistusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers with Bef
       val completedJob = waitForCompletion(todistusJob.id, todistuksenOmistajaHetu)
       completedJob.state should equal(TodistusState.COMPLETED)
 
-      verifyResult(s"/api/todistus/download/${todistusJob.id}", todistuksenOmistajaHetu)
+      verifyDownloadResult(s"/api/todistus/download/${todistusJob.id}", todistuksenOmistajaHetu)
 
       // Toinen kansalainen yrittää ladata todistuksen
       getResult(s"/api/todistus/download/${todistusJob.id}", toinenKansalainenHetu) {
@@ -1060,7 +1108,7 @@ class TodistusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers with Bef
 
       AuditLogTester.clearMessages
 
-      verifyResult(s"/api/todistus/download/${todistusJob.id}", hetu)
+      verifyDownloadResult(s"/api/todistus/download/${todistusJob.id}", hetu)
 
       AuditLogTester.verifyLastAuditLogMessage(Map(
         "operation" -> KoskiOperation.TODISTUKSEN_LATAAMINEN.toString,
@@ -1093,7 +1141,7 @@ class TodistusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers with Bef
 
       AuditLogTester.clearMessages
 
-      verifyResult(s"/api/todistus/download/${todistusJob.id}", huoltajanHetu)
+      verifyDownloadResult(s"/api/todistus/download/${todistusJob.id}", huoltajanHetu)
 
       AuditLogTester.verifyLastAuditLogMessage(Map(
         "operation" -> KoskiOperation.TODISTUKSEN_LATAAMINEN.toString,
@@ -1129,7 +1177,7 @@ class TodistusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers with Bef
       AuditLogTester.clearMessages
 
       // Huollettava itse lataa todistuksen
-      verifyResult(s"/api/todistus/download/${todistusJob.id}", huollettavanHetu)
+      verifyDownloadResult(s"/api/todistus/download/${todistusJob.id}", huollettavanHetu)
 
       AuditLogTester.verifyLastAuditLogMessage(Map(
         "operation" -> KoskiOperation.TODISTUKSEN_LATAAMINEN.toString,
@@ -1243,13 +1291,11 @@ class TodistusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers with Bef
     get(url.replace(rootUrl, ""), headers = kansalainenLoginHeaders(hetu))(f)
   }
 
-  def verifyResult(url: String, hetu: String): Unit =
-    getResult(url, hetu) {
-      verifyResponseStatus(302) // 302: Found (redirect)
-    }
+  def verifyPresignedResult(url: String): Unit =
+    verifyPresignedResultAndContent(url) {}
 
-  def verifyResultAndContent[T](url: String, hetu: String)(f: => T): T = {
-    val location = new URL(getResult(url, hetu) {
+  def verifyPresignedResultAndContent[T](url: String)(f: => T): T = {
+    val location = new URL(get(url, headers = authHeaders(MockUsers.paakayttaja)) {
       verifyResponseStatus(302) // 302: Found (redirect)
       response.header("Location")
     })
@@ -1258,6 +1304,16 @@ class TodistusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers with Bef
         verifyResponseStatusOk()
         f
       }
+    }
+  }
+
+  def verifyDownloadResult(url: String, hetu: String): Unit =
+    verifyDownloadResultAndContent(url, hetu) {}
+
+  def verifyDownloadResultAndContent[T](url: String, hetu: String)(f: => T): T = {
+    getResult(url, hetu) {
+      verifyResponseStatusOk()
+      f
     }
   }
 

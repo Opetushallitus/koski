@@ -2,7 +2,7 @@ package fi.oph.koski.todistus
 
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
-import fi.oph.koski.koskiuser.{AuthenticationSupport, HasKoskiSpecificSession, KoskiCookieAndBasicAuthenticationSupport, KoskiSpecificSession, RequiresKansalainen, RequiresSession}
+import fi.oph.koski.koskiuser.{AuthenticationSupport, HasKoskiSpecificSession, KoskiCookieAndBasicAuthenticationSupport, KoskiSpecificSession, RequiresKansalainen, RequiresSession, UserLanguage}
 import fi.oph.koski.koskiuser.Rooli.OPHPAAKAYTTAJA
 import fi.oph.koski.log.{AuditLog, AuditLogMessage, KoskiAuditLogMessage, KoskiAuditLogMessageField}
 import fi.oph.koski.log.KoskiOperation.{KoskiOperation, TODISTUKSEN_LATAAMINEN, TODISTUKSEN_LUONTI}
@@ -11,7 +11,7 @@ import fi.oph.koski.servlet.{KoskiSpecificApiServlet, NoCache}
 import fi.oph.koski.util.ChainingSyntax._
 
 import java.util.UUID
-import scala.util.Try
+import scala.util.{Try, Using}
 
 class TodistusServlet(implicit val application: KoskiApplication)
   extends KoskiSpecificApiServlet
@@ -32,6 +32,12 @@ class TodistusServlet(implicit val application: KoskiApplication)
       case Right(user) if user.kansalainen || session.hasRole(OPHPAAKAYTTAJA) => // OK
       case Right(_) => haltWithStatus(KoskiErrorCategory.forbidden("Sallittu vain kansalaiselle tai OPH-pääkäyttäjälle"))
       case Left(error) => haltWithStatus(error)
+    }
+  }
+
+  private def requireOphPääkäyttäjä: Unit = {
+    if (!session.hasRole(OPHPAAKAYTTAJA)) {
+      haltWithStatus(KoskiErrorCategory.forbidden("Sallittu vain OPH-pääkäyttäjälle"))
     }
   }
 
@@ -66,29 +72,38 @@ class TodistusServlet(implicit val application: KoskiApplication)
 
   get("/download/:id") {
     val result = for {
-      req <- getIdRequest
-      todistusJob <- service.currentStatus(req) // Tekee myös käyttöoikeustarkistuksen
-      _ <- Either.cond(
-        todistusJob.state == TodistusState.COMPLETED,
-        (),
-        KoskiErrorCategory.unavailable.todistus.notCompleteOrNoAccess()
-      )
+      todistusJob <- validateCompletedTodistus
+      stream <- service.getDownloadStream(BucketType.STAMPED, todistusJob)
+    } yield (stream, todistusJob)
 
-      url <- service.getDownloadUrl(BucketType.STAMPED, todistusJob)
+    result.fold(renderStatus, r => {
+      val (stream, todistusJob) = r
+      val filename = generateFilename(todistusJob)
+      auditLogTodistusDownload(todistusJob)
+
+      contentType = "application/pdf"
+      response.setHeader("Content-Disposition", s"""attachment; filename="$filename"""")
+
+      Using.resource(stream) { inputStream =>
+        val outputStream = response.getOutputStream
+        inputStream.transferTo(outputStream)
+        outputStream.flush()
+      }
+    })
+  }
+
+  get("/download-presigned/:id") {
+    requireOphPääkäyttäjä
+
+    val result = for {
+      todistusJob <- validateCompletedTodistus
+      filename = generateFilename(todistusJob)
+      url <- service.getDownloadUrl(BucketType.STAMPED, filename, todistusJob)
     } yield (url, todistusJob)
 
     result.fold(renderStatus, r => {
       val (url, todistusJob) = r
-
-      mkAuditLog(
-        operation = TODISTUKSEN_LATAAMINEN,
-        extraFields = Map(
-          KoskiAuditLogMessageField.oppijaHenkiloOid -> todistusJob.oppijaOid,
-          KoskiAuditLogMessageField.opiskeluoikeusOid -> todistusJob.opiskeluoikeusOid,
-          KoskiAuditLogMessageField.opiskeluoikeusVersio -> todistusJob.opiskeluoikeusVersionumero.map(_.toString).getOrElse(""),
-          KoskiAuditLogMessageField.todistusId -> todistusJob.id
-        )
-      )
+      auditLogTodistusDownload(todistusJob)
 
       contentType = "application/pdf"
       redirect(url)
@@ -117,6 +132,71 @@ class TodistusServlet(implicit val application: KoskiApplication)
         language = lang,
       ))
     }
+  }
+
+  private def validateCompletedTodistus: Either[HttpStatus, TodistusJob] = {
+    for {
+      req <- getIdRequest
+      todistusJob <- service.currentStatus(req)
+      _ <- Either.cond(
+        todistusJob.state == TodistusState.COMPLETED,
+        (),
+        KoskiErrorCategory.unavailable.todistus.notCompleteOrNoAccess()
+      )
+    } yield todistusJob
+  }
+
+  private def auditLogTodistusDownload(todistusJob: TodistusJob): Unit = {
+    mkAuditLog(
+      operation = TODISTUKSEN_LATAAMINEN,
+      extraFields = Map(
+        KoskiAuditLogMessageField.oppijaHenkiloOid -> todistusJob.oppijaOid,
+        KoskiAuditLogMessageField.opiskeluoikeusOid -> todistusJob.opiskeluoikeusOid,
+        KoskiAuditLogMessageField.opiskeluoikeusVersio -> todistusJob.opiskeluoikeusVersionumero.map(_.toString).getOrElse(""),
+        KoskiAuditLogMessageField.todistusId -> todistusJob.id
+      )
+    )
+  }
+
+  private def generateFilename(todistusJob: TodistusJob): String = {
+    val defaultFilename = s"todistus_${todistusJob.language}.pdf"
+
+    application.possu.findByOidIlmanKäyttöoikeustarkistusta(todistusJob.opiskeluoikeusOid) match {
+      case Right(opiskeluoikeus) =>
+        if (opiskeluoikeus.suoritustyypit.isEmpty) {
+          logger.warn(s"Opiskeluoikeudelta ${todistusJob.opiskeluoikeusOid} puuttuu suoritustyyppi, käytetään default-tiedostonimeä")
+          defaultFilename
+        } else if (opiskeluoikeus.suoritustyypit.size > 1) {
+          generateFilenameWithLocalization(opiskeluoikeus.koulutusmuoto, todistusJob)
+        } else {
+          generateFilenameWithLocalization(opiskeluoikeus.koulutusmuoto, opiskeluoikeus.suoritustyypit.head, todistusJob)
+        }
+      case Left(error) =>
+        logger.warn(s"Opiskeluoikeuden ${todistusJob.opiskeluoikeusOid} haku epäonnistui: ${error.errorString.mkString(", ")}, käytetään default-tiedostonimeä")
+        defaultFilename
+    }
+  }
+
+  private def generateFilenameWithLocalization(koulutusmuoto: String, suoritustyyppi: String, todistusJob: TodistusJob): String = {
+    generateFilenameWithLocalizationFromKey(s"${koulutusmuoto}_${suoritustyyppi}_todistus_", todistusJob)
+  }
+
+  private def generateFilenameWithLocalization(koulutusmuoto: String, todistusJob: TodistusJob): String = {
+    generateFilenameWithLocalizationFromKey(s"${koulutusmuoto}_todistus_", todistusJob)
+  }
+
+  private def generateFilenameWithLocalizationFromKey(keyPart: String, todistusJob: TodistusJob): String = {
+    val uiLang = UserLanguage.getLanguageFromCookie(request)
+    val key = s"todistus_download_tiedostonimi:$keyPart"
+    val localizations = application.koskiLocalizationRepository.localizations
+
+    val prefix = if (localizations.contains(key)) {
+      localizations(key).get(uiLang)
+    } else {
+      keyPart
+    }
+
+    s"${prefix}${todistusJob.language}.pdf"
   }
 
   private def mkAuditLog(

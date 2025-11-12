@@ -2870,5 +2870,6 @@
   "description:Oppija suorittaa tutkinnon osia useista..." : "Oppija suorittaa tutkinnon osia useista tutkinnoista.",
   "Suorituspaikkakunta": "Suorituspaikkakunta",
   "Avaa opiskeluoikeus": "Avaa opiskeluoikeus",
-  "Tutkintopäivä todistuksella" : "Tutkintopäivä"
+  "Tutkintopäivä todistuksella" : "Tutkintopäivä",
+  "todistus_download_tiedostonimi:kielitutkinto_yleinenkielitutkinto_todistus_" : "yki-todistus-"
 }

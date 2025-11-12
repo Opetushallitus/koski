@@ -13,6 +13,7 @@ import fi.oph.koski.todistus.swisscomclient.SwisscomClient
 import fi.oph.koski.util.{ClasspathResource, Resource, TryWithLogging}
 import software.amazon.awssdk.http.ContentStreamProvider
 
+import java.io.InputStream
 import java.security.MessageDigest
 import scala.util.Using
 import fi.oph.koski.util.ChainingSyntax.eitherChainingOps
@@ -154,15 +155,21 @@ class TodistusService(application: KoskiApplication) extends Logging {
 
   def hasNext: Boolean = todistusRepository.numberOfQueuedJobs > 0
 
-  def getDownloadUrl(bucketType: BucketType, job: TodistusJob): Either[HttpStatus, String] =
+  def getDownloadUrl(bucketType: BucketType, filename: String, job: TodistusJob): Either[HttpStatus, String] =
     for {
-      _ <- validateDownloadAccess(job)
+      _ <- validateOpiskeluoikeusExistsForDownloadAccess(job)
       result <- TryWithLogging(logger, {
-        resultRepository.getPresignedDownloadUrl(bucketType, job.id)
+        resultRepository.getPresignedDownloadUrl(bucketType, filename, job.id)
       }).left.map(t => KoskiErrorCategory.badRequest(s"Tiedostoa ei löydy tai tapahtui virhe sen jakamisessa"))
     } yield result
 
-  private def validateDownloadAccess(todistusJob: TodistusJob): Either[HttpStatus, TodistusJob] = {
+  def getDownloadStream(bucketType: BucketType, job: TodistusJob): Either[HttpStatus, InputStream] =
+    for {
+      _ <- validateOpiskeluoikeusExistsForDownloadAccess(job)
+      result <- resultRepository.getStream(bucketType, job.id)
+    } yield result
+
+  private def validateOpiskeluoikeusExistsForDownloadAccess(todistusJob: TodistusJob): Either[HttpStatus, TodistusJob] = {
     for {
       rawOpiskeluoikeus <- application.possu.findByOidIlmanKäyttöoikeustarkistusta(todistusJob.opiskeluoikeusOid)
       _ <- Either.cond(
