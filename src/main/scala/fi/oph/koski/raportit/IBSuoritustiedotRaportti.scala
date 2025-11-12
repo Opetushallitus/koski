@@ -144,24 +144,24 @@ case class IBSuoritustiedotRaportti(repository: IBSuoritustiedotRaporttiReposito
     Column(t.get("raportti-excel-kolumni-ulkomaanjaksot"), comment = Some(t.get("raportti-excel-kolumni-ulkomaanjaksot-comment"))),
     Column(t.get("raportti-excel-kolumni-sisäoppilaitosmainenMajoitus"), comment = Some(t.get("raportti-excel-kolumni-sisäoppilaitosmainenMajoitus-count-comment"))),
     raportinTyyppi match {
-      case PreIBSuoritusRaportti => Column(t.get("raportti-excel-kolumni-yhteislaajuusKaikkiKurssitOpintopisteet"), comment = Some(t.get("raportti-excel-kolumni-yhteislaajuusKaikkiKurssitOpintopisteet-comment")))
-      case _ => Column(t.get("raportti-excel-kolumni-yhteislaajuusKaikkiKurssit"), comment = Some(t.get("raportti-excel-kolumni-yhteislaajuusKaikkiKurssit-comment")))
+      case PreIBSuoritusRaportti => Column(t.get("raportti-excel-kolumni-yhteislaajuusKaikkiKurssitOpintopisteet-ib"), comment = Some(t.get("raportti-excel-kolumni-yhteislaajuusKaikkiKurssitOpintopisteet-comment")))
+      case _ => Column(t.get("raportti-excel-kolumni-yhteislaajuusKaikkiKurssit-ib"), comment = Some(t.get("raportti-excel-kolumni-yhteislaajuusKaikkiKurssit-comment")))
     },
     raportinTyyppi match {
-      case PreIBSuoritusRaportti => Column(t.get("raportti-excel-kolumni-yhteislaajuusSuoritetutKurssitOpintopisteet"), comment = Some(t.get("raportti-excel-kolumni-yhteislaajuusSuoritetutKurssitOpintopisteet-comment")))
-      case _ => Column(t.get("raportti-excel-kolumni-yhteislaajuusSuoritetutKurssit"), comment = Some(t.get("raportti-excel-kolumni-yhteislaajuusSuoritetutKurssit-comment")))
+      case PreIBSuoritusRaportti => Column(t.get("raportti-excel-kolumni-yhteislaajuusSuoritetutKurssitOpintopisteet-ib"), comment = Some(t.get("raportti-excel-kolumni-yhteislaajuusSuoritetutKurssitOpintopisteet-comment")))
+      case _ => Column(t.get("raportti-excel-kolumni-yhteislaajuusSuoritetutKurssit-ib"), comment = Some(t.get("raportti-excel-kolumni-yhteislaajuusSuoritetutKurssit-comment")))
     },
     raportinTyyppi match {
-      case PreIBSuoritusRaportti => Column(t.get("raportti-excel-kolumni-yhteislaajuusHylätytKurssitOpintopisteet"), comment = Some(t.get("raportti-excel-kolumni-yhteislaajuusHylätytKurssitOpintopisteet-comment")))
-      case _ => Column(t.get("raportti-excel-kolumni-yhteislaajuusHylätytKurssit"), comment = Some(t.get("raportti-excel-kolumni-yhteislaajuusHylätytKurssit-comment")))
+      case PreIBSuoritusRaportti => Column(t.get("raportti-excel-kolumni-yhteislaajuusHylätytKurssitOpintopisteet-ib"), comment = Some(t.get("raportti-excel-kolumni-yhteislaajuusHylätytKurssitOpintopisteet-comment")))
+      case _ => Column(t.get("raportti-excel-kolumni-yhteislaajuusHylätytKurssit-ib"), comment = Some(t.get("raportti-excel-kolumni-yhteislaajuusHylätytKurssit-comment")))
     },
     raportinTyyppi match {
-      case PreIBSuoritusRaportti => Column(t.get("raportti-excel-kolumni-yhteislaajuusTunnustetutKurssitOpintopisteet"), comment = Some(t.get("raportti-excel-kolumni-yhteislaajuusTunnustetutKurssitOpintopisteet-comment")))
-      case _ => Column(t.get("raportti-excel-kolumni-yhteislaajuusTunnustetutKurssit"), comment = Some(t.get("raportti-excel-kolumni-yhteislaajuusTunnustetutKurssit-comment")))
+      case PreIBSuoritusRaportti => Column(t.get("raportti-excel-kolumni-yhteislaajuusTunnustetutKurssitOpintopisteet-ib"), comment = Some(t.get("raportti-excel-kolumni-yhteislaajuusTunnustetutKurssitOpintopisteet-comment")))
+      case _ => Column(t.get("raportti-excel-kolumni-yhteislaajuusTunnustetutKurssit-ib"), comment = Some(t.get("raportti-excel-kolumni-yhteislaajuusTunnustetutKurssit-comment")))
     },
     raportinTyyppi match {
-      case PreIBSuoritusRaportti => Column(t.get("raportti-excel-kolumni-yhteislaajuusKorotetutKurssitOpintopisteet"), comment = Some(t.get("raportti-excel-kolumni-yhteislaajuusKorotetutKurssitOpintopisteet-comment")))
-      case _ => Column(t.get("raportti-excel-kolumni-yhteislaajuusKorotetutKurssit"), comment = Some(t.get("raportti-excel-kolumni-yhteislaajuusKorotetutKurssit-comment")))
+      case PreIBSuoritusRaportti => Column(t.get("raportti-excel-kolumni-yhteislaajuusKorotetutKurssitOpintopisteet-ib"), comment = Some(t.get("raportti-excel-kolumni-yhteislaajuusKorotetutKurssitOpintopisteet-comment")))
+      case _ => Column(t.get("raportti-excel-kolumni-yhteislaajuusKorotetutKurssit-ib"), comment = Some(t.get("raportti-excel-kolumni-yhteislaajuusKorotetutKurssit-comment")))
     }
   ) ++ oppiaineet.map(x =>
     Column(title = x.oppiaine.toColumnTitle(t), comment = Some(t.get("raportti-excel-kolumni-oppiaineSarake-comment")))
