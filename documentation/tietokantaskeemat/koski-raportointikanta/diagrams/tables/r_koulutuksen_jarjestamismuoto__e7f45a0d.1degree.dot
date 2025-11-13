@@ -11,7 +11,7 @@ digraph "oneDegreeRelationshipsDiagram" {
       <TR><TD PORT="oppisopimus_oppimispaikan_y_tunnus" COLSPAN="2" ALIGN="LEFT"><TABLE BORDER="0" CELLSPACING="0" ALIGN="LEFT"><TR ALIGN="LEFT"><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="15" HEIGHT="16"></TD><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="268" HEIGHT="16">oppisopimus_oppimispaikan_y_tunnus</TD></TR></TABLE></TD><TD PORT="oppisopimus_oppimispaikan_y_tunnus.type" ALIGN="LEFT">varchar[2147483647]</TD></TR>
       <TR><TD PORT="oppisopimus_purkamisen_paiva" COLSPAN="2" ALIGN="LEFT"><TABLE BORDER="0" CELLSPACING="0" ALIGN="LEFT"><TR ALIGN="LEFT"><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="15" HEIGHT="16"></TD><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="268" HEIGHT="16">oppisopimus_purkamisen_paiva</TD></TR></TABLE></TD><TD PORT="oppisopimus_purkamisen_paiva.type" ALIGN="LEFT">date[13]</TD></TR>
       <TR><TD PORT="oppisopimus_purettu_koeajalla" COLSPAN="2" ALIGN="LEFT"><TABLE BORDER="0" CELLSPACING="0" ALIGN="LEFT"><TR ALIGN="LEFT"><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="15" HEIGHT="16"></TD><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="268" HEIGHT="16">oppisopimus_purettu_koeajalla</TD></TR></TABLE></TD><TD PORT="oppisopimus_purettu_koeajalla.type" ALIGN="LEFT">bool[1]</TD></TR>
-      <TR><TD ALIGN="LEFT" BGCOLOR="#ffffff">&lt; 0</TD><TD ALIGN="RIGHT" BGCOLOR="#ffffff">26 rows</TD><TD ALIGN="RIGHT" BGCOLOR="#ffffff">0 &gt;</TD></TR>
+      <TR><TD ALIGN="LEFT" BGCOLOR="#ffffff">&lt; 0</TD><TD ALIGN="RIGHT" BGCOLOR="#ffffff">24 rows</TD><TD ALIGN="RIGHT" BGCOLOR="#ffffff">0 &gt;</TD></TR>
     </TABLE>>
     URL="../../tables/r_koulutuksen_jarjestamismuoto__e7f45a0d.html"
     target="_top"

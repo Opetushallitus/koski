@@ -69,7 +69,7 @@ class ValpasRouhintaApiServletSpec extends ValpasTestBase with BeforeAndAfterEac
         AuditLogTester.verifyAuditLogString(logMessages(1), Map(
           "operation" -> ValpasOperation.VALPAS_ROUHINTA_HETUHAKU.toString,
           "target" -> Map(
-            ValpasAuditLogMessageField.oppijaHenkilöOidList.toString -> "1.2.246.562.24.00000000134 1.2.246.562.24.00000000079",
+            ValpasAuditLogMessageField.oppijaHenkilöOidList.toString -> "1.2.246.562.24.00000000135 1.2.246.562.24.00000000079",
             ValpasAuditLogMessageField.sivu.toString -> "2",
             ValpasAuditLogMessageField.sivuLukumäärä.toString -> "2",
           ),

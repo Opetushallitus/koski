@@ -13,7 +13,7 @@ import fi.oph.koski.henkilo.KoskiSpecificMockOppijat._
 import fi.oph.koski.raportointikanta.{RaportointiDatabase, RaportointikantaTestMethods}
 import fi.oph.koski.henkilo.{KoskiSpecificMockOppijat, OppijaHenkilö}
 import fi.oph.koski.schema._
-import fi.oph.koski.valpas.opiskeluoikeusfixture.FixtureUtil
+import fi.oph.koski.valpas.opiskeluoikeusfixture.{FixtureUtil, ValpasMockOppijat}
 import fi.oph.koski.{DirtiesFixtures, KoskiApplicationForTests, KoskiHttpSpec}
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.should.Matchers
@@ -504,18 +504,22 @@ class OppivelvollisuustietoSpec
       "Suomeen alaikäisenä muuttanut on oppivelvollisuden alainen" in {
         resetKoskiFixtures
         isOppivelvollinen(KoskiSpecificMockOppijat.suomeenAlaikäisenäMuuttanut.oid) should be(true)
+        queryOids(KoskiSpecificMockOppijat.suomeenAlaikäisenäMuuttanut.oid).head.oppivelvollisuusVoimassaAsti shouldBe(date(2023,12,31))
+        queryOids(KoskiSpecificMockOppijat.suomeenAlaikäisenäMuuttanut.oid).head.oikeusMaksuttomaanKoulutukseenVoimassaAsti shouldBe(date(2026,12,31))
       }
 
       "Suomesta alaikäisenä pois muuttanut ja täysi-ikäisenä takaisin muuttanut on oppivelvollisuden alainen" in {
         resetKoskiFixtures
-        isOppivelvollinen("1.2.246.562.24.00000000168") should be(true)
+        isOppivelvollinen(KoskiSpecificMockOppijat.ulkomaillaHetkenAsunut.oid) should be(true)
         // Nykyinen kotikunta Suomessa -> oppivelvollisuuden päättyminen iän mukaan
-        queryOids("1.2.246.562.24.00000000168").head.oppivelvollisuusVoimassaAsti shouldBe(date(2023,12,31))
+        queryOids(KoskiSpecificMockOppijat.ulkomaillaHetkenAsunut.oid).head.oppivelvollisuusVoimassaAsti shouldBe(date(2023,12,31))
+        // Suomesta alaikäisenä muuttanut ja täysi-ikäisenä palannut -> oikeus maksuttomuuteen päättynyt Suomesta muuton päivänä
+        queryOids(KoskiSpecificMockOppijat.ulkomaillaHetkenAsunut.oid).head.oikeusMaksuttomaanKoulutukseenVoimassaAsti shouldBe(date(2022, 3, 1))
       }
 
       "Ahvenanmaalta täysi-ikäisenä Manner-Suomeen muuttanut ei ole oppivelvollisuden alainen" in {
         resetKoskiFixtures
-        isOppivelvollinen("1.2.246.562.24.00000000169") should be(false)
+        isOppivelvollinen(KoskiSpecificMockOppijat.suomeenAhvenanmaaltaTäysiikäisenäMuuttanut.oid) should be(false)
       }
 
       "Turvakiellolliset kotikuntahistoriarivit eivät päädy raportointikannan tauluun" in {
@@ -534,15 +538,52 @@ class OppivelvollisuustietoSpec
     "Oppivelvollisuuden ja maksuttomuuden päättely kuntahistorian perusteella (Valpas fixturella)" - {
       lazy val resetValpasMockData = FixtureUtil.resetMockData(defaultKoskiApplication)
 
-      "Ulkoimaille muutto päättää oppivelvollisuuden" in {
+      "Ulkomaille muutto päättää oppivelvollisuuden ja oikeuden maksuttomuuteen" in {
         resetValpasMockData
-        val result = queryOids("1.2.246.562.24.00000000088")
+        val result = queryOids(ValpasMockOppijat.muuttanutUlkomaille.oid)
         result.head.oppivelvollisuusVoimassaAsti shouldBe date(2023, 1, 1)
+        result.head.oikeusMaksuttomaanKoulutukseenVoimassaAsti shouldBe date(2023, 1, 1)
       }
-      "Muuttanut ulkomaille ennen 7v, mutta opiskeluoikeus on (teoreettisesti) olemassa -> oppivelvollisuus päättyy samana päivänä kuin alkaa" in {
+      "Muuttanut ulkomaille ennen 7v, mutta opiskeluoikeus on (teoreettisesti) olemassa -> oppivelvollisuus päättyy samana päivänä kuin alkaa, lisäksi oikeus maksuttomuuteen päättyy ulkomaille muuttoon" in {
         resetValpasMockData
-        val result = queryOids("1.2.246.562.24.00000000184")
+        val result = queryOids(ValpasMockOppijat.muuttanutUlkomailleEnnen7vIkää.oid)
         result.head.oppivelvollisuusVoimassaAsti shouldBe date(2012, 9, 1)
+        result.head.oikeusMaksuttomaanKoulutukseenVoimassaAsti shouldBe date(2010, 10, 1)
+      }
+      "Muuttanut ulkomaille alle 18-vuotiaana ja palannut alle 18-vuotiaana takaisin Suomeen, oikeus maksuttomuuteen jatkuu" in {
+        resetValpasMockData
+        val result = queryOids(ValpasMockOppijat.ulkomailleAlle18vuotiaanaMuuttanutJaAlle18vuotiaanaPalannut.oid)
+        result.head.oppivelvollisuusVoimassaAsti shouldBe date(2023, 10, 20)
+        // Oikeus maksuttomuuteen jatkuu normaalisti
+        result.head.oikeusMaksuttomaanKoulutukseenVoimassaAsti shouldBe date(2025, 12, 31)
+      }
+      "Muuttanut ulkomaille alle 18-vuotiaana ja palannut yli 18-vuotiaana takaisin Suomeen, oikeus maksuttomuuteen päättyy ulkomaille muuttoon" in {
+        resetValpasMockData
+        val result = queryOids(ValpasMockOppijat.ulkomailleAlle18vuotiaanaMuuttanutJaYli18vuotiaanaPalannut.oid)
+        result.head.oppivelvollisuusVoimassaAsti shouldBe date(2023, 1, 3)
+        // Ulkomaille muuttamisen päivämäärä
+        result.head.oikeusMaksuttomaanKoulutukseenVoimassaAsti shouldBe date(2015, 10, 2)
+      }
+      "Muuttanut ulkomaille yli 18-vuotiaana ja palannut yli 18-vuotiaana takaisin Suomeen, oikeus maksuttomuuteen jatkuu" in {
+        resetValpasMockData
+        val result = queryOids(ValpasMockOppijat.ulkomailleYli18vuotiaanaMuuttanutJaYli18vuotiaanaPalannut.oid)
+        result.head.oppivelvollisuusVoimassaAsti shouldBe date(2023, 4, 4)
+        // Oikeus maksuttomuuteen jatkuu normaalisti
+        result.head.oikeusMaksuttomaanKoulutukseenVoimassaAsti shouldBe date(2025, 12, 31)
+      }
+      "Muuttanut ulkomaille alle 18-vuotiaana ja palannut takaisin Suomeen sinä vuonna kun täyttää 21, oikeus maksuttomuuteen päättyy ulkomaille muuttoon" in {
+        resetValpasMockData
+        val result = queryOids(ValpasMockOppijat.ulkomailleAlle18vuotiaanaMuuttanutJaYli20vuotiaanaPalannut.oid)
+        result.head.oppivelvollisuusVoimassaAsti shouldBe date(2023, 5, 7)
+        // Ulkomaille muuttamisen päivämäärä
+        result.head.oikeusMaksuttomaanKoulutukseenVoimassaAsti shouldBe date(2015, 4, 21)
+      }
+      "Muuttanut ulkomaille yli 18-vuotiaana ja palannut takaisin Suomeen sinä vuonna kun täyttää 21, oikeus maksuttomuuteen päättyy ulkomaille muuttoon" in {
+        resetValpasMockData
+        val result = queryOids(ValpasMockOppijat.ulkomailleYli18vuotiaanaMuuttanutJaYli20vuotiaanaPalannut.oid)
+        result.head.oppivelvollisuusVoimassaAsti shouldBe date(2023, 4, 20)
+        // Ulkomaille muuttamisen päivämäärä
+        result.head.oikeusMaksuttomaanKoulutukseenVoimassaAsti shouldBe date(2023, 4, 21)
       }
     }
   }

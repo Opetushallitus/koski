@@ -5,7 +5,7 @@ import {
   expectElementEventuallyVisible,
 } from "../integrationtests-env/browser/content"
 
-export const jklNormaalikouluTableHead = "Hakeutumisvelvollisia (48)"
+export const jklNormaalikouluTableHead = "Hakeutumisvelvollisia (53)"
 export const jklNormaalikouluTableContent = `
   Amis-valmistunut-eronnut-valmasta Valpas                | 18.6.2005   | 9C | 30.5.2021  | Ei hakemusta         | –                           | –                         | done3 opiskeluoikeutta                                                     |
   Epäonninen Valpas                                       | 30.10.2005  | 9C | –          | Ei hakemusta         | –                           | –                         | –                                                                          |
@@ -46,6 +46,11 @@ export const jklNormaalikouluTableContent = `
   SuorittaaPreIB Valpas                                   | 19.7.2004   | 9C | 30.5.2021  | Ei hakemusta         | –                           | –                         | doneJyväskylän normaalikoulu, IB-tutkinto                                  |
   Turvakielto Valpas                                      | 29.9.2004   | 9C | –          | Hakenut open_in_new  | warningEi opiskelupaikkaa   | –                         | –                                                                          |
   TurvakieltoTyhjälläKotikunnalla Valpas                  | 28.7.2005   | 9C | –          | Ei hakemusta         | –                           | –                         | –                                                                          |
+  UlkomailleAlle18vuotiaanaMuuttanutJaAlle18vuotiaanaPalannut Valpas | 21.10.2005 | 9C | – | Ei hakemusta        | –                           | –                         | –                                                                          |
+  UlkomailleAlle18vuotiaanaMuuttanutJaYli18vuotiaanaPalannut Valpas  | 4.1.2005 | 9C | – | Ei hakemusta          | –                           | –                         | –                                                                          |
+  UlkomailleAlle18vuotiaanaMuuttanutJaYli21vuotiaanaPalannut Valpas  | 8.5.2005 | 9C | – | Ei hakemusta          | –                           | –                         | –                                                                          |
+  UlkomailleYli18vuotiaanaMuuttanutJaYli18vuotiaanaPalannut Valpas   | 5.4.2005 | 9C | – | Ei hakemusta          | –                           | –                         | –                                                                          |
+  UlkomailleYli18vuotiaanaMuuttanutJaYli21vuotiaanaPalannut Valpas   | 21.4.2005 | 9C | – | Ei hakemusta         | –                           | –                         | –                                                                          |
   UseampiYsiluokkaSamassaKoulussa Valpas                  | 25.8.2005   | 9C | 30.5.2021  | Ei hakemusta         | –                           | –                         | –                                                                          |
   Valmistunut-ei-ysiluokkaa Valpas                        | 24.9.2005   | –  | 30.5.2021  | Ei hakemusta         | –                           | –                         | –                                                                          |
   Valmistunut-kasiluokkalainen-alle-17-vuotias Valpas     | 9.6.2005    | 8C | 30.5.2021  | Ei hakemusta         | –                           | –                         | –                                                                          |

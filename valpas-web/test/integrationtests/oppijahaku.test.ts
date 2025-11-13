@@ -344,7 +344,7 @@ describe("Oppijahaku", () => {
     await expectResultToBe(
       "Löytyi: ESH-s4-jälkeen-s5-aloittanut Valpas (200305A594S)",
       oppijaPath.href("/virkailija", {
-        oppijaOid: "1.2.246.562.24.00000000171",
+        oppijaOid: "1.2.246.562.24.00000000172",
         prev: maksuttomuusPath.href(),
       }),
       "maksuttomuusoppijasearch",
@@ -424,7 +424,7 @@ describe("Oppijahaku", () => {
       await expectResultToBe(
         "Löytyi: Oppivelvollisuudesta-vapautettu Valpas (060605A538B)",
         oppijaPath.href("/virkailija", {
-          oppijaOid: "1.2.246.562.24.00000000161",
+          oppijaOid: "1.2.246.562.24.00000000162",
           prev: kunnanHetuhakuPath.href(),
         }),
       )

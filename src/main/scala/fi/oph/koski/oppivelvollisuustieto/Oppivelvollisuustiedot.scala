@@ -109,7 +109,8 @@ object Oppivelvollisuustiedot {
     sqlu"""
       create table #${s.name}.oppivelvollisuustiedot as
         with
-          kotikunta_suomessa_alkaen as (
+          -- Päivä jolloin oppijan kotikunta on ollut manner-Suomessa ensimmäistä kertaa
+          kotikunta_suomessa_ensimmaisen_kerran_alkaen as (
             select
               master_oid,
               min(coalesce(muutto_pvm, poismuutto_pvm)) pvm
@@ -137,10 +138,10 @@ object Oppivelvollisuustiedot {
                 pidennyspaivat) as maksuttomuutta_pidennetty_yhteensa_vanha_laki
               from
                 #${s.name}.r_henkilo henkilo
-                left join kotikunta_suomessa_alkaen on henkilo.master_oid = kotikunta_suomessa_alkaen.master_oid
+                left join kotikunta_suomessa_ensimmaisen_kerran_alkaen on henkilo.master_oid = kotikunta_suomessa_ensimmaisen_kerran_alkaen.master_oid
               where syntymaaika >= '#$valpasLakiVoimassaVanhinSyntymäaika'::date
-                and kotikunta_suomessa_alkaen.pvm is not null
-                and kotikunta_suomessa_alkaen.pvm < syntymaaika + interval '18 years'
+                and kotikunta_suomessa_ensimmaisen_kerran_alkaen.pvm is not null
+                and kotikunta_suomessa_ensimmaisen_kerran_alkaen.pvm < syntymaaika + interval '18 years'
                 and henkilo.master_oid not in (
                                 select
                                   henkilo.master_oid
@@ -162,6 +163,53 @@ object Oppivelvollisuustiedot {
                                   and vahvistus_paiva < '#$valpasLakiVoimassaPeruskoulustaValmistuneilla'::date)
                 )
 
+        ),
+
+        -- Päivä jolloin oppija on muuttanut Suomeen, jos viimeisin (nykyinen) kotikunta on Suomessa, muuten null
+        nykyinen_kotikunta_suomessa_alkaen as (
+          select distinct on (master_oid)
+            master_oid,
+            case when not kotikunta = any(#$ulkopuolisetKunnat) then muutto_pvm end as pvm
+          from #${confidentialSchema.name}.r_kotikuntahistoria
+          where muutto_pvm is not null
+          order by master_oid, muutto_pvm desc
+        ),
+
+        -- Päivä jolloin oppijan kotikunta on ollut ulkomailla tai Ahvenanmaalla ensimmäistä kertaa
+        kotikunta_ulkomailla_ensimmaisen_kerran_alkaen as (
+          select
+              master_oid,
+              min(coalesce(muutto_pvm, poismuutto_pvm)) pvm
+          from #${confidentialSchema.name}.r_kotikuntahistoria
+          where kotikunta = any(#$ulkopuolisetKunnat)
+          group by master_oid
+        ),
+
+        -- Päivä jolloin oppija on muuttanut ulkomaille ensimmäistä kertaa, kun nykyinen kotikunta on Suomessa.
+        -- Palauttaa päivämäärän siinä tapauksessa jos on muuttanut ulkomaille alle 18-vuotiaana ja palannut yli 18-vuotiaana, tai muuten null.
+        -- Palauttaa päivämäärän myös silloin, jos on muuttanut ulkomaille yli 18-vuotiaana ja palannut sen vuoden jälkeen kun täyttää 20 vuotta, tai muuten null.
+        kotikunta_ulkomailla_alkaen_jos_palannut_suomeen as (
+          select
+            kotikunta_ulkomailla_ensimmaisen_kerran_alkaen.master_oid,
+            kotikunta_ulkomailla_ensimmaisen_kerran_alkaen.pvm
+          from kotikunta_ulkomailla_ensimmaisen_kerran_alkaen
+            join oppivelvolliset_henkilot on oppivelvolliset_henkilot.master_oid = kotikunta_ulkomailla_ensimmaisen_kerran_alkaen.master_oid
+            join nykyinen_kotikunta_suomessa_alkaen on nykyinen_kotikunta_suomessa_alkaen.master_oid = kotikunta_ulkomailla_ensimmaisen_kerran_alkaen.master_oid
+          where (
+                  kotikunta_ulkomailla_ensimmaisen_kerran_alkaen.pvm < oppivelvolliset_henkilot.syntymaaika + interval '18 years'
+                  and (
+                    nykyinen_kotikunta_suomessa_alkaen.pvm is not null
+                    and nykyinen_kotikunta_suomessa_alkaen.pvm >= oppivelvolliset_henkilot.syntymaaika + interval '18 years'
+                  )
+                )
+             or
+                (
+                  kotikunta_ulkomailla_ensimmaisen_kerran_alkaen.pvm >= oppivelvolliset_henkilot.syntymaaika + interval '18 years'
+                  and (
+                    nykyinen_kotikunta_suomessa_alkaen.pvm is not null
+                    and nykyinen_kotikunta_suomessa_alkaen.pvm >= #${s.name}.vuodenViimeinenPaivamaara(oppivelvolliset_henkilot.syntymaaika + interval '#$maksuttomuusLoppuuIka year')
+                  )
+                )
         ),
 
         -- Päivä jolloin oppija on muuttanut ulkomaille, jos viimeisin (nykyinen) kotikunta on ulkomailla, muuten null
@@ -337,38 +385,53 @@ object Oppivelvollisuustiedot {
               (syntymaaika + interval '#$oppivelvollisuusLoppuuIka year' - interval '1 day')::date,
               -- Jos oppija on muuttanut Suomesta ennen kuin hän täyttää 7v, "oppivelvollisuus" alkaa ja päättyy samana päivänä, muuten ulkoimaille muutto päättää oppivelvollisuuden
               case when nykyinen_kotikunta_ulkomailla_alkaen.pvm is not null then greatest(oppivelvollisuus_alkaa.pvm, nykyinen_kotikunta_ulkomailla_alkaen.pvm) end
-              )
-            as oppivelvollisuusVoimassaAsti,
+          )::date as oppivelvollisuusVoimassaAsti,
 
           -- Huom! Osa samasta logiikasta on myös Scala-koodina ValpasRajapäivätService-luokassa. Varmista muutosten jälkeen,
           -- että logiikka säilyy samana.
-          greatest(
-            maksuttomuuden_pidennysjakso.loppu,
+          (
             case
               when amis_ja_lukio_samaan_aikaan and ylioppilastutkinnon_vahvistus_paiva is not null and ammattitutkinnon_vahvistus_paiva is not null then least(
-                oppivelvollisuudesta_vapautus,
-                dia_tutkinnon_vahvistuspaiva,
-                ebtutkinto_toisen_asteen_vahvistus_paiva,
-                greatest(ylioppilastutkinnon_vahvistus_paiva, ammattitutkinnon_vahvistus_paiva),
-                #${s.name}.vuodenViimeinenPaivamaara(syntymaaika + interval '#$maksuttomuusLoppuuIka year'))
+                oppivelvollisuudesta_vapautus + (interval '1 day' * maksuttomuutta_pidennetty_yhteensa_vanha_laki),
+                dia_tutkinnon_vahvistuspaiva + (interval '1 day' * maksuttomuutta_pidennetty_yhteensa_vanha_laki),
+                ebtutkinto_toisen_asteen_vahvistus_paiva + (interval '1 day' * maksuttomuutta_pidennetty_yhteensa_vanha_laki),
+                greatest(ylioppilastutkinnon_vahvistus_paiva, ammattitutkinnon_vahvistus_paiva) + (interval '1 day' * maksuttomuutta_pidennetty_yhteensa_vanha_laki),
+                greatest(
+                  maksuttomuuden_pidennysjakso.loppu,
+                  #${s.name}.vuodenViimeinenPaivamaara(syntymaaika + interval '#$maksuttomuusLoppuuIka year') + (interval '1 day' * maksuttomuutta_pidennetty_yhteensa_vanha_laki)
+                ),
+                nykyinen_kotikunta_ulkomailla_alkaen.pvm,
+                kotikunta_ulkomailla_alkaen_jos_palannut_suomeen.pvm
+              )
 
              when amis_ja_lukio_samaan_aikaan then least(
-                oppivelvollisuudesta_vapautus,
-                dia_tutkinnon_vahvistuspaiva,
-                ebtutkinto_toisen_asteen_vahvistus_paiva,
-                #${s.name}.vuodenViimeinenPaivamaara(syntymaaika + interval '#$maksuttomuusLoppuuIka year'))
+                oppivelvollisuudesta_vapautus + (interval '1 day' * maksuttomuutta_pidennetty_yhteensa_vanha_laki),
+                dia_tutkinnon_vahvistuspaiva + (interval '1 day' * maksuttomuutta_pidennetty_yhteensa_vanha_laki),
+                ebtutkinto_toisen_asteen_vahvistus_paiva + (interval '1 day' * maksuttomuutta_pidennetty_yhteensa_vanha_laki),
+                greatest(
+                  maksuttomuuden_pidennysjakso.loppu,
+                  #${s.name}.vuodenViimeinenPaivamaara(syntymaaika + interval '#$maksuttomuusLoppuuIka year') + (interval '1 day' * maksuttomuutta_pidennetty_yhteensa_vanha_laki)
+                ),
+                nykyinen_kotikunta_ulkomailla_alkaen.pvm,
+                kotikunta_ulkomailla_alkaen_jos_palannut_suomeen.pvm
+              )
 
               else least(
-                oppivelvollisuudesta_vapautus,
-                dia_tutkinnon_vahvistuspaiva,
-                ebtutkinto_toisen_asteen_vahvistus_paiva,
-                ylioppilastutkinnon_vahvistus_paiva,
-                ammattitutkinnon_vahvistus_paiva,
-                #${s.name}.vuodenViimeinenPaivamaara(syntymaaika + interval '#$maksuttomuusLoppuuIka year'))
-            end + (interval '1 day' * maksuttomuutta_pidennetty_yhteensa_vanha_laki)
+                oppivelvollisuudesta_vapautus + (interval '1 day' * maksuttomuutta_pidennetty_yhteensa_vanha_laki),
+                dia_tutkinnon_vahvistuspaiva + (interval '1 day' * maksuttomuutta_pidennetty_yhteensa_vanha_laki),
+                ebtutkinto_toisen_asteen_vahvistus_paiva + (interval '1 day' * maksuttomuutta_pidennetty_yhteensa_vanha_laki),
+                ylioppilastutkinnon_vahvistus_paiva + (interval '1 day' * maksuttomuutta_pidennetty_yhteensa_vanha_laki),
+                ammattitutkinnon_vahvistus_paiva + (interval '1 day' * maksuttomuutta_pidennetty_yhteensa_vanha_laki),
+                greatest(
+                  maksuttomuuden_pidennysjakso.loppu,
+                  #${s.name}.vuodenViimeinenPaivamaara(syntymaaika + interval '#$maksuttomuusLoppuuIka year') + (interval '1 day' * maksuttomuutta_pidennetty_yhteensa_vanha_laki)
+                ),
+                nykyinen_kotikunta_ulkomailla_alkaen.pvm,
+                kotikunta_ulkomailla_alkaen_jos_palannut_suomeen.pvm
+              )
+            end
           )::date as oikeusKoulutuksenMaksuttomuuteenVoimassaAsti,
-
-          kotikunta_suomessa_alkaen.pvm as kotikuntaSuomessaAlkaen
+          kotikunta_suomessa_ensimmaisen_kerran_alkaen.pvm as kotikuntaSuomessaAlkaen
 
         from
           oppivelvolliset_henkilot
@@ -381,9 +444,12 @@ object Oppivelvollisuustiedot {
           left join ylioppilastutkinto on oppivelvolliset_henkilot.master_oid = ylioppilastutkinto.master_oid
           left join maksuttomuuden_pidennysjakso on oppivelvolliset_henkilot.master_oid = maksuttomuuden_pidennysjakso.master_oid
           left join amis_ja_lukio_samanaikaisuus on oppivelvolliset_henkilot.master_oid = amis_ja_lukio_samanaikaisuus.master_oid
-          left join kotikunta_suomessa_alkaen on oppivelvolliset_henkilot.master_oid = kotikunta_suomessa_alkaen.master_oid
+          left join kotikunta_suomessa_ensimmaisen_kerran_alkaen on oppivelvolliset_henkilot.master_oid = kotikunta_suomessa_ensimmaisen_kerran_alkaen.master_oid
+          left join nykyinen_kotikunta_suomessa_alkaen on oppivelvolliset_henkilot.master_oid = nykyinen_kotikunta_suomessa_alkaen.master_oid
           left join nykyinen_kotikunta_ulkomailla_alkaen on oppivelvolliset_henkilot.master_oid = nykyinen_kotikunta_ulkomailla_alkaen.master_oid
           left join oppivelvollisuus_alkaa on oppivelvolliset_henkilot.master_oid = oppivelvollisuus_alkaa.master_oid
+          left join kotikunta_ulkomailla_ensimmaisen_kerran_alkaen on oppivelvolliset_henkilot.master_oid = kotikunta_ulkomailla_ensimmaisen_kerran_alkaen.master_oid
+          left join kotikunta_ulkomailla_alkaen_jos_palannut_suomeen on oppivelvolliset_henkilot.master_oid = kotikunta_ulkomailla_alkaen_jos_palannut_suomeen.master_oid
       """
   }
 

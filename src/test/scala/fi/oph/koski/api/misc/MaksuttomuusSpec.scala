@@ -1,8 +1,9 @@
 package fi.oph.koski.api.misc
 
-import fi.oph.koski.documentation.AmmatillinenExampleData.{ammatillisenTutkinnonOsittainenSuoritus, stadinAmmattiopisto}
+import fi.oph.koski.documentation.AmmatillinenExampleData.{ammatillisenTutkinnonOsittainenSuoritus, autoalanPerustutkinnonSuoritus, stadinAmmattiopisto, stadinToimipiste}
+import fi.oph.koski.documentation.AmmatillinenOldExamples.muunAmmatillisenTutkinnonOsanSuoritus
 import fi.oph.koski.{KoskiApplicationForTests, KoskiHttpSpec}
-import fi.oph.koski.documentation.ExampleData.{opiskeluoikeusEronnut, opiskeluoikeusLäsnä, opiskeluoikeusValmistunut, vahvistusPaikkakunnalla}
+import fi.oph.koski.documentation.ExampleData.{opiskeluoikeusEronnut, opiskeluoikeusLäsnä, opiskeluoikeusValmistunut, vahvistus, vahvistusPaikkakunnalla}
 import fi.oph.koski.documentation.PerusopetusExampleData.{perusopetuksenOppimääränSuoritus, yhdeksännenLuokanSuoritus}
 import fi.oph.koski.documentation._
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat._
@@ -805,7 +806,6 @@ class MaksuttomuusSpec extends AnyFreeSpec with OpiskeluoikeusTestMethodsAmmatil
       result.get.oikeusMaksuttomaanKoulutukseenVoimassaAsti should equal(date(2026, 1, 2)) // 20. ikävuoden loppu + 2 päivää
     }
 
-
     "Maksuttomuuden pidennyspäiviä ennen 1.8.2022 ei oteta huomioon, jos uusia, 20. ikävuoden lopun jälkeen loppuvia pidennyksiä on myös olemassa" in {
       val oppija = KoskiSpecificMockOppijat.vuonna2005SyntynytPeruskouluValmis2021
       val alkamispaiva = date(2021, 8, 2)
@@ -823,6 +823,37 @@ class MaksuttomuusSpec extends AnyFreeSpec with OpiskeluoikeusTestMethodsAmmatil
       val result = Oppivelvollisuustiedot.queryByOid(oppija.oid, mainRaportointiDb)
 
       result.get.oikeusMaksuttomaanKoulutukseenVoimassaAsti should equal(date(2026, 3, 31)) // viimeisimmän pidennyksen loppu
+    }
+
+    "Maksuttomuus päättyy valmistumiseen, vaikka maksuttomuuden pidennyspäiviä jatkuisi valmistumisen jälkeen" in {
+      val oppija = KoskiSpecificMockOppijat.vuonna2005SyntynytPeruskouluValmis2021
+      val alkamispaiva = date(2021, 8, 2)
+      val maksuttomuusJaksot = Some(List(Maksuttomuus(alkamispaiva, None, maksuton = true)))
+      val pidennykset = List(OikeuttaMaksuttomuuteenPidennetty(date(2026, 1, 1), date(2026, 5, 31)),
+        OikeuttaMaksuttomuuteenPidennetty(date(2026, 6, 1), date(2026, 6, 30)))
+
+      val opiskeluoikeus = defaultOpiskeluoikeus.copy(
+        tila = AmmatillinenOpiskeluoikeudenTila(List(
+          AmmatillinenOpiskeluoikeusjakso(alkamispaiva, opiskeluoikeusLäsnä, Some(ExampleData.valtionosuusRahoitteinen)),
+          AmmatillinenOpiskeluoikeusjakso(date(2026, 6, 15), opiskeluoikeusValmistunut, Some(ExampleData.valtionosuusRahoitteinen)),
+        )),
+        suoritukset = List(autoalanPerustutkinnonSuoritus(stadinToimipiste).copy(
+          alkamispäivä = Some(alkamispaiva),
+          vahvistus = vahvistus(date(2026, 6, 15), stadinAmmattiopisto, None),
+          osasuoritukset = Some(List(muunAmmatillisenTutkinnonOsanSuoritus.copy(vahvistus = None))),
+          keskiarvo = Some(3.0)
+        ))
+      )
+
+      mitätöiOppijanKaikkiOpiskeluoikeudet(oppija)
+      putMaksuttomuuttaPidennetty(pidennykset, oppija, opiskeluoikeus, maksuttomuusJaksot) {
+        verifyResponseStatusOk()
+      }
+      reloadRaportointikanta()
+
+      val result = Oppivelvollisuustiedot.queryByOid(oppija.oid, mainRaportointiDb)
+
+      result.get.oikeusMaksuttomaanKoulutukseenVoimassaAsti should equal(date(2026, 6, 15)) // valmistumisen päivämäärä
     }
   }
 

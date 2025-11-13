@@ -795,6 +795,28 @@ object ValpasOpiskeluoikeusExampleData {
     )),
   )
 
+  def ammattikouluMaksuttomuuttaPidennettyValmistunut = ammattikouluAlkaaOmniaSyys2021.copy(
+    tila = AmmatillinenOpiskeluoikeudenTila(List(
+      AmmatillinenOpiskeluoikeusjakso(date(2021, 9, 1), opiskeluoikeusLäsnä, Some(ExampleData.valtionosuusRahoitteinen)),
+      AmmatillinenOpiskeluoikeusjakso(date(2025, 6, 15), opiskeluoikeusValmistunut, Some(ExampleData.valtionosuusRahoitteinen)),
+    )),
+    oppilaitos = Some(stadinAmmattiopisto),
+    lisätiedot = Some(AmmatillisenOpiskeluoikeudenLisätiedot(
+      hojks = None,
+      maksuttomuus = Some(List(Maksuttomuus(alku = date(2021, 9, 1), loppu = None, maksuton = true))),
+      oikeuttaMaksuttomuuteenPidennetty = Some(List(
+        OikeuttaMaksuttomuuteenPidennetty(alku = date(2025, 1, 1), loppu = date(2025, 5, 31)),
+        OikeuttaMaksuttomuuteenPidennetty(alku = date(2025, 6, 1), loppu = date(2025, 6, 30)),
+      ))
+    )),
+    suoritukset = List(
+      ammatillisenTutkinnonSuoritus2021.copy(
+        toimipiste = Toimipiste(MockOrganisaatiot.omniaArbetarInstitutToimipiste),
+        vahvistus = vahvistus(date(2025, 6, 15), oppilaitos(MockOrganisaatiot.omnia), Some(helsinki))
+      )
+    )
+  )
+
   lazy val ammatillisenTutkinnonSuoritus2021 = AmmatillisenTutkinnonSuoritus(
     koulutusmoduuli = AmmattitutkintoExample.tutkinto,
     suoritustapa = AmmatillinenExampleData.suoritustapaNäyttö,
