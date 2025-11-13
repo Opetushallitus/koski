@@ -82,25 +82,14 @@ const AcceptanceParagraphs = ({ durationInMin, clientId }) => {
     <div className="acceptance-paragraphs">
       <Paattymisajankohta durationInMin={durationInMin} />
       <p>
-        <Text name="Omat opiskeluoikeustietosi voit tarkistaa Oma Opintopolku-sivustolla" />
-      </p>
-      <p>
-        <a href="https://opintopolku.fi/koski/omattiedot" target="_blank">
-          <Text name="Oma Opintopolussa olevat omat opintosuorituksesi" />
+        <Text name="omadataoauth2_oma_opintopolku_linkin_esittely" />{' '}
+        <a href={t('omadataoauth2_oma_opintopolku_linkki')} target="_blank">
+          <Text name="omadataoauth2_oma_opintopolku_linkin_teksti" />
         </a>
       </p>
 
       <PalveluntarjoajakohtainenTeksti clientId={clientId} />
       <LinkkiPalveluntarjoajaan clientId={clientId} />
-
-      <p>
-        <Text name="Lisätietoja Opetushallituksen suorittamasta tietojen käsittelystä saat Opintopolku-palvelusta" />
-      </p>
-      <p>
-        <a href={t('tietosuojaseloste-link')} target="_blank">
-          <Text name="KOSKI-palvelun tietosuojaseloste Opintopolku-sivustolla" />
-        </a>
-      </p>
     </div>
   )
 }
