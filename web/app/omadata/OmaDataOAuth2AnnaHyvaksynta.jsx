@@ -90,6 +90,22 @@ const AcceptanceParagraphs = ({ durationInMin, clientId }) => {
 
       <PalveluntarjoajakohtainenTeksti clientId={clientId} />
       <LinkkiPalveluntarjoajaan clientId={clientId} />
+
+      {
+        // tämän ei haluta näkyvän kuin tietyille tahoille
+        tExists(`omadataoauth2_oph_lisatietoja_${clientId}`) && (
+          <>
+            <p>
+              <Text name="Lisätietoja Opetushallituksen suorittamasta tietojen käsittelystä saat Opintopolku-palvelusta" />
+            </p>
+            <p>
+              <a href={t('tietosuojaseloste-link')} target="_blank">
+                <Text name="KOSKI-palvelun tietosuojaseloste Opintopolku-sivustolla" />
+              </a>
+            </p>
+          </>
+        )
+      }
     </div>
   )
 }
