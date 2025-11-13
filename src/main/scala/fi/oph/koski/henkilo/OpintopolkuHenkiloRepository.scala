@@ -21,6 +21,7 @@ case class LaajatOppijaHenkilöTiedot(
   kutsumanimi: String,
   hetu: Option[String],
   syntymäaika: Option[LocalDate],
+  kuolinpäivä: Option[LocalDate] = None,
   sukupuoli: Option[String] = None,
   äidinkieli: Option[String] = None,
   kansalaisuus: Option[List[String]] = None,
