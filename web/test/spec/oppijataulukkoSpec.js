@@ -305,6 +305,7 @@ describe('Oppijataulukko', function () {
           'Maksamaa-Toikkarinen, Matti',
           'Markkanen-Fagerström, Eéro Jorma-Petteri',
           'Mastinen, Maarni',
+          'Menehtynyt, Mette',
           'Mervi, Monioppiaineinen',
           'Monia, Useita',
           'Monia, Useita',
@@ -340,10 +341,9 @@ describe('Oppijataulukko', function () {
           'Telmanen, Tuula',
           'Tiedonsiirto, Tiina',
           'Toiminta, Tommi',
-          'Tuleva-ammattilainen, Tuure',
-          'Tunnustettu, Teuvo'
+          'Tuleva-ammattilainen, Tuure'
         ])
-        expect(page.opiskeluoikeudeTotal()).to.equal('121')
+        expect(page.opiskeluoikeudeTotal()).to.equal('122')
       })
     })
 
@@ -400,6 +400,7 @@ describe('Oppijataulukko', function () {
           'Koululainen, Kaisa',
           'Lukiolainen, Liisa',
           'Luokallejäänyt, Lasse',
+          'Menehtynyt, Mette',
           'Monia, Useita',
           'Monia, Useita',
           'Monia, Useita',
@@ -457,6 +458,7 @@ describe('Oppijataulukko', function () {
               'Monia, Useita',
               'Monia, Useita',
               'Monia, Useita',
+              'Menehtynyt, Mette',
               'Luokallejäänyt, Lasse',
               'Lukiolainen, Liisa',
               'Koululainen, Kaisa',
@@ -558,6 +560,7 @@ describe('Oppijataulukko', function () {
               '9C',
               '9C',
               '9C',
+              '9C',
               '9D'
             ])
           })
@@ -572,6 +575,7 @@ describe('Oppijataulukko', function () {
               })
             ).to.deep.equal([
               '9D',
+              '9C',
               '9C',
               '9C',
               '9C',
