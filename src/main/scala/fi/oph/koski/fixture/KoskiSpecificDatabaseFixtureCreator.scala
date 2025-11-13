@@ -334,6 +334,7 @@ class KoskiSpecificDatabaseFixtureCreator(application: KoskiApplication) extends
       (KoskiSpecificMockOppijat.kielitutkintoTodistusVirhe, ExamplesKielitutkinto.YleisetKielitutkinnot.opiskeluoikeus(LocalDate.of(2023, 1, 1), "FI", "kt")),
       (KoskiSpecificMockOppijat.keskeneräinenIbTutkinto, ExamplesIB.keskeneräinenIbTutkintoOpiskeluoikeus(LocalDate.of(2025, 7, 30))),
       (KoskiSpecificMockOppijat.esikoululainen2025, ExamplesEsiopetus.opiskeluoikeus2025),
+      (KoskiSpecificMockOppijat.menehtynytOppija, PerusopetusExampleData.päättötodistusOpiskeluoikeus()),
     )
   }
 
