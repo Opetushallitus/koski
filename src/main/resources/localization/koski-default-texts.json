@@ -1272,6 +1272,7 @@
   "omadataoauth2_linkki_dvvdigilompakkopk": "https://dvv.fi/TODO",
   "omadataoauth2_linkki_oauth2client": "https://opintopolku.fi/",
   "omadataoauth2_linkkiteksti_dvvdigilompakkopk": "Eurooppalainen identiteettilompakko, Digi- ja väestötietovirasto",
+  "omadataoauth2_oph_lisatietoja_osaamispolkupk": "[Määrittele tämä lokalisaatioavain vain, jos haluat lisätä linkin OPH:n tietosuojaselosteisiin]",
   "omadataoauth2_linkkiteksti_oauth2client": "OPH Oma opintopolku",
   "omadataoauth2_lisatietoja_palveluntarjoajalta_saat": "Lisätietoja palveluntarjoajan suorittamasta tietojen käsittelystä saat verkkosivulta",
   "omadataoauth2_suostumuksesi_paattymisajankohta": "Suostumuksesi päättymisajankohta",
