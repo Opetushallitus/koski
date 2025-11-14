@@ -3,13 +3,18 @@ on:
   schedule:
     - cron: "30 5-12 * * MON-FRI"
   workflow_dispatch:
-
+    inputs:
+      commithash:
+        description: "Commit hash to run smoketest from"
+        required: true
 jobs:
   smoketests:
     name:
     runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.commithash }}
 
       - name: Setup Node
         uses: actions/setup-node@v3
@@ -29,7 +34,7 @@ jobs:
             pnpm install --frozen-lockfile
 
       - name: Test kansalaisen näkymä testiopintopolussa
-        run: cd smoketests && pnpm run qa:kansalainen
+        run: cd smoketests && npx puppeteer browsers install chrome && pnpm run qa:kansalainen
 
       - name: Report failure
         uses: ravsamhq/notify-slack-action@95a35215cdf7ab510d2cdd20ae94f342d212a1a1
