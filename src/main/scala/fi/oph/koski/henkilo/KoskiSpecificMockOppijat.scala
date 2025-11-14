@@ -380,6 +380,8 @@ object KoskiSpecificMockOppijat {
   val osittainenAmmattitutkintoUseastaTutkinnostaValmis = koskiSpecificOppijat.oppija("Osittainen-Useasta-Tutkinnosta-Valmis", "Jaina", "011007A1489")
   val osittainenAmmattitutkintoUseastaTutkinnostaKesken = koskiSpecificOppijat.oppija("Osittainen-Useasta-Tutkinnosta-Kesken", "Jatta", "150507A1744")
 
+  val menehtynytOppija = koskiSpecificOppijat.oppija("Menehtynyt", "Mette", "281115A252X", syntymäaika = Some(LocalDate.of(2015, 11, 28)), kuolinpäivä = Some(LocalDate.of(2025, 11, 13)))
+
   def defaultOppijat = koskiSpecificOppijat.getOppijat
   def defaultKuntahistoriat: mutable.Map[String, Seq[OppijanumerorekisteriKotikuntahistoriaRow]] = koskiSpecificOppijat.getKuntahistoriat
   def defaultTurvakieltoKuntahistoriat: mutable.Map[String, Seq[OppijanumerorekisteriKotikuntahistoriaRow]] = koskiSpecificOppijat.getTurvakieltoKuntahistoriat

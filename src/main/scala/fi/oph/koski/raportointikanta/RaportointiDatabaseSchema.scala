@@ -371,6 +371,7 @@ object RaportointiDatabaseSchema {
     val hetu = column[Option[String]]("hetu", StringIdentifierType)
     val sukupuoli = column[Option[String]]("sukupuoli")
     val syntymäaika = column[Option[Date]]("syntymaaika")
+    val kuolinpäivä = column[Option[Date]]("kuolinpaiva")
     val sukunimi = column[String]("sukunimi")
     val etunimet = column[String]("etunimet")
     val kutsumanimi = column[String]("kutsumanimi")
@@ -381,7 +382,7 @@ object RaportointiDatabaseSchema {
     val kotikuntaNimiFi = column[Option[String]]("kotikunta_nimi_fi")
     val kotikuntaNimiSv = column[Option[String]]("kotikunta_nimi_sv")
     val yksiloity = column[Boolean]("yksiloity")
-    def * = (oppijaOid, masterOid, hetu, sukupuoli, syntymäaika, sukunimi, etunimet, kutsumanimi, äidinkieli, kansalaisuus, turvakielto, kotikunta, kotikuntaNimiFi, kotikuntaNimiSv, yksiloity) <> (RHenkilöRow.tupled, RHenkilöRow.unapply)
+    def * = (oppijaOid, masterOid, hetu, sukupuoli, syntymäaika, kuolinpäivä, sukunimi, etunimet, kutsumanimi, äidinkieli, kansalaisuus, turvakielto, kotikunta, kotikuntaNimiFi, kotikuntaNimiSv, yksiloity) <> (RHenkilöRow.tupled, RHenkilöRow.unapply)
   }
   class RHenkilöTableTemp(tag: Tag) extends RHenkilöTable(tag, Temp)
   class RHenkilöConfidentialTable(tag: Tag) extends RHenkilöTable(tag, Confidential)
@@ -984,6 +985,7 @@ case class RHenkilöRow(
                         hetu: Option[String],
                         sukupuoli: Option[String],
                         syntymäaika: Option[Date],
+                        kuolinpäivä: Option[Date],
                         sukunimi: String,
                         etunimet: String,
                         kutsumanimi: String,
