@@ -56,6 +56,9 @@ class CasService(config: Config) extends Logging {
     val kokonimiAttempt = Some(etunimiAttempt + " " + sukunimiAttempt).map(_.trim).filter(_.nonEmpty)
       .orElse(getOppijaAttribute(ATTRIBUTE_DISPLAY_NAME))
 
+    logger.info(s"Kansalaisen login oid CASista: $oppijaOidAttempt")
+    logger.info(s"Kansalaisen login eIDAS-tunniste CASista: ${getOppijaAttribute(ATTRIBUTE_EIDAS_ID)}")
+
     KansalaisenTunnisteet(hetuAttempt, oppijaOidAttempt, kokonimiAttempt)
   }
 
