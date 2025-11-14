@@ -1,0 +1,5 @@
+  # Avoid too-fresh packages (minutes since released)
+  minimumReleaseAge: 4320
+  minimumReleaseAgeExclude:
+  - puppeteer@24.30.0
+  - puppeteer-core@24.30.0
