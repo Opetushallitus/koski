@@ -9,6 +9,7 @@ import fi.oph.koski.schema.{KielitutkinnonOpiskeluoikeus, Opiskeluoikeus, Päiv�
 import fi.oph.koski.schema.KoskiSchema.strictDeserialization
 import fi.oph.koski.util.Wait
 import fi.oph.koski.{KoskiApplicationForTests, KoskiHttpSpec}
+import org.apache.pdfbox.Loader
 import org.apache.pdfbox.pdmodel.PDDocument
 import org.apache.pdfbox.text.PDFTextStripper
 import org.json4s.jackson.JsonMethods
@@ -407,9 +408,7 @@ class TodistusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers with Bef
     verifyDownloadResultAndContent(s"/api/todistus/download/${todistusJob.id}", hetu) {
       val pdfBytes = response.getContentBytes()
 
-      val pdfStream = new ByteArrayInputStream(pdfBytes)
-
-      val document = PDDocument.load(pdfStream)
+      val document = Loader.loadPDF(pdfBytes)
       val pdfText = new PDFTextStripper().getText(document)
       assert(pdfText.contains("Läpi meni!"))
 
@@ -431,9 +430,7 @@ class TodistusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers with Bef
     verifyPresignedResultAndContent(s"/api/todistus/download-presigned/${todistusJob.id}") {
       val pdfBytes = response.getContentBytes()
 
-      val pdfStream = new ByteArrayInputStream(pdfBytes)
-
-      val document = PDDocument.load(pdfStream)
+      val document = Loader.loadPDF(pdfBytes)
       val pdfText = new PDFTextStripper().getText(document)
       assert(pdfText.contains("Läpi meni!"))
 

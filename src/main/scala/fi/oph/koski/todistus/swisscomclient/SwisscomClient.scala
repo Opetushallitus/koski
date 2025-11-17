@@ -3,8 +3,9 @@ package fi.oph.koski.todistus.swisscomclient
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.log.Logging
 import fi.oph.koski.todistus.swisscomclient.SwisscomConfigSecretsSource.MOCK_FROM_CONFIG
+import org.apache.pdfbox.Loader
 import org.apache.pdfbox.cos.COSDictionary
-import org.apache.pdfbox.io.IOUtils
+import org.apache.pdfbox.io.{IOUtils, RandomAccessReadBuffer, RandomAccessReadBufferedFile}
 import org.apache.pdfbox.pdmodel.PDDocument
 import org.apache.pdfbox.pdmodel.interactive.digitalsignature.{ExternalSigningSupport, PDSeedValue, PDSeedValueMDP, PDSignature, SignatureOptions}
 import org.apache.pdfbox.pdmodel.interactive.form.PDSignatureField
@@ -13,7 +14,6 @@ import java.io.{ByteArrayOutputStream, InputStream, OutputStream}
 import java.security.MessageDigest
 import java.util
 import java.util.{Base64, Calendar}
-
 import scala.util.{Failure, Success, Using}
 
 object SwisscomClient extends Logging {
@@ -35,7 +35,7 @@ trait SwisscomClient extends Logging {
 
   def signWithStaticCertificate(id: String, contentIn: InputStream, contentOut: OutputStream): Either[HttpStatus, SwisscomAISSignResponse] = {
     Using.Manager { use => {
-      val pdDocument = use(PDDocument.load(contentIn))
+      val pdDocument = use(Loader.loadPDF(new RandomAccessReadBuffer(contentIn)))
       val inMemoryStream: ByteArrayOutputStream = new ByteArrayOutputStream()
 
       val (pbSigningSupport: ExternalSigningSupport, base64HashToSign: String) =
@@ -155,7 +155,7 @@ trait SwisscomClient extends Logging {
 
     if (crlEntries.nonEmpty || ocspEntries.nonEmpty) {
       val documentBytes = inMemoryStream.toByteArray
-      val pdDocument = use(PDDocument.load(documentBytes))
+      val pdDocument = use(Loader.loadPDF(documentBytes))
       for {
         _ <- SwisscomCRLAndOCSPExtender.extendPdfWithCrlAndOcsp(id, pdDocument, documentBytes, crlEntries, ocspEntries)
         _ = pdDocument.saveIncremental(contentOut)
