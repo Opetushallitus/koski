@@ -28,6 +28,11 @@ jobs:
             cd smoketests
             pnpm install --frozen-lockfile
 
+      - name: Install Puppeteer browser
+        run: |
+          cd smoketests
+          pnpm exec puppeteer browsers install chrome
+
       - name: Test kansalaisen näkymä testiopintopolussa
         run: cd smoketests && pnpm run qa:kansalainen
 
