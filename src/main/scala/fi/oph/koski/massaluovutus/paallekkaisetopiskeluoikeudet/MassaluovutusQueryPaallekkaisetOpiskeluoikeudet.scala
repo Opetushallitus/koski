@@ -2,7 +2,7 @@ package fi.oph.koski.massaluovutus.paallekkaisetopiskeluoikeudet
 
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.http.HttpStatus
-import fi.oph.koski.koskiuser.KoskiSpecificSession
+import fi.oph.koski.koskiuser.{KoskiSpecificSession, Session}
 import fi.oph.koski.localization.LocalizationReader
 import fi.oph.koski.log.KoskiAuditLogMessageField.hakuEhto
 import fi.oph.koski.log.KoskiOperation.OPISKELUOIKEUS_RAPORTTI
@@ -66,8 +66,11 @@ case class MassaluovutusQueryPaallekkaisetOpiskeluoikeudet(
       auditLog
     }
 
-  override def queryAllowed(application: KoskiApplication)(implicit user: KoskiSpecificSession): Boolean =
-    user.hasGlobalReadAccess || organisaatioOid.exists(oid => user.hasRaporttiReadAccess(oid))
+  override def queryAllowed(application: KoskiApplication)(implicit user: Session): Boolean = user match {
+    case u: KoskiSpecificSession =>
+      u.hasGlobalReadAccess || organisaatioOid.exists(oid => u.hasRaporttiReadAccess(oid))
+    case _ => false
+  }
 
   override def fillAndValidate(implicit user: KoskiSpecificSession): Either[HttpStatus, MassaluovutusQueryPaallekkaisetOpiskeluoikeudet] =
     for {

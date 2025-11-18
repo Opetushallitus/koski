@@ -6,7 +6,7 @@ import fi.oph.koski.db.KoskiOpiskeluoikeusRowImplicits.getKoskiOpiskeluoikeusRow
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api.actionBasedSQLInterpolation
 import fi.oph.koski.db.{DB, KoskiOpiskeluoikeusRow, KoskiTables, QueryMethods}
 import fi.oph.koski.http.HttpStatus
-import fi.oph.koski.koskiuser.KoskiSpecificSession
+import fi.oph.koski.koskiuser.{KoskiSpecificSession, Session}
 import fi.oph.koski.koskiuser.Rooli.{OPHKATSELIJA, OPHPAAKAYTTAJA}
 import fi.oph.koski.log._
 import fi.oph.koski.massaluovutus.{MassaluovutusQueryParameters, MassaluovutusQueryPriority, QueryFormat, QueryResultWriter}
@@ -61,8 +61,10 @@ case class ValintalaskentaQuery(
     Right(())
   }
 
-  override def queryAllowed(application: KoskiApplication)(implicit user: KoskiSpecificSession): Boolean =
-    user.hasRole(OPHKATSELIJA) || user.hasRole(OPHPAAKAYTTAJA)
+  override def queryAllowed(application: KoskiApplication)(implicit user: Session): Boolean = user match {
+    case u: KoskiSpecificSession => u.hasRole(OPHKATSELIJA) || u.hasRole(OPHPAAKAYTTAJA)
+    case _ => false
+  }
 
   override def fillAndValidate(implicit user: KoskiSpecificSession): Either[HttpStatus, MassaluovutusQueryParameters] =
     Right(copy(

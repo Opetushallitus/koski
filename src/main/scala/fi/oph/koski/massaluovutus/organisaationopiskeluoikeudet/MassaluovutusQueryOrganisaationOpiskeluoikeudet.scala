@@ -7,7 +7,7 @@ import fi.oph.koski.db.KoskiOpiskeluoikeusRowImplicits._
 import fi.oph.koski.db._
 import fi.oph.koski.henkilo.LaajatOppijaHenkilöTiedot
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
-import fi.oph.koski.koskiuser.{AccessType, KoskiSpecificSession, OoPtsMask, Rooli}
+import fi.oph.koski.koskiuser.{AccessType, KoskiSpecificSession, OoPtsMask, Rooli, Session}
 import fi.oph.koski.log.KoskiAuditLogMessageField.hakuEhto
 import fi.oph.koski.log.KoskiOperation.OPISKELUOIKEUS_HAKU
 import fi.oph.koski.log.{AuditLog, KoskiAuditLogMessage, Logging}
@@ -67,12 +67,15 @@ trait MassaluovutusQueryOrganisaationOpiskeluoikeudet extends MassaluovutusQuery
     ).tap(_ => auditLog)
   }
 
-  def queryAllowed(application: KoskiApplication)(implicit user: KoskiSpecificSession): Boolean =
-    user.hasGlobalReadAccess || (
-      organisaatioOid.exists(user.organisationOids(AccessType.read).contains)
-        && koulutusmuoto.forall(k => user.allowedOpiskeluoikeudetJaPäätasonSuoritukset.intersects(OoPtsMask(k)))
-        && user.sensitiveDataAllowed(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))
+  def queryAllowed(application: KoskiApplication)(implicit user: Session): Boolean = user match {
+    case u: KoskiSpecificSession =>
+      u.hasGlobalReadAccess || (
+        organisaatioOid.exists(u.organisationOids(AccessType.read).contains)
+          && koulutusmuoto.forall(k => u.allowedOpiskeluoikeudetJaPäätasonSuoritukset.intersects(OoPtsMask(k)))
+          && u.sensitiveDataAllowed(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))
       )
+    case _ => false
+  }
 
   override def fillAndValidate(implicit user: KoskiSpecificSession): Either[HttpStatus, MassaluovutusQueryOrganisaationOpiskeluoikeudet] = {
     for {

@@ -3,7 +3,7 @@ package fi.oph.koski.massaluovutus
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.json.JsonSerializer
-import fi.oph.koski.koskiuser.{AccessType, KoskiSpecificSession}
+import fi.oph.koski.koskiuser.{AccessType, KoskiSpecificSession, Session}
 import fi.oph.koski.schema.Organisaatio
 import fi.oph.scalaschema.annotation.{Description, Discriminator, EnumValue, Title}
 import org.json4s.JValue
@@ -23,7 +23,7 @@ trait MassaluovutusQueryParameters {
 
   def run(application: KoskiApplication, writer: QueryResultWriter)(implicit user: KoskiSpecificSession): Either[String, Unit]
 
-  def queryAllowed(application: KoskiApplication)(implicit user: KoskiSpecificSession): Boolean
+  def queryAllowed(application: KoskiApplication)(implicit user: Session): Boolean
   def asJson: JValue = JsonSerializer.serializeWithRoot(this)
   def fillAndValidate(implicit user: KoskiSpecificSession): Either[HttpStatus, MassaluovutusQueryParameters] = Right(this)
   def priority: Int = MassaluovutusQueryPriority.normal

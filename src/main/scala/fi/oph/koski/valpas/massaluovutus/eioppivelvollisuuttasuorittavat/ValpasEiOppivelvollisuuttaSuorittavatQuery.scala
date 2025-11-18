@@ -1,10 +1,13 @@
 package fi.oph.koski.valpas.massaluovutus.eioppivelvollisuuttasuorittavat
 
 import fi.oph.koski.config.KoskiApplication
-import fi.oph.koski.koskiuser.KoskiSpecificSession
+import fi.oph.koski.koskiuser.{KoskiSpecificSession, Session}
 import fi.oph.koski.massaluovutus.{MassaluovutusQueryParameters, QueryFormat, QueryResultWriter}
 import fi.oph.koski.schema.annotation.EnumValues
 import fi.oph.koski.valpas.massaluovutus.{ValpasMassaluovutusOppija, ValpasMassaluovutusResult}
+import fi.oph.koski.valpas.oppija.ValpasAccessResolver
+import fi.oph.koski.valpas.rouhinta.ValpasKuntarouhintaService
+import fi.oph.koski.valpas.valpasuser.ValpasSession
 import fi.oph.scalaschema.annotation.{Description, Title}
 
 @Title("Kunnan ei-oppivelvollisuutta suorittavat oppijat")
@@ -19,7 +22,9 @@ case class ValpasEiOppivelvollisuuttaSuorittavatQuery(
 ) extends MassaluovutusQueryParameters {
 
   override def run(application: KoskiApplication, writer: QueryResultWriter)(implicit user: KoskiSpecificSession): Either[String, Unit] = {
-    application.valpasKuntarouhintaService
+    val kuntarouhinta = new ValpasKuntarouhintaService(application)
+
+    kuntarouhinta
       .haeKunnanPerusteellaIlmanOikeustarkastusta(kuntaOid)
       .left.map(_.errorString.getOrElse("Tuntematon virhe"))
       .map { tulos =>
@@ -29,8 +34,10 @@ case class ValpasEiOppivelvollisuuttaSuorittavatQuery(
       }
   }
 
-  override def queryAllowed(application: KoskiApplication)(implicit user: KoskiSpecificSession): Boolean = {
-    // TODO: Implement in step 6
-    false
+  override def queryAllowed(application: KoskiApplication)(implicit user: Session): Boolean = user match {
+    case session: ValpasSession =>
+      val accessResolver = new ValpasAccessResolver
+      accessResolver.accessToKuntaOrg(kuntaOid)(session)
+    case _ => false
   }
 }
