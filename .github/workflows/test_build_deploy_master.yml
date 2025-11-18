@@ -31,6 +31,14 @@ jobs:
       commithash: ${{ github.sha }}
     secrets: inherit
 
+  tag_image_dev:
+    needs: [deploy_dev]
+    uses: ./.github/workflows/tag_image.yml
+    with:
+      commithash: ${{ github.sha }}
+      environment: dev
+    secrets: inherit
+
   deploy_omadataoauth2sample_dev:
     name: Deploy OmaData OAuth2 sample to dev environment
     needs: [deploy_dev]
@@ -49,6 +57,14 @@ jobs:
       commithash: ${{ github.sha }}
     secrets: inherit
 
+  tag_image_qa:
+    needs: [ deploy_qa ]
+    uses: ./.github/workflows/tag_image.yml
+    with:
+      commithash: ${{ github.sha }}
+      environment: qa
+    secrets: inherit
+
   deploy_omadataoauth2sample_qa:
     name: Deploy OmaData OAuth2 sample to qa environment
     needs: [deploy_qa]
@@ -65,4 +81,12 @@ jobs:
     with:
       environment: prod
       commithash: ${{ github.sha }}
+    secrets: inherit
+
+  tag_image_prod:
+    needs: [ deploy_prod ]
+    uses: ./.github/workflows/tag_image.yml
+    with:
+      commithash: ${{ github.sha }}
+      environment: prod
     secrets: inherit
