@@ -1,5 +1,9 @@
 # Koskeen tallennettavien tietojen validaatiosäännöt
 
+
+## 18.11.2025
+ - Korjattu bugi näyttötutkintoon valmistavassa ammatillisessa, joka esti päällekkäiset suoritukset eri diaarinumeroilla.
+
 ## 27.10.2025
 
 - Lisää valkolista diaarinumeroista ammatillisen koulutuksen duplikaattiopiskeluoikeuksien validaation ohittamiseen.

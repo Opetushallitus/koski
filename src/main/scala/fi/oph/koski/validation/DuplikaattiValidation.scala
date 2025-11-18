@@ -31,8 +31,9 @@ object DuplikaattiValidation extends Logging {
       }
 
     lazy val isAmmatillisenTutkinnonOsittainenTaiKokoTutkintoKoulutuksenSuoritus: Boolean =
-      opiskeluoikeus.suoritukset.forall {
+      opiskeluoikeus.suoritukset.exists {
         case _: AmmatillisenTutkinnonOsittainenTaiKokoTutkintoKolutuksenSuoritus => true
+        case _: NäyttötutkintoonValmistavanKoulutuksenSuoritus => true
         case _ => false
       }
 
