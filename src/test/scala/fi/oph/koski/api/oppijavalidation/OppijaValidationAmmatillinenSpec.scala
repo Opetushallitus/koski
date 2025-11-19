@@ -861,6 +861,38 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
             verifyResponseStatusOk()
           }
         }
+        "NVK duplikaatit" - {
+          "Sallitaan kaksi päällekkäistä NVK-suoritusta eri opiskeluoikeuksissa" in {
+            val opiskelija = defaultHenkilö.copy(hetu = "220234-102V")
+            mitätöiOppijanKaikkiOpiskeluoikeudet(opiskelija)
+            val templateOo = ammatillinenOpiskeluoikeusNäyttötutkinnonJaNäyttöönValmistavanSuorituksilla()
+            val nvkTemplate = templateOo.suoritukset.collectFirst {
+              case s: NäyttötutkintoonValmistavanKoulutuksenSuoritus => s
+            }.get
+            def nvkSuoritus(start: LocalDate) =
+              nvkTemplate.copy(
+                alkamispäivä = Some(start),
+                vahvistus = None
+              )
+            def nvkOpiskeluoikeus(start: LocalDate, end: Option[LocalDate]) =
+              templateOo.copy(
+                oid = None,
+                arvioituPäättymispäivä = end,
+                tila = AmmatillinenOpiskeluoikeudenTila(List(
+                  AmmatillinenOpiskeluoikeusjakso(start, opiskeluoikeusLäsnä, Some(valtionosuusRahoitteinen))
+                )),
+                suoritukset = List(nvkSuoritus(start))
+              )
+            val oo1 = nvkOpiskeluoikeus(date(2016, 1, 1), Some(date(2016, 1, 31)))
+            setupOppijaWithOpiskeluoikeus(oo1, opiskelija) {
+              verifyResponseStatusOk()
+            }
+            val oo2 = nvkOpiskeluoikeus(date(2016, 1, 1), Some(date(2016, 1, 31)))
+            postOpiskeluoikeus(oo2, opiskelija) {
+              verifyResponseStatusOk()
+            }
+          }
+        }
       }
 
       "Tutkinnon rakenteen vanheneminen" - {
