@@ -28,7 +28,10 @@ import {
 import { ButtonGroup } from '../../components-v2/containers/ButtonGroup'
 import { FlatButton } from '../../components-v2/controls/FlatButton'
 import { append, deleteAt } from '../../util/fp/arrays'
-import { NäyttöEdit, NäyttöView } from '../Näyttö'
+import {
+  NäyttöAmmatillinenOsittainenEdit,
+  NäyttöAmmatillinenOsittainenView
+} from '../Näyttö'
 import { OsasuoritusTable } from '../../components-v2/opiskeluoikeus/OsasuoritusTable'
 import { AmmatillisenTutkinnonOsaaPienemmänKokonaisuudenSuoritusProperties } from '../AmmatillisenTutkinnonOsaaPienemmänKokonaisuudenSuoritusProperties'
 import React from 'react'
@@ -166,8 +169,8 @@ export const MuunOsittaisenAmmatillisenTutkinnonUseastaTutkinnostaTutkinnonosanS
             <OsasuoritusPropertyValue>
               <FormField
                 form={form}
-                view={NäyttöView}
-                edit={NäyttöEdit}
+                view={NäyttöAmmatillinenOsittainenView}
+                edit={NäyttöAmmatillinenOsittainenEdit}
                 path={osasuoritusPath.prop('näyttö')}
               />
             </OsasuoritusPropertyValue>
