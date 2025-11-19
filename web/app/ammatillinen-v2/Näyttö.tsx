@@ -30,38 +30,17 @@ import { CommonProps } from '../components-v2/CommonProps'
 import { NäytönSuorituspaikka } from '../types/fi/oph/koski/schema/NaytonSuorituspaikka'
 import { AmisArvosanaSelect } from './Arviointi'
 import { NäyttöAmmatillinenOsittainen } from '../types/fi/oph/koski/schema/NayttoAmmatillinenOsittainen'
+import { Näyttö } from '../types/fi/oph/koski/schema/Naytto'
 
-type NType = NäyttöAmmatillinenOsittainen
-export const NäyttöView = ({
-  value
-}: CommonProps<FieldViewerProps<NType, EmptyObject>>) => {
-  return (
-    <KeyValueTable>
-      <KeyValueRow localizableLabel="Kuvaus">{t(value?.kuvaus)}</KeyValueRow>
-      <KeyValueRow localizableLabel={'Suorituspaikka'}>
-        {t(value?.suorituspaikka?.tunniste.nimi)}
-        {': '}
-        {t(value?.suorituspaikka?.kuvaus)}
-      </KeyValueRow>
-      <KeyValueRow localizableLabel="Suoritusaika">
-        {value?.suoritusaika?.alku && ISO2FinnishDate(value.suoritusaika.alku)}
-        {' - '}
-        {value?.suoritusaika?.loppu &&
-          ISO2FinnishDate(value.suoritusaika.loppu)}
-      </KeyValueRow>
-      <NäytönArviointiView value={value?.arviointi} />
-    </KeyValueTable>
-  )
-}
-const mkEmptyNäyttö = (): NType => ({}) as NType
+type AnyNäyttö = Näyttö | NäyttöAmmatillinenOsittainen
 
-const mkEmptySuoritusaika = (): NäytönSuoritusaika =>
+const EmptySuoritusaika = (): NäytönSuoritusaika =>
   NäytönSuoritusaika({
     alku: todayISODate(),
     loppu: todayISODate()
   })
 
-const mkEmptySuoritusPaikka = (): NäytönSuorituspaikka =>
+const EmptySuoritusPaikka = (): NäytönSuorituspaikka =>
   NäytönSuorituspaikka({
     tunniste: Koodistokoodiviite({
       koodistoUri: 'ammatillisennaytonsuorituspaikka',
@@ -69,15 +48,56 @@ const mkEmptySuoritusPaikka = (): NäytönSuorituspaikka =>
     }),
     kuvaus: localize('')
   })
+type NäyttöEditBaseProps<T extends AnyNäyttö> = FieldEditorProps<
+  T,
+  EmptyObject
+> & {
+  EmptyNäyttö: () => T
+}
 
-export const NäyttöEdit = ({
+export const NäyttöEdit = (props: FieldEditorProps<Näyttö, EmptyObject>) => (
+  <NäyttöEditBase {...props} EmptyNäyttö={Näyttö} />
+)
+
+export const NäyttöAmmatillinenOsittainenEdit = (
+  props: FieldEditorProps<NäyttöAmmatillinenOsittainen, EmptyObject>
+) => <NäyttöEditBase {...props} EmptyNäyttö={NäyttöAmmatillinenOsittainen} />
+
+export const NäyttöAmmatillinenOsittainenView = ({
+  value
+}: CommonProps<FieldViewerProps<NäyttöAmmatillinenOsittainen, EmptyObject>>) =>
+  NäyttöViewBase(value)
+
+const NäyttöViewBase = (value?: AnyNäyttö) => (
+  <KeyValueTable>
+    <KeyValueRow localizableLabel="Kuvaus">{t(value?.kuvaus)}</KeyValueRow>
+    <KeyValueRow localizableLabel={'Suorituspaikka'}>
+      {t(value?.suorituspaikka?.tunniste.nimi)}
+      {': '}
+      {t(value?.suorituspaikka?.kuvaus)}
+    </KeyValueRow>
+    <KeyValueRow localizableLabel="Suoritusaika">
+      {value?.suoritusaika?.alku && ISO2FinnishDate(value.suoritusaika.alku)}
+      {' - '}
+      {value?.suoritusaika?.loppu && ISO2FinnishDate(value.suoritusaika.loppu)}
+    </KeyValueRow>
+    <NäytönArviointiView value={value?.arviointi} />
+  </KeyValueTable>
+)
+
+export const NäyttöView = ({
+  value
+}: CommonProps<FieldViewerProps<Näyttö, EmptyObject>>) => NäyttöViewBase(value)
+
+const NäyttöEditBase = <T extends AnyNäyttö>({
   value,
-  onChange
-}: FieldEditorProps<NType, EmptyObject>) => {
+  onChange,
+  EmptyNäyttö
+}: NäyttöEditBaseProps<T>) => {
   if (value === undefined) {
     return (
       <ButtonGroup>
-        <FlatButton onClick={() => onChange(mkEmptyNäyttö())}>
+        <FlatButton onClick={() => onChange(EmptyNäyttö())}>
           {t('Lisää ammattiosaamisen näyttö')}
         </FlatButton>
       </ButtonGroup>
@@ -104,7 +124,7 @@ export const NäyttöEdit = ({
               onChange({
                 ...value,
                 suorituspaikka: {
-                  ...(value?.suorituspaikka ?? mkEmptySuoritusPaikka()),
+                  ...(value?.suorituspaikka ?? EmptySuoritusPaikka()),
                   tunniste
                 }
               })
@@ -118,7 +138,7 @@ export const NäyttöEdit = ({
               onChange({
                 ...value,
                 suorituspaikka: {
-                  ...(value?.suorituspaikka ?? mkEmptySuoritusPaikka()),
+                  ...(value?.suorituspaikka ?? EmptySuoritusPaikka()),
                   kuvaus
                 }
               })
@@ -134,9 +154,9 @@ export const NäyttöEdit = ({
                   onChange({
                     ...value,
                     suoritusaika: {
-                      ...(value?.suoritusaika ?? mkEmptySuoritusaika()),
+                      ...(value?.suoritusaika ?? EmptySuoritusaika()),
                       alku
-                    } as NäytönSuoritusaika
+                    }
                   })
               }}
               testId="alku"
@@ -149,9 +169,9 @@ export const NäyttöEdit = ({
                   onChange({
                     ...value,
                     suoritusaika: {
-                      ...(value?.suoritusaika ?? mkEmptySuoritusaika()),
+                      ...(value?.suoritusaika ?? EmptySuoritusaika()),
                       loppu
-                    } as NäytönSuoritusaika
+                    }
                   })
               }}
               testId="loppu"
