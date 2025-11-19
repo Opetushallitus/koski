@@ -2,6 +2,7 @@ package fi.oph.koski.massaluovutus.paallekkaisetopiskeluoikeudet
 
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.http.HttpStatus
+import fi.oph.koski.json.SensitiveDataAllowed
 import fi.oph.koski.koskiuser.{KoskiSpecificSession, Session}
 import fi.oph.koski.localization.LocalizationReader
 import fi.oph.koski.log.KoskiAuditLogMessageField.hakuEhto
@@ -10,7 +11,7 @@ import fi.oph.koski.log.{AuditLog, KoskiAuditLogMessage, Logging}
 import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusQueryContext
 import fi.oph.koski.organisaatio.{MockOrganisaatiot, OrganisaatioRepository}
 import fi.oph.koski.massaluovutus.MassaluovutusUtils.{QueryResourceManager, defaultOrganisaatio, generatePassword}
-import fi.oph.koski.massaluovutus.{MassaluovutusQueryParameters, QueryFormat, QueryMeta, QueryResultWriter}
+import fi.oph.koski.massaluovutus.{KoskiMassaluovutusQueryParameters, MassaluovutusQueryParameters, QueryFormat, QueryMeta, QueryResultWriter}
 import fi.oph.koski.raportit.{AikajaksoRaporttiRequest, RaportitService}
 import fi.oph.koski.schema.Organisaatio
 import fi.oph.koski.schema.annotation.EnumValues
@@ -39,8 +40,9 @@ case class MassaluovutusQueryPaallekkaisetOpiskeluoikeudet(
   loppu: LocalDate,
   @Description("Salasana. Merkityksellinen vain xlsx-tiedostoille. Jos ei annettu, salasana generoidaan automaattisesti. Salasana palautetaan tulosten yhteydessä.")
   password: Option[String] = None,
-) extends MassaluovutusQueryParameters with Logging {
-  override def run(application: KoskiApplication, writer: QueryResultWriter)(implicit user: KoskiSpecificSession): Either[String, Unit] =
+) extends KoskiMassaluovutusQueryParameters with Logging {
+
+  override def run(application: KoskiApplication, writer: QueryResultWriter)(implicit user: Session with SensitiveDataAllowed): Either[String, Unit] =
     QueryResourceManager(logger) { mgr =>
       implicit val manager: Using.Manager = mgr
 
@@ -72,7 +74,7 @@ case class MassaluovutusQueryPaallekkaisetOpiskeluoikeudet(
     case _ => false
   }
 
-  override def fillAndValidate(implicit user: KoskiSpecificSession): Either[HttpStatus, MassaluovutusQueryPaallekkaisetOpiskeluoikeudet] =
+  override def fillAndValidate(implicit user: Session): Either[HttpStatus, MassaluovutusQueryPaallekkaisetOpiskeluoikeudet] =
     for {
       orgOid <- organisaatioOid
         .toRight(defaultOrganisaatio)
@@ -83,7 +85,7 @@ case class MassaluovutusQueryPaallekkaisetOpiskeluoikeudet(
       language = Some(lang),
     )
 
-  private def auditLog(implicit user: KoskiSpecificSession): Unit =
+  private def auditLog(implicit user: Session): Unit =
     AuditLog.log(KoskiAuditLogMessage(
       OPISKELUOIKEUS_RAPORTTI,
       user,
