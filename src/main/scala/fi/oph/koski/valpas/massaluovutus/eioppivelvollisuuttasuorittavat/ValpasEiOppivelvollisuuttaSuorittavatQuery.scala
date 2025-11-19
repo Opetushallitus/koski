@@ -1,8 +1,9 @@
 package fi.oph.koski.valpas.massaluovutus.eioppivelvollisuuttasuorittavat
 
 import fi.oph.koski.config.KoskiApplication
-import fi.oph.koski.koskiuser.{KoskiSpecificSession, Session}
-import fi.oph.koski.massaluovutus.{MassaluovutusQueryParameters, QueryFormat, QueryResultWriter}
+import fi.oph.koski.json.SensitiveDataAllowed
+import fi.oph.koski.koskiuser.Session
+import fi.oph.koski.massaluovutus.{QueryFormat, QueryResultWriter, ValpasMassaluovutusQueryParameters}
 import fi.oph.koski.schema.annotation.EnumValues
 import fi.oph.koski.valpas.massaluovutus.{ValpasMassaluovutusOppija, ValpasMassaluovutusResult}
 import fi.oph.koski.valpas.oppija.ValpasAccessResolver
@@ -19,9 +20,9 @@ case class ValpasEiOppivelvollisuuttaSuorittavatQuery(
   format: String = QueryFormat.json,
   @Description("Kunnan organisaatio-oid")
   kuntaOid: String,
-) extends MassaluovutusQueryParameters {
+) extends ValpasMassaluovutusQueryParameters {
 
-  override def run(application: KoskiApplication, writer: QueryResultWriter)(implicit user: KoskiSpecificSession): Either[String, Unit] = {
+  override def run(application: KoskiApplication, writer: QueryResultWriter)(implicit user: Session with SensitiveDataAllowed): Either[String, Unit] = {
     val kuntarouhinta = new ValpasKuntarouhintaService(application)
 
     kuntarouhinta

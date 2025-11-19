@@ -4,23 +4,24 @@ import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.db.KoskiOpiskeluoikeusRowImplicits.getKoskiOpiskeluoikeusRow
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api.actionBasedSQLInterpolation
 import fi.oph.koski.db.{DB, KoskiOpiskeluoikeusRow, KoskiTables, QueryMethods}
+import fi.oph.koski.json.SensitiveDataAllowed
 import fi.oph.koski.koskiuser.{KoskiSpecificSession, Session}
 import fi.oph.koski.koskiuser.Rooli.{OPHKATSELIJA, OPHPAAKAYTTAJA}
 import fi.oph.koski.log._
 import fi.oph.koski.massaluovutus.suorituspalvelu.opiskeluoikeus.SupaOpiskeluoikeus
-import fi.oph.koski.massaluovutus.{MassaluovutusQueryParameters, MassaluovutusQueryPriority, QueryResultWriter}
+import fi.oph.koski.massaluovutus.{KoskiMassaluovutusQueryParameters, MassaluovutusQueryPriority, QueryResultWriter}
 import fi.oph.koski.schema.{KoskeenTallennettavaOpiskeluoikeus, KoskiSchema}
 
 import java.sql.Timestamp
 import java.time.LocalDateTime
 import scala.concurrent.duration.DurationInt
 
-trait SuorituspalveluQuery extends MassaluovutusQueryParameters with Logging {
+trait SuorituspalveluQuery extends KoskiMassaluovutusQueryParameters with Logging {
   def getOpiskeluoikeusIds(db: DB): Seq[(Int, Timestamp, String)]
 
   override def priority: Int = MassaluovutusQueryPriority.high
 
-  override def run(application: KoskiApplication, writer: QueryResultWriter)(implicit user: KoskiSpecificSession): Either[String, Unit] = {
+  override def run(application: KoskiApplication, writer: QueryResultWriter)(implicit user: Session with SensitiveDataAllowed): Either[String, Unit] = {
     val opiskeluoikeudetResult = getOpiskeluoikeusIds(application.masterDatabase.db)
     val resultsByOppija = opiskeluoikeudetResult.groupBy(_._3)
 
@@ -83,7 +84,7 @@ trait SuorituspalveluQuery extends MassaluovutusQueryParameters with Logging {
     }
   }
 
-  private def auditLog(oppijaOid: String, opiskeluoikeusOid: String)(implicit user: KoskiSpecificSession): Unit =
+  private def auditLog(oppijaOid: String, opiskeluoikeusOid: String)(implicit user: Session): Unit =
     AuditLog
       .log(
         KoskiAuditLogMessage(

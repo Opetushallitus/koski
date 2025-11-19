@@ -3,7 +3,9 @@ package fi.oph.koski.massaluovutus
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.plainAPI._
 import fi.oph.koski.db.{DB, DatabaseConverters, QueryMethods}
 import fi.oph.koski.json.JsonSerializer
-import fi.oph.koski.koskiuser.{AuthenticationUser, KoskiSpecificSession, KäyttöoikeusRepository, MockUser}
+import fi.oph.koski.json.SensitiveDataAllowed
+import fi.oph.koski.koskiuser.{AuthenticationUser, KoskiSpecificSession, KäyttöoikeusRepository, MockUser, Session}
+import fi.oph.koski.valpas.valpasuser.ValpasSession
 import fi.oph.koski.log.Logging
 import fi.oph.koski.schema.KoskiSchema.strictDeserialization
 import fi.oph.koski.util.Optional.when
@@ -24,7 +26,7 @@ class QueryRepository(
   extractor: ValidatingAndResolvingExtractor,
 )  extends QueryMethods with Logging with DatabaseConverters  {
 
-  def get(id: UUID)(implicit user: KoskiSpecificSession): Option[Query] =
+  def get(id: UUID)(implicit user: Session): Option[Query] =
     runDbSync(sql"""
       SELECT *
       FROM massaluovutus
@@ -33,7 +35,7 @@ class QueryRepository(
       """.as[Query]
     ).headOption
 
-  def getExisting(query: MassaluovutusQueryParameters)(implicit user: KoskiSpecificSession): Option[Query] =
+  def getExisting(query: MassaluovutusQueryParameters)(implicit user: Session): Option[Query] =
     runDbSync(sql"""
       SELECT *
       FROM massaluovutus
@@ -43,7 +45,7 @@ class QueryRepository(
      """.as[Query]
     ).headOption
 
-  def add(query: MassaluovutusQueryParameters)(implicit user: KoskiSpecificSession): PendingQuery = {
+  def add(query: MassaluovutusQueryParameters)(implicit user: Session with SensitiveDataAllowed): PendingQuery = {
     val session = JsonSerializer.serialize(StorableSession(user))
     runDbSync(sql"""
       INSERT INTO massaluovutus(id, user_oid, session, query, state, priority)
@@ -314,7 +316,7 @@ trait Query {
   def session: JValue
   def meta: Option[QueryMeta]
 
-  def getSession(käyttöoikeudet: KäyttöoikeusRepository): Option[KoskiSpecificSession] =
+  def getSession(käyttöoikeudet: KäyttöoikeusRepository): Option[Session with SensitiveDataAllowed] =
     JsonSerializer
       .validateAndExtract[StorableSession](session)
       .map(_.toSession(käyttöoikeudet))
@@ -417,40 +419,52 @@ case class StorableSession(
   lang: String,
   clientIp: String,
   userAgent: String,
+  sessionType: String = "koski",
 ) {
-  def toSession(käyttöoikeudet: KäyttöoikeusRepository): KoskiSpecificSession = {
+  def toSession(käyttöoikeudet: KäyttöoikeusRepository): Session with SensitiveDataAllowed = {
     val user = AuthenticationUser(
       oid = oid,
       username = username,
       name = name,
       serviceTicket = None,
     )
-    new KoskiSpecificSession(
-      user = AuthenticationUser(
-        oid = oid,
-        username = username,
-        name = name,
-        serviceTicket = None,
-      ),
-      lang = lang,
-      clientIp = InetAddress.getByName(clientIp),
-      userAgent = userAgent,
-      lähdeKäyttöoikeudet = käyttöoikeudet.käyttäjänKäyttöoikeudet(user),
-    )
+    sessionType match {
+      case "valpas" =>
+        new ValpasSession(
+          user = user,
+          lang = lang,
+          clientIp = InetAddress.getByName(clientIp),
+          userAgent = userAgent,
+          lähdeKäyttöoikeudet = käyttöoikeudet.käyttäjänKäyttöoikeudet(user),
+        )
+      case _ =>
+        new KoskiSpecificSession(
+          user = user,
+          lang = lang,
+          clientIp = InetAddress.getByName(clientIp),
+          userAgent = userAgent,
+          lähdeKäyttöoikeudet = käyttöoikeudet.käyttäjänKäyttöoikeudet(user),
+        )
+    }
   }
 
   def toJson: JValue = JsonSerializer.serializeWithRoot(this)
 }
 
 object StorableSession {
-  def apply(session: KoskiSpecificSession): StorableSession = {
+  def apply(session: Session): StorableSession = {
+    val sessionType = session match {
+      case _: ValpasSession => "valpas"
+      case _ => "koski"
+    }
     StorableSession(
       oid = session.oid,
-      username =  session.username,
+      username = session.username,
       name = session.user.name,
       lang = session.lang,
       clientIp = session.clientIp.getHostAddress,
       userAgent = session.userAgent,
+      sessionType = sessionType,
     )
   }
 
@@ -462,6 +476,7 @@ object StorableSession {
       lang = user.lang,
       clientIp = "127.0.0.1",
       userAgent = "Test",
+      sessionType = "koski",
     )
   }
 }

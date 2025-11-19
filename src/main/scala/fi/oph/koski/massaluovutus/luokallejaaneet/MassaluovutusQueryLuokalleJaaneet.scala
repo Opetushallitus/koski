@@ -14,7 +14,7 @@ import fi.oph.koski.log.KoskiAuditLogMessageField.{hakuEhto, opiskeluoikeusId, o
 import fi.oph.koski.log.KoskiOperation.OPISKELUOIKEUS_KATSOMINEN
 import fi.oph.koski.log.{AuditLog, KoskiAuditLogMessage, Logging}
 import fi.oph.koski.massaluovutus.MassaluovutusUtils.defaultOrganisaatio
-import fi.oph.koski.massaluovutus.{MassaluovutusQueryParameters, QueryFormat, QueryResultWriter}
+import fi.oph.koski.massaluovutus.{KoskiMassaluovutusQueryParameters, MassaluovutusQueryParameters, QueryFormat, QueryResultWriter}
 import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusQueryContext
 import fi.oph.koski.schema.PerusopetuksenOpiskeluoikeus
 import fi.oph.koski.schema.annotation.EnumValues
@@ -28,7 +28,7 @@ import java.time.LocalDateTime
 @Title("Perusopetuksen luokalle jäämiset")
 @Description("Tämä kysely on tarkoitettu opiskeluoikeusversioiden löytäiseksi KOSKI-varannoksi, joissa perusopetuksen opiskeluoikeuteen on merkitty tieto, että oppilas jää luokalle.")
 @Description("Vastauksen skeema on saatavana <a href=\"/koski/json-schema-viewer/?schema=luokalle-jaaneet-result.json\">täältä.</a>")
-trait MassaluovutusQueryLuokalleJaaneet extends MassaluovutusQueryParameters with DatabaseConverters with Logging {
+trait MassaluovutusQueryLuokalleJaaneet extends KoskiMassaluovutusQueryParameters with DatabaseConverters with Logging {
   @EnumValues(Set("luokallejaaneet"))
   def `type`: String
   def format: String

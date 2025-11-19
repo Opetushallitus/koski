@@ -3,7 +3,7 @@ package fi.oph.koski.massaluovutus
 import com.typesafe.config.Config
 import fi.oph.koski.config.{KoskiApplication, KoskiInstance}
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
-import fi.oph.koski.koskiuser.KoskiSpecificSession
+import fi.oph.koski.koskiuser.{KoskiSpecificSession, Session}
 import fi.oph.koski.log.LoggerWithContext
 import fi.oph.koski.schema.Organisaatio.Oid
 import fi.oph.koski.util.TryWithLogging
@@ -27,15 +27,19 @@ object MassaluovutusUtils {
       .reverse
       .take(concurrency)
 
-  def defaultOrganisaatio(implicit user: KoskiSpecificSession): Either[HttpStatus, Oid] = {
-    val organisaatiot = user.juuriOrganisaatiot
-    if (organisaatiot.isEmpty) {
+  def defaultOrganisaatio(implicit user: Session): Either[HttpStatus, Oid] = user match {
+    case koskiUser: KoskiSpecificSession =>
+      val organisaatiot = koskiUser.juuriOrganisaatiot
+      if (organisaatiot.isEmpty) {
+        Left(KoskiErrorCategory.forbidden.organisaatio())
+      } else if (organisaatiot.size > 1) {
+        Left(KoskiErrorCategory.badRequest.massaluovutus.eiYksiselitteinenOrganisaatio())
+      } else {
+        Right(koskiUser.juuriOrganisaatiot.head.oid)
+      }
+    case _ =>
+      // TODO: toteuta ValpasSessiolle jos tarvitaan
       Left(KoskiErrorCategory.forbidden.organisaatio())
-    } else if (organisaatiot.size > 1) {
-      Left(KoskiErrorCategory.badRequest.massaluovutus.eiYksiselitteinenOrganisaatio())
-    } else {
-      Right(user.juuriOrganisaatiot.head.oid)
-    }
   }
 
   def QueryResourceManager(logger: LoggerWithContext)(op: Using.Manager => Unit): Either[String, Unit] =

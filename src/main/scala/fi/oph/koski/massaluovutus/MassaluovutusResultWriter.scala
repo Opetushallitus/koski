@@ -2,8 +2,8 @@ package fi.oph.koski.massaluovutus
 
 import com.typesafe.config.Config
 import fi.oph.koski.config.Environment
-import fi.oph.koski.json.JsonSerializer
-import fi.oph.koski.koskiuser.KoskiSpecificSession
+import fi.oph.koski.json.{JsonSerializer, SensitiveDataAllowed}
+import fi.oph.koski.koskiuser.{KoskiSpecificSession, Session}
 import fi.oph.koski.localization.LocalizationReader
 import fi.oph.koski.raportit.{DataSheet, ExcelWriter, OppilaitosRaporttiResponse}
 import fi.oph.koski.util.CsvFormatter
@@ -56,7 +56,7 @@ case class QueryResultWriter(
     updateProgress()
   }
 
-  def putJson[T: TypeTag](name: String, obj: T)(implicit user: KoskiSpecificSession): Unit =
+  def putJson[T: TypeTag](name: String, obj: T)(implicit user: Session with SensitiveDataAllowed): Unit =
     putJson(name, JsonSerializer.write(obj))
 
   def putJson(name: String, json: JValue): Unit =

@@ -6,6 +6,7 @@ import fi.oph.koski.cloudwatch.CloudWatchMetricsService
 import fi.oph.koski.config.{KoskiApplication, KoskiInstance}
 import fi.oph.koski.executors.GlobalExecutionContext
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
+import fi.oph.koski.json.SensitiveDataAllowed
 import fi.oph.koski.koskiuser.{KoskiSpecificSession, Session}
 import fi.oph.koski.log.Logging
 import fi.oph.koski.util.{Timeout, TryWithLogging}
@@ -32,7 +33,7 @@ class MassaluovutusService(application: KoskiApplication) extends GlobalExecutio
   )
   private val results = new MassaluovutusResultRepository(application.config)
 
-  def add(query: MassaluovutusQueryParameters)(implicit user: KoskiSpecificSession): Either[HttpStatus, Query] = {
+  def add(query: MassaluovutusQueryParameters)(implicit user: Session with SensitiveDataAllowed): Either[HttpStatus, Query] = {
     query.fillAndValidate.flatMap { query =>
       queries.getExisting(query).fold {
         if (query.queryAllowed(application)) {
@@ -46,7 +47,7 @@ class MassaluovutusService(application: KoskiApplication) extends GlobalExecutio
 
   def addRaw(query: Query): Query = queries.addRaw(query)
 
-  def get(id: UUID)(implicit user: KoskiSpecificSession): Either[HttpStatus, Query] =
+  def get(id: UUID)(implicit user: Session): Either[HttpStatus, Query] =
     queries.get(id)
       .filter(_.userOid == user.oid || user.hasGlobalReadAccess)
       .toRight(KoskiErrorCategory.notFound())
@@ -63,7 +64,7 @@ class MassaluovutusService(application: KoskiApplication) extends GlobalExecutio
         logger.error(s"Could not start query ${query.queryId} due to invalid session")
       } { session =>
         logStart(query)
-        implicit val user: KoskiSpecificSession = session
+        implicit val user: Session with SensitiveDataAllowed = session
         val writer = QueryResultWriter(UUID.fromString(query.queryId), queries, results)
         try {
           Timeout(queryMaxRunningTime) {
