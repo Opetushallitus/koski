@@ -144,13 +144,13 @@ class RaamiProxyServlet(val proxyHost: String, val proxyPrefix: String, val appl
       val headerName = headerNames.nextElement
       val lowerHeaderName = headerName.toLowerCase(Locale.ENGLISH)
       breakable {
-        if (HttpHeader.HOST.is(headerName)) break // Ohitetaan HOST-header
+        if (HttpHeader.HOST.is(headerName)) break() // Ohitetaan HOST-header
       }
       breakable {
-        if (hopHeaders.contains(lowerHeaderName)) break
+        if (hopHeaders.contains(lowerHeaderName)) break()
       }
       breakable {
-        if (headersToRemove != null && headersToRemove.contains(lowerHeaderName)) break
+        if (headersToRemove != null && headersToRemove.contains(lowerHeaderName)) break()
       }
       val headerValues = clientRequest.getHeaders(headerName)
       while ( {

@@ -66,7 +66,7 @@ class UpdateHenkilotTask(application: KoskiApplication) extends Timing {
       WithModifiedTime(application.henkilöRepository.opintopolku.withMasterInfo(oppija), oppija.modified)
     }
 
-    val oppijatByOid: Map[Oid, WithModifiedTime] = oppijatWithMaster.groupBy(_.tiedot.henkilö.oid).mapValues(_.head)
+    val oppijatByOid: Map[Oid, WithModifiedTime] = oppijatWithMaster.groupBy(_.tiedot.henkilö.oid).view.mapValues(_.head).toMap
 
     val lastModified = oppijat.lastOption.map(_.modified + 1)
       .orElse(oids.lastOption.flatMap(o => findOppijatWithoutSlaveOids(List(o)).headOption).map(_.modified))

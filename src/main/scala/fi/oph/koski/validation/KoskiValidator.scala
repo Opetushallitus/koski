@@ -27,6 +27,7 @@ import org.json4s.{JArray, JValue}
 
 import java.lang.Character.isDigit
 import java.time.LocalDate
+import scala.collection.parallel.CollectionConverters._
 
 // scalastyle:off line.size.limit
 // scalastyle:off number.of.methods

@@ -10,7 +10,7 @@ import org.json4s.JValue
 import scala.collection.immutable
 
 case class SensitiveAndRedundantDataFilter(user: SensitiveDataAllowed) {
-  private implicit val u = user
+  private implicit val implicitUser: SensitiveDataAllowed = user
 
   def filterSensitiveData(s: ClassSchema, p: Property) = if (shouldHideField(p.metadata)) Nil else List(p)
 

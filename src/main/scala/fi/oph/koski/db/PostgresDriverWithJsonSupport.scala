@@ -26,12 +26,14 @@ trait PostgresDriverWithJsonSupport extends PostgresProfile
     with ArrayImplicits
     with PgStringImplicits {
 
-    implicit val strListTypeMapper = new SimpleArrayJdbcType[String]("text").to(_.toList)
+    implicit val strListTypeMapper: DriverJdbcType[List[String]] =
+      new SimpleArrayJdbcType[String]("text").to(_.toList)
 
-    implicit val json4sJsonArrayTypeMapper =
-      new AdvancedArrayJdbcType[JValue](pgjson,
-        (s) => utils.SimpleArrayUtils.fromString[JValue](jsonMethods.parse(_))(s).orNull,
-        (v) => utils.SimpleArrayUtils.mkString[JValue](j => jsonMethods.compact(jsonMethods.render(j)))(v)
+    implicit val json4sJsonArrayTypeMapper: DriverJdbcType[List[JValue]] =
+      new AdvancedArrayJdbcType[JValue](
+        pgjson,
+        s => utils.SimpleArrayUtils.fromString[JValue](jsonMethods.parse(_))(s).orNull,
+        v => utils.SimpleArrayUtils.mkString[JValue](j => jsonMethods.compact(jsonMethods.render(j)))(v)
       ).to(_.toList)
 
     implicit class ExtendedPlainSqlOps(r: PositionedResult) {

@@ -6,6 +6,7 @@ import fi.oph.koski.henkilo.KoskiSpecificMockOppijat._
 import fi.oph.koski.koskiuser.{MockUser, MockUsers}
 import fi.oph.koski.log.AuditLogTester
 import fi.oph.koski.{KoskiApplicationForTests, KoskiHttpSpec}
+import fi.oph.koski.xml.NodeSeqImplicits._
 import fi.oph.scalaschema.Serializer.format
 import org.json4s.jackson.JsonMethods
 import org.json4s.{JNothing, JNull, JObject, JValue}

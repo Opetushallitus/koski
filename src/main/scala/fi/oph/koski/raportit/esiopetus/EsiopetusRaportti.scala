@@ -19,7 +19,7 @@ case class EsiopetusRaportti(db: DB, organisaatioService: OrganisaatioService) e
       opiskeluoikeusOid = r.<<,
       lähdejärjestelmäKoodiarvo = r.<<,
       lähdejärjestelmäId = r.<<,
-      aikaleima = r.nextTimestamp.toLocalDateTime.toLocalDate,
+      aikaleima = r.nextTimestamp().toLocalDateTime.toLocalDate,
       koulutustoimijaNimi = r.<<,
       oppilaitosNimi = r.<<,
       toimipisteNimi = r.<<,

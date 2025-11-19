@@ -51,11 +51,10 @@ class ValpasTestApiServlet(implicit val application: KoskiApplication) extends V
       raportointikantaService.loadRaportointikanta(force = true, pageSize = OpiskeluoikeusLoader.LocalTestingBatchSize)
       Wait.until { raportointikantaService.isLoadComplete }
     }
-    Unit
+    ()
   }
 
   get("/logout/:user") {
     application.koskiSessionRepository.removeSessionByUsername(getStringParam("user"))
   }
 }
-

@@ -48,7 +48,7 @@ class PostgresKoskiOpiskeluoikeusRepositoryActions(
       case Right(result) if result.changed =>
         syncHenkilötiedotAction(result.id, oppijaOid.oppijaOid, opiskeluoikeus, result.henkilötiedot)
       case _ =>
-        DBIO.successful(Unit)
+        DBIO.successful(())
     }
   }
 

@@ -6,7 +6,7 @@ import fi.oph.koski.http.Http
 import fi.oph.koski.http.Http._
 import fi.oph.koski.json.GenericJsonFormats
 import fi.oph.koski.json.JsonSerializer.extract
-import org.json4s.JValue
+import org.json4s.{Formats, JValue}
 
 object PrometheusRepository {
   def apply(config: Config) = {
@@ -24,7 +24,7 @@ class RemotePrometheusRepository(http: Http) extends PrometheusRepository {
 }
 
 trait PrometheusRepository {
-  implicit val formats = GenericJsonFormats.genericFormats
+  implicit val formats: Formats = GenericJsonFormats.genericFormats
 
   def query(query: String): IO[JValue]
 

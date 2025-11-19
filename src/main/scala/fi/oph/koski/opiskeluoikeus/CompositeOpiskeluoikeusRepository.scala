@@ -163,7 +163,7 @@ class CompositeOpiskeluoikeusRepository(main: KoskiOpiskeluoikeusRepository, vir
                               opiskeluoikeusRow.oppilaitosOid,
                               opiskeluoikeusRow.koulutustoimijaOid
                             ),
-                            Unit,
+                            (),
                             KoskiErrorCategory.notFound.opiskeluoikeuttaEiLöydyTaiEiOikeuksia()
                            )
       opiskeluoikeus    <- Right(opiskeluoikeusRow.toOpiskeluoikeusUnsafe)

@@ -24,7 +24,7 @@ class KoskiOppijaExamplesValidationSpec extends AnyFreeSpec with TestEnvironment
   "Validation with JSON Schema" - {
     Examples.oppijaExamples.foreach { example =>
       example.name in {
-        import scala.collection.JavaConverters._
+        import scala.jdk.CollectionConverters._
         val json = JsonLoader.fromString(JsonSerializer.writeWithRoot(example.data))
         val report = validator.validate(schema, json)
         assert(report.isSuccess, "Example \"" + example.name + "\" failed to validate: \n\n" + report.asScala.filter(m => m.getLogLevel.toString == "error").mkString("\n"))

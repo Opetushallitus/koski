@@ -29,11 +29,11 @@ trait LocalizationRepository extends Logging {
 
   def fetchLocalizations(): JValue
 
-  def createOrUpdate(localizations: List[UpdateLocalization])
+  def createOrUpdate(localizations: List[UpdateLocalization]): Unit
 
   def localizationsFromLocalizationService: Map[String, Map[String, String]] = parseLocalizations(fetchLocalizations())
 
-  def init
+  def init: Unit
 }
 
 class DefaultLocalizations(resourceFilename: String) {
@@ -96,7 +96,9 @@ object LocalizationRepository {
   }
   def parseLocalizations(json: JValue) = extract[List[LocalizationServiceLocalization]](json, ignoreExtras = true)
     .groupBy(_.key)
+    .view
     .mapValues(_.map(v => (v.locale, v.value)).toMap)
+    .toMap
 }
 
 case class MockLocalizationRepository(localizationConfig: LocalizationConfig)(implicit cacheInvalidator: CacheManager) extends CachedLocalizationService(localizationConfig) {
@@ -118,11 +120,11 @@ case class MockLocalizationRepository(localizationConfig: LocalizationConfig)(im
       }
     }
   }
-  def reset = {
-    _localizations = super.localizations
+  def reset: Unit = {
+    _localizations = super.localizations()
   }
 
-  def init {}
+  def init: Unit = ()
 
   override def reportMissingLocalization(key: String): Unit = {
     // Don't report missing localizations in MockLocalizationRepository, i.e. entries missing from the localizationConfig.mockLocalizationResourceFilename
@@ -138,7 +140,7 @@ class ReadOnlyRemoteLocalizationRepository(virkalijaRoot: String, val localizati
   private val http = Http(virkalijaRoot, "lokalisaatiopalvelu")
   override def fetchLocalizations(): JValue = runIO(http.get(uri"/lokalisointi/cxf/rest/v1/localisation?category=${localizationConfig.localizationCategory}")(Http.parseJson[JValue]))
   override def createOrUpdate(localizations: List[UpdateLocalization]): Unit = ???
-  def init {}
+  def init: Unit = ()
 }
 
 class RemoteLocalizationRepository(config: Config, val localizationConfig: LocalizationConfig)(implicit cacheInvalidator: CacheManager) extends CachedLocalizationService(localizationConfig) {
@@ -151,7 +153,7 @@ class RemoteLocalizationRepository(config: Config, val localizationConfig: Local
     runIO(http.post(uri"/lokalisointi/cxf/rest/v1/localisation/update", localizations)(json4sEncoderOf[List[UpdateLocalization]])(Http.unitDecoder))
   }
 
-  def init {
+  def init: Unit = {
     lazy val inLocalizationService = localizationsFromLocalizationService
     if (config.getBoolean("localization.create")) {
       val missing = defaultLocalizations.defaultFinnishTexts.flatMap {
@@ -197,7 +199,7 @@ class RemoteLocalizationRepository(config: Config, val localizationConfig: Local
     }
   }
 
-  private def updateToRemote(toUpdate: List[UpdateLocalization]) = {
+  private def updateToRemote(toUpdate: List[UpdateLocalization]): Unit = {
     if (toUpdate.nonEmpty) {
       try {
         createOrUpdate(toUpdate)

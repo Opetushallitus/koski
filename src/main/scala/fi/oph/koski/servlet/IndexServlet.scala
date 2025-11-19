@@ -4,6 +4,7 @@ import fi.oph.koski.config.{Environment, KoskiApplication}
 import fi.oph.koski.frontendvalvonta.FrontendValvontaMode
 import fi.oph.koski.util.JsStringInterpolation.setWindowVar
 import org.scalatra.ScalatraServlet
+import fi.oph.koski.xml.NodeSeqImplicits._
 
 class IndexServlet(implicit val application: KoskiApplication) extends ScalatraServlet with VirkailijaHtmlServlet with OmaOpintopolkuSupport {
 
@@ -66,9 +67,11 @@ class IndexServlet(implicit val application: KoskiApplication) extends ScalatraS
     htmlIndex(
       scriptBundleName = "koski-lander.js",
       raamit = oppijaRaamit,
-      scripts = <script nonce={nonce} id="auth">
-        {setWindowVar("kansalaisenAuthUrl", "/koski/login/oppija")}
-      </script>,
+      scripts = Seq(
+        <script nonce={nonce} id="auth">
+          {setWindowVar("kansalaisenAuthUrl", "/koski/login/oppija")}
+        </script>
+      ),
       responsive = true,
       nonce = nonce
     )
