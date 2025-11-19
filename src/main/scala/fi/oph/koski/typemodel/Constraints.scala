@@ -18,7 +18,7 @@ object Constraints {
         case t: ObjectType =>
           ObjectConstraint(
             default = defaultOf(t).asInstanceOf[Option[JObject]],
-            properties = t.properties.mapValues(value => buildConstraint(value, levelsLeft - 1)),
+            properties = t.properties.view.mapValues(value => buildConstraint(value, levelsLeft - 1)).toMap,
             `class` = t.fullClassName,
             infoDescription = t.infoDescription.headOption,
             infoLinkUrl = t.infoLinkUrl.headOption,

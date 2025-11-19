@@ -305,10 +305,10 @@ class SureSpec extends AnyFreeSpec with KoskiHttpSpec with OpiskeluoikeusTestMet
       if (res.mayHaveMore) {
         cursor = res.nextCursor
       } else {
-        return responses
+        return responses.toSeq
       }
     }
-    responses
+    responses.toSeq
   }
 
   private def extractCursor = {
@@ -316,4 +316,3 @@ class SureSpec extends AnyFreeSpec with KoskiHttpSpec with OpiskeluoikeusTestMet
     (JsonMethods.parse(body) \ "nextCursor").extract[String]
   }
 }
-

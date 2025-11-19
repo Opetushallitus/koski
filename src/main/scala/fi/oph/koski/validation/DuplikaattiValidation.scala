@@ -8,7 +8,9 @@ import fi.oph.koski.log.Logging
 import fi.oph.koski.opiskeluoikeus.CompositeOpiskeluoikeusRepository
 import fi.oph.koski.schema._
 import fi.oph.koski.validation.PerusopetuksenOpiskeluoikeusValidation.sisältääNuortenPerusopetuksenOppimääränTaiVuosiluokanSuorituksen
-import scala.collection.JavaConverters._
+
+import scala.collection.mutable
+import scala.jdk.CollectionConverters._
 
 object DuplikaattiValidation extends Logging {
 
@@ -79,7 +81,7 @@ object DuplikaattiValidation extends Logging {
     lazy val aiemminTallennettuOpiskeluoikeus = oppijanOpiskeluoikeudet.map(_.find(samaOo(opiskeluoikeus, _)))
 
     def samaDiaarinumeroAmmatillinen(muuOpiskeluoikeus: AmmatillinenOpiskeluoikeus): Boolean = {
-      val duplikaatinSallivatAmmatillisenKoulutuksenPerusteenDiaarinumerot: Seq[String] =
+      val duplikaatinSallivatAmmatillisenKoulutuksenPerusteenDiaarinumerot: mutable.Buffer[String] =
         config.getStringList("validaatiot.duplikaatinSallivatAmmatillisenKoulutuksenPerusteenDiaarinumerot").asScala
 
       def diaarinumerot(oo: Opiskeluoikeus): List[String] = oo.suoritukset

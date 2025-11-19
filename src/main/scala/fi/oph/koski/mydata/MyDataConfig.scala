@@ -5,7 +5,7 @@ import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.log.Logging
 import com.typesafe.config.{Config => TypeSafeConfig}
 import fi.oph.koski.servlet.InvalidRequestException
-import scala.collection.JavaConverters._
+import scala.jdk.CollectionConverters._
 
 
 trait MyDataConfig extends Logging  {

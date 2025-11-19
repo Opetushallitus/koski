@@ -177,13 +177,16 @@ case class ObjectType(
   }
 
   override def unambigiousDefaultValue: Option[ObjectDefaultsMap] = {
-    val propDefaults = properties.mapValues {
-      case o: ObjectType => o.unambigiousDefaultValue.map(values => ObjectDefaultsMap(o.className, values.properties))
-      case p: TypeModel => p.unambigiousDefaultValue.map(value => ObjectDefaultsProperty(value))
-      case _ => None
-    }
+    val propDefaults = properties.iterator.map {
+      case (key, o: ObjectType) =>
+        key -> o.unambigiousDefaultValue.map(values => ObjectDefaultsMap(o.className, values.properties))
+      case (key, p: TypeModel) =>
+        key -> p.unambigiousDefaultValue.map(value => ObjectDefaultsProperty(value))
+      case (key, _) =>
+        key -> None
+    }.toMap
     if (propDefaults.values.forall(_.isDefined)) {
-      Some(ObjectDefaultsMap(className, propDefaults.mapValues(_.get)))
+      Some(ObjectDefaultsMap(className, propDefaults.view.mapValues(_.get).toMap))
     } else {
       None
     }

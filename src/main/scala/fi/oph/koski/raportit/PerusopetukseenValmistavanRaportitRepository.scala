@@ -37,7 +37,7 @@ case class PerusopetukseenValmistavanRaportitRepository(db: DB) extends QueryMet
       .filter(osasuoritus => !osasuoritustenAikarajaus || arvioituAikavälillä(alku, loppu)(osasuoritus))
       .groupBy(_.päätasonSuoritusId)
 
-    val henkilot = runDbSync(RHenkilöt.filter(_.oppijaOid inSet opiskeluoikeudet.map(_.oppijaOid).distinct).result).groupBy(_.oppijaOid).mapValues(_.head)
+    val henkilot = runDbSync(RHenkilöt.filter(_.oppijaOid inSet opiskeluoikeudet.map(_.oppijaOid).distinct).result).groupBy(_.oppijaOid).view.mapValues(_.head).toMap
 
     opiskeluoikeudet.foldLeft[Seq[PerusopetukseenValmistavanRaporttiRows]](Seq.empty) { (acc, oo) =>
       paatasonSuoritukset.getOrElse(oo.opiskeluoikeusOid, Nil).map((pts: RPäätasonSuoritusRow) =>
@@ -53,7 +53,7 @@ case class PerusopetukseenValmistavanRaportitRepository(db: DB) extends QueryMet
   }
 
   private def queryOpiskeluoikeusOids(oppilaitokset: Seq[String], alku: LocalDate, loppu: LocalDate) = {
-    implicit val getResult = GetResult(rs => (rs.nextString, rs.nextArray, rs.nextArray))
+    implicit val getResult = GetResult(rs => (rs.nextString(), rs.nextArray(), rs.nextArray()))
 
     val query =
       sql"""

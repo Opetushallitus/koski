@@ -52,7 +52,7 @@ case class Lukio2019RaportitRepository(db: DB) extends QueryMethods with Raporto
       .filter(osasuoritus => !osasuoritustenAikarajaus || isOppiaine(osasuoritus) || arvioituAikavälillä(alku, loppu)(osasuoritus))
       .groupBy(_.päätasonSuoritusId)
 
-    val henkilot = runDbSync(RHenkilöt.filter(_.oppijaOid inSet opiskeluoikeudet.map(_.oppijaOid).distinct).result, timeout = defaultTimeout).groupBy(_.oppijaOid).mapValues(_.head)
+    val henkilot = runDbSync(RHenkilöt.filter(_.oppijaOid inSet opiskeluoikeudet.map(_.oppijaOid).distinct).result, timeout = defaultTimeout).groupBy(_.oppijaOid).view.mapValues(_.head).toMap
 
     val kotikuntahistoriat = kotikuntaPvm.toSeq.flatMap { pvm =>
       val pvmDateBegin = Date.valueOf(LocalDate.of(1900, 1, 1))

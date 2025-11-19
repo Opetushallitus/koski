@@ -9,7 +9,7 @@ trait RequiresHakemuspalvelu extends KoskiCookieAndBasicAuthenticationSupport {
     requiresHakemuspalvelu
   }
 
-  private def requiresHakemuspalvelu {
+  private def requiresHakemuspalvelu: Unit = {
     getUser match {
       case Left(status) if status.statusCode == 401 =>
         haltWithStatus(status)

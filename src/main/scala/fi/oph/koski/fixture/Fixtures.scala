@@ -46,7 +46,7 @@ class FixtureCreator(application: KoskiApplication) extends Logging with QueryMe
 
     if (shouldUseFixtures) {
       val fixtureNameHasChanged = fixtureState.name != currentFixtureState.name
-      application.cacheManager.invalidateAllCaches
+      application.cacheManager.invalidateAllCaches()
 
       if (raportointikantaService.isEmpty && reloadRaportointikanta) {
         reloadRaportointikantaAndWait()

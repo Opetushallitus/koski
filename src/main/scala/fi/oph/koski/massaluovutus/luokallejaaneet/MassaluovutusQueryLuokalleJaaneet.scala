@@ -62,7 +62,7 @@ trait MassaluovutusQueryLuokalleJaaneet extends MassaluovutusQueryParameters wit
         }
     }
 
-    Right(Unit)
+    Right(())
   }
 
   override def queryAllowed(application: KoskiApplication)(implicit user: KoskiSpecificSession): Boolean =

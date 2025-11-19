@@ -43,7 +43,7 @@ class OmaDataOAuth2Repository(val application: KoskiApplication, val db: DB) ext
         mitätöity = false,
         mitätöitySyy = None
       ))
-      Right(Unit)
+      Right(())
     } catch {
       case t:Throwable =>
         val errorMessage = s"Failed to add authorization for ${clientId} to access student info of ${oppijaOid}"

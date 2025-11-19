@@ -3,6 +3,7 @@ package fi.oph.koski.luovutuspalvelu
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.servlet.KoskiSpecificApiServlet
 import fi.oph.koski.util.XML
+import fi.oph.koski.xml.NodeSeqImplicits._
 
 import scala.util.control.NonFatal
 import scala.xml.transform.{RewriteRule, RuleTransformer}

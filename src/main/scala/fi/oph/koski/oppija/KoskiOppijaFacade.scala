@@ -193,7 +193,7 @@ class KoskiOppijaFacade(
       }
 
       val globaaliValidatorCheck = oppijaOid.map(_.verified).flatMap {
-        case _ if skipGlobaaliValidation => Right(Unit)
+        case _ if skipGlobaaliValidation => Right(())
         case Some(henkilö) =>
           val henkilöMaster = henkilöRepository.findByOid(henkilö.oid, findMasterIfSlaveOid = true)
           val validation = HttpStatus.fold(oppija.tallennettavatOpiskeluoikeudet.map(opiskeluoikeus => {
@@ -204,10 +204,10 @@ class KoskiOppijaFacade(
             )
           }))
           validation match {
-            case status if status.isOk => Right(Unit)
+            case status if status.isOk => Right(())
             case _ if (config.getStringList("validaatiot.ohitaValidaatiovirheetKäyttäjällä").contains(user.user.username)) =>
               logger.info(s"Ohitetaan käyttäjätunnuksen perusteella validaatiovirheitä")
-              Right(Unit)
+              Right(())
             case _ => Left(validation)
           }
         case None => Left(KoskiErrorCategory.notFound.oppijaaEiLöydy("Oppijaa " + oppijaOid.right.get.oppijaOid + " ei löydy."))

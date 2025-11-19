@@ -7,7 +7,7 @@ import fi.oph.koski.documentation.AmmatillinenExampleData._
 import fi.oph.koski.eperusteet.ERakenneOsa
 import fi.oph.koski.http._
 import fi.oph.koski.koodisto.{KoodistoPalvelu, KoodistoViite}
-import fi.oph.koski.koskiuser.AccessType
+import fi.oph.koski.koskiuser.{AccessType, KoskiSpecificSession}
 import fi.oph.koski.koskiuser.KoskiSpecificSession._
 import fi.oph.koski.log.Logging
 import fi.oph.koski.organisaatio.{MockOrganisaatiot, RemoteOrganisaatioRepository}
@@ -19,13 +19,14 @@ import fi.oph.koski.executors.GlobalExecutionContext
 import fi.oph.koski.healthcheck.Subsystem._
 import org.json4s.JString
 
+import scala.collection.parallel.CollectionConverters._
 import scala.collection.parallel.ExecutionContextTaskSupport
 import scala.concurrent.duration.{DurationInt, FiniteDuration}
 import scala.language.postfixOps
 
 class HealthChecker(val application: KoskiApplication) extends Logging with Timing with GlobalExecutionContext {
-  private implicit val user = systemUser
-  private implicit val accessType = AccessType.write
+  private implicit val user: KoskiSpecificSession = systemUser
+  private implicit val accessType: AccessType.Value = AccessType.write
   private val oid = application.config.getString("healthcheck.oppija.oid")
   private val koodistoPalvelu = KoodistoPalvelu.withoutCache(application.config)
   private val ePerusteet = application.ePerusteet

@@ -155,7 +155,7 @@ class RaportointikantaService(application: KoskiApplication) extends Logging {
   def isEmpty: Boolean = raportointiDatabase.status.isEmpty
 
   def status: Map[String, RaportointikantaStatusResponse] =
-    List(loadDatabase.status, raportointiDatabase.status).groupBy(_.schema).mapValues(_.head)
+    List(loadDatabase.status, raportointiDatabase.status).groupBy(_.schema).view.mapValues(_.head).toMap
 
   def putUploadEvents(): Unit = {
     eventBridgeClient.putEvents(
