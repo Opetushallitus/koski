@@ -61,7 +61,7 @@ trait ArviointiPäivämäärällä extends Arviointi {
   @Description("Päivämäärä, jolloin arviointi on annettu. Muoto YYYY-MM-DD")
   @Title("Arviointipäivä")
   def päivä: LocalDate
-  def arviointipäivä = Some(päivä)
+  def arviointipäivä: Option[LocalDate] = Some(päivä)
 }
 
 trait KoodistostaLöytyväArviointi extends Arviointi {
