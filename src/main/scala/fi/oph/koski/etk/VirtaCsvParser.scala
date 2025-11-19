@@ -23,7 +23,7 @@ object VirtaCsvParser extends Logging {
   private val sukupuoli = "sukupuoli"
 
   def parse(source: BufferedSource): Option[EtkResponse] = {
-    val csv = source.getLines.toList
+    val csv = source.getLines().toList
 
     if (csv.nonEmpty) {
       val headLine = validateHeading(csv.head.split(separator))

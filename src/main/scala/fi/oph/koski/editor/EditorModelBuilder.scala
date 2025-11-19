@@ -14,7 +14,7 @@ import fi.oph.koski.schema._
 import fi.oph.koski.schema.annotation._
 import fi.oph.koski.util.OptionalLists
 import fi.oph.scalaschema._
-import fi.oph.scalaschema.annotation._
+import fi.oph.scalaschema.annotation.{EnumValue => _, _}
 import org.json4s.JsonAST.{JBool, JString}
 import org.json4s.{JArray, JValue}
 
@@ -54,7 +54,8 @@ object EditorModelBuilder {
 
   def buildModel(obj: Any, schema: Schema, metadata: List[Metadata])(implicit context: ModelBuilderContext): EditorModel = builder(schema).buildModelForObject(obj, metadata)
   def sanitizeName(s: String) = s.toLowerCase.replaceAll("ä", "a").replaceAll("ö", "o").replaceAll("/", "-")
-  def organisaatioEnumValue(localization: LocalizedHtml)(o: OrganisaatioWithOid)() = EnumValue(o.oid, localization.i(o), JsonSerializer.serializeWithRoot(o), None)
+  def organisaatioEnumValue(localization: LocalizedHtml)(o: OrganisaatioWithOid): EnumValue =
+    EnumValue(o.oid, localization.i(o), JsonSerializer.serializeWithRoot(o), None)
   def resolveSchema(schema: SchemaWithClassName)(implicit context: ModelBuilderContext): SchemaWithClassName = schema match {
     case s: ClassRefSchema => context.deserializationContext.schemaFactory.createSchema(s.fullClassName)
     case _ => schema
@@ -197,10 +198,11 @@ trait EnumModelBuilder[A] extends ModelBuilderForClass {
   def prototypeKey = sanitizeName(alternativesPath)
 
   def buildModelForObject(o: AnyRef, metadata: List[Metadata]) = {
-    o match {
-      case k: Option[A] => EnumeratedModel(k.map(toEnumValue), None, Some(alternativesPath), metadata)
-      case k: A @unchecked => buildModelForObject(Some(k), metadata)
+    val asOption: Option[A] = o match {
+      case opt: Option[_] => opt.asInstanceOf[Option[A]]
+      case value => Option(value.asInstanceOf[A])
     }
+    EnumeratedModel(asOption.map(toEnumValue), None, Some(alternativesPath), metadata)
   }
 }
 

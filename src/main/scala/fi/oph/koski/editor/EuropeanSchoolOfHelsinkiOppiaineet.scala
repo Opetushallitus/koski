@@ -32,7 +32,7 @@ case class EuropeanSchoolOfHelsinkiOppiaineet(koodistoViitePalvelu: KoodistoViit
     koulutusmoduulinTunniste match {
       case "P1" | "P2" => makePrimaryOsasuoritusLista(osasuorituksetPrimary12, oppiainekoodi)
       case "P3" | "P4" | "P5" => makePrimaryOsasuoritusLista(osasuorituksetPrimary345, oppiainekoodi)
-      case "S7" => osasurituksetAB().getOrElse(List())
+      case "S7" => osasurituksetAB.getOrElse(List())
       case _ => List()
     }
   }
@@ -735,7 +735,7 @@ case class EuropeanSchoolOfHelsinkiOppiaineet(koodistoViitePalvelu: KoodistoViit
     )
   }
 
-  private def osasurituksetAB(): Option[List[S7OppiaineenAlaosasuoritus]] = Some(List(
+  private def osasurituksetAB: Option[List[S7OppiaineenAlaosasuoritus]] = Some(List(
     S7OppiaineenAlaosasuoritus(
       koulutusmoduuli = S7OppiaineKomponentti(
         lokalisoituKoodi("A", "europeanschoolofhelsinkis7oppiaineenkomponentti")

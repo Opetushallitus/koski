@@ -34,7 +34,7 @@ class ValpasAccessResolver {
   : Either[HttpStatus, Unit] =
     Either.cond(
       accessToAnyOrg(rooli),
-      Unit,
+      (),
       ValpasErrorCategory.forbidden.toiminto()
     )
 

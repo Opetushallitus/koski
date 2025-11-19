@@ -10,6 +10,7 @@ import fi.oph.koski.schema._
 import org.scalatest.OptionValues
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.should.Matchers
+import fi.oph.koski.xml.NodeSeqImplicits._
 
 import java.time.LocalDate
 import scala.xml.Elem

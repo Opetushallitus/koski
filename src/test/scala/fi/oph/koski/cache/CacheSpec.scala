@@ -6,6 +6,7 @@ import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.should.Matchers
 
 import scala.concurrent.duration.DurationInt
+import scala.collection.parallel.CollectionConverters._
 
 class CacheSpec extends AnyFreeSpec with TestEnvironment with Matchers {
   implicit val manager = GlobalCacheManager

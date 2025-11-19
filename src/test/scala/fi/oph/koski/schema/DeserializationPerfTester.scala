@@ -4,6 +4,7 @@ import java.io.File
 import fi.oph.koski.json.JsonFiles
 import fi.oph.scalaschema._
 import org.json4s.JsonAST.JBool
+import scala.collection.immutable.LazyList
 
 object DeserializationPerfTester extends App {
 
@@ -27,7 +28,7 @@ object DeserializationPerfTester extends App {
     .toList
     .map(_.getAbsolutePath)
     .sorted
-  val filesRepeating = Stream.continually(files.toStream).flatten
+  val filesRepeating = LazyList.continually(LazyList.from(files)).flatten
 
   val count = 1
   var started = System.currentTimeMillis()

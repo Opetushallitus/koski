@@ -9,7 +9,7 @@ trait RequiresValvira extends KoskiLuovutuspalveluHeaderAuthenticationSupport wi
     requiresValvira
   }
 
-  private def requiresValvira {
+  private def requiresValvira: Unit = {
     getUser match {
       case Left(status) if status.statusCode == 401 =>
         haltWithStatus(status)

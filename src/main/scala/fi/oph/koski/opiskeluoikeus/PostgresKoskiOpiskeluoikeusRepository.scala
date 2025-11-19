@@ -240,7 +240,9 @@ class PostgresKoskiOpiskeluoikeusRepository(
         AND poistettu IS NOT TRUE
   """.as[(String, Timestamp)])
       .toMap
+      .view
       .mapValues(_.toLocalDateTime.toLocalDate)
+      .toMap
 
   private implicit def getLocalDate: GetResult[LocalDate] = GetResult(r => {
     r.getLocalDate("paiva")

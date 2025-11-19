@@ -275,22 +275,22 @@ protected case class HttpResponseLog(request: Request[IO], uriTemplate: String) 
 
   private def elapsedMillis = System.currentTimeMillis - started
 
-  def log(responseStatus: Status) {
+  def log(responseStatus: Status): Unit = {
     log(responseStatus.code.toString)
     HttpResponseMonitoring.record(request, uriTemplate, responseStatus.code, elapsedMillis)
   }
 
-  def log(e: HttpStatusException) {
+  def log(e: HttpStatusException): Unit = {
     log(e.status.toString)
     HttpResponseMonitoring.record(request, uriTemplate, e.status, elapsedMillis)
   }
 
-  def log(e: Exception) {
+  def log(e: Exception): Unit = {
     log(s"${e.getClass.getSimpleName}: ${e.getMessage}")
     HttpResponseMonitoring.record(request, uriTemplate, 500, elapsedMillis)
   }
 
-  private def log(status: String) {
+  private def log(status: String): Unit = {
     HttpResponseLog.logger.debug(
       maskSensitiveInformation(s"${request.method} ${request.uri} status ${status} took ${elapsedMillis} ms")
     )
@@ -303,7 +303,7 @@ protected object HttpResponseMonitoring {
 
   private val HttpServicePattern = """https?://([a-z0-9:.-]+/[a-z0-9.-]+).*""".r
 
-  def record(request: Request[IO], uriTemplate: String, status: Int, durationMillis: Long) {
+  def record(request: Request[IO], uriTemplate: String, status: Int, durationMillis: Long): Unit = {
     val responseClass = status / 100 * 100 // 100, 200, 300, 400, 500
 
     val service = request.uri.toString match {

@@ -525,7 +525,7 @@ class RaportointiDatabase(config: RaportointiDatabaseConfigBase) extends Logging
     val sisältyvätOpiskeluoikeudet: Map[String, Seq[ROpiskeluoikeusRow]] = retryDbSync(sisältyvätOpiskeluoikeudetQuery.result).groupBy(_.sisältyyOpiskeluoikeuteenOid.get)
 
     val henkilötQuery = RHenkilöt.filter(_.oppijaOid inSet result1.map(_._1.oppijaOid))
-    val henkilöt: Map[String, RHenkilöRow] = runDbSync(henkilötQuery.result).groupBy(_.oppijaOid).mapValues(_.head)
+    val henkilöt: Map[String, RHenkilöRow] = runDbSync(henkilötQuery.result).groupBy(_.oppijaOid).view.mapValues(_.head).toMap
 
     // group rows belonging to same opiskeluoikeus
     result1
