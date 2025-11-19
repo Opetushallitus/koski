@@ -566,11 +566,11 @@ object IBExampleData {
     suorituskieli = None
   )
 
-  def muidenLukioOpintojenSuoritus(): MuidenLukioOpintojenPreIBSuoritus2019 = muidenLukioOpintojenSuoritus(Lukio2019ExampleData.muutSuoritukset)
+  def muidenLukioOpintojenSuoritus(): MuidenLukioOpintojenPreIBSuoritus2019 = muidenLukioOpintojenSuoritus(Lukio2019ExampleData.muutSuoritukset())
 
-  def lukioDiplomienSuoritus(): MuidenLukioOpintojenPreIBSuoritus2019 = muidenLukioOpintojenSuoritus(Lukio2019ExampleData.lukiodiplomit)
+  def lukioDiplomienSuoritus(): MuidenLukioOpintojenPreIBSuoritus2019 = muidenLukioOpintojenSuoritus(Lukio2019ExampleData.lukiodiplomit())
 
-  def temaattistenOpintojenSuoritus(): MuidenLukioOpintojenPreIBSuoritus2019 = muidenLukioOpintojenSuoritus(Lukio2019ExampleData.temaattisetOpinnot)
+  def temaattistenOpintojenSuoritus(): MuidenLukioOpintojenPreIBSuoritus2019 = muidenLukioOpintojenSuoritus(Lukio2019ExampleData.temaattisetOpinnot())
 
   private def muidenLukioOpintojenSuoritus(koulutusmoduuli: MuutSuorituksetTaiVastaavat2019): MuidenLukioOpintojenPreIBSuoritus2019 = MuidenLukioOpintojenPreIBSuoritus2019(
     koulutusmoduuli = koulutusmoduuli,

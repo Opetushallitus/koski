@@ -42,9 +42,9 @@ object ExamplesLukio2019 {
     suorituskieli = suomenKieli,
     vahvistus = vahvistusPaikkakunnalla(päivä = date(2020, 5, 15)),
     toimipiste = jyväskylänNormaalikoulu,
-    omanÄidinkielenOpinnot = omanÄidinkielenOpinnotSaame,
-    puhviKoe = puhviKoe,
-    suullisenKielitaidonKokeet = Some(List(suullisenKielitaidonKoeEnglanti, suullisenKielitaidonKoeEspanja)),
+    omanÄidinkielenOpinnot = omanÄidinkielenOpinnotSaame(),
+    puhviKoe = puhviKoe(),
+    suullisenKielitaidonKokeet = Some(List(suullisenKielitaidonKoeEnglanti(), suullisenKielitaidonKoeEspanja())),
     lukiodiplomit2019 = Some(List(lukiodiplominSuoritus())),
     todistuksellaNäkyvätLisätiedot = Some("Osallistunut kansalliseen etäopetuskokeiluun"),
     osasuoritukset = Some(oppiaineSuorituksetJoissaMuitaSuorituksiaJaVastaavia),
@@ -56,9 +56,9 @@ object ExamplesLukio2019 {
     oppimäärä = aikuistenOpetussuunnitelma,
     suorituskieli = suomenKieli,
     toimipiste = jyväskylänNormaalikoulu,
-    omanÄidinkielenOpinnot = omanÄidinkielenOpinnotSaame,
-    puhviKoe = puhviKoe,
-    suullisenKielitaidonKokeet = Some(List(suullisenKielitaidonKoeEnglanti, suullisenKielitaidonKoeEspanja)),
+    omanÄidinkielenOpinnot = omanÄidinkielenOpinnotSaame(),
+    puhviKoe = puhviKoe(),
+    suullisenKielitaidonKokeet = Some(List(suullisenKielitaidonKoeEnglanti(), suullisenKielitaidonKoeEspanja())),
     todistuksellaNäkyvätLisätiedot = Some("Osallistunut kansalliseen etäopetuskokeiluun"),
     osasuoritukset = Some(oppiaineSuorituksetJoissaMuitaSuorituksiaJaVastaavia),
     ryhmä = Some("AH")
@@ -71,7 +71,7 @@ object ExamplesLukio2019 {
     oppimäärä = nuortenOpetussuunnitelma,
     suorituskieli = suomenKieli,
     toimipiste = jyväskylänNormaalikoulu,
-    suullisenKielitaidonKokeet = Some(List(suullisenKielitaidonKoeEspanja)),
+    suullisenKielitaidonKokeet = Some(List(suullisenKielitaidonKoeEspanja())),
     osasuoritukset = Some(oppiainesuoritukset)
   )
 
@@ -80,7 +80,7 @@ object ExamplesLukio2019 {
     oppimäärä = nuortenOpetussuunnitelma,
     suorituskieli = suomenKieli,
     toimipiste = jyväskylänNormaalikoulu,
-    suullisenKielitaidonKokeet = Some(List(suullisenKielitaidonKoeEspanja)),
+    suullisenKielitaidonKokeet = Some(List(suullisenKielitaidonKoeEspanja())),
     osasuoritukset = Some(oppiaineSuorituksetJoissaMuitaSuorituksiaJaVastaavia)
   )
 
@@ -89,7 +89,7 @@ object ExamplesLukio2019 {
     oppimäärä = aikuistenOpetussuunnitelma,
     suorituskieli = suomenKieli,
     toimipiste = jyväskylänNormaalikoulu,
-    suullisenKielitaidonKokeet = Some(List(suullisenKielitaidonKoeEspanja)),
+    suullisenKielitaidonKokeet = Some(List(suullisenKielitaidonKoeEspanja())),
     osasuoritukset = Some(oppiainesuoritukset)
   )
 
@@ -98,9 +98,9 @@ object ExamplesLukio2019 {
     oppimäärä = aikuistenOpetussuunnitelma,
     suorituskieli = suomenKieli,
     toimipiste = jyväskylänNormaalikoulu,
-    omanÄidinkielenOpinnot = omanÄidinkielenOpinnotSaame,
-    puhviKoe = puhviKoe,
-    suullisenKielitaidonKokeet = Some(List(suullisenKielitaidonKoeEnglanti, suullisenKielitaidonKoeEspanja)),
+    omanÄidinkielenOpinnot = omanÄidinkielenOpinnotSaame(),
+    puhviKoe = puhviKoe(),
+    suullisenKielitaidonKokeet = Some(List(suullisenKielitaidonKoeEnglanti(), suullisenKielitaidonKoeEspanja())),
     todistuksellaNäkyvätLisätiedot = Some("Osallistunut kansalliseen etäopetuskokeiluun"),
     osasuoritukset = Some(oppiaineSuorituksetJoissaMuitaSuorituksiaJaVastaavia),
     ryhmä = Some("AH")
@@ -387,11 +387,11 @@ object Lukio2019ExampleData {
     pakollinen = true
   )
 
-  def muidenLukioOpintojenSuoritus(): MuidenLukioOpintojenSuoritus2019 = muidenLukioOpintojenSuoritus(muutSuoritukset)
+  def muidenLukioOpintojenSuoritus(): MuidenLukioOpintojenSuoritus2019 = muidenLukioOpintojenSuoritus(muutSuoritukset())
 
-  def lukioDiplomienSuoritus(): MuidenLukioOpintojenSuoritus2019 = muidenLukioOpintojenSuoritus(lukiodiplomit)
+  def lukioDiplomienSuoritus(): MuidenLukioOpintojenSuoritus2019 = muidenLukioOpintojenSuoritus(lukiodiplomit())
 
-  def temaattistenOpintojenSuoritus(): MuidenLukioOpintojenSuoritus2019 = muidenLukioOpintojenSuoritus(temaattisetOpinnot)
+  def temaattistenOpintojenSuoritus(): MuidenLukioOpintojenSuoritus2019 = muidenLukioOpintojenSuoritus(temaattisetOpinnot())
 
   def muutSuoritukset():MuutLukionSuoritukset2019 = MuutLukionSuoritukset2019(Koodistokoodiviite(koodistoUri = "lukionmuutopinnot", koodiarvo= "MS"), None)
   def lukiodiplomit(): Lukiodiplomit2019 = Lukiodiplomit2019(Koodistokoodiviite(koodistoUri = "lukionmuutopinnot", koodiarvo= "LD"), None)
@@ -467,4 +467,3 @@ object Lukio2019ExampleData {
   )
 
 }
-

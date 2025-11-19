@@ -9,6 +9,7 @@ import fi.oph.koski.valpas.opiskeluoikeusrepository.{ValpasHenkilö, ValpasOppil
 import fi.oph.koski.valpas.oppijahaku.{ValpasHenkilöhakuResult, ValpasLöytyiHenkilöhakuResult}
 import fi.oph.koski.valpas.valpasrepository.{UusiOppivelvollisuudenKeskeytys, ValpasKuntailmoitusLaajatTiedot}
 import fi.oph.koski.valpas.valpasuser.ValpasSession
+import scala.collection.immutable.LazyList
 
 object ValpasAuditLog {
   def auditLogOppijaKatsominen(oppijaOid: ValpasHenkilö.Oid)(implicit session: ValpasSession): Unit =
@@ -191,7 +192,7 @@ object ValpasAuditLog {
 
     val sivuLukumäärä = hetuSivut.length + palautetutOppijaOiditSivut.length
 
-    hetuSivut.zip(Stream.from(1)).foreach {
+    hetuSivut.zip(LazyList.from(1)).foreach {
       case (hetut, sivu) =>
         AuditLog.log(ValpasAuditLogMessage(
           ValpasOperation.VALPAS_ROUHINTA_HETUHAKU,
@@ -204,7 +205,7 @@ object ValpasAuditLog {
         ))
     }
 
-    palautetutOppijaOiditSivut.zip(Stream.from(hetuSivut.length + 1)).foreach {
+    palautetutOppijaOiditSivut.zip(LazyList.from(hetuSivut.length + 1)).foreach {
       case (oidit, sivu) =>
         AuditLog.log(ValpasAuditLogMessage(
           ValpasOperation.VALPAS_ROUHINTA_HETUHAKU,
@@ -226,7 +227,7 @@ object ValpasAuditLog {
     val palautetutOppijaOiditSivut = palautetutOppijaOidit.grouped(oidejaEnintäänAuditlogEntryssä).toList
     val sivuLukumäärä = palautetutOppijaOiditSivut.length
 
-    palautetutOppijaOiditSivut.zip(Stream.from(1)).foreach {
+    palautetutOppijaOiditSivut.zip(LazyList.from(1)).foreach {
       case (oidit, sivu) =>
         AuditLog.log(ValpasAuditLogMessage(
           ValpasOperation.VALPAS_ROUHINTA_KUNTA,

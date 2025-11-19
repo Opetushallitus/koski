@@ -18,6 +18,9 @@ import scala.concurrent.duration.DurationInt
 
 class OpiskeluoikeusQueryService(val db: DB) extends QueryMethods {
   private val defaultPagination = QueryPagination(0)
+  private def pageIndexes: Iterable[Int] = new Iterable[Int] {
+    override def iterator: Iterator[Int] = Iterator.from(0)
+  }
 
   def oppijaOidsQuery(pagination: Option[PaginationSettings])(implicit user: KoskiSpecificSession): Observable[String] = {
     streamingQuery(defaultPagination.applyPagination(KoskiOpiskeluOikeudetWithAccessCheck.map(_.oppijaOid), pagination))
@@ -55,7 +58,7 @@ class OpiskeluoikeusQueryService(val db: DB) extends QueryMethods {
     (mapFn: Seq[KoskiOpiskeluoikeusRow] => Seq[A])
   : Observable[A] = {
 
-    Observable.from(Iterator.from(0).toIterable)
+    Observable.from(pageIndexes)
       .map(page => kaikkiSivulta(KoskiOpiskeluOikeudetWithAccessCheck(user))(PaginationSettings(page, pageSize), user))
       .takeWhile(!_.isEmpty)
       .flatMap(p => Observable.from(mapFn(p)))
@@ -78,7 +81,7 @@ class OpiskeluoikeusQueryService(val db: DB) extends QueryMethods {
   def koskiOpiskeluoikeudetSivuittainWithoutAccessCheck
     (pageSize: Int)
   : Observable[Seq[OpiskeluoikeusRow]] = {
-    Observable.from(Iterator.from(0).toIterable)
+    Observable.from(pageIndexes)
       .map(page => kaikkiKoskiOpiskeluoikeudetSivultaWithoutAccessCheck(PaginationSettings(page, pageSize)))
       .takeWhile(!_.isEmpty)
   }
@@ -88,7 +91,7 @@ class OpiskeluoikeusQueryService(val db: DB) extends QueryMethods {
   : Observable[Seq[OpiskeluoikeusRow]] = {
     val koskiOot = koskiOpiskeluoikeudetSivuittainWithoutAccessCheck(pageSize)
 
-    val ytrOot = Observable.from(Iterator.from(0).toIterable)
+    val ytrOot = Observable.from(pageIndexes)
       .map(page => kaikkiYtrOpiskeluoikeudetSivultaWithoutAccessCheck(PaginationSettings(page, pageSize)))
       .takeWhile(!_.isEmpty)
 

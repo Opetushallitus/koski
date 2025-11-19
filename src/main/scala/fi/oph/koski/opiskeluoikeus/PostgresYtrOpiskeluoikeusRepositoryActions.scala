@@ -40,7 +40,7 @@ class PostgresYtrOpiskeluoikeusRepositoryActions(
     opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus,
     result: Either[HttpStatus, CreateOrUpdateResult]
   )(implicit user: KoskiSpecificSession): DBIOAction[Any, NoStream, Read with Write] = {
-    DBIO.successful(Unit)
+    DBIO.successful(())
   }
 
   protected override def createOrUpdateAction(

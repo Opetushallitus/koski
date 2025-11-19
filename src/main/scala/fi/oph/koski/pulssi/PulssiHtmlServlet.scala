@@ -8,6 +8,7 @@ import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.servlet.VirkailijaHtmlServlet
 import fi.oph.koski.util.FinnishDateFormat.finnishDateTimeFormat
 import org.scalatra.ScalatraServlet
+import fi.oph.koski.xml.NodeSeqImplicits._
 
 class PulssiHtmlServlet(implicit val application: KoskiApplication) extends ScalatraServlet with VirkailijaHtmlServlet {
 

@@ -19,7 +19,8 @@ class OmaDataOAuth2ClientDetailsSpec extends AnyFreeSpec with KoskiHttpSpec with
 
     "Palauttaa 401, jos kansalainen ei ole kirjautunut" in {
       get(
-        uri = clientDetailsUri
+        uri = clientDetailsUri,
+        params = Nil
       ) {
         verifyResponseStatus(401)
       }

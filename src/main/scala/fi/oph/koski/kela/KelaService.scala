@@ -16,7 +16,7 @@ import rx.lang.scala.Observable
 import java.time.LocalDateTime
 import scala.concurrent.Future
 import scala.concurrent.duration.DurationInt
-import scala.collection.JavaConverters._
+import scala.jdk.CollectionConverters._
 
 class KelaService(application: KoskiApplication) extends GlobalExecutionContext with Logging {
   private val kelaOpiskeluoikeusRepository = new KelaOpiskeluoikeusRepository(

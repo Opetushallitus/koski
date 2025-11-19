@@ -9,7 +9,7 @@ trait RequiresSdg extends KoskiLuovutuspalveluHeaderAuthenticationSupport {
     requiresSdg
   }
 
-  private def requiresSdg {
+  private def requiresSdg: Unit = {
     getUser match {
       case Left(status) if status.statusCode == 401 =>
         haltWithStatus(status)

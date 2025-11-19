@@ -10,6 +10,8 @@ import fi.oph.koski.schema.{Henkilö, LocalizedString, OsaamisenTunnustaminen}
 import fi.oph.koski.servlet.VirkailijaHtmlServlet
 import fi.oph.scalaschema.ClassSchema
 import org.scalatra.ScalatraServlet
+import fi.oph.koski.xml.NodeSeqImplicits._
+
 
 import scala.Function.const
 import scala.xml.NodeSeq

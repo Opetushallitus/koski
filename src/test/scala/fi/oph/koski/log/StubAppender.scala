@@ -36,7 +36,7 @@ object StubLogs {
     logs.clear()
   }
   def getLogs(appenderName: String): Seq[String] = synchronized {
-    logs.filter(_.appenderName == appenderName).map(_.message)
+    logs.filter(_.appenderName == appenderName).map(_.message).toList
   }
   def append(appenderName: String, message: String): Unit = {
     synchronized {

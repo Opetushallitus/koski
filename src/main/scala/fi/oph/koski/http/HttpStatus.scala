@@ -25,7 +25,7 @@ case class HttpStatus(statusCode: Int, errors: List[ErrorDetail]) {
   def toEither: Either[HttpStatus, Unit] = if (isError) {
     Left(this)
   } else {
-    Right(Unit)
+    Right(())
   }
 }
 
