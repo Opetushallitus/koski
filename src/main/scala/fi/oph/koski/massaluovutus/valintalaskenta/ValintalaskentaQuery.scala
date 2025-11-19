@@ -6,10 +6,11 @@ import fi.oph.koski.db.KoskiOpiskeluoikeusRowImplicits.getKoskiOpiskeluoikeusRow
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api.actionBasedSQLInterpolation
 import fi.oph.koski.db.{DB, KoskiOpiskeluoikeusRow, KoskiTables, QueryMethods}
 import fi.oph.koski.http.HttpStatus
+import fi.oph.koski.json.SensitiveDataAllowed
 import fi.oph.koski.koskiuser.{KoskiSpecificSession, Session}
 import fi.oph.koski.koskiuser.Rooli.{OPHKATSELIJA, OPHPAAKAYTTAJA}
 import fi.oph.koski.log._
-import fi.oph.koski.massaluovutus.{MassaluovutusQueryParameters, MassaluovutusQueryPriority, QueryFormat, QueryResultWriter}
+import fi.oph.koski.massaluovutus.{KoskiMassaluovutusQueryParameters, MassaluovutusQueryParameters, MassaluovutusQueryPriority, QueryFormat, QueryResultWriter}
 import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusQueryContext
 import fi.oph.koski.schema.annotation.EnumValues
 import fi.oph.koski.schema.{KoskeenTallennettavaOpiskeluoikeus, KoskiSchema}
@@ -38,27 +39,30 @@ case class ValintalaskentaQuery(
   @Description(s"Haettavat suoritustyypit. Oletuksena [ammatillinentutkinto, ammatillinentutkintoosittainen]]")
   @DefaultValue(Some(ValintalaskentaQuery.defaultSuoritustyypit))
   suoritustyypit: Option[Seq[String]] = None,
-) extends MassaluovutusQueryParameters with Logging {
+) extends KoskiMassaluovutusQueryParameters with Logging {
 
   private val aikaraja: Timestamp = Timestamp.valueOf(rajapäivä.plusDays(1).atStartOfDay())
   override def priority: Int = MassaluovutusQueryPriority.highest
 
-  override def run(application: KoskiApplication, writer: QueryResultWriter)(implicit user: KoskiSpecificSession): Either[String, Unit] = {
-    writer.predictFileCount(oppijaOids.size)
-    oppijaOids.foreach { oid =>
-      val results = getOpiskeluoikeudet(application, oid)
-      if (results.nonEmpty) {
-        val opiskeluoikeudet = asNonEmpty(results.collect { case Right(oo) => oo })
-        val virheet = asNonEmpty(results.collect { case Left(err) => err })
-        writer.putJson(oid, ValintalaskentaResult(oid, opiskeluoikeudet, virheet))
-        if (opiskeluoikeudet.nonEmpty) {
-          auditLog(oid)
+  override def run(application: KoskiApplication, writer: QueryResultWriter)(implicit user: Session with SensitiveDataAllowed): Either[String, Unit] = user match {
+    case koskiUser: KoskiSpecificSession =>
+      implicit val u: KoskiSpecificSession = koskiUser
+      writer.predictFileCount(oppijaOids.size)
+      oppijaOids.foreach { oid =>
+        val results = getOpiskeluoikeudet(application, oid)
+        if (results.nonEmpty) {
+          val opiskeluoikeudet = asNonEmpty(results.collect { case Right(oo) => oo })
+          val virheet = asNonEmpty(results.collect { case Left(err) => err })
+          writer.putJson(oid, ValintalaskentaResult(oid, opiskeluoikeudet, virheet))
+          if (opiskeluoikeudet.nonEmpty) {
+            auditLog(oid)
+          }
+        } else {
+          writer.skipFile()
         }
-      } else {
-        writer.skipFile()
       }
-    }
-    Right(())
+      Right(())
+    case _ => throw new IllegalArgumentException("KoskiSpecificSession required")
   }
 
   override def queryAllowed(application: KoskiApplication)(implicit user: Session): Boolean = user match {
@@ -66,7 +70,7 @@ case class ValintalaskentaQuery(
     case _ => false
   }
 
-  override def fillAndValidate(implicit user: KoskiSpecificSession): Either[HttpStatus, MassaluovutusQueryParameters] =
+  override def fillAndValidate(implicit user: Session): Either[HttpStatus, MassaluovutusQueryParameters] =
     Right(copy(
       koulutusmuoto = koulutusmuoto.orElse(Some(ValintalaskentaQuery.defaultKoulutusmuoto)),
       suoritustyypit = suoritustyypit.orElse(Some(ValintalaskentaQuery.defaultSuoritustyypit)),

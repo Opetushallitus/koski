@@ -31,7 +31,7 @@ class MassaluovutusServlet(implicit val application: KoskiApplication)
       renderEither {
         application
           .validatingAndResolvingExtractor
-          .extract[MassaluovutusQueryParameters](strictDeserialization)(body)
+          .extract[KoskiMassaluovutusQueryParameters](strictDeserialization)(body)
           .flatMap(massaluovutukset.add)
           .map(q => QueryResponse(rootUrl, q, session))
       }
