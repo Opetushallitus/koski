@@ -102,7 +102,7 @@ object KoskiSpecificMockOppijat {
   val dia = koskiSpecificOppijat.oppija("Dia", "Dia", "151013-2195")
   val internationalschool = koskiSpecificOppijat.oppija("International", "Ida", "170186-854H")
   val europeanSchoolOfHelsinki = koskiSpecificOppijat.oppija("Eurooppalainen", "Emilia", "050707A130V")
-  val eskari = koskiSpecificOppijat.oppija("Eskari", "Essi", "300996-870E", kotikunta = Some("179"),
+  val eskari = koskiSpecificOppijat.oppijaSyntymäaikaHetusta("Eskari", "Essi", "300996-870E", kotikunta = Some("179"),
     kuntahistoriaMock = h => {
       val historia = Seq(
         OppijanumerorekisteriKotikuntahistoriaRow(h.henkilö.oid, "178", Some(LocalDate.of(2024, 1, 1)), Some(LocalDate.of(2024, 6, 1)))
