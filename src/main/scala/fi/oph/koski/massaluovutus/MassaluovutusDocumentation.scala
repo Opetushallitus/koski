@@ -13,6 +13,7 @@ import fi.oph.koski.massaluovutus.valpas.eioppivelvollisuuttasuorittavat.ValpasE
 import fi.oph.koski.massaluovutus.valpas.oppivelvolliset.ValpasOppivelvollisetQuery
 import fi.oph.koski.schema
 import fi.oph.koski.util.TryWithLogging
+import fi.oph.koski.xml.NodeSeqImplicits._
 import fi.oph.scalaschema._
 import fi.oph.scalaschema.annotation.{Description, Title}
 import org.json4s.JValue
@@ -48,7 +49,7 @@ object QueryDocumentation extends Logging {
   )
 
   def htmlTextSections(application: KoskiApplication): Map[String, String] =
-    sectionSources.mapValues(htmlTextSection(application))
+    sectionSources.view.mapValues(htmlTextSection(application)).toMap
 
   def htmlTextSection(application: KoskiApplication)(path: String): String =
     TryWithLogging.andResources(logger, { use =>

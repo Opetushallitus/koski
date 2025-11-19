@@ -18,6 +18,7 @@ import fi.oph.koski.ytr.download.{YtrLaajaOppija, YtrSsnDataWithPreviousSsns}
 import org.json4s.JsonAST.{JObject, JString}
 import org.json4s.{JArray, JValue}
 import org.scalatra.ContentEncodingSupport
+import scala.collection.parallel.CollectionConverters._
 
 class OppijaServlet(implicit val application: KoskiApplication)
   extends KoskiSpecificApiServlet

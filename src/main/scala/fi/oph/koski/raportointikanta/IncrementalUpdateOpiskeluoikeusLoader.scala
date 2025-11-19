@@ -11,6 +11,7 @@ import rx.lang.scala.Observable
 
 import java.time.{LocalDateTime, ZonedDateTime}
 import scala.concurrent.duration.FiniteDuration
+import scala.collection.parallel.CollectionConverters._
 
 class IncrementalUpdateOpiskeluoikeusLoader(
   suostumuksenPeruutusService: SuostumuksenPeruutusService,

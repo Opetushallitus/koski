@@ -4,6 +4,7 @@ import fi.oph.koski.TestEnvironment
 import fi.oph.koski.util.XML.CommentedPCData
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.should.Matchers
+import fi.oph.koski.xml.NodeSeqImplicits._
 
 import scala.xml.{Elem, NodeSeq, Text}
 

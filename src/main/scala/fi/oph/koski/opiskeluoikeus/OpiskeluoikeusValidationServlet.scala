@@ -17,6 +17,8 @@ import org.json4s._
 import org.scalatra._
 import rx.lang.scala.Observable
 
+import scala.collection.parallel.CollectionConverters._
+
 class OpiskeluoikeusValidationServlet(implicit val application: KoskiApplication) extends KoskiSpecificApiServlet with RequiresVirkailijaOrPalvelukäyttäjä with Logging with NoCache with ObservableSupport with ContentEncodingSupport {
 
   // Massavalidointi-API

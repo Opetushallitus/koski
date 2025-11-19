@@ -59,7 +59,7 @@ trait MassaluovutusQueryLuokalleJaaneet extends KoulutuksenjärjestäjienMassalu
         }
     }
 
-    Right(Unit)
+    Right(())
   }
 
   override def queryAllowed(application: KoskiApplication)(implicit user: Session): Boolean = withKoskiSpecificSession { u =>

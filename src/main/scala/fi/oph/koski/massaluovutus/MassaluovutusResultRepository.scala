@@ -87,7 +87,7 @@ class MassaluovutusResultRepository(config: Config) extends Logging {
 
   def objectKey(queryId: UUID, name: String): String = s"$queryId/$name"
 
-  private def createBucketIfDoesNotExist =
+  private def createBucketIfDoesNotExist: Unit =
     if (!s3.listBuckets().buckets().asScala.exists(bucket => bucket.name() == bucketName)) {
       s3.createBucket(CreateBucketRequest.builder().bucket(bucketName).build())
     }
@@ -104,9 +104,7 @@ class MassaluovutusResultRepository(config: Config) extends Logging {
       .bucket(bucketName)
       .key(key)
       .contentType(contentType)
-      .metadata(mapAsJavaMap(Map {
-        "query" -> queryId.toString
-      }))
+      .metadata(Map("query" -> queryId.toString).asJava)
       .build()
 
   private def logPut(key: String, contentType: String) =

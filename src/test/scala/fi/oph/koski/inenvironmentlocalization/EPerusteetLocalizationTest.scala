@@ -49,7 +49,11 @@ class EPerusteetLocalizationTest extends AnyFreeSpec with TestEnvironment with M
     val nimetEperusteissa: Map[String, List[Map[String, String]]] = perusteet
       .flatMap(_.tutkinnonOsat.getOrElse(List.empty))
       .groupBy(_.koodiArvo)
-      .mapValues(_.map(_.nimi.filterKeys(!_.startsWith("_")).mapValues(kanoninenNimi)).distinct)
+      .view
+      .mapValues(_.map { osa =>
+        osa.nimi.view.filterKeys(!_.startsWith("_")).mapValues(kanoninenNimi).toMap
+      }.distinct)
+      .toMap
     val suomenkielisetNimetEperusteissa = nimetEperusteissa
       .collect { case (arvo, nimetE) if nimetE.head.contains("fi") => (arvo, nimetE.head("fi")) }
     val ruotsinkielisetNimetEperusteissa = nimetEperusteissa
@@ -58,7 +62,9 @@ class EPerusteetLocalizationTest extends AnyFreeSpec with TestEnvironment with M
     val nimetKoodistossa: Map[String, Map[String, String]] = koodistoPalvelu
       .getKoodistoKoodit(koodistoPalvelu.getLatestVersionRequired("tutkinnonosat"))
       .groupBy(_.koodiArvo)
-      .mapValues(_.head.nimi.get.values.mapValues(kanoninenNimi))
+      .view
+      .mapValues(_.head.nimi.get.values.view.mapValues(kanoninenNimi).toMap)
+      .toMap
 
     println(s"Perusteista löytyi ${nimetEperusteissa.size} tutkinnon osaa, koodistosta ${nimetKoodistossa.size}")
 
@@ -112,4 +118,3 @@ class EPerusteetLocalizationTest extends AnyFreeSpec with TestEnvironment with M
       .foreach { k => println(s"${k.koodiArvo} ${k.nimi.get.get("fi")}") }
   }
 }
-

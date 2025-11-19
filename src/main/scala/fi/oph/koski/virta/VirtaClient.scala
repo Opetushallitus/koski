@@ -9,6 +9,7 @@ import fi.oph.koski.http.Http._
 import fi.oph.koski.http.{Http, HttpConnectionException}
 import fi.oph.koski.log.{Logging, NotLoggable, TimedProxy}
 import fi.oph.koski.util.Files
+import fi.oph.koski.xml.NodeSeqImplicits._
 
 import scala.xml.{Elem, Node}
 

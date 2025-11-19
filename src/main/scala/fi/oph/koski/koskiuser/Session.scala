@@ -101,7 +101,7 @@ class KoskiSpecificSession(
     globalKäyttöoikeudet
       .flatMap(_.globalPalveluroolit)
       .filter(_.palveluName == "KOSKI")
-      .flatMap(_.toOmaDataOAuth2Scope)
+      .flatMap(_.toOmaDataOAuth2Scope())
   }
   // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
   // HUOM!

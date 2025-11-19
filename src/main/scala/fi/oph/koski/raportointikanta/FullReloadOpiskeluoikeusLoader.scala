@@ -6,6 +6,7 @@ import fi.oph.koski.organisaatio.OrganisaatioRepository
 import fi.oph.koski.raportointikanta.OpiskeluoikeusLoader.isRaportointikantaanSiirrettäväOpiskeluoikeus
 import fi.oph.koski.suostumus.SuostumuksenPeruutusService
 import rx.lang.scala.Observable
+import scala.collection.parallel.CollectionConverters._
 
 class FullReloadOpiskeluoikeusLoader(
   opiskeluoikeusQueryRepository: OpiskeluoikeusQueryService,

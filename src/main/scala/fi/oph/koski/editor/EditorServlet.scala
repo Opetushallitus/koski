@@ -36,13 +36,13 @@ class   EditorServlet(implicit val application: KoskiApplication)
   get[Set[EnumValue]]("/organisaatiot") {
     val organisaatiot = session.organisationOids(AccessType.write)
       .flatMap(application.organisaatioRepository.getOrganisaatio)
-    organisaatiot.map(EditorModelBuilder.organisaatioEnumValue(localization)(_))
+    organisaatiot.map(EditorModelBuilder.organisaatioEnumValue(localization))
   }
 
   get[Set[EnumValue]]("/oppilaitokset") {
     val organisaatiot = session.organisationOids(AccessType.write)
       .flatMap(application.organisaatioRepository.getOrganisaatio)
-    organisaatiot.flatMap(_.toOppilaitos).map(EditorModelBuilder.organisaatioEnumValue(localization)(_))
+    organisaatiot.flatMap(_.toOppilaitos).map(EditorModelBuilder.organisaatioEnumValue(localization))
   }
 
   get("/organisaatio/:oid/kotipaikka") {

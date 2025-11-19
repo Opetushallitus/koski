@@ -122,7 +122,7 @@ case class EtkResponse(vuosi: Int, aikaleima: Timestamp, tutkintojenLkm: Int, tu
     copy(tutkintojenLkm = täydennetytTiedot.size, tutkinnot = täydennetytTiedot)
   }
 
-  private def allowOnlySameYear(other: EtkResponse) = {
-    if (vuosi == other.vuosi) Unit else throw new Error(s"Vuosien ${vuosi} ja ${other.vuosi} tutkintotietoja yritettiin yhdistää")
+  private def allowOnlySameYear(other: EtkResponse): Unit = {
+    if (vuosi == other.vuosi) () else throw new Error(s"Vuosien ${vuosi} ja ${other.vuosi} tutkintotietoja yritettiin yhdistää")
   }
 }

@@ -2,7 +2,7 @@ package fi.oph.koski.db
 
 import com.typesafe.config.Config
 import slick.jdbc.GetResult
-import slick.jdbc.PostgresProfile.api._
+import slick.jdbc.PostgresProfile.api.{Database => _, _}
 
 import scala.concurrent.duration.{Duration, DurationInt}
 
@@ -25,7 +25,7 @@ class KoskiDatabase(protected val config: DatabaseConfig, isReplica: Boolean) ex
   def replayLag: Duration =
     QueryMethods.runDbSync(
         db,
-        sql"select extract(epoch from replay_lag) as replay_lag from pg_stat_replication".as[Double](GetResult(_.nextDouble))
+        sql"select extract(epoch from replay_lag) as replay_lag from pg_stat_replication".as[Double](GetResult(_.nextDouble()))
       ).headOption
       .map(_.toInt)
       .getOrElse(0)

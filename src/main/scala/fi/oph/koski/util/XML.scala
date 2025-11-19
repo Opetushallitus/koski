@@ -1,7 +1,7 @@
 package fi.oph.koski.util
 
-import scala.collection.immutable.Seq
-import scala.xml.{Atom, Elem, Node, PrettyPrinter}
+import scala.xml.{Elem, Node, PrettyPrinter, Unparsed}
+
 
 object XML {
   def prettyPrint(xml: Node) = new PrettyPrinter(200, 2).format(xml)
@@ -15,19 +15,12 @@ object XML {
       case other => other
     })
 
-  /** An XML node to output unescaped string data, wrapped around CDATA marker.
-    *
-    * See [[scala.xml.PCData]] for more.
-    *
-    * @param data the string to output without XML escaping
-    * @param commentMarker marker string to prepend before opening and closing CDATA marker
+  /**
+    * An XML node that outputs unescaped string data wrapped in CDATA,
+    * with optional comment markers before and after.
     */
-  class CommentedPCData(data: String, commentMarker: String = "// ") extends Atom[String](data) {
-    override def buildString(sb: StringBuilder): StringBuilder =
-      sb append s"$commentMarker<![CDATA[%s$commentMarker]]>".format(data)
-  }
-
   object CommentedPCData {
-    def apply(data: String): CommentedPCData = new CommentedPCData(data)
+    def apply(data: String, commentMarker: String = "// "): Node =
+      Unparsed(s"$commentMarker<![CDATA[$data$commentMarker]]>")
   }
 }

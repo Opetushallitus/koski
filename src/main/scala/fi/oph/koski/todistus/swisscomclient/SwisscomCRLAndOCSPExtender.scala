@@ -90,7 +90,7 @@ object SwisscomCRLAndOCSPExtender extends Logging {
 
         _ = pdDssDict.setItem(COSName.getPDFName("VRI"), pdVriMapDict)
         _ = cosDocumentCatalog.setItem(COSName.getPDFName("DSS"), pdDssDict)
-      } yield Unit
+      } yield ()
     } catch {
       case e: Exception =>
         handleStampingError(todistusId, "Failed to extend PDF with CRLs and OCSPs", Some(e))
@@ -108,7 +108,7 @@ object SwisscomCRLAndOCSPExtender extends Logging {
       adbeExtension.setName("BaseVersion", "1.7")
       adbeExtension.setInt("ExtensionLevel", 5)
       catalog.setVersion("1.7")
-      Right(Unit)
+      Right(())
     } catch {
       case e: Exception =>
         handleStampingError(todistusId, "Failed to add extensions", Some(e))

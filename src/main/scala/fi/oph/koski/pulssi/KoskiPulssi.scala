@@ -42,7 +42,7 @@ class KoskiStats(application: KoskiApplication) extends KoskiPulssi {
       }.map(_.toMap))
 
     } else {
-      MockUsers.users.flatMap(u => u.käyttöoikeusRyhmät.map(ko => (ko, u.ldapUser.oid))).groupBy(_._1).mapValues(_.map(_._2))
+      MockUsers.users.flatMap(u => u.käyttöoikeusRyhmät.map(ko => (ko, u.ldapUser.oid))).groupBy(_._1).view.mapValues(_.map(_._2)).toMap
     }
 
     KäyttöoikeusTilasto(

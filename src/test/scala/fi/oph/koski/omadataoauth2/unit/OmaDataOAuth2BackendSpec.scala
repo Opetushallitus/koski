@@ -1067,7 +1067,7 @@ class OmaDataOAuth2BackendSpec
 
   "suostumusten hallinta" - {
     "kirjautumaton palauttaa 401" in {
-      get(uri = "api/omadata-oauth2/resource-owner/active-consents") {
+      get(uri = "api/omadata-oauth2/resource-owner/active-consents", params = Nil) {
         verifyResponseStatus(401)
       }
     }
@@ -1227,5 +1227,4 @@ class OmaDataOAuth2BackendSpec
     post(uri = "api/omadata-oauth2/resource-server", headers = headers)(f)
   }
 }
-
 

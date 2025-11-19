@@ -9,7 +9,7 @@ import software.amazon.awssdk.services.cloudwatch.model._
 
 import java.sql.Timestamp
 import java.time.Instant
-import scala.collection.JavaConverters._
+import scala.jdk.CollectionConverters._
 import scala.util.Try
 
 object CloudWatchMetricsService {

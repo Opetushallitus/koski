@@ -14,6 +14,9 @@ import java.nio.charset.StandardCharsets
 import java.util.{Base64, UUID}
 
 class OmaDataOAuth2TestBase extends AnyFreeSpec with KoskiHttpSpec with Matchers {
+  protected def get[A](uri: String)(f: => A): A = super.get(uri, params = Nil, headers = Nil)(f)
+  protected def get[A](uri: String, headers: Iterable[(String, String)])(f: => A): A =
+    super.get(uri, params = Nil, headers = headers)(f)
   protected def queryStringUrlEncode(str: String): String = URLEncoder.encode(str, "UTF-8").replace("+", "%20")
   protected def base64UrlEncode(str: String): String = Base64.getUrlEncoder().encodeToString(str.getBytes("UTF-8"))
   protected def base64UrlDecode(str: String): String = new String(Base64.getUrlDecoder().decode(str), "UTF-8")
