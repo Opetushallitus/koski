@@ -79,11 +79,11 @@ class KehaSDGSpec
       (false, true)
     )
 
-    paramCombinations.foreach { case (withOsasuoritukset, onlyVahvistetut) =>
+    paramCombinations.foreach { case (osasuorituksetMukaan, vainVahvistetut) =>
       withClue(
-        s"withOsasuoritukset=$withOsasuoritukset, onlyVahvistetut=$onlyVahvistetut"
+        s"osasuoritukset=$osasuorituksetMukaan, vainVahvistetut=$vainVahvistetut"
       ) {
-        postHetu(hetu, withOsasuoritukset, onlyVahvistetut) {
+        postHetu(hetu, osasuorituksetMukaan, vainVahvistetut) {
           verifyResponseStatusOk()
           val response = JsonSerializer.parse[SdgOppija](body)
 
@@ -93,22 +93,22 @@ class KehaSDGSpec
             fail(s"Opiskeluoikeutta jolla ammatillinentutkinto ei löydy")
           )
 
-          if (withOsasuoritukset && oo.suoritukset.forall {
+          if (osasuorituksetMukaan && oo.suoritukset.forall {
             _.osasuoritukset.isEmpty
           }) {
             fail("Osasuorituksia ei löydy yhdeltäkään suoritukselta (testidatassa pitäisi olla)")
           }
 
-          if (!withOsasuoritukset && oo.suoritukset.exists(s =>
+          if (!osasuorituksetMukaan && oo.suoritukset.exists(s =>
             s.osasuoritukset.exists(_.nonEmpty))) {
             fail("Osasuorituksia mukana vaikkei pitäisi")
           }
 
-          if (onlyVahvistetut && oo.suoritukset.exists(_.vahvistus.isEmpty)) {
-            fail("Vahvistamaton suoritus mukana vaikka onlyVahvistetut=t")
+          if (vainVahvistetut && oo.suoritukset.exists(_.vahvistus.isEmpty)) {
+            fail("Vahvistamaton suoritus mukana vaikka vainVahvistetut=t")
           }
 
-          if (!onlyVahvistetut && oo.suoritukset.forall(_.vahvistus.isEmpty)) {
+          if (!vainVahvistetut && oo.suoritukset.forall(_.vahvistus.isEmpty)) {
             fail("Vahvistamaton suoritus puuttuu (testidatassa pitäisi olla)")
           }
         }
@@ -143,12 +143,12 @@ class KehaSDGSpec
 
   private def postHetu[A](
     hetu: String,
-    withOsasuoritukset: Boolean = true,
-    onlyVahvistetut: Boolean = false,
+    osasuorituksetMukaan: Boolean = true,
+    vainVahvistetut: Boolean = false,
     user: MockUser = MockUsers.kehaSdgKäyttäjä
   )(f: => A): A = {
     val url =
-      s"api/luovutuspalvelu/keha/sdg/hetu?withOsasuoritukset=$withOsasuoritukset&onlyVahvistetut=$onlyVahvistetut"
+      s"api/luovutuspalvelu/keha/sdg/hetu?osasuoritukset=$osasuorituksetMukaan&vainVahvistetut=$vainVahvistetut"
 
     post(
       url,
