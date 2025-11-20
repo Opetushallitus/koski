@@ -6,7 +6,6 @@ import {
 } from '../components-v2/containers/KeyValueTable'
 import { FormModel, getValue } from '../components-v2/forms/FormModel'
 import { Spacer } from '../components-v2/layout/Spacer'
-import { SuorituksenVahvistus } from '../components-v2/opiskeluoikeus/SuorituksenVahvistus'
 import { ISO2FinnishDate } from '../date/date'
 import { t } from '../i18n/i18n'
 import { KielitutkinnonOpiskeluoikeudenTila } from '../types/fi/oph/koski/schema/KielitutkinnonOpiskeluoikeudenTila'
@@ -16,6 +15,7 @@ import { Oppilaitos } from '../types/fi/oph/koski/schema/Oppilaitos'
 import { YleisenKielitutkinnonOsakokeenSuoritus } from '../types/fi/oph/koski/schema/YleisenKielitutkinnonOsakokeenSuoritus'
 import { YleisenKielitutkinnonSuoritus } from '../types/fi/oph/koski/schema/YleisenKielitutkinnonSuoritus'
 import { ykiParasArvosana } from './yleinenKielitutkinto'
+import { YleinenKielitutkintoTodistusLataus } from './YleinenKielitutkintoTodistusLataus'
 
 export type YleinenKielitutkintoEditorProps = {
   form: FormModel<KielitutkinnonOpiskeluoikeus>
@@ -31,6 +31,10 @@ export const YleinenKielitutkintoEditor: React.FC<
 > = ({ form, päätasonSuoritus, organisaatio }) => {
   const path = päätasonSuoritus.path
   const suoritus = getValue(path)(form.state)
+
+  const hasFeatureFlagPdfTodistus =
+    localStorage.getItem('pdf-todistus') !== null ||
+    new URLSearchParams(window.location.search).has('pdf-todistus')
 
   return suoritus ? (
     <>
@@ -54,6 +58,12 @@ export const YleinenKielitutkintoEditor: React.FC<
           </>
         )}
       </KeyValueTable>
+
+      {form.state.oid && hasFeatureFlagPdfTodistus && (
+        <YleinenKielitutkintoTodistusLataus
+          opiskeluoikeusOid={form.state.oid}
+        />
+      )}
     </>
   ) : null
 }

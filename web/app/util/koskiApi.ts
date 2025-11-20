@@ -19,6 +19,7 @@ import { Constraint } from '../types/fi/oph/koski/typemodel/Constraint'
 import { GroupedKoodistot } from '../types/fi/oph/koski/typemodel/GroupedKoodistot'
 import { OpiskeluoikeusClass } from '../types/fi/oph/koski/typemodel/OpiskeluoikeusClass'
 import { YtrCertificateResponse } from '../types/fi/oph/koski/ytr/YtrCertificateResponse'
+import { TodistusJob } from '../types/fi/oph/koski/todistus/TodistusJob'
 import { tapLeftP } from './fp/either'
 import { TypedEnumValue } from './TypedEnumValue'
 import { queryString } from './url'
@@ -305,6 +306,23 @@ export const fetchYoTodistusState = (oppijaOid: string, language: string) =>
 export const generateYoTodistus = (oppijaOid: string, language: string) =>
   handleExpiredSession(
     apiGet<void>(apiUrl(`yotodistus/generate/${language}/${oppijaOid}`))
+  )
+
+export const fetchTodistusStatus = (
+  language: string,
+  opiskeluoikeusOid: string
+) =>
+  handleExpiredSession(
+    apiGet<TodistusJob>(
+      apiUrl(`todistus/status/${language}/${opiskeluoikeusOid}`)
+    )
+  )
+
+export const generateTodistus = (language: string, opiskeluoikeusOid: string) =>
+  handleExpiredSession(
+    apiGet<TodistusJob>(
+      apiUrl(`todistus/generate/${language}/${opiskeluoikeusOid}`)
+    )
   )
 
 export const fetchOsaamismerkkikuva = (koodiarvo: string) =>

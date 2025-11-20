@@ -11,6 +11,9 @@ import fi.oph.koski.schema._
 import fi.oph.koski.servlet.Osaamismerkkikuva
 import fi.oph.koski.suoritetuttutkinnot.SuoritetutTutkinnotKoskeenTallennettavaOpiskeluoikeus
 import fi.oph.koski.suoritusjako.{AktiivisetJaPäättyneetOpinnotOppijaJakolinkillä, SuoritetutTutkinnotOppijaJakolinkillä}
+import fi.oph.koski.todistus.TodistusJob
+import fi.oph.koski.todistus.TodistusLanguage.TodistusLanguage
+import fi.oph.koski.todistus.TodistusState.TodistusState
 import fi.oph.koski.tutkinto.TutkintoPeruste
 import fi.oph.koski.typemodel.TypescriptTypes.Options
 import fi.oph.koski.ytr.YtrCertificateResponse
@@ -69,6 +72,7 @@ case class AdditionalExports(
   opiskeluoikeusClass: OpiskeluoikeusClass,
   tutkintoperuste: TutkintoPeruste,
   configForFrontend: ConfigForFrontend,
+  todistusJob: TodistusJob,
 
   // Traitit jotka eivät automaattisesti exporttaudu skeemasta, koska ne eivät sellaisenaan
   // ole minkään tietomallin jäseniä (ainoastaan traitista periintyvät konkreettiset luokat exportataan automaattisesti).
