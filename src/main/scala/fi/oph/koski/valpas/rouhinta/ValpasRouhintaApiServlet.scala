@@ -4,7 +4,7 @@ import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.koodisto.Kunta
 import fi.oph.koski.localization.LocalizationReader
-import fi.oph.koski.raportit.{AhvenanmaanKunnat, ExcelWriter, OppilaitosRaporttiResponse}
+import fi.oph.koski.raportit.{ExcelWriter, OppilaitosRaporttiResponse}
 import fi.oph.koski.schema.KoskiSchema.strictDeserialization
 import fi.oph.koski.servlet.NoCache
 import fi.oph.koski.util.ChainingSyntax._
@@ -80,21 +80,10 @@ class ValpasRouhintaApiServlet(implicit val application: KoskiApplication) exten
       .flatMap(validateKuntakoodi)
   }
 
-  private def validateKuntakoodi(input: KuntaInput): Either[HttpStatus, ValidatedKuntaInput] =
-    organisaatiot
-      .haeKuntakoodi(input.kuntaOid)
-      .flatMap(kuntakoodi => {
-        if (
-          Kunta.kuntaExists(kuntakoodi, koodistoPalvelu) &&
-          !AhvenanmaanKunnat.onAhvenanmaalainenKunta(kuntakoodi) &&
-          !Kunta.onPuuttuvaKunta(kuntakoodi)
-        ) {
-          Some(ValidatedKuntaInput(original = input, kunta = kuntakoodi))
-        } else {
-          None
-        }
-      })
-      .toRight(ValpasErrorCategory.badRequest(s"Kunta ${input.kuntaOid} ei ole koodistopalvelun tuntema manner-Suomen kunta"))
+  private def validateKuntakoodi(input: KuntaInput): Either[HttpStatus, ValidatedKuntaInput] = {
+    Kunta.validateAndGetKuntaKoodi(organisaatiot, koodistoPalvelu, input.kuntaOid)
+      .map(kuntaKoodi => ValidatedKuntaInput(original = input, kunta = kuntaKoodi))
+  }
 
   private def renderResult(result: Either[HttpStatus, Any], t: LocalizationReader): Unit = {
     result match {

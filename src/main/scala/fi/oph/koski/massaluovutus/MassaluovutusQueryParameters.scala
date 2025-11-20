@@ -1,17 +1,11 @@
 package fi.oph.koski.massaluovutus
 
 import fi.oph.koski.config.KoskiApplication
-import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
+import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.json.{JsonSerializer, SensitiveDataAllowed}
-import fi.oph.koski.koskiuser.{AccessType, KoskiSpecificSession, Session}
-import fi.oph.koski.schema.Organisaatio
-import fi.oph.scalaschema.annotation.{Description, Discriminator, EnumValue, Title}
+import fi.oph.koski.koskiuser.Session
+import fi.oph.scalaschema.annotation.{Description, Discriminator}
 import org.json4s.JValue
-import software.amazon.awssdk.http.ContentStreamProvider
-
-import java.io.InputStream
-import java.time.LocalDate
-import scala.concurrent.Future
 
 trait KoskiMassaluovutusQueryParameters extends MassaluovutusQueryParameters
 

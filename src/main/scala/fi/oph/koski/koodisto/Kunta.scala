@@ -1,7 +1,10 @@
 package fi.oph.koski.koodisto
 
-import fi.oph.koski.raportit.perusopetus.PerusopetuksenVuosiluokkaRaportti.logger
+import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.log.Logging
+import fi.oph.koski.organisaatio.OrganisaatioService
+import fi.oph.koski.raportit.AhvenanmaanKunnat
+import fi.oph.koski.valpas.oppija.ValpasErrorCategory
 
 class Kunta
 
@@ -21,6 +24,27 @@ object Kunta extends Logging {
       }
       case None => None
     }
+  }
+
+  def validateAndGetKuntaKoodi(
+    organisaatiot: OrganisaatioService,
+    koodistoPalvelu: KoodistoPalvelu,
+    kuntaOid: String
+  ): Either[HttpStatus, String] = {
+    organisaatiot
+      .haeKuntakoodi(kuntaOid)
+      .flatMap(kuntakoodi => {
+        if (
+          Kunta.kuntaExists(kuntakoodi, koodistoPalvelu) &&
+            !AhvenanmaanKunnat.onAhvenanmaalainenKunta(kuntakoodi) &&
+            !Kunta.onPuuttuvaKunta(kuntakoodi)
+        ) {
+          Some(kuntakoodi)
+        } else {
+          None
+        }
+      })
+      .toRight(ValpasErrorCategory.badRequest(s"Kunta ${kuntaOid} ei ole koodistopalvelun tuntema manner-Suomen kunta"))
   }
 
   def kuntaExists(koodi: String, koodistoPalvelu: KoodistoPalvelu): Boolean = {
