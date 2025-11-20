@@ -5,7 +5,7 @@ import fi.oph.koski.koskiuser.KoskiSpecificSession
 import fi.oph.koski.executors.GlobalExecutionContext
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.localization.LocalizationReader
-import fi.oph.koski.raportit.YleissivistäväUtils.{lengthInDaysInDateRange, opetettavatOppiaineetJaNiidenKurssit, oppiaineidentiedot, rahoitusmuodotOk, removeContinuousSameTila}
+import fi.oph.koski.raportit.YleissivistäväUtils.{lengthInDaysInDateRange, opetettavatOppiaineetJaNiidenKurssit, oppiaineidentiedot, removeContinuousSameTila}
 import fi.oph.koski.raportointikanta.ROsasuoritusRow
 import fi.oph.koski.schema._
 import fi.oph.koski.util.Futures
@@ -56,6 +56,12 @@ case class IBSuoritustiedotRaportti(repository: IBSuoritustiedotRaporttiReposito
     val lisätiedot = JsonSerializer.extract[Option[LukionOpiskeluoikeudenLisätiedot]](row.opiskeluoikeus.data \ "lisätiedot")
     val kurssit = row.osasuoritukset.filter(raportinTyyppi.isKurssi)
 
+    val preibSuoritusOlemassa =
+      row.päätasonSuorituksetAll.exists(s => s.suorituksenTyyppi.startsWith("preiboppimaara"))
+
+    val ibKoulutuksenSuoritusOlemassa =
+      row.päätasonSuorituksetAll.exists(_.suorituksenTyyppi == "ibtutkinto")
+
     IBRaporttiRow(
       opiskeluoikeusOid = row.opiskeluoikeus.opiskeluoikeusOid,
       lähdejärjestelmä = lähdejärjestelmänId.map(_.lähdejärjestelmä.koodiarvo),
@@ -65,6 +71,8 @@ case class IBSuoritustiedotRaportti(repository: IBSuoritustiedotRaporttiReposito
       lähdejärjestelmänId = lähdejärjestelmänId.flatMap(_.id),
       aikaleima = row.opiskeluoikeus.aikaleima.toLocalDateTime.toLocalDate,
       yksiloity = row.henkilo.yksiloity,
+      preibSuoritusOlemassa = preibSuoritusOlemassa,
+      ibKoulutuksenSuoritusOlemassa = ibKoulutuksenSuoritusOlemassa,
       oppijaOid = row.opiskeluoikeus.oppijaOid,
       hetu = row.henkilo.hetu,
       sukunimi = row.henkilo.sukunimi,
@@ -72,10 +80,11 @@ case class IBSuoritustiedotRaportti(repository: IBSuoritustiedotRaporttiReposito
       opiskeluoikeudenAlkamispäivä = row.opiskeluoikeus.alkamispäivä.map(_.toLocalDate),
       opiskeluoikeudenViimeisinTila = row.opiskeluoikeus.viimeisinTila,
       opiskeluoikeudenTilatAikajaksonAikana = removeContinuousSameTila(row.aikajaksot).map(_.tila).mkString(", "),
+      opintojenLaajuusyksikkö = findLaajuusyksikkö(row),
       päätasonSuoritukset = row.päätasonSuoritus.koulutusModuulistaKäytettäväNimi(t.language),
+      päätasonSuorituksenVahvistuspäivä = row.päätasonSuoritus.vahvistusPäivä.map(_.toLocalDate),
       opiskeluoikeudenPäättymispäivä = row.opiskeluoikeus.päättymispäivä.map(_.toLocalDate),
       rahoitukset = row.aikajaksot.flatMap(_.opintojenRahoitus).mkString(", "),
-      rahoitusmuodotOk = rahoitusmuodotOk(row),
       ryhmä = row.päätasonSuoritus.luokkaTaiRyhmä,
       maksuttomuus = lisätiedot.flatMap(_.maksuttomuus.map(ms => ms.filter(m => m.maksuton && m.overlaps(Aikajakso(alku, Some(loppu)))).map(_.toString).mkString(", "))).filter(_.nonEmpty),
       oikeuttaMaksuttomuuteenPidennetty = lisätiedot.flatMap(_.oikeuttaMaksuttomuuteenPidennetty.map(omps => omps.map(_.toString).mkString(", "))).filter(_.nonEmpty),
@@ -98,7 +107,7 @@ case class IBSuoritustiedotRaportti(repository: IBSuoritustiedotRaporttiReposito
       yhteislaajuusKorotettuEriVuonna = kurssit
         .filter(_.korotettuEriVuonna)
         .map(_.laajuus).sum
-    ).productIterator.toList ++ oppiaineidentiedot(row.päätasonSuoritus, row.osasuoritukset, oppiaineet, _ => false, t)
+    ).productIterator.toList ++ oppiaineidentiedot(row.päätasonSuoritus, row.osasuoritukset, oppiaineet, _ => false, t, useDefaultLaajuusYksikkö = false)
   }
 
   def columnSettings(
@@ -114,6 +123,8 @@ case class IBSuoritustiedotRaportti(repository: IBSuoritustiedotRaporttiReposito
     Column(t.get("raportti-excel-kolumni-lähdejärjestelmänId")),
     Column(t.get("raportti-excel-kolumni-päivitetty"), comment = Some(t.get("raportti-excel-kolumni-päivitetty-comment"))),
     Column(t.get("raportti-excel-kolumni-yksiloity"), comment = Some(t.get("raportti-excel-kolumni-yksiloity-comment"))),
+    Column(t.get("raportti-excel-kolumni-preibSuoritusOlemassa")),
+    Column(t.get("raportti-excel-kolumni-ibKoulutuksenSuoritusOlemassa")),
     Column(t.get("raportti-excel-kolumni-oppijaOid")),
     Column(t.get("raportti-excel-kolumni-hetu")),
     Column(t.get("raportti-excel-kolumni-sukunimi")),
@@ -121,10 +132,11 @@ case class IBSuoritustiedotRaportti(repository: IBSuoritustiedotRaporttiReposito
     Column(t.get("raportti-excel-kolumni-opiskeluoikeudenAlkamispäivä")),
     Column(t.get("raportti-excel-kolumni-viimeisinTila"), comment = Some(t.get("raportti-excel-kolumni-viimeisinTila-comment"))),
     Column(t.get("raportti-excel-kolumni-kaikkiTilat"), comment = Some(t.get("raportti-excel-kolumni-kaikkiTilat-comment"))),
+    Column(t.get("raportti-excel-kolumni-opintojenLaajuusyksikkö")),
     Column(t.get("raportti-excel-kolumni-koulutusmoduuliNimet")),
+    Column(t.get("raportti-excel-kolumni-päätasonSuorituksenVahvistuspäivä")),
     Column(t.get("raportti-excel-kolumni-opiskeluoikeudenPäättymispäivä")),
     Column(t.get("raportti-excel-kolumni-rahoitukset"), comment = Some(t.get("raportti-excel-kolumni-rahoitukset-comment"))),
-    Column(t.get("raportti-excel-kolumni-rahoitusmuodot"), comment = Some(t.get("raportti-excel-kolumni-rahoitusmuodot-comment"))),
     Column(t.get("raportti-excel-kolumni-ryhmä")),
     Column(t.get("raportti-excel-kolumni-maksuttomuus"), comment = Some(t.get("raportti-excel-kolumni-maksuttomuus-comment"))),
     Column(t.get("raportti-excel-kolumni-oikeuttaMaksuttomuuteenPidennetty"), comment = Some(t.get("raportti-excel-kolumni-oikeuttaMaksuttomuuteenPidennetty-comment"))),
@@ -134,24 +146,24 @@ case class IBSuoritustiedotRaportti(repository: IBSuoritustiedotRaporttiReposito
     Column(t.get("raportti-excel-kolumni-ulkomaanjaksot"), comment = Some(t.get("raportti-excel-kolumni-ulkomaanjaksot-comment"))),
     Column(t.get("raportti-excel-kolumni-sisäoppilaitosmainenMajoitus"), comment = Some(t.get("raportti-excel-kolumni-sisäoppilaitosmainenMajoitus-count-comment"))),
     raportinTyyppi match {
-      case PreIBSuoritusRaportti => Column(t.get("raportti-excel-kolumni-yhteislaajuusKaikkiKurssitOpintopisteet"), comment = Some(t.get("raportti-excel-kolumni-yhteislaajuusKaikkiKurssitOpintopisteet-comment")))
-      case _ => Column(t.get("raportti-excel-kolumni-yhteislaajuusKaikkiKurssit"), comment = Some(t.get("raportti-excel-kolumni-yhteislaajuusKaikkiKurssit-comment")))
+      case PreIBSuoritusRaportti => Column(t.get("raportti-excel-kolumni-yhteislaajuusKaikkiKurssitOpintopisteet-ib"), comment = Some(t.get("raportti-excel-kolumni-yhteislaajuusKaikkiKurssitOpintopisteet-comment")))
+      case _ => Column(t.get("raportti-excel-kolumni-yhteislaajuusKaikkiKurssit-ib"), comment = Some(t.get("raportti-excel-kolumni-yhteislaajuusKaikkiKurssit-comment")))
     },
     raportinTyyppi match {
-      case PreIBSuoritusRaportti => Column(t.get("raportti-excel-kolumni-yhteislaajuusSuoritetutKurssitOpintopisteet"), comment = Some(t.get("raportti-excel-kolumni-yhteislaajuusSuoritetutKurssitOpintopisteet-comment")))
-      case _ => Column(t.get("raportti-excel-kolumni-yhteislaajuusSuoritetutKurssit"), comment = Some(t.get("raportti-excel-kolumni-yhteislaajuusSuoritetutKurssit-comment")))
+      case PreIBSuoritusRaportti => Column(t.get("raportti-excel-kolumni-yhteislaajuusSuoritetutKurssitOpintopisteet-ib"), comment = Some(t.get("raportti-excel-kolumni-yhteislaajuusSuoritetutKurssitOpintopisteet-comment")))
+      case _ => Column(t.get("raportti-excel-kolumni-yhteislaajuusSuoritetutKurssit-ib"), comment = Some(t.get("raportti-excel-kolumni-yhteislaajuusSuoritetutKurssit-comment")))
     },
     raportinTyyppi match {
-      case PreIBSuoritusRaportti => Column(t.get("raportti-excel-kolumni-yhteislaajuusHylätytKurssitOpintopisteet"), comment = Some(t.get("raportti-excel-kolumni-yhteislaajuusHylätytKurssitOpintopisteet-comment")))
-      case _ => Column(t.get("raportti-excel-kolumni-yhteislaajuusHylätytKurssit"), comment = Some(t.get("raportti-excel-kolumni-yhteislaajuusHylätytKurssit-comment")))
+      case PreIBSuoritusRaportti => Column(t.get("raportti-excel-kolumni-yhteislaajuusHylätytKurssitOpintopisteet-ib"), comment = Some(t.get("raportti-excel-kolumni-yhteislaajuusHylätytKurssitOpintopisteet-comment")))
+      case _ => Column(t.get("raportti-excel-kolumni-yhteislaajuusHylätytKurssit-ib"), comment = Some(t.get("raportti-excel-kolumni-yhteislaajuusHylätytKurssit-comment")))
     },
     raportinTyyppi match {
-      case PreIBSuoritusRaportti => Column(t.get("raportti-excel-kolumni-yhteislaajuusTunnustetutKurssitOpintopisteet"), comment = Some(t.get("raportti-excel-kolumni-yhteislaajuusTunnustetutKurssitOpintopisteet-comment")))
-      case _ => Column(t.get("raportti-excel-kolumni-yhteislaajuusTunnustetutKurssit"), comment = Some(t.get("raportti-excel-kolumni-yhteislaajuusTunnustetutKurssit-comment")))
+      case PreIBSuoritusRaportti => Column(t.get("raportti-excel-kolumni-yhteislaajuusTunnustetutKurssitOpintopisteet-ib"), comment = Some(t.get("raportti-excel-kolumni-yhteislaajuusTunnustetutKurssitOpintopisteet-comment")))
+      case _ => Column(t.get("raportti-excel-kolumni-yhteislaajuusTunnustetutKurssit-ib"), comment = Some(t.get("raportti-excel-kolumni-yhteislaajuusTunnustetutKurssit-comment")))
     },
     raportinTyyppi match {
-      case PreIBSuoritusRaportti => Column(t.get("raportti-excel-kolumni-yhteislaajuusKorotetutKurssitOpintopisteet"), comment = Some(t.get("raportti-excel-kolumni-yhteislaajuusKorotetutKurssitOpintopisteet-comment")))
-      case _ => Column(t.get("raportti-excel-kolumni-yhteislaajuusKorotetutKurssit"), comment = Some(t.get("raportti-excel-kolumni-yhteislaajuusKorotetutKurssit-comment")))
+      case PreIBSuoritusRaportti => Column(t.get("raportti-excel-kolumni-yhteislaajuusKorotetutKurssitOpintopisteet-ib"), comment = Some(t.get("raportti-excel-kolumni-yhteislaajuusKorotetutKurssitOpintopisteet-comment")))
+      case _ => Column(t.get("raportti-excel-kolumni-yhteislaajuusKorotetutKurssit-ib"), comment = Some(t.get("raportti-excel-kolumni-yhteislaajuusKorotetutKurssit-comment")))
     }
   ) ++ oppiaineet.map(x =>
     Column(title = x.oppiaine.toColumnTitle(t), comment = Some(t.get("raportti-excel-kolumni-oppiaineSarake-comment")))
@@ -177,6 +189,8 @@ case class IBSuoritustiedotRaportti(repository: IBSuoritustiedotRaporttiReposito
     oppijoidenRivitJärjestettyKursseittain: Seq[Seq[YleissivistäväRaporttiKurssi]],
     raportinTyyppi: IBSuoritustiedotRaporttiType
   ): IBRaportinOppiaineenOsasuorituksetRow = {
+    val kurssitiedot = kurssienTiedot(row, oppijoidenRivitJärjestettyKursseittain, raportinTyyppi)
+
     IBRaportinOppiaineenOsasuorituksetRow(
       stattisetKolumnit = IBRaporttiOppiaineenKurssienVälilehtiStaattisetKolumnit(
         oppijanOid = row.opiskeluoikeus.oppijaOid,
@@ -187,26 +201,38 @@ case class IBSuoritustiedotRaportti(repository: IBSuoritustiedotRaporttiReposito
         suorituksenTyyppi = row
           .päätasonSuoritus
           .koulutusModuulistaKäytettäväNimi(t.language)
-          .getOrElse(row.päätasonSuoritus.suorituksenTyyppi)
+          .getOrElse(row.päätasonSuoritus.suorituksenTyyppi),
+        laajuusYksikköNimi = kurssitiedot.flatMap(_.laajuusYksikköNimi).headOption.map(_.get(t.language))
       ),
-      osasuoritukset = kurssienTiedot(row, oppijoidenRivitJärjestettyKursseittain, raportinTyyppi)
+      osasuoritukset = kurssitiedot.map(_.tiedotStr)
     )
   }
+
+  private def findLaajuusyksikkö(row: IBRaporttiRows) = {
+    row.osasuoritukset.collectFirst {
+      case os: ROsasuoritusRow if os.koulutusModuulinLaajuusYksikköNimi.isDefined => os.koulutusModuulinLaajuusYksikköNimi.map(_.get(t.language))
+    }.flatten
+  }
+
+  case class KurssienTiedotResult(
+    tiedotStr: String,
+    laajuusYksikköNimi: Option[LocalizedString]
+  )
 
   private def kurssienTiedot(
     oppijanRivit: IBRaporttiRows,
     oppijoidenRivitJärjestettyKursseittain: Seq[Seq[YleissivistäväRaporttiKurssi]],
     raportinTyyppi: IBSuoritustiedotRaporttiType
-  ): Seq[String] = {
+  ): Seq[KurssienTiedotResult] = {
     def onKurssiOppijalla(k: YleissivistäväRaporttiKurssi): Boolean =
       oppijanRivit.osasuoritukset.map(_.osasuoritusId).contains(k.osasuoritusRow.osasuoritusId)
 
     oppijoidenRivitJärjestettyKursseittain.map {
-      // Tuottaa tyhjän solun jos oppijalla ei ole suorituksia tähän sarakkeeseen
-      case kurssit: Seq[YleissivistäväRaporttiKurssi] if !kurssit.exists(k => onKurssiOppijalla(k)) => ""
-      case kurssit: Seq[YleissivistäväRaporttiKurssi] =>
-        val oppijanKurssit = kurssit.filter(k => onKurssiOppijalla(k))
-        oppijanKurssit.map(kurssi =>
+      case kurssit if !kurssit.exists(onKurssiOppijalla) =>
+        KurssienTiedotResult("", None)
+      case kurssit =>
+        val oppijanKurssit = kurssit.filter(onKurssiOppijalla)
+        val kurssiStrings = oppijanKurssit.map { kurssi =>
           IBModuulinTiedot(
             kurssinTyyppi = JsonSerializer.extract[Option[LocalizedString]](kurssi.osasuoritusRow.data \ "koulutusmoduuli" \ "kurssinTyyppi" \ "nimi"),
             pakollinen = JsonSerializer.extract[Option[Boolean]](kurssi.osasuoritusRow.data \ "koulutusmoduuli" \ "pakollinen"),
@@ -215,10 +241,14 @@ case class IBSuoritustiedotRaportti(repository: IBSuoritustiedotRaporttiReposito
               case IBTutkinnonSuoritusRaportti => kurssi.osasuoritusRow.koulutusmoduuliLaajuusArvo.orElse(Some(1.0))
               case _ => kurssi.osasuoritusRow.koulutusmoduuliLaajuusArvo
             },
+            laajuusYksikköNimi = kurssi.osasuoritusRow.koulutusModuulinLaajuusYksikköNimi,
             tunnustettu = kurssi.osasuoritusRow.tunnustettu,
             korotettuEriVuonna = kurssi.osasuoritusRow.korotettuEriVuonna
           ).toStringLokalisoitu(t)
-        ).mkString(",")
+        }
+
+        val laajuusYksikköNimi = oppijanKurssit.flatMap(_.osasuoritusRow.koulutusModuulinLaajuusYksikköNimi).headOption
+        KurssienTiedotResult(kurssiStrings.mkString(","), laajuusYksikköNimi)
     }
   }
 
@@ -232,14 +262,14 @@ case class IBSuoritustiedotRaportti(repository: IBSuoritustiedotRaporttiReposito
       Column(t.get("raportti-excel-kolumni-etunimet")),
       CompactColumn(t.get("raportti-excel-kolumni-toimipisteNimi")),
       CompactColumn(t.get("raportti-excel-kolumni-suorituksenTyyppi"),
-        comment = Some(t.get("raportti-excel-kolumni-suorituksenTyyppi-ib-comment")))
+        comment = Some(t.get("raportti-excel-kolumni-suorituksenTyyppi-ib-comment"))),
+      Column(t.get("raportti-excel-kolumni-opintojenLaajuusyksikkö")),
     ) ++ oppijoidenRivitJärjestettyKursseittain.map(_.head).map(k =>
       CompactColumn(title = k.toColumnTitle(t), comment = Some(t.get("raportti-excel-kolumni-oppiaineSarake-comment")))
     )
 
   }
 }
-
 case class IBRaporttiRow(
   opiskeluoikeusOid: String,
   lähdejärjestelmä: Option[String],
@@ -249,6 +279,8 @@ case class IBRaporttiRow(
   lähdejärjestelmänId: Option[String],
   aikaleima: LocalDate,
   yksiloity: Boolean,
+  preibSuoritusOlemassa: Boolean,
+  ibKoulutuksenSuoritusOlemassa: Boolean,
   oppijaOid: String,
   hetu: Option[String],
   sukunimi: String,
@@ -256,10 +288,11 @@ case class IBRaporttiRow(
   opiskeluoikeudenAlkamispäivä: Option[LocalDate],
   opiskeluoikeudenViimeisinTila: Option[String],
   opiskeluoikeudenTilatAikajaksonAikana: String,
+  opintojenLaajuusyksikkö: Option[String],
   päätasonSuoritukset: Option[String],
+  päätasonSuorituksenVahvistuspäivä: Option[LocalDate],
   opiskeluoikeudenPäättymispäivä: Option[LocalDate],
   rahoitukset: String,
-  rahoitusmuodotOk: Boolean,
   ryhmä: Option[String],
   maksuttomuus: Option[String],
   oikeuttaMaksuttomuuteenPidennetty: Option[String],
@@ -281,7 +314,8 @@ case class IBRaporttiOppiaineenKurssienVälilehtiStaattisetKolumnit(
   sukunimi: String,
   etunimet: String,
   toimipiste: String,
-  suorituksenTyyppi: String
+  suorituksenTyyppi: String,
+  laajuusYksikköNimi: Option[String],
 )
 
 case class IBRaportinOppiaineenOsasuorituksetRow(
@@ -296,27 +330,63 @@ case class IBModuulinTiedot(
   kurssinTyyppi: Option[LocalizedString],
   arvosana: Option[String],
   laajuus: Option[Double],
+  laajuusYksikköNimi: Option[LocalizedString],
   tunnustettu: Boolean,
   korotettuEriVuonna: Boolean
 ) {
   def toStringLokalisoitu(t: LocalizationReader): String = {
-    List(
-      pakollinen.map { p =>
-        if (p) t.get("raportti-excel-default-value-pakollinen").capitalize
-        else t.get("raportti-excel-default-value-vapaavalintainen").capitalize
-      }.orElse(
-        Some(kurssinTyyppi.map(_.get(t.language)).getOrElse(t.get("raportti-excel-default-value-ei-tyyppiä")).capitalize)
-      ),
-      Some(arvosana
-        .map(s"${t.get("raportti-excel-default-value-arvosana")} " + _)
+    val pakollisuusStr = pakollinen
+      .map { p =>
+        val key =
+          if (p) {
+            "raportti-excel-default-value-pakollinen"
+          } else {
+            "raportti-excel-default-value-vapaavalintainen"
+          }
+        t.get(key).capitalize
+      }
+      .orElse {
+        Some(
+          kurssinTyyppi
+            .map(_.get(t.language))
+            .getOrElse(t.get("raportti-excel-default-value-ei-tyyppiä"))
+            .capitalize
+        )
+      }
+
+    val arvosanaStr = Some(
+      arvosana
+        .map(a => s"${t.get("raportti-excel-default-value-arvosana")} $a")
         .getOrElse(t.get("raportti-excel-default-value-ei-arvosanaa"))
-      ),
-      Some(laajuus
-        .map(s"${t.get("raportti-excel-default-value-laajuus").capitalize} " + _)
+    )
+
+    val yksikkö = laajuusYksikköNimi
+      .flatMap(_.get(t.language) match {
+        case s if s.nonEmpty => Some(s)
+        case _ => None
+      })
+      .getOrElse("")
+
+    val laajuusStr = Some {
+      val base = laajuus
+        .map(l => s"${t.get("raportti-excel-default-value-laajuus").capitalize} $l")
         .getOrElse(t.get("raportti-excel-default-value-laajuus-puuttuu"))
-      ),
-      if (tunnustettu) Some(t.get("raportti-excel-default-value-tunnustettu")) else None,
+
+      s"$base $yksikkö"
+    }
+
+    val tunnustettuStr =
+      if (tunnustettu) Some(t.get("raportti-excel-default-value-tunnustettu")) else None
+
+    val korotettuStr =
       if (korotettuEriVuonna) Some(t.get("raportti-excel-default-value-korotettuEriVuonna")) else None
+
+    List(
+      pakollisuusStr,
+      arvosanaStr,
+      laajuusStr,
+      tunnustettuStr,
+      korotettuStr
     ).flatten.mkString(", ")
   }
 }

@@ -1,6 +1,6 @@
 package fi.oph.koski.api.oppijavalidation
 
-import fi.oph.koski.KoskiHttpSpec
+import fi.oph.koski.{DirtiesFixtures, KoskiHttpSpec}
 import fi.oph.koski.api.misc.PutOpiskeluoikeusTestMethods
 import fi.oph.koski.documentation.ExampleData._
 import fi.oph.koski.documentation.ExamplesIB._

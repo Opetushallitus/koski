@@ -41,13 +41,38 @@ case class YleissivistäväOppiaineenTiedot(suoritus: RSuoritusRow, osasuorituks
   }
 
   private def hylätytKurssitStr(t: LocalizationReader) =
-    if (hylättyjenLaajuus > 0) f" (${t.get("raportti-excel-default-value-joista")} $hylättyjenLaajuus%.1f ${t.get("raportti-excel-default-value-hylättyjä")})" else ""
+    if (hylättyjenLaajuus > 0) f"(${t.get("raportti-excel-default-value-joista")} $hylättyjenLaajuus%.1f ${t.get("raportti-excel-default-value-hylättyjä")})" else ""
 
-  def toStringLokalisoitu(t: LocalizationReader): String = {
-    suoritus
-      .arviointiArvosanaKoodiarvo
-      .map(a => f"${t.get("raportti-excel-default-value-arvosana")} $a, $laajuus%.1f ${suorituksenLaajuusYksikkö.map(_.get(t.language)).getOrElse(t.get("raportti-excel-default-value-kurssia"))}${hylätytKurssitStr(t)}${luokkaAste.map(l => s", ${l.get(t.language)}").getOrElse("")}")
-      .getOrElse(t.get("raportti-excel-default-value-ei-arvosanaa"))
+  def toStringLokalisoitu(t: LocalizationReader, useDefaultLaajuusYksikkö: Boolean): String = {
+    suoritus.arviointiArvosanaKoodiarvo.map { arvosana =>
+      val arvosanaLabel = t.get("raportti-excel-default-value-arvosana")
+      val defaultYksikkö = if (useDefaultLaajuusYksikkö) t.get("raportti-excel-default-value-kurssia") else ""
+
+      val laajuusLabel = t.get("raportti-excel-default-value-laajuus").capitalize
+      val laajuusFormatted = f"$laajuus%.1f"
+      val yksikkö = suorituksenLaajuusYksikkö
+        .map(_.get(t.language))
+        .getOrElse(defaultYksikkö)
+
+      val laajuusStr = List(
+        laajuusLabel,
+        laajuusFormatted,
+        yksikkö,
+        hylätytKurssitStr(t)
+      ).filter(_.nonEmpty).mkString(" ")
+
+      val luokka = luokkaAste
+        .map(l => l.get(t.language))
+        .getOrElse("")
+
+      List(
+        s"$arvosanaLabel $arvosana",
+        laajuusStr,
+        luokka
+      ).filter(_.nonEmpty).mkString(", ")
+    }.getOrElse {
+      t.get("raportti-excel-default-value-ei-arvosanaa")
+    }
   }
 }
 
@@ -276,7 +301,8 @@ object YleissivistäväUtils {
     osasuoritukset: Seq[ROsasuoritusRow],
     oppiaineet: Seq[YleissivistäväRaporttiOppiaineJaKurssit],
     isOppiaineenOppimäärä: RPäätasonSuoritusRow => Boolean,
-    t: LocalizationReader
+    t: LocalizationReader,
+    useDefaultLaajuusYksikkö: Boolean = true
   ): Seq[String] = {
 
     def oppiaineenTiedot(oppiaine: YleissivistäväRaporttiOppiaine) = if (isOppiaineenOppimäärä(paatasonsuoritus)) {
@@ -293,7 +319,7 @@ object YleissivistäväUtils {
 
     oppiaineet
       .map(_.oppiaine)
-      .map(oppiaineenTiedot(_).map(_.toStringLokalisoitu(t)).mkString(","))
+      .map(oppiaineenTiedot(_).map(_.toStringLokalisoitu(t, useDefaultLaajuusYksikkö)).mkString(","))
   }
 
   def removeContinuousSameTila(aikajaksot: Seq[ROpiskeluoikeusAikajaksoRow]): Seq[ROpiskeluoikeusAikajaksoRow] = {

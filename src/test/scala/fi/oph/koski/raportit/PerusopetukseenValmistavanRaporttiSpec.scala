@@ -122,14 +122,14 @@ class PerusopetukseenValmistavanRaporttiSpec extends AnyFreeSpec with Matchers w
         }
 
         "Data näyttää oikealta" in {
-          sheet.rows.head should equal(defaultExpectedValmistavaRow.copy(opiskeluoikeusOid = report.head.head.toString).productIterator.toList ++ List("Arvosana S, 10.0 vuosiviikkotuntia", "Arvosana 9, 1.0 vuosiviikkotuntia, 7. vuosiluokka"))
+          sheet.rows.head should equal(defaultExpectedValmistavaRow.copy(opiskeluoikeusOid = report.head.head.toString).productIterator.toList ++ List("Arvosana S, Laajuus 10.0 vuosiviikkotuntia", "Arvosana 9, Laajuus 1.0 vuosiviikkotuntia, 7. vuosiluokka"))
         }
       }
 
       "Haettaessa koulutustoimijalla" - {
         val (report, sheet) = haeRaportti(MockOrganisaatiot.jyväskylänYliopisto)
         "Data näyttää oikealta" in {
-          sheet.rows.head should equal(defaultExpectedValmistavaRow.copy(opiskeluoikeusOid = report.head.head.toString).productIterator.toList ++ List("Arvosana S, 10.0 vuosiviikkotuntia", "Arvosana 9, 1.0 vuosiviikkotuntia, 7. vuosiluokka"))
+          sheet.rows.head should equal(defaultExpectedValmistavaRow.copy(opiskeluoikeusOid = report.head.head.toString).productIterator.toList ++ List("Arvosana S, Laajuus 10.0 vuosiviikkotuntia", "Arvosana 9, Laajuus 1.0 vuosiviikkotuntia, 7. vuosiluokka"))
         }
       }
     }

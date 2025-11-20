@@ -189,13 +189,13 @@ class AikuistenPerusopetusRaporttiSpec
             "Yhteislaajuus (hylätyllä arvosanalla suoritetut kurssit)" -> 0.0,
             "Yhteislaajuus (tunnustetut kurssit)" -> 2.0,
             "Yhteislaajuus (eri vuonna korotetut kurssit)" -> 0.0,
-            "AI Suomen kieli ja kirjallisuus valtakunnallinen" -> "Arvosana 9, 14.0 kurssia",
-            "A1 Englanti valtakunnallinen" -> "Arvosana 7, 4.0 kurssia",
-            "MA Matematiikka valtakunnallinen" -> "Arvosana 10, 3.0 kurssia",
-            "YH Yhteiskuntatietous ja kulttuurintuntemus valtakunnallinen" -> "Arvosana 8, 4.0 kurssia",
-            "TE Terveystieto valtakunnallinen" -> "Arvosana 10, 1.0 kurssia",
-            "OP Opinto-ohjaus ja työelämän taidot valtakunnallinen" -> "Arvosana S, 0.0 kurssia",
-            "YL Ympäristö- ja luonnontieto valtakunnallinen" -> "Arvosana 8, 1.0 kurssia"
+            "AI Suomen kieli ja kirjallisuus valtakunnallinen" -> "Arvosana 9, Laajuus 14.0 kurssia",
+            "A1 Englanti valtakunnallinen" -> "Arvosana 7, Laajuus 4.0 kurssia",
+            "MA Matematiikka valtakunnallinen" -> "Arvosana 10, Laajuus 3.0 kurssia",
+            "YH Yhteiskuntatietous ja kulttuurintuntemus valtakunnallinen" -> "Arvosana 8, Laajuus 4.0 kurssia",
+            "TE Terveystieto valtakunnallinen" -> "Arvosana 10, Laajuus 1.0 kurssia",
+            "OP Opinto-ohjaus ja työelämän taidot valtakunnallinen" -> "Arvosana S, Laajuus 0.0 kurssia",
+            "YL Ympäristö- ja luonnontieto valtakunnallinen" -> "Arvosana 8, Laajuus 1.0 kurssia"
           )
 
           verifyOppijanRow(aikuisOpiskelija, expectedaikuisOpiskelijaRow, oppiaineetRowsWithColumns)
@@ -370,13 +370,13 @@ class AikuistenPerusopetusRaporttiSpec
             "Yhteislaajuus (hylätyllä arvosanalla suoritetut kurssit)" -> 0.0,
             "Yhteislaajuus (tunnustetut kurssit)" -> 0.0,
             "Yhteislaajuus (eri vuonna korotetut kurssit)" -> 0.0,
-            "AI Suomen kieli ja kirjallisuus valtakunnallinen" -> "Arvosana 9, 0.0 kurssia",
-            "A1 Englanti valtakunnallinen" -> "Arvosana 7, 0.0 kurssia",
-            "MA Matematiikka valtakunnallinen" -> "Arvosana 10, 0.0 kurssia",
-            "YH Yhteiskuntatietous ja kulttuurintuntemus valtakunnallinen" -> "Arvosana 8, 0.0 kurssia",
-            "TE Terveystieto valtakunnallinen" -> "Arvosana 10, 0.0 kurssia",
-            "OP Opinto-ohjaus ja työelämän taidot valtakunnallinen" -> "Arvosana S, 0.0 kurssia",
-            "YL Ympäristö- ja luonnontieto valtakunnallinen" -> "Arvosana 8, 0.0 kurssia"
+            "AI Suomen kieli ja kirjallisuus valtakunnallinen" -> "Arvosana 9, Laajuus 0.0 kurssia",
+            "A1 Englanti valtakunnallinen" -> "Arvosana 7, Laajuus 0.0 kurssia",
+            "MA Matematiikka valtakunnallinen" -> "Arvosana 10, Laajuus 0.0 kurssia",
+            "YH Yhteiskuntatietous ja kulttuurintuntemus valtakunnallinen" -> "Arvosana 8, Laajuus 0.0 kurssia",
+            "TE Terveystieto valtakunnallinen" -> "Arvosana 10, Laajuus 0.0 kurssia",
+            "OP Opinto-ohjaus ja työelämän taidot valtakunnallinen" -> "Arvosana S, Laajuus 0.0 kurssia",
+            "YL Ympäristö- ja luonnontieto valtakunnallinen" -> "Arvosana 8, Laajuus 0.0 kurssia"
           )
 
           verifyOppijanRow(aikuisOpiskelija, expectedaikuisOpiskelijaRow, oppiaineetRowsWithColumns)
@@ -525,25 +525,25 @@ class AikuistenPerusopetusRaporttiSpec
             "Yhteislaajuus (hylätyllä arvosanalla suoritetut kurssit)" -> 1.0,
             "Yhteislaajuus (tunnustetut kurssit)" -> 2.0,
             "Yhteislaajuus (eri vuonna korotetut kurssit)" -> 1.0,
-            "AI Suomen kieli ja kirjallisuus valtakunnallinen" -> "Arvosana 9, 5.0 kurssia (joista 1.0 hylättyjä)",
-            "A1 Englanti valtakunnallinen" -> "Arvosana 8, 0.0 kurssia",
-            "B1 Ruotsi valtakunnallinen" -> "Arvosana 8, 0.0 kurssia,Arvosana S, 0.0 vuosiviikkotuntia",
-            "B2 Saksa valtakunnallinen" -> "Arvosana 9, 0.0 vuosiviikkotuntia",
-            "MA Matematiikka valtakunnallinen" -> "Arvosana 9, 0.0 kurssia",
-            "BI Biologia valtakunnallinen" -> "Arvosana 9, 0.0 kurssia",
-            "GE Maantieto valtakunnallinen" -> "Arvosana 9, 0.0 kurssia",
-            "FY Fysiikka valtakunnallinen" -> "Arvosana 9, 0.0 kurssia",
-            "KE Kemia valtakunnallinen" -> "Arvosana 7, 0.0 kurssia",
-            "HI Historia valtakunnallinen" -> "Arvosana 8, 0.0 kurssia",
-            "YH Yhteiskuntaoppi valtakunnallinen" -> "Arvosana 10, 0.0 kurssia",
-            "KT Uskonto/Elämänkatsomustieto valtakunnallinen" -> "Arvosana 10, 0.0 kurssia",
-            "TE Terveystieto valtakunnallinen" -> "Arvosana 8, 0.0 kurssia",
-            "LI Liikunta valtakunnallinen" -> "Arvosana 9, 0.0 kurssia,Arvosana S, 0.0 vuosiviikkotuntia",
-            "MU Musiikki valtakunnallinen" -> "Arvosana 7, 0.0 kurssia",
-            "KU Kuvataide valtakunnallinen" -> "Arvosana 8, 0.0 kurssia",
-            "KO Kotitalous valtakunnallinen" -> "Arvosana 8, 0.0 kurssia,Arvosana S, 0.0 vuosiviikkotuntia",
-            "KS Käsityö valtakunnallinen" -> "Arvosana 9, 0.0 kurssia",
-            "TH Tietokoneen hyötykäyttö paikallinen" -> "Arvosana 9, 0.0 kurssia"
+            "AI Suomen kieli ja kirjallisuus valtakunnallinen" -> "Arvosana 9, Laajuus 5.0 kurssia (joista 1.0 hylättyjä)",
+            "A1 Englanti valtakunnallinen" -> "Arvosana 8, Laajuus 0.0 kurssia",
+            "B1 Ruotsi valtakunnallinen" -> "Arvosana 8, Laajuus 0.0 kurssia,Arvosana S, Laajuus 0.0 vuosiviikkotuntia",
+            "B2 Saksa valtakunnallinen" -> "Arvosana 9, Laajuus 0.0 vuosiviikkotuntia",
+            "MA Matematiikka valtakunnallinen" -> "Arvosana 9, Laajuus 0.0 kurssia",
+            "BI Biologia valtakunnallinen" -> "Arvosana 9, Laajuus 0.0 kurssia",
+            "GE Maantieto valtakunnallinen" -> "Arvosana 9, Laajuus 0.0 kurssia",
+            "FY Fysiikka valtakunnallinen" -> "Arvosana 9, Laajuus 0.0 kurssia",
+            "KE Kemia valtakunnallinen" -> "Arvosana 7, Laajuus 0.0 kurssia",
+            "HI Historia valtakunnallinen" -> "Arvosana 8, Laajuus 0.0 kurssia",
+            "YH Yhteiskuntaoppi valtakunnallinen" -> "Arvosana 10, Laajuus 0.0 kurssia",
+            "KT Uskonto/Elämänkatsomustieto valtakunnallinen" -> "Arvosana 10, Laajuus 0.0 kurssia",
+            "TE Terveystieto valtakunnallinen" -> "Arvosana 8, Laajuus 0.0 kurssia",
+            "LI Liikunta valtakunnallinen" -> "Arvosana 9, Laajuus 0.0 kurssia,Arvosana S, Laajuus 0.0 vuosiviikkotuntia",
+            "MU Musiikki valtakunnallinen" -> "Arvosana 7, Laajuus 0.0 kurssia",
+            "KU Kuvataide valtakunnallinen" -> "Arvosana 8, Laajuus 0.0 kurssia",
+            "KO Kotitalous valtakunnallinen" -> "Arvosana 8, Laajuus 0.0 kurssia,Arvosana S, Laajuus 0.0 vuosiviikkotuntia",
+            "KS Käsityö valtakunnallinen" -> "Arvosana 9, Laajuus 0.0 kurssia",
+            "TH Tietokoneen hyötykäyttö paikallinen" -> "Arvosana 9, Laajuus 0.0 kurssia"
           )
 
           verifyOppijanRow(aikuisOpiskelija, expectedaikuisOpiskelijaRow, oppiaineetRowsWithColumns)
@@ -685,7 +685,7 @@ class AikuistenPerusopetusRaporttiSpec
             "Yhteislaajuus (hylätyllä arvosanalla suoritetut kurssit)" -> 0.0,
             "Yhteislaajuus (tunnustetut kurssit)" -> 0.0,
             "Yhteislaajuus (eri vuonna korotetut kurssit)" -> 0.0,
-            "AI Suomen kieli ja kirjallisuus valtakunnallinen" -> "Arvosana 9, 1.0 kurssia",
+            "AI Suomen kieli ja kirjallisuus valtakunnallinen" -> "Arvosana 9, Laajuus 1.0 kurssia",
             "YH Yhteiskuntaoppi valtakunnallinen" -> "",
             "MA Matematiikka valtakunnallinen" -> "",
             "Tutkintokoodi/koulutusmoduulin koodi" -> "AI",
@@ -700,7 +700,7 @@ class AikuistenPerusopetusRaporttiSpec
             "Yhteislaajuus (tunnustetut kurssit)" -> 0.0,
             "Yhteislaajuus (eri vuonna korotetut kurssit)" -> 0.0,
             "AI Suomen kieli ja kirjallisuus valtakunnallinen" -> "",
-            "YH Yhteiskuntaoppi valtakunnallinen" -> "Arvosana 10, 1.0 kurssia",
+            "YH Yhteiskuntaoppi valtakunnallinen" -> "Arvosana 10, Laajuus 1.0 kurssia",
             "MA Matematiikka valtakunnallinen" -> "",
             "Tutkintokoodi/koulutusmoduulin koodi" -> "YH",
             "Suorituksen nimi" -> Some("Yhteiskuntaoppi")
