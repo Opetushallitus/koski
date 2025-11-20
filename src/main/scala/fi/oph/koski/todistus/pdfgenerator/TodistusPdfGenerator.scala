@@ -45,6 +45,10 @@ class TodistusPdfGenerator extends Logging {
     convertHtmlToPdf(html, outputStream)
   }
 
+  def generateHtml(data: TodistusData): String = {
+    generateHtml(data.templateName, data)
+  }
+
   private def generateHtml(templateName: String, data: TodistusData): String = {
     val context = new Context()
     context.setVariables(data.toTemplateVariables.asJava)

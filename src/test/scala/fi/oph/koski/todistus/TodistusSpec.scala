@@ -1050,6 +1050,74 @@ class TodistusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers with Bef
     }
   }
 
+  "HTML preview endpoint" - {
+    "onnistuu OPH-pääkäyttäjältä" in {
+      val lang = "fi"
+      val oppijaOid = KoskiSpecificMockOppijat.kielitutkinnonSuorittaja.oid
+      val oppija = KoskiSpecificMockOppijat.kielitutkinnonSuorittaja
+      val opiskeluoikeusOid = getVahvistettuKielitutkinnonOpiskeluoikeus(oppijaOid).flatMap(_.oid).get
+
+      get(s"todistus/preview/$lang/$opiskeluoikeusOid", headers = authHeaders(MockUsers.paakayttaja)) {
+        verifyResponseStatusOk()
+        response.header("Content-Type") should include("text/html")
+
+        val html = response.body
+
+        // Tarkista että HTML sisältää oikeat tiedot
+        html should include("Kielitutkinto Suorittaja")
+        html should include("1.1.2007") // syntymäaika
+        html should include("suomen kielen keskitason")
+        html should include("Varsinais-Suomen kansanopisto")
+        html should include("Tekstin ymmärtäminen")
+        html should include("Kirjoittaminen")
+        html should include("Puheen ymmärtäminen")
+        html should include("Puhuminen")
+      }
+    }
+
+    "ei onnistu kansalaiselta" in {
+      val lang = "fi"
+      val hetu = KoskiSpecificMockOppijat.kielitutkinnonSuorittaja.hetu.get
+      val oppijaOid = KoskiSpecificMockOppijat.kielitutkinnonSuorittaja.oid
+      val opiskeluoikeusOid = getVahvistettuKielitutkinnonOpiskeluoikeus(oppijaOid).flatMap(_.oid).get
+
+      get(s"todistus/preview/$lang/$opiskeluoikeusOid", headers = kansalainenLoginHeaders(hetu)) {
+        verifyResponseStatus(403) // Forbidden
+      }
+    }
+
+    "ei onnistu tavalliselta virkailijalta (ei pääkäyttäjä)" in {
+      val lang = "fi"
+      val oppijaOid = KoskiSpecificMockOppijat.kielitutkinnonSuorittaja.oid
+      val opiskeluoikeusOid = getVahvistettuKielitutkinnonOpiskeluoikeus(oppijaOid).flatMap(_.oid).get
+
+      get(s"todistus/preview/$lang/$opiskeluoikeusOid", headers = authHeaders(MockUsers.kalle)) {
+        verifyResponseStatus(403) // Forbidden
+      }
+    }
+
+    "palauttaa 404 jos opiskeluoikeus ei ole kielitutkinto" in {
+      val lang = "fi"
+      val muidenOpintojenOpiskeluoikeus = getVahvistettuOpiskeluoikeus(KoskiSpecificMockOppijat.lukiolainen.oid)
+      val muidenOpintojenOpiskeluoikeusOid = muidenOpintojenOpiskeluoikeus.flatMap(_.oid).get
+
+      get(s"todistus/preview/$lang/$muidenOpintojenOpiskeluoikeusOid", headers = authHeaders(MockUsers.paakayttaja)) {
+        verifyResponseStatus(404)
+      }
+    }
+
+    "palauttaa 404 jos opiskeluoikeus on mitätöity" in {
+      val lang = "fi"
+      val oo = setupOppijaWithAndGetOpiskeluoikeus(vahvistettuKielitutkinnonOpiskeluoikeus, KoskiSpecificMockOppijat.eskari, MockUsers.paakayttaja)
+      mitätöiOppijanKaikkiOpiskeluoikeudet(KoskiSpecificMockOppijat.eskari)
+      val opiskeluoikeusOid = oo.oid.get
+
+      get(s"todistus/preview/$lang/$opiskeluoikeusOid", headers = authHeaders(MockUsers.paakayttaja)) {
+        verifyResponseStatus(404)
+      }
+    }
+  }
+
   "Audit-lokitukset" - {
     "TODISTUKSEN_LUONTI lokitetaan kun kansalainen luo todistuksen" in {
       val lang = "fi"
