@@ -56,8 +56,8 @@
     </dependency>
     <dependency>
       <artifactId>scala-schema</artifactId>
-      <groupId>fi.vm.sade</groupId>
-      <version>2.39.0_2.13</version>
+      <groupId>com.github.Opetushallitus</groupId>
+      <version>codex-test-scala-2-13-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>org.apache.commons</groupId>
@@ -218,9 +218,9 @@
       <version>3.2.1</version>
     </dependency>
     <dependency>
-      <groupId>com.github.raimohanska</groupId>
+      <groupId>com.github.a544jh</groupId>
       <artifactId>mojave</artifactId>
-      <version>0.6_2.13</version>
+      <version>scala-2.13-updates-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>org.scala-lang.modules</groupId>
