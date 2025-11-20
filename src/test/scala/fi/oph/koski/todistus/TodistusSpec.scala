@@ -365,6 +365,20 @@ class TodistusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers with Bef
   }
 
   "Allekirjoitetun todistuksen saa ladattua sen valmistuttua" in {
+    def verifyYleinenKielitutkintoTodistusSisalto(pdfText: String): Unit = {
+      // Tarkista, että todistuksen kaikki templatoidut merkkijonot löytyvät PDF:stä
+      assert(pdfText.contains("Kielitutkinto Suorittaja"), "Oppijan nimi puuttuu")
+      assert(pdfText.contains("1.1.2007"), "Oppijan syntymäaika puuttuu")
+      assert(pdfText.contains("suomen kielen keskitason"), "Tutkinnon nimi puuttuu")
+      assert(pdfText.contains("3-4"), "Tason arvosanarajat puuttuvat")
+      assert(pdfText.contains("Varsinais-Suomen kansanopisto"), "Järjestäjän nimi puuttuu")
+      assert(pdfText.contains("3.1.2011"), "Allekirjoituspäivämäärä puuttuu")
+      assert(pdfText.contains("TEKSTIN YMMÄRTÄMINEN"), "Osasuoritus 'TEKSTIN YMMÄRTÄMINEN' puuttuu")
+      assert(pdfText.contains("KIRJOITTAMINEN"), "Osasuoritus 'KIRJOITTAMINEN' puuttuu")
+      assert(pdfText.contains("PUHEEN YMMÄRTÄMINEN"), "Osasuoritus 'PUHEEN YMMÄRTÄMINEN' puuttuu")
+      assert(pdfText.contains("PUHUMINEN"), "Osasuoritus 'PUHUMINEN' puuttuu")
+    }
+
     val lang = "fi"
     val oppija = KoskiSpecificMockOppijat.kielitutkinnonSuorittaja
     val expectedHash = laskeHenkilötiedotHash(oppija)
@@ -409,8 +423,14 @@ class TodistusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers with Bef
       val pdfBytes = response.getContentBytes()
 
       val document = Loader.loadPDF(pdfBytes)
+
+      // Kirjoita PDF temp-tiedostoon debuggausta varten
+      val tempFile = java.nio.file.Files.createTempFile("todistus-test-", ".pdf")
+      java.nio.file.Files.write(tempFile, pdfBytes)
+      println(s"PDF kirjoitettu tiedostoon: ${tempFile.toAbsolutePath}")
+
       val pdfText = new PDFTextStripper().getText(document)
-      assert(pdfText.contains("Läpi meni!"))
+      verifyYleinenKielitutkintoTodistusSisalto(pdfText)
 
       val signerName = document.getLastSignatureDictionary.getName()
       signerName should be("TEST Signer")
@@ -432,7 +452,7 @@ class TodistusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers with Bef
 
       val document = Loader.loadPDF(pdfBytes)
       val pdfText = new PDFTextStripper().getText(document)
-      assert(pdfText.contains("Läpi meni!"))
+      verifyYleinenKielitutkintoTodistusSisalto(pdfText)
 
       val signerName = document.getLastSignatureDictionary.getName()
       signerName should be("TEST Signer")

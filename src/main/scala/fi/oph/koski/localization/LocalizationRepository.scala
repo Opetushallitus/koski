@@ -64,18 +64,18 @@ abstract class CachedLocalizationService(localizationConfig: LocalizationConfig)
             (key, Finnish(finnishDefaultText))
           }
     }
-    // Lisää myös inLocalizationService:stä löytyvät omadataoauth2_ -avaimet. Käyttöliittymissä näitä merkkijonoja
-    // käytetään myös dynaamisesti siten, että ylimääräisiä tekstejä voi lisätä lisäämällä uusia avaimia suoraan
-    // lokalisaatiopalveluun, lisäämättä niitä koski-default-texst.json:iin.
-    val omadataTexts: Map[String, Finnish] = inLocalizationService
-      .filter(_._1.startsWith("omadataoauth2"))
+    // Lisää myös inLocalizationService:stä löytyvät avaimet, joille pitää tukea dynaamisuutta. Käyttöliittymissä yms.
+    // näitä merkkijonoja käytetään myös dynaamisesti siten, että ylimääräisiä tekstejä voi lisätä lisäämällä uusia
+    // avaimia suoraan lokalisaatiopalveluun, lisäämättä niitä koski-default-texst.json:iin.
+    val dynamicTexts: Map[String, Finnish] = inLocalizationService
+      .filter(d => d._1.startsWith("omadataoauth2") || d._1.startsWith("todistus"))
       .mapValues(sanitize)
       .map { case (key, value) => (key, value.getOrElse {
         reportMissingLocalization(key)
         Finnish(key)
       }) }
 
-    omadataTexts ++ cleanedUpUsingDefaultFinnishTexts
+    dynamicTexts ++ cleanedUpUsingDefaultFinnishTexts
   }
 
   def reportMissingLocalization(key: String): Unit = {

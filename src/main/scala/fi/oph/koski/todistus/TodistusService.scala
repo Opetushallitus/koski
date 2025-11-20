@@ -9,8 +9,10 @@ import fi.oph.koski.koskiuser.Rooli.OPHPAAKAYTTAJA
 import fi.oph.koski.log.Logging
 import fi.oph.koski.schema.{KielitutkinnonOpiskeluoikeus, Opiskeluoikeus, YleisenKielitutkinnonSuoritus}
 import fi.oph.koski.todistus.BucketType.BucketType
+import fi.oph.koski.todistus.pdfgenerator.{TodistusData, TodistusPdfGenerator}
 import fi.oph.koski.todistus.swisscomclient.SwisscomClient
-import fi.oph.koski.util.{ClasspathResource, Resource, TryWithLogging}
+import fi.oph.koski.todistus.yleinenkielitutkinto.YleinenKielitutkintoTodistusDataBuilder
+import fi.oph.koski.util.TryWithLogging
 import software.amazon.awssdk.http.ContentStreamProvider
 
 import java.io.InputStream
@@ -26,8 +28,8 @@ class TodistusService(application: KoskiApplication) extends Logging {
   private val todistusRepository: TodistusJobRepository = application.todistusRepository
 
   private val swisscomClient: SwisscomClient = application.swisscomClient
-
-  lazy val mockTodistusResource: Resource = new ClasspathResource("/mockdata/todistus")
+  private val pdfGenerator = new TodistusPdfGenerator()
+  private val yleinenKielitutkintoTodistusDataBuilder = new YleinenKielitutkintoTodistusDataBuilder(application)
 
   def currentStatus(req: TodistusIdRequest)(implicit user: KoskiSpecificSession): Either[HttpStatus, TodistusJob] = {
     if (user.hasRole(OPHPAAKAYTTAJA)) {
@@ -240,24 +242,17 @@ class TodistusService(application: KoskiApplication) extends Logging {
           //
           // GENERATING_RAW_PDF: Generoi PDF-todistus, jota ei ole vielä allekirjoitettu
           //
-          // TODO: TOR-2400: Generoi todistus-PDF kerätyistä tiedoista
+          // TODO: TOR-2400: Tallenna myös HTML S3:een, jotta sitä voi renderöidä helposti suoraan selaimessa debuggaukseen
+          todistusData <- createTodistusData(oppijanHenkilö, opiskeluoikeus, todistus)
+          pdfBytes <- TryWithLogging(logger, {
+            pdfGenerator.generatePdf(todistusData)
+          }).left.map(t => KoskiErrorCategory.internalError(s"PDF:n generointi epäonnistui todistukselle ${todistus.id}: ${t.getMessage}"))
 
           //
           // SAVING_RAW_PDF: Tallenna allekirjoittamaton todistus S3:een
           //
           todistus <- todistusRepository.updateState(todistus.id, TodistusState.GENERATING_RAW_PDF, TodistusState.SAVING_RAW_PDF)
-          // TODO: TOR-2400: Korvaa tämä mock-datan tallentaminen oikealla toteutuksella ja tallenna generoitu raw-PDF
-          mockIs <- mockTodistusResource.getInputStream("mock-todistus-raw.pdf")
-            .toRight(KoskiErrorCategory.internalError(s"Mock-datan luku epäonnistui todistukselle ${todistus.id}"))
-            .tap(is => use(is))
-          _ <- resultRepository.putStream(BucketType.RAW, todistus.id, ContentStreamProvider.fromInputStream(mockIs))
-          // TODO: TOR-2400: Verrataan, että luettu vastaa tallennettua, poista tämä, kun oikea toteutus tehty
-          rawInputStream <- resultRepository.getStream(BucketType.RAW, todistus.id)
-            .tap(is => use(is))
-          rawExpectedInputStream = use(mockTodistusResource.getInputStream("mock-todistus-raw.pdf").get)
-          rawBytes = rawInputStream.readAllBytes()
-          rawExpectedBytes = rawExpectedInputStream.readAllBytes()
-          _ = assert(rawBytes.sameElements(rawExpectedBytes), "Raw PDF bytes do not match expected bytes")
+          _ <- resultRepository.putStream(BucketType.RAW, todistus.id, ContentStreamProvider.fromByteArray(pdfBytes))
 
           //
           // STAMPING_PDF: Allekirjoita PDF
@@ -344,4 +339,18 @@ class TodistusService(application: KoskiApplication) extends Logging {
 
   private def teeKonteksti(id: String, oppijaOid: String, opiskeluoikeusOid: String, language: String, user: String): String =
     s"job:${id}/oppija:${oppijaOid}/oo:${opiskeluoikeusOid}/lang:${language}/user:${user}"
+
+  private def createTodistusData(oppijanHenkilö: OppijaHenkilö, opiskeluoikeus: Opiskeluoikeus, todistus: TodistusJob): Either[HttpStatus, TodistusData] = {
+    opiskeluoikeus match {
+      case ktOo: KielitutkinnonOpiskeluoikeus =>
+        ktOo.suoritukset.find(_.isInstanceOf[YleisenKielitutkinnonSuoritus]) match {
+          case Some(suoritus: YleisenKielitutkinnonSuoritus) =>
+            yleinenKielitutkintoTodistusDataBuilder.createTodistusData(oppijanHenkilö, ktOo, suoritus, todistus)
+          case _ =>
+            Left(KoskiErrorCategory.internalError(s"Yleisen kielitutkinnon suoritusta ei löytynyt todistukselle ${todistus.id}"))
+        }
+      case _ =>
+        Left(KoskiErrorCategory.internalError(s"Opiskeluoikeus ei ole kielitutkinnon opiskeluoikeus todistukselle ${todistus.id}"))
+    }
+  }
 }
