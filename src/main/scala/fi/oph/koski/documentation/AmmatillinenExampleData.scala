@@ -2,9 +2,8 @@ package fi.oph.koski.documentation
 
 import java.time.LocalDate
 import java.time.LocalDate.{of => date}
-
 import fi.oph.koski.documentation.ExampleData._
-import fi.oph.koski.henkilo.{KoskiSpecificMockOppijat}
+import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.henkilo.MockOppijat.asUusiOppija
 import fi.oph.koski.localization.LocalizedStringImplicits._
 import fi.oph.koski.organisaatio.MockOrganisaatiot
@@ -25,6 +24,7 @@ object AmmatillinenExampleData {
   val virheellinenPuuteollisuudenPerustutkinto: AmmatillinenTutkintoKoulutus = AmmatillinenTutkintoKoulutus(Koodistokoodiviite("351741", "koulutus"), Some("OPH-992455-2017"))
   val validaatoitaOhittavaKoulutusmoduuli: AmmatillinenTutkintoKoulutus = AmmatillinenTutkintoKoulutus(Koodistokoodiviite("351741", "koulutus"), Some("OPH-2524-2017"))
   val liikunnanJaValmennuksenAmmattitutkinto: AmmatillinenTutkintoKoulutus = AmmatillinenTutkintoKoulutus(Koodistokoodiviite("384248", "koulutus"), Some("OPH-1161-2018"))
+  val eläintenhoidonAmmattitutkinto: AmmatillinenTutkintoKoulutus = AmmatillinenTutkintoKoulutus(Koodistokoodiviite("364902", "koulutus"), Some("OPH-2487-2018"))
 
   val tutkinnonOsaaPienemmistäKokonaisuuksistaKoostuvaKoulutus: TutkinnonOsaaPienemmistäKokonaisuuksistaKoostuvaKoulutus = TutkinnonOsaaPienemmistäKokonaisuuksistaKoostuvaKoulutus(
     PaikallinenKoodi("KISI", "Kiinteistösihteerin koulutus ja tutkinto (KISI)"),
@@ -53,6 +53,7 @@ object AmmatillinenExampleData {
   def tietoJaViestintäTekniikanPerustutkinnonSuoritus(toimipiste: OrganisaatioWithOid = stadinToimipiste): AmmatillisenTutkinnonSuoritus = ammatillinenTutkintoSuoritus(tietoJaViestintäTekniikanPerustutkinto, toimipiste)
   def virheellinenPuuteollisuudenPerustutkinnonSuoritus(toimipiste: OrganisaatioWithOid = stadinToimipiste): AmmatillisenTutkinnonSuoritus = ammatillinenTutkintoSuoritus(virheellinenPuuteollisuudenPerustutkinto, toimipiste)
   def liikunnanJaValmennuksenAmmattitutkinnonSuoritus(toimipiste: OrganisaatioWithOid = stadinToimipiste): AmmatillisenTutkinnonSuoritus = ammatillinenTutkintoSuoritus(liikunnanJaValmennuksenAmmattitutkinto, toimipiste).copy(suoritustapa = suoritustapaReformi)
+  def eläintenhoidonAmmattitutkinnonSuoritus(toimipiste: OrganisaatioWithOid = stadinToimipiste): AmmatillisenTutkinnonSuoritus = ammatillinenTutkintoSuoritus(eläintenhoidonAmmattitutkinto, toimipiste).copy(suoritustapa = suoritustapaReformi)
 
   def kiinteistösihteerinTutkinnonOsaaPienempiMuuAmmatillinenKokonaisuus(toimipiste: OrganisaatioWithOid = stadinToimipiste): TutkinnonOsaaPienemmistäKokonaisuuksistaKoostuvaSuoritus =
     tutkinnonOsaaPienempienKokonaisuuksienSuoritus(
@@ -1055,4 +1056,6 @@ object AmmatillinenExampleData {
   }
 
   def ammatillinenOpiskeluoikeusLiikunnanJaValmennuksenAmmattitutkinto = opiskeluoikeus(tutkinto = liikunnanJaValmennuksenAmmattitutkinnonSuoritus())
+  def ammatillinenOpiskeluoikeusEläintenhoidonAmmattitutkinto = opiskeluoikeus(tutkinto = eläintenhoidonAmmattitutkinnonSuoritus())
+
 }

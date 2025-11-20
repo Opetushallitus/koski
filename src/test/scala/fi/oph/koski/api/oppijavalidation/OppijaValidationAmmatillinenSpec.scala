@@ -2038,6 +2038,14 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
           postOpiskeluoikeus(ammatillinenOpiskeluoikeusLiikunnanJaValmennuksenAmmattitutkinto){
             verifyResponseStatusOk()
           }
+
+          //Toinen whitelistillä oleva opiskeluoikeus
+          postOpiskeluoikeus(ammatillinenOpiskeluoikeusEläintenhoidonAmmattitutkinto){
+            verifyResponseStatusOk()
+          }
+          postOpiskeluoikeus(ammatillinenOpiskeluoikeusEläintenhoidonAmmattitutkinto){
+            verifyResponseStatusOk()
+          }
         }
       }
     }
