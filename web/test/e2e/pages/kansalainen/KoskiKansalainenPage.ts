@@ -1,5 +1,6 @@
 import { Locator, Page } from '@playwright/test'
 import { YoTodistusLanguage } from '../../../../app/components-v2/yotutkinto/YoTodistus'
+import { TodistusLanguage } from '../../../../app/kielitutkinto/YleinenKielitutkintoTodistusLataus'
 import { expect } from '../../base'
 import { build, BuiltIdNode } from '../oppija/uiV2builder/builder'
 import { Button } from '../oppija/uiV2builder/Button'
@@ -38,6 +39,10 @@ export class KoskiKansalainenPage {
     await this.page.getByRole('button', { name }).click()
   }
 
+  async openOpiskeluoikeusByIndex(index: number = 0) {
+    await this.page.getByTestId(`oo.${index}.opiskeluoikeus.expand`).click()
+  }
+
   async expandOsaamismerkki(index: number = 0) {
     await expect(this.osaamismerkkiSuoritusTab(index)).not.toBeAttached()
     await this.osaamismerkkiExpandButton(index).click()
@@ -70,6 +75,24 @@ export class KoskiKansalainenPage {
     const popup = await popupPromise
     await popup.waitForLoadState('networkidle')
     await popup.close()
+  }
+
+  async setKielitutkintoTodistusLanguage(lang: TodistusLanguage) {
+    await this.$.kielitutkintoTodistus.language.set(lang)
+  }
+
+  async generateKielitutkintoTodistus() {
+    await this.$.kielitutkintoTodistus.start.click()
+    await this.$.kielitutkintoTodistus.loading.waitFor()
+    await this.$.kielitutkintoTodistus.loading.waitForToDisappear(10000)
+  }
+
+  async getKielitutkintoTodistusFile() {
+    const downloadPromise = this.page.waitForEvent('download')
+    await this.$.kielitutkintoTodistus.open.click()
+    const download = await downloadPromise
+    // Tarkista että lataus onnistui
+    await download.path()
   }
 
   async openJaaSuoritustietoja() {
@@ -183,6 +206,12 @@ const KansalainenUIV2TestIds = {
     start: Button,
     loading: Label,
     error: Label,
+    open: Button
+  },
+  kielitutkintoTodistus: {
+    language: Select,
+    start: Button,
+    loading: Label,
     open: Button
   },
   opiskeluoikeus: KansalainenOpiskeluoikeusHeader()
