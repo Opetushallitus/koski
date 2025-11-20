@@ -374,6 +374,29 @@ class TodistusService(application: KoskiApplication) extends Logging with Timing
   private def teeKonteksti(id: String, oppijaOid: String, opiskeluoikeusOid: String, language: String, user: String): String =
     s"job:${id}/oppija:${oppijaOid}/oo:${opiskeluoikeusOid}/lang:${language}/user:${user}"
 
+  def generateHtmlPreview(req: TodistusGenerateRequest)(implicit user: KoskiSpecificSession): Either[HttpStatus, String] = {
+    for {
+      yleisenKielitutkinnonVahvistettuOpiskeluoikeus <- kielitutkinnonVahvistettuOpiskeluoikeusJohonKutsujallaKäyttöoikeudet(req)
+      oppijanHenkilö <- application.henkilöRepository.findByOid(yleisenKielitutkinnonVahvistettuOpiskeluoikeus.oppijaOid).toRight(KoskiErrorCategory.notFound.oppijaaEiLöydyTaiEiOikeuksia())
+      opiskeluoikeus <- TryWithLogging(logger, {
+        yleisenKielitutkinnonVahvistettuOpiskeluoikeus.toOpiskeluoikeusUnsafe
+      }).left.map(t => KoskiErrorCategory.internalError("Deserialisointi epäonnistui"))
+      // Luodaan dummy todistusJob HTML-previewtä varten
+      dummyJob = TodistusJob(
+        id = "preview",
+        opiskeluoikeusOid = req.opiskeluoikeusOid,
+        oppijaOid = yleisenKielitutkinnonVahvistettuOpiskeluoikeus.oppijaOid,
+        language = req.language,
+        state = TodistusState.GATHERING_INPUT,
+        userOid = Some(user.oid),
+        oppijaHenkilötiedotHash = None,
+        opiskeluoikeusVersionumero = None,
+      )
+      todistusData <- createTodistusData(oppijanHenkilö, opiskeluoikeus, dummyJob)
+      html = pdfGenerator.generateHtml(todistusData)
+    } yield html
+  }
+
   private def createTodistusData(oppijanHenkilö: OppijaHenkilö, opiskeluoikeus: Opiskeluoikeus, todistus: TodistusJob): Either[HttpStatus, TodistusData] = {
     opiskeluoikeus match {
       case ktOo: KielitutkinnonOpiskeluoikeus =>
