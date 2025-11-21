@@ -287,7 +287,7 @@ object KoskiSpecificMockOppijat {
   val suomeenAlaikäisenäMuuttanut = koskiSpecificOppijat.oppija("Anderson", "Andrew", "010106A8159", kotikunta = Some("091"),
     kuntahistoriaMock = h => {
     val historia = Seq(
-      OppijanumerorekisteriKotikuntahistoriaRow(h.henkilö.oid, "200", None,                           Some(LocalDate.of(2024, 3, 1))),
+      OppijanumerorekisteriKotikuntahistoriaRow(h.henkilö.oid, "200", None,                           Some(LocalDate.of(2022, 3, 1))),
       OppijanumerorekisteriKotikuntahistoriaRow(h.henkilö.oid, "091", Some(LocalDate.of(2022, 3, 1)), None),
     )
     OppijanKuntahistoria(
