@@ -393,7 +393,7 @@ class ValpasRootApiServletSpec extends ValpasTestBase with BeforeAndAfterEach {
   def getOppijaListHakutiedoillaUrl(organisaatioOid: String) = s"/valpas/api/oppijat/$organisaatioOid/hakutiedot"
 
   def withoutVariatingEntries[T](headers: Map[String, T]) =
-    headers.filterKeys(_ != "Date")
+    headers.view.filterKeys(_ != "Date").toMap
 }
 
 object ValpasBackendTag extends Tag("valpasback")
