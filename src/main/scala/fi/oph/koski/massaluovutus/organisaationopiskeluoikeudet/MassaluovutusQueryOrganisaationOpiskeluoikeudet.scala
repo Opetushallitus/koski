@@ -7,13 +7,14 @@ import fi.oph.koski.db.KoskiOpiskeluoikeusRowImplicits._
 import fi.oph.koski.db._
 import fi.oph.koski.henkilo.LaajatOppijaHenkilöTiedot
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
-import fi.oph.koski.koskiuser.{AccessType, KoskiSpecificSession, OoPtsMask, Rooli}
+import fi.oph.koski.json.SensitiveDataAllowed
+import fi.oph.koski.koskiuser.{AccessType, KoskiSpecificSession, OoPtsMask, Rooli, Session}
 import fi.oph.koski.log.KoskiAuditLogMessageField.hakuEhto
 import fi.oph.koski.log.KoskiOperation.OPISKELUOIKEUS_HAKU
 import fi.oph.koski.log.{AuditLog, KoskiAuditLogMessage, Logging}
 import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusQueryContext
 import fi.oph.koski.massaluovutus.MassaluovutusUtils.defaultOrganisaatio
-import fi.oph.koski.massaluovutus.{MassaluovutusQueryParameters, QueryResultWriter}
+import fi.oph.koski.massaluovutus.{KoskiMassaluovutusQueryParameters, QueryResultWriter}
 import fi.oph.koski.schema.Organisaatio
 import fi.oph.koski.schema.annotation.EnumValues
 import fi.oph.koski.util.ChainingSyntax.chainingOps
@@ -28,7 +29,7 @@ import scala.concurrent.duration.DurationInt
 
 @Title("Organisaation opiskeluoikeudet")
 @Description("Palauttaa hakuehtojen mukaiset organisaation ja sen alaorganisaatioiden opiskeluoikeudet.")
-trait MassaluovutusQueryOrganisaationOpiskeluoikeudet extends MassaluovutusQueryParameters with DatabaseConverters with Logging {
+trait MassaluovutusQueryOrganisaationOpiskeluoikeudet extends KoskiMassaluovutusQueryParameters with DatabaseConverters with Logging {
   @EnumValues(Set("organisaationOpiskeluoikeudet"))
   def `type`: String
   @Description("Kyselyyn otettavan koulutustoimijan tai oppilaitoksen oid. Jos ei ole annettu, päätellään käyttäjän käyttöoikeuksista.")
@@ -58,23 +59,30 @@ trait MassaluovutusQueryOrganisaationOpiskeluoikeudet extends MassaluovutusQuery
 
   def fetchData(application: KoskiApplication, writer: QueryResultWriter, oppilaitosOids: List[Organisaatio.Oid])(implicit user: KoskiSpecificSession): Either[String, Unit]
 
-  def run(application: KoskiApplication, writer: QueryResultWriter)(implicit user: KoskiSpecificSession): Either[String, Unit] = {
-    val oppilaitosOids = application.organisaatioService.organisaationAlaisetOrganisaatiot(organisaatioOid.get)
-    fetchData(
-      application = application,
-      writer = writer,
-      oppilaitosOids = oppilaitosOids,
-    ).tap(_ => auditLog)
+  def run(application: KoskiApplication, writer: QueryResultWriter)(implicit user: Session with SensitiveDataAllowed): Either[String, Unit] = user match {
+    case koskiUser: KoskiSpecificSession =>
+      implicit val u: KoskiSpecificSession = koskiUser
+      val oppilaitosOids = application.organisaatioService.organisaationAlaisetOrganisaatiot(organisaatioOid.get)
+      fetchData(
+        application = application,
+        writer = writer,
+        oppilaitosOids = oppilaitosOids,
+      ).tap(_ => auditLog)
+    case _ =>
+      throw new IllegalArgumentException("KoskiSpecificSession required")
   }
 
-  def queryAllowed(application: KoskiApplication)(implicit user: KoskiSpecificSession): Boolean =
-    user.hasGlobalReadAccess || (
-      organisaatioOid.exists(user.organisationOids(AccessType.read).contains)
-        && koulutusmuoto.forall(k => user.allowedOpiskeluoikeudetJaPäätasonSuoritukset.intersects(OoPtsMask(k)))
-        && user.sensitiveDataAllowed(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))
+  def queryAllowed(application: KoskiApplication)(implicit user: Session): Boolean = user match {
+    case u: KoskiSpecificSession =>
+      u.hasGlobalReadAccess || (
+        organisaatioOid.exists(u.organisationOids(AccessType.read).contains)
+          && koulutusmuoto.forall(k => u.allowedOpiskeluoikeudetJaPäätasonSuoritukset.intersects(OoPtsMask(k)))
+          && u.sensitiveDataAllowed(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))
       )
+    case _ => false
+  }
 
-  override def fillAndValidate(implicit user: KoskiSpecificSession): Either[HttpStatus, MassaluovutusQueryOrganisaationOpiskeluoikeudet] = {
+  override def fillAndValidate(implicit user: Session): Either[HttpStatus, MassaluovutusQueryOrganisaationOpiskeluoikeudet] = {
     for {
       s1 <-
         if (organisaatioOid.isEmpty) {
@@ -93,7 +101,7 @@ trait MassaluovutusQueryOrganisaationOpiskeluoikeudet extends MassaluovutusQuery
 
   def withOrganisaatioOid(organisaatioOid: Organisaatio.Oid): MassaluovutusQueryOrganisaationOpiskeluoikeudet
 
-  protected def auditLog(implicit user: KoskiSpecificSession): Unit = {
+  protected def auditLog(implicit user: Session): Unit = {
     AuditLog.log(KoskiAuditLogMessage(
       OPISKELUOIKEUS_HAKU,
       user,
