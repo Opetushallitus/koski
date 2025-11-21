@@ -118,7 +118,7 @@ class ValpasKuntarouhintaService(application: KoskiApplication)
   private def onHetullinenOppija(oppija: OppijaNumerorekisteriKuntarouhintaOppija): Boolean =
     oppija.hetu.isDefined
 
-  private def rouhiOppivelvollisuuttaSuorittamattomatKoskesta
+  def rouhiOppivelvollisuuttaSuorittamattomatKoskesta
     (kunta: String)
   : Either[HttpStatus, Seq[ValpasRouhintaOppivelvollinen]] = {
     val oppivelvollisetKoskessa = getOppivelvollisetKotikunnalla(kunta)
