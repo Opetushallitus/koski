@@ -144,7 +144,7 @@ const AmmatillisenOsittaisenSuorituksenTiedot: React.FC<{
     <KeyValueTable>
       <KeyValueRow localizableLabel="Koulutus">
         <TestIdText id="koulutus">
-          {t(päätasonSuoritus.suoritus.koulutusmoduuli.tunniste.nimi)}
+          {t(päätasonSuoritus.suoritus.koulutusmoduuli.perusteenNimi)}
         </TestIdText>{' '}
         {päätasonSuoritus.suoritus.koulutusmoduuli.tunniste.koodiarvo}{' '}
         <FormField
