@@ -79,6 +79,12 @@ export const AmmatillinenTutkintoOsittainenUseastaTutkinnostaEditor: React.FC<
       AmmatillinenOpiskeluoikeus,
       AmmatillisenTutkinnonOsittainenUseastaTutkinnostaSuoritus
     >
+  const suorituksenNimiLocalized = localize(
+    t(
+      osittainenUseastaTutkinnostaSuoritus.suoritus.koulutusmoduuli.tunniste
+        .nimi
+    )
+  )
 
   const organisaatio =
     props.opiskeluoikeus.oppilaitos || props.opiskeluoikeus.koulutustoimija
@@ -100,9 +106,7 @@ export const AmmatillinenTutkintoOsittainenUseastaTutkinnostaEditor: React.FC<
         createOpiskeluoikeusjakso={createAmmatillinenOpiskeluoikeusJakso}
         lisätiedotContainer={AmmatillinenLisatiedot}
         additionalOpiskeluoikeusFields={SisältyyOpiskeluoikeuteen}
-        suorituksenNimi={(suoritus) =>
-          localize(t(suoritus.koulutusmoduuli.tunniste.nimi))
-        }
+        suorituksenNimi={() => suorituksenNimiLocalized}
       >
         <AmmatillisenOsittaisenUseastaTutkinnostaSuorituksenTiedot
           form={props.form}
@@ -140,13 +144,12 @@ export const AmmatillisenOsittaisenUseastaTutkinnostaSuorituksenTiedot: React.FC
   >
 }> = ({ form, päätasonSuoritus }) => {
   const path = päätasonSuoritus.path
+  const koulutusNimi = päätasonSuoritus.suoritus.koulutusmoduuli.tunniste.nimi
 
   return (
     <KeyValueTable>
       <KeyValueRow localizableLabel="Koulutus">
-        <TestIdText id="koulutus">
-          {t(päätasonSuoritus.suoritus.koulutusmoduuli.tunniste.nimi)}
-        </TestIdText>{' '}
+        <TestIdText id="koulutus">{t(koulutusNimi)}</TestIdText>{' '}
       </KeyValueRow>
       <KeyValueRow localizableLabel="Suoritustapa">
         <TestIdText id="suoritustapa">
