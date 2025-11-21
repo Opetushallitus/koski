@@ -1,12 +1,11 @@
 package fi.oph.koski.massaluovutus.eioppivelvollisuuttasuorittavat
 
 import fi.oph.koski.config.KoskiApplication
-import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.json.SensitiveDataAllowed
 import fi.oph.koski.koodisto.Kunta
 import fi.oph.koski.koskiuser.Session
 import fi.oph.koski.log.Logging
-import fi.oph.koski.massaluovutus.{MassaluovutusQueryParameters, QueryFormat, QueryResultWriter, ValpasMassaluovutusQueryParameters}
+import fi.oph.koski.massaluovutus.{QueryFormat, QueryResultWriter, ValpasMassaluovutusQueryParameters}
 import fi.oph.koski.schema.annotation.EnumValues
 import fi.oph.koski.valpas.log.ValpasAuditLog
 import fi.oph.koski.valpas.massaluovutus.{ValpasMassaluovutusOppija, ValpasMassaluovutusResult}
@@ -31,6 +30,7 @@ case class ValpasEiOppivelvollisuuttaSuorittavatQuery(
       implicit val session: ValpasSession = valpasUser
       val kuntarouhinta = new ValpasKuntarouhintaService(application)
       val kunta = getKuntaKoodiByKuntaOid(application, kuntaOid)
+        .getOrElse(throw new IllegalArgumentException(s"ValpasEiOppivelvollisuuttaSuorittavatQuery: getKuntaKoodiByKuntaOid palautti None kuntaOid:lla $kuntaOid"))
 
       kuntarouhinta
         .haeKunnanPerusteellaIlmanOikeustarkastusta(kunta)
@@ -48,16 +48,20 @@ case class ValpasEiOppivelvollisuuttaSuorittavatQuery(
 
   override def queryAllowed(application: KoskiApplication)(implicit user: Session): Boolean = user match {
     case session: ValpasSession =>
-      val kunta = getKuntaKoodiByKuntaOid(application, kuntaOid)
-      val accessResolver = new ValpasAccessResolver
-      accessResolver.accessToKuntaOrg(kunta)(session)
+      val kuntaOpt = getKuntaKoodiByKuntaOid(application, kuntaOid)
+      kuntaOpt.exists(kunta =>{
+        val accessResolver = new ValpasAccessResolver
+        accessResolver.accessToKuntaOrg(kunta)(session)
+      })
     case _ => false
   }
 
-  private def getKuntaKoodiByKuntaOid(application: KoskiApplication, kuntaOid: String) = {
+  private def getKuntaKoodiByKuntaOid(application: KoskiApplication, kuntaOid: String): Option[String] = {
     Kunta.validateAndGetKuntaKoodi(application.organisaatioService, application.koodistoPalvelu, kuntaOid) match {
-      case Right(kuntaKoodi) => kuntaKoodi
-      case Left(error) => throw new IllegalArgumentException(error.errors.map(_.toString).mkString(", "))
+      case Right(kuntaKoodi) => Some(kuntaKoodi)
+      case Left(error) =>
+        logger.warn(s"ValpasEiOppivelvollisuuttaSuorittavatQuery getKuntaKoodiByKuntaOid: ${error.errors.map(_.toString).mkString(", ")}")
+        None
     }
   }
 }
