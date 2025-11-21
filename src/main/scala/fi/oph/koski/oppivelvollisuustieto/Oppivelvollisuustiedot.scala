@@ -185,10 +185,11 @@ object Oppivelvollisuustiedot {
           group by master_oid
         ),
 
-        -- Päivä jolloin oppija on muuttanut ulkomaille ensimmäistä kertaa, kun nykyinen kotikunta on Suomessa.
-        -- Palauttaa päivämäärän siinä tapauksessa jos on muuttanut ulkomaille alle 18-vuotiaana ja palannut yli 18-vuotiaana, tai muuten null.
-        -- Palauttaa päivämäärän myös silloin, jos on muuttanut ulkomaille yli 18-vuotiaana ja palannut sen vuoden jälkeen kun täyttää 20 vuotta, tai muuten null.
-        kotikunta_ulkomailla_alkaen_jos_palannut_suomeen as (
+        -- Päivä jolloin oppija on muuttanut ulkomaille tai Ahvenanmaalle ensimmäistä kertaa, kun:
+        -- on muuttanut ulkomaille alle 18-vuotiaana ja palannut takaisin manner-Suomeen yli 18-vuotiaana
+        -- on muuttanut ulkomaille yli 18-vuotiaana
+        -- tai muussa tapauksessa null.
+        kotikunta_ulkomailla_alkaen_jos_palannut_suomeen_tai_yli_18v as (
           select
             kotikunta_ulkomailla_ensimmaisen_kerran_alkaen.master_oid,
             kotikunta_ulkomailla_ensimmaisen_kerran_alkaen.pvm
@@ -202,14 +203,7 @@ object Oppivelvollisuustiedot {
                     and nykyinen_kotikunta_suomessa_alkaen.pvm >= oppivelvolliset_henkilot.syntymaaika + interval '18 years'
                   )
                 )
-             or
-                (
-                  kotikunta_ulkomailla_ensimmaisen_kerran_alkaen.pvm >= oppivelvolliset_henkilot.syntymaaika + interval '18 years'
-                  and (
-                    nykyinen_kotikunta_suomessa_alkaen.pvm is not null
-                    and nykyinen_kotikunta_suomessa_alkaen.pvm >= #${s.name}.vuodenViimeinenPaivamaara(oppivelvolliset_henkilot.syntymaaika + interval '#$maksuttomuusLoppuuIka year')
-                  )
-                )
+             or kotikunta_ulkomailla_ensimmaisen_kerran_alkaen.pvm >= oppivelvolliset_henkilot.syntymaaika + interval '18 years'
         ),
 
         -- Päivä jolloin oppija on muuttanut ulkomaille, jos viimeisin (nykyinen) kotikunta on ulkomailla, muuten null
@@ -401,7 +395,7 @@ object Oppivelvollisuustiedot {
                   #${s.name}.vuodenViimeinenPaivamaara(syntymaaika + interval '#$maksuttomuusLoppuuIka year') + (interval '1 day' * maksuttomuutta_pidennetty_yhteensa_vanha_laki)
                 ),
                 nykyinen_kotikunta_ulkomailla_alkaen.pvm,
-                kotikunta_ulkomailla_alkaen_jos_palannut_suomeen.pvm
+                kotikunta_ulkomailla_alkaen_jos_palannut_suomeen_tai_yli_18v.pvm
               )
 
              when amis_ja_lukio_samaan_aikaan then least(
@@ -413,7 +407,7 @@ object Oppivelvollisuustiedot {
                   #${s.name}.vuodenViimeinenPaivamaara(syntymaaika + interval '#$maksuttomuusLoppuuIka year') + (interval '1 day' * maksuttomuutta_pidennetty_yhteensa_vanha_laki)
                 ),
                 nykyinen_kotikunta_ulkomailla_alkaen.pvm,
-                kotikunta_ulkomailla_alkaen_jos_palannut_suomeen.pvm
+                kotikunta_ulkomailla_alkaen_jos_palannut_suomeen_tai_yli_18v.pvm
               )
 
               else least(
@@ -427,7 +421,7 @@ object Oppivelvollisuustiedot {
                   #${s.name}.vuodenViimeinenPaivamaara(syntymaaika + interval '#$maksuttomuusLoppuuIka year') + (interval '1 day' * maksuttomuutta_pidennetty_yhteensa_vanha_laki)
                 ),
                 nykyinen_kotikunta_ulkomailla_alkaen.pvm,
-                kotikunta_ulkomailla_alkaen_jos_palannut_suomeen.pvm
+                kotikunta_ulkomailla_alkaen_jos_palannut_suomeen_tai_yli_18v.pvm
               )
             end
           )::date as oikeusKoulutuksenMaksuttomuuteenVoimassaAsti,
@@ -449,7 +443,7 @@ object Oppivelvollisuustiedot {
           left join nykyinen_kotikunta_ulkomailla_alkaen on oppivelvolliset_henkilot.master_oid = nykyinen_kotikunta_ulkomailla_alkaen.master_oid
           left join oppivelvollisuus_alkaa on oppivelvolliset_henkilot.master_oid = oppivelvollisuus_alkaa.master_oid
           left join kotikunta_ulkomailla_ensimmaisen_kerran_alkaen on oppivelvolliset_henkilot.master_oid = kotikunta_ulkomailla_ensimmaisen_kerran_alkaen.master_oid
-          left join kotikunta_ulkomailla_alkaen_jos_palannut_suomeen on oppivelvolliset_henkilot.master_oid = kotikunta_ulkomailla_alkaen_jos_palannut_suomeen.master_oid
+          left join kotikunta_ulkomailla_alkaen_jos_palannut_suomeen_tai_yli_18v on oppivelvolliset_henkilot.master_oid = kotikunta_ulkomailla_alkaen_jos_palannut_suomeen_tai_yli_18v.master_oid
       """
   }
 
