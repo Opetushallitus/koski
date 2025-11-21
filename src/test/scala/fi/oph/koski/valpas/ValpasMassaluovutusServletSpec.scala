@@ -7,8 +7,8 @@ import fi.oph.koski.log.AuditLogTester
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.util.Wait
 import fi.oph.koski.valpas.log.{ValpasAuditLogMessageField, ValpasOperation}
-import fi.oph.koski.valpas.opiskeluoikeusfixture.FixtureUtil
-import fi.oph.koski.valpas.valpasuser.ValpasMockUsers
+import fi.oph.koski.valpas.opiskeluoikeusfixture.{FixtureUtil, ValpasMockOppijat}
+import fi.oph.koski.valpas.valpasuser.{ValpasMockUser, ValpasMockUsers}
 import org.json4s.JsonAST.JObject
 import org.json4s.jackson.JsonMethods
 import org.scalatest.BeforeAndAfterEach
@@ -153,19 +153,10 @@ class ValpasMassaluovutusServletSpec extends ValpasTestBase with BeforeAndAfterE
 
       waitForCompletion(queryId, ValpasMockUsers.valpasPyhtääJaAapajoenPeruskoulu)
 
-      val files = get(s"/valpas/api/massaluovutus/${queryId}", headers = authHeaders(ValpasMockUsers.valpasPyhtääJaAapajoenPeruskoulu)) {
-        verifyResponseStatusOk()
-        val json = JsonMethods.parse(body)
-        val status = (json \ "status").extract[String]
-        status should equal("complete")
-
-        (json \ "files").extract[List[String]]
-      }
-
-      files should not be empty
+      val fileUrl: String = verifyAndGetFileUrl(queryId)
 
       // Lataa ja tarkista tiedoston sisältö
-      verifyResultAndContent(files.head, ValpasMockUsers.valpasPyhtääJaAapajoenPeruskoulu) {
+      verifyResultAndContent(fileUrl, ValpasMockUsers.valpasPyhtääJaAapajoenPeruskoulu) {
         val json = JsonMethods.parse(body)
 
         // Tarkista että vastaus sisältää oppijat-listan
@@ -187,6 +178,36 @@ class ValpasMassaluovutusServletSpec extends ValpasTestBase with BeforeAndAfterE
         val palautetutOppijanumerot = oppijat.map(o => (o \ "oppijanumero").extract[String]).toSet
         val odotetutOppijanumerot = expectedOppijat.map(_.oppija.oid).toSet
         palautetutOppijanumerot should equal(odotetutOppijanumerot)
+      }
+    }
+
+    "palauttaa vain aktiivisten kuntailmoitusten oppijat kun vainAktiivisetKuntailmoitukset=true" in {
+      val queryId = postQueryWithParams(
+        ValpasMockUsers.valpasPyhtääJaAapajoenPeruskoulu,
+        MockOrganisaatiot.pyhtäänKunta,
+        vainAktiivisetKuntailmoitukset = true
+      ) {
+        verifyResponseStatusOk()
+        (JsonMethods.parse(body) \ "queryId").extract[String]
+      }
+
+      waitForCompletion(queryId, ValpasMockUsers.valpasPyhtääJaAapajoenPeruskoulu)
+
+      val fileUrl: String = verifyAndGetFileUrl(queryId)
+
+      // Lataa ja tarkista tiedoston sisältö
+      verifyResultAndContent(fileUrl, ValpasMockUsers.valpasPyhtääJaAapajoenPeruskoulu) {
+        val json = JsonMethods.parse(body)
+
+        // Tarkista että vastaus sisältää oppijat-listan
+        val oppijat = (json \ "oppijat").extract[List[JObject]]
+        oppijat.size shouldBe 1
+
+        // Tarkista että jokaisella oppijalla on aktiivinenKuntailmoitus
+        oppijat.foreach { oppija =>
+          (oppija \ "oppijanumero").extract[String] shouldBe ValpasMockOppijat.oppivelvollisuusKeskeytettyEiOpiskele.oid
+          (oppija \ "aktiivinenKuntailmoitus" \ "aktiivinen").extract[Boolean] shouldBe true
+        }
       }
     }
 
@@ -254,12 +275,49 @@ class ValpasMassaluovutusServletSpec extends ValpasTestBase with BeforeAndAfterE
     }
   }
 
-  private def getResult[T](url: String, user: fi.oph.koski.valpas.valpasuser.ValpasMockUser)(f: => T): T = {
+  private def postQueryWithParams[T](
+    user: fi.oph.koski.valpas.valpasuser.ValpasMockUser,
+    kuntaOid: String = MockOrganisaatiot.helsinginKaupunki,
+    vainAktiivisetKuntailmoitukset: Boolean = false
+  )(f: => T): T = {
+    val query =
+      s"""
+      {
+        "type": "eiSuoritaOppivelvollisuutta",
+        "format": "application/json",
+        "kuntaOid": "${kuntaOid}",
+        "vainAktiivisetKuntailmoitukset": ${vainAktiivisetKuntailmoitukset}
+      }
+      """.stripMargin
+
+    post("/valpas/api/massaluovutus", body = query, headers = authHeaders(user) ++ jsonContent) {
+      f
+    }
+  }
+
+  private def getResult[T](url: String, user: ValpasMockUser)(f: => T): T = {
     val rootUrl = KoskiApplicationForTests.config.getString("koski.root.url")
     get(url.replace(rootUrl, ""), headers = authHeaders(user))(f)
   }
 
-  private def verifyResultAndContent[T](url: String, user: fi.oph.koski.valpas.valpasuser.ValpasMockUser)(f: => T): T = {
+  private def verifyAndGetFileUrl(queryId: String): String = {
+    val files = get(
+      s"/valpas/api/massaluovutus/${queryId}",
+      headers = authHeaders(ValpasMockUsers.valpasPyhtääJaAapajoenPeruskoulu)
+    ) {
+      verifyResponseStatusOk()
+      val json = JsonMethods.parse(body)
+      val status = (json \ "status").extract[String]
+      status should equal("complete")
+
+      (json \ "files").extract[List[String]]
+    }
+
+    files should not be empty
+    files.head
+  }
+
+  private def verifyResultAndContent[T](url: String, user: ValpasMockUser)(f: => T): T = {
     val location = new java.net.URL(getResult(url, user) {
       verifyResponseStatus(302) // 302: Found (redirect)
       response.header("Location")
@@ -272,7 +330,7 @@ class ValpasMassaluovutusServletSpec extends ValpasTestBase with BeforeAndAfterE
     }
   }
 
-  private def waitForCompletion(queryId: String, user: fi.oph.koski.valpas.valpasuser.ValpasMockUser): Unit = {
+  private def waitForCompletion(queryId: String, user: ValpasMockUser): Unit = {
     Wait.until({
       get(s"/valpas/api/massaluovutus/${queryId}", headers = authHeaders(user)) {
         val status = (JsonMethods.parse(body) \ "status").extract[String]
