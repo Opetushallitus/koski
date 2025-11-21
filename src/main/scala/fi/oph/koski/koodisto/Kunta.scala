@@ -9,6 +9,17 @@ import fi.oph.koski.valpas.oppija.ValpasErrorCategory
 class Kunta
 
 object Kunta extends Logging {
+
+  val helsinki = "091"
+  val jyväskylä = "179"
+  val pyhtää = "624"
+
+  val eiKotikuntaaSuomessa = "198"
+  val kotikuntaTuntematon = "199"
+  val kotikuntaUlkomailla = "200"
+  val eiTiedossa = "999"
+
+
   def getKunnanNimi(koodi: Option[String], koodistoPalvelu: KoodistoPalvelu, lang: String): Option[String] = {
     koodi match {
       case Some(koodi) => {
@@ -54,6 +65,6 @@ object Kunta extends Logging {
 
   // Kuntakoodit, jotka indikoivat puuttuvaa tietoa tai esim. ulkomailla-asumista
   def onPuuttuvaKunta(koodi: String): Boolean = {
-    Set("198", "199", "200", "999").contains(koodi)
+    Set(eiKotikuntaaSuomessa, kotikuntaTuntematon, kotikuntaUlkomailla, eiTiedossa).contains(koodi)
   }
 }
