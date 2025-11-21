@@ -543,3 +543,32 @@ Jos rajapinta ei palauta vastaavan oppijan tietoja, oppijan tietoja ei löydy Va
 sen myötä päätellä Valppaan tietojen perusteella.
 
 Hetu palautetaan vain oppijoille, jotka on haettu hetun avulla.
+
+
+## /koski/api/luovutuspalvelu/keha/sdg/hetu
+
+Tällä kutsulla haetaan yhden henkilön tiedot henkilötunnuksen perusteella.
+
+Käytössä olevat parametrit: vainVahvistetut=false ja osasuoritukset=false
+
+### Esimerkkipyyntö
+
+    POST /koski/api/luovutuspalvelu/keha/sdg/hetu?vainVahvistetut=false&osasuoritukset=false HTTP/1.1
+    Content-Type: application/json
+
+    {
+      "hetu": "180859-914S"
+    }
+
+### Esimerkkivastaus
+
+    HTTP/1.1 200 OK
+    Content-Type: application/json
+
+    {
+        "henkilö": ...,
+        "opiskeluoikeudet": [...]
+    }
+
+Palautettavan JSON-rakenteen tietomallin dokumentaatio on
+<a href="/koski/json-schema-viewer/?schema=sdg-oppija-schema.json">täällä</a>.

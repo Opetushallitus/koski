@@ -17,7 +17,7 @@ class SdgServlet(implicit val application: KoskiApplication) extends KoskiSpecif
   post("/hetu") {
     val ophKatselijaUser = KoskiSpecificSession.ophKatselijaUser(request)
 
-    val withOsasuoritukset = params.getAs[Boolean]("withOsasuoritukset").getOrElse(false)
+    val withOsasuoritukset = params.getAs[Boolean]("osasuoritukset").getOrElse(false)
     val onlyVahvistetut = params.getAs[Boolean]("vainVahvistetut").getOrElse(false)
 
     val queryParams = SdgQueryParams(withOsasuoritukset, onlyVahvistetut)
