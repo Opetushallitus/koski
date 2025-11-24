@@ -56,9 +56,14 @@ case class ValpasOppivelvollisetQuery(
       throw new IllegalArgumentException("ValpasSession required")
   }
 
-  override def queryAllowed(application: KoskiApplication)(implicit user: Session): Boolean = {
-    // TODO: Implement in later step
-    false
+  override def queryAllowed(application: KoskiApplication)(implicit user: Session): Boolean = user match {
+    case session: ValpasSession =>
+      val kuntaOpt = getKuntaKoodiByKuntaOid(application, kuntaOid)
+      kuntaOpt.exists(kunta => {
+        val accessResolver = new ValpasAccessResolver
+        accessResolver.accessToKuntaOrg(kunta)(session)
+      })
+    case _ => false
   }
 
   private def getKuntaKoodiByKuntaOid(application: KoskiApplication, kuntaOid: String): Option[String] = {
