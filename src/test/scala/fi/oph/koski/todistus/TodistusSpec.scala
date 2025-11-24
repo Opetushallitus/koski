@@ -359,7 +359,7 @@ class TodistusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers with Bef
         completedJob.state should equal(TodistusState.COMPLETED)
 
         // Huollettava itse yrittää ladata todistuksen
-        verifyDownloadResult(s"/api/todistus/download/${todistusJob.id}", huollettavanHetu)
+        verifyDownloadResult(s"/todistus/download/${todistusJob.id}", huollettavanHetu)
       }
     }
   }
@@ -419,7 +419,7 @@ class TodistusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers with Bef
     completedJobFromDb.worker should be(Some("local"))
 
     // Testaa suora lataus (kansalainen)
-    verifyDownloadResultAndContent(s"/api/todistus/download/${todistusJob.id}", hetu) {
+    verifyDownloadResultAndContent(s"/todistus/download/${todistusJob.id}", hetu) {
       val pdfBytes = response.getContentBytes()
 
       val document = Loader.loadPDF(pdfBytes)
@@ -447,7 +447,7 @@ class TodistusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers with Bef
     }
 
     // Testaa presigned URL lataus (OPH-pääkäyttäjä)
-    verifyPresignedResultAndContent(s"/api/todistus/download-presigned/${todistusJob.id}") {
+    verifyPresignedResultAndContent(s"/todistus/download/presigned/${todistusJob.id}") {
       val pdfBytes = response.getContentBytes()
 
       val document = Loader.loadPDF(pdfBytes)
@@ -487,7 +487,7 @@ class TodistusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers with Bef
       mitätöiOppijanKaikkiOpiskeluoikeudet(oppija)
 
       // Yritä ladata todistus - pitäisi epäonnistua
-      getResult(s"/api/todistus/download/${todistusJob.id}", hetu) {
+      getResult(s"/todistus/download/${todistusJob.id}", hetu) {
         verifyResponseStatus(503)
       }
     }
@@ -511,12 +511,12 @@ class TodistusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers with Bef
       completedJob.state should equal(TodistusState.COMPLETED)
 
       // Kansalainen yrittää käyttää presigned URL endpointtiä - pitäisi estää
-      getResult(s"/api/todistus/download-presigned/${todistusJob.id}", hetu) {
+      getResult(s"/todistus/download/presigned/${todistusJob.id}", hetu) {
         verifyResponseStatus(403) // Forbidden
       }
 
       // Varmista että normaali download toimii
-      verifyDownloadResult(s"/api/todistus/download/${todistusJob.id}", hetu)
+      verifyDownloadResult(s"/todistus/download/${todistusJob.id}", hetu)
     }
 
     "Kansalainen ei pääse lataamaan toisen oppijan todistusta" in {
@@ -537,10 +537,10 @@ class TodistusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers with Bef
       val completedJob = waitForCompletion(todistusJob.id, todistuksenOmistajaHetu)
       completedJob.state should equal(TodistusState.COMPLETED)
 
-      verifyDownloadResult(s"/api/todistus/download/${todistusJob.id}", todistuksenOmistajaHetu)
+      verifyDownloadResult(s"/todistus/download/${todistusJob.id}", todistuksenOmistajaHetu)
 
       // Toinen kansalainen yrittää ladata todistuksen
-      getResult(s"/api/todistus/download/${todistusJob.id}", toinenKansalainenHetu) {
+      getResult(s"/todistus/download/${todistusJob.id}", toinenKansalainenHetu) {
         verifyResponseStatus(404)
       }
     }
@@ -564,7 +564,7 @@ class TodistusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers with Bef
       completedJob.state should equal(TodistusState.COMPLETED)
 
       // Huoltaja (joka ei ole tämän oppijan huoltaja) yrittää ladata todistuksen
-      getResult(s"/api/todistus/download/${todistusJob.id}", huoltajanHetu) {
+      getResult(s"/todistus/download/${todistusJob.id}", huoltajanHetu) {
         verifyResponseStatus(404)
       }
     }
@@ -1289,7 +1289,7 @@ class TodistusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers with Bef
 
       AuditLogTester.clearMessages
 
-      verifyDownloadResult(s"/api/todistus/download/${todistusJob.id}", hetu)
+      verifyDownloadResult(s"/todistus/download/${todistusJob.id}", hetu)
 
       AuditLogTester.verifyLastAuditLogMessage(Map(
         "operation" -> KoskiOperation.TODISTUKSEN_LATAAMINEN.toString,
@@ -1322,7 +1322,7 @@ class TodistusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers with Bef
 
       AuditLogTester.clearMessages
 
-      verifyDownloadResult(s"/api/todistus/download/${todistusJob.id}", huoltajanHetu)
+      verifyDownloadResult(s"/todistus/download/${todistusJob.id}", huoltajanHetu)
 
       AuditLogTester.verifyLastAuditLogMessage(Map(
         "operation" -> KoskiOperation.TODISTUKSEN_LATAAMINEN.toString,
@@ -1358,7 +1358,7 @@ class TodistusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers with Bef
       AuditLogTester.clearMessages
 
       // Huollettava itse lataa todistuksen
-      verifyDownloadResult(s"/api/todistus/download/${todistusJob.id}", huollettavanHetu)
+      verifyDownloadResult(s"/todistus/download/${todistusJob.id}", huollettavanHetu)
 
       AuditLogTester.verifyLastAuditLogMessage(Map(
         "operation" -> KoskiOperation.TODISTUKSEN_LATAAMINEN.toString,
@@ -1387,7 +1387,7 @@ class TodistusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers with Bef
 
         AuditLogTester.clearMessages
 
-        getResult(s"/api/todistus/download/${todistusJob.id}", hetu) {
+        getResult(s"/todistus/download/${todistusJob.id}", hetu) {
           verifyResponseStatus(503)
         }
 

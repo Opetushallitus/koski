@@ -2,32 +2,23 @@ package fi.oph.koski.todistus
 
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
-import fi.oph.koski.koskiuser.{AuthenticationSupport, HasKoskiSpecificSession, KoskiCookieAndBasicAuthenticationSupport, KoskiSpecificSession, RequiresKansalainen, RequiresSession, UserLanguage}
 import fi.oph.koski.koskiuser.Rooli.OPHPAAKAYTTAJA
-import fi.oph.koski.log.{AuditLog, AuditLogMessage, KoskiAuditLogMessage, KoskiAuditLogMessageField}
-import fi.oph.koski.log.KoskiOperation.{KoskiOperation, TODISTUKSEN_LATAAMINEN, TODISTUKSEN_LUONTI}
+import fi.oph.koski.koskiuser.{HasKoskiSpecificSession, KoskiCookieAndBasicAuthenticationSupport, KoskiSpecificSession, UserLanguage}
+import fi.oph.koski.log.KoskiOperation.{TODISTUKSEN_LATAAMINEN, KoskiOperation}
+import fi.oph.koski.log.{AuditLog, AuditLogMessage, KoskiAuditLogMessage, KoskiAuditLogMessageField, Logging}
 import fi.oph.koski.schema.Opiskeluoikeus
-import fi.oph.koski.servlet.{KoskiSpecificApiServlet, NoCache}
-import fi.oph.koski.util.ChainingSyntax._
+import org.scalatra.ScalatraServlet
 
 import java.util.UUID
-import scala.util.{Try, Using}
+import scala.util.Try
 
-class TodistusServlet(implicit val application: KoskiApplication)
-  extends KoskiSpecificApiServlet
-    with NoCache
-    with KoskiCookieAndBasicAuthenticationSupport
-    with HasKoskiSpecificSession
-{
-  implicit def session: KoskiSpecificSession = koskiSessionOption.get
+trait TodistusServlet extends ScalatraServlet with HasKoskiSpecificSession with KoskiCookieAndBasicAuthenticationSupport with Logging {
+  def application: KoskiApplication
+  implicit def session: KoskiSpecificSession
 
   val service: TodistusService = application.todistusService
 
-  before() {
-    requireKansalainenOrOphPääkäyttäjä
-  }
-
-  private def requireKansalainenOrOphPääkäyttäjä: Unit = {
+  protected def requireKansalainenOrOphPääkäyttäjä: Unit = {
     getUser match {
       case Right(user) if user.kansalainen || session.hasRole(OPHPAAKAYTTAJA) => // OK
       case Right(_) => haltWithStatus(KoskiErrorCategory.forbidden("Sallittu vain kansalaiselle tai OPH-pääkäyttäjälle"))
@@ -35,82 +26,13 @@ class TodistusServlet(implicit val application: KoskiApplication)
     }
   }
 
-  private def requireOphPääkäyttäjä: Unit = {
+  protected def requireOphPääkäyttäjä: Unit = {
     if (!session.hasRole(OPHPAAKAYTTAJA)) {
       haltWithStatus(KoskiErrorCategory.forbidden("Sallittu vain OPH-pääkäyttäjälle"))
     }
   }
 
-  get("/status/:id") {
-    renderEither(
-      getIdRequest
-        .flatMap(service.currentStatus)
-    )
-  }
-
-  get("/status/:lang/:opiskeluoikeusOid") {
-    renderEither(
-      getTodistusGenerateRequest
-        .flatMap(service.checkStatus)
-    )
-  }
-
-  get("/generate/:lang/:opiskeluoikeusOid") {
-    renderEither(
-      getTodistusGenerateRequest
-        .flatMap(service.checkAccessAndInitiateGenerating)
-        .tap(todistusJob => mkAuditLog(
-          operation = TODISTUKSEN_LUONTI,
-          extraFields = Map(
-            KoskiAuditLogMessageField.oppijaHenkiloOid -> todistusJob.oppijaOid,
-            KoskiAuditLogMessageField.opiskeluoikeusOid -> todistusJob.opiskeluoikeusOid,
-            KoskiAuditLogMessageField.todistusId -> todistusJob.id
-          )
-        ))
-    )
-  }
-
-  get("/download/:id") {
-    val result = for {
-      todistusJob <- validateCompletedTodistus
-      stream <- service.getDownloadStream(BucketType.STAMPED, todistusJob)
-    } yield (stream, todistusJob)
-
-    result.fold(renderStatus, r => {
-      val (stream, todistusJob) = r
-      val filename = generateFilename(todistusJob)
-      auditLogTodistusDownload(todistusJob)
-
-      contentType = "application/pdf"
-      response.setHeader("Content-Disposition", s"""attachment; filename="$filename"""")
-
-      Using.resource(stream) { inputStream =>
-        val outputStream = response.getOutputStream
-        inputStream.transferTo(outputStream)
-        outputStream.flush()
-      }
-    })
-  }
-
-  get("/download-presigned/:id") {
-    requireOphPääkäyttäjä
-
-    val result = for {
-      todistusJob <- validateCompletedTodistus
-      filename = generateFilename(todistusJob)
-      url <- service.getDownloadUrl(BucketType.STAMPED, filename, todistusJob)
-    } yield (url, todistusJob)
-
-    result.fold(renderStatus, r => {
-      val (url, todistusJob) = r
-      auditLogTodistusDownload(todistusJob)
-
-      contentType = "application/pdf"
-      redirect(url)
-    })
-  }
-
-  private def getIdRequest: Either[HttpStatus, TodistusIdRequest] = {
+  protected def getIdRequest: Either[HttpStatus, TodistusIdRequest] = {
     val id = params("id")
     Try(UUID.fromString(id)).toEither match {
       case Right(_) => Right(TodistusIdRequest(id))
@@ -118,7 +40,7 @@ class TodistusServlet(implicit val application: KoskiApplication)
     }
   }
 
-  private def getTodistusGenerateRequest: Either[HttpStatus, TodistusGenerateRequest] = {
+  protected def getTodistusGenerateRequest: Either[HttpStatus, TodistusGenerateRequest] = {
     val lang = params("lang")
     val oid = params("opiskeluoikeusOid")
 
@@ -134,7 +56,7 @@ class TodistusServlet(implicit val application: KoskiApplication)
     }
   }
 
-  private def validateCompletedTodistus: Either[HttpStatus, TodistusJob] = {
+  protected def validateCompletedTodistus: Either[HttpStatus, TodistusJob] = {
     for {
       req <- getIdRequest
       todistusJob <- service.currentStatus(req)
@@ -146,7 +68,7 @@ class TodistusServlet(implicit val application: KoskiApplication)
     } yield todistusJob
   }
 
-  private def auditLogTodistusDownload(todistusJob: TodistusJob): Unit = {
+  protected def auditLogTodistusDownload(todistusJob: TodistusJob): Unit = {
     mkAuditLog(
       operation = TODISTUKSEN_LATAAMINEN,
       extraFields = Map(
@@ -158,7 +80,7 @@ class TodistusServlet(implicit val application: KoskiApplication)
     )
   }
 
-  private def generateFilename(todistusJob: TodistusJob): String = {
+  protected def generateFilename(todistusJob: TodistusJob): String = {
     val defaultFilename = s"todistus_${todistusJob.language}.pdf"
 
     application.possu.findByOidIlmanKäyttöoikeustarkistusta(todistusJob.opiskeluoikeusOid) match {
@@ -199,20 +121,9 @@ class TodistusServlet(implicit val application: KoskiApplication)
     s"${prefix}${todistusJob.language}.pdf"
   }
 
-  private def mkAuditLog(
+  protected def mkAuditLog(
     operation: KoskiOperation,
     extraFields: AuditLogMessage.ExtraFields = Map.empty
   )(implicit user: KoskiSpecificSession): Unit =
     AuditLog.log(KoskiAuditLogMessage(operation, user, extraFields))
 }
-
-case class TodistusGenerateRequest(
-  opiskeluoikeusOid: String,
-  language: String,
-) {
-  def toPathParams = s"${language}/${opiskeluoikeusOid}"
-}
-
-case class TodistusIdRequest(
-  id: String
-)

@@ -1,8 +1,8 @@
 package fi.oph.koski.todistus
 
-import fi.oph.koski.config.{KoskiApplication, KoskiInstance}
+import fi.oph.koski.config.{Environment, KoskiApplication, KoskiInstance}
 import fi.oph.koski.db.KoskiOpiskeluoikeusRow
-import fi.oph.koski.henkilo.OppijaHenkilö
+import fi.oph.koski.henkilo.{KoskiSpecificMockOppijat, OppijaHenkilö}
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.koskiuser.KoskiSpecificSession
 import fi.oph.koski.koskiuser.Rooli.OPHPAAKAYTTAJA
@@ -170,6 +170,7 @@ class TodistusService(application: KoskiApplication) extends Logging with Timing
   def getDownloadStream(bucketType: BucketType, job: TodistusJob): Either[HttpStatus, InputStream] =
     for {
       _ <- validateOpiskeluoikeusExistsForDownloadAccess(job)
+      _ <- simulateMockDownloadError(job)
       result <- resultRepository.getStream(bucketType, job.id)
     } yield result
 
@@ -182,6 +183,17 @@ class TodistusService(application: KoskiApplication) extends Logging with Timing
         KoskiErrorCategory.unavailable.todistus.opiskeluoikeusMitatoity()
       )
     } yield todistusJob
+  }
+
+  private def simulateMockDownloadError(job: TodistusJob): Either[HttpStatus, Unit] = {
+    // Mock-oppijan todistuksen lataus epäonnistuu testimielessä (vain lokaalissa/testiympäristössä)
+    if (Environment.isUsingLocalDevelopmentServices(application) &&
+        job.oppijaOid == KoskiSpecificMockOppijat.kielitutkintoTodistusVirhe.oid &&
+        job.language == "sv") {
+      Left(KoskiErrorCategory.internalError("Todistuksen lataus epäonnistui testitarkoitukseen."))
+    } else {
+      Right(())
+    }
   }
 
   def cleanup(koskiInstances: Seq[KoskiInstance]): Unit = {
@@ -413,6 +425,13 @@ class TodistusService(application: KoskiApplication) extends Logging with Timing
   }
 
   private def createTodistusData(oppijanHenkilö: OppijaHenkilö, opiskeluoikeus: Opiskeluoikeus, todistus: TodistusJob): Either[HttpStatus, TodistusData] = {
+    // Mock-oppijan todistuksen luonti epäonnistuu testimielessä (vain lokaalissa/testiympäristössä)
+    if (Environment.isUsingLocalDevelopmentServices(application) &&
+        oppijanHenkilö.hetu == KoskiSpecificMockOppijat.kielitutkintoTodistusVirhe.hetu &&
+        todistus.language == "en") {
+      return Left(KoskiErrorCategory.internalError("Todistuksen luonti epäonnistui testitarkoitukseen."))
+    }
+
     opiskeluoikeus match {
       case ktOo: KielitutkinnonOpiskeluoikeus =>
         ktOo.suoritukset.find(_.isInstanceOf[YleisenKielitutkinnonSuoritus]) match {

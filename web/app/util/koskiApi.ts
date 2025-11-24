@@ -318,6 +318,9 @@ export const fetchTodistusStatus = (
     )
   )
 
+export const fetchTodistusStatusByJobId = (jobId: string) =>
+  handleExpiredSession(apiGet<TodistusJob>(apiUrl(`todistus/status/${jobId}`)))
+
 export const generateTodistus = (language: string, opiskeluoikeusOid: string) =>
   handleExpiredSession(
     apiGet<TodistusJob>(
