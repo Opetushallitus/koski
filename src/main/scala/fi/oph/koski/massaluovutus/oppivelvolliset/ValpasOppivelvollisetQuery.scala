@@ -24,9 +24,36 @@ case class ValpasOppivelvollisetQuery(
   kuntaOid: String
 ) extends ValpasMassaluovutusQueryParameters with Logging {
 
-  override def run(application: KoskiApplication, writer: QueryResultWriter)(implicit user: Session with SensitiveDataAllowed): Either[String, Unit] = {
-    // TODO: Implement in next step
-    Left("Not implemented yet")
+  override def run(application: KoskiApplication, writer: QueryResultWriter)(implicit user: Session with SensitiveDataAllowed): Either[String, Unit] = user match {
+    case valpasUser: ValpasSession =>
+      implicit val session: ValpasSession = valpasUser
+      val oppijalistatService = application.valpasOppijalistatService
+      val kuntailmoitusService = application.valpasKuntailmoitusService
+      val rouhintaOvKeskeytyksetService = application.valpasRouhintaOppivelvollisuudenKeskeytysService
+      val kunta = getKuntaKoodiByKuntaOid(application, kuntaOid)
+        .getOrElse(throw new IllegalArgumentException(s"ValpasOppivelvollisetQuery: getKuntaKoodiByKuntaOid palautti None kuntaOid:lla $kuntaOid"))
+
+      // Hae oppivelvolliset kotikunnalla
+      val hetuMasterOids = oppijalistatService.getOppivelvollisetKotikunnallaIlmanOikeustarkastusta(kunta)
+      val oppijaOids = hetuMasterOids.map(_.masterOid)
+
+      // Hae oppijatiedot ja lisää kuntailmoitus- ja keskeytystiedot
+      oppijalistatService
+        .getOppijalistaIlmanOikeustarkastusta(oppijaOids)
+        .left.map(_.errorString.getOrElse("Tuntematon virhe"))
+        .flatMap { oppijat =>
+          kuntailmoitusService.withKuntailmoituksetIlmanKäyttöoikeustarkistusta(oppijat)
+            .left.map(_.errorString.getOrElse("Tuntematon virhe"))
+            .map(_.map(fi.oph.koski.valpas.rouhinta.ValpasRouhintaOppivelvollinen.apply))
+            .map(oppijat => rouhintaOvKeskeytyksetService.fetchOppivelvollisuudenKeskeytykset(oppijat))
+        }
+        .map { oppijat =>
+          val oppijatResult = oppijat.map(ValpasMassaluovutusOppija.apply)
+          val result = ValpasMassaluovutusResult(oppijatResult)
+          writer.putJson("result", result)
+        }
+    case _ =>
+      throw new IllegalArgumentException("ValpasSession required")
   }
 
   override def queryAllowed(application: KoskiApplication)(implicit user: Session): Boolean = {
