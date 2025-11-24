@@ -49,6 +49,8 @@ case class ValpasOppivelvollisetQuery(
         }
         .map { oppijat =>
           val oppijatResult = oppijat.map(ValpasMassaluovutusOppija.apply)
+          val oppijaOids = oppijatResult.map(_.oppijanumero)
+          ValpasAuditLog.auditLogMassaluovutusKunnalla(kunta, oppijaOids)
           val result = ValpasMassaluovutusResult(oppijatResult)
           writer.putJson("result", result)
         }
