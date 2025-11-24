@@ -41,6 +41,7 @@ export type SelectProps<T> = CommonProps<{
   autoselect?: boolean
   inlineOptions?: boolean
   maxOptions?: number
+  allowOpenUpwards?: boolean
   testId: string | number
 }>
 
@@ -141,6 +142,7 @@ export const Select = <T,>(props: SelectProps<T>) => {
                 onRemove={props.onRemove}
                 inlineOptions={props.inlineOptions}
                 maxOptions={props.maxOptions}
+                allowOpenUpwards={props.allowOpenUpwards}
                 {...select.dropdownEventListeners}
               />
             </TestIdLayer>
@@ -160,6 +162,7 @@ type OptionListProps<T> = CommonProps<{
   onRemove?: (o: SelectOption<T>) => void
   inlineOptions?: boolean
   maxOptions?: number
+  allowOpenUpwards?: boolean
 }>
 
 const OptionList = <T,>(props: OptionListProps<T>): React.ReactElement => {
@@ -181,12 +184,24 @@ const OptionList = <T,>(props: OptionListProps<T>): React.ReactElement => {
   const [maxHeight, setMaxHeight] = useState(
     props.inlineOptions ? undefined : 300
   )
+  const [openUpwards, setOpenUpwards] = useState(false)
+
   useEffect(() => {
     const updateMaxHeight = () => {
       if (props.inputRef.current) {
         const h = window.innerHeight
         const rect = props.inputRef.current.getBoundingClientRect()
-        setMaxHeight(clamp(50, 500)(h - rect.y - rect.height - 20))
+        const spaceBelow = h - rect.y - rect.height - 20
+        const spaceAbove = rect.y - 20
+
+        // Avaa ylöspäin jos alhaalla ei ole riittävästi tilaa mutta ylhäällä on enemmän
+        // ja allowOpenUpwards on true
+        const shouldOpenUpwards =
+          props.allowOpenUpwards && spaceBelow < 150 && spaceAbove > spaceBelow
+        setOpenUpwards(!!shouldOpenUpwards)
+
+        const availableSpace = shouldOpenUpwards ? spaceAbove : spaceBelow
+        setMaxHeight(clamp(50, 500)(availableSpace))
       }
     }
 
@@ -198,13 +213,14 @@ const OptionList = <T,>(props: OptionListProps<T>): React.ReactElement => {
       window.removeEventListener('scroll', updateMaxHeight)
       window.removeEventListener('resize', updateMaxHeight)
     }
-  }, [props.inputRef])
+  }, [props.inputRef, props.allowOpenUpwards])
 
   return (
     <ul
       {...common(props, [
         'Select__optionList',
-        props.inlineOptions && 'Select__optionList--inline'
+        props.inlineOptions && 'Select__optionList--inline',
+        openUpwards && 'Select__optionList--upwards'
       ])}
       style={{ maxHeight }}
     >
@@ -239,6 +255,7 @@ const OptionList = <T,>(props: OptionListProps<T>): React.ReactElement => {
               <OptionList
                 options={opt.children}
                 onRemove={onRemove}
+                allowOpenUpwards={props.allowOpenUpwards}
                 {...rest}
               />
             )}

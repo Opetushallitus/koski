@@ -235,6 +235,7 @@ export const YleinenKielitutkintoTodistusLataus: React.FC<
             value={language}
             onChange={handleLanguageChange}
             disabled={!!isInProgress}
+            allowOpenUpwards={true}
           />
         </div>
         {!isInProgress && !isCompleted && !isLoadingStatus && (
