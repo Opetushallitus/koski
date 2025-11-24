@@ -401,7 +401,7 @@ class TodistusService(application: KoskiApplication) extends Logging with Timing
   private def teeKonteksti(id: String, oppijaOid: String, opiskeluoikeusOid: String, language: String, user: String): String =
     s"job:${id}/oppija:${oppijaOid}/oo:${opiskeluoikeusOid}/lang:${language}/user:${user}"
 
-  def generateHtmlPreview(req: TodistusGenerateRequest)(implicit user: KoskiSpecificSession): Either[HttpStatus, String] = {
+  def generateHtmlPreview(req: TodistusGenerateRequest)(implicit user: KoskiSpecificSession): Either[HttpStatus, (String, TodistusJob)] = {
     for {
       yleisenKielitutkinnonVahvistettuOpiskeluoikeus <- kielitutkinnonVahvistettuOpiskeluoikeusJohonKutsujallaKäyttöoikeudet(req)
       oppijanHenkilö <- application.henkilöRepository.findByOid(yleisenKielitutkinnonVahvistettuOpiskeluoikeus.oppijaOid).toRight(KoskiErrorCategory.notFound.oppijaaEiLöydyTaiEiOikeuksia())
@@ -417,11 +417,11 @@ class TodistusService(application: KoskiApplication) extends Logging with Timing
         state = TodistusState.GATHERING_INPUT,
         userOid = Some(user.oid),
         oppijaHenkilötiedotHash = None,
-        opiskeluoikeusVersionumero = None,
+        opiskeluoikeusVersionumero = Some(yleisenKielitutkinnonVahvistettuOpiskeluoikeus.versionumero),
       )
       todistusData <- createTodistusData(oppijanHenkilö, opiskeluoikeus, dummyJob)
       html = pdfGenerator.generateHtml(todistusData)
-    } yield html
+    } yield (html, dummyJob)
   }
 
   private def createTodistusData(oppijanHenkilö: OppijaHenkilö, opiskeluoikeus: Opiskeluoikeus, todistus: TodistusJob): Either[HttpStatus, TodistusData] = {

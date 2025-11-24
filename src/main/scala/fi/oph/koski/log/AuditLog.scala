@@ -146,7 +146,8 @@ object KoskiOperation extends Enumeration {
   OAUTH2_KATSOMINEN_AKTIIVISET_JA_PAATTYNEET_OPINNOT,
   SDG_OPISKELUOIKEUS_HAKU,
   TODISTUKSEN_LUONTI,
-  TODISTUKSEN_LATAAMINEN = Value
+  TODISTUKSEN_LATAAMINEN,
+  TODISTUKSEN_ESIKATSELU = Value
 }
 
 private class KoskiAuditLogOperation(op: KoskiOperation) extends AuditLogOperation(op)

@@ -34,11 +34,13 @@ class TodistusContentServlet(implicit val application: KoskiApplication)
 
     val result = for {
       req <- getTodistusGenerateRequest
-      html <- service.generateHtmlPreview(req)
-    } yield html
+      result <- service.generateHtmlPreview(req)
+    } yield result
 
     result match {
-      case Right(html) =>
+      case Right((html, dummyJob)) =>
+        auditLogTodistusPreview(dummyJob)
+
         val os = response.getOutputStream
         os.write(html.getBytes)
         os.flush()

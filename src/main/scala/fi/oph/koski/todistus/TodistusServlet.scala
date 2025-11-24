@@ -4,7 +4,7 @@ import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.koskiuser.Rooli.OPHPAAKAYTTAJA
 import fi.oph.koski.koskiuser.{HasKoskiSpecificSession, KoskiCookieAndBasicAuthenticationSupport, KoskiSpecificSession, UserLanguage}
-import fi.oph.koski.log.KoskiOperation.{TODISTUKSEN_LATAAMINEN, KoskiOperation}
+import fi.oph.koski.log.KoskiOperation.{TODISTUKSEN_ESIKATSELU, TODISTUKSEN_LATAAMINEN, KoskiOperation}
 import fi.oph.koski.log.{AuditLog, AuditLogMessage, KoskiAuditLogMessage, KoskiAuditLogMessageField, Logging}
 import fi.oph.koski.schema.Opiskeluoikeus
 import org.scalatra.ScalatraServlet
@@ -76,6 +76,17 @@ trait TodistusServlet extends ScalatraServlet with HasKoskiSpecificSession with 
         KoskiAuditLogMessageField.opiskeluoikeusOid -> todistusJob.opiskeluoikeusOid,
         KoskiAuditLogMessageField.opiskeluoikeusVersio -> todistusJob.opiskeluoikeusVersionumero.map(_.toString).getOrElse(""),
         KoskiAuditLogMessageField.todistusId -> todistusJob.id
+      )
+    )
+  }
+
+  protected def auditLogTodistusPreview(todistusJob: TodistusJob): Unit = {
+    mkAuditLog(
+      operation = TODISTUKSEN_ESIKATSELU,
+      extraFields = Map(
+        KoskiAuditLogMessageField.oppijaHenkiloOid -> todistusJob.oppijaOid,
+        KoskiAuditLogMessageField.opiskeluoikeusOid -> todistusJob.opiskeluoikeusOid,
+        KoskiAuditLogMessageField.opiskeluoikeusVersio -> todistusJob.opiskeluoikeusVersionumero.map(_.toString).getOrElse("")
       )
     )
   }

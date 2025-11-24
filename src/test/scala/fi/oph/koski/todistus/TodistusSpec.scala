@@ -1399,6 +1399,30 @@ class TodistusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers with Bef
         ))
       }
     }
+
+    "TODISTUKSEN_ESIKATSELU lokitetaan kun OPH-pääkäyttäjä katsoo todistuksen esikatselua" in {
+      val lang = "fi"
+      val oppija = KoskiSpecificMockOppijat.kielitutkinnonSuorittaja
+      val oppijaOid = oppija.oid
+      val opiskeluoikeus = getVahvistettuKielitutkinnonOpiskeluoikeus(oppijaOid)
+      val opiskeluoikeusOid = opiskeluoikeus.flatMap(_.oid).get
+      val opiskeluoikeusVersionumero = opiskeluoikeus.flatMap(_.versionumero).get
+
+      AuditLogTester.clearMessages
+
+      get(s"todistus/preview/$lang/$opiskeluoikeusOid", headers = authHeaders(MockUsers.paakayttaja)) {
+        verifyResponseStatusOk()
+      }
+
+      AuditLogTester.verifyLastAuditLogMessage(Map(
+        "operation" -> KoskiOperation.TODISTUKSEN_ESIKATSELU.toString,
+        "target" -> Map(
+          KoskiAuditLogMessageField.oppijaHenkiloOid.toString -> oppijaOid,
+          KoskiAuditLogMessageField.opiskeluoikeusOid.toString -> opiskeluoikeusOid,
+          KoskiAuditLogMessageField.opiskeluoikeusVersio.toString -> opiskeluoikeusVersionumero.toString
+        )
+      ))
+    }
   }
 
   // TODO: TOR-2400 puuttuvia toteutuksia ja testejä:
