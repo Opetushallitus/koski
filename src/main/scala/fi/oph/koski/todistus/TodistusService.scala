@@ -31,6 +31,8 @@ class TodistusService(application: KoskiApplication) extends Logging with Timing
   private val pdfGenerator = new TodistusPdfGenerator()
   private val yleinenKielitutkintoTodistusDataBuilder = new YleinenKielitutkintoTodistusDataBuilder(application)
 
+  private val expirationDuration = application.config.getDuration("todistus.expirationDuration")
+
   def currentStatus(req: TodistusIdRequest)(implicit user: KoskiSpecificSession): Either[HttpStatus, TodistusJob] = {
     if (user.hasRole(OPHPAAKAYTTAJA)) {
       todistusRepository
@@ -189,14 +191,22 @@ class TodistusService(application: KoskiApplication) extends Logging with Timing
     val orphanedJobs = todistusRepository
       .findOrphanedJobs(instanceArns)
 
-    val cleanupRequired = orphanedJobs.nonEmpty
+    val expirationThreshold = LocalDateTime.now().minusSeconds(expirationDuration.getSeconds)
+    val expiredJobs = todistusRepository
+      .findExpiredJobs(expirationThreshold)
+
+    val cleanupRequired = orphanedJobs.nonEmpty || expiredJobs.nonEmpty
 
     if (cleanupRequired) {
       timed("cleanup", thresholdMs = 0) {
-        // TODO: TOR-2400: merkitse QUEUD_FOR_EXPIRE:ksi todistukset, jotka ovat määräaikaa (esim. vuosi?) vanhempia.
-        // TODO: TOR-2400: Poista S3:sta jotain määräaikaa (2 vuotta?) vanhemmat todistukset? Ehkä joku erillinen eräajo,
-        // mikä vaatii manuaalisen stepin vahvistukseksi, eikä tässä?
+        // Merkitse vanhentuneet todistukset QUEUED_FOR_EXPIRE-tilaan
+        if (expiredJobs.nonEmpty) {
+          val expiredJobIds = expiredJobs.map(_.id)
+          val markedCount = todistusRepository.markJobsAsQueuedForExpire(expiredJobIds)
+          logger.info(s"Merkittiin ${markedCount} vanhentunutta todistusta QUEUED_FOR_EXPIRE-tilaan (vanhenemisaika: ${expirationDuration})")
+        }
 
+        // Käsittele orpo-jobit
         orphanedJobs.foreach { todistus =>
           val attemptsCount = todistus.attempts.getOrElse(0)
           if (attemptsCount < maxAttempts) {

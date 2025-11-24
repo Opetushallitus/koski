@@ -242,6 +242,28 @@ class TodistusJobRepository(val db: DB, val workerId: String, config: Config) ex
         AND NOT worker = any($koskiInstances)
       """.as[TodistusJob])
 
+  def findExpiredJobs(expirationThreshold: LocalDateTime): Seq[TodistusJob] =
+    runDbSync(
+      sql"""
+      SELECT *
+      FROM todistus_job
+      WHERE state = ${TodistusState.COMPLETED}
+        AND completed_at < ${java.sql.Timestamp.valueOf(expirationThreshold)}
+      """.as[TodistusJob])
+
+  def markJobsAsQueuedForExpire(ids: Seq[String]): Int =
+    if (ids.isEmpty) {
+      0
+    } else {
+      runDbSync(
+        sql"""
+        UPDATE todistus_job
+        SET state = ${TodistusState.QUEUED_FOR_EXPIRE}
+        WHERE id::text = ANY(${ids})
+          AND state = ${TodistusState.COMPLETED}
+        """.asUpdate)
+    }
+
   def truncateForLocal(): Int = {
     require(Environment.isUnitTestEnvironment(config) || Environment.isLocalDevelopmentEnvironment(config), "truncateForLocal can only be used in local test environment")
 
@@ -264,6 +286,16 @@ class TodistusJobRepository(val db: DB, val workerId: String, config: Config) ex
       sql"""
       UPDATE todistus_job
       SET state = ${TodistusState.EXPIRED}
+      WHERE id = ${id}::uuid
+      """.asUpdate) != 0
+  }
+
+  def setCompletedAtForUnitTests(id: String, completedAt: LocalDateTime): Boolean = {
+    require(Environment.isUnitTestEnvironment(config), "setCompletedAtForUnitTests can only be used in unit test environment")
+    runDbSync(
+      sql"""
+      UPDATE todistus_job
+      SET completed_at = ${java.sql.Timestamp.valueOf(completedAt)}
       WHERE id = ${id}::uuid
       """.asUpdate) != 0
   }

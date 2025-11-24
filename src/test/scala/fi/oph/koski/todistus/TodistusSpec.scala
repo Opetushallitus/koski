@@ -909,6 +909,102 @@ class TodistusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers with Bef
     }
   }
 
+  "Todistusten vanheneminen" - {
+    "Merkitsee vanhentuneet todistukset QUEUED_FOR_EXPIRE-tilaan" in {
+      val lang = "fi"
+      val hetu = KoskiSpecificMockOppijat.kielitutkinnonSuorittaja.hetu.get
+      val oppijaOid = KoskiSpecificMockOppijat.kielitutkinnonSuorittaja.oid
+      val opiskeluoikeusOid = getVahvistettuKielitutkinnonOpiskeluoikeus(oppijaOid).flatMap(_.oid).get
+
+      val req = TodistusGenerateRequest(opiskeluoikeusOid, lang)
+
+      // Luo todistus ja odota sen valmistumista
+      val todistusJob = addGenerateJobSuccessfully(req, hetu) { todistusJob =>
+        todistusJob.state should equal(TodistusState.QUEUED)
+        todistusJob
+      }
+      val completedJob = waitForCompletion(todistusJob.id, hetu)
+      completedJob.state should equal(TodistusState.COMPLETED)
+
+      // Merkitse todistus vanhaksi muuttamalla completed_at-aikaleimaa tietokannassa
+      val expirationDuration = app.config.getDuration("todistus.expirationDuration")
+      val oldCompletedAt = LocalDateTime.now().minusSeconds(expirationDuration.getSeconds).minusSeconds(1)
+      app.todistusRepository.setCompletedAtForUnitTests(todistusJob.id, oldCompletedAt)
+
+      // Odota että cleanup-scheduler käsittelee vanhentuneen todistuksen
+      Thread.sleep(3000) // cleanupInterval on 2s
+
+      // Varmista että todistus on nyt QUEUED_FOR_EXPIRE-tilassa
+      val expiredJob = app.todistusRepository.getFromDbForUnitTests(todistusJob.id).get
+      expiredJob.state should equal(TodistusState.QUEUED_FOR_EXPIRE)
+    }
+
+    "Ei merkitse QUEUED_FOR_EXPIRE-tilaan, jos todistus ei ole vielä vanhentunut" in {
+      val lang = "fi"
+      val hetu = KoskiSpecificMockOppijat.kielitutkinnonSuorittaja.hetu.get
+      val oppijaOid = KoskiSpecificMockOppijat.kielitutkinnonSuorittaja.oid
+      val opiskeluoikeusOid = getVahvistettuKielitutkinnonOpiskeluoikeus(oppijaOid).flatMap(_.oid).get
+
+      val req = TodistusGenerateRequest(opiskeluoikeusOid, lang)
+
+      // Luo todistus ja odota sen valmistumista
+      val todistusJob = addGenerateJobSuccessfully(req, hetu) { todistusJob =>
+        todistusJob.state should equal(TodistusState.QUEUED)
+        todistusJob
+      }
+      val completedJob = waitForCompletion(todistusJob.id, hetu)
+      completedJob.state should equal(TodistusState.COMPLETED)
+
+      // Odota cleanup-schedulerin käynnistymistä
+      Thread.sleep(3000) // cleanupInterval on 2s
+
+      // Varmista että todistus on edelleen COMPLETED-tilassa (ei vanhentunut)
+      val stillValidJob = app.todistusRepository.getFromDbForUnitTests(todistusJob.id).get
+      stillValidJob.state should equal(TodistusState.COMPLETED)
+    }
+
+    "Merkitsee useita vanhentuneita todistuksia kerralla" in {
+      val lang = "fi"
+      val hetu = KoskiSpecificMockOppijat.kielitutkinnonSuorittaja.hetu.get
+      val oppijaOid = KoskiSpecificMockOppijat.kielitutkinnonSuorittaja.oid
+      val opiskeluoikeusOid = getVahvistettuKielitutkinnonOpiskeluoikeus(oppijaOid).flatMap(_.oid).get
+
+      // Luo useita todistuksia eri kielillä
+      val reqFi = TodistusGenerateRequest(opiskeluoikeusOid, "fi")
+      val reqSv = TodistusGenerateRequest(opiskeluoikeusOid, "sv")
+      val reqEn = TodistusGenerateRequest(opiskeluoikeusOid, "en")
+
+      val jobFi = addGenerateJobSuccessfully(reqFi, hetu) { todistusJob => todistusJob }
+      val completedFi = waitForCompletion(jobFi.id, hetu)
+
+      val jobSv = addGenerateJobSuccessfully(reqSv, hetu) { todistusJob => todistusJob }
+      val completedSv = waitForCompletion(jobSv.id, hetu)
+
+      val jobEn = addGenerateJobSuccessfully(reqEn, hetu) { todistusJob => todistusJob }
+      val completedEn = waitForCompletion(jobEn.id, hetu)
+
+      // Merkitse kaikki todistukset vanhoiksi
+      val expirationDuration = app.config.getDuration("todistus.expirationDuration")
+      val oldCompletedAt = LocalDateTime.now().minusSeconds(expirationDuration.getSeconds).minusSeconds(1)
+
+      Seq(jobFi.id, jobSv.id, jobEn.id).foreach { id =>
+        app.todistusRepository.setCompletedAtForUnitTests(id, oldCompletedAt)
+      }
+
+      // Odota cleanup-schedulerin käynnistymistä
+      Thread.sleep(3000)
+
+      // Varmista että kaikki todistukset ovat QUEUED_FOR_EXPIRE-tilassa
+      val expiredFi = app.todistusRepository.getFromDbForUnitTests(jobFi.id).get
+      val expiredSv = app.todistusRepository.getFromDbForUnitTests(jobSv.id).get
+      val expiredEn = app.todistusRepository.getFromDbForUnitTests(jobEn.id).get
+
+      expiredFi.state should equal(TodistusState.QUEUED_FOR_EXPIRE)
+      expiredSv.state should equal(TodistusState.QUEUED_FOR_EXPIRE)
+      expiredEn.state should equal(TodistusState.QUEUED_FOR_EXPIRE)
+    }
+  }
+
   "Orpojen todistusjobien uudelleenkäynnistys" - {
 
     "Ei koske aktiivisesti ajossa olevaan jobiin" in {
@@ -1310,7 +1406,6 @@ class TodistusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers with Bef
   //  - debug-rajapinta vain pääkäyttäjille: voi hakea myös allekirjoittamattoman todistuksen. Tarvitaanko tätä?
   //  - Todistuksen ulkonäkö säilyy samana, eli marginaalit, fontit jne. eivät muutu (joku kuvavertailu tarvitaan?)
   //  - pääkäyttäjälle palautetaan tekniset tiedot (S3-osoitteet, virheilmoitukset jne.)
-  //  - todistusgeneroinnin voi pyytää uudestaan, jos mennyt kauan aikaa edellisestä
 
   private def getVahvistettuKielitutkinnonOpiskeluoikeus(oppijaOid: String): Option[KielitutkinnonOpiskeluoikeus] = {
     getOpiskeluoikeudet(oppijaOid).find(_.suoritukset.exists {
