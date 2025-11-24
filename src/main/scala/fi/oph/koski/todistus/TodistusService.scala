@@ -183,17 +183,21 @@ class TodistusService(application: KoskiApplication) extends Logging with Timing
   }
 
   def cleanup(koskiInstances: Seq[KoskiInstance]): Unit = {
-    timed("cleanup", thresholdMs = 0) {
-      val instanceArns = koskiInstances.map(_.taskArn)
-      val maxAttempts = 3
+    val instanceArns = koskiInstances.map(_.taskArn)
+    val maxAttempts = 3
 
-      // TODO: TOR-2400: merkitse QUEUD_FOR_EXPIRE:ksi todistukset, jotka ovat määräaikaa (esim. vuosi?) vanhempia.
-      // TODO: TOR-2400: Poista S3:sta jotain määräaikaa (2 vuotta?) vanhemmat todistukset? Ehkä joku erillinen eräajo,
-      // mikä vaatii manuaalisen stepin vahvistukseksi, eikä tässä?
+    val orphanedJobs = todistusRepository
+      .findOrphanedJobs(instanceArns)
 
-      todistusRepository
-        .findOrphanedJobs(instanceArns)
-        .foreach { todistus =>
+    val cleanupRequired = orphanedJobs.nonEmpty
+
+    if (cleanupRequired) {
+      timed("cleanup", thresholdMs = 0) {
+        // TODO: TOR-2400: merkitse QUEUD_FOR_EXPIRE:ksi todistukset, jotka ovat määräaikaa (esim. vuosi?) vanhempia.
+        // TODO: TOR-2400: Poista S3:sta jotain määräaikaa (2 vuotta?) vanhemmat todistukset? Ehkä joku erillinen eräajo,
+        // mikä vaatii manuaalisen stepin vahvistukseksi, eikä tässä?
+
+        orphanedJobs.foreach { todistus =>
           val attemptsCount = todistus.attempts.getOrElse(0)
           if (attemptsCount < maxAttempts) {
             logger.info(s"Uudelleenkäynnistetään orpo todistus ${todistus.id} (yritys ${attemptsCount}/${maxAttempts})")
@@ -204,6 +208,7 @@ class TodistusService(application: KoskiApplication) extends Logging with Timing
             todistusRepository.setJobFailed(todistus.id, errorMessage)
           }
         }
+      }
     }
   }
 
