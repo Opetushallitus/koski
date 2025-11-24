@@ -97,14 +97,14 @@ export const YoTodistus: React.FC<YoTodistusProps> = (props) => {
     <TestIdRoot id="yoTodistus">
       <div
         {...common(props, [
-          'YoTodistus',
-          blockingErrorText && 'YoTodistus--notAvailable'
+          'Todistus',
+          blockingErrorText && 'Todistus--notAvailable'
         ])}
       >
-        <span className="YoTodistus__title">{'Ylioppilastodistus'}</span>
+        <span className="Todistus__title">{'Ylioppilastodistus'}</span>
         {blockingErrorText ? (
           <TestIdText id="error">
-            <TextWithLinks className="YoTodistus__blocked">
+            <TextWithLinks className="Todistus__blocked">
               {blockingErrorText}
             </TextWithLinks>
           </TestIdText>
@@ -143,7 +143,7 @@ export const YoTodistus: React.FC<YoTodistusProps> = (props) => {
         )}
       </div>
       {errorText && (
-        <TestIdText className="YoTodistus__error" id="error">
+        <TestIdText className="Todistus__error" id="error">
           <TextWithLinks>{errorText}</TextWithLinks>
         </TestIdText>
       )}
@@ -180,13 +180,13 @@ const LanguageSelect: React.FC<LanguageSelectProps> = (props) => {
   )
 
   return (
-    <div className="YoTodistus__lang">
-      <div className="YoTodistus__langLabel">
+    <div className="Todistus__lang">
+      <div className="Todistus__langLabel">
         <Trans>{'Todistuksen kieli'}</Trans>
       </div>
       {':'}
       <Select
-        className="YoTodistus__langSelect"
+        className="Todistus__langSelect"
         options={yoTodistusLanguages}
         value={props.value}
         onChange={onChange}

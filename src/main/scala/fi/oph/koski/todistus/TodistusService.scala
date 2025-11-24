@@ -12,7 +12,7 @@ import fi.oph.koski.todistus.BucketType.BucketType
 import fi.oph.koski.todistus.pdfgenerator.{TodistusData, TodistusPdfGenerator}
 import fi.oph.koski.todistus.swisscomclient.SwisscomClient
 import fi.oph.koski.todistus.yleinenkielitutkinto.YleinenKielitutkintoTodistusDataBuilder
-import fi.oph.koski.util.TryWithLogging
+import fi.oph.koski.util.{Timing, TryWithLogging}
 import software.amazon.awssdk.http.ContentStreamProvider
 
 import java.io.InputStream
@@ -23,7 +23,7 @@ import fi.oph.koski.util.ChainingSyntax.eitherChainingOps
 import java.time.LocalDateTime
 import java.util.UUID
 
-class TodistusService(application: KoskiApplication) extends Logging {
+class TodistusService(application: KoskiApplication) extends Logging with Timing {
   private val resultRepository = new TodistusResultRepository(application.config)
   private val todistusRepository: TodistusJobRepository = application.todistusRepository
 
@@ -183,109 +183,143 @@ class TodistusService(application: KoskiApplication) extends Logging {
   }
 
   def cleanup(koskiInstances: Seq[KoskiInstance]): Unit = {
-    val instanceArns = koskiInstances.map(_.taskArn)
-    val maxAttempts = 3
+    timed("cleanup", thresholdMs = 0) {
+      val instanceArns = koskiInstances.map(_.taskArn)
+      val maxAttempts = 3
 
-    // TODO: TOR-2400: merkitse QUEUD_FOR_EXPIRE:ksi todistukset, jotka ovat määräaikaa (esim. vuosi?) vanhempia.
-    // TODO: TOR-2400: Poista S3:sta jotain määräaikaa (2 vuotta?) vanhemmat todistukset? Ehkä joku erillinen eräajo,
-    // mikä vaatii manuaalisen stepin vahvistukseksi, eikä tässä?
+      // TODO: TOR-2400: merkitse QUEUD_FOR_EXPIRE:ksi todistukset, jotka ovat määräaikaa (esim. vuosi?) vanhempia.
+      // TODO: TOR-2400: Poista S3:sta jotain määräaikaa (2 vuotta?) vanhemmat todistukset? Ehkä joku erillinen eräajo,
+      // mikä vaatii manuaalisen stepin vahvistukseksi, eikä tässä?
 
-    todistusRepository
-      .findOrphanedJobs(instanceArns)
-      .foreach { todistus =>
-        val attemptsCount = todistus.attempts.getOrElse(0)
-        if (attemptsCount < maxAttempts) {
-          logger.info(s"Uudelleenkäynnistetään orpo todistus ${todistus.id} (yritys ${attemptsCount}/${maxAttempts})")
-          todistusRepository.requeueJob(todistus.id)
-        } else {
-          val errorMessage = s"Todistuksen ${todistus.id} luonti epäonnistui ${attemptsCount} yrityksen jälkeen"
-          logger.error(s"Orpo todistus ${todistus.id}: ${errorMessage}")
-          todistusRepository.setJobFailed(todistus.id, errorMessage)
+      todistusRepository
+        .findOrphanedJobs(instanceArns)
+        .foreach { todistus =>
+          val attemptsCount = todistus.attempts.getOrElse(0)
+          if (attemptsCount < maxAttempts) {
+            logger.info(s"Uudelleenkäynnistetään orpo todistus ${todistus.id} (yritys ${attemptsCount}/${maxAttempts})")
+            todistusRepository.requeueJob(todistus.id)
+          } else {
+            val errorMessage = s"Todistuksen ${todistus.id} luonti epäonnistui ${attemptsCount} yrityksen jälkeen"
+            logger.error(s"Orpo todistus ${todistus.id}: ${errorMessage}")
+            todistusRepository.setJobFailed(todistus.id, errorMessage)
+          }
         }
-      }
+    }
   }
 
   def runNext(): Unit = {
     todistusRepository.takeNext.foreach { todistus =>
-      // TODO: TOR-2400: Onko mahdollista, että todistuksilla näkyy jotain sensitiivistä dataa? Jos ei ole, niin tee ja käytä käyttäjätunnusta, joka ei niihin pääse edes käsiksi. Selviää, kun todistuspohjat valmiina.
-      implicit val systemUser = KoskiSpecificSession.systemUser
+      timed("runNext", thresholdMs = 0) {
+        // TODO: TOR-2400: Onko mahdollista, että todistuksilla näkyy jotain sensitiivistä dataa? Jos ei ole, niin tee ja käytä käyttäjätunnusta, joka ei niihin pääse edes käsiksi. Selviää, kun todistuspohjat valmiina.
+        implicit val systemUser = KoskiSpecificSession.systemUser
 
-      Using.Manager { use =>
-        logGenerointiAlkaa(todistus)
+        Using.Manager { use =>
+          logGenerointiAlkaa(todistus)
 
-        val generoituTodistus: Either[HttpStatus, TodistusJob] = for {
           //
           // GATHERING_INPUT: Hae tuoreet henkilötiedot ja opiskeluoikeus, joista todistus generoidaan, sekä tallenna ne tietokantaan.
           //
-          oppijanHenkilö <-
-            application.henkilöRepository.findByOid(oid = todistus.oppijaOid, findMasterIfSlaveOid = true)
-              .toRight(KoskiErrorCategory.notFound.oppijaaEiLöydyTaiEiOikeuksia())
-          oppijanHenkilötiedotHash = laskeHenkilötiedotHash(oppijanHenkilö)
-          rawOpiskeluoikeus <- application.opiskeluoikeusRepository.findByOid(todistus.opiskeluoikeusOid)
-          opiskeluoikeus <- TryWithLogging(logger, {
-            rawOpiskeluoikeus.toOpiskeluoikeusUnsafe
-          }).left.map(t => KoskiErrorCategory.internalError("Deserialisointi epäonnistui"))
-          opiskeluoikeusVersionumero <- opiskeluoikeus.versionumero.toRight({
-            val error = s"Opiskeluoikeudella ei ole versionumeroa, todistus ${todistus.id}"
-            logger.error(error)
-            KoskiErrorCategory.internalError(error)
-          })
+          val gatheringInputResult = timed("GATHERING_INPUT", thresholdMs = 0) {
+            for {
+              oppijanHenkilö <-
+                application.henkilöRepository.findByOid(oid = todistus.oppijaOid, findMasterIfSlaveOid = true)
+                  .toRight(KoskiErrorCategory.notFound.oppijaaEiLöydyTaiEiOikeuksia())
+              oppijanHenkilötiedotHash = laskeHenkilötiedotHash(oppijanHenkilö)
+              rawOpiskeluoikeus <- application.opiskeluoikeusRepository.findByOid(todistus.opiskeluoikeusOid)
+              opiskeluoikeus <- TryWithLogging(logger, {
+                rawOpiskeluoikeus.toOpiskeluoikeusUnsafe
+              }).left.map(t => KoskiErrorCategory.internalError("Deserialisointi epäonnistui"))
+              opiskeluoikeusVersionumero <- opiskeluoikeus.versionumero.toRight({
+                val error = s"Opiskeluoikeudella ei ole versionumeroa, todistus ${todistus.id}"
+                logger.error(error)
+                KoskiErrorCategory.internalError(error)
+              })
 
-          todistus <- todistusRepository.updateStateWithHashAndVersion(
-            todistus.id,
-            TodistusState.GATHERING_INPUT,
-            TodistusState.GENERATING_RAW_PDF,
-            oppijanHenkilötiedotHash,
-            opiskeluoikeusVersionumero
-          )
+              todistus <- todistusRepository.updateStateWithHashAndVersion(
+                todistus.id,
+                TodistusState.GATHERING_INPUT,
+                TodistusState.GENERATING_RAW_PDF,
+                oppijanHenkilötiedotHash,
+                opiskeluoikeusVersionumero
+              )
+            } yield (oppijanHenkilö, opiskeluoikeus, todistus)
+          }
 
           //
           // GENERATING_RAW_PDF: Generoi PDF-todistus, jota ei ole vielä allekirjoitettu
           //
-          // TODO: TOR-2400: Tallenna myös HTML S3:een, jotta sitä voi renderöidä helposti suoraan selaimessa debuggaukseen
-          todistusData <- createTodistusData(oppijanHenkilö, opiskeluoikeus, todistus)
-          pdfBytes <- TryWithLogging(logger, {
-            pdfGenerator.generatePdf(todistusData)
-          }).left.map(t => KoskiErrorCategory.internalError(s"PDF:n generointi epäonnistui todistukselle ${todistus.id}: ${t.getMessage}"))
+          val generatingRawPdfResult = gatheringInputResult.flatMap { case (oppijanHenkilö, opiskeluoikeus, todistus) =>
+            timed("GENERATING_RAW_PDF", thresholdMs = 0) {
+              for {
+                // TODO: TOR-2400: Tallenna myös HTML S3:een, jotta sitä voi renderöidä helposti suoraan selaimessa debuggaukseen
+                todistusData <- createTodistusData(oppijanHenkilö, opiskeluoikeus, todistus)
+                pdfBytes <- TryWithLogging(logger, {
+                  pdfGenerator.generatePdf(todistusData)
+                }).left.map(t => KoskiErrorCategory.internalError(s"PDF:n generointi epäonnistui todistukselle ${todistus.id}: ${t.getMessage}"))
+              } yield (todistus, pdfBytes)
+            }
+          }
 
           //
           // SAVING_RAW_PDF: Tallenna allekirjoittamaton todistus S3:een
           //
-          todistus <- todistusRepository.updateState(todistus.id, TodistusState.GENERATING_RAW_PDF, TodistusState.SAVING_RAW_PDF)
-          _ <- resultRepository.putStream(BucketType.RAW, todistus.id, ContentStreamProvider.fromByteArray(pdfBytes))
+          val savingRawPdfResult = generatingRawPdfResult.flatMap { case (todistus, pdfBytes) =>
+            timed("SAVING_RAW_PDF", thresholdMs = 0) {
+              for {
+                todistus <- todistusRepository.updateState(todistus.id, TodistusState.GENERATING_RAW_PDF, TodistusState.SAVING_RAW_PDF)
+                _ <- resultRepository.putStream(BucketType.RAW, todistus.id, ContentStreamProvider.fromByteArray(pdfBytes))
+              } yield todistus
+            }
+          }
 
           //
           // STAMPING_PDF: Allekirjoita PDF
           //
-          _ <- todistusRepository.updateState(todistus.id, TodistusState.SAVING_RAW_PDF, TodistusState.STAMPING_PDF)
-          rawInputStream <- resultRepository.getStream(BucketType.RAW, todistus.id)
-            .tap(is => use(is))
-          outputStream = new java.io.ByteArrayOutputStream()
-          _ <- swisscomClient.signWithStaticCertificate(todistus.id, rawInputStream, outputStream)
+          val stampingPdfResult = savingRawPdfResult.flatMap { todistus =>
+            timed("STAMPING_PDF", thresholdMs = 0) {
+              for {
+                _ <- todistusRepository.updateState(todistus.id, TodistusState.SAVING_RAW_PDF, TodistusState.STAMPING_PDF)
+                rawInputStream <- resultRepository.getStream(BucketType.RAW, todistus.id)
+                  .tap(is => use(is))
+                outputStream = new java.io.ByteArrayOutputStream()
+                _ <- swisscomClient.signWithStaticCertificate(todistus.id, rawInputStream, outputStream)
+              } yield (todistus, outputStream)
+            }
+          }
 
           //
           // SAVING_STAMPED_PDF: Tallenna allekirjoitettu PDF
           //
-          todistus <- todistusRepository.updateState(todistus.id, TodistusState.STAMPING_PDF, TodistusState.SAVING_STAMPED_PDF)
-          _ <- resultRepository.putStream(BucketType.STAMPED, todistus.id, ContentStreamProvider.fromByteArray(outputStream.toByteArray))
+          val savingStampedPdfResult = stampingPdfResult.flatMap { case (todistus, outputStream) =>
+            timed("SAVING_STAMPED_PDF", thresholdMs = 0) {
+              for {
+                todistus <- todistusRepository.updateState(todistus.id, TodistusState.STAMPING_PDF, TodistusState.SAVING_STAMPED_PDF)
+                _ <- resultRepository.putStream(BucketType.STAMPED, todistus.id, ContentStreamProvider.fromByteArray(outputStream.toByteArray))
+              } yield todistus
+            }
+          }
 
           //
           // COMPLETED: Valmis
           //
-          todistus <- todistusRepository.updateState(
-            todistus.id,
-            TodistusState.SAVING_STAMPED_PDF,
-            TodistusState.COMPLETED,
-            completedAt = Some(LocalDateTime.now())
-          )
-        } yield todistus
+          val generoituTodistus: Either[HttpStatus, TodistusJob] = savingStampedPdfResult.flatMap { todistus =>
+            timed("COMPLETED", thresholdMs = 0) {
+              todistusRepository.updateState(
+                todistus.id,
+                TodistusState.SAVING_STAMPED_PDF,
+                TodistusState.COMPLETED,
+                completedAt = Some(LocalDateTime.now())
+              )
+            }
+          }
 
-        generoituTodistus match {
-          case Right(todistus) =>
-            logGenerointiValmis(todistus)
-          case Left(error) =>
-            logGenerointiEpäonnistui(todistus, error.toString)
-            todistusRepository.setJobFailed(todistus.id, error.toString)
+          generoituTodistus match {
+            case Right(todistus) =>
+              logGenerointiValmis(todistus)
+            case Left(error) =>
+              logGenerointiEpäonnistui(todistus, error.toString)
+              todistusRepository.setJobFailed(todistus.id, error.toString)
+          }
         }
       }
     }
@@ -339,6 +373,29 @@ class TodistusService(application: KoskiApplication) extends Logging {
 
   private def teeKonteksti(id: String, oppijaOid: String, opiskeluoikeusOid: String, language: String, user: String): String =
     s"job:${id}/oppija:${oppijaOid}/oo:${opiskeluoikeusOid}/lang:${language}/user:${user}"
+
+  def generateHtmlPreview(req: TodistusGenerateRequest)(implicit user: KoskiSpecificSession): Either[HttpStatus, String] = {
+    for {
+      yleisenKielitutkinnonVahvistettuOpiskeluoikeus <- kielitutkinnonVahvistettuOpiskeluoikeusJohonKutsujallaKäyttöoikeudet(req)
+      oppijanHenkilö <- application.henkilöRepository.findByOid(yleisenKielitutkinnonVahvistettuOpiskeluoikeus.oppijaOid).toRight(KoskiErrorCategory.notFound.oppijaaEiLöydyTaiEiOikeuksia())
+      opiskeluoikeus <- TryWithLogging(logger, {
+        yleisenKielitutkinnonVahvistettuOpiskeluoikeus.toOpiskeluoikeusUnsafe
+      }).left.map(t => KoskiErrorCategory.internalError("Deserialisointi epäonnistui"))
+      // Luodaan dummy todistusJob HTML-previewtä varten
+      dummyJob = TodistusJob(
+        id = "preview",
+        opiskeluoikeusOid = req.opiskeluoikeusOid,
+        oppijaOid = yleisenKielitutkinnonVahvistettuOpiskeluoikeus.oppijaOid,
+        language = req.language,
+        state = TodistusState.GATHERING_INPUT,
+        userOid = Some(user.oid),
+        oppijaHenkilötiedotHash = None,
+        opiskeluoikeusVersionumero = None,
+      )
+      todistusData <- createTodistusData(oppijanHenkilö, opiskeluoikeus, dummyJob)
+      html = pdfGenerator.generateHtml(todistusData)
+    } yield html
+  }
 
   private def createTodistusData(oppijanHenkilö: OppijaHenkilö, opiskeluoikeus: Opiskeluoikeus, todistus: TodistusJob): Either[HttpStatus, TodistusData] = {
     opiskeluoikeus match {
