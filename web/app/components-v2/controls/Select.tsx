@@ -287,25 +287,51 @@ const useSelectState = <T,>(props: SelectProps<T>) => {
 
   // Losing the focus
 
+  const blurTimeoutRef = useRef<number | null>(null)
+
   const onBlur: React.FocusEventHandler = useCallback((event) => {
-    setTimeout(() => {
-      setDropdownVisible(false)
-    }, 1000) // TODO: Tää on vähän vaarallinen, voi aiheuttaa flakya
+    // Tarkistetaan, että fokus ei siirry komponentin sisälle
+    if (
+      !event.relatedTarget ||
+      !selectContainer.current?.contains(event.relatedTarget as Node)
+    ) {
+      // Lyhennetty timeout: riittää että ehditään käsitellä klikki
+      blurTimeoutRef.current = window.setTimeout(() => {
+        setDropdownVisible(false)
+      }, 150)
+    }
+  }, [])
+
+  const cancelBlur = useCallback(() => {
+    if (blurTimeoutRef.current !== null) {
+      clearTimeout(blurTimeoutRef.current)
+      blurTimeoutRef.current = null
+    }
   }, [])
 
   useEffect(() => {
     const mouseHandler = (event: MouseEvent) => {
-      return setDropdownVisible(
-        (event.target instanceof Element &&
-          selectContainer.current?.contains(event.target)) ||
-          false
-      )
+      const isInside =
+        event.target instanceof Element &&
+        selectContainer.current?.contains(event.target)
+
+      if (isInside) {
+        // Jos klikataan sisällä, peruuta blur ja pidä auki
+        cancelBlur()
+        setDropdownVisible(true)
+      } else {
+        // Jos klikataan ulkopuolella, sulje
+        setDropdownVisible(false)
+      }
     }
     document.body.addEventListener('click', mouseHandler)
     return () => {
       document.body.removeEventListener('click', mouseHandler)
+      if (blurTimeoutRef.current !== null) {
+        clearTimeout(blurTimeoutRef.current)
+      }
     }
-  }, [])
+  }, [cancelBlur])
 
   // Changes
 
