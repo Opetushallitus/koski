@@ -12,6 +12,8 @@ class TodistusCleanupScheduler(application: KoskiApplication) extends Logging {
   val schedulerDb = application.masterDatabase.db
   val todistusService = application.todistusService
 
+  var isRunning: Boolean = false
+
   def scheduler: Option[Scheduler] = {
     Some(new Scheduler(
       schedulerDb,
@@ -28,12 +30,17 @@ class TodistusCleanupScheduler(application: KoskiApplication) extends Logging {
   def resume(): Boolean = Scheduler.resume(schedulerDb, schedulerName)
 
   private def runNext(_ignore: Option[JValue]): Option[JValue] = {
-    val instances = application.ecsMetadata.currentlyRunningKoskiInstances
+    try {
+      isRunning = true
+      val instances = application.ecsMetadata.currentlyRunningKoskiInstances
 
-    todistusService.cleanup(instances)
-    runAsWorkerIfWorkersMissing()
+      todistusService.cleanup(instances)
+      runAsWorkerIfWorkersMissing()
 
-    None
+      None
+    } finally {
+      isRunning = false
+    }
   }
 
   private def runAsWorkerIfWorkersMissing(): Unit = {
