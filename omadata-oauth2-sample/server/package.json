@@ -1,6 +1,6 @@
 {
   "name": "omadata-oauth2-sample",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Sample web application to use KOSKI OmaData with OAuth2",
   "main": "index.ts",
   "engines": {
