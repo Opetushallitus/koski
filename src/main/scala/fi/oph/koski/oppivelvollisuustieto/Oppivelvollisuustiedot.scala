@@ -165,14 +165,27 @@ object Oppivelvollisuustiedot {
 
         ),
 
-        -- Päivä jolloin oppija on muuttanut Suomeen, jos viimeisin (nykyinen) kotikunta on Suomessa, muuten null
-        nykyinen_kotikunta_suomessa_alkaen as (
-          select distinct on (master_oid)
+        -- Viimeisin poismuuton päivämäärä ulkomailta, muuten null
+        viimeinen_ulkomailla_asumisen_paiva as (
+          select
             master_oid,
-            case when not kotikunta = any(#$ulkopuolisetKunnat) then muutto_pvm end as pvm
+            max(poismuutto_pvm) pvm
           from #${confidentialSchema.name}.r_kotikuntahistoria
-          where muutto_pvm is not null
-          order by master_oid, muutto_pvm desc
+          where kotikunta = any(#$ulkopuolisetKunnat)
+          group by master_oid
+        ),
+
+        -- Päivä jolloin oppija on muuttanut Suomeen ulkomailla asumisen jälkeen, muuten null
+        kotikunta_suomessa_ulkomailla_asumisen_jalkeen_alkaen as (
+          select
+            r_kotikuntahistoria.master_oid,
+            min(case when not kotikunta = any(#$ulkopuolisetKunnat) then muutto_pvm end) as pvm
+          from #${confidentialSchema.name}.r_kotikuntahistoria
+            join viimeinen_ulkomailla_asumisen_paiva on viimeinen_ulkomailla_asumisen_paiva.master_oid = r_kotikuntahistoria.master_oid
+          where muutto_pvm is not null and
+            viimeinen_ulkomailla_asumisen_paiva.pvm is not null and
+            muutto_pvm >= viimeinen_ulkomailla_asumisen_paiva.pvm
+          group by r_kotikuntahistoria.master_oid
         ),
 
         -- Päivä jolloin oppijan kotikunta on ollut ulkomailla tai Ahvenanmaalla ensimmäistä kertaa
@@ -195,12 +208,12 @@ object Oppivelvollisuustiedot {
             kotikunta_ulkomailla_ensimmaisen_kerran_alkaen.pvm
           from kotikunta_ulkomailla_ensimmaisen_kerran_alkaen
             join oppivelvolliset_henkilot on oppivelvolliset_henkilot.master_oid = kotikunta_ulkomailla_ensimmaisen_kerran_alkaen.master_oid
-            join nykyinen_kotikunta_suomessa_alkaen on nykyinen_kotikunta_suomessa_alkaen.master_oid = kotikunta_ulkomailla_ensimmaisen_kerran_alkaen.master_oid
+            join kotikunta_suomessa_ulkomailla_asumisen_jalkeen_alkaen on kotikunta_suomessa_ulkomailla_asumisen_jalkeen_alkaen.master_oid = kotikunta_ulkomailla_ensimmaisen_kerran_alkaen.master_oid
           where (
                   kotikunta_ulkomailla_ensimmaisen_kerran_alkaen.pvm < oppivelvolliset_henkilot.syntymaaika + interval '18 years'
                   and (
-                    nykyinen_kotikunta_suomessa_alkaen.pvm is not null
-                    and nykyinen_kotikunta_suomessa_alkaen.pvm >= oppivelvolliset_henkilot.syntymaaika + interval '18 years'
+                    kotikunta_suomessa_ulkomailla_asumisen_jalkeen_alkaen.pvm is not null
+                    and kotikunta_suomessa_ulkomailla_asumisen_jalkeen_alkaen.pvm >= oppivelvolliset_henkilot.syntymaaika + interval '18 years'
                   )
                 )
              or kotikunta_ulkomailla_ensimmaisen_kerran_alkaen.pvm >= oppivelvolliset_henkilot.syntymaaika + interval '18 years'
@@ -439,7 +452,8 @@ object Oppivelvollisuustiedot {
           left join maksuttomuuden_pidennysjakso on oppivelvolliset_henkilot.master_oid = maksuttomuuden_pidennysjakso.master_oid
           left join amis_ja_lukio_samanaikaisuus on oppivelvolliset_henkilot.master_oid = amis_ja_lukio_samanaikaisuus.master_oid
           left join kotikunta_suomessa_ensimmaisen_kerran_alkaen on oppivelvolliset_henkilot.master_oid = kotikunta_suomessa_ensimmaisen_kerran_alkaen.master_oid
-          left join nykyinen_kotikunta_suomessa_alkaen on oppivelvolliset_henkilot.master_oid = nykyinen_kotikunta_suomessa_alkaen.master_oid
+          left join viimeinen_ulkomailla_asumisen_paiva on oppivelvolliset_henkilot.master_oid = viimeinen_ulkomailla_asumisen_paiva.master_oid
+          left join kotikunta_suomessa_ulkomailla_asumisen_jalkeen_alkaen on oppivelvolliset_henkilot.master_oid = kotikunta_suomessa_ulkomailla_asumisen_jalkeen_alkaen.master_oid
           left join nykyinen_kotikunta_ulkomailla_alkaen on oppivelvolliset_henkilot.master_oid = nykyinen_kotikunta_ulkomailla_alkaen.master_oid
           left join oppivelvollisuus_alkaa on oppivelvolliset_henkilot.master_oid = oppivelvollisuus_alkaa.master_oid
           left join kotikunta_ulkomailla_ensimmaisen_kerran_alkaen on oppivelvolliset_henkilot.master_oid = kotikunta_ulkomailla_ensimmaisen_kerran_alkaen.master_oid
