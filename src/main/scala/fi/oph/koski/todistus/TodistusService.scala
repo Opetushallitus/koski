@@ -1,8 +1,8 @@
 package fi.oph.koski.todistus
 
-import fi.oph.koski.config.{KoskiApplication, KoskiInstance}
+import fi.oph.koski.config.{Environment, KoskiApplication, KoskiInstance}
 import fi.oph.koski.db.KoskiOpiskeluoikeusRow
-import fi.oph.koski.henkilo.OppijaHenkilö
+import fi.oph.koski.henkilo.{KoskiSpecificMockOppijat, OppijaHenkilö}
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.koskiuser.KoskiSpecificSession
 import fi.oph.koski.koskiuser.Rooli.OPHPAAKAYTTAJA
@@ -30,6 +30,8 @@ class TodistusService(application: KoskiApplication) extends Logging with Timing
   private val swisscomClient: SwisscomClient = application.swisscomClient
   private val pdfGenerator = new TodistusPdfGenerator()
   private val yleinenKielitutkintoTodistusDataBuilder = new YleinenKielitutkintoTodistusDataBuilder(application)
+
+  private val expirationDuration = application.config.getDuration("todistus.expirationDuration")
 
   def currentStatus(req: TodistusIdRequest)(implicit user: KoskiSpecificSession): Either[HttpStatus, TodistusJob] = {
     if (user.hasRole(OPHPAAKAYTTAJA)) {
@@ -168,6 +170,7 @@ class TodistusService(application: KoskiApplication) extends Logging with Timing
   def getDownloadStream(bucketType: BucketType, job: TodistusJob): Either[HttpStatus, InputStream] =
     for {
       _ <- validateOpiskeluoikeusExistsForDownloadAccess(job)
+      _ <- simulateMockDownloadError(job)
       result <- resultRepository.getStream(bucketType, job.id)
     } yield result
 
@@ -182,18 +185,41 @@ class TodistusService(application: KoskiApplication) extends Logging with Timing
     } yield todistusJob
   }
 
+  private def simulateMockDownloadError(job: TodistusJob): Either[HttpStatus, Unit] = {
+    // Mock-oppijan todistuksen lataus epäonnistuu testimielessä (vain lokaalissa/testiympäristössä)
+    if (Environment.isUsingLocalDevelopmentServices(application) &&
+        job.oppijaOid == KoskiSpecificMockOppijat.kielitutkintoTodistusVirhe.oid &&
+        job.language == "sv") {
+      Left(KoskiErrorCategory.internalError("Todistuksen lataus epäonnistui testitarkoitukseen."))
+    } else {
+      Right(())
+    }
+  }
+
   def cleanup(koskiInstances: Seq[KoskiInstance]): Unit = {
-    timed("cleanup", thresholdMs = 0) {
-      val instanceArns = koskiInstances.map(_.taskArn)
-      val maxAttempts = 3
+    val instanceArns = koskiInstances.map(_.taskArn)
+    val maxAttempts = 3
 
-      // TODO: TOR-2400: merkitse QUEUD_FOR_EXPIRE:ksi todistukset, jotka ovat määräaikaa (esim. vuosi?) vanhempia.
-      // TODO: TOR-2400: Poista S3:sta jotain määräaikaa (2 vuotta?) vanhemmat todistukset? Ehkä joku erillinen eräajo,
-      // mikä vaatii manuaalisen stepin vahvistukseksi, eikä tässä?
+    val orphanedJobs = todistusRepository
+      .findOrphanedJobs(instanceArns)
 
-      todistusRepository
-        .findOrphanedJobs(instanceArns)
-        .foreach { todistus =>
+    val expirationThreshold = LocalDateTime.now().minusSeconds(expirationDuration.getSeconds)
+    val expiredJobs = todistusRepository
+      .findExpiredJobs(expirationThreshold)
+
+    val cleanupRequired = orphanedJobs.nonEmpty || expiredJobs.nonEmpty
+
+    if (cleanupRequired) {
+      timed("cleanup", thresholdMs = 0) {
+        // Merkitse vanhentuneet todistukset QUEUED_FOR_EXPIRE-tilaan
+        if (expiredJobs.nonEmpty) {
+          val expiredJobIds = expiredJobs.map(_.id)
+          val markedCount = todistusRepository.markJobsAsQueuedForExpire(expiredJobIds)
+          logger.info(s"Merkittiin ${markedCount} vanhentunutta todistusta QUEUED_FOR_EXPIRE-tilaan (vanhenemisaika: ${expirationDuration})")
+        }
+
+        // Käsittele orpo-jobit
+        orphanedJobs.foreach { todistus =>
           val attemptsCount = todistus.attempts.getOrElse(0)
           if (attemptsCount < maxAttempts) {
             logger.info(s"Uudelleenkäynnistetään orpo todistus ${todistus.id} (yritys ${attemptsCount}/${maxAttempts})")
@@ -204,6 +230,7 @@ class TodistusService(application: KoskiApplication) extends Logging with Timing
             todistusRepository.setJobFailed(todistus.id, errorMessage)
           }
         }
+      }
     }
   }
 
@@ -374,7 +401,7 @@ class TodistusService(application: KoskiApplication) extends Logging with Timing
   private def teeKonteksti(id: String, oppijaOid: String, opiskeluoikeusOid: String, language: String, user: String): String =
     s"job:${id}/oppija:${oppijaOid}/oo:${opiskeluoikeusOid}/lang:${language}/user:${user}"
 
-  def generateHtmlPreview(req: TodistusGenerateRequest)(implicit user: KoskiSpecificSession): Either[HttpStatus, String] = {
+  def generateHtmlPreview(req: TodistusGenerateRequest)(implicit user: KoskiSpecificSession): Either[HttpStatus, (String, TodistusJob)] = {
     for {
       yleisenKielitutkinnonVahvistettuOpiskeluoikeus <- kielitutkinnonVahvistettuOpiskeluoikeusJohonKutsujallaKäyttöoikeudet(req)
       oppijanHenkilö <- application.henkilöRepository.findByOid(yleisenKielitutkinnonVahvistettuOpiskeluoikeus.oppijaOid).toRight(KoskiErrorCategory.notFound.oppijaaEiLöydyTaiEiOikeuksia())
@@ -390,14 +417,21 @@ class TodistusService(application: KoskiApplication) extends Logging with Timing
         state = TodistusState.GATHERING_INPUT,
         userOid = Some(user.oid),
         oppijaHenkilötiedotHash = None,
-        opiskeluoikeusVersionumero = None,
+        opiskeluoikeusVersionumero = Some(yleisenKielitutkinnonVahvistettuOpiskeluoikeus.versionumero),
       )
       todistusData <- createTodistusData(oppijanHenkilö, opiskeluoikeus, dummyJob)
       html = pdfGenerator.generateHtml(todistusData)
-    } yield html
+    } yield (html, dummyJob)
   }
 
   private def createTodistusData(oppijanHenkilö: OppijaHenkilö, opiskeluoikeus: Opiskeluoikeus, todistus: TodistusJob): Either[HttpStatus, TodistusData] = {
+    // Mock-oppijan todistuksen luonti epäonnistuu testimielessä (vain lokaalissa/testiympäristössä)
+    if (Environment.isUsingLocalDevelopmentServices(application) &&
+        oppijanHenkilö.hetu == KoskiSpecificMockOppijat.kielitutkintoTodistusVirhe.hetu &&
+        todistus.language == "en") {
+      return Left(KoskiErrorCategory.internalError("Todistuksen luonti epäonnistui testitarkoitukseen."))
+    }
+
     opiskeluoikeus match {
       case ktOo: KielitutkinnonOpiskeluoikeus =>
         ktOo.suoritukset.find(_.isInstanceOf[YleisenKielitutkinnonSuoritus]) match {

@@ -359,7 +359,7 @@ class TodistusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers with Bef
         completedJob.state should equal(TodistusState.COMPLETED)
 
         // Huollettava itse yrittää ladata todistuksen
-        verifyDownloadResult(s"/api/todistus/download/${todistusJob.id}", huollettavanHetu)
+        verifyDownloadResult(s"/todistus/download/${todistusJob.id}", huollettavanHetu)
       }
     }
   }
@@ -419,7 +419,7 @@ class TodistusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers with Bef
     completedJobFromDb.worker should be(Some("local"))
 
     // Testaa suora lataus (kansalainen)
-    verifyDownloadResultAndContent(s"/api/todistus/download/${todistusJob.id}", hetu) {
+    verifyDownloadResultAndContent(s"/todistus/download/${todistusJob.id}", hetu) {
       val pdfBytes = response.getContentBytes()
 
       val document = Loader.loadPDF(pdfBytes)
@@ -447,7 +447,7 @@ class TodistusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers with Bef
     }
 
     // Testaa presigned URL lataus (OPH-pääkäyttäjä)
-    verifyPresignedResultAndContent(s"/api/todistus/download-presigned/${todistusJob.id}") {
+    verifyPresignedResultAndContent(s"/todistus/download/presigned/${todistusJob.id}") {
       val pdfBytes = response.getContentBytes()
 
       val document = Loader.loadPDF(pdfBytes)
@@ -487,7 +487,7 @@ class TodistusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers with Bef
       mitätöiOppijanKaikkiOpiskeluoikeudet(oppija)
 
       // Yritä ladata todistus - pitäisi epäonnistua
-      getResult(s"/api/todistus/download/${todistusJob.id}", hetu) {
+      getResult(s"/todistus/download/${todistusJob.id}", hetu) {
         verifyResponseStatus(503)
       }
     }
@@ -511,12 +511,12 @@ class TodistusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers with Bef
       completedJob.state should equal(TodistusState.COMPLETED)
 
       // Kansalainen yrittää käyttää presigned URL endpointtiä - pitäisi estää
-      getResult(s"/api/todistus/download-presigned/${todistusJob.id}", hetu) {
+      getResult(s"/todistus/download/presigned/${todistusJob.id}", hetu) {
         verifyResponseStatus(403) // Forbidden
       }
 
       // Varmista että normaali download toimii
-      verifyDownloadResult(s"/api/todistus/download/${todistusJob.id}", hetu)
+      verifyDownloadResult(s"/todistus/download/${todistusJob.id}", hetu)
     }
 
     "Kansalainen ei pääse lataamaan toisen oppijan todistusta" in {
@@ -537,10 +537,10 @@ class TodistusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers with Bef
       val completedJob = waitForCompletion(todistusJob.id, todistuksenOmistajaHetu)
       completedJob.state should equal(TodistusState.COMPLETED)
 
-      verifyDownloadResult(s"/api/todistus/download/${todistusJob.id}", todistuksenOmistajaHetu)
+      verifyDownloadResult(s"/todistus/download/${todistusJob.id}", todistuksenOmistajaHetu)
 
       // Toinen kansalainen yrittää ladata todistuksen
-      getResult(s"/api/todistus/download/${todistusJob.id}", toinenKansalainenHetu) {
+      getResult(s"/todistus/download/${todistusJob.id}", toinenKansalainenHetu) {
         verifyResponseStatus(404)
       }
     }
@@ -564,7 +564,7 @@ class TodistusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers with Bef
       completedJob.state should equal(TodistusState.COMPLETED)
 
       // Huoltaja (joka ei ole tämän oppijan huoltaja) yrittää ladata todistuksen
-      getResult(s"/api/todistus/download/${todistusJob.id}", huoltajanHetu) {
+      getResult(s"/todistus/download/${todistusJob.id}", huoltajanHetu) {
         verifyResponseStatus(404)
       }
     }
@@ -909,6 +909,102 @@ class TodistusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers with Bef
     }
   }
 
+  "Todistusten vanheneminen" - {
+    "Merkitsee vanhentuneet todistukset QUEUED_FOR_EXPIRE-tilaan" in {
+      val lang = "fi"
+      val hetu = KoskiSpecificMockOppijat.kielitutkinnonSuorittaja.hetu.get
+      val oppijaOid = KoskiSpecificMockOppijat.kielitutkinnonSuorittaja.oid
+      val opiskeluoikeusOid = getVahvistettuKielitutkinnonOpiskeluoikeus(oppijaOid).flatMap(_.oid).get
+
+      val req = TodistusGenerateRequest(opiskeluoikeusOid, lang)
+
+      // Luo todistus ja odota sen valmistumista
+      val todistusJob = addGenerateJobSuccessfully(req, hetu) { todistusJob =>
+        todistusJob.state should equal(TodistusState.QUEUED)
+        todistusJob
+      }
+      val completedJob = waitForCompletion(todistusJob.id, hetu)
+      completedJob.state should equal(TodistusState.COMPLETED)
+
+      // Merkitse todistus vanhaksi muuttamalla completed_at-aikaleimaa tietokannassa
+      val expirationDuration = app.config.getDuration("todistus.expirationDuration")
+      val oldCompletedAt = LocalDateTime.now().minusSeconds(expirationDuration.getSeconds).minusSeconds(1)
+      app.todistusRepository.setCompletedAtForUnitTests(todistusJob.id, oldCompletedAt)
+
+      // Odota että cleanup-scheduler käsittelee vanhentuneen todistuksen
+      Thread.sleep(3000) // cleanupInterval on 2s
+
+      // Varmista että todistus on nyt QUEUED_FOR_EXPIRE-tilassa
+      val expiredJob = app.todistusRepository.getFromDbForUnitTests(todistusJob.id).get
+      expiredJob.state should equal(TodistusState.QUEUED_FOR_EXPIRE)
+    }
+
+    "Ei merkitse QUEUED_FOR_EXPIRE-tilaan, jos todistus ei ole vielä vanhentunut" in {
+      val lang = "fi"
+      val hetu = KoskiSpecificMockOppijat.kielitutkinnonSuorittaja.hetu.get
+      val oppijaOid = KoskiSpecificMockOppijat.kielitutkinnonSuorittaja.oid
+      val opiskeluoikeusOid = getVahvistettuKielitutkinnonOpiskeluoikeus(oppijaOid).flatMap(_.oid).get
+
+      val req = TodistusGenerateRequest(opiskeluoikeusOid, lang)
+
+      // Luo todistus ja odota sen valmistumista
+      val todistusJob = addGenerateJobSuccessfully(req, hetu) { todistusJob =>
+        todistusJob.state should equal(TodistusState.QUEUED)
+        todistusJob
+      }
+      val completedJob = waitForCompletion(todistusJob.id, hetu)
+      completedJob.state should equal(TodistusState.COMPLETED)
+
+      // Odota cleanup-schedulerin käynnistymistä
+      Thread.sleep(3000) // cleanupInterval on 2s
+
+      // Varmista että todistus on edelleen COMPLETED-tilassa (ei vanhentunut)
+      val stillValidJob = app.todistusRepository.getFromDbForUnitTests(todistusJob.id).get
+      stillValidJob.state should equal(TodistusState.COMPLETED)
+    }
+
+    "Merkitsee useita vanhentuneita todistuksia kerralla" in {
+      val lang = "fi"
+      val hetu = KoskiSpecificMockOppijat.kielitutkinnonSuorittaja.hetu.get
+      val oppijaOid = KoskiSpecificMockOppijat.kielitutkinnonSuorittaja.oid
+      val opiskeluoikeusOid = getVahvistettuKielitutkinnonOpiskeluoikeus(oppijaOid).flatMap(_.oid).get
+
+      // Luo useita todistuksia eri kielillä
+      val reqFi = TodistusGenerateRequest(opiskeluoikeusOid, "fi")
+      val reqSv = TodistusGenerateRequest(opiskeluoikeusOid, "sv")
+      val reqEn = TodistusGenerateRequest(opiskeluoikeusOid, "en")
+
+      val jobFi = addGenerateJobSuccessfully(reqFi, hetu) { todistusJob => todistusJob }
+      val completedFi = waitForCompletion(jobFi.id, hetu)
+
+      val jobSv = addGenerateJobSuccessfully(reqSv, hetu) { todistusJob => todistusJob }
+      val completedSv = waitForCompletion(jobSv.id, hetu)
+
+      val jobEn = addGenerateJobSuccessfully(reqEn, hetu) { todistusJob => todistusJob }
+      val completedEn = waitForCompletion(jobEn.id, hetu)
+
+      // Merkitse kaikki todistukset vanhoiksi
+      val expirationDuration = app.config.getDuration("todistus.expirationDuration")
+      val oldCompletedAt = LocalDateTime.now().minusSeconds(expirationDuration.getSeconds).minusSeconds(1)
+
+      Seq(jobFi.id, jobSv.id, jobEn.id).foreach { id =>
+        app.todistusRepository.setCompletedAtForUnitTests(id, oldCompletedAt)
+      }
+
+      // Odota cleanup-schedulerin käynnistymistä
+      Thread.sleep(3000)
+
+      // Varmista että kaikki todistukset ovat QUEUED_FOR_EXPIRE-tilassa
+      val expiredFi = app.todistusRepository.getFromDbForUnitTests(jobFi.id).get
+      val expiredSv = app.todistusRepository.getFromDbForUnitTests(jobSv.id).get
+      val expiredEn = app.todistusRepository.getFromDbForUnitTests(jobEn.id).get
+
+      expiredFi.state should equal(TodistusState.QUEUED_FOR_EXPIRE)
+      expiredSv.state should equal(TodistusState.QUEUED_FOR_EXPIRE)
+      expiredEn.state should equal(TodistusState.QUEUED_FOR_EXPIRE)
+    }
+  }
+
   "Orpojen todistusjobien uudelleenkäynnistys" - {
 
     "Ei koske aktiivisesti ajossa olevaan jobiin" in {
@@ -1193,7 +1289,7 @@ class TodistusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers with Bef
 
       AuditLogTester.clearMessages
 
-      verifyDownloadResult(s"/api/todistus/download/${todistusJob.id}", hetu)
+      verifyDownloadResult(s"/todistus/download/${todistusJob.id}", hetu)
 
       AuditLogTester.verifyLastAuditLogMessage(Map(
         "operation" -> KoskiOperation.TODISTUKSEN_LATAAMINEN.toString,
@@ -1226,7 +1322,7 @@ class TodistusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers with Bef
 
       AuditLogTester.clearMessages
 
-      verifyDownloadResult(s"/api/todistus/download/${todistusJob.id}", huoltajanHetu)
+      verifyDownloadResult(s"/todistus/download/${todistusJob.id}", huoltajanHetu)
 
       AuditLogTester.verifyLastAuditLogMessage(Map(
         "operation" -> KoskiOperation.TODISTUKSEN_LATAAMINEN.toString,
@@ -1262,7 +1358,7 @@ class TodistusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers with Bef
       AuditLogTester.clearMessages
 
       // Huollettava itse lataa todistuksen
-      verifyDownloadResult(s"/api/todistus/download/${todistusJob.id}", huollettavanHetu)
+      verifyDownloadResult(s"/todistus/download/${todistusJob.id}", huollettavanHetu)
 
       AuditLogTester.verifyLastAuditLogMessage(Map(
         "operation" -> KoskiOperation.TODISTUKSEN_LATAAMINEN.toString,
@@ -1291,7 +1387,7 @@ class TodistusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers with Bef
 
         AuditLogTester.clearMessages
 
-        getResult(s"/api/todistus/download/${todistusJob.id}", hetu) {
+        getResult(s"/todistus/download/${todistusJob.id}", hetu) {
           verifyResponseStatus(503)
         }
 
@@ -1303,6 +1399,30 @@ class TodistusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers with Bef
         ))
       }
     }
+
+    "TODISTUKSEN_ESIKATSELU lokitetaan kun OPH-pääkäyttäjä katsoo todistuksen esikatselua" in {
+      val lang = "fi"
+      val oppija = KoskiSpecificMockOppijat.kielitutkinnonSuorittaja
+      val oppijaOid = oppija.oid
+      val opiskeluoikeus = getVahvistettuKielitutkinnonOpiskeluoikeus(oppijaOid)
+      val opiskeluoikeusOid = opiskeluoikeus.flatMap(_.oid).get
+      val opiskeluoikeusVersionumero = opiskeluoikeus.flatMap(_.versionumero).get
+
+      AuditLogTester.clearMessages
+
+      get(s"todistus/preview/$lang/$opiskeluoikeusOid", headers = authHeaders(MockUsers.paakayttaja)) {
+        verifyResponseStatusOk()
+      }
+
+      AuditLogTester.verifyLastAuditLogMessage(Map(
+        "operation" -> KoskiOperation.TODISTUKSEN_ESIKATSELU.toString,
+        "target" -> Map(
+          KoskiAuditLogMessageField.oppijaHenkiloOid.toString -> oppijaOid,
+          KoskiAuditLogMessageField.opiskeluoikeusOid.toString -> opiskeluoikeusOid,
+          KoskiAuditLogMessageField.opiskeluoikeusVersio.toString -> opiskeluoikeusVersionumero.toString
+        )
+      ))
+    }
   }
 
   // TODO: TOR-2400 puuttuvia toteutuksia ja testejä:
@@ -1310,7 +1430,6 @@ class TodistusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers with Bef
   //  - debug-rajapinta vain pääkäyttäjille: voi hakea myös allekirjoittamattoman todistuksen. Tarvitaanko tätä?
   //  - Todistuksen ulkonäkö säilyy samana, eli marginaalit, fontit jne. eivät muutu (joku kuvavertailu tarvitaan?)
   //  - pääkäyttäjälle palautetaan tekniset tiedot (S3-osoitteet, virheilmoitukset jne.)
-  //  - todistusgeneroinnin voi pyytää uudestaan, jos mennyt kauan aikaa edellisestä
 
   private def getVahvistettuKielitutkinnonOpiskeluoikeus(oppijaOid: String): Option[KielitutkinnonOpiskeluoikeus] = {
     getOpiskeluoikeudet(oppijaOid).find(_.suoritukset.exists {

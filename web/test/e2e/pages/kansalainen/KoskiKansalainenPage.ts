@@ -95,6 +95,10 @@ export class KoskiKansalainenPage {
     await download.path()
   }
 
+  async getKielitutkintoTodistusError(): Promise<string> {
+    return await this.$.kielitutkintoTodistus.error.value()
+  }
+
   async openJaaSuoritustietoja() {
     await this.page
       .getByRole('button', { name: /Sulje Suoritustietojen jakaminen/ })
@@ -212,6 +216,7 @@ const KansalainenUIV2TestIds = {
     language: Select,
     start: Button,
     loading: Label,
+    error: Label,
     open: Button
   },
   opiskeluoikeus: KansalainenOpiskeluoikeusHeader()
