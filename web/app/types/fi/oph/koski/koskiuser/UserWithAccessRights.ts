@@ -8,6 +8,7 @@ export type UserWithAccessRights = {
   name: string
   hasAnyInvalidateAccess: boolean
   oid: string
+  hasPääkäyttäjäAccess: boolean
   varhaiskasvatuksenJärjestäjäKoulutustoimijat: Array<string>
   hasKelaUiAccess: boolean
   hasOneKoulutustoimijaWriteAccess: boolean
@@ -25,6 +26,7 @@ export const UserWithAccessRights = (o: {
   name: string
   hasAnyInvalidateAccess: boolean
   oid: string
+  hasPääkäyttäjäAccess: boolean
   varhaiskasvatuksenJärjestäjäKoulutustoimijat?: Array<string>
   hasKelaUiAccess: boolean
   hasOneKoulutustoimijaWriteAccess: boolean

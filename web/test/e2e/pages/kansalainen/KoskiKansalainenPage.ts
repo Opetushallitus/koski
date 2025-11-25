@@ -217,7 +217,8 @@ const KansalainenUIV2TestIds = {
     start: Button,
     loading: Label,
     error: Label,
-    open: Button
+    open: Button,
+    openPreview: Button
   },
   opiskeluoikeus: KansalainenOpiskeluoikeusHeader()
 }
