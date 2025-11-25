@@ -3,13 +3,12 @@ package fi.oph.koski.todistus
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.frontendvalvonta.FrontendValvontaMode
 import fi.oph.koski.html.{EiRaameja, Raamit}
-import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.koskiuser.{KoskiCookieAndBasicAuthenticationSupport, KoskiSpecificSession}
 import fi.oph.koski.servlet.{KoskiHtmlServlet, NoCache}
 
 import scala.util.Using
 
-class TodistusContentServlet(implicit val application: KoskiApplication)
+class TodistusDownloadServlet(implicit val application: KoskiApplication)
   extends KoskiHtmlServlet
     with TodistusServlet
     with NoCache
@@ -27,29 +26,7 @@ class TodistusContentServlet(implicit val application: KoskiApplication)
     requireKansalainenOrOphPääkäyttäjä
   }
 
-  get("/preview/:lang/:opiskeluoikeusOid")(nonce => {
-    requireOphPääkäyttäjä
-
-    contentType = "text/html"
-
-    val result = for {
-      req <- getTodistusGenerateRequest
-      result <- service.generateHtmlPreview(req)
-    } yield result
-
-    result match {
-      case Right((html, dummyJob)) =>
-        auditLogTodistusPreview(dummyJob)
-
-        val os = response.getOutputStream
-        os.write(html.getBytes)
-        os.flush()
-      case Left(status) =>
-        renderStatus(status)
-    }
-  })
-
-  get("/download/:id") { nonce =>
+  get("/:id") { nonce =>
     val result = for {
       todistusJob <- validateCompletedTodistus
       stream <- service.getDownloadStream(BucketType.STAMPED, todistusJob)
@@ -76,7 +53,7 @@ class TodistusContentServlet(implicit val application: KoskiApplication)
     }
   }
 
-  get("/download/presigned/:id") { nonce =>
+  get("/presigned/:id") { nonce =>
     requireOphPääkäyttäjä
 
     val result = for {
