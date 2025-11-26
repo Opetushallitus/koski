@@ -1,5 +1,6 @@
 package fi.oph.koski.koskiuser
 
+import fi.oph.koski.koskiuser.Rooli.OPHPAAKAYTTAJA
 import fi.oph.koski.schema.Organisaatio.Oid
 import fi.oph.koski.servlet.{KoskiSpecificApiServlet, NoCache}
 
@@ -22,6 +23,7 @@ class UserServlet(implicit val application: UserAuthenticationContext) extends K
           varhaiskasvatuksenJärjestäjäKoulutustoimijat = session.varhaiskasvatusKoulutustoimijat.toList,
           hasOneKoulutustoimijaWriteAccess = session.getKoulutustoimijatWithWriteAccess.size == 1,
           hasLähdejärjestelmäkytkennänPurkaminenAccess = session.hasAnyLähdejärjestelmäkytkennänPurkaminenAccess,
+          hasPääkäyttäjäAccess = session.hasRole(OPHPAAKAYTTAJA)
         )
       }
       }.getOrElse(UserWithAccessRights(user.name, user.oid))
@@ -44,5 +46,6 @@ case class UserWithAccessRights(
   varhaiskasvatuksenJärjestäjäKoulutustoimijat: List[String] = Nil,
   hasOneKoulutustoimijaWriteAccess: Boolean = false,
   hasLähdejärjestelmäkytkennänPurkaminenAccess: Boolean = false,
+  hasPääkäyttäjäAccess: Boolean = false
 )
 
