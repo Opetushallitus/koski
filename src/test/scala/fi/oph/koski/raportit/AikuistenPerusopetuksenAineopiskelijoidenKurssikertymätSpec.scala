@@ -42,7 +42,7 @@ class AikuistenPerusopetuksenAineopiskelijoidenKurssikertymätSpec
         ExamplesAikuistenPerusopetus.oppiaineenOppimääränSuoritusYH
       )
     )
-    reloadRaportointikanta
+    reloadRaportointikanta()
   }
 
   def tag = implicitly[reflect.runtime.universe.TypeTag[AikuistenPerusopetuksenOpiskeluoikeus]]

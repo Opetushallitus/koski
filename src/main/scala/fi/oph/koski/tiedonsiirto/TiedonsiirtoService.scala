@@ -185,7 +185,7 @@ class TiedonsiirtoService(
     }
   }
 
-  def storeTiedonsiirtoResult(implicit koskiSession: KoskiSpecificSession, oppijaOid: Option[OidHenkilö], validatedOppija: Option[Oppija], data: Option[JValue], error: Option[TiedonsiirtoError]) {
+  def storeTiedonsiirtoResult(implicit koskiSession: KoskiSpecificSession, oppijaOid: Option[OidHenkilö], validatedOppija: Option[Oppija], data: Option[JValue], error: Option[TiedonsiirtoError]): Unit = {
     if (!koskiSession.isPalvelukäyttäjä && !koskiSession.isRoot) {
       return
     }

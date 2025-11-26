@@ -56,7 +56,7 @@ object Hetu {
       val checkChar = checkChars(Math.round(((hetu.slice(0,6) + hetu.slice(7,10)).toInt / 31.0 % 1) * 31).toInt)
       if (checkChar == hetu.last) Right(hetu) else Left(KoskiErrorCategory.badRequest.validation.henkilötiedot.hetu("Virheellinen tarkistusmerkki hetussa: " + hetu))
     }
-    validFormat(hetu).right.flatMap(validDate(_).right.flatMap(validCheckChar))
+    validFormat(hetu).flatMap(validDate(_).flatMap(validCheckChar))
   }
 
   def toBirthday(hetu: String): Option[LocalDate] = {

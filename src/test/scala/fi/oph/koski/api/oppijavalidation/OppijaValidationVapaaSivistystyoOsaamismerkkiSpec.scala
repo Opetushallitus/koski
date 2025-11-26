@@ -81,7 +81,7 @@ class OppijaValidationVapaaSivistystyoOsaamismerkkiSpec extends AnyFreeSpec with
         val config = KoskiApplicationForTests.config.withoutPath("validaatiot.vstOsaamismerkkiAikaisinSallittuTallennuspaiva").withFallback(mockConfig)
         mockKoskiValidator(config).updateFieldsAndValidateAsJson(
           Oppija(defaultHenkilö, List(defaultOpiskeluoikeus))
-        ).left.get should equal (KoskiErrorCategory.badRequest.validation.vapaaSivistystyö.tallennuspäivä(s"Osaamismerkkejä voi alkaa tallentaa vasta ${finnishDateFormat.format(aikaisinTallennuspäivä)} alkaen"))
+        ).swap.toOption.get should equal (KoskiErrorCategory.badRequest.validation.vapaaSivistystyö.tallennuspäivä(s"Osaamismerkkejä voi alkaa tallentaa vasta ${finnishDateFormat.format(aikaisinTallennuspäivä)} alkaen"))
       }
 
       "voi tehdä ensimmäisenä tallennuspäivänä" in {

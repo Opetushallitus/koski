@@ -21,7 +21,7 @@ class KoskiSpecificLogoutServlet(implicit val application: KoskiApplication) ext
       case _ => false
     }
 
-    getUser.right.toOption.flatMap(_.serviceTicket).foreach(application.koskiSessionRepository.removeSessionByTicket)
+    getUser.toOption.flatMap(_.serviceTicket).foreach(application.koskiSessionRepository.removeSessionByTicket)
     removeUserCookie
 
     if (virkailija) {

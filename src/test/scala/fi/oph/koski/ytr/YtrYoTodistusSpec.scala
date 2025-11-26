@@ -82,7 +82,7 @@ class YtrYoTodistusSpec extends AnyFreeSpec with KoskiHttpSpec with Opiskeluoike
     }
 
     "jos kansalaisella on monta hetua, välitetään YTR:lle pyynnöissä ne kaikki" in {
-      KoskiApplicationForTests.cacheManager.invalidateAllCaches
+      KoskiApplicationForTests.cacheManager.invalidateAllCaches()
       MockYtrClient.latestCertificateRequest = None
 
       val oppija = KoskiSpecificMockOppijat.ylioppilas

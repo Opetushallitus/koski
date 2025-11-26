@@ -51,7 +51,7 @@ class AktiivisetJaPäättyneetOpinnotServiceSpec
     Set(KäyttöoikeusGlobal(List(Palvelurooli(OPHKATSELIJA))))
   )
 
-  implicit val koskiSession = suoritusjakoKatsominenTestUser
+  implicit val koskiSession: KoskiSpecificSession = suoritusjakoKatsominenTestUser
 
   override def afterEach(): Unit = {
     MockYtrClient.reset()
@@ -70,7 +70,7 @@ class AktiivisetJaPäättyneetOpinnotServiceSpec
 
     val (onnistuu, eiOnnistu) = result.partition(_.isRight)
 
-    val (eiOnnistu404, _) = eiOnnistu.partition(_.left.get.statusCode == 404)
+    val (eiOnnistu404, _) = eiOnnistu.partition(_.swap.toOption.get.statusCode == 404)
 
     onnistuu.length should be > 100
     eiOnnistu.length should be > 20
@@ -82,7 +82,7 @@ class AktiivisetJaPäättyneetOpinnotServiceSpec
     val result = suoritusjakoService.findAktiivisetJaPäättyneetOpinnotOppija(KoskiSpecificMockOppijat.vainMitätöityjäOpiskeluoikeuksia.oid)
 
     result.isLeft should be(true)
-    result.left.get.statusCode should be(404)
+    result.swap.toOption.get.statusCode should be(404)
   }
 
   "Palautetaan EQF- ja NQF-tietoja" in {

@@ -38,7 +38,7 @@ class Lukio2019RaporttiSpec extends AnyFreeSpec with Matchers with Raportointika
       verifyResponseStatusOk()
     }
 
-    reloadRaportointikanta
+    reloadRaportointikanta()
   }
 
   private lazy val today = LocalDate.now

@@ -12,7 +12,7 @@ import java.time.LocalDate
 
 
 trait RaportointikantaTestMethods extends KoskiHttpSpec {
-  implicit val formats = DefaultFormats
+  implicit val formats: DefaultFormats = DefaultFormats
 
   val ENCRYPTED_XLSX_PREFIX: Array[Byte] = Array(0xd0, 0xcf, 0x11, 0xe0, 0xa1, 0xb1, 0x1a, 0xe1).map(_.toByte)
 

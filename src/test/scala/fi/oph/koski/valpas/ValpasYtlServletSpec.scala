@@ -23,12 +23,12 @@ class ValpasYtlServletSpec  extends ValpasTestBase with BeforeAndAfterEach {
     FixtureUtil.resetMockData(KoskiApplicationForTests, tarkastelupäivä)
   }
 
-  override protected def beforeEach() {
+  override protected def beforeEach(): Unit = {
     super.beforeEach()
     KoskiApplicationForTests.valpasRajapäivätService.asInstanceOf[MockValpasRajapäivätService]
       .asetaMockTarkastelupäivä(FixtureUtil.DefaultTarkastelupäivä)
     new ValpasDatabaseFixtureLoader(KoskiApplicationForTests).reset()
-    AuditLogTester.clearMessages
+    AuditLogTester.clearMessages()
   }
 
   override protected def afterEach(): Unit = {

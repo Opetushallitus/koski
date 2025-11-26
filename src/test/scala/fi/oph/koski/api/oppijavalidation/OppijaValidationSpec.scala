@@ -483,7 +483,7 @@ class OppijaValidationSpec extends AnyFreeSpec with KoskiHttpSpec with Opiskeluo
         val json = JsonMethods.parse(Source.fromFile("src/test/resources/rikkinäinen_opiskeluoikeus.json").mkString)
         val oid = putOppija(json, headers = authHeaders() ++ jsonContent) {
           verifyResponseStatusOk()
-          implicit val formats = DefaultFormats
+          implicit val formats: Formats = DefaultFormats
           (JsonMethods.parse(body) \ "henkilö" \ "oid").extract[String]
         }
         val oo = lastOpiskeluoikeus(oid)

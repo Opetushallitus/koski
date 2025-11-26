@@ -6,7 +6,7 @@ import fi.oph.koski.servlet.{KoskiSpecificApiServlet, NoCache}
 
 class UserServlet(implicit val application: UserAuthenticationContext) extends KoskiSpecificApiServlet with KoskiCookieAndBasicAuthenticationSupport with NoCache {
   get("/") {
-    renderEither[UserWithAccessRights](getUser.right.map { user =>
+    renderEither[UserWithAccessRights](getUser.map { user =>
       koskiSessionOption.map { session => {
         UserWithAccessRights(
           name = user.name,
@@ -48,4 +48,3 @@ case class UserWithAccessRights(
   hasLähdejärjestelmäkytkennänPurkaminenAccess: Boolean = false,
   hasPääkäyttäjäAccess: Boolean = false
 )
-

@@ -17,7 +17,7 @@ import org.json4s.jackson.JsonMethods
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.{BeforeAndAfterAll, BeforeAndAfterEach}
-import org.verapdf.core.{VeraPDFException, ValidationException}
+import org.verapdf.core.VeraPDFException
 import org.verapdf.gf.foundry.VeraGreenfieldFoundryProvider
 import org.verapdf.pdfa.flavours.PDFAFlavour
 import org.verapdf.pdfa.{PDFAParser, PDFAValidator, Foundries}
@@ -31,7 +31,7 @@ import scala.jdk.CollectionConverters._
 class TodistusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers with BeforeAndAfterAll with BeforeAndAfterEach with PutOpiskeluoikeusTestMethods[KielitutkinnonOpiskeluoikeus] {
   def tag = implicitly[reflect.runtime.universe.TypeTag[KielitutkinnonOpiskeluoikeus]]
 
-  implicit val formats = DefaultFormats
+  implicit val formats: DefaultFormats.type = DefaultFormats
 
   val app = KoskiApplicationForTests
 
@@ -48,7 +48,7 @@ class TodistusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers with Bef
     Wait.until(!app.todistusCleanupScheduler.schedulerInstance.exists(_.isTaskRunning))
 
     app.todistusRepository.truncateForLocal()
-    AuditLogTester.clearMessages
+    AuditLogTester.clearMessages()
   }
 
   def hasWork: Boolean = {
@@ -485,7 +485,7 @@ class TodistusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers with Bef
               case os: YleisenKielitutkinnonOsakokeenSuoritus =>
                 os.arviointi.toList.flatten.size should be(1)
               case _ =>
-                fail
+                fail()
             }
           case Left(error) =>
             fail(s"Opiskeluoikeuden deserialisointi epäonnistui: ${error.toString}")
@@ -538,8 +538,6 @@ class TodistusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers with Bef
           }
         } catch {
           case e: VeraPDFException =>
-            fail(s"PDF-validointi epäonnistui flavourille $flavour: ${e.getMessage}", e)
-          case e: ValidationException =>
             fail(s"PDF-validointi epäonnistui flavourille $flavour: ${e.getMessage}", e)
         } finally {
           inputStream.close()
@@ -1403,7 +1401,7 @@ class TodistusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers with Bef
       val req = TodistusGenerateRequest(opiskeluoikeusOid, lang)
 
       withoutRunningSchedulers {
-        AuditLogTester.clearMessages
+        AuditLogTester.clearMessages()
 
         addGenerateJobSuccessfully(req, hetu) { todistusJob =>
           todistusJob.state should equal(TodistusState.QUEUED)
@@ -1430,7 +1428,7 @@ class TodistusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers with Bef
       val req = TodistusGenerateRequest(huollettavanOpiskeluoikeusOid, lang)
 
       withoutRunningSchedulers {
-        AuditLogTester.clearMessages
+        AuditLogTester.clearMessages()
 
         addGenerateJobSuccessfully(req, huoltajanHetu) { todistusJob =>
           todistusJob.state should equal(TodistusState.QUEUED)
@@ -1466,7 +1464,7 @@ class TodistusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers with Bef
       val completedJob = waitForCompletion(todistusJob.id, hetu)
       completedJob.state should equal(TodistusState.COMPLETED)
 
-      AuditLogTester.clearMessages
+      AuditLogTester.clearMessages()
 
       verifyDownloadResult(s"/todistus/download/${todistusJob.id}", hetu)
 
@@ -1499,7 +1497,7 @@ class TodistusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers with Bef
       val completedJob = waitForCompletion(todistusJob.id, huoltajanHetu)
       completedJob.state should equal(TodistusState.COMPLETED)
 
-      AuditLogTester.clearMessages
+      AuditLogTester.clearMessages()
 
       verifyDownloadResult(s"/todistus/download/${todistusJob.id}", huoltajanHetu)
 
@@ -1534,7 +1532,7 @@ class TodistusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers with Bef
       val completedJob = waitForCompletion(todistusJob.id, huoltajanHetu)
       completedJob.state should equal(TodistusState.COMPLETED)
 
-      AuditLogTester.clearMessages
+      AuditLogTester.clearMessages()
 
       // Huollettava itse lataa todistuksen
       verifyDownloadResult(s"/todistus/download/${todistusJob.id}", huollettavanHetu)
@@ -1564,7 +1562,7 @@ class TodistusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers with Bef
           todistusJob
         }
 
-        AuditLogTester.clearMessages
+        AuditLogTester.clearMessages()
 
         getResult(s"/todistus/download/${todistusJob.id}", hetu) {
           verifyResponseStatus(503)
@@ -1587,7 +1585,7 @@ class TodistusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers with Bef
       val opiskeluoikeusOid = opiskeluoikeus.flatMap(_.oid).get
       val opiskeluoikeusVersionumero = opiskeluoikeus.flatMap(_.versionumero).get
 
-      AuditLogTester.clearMessages
+      AuditLogTester.clearMessages()
 
       get(s"todistus/preview/$lang/$opiskeluoikeusOid", headers = authHeaders(MockUsers.paakayttaja)) {
         verifyResponseStatusOk()
@@ -1771,7 +1769,7 @@ class TodistusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers with Bef
     val json = JsonMethods.parse(response.body)
     val result = KoskiApplicationForTests.validatingAndResolvingExtractor.extract[TodistusJob](json, strictDeserialization)
     result should not be Left
-    result.right.get
+    result.toOption.get
   }
 
   def withoutRunningSchedulers[T](f: => T): T = withoutRunningSchedulers(true)(f)

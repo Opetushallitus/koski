@@ -38,7 +38,7 @@ trait SuoritusjakoTestMethods extends KoskiHttpSpec with OpiskeluoikeusTestMetho
 
   def getSuoritusjakoOppija(secret: String): Oppija = {
     KoskiApplicationForTests.suoritusjakoRepository.get(secret)
-      .flatMap(row => KoskiApplicationForTests.suoritusjakoService.getOppijaJakolinkilläFromRow(row, mockKoskiSession)).right.get.get.toOppija()
+      .flatMap(row => KoskiApplicationForTests.suoritusjakoService.getOppijaJakolinkilläFromRow(row, mockKoskiSession)).toOption.get.get.toOppija()
   }
 
   def getSuoritusjakoDescriptors[A](hetu: String = suoritusjakoHetu, authenticate: Boolean = true)(f: => A): A = {

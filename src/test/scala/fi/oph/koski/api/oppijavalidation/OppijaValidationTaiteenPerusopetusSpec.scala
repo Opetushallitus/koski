@@ -1006,8 +1006,8 @@ class OppijaValidationTaiteenPerusopetusSpec
       )
       oo.oid should not be empty
 
-      AuditLogTester.clearMessages
-      RootLogTester.clearMessages
+      AuditLogTester.clearMessages()
+      RootLogTester.clearMessages()
 
       // Oppija-listauksen pituus ennen suostumuksen peruuttamista
       KoskiApplicationForTests.perustiedotIndexer.sync(true)
@@ -1084,8 +1084,8 @@ class OppijaValidationTaiteenPerusopetusSpec
       )
       oo.oid should not be empty
 
-      AuditLogTester.clearMessages
-      RootLogTester.clearMessages
+      AuditLogTester.clearMessages()
+      RootLogTester.clearMessages()
 
       // Oppija-listauksen pituus ennen suostumuksen peruuttamista
       KoskiApplicationForTests.perustiedotIndexer.sync(true)
@@ -1169,8 +1169,8 @@ class OppijaValidationTaiteenPerusopetusSpec
       )
       oo.oid should not be empty
 
-      AuditLogTester.clearMessages
-      RootLogTester.clearMessages
+      AuditLogTester.clearMessages()
+      RootLogTester.clearMessages()
 
       // Oppija-listauksen pituus ennen suostumuksen peruuttamista
       KoskiApplicationForTests.perustiedotIndexer.sync(true)
@@ -1275,7 +1275,7 @@ class OppijaValidationTaiteenPerusopetusSpec
       )
       oo.oid should not be empty
 
-      AuditLogTester.clearMessages
+      AuditLogTester.clearMessages()
 
       // Peru suostumus käyttäjän omilla oikeuksilla
       val loginHeadersKansalainen = kansalainenLoginHeaders(KoskiSpecificMockOppijat.tyhjä.hetu)

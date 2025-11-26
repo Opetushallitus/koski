@@ -63,24 +63,21 @@ object QueryDocumentation extends Logging {
       .toString()
 
   def addJsonExamples(application: KoskiApplication, markdown: String): String =
-    "\\{\\{json:(\\w+)}}"
-      .r("name")
+    """\{\{json:(?<name>\w+)}}""".r
       .replaceAllIn(markdown, { m =>
         val name = m.group("name")
         QueryExamples.jsonByName(application, name).getOrElse(s"Esimerkkiä ei löydy: $name")
       })
 
   def addClassDocs(markdown: String): String =
-    "\\{\\{docs:(.+?)}}"
-      .r("name")
+    """\{\{docs:(?<name>.+?)}}""".r
       .replaceAllIn(markdown, { m =>
         val className = m.group("name")
         PropertyHtmlDocs.propertiesForClass(className)
       })
 
   def addClassTitles(markdown: String): String =
-    "\\{\\{title:(.+?)}}"
-      .r("name")
+    """\{\{title:(?<name>.+?)}}""".r
       .replaceAllIn(markdown, { m =>
         val className = m.group("name")
         PropertyHtmlDocs.headingForClass(className)
@@ -102,8 +99,7 @@ object QueryDocumentation extends Logging {
           |CSRF: 1.2.246.562.10.00000000001.myservice""".stripMargin
     )
 
-    "\\{\\{var:(.+?)}}"
-      .r("name")
+    """\{\{var:(?<name>.+?)}}""".r
       .replaceAllIn(markdown, { m => vars.getOrElse(m.group("name"), "!!! NOT FOUND !!!") })
   }
 
@@ -156,7 +152,7 @@ object PropertyHtmlDocs {
         s.enumValues match {
           case None => Text("Merkkijono")
           case Some(enums) =>
-            val strs = enums.map('"' + _ + '"')
+            val strs = enums.map(value => s"\"$value\"")
             if (strs.length == 1) {
               Text(strs.head)
             } else {

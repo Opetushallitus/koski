@@ -81,7 +81,7 @@ class AikuistenPerusopetuksenOppimääränArvioinnitSpec
       tyhjä.copy(hetu = "010106A8691")
     )
 
-    reloadRaportointikanta
+    reloadRaportointikanta()
   }
 
   override def defaultOpiskeluoikeus = ExamplesAikuistenPerusopetus.aikuistenPerusopetuksenOpiskeluoikeusAlkuvaiheineenValmistunutVanhanOppivelvollisuuslainAikana

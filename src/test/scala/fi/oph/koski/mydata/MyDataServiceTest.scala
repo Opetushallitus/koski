@@ -13,11 +13,11 @@ class MyDataServiceTest extends AnyFreeSpec with TestEnvironment with Matchers w
   val memberId = "hsl"
 
   before {
-    AuditLogTester.clearMessages
+    AuditLogTester.clearMessages()
   }
 
   after {
-    AuditLogTester.clearMessages
+    AuditLogTester.clearMessages()
   }
 
   def getSession = new KoskiSpecificSession(AuthenticationUser(oid, "", "", None), "fi", LogUserContext.toInetAddress("127.0.0.1"), "", Set())

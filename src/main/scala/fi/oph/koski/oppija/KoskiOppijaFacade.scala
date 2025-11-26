@@ -183,18 +183,17 @@ class KoskiOppijaFacade(
     timed(timedBlockname) {
       val oppijaOid: Either[HttpStatus, PossiblyUnverifiedHenkilöOid] = oppija.henkilö match {
         case h: UusiHenkilö =>
-          hetu.validate(h.hetu).right.flatMap { hetu =>
-            henkilöRepository.findOrCreate(h).right.map(VerifiedHenkilöOid)
-          }
+          hetu.validate(h.hetu).flatMap(_ => henkilöRepository.findOrCreate(h).map(VerifiedHenkilöOid))
         case h: TäydellisetHenkilötiedot if usingMockOids =>
           Right(VerifiedHenkilöOid(RemoteOpintopolkuHenkilöFacadeWithMockOids.oppijaWithMockOid(h)))
         case h: HenkilöWithOid =>
           Right(UnverifiedHenkilöOid(h.oid, henkilöRepository))
       }
 
-      val globaaliValidatorCheck = oppijaOid.map(_.verified).flatMap {
-        case _ if skipGlobaaliValidation => Right(())
-        case Some(henkilö) =>
+      val globaaliValidatorCheck = oppijaOid.flatMap {
+        case oid if skipGlobaaliValidation => Right(())
+        case oid if oid.verified.isDefined =>
+          val henkilö = oid.verified.get
           val henkilöMaster = henkilöRepository.findByOid(henkilö.oid, findMasterIfSlaveOid = true)
           val validation = HttpStatus.fold(oppija.tallennettavatOpiskeluoikeudet.map(opiskeluoikeus => {
             globaaliValidator.validateOpiskeluoikeus(
@@ -205,19 +204,19 @@ class KoskiOppijaFacade(
           }))
           validation match {
             case status if status.isOk => Right(())
-            case _ if (config.getStringList("validaatiot.ohitaValidaatiovirheetKäyttäjällä").contains(user.user.username)) =>
+            case _ if config.getStringList("validaatiot.ohitaValidaatiovirheetKäyttäjällä").contains(user.user.username) =>
               logger.info(s"Ohitetaan käyttäjätunnuksen perusteella validaatiovirheitä")
               Right(())
             case _ => Left(validation)
           }
-        case None => Left(KoskiErrorCategory.notFound.oppijaaEiLöydy("Oppijaa " + oppijaOid.right.get.oppijaOid + " ei löydy."))
+        case oid => Left(KoskiErrorCategory.notFound.oppijaaEiLöydy(s"Oppijaa ${oid.oppijaOid} ei löydy."))
       }
 
       globaaliValidatorCheck.flatMap { _ =>
         timed("createOrUpdate", 250) {
           val opiskeluoikeudet: Seq[KoskeenTallennettavaOpiskeluoikeus] = oppija.tallennettavatOpiskeluoikeudet
 
-          oppijaOid.right.flatMap { oppijaOid: PossiblyUnverifiedHenkilöOid =>
+          oppijaOid.flatMap { oppijaOid: PossiblyUnverifiedHenkilöOid =>
             if (oppijaOid.oppijaOid == user.oid) {
               Left(KoskiErrorCategory.forbidden.omienTietojenMuokkaus())
             } else {
@@ -293,7 +292,7 @@ class KoskiOppijaFacade(
         case _ =>
           opiskeluoikeusRepository.createOrUpdate(oppijaOid, opiskeluoikeus, allowUpdate, allowDeleteCompleted, skipValidations)
       }
-      result.right.map { (result: CreateOrUpdateResult) =>
+      result.map { (result: CreateOrUpdateResult) =>
         applicationLog(oppijaOid, opiskeluoikeus, result)
         opiskeluoikeus match {
           case _: YlioppilastutkinnonOpiskeluoikeus =>

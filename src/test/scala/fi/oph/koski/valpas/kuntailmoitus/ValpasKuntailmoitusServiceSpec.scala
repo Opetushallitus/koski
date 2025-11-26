@@ -19,9 +19,9 @@ import org.scalatest.BeforeAndAfterEach
 class ValpasKuntailmoitusServiceSpec extends ValpasTestBase with BeforeAndAfterEach {
   private lazy val kuntailmoitusService = KoskiApplicationForTests.valpasKuntailmoitusService
 
-  override protected def beforeEach() {
+  override protected def beforeEach(): Unit = {
     super.beforeEach()
-    AuditLogTester.clearMessages
+    AuditLogTester.clearMessages()
     KoskiApplicationForTests.valpasRajapäivätService.asInstanceOf[MockValpasRajapäivätService]
       .asetaMockTarkastelupäivä(FixtureUtil.DefaultTarkastelupäivä)
   }
@@ -262,7 +262,7 @@ class ValpasKuntailmoitusServiceSpec extends ValpasTestBase with BeforeAndAfterE
     )
     val result = kuntailmoitusService.haePohjatiedot(input)(session(ValpasMockUsers.valpasOphPääkäyttäjä))
 
-    val mahdollisetTekijäOrganisaatiot = result.right.get.mahdollisetTekijäOrganisaatiot.toSet
+    val mahdollisetTekijäOrganisaatiot = result.toOption.get.mahdollisetTekijäOrganisaatiot.toSet
 
     val expectedTekijäOrganisaatiot = Set(MockOrganisaatiot.jyväskylänNormaalikoulu, MockOrganisaatiot.aapajoenKoulu)
       .map(oppilaitos)
@@ -277,7 +277,7 @@ class ValpasKuntailmoitusServiceSpec extends ValpasTestBase with BeforeAndAfterE
     )
     val result = kuntailmoitusService.haePohjatiedot(input)(session(ValpasMockUsers.valpasAapajoenKoulu))
 
-    val mahdollisetTekijäOrganisaatiot = result.right.get.mahdollisetTekijäOrganisaatiot.toSet
+    val mahdollisetTekijäOrganisaatiot = result.toOption.get.mahdollisetTekijäOrganisaatiot.toSet
 
     val expectedTekijäOrganisaatiot = Set(
       oppilaitos(MockOrganisaatiot.aapajoenKoulu)
@@ -293,7 +293,7 @@ class ValpasKuntailmoitusServiceSpec extends ValpasTestBase with BeforeAndAfterE
     )
     val result = kuntailmoitusService.haePohjatiedot(input)(session(ValpasMockUsers.valpasUseitaKuntia))
 
-    val mahdollisetTekijäOrganisaatiot = result.right.get.mahdollisetTekijäOrganisaatiot.toSet
+    val mahdollisetTekijäOrganisaatiot = result.toOption.get.mahdollisetTekijäOrganisaatiot.toSet
 
     val expectedTekijäOrganisaatiot = Set(
       helsinginKaupunki,
@@ -310,7 +310,7 @@ class ValpasKuntailmoitusServiceSpec extends ValpasTestBase with BeforeAndAfterE
     )
     val result = kuntailmoitusService.haePohjatiedot(input)(session(ValpasMockUsers.valpasOphPääkäyttäjä))
 
-    val mahdollisetTekijäOrganisaatiot = result.right.get.mahdollisetTekijäOrganisaatiot.toSet
+    val mahdollisetTekijäOrganisaatiot = result.toOption.get.mahdollisetTekijäOrganisaatiot.toSet
 
     val expectedTekijäOrganisaatiot = Set(
       oppilaitos(MockOrganisaatiot.jyväskylänNormaalikoulu)

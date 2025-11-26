@@ -38,7 +38,7 @@ class RaportointikantaSpec
     with DirtiesFixtures
     with OpiskeluoikeudenMitätöintiJaPoistoTestMethods
     with YtrDownloadTestMethods {
-  override implicit val formats = DefaultFormats
+  override implicit val formats: DefaultFormats = DefaultFormats
 
   override protected def alterFixture(): Unit = {
     createOrUpdate(KoskiSpecificMockOppijat.slaveMasterEiKoskessa.henkilö, defaultOpiskeluoikeus)
@@ -478,15 +478,15 @@ class RaportointikantaSpec
 
     val ammatillinenJson = JsonFiles.readFile("src/test/resources/backwardcompatibility/ammatillinen-perustutkinto_2024-08-13.json")
     val oid = "1.2.246.562.15.123456"
-    val ammatillinenOpiskeluoikeus = SchemaValidatingExtractor.extract[Oppija](ammatillinenJson).right.get.opiskeluoikeudet.head.asInstanceOf[AmmatillinenOpiskeluoikeus].copy(oid = Some(oid))
+    val ammatillinenOpiskeluoikeus = SchemaValidatingExtractor.extract[Oppija](ammatillinenJson).toOption.get.opiskeluoikeudet.head.asInstanceOf[AmmatillinenOpiskeluoikeus].copy(oid = Some(oid))
     val perusopetuksenJson = JsonFiles.readFile("src/test/resources/backwardcompatibility/perusopetuksenoppimaara-paattotodistus_2021-12-21.json")
-    val perusopetuksenOpiskeluoikeus = SchemaValidatingExtractor.extract[Oppija](perusopetuksenJson).right.get.opiskeluoikeudet.head.asInstanceOf[PerusopetuksenOpiskeluoikeus].copy(oid = Some(oid))
+    val perusopetuksenOpiskeluoikeus = SchemaValidatingExtractor.extract[Oppija](perusopetuksenJson).toOption.get.opiskeluoikeudet.head.asInstanceOf[PerusopetuksenOpiskeluoikeus].copy(oid = Some(oid))
     val esiopetuksenJson = JsonFiles.readFile("src/test/resources/backwardcompatibility/esiopetusvalmis_2022-09-26.json")
-    val esiopetuksenOpiskeluoikeus = SchemaValidatingExtractor.extract[Oppija](esiopetuksenJson).right.get.opiskeluoikeudet.head.asInstanceOf[EsiopetuksenOpiskeluoikeus].copy(oid = Some(oid))
+    val esiopetuksenOpiskeluoikeus = SchemaValidatingExtractor.extract[Oppija](esiopetuksenJson).toOption.get.opiskeluoikeudet.head.asInstanceOf[EsiopetuksenOpiskeluoikeus].copy(oid = Some(oid))
     val lukionJson = JsonFiles.readFile("src/test/resources/backwardcompatibility/lukio-paattotodistus_2022-09-22.json")
-    val lukionOpiskeluoikeus = SchemaValidatingExtractor.extract[Oppija](lukionJson).right.get.opiskeluoikeudet.head.asInstanceOf[LukionOpiskeluoikeus].copy(oid = Some(oid))
+    val lukionOpiskeluoikeus = SchemaValidatingExtractor.extract[Oppija](lukionJson).toOption.get.opiskeluoikeudet.head.asInstanceOf[LukionOpiskeluoikeus].copy(oid = Some(oid))
     val vstJson = JsonFiles.readFile("src/test/resources/backwardcompatibility/vapaasivistystyo-oppivelvollisillesuunnattukoulutus_2021-07-27.json")
-    val vstOpiskeluoikeus = SchemaValidatingExtractor.extract[Oppija](vstJson).right.get.opiskeluoikeudet.head.asInstanceOf[VapaanSivistystyönOpiskeluoikeus].copy(oid = Some(oid))
+    val vstOpiskeluoikeus = SchemaValidatingExtractor.extract[Oppija](vstJson).toOption.get.opiskeluoikeudet.head.asInstanceOf[VapaanSivistystyönOpiskeluoikeus].copy(oid = Some(oid))
 
     val Läsnä = Koodistokoodiviite("lasna", "koskiopiskeluoikeudentila")
     val Loma =  Koodistokoodiviite("loma", "koskiopiskeluoikeudentila")
@@ -1027,8 +1027,8 @@ class RaportointikantaSpec
 
       val orgs = KoskiApplicationForTests.organisaatioRepository
       val mitätöidytKoskessa =
-        mitätöidytPoistamattomatKoskessa.map(OpiskeluoikeusLoaderRowBuilder.buildRowMitätöity).map(_.right.get) ++
-        mitätöidytPoistetutTaiPerututSuostumuksetKoskessa.map(OpiskeluoikeusLoaderRowBuilder.buildRowMitätöity(orgs)).map(_.right.get)
+        mitätöidytPoistamattomatKoskessa.map(OpiskeluoikeusLoaderRowBuilder.buildRowMitätöity).map(_.toOption.get) ++
+        mitätöidytPoistetutTaiPerututSuostumuksetKoskessa.map(OpiskeluoikeusLoaderRowBuilder.buildRowMitätöity(orgs)).map(_.toOption.get)
 
       mitätöidytKoskessa.distinct.length should equal(mitätöidytKoskessa.length)
       mitätöidytRaportointikannassa.length should equal(mitätöidytKoskessa.length)
@@ -1254,4 +1254,3 @@ class RaportointikantaSpec
     }
   }
 }
-

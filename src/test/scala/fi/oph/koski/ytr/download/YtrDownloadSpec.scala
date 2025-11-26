@@ -21,7 +21,7 @@ class YtrDownloadSpec
     with BeforeAndAfterEach
 {
 
-  override protected def beforeEach() {
+  override protected def beforeEach(): Unit = {
     super.beforeEach()
     MockYtrClient.reset()
   }
@@ -158,7 +158,7 @@ class YtrDownloadSpec
   }
 
   "Oppijalta lähetetään YTR:iin myös vanhat hetut" in {
-    KoskiApplicationForTests.cacheManager.invalidateAllCaches
+    KoskiApplicationForTests.cacheManager.invalidateAllCaches()
     MockYtrClient.latestOppijatJsonByHetut = None
 
     val oppija = KoskiSpecificMockOppijat.aikuisOpiskelija

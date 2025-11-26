@@ -14,7 +14,7 @@ import java.nio.charset.StandardCharsets
 import java.security.MessageDigest
 import java.security.cert.{CertificateFactory, X509CRL}
 
-import scala.collection.JavaConverters._
+import scala.jdk.CollectionConverters._
 
 import fi.oph.koski.util.ChainingSyntax._
 
@@ -157,7 +157,9 @@ object SwisscomCRLAndOCSPExtender extends Logging {
           val t = s.getCOSObject.getItem(COSName.TYPE)
           t.equals(COSName.SIG) || t.equals(COSName.DOC_TIME_STAMP)
         }).toRight({
-          handleStampingError(todistusId, "Cannot extend PDF with CRL and OCSP data. No signature was found in the PDF").left.get
+          handleStampingError(todistusId, "Cannot extend PDF with CRL and OCSP data. No signature was found in the PDF") match {
+            case Left(status) => status
+          }
         })
     } catch {
       case e: Exception =>

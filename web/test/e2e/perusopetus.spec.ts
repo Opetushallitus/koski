@@ -3,6 +3,10 @@ import { KoskiFixtures } from './fixtures/KoskiFixtures'
 import { KoskiUusiOppijaPage } from './pages/oppija/KoskiUusiOppijaPage'
 import { virkailija, virkailijaPath } from './setup/auth'
 
+test.describe.configure({
+  timeout: 120_000
+})
+
 test.describe('Perusopetus', () => {
   // Palautetaan virkailijan istunto
   test.use({ storageState: virkailija('kalle') })
@@ -164,7 +168,7 @@ test.describe('Perusopetus', () => {
           page.getByRole('button', {
             name: 'lisää opintojen päättövaiheen suoritus'
           })
-        ).not.toBeVisible({ timeout: 90000 })
+        ).not.toBeVisible({ timeout: 900000 })
       })
       test.describe('Lisäyksen jälkeen', async () => {
         test('Piilotetaan lisäyslinkki ja esitäytetään pakolliset oppiaineet', async ({

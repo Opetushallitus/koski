@@ -26,7 +26,7 @@ class OtuvaOAuth2ClientFactory(
 ) {
 
   private var token: Option[String] = None
-  private val otuvaTokenEndpointUri = Uri.fromString(otuvaTokenEndpoint).right.get
+  private val otuvaTokenEndpointUri = Uri.fromString(otuvaTokenEndpoint).toOption.getOrElse(throw new IllegalArgumentException(s"Invalid Otuva token endpoint URI: $otuvaTokenEndpoint"))
 
   def apply(serviceUrl: String, serviceClient: Client[IO]): Http = {
 
