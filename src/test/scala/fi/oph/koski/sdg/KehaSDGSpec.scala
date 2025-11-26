@@ -28,7 +28,7 @@ class KehaSDGSpec
   }
 
   "Yhden oppijan hakeminen onnistuu ja tuottaa auditlog viestin" in {
-    AuditLogTester.clearMessages
+    AuditLogTester.clearMessages()
     postHetu(KoskiSpecificMockOppijat.amis.hetu.get) {
       verifyResponseStatusOk()
       AuditLogTester.verifyLastAuditLogMessage(Map("operation" -> "SDG_OPISKELUOIKEUS_HAKU", "target" -> Map("oppijaHenkiloOid" -> KoskiSpecificMockOppijat.amis.oid)))

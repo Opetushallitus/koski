@@ -73,13 +73,13 @@ class OppijaServlet(implicit val application: KoskiApplication)
 
   // TODO: tarkista lokeista voiko tämän poistaa
   get("/:oid") {
-    renderEither[Oppija](HenkilöOid.validateHenkilöOid(params("oid")).right.flatMap { oid =>
+    renderEither[Oppija](HenkilöOid.validateHenkilöOid(params("oid")).flatMap { oid =>
       application.oppijaFacade.findOppija(oid, findMasterIfSlaveOid = false)(session)
     }.flatMap(_.warningsToLeft))
   }
 
   get("/:oid/uiv2") {
-    renderEither[Oppija](HenkilöOid.validateHenkilöOid(params("oid")).right.flatMap { oid =>
+    renderEither[Oppija](HenkilöOid.validateHenkilöOid(params("oid")).flatMap { oid =>
       application.oppijaFacade.findOppija(oid, useVirta = false, useYtr = false)(session)
     }.flatMap(_.warningsToLeft))
   }
@@ -88,7 +88,7 @@ class OppijaServlet(implicit val application: KoskiApplication)
     if (!onOikeusNähdäYtrJson) {
       haltWithStatus(KoskiErrorCategory.forbidden.kiellettyKäyttöoikeus())
     } else {
-      renderEither[Oppija](HenkilöOid.validateHenkilöOid(params("oid")).right.flatMap { oid => {
+      renderEither[Oppija](HenkilöOid.validateHenkilöOid(params("oid")).flatMap { oid => {
         application.oppijaFacade.findYtrDownloadedOppija(
           oid,
           findMasterIfSlaveOid = true
@@ -109,7 +109,7 @@ class OppijaServlet(implicit val application: KoskiApplication)
     if (!onOikeusNähdäYtrJson) {
       haltWithStatus(KoskiErrorCategory.forbidden.kiellettyKäyttöoikeus())
     } else {
-      renderEither[Oppija](HenkilöOid.validateHenkilöOid(params("oid")).right.flatMap { oid => {
+      renderEither[Oppija](HenkilöOid.validateHenkilöOid(params("oid")).flatMap { oid => {
         application.oppijaFacade.findYtrDownloadedOppijaVersionumerolla(
           oid,
           params("versionumero").toInt,
@@ -148,7 +148,7 @@ class OppijaServlet(implicit val application: KoskiApplication)
       haltWithStatus(KoskiErrorCategory.forbidden.kiellettyKäyttöoikeus())
     } else {
       val oppijaOid = HenkilöOid.validateHenkilöOid(params("oid"))
-      renderEither[JValue](oppijaOid.right.map { oid =>
+      renderEither[JValue](oppijaOid.map { oid =>
           application.ytrPossu.findAlkuperäinenYTRJsonByOppijaOid(oid)
         }.flatMap {
         case Some(json) => Right(json)
@@ -164,7 +164,7 @@ class OppijaServlet(implicit val application: KoskiApplication)
       haltWithStatus(KoskiErrorCategory.forbidden.kiellettyKäyttöoikeus())
     } else {
       val oppijaOid = HenkilöOid.validateHenkilöOid(params("oid"))
-      renderEither[List[YtrLaajaOppija]](oppijaOid.right
+      renderEither[List[YtrLaajaOppija]](oppijaOid
         .flatMap(oid =>
           application.opintopolkuHenkilöFacade.findMasterOppija(oid).toRight(KoskiErrorCategory.notFound.oppijaaEiLöydy())
         )
@@ -195,7 +195,7 @@ class OppijaServlet(implicit val application: KoskiApplication)
   }
 
   get("/:oid/opintotiedot-json") {
-    renderEither[Oppija](HenkilöOid.validateHenkilöOid(params("oid")).right.flatMap { oid =>
+    renderEither[Oppija](HenkilöOid.validateHenkilöOid(params("oid")).flatMap { oid =>
       application.oppijaFacade.findOppija(oid, findMasterIfSlaveOid = true)(session)
     }.flatMap(_.warningsToLeft))
   }
@@ -242,4 +242,3 @@ class OppijaServlet(implicit val application: KoskiApplication)
     }
   }
 }
-

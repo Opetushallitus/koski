@@ -93,18 +93,20 @@ class FullReloadOpiskeluoikeusLoader(
       .seq
       .partition(_.isLeft)
 
-    db.loadOpiskeluoikeudet(outputRows.map(_.right.get.rOpiskeluoikeusRow))
-    db.loadOrganisaatioHistoria(outputRows.flatMap(_.right.get.organisaatioHistoriaRows))
-    val opiskeluoikeusAikajaksoRows = outputRows.flatMap(_.right.get.rOpiskeluoikeusAikajaksoRows)
-    val geneerisetAikajaksoRows = outputRows.flatMap(_.right.get.rAikajaksoRows)
-    val ammatillisetAikajaksoRows = outputRows.flatMap(_.right.get.rAmmatillisenKoulutuksenJarjestamismuotoAikajaksoRows)
-    val osaamisenHankkimistapaAikajaksoRows = outputRows.flatMap(_.right.get.rOsaamisenHankkimistapaAikajaksoRows)
+    val successfulRows = outputRows.collect { case Right(value) => value }
 
-    val esiopetusOpiskeluoikeusAikajaksoRows = outputRows.flatMap(_.right.get.esiopetusOpiskeluoikeusAikajaksoRows)
-    val päätasonSuoritusRows = outputRows.flatMap(_.right.get.rPäätasonSuoritusRows)
-    val osasuoritusRows = outputRows.flatMap(_.right.get.rOsasuoritusRows)
-    val muuAmmatillinenRaportointiRows = outputRows.flatMap(_.right.get.muuAmmatillinenOsasuoritusRaportointiRows)
-    val topksAmmatillinenRaportointiRows = outputRows.flatMap(_.right.get.topksAmmatillinenRaportointiRows)
+    db.loadOpiskeluoikeudet(successfulRows.map(_.rOpiskeluoikeusRow))
+    db.loadOrganisaatioHistoria(successfulRows.flatMap(_.organisaatioHistoriaRows))
+    val opiskeluoikeusAikajaksoRows = successfulRows.flatMap(_.rOpiskeluoikeusAikajaksoRows)
+    val geneerisetAikajaksoRows = successfulRows.flatMap(_.rAikajaksoRows)
+    val ammatillisetAikajaksoRows = successfulRows.flatMap(_.rAmmatillisenKoulutuksenJarjestamismuotoAikajaksoRows)
+    val osaamisenHankkimistapaAikajaksoRows = successfulRows.flatMap(_.rOsaamisenHankkimistapaAikajaksoRows)
+
+    val esiopetusOpiskeluoikeusAikajaksoRows = successfulRows.flatMap(_.esiopetusOpiskeluoikeusAikajaksoRows)
+    val päätasonSuoritusRows = successfulRows.flatMap(_.rPäätasonSuoritusRows)
+    val osasuoritusRows = successfulRows.flatMap(_.rOsasuoritusRows)
+    val muuAmmatillinenRaportointiRows = successfulRows.flatMap(_.muuAmmatillinenOsasuoritusRaportointiRows)
+    val topksAmmatillinenRaportointiRows = successfulRows.flatMap(_.topksAmmatillinenRaportointiRows)
     db.loadOpiskeluoikeusAikajaksot(opiskeluoikeusAikajaksoRows)
     db.loadEsiopetusOpiskeluoikeusAikajaksot(esiopetusOpiskeluoikeusAikajaksoRows)
     db.loadAikajaksot(geneerisetAikajaksoRows)
@@ -115,11 +117,11 @@ class FullReloadOpiskeluoikeusLoader(
     db.loadMuuAmmatillinenRaportointi(muuAmmatillinenRaportointiRows)
     db.loadTOPKSAmmatillinenRaportointi(topksAmmatillinenRaportointiRows)
     db.setLastUpdate(statusName)
-    db.updateStatusCount(statusName, outputRows.size)
-    val result = errors.map(_.left.get) :+ LoadProgressResult(outputRows.size, päätasonSuoritusRows.size + osasuoritusRows.size)
+    db.updateStatusCount(statusName, successfulRows.size)
+    val result = errors.collect { case Left(err) => err } :+ LoadProgressResult(successfulRows.size, päätasonSuoritusRows.size + osasuoritusRows.size)
 
     val loadBatchDuration: Long = (System.nanoTime() - loadBatchStartTime) / 1000000
-    val toOpiskeluoikeusUnsafeDuration: Long = outputRows.map(_.right.get.toOpiskeluoikeusUnsafeDuration).sum / 1000000
+    val toOpiskeluoikeusUnsafeDuration: Long = successfulRows.map(_.toOpiskeluoikeusUnsafeDuration).sum / 1000000
     logger.info(s"Koski batchin käsittely kesti ${loadBatchDuration} ms, jossa toOpiskeluOikeusUnsafe ${toOpiskeluoikeusUnsafeDuration} ms.")
     result
   }
@@ -132,12 +134,14 @@ class FullReloadOpiskeluoikeusLoader(
       .seq
       .partition(_.isLeft)
 
-    db.loadOpiskeluoikeudet(outputRows.map(_.right.get.rOpiskeluoikeusRow))
-    val päätasonSuoritusRows = outputRows.flatMap(_.right.get.rPäätasonSuoritusRows)
-    val tutkintokokonaisuudenSuoritusRows = outputRows.flatMap(_.right.get.rTutkintokokonaisuudenSuoritusRows)
-    val tutkintokerranSuoritusRows = outputRows.flatMap(_.right.get.rTutkintokerranSuoritusRows)
-    val kokeenSuoritusRows = outputRows.flatMap(_.right.get.rKokeenSuoritusRows)
-    val tutkintokokonaisuudenKokeenSuoritusRows = outputRows.flatMap(_.right.get.rTutkintokokonaisuudenKokeenSuoritusRows)
+    val successfulRows = outputRows.collect { case Right(value) => value }
+
+    db.loadOpiskeluoikeudet(successfulRows.map(_.rOpiskeluoikeusRow))
+    val päätasonSuoritusRows = successfulRows.flatMap(_.rPäätasonSuoritusRows)
+    val tutkintokokonaisuudenSuoritusRows = successfulRows.flatMap(_.rTutkintokokonaisuudenSuoritusRows)
+    val tutkintokerranSuoritusRows = successfulRows.flatMap(_.rTutkintokerranSuoritusRows)
+    val kokeenSuoritusRows = successfulRows.flatMap(_.rKokeenSuoritusRows)
+    val tutkintokokonaisuudenKokeenSuoritusRows = successfulRows.flatMap(_.rTutkintokokonaisuudenKokeenSuoritusRows)
     db.loadPäätasonSuoritukset(päätasonSuoritusRows)
     db.loadYtrOsasuoritukset(
       tutkintokokonaisuudenSuoritusRows,
@@ -147,10 +151,10 @@ class FullReloadOpiskeluoikeusLoader(
     )
 
     db.setLastUpdate(statusName)
-    db.updateStatusCount(statusName, outputRows.size)
+    db.updateStatusCount(statusName, successfulRows.size)
 
-    val result = errors.map(_.left.get) :+
-      LoadProgressResult(outputRows.size,
+    val result = errors.collect { case Left(err) => err } :+
+      LoadProgressResult(successfulRows.size,
         päätasonSuoritusRows.size +
           tutkintokokonaisuudenSuoritusRows.size +
           tutkintokerranSuoritusRows.size +
@@ -158,7 +162,7 @@ class FullReloadOpiskeluoikeusLoader(
       )
 
     val loadBatchDuration: Long = (System.nanoTime() - loadBatchStartTime) / 1000000
-    val toOpiskeluoikeusUnsafeDuration: Long = outputRows.map(_.right.get.toOpiskeluoikeusUnsafeDuration).sum / 1000000
+    val toOpiskeluoikeusUnsafeDuration: Long = successfulRows.map(_.toOpiskeluoikeusUnsafeDuration).sum / 1000000
     logger.info(s"YTR batchin käsittely kesti ${loadBatchDuration} ms, jossa toOpiskeluOikeusUnsafe ${toOpiskeluoikeusUnsafeDuration} ms.")
     result
   }
@@ -166,13 +170,14 @@ class FullReloadOpiskeluoikeusLoader(
   private def loadKoskiBatchMitätöidytOpiskeluoikeudet(oot: Seq[KoskiOpiskeluoikeusRow]) = {
     val loadBatchStartTime = System.nanoTime()
     val (errors, outputRows) = oot.par.filterNot(_.poistettu).map(OpiskeluoikeusLoaderRowBuilder.buildRowMitätöity).seq.partition(_.isLeft)
-    db.loadMitätöidytOpiskeluoikeudet(outputRows.map(_.right.get))
-    db.updateStatusCount(mitätöidytStatusName, outputRows.size)
+    val successfulRows = outputRows.collect { case Right(value) => value }
+    db.loadMitätöidytOpiskeluoikeudet(successfulRows)
+    db.updateStatusCount(mitätöidytStatusName, successfulRows.size)
 
     val loadBatchDuration: Long = (System.nanoTime() - loadBatchStartTime) / 1000000
     logger.info(s"Koski batchin käsittely mitätöidyille opiskeluoikeuksille kesti ${loadBatchDuration} ms")
 
-    errors.map(_.left.get)
+    errors.collect { case Left(err) => err }
   }
 
   private def loadKoskiBatchPoistetutOpiskeluoikeudet(
@@ -184,13 +189,14 @@ class FullReloadOpiskeluoikeusLoader(
         .etsiPoistetut(oot.map(_.oid))
         .map(OpiskeluoikeusLoaderRowBuilder.buildRowMitätöity(organisaatioRepository))
         .partition(_.isLeft)
-      db.loadMitätöidytOpiskeluoikeudet(outputRows.map(_.right.get))
-      db.updateStatusCount(mitätöidytStatusName, outputRows.size)
+      val successfulRows = outputRows.collect { case Right(value) => value }
+      db.loadMitätöidytOpiskeluoikeudet(successfulRows)
+      db.updateStatusCount(mitätöidytStatusName, successfulRows.size)
 
       val loadBatchDuration: Long = (System.nanoTime() - loadBatchStartTime) / 1000000
       logger.info(s"Koski batchin käsittely poistetuille opiskeluoikeuksille kesti ${loadBatchDuration} ms")
 
-      errors.map(_.left.get)
+      errors.collect { case Left(err) => err }
     } else {
       Seq.empty
     }

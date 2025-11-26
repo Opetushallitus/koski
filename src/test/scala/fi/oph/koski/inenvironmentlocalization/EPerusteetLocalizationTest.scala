@@ -15,7 +15,7 @@ private case class EPerusteRakenneLocalization(tutkinnonOsat: Option[List[ETutki
 
 class EPerusteetLocalizationTest extends AnyFreeSpec with TestEnvironment with Matchers {
 
-  private implicit val formats = DefaultFormats
+  private implicit val formats: DefaultFormats = DefaultFormats
   private lazy val root = sys.env.getOrElse("VIRKAILIJA_ROOT", throw new RuntimeException("Environment variable VIRKAILIJA_ROOT missing"))
   private lazy val koodistoPalvelu = new RemoteKoodistoPalvelu(root)
 

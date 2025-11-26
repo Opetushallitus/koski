@@ -80,7 +80,7 @@ case class PreferencesService(protected val db: DB) extends Logging with QueryMe
 
   private def extract[T : TypeTag](value: JValue, klass: Class[_ <: T]): Either[List[ValidationError], T] = {
     implicit val context: ExtractionContext = strictDeserialization
-    SchemaValidatingExtractor.extract(value, klass).right.map(_.asInstanceOf[T])
+    SchemaValidatingExtractor.extract(value, klass).map(_.asInstanceOf[T])
   }
 
   def get(

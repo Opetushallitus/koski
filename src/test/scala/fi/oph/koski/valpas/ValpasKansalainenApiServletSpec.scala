@@ -7,8 +7,9 @@ import fi.oph.koski.valpas.opiskeluoikeusfixture.ValpasMockOppijat
 import org.scalatest.BeforeAndAfterEach
 
 class ValpasKansalainenApiServletSpec extends ValpasTestBase with BeforeAndAfterEach {
-  override protected def beforeEach() {
-    AuditLogTester.clearMessages
+  override protected def beforeEach(): Unit = {
+    super.beforeEach()
+    AuditLogTester.clearMessages()
   }
 
   "Käyttöoikeuksien tarkastus" - {

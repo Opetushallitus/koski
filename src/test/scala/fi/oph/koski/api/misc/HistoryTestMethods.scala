@@ -9,7 +9,7 @@ import org.json4s.jackson.JsonMethods
 trait HistoryTestMethods extends OpiskeluoikeusTestMethods {
   private implicit val context: ExtractionContext = strictDeserialization
 
-  def readHistory = SchemaValidatingExtractor.extract[List[OpiskeluoikeusHistoryPatch]](JsonMethods.parse(body)).right.get
+  def readHistory = SchemaValidatingExtractor.extract[List[OpiskeluoikeusHistoryPatch]](JsonMethods.parse(body)).toOption.get
 
   def getHistory(opiskeluoikeusOid: String, user: UserWithPassword = defaultUser): List[OpiskeluoikeusHistoryPatch] = {
     authGet("api/opiskeluoikeus/historia/" + opiskeluoikeusOid, user = user) {

@@ -51,7 +51,7 @@ trait OrganisaatioRepository extends Logging {
     find(_.oid == organisaatioOid)
 
   def find(condition: OrganisaatioHierarkia => Boolean): Option[OrganisaatioHierarkia] = {
-    filterView(condition).force.headOption
+    filterView(condition).iterator.nextOption()
   }
 
   def filter(condition: OrganisaatioHierarkia => Boolean): List[OrganisaatioHierarkia] = {
@@ -173,4 +173,3 @@ object Organisaatiotyyppi {
   def convertFromNew(newOrgType: String): Oid =
     fromNew.getOrElse(newOrgType, newOrgType)
 }
-

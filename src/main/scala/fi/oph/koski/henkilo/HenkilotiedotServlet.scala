@@ -52,7 +52,7 @@ class HenkilötiedotServlet(implicit val application: KoskiApplication) extends 
   }
 
   get("/oid/:oid") {
-    renderEither[List[HenkilötiedotJaOid]](henkilötiedotSearchFacade.findByOid(params("oid"))(session).right.map(_.map(_.copy(hetu = None)))) // poistetaan hetu tuloksista, sillä käytössä ei ole organisaatiorajausta
+    renderEither[List[HenkilötiedotJaOid]](henkilötiedotSearchFacade.findByOid(params("oid"))(session).map(_.map(_.copy(hetu = None)))) // poistetaan hetu tuloksista, sillä käytössä ei ole organisaatiorajausta
   }
 }
 

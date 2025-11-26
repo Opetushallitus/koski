@@ -13,7 +13,7 @@ import org.scalatest.freespec.AnyFreeSpec
 import java.time.LocalDate
 
 class PerusopetusOmattiedotSpec extends AnyFreeSpec with KoskiHttpSpec with OpiskeluoikeusTestMethodsPerusopetus with DirtiesFixtures {
-  implicit val formats = DefaultFormats
+  implicit val formats: DefaultFormats = DefaultFormats
   val suoritustenLukumäärä = PerusopetusExampleData.kaikkiAineet.get.length
 
   "Perusopetuksen oppimäärän suoritus" - {

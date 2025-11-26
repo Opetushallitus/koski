@@ -36,7 +36,7 @@ class TodistusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers with Bef
   override protected def afterEach(): Unit = {
     Wait.until { !hasWork && !KoskiApplicationForTests.todistusScheduler.isRunning && !KoskiApplicationForTests.todistusCleanupScheduler.isRunning}
     app.todistusRepository.truncateForLocal()
-    AuditLogTester.clearMessages
+    AuditLogTester.clearMessages()
   }
 
   def hasWork: Boolean = {
@@ -1301,7 +1301,7 @@ class TodistusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers with Bef
       val req = TodistusGenerateRequest(opiskeluoikeusOid, lang)
 
       withoutRunningSchedulers {
-        AuditLogTester.clearMessages
+        AuditLogTester.clearMessages()
 
         addGenerateJobSuccessfully(req, hetu) { todistusJob =>
           todistusJob.state should equal(TodistusState.QUEUED)
@@ -1328,7 +1328,7 @@ class TodistusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers with Bef
       val req = TodistusGenerateRequest(huollettavanOpiskeluoikeusOid, lang)
 
       withoutRunningSchedulers {
-        AuditLogTester.clearMessages
+        AuditLogTester.clearMessages()
 
         addGenerateJobSuccessfully(req, huoltajanHetu) { todistusJob =>
           todistusJob.state should equal(TodistusState.QUEUED)
@@ -1364,7 +1364,7 @@ class TodistusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers with Bef
       val completedJob = waitForCompletion(todistusJob.id, hetu)
       completedJob.state should equal(TodistusState.COMPLETED)
 
-      AuditLogTester.clearMessages
+      AuditLogTester.clearMessages()
 
       verifyDownloadResult(s"/todistus/download/${todistusJob.id}", hetu)
 
@@ -1397,7 +1397,7 @@ class TodistusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers with Bef
       val completedJob = waitForCompletion(todistusJob.id, huoltajanHetu)
       completedJob.state should equal(TodistusState.COMPLETED)
 
-      AuditLogTester.clearMessages
+      AuditLogTester.clearMessages()
 
       verifyDownloadResult(s"/todistus/download/${todistusJob.id}", huoltajanHetu)
 
@@ -1432,7 +1432,7 @@ class TodistusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers with Bef
       val completedJob = waitForCompletion(todistusJob.id, huoltajanHetu)
       completedJob.state should equal(TodistusState.COMPLETED)
 
-      AuditLogTester.clearMessages
+      AuditLogTester.clearMessages()
 
       // Huollettava itse lataa todistuksen
       verifyDownloadResult(s"/todistus/download/${todistusJob.id}", huollettavanHetu)
@@ -1462,7 +1462,7 @@ class TodistusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers with Bef
           todistusJob
         }
 
-        AuditLogTester.clearMessages
+        AuditLogTester.clearMessages()
 
         getResult(s"/todistus/download/${todistusJob.id}", hetu) {
           verifyResponseStatus(503)
@@ -1485,7 +1485,7 @@ class TodistusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers with Bef
       val opiskeluoikeusOid = opiskeluoikeus.flatMap(_.oid).get
       val opiskeluoikeusVersionumero = opiskeluoikeus.flatMap(_.versionumero).get
 
-      AuditLogTester.clearMessages
+      AuditLogTester.clearMessages()
 
       get(s"todistus/preview/$lang/$opiskeluoikeusOid", headers = authHeaders(MockUsers.paakayttaja)) {
         verifyResponseStatusOk()
@@ -1669,7 +1669,7 @@ class TodistusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers with Bef
     val json = JsonMethods.parse(response.body)
     val result = KoskiApplicationForTests.validatingAndResolvingExtractor.extract[TodistusJob](json, strictDeserialization)
     result should not be Left
-    result.right.get
+    result.toOption.get
   }
 
   def withoutRunningSchedulers[T](f: => T): T = withoutRunningSchedulers(true)(f)

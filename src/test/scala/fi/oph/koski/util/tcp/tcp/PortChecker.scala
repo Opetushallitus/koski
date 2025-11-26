@@ -23,7 +23,7 @@ object PortChecker {
     if (isFreeLocalPort(port)) {
       port
     } else {
-      findFreeLocalPort
+      findFreeLocalPort()
     }
   }
 }

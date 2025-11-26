@@ -45,7 +45,7 @@ class YleinenKielitutkintoTodistusDataBuilderSpec extends AnyFreeSpec with Match
           case Left(error) => fail(s"Virhe todistuksen luonnissa: ${error.errorString.mkString(", ")}")
           case Right(_) => // OK
         }
-        val todistusData = result.right.get.asInstanceOf[YleinenKielitutkintoTodistusData]
+        val todistusData = result.toOption.get.asInstanceOf[YleinenKielitutkintoTodistusData]
 
         // Oikea järjestys: puheenymmartaminen, puhuminen, tekstinymmartaminen, kirjoittaminen
         todistusData.suorituksetJaArvosanat.map(_.suoritus) should equal(List(
@@ -86,7 +86,7 @@ class YleinenKielitutkintoTodistusDataBuilderSpec extends AnyFreeSpec with Match
           case Left(error) => fail(s"Virhe todistuksen luonnissa: ${error.errorString.mkString(", ")}")
           case Right(_) => // OK
         }
-        val todistusData = result.right.get.asInstanceOf[YleinenKielitutkintoTodistusData]
+        val todistusData = result.toOption.get.asInstanceOf[YleinenKielitutkintoTodistusData]
 
         // Tekstinymmärtämisen arvosanan pitäisi olla "4" (uudempi), ei "2" (vanhempi)
         val tekstinymmartaminenSuoritus = todistusData.suorituksetJaArvosanat
@@ -124,7 +124,7 @@ class YleinenKielitutkintoTodistusDataBuilderSpec extends AnyFreeSpec with Match
           case Left(error) => fail(s"Virhe todistuksen luonnissa: ${error.errorString.mkString(", ")}")
           case Right(_) => // OK
         }
-        val todistusData = result.right.get.asInstanceOf[YleinenKielitutkintoTodistusData]
+        val todistusData = result.toOption.get.asInstanceOf[YleinenKielitutkintoTodistusData]
 
         val tekstinymmartaminenSuoritus = todistusData.suorituksetJaArvosanat
           .find(_.suoritus == "Tekstin ymmärtäminen")
@@ -162,7 +162,7 @@ class YleinenKielitutkintoTodistusDataBuilderSpec extends AnyFreeSpec with Match
           case Left(error) => fail(s"Virhe todistuksen luonnissa: ${error.errorString.mkString(", ")}")
           case Right(_) => // OK
         }
-        val todistusData = result.right.get.asInstanceOf[YleinenKielitutkintoTodistusData]
+        val todistusData = result.toOption.get.asInstanceOf[YleinenKielitutkintoTodistusData]
 
         val tekstinymmartaminenSuoritus = todistusData.suorituksetJaArvosanat
           .find(_.suoritus == "Tekstin ymmärtäminen")
@@ -209,7 +209,7 @@ class YleinenKielitutkintoTodistusDataBuilderSpec extends AnyFreeSpec with Match
           case Left(error) => fail(s"Virhe todistuksen luonnissa: ${error.errorString.mkString(", ")}")
           case Right(_) => // OK
         }
-        val todistusData = result.right.get.asInstanceOf[YleinenKielitutkintoTodistusData]
+        val todistusData = result.toOption.get.asInstanceOf[YleinenKielitutkintoTodistusData]
 
         // Syntymäaika suomalaisessa muodossa
         todistusData.oppijaSyntymäaika should equal("1.1.2007")
@@ -241,7 +241,7 @@ class YleinenKielitutkintoTodistusDataBuilderSpec extends AnyFreeSpec with Match
           case Left(error) => fail(s"Virhe todistuksen luonnissa: ${error.errorString.mkString(", ")}")
           case Right(_) => // OK
         }
-        val todistusData = result.right.get.asInstanceOf[YleinenKielitutkintoTodistusData]
+        val todistusData = result.toOption.get.asInstanceOf[YleinenKielitutkintoTodistusData]
 
         // Syntymäaika ruotsalaisessa muodossa (sama kuin suomessa)
         todistusData.oppijaSyntymäaika should equal("1.1.2007")
@@ -273,7 +273,7 @@ class YleinenKielitutkintoTodistusDataBuilderSpec extends AnyFreeSpec with Match
           case Left(error) => fail(s"Virhe todistuksen luonnissa: ${error.errorString.mkString(", ")}")
           case Right(_) => // OK
         }
-        val todistusData = result.right.get.asInstanceOf[YleinenKielitutkintoTodistusData]
+        val todistusData = result.toOption.get.asInstanceOf[YleinenKielitutkintoTodistusData]
 
         // Syntymäaika edelleen speksatussa muodossa suomi/ruotsi-tyyliin
         todistusData.oppijaSyntymäaika should equal("1.1.2007")
@@ -348,7 +348,7 @@ class YleinenKielitutkintoTodistusDataBuilderSpec extends AnyFreeSpec with Match
             case Left(error) => fail(s"Virhe todistuksen luonnissa: ${error.errorString.mkString(", ")}")
             case Right(_) => // OK
           }
-          val todistusData = result.right.get.asInstanceOf[YleinenKielitutkintoTodistusData]
+          val todistusData = result.toOption.get.asInstanceOf[YleinenKielitutkintoTodistusData]
           todistusData.allekirjoitusPäivämäärä should startWith(expectedPrefix)
         }
       }
@@ -476,7 +476,7 @@ class YleinenKielitutkintoTodistusDataBuilderSpec extends AnyFreeSpec with Match
       case Left(error) => fail(s"Virhe todistuksen luonnissa: ${error.errorString.mkString(", ")}")
       case Right(_) => // OK
     }
-    val todistusData = result.right.get.asInstanceOf[YleinenKielitutkintoTodistusData]
+    val todistusData = result.toOption.get.asInstanceOf[YleinenKielitutkintoTodistusData]
     todistusData.templateName should equal(expectedTemplateName)
   }
 }

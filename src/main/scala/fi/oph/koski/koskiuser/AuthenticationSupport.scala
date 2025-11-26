@@ -20,7 +20,7 @@ trait AuthenticationSupport extends BaseServlet with SSOSupport {
 
   def setUser(user: Either[HttpStatus, AuthenticationUser]): Either[HttpStatus, AuthenticationUser] = {
     request.setAttribute("authUser", user)
-    user.right.toOption.filter(_.serviceTicket.isDefined).foreach { user =>
+    user.toOption.filter(_.serviceTicket.isDefined).foreach { user =>
       val cookie = KoskiUserCookie(serviceTicket = user.serviceTicket.get, kansalainen = user.kansalainen)
       if (user.kansalainen) {
         setKansalaisCookie(cookie)

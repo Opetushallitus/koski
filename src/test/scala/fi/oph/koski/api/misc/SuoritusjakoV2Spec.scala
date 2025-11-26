@@ -98,7 +98,7 @@ class SuoritusjakoV2Spec extends AnyFreeSpec with Matchers with OpiskeluoikeusTe
   }
 
   "Uuden suoritusjaon lisääminen luo auditlogin" in {
-    AuditLogTester.clearMessages
+    AuditLogTester.clearMessages()
     val oppija = KoskiSpecificMockOppijat.lukiolainen
     postSuoritusjakoV2(getOpiskeluoikeudet(oppija.oid).toList, oppija) {
       verifyResponseStatusOk()
@@ -111,7 +111,7 @@ class SuoritusjakoV2Spec extends AnyFreeSpec with Matchers with OpiskeluoikeusTe
   }
 
   "Voimassa olevat suoritusjaot voi listata" in {
-    resetFixtures
+    resetFixtures()
     val oppija = KoskiSpecificMockOppijat.lukiolainen
 
     createSuoritusjako(oppija)
@@ -120,7 +120,7 @@ class SuoritusjakoV2Spec extends AnyFreeSpec with Matchers with OpiskeluoikeusTe
   }
 
   "Voimassa olevan suoritusjaon voimassaolo aikaa voi päivittää" in {
-    resetFixtures
+    resetFixtures()
     val oppija = KoskiSpecificMockOppijat.lukiolainen
     createSuoritusjako(oppija)
     val suoritusjako = getSuoritusjaot(oppija).head
@@ -132,7 +132,7 @@ class SuoritusjakoV2Spec extends AnyFreeSpec with Matchers with OpiskeluoikeusTe
   }
 
   "Suoritusjaon voi poistaa" in {
-    resetFixtures
+    resetFixtures()
     val oppija = KoskiSpecificMockOppijat.lukiolainen
     createSuoritusjako(oppija)
     val suoritusjako = getSuoritusjaot(oppija).head
@@ -142,7 +142,7 @@ class SuoritusjakoV2Spec extends AnyFreeSpec with Matchers with OpiskeluoikeusTe
   }
 
   "Jaetun suorituksen tarkastelu ei vaadi kirjautumista" in {
-    resetFixtures
+    resetFixtures()
     createSuoritusjako(KoskiSpecificMockOppijat.lukiolainen)
     val secret = getSuoritusjaot(KoskiSpecificMockOppijat.lukiolainen).head.secret
 
@@ -152,7 +152,7 @@ class SuoritusjakoV2Spec extends AnyFreeSpec with Matchers with OpiskeluoikeusTe
   }
 
   "Suoritusjakoja ei voi luoda yli maksimimäärän" in {
-    resetFixtures
+    resetFixtures()
     (1 to 20).foreach(_ => createSuoritusjako(KoskiSpecificMockOppijat.koululainen))
 
     postSuoritusjakoV2(getOpiskeluoikeudet(KoskiSpecificMockOppijat.koululainen.oid).toList, KoskiSpecificMockOppijat.koululainen) {
@@ -172,7 +172,7 @@ class SuoritusjakoV2Spec extends AnyFreeSpec with Matchers with OpiskeluoikeusTe
     get("api/test/suoritusjakoV2/available", headers = kansalainenLoginHeaders(oppija.hetu.get)) {
       verifyResponseStatusOk()
       implicit val context: ExtractionContext = strictDeserialization
-      SchemaValidatingExtractor.extract[List[Suoritusjako]](body).right.get
+      SchemaValidatingExtractor.extract[List[Suoritusjako]](body).toOption.get
     }
   }
 

@@ -42,7 +42,7 @@ object StubLogs {
     synchronized {
       logs += Message(appenderName, message)
       if (logs.size > maxSize) {
-        logs.trimStart(logs.size - maxSize)
+        logs.dropInPlace(logs.size - maxSize)
       }
     }
   }

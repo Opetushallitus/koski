@@ -12,7 +12,7 @@ import org.scalatest.matchers.should.Matchers
   */
 class LocalizationLanguagesTest extends AnyFreeSpec with TestEnvironment with Matchers {
   "Kielistetyt tekstit" - {
-    implicit lazy val cacheManager = GlobalCacheManager
+    implicit lazy val cacheManager: GlobalCacheManager.type = GlobalCacheManager
 
     lazy val root = sys.env.getOrElse("VIRKAILIJA_ROOT", throw new RuntimeException("Environment variable VIRKAILIJA_ROOT missing"))
     lazy val localizationConfig = sys.env.getOrElse("LOCALIZATION_CATEGORY", "koski") match {

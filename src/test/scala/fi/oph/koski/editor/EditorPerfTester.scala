@@ -10,8 +10,8 @@ import fi.oph.koski.schema.Oppija
 import fi.oph.koski.util.{Timing, WithWarnings}
 
 object EditorPerfTester extends App with Timing {
-  implicit val application = KoskiApplication.apply
-  implicit val user = KoskiSpecificSession.systemUser
+  implicit val application: KoskiApplication = KoskiApplication.apply
+  implicit val user: KoskiSpecificSession = KoskiSpecificSession.systemUser
 
   lazy val prebuiltModel = buildModel
   LocalPerfTest.runTest(LocalPerfTest.TestCase("build model", 10, (n) => buildModel))

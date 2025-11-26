@@ -7,7 +7,7 @@ import com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMockConfig
 import com.typesafe.config.ConfigFactory
 import fi.oph.koski.TestEnvironment
 import fi.oph.koski.sso.CasService
-import org.json4s.DefaultFormats
+import org.json4s.{DefaultFormats, Formats}
 import org.json4s.jackson.Serialization.write
 import org.scalatest.{BeforeAndAfterAll, EitherValues, OptionValues}
 import org.scalatest.freespec.AnyFreeSpec
@@ -21,7 +21,7 @@ class OpintopolkuDirectoryClientSpec
     with OptionValues
     with BeforeAndAfterAll {
 
-  implicit val jsonDefaultFormats = DefaultFormats.preservingEmptyValues
+  implicit val jsonDefaultFormats: Formats = DefaultFormats.preservingEmptyValues
   private val config = ConfigFactory.parseString(
     """
       |authentication-service.useCas = false
@@ -92,4 +92,3 @@ class OpintopolkuDirectoryClientSpec
         .willReturn(WireMock.created().withHeader("Location", "http://localhost/TGT-")))
   }
 }
-

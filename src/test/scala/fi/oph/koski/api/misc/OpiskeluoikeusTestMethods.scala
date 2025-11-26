@@ -71,15 +71,14 @@ trait OpiskeluoikeusTestMethods extends HttpSpecification with SearchTestMethods
     }
   }
 
-  def readOppija = {
+  def readOppija: Oppija = {
     SchemaValidatingExtractor.extract[Oppija](JsonMethods.parse(body))
-      .left.map(e => throw new RuntimeException(e.mkString("\n")))
-      .right.get
+      .swap.map(e => throw new RuntimeException(e.mkString("\n")))
+      .swap.toOption.get
   }
 
-  def readOpiskeluoikeus = {
-    SchemaValidatingExtractor.extract[Opiskeluoikeus](JsonMethods.parse(body)).right.get
-  }
+  def readOpiskeluoikeus: Opiskeluoikeus =
+    SchemaValidatingExtractor.extract[Opiskeluoikeus](JsonMethods.parse(body)).toOption.get
 
   def poistaOppijanOpiskeluoikeusDatat(henkilö: Henkilö): Unit = {
     val user = MockUsers.paakayttaja
