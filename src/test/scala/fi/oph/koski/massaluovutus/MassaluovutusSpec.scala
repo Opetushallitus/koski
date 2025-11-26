@@ -35,10 +35,11 @@ class MassaluovutusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers wit
   val app = KoskiApplicationForTests
 
   override protected def beforeAll(): Unit = {
-    resetFixtures()
+    resetFixturesIgnoreInvalidOpiskeluoikeudet()
   }
 
   override protected def afterEach(): Unit = {
+    super.afterEach()
     Wait.until { !app.massaluovutusService.hasWork }
     app.massaluovutusService.truncate()
   }
@@ -173,7 +174,7 @@ class MassaluovutusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers wit
         }
         val complete = waitForCompletion(queryId, user)
 
-        complete.files should have length 22
+        complete.files should have length 21
         complete.files.foreach(verifyResult(_, user))
 
         AuditLogTester.verifyLastAuditLogMessage(Map(
@@ -522,20 +523,21 @@ class MassaluovutusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers wit
     }
 
     "Palautuneen datan filtteröinti" - {
-      val query = getQuery(LocalDateTime.now().minusHours(1))
-      val queryId = addQuerySuccessfully(query, user) { response =>
-        response.status should equal(QueryState.pending)
-        response.queryId
-      }
-      val complete = waitForCompletion(queryId, user)
-
-      val jsonFiles = complete.files.map { file =>
-        verifyResultAndContent(file, user) {
-          JsonMethods.parse(response.body)
-        }
-      }
 
       def getOpiskeluoikeudet(tyyppi: Option[String] = None): List[JValue] = {
+        val query = getQuery(LocalDateTime.now().minusHours(1))
+        val queryId = addQuerySuccessfully(query, user) { response =>
+          response.status should equal(QueryState.pending)
+          response.queryId
+        }
+        val complete = waitForCompletion(queryId, user)
+
+        val jsonFiles = complete.files.map { file =>
+          verifyResultAndContent(file, user) {
+            JsonMethods.parse(response.body)
+          }
+        }
+
         val oos = jsonFiles.flatMap {
           case JArray(a) => a
           case _ => Nil
@@ -757,7 +759,9 @@ class MassaluovutusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers wit
           oos.arr.map(v =>
             (
               (v \ "oppijaOid").extract[String],
-              ((v \ "opiskeluoikeudet").extract[List[JObject]].last \ "oid").extract[String])).last match {
+              (v \ "opiskeluoikeudet").extract[List[JObject]].lastOption.map(oo => (oo \ "oid").extract[String]).getOrElse("")
+            )
+          ).last match {
             case (oppijaOid, opiskeluoikeusOid) => AuditLogTester.verifyLastAuditLogMessage(Map(
               "operation" -> "SUORITUSPALVELU_OPISKELUOIKEUS_HAKU",
               "target" -> Map(
@@ -771,20 +775,21 @@ class MassaluovutusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers wit
     }
 
     "Palautuneen datan filtteröinti" - {
-      val query = getQuery(oppijaOids)
-      val queryId = addQuerySuccessfully(query, user) { response =>
-        response.status should equal(QueryState.pending)
-        response.queryId
-      }
-      val complete = waitForCompletion(queryId, user)
-
-      val jsonFiles = complete.files.map { file =>
-        verifyResultAndContent(file, user) {
-          JsonMethods.parse(response.body)
-        }
-      }
 
       def getOpiskeluoikeudet(tyyppi: Option[String] = None): List[JValue] = {
+        val query = getQuery(oppijaOids)
+        val queryId = addQuerySuccessfully(query, user) { response =>
+          response.status should equal(QueryState.pending)
+          response.queryId
+        }
+        val complete = waitForCompletion(queryId, user)
+
+        val jsonFiles = complete.files.map { file =>
+          verifyResultAndContent(file, user) {
+            JsonMethods.parse(response.body)
+          }
+        }
+
         val oos = jsonFiles.flatMap {
           case JArray(a) => a
           case _ => Nil

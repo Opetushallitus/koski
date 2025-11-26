@@ -36,6 +36,7 @@ class FixtureCreator(application: KoskiApplication) extends Logging with QueryMe
     fixtureState: FixtureState = koskiSpecificFixtureState,
     reloadRaportointikanta: Boolean = false,
     reloadYtrData: Boolean = false,
+    skipInvalidOpiskeluoikeudet: Boolean = false
   ): Unit = synchronized {
     def reloadRaportointikantaAndWait(): Unit = {
       raportointikantaService.loadRaportointikanta(force = true, pageSize = OpiskeluoikeusLoader.LocalTestingBatchSize)
@@ -54,7 +55,7 @@ class FixtureCreator(application: KoskiApplication) extends Logging with QueryMe
 
       application.suostumuksenPeruutusService.deleteAll()
       currentFixtureState = fixtureState
-      fixtureState.resetFixtures
+      fixtureState.resetFixtures(skipInvalidOpiskeluoikeudet)
       application.koskiLocalizationRepository.asInstanceOf[MockLocalizationRepository].reset
       application.valpasLocalizationRepository.asInstanceOf[MockLocalizationRepository].reset
       application.tiedonsiirtoService.index.deleteAll()
@@ -133,7 +134,7 @@ trait FixtureState extends Timing {
   def defaultOppijat: List[OppijaHenkilöWithMasterInfo]
   def defaultKuntahistoriat: mutable.Map[String, Seq[OppijanumerorekisteriKotikuntahistoriaRow]]
   def defaultTurvakieltoKuntahistoriat: mutable.Map[String, Seq[OppijanumerorekisteriKotikuntahistoriaRow]]
-  def resetFixtures: Unit
+  def resetFixtures(skipInvalidOpiskeluoikeudet: Boolean): Unit
 
   def oppijaOids: List[String]
 }
@@ -152,7 +153,7 @@ class NotInitializedFixtureState extends FixtureState {
     throw new IllegalStateException("Internal error: Fixtures not initialized correctly")
   }
 
-  def resetFixtures = {
+  def resetFixtures(skipInvalidOpiskeluoikeudet: Boolean) = {
     throw new IllegalStateException("Internal error: Fixtures not initialized correctly")
   }
 
@@ -166,9 +167,9 @@ object NotInitializedFixtureState {
 }
 
 abstract class DatabaseFixtureState(application: KoskiApplication) extends FixtureState {
-  def resetFixtures = {
+  def resetFixtures(skipInvalidOpiskeluoikeudet: Boolean): Unit = {
     application.henkilöRepository.opintopolku.henkilöt.asInstanceOf[MockOpintopolkuHenkilöFacade].resetFixtures(defaultOppijat, defaultKuntahistoriat, defaultTurvakieltoKuntahistoriat)
-    timed("Resetting database fixtures") (databaseFixtureCreator.resetFixtures)
+    timed("Resetting database fixtures") (databaseFixtureCreator.resetFixtures(skipInvalidOpiskeluoikeudet))
   }
 
   def oppijaOids: List[String] = (
