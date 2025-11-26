@@ -78,11 +78,11 @@ case class ValidateContext(validator: KoskiValidator, historyRepository: KoskiOp
     try {
       val opiskeluoikeus = row.toOpiskeluoikeusUnsafe
       (historyRepository.findVersion(row.oid, row.versionumero)(user) match {
-        case Right(latestVersion) =>
-          HttpStatus.validate(latestVersion == opiskeluoikeus) {
-            KoskiErrorCategory.internalError(JsonErrorMessage(HistoryInconsistency(row + " versiohistoria epäkonsistentti", jsonDiff(serialize(row), serialize(latestVersion)))))
-          }
-        case Left(error) => error
+          case Right(latestVersion) =>
+            HttpStatus.validate(latestVersion == opiskeluoikeus) {
+              KoskiErrorCategory.internalError(JsonErrorMessage(HistoryInconsistency(s"$row versiohistoria epäkonsistentti", jsonDiff(serialize(row), serialize(latestVersion)))))
+            }
+          case Left(error) => error
       }) match {
         case HttpStatus.ok => ValidationResult(row.oppijaOid, row.oid, row.koulutusmuoto, Nil)
         case status: HttpStatus => ValidationResult(row.oppijaOid, row.oid, row.koulutusmuoto, status.errors)

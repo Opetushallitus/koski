@@ -30,7 +30,7 @@ trait KoskiHtmlServlet extends HtmlServlet with KoskiCookieAndBasicAuthenticatio
 
   def subdomainRedirectNeeded: Option[String] = {
     val url = new URL(request.getRequestURL.toString)
-    "(\\w+)\\.(.+)".r("subdomain", "rest").findFirstMatchIn(url.getHost) match {
+    """(?<subdomain>\w+)\.(?<rest>.+)""".r.findFirstMatchIn(url.getHost) match {
       case Some(m) if m.group("subdomain") == "koski" =>
         Some(new URL(
           url.getProtocol,

@@ -26,7 +26,7 @@ class KoskiHistoryServlet(implicit val application: KoskiApplication)
 
     val result: Either[HttpStatus, KoskeenTallennettavaOpiskeluoikeus] = application.historyRepository.findVersion(oid, version)(session)
 
-    result.right.foreach { _ => logHistoryView(oid)}
+    result.foreach { _ => logHistoryView(oid)}
 
     renderEither[KoskeenTallennettavaOpiskeluoikeus](result)
   }

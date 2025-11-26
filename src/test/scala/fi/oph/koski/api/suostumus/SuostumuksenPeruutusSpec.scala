@@ -61,7 +61,7 @@ class SuostumuksenPeruutusSpec extends AnyFreeSpec with Matchers with Opiskeluoi
         henkilö = KoskiSpecificMockOppijat.vapaaSivistystyöVapaatavoitteinenKoulutus
       ).oid.get
 
-      AuditLogTester.clearMessages
+      AuditLogTester.clearMessages()
 
       post(s"/api/opiskeluoikeus/suostumuksenperuutus/$ooOid", headers = kansalainenLoginHeaders(vapaatavoitteinenHetu)) {
         verifyResponseStatus(200, Nil)
@@ -83,7 +83,7 @@ class SuostumuksenPeruutusSpec extends AnyFreeSpec with Matchers with Opiskeluoi
         henkilö = KoskiSpecificMockOppijat.vapaaSivistystyöVapaatavoitteinenKoulutus
       ).oid.get
 
-      RootLogTester.clearMessages
+      RootLogTester.clearMessages()
       post(s"/api/opiskeluoikeus/suostumuksenperuutus/$ooOid", headers = kansalainenLoginHeaders(vapaatavoitteinenHetu)) {
         verifyResponseStatus(200, Nil)
       }
@@ -92,7 +92,7 @@ class SuostumuksenPeruutusSpec extends AnyFreeSpec with Matchers with Opiskeluoi
     }
 
     "Sähköpostinotifikaatiota varten voi tehdä testimerkinnän" in {
-      RootLogTester.clearMessages
+      RootLogTester.clearMessages()
       get(s"/api/opiskeluoikeus/suostumuksenperuutus/testimerkinta", headers = authHeaders(MockUsers.paakayttaja)) {
         verifyResponseStatusOk()
       }
@@ -101,14 +101,14 @@ class SuostumuksenPeruutusSpec extends AnyFreeSpec with Matchers with Opiskeluoi
     }
 
     "Testimerkintää ei voi tehdä ilman loginia" in {
-      RootLogTester.clearMessages
+      RootLogTester.clearMessages()
       get(s"/api/opiskeluoikeus/suostumuksenperuutus/testimerkinta") {
         verifyResponseStatus(401, KoskiErrorCategory.unauthorized.notAuthenticated("Käyttäjä ei ole tunnistautunut."))
       }
     }
 
     "Testimerkintää ei voi tehdä kansalaisen tunnuksilla" in {
-      RootLogTester.clearMessages
+      RootLogTester.clearMessages()
       get(s"/api/opiskeluoikeus/suostumuksenperuutus/testimerkinta", headers = kansalainenLoginHeaders(vapaatavoitteinenHetu) ) {
         verifyResponseStatus(403, KoskiErrorCategory.forbidden.vainVirkailija("Sallittu vain virkailija-käyttäjille"))
       }
@@ -312,7 +312,7 @@ class SuostumuksenPeruutusSpec extends AnyFreeSpec with Matchers with Opiskeluoi
         henkilö = KoskiSpecificMockOppijat.vapaaSivistystyöVapaatavoitteinenKoulutus
       ).oid.get
 
-      AuditLogTester.clearMessages
+      AuditLogTester.clearMessages()
       mitätöiOpiskeluoikeus(ooOid, MockUsers.paakayttaja)
 
       val logMessages = AuditLogTester.getLogMessages
@@ -500,7 +500,7 @@ class SuostumuksenPeruutusSpec extends AnyFreeSpec with Matchers with Opiskeluoi
       )
       val ooOid = oo.oid.get
 
-      AuditLogTester.clearMessages
+      AuditLogTester.clearMessages()
       putOpiskeluoikeus(vapaatavoitteinenOpiskeluoikeusMitätöity(oo), henkilö = KoskiSpecificMockOppijat.vapaaSivistystyöVapaatavoitteinenKoulutus, headers = authHeaders(paakayttajaMitatoidytJaPoistetutOpiskeluoikeudet) ++ jsonContent){
         verifyResponseStatusOk()
       }

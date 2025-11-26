@@ -55,7 +55,7 @@ class UpdateHenkilotTask(application: KoskiApplication) extends Timing {
     Iterator.continually(changedOids)
       // query until oids found from koski or got less oids than requested
       .span { case (oids, koskiOids) => koskiOids.isEmpty && oids.size == batchSize }._2
-      .next
+      .next()
   }
 
 

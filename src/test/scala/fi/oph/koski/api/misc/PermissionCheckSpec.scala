@@ -52,7 +52,7 @@ class PermissionCheckSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers {
     ) {
       verifyResponseStatusOk()
       implicit val context: ExtractionContext = strictDeserialization
-      SchemaValidatingExtractor.extract[PermissionCheckResponse](body).right.get.accessAllowed
+      SchemaValidatingExtractor.extract[PermissionCheckResponse](body).toOption.get.accessAllowed
     }
   }
 }

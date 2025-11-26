@@ -10,7 +10,7 @@ object DeserializationPerfTester extends App {
 
   // scala.io.StdIn.readLine("Press enter to continue (for VisualVM)")
 
-  implicit val deserializationContext = ExtractionContext(KoskiSchema.schemaFactory).copy(validate = false)
+  implicit val deserializationContext: ExtractionContext = ExtractionContext(KoskiSchema.schemaFactory).copy(validate = false)
 
   def doOne(filename: String) = {
     val json = JsonFiles.readFile(filename).removeField {

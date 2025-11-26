@@ -53,7 +53,7 @@ class YtrKoesuoritusSpec extends AnyFreeSpec with KoskiHttpSpec with Opiskeluoik
     }
 
     "oman koesuorituksen haku aiheuttaa auditlogin" in {
-      AuditLogTester.clearMessages
+      AuditLogTester.clearMessages()
       get("koesuoritus/2345K/pdf/2345K_XX_12345.pdf", headers = kansalainenLoginHeaders("080698-703Y")) {
         verifyResponseStatusOk()
         bodyBytes should equal(resourceAsByteArray(s"/mockdata/ytr/2345K_XX_12345.pdf"))
@@ -62,7 +62,7 @@ class YtrKoesuoritusSpec extends AnyFreeSpec with KoskiHttpSpec with Opiskeluoik
     }
 
     "huollettavan koesuorituksen haku aiheuttaa auditlogin" in {
-      AuditLogTester.clearMessages
+      AuditLogTester.clearMessages()
       get(s"koesuoritus/2345K/pdf/2345K_XX_12345.pdf?huollettava=${KoskiSpecificMockOppijat.ylioppilasLukiolainen.oid}", headers = kansalainenLoginHeaders(KoskiSpecificMockOppijat.faija.hetu.get)) {
         verifyResponseStatusOk()
         bodyBytes should equal(resourceAsByteArray(s"/mockdata/ytr/2345K_XX_12345.pdf"))

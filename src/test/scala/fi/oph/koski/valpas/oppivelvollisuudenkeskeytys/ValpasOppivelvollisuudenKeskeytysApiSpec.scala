@@ -181,7 +181,7 @@ class ValpasOppivelvollisuudenKeskeytysApiSpec extends ValpasTestBase with Befor
   private def uusiKeskeytys: ValpasOppivelvollisuudenKeskeytys =
     oppivelvollisuudenKeskeytysService
       .addOppivelvollisuudenKeskeytys(okMääräaikainenKeskeytys)(session(user))
-      .right.get
+      .toOption.get
 
   private def lisääKeskeytys[A](keskeytys: UusiOppivelvollisuudenKeskeytys)(f: => A): A = post(
     uri = "/valpas/api/oppija/ovkeskeytys",
@@ -209,7 +209,7 @@ class ValpasOppivelvollisuudenKeskeytysApiSpec extends ValpasTestBase with Befor
   private def getMuutoshistoria(id: UUID): Seq[OppivelvollisuudenKeskeytyshistoriaRow] =
     oppivelvollisuudenKeskeytysService
       .getOppivelvollisuudenKeskeytyksenMuutoshistoria(id)(session(user))
-      .right.get
+      .toOption.get
 
   private def verifyHistoriaEntry(a: OppivelvollisuudenKeskeytyshistoriaRow, b: OppivelvollisuudenKeskeytyshistoriaRow): Unit = {
     withClue(s"Actual: ${a}\nExpected: ${b}") {

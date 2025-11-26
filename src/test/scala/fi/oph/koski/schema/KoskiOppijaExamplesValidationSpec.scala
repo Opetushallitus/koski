@@ -64,7 +64,7 @@ class KoskiOppijaExamplesValidationSpec extends AnyFreeSpec with TestEnvironment
     }
   }
 
-  private def testDeserialization[T : TypeTag](obj: T) {
+  private def testDeserialization[T : TypeTag](obj: T): Unit = {
     deserialize(obj) match {
       case Right(x) =>
         x should equal(obj)
@@ -75,7 +75,7 @@ class KoskiOppijaExamplesValidationSpec extends AnyFreeSpec with TestEnvironment
     testDeserialization(obj, (Right(obj)))
   }
 
-  private def testDeserialization[T : TypeTag](obj: T, expected: Either[List[ValidationError], T]) {
+  private def testDeserialization[T : TypeTag](obj: T, expected: Either[List[ValidationError], T]): Unit = {
     deserialize(obj) should equal(expected)
   }
 

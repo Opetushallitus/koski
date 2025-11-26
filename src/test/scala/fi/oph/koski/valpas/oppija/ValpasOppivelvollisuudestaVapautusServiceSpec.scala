@@ -9,14 +9,14 @@ import fi.oph.koski.valpas.db.ValpasDatabaseFixtureLoader
 import fi.oph.koski.valpas.opiskeluoikeusfixture.{FixtureUtil, ValpasMockOppijat}
 import fi.oph.koski.valpas.oppivelvollisuudestavapautus.{UusiOppivelvollisuudestaVapautus, ValpasOppivelvollisuudestaVapautusService}
 import fi.oph.koski.valpas.valpasrepository.ValpasExampleData
-import fi.oph.koski.valpas.valpasuser.ValpasMockUsers
+import fi.oph.koski.valpas.valpasuser.{ValpasMockUsers, ValpasSession}
 import org.scalatest.BeforeAndAfterAll
 
 import java.time.LocalDate
 
 class ValpasOppivelvollisuudestaVapautusServiceSpec extends ValpasTestBase with BeforeAndAfterAll {
   val service: ValpasOppivelvollisuudestaVapautusService = KoskiApplicationForTests.valpasOppivelvollisuudestaVapautusService
-  implicit val defaultImplSession = session(ValpasMockUsers.valpasHelsinki)
+  implicit val defaultImplSession: ValpasSession = session(ValpasMockUsers.valpasHelsinki)
   val fixtureLoader = new ValpasDatabaseFixtureLoader(KoskiApplicationForTests)
 
   override def beforeAll(): Unit = {

@@ -110,7 +110,7 @@ trait Constraint {
 
 case class StringConstraint(
   default: Option[JValue] = None,
-  enum: Option[Seq[String]] = None,
+  `enum`: Option[Seq[String]] = None,
   @EnumValue("string")
   `type`: String = "string",
 ) extends Constraint
@@ -128,7 +128,7 @@ case class DateConstraint(
 
 case class BooleanConstraint(
   default: Option[JValue] = None,
-  enum: Option[Seq[Boolean]] = None,
+  `enum`: Option[Seq[Boolean]] = None,
   @EnumValue("bool")
   `type`: String = "bool",
 ) extends Constraint
@@ -138,7 +138,7 @@ case class NumberConstraint(
   decimals: Option[Int] = None,
   min: Option[Limit] = None,
   max: Option[Limit] = None,
-  enum: Option[Seq[Double]] = None,
+  `enum`: Option[Seq[Double]] = None,
   @EnumValue("number")
   `type`: String = "number",
 ) extends Constraint

@@ -86,7 +86,7 @@ object AmmatillinenOsittainenRaportti {
       viimeisinOpiskeluoikeudenTila = opiskeluoikeus.viimeisinTila,
       viimeisinOpiskeluoikeudenTilaAikajaksonLopussa = aikajaksot.last.tila,
       opintojenRahoitukset = aikajaksot.flatMap(_.opintojenRahoitus).sorted.distinct.mkString(","),
-      suoritettujenOpintojenYhteislaajuus = suorituksetJaKorotuksetLaajuuksina(ammatillisetTutkinnonOsat.union(yhteistenTutkinnonOsienOsaSuoritukset).filter(_.arvioituJaHyväksytty)),
+      suoritettujenOpintojenYhteislaajuus = suorituksetJaKorotuksetLaajuuksina((ammatillisetTutkinnonOsat ++ yhteistenTutkinnonOsienOsaSuoritukset).filter(_.arvioituJaHyväksytty)),
       valmiitAmmatillisetTutkinnonOsatLkm = suorituksetJaKorotuksetSuoritustenMäärässä(ammatillisetTutkinnonOsat.filter(isHyväksytty)),
       näyttöjäAmmatillisessaValmiistaTutkinnonOsistaLkm = suorituksetJaKorotuksetSuoritustenMäärässä(näytöt(ammatillisetTutkinnonOsat.filter(isHyväksytty))),
       tunnustettujaAmmatillisessaValmiistaTutkinnonOsistaLkm = suorituksetJaKorotuksetSuoritustenMäärässä(vahvistuspäivällisetTunnustetutAmmatillisenTutkinnonOsat),

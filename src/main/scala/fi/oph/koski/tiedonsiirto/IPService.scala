@@ -22,7 +22,7 @@ class IPService(val db: DB) extends QueryMethods with Logging {
   def getIP(username: String): Option[InetAddress] =
     runDbSync(OppilaitosIPOsoite.filter(_.username === username).map(_.ip).result.headOption).map(InetAddress.getByName)
 
-  def trackIPAddress(koskiSession: KoskiSpecificSession) {
+  def trackIPAddress(koskiSession: KoskiSpecificSession): Unit = {
     val ip = getIP(koskiSession.username)
 
     if (!ip.contains(koskiSession.clientIp)) {
@@ -33,7 +33,7 @@ class IPService(val db: DB) extends QueryMethods with Logging {
 }
 
 private case class IPTracking(koskiSession: KoskiSpecificSession) {
-  def logIPChange(oldIP: InetAddress) {
+  def logIPChange(oldIP: InetAddress): Unit = {
     val user = koskiSession.user
     IPTracking.logger.info(s"${user.username}(${user.oid}), vanha: ${oldIP.getHostAddress}, uusi: ${koskiSession.clientIp.getHostAddress}")
   }

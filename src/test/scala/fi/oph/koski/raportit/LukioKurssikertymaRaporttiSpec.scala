@@ -54,13 +54,13 @@ class LukioKurssikertymaRaporttiSpec extends AnyFreeSpec with RaportointikantaTe
       verifyResponseStatusOk()
     }
 
-    reloadRaportointikanta
+    reloadRaportointikanta()
   }
 
   override def defaultUser = MockUsers.helsinginKaupunkiPalvelukäyttäjä
 
   "Raportin lataaminen onnistuu ja tuottaa auditlogin" in {
-    AuditLogTester.clearMessages
+    AuditLogTester.clearMessages()
     authGet(s"api/raportit/lukiokurssikertymat?oppilaitosOid=${MockOrganisaatiot.helsinginKaupunki}&alku=2018-01-01&loppu=2018-01-01&lang=fi&password=salasana") {
       verifyResponseStatusOk()
       response.headers("Content-Disposition").head should equal(s"""attachment; filename="lukion_kurssikertymat_20180101-20180101.xlsx"""")
@@ -70,7 +70,7 @@ class LukioKurssikertymaRaporttiSpec extends AnyFreeSpec with RaportointikantaTe
   }
 
   "Raportin lataaminen eri lokalisaatiolla onnistuu ja tuottaa auditlogin" in {
-    AuditLogTester.clearMessages
+    AuditLogTester.clearMessages()
     authGet(s"api/raportit/lukiokurssikertymat?oppilaitosOid=${MockOrganisaatiot.helsinginKaupunki}&alku=2018-01-01&loppu=2018-01-01&lang=sv&password=salasana") {
       verifyResponseStatusOk()
       response.headers("Content-Disposition").head should equal(s"""attachment; filename="gymnasiets_antal_kurser_20180101-20180101.xlsx"""")

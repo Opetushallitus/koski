@@ -11,7 +11,7 @@ import org.json4s.jackson.JsonMethods
 import java.time.LocalDate
 
 trait YtrDownloadTestMethods extends KoskiHttpSpec with OpiskeluoikeusTestMethods {
-  implicit val formats = DefaultFormats
+  implicit val formats: DefaultFormats = DefaultFormats
 
   def clearYtrData(): Unit = {
     authGet(s"test/ytr/clear") {

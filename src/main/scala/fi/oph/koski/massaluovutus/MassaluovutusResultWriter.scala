@@ -228,6 +228,7 @@ class CsvStream[T <: Product](name: String, partitionSize: Option[Long], upload:
         .getDeclaredFields
         .map(_.getName)
         .map(CsvFormatter.snakecasify)
+        .toList
     )
 }
 

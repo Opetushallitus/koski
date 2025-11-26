@@ -27,7 +27,7 @@ class AmmatillinenTutkintoRaporttiSpec
 
   override protected def beforeAll(): Unit = {
     super.beforeAll()
-    reloadRaportointikanta
+    reloadRaportointikanta()
   }
 
   override protected def alterFixture(): Unit = {
@@ -36,7 +36,7 @@ class AmmatillinenTutkintoRaporttiSpec
       tila = AmmatillinenOpiskeluoikeudenTila(List(AmmatillinenOpiskeluoikeusjakso(date(2016, 1, 1), opiskeluoikeusLäsnä, Some(ExampleData.valtionosuusRahoitteinen)))),
     )))) {
       verifyResponseStatusOk()
-      reloadRaportointikanta
+      reloadRaportointikanta()
     }
   }
 
@@ -45,7 +45,7 @@ class AmmatillinenTutkintoRaporttiSpec
 
   "Suoritustietojen tarkistusraportti" - {
     lazy val rivi = {
-      reloadRaportointikanta
+      reloadRaportointikanta()
       val rows = testiHenkilöRaporttiRows(defaultRequest)
       rows.length should equal(2)
       rows.head
@@ -399,7 +399,7 @@ class AmmatillinenTutkintoRaporttiSpec
     AmmatillinenTutkintoRaportti.buildRaportti(request, repository, t).filter(_.hetu.contains(hetu)).toList
 
   private def withNewSisällytettyOpiskeluoikeus(f: => Unit) = {
-    resetFixtures
+    resetFixtures()
     val omnia = MockOrganisaatioRepository.findByOppilaitosnumero("10054").get
     val omnianOpiskeluoikeus = makeOpiskeluoikeus(date(2016, 1, 1), omnia, omnia.oid)
     val oppija = KoskiSpecificMockOppijat.ammattilainen
@@ -410,13 +410,13 @@ class AmmatillinenTutkintoRaporttiSpec
     val omnianOpiskeluoikeusOid = lastOpiskeluoikeus(KoskiSpecificMockOppijat.ammattilainen.oid).oid.get
 
     putOpiskeluoikeus(sisällytäOpiskeluoikeus(stadinOpiskeluoikeus, SisältäväOpiskeluoikeus(omnia, omnianOpiskeluoikeusOid)), oppija){}
-    reloadRaportointikanta
+    reloadRaportointikanta()
     (f)
   }
 
   private def withNewVäärinSiirrettyNäyttötutkintoonValmistavanSisällytettyOpiskeluoikeus(f: => Unit) = {
     // Stadin opiskeluoikeus (jossa päätutkinto) sisältyy omnian opiskeluoikeuteen (jossa pelkkä näyttötutkintoon valmistava)
-    resetFixtures
+    resetFixtures()
     val omnia = MockOrganisaatioRepository.findByOppilaitosnumero("10054").get
 
     val omnianOpiskeluoikeus = AmmatillinenOpiskeluoikeus(
@@ -460,7 +460,7 @@ class AmmatillinenTutkintoRaporttiSpec
     putOpiskeluoikeus(sisällytäOpiskeluoikeus(stadinOpiskeluoikeus, SisältäväOpiskeluoikeus(omnia, omnianOpiskeluoikeusOid)), oppija){
       verifyResponseStatusOk()
     }
-    reloadRaportointikanta
+    reloadRaportointikanta()
     (f)
   }
 

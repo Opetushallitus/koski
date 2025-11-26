@@ -6,6 +6,7 @@ import org.json4s.JValue
 import slick.jdbc.{PositionedParameters, PositionedResult, PostgresProfile, SQLActionBuilder}
 
 import java.time.LocalDate
+import scala.collection.immutable.ArraySeq
 
 trait PostgresDriverWithJsonSupport extends PostgresProfile
   with PgJson4sSupport
@@ -19,7 +20,7 @@ trait PostgresDriverWithJsonSupport extends PostgresProfile
   type DOCType = JValue
   override val jsonMethods = org.json4s.jackson.JsonMethods
 
-  trait API extends super.API
+  trait KoskiAPI extends super.API
     with JsonImplicits
     with SearchAssistants
     with SearchImplicits
@@ -39,7 +40,8 @@ trait PostgresDriverWithJsonSupport extends PostgresProfile
     implicit class ExtendedPlainSqlOps(r: PositionedResult) {
       // Add support for getting complex datatype columns by column label
 
-      def getArray[T](columnName: String): IndexedSeq[T] = r.rs.getArray(columnName).getArray.asInstanceOf[Array[T]]
+      def getArray[T](columnName: String): IndexedSeq[T] =
+        ArraySeq.unsafeWrapArray(r.rs.getArray(columnName).getArray.asInstanceOf[Array[T]])
 
       def getArraySafe[T](columnName: String): IndexedSeq[T] =
         try {
@@ -62,9 +64,11 @@ trait PostgresDriverWithJsonSupport extends PostgresProfile
     }
   }
 
-  override val api: API = new API {}
+  type API = KoskiAPI
 
-  val plainAPI = new API with Json4sJsonPlainImplicits with SimpleArrayPlainImplicits
+  override val api: KoskiAPI = new KoskiAPI {}
+
+  val plainAPI = new KoskiAPI with Json4sJsonPlainImplicits with SimpleArrayPlainImplicits
 }
 
 object PostgresDriverWithJsonSupport extends PostgresDriverWithJsonSupport
