@@ -63,11 +63,12 @@ trait MassaluovutusQueryOrganisaationOpiskeluoikeudet extends KoskiMassaluovutus
     case koskiUser: KoskiSpecificSession =>
       implicit val u: KoskiSpecificSession = koskiUser
       val oppilaitosOids = application.organisaatioService.organisaationAlaisetOrganisaatiot(organisaatioOid.get)
+      auditLog
       fetchData(
         application = application,
         writer = writer,
         oppilaitosOids = oppilaitosOids,
-      ).tap(_ => auditLog)
+      )
     case _ =>
       throw new IllegalArgumentException("KoskiSpecificSession required")
   }

@@ -28,7 +28,18 @@ class FixtureServlet(implicit val application: KoskiApplication) extends KoskiSp
       case _: NoSuchElementException => true
       case _: Exception => true
     }
-    application.fixtureCreator.resetFixtures(reloadRaportointikanta = reloadRaportointikanta, reloadYtrData = reloadYtr)
+    val skipInvalidOpiskeluoikeudet = try {
+      params("skipInvalidOpiskeluoikeudet") match {
+        case "true" | "1" => true
+        case "false" | "0" => false
+        // Oletuksena false, kuten aiemmin on testeissä ollut
+        case _ => false
+      }
+    } catch {
+      case _: NoSuchElementException => false
+      case _: Exception => false
+    }
+    application.fixtureCreator.resetFixtures(reloadRaportointikanta = reloadRaportointikanta, reloadYtrData = reloadYtr, skipInvalidOpiskeluoikeudet = skipInvalidOpiskeluoikeudet)
     "ok"
   }
 
