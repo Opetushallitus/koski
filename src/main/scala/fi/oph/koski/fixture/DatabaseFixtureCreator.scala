@@ -33,9 +33,10 @@ abstract class DatabaseFixtureCreator(application: KoskiApplication, opiskeluoik
     }
 
   private var fixtureCacheCreated = false
+  private var invalidOpiskeluoikeudetSkipped = false
   private var cachedPerustiedot: Option[Seq[OpiskeluoikeudenOsittaisetTiedot]] = None
 
-  def resetFixtures: Unit = {
+  def resetFixtures(skipInvalidOpiskeluoikeudet: Boolean = false): Unit = {
     if (!application.masterDatabase.isLocal) throw new IllegalStateException("Trying to reset fixtures in remote database")
 
     val henkilöOids = application.fixtureCreator.allOppijaOids.sorted
@@ -55,10 +56,18 @@ abstract class DatabaseFixtureCreator(application: KoskiApplication, opiskeluoik
     application.perustiedotIndexer.sync(refresh = false) // Make sure the sync queue is empty
     application.perustiedotIndexer.deleteByOppijaOids(henkilöOids, refresh = false)
 
-    if (!fixtureCacheCreated) {
+    def lisääInvalidOpiskeluoikeudet = {
+      if(skipInvalidOpiskeluoikeudet) {
+        Seq.empty
+      } else {
+        validationConfig.runWithoutValidations { luoOpiskeluoikeudetJaPerustiedot("invalid opiskeluoikeudet", invalidOpiskeluoikeudet) }
+      }
+    }
+
+    if (!fixtureCacheCreated || invalidOpiskeluoikeudetSkipped != skipInvalidOpiskeluoikeudet) {
       cachedPerustiedot = Some(
         luoOpiskeluoikeudetJaPerustiedot("default opiskeluoikeudet", defaultOpiskeluOikeudet) ++
-        validationConfig.runWithoutValidations { luoOpiskeluoikeudetJaPerustiedot("invalid opiskeluoikeudet", invalidOpiskeluoikeudet) } ++
+        lisääInvalidOpiskeluoikeudet ++
         luoOpiskeluoikeudetJaPerustiedot("second batch opiskeluoikeudet", secondBatchOpiskeluOikeudet) ++
         luoOpiskeluoikeudetJaPerustiedot("third batch päivitettävät opiskeluoikeudet", thirdBatchPäivitettävätOpiskeluOikeudet, allowUpdate = true)
       )
@@ -72,6 +81,7 @@ abstract class DatabaseFixtureCreator(application: KoskiApplication, opiskeluoik
         sqlu"create table #$opiskeluoikeusHistoriaFixtureCacheTableName as select * from opiskeluoikeushistoria where opiskeluoikeus_id in (select id from #$opiskeluoikeusFixtureCacheTableName)"
       ))
       fixtureCacheCreated = true
+      invalidOpiskeluoikeudetSkipped = skipInvalidOpiskeluoikeudet
     } else {
       runDbSync(DBIO.seq(
         sqlu"alter table opiskeluoikeus disable trigger update_opiskeluoikeus_aikaleima",

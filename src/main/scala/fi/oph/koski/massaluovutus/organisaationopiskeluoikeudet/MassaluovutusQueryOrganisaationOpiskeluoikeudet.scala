@@ -60,11 +60,12 @@ trait MassaluovutusQueryOrganisaationOpiskeluoikeudet extends MassaluovutusQuery
 
   def run(application: KoskiApplication, writer: QueryResultWriter)(implicit user: KoskiSpecificSession): Either[String, Unit] = {
     val oppilaitosOids = application.organisaatioService.organisaationAlaisetOrganisaatiot(organisaatioOid.get)
+    auditLog
     fetchData(
       application = application,
       writer = writer,
       oppilaitosOids = oppilaitosOids,
-    ).tap(_ => auditLog)
+    )
   }
 
   def queryAllowed(application: KoskiApplication)(implicit user: KoskiSpecificSession): Boolean =
