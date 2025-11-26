@@ -139,12 +139,11 @@ const AmmatillisenOsittaisenSuorituksenTiedot: React.FC<{
   >
 }> = ({ form, päätasonSuoritus }) => {
   const path = päätasonSuoritus.path
-
   return (
     <KeyValueTable>
       <KeyValueRow localizableLabel="Koulutus">
         <TestIdText id="koulutus">
-          {t(päätasonSuoritus.suoritus.koulutusmoduuli.tunniste.nimi)}
+          {t(päätasonSuoritus.suoritus.koulutusmoduuli.perusteenNimi)}
         </TestIdText>{' '}
         {päätasonSuoritus.suoritus.koulutusmoduuli.tunniste.koodiarvo}{' '}
         <FormField
