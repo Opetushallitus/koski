@@ -278,15 +278,9 @@
       <version>${jetty.version}</version>
     </dependency>
     <dependency>
-      <groupId>com.github.raimohanska</groupId>
-      <artifactId>knockoff</artifactId>
-      <version>397efc3ff2a49cfaad1f5e76499715e3d617913a</version>
-      <exclusions>
-        <exclusion>
-          <groupId>org.scala-lang.modules</groupId>
-          <artifactId>scala-xml_2.12</artifactId>
-        </exclusion>
-      </exclusions>
+      <groupId>org.commonmark</groupId>
+      <artifactId>commonmark</artifactId>
+      <version>0.23.0</version>
     </dependency>
     <dependency>
       <groupId>com.github.fge</groupId>
