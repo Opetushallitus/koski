@@ -9,9 +9,6 @@
     "ghcr.io/devcontainers/features/common-utils:2": {
       "installZsh": true,
       "configureZshAsDefaultShell": true,
-      "username": "developer",
-      "userUid": "1000",
-      "userGid": "1000",
       "upgradePackages": true
     },
     "ghcr.io/devcontainers/features/git:1": {
@@ -62,25 +59,30 @@
   "postCreateCommand": "bash .devcontainer/post-create.sh",
 
   // Use 'postStartCommand' to run commands each time the container starts
-  "postStartCommand": "docker compose -f docker-compose.yaml up -d",
+  "postStartCommand": "make docker-dbs-arm64",
 
   // Comment out to connect as root instead
-  "remoteUser": "developer",
+  "remoteUser": "vscode",
 
   // Set environment variables
   "remoteEnv": {
     "JAVA_HOME": "/usr/local/sdkman/candidates/java/current",
     "MAVEN_HOME": "/usr/local/sdkman/candidates/maven/current",
-    "PATH": "${containerEnv:PATH}:/usr/local/sdkman/candidates/maven/current/bin:/home/developer/.local/bin"
+    "PATH": "${containerEnv:PATH}:/usr/local/sdkman/candidates/maven/current/bin:/home/vscode/.local/bin",
+    "LANG": "en_US.UTF-8",
+    "LC_ALL": "en_US.UTF-8"
   },
 
   // Mount the Docker socket and persist shell history and Claude config
   "mounts": [
     "source=/var/run/docker.sock,target=/var/run/docker.sock,type=bind",
     "source=koski-shell-history,target=/commandhistory,type=volume",
-    "source=koski-claude-config,target=/home/developer/.config/claude,type=volume",
-    "source=koski-pnpm-cache,target=/home/developer/.local/share/pnpm,type=volume"
+    "source=koski-claude-config,target=/home/vscode/.config/claude,type=volume",
+    "source=koski-pnpm-cache,target=/home/vscode/.local/share/pnpm,type=volume"
   ],
+
+  // Forward SSH agent for git operations
+  "forwardAgent": true,
 
   // Additional volume definitions
   "additionalProperties": {

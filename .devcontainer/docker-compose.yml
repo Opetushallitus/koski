@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   dev:
     build:
@@ -11,13 +9,22 @@ services:
       # JetBrains Gateway will clone the repo into this volume
       - koski-workspace:/workspace
       # Persist Maven cache
-      - koski-maven-cache:/home/developer/.m2
+      - koski-maven-cache:/home/vscode/.m2
+      # Forward SSH agent for git operations
+      - type: bind
+        source: ${SSH_AUTH_SOCK:-/run/host-services/ssh-auth.sock}
+        target: /run/host-services/ssh-auth.sock
 
     # Overrides default command so things don't shut down after the process ends.
     command: sleep infinity
 
-    # Use host network mode to access services running on host
-    network_mode: host
+    # Expose ports for services (host network mode doesn't work on macOS)
+    ports:
+      - "7021:7021"
+      - "5432:5432"
+      - "9200:9200"
+      - "8000:8000"
+      - "4566:4566"
 
     # Increase shared memory size for browser operations
     shm_size: '2gb'
@@ -34,6 +41,8 @@ services:
       - DISPLAY=:99
       # Playwright/Puppeteer settings
       - PLAYWRIGHT_BROWSERS_PATH=/ms-playwright
+      # SSH agent forwarding
+      - SSH_AUTH_SOCK=/run/host-services/ssh-auth.sock
 
 volumes:
   koski-workspace:
