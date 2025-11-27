@@ -9,30 +9,30 @@ import { SuoritustapaJaRakenne } from './SuoritustapaJaRakenne'
 export type TutkintoRakenne = {
   $class: 'fi.oph.koski.tutkinto.TutkintoRakenne'
   tutkintonimikkeet: Array<Koodistokoodiviite>
-  koulutukset: Array<Koodistokoodiviite>
-  voimassaoloAlkaa?: string
   diaarinumero: string
   id: number
   suoritustavat: Array<SuoritustapaJaRakenne>
   osaamisalat: Array<Koodistokoodiviite>
   koulutustyyppi: Koodistokoodiviite
+  koulutukset: Array<Koodistokoodiviite>
+  voimassaoloAlkaa?: string
 }
 
 export const TutkintoRakenne = (o: {
   tutkintonimikkeet?: Array<Koodistokoodiviite>
-  koulutukset?: Array<Koodistokoodiviite>
-  voimassaoloAlkaa?: string
   diaarinumero: string
   id: number
   suoritustavat?: Array<SuoritustapaJaRakenne>
   osaamisalat?: Array<Koodistokoodiviite>
   koulutustyyppi: Koodistokoodiviite
+  koulutukset?: Array<Koodistokoodiviite>
+  voimassaoloAlkaa?: string
 }): TutkintoRakenne => ({
   tutkintonimikkeet: [],
-  koulutukset: [],
   suoritustavat: [],
   osaamisalat: [],
   $class: 'fi.oph.koski.tutkinto.TutkintoRakenne',
+  koulutukset: [],
   ...o
 })
 

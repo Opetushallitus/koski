@@ -1,12 +1,12 @@
 import { Koodistokoodiviite } from './Koodistokoodiviite'
 import { LocalizedString } from './LocalizedString'
-import { EBOpiskeluoikeudenTila } from './EBOpiskeluoikeudenTila'
 import { OpiskeluoikeudenOrganisaatiohistoria } from './OpiskeluoikeudenOrganisaatiohistoria'
 import { Koulutustoimija } from './Koulutustoimija'
 import { EBTutkinnonSuoritus } from './EBTutkinnonSuoritus'
-import { LähdejärjestelmäId } from './LahdejarjestelmaId'
 import { LähdejärjestelmäkytkennänPurkaminen } from './LahdejarjestelmakytkennanPurkaminen'
 import { Oppilaitos } from './Oppilaitos'
+import { EBOpiskeluoikeudenTila } from './EBOpiskeluoikeudenTila'
+import { LähdejärjestelmäId } from './LahdejarjestelmaId'
 
 /**
  * EBOpiskeluoikeus
@@ -16,8 +16,6 @@ import { Oppilaitos } from './Oppilaitos'
 export type EBOpiskeluoikeus = {
   $class: 'fi.oph.koski.schema.EBOpiskeluoikeus'
   tyyppi: Koodistokoodiviite<'opiskeluoikeudentyyppi', 'ebtutkinto'>
-  tila: EBOpiskeluoikeudenTila
-  alkamispäivä?: string
   organisaatiohistoria?: Array<OpiskeluoikeudenOrganisaatiohistoria>
   oid?: string
   koulutustoimija?: Koulutustoimija
@@ -25,17 +23,17 @@ export type EBOpiskeluoikeus = {
   suoritukset: Array<EBTutkinnonSuoritus>
   aikaleima?: string
   päättymispäivä?: string
-  lähdejärjestelmänId?: LähdejärjestelmäId
-  arvioituPäättymispäivä?: string
   lähdejärjestelmäkytkentäPurettu?: LähdejärjestelmäkytkennänPurkaminen
   oppilaitos?: Oppilaitos
+  tila: EBOpiskeluoikeudenTila
+  alkamispäivä?: string
+  lähdejärjestelmänId?: LähdejärjestelmäId
+  arvioituPäättymispäivä?: string
 }
 
 export const EBOpiskeluoikeus = (
   o: {
     tyyppi?: Koodistokoodiviite<'opiskeluoikeudentyyppi', 'ebtutkinto'>
-    tila?: EBOpiskeluoikeudenTila
-    alkamispäivä?: string
     organisaatiohistoria?: Array<OpiskeluoikeudenOrganisaatiohistoria>
     oid?: string
     koulutustoimija?: Koulutustoimija
@@ -43,19 +41,21 @@ export const EBOpiskeluoikeus = (
     suoritukset?: Array<EBTutkinnonSuoritus>
     aikaleima?: string
     päättymispäivä?: string
-    lähdejärjestelmänId?: LähdejärjestelmäId
-    arvioituPäättymispäivä?: string
     lähdejärjestelmäkytkentäPurettu?: LähdejärjestelmäkytkennänPurkaminen
     oppilaitos?: Oppilaitos
+    tila?: EBOpiskeluoikeudenTila
+    alkamispäivä?: string
+    lähdejärjestelmänId?: LähdejärjestelmäId
+    arvioituPäättymispäivä?: string
   } = {}
 ): EBOpiskeluoikeus => ({
   tyyppi: Koodistokoodiviite({
     koodiarvo: 'ebtutkinto',
     koodistoUri: 'opiskeluoikeudentyyppi'
   }),
-  tila: EBOpiskeluoikeudenTila({ opiskeluoikeusjaksot: [] }),
   suoritukset: [],
   $class: 'fi.oph.koski.schema.EBOpiskeluoikeus',
+  tila: EBOpiskeluoikeudenTila({ opiskeluoikeusjaksot: [] }),
   ...o
 })
 

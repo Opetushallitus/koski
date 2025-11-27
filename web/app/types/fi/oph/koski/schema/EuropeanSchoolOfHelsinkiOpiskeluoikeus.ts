@@ -1,13 +1,13 @@
 import { Koodistokoodiviite } from './Koodistokoodiviite'
 import { LocalizedString } from './LocalizedString'
-import { EuropeanSchoolOfHelsinkiOpiskeluoikeudenTila } from './EuropeanSchoolOfHelsinkiOpiskeluoikeudenTila'
 import { OpiskeluoikeudenOrganisaatiohistoria } from './OpiskeluoikeudenOrganisaatiohistoria'
-import { Koulutustoimija } from './Koulutustoimija'
-import { EuropeanSchoolOfHelsinkiOpiskeluoikeudenLisätiedot } from './EuropeanSchoolOfHelsinkiOpiskeluoikeudenLisatiedot'
 import { EuropeanSchoolOfHelsinkiPäätasonSuoritus } from './EuropeanSchoolOfHelsinkiPaatasonSuoritus'
-import { LähdejärjestelmäId } from './LahdejarjestelmaId'
 import { LähdejärjestelmäkytkennänPurkaminen } from './LahdejarjestelmakytkennanPurkaminen'
 import { Oppilaitos } from './Oppilaitos'
+import { EuropeanSchoolOfHelsinkiOpiskeluoikeudenTila } from './EuropeanSchoolOfHelsinkiOpiskeluoikeudenTila'
+import { Koulutustoimija } from './Koulutustoimija'
+import { EuropeanSchoolOfHelsinkiOpiskeluoikeudenLisätiedot } from './EuropeanSchoolOfHelsinkiOpiskeluoikeudenLisatiedot'
+import { LähdejärjestelmäId } from './LahdejarjestelmaId'
 
 /**
  * EuropeanSchoolOfHelsinkiOpiskeluoikeus
@@ -20,20 +20,20 @@ export type EuropeanSchoolOfHelsinkiOpiskeluoikeus = {
     'opiskeluoikeudentyyppi',
     'europeanschoolofhelsinki'
   >
-  tila: EuropeanSchoolOfHelsinkiOpiskeluoikeudenTila
-  alkamispäivä?: string
   organisaatiohistoria?: Array<OpiskeluoikeudenOrganisaatiohistoria>
   oid?: string
-  koulutustoimija?: Koulutustoimija
-  lisätiedot?: EuropeanSchoolOfHelsinkiOpiskeluoikeudenLisätiedot
   versionumero?: number
   suoritukset: Array<EuropeanSchoolOfHelsinkiPäätasonSuoritus>
   aikaleima?: string
   päättymispäivä?: string
-  lähdejärjestelmänId?: LähdejärjestelmäId
-  arvioituPäättymispäivä?: string
   lähdejärjestelmäkytkentäPurettu?: LähdejärjestelmäkytkennänPurkaminen
   oppilaitos?: Oppilaitos
+  tila: EuropeanSchoolOfHelsinkiOpiskeluoikeudenTila
+  alkamispäivä?: string
+  koulutustoimija?: Koulutustoimija
+  lisätiedot?: EuropeanSchoolOfHelsinkiOpiskeluoikeudenLisätiedot
+  lähdejärjestelmänId?: LähdejärjestelmäId
+  arvioituPäättymispäivä?: string
 }
 
 export const EuropeanSchoolOfHelsinkiOpiskeluoikeus = (
@@ -42,31 +42,31 @@ export const EuropeanSchoolOfHelsinkiOpiskeluoikeus = (
       'opiskeluoikeudentyyppi',
       'europeanschoolofhelsinki'
     >
-    tila?: EuropeanSchoolOfHelsinkiOpiskeluoikeudenTila
-    alkamispäivä?: string
     organisaatiohistoria?: Array<OpiskeluoikeudenOrganisaatiohistoria>
     oid?: string
-    koulutustoimija?: Koulutustoimija
-    lisätiedot?: EuropeanSchoolOfHelsinkiOpiskeluoikeudenLisätiedot
     versionumero?: number
     suoritukset?: Array<EuropeanSchoolOfHelsinkiPäätasonSuoritus>
     aikaleima?: string
     päättymispäivä?: string
-    lähdejärjestelmänId?: LähdejärjestelmäId
-    arvioituPäättymispäivä?: string
     lähdejärjestelmäkytkentäPurettu?: LähdejärjestelmäkytkennänPurkaminen
     oppilaitos?: Oppilaitos
+    tila?: EuropeanSchoolOfHelsinkiOpiskeluoikeudenTila
+    alkamispäivä?: string
+    koulutustoimija?: Koulutustoimija
+    lisätiedot?: EuropeanSchoolOfHelsinkiOpiskeluoikeudenLisätiedot
+    lähdejärjestelmänId?: LähdejärjestelmäId
+    arvioituPäättymispäivä?: string
   } = {}
 ): EuropeanSchoolOfHelsinkiOpiskeluoikeus => ({
   tyyppi: Koodistokoodiviite({
     koodiarvo: 'europeanschoolofhelsinki',
     koodistoUri: 'opiskeluoikeudentyyppi'
   }),
+  suoritukset: [],
+  $class: 'fi.oph.koski.schema.EuropeanSchoolOfHelsinkiOpiskeluoikeus',
   tila: EuropeanSchoolOfHelsinkiOpiskeluoikeudenTila({
     opiskeluoikeusjaksot: []
   }),
-  suoritukset: [],
-  $class: 'fi.oph.koski.schema.EuropeanSchoolOfHelsinkiOpiskeluoikeus',
   ...o
 })
 

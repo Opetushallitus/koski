@@ -12,33 +12,33 @@ export type NuortenPerusopetuksenOppiaineenSuoritus = {
   $class: 'fi.oph.koski.schema.NuortenPerusopetuksenOppiaineenSuoritus'
   arviointi?: Array<PerusopetuksenOppiaineenArviointi>
   tyyppi: Koodistokoodiviite<'suorituksentyyppi', 'perusopetuksenoppiaine'>
-  tila?: Koodistokoodiviite<'suorituksentila', string>
-  luokkaAste?: Koodistokoodiviite<'perusopetuksenluokkaaste', string>
   suorituskieli?: Koodistokoodiviite<'kieli', string>
   suoritustapa?: Koodistokoodiviite<
     'perusopetuksensuoritustapa',
     'erityinentutkinto'
   >
   rajattuOppimäärä: boolean
+  yksilöllistettyOppimäärä: boolean
+  tila?: Koodistokoodiviite<'suorituksentila', string>
+  luokkaAste?: Koodistokoodiviite<'perusopetuksenluokkaaste', string>
   painotettuOpetus: boolean
   koulutusmoduuli: NuortenPerusopetuksenOppiaine
-  yksilöllistettyOppimäärä: boolean
 }
 
 export const NuortenPerusopetuksenOppiaineenSuoritus = (o: {
   arviointi?: Array<PerusopetuksenOppiaineenArviointi>
   tyyppi?: Koodistokoodiviite<'suorituksentyyppi', 'perusopetuksenoppiaine'>
-  tila?: Koodistokoodiviite<'suorituksentila', string>
-  luokkaAste?: Koodistokoodiviite<'perusopetuksenluokkaaste', string>
   suorituskieli?: Koodistokoodiviite<'kieli', string>
   suoritustapa?: Koodistokoodiviite<
     'perusopetuksensuoritustapa',
     'erityinentutkinto'
   >
   rajattuOppimäärä?: boolean
+  yksilöllistettyOppimäärä?: boolean
+  tila?: Koodistokoodiviite<'suorituksentila', string>
+  luokkaAste?: Koodistokoodiviite<'perusopetuksenluokkaaste', string>
   painotettuOpetus: boolean
   koulutusmoduuli: NuortenPerusopetuksenOppiaine
-  yksilöllistettyOppimäärä?: boolean
 }): NuortenPerusopetuksenOppiaineenSuoritus => ({
   tyyppi: Koodistokoodiviite({
     koodiarvo: 'perusopetuksenoppiaine',

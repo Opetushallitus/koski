@@ -23,11 +23,11 @@ export const TelmaKoulutus = (
     koulutustyyppi?: Koodistokoodiviite<'koulutustyyppi', string>
   } = {}
 ): TelmaKoulutus => ({
-  $class: 'fi.oph.koski.schema.TelmaKoulutus',
   tunniste: Koodistokoodiviite({
     koodiarvo: '999903',
     koodistoUri: 'koulutus'
   }),
+  $class: 'fi.oph.koski.schema.TelmaKoulutus',
   ...o
 })
 

@@ -18,14 +18,14 @@ export type NuortenPerusopetuksenOppiaineenOppimääränSuoritus = {
     'suorituksentyyppi',
     'nuortenperusopetuksenoppiaineenoppimaara'
   >
-  tila?: Koodistokoodiviite<'suorituksentila', string>
-  luokkaAste?: Koodistokoodiviite<'perusopetuksenluokkaaste', string>
   suorituskieli: Koodistokoodiviite<'kieli', string>
   suoritustapa: Koodistokoodiviite<'perusopetuksensuoritustapa', string>
   todistuksellaNäkyvätLisätiedot?: LocalizedString
   koulutusmoduuli: NuortenPerusopetuksenOppiainenTaiEiTiedossaOppiaine
   toimipiste: OrganisaatioWithOid
   vahvistus?: HenkilövahvistusPaikkakunnalla
+  tila?: Koodistokoodiviite<'suorituksentila', string>
+  luokkaAste?: Koodistokoodiviite<'perusopetuksenluokkaaste', string>
 }
 
 export const NuortenPerusopetuksenOppiaineenOppimääränSuoritus = (o: {
@@ -35,14 +35,14 @@ export const NuortenPerusopetuksenOppiaineenOppimääränSuoritus = (o: {
     'suorituksentyyppi',
     'nuortenperusopetuksenoppiaineenoppimaara'
   >
-  tila?: Koodistokoodiviite<'suorituksentila', string>
-  luokkaAste?: Koodistokoodiviite<'perusopetuksenluokkaaste', string>
   suorituskieli: Koodistokoodiviite<'kieli', string>
   suoritustapa: Koodistokoodiviite<'perusopetuksensuoritustapa', string>
   todistuksellaNäkyvätLisätiedot?: LocalizedString
   koulutusmoduuli: NuortenPerusopetuksenOppiainenTaiEiTiedossaOppiaine
   toimipiste: OrganisaatioWithOid
   vahvistus?: HenkilövahvistusPaikkakunnalla
+  tila?: Koodistokoodiviite<'suorituksentila', string>
+  luokkaAste?: Koodistokoodiviite<'perusopetuksenluokkaaste', string>
 }): NuortenPerusopetuksenOppiaineenOppimääränSuoritus => ({
   tyyppi: Koodistokoodiviite({
     koodiarvo: 'nuortenperusopetuksenoppiaineenoppimaara',

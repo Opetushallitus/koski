@@ -1,10 +1,10 @@
 import { Koodistokoodiviite } from './Koodistokoodiviite'
 import { LocalizedString } from './LocalizedString'
-import { OmanÄidinkielenOpinnotLaajuusKursseina } from './OmanAidinkielenOpinnotLaajuusKursseina'
 import { AikuistenPerusopetus } from './AikuistenPerusopetus'
 import { OrganisaatioWithOid } from './OrganisaatioWithOid'
 import { AikuistenPerusopetuksenOppiaineenSuoritus } from './AikuistenPerusopetuksenOppiaineenSuoritus'
 import { HenkilövahvistusPaikkakunnalla } from './HenkilovahvistusPaikkakunnalla'
+import { OmanÄidinkielenOpinnotLaajuusKursseina } from './OmanAidinkielenOpinnotLaajuusKursseina'
 
 /**
  * Laajennetun oppivelvollisuuden suoritus
@@ -18,8 +18,6 @@ export type AikuistenPerusopetuksenOppimääränSuoritus = {
     'suorituksentyyppi',
     'aikuistenperusopetuksenoppimaara'
   >
-  tila?: Koodistokoodiviite<'suorituksentila', string>
-  omanÄidinkielenOpinnot?: OmanÄidinkielenOpinnotLaajuusKursseina
   suorituskieli: Koodistokoodiviite<'kieli', string>
   luokka?: string
   suoritustapa: Koodistokoodiviite<'perusopetuksensuoritustapa', string>
@@ -28,6 +26,8 @@ export type AikuistenPerusopetuksenOppimääränSuoritus = {
   toimipiste: OrganisaatioWithOid
   osasuoritukset?: Array<AikuistenPerusopetuksenOppiaineenSuoritus>
   vahvistus?: HenkilövahvistusPaikkakunnalla
+  tila?: Koodistokoodiviite<'suorituksentila', string>
+  omanÄidinkielenOpinnot?: OmanÄidinkielenOpinnotLaajuusKursseina
 }
 
 export const AikuistenPerusopetuksenOppimääränSuoritus = (o: {
@@ -36,8 +36,6 @@ export const AikuistenPerusopetuksenOppimääränSuoritus = (o: {
     'suorituksentyyppi',
     'aikuistenperusopetuksenoppimaara'
   >
-  tila?: Koodistokoodiviite<'suorituksentila', string>
-  omanÄidinkielenOpinnot?: OmanÄidinkielenOpinnotLaajuusKursseina
   suorituskieli: Koodistokoodiviite<'kieli', string>
   luokka?: string
   suoritustapa: Koodistokoodiviite<'perusopetuksensuoritustapa', string>
@@ -46,6 +44,8 @@ export const AikuistenPerusopetuksenOppimääränSuoritus = (o: {
   toimipiste: OrganisaatioWithOid
   osasuoritukset?: Array<AikuistenPerusopetuksenOppiaineenSuoritus>
   vahvistus?: HenkilövahvistusPaikkakunnalla
+  tila?: Koodistokoodiviite<'suorituksentila', string>
+  omanÄidinkielenOpinnot?: OmanÄidinkielenOpinnotLaajuusKursseina
 }): AikuistenPerusopetuksenOppimääränSuoritus => ({
   tyyppi: Koodistokoodiviite({
     koodiarvo: 'aikuistenperusopetuksenoppimaara',
