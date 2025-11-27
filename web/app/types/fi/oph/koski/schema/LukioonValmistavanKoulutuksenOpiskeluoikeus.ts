@@ -1,14 +1,14 @@
 import { Koodistokoodiviite } from './Koodistokoodiviite'
 import { LocalizedString } from './LocalizedString'
-import { LukionOpiskeluoikeudenTila } from './LukionOpiskeluoikeudenTila'
 import { OpiskeluoikeudenOrganisaatiohistoria } from './OpiskeluoikeudenOrganisaatiohistoria'
 import { SisältäväOpiskeluoikeus } from './SisaltavaOpiskeluoikeus'
-import { Koulutustoimija } from './Koulutustoimija'
-import { LukioonValmistavanKoulutuksenOpiskeluoikeudenLisätiedot } from './LukioonValmistavanKoulutuksenOpiskeluoikeudenLisatiedot'
 import { LukioonValmistavanKoulutuksenSuoritus } from './LukioonValmistavanKoulutuksenSuoritus'
-import { LähdejärjestelmäId } from './LahdejarjestelmaId'
 import { LähdejärjestelmäkytkennänPurkaminen } from './LahdejarjestelmakytkennanPurkaminen'
 import { Oppilaitos } from './Oppilaitos'
+import { LukionOpiskeluoikeudenTila } from './LukionOpiskeluoikeudenTila'
+import { Koulutustoimija } from './Koulutustoimija'
+import { LukioonValmistavanKoulutuksenOpiskeluoikeudenLisätiedot } from './LukioonValmistavanKoulutuksenOpiskeluoikeudenLisatiedot'
+import { LähdejärjestelmäId } from './LahdejarjestelmaId'
 
 /**
  * Lukioon valmistava koulutus (LUVA)
@@ -18,50 +18,50 @@ import { Oppilaitos } from './Oppilaitos'
 export type LukioonValmistavanKoulutuksenOpiskeluoikeus = {
   $class: 'fi.oph.koski.schema.LukioonValmistavanKoulutuksenOpiskeluoikeus'
   tyyppi: Koodistokoodiviite<'opiskeluoikeudentyyppi', 'luva'>
-  tila: LukionOpiskeluoikeudenTila
-  alkamispäivä?: string
   organisaatiohistoria?: Array<OpiskeluoikeudenOrganisaatiohistoria>
   sisältyyOpiskeluoikeuteen?: SisältäväOpiskeluoikeus
   oid?: string
-  koulutustoimija?: Koulutustoimija
-  lisätiedot?: LukioonValmistavanKoulutuksenOpiskeluoikeudenLisätiedot
   versionumero?: number
   suoritukset: Array<LukioonValmistavanKoulutuksenSuoritus>
   aikaleima?: string
   päättymispäivä?: string
-  lähdejärjestelmänId?: LähdejärjestelmäId
-  arvioituPäättymispäivä?: string
   lähdejärjestelmäkytkentäPurettu?: LähdejärjestelmäkytkennänPurkaminen
   oppilaitos?: Oppilaitos
+  tila: LukionOpiskeluoikeudenTila
+  alkamispäivä?: string
+  koulutustoimija?: Koulutustoimija
+  lisätiedot?: LukioonValmistavanKoulutuksenOpiskeluoikeudenLisätiedot
+  lähdejärjestelmänId?: LähdejärjestelmäId
+  arvioituPäättymispäivä?: string
 }
 
 export const LukioonValmistavanKoulutuksenOpiskeluoikeus = (
   o: {
     tyyppi?: Koodistokoodiviite<'opiskeluoikeudentyyppi', 'luva'>
-    tila?: LukionOpiskeluoikeudenTila
-    alkamispäivä?: string
     organisaatiohistoria?: Array<OpiskeluoikeudenOrganisaatiohistoria>
     sisältyyOpiskeluoikeuteen?: SisältäväOpiskeluoikeus
     oid?: string
-    koulutustoimija?: Koulutustoimija
-    lisätiedot?: LukioonValmistavanKoulutuksenOpiskeluoikeudenLisätiedot
     versionumero?: number
     suoritukset?: Array<LukioonValmistavanKoulutuksenSuoritus>
     aikaleima?: string
     päättymispäivä?: string
-    lähdejärjestelmänId?: LähdejärjestelmäId
-    arvioituPäättymispäivä?: string
     lähdejärjestelmäkytkentäPurettu?: LähdejärjestelmäkytkennänPurkaminen
     oppilaitos?: Oppilaitos
+    tila?: LukionOpiskeluoikeudenTila
+    alkamispäivä?: string
+    koulutustoimija?: Koulutustoimija
+    lisätiedot?: LukioonValmistavanKoulutuksenOpiskeluoikeudenLisätiedot
+    lähdejärjestelmänId?: LähdejärjestelmäId
+    arvioituPäättymispäivä?: string
   } = {}
 ): LukioonValmistavanKoulutuksenOpiskeluoikeus => ({
   tyyppi: Koodistokoodiviite({
     koodiarvo: 'luva',
     koodistoUri: 'opiskeluoikeudentyyppi'
   }),
-  tila: LukionOpiskeluoikeudenTila({ opiskeluoikeusjaksot: [] }),
   suoritukset: [],
   $class: 'fi.oph.koski.schema.LukioonValmistavanKoulutuksenOpiskeluoikeus',
+  tila: LukionOpiskeluoikeudenTila({ opiskeluoikeusjaksot: [] }),
   ...o
 })
 

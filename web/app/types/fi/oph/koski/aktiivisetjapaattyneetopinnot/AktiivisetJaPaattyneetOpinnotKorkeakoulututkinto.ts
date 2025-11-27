@@ -11,17 +11,17 @@ export type AktiivisetJaPäättyneetOpinnotKorkeakoulututkinto = {
   $class: 'fi.oph.koski.aktiivisetjapaattyneetopinnot.AktiivisetJaPäättyneetOpinnotKorkeakoulututkinto'
   kansallinenTutkintojenViitekehysNQF?: Koodistokoodiviite<'nqf', string>
   eurooppalainenTutkintojenViitekehysEQF?: Koodistokoodiviite<'eqf', string>
+  tunniste: AktiivisetJaPäättyneetOpinnotKoodistokoodiviite
   virtaNimi?: LocalizedString
   koulutustyyppi?: AktiivisetJaPäättyneetOpinnotKoodistokoodiviite
-  tunniste: AktiivisetJaPäättyneetOpinnotKoodistokoodiviite
 }
 
 export const AktiivisetJaPäättyneetOpinnotKorkeakoulututkinto = (o: {
   kansallinenTutkintojenViitekehysNQF?: Koodistokoodiviite<'nqf', string>
   eurooppalainenTutkintojenViitekehysEQF?: Koodistokoodiviite<'eqf', string>
+  tunniste: AktiivisetJaPäättyneetOpinnotKoodistokoodiviite
   virtaNimi?: LocalizedString
   koulutustyyppi?: AktiivisetJaPäättyneetOpinnotKoodistokoodiviite
-  tunniste: AktiivisetJaPäättyneetOpinnotKoodistokoodiviite
 }): AktiivisetJaPäättyneetOpinnotKorkeakoulututkinto => ({
   $class:
     'fi.oph.koski.aktiivisetjapaattyneetopinnot.AktiivisetJaPäättyneetOpinnotKorkeakoulututkinto',

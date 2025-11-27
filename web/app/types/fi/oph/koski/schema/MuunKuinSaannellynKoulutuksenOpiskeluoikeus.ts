@@ -1,13 +1,13 @@
 import { Koodistokoodiviite } from './Koodistokoodiviite'
 import { LocalizedString } from './LocalizedString'
-import { MuunKuinSäännellynKoulutuksenTila } from './MuunKuinSaannellynKoulutuksenTila'
 import { OpiskeluoikeudenOrganisaatiohistoria } from './OpiskeluoikeudenOrganisaatiohistoria'
-import { Koulutustoimija } from './Koulutustoimija'
-import { MuunKuinSäännellynKoulutuksenLisätiedot } from './MuunKuinSaannellynKoulutuksenLisatiedot'
 import { MuunKuinSäännellynKoulutuksenPäätasonSuoritus } from './MuunKuinSaannellynKoulutuksenPaatasonSuoritus'
-import { LähdejärjestelmäId } from './LahdejarjestelmaId'
 import { LähdejärjestelmäkytkennänPurkaminen } from './LahdejarjestelmakytkennanPurkaminen'
 import { Oppilaitos } from './Oppilaitos'
+import { MuunKuinSäännellynKoulutuksenTila } from './MuunKuinSaannellynKoulutuksenTila'
+import { Koulutustoimija } from './Koulutustoimija'
+import { MuunKuinSäännellynKoulutuksenLisätiedot } from './MuunKuinSaannellynKoulutuksenLisatiedot'
+import { LähdejärjestelmäId } from './LahdejarjestelmaId'
 
 /**
  * MuunKuinSäännellynKoulutuksenOpiskeluoikeus
@@ -20,20 +20,20 @@ export type MuunKuinSäännellynKoulutuksenOpiskeluoikeus = {
     'opiskeluoikeudentyyppi',
     'muukuinsaanneltykoulutus'
   >
-  tila: MuunKuinSäännellynKoulutuksenTila
-  alkamispäivä?: string
   organisaatiohistoria?: Array<OpiskeluoikeudenOrganisaatiohistoria>
   oid?: string
-  koulutustoimija?: Koulutustoimija
-  lisätiedot?: MuunKuinSäännellynKoulutuksenLisätiedot
   versionumero?: number
   suoritukset: Array<MuunKuinSäännellynKoulutuksenPäätasonSuoritus>
   aikaleima?: string
   päättymispäivä?: string
-  lähdejärjestelmänId?: LähdejärjestelmäId
-  arvioituPäättymispäivä?: string
   lähdejärjestelmäkytkentäPurettu?: LähdejärjestelmäkytkennänPurkaminen
   oppilaitos?: Oppilaitos
+  tila: MuunKuinSäännellynKoulutuksenTila
+  alkamispäivä?: string
+  koulutustoimija?: Koulutustoimija
+  lisätiedot?: MuunKuinSäännellynKoulutuksenLisätiedot
+  lähdejärjestelmänId?: LähdejärjestelmäId
+  arvioituPäättymispäivä?: string
 }
 
 export const MuunKuinSäännellynKoulutuksenOpiskeluoikeus = (
@@ -42,29 +42,29 @@ export const MuunKuinSäännellynKoulutuksenOpiskeluoikeus = (
       'opiskeluoikeudentyyppi',
       'muukuinsaanneltykoulutus'
     >
-    tila?: MuunKuinSäännellynKoulutuksenTila
-    alkamispäivä?: string
     organisaatiohistoria?: Array<OpiskeluoikeudenOrganisaatiohistoria>
     oid?: string
-    koulutustoimija?: Koulutustoimija
-    lisätiedot?: MuunKuinSäännellynKoulutuksenLisätiedot
     versionumero?: number
     suoritukset?: Array<MuunKuinSäännellynKoulutuksenPäätasonSuoritus>
     aikaleima?: string
     päättymispäivä?: string
-    lähdejärjestelmänId?: LähdejärjestelmäId
-    arvioituPäättymispäivä?: string
     lähdejärjestelmäkytkentäPurettu?: LähdejärjestelmäkytkennänPurkaminen
     oppilaitos?: Oppilaitos
+    tila?: MuunKuinSäännellynKoulutuksenTila
+    alkamispäivä?: string
+    koulutustoimija?: Koulutustoimija
+    lisätiedot?: MuunKuinSäännellynKoulutuksenLisätiedot
+    lähdejärjestelmänId?: LähdejärjestelmäId
+    arvioituPäättymispäivä?: string
   } = {}
 ): MuunKuinSäännellynKoulutuksenOpiskeluoikeus => ({
   tyyppi: Koodistokoodiviite({
     koodiarvo: 'muukuinsaanneltykoulutus',
     koodistoUri: 'opiskeluoikeudentyyppi'
   }),
-  tila: MuunKuinSäännellynKoulutuksenTila({ opiskeluoikeusjaksot: [] }),
   suoritukset: [],
   $class: 'fi.oph.koski.schema.MuunKuinSäännellynKoulutuksenOpiskeluoikeus',
+  tila: MuunKuinSäännellynKoulutuksenTila({ opiskeluoikeusjaksot: [] }),
   ...o
 })
 

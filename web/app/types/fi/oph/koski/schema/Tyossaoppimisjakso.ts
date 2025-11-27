@@ -1,6 +1,6 @@
 import { LocalizedString } from './LocalizedString'
-import { Koodistokoodiviite } from './Koodistokoodiviite'
 import { LaajuusOsaamispisteissä } from './LaajuusOsaamispisteissa'
+import { Koodistokoodiviite } from './Koodistokoodiviite'
 
 /**
  * Työssäoppimisjakso
@@ -10,22 +10,22 @@ import { LaajuusOsaamispisteissä } from './LaajuusOsaamispisteissa'
 export type Työssäoppimisjakso = {
   $class: 'fi.oph.koski.schema.Työssäoppimisjakso'
   työssäoppimispaikka?: LocalizedString
-  paikkakunta: Koodistokoodiviite<'kunta', string>
-  loppu?: string
   laajuus: LaajuusOsaamispisteissä
   maa: Koodistokoodiviite<'maatjavaltiot2', string>
   alku: string
   työtehtävät?: LocalizedString
+  paikkakunta: Koodistokoodiviite<'kunta', string>
+  loppu?: string
 }
 
 export const Työssäoppimisjakso = (o: {
   työssäoppimispaikka?: LocalizedString
-  paikkakunta: Koodistokoodiviite<'kunta', string>
-  loppu?: string
   laajuus: LaajuusOsaamispisteissä
   maa: Koodistokoodiviite<'maatjavaltiot2', string>
   alku: string
   työtehtävät?: LocalizedString
+  paikkakunta: Koodistokoodiviite<'kunta', string>
+  loppu?: string
 }): Työssäoppimisjakso => ({
   $class: 'fi.oph.koski.schema.Työssäoppimisjakso',
   ...o

@@ -1,10 +1,10 @@
 import { Koodistokoodiviite } from './Koodistokoodiviite'
 import { LocalizedString } from './LocalizedString'
-import { OmanÄidinkielenOpinnotLaajuusKursseina } from './OmanAidinkielenOpinnotLaajuusKursseina'
 import { AikuistenPerusopetuksenAlkuvaihe } from './AikuistenPerusopetuksenAlkuvaihe'
 import { OrganisaatioWithOid } from './OrganisaatioWithOid'
 import { AikuistenPerusopetuksenAlkuvaiheenOppiaineenSuoritus } from './AikuistenPerusopetuksenAlkuvaiheenOppiaineenSuoritus'
 import { HenkilövahvistusPaikkakunnalla } from './HenkilovahvistusPaikkakunnalla'
+import { OmanÄidinkielenOpinnotLaajuusKursseina } from './OmanAidinkielenOpinnotLaajuusKursseina'
 
 /**
  * Laajennetun oppivelvollisuuden suoritus
@@ -18,8 +18,6 @@ export type AikuistenPerusopetuksenAlkuvaiheenSuoritus = {
     'suorituksentyyppi',
     'aikuistenperusopetuksenoppimaaranalkuvaihe'
   >
-  tila?: Koodistokoodiviite<'suorituksentila', string>
-  omanÄidinkielenOpinnot?: OmanÄidinkielenOpinnotLaajuusKursseina
   suorituskieli: Koodistokoodiviite<'kieli', string>
   luokka?: string
   suoritustapa: Koodistokoodiviite<'perusopetuksensuoritustapa', string>
@@ -28,6 +26,8 @@ export type AikuistenPerusopetuksenAlkuvaiheenSuoritus = {
   toimipiste: OrganisaatioWithOid
   osasuoritukset?: Array<AikuistenPerusopetuksenAlkuvaiheenOppiaineenSuoritus>
   vahvistus?: HenkilövahvistusPaikkakunnalla
+  tila?: Koodistokoodiviite<'suorituksentila', string>
+  omanÄidinkielenOpinnot?: OmanÄidinkielenOpinnotLaajuusKursseina
 }
 
 export const AikuistenPerusopetuksenAlkuvaiheenSuoritus = (o: {
@@ -36,8 +36,6 @@ export const AikuistenPerusopetuksenAlkuvaiheenSuoritus = (o: {
     'suorituksentyyppi',
     'aikuistenperusopetuksenoppimaaranalkuvaihe'
   >
-  tila?: Koodistokoodiviite<'suorituksentila', string>
-  omanÄidinkielenOpinnot?: OmanÄidinkielenOpinnotLaajuusKursseina
   suorituskieli: Koodistokoodiviite<'kieli', string>
   luokka?: string
   suoritustapa: Koodistokoodiviite<'perusopetuksensuoritustapa', string>
@@ -46,6 +44,8 @@ export const AikuistenPerusopetuksenAlkuvaiheenSuoritus = (o: {
   toimipiste: OrganisaatioWithOid
   osasuoritukset?: Array<AikuistenPerusopetuksenAlkuvaiheenOppiaineenSuoritus>
   vahvistus?: HenkilövahvistusPaikkakunnalla
+  tila?: Koodistokoodiviite<'suorituksentila', string>
+  omanÄidinkielenOpinnot?: OmanÄidinkielenOpinnotLaajuusKursseina
 }): AikuistenPerusopetuksenAlkuvaiheenSuoritus => ({
   tyyppi: Koodistokoodiviite({
     koodiarvo: 'aikuistenperusopetuksenoppimaaranalkuvaihe',

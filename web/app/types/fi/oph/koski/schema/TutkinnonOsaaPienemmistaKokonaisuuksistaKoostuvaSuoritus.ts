@@ -18,8 +18,6 @@ export type TutkinnonOsaaPienemmistäKokonaisuuksistaKoostuvaSuoritus = {
     'suorituksentyyppi',
     'tutkinnonosaapienemmistäkokonaisuuksistakoostuvasuoritus'
   >
-  tila?: Koodistokoodiviite<'suorituksentila', string>
-  alkamispäivä?: string
   suorituskieli: Koodistokoodiviite<'kieli', string>
   todistuksellaNäkyvätLisätiedot?: LocalizedString
   koulutussopimukset?: Array<Koulutussopimusjakso>
@@ -29,6 +27,8 @@ export type TutkinnonOsaaPienemmistäKokonaisuuksistaKoostuvaSuoritus = {
   osasuoritukset?: Array<TutkinnonOsaaPienemmistäKokonaisuuksistaKoostuvanSuorituksenOsasuoritus>
   osaamisenHankkimistavat?: Array<OsaamisenHankkimistapajakso>
   vahvistus?: HenkilövahvistusValinnaisellaPaikkakunnalla
+  tila?: Koodistokoodiviite<'suorituksentila', string>
+  alkamispäivä?: string
 }
 
 export const TutkinnonOsaaPienemmistäKokonaisuuksistaKoostuvaSuoritus = (o: {
@@ -36,8 +36,6 @@ export const TutkinnonOsaaPienemmistäKokonaisuuksistaKoostuvaSuoritus = (o: {
     'suorituksentyyppi',
     'tutkinnonosaapienemmistäkokonaisuuksistakoostuvasuoritus'
   >
-  tila?: Koodistokoodiviite<'suorituksentila', string>
-  alkamispäivä?: string
   suorituskieli: Koodistokoodiviite<'kieli', string>
   todistuksellaNäkyvätLisätiedot?: LocalizedString
   koulutussopimukset?: Array<Koulutussopimusjakso>
@@ -47,6 +45,8 @@ export const TutkinnonOsaaPienemmistäKokonaisuuksistaKoostuvaSuoritus = (o: {
   osasuoritukset?: Array<TutkinnonOsaaPienemmistäKokonaisuuksistaKoostuvanSuorituksenOsasuoritus>
   osaamisenHankkimistavat?: Array<OsaamisenHankkimistapajakso>
   vahvistus?: HenkilövahvistusValinnaisellaPaikkakunnalla
+  tila?: Koodistokoodiviite<'suorituksentila', string>
+  alkamispäivä?: string
 }): TutkinnonOsaaPienemmistäKokonaisuuksistaKoostuvaSuoritus => ({
   tyyppi: Koodistokoodiviite({
     koodiarvo: 'tutkinnonosaapienemmistäkokonaisuuksistakoostuvasuoritus',

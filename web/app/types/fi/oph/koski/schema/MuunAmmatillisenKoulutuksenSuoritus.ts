@@ -16,8 +16,6 @@ import { HenkilövahvistusValinnaisellaPaikkakunnalla } from './Henkilovahvistus
 export type MuunAmmatillisenKoulutuksenSuoritus = {
   $class: 'fi.oph.koski.schema.MuunAmmatillisenKoulutuksenSuoritus'
   tyyppi: Koodistokoodiviite<'suorituksentyyppi', 'muuammatillinenkoulutus'>
-  tila?: Koodistokoodiviite<'suorituksentila', string>
-  alkamispäivä?: string
   suorituskieli: Koodistokoodiviite<'kieli', string>
   täydentääTutkintoa?: AmmatillinenTutkintoKoulutus
   todistuksellaNäkyvätLisätiedot?: LocalizedString
@@ -28,12 +26,12 @@ export type MuunAmmatillisenKoulutuksenSuoritus = {
   osasuoritukset?: Array<MuuAmmatillinenOsasuoritus>
   osaamisenHankkimistavat?: Array<OsaamisenHankkimistapajakso>
   vahvistus?: HenkilövahvistusValinnaisellaPaikkakunnalla
+  tila?: Koodistokoodiviite<'suorituksentila', string>
+  alkamispäivä?: string
 }
 
 export const MuunAmmatillisenKoulutuksenSuoritus = (o: {
   tyyppi?: Koodistokoodiviite<'suorituksentyyppi', 'muuammatillinenkoulutus'>
-  tila?: Koodistokoodiviite<'suorituksentila', string>
-  alkamispäivä?: string
   suorituskieli: Koodistokoodiviite<'kieli', string>
   täydentääTutkintoa?: AmmatillinenTutkintoKoulutus
   todistuksellaNäkyvätLisätiedot?: LocalizedString
@@ -44,6 +42,8 @@ export const MuunAmmatillisenKoulutuksenSuoritus = (o: {
   osasuoritukset?: Array<MuuAmmatillinenOsasuoritus>
   osaamisenHankkimistavat?: Array<OsaamisenHankkimistapajakso>
   vahvistus?: HenkilövahvistusValinnaisellaPaikkakunnalla
+  tila?: Koodistokoodiviite<'suorituksentila', string>
+  alkamispäivä?: string
 }): MuunAmmatillisenKoulutuksenSuoritus => ({
   tyyppi: Koodistokoodiviite({
     koodiarvo: 'muuammatillinenkoulutus',

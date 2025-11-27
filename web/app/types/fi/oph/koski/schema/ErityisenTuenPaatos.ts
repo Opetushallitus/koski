@@ -8,21 +8,21 @@ import { LocalizedString } from './LocalizedString'
  */
 export type ErityisenTuenPäätös = {
   $class: 'fi.oph.koski.schema.ErityisenTuenPäätös'
-  toteutuspaikka?: Koodistokoodiviite<'erityisopetuksentoteutuspaikka', string>
-  opiskeleeToimintaAlueittain: boolean
   loppu?: string
   erityisryhmässä?: boolean
   tukimuodot?: Array<Koodistokoodiviite<'perusopetuksentukimuoto', string>>
   alku?: string
+  toteutuspaikka?: Koodistokoodiviite<'erityisopetuksentoteutuspaikka', string>
+  opiskeleeToimintaAlueittain: boolean
 }
 
 export const ErityisenTuenPäätös = (o: {
-  toteutuspaikka?: Koodistokoodiviite<'erityisopetuksentoteutuspaikka', string>
-  opiskeleeToimintaAlueittain: boolean
   loppu?: string
   erityisryhmässä?: boolean
   tukimuodot?: Array<Koodistokoodiviite<'perusopetuksentukimuoto', string>>
   alku?: string
+  toteutuspaikka?: Koodistokoodiviite<'erityisopetuksentoteutuspaikka', string>
+  opiskeleeToimintaAlueittain: boolean
 }): ErityisenTuenPäätös => ({
   $class: 'fi.oph.koski.schema.ErityisenTuenPäätös',
   ...o

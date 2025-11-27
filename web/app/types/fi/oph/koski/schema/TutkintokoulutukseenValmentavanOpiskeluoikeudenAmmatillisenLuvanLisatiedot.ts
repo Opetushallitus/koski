@@ -1,7 +1,7 @@
 import { OsaAikaisuusJakso } from './OsaAikaisuusJakso'
 import { Aikajakso } from './Aikajakso'
-import { Ulkomaanjakso } from './Ulkomaanjakso'
 import { OikeuttaMaksuttomuuteenPidennetty } from './OikeuttaMaksuttomuuteenPidennetty'
+import { Ulkomaanjakso } from './Ulkomaanjakso'
 import { Maksuttomuus } from './Maksuttomuus'
 
 /**
@@ -13,17 +13,17 @@ export type TutkintokoulutukseenValmentavanOpiskeluoikeudenAmmatillisenLuvanLis�
   {
     $class: 'fi.oph.koski.schema.TutkintokoulutukseenValmentavanOpiskeluoikeudenAmmatillisenLuvanLisätiedot'
     osaAikaisuusjaksot?: Array<OsaAikaisuusJakso>
-    vaativanErityisenTuenErityinenTehtävä?: Array<Aikajakso>
-    ulkomaanjaksot?: Array<Ulkomaanjakso>
     vaativanErityisenTuenYhteydessäJärjestettäväMajoitus?: Array<Aikajakso>
     oikeuttaMaksuttomuuteenPidennetty?: Array<OikeuttaMaksuttomuuteenPidennetty>
-    vaikeastiVammainen?: Array<Aikajakso>
-    maksuttomuus?: Array<Maksuttomuus>
     vammainenJaAvustaja?: Array<Aikajakso>
-    majoitus?: Array<Aikajakso>
-    vankilaopetuksessa?: Array<Aikajakso>
     erityinenTuki?: Array<Aikajakso>
     koulutusvienti?: boolean
+    vaativanErityisenTuenErityinenTehtävä?: Array<Aikajakso>
+    ulkomaanjaksot?: Array<Ulkomaanjakso>
+    vaikeastiVammainen?: Array<Aikajakso>
+    maksuttomuus?: Array<Maksuttomuus>
+    majoitus?: Array<Aikajakso>
+    vankilaopetuksessa?: Array<Aikajakso>
     pidennettyPäättymispäivä?: boolean
     sisäoppilaitosmainenMajoitus?: Array<Aikajakso>
   }
@@ -32,17 +32,17 @@ export const TutkintokoulutukseenValmentavanOpiskeluoikeudenAmmatillisenLuvanLis
   (
     o: {
       osaAikaisuusjaksot?: Array<OsaAikaisuusJakso>
-      vaativanErityisenTuenErityinenTehtävä?: Array<Aikajakso>
-      ulkomaanjaksot?: Array<Ulkomaanjakso>
       vaativanErityisenTuenYhteydessäJärjestettäväMajoitus?: Array<Aikajakso>
       oikeuttaMaksuttomuuteenPidennetty?: Array<OikeuttaMaksuttomuuteenPidennetty>
-      vaikeastiVammainen?: Array<Aikajakso>
-      maksuttomuus?: Array<Maksuttomuus>
       vammainenJaAvustaja?: Array<Aikajakso>
-      majoitus?: Array<Aikajakso>
-      vankilaopetuksessa?: Array<Aikajakso>
       erityinenTuki?: Array<Aikajakso>
       koulutusvienti?: boolean
+      vaativanErityisenTuenErityinenTehtävä?: Array<Aikajakso>
+      ulkomaanjaksot?: Array<Ulkomaanjakso>
+      vaikeastiVammainen?: Array<Aikajakso>
+      maksuttomuus?: Array<Maksuttomuus>
+      majoitus?: Array<Aikajakso>
+      vankilaopetuksessa?: Array<Aikajakso>
       pidennettyPäättymispäivä?: boolean
       sisäoppilaitosmainenMajoitus?: Array<Aikajakso>
     } = {}

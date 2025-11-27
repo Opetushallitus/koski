@@ -1,10 +1,10 @@
 import { Koodistokoodiviite } from '../schema/Koodistokoodiviite'
 import { LocalizedString } from '../schema/LocalizedString'
-import { AktiivisetJaPäättyneetOpinnotOpiskeluoikeudenTila } from './AktiivisetJaPaattyneetOpinnotOpiskeluoikeudenTila'
 import { SisältäväOpiskeluoikeus } from './SisaltavaOpiskeluoikeus'
 import { Koulutustoimija } from './Koulutustoimija'
 import { AktiivisetJaPäättyneetOpinnotEBTutkinnonPäätasonSuoritus } from './AktiivisetJaPaattyneetOpinnotEBTutkinnonPaatasonSuoritus'
 import { Oppilaitos } from './Oppilaitos'
+import { AktiivisetJaPäättyneetOpinnotOpiskeluoikeudenTila } from './AktiivisetJaPaattyneetOpinnotOpiskeluoikeudenTila'
 
 /**
  * AktiivisetJaPäättyneetOpinnotEBTutkinnonOpiskeluoikeus
@@ -14,8 +14,6 @@ import { Oppilaitos } from './Oppilaitos'
 export type AktiivisetJaPäättyneetOpinnotEBTutkinnonOpiskeluoikeus = {
   $class: 'fi.oph.koski.aktiivisetjapaattyneetopinnot.AktiivisetJaPäättyneetOpinnotEBTutkinnonOpiskeluoikeus'
   tyyppi: Koodistokoodiviite<'opiskeluoikeudentyyppi', 'ebtutkinto'>
-  tila: AktiivisetJaPäättyneetOpinnotOpiskeluoikeudenTila
-  alkamispäivä?: string
   sisältyyOpiskeluoikeuteen?: SisältäväOpiskeluoikeus
   oid?: string
   koulutustoimija?: Koulutustoimija
@@ -23,13 +21,13 @@ export type AktiivisetJaPäättyneetOpinnotEBTutkinnonOpiskeluoikeus = {
   suoritukset: Array<AktiivisetJaPäättyneetOpinnotEBTutkinnonPäätasonSuoritus>
   päättymispäivä?: string
   oppilaitos?: Oppilaitos
+  tila: AktiivisetJaPäättyneetOpinnotOpiskeluoikeudenTila
+  alkamispäivä?: string
 }
 
 export const AktiivisetJaPäättyneetOpinnotEBTutkinnonOpiskeluoikeus = (
   o: {
     tyyppi?: Koodistokoodiviite<'opiskeluoikeudentyyppi', 'ebtutkinto'>
-    tila?: AktiivisetJaPäättyneetOpinnotOpiskeluoikeudenTila
-    alkamispäivä?: string
     sisältyyOpiskeluoikeuteen?: SisältäväOpiskeluoikeus
     oid?: string
     koulutustoimija?: Koulutustoimija
@@ -37,18 +35,20 @@ export const AktiivisetJaPäättyneetOpinnotEBTutkinnonOpiskeluoikeus = (
     suoritukset?: Array<AktiivisetJaPäättyneetOpinnotEBTutkinnonPäätasonSuoritus>
     päättymispäivä?: string
     oppilaitos?: Oppilaitos
+    tila?: AktiivisetJaPäättyneetOpinnotOpiskeluoikeudenTila
+    alkamispäivä?: string
   } = {}
 ): AktiivisetJaPäättyneetOpinnotEBTutkinnonOpiskeluoikeus => ({
   tyyppi: Koodistokoodiviite({
     koodiarvo: 'ebtutkinto',
     koodistoUri: 'opiskeluoikeudentyyppi'
   }),
-  tila: AktiivisetJaPäättyneetOpinnotOpiskeluoikeudenTila({
-    opiskeluoikeusjaksot: []
-  }),
   suoritukset: [],
   $class:
     'fi.oph.koski.aktiivisetjapaattyneetopinnot.AktiivisetJaPäättyneetOpinnotEBTutkinnonOpiskeluoikeus',
+  tila: AktiivisetJaPäättyneetOpinnotOpiskeluoikeudenTila({
+    opiskeluoikeusjaksot: []
+  }),
   ...o
 })
 

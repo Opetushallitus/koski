@@ -1,8 +1,8 @@
 import { Aikajakso } from './Aikajakso'
 import { OikeuttaMaksuttomuuteenPidennetty } from './OikeuttaMaksuttomuuteenPidennetty'
-import { Maksuttomuus } from './Maksuttomuus'
 import { Koodistokoodiviite } from './Koodistokoodiviite'
 import { LocalizedString } from './LocalizedString'
+import { Maksuttomuus } from './Maksuttomuus'
 
 /**
  * AikuistenPerusopetuksenOpiskeluoikeudenLisätiedot
@@ -16,14 +16,14 @@ export type AikuistenPerusopetuksenOpiskeluoikeudenLisätiedot = {
   majoitusetu?: Aikajakso
   oikeuttaMaksuttomuuteenPidennetty?: Array<OikeuttaMaksuttomuuteenPidennetty>
   oikeusMaksuttomaanAsuntolapaikkaan?: Aikajakso
-  vaikeastiVammainen?: Array<Aikajakso>
-  maksuttomuus?: Array<Maksuttomuus>
   ulkomailla?: Aikajakso
   vammainen?: Array<Aikajakso>
   tehostetunTuenPäätös?: Aikajakso
   tukimuodot?: Array<Koodistokoodiviite<'perusopetuksentukimuoto', string>>
   vuosiluokkiinSitoutumatonOpetus?: boolean
   sisäoppilaitosmainenMajoitus?: Array<Aikajakso>
+  vaikeastiVammainen?: Array<Aikajakso>
+  maksuttomuus?: Array<Maksuttomuus>
 }
 
 export const AikuistenPerusopetuksenOpiskeluoikeudenLisätiedot = (
@@ -33,14 +33,14 @@ export const AikuistenPerusopetuksenOpiskeluoikeudenLisätiedot = (
     majoitusetu?: Aikajakso
     oikeuttaMaksuttomuuteenPidennetty?: Array<OikeuttaMaksuttomuuteenPidennetty>
     oikeusMaksuttomaanAsuntolapaikkaan?: Aikajakso
-    vaikeastiVammainen?: Array<Aikajakso>
-    maksuttomuus?: Array<Maksuttomuus>
     ulkomailla?: Aikajakso
     vammainen?: Array<Aikajakso>
     tehostetunTuenPäätös?: Aikajakso
     tukimuodot?: Array<Koodistokoodiviite<'perusopetuksentukimuoto', string>>
     vuosiluokkiinSitoutumatonOpetus?: boolean
     sisäoppilaitosmainenMajoitus?: Array<Aikajakso>
+    vaikeastiVammainen?: Array<Aikajakso>
+    maksuttomuus?: Array<Maksuttomuus>
   } = {}
 ): AikuistenPerusopetuksenOpiskeluoikeudenLisätiedot => ({
   $class:

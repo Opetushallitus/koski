@@ -1,11 +1,11 @@
 import { Koodistokoodiviite } from './Koodistokoodiviite'
 import { LocalizedString } from './LocalizedString'
 import { Koulutussopimusjakso } from './Koulutussopimusjakso'
-import { Työssäoppimisjakso } from './Tyossaoppimisjakso'
 import { ValmaKoulutus } from './ValmaKoulutus'
 import { OrganisaatioWithOid } from './OrganisaatioWithOid'
 import { ValmaKoulutuksenOsanTaiOsanOsaAlueenSuoritus } from './ValmaKoulutuksenOsanTaiOsanOsaAlueenSuoritus'
 import { HenkilövahvistusValinnaisellaPaikkakunnalla } from './HenkilovahvistusValinnaisellaPaikkakunnalla'
+import { Työssäoppimisjakso } from './Tyossaoppimisjakso'
 
 /**
  * Laajennetun oppivelvollisuuden suoritus
@@ -20,12 +20,12 @@ export type ValmaKoulutuksenSuoritus = {
   suorituskieli: Koodistokoodiviite<'kieli', string>
   todistuksellaNäkyvätLisätiedot?: LocalizedString
   koulutussopimukset?: Array<Koulutussopimusjakso>
-  ryhmä?: string
-  työssäoppimisjaksot?: Array<Työssäoppimisjakso>
   koulutusmoduuli: ValmaKoulutus
   toimipiste: OrganisaatioWithOid
   osasuoritukset?: Array<ValmaKoulutuksenOsanTaiOsanOsaAlueenSuoritus>
   vahvistus?: HenkilövahvistusValinnaisellaPaikkakunnalla
+  ryhmä?: string
+  työssäoppimisjaksot?: Array<Työssäoppimisjakso>
 }
 
 export const ValmaKoulutuksenSuoritus = (o: {
@@ -34,12 +34,12 @@ export const ValmaKoulutuksenSuoritus = (o: {
   suorituskieli: Koodistokoodiviite<'kieli', string>
   todistuksellaNäkyvätLisätiedot?: LocalizedString
   koulutussopimukset?: Array<Koulutussopimusjakso>
-  ryhmä?: string
-  työssäoppimisjaksot?: Array<Työssäoppimisjakso>
   koulutusmoduuli?: ValmaKoulutus
   toimipiste: OrganisaatioWithOid
   osasuoritukset?: Array<ValmaKoulutuksenOsanTaiOsanOsaAlueenSuoritus>
   vahvistus?: HenkilövahvistusValinnaisellaPaikkakunnalla
+  ryhmä?: string
+  työssäoppimisjaksot?: Array<Työssäoppimisjakso>
 }): ValmaKoulutuksenSuoritus => ({
   tyyppi: Koodistokoodiviite({
     koodiarvo: 'valma',

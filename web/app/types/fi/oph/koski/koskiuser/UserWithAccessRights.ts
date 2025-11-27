@@ -13,13 +13,13 @@ export type UserWithAccessRights = {
   hasKelaUiAccess: boolean
   hasOneKoulutustoimijaWriteAccess: boolean
   hasAnyReadAccess: boolean
-  hasRaportitAccess: boolean
-  hasLähdejärjestelmäkytkennänPurkaminenAccess: boolean
   hasGlobalReadAccess: boolean
   hasWriteAccess: boolean
   hasHenkiloUiWriteAccess: boolean
   hasLocalizationWriteAccess: boolean
   isViranomainen: boolean
+  hasRaportitAccess: boolean
+  hasLähdejärjestelmäkytkennänPurkaminenAccess: boolean
 }
 
 export const UserWithAccessRights = (o: {
@@ -31,13 +31,13 @@ export const UserWithAccessRights = (o: {
   hasKelaUiAccess: boolean
   hasOneKoulutustoimijaWriteAccess: boolean
   hasAnyReadAccess: boolean
-  hasRaportitAccess: boolean
-  hasLähdejärjestelmäkytkennänPurkaminenAccess: boolean
   hasGlobalReadAccess: boolean
   hasWriteAccess: boolean
   hasHenkiloUiWriteAccess: boolean
   hasLocalizationWriteAccess: boolean
   isViranomainen: boolean
+  hasRaportitAccess: boolean
+  hasLähdejärjestelmäkytkennänPurkaminenAccess: boolean
 }): UserWithAccessRights => ({
   $class: 'fi.oph.koski.koskiuser.UserWithAccessRights',
   varhaiskasvatuksenJärjestäjäKoulutustoimijat: [],
