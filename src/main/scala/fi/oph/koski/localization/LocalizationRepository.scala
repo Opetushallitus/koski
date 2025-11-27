@@ -69,11 +69,13 @@ abstract class CachedLocalizationService(localizationConfig: LocalizationConfig)
     // avaimia suoraan lokalisaatiopalveluun, lisäämättä niitä koski-default-texst.json:iin.
     val dynamicTexts: Map[String, Finnish] = inLocalizationService
       .filter(d => d._1.startsWith("omadataoauth2") || d._1.startsWith("todistus"))
+      .view
       .mapValues(sanitize)
       .map { case (key, value) => (key, value.getOrElse {
         reportMissingLocalization(key)
         Finnish(key)
       }) }
+      .toMap
 
     dynamicTexts ++ cleanedUpUsingDefaultFinnishTexts
   }
