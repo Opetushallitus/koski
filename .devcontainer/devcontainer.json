@@ -33,25 +33,16 @@
     }
   },
 
-  // Use 'forwardPorts' to make a list of ports inside the container available locally
+  // Forward only the Koski application port
+  // Database ports are exposed by their services in docker-compose.yml
   "forwardPorts": [
-    7021,  // Koski application
-    5432,  // PostgreSQL
-    9200,  // OpenSearch
-    8000,  // DynamoDB
-    4566   // LocalStack
+    7021  // Koski application
   ],
 
   "portsAttributes": {
     "7021": {
       "label": "Koski App",
       "onAutoForward": "notify"
-    },
-    "5432": {
-      "label": "PostgreSQL"
-    },
-    "9200": {
-      "label": "OpenSearch"
     }
   },
 
