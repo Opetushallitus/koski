@@ -1,10 +1,10 @@
 import { Koodistokoodiviite } from './Koodistokoodiviite'
 import { LocalizedString } from './LocalizedString'
-import { OmanÄidinkielenOpinnotLaajuusVuosiviikkotunteina } from './OmanAidinkielenOpinnotLaajuusVuosiviikkotunteina'
 import { NuortenPerusopetus } from './NuortenPerusopetus'
 import { OrganisaatioWithOid } from './OrganisaatioWithOid'
 import { OppiaineenTaiToiminta_AlueenSuoritus } from './OppiaineenTaiToimintaAlueenSuoritus'
 import { HenkilövahvistusPaikkakunnalla } from './HenkilovahvistusPaikkakunnalla'
+import { OmanÄidinkielenOpinnotLaajuusVuosiviikkotunteina } from './OmanAidinkielenOpinnotLaajuusVuosiviikkotunteina'
 
 /**
  * Perusopetuksen koko oppimäärän suoritus. Nämä suoritukset näkyvät päättötodistuksella
@@ -15,8 +15,6 @@ export type NuortenPerusopetuksenOppimääränSuoritus = {
   $class: 'fi.oph.koski.schema.NuortenPerusopetuksenOppimääränSuoritus'
   muutSuorituskielet?: Array<Koodistokoodiviite<'kieli', string>>
   tyyppi: Koodistokoodiviite<'suorituksentyyppi', 'perusopetuksenoppimaara'>
-  tila?: Koodistokoodiviite<'suorituksentila', string>
-  omanÄidinkielenOpinnot?: OmanÄidinkielenOpinnotLaajuusVuosiviikkotunteina
   suorituskieli: Koodistokoodiviite<'kieli', string>
   suoritustapa: Koodistokoodiviite<'perusopetuksensuoritustapa', string>
   koulusivistyskieli?: Array<Koodistokoodiviite<'kieli', 'FI' | 'SV'>>
@@ -25,13 +23,13 @@ export type NuortenPerusopetuksenOppimääränSuoritus = {
   toimipiste: OrganisaatioWithOid
   osasuoritukset?: Array<OppiaineenTaiToiminta_AlueenSuoritus>
   vahvistus?: HenkilövahvistusPaikkakunnalla
+  tila?: Koodistokoodiviite<'suorituksentila', string>
+  omanÄidinkielenOpinnot?: OmanÄidinkielenOpinnotLaajuusVuosiviikkotunteina
 }
 
 export const NuortenPerusopetuksenOppimääränSuoritus = (o: {
   muutSuorituskielet?: Array<Koodistokoodiviite<'kieli', string>>
   tyyppi?: Koodistokoodiviite<'suorituksentyyppi', 'perusopetuksenoppimaara'>
-  tila?: Koodistokoodiviite<'suorituksentila', string>
-  omanÄidinkielenOpinnot?: OmanÄidinkielenOpinnotLaajuusVuosiviikkotunteina
   suorituskieli: Koodistokoodiviite<'kieli', string>
   suoritustapa: Koodistokoodiviite<'perusopetuksensuoritustapa', string>
   koulusivistyskieli?: Array<Koodistokoodiviite<'kieli', 'FI' | 'SV'>>
@@ -40,6 +38,8 @@ export const NuortenPerusopetuksenOppimääränSuoritus = (o: {
   toimipiste: OrganisaatioWithOid
   osasuoritukset?: Array<OppiaineenTaiToiminta_AlueenSuoritus>
   vahvistus?: HenkilövahvistusPaikkakunnalla
+  tila?: Koodistokoodiviite<'suorituksentila', string>
+  omanÄidinkielenOpinnot?: OmanÄidinkielenOpinnotLaajuusVuosiviikkotunteina
 }): NuortenPerusopetuksenOppimääränSuoritus => ({
   tyyppi: Koodistokoodiviite({
     koodiarvo: 'perusopetuksenoppimaara',

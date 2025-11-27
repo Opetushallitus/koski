@@ -1,11 +1,11 @@
 import { TelmaJaValmaArviointi } from './TelmaJaValmaArviointi'
-import { Näyttö } from './Naytto'
 import { Koodistokoodiviite } from './Koodistokoodiviite'
 import { LocalizedString } from './LocalizedString'
 import { AmmatillisenTutkinnonOsanLisätieto } from './AmmatillisenTutkinnonOsanLisatieto'
 import { ValmaKoulutuksenOsa } from './ValmaKoulutuksenOsa'
 import { OsaamisenTunnustaminen } from './OsaamisenTunnustaminen'
 import { HenkilövahvistusValinnaisellaTittelillä } from './HenkilovahvistusValinnaisellaTittelilla'
+import { Näyttö } from './Naytto'
 
 /**
  * Suoritettavan VALMA-koulutuksen osan / osien tiedot
@@ -15,34 +15,34 @@ import { HenkilövahvistusValinnaisellaTittelillä } from './HenkilovahvistusVal
 export type ValmaKoulutuksenOsanSuoritus = {
   $class: 'fi.oph.koski.schema.ValmaKoulutuksenOsanSuoritus'
   arviointi?: Array<TelmaJaValmaArviointi>
+  suorituskieli?: Koodistokoodiviite<'kieli', string>
+  lisätiedot?: Array<AmmatillisenTutkinnonOsanLisätieto>
+  koulutusmoduuli: ValmaKoulutuksenOsa
+  tunnustettu?: OsaamisenTunnustaminen
+  vahvistus?: HenkilövahvistusValinnaisellaTittelillä
   näyttö?: Näyttö
   tyyppi: Koodistokoodiviite<'suorituksentyyppi', 'valmakoulutuksenosa'>
   tila?: Koodistokoodiviite<'suorituksentila', string>
   alkamispäivä?: string
-  suorituskieli?: Koodistokoodiviite<'kieli', string>
-  lisätiedot?: Array<AmmatillisenTutkinnonOsanLisätieto>
-  koulutusmoduuli: ValmaKoulutuksenOsa
-  tunnustettu?: OsaamisenTunnustaminen
-  vahvistus?: HenkilövahvistusValinnaisellaTittelillä
 }
 
 export const ValmaKoulutuksenOsanSuoritus = (o: {
   arviointi?: Array<TelmaJaValmaArviointi>
-  näyttö?: Näyttö
-  tyyppi?: Koodistokoodiviite<'suorituksentyyppi', 'valmakoulutuksenosa'>
-  tila?: Koodistokoodiviite<'suorituksentila', string>
-  alkamispäivä?: string
   suorituskieli?: Koodistokoodiviite<'kieli', string>
   lisätiedot?: Array<AmmatillisenTutkinnonOsanLisätieto>
   koulutusmoduuli: ValmaKoulutuksenOsa
   tunnustettu?: OsaamisenTunnustaminen
   vahvistus?: HenkilövahvistusValinnaisellaTittelillä
+  näyttö?: Näyttö
+  tyyppi?: Koodistokoodiviite<'suorituksentyyppi', 'valmakoulutuksenosa'>
+  tila?: Koodistokoodiviite<'suorituksentila', string>
+  alkamispäivä?: string
 }): ValmaKoulutuksenOsanSuoritus => ({
+  $class: 'fi.oph.koski.schema.ValmaKoulutuksenOsanSuoritus',
   tyyppi: Koodistokoodiviite({
     koodiarvo: 'valmakoulutuksenosa',
     koodistoUri: 'suorituksentyyppi'
   }),
-  $class: 'fi.oph.koski.schema.ValmaKoulutuksenOsanSuoritus',
   ...o
 })
 

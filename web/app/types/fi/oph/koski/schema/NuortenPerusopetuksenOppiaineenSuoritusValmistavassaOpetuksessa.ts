@@ -15,14 +15,14 @@ export type NuortenPerusopetuksenOppiaineenSuoritusValmistavassaOpetuksessa = {
     'suorituksentyyppi',
     'perusopetuksenoppiaineperusopetukseenvalmistavassaopetuksessa'
   >
-  tila?: Koodistokoodiviite<'suorituksentila', string>
-  luokkaAste?: Koodistokoodiviite<'perusopetuksenluokkaaste', string>
   suorituskieli?: Koodistokoodiviite<'kieli', string>
   suoritustapa?: Koodistokoodiviite<
     'perusopetuksensuoritustapa',
     'erityinentutkinto'
   >
   koulutusmoduuli: NuortenPerusopetuksenOppiaine
+  tila?: Koodistokoodiviite<'suorituksentila', string>
+  luokkaAste?: Koodistokoodiviite<'perusopetuksenluokkaaste', string>
 }
 
 export const NuortenPerusopetuksenOppiaineenSuoritusValmistavassaOpetuksessa =
@@ -32,14 +32,14 @@ export const NuortenPerusopetuksenOppiaineenSuoritusValmistavassaOpetuksessa =
       'suorituksentyyppi',
       'perusopetuksenoppiaineperusopetukseenvalmistavassaopetuksessa'
     >
-    tila?: Koodistokoodiviite<'suorituksentila', string>
-    luokkaAste?: Koodistokoodiviite<'perusopetuksenluokkaaste', string>
     suorituskieli?: Koodistokoodiviite<'kieli', string>
     suoritustapa?: Koodistokoodiviite<
       'perusopetuksensuoritustapa',
       'erityinentutkinto'
     >
     koulutusmoduuli: NuortenPerusopetuksenOppiaine
+    tila?: Koodistokoodiviite<'suorituksentila', string>
+    luokkaAste?: Koodistokoodiviite<'perusopetuksenluokkaaste', string>
   }): NuortenPerusopetuksenOppiaineenSuoritusValmistavassaOpetuksessa => ({
     tyyppi: Koodistokoodiviite({
       koodiarvo:

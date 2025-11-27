@@ -16,9 +16,9 @@ export type ValtionhallinnonKielitutkinnonSuullisenKielitaidonOsakokeenSuoritus 
       'suorituksentyyppi',
       'valtionhallinnonkielitutkinnonosakoe'
     >
+    koulutusmoduuli: ValtionhallinnonSuullisenKielitaidonOsakoe
     tila?: Koodistokoodiviite<'suorituksentila', string>
     alkamispäivä?: string
-    koulutusmoduuli: ValtionhallinnonSuullisenKielitaidonOsakoe
   }
 
 export const ValtionhallinnonKielitutkinnonSuullisenKielitaidonOsakokeenSuoritus =
@@ -28,9 +28,9 @@ export const ValtionhallinnonKielitutkinnonSuullisenKielitaidonOsakokeenSuoritus
       'suorituksentyyppi',
       'valtionhallinnonkielitutkinnonosakoe'
     >
+    koulutusmoduuli: ValtionhallinnonSuullisenKielitaidonOsakoe
     tila?: Koodistokoodiviite<'suorituksentila', string>
     alkamispäivä?: string
-    koulutusmoduuli: ValtionhallinnonSuullisenKielitaidonOsakoe
   }): ValtionhallinnonKielitutkinnonSuullisenKielitaidonOsakokeenSuoritus => ({
     tyyppi: Koodistokoodiviite({
       koodiarvo: 'valtionhallinnonkielitutkinnonosakoe',

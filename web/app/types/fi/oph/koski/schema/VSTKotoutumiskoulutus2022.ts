@@ -23,11 +23,11 @@ export const VSTKotoutumiskoulutus2022 = (
     laajuus?: LaajuusOpintopisteissä
   } = {}
 ): VSTKotoutumiskoulutus2022 => ({
-  $class: 'fi.oph.koski.schema.VSTKotoutumiskoulutus2022',
   tunniste: Koodistokoodiviite({
     koodiarvo: '999910',
     koodistoUri: 'koulutus'
   }),
+  $class: 'fi.oph.koski.schema.VSTKotoutumiskoulutus2022',
   ...o
 })
 

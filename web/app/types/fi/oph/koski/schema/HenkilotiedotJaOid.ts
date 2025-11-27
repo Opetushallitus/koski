@@ -5,19 +5,19 @@
  */
 export type HenkilötiedotJaOid = {
   $class: 'fi.oph.koski.schema.HenkilötiedotJaOid'
-  sukunimi: string
-  oid: string
   kutsumanimi: string
   hetu?: string
   etunimet: string
+  sukunimi: string
+  oid: string
 }
 
 export const HenkilötiedotJaOid = (o: {
-  sukunimi: string
-  oid: string
   kutsumanimi: string
   hetu?: string
   etunimet: string
+  sukunimi: string
+  oid: string
 }): HenkilötiedotJaOid => ({
   $class: 'fi.oph.koski.schema.HenkilötiedotJaOid',
   ...o

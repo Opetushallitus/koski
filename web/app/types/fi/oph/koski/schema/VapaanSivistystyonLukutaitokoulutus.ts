@@ -23,11 +23,11 @@ export const VapaanSivistystyönLukutaitokoulutus = (
     laajuus?: LaajuusOpintopisteissä
   } = {}
 ): VapaanSivistystyönLukutaitokoulutus => ({
-  $class: 'fi.oph.koski.schema.VapaanSivistystyönLukutaitokoulutus',
   tunniste: Koodistokoodiviite({
     koodiarvo: '999911',
     koodistoUri: 'koulutus'
   }),
+  $class: 'fi.oph.koski.schema.VapaanSivistystyönLukutaitokoulutus',
   ...o
 })
 

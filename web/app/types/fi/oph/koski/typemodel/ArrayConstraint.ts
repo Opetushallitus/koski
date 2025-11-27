@@ -9,17 +9,17 @@ export type ArrayConstraint = {
   $class: 'fi.oph.koski.typemodel.ArrayConstraint'
   items: Constraint
   maxItems?: number
+  type: 'array'
   default?: any
   minItems?: number
-  type: 'array'
 }
 
 export const ArrayConstraint = (o: {
   items: Constraint
   maxItems?: number
+  type?: 'array'
   default?: any
   minItems?: number
-  type?: 'array'
 }): ArrayConstraint => ({
   type: 'array',
   $class: 'fi.oph.koski.typemodel.ArrayConstraint',

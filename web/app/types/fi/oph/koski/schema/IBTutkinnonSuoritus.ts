@@ -2,11 +2,11 @@ import { Koodistokoodiviite } from './Koodistokoodiviite'
 import { LocalizedString } from './LocalizedString'
 import { IBExtendedEssaySuoritus } from './IBExtendedEssaySuoritus'
 import { IBCASSuoritus } from './IBCASSuoritus'
-import { IBTheoryOfKnowledgeSuoritus } from './IBTheoryOfKnowledgeSuoritus'
-import { IBTutkinto } from './IBTutkinto'
 import { OrganisaatioWithOid } from './OrganisaatioWithOid'
 import { IBTutkinnonOppiaineenSuoritus } from './IBTutkinnonOppiaineenSuoritus'
 import { HenkilövahvistusPaikkakunnalla } from './HenkilovahvistusPaikkakunnalla'
+import { IBTheoryOfKnowledgeSuoritus } from './IBTheoryOfKnowledgeSuoritus'
+import { IBTutkinto } from './IBTutkinto'
 
 /**
  * Laajennetun oppivelvollisuuden suoritus
@@ -22,12 +22,12 @@ export type IBTutkinnonSuoritus = {
   creativityActionService?: IBCASSuoritus
   todistuksellaNäkyvätLisätiedot?: LocalizedString
   ryhmä?: string
-  lisäpisteet?: Koodistokoodiviite<'arviointiasteikkolisapisteetib', string>
-  theoryOfKnowledge?: IBTheoryOfKnowledgeSuoritus
-  koulutusmoduuli: IBTutkinto
   toimipiste: OrganisaatioWithOid
   osasuoritukset?: Array<IBTutkinnonOppiaineenSuoritus>
   vahvistus?: HenkilövahvistusPaikkakunnalla
+  lisäpisteet?: Koodistokoodiviite<'arviointiasteikkolisapisteetib', string>
+  theoryOfKnowledge?: IBTheoryOfKnowledgeSuoritus
+  koulutusmoduuli: IBTutkinto
 }
 
 export const IBTutkinnonSuoritus = (o: {
@@ -38,24 +38,24 @@ export const IBTutkinnonSuoritus = (o: {
   creativityActionService?: IBCASSuoritus
   todistuksellaNäkyvätLisätiedot?: LocalizedString
   ryhmä?: string
-  lisäpisteet?: Koodistokoodiviite<'arviointiasteikkolisapisteetib', string>
-  theoryOfKnowledge?: IBTheoryOfKnowledgeSuoritus
-  koulutusmoduuli?: IBTutkinto
   toimipiste: OrganisaatioWithOid
   osasuoritukset?: Array<IBTutkinnonOppiaineenSuoritus>
   vahvistus?: HenkilövahvistusPaikkakunnalla
+  lisäpisteet?: Koodistokoodiviite<'arviointiasteikkolisapisteetib', string>
+  theoryOfKnowledge?: IBTheoryOfKnowledgeSuoritus
+  koulutusmoduuli?: IBTutkinto
 }): IBTutkinnonSuoritus => ({
   tyyppi: Koodistokoodiviite({
     koodiarvo: 'ibtutkinto',
     koodistoUri: 'suorituksentyyppi'
   }),
+  $class: 'fi.oph.koski.schema.IBTutkinnonSuoritus',
   koulutusmoduuli: IBTutkinto({
     tunniste: Koodistokoodiviite({
       koodiarvo: '301102',
       koodistoUri: 'koulutus'
     })
   }),
-  $class: 'fi.oph.koski.schema.IBTutkinnonSuoritus',
   ...o
 })
 

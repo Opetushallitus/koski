@@ -1,11 +1,11 @@
 import { Koodistokoodiviite } from './Koodistokoodiviite'
 import { LocalizedString } from './LocalizedString'
 import { Koulutussopimusjakso } from './Koulutussopimusjakso'
-import { Työssäoppimisjakso } from './Tyossaoppimisjakso'
 import { TelmaKoulutus } from './TelmaKoulutus'
 import { OrganisaatioWithOid } from './OrganisaatioWithOid'
 import { TelmaKoulutuksenOsanSuoritus } from './TelmaKoulutuksenOsanSuoritus'
 import { HenkilövahvistusValinnaisellaPaikkakunnalla } from './HenkilovahvistusValinnaisellaPaikkakunnalla'
+import { Työssäoppimisjakso } from './Tyossaoppimisjakso'
 
 /**
  * Laajennetun oppivelvollisuuden suoritus
@@ -20,12 +20,12 @@ export type TelmaKoulutuksenSuoritus = {
   suorituskieli: Koodistokoodiviite<'kieli', string>
   todistuksellaNäkyvätLisätiedot?: LocalizedString
   koulutussopimukset?: Array<Koulutussopimusjakso>
-  ryhmä?: string
-  työssäoppimisjaksot?: Array<Työssäoppimisjakso>
   koulutusmoduuli: TelmaKoulutus
   toimipiste: OrganisaatioWithOid
   osasuoritukset?: Array<TelmaKoulutuksenOsanSuoritus>
   vahvistus?: HenkilövahvistusValinnaisellaPaikkakunnalla
+  ryhmä?: string
+  työssäoppimisjaksot?: Array<Työssäoppimisjakso>
 }
 
 export const TelmaKoulutuksenSuoritus = (o: {
@@ -34,12 +34,12 @@ export const TelmaKoulutuksenSuoritus = (o: {
   suorituskieli: Koodistokoodiviite<'kieli', string>
   todistuksellaNäkyvätLisätiedot?: LocalizedString
   koulutussopimukset?: Array<Koulutussopimusjakso>
-  ryhmä?: string
-  työssäoppimisjaksot?: Array<Työssäoppimisjakso>
   koulutusmoduuli?: TelmaKoulutus
   toimipiste: OrganisaatioWithOid
   osasuoritukset?: Array<TelmaKoulutuksenOsanSuoritus>
   vahvistus?: HenkilövahvistusValinnaisellaPaikkakunnalla
+  ryhmä?: string
+  työssäoppimisjaksot?: Array<Työssäoppimisjakso>
 }): TelmaKoulutuksenSuoritus => ({
   tyyppi: Koodistokoodiviite({
     koodiarvo: 'telma',
