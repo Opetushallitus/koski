@@ -44,9 +44,6 @@ class KoskiSpecificDatabaseFixtureCreator(application: KoskiApplication) extends
       }
     )
 
-    val validESHOpiskeluoikeus = updateFieldsAndValidateOpiskeluoikeus(ExamplesEuropeanSchoolOfHelsinki.opiskeluoikeus)
-
-    val hkiTallentaja = MockUsers.helsinkiTallentaja.toKoskiSpecificSession(application.käyttöoikeusRepository)
     List(
       (KoskiSpecificMockOppijat.organisaatioHistoria, validOpiskeluoikeus.copy(organisaatiohistoria = Some(AmmatillinenExampleData.opiskeluoikeudenOrganisaatioHistoria))),
       (
@@ -62,19 +59,6 @@ class KoskiSpecificDatabaseFixtureCreator(application: KoskiApplication) extends
         )
       ),
       (KoskiSpecificMockOppijat.tunnisteenKoodiarvoPoistettu, opiskeluoikeusJostaTunnisteenKoodiarvoPoistettu),
-      (KoskiSpecificMockOppijat.eskari, updateFieldsAndValidateOpiskeluoikeus(ostopalveluOpiskeluoikeus, hkiTallentaja)),
-      (KoskiSpecificMockOppijat.eskari, updateFieldsAndValidateOpiskeluoikeus(ostopalveluOpiskeluoikeus.copy(
-        suoritukset = List(päiväkotisuoritus(oppilaitos(päiväkotiMajakka))),
-        tila = NuortenPerusopetuksenOpiskeluoikeudenTila(
-          ostopalveluOpiskeluoikeus.tila.opiskeluoikeusjaksot.map(j => j.copy(alku = j.alku.minusDays(1)))
-        )
-      ), hkiTallentaja)),
-      (KoskiSpecificMockOppijat.eskari, updateFieldsAndValidateOpiskeluoikeus(ostopalveluOpiskeluoikeus.copy(
-        suoritukset = List(peruskoulusuoritus(oppilaitos(jyväskylänNormaalikoulu)).copy(vahvistus = None)),
-        tila = NuortenPerusopetuksenOpiskeluoikeudenTila(
-          ostopalveluOpiskeluoikeus.tila.opiskeluoikeusjaksot.map(j => j.copy(alku = date(2022, 6, 7)))
-        ),
-      ), hkiTallentaja)),
       (KoskiSpecificMockOppijat.rikkinäinenOpiskeluoikeus, MaksuttomuusRaporttiFixtures.opiskeluoikeusAmmatillinenMaksuttomuuttaPidennetty.copy(
         tyyppi = OpiskeluoikeudenTyyppi.ammatillinenkoulutus.copy(
           // Normaalisti validaattori täyttää nimen, nyt esitäytetään se itse. Jos tätä ei tehdä, esim. Koski
@@ -148,6 +132,19 @@ class KoskiSpecificDatabaseFixtureCreator(application: KoskiApplication) extends
       (KoskiSpecificMockOppijat.syntymäajallinen, AmmatillinenOpiskeluoikeusTestData.opiskeluoikeus(MockOrganisaatiot.stadinAmmattiopisto, versio = Some(11))),
       (KoskiSpecificMockOppijat.markkanen, AmmatillinenOpiskeluoikeusTestData.opiskeluoikeus(MockOrganisaatiot.omnia, versio = Some(11)).copy(ostettu = true)),
       (KoskiSpecificMockOppijat.eskari, ExamplesEsiopetus.esioppilas.tallennettavatOpiskeluoikeudet.head),
+      (KoskiSpecificMockOppijat.eskari, updateFieldsAndValidateOpiskeluoikeus(ostopalveluOpiskeluoikeus, MockUsers.helsinkiTallentaja.toKoskiSpecificSession(application.käyttöoikeusRepository))),
+      (KoskiSpecificMockOppijat.eskari, updateFieldsAndValidateOpiskeluoikeus(ostopalveluOpiskeluoikeus.copy(
+        suoritukset = List(päiväkotisuoritus(oppilaitos(päiväkotiMajakka))),
+        tila = NuortenPerusopetuksenOpiskeluoikeudenTila(
+          ostopalveluOpiskeluoikeus.tila.opiskeluoikeusjaksot.map(j => j.copy(alku = j.alku.minusDays(1)))
+        )
+      ), MockUsers.helsinkiTallentaja.toKoskiSpecificSession(application.käyttöoikeusRepository))),
+      (KoskiSpecificMockOppijat.eskari, updateFieldsAndValidateOpiskeluoikeus(ostopalveluOpiskeluoikeus.copy(
+        suoritukset = List(peruskoulusuoritus(oppilaitos(jyväskylänNormaalikoulu)).copy(vahvistus = None)),
+        tila = NuortenPerusopetuksenOpiskeluoikeudenTila(
+          ostopalveluOpiskeluoikeus.tila.opiskeluoikeusjaksot.map(j => j.copy(alku = date(2022, 6, 7)))
+        ),
+      ), MockUsers.helsinkiTallentaja.toKoskiSpecificSession(application.käyttöoikeusRepository))),
       (KoskiSpecificMockOppijat.eskariAikaisillaLisätiedoilla, ExamplesEsiopetus.esioppilasAikaisillaLisätiedoilla.tallennettavatOpiskeluoikeudet.head),
       (KoskiSpecificMockOppijat.ysiluokkalainen, ysinOpiskeluoikeusKesken),
       (KoskiSpecificMockOppijat.hetuton, ysinOpiskeluoikeusKesken),
@@ -354,8 +351,8 @@ class KoskiSpecificDatabaseFixtureCreator(application: KoskiApplication) extends
     )
   }
 
-  override def resetFixtures: Unit = {
-    super.resetFixtures
+  override def resetFixtures(skipInvalidOpiskeluoikeudet: Boolean): Unit = {
+    super.resetFixtures(skipInvalidOpiskeluoikeudet)
     peruutaSuostumusOpiskeluoikeudelta()
   }
 

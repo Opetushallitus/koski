@@ -8,7 +8,7 @@ import fi.oph.koski.koskiuser.KoskiSpecificSession
 import fi.oph.koski.koskiuser.Rooli.{OPHKATSELIJA, OPHPAAKAYTTAJA}
 import fi.oph.koski.log._
 import fi.oph.koski.massaluovutus.suorituspalvelu.opiskeluoikeus.SupaOpiskeluoikeus
-import fi.oph.koski.massaluovutus.{MassaluovutusQueryParameters, MassaluovutusQueryPriority, QueryResultWriter}
+import fi.oph.koski.massaluovutus.{MassaluovutusException, MassaluovutusQueryParameters, MassaluovutusQueryPriority, QueryResultWriter}
 import fi.oph.koski.schema.{KoskeenTallennettavaOpiskeluoikeus, KoskiSchema}
 
 import java.sql.Timestamp
@@ -77,7 +77,7 @@ trait SuorituspalveluQuery extends MassaluovutusQueryParameters with Logging {
         SupaOpiskeluoikeusO(oo, row.oppijaOid)
       case Left(errors) =>
         logger.warn(s"Error deserializing opiskeluoikeus: ${errors}")
-        None
+        throw new MassaluovutusException("Opiskeluoikeuden deserialisointi epäonnistui")
     }
   }
 

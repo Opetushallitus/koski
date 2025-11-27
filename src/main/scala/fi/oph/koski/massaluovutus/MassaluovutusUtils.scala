@@ -57,3 +57,5 @@ object  QueryFormat {
   val csvPartition = "text/x-csv-partition"
   val xlsx = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
 }
+
+class MassaluovutusException(message: String) extends Exception(message)
