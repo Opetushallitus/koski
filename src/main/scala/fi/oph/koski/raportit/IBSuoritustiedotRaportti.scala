@@ -415,7 +415,7 @@ object IBTutkinnonSuoritusRaportti extends IBSuoritustiedotRaporttiType {
 
   override def isOppiaine(osasuoritus: ROsasuoritusRow): Boolean = osasuoritus.suorituksenTyyppi == "iboppiaine" || osasuoritus.suorituksenTyyppi == "ibcore"
 
-  override def isKurssi(osasuoritus: ROsasuoritusRow): Boolean = osasuoritus.suorituksenTyyppi == "ibkurssi"
+  override def isKurssi(osasuoritus: ROsasuoritusRow): Boolean = osasuoritus.suorituksenTyyppi == "ibkurssi" || osasuoritus.suorituksenTyyppi == "ibcorekurssi"
 }
 
 object PreIBSuoritusRaportti extends IBSuoritustiedotRaporttiType {

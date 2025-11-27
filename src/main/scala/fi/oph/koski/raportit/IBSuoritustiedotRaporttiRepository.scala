@@ -52,7 +52,7 @@ case class IBSuoritustiedotRaporttiRepository(
       }
 
     val osasuoritukset = runDbSync(ROsasuoritukset.filter(_.päätasonSuoritusId inSet paatasonSuoritusIds).result, timeout = defaultTimeout)
-      .filter(osasuoritus => !osasuoritustenAikarajaus || arvioituAikavälillä(alku, loppu)(osasuoritus))
+      .filter(osasuoritus => !osasuoritustenAikarajaus || IBTutkinnonSuoritusRaportti.isOppiaine(osasuoritus) || PreIBSuoritusRaportti.isOppiaine(osasuoritus)  || arvioituAikavälillä(alku, loppu)(osasuoritus))
       .groupBy(_.päätasonSuoritusId)
 
     val henkilot = runDbSync(RHenkilöt.filter(_.oppijaOid inSet opiskeluoikeudet.map(_.oppijaOid).distinct).result, timeout = defaultTimeout).groupBy(_.oppijaOid).mapValues(_.head)
