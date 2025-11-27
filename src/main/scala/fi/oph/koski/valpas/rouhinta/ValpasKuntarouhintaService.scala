@@ -56,7 +56,7 @@ class ValpasKuntarouhintaService(application: KoskiApplication)
       ))
   }
 
-  private def rouhiOppivelvollisuuttaSuorittamattomatOppijanumerorekisteristä
+  def rouhiOppivelvollisuuttaSuorittamattomatOppijanumerorekisteristä
     (kunta: String)
   : Seq[ValpasRouhintaOppivelvollinen] = {
     timed("rouhiOppivelvollisuuttaSuorittamattomatOppijanumerorekisteristä") {
