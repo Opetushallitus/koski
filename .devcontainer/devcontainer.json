@@ -1,0 +1,89 @@
+{
+  "name": "Koski Development",
+  "dockerComposeFile": "docker-compose.yml",
+  "service": "dev",
+  "workspaceFolder": "/workspace",
+
+  // Features to add to the dev container
+  "features": {
+    "ghcr.io/devcontainers/features/common-utils:2": {
+      "installZsh": true,
+      "configureZshAsDefaultShell": true,
+      "username": "developer",
+      "userUid": "1000",
+      "userGid": "1000",
+      "upgradePackages": true
+    },
+    "ghcr.io/devcontainers/features/git:1": {
+      "version": "latest",
+      "ppa": true
+    },
+    "ghcr.io/devcontainers/features/docker-outside-of-docker:1": {
+      "version": "latest",
+      "enableNonRootDocker": "true",
+      "moby": "true"
+    },
+    "ghcr.io/devcontainers/features/java:1": {
+      "version": "11",
+      "installMaven": "true",
+      "mavenVersion": "3.9",
+      "installGradle": "false"
+    },
+    "ghcr.io/devcontainers/features/node:1": {
+      "version": "22",
+      "nodeGypDependencies": true,
+      "nvmVersion": "latest"
+    }
+  },
+
+  // Use 'forwardPorts' to make a list of ports inside the container available locally
+  "forwardPorts": [
+    7021,  // Koski application
+    5432,  // PostgreSQL
+    9200,  // OpenSearch
+    8000,  // DynamoDB
+    4566   // LocalStack
+  ],
+
+  "portsAttributes": {
+    "7021": {
+      "label": "Koski App",
+      "onAutoForward": "notify"
+    },
+    "5432": {
+      "label": "PostgreSQL"
+    },
+    "9200": {
+      "label": "OpenSearch"
+    }
+  },
+
+  // Use 'postCreateCommand' to run commands after the container is created
+  "postCreateCommand": "bash .devcontainer/post-create.sh",
+
+  // Use 'postStartCommand' to run commands each time the container starts
+  "postStartCommand": "docker compose -f docker-compose.yaml up -d",
+
+  // Comment out to connect as root instead
+  "remoteUser": "developer",
+
+  // Set environment variables
+  "remoteEnv": {
+    "JAVA_HOME": "/usr/local/sdkman/candidates/java/current",
+    "MAVEN_HOME": "/usr/local/sdkman/candidates/maven/current",
+    "PATH": "${containerEnv:PATH}:/usr/local/sdkman/candidates/maven/current/bin:/home/developer/.local/bin"
+  },
+
+  // Mount the Docker socket and persist shell history and Claude config
+  "mounts": [
+    "source=/var/run/docker.sock,target=/var/run/docker.sock,type=bind",
+    "source=koski-shell-history,target=/commandhistory,type=volume",
+    "source=koski-claude-config,target=/home/developer/.config/claude,type=volume",
+    "source=koski-pnpm-cache,target=/home/developer/.local/share/pnpm,type=volume"
+  ],
+
+  // Additional volume definitions
+  "additionalProperties": {
+    "com.jetbrains.gateway.devcontainer.cloneSources": true
+  }
+}

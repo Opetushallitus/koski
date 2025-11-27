@@ -1,0 +1,40 @@
+version: '3.8'
+
+services:
+  dev:
+    build:
+      context: .
+      dockerfile: Dockerfile
+
+    volumes:
+      # Named volume for source code (for Clone Sources mode)
+      # JetBrains Gateway will clone the repo into this volume
+      - koski-workspace:/workspace
+      # Persist Maven cache
+      - koski-maven-cache:/home/developer/.m2
+
+    # Overrides default command so things don't shut down after the process ends.
+    command: sleep infinity
+
+    # Use host network mode to access services running on host
+    network_mode: host
+
+    # Increase shared memory size for browser operations
+    shm_size: '2gb'
+
+    # Add capabilities for browser support
+    cap_add:
+      - SYS_ADMIN
+
+    security_opt:
+      - seccomp:unconfined
+
+    environment:
+      # Display settings for headless browser
+      - DISPLAY=:99
+      # Playwright/Puppeteer settings
+      - PLAYWRIGHT_BROWSERS_PATH=/ms-playwright
+
+volumes:
+  koski-workspace:
+  koski-maven-cache:
