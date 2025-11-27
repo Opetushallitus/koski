@@ -20,7 +20,7 @@ trait HttpSpecification extends HttpTester with TestEnvironment with Assertions 
     }
   }
 
-  def resetFixturesIgnoreInvalidOpiskeluoikeudet(): Unit = {
+  def resetFixturesSkipInvalidOpiskeluoikeudet(): Unit = {
     post("fixtures/reset", Seq(("skipInvalidOpiskeluoikeudet", "true")), authHeaders()) {
       verifyResponseStatus(200, Nil)
     }
