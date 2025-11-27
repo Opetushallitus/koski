@@ -58,8 +58,8 @@
   // Use 'postCreateCommand' to run commands after the container is created
   "postCreateCommand": "bash .devcontainer/post-create.sh",
 
-  // Use 'postStartCommand' to run commands each time the container starts
-  "postStartCommand": "make docker-dbs-arm64",
+  // Note: Database services (postgres, opensearch, dynamodb, localstack) are defined
+  // in docker-compose.yml and will start automatically with the dev container
 
   // Comment out to connect as root instead
   "remoteUser": "vscode",

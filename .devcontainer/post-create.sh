@@ -46,6 +46,10 @@ if [ -f ~/.zshrc ] && ! grep -q "start-xvfb.sh" ~/.zshrc; then
     echo '/usr/local/bin/start-xvfb.sh' >> ~/.zshrc
 fi
 
+# Update npm to latest version
+echo "Updating npm..."
+npm install -g npm@latest
+
 # Install pnpm globally (Node.js is available now via features)
 echo "Installing pnpm..."
 npm install -g pnpm
