@@ -52,8 +52,8 @@ npm install -g pnpm
 
 # Install pnpm dependencies for web and valpas-web
 echo "Installing frontend dependencies..."
-cd /workspace/koski/web && pnpm install
-cd /workspace/koski/valpas-web && pnpm install
+cd /workspace/koski/web && pnpm install || echo "Warning: Failed to install web dependencies"
+cd /workspace/koski/valpas-web && pnpm install || echo "Warning: Failed to install valpas-web dependencies"
 
 # Install Playwright browsers (for integration tests)
 echo "Installing Playwright browsers..."

@@ -2,7 +2,7 @@
   "name": "Koski Development",
   "dockerComposeFile": "docker-compose.yml",
   "service": "dev",
-  "workspaceFolder": "/workspace",
+  "workspaceFolder": "/workspace/koski",
 
   // Features to add to the dev container
   "features": {
