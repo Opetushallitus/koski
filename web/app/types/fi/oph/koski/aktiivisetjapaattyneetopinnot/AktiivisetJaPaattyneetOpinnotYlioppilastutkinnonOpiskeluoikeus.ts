@@ -1,9 +1,9 @@
 import { Koodistokoodiviite } from '../schema/Koodistokoodiviite'
 import { LocalizedString } from '../schema/LocalizedString'
-import { AktiivisetJaPäättyneetOpinnotOpiskeluoikeudenTila } from './AktiivisetJaPaattyneetOpinnotOpiskeluoikeudenTila'
 import { Koulutustoimija } from './Koulutustoimija'
 import { AktiivisetJaPäättyneetOpinnotYlioppilastutkinnonPäätasonSuoritus } from './AktiivisetJaPaattyneetOpinnotYlioppilastutkinnonPaatasonSuoritus'
 import { Oppilaitos } from './Oppilaitos'
+import { AktiivisetJaPäättyneetOpinnotOpiskeluoikeudenTila } from './AktiivisetJaPaattyneetOpinnotOpiskeluoikeudenTila'
 
 /**
  * Ylioppilastutkinnon opiskeluoikeus
@@ -13,35 +13,35 @@ import { Oppilaitos } from './Oppilaitos'
 export type AktiivisetJaPäättyneetOpinnotYlioppilastutkinnonOpiskeluoikeus = {
   $class: 'fi.oph.koski.aktiivisetjapaattyneetopinnot.AktiivisetJaPäättyneetOpinnotYlioppilastutkinnonOpiskeluoikeus'
   tyyppi: Koodistokoodiviite<'opiskeluoikeudentyyppi', 'ylioppilastutkinto'>
-  tila: AktiivisetJaPäättyneetOpinnotOpiskeluoikeudenTila
-  alkamispäivä?: string
   koulutustoimija?: Koulutustoimija
   suoritukset: Array<AktiivisetJaPäättyneetOpinnotYlioppilastutkinnonPäätasonSuoritus>
   päättymispäivä?: string
   oppilaitos?: Oppilaitos
+  tila: AktiivisetJaPäättyneetOpinnotOpiskeluoikeudenTila
+  alkamispäivä?: string
 }
 
 export const AktiivisetJaPäättyneetOpinnotYlioppilastutkinnonOpiskeluoikeus = (
   o: {
     tyyppi?: Koodistokoodiviite<'opiskeluoikeudentyyppi', 'ylioppilastutkinto'>
-    tila?: AktiivisetJaPäättyneetOpinnotOpiskeluoikeudenTila
-    alkamispäivä?: string
     koulutustoimija?: Koulutustoimija
     suoritukset?: Array<AktiivisetJaPäättyneetOpinnotYlioppilastutkinnonPäätasonSuoritus>
     päättymispäivä?: string
     oppilaitos?: Oppilaitos
+    tila?: AktiivisetJaPäättyneetOpinnotOpiskeluoikeudenTila
+    alkamispäivä?: string
   } = {}
 ): AktiivisetJaPäättyneetOpinnotYlioppilastutkinnonOpiskeluoikeus => ({
   tyyppi: Koodistokoodiviite({
     koodiarvo: 'ylioppilastutkinto',
     koodistoUri: 'opiskeluoikeudentyyppi'
   }),
-  tila: AktiivisetJaPäättyneetOpinnotOpiskeluoikeudenTila({
-    opiskeluoikeusjaksot: []
-  }),
   suoritukset: [],
   $class:
     'fi.oph.koski.aktiivisetjapaattyneetopinnot.AktiivisetJaPäättyneetOpinnotYlioppilastutkinnonOpiskeluoikeus',
+  tila: AktiivisetJaPäättyneetOpinnotOpiskeluoikeudenTila({
+    opiskeluoikeusjaksot: []
+  }),
   ...o
 })
 

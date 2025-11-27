@@ -1,9 +1,9 @@
 import { Koodistokoodiviite } from './Koodistokoodiviite'
 import { LocalizedString } from './LocalizedString'
-import { Ylioppilastutkinto } from './Ylioppilastutkinto'
 import { OrganisaatioWithOid } from './OrganisaatioWithOid'
 import { YlioppilastutkinnonKokeenSuoritus } from './YlioppilastutkinnonKokeenSuoritus'
 import { Organisaatiovahvistus } from './Organisaatiovahvistus'
+import { Ylioppilastutkinto } from './Ylioppilastutkinto'
 
 /**
  * YlioppilastutkinnonSuoritus
@@ -15,22 +15,22 @@ export type YlioppilastutkinnonSuoritus = {
   tyyppi: Koodistokoodiviite<'suorituksentyyppi', 'ylioppilastutkinto'>
   tila?: Koodistokoodiviite<'suorituksentila', string>
   koulusivistyskieli?: Array<Koodistokoodiviite<'kieli', 'FI' | 'SV'>>
-  pakollisetKokeetSuoritettu: boolean
-  koulutusmoduuli: Ylioppilastutkinto
   toimipiste: OrganisaatioWithOid
   osasuoritukset?: Array<YlioppilastutkinnonKokeenSuoritus>
   vahvistus?: Organisaatiovahvistus
+  pakollisetKokeetSuoritettu: boolean
+  koulutusmoduuli: Ylioppilastutkinto
 }
 
 export const YlioppilastutkinnonSuoritus = (o: {
   tyyppi?: Koodistokoodiviite<'suorituksentyyppi', 'ylioppilastutkinto'>
   tila?: Koodistokoodiviite<'suorituksentila', string>
   koulusivistyskieli?: Array<Koodistokoodiviite<'kieli', 'FI' | 'SV'>>
-  pakollisetKokeetSuoritettu: boolean
-  koulutusmoduuli?: Ylioppilastutkinto
   toimipiste: OrganisaatioWithOid
   osasuoritukset?: Array<YlioppilastutkinnonKokeenSuoritus>
   vahvistus?: Organisaatiovahvistus
+  pakollisetKokeetSuoritettu: boolean
+  koulutusmoduuli?: Ylioppilastutkinto
 }): YlioppilastutkinnonSuoritus => ({
   tyyppi: Koodistokoodiviite({
     koodiarvo: 'ylioppilastutkinto',

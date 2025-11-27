@@ -10,21 +10,21 @@ export type Koulutussopimusjakso = {
   $class: 'fi.oph.koski.schema.Koulutussopimusjakso'
   työssäoppimispaikka?: LocalizedString
   työssäoppimispaikanYTunnus?: string
-  paikkakunta: Koodistokoodiviite<'kunta', string>
-  loppu?: string
   maa: Koodistokoodiviite<'maatjavaltiot2', string>
   alku: string
   työtehtävät?: LocalizedString
+  paikkakunta: Koodistokoodiviite<'kunta', string>
+  loppu?: string
 }
 
 export const Koulutussopimusjakso = (o: {
   työssäoppimispaikka?: LocalizedString
   työssäoppimispaikanYTunnus?: string
-  paikkakunta: Koodistokoodiviite<'kunta', string>
-  loppu?: string
   maa: Koodistokoodiviite<'maatjavaltiot2', string>
   alku: string
   työtehtävät?: LocalizedString
+  paikkakunta: Koodistokoodiviite<'kunta', string>
+  loppu?: string
 }): Koulutussopimusjakso => ({
   $class: 'fi.oph.koski.schema.Koulutussopimusjakso',
   ...o

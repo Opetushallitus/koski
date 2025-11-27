@@ -1,14 +1,14 @@
 import { Koodistokoodiviite } from './Koodistokoodiviite'
 import { LocalizedString } from './LocalizedString'
-import { AmmatillinenOpiskeluoikeudenTila } from './AmmatillinenOpiskeluoikeudenTila'
 import { OpiskeluoikeudenOrganisaatiohistoria } from './OpiskeluoikeudenOrganisaatiohistoria'
 import { SisältäväOpiskeluoikeus } from './SisaltavaOpiskeluoikeus'
-import { Koulutustoimija } from './Koulutustoimija'
-import { AmmatillisenOpiskeluoikeudenLisätiedot } from './AmmatillisenOpiskeluoikeudenLisatiedot'
 import { AmmatillinenPäätasonSuoritus } from './AmmatillinenPaatasonSuoritus'
-import { LähdejärjestelmäId } from './LahdejarjestelmaId'
 import { LähdejärjestelmäkytkennänPurkaminen } from './LahdejarjestelmakytkennanPurkaminen'
 import { Oppilaitos } from './Oppilaitos'
+import { AmmatillinenOpiskeluoikeudenTila } from './AmmatillinenOpiskeluoikeudenTila'
+import { Koulutustoimija } from './Koulutustoimija'
+import { AmmatillisenOpiskeluoikeudenLisätiedot } from './AmmatillisenOpiskeluoikeudenLisatiedot'
+import { LähdejärjestelmäId } from './LahdejarjestelmaId'
 
 /**
  * Ammatillisen koulutuksen opiskeluoikeus
@@ -18,22 +18,22 @@ import { Oppilaitos } from './Oppilaitos'
 export type AmmatillinenOpiskeluoikeus = {
   $class: 'fi.oph.koski.schema.AmmatillinenOpiskeluoikeus'
   tyyppi: Koodistokoodiviite<'opiskeluoikeudentyyppi', 'ammatillinenkoulutus'>
-  tila: AmmatillinenOpiskeluoikeudenTila
-  alkamispäivä?: string
   organisaatiohistoria?: Array<OpiskeluoikeudenOrganisaatiohistoria>
   sisältyyOpiskeluoikeuteen?: SisältäväOpiskeluoikeus
   oid?: string
-  koulutustoimija?: Koulutustoimija
-  lisätiedot?: AmmatillisenOpiskeluoikeudenLisätiedot
   versionumero?: number
   suoritukset: Array<AmmatillinenPäätasonSuoritus>
   aikaleima?: string
   päättymispäivä?: string
-  lähdejärjestelmänId?: LähdejärjestelmäId
-  arvioituPäättymispäivä?: string
   ostettu: boolean
   lähdejärjestelmäkytkentäPurettu?: LähdejärjestelmäkytkennänPurkaminen
   oppilaitos?: Oppilaitos
+  tila: AmmatillinenOpiskeluoikeudenTila
+  alkamispäivä?: string
+  koulutustoimija?: Koulutustoimija
+  lisätiedot?: AmmatillisenOpiskeluoikeudenLisätiedot
+  lähdejärjestelmänId?: LähdejärjestelmäId
+  arvioituPäättymispäivä?: string
 }
 
 export const AmmatillinenOpiskeluoikeus = (
@@ -42,30 +42,30 @@ export const AmmatillinenOpiskeluoikeus = (
       'opiskeluoikeudentyyppi',
       'ammatillinenkoulutus'
     >
-    tila?: AmmatillinenOpiskeluoikeudenTila
-    alkamispäivä?: string
     organisaatiohistoria?: Array<OpiskeluoikeudenOrganisaatiohistoria>
     sisältyyOpiskeluoikeuteen?: SisältäväOpiskeluoikeus
     oid?: string
-    koulutustoimija?: Koulutustoimija
-    lisätiedot?: AmmatillisenOpiskeluoikeudenLisätiedot
     versionumero?: number
     suoritukset?: Array<AmmatillinenPäätasonSuoritus>
     aikaleima?: string
     päättymispäivä?: string
-    lähdejärjestelmänId?: LähdejärjestelmäId
-    arvioituPäättymispäivä?: string
     ostettu?: boolean
     lähdejärjestelmäkytkentäPurettu?: LähdejärjestelmäkytkennänPurkaminen
     oppilaitos?: Oppilaitos
+    tila?: AmmatillinenOpiskeluoikeudenTila
+    alkamispäivä?: string
+    koulutustoimija?: Koulutustoimija
+    lisätiedot?: AmmatillisenOpiskeluoikeudenLisätiedot
+    lähdejärjestelmänId?: LähdejärjestelmäId
+    arvioituPäättymispäivä?: string
   } = {}
 ): AmmatillinenOpiskeluoikeus => ({
   tyyppi: Koodistokoodiviite({
     koodiarvo: 'ammatillinenkoulutus',
     koodistoUri: 'opiskeluoikeudentyyppi'
   }),
-  tila: AmmatillinenOpiskeluoikeudenTila({ opiskeluoikeusjaksot: [] }),
   suoritukset: [],
+  tila: AmmatillinenOpiskeluoikeudenTila({ opiskeluoikeusjaksot: [] }),
   $class: 'fi.oph.koski.schema.AmmatillinenOpiskeluoikeus',
   ostettu: false,
   ...o

@@ -1,12 +1,12 @@
-import { Järjestämismuotojakso } from './Jarjestamismuotojakso'
-import { Koodistokoodiviite } from './Koodistokoodiviite'
 import { LocalizedString } from './LocalizedString'
 import { Koulutussopimusjakso } from './Koulutussopimusjakso'
-import { Työssäoppimisjakso } from './Tyossaoppimisjakso'
 import { AmmatillinenTutkintoKoulutus } from './AmmatillinenTutkintoKoulutus'
 import { OrganisaatioWithOid } from './OrganisaatioWithOid'
 import { OsittaisenAmmatillisenTutkinnonOsanSuoritus } from './OsittaisenAmmatillisenTutkinnonOsanSuoritus'
 import { OsaamisenHankkimistapajakso } from './OsaamisenHankkimistapajakso'
+import { Järjestämismuotojakso } from './Jarjestamismuotojakso'
+import { Koodistokoodiviite } from './Koodistokoodiviite'
+import { Työssäoppimisjakso } from './Tyossaoppimisjakso'
 import { Osaamisalajakso } from './Osaamisalajakso'
 import { HenkilövahvistusValinnaisellaPaikkakunnalla } from './HenkilovahvistusValinnaisellaPaikkakunnalla'
 
@@ -18,6 +18,13 @@ import { HenkilövahvistusValinnaisellaPaikkakunnalla } from './Henkilovahvistus
  */
 export type AmmatillisenTutkinnonOsittainenSuoritus = {
   $class: 'fi.oph.koski.schema.AmmatillisenTutkinnonOsittainenSuoritus'
+  keskiarvoSisältääMukautettujaArvosanoja?: boolean
+  todistuksellaNäkyvätLisätiedot?: LocalizedString
+  koulutussopimukset?: Array<Koulutussopimusjakso>
+  koulutusmoduuli: AmmatillinenTutkintoKoulutus
+  toimipiste: OrganisaatioWithOid
+  osasuoritukset?: Array<OsittaisenAmmatillisenTutkinnonOsanSuoritus>
+  osaamisenHankkimistavat?: Array<OsaamisenHankkimistapajakso>
   korotettuKeskiarvoSisältääMukautettujaArvosanoja?: boolean
   toinenTutkintonimike: boolean
   järjestämismuodot?: Array<Järjestämismuotojakso>
@@ -31,23 +38,23 @@ export type AmmatillisenTutkinnonOsittainenSuoritus = {
   alkamispäivä?: string
   suorituskieli: Koodistokoodiviite<'kieli', string>
   toinenOsaamisala: boolean
-  keskiarvoSisältääMukautettujaArvosanoja?: boolean
   korotettuOpiskeluoikeusOid?: string
   korotettuKeskiarvo?: number
   suoritustapa: Koodistokoodiviite<'ammatillisentutkinnonsuoritustapa', string>
-  todistuksellaNäkyvätLisätiedot?: LocalizedString
-  koulutussopimukset?: Array<Koulutussopimusjakso>
   ryhmä?: string
   työssäoppimisjaksot?: Array<Työssäoppimisjakso>
-  koulutusmoduuli: AmmatillinenTutkintoKoulutus
-  toimipiste: OrganisaatioWithOid
-  osasuoritukset?: Array<OsittaisenAmmatillisenTutkinnonOsanSuoritus>
-  osaamisenHankkimistavat?: Array<OsaamisenHankkimistapajakso>
   osaamisala?: Array<Osaamisalajakso>
   vahvistus?: HenkilövahvistusValinnaisellaPaikkakunnalla
 }
 
 export const AmmatillisenTutkinnonOsittainenSuoritus = (o: {
+  keskiarvoSisältääMukautettujaArvosanoja?: boolean
+  todistuksellaNäkyvätLisätiedot?: LocalizedString
+  koulutussopimukset?: Array<Koulutussopimusjakso>
+  koulutusmoduuli: AmmatillinenTutkintoKoulutus
+  toimipiste: OrganisaatioWithOid
+  osasuoritukset?: Array<OsittaisenAmmatillisenTutkinnonOsanSuoritus>
+  osaamisenHankkimistavat?: Array<OsaamisenHankkimistapajakso>
   korotettuKeskiarvoSisältääMukautettujaArvosanoja?: boolean
   toinenTutkintonimike?: boolean
   järjestämismuodot?: Array<Järjestämismuotojakso>
@@ -61,28 +68,21 @@ export const AmmatillisenTutkinnonOsittainenSuoritus = (o: {
   alkamispäivä?: string
   suorituskieli: Koodistokoodiviite<'kieli', string>
   toinenOsaamisala?: boolean
-  keskiarvoSisältääMukautettujaArvosanoja?: boolean
   korotettuOpiskeluoikeusOid?: string
   korotettuKeskiarvo?: number
   suoritustapa: Koodistokoodiviite<'ammatillisentutkinnonsuoritustapa', string>
-  todistuksellaNäkyvätLisätiedot?: LocalizedString
-  koulutussopimukset?: Array<Koulutussopimusjakso>
   ryhmä?: string
   työssäoppimisjaksot?: Array<Työssäoppimisjakso>
-  koulutusmoduuli: AmmatillinenTutkintoKoulutus
-  toimipiste: OrganisaatioWithOid
-  osasuoritukset?: Array<OsittaisenAmmatillisenTutkinnonOsanSuoritus>
-  osaamisenHankkimistavat?: Array<OsaamisenHankkimistapajakso>
   osaamisala?: Array<Osaamisalajakso>
   vahvistus?: HenkilövahvistusValinnaisellaPaikkakunnalla
 }): AmmatillisenTutkinnonOsittainenSuoritus => ({
+  toinenOsaamisala: false,
+  $class: 'fi.oph.koski.schema.AmmatillisenTutkinnonOsittainenSuoritus',
   toinenTutkintonimike: false,
   tyyppi: Koodistokoodiviite({
     koodiarvo: 'ammatillinentutkintoosittainen',
     koodistoUri: 'suorituksentyyppi'
   }),
-  toinenOsaamisala: false,
-  $class: 'fi.oph.koski.schema.AmmatillisenTutkinnonOsittainenSuoritus',
   ...o
 })
 

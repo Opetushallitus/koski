@@ -29,11 +29,11 @@ export const TanssinOpintotaso = (
     koodiarvo: 'tanssi',
     koodistoUri: 'taiteenperusopetustaiteenala'
   }),
-  $class: 'fi.oph.koski.schema.TanssinOpintotaso',
   tunniste: Koodistokoodiviite({
     koodiarvo: '999907',
     koodistoUri: 'koulutus'
   }),
+  $class: 'fi.oph.koski.schema.TanssinOpintotaso',
   ...o
 })
 

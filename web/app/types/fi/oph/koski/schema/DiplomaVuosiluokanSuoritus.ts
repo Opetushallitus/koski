@@ -16,14 +16,14 @@ export type DiplomaVuosiluokanSuoritus = {
     'suorituksentyyppi',
     'internationalschooldiplomavuosiluokka'
   >
-  tila?: Koodistokoodiviite<'suorituksentila', string>
-  alkamispäivä?: string
   suorituskieli: Koodistokoodiviite<'kieli', string>
   luokka?: string
   koulutusmoduuli: DiplomaLuokkaAste
   toimipiste: OrganisaatioWithOid
   osasuoritukset?: Array<DiplomaIBOppiaineenSuoritus>
   vahvistus?: HenkilövahvistusPaikkakunnalla
+  tila?: Koodistokoodiviite<'suorituksentila', string>
+  alkamispäivä?: string
 }
 
 export const DiplomaVuosiluokanSuoritus = (o: {
@@ -31,14 +31,14 @@ export const DiplomaVuosiluokanSuoritus = (o: {
     'suorituksentyyppi',
     'internationalschooldiplomavuosiluokka'
   >
-  tila?: Koodistokoodiviite<'suorituksentila', string>
-  alkamispäivä?: string
   suorituskieli: Koodistokoodiviite<'kieli', string>
   luokka?: string
   koulutusmoduuli: DiplomaLuokkaAste
   toimipiste: OrganisaatioWithOid
   osasuoritukset?: Array<DiplomaIBOppiaineenSuoritus>
   vahvistus?: HenkilövahvistusPaikkakunnalla
+  tila?: Koodistokoodiviite<'suorituksentila', string>
+  alkamispäivä?: string
 }): DiplomaVuosiluokanSuoritus => ({
   tyyppi: Koodistokoodiviite({
     koodiarvo: 'internationalschooldiplomavuosiluokka',

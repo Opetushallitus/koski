@@ -10,26 +10,26 @@ import { LocalizedString } from './LocalizedString'
 export type TäydellisetHenkilötiedot = {
   $class: 'fi.oph.koski.schema.TäydellisetHenkilötiedot'
   äidinkieli?: Koodistokoodiviite<'kieli', string>
-  sukunimi: string
-  oid: string
   syntymäaika?: string
   kutsumanimi: string
   kansalaisuus?: Array<Koodistokoodiviite<'maatjavaltiot2', string>>
   turvakielto?: boolean
   hetu?: string
   etunimet: string
+  sukunimi: string
+  oid: string
 }
 
 export const TäydellisetHenkilötiedot = (o: {
   äidinkieli?: Koodistokoodiviite<'kieli', string>
-  sukunimi: string
-  oid: string
   syntymäaika?: string
   kutsumanimi: string
   kansalaisuus?: Array<Koodistokoodiviite<'maatjavaltiot2', string>>
   turvakielto?: boolean
   hetu?: string
   etunimet: string
+  sukunimi: string
+  oid: string
 }): TäydellisetHenkilötiedot => ({
   $class: 'fi.oph.koski.schema.TäydellisetHenkilötiedot',
   ...o

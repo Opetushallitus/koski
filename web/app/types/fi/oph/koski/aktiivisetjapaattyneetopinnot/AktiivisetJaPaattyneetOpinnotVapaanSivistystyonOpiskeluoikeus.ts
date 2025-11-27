@@ -1,9 +1,9 @@
 import { Koodistokoodiviite } from '../schema/Koodistokoodiviite'
 import { LocalizedString } from '../schema/LocalizedString'
-import { AktiivisetJaPäättyneetOpinnotOpiskeluoikeudenTila } from './AktiivisetJaPaattyneetOpinnotOpiskeluoikeudenTila'
 import { Koulutustoimija } from './Koulutustoimija'
 import { AktiivisetJaPäättyneetOpinnotVapaanSivistystyönPäätasonSuoritus } from './AktiivisetJaPaattyneetOpinnotVapaanSivistystyonPaatasonSuoritus'
 import { Oppilaitos } from './Oppilaitos'
+import { AktiivisetJaPäättyneetOpinnotOpiskeluoikeudenTila } from './AktiivisetJaPaattyneetOpinnotOpiskeluoikeudenTila'
 
 /**
  * AktiivisetJaPäättyneetOpinnotVapaanSivistystyönOpiskeluoikeus
@@ -16,14 +16,14 @@ export type AktiivisetJaPäättyneetOpinnotVapaanSivistystyönOpiskeluoikeus = {
     'opiskeluoikeudentyyppi',
     'vapaansivistystyonkoulutus'
   >
-  tila: AktiivisetJaPäättyneetOpinnotOpiskeluoikeudenTila
-  alkamispäivä?: string
   oid?: string
   koulutustoimija?: Koulutustoimija
   versionumero?: number
   suoritukset: Array<AktiivisetJaPäättyneetOpinnotVapaanSivistystyönPäätasonSuoritus>
   päättymispäivä?: string
   oppilaitos?: Oppilaitos
+  tila: AktiivisetJaPäättyneetOpinnotOpiskeluoikeudenTila
+  alkamispäivä?: string
 }
 
 export const AktiivisetJaPäättyneetOpinnotVapaanSivistystyönOpiskeluoikeus = (
@@ -32,26 +32,26 @@ export const AktiivisetJaPäättyneetOpinnotVapaanSivistystyönOpiskeluoikeus = 
       'opiskeluoikeudentyyppi',
       'vapaansivistystyonkoulutus'
     >
-    tila?: AktiivisetJaPäättyneetOpinnotOpiskeluoikeudenTila
-    alkamispäivä?: string
     oid?: string
     koulutustoimija?: Koulutustoimija
     versionumero?: number
     suoritukset?: Array<AktiivisetJaPäättyneetOpinnotVapaanSivistystyönPäätasonSuoritus>
     päättymispäivä?: string
     oppilaitos?: Oppilaitos
+    tila?: AktiivisetJaPäättyneetOpinnotOpiskeluoikeudenTila
+    alkamispäivä?: string
   } = {}
 ): AktiivisetJaPäättyneetOpinnotVapaanSivistystyönOpiskeluoikeus => ({
   tyyppi: Koodistokoodiviite({
     koodiarvo: 'vapaansivistystyonkoulutus',
     koodistoUri: 'opiskeluoikeudentyyppi'
   }),
-  tila: AktiivisetJaPäättyneetOpinnotOpiskeluoikeudenTila({
-    opiskeluoikeusjaksot: []
-  }),
   suoritukset: [],
   $class:
     'fi.oph.koski.aktiivisetjapaattyneetopinnot.AktiivisetJaPäättyneetOpinnotVapaanSivistystyönOpiskeluoikeus',
+  tila: AktiivisetJaPäättyneetOpinnotOpiskeluoikeudenTila({
+    opiskeluoikeusjaksot: []
+  }),
   ...o
 })
 

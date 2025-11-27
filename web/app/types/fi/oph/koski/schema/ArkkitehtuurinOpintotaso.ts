@@ -35,11 +35,11 @@ export const ArkkitehtuurinOpintotaso = (
     koodiarvo: 'arkkitehtuuri',
     koodistoUri: 'taiteenperusopetustaiteenala'
   }),
-  $class: 'fi.oph.koski.schema.ArkkitehtuurinOpintotaso',
   tunniste: Koodistokoodiviite({
     koodiarvo: '999907',
     koodistoUri: 'koulutus'
   }),
+  $class: 'fi.oph.koski.schema.ArkkitehtuurinOpintotaso',
   ...o
 })
 
