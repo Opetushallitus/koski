@@ -131,7 +131,10 @@ trait MassaluovutusQueryOrganisaationOpiskeluoikeudet extends MassaluovutusQuery
 
   protected def getOppijaOids(db: DB, filters: SQLActionBuilder): Seq[String] = QueryMethods.runDbSync(
     db,
-    SQLHelpers.concat(sql"SELECT DISTINCT oppija_oid FROM opiskeluoikeus ", filters).as[(String)]
+    SQLHelpers.concat(
+      SQLHelpers.concat(sql"SELECT DISTINCT oppija_oid FROM opiskeluoikeus ", filters),
+      sql"ORDER BY oppija_oid asc"
+    ).as[(String)]
   )
 
   protected def forEachOpiskeluoikeusAndHenkilö(
