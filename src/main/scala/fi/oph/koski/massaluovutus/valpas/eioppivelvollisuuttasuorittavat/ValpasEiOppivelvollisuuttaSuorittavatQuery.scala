@@ -41,9 +41,11 @@ case class ValpasEiOppivelvollisuuttaSuorittavatQuery(
           .left.map(_.errorString.getOrElse("Tuntematon virhe"))
           .map { tulos =>
             val oppijat = tulos.filter(_.aktiivinenKuntailmoitus.nonEmpty).map(ValpasMassaluovutusOppija.apply)
-            val oppijaOids = oppijat.map(_.oppijanumero)
+            // Rikastetaan oppijat maksuttomuustiedoilla
+            val enrichedOppijat = withOikeusMaksuttomuuteen(oppijat, application)
+            val oppijaOids = enrichedOppijat.map(_.oppijanumero)
             ValpasAuditLog.auditLogMassaluovutusKunnalla(kunta, oppijaOids)
-            val result = ValpasMassaluovutusResult(oppijat)
+            val result = ValpasMassaluovutusResult(enrichedOppijat)
             writer.putJson("result", result)
           }
       } else {
@@ -52,9 +54,11 @@ case class ValpasEiOppivelvollisuuttaSuorittavatQuery(
           .left.map(_.errorString.getOrElse("Tuntematon virhe"))
           .map { tulos =>
             val oppijat = tulos.eiOppivelvollisuuttaSuorittavat.map(ValpasMassaluovutusOppija.apply)
-            val oppijaOids = oppijat.map(_.oppijanumero)
+            // Rikastetaan oppijat maksuttomuustiedoilla
+            val enrichedOppijat = withOikeusMaksuttomuuteen(oppijat, application)
+            val oppijaOids = enrichedOppijat.map(_.oppijanumero)
             ValpasAuditLog.auditLogMassaluovutusKunnalla(kunta, oppijaOids)
-            val result = ValpasMassaluovutusResult(oppijat)
+            val result = ValpasMassaluovutusResult(enrichedOppijat)
             writer.putJson("result", result)
           }
       }
