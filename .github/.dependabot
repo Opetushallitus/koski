@@ -1,0 +1,36 @@
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: "/web"
+    schedule:
+      interval: daily
+    versioning-strategy: increase
+    registries: {}
+
+  - package-ecosystem: npm
+    directory: "/omadata-oauth2-sample/server"
+    schedule:
+      interval: daily
+    versioning-strategy: increase
+    registries: {}
+
+  - package-ecosystem: npm
+    directory: "/omadata-oauth2-sample/client"
+    schedule:
+      interval: daily
+    versioning-strategy: increase
+    registries: {}
+
+  - package-ecosystem: npm
+    directory: "/valpas/web"
+    schedule:
+      interval: daily
+    versioning-strategy: increase
+    registries: {}
+
+  - package-ecosystem: npm
+    directory: "/smoketests"
+    schedule:
+      interval: daily
+    versioning-strategy: increase
+    registries: {}
