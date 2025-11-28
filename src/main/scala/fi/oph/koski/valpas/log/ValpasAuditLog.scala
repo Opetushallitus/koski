@@ -3,7 +3,6 @@ package fi.oph.koski.valpas.log
 import fi.oph.koski.log.{AuditLog, AuditLogMessage, AuditLogOperation, LogConfiguration}
 import fi.oph.koski.schema.Organisaatio
 import fi.oph.koski.valpas.kansalainen.{KansalainenOppijatiedot, KansalaisnäkymänTiedot}
-import fi.oph.koski.valpas.log
 import fi.oph.koski.valpas.log.ValpasOperation.ValpasOperation
 import fi.oph.koski.valpas.opiskeluoikeusrepository.{ValpasHenkilö, ValpasOppilaitos}
 import fi.oph.koski.valpas.oppijahaku.{ValpasHenkilöhakuResult, ValpasLöytyiHenkilöhakuResult}
@@ -221,15 +220,24 @@ object ValpasAuditLog {
   def auditLogRouhintahakuKunnalla
     (kunta: String, palautetutOppijaOidit: Seq[String])
     (implicit session: ValpasSession)
-  : Unit = {
+  : Unit = auditLogKuntahaku(ValpasOperation.VALPAS_ROUHINTA_KUNTA, kunta, palautetutOppijaOidit)
 
+  def auditLogMassaluovutusKunnalla
+    (kunta: String, palautetutOppijaOidit: Seq[String])
+    (implicit session: ValpasSession)
+  : Unit = auditLogKuntahaku(ValpasOperation.VALPAS_MASSALUOVUTUS_KUNTA, kunta, palautetutOppijaOidit)
+
+  private def auditLogKuntahaku
+    (operation: ValpasOperation, kunta: String, palautetutOppijaOidit: Seq[String])
+    (implicit session: ValpasSession)
+  : Unit = {
     val palautetutOppijaOiditSivut = palautetutOppijaOidit.grouped(oidejaEnintäänAuditlogEntryssä).toList
     val sivuLukumäärä = palautetutOppijaOiditSivut.length
 
     palautetutOppijaOiditSivut.zip(Stream.from(1)).foreach {
       case (oidit, sivu) =>
         AuditLog.log(ValpasAuditLogMessage(
-          ValpasOperation.VALPAS_ROUHINTA_KUNTA,
+          operation,
           session,
           Map(
             ValpasAuditLogMessageField.hakulause -> kunta,
@@ -344,7 +352,8 @@ object ValpasOperation extends Enumeration {
       VALPAS_KANSALAINEN_KATSOMINEN,
       VALPAS_KANSALAINEN_HUOLTAJA_KATSOMINEN,
       VALPAS_OPPIVELVOLLISUUDESTA_VAPAUTTAMINEN,
-      VALPAS_OPPIVELVOLLISUUDESTA_VAPAUTTAMISEN_POISTO = Value
+      VALPAS_OPPIVELVOLLISUUDESTA_VAPAUTTAMISEN_POISTO,
+      VALPAS_MASSALUOVUTUS_KUNTA = Value
 }
 
 private class ValpasAuditLogOperation(op: ValpasOperation) extends AuditLogOperation(op)
