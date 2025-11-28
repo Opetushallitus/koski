@@ -196,6 +196,14 @@ class ValpasMassaluovutusServletSpec extends ValpasTestBase with BeforeAndAfterE
             (oppija \ "hetu").extractOpt[String] should not be None
             (oppija \ "etunimet").extract[String] should not be empty
             (oppija \ "sukunimi").extract[String] should not be empty
+
+            val vainOppijanumerorekisterissä = (oppija \ "vainOppijanumerorekisterissä").extract[Boolean]
+            if (!vainOppijanumerorekisterissä) {
+              // Jos on oppivelvollinen Valppaassa, on myös oikeus maksuttomuuteen päätelty
+              (oppija \ "oikeusMaksuttomaanKoulutukseenVoimassaAsti").toOption should not be None
+            } else {
+              (oppija \ "oikeusMaksuttomaanKoulutukseenVoimassaAsti").toOption should be (None)
+            }
           }
 
           // Tarkista että palautetut oppijat vastaavat kuntarouhinta-haun tuloksia
@@ -358,6 +366,13 @@ class ValpasMassaluovutusServletSpec extends ValpasTestBase with BeforeAndAfterE
             (oppija \ "oppijanumero").extract[String] should not be empty
             (oppija \ "etunimet").extract[String] should not be empty
             (oppija \ "sukunimi").extract[String] should not be empty
+            val vainOppijanumerorekisterissä = (oppija \ "vainOppijanumerorekisterissä").extract[Boolean]
+            if (!vainOppijanumerorekisterissä) {
+              // Jos on oppivelvollinen Valppaassa, on myös oikeus maksuttomuuteen päätelty
+              (oppija \ "oikeusMaksuttomaanKoulutukseenVoimassaAsti").toOption should not be None
+            } else {
+              (oppija \ "oikeusMaksuttomaanKoulutukseenVoimassaAsti").toOption should be (None)
+            }
           }
 
           // Tarkista että myös oppijat ONR:stä on mukana tuloksissa
