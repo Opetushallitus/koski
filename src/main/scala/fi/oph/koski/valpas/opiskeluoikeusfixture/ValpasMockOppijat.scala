@@ -237,7 +237,7 @@ object ValpasMockOppijat {
   val eiKoskessaEikäOppivelvollinenKotikuntahistorianPerusteella = valpasOppijat.oppijaSyntymäaikaHetusta("Kosketon-ei-oppivelvollinen-ulkomailla", "Valpas", "041006A550X", kotikunta = Some(Kunta.helsinki),
     kuntahistoriaMock = h => {
       val historia = Seq(
-        OppijanumerorekisteriKotikuntahistoriaRow(h.henkilö.oid, "198", Some(LocalDate.of(2006, 4, 10)), None)
+        OppijanumerorekisteriKotikuntahistoriaRow(h.henkilö.oid, Kunta.eiKotikuntaaSuomessa, Some(LocalDate.of(2006, 4, 10)), None)
       )
       OppijanKuntahistoria(
         Some(h.henkilö.oid),
@@ -330,12 +330,12 @@ object ValpasMockOppijat {
     }
   )
 
-  val ulkomailtaAlle18vuotiaanaMuuttanutJaSuomessaMuuttanut = valpasOppijat.oppijaSyntymäaikaHetusta("UlkomailtaAlle18vuotiaanaMuuttanutJaSuomessaMuuttanut", "Valpas", "020206A171Y", kotikunta = Some("091"),
+  val ulkomailtaAlle18vuotiaanaMuuttanutJaSuomessaMuuttanut = valpasOppijat.oppijaSyntymäaikaHetusta("UlkomailtaAlle18vuotiaanaMuuttanutJaSuomessaMuuttanut", "Valpas", "020206A171Y", kotikunta = Some(Kunta.helsinki),
     kuntahistoriaMock = h => {
       val historia = Seq(
-        OppijanumerorekisteriKotikuntahistoriaRow(h.henkilö.oid, "198", Some(date(2018, 10, 1)), Some(date(2018, 11, 30))),
-        OppijanumerorekisteriKotikuntahistoriaRow(h.henkilö.oid, "624", Some(date(2018, 12, 1)), Some(date(2024, 11, 30))),
-        OppijanumerorekisteriKotikuntahistoriaRow(h.henkilö.oid, "091", Some(date(2024, 12, 1)), None)
+        OppijanumerorekisteriKotikuntahistoriaRow(h.henkilö.oid, Kunta.eiKotikuntaaSuomessa, Some(date(2018, 10, 1)), Some(date(2018, 11, 30))),
+        OppijanumerorekisteriKotikuntahistoriaRow(h.henkilö.oid, Kunta.pyhtää, Some(date(2018, 12, 1)), Some(date(2024, 11, 30))),
+        OppijanumerorekisteriKotikuntahistoriaRow(h.henkilö.oid, Kunta.helsinki, Some(date(2024, 12, 1)), None)
       )
       OppijanKuntahistoria(
         Some(h.henkilö.oid),
@@ -345,12 +345,12 @@ object ValpasMockOppijat {
     }
   )
 
-  val suomessaMuuttanutPaikastaToiseen = valpasOppijat.oppijaSyntymäaikaHetusta("SuomessaMuuttanutPaikastaToiseen", "Valpas", "060206A2868", kotikunta = Some("091"),
+  val suomessaMuuttanutPaikastaToiseen = valpasOppijat.oppijaSyntymäaikaHetusta("SuomessaMuuttanutPaikastaToiseen", "Valpas", "060206A2868", kotikunta = Some(Kunta.helsinki),
     kuntahistoriaMock = h => {
       val historia = Seq(
-        OppijanumerorekisteriKotikuntahistoriaRow(h.henkilö.oid, "179", Some(date(2018, 10, 1)), Some(date(2018, 11, 30))),
-        OppijanumerorekisteriKotikuntahistoriaRow(h.henkilö.oid, "624", Some(date(2018, 12, 1)), Some(date(2024, 11, 30))),
-        OppijanumerorekisteriKotikuntahistoriaRow(h.henkilö.oid, "091", Some(date(2024, 12, 1)), None)
+        OppijanumerorekisteriKotikuntahistoriaRow(h.henkilö.oid, Kunta.jyväskylä, Some(date(2018, 10, 1)), Some(date(2018, 11, 30))),
+        OppijanumerorekisteriKotikuntahistoriaRow(h.henkilö.oid, Kunta.pyhtää, Some(date(2018, 12, 1)), Some(date(2024, 11, 30))),
+        OppijanumerorekisteriKotikuntahistoriaRow(h.henkilö.oid, Kunta.helsinki, Some(date(2024, 12, 1)), None)
       )
       OppijanKuntahistoria(
         Some(h.henkilö.oid),
@@ -360,14 +360,14 @@ object ValpasMockOppijat {
     }
   )
 
-  val suomessaJaUlkomaillaVuorotellenAsunut = valpasOppijat.oppijaSyntymäaikaHetusta("SuomessaJaUlkomaillaVuorotellenAsunut", "Valpas", "210306A621J", kotikunta = Some("091"),
+  val suomessaJaUlkomaillaVuorotellenAsunut = valpasOppijat.oppijaSyntymäaikaHetusta("SuomessaJaUlkomaillaVuorotellenAsunut", "Valpas", "210306A621J", kotikunta = Some(Kunta.helsinki),
     kuntahistoriaMock = h => {
       val historia = Seq(
-        OppijanumerorekisteriKotikuntahistoriaRow(h.henkilö.oid, "200", Some(date(2016, 10, 1)), Some(date(2017, 9, 30))),
-        OppijanumerorekisteriKotikuntahistoriaRow(h.henkilö.oid, "179", Some(date(2017, 10, 1)), Some(date(2018, 9, 30))),
-        OppijanumerorekisteriKotikuntahistoriaRow(h.henkilö.oid, "200", Some(date(2018, 10, 1)), Some(date(2018, 11, 30))),
-        OppijanumerorekisteriKotikuntahistoriaRow(h.henkilö.oid, "624", Some(date(2018, 12, 1)), Some(date(2024, 11, 30))),
-        OppijanumerorekisteriKotikuntahistoriaRow(h.henkilö.oid, "091", Some(date(2024, 12, 1)), None)
+        OppijanumerorekisteriKotikuntahistoriaRow(h.henkilö.oid, Kunta.kotikuntaUlkomailla, Some(date(2016, 10, 1)), Some(date(2017, 9, 30))),
+        OppijanumerorekisteriKotikuntahistoriaRow(h.henkilö.oid, Kunta.jyväskylä, Some(date(2017, 10, 1)), Some(date(2018, 9, 30))),
+        OppijanumerorekisteriKotikuntahistoriaRow(h.henkilö.oid, Kunta.kotikuntaUlkomailla, Some(date(2018, 10, 1)), Some(date(2018, 11, 30))),
+        OppijanumerorekisteriKotikuntahistoriaRow(h.henkilö.oid, Kunta.pyhtää, Some(date(2018, 12, 1)), Some(date(2024, 11, 30))),
+        OppijanumerorekisteriKotikuntahistoriaRow(h.henkilö.oid, Kunta.helsinki, Some(date(2024, 12, 1)), None)
       )
       OppijanKuntahistoria(
         Some(h.henkilö.oid),
