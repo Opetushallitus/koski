@@ -19,7 +19,7 @@ dependencies:
     version: 1.4.7
   fp-ts:
     specifier: ^2.16.10
-    version: 2.16.11
+    version: 2.16.10
   react:
     specifier: ^19.1.0
     version: 19.2.0
@@ -3912,8 +3912,8 @@ packages:
     engines: {node: '>= 0.6'}
     dev: true
 
-  /fp-ts@2.16.11:
-    resolution: {integrity: sha512-LaI+KaX2NFkfn1ZGHoKCmcfv7yrZsC3b8NtWsTVQeHkq4F27vI5igUuO53sxqDEa2gNQMHFPmpojDw/1zmUK7w==}
+  /fp-ts@2.16.10:
+    resolution: {integrity: sha512-vuROzbNVfCmUkZSUbnWSltR1sbheyQbTzug7LB/46fEa1c0EucLeBaCEUE0gF3ZGUGBt9lVUiziGOhhj6K1ORA==}
     dev: false
 
   /fresh@0.5.2:

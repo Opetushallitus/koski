@@ -174,7 +174,7 @@ export const useFormState = <T extends object>({
 const createInitialState = <T extends object>(values: T): FormState<T> =>
   pipe(
     Object.entries(values),
-    A.map(([key, value]): [string, FieldState<typeof value>] => [
+    A.map(([key, value]): [string, FieldState<any>] => [
       key,
       {
         initialValue: value,
