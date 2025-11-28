@@ -1,11 +1,12 @@
-package fi.oph.koski.massaluovutus.eioppivelvollisuuttasuorittavat
+package fi.oph.koski.massaluovutus.valpas.eioppivelvollisuuttasuorittavat
 
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.json.SensitiveDataAllowed
 import fi.oph.koski.koodisto.Kunta
 import fi.oph.koski.koskiuser.Session
 import fi.oph.koski.log.Logging
-import fi.oph.koski.massaluovutus.{QueryFormat, QueryResultWriter, ValpasMassaluovutusQueryParameters}
+import fi.oph.koski.massaluovutus.valpas.ValpasMassaluovutusQueryParameters
+import fi.oph.koski.massaluovutus.{QueryFormat, QueryResultWriter}
 import fi.oph.koski.schema.annotation.EnumValues
 import fi.oph.koski.valpas.log.ValpasAuditLog
 import fi.oph.koski.valpas.massaluovutus.{ValpasMassaluovutusOppija, ValpasMassaluovutusResult}

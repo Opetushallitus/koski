@@ -3,6 +3,7 @@ package fi.oph.koski.valpas.massaluovutus
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.massaluovutus._
+import fi.oph.koski.massaluovutus.valpas.ValpasMassaluovutusQueryParameters
 import fi.oph.koski.schema.KoskiSchema.strictDeserialization
 import fi.oph.koski.servlet.NoCache
 import fi.oph.koski.util.UuidUtils

@@ -9,8 +9,6 @@ import org.json4s.JValue
 
 trait KoskiMassaluovutusQueryParameters extends MassaluovutusQueryParameters
 
-trait ValpasMassaluovutusQueryParameters extends MassaluovutusQueryParameters
-
 trait MassaluovutusQueryParameters {
   @Description("Massaluovutuksen tyyppi.")
   @Discriminator
