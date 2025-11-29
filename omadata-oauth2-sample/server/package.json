@@ -28,7 +28,7 @@
   "license": "EUPL-1.1",
   "dependencies": {
     "@aws-sdk/client-secrets-manager": "^3.839.0",
-    "body-parser": "^2.2.0",
+    "body-parser": "^2.2.1",
     "express": "^5.1.0",
     "express-rate-limit": "^7.5.0",
     "helmet": "^8.1.0",
