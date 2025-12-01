@@ -41,11 +41,13 @@ class OppivelvollisuustietoServletSpec extends AnyFreeSpec with KoskiHttpSpec wi
           oid = KoskiSpecificMockOppijat.maksuttomuuttaPidennetty1.oid,
           oppivelvollisuusVoimassaAsti = LocalDate.of(2021, 12, 31),
           oikeusMaksuttomaanKoulutukseenVoimassaAsti = LocalDate.of(2025, 10, 25),
+          kotikuntaSuomessaAlkaen = LocalDate.of(2004, 1, 1),
         ),
         Oppivelvollisuustieto(
           oid = KoskiSpecificMockOppijat.maksuttomuuttaPidennetty2.oid,
           oppivelvollisuusVoimassaAsti = LocalDate.of(2021, 12, 31),
           oikeusMaksuttomaanKoulutukseenVoimassaAsti = LocalDate.of(2026, 1, 10),
+          kotikuntaSuomessaAlkaen = LocalDate.of(2004, 1, 1),
         )
       )
 

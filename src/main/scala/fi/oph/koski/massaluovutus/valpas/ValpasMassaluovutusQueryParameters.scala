@@ -7,7 +7,7 @@ import fi.oph.koski.valpas.massaluovutus.ValpasMassaluovutusOppija
 
 trait ValpasMassaluovutusQueryParameters extends MassaluovutusQueryParameters {
 
-  def withOikeusMaksuttomuuteen(
+  def withOppivelvollisuustiedot(
     oppijat: Seq[ValpasMassaluovutusOppija],
     application: KoskiApplication
   ): Seq[ValpasMassaluovutusOppija] = {
@@ -22,8 +22,14 @@ trait ValpasMassaluovutusQueryParameters extends MassaluovutusQueryParameters {
       val oikeusMaksuttomuuteenPäättyy = oppivelvollisuustiedotByOid
         .get(oppija.oppijanumero)
         .map(_.oikeusMaksuttomaanKoulutukseenVoimassaAsti)
+      val kotikuntaSuomessaAlkaen = oppivelvollisuustiedotByOid
+        .get(oppija.oppijanumero)
+        .map(_.kotikuntaSuomessaAlkaen)
 
-      oppija.copy(oikeusMaksuttomaanKoulutukseenVoimassaAsti = oikeusMaksuttomuuteenPäättyy)
+      oppija.copy(
+        oikeusMaksuttomaanKoulutukseenVoimassaAsti = oikeusMaksuttomuuteenPäättyy,
+        kotikuntaSuomessaAlkaen = kotikuntaSuomessaAlkaen
+      )
     }
   }
 }

@@ -41,11 +41,11 @@ case class ValpasEiOppivelvollisuuttaSuorittavatQuery(
           .left.map(_.errorString.getOrElse("Tuntematon virhe"))
           .map { tulos =>
             val oppijat = tulos.filter(_.aktiivinenKuntailmoitus.nonEmpty).map(ValpasMassaluovutusOppija.apply)
-            // Rikastetaan oppijat maksuttomuustiedoilla
-            val enrichedOppijat = withOikeusMaksuttomuuteen(oppijat, application)
-            val oppijaOids = enrichedOppijat.map(_.oppijanumero)
+            // Rikastetaan oppijat oppivelvollisuustiedoilla
+            val oppijatOppivelvollisuustiedoilla = withOppivelvollisuustiedot(oppijat, application)
+            val oppijaOids = oppijatOppivelvollisuustiedoilla.map(_.oppijanumero)
             ValpasAuditLog.auditLogMassaluovutusKunnalla(kunta, oppijaOids)
-            val result = ValpasMassaluovutusResult(enrichedOppijat)
+            val result = ValpasMassaluovutusResult(oppijatOppivelvollisuustiedoilla)
             writer.putJson("result", result)
           }
       } else {
@@ -54,11 +54,11 @@ case class ValpasEiOppivelvollisuuttaSuorittavatQuery(
           .left.map(_.errorString.getOrElse("Tuntematon virhe"))
           .map { tulos =>
             val oppijat = tulos.eiOppivelvollisuuttaSuorittavat.map(ValpasMassaluovutusOppija.apply)
-            // Rikastetaan oppijat maksuttomuustiedoilla
-            val enrichedOppijat = withOikeusMaksuttomuuteen(oppijat, application)
-            val oppijaOids = enrichedOppijat.map(_.oppijanumero)
+            // Rikastetaan oppijat oppivelvollisuustiedoilla
+            val oppijatOppivelvollisuustiedoilla = withOppivelvollisuustiedot(oppijat, application)
+            val oppijaOids = oppijatOppivelvollisuustiedoilla.map(_.oppijanumero)
             ValpasAuditLog.auditLogMassaluovutusKunnalla(kunta, oppijaOids)
-            val result = ValpasMassaluovutusResult(enrichedOppijat)
+            val result = ValpasMassaluovutusResult(oppijatOppivelvollisuustiedoilla)
             writer.putJson("result", result)
           }
       }

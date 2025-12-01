@@ -17,7 +17,8 @@ case class ValpasMassaluovutusOppija(
   oppivelvollisuudenKeskeytys: Seq[ValpasOppivelvollisuudenKeskeytys],
   vainOppijanumerorekisterissä: Boolean,
   aktiivinenKuntailmoitus: Option[ValpasKuntailmoitusSuppeatTiedot],
-  oikeusMaksuttomaanKoulutukseenVoimassaAsti: Option[LocalDate]
+  oikeusMaksuttomaanKoulutukseenVoimassaAsti: Option[LocalDate],
+  kotikuntaSuomessaAlkaen: Option[LocalDate]
 )
 
 object ValpasMassaluovutusOppija {
@@ -33,7 +34,8 @@ object ValpasMassaluovutusOppija {
       oppivelvollisuudenKeskeytys = oppivelvollinen.oppivelvollisuudenKeskeytys,
       vainOppijanumerorekisterissä = oppivelvollinen.vainOppijanumerorekisterissä,
       aktiivinenKuntailmoitus = oppivelvollinen.aktiivinenKuntailmoitus,
-      oikeusMaksuttomaanKoulutukseenVoimassaAsti = None
+      oikeusMaksuttomaanKoulutukseenVoimassaAsti = None,
+      kotikuntaSuomessaAlkaen = None
     )
   }
 }

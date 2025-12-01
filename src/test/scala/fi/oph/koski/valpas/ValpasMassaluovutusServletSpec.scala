@@ -201,8 +201,10 @@ class ValpasMassaluovutusServletSpec extends ValpasTestBase with BeforeAndAfterE
             if (!vainOppijanumerorekisterissä) {
               // Jos on oppivelvollinen Valppaassa, on myös oikeus maksuttomuuteen päätelty
               (oppija \ "oikeusMaksuttomaanKoulutukseenVoimassaAsti").toOption should not be None
+              (oppija \ "kotikuntaSuomessaAlkaen").toOption should not be None
             } else {
               (oppija \ "oikeusMaksuttomaanKoulutukseenVoimassaAsti").toOption should be (None)
+              (oppija \ "kotikuntaSuomessaAlkaen").toOption should be (None)
             }
           }
 
@@ -370,8 +372,10 @@ class ValpasMassaluovutusServletSpec extends ValpasTestBase with BeforeAndAfterE
             if (!vainOppijanumerorekisterissä) {
               // Jos on oppivelvollinen Valppaassa, on myös oikeus maksuttomuuteen päätelty
               (oppija \ "oikeusMaksuttomaanKoulutukseenVoimassaAsti").toOption should not be None
+              (oppija \ "kotikuntaSuomessaAlkaen").toOption should not be None
             } else {
               (oppija \ "oikeusMaksuttomaanKoulutukseenVoimassaAsti").toOption should be (None)
+              (oppija \ "kotikuntaSuomessaAlkaen").toOption should be (None)
             }
           }
 

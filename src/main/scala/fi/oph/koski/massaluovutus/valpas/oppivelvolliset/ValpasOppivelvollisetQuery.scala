@@ -70,12 +70,12 @@ case class ValpasOppivelvollisetQuery(
           val onrOppijatResult = Futures.await(onrOppivelvollisetOppijat.map(_.map(ValpasMassaluovutusOppija.apply)))
           val oppijatResult = oppijat.map(ValpasMassaluovutusOppija.apply) ++ onrOppijatResult
 
-          // Rikastetaan oppijat maksuttomuustiedoilla
-          val enrichedOppijat = withOikeusMaksuttomuuteen(oppijatResult, application)
+          // Rikastetaan oppijat oppivelvollisuustiedoilla
+          val oppijatOppivelvollisuustiedoilla = withOppivelvollisuustiedot(oppijatResult, application)
 
-          val oppijaOids = enrichedOppijat.map(_.oppijanumero)
+          val oppijaOids = oppijatOppivelvollisuustiedoilla.map(_.oppijanumero)
           ValpasAuditLog.auditLogMassaluovutusKunnalla(kunta, oppijaOids)
-          val result = ValpasMassaluovutusResult(enrichedOppijat)
+          val result = ValpasMassaluovutusResult(oppijatOppivelvollisuustiedoilla)
           writer.putJson("result", result)
         }
     case _ =>
