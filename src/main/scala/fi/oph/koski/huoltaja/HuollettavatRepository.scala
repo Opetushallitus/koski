@@ -70,6 +70,7 @@ class MockHuollettavatRepository extends HuollettavatRepository {
             VtjHuollettavaHenkilö(ylioppilasLukiolainen),
             VtjHuollettavaHenkilö("Olli", "Oiditon", "060488-681S"),
             VtjHuollettavaHenkilö(turvakielto),
+            VtjHuollettavaHenkilö(menehtynytOppija),
           ))
         } else if (faijaFeilaa.hetu.contains(huoltajaHetu)) {
           Left(KoskiErrorCategory.unavailable.huollettavat())
