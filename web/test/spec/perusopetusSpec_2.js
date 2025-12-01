@@ -2324,7 +2324,7 @@ describe('Perusopetus 2', function () {
         describe('Oppiaineiden suoritukset', function () {
           before(editor.edit)
           it('Esitäyttää pakolliset oppiaineet', function () {
-            expect(textsOf(S('.oppiaineet .oppiaine .nimi'))).to.deep.equal([
+            var expectedOppiaineet = [
               'Äidinkieli ja kirjallisuus,',
               'A1-kieli,',
               'B1-kieli,',
@@ -2343,10 +2343,21 @@ describe('Perusopetus 2', function () {
               'Liikunta',
               'Kotitalous',
               'Opinto-ohjaus'
-            ])
-            expect(S('.oppiaineet .oppiaine .kieli input').val()).to.equal(
-              'Suomen kieli ja kirjallisuus'
-            )
+            ]
+            return wait
+              .until(function () {
+                return (
+                  JSON.stringify(textsOf(S('.oppiaineet .oppiaine .nimi'))) ===
+                  JSON.stringify(expectedOppiaineet)
+                )
+              })()
+              .then(function () {
+                var oppiaineet = textsOf(S('.oppiaineet .oppiaine .nimi'))
+                expect(oppiaineet).to.deep.equal(expectedOppiaineet)
+                expect(S('.oppiaineet .oppiaine .kieli input').val()).to.equal(
+                  'Suomen kieli ja kirjallisuus'
+                )
+              })
           })
           after(editor.cancelChanges)
         })
