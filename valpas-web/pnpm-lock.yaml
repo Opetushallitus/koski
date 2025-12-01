@@ -55,6 +55,12 @@ devDependencies:
   '@parcel/babel-plugin-transform-runtime':
     specifier: ^2.14.4
     version: 2.16.1(@babel/core@7.28.5)
+  '@parcel/config-default':
+    specifier: ^2.16.1
+    version: 2.16.1(@parcel/core@2.16.1)
+  '@parcel/core':
+    specifier: ^2.16.1
+    version: 2.16.1
   '@parcel/package-manager':
     specifier: ^2.14.4
     version: 2.16.1(@parcel/core@2.16.1)

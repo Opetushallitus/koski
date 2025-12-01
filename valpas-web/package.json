@@ -39,6 +39,8 @@
     "@eslint/js": "^9.24.0",
     "@jest/globals": "^29.7.0",
     "@parcel/babel-plugin-transform-runtime": "^2.14.4",
+    "@parcel/config-default": "^2.16.1",
+    "@parcel/core": "^2.16.1",
     "@parcel/package-manager": "^2.14.4",
     "@parcel/transformer-less": "^2.14.4",
     "@testing-library/dom": "^10.4.0",
