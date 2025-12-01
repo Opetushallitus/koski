@@ -17,10 +17,16 @@ import org.json4s.jackson.JsonMethods
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.{BeforeAndAfterAll, BeforeAndAfterEach}
+import org.verapdf.core.{VeraPDFException, ValidationException}
+import org.verapdf.gf.foundry.VeraGreenfieldFoundryProvider
+import org.verapdf.pdfa.flavours.PDFAFlavour
+import org.verapdf.pdfa.{PDFAParser, PDFAValidator, Foundries}
 
 import java.net.URL
 import java.security.MessageDigest
 import java.time.{Duration, LocalDate, LocalDateTime}
+
+import scala.jdk.CollectionConverters._
 
 class TodistusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers with BeforeAndAfterAll with BeforeAndAfterEach with PutOpiskeluoikeusTestMethods[KielitutkinnonOpiskeluoikeus] {
   def tag = implicitly[reflect.runtime.universe.TypeTag[KielitutkinnonOpiskeluoikeus]]
@@ -433,6 +439,13 @@ class TodistusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers with Bef
       info.getCustomMetadataValue("TodistusJobId") should equal(todistusJob.id)
       info.getCustomMetadataValue("OpiskeluoikeusVersionumero") should equal(opiskeluoikeus.versionumero.get.toString)
 
+      info.getTitle should equal("Todistus")
+      info.getSubject should equal("Todistus yleisen kielitutkinnon suorittamisesta")
+      info.getAuthor should equal("Opetushallitus")
+      // TODO: TOR-2400: Keywords ei toimi Acrobat:ssa, vaikka tässä toimii, ja samoin esim. Chromen PDF viewerissä.
+      // Jotenkin littyy siihen, miten/mihin keywordsit PDF:ssä on tallennettu.
+      info.getKeywords should equal("todistus, yleinen kielitutkinto")
+
       val generointiStartedAt = info.getCustomMetadataValue("GenerointiStartedAt")
       withClue(s"GenerointiStartedAt-metadatassa virhe. Saatu: $generointiStartedAt ") {
         generointiStartedAt should not be null
@@ -473,6 +486,60 @@ class TodistusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers with Bef
             }
           case Left(error) =>
             fail(s"Opiskeluoikeuden deserialisointi epäonnistui: ${error.toString}")
+        }
+      }
+    }
+
+    def verifyPdfUaAccessibility(pdfBytes: Array[Byte]): Unit = {
+      VeraGreenfieldFoundryProvider.initialise()
+
+      val flavoursToValidate = Seq(
+        PDFAFlavour.PDFUA_1,    // PDF/UA-1, minkä täyttävän PDF:n openhtmltopdf luo. PDF/UA-2 ei mene läpi.
+        // PDFAFlavour.WCAG_2_1    // WCAG 2.1, tämä on EU-direktiiviein vaatima. VeraPDF:n tuki on kuitenkin ilmeisesti tälle vielä jotain experimental-koodia,.
+      )
+
+      flavoursToValidate.foreach { flavour =>
+        println(s"DEBUG: Validating flavour $flavour")
+
+        val inputStream = new java.io.ByteArrayInputStream(pdfBytes)
+
+        try {
+          val parser: PDFAParser = Foundries.defaultInstance().createParser(inputStream, flavour)
+
+          try {
+            val validator: PDFAValidator = Foundries.defaultInstance().createValidator(flavour, false)
+            val results = validator.validateAll(parser).asScala
+
+            results.foreach { result =>
+              val isCompliant = result.isCompliant
+              val totalAssertions = result.getTotalAssertions
+              val failedAssertions = result.getTestAssertions.asScala.filter(_.getStatus.toString != "PASSED")
+
+              totalAssertions should be > 3000
+
+              println(s"DEBUG: Flavour $flavour - Compliant: $isCompliant, Total assertions: $totalAssertions, Failed: ${failedAssertions.size}")
+
+              if (!isCompliant && failedAssertions.nonEmpty) {
+                println(s"DEBUG: Ensimmäiset 5 virhettä flavourille $flavour:")
+                failedAssertions.take(5).foreach { assertion =>
+                  println(s"  - ${assertion.getRuleId}: ${assertion.getMessage}")
+                }
+              }
+
+              withClue(s"PDF ei ole ${flavour}-standardin mukainen. Epäonnistuneita tarkistuksia: ${failedAssertions.size}/${totalAssertions}. Ensimmäiset virheet: ${failedAssertions.take(3).map(a => s"${a.getRuleId.getClause}: ${a.getMessage}").mkString("; ")}. ") {
+                isCompliant should be(true)
+              }
+            }
+          } finally {
+            parser.close()
+          }
+        } catch {
+          case e: VeraPDFException =>
+            fail(s"PDF-validointi epäonnistui flavourille $flavour: ${e.getMessage}", e)
+          case e: ValidationException =>
+            fail(s"PDF-validointi epäonnistui flavourille $flavour: ${e.getMessage}", e)
+        } finally {
+          inputStream.close()
         }
       }
     }
@@ -536,6 +603,7 @@ class TodistusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers with Bef
       verifyTodistusFontit(document)
       verifyTodistusSivumaara(document, 2)
       verifyTodistusMetadata(document, completedJob, opiskeluoikeus.get)
+      verifyPdfUaAccessibility(pdfBytes)
 
       // Varmista että Content-Type on oikea
       response.header("Content-Type") should include("application/pdf")
@@ -562,6 +630,7 @@ class TodistusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers with Bef
       verifyTodistusFontit(document)
       verifyTodistusSivumaara(document, 2)
       verifyTodistusMetadata(document, completedJob, opiskeluoikeus.get)
+      verifyPdfUaAccessibility(pdfBytes)
 
       // TODO: TOR-2400: validoi todistus jollain paikallisella validaattorilla, ja katso, että sisältää kaiken long-term -validointia tukevan
 

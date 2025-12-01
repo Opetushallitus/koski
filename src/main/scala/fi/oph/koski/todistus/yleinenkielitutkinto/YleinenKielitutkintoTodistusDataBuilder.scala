@@ -63,7 +63,6 @@ class YleinenKielitutkintoTodistusDataBuilder(application: KoskiApplication) {
       allekirjoitusPäivämäärä = formatSignatureDate(ensimmäisenLäsnäTilanAlkupäivä, todistus.language)
 
       vahvistusViimeinenPäivämäärä = formatVahvistusViimeinenPaivamaaraDate(todistus.createdAt.toLocalDate.plusDays(application.config.getLong("todistus.allekirjoituksenVoimassaolonKestoInDays")), todistus.language)
-
     } yield {
       YleinenKielitutkintoTodistusData(
         templateName = s"kielitutkinto_yleinenkielitutkinto_${todistus.language}",
