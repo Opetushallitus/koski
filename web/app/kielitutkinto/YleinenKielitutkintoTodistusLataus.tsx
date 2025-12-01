@@ -25,6 +25,7 @@ import { RaisedButton } from '../components-v2/controls/RaisedButton'
 import { Spinner } from '../components-v2/texts/Spinner'
 import { Trans } from '../components-v2/texts/Trans'
 import { TextWithLinks } from '../components-v2/texts/TextWithLinks'
+import { useVirkailijaUser } from '../appstate/user'
 
 export type TodistusLanguage = 'fi' | 'sv' | 'en'
 
@@ -41,6 +42,8 @@ const kielitutkintoTodistusLanguages: OptionList<TodistusLanguage> = [
 export const YleinenKielitutkintoTodistusLataus: React.FC<
   YleinenKielitutkintoTodistusLatausProps
 > = ({ opiskeluoikeusOid }) => {
+  const hasPääkäyttäjäAccess = useVirkailijaUser()?.hasPääkäyttäjäAccess
+
   const [language, setLanguage] = useState<TodistusLanguage>('fi')
   const [status, setStatus] = useSafeState<TodistusJob | null>(null)
   const [currentJobId, setCurrentJobId] = useSafeState<string | null>(null)
@@ -263,6 +266,16 @@ export const YleinenKielitutkintoTodistusLataus: React.FC<
             rel="noreferrer"
           >
             {t('Näytä todistus')}
+          </a>
+        )}
+        {hasPääkäyttäjäAccess && (
+          <a
+            data-testid="kielitutkintoTodistus.openPreview"
+            href={`/koski/todistus/preview/${language}/${opiskeluoikeusOid}`}
+            target="_blank"
+            rel="noreferrer"
+          >
+            {t('todistus:preview')}
           </a>
         )}
       </div>

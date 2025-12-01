@@ -2556,6 +2556,7 @@
   "todistus:kielitutkinto_yleinenkielitutkinto_tason_arvosanarajat_kt": "3-4",
   "todistus:kielitutkinto_yleinenkielitutkinto_tason_arvosanarajat_yt": "5-6",
   "todistus:error": "Tapahtui odottamaton tekninen ongelma. Jos ongelma jatkuu, ota yhteyttä KOSKI-tiimiin osoitteeseen koski@opintopolku.fi",
+  "todistus:preview": "Esikatsele todistusta (vain pääkäyttäjä)",
   "Toiminta-alue": "Toiminta-alue",
   "Toiminta-alueiden arvosanat": "Toiminta-alueiden arvosanat",
   "Toimipiste": "Toimipiste",

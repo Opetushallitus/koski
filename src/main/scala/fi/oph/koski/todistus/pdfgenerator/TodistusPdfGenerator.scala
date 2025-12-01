@@ -2,7 +2,7 @@ package fi.oph.koski.todistus.pdfgenerator
 
 import com.openhtmltopdf.outputdevice.helper.BaseRendererBuilder
 import com.openhtmltopdf.outputdevice.helper.BaseRendererBuilder.FontStyle
-import com.openhtmltopdf.pdfboxout.PdfRendererBuilder
+import com.openhtmltopdf.pdfboxout.{PDFCreationListener, PdfBoxRenderer, PdfRendererBuilder}
 import com.openhtmltopdf.svgsupport.BatikSVGDrawer
 import fi.oph.koski.log.Logging
 import org.thymeleaf.TemplateEngine
@@ -17,6 +17,24 @@ import scala.jdk.CollectionConverters._
 trait TodistusData {
   def toTemplateVariables: Map[String, Object]
   def templateName: String
+}
+
+case class TodistusMetadata(
+  oppijaOid: String,
+  opiskeluoikeusOid: String,
+  opiskeluoikeusVersionumero: Int,
+  todistusJobId: String,
+  generointiStartedAt: String,
+  commitHash: String
+) {
+  def toMap: Map[String, String] = Map(
+    "OppijaOid" -> oppijaOid,
+    "OpiskeluoikeusOid" -> opiskeluoikeusOid,
+    "OpiskeluoikeusVersionumero" -> opiskeluoikeusVersionumero.toString,
+    "TodistusJobId" -> todistusJobId,
+    "GenerointiStartedAt" -> generointiStartedAt,
+    "CommitHash" -> commitHash
+  )
 }
 
 class TodistusPdfGenerator extends Logging {
@@ -35,14 +53,14 @@ class TodistusPdfGenerator extends Logging {
     engine
   }
 
-  def generatePdf(data: TodistusData): Array[Byte] = {
+  def generatePdf(data: TodistusData, metadata: TodistusMetadata): Array[Byte] = {
     val html = generateHtml(data.templateName, data)
-    convertHtmlToPdf(html)
+    convertHtmlToPdf(html, metadata)
   }
 
-  def generatePdf(data: TodistusData, outputStream: OutputStream): Unit = {
+  def generatePdf(data: TodistusData, metadata: TodistusMetadata, outputStream: OutputStream): Unit = {
     val html = generateHtml(data.templateName, data)
-    convertHtmlToPdf(html, outputStream)
+    convertHtmlToPdf(html, metadata, outputStream)
   }
 
   def generateHtml(data: TodistusData): String = {
@@ -57,13 +75,13 @@ class TodistusPdfGenerator extends Logging {
     result
   }
 
-  private def convertHtmlToPdf(html: String): Array[Byte] = {
+  private def convertHtmlToPdf(html: String, metadata: TodistusMetadata): Array[Byte] = {
     val outputStream = new ByteArrayOutputStream()
-    convertHtmlToPdf(html, outputStream)
+    convertHtmlToPdf(html, metadata, outputStream)
     outputStream.toByteArray
   }
 
-  private def convertHtmlToPdf(html: String, outputStream: OutputStream): Unit = {
+  private def convertHtmlToPdf(html: String, metadata: TodistusMetadata, outputStream: OutputStream): Unit = {
     // TODO: TOR-2400: Älä tee builderiä aina uudestaan, ja lisää cache?
     val builder = new PdfRendererBuilder()
     builder.useDefaultPageSize(210.0f, 297.0f, BaseRendererBuilder.PageSizeUnits.MM)
@@ -72,6 +90,9 @@ class TodistusPdfGenerator extends Logging {
     builder.useSVGDrawer(new BatikSVGDrawer())
 
     builder.withHtmlContent(html, null)
+
+    // Lisää producer-tieto
+    builder.withProducer(s"Koski (commit: ${metadata.commitHash})")
 
     // TODO: TOR-2400: Fontit ovat nyt base64:nä HTML:ssä, jotta täsmälleen saman koodin saa toimimaan JAR:in sisältä ja tiedostojärjestelmästä, kun
     // haluaa rendata esim. Chromella. Lisää nämä ja poista @font-face:t HTML:stä, jos haluat käyttää näitä. Tämä lähinnä helpottaisi HTML-tiedostojen
@@ -83,9 +104,27 @@ class TodistusPdfGenerator extends Logging {
 
     builder.toStream(outputStream)
 
-    logger.info("START builder.run()")
-    builder.run()
-    logger.info("END builder.run()")
+    logger.info("START builder)")
+
+    val renderer = builder.buildPdfRenderer()
+
+    renderer.setListener(new PDFCreationListener {
+      override def preOpen(pdfBoxRenderer: PdfBoxRenderer): Unit = {
+        metadata.toMap.foreach { case (key, value) => pdfBoxRenderer.getOutputDevice.addMetadata(key, value)}
+      }
+
+      override def preWrite(pdfBoxRenderer: PdfBoxRenderer, i: Int): Unit = {}
+
+      override def onClose(pdfBoxRenderer: PdfBoxRenderer): Unit = {}
+    })
+
+    try {
+      renderer.createPDF()
+    }
+    finally {
+      renderer.close()
+    }
+    logger.info("END builder")
   }
 
   private def registerFont(builder: PdfRendererBuilder, fontUrl: String, weight: Int) = {
