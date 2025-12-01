@@ -379,6 +379,50 @@ class TodistusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers with Bef
       assert(pdfText.contains("PUHUMINEN"), "Osasuoritus 'PUHUMINEN' puuttuu")
     }
 
+    def verifyTodistusFontit(document: PDDocument): Unit = {
+      import scala.jdk.CollectionConverters._
+
+      val expectedFonts = Set("OpenSans-SemiBold", "OpenSans-Bold", "OpenSans-Regular")
+
+      case class FontInfo(name: String, embedded: Boolean)
+
+      val allFonts = document.getDocumentCatalog.getPages.asScala.flatMap { page =>
+        Option(page.getResources).toSeq.flatMap { resources =>
+          resources.getFontNames.asScala.map { fontName =>
+            val font = resources.getFont(fontName)
+            FontInfo(font.getName, font.isEmbedded)
+          }
+        }
+      }.toList
+
+      val uniqueFontNames = allFonts.map(_.name).toSet
+      val nonEmbeddedFonts = allFonts.filterNot(_.embedded).map(_.name)
+
+      uniqueFontNames.size should be > 0
+
+      withClue(s"Löydettiin ${nonEmbeddedFonts.size} embeddaamatonta fonttia: ${nonEmbeddedFonts.mkString(", ")}. ") {
+        nonEmbeddedFonts shouldBe empty
+      }
+
+      withClue(s"Odotettu ${expectedFonts.size} eri fonttia, löydettiin ${uniqueFontNames.size}. Löydetyt fontit: ${uniqueFontNames.mkString(", ")}. ") {
+        uniqueFontNames.size should be(expectedFonts.size)
+      }
+
+      expectedFonts.foreach { expectedFont =>
+        val found = uniqueFontNames.exists(_.contains(expectedFont))
+        withClue(s"Odotettua fonttia '$expectedFont' ei löytynyt. Löydetyt fontit: ${uniqueFontNames.mkString(", ")}. ") {
+          found should be(true)
+        }
+      }
+    }
+
+    def verifyTodistusSivumaara(document: PDDocument, expectedPages: Int): Unit = {
+      val actualPages = document.getNumberOfPages
+      withClue(s"PDF:n sivumäärä oli $actualPages, odotettu $expectedPages. ") {
+        actualPages should be(expectedPages)
+      }
+    }
+
     val lang = "fi"
     val oppija = KoskiSpecificMockOppijat.kielitutkinnonSuorittaja
     val expectedHash = laskeHenkilötiedotHash(oppija)
@@ -435,6 +479,9 @@ class TodistusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers with Bef
       val signerName = document.getLastSignatureDictionary.getName()
       signerName should be("TEST Signer")
 
+      verifyTodistusFontit(document)
+      verifyTodistusSivumaara(document, 2)
+
       // Varmista että Content-Type on oikea
       response.header("Content-Type") should include("application/pdf")
       // Varmista että Content-Disposition on asetettu
@@ -456,9 +503,13 @@ class TodistusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers with Bef
 
       val signerName = document.getLastSignatureDictionary.getName()
       signerName should be("TEST Signer")
+
+      verifyTodistusFontit(document)
+      verifyTodistusSivumaara(document, 2)
+
       // TODO: TOR-2400: validoi todistus jollain paikallisella validaattorilla, ja katso, että sisältää kaiken long-term -validointia tukevan
 
-      // TODO: TOR-2400: tarkista, että pdf:n sisältö vastaa myös graafisesti renderöitynä odotettua (marginaalit, sivumäärä jne.)
+      // TODO: TOR-2400: tarkista, että pdf:n sisältö vastaa myös graafisesti renderöitynä odotettua (marginaalit jne.)
       document.close()
     }
   }
