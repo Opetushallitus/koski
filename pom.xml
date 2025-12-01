@@ -522,6 +522,7 @@
             <arg>-feature</arg>
             <arg>-Ywarn-dead-code</arg>
             <arg>-Xlint:missing-interpolator</arg>
+            <arg>-Xfatal-warnings</arg>
           </args>
         </configuration>
         <executions>

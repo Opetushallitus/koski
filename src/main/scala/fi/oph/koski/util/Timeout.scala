@@ -8,7 +8,7 @@ import scala.util.{Failure, Success, Try}
 object CancellableFuture {
   type CancelFn = () => Boolean
 
-  def apply[T](f: => T)(onTimeout: => Unit)(implicit ec: ExecutionContext): (Future[T], CancelFn) = {
+  def apply[T](f: => T)(onTimeout: () => Unit)(implicit ec: ExecutionContext): (Future[T], CancelFn) = {
     val promise = Promise[T]()
     val future = promise.future
     val ref = new AtomicReference[Thread](null)
@@ -19,7 +19,7 @@ object CancellableFuture {
       try f finally {
         val wasInterrupted = ref.synchronized { ref.getAndSet(null) } != thread
         if (wasInterrupted) {
-          onTimeout
+          onTimeout()
         }
       }
     })
@@ -35,7 +35,8 @@ object CancellableFuture {
 
 object Timeout {
   def apply[T](duration: Duration)(f: => T)(implicit ec: ExecutionContext): T = {
-    val (future, cancel) = CancellableFuture(f)(() => {})
+    val noop: () => Unit = () => ()
+    val (future, cancel) = CancellableFuture(f)(noop)
     try {
       Await.result(future, duration)
     } catch {
