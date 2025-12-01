@@ -16,7 +16,7 @@ updates:
       interval: daily
 
   - package-ecosystem: npm
-    directory: "/valpas/web"
+    directory: "/valpas-web"
     schedule:
       interval: daily
 
