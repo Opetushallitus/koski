@@ -2346,9 +2346,13 @@ describe('Perusopetus 2', function () {
             ]
             return wait
               .until(function () {
+                var oppiaineet = textsOf(S('.oppiaineet .oppiaine .nimi'))
+                var kieli = S('.oppiaineet .oppiaine .kieli input').val()
                 return (
-                  JSON.stringify(textsOf(S('.oppiaineet .oppiaine .nimi'))) ===
-                  JSON.stringify(expectedOppiaineet)
+                  oppiaineet.length === expectedOppiaineet.length &&
+                  JSON.stringify(oppiaineet) ===
+                    JSON.stringify(expectedOppiaineet) &&
+                  kieli === 'Suomen kieli ja kirjallisuus'
                 )
               })()
               .then(function () {
