@@ -11,7 +11,7 @@ class ConcurrentBuffer[T] {
 
   def popAll: List[T] = synchronized {
     val values = xs.toList
-    xs.clear
+    xs.clear()
     values
   }
 }

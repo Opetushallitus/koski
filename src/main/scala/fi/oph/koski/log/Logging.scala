@@ -33,8 +33,8 @@ case class LoggerWithContext(
   private def fmt(msg: => String) = {
     context match {
       case Some(ctx) => ctx.userOption match {
-        case Some(user) => s"${user.username}(${user.oid})@${ctx.clientIp} " + msg
-        case None =>  ctx.clientIp + " " + msg
+        case Some(user) => s"${user.username}(${user.oid})@${ctx.clientIp} $msg"
+        case None =>  s"${ctx.clientIp} $msg"
       }
       case None => msg
     }

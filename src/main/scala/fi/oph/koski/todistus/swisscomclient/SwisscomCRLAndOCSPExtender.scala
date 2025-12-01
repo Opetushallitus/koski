@@ -14,7 +14,7 @@ import java.nio.charset.StandardCharsets
 import java.security.MessageDigest
 import java.security.cert.{CertificateFactory, X509CRL}
 
-import scala.collection.JavaConverters._
+import scala.jdk.CollectionConverters._
 
 import fi.oph.koski.util.ChainingSyntax._
 

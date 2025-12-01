@@ -11,7 +11,7 @@ import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import slick.jdbc.GetResult
 
 class YtrDownloadStatus(val db: DB) extends QueryMethods with Logging with DatabaseExecutionContext{
-  implicit val formats = DefaultFormats
+  implicit val formats: DefaultFormats = DefaultFormats
 
   def init() = initLoading().map(_.id).getOrElse(throw new InternalError("Ytr-latauksen statuksen initialisointi epäonnistui."))
 

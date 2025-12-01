@@ -179,8 +179,8 @@ object ValpasAuditLog {
   private val hetuLength = 11
   private val listSeparatorMaxLength = 2
   private val maxAuditLogMessageLength = LogConfiguration.logMessageMaxLength - 1024
-  private val hetujaEnintäänAuditlogEntryssä = (maxAuditLogMessageLength / (hetuLength + listSeparatorMaxLength)).floor.toInt
-  private val oidejaEnintäänAuditlogEntryssä = (maxAuditLogMessageLength / (oidLengthInKoski + listSeparatorMaxLength)).floor.toInt
+  private val hetujaEnintäänAuditlogEntryssä = maxAuditLogMessageLength / (hetuLength + listSeparatorMaxLength)
+  private val oidejaEnintäänAuditlogEntryssä = maxAuditLogMessageLength / (oidLengthInKoski + listSeparatorMaxLength)
 
   def auditLogRouhintahakuHetulistalla
     (hetut: Seq[String], palautetutOppijaOidit: Seq[String])

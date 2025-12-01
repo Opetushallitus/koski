@@ -25,7 +25,7 @@ case class AmmatillisenRaportitRepository(db: DB) extends QueryMethods with Rapo
   def suoritustiedot(oppilaitos: Organisaatio.Oid, koulutusmuoto: String, suorituksenTyyppi: String, alku: LocalDate, loppu: LocalDate) = {
     val opiskeluoikeusAikajaksotVarsinaisetPäätasonSuoritukset = opiskeluoikeusAikajaksotPäätasonSuorituksetQuery(oppilaitos, koulutusmuoto, suorituksenTyyppi, alku, loppu)
     val opiskeluoikeusAikajaksotNäyttötutkintoonValmistavatPäätasonSuoritukset = opiskeluoikeusAikajaksotPäätasonSuorituksetQuery(oppilaitos, koulutusmuoto, "nayttotutkintoonvalmistavakoulutus", alku, loppu)
-    val masterOpiskeluoikeusOids = opiskeluoikeusAikajaksotVarsinaisetPäätasonSuoritukset.union(opiskeluoikeusAikajaksotNäyttötutkintoonValmistavatPäätasonSuoritukset).map(_._1)
+    val masterOpiskeluoikeusOids = (opiskeluoikeusAikajaksotVarsinaisetPäätasonSuoritukset ++ opiskeluoikeusAikajaksotNäyttötutkintoonValmistavatPäätasonSuoritukset).map(_._1)
 
     val sisältyvätOpiskeluoikeusAikajaksotPäätasonSuoritukset = sisältyvätOpiskeluoikeusAikajaksotPäätasonSuorituksetQuery(masterOpiskeluoikeusOids)
     val sisältyvätOpiskeluoikeusOids = sisältyvätOpiskeluoikeusAikajaksotPäätasonSuoritukset.map(_._1)
@@ -37,12 +37,12 @@ case class AmmatillisenRaportitRepository(db: DB) extends QueryMethods with Rapo
         opiskeluoikeusAikajaksotVarsinaisetPäätasonSuoritukset.exists(_._1 == nvp._1) || sisältyvätOpiskeluoikeudetGrouped.contains(nvp._1)
       }
     )
-    val opiskeluoikeusAikajaksotPäätasonSuoritukset = opiskeluoikeusAikajaksotVarsinaisetPäätasonSuoritukset.union(opiskeluoikeusAikajaksotNäyttötutkintoonValmistavatPäätasonSuorituksetJoillaPariPäätasonSuorituksissaTaiSisältyvissäOpiskeluoikeuksissa)
+    val opiskeluoikeusAikajaksotPäätasonSuoritukset = opiskeluoikeusAikajaksotVarsinaisetPäätasonSuoritukset ++ opiskeluoikeusAikajaksotNäyttötutkintoonValmistavatPäätasonSuorituksetJoillaPariPäätasonSuorituksissaTaiSisältyvissäOpiskeluoikeuksissa
 
-    val päätasonSuoritusIds = opiskeluoikeusAikajaksotPäätasonSuoritukset.flatMap(_._2).union(sisältyvätOpiskeluoikeusAikajaksotPäätasonSuoritukset.flatMap(_._2))
-    val aikajaksoIds = opiskeluoikeusAikajaksotPäätasonSuoritukset.flatMap(_._3).union(sisältyvätOpiskeluoikeusAikajaksotPäätasonSuoritukset.flatMap(_._3))
+    val päätasonSuoritusIds = opiskeluoikeusAikajaksotPäätasonSuoritukset.flatMap(_._2) ++ sisältyvätOpiskeluoikeusAikajaksotPäätasonSuoritukset.flatMap(_._2)
+    val aikajaksoIds = opiskeluoikeusAikajaksotPäätasonSuoritukset.flatMap(_._3) ++ sisältyvätOpiskeluoikeusAikajaksotPäätasonSuoritukset.flatMap(_._3)
 
-    val opiskeluoikeudet = runDbSync(ROpiskeluoikeudet.filter(_.opiskeluoikeusOid inSet masterOpiskeluoikeusOids).result, timeout = defaultTimeout).union(sisältyvätOpiskeluoikeudet)
+    val opiskeluoikeudet = runDbSync(ROpiskeluoikeudet.filter(_.opiskeluoikeusOid inSet masterOpiskeluoikeusOids).result, timeout = defaultTimeout) ++ sisältyvätOpiskeluoikeudet
     val aikajaksot = runDbSync(ROpiskeluoikeusAikajaksot.filter(_.id inSet aikajaksoIds).result, timeout = defaultTimeout).groupBy(_.opiskeluoikeusOid)
     val päätasonSuoritukset = runDbSync(RPäätasonSuoritukset.filter(_.päätasonSuoritusId inSet päätasonSuoritusIds).result, timeout = defaultTimeout).groupBy(_.opiskeluoikeusOid)
     val osasuoritukset = runDbSync(ROsasuoritukset.filter(_.päätasonSuoritusId inSet päätasonSuoritusIds).result, timeout = defaultTimeout).groupBy(_.päätasonSuoritusId)

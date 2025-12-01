@@ -17,7 +17,7 @@ class ValpasLogoutServlet(implicit val application: KoskiApplication) extends Va
       case _ => false
     }
 
-    getUser.right.toOption.flatMap(_.serviceTicket).foreach(application.koskiSessionRepository.removeSessionByTicket)
+    getUser.toOption.flatMap(_.serviceTicket).foreach(application.koskiSessionRepository.removeSessionByTicket)
     removeUserCookie
 
     if (virkailija) {

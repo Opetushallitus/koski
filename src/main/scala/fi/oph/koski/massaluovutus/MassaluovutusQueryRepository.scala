@@ -299,10 +299,14 @@ class QueryRepository(
   }
 
   private def parseParameters(parameters: JValue): MassaluovutusQueryParameters =
-    extractor.extract[MassaluovutusQueryParameters](strictDeserialization)(parameters).right.get // TODO: parempi virheenhallinta siltä varalta että parametrit eivät deserialisoidukaan
+    extractor
+      .extract[MassaluovutusQueryParameters](strictDeserialization)(parameters)
+      .getOrElse(throw new IllegalArgumentException("MassaluovutusQueryParameters deserialization failed"))
 
   private def parseMeta(meta: JValue): QueryMeta =
-    extractor.extract[QueryMeta](strictDeserialization)(meta).right.get // TODO: parempi virheenhallinta siltä varalta että parametrit eivät deserialisoidukaan
+    extractor
+      .extract[QueryMeta](strictDeserialization)(meta)
+      .getOrElse(throw new IllegalArgumentException("QueryMeta deserialization failed"))
 }
 
 trait Query {

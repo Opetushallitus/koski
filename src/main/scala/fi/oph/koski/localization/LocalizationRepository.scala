@@ -46,7 +46,7 @@ abstract class CachedLocalizationService(localizationConfig: LocalizationConfig)
     key => fetch()
   )
 
-  def localizations(): Map[String, LocalizedString] = {
+  def localizations: Map[String, LocalizedString] = {
     cache("key")
   }
 
@@ -105,9 +105,9 @@ object LocalizationRepository {
 
 case class MockLocalizationRepository(localizationConfig: LocalizationConfig)(implicit cacheInvalidator: CacheManager) extends CachedLocalizationService(localizationConfig) {
 
-  private var _localizations: Map[String, LocalizedString] = super.localizations()
+  private var _localizations: Map[String, LocalizedString] = super.localizations
 
-  override def localizations(): Map[String, LocalizedString] = {
+  override def localizations: Map[String, LocalizedString] = {
     _localizations
   }
 
@@ -123,7 +123,7 @@ case class MockLocalizationRepository(localizationConfig: LocalizationConfig)(im
     }
   }
   def reset: Unit = {
-    _localizations = super.localizations()
+    _localizations = super.localizations
   }
 
   def init: Unit = ()

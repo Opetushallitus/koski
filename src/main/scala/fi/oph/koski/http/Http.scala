@@ -310,7 +310,7 @@ protected object HttpResponseMonitoring {
       case HttpServicePattern(service) => service
       case _ => request.uri.toString
     }
-    val endpoint = request.method + " " + uriTemplate
+    val endpoint = s"${request.method} $uriTemplate"
 
     statusCounter.labels(service, endpoint, responseClass.toString).inc
     durationDummary.labels(service, endpoint).observe(durationMillis.toDouble / 1000)

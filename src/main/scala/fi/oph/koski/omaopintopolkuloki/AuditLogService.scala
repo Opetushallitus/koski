@@ -23,7 +23,7 @@ class AuditLogService(val application: KoskiApplication) extends Logging with My
     val kaikkiOppijanOidit = application.opintopolkuHenkilöFacade.findSlaveOids(masterOppijaOid).toSet + masterOppijaOid
 
     val queryResult = kaikkiOppijanOidit
-      .toIterator
+      .iterator
       .flatMap(runQuery)
 
     buildLogs(queryResult)

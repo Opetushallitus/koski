@@ -13,7 +13,7 @@ object CancellableFuture {
     val future = promise.future
     val ref = new AtomicReference[Thread](null)
 
-    promise.tryCompleteWith(Future {
+    promise.completeWith(Future {
       val thread = Thread.currentThread()
       ref.synchronized { ref.set(thread) }
       try f finally {
