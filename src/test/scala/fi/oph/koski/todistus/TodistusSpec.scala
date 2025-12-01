@@ -5,7 +5,7 @@ import fi.oph.koski.documentation.ExamplesKielitutkinto
 import fi.oph.koski.henkilo.{KoskiSpecificMockOppijat, OppijaHenkilö}
 import fi.oph.koski.koskiuser.MockUsers
 import fi.oph.koski.log.{AuditLogTester, KoskiAuditLogMessageField, KoskiOperation}
-import fi.oph.koski.schema.{KielitutkinnonOpiskeluoikeus, Opiskeluoikeus, Päivämäärävahvistus, Suoritus, YleisenKielitutkinnonSuoritus}
+import fi.oph.koski.schema.{KielitutkinnonOpiskeluoikeus, Opiskeluoikeus, Suoritus, YleisenKielitutkinnonSuoritus}
 import fi.oph.koski.schema.KoskiSchema.strictDeserialization
 import fi.oph.koski.util.Wait
 import fi.oph.koski.{KoskiApplicationForTests, KoskiHttpSpec}
@@ -17,7 +17,6 @@ import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.{BeforeAndAfterAll, BeforeAndAfterEach}
 
-import java.io.ByteArrayInputStream
 import java.net.URL
 import java.security.MessageDigest
 import java.time.{Duration, LocalDate, LocalDateTime}
@@ -423,6 +422,31 @@ class TodistusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers with Bef
       }
     }
 
+    def verifyTodistusMetadata(document: PDDocument, todistusJob: TodistusJob, opiskeluoikeus: KielitutkinnonOpiskeluoikeus): Unit = {
+      val info = document.getDocumentInformation
+
+      info.getCustomMetadataValue("OppijaOid") should equal(todistusJob.oppijaOid)
+      info.getCustomMetadataValue("OpiskeluoikeusOid") should equal(todistusJob.opiskeluoikeusOid)
+      info.getCustomMetadataValue("TodistusJobId") should equal(todistusJob.id)
+      info.getCustomMetadataValue("OpiskeluoikeusVersionumero") should equal(opiskeluoikeus.versionumero.get.toString)
+
+      val generointiStartedAt = info.getCustomMetadataValue("GenerointiStartedAt")
+      withClue(s"GenerointiStartedAt-metadatassa virhe. Saatu: $generointiStartedAt ") {
+        generointiStartedAt should not be null
+        generointiStartedAt should not be empty
+      }
+
+      val expectedCommitHash = "unknown"
+      info.getCustomMetadataValue("CommitHash") should equal(expectedCommitHash)
+
+      val producer = info.getProducer
+      withClue(s"Producer-kentässä virhe. Saatu: $producer ") {
+        producer should include("Koski")
+        producer should include("commit:")
+        producer should include(expectedCommitHash)
+      }
+    }
+
     val lang = "fi"
     val oppija = KoskiSpecificMockOppijat.kielitutkinnonSuorittaja
     val expectedHash = laskeHenkilötiedotHash(oppija)
@@ -481,6 +505,7 @@ class TodistusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers with Bef
 
       verifyTodistusFontit(document)
       verifyTodistusSivumaara(document, 2)
+      verifyTodistusMetadata(document, completedJob, opiskeluoikeus.get)
 
       // Varmista että Content-Type on oikea
       response.header("Content-Type") should include("application/pdf")
@@ -506,6 +531,7 @@ class TodistusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers with Bef
 
       verifyTodistusFontit(document)
       verifyTodistusSivumaara(document, 2)
+      verifyTodistusMetadata(document, completedJob, opiskeluoikeus.get)
 
       // TODO: TOR-2400: validoi todistus jollain paikallisella validaattorilla, ja katso, että sisältää kaiken long-term -validointia tukevan
 
