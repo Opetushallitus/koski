@@ -160,8 +160,8 @@ importers:
         specifier: ^3.0.5
         version: 3.0.5
       less:
-        specifier: ^4.3.0
-        version: 4.3.0
+        specifier: ^4.4.2
+        version: 4.4.2
       node-fetch:
         specifier: ^3.3.2
         version: 3.3.2
@@ -1522,14 +1522,6 @@ packages:
       supports-color:
         optional: true
 
-  debug@3.2.7:
-    resolution: {integrity: sha512-CFjzYYAi4ThfiQvizrFQevTTXHtnCqWfe7x1AhgEscTz6ZbLbfoLRLPugTQyBth6f8ZERVUSyWHFD/7Wu4t1XQ==}
-    peerDependencies:
-      supports-color: '*'
-    peerDependenciesMeta:
-      supports-color:
-        optional: true
-
   debug@4.3.1:
     resolution: {integrity: sha512-doEwdvm4PCeK4K3RQN2ZC2BYUBaxwLARCqZmMjtF8a51J2Rb0xpVloFRnCODwqjpwnAoao4pelN8l3RJdv3gRQ==}
     engines: {node: '>=6.0'}
@@ -2022,6 +2014,9 @@ packages:
   graceful-fs@4.2.10:
     resolution: {integrity: sha512-9ByhssR2fPVsNZj478qUUbKfmL0+t5BDVyjShtyZZLiK7ZDAArFFfopyOTj0M05wE2tJPisA4iTnnXl2YoPvOA==}
 
+  graceful-fs@4.2.11:
+    resolution: {integrity: sha512-RbJ5/jmFcNNCcDV5o9eTnBLJ/HszWV0P73bc+Ff4nS/rJj+YaS6IGyiOL0VoBYX+l1Wrl3k63h/KrH+nhJ0XvQ==}
+
   graphemer@1.4.0:
     resolution: {integrity: sha512-EtKwoO6kxCL9WO5xipiHTZlSzBm7WLT627TqC/uVRd0HKmq8NXyebnNYxDoBi7wt8eTWrUrKXCOVaFq9x1kgag==}
 
@@ -2477,8 +2472,8 @@ packages:
     resolution: {integrity: sha512-eTIzlVOSUR+JxdDFepEYcBMtZ9Qqdef+rnzWdRZuMbOywu5tO2w2N7rqjoANZ5k9vywhL6Br1VRjUIgTQx4E8w==}
     engines: {node: '>=6'}
 
-  less@4.3.0:
-    resolution: {integrity: sha512-X9RyH9fvemArzfdP8Pi3irr7lor2Ok4rOttDXBhlwDg+wKQsXOXgHWduAJE1EsF7JJx0w0bcO6BC6tCKKYnXKA==}
+  less@4.4.2:
+    resolution: {integrity: sha512-j1n1IuTX1VQjIy3tT7cyGbX7nvQOsFLoIqobZv4ttI5axP923gA44zUj6miiA6R5Aoms4sEGVIIcucXUbRI14g==}
     engines: {node: '>=14'}
     hasBin: true
 
@@ -2713,8 +2708,8 @@ packages:
   natural-compare@1.4.0:
     resolution: {integrity: sha512-OWND8ei3VtNC9h7V60qff3SVobHr996CTwgxubgyQYEpg290h9J0buyECNNJexkFm5sOajh5G116RYA1c8ZMSw==}
 
-  needle@3.2.0:
-    resolution: {integrity: sha512-oUvzXnyLiVyVGoianLijF9O/RecZUf7TkBfimjGrLM4eQhXyeJwM6GeAWccwfQ9aa4gMCZKqhAOuLaMIcQxajQ==}
+  needle@3.3.1:
+    resolution: {integrity: sha512-6k0YULvhpw+RoLNiQCRKOl09Rv1dPLr8hHnVjHqdolKwDrdNyk+Hmrthi4lIGPPz3r39dLx0hsF5s40sZ3Us4Q==}
     engines: {node: '>= 4.4.x'}
     hasBin: true
 
@@ -3161,8 +3156,8 @@ packages:
   safer-buffer@2.1.2:
     resolution: {integrity: sha512-YZo3K82SD7Riyi0E1EQPojLz7kpepnSQI9IyPbHHg1XXXevb5dJI7tpyN2ADxGcQbHG7vcyRHk0cbwqcQriUtg==}
 
-  sax@1.2.4:
-    resolution: {integrity: sha512-NqVDv9TpANUjFm0N8uM5GxL36UgKi9/atZw+x7YFnQ8ckwFGKrl4xX4yWtrey3UJm5nP1kUbnYgLopqWNSRhWw==}
+  sax@1.4.3:
+    resolution: {integrity: sha512-yqYn1JhPczigF94DMS+shiDMjDowYO6y9+wB/4WgO0Y19jWYk0lQ4tuG5KI7kj4FTp1wxPj5IFfcrz/s1c3jjQ==}
 
   saxes@6.0.0:
     resolution: {integrity: sha512-xAg7SOnEhrm5zI3puOOKyy1OMcMlIJZYNJY7xLBwSze0UjhPLnWfj2GF2EpT0jmzaJKIWKHLsaSSajf35bcYnA==}
@@ -3185,6 +3180,11 @@ packages:
 
   semver@7.7.1:
     resolution: {integrity: sha512-hlq8tAfn0m/61p4BVRcPzIGr6LKiMwo4VM6dGi6pt4qcRkmNzTcWq6eCEjEh+qXjkMDvPlOFFSGwQjoEa6gyMA==}
+    engines: {node: '>=10'}
+    hasBin: true
+
+  semver@7.7.3:
+    resolution: {integrity: sha512-SdsKMrI9TdgjdweUSR9MweHA4EJ8YxHn8DFaDisvhVlUOe4BF1tLD7GAj0lIqWVl+dPb/rExr0Btby5loQm20Q==}
     engines: {node: '>=10'}
     hasBin: true
 
@@ -3909,7 +3909,7 @@ snapshots:
       chalk: 4.1.2
       ci-info: 3.9.0
       exit: 0.1.2
-      graceful-fs: 4.2.10
+      graceful-fs: 4.2.11
       jest-changed-files: 29.7.0
       jest-config: 29.7.0(@types/node@22.14.1)
       jest-haste-map: 29.7.0
@@ -3981,7 +3981,7 @@ snapshots:
       collect-v8-coverage: 1.0.2
       exit: 0.1.2
       glob: 7.2.3
-      graceful-fs: 4.2.10
+      graceful-fs: 4.2.11
       istanbul-lib-coverage: 3.2.0
       istanbul-lib-instrument: 6.0.1
       istanbul-lib-report: 3.0.1
@@ -4005,7 +4005,7 @@ snapshots:
     dependencies:
       '@jridgewell/trace-mapping': 0.3.25
       callsites: 3.1.0
-      graceful-fs: 4.2.10
+      graceful-fs: 4.2.11
 
   '@jest/test-result@29.7.0':
     dependencies:
@@ -4017,7 +4017,7 @@ snapshots:
   '@jest/test-sequencer@29.7.0':
     dependencies:
       '@jest/test-result': 29.7.0
-      graceful-fs: 4.2.10
+      graceful-fs: 4.2.11
       jest-haste-map: 29.7.0
       slash: 3.0.0
 
@@ -4560,7 +4560,7 @@ snapshots:
       browserslist: 4.24.4
       json5: 2.2.3
       nullthrows: 1.1.1
-      semver: 7.7.1
+      semver: 7.7.3
     transitivePeerDependencies:
       - '@parcel/core'
       - napi-wasm
@@ -4587,7 +4587,7 @@ snapshots:
       posthtml: 0.16.6
       posthtml-parser: 0.12.1
       posthtml-render: 3.0.0
-      semver: 7.7.1
+      semver: 7.7.3
       srcset: 4.0.0
     transitivePeerDependencies:
       - '@parcel/core'
@@ -4616,7 +4616,7 @@ snapshots:
       browserslist: 4.24.4
       nullthrows: 1.1.1
       regenerator-runtime: 0.14.1
-      semver: 7.7.1
+      semver: 7.7.3
     transitivePeerDependencies:
       - napi-wasm
 
@@ -4632,11 +4632,10 @@ snapshots:
     dependencies:
       '@parcel/plugin': 2.14.4(@parcel/core@2.14.4(@swc/helpers@0.5.17))
       '@parcel/source-map': 2.1.1
-      less: 4.3.0
+      less: 4.4.2
     transitivePeerDependencies:
       - '@parcel/core'
       - napi-wasm
-      - supports-color
 
   '@parcel/transformer-node@2.14.4(@parcel/core@2.14.4(@swc/helpers@0.5.17))':
     dependencies:
@@ -4654,7 +4653,7 @@ snapshots:
       clone: 2.1.2
       nullthrows: 1.1.1
       postcss-value-parser: 4.2.0
-      semver: 7.7.1
+      semver: 7.7.3
     transitivePeerDependencies:
       - '@parcel/core'
       - napi-wasm
@@ -4667,7 +4666,7 @@ snapshots:
       posthtml: 0.16.6
       posthtml-parser: 0.12.1
       posthtml-render: 3.0.0
-      semver: 7.7.1
+      semver: 7.7.3
     transitivePeerDependencies:
       - '@parcel/core'
       - napi-wasm
@@ -4698,7 +4697,7 @@ snapshots:
       posthtml: 0.16.6
       posthtml-parser: 0.12.1
       posthtml-render: 3.0.0
-      semver: 7.7.1
+      semver: 7.7.3
     transitivePeerDependencies:
       - '@parcel/core'
       - napi-wasm
@@ -5424,7 +5423,7 @@ snapshots:
       '@jest/types': 29.6.3
       chalk: 4.1.2
       exit: 0.1.2
-      graceful-fs: 4.2.10
+      graceful-fs: 4.2.11
       jest-config: 29.7.0(@types/node@22.14.1)
       jest-util: 29.7.0
       prompts: 2.4.2
@@ -5481,11 +5480,6 @@ snapshots:
   debug@2.6.9:
     dependencies:
       ms: 2.0.0
-
-  debug@3.2.7:
-    dependencies:
-      ms: 2.1.3
-    optional: true
 
   debug@4.3.1:
     dependencies:
@@ -5916,7 +5910,7 @@ snapshots:
 
   fs-extra@11.2.0:
     dependencies:
-      graceful-fs: 4.2.10
+      graceful-fs: 4.2.11
       jsonfile: 6.1.0
       universalify: 2.0.1
 
@@ -6004,6 +5998,8 @@ snapshots:
   gopd@1.2.0: {}
 
   graceful-fs@4.2.10: {}
+
+  graceful-fs@4.2.11: {}
 
   graphemer@1.4.0: {}
 
@@ -6229,7 +6225,7 @@ snapshots:
       '@babel/parser': 7.27.0
       '@istanbuljs/schema': 0.1.3
       istanbul-lib-coverage: 3.2.0
-      semver: 7.7.1
+      semver: 7.7.3
     transitivePeerDependencies:
       - supports-color
 
@@ -6320,7 +6316,7 @@ snapshots:
       ci-info: 3.9.0
       deepmerge: 4.3.1
       glob: 7.2.3
-      graceful-fs: 4.2.10
+      graceful-fs: 4.2.11
       jest-circus: 29.7.0
       jest-environment-node: 29.7.0
       jest-get-type: 29.6.3
@@ -6403,7 +6399,7 @@ snapshots:
       '@types/node': 22.14.1
       anymatch: 3.1.3
       fb-watchman: 2.0.2
-      graceful-fs: 4.2.10
+      graceful-fs: 4.2.11
       jest-regex-util: 29.6.3
       jest-util: 29.7.0
       jest-worker: 29.7.0
@@ -6430,7 +6426,7 @@ snapshots:
       '@jest/types': 29.6.3
       '@types/stack-utils': 2.0.1
       chalk: 4.1.2
-      graceful-fs: 4.2.10
+      graceful-fs: 4.2.11
       micromatch: 4.0.8
       pretty-format: 29.7.0
       slash: 3.0.0
@@ -6458,7 +6454,7 @@ snapshots:
   jest-resolve@29.7.0:
     dependencies:
       chalk: 4.1.2
-      graceful-fs: 4.2.10
+      graceful-fs: 4.2.11
       jest-haste-map: 29.7.0
       jest-pnp-resolver: 1.2.3(jest-resolve@29.7.0)
       jest-util: 29.7.0
@@ -6477,7 +6473,7 @@ snapshots:
       '@types/node': 22.14.1
       chalk: 4.1.2
       emittery: 0.13.1
-      graceful-fs: 4.2.10
+      graceful-fs: 4.2.11
       jest-docblock: 29.7.0
       jest-environment-node: 29.7.0
       jest-haste-map: 29.7.0
@@ -6507,7 +6503,7 @@ snapshots:
       cjs-module-lexer: 1.2.3
       collect-v8-coverage: 1.0.2
       glob: 7.2.3
-      graceful-fs: 4.2.10
+      graceful-fs: 4.2.11
       jest-haste-map: 29.7.0
       jest-message-util: 29.7.0
       jest-mock: 29.7.0
@@ -6533,7 +6529,7 @@ snapshots:
       babel-preset-current-node-syntax: 1.0.1(@babel/core@7.20.5)
       chalk: 4.1.2
       expect: 29.7.0
-      graceful-fs: 4.2.10
+      graceful-fs: 4.2.11
       jest-diff: 29.7.0
       jest-get-type: 29.6.3
       jest-matcher-utils: 29.7.0
@@ -6541,7 +6537,7 @@ snapshots:
       jest-util: 29.7.0
       natural-compare: 1.4.0
       pretty-format: 29.7.0
-      semver: 7.7.1
+      semver: 7.7.3
     transitivePeerDependencies:
       - supports-color
 
@@ -6551,7 +6547,7 @@ snapshots:
       '@types/node': 22.14.1
       chalk: 4.1.2
       ci-info: 3.9.0
-      graceful-fs: 4.2.10
+      graceful-fs: 4.2.11
       picomatch: 2.3.1
 
   jest-validate@29.7.0:
@@ -6657,7 +6653,7 @@ snapshots:
     dependencies:
       universalify: 2.0.1
     optionalDependencies:
-      graceful-fs: 4.2.10
+      graceful-fs: 4.2.11
 
   jszip@3.10.1:
     dependencies:
@@ -6672,21 +6668,19 @@ snapshots:
 
   kleur@3.0.3: {}
 
-  less@4.3.0:
+  less@4.4.2:
     dependencies:
       copy-anything: 2.0.6
       parse-node-version: 1.0.1
       tslib: 2.8.1
     optionalDependencies:
       errno: 0.1.8
-      graceful-fs: 4.2.10
+      graceful-fs: 4.2.11
       image-size: 0.5.5
       make-dir: 2.1.0
       mime: 1.6.0
-      needle: 3.2.0
+      needle: 3.3.1
       source-map: 0.6.1
-    transitivePeerDependencies:
-      - supports-color
 
   leven@3.1.0: {}
 
@@ -6797,7 +6791,7 @@ snapshots:
 
   make-dir@4.0.0:
     dependencies:
-      semver: 7.7.1
+      semver: 7.7.3
 
   make-error@1.3.6: {}
 
@@ -6887,13 +6881,10 @@ snapshots:
 
   natural-compare@1.4.0: {}
 
-  needle@3.2.0:
+  needle@3.3.1:
     dependencies:
-      debug: 3.2.7
       iconv-lite: 0.6.3
-      sax: 1.2.4
-    transitivePeerDependencies:
-      - supports-color
+      sax: 1.4.3
     optional: true
 
   negotiator@0.6.3: {}
@@ -7348,7 +7339,7 @@ snapshots:
 
   safer-buffer@2.1.2: {}
 
-  sax@1.2.4:
+  sax@1.4.3:
     optional: true
 
   saxes@6.0.0:
@@ -7373,6 +7364,8 @@ snapshots:
   semver@6.3.1: {}
 
   semver@7.7.1: {}
+
+  semver@7.7.3: {}
 
   send@0.19.0:
     dependencies:
