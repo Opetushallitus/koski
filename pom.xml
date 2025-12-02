@@ -668,6 +668,19 @@
             <version>3.5.0</version>
             <executions>
               <execution>
+                <id>Create buildversion.txt for backend</id>
+                <phase>process-resources</phase>
+                <goals>
+                  <goal>exec</goal>
+                </goals>
+                <configuration>
+                  <executable>bash</executable>
+                  <commandlineArgs>scripts/create-buildversion.sh
+                    ${project.build.directory}/classes/buildversion.txt ${project.version}
+                  </commandlineArgs>
+                </configuration>
+              </execution>
+              <execution>
                 <id>koski - pnpm install</id>
                 <goals>
                   <goal>exec</goal>

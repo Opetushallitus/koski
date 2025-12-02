@@ -34,7 +34,7 @@ class TodistusService(application: KoskiApplication) extends Logging with Timing
 
   private val expirationDuration = application.config.getDuration("todistus.expirationDuration")
 
-  private val commitHash: String = getBuildVersion.getOrElse("unknown")
+  private val commitHash: String = getBuildVersion.getOrElse("local")
 
   def currentStatus(req: TodistusIdRequest)(implicit user: KoskiSpecificSession): Either[HttpStatus, TodistusJob] = {
     if (user.hasRole(OPHPAAKAYTTAJA)) {
@@ -470,7 +470,7 @@ class TodistusService(application: KoskiApplication) extends Logging with Timing
       val props = new Properties()
       props.load(stream)
       stream.close()
-      Option(props.getProperty("vcsRevision", null))
+      Option(props.getProperty("version", null))
     }
   }
 }
