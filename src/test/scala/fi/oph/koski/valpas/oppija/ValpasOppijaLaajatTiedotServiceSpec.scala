@@ -18,7 +18,7 @@ class ValpasOppijaLaajatTiedotServiceSpec extends ValpasOppijaTestBase {
       val oid = ValpasMockOppijat.oppijaJollaYOOpiskeluoikeus.oid
       val result = oppijaLaajatTiedotService.getOppijaLaajatTiedotYhteystiedoillaJaKuntailmoituksilla(oid)(session(ValpasMockUsers.valpasAapajoenKoulu))
 
-      result.swap.map(_.statusCode) should be(Left(403))
+      result.left.map(_.statusCode) should be(Left(403))
     }
 
     "palautetun oppijan valintatilat ovat oikein" in {

@@ -74,7 +74,7 @@ trait OpiskeluoikeusTestMethods extends HttpSpecification with SearchTestMethods
   def readOppija: Oppija = {
     SchemaValidatingExtractor.extract[Oppija](JsonMethods.parse(body))
       .swap.map(e => throw new RuntimeException(e.mkString("\n")))
-      .toOption.get
+      .swap.toOption.get
   }
 
   def readOpiskeluoikeus: Opiskeluoikeus =
