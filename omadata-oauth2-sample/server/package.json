@@ -37,7 +37,7 @@
     "uuid": "^11.1.0"
   },
   "devDependencies": {
-    "@aws-sdk/types": "^3.775.0",
+    "@aws-sdk/types": "^3.936.0",
     "@types/body-parser": "^1.19.6",
     "@types/express": "^5.0.1",
     "@typescript-eslint/eslint-plugin": "^8.30.1",
