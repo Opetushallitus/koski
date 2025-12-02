@@ -439,14 +439,17 @@ class TodistusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers with Bef
         generointiStartedAt should not be empty
       }
 
-      val expectedCommitHash = "unknown"
-      info.getCustomMetadataValue("CommitHash") should equal(expectedCommitHash)
+      val expectedCommitHash = "local"
+      val commitHash = info.getCustomMetadataValue("CommitHash")
+      withClue(s"CommitHash-metadatassa virhe. Saatu: $commitHash ") {
+        commitHash should (equal(expectedCommitHash) or fullyMatch regex "[0-9a-f]{7,40}")
+      }
 
       val producer = info.getProducer
       withClue(s"Producer-kentässä virhe. Saatu: $producer ") {
         producer should include("Koski")
         producer should include("commit:")
-        producer should include(expectedCommitHash)
+        producer should include(commitHash)
       }
 
       val opiskeluoikeusJson = info.getCustomMetadataValue("OpiskeluoikeusJson")
