@@ -32,7 +32,7 @@ class OmaDataOAuth2BackendSpec
 {
   "authorization-server rajapinta" - {
     "voi kutsua, kun on käyttöoikeudet" in {
-      val pkce = createChallengeAndVerifier
+      val pkce = createChallengeAndVerifier()
       val code = createAuthorization(validKansalainen, pkce.challenge)
 
       postAuthorizationServerClientIdFromUsername(
@@ -46,7 +46,7 @@ class OmaDataOAuth2BackendSpec
     }
     "voi kutsua, kun on käyttöoikeudet OPH:lla" in {
       val user = MockUsers.omadataOAuth2OphPalvelukäyttäjä
-      val pkce = createChallengeAndVerifier
+      val pkce = createChallengeAndVerifier()
       val code = createAuthorization(kansalainen = validKansalainen, codeChallenge = pkce.challenge, user = user)
 
       postAuthorizationServerClientIdFromUsername(
@@ -59,7 +59,7 @@ class OmaDataOAuth2BackendSpec
       }
     }
     "tekee audit-lokimerkinnän" in {
-      val pkce = createChallengeAndVerifier
+      val pkce = createChallengeAndVerifier()
       val code = createAuthorization(validKansalainen, pkce.challenge)
 
       AuditLogTester.clearMessages()
@@ -83,7 +83,7 @@ class OmaDataOAuth2BackendSpec
     }
 
     "ei voi kutsua ilman käyttöoikeuksia" in {
-      val pkce = createChallengeAndVerifier
+      val pkce = createChallengeAndVerifier()
       val code = createAuthorization(validKansalainen, pkce.challenge)
 
       postAuthorizationServerClientIdFromUsername(
@@ -98,7 +98,7 @@ class OmaDataOAuth2BackendSpec
 
     "redirect_uri" - {
       "eri URI kuin autorisointikutussa aiheuttaa virheen" in {
-        val pkce = createChallengeAndVerifier
+        val pkce = createChallengeAndVerifier()
         val code = createAuthorization(validKansalainen, pkce.challenge)
 
         val invalidRedirectUri = "/koski/omadata-oauth2/INVALID-debug-post-response"
@@ -116,7 +116,7 @@ class OmaDataOAuth2BackendSpec
         }
       }
       "väärän URIn käyttöyritys sulkee koodin" in {
-        val pkce = createChallengeAndVerifier
+        val pkce = createChallengeAndVerifier()
         val code = createAuthorization(validKansalainen, pkce.challenge)
 
         val invalidRedirectUri = "/koski/omadata-oauth2/INVALID-debug-post-response"
@@ -149,7 +149,7 @@ class OmaDataOAuth2BackendSpec
 
     "grant_type" - {
       "puuttuminen aiheuttaa virheen" in {
-        val pkce = createChallengeAndVerifier
+        val pkce = createChallengeAndVerifier()
         val code = createAuthorization(validKansalainen, pkce.challenge)
 
         postAuthorizationServerClientIdFromUsername(
@@ -166,7 +166,7 @@ class OmaDataOAuth2BackendSpec
         }
       }
       "muu arvo kuin authorization_code aiheuttaa virheen" in {
-        val pkce = createChallengeAndVerifier
+        val pkce = createChallengeAndVerifier()
         val code = createAuthorization(validKansalainen, pkce.challenge)
 
         postAuthorizationServerClientIdFromUsername(
@@ -186,7 +186,7 @@ class OmaDataOAuth2BackendSpec
 
     "client_id" - {
       "puuttuminen aiheuttaa virheen" in {
-        val pkce = createChallengeAndVerifier
+        val pkce = createChallengeAndVerifier()
         val code = createAuthorization(validKansalainen, pkce.challenge)
 
         postAuthorizationServer(
@@ -203,7 +203,7 @@ class OmaDataOAuth2BackendSpec
         }
       }
       "voi kutsua, kun client on rekisteröity" in {
-        val pkce = createChallengeAndVerifier
+        val pkce = createChallengeAndVerifier()
         val code = createAuthorization(validKansalainen, pkce.challenge)
 
         val user = MockUsers.omadataOAuth2Palvelukäyttäjä
@@ -219,7 +219,7 @@ class OmaDataOAuth2BackendSpec
       "ei voi kutsua, kun clientia ei ole rekisteröity" in {
         val user = MockUsers.rekisteröimätönOmadataOAuth2Palvelukäyttäjä
 
-        val pkce = createChallengeAndVerifier
+        val pkce = createChallengeAndVerifier()
         val code = createAuthorization(validKansalainen, pkce.challenge)
 
         postAuthorizationServer(
@@ -240,7 +240,7 @@ class OmaDataOAuth2BackendSpec
         val user = MockUsers.omadataOAuth2Palvelukäyttäjä
         val vääräUser = MockUsers.rekisteröimätönOmadataOAuth2Palvelukäyttäjä
 
-        val pkce = createChallengeAndVerifier
+        val pkce = createChallengeAndVerifier()
         val code = createAuthorization(validKansalainen, pkce.challenge)
 
         postAuthorizationServer(
@@ -260,7 +260,7 @@ class OmaDataOAuth2BackendSpec
 
     "scope" - {
       "palauttaa virheen, jos scope on liian laaja" in {
-        val pkce = createChallengeAndVerifier
+        val pkce = createChallengeAndVerifier()
         val code = createAuthorization(validKansalainen, pkce.challenge, validScope + " HENKILOTIEDOT_HETU")
 
         postAuthorizationServerClientIdFromUsername(
@@ -277,7 +277,7 @@ class OmaDataOAuth2BackendSpec
       }
 
       "liian laajan scopen käyttöyritys ei sulje koodia kokonaan" in {
-        val pkce = createChallengeAndVerifier
+        val pkce = createChallengeAndVerifier()
         val code = createAuthorization(validKansalainen, pkce.challenge, validScope + " HENKILOTIEDOT_HETU")
 
         postAuthorizationServerClientIdFromUsername(
@@ -309,7 +309,7 @@ class OmaDataOAuth2BackendSpec
 
     "code" - {
       "puuttuminen aiheuttaa virheen" in {
-        val pkce = createChallengeAndVerifier
+        val pkce = createChallengeAndVerifier()
         val code = createAuthorization(validKansalainen, pkce.challenge)
 
         postAuthorizationServerClientIdFromUsername(
@@ -326,7 +326,7 @@ class OmaDataOAuth2BackendSpec
       }
 
       "tuntematon koodi aiheuttaa virheen" in {
-        val pkce = createChallengeAndVerifier
+        val pkce = createChallengeAndVerifier()
         val code = createAuthorization(validKansalainen, pkce.challenge) + "ERROR"
 
         postAuthorizationServerClientIdFromUsername(
@@ -344,7 +344,7 @@ class OmaDataOAuth2BackendSpec
 
       "ei toimi, jos mitätöity" in {
         // Triggeröi mitätöinti käyttämällä ensin väärää redirect_uri:a
-        val pkce = createChallengeAndVerifier
+        val pkce = createChallengeAndVerifier()
         val code = createAuthorization(validKansalainen, pkce.challenge)
 
         val invalidRedirectUri = "/koski/omadata-oauth2/INVALID-debug-post-response"
@@ -377,7 +377,7 @@ class OmaDataOAuth2BackendSpec
 
       "ei toimi, jos vanhentunut" in {
         // Luo koodi
-        val pkce = createChallengeAndVerifier
+        val pkce = createChallengeAndVerifier()
         val code = createAuthorization(validKansalainen, pkce.challenge)
 
         postAuthorizationServerClientIdFromUsername(
@@ -415,7 +415,7 @@ class OmaDataOAuth2BackendSpec
 
       "saman koodin uudelleenkäyttöyritys" - {
         "palauttaa virheen" in {
-          val pkce = createChallengeAndVerifier
+          val pkce = createChallengeAndVerifier()
           val code = createAuthorization(validKansalainen, pkce.challenge)
 
           postAuthorizationServerClientIdFromUsername(
@@ -440,7 +440,7 @@ class OmaDataOAuth2BackendSpec
           }
         }
         "sulkee koodin" in {
-          val pkce = createChallengeAndVerifier
+          val pkce = createChallengeAndVerifier()
           val code = createAuthorization(validKansalainen, pkce.challenge)
 
           postAuthorizationServerClientIdFromUsername(
@@ -477,7 +477,7 @@ class OmaDataOAuth2BackendSpec
           }
         }
         "sulkee access tokenin" in {
-          val pkce = createChallengeAndVerifier
+          val pkce = createChallengeAndVerifier()
           val code = createAuthorization(validKansalainen, pkce.challenge)
 
           val token = postAuthorizationServerClientIdFromUsername(
@@ -514,7 +514,7 @@ class OmaDataOAuth2BackendSpec
 
     "code_verifier" - {
       "puuttuminen aiheuttaa virheen" in {
-        val pkce = createChallengeAndVerifier
+        val pkce = createChallengeAndVerifier()
         val code = createAuthorization(validKansalainen, pkce.challenge)
 
         postAuthorizationServerClientIdFromUsername(
@@ -531,7 +531,7 @@ class OmaDataOAuth2BackendSpec
       }
 
       "tarkistetaan" in {
-        val pkce = createChallengeAndVerifier
+        val pkce = createChallengeAndVerifier()
         val code = createAuthorization(validKansalainen, pkce.challenge)
 
         val invalidVerifier = pkce.verifier + "123"
@@ -550,7 +550,7 @@ class OmaDataOAuth2BackendSpec
       }
 
       "väärän verifierin käyttö sulkee koodin" in {
-        val pkce = createChallengeAndVerifier
+        val pkce = createChallengeAndVerifier()
         val code = createAuthorization(validKansalainen, pkce.challenge)
 
         val invalidVerifier = pkce.verifier + "123"
@@ -584,7 +584,7 @@ class OmaDataOAuth2BackendSpec
 
   "resource-server rajapinta" - {
     "voi kutsua, kun on käyttöoikeudet" in {
-      val pkce = createChallengeAndVerifier
+      val pkce = createChallengeAndVerifier()
       val token = createAuthorizationAndToken(validKansalainen, pkce)
 
       postResourceServer(token) {
@@ -593,7 +593,7 @@ class OmaDataOAuth2BackendSpec
     }
 
     "voi kutsua luovutuspalvelu v2 headereilla, kun on käyttöoikeudet" in {
-      val pkce = createChallengeAndVerifier
+      val pkce = createChallengeAndVerifier()
       val token = createAuthorizationAndToken(validKansalainen, pkce)
 
       postResourceServerWithLuovutuspalveluV2Headers(token) {
@@ -602,7 +602,7 @@ class OmaDataOAuth2BackendSpec
     }
 
     "tekee audit log -merkinnän" in {
-      val pkce = createChallengeAndVerifier
+      val pkce = createChallengeAndVerifier()
       val token = createAuthorizationAndToken(validKansalainen, pkce)
 
       AuditLogTester.clearMessages()
@@ -622,7 +622,7 @@ class OmaDataOAuth2BackendSpec
     }
 
     "ei voi kutsua ilman käyttöoikeuksia" in {
-      val pkce = createChallengeAndVerifier
+      val pkce = createChallengeAndVerifier()
       val token = createAuthorizationAndToken(validKansalainen, pkce)
 
       postResourceServer(token, MockUsers.kalle) {
@@ -631,7 +631,7 @@ class OmaDataOAuth2BackendSpec
     }
     "ei voi kutsua, jos liian laaja scope" in {
       // palvelukäyttäjän käyttöoikeudet voivat muuttua myös tokenin elinaikana, siksi tämä on tärkeä testata
-      val pkce = createChallengeAndVerifier
+      val pkce = createChallengeAndVerifier()
       val token = createAuthorizationAndToken(validKansalainen, pkce)
 
       // Vaihda scope laajemmaksi
@@ -653,7 +653,7 @@ class OmaDataOAuth2BackendSpec
       }
     }
     "ei voi kutsua, kun token on vanhentunut" in {
-      val pkce = createChallengeAndVerifier
+      val pkce = createChallengeAndVerifier()
       val token = createAuthorizationAndToken(validKansalainen, pkce)
 
       // Vaihda aikaleima menneisyyteen
@@ -675,7 +675,7 @@ class OmaDataOAuth2BackendSpec
       }
     }
     "ei voi kutsua, jos scope on muuttunut epävalidiksi" in {
-      val pkce = createChallengeAndVerifier
+      val pkce = createChallengeAndVerifier()
       val token = createAuthorizationAndToken(validKansalainen, pkce)
 
       // Vaihda scope epävalidiksi (simuloi taustalla tapahtunutta validointimuutosta)
@@ -702,7 +702,7 @@ class OmaDataOAuth2BackendSpec
         "kun vain osa scopeista mukana" in {
           val scope = "HENKILOTIEDOT_SYNTYMAAIKA HENKILOTIEDOT_NIMI OPISKELUOIKEUDET_SUORITETUT_TUTKINNOT"
 
-          val pkce = createChallengeAndVerifier
+          val pkce = createChallengeAndVerifier()
           val token = createAuthorizationAndToken(validKansalainen, pkce, scope, MockUsers.omadataOAuth2KaikkiOikeudetPalvelukäyttäjä)
 
           // Tarkista esimerkkidata, että käytetyllä testihenkilöllä on kaikki tiedot olemassa
@@ -724,7 +724,7 @@ class OmaDataOAuth2BackendSpec
         "kun kaikki scopet mukana" in {
           val scope = "HENKILOTIEDOT_SYNTYMAAIKA HENKILOTIEDOT_NIMI HENKILOTIEDOT_HETU HENKILOTIEDOT_OPPIJANUMERO OPISKELUOIKEUDET_SUORITETUT_TUTKINNOT"
 
-          val pkce = createChallengeAndVerifier
+          val pkce = createChallengeAndVerifier()
           val token = createAuthorizationAndToken(validKansalainen, pkce, scope, MockUsers.omadataOAuth2KaikkiOikeudetPalvelukäyttäjä)
 
           // Tarkista esimerkkidata, että käytetyllä testihenkilöllä on kaikki tiedot olemassa
@@ -747,7 +747,7 @@ class OmaDataOAuth2BackendSpec
         "kun käytetään HENKILOTIEDOT_KAIKKI_TIEDOT ja OPISKELUOIKEUDET_SUORITETUT_TUTKINNOT" in {
           val scope = "HENKILOTIEDOT_KAIKKI_TIEDOT OPISKELUOIKEUDET_SUORITETUT_TUTKINNOT"
 
-          val pkce = createChallengeAndVerifier
+          val pkce = createChallengeAndVerifier()
           val token = createAuthorizationAndToken(validKansalainen, pkce, scope, MockUsers.omadataOAuth2KaikkiOikeudetPalvelukäyttäjä)
 
           // Tarkista esimerkkidata, että käytetyllä testihenkilöllä on kaikki tiedot olemassa
@@ -770,7 +770,7 @@ class OmaDataOAuth2BackendSpec
         "kun käytetään HENKILOTIEDOT_KAIKKI_TIEDOT ja OPISKELUOIKEUDET_AKTIIVISET_JA_PAATTYNEET_OPINNOT" in {
           val scope = "HENKILOTIEDOT_KAIKKI_TIEDOT OPISKELUOIKEUDET_AKTIIVISET_JA_PAATTYNEET_OPINNOT"
 
-          val pkce = createChallengeAndVerifier
+          val pkce = createChallengeAndVerifier()
           val token = createAuthorizationAndToken(validKansalainen, pkce, scope, MockUsers.omadataOAuth2KaikkiOikeudetPalvelukäyttäjä)
 
           // Tarkista esimerkkidata, että käytetyllä testihenkilöllä on kaikki tiedot olemassa
@@ -793,7 +793,7 @@ class OmaDataOAuth2BackendSpec
         "kun käytetään HENKILOTIEDOT_KAIKKI_TIEDOT ja OPISKELUOIKEUDET_KAIKKI_TIEDOT" in {
           val scope = "HENKILOTIEDOT_KAIKKI_TIEDOT OPISKELUOIKEUDET_KAIKKI_TIEDOT"
 
-          val pkce = createChallengeAndVerifier
+          val pkce = createChallengeAndVerifier()
           val token = createAuthorizationAndToken(validKansalainen, pkce, scope, MockUsers.omadataOAuth2KaikkiOikeudetPalvelukäyttäjä)
 
           // Tarkista esimerkkidata, että käytetyllä testihenkilöllä on kaikki tiedot olemassa
@@ -824,7 +824,7 @@ class OmaDataOAuth2BackendSpec
 
         val scope = "HENKILOTIEDOT_SYNTYMAAIKA HENKILOTIEDOT_NIMI OPISKELUOIKEUDET_SUORITETUT_TUTKINNOT"
 
-        val pkce = createChallengeAndVerifier
+        val pkce = createChallengeAndVerifier()
         val token = createAuthorizationAndToken(oppija, pkce, scope, MockUsers.omadataOAuth2KaikkiOikeudetPalvelukäyttäjä)
 
         postResourceServer(token, MockUsers.omadataOAuth2KaikkiOikeudetPalvelukäyttäjä) {
@@ -845,7 +845,7 @@ class OmaDataOAuth2BackendSpec
 
         val scope = "HENKILOTIEDOT_SYNTYMAAIKA HENKILOTIEDOT_NIMI OPISKELUOIKEUDET_SUORITETUT_TUTKINNOT"
 
-        val pkce = createChallengeAndVerifier
+        val pkce = createChallengeAndVerifier()
         val token = createAuthorizationAndToken(oppija, pkce, scope, MockUsers.omadataOAuth2KaikkiOikeudetPalvelukäyttäjä)
 
         AuditLogTester.clearMessages()
@@ -873,7 +873,7 @@ class OmaDataOAuth2BackendSpec
 
         val scope = "HENKILOTIEDOT_SYNTYMAAIKA HENKILOTIEDOT_NIMI OPISKELUOIKEUDET_AKTIIVISET_JA_PAATTYNEET_OPINNOT"
 
-        val pkce = createChallengeAndVerifier
+        val pkce = createChallengeAndVerifier()
         val token = createAuthorizationAndToken(oppija, pkce, scope, MockUsers.omadataOAuth2KaikkiOikeudetPalvelukäyttäjä)
 
         postResourceServer(token, MockUsers.omadataOAuth2KaikkiOikeudetPalvelukäyttäjä) {
@@ -894,7 +894,7 @@ class OmaDataOAuth2BackendSpec
 
         val scope = "HENKILOTIEDOT_SYNTYMAAIKA HENKILOTIEDOT_NIMI OPISKELUOIKEUDET_AKTIIVISET_JA_PAATTYNEET_OPINNOT"
 
-        val pkce = createChallengeAndVerifier
+        val pkce = createChallengeAndVerifier()
         val token = createAuthorizationAndToken(oppija, pkce, scope, MockUsers.omadataOAuth2KaikkiOikeudetPalvelukäyttäjä)
 
         AuditLogTester.clearMessages()
@@ -923,7 +923,7 @@ class OmaDataOAuth2BackendSpec
 
         val scope = "HENKILOTIEDOT_SYNTYMAAIKA HENKILOTIEDOT_NIMI OPISKELUOIKEUDET_KAIKKI_TIEDOT"
 
-        val pkce = createChallengeAndVerifier
+        val pkce = createChallengeAndVerifier()
         val token = createAuthorizationAndToken(oppija, pkce, scope, MockUsers.omadataOAuth2KaikkiOikeudetPalvelukäyttäjä)
 
         postResourceServer(token, MockUsers.omadataOAuth2KaikkiOikeudetPalvelukäyttäjä) {
@@ -955,7 +955,7 @@ class OmaDataOAuth2BackendSpec
 
         val scope = "HENKILOTIEDOT_SYNTYMAAIKA HENKILOTIEDOT_NIMI OPISKELUOIKEUDET_KAIKKI_TIEDOT"
 
-        val pkce = createChallengeAndVerifier
+        val pkce = createChallengeAndVerifier()
         val token = createAuthorizationAndToken(oppija, pkce, scope, MockUsers.omadataOAuth2KaikkiOikeudetPalvelukäyttäjä)
 
         postResourceServer(token, MockUsers.omadataOAuth2KaikkiOikeudetPalvelukäyttäjä) {
@@ -976,7 +976,7 @@ class OmaDataOAuth2BackendSpec
 
         val scope = "HENKILOTIEDOT_SYNTYMAAIKA HENKILOTIEDOT_NIMI OPISKELUOIKEUDET_KAIKKI_TIEDOT"
 
-        val pkce = createChallengeAndVerifier
+        val pkce = createChallengeAndVerifier()
         val token = createAuthorizationAndToken(oppija, pkce, scope, MockUsers.omadataOAuth2KaikkiOikeudetPalvelukäyttäjä)
 
         AuditLogTester.clearMessages()
@@ -1007,7 +1007,7 @@ class OmaDataOAuth2BackendSpec
 
         val scope = s"HENKILOTIEDOT_SYNTYMAAIKA HENKILOTIEDOT_NIMI ${ooScope}"
 
-        val pkce = createChallengeAndVerifier
+        val pkce = createChallengeAndVerifier()
 
         KoskiApplicationForTests.omaDataOAuth2Repository.create(
           code = s"foo${ooScope}",
@@ -1038,7 +1038,7 @@ class OmaDataOAuth2BackendSpec
 
         val scope = s"HENKILOTIEDOT_SYNTYMAAIKA HENKILOTIEDOT_NIMI ${ooScope}"
 
-        val pkce = createChallengeAndVerifier
+        val pkce = createChallengeAndVerifier()
 
         KoskiApplicationForTests.omaDataOAuth2Repository.create(
           code = s"foobar${ooScope}",
@@ -1076,7 +1076,7 @@ class OmaDataOAuth2BackendSpec
       setupOppijaWithOpiskeluoikeus(opiskeluoikeus = PerusopetusExampleData.päättötodistusOpiskeluoikeus(), henkilö = validKansalainen) {
         verifyResponseStatusOk()
       }
-      val pkce = createChallengeAndVerifier
+      val pkce = createChallengeAndVerifier()
       val token = createAuthorizationAndToken(validKansalainen, pkce)
 
       postResourceServer(token) {
@@ -1095,7 +1095,7 @@ class OmaDataOAuth2BackendSpec
       setupOppijaWithOpiskeluoikeus(opiskeluoikeus = PerusopetusExampleData.päättötodistusOpiskeluoikeus(), henkilö = validKansalainen) {
         verifyResponseStatusOk()
       }
-      val pkce = createChallengeAndVerifier
+      val pkce = createChallengeAndVerifier()
       val token = createAuthorizationAndToken(validKansalainen, pkce)
 
       postResourceServer(token) {
@@ -1132,7 +1132,7 @@ class OmaDataOAuth2BackendSpec
       setupOppijaWithOpiskeluoikeus(opiskeluoikeus = PerusopetusExampleData.päättötodistusOpiskeluoikeus(), henkilö = validKansalainen) {
         verifyResponseStatusOk()
       }
-      val pkce = createChallengeAndVerifier
+      val pkce = createChallengeAndVerifier()
       val token = createAuthorizationAndToken(validKansalainen, pkce)
 
       postResourceServer(token) {
@@ -1227,4 +1227,3 @@ class OmaDataOAuth2BackendSpec
     post(uri = "api/omadata-oauth2/resource-server", headers = headers)(f)
   }
 }
-

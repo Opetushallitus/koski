@@ -24,7 +24,7 @@ class ValpasOppivelvollisuudenKeskeytysServiceSpec extends ValpasOppijaTestBase 
         tekijäOrganisaatioOid = tekijäOrganisaatioOid,
       ))(defaultSession)
 
-      result.left.map(_.statusCode) shouldBe Left(403)
+      result.swap.map(_.statusCode) shouldBe Left(403)
     }
 
     "Oppivelvollisuutta ei pysty keskeyttämään organisaation nimissä, jos siihen ei ole oikeuksia" in {
@@ -40,7 +40,7 @@ class ValpasOppivelvollisuudenKeskeytysServiceSpec extends ValpasOppijaTestBase 
         tekijäOrganisaatioOid = tekijäOrganisaatioOid,
       ))(kuntaSession)
 
-      result.left.map(_.statusCode) shouldBe Left(403)
+      result.swap.map(_.statusCode) shouldBe Left(403)
     }
 
     "Oppivelvollisuuden pystyy keskeyttämään toistaiseksi kunnan valvontaoikeuksilla" in {
@@ -158,7 +158,7 @@ class ValpasOppivelvollisuudenKeskeytysServiceSpec extends ValpasOppijaTestBase 
         tekijäOrganisaatioOid = tekijäOrganisaatioOid,
       ))(kuntaSession)
 
-      result.left.map(_.statusCode) shouldBe Left(403)
+      result.swap.map(_.statusCode) shouldBe Left(403)
     }
 
     "Oppivelvollisuutta ei voi keskeyttää ellei oppija ole ovl-lain alainen" in {
@@ -174,7 +174,7 @@ class ValpasOppivelvollisuudenKeskeytysServiceSpec extends ValpasOppijaTestBase 
         tekijäOrganisaatioOid = tekijäOrganisaatioOid,
       ))(kuntaSession)
 
-      result.left.map(_.statusCode) shouldBe Left(403)
+      result.swap.map(_.statusCode) shouldBe Left(403)
     }
   }
 

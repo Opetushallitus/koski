@@ -21,7 +21,7 @@ class KoskiSpecificSchemaLocalizationSpec extends AnyFreeSpec with TestEnvironme
 
         println("Missing properties by class: " + newStuff.map { case (schema, key, title) => schema.simpleName + "." + key }.toList.mkString("\n"))
 
-        fail(missingKeysAndValues.size +  " missing schema localization(s). Copy the above JSON snippet into /localization/default-texts.json")
+        fail(s"${missingKeysAndValues.size} missing schema localization(s). Copy the above JSON snippet into /localization/default-texts.json")
       }
     }
   }
@@ -49,7 +49,7 @@ class KoskiSpecificSchemaLocalizationSpec extends AnyFreeSpec with TestEnvironme
       }
     case s: OptionalSchema => s :: allSchemas(s.itemSchema)
     case s: ListSchema => s :: allSchemas(s.itemSchema)
+    case s: MapSchema => s :: allSchemas(s.itemSchema)
     case s: ElementSchema => List(s)
   }
 }
-

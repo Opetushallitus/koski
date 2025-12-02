@@ -22,7 +22,7 @@ import org.scalatest.matchers.should.Matchers
 
 class SureSpec extends AnyFreeSpec with KoskiHttpSpec with OpiskeluoikeusTestMethodsAmmatillinen with DatabaseTestMethods with OpiskeluoikeudenMitätöintiJaPoistoTestMethods with Matchers {
   private implicit val context: ExtractionContext = strictDeserialization
-  private implicit val formats = DefaultFormats
+  private implicit val formats: DefaultFormats = DefaultFormats
 
   "Sure-rajapinnat" - {
     "/api/sure/oids" - {
@@ -30,7 +30,7 @@ class SureSpec extends AnyFreeSpec with KoskiHttpSpec with OpiskeluoikeusTestMet
         val henkilöOids = Set(KoskiSpecificMockOppijat.amis.oid, KoskiSpecificMockOppijat.lukiolainen.oid)
         postOids(henkilöOids) {
           verifyResponseStatusOk()
-          val oppijat = SchemaValidatingExtractor.extract[List[Oppija]](body).right.get
+          val oppijat = SchemaValidatingExtractor.extract[List[Oppija]](body).toOption.get
           oppijat.map(_.henkilö).toSet should equal(henkilöOids.map(OidHenkilö))
         }
       }
@@ -49,7 +49,7 @@ class SureSpec extends AnyFreeSpec with KoskiHttpSpec with OpiskeluoikeusTestMet
         postOids(henkilöOids) {
           verifyResponseStatusOk()
 
-          val oppijat = SchemaValidatingExtractor.extract[List[Oppija]](body).right.get
+          val oppijat = SchemaValidatingExtractor.extract[List[Oppija]](body).toOption.get
 
           oppijat(0).opiskeluoikeudet.length should be(1)
 
@@ -100,7 +100,7 @@ class SureSpec extends AnyFreeSpec with KoskiHttpSpec with OpiskeluoikeusTestMet
       }
       "Luottamuksellinen data" - {
         "Näytetään käyttäjälle jolla on LUOTTAMUKSELLINEN_KAIKKI_TIEDOT-rooli" in {
-          resetFixtures
+          resetFixtures()
           postOids(Seq(KoskiSpecificMockOppijat.eero.oid), user = stadinAmmattiopistoKatselija) {
             verifyResponseStatusOk()
             body should include("vankilaopetuksessa")
@@ -292,7 +292,7 @@ class SureSpec extends AnyFreeSpec with KoskiHttpSpec with OpiskeluoikeusTestMet
   private def muuttuneetKursorilla(cursor: String, pageSize: Int = 5, recentPageOverlapTestsOnly: Int = 0): MuuttuneetOppijatResponse = {
     get("api/sure/muuttuneet-oppijat", Map("cursor" -> cursor, "pageSize" -> pageSize.toString, "recentPageOverlapTestsOnly" -> recentPageOverlapTestsOnly.toString), authHeaders(MockUsers.paakayttaja)) {
       verifyResponseStatusOk()
-      SchemaValidatingExtractor.extract[MuuttuneetOppijatResponse](body).right.get
+      SchemaValidatingExtractor.extract[MuuttuneetOppijatResponse](body).toOption.get
     }
   }
 

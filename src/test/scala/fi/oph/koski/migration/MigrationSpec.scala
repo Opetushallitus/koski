@@ -64,8 +64,8 @@ class MigrationSpec extends AnyFreeSpec with Matchers with RaportointikantaTestM
 
       val errors = getListOfFiles(dir).flatMap(file => {
         val source = Source.fromFile(file)
-        val actualChecksum = md5(source.getLines.mkString)
-        source.close
+        val actualChecksum = md5(source.getLines().mkString)
+        source.close()
 
         val filename = file.getName
         val expectedChecksum = expectedChecksums.get(filename)

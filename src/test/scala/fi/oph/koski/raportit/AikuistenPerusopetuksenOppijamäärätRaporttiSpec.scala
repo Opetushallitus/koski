@@ -22,7 +22,7 @@ class AikuistenPerusopetuksenOppijamäärätRaporttiSpec extends AnyFreeSpec wit
 
   override protected def beforeAll(): Unit = {
     super.beforeAll()
-    reloadRaportointikanta
+    reloadRaportointikanta()
   }
 
   "Aikuisten perusopetuksen oppijamäärien raportti" - {

@@ -16,8 +16,8 @@ class ValpasRouhintaApiServletSpec extends ValpasTestBase with BeforeAndAfterEac
     FixtureUtil.resetMockData(KoskiApplicationForTests, ValpasKuntarouhintaSpec.tarkastelupäivä)
   }
 
-  override protected def beforeEach() {
-    AuditLogTester.clearMessages
+  override protected def beforeEach(): Unit = {
+    AuditLogTester.clearMessages()
   }
 
   "Hetuhaku" - {

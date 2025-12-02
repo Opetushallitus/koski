@@ -50,7 +50,7 @@ class AikuistenPerusopetuksenOpiskeluoikeudenUlkopuolisetKurssitSpec
       verifyResponseStatusOk()
     }
 
-    reloadRaportointikanta
+    reloadRaportointikanta()
   }
 
   def tag = implicitly[reflect.runtime.universe.TypeTag[AikuistenPerusopetuksenOpiskeluoikeus]]

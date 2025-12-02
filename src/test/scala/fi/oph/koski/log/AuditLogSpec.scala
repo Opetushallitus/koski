@@ -34,7 +34,7 @@ class AuditLogSpec extends AnyFreeSpec with TestEnvironment with Assertions with
     }
   }
 
-  private def verifyLogMessage(expectedMessage: Regex) {
+  private def verifyLogMessage(expectedMessage: Regex): Unit = {
     val infoCapture: ArgumentCaptor[String] = ArgumentCaptor.forClass(classOf[String])
     verify(loggerMock, atLeastOnce).log(infoCapture.capture)
     val logMessage: String = infoCapture.getValue

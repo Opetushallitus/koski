@@ -21,7 +21,7 @@ class LukioRaporttiSpec extends AnyFreeSpec with Matchers with RaportointikantaT
 
   override protected def alterFixture(): Unit = {
     lisääPäätasonSuorituksia(lukionAineopiskelijaAktiivinen, List(LukioExampleData.lukionOppiaineenOppimääränSuoritusA1Englanti, LukioExampleData.lukionOppiaineenOppimääränSuoritusPitkäMatematiikka))
-    reloadRaportointikanta
+    reloadRaportointikanta()
   }
 
   private lazy val today = LocalDate.now
@@ -322,7 +322,7 @@ class LukioRaporttiSpec extends AnyFreeSpec with Matchers with RaportointikantaT
     val expectedResult = if (addOpiskeluoikeudenOid) {
       val opiskeluoikeudenOid = lastOpiskeluoikeus(oppija.oid).oid
       opiskeluoikeudenOid shouldBe defined
-      expected + ("Opiskeluoikeuden oid" -> opiskeluoikeudenOid.get)
+      expected ++ Map("Opiskeluoikeuden oid" -> opiskeluoikeudenOid.get)
     } else {
       expected
     }
@@ -335,7 +335,7 @@ class LukioRaporttiSpec extends AnyFreeSpec with Matchers with RaportointikantaT
     opiskeluoikeudenOid shouldBe defined
     val found = findByOid(oppija.oid, all)
     found.length should equal(expected.length)
-    found.toSet should equal(expected.map(_ + ("Opiskeluoikeuden oid" -> opiskeluoikeudenOid.get)).toSet)
+    found.toSet should equal(expected.map(_ ++ Map("Opiskeluoikeuden oid" -> opiskeluoikeudenOid.get)).toSet)
   }
 
   private def findRowsWithColumnsByTitle(title: String, all: Seq[(String, Seq[Map[String, Any]])]) = {
@@ -361,7 +361,7 @@ class LukioRaporttiSpec extends AnyFreeSpec with Matchers with RaportointikantaT
     val oo = getOpiskeluoikeus(oppija.oid, OpiskeluoikeudenTyyppi.lukiokoulutus.koodiarvo).asInstanceOf[LukionOpiskeluoikeus]
     putOppija(Oppija(oppija, List(oo.copy(suoritukset = päätasonSuoritukset ::: oo.suoritukset)))) {
       verifyResponseStatusOk()
-      reloadRaportointikanta
+      reloadRaportointikanta()
     }
   }
 
@@ -509,7 +509,7 @@ class LukioRaporttiSpec extends AnyFreeSpec with Matchers with RaportointikantaT
   )
 
   private object AktiivinenAineopiskelija {
-    private lazy val default = defaultAineopiskelijaRow + (
+    private lazy val default = defaultAineopiskelijaRow ++ Map(
       "Oppijan oid" -> lukionAineopiskelijaAktiivinen.oid,
       "hetu" -> lukionAineopiskelijaAktiivinen.hetu,
       "Sukunimi" -> lukionAineopiskelijaAktiivinen.sukunimi,
@@ -517,7 +517,7 @@ class LukioRaporttiSpec extends AnyFreeSpec with Matchers with RaportointikantaT
       "Kotikunta" -> None,
     )
 
-    lazy val englanninOppiaineenRow = default + (
+    lazy val englanninOppiaineenRow = default ++ Map(
       "Suorituksen vahvistuspäivä" -> Some(date(2016, 1, 10)),
       "Yhteislaajuus (kaikki kurssit)" -> 3.0,
       "Yhteislaajuus (suoritetut kurssit)" -> 3.0,
@@ -527,7 +527,7 @@ class LukioRaporttiSpec extends AnyFreeSpec with Matchers with RaportointikantaT
       "A1 Englanti valtakunnallinen" -> "Arvosana 7, Laajuus 3.0 kurssia"
     )
 
-    lazy val matematiikanOppiaineRow = default + (
+    lazy val matematiikanOppiaineRow = default ++ Map(
       "Suorituksen vahvistuspäivä" -> Some(date(2016, 1, 10)),
       "Yhteislaajuus (kaikki kurssit)" -> 5.0,
       "Yhteislaajuus (suoritetut kurssit)" -> 5.0,
@@ -537,7 +537,7 @@ class LukioRaporttiSpec extends AnyFreeSpec with Matchers with RaportointikantaT
       "MA Matematiikka, pitkä oppimäärä valtakunnallinen" -> "Arvosana 8, Laajuus 5.0 kurssia"
     )
 
-    lazy val historiaOppiaineenRow = default + (
+    lazy val historiaOppiaineenRow = default ++ Map(
       "Suorituksen vahvistuspäivä" -> Some(date(2016, 1, 10)),
       "Yhteislaajuus (kaikki kurssit)" -> 4.0,
       "Yhteislaajuus (suoritetut kurssit)" -> 4.0,
@@ -547,7 +547,7 @@ class LukioRaporttiSpec extends AnyFreeSpec with Matchers with RaportointikantaT
       "HI Historia valtakunnallinen" -> "Arvosana 9, Laajuus 4.0 kurssia"
     )
 
-    lazy val kemiaOppiaineenRow = default + (
+    lazy val kemiaOppiaineenRow = default ++ Map(
       "Suorituksen vahvistuspäivä" -> Some(date(2015, 1, 10)),
       "Yhteislaajuus (kaikki kurssit)" -> 1.0,
       "Yhteislaajuus (suoritetut kurssit)" -> 1.0,
@@ -557,7 +557,7 @@ class LukioRaporttiSpec extends AnyFreeSpec with Matchers with RaportointikantaT
       "KE Kemia valtakunnallinen" -> "Arvosana 8, Laajuus 1.0 kurssia"
     )
 
-    lazy val filosofiaOppiaineenRow = default + (
+    lazy val filosofiaOppiaineenRow = default ++ Map(
       "Suorituksen tila" -> "kesken",
       "Suorituksen vahvistuspäivä" -> None,
       "Yhteislaajuus (kaikki kurssit)" -> 1.0,
@@ -579,7 +579,7 @@ class LukioRaporttiSpec extends AnyFreeSpec with Matchers with RaportointikantaT
       "Suorituksen tyyppi" -> "lukionoppiaineenoppimaara"
     )
 
-    lazy val historiaKurssitRow = eiSuorituksiaKurssitRow + (
+    lazy val historiaKurssitRow = eiSuorituksiaKurssitRow ++ Map(
       "HI1 Ihminen ympäristön ja yhteiskuntien muutoksessa valtakunnallinen" -> "",
       "HI1 Ihminen, ympäristö ja kulttuuri valtakunnallinen" -> kurssintiedot(arvosana = "7", tyyppi = "Pakollinen"),
       "HI2 Kansainväliset suhteet valtakunnallinen" -> kurssintiedot(arvosana = "8", tyyppi = "Pakollinen"),
@@ -587,7 +587,7 @@ class LukioRaporttiSpec extends AnyFreeSpec with Matchers with RaportointikantaT
       "HI4 Eurooppalaisen maailmankuvan kehitys valtakunnallinen" -> kurssintiedot(arvosana = "6", tyyppi = "Pakollinen")
     )
 
-    lazy val matematiikanKurssitRow = eiSuorituksiaKurssitRow + (
+    lazy val matematiikanKurssitRow = eiSuorituksiaKurssitRow ++ Map(
       "MAA1 Funktiot ja yhtälöt, pa, vuositaso 1 paikallinen" -> "",
       "MAA2 Polynomifunktiot ja -yhtälöt valtakunnallinen"  -> kurssintiedot(arvosana = "6", tyyppi = "Pakollinen"),
       "MAA3 Geometria valtakunnallinen" -> "Pakollinen, Arvosana 7, Laajuus 1.0",
@@ -607,7 +607,7 @@ class LukioRaporttiSpec extends AnyFreeSpec with Matchers with RaportointikantaT
   }
 
   private object EiTiedossaOppiaineenOpiskelija {
-    private lazy val default = defaultAineopiskelijaRow + (
+    private lazy val default = defaultAineopiskelijaRow ++ Map(
       "Oppijan oid" -> lukionEiTiedossaAineopiskelija.oid,
       "hetu" -> lukionEiTiedossaAineopiskelija.hetu,
       "Sukunimi" -> lukionEiTiedossaAineopiskelija.sukunimi,
@@ -615,7 +615,7 @@ class LukioRaporttiSpec extends AnyFreeSpec with Matchers with RaportointikantaT
       "Kotikunta" -> None,
     )
 
-    lazy val eiTiedossaOppiaineenRow = default + (
+    lazy val eiTiedossaOppiaineenRow = default ++ Map(
       "XX Ei tiedossa valtakunnallinen" -> "Arvosana 9, Laajuus 1.0 kurssia",
       "Suorituksen tila" -> "kesken",
       "Yhteislaajuus (kaikki kurssit)" -> 1.0,
@@ -626,7 +626,7 @@ class LukioRaporttiSpec extends AnyFreeSpec with Matchers with RaportointikantaT
       "Opetussuunnitelma" -> None
     )
 
-    lazy val historiaOppiaineenRow = default + (
+    lazy val historiaOppiaineenRow = default ++ Map(
       "Suorituksen vahvistuspäivä" -> Some(date(2016, 1, 10)),
       "Yhteislaajuus (kaikki kurssit)" -> 4.0,
       "Yhteislaajuus (suoritetut kurssit)" -> 4.0,
@@ -636,7 +636,7 @@ class LukioRaporttiSpec extends AnyFreeSpec with Matchers with RaportointikantaT
       "HI Historia valtakunnallinen" -> "Arvosana 9, Laajuus 4.0 kurssia"
     )
 
-    lazy val kemiaOppiaineenRow = default + (
+    lazy val kemiaOppiaineenRow = default ++ Map(
       "Suorituksen vahvistuspäivä" -> Some(date(2015, 1, 10)),
       "Yhteislaajuus (kaikki kurssit)" -> 1.0,
       "Yhteislaajuus (suoritetut kurssit)" -> 1.0,
@@ -646,7 +646,7 @@ class LukioRaporttiSpec extends AnyFreeSpec with Matchers with RaportointikantaT
       "KE Kemia valtakunnallinen" -> "Arvosana 8, Laajuus 1.0 kurssia"
     )
 
-    lazy val filosofiaOppiaineenRow = default + (
+    lazy val filosofiaOppiaineenRow = default ++ Map(
       "Suorituksen tila" -> "kesken",
       "Suorituksen vahvistuspäivä" -> None,
       "Yhteislaajuus (kaikki kurssit)" -> 1.0,
@@ -657,7 +657,7 @@ class LukioRaporttiSpec extends AnyFreeSpec with Matchers with RaportointikantaT
       "FI Filosofia valtakunnallinen" -> "Arvosana 9, Laajuus 1.0 kurssia"
     )
 
-    lazy val EiTiedossaOppiaineenRow = default + (
+    lazy val EiTiedossaOppiaineenRow = default ++ Map(
       "Suorituksen tila" -> "kesken",
       "Suorituksen vahvistuspäivä" -> None,
       "Yhteislaajuus (kaikki kurssit)" -> 1.0,

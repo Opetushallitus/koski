@@ -4,21 +4,21 @@ import com.github.tomakehurst.wiremock.WireMockServer
 import com.github.tomakehurst.wiremock.client.WireMock.{get, ok, urlPathEqualTo}
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMockConfig
 import fi.oph.koski.{KoskiApplicationForTests, TestEnvironment}
-import fi.oph.koski.cache.GlobalCacheManager
+import fi.oph.koski.cache.{CacheManager, GlobalCacheManager}
 import fi.oph.koski.http.Http
 import fi.oph.koski.json.JsonResources.readResource
 import fi.oph.koski.organisaatio.MockOrganisaatioRepository.hierarchyResourcename
 import fi.oph.koski.organisaatio.MockOrganisaatiot.helsinginKaupunki
 import fi.oph.koski.organisaatio.Organisaatiotyyppi.VARHAISKASVATUKSEN_TOIMIPAIKKA
-import org.json4s.DefaultFormats
+import org.json4s.{DefaultFormats, Formats}
 import org.json4s.jackson.Serialization.write
 import org.scalatest.BeforeAndAfterAll
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.should.Matchers
 
 class RemoteOrganisaatioRepositorySpec extends AnyFreeSpec with TestEnvironment with Matchers with BeforeAndAfterAll {
-  implicit val jsonDefaultFormats = DefaultFormats.preservingEmptyValues
-  implicit val cacheManager = GlobalCacheManager
+  implicit val jsonDefaultFormats: Formats = DefaultFormats.preservingEmptyValues
+  implicit val cacheManager: CacheManager = GlobalCacheManager
 
   private val wireMockServer = new WireMockServer(wireMockConfig().port(9877))
   private val orgRepository = new RemoteOrganisaatioRepository(Http("http://localhost:9877", "organisaatiopalvelu"), KoskiApplicationForTests.koodistoViitePalvelu)
@@ -38,13 +38,13 @@ class RemoteOrganisaatioRepositorySpec extends AnyFreeSpec with TestEnvironment 
     }
 
     "hakee kaikki päiväkodit" in {
-      val organisaatioHierarkia = organisaatioHierarkiaJson.extract[OrganisaatioHakuTulos].organisaatiot.map(MockOrganisaatioRepository.convertOrganisaatio)
+      val organisaatioHierarkia = organisaatioHierarkiaJson.extract[OrganisaatioHakuTulos].organisaatiot.map(MockOrganisaatioRepository.convertOrganisaatio(_))
       val päiväkotiCount = OrganisaatioHierarkia.flatten(organisaatioHierarkia).count(_.organisaatiotyypit.contains(VARHAISKASVATUKSEN_TOIMIPAIKKA))
       orgRepository.findAllVarhaiskasvatusToimipisteet.count(_.varhaiskasvatuksenOrganisaatioTyyppi) should equal(päiväkotiCount)
     }
 
     "hakee varhaiskasvatuksen toimipisteitä jotka eivät ole päiväkoteja" in {
-      val organisaatioHierarkia = organisaatioHierarkiaJson.extract[OrganisaatioHakuTulos].organisaatiot.map(MockOrganisaatioRepository.convertOrganisaatio)
+      val organisaatioHierarkia = organisaatioHierarkiaJson.extract[OrganisaatioHakuTulos].organisaatiot.map(MockOrganisaatioRepository.convertOrganisaatio(_))
       val muuKuinPäiväkotiCount = OrganisaatioHierarkia.flatten(organisaatioHierarkia).count(o =>
         o.oppilaitostyyppi.contains(Oppilaitostyyppi.peruskoulut) ||
         o.oppilaitostyyppi.contains(Oppilaitostyyppi.peruskouluasteenErityiskoulut) ||
@@ -54,13 +54,13 @@ class RemoteOrganisaatioRepositorySpec extends AnyFreeSpec with TestEnvironment 
     }
   }
 
-  override protected def beforeAll {
+  override protected def beforeAll(): Unit = {
     super.beforeAll()
     wireMockServer.start()
     mockEndpoints
   }
 
-  override protected def afterAll {
+  override protected def afterAll(): Unit = {
     wireMockServer.stop()
     super.afterAll()
   }

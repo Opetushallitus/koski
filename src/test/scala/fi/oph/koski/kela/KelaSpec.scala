@@ -36,7 +36,7 @@ class KelaSpec
 
   "Kelan yhden oppijan rajapinta" - {
     "Yhden oppijan hakeminen onnistuu ja tuottaa auditlog viestin" in {
-      AuditLogTester.clearMessages
+      AuditLogTester.clearMessages()
       postHetu(KoskiSpecificMockOppijat.amis.hetu.get) {
         verifyResponseStatusOk()
         AuditLogTester.verifyLastAuditLogMessage(Map("operation" -> "OPISKELUOIKEUS_KATSOMINEN", "target" -> Map("oppijaHenkiloOid" -> KoskiSpecificMockOppijat.amis.oid)))
@@ -233,7 +233,7 @@ class KelaSpec
     "Jos YTR-rajapinta palauttaa virheen, ei palauteta oppijan tietoja lainkaan" in {
       val hetu = KoskiSpecificMockOppijat.kelaErityyppisiaOpiskeluoikeuksia.hetu.get
 
-      KoskiApplicationForTests.cacheManager.invalidateAllCaches
+      KoskiApplicationForTests.cacheManager.invalidateAllCaches()
       MockYtrClient.setFailureHetu(hetu)
 
       postHetu(hetu) {
@@ -243,7 +243,7 @@ class KelaSpec
     "Jos YTR-rajapinta timeouttaa, ei palauteta oppijan tietoja lainkaan" in {
       val hetu = KoskiSpecificMockOppijat.kelaErityyppisiaOpiskeluoikeuksia.hetu.get
 
-      KoskiApplicationForTests.cacheManager.invalidateAllCaches
+      KoskiApplicationForTests.cacheManager.invalidateAllCaches()
       MockYtrClient.setTimeoutHetu(hetu)
 
       postHetu(hetu) {
@@ -384,14 +384,14 @@ class KelaSpec
       }
     }
     "Luo AuditLogin" in {
-      AuditLogTester.clearMessages
+      AuditLogTester.clearMessages()
       postHetut(List(KoskiSpecificMockOppijat.amis.hetu.get)) {
         verifyResponseStatusOk()
         AuditLogTester.verifyLastAuditLogMessage(Map("operation" -> "OPISKELUOIKEUS_KATSOMINEN", "target" -> Map("oppijaHenkiloOid" -> KoskiSpecificMockOppijat.amis.oid)))
       }
     }
     "Ei luo AuditLogia jos hetulla löytyvä oppija puuttuu vastauksesta" in {
-      AuditLogTester.clearMessages
+      AuditLogTester.clearMessages()
       postHetut(List(KoskiSpecificMockOppijat.korkeakoululainen.hetu.get)) {
         verifyResponseStatusOk()
         AuditLogTester.getLogMessages.length should equal(0)
@@ -571,7 +571,7 @@ class KelaSpec
 
   "Opiskeluoikeushistoria" - {
     lazy val historiaFixture = new {
-      resetFixtures
+      resetFixtures()
 
       val opiskeluoikeus = lastOpiskeluoikeusByHetu(KoskiSpecificMockOppijat.amis)
 
@@ -586,7 +586,7 @@ class KelaSpec
 
       "Opiskeluoikeuden versiohistorian haku tuottaa AuditLogin" in {
 
-        AuditLogTester.clearMessages
+        AuditLogTester.clearMessages()
 
         getVersiohistoria(historiaFixture.opiskeluoikeus.oid.get) {
           verifyResponseStatusOk()
@@ -598,7 +598,7 @@ class KelaSpec
       }
 
       "Tietyn version haku opiskeluoikeudesta tuottaa AuditLogin" in {
-        AuditLogTester.clearMessages
+        AuditLogTester.clearMessages()
 
         getOpiskeluoikeudenVersio(historiaFixture.opiskeluoikeus.oid.get, 1) {
           verifyResponseStatusOk()
@@ -767,7 +767,7 @@ class KelaSpec
   }
 
   "Hetu ei päädy lokiin" in {
-    AccessLogTester.clearMessages
+    AccessLogTester.clearMessages()
     val maskedHetu = "******-****"
     getHetu(KoskiSpecificMockOppijat.amis.hetu.get) {
       verifyResponseStatusOk()

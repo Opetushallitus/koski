@@ -18,7 +18,7 @@ class ValpasOppijaLaajatTiedotServiceSpec extends ValpasOppijaTestBase {
       val oid = ValpasMockOppijat.oppijaJollaYOOpiskeluoikeus.oid
       val result = oppijaLaajatTiedotService.getOppijaLaajatTiedotYhteystiedoillaJaKuntailmoituksilla(oid)(session(ValpasMockUsers.valpasAapajoenKoulu))
 
-      result.left.map(_.statusCode) should be(Left(403))
+      result.swap.map(_.statusCode) should be(Left(403))
     }
 
     "palautetun oppijan valintatilat ovat oikein" in {
@@ -151,7 +151,7 @@ class ValpasOppijaLaajatTiedotServiceSpec extends ValpasOppijaTestBase {
 
     "palauttaa turvakiellon alaisen oppijan tiedot ilman kotikuntaa" in {
       val result = oppijaLaajatTiedotService.getOppijaLaajatTiedotYhteystiedoillaJaKuntailmoituksilla(ValpasMockOppijat.turvakieltoOppija.oid)(session(ValpasMockUsers.valpasMonta))
-      result.right.get.oppija.henkilö.kotikunta shouldBe None
+      result.toOption.get.oppija.henkilö.kotikunta shouldBe None
     }
   }
 }

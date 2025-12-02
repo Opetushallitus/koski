@@ -130,7 +130,7 @@ class OppijaQuerySpec extends AnyFreeSpec with KoskiHttpSpec with Opiskeluoikeus
 
     "Luottamuksellinen data" - {
       "Näytetään käyttäjälle jolla on LUOTTAMUKSELLINEN_KAIKKI_TIEDOT-rooli" in {
-        resetFixtures
+        resetFixtures()
         vankilaopetuksessa(haeOpiskeluoikeudetOppijanNimellä("Eero", "Esimerkki", stadinAmmattiopistoKatselija)) should equal(Some(List(Aikajakso(date(2019, 5, 30), None))))
       }
 
@@ -181,7 +181,7 @@ class OppijaQuerySpec extends AnyFreeSpec with KoskiHttpSpec with Opiskeluoikeus
         }
         val oppijat = queryOppijat("?opiskeluoikeusPäättynytViimeistään=2014-04-30&opiskeluoikeusPäättynytAikaisintaan=2014-01-01")
         oppijat.length should equal(0)
-        resetFixtures
+        resetFixtures()
       }
     }
 
@@ -209,4 +209,3 @@ class OppijaQuerySpec extends AnyFreeSpec with KoskiHttpSpec with Opiskeluoikeus
 
   def vankilaopetuksessa(oos: List[AmmatillinenOpiskeluoikeus]): Option[List[Aikajakso]] = oos.head.lisätiedot.flatMap(_.vankilaopetuksessa)
 }
-

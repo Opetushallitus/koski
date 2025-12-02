@@ -29,7 +29,7 @@ class ElaketurvakeskusSpec
 
   override protected def alterFixture(): Unit = {
     insertAdditionalTestData
-    reloadRaportointikanta
+    reloadRaportointikanta()
   }
 
   "Elaketurvakeskus API" - {
@@ -194,7 +194,7 @@ class ElaketurvakeskusSpec
     }
     "Auditlogit" - {
       "Luo auditlogin, kun oid on ok" in {
-        AuditLogTester.clearMessages
+        AuditLogTester.clearMessages()
         val file = createFile(createCsv(createLine(oid = ammattilainen.oid)))
         postCsvFile(file) {
           verifyAuditLogMessage(ammattilainen)
@@ -202,7 +202,7 @@ class ElaketurvakeskusSpec
         file.delete
       }
       "Ei luoda auditlogia, jos ei hetua ja virheellinen oid" in {
-        AuditLogTester.clearMessages
+        AuditLogTester.clearMessages()
         val file = createFile(createCsv(createLine(oid = "1337")))
         postCsvFile(file) {
           AuditLogTester.getLogMessages should equal(Nil)
@@ -210,7 +210,7 @@ class ElaketurvakeskusSpec
         file.delete
       }
       "Luodaan auditlog, jos oid puuttuu mutta hetu löytyy" in {
-        AuditLogTester.clearMessages
+        AuditLogTester.clearMessages()
         val file = createFile(createCsv(createLine(hetu = eero.hetu.get, oid = "1337")))
         postCsvFile(file) {
           verifyAuditLogMessage(eero)
@@ -265,8 +265,8 @@ class ElaketurvakeskusSpec
   }
 
   def write(file: File, content: String) = new PrintWriter(file) {
-    write(content);
-    flush
+    super.write(content)
+    flush()
   }
 
   def insertAdditionalTestData: Unit = {

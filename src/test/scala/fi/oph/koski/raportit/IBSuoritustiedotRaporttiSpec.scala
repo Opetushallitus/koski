@@ -57,7 +57,7 @@ class IBSuoritustiedotRaporttiSpec extends
 
   override protected def beforeAll(): Unit = {
     super.beforeAll()
-    reloadRaportointikanta
+    reloadRaportointikanta()
   }
 
   override protected def alterFixture(): Unit = {
@@ -125,7 +125,7 @@ class IBSuoritustiedotRaporttiSpec extends
       tyhjä
     )
 
-    reloadRaportointikanta
+    reloadRaportointikanta()
   }
 
   override def defaultOpiskeluoikeus = ExamplesIB.opiskeluoikeus

@@ -21,11 +21,11 @@ class YtrAuditLogSpec
     with BeforeAndAfterEach
 {
 
-  override protected def beforeEach() {
+  override protected def beforeEach(): Unit = {
     super.beforeEach()
     clearYtrData()
     MockYtrClient.reset()
-    AuditLogTester.clearMessages
+    AuditLogTester.clearMessages()
   }
 
   val birthmonthStart = "1980-03"
@@ -58,7 +58,7 @@ class YtrAuditLogSpec
 
   "Muutos" in {
     downloadYtrData(birthmonthStart, birthmonthEnd, force = true)
-    AuditLogTester.clearMessages
+    AuditLogTester.clearMessages()
     MockYtrClient.incrementOppijaVersion(hetu)
     downloadYtrData(modifiedSince, force = true)
 
@@ -81,7 +81,7 @@ class YtrAuditLogSpec
     downloadYtrData(birthmonthStart, birthmonthEnd, force = true)
     MockYtrClient.incrementOppijaVersion(hetu)
     downloadYtrData(modifiedSince, force = true)
-    AuditLogTester.clearMessages
+    AuditLogTester.clearMessages()
 
     getYtrOppija(oppijaOid, MockUsers.ophkatselija)
 
@@ -105,7 +105,7 @@ class YtrAuditLogSpec
     downloadYtrData(birthmonthStart, birthmonthEnd, force = true)
     MockYtrClient.incrementOppijaVersion(hetu)
     downloadYtrData(modifiedSince, force = true)
-    AuditLogTester.clearMessages
+    AuditLogTester.clearMessages()
 
     getYtrOppijaVersionumerolla(oppijaOid, 1, MockUsers.ophkatselija)
 
@@ -129,7 +129,7 @@ class YtrAuditLogSpec
     downloadYtrData(birthmonthStart, birthmonthEnd, force = true)
     MockYtrClient.incrementOppijaVersion(hetu)
     downloadYtrData(modifiedSince, force = true)
-    AuditLogTester.clearMessages
+    AuditLogTester.clearMessages()
 
     getYtrSavedOriginal(oppijaOid, MockUsers.ophkatselija)
 
@@ -152,7 +152,7 @@ class YtrAuditLogSpec
     downloadYtrData(birthmonthStart, birthmonthEnd, force = true)
     MockYtrClient.incrementOppijaVersion(hetu)
     downloadYtrData(modifiedSince, force = true)
-    AuditLogTester.clearMessages
+    AuditLogTester.clearMessages()
 
     getYtrCurrentOriginal(oppijaOid, MockUsers.ophkatselija)
 

@@ -16,9 +16,9 @@ import org.scalatest.{BeforeAndAfterEach, Tag}
 import java.time.LocalDate.{of => date}
 
 class ValpasRootApiServletSpec extends ValpasTestBase with BeforeAndAfterEach {
-  override protected def beforeEach() {
+  override protected def beforeEach(): Unit = {
     super.beforeEach()
-    AuditLogTester.clearMessages
+    AuditLogTester.clearMessages()
     KoskiApplicationForTests.valpasRajapäivätService.asInstanceOf[MockValpasRajapäivätService]
       .asetaMockTarkastelupäivä(FixtureUtil.DefaultTarkastelupäivä)
     new ValpasDatabaseFixtureLoader(KoskiApplicationForTests).reset()
@@ -374,7 +374,7 @@ class ValpasRootApiServletSpec extends ValpasTestBase with BeforeAndAfterEach {
   }
 
   private def testHetunMaskausAccessLogissa(url: String) = {
-    AccessLogTester.clearMessages
+    AccessLogTester.clearMessages()
     val maskedHetu = "******-****"
     authGet(url, ValpasMockUsers.valpasMonta) {
       verifyResponseStatusOk()
@@ -397,4 +397,3 @@ class ValpasRootApiServletSpec extends ValpasTestBase with BeforeAndAfterEach {
 }
 
 object ValpasBackendTag extends Tag("valpasback")
-

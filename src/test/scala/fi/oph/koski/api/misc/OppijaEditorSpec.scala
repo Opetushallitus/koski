@@ -12,7 +12,7 @@ class OppijaEditorSpec extends AnyFreeSpec with Matchers with KoskiHttpSpec with
 
   "GET /api/editor/:oid" - {
     "with valid oid" in {
-      AuditLogTester.clearMessages
+    AuditLogTester.clearMessages()
       get("api/editor/" + KoskiSpecificMockOppijat.eero.oid, headers = authHeaders()) {
         verifyResponseStatusOk()
         AuditLogTester.verifyLastAuditLogMessage(Map("operation" -> "OPISKELUOIKEUS_KATSOMINEN"))
@@ -20,7 +20,7 @@ class OppijaEditorSpec extends AnyFreeSpec with Matchers with KoskiHttpSpec with
     }
     "with version number" in {
       val opiskeluoikeusOid = lastOpiskeluoikeus(KoskiSpecificMockOppijat.eero.oid).oid.get
-      AuditLogTester.clearMessages
+    AuditLogTester.clearMessages()
       get("api/editor/" + KoskiSpecificMockOppijat.eero.oid, params = List("opiskeluoikeus" -> opiskeluoikeusOid, "versionumero" -> "1"), headers = authHeaders()) {
         verifyResponseStatusOk()
         AuditLogTester.verifyLastAuditLogMessage(Map("operation" -> "OPISKELUOIKEUS_KATSOMINEN"))
@@ -46,13 +46,13 @@ class OppijaEditorSpec extends AnyFreeSpec with Matchers with KoskiHttpSpec with
 
   "GET /api/omattiedot/editor" - {
     "with virkailija login -> forbidden" in {
-      AuditLogTester.clearMessages
+    AuditLogTester.clearMessages()
       get("api/omattiedot/editor", headers = authHeaders(user = MockUsers.omattiedot)) {
         verifyResponseStatus(403, KoskiErrorCategory.forbidden.vainKansalainen())
       }
     }
     "with kansalainen login -> logs KANSALAINEN_OPISKELUOIKEUS_KATSOMINEN" in {
-      AuditLogTester.clearMessages
+    AuditLogTester.clearMessages()
       get("api/omattiedot/editor", headers = kansalainenLoginHeaders("190751-739W")) {
         verifyResponseStatusOk()
         AuditLogTester.verifyLastAuditLogMessage(Map("operation" -> "KANSALAINEN_OPISKELUOIKEUS_KATSOMINEN"))
@@ -66,4 +66,3 @@ class OppijaEditorSpec extends AnyFreeSpec with Matchers with KoskiHttpSpec with
     }
   }
 }
-

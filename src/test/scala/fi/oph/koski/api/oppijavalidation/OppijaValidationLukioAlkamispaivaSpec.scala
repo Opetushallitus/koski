@@ -22,7 +22,7 @@ class OppijaValidationLukioAlkamispäiväSpec
     with OpiskeluoikeusTestMethodsLukio2015
     with BeforeAndAfterEach
 {
-  override protected def beforeEach() {
+  override protected def beforeEach(): Unit = {
     super.beforeEach()
   }
 

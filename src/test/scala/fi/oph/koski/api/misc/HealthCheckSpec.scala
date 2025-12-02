@@ -11,7 +11,7 @@ class HealthCheckSpec extends AnyFreeSpec with Matchers with KoskiHttpSpec with 
   }
 
   override def afterEach(): Unit = {
-    KoskiApplicationForTests.cacheManager.invalidateAllCaches
+    KoskiApplicationForTests.cacheManager.invalidateAllCaches()
     super.afterEach()
   }
 
@@ -103,4 +103,3 @@ class HealthCheckSpec extends AnyFreeSpec with Matchers with KoskiHttpSpec with 
     }
   }
 }
-

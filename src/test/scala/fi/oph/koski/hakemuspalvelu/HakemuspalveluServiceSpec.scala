@@ -39,7 +39,7 @@ class HakemuspalveluServiceSpec
 
   val hakemuspalveluService = KoskiApplicationForTests.hakemuspalveluService
 
-  implicit val koskiSession = new KoskiSpecificSession(
+  implicit val koskiSession: KoskiSpecificSession = new KoskiSpecificSession(
     AuthenticationUser(
       hakemuspalveluKäyttäjä.oid,
       OPH_KATSELIJA_USER,
@@ -79,7 +79,7 @@ class HakemuspalveluServiceSpec
 
     val (onnistuu, eiOnnistu) = results.partition(_.isRight)
 
-    val (eiOnnistu404, _) = eiOnnistu.partition(_.left.get.statusCode == 404)
+    val (eiOnnistu404, _) = eiOnnistu.partition(_.swap.toOption.get.statusCode == 404)
 
     onnistuu.length should be > 100
     eiOnnistu.length should be > 20
@@ -91,7 +91,7 @@ class HakemuspalveluServiceSpec
     val result = hakemuspalveluService.findOppija(KoskiSpecificMockOppijat.vainMitätöityjäOpiskeluoikeuksia.oid)
 
     result.isLeft should be(true)
-    result.left.get.statusCode should be(404)
+    result.swap.toOption.get.statusCode should be(404)
   }
 
   "Korkeakoulu" - {

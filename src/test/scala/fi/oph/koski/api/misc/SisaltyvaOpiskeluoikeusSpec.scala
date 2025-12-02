@@ -20,7 +20,7 @@ import scala.language.reflectiveCalls
 class SisältyväOpiskeluoikeusSpec extends AnyFreeSpec with Matchers with OpiskeluoikeusTestMethodsAmmatillinen with SearchTestMethods with KoskiHttpSpec with DatabaseTestMethods {
   "Sisältyvä opiskeluoikeus" - {
     lazy val fixture = new {
-      resetFixtures
+      resetFixtures()
       val original: AmmatillinenOpiskeluoikeus = setupOppijaWithAndGetOpiskeluoikeus(defaultOpiskeluoikeus, defaultHenkilö, headers = authHeaders(stadinAmmattiopistoJaOppisopimuskeskusTallentaja) ++ jsonContent)
 
       val sisältyvä: AmmatillinenOpiskeluoikeus = defaultOpiskeluoikeus.copy(

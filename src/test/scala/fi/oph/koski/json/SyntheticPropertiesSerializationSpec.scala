@@ -52,7 +52,7 @@ class SyntheticPropertiesSerializationSpec extends AnyFreeSpec with TestEnvironm
       ).head
       koskiRow.data.asInstanceOf[JObject].values should contain("alkamispäivä", "2019-05-30")
 
-      val res = SchemaValidatingExtractor.extract[AlkamispäiväMuuttunut](koskiRow.data).right.get
+      val res = SchemaValidatingExtractor.extract[AlkamispäiväMuuttunut](koskiRow.data).toOption.get
       res.alkamispäivä shouldBe Some(LocalDate.of(2019, 5, 31))
       Serializer.serialize(res, serializationContext).asInstanceOf[JObject].values should contain ("alkamispäivä", "2019-05-31")
     }
@@ -140,7 +140,7 @@ class SyntheticPropertiesSerializationSpec extends AnyFreeSpec with TestEnvironm
       history.version shouldBe 2
       history.asOpiskeluoikeusJson.asInstanceOf[JObject].values should contain("alkamispäivä", "2019-06-01")
 
-      val res = SchemaValidatingExtractor.extract[AlkamispäiväMuuttunut](history.asOpiskeluoikeusJson).right.get
+      val res = SchemaValidatingExtractor.extract[AlkamispäiväMuuttunut](history.asOpiskeluoikeusJson).toOption.get
       res.alkamispäivä shouldBe Some(LocalDate.of(2019, 6, 2))
       Serializer.serialize(res, serializationContext).asInstanceOf[JObject].values should contain("alkamispäivä", "2019-06-02")
     }

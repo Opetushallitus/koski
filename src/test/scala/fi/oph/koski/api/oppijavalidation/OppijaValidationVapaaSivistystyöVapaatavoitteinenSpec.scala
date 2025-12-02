@@ -75,14 +75,14 @@ class OppijaValidationVapaaSivistystyöVapaatavoitteinenSpec extends AnyFreeSpec
         val oppijaOid = KoskiSpecificMockOppijat.poistettuOpiskeluoikeus.oid
         val oppijaResult = tryOppija(oppijaOid)
         oppijaResult.isLeft should be(true)
-        oppijaResult.left.map(_.statusCode) should be(Left(404))
+        oppijaResult.swap.map(_.statusCode) should be(Left(404))
       }
 
       "Kun suostumus on peruutettu, oppijan opiskeluoikeuksia ei saa API:n kautta, vaikka olisi oikeudet mitätöityihin opiskeluoikeuksiin" in {
         val oppijaOid = KoskiSpecificMockOppijat.poistettuOpiskeluoikeus.oid
         val oppijaResult = tryOppija(oppijaOid, MockUsers.paakayttajaMitatoidytOpiskeluoikeudet)
         oppijaResult.isLeft should be(true)
-        oppijaResult.left.map(_.statusCode) should be(Left(404))
+        oppijaResult.swap.map(_.statusCode) should be(Left(404))
       }
     }
 
@@ -253,7 +253,7 @@ class OppijaValidationVapaaSivistystyöVapaatavoitteinenSpec extends AnyFreeSpec
     oo.copy(
       suoritukset = List(suoritusVapaatavoitteinenKoulutus.copy(
         osasuoritukset = Some(List(
-          vapaanSivistystyönVapaatavoitteisenKoulutuksenOsasuorituksenSuoritus.copy(
+          vapaanSivistystyönVapaatavoitteisenKoulutuksenOsasuorituksenSuoritus().copy(
             arviointi = None
           )
         )))

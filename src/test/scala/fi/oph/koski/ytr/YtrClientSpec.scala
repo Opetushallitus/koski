@@ -8,14 +8,14 @@ import com.github.tomakehurst.wiremock.core.WireMockConfiguration._
 import com.typesafe.config.ConfigFactory
 import fi.oph.koski.TestEnvironment
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
-import org.json4s.DefaultFormats
+import org.json4s.{DefaultFormats, Formats}
 import org.scalatest.BeforeAndAfterAll
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.should.Matchers
 import org.json4s.jackson.Serialization.write
 
 class YtrClientSpec extends AnyFreeSpec with TestEnvironment with Matchers with BeforeAndAfterAll {
-  implicit val jsonDefaultFormats = DefaultFormats.preservingEmptyValues
+  implicit val jsonDefaultFormats: Formats = DefaultFormats.preservingEmptyValues
 
   private val config = ConfigFactory.parseString(
     """

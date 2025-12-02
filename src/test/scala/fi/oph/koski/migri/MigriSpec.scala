@@ -49,7 +49,7 @@ class MigriSpec extends AnyFreeSpec with KoskiHttpSpec with OpiskeluoikeusTestMe
   }
 
   "Oppijan opiskeluoikeuksista ja suorituksista palautetaan vain migriä kiinnostavat" in {
-    resetFixtures
+    resetFixtures()
     putOpiskeluoikeus(MuunAmmatillisenKoulutuksenExample.muuAmmatillinenKoulutusOpiskeluoikeus, ammattilainen) {
       verifyResponseStatusOk()
     }
@@ -138,7 +138,7 @@ class MigriSpec extends AnyFreeSpec with KoskiHttpSpec with OpiskeluoikeusTestMe
   }
 
   "Oidilla hakeminen luo auditlogin" in {
-    AuditLogTester.clearMessages
+    AuditLogTester.clearMessages()
     postOid(ammattilainen.oid, user) {
       verifyResponseStatusOk()
       AuditLogTester.verifyLastAuditLogMessage(Map("operation" -> "OPISKELUOIKEUS_KATSOMINEN"))
@@ -146,7 +146,7 @@ class MigriSpec extends AnyFreeSpec with KoskiHttpSpec with OpiskeluoikeusTestMe
   }
 
   "Hetulla hakeminen luo auditlogin" in {
-    AuditLogTester.clearMessages
+    AuditLogTester.clearMessages()
     postHetu(ammattilainen.hetu, user) {
       verifyResponseStatusOk()
       AuditLogTester.verifyLastAuditLogMessage(Map("operation" -> "OPISKELUOIKEUS_KATSOMINEN"))
@@ -154,7 +154,7 @@ class MigriSpec extends AnyFreeSpec with KoskiHttpSpec with OpiskeluoikeusTestMe
   }
 
   "Lisätiedot-rakenne palautetaan, jos osasuorituksen lisätietojen tunnisteen koodiarvo on 'mukautettu'" in {
-    resetFixtures
+    resetFixtures()
     val lisätiedot = Some(List(AmmatillisenTutkinnonOsanLisätieto(
       Koodistokoodiviite("mukautettu", "ammatillisentutkinnonosanlisatieto"),
       LocalizedString.finnish("lisätiedot")
@@ -177,7 +177,7 @@ class MigriSpec extends AnyFreeSpec with KoskiHttpSpec with OpiskeluoikeusTestMe
   }
 
   "Lisätiedot-rakenne palautetaan aliosasuoritukselle, jos aliosasuorituksen lisätietojen tunnisteen koodiarvo on 'mukautettu'" in {
-    resetFixtures
+    resetFixtures()
     val lisätiedot = Some(List(AmmatillisenTutkinnonOsanLisätieto(
       Koodistokoodiviite("mukautettu", "ammatillisentutkinnonosanlisatieto"),
       LocalizedString.finnish("lisätiedot")
@@ -214,7 +214,7 @@ class MigriSpec extends AnyFreeSpec with KoskiHttpSpec with OpiskeluoikeusTestMe
   }
 
   "Muilla koodiarvoilla lisätiedot-rakenne on piilotettu" in {
-    resetFixtures
+    resetFixtures()
     val lisätiedot = Some(List(AmmatillisenTutkinnonOsanLisätieto(
       Koodistokoodiviite("muu", "ammatillisentutkinnonosanlisatieto"),
       LocalizedString.finnish("lisätiedot")
@@ -234,7 +234,7 @@ class MigriSpec extends AnyFreeSpec with KoskiHttpSpec with OpiskeluoikeusTestMe
   }
 
   "Muilla koodiarvoilla lisätiedot-rakenne on piilotettu myös aliosasuorituksilta" in {
-    resetFixtures
+    resetFixtures()
     val lisätiedot = Some(List(AmmatillisenTutkinnonOsanLisätieto(
       Koodistokoodiviite("muu", "ammatillisentutkinnonosanlisatieto"),
       LocalizedString.finnish("lisätiedot")
