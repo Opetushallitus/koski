@@ -79,8 +79,8 @@ trait SuorituspalveluQuery extends KoskiMassaluovutusQueryParameters with Loggin
       case Right(oo: KoskeenTallennettavaOpiskeluoikeus) =>
         SupaOpiskeluoikeusO(oo, row.oppijaOid)
       case Left(errors) =>
-        logger.warn(s"Error deserializing opiskeluoikeus: ${errors}")
-        throw new MassaluovutusException("Opiskeluoikeuden deserialisointi epäonnistui")
+        logger.warn(s"Error deserializing oppijan ${row.oppijaOid} opiskeluoikeus ${row.oid}: ${errors}")
+        throw new MassaluovutusException(s"Oppijan ${row.oppijaOid} opiskeluoikeuden ${row.oid} deserialisointi epäonnistui")
     }
   }
 
