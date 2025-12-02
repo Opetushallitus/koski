@@ -25,7 +25,8 @@ case class TodistusMetadata(
   opiskeluoikeusVersionumero: Int,
   todistusJobId: String,
   generointiStartedAt: String,
-  commitHash: String
+  commitHash: String,
+  opiskeluoikeusJson: String
 ) {
   def toMap: Map[String, String] = Map(
     "OppijaOid" -> oppijaOid,
@@ -33,7 +34,8 @@ case class TodistusMetadata(
     "OpiskeluoikeusVersionumero" -> opiskeluoikeusVersionumero.toString,
     "TodistusJobId" -> todistusJobId,
     "GenerointiStartedAt" -> generointiStartedAt,
-    "CommitHash" -> commitHash
+    "CommitHash" -> commitHash,
+    "OpiskeluoikeusJson" -> opiskeluoikeusJson
   )
 }
 

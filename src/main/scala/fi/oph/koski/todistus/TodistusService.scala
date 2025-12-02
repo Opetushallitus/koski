@@ -4,6 +4,7 @@ import fi.oph.koski.config.{Environment, KoskiApplication, KoskiInstance}
 import fi.oph.koski.db.KoskiOpiskeluoikeusRow
 import fi.oph.koski.henkilo.{KoskiSpecificMockOppijat, OppijaHenkilö}
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
+import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.koskiuser.KoskiSpecificSession
 import fi.oph.koski.koskiuser.Rooli.OPHPAAKAYTTAJA
 import fi.oph.koski.log.Logging
@@ -452,13 +453,15 @@ class TodistusService(application: KoskiApplication) extends Logging with Timing
     for {
       versionumero <- opiskeluoikeus.versionumero.toRight(KoskiErrorCategory.internalError("Versionumero puuttuu"))
       generointiStartedAt <- todistus.startedAt.toRight(KoskiErrorCategory.internalError("Aloitusaika puuttuu"))
+      opiskeluoikeusJson = JsonSerializer.writeWithRoot(opiskeluoikeus, pretty = false)
     } yield TodistusMetadata(
       oppijaOid = todistus.oppijaOid,
       opiskeluoikeusOid = todistus.opiskeluoikeusOid,
       opiskeluoikeusVersionumero = versionumero,
       todistusJobId = todistus.id,
       generointiStartedAt = generointiStartedAt.toString,
-      commitHash = commitHash
+      commitHash = commitHash,
+      opiskeluoikeusJson = opiskeluoikeusJson
     )
   }
 

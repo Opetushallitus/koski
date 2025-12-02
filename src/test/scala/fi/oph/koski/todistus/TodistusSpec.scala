@@ -12,6 +12,7 @@ import fi.oph.koski.{KoskiApplicationForTests, KoskiHttpSpec}
 import org.apache.pdfbox.Loader
 import org.apache.pdfbox.pdmodel.PDDocument
 import org.apache.pdfbox.text.PDFTextStripper
+import org.json4s.DefaultFormats
 import org.json4s.jackson.JsonMethods
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.should.Matchers
@@ -23,6 +24,8 @@ import java.time.{Duration, LocalDate, LocalDateTime}
 
 class TodistusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers with BeforeAndAfterAll with BeforeAndAfterEach with PutOpiskeluoikeusTestMethods[KielitutkinnonOpiskeluoikeus] {
   def tag = implicitly[reflect.runtime.universe.TypeTag[KielitutkinnonOpiskeluoikeus]]
+
+  implicit val formats = DefaultFormats
 
   val app = KoskiApplicationForTests
 
@@ -444,6 +447,24 @@ class TodistusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers with Bef
         producer should include("Koski")
         producer should include("commit:")
         producer should include(expectedCommitHash)
+      }
+
+      val opiskeluoikeusJson = info.getCustomMetadataValue("OpiskeluoikeusJson")
+      withClue(s"OpiskeluoikeusJson-metadatassa virhe. Saatu: $opiskeluoikeusJson ") {
+        opiskeluoikeusJson should not be null
+        opiskeluoikeusJson should not be empty
+
+        // Varmista että JSON on validi ja deserialisoituu takaisin Opiskeluoikeus-objektiksi
+        val parsedJson = JsonMethods.parse(opiskeluoikeusJson)
+        val deserializedOpiskeluoikeus = KoskiApplicationForTests.validatingAndResolvingExtractor.extract[Opiskeluoikeus](parsedJson, strictDeserialization)
+
+        deserializedOpiskeluoikeus match {
+          case Right(extractedOpiskeluoikeus) =>
+            extractedOpiskeluoikeus.oid should equal(opiskeluoikeus.oid)
+            extractedOpiskeluoikeus.versionumero should equal(opiskeluoikeus.versionumero)
+          case Left(error) =>
+            fail(s"Opiskeluoikeuden deserialisointi epäonnistui: ${error.toString}")
+        }
       }
     }
 
