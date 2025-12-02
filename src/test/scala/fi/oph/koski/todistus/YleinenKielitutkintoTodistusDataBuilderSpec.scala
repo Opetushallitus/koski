@@ -37,7 +37,6 @@ class YleinenKielitutkintoTodistusDataBuilderSpec extends AnyFreeSpec with Match
         val result = generator.createTodistusData(
           mockOppija,
           opiskeluoikeus,
-          opiskeluoikeus.suoritukset.head.asInstanceOf[YleisenKielitutkinnonSuoritus],
           todistusJob
         )
 
@@ -78,7 +77,6 @@ class YleinenKielitutkintoTodistusDataBuilderSpec extends AnyFreeSpec with Match
         val result = generator.createTodistusData(
           mockOppija,
           opiskeluoikeus,
-          opiskeluoikeus.suoritukset.head.asInstanceOf[YleisenKielitutkinnonSuoritus],
           todistusJob
         )
 
@@ -116,7 +114,6 @@ class YleinenKielitutkintoTodistusDataBuilderSpec extends AnyFreeSpec with Match
         val result = generator.createTodistusData(
           mockOppija,
           opiskeluoikeus,
-          opiskeluoikeus.suoritukset.head.asInstanceOf[YleisenKielitutkinnonSuoritus],
           todistusJob
         )
 
@@ -154,7 +151,6 @@ class YleinenKielitutkintoTodistusDataBuilderSpec extends AnyFreeSpec with Match
         val result = generator.createTodistusData(
           mockOppija,
           opiskeluoikeus,
-          opiskeluoikeus.suoritukset.head.asInstanceOf[YleisenKielitutkinnonSuoritus],
           todistusJob
         )
 
@@ -201,7 +197,6 @@ class YleinenKielitutkintoTodistusDataBuilderSpec extends AnyFreeSpec with Match
         val result = generator.createTodistusData(
           mockOppija,
           opiskeluoikeus,
-          opiskeluoikeus.suoritukset.head.asInstanceOf[YleisenKielitutkinnonSuoritus],
           todistusJob
         )
 
@@ -233,7 +228,6 @@ class YleinenKielitutkintoTodistusDataBuilderSpec extends AnyFreeSpec with Match
         val result = generator.createTodistusData(
           mockOppija,
           opiskeluoikeus,
-          opiskeluoikeus.suoritukset.head.asInstanceOf[YleisenKielitutkinnonSuoritus],
           todistusJob
         )
 
@@ -265,7 +259,6 @@ class YleinenKielitutkintoTodistusDataBuilderSpec extends AnyFreeSpec with Match
         val result = generator.createTodistusData(
           mockOppija,
           opiskeluoikeus,
-          opiskeluoikeus.suoritukset.head.asInstanceOf[YleisenKielitutkinnonSuoritus],
           todistusJob
         )
 
@@ -340,7 +333,6 @@ class YleinenKielitutkintoTodistusDataBuilderSpec extends AnyFreeSpec with Match
           val result = generator.createTodistusData(
             mockOppija,
             opiskeluoikeus,
-            opiskeluoikeus.suoritukset.head.asInstanceOf[YleisenKielitutkinnonSuoritus],
             todistusJob
           )
 
@@ -468,7 +460,6 @@ class YleinenKielitutkintoTodistusDataBuilderSpec extends AnyFreeSpec with Match
     val result = generator.createTodistusData(
       mockOppija,
       opiskeluoikeus,
-      opiskeluoikeus.suoritukset.head.asInstanceOf[YleisenKielitutkinnonSuoritus],
       todistusJob
     )
 

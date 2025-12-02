@@ -5,6 +5,7 @@ import com.openhtmltopdf.outputdevice.helper.BaseRendererBuilder.FontStyle
 import com.openhtmltopdf.pdfboxout.{PDFCreationListener, PdfBoxRenderer, PdfRendererBuilder}
 import com.openhtmltopdf.svgsupport.BatikSVGDrawer
 import fi.oph.koski.log.Logging
+import fi.oph.koski.schema.Opiskeluoikeus
 import org.thymeleaf.TemplateEngine
 import org.thymeleaf.context.Context
 import org.thymeleaf.templatemode.TemplateMode
@@ -17,6 +18,7 @@ import scala.jdk.CollectionConverters._
 trait TodistusData {
   def toTemplateVariables: Map[String, Object]
   def templateName: String
+  def siistittyOo: Opiskeluoikeus
 }
 
 case class TodistusMetadata(
@@ -25,7 +27,8 @@ case class TodistusMetadata(
   opiskeluoikeusVersionumero: Int,
   todistusJobId: String,
   generointiStartedAt: String,
-  commitHash: String
+  commitHash: String,
+  opiskeluoikeusJson: String
 ) {
   def toMap: Map[String, String] = Map(
     "OppijaOid" -> oppijaOid,
@@ -33,7 +36,8 @@ case class TodistusMetadata(
     "OpiskeluoikeusVersionumero" -> opiskeluoikeusVersionumero.toString,
     "TodistusJobId" -> todistusJobId,
     "GenerointiStartedAt" -> generointiStartedAt,
-    "CommitHash" -> commitHash
+    "CommitHash" -> commitHash,
+    "OpiskeluoikeusJson" -> opiskeluoikeusJson
   )
 }
 

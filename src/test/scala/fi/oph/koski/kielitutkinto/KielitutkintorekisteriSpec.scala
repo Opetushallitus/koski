@@ -3,8 +3,8 @@ package fi.oph.koski.kielitutkinto
 import fi.oph.koski.api.misc.PutOpiskeluoikeusTestMethods
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api.actionBasedSQLInterpolation
 import fi.oph.koski.db.QueryMethods.runDbSync
-import fi.oph.koski.documentation.ExamplesKielitutkinto.Opiskeluoikeusjakso
-import fi.oph.koski.documentation.ExamplesKielitutkinto.YleisetKielitutkinnot.tutkinnonOsa
+import fi.oph.koski.documentation.ExamplesKielitutkinto.{Opiskeluoikeusjakso, tutkinnonOsa}
+import fi.oph.koski.documentation.ExamplesKielitutkinto.YleisetKielitutkinnot.tutkinnonOsaMonellaArvioinnilla
 import fi.oph.koski.documentation.{ExamplesKielitutkinto, ExamplesLukio}
 import fi.oph.koski.henkilo.{KoskiSpecificMockOppijat, LaajatOppijaHenkilöTiedot}
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
