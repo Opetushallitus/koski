@@ -227,7 +227,7 @@ class MassaluovutusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers wit
         val failed = waitForFailure(queryId, user)
 
         failed.status shouldBe QueryState.failed
-        failed.error shouldBe Some("Opiskeluoikeuden deserialisointi epäonnistui") // Näkyy pääkäyttäjälle
+        failed.error.get should fullyMatch regex  "^Oppijan (1\\.2\\.246\\.562\\.24\\.\\d+) opiskeluoikeuden (1\\.2\\.246\\.562\\.15\\.\\d+) deserialisointi epäonnistui$".r // Näkyy pääkäyttäjälle
 
         // Tulokset ennen rikkinäisen opiskeluoikeuden käsittelyä on kirjoitettu vastaukseen:
         failed.files should have length 36
@@ -1042,7 +1042,7 @@ class MassaluovutusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers wit
       val failed = waitForFailure(queryId, user)
 
       failed.status shouldBe QueryState.failed
-      failed.error shouldBe Some("Opiskeluoikeuden deserialisointi epäonnistui") // Näkyy pääkäyttäjälle
+      failed.error.get should fullyMatch regex  "^Oppijan (1\\.2\\.246\\.562\\.24\\.\\d+) opiskeluoikeuden (1\\.2\\.246\\.562\\.15\\.\\d+) deserialisointi epäonnistui$".r // Näkyy pääkäyttäjälle
       failed.files should have length 0 // Ei palauta tuloksia, joten ei myöskään tee auditlokitusta
     }
   }

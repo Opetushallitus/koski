@@ -54,8 +54,8 @@ case class MassaluovutusQueryOrganisaationOpiskeluoikeudetJson(
     application.validatingAndResolvingExtractor.extract[KoskeenTallennettavaOpiskeluoikeus](KoskiSchema.strictDeserialization)(json) match {
       case Right(oo: KoskeenTallennettavaOpiskeluoikeus) => Some(oo)
       case Left(errors) =>
-        logger.warn(s"Error deserializing opiskeluoikeus: ${errors}")
-        throw new MassaluovutusException("Opiskeluoikeuden deserialisointi epäonnistui")
+        logger.warn(s"Error deserializing oppijan ${row.oppijaOid} opiskeluoikeus ${row.oid}: ${errors}")
+        throw new MassaluovutusException(s"Oppijan ${row.oppijaOid} opiskeluoikeuden ${row.oid} deserialisointi epäonnistui")
     }
   }
 }
