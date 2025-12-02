@@ -140,6 +140,7 @@ object Oppivelvollisuustiedot {
                 #${s.name}.r_henkilo henkilo
                 left join kotikunta_suomessa_ensimmaisen_kerran_alkaen on henkilo.master_oid = kotikunta_suomessa_ensimmaisen_kerran_alkaen.master_oid
               where syntymaaika >= '#$valpasLakiVoimassaVanhinSyntymäaika'::date
+                and kuolinpaiva is null
                 and kotikunta_suomessa_ensimmaisen_kerran_alkaen.pvm is not null
                 and kotikunta_suomessa_ensimmaisen_kerran_alkaen.pvm < syntymaaika + interval '18 years'
                 and henkilo.master_oid not in (
