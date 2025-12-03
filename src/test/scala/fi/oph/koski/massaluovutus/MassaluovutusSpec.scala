@@ -230,9 +230,11 @@ class MassaluovutusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers wit
         failed.error.get should fullyMatch regex  "^Oppijan (1\\.2\\.246\\.562\\.24\\.\\d+) opiskeluoikeuden (1\\.2\\.246\\.562\\.15\\.\\d+) deserialisointi epäonnistui$".r // Näkyy pääkäyttäjälle
 
         // Tulokset ennen rikkinäisen opiskeluoikeuden käsittelyä on kirjoitettu vastaukseen:
-        failed.files should have length 36
+        failed.files should have length 0
         failed.files.foreach(verifyResult(_, user))
 
+        // Tulokset poikkeukseen saakka on kirjoitettu S3:een, vaikka epäonnistuneen kyselyn tuloksessa tiedostoja ei listata
+        // Osoitteen arvaamalla käyttäjä voi kuitenkin saada nähtäväkseen tulokset ennen poikkeuksen lentämistä
         AuditLogTester.verifyLastAuditLogMessage(Map(
           "operation" -> "OPISKELUOIKEUS_HAKU",
           "target" -> Map(
@@ -524,10 +526,11 @@ class MassaluovutusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers wit
       failed.status shouldBe QueryState.failed
       failed.error.get should fullyMatch regex  "^Oppijan (1\\.2\\.246\\.562\\.24\\.\\d+) opiskeluoikeuden (1\\.2\\.246\\.562\\.15\\.\\d+) deserialisointi epäonnistui$".r // Näkyy pääkäyttäjälle
 
-      // Tulokset ennen rikkinäisen opiskeluoikeuden käsittelyä on kirjoitettu vastaukseen:
-      failed.files should have length 1
-      failed.files.foreach(verifyResult(_, user))
+      // Epäonnistuneelle kyselylle ei palauteta mitään tuloksia:
+      failed.files should have length 0
 
+      // Tulokset poikkeukseen saakka on kirjoitettu S3:een, vaikka epäonnistuneen kyselyn tuloksessa tiedostoja ei listata
+      // Osoitteen arvaamalla käyttäjä voi kuitenkin saada nähtäväkseen tuloksia ennen poikkeuksen lentämistä
       AuditLogTester.verifyLastAuditLogMessage(Map(
         "operation" -> "VALINTAPALVELU_OPISKELUOIKEUS_HAKU",
         "target" -> Map(
