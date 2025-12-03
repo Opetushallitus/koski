@@ -29,9 +29,6 @@ import java.lang.Character.isDigit
 import java.time.LocalDate
 import scala.collection.parallel.CollectionConverters._
 
-// scalastyle:off line.size.limit
-// scalastyle:off number.of.methods
-
 class KoskiValidator(
   organisaatioRepository: OrganisaatioRepository,
   koskiOpiskeluoikeudet: KoskiOpiskeluoikeusRepository,

@@ -654,42 +654,6 @@
       </build>
     </profile>
     <profile>
-      <id>scalastyle</id>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.scalastyle</groupId>
-            <artifactId>scalastyle-maven-plugin</artifactId>
-            <version>1.0.0</version>
-            <dependencies>
-              <dependency>
-                <groupId>com.beautiful-scala</groupId>
-                <artifactId>scalastyle_2.13</artifactId>
-                <version>1.5.1</version>
-              </dependency>
-            </dependencies>
-            <configuration>
-              <verbose>false</verbose>
-              <failOnViolation>true</failOnViolation>
-              <includeTestSourceDirectory>true</includeTestSourceDirectory>
-              <sourceDirectory>${basedir}/src/main/scala</sourceDirectory>
-              <testSourceDirectory>${basedir}/src/test/scala</testSourceDirectory>
-              <configLocation>${basedir}/scalastyle_config.xml</configLocation>
-              <outputFile>${project.basedir}/target/scalastyle-output.xml</outputFile>
-              <outputEncoding>UTF-8</outputEncoding>
-            </configuration>
-            <executions>
-              <execution>
-                <goals>
-                  <goal>check</goal>
-                </goals>
-              </execution>
-            </executions>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-    <profile>
       <id>frontend</id>
       <activation>
         <activeByDefault>true</activeByDefault>

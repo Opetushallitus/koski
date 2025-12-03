@@ -136,7 +136,7 @@ Buildaa frontti, ja päivitä automaattisesti kun tiedostoja muokataan:
 make watch
 ```
 
-Staattinen analyysi ([ScalaStyle](http://www.scalastyle.org/) ja [ESLint](http://eslint.org/)):
+Staattinen analyysi ([ESLint](http://eslint.org/)):
 
 ```shell
 make lint
@@ -313,7 +313,7 @@ Koskessa on käytössä [Github Actions](https://github.com/Opetushallitus/koski
 
 CI-palvelimella sovellus testataan jokaisen commitin yhteydessä. Paikallisten testien lisäksi ajetaan pieni määrä integraatiotestejä testiympäristön REST-rajapintoja vasten.
 
-Myös staattinen analyysi [ScalaStyle](http://www.scalastyle.org/) ja [ESLint](http://eslint.org/) -työkaluilla ajetaan joka commitille.
+Myös staattinen analyysi [ESLint](http://eslint.org/) -työkalulla ajetaan joka commitille.
 
 Suorituskykytestit ajetaan joka aamuyö.
 
