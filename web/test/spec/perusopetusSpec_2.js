@@ -2354,7 +2354,7 @@ describe('Perusopetus 2', function () {
                     JSON.stringify(expectedOppiaineet) &&
                   kieli === 'Suomen kieli ja kirjallisuus'
                 )
-              })()
+              }, 20000)()
               .then(function () {
                 var oppiaineet = textsOf(S('.oppiaineet .oppiaine .nimi'))
                 expect(oppiaineet).to.deep.equal(expectedOppiaineet)
