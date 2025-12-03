@@ -151,12 +151,8 @@ eslint:
 prettier:
 	cd web && pnpm run prettier:check
 
-.PHONY: scalastyle
-scalastyle:
-	mvn scalastyle:check -P scalastyle
-
 .PHONY: lint
-lint: eslint prettier scalastyle
+lint: eslint prettier
 
 .PHONY: owasp
 owasp:
