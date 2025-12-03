@@ -10,7 +10,7 @@ import fi.oph.koski.json.SensitiveDataAllowed
 import fi.oph.koski.koskiuser.{KoskiSpecificSession, Session}
 import fi.oph.koski.koskiuser.Rooli.{OPHKATSELIJA, OPHPAAKAYTTAJA}
 import fi.oph.koski.log._
-import fi.oph.koski.massaluovutus.{KoskiMassaluovutusQueryParameters, MassaluovutusQueryParameters, MassaluovutusQueryPriority, QueryFormat, QueryResultWriter}
+import fi.oph.koski.massaluovutus.{KoskiMassaluovutusQueryParameters, MassaluovutusException, MassaluovutusQueryParameters, MassaluovutusQueryPriority, QueryFormat, QueryResultWriter}
 import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusQueryContext
 import fi.oph.koski.schema.annotation.EnumValues
 import fi.oph.koski.schema.{KoskeenTallennettavaOpiskeluoikeus, KoskiSchema}
@@ -78,19 +78,15 @@ case class ValintalaskentaQuery(
     ))
 
   private def getOpiskeluoikeudet(application: KoskiApplication, oppijaOid: String)(implicit user: KoskiSpecificSession): List[Either[ValintalaskentaError, ValintalaskentaOpiskeluoikeus]] =
-    try {
-      getOpiskeluoikeuksienVersiot(application.replicaDatabase.db, oppijaOid).flatMap { oo =>
-        if (oo.rajapäivänVersio == oo.uusinVersio) {
-          Some(getUusinOpiskeluoikeus(application, oo.id))
-        } else if (oo.rajapäivänVersio > 0) {
-          Some(getOpiskeluoikeusHistoriasta(application, oo.oid, oo.rajapäivänVersio))
-        } else {
-          None
-        }
-      }.toList
-    } catch {
-      case t: Throwable => List(Left(ValintalaskentaError(t)))
-    }
+    getOpiskeluoikeuksienVersiot(application.replicaDatabase.db, oppijaOid).flatMap { oo =>
+      if (oo.rajapäivänVersio == oo.uusinVersio) {
+        Some(getUusinOpiskeluoikeus(application, oo.id))
+      } else if (oo.rajapäivänVersio > 0) {
+        Some(getOpiskeluoikeusHistoriasta(application, oo.oid, oo.rajapäivänVersio))
+      } else {
+        None
+      }
+    }.toList
 
   private def getUusinOpiskeluoikeus(application: KoskiApplication, id: Int): Either[ValintalaskentaError, ValintalaskentaOpiskeluoikeus] =
     QueryMethods.runDbSync(application.replicaDatabase.db, sql"""
@@ -139,8 +135,8 @@ case class ValintalaskentaQuery(
     application.validatingAndResolvingExtractor.extract[KoskeenTallennettavaOpiskeluoikeus](KoskiSchema.strictDeserialization)(json) match {
       case Right(oo: KoskeenTallennettavaOpiskeluoikeus) => Some(ValintalaskentaOpiskeluoikeus(oo))
       case Left(errors) =>
-        logger.warn(s"Error deserializing opiskeluoikeus: ${errors}")
-        None
+        logger.warn(s"Error deserializing oppijan ${row.oppijaOid} opiskeluoikeus ${row.oid}: ${errors}")
+        throw new MassaluovutusException(s"Oppijan ${row.oppijaOid} opiskeluoikeuden ${row.oid} deserialisointi epäonnistui")
     }
   }
 

@@ -422,6 +422,7 @@ class MassaluovutusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers wit
     val user = MockUsers.paakayttaja
     val ammattikoululainen = "1.2.246.562.24.00000000001"
     val olematon = "1.2.246.562.25.1010101010101"
+    val rikkinäinenOpiskeluoikeus = KoskiSpecificMockOppijat.kelaRikkinäinenOpiskeluoikeus.oid
 
     def getQuery(oid: String, rajapäivä: LocalDate = LocalDate.now()) =  ValintalaskentaQuery(
       rajapäivä = rajapäivä,
@@ -501,6 +502,39 @@ class MassaluovutusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers wit
       }
 
       storedQuery.oppijaOids should equal(List(ammattikoululainen, olematon))
+    }
+
+    "Palauttaa epäonnistuneen kyselyn, mutta jättää merkinnän auditlokiin" in {
+      resetFixtures()
+
+      AuditLogTester.clearMessages()
+
+      val query = ValintalaskentaQuery(
+        rajapäivä = LocalDate.now(),
+        oppijaOids = List(ammattikoululainen, rikkinäinenOpiskeluoikeus)
+      )
+      val queryId = addQuerySuccessfully(query, user) { response =>
+        response.status should equal(QueryState.pending)
+        response.query.asInstanceOf[ValintalaskentaQuery].koulutusmuoto should equal(Some("ammatillinenkoulutus"))
+        response.queryId
+      }
+
+      val failed = waitForFailure(queryId, user)
+
+      failed.status shouldBe QueryState.failed
+      failed.error.get should fullyMatch regex  "^Oppijan (1\\.2\\.246\\.562\\.24\\.\\d+) opiskeluoikeuden (1\\.2\\.246\\.562\\.15\\.\\d+) deserialisointi epäonnistui$".r // Näkyy pääkäyttäjälle
+
+      // Tulokset ennen rikkinäisen opiskeluoikeuden käsittelyä on kirjoitettu vastaukseen:
+      failed.files should have length 1
+      failed.files.foreach(verifyResult(_, user))
+
+      AuditLogTester.verifyLastAuditLogMessage(Map(
+        "operation" -> "VALINTAPALVELU_OPISKELUOIKEUS_HAKU",
+        "target" -> Map(
+          "oppijaHenkiloOid" -> ammattikoululainen,
+          "hakuEhto" -> "koulutusmuoto=ammatillinenkoulutus&suoritustyypit=ammatillinentutkinto&suoritustyypit=ammatillinentutkintoosittainen"
+        ),
+      ))
     }
   }
 
