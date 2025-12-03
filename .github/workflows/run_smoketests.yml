@@ -4,6 +4,9 @@ on:
     - cron: "30 5-12 * * MON-FRI"
   workflow_dispatch:
 
+env:
+  PNPM_FROZEN_FLAG: ${{ github.event_name == 'pull_request' && github.event.pull_request.user.login == 'snyk-io[bot]' && '--no-frozen-lockfile' || '--frozen-lockfile' }}
+
 jobs:
   smoketests:
     name:
@@ -26,7 +29,7 @@ jobs:
           retry_wait_seconds: 120
           command: |
             cd smoketests
-            pnpm install --frozen-lockfile
+            pnpm install $PNPM_FROZEN_FLAG
 
       - name: Install Puppeteer browser
         run: |

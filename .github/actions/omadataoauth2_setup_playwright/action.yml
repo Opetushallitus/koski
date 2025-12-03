@@ -3,11 +3,15 @@ runs:
   steps:
     - name: Install project dependencies server
       working-directory: omadata-oauth2-sample/server
-      run: pnpm install --frozen-lockfile
+      env:
+        PNPM_FROZEN_FLAG: ${{ github.event_name == 'pull_request' && github.event.pull_request.user.login == 'snyk-io[bot]' && '--no-frozen-lockfile' || '--frozen-lockfile' }}
+      run: pnpm install $PNPM_FROZEN_FLAG
       shell: bash
     - name: Install project dependencies client
       working-directory: omadata-oauth2-sample/client
-      run: pnpm install --frozen-lockfile
+      env:
+        PNPM_FROZEN_FLAG: ${{ github.event_name == 'pull_request' && github.event.pull_request.user.login == 'snyk-io[bot]' && '--no-frozen-lockfile' || '--frozen-lockfile' }}
+      run: pnpm install $PNPM_FROZEN_FLAG
       shell: bash
     - name: Install project dependencies luovutuspalvelu
       working-directory: koski-luovutuspalvelu/proxy

@@ -10,6 +10,7 @@ on:
 env:
   DOCKER_BUILDKIT: 1
   TZ: Europe/Helsinki
+  PNPM_FROZEN_FLAG: ${{ github.event_name == 'pull_request' && github.event.pull_request.user.login == 'snyk-io[bot]' && '--no-frozen-lockfile' || '--frozen-lockfile' }}
 
 jobs:
   build_koski:
@@ -38,7 +39,7 @@ jobs:
       - name: Run linter
         run: |
           cd web
-          pnpm install --frozen-lockfile
+          pnpm install $PNPM_FROZEN_FLAG
           cd ..
           make lint
 
@@ -260,7 +261,7 @@ jobs:
           node-version: "22.14.0"
       - run: |
           cd web
-          pnpm install --frozen-lockfile
+          pnpm install $PNPM_FROZEN_FLAG
           cd ..
           make js-unit-test
 
@@ -315,7 +316,7 @@ jobs:
       - name: Run linter and tests
         run: |
           cd valpas-web
-          pnpm install --frozen-lockfile
+          pnpm install $PNPM_FROZEN_FLAG
           pnpm run lint
           pnpm run test:unit
 
