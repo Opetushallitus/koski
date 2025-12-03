@@ -485,7 +485,8 @@ object Oppivelvollisuustiedot {
     Oppivelvollisuustieto(
       oid = row.rs.getString("oppija_oid"),
       oppivelvollisuusVoimassaAsti = row.getLocalDate("oppivelvollisuusVoimassaAsti"),
-      oikeusMaksuttomaanKoulutukseenVoimassaAsti = row.getLocalDate("oikeusKoulutuksenMaksuttomuuteenVoimassaAsti")
+      oikeusMaksuttomaanKoulutukseenVoimassaAsti = row.getLocalDate("oikeusKoulutuksenMaksuttomuuteenVoimassaAsti"),
+      kotikuntaSuomessaAlkaen = row.getLocalDate("kotikuntaSuomessaAlkaen")
     )
   )
 
@@ -510,7 +511,8 @@ object Oppivelvollisuustiedot {
 case class Oppivelvollisuustieto(
   oid: String,
   oppivelvollisuusVoimassaAsti: LocalDate,
-  oikeusMaksuttomaanKoulutukseenVoimassaAsti: LocalDate
+  oikeusMaksuttomaanKoulutukseenVoimassaAsti: LocalDate,
+  kotikuntaSuomessaAlkaen: LocalDate
 )
 
 case class OptionalOppivelvollisuustieto(

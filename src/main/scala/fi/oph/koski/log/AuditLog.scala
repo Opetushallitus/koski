@@ -75,7 +75,7 @@ object KoskiAuditLogMessage {
     )
   }
 
-  def apply(operation: KoskiOperation, session: KoskiSpecificSession, extraFields: AuditLogMessage.ExtraFields): AuditLogMessage = {
+  def apply(operation: KoskiOperation, session: Session, extraFields: AuditLogMessage.ExtraFields): AuditLogMessage = {
     val logOp = new KoskiAuditLogOperation(operation)
     if (session.user.isSuoritusjakoKatsominen || session.user.isYtrDownloadUser || session.user.isOauth2Katsominen) {
       val user = new User(session.clientIp, "", session.userAgent)

@@ -78,21 +78,21 @@ class OppivelvollisuustietoSpec
           clearAndInsert(slave1, ammatillinenTutkinto(vahvistus = Some(date(2019, 7, 1)), keskiarvo = Some(4.0))) // alku 2000-1-1
           clearAndInsert(slave2, lukionOppimäärä(vahvistus = None)) // alku 2019-8-1
           reloadRaportointikanta
-          verifyTestiOidit(oppivelvollisuus = date(2019, 7, 1), maksuttomuus = date(2019, 7, 1))
+          verifyTestiOidit(oppivelvollisuus = date(2019, 7, 1), maksuttomuus = date(2019, 7, 1), kotikuntaSuomessaAlkaen = date(2004, 1, 1))
         }
         "Lukion oppimaaralla vahvistus (mutta ei YO-todistusta) -> iän mukaan" in {
           clearAndInsert(master, perusopetuksenOppimäärä(Some(date(2021, 1, 1))))
           clearAndInsert(slave1, ammatillinenTutkinto(vahvistus = None))
           clearAndInsert(slave2, lukionOppimäärä(vahvistus = Some(date(2021, 10, 1)), alkamispäivä = date(2021, 8, 1)))
           reloadRaportointikanta
-          verifyTestiOidit(oppivelvollisuus = date(2021, 12, 31), maksuttomuus = date(2024, 12, 31))
+          verifyTestiOidit(oppivelvollisuus = date(2021, 12, 31), maksuttomuus = date(2024, 12, 31), kotikuntaSuomessaAlkaen = date(2004, 1, 1))
         }
         "Molemmilla vahvistus (mutta ei YO-todistusta) -> ammatillisen mukaan" in {
           clearAndInsert(master, perusopetuksenOppimäärä(Some(date(2021, 1, 1))))
           clearAndInsert(slave1, ammatillinenTutkinto(vahvistus = Some(date(2019, 7, 1)), keskiarvo = Some(4.0)))
           clearAndInsert(slave2, lukionOppimäärä(vahvistus = Some(date(2021, 10, 1)), alkamispäivä = date(2021, 8, 1)))
           reloadRaportointikanta
-          verifyTestiOidit(oppivelvollisuus = date(2019, 7, 1), maksuttomuus = date(2019, 7, 1))
+          verifyTestiOidit(oppivelvollisuus = date(2019, 7, 1), maksuttomuus = date(2019, 7, 1), kotikuntaSuomessaAlkaen = date(2004, 1, 1))
         }
       }
       "Jos suorittaa ammatillista tutkintoa ja lukion aineopintoja erillään, käytetään aiempaa valmistumisaikaa päättymispäivien päättelyssä" - {
@@ -101,21 +101,21 @@ class OppivelvollisuustietoSpec
           clearAndInsert(slave1, ammatillinenTutkinto(vahvistus = Some(date(2019, 7, 1)), keskiarvo = Some(4.0)))
           clearAndInsert(slave2, lukionAineopinnot(vahvistus = None)) // alku 2019-8-1
           reloadRaportointikanta
-          verifyTestiOidit(oppivelvollisuus = date(2019, 7, 1), maksuttomuus = date(2019, 7, 1))
+          verifyTestiOidit(oppivelvollisuus = date(2019, 7, 1), maksuttomuus = date(2019, 7, 1), kotikuntaSuomessaAlkaen = date(2004, 1, 1))
         }
         "Lukion oppimaaralla vahvistus (mutta ei YO-todistusta) -> iän mukaan" in {
           clearAndInsert(master, perusopetuksenOppimäärä(Some(date(2021, 1, 1))))
           clearAndInsert(slave1, ammatillinenTutkinto(vahvistus = None))
           clearAndInsert(slave2, lukionAineopinnot(vahvistus = Some(date(2019, 10, 1))))
           reloadRaportointikanta
-          verifyTestiOidit(oppivelvollisuus = date(2021, 12, 31), maksuttomuus = date(2024, 12, 31))
+          verifyTestiOidit(oppivelvollisuus = date(2021, 12, 31), maksuttomuus = date(2024, 12, 31), kotikuntaSuomessaAlkaen = date(2004, 1, 1))
         }
         "Molemmilla vahvistus (mutta ei YO-todistusta) -> ammatillisen mukaan" in {
           clearAndInsert(master, perusopetuksenOppimäärä(Some(date(2021, 1, 1))))
           clearAndInsert(slave1, ammatillinenTutkinto(vahvistus = Some(date(2019, 7, 1)), keskiarvo = Some(4.0)))
           clearAndInsert(slave2, lukionAineopinnot(vahvistus = Some(date(2019, 10, 1))))
           reloadRaportointikanta
-          verifyTestiOidit(oppivelvollisuus = date(2019, 7, 1), maksuttomuus = date(2019, 7, 1))
+          verifyTestiOidit(oppivelvollisuus = date(2019, 7, 1), maksuttomuus = date(2019, 7, 1), kotikuntaSuomessaAlkaen = date(2004, 1, 1))
         }
       }
 
@@ -125,7 +125,7 @@ class OppivelvollisuustietoSpec
           clearAndInsert(slave1, lukionOppimäärä(vahvistus = Some(date(2023, 1, 1)), alkamispäivä = date(2022, 8, 1)))
           clearAndInsert(slave2, lukionOppimäärä(vahvistus = Some(date(2024, 1, 1)), alkamispäivä = date(2023, 8, 1)))
           reloadRaportointikanta
-          verifyTestiOidit(oppivelvollisuus = date(2021, 12, 31), maksuttomuus = date(2024, 12, 31))
+          verifyTestiOidit(oppivelvollisuus = date(2021, 12, 31), maksuttomuus = date(2024, 12, 31), kotikuntaSuomessaAlkaen = date(2004, 1, 1))
         }
       }
 
@@ -137,7 +137,8 @@ class OppivelvollisuustietoSpec
               Oppivelvollisuustieto(
                 pelkkäYoKannassaUudenOvLainPiirissä.oid,
                 oppivelvollisuusVoimassaAsti = date(2012, 11, 30),
-                oikeusMaksuttomaanKoulutukseenVoimassaAsti = date(2012, 11, 30)
+                oikeusMaksuttomaanKoulutukseenVoimassaAsti = date(2012, 11, 30),
+                kotikuntaSuomessaAlkaen = date(2007, 8, 6)
               )
             ))
           }
@@ -150,7 +151,8 @@ class OppivelvollisuustietoSpec
               Oppivelvollisuustieto(
                 pelkkäYoKannassaUudenOvLainPiirissä.oid,
                 oppivelvollisuusVoimassaAsti = date(2012, 11, 30),
-                oikeusMaksuttomaanKoulutukseenVoimassaAsti = date(2012, 11, 30)
+                oikeusMaksuttomaanKoulutukseenVoimassaAsti = date(2012, 11, 30),
+                kotikuntaSuomessaAlkaen = date(2007, 8, 6)
               )
             ))
           }
@@ -168,7 +170,8 @@ class OppivelvollisuustietoSpec
               Oppivelvollisuustieto(
                 pelkkäYoKannassaUudenOvLainPiirissä.oid,
                 oppivelvollisuusVoimassaAsti = date(2012, 11, 30),
-                oikeusMaksuttomaanKoulutukseenVoimassaAsti = date(2012, 11, 30)
+                oikeusMaksuttomaanKoulutukseenVoimassaAsti = date(2012, 11, 30),
+                kotikuntaSuomessaAlkaen = date(2007, 8, 6)
               )
             ))
           }
@@ -186,7 +189,8 @@ class OppivelvollisuustietoSpec
               Oppivelvollisuustieto(
                 pelkkäYoKannassaUudenOvLainPiirissä.oid,
                 oppivelvollisuusVoimassaAsti = date(2012, 11, 30),
-                oikeusMaksuttomaanKoulutukseenVoimassaAsti = date(2012, 11, 30)
+                oikeusMaksuttomaanKoulutukseenVoimassaAsti = date(2012, 11, 30),
+                kotikuntaSuomessaAlkaen = date(2007, 8, 6)
               )
             ))
           }
@@ -199,7 +203,8 @@ class OppivelvollisuustietoSpec
               Oppivelvollisuustieto(
                 pelkkäYoKannassaUudenOvLainPiirissä.oid,
                 oppivelvollisuusVoimassaAsti = date(2012, 11, 30),
-                oikeusMaksuttomaanKoulutukseenVoimassaAsti = date(2012, 11, 30)
+                oikeusMaksuttomaanKoulutukseenVoimassaAsti = date(2012, 11, 30),
+                kotikuntaSuomessaAlkaen = date(2007, 8, 6)
               )
             ))
           }
@@ -213,7 +218,8 @@ class OppivelvollisuustietoSpec
               Oppivelvollisuustieto(
                 pelkkäYo2021.oid,
                 oppivelvollisuusVoimassaAsti = date(2021, 9, 5),
-                oikeusMaksuttomaanKoulutukseenVoimassaAsti = date(2021, 9, 5)
+                oikeusMaksuttomaanKoulutukseenVoimassaAsti = date(2021, 9, 5),
+                kotikuntaSuomessaAlkaen = date(2005, 8, 30)
               )
             ))
           }
@@ -228,13 +234,14 @@ class OppivelvollisuustietoSpec
               Oppivelvollisuustieto(
                 pelkkäYo2021.oid,
                 oppivelvollisuusVoimassaAsti = date(2021, 1, 1),
-                oikeusMaksuttomaanKoulutukseenVoimassaAsti = date(2021, 9, 5)
+                oikeusMaksuttomaanKoulutukseenVoimassaAsti = date(2021, 9, 5),
+                kotikuntaSuomessaAlkaen = date(2005, 8, 30)
               )
             ))
           }
         }
 
-        "ja vahvisteettuja ammattiopintoja samaan aikaan kuin lukio-opintoja, ammattiopinnot vahvistettu myöhemmin" - {
+        "ja vahvistettuja ammattiopintoja samaan aikaan kuin lukio-opintoja, ammattiopinnot vahvistettu myöhemmin" - {
           "käytetään päättimyspäivänä ammattiopintiojen vahvistuspäivää" in {
             clearAndInsert(pelkkäYo2021, ammatillinenTutkinto(vahvistus = Some(date(2021, 10, 1)), keskiarvo = Some(4.0), alkamispäivä = date(2019, 8, 2)),
               lukionOppimäärä(vahvistus = Some(date(2021, 9, 5))))//alku: 2019-8-1
@@ -243,7 +250,8 @@ class OppivelvollisuustietoSpec
               Oppivelvollisuustieto(
                 pelkkäYo2021.oid,
                 oppivelvollisuusVoimassaAsti = date(2021, 9, 5),
-                oikeusMaksuttomaanKoulutukseenVoimassaAsti = date(2021, 10, 1)
+                oikeusMaksuttomaanKoulutukseenVoimassaAsti = date(2021, 10, 1),
+                kotikuntaSuomessaAlkaen = date(2005, 8, 30)
               )
             ))
           }
@@ -258,7 +266,8 @@ class OppivelvollisuustietoSpec
               Oppivelvollisuustieto(
                 pelkkäYo2021.oid,
                 oppivelvollisuusVoimassaAsti = date(2021, 9, 5),
-                oikeusMaksuttomaanKoulutukseenVoimassaAsti = date(2025, 12, 31)
+                oikeusMaksuttomaanKoulutukseenVoimassaAsti = date(2025, 12, 31),
+                kotikuntaSuomessaAlkaen = date(2005, 8, 30)
               )
             ))
           }
@@ -272,7 +281,8 @@ class OppivelvollisuustietoSpec
               Oppivelvollisuustieto(
                 pelkkäYoKannassaUudenOvLainPiirissä.oid,
                 oppivelvollisuusVoimassaAsti = date(2012, 11, 30),
-                oikeusMaksuttomaanKoulutukseenVoimassaAsti = date(2012, 11, 30)
+                oikeusMaksuttomaanKoulutukseenVoimassaAsti = date(2012, 11, 30),
+                kotikuntaSuomessaAlkaen = date(2007, 8, 6)
               )
             ))
           }
@@ -289,7 +299,7 @@ class OppivelvollisuustietoSpec
             clearAndInsert(slave2, ammatillinenTutkinto(vahvistus = Some(date(2024, 1, 1)), keskiarvo = Some(4.0)))
           }
           reloadRaportointikanta
-          verifyTestiOidit(oppivelvollisuus = date(2021, 12, 31), maksuttomuus = date(2023, 1, 1))
+          verifyTestiOidit(oppivelvollisuus = date(2021, 12, 31), maksuttomuus = date(2023, 1, 1), kotikuntaSuomessaAlkaen = date(2004, 1, 1))
         }
         "Syntymäaika päättää molemmat aikaisemmin" in {
           validationContext.runWithoutValidations {
@@ -298,7 +308,7 @@ class OppivelvollisuustietoSpec
             clearAndInsert(slave2, ammatillinenTutkinto(vahvistus = Some(date(2024, 12, 31)), keskiarvo = Some(4.0)))
           }
           reloadRaportointikanta
-          verifyTestiOidit(oppivelvollisuus = date(2021, 12, 31), maksuttomuus = date(2024, 12, 31))
+          verifyTestiOidit(oppivelvollisuus = date(2021, 12, 31), maksuttomuus = date(2024, 12, 31), kotikuntaSuomessaAlkaen = date(2004, 1, 1))
         }
         "Vahvistuspäivä päättää molemmat aikaisemmin" in {
           validationContext.runWithoutValidations {
@@ -307,7 +317,7 @@ class OppivelvollisuustietoSpec
             clearAndInsert(slave2, ammatillinenTutkinto(vahvistus = None))
           }
           reloadRaportointikanta
-          verifyTestiOidit(oppivelvollisuus = date(2021, 1, 1), maksuttomuus = date(2021, 1, 1))
+          verifyTestiOidit(oppivelvollisuus = date(2021, 1, 1), maksuttomuus = date(2021, 1, 1), kotikuntaSuomessaAlkaen = date(2004, 1, 1))
         }
       }
 
@@ -317,7 +327,7 @@ class OppivelvollisuustietoSpec
           clearAndInsert(slave1, internationalSchoolToinenAste(alkamispäivä = date(2021, 1, 2), päättymispäivä = Some(date(2025, 1, 1))))
           clearAndInsert(slave2, internationalSchoolToinenAste(alkamispäivä = date(2025, 1, 2), päättymispäivä = None, lisääMaksuttomuus = false))
           reloadRaportointikanta
-          verifyTestiOidit(oppivelvollisuus = date(2021, 12, 31), maksuttomuus = date(2024, 12, 31))
+          verifyTestiOidit(oppivelvollisuus = date(2021, 12, 31), maksuttomuus = date(2024, 12, 31), kotikuntaSuomessaAlkaen = date(2004, 1, 1))
         }
       }
 
@@ -327,7 +337,7 @@ class OppivelvollisuustietoSpec
           clearAndInsert(slave1, internationalSchoolToinenAste(alkamispäivä = date(2021, 1, 2), päättymispäivä = Some(date(2025, 1, 1))))
           clearAndInsert(slave2, lukionOppimäärä(alkamispäivä = date(2025, 1, 2), vahvistus = None))
           reloadRaportointikanta
-          verifyTestiOidit(oppivelvollisuus = date(2021, 12, 31), maksuttomuus = date(2024, 12, 31))
+          verifyTestiOidit(oppivelvollisuus = date(2021, 12, 31), maksuttomuus = date(2024, 12, 31), kotikuntaSuomessaAlkaen = date(2004, 1, 1))
         }
       }
 
@@ -337,7 +347,7 @@ class OppivelvollisuustietoSpec
           clearAndInsert(slave1, ammatillinenTutkinto(vahvistus = None))
           clearAndInsert(slave2, lukionOppimäärä(vahvistus = None))
           reloadRaportointikanta
-          verifyTestiOidit(oppivelvollisuus = date(2021, 12, 31), maksuttomuus = date(2024, 12, 31))
+          verifyTestiOidit(oppivelvollisuus = date(2021, 12, 31), maksuttomuus = date(2024, 12, 31), kotikuntaSuomessaAlkaen = date(2004, 1, 1))
         }
       }
 
@@ -347,7 +357,7 @@ class OppivelvollisuustietoSpec
           clearAndInsert(slave1, ibTutkinto(alkamispäivä = date(2021, 3, 4), ibTutkinnonVahvistus = Some(date(2025, 1, 1))).withLisääPuuttuvaMaksuttomuustieto)
           clearAndInsert(slave2, internationalSchoolToinenAste(päättymispäivä = Some(date(2021, 1, 1))))
           reloadRaportointikanta
-          verifyTestiOidit(oppivelvollisuus = date(2021, 12, 31), maksuttomuus = date(2024, 12, 31))
+          verifyTestiOidit(oppivelvollisuus = date(2021, 12, 31), maksuttomuus = date(2024, 12, 31), kotikuntaSuomessaAlkaen = date(2004, 1, 1))
         }
       }
 
@@ -360,7 +370,7 @@ class OppivelvollisuustietoSpec
             insertEuropeanSchoolOfHelsinkiToinenAsteEB(slave1, vahvistusEB = Some(date(2025, 1, 1)), alkamispäivä = date(2023, 1, 2), päättymispäivä = Some(date(2025, 1, 1)))
             insertEuropeanSchoolOfHelsinkiToinenAsteEB(slave2, vahvistusEB = None, alkamispäivä = date(2025, 1, 2), päättymispäivä = None, lisääMaksuttomuus = false)
             reloadRaportointikanta
-            verifyTestiOidit(oppivelvollisuus = date(2021, 1, 1), maksuttomuus = date(2021, 1, 1))
+            verifyTestiOidit(oppivelvollisuus = date(2021, 1, 1), maksuttomuus = date(2021, 1, 1), kotikuntaSuomessaAlkaen = date(2004, 1, 1))
           }
         }
 
@@ -371,7 +381,7 @@ class OppivelvollisuustietoSpec
             insertEuropeanSchoolOfHelsinkiToinenAsteEB(slave1, vahvistusEB = Some(date(2025, 1, 1)), alkamispäivä = date(2023, 1, 2), päättymispäivä = Some(date(2025, 1, 1)))
             insert(slave2, lukionOppimäärä(vahvistus = None))
             reloadRaportointikanta
-            verifyTestiOidit(oppivelvollisuus = date(2021, 1, 1), maksuttomuus = date(2021, 1, 1))
+            verifyTestiOidit(oppivelvollisuus = date(2021, 1, 1), maksuttomuus = date(2021, 1, 1), kotikuntaSuomessaAlkaen = date(2004, 1, 1))
           }
         }
 
@@ -382,7 +392,7 @@ class OppivelvollisuustietoSpec
             insert(slave1, ammatillinenTutkinto(vahvistus = None))
             insert(slave2, lukionOppimäärä(vahvistus = None))
             reloadRaportointikanta
-            verifyTestiOidit(oppivelvollisuus = date(2021, 1, 1), maksuttomuus = date(2021, 1, 1))
+            verifyTestiOidit(oppivelvollisuus = date(2021, 1, 1), maksuttomuus = date(2021, 1, 1), kotikuntaSuomessaAlkaen = date(2004, 1, 1))
           }
         }
 
@@ -393,7 +403,7 @@ class OppivelvollisuustietoSpec
             insert(slave1, ibTutkinto(alkamispäivä = date(2021, 1, 2), ibTutkinnonVahvistus = Some(date(2025, 1, 1))).withLisääPuuttuvaMaksuttomuustieto)
             insertEuropeanSchoolOfHelsinkiToinenAsteEB(slave2, vahvistusEB = Some(date(2021, 3, 3)), päättymispäivä = Some(date(2023, 1, 1)))
             reloadRaportointikanta
-            verifyTestiOidit(oppivelvollisuus = date(2021, 3, 3), maksuttomuus = date(2021, 3, 3))
+            verifyTestiOidit(oppivelvollisuus = date(2021, 3, 3), maksuttomuus = date(2021, 3, 3), kotikuntaSuomessaAlkaen = date(2004, 1, 1))
           }
         }
       }
@@ -404,7 +414,7 @@ class OppivelvollisuustietoSpec
           clearAndInsert(slave1, ibTutkinto(alkamispäivä = date(2021, 1, 2), ibTutkinnonVahvistus = Some(date(2024, 7, 30))).withLisääPuuttuvaMaksuttomuustieto)
           clearAndInsert(slave2, ibTutkinto(alkamispäivä = date(2024, 7, 31), ibTutkinnonVahvistus = None).withLisääPuuttuvaMaksuttomuustieto)
           reloadRaportointikanta
-          verifyTestiOidit(oppivelvollisuus = date(2021, 12, 31), maksuttomuus = date(2024, 12, 31))
+          verifyTestiOidit(oppivelvollisuus = date(2021, 12, 31), maksuttomuus = date(2024, 12, 31), kotikuntaSuomessaAlkaen = date(2004, 1, 1))
         }
       }
 
@@ -414,7 +424,7 @@ class OppivelvollisuustietoSpec
           clearAndInsert(slave1, ibTutkinto(alkamispäivä = date(2021, 1, 2), ibTutkinnonVahvistus = Some(date(2025, 1, 1))).withLisääPuuttuvaMaksuttomuustieto)
           clearAndInsert(slave2, lukionOppimäärä(vahvistus = None))
           reloadRaportointikanta
-          verifyTestiOidit(oppivelvollisuus = date(2021, 12, 31), maksuttomuus = date(2024, 12, 31))
+          verifyTestiOidit(oppivelvollisuus = date(2021, 12, 31), maksuttomuus = date(2024, 12, 31), kotikuntaSuomessaAlkaen = date(2004, 1, 1))
         }
       }
 
@@ -424,7 +434,7 @@ class OppivelvollisuustietoSpec
           clearAndInsert(slave1, ammatillinenTutkinto(vahvistus = None))
           clearAndInsert(slave2, lukionOppimäärä(vahvistus = None))
           reloadRaportointikanta
-          verifyTestiOidit(oppivelvollisuus = date(2021, 12, 31), maksuttomuus = date(2024, 12, 31))
+          verifyTestiOidit(oppivelvollisuus = date(2021, 12, 31), maksuttomuus = date(2024, 12, 31), kotikuntaSuomessaAlkaen = date(2004, 1, 1))
         }
       }
 
@@ -434,7 +444,7 @@ class OppivelvollisuustietoSpec
           clearAndInsert(slave1, diaTutkinto(alkamispäivä = date(2021, 1, 2), diaTutkinnonVahvistus = Some(date(2025, 1, 1))).withLisääPuuttuvaMaksuttomuustieto)
           clearAndInsert(slave2, diaTutkinto(alkamispäivä = date(2025, 1, 2), diaTutkinnonVahvistus = None))
           reloadRaportointikanta
-          verifyTestiOidit(oppivelvollisuus = date(2021, 1, 1), maksuttomuus = date(2021, 1, 1))
+          verifyTestiOidit(oppivelvollisuus = date(2021, 1, 1), maksuttomuus = date(2021, 1, 1), kotikuntaSuomessaAlkaen = date(2004, 1, 1))
         }
       }
 
@@ -446,7 +456,8 @@ class OppivelvollisuustietoSpec
             Oppivelvollisuustieto(
               oikeusOpiskelunMaksuttomuuteen.oid,
               oppivelvollisuusVoimassaAsti = date(2022, 12, 30),
-              oikeusMaksuttomaanKoulutukseenVoimassaAsti = date(2024, 12, 31)
+              oikeusMaksuttomaanKoulutukseenVoimassaAsti = date(2024, 12, 31),
+              kotikuntaSuomessaAlkaen = date(2004, 12, 31)
             )
           ))
         }
@@ -480,12 +491,14 @@ class OppivelvollisuustietoSpec
         queryResult should contain(Oppivelvollisuustieto(
           master.oid,
           oppivelvollisuusVoimassaAsti = date(2021, 12, 31),
-          oikeusMaksuttomaanKoulutukseenVoimassaAsti = date(2025, 1, 21)
+          oikeusMaksuttomaanKoulutukseenVoimassaAsti = date(2025, 1, 21),
+          kotikuntaSuomessaAlkaen = date(2004, 1, 1)
         ))
         queryResult should contain(Oppivelvollisuustieto(
           slave1.oid,
           oppivelvollisuusVoimassaAsti = date(2021, 12, 31),
-          oikeusMaksuttomaanKoulutukseenVoimassaAsti = date(2025, 1, 21)
+          oikeusMaksuttomaanKoulutukseenVoimassaAsti = date(2025, 1, 21),
+          kotikuntaSuomessaAlkaen = date(2004, 1, 1)
         ))
       }
     }
@@ -877,13 +890,14 @@ class OppivelvollisuustietoSpec
 
   private def queryOids(oids: List[String]): List[Oppivelvollisuustieto] = Oppivelvollisuustiedot.queryByOids(oids, mainRaportointiDb).toList
 
-  private def verifyTestiOidit(oppivelvollisuus: LocalDate, maksuttomuus: LocalDate) = {
+  private def verifyTestiOidit(oppivelvollisuus: LocalDate, maksuttomuus: LocalDate, kotikuntaSuomessaAlkaen: LocalDate) = {
     queryTestioidit should contain theSameElementsAs(
       testiOidit.map(oid =>
         Oppivelvollisuustieto(
           oid,
           oppivelvollisuusVoimassaAsti = oppivelvollisuus,
-          oikeusMaksuttomaanKoulutukseenVoimassaAsti = maksuttomuus
+          oikeusMaksuttomaanKoulutukseenVoimassaAsti = maksuttomuus,
+          kotikuntaSuomessaAlkaen = kotikuntaSuomessaAlkaen
         )
       )
     )

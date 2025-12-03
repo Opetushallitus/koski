@@ -50,6 +50,7 @@ import fi.oph.koski.valpas.kela.ValpasKelaServlet
 import fi.oph.koski.valpas.valpasuser.ValpasLogoutServlet
 import fi.oph.koski.valpas._
 import fi.oph.koski.valpas.kansalainen.ValpasKansalainenApiServlet
+import fi.oph.koski.valpas.massaluovutus.ValpasMassaluovutusServlet
 import fi.oph.koski.valpas.kuntailmoitus.ValpasKuntailmoitusApiServlet
 import fi.oph.koski.valpas.oppija.OppivelvollisuudestaVapautusServlet
 import fi.oph.koski.valpas.rouhinta.ValpasRouhintaApiServlet
@@ -173,6 +174,7 @@ class ScalatraBootstrap extends LifeCycle with Logging with Timing with GlobalEx
     mount("/koski/valpas/api/kuntailmoitus", new ValpasKuntailmoitusApiServlet)
     mount("/koski/valpas/api/luovutuspalvelu/kela", new ValpasKelaServlet)
     mount("/koski/valpas/api/rouhinta", new ValpasRouhintaApiServlet)
+    mount("/koski/valpas/api/massaluovutus", new ValpasMassaluovutusServlet)
     mount("/koski/valpas/api/kansalainen", new ValpasKansalainenApiServlet)
     mount("/koski/valpas/api/luovutuspalvelu/ytl", new ValpasYtlServlet)
     mount("/koski/valpas/api/vapautus", new OppivelvollisuudestaVapautusServlet)
