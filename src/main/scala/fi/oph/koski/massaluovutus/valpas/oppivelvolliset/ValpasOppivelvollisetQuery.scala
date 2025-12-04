@@ -3,18 +3,14 @@ package fi.oph.koski.massaluovutus.valpas.oppivelvolliset
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.executors.GlobalExecutionContext
 import fi.oph.koski.json.SensitiveDataAllowed
-import fi.oph.koski.koodisto.Kunta
 import fi.oph.koski.koskiuser.Session
-import fi.oph.koski.log.Logging
 import fi.oph.koski.massaluovutus.valpas.ValpasMassaluovutusQueryParameters
 import fi.oph.koski.massaluovutus.{QueryFormat, QueryResultWriter}
 import fi.oph.koski.schema.annotation.EnumValues
 import fi.oph.koski.util.Futures
 import fi.oph.koski.valpas.log.ValpasAuditLog
 import fi.oph.koski.valpas.massaluovutus.{ValpasMassaluovutusOppija, ValpasMassaluovutusResult}
-import fi.oph.koski.valpas.oppija.ValpasAccessResolver
 import fi.oph.koski.valpas.rouhinta.ValpasKuntarouhintaService
-import fi.oph.koski.valpas.valpasuser.ValpasSession
 import fi.oph.scalaschema.annotation.{Description, Title}
 
 import scala.concurrent.Future

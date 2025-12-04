@@ -170,22 +170,24 @@ class ValpasKuntailmoitusService(
   ): Either[HttpStatus, Seq[OppijaHakutilanteillaLaajatTiedot]] = {
     application.valpasKuntailmoitusService.getKuntailmoituksetIlmanKäyttöoikeustarkistusta(oppijaTiedot.map(_.oppija))
       .map(kuntailmoitukset =>
-        oppijaTiedot.map(oppijaTieto => {
-          val oppijanIlmoitukset = kuntailmoitukset.filter(
-            // Tietokannassa ei voi olla kuntailmoituksia ilman oppijaOid:ia, joten oppijaOid:n olemassaoloa ei tässä
-            // erikseen tarkisteta, vaan keskeytys ja sen seurauksena tuleva 500-virhe on ok, jos oppijaOid on None.
-            ilmoitus => oppijaTieto.oppija.henkilö.kaikkiOidit.contains(ilmoitus.oppijaOid.get)
-          )
-          val oppijanIlmoituksetAktiivisuustiedoilla = oppijaTieto.oppija match {
-            case oppija: ValpasOppivelvollinenOppijaLaajatTiedot => oppijaLaajatTiedotService.lisääAktiivisuustiedot (oppija) (oppijanIlmoitukset)
-            case _ => Nil
-          }
-
-          oppijaTieto.copy(
-            kuntailmoitukset = oppijanIlmoituksetAktiivisuustiedoilla
-          )
-        })
+        oppijaTiedot.map(oppijaTieto => oppijaHakutilanteillaJaAktiivisuustiedoilla(oppijaTieto, kuntailmoitukset))
       )
+  }
+
+  def oppijaHakutilanteillaJaAktiivisuustiedoilla(oppijaTieto: OppijaHakutilanteillaLaajatTiedot, kuntailmoitukset: Seq[ValpasKuntailmoitusLaajatTiedot]): OppijaHakutilanteillaLaajatTiedot = {
+    val oppijanIlmoitukset = kuntailmoitukset.filter(
+      // Tietokannassa ei voi olla kuntailmoituksia ilman oppijaOid:ia, joten oppijaOid:n olemassaoloa ei tässä
+      // erikseen tarkisteta, vaan keskeytys ja sen seurauksena tuleva 500-virhe on ok, jos oppijaOid on None.
+      ilmoitus => oppijaTieto.oppija.henkilö.kaikkiOidit.contains(ilmoitus.oppijaOid.get)
+    )
+    val oppijanIlmoituksetAktiivisuustiedoilla = oppijaTieto.oppija match {
+      case oppija: ValpasOppivelvollinenOppijaLaajatTiedot => oppijaLaajatTiedotService.lisääAktiivisuustiedot (oppija) (oppijanIlmoitukset)
+      case _ => Nil
+    }
+
+    oppijaTieto.copy(
+      kuntailmoitukset = oppijanIlmoituksetAktiivisuustiedoilla
+    )
   }
 
   def queryOpiskeluoikeudetWithIlmoitus(opiskeluoikeudet: Seq[String]): Seq[String] =
