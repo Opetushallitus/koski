@@ -29,7 +29,7 @@
   "dependencies": {
     "@aws-sdk/client-secrets-manager": "^3.839.0",
     "body-parser": "^2.2.1",
-    "express": "^5.1.0",
+    "express": "^5.2.0",
     "express-rate-limit": "^7.5.0",
     "helmet": "^8.1.0",
     "openid-client": "^6.8.1",
@@ -47,5 +47,6 @@
     "eslint-plugin-prettier": "^5.5.4",
     "tsx": "^4.19.1",
     "typescript": "^5.8.3"
-  }
+  },
+  "packageManager": "pnpm@10.2.0+sha512.0d27364e0139c6aadeed65ada153135e0ca96c8da42123bd50047f961339dc7a758fc2e944b428f52be570d1bd3372455c1c65fa2e7aa0bfbf931190f9552001"
 }
