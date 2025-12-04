@@ -10,6 +10,7 @@ on:
 env:
   DOCKER_BUILDKIT: 1
   TZ: Europe/Helsinki
+  PNPM_FROZEN_FLAG: ${{ github.event_name == 'pull_request' && github.event.pull_request.user.login == 'snyk-io[bot]' && '--no-frozen-lockfile' || '--frozen-lockfile' }}
 
 jobs:
   test-client:
@@ -25,7 +26,7 @@ jobs:
           node-version-file: "omadata-oauth2-sample/.nvmrc"
           cache: "pnpm"
           cache-dependency-path: "omadata-oauth2-sample/client/pnpm-lock.yaml"
-      - run: cd omadata-oauth2-sample/client && pnpm install --frozen-lockfile
+      - run: cd omadata-oauth2-sample/client && pnpm install $PNPM_FROZEN_FLAG
       - run: cd omadata-oauth2-sample/client && pnpm run lint
       - run: cd omadata-oauth2-sample/client && pnpm run build
         # TODO add test step when there are tests
@@ -42,7 +43,7 @@ jobs:
           node-version-file: "omadata-oauth2-sample/.nvmrc"
           cache: "pnpm"
           cache-dependency-path: "omadata-oauth2-sample/server/pnpm-lock.yaml"
-      - run: cd omadata-oauth2-sample/server && pnpm install --frozen-lockfile
+      - run: cd omadata-oauth2-sample/server && pnpm install $PNPM_FROZEN_FLAG
       - run: cd omadata-oauth2-sample/server && pnpm run lint
       - run: cd omadata-oauth2-sample/server && pnpm run build
       # TODO add test step when there are tests

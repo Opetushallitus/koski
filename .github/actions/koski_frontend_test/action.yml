@@ -15,7 +15,9 @@ runs:
       uses: ./.github/actions/setup_backend
 
     - name: Install js deps
-      run: cd web && pnpm install --frozen-lockfile
+      env:
+        PNPM_FROZEN_FLAG: ${{ github.event_name == 'pull_request' && github.event.pull_request.user.login == 'snyk-io[bot]' && '--no-frozen-lockfile' || '--frozen-lockfile' }}
+      run: cd web && pnpm install $PNPM_FROZEN_FLAG
       shell: bash
 
     - name: Run frontend tests

@@ -5,6 +5,7 @@ on:
   workflow_dispatch:
 env:
   DOCKER_BUILDKIT: 1
+  PNPM_FROZEN_FLAG: ${{ github.event_name == 'pull_request' && github.event.pull_request.user.login == 'snyk-io[bot]' && '--no-frozen-lockfile' || '--frozen-lockfile' }}
 
 jobs:
   build:
@@ -17,7 +18,7 @@ jobs:
       - uses: ./.github/actions/setup_pnpm_cache
 
       - name: Run pnpm install
-        run: pnpm install --recursive --frozen-lockfile
+        run: pnpm install --recursive $PNPM_FROZEN_FLAG
         shell: bash
 
       - name: Run Trivy on Koski
