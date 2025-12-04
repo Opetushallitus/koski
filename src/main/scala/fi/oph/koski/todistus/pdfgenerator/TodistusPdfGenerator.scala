@@ -25,7 +25,8 @@ case class TodistusMetadata(
   opiskeluoikeusVersionumero: Int,
   todistusJobId: String,
   generointiStartedAt: String,
-  commitHash: String
+  commitHash: String,
+  opiskeluoikeusJson: String
 ) {
   def toMap: Map[String, String] = Map(
     "OppijaOid" -> oppijaOid,
@@ -33,7 +34,8 @@ case class TodistusMetadata(
     "OpiskeluoikeusVersionumero" -> opiskeluoikeusVersionumero.toString,
     "TodistusJobId" -> todistusJobId,
     "GenerointiStartedAt" -> generointiStartedAt,
-    "CommitHash" -> commitHash
+    "CommitHash" -> commitHash,
+    "OpiskeluoikeusJson" -> opiskeluoikeusJson
   )
 }
 
@@ -55,12 +57,12 @@ class TodistusPdfGenerator extends Logging {
 
   def generatePdf(data: TodistusData, metadata: TodistusMetadata): Array[Byte] = {
     val html = generateHtml(data.templateName, data)
-    convertHtmlToPdf(html, metadata)
+    convertHtmlToPdf(html, metadata.toMap)
   }
 
   def generatePdf(data: TodistusData, metadata: TodistusMetadata, outputStream: OutputStream): Unit = {
     val html = generateHtml(data.templateName, data)
-    convertHtmlToPdf(html, metadata, outputStream)
+    convertHtmlToPdf(html, metadata.toMap, outputStream)
   }
 
   def generateHtml(data: TodistusData): String = {
@@ -75,13 +77,13 @@ class TodistusPdfGenerator extends Logging {
     result
   }
 
-  private def convertHtmlToPdf(html: String, metadata: TodistusMetadata): Array[Byte] = {
+  private def convertHtmlToPdf(html: String, metadata: Map[String, String]): Array[Byte] = {
     val outputStream = new ByteArrayOutputStream()
     convertHtmlToPdf(html, metadata, outputStream)
     outputStream.toByteArray
   }
 
-  private def convertHtmlToPdf(html: String, metadata: TodistusMetadata, outputStream: OutputStream): Unit = {
+  private def convertHtmlToPdf(html: String, metadata: Map[String, String], outputStream: OutputStream): Unit = {
     // TODO: TOR-2400: Älä tee builderiä aina uudestaan, ja lisää cache?
     val builder = new PdfRendererBuilder()
     builder.useDefaultPageSize(210.0f, 297.0f, BaseRendererBuilder.PageSizeUnits.MM)
@@ -92,7 +94,7 @@ class TodistusPdfGenerator extends Logging {
     builder.withHtmlContent(html, null)
 
     // Lisää producer-tieto
-    builder.withProducer(s"Koski (commit: ${metadata.commitHash})")
+    builder.withProducer(s"Koski (commit: ${metadata("CommitHash")})")
 
     // TODO: TOR-2400: Fontit ovat nyt base64:nä HTML:ssä, jotta täsmälleen saman koodin saa toimimaan JAR:in sisältä ja tiedostojärjestelmästä, kun
     // haluaa rendata esim. Chromella. Lisää nämä ja poista @font-face:t HTML:stä, jos haluat käyttää näitä. Tämä lähinnä helpottaisi HTML-tiedostojen
@@ -110,7 +112,7 @@ class TodistusPdfGenerator extends Logging {
 
     renderer.setListener(new PDFCreationListener {
       override def preOpen(pdfBoxRenderer: PdfBoxRenderer): Unit = {
-        metadata.toMap.foreach { case (key, value) => pdfBoxRenderer.getOutputDevice.addMetadata(key, value)}
+        metadata.foreach { case (key, value) => pdfBoxRenderer.getOutputDevice.addMetadata(key, value)}
       }
 
       override def preWrite(pdfBoxRenderer: PdfBoxRenderer, i: Int): Unit = {}
