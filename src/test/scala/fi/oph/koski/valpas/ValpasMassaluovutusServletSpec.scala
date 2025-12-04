@@ -1,7 +1,7 @@
 package fi.oph.koski.valpas
 
 import fi.oph.koski.KoskiApplicationForTests
-import fi.oph.koski.http.KoskiErrorCategory
+import fi.oph.koski.http.{ErrorMatcher, KoskiErrorCategory}
 import fi.oph.koski.localization.LocalizationReader
 import fi.oph.koski.log.AuditLogTester
 import fi.oph.koski.organisaatio.MockOrganisaatiot
@@ -425,6 +425,19 @@ class ValpasMassaluovutusServletSpec extends ValpasTestBase with BeforeAndAfterE
         logMessage should include(ValpasOperation.VALPAS_MASSALUOVUTUS_KUNTA.toString)
         logMessage should include(ValpasKuntarouhintaSpec.kuntakoodi)
       }
+    }
+  }
+
+  "Vääräntyyppisen kyselyn syöttäminen Valppaan massaluovutuksen kautta ei onnistu" in {
+    val koskiQuery = s"""
+      {
+        "type": "luokallejaaneet",
+        "format": "application/json"
+      }
+      """.stripMargin
+
+    postQuery(koskiQuery, ValpasMockUsers.valpasHelsinki) {
+      verifyResponseStatus(400, ErrorMatcher.regex(KoskiErrorCategory.badRequest.validation.jsonSchema, ".*notAnyOf.*".r))
     }
   }
 
