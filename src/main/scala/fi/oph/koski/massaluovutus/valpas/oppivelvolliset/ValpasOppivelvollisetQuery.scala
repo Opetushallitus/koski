@@ -29,75 +29,53 @@ case class ValpasOppivelvollisetQuery(
   format: String = QueryFormat.json,
   @Description("Kunnan organisaatio-oid")
   kuntaOid: String
-) extends ValpasMassaluovutusQueryParameters with Logging with GlobalExecutionContext {
+) extends ValpasMassaluovutusQueryParameters with GlobalExecutionContext {
 
-  override def run(application: KoskiApplication, writer: QueryResultWriter)(implicit user: Session with SensitiveDataAllowed): Either[String, Unit] = user match {
-    case valpasUser: ValpasSession =>
-      implicit val session: ValpasSession = valpasUser
-      val oppijalistatService = application.valpasOppijalistatService
-      val kuntarouhinta = new ValpasKuntarouhintaService(application)
-      val kuntailmoitusService = application.valpasKuntailmoitusService
-      val rouhintaOvKeskeytyksetService = application.valpasRouhintaOppivelvollisuudenKeskeytysService
-      val kunta = getKuntaKoodiByKuntaOid(application, kuntaOid)
-        .getOrElse(throw new IllegalArgumentException(s"ValpasOppivelvollisetQuery: getKuntaKoodiByKuntaOid palautti None kuntaOid:lla $kuntaOid"))
+  override def run(application: KoskiApplication, writer: QueryResultWriter)
+    (implicit user: Session with SensitiveDataAllowed): Either[String, Unit] = withValpasSession { implicit valpasSession =>
+    val oppijalistatService = application.valpasOppijalistatService
+    val kuntarouhinta = new ValpasKuntarouhintaService(application)
+    val kuntailmoitusService = application.valpasKuntailmoitusService
+    val rouhintaOvKeskeytyksetService = application.valpasRouhintaOppivelvollisuudenKeskeytysService
+    val kunta = getKuntaKoodiByKuntaOid(application, kuntaOid)
+      .getOrElse(throw new IllegalArgumentException(s"ValpasOppivelvollisetQuery: getKuntaKoodiByKuntaOid palautti None kuntaOid:lla $kuntaOid"))
 
-      // Hae oppivelvolliset kotikunnalla ONR:stä, vaikka eivät suorita nyt oppivelvollisuutta
-      val onrOppivelvollisetOppijat = Future {
-        try {
-          kuntarouhinta.rouhiOppivelvollisuuttaSuorittamattomatOppijanumerorekisteristä(kunta)
-        } catch {
-          case NonFatal(e) =>
-            val msg = "Tietoja ei saatu haettua oppijanumerorekisteristä"
-            logger.error(e)(msg)
-            throw e
-        }
+    // Hae oppivelvolliset kotikunnalla ONR:stä, vaikka eivät suorita nyt oppivelvollisuutta
+    val onrOppivelvollisetOppijat = Future {
+      try {
+        kuntarouhinta.rouhiOppivelvollisuuttaSuorittamattomatOppijanumerorekisteristä(kunta)
+      } catch {
+        case NonFatal(e) =>
+          val msg = "Tietoja ei saatu haettua oppijanumerorekisteristä"
+          logger.error(e)(msg)
+          throw e
       }
-
-      // Hae oppivelvolliset Koskesta kotikunnalla
-      val oppijaOids = oppijalistatService.getOppivelvollisetKotikunnallaIlmanOikeustarkastusta(kunta).map(_.masterOid)
-
-      // Hae oppijatiedot ja lisää kuntailmoitus- ja keskeytystiedot
-      oppijalistatService
-        .getOppijalistaIlmanOikeustarkastusta(oppijaOids)
-        .left.map(_.errorString.getOrElse("Tuntematon virhe"))
-        .flatMap { oppijat =>
-          kuntailmoitusService.withKuntailmoituksetIlmanKäyttöoikeustarkistusta(oppijat)
-            .left.map(_.errorString.getOrElse("Tuntematon virhe"))
-            .map(_.map(fi.oph.koski.valpas.rouhinta.ValpasRouhintaOppivelvollinen.apply))
-            .map(oppijat => rouhintaOvKeskeytyksetService.fetchOppivelvollisuudenKeskeytykset(oppijat))
-        }
-        .map { oppijat =>
-          val onrOppijatResult = Futures.await(onrOppivelvollisetOppijat.map(_.map(ValpasMassaluovutusOppija.apply)))
-          val oppijatResult = oppijat.map(ValpasMassaluovutusOppija.apply) ++ onrOppijatResult
-
-          // Rikastetaan oppijat oppivelvollisuustiedoilla
-          val oppijatOppivelvollisuustiedoilla = withOppivelvollisuustiedot(oppijatResult, application)
-
-          val oppijaOids = oppijatOppivelvollisuustiedoilla.map(_.oppijanumero)
-          ValpasAuditLog.auditLogMassaluovutusKunnalla(kunta, oppijaOids)
-          val result = ValpasMassaluovutusResult(oppijatOppivelvollisuustiedoilla)
-          writer.putJson("result", result)
-        }
-    case _ =>
-      throw new IllegalArgumentException("ValpasSession required")
-  }
-
-  override def queryAllowed(application: KoskiApplication)(implicit user: Session): Boolean = user match {
-    case session: ValpasSession =>
-      val kuntaOpt = getKuntaKoodiByKuntaOid(application, kuntaOid)
-      kuntaOpt.exists(kunta => {
-        val accessResolver = new ValpasAccessResolver
-        accessResolver.accessToKuntaOrg(kunta)(session)
-      })
-    case _ => false
-  }
-
-  private def getKuntaKoodiByKuntaOid(application: KoskiApplication, kuntaOid: String): Option[String] = {
-    Kunta.validateAndGetKuntaKoodi(application.organisaatioService, application.koodistoPalvelu, kuntaOid) match {
-      case Right(kuntaKoodi) => Some(kuntaKoodi)
-      case Left(error) =>
-        logger.warn(s"ValpasOppivelvollisetQuery getKuntaKoodiByKuntaOid: ${error.errors.map(_.toString).mkString(", ")}")
-        None
     }
+
+    // Hae oppivelvolliset Koskesta kotikunnalla
+    val oppijaOids = oppijalistatService.getOppivelvollisetKotikunnallaIlmanOikeustarkastusta(kunta).map(_.masterOid)
+
+    // Hae oppijatiedot ja lisää kuntailmoitus- ja keskeytystiedot
+    oppijalistatService
+      .getOppijalistaIlmanOikeustarkastusta(oppijaOids)
+      .left.map(_.errorString.getOrElse("Tuntematon virhe"))
+      .flatMap { oppijat =>
+        kuntailmoitusService.withKuntailmoituksetIlmanKäyttöoikeustarkistusta(oppijat)
+          .left.map(_.errorString.getOrElse("Tuntematon virhe"))
+          .map(_.map(fi.oph.koski.valpas.rouhinta.ValpasRouhintaOppivelvollinen.apply))
+          .map(oppijat => rouhintaOvKeskeytyksetService.fetchOppivelvollisuudenKeskeytykset(oppijat))
+      }
+      .map { oppijat =>
+        val onrOppijatResult = Futures.await(onrOppivelvollisetOppijat.map(_.map(ValpasMassaluovutusOppija.apply)))
+        val oppijatResult = oppijat.map(ValpasMassaluovutusOppija.apply) ++ onrOppijatResult
+
+        // Rikastetaan oppijat oppivelvollisuustiedoilla
+        val oppijatOppivelvollisuustiedoilla = withOppivelvollisuustiedot(oppijatResult, application)
+
+        val oppijaOids = oppijatOppivelvollisuustiedoilla.map(_.oppijanumero)
+        ValpasAuditLog.auditLogMassaluovutusKunnalla(kunta, oppijaOids)
+        val result = ValpasMassaluovutusResult(oppijatOppivelvollisuustiedoilla)
+        writer.putJson("result", result)
+      }
   }
 }

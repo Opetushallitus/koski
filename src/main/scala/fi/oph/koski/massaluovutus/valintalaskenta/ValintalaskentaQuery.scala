@@ -44,30 +44,27 @@ case class ValintalaskentaQuery(
   private val aikaraja: Timestamp = Timestamp.valueOf(rajapäivä.plusDays(1).atStartOfDay())
   override def priority: Int = MassaluovutusQueryPriority.highest
 
-  override def run(application: KoskiApplication, writer: QueryResultWriter)(implicit user: Session with SensitiveDataAllowed): Either[String, Unit] = user match {
-    case koskiUser: KoskiSpecificSession =>
-      implicit val u: KoskiSpecificSession = koskiUser
-      writer.predictFileCount(oppijaOids.size)
-      oppijaOids.foreach { oid =>
-        val results = getOpiskeluoikeudet(application, oid)
-        if (results.nonEmpty) {
-          val opiskeluoikeudet = asNonEmpty(results.collect { case Right(oo) => oo })
-          val virheet = asNonEmpty(results.collect { case Left(err) => err })
-          writer.putJson(oid, ValintalaskentaResult(oid, opiskeluoikeudet, virheet))
-          if (opiskeluoikeudet.nonEmpty) {
-            auditLog(oid)
-          }
-        } else {
-          writer.skipFile()
+  override def run(application: KoskiApplication, writer: QueryResultWriter)
+    (implicit user: Session with SensitiveDataAllowed): Either[String, Unit] = withKoskiSpecificSession { implicit koskiUser =>
+    writer.predictFileCount(oppijaOids.size)
+    oppijaOids.foreach { oid =>
+      val results = getOpiskeluoikeudet(application, oid)
+      if (results.nonEmpty) {
+        val opiskeluoikeudet = asNonEmpty(results.collect { case Right(oo) => oo })
+        val virheet = asNonEmpty(results.collect { case Left(err) => err })
+        writer.putJson(oid, ValintalaskentaResult(oid, opiskeluoikeudet, virheet))
+        if (opiskeluoikeudet.nonEmpty) {
+          auditLog(oid)
         }
+      } else {
+        writer.skipFile()
       }
-      Right(())
-    case _ => throw new IllegalArgumentException("KoskiSpecificSession required")
+    }
+    Right(())
   }
 
-  override def queryAllowed(application: KoskiApplication)(implicit user: Session): Boolean = user match {
-    case u: KoskiSpecificSession => u.hasRole(OPHKATSELIJA) || u.hasRole(OPHPAAKAYTTAJA)
-    case _ => false
+  override def queryAllowed(application: KoskiApplication)(implicit user: Session): Boolean = withKoskiSpecificSession { u =>
+    u.hasRole(OPHKATSELIJA) || u.hasRole(OPHPAAKAYTTAJA)
   }
 
   override def fillAndValidate(implicit user: Session): Either[HttpStatus, MassaluovutusQueryParameters] =

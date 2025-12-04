@@ -27,61 +27,39 @@ case class ValpasEiOppivelvollisuuttaSuorittavatQuery(
   @Description("Palautetaanko tuloksissa vain sellaiset oppijat, joista on aktiivinen kuntailmoitus")
   @DefaultValue(false)
   vainAktiivisetKuntailmoitukset: Boolean
-) extends ValpasMassaluovutusQueryParameters with Logging {
+) extends ValpasMassaluovutusQueryParameters {
 
-  override def run(application: KoskiApplication, writer: QueryResultWriter)(implicit user: Session with SensitiveDataAllowed): Either[String, Unit] = user match {
-    case valpasUser: ValpasSession =>
-      implicit val session: ValpasSession = valpasUser
-      val kuntarouhinta = new ValpasKuntarouhintaService(application)
-      val kunta = getKuntaKoodiByKuntaOid(application, kuntaOid)
-        .getOrElse(throw new IllegalArgumentException(s"ValpasEiOppivelvollisuuttaSuorittavatQuery: getKuntaKoodiByKuntaOid palautti None kuntaOid:lla $kuntaOid"))
+  override def run(application: KoskiApplication, writer: QueryResultWriter)
+    (implicit user: Session with SensitiveDataAllowed): Either[String, Unit] = withValpasSession { implicit valpasUser =>
+    val kuntarouhinta = new ValpasKuntarouhintaService(application)
+    val kunta = getKuntaKoodiByKuntaOid(application, kuntaOid)
+      .getOrElse(throw new IllegalArgumentException(s"ValpasEiOppivelvollisuuttaSuorittavatQuery: getKuntaKoodiByKuntaOid palautti None kuntaOid:lla $kuntaOid"))
 
-      if(vainAktiivisetKuntailmoitukset) {
-        kuntarouhinta.rouhiOppivelvollisuuttaSuorittamattomatKoskesta(kunta)
-          .left.map(_.errorString.getOrElse("Tuntematon virhe"))
-          .map { tulos =>
-            val oppijat = tulos.filter(_.aktiivinenKuntailmoitus.nonEmpty).map(ValpasMassaluovutusOppija.apply)
-            // Rikastetaan oppijat oppivelvollisuustiedoilla
-            val oppijatOppivelvollisuustiedoilla = withOppivelvollisuustiedot(oppijat, application)
-            val oppijaOids = oppijatOppivelvollisuustiedoilla.map(_.oppijanumero)
-            ValpasAuditLog.auditLogMassaluovutusKunnalla(kunta, oppijaOids)
-            val result = ValpasMassaluovutusResult(oppijatOppivelvollisuustiedoilla)
-            writer.putJson("result", result)
-          }
-      } else {
-        kuntarouhinta
-          .haeKunnanPerusteellaIlmanOikeustarkastusta(kunta)
-          .left.map(_.errorString.getOrElse("Tuntematon virhe"))
-          .map { tulos =>
-            val oppijat = tulos.eiOppivelvollisuuttaSuorittavat.map(ValpasMassaluovutusOppija.apply)
-            // Rikastetaan oppijat oppivelvollisuustiedoilla
-            val oppijatOppivelvollisuustiedoilla = withOppivelvollisuustiedot(oppijat, application)
-            val oppijaOids = oppijatOppivelvollisuustiedoilla.map(_.oppijanumero)
-            ValpasAuditLog.auditLogMassaluovutusKunnalla(kunta, oppijaOids)
-            val result = ValpasMassaluovutusResult(oppijatOppivelvollisuustiedoilla)
-            writer.putJson("result", result)
-          }
-      }
-    case _ =>
-      throw new IllegalArgumentException("ValpasSession required")
-  }
-
-  override def queryAllowed(application: KoskiApplication)(implicit user: Session): Boolean = user match {
-    case session: ValpasSession =>
-      val kuntaOpt = getKuntaKoodiByKuntaOid(application, kuntaOid)
-      kuntaOpt.exists(kunta =>{
-        val accessResolver = new ValpasAccessResolver
-        accessResolver.accessToKuntaOrg(kunta)(session)
-      })
-    case _ => false
-  }
-
-  private def getKuntaKoodiByKuntaOid(application: KoskiApplication, kuntaOid: String): Option[String] = {
-    Kunta.validateAndGetKuntaKoodi(application.organisaatioService, application.koodistoPalvelu, kuntaOid) match {
-      case Right(kuntaKoodi) => Some(kuntaKoodi)
-      case Left(error) =>
-        logger.warn(s"ValpasEiOppivelvollisuuttaSuorittavatQuery getKuntaKoodiByKuntaOid: ${error.errors.map(_.toString).mkString(", ")}")
-        None
+    if (vainAktiivisetKuntailmoitukset) {
+      kuntarouhinta.rouhiOppivelvollisuuttaSuorittamattomatKoskesta(kunta)
+        .left.map(_.errorString.getOrElse("Tuntematon virhe"))
+        .map { tulos =>
+          val oppijat = tulos.filter(_.aktiivinenKuntailmoitus.nonEmpty).map(ValpasMassaluovutusOppija.apply)
+          // Rikastetaan oppijat oppivelvollisuustiedoilla
+          val oppijatOppivelvollisuustiedoilla = withOppivelvollisuustiedot(oppijat, application)
+          val oppijaOids = oppijatOppivelvollisuustiedoilla.map(_.oppijanumero)
+          ValpasAuditLog.auditLogMassaluovutusKunnalla(kunta, oppijaOids)
+          val result = ValpasMassaluovutusResult(oppijatOppivelvollisuustiedoilla)
+          writer.putJson("result", result)
+        }
+    } else {
+      kuntarouhinta
+        .haeKunnanPerusteellaIlmanOikeustarkastusta(kunta)
+        .left.map(_.errorString.getOrElse("Tuntematon virhe"))
+        .map { tulos =>
+          val oppijat = tulos.eiOppivelvollisuuttaSuorittavat.map(ValpasMassaluovutusOppija.apply)
+          // Rikastetaan oppijat oppivelvollisuustiedoilla
+          val oppijatOppivelvollisuustiedoilla = withOppivelvollisuustiedot(oppijat, application)
+          val oppijaOids = oppijatOppivelvollisuustiedoilla.map(_.oppijanumero)
+          ValpasAuditLog.auditLogMassaluovutusKunnalla(kunta, oppijaOids)
+          val result = ValpasMassaluovutusResult(oppijatOppivelvollisuustiedoilla)
+          writer.putJson("result", result)
+        }
     }
   }
 }
