@@ -55,10 +55,15 @@ case class ValpasEiOppivelvollisuuttaSuorittavatQuery(
           val oppijat = tulos.filter(_.aktiivinenKuntailmoitus.nonEmpty).map(ValpasMassaluovutusOppija.apply)
           // Rikastetaan oppijat oppivelvollisuustiedoilla
           val oppijatOppivelvollisuustiedoilla = withOppivelvollisuustiedot(oppijat, application)
-          val oppijaOids = oppijatOppivelvollisuustiedoilla.map(_.oppijanumero)
-          ValpasAuditLog.auditLogMassaluovutusKunnalla(kunta, oppijaOids)
-          val result = ValpasMassaluovutusResult(oppijatOppivelvollisuustiedoilla)
-          writer.putJson("result", result)
+
+          writer.predictFileCount(oppijatOppivelvollisuustiedoilla.size / sivukoko)
+
+          oppijatOppivelvollisuustiedoilla.grouped(sivukoko).zipWithIndex.foreach { case (oppijatSivu, index) =>
+            val oppijaOids = oppijatSivu.map(_.oppijanumero)
+            ValpasAuditLog.auditLogMassaluovutusKunnalla(kunta, oppijaOids)
+            val result = ValpasMassaluovutusResult(oppijatSivu)
+            writer.putJson(s"$index", result)
+          }
         }
     } else {
       kuntarouhintaService
@@ -68,10 +73,15 @@ case class ValpasEiOppivelvollisuuttaSuorittavatQuery(
           val oppijat = tulos.eiOppivelvollisuuttaSuorittavat.map(ValpasMassaluovutusOppija.apply)
           // Rikastetaan oppijat oppivelvollisuustiedoilla
           val oppijatOppivelvollisuustiedoilla = withOppivelvollisuustiedot(oppijat, application)
-          val oppijaOids = oppijatOppivelvollisuustiedoilla.map(_.oppijanumero)
-          ValpasAuditLog.auditLogMassaluovutusKunnalla(kunta, oppijaOids)
-          val result = ValpasMassaluovutusResult(oppijatOppivelvollisuustiedoilla)
-          writer.putJson("result", result)
+
+          writer.predictFileCount(oppijatOppivelvollisuustiedoilla.size / sivukoko)
+
+          oppijatOppivelvollisuustiedoilla.grouped(sivukoko).zipWithIndex.foreach { case (oppijatSivu, index) =>
+            val oppijaOids = oppijatSivu.map(_.oppijanumero)
+            ValpasAuditLog.auditLogMassaluovutusKunnalla(kunta, oppijaOids)
+            val result = ValpasMassaluovutusResult(oppijatSivu)
+            writer.putJson(s"$index", result)
+          }
         }
     }
   }

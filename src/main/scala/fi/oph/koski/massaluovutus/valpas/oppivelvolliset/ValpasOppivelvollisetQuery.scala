@@ -78,10 +78,14 @@ case class ValpasOppivelvollisetQuery(
         // Rikastetaan oppijat oppivelvollisuustiedoilla
         val oppijatOppivelvollisuustiedoilla = withOppivelvollisuustiedot(oppijatResult, application)
 
-        val oppijaOids = oppijatOppivelvollisuustiedoilla.map(_.oppijanumero)
-        ValpasAuditLog.auditLogMassaluovutusKunnalla(kunta, oppijaOids)
-        val result = ValpasMassaluovutusResult(oppijatOppivelvollisuustiedoilla)
-        writer.putJson("result", result)
+        writer.predictFileCount(oppijatOppivelvollisuustiedoilla.size / sivukoko)
+
+        oppijatOppivelvollisuustiedoilla.grouped(sivukoko).zipWithIndex.foreach { case (oppijatSivu, index) =>
+          val oppijaOids = oppijatSivu.map(_.oppijanumero)
+          ValpasAuditLog.auditLogMassaluovutusKunnalla(kunta, oppijaOids)
+          val result = ValpasMassaluovutusResult(oppijatSivu)
+          writer.putJson(s"$index", result)
+        }
       }
   }
 }
