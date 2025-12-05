@@ -344,19 +344,19 @@ class ValpasMassaluovutusServletSpec extends ValpasTestBase with BeforeAndAfterE
 
       "palauttaa kaikki kunnan oppivelvolliset" in {
         val queryId = postQuery(
-          getQuery(MockOrganisaatiot.pyhtäänKunta),
-          ValpasMockUsers.valpasPyhtääJaAapajoenPeruskoulu
+          getQuery(MockOrganisaatiot.helsinginKaupunki),
+          ValpasMockUsers.valpasHelsinki
         ) {
           verifyResponseStatusOk()
           (JsonMethods.parse(body) \ "queryId").extract[String]
         }
 
-        waitForCompletion(queryId, ValpasMockUsers.valpasPyhtääJaAapajoenPeruskoulu)
+        waitForCompletion(queryId, ValpasMockUsers.valpasHelsinki)
 
-        val fileUrl: String = verifyAndGetFileUrl(queryId)
+        val fileUrl: String = verifyAndGetFileUrl(queryId, ValpasMockUsers.valpasHelsinki)
 
         // Lataa ja tarkista tiedoston sisältö
-        verifyResultAndContent(fileUrl, ValpasMockUsers.valpasPyhtääJaAapajoenPeruskoulu) {
+        verifyResultAndContent(fileUrl, ValpasMockUsers.valpasHelsinki) {
           val json = JsonMethods.parse(body)
 
           // Tarkista että vastaus sisältää oppijat-listan
@@ -381,6 +381,14 @@ class ValpasMassaluovutusServletSpec extends ValpasTestBase with BeforeAndAfterE
 
           // Tarkista että myös oppijat ONR:stä on mukana tuloksissa
           oppijat.find(oppija => (oppija \ "vainOppijanumerorekisterissä").extract[Boolean]) should not be empty
+
+          // Tarkista että kaikki aktiiviset opiskeluoikeudet on mukana tuloksissa
+          val aktiivisiaOpiskeluoikeuksia = oppijat.find(oppija => (oppija \ "oppijanumero").extract[String] == ValpasMockOppijat.amisEronnutUusiKelpaamatonOpiskeluoikeusNivelvaiheessa.oid)
+          aktiivisiaOpiskeluoikeuksia should not be empty
+          val aktiivisetOot = (aktiivisiaOpiskeluoikeuksia.get \ "aktiivisetOppivelvollisuudenSuorittamiseenKelpaavatOpiskeluoikeudet").extract[List[JObject]]
+          aktiivisetOot.length should be (2)
+          aktiivisetOot.exists(oo => (oo \ "suorituksenTyyppi" \ "koodiarvo").extract[String] == "perusopetuksenvuosiluokka") should be (true)
+          aktiivisetOot.exists(oo => (oo \ "suorituksenTyyppi" \ "koodiarvo").extract[String] == "perusopetuksenlisaopetus") should be (true)
         }
       }
 
@@ -455,10 +463,10 @@ class ValpasMassaluovutusServletSpec extends ValpasTestBase with BeforeAndAfterE
     get(url.replace(rootUrl, ""), headers = authHeaders(user))(f)
   }
 
-  private def verifyAndGetFileUrl(queryId: String): String = {
+  private def verifyAndGetFileUrl(queryId: String, user: ValpasMockUser = ValpasMockUsers.valpasPyhtääJaAapajoenPeruskoulu): String = {
     val files = get(
       s"/valpas/api/massaluovutus/${queryId}",
-      headers = authHeaders(ValpasMockUsers.valpasPyhtääJaAapajoenPeruskoulu)
+      headers = authHeaders(user)
     ) {
       verifyResponseStatusOk()
       val json = JsonMethods.parse(body)
