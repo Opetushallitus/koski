@@ -10,7 +10,7 @@ import fi.oph.koski.schema.annotation.EnumValues
 import fi.oph.koski.util.Futures
 import fi.oph.koski.valpas.log.ValpasAuditLog
 import fi.oph.koski.valpas.massaluovutus.{ValpasMassaluovutusOppija, ValpasMassaluovutusResult}
-import fi.oph.koski.valpas.rouhinta.ValpasKuntarouhintaService
+import fi.oph.koski.valpas.rouhinta.{RouhintaOpiskeluoikeus, ValpasKuntarouhintaService, ValpasRouhintaOppivelvollinen}
 import fi.oph.scalaschema.annotation.{Description, Title}
 
 import scala.concurrent.Future
@@ -56,14 +56,24 @@ case class ValpasOppivelvollisetQuery(
       .getOppijalistaIlmanOikeustarkastusta(oppijaOids)
       .left.map(_.errorString.getOrElse("Tuntematon virhe"))
       .flatMap { oppijat =>
+        def oppijanAktiivisetOpiskeluoikeudet(oid: String) = oppijat
+          .find(o => o.oppija.henkilö.kaikkiOidit.contains(oid))
+          .map(_.oppija.opiskeluoikeudet.filter(_.isOpiskelu).map(RouhintaOpiskeluoikeus.apply))
+          .getOrElse(Seq.empty)
+          .flatten
+
+        // Täydennä kuntailmoitukset oppijoille
         kuntailmoitusService.withKuntailmoituksetIlmanKäyttöoikeustarkistusta(oppijat)
           .left.map(_.errorString.getOrElse("Tuntematon virhe"))
-          .map(_.map(fi.oph.koski.valpas.rouhinta.ValpasRouhintaOppivelvollinen.apply))
+          .map(_.map(ValpasRouhintaOppivelvollinen.apply))
+          // Täydennä keskeytykset oppijoille
           .map(oppijat => rouhintaOvKeskeytyksetService.fetchOppivelvollisuudenKeskeytykset(oppijat))
+          // Täydennä aktiiviset oppivelvollisuuteen kelpaavat opiskeluoikeudet oppijoille
+          .map(oppijat => oppijat.map(oppija => ValpasMassaluovutusOppija.apply(oppija, oppijanAktiivisetOpiskeluoikeudet(oppija.oppijanumero))))
       }
       .map { oppijat =>
         val onrOppijatResult = Futures.await(onrOppivelvollisetOppijat.map(_.map(ValpasMassaluovutusOppija.apply)))
-        val oppijatResult = oppijat.map(ValpasMassaluovutusOppija.apply) ++ onrOppijatResult
+        val oppijatResult = oppijat ++ onrOppijatResult
 
         // Rikastetaan oppijat oppivelvollisuustiedoilla
         val oppijatOppivelvollisuustiedoilla = withOppivelvollisuustiedot(oppijatResult, application)
