@@ -11,6 +11,7 @@ import fi.oph.koski.valpas.oppija.ValpasAccessResolver
 import fi.oph.koski.valpas.valpasuser.ValpasSession
 
 trait ValpasMassaluovutusQueryParameters extends MassaluovutusQueryParameters with Logging {
+  val sivukoko = 1000
   def kuntaOid: String
 
   override def queryAllowed(application: KoskiApplication)(implicit user: Session): Boolean = user match {
