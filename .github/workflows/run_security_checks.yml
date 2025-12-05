@@ -32,7 +32,7 @@ jobs:
           format: json
           output: trivy-report.json
           severity: 'CRITICAL,HIGH'
-          skip-dirs: 'src/main/resources/mockdata,src/test,target'
+          skip-dirs: 'src/main/resources/mockdata,src/test,target,omadata-oauth2-sample'
 
       - name: Summarize new CVEs
         if: failure()

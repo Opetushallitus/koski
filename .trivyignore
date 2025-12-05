@@ -35,3 +35,11 @@ CVE-2025-41248
 # Suppressed: spring-core 6.2.10
 # Trivy flags this as HIGH, but our usage is limited to OAuth2 sample code
 CVE-2025-41249
+
+# Suppressed: glob CLI command injection (used via sucrase toolchain in OAuth2 sample)
+GHSA-5j98-mcp5-4vw2
+
+# Suppressed: node-forge ASN.1 vulnerabilities (pulled via selfsigned in OAuth2 sample)
+GHSA-554w-wpv2-vw27
+GHSA-5gfm-wpxj-wjgq
+GHSA-65ch-62r8-g69g
