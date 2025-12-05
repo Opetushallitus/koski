@@ -5,7 +5,7 @@ import fi.oph.koski.db.{KoskiOpiskeluoikeusRow, KoskiTables}
 import fi.oph.koski.koskiuser.KoskiSpecificSession
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.massaluovutus.MassaluovutusUtils.QueryResourceManager
-import fi.oph.koski.massaluovutus.{QueryFormat, QueryResultWriter}
+import fi.oph.koski.massaluovutus.{MassaluovutusException, QueryFormat, QueryResultWriter}
 import fi.oph.koski.schema.Organisaatio.Oid
 import fi.oph.koski.schema.annotation.EnumValues
 import fi.oph.koski.schema.{KoskeenTallennettavaOpiskeluoikeus, KoskiSchema, Oppija, Organisaatio}
@@ -54,8 +54,8 @@ case class MassaluovutusQueryOrganisaationOpiskeluoikeudetJson(
     application.validatingAndResolvingExtractor.extract[KoskeenTallennettavaOpiskeluoikeus](KoskiSchema.strictDeserialization)(json) match {
       case Right(oo: KoskeenTallennettavaOpiskeluoikeus) => Some(oo)
       case Left(errors) =>
-        logger.warn(s"Error deserializing opiskeluoikeus: ${errors}")
-        None
+        logger.warn(s"Error deserializing oppijan ${row.oppijaOid} opiskeluoikeus ${row.oid}: ${errors}")
+        throw new MassaluovutusException(s"Oppijan ${row.oppijaOid} opiskeluoikeuden ${row.oid} deserialisointi epäonnistui")
     }
   }
 }

@@ -34,11 +34,13 @@ import java.util.UUID
 class MassaluovutusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers with BeforeAndAfterAll with BeforeAndAfterEach with OpiskeluoikeusTestMethodsAmmatillinen {
   val app = KoskiApplicationForTests
 
-  override protected def beforeAll(): Unit = {
-    resetFixtures()
+  override protected def beforeEach(): Unit = {
+    resetFixturesSkipInvalidOpiskeluoikeudet()
+    super.beforeEach()
   }
 
   override protected def afterEach(): Unit = {
+    super.afterEach()
     Wait.until { !app.massaluovutusService.hasWork }
     app.massaluovutusService.truncate()
   }
@@ -173,7 +175,7 @@ class MassaluovutusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers wit
         }
         val complete = waitForCompletion(queryId, user)
 
-        complete.files should have length 22
+        complete.files should have length 21
         complete.files.foreach(verifyResult(_, user))
 
         AuditLogTester.verifyLastAuditLogMessage(Map(
@@ -201,6 +203,44 @@ class MassaluovutusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers wit
         val complete = waitForCompletion(queryId, user)
 
         complete.files should have length 2
+      }
+
+      "Palauttaa epäonnistuneen kyselyn, mutta jättää merkinnän auditlokiin" in {
+        AuditLogTester.clearMessages()
+
+        // Lisää rikkinäiset opiskeluoikeudet fikstureen:
+        resetFixtures()
+
+        val user = MockUsers.paakayttaja
+        val queryId = addQuerySuccessfully(
+          MassaluovutusQueryOrganisaationOpiskeluoikeudetJson(
+            alkanutAikaisintaan = LocalDate.of(2010, 1, 1),
+            organisaatioOid = Some(MockOrganisaatiot.helsinginKaupunki)
+          ), user
+        ) { response =>
+          response.status should equal(QueryState.pending)
+          response.query.asInstanceOf[MassaluovutusQueryOrganisaationOpiskeluoikeudet].organisaatioOid should contain(
+            MockOrganisaatiot.helsinginKaupunki
+          )
+          response.queryId
+        }
+        val failed = waitForFailure(queryId, user)
+
+        failed.status shouldBe QueryState.failed
+        failed.error.get should fullyMatch regex  "^Oppijan (1\\.2\\.246\\.562\\.24\\.\\d+) opiskeluoikeuden (1\\.2\\.246\\.562\\.15\\.\\d+) deserialisointi epäonnistui$".r // Näkyy pääkäyttäjälle
+
+        // Tulokset ennen rikkinäisen opiskeluoikeuden käsittelyä on kirjoitettu vastaukseen:
+        failed.files should have length 0
+        failed.files.foreach(verifyResult(_, user))
+
+        // Tulokset poikkeukseen saakka on kirjoitettu S3:een, vaikka epäonnistuneen kyselyn tuloksessa tiedostoja ei listata
+        // Osoitteen arvaamalla käyttäjä voi kuitenkin saada nähtäväkseen tulokset ennen poikkeuksen lentämistä
+        AuditLogTester.verifyLastAuditLogMessage(Map(
+          "operation" -> "OPISKELUOIKEUS_HAKU",
+          "target" -> Map(
+            "hakuEhto" -> "alkanutAikaisintaan=2010-01-01&organisaatio=1.2.246.562.10.346830761110",
+          ),
+        ))
       }
     }
 
@@ -522,20 +562,21 @@ class MassaluovutusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers wit
     }
 
     "Palautuneen datan filtteröinti" - {
-      val query = getQuery(LocalDateTime.now().minusHours(1))
-      val queryId = addQuerySuccessfully(query, user) { response =>
-        response.status should equal(QueryState.pending)
-        response.queryId
-      }
-      val complete = waitForCompletion(queryId, user)
-
-      val jsonFiles = complete.files.map { file =>
-        verifyResultAndContent(file, user) {
-          JsonMethods.parse(response.body)
-        }
-      }
 
       def getOpiskeluoikeudet(tyyppi: Option[String] = None): List[JValue] = {
+        val query = getQuery(LocalDateTime.now().minusHours(1))
+        val queryId = addQuerySuccessfully(query, user) { response =>
+          response.status should equal(QueryState.pending)
+          response.queryId
+        }
+        val complete = waitForCompletion(queryId, user)
+
+        val jsonFiles = complete.files.map { file =>
+          verifyResultAndContent(file, user) {
+            JsonMethods.parse(response.body)
+          }
+        }
+
         val oos = jsonFiles.flatMap {
           case JArray(a) => a
           case _ => Nil
@@ -757,7 +798,9 @@ class MassaluovutusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers wit
           oos.arr.map(v =>
             (
               (v \ "oppijaOid").extract[String],
-              ((v \ "opiskeluoikeudet").extract[List[JObject]].last \ "oid").extract[String])).last match {
+              (v \ "opiskeluoikeudet").extract[List[JObject]].lastOption.map(oo => (oo \ "oid").extract[String]).getOrElse("")
+            )
+          ).last match {
             case (oppijaOid, opiskeluoikeusOid) => AuditLogTester.verifyLastAuditLogMessage(Map(
               "operation" -> "SUORITUSPALVELU_OPISKELUOIKEUS_HAKU",
               "target" -> Map(
@@ -771,20 +814,21 @@ class MassaluovutusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers wit
     }
 
     "Palautuneen datan filtteröinti" - {
-      val query = getQuery(oppijaOids)
-      val queryId = addQuerySuccessfully(query, user) { response =>
-        response.status should equal(QueryState.pending)
-        response.queryId
-      }
-      val complete = waitForCompletion(queryId, user)
-
-      val jsonFiles = complete.files.map { file =>
-        verifyResultAndContent(file, user) {
-          JsonMethods.parse(response.body)
-        }
-      }
 
       def getOpiskeluoikeudet(tyyppi: Option[String] = None): List[JValue] = {
+        val query = getQuery(oppijaOids)
+        val queryId = addQuerySuccessfully(query, user) { response =>
+          response.status should equal(QueryState.pending)
+          response.queryId
+        }
+        val complete = waitForCompletion(queryId, user)
+
+        val jsonFiles = complete.files.map { file =>
+          verifyResultAndContent(file, user) {
+            JsonMethods.parse(response.body)
+          }
+        }
+
         val oos = jsonFiles.flatMap {
           case JArray(a) => a
           case _ => Nil
@@ -988,6 +1032,21 @@ class MassaluovutusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers wit
         KoskiSpecificMockOppijat.master.oid -> OpiskeluoikeudenTyyppi.perusopetus.koodiarvo
       )
     }
+
+    "Palauttaa epäonnistuneen kyselyn" in {
+      // Lisää rikkinäiset opiskeluoikeudet fikstureen:
+      resetFixtures()
+
+      val queryId = addQuerySuccessfully(getQuery(oppijaOids), user) { response =>
+        response.status should equal(QueryState.pending)
+        response.queryId
+      }
+      val failed = waitForFailure(queryId, user)
+
+      failed.status shouldBe QueryState.failed
+      failed.error.get should fullyMatch regex  "^Oppijan (1\\.2\\.246\\.562\\.24\\.\\d+) opiskeluoikeuden (1\\.2\\.246\\.562\\.15\\.\\d+) deserialisointi epäonnistui$".r // Näkyy pääkäyttäjälle
+      failed.files should have length 0 // Ei palauta tuloksia, joten ei myöskään tee auditlokitusta
+    }
   }
 
   "Luokalle jäämiset" - {
@@ -1096,6 +1155,9 @@ class MassaluovutusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers wit
 
   def waitForCompletion(queryId: String, user: UserWithPassword): CompleteQueryResponse =
     waitForStateTransition(queryId, user)(QueryState.pending, QueryState.running, QueryState.complete).asInstanceOf[CompleteQueryResponse]
+
+  def waitForFailure(queryId: String, user: UserWithPassword): FailedQueryResponse =
+    waitForStateTransition(queryId, user)(QueryState.pending, QueryState.running, QueryState.failed).asInstanceOf[FailedQueryResponse]
 
   def parsedResponse: QueryResponse = {
     verifyResponseStatusOk()

@@ -169,7 +169,8 @@ class QueryRepository(
       SET
         state = ${QueryState.failed},
         error = $error,
-        finished_at = now()
+        finished_at = now(),
+        result_files = null
       WHERE id = ${id}::uuid
       """.asUpdate) != 0
 

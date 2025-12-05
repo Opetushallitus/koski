@@ -89,6 +89,7 @@ case class ValintalaskentaQuery(
         }
       }.toList
     } catch {
+      // Virheet täältä eivät tee lopullisesta QueryResponse:sta failed-tilaista, mutta näkyvät yksittäisen oppijan ValintalaskentaResult:ssa
       case t: Throwable => List(Left(ValintalaskentaError(t)))
     }
 

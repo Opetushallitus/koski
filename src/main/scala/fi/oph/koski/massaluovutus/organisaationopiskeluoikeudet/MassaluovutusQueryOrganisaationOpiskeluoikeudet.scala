@@ -63,11 +63,12 @@ trait MassaluovutusQueryOrganisaationOpiskeluoikeudet extends KoskiMassaluovutus
     case koskiUser: KoskiSpecificSession =>
       implicit val u: KoskiSpecificSession = koskiUser
       val oppilaitosOids = application.organisaatioService.organisaationAlaisetOrganisaatiot(organisaatioOid.get)
+      auditLog
       fetchData(
         application = application,
         writer = writer,
         oppilaitosOids = oppilaitosOids,
-      ).tap(_ => auditLog)
+      )
     case _ =>
       throw new IllegalArgumentException("KoskiSpecificSession required")
   }
@@ -138,7 +139,10 @@ trait MassaluovutusQueryOrganisaationOpiskeluoikeudet extends KoskiMassaluovutus
 
   protected def getOppijaOids(db: DB, filters: SQLActionBuilder): Seq[String] = QueryMethods.runDbSync(
     db,
-    SQLHelpers.concat(sql"SELECT DISTINCT oppija_oid FROM opiskeluoikeus ", filters).as[(String)]
+    SQLHelpers.concat(
+      SQLHelpers.concat(sql"SELECT DISTINCT oppija_oid FROM opiskeluoikeus ", filters),
+      sql"ORDER BY oppija_oid asc"
+    ).as[(String)]
   )
 
   protected def forEachOpiskeluoikeusAndHenkilö(
