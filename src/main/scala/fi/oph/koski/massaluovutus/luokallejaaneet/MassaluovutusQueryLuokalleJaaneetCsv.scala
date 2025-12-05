@@ -3,7 +3,7 @@ package fi.oph.koski.massaluovutus.luokallejaaneet
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.json.SensitiveDataAllowed
-import fi.oph.koski.koskiuser.{KoskiSpecificSession, Session}
+import fi.oph.koski.koskiuser.Session
 import fi.oph.koski.massaluovutus.MassaluovutusUtils.{QueryResourceManager, defaultOrganisaatio}
 import fi.oph.koski.massaluovutus.{QueryFormat, QueryResultWriter}
 import fi.oph.koski.schema.annotation.EnumValues
@@ -16,17 +16,14 @@ case class MassaluovutusQueryLuokalleJaaneetCsv(
   format: String = QueryFormat.csv,
   organisaatioOid: Option[String],
 ) extends MassaluovutusQueryLuokalleJaaneet {
-  override def run(application: KoskiApplication, writer: QueryResultWriter)(implicit user: Session with SensitiveDataAllowed): Either[String, Unit] = user match {
-    case koskiUser: KoskiSpecificSession =>
-      implicit val u: KoskiSpecificSession = koskiUser
-      QueryResourceManager(logger) { mgr =>
-        implicit val manager: Using.Manager = mgr
-        val csvFile = writer.createCsv[CsvFields](s"luokalle_jaaneet_${organisaatioOid.get}", None)
-        forEachResult(application) { result => csvFile.put(CsvFields(result)) }
-        csvFile.save()
-      }
-    case _ =>
-      throw new IllegalArgumentException("KoskiSpecificSession required")
+  override def run(application: KoskiApplication, writer: QueryResultWriter)
+    (implicit user: Session with SensitiveDataAllowed): Either[String, Unit] = withKoskiSpecificSession { implicit koskiUser =>
+    QueryResourceManager(logger) { mgr =>
+      implicit val manager: Using.Manager = mgr
+      val csvFile = writer.createCsv[CsvFields](s"luokalle_jaaneet_${organisaatioOid.get}", None)
+      forEachResult(application) { result => csvFile.put(CsvFields(result)) }
+      csvFile.save()
+    }
   }
 
   override def fillAndValidate(implicit user: Session): Either[HttpStatus, MassaluovutusQueryLuokalleJaaneet] =

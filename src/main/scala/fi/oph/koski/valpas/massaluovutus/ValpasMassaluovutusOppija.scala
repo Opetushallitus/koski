@@ -13,6 +13,7 @@ case class ValpasMassaluovutusOppija(
   sukunimi: String,
   syntymäaika: Option[LocalDate],
   hetu: Option[String],
+  aktiivisetOppivelvollisuudenSuorittamiseenKelpaavatOpiskeluoikeudet: Option[Seq[RouhintaOpiskeluoikeus]] = None,
   viimeisinOppivelvollisuudenSuorittamiseenKelpaavaOpiskeluoikeus: Option[RouhintaOpiskeluoikeus],
   oppivelvollisuudenKeskeytys: Seq[ValpasOppivelvollisuudenKeskeytys],
   vainOppijanumerorekisterissä: Boolean,
@@ -30,6 +31,24 @@ object ValpasMassaluovutusOppija {
       sukunimi = oppivelvollinen.sukunimi,
       syntymäaika = oppivelvollinen.syntymäaika,
       hetu = oppivelvollinen.hetu,
+      viimeisinOppivelvollisuudenSuorittamiseenKelpaavaOpiskeluoikeus = oppivelvollinen.viimeisinOppivelvollisuudenSuorittamiseenKelpaavaOpiskeluoikeus,
+      oppivelvollisuudenKeskeytys = oppivelvollinen.oppivelvollisuudenKeskeytys,
+      vainOppijanumerorekisterissä = oppivelvollinen.vainOppijanumerorekisterissä,
+      aktiivinenKuntailmoitus = oppivelvollinen.aktiivinenKuntailmoitus,
+      oikeusMaksuttomaanKoulutukseenVoimassaAsti = None,
+      kotikuntaSuomessaAlkaen = None
+    )
+  }
+
+  def apply(oppivelvollinen: ValpasRouhintaOppivelvollinen, aktiivisetOpiskeluoikeudet: Seq[RouhintaOpiskeluoikeus]): ValpasMassaluovutusOppija = {
+    ValpasMassaluovutusOppija(
+      oppijanumero = oppivelvollinen.oppijanumero,
+      kaikkiOidit = oppivelvollinen.kaikkiOidit,
+      etunimet = oppivelvollinen.etunimet,
+      sukunimi = oppivelvollinen.sukunimi,
+      syntymäaika = oppivelvollinen.syntymäaika,
+      hetu = oppivelvollinen.hetu,
+      aktiivisetOppivelvollisuudenSuorittamiseenKelpaavatOpiskeluoikeudet = Some(aktiivisetOpiskeluoikeudet),
       viimeisinOppivelvollisuudenSuorittamiseenKelpaavaOpiskeluoikeus = oppivelvollinen.viimeisinOppivelvollisuudenSuorittamiseenKelpaavaOpiskeluoikeus,
       oppivelvollisuudenKeskeytys = oppivelvollinen.oppivelvollisuudenKeskeytys,
       vainOppijanumerorekisterissä = oppivelvollinen.vainOppijanumerorekisterissä,

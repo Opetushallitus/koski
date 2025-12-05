@@ -89,12 +89,12 @@ object RouhintaOpiskeluoikeus {
   def apply(oo: ValpasOpiskeluoikeusLaajatTiedot): Option[RouhintaOpiskeluoikeus] = {
     oo.tarkasteltavaPäätasonSuoritus.flatMap(päätasonSuoritus => {
       oo.viimeisimmätOpiskeluoikeustiedot
-        .map(viimeisinTila => RouhintaOpiskeluoikeus(
+        .map(viimeisinOpiskeluoikeus => RouhintaOpiskeluoikeus(
           suorituksenTyyppi = päätasonSuoritus.suorituksenTyyppi,
           koulutusmoduulinTunniste = päätasonSuoritus.koulutusmoduuli.tunniste.koodiarvo,
-          päättymispäivä = viimeisinTila.päättymispäivä,
-          viimeisinValpasTila = viimeisinTila.tarkastelupäivänTila,
-          viimeisinTila = viimeisinTila.tarkastelupäivänKoskiTila,
+          päättymispäivä = viimeisinOpiskeluoikeus.päättymispäivä,
+          viimeisinValpasTila = viimeisinOpiskeluoikeus.tarkastelupäivänTila,
+          viimeisinTila = viimeisinOpiskeluoikeus.tarkastelupäivänKoskiTila,
           toimipiste = päätasonSuoritus.toimipiste.nimi,
         ))
     })
