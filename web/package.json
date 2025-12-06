@@ -17,7 +17,7 @@
     "baconjs": "^1.0.1",
     "baret": "^1.2.0",
     "classnames": "^2.5.1",
-    "codemirror": "^5.65.19",
+    "codemirror": "^6.0.0",
     "core-js": "^3.41.0",
     "downloadjs": "^1.4.7",
     "element-closest": "^3.0.2",
