@@ -27,62 +27,61 @@ case class ValpasEiOppivelvollisuuttaSuorittavatQuery(
 
   override def run(application: KoskiApplication, writer: QueryResultWriter)
     (implicit user: Session with SensitiveDataAllowed): Either[String, Unit] = withValpasSession { implicit valpasUser =>
-    val kuntarouhintaService = new ValpasKuntarouhintaService(application)
-    val kuntailmoitusService = application.valpasKuntailmoitusService
-    val ovKeskeytysService = application.valpasRouhintaOppivelvollisuudenKeskeytysService
-    val kunta = getKuntaKoodiByKuntaOid(application, kuntaOid)
-      .getOrElse(throw new IllegalArgumentException(s"ValpasEiOppivelvollisuuttaSuorittavatQuery: getKuntaKoodiByKuntaOid palautti None kuntaOid:lla $kuntaOid"))
+    timed("ValpasEiOppivelvollisuuttaSuorittavatQuery:run") {
+      val kuntarouhintaService = new ValpasKuntarouhintaService(application)
+      val kuntailmoitusService = application.valpasKuntailmoitusService
+      val ovKeskeytysService = application.valpasRouhintaOppivelvollisuudenKeskeytysService
+      val kunta = getKuntaKoodiByKuntaOid(application, kuntaOid)
+        .getOrElse(throw new IllegalArgumentException(s"ValpasEiOppivelvollisuuttaSuorittavatQuery: getKuntaKoodiByKuntaOid palautti None kuntaOid:lla $kuntaOid"))
 
-    if (vainAktiivisetKuntailmoitukset) {
-      val ovSuorittamattomatOppijatAktiivisuustiedoillaJaKeskeytyksillä = for {
-        kuntailmoitukset <- kuntailmoitusService.getKuntailmoituksetKunnalleIlmanKäyttöoikeustarkistusta(kuntaOid)
-        oppijaOids = kuntailmoitukset.flatMap(_.oppijaOid)
-        oppijaTiedot <- application.valpasOppijalistatService.getOppijalistaIlmanOikeustarkastusta(oppijaOids)
-        eiOvSuorittavatOppijatJoillaKuntailmoitus = oppijaTiedot.filterNot(_.oppija.suorittaaOppivelvollisuutta)
-      } yield {
-        val oppijatKuntaIlmoituksilla = eiOvSuorittavatOppijatJoillaKuntailmoitus
-          .map(oppijaTieto => kuntailmoitusService.oppijaHakutilanteillaJaAktiivisuustiedoilla(oppijaTieto, kuntailmoitukset))
-          .map(ValpasRouhintaOppivelvollinen.apply)
+      val oppijatOppivelvollisuustiedoilla = if (vainAktiivisetKuntailmoitukset) {
+        timed("ValpasEiOppivelvollisuuttaSuorittavatQuery:run:vainAktiivisetKuntailmoitukset=true") {
+          val ovSuorittamattomatOppijatAktiivisuustiedoillaJaKeskeytyksillä = for {
+            kuntailmoitukset <- kuntailmoitusService.getKuntailmoituksetKunnalleIlmanKäyttöoikeustarkistusta(kuntaOid)
+            oppijaOids = kuntailmoitukset.flatMap(_.oppijaOid)
+            oppijaTiedot <- application.valpasOppijalistatService.getOppijalistaIlmanOikeustarkastusta(oppijaOids)
+            eiOvSuorittavatOppijatJoillaKuntailmoitus = oppijaTiedot.filterNot(_.oppija.suorittaaOppivelvollisuutta)
+          } yield {
+            val oppijatKuntaIlmoituksilla = eiOvSuorittavatOppijatJoillaKuntailmoitus
+              .map(oppijaTieto => kuntailmoitusService.oppijaHakutilanteillaJaAktiivisuustiedoilla(oppijaTieto, kuntailmoitukset))
+              .map(ValpasRouhintaOppivelvollinen.apply)
 
-        ovKeskeytysService.fetchOppivelvollisuudenKeskeytykset(
-          oppijatKuntaIlmoituksilla
-        )
+            ovKeskeytysService.fetchOppivelvollisuudenKeskeytykset(
+              oppijatKuntaIlmoituksilla
+            )
+          }
+
+          ovSuorittamattomatOppijatAktiivisuustiedoillaJaKeskeytyksillä
+            .left.map(_.errorString.getOrElse("Tuntematon virhe"))
+            .map { tulos =>
+              val oppijat = tulos.filter(_.aktiivinenKuntailmoitus.nonEmpty).map(ValpasMassaluovutusOppija.apply)
+              // Rikastetaan oppijat oppivelvollisuustiedoilla
+              withOppivelvollisuustiedot(oppijat, application)
+            }
+        }
+      } else {
+        timed("ValpasEiOppivelvollisuuttaSuorittavatQuery:run:vainAktiivisetKuntailmoitukset=false") {
+          kuntarouhintaService
+            .haeKunnanPerusteellaIlmanOikeustarkastusta(kunta)
+            .left.map(_.errorString.getOrElse("Tuntematon virhe"))
+            .map { tulos =>
+              val oppijat = tulos.eiOppivelvollisuuttaSuorittavat.map(ValpasMassaluovutusOppija.apply)
+              // Rikastetaan oppijat oppivelvollisuustiedoilla
+              withOppivelvollisuustiedot(oppijat, application)
+            }
+        }
       }
 
-      ovSuorittamattomatOppijatAktiivisuustiedoillaJaKeskeytyksillä
-        .left.map(_.errorString.getOrElse("Tuntematon virhe"))
-        .map { tulos =>
-          val oppijat = tulos.filter(_.aktiivinenKuntailmoitus.nonEmpty).map(ValpasMassaluovutusOppija.apply)
-          // Rikastetaan oppijat oppivelvollisuustiedoilla
-          val oppijatOppivelvollisuustiedoilla = withOppivelvollisuustiedot(oppijat, application)
+      oppijatOppivelvollisuustiedoilla.map { oppijat =>
+        writer.predictFileCount(oppijat.size / sivukoko)
 
-          writer.predictFileCount(oppijatOppivelvollisuustiedoilla.size / sivukoko)
-
-          oppijatOppivelvollisuustiedoilla.grouped(sivukoko).zipWithIndex.foreach { case (oppijatSivu, index) =>
-            val oppijaOids = oppijatSivu.map(_.oppijanumero)
-            ValpasAuditLog.auditLogMassaluovutusKunnalla(kunta, oppijaOids)
-            val result = ValpasMassaluovutusResult(oppijatSivu)
-            writer.putJson(s"$index", result)
-          }
+        oppijat.grouped(sivukoko).zipWithIndex.foreach { case (oppijatSivu, index) =>
+          val oppijaOids = oppijatSivu.map(_.oppijanumero)
+          ValpasAuditLog.auditLogMassaluovutusKunnalla(kunta, oppijaOids)
+          val result = ValpasMassaluovutusResult(oppijatSivu)
+          writer.putJson(s"$index", result)
         }
-    } else {
-      kuntarouhintaService
-        .haeKunnanPerusteellaIlmanOikeustarkastusta(kunta)
-        .left.map(_.errorString.getOrElse("Tuntematon virhe"))
-        .map { tulos =>
-          val oppijat = tulos.eiOppivelvollisuuttaSuorittavat.map(ValpasMassaluovutusOppija.apply)
-          // Rikastetaan oppijat oppivelvollisuustiedoilla
-          val oppijatOppivelvollisuustiedoilla = withOppivelvollisuustiedot(oppijat, application)
-
-          writer.predictFileCount(oppijatOppivelvollisuustiedoilla.size / sivukoko)
-
-          oppijatOppivelvollisuustiedoilla.grouped(sivukoko).zipWithIndex.foreach { case (oppijatSivu, index) =>
-            val oppijaOids = oppijatSivu.map(_.oppijanumero)
-            ValpasAuditLog.auditLogMassaluovutusKunnalla(kunta, oppijaOids)
-            val result = ValpasMassaluovutusResult(oppijatSivu)
-            writer.putJson(s"$index", result)
-          }
-        }
+      }
     }
   }
 }

@@ -6,11 +6,12 @@ import fi.oph.koski.koskiuser.Session
 import fi.oph.koski.log.Logging
 import fi.oph.koski.massaluovutus.MassaluovutusQueryParameters
 import fi.oph.koski.oppivelvollisuustieto.Oppivelvollisuustiedot
+import fi.oph.koski.util.Timing
 import fi.oph.koski.valpas.massaluovutus.ValpasMassaluovutusOppija
 import fi.oph.koski.valpas.oppija.ValpasAccessResolver
 import fi.oph.koski.valpas.valpasuser.ValpasSession
 
-trait ValpasMassaluovutusQueryParameters extends MassaluovutusQueryParameters with Logging {
+trait ValpasMassaluovutusQueryParameters extends MassaluovutusQueryParameters with Logging with Timing {
   val sivukoko = 1000
   def kuntaOid: String
 
@@ -37,25 +38,27 @@ trait ValpasMassaluovutusQueryParameters extends MassaluovutusQueryParameters wi
     oppijat: Seq[ValpasMassaluovutusOppija],
     application: KoskiApplication
   ): Seq[ValpasMassaluovutusOppija] = {
-    val oppijaOids = oppijat.map(_.oppijanumero)
-    val oppivelvollisuustiedot = Oppivelvollisuustiedot.queryByOids(
-      oppijaOids,
-      application.raportointiDatabase
-    )
-    val oppivelvollisuustiedotByOid = oppivelvollisuustiedot.map(t => t.oid -> t).toMap
-
-    oppijat.map { oppija =>
-      val oikeusMaksuttomuuteenPäättyy = oppivelvollisuustiedotByOid
-        .get(oppija.oppijanumero)
-        .map(_.oikeusMaksuttomaanKoulutukseenVoimassaAsti)
-      val kotikuntaSuomessaAlkaen = oppivelvollisuustiedotByOid
-        .get(oppija.oppijanumero)
-        .map(_.kotikuntaSuomessaAlkaen)
-
-      oppija.copy(
-        oikeusMaksuttomaanKoulutukseenVoimassaAsti = oikeusMaksuttomuuteenPäättyy,
-        kotikuntaSuomessaAlkaen = kotikuntaSuomessaAlkaen
+    timed("ValpasMassaluovutusQueryParameters:withOppivelvollisuustiedot") {
+      val oppijaOids = oppijat.map(_.oppijanumero)
+      val oppivelvollisuustiedot = Oppivelvollisuustiedot.queryByOids(
+        oppijaOids,
+        application.raportointiDatabase
       )
+      val oppivelvollisuustiedotByOid = oppivelvollisuustiedot.map(t => t.oid -> t).toMap
+
+      oppijat.map { oppija =>
+        val oikeusMaksuttomuuteenPäättyy = oppivelvollisuustiedotByOid
+          .get(oppija.oppijanumero)
+          .map(_.oikeusMaksuttomaanKoulutukseenVoimassaAsti)
+        val kotikuntaSuomessaAlkaen = oppivelvollisuustiedotByOid
+          .get(oppija.oppijanumero)
+          .map(_.kotikuntaSuomessaAlkaen)
+
+        oppija.copy(
+          oikeusMaksuttomaanKoulutukseenVoimassaAsti = oikeusMaksuttomuuteenPäättyy,
+          kotikuntaSuomessaAlkaen = kotikuntaSuomessaAlkaen
+        )
+      }
     }
   }
 }
