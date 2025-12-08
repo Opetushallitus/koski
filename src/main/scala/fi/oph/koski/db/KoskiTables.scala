@@ -342,8 +342,9 @@ object KoskiTables {
     val nextFireTime = column[Timestamp]("nextfiretime")
     val context = column[Option[JValue]]("context")
     val status = column[Int]("status")
+    val pausedUntil = column[Option[Timestamp]]("pauseduntil")
 
-    def * = (name, nextFireTime, context, status) <> (SchedulerRow.tupled, SchedulerRow.unapply)
+    def * = (name, nextFireTime, context, status, pausedUntil) <> (SchedulerRow.tupled, SchedulerRow.unapply)
   }
 
   class YtrDownloadStatusTable(tag: Tag) extends Table[YtrDownloadStatusRow](tag, "ytr_download_status") {
@@ -682,8 +683,9 @@ object ScheduledTaskStatus {
   val running: ScheduledTaskStatus = 1
 }
 
-case class SchedulerRow(name: String, nextFireTime: Timestamp, context: Option[JValue], status: Int) {
+case class SchedulerRow(name: String, nextFireTime: Timestamp, context: Option[JValue], status: Int, pausedUntil: Option[Timestamp]) {
   def running: Boolean = status == ScheduledTaskStatus.running
+  def paused: Boolean = pausedUntil.exists(_.after(new Timestamp(System.currentTimeMillis)))
 }
 
 case class YtrDownloadStatusRow(id: Int, aikaleima: Timestamp, data: JValue, initialized: Timestamp, completed: Option[Timestamp], modifiedSinceParam: Option[LocalDate])

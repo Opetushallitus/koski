@@ -12,8 +12,6 @@ class TodistusScheduler(application: KoskiApplication) extends Logging {
   val schedulerDb = application.masterDatabase.db
   val todistusService: TodistusService = application.todistusService
 
-  var isRunning: Boolean = false
-
   sys.addShutdownHook {
     todistusService.markAllMyJobsInterrupted()
   }
@@ -47,17 +45,13 @@ class TodistusScheduler(application: KoskiApplication) extends Logging {
   def resume(): Boolean = Scheduler.resume(schedulerDb, schedulerName)
 
   private def runNextTodistus(_context: Option[JValue]): Option[JValue] = {
-      if (isTodistusWorker) {
-        try {
-          isRunning = true
-          if (todistusService.hasNext) {
-            todistusService.runNext()
-          }
-        } finally {
-          isRunning = false
-        }
+    if (isTodistusWorker) {
+      if (todistusService.hasNext) {
+        todistusService.runNext()
       }
-      None
+    }
+
+    None
   }
 
   private def workerInstances: Seq[KoskiInstance] = {

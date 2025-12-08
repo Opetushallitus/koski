@@ -43,7 +43,7 @@ class TodistusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers with Bef
   }
 
   override protected def afterEach(): Unit = {
-    Wait.until { !hasWork && !KoskiApplicationForTests.todistusScheduler.isRunning && !KoskiApplicationForTests.todistusCleanupScheduler.isRunning}
+    Wait.until { !hasWork }
     app.todistusRepository.truncateForLocal()
     AuditLogTester.clearMessages
   }
@@ -1780,7 +1780,6 @@ class TodistusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers with Bef
       app.todistusScheduler.pause(Duration.ofDays(1))
       app.todistusCleanupScheduler.pause(Duration.ofDays(1))
 
-      Wait.until { !KoskiApplicationForTests.todistusScheduler.isRunning && !KoskiApplicationForTests.todistusCleanupScheduler.isRunning}
       f
     } finally {
       if (truncate) {
