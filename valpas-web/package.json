@@ -49,8 +49,8 @@
     "@types/js-cookie": "^3.0.6",
     "@types/node": "^22.14.1",
     "@types/node-fetch": "^2.6.13",
-    "@types/react": "^19.1.2",
-    "@types/react-dom": "^19.1.2",
+    "@types/react": "^19.2.0",
+    "@types/react-dom": "^19.2.0",
     "@types/react-router-dom": "^5.3.3",
     "@types/react-test-renderer": "^19.1.0",
     "@types/selenium-webdriver": "^4.1.28",
@@ -90,18 +90,11 @@
     "date-fns": "^4.1.0",
     "downloadjs": "^1.4.7",
     "fp-ts": "^2.16.11",
-    "react": "^19.1.0",
+    "react": "^19.2.0",
     "react-calendar": "^6.0.0",
     "react-date-picker": "^11.0.0",
-<<<<<<< HEAD
-    "react-dom": "^19.1.0",
+    "react-dom": "^19.2.0",
     "react-router-dom": "^5.3.4",
     "regenerator-runtime": "^0.14.1"
-  },
-  "packageManager": "pnpm@10.2.0+sha512.0d27364e0139c6aadeed65ada153135e0ca96c8da42123bd50047f961339dc7a758fc2e944b428f52be570d1bd3372455c1c65fa2e7aa0bfbf931190f9552001"
-=======
-    "react-dom": "^19.1.1",
-    "react-router-dom": "^5.3.4"
   }
->>>>>>> 54e57bbca (fix: upgrade react-dom from 19.1.0 to 19.1.1)
 }
