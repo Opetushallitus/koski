@@ -19,6 +19,7 @@ class TodistusCleanupScheduler(application: KoskiApplication) extends Logging {
       new IntervalSchedule(application.config.getDuration("todistus.cleanupInterval")),
       None,
       runNext,
+      runOnSingleNode = true,
       intervalMillis = 1000
     ))
   }
