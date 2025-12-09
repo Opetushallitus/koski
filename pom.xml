@@ -229,9 +229,9 @@
       <version>3.2.1</version>
     </dependency>
     <dependency>
-      <groupId>com.github.a544jh</groupId>
+      <groupId>com.github.Opetushallitus</groupId>
       <artifactId>mojave</artifactId>
-      <version>scala-2.13-updates-SNAPSHOT</version>
+      <version>scala-2-13-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>org.scala-lang.modules</groupId>
