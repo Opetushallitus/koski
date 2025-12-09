@@ -44,6 +44,9 @@ class TodistusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers with Bef
 
   override protected def afterEach(): Unit = {
     Wait.until { !hasWork }
+    Wait.until(!app.todistusScheduler.schedulerInstance.exists(_.isTaskRunning))
+    Wait.until(!app.todistusCleanupScheduler.schedulerInstance.exists(_.isTaskRunning))
+
     app.todistusRepository.truncateForLocal()
     AuditLogTester.clearMessages
   }
@@ -1779,6 +1782,10 @@ class TodistusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers with Bef
 
       app.todistusScheduler.pause(Duration.ofDays(1))
       app.todistusCleanupScheduler.pause(Duration.ofDays(1))
+
+      // Wait for any running tasks to complete
+      Wait.until(!app.todistusScheduler.schedulerInstance.exists(_.isTaskRunning))
+      Wait.until(!app.todistusCleanupScheduler.schedulerInstance.exists(_.isTaskRunning))
 
       f
     } finally {

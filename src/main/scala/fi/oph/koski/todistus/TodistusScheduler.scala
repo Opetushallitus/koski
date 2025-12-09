@@ -16,7 +16,9 @@ class TodistusScheduler(application: KoskiApplication) extends Logging {
     todistusService.markAllMyJobsInterrupted()
   }
 
-  def scheduler: Option[Scheduler] = {
+  var schedulerInstance: Option[Scheduler] = None
+
+  def createScheduler: Option[Scheduler] = {
     val arn = application.ecsMetadata.taskARN
     val allInstances = application.ecsMetadata.currentlyRunningKoskiInstances
 
@@ -26,18 +28,20 @@ class TodistusScheduler(application: KoskiApplication) extends Logging {
       val workerId = application.todistusRepository.workerId
       logger.info(s"Starting as todistus worker (id: $workerId)")
 
-      Some(new Scheduler(
+      schedulerInstance = Some(new Scheduler(
         schedulerDb,
         schedulerName,
         new IntervalSchedule(application.config.getDuration("todistus.checkInterval")),
         None,
         runNextTodistus,
         runOnSingleNode = false,
-        intervalMillis = 1000
+        intervalMillis = 1000,
+        config = application.config
       ))
     } else {
-      None
+      schedulerInstance = None
     }
+    schedulerInstance
   }
 
   def pause(duration: Duration): Boolean = Scheduler.pauseForDuration(schedulerDb, schedulerName, duration)

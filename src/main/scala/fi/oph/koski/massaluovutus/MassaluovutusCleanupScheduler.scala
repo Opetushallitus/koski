@@ -16,7 +16,8 @@ class MassaluovutusCleanupScheduler(application: KoskiApplication) extends Loggi
       new IntervalSchedule(application.config.getDuration("kyselyt.cleanupInterval")),
       None,
       runNextQuery,
-      intervalMillis = 1000
+      intervalMillis = 1000,
+      config = application.config
     ))
   }
 

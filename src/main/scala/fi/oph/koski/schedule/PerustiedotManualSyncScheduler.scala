@@ -12,7 +12,8 @@ case class PerustiedotManualSyncScheduler(app: KoskiApplication) extends Timing 
     "perustiedot-manual-sync",
     new IntervalSchedule(Duration.ofMinutes(5)),
     None,
-    manualSyncAndLogErrors
+    manualSyncAndLogErrors,
+    config = app.config
   ))
 
   private def manualSyncAndLogErrors(options: Option[JValue]): Option[JValue] = timed("perustiedotManualSync", 500) {

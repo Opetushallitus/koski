@@ -6,6 +6,8 @@ import java.time.{Duration, LocalDateTime}
 import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit.MILLISECONDS
 
+import com.typesafe.config.Config
+import fi.oph.koski.config.Environment
 import fi.oph.koski.db.DB
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.db._
@@ -23,7 +25,8 @@ class Scheduler(
   initialContext: Option[JValue],
   task: Option[JValue] => Option[JValue],
   runOnSingleNode: Boolean = true,
-  intervalMillis: Int = 10000
+  intervalMillis: Int = 10000,
+  config: Config
 ) extends QueryMethods with Logging {
 
   private val taskExecutor = Executors.newSingleThreadScheduledExecutor(NamedThreadFactory(name))
@@ -43,6 +46,11 @@ class Scheduler(
   taskExecutor.scheduleAtFixedRate(() => fireIfTime(), 0, intervalMillis, MILLISECONDS)
 
   def shutdown: Unit = taskExecutor.shutdown()
+
+  /** Returns true if task is currently running.
+   * For single-node schedulers: accurate across all nodes (uses database state).
+   * For multi-node schedulers: only tracks THIS node's local state - reliable only in tests with single node. */
+  def isTaskRunning: Boolean = firingStrategy.isTaskRunning
 
   private def fireIfTime() = {
     if (shouldFire) {
@@ -92,6 +100,10 @@ class Scheduler(
   trait FiringStrategy {
     def shouldFire: Boolean
     def endRun: Unit
+
+    /** Returns true if task is running. For FireOnSingleNode this is accurate across all nodes.
+     * For FireOnAllNodes this only tracks this node's local state - use only in tests with single node. */
+    def isTaskRunning: Boolean
   }
 
   class FireOnSingleNode extends FiringStrategy {
@@ -107,10 +119,13 @@ class Scheduler(
 
     override def endRun: Unit =
       runDbSync(KoskiTables.Scheduler.filter(_.name === name).map(_.status).update(ScheduledTaskStatus.scheduled))
+
+    override def isTaskRunning: Boolean = getScheduler.exists(_.running)
   }
 
   class FireOnAllNodes extends FiringStrategy {
     private var lastFired: Timestamp = new Timestamp(0)
+    private val runningTasksOnThisNode = new java.util.concurrent.atomic.AtomicInteger(0)
 
     override def shouldFire: Boolean = {
       val scheduler = getScheduler
@@ -122,12 +137,25 @@ class Scheduler(
         val shouldFire = now.after(nextFireTime)
         if (shouldFire) {
           lastFired = now
+          runningTasksOnThisNode.incrementAndGet()
         }
         shouldFire
       }
     }
 
-    override def endRun: Unit = ()
+    override def endRun: Unit = {
+      runningTasksOnThisNode.decrementAndGet()
+    }
+
+    override def isTaskRunning: Boolean = {
+      if (!Environment.isUnitTestEnvironment(config)) {
+        throw new UnsupportedOperationException(
+          s"isTaskRunning is not reliable for multi-node schedulers in production. " +
+          s"It only tracks this node's local state. Use only in tests with single node."
+        )
+      }
+      runningTasksOnThisNode.get() > 0
+    }
   }
 }
 

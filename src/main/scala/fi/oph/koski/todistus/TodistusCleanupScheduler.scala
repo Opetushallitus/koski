@@ -12,16 +12,20 @@ class TodistusCleanupScheduler(application: KoskiApplication) extends Logging {
   val schedulerDb = application.masterDatabase.db
   val todistusService = application.todistusService
 
-  def scheduler: Option[Scheduler] = {
-    Some(new Scheduler(
+  var schedulerInstance: Option[Scheduler] = None
+
+  def createScheduler: Option[Scheduler] = {
+    schedulerInstance = Some(new Scheduler(
       schedulerDb,
       schedulerName,
       new IntervalSchedule(application.config.getDuration("todistus.cleanupInterval")),
       None,
       runNext,
       runOnSingleNode = true,
-      intervalMillis = 1000
+      intervalMillis = 1000,
+      config = application.config
     ))
+    schedulerInstance
   }
 
   def pause(duration: Duration): Boolean = Scheduler.pauseForDuration(schedulerDb, schedulerName, duration)
