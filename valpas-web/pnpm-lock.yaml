@@ -30,13 +30,8 @@ importers:
         specifier: ^6.0.0
         version: 6.0.0(@types/react@19.2.7)(react-dom@19.2.1(react@19.2.1))(react@19.2.1)
       react-date-picker:
-<<<<<<< HEAD
-        specifier: ^11.0.0
-        version: 11.0.0(@types/react-dom@19.2.3(@types/react@19.2.7))(@types/react@19.2.7)(react-dom@19.2.1(react@19.2.1))(react@19.2.1)
-=======
         specifier: ^12.0.1
-        version: 12.0.1(@types/react@19.1.2)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
->>>>>>> 8e81fb835 (Bump react-date-picker from 11.0.0 to 12.0.1 in /valpas-web)
+        version: 12.0.1(@types/react@19.2.7)(react-dom@19.2.1(react@19.2.1))(react@19.2.1)
       react-dom:
         specifier: ^19.2.0
         version: 19.2.1(react@19.2.1)
@@ -7385,22 +7380,7 @@ snapshots:
       iconv-lite: 0.4.24
       unpipe: 1.0.0
 
-<<<<<<< HEAD
-  react-calendar@5.1.0(@types/react@19.2.7)(react-dom@19.2.1(react@19.2.1))(react@19.2.1):
-    dependencies:
-      '@wojtekmaj/date-utils': 1.5.1
-      clsx: 2.1.1
-      get-user-locale: 2.3.2
-      react: 19.2.1
-      react-dom: 19.2.1(react@19.2.1)
-      warning: 4.0.3
-    optionalDependencies:
-      '@types/react': 19.2.7
-
   react-calendar@6.0.0(@types/react@19.2.7)(react-dom@19.2.1(react@19.2.1))(react@19.2.1):
-=======
-  react-calendar@6.0.0(@types/react@19.1.2)(react-dom@19.1.0(react@19.1.0))(react@19.1.0):
->>>>>>> 8e81fb835 (Bump react-date-picker from 11.0.0 to 12.0.1 in /valpas-web)
     dependencies:
       '@wojtekmaj/date-utils': 2.0.2
       clsx: 2.1.1
@@ -7411,63 +7391,33 @@ snapshots:
     optionalDependencies:
       '@types/react': 19.2.7
 
-<<<<<<< HEAD
-  react-date-picker@11.0.0(@types/react-dom@19.2.3(@types/react@19.2.7))(@types/react@19.2.7)(react-dom@19.2.1(react@19.2.1))(react@19.2.1):
-=======
-  react-date-picker@12.0.1(@types/react@19.1.2)(react-dom@19.1.0(react@19.1.0))(react@19.1.0):
->>>>>>> 8e81fb835 (Bump react-date-picker from 11.0.0 to 12.0.1 in /valpas-web)
+  react-date-picker@12.0.1(@types/react@19.2.7)(react-dom@19.2.1(react@19.2.1))(react@19.2.1):
     dependencies:
       '@wojtekmaj/date-utils': 2.0.2
       clsx: 2.1.1
-<<<<<<< HEAD
-      get-user-locale: 2.3.2
-      make-event-props: 1.6.2
-      react: 19.2.1
-      react-calendar: 5.1.0(@types/react@19.2.7)(react-dom@19.2.1(react@19.2.1))(react@19.2.1)
-      react-dom: 19.2.1(react@19.2.1)
-      react-fit: 2.0.1(@types/react-dom@19.2.3(@types/react@19.2.7))(@types/react@19.2.7)(react-dom@19.2.1(react@19.2.1))(react@19.2.1)
-      update-input-width: 1.4.2
-    optionalDependencies:
-      '@types/react': 19.2.7
-    transitivePeerDependencies:
-      - '@types/react-dom'
-=======
       get-user-locale: 3.0.0
       make-event-props: 2.0.0
-      react: 19.1.0
-      react-calendar: 6.0.0(@types/react@19.1.2)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
-      react-dom: 19.1.0(react@19.1.0)
-      react-fit: 3.0.0(@types/react@19.1.2)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+      react: 19.2.1
+      react-calendar: 6.0.0(@types/react@19.2.7)(react-dom@19.2.1(react@19.2.1))(react@19.2.1)
+      react-dom: 19.2.1(react@19.2.1)
+      react-fit: 3.0.0(@types/react@19.2.7)(react-dom@19.2.1(react@19.2.1))(react@19.2.1)
       update-input-width: 1.4.2
     optionalDependencies:
-      '@types/react': 19.1.2
->>>>>>> 8e81fb835 (Bump react-date-picker from 11.0.0 to 12.0.1 in /valpas-web)
+      '@types/react': 19.2.7
 
   react-dom@19.2.1(react@19.2.1):
     dependencies:
       react: 19.2.1
       scheduler: 0.27.0
 
-<<<<<<< HEAD
-  react-fit@2.0.1(@types/react-dom@19.2.3(@types/react@19.2.7))(@types/react@19.2.7)(react-dom@19.2.1(react@19.2.1))(react@19.2.1):
+  react-fit@3.0.0(@types/react@19.2.7)(react-dom@19.2.1(react@19.2.1))(react@19.2.1):
     dependencies:
-      detect-element-overflow: 1.4.2
+      detect-element-overflow: 2.0.0
       react: 19.2.1
       react-dom: 19.2.1(react@19.2.1)
       warning: 4.0.3
     optionalDependencies:
       '@types/react': 19.2.7
-      '@types/react-dom': 19.2.3(@types/react@19.2.7)
-=======
-  react-fit@3.0.0(@types/react@19.1.2)(react-dom@19.1.0(react@19.1.0))(react@19.1.0):
-    dependencies:
-      detect-element-overflow: 2.0.0
-      react: 19.1.0
-      react-dom: 19.1.0(react@19.1.0)
-      warning: 4.0.3
-    optionalDependencies:
-      '@types/react': 19.1.2
->>>>>>> 8e81fb835 (Bump react-date-picker from 11.0.0 to 12.0.1 in /valpas-web)
 
   react-is@16.13.1: {}
 

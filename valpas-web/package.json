@@ -96,5 +96,8 @@
     "react-dom": "^19.2.0",
     "react-router-dom": "^5.3.4",
     "regenerator-runtime": "^0.14.1"
+  },
+  "alias": {
+    "memoize": "./node_modules/.pnpm/memoize@10.2.0/node_modules/memoize/distribution/index.js"
   }
 }
