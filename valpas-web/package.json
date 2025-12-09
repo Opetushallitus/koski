@@ -92,9 +92,12 @@
     "fp-ts": "^2.16.11",
     "react": "^19.2.0",
     "react-calendar": "^6.0.0",
-    "react-date-picker": "^11.0.0",
+    "react-date-picker": "^12.0.1",
     "react-dom": "^19.2.0",
     "react-router-dom": "^5.3.4",
     "regenerator-runtime": "^0.14.1"
+  },
+  "alias": {
+    "memoize": "./node_modules/.pnpm/memoize@10.2.0/node_modules/memoize/distribution/index.js"
   }
 }
