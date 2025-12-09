@@ -25,7 +25,8 @@ class UpdateHenkilotTask(application: KoskiApplication) extends Timing {
         "henkilötiedot-update",
         new IntervalSchedule(application.config.getDuration("schedule.henkilötiedotUpdateInterval")),
         henkilöUpdateContext(currentTimeMillis - backBufferMs),
-        updateHenkilöt(refresh = false)
+        updateHenkilöt(refresh = false),
+        config = application.config
       ))
     }
 

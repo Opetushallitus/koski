@@ -1,6 +1,8 @@
 package fi.oph.koski.todistus.yleinenkielitutkinto
 
+import fi.oph.koski.schema.{KielitutkinnonOpiskeluoikeus, Opiskeluoikeus}
 import fi.oph.koski.todistus.pdfgenerator.TodistusData
+
 import scala.jdk.CollectionConverters._
 
 case class YleinenKielitutkintoTodistusData(
@@ -12,7 +14,8 @@ case class YleinenKielitutkintoTodistusData(
   tasonArvosanarajat: String,
   järjestäjäNimi: String,
   allekirjoitusPäivämäärä: String,
-  vahvistusViimeinenPäivämäärä: String
+  vahvistusViimeinenPäivämäärä: String,
+  siistittyOo: KielitutkinnonOpiskeluoikeus
  ) extends TodistusData {
 
   def toTemplateVariables: Map[String, Object] = Map(

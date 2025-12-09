@@ -451,7 +451,7 @@
             <column ascending="true" name="tila"/>
          </index>
       </table>
-      <table name="r_oppivelvollisuudesta_vapautus" numRows="1" remarks="" schema="public" type="TABLE">
+      <table name="r_oppivelvollisuudesta_vapautus" numRows="0" remarks="" schema="public" type="TABLE">
          <column autoUpdated="false" defaultValue="null" digits="0" id="0" name="oppija_oid" nullable="false" remarks="" size="2147483647" type="varchar" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="6" id="1" name="vapautettu" nullable="false" remarks="" size="29" type="timestamp" typeCode="93"/>
          <primaryKey column="oppija_oid" sequenceNumberInPK="1"/>

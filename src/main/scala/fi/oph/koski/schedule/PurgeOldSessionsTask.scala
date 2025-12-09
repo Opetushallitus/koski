@@ -12,7 +12,8 @@ class PurgeOldSessionsTask(app: KoskiApplication) extends Timing {
     "purge-old-sessions",
     new IntervalSchedule(Duration.ofHours(3)),
     None,
-    tryRun
+    tryRun,
+    config = app.config
   ))
 
   private def tryRun(unused: Option[JValue]) = timed("purgeOldSessions") {

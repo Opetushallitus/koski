@@ -63,27 +63,53 @@ object ExamplesKielitutkinto {
           myöntäjäOrganisaatio = OidOrganisaatio(MockOrganisaatiot.helsinginKaupunki),
         )),
         osasuoritukset = Some(List(
-          tutkinnonOsa("tekstinymmartaminen", s"$arvosana", arviointipäivä),
-          tutkinnonOsa("kirjoittaminen", s"alle$arvosana", arviointipäivä),
-          tutkinnonOsa("puheenymmartaminen", s"${arvosana + 1}", arviointipäivä),
-          tutkinnonOsa("puhuminen", s"$arvosana", arviointipäivä),
+          tutkinnonOsaMonellaArvioinnilla("tekstinymmartaminen", arvosana, s"$arvosana", arviointipäivä),
+          tutkinnonOsaMonellaArvioinnilla("kirjoittaminen", arvosana, s"alle$arvosana", arviointipäivä),
+          tutkinnonOsaMonellaArvioinnilla("puheenymmartaminen", arvosana, s"${arvosana + 1}", arviointipäivä),
+          tutkinnonOsaMonellaArvioinnilla("puhuminen", arvosana, s"$arvosana", arviointipäivä),
         )),
         yleisarvosana = if (arviointipäivä.isBefore(LocalDate.of(2012, 1, 1))) Some(Koodistokoodiviite(s"$arvosana", "ykiarvosana")) else None,
       )
     }
 
-    def tutkinnonOsa(tyyppi: String, arvosana: String, arviointiPäivä: LocalDate): YleisenKielitutkinnonOsakokeenSuoritus =
+    def tutkinnonOsaMonellaArvioinnilla(tyyppi: String, arvosana: Int, uusinArvosana: String, arviointiPäivä: LocalDate): YleisenKielitutkinnonOsakokeenSuoritus = {
+      val arvioinnit = List(
+        (s"alle${arvosana}", arviointiPäivä.minusDays(1)),
+        (s"${arvosana}", arviointiPäivä.plusDays(1)),
+        (uusinArvosana, arviointiPäivä.plusDays(2)),
+        (s"${arvosana + 1}", arviointiPäivä),
+      ).map {
+        case (arvosana, päivä) => YleisenKielitutkinnonOsakokeenArviointi(
+          arvosana = Koodistokoodiviite(arvosana, "ykiarvosana"),
+          päivä = päivä,
+        )
+      }
+
       YleisenKielitutkinnonOsakokeenSuoritus(
         koulutusmoduuli = YleisenKielitutkinnonOsakoe(
           tunniste = Koodistokoodiviite(tyyppi, "ykisuorituksenosa"),
         ),
-        arviointi = Some(List(
-          YleisenKielitutkinnonOsakokeenArviointi(
-            arvosana = Koodistokoodiviite(arvosana, "ykiarvosana"),
-            päivä = arviointiPäivä,
-          )
-        ))
+        arviointi = Some(arvioinnit)
       )
+    }
+  }
+
+  def tutkinnonOsa(tyyppi: String, arvosana: String, arviointiPäivä: LocalDate): YleisenKielitutkinnonOsakokeenSuoritus = {
+    val arvioinnit = List(
+      (arvosana, arviointiPäivä)
+    ).map {
+      case (arvosana, päivä) => YleisenKielitutkinnonOsakokeenArviointi(
+        arvosana = Koodistokoodiviite(arvosana, "ykiarvosana"),
+        päivä = päivä,
+      )
+    }
+
+    YleisenKielitutkinnonOsakokeenSuoritus(
+      koulutusmoduuli = YleisenKielitutkinnonOsakoe(
+        tunniste = Koodistokoodiviite(tyyppi, "ykisuorituksenosa"),
+      ),
+      arviointi = Some(arvioinnit)
+    )
   }
 
   object ValtionhallinnonKielitutkinnot {

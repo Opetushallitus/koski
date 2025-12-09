@@ -37,7 +37,8 @@ class MassaluovutusScheduler(application: KoskiApplication) extends Logging {
         None,
         runNextQuery,
         runOnSingleNode = false,
-        intervalMillis = 1000
+        intervalMillis = 1000,
+        config = application.config
       ))
     } else {
       None

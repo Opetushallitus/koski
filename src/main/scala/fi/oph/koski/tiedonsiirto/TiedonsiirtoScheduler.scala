@@ -15,7 +15,8 @@ class TiedonsiirtoScheduler(db: DB, config: Config, tiedonsiirtoService: Tiedons
       None,
       syncTiedonsiirrot,
       runOnSingleNode = false,
-      intervalMillis = 1000
+      intervalMillis = 1000,
+      config = config
     )
 
   def syncTiedonsiirrot(ctx: Option[JValue]): Option[JValue] = {

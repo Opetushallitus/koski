@@ -5,24 +5,33 @@ import fi.oph.koski.documentation.ExamplesKielitutkinto
 import fi.oph.koski.henkilo.{KoskiSpecificMockOppijat, OppijaHenkilö}
 import fi.oph.koski.koskiuser.MockUsers
 import fi.oph.koski.log.{AuditLogTester, KoskiAuditLogMessageField, KoskiOperation}
-import fi.oph.koski.schema.{KielitutkinnonOpiskeluoikeus, Opiskeluoikeus, Suoritus, YleisenKielitutkinnonSuoritus}
+import fi.oph.koski.schema.{KielitutkinnonOpiskeluoikeus, Opiskeluoikeus, Suoritus, YleisenKielitutkinnonOsakokeenSuoritus, YleisenKielitutkinnonSuoritus}
 import fi.oph.koski.schema.KoskiSchema.strictDeserialization
 import fi.oph.koski.util.Wait
 import fi.oph.koski.{KoskiApplicationForTests, KoskiHttpSpec}
 import org.apache.pdfbox.Loader
 import org.apache.pdfbox.pdmodel.PDDocument
 import org.apache.pdfbox.text.PDFTextStripper
+import org.json4s.DefaultFormats
 import org.json4s.jackson.JsonMethods
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.{BeforeAndAfterAll, BeforeAndAfterEach}
+import org.verapdf.core.{VeraPDFException, ValidationException}
+import org.verapdf.gf.foundry.VeraGreenfieldFoundryProvider
+import org.verapdf.pdfa.flavours.PDFAFlavour
+import org.verapdf.pdfa.{PDFAParser, PDFAValidator, Foundries}
 
 import java.net.URL
 import java.security.MessageDigest
 import java.time.{Duration, LocalDate, LocalDateTime}
 
+import scala.jdk.CollectionConverters._
+
 class TodistusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers with BeforeAndAfterAll with BeforeAndAfterEach with PutOpiskeluoikeusTestMethods[KielitutkinnonOpiskeluoikeus] {
   def tag = implicitly[reflect.runtime.universe.TypeTag[KielitutkinnonOpiskeluoikeus]]
+
+  implicit val formats = DefaultFormats
 
   val app = KoskiApplicationForTests
 
@@ -34,7 +43,10 @@ class TodistusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers with Bef
   }
 
   override protected def afterEach(): Unit = {
-    Wait.until { !hasWork && !KoskiApplicationForTests.todistusScheduler.isRunning && !KoskiApplicationForTests.todistusCleanupScheduler.isRunning}
+    Wait.until { !hasWork }
+    Wait.until(!app.todistusScheduler.schedulerInstance.exists(_.isTaskRunning))
+    Wait.until(!app.todistusCleanupScheduler.schedulerInstance.exists(_.isTaskRunning))
+
     app.todistusRepository.truncateForLocal()
     AuditLogTester.clearMessages
   }
@@ -430,20 +442,108 @@ class TodistusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers with Bef
       info.getCustomMetadataValue("TodistusJobId") should equal(todistusJob.id)
       info.getCustomMetadataValue("OpiskeluoikeusVersionumero") should equal(opiskeluoikeus.versionumero.get.toString)
 
+      info.getTitle should equal("Todistus")
+      info.getSubject should equal("Todistus yleisen kielitutkinnon suorittamisesta")
+      info.getAuthor should equal("Opetushallitus")
+      // TODO: TOR-2400: Keywords ei toimi Acrobat:ssa, vaikka tässä toimii, ja samoin esim. Chromen PDF viewerissä.
+      // Jotenkin littyy siihen, miten/mihin keywordsit PDF:ssä on tallennettu.
+      info.getKeywords should equal("todistus, yleinen kielitutkinto")
+
       val generointiStartedAt = info.getCustomMetadataValue("GenerointiStartedAt")
       withClue(s"GenerointiStartedAt-metadatassa virhe. Saatu: $generointiStartedAt ") {
         generointiStartedAt should not be null
         generointiStartedAt should not be empty
       }
 
-      val expectedCommitHash = "unknown"
-      info.getCustomMetadataValue("CommitHash") should equal(expectedCommitHash)
+      val expectedCommitHash = "local"
+      val commitHash = info.getCustomMetadataValue("CommitHash")
+      withClue(s"CommitHash-metadatassa virhe. Saatu: $commitHash ") {
+        commitHash should (equal(expectedCommitHash) or fullyMatch regex "[0-9a-f]{7,40}")
+      }
 
       val producer = info.getProducer
       withClue(s"Producer-kentässä virhe. Saatu: $producer ") {
         producer should include("Koski")
         producer should include("commit:")
-        producer should include(expectedCommitHash)
+        producer should include(commitHash)
+      }
+
+      val opiskeluoikeusJson = info.getCustomMetadataValue("OpiskeluoikeusJson")
+      withClue(s"OpiskeluoikeusJson-metadatassa virhe. Saatu: $opiskeluoikeusJson ") {
+        opiskeluoikeusJson should not be null
+        opiskeluoikeusJson should not be empty
+
+        // Varmista että JSON on validi ja deserialisoituu takaisin Opiskeluoikeus-objektiksi
+        val parsedJson = JsonMethods.parse(opiskeluoikeusJson)
+        val deserializedOpiskeluoikeus = KoskiApplicationForTests.validatingAndResolvingExtractor.extract[Opiskeluoikeus](parsedJson, strictDeserialization)
+
+        deserializedOpiskeluoikeus match {
+          case Right(extractedOpiskeluoikeus) =>
+            extractedOpiskeluoikeus.oid should equal(opiskeluoikeus.oid)
+            extractedOpiskeluoikeus.versionumero should equal(opiskeluoikeus.versionumero)
+            extractedOpiskeluoikeus.suoritukset.flatMap(_.osasuoritusLista).foreach {
+              case os: YleisenKielitutkinnonOsakokeenSuoritus =>
+                os.arviointi.toList.flatten.size should be(1)
+              case _ =>
+                fail
+            }
+          case Left(error) =>
+            fail(s"Opiskeluoikeuden deserialisointi epäonnistui: ${error.toString}")
+        }
+      }
+    }
+
+    def verifyPdfUaAccessibility(pdfBytes: Array[Byte]): Unit = {
+      VeraGreenfieldFoundryProvider.initialise()
+
+      val flavoursToValidate = Seq(
+        PDFAFlavour.PDFUA_1,    // PDF/UA-1, minkä täyttävän PDF:n openhtmltopdf luo. PDF/UA-2 ei mene läpi.
+        // PDFAFlavour.WCAG_2_1    // WCAG 2.1, tämä on EU-direktiiviein vaatima. VeraPDF:n tuki on kuitenkin ilmeisesti tälle vielä jotain experimental-koodia,.
+      )
+
+      flavoursToValidate.foreach { flavour =>
+        println(s"DEBUG: Validating flavour $flavour")
+
+        val inputStream = new java.io.ByteArrayInputStream(pdfBytes)
+
+        try {
+          val parser: PDFAParser = Foundries.defaultInstance().createParser(inputStream, flavour)
+
+          try {
+            val validator: PDFAValidator = Foundries.defaultInstance().createValidator(flavour, false)
+            val results = validator.validateAll(parser).asScala
+
+            results.foreach { result =>
+              val isCompliant = result.isCompliant
+              val totalAssertions = result.getTotalAssertions
+              val failedAssertions = result.getTestAssertions.asScala.filter(_.getStatus.toString != "PASSED")
+
+              totalAssertions should be > 3000
+
+              println(s"DEBUG: Flavour $flavour - Compliant: $isCompliant, Total assertions: $totalAssertions, Failed: ${failedAssertions.size}")
+
+              if (!isCompliant && failedAssertions.nonEmpty) {
+                println(s"DEBUG: Ensimmäiset 5 virhettä flavourille $flavour:")
+                failedAssertions.take(5).foreach { assertion =>
+                  println(s"  - ${assertion.getRuleId}: ${assertion.getMessage}")
+                }
+              }
+
+              withClue(s"PDF ei ole ${flavour}-standardin mukainen. Epäonnistuneita tarkistuksia: ${failedAssertions.size}/${totalAssertions}. Ensimmäiset virheet: ${failedAssertions.take(3).map(a => s"${a.getRuleId.getClause}: ${a.getMessage}").mkString("; ")}. ") {
+                isCompliant should be(true)
+              }
+            }
+          } finally {
+            parser.close()
+          }
+        } catch {
+          case e: VeraPDFException =>
+            fail(s"PDF-validointi epäonnistui flavourille $flavour: ${e.getMessage}", e)
+          case e: ValidationException =>
+            fail(s"PDF-validointi epäonnistui flavourille $flavour: ${e.getMessage}", e)
+        } finally {
+          inputStream.close()
+        }
       }
     }
 
@@ -506,6 +606,7 @@ class TodistusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers with Bef
       verifyTodistusFontit(document)
       verifyTodistusSivumaara(document, 2)
       verifyTodistusMetadata(document, completedJob, opiskeluoikeus.get)
+      verifyPdfUaAccessibility(pdfBytes)
 
       // Varmista että Content-Type on oikea
       response.header("Content-Type") should include("application/pdf")
@@ -532,6 +633,7 @@ class TodistusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers with Bef
       verifyTodistusFontit(document)
       verifyTodistusSivumaara(document, 2)
       verifyTodistusMetadata(document, completedJob, opiskeluoikeus.get)
+      verifyPdfUaAccessibility(pdfBytes)
 
       // TODO: TOR-2400: validoi todistus jollain paikallisella validaattorilla, ja katso, että sisältää kaiken long-term -validointia tukevan
 
@@ -1681,7 +1783,10 @@ class TodistusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers with Bef
       app.todistusScheduler.pause(Duration.ofDays(1))
       app.todistusCleanupScheduler.pause(Duration.ofDays(1))
 
-      Wait.until { !KoskiApplicationForTests.todistusScheduler.isRunning && !KoskiApplicationForTests.todistusCleanupScheduler.isRunning}
+      // Wait for any running tasks to complete
+      Wait.until(!app.todistusScheduler.schedulerInstance.exists(_.isTaskRunning))
+      Wait.until(!app.todistusCleanupScheduler.schedulerInstance.exists(_.isTaskRunning))
+
       f
     } finally {
       if (truncate) {

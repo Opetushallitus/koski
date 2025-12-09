@@ -4,6 +4,7 @@ import fi.oph.koski.config.{Environment, KoskiApplication, KoskiInstance}
 import fi.oph.koski.db.KoskiOpiskeluoikeusRow
 import fi.oph.koski.henkilo.{KoskiSpecificMockOppijat, OppijaHenkilö}
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
+import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.koskiuser.KoskiSpecificSession
 import fi.oph.koski.koskiuser.Rooli.OPHPAAKAYTTAJA
 import fi.oph.koski.log.Logging
@@ -33,7 +34,7 @@ class TodistusService(application: KoskiApplication) extends Logging with Timing
 
   private val expirationDuration = application.config.getDuration("todistus.expirationDuration")
 
-  private val commitHash: String = getBuildVersion.getOrElse("unknown")
+  private val commitHash: String = getBuildVersion.getOrElse("local")
 
   def currentStatus(req: TodistusIdRequest)(implicit user: KoskiSpecificSession): Either[HttpStatus, TodistusJob] = {
     if (user.hasRole(OPHPAAKAYTTAJA)) {
@@ -282,7 +283,7 @@ class TodistusService(application: KoskiApplication) extends Logging with Timing
               for {
                 // TODO: TOR-2400: Tallenna myös HTML S3:een, jotta sitä voi renderöidä helposti suoraan selaimessa debuggaukseen
                 todistusData <- createTodistusData(oppijanHenkilö, opiskeluoikeus, todistus)
-                metadata <- createTodistusMetaData(opiskeluoikeus, todistus)
+                metadata <- createTodistusMetaData(todistusData.siistittyOo, todistus)
                 pdfBytes <- TryWithLogging(logger, {
                   pdfGenerator.generatePdf(todistusData, metadata)
                 }).left.map(t => KoskiErrorCategory.internalError(s"PDF:n generointi epäonnistui todistukselle ${todistus.id}: ${t.getMessage}"))
@@ -438,8 +439,8 @@ class TodistusService(application: KoskiApplication) extends Logging with Timing
     opiskeluoikeus match {
       case ktOo: KielitutkinnonOpiskeluoikeus =>
         ktOo.suoritukset.find(_.isInstanceOf[YleisenKielitutkinnonSuoritus]) match {
-          case Some(suoritus: YleisenKielitutkinnonSuoritus) =>
-            yleinenKielitutkintoTodistusDataBuilder.createTodistusData(oppijanHenkilö, ktOo, suoritus, todistus)
+          case Some(_: YleisenKielitutkinnonSuoritus) =>
+            yleinenKielitutkintoTodistusDataBuilder.createTodistusData(oppijanHenkilö, ktOo, todistus)
           case _ =>
             Left(KoskiErrorCategory.internalError(s"Yleisen kielitutkinnon suoritusta ei löytynyt todistukselle ${todistus.id}"))
         }
@@ -452,13 +453,15 @@ class TodistusService(application: KoskiApplication) extends Logging with Timing
     for {
       versionumero <- opiskeluoikeus.versionumero.toRight(KoskiErrorCategory.internalError("Versionumero puuttuu"))
       generointiStartedAt <- todistus.startedAt.toRight(KoskiErrorCategory.internalError("Aloitusaika puuttuu"))
+      opiskeluoikeusJson = JsonSerializer.writeWithRoot(opiskeluoikeus, pretty = false)
     } yield TodistusMetadata(
       oppijaOid = todistus.oppijaOid,
       opiskeluoikeusOid = todistus.opiskeluoikeusOid,
       opiskeluoikeusVersionumero = versionumero,
       todistusJobId = todistus.id,
       generointiStartedAt = generointiStartedAt.toString,
-      commitHash = commitHash
+      commitHash = commitHash,
+      opiskeluoikeusJson = opiskeluoikeusJson
     )
   }
 
@@ -467,7 +470,7 @@ class TodistusService(application: KoskiApplication) extends Logging with Timing
       val props = new Properties()
       props.load(stream)
       stream.close()
-      Option(props.getProperty("vcsRevision", null))
+      Option(props.getProperty("version", null))
     }
   }
 }

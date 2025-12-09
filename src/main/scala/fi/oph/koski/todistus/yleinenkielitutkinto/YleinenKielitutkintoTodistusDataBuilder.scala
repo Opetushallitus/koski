@@ -11,7 +11,6 @@ import fi.oph.koski.util.DateOrdering.localDateOptionOrdering
 import java.time.LocalDate
 
 class YleinenKielitutkintoTodistusDataBuilder(application: KoskiApplication) {
-
   private def osasuoritustenJärjestysKoulutusmoduulinTunnisteilla: List[String] = List(
     "puheenymmartaminen",
     "puhuminen",
@@ -23,11 +22,13 @@ class YleinenKielitutkintoTodistusDataBuilder(application: KoskiApplication) {
   def createTodistusData(
     oppijanHenkilö: OppijaHenkilö,
     ktOo: KielitutkinnonOpiskeluoikeus,
-    yleinenKtSuoritus: YleisenKielitutkinnonSuoritus,
     todistus: TodistusJob
   ): Either[HttpStatus, TodistusData] = {
 
     for {
+      siistittyOo <- poistaArvioimattomatOsasuorituksetJaVanhatArvioinnit(ktOo, todistus)
+      yleinenKtSuoritus = siistittyOo.suoritukset.head.asInstanceOf[YleisenKielitutkinnonSuoritus]
+
       // TODO: TOR-2400: On vielä avoinna, mitä nimeä halutaan käytettävän
       etunimiTodistuksella <- if (oppijanHenkilö.kutsumanimi.nonEmpty) {
         Right(oppijanHenkilö.kutsumanimi)
@@ -62,7 +63,6 @@ class YleinenKielitutkintoTodistusDataBuilder(application: KoskiApplication) {
       allekirjoitusPäivämäärä = formatSignatureDate(ensimmäisenLäsnäTilanAlkupäivä, todistus.language)
 
       vahvistusViimeinenPäivämäärä = formatVahvistusViimeinenPaivamaaraDate(todistus.createdAt.toLocalDate.plusDays(application.config.getLong("todistus.allekirjoituksenVoimassaolonKestoInDays")), todistus.language)
-
     } yield {
       YleinenKielitutkintoTodistusData(
         templateName = s"kielitutkinto_yleinenkielitutkinto_${todistus.language}",
@@ -73,9 +73,31 @@ class YleinenKielitutkintoTodistusDataBuilder(application: KoskiApplication) {
         tasonArvosanarajat = tasonArvosanarajat,
         järjestäjäNimi = järjestäjäNimi,
         allekirjoitusPäivämäärä = allekirjoitusPäivämäärä,
-        vahvistusViimeinenPäivämäärä = vahvistusViimeinenPäivämäärä
+        vahvistusViimeinenPäivämäärä = vahvistusViimeinenPäivämäärä,
+        siistittyOo = siistittyOo
       )
     }
+  }
+
+  private def poistaArvioimattomatOsasuorituksetJaVanhatArvioinnit(
+    ktOo: KielitutkinnonOpiskeluoikeus,
+    todistus: TodistusJob
+  ): Either[HttpStatus,KielitutkinnonOpiskeluoikeus] = {
+    val yleinenKtSuoritus = ktOo.suoritukset.head.asInstanceOf[YleisenKielitutkinnonSuoritus]
+
+    val uudetOsasuoritukset = yleinenKtSuoritus.osasuoritukset.toList.flatMap(_.flatMap(os => {
+      val viimeisinArvosana = os.arviointi.toList.flatten
+        .sortBy(_.arviointipäivä)(localDateOptionOrdering).reverse
+        .headOption
+
+      viimeisinArvosana.map(arvosana => os.copy(arviointi = Some(List(arvosana))))
+    }))
+
+    Either.cond(
+      uudetOsasuoritukset.nonEmpty,
+      ktOo.copy(suoritukset = List(yleinenKtSuoritus.copy(osasuoritukset = Some(uudetOsasuoritukset)))),
+      KoskiErrorCategory.internalError(s"Opiskeluoikeudella ${ktOo.oid.getOrElse("NONE")} ei ole yhtään arvioitua osasuoritusta ${todistus.id}")
+    )
   }
 
   private def formatTutkinnonNimi(tutkinto: YleinenKielitutkinto, language: String): Either[HttpStatus, String] = {
@@ -101,7 +123,6 @@ class YleinenKielitutkintoTodistusDataBuilder(application: KoskiApplication) {
         .map { osasuoritus =>
           val suoritus = osasuoritus.koulutusmoduuli.tunniste.getNimi.map(_.get(todistus.language)).getOrElse("")
           val arvosanaOption = osasuoritus.arviointi.toList.flatten
-            .sortBy(_.arviointipäivä)(localDateOptionOrdering).reverse
             .headOption
             .flatMap(_.arvosana.getNimi.map(_.get(todistus.language)))
 
