@@ -14,6 +14,7 @@ export type YlioppilastutkinnonKokeenSuoritus = {
   arviointi?: Array<YlioppilaskokeenArviointi>
   tyyppi: Koodistokoodiviite<'suorituksentyyppi', 'ylioppilastutkinnonkoe'>
   tila?: Koodistokoodiviite<'suorituksentila', string>
+  suoritusMukanaTodistuksella?: boolean
   keskeytynyt?: boolean
   tutkintokerta: YlioppilastutkinnonTutkintokerta
   koulutusmoduuli: YlioppilasTutkinnonKoe
@@ -25,6 +26,7 @@ export const YlioppilastutkinnonKokeenSuoritus = (o: {
   arviointi?: Array<YlioppilaskokeenArviointi>
   tyyppi?: Koodistokoodiviite<'suorituksentyyppi', 'ylioppilastutkinnonkoe'>
   tila?: Koodistokoodiviite<'suorituksentila', string>
+  suoritusMukanaTodistuksella?: boolean
   keskeytynyt?: boolean
   tutkintokerta: YlioppilastutkinnonTutkintokerta
   koulutusmoduuli: YlioppilasTutkinnonKoe

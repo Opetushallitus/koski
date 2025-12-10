@@ -1,6 +1,6 @@
 package fi.oph.koski.schema
 
-import fi.oph.koski.schema.annotation.{KoodistoKoodiarvo, KoodistoUri}
+import fi.oph.koski.schema.annotation.{Hidden, KoodistoKoodiarvo, KoodistoUri}
 import fi.oph.koski.util.DateOrdering.localDateOrdering
 import fi.oph.koski.util.OptionalLists
 import fi.oph.koski.ytr.YtrConversionUtils
@@ -130,7 +130,9 @@ case class YlioppilastutkinnonKokeenSuoritus(
   @Description("Toistaiseksi vain Kosken sisäisessä käytössä. Kertoo, onko kyseessä ylioppilastutkinnosta annetun lain (502/2019) 14 § tai 15 § mukaisesti keskeytetty koe.")
   keskeytynyt: Option[Boolean] = None,
   @Description("Toistaiseksi vain Kosken sisäisessä käytössä. Kertoo, onko kyseessä ylioppilastutkinnosta annetun lain (502/2019) 20 § mukaisesti koe, johon osallistumisesta ei peritä maksua.")
-  maksuton: Option[Boolean] = None
+  maksuton: Option[Boolean] = None,
+  @Hidden
+  suoritusMukanaTodistuksella: Option[Boolean] = None
 ) extends Vahvistukseton with DuplikaatitSallittu {
   override def viimeisinArviointi: Option[YlioppilaskokeenArviointi] = arviointi.toList.flatten.lastOption
 }
