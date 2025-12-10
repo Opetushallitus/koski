@@ -18,5 +18,6 @@ case class YtrExam(
   examId: String,
   grade: String,
   points: Option[Int],
-  copyOfExamPaper: Option[String] = None
+  copyOfExamPaper: Option[String] = None,
+  toCertificate: Option[Boolean] = None
 )
