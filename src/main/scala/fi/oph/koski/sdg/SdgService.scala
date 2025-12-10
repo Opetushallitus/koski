@@ -31,7 +31,7 @@ class SdgService(application: KoskiApplication) extends GlobalExecutionContext w
   )
     (implicit koskiSession: KoskiSpecificSession): Either[HttpStatus, SdgOppija] = {
 
-    val sdgOppija = opiskeluoikeusFacade.haeOpiskeluoikeudet(oppijaOid, SdgSchema.schemassaTuetutOpiskeluoikeustyypit, useDownloadedYtr = true)
+    val sdgOppija = opiskeluoikeusFacade.haeOpiskeluoikeudet(oppijaOid, SdgSchema.schemassaTuetutOpiskeluoikeustyypit, useDownloadedYtr = false)
       .map(rawOppija => SdgOppija(
         henkilö = SdgHenkilo.fromOppijaHenkilö(rawOppija.henkilö),
         opiskeluoikeudet = suodataPalautettavatSuoritukset(rawOppija.opiskeluoikeudet, queryParams)
@@ -50,6 +50,7 @@ class SdgService(application: KoskiApplication) extends GlobalExecutionContext w
         val suoritukset = opiskeluoikeus.suoritukset
           .filter(josYOTutkintoNiinVahvistettu)
           .filter(suoritus => !queryParams.onlyVahvistetut || suoritus.vahvistus.isDefined)
+          .map(josYOTutkintoNiinVainTodistuksellaOlevatKoesuoritukset)
           .map { suoritus =>
             if (queryParams.withOsasuoritukset) {
               suoritus
@@ -62,6 +63,17 @@ class SdgService(application: KoskiApplication) extends GlobalExecutionContext w
         opiskeluoikeus.withSuoritukset(suoritukset)
       }
       .filter(_.suoritukset.nonEmpty)
+  }
+
+  private def josYOTutkintoNiinVainTodistuksellaOlevatKoesuoritukset(s: Suoritus): Suoritus = {
+    s match {
+      case s: SdgYlioppilastutkinnonSuoritus =>
+        val filteredOsasuoritukset = s.osasuoritukset.map(_.filter { x =>
+          x.suoritusMukanaTodistuksella.forall(_ == true)
+        })
+        s.copy(osasuoritukset = filteredOsasuoritukset)
+      case _ => s
+    }
   }
 
   private def josYOTutkintoNiinVahvistettu(s: Suoritus): Boolean = {

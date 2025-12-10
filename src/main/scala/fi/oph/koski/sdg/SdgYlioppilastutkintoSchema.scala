@@ -85,11 +85,12 @@ case class SdgYlioppilastutkinnonOsasuoritus(
   arviointi: Option[List[schema.YlioppilaskokeenArviointi]],
   tyyppi: schema.Koodistokoodiviite,
   tutkintokerta: schema.YlioppilastutkinnonTutkintokerta,
+  suoritusMukanaTodistuksella: Option[Boolean]
 ) extends Osasuoritus
 
 object SdgYlioppilastutkinnonOsasuoritus {
   def fromKoskiSchema(k: schema.YlioppilastutkinnonKokeenSuoritus): SdgYlioppilastutkinnonOsasuoritus =
     SdgYlioppilastutkinnonOsasuoritus(
-      koulutusmoduuli = k.koulutusmoduuli, arviointi = k.arviointi, tyyppi = k.tyyppi, tutkintokerta = k.tutkintokerta)
+      koulutusmoduuli = k.koulutusmoduuli, arviointi = k.arviointi, tyyppi = k.tyyppi, tutkintokerta = k.tutkintokerta, suoritusMukanaTodistuksella = k.suoritusMukanaTodistuksella)
 }
 
