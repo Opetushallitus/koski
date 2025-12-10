@@ -80,6 +80,8 @@ const ScopeList = ({ scope }) => {
 const AcceptanceParagraphs = ({ durationInMin, clientId }) => {
   return (
     <div className="acceptance-paragraphs">
+      <PalveluntarjoajakohtainenKayttotarkoitusTeksti clientId={clientId} />
+
       <Paattymisajankohta durationInMin={durationInMin} />
       <p>
         <Text name="omadataoauth2_oma_opintopolku_linkin_esittely" />{' '}
@@ -119,6 +121,22 @@ const Paattymisajankohta = ({ durationInMin }) => {
       />
     </p>
   )
+}
+
+const PalveluntarjoajakohtainenKayttotarkoitusTeksti = ({ clientId }) => {
+  return Array.from({ length: 9 }, (x, i) => {
+    const paragraphId = `omadataoauth2_tekstikappale_kayttotarkoitus_${clientId}_${i + 1}`
+
+    if (tExists(paragraphId)) {
+      return (
+        <p key={paragraphId}>
+          <Text name={paragraphId} />
+        </p>
+      )
+    } else {
+      return null
+    }
+  })
 }
 
 const PalveluntarjoajakohtainenTeksti = ({ clientId }) => {
