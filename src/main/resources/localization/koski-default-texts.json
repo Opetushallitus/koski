@@ -1279,6 +1279,7 @@
   "omadataoauth2_tekstikappale_dvvdigilompakkopk_1": "Palveluntarjoaja käyttää tietojasi opintotietojesi tallentamiseen eurooppalaiseen identiteettilompakkoon.",
   "omadataoauth2_tekstikappale_dvvdigilompakkopk_2": "Kun suostumuksen voimassaolo on päättynyt tai peruutettu, Opetushallitus ei enää luovuta henkilötietojasi palveluntarjoajalle. Palveluntarjoajalla voi kuitenkin olla lainmukainen peruste käsitellä ja säilyttää tietojasi myös suostumuksen peruuttamisen jälkeen.",
   "omadataoauth2_tekstikappale_oauth2client_1": "Palveluntarjoaja käyttää tietojasi palvelun testaamiseen.",
+  "omadataoauth2_tekstikappale_kayttotarkoitus_oauth2client_1": "Palveluntarjoaja käyttää tietojasi palvelun testaamiseen.",
   "omadataoauth2_oma_opintopolku_linkin_esittely": "Voit halutessasi tarkistaa omat opiskeluoikeus- ja suoritustietosi myös Oma Opintopolku-sivustolla:",
   "omadataoauth2_oma_opintopolku_linkin_teksti": "https://opintopolku.fi/koski/omattiedot",
   "omadataoauth2_oma_opintopolku_linkki": "https://opintopolku.fi/koski/omattiedot",
