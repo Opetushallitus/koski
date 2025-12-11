@@ -16,12 +16,11 @@ trait ValpasMassaluovutusQueryParameters extends MassaluovutusQueryParameters wi
   def kuntaOid: String
 
   override def queryAllowed(application: KoskiApplication)(implicit user: Session): Boolean = user match {
-    case session: ValpasSession =>
+    case valpasSession: ValpasSession =>
       val kuntaOpt = getKuntaKoodiByKuntaOid(application, kuntaOid)
-      kuntaOpt.exists(kunta => {
-        val accessResolver = new ValpasAccessResolver
-        accessResolver.accessToKuntaOrg(kunta)(session)
-      })
+      val accessResolver = new ValpasAccessResolver
+      val hasAccess = accessResolver.accessToMassaluovutusrajapintaKuntaOrg(kuntaOid)(valpasSession)
+      kuntaOpt.nonEmpty && hasAccess
     case _ => false
   }
 

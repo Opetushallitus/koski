@@ -8,7 +8,7 @@ import fi.oph.koski.schema.KoskiSchema.strictDeserialization
 import fi.oph.koski.servlet.NoCache
 import fi.oph.koski.util.UuidUtils
 import fi.oph.koski.valpas.servlet.ValpasApiServlet
-import fi.oph.koski.valpas.valpasuser.RequiresValpasSession
+import fi.oph.koski.valpas.valpasuser.RequiresValpasMassaluovutusrajapintaSession
 import org.json4s.jackson.JsonMethods
 
 object ValpasMassaluovutusServletUrls {
@@ -18,7 +18,7 @@ object ValpasMassaluovutusServletUrls {
 }
 
 class ValpasMassaluovutusServlet(implicit val application: KoskiApplication)
-  extends ValpasApiServlet with RequiresValpasSession with JsonMethods with NoCache
+  extends ValpasApiServlet with RequiresValpasMassaluovutusrajapintaSession with JsonMethods with NoCache
 {
   val massaluovutukset: MassaluovutusService = application.massaluovutusService
   val rootUrl: String = application.config.getString("koski.root.url")

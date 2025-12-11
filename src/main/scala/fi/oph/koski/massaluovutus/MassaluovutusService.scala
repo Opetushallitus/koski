@@ -7,9 +7,10 @@ import fi.oph.koski.config.{KoskiApplication, KoskiInstance}
 import fi.oph.koski.executors.GlobalExecutionContext
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.json.SensitiveDataAllowed
-import fi.oph.koski.koskiuser.Session
+import fi.oph.koski.koskiuser.{KoskiSpecificSession, Session}
 import fi.oph.koski.log.Logging
 import fi.oph.koski.util.{Timeout, TryWithLogging}
+import fi.oph.koski.valpas.valpasuser.{ValpasRooli, ValpasSession}
 
 import java.time.format.DateTimeFormatter
 import java.time.{Duration, LocalDateTime}
@@ -35,7 +36,12 @@ class MassaluovutusService(application: KoskiApplication) extends GlobalExecutio
 
   def add(query: MassaluovutusQueryParameters)(implicit user: Session with SensitiveDataAllowed): Either[HttpStatus, Query] = {
     query.fillAndValidate.flatMap { query =>
-      queries.getExisting(query).fold {
+      val existing = user match {
+        case s: KoskiSpecificSession => queries.getExistingKoskiQuery(query)(s)
+        case s: ValpasSession => queries.getExistingValpasQuery(query)(s)
+      }
+
+      existing.fold {
         if (query.queryAllowed(application)) {
           Right[HttpStatus, Query](queries.add(query))
         } else {
@@ -47,10 +53,13 @@ class MassaluovutusService(application: KoskiApplication) extends GlobalExecutio
 
   def addRaw(query: Query): Query = queries.addRaw(query)
 
-  def get(id: UUID)(implicit user: Session): Either[HttpStatus, Query] =
-    queries.get(id)
-      .filter(_.userOid == user.oid || user.hasGlobalReadAccess)
-      .toRight(KoskiErrorCategory.notFound())
+  def get(id: UUID)(implicit user: Session): Either[HttpStatus, Query] = {
+    val queryWithAccess = user match {
+      case s: KoskiSpecificSession => queries.getKoskiQuery(id)(s).filter(_.userOid == s.oid || s.hasGlobalReadAccess)
+      case s: ValpasSession => queries.getValpasQuery(id)(s).filter(_.userOid == s.oid || s.hasGlobalValpasOikeus(Set(ValpasRooli.KUNTA_MASSALUOVUTUS)))
+    }
+    queryWithAccess.toRight(KoskiErrorCategory.notFound())
+  }
 
   def numberOfRunningQueries: Int = queries.numberOfRunningQueries
 

@@ -22,6 +22,8 @@ object ValpasMockKäyttöoikeusryhmät {
 
   def kuntakäyttäjä(organisaatioOid: String): Seq[OrganisaatioJaKäyttöoikeudet] = Seq(organisaatioKäyttäjä(organisaatioOid, ValpasRooli.KUNTA))
 
+  def massaluovutuskäyttäjä(organisaatioOid: String): Seq[OrganisaatioJaKäyttöoikeudet] = Seq(organisaatioKäyttäjä(organisaatioOid, ValpasRooli.KUNTA_MASSALUOVUTUS))
+
   def pääkäyttäjä: Seq[OrganisaatioJaKäyttöoikeudet] =
     Seq(OrganisaatioJaKäyttöoikeudet(
       Opetushallitus.organisaatioOid,
@@ -29,7 +31,8 @@ object ValpasMockKäyttöoikeusryhmät {
         ValpasRooli.KUNTA,
         ValpasRooli.OPPILAITOS_HAKEUTUMINEN,
         ValpasRooli.OPPILAITOS_SUORITTAMINEN,
-        ValpasRooli.OPPILAITOS_MAKSUTTOMUUS
+        ValpasRooli.OPPILAITOS_MAKSUTTOMUUS,
+        ValpasRooli.KUNTA_MASSALUOVUTUS
       )
         .map(rooli => PalveluJaOikeus("VALPAS", rooli))))
 
