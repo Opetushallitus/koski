@@ -60,7 +60,8 @@ case class YtrLaajaExam(
 
   freeOfCharge: Option[Boolean],
   totalScore: Option[Int], // Ei tallenneta Koskeen
-  examItems: List[YtrExamItem] // Ei tallenneta Koskeen
+  examItems: List[YtrExamItem], // Ei tallenneta Koskeen
+  toCertificate: Option[Boolean] = None
 )
 
 // Ei tallenneta Koskeen

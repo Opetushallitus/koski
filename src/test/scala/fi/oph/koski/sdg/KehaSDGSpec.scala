@@ -141,6 +141,14 @@ class KehaSDGSpec
     }
   }
 
+  "YO ei sisällä todistukselle kuulumattomia osasuorituksia" in {
+    getOppija(KoskiSpecificMockOppijat.ylioppilas.oid) {
+      verifyResponseStatusOk()
+      body should include ("\"suoritusMukanaTodistuksella\":true")
+      body should include ("\"suoritusMukanaTodistuksella\":false")
+    }
+  }
+
   private def postHetu[A](
     hetu: String,
     osasuorituksetMukaan: Boolean = true,

@@ -98,9 +98,22 @@
     "examRoleShort" : "mandatory-subject",
     "grade" : "L",
     "points" : 59,
+    "toCertificate": true,
     "sections" : [ {
       "sectionPoints" : 59,
       "sectionId" : "T000"
     } ]
+  }, {
+    "period" : "2012K",
+    "examId" : "N",
+    "examRoleLegacy" : null,
+    "examRoleShort" : "mandatory-subject",
+    "grade" : "L",
+    "points" : 59,
+    "toCertificate": false,
+    "sections" : [ {
+      "sectionPoints" : 59,
+      "sectionId" : "T000"
+    }  ]
   }
 ]}

@@ -96,7 +96,8 @@ class YtrDownloadOppijaConverter(
                       List(conversionUtils.convertArviointi(grade, exam.gradePoints))
                     ),
                     keskeytynyt = exam.aborted,
-                    maksuton = exam.freeOfCharge
+                    maksuton = exam.freeOfCharge,
+                    suoritusMukanaTodistuksella = exam.toCertificate
                   ))
                 )
               }
