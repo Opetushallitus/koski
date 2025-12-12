@@ -215,6 +215,14 @@ class ValpasAccessResolver {
     onGlobaaliOikeus(rooli) || valpasOrganisaatiot(rooli).exists(_.kotipaikka.exists(_.koodiarvo == kotipaikkaKoodiarvo))
   }
 
+  def accessToMassaluovutusrajapintaKuntaOrg
+    (kuntaOid: String)
+    (implicit session: ValpasSession)
+  : Boolean = {
+    val rooli = ValpasRooli.KUNTA_MASSALUOVUTUS
+    onGlobaaliOikeus(rooli) || valpasOrganisaatiot(rooli).exists(_.oid == kuntaOid)
+  }
+
   def accessToAnyOrg(
     rooli: ValpasRooli.Role
   )(

@@ -1,13 +1,15 @@
 package fi.oph.koski.valpas
 
 import fi.oph.koski.KoskiApplicationForTests
-import fi.oph.koski.http.KoskiErrorCategory
+import fi.oph.koski.http.{ErrorMatcher, KoskiErrorCategory}
+import fi.oph.koski.koskiuser.{MockUser, MockUsers}
 import fi.oph.koski.localization.LocalizationReader
 import fi.oph.koski.log.AuditLogTester
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.util.Wait
 import fi.oph.koski.valpas.log.{ValpasAuditLogMessageField, ValpasOperation}
 import fi.oph.koski.valpas.opiskeluoikeusfixture.{FixtureUtil, ValpasMockOppijat}
+import fi.oph.koski.valpas.oppija.ValpasErrorCategory
 import fi.oph.koski.valpas.valpasuser.{ValpasMockUser, ValpasMockUsers}
 import org.json4s.JsonAST.JObject
 import org.json4s.jackson.JsonMethods
@@ -66,35 +68,65 @@ class ValpasMassaluovutusServletSpec extends ValpasTestBase with BeforeAndAfterE
         }
       }
 
-      "toimii kuntakäyttäjänä" in {
-        postQuery(getQuery(MockOrganisaatiot.helsinginKaupunki), ValpasMockUsers.valpasHelsinki) {
+      "toimii kunnan palvelukäyttäjänä" in {
+        postQuery(getQuery(MockOrganisaatiot.helsinginKaupunki), ValpasMockUsers.valpasHelsinkiPk) {
           verifyResponseStatusOk()
           val json = JsonMethods.parse(body)
           (json \ "status").extract[String] should equal("pending")
         }
       }
 
-      "hylätään, jos kuntakäyttäjällä ei oikeuksia kysyttyyn kuntaan" in {
-        postQuery(getQuery(MockOrganisaatiot.helsinginKaupunki), ValpasMockUsers.valpasTornio) {
+      "toimii usean kunnan palvelukäyttäjänä" in {
+        postQuery(getQuery(MockOrganisaatiot.tornionKaupunki), ValpasMockUsers.valpasPkUseitaKuntia) {
+          verifyResponseStatusOk()
+          val json = JsonMethods.parse(body)
+          (json \ "status").extract[String] should equal("pending")
+        }
+      }
+
+      "hylätään, jos kunnan palvelukäyttäjällä ei oikeuksia kysyttyyn kuntaan" in {
+        postQuery(getQuery(MockOrganisaatiot.pyhtäänKunta), ValpasMockUsers.valpasHelsinkiPk) {
           verifyResponseStatus(403, KoskiErrorCategory.forbidden())
+        }
+
+        postQuery(getQuery(MockOrganisaatiot.pyhtäänKunta), ValpasMockUsers.valpasPkUseitaKuntia) {
+          verifyResponseStatus(403, KoskiErrorCategory.forbidden())
+        }
+      }
+
+      "hylätään pelkillä kuntakäyttäjän oikeuksilla" in {
+        postQuery(getQuery(MockOrganisaatiot.helsinginKaupunki), ValpasMockUsers.valpasHelsinki) {
+          verifyResponseStatus(403, ValpasErrorCategory.forbidden())
         }
       }
 
       "hylätään pelkillä hakeutumisenvalvonnan oikeuksilla" in {
         postQuery(getQuery(MockOrganisaatiot.helsinginKaupunki), ValpasMockUsers.valpasHelsinkiPeruskoulu) {
-          verifyResponseStatus(403, KoskiErrorCategory.forbidden())
+          verifyResponseStatus(403, ValpasErrorCategory.forbidden())
         }
       }
 
       "hylätään pelkillä suorittamisenvalvonnan oikeuksilla" in {
         postQuery(getQuery(MockOrganisaatiot.helsinginKaupunki), ValpasMockUsers.valpasPelkkäSuorittaminenkäyttäjäAmmattikoulu) {
-          verifyResponseStatus(403, KoskiErrorCategory.forbidden())
+          verifyResponseStatus(403, ValpasErrorCategory.forbidden())
         }
       }
 
       "hylätään pelkillä maksuttomuudenvalvonnan oikeuksilla" in {
         postQuery(getQuery(MockOrganisaatiot.helsinginKaupunki), ValpasMockUsers.valpasPelkkäMaksuttomuusKäyttäjä) {
+          verifyResponseStatus(403, ValpasErrorCategory.forbidden())
+        }
+      }
+
+      "hylätään oppilaitostasoisella massaluovutuskäyttöoikeudella" in {
+        postQuery(getQuery(MockOrganisaatiot.helsinginKaupunki), ValpasMockUsers.valpasMassaluovutusrooliOppilaitoksella) {
           verifyResponseStatus(403, KoskiErrorCategory.forbidden())
+        }
+      }
+
+      "hylätään Kosken pääkäyttäjän oikeuksilla" in {
+        postQuery(getQuery(MockOrganisaatiot.helsinginKaupunki), MockUsers.paakayttaja) {
+          verifyResponseStatus(403, ValpasErrorCategory.forbidden())
         }
       }
 
@@ -114,12 +146,42 @@ class ValpasMassaluovutusServletSpec extends ValpasTestBase with BeforeAndAfterE
     "Kyselyn tila ja käyttöoikeudet" - {
 
       "palauttaa kyselyn tilan" in {
-        val queryId = postQuery(getQuery(MockOrganisaatiot.helsinginKaupunki), ValpasMockUsers.valpasHelsinki) {
+        val queryId = postQuery(getQuery(MockOrganisaatiot.helsinginKaupunki), ValpasMockUsers.valpasHelsinkiPk) {
           verifyResponseStatusOk()
           (JsonMethods.parse(body) \ "queryId").extract[String]
         }
 
-        get(s"/valpas/api/massaluovutus/${queryId}", headers = authHeaders(ValpasMockUsers.valpasHelsinki)) {
+        get(s"/valpas/api/massaluovutus/${queryId}", headers = authHeaders(ValpasMockUsers.valpasHelsinkiPk)) {
+          verifyResponseStatusOk()
+          val json = JsonMethods.parse(body)
+          (json \ "queryId").extract[String] should equal(queryId)
+          val status = (json \ "status").extract[String]
+          status should (equal("pending") or equal("running") or equal("complete"))
+        }
+      }
+
+      "palauttaa kyselyn tilan usean kunnan palvelukäyttäjälle" in {
+        val queryId = postQuery(getQuery(MockOrganisaatiot.helsinginKaupunki), ValpasMockUsers.valpasPkUseitaKuntia) {
+          verifyResponseStatusOk()
+          (JsonMethods.parse(body) \ "queryId").extract[String]
+        }
+
+        get(s"/valpas/api/massaluovutus/${queryId}", headers = authHeaders(ValpasMockUsers.valpasPkUseitaKuntia)) {
+          verifyResponseStatusOk()
+          val json = JsonMethods.parse(body)
+          (json \ "queryId").extract[String] should equal(queryId)
+          val status = (json \ "status").extract[String]
+          status should (equal("pending") or equal("running") or equal("complete"))
+        }
+      }
+
+      "palauttaa palvelukäyttäjän tekemän kyselyn tilan pääkäyttäjälle" in {
+        val queryId = postQuery(getQuery(MockOrganisaatiot.helsinginKaupunki), ValpasMockUsers.valpasHelsinkiPk) {
+          verifyResponseStatusOk()
+          (JsonMethods.parse(body) \ "queryId").extract[String]
+        }
+
+        get(s"/valpas/api/massaluovutus/${queryId}", headers = authHeaders(ValpasMockUsers.valpasOphPääkäyttäjä)) {
           verifyResponseStatusOk()
           val json = JsonMethods.parse(body)
           (json \ "queryId").extract[String] should equal(queryId)
@@ -129,23 +191,89 @@ class ValpasMassaluovutusServletSpec extends ValpasTestBase with BeforeAndAfterE
       }
 
       "hylkää, jos ei oikeutta kyselyn katseluun" in {
-        val queryId = postQuery(getQuery(MockOrganisaatiot.helsinginKaupunki), ValpasMockUsers.valpasHelsinki) {
+        val queryId = postQuery(getQuery(MockOrganisaatiot.helsinginKaupunki), ValpasMockUsers.valpasHelsinkiPk) {
           verifyResponseStatusOk()
           (JsonMethods.parse(body) \ "queryId").extract[String]
         }
 
-        get(s"/valpas/api/massaluovutus/${queryId}", headers = authHeaders(ValpasMockUsers.valpasTornio)) {
+        get(s"/valpas/api/massaluovutus/${queryId}", headers = authHeaders(ValpasMockUsers.valpasPyhtääPk)) {
           verifyResponseStatus(404, KoskiErrorCategory.notFound())
         }
       }
 
-      "hylkää, kyselyn tunniste on epävalidi" in {
-        postQuery(getQuery(MockOrganisaatiot.helsinginKaupunki), ValpasMockUsers.valpasHelsinki) {
+      "hylkää, jos ei oikeutta kyselyn katseluun usean kunnan palvelukäyttäjällä" in {
+        val queryId = postQuery(getQuery(MockOrganisaatiot.pyhtäänKunta), ValpasMockUsers.valpasPyhtääPk) {
           verifyResponseStatusOk()
           (JsonMethods.parse(body) \ "queryId").extract[String]
         }
 
-        get(s"/valpas/api/massaluovutus/foobar", headers = authHeaders(ValpasMockUsers.valpasTornio)) {
+        get(s"/valpas/api/massaluovutus/${queryId}", headers = authHeaders(ValpasMockUsers.valpasPkUseitaKuntia)) {
+          verifyResponseStatus(404, KoskiErrorCategory.notFound())
+        }
+      }
+
+      "hylkää, kun kysely on tehty eri palvelukäyttäjällä, vaikka molemmilla palvelukäyttäjillä on oikeudet kyseiseen kuntaan" in {
+        val queryId = postQuery(getQuery(MockOrganisaatiot.helsinginKaupunki), ValpasMockUsers.valpasHelsinkiPk) {
+          verifyResponseStatusOk()
+          (JsonMethods.parse(body) \ "queryId").extract[String]
+        }
+
+        get(s"/valpas/api/massaluovutus/${queryId}", headers = authHeaders(ValpasMockUsers.valpasPkUseitaKuntia)) {
+          verifyResponseStatus(404, KoskiErrorCategory.notFound())
+        }
+      }
+
+      "hylkää, kun kysely on tehty pääkäyttäjällä, vaikka palvelukäyttäjillä on oikeudet kyseiseen kuntaan" in {
+        val queryId = postQuery(getQuery(MockOrganisaatiot.helsinginKaupunki), ValpasMockUsers.valpasOphPääkäyttäjä) {
+          verifyResponseStatusOk()
+          (JsonMethods.parse(body) \ "queryId").extract[String]
+        }
+
+        get(s"/valpas/api/massaluovutus/${queryId}", headers = authHeaders(ValpasMockUsers.valpasHelsinkiPk)) {
+          verifyResponseStatus(404, KoskiErrorCategory.notFound())
+        }
+      }
+
+      "hylkää, kun pelkät kuntakäyttäjän oikeudet" in {
+        val queryId = postQuery(getQuery(MockOrganisaatiot.helsinginKaupunki), ValpasMockUsers.valpasHelsinkiPk) {
+          verifyResponseStatusOk()
+          (JsonMethods.parse(body) \ "queryId").extract[String]
+        }
+
+        get(s"/valpas/api/massaluovutus/${queryId}", headers = authHeaders(ValpasMockUsers.valpasHelsinki)) {
+          verifyResponseStatus(403, ValpasErrorCategory.forbidden())
+        }
+      }
+
+      "hylkää oppilaitostasoisella massaluovutuskäyttöoikeudella" in {
+        val queryId = postQuery(getQuery(MockOrganisaatiot.helsinginKaupunki), ValpasMockUsers.valpasHelsinkiPk) {
+          verifyResponseStatusOk()
+          (JsonMethods.parse(body) \ "queryId").extract[String]
+        }
+
+        get(s"/valpas/api/massaluovutus/${queryId}", headers = authHeaders(ValpasMockUsers.valpasMassaluovutusrooliOppilaitoksella)) {
+          verifyResponseStatus(404, KoskiErrorCategory.notFound())
+        }
+      }
+
+      "hylkää Kosken pääkäyttäjän oikeuksilla" in {
+        val queryId = postQuery(getQuery(MockOrganisaatiot.pyhtäänKunta), ValpasMockUsers.valpasPyhtääPk) {
+          verifyResponseStatusOk()
+          (JsonMethods.parse(body) \ "queryId").extract[String]
+        }
+
+        get(s"/valpas/api/massaluovutus/${queryId}", headers = authHeaders(MockUsers.paakayttaja)) {
+          verifyResponseStatus(403, ValpasErrorCategory.forbidden())
+        }
+      }
+
+      "hylkää, kyselyn tunniste on epävalidi" in {
+        postQuery(getQuery(MockOrganisaatiot.helsinginKaupunki), ValpasMockUsers.valpasHelsinkiPk) {
+          verifyResponseStatusOk()
+          (JsonMethods.parse(body) \ "queryId").extract[String]
+        }
+
+        get(s"/valpas/api/massaluovutus/foobar", headers = authHeaders(ValpasMockUsers.valpasHelsinkiPk)) {
           verifyResponseStatus(400, KoskiErrorCategory.badRequest.queryParam("Epävalidi tunniste"))
         }
       }
@@ -154,14 +282,14 @@ class ValpasMassaluovutusServletSpec extends ValpasTestBase with BeforeAndAfterE
     "Kyselyn tulosten noutaminen ja audit lokit" - {
 
       "suorittaa kyselyn ja palauttaa tulokset" in {
-        val queryId = postQuery(getQuery(MockOrganisaatiot.helsinginKaupunki), ValpasMockUsers.valpasHelsinki) {
+        val queryId = postQuery(getQuery(MockOrganisaatiot.helsinginKaupunki), ValpasMockUsers.valpasHelsinkiPk) {
           verifyResponseStatusOk()
           (JsonMethods.parse(body) \ "queryId").extract[String]
         }
 
-        waitForCompletion(queryId, ValpasMockUsers.valpasHelsinki)
+        waitForCompletion(queryId, ValpasMockUsers.valpasHelsinkiPk)
 
-        get(s"/valpas/api/massaluovutus/${queryId}", headers = authHeaders(ValpasMockUsers.valpasHelsinki)) {
+        get(s"/valpas/api/massaluovutus/${queryId}", headers = authHeaders(ValpasMockUsers.valpasHelsinkiPk)) {
           verifyResponseStatusOk()
           val json = JsonMethods.parse(body)
           val status = (json \ "status").extract[String]
@@ -173,17 +301,17 @@ class ValpasMassaluovutusServletSpec extends ValpasTestBase with BeforeAndAfterE
       }
 
       "palauttaa oikean sisällön tulostiedostoissa" in {
-        val queryId = postQuery(getQuery(MockOrganisaatiot.pyhtäänKunta), ValpasMockUsers.valpasPyhtääJaAapajoenPeruskoulu) {
+        val queryId = postQuery(getQuery(MockOrganisaatiot.pyhtäänKunta), ValpasMockUsers.valpasPyhtääPk) {
           verifyResponseStatusOk()
           (JsonMethods.parse(body) \ "queryId").extract[String]
         }
 
-        waitForCompletion(queryId, ValpasMockUsers.valpasPyhtääJaAapajoenPeruskoulu)
+        waitForCompletion(queryId, ValpasMockUsers.valpasPyhtääPk)
 
         val fileUrl: String = verifyAndGetFileUrl(queryId)
 
         // Lataa ja tarkista tiedoston sisältö
-        verifyResultAndContent(fileUrl, ValpasMockUsers.valpasPyhtääJaAapajoenPeruskoulu) {
+        verifyResultAndContent(fileUrl, ValpasMockUsers.valpasPyhtääPk) {
           val json = JsonMethods.parse(body)
 
           // Tarkista että vastaus sisältää oppijat-listan
@@ -220,18 +348,18 @@ class ValpasMassaluovutusServletSpec extends ValpasTestBase with BeforeAndAfterE
 
       "palauttaa vain aktiivisten kuntailmoitusten oppijat kun vainAktiivisetKuntailmoitukset=true" in {
         val queryId = postQuery(getAktiivisetQuery(MockOrganisaatiot.pyhtäänKunta, vainAktiivisetKuntailmoitukset = true),
-          ValpasMockUsers.valpasPyhtääJaAapajoenPeruskoulu
+          ValpasMockUsers.valpasPyhtääPk
         ) {
           verifyResponseStatusOk()
           (JsonMethods.parse(body) \ "queryId").extract[String]
         }
 
-        waitForCompletion(queryId, ValpasMockUsers.valpasPyhtääJaAapajoenPeruskoulu)
+        waitForCompletion(queryId, ValpasMockUsers.valpasPyhtääPk)
 
         val fileUrl: String = verifyAndGetFileUrl(queryId)
 
         // Lataa ja tarkista tiedoston sisältö
-        verifyResultAndContent(fileUrl, ValpasMockUsers.valpasPyhtääJaAapajoenPeruskoulu) {
+        verifyResultAndContent(fileUrl, ValpasMockUsers.valpasPyhtääPk) {
           val json = JsonMethods.parse(body)
 
           // Tarkista että vastaus sisältää oppijat-listan
@@ -249,16 +377,16 @@ class ValpasMassaluovutusServletSpec extends ValpasTestBase with BeforeAndAfterE
       }
 
       "hylkää tiedoston latauksen, jos käyttäjällä ei ole oikeuksia" in {
-        val queryId = postQuery(getQuery(MockOrganisaatiot.helsinginKaupunki), ValpasMockUsers.valpasHelsinki) {
+        val queryId = postQuery(getQuery(MockOrganisaatiot.pyhtäänKunta), ValpasMockUsers.valpasPyhtääPk) {
           verifyResponseStatusOk()
           (JsonMethods.parse(body) \ "queryId").extract[String]
         }
 
-        waitForCompletion(queryId, ValpasMockUsers.valpasHelsinki)
+        waitForCompletion(queryId, ValpasMockUsers.valpasPyhtääPk)
 
         val fileUrl = get(
           s"/valpas/api/massaluovutus/${queryId}",
-          headers = authHeaders(ValpasMockUsers.valpasHelsinki)
+          headers = authHeaders(ValpasMockUsers.valpasPyhtääPk)
         ) {
           val json = JsonMethods.parse(body)
           val files = (json \ "files").extract[List[String]]
@@ -266,18 +394,66 @@ class ValpasMassaluovutusServletSpec extends ValpasTestBase with BeforeAndAfterE
         }
 
         // Yritä ladata tiedosto eri käyttäjänä
-        getResult(fileUrl, ValpasMockUsers.valpasTornio) {
+        getResult(fileUrl, ValpasMockUsers.valpasHelsinkiPk) {
+          verifyResponseStatus(404, KoskiErrorCategory.notFound())
+        }
+        getResult(fileUrl, ValpasMockUsers.valpasPkUseitaKuntia) {
           verifyResponseStatus(404, KoskiErrorCategory.notFound())
         }
       }
 
-      "jättää merkinnän kyselyn suorituksesta" in {
-        val queryId = postQuery(getQuery(MockOrganisaatiot.pyhtäänKunta), ValpasMockUsers.valpasPyhtääJaAapajoenPeruskoulu) {
+      "hylkää tiedoston latauksen oppilaitostasoisella massaluovutusroolilla" in {
+        val queryId = postQuery(getQuery(MockOrganisaatiot.helsinginKaupunki), ValpasMockUsers.valpasHelsinkiPk) {
           verifyResponseStatusOk()
           (JsonMethods.parse(body) \ "queryId").extract[String]
         }
 
-        waitForCompletion(queryId, ValpasMockUsers.valpasPyhtääJaAapajoenPeruskoulu)
+        waitForCompletion(queryId, ValpasMockUsers.valpasHelsinkiPk)
+
+        val fileUrl = get(
+          s"/valpas/api/massaluovutus/${queryId}",
+          headers = authHeaders(ValpasMockUsers.valpasHelsinkiPk)
+        ) {
+          val json = JsonMethods.parse(body)
+          val files = (json \ "files").extract[List[String]]
+          files.head
+        }
+
+        // Yritä ladata tiedosto eri käyttäjänä
+        getResult(fileUrl, ValpasMockUsers.valpasMassaluovutusrooliOppilaitoksella) {
+          verifyResponseStatus(404, KoskiErrorCategory.notFound())
+        }
+      }
+
+      "sallii toisen tekemän kyselyn tuloksen lataamisen pääkäyttäjälle" in {
+        val queryId = postQuery(getQuery(MockOrganisaatiot.helsinginKaupunki), ValpasMockUsers.valpasHelsinkiPk) {
+          verifyResponseStatusOk()
+          (JsonMethods.parse(body) \ "queryId").extract[String]
+        }
+
+        waitForCompletion(queryId, ValpasMockUsers.valpasHelsinkiPk)
+
+        val fileUrl = get(
+          s"/valpas/api/massaluovutus/${queryId}",
+          headers = authHeaders(ValpasMockUsers.valpasHelsinkiPk)
+        ) {
+          val json = JsonMethods.parse(body)
+          val files = (json \ "files").extract[List[String]]
+          files.head
+        }
+
+        verifyResultAndContent(fileUrl, ValpasMockUsers.valpasOphPääkäyttäjä){
+          verifyResponseStatusOk()
+        }
+      }
+
+      "jättää merkinnän kyselyn suorituksesta" in {
+        val queryId = postQuery(getQuery(MockOrganisaatiot.pyhtäänKunta), ValpasMockUsers.valpasPyhtääPk) {
+          verifyResponseStatusOk()
+          (JsonMethods.parse(body) \ "queryId").extract[String]
+        }
+
+        waitForCompletion(queryId, ValpasMockUsers.valpasPyhtääPk)
 
         val logMessages = AuditLogTester.getLogMessages
         val massaluovutusLog = logMessages.find(msg =>
@@ -325,16 +501,36 @@ class ValpasMassaluovutusServletSpec extends ValpasTestBase with BeforeAndAfterE
         }
       }
 
-      "toimii kuntakäyttäjänä" in {
-        postQuery(getQuery(MockOrganisaatiot.helsinginKaupunki), ValpasMockUsers.valpasHelsinki) {
+      "toimii kunnan palvelukäyttäjällä" in {
+        postQuery(getQuery(MockOrganisaatiot.helsinginKaupunki), ValpasMockUsers.valpasHelsinkiPk) {
           verifyResponseStatusOk()
           val json = JsonMethods.parse(body)
           (json \ "status").extract[String] should equal("pending")
         }
       }
 
-      "hylätään, jos kuntakäyttäjällä ei oikeuksia kysyttyyn kuntaan" in {
-        postQuery(getQuery(MockOrganisaatiot.helsinginKaupunki), ValpasMockUsers.valpasTornio) {
+      "toimii usean kunnan palvelukäyttäjällä" in {
+        postQuery(getQuery(MockOrganisaatiot.helsinginKaupunki), ValpasMockUsers.valpasPkUseitaKuntia) {
+          verifyResponseStatusOk()
+          val json = JsonMethods.parse(body)
+          (json \ "status").extract[String] should equal("pending")
+        }
+      }
+
+      "hylätään pelkillä kuntakäyttäjän oikeuksilla" in {
+        postQuery(getQuery(MockOrganisaatiot.helsinginKaupunki), ValpasMockUsers.valpasHelsinki) {
+          KoskiErrorCategory.forbidden()
+        }
+      }
+
+      "hylätään, jos kunnan palvelukäyttäjällä ei oikeuksia kysyttyyn kuntaan" in {
+        postQuery(getQuery(MockOrganisaatiot.helsinginKaupunki), ValpasMockUsers.valpasPyhtääPk) {
+          verifyResponseStatus(403, KoskiErrorCategory.forbidden())
+        }
+      }
+
+      "hylätään, jos usean kunnan palvelukäyttäjällä ei oikeuksia kysyttyyn kuntaan" in {
+        postQuery(getQuery(MockOrganisaatiot.pyhtäänKunta), ValpasMockUsers.valpasPkUseitaKuntia) {
           verifyResponseStatus(403, KoskiErrorCategory.forbidden())
         }
       }
@@ -344,19 +540,19 @@ class ValpasMassaluovutusServletSpec extends ValpasTestBase with BeforeAndAfterE
 
       "palauttaa kaikki kunnan oppivelvolliset" in {
         val queryId = postQuery(
-          getQuery(MockOrganisaatiot.pyhtäänKunta),
-          ValpasMockUsers.valpasPyhtääJaAapajoenPeruskoulu
+          getQuery(MockOrganisaatiot.helsinginKaupunki),
+          ValpasMockUsers.valpasHelsinkiPk
         ) {
           verifyResponseStatusOk()
           (JsonMethods.parse(body) \ "queryId").extract[String]
         }
 
-        waitForCompletion(queryId, ValpasMockUsers.valpasPyhtääJaAapajoenPeruskoulu)
+        waitForCompletion(queryId, ValpasMockUsers.valpasHelsinkiPk)
 
-        val fileUrl: String = verifyAndGetFileUrl(queryId)
+        val fileUrl: String = verifyAndGetFileUrl(queryId, ValpasMockUsers.valpasHelsinkiPk)
 
         // Lataa ja tarkista tiedoston sisältö
-        verifyResultAndContent(fileUrl, ValpasMockUsers.valpasPyhtääJaAapajoenPeruskoulu) {
+        verifyResultAndContent(fileUrl, ValpasMockUsers.valpasHelsinkiPk) {
           val json = JsonMethods.parse(body)
 
           // Tarkista että vastaus sisältää oppijat-listan
@@ -381,39 +577,61 @@ class ValpasMassaluovutusServletSpec extends ValpasTestBase with BeforeAndAfterE
 
           // Tarkista että myös oppijat ONR:stä on mukana tuloksissa
           oppijat.find(oppija => (oppija \ "vainOppijanumerorekisterissä").extract[Boolean]) should not be empty
+
+          // Tarkista että kaikki aktiiviset opiskeluoikeudet on mukana tuloksissa
+          val aktiivisiaOpiskeluoikeuksia = oppijat.find(oppija => (oppija \ "oppijanumero").extract[String] == ValpasMockOppijat.amisEronnutUusiKelpaamatonOpiskeluoikeusNivelvaiheessa.oid)
+          aktiivisiaOpiskeluoikeuksia should not be empty
+          val aktiivisetOot = (aktiivisiaOpiskeluoikeuksia.get \ "aktiivisetOppivelvollisuudenSuorittamiseenKelpaavatOpiskeluoikeudet").extract[List[JObject]]
+          aktiivisetOot.length should be (2)
+          aktiivisetOot.exists(oo => (oo \ "suorituksenTyyppi" \ "koodiarvo").extract[String] == "perusopetuksenvuosiluokka") should be (true)
+          aktiivisetOot.exists(oo => (oo \ "suorituksenTyyppi" \ "koodiarvo").extract[String] == "perusopetuksenlisaopetus") should be (true)
+        }
+
+        // Tiedoston voi ladata myös pääkäyttäjänä
+        verifyResultAndContent(fileUrl, ValpasMockUsers.valpasOphPääkäyttäjä) {
+          verifyResponseStatusOk()
         }
       }
 
       "hylkää tiedoston latauksen, jos käyttäjällä ei ole oikeuksia" in {
-        val queryId = postQuery(getQuery(MockOrganisaatiot.helsinginKaupunki), ValpasMockUsers.valpasHelsinki) {
+        val queryId = postQuery(getQuery(MockOrganisaatiot.helsinginKaupunki), ValpasMockUsers.valpasHelsinkiPk) {
           verifyResponseStatusOk()
           (JsonMethods.parse(body) \ "queryId").extract[String]
         }
 
-        waitForCompletion(queryId, ValpasMockUsers.valpasHelsinki)
+        waitForCompletion(queryId, ValpasMockUsers.valpasHelsinkiPk)
 
         val fileUrl = get(
           s"/valpas/api/massaluovutus/${queryId}",
-          headers = authHeaders(ValpasMockUsers.valpasHelsinki)
+          headers = authHeaders(ValpasMockUsers.valpasHelsinkiPk)
         ) {
           val json = JsonMethods.parse(body)
           val files = (json \ "files").extract[List[String]]
           files.head
         }
 
-        // Yritä ladata tiedosto eri käyttäjänä
-        getResult(fileUrl, ValpasMockUsers.valpasTornio) {
+        // Yritä ladata tiedosto eri käyttäjinä
+        getResult(fileUrl, ValpasMockUsers.valpasHelsinki) {
+          verifyResponseStatus(403, ValpasErrorCategory.forbidden())
+        }
+        getResult(fileUrl, ValpasMockUsers.valpasPyhtääPk) {
           verifyResponseStatus(404, KoskiErrorCategory.notFound())
+        }
+        getResult(fileUrl, ValpasMockUsers.valpasPkUseitaKuntia) {
+          verifyResponseStatus(404, KoskiErrorCategory.notFound())
+        }
+        getResult(fileUrl, MockUsers.paakayttaja) {
+          verifyResponseStatus(403, ValpasErrorCategory.forbidden())
         }
       }
 
       "jättää merkinnän kyselyn suorituksesta" in {
-        val queryId = postQuery(getQuery(MockOrganisaatiot.pyhtäänKunta), ValpasMockUsers.valpasPyhtääJaAapajoenPeruskoulu) {
+        val queryId = postQuery(getQuery(MockOrganisaatiot.pyhtäänKunta), ValpasMockUsers.valpasPyhtääPk) {
           verifyResponseStatusOk()
           (JsonMethods.parse(body) \ "queryId").extract[String]
         }
 
-        waitForCompletion(queryId, ValpasMockUsers.valpasPyhtääJaAapajoenPeruskoulu)
+        waitForCompletion(queryId, ValpasMockUsers.valpasPyhtääPk)
 
         val logMessages = AuditLogTester.getLogMessages
         val massaluovutusLog = logMessages.find(msg =>
@@ -428,24 +646,37 @@ class ValpasMassaluovutusServletSpec extends ValpasTestBase with BeforeAndAfterE
     }
   }
 
+  "Vääräntyyppisen kyselyn syöttäminen Valppaan massaluovutuksen kautta ei onnistu" in {
+    val koskiQuery = s"""
+      {
+        "type": "luokallejaaneet",
+        "format": "application/json"
+      }
+      """.stripMargin
+
+    postQuery(koskiQuery, ValpasMockUsers.valpasHelsinkiPk) {
+      verifyResponseStatus(400, ErrorMatcher.regex(KoskiErrorCategory.badRequest.validation.jsonSchema, ".*notAnyOf.*".r))
+    }
+  }
+
   private def postQuery[T](
     query: String,
-    user: fi.oph.koski.valpas.valpasuser.ValpasMockUser
+    user: MockUser
   )(f: => T): T = {
     post("/valpas/api/massaluovutus", body = query, headers = authHeaders(user) ++ jsonContent) {
       f
     }
   }
 
-  private def getResult[T](url: String, user: ValpasMockUser)(f: => T): T = {
+  private def getResult[T](url: String, user: MockUser)(f: => T): T = {
     val rootUrl = KoskiApplicationForTests.config.getString("koski.root.url")
     get(url.replace(rootUrl, ""), headers = authHeaders(user))(f)
   }
 
-  private def verifyAndGetFileUrl(queryId: String): String = {
+  private def verifyAndGetFileUrl(queryId: String, user: ValpasMockUser = ValpasMockUsers.valpasPyhtääPk): String = {
     val files = get(
       s"/valpas/api/massaluovutus/${queryId}",
-      headers = authHeaders(ValpasMockUsers.valpasPyhtääJaAapajoenPeruskoulu)
+      headers = authHeaders(user)
     ) {
       verifyResponseStatusOk()
       val json = JsonMethods.parse(body)

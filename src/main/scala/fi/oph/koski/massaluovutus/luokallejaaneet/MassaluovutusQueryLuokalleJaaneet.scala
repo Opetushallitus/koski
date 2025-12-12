@@ -7,15 +7,12 @@ import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.plainAPI._
 import fi.oph.koski.db.{DB, DatabaseConverters, QueryMethods}
 import fi.oph.koski.history.OpiskeluoikeusHistoryPatch
-import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.koskiuser.{AccessType, KoskiSpecificSession, Rooli, Session}
-import fi.oph.koski.log.KoskiAuditLogMessageField.{hakuEhto, opiskeluoikeusId, oppijaHenkiloOid}
+import fi.oph.koski.log.KoskiAuditLogMessageField.oppijaHenkiloOid
 import fi.oph.koski.log.KoskiOperation.OPISKELUOIKEUS_KATSOMINEN
 import fi.oph.koski.log.{AuditLog, KoskiAuditLogMessage, Logging}
-import fi.oph.koski.massaluovutus.MassaluovutusUtils.defaultOrganisaatio
-import fi.oph.koski.massaluovutus.{KoskiMassaluovutusQueryParameters, MassaluovutusQueryParameters, QueryFormat, QueryResultWriter}
-import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusQueryContext
+import fi.oph.koski.massaluovutus.KoskiMassaluovutusQueryParameters
 import fi.oph.koski.schema.PerusopetuksenOpiskeluoikeus
 import fi.oph.koski.schema.annotation.EnumValues
 import fi.oph.scalaschema.annotation.{Description, Title}
@@ -65,13 +62,11 @@ trait MassaluovutusQueryLuokalleJaaneet extends KoskiMassaluovutusQueryParameter
     Right(Unit)
   }
 
-  override def queryAllowed(application: KoskiApplication)(implicit user: Session): Boolean = user match {
-    case u: KoskiSpecificSession =>
-      u.hasGlobalReadAccess || (
-        organisaatioOid.exists(u.organisationOids(AccessType.read).contains)
-          && u.sensitiveDataAllowed(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))
-      )
-    case _ => false
+  override def queryAllowed(application: KoskiApplication)(implicit user: Session): Boolean = withKoskiSpecificSession { u =>
+    u.hasGlobalReadAccess || (
+      organisaatioOid.exists(u.organisationOids(AccessType.read).contains)
+        && u.sensitiveDataAllowed(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))
+    )
   }
 
   private def haeOpiskeluoikeusOidit(raportointiDb: DB, oppilaitosOids: Seq[String]): Seq[(String, String)] =

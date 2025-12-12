@@ -59,28 +59,22 @@ trait MassaluovutusQueryOrganisaationOpiskeluoikeudet extends KoskiMassaluovutus
 
   def fetchData(application: KoskiApplication, writer: QueryResultWriter, oppilaitosOids: List[Organisaatio.Oid])(implicit user: KoskiSpecificSession): Either[String, Unit]
 
-  def run(application: KoskiApplication, writer: QueryResultWriter)(implicit user: Session with SensitiveDataAllowed): Either[String, Unit] = user match {
-    case koskiUser: KoskiSpecificSession =>
-      implicit val u: KoskiSpecificSession = koskiUser
-      val oppilaitosOids = application.organisaatioService.organisaationAlaisetOrganisaatiot(organisaatioOid.get)
-      auditLog
-      fetchData(
-        application = application,
-        writer = writer,
-        oppilaitosOids = oppilaitosOids,
-      )
-    case _ =>
-      throw new IllegalArgumentException("KoskiSpecificSession required")
+  def run(application: KoskiApplication, writer: QueryResultWriter)(implicit user: Session with SensitiveDataAllowed): Either[String, Unit] = withKoskiSpecificSession { implicit u =>
+    val oppilaitosOids = application.organisaatioService.organisaationAlaisetOrganisaatiot(organisaatioOid.get)
+    auditLog
+    fetchData(
+      application = application,
+      writer = writer,
+      oppilaitosOids = oppilaitosOids,
+    )
   }
 
-  def queryAllowed(application: KoskiApplication)(implicit user: Session): Boolean = user match {
-    case u: KoskiSpecificSession =>
-      u.hasGlobalReadAccess || (
-        organisaatioOid.exists(u.organisationOids(AccessType.read).contains)
-          && koulutusmuoto.forall(k => u.allowedOpiskeluoikeudetJaPäätasonSuoritukset.intersects(OoPtsMask(k)))
-          && u.sensitiveDataAllowed(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))
-      )
-    case _ => false
+  def queryAllowed(application: KoskiApplication)(implicit user: Session): Boolean = withKoskiSpecificSession { u =>
+    u.hasGlobalReadAccess || (
+      organisaatioOid.exists(u.organisationOids(AccessType.read).contains)
+        && koulutusmuoto.forall(k => u.allowedOpiskeluoikeudetJaPäätasonSuoritukset.intersects(OoPtsMask(k)))
+        && u.sensitiveDataAllowed(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))
+    )
   }
 
   override def fillAndValidate(implicit user: Session): Either[HttpStatus, MassaluovutusQueryOrganisaationOpiskeluoikeudet] = {

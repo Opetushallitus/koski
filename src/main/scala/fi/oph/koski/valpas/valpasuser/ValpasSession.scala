@@ -35,6 +35,8 @@ class ValpasSession(
 
   def hasYtlAccess: Boolean = globalViranomaisKäyttöoikeudet.flatMap(_.globalPalveluroolit).intersect(Set(Palvelurooli("VALPAS", ValpasRooli.YTL))).nonEmpty
 
+  def hasMassaluovutusrajapintaAccess: Boolean = orgKäyttöoikeudet.flatMap(_.organisaatiokohtaisetPalveluroolit).intersect(Set(Palvelurooli("VALPAS", ValpasRooli.KUNTA_MASSALUOVUTUS))).nonEmpty
+
   def organisaationRoolit(organisaatioOid: Organisaatio.Oid): Set[ValpasRooli.Role] =
     käyttöoikeudet.flatMap {
       case k: KäyttöoikeusOrg if k.organisaatio.oid == organisaatioOid => k.organisaatiokohtaisetPalveluroolit.map(_.rooli)

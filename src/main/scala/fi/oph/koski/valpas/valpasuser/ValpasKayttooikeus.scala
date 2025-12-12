@@ -14,4 +14,5 @@ object ValpasRooli {
   val KUNTA = "KUNTA"
   val KELA = "KELA"
   val YTL = "YTL"
+  val KUNTA_MASSALUOVUTUS = "KUNTA_MASSALUOVUTUS"
 }

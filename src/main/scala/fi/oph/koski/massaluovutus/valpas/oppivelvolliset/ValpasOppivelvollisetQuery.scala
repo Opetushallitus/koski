@@ -3,18 +3,14 @@ package fi.oph.koski.massaluovutus.valpas.oppivelvolliset
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.executors.GlobalExecutionContext
 import fi.oph.koski.json.SensitiveDataAllowed
-import fi.oph.koski.koodisto.Kunta
 import fi.oph.koski.koskiuser.Session
-import fi.oph.koski.log.Logging
 import fi.oph.koski.massaluovutus.valpas.ValpasMassaluovutusQueryParameters
 import fi.oph.koski.massaluovutus.{QueryFormat, QueryResultWriter}
 import fi.oph.koski.schema.annotation.EnumValues
 import fi.oph.koski.util.Futures
 import fi.oph.koski.valpas.log.ValpasAuditLog
 import fi.oph.koski.valpas.massaluovutus.{ValpasMassaluovutusOppija, ValpasMassaluovutusResult}
-import fi.oph.koski.valpas.oppija.ValpasAccessResolver
-import fi.oph.koski.valpas.rouhinta.ValpasKuntarouhintaService
-import fi.oph.koski.valpas.valpasuser.ValpasSession
+import fi.oph.koski.valpas.rouhinta.{RouhintaOpiskeluoikeus, ValpasKuntarouhintaService, ValpasRouhintaOppivelvollinen}
 import fi.oph.scalaschema.annotation.{Description, Title}
 
 import scala.concurrent.Future
@@ -29,11 +25,11 @@ case class ValpasOppivelvollisetQuery(
   format: String = QueryFormat.json,
   @Description("Kunnan organisaatio-oid")
   kuntaOid: String
-) extends ValpasMassaluovutusQueryParameters with Logging with GlobalExecutionContext {
+) extends ValpasMassaluovutusQueryParameters with GlobalExecutionContext {
 
-  override def run(application: KoskiApplication, writer: QueryResultWriter)(implicit user: Session with SensitiveDataAllowed): Either[String, Unit] = user match {
-    case valpasUser: ValpasSession =>
-      implicit val session: ValpasSession = valpasUser
+  override def run(application: KoskiApplication, writer: QueryResultWriter)
+    (implicit user: Session with SensitiveDataAllowed): Either[String, Unit] = withValpasSession { implicit valpasSession =>
+    timed("ValpasOppivelvollisetQuery:run") {
       val oppijalistatService = application.valpasOppijalistatService
       val kuntarouhinta = new ValpasKuntarouhintaService(application)
       val kuntailmoitusService = application.valpasKuntailmoitusService
@@ -61,43 +57,37 @@ case class ValpasOppivelvollisetQuery(
         .getOppijalistaIlmanOikeustarkastusta(oppijaOids)
         .left.map(_.errorString.getOrElse("Tuntematon virhe"))
         .flatMap { oppijat =>
+          def oppijanAktiivisetOpiskeluoikeudet(oid: String) = oppijat
+            .find(o => o.oppija.henkilö.kaikkiOidit.contains(oid))
+            .map(_.oppija.opiskeluoikeudet.filter(_.isOpiskelu).map(RouhintaOpiskeluoikeus.apply))
+            .getOrElse(Seq.empty)
+            .flatten
+
+          // Täydennä kuntailmoitukset oppijoille
           kuntailmoitusService.withKuntailmoituksetIlmanKäyttöoikeustarkistusta(oppijat)
             .left.map(_.errorString.getOrElse("Tuntematon virhe"))
-            .map(_.map(fi.oph.koski.valpas.rouhinta.ValpasRouhintaOppivelvollinen.apply))
+            .map(_.map(ValpasRouhintaOppivelvollinen.apply))
+            // Täydennä keskeytykset oppijoille
             .map(oppijat => rouhintaOvKeskeytyksetService.fetchOppivelvollisuudenKeskeytykset(oppijat))
+            // Täydennä aktiiviset oppivelvollisuuteen kelpaavat opiskeluoikeudet oppijoille
+            .map(oppijat => oppijat.map(oppija => ValpasMassaluovutusOppija.apply(oppija, oppijanAktiivisetOpiskeluoikeudet(oppija.oppijanumero))))
         }
         .map { oppijat =>
           val onrOppijatResult = Futures.await(onrOppivelvollisetOppijat.map(_.map(ValpasMassaluovutusOppija.apply)))
-          val oppijatResult = oppijat.map(ValpasMassaluovutusOppija.apply) ++ onrOppijatResult
+          val oppijatResult = oppijat ++ onrOppijatResult
 
           // Rikastetaan oppijat oppivelvollisuustiedoilla
           val oppijatOppivelvollisuustiedoilla = withOppivelvollisuustiedot(oppijatResult, application)
 
-          val oppijaOids = oppijatOppivelvollisuustiedoilla.map(_.oppijanumero)
-          ValpasAuditLog.auditLogMassaluovutusKunnalla(kunta, oppijaOids)
-          val result = ValpasMassaluovutusResult(oppijatOppivelvollisuustiedoilla)
-          writer.putJson("result", result)
+          writer.predictFileCount(oppijatOppivelvollisuustiedoilla.size / sivukoko)
+
+          oppijatOppivelvollisuustiedoilla.grouped(sivukoko).zipWithIndex.foreach { case (oppijatSivu, index) =>
+            val oppijaOids = oppijatSivu.map(_.oppijanumero)
+            ValpasAuditLog.auditLogMassaluovutusKunnalla(kunta, oppijaOids)
+            val result = ValpasMassaluovutusResult(oppijatSivu)
+            writer.putJson(s"$index", result)
+          }
         }
-    case _ =>
-      throw new IllegalArgumentException("ValpasSession required")
-  }
-
-  override def queryAllowed(application: KoskiApplication)(implicit user: Session): Boolean = user match {
-    case session: ValpasSession =>
-      val kuntaOpt = getKuntaKoodiByKuntaOid(application, kuntaOid)
-      kuntaOpt.exists(kunta => {
-        val accessResolver = new ValpasAccessResolver
-        accessResolver.accessToKuntaOrg(kunta)(session)
-      })
-    case _ => false
-  }
-
-  private def getKuntaKoodiByKuntaOid(application: KoskiApplication, kuntaOid: String): Option[String] = {
-    Kunta.validateAndGetKuntaKoodi(application.organisaatioService, application.koodistoPalvelu, kuntaOid) match {
-      case Right(kuntaKoodi) => Some(kuntaKoodi)
-      case Left(error) =>
-        logger.warn(s"ValpasOppivelvollisetQuery getKuntaKoodiByKuntaOid: ${error.errors.map(_.toString).mkString(", ")}")
-        None
     }
   }
 }

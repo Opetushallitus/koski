@@ -5,7 +5,7 @@ import fi.oph.koski.db.KoskiOpiskeluoikeusRowImplicits.getKoskiOpiskeluoikeusRow
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api.actionBasedSQLInterpolation
 import fi.oph.koski.db.{DB, KoskiOpiskeluoikeusRow, KoskiTables, QueryMethods}
 import fi.oph.koski.json.SensitiveDataAllowed
-import fi.oph.koski.koskiuser.{KoskiSpecificSession, Session}
+import fi.oph.koski.koskiuser.Session
 import fi.oph.koski.koskiuser.Rooli.{OPHKATSELIJA, OPHPAAKAYTTAJA}
 import fi.oph.koski.log._
 import fi.oph.koski.massaluovutus.suorituspalvelu.opiskeluoikeus.SupaOpiskeluoikeus
@@ -46,9 +46,8 @@ trait SuorituspalveluQuery extends KoskiMassaluovutusQueryParameters with Loggin
     Right(())
   }
 
-  override def queryAllowed(application: KoskiApplication)(implicit user: Session): Boolean = user match {
-    case u: KoskiSpecificSession => u.hasRole(OPHKATSELIJA) || u.hasRole(OPHPAAKAYTTAJA)
-    case _ => false
+  override def queryAllowed(application: KoskiApplication)(implicit user: Session): Boolean = withKoskiSpecificSession { u =>
+    u.hasRole(OPHKATSELIJA) || u.hasRole(OPHPAAKAYTTAJA)
   }
 
   private def getOpiskeluoikeus(application: KoskiApplication, db: DB, id: Int): Option[SupaOpiskeluoikeus] =
