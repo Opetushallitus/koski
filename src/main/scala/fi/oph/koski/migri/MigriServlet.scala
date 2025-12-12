@@ -1,6 +1,6 @@
 package fi.oph.koski.migri
 
-import fi.oph.koski.config.{Environment, KoskiApplication}
+import fi.oph.koski.config.{Environment, KoskiApplication, SecretsManager}
 import fi.oph.koski.henkilo.{HenkilöOid, Hetu}
 import fi.oph.koski.http.{HttpStatus, JsonErrorMessage, KoskiErrorCategory}
 import fi.oph.koski.json.JsonSerializer
@@ -13,6 +13,8 @@ import org.scalatra.auth.strategy.BasicAuthStrategy.BasicAuthRequest
 class MigriServlet(implicit val application: KoskiApplication) extends KoskiSpecificApiServlet with RequiresMigri with NoCache {
   lazy val migriService =
     if (Environment.isMockEnvironment(application.config)) new MockMigriService else new RemoteMigriService
+
+  private lazy val secretsManager = new SecretsManager
 
   post("/hetu") {
     withJsonBody{ json =>
@@ -69,13 +71,21 @@ class MigriServlet(implicit val application: KoskiApplication) extends KoskiSpec
       .flatMap(convertToMigriSchema)
 
   private def valintaTiedotOideilla(oids: List[String]): Either[HttpStatus, RawJsonResponse] = {
-    val basicAuthRequest = new BasicAuthRequest(request)
-    migriService.getByOids(oids, basicAuthRequest)
+    migriService.getByOids(oids, migriCredentials())
   }
 
   private def valintaTiedotHetuilla(hetut: List[String]): Either[HttpStatus, RawJsonResponse] = {
-    val basicAuthRequest = new BasicAuthRequest(request)
-    migriService.getByHetus(hetut, basicAuthRequest)
+    migriService.getByHetus(hetut, migriCredentials())
+  }
+
+  private def migriCredentials(): MigriCredentials = {
+    if (Environment.usesAwsSecretsManager) {
+      val password = secretsManager.getPlainSecret("luovutuspalvelu-v2-migripk")
+      MigriCredentials("migripk", password)
+    } else {
+      val basicAuthRequest = new BasicAuthRequest(request)
+      MigriCredentials(basicAuthRequest.username, basicAuthRequest.password)
+    }
   }
 
   private def convertToMigriSchema(oppija: Oppija): Either[HttpStatus, MigriOppija] =
