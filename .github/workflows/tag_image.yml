@@ -16,7 +16,6 @@ jobs:
   tag_image:
     name: Tag and push Koski image
     runs-on: ubuntu-22.04
-    environment: ${{ inputs.environment }}
     permissions:
       id-token: write
       contents: read
