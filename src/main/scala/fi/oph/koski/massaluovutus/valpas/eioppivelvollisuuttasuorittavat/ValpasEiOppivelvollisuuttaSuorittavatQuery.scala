@@ -7,7 +7,7 @@ import fi.oph.koski.massaluovutus.valpas.ValpasMassaluovutusQueryParameters
 import fi.oph.koski.massaluovutus.{QueryFormat, QueryResultWriter}
 import fi.oph.koski.schema.annotation.EnumValues
 import fi.oph.koski.valpas.log.ValpasAuditLog
-import fi.oph.koski.valpas.massaluovutus.{ValpasMassaluovutusOppija, ValpasMassaluovutusResult}
+import fi.oph.koski.valpas.massaluovutus.{ValpasMassaluovutusEiOppivelvollisuuttaSuorittavaOppija, ValpasMassaluovutusOppija, ValpasMassaluovutusResult}
 import fi.oph.koski.valpas.rouhinta.{ValpasKuntarouhintaService, ValpasRouhintaOppivelvollinen}
 import fi.oph.scalaschema.annotation.{DefaultValue, Description, Title}
 
@@ -54,7 +54,7 @@ case class ValpasEiOppivelvollisuuttaSuorittavatQuery(
           ovSuorittamattomatOppijatAktiivisuustiedoillaJaKeskeytyksillä
             .left.map(_.errorString.getOrElse("Tuntematon virhe"))
             .map { tulos =>
-              val oppijat = tulos.filter(_.aktiivinenKuntailmoitus.nonEmpty).map(ValpasMassaluovutusOppija.apply)
+              val oppijat = tulos.filter(_.aktiivinenKuntailmoitus.nonEmpty).map(ValpasMassaluovutusEiOppivelvollisuuttaSuorittavaOppija.apply)
               // Rikastetaan oppijat oppivelvollisuustiedoilla
               withOppivelvollisuustiedot(oppijat, application)
             }
@@ -65,7 +65,7 @@ case class ValpasEiOppivelvollisuuttaSuorittavatQuery(
             .haeKunnanPerusteellaIlmanOikeustarkastusta(kunta)
             .left.map(_.errorString.getOrElse("Tuntematon virhe"))
             .map { tulos =>
-              val oppijat = tulos.eiOppivelvollisuuttaSuorittavat.map(ValpasMassaluovutusOppija.apply)
+              val oppijat = tulos.eiOppivelvollisuuttaSuorittavat.map(ValpasMassaluovutusEiOppivelvollisuuttaSuorittavaOppija.apply)
               // Rikastetaan oppijat oppivelvollisuustiedoilla
               withOppivelvollisuustiedot(oppijat, application)
             }

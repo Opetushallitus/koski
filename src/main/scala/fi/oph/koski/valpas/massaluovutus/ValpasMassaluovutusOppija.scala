@@ -8,25 +8,83 @@ import fi.oph.koski.valpas.oppija.ValpasKuntailmoitusSuppeatTiedot
 import fi.oph.koski.valpas.rouhinta.{RouhintaOpiskeluoikeus, ValpasRouhintaOppivelvollinen}
 import fi.oph.koski.valpas.valpasrepository.ValpasOppivelvollisuudenKeskeytys
 
-case class ValpasMassaluovutusOppija(
+trait ValpasMassaluovutusOppija {
+  def oppijanumero: ValpasHenkilö.Oid
+  def kaikkiOidit: Option[Seq[ValpasHenkilö.Oid]]
+  def etunimet: String
+  def sukunimi: String
+  def syntymäaika: Option[LocalDate]
+  def hetu: Option[String]
+  def viimeisinOppivelvollisuudenSuorittamiseenKelpaavaOpiskeluoikeus: Option[ValpasMassaluovutusOpiskeluoikeus]
+  def oppivelvollisuudenKeskeytys: Seq[ValpasMassaluovutusOppivelvollisuudenKeskeytys]
+  def vainOppijanumerorekisterissä: Boolean
+  def aktiivinenKuntailmoitus: Option[ValpasMassaluovutusKuntailmoitus]
+  def oikeusMaksuttomaanKoulutukseenVoimassaAsti: Option[LocalDate]
+  def kotikuntaSuomessaAlkaen: Option[LocalDate]
+}
+
+case class ValpasMassaluovutusOppivelvollinenOppija(
   oppijanumero: ValpasHenkilö.Oid,
   kaikkiOidit: Option[Seq[ValpasHenkilö.Oid]],
   etunimet: String,
   sukunimi: String,
   syntymäaika: Option[LocalDate],
   hetu: Option[String],
-  aktiivisetOppivelvollisuudenSuorittamiseenKelpaavatOpiskeluoikeudet: Option[Seq[ValpasMassaluovutusOpiskeluoikeus]] = None,
+  aktiivisetOppivelvollisuudenSuorittamiseenKelpaavatOpiskeluoikeudet: Seq[ValpasMassaluovutusOpiskeluoikeus],
   viimeisinOppivelvollisuudenSuorittamiseenKelpaavaOpiskeluoikeus: Option[ValpasMassaluovutusOpiskeluoikeus],
   oppivelvollisuudenKeskeytys: Seq[ValpasMassaluovutusOppivelvollisuudenKeskeytys],
   vainOppijanumerorekisterissä: Boolean,
   aktiivinenKuntailmoitus: Option[ValpasMassaluovutusKuntailmoitus],
   oikeusMaksuttomaanKoulutukseenVoimassaAsti: Option[LocalDate],
   kotikuntaSuomessaAlkaen: Option[LocalDate]
-)
+) extends ValpasMassaluovutusOppija
 
-object ValpasMassaluovutusOppija {
-  def apply(oppivelvollinen: ValpasRouhintaOppivelvollinen): ValpasMassaluovutusOppija = {
-    ValpasMassaluovutusOppija(
+object ValpasMassaluovutusOppivelvollinenOppija {
+  def apply(
+    oppivelvollinen: ValpasRouhintaOppivelvollinen,
+    aktiivisetOpiskeluoikeudet: Seq[RouhintaOpiskeluoikeus]
+  ): ValpasMassaluovutusOppivelvollinenOppija = ValpasMassaluovutusOppivelvollinenOppija(
+    oppijanumero = oppivelvollinen.oppijanumero,
+    kaikkiOidit = oppivelvollinen.kaikkiOidit,
+    etunimet = oppivelvollinen.etunimet,
+    sukunimi = oppivelvollinen.sukunimi,
+    syntymäaika = oppivelvollinen.syntymäaika,
+    hetu = oppivelvollinen.hetu,
+    aktiivisetOppivelvollisuudenSuorittamiseenKelpaavatOpiskeluoikeudet = aktiivisetOpiskeluoikeudet
+      .map(ValpasMassaluovutusOpiskeluoikeus.apply),
+    viimeisinOppivelvollisuudenSuorittamiseenKelpaavaOpiskeluoikeus =
+      oppivelvollinen
+        .viimeisinOppivelvollisuudenSuorittamiseenKelpaavaOpiskeluoikeus
+        .map(ValpasMassaluovutusOpiskeluoikeus.apply),
+    oppivelvollisuudenKeskeytys = oppivelvollinen
+      .oppivelvollisuudenKeskeytys
+      .map(ValpasMassaluovutusOppivelvollisuudenKeskeytys.apply),
+    vainOppijanumerorekisterissä = oppivelvollinen.vainOppijanumerorekisterissä,
+    aktiivinenKuntailmoitus = oppivelvollinen.aktiivinenKuntailmoitus.map(ValpasMassaluovutusKuntailmoitus.apply),
+    oikeusMaksuttomaanKoulutukseenVoimassaAsti = None,
+    kotikuntaSuomessaAlkaen = None
+  )
+}
+
+
+case class ValpasMassaluovutusEiOppivelvollisuuttaSuorittavaOppija(
+  oppijanumero: ValpasHenkilö.Oid,
+  kaikkiOidit: Option[Seq[ValpasHenkilö.Oid]],
+  etunimet: String,
+  sukunimi: String,
+  syntymäaika: Option[LocalDate],
+  hetu: Option[String],
+  viimeisinOppivelvollisuudenSuorittamiseenKelpaavaOpiskeluoikeus: Option[ValpasMassaluovutusOpiskeluoikeus],
+  oppivelvollisuudenKeskeytys: Seq[ValpasMassaluovutusOppivelvollisuudenKeskeytys],
+  vainOppijanumerorekisterissä: Boolean,
+  aktiivinenKuntailmoitus: Option[ValpasMassaluovutusKuntailmoitus],
+  oikeusMaksuttomaanKoulutukseenVoimassaAsti: Option[LocalDate],
+  kotikuntaSuomessaAlkaen: Option[LocalDate]
+) extends ValpasMassaluovutusOppija
+
+object ValpasMassaluovutusEiOppivelvollisuuttaSuorittavaOppija {
+  def apply(oppivelvollinen: ValpasRouhintaOppivelvollinen): ValpasMassaluovutusEiOppivelvollisuuttaSuorittavaOppija =
+    ValpasMassaluovutusEiOppivelvollisuuttaSuorittavaOppija(
       oppijanumero = oppivelvollinen.oppijanumero,
       kaikkiOidit = oppivelvollinen.kaikkiOidit,
       etunimet = oppivelvollinen.etunimet,
@@ -34,34 +92,17 @@ object ValpasMassaluovutusOppija {
       syntymäaika = oppivelvollinen.syntymäaika,
       hetu = oppivelvollinen.hetu,
       viimeisinOppivelvollisuudenSuorittamiseenKelpaavaOpiskeluoikeus =
-        oppivelvollinen.viimeisinOppivelvollisuudenSuorittamiseenKelpaavaOpiskeluoikeus.map(ValpasMassaluovutusOpiskeluoikeus.apply),
-      oppivelvollisuudenKeskeytys = oppivelvollinen.oppivelvollisuudenKeskeytys.map(ValpasMassaluovutusOppivelvollisuudenKeskeytys.apply),
+        oppivelvollinen
+          .viimeisinOppivelvollisuudenSuorittamiseenKelpaavaOpiskeluoikeus
+          .map(ValpasMassaluovutusOpiskeluoikeus.apply),
+      oppivelvollisuudenKeskeytys = oppivelvollinen
+        .oppivelvollisuudenKeskeytys
+        .map(ValpasMassaluovutusOppivelvollisuudenKeskeytys.apply),
       vainOppijanumerorekisterissä = oppivelvollinen.vainOppijanumerorekisterissä,
       aktiivinenKuntailmoitus = oppivelvollinen.aktiivinenKuntailmoitus.map(ValpasMassaluovutusKuntailmoitus.apply),
       oikeusMaksuttomaanKoulutukseenVoimassaAsti = None,
       kotikuntaSuomessaAlkaen = None
     )
-  }
-
-  def apply(oppivelvollinen: ValpasRouhintaOppivelvollinen, aktiivisetOpiskeluoikeudet: Seq[RouhintaOpiskeluoikeus]): ValpasMassaluovutusOppija = {
-    ValpasMassaluovutusOppija(
-      oppijanumero = oppivelvollinen.oppijanumero,
-      kaikkiOidit = oppivelvollinen.kaikkiOidit,
-      etunimet = oppivelvollinen.etunimet,
-      sukunimi = oppivelvollinen.sukunimi,
-      syntymäaika = oppivelvollinen.syntymäaika,
-      hetu = oppivelvollinen.hetu,
-      aktiivisetOppivelvollisuudenSuorittamiseenKelpaavatOpiskeluoikeudet =
-        Some(aktiivisetOpiskeluoikeudet.map(ValpasMassaluovutusOpiskeluoikeus.apply)),
-      viimeisinOppivelvollisuudenSuorittamiseenKelpaavaOpiskeluoikeus =
-        oppivelvollinen.viimeisinOppivelvollisuudenSuorittamiseenKelpaavaOpiskeluoikeus.map(ValpasMassaluovutusOpiskeluoikeus.apply),
-      oppivelvollisuudenKeskeytys = oppivelvollinen.oppivelvollisuudenKeskeytys.map(ValpasMassaluovutusOppivelvollisuudenKeskeytys.apply),
-      vainOppijanumerorekisterissä = oppivelvollinen.vainOppijanumerorekisterissä,
-      aktiivinenKuntailmoitus = oppivelvollinen.aktiivinenKuntailmoitus.map(ValpasMassaluovutusKuntailmoitus.apply),
-      oikeusMaksuttomaanKoulutukseenVoimassaAsti = None,
-      kotikuntaSuomessaAlkaen = None
-    )
-  }
 }
 
 case class ValpasMassaluovutusOpiskeluoikeus(

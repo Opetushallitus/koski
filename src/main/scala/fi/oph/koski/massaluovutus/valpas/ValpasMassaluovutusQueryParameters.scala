@@ -7,7 +7,7 @@ import fi.oph.koski.log.Logging
 import fi.oph.koski.massaluovutus.MassaluovutusQueryParameters
 import fi.oph.koski.oppivelvollisuustieto.Oppivelvollisuustiedot
 import fi.oph.koski.util.Timing
-import fi.oph.koski.valpas.massaluovutus.ValpasMassaluovutusOppija
+import fi.oph.koski.valpas.massaluovutus.{ValpasMassaluovutusEiOppivelvollisuuttaSuorittavaOppija, ValpasMassaluovutusOppija, ValpasMassaluovutusOppivelvollinenOppija}
 import fi.oph.koski.valpas.oppija.ValpasAccessResolver
 import fi.oph.koski.valpas.valpasuser.ValpasSession
 
@@ -53,10 +53,16 @@ trait ValpasMassaluovutusQueryParameters extends MassaluovutusQueryParameters wi
           .get(oppija.oppijanumero)
           .map(_.kotikuntaSuomessaAlkaen)
 
-        oppija.copy(
-          oikeusMaksuttomaanKoulutukseenVoimassaAsti = oikeusMaksuttomuuteenPäättyy,
-          kotikuntaSuomessaAlkaen = kotikuntaSuomessaAlkaen
-        )
+        oppija match {
+          case o: ValpasMassaluovutusOppivelvollinenOppija => o.copy(
+            oikeusMaksuttomaanKoulutukseenVoimassaAsti = oikeusMaksuttomuuteenPäättyy,
+            kotikuntaSuomessaAlkaen = kotikuntaSuomessaAlkaen
+          )
+          case o: ValpasMassaluovutusEiOppivelvollisuuttaSuorittavaOppija => o.copy(
+            oikeusMaksuttomaanKoulutukseenVoimassaAsti = oikeusMaksuttomuuteenPäättyy,
+            kotikuntaSuomessaAlkaen = kotikuntaSuomessaAlkaen
+          )
+        }
       }
     }
   }
