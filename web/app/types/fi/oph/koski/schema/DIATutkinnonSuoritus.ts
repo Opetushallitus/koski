@@ -16,14 +16,14 @@ export type DIATutkinnonSuoritus = {
   tila?: Koodistokoodiviite<'suorituksentila', string>
   suorituskieli: Koodistokoodiviite<'kieli', string>
   tutkintoaineidenKokonaispistemäärä?: number
-  kokonaispistemäärästäJohdettuKeskiarvo?: number
-  todistuksellaNäkyvätLisätiedot?: LocalizedString
   kokonaispistemäärä?: number
   koulutusmoduuli: DIATutkinto
   toimipiste: OrganisaatioWithOid
   lukukausisuoritustenKokonaispistemäärä?: number
   osasuoritukset?: Array<DIAOppiaineenTutkintovaiheenSuoritus>
   vahvistus?: HenkilövahvistusPaikkakunnalla
+  kokonaispistemäärästäJohdettuKeskiarvo?: number
+  todistuksellaNäkyvätLisätiedot?: LocalizedString
 }
 
 export const DIATutkinnonSuoritus = (o: {
@@ -31,14 +31,14 @@ export const DIATutkinnonSuoritus = (o: {
   tila?: Koodistokoodiviite<'suorituksentila', string>
   suorituskieli: Koodistokoodiviite<'kieli', string>
   tutkintoaineidenKokonaispistemäärä?: number
-  kokonaispistemäärästäJohdettuKeskiarvo?: number
-  todistuksellaNäkyvätLisätiedot?: LocalizedString
   kokonaispistemäärä?: number
   koulutusmoduuli?: DIATutkinto
   toimipiste: OrganisaatioWithOid
   lukukausisuoritustenKokonaispistemäärä?: number
   osasuoritukset?: Array<DIAOppiaineenTutkintovaiheenSuoritus>
   vahvistus?: HenkilövahvistusPaikkakunnalla
+  kokonaispistemäärästäJohdettuKeskiarvo?: number
+  todistuksellaNäkyvätLisätiedot?: LocalizedString
 }): DIATutkinnonSuoritus => ({
   tyyppi: Koodistokoodiviite({
     koodiarvo: 'diatutkintovaihe',

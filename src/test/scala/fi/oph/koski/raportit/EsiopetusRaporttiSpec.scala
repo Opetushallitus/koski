@@ -27,7 +27,7 @@ class EsiopetusRaporttiSpec extends AnyFreeSpec with Matchers with Raportointika
 
   override protected def beforeAll(): Unit = {
     super.beforeAll()
-    reloadRaportointikanta
+    reloadRaportointikanta()
   }
 
   "Esiopetuksen raportti" - {

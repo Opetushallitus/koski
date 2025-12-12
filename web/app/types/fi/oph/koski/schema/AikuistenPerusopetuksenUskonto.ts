@@ -1,6 +1,6 @@
-import { Koodistokoodiviite } from './Koodistokoodiviite'
-import { LocalizedString } from './LocalizedString'
 import { LaajuusVuosiviikkotunneissaTaiKursseissa } from './LaajuusVuosiviikkotunneissaTaiKursseissa'
+import { LocalizedString } from './LocalizedString'
+import { Koodistokoodiviite } from './Koodistokoodiviite'
 
 /**
  * Perusopetuksen oppiaineen tunnistetiedot
@@ -9,21 +9,21 @@ import { LaajuusVuosiviikkotunneissaTaiKursseissa } from './LaajuusVuosiviikkotu
  */
 export type AikuistenPerusopetuksenUskonto = {
   $class: 'fi.oph.koski.schema.AikuistenPerusopetuksenUskonto'
-  pakollinen: boolean
-  uskonnonOppimäärä?: Koodistokoodiviite<'uskonnonoppimaara', string>
   laajuus?: LaajuusVuosiviikkotunneissaTaiKursseissa
   kuvaus?: LocalizedString
   perusteenDiaarinumero?: string
   tunniste: Koodistokoodiviite<'koskioppiaineetyleissivistava', 'KT'>
+  pakollinen: boolean
+  uskonnonOppimäärä?: Koodistokoodiviite<'uskonnonoppimaara', string>
 }
 
 export const AikuistenPerusopetuksenUskonto = (o: {
-  pakollinen: boolean
-  uskonnonOppimäärä?: Koodistokoodiviite<'uskonnonoppimaara', string>
   laajuus?: LaajuusVuosiviikkotunneissaTaiKursseissa
   kuvaus?: LocalizedString
   perusteenDiaarinumero?: string
   tunniste?: Koodistokoodiviite<'koskioppiaineetyleissivistava', 'KT'>
+  pakollinen: boolean
+  uskonnonOppimäärä?: Koodistokoodiviite<'uskonnonoppimaara', string>
 }): AikuistenPerusopetuksenUskonto => ({
   $class: 'fi.oph.koski.schema.AikuistenPerusopetuksenUskonto',
   tunniste: Koodistokoodiviite({

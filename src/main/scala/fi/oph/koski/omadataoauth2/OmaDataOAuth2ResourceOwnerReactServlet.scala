@@ -45,6 +45,8 @@ class OmaDataOAuth2ResourceOwnerReactServlet(implicit val application: KoskiAppl
               loginAndRedirectToSelf(lang)
             case Right(paramInfo) if isAuthenticated =>
               landerHtml(nonce)
+            case Right(_) =>
+              landerHtml(nonce)
           }
       }
     }

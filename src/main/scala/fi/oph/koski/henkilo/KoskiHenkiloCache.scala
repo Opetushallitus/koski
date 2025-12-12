@@ -33,7 +33,7 @@ class KoskiHenkilöCache(val db: DB) extends Logging with DatabaseExecutionConte
   private def addMasterIfNecessary(master: Option[OppijaHenkilö]) =
     master.map { m =>
       addHenkilö(m.oid, toHenkilöRow(m, None))
-    }.getOrElse(DBIO.successful(Unit))
+    }.getOrElse(DBIO.successful(()))
 
   private def addHenkilö(oid: String, row: HenkilöRow) = {
     Henkilöt.filter(_.oid === oid).result.map(_.toList).flatMap {
@@ -46,4 +46,3 @@ class KoskiHenkilöCache(val db: DB) extends Logging with DatabaseExecutionConte
 
   private def toHenkilöRow(data: OppijaHenkilö, masterOid: Option[String]) = HenkilöRow(data.oid, data.sukunimi, data.etunimet, data.kutsumanimi, masterOid)
 }
-

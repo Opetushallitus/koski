@@ -203,13 +203,13 @@ object TypescriptTypes {
       options.exportClassNamesAs.toList.map(key => (key, ObjectType.ObjectDefaultsProperty(t.fullClassName)))
 
     def resolveKnownProps(o: ObjectType): Map[String, Any] =
-      o.properties
-        .mapValues {
-          case ref: ClassRef => ref.resolve(allTypes).getOrElse(ref)
-          case p: TypeModel => p
-        }
-        .mapValues(_.unambigiousDefaultValue)
-        .flatMap { case (key, defaults) => defaults.map(d => (key, d)) }
+      o.properties.iterator.flatMap {
+        case (key, ref: ClassRef) =>
+          val resolved: TypeModel = ref.resolve(allTypes).getOrElse(ref)
+          resolved.unambigiousDefaultValue.map(key -> _)
+        case (key, model: TypeModel) =>
+          model.unambigiousDefaultValue.map(key -> _)
+      }.toMap
 
     def valueToTs(value: Any, assignToObject: Option[String] = None): String = value match {
       case obj: Map[_, _] =>

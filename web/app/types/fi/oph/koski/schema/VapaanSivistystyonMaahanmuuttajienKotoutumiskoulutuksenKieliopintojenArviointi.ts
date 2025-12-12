@@ -13,10 +13,10 @@ export type VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenKieliopintoj
     päivä: string
     luetunYmmärtämisenTaitotaso?: VSTKehittyvänKielenTaitotasonArviointi
     arvosana: Koodistokoodiviite<'arviointiasteikkovst', 'Hyväksytty'>
-    puhumisenTaitotaso?: VSTKehittyvänKielenTaitotasonArviointi
-    hyväksytty?: boolean
     kirjoittamisenTaitotaso?: VSTKehittyvänKielenTaitotasonArviointi
     kuullunYmmärtämisenTaitotaso?: VSTKehittyvänKielenTaitotasonArviointi
+    puhumisenTaitotaso?: VSTKehittyvänKielenTaitotasonArviointi
+    hyväksytty?: boolean
   }
 
 export const VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenKieliopintojenArviointi =
@@ -24,10 +24,10 @@ export const VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenKieliopinto
     päivä: string
     luetunYmmärtämisenTaitotaso?: VSTKehittyvänKielenTaitotasonArviointi
     arvosana?: Koodistokoodiviite<'arviointiasteikkovst', 'Hyväksytty'>
-    puhumisenTaitotaso?: VSTKehittyvänKielenTaitotasonArviointi
-    hyväksytty?: boolean
     kirjoittamisenTaitotaso?: VSTKehittyvänKielenTaitotasonArviointi
     kuullunYmmärtämisenTaitotaso?: VSTKehittyvänKielenTaitotasonArviointi
+    puhumisenTaitotaso?: VSTKehittyvänKielenTaitotasonArviointi
+    hyväksytty?: boolean
   }): VapaanSivistystyönMaahanmuuttajienKotoutumiskoulutuksenKieliopintojenArviointi => ({
     arvosana: Koodistokoodiviite({
       koodiarvo: 'Hyväksytty',

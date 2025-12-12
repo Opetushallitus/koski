@@ -902,7 +902,7 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
           implicit val session: KoskiSpecificSession = KoskiSpecificSession.systemUser
           implicit val accessType = AccessType.write
           val oppija = Oppija(defaultHenkilö, List(opiskeluoikeus))
-          mockKoskiValidator(KoskiApplicationForTests.config).updateFieldsAndValidateAsJson(oppija).left.get should equal (KoskiErrorCategory.badRequest.validation.rakenne.perusteEiVoimassa())
+          mockKoskiValidator(KoskiApplicationForTests.config).updateFieldsAndValidateAsJson(oppija).swap.toOption.get should equal (KoskiErrorCategory.badRequest.validation.rakenne.perusteEiVoimassa())
         }
 
         "Sallitaan siirto ja täydennetään perusteen nimi oikein perusteen siirtymäajalla päättyneelle opiskeluoikeudelle" in {
@@ -921,7 +921,7 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
 
           validatedOppija.isRight should equal (true)
 
-          validatedOppija.right.get.opiskeluoikeudet(0).suoritukset(0).koulutusmoduuli.asInstanceOf[PerusteenNimellinen].perusteenNimi.get.get("fi") should be("Liiketalouden perustutkinto - päättymisajan testi 4")
+          validatedOppija.toOption.get.opiskeluoikeudet(0).suoritukset(0).koulutusmoduuli.asInstanceOf[PerusteenNimellinen].perusteenNimi.get.get("fi") should be("Liiketalouden perustutkinto - päättymisajan testi 4")
         }
 
         "Ei sallita siirtoa perusteen siirtymäajan jälkeen päättyneelle opiskeluoikeudelle" in {
@@ -936,7 +936,7 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
           implicit val accessType = AccessType.write
           val oppija = Oppija(defaultHenkilö, List(opiskeluoikeus))
 
-          mockKoskiValidator(KoskiApplicationForTests.config).updateFieldsAndValidateAsJson(oppija).left.get should equal (KoskiErrorCategory.badRequest.validation.rakenne.perusteEiVoimassa())
+          mockKoskiValidator(KoskiApplicationForTests.config).updateFieldsAndValidateAsJson(oppija).swap.toOption.get should equal (KoskiErrorCategory.badRequest.validation.rakenne.perusteEiVoimassa())
         }
 
         "Sallitaan siirto ja täydennetään perusteen nimi oikein perusteen voimassaoloaikana päättyneelle opiskeluoikeudelle, vaikka samalla diaarinumerolla löytyy luontipäivältään uudempi mutta päättynyt peruste" in {
@@ -955,7 +955,7 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
 
           validatedOppija.isRight should equal (true)
 
-          validatedOppija.right.get.opiskeluoikeudet(0).suoritukset(0).koulutusmoduuli.asInstanceOf[PerusteenNimellinen].perusteenNimi.get.get("fi") should be("Liiketalouden perustutkinto - päättymisajan testi 3")
+          validatedOppija.toOption.get.opiskeluoikeudet(0).suoritukset(0).koulutusmoduuli.asInstanceOf[PerusteenNimellinen].perusteenNimi.get.get("fi") should be("Liiketalouden perustutkinto - päättymisajan testi 3")
         }
 
         "Sallitaan siirto ja läpäistään validaatio, vaikka samalla diaarinumerolla löytyy monta perustetta jotka ovat voimassa mutta kaikkiin ei validoidu" in {
@@ -976,7 +976,7 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
 
           // Validoituu perusteeseen "Liiketalouden perustutkinto - päättymisajan testi 3", mutta ei perusteeseen "Liiketalouden perustutkinto - päättymisajan testi 2".
           // Kuitenkin perusteen nimi valitaan myöhemmän luotu-timestampin sisältävältä perusteelta "Liiketalouden perustutkinto - päättymisajan testi 2".
-          validatedOppija.right.get.opiskeluoikeudet(0).suoritukset(0).koulutusmoduuli.asInstanceOf[PerusteenNimellinen].perusteenNimi.get.get("fi") should be("Liiketalouden perustutkinto - päättymisajan testi 2")
+          validatedOppija.toOption.get.opiskeluoikeudet(0).suoritukset(0).koulutusmoduuli.asInstanceOf[PerusteenNimellinen].perusteenNimi.get.get("fi") should be("Liiketalouden perustutkinto - päättymisajan testi 2")
         }
 
         "Ei sallita siirtoa perusteen voimassaolon jälkeen päättyneelle opiskeluoikeudelle" in {
@@ -989,7 +989,7 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
           implicit val session: KoskiSpecificSession = KoskiSpecificSession.systemUser
           implicit val accessType = AccessType.write
           val oppija = Oppija(defaultHenkilö, List(opiskeluoikeus))
-          mockKoskiValidator(KoskiApplicationForTests.config).updateFieldsAndValidateAsJson(oppija).left.get should equal (KoskiErrorCategory.badRequest.validation.rakenne.perusteEiVoimassa())
+          mockKoskiValidator(KoskiApplicationForTests.config).updateFieldsAndValidateAsJson(oppija).swap.toOption.get should equal (KoskiErrorCategory.badRequest.validation.rakenne.perusteEiVoimassa())
         }
 
         "Ei validoida perusteen voimassaoloa tai rakennetta, jos diaarinumero löytyy koodistosta" in {
@@ -1019,7 +1019,7 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
           val oppija = Oppija(defaultHenkilö, List(opiskeluoikeus))
           val validatedOppija = mockKoskiValidator(KoskiApplicationForTests.config).updateFieldsAndValidateAsJson(oppija)
           validatedOppija.isRight should equal (true)
-          validatedOppija.right.get.opiskeluoikeudet(0).suoritukset(0).koulutusmoduuli.asInstanceOf[PerusteenNimellinen].perusteenNimi.get.get("fi") should be("Liiketalouden perustutkinto - päättymisajan testi 5")
+          validatedOppija.toOption.get.opiskeluoikeudet(0).suoritukset(0).koulutusmoduuli.asInstanceOf[PerusteenNimellinen].perusteenNimi.get.get("fi") should be("Liiketalouden perustutkinto - päättymisajan testi 5")
         }
 
         "Ei sallita siirtoa tulevaisuudessa alkavalle opiskeluoikeudelle, jos peruste ei ole voimassa opiskeluoikeuden alkamisen päivänä" in {
@@ -1032,7 +1032,7 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
           implicit val session: KoskiSpecificSession = KoskiSpecificSession.systemUser
           implicit val accessType = AccessType.write
           val oppija = Oppija(defaultHenkilö, List(opiskeluoikeus))
-          mockKoskiValidator(KoskiApplicationForTests.config).updateFieldsAndValidateAsJson(oppija).left.get should equal (KoskiErrorCategory.badRequest.validation.rakenne.perusteEiVoimassa())
+          mockKoskiValidator(KoskiApplicationForTests.config).updateFieldsAndValidateAsJson(oppija).swap.toOption.get should equal (KoskiErrorCategory.badRequest.validation.rakenne.perusteEiVoimassa())
         }
       }
     }

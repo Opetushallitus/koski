@@ -13,11 +13,11 @@ export type ValtionhallinnonKielitutkinnonSuullisenKielitaidonSuoritus = {
   $class: 'fi.oph.koski.schema.ValtionhallinnonKielitutkinnonSuullisenKielitaidonSuoritus'
   arviointi?: Array<ValtionhallinnonKielitutkinnonArviointi>
   tyyppi: Koodistokoodiviite<'suorituksentyyppi', 'valtionhallinnonkielitaito'>
-  tila?: Koodistokoodiviite<'suorituksentila', string>
-  alkamispäivä?: string
   tutkintopäiväTodistuksella?: string
   koulutusmoduuli: ValtionhallinnonKielitutkinnonSuullinenKielitaito
   osasuoritukset?: Array<ValtionhallinnonKielitutkinnonSuullisenKielitaidonOsakokeenSuoritus>
+  tila?: Koodistokoodiviite<'suorituksentila', string>
+  alkamispäivä?: string
 }
 
 export const ValtionhallinnonKielitutkinnonSuullisenKielitaidonSuoritus = (
@@ -27,11 +27,11 @@ export const ValtionhallinnonKielitutkinnonSuullisenKielitaidonSuoritus = (
       'suorituksentyyppi',
       'valtionhallinnonkielitaito'
     >
-    tila?: Koodistokoodiviite<'suorituksentila', string>
-    alkamispäivä?: string
     tutkintopäiväTodistuksella?: string
     koulutusmoduuli?: ValtionhallinnonKielitutkinnonSuullinenKielitaito
     osasuoritukset?: Array<ValtionhallinnonKielitutkinnonSuullisenKielitaidonOsakokeenSuoritus>
+    tila?: Koodistokoodiviite<'suorituksentila', string>
+    alkamispäivä?: string
   } = {}
 ): ValtionhallinnonKielitutkinnonSuullisenKielitaidonSuoritus => ({
   tyyppi: Koodistokoodiviite({

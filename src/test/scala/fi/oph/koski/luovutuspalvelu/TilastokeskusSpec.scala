@@ -108,7 +108,7 @@ class TilastokeskusSpec extends AnyFreeSpec with KoskiHttpSpec with Opiskeluoike
 
     "Kyselyparametrit" - {
       "päättymispäivämäärä" in {
-        resetFixtures
+        resetFixtures()
         setup(päättymispäivällä(defaultOpiskeluoikeus, date(2016,1,9)), KoskiSpecificMockOppijat.eero)
         setup(päättymispäivällä(defaultOpiskeluoikeus, date(2015, 8, 9)), KoskiSpecificMockOppijat.teija)
 
@@ -123,7 +123,7 @@ class TilastokeskusSpec extends AnyFreeSpec with KoskiHttpSpec with Opiskeluoike
       }
 
       "alkamispäivämäärä" in {
-        resetFixtures
+        resetFixtures()
         setup(makeOpiskeluoikeus(date(2100, 1, 2)), KoskiSpecificMockOppijat.eero)
         setup(makeOpiskeluoikeus(date(2110, 1, 1)), KoskiSpecificMockOppijat.teija)
         val alkamispäivät = performQuery("?v=1&opiskeluoikeusAlkanutAikaisintaan=2100-01-02&opiskeluoikeusAlkanutViimeistään=2100-01-02")
@@ -133,7 +133,7 @@ class TilastokeskusSpec extends AnyFreeSpec with KoskiHttpSpec with Opiskeluoike
 
 
       "opiskeluoikeuden tyypit" in {
-        resetFixtures
+        resetFixtures()
         setup(makeOpiskeluoikeus(date(2100, 1, 2)), KoskiSpecificMockOppijat.eero)
         performQuery("?v=1&opiskeluoikeusAlkanutAikaisintaan=2100-01-02&opiskeluoikeudenTyyppi=ammatillinenkoulutus").flatMap(_.opiskeluoikeudet).length should equal(1)
         performQuery("?v=1&opiskeluoikeusAlkanutAikaisintaan=2100-01-02&opiskeluoikeudenTyyppi=perusopetus").flatMap(_.opiskeluoikeudet).length should equal(0)
@@ -215,7 +215,7 @@ class TilastokeskusSpec extends AnyFreeSpec with KoskiHttpSpec with Opiskeluoike
       }
 
       "suorituksen tyyppi" in {
-        resetFixtures
+        resetFixtures()
         val opiskeluoikeudet = performQuery("?v=1&suorituksenTyyppi=ammatillinentutkinto").map(_.opiskeluoikeudet).flatten
         opiskeluoikeudet.length should equal (opiskeluoikeudet.filter(_.suoritukset.exists(_.tyyppi.koodiarvo == "ammatillinentutkinto")).length)
       }

@@ -23,7 +23,7 @@ class PerusopetukseenValmistavanRaporttiSpec extends AnyFreeSpec with Matchers w
 
   override protected def beforeAll(): Unit = {
     super.beforeAll()
-    reloadRaportointikanta
+    reloadRaportointikanta()
   }
 
   private val defaultExpectedValmistavaRow: PerusopetukseenValmistavanRaporttiStableFields = PerusopetukseenValmistavanRaporttiStableFields(

@@ -44,7 +44,7 @@ class TuvaPerusopetuksenOppijamäärätRaporttiSpec extends AnyFreeSpec with Mat
     rikkinäisetOpiskeluoikeusOidit = rikkinäisetTestiopiskeluoikeudet.map(create).map(_.getOrElse(throw new Error))
 
     application.perustiedotIndexer.sync(refresh = true)
-    reloadRaportointikanta
+    reloadRaportointikanta()
   }
 
   private val ehjätTestiopiskeluoikeudet =

@@ -26,7 +26,7 @@ class YtlSpec
 
   "YTL rajapinta" - {
     "Yhden oppijan hakeminen hetulla onnistuu ja tuottaa auditlog viestin" in {
-      AuditLogTester.clearMessages
+      AuditLogTester.clearMessages()
       val hetut = List(
         KoskiSpecificMockOppijat.amis
       ).map(_.hetu.get)
@@ -44,7 +44,7 @@ class YtlSpec
     }
 
     "Yhden oppijan hakeminen oidilla onnistuu ja tuottaa auditlog viestin" in {
-      AuditLogTester.clearMessages
+      AuditLogTester.clearMessages()
       val oidit = List(
         KoskiSpecificMockOppijat.amis
       ).map(_.oid)
@@ -61,7 +61,7 @@ class YtlSpec
     }
 
     "Saman oppijan hakeminen hetulla ja oidilla palauttaa opiskeluoikeudet vain kerran" in {
-      AuditLogTester.clearMessages
+      AuditLogTester.clearMessages()
       val hetut = List(
         KoskiSpecificMockOppijat.amis
       ).map(_.hetu.get)
@@ -368,7 +368,7 @@ class YtlSpec
     }
 
     "Yhden oppijan, jolla useampi opiskeluoikeus, hakeminen oidilla onnistuu, tuottaa auditlog viestin ja palauttaa oikeat tiedot" in {
-      AuditLogTester.clearMessages
+      AuditLogTester.clearMessages()
       val oidit = List(
         KoskiSpecificMockOppijat.maksuttomuuttaPidennetty2
       ).map(_.oid)
@@ -759,7 +759,7 @@ class YtlSpec
     }
 
     "Peruskoulun oppijan hakeminen tuottaa tyhjän vastauksen, koska peruskoulun tietoja ei YTL:lle luovuteta" in {
-      AuditLogTester.clearMessages
+      AuditLogTester.clearMessages()
       val hetut = List(
         KoskiSpecificMockOppijat.ysiluokkalainen
       ).map(_.hetu.get)

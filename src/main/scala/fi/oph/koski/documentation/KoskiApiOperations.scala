@@ -12,6 +12,8 @@ import fi.oph.koski.koskiuser.MockUsers
 import fi.oph.koski.schema.{HenkilötiedotJaOid, Opiskeluoikeus, Oppija}
 import org.json4s.{JField, JString}
 import org.json4s.JsonAST.JObject
+import fi.oph.koski.xml.NodeSeqImplicits._
+
 
 object KoskiApiOperations extends ApiGroup {
   object koodisto extends ApiGroup {

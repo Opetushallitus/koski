@@ -14,7 +14,7 @@ class OppijaValidationApiSpec extends AnyFreeSpec with KoskiHttpSpec with Opiske
 
   "Validation of stored data using the validation API" - {
     "Validate all - fast" in {
-      resetFixtures
+      resetFixtures()
       authGet("api/opiskeluoikeus/validate") {
         verifyResponseStatusOk()
         val results = JsonSerializer.parse[List[ValidationResult]](body)
@@ -23,7 +23,7 @@ class OppijaValidationApiSpec extends AnyFreeSpec with KoskiHttpSpec with Opiske
       }
     }
     "Validate all - with person and history data" in {
-      resetFixtures
+      resetFixtures()
       authGet("api/opiskeluoikeus/validate?henkilö=true&history=true") {
         verifyResponseStatusOk()
         val results = JsonSerializer.parse[List[ValidationResult]](body)

@@ -32,11 +32,11 @@ export const MediataiteenOpintotaso = (
     koodiarvo: 'mediataiteet',
     koodistoUri: 'taiteenperusopetustaiteenala'
   }),
-  $class: 'fi.oph.koski.schema.MediataiteenOpintotaso',
   tunniste: Koodistokoodiviite({
     koodiarvo: '999907',
     koodistoUri: 'koulutus'
   }),
+  $class: 'fi.oph.koski.schema.MediataiteenOpintotaso',
   ...o
 })
 

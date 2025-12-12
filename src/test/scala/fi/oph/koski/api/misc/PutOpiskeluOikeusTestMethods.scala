@@ -102,7 +102,7 @@ trait PutOpiskeluoikeusTestMethods[Oikeus <: Opiskeluoikeus] extends Opiskeluoik
   }
 
   def putHenkilö[A](henkilö: Henkilö)(f: => A): Unit = {
-    putOppija(JsonSerializer.serializeWithRoot(SchemaValidatingExtractor.extract[Oppija](makeOppija(opiskeluOikeudet = List(defaultOpiskeluoikeus))(tag)).right.get.copy(henkilö = henkilö)))(f)
+    putOppija(JsonSerializer.serializeWithRoot(SchemaValidatingExtractor.extract[Oppija](makeOppija(opiskeluOikeudet = List(defaultOpiskeluoikeus))(tag)).toOption.get.copy(henkilö = henkilö)))(f)
   }
 
   def putOppija[A](oppija: JValue, headers: Headers = authHeaders() ++ jsonContent)(f: => A): A = {
@@ -129,7 +129,7 @@ trait PutOpiskeluoikeusTestMethods[Oikeus <: Opiskeluoikeus] extends Opiskeluoik
   }
 
   def createOpiskeluoikeus[T <: Opiskeluoikeus](oppija: Henkilö, opiskeluoikeus: T, resetFixtures: Boolean = false, user: UserWithPassword = defaultUser): T = {
-    if (resetFixtures) this.resetFixtures
+    if (resetFixtures) this.resetFixtures()
     createOrUpdate(oppija, opiskeluoikeus, user = user).asInstanceOf[T]
   }
 

@@ -4,7 +4,7 @@ import fi.oph.koski.json.{JsonSerializer, LegacyJsonSerialization}
 import fi.oph.koski.log.Logging
 import fi.oph.koski.schema.KoskiSchema
 import fi.oph.koski.schema.annotation.{Example, HiddenWhen, InfoDescription, InfoLinkTitle, InfoLinkUrl, MultiLineString, Scale, UnitOfMeasure}
-import fi.oph.scalaschema.annotation._
+import fi.oph.scalaschema.annotation.{EnumValue => _, _}
 import fi.oph.scalaschema.{Metadata, SerializationContext, Serializer}
 import org.json4s.JsonAST.{JObject, JString, JValue}
 import org.json4s.{Extraction, _}
@@ -14,7 +14,7 @@ object EditorModelSerializer extends Serializer[EditorModel] with Logging {
   def serializeNotWhen(o: NotWhen) = Serializer.serialize(o.serializableForm, SerializationContext(KoskiSchema.schemaFactory))
   def serializeHiddenWhen(o: HiddenWhen) = Serializer.serialize(o.serializableForm, SerializationContext(KoskiSchema.schemaFactory))
   def serializeModel(model: EditorModel) = serialize(LegacyJsonSerialization.jsonFormats)(model)
-  def serializeEnum(enum: EnumValue) = serializeEnumValue(enum)(LegacyJsonSerialization.jsonFormats)
+  def serializeEnum(enumValue: EnumValue) = serializeEnumValue(enumValue)(LegacyJsonSerialization.jsonFormats)
 
   override def deserialize(implicit format: Formats) = PartialFunction.empty
 

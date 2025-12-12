@@ -41,7 +41,13 @@ describe('Helsingin eurooppalainen koulu', function () {
 
         describe('Käyttöliittymän tila', function () {
           it('Lisää-nappi on enabloitu', function () {
-            expect(addOppija.isEnabled()).to.equal(true)
+            return wait
+              .until(function () {
+                return addOppija.isEnabled()
+              })()
+              .then(function () {
+                expect(addOppija.isEnabled()).to.equal(true)
+              })
           })
 
           it('Ei näytetä opintojen rahoitus -kenttää', function () {

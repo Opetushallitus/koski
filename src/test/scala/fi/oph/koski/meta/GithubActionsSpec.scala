@@ -9,7 +9,8 @@ import scala.io.Source
 class GithubActionsSpec extends AnyFreeSpec with Matchers {
   lazy val testPackages: Seq[String] = {
     def allSubdirs(dir: File): Seq[File] =
-      Option(dir.listFiles).getOrElse(Array.empty)
+      Option(dir.listFiles).toSeq
+        .flatten
         .filter(_.isDirectory)
         .flatMap(d => d +: allSubdirs(d))
 

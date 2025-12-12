@@ -47,7 +47,7 @@ class AmmatillinenOpiskelijavuositiedotRaporttiSpec
     ))) {
       verifyResponseStatusOk()
     }
-    reloadRaportointikanta
+    reloadRaportointikanta()
   }
 
   private lazy val raportointiDatabase = KoskiApplicationForTests.raportointiDatabase
