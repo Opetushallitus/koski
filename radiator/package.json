@@ -16,7 +16,7 @@
   "license": "ISC",
   "dependencies": {
     "dotenv": "^16.6.1",
-    "fp-ts": "^2.16.10",
+    "fp-ts": "^2.16.11",
     "tail": "^2.2.6",
     "ts-node": "^10.9.2"
   },
