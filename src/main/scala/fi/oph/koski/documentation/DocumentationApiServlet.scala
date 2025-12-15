@@ -128,6 +128,10 @@ class DocumentationApiServlet(application: KoskiApplication) extends KoskiSpecif
     QueryDocumentation.querySchemaJson
   }
 
+  get("/massaluovutus-oph-query.json") {
+    QueryDocumentation.ophQuerySchemaJson
+  }
+
   get("/valpas-massaluovutus-query.json") {
     QueryDocumentation.valpasQuerySchemaJson
   }

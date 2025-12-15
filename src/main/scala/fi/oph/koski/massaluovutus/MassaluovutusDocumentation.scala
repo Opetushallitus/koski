@@ -33,6 +33,9 @@ object QueryDocumentation extends Logging {
   lazy val querySchemaJson: JValue =
     SchemaToJson.toJsonSchema(schema.KoskiSchema.createSchema(classOf[QueryParametersWrapper]).asInstanceOf[ClassSchema])
 
+  lazy val ophQuerySchemaJson: JValue =
+    SchemaToJson.toJsonSchema(schema.KoskiSchema.createSchema(classOf[OphQueryParametersWrapper]).asInstanceOf[ClassSchema])
+
   lazy val valpasQuerySchemaJson: JValue =
     SchemaToJson.toJsonSchema(schema.KoskiSchema.createSchema(classOf[ValpasQueryParametersWrapper]).asInstanceOf[ClassSchema])
 
@@ -330,8 +333,11 @@ object QueryExamples {
 @Title("Massaluovutusrajapinnasta saatava vastaus")
 case class QueryResponseWrapper(` `: QueryResponse)
 
-@Title("Massaluovutusrajapintaan tehtävä kysely")
-case class QueryParametersWrapper(` `: KoskiMassaluovutusQueryParameters)
+@Title("Massaluovutusrajapintaan tehtävä kysely koulutuksenjärjestäjille")
+case class QueryParametersWrapper(` `: KoulutuksenjärjestäjienMassaluovutusQueryParameters)
+
+@Title("Massaluovutusrajapintaan tehtävä kysely Opetushallituksen palveluille")
+case class OphQueryParametersWrapper(` `: OpetushallituksenMassaluovutusQueryParameters)
 
 @Title("Valppaan massaluovutusrajapintaan tehtävä kysely")
 case class ValpasQueryParametersWrapper(` `: ValpasMassaluovutusQueryParameters)

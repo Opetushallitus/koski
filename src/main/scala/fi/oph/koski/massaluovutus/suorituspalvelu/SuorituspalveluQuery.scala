@@ -9,14 +9,14 @@ import fi.oph.koski.koskiuser.Session
 import fi.oph.koski.koskiuser.Rooli.{OPHKATSELIJA, OPHPAAKAYTTAJA}
 import fi.oph.koski.log._
 import fi.oph.koski.massaluovutus.suorituspalvelu.opiskeluoikeus.SupaOpiskeluoikeus
-import fi.oph.koski.massaluovutus.{KoskiMassaluovutusQueryParameters, MassaluovutusException, MassaluovutusQueryPriority, QueryResultWriter}
+import fi.oph.koski.massaluovutus.{MassaluovutusException, MassaluovutusQueryPriority, OpetushallituksenMassaluovutusQueryParameters, QueryResultWriter}
 import fi.oph.koski.schema.{KoskeenTallennettavaOpiskeluoikeus, KoskiSchema}
 
 import java.sql.Timestamp
 import java.time.LocalDateTime
 import scala.concurrent.duration.DurationInt
 
-trait SuorituspalveluQuery extends KoskiMassaluovutusQueryParameters with Logging {
+trait SuorituspalveluQuery extends OpetushallituksenMassaluovutusQueryParameters with Logging {
   def getOpiskeluoikeusIds(db: DB): Seq[(Int, Timestamp, String)]
 
   override def priority: Int = MassaluovutusQueryPriority.high
