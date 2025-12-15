@@ -27,26 +27,26 @@
   },
   "license": "EUPL-1.1",
   "dependencies": {
-    "@aws-sdk/client-secrets-manager": "^3.839.0",
+    "@aws-sdk/client-secrets-manager": "^3.950.0",
     "body-parser": "^2.2.1",
     "express": "^5.2.0",
     "express-rate-limit": "^7.5.0",
     "helmet": "^8.1.0",
     "openid-client": "^6.8.1",
-    "undici": "^7.8.0",
+    "undici": "^7.16.0",
     "uuid": "^13.0.0"
   },
   "devDependencies": {
     "@aws-sdk/types": "^3.936.0",
     "@types/body-parser": "^1.19.6",
-    "@types/express": "^5.0.1",
-    "@typescript-eslint/eslint-plugin": "^8.30.1",
-    "@typescript-eslint/parser": "^8.30.1",
+    "@types/express": "^5.0.6",
+    "@typescript-eslint/eslint-plugin": "^8.49.0",
+    "@typescript-eslint/parser": "^8.49.0",
     "eslint": "^8.57.1",
-    "eslint-config-prettier": "^10.1.2",
+    "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-prettier": "^5.5.4",
-    "tsx": "^4.19.1",
-    "typescript": "^5.8.3"
+    "tsx": "^4.21.0",
+    "typescript": "^5.9.3"
   },
   "packageManager": "pnpm@10.2.0+sha512.0d27364e0139c6aadeed65ada153135e0ca96c8da42123bd50047f961339dc7a758fc2e944b428f52be570d1bd3372455c1c65fa2e7aa0bfbf931190f9552001"
 }
