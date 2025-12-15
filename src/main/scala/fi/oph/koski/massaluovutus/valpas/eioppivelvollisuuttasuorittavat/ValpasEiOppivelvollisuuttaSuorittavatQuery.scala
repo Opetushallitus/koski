@@ -5,14 +5,16 @@ import fi.oph.koski.json.SensitiveDataAllowed
 import fi.oph.koski.koskiuser.Session
 import fi.oph.koski.massaluovutus.valpas.ValpasMassaluovutusQueryParameters
 import fi.oph.koski.massaluovutus.{QueryFormat, QueryResultWriter}
+import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.schema.annotation.EnumValues
 import fi.oph.koski.valpas.log.ValpasAuditLog
-import fi.oph.koski.valpas.massaluovutus.{ValpasMassaluovutusEiOppivelvollisuuttaSuorittavaOppija, ValpasMassaluovutusOppija, ValpasMassaluovutusResult}
+import fi.oph.koski.valpas.massaluovutus.{ValpasEiOppivelvollisuuttaSuorittavatMassaluovutusResult, ValpasMassaluovutusEiOppivelvollisuuttaSuorittavaOppija}
 import fi.oph.koski.valpas.rouhinta.{ValpasKuntarouhintaService, ValpasRouhintaOppivelvollinen}
 import fi.oph.scalaschema.annotation.{DefaultValue, Description, Title}
 
-@Title("Kunnan ei-oppivelvollisuutta suorittavat oppijat")
-@Description("Palauttaa kunnan oppijat, jotka eivät suorita oppivelvollisuutta.")
+@Title("Kunnan oppivelvolliset oppijat, jotka eivät suorita oppivelvollisuutta")
+@Description("Palauttaa kaikki kunnan oppivelvolliset oppijat, joilla ei ole tällä hetkellä aktiivista oppivelvollisuuden suorittamiseen kelpaavaa opiskeluoikeutta KOSKI-tietovarannossa.")
+@Description("HUOM! Oppijan asuinkunta voi olla eri kuin oppijan virallinen kotikunta. Tuloksissa eivät näy henkilöt, joilla on turvakielto, tai henkilöt, joista ei ole mitään tietoja tallennettuna Opintopolun palveluihin.")
 case class ValpasEiOppivelvollisuuttaSuorittavatQuery(
   @EnumValues(Set("eiSuoritaOppivelvollisuutta"))
   `type`: String = "eiSuoritaOppivelvollisuutta",
@@ -56,7 +58,7 @@ case class ValpasEiOppivelvollisuuttaSuorittavatQuery(
             .map { tulos =>
               val oppijat = tulos.filter(_.aktiivinenKuntailmoitus.nonEmpty).map(ValpasMassaluovutusEiOppivelvollisuuttaSuorittavaOppija.apply)
               // Rikastetaan oppijat oppivelvollisuustiedoilla
-              withOppivelvollisuustiedot(oppijat, application)
+              withEiOppivelvollisuuttaSuorittavatOppivelvollisuustiedot(oppijat, application)
             }
         }
       } else {
@@ -67,7 +69,7 @@ case class ValpasEiOppivelvollisuuttaSuorittavatQuery(
             .map { tulos =>
               val oppijat = tulos.eiOppivelvollisuuttaSuorittavat.map(ValpasMassaluovutusEiOppivelvollisuuttaSuorittavaOppija.apply)
               // Rikastetaan oppijat oppivelvollisuustiedoilla
-              withOppivelvollisuustiedot(oppijat, application)
+              withEiOppivelvollisuuttaSuorittavatOppivelvollisuustiedot(oppijat, application)
             }
         }
       }
@@ -78,10 +80,17 @@ case class ValpasEiOppivelvollisuuttaSuorittavatQuery(
         oppijat.grouped(sivukoko).zipWithIndex.foreach { case (oppijatSivu, index) =>
           val oppijaOids = oppijatSivu.map(_.oppijanumero)
           ValpasAuditLog.auditLogMassaluovutusKunnalla(kunta, oppijaOids)
-          val result = ValpasMassaluovutusResult(oppijatSivu)
+          val result = ValpasEiOppivelvollisuuttaSuorittavatMassaluovutusResult(oppijatSivu)
           writer.putJson(s"$index", result)
         }
       }
     }
   }
+}
+
+object ValpasEiOppivelvollisuuttaSuorittavatQueryDocumentation {
+  def example: ValpasEiOppivelvollisuuttaSuorittavatQuery = ValpasEiOppivelvollisuuttaSuorittavatQuery(
+    kuntaOid = MockOrganisaatiot.helsinginKaupunki,
+    vainAktiivisetKuntailmoitukset = false
+  )
 }

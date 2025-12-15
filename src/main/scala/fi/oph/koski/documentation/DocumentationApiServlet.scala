@@ -19,6 +19,7 @@ import fi.oph.koski.sdg.SdgSchema
 import fi.oph.koski.servlet.{KoskiSpecificApiServlet, NoCache}
 import fi.oph.koski.suoritusjako.{AktiivisetJaPäättyneetOpinnotOppijaJakolinkillä, SuoritetutTutkinnotOppijaJakolinkillä}
 import fi.oph.koski.valpas.kela.ValpasKelaSchema
+import fi.oph.koski.valpas.massaluovutus.{ValpasEiOppivelvollisuuttaSuorittavatMassaluovutusResult, ValpasOppivelvollisetMassaluovutusResult}
 import fi.oph.koski.valpas.oppija.ValpasInternalSchema
 import fi.oph.koski.valpas.ytl.ValpasYtlSchema
 import fi.oph.koski.valvira.ValviraSchema
@@ -125,6 +126,18 @@ class DocumentationApiServlet(application: KoskiApplication) extends KoskiSpecif
 
   get("/massaluovutus-query.json") {
     QueryDocumentation.querySchemaJson
+  }
+
+  get("/valpas-massaluovutus-query.json") {
+    QueryDocumentation.valpasQuerySchemaJson
+  }
+
+  get("/valpas-oppivelvolliset-result.json") {
+    ValpasOppivelvollisetMassaluovutusResult.schemaJson
+  }
+
+  get("/valpas-ei-oppivelvollisuutta-suorittavat-result.json") {
+    ValpasEiOppivelvollisuuttaSuorittavatMassaluovutusResult.schemaJson
   }
 
   get("/valintalaskenta-result.json") {

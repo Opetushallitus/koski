@@ -11,6 +11,8 @@ import fi.oph.koski.valpas.massaluovutus.{ValpasMassaluovutusEiOppivelvollisuutt
 import fi.oph.koski.valpas.oppija.ValpasAccessResolver
 import fi.oph.koski.valpas.valpasuser.ValpasSession
 
+import java.time.LocalDate
+
 trait ValpasMassaluovutusQueryParameters extends MassaluovutusQueryParameters with Logging with Timing {
   val sivukoko = 1000
   def kuntaOid: String
@@ -33,10 +35,34 @@ trait ValpasMassaluovutusQueryParameters extends MassaluovutusQueryParameters wi
     }
   }
 
-  def withOppivelvollisuustiedot(
-    oppijat: Seq[ValpasMassaluovutusOppija],
+  def withOppivelvollisetOppivelvollisuustiedot(
+    oppijat: Seq[ValpasMassaluovutusOppivelvollinenOppija],
     application: KoskiApplication
-  ): Seq[ValpasMassaluovutusOppija] = {
+  ): Seq[ValpasMassaluovutusOppivelvollinenOppija] = {
+    withOppivelvollisuustiedot(oppijat, application) { (oppija, oikeusMaksuttomuuteenPäättyy, kotikuntaSuomessaAlkaen) =>
+      oppija.copy(
+        oikeusMaksuttomaanKoulutukseenVoimassaAsti = oikeusMaksuttomuuteenPäättyy,
+        kotikuntaSuomessaAlkaen = kotikuntaSuomessaAlkaen
+      )
+    }
+  }
+
+  def withEiOppivelvollisuuttaSuorittavatOppivelvollisuustiedot(
+    oppijat: Seq[ValpasMassaluovutusEiOppivelvollisuuttaSuorittavaOppija],
+    application: KoskiApplication
+  ): Seq[ValpasMassaluovutusEiOppivelvollisuuttaSuorittavaOppija] = {
+    withOppivelvollisuustiedot(oppijat, application) { (oppija, oikeusMaksuttomuuteenPäättyy, kotikuntaSuomessaAlkaen) =>
+      oppija.copy(
+        oikeusMaksuttomaanKoulutukseenVoimassaAsti = oikeusMaksuttomuuteenPäättyy,
+        kotikuntaSuomessaAlkaen = kotikuntaSuomessaAlkaen
+      )
+    }
+  }
+
+  private def withOppivelvollisuustiedot[T <: ValpasMassaluovutusOppija](
+    oppijat: Seq[T],
+    application: KoskiApplication
+  )(copy: (T, Option[LocalDate], Option[LocalDate]) => T): Seq[T] = {
     timed("ValpasMassaluovutusQueryParameters:withOppivelvollisuustiedot") {
       val oppijaOids = oppijat.map(_.oppijanumero)
       val oppivelvollisuustiedot = Oppivelvollisuustiedot.queryByOids(
@@ -53,16 +79,7 @@ trait ValpasMassaluovutusQueryParameters extends MassaluovutusQueryParameters wi
           .get(oppija.oppijanumero)
           .map(_.kotikuntaSuomessaAlkaen)
 
-        oppija match {
-          case o: ValpasMassaluovutusOppivelvollinenOppija => o.copy(
-            oikeusMaksuttomaanKoulutukseenVoimassaAsti = oikeusMaksuttomuuteenPäättyy,
-            kotikuntaSuomessaAlkaen = kotikuntaSuomessaAlkaen
-          )
-          case o: ValpasMassaluovutusEiOppivelvollisuuttaSuorittavaOppija => o.copy(
-            oikeusMaksuttomaanKoulutukseenVoimassaAsti = oikeusMaksuttomuuteenPäättyy,
-            kotikuntaSuomessaAlkaen = kotikuntaSuomessaAlkaen
-          )
-        }
+        copy(oppija, oikeusMaksuttomuuteenPäättyy, kotikuntaSuomessaAlkaen)
       }
     }
   }
