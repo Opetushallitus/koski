@@ -18,7 +18,7 @@ export async function buildAuthorizationUrl(
     codeChallengeOverride ||
     (await client.calculatePKCECodeChallenge(code_verifier))
 
-  let parameters: Record<string, string> = {
+  const parameters: Record<string, string> = {
     redirect_uri: redirectUriOverride || redirectUri,
     scope,
     code_challenge,
@@ -37,7 +37,9 @@ export async function fetchAccessToken(
 ) {
   const config = await getOAuthClientConfig()
 
-  var reqUrl = new URL(`${req.protocol}://${req.get('host')}${req.originalUrl}`)
+  const reqUrl = new URL(
+    `${req.protocol}://${req.get('host')}${req.originalUrl}`
+  )
   reqUrl.search = new URLSearchParams(req.body).toString()
 
   const tokens: client.TokenEndpointResponse =
@@ -50,7 +52,7 @@ export async function fetchAccessToken(
   return token
 }
 
-export async function fetchData(accessToken: string): Promise<any> {
+export async function fetchData(accessToken: string): Promise<unknown> {
   const config = await getOAuthClientConfig()
 
   const response = await client.fetchProtectedResource(
