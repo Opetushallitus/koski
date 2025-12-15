@@ -4,7 +4,7 @@ import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.log.Logging
 import fi.oph.koski.todistus.swisscomclient.SwisscomConfigSecretsSource.MOCK_FROM_CONFIG
 import org.apache.pdfbox.Loader
-import org.apache.pdfbox.cos.COSDictionary
+import org.apache.pdfbox.cos.{COSArray, COSDictionary, COSName}
 import org.apache.pdfbox.io.{IOUtils, RandomAccessReadBuffer, RandomAccessReadBufferedFile}
 import org.apache.pdfbox.pdmodel.PDDocument
 import org.apache.pdfbox.pdmodel.interactive.digitalsignature.{ExternalSigningSupport, PDSeedValue, PDSeedValueMDP, PDSignature, SignatureOptions}
@@ -80,6 +80,11 @@ trait SwisscomClient extends Logging {
     val options = new SignatureOptions
     options.setPreferredSignatureSize(config.signaturePreferredSize)
 
+    // Set DocMDP permissions to prevent any modifications to the PDF after signing
+    // P=1 means no changes are allowed (including annotations and form filling)
+    // for more details: https://wwwimages2.adobe.com/content/dam/acom/en/devnet/pdf/pdfs/PDF32000_2008.pdf see section 12.8.2.2
+    // setDocMDPPermission(pdDocument, pdSignature, 1) // TODO: TOR-2400: vai 2? Jolloin ei tule epävalidi-virheilmoitusta Acrobatissa, mutta tietyt muutokset sallitaan.
+
     pdDocument.addSignature(pdSignature, options)
     // Set this signature's access permissions level to 0, to ensure we just sign the PDF, not certify it
     // for more details: https://wwwimages2.adobe.com/content/dam/acom/en/devnet/pdf/pdfs/PDF32000_2008.pdf see section 12.7.4.5
@@ -116,6 +121,51 @@ trait SwisscomClient extends Logging {
     }
     pdSeedValueMDP.setP(0) // identify this signature as an author signature, not document certification
   }
+
+  // TODO: TOR-2400: Poista tämä, jos päätetään, että ei oteta käyttöön
+  /**
+   * Sets DocMDP (Document Modification Detection and Prevention) permissions for the PDF signature.
+   * This adds the DocMDP transform to the signature dictionary and updates the document catalog.
+   *
+   * @param doc The PDF document
+   * @param signature The signature to apply DocMDP to
+   * @param accessPermissions The permission level:
+   *   - 1: No changes allowed (most restrictive)
+   *   - 2: Form filling and signing allowed
+   *   - 3: Form filling, signing, and annotations allowed
+   */
+//  private def setDocMDPPermission(doc: PDDocument, signature: PDSignature, accessPermissions: Int): Unit = {
+//    val sigDict = signature.getCOSObject
+//
+//    // Create TransformParams dictionary with DocMDP settings
+//    val transformParameters = new COSDictionary
+//    transformParameters.setItem(COSName.TYPE, COSName.getPDFName("TransformParams"))
+//    transformParameters.setInt(COSName.P, accessPermissions)
+//    transformParameters.setName(COSName.V, "1.2")
+//    transformParameters.setNeedToBeUpdated(true)
+//
+//    // Create Reference dictionary that points to the transform parameters
+//    val referenceDict = new COSDictionary
+//    referenceDict.setItem(COSName.TYPE, COSName.getPDFName("SigRef"))
+//    referenceDict.setItem(COSName.getPDFName("TransformMethod"), COSName.DOCMDP)
+//    referenceDict.setItem(COSName.getPDFName("DigestMethod"), COSName.getPDFName("SHA256"))
+//    referenceDict.setItem(COSName.getPDFName("TransformParams"), transformParameters)
+//    referenceDict.setNeedToBeUpdated(true)
+//
+//    // Add Reference array to signature dictionary
+//    val referenceArray = new COSArray
+//    referenceArray.add(referenceDict)
+//    sigDict.setItem(COSName.getPDFName("Reference"), referenceArray)
+//    referenceArray.setNeedToBeUpdated(true)
+//
+//    // Update document catalog to reference this signature as the DocMDP signature
+//    val catalogDict = doc.getDocumentCatalog.getCOSObject
+//    val permsDict = new COSDictionary
+//    catalogDict.setItem(COSName.PERMS, permsDict)
+//    permsDict.setItem(COSName.DOCMDP, signature)
+//    catalogDict.setNeedToBeUpdated(true)
+//    permsDict.setNeedToBeUpdated(true)
+//  }
 
   def requestSignatureWithLogging(req: SwisscomAISSignRequest): Either[HttpStatus, SwisscomAISSignResponse] = {
     logger.info(s"SEND RequestId: ${req.SignRequest.`@RequestID`}")
