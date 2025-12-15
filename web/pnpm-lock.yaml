@@ -27,8 +27,8 @@ importers:
         specifier: ^5.65.19
         version: 5.65.19
       core-js:
-        specifier: ^3.41.0
-        version: 3.41.0
+        specifier: ^3.47.0
+        version: 3.47.0
       downloadjs:
         specifier: ^1.4.7
         version: 1.4.7
@@ -42,8 +42,8 @@ importers:
         specifier: ^4.2.3
         version: 4.2.3
       fp-ts:
-        specifier: ^2.16.9
-        version: 2.16.9
+        specifier: ^2.16.11
+        version: 2.16.11
       js-cookie:
         specifier: ^3.0.5
         version: 3.0.5
@@ -69,8 +69,8 @@ importers:
         specifier: ^16.14.0
         version: 16.14.0(react@16.14.0)
       react-focus-lock:
-        specifier: ^2.13.6
-        version: 2.13.6(@types/react@16.14.63)(react@16.14.0)
+        specifier: ^2.13.7
+        version: 2.13.7(@types/react@16.14.63)(react@16.14.0)
       react-highlight:
         specifier: ^0.15.0
         version: 0.15.0
@@ -1957,8 +1957,8 @@ packages:
   core-js-compat@3.41.0:
     resolution: {integrity: sha512-RFsU9LySVue9RTwdDVX/T0e2Y6jRYWXERKElIjpuEOEnxaXffI0X7RUwVzfYLfzuLXSNJDYoRYUAmRUcyln20A==}
 
-  core-js@3.41.0:
-    resolution: {integrity: sha512-SJ4/EHwS36QMJd6h/Rg+GyR4A5xE0FSI3eZ+iBVpfqf1x0eTSg1smWLHrA+2jQThZSh97fmSgFSU8B61nxosxA==}
+  core-js@3.47.0:
+    resolution: {integrity: sha512-c3Q2VVkGAUyupsjRnaNX6u8Dq2vAdzm9iuPj5FW0fRxzlxgq9Q39MDq10IvmQSpLgHQNyQzQmOo6bgGHmH3NNg==}
 
   cosmiconfig@8.3.6:
     resolution: {integrity: sha512-kcZ6+W5QzcJ3P1Mt+83OUv/oHFqZHIx8DuxG6eZ5RGMERoLqp4BuGjhHLYGK+Kf5XVkQvqBSmAy/nGWN3qDgEA==}
@@ -2486,8 +2486,8 @@ packages:
       typescript: '>3.6.0'
       webpack: ^5.11.0
 
-  fp-ts@2.16.9:
-    resolution: {integrity: sha512-+I2+FnVB+tVaxcYyQkHUq7ZdKScaBlX53A41mxQtpIccsfyv8PzdzP7fzp2AY832T4aoK6UZ5WRX/ebGd8uZuQ==}
+  fp-ts@2.16.11:
+    resolution: {integrity: sha512-LaI+KaX2NFkfn1ZGHoKCmcfv7yrZsC3b8NtWsTVQeHkq4F27vI5igUuO53sxqDEa2gNQMHFPmpojDw/1zmUK7w==}
 
   fraction.js@4.3.7:
     resolution: {integrity: sha512-ZsDfxO51wGAXREY55a7la9LScWpwv9RxIrYABrlvOFBlH/ShPnrtsXeuUIfXKKOVicNxQ+o8JTbJvjS4M89yew==}
@@ -3748,8 +3748,8 @@ packages:
     peerDependencies:
       react: ^16.14.0
 
-  react-focus-lock@2.13.6:
-    resolution: {integrity: sha512-ehylFFWyYtBKXjAO9+3v8d0i+cnc1trGS0vlTGhzFW1vbFXVUTmR8s2tt/ZQG8x5hElg6rhENlLG1H3EZK0Llg==}
+  react-focus-lock@2.13.7:
+    resolution: {integrity: sha512-20lpZHEQrXPb+pp1tzd4ULL6DyO5D2KnR0G69tTDdydrmNhU7pdFmbQUYVyHUgp+xN29IuFR0PVuhOmvaZL9Og==}
     peerDependencies:
       '@types/react': '*'
       react: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0 || ^19.0.0-rc
@@ -6440,7 +6440,7 @@ snapshots:
     dependencies:
       browserslist: 4.24.4
 
-  core-js@3.41.0: {}
+  core-js@3.47.0: {}
 
   cosmiconfig@8.3.6(typescript@5.8.3):
     dependencies:
@@ -7070,7 +7070,7 @@ snapshots:
       typescript: 5.8.3
       webpack: 5.99.5(@swc/core@1.11.21)(webpack-cli@6.0.1)
 
-  fp-ts@2.16.9: {}
+  fp-ts@2.16.11: {}
 
   fraction.js@4.3.7: {}
 
@@ -8419,7 +8419,7 @@ snapshots:
       react: 16.14.0
       scheduler: 0.19.1
 
-  react-focus-lock@2.13.6(@types/react@16.14.63)(react@16.14.0):
+  react-focus-lock@2.13.7(@types/react@16.14.63)(react@16.14.0):
     dependencies:
       '@babel/runtime': 7.27.0
       focus-lock: 1.3.6
