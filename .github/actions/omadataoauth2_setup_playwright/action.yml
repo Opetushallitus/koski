@@ -4,13 +4,13 @@ runs:
     - name: Install project dependencies server
       working-directory: omadata-oauth2-sample/server
       env:
-        PNPM_FROZEN_FLAG: ${{ github.event_name == 'pull_request' && github.event.pull_request.user.login == 'snyk-io[bot]' && '--no-frozen-lockfile' || '--frozen-lockfile' }}
+        PNPM_FROZEN_FLAG: ${{ github.event_name == 'pull_request' && (github.event.pull_request.user.login == 'snyk-io[bot]' || github.event.pull_request.user.login == 'snyk-io') && '--no-frozen-lockfile' || '--frozen-lockfile' }}
       run: pnpm install $PNPM_FROZEN_FLAG
       shell: bash
     - name: Install project dependencies client
       working-directory: omadata-oauth2-sample/client
       env:
-        PNPM_FROZEN_FLAG: ${{ github.event_name == 'pull_request' && github.event.pull_request.user.login == 'snyk-io[bot]' && '--no-frozen-lockfile' || '--frozen-lockfile' }}
+        PNPM_FROZEN_FLAG: ${{ github.event_name == 'pull_request' && (github.event.pull_request.user.login == 'snyk-io[bot]' || github.event.pull_request.user.login == 'snyk-io') && '--no-frozen-lockfile' || '--frozen-lockfile' }}
       run: pnpm install $PNPM_FROZEN_FLAG
       shell: bash
     - name: Install project dependencies luovutuspalvelu
