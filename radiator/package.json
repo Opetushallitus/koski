@@ -27,5 +27,6 @@
   },
   "engines": {
     "pnpm": ">=10"
-  }
+  },
+  "packageManager": "pnpm@10.2.0"
 }

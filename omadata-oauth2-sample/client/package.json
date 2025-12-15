@@ -87,5 +87,6 @@
       "postcss@^8": "8.4.45",
       "webpack-dev-server": "^4.15.2"
     }
-  }
+  },
+  "packageManager": "pnpm@10.2.0"
 }
