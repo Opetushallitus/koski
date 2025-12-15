@@ -39,6 +39,8 @@
     "@eslint/js": "^9.24.0",
     "@jest/globals": "^29.7.0",
     "@parcel/babel-plugin-transform-runtime": "^2.14.4",
+    "@parcel/config-default": "^2.14.4",
+    "@parcel/core": "^2.14.4",
     "@parcel/package-manager": "^2.14.4",
     "@parcel/transformer-less": "^2.14.4",
     "@testing-library/dom": "^10.4.0",
@@ -99,6 +101,16 @@
   },
   "alias": {
     "memoize": "./node_modules/.pnpm/memoize@10.2.0/node_modules/memoize/distribution/index.js"
+  },
+  "pnpm": {
+    "overrides": {
+      "axios": "^1.12.0",
+      "brace-expansion@^1": "1.1.12",
+      "brace-expansion@^2": "2.0.2",
+      "js-yaml@^3": "3.14.2",
+      "js-yaml@^4": "4.1.1",
+      "@eslint/plugin-kit": "^0.3.4"
+    }
   },
   "packageManager": "pnpm@10.2.0+sha512.0d27364e0139c6aadeed65ada153135e0ca96c8da42123bd50047f961339dc7a758fc2e944b428f52be570d1bd3372455c1c65fa2e7aa0bfbf931190f9552001"
 }
