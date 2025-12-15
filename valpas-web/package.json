@@ -90,14 +90,15 @@
     "date-fns": "^4.1.0",
     "downloadjs": "^1.4.7",
     "fp-ts": "^2.16.11",
-    "react": "^19.2.0",
+    "react": "^19.2.3",
     "react-calendar": "^6.0.0",
     "react-date-picker": "^12.0.1",
-    "react-dom": "^19.2.0",
+    "react-dom": "^19.2.3",
     "react-router-dom": "^5.3.4",
     "regenerator-runtime": "^0.14.1"
   },
   "alias": {
     "memoize": "./node_modules/.pnpm/memoize@10.2.0/node_modules/memoize/distribution/index.js"
-  }
+  },
+  "packageManager": "pnpm@10.2.0+sha512.0d27364e0139c6aadeed65ada153135e0ca96c8da42123bd50047f961339dc7a758fc2e944b428f52be570d1bd3372455c1c65fa2e7aa0bfbf931190f9552001"
 }
