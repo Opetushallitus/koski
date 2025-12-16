@@ -109,12 +109,8 @@ case class HenkilöRepository(
   }
 
   def findByOids(query: String)(implicit session: KoskiSpecificSession): List[LaajatOppijaHenkilöTiedot] = {
-    val perustiedotResult = timed("searchHenkilötiedot:findByOids:perustiedotRepository.findOids", 0) {
-      perustiedotRepository.findOids(query)
-    }
-    timed("searchHenkilötiedot:findByOids:opintopolku.findMastersByOids", 0) {
-      opintopolku.findMastersByOids(perustiedotResult)
-    }
+    val perustiedotResult = perustiedotRepository.findOids(query)
+    opintopolku.findMastersByOids(perustiedotResult)
   }
 
   def oppijaHenkilöToTäydellisetHenkilötiedot(henkilö: OppijaHenkilö): TäydellisetHenkilötiedot =
