@@ -7,7 +7,7 @@ import fi.oph.koski.omaopintopolkuloki.AuditLogDynamoDB.AuditLogTableName
 import software.amazon.awssdk.services.dynamodb.DynamoDbClient
 import software.amazon.awssdk.services.dynamodb.model.{AttributeDefinition, AttributeValue, CreateTableRequest, DeleteTableRequest, KeySchemaElement, KeyType, ProvisionedThroughput, PutItemRequest, ScalarAttributeType}
 
-import scala.collection.JavaConverters._
+import scala.jdk.CollectionConverters._
 
 object AuditLogMockData extends Logging {
 

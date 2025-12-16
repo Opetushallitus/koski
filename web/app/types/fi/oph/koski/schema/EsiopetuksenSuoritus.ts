@@ -14,28 +14,28 @@ export type EsiopetuksenSuoritus = {
   muutSuorituskielet?: Array<Koodistokoodiviite<'kieli', string>>
   tyyppi: Koodistokoodiviite<'suorituksentyyppi', 'esiopetuksensuoritus'>
   tila?: Koodistokoodiviite<'suorituksentila', string>
-  suorituskieli: Koodistokoodiviite<'kieli', string>
-  kielikylpykieli?: Koodistokoodiviite<'kieli', string>
   koulutusmoduuli: Esiopetus
   toimipiste: OrganisaatioWithOid
   osaAikainenErityisopetus?: Array<
     Koodistokoodiviite<'osaaikainenerityisopetuslukuvuodenaikana', string>
   >
   vahvistus?: HenkilövahvistusPaikkakunnalla
+  suorituskieli: Koodistokoodiviite<'kieli', string>
+  kielikylpykieli?: Koodistokoodiviite<'kieli', string>
 }
 
 export const EsiopetuksenSuoritus = (o: {
   muutSuorituskielet?: Array<Koodistokoodiviite<'kieli', string>>
   tyyppi?: Koodistokoodiviite<'suorituksentyyppi', 'esiopetuksensuoritus'>
   tila?: Koodistokoodiviite<'suorituksentila', string>
-  suorituskieli: Koodistokoodiviite<'kieli', string>
-  kielikylpykieli?: Koodistokoodiviite<'kieli', string>
   koulutusmoduuli: Esiopetus
   toimipiste: OrganisaatioWithOid
   osaAikainenErityisopetus?: Array<
     Koodistokoodiviite<'osaaikainenerityisopetuslukuvuodenaikana', string>
   >
   vahvistus?: HenkilövahvistusPaikkakunnalla
+  suorituskieli: Koodistokoodiviite<'kieli', string>
+  kielikylpykieli?: Koodistokoodiviite<'kieli', string>
 }): EsiopetuksenSuoritus => ({
   tyyppi: Koodistokoodiviite({
     koodiarvo: 'esiopetuksensuoritus',

@@ -9,7 +9,7 @@ trait RequiresTilastokeskus extends KoskiLuovutuspalveluHeaderAuthenticationSupp
     requiresTilastokeskus
   }
 
-  private def requiresTilastokeskus{
+  private def requiresTilastokeskus: Unit = {
     getUser match {
       case Left(status) if status.statusCode == 401 =>
         haltWithStatus(status)

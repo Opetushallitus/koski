@@ -9,7 +9,7 @@ import scala.util.Try
 
 class LocalLoginServlet(implicit val application: UserAuthenticationContext) extends KoskiSpecificApiServlet with KoskiCookieAndBasicAuthenticationSupport with KoskiSpecificSSOSupport with NoCache {
   post("/") {
-    def loginRequestInBody = JsonBodySnatcher.getJsonBody(request).right.toOption flatMap { json =>
+    def loginRequestInBody = JsonBodySnatcher.getJsonBody(request).toOption flatMap { json =>
       Try(JsonSerializer.extract[Login](json)).toOption
     }
 
@@ -20,7 +20,7 @@ class LocalLoginServlet(implicit val application: UserAuthenticationContext) ext
           // Mahdollistaa testeille sotkun lisäämiseen salasanaan, jotta vältetään
           // testejä blokkaava "salasanasi löytyi vuodettujen salasanojen listalta" -varoitus.
           password.replaceAll("__.*", "")
-        ).right.flatMap(user => setUser(Right(localLogin(user)))))
+        ).flatMap(user => setUser(Right(localLogin(user)))))
       case None =>
         haltWithStatus(KoskiErrorCategory.badRequest("Login request missing from body"))
     }

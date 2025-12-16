@@ -6,6 +6,7 @@ import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.sso.KoskiSpecificSSOSupport
 import fi.oph.koski.util.JsStringInterpolation.setWindowVar
 import org.scalatra.ScalatraServlet
+import fi.oph.koski.xml.NodeSeqImplicits._
 
 class OppijaLoginPageServlet(implicit val application: KoskiApplication) extends ScalatraServlet with OppijaHtmlServlet with KoskiSpecificSSOSupport {
 
@@ -25,7 +26,7 @@ class OppijaLoginPageServlet(implicit val application: KoskiApplication) extends
 
     htmlIndex(
       scriptBundleName = "koski-korhopankki.js",
-      scripts = <script nonce={nonce} id="auth">{setWindowVar("mockUsers", oppijat)}</script>,
+      scripts = Seq(<script nonce={nonce} id="auth">{setWindowVar("mockUsers", oppijat)}</script>),
       responsive = true,
       nonce = nonce
     )

@@ -29,11 +29,11 @@ export const KäsityönOpintotaso = (
     koodiarvo: 'kasityo',
     koodistoUri: 'taiteenperusopetustaiteenala'
   }),
-  $class: 'fi.oph.koski.schema.KäsityönOpintotaso',
   tunniste: Koodistokoodiviite({
     koodiarvo: '999907',
     koodistoUri: 'koulutus'
   }),
+  $class: 'fi.oph.koski.schema.KäsityönOpintotaso',
   ...o
 })
 

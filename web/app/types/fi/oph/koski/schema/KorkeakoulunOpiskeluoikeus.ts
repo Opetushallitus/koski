@@ -1,12 +1,12 @@
 import { Koodistokoodiviite } from './Koodistokoodiviite'
 import { LocalizedString } from './LocalizedString'
+import { VirtaVirhe } from './VirtaVirhe'
+import { KorkeakouluSuoritus } from './KorkeakouluSuoritus'
+import { Oppilaitos } from './Oppilaitos'
 import { KorkeakoulunOpiskeluoikeudenTila } from './KorkeakoulunOpiskeluoikeudenTila'
 import { Koulutustoimija } from './Koulutustoimija'
 import { KorkeakoulunOpiskeluoikeudenLisätiedot } from './KorkeakoulunOpiskeluoikeudenLisatiedot'
-import { VirtaVirhe } from './VirtaVirhe'
-import { KorkeakouluSuoritus } from './KorkeakouluSuoritus'
 import { LähdejärjestelmäId } from './LahdejarjestelmaId'
-import { Oppilaitos } from './Oppilaitos'
 
 /**
  * KorkeakoulunOpiskeluoikeus
@@ -16,49 +16,49 @@ import { Oppilaitos } from './Oppilaitos'
 export type KorkeakoulunOpiskeluoikeus = {
   $class: 'fi.oph.koski.schema.KorkeakoulunOpiskeluoikeus'
   tyyppi: Koodistokoodiviite<'opiskeluoikeudentyyppi', 'korkeakoulutus'>
-  tila: KorkeakoulunOpiskeluoikeudenTila
-  alkamispäivä?: string
   oid?: string
-  synteettinen: boolean
-  koulutustoimija?: Koulutustoimija
-  lisätiedot?: KorkeakoulunOpiskeluoikeudenLisätiedot
   virtaVirheet: Array<VirtaVirhe>
   suoritukset: Array<KorkeakouluSuoritus>
   päättymispäivä?: string
+  oppilaitos?: Oppilaitos
+  tila: KorkeakoulunOpiskeluoikeudenTila
+  alkamispäivä?: string
+  synteettinen: boolean
+  koulutustoimija?: Koulutustoimija
+  lisätiedot?: KorkeakoulunOpiskeluoikeudenLisätiedot
   lähdejärjestelmänId?: LähdejärjestelmäId
   luokittelu?: Array<
     Koodistokoodiviite<'virtaopiskeluoikeudenluokittelu', string>
   >
   arvioituPäättymispäivä?: string
-  oppilaitos?: Oppilaitos
 }
 
 export const KorkeakoulunOpiskeluoikeus = (o: {
   tyyppi?: Koodistokoodiviite<'opiskeluoikeudentyyppi', 'korkeakoulutus'>
-  tila?: KorkeakoulunOpiskeluoikeudenTila
-  alkamispäivä?: string
   oid?: string
-  synteettinen: boolean
-  koulutustoimija?: Koulutustoimija
-  lisätiedot?: KorkeakoulunOpiskeluoikeudenLisätiedot
   virtaVirheet?: Array<VirtaVirhe>
   suoritukset?: Array<KorkeakouluSuoritus>
   päättymispäivä?: string
+  oppilaitos?: Oppilaitos
+  tila?: KorkeakoulunOpiskeluoikeudenTila
+  alkamispäivä?: string
+  synteettinen: boolean
+  koulutustoimija?: Koulutustoimija
+  lisätiedot?: KorkeakoulunOpiskeluoikeudenLisätiedot
   lähdejärjestelmänId?: LähdejärjestelmäId
   luokittelu?: Array<
     Koodistokoodiviite<'virtaopiskeluoikeudenluokittelu', string>
   >
   arvioituPäättymispäivä?: string
-  oppilaitos?: Oppilaitos
 }): KorkeakoulunOpiskeluoikeus => ({
   tyyppi: Koodistokoodiviite({
     koodiarvo: 'korkeakoulutus',
     koodistoUri: 'opiskeluoikeudentyyppi'
   }),
-  tila: KorkeakoulunOpiskeluoikeudenTila({ opiskeluoikeusjaksot: [] }),
   virtaVirheet: [],
   suoritukset: [],
   $class: 'fi.oph.koski.schema.KorkeakoulunOpiskeluoikeus',
+  tila: KorkeakoulunOpiskeluoikeudenTila({ opiskeluoikeusjaksot: [] }),
   ...o
 })
 

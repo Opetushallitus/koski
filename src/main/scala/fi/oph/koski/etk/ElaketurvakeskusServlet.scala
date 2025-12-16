@@ -13,7 +13,7 @@ import org.json4s.jackson.JsonMethods
 import org.scalatra.servlet.FileUploadSupport
 
 import scala.io.{BufferedSource, Source}
-import scala.collection.JavaConverters._
+import scala.jdk.CollectionConverters._
 
 class ElaketurvakeskusServlet(implicit val application: KoskiApplication) extends KoskiSpecificApiServlet with FileUploadSupport with RequiresVirkailijaOrPalvelukäyttäjä with Logging with NoCache {
 

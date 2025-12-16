@@ -15,7 +15,7 @@ class OpiskeluoikeusGetByOidSpec extends AnyFreeSpec with Matchers with KoskiHtt
     "GET" - {
       "with valid oid" in {
         val oid = lastOpiskeluoikeus(KoskiSpecificMockOppijat.eero.oid).oid.get
-        AuditLogTester.clearMessages
+        AuditLogTester.clearMessages()
         get("api/opiskeluoikeus/" + oid, headers = authHeaders()) {
           verifyResponseStatusOk()
           AuditLogTester.verifyLastAuditLogMessage(Map("operation" -> "OPISKELUOIKEUS_KATSOMINEN"))

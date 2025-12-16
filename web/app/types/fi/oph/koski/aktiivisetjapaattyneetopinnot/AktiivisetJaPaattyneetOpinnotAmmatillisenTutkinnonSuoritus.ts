@@ -1,10 +1,10 @@
 import { AktiivisetJaPäättyneetOpinnotKoodistokoodiviite } from './AktiivisetJaPaattyneetOpinnotKoodistokoodiviite'
-import { Koodistokoodiviite } from '../schema/Koodistokoodiviite'
-import { LocalizedString } from '../schema/LocalizedString'
 import { Koulutussopimusjakso } from './Koulutussopimusjakso'
 import { AktiivisetJaPäättyneetOpinnotAmmatillinenTutkintoKoulutus } from './AktiivisetJaPaattyneetOpinnotAmmatillinenTutkintoKoulutus'
 import { Toimipiste } from './Toimipiste'
 import { OsaamisenHankkimistapajakso } from './OsaamisenHankkimistapajakso'
+import { Koodistokoodiviite } from '../schema/Koodistokoodiviite'
+import { LocalizedString } from '../schema/LocalizedString'
 import { AktiivisetJaPäättyneetOpinnotOsaamisalajakso } from './AktiivisetJaPaattyneetOpinnotOsaamisalajakso'
 import { Vahvistus } from './Vahvistus'
 
@@ -15,27 +15,27 @@ import { Vahvistus } from './Vahvistus'
  */
 export type AktiivisetJaPäättyneetOpinnotAmmatillisenTutkinnonSuoritus = {
   $class: 'fi.oph.koski.aktiivisetjapaattyneetopinnot.AktiivisetJaPäättyneetOpinnotAmmatillisenTutkinnonSuoritus'
-  tutkintonimike?: Array<AktiivisetJaPäättyneetOpinnotKoodistokoodiviite>
-  tyyppi: Koodistokoodiviite<string, 'ammatillinentutkinto'>
   suorituskieli: AktiivisetJaPäättyneetOpinnotKoodistokoodiviite
   suoritustapa: AktiivisetJaPäättyneetOpinnotKoodistokoodiviite
   koulutussopimukset?: Array<Koulutussopimusjakso>
   koulutusmoduuli: AktiivisetJaPäättyneetOpinnotAmmatillinenTutkintoKoulutus
   toimipiste?: Toimipiste
   osaamisenHankkimistavat?: Array<OsaamisenHankkimistapajakso>
+  tutkintonimike?: Array<AktiivisetJaPäättyneetOpinnotKoodistokoodiviite>
+  tyyppi: Koodistokoodiviite<string, 'ammatillinentutkinto'>
   osaamisala?: Array<AktiivisetJaPäättyneetOpinnotOsaamisalajakso>
   vahvistus?: Vahvistus
 }
 
 export const AktiivisetJaPäättyneetOpinnotAmmatillisenTutkinnonSuoritus = (o: {
-  tutkintonimike?: Array<AktiivisetJaPäättyneetOpinnotKoodistokoodiviite>
-  tyyppi: Koodistokoodiviite<string, 'ammatillinentutkinto'>
   suorituskieli: AktiivisetJaPäättyneetOpinnotKoodistokoodiviite
   suoritustapa: AktiivisetJaPäättyneetOpinnotKoodistokoodiviite
   koulutussopimukset?: Array<Koulutussopimusjakso>
   koulutusmoduuli: AktiivisetJaPäättyneetOpinnotAmmatillinenTutkintoKoulutus
   toimipiste?: Toimipiste
   osaamisenHankkimistavat?: Array<OsaamisenHankkimistapajakso>
+  tutkintonimike?: Array<AktiivisetJaPäättyneetOpinnotKoodistokoodiviite>
+  tyyppi: Koodistokoodiviite<string, 'ammatillinentutkinto'>
   osaamisala?: Array<AktiivisetJaPäättyneetOpinnotOsaamisalajakso>
   vahvistus?: Vahvistus
 }): AktiivisetJaPäättyneetOpinnotAmmatillisenTutkinnonSuoritus => ({

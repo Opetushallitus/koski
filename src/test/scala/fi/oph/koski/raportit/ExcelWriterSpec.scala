@@ -3,7 +3,7 @@ package fi.oph.koski.raportit
 import fi.oph.koski.{KoskiApplicationForTests, TestEnvironment}
 import fi.oph.koski.localization.{LocalizationReader, LocalizationRepository}
 import org.apache.poi.EncryptedDocumentException
-import org.apache.poi.ss.usermodel._
+import org.apache.poi.ss.usermodel.{Sheet => PoiSheet, _}
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.should.Matchers
 
@@ -11,7 +11,7 @@ import java.io.{File, FileOutputStream}
 import java.sql.Date
 import java.time.LocalDate
 import java.time.LocalDate.{of => date}
-import scala.collection.JavaConverters._
+import scala.jdk.CollectionConverters._
 
 
 class ExcelWriterSpec extends AnyFreeSpec with TestEnvironment with Matchers {
@@ -52,7 +52,7 @@ class ExcelWriterSpec extends AnyFreeSpec with TestEnvironment with Matchers {
       }
 
       "Jos uniikkia välilehteä ei löydy" in {
-        an[InterruptedException] should be thrownBy(withExcel(uniikinVälilehdenLuontiEpäonnistuuTestCase) {_ => Unit})
+        an[InterruptedException] should be thrownBy(withExcel(uniikinVälilehdenLuontiEpäonnistuuTestCase) {_ => ()})
       }
     }
 

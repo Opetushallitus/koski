@@ -73,6 +73,7 @@ object VapaaSivistystyöValidation {
       case (None, oo: VapaanSivistystyönOpiskeluoikeus) => oo.suoritukset.headOption match {
         case Some(vs: VapaanSivistystyönVapaatavoitteisenKoulutuksenSuoritus) if vs.koulutusmoduuli.opintokokonaisuus.isEmpty => KoskiErrorCategory.badRequest.validation.vapaaSivistystyö.puuttuvaOpintokokonaisuus()
         case Some(_) => HttpStatus.ok
+        case None => HttpStatus.ok
       }
       // Muissa järjestelmissä sallitaan opintokokonaisuuden puuttuminen, kunhan siirtymäajan deadlinea ei ole saavutettu
       case (Some(_), oo: VapaanSivistystyönOpiskeluoikeus) => oo.suoritukset.headOption match {
@@ -84,6 +85,7 @@ object VapaaSivistystyöValidation {
             HttpStatus.ok
           }
         case Some(_) => HttpStatus.ok
+        case None => HttpStatus.ok
       }
       case _ => HttpStatus.ok
     }

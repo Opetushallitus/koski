@@ -29,7 +29,7 @@ class JMXCacheManager extends CacheManager with JMXCacheManagerMXBean {
 }
 
 trait JMXCacheManagerMXBean {
-  def invalidateAllCaches: Unit
+  def invalidateAllCaches(): Unit
   def getHitRate: Double
   def getHitCount: Long
   def getMissCount: Long

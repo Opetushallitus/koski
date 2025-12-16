@@ -11,6 +11,7 @@ import rx.lang.scala.Observable
 
 import java.time.{LocalDateTime, ZonedDateTime}
 import scala.concurrent.duration.FiniteDuration
+import scala.collection.parallel.CollectionConverters._
 
 class IncrementalUpdateOpiskeluoikeusLoader(
   suostumuksenPeruutusService: SuostumuksenPeruutusService,
@@ -81,42 +82,44 @@ class IncrementalUpdateOpiskeluoikeusLoader(
       .seq
       .partition(_.isLeft)
 
-    db.updateOpiskeluoikeudet(outputRows.map(_.right.get.rOpiskeluoikeusRow), mitätöidytOot)
-    db.updateOrganisaatioHistoria(outputRows.flatMap(_.right.get.organisaatioHistoriaRows))
+    val successfulRows = outputRows.collect { case Right(value) => value }
 
-    val opiskeluoikeusAikajaksoRows = outputRows.flatMap(_.right.get.rOpiskeluoikeusAikajaksoRows)
+    db.updateOpiskeluoikeudet(successfulRows.map(_.rOpiskeluoikeusRow), mitätöidytOot)
+    db.updateOrganisaatioHistoria(successfulRows.flatMap(_.organisaatioHistoriaRows))
+
+    val opiskeluoikeusAikajaksoRows = successfulRows.flatMap(_.rOpiskeluoikeusAikajaksoRows)
     db.updateOpiskeluoikeusAikajaksot(opiskeluoikeusAikajaksoRows)
 
-    val aikajaksoRows = outputRows.flatMap(_.right.get.rAikajaksoRows)
+    val aikajaksoRows = successfulRows.flatMap(_.rAikajaksoRows)
     db.updateAikajaksot(aikajaksoRows)
 
-    val ammatillisenKoulutuksenJarjestamismuotoAikajaksoRows = outputRows.flatMap(_.right.get.rAmmatillisenKoulutuksenJarjestamismuotoAikajaksoRows)
+    val ammatillisenKoulutuksenJarjestamismuotoAikajaksoRows = successfulRows.flatMap(_.rAmmatillisenKoulutuksenJarjestamismuotoAikajaksoRows)
     db.updateAmmatillisenKoulutuksenJarjestamismuotoAikajaksot(ammatillisenKoulutuksenJarjestamismuotoAikajaksoRows)
 
-    val updateOsaamisenHankkimistapaAikajaksoRows = outputRows.flatMap(_.right.get.rOsaamisenHankkimistapaAikajaksoRows)
+    val updateOsaamisenHankkimistapaAikajaksoRows = successfulRows.flatMap(_.rOsaamisenHankkimistapaAikajaksoRows)
     db.updateOsaamisenHankkimistapaAikajaksoRows(updateOsaamisenHankkimistapaAikajaksoRows)
 
-    val esiopetusOpiskeluoikeusAikajaksoRows = outputRows.flatMap(_.right.get.esiopetusOpiskeluoikeusAikajaksoRows)
+    val esiopetusOpiskeluoikeusAikajaksoRows = successfulRows.flatMap(_.esiopetusOpiskeluoikeusAikajaksoRows)
     db.updateEsiopetusOpiskeluoikeusAikajaksot(esiopetusOpiskeluoikeusAikajaksoRows)
 
-    val päätasonSuoritusRows = outputRows.flatMap(_.right.get.rPäätasonSuoritusRows)
+    val päätasonSuoritusRows = successfulRows.flatMap(_.rPäätasonSuoritusRows)
     db.updatePäätasonSuoritukset(päätasonSuoritusRows)
 
-    val osasuoritusRows = outputRows.flatMap(_.right.get.rOsasuoritusRows)
+    val osasuoritusRows = successfulRows.flatMap(_.rOsasuoritusRows)
     db.updateOsasuoritukset(osasuoritusRows)
 
-    val muuAmmatillinenRaportointiRows = outputRows.flatMap(_.right.get.muuAmmatillinenOsasuoritusRaportointiRows)
+    val muuAmmatillinenRaportointiRows = successfulRows.flatMap(_.muuAmmatillinenOsasuoritusRaportointiRows)
     db.updateMuuAmmatillinenRaportointi(muuAmmatillinenRaportointiRows)
 
-    val topksAmmatillinenRaportointiRows = outputRows.flatMap(_.right.get.topksAmmatillinenRaportointiRows)
+    val topksAmmatillinenRaportointiRows = successfulRows.flatMap(_.topksAmmatillinenRaportointiRows)
     db.updateTOPKSAmmatillinenRaportointi(topksAmmatillinenRaportointiRows)
 
     db.setLastUpdate(statusName)
-    db.updateStatusCount(statusName, outputRows.size)
-    val result = errors.map(_.left.get) :+ LoadProgressResult(outputRows.size, päätasonSuoritusRows.size + osasuoritusRows.size)
+    db.updateStatusCount(statusName, successfulRows.size)
+    val result = errors.collect { case Left(err) => err } :+ LoadProgressResult(successfulRows.size, päätasonSuoritusRows.size + osasuoritusRows.size)
 
     val loadBatchDuration: Long = (System.nanoTime() - loadBatchStartTime) / 1000000
-    val toOpiskeluoikeusUnsafeDuration: Long = outputRows.map(_.right.get.toOpiskeluoikeusUnsafeDuration).sum / 1000000
+    val toOpiskeluoikeusUnsafeDuration: Long = successfulRows.map(_.toOpiskeluoikeusUnsafeDuration).sum / 1000000
     logger.info(s"Batchin käsittely kesti ${loadBatchDuration} ms, jossa toOpiskeluOikeusUnsafe ${toOpiskeluoikeusUnsafeDuration} ms.")
     result
   }
@@ -126,9 +129,10 @@ class IncrementalUpdateOpiskeluoikeusLoader(
     olemassaolevatOot: Seq[Opiskeluoikeus.Oid],
   ) = {
     val (errors, outputRows) = oot.par.filterNot(_.poistettu).map(OpiskeluoikeusLoaderRowBuilder.buildRowMitätöity).seq.partition(_.isLeft)
-    db.updateMitätöidytOpiskeluoikeudet(outputRows.map(_.right.get), olemassaolevatOot)
-    db.updateStatusCount(mitätöidytStatusName, outputRows.size)
-    errors.map(_.left.get)
+    val successfulRows = outputRows.collect { case Right(value) => value }
+    db.updateMitätöidytOpiskeluoikeudet(successfulRows, olemassaolevatOot)
+    db.updateStatusCount(mitätöidytStatusName, successfulRows.size)
+    errors.collect { case Left(err) => err }
   }
 
   private def updateBatchPoistetutOpiskeluoikeudet(
@@ -139,9 +143,10 @@ class IncrementalUpdateOpiskeluoikeusLoader(
         .etsiPoistetut(oot.map(_.oid))
         .map(OpiskeluoikeusLoaderRowBuilder.buildRowMitätöity(organisaatioRepository))
         .partition(_.isLeft)
-      db.updateMitätöidytOpiskeluoikeudet(outputRows.map(_.right.get), Seq.empty)
-      db.updateStatusCount(mitätöidytStatusName, outputRows.size)
-      errors.map(_.left.get)
+      val successfulRows = outputRows.collect { case Right(value) => value }
+      db.updateMitätöidytOpiskeluoikeudet(successfulRows, Seq.empty)
+      db.updateStatusCount(mitätöidytStatusName, successfulRows.size)
+      errors.collect { case Left(err) => err }
     } else {
       Seq.empty
     }

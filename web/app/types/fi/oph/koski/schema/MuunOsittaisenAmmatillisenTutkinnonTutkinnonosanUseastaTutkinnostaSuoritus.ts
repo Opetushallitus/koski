@@ -1,13 +1,13 @@
 import { AmmatillinenArviointi } from './AmmatillinenArviointi'
-import { NäyttöAmmatillinenOsittainen } from './NayttoAmmatillinenOsittainen'
 import { Koodistokoodiviite } from './Koodistokoodiviite'
 import { LocalizedString } from './LocalizedString'
 import { AmmatillisenTutkinnonOsanLisätieto } from './AmmatillisenTutkinnonOsanLisatieto'
 import { MuuKuinYhteinenTutkinnonOsa } from './MuuKuinYhteinenTutkinnonOsa'
+import { AmmatillinenTutkintoKoulutus } from './AmmatillinenTutkintoKoulutus'
+import { NäyttöAmmatillinenOsittainen } from './NayttoAmmatillinenOsittainen'
 import { OsaamisenTunnustaminen } from './OsaamisenTunnustaminen'
 import { OrganisaatioWithOid } from './OrganisaatioWithOid'
 import { AmmatillisenTutkinnonOsaaPienemmänKokonaisuudenSuoritus } from './AmmatillisenTutkinnonOsaaPienemmanKokonaisuudenSuoritus'
-import { AmmatillinenTutkintoKoulutus } from './AmmatillinenTutkintoKoulutus'
 
 /**
  * Ammatilliseen tutkintoon liittyvän, muun kuin yhteisen tutkinnonosan suoritus
@@ -18,13 +18,14 @@ export type MuunOsittaisenAmmatillisenTutkinnonTutkinnonosanUseastaTutkinnostaSu
   {
     $class: 'fi.oph.koski.schema.MuunOsittaisenAmmatillisenTutkinnonTutkinnonosanUseastaTutkinnostaSuoritus'
     arviointi?: Array<AmmatillinenArviointi>
+    suorituskieli?: Koodistokoodiviite<'kieli', string>
+    lisätiedot?: Array<AmmatillisenTutkinnonOsanLisätieto>
+    koulutusmoduuli: MuuKuinYhteinenTutkinnonOsa
+    tutkinto: AmmatillinenTutkintoKoulutus
     näyttö?: NäyttöAmmatillinenOsittainen
     tyyppi: Koodistokoodiviite<'suorituksentyyppi', 'ammatillisentutkinnonosa'>
     tila?: Koodistokoodiviite<'suorituksentila', string>
     alkamispäivä?: string
-    suorituskieli?: Koodistokoodiviite<'kieli', string>
-    lisätiedot?: Array<AmmatillisenTutkinnonOsanLisätieto>
-    koulutusmoduuli: MuuKuinYhteinenTutkinnonOsa
     tunnustettu?: OsaamisenTunnustaminen
     toimipiste?: OrganisaatioWithOid
     tutkinnonOsanRyhmä?: Koodistokoodiviite<
@@ -32,19 +33,19 @@ export type MuunOsittaisenAmmatillisenTutkinnonTutkinnonosanUseastaTutkinnostaSu
       '1'
     >
     osasuoritukset?: Array<AmmatillisenTutkinnonOsaaPienemmänKokonaisuudenSuoritus>
-    tutkinto: AmmatillinenTutkintoKoulutus
   }
 
 export const MuunOsittaisenAmmatillisenTutkinnonTutkinnonosanUseastaTutkinnostaSuoritus =
   (o: {
     arviointi?: Array<AmmatillinenArviointi>
+    suorituskieli?: Koodistokoodiviite<'kieli', string>
+    lisätiedot?: Array<AmmatillisenTutkinnonOsanLisätieto>
+    koulutusmoduuli: MuuKuinYhteinenTutkinnonOsa
+    tutkinto: AmmatillinenTutkintoKoulutus
     näyttö?: NäyttöAmmatillinenOsittainen
     tyyppi?: Koodistokoodiviite<'suorituksentyyppi', 'ammatillisentutkinnonosa'>
     tila?: Koodistokoodiviite<'suorituksentila', string>
     alkamispäivä?: string
-    suorituskieli?: Koodistokoodiviite<'kieli', string>
-    lisätiedot?: Array<AmmatillisenTutkinnonOsanLisätieto>
-    koulutusmoduuli: MuuKuinYhteinenTutkinnonOsa
     tunnustettu?: OsaamisenTunnustaminen
     toimipiste?: OrganisaatioWithOid
     tutkinnonOsanRyhmä?: Koodistokoodiviite<
@@ -52,14 +53,13 @@ export const MuunOsittaisenAmmatillisenTutkinnonTutkinnonosanUseastaTutkinnostaS
       '1'
     >
     osasuoritukset?: Array<AmmatillisenTutkinnonOsaaPienemmänKokonaisuudenSuoritus>
-    tutkinto: AmmatillinenTutkintoKoulutus
   }): MuunOsittaisenAmmatillisenTutkinnonTutkinnonosanUseastaTutkinnostaSuoritus => ({
+    $class:
+      'fi.oph.koski.schema.MuunOsittaisenAmmatillisenTutkinnonTutkinnonosanUseastaTutkinnostaSuoritus',
     tyyppi: Koodistokoodiviite({
       koodiarvo: 'ammatillisentutkinnonosa',
       koodistoUri: 'suorituksentyyppi'
     }),
-    $class:
-      'fi.oph.koski.schema.MuunOsittaisenAmmatillisenTutkinnonTutkinnonosanUseastaTutkinnostaSuoritus',
     ...o
   })
 

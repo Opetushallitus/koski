@@ -47,7 +47,7 @@ trait OpiskeluoikeusLoader extends Logging {
   protected def createIndexes(): Unit = {
     val indexStartTime = System.currentTimeMillis
     logger.info("Luodaan indeksit opiskeluoikeuksille...")
-    db.createOpiskeluoikeusIndexes
+    db.createOpiskeluoikeusIndexes()
     val indexElapsedSeconds = (System.currentTimeMillis - indexStartTime)/1000
     logger.info(s"Luotiin indeksit opiskeluoikeuksille, ${indexElapsedSeconds} s")
   }
@@ -78,10 +78,10 @@ trait OpiskeluoikeusLoader extends Logging {
         lastLogged = now
       }
     }
-    override def onError(e: Throwable) {
+    override def onError(e: Throwable): Unit = {
       logger.error(e)("Opiskeluoikeuksien lataus epäonnistui")
     }
-    override def onCompleted() {
+    override def onCompleted(): Unit = {
       logIt(true)
     }
     private def logIt(done: Boolean) = {

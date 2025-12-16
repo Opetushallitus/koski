@@ -61,7 +61,7 @@ class ValpasOppivelvollisuudestaVapautusService(application: KoskiApplication) e
   def mitätöiOppivelvollisuudestaVapautus(vapautus: OppivelvollisuudestaVapautuksenMitätöinti)(implicit session: ValpasSession): Either[HttpStatus, Unit] =
     withValidation(None, vapautus.kuntakoodi) { () =>
       if (db.mitätöiOppivelvollisuudestaVapautus(vapautus.oppijaOid, vapautus.kuntakoodi)) {
-        Right(Unit)
+        Right(())
       } else {
         Left(ValpasErrorCategory.notFound.vapautustaEiLöydy())
       }

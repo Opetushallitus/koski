@@ -98,7 +98,7 @@ object ErrorMatcher {
 
 sealed trait ErrorMatcher extends Assertions with Matchers {
   def errorKey: String
-  def matchMessage(msg: JValue)
+  def matchMessage(msg: JValue): Unit
 }
 case class FixedErrorMatcher(errorKey: String, message: JValue) extends ErrorMatcher {
   override def matchMessage(msg: JValue): Unit = msg should equal(message)

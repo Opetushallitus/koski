@@ -23,11 +23,11 @@ export const TutkintokoulutukseenValmentavanKoulutus = (
     laajuus?: LaajuusViikoissa
   } = {}
 ): TutkintokoulutukseenValmentavanKoulutus => ({
-  $class: 'fi.oph.koski.schema.TutkintokoulutukseenValmentavanKoulutus',
   tunniste: Koodistokoodiviite({
     koodiarvo: '999908',
     koodistoUri: 'koulutus'
   }),
+  $class: 'fi.oph.koski.schema.TutkintokoulutukseenValmentavanKoulutus',
   ...o
 })
 

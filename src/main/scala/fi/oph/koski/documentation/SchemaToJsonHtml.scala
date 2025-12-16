@@ -10,6 +10,8 @@ import org.json4s.JValue
 import org.json4s.jackson.JsonMethods
 
 import scala.xml.Elem
+import fi.oph.koski.xml.NodeSeqImplicits._
+
 
 object SchemaToJsonHtml {
   def buildHtml(schema: ClassSchema, exampleData: AnyRef): List[Elem] = {

@@ -1,6 +1,5 @@
 import { Koodistokoodiviite } from './Koodistokoodiviite'
 import { LocalizedString } from './LocalizedString'
-import { PerusopetukseenValmistavanOpetuksenOpiskeluoikeudenTila } from './PerusopetukseenValmistavanOpetuksenOpiskeluoikeudenTila'
 import { OpiskeluoikeudenOrganisaatiohistoria } from './OpiskeluoikeudenOrganisaatiohistoria'
 import { SisältäväOpiskeluoikeus } from './SisaltavaOpiskeluoikeus'
 import { Koulutustoimija } from './Koulutustoimija'
@@ -8,6 +7,7 @@ import { PerusopetukseenValmistavanOpetuksenSuoritus } from './PerusopetukseenVa
 import { LähdejärjestelmäId } from './LahdejarjestelmaId'
 import { LähdejärjestelmäkytkennänPurkaminen } from './LahdejarjestelmakytkennanPurkaminen'
 import { Oppilaitos } from './Oppilaitos'
+import { PerusopetukseenValmistavanOpetuksenOpiskeluoikeudenTila } from './PerusopetukseenValmistavanOpetuksenOpiskeluoikeudenTila'
 
 /**
  * Perusopetukseen valmistavan opetuksen opiskeluoikeuden tiedot
@@ -20,8 +20,6 @@ export type PerusopetukseenValmistavanOpetuksenOpiskeluoikeus = {
     'opiskeluoikeudentyyppi',
     'perusopetukseenvalmistavaopetus'
   >
-  tila: PerusopetukseenValmistavanOpetuksenOpiskeluoikeudenTila
-  alkamispäivä?: string
   organisaatiohistoria?: Array<OpiskeluoikeudenOrganisaatiohistoria>
   sisältyyOpiskeluoikeuteen?: SisältäväOpiskeluoikeus
   oid?: string
@@ -33,6 +31,8 @@ export type PerusopetukseenValmistavanOpetuksenOpiskeluoikeus = {
   lähdejärjestelmänId?: LähdejärjestelmäId
   lähdejärjestelmäkytkentäPurettu?: LähdejärjestelmäkytkennänPurkaminen
   oppilaitos?: Oppilaitos
+  tila: PerusopetukseenValmistavanOpetuksenOpiskeluoikeudenTila
+  alkamispäivä?: string
 }
 
 export const PerusopetukseenValmistavanOpetuksenOpiskeluoikeus = (
@@ -41,8 +41,6 @@ export const PerusopetukseenValmistavanOpetuksenOpiskeluoikeus = (
       'opiskeluoikeudentyyppi',
       'perusopetukseenvalmistavaopetus'
     >
-    tila?: PerusopetukseenValmistavanOpetuksenOpiskeluoikeudenTila
-    alkamispäivä?: string
     organisaatiohistoria?: Array<OpiskeluoikeudenOrganisaatiohistoria>
     sisältyyOpiskeluoikeuteen?: SisältäväOpiskeluoikeus
     oid?: string
@@ -54,18 +52,20 @@ export const PerusopetukseenValmistavanOpetuksenOpiskeluoikeus = (
     lähdejärjestelmänId?: LähdejärjestelmäId
     lähdejärjestelmäkytkentäPurettu?: LähdejärjestelmäkytkennänPurkaminen
     oppilaitos?: Oppilaitos
+    tila?: PerusopetukseenValmistavanOpetuksenOpiskeluoikeudenTila
+    alkamispäivä?: string
   } = {}
 ): PerusopetukseenValmistavanOpetuksenOpiskeluoikeus => ({
   tyyppi: Koodistokoodiviite({
     koodiarvo: 'perusopetukseenvalmistavaopetus',
     koodistoUri: 'opiskeluoikeudentyyppi'
   }),
-  tila: PerusopetukseenValmistavanOpetuksenOpiskeluoikeudenTila({
-    opiskeluoikeusjaksot: []
-  }),
   suoritukset: [],
   $class:
     'fi.oph.koski.schema.PerusopetukseenValmistavanOpetuksenOpiskeluoikeus',
+  tila: PerusopetukseenValmistavanOpetuksenOpiskeluoikeudenTila({
+    opiskeluoikeusjaksot: []
+  }),
   ...o
 })
 

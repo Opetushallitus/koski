@@ -1,10 +1,10 @@
-import { Koodistokoodiviite } from './Koodistokoodiviite'
-import { LocalizedString } from './LocalizedString'
-import { Aikajakso } from './Aikajakso'
 import { KorkeakoulunOpiskeluoikeudenLukuvuosimaksu } from './KorkeakoulunOpiskeluoikeudenLukuvuosimaksu'
 import { Oppilaitos } from './Oppilaitos'
 import { KoulutuskuntaJakso } from './KoulutuskuntaJakso'
+import { Koodistokoodiviite } from './Koodistokoodiviite'
+import { LocalizedString } from './LocalizedString'
 import { Lukukausi_Ilmoittautuminen } from './LukukausiIlmoittautuminen'
+import { Aikajakso } from './Aikajakso'
 
 /**
  * Korkeakoulun opiskeluoikeuden lisätiedot
@@ -13,8 +13,6 @@ import { Lukukausi_Ilmoittautuminen } from './LukukausiIlmoittautuminen'
  */
 export type KorkeakoulunOpiskeluoikeudenLisätiedot = {
   $class: 'fi.oph.koski.schema.KorkeakoulunOpiskeluoikeudenLisätiedot'
-  opetettavanAineenOpinnot?: Array<Koodistokoodiviite<'virtapatevyys', string>>
-  ensisijaisuus?: Array<Aikajakso>
   maksettavatLukuvuosimaksut?: Array<KorkeakoulunOpiskeluoikeudenLukuvuosimaksu>
   järjestäväOrganisaatio?: Oppilaitos
   koulutuskuntaJaksot: Array<KoulutuskuntaJakso>
@@ -26,14 +24,12 @@ export type KorkeakoulunOpiskeluoikeudenLisätiedot = {
     string
   >
   lukukausiIlmoittautuminen?: Lukukausi_Ilmoittautuminen
+  opetettavanAineenOpinnot?: Array<Koodistokoodiviite<'virtapatevyys', string>>
+  ensisijaisuus?: Array<Aikajakso>
 }
 
 export const KorkeakoulunOpiskeluoikeudenLisätiedot = (
   o: {
-    opetettavanAineenOpinnot?: Array<
-      Koodistokoodiviite<'virtapatevyys', string>
-    >
-    ensisijaisuus?: Array<Aikajakso>
     maksettavatLukuvuosimaksut?: Array<KorkeakoulunOpiskeluoikeudenLukuvuosimaksu>
     järjestäväOrganisaatio?: Oppilaitos
     koulutuskuntaJaksot?: Array<KoulutuskuntaJakso>
@@ -45,6 +41,10 @@ export const KorkeakoulunOpiskeluoikeudenLisätiedot = (
       string
     >
     lukukausiIlmoittautuminen?: Lukukausi_Ilmoittautuminen
+    opetettavanAineenOpinnot?: Array<
+      Koodistokoodiviite<'virtapatevyys', string>
+    >
+    ensisijaisuus?: Array<Aikajakso>
   } = {}
 ): KorkeakoulunOpiskeluoikeudenLisätiedot => ({
   koulutuskuntaJaksot: [],

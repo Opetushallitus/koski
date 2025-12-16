@@ -18,11 +18,11 @@ class YtrDownloadVirhetilanteetSpec
     with BeforeAndAfterEach
 {
 
-  override protected def beforeEach() {
+  override protected def beforeEach(): Unit = {
     super.beforeEach()
   }
 
-  override protected def afterEach() {
+  override protected def afterEach(): Unit = {
     super.afterEach()
     // Testit rikkovat tietokannan eheyttä, joten on turvallisinta resetoida kanta aina testien jälkeen
     resetFixtures()

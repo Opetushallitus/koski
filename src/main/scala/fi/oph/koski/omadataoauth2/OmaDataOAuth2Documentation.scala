@@ -4,6 +4,7 @@ import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.documentation.Markdown
 import fi.oph.koski.log.Logging
 import fi.oph.koski.util.TryWithLogging
+import fi.oph.koski.xml.NodeSeqImplicits._
 
 import java.net.URL
 import scala.io.Source
@@ -15,7 +16,7 @@ object OmaDataOAuth2Documentation extends Logging {
   )
 
   def htmlTextSections(application: KoskiApplication): Map[String, String] =
-    sectionSources.mapValues(htmlTextSection(application))
+    sectionSources.view.mapValues(htmlTextSection(application)).toMap
 
   def htmlTextSection(application: KoskiApplication)(path: String): String =
     TryWithLogging.andResources(logger, { use =>
@@ -53,8 +54,7 @@ object OmaDataOAuth2Documentation extends Logging {
       "luovutuspalveluBaseUrl" -> luovutuspalveluBaseUrl
     )
 
-    "\\{\\{var:(.+?)\\}\\}"
-      .r("name")
+    """\{\{var:(?<name>.+?)\}\}""".r
       .replaceAllIn(markdown, { m => vars.getOrElse(m.group("name"), "!!! NOT FOUND !!!") })
   }
 }

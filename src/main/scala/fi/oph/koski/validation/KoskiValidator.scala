@@ -27,9 +27,7 @@ import org.json4s.{JArray, JValue}
 
 import java.lang.Character.isDigit
 import java.time.LocalDate
-
-// scalastyle:off line.size.limit
-// scalastyle:off number.of.methods
+import scala.collection.parallel.CollectionConverters._
 
 class KoskiValidator(
   organisaatioRepository: OrganisaatioRepository,
@@ -61,13 +59,13 @@ class KoskiValidator(
 
   def extractUpdateFieldsAndValidateOppija(parsedJson: JValue)(implicit user: KoskiSpecificSession, accessType: AccessType.Value): Either[HttpStatus, Oppija] = {
     timed("extractAndValidateOppija", 200) {
-      extractOppija(parsedJson).right.flatMap(updateFieldsAndValidateOpiskeluoikeudet)
+      extractOppija(parsedJson).flatMap(updateFieldsAndValidateOpiskeluoikeudet)
     }
   }
 
   def extractUpdateFieldsAndValidateOpiskeluoikeus(parsedJson: JValue)(implicit user: KoskiSpecificSession, accessType: AccessType.Value): Either[HttpStatus, Opiskeluoikeus] = {
     timed("extractAndValidateOpiskeluoikeus") {
-      extractOpiskeluoikeus(parsedJson).right.flatMap { opiskeluoikeus =>
+      extractOpiskeluoikeus(parsedJson).flatMap { opiskeluoikeus =>
         updateFieldsAndValidateOpiskeluoikeus(opiskeluoikeus, None)
       }
     }
@@ -92,7 +90,7 @@ class KoskiValidator(
         updateFieldsAndValidateOpiskeluoikeus(oo, Some(oppija.henkilö))
       }
     })
-    HttpStatus.foldEithers(results).right.flatMap {
+    HttpStatus.foldEithers(results).flatMap {
       case Nil => Left(KoskiErrorCategory.badRequest.validation.tyhjäOpiskeluoikeusLista())
       case opiskeluoikeudet => Right(oppija.copy(opiskeluoikeudet = opiskeluoikeudet))
     }
@@ -336,12 +334,12 @@ class KoskiValidator(
               case None => Left(KoskiErrorCategory.badRequest.validation.organisaatio.eiOppilaitos(s"Toimipisteenä käytetylle organisaatiolle ${toimipiste.oid} ei löydy oppilaitos-tyyppistä yliorganisaatiota."))
             }
           })
-          oppilaitokset.right.map(_.distinct).flatMap {
+          oppilaitokset.map(_.distinct).flatMap {
             case List(oppilaitos) => Right(oppilaitos)
             case _ => Left(KoskiErrorCategory.badRequest.validation.organisaatio.oppilaitosPuuttuu("Opiskeluoikeudesta puuttuu oppilaitos, eikä sitä voi yksiselitteisesti päätellä annetuista toimipisteistä."))
           }
         }
-        oppilaitos.right.map(oo.withOppilaitos(_))
+        oppilaitos.map(oo.withOppilaitos(_))
     }
   }
 

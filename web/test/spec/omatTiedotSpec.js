@@ -934,8 +934,8 @@ describe('Omat tiedot', function () {
                         '24.8.2011 aktiivinen\n' +
                         'Lisätiedot\n' +
                         'Opintojakso Laajuus Arvosana\n' +
-                        '+\nLaajaverkot 3 op 5\n' +
                         '+\nIP-verkkojen hallinta 4 op 1\n' +
+                        '+\nLaajaverkot 3 op 5\n' +
                         '+\nTietoverkkojen tietoturva 5 op 5\n' +
                         '+\nTekninen tietoturva 3 op 4\n' +
                         '+\nWeb-ohjelmointi 5 op 3\n' +

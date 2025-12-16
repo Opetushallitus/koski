@@ -83,7 +83,7 @@ object EmptyYtrClient extends YtrClient {
 
   override def getCertificateStatus(req: YoTodistusHetuRequest): Either[HttpStatus, YtrCertificateResponse] = Right(YtrCertificateServiceUnavailable())
 
-  override def generateCertificate(req: YoTodistusHetuRequest): Either[HttpStatus, Unit] = Right(Unit)
+  override def generateCertificate(req: YoTodistusHetuRequest): Either[HttpStatus, Unit] = Right(())
 }
 
 object MockYtrClient extends YtrClient {

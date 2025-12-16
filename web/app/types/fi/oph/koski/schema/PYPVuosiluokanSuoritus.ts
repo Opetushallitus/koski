@@ -16,14 +16,14 @@ export type PYPVuosiluokanSuoritus = {
     'suorituksentyyppi',
     'internationalschoolpypvuosiluokka'
   >
-  tila?: Koodistokoodiviite<'suorituksentila', string>
-  alkamispäivä?: string
   suorituskieli: Koodistokoodiviite<'kieli', string>
   luokka?: string
   koulutusmoduuli: PYPLuokkaAste
   toimipiste: OrganisaatioWithOid
   osasuoritukset?: Array<PYPOppiaineenSuoritus>
   vahvistus?: HenkilövahvistusPaikkakunnalla
+  tila?: Koodistokoodiviite<'suorituksentila', string>
+  alkamispäivä?: string
 }
 
 export const PYPVuosiluokanSuoritus = (o: {
@@ -31,14 +31,14 @@ export const PYPVuosiluokanSuoritus = (o: {
     'suorituksentyyppi',
     'internationalschoolpypvuosiluokka'
   >
-  tila?: Koodistokoodiviite<'suorituksentila', string>
-  alkamispäivä?: string
   suorituskieli: Koodistokoodiviite<'kieli', string>
   luokka?: string
   koulutusmoduuli: PYPLuokkaAste
   toimipiste: OrganisaatioWithOid
   osasuoritukset?: Array<PYPOppiaineenSuoritus>
   vahvistus?: HenkilövahvistusPaikkakunnalla
+  tila?: Koodistokoodiviite<'suorituksentila', string>
+  alkamispäivä?: string
 }): PYPVuosiluokanSuoritus => ({
   tyyppi: Koodistokoodiviite({
     koodiarvo: 'internationalschoolpypvuosiluokka',

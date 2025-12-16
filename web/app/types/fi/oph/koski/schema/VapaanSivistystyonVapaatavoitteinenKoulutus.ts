@@ -23,11 +23,11 @@ export const VapaanSivistystyönVapaatavoitteinenKoulutus = (
     opintokokonaisuus?: Koodistokoodiviite<'opintokokonaisuudet', string>
   } = {}
 ): VapaanSivistystyönVapaatavoitteinenKoulutus => ({
-  $class: 'fi.oph.koski.schema.VapaanSivistystyönVapaatavoitteinenKoulutus',
   tunniste: Koodistokoodiviite({
     koodiarvo: '099999',
     koodistoUri: 'koulutus'
   }),
+  $class: 'fi.oph.koski.schema.VapaanSivistystyönVapaatavoitteinenKoulutus',
   ...o
 })
 

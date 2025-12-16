@@ -29,11 +29,11 @@ export const SanataiteenOpintotaso = (
     koodiarvo: 'sanataide',
     koodistoUri: 'taiteenperusopetustaiteenala'
   }),
-  $class: 'fi.oph.koski.schema.SanataiteenOpintotaso',
   tunniste: Koodistokoodiviite({
     koodiarvo: '999907',
     koodistoUri: 'koulutus'
   }),
+  $class: 'fi.oph.koski.schema.SanataiteenOpintotaso',
   ...o
 })
 
