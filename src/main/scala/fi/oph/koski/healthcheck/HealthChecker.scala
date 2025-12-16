@@ -104,26 +104,24 @@ class HealthChecker(val application: KoskiApplication) extends Logging with Timi
     ))(application.cacheManager), checkSystem)
 
   private def checkSystem(system: Subsystem): HttpStatus = {
-    timed(s"${system}", 0) {
-      system match {
-        case Oppijanumerorekisteri => oppijaCheck(findOrCreateOppija)
-        case OpenSearch => openSearchCheck(findOrCreateOppija)
-        case Koodistopalvelu => koodistopalveluCheck
-        case Organisaatiopalvelu => organisaatioPalveluCheck
-        case EPerusteet => ePerusteetCheck
-        case CAS => casCheck
-        case KoskiDatabase => assertTrue("koski database", application.masterDatabase.util.databaseIsOnline)
-        case RaportointiDatabase => assertTrue("raportointi database", application.raportointiDatabase.util.databaseIsOnline)
-        case ValpasDatabase => assertTrue("valpas database", application.valpasDatabase.util.databaseIsOnline)
-        case PerustiedotIndex => assertTrue("perustiedot index", application.perustiedotIndexer.index.isOnline)
-        case TiedonsiirtoIndex => assertTrue("tiedonsiirrot index", application.tiedonsiirtoService.index.isOnline)
-        case MockSystemForTests => assertTrue("mock system for tests", {
-          mockSystemCounter -= 1
+    system match {
+      case Oppijanumerorekisteri => oppijaCheck(findOrCreateOppija)
+      case OpenSearch => openSearchCheck(findOrCreateOppija)
+      case Koodistopalvelu => koodistopalveluCheck
+      case Organisaatiopalvelu => organisaatioPalveluCheck
+      case EPerusteet => ePerusteetCheck
+      case CAS => casCheck
+      case KoskiDatabase => assertTrue("koski database", application.masterDatabase.util.databaseIsOnline)
+      case RaportointiDatabase => assertTrue("raportointi database", application.raportointiDatabase.util.databaseIsOnline)
+      case ValpasDatabase => assertTrue("valpas database", application.valpasDatabase.util.databaseIsOnline)
+      case PerustiedotIndex => assertTrue("perustiedot index", application.perustiedotIndexer.index.isOnline)
+      case TiedonsiirtoIndex => assertTrue("tiedonsiirrot index", application.tiedonsiirtoService.index.isOnline)
+      case MockSystemForTests => assertTrue("mock system for tests", {
+        mockSystemCounter -= 1
 
-          mockSystemCheckFunction(mockSystemCounter)
-        })
-        case other: Subsystem => HttpStatus(404, List(ErrorDetail("invalid subsystem", JString(other.toString))))
-      }
+        mockSystemCheckFunction(mockSystemCounter)
+      })
+      case other: Subsystem => HttpStatus(404, List(ErrorDetail("invalid subsystem", JString(other.toString))))
     }
   }
 
