@@ -18,7 +18,7 @@ export const getOAuthClientConfig = memoize(
         }
       : undefined
 
-    let config = await client.discovery(
+    const config = await client.discovery(
       new URL(
         `${koskiBackendHost}/koski/omadata-oauth2/.well-known/oauth-authorization-server`
       ),
@@ -37,7 +37,7 @@ export const getOAuthClientConfig = memoize(
 
     const agent = new undici.Agent({ connect: options })
     config[client.customFetch] = (...args) =>
-      // @ts-expect-error
+      // @ts-expect-error dispatcher is supported but not in undici's fetch types here
       undici.fetch(args[0], { ...args[1], dispatcher: agent })
 
     if (enableLocalMTLS) {

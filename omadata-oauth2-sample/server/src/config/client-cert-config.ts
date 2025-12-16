@@ -84,23 +84,17 @@ const getSecretsManagerClient = memoize(
   () => 'secretsManager'
 )
 async function getSecret(secretName: string): Promise<string> {
-  try {
-    const response = await (
-      await getSecretsManagerClient()
-    ).send(
-      new GetSecretValueCommand({
-        SecretId: secretName,
-        VersionStage: 'AWSCURRENT'
-      })
-    )
-    if (response.SecretString) {
-      return response.SecretString
-    } else {
-      throw new Error(`No data found in secret ${secretName}`)
-    }
-  } catch (error) {
-    // For a list of exceptions thrown, see
-    // https://docs.aws.amazon.com/secretsmanager/latest/apireference/API_GetSecretValue.html
-    throw error
+  const response = await (
+    await getSecretsManagerClient()
+  ).send(
+    new GetSecretValueCommand({
+      SecretId: secretName,
+      VersionStage: 'AWSCURRENT'
+    })
+  )
+  if (response.SecretString) {
+    return response.SecretString
   }
+
+  throw new Error(`No data found in secret ${secretName}`)
 }

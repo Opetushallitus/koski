@@ -4,6 +4,10 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
+overrides:
+  glob: ^10.5.0
+  js-yaml: 4.1.1
+
 importers:
 
   .:
@@ -27,8 +31,8 @@ importers:
         specifier: ^5.65.19
         version: 5.65.19
       core-js:
-        specifier: ^3.41.0
-        version: 3.41.0
+        specifier: ^3.47.0
+        version: 3.47.0
       downloadjs:
         specifier: ^1.4.7
         version: 1.4.7
@@ -42,8 +46,8 @@ importers:
         specifier: ^4.2.3
         version: 4.2.3
       fp-ts:
-        specifier: ^2.16.9
-        version: 2.16.9
+        specifier: ^2.16.11
+        version: 2.16.11
       js-cookie:
         specifier: ^3.0.5
         version: 3.0.5
@@ -69,8 +73,8 @@ importers:
         specifier: ^16.14.0
         version: 16.14.0(react@16.14.0)
       react-focus-lock:
-        specifier: ^2.13.6
-        version: 2.13.6(@types/react@16.14.63)(react@16.14.0)
+        specifier: ^2.13.7
+        version: 2.13.7(@types/react@16.14.63)(react@16.14.0)
       react-highlight:
         specifier: ^0.15.0
         version: 0.15.0
@@ -1837,8 +1841,8 @@ packages:
     resolution: {integrity: sha512-Gmy6FhYlCY7uOElZUSbxo2UCDH8owEk996gkbrpsgGtrJLM3J7jGxl9Ic7Qwwj4ivOE5AWZWRMecDdF7hqGjFA==}
     engines: {node: '>=10'}
 
-  caniuse-lite@1.0.30001703:
-    resolution: {integrity: sha512-kRlAGTRWgPsOj7oARC9m1okJEXdL/8fekFVcxA8Hl7GH4r/sN4OJn/i6Flde373T50KS7Y37oFbMwlE8+F42kQ==}
+  caniuse-lite@1.0.30001760:
+    resolution: {integrity: sha512-7AAMPcueWELt1p3mi13HR/LHH0TJLT11cnwDJEs3xA4+CK/PLKeO9Kl1oru24htkyUKtkGCvAx4ohB0Ttry8Dw==}
 
   chai@4.5.0:
     resolution: {integrity: sha512-RITGBfijLkBddZvnn8jdqoTypxvqbOLYQkGGxXzeFjVHvudaPw0HNFD9x928/eUwYWd2dPCugVqspGALTZZQKw==}
@@ -1957,8 +1961,8 @@ packages:
   core-js-compat@3.41.0:
     resolution: {integrity: sha512-RFsU9LySVue9RTwdDVX/T0e2Y6jRYWXERKElIjpuEOEnxaXffI0X7RUwVzfYLfzuLXSNJDYoRYUAmRUcyln20A==}
 
-  core-js@3.41.0:
-    resolution: {integrity: sha512-SJ4/EHwS36QMJd6h/Rg+GyR4A5xE0FSI3eZ+iBVpfqf1x0eTSg1smWLHrA+2jQThZSh97fmSgFSU8B61nxosxA==}
+  core-js@3.47.0:
+    resolution: {integrity: sha512-c3Q2VVkGAUyupsjRnaNX6u8Dq2vAdzm9iuPj5FW0fRxzlxgq9Q39MDq10IvmQSpLgHQNyQzQmOo6bgGHmH3NNg==}
 
   cosmiconfig@8.3.6:
     resolution: {integrity: sha512-kcZ6+W5QzcJ3P1Mt+83OUv/oHFqZHIx8DuxG6eZ5RGMERoLqp4BuGjhHLYGK+Kf5XVkQvqBSmAy/nGWN3qDgEA==}
@@ -2486,8 +2490,8 @@ packages:
       typescript: '>3.6.0'
       webpack: ^5.11.0
 
-  fp-ts@2.16.9:
-    resolution: {integrity: sha512-+I2+FnVB+tVaxcYyQkHUq7ZdKScaBlX53A41mxQtpIccsfyv8PzdzP7fzp2AY832T4aoK6UZ5WRX/ebGd8uZuQ==}
+  fp-ts@2.16.11:
+    resolution: {integrity: sha512-LaI+KaX2NFkfn1ZGHoKCmcfv7yrZsC3b8NtWsTVQeHkq4F27vI5igUuO53sxqDEa2gNQMHFPmpojDw/1zmUK7w==}
 
   fraction.js@4.3.7:
     resolution: {integrity: sha512-ZsDfxO51wGAXREY55a7la9LScWpwv9RxIrYABrlvOFBlH/ShPnrtsXeuUIfXKKOVicNxQ+o8JTbJvjS4M89yew==}
@@ -2506,9 +2510,6 @@ packages:
 
   fs-monkey@1.0.4:
     resolution: {integrity: sha512-INM/fWAxMICjttnD0DX1rBvinKskj5G1w+oy/pnm9u/tSlnBrzFonJMcalKJ30P8RRsPzKcCG7Q8l0jx5Fh9YQ==}
-
-  fs.realpath@1.0.0:
-    resolution: {integrity: sha512-OO0pH2lK6a0hZnAdau5ItzHPI6pUlvI7jMVnxUQRtw4owF2wk8lOSabtGDCTP4Ggrg2MbGnWO9X8K1t4+fGMDw==}
 
   fsevents@2.3.2:
     resolution: {integrity: sha512-xiqMQR4xAeHTuB9uWm+fFRcIOgKBMiOBP+eXiyT7jsgVCq1bkVygt00oASowB7EdtpOHaaPgKt812P9ab+DDKA==}
@@ -2570,15 +2571,9 @@ packages:
   glob-to-regexp@0.4.1:
     resolution: {integrity: sha512-lkX1HJXwyMcprw/5YUZc2s7DrpAiHB21/V+E1rHUrVNokkvB6bqMzT0VfV6/86ZNabt1k14YOIaT7nDvOX3Iiw==}
 
-  glob@10.3.10:
-    resolution: {integrity: sha512-fa46+tv1Ak0UPK1TOy/pZrIybNNt4HCv7SDzwyfiOZkvZLEbjsZkJBPtDHVshZjbecAoAGSC20MjLDG/qr679g==}
-    engines: {node: '>=16 || 14 >=14.17'}
+  glob@10.5.0:
+    resolution: {integrity: sha512-DfXN8DfhJ7NH3Oe7cFmu3NCu1wKbkReJ8TorzSAFbSKrlNaQSKfIzqYqVY8zlbs2NLBbWpRiU52GX2PbaBVNkg==}
     hasBin: true
-
-  glob@8.1.0:
-    resolution: {integrity: sha512-r8hpEjiQEYlF2QU0df3dS+nxxSIreXQS1qRhMJM0Q5NDdR386C7jb7Hwwod8Fgiuex+k0GFjgft18yvxm5XoCQ==}
-    engines: {node: '>=12'}
-    deprecated: Glob versions prior to v9 are no longer supported
 
   global-agent@3.0.0:
     resolution: {integrity: sha512-PT6XReJ+D07JvGoxQMkT6qji/jVNfX/h364XHZOWeRzy64sSFr+xJ5OX7LI3b4MPQzdL4H8Y8M0xzPpsVMwA8Q==}
@@ -2724,13 +2719,6 @@ packages:
 
   infestines@0.4.11:
     resolution: {integrity: sha512-09nHagZLOYUaXKHqdV+nxEaYaD0hRlKyhQMhgTMwfbvWpMkowXf4XLZzAkLq6Y90wZ7Wqm6aMoL2trBsNNKGeg==}
-
-  inflight@1.0.6:
-    resolution: {integrity: sha512-k92I/b08q4wvFscXCLvqfsHCrjrF7yiXsQuIVvVE7N82W3+aqpzuUdBbfhWcy/FZR3/4IgflMgKLOsvPDrGCJA==}
-    deprecated: This module is not supported, and leaks memory. Do not use it. Check out lru-cache if you want a good and tested way to coalesce async requests by a key value, which is much more comprehensive and powerful.
-
-  inherits@2.0.4:
-    resolution: {integrity: sha512-k/vGaX4/Yla3WzyMCvTQOXYeIHvqOKtnqBduzTHpzpQZzAskKMhZ2K+EnBiSM9zGSoIFeMpXKxa4dYeZIQqewQ==}
 
   internal-slot@1.1.0:
     resolution: {integrity: sha512-4gd7VpWNQNB4UKKCFFVcp1AVv+FMOgs9NKzjHKusc8jTMhd5eL1NqQqOpE0KzMds804/yHlglp3uxgluOqAPLw==}
@@ -2904,9 +2892,8 @@ packages:
     resolution: {integrity: sha512-H0dkQoCa3b2VEeKQBOxFph+JAbcrQdE7KC0UkqwpLmv2EC4P41QXP+rqo9wYodACiG5/WM5s9oDApTU8utwj9g==}
     engines: {node: '>= 0.4'}
 
-  jackspeak@2.3.6:
-    resolution: {integrity: sha512-N3yCS/NegsOBokc8GAdM8UcmfsKiSS8cipheD/nivzr700H+nsMOxJjQnvwOcRYVuFkdH0wGUvW2WbXGmrZGbQ==}
-    engines: {node: '>=14'}
+  jackspeak@3.4.3:
+    resolution: {integrity: sha512-OGlZQpz2yfahA/Rd1Y8Cd9SIEsqvXkLVoSw/cgwhnhFMDbsQFeZYoJJ7bIZBS9BcamUW96asq/npPWugM+RQBw==}
 
   jest-worker@27.5.1:
     resolution: {integrity: sha512-7vuh85V5cdDofPyxn58nrPjBktZo0u9x1g8WtjQol+jZDaE+fhN+cIvTj11GndBnMnyfrUOG1sZQxCdjKh+DKg==}
@@ -2926,8 +2913,8 @@ packages:
   js-tokens@4.0.0:
     resolution: {integrity: sha512-RdJUflcE3cUzKiMqQgsCu06FPu9UdIJO0beYbPhHN4k6apgJtifcoCtT9bcxOpYBtpD2kCM6Sbzg4CausW/PKQ==}
 
-  js-yaml@4.1.0:
-    resolution: {integrity: sha512-wpxZs9NoxZaJESJGIZTyDEaYpl0FKSA+FB9aJiyemKhMwkxQg63h4T1KJgUGHpTqPDNRcmmYLugrRjJlBtWvRA==}
+  js-yaml@4.1.1:
+    resolution: {integrity: sha512-qQKT4zQxXl8lLwBtHMWwaTcGfFOZviOJet3Oy/xmGk2gZH677CJM9EvtfdSkgWcATZhj/55JZ0rmy3myCT5lsA==}
     hasBin: true
 
   jsbn@1.1.0:
@@ -3066,6 +3053,9 @@ packages:
     resolution: {integrity: sha512-/1clY/ui8CzjKFyjdvwPWJUYKiFVXG2I2cY0ssG7h4+hwk+XOIX7ZSG9Q7TW8TW3Kp3BUSqgFWBLgL4PJ+Blag==}
     engines: {node: 14 || >=16.14}
 
+  lru-cache@10.4.3:
+    resolution: {integrity: sha512-JNAzZcXrCt42VGLuYz0zfAzDfAvJWW6AfYlDBQyDV5DClI2m5sAmK+OIO7s59XfsRsWHp02jAJrRadPRGTt6SQ==}
+
   lru-cache@5.1.1:
     resolution: {integrity: sha512-KpNARQA3Iwv+jTA0utUVVbrh+Jlrr1Fv0e56GGzAFOXN7dk/FviaDW8LHmK52DlcH4WP2n6gI8vN1aesBFgo9w==}
 
@@ -3187,6 +3177,10 @@ packages:
 
   minipass@7.0.4:
     resolution: {integrity: sha512-jYofLM5Dam9279rdkWzqHozUo4ybjdZmCsDHePy5V/PbBcVMiSZR97gmAy45aqi8CK1lG2ECd356FU86avfwUQ==}
+    engines: {node: '>=16 || 14 >=14.17'}
+
+  minipass@7.1.2:
+    resolution: {integrity: sha512-qOOzS1cBTWYF4BH8fVePDBOO9iptMnGUEZwNc/cMWnTV2nVLZ7VoNWEPHkYczZA0pdoA7dl6e7FL659nX9S2aw==}
     engines: {node: '>=16 || 14 >=14.17'}
 
   minizlib@2.1.2:
@@ -3368,6 +3362,9 @@ packages:
     resolution: {integrity: sha512-5NPgf87AT2STgwa2ntRMr45jTKrYBGkVU36yT0ig/n/GMAa3oPqhZfIQ2kMEimReg0+t9kZViDVZ83qfVUlckg==}
     engines: {node: '>= 14'}
 
+  package-json-from-dist@1.0.1:
+    resolution: {integrity: sha512-UEZIS3/by4OC8vL3P2dTXRETpebLI2NiI5vIrjaD/5UtrkFX/tNbwjTSRAGC/+7CAo2pIcBaRgWmcBBHcsaCIw==}
+
   parent-module@1.0.1:
     resolution: {integrity: sha512-GQ2EWRpQV8/o+Aw8YqtfZZPfNRWZYkbidE9k5rpl/hC3vtHHBfGm2Ifi6qWV+coDGkrUKZAxE3Lot5kcsRlh+g==}
     engines: {node: '>=6'}
@@ -3398,9 +3395,9 @@ packages:
   path-parse@1.0.7:
     resolution: {integrity: sha512-LDJzPVEEEPR+y48z93A0Ed0yXb8pAByGWo/k5YYdYgpY2/2EsOsksJrq7lOHxryrVOn1ejG6oAp8ahvOIQD8sw==}
 
-  path-scurry@1.10.1:
-    resolution: {integrity: sha512-MkhCqzzBEpPvxxQ71Md0b1Kk51W01lrYvlMzSUaIzNsODdd7mqhiimSZlr+VegAz5Z6Vzt9Xg2ttE//XBhH3EQ==}
-    engines: {node: '>=16 || 14 >=14.17'}
+  path-scurry@1.11.1:
+    resolution: {integrity: sha512-Xa4Nw17FS9ApQFJ9umLiJS4orGjm7ZzwUrwamcGQuHSzDyth9boKDaycYdDcZDuqYATXw4HFXgaqWTctW/v1HA==}
+    engines: {node: '>=16 || 14 >=14.18'}
 
   path-type@4.0.0:
     resolution: {integrity: sha512-gDKb8aZMDeD/tZWs9P6+q0J9Mwkdl6xMV8TjnGP3qJVJ06bdMgkbBlLU8IdfOsIsFz2BW1rNVT3XuNEl8zPAvw==}
@@ -3748,8 +3745,8 @@ packages:
     peerDependencies:
       react: ^16.14.0
 
-  react-focus-lock@2.13.6:
-    resolution: {integrity: sha512-ehylFFWyYtBKXjAO9+3v8d0i+cnc1trGS0vlTGhzFW1vbFXVUTmR8s2tt/ZQG8x5hElg6rhENlLG1H3EZK0Llg==}
+  react-focus-lock@2.13.7:
+    resolution: {integrity: sha512-20lpZHEQrXPb+pp1tzd4ULL6DyO5D2KnR0G69tTDdydrmNhU7pdFmbQUYVyHUgp+xN29IuFR0PVuhOmvaZL9Og==}
     peerDependencies:
       '@types/react': '*'
       react: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0 || ^19.0.0-rc
@@ -5550,7 +5547,7 @@ snapshots:
       globals: 14.0.0
       ignore: 5.3.2
       import-fresh: 3.3.0
-      js-yaml: 4.1.0
+      js-yaml: 4.1.1
       minimatch: 3.1.2
       strip-json-comments: 3.1.1
     transitivePeerDependencies:
@@ -6135,7 +6132,7 @@ snapshots:
   autoprefixer@10.4.20(postcss@8.5.3):
     dependencies:
       browserslist: 4.24.4
-      caniuse-lite: 1.0.30001703
+      caniuse-lite: 1.0.30001760
       fraction.js: 4.3.7
       normalize-range: 0.1.2
       picocolors: 1.1.1
@@ -6248,7 +6245,7 @@ snapshots:
 
   browserslist@4.24.4:
     dependencies:
-      caniuse-lite: 1.0.30001703
+      caniuse-lite: 1.0.30001760
       electron-to-chromium: 1.5.114
       node-releases: 2.0.19
       update-browserslist-db: 1.1.3(browserslist@4.24.4)
@@ -6261,7 +6258,7 @@ snapshots:
     dependencies:
       '@npmcli/fs': 3.1.0
       fs-minipass: 3.0.3
-      glob: 10.3.10
+      glob: 10.5.0
       lru-cache: 10.1.0
       minipass: 7.0.4
       minipass-collect: 2.0.1
@@ -6301,7 +6298,7 @@ snapshots:
 
   camelcase@6.3.0: {}
 
-  caniuse-lite@1.0.30001703: {}
+  caniuse-lite@1.0.30001760: {}
 
   chai@4.5.0:
     dependencies:
@@ -6440,12 +6437,12 @@ snapshots:
     dependencies:
       browserslist: 4.24.4
 
-  core-js@3.41.0: {}
+  core-js@3.47.0: {}
 
   cosmiconfig@8.3.6(typescript@5.8.3):
     dependencies:
       import-fresh: 3.3.0
-      js-yaml: 4.1.0
+      js-yaml: 4.1.1
       parse-json: 5.2.0
       path-type: 4.0.0
     optionalDependencies:
@@ -6455,7 +6452,7 @@ snapshots:
     dependencies:
       env-paths: 2.2.1
       import-fresh: 3.3.0
-      js-yaml: 4.1.0
+      js-yaml: 4.1.1
       parse-json: 5.2.0
     optionalDependencies:
       typescript: 5.8.3
@@ -7070,7 +7067,7 @@ snapshots:
       typescript: 5.8.3
       webpack: 5.99.5(@swc/core@1.11.21)(webpack-cli@6.0.1)
 
-  fp-ts@2.16.9: {}
+  fp-ts@2.16.11: {}
 
   fraction.js@4.3.7: {}
 
@@ -7089,8 +7086,6 @@ snapshots:
       minipass: 7.0.4
 
   fs-monkey@1.0.4: {}
-
-  fs.realpath@1.0.0: {}
 
   fsevents@2.3.2:
     optional: true
@@ -7164,21 +7159,14 @@ snapshots:
 
   glob-to-regexp@0.4.1: {}
 
-  glob@10.3.10:
+  glob@10.5.0:
     dependencies:
       foreground-child: 3.1.1
-      jackspeak: 2.3.6
+      jackspeak: 3.4.3
       minimatch: 9.0.5
-      minipass: 7.0.4
-      path-scurry: 1.10.1
-
-  glob@8.1.0:
-    dependencies:
-      fs.realpath: 1.0.0
-      inflight: 1.0.6
-      inherits: 2.0.4
-      minimatch: 5.1.6
-      once: 1.4.0
+      minipass: 7.1.2
+      package-json-from-dist: 1.0.1
+      path-scurry: 1.11.1
 
   global-agent@3.0.0:
     dependencies:
@@ -7301,13 +7289,6 @@ snapshots:
   indent-string@4.0.0: {}
 
   infestines@0.4.11: {}
-
-  inflight@1.0.6:
-    dependencies:
-      once: 1.4.0
-      wrappy: 1.0.2
-
-  inherits@2.0.4: {}
 
   internal-slot@1.1.0:
     dependencies:
@@ -7473,7 +7454,7 @@ snapshots:
       has-symbols: 1.1.0
       set-function-name: 2.0.2
 
-  jackspeak@2.3.6:
+  jackspeak@3.4.3:
     dependencies:
       '@isaacs/cliui': 8.0.2
     optionalDependencies:
@@ -7493,7 +7474,7 @@ snapshots:
 
   js-tokens@4.0.0: {}
 
-  js-yaml@4.1.0:
+  js-yaml@4.1.1:
     dependencies:
       argparse: 2.0.1
 
@@ -7623,6 +7604,8 @@ snapshots:
       get-func-name: 2.0.2
 
   lru-cache@10.1.0: {}
+
+  lru-cache@10.4.3: {}
 
   lru-cache@5.1.1:
     dependencies:
@@ -7755,6 +7738,8 @@ snapshots:
 
   minipass@7.0.4: {}
 
+  minipass@7.1.2: {}
+
   minizlib@2.1.2:
     dependencies:
       minipass: 3.3.6
@@ -7791,9 +7776,9 @@ snapshots:
       diff: 5.2.0
       escape-string-regexp: 4.0.0
       find-up: 5.0.0
-      glob: 8.1.0
+      glob: 10.5.0
       he: 1.2.0
-      js-yaml: 4.1.0
+      js-yaml: 4.1.1
       log-symbols: 4.1.0
       minimatch: 5.1.6
       ms: 2.1.3
@@ -7853,7 +7838,7 @@ snapshots:
     dependencies:
       env-paths: 2.2.1
       exponential-backoff: 3.1.1
-      glob: 10.3.10
+      glob: 10.5.0
       graceful-fs: 4.2.11
       make-fetch-happen: 13.0.0
       nopt: 7.2.0
@@ -7988,6 +7973,8 @@ snapshots:
       degenerator: 5.0.1
       netmask: 2.0.2
 
+  package-json-from-dist@1.0.1: {}
+
   parent-module@1.0.1:
     dependencies:
       callsites: 3.1.0
@@ -8013,10 +8000,10 @@ snapshots:
 
   path-parse@1.0.7: {}
 
-  path-scurry@1.10.1:
+  path-scurry@1.11.1:
     dependencies:
-      lru-cache: 10.1.0
-      minipass: 7.0.4
+      lru-cache: 10.4.3
+      minipass: 7.1.2
 
   path-type@4.0.0: {}
 
@@ -8419,7 +8406,7 @@ snapshots:
       react: 16.14.0
       scheduler: 0.19.1
 
-  react-focus-lock@2.13.6(@types/react@16.14.63)(react@16.14.0):
+  react-focus-lock@2.13.7(@types/react@16.14.63)(react@16.14.0):
     dependencies:
       '@babel/runtime': 7.27.0
       focus-lock: 1.3.6

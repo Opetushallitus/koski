@@ -1,4 +1,4 @@
-export const memoize = <A extends any[], T>(
+export const memoize = <A extends unknown[], T>(
   fn: (...a: A) => Promise<T>,
   getKey: (...a: A) => string
 ) => {

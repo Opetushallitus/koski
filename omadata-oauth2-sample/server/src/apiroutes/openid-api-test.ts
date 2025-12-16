@@ -16,7 +16,7 @@ import { URLSearchParams } from 'url'
 const router: Router = express.Router()
 
 // Toistaiseksi vain muistinvarainen map, riittää tähän esimerkkikäyttöön, tietokanta olisi overkill
-let verifiers: Map<string, string> = new Map()
+const verifiers: Map<string, string> = new Map()
 
 const defaultScope: string =
   'HENKILOTIEDOT_NIMI HENKILOTIEDOT_SYNTYMAAIKA HENKILOTIEDOT_HETU OPISKELUOIKEUDET_SUORITETUT_TUTKINNOT'

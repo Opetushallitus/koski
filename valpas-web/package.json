@@ -39,6 +39,8 @@
     "@eslint/js": "^9.24.0",
     "@jest/globals": "^29.7.0",
     "@parcel/babel-plugin-transform-runtime": "^2.14.4",
+    "@parcel/config-default": "^2.14.4",
+    "@parcel/core": "^2.14.4",
     "@parcel/package-manager": "^2.14.4",
     "@parcel/transformer-less": "^2.14.4",
     "@testing-library/dom": "^10.4.0",
@@ -90,14 +92,25 @@
     "date-fns": "^4.1.0",
     "downloadjs": "^1.4.7",
     "fp-ts": "^2.16.11",
-    "react": "^19.2.0",
+    "react": "^19.2.3",
     "react-calendar": "^6.0.0",
     "react-date-picker": "^12.0.1",
-    "react-dom": "^19.2.0",
+    "react-dom": "^19.2.3",
     "react-router-dom": "^5.3.4",
     "regenerator-runtime": "^0.14.1"
   },
   "alias": {
     "memoize": "./node_modules/.pnpm/memoize@10.2.0/node_modules/memoize/distribution/index.js"
-  }
+  },
+  "pnpm": {
+    "overrides": {
+      "axios": "^1.12.0",
+      "brace-expansion@^1": "1.1.12",
+      "brace-expansion@^2": "2.0.2",
+      "js-yaml@^3": "3.14.2",
+      "js-yaml@^4": "4.1.1",
+      "@eslint/plugin-kit": "^0.3.4"
+    }
+  },
+  "packageManager": "pnpm@10.2.0"
 }

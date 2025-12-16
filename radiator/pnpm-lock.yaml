@@ -19,17 +19,17 @@ importers:
         version: 2.2.6
       ts-node:
         specifier: ^10.9.2
-        version: 10.9.2(@types/node@20.10.0)(typescript@4.9.5)
+        version: 10.9.2(@types/node@22.19.3)(typescript@5.9.3)
     devDependencies:
       '@types/node':
-        specifier: ^20.10.0
-        version: 20.10.0
+        specifier: ^22.15.32
+        version: 22.19.3
       '@types/tail':
-        specifier: ^2.2.1
-        version: 2.2.1
+        specifier: ^2.2.3
+        version: 2.2.3
       typescript:
-        specifier: ^4.9.5
-        version: 4.9.5
+        specifier: ^5.9.3
+        version: 5.9.3
 
 packages:
 
@@ -59,11 +59,11 @@ packages:
   '@tsconfig/node16@1.0.3':
     resolution: {integrity: sha512-yOlFc+7UtL/89t2ZhjPvvB/DeAr3r+Dq58IgzsFkOAvVC6NMJXmCGjbptdXdR9qsX7pKcTL+s87FtYREi2dEEQ==}
 
-  '@types/node@20.10.0':
-    resolution: {integrity: sha512-D0WfRmU9TQ8I9PFx9Yc+EBHw+vSpIub4IDvQivcp26PtPrdMGAq5SDcpXEo/epqa/DXotVpekHiLNTg3iaKXBQ==}
+  '@types/node@22.19.3':
+    resolution: {integrity: sha512-1N9SBnWYOJTrNZCdh/yJE+t910Y128BoyY+zBLWhL3r0TYzlTmFdXrPwHL9DyFZmlEXNQQolTZh3KHV31QDhyA==}
 
-  '@types/tail@2.2.1':
-    resolution: {integrity: sha512-j75Gs5MiIpNR14wztQ4vtViUqxZi+lcgflyXC7P9iMgNnMab7XcV5p+2590IO3njsWWn5l8C+55ILk2CDDyaHg==}
+  '@types/tail@2.2.3':
+    resolution: {integrity: sha512-Hnf352egOlDR4nVTaGX0t/kmTNXHMdovF2C7PVDFtHTHJPFmIspOI1b86vEOxU7SfCq/dADS7ptbqgG/WGGxnA==}
 
   acorn-walk@8.2.0:
     resolution: {integrity: sha512-k+iyHEuPgSw6SbuDpGQM+06HQUa04DZ3o+F6CSzXMvvI5KMvnaEqXe+YVe555R9nn6GPt404fos4wcgpw12SDA==}
@@ -112,13 +112,13 @@ packages:
       '@swc/wasm':
         optional: true
 
-  typescript@4.9.5:
-    resolution: {integrity: sha512-1FXk9E2Hm+QzZQ7z+McJiHL4NW1F2EzMu9Nq9i3zAaGqibafqYwCVU6WyWAuyQRRzOlxou8xZSyXLEN8oKj24g==}
-    engines: {node: '>=4.2.0'}
+  typescript@5.9.3:
+    resolution: {integrity: sha512-jl1vZzPDinLr9eUt3J/t7V6FgNEw9QjvBPdysz9KfQDD41fQrC2Y4vKQdiaUpFT4bXlb1RHhLpp8wtm6M5TgSw==}
+    engines: {node: '>=14.17'}
     hasBin: true
 
-  undici-types@5.26.5:
-    resolution: {integrity: sha512-JlCMO+ehdEIKqlFxk6IfVoAUVmgz7cU7zD/h9XZ0qzeosSHmUJVOzSQvvYSYWXkFXC+IfLKSIffhv0sVZup6pA==}
+  undici-types@6.21.0:
+    resolution: {integrity: sha512-iwDZqg0QAGrg9Rav5H4n0M64c3mkR59cJ6wQp+7C4nI0gsmExaedaYLNO44eT4AtBBwjbTiGPMlt2Md0T9H9JQ==}
 
   v8-compile-cache-lib@3.0.1:
     resolution: {integrity: sha512-wa7YjyUGfNZngI/vtK0UHAN+lgDCxBPCylVXGp0zu59Fz5aiGtNXaq3DhIov063MorB+VfufLh3JlF2KdTK3xg==}
@@ -150,11 +150,11 @@ snapshots:
 
   '@tsconfig/node16@1.0.3': {}
 
-  '@types/node@20.10.0':
+  '@types/node@22.19.3':
     dependencies:
-      undici-types: 5.26.5
+      undici-types: 6.21.0
 
-  '@types/tail@2.2.1': {}
+  '@types/tail@2.2.3': {}
 
   acorn-walk@8.2.0: {}
 
@@ -174,27 +174,27 @@ snapshots:
 
   tail@2.2.6: {}
 
-  ts-node@10.9.2(@types/node@20.10.0)(typescript@4.9.5):
+  ts-node@10.9.2(@types/node@22.19.3)(typescript@5.9.3):
     dependencies:
       '@cspotcode/source-map-support': 0.8.1
       '@tsconfig/node10': 1.0.9
       '@tsconfig/node12': 1.0.11
       '@tsconfig/node14': 1.0.3
       '@tsconfig/node16': 1.0.3
-      '@types/node': 20.10.0
+      '@types/node': 22.19.3
       acorn: 8.8.2
       acorn-walk: 8.2.0
       arg: 4.1.3
       create-require: 1.1.1
       diff: 4.0.2
       make-error: 1.3.6
-      typescript: 4.9.5
+      typescript: 5.9.3
       v8-compile-cache-lib: 3.0.1
       yn: 3.1.1
 
-  typescript@4.9.5: {}
+  typescript@5.9.3: {}
 
-  undici-types@5.26.5: {}
+  undici-types@6.21.0: {}
 
   v8-compile-cache-lib@3.0.1: {}
 
