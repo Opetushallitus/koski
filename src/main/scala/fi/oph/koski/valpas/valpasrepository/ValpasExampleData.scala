@@ -119,6 +119,18 @@ object ValpasExampleData {
       ),
       Some(LocalDate.of(2021, 6, 27))
     ),
+    ValpasKuntailmoitusFixture(
+      oppilaitoksenIlmoitusKaikillaTiedoilla.withOppijaOid(
+        ValpasMockOppijat.menehtynytOppija.oid
+      ),
+      Some(LocalDate.of(2021, 2, 1))
+    ),
+    ValpasKuntailmoitusFixture(
+      oppilaitoksenIlmoitusKaikillaTiedoilla.withOppijaOid(
+        ValpasMockOppijat.menehtynytToisellaAsteellaOppija.oid
+      ),
+      Some(LocalDate.of(2021, 2, 1))
+    ),
   )
 
   def ilmoitustenLisätietojenPoistot = Seq(

@@ -1036,11 +1036,13 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
       LEFT JOIN suorittamisvalvottava_opiskeluoikeus ON suorittamisvalvottava_opiskeluoikeus.master_oid = r_henkilo.master_oid
       -- Haetaan kaikki oppijan oidit: pitää palauttaa esim. kuntailmoitusten kyselyä varten
       JOIN r_henkilo kaikki_henkilot ON kaikki_henkilot.master_oid = r_henkilo.master_oid
+      -- Ei valita koskaan mukaan tuloksiin menehtyneitä oppijoita
+      WHERE r_henkilo.kuolinpaiva is null
       """),
         nonEmptyOppijaOids.map(_ => sql"""
       -- Jos haetaan oppijan oid:n perusteella, on oppijalla oltava vähintään yksi oppivelvollisuuskelvollinen
       -- opiskeluoikeus:
-    WHERE
+    AND
       EXISTS (SELECT 1 FROM ov_kelvollinen_opiskeluoikeus
         WHERE ov_kelvollinen_opiskeluoikeus.master_oid = r_henkilo.master_oid)
       """),

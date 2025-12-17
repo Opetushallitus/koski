@@ -624,16 +624,18 @@ class OppivelvollisuustietoSpec
     "Menehtyneet oppijat" - {
       lazy val resetValpasMockData = FixtureUtil.resetMockData(defaultKoskiApplication)
 
-      "Menehtynyt peruskoululainen ei löydy oppivelvollisuustiedoista" in {
+      "Oppivelvollisuus ja oikeus maksuttomuuteen päättyy menehtymiseen peruskoululaiselle" in {
         resetValpasMockData
         val result = queryOids(ValpasMockOppijat.menehtynytOppija.oid)
-        result should be (empty)
+        result.head.oppivelvollisuusVoimassaAsti shouldBe date(2021, 3, 1)
+        result.head.oikeusMaksuttomaanKoulutukseenVoimassaAsti shouldBe date(2021, 3, 1)
       }
 
-      "Menehtynyt toisen asteen opiskelija ei löydy oppivelvollisuustiedoista" in {
+      "Oppivelvollisuus ja oikeus maksuttomuuteen päättyy menehtymiseen toisen asteen opiskelijalle" in {
         resetValpasMockData
         val result = queryOids(ValpasMockOppijat.menehtynytToisellaAsteellaOppija.oid)
-        result should be (empty)
+        result.head.oppivelvollisuusVoimassaAsti shouldBe date(2021, 3, 1)
+        result.head.oikeusMaksuttomaanKoulutukseenVoimassaAsti shouldBe date(2021, 3, 1)
       }
     }
   }
