@@ -46,7 +46,7 @@ case class SupaDiplomaVuosiluokanSuoritus(
   vahvistus: Option[SupaVahvistus],
   koulutusmoduuli: DiplomaLuokkaAste,
   suorituskieli: Koodistokoodiviite,
-  osasuoritukset: List[SupaDiplomaIBOppiaineenSuoritus],
+  osasuoritukset: Option[List[SupaDiplomaIBOppiaineenSuoritus]],
 ) extends SupaSuoritus
   with Suorituskielellinen
   with SupaVahvistuksellinen
@@ -60,7 +60,7 @@ object SupaDiplomaVuosiluokanSuoritus {
         vahvistus = s.vahvistus.map(v => SupaVahvistus(v.päivä)),
         koulutusmoduuli = s.koulutusmoduuli,
         suorituskieli = s.suorituskieli,
-        osasuoritukset = s.osasuoritukset.toList.flatten.map(SupaDiplomaIBOppiaineenSuoritus.apply),
+        osasuoritukset = s.osasuoritukset.map(_.map(SupaDiplomaIBOppiaineenSuoritus.apply)).filter(_.nonEmpty),
       )
     }
 }

@@ -54,7 +54,7 @@ case class SupaAikuistenPerusopetuksenOppimääränSuoritus(
   vahvistus: Option[SupaVahvistus],
   koulutusmoduuli: AikuistenPerusopetus,
   suorituskieli: Koodistokoodiviite,
-  osasuoritukset: List[AikuistenPerusopetuksenOppiaineenSuoritus],
+  osasuoritukset: Option[List[AikuistenPerusopetuksenOppiaineenSuoritus]],
 ) extends SupaAikuistenPerusopetuksenSuoritus with SupaVahvistuksellinen
 
 object SupaAikuistenPerusopetuksenOppimääränSuoritus {
@@ -65,7 +65,7 @@ object SupaAikuistenPerusopetuksenOppimääränSuoritus {
       vahvistus = s.vahvistus.map(v => SupaVahvistus(v.päivä)),
       koulutusmoduuli = s.koulutusmoduuli,
       suorituskieli = s.suorituskieli,
-      osasuoritukset = s.osasuoritukset.toList.flatten,
+      osasuoritukset = s.osasuoritukset.filter(_.nonEmpty),
     )
 }
 
@@ -96,7 +96,7 @@ object SupaAikuistenPerusopetuksenOppiaineenOppimääränSuoritus {
       suorituskieli = s.suorituskieli,
       muutSuorituskielet = s.muutSuorituskielet,
       todistuksellaNäkyvätLisätiedot = s.todistuksellaNäkyvätLisätiedot,
-      osasuoritukset = s.osasuoritukset,
+      osasuoritukset = s.osasuoritukset.filter(_.nonEmpty),
       tyyppi = s.tyyppi
     )
 }

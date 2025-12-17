@@ -45,7 +45,7 @@ case class SupaDIATutkinnonSuoritus(
   vahvistus: Option[SupaVahvistus],
   koulutusmoduuli: DIATutkinto,
   suorituskieli: Koodistokoodiviite,
-  osasuoritukset: List[SupaDIAOppiaineenTutkintovaiheenSuoritus],
+  osasuoritukset: Option[List[SupaDIAOppiaineenTutkintovaiheenSuoritus]],
 ) extends SupaSuoritus
   with Suorituskielellinen
   with SupaVahvistuksellinen
@@ -58,12 +58,7 @@ object SupaDIATutkinnonSuoritus {
       vahvistus = s.vahvistus.map(v => SupaVahvistus(v.päivä)),
       koulutusmoduuli = s.koulutusmoduuli,
       suorituskieli = s.suorituskieli,
-      osasuoritukset =
-        s.osasuoritukset
-          .toList
-          .flatten
-          .filter(_.valmis)
-          .map(SupaDIAOppiaineenTutkintovaiheenSuoritus.apply)
+      osasuoritukset = s.osasuoritukset.map(_.filter(_.valmis).map(SupaDIAOppiaineenTutkintovaiheenSuoritus.apply)).filter(_.nonEmpty)
     )
 }
 
@@ -75,7 +70,7 @@ case class SupaDIAOppiaineenTutkintovaiheenSuoritus(
   suorituskieli: Option[Koodistokoodiviite] = None,
   vastaavuustodistuksenTiedot: Option[DIAVastaavuustodistuksenTiedot] = None,
   koetuloksenNelinkertainenPistemäärä: Option[Int] = None,
-  osasuoritukset: List[SupaDIAOppiaineenTutkintovaiheenOsasuorituksenSuoritus],
+  osasuoritukset: Option[List[SupaDIAOppiaineenTutkintovaiheenOsasuorituksenSuoritus]],
 ) extends SupaSuoritus
   with MahdollisestiSuorituskielellinen
 
@@ -87,7 +82,7 @@ object SupaDIAOppiaineenTutkintovaiheenSuoritus {
       vastaavuustodistuksenTiedot = s.vastaavuustodistuksenTiedot,
       koetuloksenNelinkertainenPistemäärä = s.koetuloksenNelinkertainenPistemäärä,
       tyyppi = s.tyyppi,
-      osasuoritukset = s.osasuoritukset.toList.flatten.flatMap(s => SupaDIAOppiaineenTutkintovaiheenOsasuorituksenSuoritus(s)),
+      osasuoritukset = s.osasuoritukset.map(_.flatMap(s => SupaDIAOppiaineenTutkintovaiheenOsasuorituksenSuoritus(s))).filter(_.nonEmpty),
     )
 }
 
