@@ -1,6 +1,6 @@
 # Massaluovutusrajapinnat oppivelvollisuuden valvontaan
 
-Massaluovutusrajapinta on tarkoitettu pidempikestoisten kyselyiden tekemiseen KOSKI-datasta.
+Massaluovutusrajapinta on tarkoitettu pidempikestoisten kyselyiden tekemiseen KOSKI-datasta ja Valpas-palvelun koostamasta datasta.
 Tässä dokumentaatiossa kuvataan oppivelvollisuuden valvontaan tarkoitettujen rajapintojen käyttö sekä
 rajapintaan tehtävien kyselyiden ja vastausten muoto.
 
