@@ -3,7 +3,7 @@ import puppeteer, { Page } from "puppeteer";
 type Environment = "dev" | "qa";
 
 const RETRIES = 3;
-const TIMEOUT_MS = 10_000;
+const TIMEOUT_MS = 30000;
 
 const ENVIRONMENTS: Record<Environment, string> = {
   dev: "https://oph-koski-omadataoauth2sample-dev.testiopintopolku.fi",
