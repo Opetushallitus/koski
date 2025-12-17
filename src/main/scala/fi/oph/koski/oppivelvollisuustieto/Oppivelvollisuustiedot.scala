@@ -39,6 +39,7 @@ object Oppivelvollisuustiedot {
     }
   }
 
+  // Huom. tämä kysely palauttaa myös menehtyneen oppijan.
   def queryByOid(oid: String, db: RaportointiDatabase): Option[Oppivelvollisuustieto] = {
     try {
       db.runDbSync(
@@ -51,12 +52,14 @@ object Oppivelvollisuustiedot {
     }
   }
 
+  // Huom. tämä kysely palauttaa myös menehtyneet oppijat.
   def queryByOids(oids: Seq[String], db: RaportointiDatabase): Seq[Oppivelvollisuustieto] = {
     db.runDbSync(
       sql"select * from oppivelvollisuustiedot where oppija_oid = any($oids)".as[Oppivelvollisuustieto]
     )
   }
 
+  // Huom. tämä kysely palauttaa myös menehtyneet oppijat.
   def queryByOidsIncludeMissing(oids: Seq[String], db: RaportointiDatabase): Seq[OptionalOppivelvollisuustieto] = {
     db.runDbSync(
       sql"""
@@ -75,6 +78,7 @@ object Oppivelvollisuustiedot {
     )
   }
 
+  // Huom. tämä kysely palauttaa myös menehtyneet oppijat.
   def queryByHetusIncludeMissing(hetus: Seq[String], db: RaportointiDatabase): Seq[OptionalOppivelvollisuustieto] =
     db.runDbSync(
       sql"""

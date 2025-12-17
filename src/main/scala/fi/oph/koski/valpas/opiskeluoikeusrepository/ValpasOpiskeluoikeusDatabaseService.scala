@@ -1996,6 +1996,7 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
     }
   }
 
+  // Huom. tämä kysely palauttaa myös menehtyneet oppijat.
   def getOppivelvollisuusTiedot(hetut: Seq[String]): Seq[ValpasOppivelvollisuustiedotRow] = {
 
     implicit def getResult: GetResult[ValpasOppivelvollisuustiedotRow] = GetResult(r => {
@@ -2075,6 +2076,8 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
       LEFT JOIN oppivelvollisuustiedot ON (r_henkilo.master_oid = oppivelvollisuustiedot.oppija_oid)
       WHERE
         r_henkilo.hetu = any($hetut)
+        -- Suodata vielä pois menehtyneet oppijat, vaikka heille oppivelvollisuus pitäisikin olla päättynyt
+        AND r_henkilo.kuolinpaiva is null
       """.as[HetuMasterOid])
   }
 
@@ -2094,10 +2097,14 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
             AND ($tarkastelupäivä BETWEEN oppivelvollisuustiedot.oppivelvollisuusvoimassaalkaen AND oppivelvollisuustiedot.oppivelvollisuusvoimassaasti)
       WHERE
         r_henkilo.kotikunta = $kunta
+        -- Suodata vielä pois menehtyneet oppijat, vaikka heille pitäisi olla kotikunta null
+        AND r_henkilo.kuolinpaiva is null
       """.as[HetuMasterOid])
   }
 
 
+  // Anna tämän kyselyn löytää myös menehtyneet oppijat.
+  // Käytetään Kosken tuntemien oppijoiden poistamiseen ONR:stä saaduista oppijalistoista.
   def haeTunnettujenOppijoidenOidit(oppijaOidit: Seq[ValpasHenkilö.Oid]): Seq[OidResult] = {
     db.runDbSync(sql"""
       SELECT
