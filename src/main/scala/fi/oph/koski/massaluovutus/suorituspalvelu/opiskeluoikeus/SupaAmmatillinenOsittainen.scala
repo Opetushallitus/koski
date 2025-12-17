@@ -22,7 +22,7 @@ case class SupaAmmatillisenTutkinnonOsittainenSuoritus(
   vahvistus: Option[SupaVahvistus],
   koulutusmoduuli: AmmatillinenTutkintoKoulutus,
   suorituskieli: Koodistokoodiviite,
-  osasuoritukset: List[SupaOsittaisenAmmatillisenTutkinnonOsanSuoritus],
+  osasuoritukset: Option[List[SupaOsittaisenAmmatillisenTutkinnonOsanSuoritus]],
   @KoodistoKoodiarvo("ammatillinentutkintoosittainen")
   suoritustapa: Koodistokoodiviite,
   @MinValue(1) @MaxValue(5)
@@ -47,7 +47,7 @@ object SupaAmmatillisenTutkinnonOsittainenSuoritus {
       vahvistus = s.vahvistus.map(v => SupaVahvistus(v.päivä)),
       koulutusmoduuli = s.koulutusmoduuli,
       suorituskieli = s.suorituskieli,
-      osasuoritukset = s.osasuoritukset.toList.flatten.map(SupaOsittaisenAmmatillisenTutkinnonOsanSuoritusmapper.apply),
+      osasuoritukset = s.osasuoritukset.map(_.map(SupaOsittaisenAmmatillisenTutkinnonOsanSuoritusmapper.apply)).filter(_.nonEmpty),
       suoritustapa = s.suoritustapa,
       keskiarvo = s.keskiarvo,
       korotettuKeskiarvo = s.korotettuKeskiarvo,
@@ -60,7 +60,7 @@ case class SupaOsittaisenYhteisenAmmatillisenTutkinnonOsanSuoritus(
   tyyppi: Koodistokoodiviite,
   koulutusmoduuli: AmmatillisenTutkinnonOsa,
   arviointi: Option[List[AmmatillinenArviointi]],
-  osasuoritukset: List[SupaOsittaisenYhteisenTutkinnonOsanOsaAlueenSuoritus]
+  osasuoritukset: Option[List[SupaOsittaisenYhteisenTutkinnonOsanOsaAlueenSuoritus]]
 ) extends SupaOsittaisenAmmatillisenTutkinnonOsanSuoritus
 
 @Title("Muun tutkinnon osan suoritus")
@@ -76,7 +76,7 @@ case class SupaOsittaisenJatkoOpintovalmiuksiaTukevienOpintojenSuoritus(
   tyyppi: Koodistokoodiviite,
   koulutusmoduuli: AmmatillisenTutkinnonOsa,
   arviointi: Option[List[AmmatillinenArviointi]],
-  osasuoritukset: List[SupaOsittaisenJatkovalmiudetOsasuoritus]
+  osasuoritukset: Option[List[SupaOsittaisenJatkovalmiudetOsasuoritus]]
 ) extends SupaOsittaisenAmmatillisenTutkinnonOsanSuoritus
 
 @Title("Korkeakouluopintoja")
@@ -84,7 +84,7 @@ case class SupaOsittaisenKorkeakouluopintoSuoritus(
   tyyppi: Koodistokoodiviite,
   koulutusmoduuli: AmmatillisenTutkinnonOsa,
   arviointi: Option[List[AmmatillinenArviointi]],
-  osasuoritukset: List[SupaKorkeakouluopintojenSuoritus]
+  osasuoritukset: Option[List[SupaKorkeakouluopintojenSuoritus]]
 ) extends SupaOsittaisenAmmatillisenTutkinnonOsanSuoritus
 
 @Title("Yhteisten tutkinnon osien osa-alueita, lukio-opintoja tai muita jatko-opintovalmiuksia tukevia opintoja")
@@ -153,7 +153,7 @@ private object SupaOsittaisenAmmatillisenTutkinnonOsanSuoritusmapper {
         tyyppi = ss.tyyppi,
         koulutusmoduuli = ss.koulutusmoduuli,
         arviointi = ss.arviointi,
-        osasuoritukset = ss.osasuoritukset.toList.flatten.map(SupaOsittaisenYhteisenTutkinnonOsanOsaAlueenSuoritus.apply)
+        osasuoritukset = ss.osasuoritukset.map(_.map(SupaOsittaisenYhteisenTutkinnonOsanOsaAlueenSuoritus.apply)).filter(_.nonEmpty)
       )
 
     case ss: MuunOsittaisenAmmatillisenTutkinnonTutkinnonosanSuoritus =>
@@ -169,9 +169,7 @@ private object SupaOsittaisenAmmatillisenTutkinnonOsanSuoritusmapper {
         tyyppi = ss.tyyppi,
         koulutusmoduuli = ss.koulutusmoduuli,
         arviointi = None,
-        osasuoritukset = ss.osasuoritukset.toList.flatten.map(
-          OsittainenJatkoOpintovalmiuksiaOsasuoritusMapper.apply
-        )
+        osasuoritukset = ss.osasuoritukset.map(_.map(OsittainenJatkoOpintovalmiuksiaOsasuoritusMapper.apply)).filter(_.nonEmpty)
       )
 
     case ss: OsittaisenAmmatillisenTutkinnonOsanKorkeakouluopintoSuoritus =>
@@ -179,7 +177,7 @@ private object SupaOsittaisenAmmatillisenTutkinnonOsanSuoritusmapper {
         tyyppi = ss.tyyppi,
         koulutusmoduuli = ss.koulutusmoduuli,
         arviointi = None,
-        osasuoritukset = ss.osasuoritukset.toList.flatten.map(SupaKorkeakouluopintojenSuoritus.apply)
+        osasuoritukset = ss.osasuoritukset.map(_.map(SupaKorkeakouluopintojenSuoritus.apply)).filter(_.nonEmpty)
       )
   }
 }

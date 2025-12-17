@@ -46,7 +46,7 @@ case class SupaOppivelvollisilleSuunnattuVapaanSivistystyönKoulutuksenSuoritus(
   vahvistus: Option[SupaVahvistus],
   koulutusmoduuli: OppivelvollisilleSuunnattuVapaanSivistystyönKoulutus,
   suorituskieli: Koodistokoodiviite,
-  osasuoritukset: List[SupaOppivelvollisilleSuunnatunVapaanSivistystyönOsasuoritus],
+  osasuoritukset: Option[List[SupaOppivelvollisilleSuunnatunVapaanSivistystyönOsasuoritus]],
 ) extends SupaVapaanSivistystyönPäätasonSuoritus
   with Suorituskielellinen
   with SupaVahvistuksellinen
@@ -59,12 +59,12 @@ object SupaOppivelvollisilleSuunnattuVapaanSivistystyönKoulutuksenSuoritus {
       vahvistus = s.vahvistus.map(v => SupaVahvistus(v.päivä)),
       koulutusmoduuli = s.koulutusmoduuli,
       suorituskieli = s.suorituskieli,
-      osasuoritukset = s.osasuoritukset.toList.flatten.map {
+      osasuoritukset = s.osasuoritukset.map(_.map {
         case os: OppivelvollisilleSuunnatunVapaanSivistystyönOsaamiskokonaisuudenSuoritus =>
           SupaOppivelvollisilleSuunnatunVapaanSivistystyönOsaamiskokonaisuudenSuoritus(os)
         case os: OppivelvollisilleSuunnatunVapaanSivistystyönValinnaistenSuuntautumisopintojenSuoritus =>
           SupaOppivelvollisilleSuunnatunVapaanSivistystyönValinnaistenSuuntautumisopintojenSuoritus(os)
-      }
+      }).filter(_.nonEmpty)
     )
 }
 
@@ -75,7 +75,7 @@ case class SupaOppivelvollisilleSuunnatunVapaanSivistystyönOsaamiskokonaisuuden
   @KoodistoKoodiarvo("vstosaamiskokonaisuus")
   tyyppi: Koodistokoodiviite,
   koulutusmoduuli: OppivelvollisilleSuunnattuVapaanSivistystyönOsaamiskokonaisuus,
-  osasuoritukset: List[SupaOppivelvollisilleSuunnatunVapaanSivistystyönOpintokokonaisuudenSuoritus],
+  osasuoritukset: Option[List[SupaOppivelvollisilleSuunnatunVapaanSivistystyönOpintokokonaisuudenSuoritus]],
 ) extends SupaOppivelvollisilleSuunnatunVapaanSivistystyönOsasuoritus
 
 object SupaOppivelvollisilleSuunnatunVapaanSivistystyönOsaamiskokonaisuudenSuoritus {
@@ -83,7 +83,7 @@ object SupaOppivelvollisilleSuunnatunVapaanSivistystyönOsaamiskokonaisuudenSuor
     SupaOppivelvollisilleSuunnatunVapaanSivistystyönOsaamiskokonaisuudenSuoritus(
       tyyppi = s.tyyppi,
       koulutusmoduuli = s.koulutusmoduuli,
-      osasuoritukset = s.osasuoritukset.toList.flatten.map(SupaOppivelvollisilleSuunnatunVapaanSivistystyönOpintokokonaisuudenSuoritus.apply)
+      osasuoritukset = s.osasuoritukset.map(_.map(SupaOppivelvollisilleSuunnatunVapaanSivistystyönOpintokokonaisuudenSuoritus.apply)).filter(_.nonEmpty)
     )
 }
 
@@ -107,7 +107,7 @@ case class SupaOppivelvollisilleSuunnatunVapaanSivistystyönValinnaistenSuuntaut
   @KoodistoKoodiarvo("vstvalinnainensuuntautuminen")
   tyyppi: Koodistokoodiviite,
   koulutusmoduuli: OppivelvollisilleSuunnatunVapaanSivistystyönValinnaisetSuuntautumisopinnot,
-  osasuoritukset: List[SupaVapaanSivistystyönOpintokokonaisuudenSuoritus],
+  osasuoritukset: Option[List[SupaVapaanSivistystyönOpintokokonaisuudenSuoritus]],
 ) extends SupaOppivelvollisilleSuunnatunVapaanSivistystyönOsasuoritus
 
 object SupaOppivelvollisilleSuunnatunVapaanSivistystyönValinnaistenSuuntautumisopintojenSuoritus {
@@ -115,12 +115,12 @@ object SupaOppivelvollisilleSuunnatunVapaanSivistystyönValinnaistenSuuntautumis
     SupaOppivelvollisilleSuunnatunVapaanSivistystyönValinnaistenSuuntautumisopintojenSuoritus(
       tyyppi = s.tyyppi,
       koulutusmoduuli = s.koulutusmoduuli,
-      osasuoritukset = s.osasuoritukset.toList.flatten.map {
+      osasuoritukset = s.osasuoritukset.map(_.map {
         case os: OppivelvollisilleSuunnatunVapaanSivistystyönOpintokokonaisuudenSuoritus =>
           SupaOppivelvollisilleSuunnatunVapaanSivistystyönOpintokokonaisuudenSuoritus(os)
         case os: MuuallaSuoritettuOppivelvollisilleSuunnatunVapaanSivistystyönOpintojenSuoritus =>
           SupaMuuallaSuoritettuOppivelvollisilleSuunnatunVapaanSivistystyönOpintojenSuoritus(os)
-      }
+      }).filter(_.nonEmpty)
     )
 }
 

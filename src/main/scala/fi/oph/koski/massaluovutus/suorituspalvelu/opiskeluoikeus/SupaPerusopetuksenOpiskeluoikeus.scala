@@ -78,7 +78,7 @@ object SupaNuortenPerusopetuksenOppimääränSuoritus {
       vahvistus = s.vahvistus.map(v => SupaVahvistus(v.päivä)),
       suorituskieli = s.suorituskieli,
       koulusivistyskieli = s.koulusivistyskieli,
-      osasuoritukset = s.osasuoritukset.map(_.collect { case os: NuortenPerusopetuksenOppiaineenSuoritus => os }),
+      osasuoritukset = s.osasuoritukset.map(_.collect { case os: NuortenPerusopetuksenOppiaineenSuoritus => os }).filter(_.nonEmpty),
     )
 }
 
@@ -104,7 +104,7 @@ object SupaPerusopetuksenYhdeksännenVuosiluokanSuoritus {
       vahvistus = s.vahvistus.map(v => SupaVahvistus(v.päivä)),
       suorituskieli = s.suorituskieli,
       jääLuokalle = s.jääLuokalle,
-      osasuoritukset = if(lisääOsasuoritukset) s.osasuoritukset.map(_.collect { case os: NuortenPerusopetuksenOppiaineenSuoritus => os }) else None,
+      osasuoritukset = if(lisääOsasuoritukset) s.osasuoritukset.map(_.collect { case os: NuortenPerusopetuksenOppiaineenSuoritus => os }).filter(_.nonEmpty) else None,
     )
 }
 

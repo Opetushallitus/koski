@@ -66,7 +66,7 @@ object SupaIBTutkinnonSuoritus {
         case oppiaine: IBOppiaineenSuoritus => Some(SupaIBOppiaineenSuoritus(oppiaine))
         case oppiaine: IBDPCoreSuoritus => Some(SupaIBDPCoreSuoritus(oppiaine))
         case _ => None
-      }),
+      }).filter(_.nonEmpty),
       theoryOfKnowledgeSuoritus = s.theoryOfKnowledge,
       extendedEssay = s.extendedEssay,
       creativityActionService = s.creativityActionService,
