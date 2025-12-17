@@ -159,7 +159,10 @@ case class SupaPerusopetuksenOpiskeluoikeudenLisätiedot(
 
 object SupaPerusopetuksenOpiskeluoikeudenLisätiedot {
   def apply(lt: PerusopetuksenOpiskeluoikeudenLisätiedot): Option[SupaPerusopetuksenOpiskeluoikeudenLisätiedot] =
-    if (lt.kotiopetusjaksot.exists(_.nonEmpty) || lt.erityisenTuenPäätös.isDefined || lt.erityisenTuenPäätökset.exists(_.nonEmpty)) {
+    if (lt.kotiopetusjaksot.exists(_.nonEmpty) ||
+      lt.erityisenTuenPäätös.isDefined ||
+      lt.erityisenTuenPäätökset.exists(_.nonEmpty) ||
+      lt.vuosiluokkiinSitoutumatonOpetus.contains(true)) {
       Some(SupaPerusopetuksenOpiskeluoikeudenLisätiedot(
         kotiopetusjaksot = lt.kotiopetusjaksot,
         erityisenTuenPäätökset =
