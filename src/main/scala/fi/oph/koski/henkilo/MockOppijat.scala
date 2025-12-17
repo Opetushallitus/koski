@@ -51,6 +51,7 @@ class MockOppijat(
     kotikunta: Option[String] = None,
     äidinkieli: Option[String] = Some("fi"),
     syntymäaika: Option[LocalDate] = None,
+    kuolinpäivä: Option[LocalDate] = None,
     kuntahistoriaMock: OppijaHenkilöWithMasterInfo => OppijanKuntahistoria = MockOppijat.kuntahistoriaDefault
   ): LaajatOppijaHenkilöTiedot = {
     addLaajatOppijaHenkilöTiedot(henkilo.LaajatOppijaHenkilöTiedot(
@@ -60,6 +61,7 @@ class MockOppijat(
       kutsumanimi = kutsumanimi.getOrElse(etu),
       hetu = if (hetu.isEmpty) None else Some(hetu),
       syntymäaika = syntymäaika,
+      kuolinpäivä = kuolinpäivä,
       äidinkieli = äidinkieli,
       turvakielto = turvakielto,
       vanhatHetut = vanhaHetu.toList,
@@ -78,12 +80,13 @@ class MockOppijat(
     vanhaHetu: Option[String] = None,
     kotikunta: Option[String] = None,
     äidinkieli: Option[String] = Some("fi"),
-    kuntahistoriaMock: OppijaHenkilöWithMasterInfo => OppijanKuntahistoria = MockOppijat.kuntahistoriaDefault
+    kuntahistoriaMock: OppijaHenkilöWithMasterInfo => OppijanKuntahistoria = MockOppijat.kuntahistoriaDefault,
+    kuolinpäivä: Option[LocalDate] = None
   ): LaajatOppijaHenkilöTiedot = {
     val syntymäaika = Hetu.century(hetu).map(century => Hetu.birthday(hetu, century))
     val sukupuoli = Hetu.sukupuoli(hetu)
     oppija(
-      suku, etu, hetu, oid, kutsumanimi, turvakielto, vanhaHetu, sukupuoli, kotikunta, äidinkieli, syntymäaika, kuntahistoriaMock)
+      suku, etu, hetu, oid, kutsumanimi, turvakielto, vanhaHetu, sukupuoli, kotikunta, äidinkieli, syntymäaika, kuolinpäivä, kuntahistoriaMock)
   }
 
   def addLaajatOppijaHenkilöTiedot(

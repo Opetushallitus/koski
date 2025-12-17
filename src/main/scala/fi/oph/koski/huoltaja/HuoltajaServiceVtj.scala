@@ -8,7 +8,10 @@ class HuoltajaServiceVtj(henkilöRepository: HenkilöRepository, huollettavatRep
   def getHuollettavat(oppija: OppijaHenkilö): HuollettavatSearchResult = try {
     oppija.hetu match {
       case Some(_) =>
-        huollettavatRepository.getHuollettavat(oppija).map(_.flatMap(oiditHuollettaville)) match {
+        huollettavatRepository
+          .getHuollettavat(oppija)
+          .map(_.flatMap(oiditHuollettaville))
+          .map(_.filterNot(onMenehtynyt)) match {
           case Right(huollettavat) =>
             HuollettavienHakuOnnistui(huollettavat)
           case Left(error) =>
@@ -29,6 +32,10 @@ class HuoltajaServiceVtj(henkilöRepository: HenkilöRepository, huollettavatRep
     henkilöRepository.findByHetuOrCreateIfInYtrOrVirta(vtj.hetu)
       .map(h => Huollettava(h.etunimet, h.sukunimi, Some(h.oid), h.hetu))
       .orElse(Some(Huollettava(vtj.etunimet, vtj.sukunimi, oid = None, Some(vtj.hetu))))
+  }
+
+  private def onMenehtynyt(h: Huollettava): Boolean = {
+    h.oid.flatMap(oid => henkilöRepository.findByOid(oid)).exists(_.kuolinpäivä.nonEmpty)
   }
 }
 

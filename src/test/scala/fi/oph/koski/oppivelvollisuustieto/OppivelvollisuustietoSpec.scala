@@ -620,6 +620,22 @@ class OppivelvollisuustietoSpec
         result.head.oikeusMaksuttomaanKoulutukseenVoimassaAsti shouldBe date(2026, 12, 31)
       }
     }
+
+    "Menehtyneet oppijat" - {
+      lazy val resetValpasMockData = FixtureUtil.resetMockData(defaultKoskiApplication)
+
+      "Menehtynyt peruskoululainen ei löydy oppivelvollisuustiedoista" in {
+        resetValpasMockData
+        val result = queryOids(ValpasMockOppijat.menehtynytOppija.oid)
+        result should be (empty)
+      }
+
+      "Menehtynyt toisen asteen opiskelija ei löydy oppivelvollisuustiedoista" in {
+        resetValpasMockData
+        val result = queryOids(ValpasMockOppijat.menehtynytToisellaAsteellaOppija.oid)
+        result should be (empty)
+      }
+    }
   }
 
   private def ammatillinenTutkinto(vahvistus: Option[LocalDate], alkamispäivä: LocalDate = longTimeAgo, lisääMaksuttomuus: Boolean = true, keskiarvo: Option[Double] = None): AmmatillinenOpiskeluoikeus = {

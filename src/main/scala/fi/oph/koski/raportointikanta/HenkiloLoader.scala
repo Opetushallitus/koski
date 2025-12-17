@@ -66,25 +66,27 @@ object HenkilöLoader extends Logging {
     total
   }
 
-  private def buildRHenkilöRow(oid: String,
-                               oppija: LaajatOppijaHenkilöTiedot,
-                               koodistoPalvelu: KoodistoPalvelu,
-                               opiskeluoikeusRepository: CompositeOpiskeluoikeusRepository) =
-    RHenkilöRow(
-      oppijaOid = oid,
-      masterOid = oppija.oid,
-      hetu = oppija.hetu,
-      sukupuoli = oppija.sukupuoli,
-      syntymäaika = oppija.syntymäaika.orElse(oppija.hetu.flatMap(Hetu.toBirthday)).map(Date.valueOf),
-      sukunimi = oppija.sukunimi,
-      etunimet = oppija.etunimet,
-      kutsumanimi = oppija.kutsumanimi,
-      aidinkieli = oppija.äidinkieli,
-      kansalaisuus = oppija.kansalaisuus.filter(_.nonEmpty).map(_.sorted.mkString(",")),
-      turvakielto = oppija.turvakielto,
-      kotikunta = oppija.kotikunta,
-      kotikuntaNimiFi = Kunta.getKunnanNimi(oppija.kotikunta, koodistoPalvelu, "fi"),
-      kotikuntaNimiSv = Kunta.getKunnanNimi(oppija.kotikunta, koodistoPalvelu, "sv"),
-      yksiloity =  oppija.yksilöity
-    )
+  private def buildRHenkilöRow(
+    oid: String,
+    oppija: LaajatOppijaHenkilöTiedot,
+    koodistoPalvelu: KoodistoPalvelu,
+    opiskeluoikeusRepository: CompositeOpiskeluoikeusRepository
+  ) = RHenkilöRow(
+    oppijaOid = oid,
+    masterOid = oppija.oid,
+    hetu = oppija.hetu,
+    sukupuoli = oppija.sukupuoli,
+    syntymäaika = oppija.syntymäaika.orElse(oppija.hetu.flatMap(Hetu.toBirthday)).map(Date.valueOf),
+    kuolinpäivä = oppija.kuolinpäivä.map(Date.valueOf),
+    sukunimi = oppija.sukunimi,
+    etunimet = oppija.etunimet,
+    kutsumanimi = oppija.kutsumanimi,
+    aidinkieli = oppija.äidinkieli,
+    kansalaisuus = oppija.kansalaisuus.filter(_.nonEmpty).map(_.sorted.mkString(",")),
+    turvakielto = oppija.turvakielto,
+    kotikunta = oppija.kotikunta,
+    kotikuntaNimiFi = Kunta.getKunnanNimi(oppija.kotikunta, koodistoPalvelu, "fi"),
+    kotikuntaNimiSv = Kunta.getKunnanNimi(oppija.kotikunta, koodistoPalvelu, "sv"),
+    yksiloity = oppija.yksilöity
+  )
 }

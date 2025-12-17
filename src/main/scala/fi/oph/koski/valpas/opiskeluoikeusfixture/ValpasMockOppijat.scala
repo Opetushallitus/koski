@@ -377,6 +377,30 @@ object ValpasMockOppijat {
     }
   )
 
+  val menehtynytOppija = valpasOppijat.oppijaSyntymäaikaHetusta("Menehtynyt", "Valpas", "161215A298F", kuolinpäivä = Some(LocalDate.of(2021, 3, 1)), kotikunta = None,
+    kuntahistoriaMock = h => {
+      val historia = Seq(
+        OppijanumerorekisteriKotikuntahistoriaRow(h.henkilö.oid, "091", Some(LocalDate.of(2015, 12, 16)), None)
+      )
+      OppijanKuntahistoria(
+        Some(h.henkilö.oid),
+        historia,
+        Seq.empty
+      )
+    })
+
+  val menehtynytToisellaAsteellaOppija = valpasOppijat.oppijaSyntymäaikaHetusta("Menehtynyt-toisella-asteella", "Valpas", "030115A589L", kuolinpäivä = Some(LocalDate.of(2021, 3, 1)), kotikunta = None,
+    kuntahistoriaMock = h => {
+      val historia = Seq(
+        OppijanumerorekisteriKotikuntahistoriaRow(h.henkilö.oid, "091", Some(LocalDate.of(2015, 11, 3)), None)
+      )
+      OppijanKuntahistoria(
+        Some(h.henkilö.oid),
+        historia,
+        Seq.empty
+      )
+    })
+
   def defaultOppijat = valpasOppijat.getOppijat
   def defaultKuntahistoriat = valpasOppijat.getKuntahistoriat
   def defaultTurvakieltoKuntahistoriat = valpasOppijat.getTurvakieltoKuntahistoriat
