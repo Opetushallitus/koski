@@ -10,7 +10,7 @@ import fi.oph.koski.json.SensitiveDataAllowed
 import fi.oph.koski.koskiuser.{KoskiSpecificSession, Session}
 import fi.oph.koski.koskiuser.Rooli.{OPHKATSELIJA, OPHPAAKAYTTAJA}
 import fi.oph.koski.log._
-import fi.oph.koski.massaluovutus.{KoskiMassaluovutusQueryParameters, MassaluovutusQueryParameters, MassaluovutusQueryPriority, QueryFormat, QueryResultWriter}
+import fi.oph.koski.massaluovutus.{MassaluovutusQueryParameters, MassaluovutusQueryPriority, OpetushallituksenMassaluovutusQueryParameters, QueryFormat, QueryResultWriter}
 import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusQueryContext
 import fi.oph.koski.schema.annotation.EnumValues
 import fi.oph.koski.schema.{KoskeenTallennettavaOpiskeluoikeus, KoskiSchema}
@@ -39,7 +39,7 @@ case class ValintalaskentaQuery(
   @Description(s"Haettavat suoritustyypit. Oletuksena [ammatillinentutkinto, ammatillinentutkintoosittainen]]")
   @DefaultValue(Some(ValintalaskentaQuery.defaultSuoritustyypit))
   suoritustyypit: Option[Seq[String]] = None,
-) extends KoskiMassaluovutusQueryParameters with Logging {
+) extends OpetushallituksenMassaluovutusQueryParameters with Logging {
 
   private val aikaraja: Timestamp = Timestamp.valueOf(rajapäivä.plusDays(1).atStartOfDay())
   override def priority: Int = MassaluovutusQueryPriority.highest

@@ -134,6 +134,13 @@ const dokumentaatioContentP = (location, contentP) =>
             location,
             ''
           )}
+
+          {naviLink(
+            '/koski/dokumentaatio/rajapinnat/massaluovutus/valpas',
+            'Massaluovutusrajapinnat oppivelvollisuuden valvontaan',
+            location,
+            ''
+          )}
         </nav>
 
         <div className="main-content dokumentaatio-content">
@@ -306,7 +313,8 @@ export const dokumentaatioKyselytP = (path) => {
   const basePath = '/koski/dokumentaatio/rajapinnat/massaluovutus'
   const sections = {
     koulutuksenjarjestajat: 'massaluovutus_koulutuksenjarjestajat',
-    oph: 'massaluovutus_oph'
+    oph: 'massaluovutus_oph',
+    valpas: 'massaluovutus_valpas'
   }
   const match = Object.keys(sections).find((key) =>
     path.includes(`${basePath}/${key}`)

@@ -8,6 +8,9 @@ import fi.oph.koski.massaluovutus.luokallejaaneet.MassaluovutusQueryLuokalleJaan
 import fi.oph.koski.massaluovutus.organisaationopiskeluoikeudet.{QueryOrganisaationOpiskeluoikeudetCsvDocumentation, QueryOrganisaationOpiskeluoikeudetJsonDocumentation}
 import fi.oph.koski.massaluovutus.paallekkaisetopiskeluoikeudet.QueryPaallekkaisetOpiskeluoikeudetDocumentation
 import fi.oph.koski.massaluovutus.valintalaskenta.ValintalaskentaQueryDocumentation
+import fi.oph.koski.massaluovutus.valpas.ValpasMassaluovutusQueryParameters
+import fi.oph.koski.massaluovutus.valpas.eioppivelvollisuuttasuorittavat.ValpasEiOppivelvollisuuttaSuorittavatQueryDocumentation
+import fi.oph.koski.massaluovutus.valpas.oppivelvolliset.ValpasOppivelvollisetQuery
 import fi.oph.koski.schema
 import fi.oph.koski.util.TryWithLogging
 import fi.oph.scalaschema._
@@ -15,11 +18,11 @@ import fi.oph.scalaschema.annotation.{Description, Title}
 import org.json4s.JValue
 
 import java.net.URL
-import java.time.{Duration, LocalDateTime, OffsetDateTime}
+import java.time.{Duration, OffsetDateTime}
 import java.util.UUID
 import scala.io.Source
 import scala.reflect.runtime.universe.TypeTag
-import scala.xml.{Elem, Node, Text}
+import scala.xml.{Node, Text}
 
 object QueryDocumentation extends Logging {
   // Skeema-jsonit
@@ -30,11 +33,18 @@ object QueryDocumentation extends Logging {
   lazy val querySchemaJson: JValue =
     SchemaToJson.toJsonSchema(schema.KoskiSchema.createSchema(classOf[QueryParametersWrapper]).asInstanceOf[ClassSchema])
 
+  lazy val ophQuerySchemaJson: JValue =
+    SchemaToJson.toJsonSchema(schema.KoskiSchema.createSchema(classOf[OphQueryParametersWrapper]).asInstanceOf[ClassSchema])
+
+  lazy val valpasQuerySchemaJson: JValue =
+    SchemaToJson.toJsonSchema(schema.KoskiSchema.createSchema(classOf[ValpasQueryParametersWrapper]).asInstanceOf[ClassSchema])
+
   // HTML-stringit, jotka palautetaan polusta /koski/api/documentation/sections.html
 
   private val sectionSources = Map(
     "massaluovutus_koulutuksenjarjestajat" -> "documentation/massaluovutus-koulutuksenjarjestajille.md",
     "massaluovutus_oph" -> "documentation/massaluovutus-oph.md",
+    "massaluovutus_valpas" -> "documentation/massaluovutus-valpas.md"
   )
 
   def htmlTextSections(application: KoskiApplication): Map[String, String] =
@@ -196,11 +206,10 @@ object QueryExamples {
     case "PaallekkaisetOpiskeluoikeudetCsv" => asJson(QueryPaallekkaisetOpiskeluoikeudetDocumentation.csvExample)
     case "PaallekkaisetOpiskeluoikeudetXlsx" => asJson(QueryPaallekkaisetOpiskeluoikeudetDocumentation.xlsxExample)
     case "PendingQueryResponse" => asJson(pendingQuery(
-      application,
       QueryOrganisaationOpiskeluoikeudetCsvDocumentation.example,
+      application.config.getString("koski.root.url"),
     ))
     case "RunningQueryResponse" => asJson(runningQuery(
-      application,
       QueryOrganisaationOpiskeluoikeudetCsvDocumentation.example,
       QueryOrganisaationOpiskeluoikeudetCsvDocumentation.outputFiles.take(1),
       application.config.getString("koski.root.url"),
@@ -213,16 +222,15 @@ object QueryExamples {
     ))
     case "FailedQueryResponse" => asJson(faileddQuery(
       QueryOrganisaationOpiskeluoikeudetCsvDocumentation.example,
-      QueryOrganisaationOpiskeluoikeudetCsvDocumentation.outputFiles,
+      List.empty,
       application.config.getString("koski.root.url"),
     ))
     case "Valintalaskenta" => asJson(ValintalaskentaQueryDocumentation.example)
     case "ValintalaskentaPendingQueryResponse" => asJson(pendingQuery(
-      application,
       ValintalaskentaQueryDocumentation.example,
+      application.config.getString("koski.root.url"),
     ))
     case "ValintalaskentaRunningQueryResponse" => asJson(runningQuery(
-      application,
       ValintalaskentaQueryDocumentation.example,
       ValintalaskentaQueryDocumentation.outputFiles.take(1),
       application.config.getString("koski.root.url"),
@@ -235,24 +243,46 @@ object QueryExamples {
     ))
     case "ValintalaskentaFailedQueryResponse" => asJson(faileddQuery(
       ValintalaskentaQueryDocumentation.example,
-      ValintalaskentaQueryDocumentation.outputFiles,
+      List.empty,
       application.config.getString("koski.root.url"),
     ))
     case "LuokalleJaaneetJson" => asJson(MassaluovutusQueryLuokalleJaaneetExamples.jsonQuery)
     case "LuokalleJaaneetCsv" => asJson(MassaluovutusQueryLuokalleJaaneetExamples.csvQuery)
+    case "ValpasOppivelvollisetQuery" => asJson(ValpasOppivelvollisetQuery.example)
+    case "ValpasEiOppivelvollisuuttaSuorittavatQuery" => asJson(ValpasEiOppivelvollisuuttaSuorittavatQueryDocumentation.example)
+    case "ValpasPendingQueryResponse" => asJson(pendingQuery(
+      ValpasEiOppivelvollisuuttaSuorittavatQueryDocumentation.example,
+      application.config.getString("koski.root.url") + "/valpas"
+    ))
+    case "ValpasRunningQueryResponse" => asJson(runningQuery(
+      ValpasEiOppivelvollisuuttaSuorittavatQueryDocumentation.example,
+      List("0.json"),
+      application.config.getString("koski.root.url") + "/valpas",
+    ))
+    case "ValpasCompleteQueryResponse" => asJson(completedQuery(
+      ValpasEiOppivelvollisuuttaSuorittavatQueryDocumentation.example,
+      List("0.json", "1.json"),
+      application.config.getString("koski.root.url") + "/valpas",
+      None,
+    ))
+    case "ValpasFailedQueryResponse" => asJson(faileddQuery(
+      ValpasEiOppivelvollisuuttaSuorittavatQueryDocumentation.example,
+      List.empty,
+      application.config.getString("koski.root.url") + "/valpas",
+    ))
     case _ => None
   }
 
-  def pendingQuery(application: KoskiApplication, query: MassaluovutusQueryParameters): PendingQueryResponse =
+  def pendingQuery(query: MassaluovutusQueryParameters, rootUrl: String): PendingQueryResponse =
     PendingQueryResponse(
       queryId = queryId,
       requestedBy = "1.2.246.562.24.123123123123",
       query = query,
       createdAt = createdAt,
-      resultsUrl = resultsUrl(application, queryId),
+      resultsUrl = resultsUrl(rootUrl, queryId),
     )
 
-  def runningQuery(application: KoskiApplication, query: MassaluovutusQueryParameters, files: List[String], rootUrl: String): RunningQueryResponse =
+  def runningQuery(query: MassaluovutusQueryParameters, files: List[String], rootUrl: String): RunningQueryResponse =
     RunningQueryResponse(
       queryId = queryId,
       requestedBy = "1.2.246.562.24.123123123123",
@@ -260,7 +290,7 @@ object QueryExamples {
       createdAt = createdAt,
       startedAt = startedAt,
       files = files.map(MassaluovutusServletUrls.file(rootUrl, queryId, _)),
-      resultsUrl = resultsUrl(application, queryId),
+      resultsUrl = resultsUrl(rootUrl, queryId),
       progress = Some(QueryProgress.from(75, startedAt.toLocalDateTime))
     )
 
@@ -290,9 +320,9 @@ object QueryExamples {
       error = None,
     )
 
-  private def resultsUrl(application: KoskiApplication, queryId: String): String =
+  private def resultsUrl(rootUrl: String, queryId: String): String =
     MassaluovutusServletUrls.query(
-      application.config.getString("koski.root.url"),
+      rootUrl,
       queryId,
     )
 
@@ -303,5 +333,11 @@ object QueryExamples {
 @Title("Massaluovutusrajapinnasta saatava vastaus")
 case class QueryResponseWrapper(` `: QueryResponse)
 
-@Title("Massaluovutusrajapintaan tehtävä kysely")
-case class QueryParametersWrapper(` `: MassaluovutusQueryParameters)
+@Title("Massaluovutusrajapintaan tehtävä kysely koulutuksenjärjestäjille")
+case class QueryParametersWrapper(` `: KoulutuksenjärjestäjienMassaluovutusQueryParameters)
+
+@Title("Massaluovutusrajapintaan tehtävä kysely Opetushallituksen palveluille")
+case class OphQueryParametersWrapper(` `: OpetushallituksenMassaluovutusQueryParameters)
+
+@Title("Valppaan massaluovutusrajapintaan tehtävä kysely")
+case class ValpasQueryParametersWrapper(` `: ValpasMassaluovutusQueryParameters)

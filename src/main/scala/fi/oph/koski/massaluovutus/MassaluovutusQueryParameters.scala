@@ -8,6 +8,10 @@ import fi.oph.koski.valpas.valpasuser.ValpasSession
 import fi.oph.scalaschema.annotation.{Description, Discriminator}
 import org.json4s.JValue
 
+trait KoulutuksenjärjestäjienMassaluovutusQueryParameters extends KoskiMassaluovutusQueryParameters
+
+trait OpetushallituksenMassaluovutusQueryParameters extends KoskiMassaluovutusQueryParameters
+
 trait KoskiMassaluovutusQueryParameters extends MassaluovutusQueryParameters
 
 trait MassaluovutusQueryParameters {

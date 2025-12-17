@@ -1,7 +1,7 @@
 # Massaluovutusrajapinta Opetushallituksen sisäisille palveluille
 
 Massaluovutusrajapinta on tarkoitettu pidempikestoisten kyselyiden tekemiseen KOSKI-datasta.
-Rajapintaa käytetään seuraavanlaisesti.
+Rajapintaa käytetään seuraavanlaisesti. [Katso myös kaikki skeemat graafisessa muodossa](/koski/json-schema-viewer/?schema=massaluovutus-oph-query.json).
 
 ## Uuden kyselyn luonti
 
