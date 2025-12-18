@@ -1036,11 +1036,13 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
       LEFT JOIN suorittamisvalvottava_opiskeluoikeus ON suorittamisvalvottava_opiskeluoikeus.master_oid = r_henkilo.master_oid
       -- Haetaan kaikki oppijan oidit: pitää palauttaa esim. kuntailmoitusten kyselyä varten
       JOIN r_henkilo kaikki_henkilot ON kaikki_henkilot.master_oid = r_henkilo.master_oid
+      -- Ei valita koskaan mukaan tuloksiin menehtyneitä oppijoita
+      WHERE r_henkilo.kuolinpaiva is null
       """),
         nonEmptyOppijaOids.map(_ => sql"""
       -- Jos haetaan oppijan oid:n perusteella, on oppijalla oltava vähintään yksi oppivelvollisuuskelvollinen
       -- opiskeluoikeus:
-    WHERE
+    AND
       EXISTS (SELECT 1 FROM ov_kelvollinen_opiskeluoikeus
         WHERE ov_kelvollinen_opiskeluoikeus.master_oid = r_henkilo.master_oid)
       """),
@@ -1994,6 +1996,7 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
     }
   }
 
+  // Huom. tämä kysely palauttaa myös menehtyneet oppijat.
   def getOppivelvollisuusTiedot(hetut: Seq[String]): Seq[ValpasOppivelvollisuustiedotRow] = {
 
     implicit def getResult: GetResult[ValpasOppivelvollisuustiedotRow] = GetResult(r => {
@@ -2073,6 +2076,8 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
       LEFT JOIN oppivelvollisuustiedot ON (r_henkilo.master_oid = oppivelvollisuustiedot.oppija_oid)
       WHERE
         r_henkilo.hetu = any($hetut)
+        -- Suodata vielä pois menehtyneet oppijat, vaikka heille oppivelvollisuus pitäisikin olla päättynyt
+        AND r_henkilo.kuolinpaiva is null
       """.as[HetuMasterOid])
   }
 
@@ -2092,10 +2097,14 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
             AND ($tarkastelupäivä BETWEEN oppivelvollisuustiedot.oppivelvollisuusvoimassaalkaen AND oppivelvollisuustiedot.oppivelvollisuusvoimassaasti)
       WHERE
         r_henkilo.kotikunta = $kunta
+        -- Suodata vielä pois menehtyneet oppijat, vaikka heille pitäisi olla kotikunta null
+        AND r_henkilo.kuolinpaiva is null
       """.as[HetuMasterOid])
   }
 
 
+  // Anna tämän kyselyn löytää myös menehtyneet oppijat.
+  // Käytetään Kosken tuntemien oppijoiden poistamiseen ONR:stä saaduista oppijalistoista.
   def haeTunnettujenOppijoidenOidit(oppijaOidit: Seq[ValpasHenkilö.Oid]): Seq[OidResult] = {
     db.runDbSync(sql"""
       SELECT

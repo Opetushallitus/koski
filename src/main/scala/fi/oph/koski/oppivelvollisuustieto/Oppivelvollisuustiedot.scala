@@ -39,6 +39,7 @@ object Oppivelvollisuustiedot {
     }
   }
 
+  // Huom. tämä kysely palauttaa myös menehtyneen oppijan.
   def queryByOid(oid: String, db: RaportointiDatabase): Option[Oppivelvollisuustieto] = {
     try {
       db.runDbSync(
@@ -51,12 +52,14 @@ object Oppivelvollisuustiedot {
     }
   }
 
+  // Huom. tämä kysely palauttaa myös menehtyneet oppijat.
   def queryByOids(oids: Seq[String], db: RaportointiDatabase): Seq[Oppivelvollisuustieto] = {
     db.runDbSync(
       sql"select * from oppivelvollisuustiedot where oppija_oid = any($oids)".as[Oppivelvollisuustieto]
     )
   }
 
+  // Huom. tämä kysely palauttaa myös menehtyneet oppijat.
   def queryByOidsIncludeMissing(oids: Seq[String], db: RaportointiDatabase): Seq[OptionalOppivelvollisuustieto] = {
     db.runDbSync(
       sql"""
@@ -75,6 +78,7 @@ object Oppivelvollisuustiedot {
     )
   }
 
+  // Huom. tämä kysely palauttaa myös menehtyneet oppijat.
   def queryByHetusIncludeMissing(hetus: Seq[String], db: RaportointiDatabase): Seq[OptionalOppivelvollisuustieto] =
     db.runDbSync(
       sql"""
@@ -125,6 +129,7 @@ object Oppivelvollisuustiedot {
                 oppija_oid,
                 henkilo.master_oid,
                 syntymaaika,
+                kuolinpaiva,
                 -- Maksuttomuuden pidennysjaksojen päivät, jotka ovat ennen 1.8.2022, lisätään maksuttomuuskauden loppuun
                 (select count(distinct paivat) from (
                     select generate_series(alku, least(loppu, '2022-07-31'), interval '1 day') paivat
@@ -140,7 +145,6 @@ object Oppivelvollisuustiedot {
                 #${s.name}.r_henkilo henkilo
                 left join kotikunta_suomessa_ensimmaisen_kerran_alkaen on henkilo.master_oid = kotikunta_suomessa_ensimmaisen_kerran_alkaen.master_oid
               where syntymaaika >= '#$valpasLakiVoimassaVanhinSyntymäaika'::date
-                and kuolinpaiva is null
                 and kotikunta_suomessa_ensimmaisen_kerran_alkaen.pvm is not null
                 and kotikunta_suomessa_ensimmaisen_kerran_alkaen.pvm < syntymaaika + interval '18 years'
                 and henkilo.master_oid not in (
@@ -391,6 +395,7 @@ object Oppivelvollisuustiedot {
               ylioppilastutkinnon_vahvistus_paiva,
               ammattitutkinnon_vahvistus_paiva,
               (syntymaaika + interval '#$oppivelvollisuusLoppuuIka year' - interval '1 day')::date,
+              kuolinpaiva,
               -- Jos oppija on muuttanut Suomesta ennen kuin hän täyttää 7v, "oppivelvollisuus" alkaa ja päättyy samana päivänä, muuten ulkoimaille muutto päättää oppivelvollisuuden
               case when nykyinen_kotikunta_ulkomailla_alkaen.pvm is not null then greatest(oppivelvollisuus_alkaa.pvm, nykyinen_kotikunta_ulkomailla_alkaen.pvm) end
           )::date as oppivelvollisuusVoimassaAsti,
@@ -409,7 +414,8 @@ object Oppivelvollisuustiedot {
                   #${s.name}.vuodenViimeinenPaivamaara(syntymaaika + interval '#$maksuttomuusLoppuuIka year') + (interval '1 day' * maksuttomuutta_pidennetty_yhteensa_vanha_laki)
                 ),
                 nykyinen_kotikunta_ulkomailla_alkaen.pvm,
-                kotikunta_ulkomailla_alkaen_jos_palannut_suomeen_tai_yli_18v.pvm
+                kotikunta_ulkomailla_alkaen_jos_palannut_suomeen_tai_yli_18v.pvm,
+                kuolinpaiva
               )
 
              when amis_ja_lukio_samaan_aikaan then least(
@@ -421,7 +427,8 @@ object Oppivelvollisuustiedot {
                   #${s.name}.vuodenViimeinenPaivamaara(syntymaaika + interval '#$maksuttomuusLoppuuIka year') + (interval '1 day' * maksuttomuutta_pidennetty_yhteensa_vanha_laki)
                 ),
                 nykyinen_kotikunta_ulkomailla_alkaen.pvm,
-                kotikunta_ulkomailla_alkaen_jos_palannut_suomeen_tai_yli_18v.pvm
+                kotikunta_ulkomailla_alkaen_jos_palannut_suomeen_tai_yli_18v.pvm,
+                kuolinpaiva
               )
 
               else least(
@@ -435,7 +442,8 @@ object Oppivelvollisuustiedot {
                   #${s.name}.vuodenViimeinenPaivamaara(syntymaaika + interval '#$maksuttomuusLoppuuIka year') + (interval '1 day' * maksuttomuutta_pidennetty_yhteensa_vanha_laki)
                 ),
                 nykyinen_kotikunta_ulkomailla_alkaen.pvm,
-                kotikunta_ulkomailla_alkaen_jos_palannut_suomeen_tai_yli_18v.pvm
+                kotikunta_ulkomailla_alkaen_jos_palannut_suomeen_tai_yli_18v.pvm,
+                kuolinpaiva
               )
             end
           )::date as oikeusKoulutuksenMaksuttomuuteenVoimassaAsti,
