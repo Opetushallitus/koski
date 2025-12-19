@@ -191,12 +191,17 @@ Esimerkki palautettavan datan rakenteesta:
 
 ### Virhetilanteet
 
-OAuth2:n speksaamissa authorization ja token endpoint rajapinnoissa palautetaan virheilmoitukset speksin mukaisina. Esimerkiksi
-token endpointissa virhekoodi `400 Bad Request` ja sisältönä JSON, esimerkiksi:
+Mikäli virhetilanne liittyy varmenteisiin tai itse mTLS-pyyntöön, katkaistaan TCP-yhteys samantien
+kokonaan. Eli jos esim. asiakasvarmenne puuttuu, se on vanhentunut, tai pyynnöstä puuttuvat tarvittavat välivarmenteet,
+käyttäytyy rajapinta ikäänkuin yhteys olisi kokonaan katkennut.
+
+Mikäli pyyntö on varmenteiden osalta teknisesti kunnossa, OAuth2:n speksaamissa authorization ja token endpoint
+rajapinnoissa palautetaan virheilmoitukset speksin mukaisina.
+Esimerkiksi token endpointissa virhekoodi `400 Bad Request` ja sisältönä JSON, esimerkiksi:
 
     {
       "error" : "invalid_client",
-      "error_description" : "Varmenne puuttuu"
+      "error_description" : "..."
     }
 
 Resource endpointeissa käytetään myös yleisempiä virhekoodeja. Esimerkiksi jos oppijalla ei ole tallennettuna mitään
