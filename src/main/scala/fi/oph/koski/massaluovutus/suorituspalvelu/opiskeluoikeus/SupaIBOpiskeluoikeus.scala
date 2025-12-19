@@ -6,7 +6,7 @@ import fi.oph.koski.schema.annotation.KoodistoKoodiarvo
 import fi.oph.koski.util.Optional.when
 import fi.oph.scalaschema.annotation.Title
 
-import java.time.LocalDate
+import java.time.{LocalDate, LocalDateTime}
 
 @Title("IB-tutkinnon opiskeluoikeus")
 case class SupaIBOpiskeluoikeus(
@@ -18,6 +18,8 @@ case class SupaIBOpiskeluoikeus(
   oppilaitos: Option[Oppilaitos],
   tila: LukionOpiskeluoikeudenTila,
   suoritukset: List[SupaIBTutkinnonSuoritus],
+  versionumero: Option[Int],
+  aikaleima: Option[LocalDateTime],
 ) extends SupaOpiskeluoikeus
 
 object SupaIBOpiskeluoikeus {
@@ -32,7 +34,9 @@ object SupaIBOpiskeluoikeus {
         tila = oo.tila,
         suoritukset = oo.suoritukset.collect {
           case s: IBTutkinnonSuoritus => SupaIBTutkinnonSuoritus(s)
-        }
+        },
+        versionumero = oo.versionumero,
+        aikaleima = oo.aikaleima
       )
     }
 }

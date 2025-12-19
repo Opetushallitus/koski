@@ -6,7 +6,7 @@ import fi.oph.koski.schema.annotation.KoodistoKoodiarvo
 import fi.oph.koski.util.Optional.when
 import fi.oph.scalaschema.annotation.Title
 
-import java.time.LocalDate
+import java.time.{LocalDate, LocalDateTime}
 
 @Title("International school opiskeluoikeus")
 case class SupaInternationalSchoolOpiskeluoikeus(
@@ -18,6 +18,8 @@ case class SupaInternationalSchoolOpiskeluoikeus(
   oppilaitos: Option[Oppilaitos],
   tila: InternationalSchoolOpiskeluoikeudenTila,
   suoritukset: List[SupaDiplomaVuosiluokanSuoritus],
+  versionumero: Option[Int],
+  aikaleima: Option[LocalDateTime],
 ) extends SupaOpiskeluoikeus
 
 object SupaInternationalSchoolOpiskeluoikeus {
@@ -33,7 +35,9 @@ object SupaInternationalSchoolOpiskeluoikeus {
         suoritukset = oo.suoritukset.flatMap {
           case s: DiplomaVuosiluokanSuoritus => SupaDiplomaVuosiluokanSuoritus(s)
           case _ => None
-        }
+        },
+        versionumero = oo.versionumero,
+        aikaleima = oo.aikaleima
       )
     }
 }

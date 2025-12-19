@@ -4,7 +4,7 @@ import fi.oph.koski.schema.{OsittaisenAmmatillisenTutkinnonOsanSuoritus, _}
 import fi.oph.koski.schema.annotation.{KoodistoKoodiarvo, KoodistoUri, Scale, Tooltip}
 import fi.oph.scalaschema.annotation.{Description, MaxValue, MinValue, OnlyWhen, Title}
 
-import java.time.LocalDate
+import java.time.{LocalDate, LocalDateTime}
 
 @Title("Ammatillinen opiskeluoikeus")
 @Description("Ammatillisen koulutuksen opiskeluoikeus")
@@ -17,6 +17,8 @@ case class SupaAmmatillinenOpiskeluoikeus(
   oppilaitos: Option[Oppilaitos],
   tila: AmmatillinenOpiskeluoikeudenTila,
   suoritukset: List[SupaAmmatillinenPäätasonSuoritus],
+  versionumero: Option[Int],
+  aikaleima: Option[LocalDateTime],
 ) extends SupaOpiskeluoikeus
 
 object SupaAmmatillinenTutkinto {
@@ -32,7 +34,9 @@ object SupaAmmatillinenTutkinto {
         case s: AmmatillisenTutkinnonSuoritus => SupaAmmatillisenTutkinnonSuoritus(s)
         case s: TelmaKoulutuksenSuoritus => SupaTelmaKoulutuksenSuoritus(s)
         case s: AmmatillisenTutkinnonOsittainenSuoritus => SupaAmmatillisenTutkinnonOsittainenSuoritus(s)
-      }
+      },
+      versionumero = oo.versionumero,
+      aikaleima = oo.aikaleima
     )
 }
 

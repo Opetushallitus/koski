@@ -4,7 +4,7 @@ import fi.oph.koski.schema._
 import fi.oph.koski.schema.annotation._
 import fi.oph.scalaschema.annotation.{Description, OnlyWhen, Title}
 
-import java.time.LocalDate
+import java.time.{LocalDate, LocalDateTime}
 
 @Title("Perusopetuksen opiskeluoikeus")
 case class SupaPerusopetuksenOpiskeluoikeus(
@@ -17,6 +17,8 @@ case class SupaPerusopetuksenOpiskeluoikeus(
   tila: NuortenPerusopetuksenOpiskeluoikeudenTila,
   suoritukset: List[SupaPerusopetuksenPäätasonSuoritus],
   lisätiedot: Option[SupaPerusopetuksenOpiskeluoikeudenLisätiedot],
+  versionumero: Option[Int],
+  aikaleima: Option[LocalDateTime],
 ) extends SupaOpiskeluoikeus
 
 object SupaPerusopetuksenOpiskeluoikeus {
@@ -30,6 +32,8 @@ object SupaPerusopetuksenOpiskeluoikeus {
       tila = oo.tila,
       suoritukset = oo.suoritukset.flatMap(SupaPerusopetuksenPäätasonSuoritus.apply),
       lisätiedot = oo.lisätiedot.flatMap(SupaPerusopetuksenOpiskeluoikeudenLisätiedot.apply),
+      versionumero = oo.versionumero,
+      aikaleima = oo.aikaleima
     )
 }
 

@@ -4,7 +4,7 @@ import fi.oph.koski.schema._
 import fi.oph.koski.schema.annotation.KoodistoKoodiarvo
 import fi.oph.scalaschema.annotation.Title
 
-import java.time.LocalDate
+import java.time.{LocalDate, LocalDateTime}
 
 @Title("Vapaan sivistystyön opiskeluoikeus")
 case class SupaVapaanSivistystyönOpiskeluoikeus(
@@ -16,6 +16,8 @@ case class SupaVapaanSivistystyönOpiskeluoikeus(
   oppilaitos: Option[Oppilaitos],
   tila: VapaanSivistystyönOpiskeluoikeudenTila,
   suoritukset: List[SupaVapaanSivistystyönPäätasonSuoritus],
+  versionumero: Option[Int],
+  aikaleima: Option[LocalDateTime],
 ) extends SupaOpiskeluoikeus
 
 trait SupaVapaanSivistystyönPäätasonSuoritus extends SupaSuoritus
@@ -35,6 +37,8 @@ object SupaVapaanSivistystyönOpiskeluoikeus {
         case _ =>
           None
       },
+      versionumero = oo.versionumero,
+      aikaleima = oo.aikaleima
     )
 }
 
