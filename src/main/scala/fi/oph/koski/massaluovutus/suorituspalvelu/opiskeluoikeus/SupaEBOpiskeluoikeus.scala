@@ -5,7 +5,7 @@ import fi.oph.koski.schema.annotation.KoodistoKoodiarvo
 import fi.oph.koski.util.Optional.when
 import fi.oph.scalaschema.annotation.Title
 
-import java.time.LocalDate
+import java.time.{LocalDate, LocalDateTime}
 
 @Title("EB-tutkinnon opiskeluoikeus")
 case class SupaEBOpiskeluoikeus(
@@ -17,6 +17,8 @@ case class SupaEBOpiskeluoikeus(
   oppilaitos: Option[Oppilaitos],
   tila: EBOpiskeluoikeudenTila,
   suoritukset: List[SupaEBTutkinnonSuoritus],
+  versionumero: Option[Int],
+  aikaleima: Option[LocalDateTime],
 ) extends SupaOpiskeluoikeus
 
 object SupaEBOpiskeluoikeus {
@@ -29,6 +31,8 @@ object SupaEBOpiskeluoikeus {
       oppilaitos = oo.oppilaitos,
       tila = oo.tila,
       suoritukset = oo.suoritukset.map(SupaEBTutkinnonSuoritus.apply),
+      versionumero = oo.versionumero,
+      aikaleima = oo.aikaleima
     )
 }
 
@@ -51,7 +55,7 @@ object SupaEBTutkinnonSuoritus {
       vahvistus = pts.vahvistus.map(v => SupaVahvistus(v.päivä)),
       koulutusmoduuli = pts.koulutusmoduuli,
       yleisarvosana = pts.yleisarvosana,
-      osasuoritukset = pts.osasuoritukset.map(_.map(SupaEBTutkinnonOsasuoritus.apply)),
+      osasuoritukset = pts.osasuoritukset.map(_.map(SupaEBTutkinnonOsasuoritus.apply)).filter(_.nonEmpty),
     )
 }
 @Title("EB-tutkinnon osasuoritus")
@@ -59,7 +63,7 @@ case class SupaEBTutkinnonOsasuoritus(
   @KoodistoKoodiarvo("ebtutkinnonosasuoritus")
   tyyppi: Koodistokoodiviite,
   koulutusmoduuli: SecondaryOppiaine,
-  osasuoritukset: List[SupaEBOppiaineenFinalAlaosasuoritus],
+  osasuoritukset: Option[List[SupaEBOppiaineenFinalAlaosasuoritus]],
 ) extends SupaSuoritus
 
 object SupaEBTutkinnonOsasuoritus {
@@ -67,7 +71,7 @@ object SupaEBTutkinnonOsasuoritus {
     SupaEBTutkinnonOsasuoritus(
       tyyppi = s.tyyppi,
       koulutusmoduuli = s.koulutusmoduuli,
-      osasuoritukset = s.osasuoritukset.toList.flatten.flatMap(os => SupaEBOppiaineenFinalAlaosasuoritus(os)),
+      osasuoritukset = s.osasuoritukset.map(_.flatMap(os => SupaEBOppiaineenFinalAlaosasuoritus(os))).filter(_.nonEmpty),
     )
 }
 

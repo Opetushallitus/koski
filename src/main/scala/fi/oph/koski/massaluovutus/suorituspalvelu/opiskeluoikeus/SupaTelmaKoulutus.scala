@@ -16,7 +16,7 @@ case class SupaTelmaKoulutuksenSuoritus(
   vahvistus: Option[SupaVahvistus],
   koulutusmoduuli: TelmaKoulutus,
   suorituskieli: Koodistokoodiviite,
-  osasuoritukset: List[SupaTelmaKoulutuksenOsanSuoritus],
+  osasuoritukset: Option[List[SupaTelmaKoulutuksenOsanSuoritus]],
 ) extends SupaAmmatillinenPäätasonSuoritus
   with Suorituskielellinen
   with SupaVahvistuksellinen
@@ -29,7 +29,7 @@ object SupaTelmaKoulutuksenSuoritus {
       vahvistus = s.vahvistus.map(v => SupaVahvistus(v.päivä)),
       koulutusmoduuli = s.koulutusmoduuli,
       suorituskieli = s.suorituskieli,
-      osasuoritukset = s.osasuoritukset.toList.flatten.map(SupaTelmaKoulutuksenOsanSuoritus.apply),
+      osasuoritukset = s.osasuoritukset.map(_.map(SupaTelmaKoulutuksenOsanSuoritus.apply)).filter(_.nonEmpty),
     )
 }
 

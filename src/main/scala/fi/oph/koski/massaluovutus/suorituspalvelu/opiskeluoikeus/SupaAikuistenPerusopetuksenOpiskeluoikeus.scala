@@ -5,7 +5,7 @@ import fi.oph.koski.schema.annotation.KoodistoKoodiarvo
 import fi.oph.koski.util.CaseClass
 import fi.oph.scalaschema.annotation.{Description, Title}
 
-import java.time.LocalDate
+import java.time.{LocalDate, LocalDateTime}
 
 @Title("Aikuisten perusopetuksen opiskeluoikeus")
 case class SupaAikuistenPerusopetuksenOpiskeluoikeus(
@@ -17,6 +17,8 @@ case class SupaAikuistenPerusopetuksenOpiskeluoikeus(
   oppilaitos: Option[Oppilaitos],
   tila: AikuistenPerusopetuksenOpiskeluoikeudenTila,
   suoritukset: List[SupaAikuistenPerusopetuksenSuoritus],
+  versionumero: Option[Int],
+  aikaleima: Option[LocalDateTime],
 ) extends SupaOpiskeluoikeus
 
 object SupaAikuistenPerusopetuksenOpiskeluoikeus {
@@ -29,6 +31,8 @@ object SupaAikuistenPerusopetuksenOpiskeluoikeus {
       oppilaitos = oo.oppilaitos,
       tila = oo.tila,
       suoritukset = oo.suoritukset.flatMap(SupaAikuistenPerusopetuksenSuoritus.apply),
+      versionumero = oo.versionumero,
+      aikaleima = oo.aikaleima
     )
 }
 
@@ -54,7 +58,7 @@ case class SupaAikuistenPerusopetuksenOppimääränSuoritus(
   vahvistus: Option[SupaVahvistus],
   koulutusmoduuli: AikuistenPerusopetus,
   suorituskieli: Koodistokoodiviite,
-  osasuoritukset: List[AikuistenPerusopetuksenOppiaineenSuoritus],
+  osasuoritukset: Option[List[AikuistenPerusopetuksenOppiaineenSuoritus]],
 ) extends SupaAikuistenPerusopetuksenSuoritus with SupaVahvistuksellinen
 
 object SupaAikuistenPerusopetuksenOppimääränSuoritus {
@@ -65,7 +69,7 @@ object SupaAikuistenPerusopetuksenOppimääränSuoritus {
       vahvistus = s.vahvistus.map(v => SupaVahvistus(v.päivä)),
       koulutusmoduuli = s.koulutusmoduuli,
       suorituskieli = s.suorituskieli,
-      osasuoritukset = s.osasuoritukset.toList.flatten,
+      osasuoritukset = s.osasuoritukset.filter(_.nonEmpty),
     )
 }
 
@@ -96,7 +100,7 @@ object SupaAikuistenPerusopetuksenOppiaineenOppimääränSuoritus {
       suorituskieli = s.suorituskieli,
       muutSuorituskielet = s.muutSuorituskielet,
       todistuksellaNäkyvätLisätiedot = s.todistuksellaNäkyvätLisätiedot,
-      osasuoritukset = s.osasuoritukset,
+      osasuoritukset = s.osasuoritukset.filter(_.nonEmpty),
       tyyppi = s.tyyppi
     )
 }
