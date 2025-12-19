@@ -7,29 +7,48 @@ Rajapinnat ovat REST-tyyppisiä, ja dataformaattina on JSON.
 Kutsut käyttävät REST-tyylistä poiketen POST-metodia, koska pyyntöjen URLit päätyvät helposti
 erilaisiin lokeihin (esim. kuormantasaimet, virheilmoitukset), ja näihin lokeihin ei haluta henkilötunnuksia.
 
-Pyynnöt luovutuspalveluun tunnistetaan TLS-kättelyn palvelinvarmenteella ja rajataan IP-osoitteen perusteella.
-Tätä varten kutsujan on ilmoitettava käytettävän varmenteen subject-tieto ja ne IP-osoitteet/verkot, joista pyynnöt tehdään.
+Pyynnöt luovutuspalveluun tunnistetaan TLS-kättelyn asiakasvarmenteella (mutual TLS, mTLS) ja rajataan IP-osoitteen
+perusteella. Tätä varten kutsujan on ilmoitettava käytettävän varmenteen subject-tieto ja ne IP-osoitteet,
+joista pyynnöt tehdään.
 
-Palvelinvarmenteen on oltava luotettavan CA:n myöntämä (yleisesti selaimien hyväksymät CA:t tai DVV),
-ja sen "extended key usage" -kentässä on sallittava "client authentication" -käyttötarkoitus.
 Salausprotokollan on oltava TLS 1.2 tai 1.3.
 
-Varmenneketjun maksimipituus on 4 eli välivarmenteita saa olla ketjussa korkeintaan kaksi.
+### Asiakasvarmenteet
 
-Varmenteen nimen pitää olla Subject distinguished name (subject dn, subject) -kentässä: Subject alternative name -kenttää
-ei tueta.
+Asiakasvarmenteen sekä tuotanto- että testiympäristöissä on oltava DVV:n myöntämä. Testiympäristössä hyväksytään DVV:n
+testivarmenteet. Aiemmin on hyväksytty muitakin juurivarmentajia, mutta käytäntö muuttui vuoden 2026 alussa. Tällä hetkellä
+DVV:n palveluvalikoimassa (https://dvv.fi/varmenteet) on kyseessä palvelinvarmenne-tyyppinen palveluvarmenne, jolle
+pyydetään käyttötarkoitukseksi asiakkaan tunnistaminen ("client authentication"). Tämä tulee luultavasti vuoden 2026
+kuluessa muuttumaan, kun DVV erottaa asiakasvarmenteet selkeämmin erilliseksi tuotteeksi.
+
+Jotta varmennetta voi käyttää, sen "extended key usage" -kentässä on sallittava "client authentication" -käyttötarkoitus.
+Varmenteen nimen pitää olla Subject distinguished name (subject dn, subject) -kentässä: Subject
+alternative name -kenttää ei toistaiseksi tueta. KOSKI-palvelussa asiakasvarmenteiden varmennus on toteutettu
+AWS:n työkaluilla. Tarkempia tietoja sen asettamista rajoituksista varmenteelle on sivulla
+https://docs.aws.amazon.com/elasticloadbalancing/latest/application/mutual-authentication.html , otsikon
+"Requirements for certificates" alla.
 
 KOSKI-palvelu tarvitsee varmenteesta vain subject-tiedon, mutta kätevintä voi olla toimittaa fullchain.pem-tiedosto,
 mistä KOSKI-palvelun kehittäjät saavat tunnistetiedon varmasti oikeassa muodossa.
 
-Sertifikaatin uusimisprosessi kannattaa rakentaa niin, että subject-nimi ei siinä muutu,
-jolloin KOSKI-palvelulle ei tarvitse toimittaa uutta nimeä sertifikaatin uusimisen jälkeen.
+Varmenteen uusimisprosessi kannattaa rakentaa niin, että subject-nimi ei siinä muutu,
+jolloin KOSKI-palvelulle ei tarvitse toimittaa uutta nimeä varmenteen uusimisen jälkeen.
 
 Varmenteen päivittämisestä tarvitsee viestiä KOSKI-palvelulle vain siinä tapauksessa,
 että varmenteen subject-kenttä muuttuu tai IP-osoitteet vaihtuvat.
 
 Rajapintojen käyttöönoton yhteydessä on saatavissa pyynnöstä myös lista esimerkkihenkilöistä,
 joiden avulla rajapintaintegraatiota on mahdollista testata.
+
+### Varmenteisiin liittyvien virheiden käsittely
+
+Jos varmenteella tehtävässä mutual-TLS pyynnössä on jokin tekninen virhe, esim. varmenne puuttuu, se on vanhentunut
+tai välivarmenteet puuttuvat pyynnöstä, luovutuspalvelun toteutus katkaisee TCP-yhteyden kokonaan
+TLS-kättelyn aikana. Näissä tilanteissa luovutuspalvelu ei siis palauta mitään selväkielistä virheilmoitusta.
+
+Mikäli pyyntö on teknisesti kunnossa, mutta esim. käyttöoikeuksissa, IP-osoitteiden rekisteröinnissä,
+tai muussa vastaavassa konfiguraatiossa on ongelmia, palautetaan http-virhekoodi ja tilanteesta riippuen mahdollisesti
+lisätietoja vastauksen body:ssä.
 
 ------------
 
