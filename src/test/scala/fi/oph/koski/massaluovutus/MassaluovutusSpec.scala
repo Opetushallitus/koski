@@ -703,7 +703,16 @@ class MassaluovutusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers wit
           ) should equal(List(
             "valmistunut"
           ))
-       }
+        }
+
+        "Opiskeluoikeudet sisältävät versionumeron ja aikaleiman" in {
+          val oos = getOpiskeluoikeudet()
+          oos should not be empty
+          oos.foreach { oo =>
+            (oo \ "versionumero") should not equal JNothing
+            (oo \ "aikaleima") should not equal JNothing
+          }
+        }
       }
 
       "Palauttaa oppijan kaikki opiskeluoikeudet jos yksikin on muuttunut" in {
@@ -965,6 +974,15 @@ class MassaluovutusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers wit
           ) should equal(List(
             "valmistunut"
           ))
+        }
+
+        "Opiskeluoikeudet sisältävät versionumeron ja aikaleiman" in {
+          val oos = getOpiskeluoikeudet()
+          oos should not be empty
+          oos.foreach { oo =>
+            (oo \ "versionumero") should not equal JNothing
+            (oo \ "aikaleima") should not equal JNothing
+          }
         }
       }
 
