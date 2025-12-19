@@ -1,35 +1,38 @@
 .Todistus {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   background: @color-light-blue;
   min-height: 4 * @baseline;
   padding: 4px 17px;
+  gap: 12px 25px;
 
   &--notAvailable {
     background: @color-info-box-background--neutral;
   }
 
-  & > * {
-    margin-right: 25px;
-  }
-
   &__title {
     font-weight: 600;
     text-transform: uppercase;
+    flex-shrink: 0;
   }
 
   &__lang {
     display: flex;
     align-items: center;
+    flex-wrap: wrap;
+    gap: 6px 10px;
+    flex-shrink: 0;
 
     .Todistus__langLabel {
       white-space: nowrap;
+      margin-right: 4px;
     }
 
     .Select {
       max-width: 200px;
+      min-width: 120px;
       margin-bottom: 0;
-      margin-left: 10px;
     }
   }
 
@@ -37,11 +40,15 @@
     height: 18px;
   }
 
+  button {
+    flex-shrink: 0;
+  }
+
   a {
     color: @color-black;
     font-weight: lighter;
     text-decoration: underline;
-    margin-right: 50px;
+    flex-shrink: 0;
 
     &::after {
       content: '';
@@ -51,6 +58,53 @@
       margin-top: 1px;
       width: 16px;
       height: 16px;
+    }
+  }
+
+  // Mobiilioptimointi
+  @media (max-width: 768px) {
+    padding: 12px;
+    gap: 12px;
+
+    &__title {
+      width: 100%;
+      margin-bottom: 4px;
+    }
+
+    &__lang {
+      width: 100%;
+      gap: 8px;
+
+      .Todistus__langLabel {
+        flex-shrink: 0;
+      }
+
+      .Select {
+        flex: 1;
+        max-width: none;
+        min-width: 0;
+      }
+    }
+
+    button {
+      width: 100%;
+    }
+
+    a {
+      display: inline-block;
+      margin: 4px 0;
+    }
+  }
+
+  // Erittäin pienille näytöille
+  @media (max-width: 480px) {
+    &__lang {
+      flex-direction: column;
+      align-items: flex-start;
+
+      .Select {
+        width: 100%;
+      }
     }
   }
 }
