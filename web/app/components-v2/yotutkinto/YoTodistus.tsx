@@ -183,8 +183,8 @@ const LanguageSelect: React.FC<LanguageSelectProps> = (props) => {
     <div className="Todistus__lang">
       <div className="Todistus__langLabel">
         <Trans>{'Todistuksen kieli'}</Trans>
+        {':'}
       </div>
-      {':'}
       <Select
         className="Todistus__langSelect"
         options={yoTodistusLanguages}
