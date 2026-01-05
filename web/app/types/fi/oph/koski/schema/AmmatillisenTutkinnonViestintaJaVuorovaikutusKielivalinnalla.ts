@@ -11,7 +11,7 @@ export type AmmatillisenTutkinnonViestintäJaVuorovaikutusKielivalinnalla = {
   $class: 'fi.oph.koski.schema.AmmatillisenTutkinnonViestintäJaVuorovaikutusKielivalinnalla'
   tunniste: Koodistokoodiviite<
     'ammatillisenoppiaineet',
-    'VVTK' | 'VVAI' | 'VVAI22' | 'VVVK'
+    'VVTK' | 'VVAI' | 'VVAI22' | 'VVAI26' | 'VVTK26' | 'VVVK26' | 'VVVK'
   >
   kieli: Koodistokoodiviite<'kielivalikoima', string>
   pakollinen: boolean
@@ -22,7 +22,7 @@ export const AmmatillisenTutkinnonViestintäJaVuorovaikutusKielivalinnalla =
   (o: {
     tunniste: Koodistokoodiviite<
       'ammatillisenoppiaineet',
-      'VVTK' | 'VVAI' | 'VVAI22' | 'VVVK'
+      'VVTK' | 'VVAI' | 'VVAI22' | 'VVAI26' | 'VVTK26' | 'VVVK26' | 'VVVK'
     >
     kieli: Koodistokoodiviite<'kielivalikoima', string>
     pakollinen: boolean

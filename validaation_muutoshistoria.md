@@ -1,5 +1,8 @@
 # Koskeen tallennettavien tietojen validaatiosäännöt
 
+## 14.1.2026
+- Estetään viestintä ja vuorovaikutus kielivalinnalla -koodien (VVTK, VVAI, VVAI22, VVVK) siirto ValtakunnallinenAmmatillisenTutkinnonOsanOsaAlue-haaraan.
+- Estetään uusien 26-koodien (VVTK26, VVAI26, VVVK26) käyttö ennen 1.8.2026 alkavissa opiskeluoikeuksissa.
 
 ## 18.11.2025
  - Korjattu bugi näyttötutkintoon valmistavassa ammatillisessa, joka esti päällekkäiset suoritukset eri diaarinumeroilla.

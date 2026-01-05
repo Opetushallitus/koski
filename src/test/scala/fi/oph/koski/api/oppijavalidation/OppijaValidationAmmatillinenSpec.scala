@@ -1844,6 +1844,124 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
       }
     }
 
+    "Viestintä ja vuorovaikutus kielivalinnalla -koodit valtakunnallisena tutkinnon osan osa-alueena" - {
+      val autoalanKoodit = List("VVTK", "VVAI", "VVVK")
+
+      autoalanKoodit.foreach { koodiarvo =>
+        s"Koodia $koodiarvo ei saa käyttää ValtakunnallinenAmmatillisenTutkinnonOsanOsaAlue-tyypissä" in {
+          val virheellinenOsaAlue = YhteisenTutkinnonOsanOsaAlueenSuoritus(
+            koulutusmoduuli = ValtakunnallinenAmmatillisenTutkinnonOsanOsaAlue(Koodistokoodiviite(koodiarvo, "ammatillisenoppiaineet"), pakollinen = true, Some(LaajuusOsaamispisteissä(4))),
+            arviointi = Some(List(arviointiKiitettävä))
+          )
+          val muutOsaAlueet = List(
+            YhteisenTutkinnonOsanOsaAlueenSuoritus(
+              koulutusmoduuli = ValtakunnallinenAmmatillisenTutkinnonOsanOsaAlue(Koodistokoodiviite("VVTD", "ammatillisenoppiaineet"), pakollinen = true, Some(LaajuusOsaamispisteissä(2))),
+              arviointi = Some(List(arviointiKiitettävä))
+            ),
+            YhteisenTutkinnonOsanOsaAlueenSuoritus(
+              koulutusmoduuli = AmmatillisenTutkinnonÄidinkieli(Koodistokoodiviite("AI", "ammatillisenoppiaineet"), pakollinen = true, kieli = Koodistokoodiviite("AI1", "oppiaineaidinkielijakirjallisuus"), laajuus = Some(LaajuusOsaamispisteissä(5))),
+              arviointi = Some(List(arviointiKiitettävä))
+            )
+          )
+          val ytoSuoritus = yhteisenTutkinnonOsanSuoritus("101053", "Viestintä- ja vuorovaikutusosaaminen", k3, 11).copy(
+            osasuoritukset = Some(virheellinenOsaAlue :: muutOsaAlueet)
+          )
+          val suoritus = autoalanPerustutkinnonSuoritus().copy(
+            osasuoritukset = Some(List(ytoSuoritus))
+          )
+
+          setupOppijaWithOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(suoritus))) {
+            verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.ammatillinen.viestintäJaVuorovaikutusOsaAlueVäärässäHaarassa(koodiarvo)())
+          }
+        }
+      }
+
+      "Muut koodit sallitaan ValtakunnallinenAmmatillisenTutkinnonOsanOsaAlue-tyypissä" in {
+        val osaAlueet = List(
+          YhteisenTutkinnonOsanOsaAlueenSuoritus(
+            koulutusmoduuli = ValtakunnallinenAmmatillisenTutkinnonOsanOsaAlue(Koodistokoodiviite("VVTD", "ammatillisenoppiaineet"), pakollinen = true, Some(LaajuusOsaamispisteissä(7))),
+            arviointi = Some(List(arviointiKiitettävä))
+          ),
+          YhteisenTutkinnonOsanOsaAlueenSuoritus(
+            koulutusmoduuli = ValtakunnallinenAmmatillisenTutkinnonOsanOsaAlue(Koodistokoodiviite("VVTL", "ammatillisenoppiaineet"), pakollinen = true, Some(LaajuusOsaamispisteissä(4))),
+            arviointi = Some(List(arviointiKiitettävä))
+          )
+        )
+        val ytoSuoritus = yhteisenTutkinnonOsanSuoritus("101053", "Viestintä- ja vuorovaikutusosaaminen", k3, 11).copy(
+          osasuoritukset = Some(osaAlueet)
+        )
+        val suoritus = autoalanPerustutkinnonSuoritus().copy(
+          osasuoritukset = Some(List(ytoSuoritus))
+        )
+
+        setupOppijaWithOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(suoritus))) {
+          verifyResponseStatusOk()
+        }
+      }
+    }
+
+    "Viestintä ja vuorovaikutus 26-koodit päivämäärärajoituksella" - {
+      "VVTK26-koodia ei saa käyttää ennen 1.8.2026 alkavassa opiskeluoikeudessa" in {
+        val osaAlue = YhteisenTutkinnonOsanOsaAlueenSuoritus(
+          koulutusmoduuli = AmmatillisenTutkinnonViestintäJaVuorovaikutusKielivalinnalla(
+            Koodistokoodiviite("VVTK26", "ammatillisenoppiaineet"),
+            Koodistokoodiviite("SV", "kielivalikoima"),
+            pakollinen = true,
+            Some(LaajuusOsaamispisteissä(1))
+          ),
+          arviointi = Some(List(arviointiKiitettävä))
+        )
+        val ytoSuoritus = yhteisenTutkinnonOsanSuoritus("400012", "Viestintä- ja vuorovaikutusosaaminen", k3, 11).copy(
+          osasuoritukset = Some(List(osaAlue)),
+          arviointi = None,
+          vahvistus = None
+        )
+        val suoritus = puuteollisuudenPerustutkinnonSuoritus().copy(
+          suoritustapa = suoritustapaReformi,
+          osasuoritukset = Some(List(ytoSuoritus)),
+          vahvistus = None,
+          alkamispäivä = Some(date(2026, 8, 1))
+        )
+        val opiskeluoikeus = makeOpiskeluoikeus(alkamispäivä = date(2016, 9, 1)).copy(
+          suoritukset = List(suoritus)
+        )
+
+        setupOppijaWithOpiskeluoikeus(opiskeluoikeus) {
+          verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.ammatillinen.viestintäJaVuorovaikutus26KoodiarvoEnnenRajapäivää("VVTK26")())
+        }
+      }
+
+      "VVTK26-koodia saa käyttää 1.8.2026 tai sen jälkeen alkavassa opiskeluoikeudessa" in {
+        val osaAlue = YhteisenTutkinnonOsanOsaAlueenSuoritus(
+          koulutusmoduuli = AmmatillisenTutkinnonViestintäJaVuorovaikutusKielivalinnalla(
+            Koodistokoodiviite("VVTK26", "ammatillisenoppiaineet"),
+            Koodistokoodiviite("SV", "kielivalikoima"),
+            pakollinen = true,
+            Some(LaajuusOsaamispisteissä(1))
+          ),
+          arviointi = Some(List(arviointiKiitettävä))
+        )
+        val ytoSuoritus = yhteisenTutkinnonOsanSuoritus("400012", "Viestintä- ja vuorovaikutusosaaminen", k3, 11).copy(
+          osasuoritukset = Some(List(osaAlue)),
+          arviointi = None,
+          vahvistus = None
+        )
+        val suoritus = puuteollisuudenPerustutkinnonSuoritus().copy(
+          suoritustapa = suoritustapaReformi,
+          osasuoritukset = Some(List(ytoSuoritus)),
+          vahvistus = None,
+          alkamispäivä = Some(date(2026, 8, 1))
+        )
+        val opiskeluoikeus = makeOpiskeluoikeus(alkamispäivä = date(2026, 8, 1)).copy(
+          suoritukset = List(suoritus)
+        )
+
+        setupOppijaWithOpiskeluoikeus(opiskeluoikeus) {
+          verifyResponseStatusOk()
+        }
+      }
+    }
+
     "Duplikaattiopiskeluoikeuksien tunnistus" - {
       def testDuplicates(opiskeluoikeus: AmmatillinenOpiskeluoikeus): Unit = {
         setupOppijaWithOpiskeluoikeus(opiskeluoikeus = opiskeluoikeus) {
