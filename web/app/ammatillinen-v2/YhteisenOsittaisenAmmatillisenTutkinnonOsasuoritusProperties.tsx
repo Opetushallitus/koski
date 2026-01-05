@@ -372,9 +372,12 @@ export const oppiaineToKielikoodistoMap: Record<string, string> = {
   TK1: 'kielivalikoima',
   TK2: 'kielivalikoima',
   VVTK: 'kielivalikoima',
+  VVTK26: 'kielivalikoima',
   VVAI: 'kielivalikoima',
   VVAI22: 'kielivalikoima',
+  VVAI26: 'kielivalikoima',
   VVVK: 'kielivalikoima',
+  VVVK26: 'kielivalikoima',
   AI: 'oppiaineaidinkielijakirjallisuus'
 }
 

@@ -243,6 +243,8 @@ object KoskiErrorCategory {
         def lisätietoRajapäivänJälkeenAlkavaOpiskeluoikeus(lisätiedonNimi: String) = subcategory("lisätietoRajapäivänJälkeen", s"$lisätiedonNimi lisätieto ei ole käytössä 31.12.2025 jälkeen alkavalle opiskeluoikeudelle")
         def lisätietoAlkaaRajapäivänJälkeen(lisätiedonNimi: String) = subcategory("lisätietoRajapäivänJälkeen", s"$lisätiedonNimi aikajakso ei voi alkaa 31.12.2025 jälkeen")
         val henkilöstökoulutusRajapäivänJälkeen = subcategory("henkilöstökoulutusRajapäivänJälkeen", "Henkilöstökoulutus-tietoa ei voi lisätä 31.12.2025 jälkeen alkavaan opiskeluoikeuteen")
+        def viestintäJaVuorovaikutusOsaAlueVäärässäHaarassa(koodiarvo: String) = subcategory("viestintäJaVuorovaikutusOsaAlueVäärässäHaarassa", s"Yhteisen tutkinnon osan osa-alueen koodiarvoa '$koodiarvo' ei voi käyttää valtakunnallisena tutkinnon osan osa-alueena. Käytä viestintä ja vuorovaikutus kielivalinnalla -tietomallia.")
+        def viestintäJaVuorovaikutus26KoodiarvoEnnenRajapäivää(koodiarvo: String) = subcategory("viestintäJaVuorovaikutus26KoodiarvoEnnenRajapäivää", s"Koodiarvoa '$koodiarvo' ei voi käyttää ennen 1.8.2026 alkavassa opiskeluoikeudessa.")
       }
       val ammatillinen = new Ammatillinen
 
