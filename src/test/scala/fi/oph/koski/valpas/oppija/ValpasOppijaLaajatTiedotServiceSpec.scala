@@ -153,5 +153,10 @@ class ValpasOppijaLaajatTiedotServiceSpec extends ValpasOppijaTestBase {
       val result = oppijaLaajatTiedotService.getOppijaLaajatTiedotYhteystiedoillaJaKuntailmoituksilla(ValpasMockOppijat.turvakieltoOppija.oid)(session(ValpasMockUsers.valpasMonta))
       result.toOption.get.oppija.henkilö.kotikunta shouldBe None
     }
+
+    "ei palauta menehtyneen oppijan tietoja" in {
+      val result = oppijaLaajatTiedotService.getOppijaLaajatTiedotYhteystiedoillaJaKuntailmoituksilla(ValpasMockOppijat.menehtynytOppija.oid)(session(ValpasMockUsers.valpasMonta))
+      result.left.map(_.statusCode) should be(Left(403))
+    }
   }
 }
