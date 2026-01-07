@@ -1863,10 +1863,11 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
               arviointi = Some(List(arviointiKiitettävä))
             )
           )
-          val ytoSuoritus = yhteisenTutkinnonOsanSuoritus("101053", "Viestintä- ja vuorovaikutusosaaminen", k3, 11).copy(
+          val ytoKoodi = if (koodiarvo == "VVAI22") "106727" else "101053"
+          val ytoSuoritus = yhteisenTutkinnonOsanSuoritus(ytoKoodi, "Viestintä- ja vuorovaikutusosaaminen", k3, 11).copy(
             osasuoritukset = Some(virheellinenOsaAlue :: muutOsaAlueet)
           )
-          val suoritus = autoalanPerustutkinnonSuoritus().copy(
+          val suoritus = (if (koodiarvo == "VVAI22") ajoneuvoalanPerustutkinnonSuoritus() else autoalanPerustutkinnonSuoritus()).copy(
             osasuoritukset = Some(List(ytoSuoritus))
           )
 
