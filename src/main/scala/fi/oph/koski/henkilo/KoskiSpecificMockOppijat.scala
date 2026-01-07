@@ -14,8 +14,6 @@ object KoskiSpecificMockOppijat {
   // Tällä oppijalla ei ole fixtuureissa opiskeluoikeuksia, eikä tätä lisätä henkilöpalveluun.
   val tyhjä = UusiHenkilö("230872-7258", "Tero", Some("Tero"), "Tyhjä")
 
-  val demoNordea = koskiSpecificOppijat.oppija(suku = "Demo", etu = "Nordea", hetu = "210281-9988", syntymäaika = Some(LocalDate.of(1981,2, 21)))
-
   val hetuton = koskiSpecificOppijat.addLaajatOppijaHenkilöTiedot(LaajatOppijaHenkilöTiedot(oid = "1.2.246.562.24.99999999123", sukunimi = "Hetuton", etunimet = "Heikki", kutsumanimi = "Heikki", hetu = None, syntymäaika = Some(LocalDate.of(1977, 2, 24)), yksilöity = false))
   val syntymäajallinen = koskiSpecificOppijat.addLaajatOppijaHenkilöTiedot(LaajatOppijaHenkilöTiedot(oid = "1.2.246.562.24.99999999124", sukunimi = "Syntynyt", etunimet = "Sylvi", kutsumanimi = "Sylvi", hetu = Some("220627-833V"), syntymäaika = Some(LocalDate.of(1970, 1, 1))))
   val eero = koskiSpecificOppijat.oppijaSyntymäaikaHetusta("Esimerkki", "Eero", "010101-123N")
@@ -387,6 +385,7 @@ object KoskiSpecificMockOppijat {
   val kielitutkintoTodistusVirhe = koskiSpecificOppijat.oppija("TodistusVirhe", "Kielitutkinto", "020107A540T", syntymäaika = Some(LocalDate.of(2007, 1, 2)))
 
   val menehtynytOppija = koskiSpecificOppijat.oppija("Menehtynyt", "Mette", "281115A252X", syntymäaika = Some(LocalDate.of(2015, 11, 28)), kuolinpäivä = Some(LocalDate.of(2025, 11, 13)))
+  val demoNordea = koskiSpecificOppijat.oppija(suku = "Demo", etu = "Nordea", hetu = "210281-8715", syntymäaika = Some(LocalDate.of(1981,2, 21)))
 
   def defaultOppijat = koskiSpecificOppijat.getOppijat
   def defaultKuntahistoriat: mutable.Map[String, Seq[OppijanumerorekisteriKotikuntahistoriaRow]] = koskiSpecificOppijat.getKuntahistoriat

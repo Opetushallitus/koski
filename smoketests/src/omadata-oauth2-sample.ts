@@ -76,7 +76,7 @@ const withRetries = async <T>(
 const suomiFiLogin = async (page: Page, opts: { local: boolean }) => {
   if (opts.local) {
     await page.waitForSelector("#hetu");
-    await page.type("#hetu", "210281-9988");
+    await page.type("#hetu", "210281-8715");
     await clickAndWait(page, "button.koski-button.blue", {
       navigation: true,
     });
@@ -123,7 +123,7 @@ const authorizeAndVerifyData = async (page: Page) => {
   console.log("Check that assumed data is visible")
   expectPerson(json.henkilö ?? {}, {
     kutsumanimi: "Nordea",
-    hetu: "210281-9988",
+    hetu: "210281-8715",
     syntymäaika: "1981-02-21",
   });
 };

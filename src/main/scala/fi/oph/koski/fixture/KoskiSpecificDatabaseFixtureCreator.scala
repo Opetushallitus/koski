@@ -125,7 +125,6 @@ class KoskiSpecificDatabaseFixtureCreator(application: KoskiApplication) extends
 
   protected def defaultOpiskeluOikeudet: List[(OppijaHenkilö, KoskeenTallennettavaOpiskeluoikeus)] = {
     List(
-      (KoskiSpecificMockOppijat.demoNordea, ExamplesLukio.päättötodistus()),
       (KoskiSpecificMockOppijat.eero, AmmatillinenOpiskeluoikeusTestData.opiskeluoikeus(MockOrganisaatiot.stadinAmmattiopisto, versio = Some(11))),
       (KoskiSpecificMockOppijat.eero, PerusopetuksenOpiskeluoikeusTestData.mitätöitäväOpiskeluoikeus),
       (KoskiSpecificMockOppijat.eerola, AmmatillinenOpiskeluoikeusTestData.opiskeluoikeus(MockOrganisaatiot.stadinAmmattiopisto, versio = Some(11))),
@@ -336,6 +335,7 @@ class KoskiSpecificDatabaseFixtureCreator(application: KoskiApplication) extends
       (KoskiSpecificMockOppijat.keskeneräinenIbTutkinto, ExamplesIB.keskeneräinenIbTutkintoOpiskeluoikeus(LocalDate.of(2025, 7, 30))),
       (KoskiSpecificMockOppijat.esikoululainen2025, ExamplesEsiopetus.opiskeluoikeus2025),
       (KoskiSpecificMockOppijat.menehtynytOppija, PerusopetusExampleData.päättötodistusOpiskeluoikeus()),
+      (KoskiSpecificMockOppijat.demoNordea, ExamplesLukio.päättötodistus()),
     )
   }
 
