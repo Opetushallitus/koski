@@ -1845,7 +1845,6 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
     }
 
     "Viestintä ja vuorovaikutus kielivalinnalla -koodit valtakunnallisena tutkinnon osan osa-alueena" - {
-      // Testataan VVTK, VVAI ja VVVK autoalan tutkinnolla (YTO 101053)
       val autoalanKoodit = List("VVTK", "VVAI", "VVVK")
 
       autoalanKoodit.foreach { koodiarvo =>
@@ -1877,8 +1876,6 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
         }
       }
 
-      // VVAI22 vaatii perusteen, jonka voimaantulopäivä on 1.8.2022 tai myöhemmin,
-      // joten testataan ajoneuvoalan tutkinnolla (YTO 106727)
       "Koodia VVAI22 ei saa käyttää ValtakunnallinenAmmatillisenTutkinnonOsanOsaAlue-tyypissä" in {
         val virheellinenOsaAlue = YhteisenTutkinnonOsanOsaAlueenSuoritus(
           koulutusmoduuli = ValtakunnallinenAmmatillisenTutkinnonOsanOsaAlue(Koodistokoodiviite("VVAI22", "ammatillisenoppiaineet"), pakollinen = true, Some(LaajuusOsaamispisteissä(4))),
