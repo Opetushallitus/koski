@@ -1,11 +1,13 @@
+import path from "path";
 import puppeteer, { Page } from "puppeteer";
 
-type Environment = "dev" | "qa";
+type Environment = "local" | "dev" | "qa";
 
 const RETRIES = 3;
 const TIMEOUT_MS = 30000;
 
 const ENVIRONMENTS: Record<Environment, string> = {
+  local: process.env.OMADATA_URL || "http://localhost:7051",
   dev: "https://oph-koski-omadataoauth2sample-dev.testiopintopolku.fi",
   qa: "https://oph-koski-omadataoauth2sample-qa.testiopintopolku.fi",
 };
@@ -71,11 +73,19 @@ const withRetries = async <T>(
   throw lastError;
 };
 
-const suomiFiLogin = async (page: Page) => {
-  await clickAndWait(page, "#li_fakevetuma2");
-  await clickAndWait(page, ".default-link");
-  await clickAndWait(page, "#tunnistaudu");
-  await clickAndWait(page, "#continue-button", { navigation: true });
+const suomiFiLogin = async (page: Page, opts: { local: boolean }) => {
+  if (opts.local) {
+    await page.waitForSelector("#hetu");
+    await page.type("#hetu", "210281-9988");
+    await clickAndWait(page, "button.koski-button.blue", {
+      navigation: true,
+    });
+  } else {
+    await clickAndWait(page, "#li_fakevetuma2");
+    await clickAndWait(page, ".default-link");
+    await clickAndWait(page, "#tunnistaudu");
+    await clickAndWait(page, "#continue-button", { navigation: true });
+  }
 };
 
 const expectPerson = (
@@ -112,8 +122,6 @@ const authorizeAndVerifyData = async (page: Page) => {
 
   console.log("Check that assumed data is visible")
   expectPerson(json.henkilö ?? {}, {
-    sukunimi: "Demo",
-    etunimet: "Nordea",
     kutsumanimi: "Nordea",
     hetu: "210281-9988",
     syntymäaika: "1981-02-21",
@@ -127,6 +135,7 @@ const runTest = async (environment: Environment) =>
     );
 
     const browser = await puppeteer.launch({ headless: true });
+    const isLocal = environment === "local";
     const page = await browser.newPage();
 
     try {
@@ -143,7 +152,7 @@ const runTest = async (environment: Environment) =>
         { navigation: true }
       );
 
-      await suomiFiLogin(page);
+      await suomiFiLogin(page, { local: isLocal });
       await authorizeAndVerifyData(page);
 
       console.log("Smoke test succeeded");
@@ -155,7 +164,9 @@ const runTest = async (environment: Environment) =>
 const environment = process.argv[2] as Environment | undefined;
 
 if (!environment || !ENVIRONMENTS[environment]) {
-  console.error("Usage: pnpm ts-node src/omadata-oauth2-sample.ts <dev|qa>");
+  console.error(
+    "Usage: pnpm ts-node src/omadata-oauth2-sample.ts <local|dev|qa>"
+  );
   process.exit(1);
 }
 

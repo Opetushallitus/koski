@@ -25,8 +25,7 @@ app.use(helmet())
 app.use(bodyParser.urlencoded({ extended: false }))
 
 const staticFilesPath = path.resolve(
-  path.dirname(fileURLToPath(import.meta.url)),
-  '../../client/build'
+  './public'
 )
 
 app.use(express.static(staticFilesPath))
@@ -37,11 +36,7 @@ app.use('/api/healthcheck', healthCheck)
 
 app.get('/{*splat}', (req: Request, res: Response) => {
   res.sendFile(
-    path.resolve(
-      path.dirname(fileURLToPath(import.meta.url)),
-      './client/build',
-      'index.html'
-    )
+    staticFilesPath
   )
 })
 
