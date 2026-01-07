@@ -60,7 +60,7 @@ class ValpasOppijanumerorekisteriService(application: KoskiApplication) {
     oppijaOid: ValpasHenkilö.Oid
   ): Either[HttpStatus, ValpasOppivelvollinenOppijaLaajatTiedot] = {
     henkilöRepository.findByOid(oppijaOid, findMasterIfSlaveOid = true) match {
-      case Some(henkilö) if onPalautettavaOppija(henkilö) =>
+      case Some(henkilö) if henkilö.kuolinpäivä.isEmpty && onPalautettavaOppija(henkilö) =>
         Right(ValpasOppivelvollinenOppijaLaajatTiedot(
           henkilö,
           rajapäivätService,
