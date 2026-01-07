@@ -1845,9 +1845,10 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
     }
 
     "Viestintä ja vuorovaikutus kielivalinnalla -koodit valtakunnallisena tutkinnon osan osa-alueena" - {
-      val kielivalintaKoodit = List("VVTK", "VVAI", "VVAI22", "VVVK")
+      // Testataan VVTK, VVAI ja VVVK autoalan tutkinnolla (YTO 101053)
+      val autoalanKoodit = List("VVTK", "VVAI", "VVVK")
 
-      kielivalintaKoodit.foreach { koodiarvo =>
+      autoalanKoodit.foreach { koodiarvo =>
         s"Koodia $koodiarvo ei saa käyttää ValtakunnallinenAmmatillisenTutkinnonOsanOsaAlue-tyypissä" in {
           val virheellinenOsaAlue = YhteisenTutkinnonOsanOsaAlueenSuoritus(
             koulutusmoduuli = ValtakunnallinenAmmatillisenTutkinnonOsanOsaAlue(Koodistokoodiviite(koodiarvo, "ammatillisenoppiaineet"), pakollinen = true, Some(LaajuusOsaamispisteissä(4))),
@@ -1863,17 +1864,37 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
               arviointi = Some(List(arviointiKiitettävä))
             )
           )
-          val ytoKoodi = if (koodiarvo == "VVAI22") "106727" else "101053"
-          val ytoSuoritus = yhteisenTutkinnonOsanSuoritus(ytoKoodi, "Viestintä- ja vuorovaikutusosaaminen", k3, 11).copy(
+          val ytoSuoritus = yhteisenTutkinnonOsanSuoritus("101053", "Viestintä- ja vuorovaikutusosaaminen", k3, 11).copy(
             osasuoritukset = Some(virheellinenOsaAlue :: muutOsaAlueet)
           )
-          val suoritus = (if (koodiarvo == "VVAI22") ajoneuvoalanPerustutkinnonSuoritus() else autoalanPerustutkinnonSuoritus()).copy(
+          val suoritus = autoalanPerustutkinnonSuoritus().copy(
             osasuoritukset = Some(List(ytoSuoritus))
           )
 
           setupOppijaWithOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(suoritus))) {
             verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.ammatillinen.viestintäJaVuorovaikutusOsaAlueVäärässäHaarassa(koodiarvo)())
           }
+        }
+      }
+
+      // VVAI22 vaatii perusteen, jonka voimaantulopäivä on 1.8.2022 tai myöhemmin,
+      // joten testataan ajoneuvoalan tutkinnolla (YTO 106727)
+      "Koodia VVAI22 ei saa käyttää ValtakunnallinenAmmatillisenTutkinnonOsanOsaAlue-tyypissä" in {
+        val virheellinenOsaAlue = YhteisenTutkinnonOsanOsaAlueenSuoritus(
+          koulutusmoduuli = ValtakunnallinenAmmatillisenTutkinnonOsanOsaAlue(Koodistokoodiviite("VVAI22", "ammatillisenoppiaineet"), pakollinen = true, Some(LaajuusOsaamispisteissä(4))),
+          arviointi = Some(List(arviointiKiitettävä))
+        )
+        val ytoSuoritus = yhteisenTutkinnonOsanSuoritus("106727", "Viestintä- ja vuorovaikutusosaaminen", k3, 4).copy(
+          osasuoritukset = Some(List(virheellinenOsaAlue)),
+          arviointi = None,
+          vahvistus = None
+        )
+        val suoritus = ajoneuvoalanPerustutkinnonSuoritus().copy(
+          osasuoritukset = Some(List(ytoSuoritus))
+        )
+
+        setupOppijaWithOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(suoritus))) {
+          verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.ammatillinen.viestintäJaVuorovaikutusOsaAlueVäärässäHaarassa("VVAI22")())
         }
       }
 
