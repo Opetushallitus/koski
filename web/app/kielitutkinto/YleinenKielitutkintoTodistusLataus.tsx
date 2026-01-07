@@ -229,8 +229,8 @@ export const YleinenKielitutkintoTodistusLataus: React.FC<
         <div className="Todistus__lang">
           <div className="Todistus__langLabel">
             <Trans>{'Todistuksen kieli'}</Trans>
+            {':'}
           </div>
-          {':'}
           <Select
             className="Todistus__langSelect"
             testId="language"

@@ -1,5 +1,6 @@
 .Todistus {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   background: @color-light-blue;
   min-height: 4 * @baseline;
@@ -51,6 +52,36 @@
       margin-top: 1px;
       width: 16px;
       height: 16px;
+    }
+  }
+
+  @media @media-phone {
+    padding: 12px;
+    gap: 12px;
+
+    & > * {
+      margin-right: 0;
+    }
+
+    &__title {
+      width: 100%;
+      margin-bottom: 4px;
+    }
+
+    &__lang,
+    button {
+      width: 100%;
+    }
+
+    &__lang {
+      flex-direction: column;
+      align-items: flex-start;
+
+      .Select {
+        width: 100%;
+        max-width: none;
+        margin-left: 0;
+      }
     }
   }
 }
