@@ -2,7 +2,7 @@
 package fi.oph.koski.valpas.oppijahaku
 
 import fi.oph.koski.config.KoskiApplication
-import fi.oph.koski.henkilo.OppijaHenkilö
+import fi.oph.koski.henkilo.{LaajatOppijaHenkilöTiedot, OppijaHenkilö}
 import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.log.Logging
 import fi.oph.koski.oppivelvollisuustieto.Oppivelvollisuustiedot
@@ -86,14 +86,21 @@ class ValpasOppijaSearchService(application: KoskiApplication) extends Logging {
   private def searchByHetu
     (asHenkilöhakuResult: (OppijaHenkilö) => Either[HttpStatus, ValpasHenkilöhakuResult], hetu: String)
     (implicit session: ValpasSession)
-  : Either[HttpStatus, ValpasHenkilöhakuResult] =
-    asSearchResult(asHenkilöhakuResult, henkilöRepository.findByHetuOrCreateIfInYtrOrVirta(hetu))
+  : Either[HttpStatus, ValpasHenkilöhakuResult] = {
+    val henkilö = henkilöRepository.findByHetuOrCreateIfInYtrOrVirta(hetu).filter {
+      case h: LaajatOppijaHenkilöTiedot => h.kuolinpäivä.isEmpty
+      case _ => true
+    }
+    asSearchResult(asHenkilöhakuResult, henkilö)
+  }
 
   private def searchByOppijaOid
     (asHenkilöhakuResult: (OppijaHenkilö) => Either[HttpStatus, ValpasHenkilöhakuResult], oid: String)
     (implicit session: ValpasSession)
-  : Either[HttpStatus, ValpasHenkilöhakuResult] =
-    asSearchResult(asHenkilöhakuResult, henkilöRepository.findByOid(oid, findMasterIfSlaveOid = true))
+  : Either[HttpStatus, ValpasHenkilöhakuResult] = {
+    val henkilö = henkilöRepository.findByOid(oid, findMasterIfSlaveOid = true).filter(_.kuolinpäivä.isEmpty)
+    asSearchResult(asHenkilöhakuResult, henkilö)
+  }
 
   private def asSearchResult
     (asResult: (OppijaHenkilö) => Either[HttpStatus, ValpasHenkilöhakuResult], oppijaHenkilö: Option[OppijaHenkilö])
