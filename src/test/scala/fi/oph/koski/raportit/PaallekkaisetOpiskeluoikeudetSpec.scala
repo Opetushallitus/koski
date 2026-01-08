@@ -46,7 +46,7 @@ class PaallekkaisetOpiskeluoikeudetSpec extends AnyFreeSpec with Raportointikant
 
   "Päällekkäisten opiskeluoikeuksien raportti" - {
     "Lataus onnistuu ja tuottaa auditlogin" in {
-      AuditLogTester.clearMessages
+      AuditLogTester.clearMessages()
       authGet(s"api/raportit/paallekkaisetopiskeluoikeudet?oppilaitosOid=${MockOrganisaatiot.helsinginKaupunki}&alku=2018-01-01&loppu=2020-01-01&lang=fi&password=salasana") {
         verifyResponseStatusOk()
         response.headers("Content-Disposition").head should equal(
@@ -61,7 +61,7 @@ class PaallekkaisetOpiskeluoikeudetSpec extends AnyFreeSpec with Raportointikant
     }
 
     "Lataus onnistuu eri lokalisaatiolla ja tuottaa auditlogin" in {
-      AuditLogTester.clearMessages
+      AuditLogTester.clearMessages()
       authGet(s"api/raportit/paallekkaisetopiskeluoikeudet?oppilaitosOid=${MockOrganisaatiot.helsinginKaupunki}&alku=2018-01-01&loppu=2020-01-01&lang=sv&password=salasana") {
         verifyResponseStatusOk()
         response.headers("Content-Disposition").head should equal(

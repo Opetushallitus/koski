@@ -21,7 +21,7 @@ class LukioDiaIbInternationalESHOpiskelijaMaaratRaporttiSpec extends AnyFreeSpec
 
   override protected def beforeAll(): Unit = {
     super.beforeAll()
-    reloadRaportointikanta
+    reloadRaportointikanta()
   }
 
   val hese = "Helsingin medialukio"
@@ -29,7 +29,7 @@ class LukioDiaIbInternationalESHOpiskelijaMaaratRaporttiSpec extends AnyFreeSpec
 
   "Lukion opiskelijamäärät raportti" - {
     "Raportin lataaminen onnistuu ja tuottaa auditlogin" in {
-      AuditLogTester.clearMessages
+      AuditLogTester.clearMessages()
       authGet(s"api/raportit/lukiodiaibinternationaleshopiskelijamaarat?oppilaitosOid=${MockOrganisaatiot.helsinginKaupunki}&paiva=2018-01-01&password=salasana&lang=fi") {
         verifyResponseStatusOk()
         response.headers("Content-Disposition").head should equal(s"""attachment; filename="lukiokoulutus_opiskelijamaarat_20180101.xlsx"""")
@@ -39,7 +39,7 @@ class LukioDiaIbInternationalESHOpiskelijaMaaratRaporttiSpec extends AnyFreeSpec
     }
 
     "Raportin lataaminen onnistuu eri lokalisaatiolla ja tuottaa auditlogin" in {
-      AuditLogTester.clearMessages
+      AuditLogTester.clearMessages()
       authGet(s"api/raportit/lukiodiaibinternationaleshopiskelijamaarat?oppilaitosOid=${MockOrganisaatiot.helsinginKaupunki}&paiva=2018-01-01&password=salasana&lang=sv") {
         verifyResponseStatusOk()
         response.headers("Content-Disposition").head should equal(s"""attachment; filename="gymnasieutbildning_antal_studerande_20180101.xlsx"""")

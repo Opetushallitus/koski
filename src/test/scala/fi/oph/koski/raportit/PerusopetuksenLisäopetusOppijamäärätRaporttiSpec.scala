@@ -34,7 +34,7 @@ class PerusopetuksenLisäopetusOppijamäärätRaporttiSpec extends AnyFreeSpec w
     })
 
     application.perustiedotIndexer.sync(refresh = true)
-    reloadRaportointikanta
+    reloadRaportointikanta()
   }
 
   private val testiOpiskeluoikeudet =

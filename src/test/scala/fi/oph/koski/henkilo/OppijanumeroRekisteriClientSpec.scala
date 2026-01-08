@@ -8,7 +8,7 @@ import com.typesafe.config.ConfigFactory
 import fi.oph.koski.TestEnvironment
 import fi.oph.koski.http.Http
 import fi.oph.koski.schema.Koodistokoodiviite
-import org.json4s.DefaultFormats
+import org.json4s.{DefaultFormats, Formats}
 import org.json4s.jackson.Serialization.write
 import org.scalatest.{BeforeAndAfterAll, EitherValues, OptionValues}
 import org.scalatest.freespec.AnyFreeSpec
@@ -24,7 +24,7 @@ class OppijanumeroRekisteriClientSpec
     with OptionValues
     with BeforeAndAfterAll {
 
-  implicit val jsonDefaultFormats = DefaultFormats.preservingEmptyValues
+  implicit val jsonDefaultFormats: Formats = DefaultFormats.preservingEmptyValues
 
   private val config = ConfigFactory.parseString(
     """
@@ -53,7 +53,7 @@ class OppijanumeroRekisteriClientSpec
     "kutsumanimi" -> "Mikko",
     "hetu" -> hetu,
     "syntymaaika" -> "1956-04-12",
-    "modified" -> 1543411774579l,
+    "modified" -> 1543411774579L,
     "externalIds" -> null,
     "identifications" -> null,
     "turvakielto" -> false,
@@ -88,8 +88,8 @@ class OppijanumeroRekisteriClientSpec
     "yksiloityVTJ" -> true,
     "yksilointiYritetty" -> false,
     "duplicate" -> false,
-    "created" -> 1543411645075l,
-    "modified" -> 1543411774579l,
+    "created" -> 1543411645075L,
+    "modified" -> 1543411774579L,
     "vtjsynced" -> null,
     "kasittelijaOid" -> null,
     "asiointiKieli" -> null,
@@ -154,7 +154,7 @@ class OppijanumeroRekisteriClientSpec
     syntymäaika = Some(LocalDate.parse("1956-04-12")),
     äidinkieli = None,
     kansalaisuus = None,
-    modified = 1543411774579l,
+    modified = 1543411774579L,
     turvakielto = false,
     linkitetytOidit = Nil,
     yksilöity = true,
@@ -183,7 +183,7 @@ class OppijanumeroRekisteriClientSpec
     syntymäaika = Some(LocalDate.parse("1956-04-12")),
     äidinkieli = None,
     kansalaisuus = None,
-    modified = 1543411774579l,
+    modified = 1543411774579L,
     turvakielto = false,
     linkitetytOidit = Nil
   )
@@ -262,13 +262,13 @@ class OppijanumeroRekisteriClientSpec
           "kielisyys": []
         }"""
 
-  override protected def beforeAll {
+  override protected def beforeAll(): Unit = {
     super.beforeAll()
     wireMockServer.start()
     mockEndpoints()
   }
 
-  override protected def afterAll {
+  override protected def afterAll(): Unit = {
     wireMockServer.stop()
     super.afterAll()
   }
@@ -363,19 +363,19 @@ class OppijanumeroRekisteriClientSpec
     }
 
     "palauttaa yksilöintitiedon mikäli asetettu" in {
-      mockEndpoints(defaultHenkilöResponse + ("yksiloity" -> true, "yksiloityVTJ" -> true))
+      mockEndpoints(defaultHenkilöResponse ++ Map("yksiloity" -> true, "yksiloityVTJ" -> true))
       val result = Http.runIO(mockClient.findMasterOppija(oid))
       result.value.yksilöity should equal(true)
     }
 
     "palauttaa yksilöity false jos yksilöintitieto on null" in {
-      mockEndpoints(defaultHenkilöResponse + ("yksiloity" -> None, "yksiloityVTJ" -> None))
+      mockEndpoints(defaultHenkilöResponse ++ Map("yksiloity" -> None, "yksiloityVTJ" -> None))
       val result = Http.runIO(mockClient.findMasterOppija(oid))
       result.value.yksilöity should equal(false)
     }
 
     "palauttaa yksilöity false jos yksilöintitietoa ei ole määritelty" in {
-      mockEndpoints(defaultHenkilöResponse - ("yksiloity", "yksiloityVTJ"))
+      mockEndpoints(defaultHenkilöResponse -- Seq("yksiloity", "yksiloityVTJ"))
       val result = Http.runIO(mockClient.findMasterOppija(oid))
       result.value.yksilöity should equal(false)
     }

@@ -49,7 +49,7 @@ class RefreshingCache(val name: String, val params: RefreshingCache.Params)(impl
 
   def callAsync(invocation: Invocation): Future[AnyRef] = synchronized {
     val current = entries.getOrElseUpdate(invocation, new CacheEntry(invocation))
-    cleanup
+    cleanup()
     current.valueFuture
   }
 
@@ -57,20 +57,20 @@ class RefreshingCache(val name: String, val params: RefreshingCache.Params)(impl
     if (debugCaching) {
       logger.debug(s"$name invalidate (cache size ${entries.size})")
     }
-    entries.values.foreach(_.evict)
-    entries.clear
+    entries.values.foreach(_.evict())
+    entries.clear()
   }
 
   protected[cache] def getEntry(invocation: Invocation) = synchronized(entries.get(invocation))
 
-  private def cleanup = {
+  private def cleanup(): Unit = {
     val diff = entries.size - params.maxSize
     if (diff > maxExcess) {
       if (debugCaching) {
         logger.debug(s"$name cleanup (${entries.size} -> ${params.maxSize})")
       }
       entries.values.toList.sortBy(_.lastReadTimestamp).take(diff).foreach { entry =>
-        entry.evict
+        entry.evict()
         entries.remove(entry.invocation)
       }
     }
@@ -85,7 +85,7 @@ class RefreshingCache(val name: String, val params: RefreshingCache.Params)(impl
 
     newFetcher
 
-    def valueFuture = synchronized {
+    def valueFuture: Future[AnyRef] = synchronized {
       lastRead = System.currentTimeMillis
       currentValue match {
         case Some(value) =>
@@ -103,14 +103,14 @@ class RefreshingCache(val name: String, val params: RefreshingCache.Params)(impl
       }
     }
 
-    def lastReadTimestamp = synchronized(lastRead)
+    def lastReadTimestamp: Long = synchronized(lastRead)
 
-    def evict = synchronized {
+    def evict(): Unit = synchronized {
       cancelled = true
-      statsCounter.recordEviction
+      statsCounter.recordEviction()
     }
 
-    def getScheduledRefreshTime = synchronized(scheduledRefreshTime)
+    def getScheduledRefreshTime: Option[Long] = synchronized(scheduledRefreshTime)
 
     private def newFetcher: Future[AnyRef] = {
       val start = System.nanoTime()
@@ -136,7 +136,9 @@ class RefreshingCache(val name: String, val params: RefreshingCache.Params)(impl
         }
       }
 
-      synchronized(fetcher = Some(newFetcherFuture))
+      synchronized {
+        fetcher = Some(newFetcherFuture)
+      }
 
       newFetcherFuture.andThen { case _ =>
         CacheEntry.this.synchronized {
@@ -145,13 +147,13 @@ class RefreshingCache(val name: String, val params: RefreshingCache.Params)(impl
             fetcher = None
           }
         }
-        scheduleRefresh
+        scheduleRefresh()
       }
       newFetcherFuture
     }
 
-    private def scheduleRefresh = synchronized {
-      if (!scheduledRefreshTime.isDefined) {
+    private def scheduleRefresh(): Unit = synchronized {
+      if (scheduledRefreshTime.isEmpty) {
         val variation = params.refreshScatteringRatio // add some random variation to refresh time
         val randomizedFactor: Double = Math.random() * variation + (1.0 - variation)
         val delayMillis = (params.duration.toMillis * randomizedFactor).toLong
@@ -159,11 +161,11 @@ class RefreshingCache(val name: String, val params: RefreshingCache.Params)(impl
         if (debugCaching) {
           logger.debug(s"$name.$invocation scheduling new fetch at ${LocalDateTime.now().plus(delayMillis, MILLIS)}")
         }
-        RefreshingCache.refreshExecutor.schedule(new Runnable { override def run(): Unit = startScheduledRefresh }, delayMillis, MILLISECONDS)
+        RefreshingCache.refreshExecutor.schedule(new Runnable { override def run(): Unit = startScheduledRefresh() }, delayMillis, MILLISECONDS)
       }
     }
 
-    private def startScheduledRefresh = synchronized {
+    private def startScheduledRefresh(): Unit = synchronized {
       scheduledRefreshTime = None
       if (fetcher.isEmpty && !cancelled) {
         if (debugCaching) {

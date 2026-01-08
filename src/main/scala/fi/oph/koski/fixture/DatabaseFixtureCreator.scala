@@ -19,10 +19,10 @@ import scala.collection.mutable
 import scala.reflect.runtime.universe.TypeTag
 
 abstract class DatabaseFixtureCreator(application: KoskiApplication, opiskeluoikeusFixtureCacheTableName: String, opiskeluoikeusHistoriaFixtureCacheTableName: String) extends QueryMethods with Timing {
-  implicit val user = KoskiSpecificSession.systemUser
+  implicit val user: KoskiSpecificSession = KoskiSpecificSession.systemUser
   protected val validator = application.validator
   val db = application.masterDatabase.db
-  implicit val accessType = AccessType.write
+  implicit val accessType: AccessType.Value = AccessType.write
   val raportointiDatabase = application.raportointiDatabase
   val validationConfig = application.validationContext
 

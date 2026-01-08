@@ -17,6 +17,8 @@ trait RequiresValpasKansalainenSession extends ValpasCookieAndBasicAuthAuthentic
         if (!user.kansalainen) {
           haltWithStatus(KoskiErrorCategory.forbidden.kiellettyKäyttöoikeus())
         }
+      case Left(status) =>
+        haltWithStatus(status)
     }
   }
 }

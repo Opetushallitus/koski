@@ -38,7 +38,7 @@ class AikuistenPerusopetusRaporttiSpec
         ExamplesAikuistenPerusopetus.oppiaineenOppimääränSuoritusYH
       )
     )
-    reloadRaportointikanta
+    reloadRaportointikanta()
   }
 
   def opiskeluoikeusWithPerusteenDiaarinumero(diaari: Option[String]) = AikuistenPerusopetuksenOpiskeluoikeus(
@@ -678,7 +678,7 @@ class AikuistenPerusopetusRaporttiSpec
             "Etunimet" -> vuonna2005SyntynytEiOpiskeluoikeuksiaFikstuurissa.etunimet
           )
 
-          lazy val aiOppiaineenRow = common + (
+          lazy val aiOppiaineenRow = common ++ Map(
             "Suorituksen vahvistuspäivä" -> Some(date(2016, 6, 4)),
             "Yhteislaajuus (kaikki kurssit)" -> 1.0,
             "Yhteislaajuus (suoritetut kurssit)" -> 1.0,
@@ -692,7 +692,7 @@ class AikuistenPerusopetusRaporttiSpec
             "Suorituksen nimi" -> Some("Äidinkieli ja kirjallisuus")
           )
 
-          lazy val yhOppiaineenRow = common + (
+          lazy val yhOppiaineenRow = common ++ Map(
             "Suorituksen vahvistuspäivä" -> Some(date(2016, 6, 4)),
             "Yhteislaajuus (kaikki kurssit)" -> 1.0,
             "Yhteislaajuus (suoritetut kurssit)" -> 1.0,
@@ -788,7 +788,7 @@ class AikuistenPerusopetusRaporttiSpec
     val expectedResult = if (addOpiskeluoikeudenOid) {
       val opiskeluoikeudenOid = lastOpiskeluoikeus(oppija.oid).oid
       opiskeluoikeudenOid shouldBe defined
-      expected + ("Opiskeluoikeuden oid" -> opiskeluoikeudenOid.get)
+      expected ++ Map("Opiskeluoikeuden oid" -> opiskeluoikeudenOid.get)
     } else {
       expected
     }
@@ -801,7 +801,7 @@ class AikuistenPerusopetusRaporttiSpec
     opiskeluoikeudenOid shouldBe defined
     val found = findByOid(oppija.oid, all)
     found.length should equal(expected.length)
-    found.toSet should equal(expected.map(_ + ("Opiskeluoikeuden oid" -> opiskeluoikeudenOid.get)).toSet)
+    found.toSet should equal(expected.map(_ ++ Map("Opiskeluoikeuden oid" -> opiskeluoikeudenOid.get)).toSet)
   }
 
   private def findRowsWithColumnsByTitle(title: String, all: Seq[(String, Seq[Map[String, Any]])]) = {

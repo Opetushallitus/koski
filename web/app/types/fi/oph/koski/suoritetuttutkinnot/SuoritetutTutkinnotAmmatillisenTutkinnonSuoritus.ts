@@ -1,8 +1,8 @@
 import { SuoritetutTutkinnotKoodistokoodiviite } from './SuoritetutTutkinnotKoodistokoodiviite'
-import { Koodistokoodiviite } from '../schema/Koodistokoodiviite'
-import { LocalizedString } from '../schema/LocalizedString'
 import { SuoritetutTutkinnotKokoTaiOsittaisenAmmatillisenTutkinnonKoulutusmoduuli } from './SuoritetutTutkinnotKokoTaiOsittaisenAmmatillisenTutkinnonKoulutusmoduuli'
 import { Toimipiste } from './Toimipiste'
+import { Koodistokoodiviite } from '../schema/Koodistokoodiviite'
+import { LocalizedString } from '../schema/LocalizedString'
 import { SuoritetutTutkinnotOsaamisalajakso } from './SuoritetutTutkinnotOsaamisalajakso'
 import { Vahvistus } from './Vahvistus'
 
@@ -13,23 +13,23 @@ import { Vahvistus } from './Vahvistus'
  */
 export type SuoritetutTutkinnotAmmatillisenTutkinnonSuoritus = {
   $class: 'fi.oph.koski.suoritetuttutkinnot.SuoritetutTutkinnotAmmatillisenTutkinnonSuoritus'
-  tutkintonimike?: Array<SuoritetutTutkinnotKoodistokoodiviite>
-  tyyppi: Koodistokoodiviite<string, 'ammatillinentutkinto'>
   suorituskieli?: SuoritetutTutkinnotKoodistokoodiviite
   suoritustapa?: SuoritetutTutkinnotKoodistokoodiviite
   koulutusmoduuli: SuoritetutTutkinnotKokoTaiOsittaisenAmmatillisenTutkinnonKoulutusmoduuli
   toimipiste?: Toimipiste
+  tutkintonimike?: Array<SuoritetutTutkinnotKoodistokoodiviite>
+  tyyppi: Koodistokoodiviite<string, 'ammatillinentutkinto'>
   osaamisala?: Array<SuoritetutTutkinnotOsaamisalajakso>
   vahvistus?: Vahvistus
 }
 
 export const SuoritetutTutkinnotAmmatillisenTutkinnonSuoritus = (o: {
-  tutkintonimike?: Array<SuoritetutTutkinnotKoodistokoodiviite>
-  tyyppi: Koodistokoodiviite<string, 'ammatillinentutkinto'>
   suorituskieli?: SuoritetutTutkinnotKoodistokoodiviite
   suoritustapa?: SuoritetutTutkinnotKoodistokoodiviite
   koulutusmoduuli: SuoritetutTutkinnotKokoTaiOsittaisenAmmatillisenTutkinnonKoulutusmoduuli
   toimipiste?: Toimipiste
+  tutkintonimike?: Array<SuoritetutTutkinnotKoodistokoodiviite>
+  tyyppi: Koodistokoodiviite<string, 'ammatillinentutkinto'>
   osaamisala?: Array<SuoritetutTutkinnotOsaamisalajakso>
   vahvistus?: Vahvistus
 }): SuoritetutTutkinnotAmmatillisenTutkinnonSuoritus => ({

@@ -14,6 +14,7 @@ import fi.oph.koski.util.SortOrder.Descending
 import org.json4s._
 import org.json4s.jackson.JsonMethods
 
+import scala.collection.parallel.CollectionConverters._
 import scala.util.{Failure, Success, Try}
 
 object OpiskeluoikeudenPerustiedotIndexer {
@@ -103,7 +104,12 @@ class OpiskeluoikeudenPerustiedotIndexer(
   def sync(refresh: Boolean): Unit = synchronized {
     logger.debug("Checking for sync rows")
     val allRows = perustiedotSyncRepository.queuedUpdates(1000)
-    val rowsToBeSync = allRows.groupBy(_.opiskeluoikeusId).mapValues(_.sortBy(_.aikaleima)(DateOrdering.ascedingSqlTimestampOrdering).last).map(_._2).toSeq
+    val rowsToBeSync = allRows
+      .groupBy(_.opiskeluoikeusId)
+      .view
+      .mapValues(_.sortBy(_.aikaleima)(DateOrdering.ascedingSqlTimestampOrdering).last)
+      .values
+      .toSeq
     if (allRows.nonEmpty) {
       logger.debug(s"Syncing ${allRows.length} rows")
       val (itemsToDelete, itemsToUpdate) = rowsToBeSync.partition(r => r.data == JObject(List.empty))
@@ -124,7 +130,12 @@ class OpiskeluoikeudenPerustiedotIndexer(
   def manualSync(refresh: Boolean): Unit = synchronized {
     logger.debug("Checking for manual sync rows")
     val allRows = perustiedotManualSyncRepository.getQueuedUpdates(1000)
-    val itemsToSync = allRows.groupBy(_._2.opiskeluoikeusOid).mapValues(_.sortBy(_._2.aikaleima)(DateOrdering.ascedingSqlTimestampOrdering).last).map(_._2).toSeq
+    val itemsToSync = allRows
+      .groupBy(_._2.opiskeluoikeusOid)
+      .view
+      .mapValues(_.sortBy(_._2.aikaleima)(DateOrdering.ascedingSqlTimestampOrdering).last)
+      .values
+      .toSeq
     if (itemsToSync.nonEmpty) {
       logger.debug(s"Manually syncing ${itemsToSync.length} rows")
       itemsToSync.groupBy(_._2.upsert) foreach { case (upsert, syncRows) =>

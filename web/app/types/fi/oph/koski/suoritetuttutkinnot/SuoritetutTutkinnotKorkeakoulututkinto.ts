@@ -11,17 +11,17 @@ export type SuoritetutTutkinnotKorkeakoulututkinto = {
   $class: 'fi.oph.koski.suoritetuttutkinnot.SuoritetutTutkinnotKorkeakoulututkinto'
   kansallinenTutkintojenViitekehysNQF?: Koodistokoodiviite<'nqf', string>
   eurooppalainenTutkintojenViitekehysEQF?: Koodistokoodiviite<'eqf', string>
+  tunniste: SuoritetutTutkinnotKoodistokoodiviite
   virtaNimi?: LocalizedString
   koulutustyyppi?: SuoritetutTutkinnotKoodistokoodiviite
-  tunniste: SuoritetutTutkinnotKoodistokoodiviite
 }
 
 export const SuoritetutTutkinnotKorkeakoulututkinto = (o: {
   kansallinenTutkintojenViitekehysNQF?: Koodistokoodiviite<'nqf', string>
   eurooppalainenTutkintojenViitekehysEQF?: Koodistokoodiviite<'eqf', string>
+  tunniste: SuoritetutTutkinnotKoodistokoodiviite
   virtaNimi?: LocalizedString
   koulutustyyppi?: SuoritetutTutkinnotKoodistokoodiviite
-  tunniste: SuoritetutTutkinnotKoodistokoodiviite
 }): SuoritetutTutkinnotKorkeakoulututkinto => ({
   $class:
     'fi.oph.koski.suoritetuttutkinnot.SuoritetutTutkinnotKorkeakoulututkinto',

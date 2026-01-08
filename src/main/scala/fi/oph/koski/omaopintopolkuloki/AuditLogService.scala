@@ -23,7 +23,7 @@ class AuditLogService(val application: KoskiApplication) extends Logging with My
     val kaikkiOppijanOidit = application.opintopolkuHenkilöFacade.findSlaveOids(masterOppijaOid).toSet + masterOppijaOid
 
     val queryResult = kaikkiOppijanOidit
-      .toIterator
+      .iterator
       .flatMap(runQuery)
 
     buildLogs(queryResult)
@@ -107,7 +107,9 @@ class AuditLogService(val application: KoskiApplication) extends Logging with My
       })
       .toSeq
       .groupBy(x => (x._1, x._2, x._3, x._4))
+      .view
       .mapValues(_.map(_._5))
+      .toMap
 
     HttpStatus.foldEithers(
       timestampsGrouped
@@ -161,4 +163,3 @@ case class Organisaatio(
   oid: String,
   name: LocalizedString
 )
-

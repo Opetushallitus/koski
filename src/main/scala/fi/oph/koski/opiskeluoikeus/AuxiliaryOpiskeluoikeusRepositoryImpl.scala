@@ -6,6 +6,7 @@ import fi.oph.koski.koskiuser.{AccessChecker, KoskiSpecificSession}
 import fi.oph.koski.log.Logging
 import fi.oph.koski.schema.{Opiskeluoikeus, Organisaatio}
 
+import scala.collection.parallel.CollectionConverters._
 import scala.concurrent.duration.DurationInt
 import scala.util.control.NonFatal
 
@@ -17,7 +18,12 @@ abstract class AuxiliaryOpiskeluoikeusRepositoryImpl[OO <: Opiskeluoikeus, CK <:
       if (globalAccess) {
         oppijat.filter(oppija => cachedOrganizations(oppija).nonEmpty)
       } else {
-        quickAccessCheck(oppijat.par.filter(oppija => cachedOrganizations(oppija).exists(user.hasReadAccess(_, None))).toList)
+        quickAccessCheck(
+          oppijat
+            .par
+            .filter(oppija => cachedOrganizations(oppija).exists(user.hasReadAccess(_, None)))
+            .toList
+        )
       }
     } catch {
       case NonFatal(e) =>

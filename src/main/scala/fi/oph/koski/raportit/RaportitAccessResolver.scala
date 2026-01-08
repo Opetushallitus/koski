@@ -10,7 +10,7 @@ import fi.oph.koski.raportointikanta.RaportointiDatabase
 import fi.oph.koski.schema.Organisaatio.Oid
 import fi.oph.koski.schema._
 
-import scala.collection.JavaConverters._
+import scala.jdk.CollectionConverters._
 
 object RaportitAccessResolver {
   def apply(application: KoskiApplication): RaportitAccessResolver = {

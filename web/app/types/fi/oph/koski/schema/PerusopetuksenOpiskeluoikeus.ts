@@ -1,14 +1,14 @@
 import { Koodistokoodiviite } from './Koodistokoodiviite'
 import { LocalizedString } from './LocalizedString'
-import { NuortenPerusopetuksenOpiskeluoikeudenTila } from './NuortenPerusopetuksenOpiskeluoikeudenTila'
 import { OpiskeluoikeudenOrganisaatiohistoria } from './OpiskeluoikeudenOrganisaatiohistoria'
 import { SisältäväOpiskeluoikeus } from './SisaltavaOpiskeluoikeus'
-import { Koulutustoimija } from './Koulutustoimija'
-import { PerusopetuksenOpiskeluoikeudenLisätiedot } from './PerusopetuksenOpiskeluoikeudenLisatiedot'
 import { PerusopetuksenPäätasonSuoritus } from './PerusopetuksenPaatasonSuoritus'
 import { LähdejärjestelmäId } from './LahdejarjestelmaId'
 import { LähdejärjestelmäkytkennänPurkaminen } from './LahdejarjestelmakytkennanPurkaminen'
 import { Oppilaitos } from './Oppilaitos'
+import { NuortenPerusopetuksenOpiskeluoikeudenTila } from './NuortenPerusopetuksenOpiskeluoikeudenTila'
+import { Koulutustoimija } from './Koulutustoimija'
+import { PerusopetuksenOpiskeluoikeudenLisätiedot } from './PerusopetuksenOpiskeluoikeudenLisatiedot'
 
 /**
  * Perusopetuksen opiskeluoikeus
@@ -18,13 +18,9 @@ import { Oppilaitos } from './Oppilaitos'
 export type PerusopetuksenOpiskeluoikeus = {
   $class: 'fi.oph.koski.schema.PerusopetuksenOpiskeluoikeus'
   tyyppi: Koodistokoodiviite<'opiskeluoikeudentyyppi', 'perusopetus'>
-  tila: NuortenPerusopetuksenOpiskeluoikeudenTila
-  alkamispäivä?: string
   organisaatiohistoria?: Array<OpiskeluoikeudenOrganisaatiohistoria>
   sisältyyOpiskeluoikeuteen?: SisältäväOpiskeluoikeus
   oid?: string
-  koulutustoimija?: Koulutustoimija
-  lisätiedot?: PerusopetuksenOpiskeluoikeudenLisätiedot
   versionumero?: number
   suoritukset: Array<PerusopetuksenPäätasonSuoritus>
   aikaleima?: string
@@ -32,18 +28,18 @@ export type PerusopetuksenOpiskeluoikeus = {
   lähdejärjestelmänId?: LähdejärjestelmäId
   lähdejärjestelmäkytkentäPurettu?: LähdejärjestelmäkytkennänPurkaminen
   oppilaitos?: Oppilaitos
+  tila: NuortenPerusopetuksenOpiskeluoikeudenTila
+  alkamispäivä?: string
+  koulutustoimija?: Koulutustoimija
+  lisätiedot?: PerusopetuksenOpiskeluoikeudenLisätiedot
 }
 
 export const PerusopetuksenOpiskeluoikeus = (
   o: {
     tyyppi?: Koodistokoodiviite<'opiskeluoikeudentyyppi', 'perusopetus'>
-    tila?: NuortenPerusopetuksenOpiskeluoikeudenTila
-    alkamispäivä?: string
     organisaatiohistoria?: Array<OpiskeluoikeudenOrganisaatiohistoria>
     sisältyyOpiskeluoikeuteen?: SisältäväOpiskeluoikeus
     oid?: string
-    koulutustoimija?: Koulutustoimija
-    lisätiedot?: PerusopetuksenOpiskeluoikeudenLisätiedot
     versionumero?: number
     suoritukset?: Array<PerusopetuksenPäätasonSuoritus>
     aikaleima?: string
@@ -51,15 +47,19 @@ export const PerusopetuksenOpiskeluoikeus = (
     lähdejärjestelmänId?: LähdejärjestelmäId
     lähdejärjestelmäkytkentäPurettu?: LähdejärjestelmäkytkennänPurkaminen
     oppilaitos?: Oppilaitos
+    tila?: NuortenPerusopetuksenOpiskeluoikeudenTila
+    alkamispäivä?: string
+    koulutustoimija?: Koulutustoimija
+    lisätiedot?: PerusopetuksenOpiskeluoikeudenLisätiedot
   } = {}
 ): PerusopetuksenOpiskeluoikeus => ({
   tyyppi: Koodistokoodiviite({
     koodiarvo: 'perusopetus',
     koodistoUri: 'opiskeluoikeudentyyppi'
   }),
-  tila: NuortenPerusopetuksenOpiskeluoikeudenTila({ opiskeluoikeusjaksot: [] }),
   suoritukset: [],
   $class: 'fi.oph.koski.schema.PerusopetuksenOpiskeluoikeus',
+  tila: NuortenPerusopetuksenOpiskeluoikeudenTila({ opiskeluoikeusjaksot: [] }),
   ...o
 })
 

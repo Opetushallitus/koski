@@ -16,8 +16,6 @@ export type SecondaryLowerVuosiluokanSuoritus = {
     'suorituksentyyppi',
     'europeanschoolofhelsinkivuosiluokkasecondarylower'
   >
-  tila?: Koodistokoodiviite<'suorituksentila', string>
-  alkamispäivä?: string
   luokka?: string
   todistuksellaNäkyvätLisätiedot?: LocalizedString
   jääLuokalle: boolean
@@ -25,6 +23,8 @@ export type SecondaryLowerVuosiluokanSuoritus = {
   toimipiste: OrganisaatioWithOid
   osasuoritukset?: Array<SecondaryLowerOppiaineenSuoritus>
   vahvistus?: HenkilövahvistusPaikkakunnalla
+  tila?: Koodistokoodiviite<'suorituksentila', string>
+  alkamispäivä?: string
 }
 
 export const SecondaryLowerVuosiluokanSuoritus = (o: {
@@ -32,8 +32,6 @@ export const SecondaryLowerVuosiluokanSuoritus = (o: {
     'suorituksentyyppi',
     'europeanschoolofhelsinkivuosiluokkasecondarylower'
   >
-  tila?: Koodistokoodiviite<'suorituksentila', string>
-  alkamispäivä?: string
   luokka?: string
   todistuksellaNäkyvätLisätiedot?: LocalizedString
   jääLuokalle?: boolean
@@ -41,6 +39,8 @@ export const SecondaryLowerVuosiluokanSuoritus = (o: {
   toimipiste: OrganisaatioWithOid
   osasuoritukset?: Array<SecondaryLowerOppiaineenSuoritus>
   vahvistus?: HenkilövahvistusPaikkakunnalla
+  tila?: Koodistokoodiviite<'suorituksentila', string>
+  alkamispäivä?: string
 }): SecondaryLowerVuosiluokanSuoritus => ({
   tyyppi: Koodistokoodiviite({
     koodiarvo: 'europeanschoolofhelsinkivuosiluokkasecondarylower',

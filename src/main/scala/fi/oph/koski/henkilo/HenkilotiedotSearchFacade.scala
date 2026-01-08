@@ -24,7 +24,7 @@ private[henkilo] case class HenkilötiedotSearchFacade(henkilöRepository: Henki
   // huom: tässä kutsussa ei ole organisaatiorajausta.
   def findByHetuOrCreateIfInYtrOrVirta(hetu: String)(implicit user: KoskiSpecificSession): Either[HttpStatus, List[HenkilötiedotJaOid]] = {
     AuditLog.log(KoskiAuditLogMessage(OPPIJA_HAKU, user, Map(hakuEhto -> hetu)))
-    hetuValidator.validate(hetu).right.map(henkilöRepository.findByHetuOrCreateIfInYtrOrVirta(_)).map(_.map(_.toHenkilötiedotJaOid).toList)
+    hetuValidator.validate(hetu).map(henkilöRepository.findByHetuOrCreateIfInYtrOrVirta(_)).map(_.map(_.toHenkilötiedotJaOid).toList)
   }
 
   // huom, tässä kutsussa ei ole organisaatiorajausta.

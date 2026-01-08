@@ -273,7 +273,7 @@ class SuoritusjakoSpec extends AnyFreeSpec with SuoritusjakoTestMethods with Mat
     }
 
     "tuottaa auditlog-merkinnän" in {
-      AuditLogTester.clearMessages
+      AuditLogTester.clearMessages()
       val perusopetuksenVuosiluokkaJson =
         """[{
           "oppilaitosOid": "1.2.246.562.10.64353470871",
@@ -289,7 +289,7 @@ class SuoritusjakoSpec extends AnyFreeSpec with SuoritusjakoTestMethods with Mat
     }
 
     "tuottaa auditlog-merkinnän suoritetuille kokonaisuuksille" in {
-      AuditLogTester.clearMessages
+      AuditLogTester.clearMessages()
 
       val suoritetutTutkinnotJson =
         """[{ "tyyppi": "suoritetut-tutkinnot" }]"""
@@ -302,7 +302,7 @@ class SuoritusjakoSpec extends AnyFreeSpec with SuoritusjakoTestMethods with Mat
     }
 
     "tuottaa auditlog-merkinnän aktiivisten ja päättyneiden opintojen kokonaisuuksille" in {
-      AuditLogTester.clearMessages
+      AuditLogTester.clearMessages()
 
       val aktiivisetJaPaattyneetOpinnotJson =
         """[{ "tyyppi": "aktiiviset-ja-paattyneet-opinnot" }]"""
@@ -442,7 +442,7 @@ class SuoritusjakoSpec extends AnyFreeSpec with SuoritusjakoTestMethods with Mat
     }
 
     "salaisuus ei päädy lokiin" in {
-      AccessLogTester.clearMessages
+      AccessLogTester.clearMessages()
       val secret = secrets("yksi suoritus")
       val maskedSecret = secret.take(8) + "*" * (32 - 8)
       get(s"opinnot/$secret") {
@@ -452,7 +452,7 @@ class SuoritusjakoSpec extends AnyFreeSpec with SuoritusjakoTestMethods with Mat
     }
 
     "tuottaa auditlog-merkinnän" in {
-      AuditLogTester.clearMessages
+      AuditLogTester.clearMessages()
       getSuoritusjako(secrets("yksi suoritus")) {
         verifyResponseStatusOk()
         AuditLogTester.verifyLastAuditLogMessage(Map("operation" -> "KANSALAINEN_SUORITUSJAKO_KATSOMINEN"))
@@ -554,7 +554,7 @@ class SuoritusjakoSpec extends AnyFreeSpec with SuoritusjakoTestMethods with Mat
 
   "Suoritusjaon katsominen" - {
     "tuottaa auditlog-merkinnän" in {
-      AuditLogTester.clearMessages
+      AuditLogTester.clearMessages()
       getSuoritusjakoFromOpinnotApi(secrets("yksi suoritus"), None) {
         verifyResponseStatusOk()
         AuditLogTester.verifyLastAuditLogMessage(Map("operation" -> "KANSALAINEN_SUORITUSJAKO_KATSOMINEN"))
@@ -562,7 +562,7 @@ class SuoritusjakoSpec extends AnyFreeSpec with SuoritusjakoTestMethods with Mat
     }
 
     "tuottaa auditlog-merkinnän suoritetuille tutkinnoille" in {
-      AuditLogTester.clearMessages
+      AuditLogTester.clearMessages()
       getSuoritusjakoFromOpinnotApi(secrets("auditlog-suoritetut-tutkinnot"), Some("suoritetut-tutkinnot")) {
         verifyResponseStatusOk()
         AuditLogTester.verifyLastAuditLogMessage(Map("operation" -> "KANSALAINEN_SUORITUSJAKO_KATSOMINEN_SUORITETUT_TUTKINNOT"))
@@ -570,7 +570,7 @@ class SuoritusjakoSpec extends AnyFreeSpec with SuoritusjakoTestMethods with Mat
     }
 
     "tuottaa auditlog-merkinnän aktiiviselle ja päättyneille opinnoille" in {
-      AuditLogTester.clearMessages
+      AuditLogTester.clearMessages()
       getSuoritusjakoFromOpinnotApi(secrets("auditlog-aktiiviset-ja-paattyneet-opinnot"), Some("aktiiviset-ja-paattyneet-opinnot")) {
         verifyResponseStatusOk()
         AuditLogTester.verifyLastAuditLogMessage(Map("operation" -> "KANSALAINEN_SUORITUSJAKO_KATSOMINEN_AKTIIVISET_JA_PAATTYNEET_OPINNOT"))
@@ -787,7 +787,7 @@ class SuoritusjakoSpec extends AnyFreeSpec with SuoritusjakoTestMethods with Mat
 
   "Suoritusjakojen määrän rajoitus" - {
     "Jaon lisääminen onnistuu kun käyttäjällä on alle maksimimäärä jakoja" in {
-      resetFixtures
+      resetFixtures()
 
       val json =
         """[{

@@ -36,17 +36,17 @@ class   EditorServlet(implicit val application: KoskiApplication)
   get[Set[EnumValue]]("/organisaatiot") {
     val organisaatiot = session.organisationOids(AccessType.write)
       .flatMap(application.organisaatioRepository.getOrganisaatio)
-    organisaatiot.map(EditorModelBuilder.organisaatioEnumValue(localization)(_))
+    organisaatiot.map(EditorModelBuilder.organisaatioEnumValue(localization))
   }
 
   get[Set[EnumValue]]("/oppilaitokset") {
     val organisaatiot = session.organisationOids(AccessType.write)
       .flatMap(application.organisaatioRepository.getOrganisaatio)
-    organisaatiot.flatMap(_.toOppilaitos).map(EditorModelBuilder.organisaatioEnumValue(localization)(_))
+    organisaatiot.flatMap(_.toOppilaitos).map(EditorModelBuilder.organisaatioEnumValue(localization))
   }
 
   get("/organisaatio/:oid/kotipaikka") {
-    renderEither[EnumValue](OrganisaatioOid.validateOrganisaatioOid(params("oid")).right.flatMap { oid =>
+    renderEither[EnumValue](OrganisaatioOid.validateOrganisaatioOid(params("oid")).flatMap { oid =>
       application.organisaatioRepository.getOrganisaatio(oid).flatMap(_.kotipaikka) match {
         case None => Left(KoskiErrorCategory.notFound())
         case Some(kotipaikka) => Right(
@@ -78,7 +78,7 @@ class   EditorServlet(implicit val application: KoskiApplication)
     val organisaatioOid = params("organisaatioOid")
     val `type` = params("type")
     renderEither[Seq[EditorModel]](preferencesService.get(organisaatioOid, params.get("koulutustoimijaOid"), `type`)
-      .right.map(_.map(OppijaEditorModel.buildModel(_, true))))
+      .map(_.map(OppijaEditorModel.buildModel(_, editable = true))))
   }
 
   post("/check-vaatiiko-suoritus-maksuttomuus-tiedon") {
@@ -93,7 +93,7 @@ class   EditorServlet(implicit val application: KoskiApplication)
 
   private def findByHenkilöOid(oid: String): Either[HttpStatus, EditorModel] = {
     for {
-      oid <- HenkilöOid.validateHenkilöOid(oid).right
+      oid <- HenkilöOid.validateHenkilöOid(oid)
       oppija <- application.oppijaFacade.findOppijaHenkilö(oid, findMasterIfSlaveOid = true)
     } yield {
       toEditorModel(oppija, editable = true)
@@ -102,7 +102,7 @@ class   EditorServlet(implicit val application: KoskiApplication)
 
   private def findVersion(henkilöOid: String, opiskeluoikeusOid: String, versionumero: Int): Either[HttpStatus, EditorModel] = {
     for {
-      oid <- HenkilöOid.validateHenkilöOid(henkilöOid).right
+      oid <- HenkilöOid.validateHenkilöOid(henkilöOid)
       oppija <- application.oppijaFacade.findVersion(oid, opiskeluoikeusOid, versionumero)
     } yield {
       toEditorModel(WithWarnings(oppija, Nil), editable = false)

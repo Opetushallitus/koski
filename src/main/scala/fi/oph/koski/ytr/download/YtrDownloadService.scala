@@ -177,7 +177,7 @@ class YtrDownloadService(
             startDate.plusMonths(1).format(DateTimeFormatter.ofPattern("yyyy-MM"))
           )
         )
-        .toIterable
+        .toList
     )
   }
 

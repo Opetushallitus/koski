@@ -521,28 +521,28 @@ class OppijaUpdateSpec extends AnyFreeSpec with KoskiHttpSpec with Opiskeluoikeu
         MockOrganisaatioRepository.getOrganisaatioHierarkia(MockOrganisaatiot.helsinginKaupunki).flatMap(_.toKoulutustoimija)
       )
       "Oppilaitoksen oid muuttuu ja ei aikaisempaa organisaatio historiaa" in {
-        resetFixtures
+        resetFixtures()
         verifyChange(change = { existing: AmmatillinenOpiskeluoikeus => existing.copy(oppilaitos = existing.oppilaitos.map(o => o.copy(oid = MockOrganisaatiot.omnia)), koulutustoimija = None)}) {
           verifyResponseStatusOk()
           lastOpiskeluoikeusByHetu(oppija).organisaatiohistoria should equal(Some(List(uusiOrganisaatioHistoria)))
         }
       }
       "Organisaatio historiaan ei voi tuoda dataa opiskeluoikeutta luotaessa" in {
-        resetFixtures
+        resetFixtures()
         putOppija(Oppija(oppija, List(defaultOpiskeluoikeus.copy(organisaatiohistoria = Some(List(uusiOrganisaatioHistoria)))))) {
           verifyResponseStatusOk()
           lastOpiskeluoikeusByHetu(oppija).organisaatiohistoria should equal(None)
         }
       }
       "Uusi muutos lisätään vanhojen perään" in {
-        resetFixtures
+        resetFixtures()
         val existing = lastOpiskeluoikeusByHetu(KoskiSpecificMockOppijat.organisaatioHistoria).asInstanceOf[AmmatillinenOpiskeluoikeus]
         putOppija(Oppija(KoskiSpecificMockOppijat.organisaatioHistoria, List(existing.copy(oppilaitos = Some(Oppilaitos(MockOrganisaatiot.winnova)), koulutustoimija = None)))) {
           lastOpiskeluoikeusByHetu(KoskiSpecificMockOppijat.organisaatioHistoria).organisaatiohistoria.get should equal(AmmatillinenExampleData.opiskeluoikeudenOrganisaatioHistoria :+ uusiOrganisaatioHistoria)
         }
       }
       "Organisaatiot eivät ole muuttuneet, vanha historia kopioidaan uuteen versioon" in {
-        resetFixtures
+        resetFixtures()
         val existing = lastOpiskeluoikeusByHetu(KoskiSpecificMockOppijat.organisaatioHistoria).asInstanceOf[AmmatillinenOpiskeluoikeus]
         putOppija(Oppija(KoskiSpecificMockOppijat.organisaatioHistoria, List(existing.copy(ostettu = true)))) {
           lastOpiskeluoikeusByHetu(KoskiSpecificMockOppijat.organisaatioHistoria).organisaatiohistoria should equal(Some(
@@ -740,7 +740,7 @@ class OppijaUpdateSpec extends AnyFreeSpec with KoskiHttpSpec with Opiskeluoikeu
   "Oppilaitoksen muutos opiskeluoikeudessa" - {
     "Jos koulutustoimija pysyy samana" - {
       "Vanha oppilaitos on aktiivinen, mutta opiskeluoikeus on aikaisemmin ollut osana oppilaitosta johon opiskeluoikeutta ollaan nyt siirtämässä -> muutos sallitaan" in {
-        resetFixtures
+        resetFixtures()
         val oppija = KoskiSpecificMockOppijat.organisaatioHistoria
         val opiskeluoikeus = lastOpiskeluoikeusByHetu(oppija)
         val muutos = opiskeluoikeus.withOppilaitos(Oppilaitos(MockOrganisaatiot.ressunLukio))

@@ -6,6 +6,7 @@ import fi.oph.koski.henkilo.KoskiSpecificMockOppijat._
 import fi.oph.koski.koskiuser.{MockUser, MockUsers}
 import fi.oph.koski.log.AuditLogTester
 import fi.oph.koski.{KoskiApplicationForTests, KoskiHttpSpec}
+import fi.oph.koski.xml.NodeSeqImplicits._
 import fi.oph.scalaschema.Serializer.format
 import org.json4s.jackson.JsonMethods
 import org.json4s.{JNothing, JNull, JObject, JValue}
@@ -247,7 +248,7 @@ class HslSpec extends AnyFreeSpec with KoskiHttpSpec with OpiskeluoikeusTestMeth
 
       oppimääränSuoritus shouldBe defined
 
-      val expectedOppimääräJson = """{"koodiarvo": "lukionoppimaara", "nimi": {"fi": "Lukion oppimäärä", "sv": "Gymnasiets lärokurs", "en": "General upper secondary education syllabus"}, "koodistoUri": "suorituksentyyppi", "koodistoVersio": 1}"""
+      val expectedOppimääräJson = """{"koodiarvo": "lukionoppimaara", "nimi": {"fi": "Lukion oppimäärä", "sv": "Gymnasiets lärokurs", "en": "General upper secondary education  syllabus"}, "koodistoUri": "suorituksentyyppi", "koodistoVersio": 1}"""
       val expectedObject = JsonMethods.parse(expectedOppimääräJson)
 
       oppimääränSuoritus.get should equal(expectedObject)

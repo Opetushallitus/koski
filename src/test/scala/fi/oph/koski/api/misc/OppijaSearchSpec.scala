@@ -13,7 +13,7 @@ import org.scalatest.matchers.should.Matchers
 class OppijaSearchSpec extends AnyFreeSpec with Matchers with SearchTestMethods with KoskiHttpSpec with OpiskeluoikeusTestMethodsAmmatillinen {
   "/api/henkilo/search" - {
     "Finds by name" in {
-      resetFixtures
+      resetFixtures()
       searchForNames("eero") should equal(List("Jouni Çelik-Eerola", "Eero Esimerkki", "Eéro Jorma-Petteri Markkanen-Fagerström"))
     }
     "Find only those from your organization" in {
@@ -23,7 +23,7 @@ class OppijaSearchSpec extends AnyFreeSpec with Matchers with SearchTestMethods 
       searchForNames("010101-123N") should equal(List("Eero Esimerkki"))
     }
     "Finds ylioppilas with multiple hetus by all hetus from YTR" in {
-      KoskiApplicationForTests.cacheManager.invalidateAllCaches
+      KoskiApplicationForTests.cacheManager.invalidateAllCaches()
       MockYtrClient.latestOppijaJsonByHetu = None
 
       val oppija = KoskiSpecificMockOppijat.ylioppilas
@@ -54,7 +54,7 @@ class OppijaSearchSpec extends AnyFreeSpec with Matchers with SearchTestMethods 
     }
     "GET endpoints" - {
       "Finds by hetu, and does not include hetu in access log" in {
-        AccessLogTester.clearMessages
+        AccessLogTester.clearMessages()
         authGet("api/henkilo/hetu/010101-123N") {
           verifyResponseStatusOk()
           body should include("Esimerkki")
@@ -62,7 +62,7 @@ class OppijaSearchSpec extends AnyFreeSpec with Matchers with SearchTestMethods 
         }
       }
       "Finds by name, and does not include name in access log" in {
-        AccessLogTester.clearMessages
+        AccessLogTester.clearMessages()
         authGet("api/henkilo/search?query=eero") {
           verifyResponseStatusOk()
           body should include("Eerola")
@@ -70,7 +70,7 @@ class OppijaSearchSpec extends AnyFreeSpec with Matchers with SearchTestMethods 
         }
       }
       "Does not allow access for user with read-only access" in {
-        AccessLogTester.clearMessages
+        AccessLogTester.clearMessages()
         authGet("api/henkilo/hetu/010101-123N", omniaKatselija) {
           verifyResponseStatus(403, KoskiErrorCategory.forbidden.kiellettyKäyttöoikeus("Ei sallittu ilman muokkausoikeuksia"))
         }
@@ -78,14 +78,14 @@ class OppijaSearchSpec extends AnyFreeSpec with Matchers with SearchTestMethods 
     }
     "POST hetu endpoint" - {
       "Allow access for users with write access" in {
-        AccessLogTester.clearMessages
+        AccessLogTester.clearMessages()
         postHenkilöHetu("010101-123N") {
           verifyResponseStatusOk()
         }
       }
 
       "Does not allow access for user with read-only access" in {
-        AccessLogTester.clearMessages
+        AccessLogTester.clearMessages()
         postHenkilöHetu("010101-123N", omniaKatselija) {
           verifyResponseStatus(403, KoskiErrorCategory.forbidden.kiellettyKäyttöoikeus("Ei sallittu ilman muokkausoikeuksia"))
         }

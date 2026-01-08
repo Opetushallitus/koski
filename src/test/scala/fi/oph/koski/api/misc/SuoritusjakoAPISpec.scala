@@ -100,7 +100,7 @@ class SuoritusjakoAPISpec extends AnyFreeSpec with SuoritusjakoTestMethods with 
       }
 
       "tuottaa auditlog-merkinnän" in {
-        AuditLogTester.clearMessages
+        AuditLogTester.clearMessages()
         postSuoritusjakoV3(secrets("taiteen perusopetus")) {
           verifyResponseStatusOk()
           AuditLogTester.verifyLastAuditLogMessage(Map("operation" -> "KANSALAINEN_SUORITUSJAKO_KATSOMINEN"))
@@ -121,7 +121,7 @@ class SuoritusjakoAPISpec extends AnyFreeSpec with SuoritusjakoTestMethods with 
           val bodyString = new String(response.bodyBytes, StandardCharsets.UTF_8)
 
           implicit val context: ExtractionContext = strictDeserialization
-          val oppija = SchemaValidatingExtractor.extract[OppijaJakolinkillä](bodyString).right.get
+          val oppija = SchemaValidatingExtractor.extract[OppijaJakolinkillä](bodyString).toOption.get
 
           val henkilö = oppija.henkilö.asInstanceOf[TäydellisetHenkilötiedot]
 
@@ -150,7 +150,7 @@ class SuoritusjakoAPISpec extends AnyFreeSpec with SuoritusjakoTestMethods with 
       }
 
       "tuottaa auditlog-merkinnän" in {
-        AuditLogTester.clearMessages
+        AuditLogTester.clearMessages()
         getSuoritusjakoPublicAPI(secrets("taiteen perusopetus")) {
           verifyResponseStatusOk()
           AuditLogTester.verifyLastAuditLogMessage(Map("operation" -> "KANSALAINEN_SUORITUSJAKO_KATSOMINEN"))
@@ -158,7 +158,7 @@ class SuoritusjakoAPISpec extends AnyFreeSpec with SuoritusjakoTestMethods with 
       }
 
       "salaisuus ei päädy lokiin" in {
-        AccessLogTester.clearMessages
+        AccessLogTester.clearMessages()
         val secret = secrets("taiteen perusopetus")
         val maskedSecret = secret.take(8) + "*" * (32 - 8)
         getSuoritusjakoPublicAPI(secret) {
@@ -174,7 +174,7 @@ class SuoritusjakoAPISpec extends AnyFreeSpec with SuoritusjakoTestMethods with 
 
           val bodyString = new String(response.bodyBytes, StandardCharsets.UTF_8)
           implicit val context: ExtractionContext = strictDeserialization
-          val oppija = SchemaValidatingExtractor.extract[OppijaJakolinkillä](bodyString).right.get
+          val oppija = SchemaValidatingExtractor.extract[OppijaJakolinkillä](bodyString).toOption.get
 
           AuditLogTester.verifyLastAuditLogMessage(Map(
             "operation" -> "KANSALAINEN_SUORITUSJAKO_KATSOMINEN",
@@ -189,7 +189,7 @@ class SuoritusjakoAPISpec extends AnyFreeSpec with SuoritusjakoTestMethods with 
 
           val bodyString = new String(response.bodyBytes, StandardCharsets.UTF_8)
           implicit val context: ExtractionContext = strictDeserialization
-          val oppija = SchemaValidatingExtractor.extract[SuoritetutTutkinnotOppijaJakolinkillä](bodyString).right.get
+          val oppija = SchemaValidatingExtractor.extract[SuoritetutTutkinnotOppijaJakolinkillä](bodyString).toOption.get
           oppija.jakolinkki should be(Some(Jakolinkki(LocalDate.now.plusMonths(6))))
 
           AuditLogTester.verifyLastAuditLogMessage(Map(
@@ -206,7 +206,7 @@ class SuoritusjakoAPISpec extends AnyFreeSpec with SuoritusjakoTestMethods with 
 
           val bodyString = new String(response.bodyBytes, StandardCharsets.UTF_8)
           implicit val context: ExtractionContext = strictDeserialization
-          val oppija = SchemaValidatingExtractor.extract[AktiivisetJaPäättyneetOpinnotOppijaJakolinkillä](bodyString).right.get
+          val oppija = SchemaValidatingExtractor.extract[AktiivisetJaPäättyneetOpinnotOppijaJakolinkillä](bodyString).toOption.get
           oppija.jakolinkki should be(Some(Jakolinkki(LocalDate.now.plusMonths(6))))
 
           AuditLogTester.verifyLastAuditLogMessage(Map(

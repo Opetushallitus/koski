@@ -13,7 +13,7 @@
     <name>fi.vm.sade</name>
   </organization>
   <properties>
-    <scala.version>2.12.15</scala.version>
+    <scala.version>2.13.18</scala.version>
     <slick.version>3.4.1</slick.version>
     <slick-pg.version>0.21.1</slick-pg.version>
     <scalatra.version>2.8.4</scalatra.version>
@@ -33,6 +33,16 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <verapdf.version>1.28.2</verapdf.version>
   </properties>
+
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>org.scala-lang.modules</groupId>
+        <artifactId>scala-xml_2.13</artifactId>
+        <version>2.3.0</version>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
   <dependencies>
     <!-- OPH internal deps -->
     <dependency>
@@ -42,12 +52,12 @@
     </dependency>
     <dependency>
       <groupId>co.fs2</groupId>
-      <artifactId>fs2-core_2.12</artifactId>
+      <artifactId>fs2-core_2.13</artifactId>
       <version>3.12.2</version>
     </dependency>
     <dependency>
       <groupId>co.fs2</groupId>
-      <artifactId>fs2-io_2.12</artifactId>
+      <artifactId>fs2-io_2.13</artifactId>
       <version>3.12.2</version>
     </dependency>
     <dependency>
@@ -58,11 +68,7 @@
     <dependency>
       <artifactId>scala-schema</artifactId>
       <groupId>com.github.Opetushallitus</groupId>
-      <version>2.40.0_2.12</version>
-      <!-- Käytä tätä versiota, jos haluat linkittää mukaan paikallisesti käännetyn scala-scheman
-      (mvn install) -->
-      <!--<groupId>fi.vm.sade</groupId>-->
-      <!--<version>0.1.0-SNAPSHOT</version>-->
+      <version>2.40.0_2.13</version>
     </dependency>
     <dependency>
       <groupId>org.apache.commons</groupId>
@@ -74,6 +80,12 @@
       <groupId>org.scala-lang</groupId>
       <artifactId>scala-library</artifactId>
       <version>${scala.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.scala-lang.modules</groupId>
+      <artifactId>scala-xml_2.13</artifactId>
+      <version>2.3.0</version>
     </dependency>
     <dependency>
       <groupId>org.reflections</groupId>
@@ -92,22 +104,22 @@
     </dependency>
     <dependency>
       <groupId>org.scalatra</groupId>
-      <artifactId>scalatra_2.12</artifactId>
+      <artifactId>scalatra_2.13</artifactId>
       <version>${scalatra.version}</version>
     </dependency>
     <dependency>
       <groupId>org.scalatra</groupId>
-      <artifactId>scalatra-auth_2.12</artifactId>
+      <artifactId>scalatra-auth_2.13</artifactId>
       <version>${scalatra.version}</version>
     </dependency>
     <dependency>
       <groupId>org.scalatra</groupId>
-      <artifactId>scalatra-forms_2.12</artifactId>
+      <artifactId>scalatra-forms_2.13</artifactId>
       <version>${scalatra.version}</version>
     </dependency>
     <dependency>
       <groupId>org.json4s</groupId>
-      <artifactId>json4s-jackson_2.12</artifactId>
+      <artifactId>json4s-jackson_2.13</artifactId>
       <version>${json4s.version}</version>
       <exclusions>
         <exclusion>
@@ -123,12 +135,12 @@
     </dependency>
     <dependency>
       <groupId>org.json4s</groupId>
-      <artifactId>json4s-ast_2.12</artifactId>
+      <artifactId>json4s-ast_2.13</artifactId>
       <version>${json4s.version}</version>
     </dependency>
     <dependency>
       <groupId>org.json4s</groupId>
-      <artifactId>json4s-ext_2.12</artifactId>
+      <artifactId>json4s-ext_2.13</artifactId>
       <version>${json4s.version}</version>
     </dependency>
     <dependency>
@@ -138,32 +150,32 @@
     </dependency>
     <dependency>
       <groupId>com.typesafe.slick</groupId>
-      <artifactId>slick_2.12</artifactId>
+      <artifactId>slick_2.13</artifactId>
       <version>${slick.version}</version>
     </dependency>
     <dependency>
       <groupId>org.scalaz</groupId>
-      <artifactId>scalaz-core_2.12</artifactId>
+      <artifactId>scalaz-core_2.13</artifactId>
       <version>7.3.8</version>
     </dependency>
     <dependency>
       <groupId>com.typesafe.slick</groupId>
-      <artifactId>slick-hikaricp_2.12</artifactId>
+      <artifactId>slick-hikaricp_2.13</artifactId>
       <version>${slick.version}</version>
     </dependency>
     <dependency>
       <groupId>io.underscore</groupId>
-      <artifactId>slickless_2.12</artifactId>
+      <artifactId>slickless_2.13</artifactId>
       <version>0.3.6</version>
     </dependency>
     <dependency>
       <groupId>com.github.tminglei</groupId>
-      <artifactId>slick-pg_2.12</artifactId>
+      <artifactId>slick-pg_2.13</artifactId>
       <version>${slick-pg.version}</version>
     </dependency>
     <dependency>
       <groupId>com.github.tminglei</groupId>
-      <artifactId>slick-pg_json4s_2.12</artifactId>
+      <artifactId>slick-pg_json4s_2.13</artifactId>
       <version>${slick-pg.version}</version>
     </dependency>
     <dependency>
@@ -173,7 +185,7 @@
     </dependency>
     <dependency>
       <groupId>io.reactivex</groupId>
-      <artifactId>rxscala_2.12</artifactId>
+      <artifactId>rxscala_2.13</artifactId>
       <version>0.27.0</version>
     </dependency>
     <dependency>
@@ -208,7 +220,7 @@
     </dependency>
     <dependency>
       <groupId>org.log4s</groupId>
-      <artifactId>log4s_2.12</artifactId>
+      <artifactId>log4s_2.13</artifactId>
       <version>1.10.0</version>
     </dependency>
     <dependency>
@@ -217,9 +229,14 @@
       <version>3.2.1</version>
     </dependency>
     <dependency>
-      <groupId>com.github.raimohanska</groupId>
+      <groupId>com.github.Opetushallitus</groupId>
       <artifactId>mojave</artifactId>
-      <version>0.6</version>
+      <version>0.6_2.13</version>
+    </dependency>
+    <dependency>
+      <groupId>org.scala-lang.modules</groupId>
+      <artifactId>scala-parallel-collections_2.13</artifactId>
+      <version>0.2.0</version>
     </dependency>
     <dependency>
       <groupId>com.typesafe</groupId>
@@ -228,22 +245,22 @@
     </dependency>
     <dependency>
       <groupId>org.http4s</groupId>
-      <artifactId>http4s-blaze-client_2.12</artifactId>
+      <artifactId>http4s-blaze-client_2.13</artifactId>
       <version>${http4s-blaze-client.version}</version>
     </dependency>
     <dependency>
       <groupId>org.http4s</groupId>
-      <artifactId>http4s-dsl_2.12</artifactId>
+      <artifactId>http4s-dsl_2.13</artifactId>
       <version>${http4s.version}</version>
     </dependency>
     <dependency>
       <groupId>org.http4s</groupId>
-      <artifactId>http4s-client_2.12</artifactId>
+      <artifactId>http4s-client_2.13</artifactId>
       <version>${http4s.version}</version>
     </dependency>
     <dependency>
       <groupId>org.http4s</groupId>
-      <artifactId>http4s-scala-xml_2.12</artifactId>
+      <artifactId>http4s-scala-xml_2.13</artifactId>
       <version>${http4s-scala-xml.version}</version>
     </dependency>
     <dependency>
@@ -262,9 +279,9 @@
       <version>${jetty.version}</version>
     </dependency>
     <dependency>
-      <groupId>com.github.raimohanska</groupId>
-      <artifactId>knockoff</artifactId>
-      <version>397efc3ff2a49cfaad1f5e76499715e3d617913a</version>
+      <groupId>org.commonmark</groupId>
+      <artifactId>commonmark</artifactId>
+      <version>0.23.0</version>
     </dependency>
     <dependency>
       <groupId>com.github.fge</groupId>
@@ -404,13 +421,13 @@
     <!-- test deps -->
     <dependency>
       <groupId>org.scalatest</groupId>
-      <artifactId>scalatest_2.12</artifactId>
+      <artifactId>scalatest_2.13</artifactId>
       <version>3.2.9</version>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.scalatra</groupId>
-      <artifactId>scalatra-scalatest_2.12</artifactId>
+      <artifactId>scalatra-scalatest_2.13</artifactId>
       <version>${scalatra.version}</version>
       <scope>test</scope>
     </dependency>
@@ -422,8 +439,8 @@
     </dependency>
     <dependency>
       <groupId>org.scalamock</groupId>
-      <artifactId>scalamock_2.12</artifactId>
-      <version>4.1.0</version>
+      <artifactId>scalamock_2.13</artifactId>
+      <version>5.2.0</version>
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -509,14 +526,16 @@
       <plugin>
         <groupId>net.alchim31.maven</groupId>
         <artifactId>scala-maven-plugin</artifactId>
-        <version>4.9.1</version>
+        <version>4.9.2</version>
         <configuration>
+          <scalaVersion>${scala.version}</scalaVersion>
+          <scalaCompatVersion>2.13</scalaCompatVersion>
+          <scalaCompilerVersion>${scala.version}</scalaCompilerVersion>
           <args>
             <arg>-unchecked</arg>
             <arg>-deprecation</arg>
             <arg>-feature</arg>
             <arg>-Ywarn-dead-code</arg>
-            <arg>-Ypartial-unification</arg>
             <arg>-Xlint:missing-interpolator</arg>
             <arg>-Xfatal-warnings</arg>
           </args>
@@ -630,42 +649,6 @@
             <configuration>
               <tagsToExclude>koskidev</tagsToExclude>
             </configuration>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-    <profile>
-      <id>scalastyle</id>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.scalastyle</groupId>
-            <artifactId>scalastyle-maven-plugin</artifactId>
-            <version>1.0.0</version>
-            <dependencies>
-              <dependency>
-                <groupId>com.beautiful-scala</groupId>
-                <artifactId>scalastyle_2.12</artifactId>
-                <version>1.5.1</version>
-              </dependency>
-            </dependencies>
-            <configuration>
-              <verbose>false</verbose>
-              <failOnViolation>true</failOnViolation>
-              <includeTestSourceDirectory>true</includeTestSourceDirectory>
-              <sourceDirectory>${basedir}/src/main/scala</sourceDirectory>
-              <testSourceDirectory>${basedir}/src/test/scala</testSourceDirectory>
-              <configLocation>${basedir}/scalastyle_config.xml</configLocation>
-              <outputFile>${project.basedir}/target/scalastyle-output.xml</outputFile>
-              <outputEncoding>UTF-8</outputEncoding>
-            </configuration>
-            <executions>
-              <execution>
-                <goals>
-                  <goal>check</goal>
-                </goals>
-              </execution>
-            </executions>
           </plugin>
         </plugins>
       </build>

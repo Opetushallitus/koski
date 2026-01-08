@@ -13,10 +13,10 @@ export type NäyttötutkintoonValmistavanKoulutuksenOsanSuoritus = {
     'suorituksentyyppi',
     'nayttotutkintoonvalmistavankoulutuksenosa'
   >
-  tila?: Koodistokoodiviite<'suorituksentila', string>
-  alkamispäivä?: string
   suorituskieli?: Koodistokoodiviite<'kieli', string>
   koulutusmoduuli: NäyttötutkintoonValmistavanKoulutuksenOsa
+  tila?: Koodistokoodiviite<'suorituksentila', string>
+  alkamispäivä?: string
 }
 
 export const NäyttötutkintoonValmistavanKoulutuksenOsanSuoritus = (o: {
@@ -24,10 +24,10 @@ export const NäyttötutkintoonValmistavanKoulutuksenOsanSuoritus = (o: {
     'suorituksentyyppi',
     'nayttotutkintoonvalmistavankoulutuksenosa'
   >
-  tila?: Koodistokoodiviite<'suorituksentila', string>
-  alkamispäivä?: string
   suorituskieli?: Koodistokoodiviite<'kieli', string>
   koulutusmoduuli: NäyttötutkintoonValmistavanKoulutuksenOsa
+  tila?: Koodistokoodiviite<'suorituksentila', string>
+  alkamispäivä?: string
 }): NäyttötutkintoonValmistavanKoulutuksenOsanSuoritus => ({
   tyyppi: Koodistokoodiviite({
     koodiarvo: 'nayttotutkintoonvalmistavankoulutuksenosa',

@@ -6,7 +6,7 @@ import fi.oph.koski.henkilo.Hetu
 import fi.oph.koski.integrationtest.KoskidevHttpSpecification
 
 class RandomHetu(lahtienVuodesta: Int) extends KoskidevHttpSpecification {
-  def nextHetu = hetut.synchronized { hetut.next }
+  def nextHetu = hetut.synchronized { hetut.next() }
   private lazy val hetut: Iterator[String] = {
     Iterator.continually({
       println("Haetaan hetuja...")
@@ -20,4 +20,3 @@ class RandomHetu(lahtienVuodesta: Int) extends KoskidevHttpSpecification {
     Hetu.toBirthday(hetu).getOrElse(LocalDate.now).isAfter(LocalDate.of(year, 1, 1))
   }
 }
-

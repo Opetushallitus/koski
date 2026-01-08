@@ -1,11 +1,11 @@
 import { Koodistokoodiviite } from './Koodistokoodiviite'
 import { LocalizedString } from './LocalizedString'
-import { KielitutkinnonOpiskeluoikeudenTila } from './KielitutkinnonOpiskeluoikeudenTila'
 import { Koulutustoimija } from './Koulutustoimija'
 import { KielitutkinnonPäätasonSuoritus } from './KielitutkinnonPaatasonSuoritus'
 import { LähdejärjestelmäId } from './LahdejarjestelmaId'
 import { LähdejärjestelmäkytkennänPurkaminen } from './LahdejarjestelmakytkennanPurkaminen'
 import { Oppilaitos } from './Oppilaitos'
+import { KielitutkinnonOpiskeluoikeudenTila } from './KielitutkinnonOpiskeluoikeudenTila'
 
 /**
  * KielitutkinnonOpiskeluoikeus
@@ -15,8 +15,6 @@ import { Oppilaitos } from './Oppilaitos'
 export type KielitutkinnonOpiskeluoikeus = {
   $class: 'fi.oph.koski.schema.KielitutkinnonOpiskeluoikeus'
   tyyppi: Koodistokoodiviite<'opiskeluoikeudentyyppi', 'kielitutkinto'>
-  tila: KielitutkinnonOpiskeluoikeudenTila
-  alkamispäivä?: string
   oid?: string
   koulutustoimija?: Koulutustoimija
   versionumero?: number
@@ -26,13 +24,13 @@ export type KielitutkinnonOpiskeluoikeus = {
   lähdejärjestelmänId?: LähdejärjestelmäId
   lähdejärjestelmäkytkentäPurettu?: LähdejärjestelmäkytkennänPurkaminen
   oppilaitos?: Oppilaitos
+  tila: KielitutkinnonOpiskeluoikeudenTila
+  alkamispäivä?: string
 }
 
 export const KielitutkinnonOpiskeluoikeus = (
   o: {
     tyyppi?: Koodistokoodiviite<'opiskeluoikeudentyyppi', 'kielitutkinto'>
-    tila?: KielitutkinnonOpiskeluoikeudenTila
-    alkamispäivä?: string
     oid?: string
     koulutustoimija?: Koulutustoimija
     versionumero?: number
@@ -42,15 +40,17 @@ export const KielitutkinnonOpiskeluoikeus = (
     lähdejärjestelmänId?: LähdejärjestelmäId
     lähdejärjestelmäkytkentäPurettu?: LähdejärjestelmäkytkennänPurkaminen
     oppilaitos?: Oppilaitos
+    tila?: KielitutkinnonOpiskeluoikeudenTila
+    alkamispäivä?: string
   } = {}
 ): KielitutkinnonOpiskeluoikeus => ({
   tyyppi: Koodistokoodiviite({
     koodiarvo: 'kielitutkinto',
     koodistoUri: 'opiskeluoikeudentyyppi'
   }),
-  tila: KielitutkinnonOpiskeluoikeudenTila({ opiskeluoikeusjaksot: [] }),
   suoritukset: [],
   $class: 'fi.oph.koski.schema.KielitutkinnonOpiskeluoikeus',
+  tila: KielitutkinnonOpiskeluoikeudenTila({ opiskeluoikeusjaksot: [] }),
   ...o
 })
 

@@ -15,7 +15,10 @@ import java.time.LocalDate
 
 class OppivelvollisuustietoServletSpec extends AnyFreeSpec with KoskiHttpSpec with OpiskeluoikeusTestMethods with Matchers with BeforeAndAfterAll {
 
-  override def beforeAll = resetFixtures
+  override protected def beforeAll(): Unit = {
+    super.beforeAll()
+    resetFixtures()
+  }
 
   "Oppivelvollisuustieto" - {
     "Rajapinnan kutsuminen vaatii käyttöoikeuden" in {

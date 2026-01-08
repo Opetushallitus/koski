@@ -78,13 +78,14 @@ class MockOpintopolkuHenkilöFacade(val hetu: Hetu, fixtures: => FixtureCreator)
       }
     }
     val UusiOppijaHenkilö(Some(hetu), sukunimi, etunimet, kutsumanimi, _) = createUserInfo
-    val oid = this.hetu.validate(hetu).right.flatMap { hetu =>
-      create(createUserInfo).left.flatMap {
-        case HttpStatus(409, _) => oidFrom(findOppijaByHetu(hetu))
-        case HttpStatus(_, _) => throw new RuntimeException("Unreachable match arm: HTTP status code must be 409")
+    val oid = this.hetu.validate(hetu).flatMap { validHetu =>
+      create(createUserInfo) match {
+        case Left(HttpStatus(409, _)) => oidFrom(findOppijaByHetu(validHetu))
+        case Left(HttpStatus(_, _)) => throw new RuntimeException("Unreachable match arm: HTTP status code must be 409")
+        case Right(created) => Right(created)
       }
     }
-    oid.right.map(oid => findOppijaByOid(oid).get)
+    oid.map(id => findOppijaByOid(id).get)
   }
 
   def modifyMock(oppija: OppijaHenkilöWithMasterInfo): Unit = synchronized {

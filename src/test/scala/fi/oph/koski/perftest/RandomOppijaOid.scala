@@ -22,7 +22,7 @@ case class RandomOppijaOid(fetchCount: Int) extends KoskidevHttpSpecification wi
     SynchronizedIterator(Iterator.continually(Random.shuffle(oids).iterator).flatten)
   }
 
-  def nextOid = oidIterator.next
+  def nextOid = oidIterator.next()
 }
 
 case class SynchronizedIterator[A](i: Iterator[A]) extends Iterator[A] {

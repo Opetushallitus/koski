@@ -1,12 +1,12 @@
 import { Koodistokoodiviite } from './Koodistokoodiviite'
 import { LocalizedString } from './LocalizedString'
 import { SuullisenKielitaidonKoe2019 } from './SuullisenKielitaidonKoe2019'
-import { LukionOmanÄidinkielenOpinnot } from './LukionOmanAidinkielenOpinnot'
 import { PuhviKoe2019 } from './PuhviKoe2019'
 import { PreIBKoulutusmoduuli2019 } from './PreIBKoulutusmoduuli2019'
 import { OrganisaatioWithOid } from './OrganisaatioWithOid'
 import { PreIBSuorituksenOsasuoritus2019 } from './PreIBSuorituksenOsasuoritus2019'
 import { HenkilövahvistusPaikkakunnalla } from './HenkilovahvistusPaikkakunnalla'
+import { LukionOmanÄidinkielenOpinnot } from './LukionOmanAidinkielenOpinnot'
 
 /**
  * Laajennetun oppivelvollisuuden suoritus
@@ -17,8 +17,6 @@ export type PreIBSuoritus2019 = {
   $class: 'fi.oph.koski.schema.PreIBSuoritus2019'
   tyyppi: Koodistokoodiviite<'suorituksentyyppi', 'preiboppimaara'>
   suullisenKielitaidonKokeet?: Array<SuullisenKielitaidonKoe2019>
-  tila?: Koodistokoodiviite<'suorituksentila', string>
-  omanÄidinkielenOpinnot?: LukionOmanÄidinkielenOpinnot
   suorituskieli: Koodistokoodiviite<'kieli', string>
   puhviKoe?: PuhviKoe2019
   todistuksellaNäkyvätLisätiedot?: LocalizedString
@@ -27,13 +25,13 @@ export type PreIBSuoritus2019 = {
   toimipiste: OrganisaatioWithOid
   osasuoritukset?: Array<PreIBSuorituksenOsasuoritus2019>
   vahvistus?: HenkilövahvistusPaikkakunnalla
+  tila?: Koodistokoodiviite<'suorituksentila', string>
+  omanÄidinkielenOpinnot?: LukionOmanÄidinkielenOpinnot
 }
 
 export const PreIBSuoritus2019 = (o: {
   tyyppi?: Koodistokoodiviite<'suorituksentyyppi', 'preiboppimaara'>
   suullisenKielitaidonKokeet?: Array<SuullisenKielitaidonKoe2019>
-  tila?: Koodistokoodiviite<'suorituksentila', string>
-  omanÄidinkielenOpinnot?: LukionOmanÄidinkielenOpinnot
   suorituskieli: Koodistokoodiviite<'kieli', string>
   puhviKoe?: PuhviKoe2019
   todistuksellaNäkyvätLisätiedot?: LocalizedString
@@ -42,6 +40,8 @@ export const PreIBSuoritus2019 = (o: {
   toimipiste: OrganisaatioWithOid
   osasuoritukset?: Array<PreIBSuorituksenOsasuoritus2019>
   vahvistus?: HenkilövahvistusPaikkakunnalla
+  tila?: Koodistokoodiviite<'suorituksentila', string>
+  omanÄidinkielenOpinnot?: LukionOmanÄidinkielenOpinnot
 }): PreIBSuoritus2019 => ({
   tyyppi: Koodistokoodiviite({
     koodiarvo: 'preiboppimaara',

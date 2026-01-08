@@ -18,7 +18,7 @@ object Constraints {
         case t: ObjectType =>
           ObjectConstraint(
             default = defaultOf(t).asInstanceOf[Option[JObject]],
-            properties = t.properties.mapValues(value => buildConstraint(value, levelsLeft - 1)),
+            properties = t.properties.view.mapValues(value => buildConstraint(value, levelsLeft - 1)).toMap,
             `class` = t.fullClassName,
             infoDescription = t.infoDescription.headOption,
             infoLinkUrl = t.infoLinkUrl.headOption,
@@ -110,7 +110,7 @@ trait Constraint {
 
 case class StringConstraint(
   default: Option[JValue] = None,
-  enum: Option[Seq[String]] = None,
+  `enum`: Option[Seq[String]] = None,
   @EnumValue("string")
   `type`: String = "string",
 ) extends Constraint
@@ -128,7 +128,7 @@ case class DateConstraint(
 
 case class BooleanConstraint(
   default: Option[JValue] = None,
-  enum: Option[Seq[Boolean]] = None,
+  `enum`: Option[Seq[Boolean]] = None,
   @EnumValue("bool")
   `type`: String = "bool",
 ) extends Constraint
@@ -138,7 +138,7 @@ case class NumberConstraint(
   decimals: Option[Int] = None,
   min: Option[Limit] = None,
   max: Option[Limit] = None,
-  enum: Option[Seq[Double]] = None,
+  `enum`: Option[Seq[Double]] = None,
   @EnumValue("number")
   `type`: String = "number",
 ) extends Constraint

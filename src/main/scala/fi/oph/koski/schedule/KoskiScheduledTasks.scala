@@ -19,7 +19,7 @@ class KoskiScheduledTasks(application: KoskiApplication) {
   var todistusScheduler: Option[Scheduler] = application.todistusScheduler.createScheduler
   val todistusCleanupScheduler: Option[Scheduler] = application.todistusCleanupScheduler.createScheduler
 
-  def init {}
+  def init(): Unit = {}
 
   def restartMassaluovutusScheduler(): Unit = {
     runQueries.foreach { _.shutdown }
@@ -31,4 +31,3 @@ class KoskiScheduledTasks(application: KoskiApplication) {
     todistusScheduler = application.todistusScheduler.createScheduler
   }
 }
-

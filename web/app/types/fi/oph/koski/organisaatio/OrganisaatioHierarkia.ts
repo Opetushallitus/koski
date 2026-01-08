@@ -8,8 +8,6 @@ import { LocalizedString } from '../schema/LocalizedString'
  */
 export type OrganisaatioHierarkia = {
   $class: 'fi.oph.koski.organisaatio.OrganisaatioHierarkia'
-  children: Array<OrganisaatioHierarkia>
-  oppilaitosnumero?: Koodistokoodiviite
   oppilaitostyyppi?: string
   parentOidPath: Array<string>
   kielikoodit: Array<string>
@@ -19,11 +17,11 @@ export type OrganisaatioHierarkia = {
   aktiivinen: boolean
   nimi: LocalizedString
   organisaatiotyypit: Array<string>
+  children: Array<OrganisaatioHierarkia>
+  oppilaitosnumero?: Koodistokoodiviite
 }
 
 export const OrganisaatioHierarkia = (o: {
-  children?: Array<OrganisaatioHierarkia>
-  oppilaitosnumero?: Koodistokoodiviite
   oppilaitostyyppi?: string
   parentOidPath?: Array<string>
   kielikoodit?: Array<string>
@@ -33,12 +31,14 @@ export const OrganisaatioHierarkia = (o: {
   aktiivinen: boolean
   nimi: LocalizedString
   organisaatiotyypit?: Array<string>
+  children?: Array<OrganisaatioHierarkia>
+  oppilaitosnumero?: Koodistokoodiviite
 }): OrganisaatioHierarkia => ({
-  children: [],
   parentOidPath: [],
   kielikoodit: [],
   organisaatiotyypit: [],
   $class: 'fi.oph.koski.organisaatio.OrganisaatioHierarkia',
+  children: [],
   ...o
 })
 

@@ -70,10 +70,10 @@ private object OpiskeluoikeusQueryFilterParser extends Logging {
     }
 
     val queryFilters: List[Either[HttpStatus, OpiskeluoikeusQueryFilter]] = params.filterNot { case (key, value) => List("sort", "pageSize", "pageNumber", "toimipisteNimi", "v").contains(key) }.map {
-      case (p, v +: _) if p == "opiskeluoikeusPäättynytAikaisintaan" => dateParam((p, v)).right.map(OpiskeluoikeusPäättynytAikaisintaan)
-      case (p, v +: _) if p == "opiskeluoikeusPäättynytViimeistään" => dateParam((p, v)).right.map(OpiskeluoikeusPäättynytViimeistään)
-      case (p, v +: _) if p == "opiskeluoikeusAlkanutAikaisintaan" => dateParam((p, v)).right.map(OpiskeluoikeusAlkanutAikaisintaan)
-      case (p, v +: _) if p == "opiskeluoikeusAlkanutViimeistään" => dateParam((p, v)).right.map(OpiskeluoikeusAlkanutViimeistään)
+      case (p, v +: _) if p == "opiskeluoikeusPäättynytAikaisintaan" => dateParam((p, v)).map(OpiskeluoikeusPäättynytAikaisintaan)
+      case (p, v +: _) if p == "opiskeluoikeusPäättynytViimeistään" => dateParam((p, v)).map(OpiskeluoikeusPäättynytViimeistään)
+      case (p, v +: _) if p == "opiskeluoikeusAlkanutAikaisintaan" => dateParam((p, v)).map(OpiskeluoikeusAlkanutAikaisintaan)
+      case (p, v +: _) if p == "opiskeluoikeusAlkanutViimeistään" => dateParam((p, v)).map(OpiskeluoikeusAlkanutViimeistään)
       case ("opiskeluoikeudenTyyppi", Seq(tyyppi)) => Right(OpiskeluoikeudenTyyppi(koodisto.validateRequired("opiskeluoikeudentyyppi", tyyppi)))
       case ("opiskeluoikeudenTyyppi", tyypit) => Right(OneOfOpiskeluoikeudenTyypit(tyypit.toList.map(tyyppi => OpiskeluoikeudenTyyppi(koodisto.validateRequired("opiskeluoikeudentyyppi", tyyppi)))))
       case ("opiskeluoikeudenTila", v +: _) => Right(OpiskeluoikeudenTila(koodisto.validateRequired("koskiopiskeluoikeudentila", v)))
@@ -90,7 +90,7 @@ private object OpiskeluoikeusQueryFilterParser extends Logging {
         case hierarkia => Right(VarhaiskasvatuksenToimipiste(hierarkia.map(_.toOrganisaatio)))
       }
       case ("toimipiste", oid +: _) =>
-        OrganisaatioOid.validateOrganisaatioOid(oid).right.flatMap { oid =>
+        OrganisaatioOid.validateOrganisaatioOid(oid).flatMap { oid =>
           organisaatiot.organisaatioRepository.getOrganisaatioHierarkia(oid) match {
             case Some(hierarkia) => Right(Toimipiste(hierarkia.flatten))
             case None => Left(KoskiErrorCategory.notFound.oppilaitostaEiLöydy("Oppilaitosta/koulutustoimijaa/toimipistettä ei löydy: " + oid))
@@ -103,17 +103,17 @@ private object OpiskeluoikeusQueryFilterParser extends Logging {
         case Success(json) => Right(SuoritusJsonHaku(json))
         case Failure(e) => Left(KoskiErrorCategory.badRequest.queryParam("Epävalidi json-dokumentti parametrissa suoritusJson"))
       }
-      case (p, v +: _) if p == "muuttunutEnnen" => dateTimeParam((p, v)).right.map(MuuttunutEnnen)
-      case (p, v +: _) if p == "muuttunutJälkeen" => dateTimeParam((p, v)).right.map(MuuttunutJälkeen)
+      case (p, v +: _) if p == "muuttunutEnnen" => dateTimeParam((p, v)).map(MuuttunutEnnen)
+      case (p, v +: _) if p == "muuttunutJälkeen" => dateTimeParam((p, v)).map(MuuttunutJälkeen)
       case (p, _) => Left(KoskiErrorCategory.badRequest.queryParam.unknown("Unsupported query parameter: " + p))
       // IdHaku, OppijaOidHaku, OneOfOpiskeluoikeudenTyypit, NotSuorituksenTyyppi, Poistettu missing from here (intentionally)
     }.toList
 
     queryFilters.partition(_.isLeft) match {
       case (Nil, queries) =>
-        Right(queries.flatMap(_.right.toOption))
+        Right(queries.flatMap(_.toOption))
       case (errors, _) =>
-        Left(HttpStatus.fold(errors.map(_.left.get)))
+        Left(HttpStatus.fold(errors.collect { case Left(err) => err }))
     }
   }
 }

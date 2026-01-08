@@ -11,6 +11,6 @@ class YtrStatusServlet(implicit val application: KoskiApplication) extends Koski
   private val downloadService = application.ytrDownloadService
 
   get("/download-status") {
-    renderObject(downloadService.status.getDownloadStatusJsonLatest)
+    renderObject(downloadService.status.getDownloadStatusJsonLatest())
   }
 }

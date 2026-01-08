@@ -17,12 +17,12 @@ export type AmmatillisenTutkinnonOsaaPienemmänKokonaisuudenSuoritus = {
     'suorituksentyyppi',
     'ammatillisentutkinnonosaapienempikokonaisuus'
   >
-  tila?: Koodistokoodiviite<'suorituksentila', string>
-  alkamispäivä?: string
   suorituskieli?: Koodistokoodiviite<'kieli', string>
   lisätiedot?: Array<AmmatillisenTutkinnonOsanLisätieto>
   koulutusmoduuli: AmmatillisenTutkinnonOsaaPienempiKokonaisuus
   tunnustettu?: OsaamisenTunnustaminen
+  tila?: Koodistokoodiviite<'suorituksentila', string>
+  alkamispäivä?: string
 }
 
 export const AmmatillisenTutkinnonOsaaPienemmänKokonaisuudenSuoritus = (o: {
@@ -31,12 +31,12 @@ export const AmmatillisenTutkinnonOsaaPienemmänKokonaisuudenSuoritus = (o: {
     'suorituksentyyppi',
     'ammatillisentutkinnonosaapienempikokonaisuus'
   >
-  tila?: Koodistokoodiviite<'suorituksentila', string>
-  alkamispäivä?: string
   suorituskieli?: Koodistokoodiviite<'kieli', string>
   lisätiedot?: Array<AmmatillisenTutkinnonOsanLisätieto>
   koulutusmoduuli: AmmatillisenTutkinnonOsaaPienempiKokonaisuus
   tunnustettu?: OsaamisenTunnustaminen
+  tila?: Koodistokoodiviite<'suorituksentila', string>
+  alkamispäivä?: string
 }): AmmatillisenTutkinnonOsaaPienemmänKokonaisuudenSuoritus => ({
   tyyppi: Koodistokoodiviite({
     koodiarvo: 'ammatillisentutkinnonosaapienempikokonaisuus',

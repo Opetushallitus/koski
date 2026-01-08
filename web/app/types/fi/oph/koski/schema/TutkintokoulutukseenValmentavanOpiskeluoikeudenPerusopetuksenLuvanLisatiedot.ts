@@ -1,8 +1,8 @@
 import { Ulkomaanjakso } from './Ulkomaanjakso'
 import { Aikajakso } from './Aikajakso'
 import { OikeuttaMaksuttomuuteenPidennetty } from './OikeuttaMaksuttomuuteenPidennetty'
-import { Maksuttomuus } from './Maksuttomuus'
 import { TuvaErityisenTuenPäätös } from './TuvaErityisenTuenPaatos'
+import { Maksuttomuus } from './Maksuttomuus'
 
 /**
  * Tutkintokoulutukseen valmentavan opiskeluoikeuden perusopetuksen järjestämisluvan lisätiedot
@@ -16,11 +16,11 @@ export type TutkintokoulutukseenValmentavanOpiskeluoikeudenPerusopetuksenLuvanLi
     majoitusetu?: Aikajakso
     oikeuttaMaksuttomuuteenPidennetty?: Array<OikeuttaMaksuttomuuteenPidennetty>
     kuljetusetu?: Aikajakso
-    vaikeastiVammainen?: Array<Aikajakso>
-    maksuttomuus?: Array<Maksuttomuus>
     koulukoti?: Array<Aikajakso>
     erityisenTuenPäätökset?: Array<TuvaErityisenTuenPäätös>
     vammainen?: Array<Aikajakso>
+    vaikeastiVammainen?: Array<Aikajakso>
+    maksuttomuus?: Array<Maksuttomuus>
     pidennettyPäättymispäivä?: boolean
     sisäoppilaitosmainenMajoitus?: Array<Aikajakso>
   }
@@ -32,11 +32,11 @@ export const TutkintokoulutukseenValmentavanOpiskeluoikeudenPerusopetuksenLuvanL
       majoitusetu?: Aikajakso
       oikeuttaMaksuttomuuteenPidennetty?: Array<OikeuttaMaksuttomuuteenPidennetty>
       kuljetusetu?: Aikajakso
-      vaikeastiVammainen?: Array<Aikajakso>
-      maksuttomuus?: Array<Maksuttomuus>
       koulukoti?: Array<Aikajakso>
       erityisenTuenPäätökset?: Array<TuvaErityisenTuenPäätös>
       vammainen?: Array<Aikajakso>
+      vaikeastiVammainen?: Array<Aikajakso>
+      maksuttomuus?: Array<Maksuttomuus>
       pidennettyPäättymispäivä?: boolean
       sisäoppilaitosmainenMajoitus?: Array<Aikajakso>
     } = {}

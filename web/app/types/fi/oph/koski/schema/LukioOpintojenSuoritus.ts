@@ -14,23 +14,23 @@ export type LukioOpintojenSuoritus = {
   $class: 'fi.oph.koski.schema.LukioOpintojenSuoritus'
   arviointi?: Array<AmmatillinenArviointi>
   tyyppi: Koodistokoodiviite<'suorituksentyyppi', 'ammatillinenlukionopintoja'>
-  tila?: Koodistokoodiviite<'suorituksentila', string>
-  alkamispäivä?: string
   suorituskieli?: Koodistokoodiviite<'kieli', string>
   lisätiedot?: Array<AmmatillisenTutkinnonOsanLisätieto>
   koulutusmoduuli: PaikallinenLukionOpinto
   tunnustettu?: OsaamisenTunnustaminen
+  tila?: Koodistokoodiviite<'suorituksentila', string>
+  alkamispäivä?: string
 }
 
 export const LukioOpintojenSuoritus = (o: {
   arviointi?: Array<AmmatillinenArviointi>
   tyyppi?: Koodistokoodiviite<'suorituksentyyppi', 'ammatillinenlukionopintoja'>
-  tila?: Koodistokoodiviite<'suorituksentila', string>
-  alkamispäivä?: string
   suorituskieli?: Koodistokoodiviite<'kieli', string>
   lisätiedot?: Array<AmmatillisenTutkinnonOsanLisätieto>
   koulutusmoduuli: PaikallinenLukionOpinto
   tunnustettu?: OsaamisenTunnustaminen
+  tila?: Koodistokoodiviite<'suorituksentila', string>
+  alkamispäivä?: string
 }): LukioOpintojenSuoritus => ({
   tyyppi: Koodistokoodiviite({
     koodiarvo: 'ammatillinenlukionopintoja',

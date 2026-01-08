@@ -17,13 +17,12 @@ import org.scalatest.BeforeAndAfterEach
 import java.time.LocalDate
 
 class ValpasKelaServletSpec extends ValpasTestBase with BeforeAndAfterEach {
-  override protected def beforeEach() {
+  override protected def beforeEach(): Unit = {
     super.beforeEach()
     KoskiApplicationForTests.valpasRajapäivätService.asInstanceOf[MockValpasRajapäivätService]
       .asetaMockTarkastelupäivä(FixtureUtil.DefaultTarkastelupäivä)
     new ValpasDatabaseFixtureLoader(KoskiApplicationForTests).reset()
-    AuditLogTester.clearMessages
-
+    AuditLogTester.clearMessages()
   }
 
   override protected def afterEach(): Unit = {
@@ -36,7 +35,7 @@ class ValpasKelaServletSpec extends ValpasTestBase with BeforeAndAfterEach {
   "Kelan Valpas API" - {
     "Yhden oppijan rajapinta" - {
       "Yhden oppijan hakeminen onnistuu ja tuottaa auditlog viestin" in {
-        AuditLogTester.clearMessages
+        AuditLogTester.clearMessages()
 
         val oppija = ValpasMockOppijat.oppivelvollinenYsiluokkaKeskenKeväällä2021
 
@@ -286,7 +285,7 @@ class ValpasKelaServletSpec extends ValpasTestBase with BeforeAndAfterEach {
       }
 
       "Palautetaan 404 jos oppija puuttuu" in {
-        AuditLogTester.clearMessages
+        AuditLogTester.clearMessages()
 
         val puuttuvaHetu = "191105A033F"
 
@@ -297,7 +296,7 @@ class ValpasKelaServletSpec extends ValpasTestBase with BeforeAndAfterEach {
       }
 
       "Palautetaan 404 jos oppija ei ole oppivelvollisuuslain piirissä" in {
-        AuditLogTester.clearMessages
+        AuditLogTester.clearMessages()
 
         postHetu(ValpasMockOppijat.eiOppivelvollinenSyntynytEnnen2004.hetu.get) {
           verifyResponseStatus(404, ValpasErrorCategory.notFound.oppijaaEiLöydyTaiEiOikeuksia("Oppijaa (hetu) ei löydy tai käyttäjällä ei ole oikeuksia tietojen katseluun."))
@@ -306,7 +305,7 @@ class ValpasKelaServletSpec extends ValpasTestBase with BeforeAndAfterEach {
       }
 
       "Palautetaan 403-virhe, jos käyttäjällä ei ole oikeutta API:n käyttöön" in {
-        AuditLogTester.clearMessages
+        AuditLogTester.clearMessages()
 
         postHetu(ValpasMockOppijat.eiOppivelvollinenSyntynytEnnen2004.hetu.get, ValpasMockUsers.valpasHelsinki) {
           verifyResponseStatus(403, ValpasErrorCategory.forbidden())
@@ -338,7 +337,7 @@ class ValpasKelaServletSpec extends ValpasTestBase with BeforeAndAfterEach {
     "Usean oppijan rajapinta" - {
 
       "Yksittäisen oppijan hakeminen onnistuu ja tuottaa auditlog viestin" in {
-        AuditLogTester.clearMessages
+        AuditLogTester.clearMessages()
 
         val oppija = ValpasMockOppijat.oppivelvollinenYsiluokkaKeskenKeväällä2021
         val hetut = Seq(oppija.hetu.get)
@@ -350,7 +349,7 @@ class ValpasKelaServletSpec extends ValpasTestBase with BeforeAndAfterEach {
       }
 
       "Usean oppijan hakeminen onnistuu ja tuottaa yhtä monta auditlog-viestiä, kuin oppivelvollisia oppijoita löytyi" in {
-        AuditLogTester.clearMessages
+        AuditLogTester.clearMessages()
 
         val oppijat = Seq(
           ValpasMockOppijat.oppivelvollinenYsiluokkaKeskenKeväällä2021,
@@ -437,7 +436,7 @@ class ValpasKelaServletSpec extends ValpasTestBase with BeforeAndAfterEach {
       }
 
       "Palautetaan 400-virhe, jos yritetään kysyä liian monen oppijan tietoja" in {
-        AuditLogTester.clearMessages
+        AuditLogTester.clearMessages()
 
         val liikaaHetuja = Seq.fill(1001)("191105A033F")
 
@@ -448,7 +447,7 @@ class ValpasKelaServletSpec extends ValpasTestBase with BeforeAndAfterEach {
       }
 
       "Palautetaan 403-virhe, jos käyttäjällä ei ole oikeutta API:n käyttöön" in {
-        AuditLogTester.clearMessages
+        AuditLogTester.clearMessages()
 
         postHetut(Seq(ValpasMockOppijat.eiOppivelvollinenSyntynytEnnen2004.hetu.get), ValpasMockUsers.valpasHelsinki) {
           verifyResponseStatus(403, ValpasErrorCategory.forbidden())
@@ -474,4 +473,3 @@ class ValpasKelaServletSpec extends ValpasTestBase with BeforeAndAfterEach {
     )(f)
   }
 }
-

@@ -91,11 +91,11 @@ class Lukio2019OpintopistekertymaRaporttiSpec extends AnyFreeSpec with Raportoin
       verifyResponseStatusOk()
     }
 
-    reloadRaportointikanta
+    reloadRaportointikanta()
   }
 
   "Raportin lataaminen onnistuu ja tuottaa auditlogin" in {
-    AuditLogTester.clearMessages
+    AuditLogTester.clearMessages()
     authGet(s"api/raportit/lukio2019opintopistekertymat?oppilaitosOid=${MockOrganisaatiot.jyväskylänNormaalikoulu}&alku=2000-01-01&loppu=2001-01-01&lang=fi&password=salasana") {
       verifyResponseStatusOk()
       response.headers("Content-Disposition").head should equal(s"""attachment; filename="lukio2019_opintopistekertymat_20000101-20010101.xlsx"""")

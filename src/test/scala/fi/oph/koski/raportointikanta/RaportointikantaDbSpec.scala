@@ -38,24 +38,24 @@ class RaportointikantaDbSpec extends AnyFreeSpec with Matchers with Raportointik
     dropAndCreateSchema(db)
     schemaExists(db)
     db.createOtherIndexes()
-    db.createCustomFunctions
+    db.createCustomFunctions()
     db.createPrecomputedTables(KoskiApplicationForTests.valpasRajapäivätService)
   }
 
-  private def schemaExists(db: RaportointiDatabase) {
+  private def schemaExists(db: RaportointiDatabase): Unit = {
     db.tables.map(_.baseTableRow.tableName).foreach { tableName =>
       db.runDbSync(sql" SELECT '#${db.schema.name}.#$tableName'::regclass".as[String]).head should endWith(tableName)
     }
   }
 
-  private def schemaIsEmpty(db: RaportointiDatabase) {
+  private def schemaIsEmpty(db: RaportointiDatabase): Unit = {
     db.tables.map(_.baseTableRow.tableName).foreach { tableName =>
       val thrown = the[PSQLException] thrownBy db.runDbSync(sql" SELECT '#${db.schema.name}.#$tableName'::regclass".as[String])
       thrown.getMessage should include regex s""""${db.schema.name}(.$tableName)?" does not exist"""
     }
   }
 
-  private def dropAndCreateSchema(db: RaportointiDatabase) {
+  private def dropAndCreateSchema(db: RaportointiDatabase): Unit = {
     db.dropAndCreateObjects()
   }
 }
