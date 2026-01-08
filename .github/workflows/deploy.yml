@@ -38,10 +38,3 @@ jobs:
       environment: ${{ inputs.environment }}
       commithash: ${{ inputs.commithash }}
     secrets: inherit
-  tag_image:
-    needs: [ deploy ]
-    uses: ./.github/workflows/tag_image.yml
-    with:
-      commithash: ${{ github.sha }}
-      environment: ${{ inputs.environment }}
-    secrets: inherit
