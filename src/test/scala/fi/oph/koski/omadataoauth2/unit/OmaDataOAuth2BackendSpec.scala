@@ -1222,6 +1222,7 @@ class OmaDataOAuth2BackendSpec
       "Authorization" -> s"Bearer ${token}",
       "x-amzn-mtls-clientcert-subject" -> "CN=oauth2client",
       "x-amzn-mtls-clientcert-serial-number" -> "123",
+      "x-amzn-mtls-clientcert-issuer" -> "CN=mock-issuer",
       "X-Forwarded-For" -> "0.0.0.0"
     )
     post(uri = "api/omadata-oauth2/resource-server", headers = headers)(f)

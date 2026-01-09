@@ -11,6 +11,11 @@ trait LuovutuspalveluHeaderAuthenticationSupport extends AuthenticationSupport {
       subjectDnHeader =>
         for {
           serial <- request.header("x-amzn-mtls-clientcert-serial-number").toRight(KoskiErrorCategory.internalError())
+          issuer <- request.header("x-amzn-mtls-clientcert-issuer").toRight(KoskiErrorCategory.internalError())
+          _ <- Either.cond(!issuer.endsWith("compute.internal"), (), {
+            defaultLogger.error(s"Luovutuspalvelu rejected certificate with disallowed issuer $issuer ($subjectDnHeader, $serial)")
+            KoskiErrorCategory.unauthorized("Virheellinen varmenteen myöntäjä")
+          })
           client <- clientList.find(_.subjectDn == subjectDnHeader).toRight {
             // Use defaultLogger to prevent recursion, since we don't have a user yet
             defaultLogger.warn(s"Luovutuspalvelu presented with unknown client certificate $subjectDnHeader ($serial)")
