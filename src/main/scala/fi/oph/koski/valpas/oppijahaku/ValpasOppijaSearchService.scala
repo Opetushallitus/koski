@@ -155,7 +155,12 @@ class ValpasOppijaSearchService(application: KoskiApplication) extends Logging {
           accessResolver.withOppijaAccessAsRole(ValpasRooli.KUNTA)(oppija)
             .map(o => ValpasLöytyiHenkilöhakuResult.apply(o, rajapäivätService))
         case Right(None) if oppijanumerorekisteriService.onKunnalleNäkyväVainOnrssäOlevaOppija(henkilö) =>
-          Right(ValpasLöytyiHenkilöhakuResult(henkilö, vainOppijanumerorekisterissä = true, rajapäivätService))
+          henkilö match {
+            case h: LaajatOppijaHenkilöTiedot =>
+              Right(ValpasLöytyiHenkilöhakuResult(h, vainOppijanumerorekisterissä = true, rajapäivätService))
+            case _ =>
+              Right(ValpasLöytyiHenkilöhakuResult(henkilö, vainOppijanumerorekisterissä = true, rajapäivätService))
+          }
         case _ => Left(ValpasErrorCategory.forbidden.oppija())
       }
     }
@@ -192,6 +197,19 @@ object ValpasLöytyiHenkilöhakuResult {
       sukunimi = oppija.sukunimi,
       vainOppijanumerorekisterissä = vainOppijanumerorekisterissä,
       maksuttomuusVoimassaAstiIänPerusteella = oppija.syntymäaika.map(rajapäivät.maksuttomuusVoimassaAstiIänPerusteella)
+    )
+  }
+
+  def apply(oppija: LaajatOppijaHenkilöTiedot, vainOppijanumerorekisterissä: Boolean, rajapäivät: ValpasRajapäivätService): ValpasLöytyiHenkilöhakuResult = {
+    ValpasLöytyiHenkilöhakuResult(
+      oid = oppija.oid,
+      hetu = oppija.hetu,
+      etunimet = oppija.etunimet,
+      sukunimi = oppija.sukunimi,
+      vainOppijanumerorekisterissä = vainOppijanumerorekisterissä,
+      maksuttomuusVoimassaAstiIänPerusteella = oppija.kuolinpäivä.orElse(
+        oppija.syntymäaika.map(rajapäivät.maksuttomuusVoimassaAstiIänPerusteella)
+      )
     )
   }
 }

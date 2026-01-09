@@ -404,7 +404,7 @@ object ValpasMockOppijat {
   val eiKoskessaMenehtynytOppija = valpasOppijat.oppijaSyntymäaikaHetusta("Ei-Koskessa-menehtynyt", "Valpas", "260605A666C", kuolinpäivä = Some(LocalDate.of(2021, 3, 1)), kotikunta = None,
     kuntahistoriaMock = h => {
       val historia = Seq(
-        OppijanumerorekisteriKotikuntahistoriaRow(h.henkilö.oid, Kunta.helsinki, Some(LocalDate.of(2005, 6, 5)), None)
+        OppijanumerorekisteriKotikuntahistoriaRow(h.henkilö.oid, Kunta.helsinki, Some(LocalDate.of(2005, 6, 26)), None)
       )
       OppijanKuntahistoria(
         Some(h.henkilö.oid),
