@@ -13,23 +13,6 @@ env:
   PNPM_FROZEN_FLAG: ${{ github.event_name == 'pull_request' && (github.event.pull_request.user.login == 'snyk-io[bot]' || github.event.pull_request.user.login == 'snyk-io') && '--no-frozen-lockfile' || '--frozen-lockfile' }}
 
 jobs:
-  test-client:
-    name: OAuth2 client
-    runs-on: ${{ inputs.runs-on }}
-    permissions:
-      contents: read
-    steps:
-      - uses: actions/checkout@v4
-      - uses: ./.github/actions/setup_pnpm_cache
-      - uses: actions/setup-node@v4
-        with:
-          node-version-file: "omadata-oauth2-sample/.nvmrc"
-          cache: "pnpm"
-          cache-dependency-path: "omadata-oauth2-sample/client/pnpm-lock.yaml"
-      - run: cd omadata-oauth2-sample/client && pnpm install $PNPM_FROZEN_FLAG
-      - run: cd omadata-oauth2-sample/client && pnpm run lint
-      - run: cd omadata-oauth2-sample/client && pnpm run build
-        # TODO add test step when there are tests
   test-server:
     name: OAuth2 server
     runs-on: ${{ inputs.runs-on }}
@@ -68,6 +51,9 @@ jobs:
        with:
          repository: Opetushallitus/koski-luovutuspalvelu
          path: koski-luovutuspalvelu
+
+     - name: Generate luovutuspalvelu test certificates
+       run: bash koski-luovutuspalvelu/proxy/test/testca/generate-certs.sh
 
      - uses: ./.github/actions/omadataoauth2_e2e_test
        with:

@@ -9,9 +9,9 @@ että [koski-luovutuspalvelu](https://github.com/Opetushallitus/koski-luovutuspa
 
     /koski-luovutuspalvelu
 
-Tämän jälkeen luovutuspalvelun, voi käynnistää:
+Tämän jälkeen luovutuspalvelun voi käynnistää:
 
-    /omadata-oauth2-sample/client % pnpm run build-and-start-luovutuspalvelu
+    /omadata-oauth2-sample/server % pnpm run start:luovutuspalvelu:build
 
 Tämän varsinen esimerkki-applikaatio frontti & backend käynnistetään terminaalissa:
 
@@ -29,4 +29,4 @@ Koko putken rakenne:
     (3) Koski-backend, http://<lokaali-ip>:<port>
           Luovutuspalvelun docker-kontille näkyvä <lokaali-ip> on Github Actions CI:llä ajettaessa
           172.17.0.1 ja <port> arvottu.
-          Lokaalisti <lokaali-ip> haetaan client/scripts/getmyip.js -skriptillä ja <port> on aina 7021.
+          Lokaalisti <lokaali-ip> haetaan server/scripts/getmyip.js -skriptillä ja <port> on aina 7021.

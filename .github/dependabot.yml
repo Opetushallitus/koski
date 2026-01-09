@@ -13,12 +13,6 @@ updates:
     open-pull-requests-limit: 0
 
   - package-ecosystem: npm
-    directory: "/omadata-oauth2-sample/client"
-    schedule:
-      interval: daily
-    open-pull-requests-limit: 0
-    
-  - package-ecosystem: npm
     directory: "/valpas-web"
     schedule:
       interval: daily
