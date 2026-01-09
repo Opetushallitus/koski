@@ -6,7 +6,9 @@ const gotoJava = (path: string) => `${javaBaseUrl}${path}`
 
 test('Java sample front page renders', async ({ page }) => {
   await page.goto(gotoJava('/'))
-  await expect(page.getByText('You have NOT authorized use of your data.')).toBeVisible()
+  await expect(
+    page.getByText('You have NOT authorized use of your data.')
+  ).toBeVisible()
 })
 
 test('Java sample OAuth2 flow works', async ({ page }) => {
@@ -14,7 +16,9 @@ test('Java sample OAuth2 flow works', async ({ page }) => {
 
   await page.waitForURL('**/koski/login/oppija/**')
   await page.getByTestId('hetu').fill('280618-402H')
-  await expect(page.getByRole('button', { name: 'Kirjaudu sisään' })).toBeEnabled()
+  await expect(
+    page.getByRole('button', { name: 'Kirjaudu sisään' })
+  ).toBeEnabled()
   await page.getByRole('button', { name: 'Kirjaudu sisään' }).click()
 
   await page.waitForURL('**/koski/omadata-oauth2/authorize**')
