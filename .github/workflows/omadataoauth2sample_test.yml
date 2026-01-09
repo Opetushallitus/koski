@@ -52,6 +52,9 @@ jobs:
          repository: Opetushallitus/koski-luovutuspalvelu
          path: koski-luovutuspalvelu
 
+     - name: Generate luovutuspalvelu test certificates
+       run: bash koski-luovutuspalvelu/proxy/test/testca/generate-certs.sh
+
      - uses: ./.github/actions/omadataoauth2_e2e_test
        with:
          shardIndex: ${{ matrix.shardIndex }}
