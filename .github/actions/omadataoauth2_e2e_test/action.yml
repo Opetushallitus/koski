@@ -54,5 +54,5 @@ runs:
       if: always()
       with:
         name: omadataoauth2-e2e-report-${{inputs.shardIndex}}-of-${{inputs.shardTotal}}
-        path: omadata-oauth2-sample/client/omadataoauth2-e2e-report-${{inputs.shardIndex}}-of-${{inputs.shardTotal}}/
+        path: omadata-oauth2-sample/server/omadataoauth2-e2e-report-${{inputs.shardIndex}}-of-${{inputs.shardTotal}}/
         retention-days: 3
