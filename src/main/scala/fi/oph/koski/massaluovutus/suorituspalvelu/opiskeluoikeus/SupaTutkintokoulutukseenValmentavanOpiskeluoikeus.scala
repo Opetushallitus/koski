@@ -40,6 +40,7 @@ object SupaTutkintokoulutukseenValmentavanOpiskeluoikeus {
 
 @Title("Tutkintokoulutukseen valmentavan koulutuksen suoritustiedot")
 case class SupaTutkintokoulutukseenValmentavanKoulutuksenSuoritus(
+  @KoodistoKoodiarvo("tuvakoulutuksensuoritus")
   tyyppi: Koodistokoodiviite,
   alkamispäivä: Option[LocalDate],
   vahvistus: Option[SupaVahvistus],

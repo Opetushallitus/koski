@@ -63,6 +63,7 @@ object SupaPerusopetuksenPäätasonSuoritus {
 
 @Title("Nuorten perusopetuksen oppimäärän suoritus")
 case class SupaNuortenPerusopetuksenOppimääränSuoritus(
+  @KoodistoKoodiarvo("perusopetuksenoppimaara")
   tyyppi: Koodistokoodiviite,
   koulutusmoduuli: NuortenPerusopetus,
   vahvistus: Option[SupaVahvistus],
@@ -88,6 +89,7 @@ object SupaNuortenPerusopetuksenOppimääränSuoritus {
 
 @Title("Perusopetuksen vuosiluokan suoritus")
 case class SupaPerusopetuksenYhdeksännenVuosiluokanSuoritus(
+  @KoodistoKoodiarvo("perusopetuksenvuosiluokka")
   tyyppi: Koodistokoodiviite,
   koulutusmoduuli: PerusopetuksenLuokkaAste,
   alkamispäivä: Option[LocalDate],

@@ -36,7 +36,7 @@ case class SuorituspalveluMuuttuneetJalkeenQuery(
           FROM henkilo h
             JOIN opiskeluoikeus o ON h.oid = o.oppija_oid
           WHERE aikaleima >= ${Timestamp.valueOf(muuttuneetJälkeen)}
-            AND o.koulutusmuoto = ANY(${SuorituspalveluQuery.opiskeluoikeudenTyypit}))
+            AND o.suoritustyypit && ${SuorituspalveluQuery.suoritustenTyypit}::text[]) -- True jos listoissa on yhteisiä alkioita
         ORDER BY opiskeluoikeus.aikaleima
       """.as[(Int, Timestamp, String)])
 }

@@ -107,15 +107,20 @@ trait SuorituspalveluQuery extends OpetushallituksenMassaluovutusQueryParameters
 }
 
 object SuorituspalveluQuery {
-  def opiskeluoikeudenTyypit: List[String] = List(
-    "perusopetus",
-    "aikuistenperusopetus",
-    "ammatillinenkoulutus",
-    "tuva",
-    "vapaansivistystyonkoulutus",
-    "diatutkinto",
+  def suoritustenTyypit: List[String] = List(
+    "perusopetuksenoppiaineenoppimaara",
+    "aikuistenperusopetuksenoppimaara",
+    "ammatillinentutkintoosittainen",
+    "ammatillinentutkinto",
+    "telma",
+    "diatutkintovaihe",
     "ebtutkinto",
     "ibtutkinto",
-    "internationalschool",
+    "internationalschooldiplomavuosiluokka",
+    "nuortenperusopetuksenoppiaineenoppimaara",
+    "perusopetuksenoppimaara",
+    "perusopetuksenvuosiluokka",
+    "tuvakoulutuksensuoritus",
+    "vstoppivelvollisillesuunnattukoulutus"
   )
 }
