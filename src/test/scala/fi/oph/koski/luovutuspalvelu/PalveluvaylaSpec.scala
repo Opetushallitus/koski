@@ -202,6 +202,7 @@ class PalveluvaylaSpec extends AnyFreeSpec with KoskiHttpSpec with Opiskeluoikeu
   private def mockSecurityServerHeader = Map(
     "x-amzn-mtls-clientcert-subject" -> "CN=liityntapalvelin",
     "x-amzn-mtls-clientcert-serial-number" -> "123",
+    "x-amzn-mtls-clientcert-issuer" -> "CN=mock-issuer",
     "X-Forwarded-For" -> "0.0.0.0"
   )
 

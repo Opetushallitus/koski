@@ -35,23 +35,41 @@ class LuovutuspalveluV2Spec extends AnyFreeSpec with KoskiHttpSpec {
         verifyResponseStatus(401, KoskiErrorCategory.unauthorized("Tuntematon IP-osoite"))
       }
     }
+
+    "Palauttaa virheen estetyllä varmenteen myöntäjällä" in {
+      post("api/luovutuspalvelu/kela/hetu",
+        JsonSerializer.writeWithRoot(KelaRequest(KoskiSpecificMockOppijat.amis.hetu.get)),
+        headers = mockLuovutuspalveluV2DisallowedIssuerHeader ++ jsonContent) {
+        verifyResponseStatus(401, KoskiErrorCategory.unauthorized("Virheellinen varmenteen myöntäjä"))
+      }
+    }
   }
 
   def mockLuovutuspalveluV2KelaHeader: Headers = Map(
     "x-amzn-mtls-clientcert-subject" -> "CN=kela",
     "x-amzn-mtls-clientcert-serial-number" -> "123",
+    "x-amzn-mtls-clientcert-issuer" -> "CN=mock-issuer",
     "X-Forwarded-For" -> "0.0.0.0"
   )
 
   def mockLuovutuspalveluV2KelaInvalidIpHeader: Headers = Map(
     "x-amzn-mtls-clientcert-subject" -> "CN=kela",
     "x-amzn-mtls-clientcert-serial-number" -> "123",
+    "x-amzn-mtls-clientcert-issuer" -> "CN=mock-issuer",
     "X-Forwarded-For" -> "255.255.255.255"
   )
 
   def mockLuovutuspalveluV2InvalidHeader: Headers = Map(
     "x-amzn-mtls-clientcert-subject" -> "CN=example.com",
     "x-amzn-mtls-clientcert-serial-number" -> "123",
+    "x-amzn-mtls-clientcert-issuer" -> "CN=mock-issuer",
+    "X-Forwarded-For" -> "0.0.0.0"
+  )
+
+  def mockLuovutuspalveluV2DisallowedIssuerHeader: Headers = Map(
+    "x-amzn-mtls-clientcert-subject" -> "CN=kela",
+    "x-amzn-mtls-clientcert-serial-number" -> "123",
+    "x-amzn-mtls-clientcert-issuer" -> "CN=ip-10-0-0-1.eu-west-1.compute.internal",
     "X-Forwarded-For" -> "0.0.0.0"
   )
 }
