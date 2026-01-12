@@ -79,7 +79,7 @@ object SwisscomConfig extends Logging {
     val secretId = cachedSecretsClient.getSecretId("Swisscom Secrets", "SWISSCOM_SECRET_ID")
     val secrets = cachedSecretsClient.getStructuredSecret[SwisscomSecretsConfig](secretId)
 
-    fromSecrets(secretsSource, swisscomConfig, signatureConfig, secrets)
+    fromSecrets(secretsSource, swisscomConfig, signatureConfig, secrets, cachedSecretsClient.getPlainSecret)
   }
 
   private def fromSsoCredentialsSecretsManager(config: Config, secretsSource: SwisscomConfigSecretsSource): SwisscomConfig = {
@@ -103,15 +103,38 @@ object SwisscomConfig extends Logging {
 
     val secrets = JsonSerializer.extract[SwisscomSecretsConfig](parse(resp.secretString()), ignoreExtras = true)
 
-    fromSecrets(secretsSource, swisscomConfig, signatureConfig, secrets)
+    // Apufunktio erillisten secretien lukemiseen SSO:lla
+    def readSsoSecret(secretName: String): String = {
+      val req = GetSecretValueRequest.builder().secretId(secretName).build()
+      val resp = smClient.getSecretValue(req)
+      resp.secretString().stripPrefix("\"").stripSuffix("\"")
+    }
+
+    fromSecrets(secretsSource, swisscomConfig, signatureConfig, secrets, readSsoSecret)
   }
 
-  private def fromSecrets(secretsSource: SwisscomConfigSecretsSource, swisscomConfig: Config, signatureConfig: Config, secrets: SwisscomSecretsConfig): SwisscomConfig = {
+  private def fromSecrets(
+    secretsSource: SwisscomConfigSecretsSource,
+    swisscomConfig: Config,
+    signatureConfig: Config,
+    secrets: SwisscomSecretsConfig,
+    secretReader: String => String
+  ): SwisscomConfig = {
+    val keyStore = secrets.keystoreSecretName match {
+      case Some(secretName) => secretReader(secretName)
+      case None => secrets.keyStore
+    }
+
+    val keyStorePassword = secrets.keystorePasswordSecretName match {
+      case Some(secretName) => secretReader(secretName)
+      case None => secrets.keyStorePassword
+    }
+
     SwisscomConfig(
       configSource = secretsSource,
       signUrl = swisscomConfig.getString("signUrl"),
-      keyStore = secrets.keyStore,
-      keyStorePassword = secrets.keyStorePassword,
+      keyStore = keyStore,
+      keyStorePassword = keyStorePassword,
       digestAlgorithm = swisscomConfig.getString("digestAlgorithm"),
       digestUri = swisscomConfig.getString("digestUri"),
       signaturePreferredSize = signatureConfig.getInt("preferredSize"),
@@ -134,6 +157,8 @@ case class SwisscomSecretsConfig(
   signatureClaimedIdentityName: String,
   signatureClaimedIdentityKey: String,
   signatureDistinguishedName: String,
+  keystoreSecretName: Option[String],
+  keystorePasswordSecretName: Option[String]
 ) extends NotLoggable
 
 object SwisscomConfigSecretsSource extends Enumeration {
