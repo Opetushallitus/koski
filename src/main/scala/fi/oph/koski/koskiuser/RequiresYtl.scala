@@ -9,7 +9,7 @@ trait RequiresYtl extends KoskiLuovutuspalveluHeaderAuthenticationSupport with H
     requiresYtl
   }
 
-  private def requiresYtl {
+  private def requiresYtl: Unit = {
     getUser match {
       case Left(status) if status.statusCode == 401 =>
         haltWithStatus(status)

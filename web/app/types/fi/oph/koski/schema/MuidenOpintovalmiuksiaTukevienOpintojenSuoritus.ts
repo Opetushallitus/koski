@@ -17,13 +17,13 @@ export type MuidenOpintovalmiuksiaTukevienOpintojenSuoritus = {
     'suorituksentyyppi',
     'ammatillinenmuitaopintovalmiuksiatukeviaopintoja'
   >
-  tila?: Koodistokoodiviite<'suorituksentila', string>
-  alkamispäivä?: string
   suorituskieli?: Koodistokoodiviite<'kieli', string>
   lisätiedot?: Array<AmmatillisenTutkinnonOsanLisätieto>
   korotettu?: Koodistokoodiviite<'ammatillisensuorituksenkorotus', string>
   koulutusmoduuli: PaikallinenOpintovalmiuksiaTukevaOpinto
   tunnustettu?: OsaamisenTunnustaminen
+  tila?: Koodistokoodiviite<'suorituksentila', string>
+  alkamispäivä?: string
 }
 
 export const MuidenOpintovalmiuksiaTukevienOpintojenSuoritus = (o: {
@@ -32,13 +32,13 @@ export const MuidenOpintovalmiuksiaTukevienOpintojenSuoritus = (o: {
     'suorituksentyyppi',
     'ammatillinenmuitaopintovalmiuksiatukeviaopintoja'
   >
-  tila?: Koodistokoodiviite<'suorituksentila', string>
-  alkamispäivä?: string
   suorituskieli?: Koodistokoodiviite<'kieli', string>
   lisätiedot?: Array<AmmatillisenTutkinnonOsanLisätieto>
   korotettu?: Koodistokoodiviite<'ammatillisensuorituksenkorotus', string>
   koulutusmoduuli: PaikallinenOpintovalmiuksiaTukevaOpinto
   tunnustettu?: OsaamisenTunnustaminen
+  tila?: Koodistokoodiviite<'suorituksentila', string>
+  alkamispäivä?: string
 }): MuidenOpintovalmiuksiaTukevienOpintojenSuoritus => ({
   tyyppi: Koodistokoodiviite({
     koodiarvo: 'ammatillinenmuitaopintovalmiuksiatukeviaopintoja',

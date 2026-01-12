@@ -12,7 +12,7 @@ class YtrKoesuoritusApiSpec extends AnyFreeSpec with KoskiHttpSpec with Opiskelu
   private implicit val context: ExtractionContext = strictDeserialization
 
   private def readExams: List[ExamResponse] =
-    SchemaValidatingExtractor.extract[List[ExamResponse]](JsonMethods.parse(body)).right.get
+    SchemaValidatingExtractor.extract[List[ExamResponse]](JsonMethods.parse(body)).toOption.get
 
   private val expected = List(
     ExamResponse(period = "2012K", examId = "A", copyOfExamPaper = Some("2345K/pdf/2345K_XX_12345.pdf")),
@@ -31,7 +31,7 @@ class YtrKoesuoritusApiSpec extends AnyFreeSpec with KoskiHttpSpec with Opiskelu
     }
 
     "Koesuoritusta haettaessa lähetetään YTR:iin myös oppijan vanhat hetut" in {
-      KoskiApplicationForTests.cacheManager.invalidateAllCaches
+      KoskiApplicationForTests.cacheManager.invalidateAllCaches()
       MockYtrClient.latestOppijaJsonByHetu = None
 
       val oppija = KoskiSpecificMockOppijat.aikuisOpiskelija

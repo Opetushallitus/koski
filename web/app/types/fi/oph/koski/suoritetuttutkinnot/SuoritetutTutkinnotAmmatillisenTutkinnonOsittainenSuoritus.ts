@@ -1,8 +1,8 @@
+import { SuoritetutTutkinnotKokoTaiOsittaisenAmmatillisenTutkinnonKoulutusmoduuli } from './SuoritetutTutkinnotKokoTaiOsittaisenAmmatillisenTutkinnonKoulutusmoduuli'
+import { Toimipiste } from './Toimipiste'
 import { SuoritetutTutkinnotKoodistokoodiviite } from './SuoritetutTutkinnotKoodistokoodiviite'
 import { Koodistokoodiviite } from '../schema/Koodistokoodiviite'
 import { LocalizedString } from '../schema/LocalizedString'
-import { SuoritetutTutkinnotKokoTaiOsittaisenAmmatillisenTutkinnonKoulutusmoduuli } from './SuoritetutTutkinnotKokoTaiOsittaisenAmmatillisenTutkinnonKoulutusmoduuli'
-import { Toimipiste } from './Toimipiste'
 import { SuoritetutTutkinnotOsaamisalajakso } from './SuoritetutTutkinnotOsaamisalajakso'
 import { Vahvistus } from './Vahvistus'
 
@@ -14,28 +14,28 @@ import { Vahvistus } from './Vahvistus'
 export type SuoritetutTutkinnotAmmatillisenTutkinnonOsittainenSuoritus = {
   $class: 'fi.oph.koski.suoritetuttutkinnot.SuoritetutTutkinnotAmmatillisenTutkinnonOsittainenSuoritus'
   toinenTutkintonimike?: boolean
+  koulutusmoduuli: SuoritetutTutkinnotKokoTaiOsittaisenAmmatillisenTutkinnonKoulutusmoduuli
+  toimipiste?: Toimipiste
   tutkintonimike?: Array<SuoritetutTutkinnotKoodistokoodiviite>
   tyyppi: Koodistokoodiviite<string, 'ammatillinentutkintoosittainen'>
   suorituskieli?: SuoritetutTutkinnotKoodistokoodiviite
   toinenOsaamisala?: boolean
   korotettuOpiskeluoikeusOid?: string
   suoritustapa?: SuoritetutTutkinnotKoodistokoodiviite
-  koulutusmoduuli: SuoritetutTutkinnotKokoTaiOsittaisenAmmatillisenTutkinnonKoulutusmoduuli
-  toimipiste?: Toimipiste
   osaamisala?: Array<SuoritetutTutkinnotOsaamisalajakso>
   vahvistus?: Vahvistus
 }
 
 export const SuoritetutTutkinnotAmmatillisenTutkinnonOsittainenSuoritus = (o: {
   toinenTutkintonimike?: boolean
+  koulutusmoduuli: SuoritetutTutkinnotKokoTaiOsittaisenAmmatillisenTutkinnonKoulutusmoduuli
+  toimipiste?: Toimipiste
   tutkintonimike?: Array<SuoritetutTutkinnotKoodistokoodiviite>
   tyyppi: Koodistokoodiviite<string, 'ammatillinentutkintoosittainen'>
   suorituskieli?: SuoritetutTutkinnotKoodistokoodiviite
   toinenOsaamisala?: boolean
   korotettuOpiskeluoikeusOid?: string
   suoritustapa?: SuoritetutTutkinnotKoodistokoodiviite
-  koulutusmoduuli: SuoritetutTutkinnotKokoTaiOsittaisenAmmatillisenTutkinnonKoulutusmoduuli
-  toimipiste?: Toimipiste
   osaamisala?: Array<SuoritetutTutkinnotOsaamisalajakso>
   vahvistus?: Vahvistus
 }): SuoritetutTutkinnotAmmatillisenTutkinnonOsittainenSuoritus => ({

@@ -1,10 +1,10 @@
 import { Koodistokoodiviite } from './Koodistokoodiviite'
 import { LocalizedString } from './LocalizedString'
-import { OmanÄidinkielenOpinnotLaajuusKursseina } from './OmanAidinkielenOpinnotLaajuusKursseina'
 import { LukionOppimäärä } from './LukionOppimaara'
 import { OrganisaatioWithOid } from './OrganisaatioWithOid'
 import { LukionOppimääränOsasuoritus2015 } from './LukionOppimaaranOsasuoritus2015'
 import { HenkilövahvistusPaikkakunnalla } from './HenkilovahvistusPaikkakunnalla'
+import { OmanÄidinkielenOpinnotLaajuusKursseina } from './OmanAidinkielenOpinnotLaajuusKursseina'
 
 /**
  * Laajennetun oppivelvollisuuden suoritus
@@ -15,8 +15,6 @@ import { HenkilövahvistusPaikkakunnalla } from './HenkilovahvistusPaikkakunnall
 export type LukionOppimääränSuoritus2015 = {
   $class: 'fi.oph.koski.schema.LukionOppimääränSuoritus2015'
   tyyppi: Koodistokoodiviite<'suorituksentyyppi', 'lukionoppimaara'>
-  tila?: Koodistokoodiviite<'suorituksentila', string>
-  omanÄidinkielenOpinnot?: OmanÄidinkielenOpinnotLaajuusKursseina
   suorituskieli: Koodistokoodiviite<'kieli', string>
   oppimäärä: Koodistokoodiviite<'lukionoppimaara', string>
   koulusivistyskieli?: Array<Koodistokoodiviite<'kieli', 'FI' | 'SV'>>
@@ -26,12 +24,12 @@ export type LukionOppimääränSuoritus2015 = {
   toimipiste: OrganisaatioWithOid
   osasuoritukset?: Array<LukionOppimääränOsasuoritus2015>
   vahvistus?: HenkilövahvistusPaikkakunnalla
+  tila?: Koodistokoodiviite<'suorituksentila', string>
+  omanÄidinkielenOpinnot?: OmanÄidinkielenOpinnotLaajuusKursseina
 }
 
 export const LukionOppimääränSuoritus2015 = (o: {
   tyyppi?: Koodistokoodiviite<'suorituksentyyppi', 'lukionoppimaara'>
-  tila?: Koodistokoodiviite<'suorituksentila', string>
-  omanÄidinkielenOpinnot?: OmanÄidinkielenOpinnotLaajuusKursseina
   suorituskieli: Koodistokoodiviite<'kieli', string>
   oppimäärä: Koodistokoodiviite<'lukionoppimaara', string>
   koulusivistyskieli?: Array<Koodistokoodiviite<'kieli', 'FI' | 'SV'>>
@@ -41,6 +39,8 @@ export const LukionOppimääränSuoritus2015 = (o: {
   toimipiste: OrganisaatioWithOid
   osasuoritukset?: Array<LukionOppimääränOsasuoritus2015>
   vahvistus?: HenkilövahvistusPaikkakunnalla
+  tila?: Koodistokoodiviite<'suorituksentila', string>
+  omanÄidinkielenOpinnot?: OmanÄidinkielenOpinnotLaajuusKursseina
 }): LukionOppimääränSuoritus2015 => ({
   tyyppi: Koodistokoodiviite({
     koodiarvo: 'lukionoppimaara',

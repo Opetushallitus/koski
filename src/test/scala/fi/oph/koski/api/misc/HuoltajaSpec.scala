@@ -9,7 +9,7 @@ import org.json4s.{DefaultFormats, JObject}
 import org.scalatest.freespec.AnyFreeSpec
 
 class HuoltajaSpec extends AnyFreeSpec with KoskiHttpSpec with OpiskeluoikeusTestMethodsPerusopetus {
-  private implicit val formats = DefaultFormats
+  private implicit val formats: DefaultFormats = DefaultFormats
 
   "Huollettavan tietojen katselu" - {
     "Tarkistaa, että huollettavat tulevat login-datan mukana" in {

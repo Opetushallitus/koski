@@ -244,7 +244,7 @@ class RaportointiDatabase(config: RaportointiDatabaseConfigBase) extends Logging
     kloonattavatTaulut.foreach { kloonaus =>
       val startTime = System.currentTimeMillis
       val count = runDbSync(sql"""SELECT COUNT(*) FROM #${source.schema.name}.#${kloonaus.taulu}""".as[Long]).head
-      val batchCount = (count / BATCH_SIZE).ceil.toInt
+      val batchCount = ((count + BATCH_SIZE - 1) / BATCH_SIZE).toInt
       logger.info(s"Kopioidaan ${count} riviä ${source.schema.name}.${kloonaus.taulu} --> ${schema.name}.${kloonaus.taulu}")
 
       Range.inclusive(0, batchCount).foreach(i => {
@@ -525,7 +525,7 @@ class RaportointiDatabase(config: RaportointiDatabaseConfigBase) extends Logging
     val sisältyvätOpiskeluoikeudet: Map[String, Seq[ROpiskeluoikeusRow]] = retryDbSync(sisältyvätOpiskeluoikeudetQuery.result).groupBy(_.sisältyyOpiskeluoikeuteenOid.get)
 
     val henkilötQuery = RHenkilöt.filter(_.oppijaOid inSet result1.map(_._1.oppijaOid))
-    val henkilöt: Map[String, RHenkilöRow] = runDbSync(henkilötQuery.result).groupBy(_.oppijaOid).mapValues(_.head)
+    val henkilöt: Map[String, RHenkilöRow] = runDbSync(henkilötQuery.result).groupBy(_.oppijaOid).view.mapValues(_.head).toMap
 
     // group rows belonging to same opiskeluoikeus
     result1

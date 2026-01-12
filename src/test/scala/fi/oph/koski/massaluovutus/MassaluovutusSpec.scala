@@ -1164,7 +1164,7 @@ class MassaluovutusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers wit
     val json = JsonMethods.parse(response.body)
     val result = KoskiApplicationForTests.validatingAndResolvingExtractor.extract[QueryResponse](json, strictDeserialization)
     result should not be Left
-    result.right.get
+    result.toOption.get
   }
 
   def withoutRunningQueryScheduler[T](f: => T): T =
@@ -1172,7 +1172,7 @@ class MassaluovutusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers wit
       app.massaluovutusScheduler.pause(Duration.ofDays(1))
       f
     } finally {
-      app.massaluovutusService.truncate
+      app.massaluovutusService.truncate()
       app.massaluovutusScheduler.resume()
     }
 }

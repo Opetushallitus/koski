@@ -361,7 +361,12 @@ class KoskiSpecificDatabaseFixtureCreator(application: KoskiApplication) extends
     val oppijaOid = KoskiSpecificMockOppijat.poistettuOpiskeluoikeus.oid
     peruutaSuostumusOpiskeluoikeudelta(
       oppijaOid = oppijaOid,
-      opiskeluoikeusOid = application.oppijaFacade.findOppija(oppijaOid)(KoskiSpecificSession.systemUser).right.get.map(_.opiskeluoikeudet.head.oid.get)._value
+      opiskeluoikeusOid = application.oppijaFacade
+        .findOppija(oppijaOid)(KoskiSpecificSession.systemUser)
+        .fold(
+          err => throw new IllegalStateException(s"Oppijaa $oppijaOid ei löydy: $err"),
+          _.map(_.opiskeluoikeudet.head.oid.get)._value
+        )
     )
   }
 

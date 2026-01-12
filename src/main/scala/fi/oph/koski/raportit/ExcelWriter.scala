@@ -9,13 +9,13 @@ import org.apache.poi.openxml4j.opc.OPCPackage
 import org.apache.poi.poifs.crypt.{EncryptionInfo, EncryptionMode, Encryptor}
 import org.apache.poi.poifs.crypt.temp.{EncryptedTempData, SXSSFWorkbookWithCustomZipEntrySource}
 import org.apache.poi.poifs.filesystem.POIFSFileSystem
-import org.apache.poi.ss.usermodel._
+import org.apache.poi.ss.usermodel.{Sheet => PoiSheet, _}
 import org.apache.poi.ss.util.{CellRangeAddress, CellUtil, RegionUtil}
 import org.apache.poi.ss.util.WorkbookUtil.createSafeSheetName
 import org.apache.poi.xssf.streaming.{SXSSFCell, SXSSFDrawing, SXSSFSheet, SXSSFWorkbook}
 import org.apache.poi.xssf.usermodel.XSSFSheet
 
-import scala.collection.JavaConverters._
+import scala.jdk.CollectionConverters._
 
 object ExcelWriter {
 
@@ -119,7 +119,9 @@ object ExcelWriter {
         .columnSettingsWithIndex
         .flatMap { case (column, index) => column.groupingTitle.map(title => (title, index)) }
         .groupBy(_._1)
+        .view
         .mapValues(_.map(_._2))
+        .toMap
         .map { case (title, indexes) => { (title, indexes.min, indexes.max) }}
 
       val writeGroupingHeader = createGroupingHeaderWriter(wb, sh)
@@ -255,17 +257,17 @@ object ExcelWriter {
     case x: Any => throw new IllegalStateException("Not handled yet? " + x.toString)
   }
 
-  private def setCellStyleAndValue(cell: SXSSFCell, s: String, cs: CellStyle) {
+  private def setCellStyleAndValue(cell: SXSSFCell, s: String, cs: CellStyle): Unit = {
     cell.setCellStyle(cs)
     cell.setCellValue(s)
   }
 
-  private def setCellStyleAndValue(cell: SXSSFCell, d: LocalDate, cs: CellStyle) {
+  private def setCellStyleAndValue(cell: SXSSFCell, d: LocalDate, cs: CellStyle): Unit = {
     cell.setCellStyle(cs)
     cell.setCellValue(Date.from(d.atStartOfDay(ZoneId.systemDefault).toInstant))
   }
 
-  private def setCellStyleAndValue(cell: SXSSFCell, f: Double, cs: CellStyle) {
+  private def setCellStyleAndValue(cell: SXSSFCell, f: Double, cs: CellStyle): Unit = {
     if (f != 0) {
       cell.setCellStyle(cs)
     } else {

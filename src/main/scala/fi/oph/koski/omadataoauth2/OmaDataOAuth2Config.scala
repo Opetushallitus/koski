@@ -3,7 +3,7 @@ package fi.oph.koski.omadataoauth2
 import com.typesafe.config.{Config => TypeSafeConfig}
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.log.Logging
-import scala.collection.JavaConverters._
+import scala.jdk.CollectionConverters._
 
 
 trait OmaDataOAuth2Config extends Logging  {

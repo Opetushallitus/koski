@@ -20,7 +20,7 @@ class SerializationSpec extends AnyFreeSpec with TestEnvironment with Matchers w
   "Serialization / deserialization" - {
     "Tunnustaminen" in {
       val json = JsonSerializer.serializeWithRoot(AmmatillinenExampleData.tunnustettu)
-      val tunnustettu = SchemaValidatingExtractor.extract[OsaamisenTunnustaminen](json).right.get
+      val tunnustettu = SchemaValidatingExtractor.extract[OsaamisenTunnustaminen](json).toOption.get
       tunnustettu should(equal(AmmatillinenExampleData.tunnustettu))
     }
 
@@ -28,7 +28,7 @@ class SerializationSpec extends AnyFreeSpec with TestEnvironment with Matchers w
       Examples.oppijaExamples.foreach { example =>
         example.name in {
           val json = JsonSerializer.serializeWithRoot(example.data)
-          val oppija = SchemaValidatingExtractor.extract[Oppija](json).right.get
+          val oppija = SchemaValidatingExtractor.extract[Oppija](json).toOption.get
           oppija should(equal(example.data))
           logger.info(example.name + " ok")
         }

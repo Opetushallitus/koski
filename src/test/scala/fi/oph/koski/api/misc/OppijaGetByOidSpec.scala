@@ -57,7 +57,7 @@ class OppijaGetByOidSpec
         }
       }
       "Hakee oppijan tiedot YTR:stä oppijan kaikilla hetuilla" in {
-        KoskiApplicationForTests.cacheManager.invalidateAllCaches
+        KoskiApplicationForTests.cacheManager.invalidateAllCaches()
         MockYtrClient.latestOppijaJsonByHetu = None
 
         val oppija = KoskiSpecificMockOppijat.ylioppilas

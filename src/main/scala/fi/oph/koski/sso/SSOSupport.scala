@@ -7,7 +7,7 @@ import fi.oph.koski.log.Logging
 import org.scalatra.{Cookie, CookieOptions, ScalatraBase}
 
 import java.net.{URI, URLDecoder, URLEncoder}
-import scala.collection.JavaConverters._
+import scala.jdk.CollectionConverters._
 
 trait SSOSupport extends ScalatraBase with Logging {
   def application: UserAuthenticationContext
@@ -159,4 +159,3 @@ case class KoskiUserCookie(
   serviceTicket: String,
   kansalainen: Boolean
 )
-

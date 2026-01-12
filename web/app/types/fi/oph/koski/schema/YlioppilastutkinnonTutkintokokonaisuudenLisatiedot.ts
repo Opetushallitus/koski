@@ -13,22 +13,22 @@ export type YlioppilastutkinnonTutkintokokonaisuudenLisätiedot = {
   aiemminSuoritetutKokeet?: Array<YlioppilastutkinnonSisältyväKoe>
   tyyppi?: Koodistokoodiviite<'ytrtutkintokokonaisuudentyyppi', string>
   tila?: Koodistokoodiviite<'ytrtutkintokokonaisuudentila', string>
+  tunniste: number
   tutkintokerrat: Array<YlioppilastutkinnonTutkintokerranLisätiedot>
   suorituskieli?: Koodistokoodiviite<'kieli', string>
-  tunniste: number
 }
 
 export const YlioppilastutkinnonTutkintokokonaisuudenLisätiedot = (o: {
   aiemminSuoritetutKokeet?: Array<YlioppilastutkinnonSisältyväKoe>
   tyyppi?: Koodistokoodiviite<'ytrtutkintokokonaisuudentyyppi', string>
   tila?: Koodistokoodiviite<'ytrtutkintokokonaisuudentila', string>
+  tunniste: number
   tutkintokerrat?: Array<YlioppilastutkinnonTutkintokerranLisätiedot>
   suorituskieli?: Koodistokoodiviite<'kieli', string>
-  tunniste: number
 }): YlioppilastutkinnonTutkintokokonaisuudenLisätiedot => ({
-  tutkintokerrat: [],
   $class:
     'fi.oph.koski.schema.YlioppilastutkinnonTutkintokokonaisuudenLisätiedot',
+  tutkintokerrat: [],
   ...o
 })
 

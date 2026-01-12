@@ -19,8 +19,6 @@ export type AmmatillisenTutkinnonOsittainenUseastaTutkinnostaSuoritus = {
     'suorituksentyyppi',
     'ammatillinentutkintoosittainen'
   >
-  tila?: Koodistokoodiviite<'suorituksentila', string>
-  alkamispäivä?: string
   suorituskieli: Koodistokoodiviite<'kieli', string>
   suoritustapa: Koodistokoodiviite<
     'ammatillisentutkinnonsuoritustapa',
@@ -34,6 +32,8 @@ export type AmmatillisenTutkinnonOsittainenUseastaTutkinnostaSuoritus = {
   osasuoritukset?: Array<OsittaisenAmmatillisenTutkinnonOsanUseastaTutkinnostaSuoritus>
   osaamisenHankkimistavat?: Array<OsaamisenHankkimistapajakso>
   vahvistus?: HenkilövahvistusValinnaisellaPaikkakunnalla
+  tila?: Koodistokoodiviite<'suorituksentila', string>
+  alkamispäivä?: string
 }
 
 export const AmmatillisenTutkinnonOsittainenUseastaTutkinnostaSuoritus = (o: {
@@ -41,8 +41,6 @@ export const AmmatillisenTutkinnonOsittainenUseastaTutkinnostaSuoritus = (o: {
     'suorituksentyyppi',
     'ammatillinentutkintoosittainen'
   >
-  tila?: Koodistokoodiviite<'suorituksentila', string>
-  alkamispäivä?: string
   suorituskieli: Koodistokoodiviite<'kieli', string>
   suoritustapa?: Koodistokoodiviite<
     'ammatillisentutkinnonsuoritustapa',
@@ -56,6 +54,8 @@ export const AmmatillisenTutkinnonOsittainenUseastaTutkinnostaSuoritus = (o: {
   osasuoritukset?: Array<OsittaisenAmmatillisenTutkinnonOsanUseastaTutkinnostaSuoritus>
   osaamisenHankkimistavat?: Array<OsaamisenHankkimistapajakso>
   vahvistus?: HenkilövahvistusValinnaisellaPaikkakunnalla
+  tila?: Koodistokoodiviite<'suorituksentila', string>
+  alkamispäivä?: string
 }): AmmatillisenTutkinnonOsittainenUseastaTutkinnostaSuoritus => ({
   tyyppi: Koodistokoodiviite({
     koodiarvo: 'ammatillinentutkintoosittainen',

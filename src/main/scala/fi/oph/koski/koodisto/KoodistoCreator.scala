@@ -9,6 +9,8 @@ import fi.oph.koski.log.Logging
 import fi.oph.koski.koodisto.MockKoodistoPalvelu.{sortKoodistoMetadata, sortKoodistoKoodiMetadata}
 import org.json4s.jackson.JsonMethods
 
+import scala.collection.parallel.CollectionConverters._
+
 case class KoodistoCreator(application: KoskiApplication) extends Logging {
   private val config = application.config
   private val kp = application.koodistoPalvelu
@@ -35,7 +37,7 @@ case class KoodistoCreator(application: KoskiApplication) extends Logging {
     }
   }
 
-  def createAndUpdateCodesBasedOnMockData {
+  def createAndUpdateCodesBasedOnMockData: Unit = {
     val codesToCheck = (updateable ++ createable).distinct
     if (codesToCheck.nonEmpty) {
       logger.info(s"Aloitetaan ${codesToCheck.length} koodiston tarkistus")
@@ -79,7 +81,7 @@ case class KoodistoCreator(application: KoskiApplication) extends Logging {
     }
   }
 
-  private def luoPuuttuvatKoodit(luotavatKoodit: List[(String, KoodistoKoodi)]) = {
+  private def luoPuuttuvatKoodit(luotavatKoodit: List[(String, KoodistoKoodi)]): Unit = {
     luotavatKoodit.zipWithIndex.foreach { case ((koodistoUri, koodi), index) =>
       logger.info("Luodaan koodi (" + (index + 1) + "/" + (luotavatKoodit.length) + ") " + koodi.koodiUri)
       kmp.createKoodi(koodistoUri, koodi.copy(voimassaAlkuPvm = Some(LocalDate.now)))
@@ -109,7 +111,7 @@ case class KoodistoCreator(application: KoskiApplication) extends Logging {
     }
   }
 
-  private def päivitäKoodit(päivitettävätKoodit: List[(String, KoodistoKoodi, KoodistoKoodi)]) = {
+  private def päivitäKoodit(päivitettävätKoodit: List[(String, KoodistoKoodi, KoodistoKoodi)]): Unit = {
     päivitettävätKoodit.zipWithIndex.foreach { case ((koodistoUri, vanhaKoodi, uusiKoodi), index) =>
       logger.info("Päivitetään koodi (" + (index + 1) + "/" + (päivitettävätKoodit.length) + ") " + uusiKoodi.koodiUri + " diff " + JsonMethods.compact(objectDiff(vanhaKoodi, uusiKoodi)) + " original " + JsonSerializer.writeWithRoot(vanhaKoodi))
       kmp.updateKoodi(koodistoUri, uusiKoodi.copy(
@@ -120,7 +122,7 @@ case class KoodistoCreator(application: KoskiApplication) extends Logging {
     }
   }
 
-  private def päivitäOlemassaOlevatKoodistot = {
+  private def päivitäOlemassaOlevatKoodistot: Unit = {
     // update existing
     val olemassaOlevatKoodistot = Koodistot.koodistot.filter(updateable.contains(_)).filter(!kp.getLatestVersionOptional(_).isEmpty).toList
     val päivitettävätKoodistot = olemassaOlevatKoodistot.flatMap { koodistoUri =>
@@ -147,7 +149,7 @@ case class KoodistoCreator(application: KoskiApplication) extends Logging {
     }
   }
 
-  private def luoPuuttuvatKoodistot {
+  private def luoPuuttuvatKoodistot: Unit = {
     // Create missing
     val luotavatKoodistot = Koodistot.koodistot.filter(createable.contains(_)).filter(kp.getLatestVersionOptional(_).isEmpty).toList
     luotavatKoodistot.foreach { koodistoUri =>

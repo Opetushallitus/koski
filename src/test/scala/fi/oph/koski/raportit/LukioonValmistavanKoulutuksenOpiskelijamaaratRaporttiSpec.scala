@@ -19,13 +19,13 @@ class LukioonValmistavanKoulutuksenOpiskelijamaaratRaporttiSpec extends AnyFreeS
 
   override protected def beforeAll(): Unit = {
     super.beforeAll()
-    reloadRaportointikanta
+    reloadRaportointikanta()
   }
 
   "Lukioon valmistavan koulutuksen opiskelijamaarat" - {
 
     "Raportin voi ladata ja se tuottaa auditlogin" in {
-      AuditLogTester.clearMessages
+      AuditLogTester.clearMessages()
       authGet(s"api/raportit/luvaopiskelijamaarat?oppilaitosOid=${MockOrganisaatiot.helsinginKaupunki}&paiva=2018-01-01&password=salasana&lang=fi") {
         verifyResponseStatusOk()
         response.headers("Content-Disposition").head should equal(s"""attachment; filename="lukioon_valmistavan_koulutuksen_opiskelijamaarat_20180101.xlsx"""")
@@ -35,7 +35,7 @@ class LukioonValmistavanKoulutuksenOpiskelijamaaratRaporttiSpec extends AnyFreeS
     }
 
     "Raportin voi ladata eri lokalisaatiolla ja se tuottaa auditlogin" in {
-      AuditLogTester.clearMessages
+      AuditLogTester.clearMessages()
       authGet(s"api/raportit/luvaopiskelijamaarat?oppilaitosOid=${MockOrganisaatiot.helsinginKaupunki}&paiva=2018-01-01&password=salasana&lang=sv") {
         verifyResponseStatusOk()
         response.headers("Content-Disposition").head should equal(s"""attachment; filename="antal_studerande_gymnasieförberedande_20180101.xlsx"""")

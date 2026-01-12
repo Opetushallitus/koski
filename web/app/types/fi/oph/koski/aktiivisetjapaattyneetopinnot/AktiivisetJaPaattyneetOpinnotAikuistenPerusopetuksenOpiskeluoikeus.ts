@@ -1,10 +1,10 @@
 import { Koodistokoodiviite } from '../schema/Koodistokoodiviite'
 import { LocalizedString } from '../schema/LocalizedString'
-import { AktiivisetJaPäättyneetOpinnotOpiskeluoikeudenTila } from './AktiivisetJaPaattyneetOpinnotOpiskeluoikeudenTila'
 import { SisältäväOpiskeluoikeus } from './SisaltavaOpiskeluoikeus'
 import { Koulutustoimija } from './Koulutustoimija'
 import { AktiivisetJaPäättyneetOpinnotPäätasonSuoritus } from './AktiivisetJaPaattyneetOpinnotPaatasonSuoritus'
 import { Oppilaitos } from './Oppilaitos'
+import { AktiivisetJaPäättyneetOpinnotOpiskeluoikeudenTila } from './AktiivisetJaPaattyneetOpinnotOpiskeluoikeudenTila'
 
 /**
  * AktiivisetJaPäättyneetOpinnotAikuistenPerusopetuksenOpiskeluoikeus
@@ -15,8 +15,6 @@ export type AktiivisetJaPäättyneetOpinnotAikuistenPerusopetuksenOpiskeluoikeus
   {
     $class: 'fi.oph.koski.aktiivisetjapaattyneetopinnot.AktiivisetJaPäättyneetOpinnotAikuistenPerusopetuksenOpiskeluoikeus'
     tyyppi: Koodistokoodiviite<'opiskeluoikeudentyyppi', 'aikuistenperusopetus'>
-    tila: AktiivisetJaPäättyneetOpinnotOpiskeluoikeudenTila
-    alkamispäivä?: string
     sisältyyOpiskeluoikeuteen?: SisältäväOpiskeluoikeus
     oid?: string
     koulutustoimija?: Koulutustoimija
@@ -24,6 +22,8 @@ export type AktiivisetJaPäättyneetOpinnotAikuistenPerusopetuksenOpiskeluoikeus
     suoritukset: Array<AktiivisetJaPäättyneetOpinnotPäätasonSuoritus>
     päättymispäivä?: string
     oppilaitos?: Oppilaitos
+    tila: AktiivisetJaPäättyneetOpinnotOpiskeluoikeudenTila
+    alkamispäivä?: string
   }
 
 export const AktiivisetJaPäättyneetOpinnotAikuistenPerusopetuksenOpiskeluoikeus =
@@ -33,8 +33,6 @@ export const AktiivisetJaPäättyneetOpinnotAikuistenPerusopetuksenOpiskeluoikeu
         'opiskeluoikeudentyyppi',
         'aikuistenperusopetus'
       >
-      tila?: AktiivisetJaPäättyneetOpinnotOpiskeluoikeudenTila
-      alkamispäivä?: string
       sisältyyOpiskeluoikeuteen?: SisältäväOpiskeluoikeus
       oid?: string
       koulutustoimija?: Koulutustoimija
@@ -42,18 +40,20 @@ export const AktiivisetJaPäättyneetOpinnotAikuistenPerusopetuksenOpiskeluoikeu
       suoritukset?: Array<AktiivisetJaPäättyneetOpinnotPäätasonSuoritus>
       päättymispäivä?: string
       oppilaitos?: Oppilaitos
+      tila?: AktiivisetJaPäättyneetOpinnotOpiskeluoikeudenTila
+      alkamispäivä?: string
     } = {}
   ): AktiivisetJaPäättyneetOpinnotAikuistenPerusopetuksenOpiskeluoikeus => ({
     tyyppi: Koodistokoodiviite({
       koodiarvo: 'aikuistenperusopetus',
       koodistoUri: 'opiskeluoikeudentyyppi'
     }),
-    tila: AktiivisetJaPäättyneetOpinnotOpiskeluoikeudenTila({
-      opiskeluoikeusjaksot: []
-    }),
     suoritukset: [],
     $class:
       'fi.oph.koski.aktiivisetjapaattyneetopinnot.AktiivisetJaPäättyneetOpinnotAikuistenPerusopetuksenOpiskeluoikeus',
+    tila: AktiivisetJaPäättyneetOpinnotOpiskeluoikeudenTila({
+      opiskeluoikeusjaksot: []
+    }),
     ...o
   })
 

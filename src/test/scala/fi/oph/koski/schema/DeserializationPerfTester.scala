@@ -4,12 +4,13 @@ import java.io.File
 import fi.oph.koski.json.JsonFiles
 import fi.oph.scalaschema._
 import org.json4s.JsonAST.JBool
+import scala.collection.immutable.LazyList
 
 object DeserializationPerfTester extends App {
 
   // scala.io.StdIn.readLine("Press enter to continue (for VisualVM)")
 
-  implicit val deserializationContext = ExtractionContext(KoskiSchema.schemaFactory).copy(validate = false)
+  implicit val deserializationContext: ExtractionContext = ExtractionContext(KoskiSchema.schemaFactory).copy(validate = false)
 
   def doOne(filename: String) = {
     val json = JsonFiles.readFile(filename).removeField {
@@ -27,7 +28,7 @@ object DeserializationPerfTester extends App {
     .toList
     .map(_.getAbsolutePath)
     .sorted
-  val filesRepeating = Stream.continually(files.toStream).flatten
+  val filesRepeating = LazyList.continually(LazyList.from(files)).flatten
 
   val count = 1
   var started = System.currentTimeMillis()

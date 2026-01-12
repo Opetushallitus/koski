@@ -30,7 +30,7 @@ case class PerusopetuksenRaportitRepository(db: DB) extends QueryMethods with Ra
     t: LocalizationReader
   ): Seq[PerusopetuksenRaporttiRows] = {
     val potentiaalisestiKeskeyttäneet = mahdollisestiKeskeyttäneet(organisaatioOidit, päivä, vuosiluokka)
-    val tunnisteet = opiskeluoikeusAikajaksotPaatasonSuorituksetQuery(organisaatioOidit, päivä, vuosiluokka).union(potentiaalisestiKeskeyttäneet)
+    val tunnisteet = opiskeluoikeusAikajaksotPaatasonSuorituksetQuery(organisaatioOidit, päivä, vuosiluokka) ++ potentiaalisestiKeskeyttäneet
     val opiskeluoikeusOids = tunnisteet.map(_._1)
     val paatasonSuoritusIds = tunnisteet.flatMap(_._2)
     val aikajaksoIds = tunnisteet.flatMap(_._3)
@@ -48,9 +48,9 @@ case class PerusopetuksenRaportitRepository(db: DB) extends QueryMethods with Ra
     val luokalleJäävienTunnisteet = queryLuokalleJäävienTunnisteet(organisaatioOidit, päivä)
     val luokalleJaavienOidit = luokalleJäävienTunnisteet.map(_._1)
     val peruskoulunPäättävienTunnisteet = queryPeruskoulunPäättäneidenTunnisteet(organisaatioOidit, päivä, luokalleJaavienOidit.distinct)
-    val opiskeluoikeusOids = luokalleJaavienOidit.union(peruskoulunPäättävienTunnisteet.map(_._1))
-    val paatasonSuoritusIds = luokalleJäävienTunnisteet.flatMap(_._2).union(peruskoulunPäättävienTunnisteet.flatMap(_._2))
-    val aikajaksoIds = luokalleJäävienTunnisteet.flatMap(_._3).union(peruskoulunPäättävienTunnisteet.flatMap(_._3))
+    val opiskeluoikeusOids = luokalleJaavienOidit ++ peruskoulunPäättävienTunnisteet.map(_._1)
+    val paatasonSuoritusIds = luokalleJäävienTunnisteet.flatMap(_._2) ++ peruskoulunPäättävienTunnisteet.flatMap(_._2)
+    val aikajaksoIds = luokalleJäävienTunnisteet.flatMap(_._3) ++ peruskoulunPäättävienTunnisteet.flatMap(_._3)
 
     suoritustiedot(päivä, opiskeluoikeusOids, paatasonSuoritusIds, aikajaksoIds, vuosiluokka, kotikuntaPvm, t)
   }
@@ -68,7 +68,7 @@ case class PerusopetuksenRaportitRepository(db: DB) extends QueryMethods with Ra
     val aikajaksot = runDbSync(ROpiskeluoikeusAikajaksot.filter(_.id inSet aikajaksoIds).result, timeout = 5.minutes).groupBy(_.opiskeluoikeusOid)
     val paatasonSuoritukset = runDbSync(RPäätasonSuoritukset.filter(_.päätasonSuoritusId inSet paatasonSuoritusIds).result, timeout = 5.minutes).groupBy(_.opiskeluoikeusOid)
     val osasuoritukset = runDbSync(ROsasuoritukset.filter(_.päätasonSuoritusId inSet paatasonSuoritusIds).result).groupBy(_.päätasonSuoritusId)
-    val henkilot = runDbSync(RHenkilöt.filter(_.oppijaOid inSet opiskeluoikeudet.map(_.oppijaOid).distinct).result).groupBy(_.oppijaOid).mapValues(_.head)
+    val henkilot = runDbSync(RHenkilöt.filter(_.oppijaOid inSet opiskeluoikeudet.map(_.oppijaOid).distinct).result).groupBy(_.oppijaOid).view.mapValues(_.head).toMap
     val kotikuntahistoriat = kotikuntaPvm.toSeq.flatMap { pvm =>
       val pvmDateBegin = Date.valueOf(LocalDate.of(1900, 1, 1))
       val pvmDateEnd = Date.valueOf(LocalDate.now())
@@ -79,8 +79,8 @@ case class PerusopetuksenRaportitRepository(db: DB) extends QueryMethods with Ra
         .result
       )
     }
-    val voimassaOlevatVuosiluokat = runDbSync(voimassaOlevatVuosiluokatQuery(opiskeluoikeusOids).result, timeout = 5.minutes).groupBy(_._1).mapValues(_.map(_._2).toSeq)
-    val luokat = runDbSync(luokkatiedotVuosiluokalleQuery(opiskeluoikeusOids, vuosiluokka).result, timeout = 5.minutes).groupBy(_._1).mapValues(_.map(_._2).distinct.sorted.mkString(","))
+    val voimassaOlevatVuosiluokat = runDbSync(voimassaOlevatVuosiluokatQuery(opiskeluoikeusOids).result, timeout = 5.minutes).groupBy(_._1).view.mapValues(_.map(_._2).toSeq).toMap
+    val luokat = runDbSync(luokkatiedotVuosiluokalleQuery(opiskeluoikeusOids, vuosiluokka).result, timeout = 5.minutes).groupBy(_._1).view.mapValues(_.map(_._2).distinct.sorted.mkString(",")).toMap
     val organisaatiohistoriat = fetchOrganisaatiohistoriat(päivä, opiskeluoikeusOids, t.language).groupBy(_.opiskeluoikeusOid)
 
     opiskeluoikeudet.flatMap { oo =>
@@ -147,7 +147,7 @@ case class PerusopetuksenRaportitRepository(db: DB) extends QueryMethods with Ra
   }
 
   private def opiskeluoikeusAikajaksotPaatasonSuorituksetQuery(oppilaitokset: Seq[String], päivä: LocalDate, vuosiluokka: String) = {
-    implicit val getResult = GetResult(rs => (rs.nextString, rs.nextArray, rs.nextArray))
+    implicit val getResult = GetResult(rs => (rs.nextString(), rs.nextArray(), rs.nextArray()))
 
     val query = sql"""
      select
@@ -178,7 +178,7 @@ case class PerusopetuksenRaportitRepository(db: DB) extends QueryMethods with Ra
   }
 
   private def queryLuokalleJäävienTunnisteet(oppilaitokset: Seq[String], päivä: LocalDate) = {
-    implicit val getResult = GetResult(rs => (rs.nextString, rs.nextArray, rs.nextArray))
+    implicit val getResult = GetResult(rs => (rs.nextString(), rs.nextArray(), rs.nextArray()))
 
     val query = sql"""
      select
@@ -211,7 +211,7 @@ case class PerusopetuksenRaportitRepository(db: DB) extends QueryMethods with Ra
   }
 
   private def queryPeruskoulunPäättäneidenTunnisteet(oppilaitokset: Seq[String], päivä: LocalDate, luokalleJaavatOidit: Seq[String]) = {
-    implicit val getResult = GetResult(rs => (rs.nextString, rs.nextArray, rs.nextArray))
+    implicit val getResult = GetResult(rs => (rs.nextString(), rs.nextArray(), rs.nextArray()))
 
     val query = sql"""
       with koulun_paattavat_ysiluokkalaiset as (
@@ -285,7 +285,7 @@ case class PerusopetuksenRaportitRepository(db: DB) extends QueryMethods with Ra
   }
 
   private def queryAktiivisetSuoritukset(oppilaitokset: Seq[String], päivä: LocalDate) = {
-    implicit val getResult = GetResult(rs => (rs.nextString, rs.nextArray, rs.nextArray))
+    implicit val getResult = GetResult(rs => (rs.nextString(), rs.nextArray(), rs.nextArray()))
 
     val query = sql"""
       select

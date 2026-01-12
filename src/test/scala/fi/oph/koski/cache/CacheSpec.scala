@@ -6,9 +6,10 @@ import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.should.Matchers
 
 import scala.concurrent.duration.DurationInt
+import scala.collection.parallel.CollectionConverters._
 
 class CacheSpec extends AnyFreeSpec with TestEnvironment with Matchers {
-  implicit val manager = GlobalCacheManager
+  implicit val manager: CacheManager = GlobalCacheManager
 
   "Cache" - {
     "Without background refresh" - {
@@ -36,12 +37,12 @@ class CacheSpec extends AnyFreeSpec with TestEnvironment with Matchers {
         val counter = new Counter()
         val cache = RefreshingCache("testcache", 1.second, 10)
         (1 to 11) foreach { n =>
-          cache(counter.incInvocation(n + ".")) should equal(n + ".1")
+          cache(counter.incInvocation(s"$n.")) should equal(s"$n.1")
           Thread.sleep(1)
         }
         cache.getEntry(counter.incInvocation("1.")).isDefined should equal(true) // Eviction threshold not exceeded yet
         (12 to 12) foreach { n =>
-          cache(counter.incInvocation(n + ".")) should equal(n + ".1")
+          cache(counter.incInvocation(s"$n.")) should equal(s"$n.1")
         }
         // 2 first entries evicted
         cache.getEntry(counter.incInvocation("1.")).isDefined should equal(false)

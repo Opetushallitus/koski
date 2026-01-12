@@ -14,7 +14,7 @@ import java.nio.charset.StandardCharsets
 import java.security.MessageDigest
 import java.security.cert.{CertificateFactory, X509CRL}
 
-import scala.collection.JavaConverters._
+import scala.jdk.CollectionConverters._
 
 import fi.oph.koski.util.ChainingSyntax._
 
@@ -90,7 +90,7 @@ object SwisscomCRLAndOCSPExtender extends Logging {
 
         _ = pdDssDict.setItem(COSName.getPDFName("VRI"), pdVriMapDict)
         _ = cosDocumentCatalog.setItem(COSName.getPDFName("DSS"), pdDssDict)
-      } yield Unit
+      } yield ()
     } catch {
       case e: Exception =>
         handleStampingError(todistusId, "Failed to extend PDF with CRLs and OCSPs", Some(e))
@@ -108,7 +108,7 @@ object SwisscomCRLAndOCSPExtender extends Logging {
       adbeExtension.setName("BaseVersion", "1.7")
       adbeExtension.setInt("ExtensionLevel", 5)
       catalog.setVersion("1.7")
-      Right(Unit)
+      Right(())
     } catch {
       case e: Exception =>
         handleStampingError(todistusId, "Failed to add extensions", Some(e))
@@ -157,7 +157,9 @@ object SwisscomCRLAndOCSPExtender extends Logging {
           val t = s.getCOSObject.getItem(COSName.TYPE)
           t.equals(COSName.SIG) || t.equals(COSName.DOC_TIME_STAMP)
         }).toRight({
-          handleStampingError(todistusId, "Cannot extend PDF with CRL and OCSP data. No signature was found in the PDF").left.get
+          handleStampingError(todistusId, "Cannot extend PDF with CRL and OCSP data. No signature was found in the PDF") match {
+            case Left(status) => status
+          }
         })
     } catch {
       case e: Exception =>

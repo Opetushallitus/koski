@@ -72,7 +72,7 @@ object ExpectedOppijaData {
 
 trait ValpasOppijaTestBase extends ValpasTestBase with BeforeAndAfterEach {
 
-  override protected def beforeEach() {
+  override protected def beforeEach(): Unit = {
     super.beforeEach()
     KoskiApplicationForTests.valpasRajapäivätService.asInstanceOf[MockValpasRajapäivätService]
       .asetaMockTarkastelupäivä(FixtureUtil.DefaultTarkastelupäivä)

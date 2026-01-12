@@ -15,7 +15,7 @@ import software.amazon.awssdk.services.ecs.EcsClient
 import software.amazon.awssdk.services.ecs.model.{DescribeTasksRequest, ListTasksRequest, Task}
 
 import java.time.Instant
-import scala.collection.JavaConverters._
+import scala.jdk.CollectionConverters._
 import scala.concurrent.ExecutionContext
 import scala.concurrent.duration.DurationInt
 import scala.language.postfixOps
@@ -105,14 +105,14 @@ class RemoteEcsService(config: Config) extends EcsService with Logging {
       .cluster(cluster)
       .serviceName(koskiServiceName)
       .build()
-    client.listTasks(request).taskArns().asScala
+    client.listTasks(request).taskArns().asScala.toSeq
   }).getOrElse(Seq.empty)
 
   def getRaportointikantaLoaderTasks: Seq[KoskiInstance] = TryWithLogging(logger, {
     val listAllTasksReq = ListTasksRequest.builder()
       .cluster(cluster)
       .build()
-    val taskArns = client.listTasks(listAllTasksReq).taskArns().asScala
+    val taskArns = client.listTasks(listAllTasksReq).taskArns().asScala.toSeq
     describeKoskiTasks(taskArns)
       .filter(_.group.contains("RaportointikantaLoader"))
   }).getOrElse(Seq.empty)
@@ -123,7 +123,7 @@ class RemoteEcsService(config: Config) extends EcsService with Logging {
       .tasks(taskArns.asJava)
       .build()
     client.describeTasks(request)
-      .tasks().asScala
+      .tasks().asScala.toSeq
       .map(KoskiInstance.apply)
   }).getOrElse(Seq.empty)
 }

@@ -26,7 +26,7 @@ class AmmatillinenOsittainenRaporttiSpec
 
   override protected def beforeAll(): Unit = {
     super.beforeAll()
-    reloadRaportointikanta
+    reloadRaportointikanta()
   }
 
   override protected def alterFixture(): Unit = {
@@ -35,7 +35,7 @@ class AmmatillinenOsittainenRaporttiSpec
       tila = AmmatillinenOpiskeluoikeudenTila(List(AmmatillinenOpiskeluoikeusjakso(date(2016, 1, 1), opiskeluoikeusLäsnä, Some(ExampleData.valtionosuusRahoitteinen)))),
     )))) {
       verifyResponseStatusOk()
-      reloadRaportointikanta
+      reloadRaportointikanta()
     }
   }
 

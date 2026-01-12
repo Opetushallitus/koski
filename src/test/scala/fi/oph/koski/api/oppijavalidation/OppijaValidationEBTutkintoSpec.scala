@@ -265,7 +265,7 @@ class OppijaValidationEBTutkintoSpec
     implicit val session: KoskiSpecificSession = KoskiSpecificSession.systemUser
     implicit val accessType = AccessType.write
     mockKoskiValidator(config).updateFieldsAndValidateAsJson(oppija)
-      .left.get should equal(KoskiErrorCategory.badRequest.validation.esh.tallennuspäivä(s"Helsingin eurooppalaisen koulun opiskeluoikeuksia voi alkaa tallentaa vasta ${finnishDateFormat.format(huominenPäivä)} alkaen"))
+      .swap.toOption.get should equal(KoskiErrorCategory.badRequest.validation.esh.tallennuspäivä(s"Helsingin eurooppalaisen koulun opiskeluoikeuksia voi alkaa tallentaa vasta ${finnishDateFormat.format(huominenPäivä)} alkaen"))
   }
 
   "Ei voi tallentaa, jos päättynyt ennen rajapäivää" in {
@@ -281,7 +281,7 @@ class OppijaValidationEBTutkintoSpec
     implicit val session: KoskiSpecificSession = KoskiSpecificSession.systemUser
     implicit val accessType = AccessType.write
     mockKoskiValidator(config).updateFieldsAndValidateAsJson(oppija)
-      .left.get should equal(KoskiErrorCategory.badRequest.validation.esh.päättymispäivä(s"Helsingin eurooppalaisen koulun tallennettavat opiskeluoikeudet eivät voi olla päättyneet ennen lain voimaantuloa ${finnishDateFormat.format(päättymispäivänjälkeinenPäivä)}"))
+      .swap.toOption.get should equal(KoskiErrorCategory.badRequest.validation.esh.päättymispäivä(s"Helsingin eurooppalaisen koulun tallennettavat opiskeluoikeudet eivät voi olla päättyneet ennen lain voimaantuloa ${finnishDateFormat.format(päättymispäivänjälkeinenPäivä)}"))
   }
 
   def mockKoskiValidator(config: Config) = {

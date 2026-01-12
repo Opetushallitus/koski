@@ -1,7 +1,6 @@
 package fi.oph.koski.eperusteetvalidation
 
 import com.typesafe.config.Config
-import fi.oph.koski.documentation.KoskiApiOperations.opiskeluoikeus
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.koodisto.KoodistoViitePalvelu
 import fi.oph.koski.log.Logging

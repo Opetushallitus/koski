@@ -1,9 +1,9 @@
 import { MuunAmmatillisenKoulutuksenArviointi } from './MuunAmmatillisenKoulutuksenArviointi'
-import { Näyttö } from './Naytto'
 import { Koodistokoodiviite } from './Koodistokoodiviite'
 import { LocalizedString } from './LocalizedString'
 import { MuunAmmatillisenKoulutuksenOsasuorituksenLisätieto } from './MuunAmmatillisenKoulutuksenOsasuorituksenLisatieto'
 import { TutkinnonOsaaPienempiKokonaisuus } from './TutkinnonOsaaPienempiKokonaisuus'
+import { Näyttö } from './Naytto'
 
 /**
  * ValtakunnalliseenTutkinnonOsaanLiittyvänTutkinnonOsaaPienemmänKokonaisuudenSuoritus
@@ -14,6 +14,10 @@ export type ValtakunnalliseenTutkinnonOsaanLiittyvänTutkinnonOsaaPienemmänKoko
   {
     $class: 'fi.oph.koski.schema.ValtakunnalliseenTutkinnonOsaanLiittyvänTutkinnonOsaaPienemmänKokonaisuudenSuoritus'
     arviointi?: Array<MuunAmmatillisenKoulutuksenArviointi>
+    suorituskieli?: Koodistokoodiviite<'kieli', string>
+    lisätiedot?: Array<MuunAmmatillisenKoulutuksenOsasuorituksenLisätieto>
+    liittyyTutkinnonOsaan: Koodistokoodiviite<'tutkinnonosat', string>
+    koulutusmoduuli: TutkinnonOsaaPienempiKokonaisuus
     näyttö?: Näyttö
     tyyppi: Koodistokoodiviite<
       'suorituksentyyppi',
@@ -21,15 +25,15 @@ export type ValtakunnalliseenTutkinnonOsaanLiittyvänTutkinnonOsaaPienemmänKoko
     >
     tila?: Koodistokoodiviite<'suorituksentila', string>
     alkamispäivä?: string
-    suorituskieli?: Koodistokoodiviite<'kieli', string>
-    lisätiedot?: Array<MuunAmmatillisenKoulutuksenOsasuorituksenLisätieto>
-    liittyyTutkinnonOsaan: Koodistokoodiviite<'tutkinnonosat', string>
-    koulutusmoduuli: TutkinnonOsaaPienempiKokonaisuus
   }
 
 export const ValtakunnalliseenTutkinnonOsaanLiittyvänTutkinnonOsaaPienemmänKokonaisuudenSuoritus =
   (o: {
     arviointi?: Array<MuunAmmatillisenKoulutuksenArviointi>
+    suorituskieli?: Koodistokoodiviite<'kieli', string>
+    lisätiedot?: Array<MuunAmmatillisenKoulutuksenOsasuorituksenLisätieto>
+    liittyyTutkinnonOsaan: Koodistokoodiviite<'tutkinnonosat', string>
+    koulutusmoduuli: TutkinnonOsaaPienempiKokonaisuus
     näyttö?: Näyttö
     tyyppi?: Koodistokoodiviite<
       'suorituksentyyppi',
@@ -37,17 +41,13 @@ export const ValtakunnalliseenTutkinnonOsaanLiittyvänTutkinnonOsaaPienemmänKok
     >
     tila?: Koodistokoodiviite<'suorituksentila', string>
     alkamispäivä?: string
-    suorituskieli?: Koodistokoodiviite<'kieli', string>
-    lisätiedot?: Array<MuunAmmatillisenKoulutuksenOsasuorituksenLisätieto>
-    liittyyTutkinnonOsaan: Koodistokoodiviite<'tutkinnonosat', string>
-    koulutusmoduuli: TutkinnonOsaaPienempiKokonaisuus
   }): ValtakunnalliseenTutkinnonOsaanLiittyvänTutkinnonOsaaPienemmänKokonaisuudenSuoritus => ({
+    $class:
+      'fi.oph.koski.schema.ValtakunnalliseenTutkinnonOsaanLiittyvänTutkinnonOsaaPienemmänKokonaisuudenSuoritus',
     tyyppi: Koodistokoodiviite({
       koodiarvo: 'tutkinnonosaapienempikokonaisuus',
       koodistoUri: 'suorituksentyyppi'
     }),
-    $class:
-      'fi.oph.koski.schema.ValtakunnalliseenTutkinnonOsaanLiittyvänTutkinnonOsaaPienemmänKokonaisuudenSuoritus',
     ...o
   })
 

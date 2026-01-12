@@ -27,7 +27,7 @@ class PerusopetuksenVuosiluokkaRaporttiSpec
 
   override protected def beforeAll(): Unit = {
     super.beforeAll()
-    reloadRaportointikanta
+    reloadRaportointikanta()
   }
 
   private lazy val repository = PerusopetuksenRaportitRepository(KoskiApplicationForTests.raportointiDatabase.db)
@@ -94,7 +94,7 @@ class PerusopetuksenVuosiluokkaRaporttiSpec
         verifyResponseStatusOk()
       }
 
-      reloadRaportointikanta
+      reloadRaportointikanta()
 
       val result = PerusopetuksenVuosiluokkaRaportti.buildRaportti(repository, Seq(MockOrganisaatiot.jyväskylänNormaalikoulu), hakupäivä, None, vuosiluokka = "8", t)
       val opiskeluoikeusOid = lastOpiskeluoikeus(KoskiSpecificMockOppijat.lukioKesken.oid).oid.get
@@ -576,7 +576,7 @@ class PerusopetuksenVuosiluokkaRaporttiSpec
     addPerusopetus(KoskiSpecificMockOppijat.markkanen, createVuosiluokanSuoritus(Some(date(2015, 1, 1)), None, vuosiluokka = 9), createVuosiluokanSuoritus(Some(date(2014, 1, 1)), Some(date(2015, 1, 1))))
     addPerusopetus(KoskiSpecificMockOppijat.teija, createVuosiluokanSuoritus(Some(date(2014, 1, 1)), Some(date(2014, 12, 12))), createVuosiluokanSuoritus(alkupäivä, None, vuosiluokka = 8))
     addPerusopetus(KoskiSpecificMockOppijat.tero, createVuosiluokanSuoritus(alkupäivä, loppupäivä), createVuosiluokanSuoritus(Some(date(2014, 1, 1)), Some(date(2015, 2, 2)), vuosiluokka = 8))
-    reloadRaportointikanta
+    reloadRaportointikanta()
   }
 
   private def addPerusopetus(oppija: Henkilö, suoritukset: PerusopetuksenPäätasonSuoritus*) = {
@@ -593,14 +593,14 @@ class PerusopetuksenVuosiluokkaRaporttiSpec
   }
 
   private def withAdditionalSuoritukset(oppija: LaajatOppijaHenkilöTiedot, vuosiluokanSuoritus: List[PerusopetuksenPäätasonSuoritus], lisätiedot: Option[PerusopetuksenOpiskeluoikeudenLisätiedot] = None)(f: => Any) = {
-    resetFixtures
+    resetFixtures()
     val oo = getOpiskeluoikeudet(oppija.oid).collect { case oo: PerusopetuksenOpiskeluoikeus => oo }.head
     val lisatyllaVuosiluokanSuorituksella = oo.copy(suoritukset = (vuosiluokanSuoritus ::: oo.suoritukset),
       lisätiedot = lisätiedot,
       tila = NuortenPerusopetuksenOpiskeluoikeudenTila(List(NuortenPerusopetuksenOpiskeluoikeusjakso(date(2008, 8, 15), opiskeluoikeusLäsnä))))
     putOppija(Oppija(oppija, List(lisatyllaVuosiluokanSuorituksella))) {
       verifyResponseStatusOk()
-      reloadRaportointikanta
+      reloadRaportointikanta()
       f
     }
   }
@@ -609,7 +609,7 @@ class PerusopetuksenVuosiluokkaRaporttiSpec
     val oo = lastOpiskeluoikeus(oppija.oid).asInstanceOf[T].copy(lisätiedot = Some(lisätiedot))
     putOppija(Oppija(oppija, List(oo))) {
       verifyResponseStatusOk()
-      reloadRaportointikanta
+      reloadRaportointikanta()
       f
     }
   }

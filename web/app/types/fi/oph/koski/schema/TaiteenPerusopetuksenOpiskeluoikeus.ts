@@ -1,12 +1,12 @@
 import { Koodistokoodiviite } from './Koodistokoodiviite'
 import { LocalizedString } from './LocalizedString'
-import { TaiteenPerusopetuksenOpiskeluoikeudenTila } from './TaiteenPerusopetuksenOpiskeluoikeudenTila'
 import { OpiskeluoikeudenOrganisaatiohistoria } from './OpiskeluoikeudenOrganisaatiohistoria'
 import { Koulutustoimija } from './Koulutustoimija'
 import { TaiteenPerusopetuksenPäätasonSuoritus } from './TaiteenPerusopetuksenPaatasonSuoritus'
-import { LähdejärjestelmäId } from './LahdejarjestelmaId'
 import { LähdejärjestelmäkytkennänPurkaminen } from './LahdejarjestelmakytkennanPurkaminen'
 import { Oppilaitos } from './Oppilaitos'
+import { TaiteenPerusopetuksenOpiskeluoikeudenTila } from './TaiteenPerusopetuksenOpiskeluoikeudenTila'
+import { LähdejärjestelmäId } from './LahdejarjestelmaId'
 
 /**
  * TaiteenPerusopetuksenOpiskeluoikeus
@@ -16,54 +16,54 @@ import { Oppilaitos } from './Oppilaitos'
 export type TaiteenPerusopetuksenOpiskeluoikeus = {
   $class: 'fi.oph.koski.schema.TaiteenPerusopetuksenOpiskeluoikeus'
   tyyppi: Koodistokoodiviite<'opiskeluoikeudentyyppi', 'taiteenperusopetus'>
-  tila: TaiteenPerusopetuksenOpiskeluoikeudenTila
-  alkamispäivä?: string
   organisaatiohistoria?: Array<OpiskeluoikeudenOrganisaatiohistoria>
   oid?: string
   koulutustoimija?: Koulutustoimija
-  versionumero?: number
-  oppimäärä: Koodistokoodiviite<'taiteenperusopetusoppimaara', string>
   suoritukset: Array<TaiteenPerusopetuksenPäätasonSuoritus>
   aikaleima?: string
   päättymispäivä?: string
-  lähdejärjestelmänId?: LähdejärjestelmäId
-  arvioituPäättymispäivä?: string
   koulutuksenToteutustapa: Koodistokoodiviite<
     'taiteenperusopetuskoulutuksentoteutustapa',
     string
   >
   lähdejärjestelmäkytkentäPurettu?: LähdejärjestelmäkytkennänPurkaminen
   oppilaitos?: Oppilaitos
+  tila: TaiteenPerusopetuksenOpiskeluoikeudenTila
+  alkamispäivä?: string
+  versionumero?: number
+  oppimäärä: Koodistokoodiviite<'taiteenperusopetusoppimaara', string>
+  lähdejärjestelmänId?: LähdejärjestelmäId
+  arvioituPäättymispäivä?: string
 }
 
 export const TaiteenPerusopetuksenOpiskeluoikeus = (o: {
   tyyppi?: Koodistokoodiviite<'opiskeluoikeudentyyppi', 'taiteenperusopetus'>
-  tila?: TaiteenPerusopetuksenOpiskeluoikeudenTila
-  alkamispäivä?: string
   organisaatiohistoria?: Array<OpiskeluoikeudenOrganisaatiohistoria>
   oid?: string
   koulutustoimija?: Koulutustoimija
-  versionumero?: number
-  oppimäärä: Koodistokoodiviite<'taiteenperusopetusoppimaara', string>
   suoritukset?: Array<TaiteenPerusopetuksenPäätasonSuoritus>
   aikaleima?: string
   päättymispäivä?: string
-  lähdejärjestelmänId?: LähdejärjestelmäId
-  arvioituPäättymispäivä?: string
   koulutuksenToteutustapa: Koodistokoodiviite<
     'taiteenperusopetuskoulutuksentoteutustapa',
     string
   >
   lähdejärjestelmäkytkentäPurettu?: LähdejärjestelmäkytkennänPurkaminen
   oppilaitos?: Oppilaitos
+  tila?: TaiteenPerusopetuksenOpiskeluoikeudenTila
+  alkamispäivä?: string
+  versionumero?: number
+  oppimäärä: Koodistokoodiviite<'taiteenperusopetusoppimaara', string>
+  lähdejärjestelmänId?: LähdejärjestelmäId
+  arvioituPäättymispäivä?: string
 }): TaiteenPerusopetuksenOpiskeluoikeus => ({
   tyyppi: Koodistokoodiviite({
     koodiarvo: 'taiteenperusopetus',
     koodistoUri: 'opiskeluoikeudentyyppi'
   }),
-  tila: TaiteenPerusopetuksenOpiskeluoikeudenTila({ opiskeluoikeusjaksot: [] }),
   suoritukset: [],
   $class: 'fi.oph.koski.schema.TaiteenPerusopetuksenOpiskeluoikeus',
+  tila: TaiteenPerusopetuksenOpiskeluoikeudenTila({ opiskeluoikeusjaksot: [] }),
   ...o
 })
 

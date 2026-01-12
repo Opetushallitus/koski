@@ -253,7 +253,7 @@ class OppijaValidationVapaaSivistystyöVapaatavoitteinenSpec extends AnyFreeSpec
     oo.copy(
       suoritukset = List(suoritusVapaatavoitteinenKoulutus.copy(
         osasuoritukset = Some(List(
-          vapaanSivistystyönVapaatavoitteisenKoulutuksenOsasuorituksenSuoritus.copy(
+          vapaanSivistystyönVapaatavoitteisenKoulutuksenOsasuorituksenSuoritus().copy(
             arviointi = None
           )
         )))

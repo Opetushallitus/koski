@@ -81,7 +81,7 @@ class PostgresKoskiOpiskeluoikeusRepository(
   private def withExistenceCheck[T](things: Iterable[T]): Either[HttpStatus, T] = things.headOption.toRight(KoskiErrorCategory.notFound.opiskeluoikeuttaEiLöydyTaiEiOikeuksia())
 
   private def withOidCheck[T](oid: String)(f: => Either[HttpStatus, T]) = {
-    OpiskeluoikeusOid.validateOpiskeluoikeusOid(oid).right.flatMap(_ => f)
+    OpiskeluoikeusOid.validateOpiskeluoikeusOid(oid).flatMap(_ => f)
   }
 
   override def createOrUpdate(
@@ -113,7 +113,7 @@ class PostgresKoskiOpiskeluoikeusRepository(
   override def isKuoriOpiskeluoikeus(opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus): Boolean = {
     if (opiskeluoikeus.oid.isDefined && opiskeluoikeus.oppilaitos.isDefined) {
       val ooid = opiskeluoikeus.oid.get
-      val oppijaOids = getOppijaOidsForOpiskeluoikeus(ooid)(KoskiSpecificSession.systemUser).right.getOrElse(List())
+      val oppijaOids = getOppijaOidsForOpiskeluoikeus(ooid)(KoskiSpecificSession.systemUser).getOrElse(List())
 
       findByOppijaOids(oppijaOids)(KoskiSpecificSession.systemUser)
         .exists(_.sisältyyOpiskeluoikeuteen.exists(_.oid == ooid))
@@ -240,7 +240,9 @@ class PostgresKoskiOpiskeluoikeusRepository(
         AND poistettu IS NOT TRUE
   """.as[(String, Timestamp)])
       .toMap
+      .view
       .mapValues(_.toLocalDateTime.toLocalDate)
+      .toMap
 
   private implicit def getLocalDate: GetResult[LocalDate] = GetResult(r => {
     r.getLocalDate("paiva")

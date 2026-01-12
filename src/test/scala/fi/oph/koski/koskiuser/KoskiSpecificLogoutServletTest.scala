@@ -16,7 +16,7 @@ class KoskiSpecificLogoutServletTest
     with KoskiHttpSpec
     with BeforeAndAfterEach {
 
-  override protected def afterEach = {
+  override protected def afterEach(): Unit = {
     LogoutServerConfiguration.clearOverrides
     SSOConfigurationOverride.clearOverrides
   }

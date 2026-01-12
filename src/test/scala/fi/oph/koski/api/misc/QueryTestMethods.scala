@@ -11,7 +11,7 @@ trait QueryTestMethods extends HttpSpecification {
     authGet ("api/oppija" + queryString, user = user) {
       verifyResponseStatusOk()
       implicit val context: ExtractionContext = strictDeserialization
-      SchemaValidatingExtractor.extract[List[Oppija]](body).right.get
+      SchemaValidatingExtractor.extract[List[Oppija]](body).toOption.get
     }
   }
 }

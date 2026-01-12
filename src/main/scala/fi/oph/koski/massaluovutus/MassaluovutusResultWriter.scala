@@ -5,7 +5,7 @@ import fi.oph.koski.config.Environment
 import fi.oph.koski.json.{JsonSerializer, SensitiveDataAllowed}
 import fi.oph.koski.koskiuser.{KoskiSpecificSession, Session}
 import fi.oph.koski.localization.LocalizationReader
-import fi.oph.koski.raportit.{DataSheet, ExcelWriter, OppilaitosRaporttiResponse}
+import fi.oph.koski.raportit.{DataSheet, ExcelWriter, OppilaitosRaporttiResponse, Sheet}
 import fi.oph.koski.util.CsvFormatter
 import org.json4s.JValue
 import org.json4s.jackson.JsonMethods
@@ -13,6 +13,7 @@ import software.amazon.awssdk.core.internal.sync.FileContentStreamProvider
 import software.amazon.awssdk.http.ContentStreamProvider
 
 import java.io.{BufferedOutputStream, FileOutputStream, InputStream, OutputStream}
+import scala.collection.immutable.LazyList
 import java.nio.file.{Files, Path}
 import java.util.UUID
 import scala.collection.mutable
@@ -103,9 +104,10 @@ case class QueryResultWriter(
       case QueryFormat.xlsx =>
         val upload = createStream(report.filename, format)
         manager.acquire(upload)
+        val sheets: Seq[Sheet] = report.sheets
         ExcelWriter.writeExcel(
           report.workbookSettings,
-          report.sheets,
+          sheets,
           ExcelWriter.BooleanCellStyleLocalizedValues(localizationReader),
           upload.output,
         )
@@ -218,7 +220,7 @@ class CsvStream[T <: Product](name: String, partitionSize: Option[Long], upload:
   }
 
   private def recordOf(data: T): String =
-    CsvFormatter.formatRecord(data.productIterator.to)
+    CsvFormatter.formatRecord(data.productIterator.toList)
 
   private def headerOf(data: T): String =
     CsvFormatter.formatRecord(
@@ -226,6 +228,7 @@ class CsvStream[T <: Product](name: String, partitionSize: Option[Long], upload:
         .getDeclaredFields
         .map(_.getName)
         .map(CsvFormatter.snakecasify)
+        .toList
     )
 }
 
@@ -265,13 +268,13 @@ case class StringStreamProvider(content: String) extends ContentStreamProvider {
   def newStream(): InputStream = ByteInputStream(content)
 }
 
-class ByteInputStream[T <: Byte](stream: Stream[T]) extends InputStream {
+class ByteInputStream[T <: Byte](stream: LazyList[T]) extends InputStream {
   private val iter = stream.iterator
-  override def read(): Int = if (iter.hasNext) iter.next else -1
+  override def read(): Int = if (iter.hasNext) iter.next() else -1
 }
 
 object ByteInputStream {
-  def apply(string: String) = new ByteInputStream(string.getBytes("UTF-8").toStream)
+  def apply(string: String) = new ByteInputStream(LazyList.from(string.getBytes("UTF-8").iterator))
 }
 
 abstract class CsvRecord[T <: Product](val self: T) {

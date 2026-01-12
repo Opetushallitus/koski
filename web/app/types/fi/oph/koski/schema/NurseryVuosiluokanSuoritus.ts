@@ -15,14 +15,14 @@ export type NurseryVuosiluokanSuoritus = {
     'suorituksentyyppi',
     'europeanschoolofhelsinkivuosiluokkanursery'
   >
-  tila?: Koodistokoodiviite<'suorituksentila', string>
-  alkamispäivä?: string
   luokka?: string
   todistuksellaNäkyvätLisätiedot?: LocalizedString
   jääLuokalle: boolean
   koulutusmoduuli: NurseryLuokkaAste
   toimipiste: OrganisaatioWithOid
   vahvistus?: HenkilövahvistusPaikkakunnalla
+  tila?: Koodistokoodiviite<'suorituksentila', string>
+  alkamispäivä?: string
 }
 
 export const NurseryVuosiluokanSuoritus = (o: {
@@ -30,14 +30,14 @@ export const NurseryVuosiluokanSuoritus = (o: {
     'suorituksentyyppi',
     'europeanschoolofhelsinkivuosiluokkanursery'
   >
-  tila?: Koodistokoodiviite<'suorituksentila', string>
-  alkamispäivä?: string
   luokka?: string
   todistuksellaNäkyvätLisätiedot?: LocalizedString
   jääLuokalle?: boolean
   koulutusmoduuli: NurseryLuokkaAste
   toimipiste: OrganisaatioWithOid
   vahvistus?: HenkilövahvistusPaikkakunnalla
+  tila?: Koodistokoodiviite<'suorituksentila', string>
+  alkamispäivä?: string
 }): NurseryVuosiluokanSuoritus => ({
   tyyppi: Koodistokoodiviite({
     koodiarvo: 'europeanschoolofhelsinkivuosiluokkanursery',

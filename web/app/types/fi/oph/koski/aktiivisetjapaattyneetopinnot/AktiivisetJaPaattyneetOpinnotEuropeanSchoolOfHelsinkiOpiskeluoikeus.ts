@@ -1,10 +1,10 @@
 import { Koodistokoodiviite } from '../schema/Koodistokoodiviite'
 import { LocalizedString } from '../schema/LocalizedString'
-import { AktiivisetJaPäättyneetOpinnotOpiskeluoikeudenTila } from './AktiivisetJaPaattyneetOpinnotOpiskeluoikeudenTila'
 import { SisältäväOpiskeluoikeus } from './SisaltavaOpiskeluoikeus'
 import { Koulutustoimija } from './Koulutustoimija'
 import { AktiivisetJaPäättyneetOpinnotEuropeanSchoolOfHelsinkiPäätasonSuoritus } from './AktiivisetJaPaattyneetOpinnotEuropeanSchoolOfHelsinkiPaatasonSuoritus'
 import { Oppilaitos } from './Oppilaitos'
+import { AktiivisetJaPäättyneetOpinnotOpiskeluoikeudenTila } from './AktiivisetJaPaattyneetOpinnotOpiskeluoikeudenTila'
 
 /**
  * AktiivisetJaPäättyneetOpinnotEuropeanSchoolOfHelsinkiOpiskeluoikeus
@@ -18,8 +18,6 @@ export type AktiivisetJaPäättyneetOpinnotEuropeanSchoolOfHelsinkiOpiskeluoikeu
       'opiskeluoikeudentyyppi',
       'europeanschoolofhelsinki'
     >
-    tila: AktiivisetJaPäättyneetOpinnotOpiskeluoikeudenTila
-    alkamispäivä?: string
     sisältyyOpiskeluoikeuteen?: SisältäväOpiskeluoikeus
     oid?: string
     koulutustoimija?: Koulutustoimija
@@ -27,6 +25,8 @@ export type AktiivisetJaPäättyneetOpinnotEuropeanSchoolOfHelsinkiOpiskeluoikeu
     suoritukset: Array<AktiivisetJaPäättyneetOpinnotEuropeanSchoolOfHelsinkiPäätasonSuoritus>
     päättymispäivä?: string
     oppilaitos?: Oppilaitos
+    tila: AktiivisetJaPäättyneetOpinnotOpiskeluoikeudenTila
+    alkamispäivä?: string
   }
 
 export const AktiivisetJaPäättyneetOpinnotEuropeanSchoolOfHelsinkiOpiskeluoikeus =
@@ -36,8 +36,6 @@ export const AktiivisetJaPäättyneetOpinnotEuropeanSchoolOfHelsinkiOpiskeluoike
         'opiskeluoikeudentyyppi',
         'europeanschoolofhelsinki'
       >
-      tila?: AktiivisetJaPäättyneetOpinnotOpiskeluoikeudenTila
-      alkamispäivä?: string
       sisältyyOpiskeluoikeuteen?: SisältäväOpiskeluoikeus
       oid?: string
       koulutustoimija?: Koulutustoimija
@@ -45,18 +43,20 @@ export const AktiivisetJaPäättyneetOpinnotEuropeanSchoolOfHelsinkiOpiskeluoike
       suoritukset?: Array<AktiivisetJaPäättyneetOpinnotEuropeanSchoolOfHelsinkiPäätasonSuoritus>
       päättymispäivä?: string
       oppilaitos?: Oppilaitos
+      tila?: AktiivisetJaPäättyneetOpinnotOpiskeluoikeudenTila
+      alkamispäivä?: string
     } = {}
   ): AktiivisetJaPäättyneetOpinnotEuropeanSchoolOfHelsinkiOpiskeluoikeus => ({
     tyyppi: Koodistokoodiviite({
       koodiarvo: 'europeanschoolofhelsinki',
       koodistoUri: 'opiskeluoikeudentyyppi'
     }),
-    tila: AktiivisetJaPäättyneetOpinnotOpiskeluoikeudenTila({
-      opiskeluoikeusjaksot: []
-    }),
     suoritukset: [],
     $class:
       'fi.oph.koski.aktiivisetjapaattyneetopinnot.AktiivisetJaPäättyneetOpinnotEuropeanSchoolOfHelsinkiOpiskeluoikeus',
+    tila: AktiivisetJaPäättyneetOpinnotOpiskeluoikeudenTila({
+      opiskeluoikeusjaksot: []
+    }),
     ...o
   })
 

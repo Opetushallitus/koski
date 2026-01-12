@@ -79,11 +79,11 @@ class SuoritusjakoRepositoryV2(val db: DB) extends Logging with QueryMethods {
   }
 }
 
-object SuoritusjakoJsonMethods {
-  private def skipSyntheticProperties(s: ClassSchema, p: Property) = if (p.synthetic) Nil else List(p)
+  object SuoritusjakoJsonMethods {
+    private def skipSyntheticProperties(s: ClassSchema, p: Property) = if (p.synthetic) Nil else List(p)
 
-  private val serializationContext = SerializationContext(KoskiSchema.schemaFactory, skipSyntheticProperties)
-  private implicit val deserializationContext = ExtractionContext(KoskiSchema.schemaFactory).copy(validate = false)
+    private val serializationContext = SerializationContext(KoskiSchema.schemaFactory, skipSyntheticProperties)
+    private implicit val deserializationContext: ExtractionContext = ExtractionContext(KoskiSchema.schemaFactory).copy(validate = false)
 
   def serialize(opiskeluoikeudet: Seq[Opiskeluoikeus]): JValue =
     Serializer.serialize(opiskeluoikeudet, serializationContext)

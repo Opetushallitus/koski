@@ -8,7 +8,7 @@ import org.json4s.jackson.JsonMethods
 import software.amazon.awssdk.services.eventbridge.model.{PutEventsRequest, PutEventsRequestEntry}
 import software.amazon.awssdk.services.eventbridge.EventBridgeClient
 
-import scala.collection.JavaConverters._
+import scala.jdk.CollectionConverters._
 
 object KoskiEventBridgeClient extends Logging {
   def apply(config: Config): KoskiEventBridgeClient = {

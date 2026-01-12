@@ -1,8 +1,8 @@
 import { YlioppilaskokeenArviointi } from './YlioppilaskokeenArviointi'
 import { Koodistokoodiviite } from './Koodistokoodiviite'
 import { LocalizedString } from './LocalizedString'
-import { YlioppilastutkinnonTutkintokerta } from './YlioppilastutkinnonTutkintokerta'
 import { YlioppilasTutkinnonKoe } from './YlioppilasTutkinnonKoe'
+import { YlioppilastutkinnonTutkintokerta } from './YlioppilastutkinnonTutkintokerta'
 
 /**
  * YlioppilastutkinnonKokeenSuoritus
@@ -15,11 +15,11 @@ export type YlioppilastutkinnonKokeenSuoritus = {
   tyyppi: Koodistokoodiviite<'suorituksentyyppi', 'ylioppilastutkinnonkoe'>
   tila?: Koodistokoodiviite<'suorituksentila', string>
   suoritusMukanaTodistuksella?: boolean
-  keskeytynyt?: boolean
-  tutkintokerta: YlioppilastutkinnonTutkintokerta
   koulutusmoduuli: YlioppilasTutkinnonKoe
   tutkintokokonaisuudenTunniste?: number
   maksuton?: boolean
+  keskeytynyt?: boolean
+  tutkintokerta: YlioppilastutkinnonTutkintokerta
 }
 
 export const YlioppilastutkinnonKokeenSuoritus = (o: {
@@ -27,11 +27,11 @@ export const YlioppilastutkinnonKokeenSuoritus = (o: {
   tyyppi?: Koodistokoodiviite<'suorituksentyyppi', 'ylioppilastutkinnonkoe'>
   tila?: Koodistokoodiviite<'suorituksentila', string>
   suoritusMukanaTodistuksella?: boolean
-  keskeytynyt?: boolean
-  tutkintokerta: YlioppilastutkinnonTutkintokerta
   koulutusmoduuli: YlioppilasTutkinnonKoe
   tutkintokokonaisuudenTunniste?: number
   maksuton?: boolean
+  keskeytynyt?: boolean
+  tutkintokerta: YlioppilastutkinnonTutkintokerta
 }): YlioppilastutkinnonKokeenSuoritus => ({
   tyyppi: Koodistokoodiviite({
     koodiarvo: 'ylioppilastutkinnonkoe',

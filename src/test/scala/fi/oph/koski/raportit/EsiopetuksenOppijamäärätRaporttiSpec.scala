@@ -55,7 +55,7 @@ class EsiopetuksenOppijamäärätRaporttiSpec
     tuenPäätöstenTestiopiskeluoikeudet.map(create)
 
     application.perustiedotIndexer.sync(refresh = true)
-    reloadRaportointikanta
+    reloadRaportointikanta()
   }
 
   private val ehjätTestiopiskeluoikeudet =

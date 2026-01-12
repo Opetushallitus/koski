@@ -19,6 +19,7 @@ import java.net.URI
 import java.nio.file.Path
 import java.time.Duration
 import scala.jdk.CollectionConverters._
+import scala.jdk.CollectionConverters._
 import scala.util.{Failure, Success, Try}
 
 class TodistusResultRepository(config: Config) extends Logging {
@@ -72,7 +73,7 @@ class TodistusResultRepository(config: Config) extends Logging {
         logger.error(t)(error)
         KoskiErrorCategory.internalError(error)
       })
-      .map(_ => Unit)
+      .map(_ => ())
   }
 
   def putFile(bucketType: BucketType, id: String, file: Path, contentType: String = "application/pdf" ): Either[HttpStatus, Unit] = {
@@ -88,7 +89,7 @@ class TodistusResultRepository(config: Config) extends Logging {
         logger.error(t)(error)
         KoskiErrorCategory.internalError(error)
       })
-      .map(_ => Unit)
+      .map(_ => ())
   }
 
   def getPresignedDownloadUrl(bucketType: BucketType, filename: String, id: String): String = {
@@ -139,9 +140,7 @@ class TodistusResultRepository(config: Config) extends Logging {
       .bucket(bucketName(bucketType))
       .key(key)
       .contentType(contentType)
-      .metadata(mapAsJavaMap(Map {
-        "todistusJobId" -> id
-      }))
+      .metadata(Map("todistusJobId" -> id).asJava)
       .build()
 
 
@@ -168,4 +167,3 @@ object BucketType extends Enumeration {
     RAW,
     STAMPED = Value
 }
-

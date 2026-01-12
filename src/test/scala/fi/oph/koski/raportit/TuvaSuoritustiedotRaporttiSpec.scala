@@ -19,7 +19,7 @@ class TuvaSuoritustiedotRaporttiSpec
 
   override protected def beforeAll(): Unit = {
     super.beforeAll()
-    reloadRaportointikanta
+    reloadRaportointikanta()
   }
 
   private lazy val t: LocalizationReader = new LocalizationReader(KoskiApplicationForTests.koskiLocalizationRepository, "fi")

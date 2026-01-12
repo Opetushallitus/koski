@@ -9,8 +9,6 @@ import fi.oph.koski.raportointikanta._
 import fi.oph.koski.schema.{LähdejärjestelmäId, OpiskeluoikeudenTyyppi, Organisaatio}
 import fi.oph.koski.util.FinnishDateFormat.{finnishDateFormat, finnishDateTimeFormat}
 
-// scalastyle:off method.length
-
 object AmmatillinenOsittainenRaportti {
 
   def buildRaportti(
@@ -86,7 +84,7 @@ object AmmatillinenOsittainenRaportti {
       viimeisinOpiskeluoikeudenTila = opiskeluoikeus.viimeisinTila,
       viimeisinOpiskeluoikeudenTilaAikajaksonLopussa = aikajaksot.last.tila,
       opintojenRahoitukset = aikajaksot.flatMap(_.opintojenRahoitus).sorted.distinct.mkString(","),
-      suoritettujenOpintojenYhteislaajuus = suorituksetJaKorotuksetLaajuuksina(ammatillisetTutkinnonOsat.union(yhteistenTutkinnonOsienOsaSuoritukset).filter(_.arvioituJaHyväksytty)),
+      suoritettujenOpintojenYhteislaajuus = suorituksetJaKorotuksetLaajuuksina((ammatillisetTutkinnonOsat ++ yhteistenTutkinnonOsienOsaSuoritukset).filter(_.arvioituJaHyväksytty)),
       valmiitAmmatillisetTutkinnonOsatLkm = suorituksetJaKorotuksetSuoritustenMäärässä(ammatillisetTutkinnonOsat.filter(isHyväksytty)),
       näyttöjäAmmatillisessaValmiistaTutkinnonOsistaLkm = suorituksetJaKorotuksetSuoritustenMäärässä(näytöt(ammatillisetTutkinnonOsat.filter(isHyväksytty))),
       tunnustettujaAmmatillisessaValmiistaTutkinnonOsistaLkm = suorituksetJaKorotuksetSuoritustenMäärässä(vahvistuspäivällisetTunnustetutAmmatillisenTutkinnonOsat),

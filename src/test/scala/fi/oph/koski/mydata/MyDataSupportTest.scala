@@ -8,7 +8,7 @@ import org.scalamock.scalatest.MockFactory
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.should.Matchers
 
-import scala.collection.JavaConverters._
+import scala.jdk.CollectionConverters._
 
 
 class MyDataSupportTest extends AnyFreeSpec with TestEnvironment with Matchers with MockFactory {
@@ -45,7 +45,7 @@ class MyDataSupportTest extends AnyFreeSpec with TestEnvironment with Matchers w
     "Palauttaa oikean member ID:n" in {
       val request: HttpServletRequest = stub[HttpServletRequest]
       (request.getAttribute _).when("MultiParamsRead").returns("")
-      (() => request.getParameterMap).when().returns(mapAsJavaMap(Map("memberCode" -> Array("hsl"))))
+      (() => request.getParameterMap).when().returns(Map("memberCode" -> Array("hsl")).asJava)
 
       support(request).memberCodeParam should equal("hsl")
     }

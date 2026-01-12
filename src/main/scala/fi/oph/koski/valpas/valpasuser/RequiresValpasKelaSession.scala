@@ -6,10 +6,10 @@ trait RequiresValpasKelaSession extends ValpasLuovutuspalveluHeaderAuthenticatio
   implicit def session: ValpasSession = koskiSessionOption.get
 
   before() {
-    requiresKela
+    requiresKela()
   }
 
-  private def requiresKela {
+  private def requiresKela(): Unit = {
     getUser match {
       case Left(status) if status.statusCode == 401 =>
         haltWithStatus(status)

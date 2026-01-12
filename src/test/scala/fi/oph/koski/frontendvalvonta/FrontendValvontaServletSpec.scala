@@ -13,7 +13,7 @@ class FrontendValvontaServletSpec extends AnyFreeSpec with KoskiHttpSpec with Ht
   "FrontendValvontaServlet" - {
     "ReportUri route" - {
       "APIin postaaminen tuottaa logimerkinnän samalla sisällöllä" in {
-        ReportUriLogTester.clearMessages
+        ReportUriLogTester.clearMessages()
 
         post(
           "api/frontendvalvonta/report-uri",
@@ -31,7 +31,7 @@ class FrontendValvontaServletSpec extends AnyFreeSpec with KoskiHttpSpec with Ht
       }
 
       "API maskaa hetut ja salaiset opintojen jako-URLit" in {
-        ReportUriLogTester.clearMessages
+        ReportUriLogTester.clearMessages()
 
         post(
           "api/frontendvalvonta/report-uri",
@@ -49,7 +49,7 @@ class FrontendValvontaServletSpec extends AnyFreeSpec with KoskiHttpSpec with Ht
       }
 
       "API ei hyväksy requestiä väärällä content-typellä" in {
-        ReportUriLogTester.clearMessages
+        ReportUriLogTester.clearMessages()
 
         post(
           "api/frontendvalvonta/report-uri",
@@ -64,7 +64,7 @@ class FrontendValvontaServletSpec extends AnyFreeSpec with KoskiHttpSpec with Ht
       }
 
       "API ei hyväksy yli 32000 merkkiä pitkää inputtia DOS-hyökkäysten estämiseksi" in {
-        ReportUriLogTester.clearMessages
+        ReportUriLogTester.clearMessages()
 
         post(
           "api/frontendvalvonta/report-uri",
@@ -79,7 +79,7 @@ class FrontendValvontaServletSpec extends AnyFreeSpec with KoskiHttpSpec with Ht
       }
 
       "API poistaa muun Kosken logituksen sotkevat kentät JSON:sta" in {
-        ReportUriLogTester.clearMessages
+        ReportUriLogTester.clearMessages()
 
         val reportWithMaliciousFields = reportUriSample(extraContent =
           """,
@@ -107,7 +107,7 @@ class FrontendValvontaServletSpec extends AnyFreeSpec with KoskiHttpSpec with Ht
 
     "ReportTo" - {
       "APIin yhden CSP-entryn postaaminen tuottaa logimerkinnän samalla sisällöllä" in {
-        ReportToLogTester.clearMessages
+        ReportToLogTester.clearMessages()
 
         post(
           "api/frontendvalvonta/report-to",
@@ -129,7 +129,7 @@ class FrontendValvontaServletSpec extends AnyFreeSpec with KoskiHttpSpec with Ht
       }
 
       "API maskaa hetut ja salaiset opintojen jako-URLit" in {
-        ReportToLogTester.clearMessages
+        ReportToLogTester.clearMessages()
 
         post(
           "api/frontendvalvonta/report-to",
@@ -151,7 +151,7 @@ class FrontendValvontaServletSpec extends AnyFreeSpec with KoskiHttpSpec with Ht
       }
 
       "API ei hyväksy requestiä väärällä content-typellä" in {
-        ReportToLogTester.clearMessages
+        ReportToLogTester.clearMessages()
 
         post(
           "api/frontendvalvonta/report-to",
@@ -166,7 +166,7 @@ class FrontendValvontaServletSpec extends AnyFreeSpec with KoskiHttpSpec with Ht
       }
 
       "APIin usean entry postaaminen tuottaa logimerkinnät entryistä samalla sisällöllä" in {
-        ReportToLogTester.clearMessages
+        ReportToLogTester.clearMessages()
 
         post(
           "api/frontendvalvonta/report-to",
@@ -180,7 +180,7 @@ class FrontendValvontaServletSpec extends AnyFreeSpec with KoskiHttpSpec with Ht
       }
 
       "API ei hyväksy yli 32000 merkkiä pitkää inputtia DOS-hyökkäysten estämiseksi" in {
-        ReportToLogTester.clearMessages
+        ReportToLogTester.clearMessages()
 
         post(
           "api/frontendvalvonta/report-to",
@@ -195,7 +195,7 @@ class FrontendValvontaServletSpec extends AnyFreeSpec with KoskiHttpSpec with Ht
       }
 
       "API poistaa muun Kosken logituksen sotkevat kentät JSON:sta" in {
-        ReportToLogTester.clearMessages
+        ReportToLogTester.clearMessages()
 
         val reportWithMaliciousFields = reportToSample(extraContent =
           """,

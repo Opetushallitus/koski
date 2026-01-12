@@ -16,11 +16,11 @@ import java.util.UUID
 trait AuthenticationSupport extends BaseServlet with SSOSupport {
   def application: UserAuthenticationContext
 
-  def haltWithStatus(status: HttpStatus)
+  def haltWithStatus(status: HttpStatus): Unit
 
   def setUser(user: Either[HttpStatus, AuthenticationUser]): Either[HttpStatus, AuthenticationUser] = {
     request.setAttribute("authUser", user)
-    user.right.toOption.filter(_.serviceTicket.isDefined).foreach { user =>
+    user.toOption.filter(_.serviceTicket.isDefined).foreach { user =>
       val cookie = KoskiUserCookie(serviceTicket = user.serviceTicket.get, kansalainen = user.kansalainen)
       if (user.kansalainen) {
         setKansalaisCookie(cookie)
@@ -94,7 +94,7 @@ trait AuthenticationSupport extends BaseServlet with SSOSupport {
     }
   }
 
-  def requireKansalainen = {
+  def requireKansalainen: Unit = {
     getUser match {
       case Right(user) if !user.kansalainen => haltWithStatus(KoskiErrorCategory.forbidden.vainKansalainen())
       case Right(user) =>
@@ -102,10 +102,11 @@ trait AuthenticationSupport extends BaseServlet with SSOSupport {
     }
   }
 
-  def requireSession = getUser match {
-    case Left(error) => haltWithStatus(error)
-    case _ =>
-  }
+  def requireSession: Unit =
+    getUser match {
+      case Left(error) => haltWithStatus(error)
+      case _ =>
+    }
 
   def localLogin(user: AuthenticationUser, lang: Option[String] = None): AuthenticationUser = {
     val fakeServiceTicket: String = "koski-" + UUID.randomUUID()

@@ -9,7 +9,7 @@ trait RequiresValpasMassaluovutusrajapintaSession extends ValpasCookieAndBasicAu
     requiresMassaluovutusrajapinta
   }
 
-  private def requiresMassaluovutusrajapinta {
+  private def requiresMassaluovutusrajapinta: Unit = {
     getUser match {
       case Left(status) if status.statusCode == 401 =>
         haltWithStatus(status)

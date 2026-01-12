@@ -22,7 +22,7 @@ class TypescriptExportsSpec extends AnyFreeSpec with Matchers {
         }
 
         val source = Source.fromFile(file)
-        val content = source.getLines.mkString
+        val content = source.getLines().mkString
         source.close()
 
         withClue("Tiedoston sisältö ei ole ajantasainen:") {

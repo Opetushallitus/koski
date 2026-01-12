@@ -54,7 +54,7 @@ case class EnumValues(values: Set[String]) extends RepresentationalMetadata {
   }
 
   override def appendMetadataToJsonSchema(obj: JObject): JObject = {
-    val valuesStr = values.map('"' + _ + '"').mkString(", ")
+    val valuesStr = values.map(value => s"\"$value\"").mkString(", ")
     appendToDescription(obj, s"${if (values.size > 1) "Sallitut arvot" else "Sallittu arvo"}: $valuesStr")
   }
 

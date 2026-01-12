@@ -75,7 +75,8 @@ describe('Ammatillinen koulutus 2', function () {
           Authentication().logout,
           Authentication().login('stadin-pää'),
           page.openPage,
-          page.oppijaHaku.searchAndSelect('270303-281N')
+          page.oppijaHaku.searchAndSelect('270303-281N'),
+          wait.until(opinnot.invalidateOpiskeluoikeusIsShown)
         )
         it('Näytetään mitätöintilinkki', function () {
           expect(opinnot.invalidateOpiskeluoikeusIsShown()).to.equal(true)

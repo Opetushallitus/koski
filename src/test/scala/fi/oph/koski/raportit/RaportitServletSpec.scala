@@ -19,7 +19,7 @@ class RaportitServletSpec extends AnyFreeSpec with RaportointikantaTestMethods w
 
   override protected def beforeAll(): Unit = {
     super.beforeAll()
-    reloadRaportointikanta
+    reloadRaportointikanta()
   }
 
   "Mahdolliset raportit -API" - {

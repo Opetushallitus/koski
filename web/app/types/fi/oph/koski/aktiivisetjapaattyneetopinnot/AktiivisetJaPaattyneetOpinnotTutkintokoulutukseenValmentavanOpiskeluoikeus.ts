@@ -1,11 +1,11 @@
 import { Koodistokoodiviite } from '../schema/Koodistokoodiviite'
 import { LocalizedString } from '../schema/LocalizedString'
-import { AktiivisetJaPäättyneetOpinnotOpiskeluoikeudenTila } from './AktiivisetJaPaattyneetOpinnotOpiskeluoikeudenTila'
 import { SisältäväOpiskeluoikeus } from './SisaltavaOpiskeluoikeus'
-import { Koulutustoimija } from './Koulutustoimija'
-import { AktiivisetJaPäättyneetOpinnotTuvaJaAmmatillinenOpiskeluoikeudenLisätiedot } from './AktiivisetJaPaattyneetOpinnotTuvaJaAmmatillinenOpiskeluoikeudenLisatiedot'
 import { AktiivisetJaPäättyneetOpinnotPäätasonSuoritus } from './AktiivisetJaPaattyneetOpinnotPaatasonSuoritus'
 import { Oppilaitos } from './Oppilaitos'
+import { AktiivisetJaPäättyneetOpinnotOpiskeluoikeudenTila } from './AktiivisetJaPaattyneetOpinnotOpiskeluoikeudenTila'
+import { Koulutustoimija } from './Koulutustoimija'
+import { AktiivisetJaPäättyneetOpinnotTuvaJaAmmatillinenOpiskeluoikeudenLisätiedot } from './AktiivisetJaPaattyneetOpinnotTuvaJaAmmatillinenOpiskeluoikeudenLisatiedot'
 
 /**
  * AktiivisetJaPäättyneetOpinnotTutkintokoulutukseenValmentavanOpiskeluoikeus
@@ -16,44 +16,44 @@ export type AktiivisetJaPäättyneetOpinnotTutkintokoulutukseenValmentavanOpiske
   {
     $class: 'fi.oph.koski.aktiivisetjapaattyneetopinnot.AktiivisetJaPäättyneetOpinnotTutkintokoulutukseenValmentavanOpiskeluoikeus'
     tyyppi: Koodistokoodiviite<'opiskeluoikeudentyyppi', 'tuva'>
-    tila: AktiivisetJaPäättyneetOpinnotOpiskeluoikeudenTila
-    alkamispäivä?: string
     sisältyyOpiskeluoikeuteen?: SisältäväOpiskeluoikeus
     oid?: string
-    koulutustoimija?: Koulutustoimija
-    lisätiedot?: AktiivisetJaPäättyneetOpinnotTuvaJaAmmatillinenOpiskeluoikeudenLisätiedot
     versionumero?: number
     suoritukset: Array<AktiivisetJaPäättyneetOpinnotPäätasonSuoritus>
     päättymispäivä?: string
     oppilaitos?: Oppilaitos
+    tila: AktiivisetJaPäättyneetOpinnotOpiskeluoikeudenTila
+    alkamispäivä?: string
+    koulutustoimija?: Koulutustoimija
+    lisätiedot?: AktiivisetJaPäättyneetOpinnotTuvaJaAmmatillinenOpiskeluoikeudenLisätiedot
   }
 
 export const AktiivisetJaPäättyneetOpinnotTutkintokoulutukseenValmentavanOpiskeluoikeus =
   (
     o: {
       tyyppi?: Koodistokoodiviite<'opiskeluoikeudentyyppi', 'tuva'>
-      tila?: AktiivisetJaPäättyneetOpinnotOpiskeluoikeudenTila
-      alkamispäivä?: string
       sisältyyOpiskeluoikeuteen?: SisältäväOpiskeluoikeus
       oid?: string
-      koulutustoimija?: Koulutustoimija
-      lisätiedot?: AktiivisetJaPäättyneetOpinnotTuvaJaAmmatillinenOpiskeluoikeudenLisätiedot
       versionumero?: number
       suoritukset?: Array<AktiivisetJaPäättyneetOpinnotPäätasonSuoritus>
       päättymispäivä?: string
       oppilaitos?: Oppilaitos
+      tila?: AktiivisetJaPäättyneetOpinnotOpiskeluoikeudenTila
+      alkamispäivä?: string
+      koulutustoimija?: Koulutustoimija
+      lisätiedot?: AktiivisetJaPäättyneetOpinnotTuvaJaAmmatillinenOpiskeluoikeudenLisätiedot
     } = {}
   ): AktiivisetJaPäättyneetOpinnotTutkintokoulutukseenValmentavanOpiskeluoikeus => ({
     tyyppi: Koodistokoodiviite({
       koodiarvo: 'tuva',
       koodistoUri: 'opiskeluoikeudentyyppi'
     }),
-    tila: AktiivisetJaPäättyneetOpinnotOpiskeluoikeudenTila({
-      opiskeluoikeusjaksot: []
-    }),
     suoritukset: [],
     $class:
       'fi.oph.koski.aktiivisetjapaattyneetopinnot.AktiivisetJaPäättyneetOpinnotTutkintokoulutukseenValmentavanOpiskeluoikeus',
+    tila: AktiivisetJaPäättyneetOpinnotOpiskeluoikeudenTila({
+      opiskeluoikeusjaksot: []
+    }),
     ...o
   })
 

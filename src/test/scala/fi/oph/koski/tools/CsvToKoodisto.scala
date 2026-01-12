@@ -19,7 +19,10 @@ object CsvToKoodisto extends App {
     .map(line => line.split(",").toList)
     .map(_.map(_.trim))
     .map {
-      case List(nimi: String, koodi: String) => KoodistoKoodi(KoodistoKoodi.koodiUri(koodistoUri, koodi), koodi, List(KoodistoKoodiMetadata(kieli = Some("FI"), nimi = Some(nimi))), 1, None, None)
+      case List(nimi: String, koodi: String) =>
+        KoodistoKoodi(KoodistoKoodi.koodiUri(koodistoUri, koodi), koodi, List(KoodistoKoodiMetadata(kieli = Some("FI"), nimi = Some(nimi))), 1, None, None)
+      case other =>
+        throw new IllegalArgumentException(s"Unexpected CSV line: ${other.mkString(",")}")
     }
   JsonFiles.writeFile(
     MockKoodistoPalvelu.koodistoKooditFileName(koodistoUri, None),

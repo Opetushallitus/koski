@@ -53,7 +53,7 @@ case class MuksRaportitRepository(raportointiDatabase: RaportointiDatabase) exte
     val henkilot = runDbSync(
       RHenkilöt.filter(_.oppijaOid inSet opiskeluoikeudet.map(_.oppijaOid).distinct).result,
       timeout = defaultTimeout,
-    ).groupBy(_.oppijaOid).mapValues(_.head)
+    ).groupBy(_.oppijaOid).view.mapValues(_.head).toMap
 
     opiskeluoikeudet.foldLeft[Seq[MuksRaporttiRows]](Seq.empty) {
       combineOpiskeluoikeusWith(_, _, aikajaksot, paatasonSuoritukset, osasuoritukset, henkilot)

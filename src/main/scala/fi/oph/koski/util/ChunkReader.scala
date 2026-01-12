@@ -18,6 +18,7 @@ class ChunkReader[T](pageSize: Int, read: Chunk => Option[Seq[T]]) extends Itera
       case None if !finished => readNext()
       case Some(data) => data
       case None if finished => Seq.empty
+      case _ => Seq.empty
     }
 
 

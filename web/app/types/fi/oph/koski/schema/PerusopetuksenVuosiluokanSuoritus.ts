@@ -1,12 +1,12 @@
 import { Koodistokoodiviite } from './Koodistokoodiviite'
 import { LocalizedString } from './LocalizedString'
+import { OrganisaatioWithOid } from './OrganisaatioWithOid'
+import { OppiaineenTaiToiminta_AlueenSuoritus } from './OppiaineenTaiToimintaAlueenSuoritus'
+import { HenkilövahvistusPaikkakunnalla } from './HenkilovahvistusPaikkakunnalla'
 import { PerusopetuksenVuosiluokanSuorituksenLiite } from './PerusopetuksenVuosiluokanSuorituksenLiite'
 import { OmanÄidinkielenOpinnotLaajuusVuosiviikkotunteina } from './OmanAidinkielenOpinnotLaajuusVuosiviikkotunteina'
 import { PerusopetuksenKäyttäytymisenArviointi } from './PerusopetuksenKayttaytymisenArviointi'
 import { PerusopetuksenLuokkaAste } from './PerusopetuksenLuokkaAste'
-import { OrganisaatioWithOid } from './OrganisaatioWithOid'
-import { OppiaineenTaiToiminta_AlueenSuoritus } from './OppiaineenTaiToimintaAlueenSuoritus'
-import { HenkilövahvistusPaikkakunnalla } from './HenkilovahvistusPaikkakunnalla'
 
 /**
  * Perusopetuksen vuosiluokan suoritus. Nämä suoritukset näkyvät lukuvuositodistuksella
@@ -16,6 +16,14 @@ import { HenkilövahvistusPaikkakunnalla } from './HenkilovahvistusPaikkakunnall
 export type PerusopetuksenVuosiluokanSuoritus = {
   $class: 'fi.oph.koski.schema.PerusopetuksenVuosiluokanSuoritus'
   muutSuorituskielet?: Array<Koodistokoodiviite<'kieli', string>>
+  luokka: string
+  suoritustapa?: Koodistokoodiviite<'perusopetuksensuoritustapa', string>
+  todistuksellaNäkyvätLisätiedot?: LocalizedString
+  jääLuokalle: boolean
+  toimipiste: OrganisaatioWithOid
+  osasuoritukset?: Array<OppiaineenTaiToiminta_AlueenSuoritus>
+  osaAikainenErityisopetus?: boolean
+  vahvistus?: HenkilövahvistusPaikkakunnalla
   tyyppi: Koodistokoodiviite<'suorituksentyyppi', 'perusopetuksenvuosiluokka'>
   liitetiedot?: Array<PerusopetuksenVuosiluokanSuorituksenLiite>
   tila?: Koodistokoodiviite<'suorituksentila', string>
@@ -23,20 +31,20 @@ export type PerusopetuksenVuosiluokanSuoritus = {
   omanÄidinkielenOpinnot?: OmanÄidinkielenOpinnotLaajuusVuosiviikkotunteina
   suorituskieli: Koodistokoodiviite<'kieli', string>
   kielikylpykieli?: Koodistokoodiviite<'kieli', string>
-  luokka: string
-  suoritustapa?: Koodistokoodiviite<'perusopetuksensuoritustapa', string>
-  todistuksellaNäkyvätLisätiedot?: LocalizedString
-  jääLuokalle: boolean
   käyttäytymisenArvio?: PerusopetuksenKäyttäytymisenArviointi
   koulutusmoduuli: PerusopetuksenLuokkaAste
-  toimipiste: OrganisaatioWithOid
-  osasuoritukset?: Array<OppiaineenTaiToiminta_AlueenSuoritus>
-  osaAikainenErityisopetus?: boolean
-  vahvistus?: HenkilövahvistusPaikkakunnalla
 }
 
 export const PerusopetuksenVuosiluokanSuoritus = (o: {
   muutSuorituskielet?: Array<Koodistokoodiviite<'kieli', string>>
+  luokka: string
+  suoritustapa?: Koodistokoodiviite<'perusopetuksensuoritustapa', string>
+  todistuksellaNäkyvätLisätiedot?: LocalizedString
+  jääLuokalle?: boolean
+  toimipiste: OrganisaatioWithOid
+  osasuoritukset?: Array<OppiaineenTaiToiminta_AlueenSuoritus>
+  osaAikainenErityisopetus?: boolean
+  vahvistus?: HenkilövahvistusPaikkakunnalla
   tyyppi?: Koodistokoodiviite<'suorituksentyyppi', 'perusopetuksenvuosiluokka'>
   liitetiedot?: Array<PerusopetuksenVuosiluokanSuorituksenLiite>
   tila?: Koodistokoodiviite<'suorituksentila', string>
@@ -44,23 +52,15 @@ export const PerusopetuksenVuosiluokanSuoritus = (o: {
   omanÄidinkielenOpinnot?: OmanÄidinkielenOpinnotLaajuusVuosiviikkotunteina
   suorituskieli: Koodistokoodiviite<'kieli', string>
   kielikylpykieli?: Koodistokoodiviite<'kieli', string>
-  luokka: string
-  suoritustapa?: Koodistokoodiviite<'perusopetuksensuoritustapa', string>
-  todistuksellaNäkyvätLisätiedot?: LocalizedString
-  jääLuokalle?: boolean
   käyttäytymisenArvio?: PerusopetuksenKäyttäytymisenArviointi
   koulutusmoduuli: PerusopetuksenLuokkaAste
-  toimipiste: OrganisaatioWithOid
-  osasuoritukset?: Array<OppiaineenTaiToiminta_AlueenSuoritus>
-  osaAikainenErityisopetus?: boolean
-  vahvistus?: HenkilövahvistusPaikkakunnalla
 }): PerusopetuksenVuosiluokanSuoritus => ({
+  jääLuokalle: false,
+  $class: 'fi.oph.koski.schema.PerusopetuksenVuosiluokanSuoritus',
   tyyppi: Koodistokoodiviite({
     koodiarvo: 'perusopetuksenvuosiluokka',
     koodistoUri: 'suorituksentyyppi'
   }),
-  jääLuokalle: false,
-  $class: 'fi.oph.koski.schema.PerusopetuksenVuosiluokanSuoritus',
   ...o
 })
 

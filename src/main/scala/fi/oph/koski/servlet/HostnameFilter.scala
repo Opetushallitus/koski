@@ -7,9 +7,9 @@ import javax.servlet.http.HttpServletResponse
 class HostnameFilter extends Filter {
   val hostname = InetAddress.getLocalHost.getHostName
 
-  override def init(filterConfig: FilterConfig) {}
+  override def init(filterConfig: FilterConfig): Unit = {}
 
-  override def destroy {}
+  override def destroy(): Unit = {}
 
   override def doFilter(servletRequest: ServletRequest, servletResponse: ServletResponse, filterChain: FilterChain) = {
     servletResponse.asInstanceOf[HttpServletResponse].setHeader("X-Backend-Server", hostname)

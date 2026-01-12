@@ -46,7 +46,7 @@ class PerusopetuksenOppijamäärätRaporttiSpec extends AnyFreeSpec with Matcher
     tuenPäätöksenJaksojenTestiopiskeluiokeudet.map(create)
 
     application.perustiedotIndexer.sync(refresh = true)
-    reloadRaportointikanta
+    reloadRaportointikanta()
   }
 
   private val eiRikkinäinäRaportoitavatTestiopiskeluoikeudet =

@@ -59,7 +59,7 @@ class SuoritetutTutkinnotServiceSpec
     Set(KäyttöoikeusGlobal(List(Palvelurooli(OPHKATSELIJA))))
   )
 
-  implicit val koskiSession = suoritusjakoKatsominenTestUser
+  implicit val koskiSession: KoskiSpecificSession = suoritusjakoKatsominenTestUser
 
   override def afterEach(): Unit = {
     MockYtrClient.reset()
@@ -78,7 +78,7 @@ class SuoritetutTutkinnotServiceSpec
 
     val (onnistuu, eiOnnistu) = results.partition(_.isRight)
 
-    val (eiOnnistu404, _) = eiOnnistu.partition(_.left.get.statusCode == 404)
+    val (eiOnnistu404, _) = eiOnnistu.partition(_.swap.toOption.get.statusCode == 404)
 
     onnistuu.length should be > 100
     eiOnnistu.length should be > 20
@@ -101,7 +101,7 @@ class SuoritetutTutkinnotServiceSpec
     val result = suoritusjakoService.findSuoritetutTutkinnotOppija(KoskiSpecificMockOppijat.vainMitätöityjäOpiskeluoikeuksia.oid)
 
     result.isLeft should be(true)
-    result.left.get.statusCode should be(404)
+    result.swap.toOption.get.statusCode should be(404)
   }
 
   "Ammatillinen tutkinto" - {
@@ -426,7 +426,7 @@ class SuoritetutTutkinnotServiceSpec
 
     suoritusjakoService.findSuoritetutTutkinnotOppija(oppija.oid).isRight should be(true)
 
-    KoskiApplicationForTests.cacheManager.invalidateAllCaches
+    KoskiApplicationForTests.cacheManager.invalidateAllCaches()
     MockYtrClient.setFailureHetu(oppija.hetu.get)
 
     val result = suoritusjakoService.findSuoritetutTutkinnotOppija(oppija.oid)
@@ -449,7 +449,7 @@ class SuoritetutTutkinnotServiceSpec
 
     suoritusjakoService.findSuoritetutTutkinnotOppija(oppija.oid).isRight should be(true)
 
-    KoskiApplicationForTests.cacheManager.invalidateAllCaches
+    KoskiApplicationForTests.cacheManager.invalidateAllCaches()
     MockYtrClient.setTimeoutHetu(oppija.hetu.get)
 
     val result = suoritusjakoService.findSuoritetutTutkinnotOppija(oppija.oid)

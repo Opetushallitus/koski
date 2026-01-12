@@ -1,10 +1,10 @@
 import { Koodistokoodiviite } from '../schema/Koodistokoodiviite'
 import { LocalizedString } from '../schema/LocalizedString'
-import { AktiivisetJaPäättyneetOpinnotOpiskeluoikeudenTila } from './AktiivisetJaPaattyneetOpinnotOpiskeluoikeudenTila'
 import { SisältäväOpiskeluoikeus } from './SisaltavaOpiskeluoikeus'
 import { Koulutustoimija } from './Koulutustoimija'
 import { AktiivisetJaPäättyneetOpinnotInternationalSchoolVuosiluokanSuoritus } from './AktiivisetJaPaattyneetOpinnotInternationalSchoolVuosiluokanSuoritus'
 import { Oppilaitos } from './Oppilaitos'
+import { AktiivisetJaPäättyneetOpinnotOpiskeluoikeudenTila } from './AktiivisetJaPaattyneetOpinnotOpiskeluoikeudenTila'
 
 /**
  * AktiivisetJaPäättyneetOpinnotInternationalSchoolOpiskeluoikeus
@@ -14,8 +14,6 @@ import { Oppilaitos } from './Oppilaitos'
 export type AktiivisetJaPäättyneetOpinnotInternationalSchoolOpiskeluoikeus = {
   $class: 'fi.oph.koski.aktiivisetjapaattyneetopinnot.AktiivisetJaPäättyneetOpinnotInternationalSchoolOpiskeluoikeus'
   tyyppi: Koodistokoodiviite<'opiskeluoikeudentyyppi', 'internationalschool'>
-  tila: AktiivisetJaPäättyneetOpinnotOpiskeluoikeudenTila
-  alkamispäivä?: string
   sisältyyOpiskeluoikeuteen?: SisältäväOpiskeluoikeus
   oid?: string
   koulutustoimija?: Koulutustoimija
@@ -23,13 +21,13 @@ export type AktiivisetJaPäättyneetOpinnotInternationalSchoolOpiskeluoikeus = {
   suoritukset: Array<AktiivisetJaPäättyneetOpinnotInternationalSchoolVuosiluokanSuoritus>
   päättymispäivä?: string
   oppilaitos?: Oppilaitos
+  tila: AktiivisetJaPäättyneetOpinnotOpiskeluoikeudenTila
+  alkamispäivä?: string
 }
 
 export const AktiivisetJaPäättyneetOpinnotInternationalSchoolOpiskeluoikeus = (
   o: {
     tyyppi?: Koodistokoodiviite<'opiskeluoikeudentyyppi', 'internationalschool'>
-    tila?: AktiivisetJaPäättyneetOpinnotOpiskeluoikeudenTila
-    alkamispäivä?: string
     sisältyyOpiskeluoikeuteen?: SisältäväOpiskeluoikeus
     oid?: string
     koulutustoimija?: Koulutustoimija
@@ -37,18 +35,20 @@ export const AktiivisetJaPäättyneetOpinnotInternationalSchoolOpiskeluoikeus = 
     suoritukset?: Array<AktiivisetJaPäättyneetOpinnotInternationalSchoolVuosiluokanSuoritus>
     päättymispäivä?: string
     oppilaitos?: Oppilaitos
+    tila?: AktiivisetJaPäättyneetOpinnotOpiskeluoikeudenTila
+    alkamispäivä?: string
   } = {}
 ): AktiivisetJaPäättyneetOpinnotInternationalSchoolOpiskeluoikeus => ({
   tyyppi: Koodistokoodiviite({
     koodiarvo: 'internationalschool',
     koodistoUri: 'opiskeluoikeudentyyppi'
   }),
-  tila: AktiivisetJaPäättyneetOpinnotOpiskeluoikeudenTila({
-    opiskeluoikeusjaksot: []
-  }),
   suoritukset: [],
   $class:
     'fi.oph.koski.aktiivisetjapaattyneetopinnot.AktiivisetJaPäättyneetOpinnotInternationalSchoolOpiskeluoikeus',
+  tila: AktiivisetJaPäättyneetOpinnotOpiskeluoikeudenTila({
+    opiskeluoikeusjaksot: []
+  }),
   ...o
 })
 

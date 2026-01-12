@@ -177,7 +177,7 @@ class OppijaValidationTutkintokoulutukseenValmentavaKoulutusSpec extends Tutkinn
             )
           )))
 
-        val res = KoskiApplicationForTests.validator.updateFieldsAndValidateAsJson(Oppija(tuvaHenkilöValmis, List(oo)))(session, accessType).right.get
+        val res = KoskiApplicationForTests.validator.updateFieldsAndValidateAsJson(Oppija(tuvaHenkilöValmis, List(oo)))(session, accessType).toOption.get
         res.opiskeluoikeudet.size shouldBe 1
 
         val tuva = res.opiskeluoikeudet.head
@@ -294,7 +294,7 @@ class OppijaValidationTutkintokoulutukseenValmentavaKoulutusSpec extends Tutkinn
           ))
         )
 
-        val res = KoskiApplicationForTests.validator.updateFieldsAndValidateAsJson(Oppija(tuvaHenkilöValmis, List(oo)))(session, accessType).left.get
+        val res = KoskiApplicationForTests.validator.updateFieldsAndValidateAsJson(Oppija(tuvaHenkilöValmis, List(oo)))(session, accessType).swap.toOption.get
         res shouldBe KoskiErrorCategory.badRequest.validation.laajuudet.tuvaOsaSuoritusVääräLaajuus("Tutkintokoulutukseen valmentavan koulutuksen arjen ja yhteiskunnallisen osallisuuden taitojen osasuorituksen laajuus on oltava enintään 20 viikkoa.")
       }
 
@@ -378,7 +378,7 @@ class OppijaValidationTutkintokoulutukseenValmentavaKoulutusSpec extends Tutkinn
           ))
         )
 
-        val res = KoskiApplicationForTests.validator.updateFieldsAndValidateAsJson(Oppija(tuvaHenkilöValmis, List(oo)))(session, accessType).left.get
+        val res = KoskiApplicationForTests.validator.updateFieldsAndValidateAsJson(Oppija(tuvaHenkilöValmis, List(oo)))(session, accessType).swap.toOption.get
         res shouldBe KoskiErrorCategory.badRequest.validation.rakenne.tuvaOpiskeluJaUrasuunnittelutaitojenOsasuoritusPuuttuu()
       }
 
@@ -620,7 +620,7 @@ class OppijaValidationTutkintokoulutukseenValmentavaKoulutusSpec extends Tutkinn
         )
 
         val res = mockKoskiValidator(config).updateFieldsAndValidateAsJson(Oppija(tuvaHenkilöValmis, List(oo)))(session, accessType)
-        res.left.get shouldBe KoskiErrorCategory.badRequest.validation.ammatillinen.lomaTilaRajapäivänJälkeen()
+        res.swap.toOption.get shouldBe KoskiErrorCategory.badRequest.validation.ammatillinen.lomaTilaRajapäivänJälkeen()
       }
 
       "Loma-tilan voi siirtää, vaikka se jatkuu viimeisen käyttöpäivän jälkeen, kun validaatio ei ole vielä voimassa" in {
@@ -736,7 +736,7 @@ class OppijaValidationTutkintokoulutukseenValmentavaKoulutusSpec extends Tutkinn
           )
         )
 
-        validate(oo).left.get should equal(KoskiErrorCategory.badRequest.validation.date.vammaisuusjakso("Vaikeasti vammaisuuden ja muun kuin vaikeasti vammaisuuden aikajaksot eivät voi olla voimassa samana päivänä"))
+        validate(oo).swap.toOption.get should equal(KoskiErrorCategory.badRequest.validation.date.vammaisuusjakso("Vaikeasti vammaisuuden ja muun kuin vaikeasti vammaisuuden aikajaksot eivät voi olla voimassa samana päivänä"))
       }
 
       "Validointi onnistuu vaikka opiskeluoikeus sisältää osittain päällekäiset eri vammaisuuden jaksot" in {
@@ -785,7 +785,7 @@ class OppijaValidationTutkintokoulutukseenValmentavaKoulutusSpec extends Tutkinn
           )
         )
 
-        validate(oo).left.get should equal(KoskiErrorCategory.badRequest.validation.date.vammaisuusjakso("Vammaisuusjaksot sisältävät päiviä, joina ei ole voimassaolevaa erityisen tuen jaksoa"))
+        validate(oo).swap.toOption.get should equal(KoskiErrorCategory.badRequest.validation.date.vammaisuusjakso("Vammaisuusjaksot sisältävät päiviä, joina ei ole voimassaolevaa erityisen tuen jaksoa"))
       }
 
       "Ei voi tallentaa väärällä perusteen diaarinumerolla" in {
@@ -801,7 +801,7 @@ class OppijaValidationTutkintokoulutukseenValmentavaKoulutusSpec extends Tutkinn
             osasuoritukset = None
           ))
         )
-        validate(oo).left.get should equal(KoskiErrorCategory.badRequest.validation.rakenne.vääräKoulutustyyppi("Suoritukselle TutkintokoulutukseenValmentavanKoulutus ei voi käyttää opiskeluoikeuden voimassaoloaikana voimassaollutta perustetta OPH-5410-2021 (7614470), jonka koulutustyyppi on 1(Ammatillinen perustutkinto). Tälle suoritukselle hyväksytyt perusteen koulutustyypit ovat 40(Tutkintokoulutukseen valmentava koulutus TUVA))."))
+        validate(oo).swap.toOption.get should equal(KoskiErrorCategory.badRequest.validation.rakenne.vääräKoulutustyyppi("Suoritukselle TutkintokoulutukseenValmentavanKoulutus ei voi käyttää opiskeluoikeuden voimassaoloaikana voimassaollutta perustetta OPH-5410-2021 (7614470), jonka koulutustyyppi on 1(Ammatillinen perustutkinto). Tälle suoritukselle hyväksytyt perusteen koulutustyypit ovat 40(Tutkintokoulutukseen valmentava koulutus TUVA))."))
       }
 
       def validate(oo: Opiskeluoikeus, voimaanastumispäivänOffsetTästäPäivästä: Long = 0): Either[HttpStatus, Oppija] = {
@@ -846,7 +846,7 @@ class OppijaValidationTutkintokoulutukseenValmentavaKoulutusSpec extends Tutkinn
             )
 
             val res = mockKoskiValidator(config).updateFieldsAndValidateAsJson(Oppija(tuvaHenkilöValmis, List(oo)))(session, accessType)
-            res.left.get shouldBe HttpStatus(
+            res.swap.toOption.get shouldBe HttpStatus(
               400,
               KoskiErrorCategory.badRequest.validation.ammatillinen.lisätietoAlkaaRajapäivänJälkeen("Erityisen tuen")().errors ++
                 KoskiErrorCategory.badRequest.validation.ammatillinen.lisätietoAlkaaRajapäivänJälkeen("Vaikeasti vammaisille järjestetyn opetuksen")().errors ++
@@ -879,7 +879,7 @@ class OppijaValidationTutkintokoulutukseenValmentavaKoulutusSpec extends Tutkinn
             )
 
             val res = mockKoskiValidator(config).updateFieldsAndValidateAsJson(Oppija(tuvaHenkilöValmis, List(oo)))(session, accessType)
-            res.left.get shouldBe HttpStatus(
+            res.swap.toOption.get shouldBe HttpStatus(
               400,
               KoskiErrorCategory.badRequest.validation.ammatillinen.lisätietoRajapäivänJälkeenAlkavaOpiskeluoikeus("Erityisen tuen")().errors ++
                 KoskiErrorCategory.badRequest.validation.ammatillinen.lisätietoRajapäivänJälkeenAlkavaOpiskeluoikeus("Vaikeasti vammaisille järjestetyn opetuksen")().errors ++

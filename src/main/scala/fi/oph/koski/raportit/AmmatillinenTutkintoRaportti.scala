@@ -9,9 +9,6 @@ import fi.oph.koski.raportointikanta._
 import fi.oph.koski.schema._
 import fi.oph.koski.util.FinnishDateFormat.{finnishDateFormat, finnishDateTimeFormat}
 
-
-// scalastyle:off method.length
-
 object AmmatillinenTutkintoRaportti {
 
   def buildRaportti(

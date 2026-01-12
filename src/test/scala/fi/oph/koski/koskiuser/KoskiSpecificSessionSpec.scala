@@ -5,7 +5,7 @@ import com.github.tomakehurst.wiremock.client.WireMock._
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMockConfig
 import com.typesafe.config.ConfigFactory
 import fi.oph.koski.TestEnvironment
-import fi.oph.koski.cache.GlobalCacheManager
+import fi.oph.koski.cache.{CacheManager, GlobalCacheManager}
 import fi.oph.koski.log.LogUserContext
 import fi.oph.koski.organisaatio.MockOrganisaatiot.{helsinginKaupunki, lehtikuusentienToimipiste, oppilaitokset}
 import fi.oph.koski.organisaatio.{MockOrganisaatioRepository, MockOrganisaatiot, Opetushallitus, OrganisaatioHierarkia}
@@ -13,7 +13,7 @@ import fi.oph.koski.schema.OpiskeluoikeudenTyyppi
 import fi.oph.koski.schema.OpiskeluoikeudenTyyppi._
 import fi.oph.koski.sso.CasService
 import fi.oph.koski.userdirectory.{DirectoryUser, OpintopolkuDirectoryClient}
-import org.json4s.DefaultFormats
+import org.json4s.{DefaultFormats, Formats}
 import org.json4s.jackson.Serialization.write
 import org.mockito.Mockito.{mock, when}
 import org.scalatest.freespec.AnyFreeSpec
@@ -33,7 +33,7 @@ class KoskiSpecificSessionSpec
     with OptionValues
     with BeforeAndAfterAll {
 
-  implicit val jsonDefaultFormats = DefaultFormats.preservingEmptyValues
+  implicit val jsonDefaultFormats: Formats = DefaultFormats.preservingEmptyValues
   private val config = ConfigFactory.parseString(
     """
       |authentication-service.useCas = false
@@ -45,7 +45,7 @@ class KoskiSpecificSessionSpec
       |oppijanumerorekisteri.baseUrl="http://localhost:9877"
     """.stripMargin)
 
-  implicit val cacheManager = GlobalCacheManager
+  implicit val cacheManager: CacheManager = GlobalCacheManager
   private val wireMockServer = new WireMockServer(wireMockConfig().port(9877))
   private val directoryClient = new OpintopolkuDirectoryClient(config, new CasService(config))
   private val käyttöoikeusRepository = new KäyttöoikeusRepository(MockOrganisaatioRepository, directoryClient)
@@ -201,21 +201,21 @@ class KoskiSpecificSessionSpec
 
   private val req = mock(classOf[RichRequest])
 
-  override protected def beforeAll {
+  override protected def beforeAll(): Unit = {
     super.beforeAll()
     when(req.header("User-Agent")).thenReturn(Some("MockUserAgent/1.0"))
     when(req.header("HTTP_X_FORWARDED_FOR")).thenReturn(Some("10.1.2.3"))
     when(req.cookies).thenReturn(MultiMapHeadView.empty[String, String])
     wireMockServer.start()
-    mockEndpoints
+    mockEndpoints()
   }
 
-  override protected def afterAll: Unit = {
+  override protected def afterAll(): Unit = {
     wireMockServer.stop()
     super.afterAll()
   }
 
-  private def mockEndpoints = {
+  private def mockEndpoints(): Unit = {
     val käyttöoikeusUrl = "/kayttooikeus-service/kayttooikeus/kayttaja"
     def henkilöUrl(username: String) = {
       val oid = MockUsers.users.find(_.username == username).map(_.oid).getOrElse(throw new Exception("No oid found for user " + username))
@@ -242,7 +242,7 @@ class KoskiSpecificSessionSpec
 }
 
 object Responses {
-  implicit val jsonDefaultFormats = DefaultFormats.preservingEmptyValues
+  implicit val jsonDefaultFormats: Formats = DefaultFormats.preservingEmptyValues
   val kallenOppilaitokset = lehtikuusentienToimipiste :: oppilaitokset
   val käyttöoikeusResponse: Map[String, String] = Map(
     "kalle" -> List(Map(

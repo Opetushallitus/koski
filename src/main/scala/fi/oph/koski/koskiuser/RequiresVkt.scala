@@ -9,7 +9,7 @@ trait RequiresVkt extends KoskiCookieAndBasicAuthenticationSupport {
     requiresVkt
   }
 
-  private def requiresVkt {
+  private def requiresVkt: Unit = {
     getUser match {
       case Left(status) if status.statusCode == 401 =>
         haltWithStatus(status)

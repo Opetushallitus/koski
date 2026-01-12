@@ -12,7 +12,7 @@ class OsasuorituksetSpec extends AnyFreeSpec with Matchers with BeforeAndAfterAl
 
   override protected def beforeAll(): Unit = {
     super.beforeAll()
-    reloadRaportointikanta
+    reloadRaportointikanta()
   }
 
   "Osasuoritukset" - {

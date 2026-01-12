@@ -23,9 +23,9 @@ import java.util.UUID
 class ValpasKuntailmoitusApiServletSpec extends ValpasTestBase with BeforeAndAfterEach with QueryMethods {
   protected val db: DB = KoskiApplicationForTests.valpasDatabase.db
 
-  override protected def beforeEach() {
+  override protected def beforeEach(): Unit = {
     super.beforeEach()
-    AuditLogTester.clearMessages
+    AuditLogTester.clearMessages()
     KoskiApplicationForTests.valpasRajapäivätService.asInstanceOf[MockValpasRajapäivätService]
       .asetaMockTarkastelupäivä(FixtureUtil.DefaultTarkastelupäivä)
   }
@@ -765,7 +765,7 @@ class ValpasKuntailmoitusApiServletSpec extends ValpasTestBase with BeforeAndAft
   "Kuntailmoituksen tekijä voi mitätöidä sen" in {
     val tekijä = ValpasMockUsers.valpasJklNormaalikoulu
     val oppija = KoskiApplicationForTests.valpasOppijaLaajatTiedotService.getOppijaLaajatTiedotYhteystiedoillaJaKuntailmoituksilla(ValpasMockOppijat.lukionAloittanutJaLopettanutJollaIlmoituksia.oid)(session(tekijä))
-    val kuntailmoitus = oppija.right.get.kuntailmoitukset.find(_.aktiivinen.exists(b => b)).get
+    val kuntailmoitus = oppija.toOption.get.kuntailmoitukset.find(_.aktiivinen.exists(b => b)).get
 
     delete(s"/valpas/api/kuntailmoitus/${kuntailmoitus.id.get}", headers = authHeaders(tekijä)) {
       verifyResponseStatus(204)
@@ -781,13 +781,13 @@ class ValpasKuntailmoitusApiServletSpec extends ValpasTestBase with BeforeAndAft
 
     KoskiApplicationForTests.valpasOppijaLaajatTiedotService
       .getOppijaLaajatTiedotYhteystiedoillaJaKuntailmoituksilla(ValpasMockOppijat.lukionAloittanutJaLopettanutJollaIlmoituksia.oid)(session(tekijä))
-      .right.get.kuntailmoitukset.exists(_.id.get == kuntailmoitus.id.get) should equal(false)
+      .toOption.get.kuntailmoitukset.exists(_.id.get == kuntailmoitus.id.get) should equal(false)
   }
 
   "Kuntailmoituksen vastaanottajaorganisaatio ei voi mitätöidä sitä" in {
     val kuntakäyttäjä = ValpasMockUsers.valpasHelsinki
     val oppija = KoskiApplicationForTests.valpasOppijaLaajatTiedotService.getOppijaLaajatTiedotYhteystiedoillaJaKuntailmoituksilla(ValpasMockOppijat.lukionAloittanutJaLopettanutJollaIlmoituksia.oid)(session(kuntakäyttäjä))
-    val kuntailmoitus = oppija.right.get.kuntailmoitukset.find(_.aktiivinen.exists(b => b)).get
+    val kuntailmoitus = oppija.toOption.get.kuntailmoitukset.find(_.aktiivinen.exists(b => b)).get
 
     delete(s"/valpas/api/kuntailmoitus/${kuntailmoitus.id.get}", headers = authHeaders(kuntakäyttäjä)) {
       verifyResponseStatus(403, ValpasErrorCategory.forbidden.toiminto())
@@ -795,7 +795,7 @@ class ValpasKuntailmoitusApiServletSpec extends ValpasTestBase with BeforeAndAft
 
     KoskiApplicationForTests.valpasOppijaLaajatTiedotService
       .getOppijaLaajatTiedotYhteystiedoillaJaKuntailmoituksilla(ValpasMockOppijat.lukionAloittanutJaLopettanutJollaIlmoituksia.oid)(session(kuntakäyttäjä))
-      .right.get.kuntailmoitukset.exists(_.id.get == kuntailmoitus.id.get) should equal(true)
+      .toOption.get.kuntailmoitukset.exists(_.id.get == kuntailmoitus.id.get) should equal(true)
   }
 
   private def teeKuntailmoitusInputTekijänYhteystiedoilla(

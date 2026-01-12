@@ -12,19 +12,19 @@ export type LukioonValmistavanKurssinSuoritus = {
   $class: 'fi.oph.koski.schema.LukioonValmistavanKurssinSuoritus'
   arviointi?: Array<LukionArviointi>
   tyyppi: Koodistokoodiviite<'suorituksentyyppi', 'luvakurssi'>
-  tila?: Koodistokoodiviite<'suorituksentila', string>
-  alkamispäivä?: string
   suorituskieli?: Koodistokoodiviite<'kieli', string>
   koulutusmoduuli: LukioonValmistavanKoulutuksenKurssi
+  tila?: Koodistokoodiviite<'suorituksentila', string>
+  alkamispäivä?: string
 }
 
 export const LukioonValmistavanKurssinSuoritus = (o: {
   arviointi?: Array<LukionArviointi>
   tyyppi?: Koodistokoodiviite<'suorituksentyyppi', 'luvakurssi'>
-  tila?: Koodistokoodiviite<'suorituksentila', string>
-  alkamispäivä?: string
   suorituskieli?: Koodistokoodiviite<'kieli', string>
   koulutusmoduuli: LukioonValmistavanKoulutuksenKurssi
+  tila?: Koodistokoodiviite<'suorituksentila', string>
+  alkamispäivä?: string
 }): LukioonValmistavanKurssinSuoritus => ({
   tyyppi: Koodistokoodiviite({
     koodiarvo: 'luvakurssi',

@@ -5,11 +5,13 @@ import fi.oph.koski.documentation.ExampleData.{laajuusOpintopisteissä, laajuusO
 import fi.oph.koski.koodisto.MockKoodistoViitePalvelu
 import fi.oph.koski.localization.LocalizedStringImplicits._
 import fi.oph.koski.oppilaitos.MockOppilaitosRepository
+import fi.oph.koski.util.XML
 import fi.oph.koski.organisaatio.MockOrganisaatioRepository
 import fi.oph.koski.schema._
 import org.scalatest.OptionValues
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.should.Matchers
+import fi.oph.koski.xml.NodeSeqImplicits._
 
 import java.time.LocalDate
 import scala.xml.Elem
@@ -163,15 +165,23 @@ class VirtaXMLConverterSpec extends AnyFreeSpec with TestEnvironment with Matche
   def convertOpiskeluoikeusWithOrganisaatioAndSuoritus(suoritusPvm: String = "2014-05-30") =
     converter.convertToOpiskeluoikeudet(opiskeluoikeusSuorituksella(suoritusPvm)).head
 
-  def withArvosana(arvosana: Elem, suoritus: Elem = baseSuoritus): Elem = suoritus.copy(child = for (subNode <- suoritus.child) yield subNode match {
-    case <Arvosana>{ contents @ _* }</Arvosana> => arvosana
-    case other@_ => other
-  })
+  def withArvosana(arvosana: Elem, suoritus: Elem = baseSuoritus): Elem =
+    XML.copyElem(
+      suoritus,
+      for (subNode <- suoritus.child) yield subNode match {
+        case <Arvosana>{ contents @ _* }</Arvosana> => arvosana
+        case other@_                                => other
+      }
+    )
 
-  def withLaajuus(laajuus: Elem, suoritus: Elem = baseSuoritus): Elem = suoritus.copy(child = for (subNode <- suoritus.child) yield subNode match {
-    case <Laajuus>{ contents @ _* }</Laajuus> => laajuus
-    case other@_ => other
-  })
+  def withLaajuus(laajuus: Elem, suoritus: Elem = baseSuoritus): Elem =
+    XML.copyElem(
+      suoritus,
+      for (subNode <- suoritus.child) yield subNode match {
+        case <Laajuus>{ contents @ _* }</Laajuus> => laajuus
+        case other@_                              => other
+      }
+    )
 
   "Virta-opiskeluoikeuksien konvertointi" - {
     val opiskeluoikeudet = converter.convertToOpiskeluoikeudet(virtaOpiskeluoikeudet)

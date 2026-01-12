@@ -6,6 +6,7 @@ import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.koskiuser.RequiresSuomiFiOrHsl
 import fi.oph.koski.schema.LocalizedString
 import fi.oph.koski.servlet.NoCache
+import fi.oph.koski.xml.NodeSeqImplicits._
 
 import scala.xml.{Elem, Node, NodeSeq}
 
@@ -99,8 +100,10 @@ class PalveluvaylaServlet(implicit val application: KoskiApplication) extends So
       </kns1:opintoOikeudetServiceResponse>)
   }
 
-  private def localizedStringToXml(s: LocalizedString) =
-    s.values.map { case (k, v) => <x>{v}</x>.copy(label = k) }
+  private def localizedStringToXml(s: LocalizedString): Seq[Node] =
+    s.values.map { case (k, v) =>
+      Elem(null, k, scala.xml.Null, scala.xml.TopScope, minimizeEmpty = true, scala.xml.Text(v))
+    }.toSeq
 }
 
 object PalveluvaylaServlet {

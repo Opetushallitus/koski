@@ -33,7 +33,8 @@ object CasClient {
 class CasClient(casBaseUrl: Uri, client: Client[IO], callerId: String) extends Logging {
   import CasClient._
 
-  def this(casServer: String, client: Client[IO], callerId: String) = this(Uri.fromString(casServer).right.get, client, callerId)
+  def this(casServer: String, client: Client[IO], callerId: String) =
+    this(Uri.fromString(casServer).toOption.getOrElse(throw new IllegalArgumentException(s"Invalid CAS server URI: $casServer")), client, callerId)
 
   def validateServiceTicketWithOppijaAttributes(service: String)(serviceTicket: ServiceTicket): IO[OppijaAttributes] = {
     validateServiceTicket[OppijaAttributes](casBaseUrl, client, service, decodeOppijaAttributes)(serviceTicket)

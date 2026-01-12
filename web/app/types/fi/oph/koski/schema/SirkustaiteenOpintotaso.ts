@@ -32,11 +32,11 @@ export const SirkustaiteenOpintotaso = (
     koodiarvo: 'sirkustaide',
     koodistoUri: 'taiteenperusopetustaiteenala'
   }),
-  $class: 'fi.oph.koski.schema.SirkustaiteenOpintotaso',
   tunniste: Koodistokoodiviite({
     koodiarvo: '999907',
     koodistoUri: 'koulutus'
   }),
+  $class: 'fi.oph.koski.schema.SirkustaiteenOpintotaso',
   ...o
 })
 

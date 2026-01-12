@@ -1,11 +1,11 @@
 import { LaajuusVuosiviikkotunneissaTaiTunneissa } from './LaajuusVuosiviikkotunneissaTaiTunneissa'
 import { Koodistokoodiviite } from './Koodistokoodiviite'
 import { LocalizedString } from './LocalizedString'
-import { OmanÄidinkielenOpinnotLaajuusVuosiviikkotunteina } from './OmanAidinkielenOpinnotLaajuusVuosiviikkotunteina'
 import { PerusopetukseenValmistavaOpetus } from './PerusopetukseenValmistavaOpetus'
 import { OrganisaatioWithOid } from './OrganisaatioWithOid'
 import { PerusopetukseenValmistavanOpetuksenOsasuoritus } from './PerusopetukseenValmistavanOpetuksenOsasuoritus'
 import { HenkilövahvistusPaikkakunnalla } from './HenkilovahvistusPaikkakunnalla'
+import { OmanÄidinkielenOpinnotLaajuusVuosiviikkotunteina } from './OmanAidinkielenOpinnotLaajuusVuosiviikkotunteina'
 
 /**
  * Perusopetukseen valmistavan opetuksen suorituksen tiedot
@@ -20,14 +20,14 @@ export type PerusopetukseenValmistavanOpetuksenSuoritus = {
     'suorituksentyyppi',
     'perusopetukseenvalmistavaopetus'
   >
-  tila?: Koodistokoodiviite<'suorituksentila', string>
-  omanÄidinkielenOpinnot?: OmanÄidinkielenOpinnotLaajuusVuosiviikkotunteina
   suorituskieli: Koodistokoodiviite<'kieli', string>
   todistuksellaNäkyvätLisätiedot?: LocalizedString
   koulutusmoduuli: PerusopetukseenValmistavaOpetus
   toimipiste: OrganisaatioWithOid
   osasuoritukset?: Array<PerusopetukseenValmistavanOpetuksenOsasuoritus>
   vahvistus?: HenkilövahvistusPaikkakunnalla
+  tila?: Koodistokoodiviite<'suorituksentila', string>
+  omanÄidinkielenOpinnot?: OmanÄidinkielenOpinnotLaajuusVuosiviikkotunteina
 }
 
 export const PerusopetukseenValmistavanOpetuksenSuoritus = (o: {
@@ -37,14 +37,14 @@ export const PerusopetukseenValmistavanOpetuksenSuoritus = (o: {
     'suorituksentyyppi',
     'perusopetukseenvalmistavaopetus'
   >
-  tila?: Koodistokoodiviite<'suorituksentila', string>
-  omanÄidinkielenOpinnot?: OmanÄidinkielenOpinnotLaajuusVuosiviikkotunteina
   suorituskieli: Koodistokoodiviite<'kieli', string>
   todistuksellaNäkyvätLisätiedot?: LocalizedString
   koulutusmoduuli?: PerusopetukseenValmistavaOpetus
   toimipiste: OrganisaatioWithOid
   osasuoritukset?: Array<PerusopetukseenValmistavanOpetuksenOsasuoritus>
   vahvistus?: HenkilövahvistusPaikkakunnalla
+  tila?: Koodistokoodiviite<'suorituksentila', string>
+  omanÄidinkielenOpinnot?: OmanÄidinkielenOpinnotLaajuusVuosiviikkotunteina
 }): PerusopetukseenValmistavanOpetuksenSuoritus => ({
   tyyppi: Koodistokoodiviite({
     koodiarvo: 'perusopetukseenvalmistavaopetus',

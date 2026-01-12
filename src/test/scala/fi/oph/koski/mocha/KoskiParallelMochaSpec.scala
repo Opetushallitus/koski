@@ -26,6 +26,7 @@ object SplitMochaSpecs {
     val runnerFile = Files
       .asString("web/test/runner.html").getOrElse(throw new RuntimeException("/web/test/runner.html not found"))
       .split("\n")
+      .toIndexedSeq
 
     val filenames = runnerFile.filter(javascriptSpecFilename).map(cleanFilename)
     val filenamesByRunnerNumber = divideSpecs(filenames)
@@ -41,7 +42,9 @@ object SplitMochaSpecs {
   private def divideSpecs(specs: Seq[String]) = specs
     .zipWithIndex.map { case (spec, index) => (index % numberOfRunners, spec)}
     .groupBy(_._1)
+    .view
     .mapValues(_.map(_._2))
+    .toMap
 
   private def javascriptSpecFilename(str: String) = str.contains("spec/") && str.contains(".js")
   private def cleanFilename(str: String) = str.trim.replace(",", "").replace("\"","").replace("'","")

@@ -1,8 +1,8 @@
 import { MuunAmmatillisenKoulutuksenArviointi } from './MuunAmmatillisenKoulutuksenArviointi'
-import { Näyttö } from './Naytto'
 import { Koodistokoodiviite } from './Koodistokoodiviite'
 import { LocalizedString } from './LocalizedString'
 import { MuunAmmatillisenKoulutuksenOsasuoritus } from './MuunAmmatillisenKoulutuksenOsasuoritus'
+import { Näyttö } from './Naytto'
 
 /**
  * MuunAmmatillisenKoulutuksenOsasuorituksenSuoritus
@@ -12,6 +12,9 @@ import { MuunAmmatillisenKoulutuksenOsasuoritus } from './MuunAmmatillisenKoulut
 export type MuunAmmatillisenKoulutuksenOsasuorituksenSuoritus = {
   $class: 'fi.oph.koski.schema.MuunAmmatillisenKoulutuksenOsasuorituksenSuoritus'
   arviointi?: Array<MuunAmmatillisenKoulutuksenArviointi>
+  suorituskieli?: Koodistokoodiviite<'kieli', string>
+  koulutusmoduuli: MuunAmmatillisenKoulutuksenOsasuoritus
+  osasuoritukset?: Array<MuunAmmatillisenKoulutuksenOsasuorituksenSuoritus>
   näyttö?: Näyttö
   tyyppi: Koodistokoodiviite<
     'suorituksentyyppi',
@@ -19,13 +22,13 @@ export type MuunAmmatillisenKoulutuksenOsasuorituksenSuoritus = {
   >
   tila?: Koodistokoodiviite<'suorituksentila', string>
   alkamispäivä?: string
-  suorituskieli?: Koodistokoodiviite<'kieli', string>
-  koulutusmoduuli: MuunAmmatillisenKoulutuksenOsasuoritus
-  osasuoritukset?: Array<MuunAmmatillisenKoulutuksenOsasuorituksenSuoritus>
 }
 
 export const MuunAmmatillisenKoulutuksenOsasuorituksenSuoritus = (o: {
   arviointi?: Array<MuunAmmatillisenKoulutuksenArviointi>
+  suorituskieli?: Koodistokoodiviite<'kieli', string>
+  koulutusmoduuli: MuunAmmatillisenKoulutuksenOsasuoritus
+  osasuoritukset?: Array<MuunAmmatillisenKoulutuksenOsasuorituksenSuoritus>
   näyttö?: Näyttö
   tyyppi?: Koodistokoodiviite<
     'suorituksentyyppi',
@@ -33,16 +36,13 @@ export const MuunAmmatillisenKoulutuksenOsasuorituksenSuoritus = (o: {
   >
   tila?: Koodistokoodiviite<'suorituksentila', string>
   alkamispäivä?: string
-  suorituskieli?: Koodistokoodiviite<'kieli', string>
-  koulutusmoduuli: MuunAmmatillisenKoulutuksenOsasuoritus
-  osasuoritukset?: Array<MuunAmmatillisenKoulutuksenOsasuorituksenSuoritus>
 }): MuunAmmatillisenKoulutuksenOsasuorituksenSuoritus => ({
+  $class:
+    'fi.oph.koski.schema.MuunAmmatillisenKoulutuksenOsasuorituksenSuoritus',
   tyyppi: Koodistokoodiviite({
     koodiarvo: 'muunammatillisenkoulutuksenosasuoritus',
     koodistoUri: 'suorituksentyyppi'
   }),
-  $class:
-    'fi.oph.koski.schema.MuunAmmatillisenKoulutuksenOsasuorituksenSuoritus',
   ...o
 })
 

@@ -106,7 +106,7 @@ class OppivelvollisuudenKeskeytysRepositoryService(application: KoskiApplication
         "pvm" -> rajapäivät.ilmoitustenEnsimmäinenTallennuspäivä.format(finnishDateFormat)
       ))))
     } else {
-      Right(Unit)
+      Right(())
     }
   }
 }

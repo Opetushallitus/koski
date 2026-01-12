@@ -9,7 +9,7 @@ trait RequiresMigri extends KoskiLuovutuspalveluHeaderAuthenticationSupport {
     requiresMigri
   }
 
-  private def requiresMigri {
+  private def requiresMigri: Unit = {
     getUser match {
       case Left(status) if status.statusCode == 401 =>
         haltWithStatus(status)

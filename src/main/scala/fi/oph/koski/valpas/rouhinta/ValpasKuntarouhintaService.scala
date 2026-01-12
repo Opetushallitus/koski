@@ -70,7 +70,7 @@ class ValpasKuntarouhintaService(application: KoskiApplication)
       (1 to ylivuotosivu)
         // Käytä iteraattoria, jotta oppijanumerorekisterin pommitukseen tulee pieni tauko, kun poistetaan Kosken tuntemat
         // oppijat kutsujen välissä:
-        .toIterator
+        .iterator
         .map(tarkistaYlivuoto(ylivuotosivu))
         .map(haeSivuOppijoitaOppijanumerorekisteristä(kunta))
         .takeWhile(!_.isEmpty)

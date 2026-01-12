@@ -11,16 +11,16 @@ import scala.concurrent.duration.DurationInt
 
 case class MuuAmmatillinenRaporttiBuilder(db: DB) extends QueryMethods {
 
-  implicit val getResult = GetResult(r =>
+  implicit val getResult: GetResult[MuuAmmatillinenRaporttiRow] = GetResult(r =>
     MuuAmmatillinenRaporttiRow(
       opiskeluoikeusOid = r.<<,
       sisältyyOpiskeluoikeuteenOid = r.<<,
       lähdejärjestelmäKoodiarvo = r.<<,
       lähdejärjestelmäId = r.<<,
-      aikaleima = r.nextTimestamp.toLocalDateTime.toLocalDate,
+      aikaleima = r.nextTimestamp().toLocalDateTime.toLocalDate,
       toimipisteOid = r.<<,
       suorituksenNimi = r.<<,
-      opiskeluoikeudenAlkamispäivä = r.nextDate.toLocalDate,
+      opiskeluoikeudenAlkamispäivä = r.nextDate().toLocalDate,
       opiskeluoikeudenViimeisinTila = r.<<,
       yksilöity = r.<<,
       oppijaOid = r.<<,
