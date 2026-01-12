@@ -39,11 +39,17 @@ jobs:
       - name: Test kansalaisen näkymä testiopintopolussa
         run: cd smoketests && pnpm run qa:kansalainen
 
+      - name: Test omadata-oauth2-sample in dev
+        run: cd smoketests && pnpm run omadata:dev
+
+      - name: Test omadata-oauth2-sample in qa
+        run: cd smoketests && pnpm run omadata:qa
+
       - name: Report failure
         uses: ravsamhq/notify-slack-action@95a35215cdf7ab510d2cdd20ae94f342d212a1a1
         if: ${{ failure() }}
         with:
           status: ${{ job.status }}
-          notification_title: "Run smoketests: failure in kansalaisen näkymä testiopintopolussa"
+          notification_title: "Run smoketests: failure in kansalainen/omadata tests"
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
