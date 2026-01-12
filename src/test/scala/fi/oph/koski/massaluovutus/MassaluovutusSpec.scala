@@ -770,6 +770,21 @@ class MassaluovutusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers wit
           KoskiSpecificMockOppijat.master.oid -> OpiskeluoikeudenTyyppi.perusopetus.koodiarvo
         )
       }
+
+      "Palauttaa epäonnistuneen kyselyn" in {
+        // Lisää rikkinäiset opiskeluoikeudet fikstureen:
+        resetFixtures()
+
+        val queryId = addQuerySuccessfully(getQuery(LocalDateTime.now().minusHours(1)), user) { response =>
+          response.status should equal(QueryState.pending)
+          response.queryId
+        }
+        val failed = waitForFailure(queryId, user)
+
+        failed.status shouldBe QueryState.failed
+        failed.error.get should fullyMatch regex  s"^Oppijan ${KoskiSpecificMockOppijat.kelaRikkinäinenOpiskeluoikeus.oid} opiskeluoikeuden (1\\.2\\.246\\.562\\.15\\.\\d+) deserialisointi epäonnistui$$".r // Näkyy pääkäyttäjälle
+        failed.files should have length 0 // Ei palauta tuloksia, joten ei myöskään tee auditlokitusta
+      }
     }
 
     "Suorituspalvelukysely - oppija-oideilla hakeminen" - {
@@ -1077,7 +1092,7 @@ class MassaluovutusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers wit
         val failed = waitForFailure(queryId, user)
 
         failed.status shouldBe QueryState.failed
-        failed.error.get should fullyMatch regex  "^Oppijan (1\\.2\\.246\\.562\\.24\\.\\d+) opiskeluoikeuden (1\\.2\\.246\\.562\\.15\\.\\d+) deserialisointi epäonnistui$".r // Näkyy pääkäyttäjälle
+        failed.error.get should fullyMatch regex  s"^Oppijan ${KoskiSpecificMockOppijat.kelaRikkinäinenOpiskeluoikeus.oid} opiskeluoikeuden (1\\.2\\.246\\.562\\.15\\.\\d+) deserialisointi epäonnistui$$".r // Näkyy pääkäyttäjälle
         failed.files should have length 0 // Ei palauta tuloksia, joten ei myöskään tee auditlokitusta
       }
     }

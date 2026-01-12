@@ -35,8 +35,10 @@ case class SuorituspalveluMuuttuneetJalkeenQuery(
           SELECT DISTINCT COALESCE(h.master_oid, h.oid) AS master_oid
           FROM henkilo h
             JOIN opiskeluoikeus o ON h.oid = o.oppija_oid
-          WHERE aikaleima >= ${Timestamp.valueOf(muuttuneetJälkeen)}
-            AND o.suoritustyypit && ${SuorituspalveluQuery.suoritustenTyypit}::text[]) -- True jos listoissa on yhteisiä alkioita
+          WHERE o.aikaleima >= ${Timestamp.valueOf(muuttuneetJälkeen)}
+            AND o.suoritustyypit && ${SuorituspalveluQuery.suoritustenTyypit}::text[]
+        )
+        AND opiskeluoikeus.suoritustyypit && ${SuorituspalveluQuery.suoritustenTyypit}::text[]
         ORDER BY opiskeluoikeus.aikaleima
       """.as[(Int, Timestamp, String)])
 }
