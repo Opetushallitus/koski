@@ -16,6 +16,8 @@ case class SupaEBOpiskeluoikeus(
   koulutustoimija: Option[Koulutustoimija],
   oppilaitos: Option[Oppilaitos],
   tila: EBOpiskeluoikeudenTila,
+  alkamispäivä: Option[LocalDate],
+  päättymispäivä: Option[LocalDate],
   suoritukset: List[SupaEBTutkinnonSuoritus],
   versionumero: Option[Int],
   aikaleima: Option[LocalDateTime],
@@ -30,6 +32,8 @@ object SupaEBOpiskeluoikeus {
       koulutustoimija = oo.koulutustoimija,
       oppilaitos = oo.oppilaitos,
       tila = oo.tila,
+      alkamispäivä = oo.alkamispäivä,
+      päättymispäivä = oo.päättymispäivä,
       suoritukset = oo.suoritukset.map(SupaEBTutkinnonSuoritus.apply),
       versionumero = oo.versionumero,
       aikaleima = oo.aikaleima

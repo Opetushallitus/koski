@@ -21,6 +21,10 @@ trait SupaOpiskeluoikeus {
   def oppilaitos: Option[Oppilaitos]
   @Description("Opiskeluoikeuden tila, joka muodostuu opiskeluoikeusjaksoista")
   def tila: OpiskeluoikeudenTila
+  @Description("Opiskeluoikeuden alkamispäivä. Tieto poimitaan tila-kentän ensimmäisestä opiskeluoikeusjaksosta.")
+  def alkamispäivä: Option[LocalDate]
+  @Description("Opiskeluoikeuden päättymispäivä. Tieto poimitaan tila-kentän viimeisestä opiskeluoikeusjaksosta, jos se on opiskeluoikeuden päättävä tila.")
+  def päättymispäivä: Option[LocalDate]
   @Description("Opiskeluoikeuteen liittyvien tutkinto- ja muiden suoritusten tiedot")
   def suoritukset: List[SupaSuoritus]
 

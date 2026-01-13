@@ -16,6 +16,8 @@ case class SupaTutkintokoulutukseenValmentavanOpiskeluoikeus(
   koulutustoimija: Option[Koulutustoimija],
   oppilaitos: Option[Oppilaitos],
   tila: TutkintokoulutukseenValmentavanOpiskeluoikeudenTila,
+  alkamispäivä: Option[LocalDate],
+  päättymispäivä: Option[LocalDate],
   suoritukset: List[SupaTutkintokoulutukseenValmentavanKoulutuksenSuoritus],
   versionumero: Option[Int],
   aikaleima: Option[LocalDateTime],
@@ -30,6 +32,8 @@ object SupaTutkintokoulutukseenValmentavanOpiskeluoikeus {
       koulutustoimija = oo.koulutustoimija,
       oppilaitos = oo.oppilaitos,
       tila = oo.tila,
+      alkamispäivä = oo.alkamispäivä,
+      päättymispäivä = oo.päättymispäivä,
       suoritukset = oo.suoritukset.collect {
         case s: TutkintokoulutukseenValmentavanKoulutuksenSuoritus => SupaTutkintokoulutukseenValmentavanKoulutuksenSuoritus(s)
       },

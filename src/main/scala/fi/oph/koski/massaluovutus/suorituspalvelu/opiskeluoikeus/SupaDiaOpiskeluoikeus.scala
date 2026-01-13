@@ -17,6 +17,8 @@ case class SupaDIAOpiskeluoikeus(
   koulutustoimija: Option[Koulutustoimija],
   oppilaitos: Option[Oppilaitos],
   tila: DIAOpiskeluoikeudenTila,
+  alkamispäivä: Option[LocalDate],
+  päättymispäivä: Option[LocalDate],
   suoritukset: List[SupaDIATutkinnonSuoritus],
   versionumero: Option[Int],
   aikaleima: Option[LocalDateTime],
@@ -32,6 +34,8 @@ object SupaDIAOpiskeluoikeus {
         koulutustoimija = oo.koulutustoimija,
         oppilaitos = oo.oppilaitos,
         tila = oo.tila,
+        alkamispäivä = oo.alkamispäivä,
+        päättymispäivä = oo.päättymispäivä,
         suoritukset = oo.suoritukset.collect {
           case tutkinnonSuoritus: DIATutkinnonSuoritus if tutkinnonSuoritus.valmis => SupaDIATutkinnonSuoritus(tutkinnonSuoritus)
         },

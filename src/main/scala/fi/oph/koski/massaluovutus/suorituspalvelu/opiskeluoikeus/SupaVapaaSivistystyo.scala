@@ -15,6 +15,8 @@ case class SupaVapaanSivistystyönOpiskeluoikeus(
   koulutustoimija: Option[Koulutustoimija],
   oppilaitos: Option[Oppilaitos],
   tila: VapaanSivistystyönOpiskeluoikeudenTila,
+  alkamispäivä: Option[LocalDate],
+  päättymispäivä: Option[LocalDate],
   suoritukset: List[SupaVapaanSivistystyönPäätasonSuoritus],
   versionumero: Option[Int],
   aikaleima: Option[LocalDateTime],
@@ -31,6 +33,8 @@ object SupaVapaanSivistystyönOpiskeluoikeus {
       koulutustoimija = oo.koulutustoimija,
       oppilaitos = oo.oppilaitos,
       tila = oo.tila,
+      alkamispäivä = oo.alkamispäivä,
+      päättymispäivä = oo.päättymispäivä,
       suoritukset = oo.suoritukset.flatMap {
         case s: OppivelvollisilleSuunnattuVapaanSivistystyönKoulutuksenSuoritus =>
           Some(SupaOppivelvollisilleSuunnattuVapaanSivistystyönKoulutuksenSuoritus(s))
