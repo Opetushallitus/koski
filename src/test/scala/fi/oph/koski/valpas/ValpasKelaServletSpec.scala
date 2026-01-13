@@ -332,6 +332,34 @@ class ValpasKelaServletSpec extends ValpasTestBase with BeforeAndAfterEach {
           response.henkilö.oikeusKoulutuksenMaksuttomuuteenVoimassaAsti should equal(Some(expectedDate))
         }
       }
+
+      "Yhden oppijan hakeminen palauttaa oppijan, joka on menehtynyt, tiedot" in {
+        val oppija = ValpasMockOppijat.menehtynytOppija
+
+        postHetu(oppija.hetu.get) {
+          verifyResponseStatusOk()
+          val response = JsonSerializer.parse[ValpasKelaOppija](body)
+          response.henkilö.hetu should equal(oppija.hetu)
+          response.henkilö.oid should equal(oppija.oid)
+          response.henkilö.oppivelvollisuusVoimassaAsti should equal(date(2021, 3, 1))
+          response.henkilö.oikeusKoulutuksenMaksuttomuuteenVoimassaAsti should equal(Some(date(2021, 3, 1)))
+          response.oppivelvollisuudenKeskeytykset should be(Seq.empty)
+        }
+      }
+
+      "Yhden oppijan hakeminen palauttaa vain ONR:ssä olevan oppijan, joka on menehtynyt, tiedot" in {
+        val oppija = ValpasMockOppijat.eiKoskessaMenehtynytOppija
+
+        postHetu(oppija.hetu.get) {
+          verifyResponseStatusOk()
+          val response = JsonSerializer.parse[ValpasKelaOppija](body)
+          response.henkilö.hetu should equal(oppija.hetu)
+          response.henkilö.oid should equal(oppija.oid)
+          response.henkilö.oppivelvollisuusVoimassaAsti should equal(date(2021, 3, 1))
+          response.henkilö.oikeusKoulutuksenMaksuttomuuteenVoimassaAsti should equal(Some(date(2021, 3, 1)))
+          response.oppivelvollisuudenKeskeytykset should be(Seq.empty)
+        }
+      }
     }
 
     "Usean oppijan rajapinta" - {
@@ -432,6 +460,33 @@ class ValpasKelaServletSpec extends ValpasTestBase with BeforeAndAfterEach {
               }
             }
           }}
+        }
+      }
+
+      "Usean oppijan hakeminen palauttaa menehtyneet oppijat" in {
+        val oppijat = Seq(
+          ValpasMockOppijat.menehtynytOppija,
+          ValpasMockOppijat.menehtynytToisellaAsteellaOppija,
+          ValpasMockOppijat.eiKoskessaMenehtynytOppija,
+        )
+        val hetut = oppijat.map(_.hetu.get)
+
+        postHetut(hetut) {
+          verifyResponseStatusOk()
+          val oppijaResponset = JsonSerializer.parse[Seq[ValpasKelaOppija]](body)
+            .map(oppija => oppija.henkilö.oid -> oppija)
+            .toMap
+
+          oppijat.zipWithIndex.foreach {
+            case (oppija, index) => withClue(s"oppija ${index}: ") {
+              val oppijaResponse = oppijaResponset(oppija.oid)
+
+              oppijaResponse.henkilö.hetu should equal(oppija.hetu)
+              oppijaResponse.henkilö.oid should equal(oppija.oid)
+              oppijaResponse.henkilö.oppivelvollisuusVoimassaAsti should equal(date(2021, 3, 1))
+              oppijaResponse.henkilö.oikeusKoulutuksenMaksuttomuuteenVoimassaAsti should equal(Some(date(2021, 3, 1)))
+            }
+          }
         }
       }
 

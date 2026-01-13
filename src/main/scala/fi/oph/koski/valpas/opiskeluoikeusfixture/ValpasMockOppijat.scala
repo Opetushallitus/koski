@@ -377,10 +377,10 @@ object ValpasMockOppijat {
     }
   )
 
-  val menehtynytOppija = valpasOppijat.oppijaSyntymäaikaHetusta("Menehtynyt", "Valpas", "161215A298F", kuolinpäivä = Some(LocalDate.of(2021, 3, 1)), kotikunta = None,
+  val menehtynytOppija = valpasOppijat.oppijaSyntymäaikaHetusta("Menehtynyt", "Valpas", "300505A455B", kuolinpäivä = Some(LocalDate.of(2021, 3, 1)), kotikunta = None,
     kuntahistoriaMock = h => {
       val historia = Seq(
-        OppijanumerorekisteriKotikuntahistoriaRow(h.henkilö.oid, "091", Some(LocalDate.of(2015, 12, 16)), None)
+        OppijanumerorekisteriKotikuntahistoriaRow(h.henkilö.oid, Kunta.helsinki, Some(LocalDate.of(2005, 5, 30)), None)
       )
       OppijanKuntahistoria(
         Some(h.henkilö.oid),
@@ -389,10 +389,22 @@ object ValpasMockOppijat {
       )
     })
 
-  val menehtynytToisellaAsteellaOppija = valpasOppijat.oppijaSyntymäaikaHetusta("Menehtynyt-toisella-asteella", "Valpas", "030115A589L", kuolinpäivä = Some(LocalDate.of(2021, 3, 1)), kotikunta = None,
+  val menehtynytToisellaAsteellaOppija = valpasOppijat.oppijaSyntymäaikaHetusta("Menehtynyt-toisella-asteella", "Valpas", "130605A846T", kuolinpäivä = Some(LocalDate.of(2021, 3, 1)), kotikunta = None,
     kuntahistoriaMock = h => {
       val historia = Seq(
-        OppijanumerorekisteriKotikuntahistoriaRow(h.henkilö.oid, "091", Some(LocalDate.of(2015, 11, 3)), None)
+        OppijanumerorekisteriKotikuntahistoriaRow(h.henkilö.oid, Kunta.helsinki, Some(LocalDate.of(2005, 6, 13)), None)
+      )
+      OppijanKuntahistoria(
+        Some(h.henkilö.oid),
+        historia,
+        Seq.empty
+      )
+    })
+
+  val eiKoskessaMenehtynytOppija = valpasOppijat.oppijaSyntymäaikaHetusta("Ei-Koskessa-menehtynyt", "Valpas", "260605A666C", kuolinpäivä = Some(LocalDate.of(2021, 3, 1)), kotikunta = None,
+    kuntahistoriaMock = h => {
+      val historia = Seq(
+        OppijanumerorekisteriKotikuntahistoriaRow(h.henkilö.oid, Kunta.helsinki, Some(LocalDate.of(2005, 6, 26)), None)
       )
       OppijanKuntahistoria(
         Some(h.henkilö.oid),

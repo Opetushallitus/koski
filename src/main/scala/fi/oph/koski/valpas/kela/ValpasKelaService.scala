@@ -113,9 +113,13 @@ class ValpasKelaService(application: KoskiApplication) extends Logging with Timi
         hetu = oppija.hetu,
         // Tänne ei pitäisi koskaan päätyä syntymäajattomalla oppijalla, koska heitä ei katsota oppivelvollisiksi
         oppivelvollisuusVoimassaAsti =
-          rajapäivätService.oppivelvollisuusVoimassaAstiIänPerusteella(oppija.syntymäaika.get),
+          oppija.kuolinpäivä.getOrElse(
+            rajapäivätService.oppivelvollisuusVoimassaAstiIänPerusteella(oppija.syntymäaika.get)
+          ),
         oikeusKoulutuksenMaksuttomuuteenVoimassaAsti =
-          Some(rajapäivätService.maksuttomuusVoimassaAstiIänPerusteella(oppija.syntymäaika.get))
+          oppija.kuolinpäivä.orElse(
+            Some(rajapäivätService.maksuttomuusVoimassaAstiIänPerusteella(oppija.syntymäaika.get))
+          )
       ),
       oppivelvollisuudenKeskeytykset = keskeytykset.map(asValpasKelaOppivelvollisuudenKeskeytys)
     )

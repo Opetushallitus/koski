@@ -59,12 +59,5 @@ object YtlMaksuttomuustieto {
       case _ => None
     }
 
-  def apply(tiedot: LaajatOppijaHenkilöTiedot): YtlMaksuttomuustieto = YtlMaksuttomuustieto(
-    oppijaOid = tiedot.oid,
-    hetu = tiedot.hetu,
-    oikeusMaksuttomaanKoulutukseenVoimassaAsti = None,
-    maksuttomuudenPiirissä = Some(false),
-  )
-
   def oidOrder: Ordering[YtlMaksuttomuustieto] = Ordering.by((t: YtlMaksuttomuustieto) => t.oppijaOid)
 }

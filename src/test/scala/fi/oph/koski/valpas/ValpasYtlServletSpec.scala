@@ -62,6 +62,13 @@ class ValpasYtlServletSpec  extends ValpasTestBase with BeforeAndAfterEach {
     ValpasMockOppijat.eiKoskessaEikäOppivelvollinenKotikuntahistorianPerusteella
   )
 
+  val menehtyneetOppijat = List(
+    // Tuple: (oppija: LaajatOppijaHenkilöTiedot, maksuttomuusVoimassaAsti: LocalDate)
+    (ValpasMockOppijat.menehtynytOppija, LocalDate.of(2021, 3, 1)),
+    (ValpasMockOppijat.menehtynytToisellaAsteellaOppija, LocalDate.of(2021, 3, 1)),
+    (ValpasMockOppijat.eiKoskessaMenehtynytOppija, LocalDate.of(2021, 3, 1)),
+  )
+
   "YTL-luovutuspalvelukäyttäjä" - {
     "Oidit" - {
       "Oikea tulos, jos oppijalla oikeus maksuttomaan koulutukseen" in {
@@ -174,6 +181,19 @@ class ValpasYtlServletSpec  extends ValpasTestBase with BeforeAndAfterEach {
           verifyResponseStatus(400, KoskiErrorCategory.badRequest.queryParam.virheellinenHenkilöOid(s"Virheellinen oid: $oid. Esimerkki oikeasta muodosta: 1.2.246.562.24.00000000001."))
         }
       }
+
+      "Oikea tulos, kun kysellään menehtyneiden oppijoiden tietoja" in {
+        val expectedData = menehtyneetOppijat.map(o => YtlMaksuttomuustieto(
+          oppijaOid = o._1.oid,
+          oikeusMaksuttomaanKoulutukseenVoimassaAsti = Some(o._2),
+          maksuttomuudenPiirissä = Some(false),
+        ))
+
+        doQuery(oidit = Some(expectedData.map(_.oppijaOid))) {
+          verifyResponseStatusOk()
+          sort(parsedResponse) shouldBe sort(expectedData)
+        }
+      }
     }
 
     "Hetut" - {
@@ -268,6 +288,20 @@ class ValpasYtlServletSpec  extends ValpasTestBase with BeforeAndAfterEach {
         val hetut = List("XYZ")
         doQuery(hetut = Some(hetut)) {
           verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.henkilötiedot.hetu("Virheellinen muoto hetulla: XYZ"))
+        }
+      }
+
+      "Oikea tulos, kun kysellään menehtyneiden oppijoiden tietoja" in {
+        val expectedData = menehtyneetOppijat.map(o => YtlMaksuttomuustieto(
+          oppijaOid = o._1.oid,
+          hetu = o._1.hetu,
+          oikeusMaksuttomaanKoulutukseenVoimassaAsti = Some(o._2),
+          maksuttomuudenPiirissä = Some(false),
+        ))
+
+        doQuery(hetut = Some(expectedData.flatMap(_.hetu))) {
+          verifyResponseStatusOk()
+          sort(parsedResponse) shouldBe sort(expectedData)
         }
       }
     }

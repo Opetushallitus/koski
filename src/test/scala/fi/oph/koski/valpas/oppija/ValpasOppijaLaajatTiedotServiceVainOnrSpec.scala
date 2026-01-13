@@ -183,6 +183,21 @@ class ValpasOppijaLaajatTiedotServiceVainOnrSpec extends ValpasOppijaTestBase {
 
       result should be(expectedResult)
     }
+
+    "ei palauta menehtynyttä oppijaa" in {
+      KoskiApplicationForTests.valpasRajapäivätService.asInstanceOf[MockValpasRajapäivätService]
+        .asetaMockTarkastelupäivä(date(2021, 7, 31))
+
+      val expectedResult = Left(HttpStatus(403,List(ErrorDetail(
+        ValpasErrorCategory.forbidden.oppija.key, "Käyttäjällä ei ole oikeuksia annetun oppijan tietoihin"
+      ))))
+
+      val result = oppijaLaajatTiedotService.getOppijaLaajatTiedotYhteystiedoillaJaKuntailmoituksilla(
+        ValpasMockOppijat.eiKoskessaMenehtynytOppija.oid
+      )(session(ValpasMockUsers.valpasHelsinki))
+
+      result should be(expectedResult)
+    }
   }
 
   "getOppijaLaajatTiedotYhteystiedoillaJaKuntailmoituksilla Koskesta ja Valppaasta löytymättömällä oppijalla maksuttomuuskäyttäjällä" - {
@@ -283,6 +298,21 @@ class ValpasOppijaLaajatTiedotServiceVainOnrSpec extends ValpasOppijaTestBase {
 
       val result = oppijaLaajatTiedotService.getOppijaLaajatTiedotYhteystiedoillaJaKuntailmoituksilla(
         ValpasMockOppijat.eiKoskessaAlle18VuotiasMuttaEiOppivelvollinenSyntymäajanPerusteella.oid
+      )(session(ValpasMockUsers.valpasJklNormaalikouluPelkkäPeruskoulu))
+
+      result should be(expectedResult)
+    }
+
+    "ei palauta menehtynyttä oppijaa" in {
+      KoskiApplicationForTests.valpasRajapäivätService.asInstanceOf[MockValpasRajapäivätService]
+        .asetaMockTarkastelupäivä(date(2021, 7, 31))
+
+      val expectedResult = Left(HttpStatus(403,List(ErrorDetail(
+        ValpasErrorCategory.forbidden.oppija.key, "Käyttäjällä ei ole oikeuksia annetun oppijan tietoihin"
+      ))))
+
+      val result = oppijaLaajatTiedotService.getOppijaLaajatTiedotYhteystiedoillaJaKuntailmoituksilla(
+        ValpasMockOppijat.eiKoskessaMenehtynytOppija.oid
       )(session(ValpasMockUsers.valpasJklNormaalikouluPelkkäPeruskoulu))
 
       result should be(expectedResult)

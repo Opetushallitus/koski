@@ -191,6 +191,34 @@ class ValpasRootApiServletSpec extends ValpasTestBase with BeforeAndAfterEach {
         verifyResponseStatus(403, ValpasErrorCategory.forbidden.oppija("Käyttäjällä ei ole oikeuksia annetun oppijan tietoihin"))
       }
     }
+
+    "Ei palauta menehtynyttä oppijaa" in {
+      authGet(getHenkilöhakuKuntaUrl(ValpasMockOppijat.menehtynytOppija.oid), ValpasMockUsers.valpasHelsinki) {
+        verifyResponseStatusOk()
+        val result = JsonSerializer.parse[ValpasHenkilöhakuResult](response.body)
+        result should be(ValpasEiLöytynytHenkilöhakuResult())
+      }
+
+      authGet(getHenkilöhakuKuntaUrl(ValpasMockOppijat.menehtynytOppija.hetu.get), ValpasMockUsers.valpasHelsinki) {
+        verifyResponseStatusOk()
+        val result = JsonSerializer.parse[ValpasHenkilöhakuResult](response.body)
+        result should be(ValpasEiLöytynytHenkilöhakuResult())
+      }
+    }
+
+    "Ei palauta vain oppijanumerorekisterista löytyvää menehtynyttä oppijaa" in {
+      authGet(getHenkilöhakuKuntaUrl(ValpasMockOppijat.eiKoskessaMenehtynytOppija.oid), ValpasMockUsers.valpasHelsinki) {
+        verifyResponseStatusOk()
+        val result = JsonSerializer.parse[ValpasHenkilöhakuResult](response.body)
+        result should be(ValpasEiLöytynytHenkilöhakuResult())
+      }
+
+      authGet(getHenkilöhakuKuntaUrl(ValpasMockOppijat.eiKoskessaMenehtynytOppija.hetu.get), ValpasMockUsers.valpasHelsinki) {
+        verifyResponseStatusOk()
+        val result = JsonSerializer.parse[ValpasHenkilöhakuResult](response.body)
+        result should be(ValpasEiLöytynytHenkilöhakuResult())
+      }
+    }
   }
 
   "Maksuttomuuskäyttäjän hetuhaku" - {
@@ -359,6 +387,34 @@ class ValpasRootApiServletSpec extends ValpasTestBase with BeforeAndAfterEach {
         res.eiLainTaiMaksuttomuudenPiirissä shouldBe true
       }
     }
+
+    "Ei palauta menehtynyttä oppijaa" in {
+      authGet(getHenkilöhakuMaksuttomuusUrl(ValpasMockOppijat.menehtynytOppija.oid), ValpasMockUsers.valpasMonta) {
+        verifyResponseStatusOk()
+        val result = JsonSerializer.parse[ValpasHenkilöhakuResult](response.body)
+        result should be(ValpasEiLöytynytHenkilöhakuResult())
+      }
+
+      authGet(getHenkilöhakuMaksuttomuusUrl(ValpasMockOppijat.menehtynytOppija.hetu.get), ValpasMockUsers.valpasMonta) {
+        verifyResponseStatusOk()
+        val result = JsonSerializer.parse[ValpasHenkilöhakuResult](response.body)
+        result should be(ValpasEiLöytynytHenkilöhakuResult())
+      }
+    }
+
+    "Ei palauta vain oppijanumerorekisterista löytyvää menehtynyttä oppijaa" in {
+      authGet(getHenkilöhakuMaksuttomuusUrl(ValpasMockOppijat.eiKoskessaMenehtynytOppija.oid), ValpasMockUsers.valpasMonta) {
+        verifyResponseStatusOk()
+        val result = JsonSerializer.parse[ValpasHenkilöhakuResult](response.body)
+        result should be(ValpasEiLöytynytHenkilöhakuResult())
+      }
+
+      authGet(getHenkilöhakuMaksuttomuusUrl(ValpasMockOppijat.eiKoskessaMenehtynytOppija.hetu.get), ValpasMockUsers.valpasMonta) {
+        verifyResponseStatusOk()
+        val result = JsonSerializer.parse[ValpasHenkilöhakuResult](response.body)
+        result should be(ValpasEiLöytynytHenkilöhakuResult())
+      }
+    }
   }
 
   "Suorittamiskäyttäjän hetuhaku" - {
@@ -369,6 +425,34 @@ class ValpasRootApiServletSpec extends ValpasTestBase with BeforeAndAfterEach {
     "Ei palauta oppijaa, joka löytyy vain oppijanumerorekisteristä" in {
       authGet(getHenkilöhakuSuorittaminenUrl(ValpasMockOppijat.eiKoskessaOppivelvollinen.hetu.get), ValpasMockUsers.valpasMonta) {
         verifyResponseStatus(403, ValpasErrorCategory.forbidden.oppija("Käyttäjällä ei ole oikeuksia annetun oppijan tietoihin"))
+      }
+    }
+
+    "Ei palauta menehtynyttä oppijaa" in {
+      authGet(getHenkilöhakuSuorittaminenUrl(ValpasMockOppijat.menehtynytToisellaAsteellaOppija.oid), ValpasMockUsers.valpasMonta) {
+        verifyResponseStatusOk()
+        val result = JsonSerializer.parse[ValpasHenkilöhakuResult](response.body)
+        result should be(ValpasEiLöytynytHenkilöhakuResult())
+      }
+
+      authGet(getHenkilöhakuSuorittaminenUrl(ValpasMockOppijat.menehtynytToisellaAsteellaOppija.hetu.get), ValpasMockUsers.valpasMonta) {
+        verifyResponseStatusOk()
+        val result = JsonSerializer.parse[ValpasHenkilöhakuResult](response.body)
+        result should be(ValpasEiLöytynytHenkilöhakuResult())
+      }
+    }
+
+    "Ei palauta vain oppijanumerorekisterista löytyvää menehtynyttä oppijaa" in {
+      authGet(getHenkilöhakuSuorittaminenUrl(ValpasMockOppijat.eiKoskessaMenehtynytOppija.oid), ValpasMockUsers.valpasMonta) {
+        verifyResponseStatusOk()
+        val result = JsonSerializer.parse[ValpasHenkilöhakuResult](response.body)
+        result should be(ValpasEiLöytynytHenkilöhakuResult())
+      }
+
+      authGet(getHenkilöhakuSuorittaminenUrl(ValpasMockOppijat.eiKoskessaMenehtynytOppija.hetu.get), ValpasMockUsers.valpasMonta) {
+        verifyResponseStatusOk()
+        val result = JsonSerializer.parse[ValpasHenkilöhakuResult](response.body)
+        result should be(ValpasEiLöytynytHenkilöhakuResult())
       }
     }
   }
