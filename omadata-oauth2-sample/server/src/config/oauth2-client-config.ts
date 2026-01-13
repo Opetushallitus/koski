@@ -1,7 +1,11 @@
 import * as client from 'openid-client'
 import { Configuration } from 'openid-client'
 import { memoize } from '../util/memoize.js'
-import { enableLocalMTLS, getClientCertSecret } from './client-cert-config.js'
+import {
+  enableLocalMTLS,
+  getClientCertSecret,
+  getLocalCACert
+} from './client-cert-config.js'
 import * as undici from 'undici'
 import { koskiBackendHost } from './koski-backend-config.js'
 
@@ -29,10 +33,12 @@ export const getOAuthClientConfig = memoize(
     )
 
     const certs = await getClientCertSecret()
+    const ca = enableLocalMTLS ? await getLocalCACert() : undefined
 
-    const options = {
+    const options: undici.Agent.Options['connect'] = {
       cert: certs['fullchain.pem'],
-      key: certs['privkey.pem']
+      key: certs['privkey.pem'],
+      ...(ca && { ca })
     }
 
     const agent = new undici.Agent({ connect: options })

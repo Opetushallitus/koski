@@ -13,6 +13,7 @@
     "start": "./scripts/start-local.sh",
     "start:local": "./scripts/start-local.sh",
     "start:prod": "node dist/index.js",
+    "start:alb-proxy": "node scripts/alb-proxy.mjs",
     "start:luovutuspalvelu": "./scripts/start-luovutuspalvelu.sh start",
     "start:luovutuspalvelu:build": "./scripts/start-luovutuspalvelu.sh local",
     "start:java-sample": "./scripts/start-java-sample.sh",

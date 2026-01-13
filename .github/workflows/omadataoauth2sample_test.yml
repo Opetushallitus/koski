@@ -35,7 +35,6 @@ jobs:
    runs-on: ${{ inputs.runs-on }}
    permissions:
      contents: read
-     id-token: write
    strategy:
      fail-fast: false
      matrix:
@@ -46,17 +45,10 @@ jobs:
      - name: Checkout
        uses: actions/checkout@v4
 
-     - name: Checkout luovutuspalvelu for e2e tests
-       uses: actions/checkout@v4
-       with:
-         repository: Opetushallitus/koski-luovutuspalvelu
-         path: koski-luovutuspalvelu
-
-     - name: Generate luovutuspalvelu test certificates
-       run: bash koski-luovutuspalvelu/proxy/test/testca/generate-certs.sh
+     - name: Generate  test certificates
+       run: bash omadata-oauth2-sample/server/testca/generate-certs.sh
 
      - uses: ./.github/actions/omadataoauth2_e2e_test
        with:
          shardIndex: ${{ matrix.shardIndex }}
          shardTotal: ${{ matrix.shardTotal }}
-         AWS_OPH_UTILITY_ROLE_ARN: ${{ secrets.AWS_OPH_UTILITY_ROLE_ARN }}

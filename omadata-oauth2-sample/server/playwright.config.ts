@@ -83,24 +83,23 @@ export default defineConfig({
   /* Run your local dev server before starting the tests */
   webServer: [
     {
-      command: `KOSKI_BACKEND_HOST=${process.env.KOSKI_BACKEND_HOST || process.env.CI ? `http://172.17.0.1:${process.env.KOSKI_BACKEND_PORT || "7021"}` : `http://${getMyIp()}:${process.env.KOSKI_BACKEND_PORT || "7021"}`} pnpm run ${process.env.CI ? "start:luovutuspalvelu" : "start:luovutuspalvelu:build"}`,
-      url: "https://localhost:7022/koski-luovutuspalvelu/healthcheck/proxy",
+      command: `KOSKI_BACKEND=http://localhost:${process.env.KOSKI_BACKEND_PORT || "7021"} pnpm run start:alb-proxy`,
+      url: "http://localhost:7023/healthcheck",
       reuseExistingServer: !process.env.CI,
       stdout: "pipe",
       stderr: "pipe",
-      timeout: 10 * 60 * 1000,
-      ignoreHTTPSErrors: true,
+      timeout: 60 * 1000,
     },
     {
-      command: `KOSKI_BACKEND_HOST=${process.env.KOSKI_BACKEND_HOST || process.env.CI ? `http://172.17.0.1:${process.env.KOSKI_BACKEND_PORT || "7021"}` : `http://${getMyIp()}:${process.env.KOSKI_BACKEND_PORT || "7021"}`} pnpm run start`,
+      command: `KOSKI_BACKEND_HOST=http://localhost:${process.env.KOSKI_BACKEND_PORT || "7021"} RESOURCE_ENDPOINT_URL=https://localhost:7022/koski/api/omadata-oauth2/resource-server ENABLE_LOCAL_MTLS=true CLIENT_ID=omadataoauth2sample pnpm exec tsx src/index.ts`,
       url: "http://localhost:7051/api/healthcheck",
       reuseExistingServer: !process.env.CI,
       stdout: "pipe",
       stderr: "pipe",
-      timeout: 2 * 60 * 1000,
+      timeout: 60 * 1000,
     },
     {
-      command: `JAVA_HOME=${process.env.CI ? process.env.JAVA_HOME_23_X64 : process.env.JAVA_HOME} KOSKI_BACKEND_HOST=${process.env.KOSKI_BACKEND_HOST || process.env.CI ? `http://172.17.0.1:${process.env.KOSKI_BACKEND_PORT || "7021"}` : `http://${getMyIp()}:${process.env.KOSKI_BACKEND_PORT || "7021"}`} pnpm run start:java-sample`,
+      command: `KOSKI_BACKEND_HOST=http://localhost:${process.env.KOSKI_BACKEND_PORT || "7021"} pnpm run start:java-sample`,
       url: "http://localhost:7052",
       reuseExistingServer: !process.env.CI,
       stdout: "pipe",
