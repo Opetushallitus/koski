@@ -6,7 +6,7 @@ import fi.oph.koski.schema.annotation.KoodistoKoodiarvo
 import fi.oph.koski.util.Optional.when
 import fi.oph.scalaschema.annotation.Title
 
-import java.time.LocalDate
+import java.time.{LocalDate, LocalDateTime}
 
 @Title("DIA-tutkinnon opiskeluoikeus")
 case class SupaDIAOpiskeluoikeus(
@@ -18,6 +18,8 @@ case class SupaDIAOpiskeluoikeus(
   oppilaitos: Option[Oppilaitos],
   tila: DIAOpiskeluoikeudenTila,
   suoritukset: List[SupaDIATutkinnonSuoritus],
+  versionumero: Option[Int],
+  aikaleima: Option[LocalDateTime],
 ) extends SupaOpiskeluoikeus
 
 object SupaDIAOpiskeluoikeus {
@@ -32,7 +34,9 @@ object SupaDIAOpiskeluoikeus {
         tila = oo.tila,
         suoritukset = oo.suoritukset.collect {
           case tutkinnonSuoritus: DIATutkinnonSuoritus if tutkinnonSuoritus.valmis => SupaDIATutkinnonSuoritus(tutkinnonSuoritus)
-        }
+        },
+        versionumero = oo.versionumero,
+        aikaleima = oo.aikaleima
       )
     }
 }
@@ -45,7 +49,7 @@ case class SupaDIATutkinnonSuoritus(
   vahvistus: Option[SupaVahvistus],
   koulutusmoduuli: DIATutkinto,
   suorituskieli: Koodistokoodiviite,
-  osasuoritukset: List[SupaDIAOppiaineenTutkintovaiheenSuoritus],
+  osasuoritukset: Option[List[SupaDIAOppiaineenTutkintovaiheenSuoritus]],
 ) extends SupaSuoritus
   with Suorituskielellinen
   with SupaVahvistuksellinen
@@ -58,12 +62,7 @@ object SupaDIATutkinnonSuoritus {
       vahvistus = s.vahvistus.map(v => SupaVahvistus(v.päivä)),
       koulutusmoduuli = s.koulutusmoduuli,
       suorituskieli = s.suorituskieli,
-      osasuoritukset =
-        s.osasuoritukset
-          .toList
-          .flatten
-          .filter(_.valmis)
-          .map(SupaDIAOppiaineenTutkintovaiheenSuoritus.apply)
+      osasuoritukset = s.osasuoritukset.map(_.filter(_.valmis).map(SupaDIAOppiaineenTutkintovaiheenSuoritus.apply)).filter(_.nonEmpty)
     )
 }
 
@@ -75,7 +74,7 @@ case class SupaDIAOppiaineenTutkintovaiheenSuoritus(
   suorituskieli: Option[Koodistokoodiviite] = None,
   vastaavuustodistuksenTiedot: Option[DIAVastaavuustodistuksenTiedot] = None,
   koetuloksenNelinkertainenPistemäärä: Option[Int] = None,
-  osasuoritukset: List[SupaDIAOppiaineenTutkintovaiheenOsasuorituksenSuoritus],
+  osasuoritukset: Option[List[SupaDIAOppiaineenTutkintovaiheenOsasuorituksenSuoritus]],
 ) extends SupaSuoritus
   with MahdollisestiSuorituskielellinen
 
@@ -87,7 +86,7 @@ object SupaDIAOppiaineenTutkintovaiheenSuoritus {
       vastaavuustodistuksenTiedot = s.vastaavuustodistuksenTiedot,
       koetuloksenNelinkertainenPistemäärä = s.koetuloksenNelinkertainenPistemäärä,
       tyyppi = s.tyyppi,
-      osasuoritukset = s.osasuoritukset.toList.flatten.flatMap(s => SupaDIAOppiaineenTutkintovaiheenOsasuorituksenSuoritus(s)),
+      osasuoritukset = s.osasuoritukset.map(_.flatMap(s => SupaDIAOppiaineenTutkintovaiheenOsasuorituksenSuoritus(s))).filter(_.nonEmpty),
     )
 }
 

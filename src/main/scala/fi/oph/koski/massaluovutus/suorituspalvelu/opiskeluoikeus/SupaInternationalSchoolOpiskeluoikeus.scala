@@ -6,7 +6,7 @@ import fi.oph.koski.schema.annotation.KoodistoKoodiarvo
 import fi.oph.koski.util.Optional.when
 import fi.oph.scalaschema.annotation.Title
 
-import java.time.LocalDate
+import java.time.{LocalDate, LocalDateTime}
 
 @Title("International school opiskeluoikeus")
 case class SupaInternationalSchoolOpiskeluoikeus(
@@ -18,6 +18,8 @@ case class SupaInternationalSchoolOpiskeluoikeus(
   oppilaitos: Option[Oppilaitos],
   tila: InternationalSchoolOpiskeluoikeudenTila,
   suoritukset: List[SupaDiplomaVuosiluokanSuoritus],
+  versionumero: Option[Int],
+  aikaleima: Option[LocalDateTime],
 ) extends SupaOpiskeluoikeus
 
 object SupaInternationalSchoolOpiskeluoikeus {
@@ -33,7 +35,9 @@ object SupaInternationalSchoolOpiskeluoikeus {
         suoritukset = oo.suoritukset.flatMap {
           case s: DiplomaVuosiluokanSuoritus => SupaDiplomaVuosiluokanSuoritus(s)
           case _ => None
-        }
+        },
+        versionumero = oo.versionumero,
+        aikaleima = oo.aikaleima
       )
     }
 }
@@ -46,7 +50,7 @@ case class SupaDiplomaVuosiluokanSuoritus(
   vahvistus: Option[SupaVahvistus],
   koulutusmoduuli: DiplomaLuokkaAste,
   suorituskieli: Koodistokoodiviite,
-  osasuoritukset: List[SupaDiplomaIBOppiaineenSuoritus],
+  osasuoritukset: Option[List[SupaDiplomaIBOppiaineenSuoritus]],
 ) extends SupaSuoritus
   with Suorituskielellinen
   with SupaVahvistuksellinen
@@ -60,7 +64,7 @@ object SupaDiplomaVuosiluokanSuoritus {
         vahvistus = s.vahvistus.map(v => SupaVahvistus(v.päivä)),
         koulutusmoduuli = s.koulutusmoduuli,
         suorituskieli = s.suorituskieli,
-        osasuoritukset = s.osasuoritukset.toList.flatten.map(SupaDiplomaIBOppiaineenSuoritus.apply),
+        osasuoritukset = s.osasuoritukset.map(_.map(SupaDiplomaIBOppiaineenSuoritus.apply)).filter(_.nonEmpty),
       )
     }
 }

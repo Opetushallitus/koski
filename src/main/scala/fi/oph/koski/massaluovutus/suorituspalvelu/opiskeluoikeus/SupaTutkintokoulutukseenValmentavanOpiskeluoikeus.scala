@@ -4,7 +4,7 @@ import fi.oph.koski.schema._
 import fi.oph.koski.schema.annotation.KoodistoKoodiarvo
 import fi.oph.scalaschema.annotation.Title
 
-import java.time.LocalDate
+import java.time.{LocalDate, LocalDateTime}
 
 
 @Title("Tutkintokoulutukseen valmentavan koulutuksen opiskeluoikeus")
@@ -16,7 +16,9 @@ case class SupaTutkintokoulutukseenValmentavanOpiskeluoikeus(
   koulutustoimija: Option[Koulutustoimija],
   oppilaitos: Option[Oppilaitos],
   tila: TutkintokoulutukseenValmentavanOpiskeluoikeudenTila,
-  suoritukset: List[SupaTutkintokoulutukseenValmentavanKoulutuksenSuoritus]
+  suoritukset: List[SupaTutkintokoulutukseenValmentavanKoulutuksenSuoritus],
+  versionumero: Option[Int],
+  aikaleima: Option[LocalDateTime],
 ) extends SupaOpiskeluoikeus
 
 object SupaTutkintokoulutukseenValmentavanOpiskeluoikeus {
@@ -30,12 +32,15 @@ object SupaTutkintokoulutukseenValmentavanOpiskeluoikeus {
       tila = oo.tila,
       suoritukset = oo.suoritukset.collect {
         case s: TutkintokoulutukseenValmentavanKoulutuksenSuoritus => SupaTutkintokoulutukseenValmentavanKoulutuksenSuoritus(s)
-      }
+      },
+      versionumero = oo.versionumero,
+      aikaleima = oo.aikaleima
     )
 }
 
 @Title("Tutkintokoulutukseen valmentavan koulutuksen suoritustiedot")
 case class SupaTutkintokoulutukseenValmentavanKoulutuksenSuoritus(
+  @KoodistoKoodiarvo("tuvakoulutuksensuoritus")
   tyyppi: Koodistokoodiviite,
   alkamispäivä: Option[LocalDate],
   vahvistus: Option[SupaVahvistus],

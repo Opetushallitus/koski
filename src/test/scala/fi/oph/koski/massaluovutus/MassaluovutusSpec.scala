@@ -506,65 +506,503 @@ class MassaluovutusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers wit
     }
   }
 
-  "Suorituspalvelukysely - aikarajan jälkeen muuttuneet" - {
-    val user = MockUsers.paakayttaja
+  "Suorituspalvelu" - {
+    "Suorituspalvelukysely - aikarajan jälkeen muuttuneet" - {
+      val user = MockUsers.paakayttaja
 
-    def getQuery(muuttuneetJälkeen: LocalDateTime) = SuorituspalveluMuuttuneetJalkeenQuery(
-      muuttuneetJälkeen = muuttuneetJälkeen
-    )
+      def getQuery(muuttuneetJälkeen: LocalDateTime) = SuorituspalveluMuuttuneetJalkeenQuery(
+        muuttuneetJälkeen = muuttuneetJälkeen
+      )
 
-    "Käyttöoikeudet ja logitus" - {
-      val query = getQuery(LocalDateTime.now().plusHours(1))
+      "Käyttöoikeudet ja logitus" - {
+        val query = getQuery(LocalDateTime.now().plusHours(1))
 
-      "Kyselyä voi käyttää pääkäyttäjänä" in {
-        addQuerySuccessfully(query, MockUsers.paakayttaja) {
-          _.status should equal(QueryState.pending)
+        "Kyselyä voi käyttää pääkäyttäjänä" in {
+          addQuerySuccessfully(query, MockUsers.paakayttaja) {
+            _.status should equal(QueryState.pending)
+          }
+        }
+
+        "Kyselyä voi käyttää oph-palvelukäyttäjänä" in {
+          addQuerySuccessfully(query, MockUsers.ophkatselija) {
+            _.status should equal(QueryState.pending)
+          }
+        }
+
+        "Kyselyä ei voi käyttää muuna palvelukäyttäjänä" in {
+          addQuery(query, MockUsers.omniaPalvelukäyttäjä) {
+            verifyResponseStatus(403, KoskiErrorCategory.forbidden())
+          }
+        }
+
+        "Kyselystä jää audit log -merkinnät" in {
+          AuditLogTester.clearMessages()
+          val queryId = addQuerySuccessfully(getQuery(LocalDateTime.now().minusHours(1)), user) { response =>
+            response.status should equal(QueryState.pending)
+            response.queryId
+          }
+          val complete = waitForCompletion(queryId, user)
+
+          verifyResultAndContent(complete.files.last, user) {
+            val json = JsonMethods.parse(response.body)
+            val oos = json.asInstanceOf[JArray]
+            oos.arr.map(v =>
+              (
+                (v \ "oppijaOid").extract[String],
+                ((v \ "opiskeluoikeudet").extract[List[JObject]].last \ "oid").extract[String])).last match {
+              case (oppijaOid, opiskeluoikeusOid) => AuditLogTester.verifyLastAuditLogMessage(Map(
+                "operation" -> "SUORITUSPALVELU_OPISKELUOIKEUS_HAKU",
+                "target" -> Map(
+                  "oppijaHenkiloOid" -> oppijaOid,
+                  "opiskeluoikeusOid" -> opiskeluoikeusOid,
+                ),
+              ))
+            }
+          }
         }
       }
 
-      "Kyselyä voi käyttää oph-palvelukäyttäjänä" in {
-        addQuerySuccessfully(query, MockUsers.ophkatselija) {
-          _.status should equal(QueryState.pending)
+      "Palautuneen datan filtteröinti" - {
+
+        def getOpiskeluoikeudet(tyyppi: Option[String] = None): List[JValue] = {
+          val query = getQuery(LocalDateTime.now().minusHours(1))
+          val queryId = addQuerySuccessfully(query, user) { response =>
+            response.status should equal(QueryState.pending)
+            response.queryId
+          }
+          val complete = waitForCompletion(queryId, user)
+
+          val jsonFiles = complete.files.map { file =>
+            verifyResultAndContent(file, user) {
+              JsonMethods.parse(response.body)
+            }
+          }
+
+          val oos = jsonFiles.flatMap {
+            case JArray(a) => a
+            case _ => Nil
+          }.map(_ \ "opiskeluoikeudet").flatMap {
+            case JArray(a) => a
+            case _ => Nil
+          }
+          tyyppi match {
+            case Some(t) => oos.filter(oo => (oo \ "tyyppi" \ "koodiarvo").extract[String] == t)
+            case None => oos
+          }
+        }
+
+        def getSuoritukset(ooTyyppi: Option[String] = None): List[JValue] =
+          getOpiskeluoikeudet(ooTyyppi)
+            .map(_ \ "suoritukset")
+            .collect { case JArray(list) => list }
+            .flatten
+
+        def extractStrings(values: List[JValue], path: JValue => JValue): List[String] =
+          values
+            .map(path(_).extract[String])
+            .distinct
+            .sorted
+
+        def tyyppi(v: JValue) = v \ "tyyppi" \ "koodiarvo"
+        def suorituksenTunniste(v: JValue) = v \ "koulutusmoduuli" \ "tunniste" \ "koodiarvo"
+        def osasuoritustenMäärä(v: JValue) = v \ "osasuoritukset" match {
+          case JArray(list) => Some(list.size)
+          case _ => None
+        }
+        def viimeisinTila(v: JValue) = v \ "tila" \ "opiskeluoikeusjaksot" \ "tila" \ "koodiarvo" match {
+          case JArray(list) => list.last
+          case _ => JNothing
+        }
+
+        "Sisältää kaikkia tuettuja suoritustyyppejä" in {
+          extractStrings(
+            getSuoritukset(),
+            tyyppi
+          ) should equal(List(
+            "aikuistenperusopetuksenoppimaara",
+            "ammatillinentutkinto",
+            "ammatillinentutkintoosittainen",
+            "diatutkintovaihe",
+            "ebtutkinto",
+            "ibtutkinto",
+            "internationalschooldiplomavuosiluokka",
+            "nuortenperusopetuksenoppiaineenoppimaara",
+            "perusopetuksenoppiaineenoppimaara",
+            "perusopetuksenoppimaara",
+            "perusopetuksenvuosiluokka",
+            "telma",
+            "tuvakoulutuksensuoritus",
+            "vstoppivelvollisillesuunnattukoulutus",
+          ))
+        }
+
+        "Sisältää mitätöityjä opiskeluoikeuksia" in {
+          extractStrings(
+            getOpiskeluoikeudet(),
+            viimeisinTila
+          ) should contain("mitatoity")
+        }
+
+        "Nuorten perusopetuksesta palautetaan perusopetuksen päättötodistus sekä 7., 8. ja 9. vuosiluokan suoritukset" in {
+          extractStrings(
+            getSuoritukset(Some("perusopetus")).filterNot(s => tyyppi(s).extract[String] == "nuortenperusopetuksenoppiaineenoppimaara"),
+            suorituksenTunniste
+          ) should equal(List(
+            "201101", // Oppimäärän suoritus
+            "7",  // Vuosiluokkien suoritukset
+            "8",
+            "9",
+          ))
+        }
+
+        "Perusopetuksen suorituksille palautetaan oikea määrä osasuorituksia" in {
+          val tunnisteetJaOsasuoritustenMäärät = getSuoritukset(Some("perusopetus"))
+            .filterNot(s => tyyppi(s).extract[String] == "nuortenperusopetuksenoppiaineenoppimaara")
+            .map(suoritus => suorituksenTunniste(suoritus).extract[String] -> osasuoritustenMäärä(suoritus))
+            .toMap
+
+          tunnisteetJaOsasuoritustenMäärät("7") shouldBe None // 7. vuosiluokan suoritus
+          tunnisteetJaOsasuoritustenMäärät("8") shouldBe None // 8. vuosiluokan suoritus
+          tunnisteetJaOsasuoritustenMäärät("9") shouldBe None // 9. vuosiluokan suoritus, voi myös sisältää osasuorituksia
+          tunnisteetJaOsasuoritustenMäärät("201101") shouldBe Some(23) // Oppimäärän suoritus
+        }
+
+        "Ammatillisesta koulutuksesta ei palautetaan vain kokonainen ammatillinen tutkinto ja telma" in {
+          extractStrings(
+            getSuoritukset(Some("ammatillinenkoulutus")),
+            tyyppi
+          ) should equal(List(
+            "ammatillinentutkinto",
+            "ammatillinentutkintoosittainen",
+            "telma"
+          ))
+        }
+
+        "DIA-tutkinnoista palautetaan vain valmistuneet tutkinnot" in {
+          extractStrings(
+            getOpiskeluoikeudet(Some("diatutkinto")),
+            viimeisinTila
+          ) should equal(List(
+            "valmistunut"
+          ))
+        }
+
+        "EB-tutkinnoista palautetaan vain valmistuneet tutkinnot" in {
+          extractStrings(
+            getOpiskeluoikeudet(Some("ebtutkinto")),
+            viimeisinTila
+          ) should equal(List(
+            "valmistunut"
+          ))
+        }
+
+        "IB-tutkinnoista palautetaan vain valmistuneet tutkinnot" in {
+          extractStrings(
+            getOpiskeluoikeudet(Some("ibtutkinto")),
+            viimeisinTila
+          ) should equal(List(
+            "valmistunut"
+          ))
+        }
+
+        "Opiskeluoikeudet sisältävät versionumeron ja aikaleiman" in {
+          val oos = getOpiskeluoikeudet()
+          oos should not be empty
+          oos.foreach { oo =>
+            (oo \ "versionumero") should not equal JNothing
+            (oo \ "aikaleima") should not equal JNothing
+          }
         }
       }
 
-      "Kyselyä ei voi käyttää muuna palvelukäyttäjänä" in {
-        addQuery(query, MockUsers.omniaPalvelukäyttäjä) {
-          verifyResponseStatus(403, KoskiErrorCategory.forbidden())
+      "Palauttaa oppijan kaikki opiskeluoikeudet jos yksikin on muuttunut" in {
+        val oppija = KoskiSpecificMockOppijat.moniaEriOpiskeluoikeuksia
+        val oo = getOpiskeluoikeus(oppija.oid, "perusopetus")
+        val muokattuOo = oo.withSuoritukset(oo.suoritukset.map {
+          case p: PerusopetuksenVuosiluokanSuoritus => p.copy(todistuksellaNäkyvätLisätiedot = Some(LocalizedString.finnish("asd")))
+          case s => s
+        })
+        createOrUpdate(oppija, muokattuOo)
+        val tallennettuOo = getOpiskeluoikeus(muokattuOo.oid.get).asInstanceOf[KoskeenTallennettavaOpiskeluoikeus]
+
+        val query = getQuery(tallennettuOo.aikaleima.get)
+        val queryId = addQuerySuccessfully(query, user) { response =>
+          response.status should equal(QueryState.pending)
+          response.queryId
         }
+        val complete = waitForCompletion(queryId, user)
+
+        val jsonFiles = complete.files.map { file =>
+          verifyResultAndContent(file, user) {
+            JsonMethods.parse(response.body)
+          }
+        }
+        val oppijat = jsonFiles.head.extract[Seq[JObject]]
+        oppijat.length should equal(1)
+        (oppijat.head \ "opiskeluoikeudet").extract[Seq[JObject]].length should equal(4)
       }
 
-      "Kyselystä jää audit log -merkinnät" in {
-        AuditLogTester.clearMessages()
+      "Palauttaa myös master oid:n opiskeluoikeuden jos slave oid:n opiskeluoikeus on muuttunut" in {
+        poistaOppijanOpiskeluoikeusDatat(KoskiSpecificMockOppijat.slave.henkilö)
+        val tallennettuOo = createOrUpdate(KoskiSpecificMockOppijat.slave.henkilö, defaultOpiskeluoikeus)
+
+        val query = getQuery(tallennettuOo.aikaleima.get)
+        val queryId = addQuerySuccessfully(query, user) { response =>
+          response.status should equal(QueryState.pending)
+          response.queryId
+        }
+        val complete = waitForCompletion(queryId, user)
+
+        val jsonFiles = complete.files.map { file =>
+          verifyResultAndContent(file, user) {
+            JsonMethods.parse(response.body)
+          }
+        }
+
+        val oppijatJaOpiskeluoikeudenTyypit = (jsonFiles.head.extract[Seq[JObject]].head \ "opiskeluoikeudet")
+          .extract[Seq[JObject]]
+          .map(oo => (oo \ "oppijaOid").extract[String] -> (oo \ "tyyppi" \ "koodiarvo").extract[String])
+
+        oppijatJaOpiskeluoikeudenTyypit should contain(
+          KoskiSpecificMockOppijat.slave.henkilö.oid -> OpiskeluoikeudenTyyppi.ammatillinenkoulutus.koodiarvo
+        )
+        oppijatJaOpiskeluoikeudenTyypit should contain(
+          KoskiSpecificMockOppijat.master.oid -> OpiskeluoikeudenTyyppi.perusopetus.koodiarvo
+        )
+      }
+
+      "Palauttaa epäonnistuneen kyselyn" in {
+        // Lisää rikkinäiset opiskeluoikeudet fikstureen:
+        resetFixtures()
+
         val queryId = addQuerySuccessfully(getQuery(LocalDateTime.now().minusHours(1)), user) { response =>
           response.status should equal(QueryState.pending)
           response.queryId
         }
-        val complete = waitForCompletion(queryId, user)
+        val failed = waitForFailure(queryId, user)
 
-        verifyResultAndContent(complete.files.last, user) {
-          val json = JsonMethods.parse(response.body)
-          val oos = json.asInstanceOf[JArray]
-          oos.arr.map(v =>
-            (
-              (v \ "oppijaOid").extract[String],
-              ((v \ "opiskeluoikeudet").extract[List[JObject]].last \ "oid").extract[String])).last match {
-            case (oppijaOid, opiskeluoikeusOid) => AuditLogTester.verifyLastAuditLogMessage(Map(
-              "operation" -> "SUORITUSPALVELU_OPISKELUOIKEUS_HAKU",
-              "target" -> Map(
-                "oppijaHenkiloOid" -> oppijaOid,
-                "opiskeluoikeusOid" -> opiskeluoikeusOid,
-              ),
-            ))
-          }
-        }
+        failed.status shouldBe QueryState.failed
+        failed.error.get should fullyMatch regex  s"^Oppijan ${KoskiSpecificMockOppijat.kelaRikkinäinenOpiskeluoikeus.oid} opiskeluoikeuden (1\\.2\\.246\\.562\\.15\\.\\d+) deserialisointi epäonnistui$$".r // Näkyy pääkäyttäjälle
+        failed.files should have length 0 // Ei palauta tuloksia, joten ei myöskään tee auditlokitusta
       }
     }
 
-    "Palautuneen datan filtteröinti" - {
+    "Suorituspalvelukysely - oppija-oideilla hakeminen" - {
+      val user = MockUsers.paakayttaja
+      val oppijaOids = (1 to 200).map(i => "1.2.246.562.24.00000000%03d".format(i))
 
-      def getOpiskeluoikeudet(tyyppi: Option[String] = None): List[JValue] = {
-        val query = getQuery(LocalDateTime.now().minusHours(1))
+      def getQuery(oppijaOidit: Seq[String]) = SuorituspalveluOppijaOidsQuery(
+        oppijaOids = oppijaOidit
+      )
+
+      "Käyttöoikeudet ja logitus" - {
+        val query = getQuery(oppijaOids)
+
+        "Kyselyä voi käyttää pääkäyttäjänä" in {
+          addQuerySuccessfully(query, MockUsers.paakayttaja) {
+            _.status should equal(QueryState.pending)
+          }
+        }
+
+        "Kyselyä voi käyttää oph-palvelukäyttäjänä" in {
+          addQuerySuccessfully(query, MockUsers.ophkatselija) {
+            _.status should equal(QueryState.pending)
+          }
+        }
+
+        "Kyselyä ei voi käyttää muuna palvelukäyttäjänä" in {
+          addQuery(query, MockUsers.omniaPalvelukäyttäjä) {
+            verifyResponseStatus(403, KoskiErrorCategory.forbidden())
+          }
+        }
+
+        "Kyselystä jää audit log -merkinnät" in {
+          AuditLogTester.clearMessages()
+          val queryId = addQuerySuccessfully(getQuery(oppijaOids), user) { response =>
+            response.status should equal(QueryState.pending)
+            response.queryId
+          }
+          val complete = waitForCompletion(queryId, user)
+
+          verifyResultAndContent(complete.files.last, user) {
+            val json = JsonMethods.parse(response.body)
+            val oos = json.asInstanceOf[JArray]
+            oos.arr.map(v =>
+              (
+                (v \ "oppijaOid").extract[String],
+                (v \ "opiskeluoikeudet").extract[List[JObject]].lastOption.map(oo => (oo \ "oid").extract[String]).getOrElse("")
+              )
+            ).last match {
+              case (oppijaOid, opiskeluoikeusOid) => AuditLogTester.verifyLastAuditLogMessage(Map(
+                "operation" -> "SUORITUSPALVELU_OPISKELUOIKEUS_HAKU",
+                "target" -> Map(
+                  "oppijaHenkiloOid" -> oppijaOid,
+                  "opiskeluoikeusOid" -> opiskeluoikeusOid,
+                ),
+              ))
+            }
+          }
+        }
+      }
+
+      "Palautuneen datan filtteröinti" - {
+
+        def getOpiskeluoikeudet(tyyppi: Option[String] = None): List[JValue] = {
+          val query = getQuery(oppijaOids)
+          val queryId = addQuerySuccessfully(query, user) { response =>
+            response.status should equal(QueryState.pending)
+            response.queryId
+          }
+          val complete = waitForCompletion(queryId, user)
+
+          val jsonFiles = complete.files.map { file =>
+            verifyResultAndContent(file, user) {
+              JsonMethods.parse(response.body)
+            }
+          }
+
+          val oos = jsonFiles.flatMap {
+            case JArray(a) => a
+            case _ => Nil
+          }.map(_ \ "opiskeluoikeudet").flatMap {
+            case JArray(a) => a
+            case _ => Nil
+          }
+          tyyppi match {
+            case Some(t) => oos.filter(oo => (oo \ "tyyppi" \ "koodiarvo").extract[String] == t)
+            case None => oos
+          }
+        }
+
+        def getSuoritukset(ooTyyppi: Option[String] = None): List[JValue] =
+          getOpiskeluoikeudet(ooTyyppi)
+            .map(_ \ "suoritukset")
+            .collect { case JArray(list) => list }
+            .flatten
+
+        def extractStrings(values: List[JValue], path: JValue => JValue): List[String] =
+          values
+            .map(path(_).extract[String])
+            .distinct
+            .sorted
+
+        def tyyppi(v: JValue) = v \ "tyyppi" \ "koodiarvo"
+
+        def suorituksenTunniste(v: JValue) = v \ "koulutusmoduuli" \ "tunniste" \ "koodiarvo"
+
+        def osasuoritustenMäärä(v: JValue) = v \ "osasuoritukset" match {
+          case JArray(list) => Some(list.size)
+          case _ => None
+        }
+
+        def viimeisinTila(v: JValue) = v \ "tila" \ "opiskeluoikeusjaksot" \ "tila" \ "koodiarvo" match {
+          case JArray(list) => list.last
+          case _ => JNothing
+        }
+
+        "Sisältää kaikkia tuettuja suoritustyyppejä" in {
+          extractStrings(
+            getSuoritukset(),
+            tyyppi
+          ) should equal(List(
+            "aikuistenperusopetuksenoppimaara",
+            "ammatillinentutkinto",
+            "ammatillinentutkintoosittainen",
+            "diatutkintovaihe",
+            "ebtutkinto",
+            "ibtutkinto",
+            "internationalschooldiplomavuosiluokka",
+            "nuortenperusopetuksenoppiaineenoppimaara",
+            "perusopetuksenoppiaineenoppimaara",
+            "perusopetuksenoppimaara",
+            "perusopetuksenvuosiluokka",
+            "telma",
+            "tuvakoulutuksensuoritus",
+            "vstoppivelvollisillesuunnattukoulutus",
+          ))
+        }
+
+        "Sisältää mitätöityjä opiskeluoikeuksia" in {
+          extractStrings(
+            getOpiskeluoikeudet(),
+            viimeisinTila
+          ) should contain("mitatoity")
+        }
+
+        "Nuorten perusopetuksesta palautetaan perusopetuksen päättötodistus sekä 7., 8. ja 9. vuosiluokan suoritukset" in {
+          extractStrings(
+            getSuoritukset(Some("perusopetus")).filterNot(s => tyyppi(s).extract[String] == "nuortenperusopetuksenoppiaineenoppimaara"),
+            suorituksenTunniste
+          ) should equal(List(
+            "201101", // Oppimäärän suoritus
+            "7",  // Vuosiluokkien suoritukset
+            "8",
+            "9",
+          ))
+        }
+
+        "Perusopetuksen suorituksille palautetaan oikea määrä osasuorituksia" in {
+          val tunnisteetJaOsasuoritustenMäärät = getSuoritukset(Some("perusopetus"))
+            .filterNot(s => tyyppi(s).extract[String] == "nuortenperusopetuksenoppiaineenoppimaara")
+            .map(suoritus => suorituksenTunniste(suoritus).extract[String] -> osasuoritustenMäärä(suoritus))
+            .toMap
+
+          tunnisteetJaOsasuoritustenMäärät("7") shouldBe None // 7. vuosiluokan suoritus
+          tunnisteetJaOsasuoritustenMäärät("8") shouldBe None // 8. vuosiluokan suoritus
+          tunnisteetJaOsasuoritustenMäärät("9") shouldBe None // 9. vuosiluokan suoritus, voi myös sisältää osasuorituksia
+          tunnisteetJaOsasuoritustenMäärät("201101") shouldBe Some(23) // Oppimäärän suoritus
+        }
+
+        "Ammatillisesta koulutuksesta ei palautetaan vain kokonainen ammatillinen tutkinto ja telma" in {
+          extractStrings(
+            getSuoritukset(Some("ammatillinenkoulutus")),
+            tyyppi
+          ) should equal(List(
+            "ammatillinentutkinto",
+            "ammatillinentutkintoosittainen",
+            "telma"
+          ))
+        }
+
+        "DIA-tutkinnoista palautetaan vain valmistuneet tutkinnot" in {
+          extractStrings(
+            getOpiskeluoikeudet(Some("diatutkinto")),
+            viimeisinTila
+          ) should equal(List(
+            "valmistunut"
+          ))
+        }
+
+        "EB-tutkinnoista palautetaan vain valmistuneet tutkinnot" in {
+          extractStrings(
+            getOpiskeluoikeudet(Some("ebtutkinto")),
+            viimeisinTila
+          ) should equal(List(
+            "valmistunut"
+          ))
+        }
+
+        "IB-tutkinnoista palautetaan vain valmistuneet tutkinnot" in {
+          extractStrings(
+            getOpiskeluoikeudet(Some("ibtutkinto")),
+            viimeisinTila
+          ) should equal(List(
+            "valmistunut"
+          ))
+        }
+
+        "Opiskeluoikeudet sisältävät versionumeron ja aikaleiman" in {
+          val oos = getOpiskeluoikeudet()
+          oos should not be empty
+          oos.foreach { oo =>
+            (oo \ "versionumero") should not equal JNothing
+            (oo \ "aikaleima") should not equal JNothing
+          }
+        }
+      }
+
+      "Haku slave oidilla palauttaa master-oppijan" in {
+        val query = getQuery(Seq(KoskiSpecificMockOppijat.slave.henkilö.oid))
         val queryId = addQuerySuccessfully(query, user) { response =>
           response.status should equal(QueryState.pending)
           response.queryId
@@ -577,477 +1015,89 @@ class MassaluovutusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers wit
           }
         }
 
-        val oos = jsonFiles.flatMap {
-          case JArray(a) => a
-          case _ => Nil
-        }.map(_ \ "opiskeluoikeudet").flatMap {
-          case JArray(a) => a
-          case _ => Nil
+        (jsonFiles.head.extract[Seq[JObject]].head \ "oppijaOid").extract[String] should equal(KoskiSpecificMockOppijat.master.oid)
+      }
+
+      "Haku master oidilla palauttaa oppijan slave-oidineen" in {
+        val query = getQuery(Seq(KoskiSpecificMockOppijat.master.oid))
+        val queryId = addQuerySuccessfully(query, user) { response =>
+          response.status should equal(QueryState.pending)
+          response.queryId
         }
-        tyyppi match {
-          case Some(t) => oos.filter(oo => (oo \ "tyyppi" \ "koodiarvo").extract[String] == t)
-          case None => oos
+        val complete = waitForCompletion(queryId, user)
+
+        val jsonFiles = complete.files.map { file =>
+          verifyResultAndContent(file, user) {
+            JsonMethods.parse(response.body)
+          }
         }
+
+        (jsonFiles.head.extract[Seq[JObject]].head \ "kaikkiOidit").extract[Set[String]] should equal(Set(KoskiSpecificMockOppijat.master.oid, KoskiSpecificMockOppijat.slave.henkilö.oid))
       }
 
-      def getSuoritukset(ooTyyppi: Option[String] = None): List[JValue] =
-        getOpiskeluoikeudet(ooTyyppi)
-          .map(_ \ "suoritukset")
-          .collect { case JArray(list) => list }
-          .flatten
-
-      def extractStrings(values: List[JValue], path: JValue => JValue): List[String] =
-        values
-          .map(path(_).extract[String])
-          .distinct
-          .sorted
-
-      def tyyppi(v: JValue) = v \ "tyyppi" \ "koodiarvo"
-      def suorituksenTunniste(v: JValue) = v \ "koulutusmoduuli" \ "tunniste" \ "koodiarvo"
-      def osasuoritustenMäärä(v: JValue) = v \ "osasuoritukset" match {
-        case JArray(list) => list.size
-        case _ => 0
-      }
-      def viimeisinTila(v: JValue) = v \ "tila" \ "opiskeluoikeusjaksot" \ "tila" \ "koodiarvo" match {
-        case JArray(list) => list.last
-        case _ => JNothing
-      }
-
-      "Sisältää kaikkia tuettuja suoritustyyppejä" in {
-        extractStrings(
-          getSuoritukset(),
-          tyyppi
-        ) should equal(List(
-          "aikuistenperusopetuksenoppimaara",
-          "ammatillinentutkinto",
-          "ammatillinentutkintoosittainen",
-          "diatutkintovaihe",
-          "ebtutkinto",
-          "ibtutkinto",
-          "internationalschooldiplomavuosiluokka",
-          "nuortenperusopetuksenoppiaineenoppimaara",
-          "perusopetuksenoppiaineenoppimaara",
-          "perusopetuksenoppimaara",
-          "perusopetuksenvuosiluokka",
-          "telma",
-          "tuvakoulutuksensuoritus",
-          "vstoppivelvollisillesuunnattukoulutus",
-        ))
-      }
-
-      "Nuorten perusopetuksesta palautetaan perusopetuksen päättötodistus sekä 7., 8. ja 9. vuosiluokan suoritukset" in {
-        extractStrings(
-          getSuoritukset(Some("perusopetus")).filterNot(s => tyyppi(s).extract[String] == "nuortenperusopetuksenoppiaineenoppimaara"),
-          suorituksenTunniste
-        ) should equal(List(
-          "201101", // Oppimäärän suoritus
-          "7",  // Vuosiluokkien suoritukset
-          "8",
-          "9",
-        ))
-      }
-
-      "Perusopetuksen suorituksille palautetaan oikea määrä osasuorituksia" in {
-        val tunnisteetJaOsasuoritustenMäärät = getSuoritukset(Some("perusopetus"))
-          .filterNot(s => tyyppi(s).extract[String] == "nuortenperusopetuksenoppiaineenoppimaara")
-          .map(suoritus => suorituksenTunniste(suoritus).extract[String] -> osasuoritustenMäärä(suoritus))
-          .toMap
-
-        tunnisteetJaOsasuoritustenMäärät.get("7") shouldBe Some(0) // 7. vuosiluokan suoritus
-        tunnisteetJaOsasuoritustenMäärät.get("8") shouldBe Some(0) // 8. vuosiluokan suoritus
-        tunnisteetJaOsasuoritustenMäärät.get("9") shouldBe Some(0) // 9. vuosiluokan suoritus, voi myös sisältää osasuorituksia
-        tunnisteetJaOsasuoritustenMäärät.get("201101") shouldBe Some(23) // Oppimäärän suoritus
-      }
-
-      "Ammatillisesta koulutuksesta ei palautetaan vain kokonainen ammatillinen tutkinto ja telma" in {
-        extractStrings(
-          getSuoritukset(Some("ammatillinenkoulutus")),
-          tyyppi
-        ) should equal(List(
-          "ammatillinentutkinto",
-          "ammatillinentutkintoosittainen",
-          "telma"
-        ))
-      }
-
-      "DIA-tutkinnoista palautetaan vain valmistuneet tutkinnot" in {
-        extractStrings(
-          getOpiskeluoikeudet(Some("diatutkinto")),
-          viimeisinTila
-        ) should equal(List(
-          "valmistunut"
-        ))
-      }
-
-      "EB-tutkinnoista palautetaan vain valmistuneet tutkinnot" in {
-        extractStrings(
-          getOpiskeluoikeudet(Some("ebtutkinto")),
-          viimeisinTila
-        ) should equal(List(
-          "valmistunut"
-        ))
-      }
-
-      "IB-tutkinnoista palautetaan vain valmistuneet tutkinnot" in {
-        extractStrings(
-          getOpiskeluoikeudet(Some("ibtutkinto")),
-          viimeisinTila
-        ) should equal(List(
-          "valmistunut"
-        ))
-     }
-    }
-
-    "Palauttaa oppijan kaikki opiskeluoikeudet jos yksikin on muuttunut" in {
-      val oppija = KoskiSpecificMockOppijat.moniaEriOpiskeluoikeuksia
-      val oo = getOpiskeluoikeus(oppija.oid, "perusopetus")
-      val muokattuOo = oo.withSuoritukset(oo.suoritukset.map {
-        case p: PerusopetuksenVuosiluokanSuoritus => p.copy(todistuksellaNäkyvätLisätiedot = Some(LocalizedString.finnish("asd")))
-        case s => s
-      })
-      createOrUpdate(oppija, muokattuOo)
-      val tallennettuOo = getOpiskeluoikeus(muokattuOo.oid.get).asInstanceOf[KoskeenTallennettavaOpiskeluoikeus]
-
-      val query = getQuery(tallennettuOo.aikaleima.get)
-      val queryId = addQuerySuccessfully(query, user) { response =>
-        response.status should equal(QueryState.pending)
-        response.queryId
-      }
-      val complete = waitForCompletion(queryId, user)
-
-      val jsonFiles = complete.files.map { file =>
-        verifyResultAndContent(file, user) {
-          JsonMethods.parse(response.body)
+      "Haku master- ja slave oidilla samaan aikaan palauttaa vain yhden oppijan" in {
+        val query = getQuery(Seq(KoskiSpecificMockOppijat.master.oid, KoskiSpecificMockOppijat.slave.henkilö.oid))
+        val queryId = addQuerySuccessfully(query, user) { response =>
+          response.status should equal(QueryState.pending)
+          response.queryId
         }
-      }
-      val oppijat = jsonFiles.head.extract[Seq[JObject]]
-      oppijat.length should equal(1)
-      (oppijat.head \ "opiskeluoikeudet").extract[Seq[JObject]].length should equal(7)
-    }
+        val complete = waitForCompletion(queryId, user)
 
-    "Palauttaa myös master oid:n opiskeluoikeuden jos slave oid:n opiskeluoikeus on muuttunut" in {
-      poistaOppijanOpiskeluoikeusDatat(KoskiSpecificMockOppijat.slave.henkilö)
-      val tallennettuOo = createOrUpdate(KoskiSpecificMockOppijat.slave.henkilö, defaultOpiskeluoikeus)
-
-      val query = getQuery(tallennettuOo.aikaleima.get)
-      val queryId = addQuerySuccessfully(query, user) { response =>
-        response.status should equal(QueryState.pending)
-        response.queryId
-      }
-      val complete = waitForCompletion(queryId, user)
-
-      val jsonFiles = complete.files.map { file =>
-        verifyResultAndContent(file, user) {
-          JsonMethods.parse(response.body)
+        val jsonFiles = complete.files.map { file =>
+          verifyResultAndContent(file, user) {
+            JsonMethods.parse(response.body)
+          }
         }
+
+        jsonFiles.head.extract[Seq[JObject]].length should equal(1)
       }
 
-      val oppijatJaOpiskeluoikeudenTyypit = (jsonFiles.head.extract[Seq[JObject]].head \ "opiskeluoikeudet")
-        .extract[Seq[JObject]]
-        .map(oo => (oo \ "oppijaOid").extract[String] -> (oo \ "tyyppi" \ "koodiarvo").extract[String])
+      "Palautetulla opiskeluoikeudella on sen oppijan oid, jolle opiskeluoikeus on tallennettu" in {
+        poistaOppijanOpiskeluoikeusDatat(KoskiSpecificMockOppijat.slave.henkilö)
+        createOrUpdate(KoskiSpecificMockOppijat.slave.henkilö, defaultOpiskeluoikeus)
 
-      oppijatJaOpiskeluoikeudenTyypit should contain(
-        KoskiSpecificMockOppijat.slave.henkilö.oid -> OpiskeluoikeudenTyyppi.ammatillinenkoulutus.koodiarvo
-      )
-      oppijatJaOpiskeluoikeudenTyypit should contain(
-        KoskiSpecificMockOppijat.master.oid -> OpiskeluoikeudenTyyppi.perusopetus.koodiarvo
-      )
-    }
-  }
-
-  "Suorituspalvelukysely - oppija-oideilla hakeminen" - {
-    val user = MockUsers.paakayttaja
-    val oppijaOids = (1 to 200).map(i => "1.2.246.562.24.00000000%03d".format(i))
-
-    def getQuery(oppijaOidit: Seq[String]) = SuorituspalveluOppijaOidsQuery(
-      oppijaOids = oppijaOidit
-    )
-
-    "Käyttöoikeudet ja logitus" - {
-      val query = getQuery(oppijaOids)
-
-      "Kyselyä voi käyttää pääkäyttäjänä" in {
-        addQuerySuccessfully(query, MockUsers.paakayttaja) {
-          _.status should equal(QueryState.pending)
+        val query = getQuery(Seq(KoskiSpecificMockOppijat.master.oid))
+        val queryId = addQuerySuccessfully(query, user) { response =>
+          response.status should equal(QueryState.pending)
+          response.queryId
         }
-      }
+        val complete = waitForCompletion(queryId, user)
 
-      "Kyselyä voi käyttää oph-palvelukäyttäjänä" in {
-        addQuerySuccessfully(query, MockUsers.ophkatselija) {
-          _.status should equal(QueryState.pending)
+        val jsonFiles = complete.files.map { file =>
+          verifyResultAndContent(file, user) {
+            JsonMethods.parse(response.body)
+          }
         }
+
+        val oppijatJaOpiskeluoikeudenTyypit = (jsonFiles.head.extract[Seq[JObject]].head \ "opiskeluoikeudet")
+          .extract[Seq[JObject]]
+          .map(oo => (oo \ "oppijaOid").extract[String] -> (oo \ "tyyppi" \ "koodiarvo").extract[String])
+
+        oppijatJaOpiskeluoikeudenTyypit should contain(
+          KoskiSpecificMockOppijat.slave.henkilö.oid -> OpiskeluoikeudenTyyppi.ammatillinenkoulutus.koodiarvo
+        )
+        oppijatJaOpiskeluoikeudenTyypit should contain(
+          KoskiSpecificMockOppijat.master.oid -> OpiskeluoikeudenTyyppi.perusopetus.koodiarvo
+        )
       }
 
-      "Kyselyä ei voi käyttää muuna palvelukäyttäjänä" in {
-        addQuery(query, MockUsers.omniaPalvelukäyttäjä) {
-          verifyResponseStatus(403, KoskiErrorCategory.forbidden())
-        }
-      }
+      "Palauttaa epäonnistuneen kyselyn" in {
+        // Lisää rikkinäiset opiskeluoikeudet fikstureen:
+        resetFixtures()
 
-      "Kyselystä jää audit log -merkinnät" in {
-        AuditLogTester.clearMessages()
         val queryId = addQuerySuccessfully(getQuery(oppijaOids), user) { response =>
           response.status should equal(QueryState.pending)
           response.queryId
         }
-        val complete = waitForCompletion(queryId, user)
+        val failed = waitForFailure(queryId, user)
 
-        verifyResultAndContent(complete.files.last, user) {
-          val json = JsonMethods.parse(response.body)
-          val oos = json.asInstanceOf[JArray]
-          oos.arr.map(v =>
-            (
-              (v \ "oppijaOid").extract[String],
-              (v \ "opiskeluoikeudet").extract[List[JObject]].lastOption.map(oo => (oo \ "oid").extract[String]).getOrElse("")
-            )
-          ).last match {
-            case (oppijaOid, opiskeluoikeusOid) => AuditLogTester.verifyLastAuditLogMessage(Map(
-              "operation" -> "SUORITUSPALVELU_OPISKELUOIKEUS_HAKU",
-              "target" -> Map(
-                "oppijaHenkiloOid" -> oppijaOid,
-                "opiskeluoikeusOid" -> opiskeluoikeusOid,
-              ),
-            ))
-          }
-        }
+        failed.status shouldBe QueryState.failed
+        failed.error.get should fullyMatch regex  s"^Oppijan ${KoskiSpecificMockOppijat.kelaRikkinäinenOpiskeluoikeus.oid} opiskeluoikeuden (1\\.2\\.246\\.562\\.15\\.\\d+) deserialisointi epäonnistui$$".r // Näkyy pääkäyttäjälle
+        failed.files should have length 0 // Ei palauta tuloksia, joten ei myöskään tee auditlokitusta
       }
-    }
-
-    "Palautuneen datan filtteröinti" - {
-
-      def getOpiskeluoikeudet(tyyppi: Option[String] = None): List[JValue] = {
-        val query = getQuery(oppijaOids)
-        val queryId = addQuerySuccessfully(query, user) { response =>
-          response.status should equal(QueryState.pending)
-          response.queryId
-        }
-        val complete = waitForCompletion(queryId, user)
-
-        val jsonFiles = complete.files.map { file =>
-          verifyResultAndContent(file, user) {
-            JsonMethods.parse(response.body)
-          }
-        }
-
-        val oos = jsonFiles.flatMap {
-          case JArray(a) => a
-          case _ => Nil
-        }.map(_ \ "opiskeluoikeudet").flatMap {
-          case JArray(a) => a
-          case _ => Nil
-        }
-        tyyppi match {
-          case Some(t) => oos.filter(oo => (oo \ "tyyppi" \ "koodiarvo").extract[String] == t)
-          case None => oos
-        }
-      }
-
-      def getSuoritukset(ooTyyppi: Option[String] = None): List[JValue] =
-        getOpiskeluoikeudet(ooTyyppi)
-          .map(_ \ "suoritukset")
-          .collect { case JArray(list) => list }
-          .flatten
-
-      def extractStrings(values: List[JValue], path: JValue => JValue): List[String] =
-        values
-          .map(path(_).extract[String])
-          .distinct
-          .sorted
-
-      def tyyppi(v: JValue) = v \ "tyyppi" \ "koodiarvo"
-
-      def suorituksenTunniste(v: JValue) = v \ "koulutusmoduuli" \ "tunniste" \ "koodiarvo"
-
-      def osasuoritustenMäärä(v: JValue) = v \ "osasuoritukset" match {
-        case JArray(list) => list.size
-        case _ => 0
-      }
-
-      def viimeisinTila(v: JValue) = v \ "tila" \ "opiskeluoikeusjaksot" \ "tila" \ "koodiarvo" match {
-        case JArray(list) => list.last
-        case _ => JNothing
-      }
-
-      "Sisältää kaikkia tuettuja suoritustyyppejä" in {
-        extractStrings(
-          getSuoritukset(),
-          tyyppi
-        ) should equal(List(
-          "aikuistenperusopetuksenoppimaara",
-          "ammatillinentutkinto",
-          "ammatillinentutkintoosittainen",
-          "diatutkintovaihe",
-          "ebtutkinto",
-          "ibtutkinto",
-          "internationalschooldiplomavuosiluokka",
-          "nuortenperusopetuksenoppiaineenoppimaara",
-          "perusopetuksenoppiaineenoppimaara",
-          "perusopetuksenoppimaara",
-          "perusopetuksenvuosiluokka",
-          "telma",
-          "tuvakoulutuksensuoritus",
-          "vstoppivelvollisillesuunnattukoulutus",
-        ))
-      }
-
-      "Nuorten perusopetuksesta palautetaan perusopetuksen päättötodistus sekä 7., 8. ja 9. vuosiluokan suoritukset" in {
-        extractStrings(
-          getSuoritukset(Some("perusopetus")).filterNot(s => tyyppi(s).extract[String] == "nuortenperusopetuksenoppiaineenoppimaara"),
-          suorituksenTunniste
-        ) should equal(List(
-          "201101", // Oppimäärän suoritus
-          "7",  // Vuosiluokkien suoritukset
-          "8",
-          "9",
-        ))
-      }
-
-      "Perusopetuksen suorituksille palautetaan oikea määrä osasuorituksia" in {
-        val tunnisteetJaOsasuoritustenMäärät = getSuoritukset(Some("perusopetus"))
-          .filterNot(s => tyyppi(s).extract[String] == "nuortenperusopetuksenoppiaineenoppimaara")
-          .map(suoritus => suorituksenTunniste(suoritus).extract[String] -> osasuoritustenMäärä(suoritus))
-          .toMap
-
-        tunnisteetJaOsasuoritustenMäärät.get("7") shouldBe Some(0) // 7. vuosiluokan suoritus
-        tunnisteetJaOsasuoritustenMäärät.get("8") shouldBe Some(0) // 8. vuosiluokan suoritus
-        tunnisteetJaOsasuoritustenMäärät.get("9") shouldBe Some(0) // 9. vuosiluokan suoritus, voi myös sisältää osasuorituksia
-        tunnisteetJaOsasuoritustenMäärät.get("201101") shouldBe Some(23) // Oppimäärän suoritus
-      }
-
-      "Ammatillisesta koulutuksesta ei palautetaan vain kokonainen ammatillinen tutkinto ja telma" in {
-        extractStrings(
-          getSuoritukset(Some("ammatillinenkoulutus")),
-          tyyppi
-        ) should equal(List(
-          "ammatillinentutkinto",
-          "ammatillinentutkintoosittainen",
-          "telma"
-        ))
-      }
-
-      "DIA-tutkinnoista palautetaan vain valmistuneet tutkinnot" in {
-        extractStrings(
-          getOpiskeluoikeudet(Some("diatutkinto")),
-          viimeisinTila
-        ) should equal(List(
-          "valmistunut"
-        ))
-      }
-
-      "EB-tutkinnoista palautetaan vain valmistuneet tutkinnot" in {
-        extractStrings(
-          getOpiskeluoikeudet(Some("ebtutkinto")),
-          viimeisinTila
-        ) should equal(List(
-          "valmistunut"
-        ))
-      }
-
-      "IB-tutkinnoista palautetaan vain valmistuneet tutkinnot" in {
-        extractStrings(
-          getOpiskeluoikeudet(Some("ibtutkinto")),
-          viimeisinTila
-        ) should equal(List(
-          "valmistunut"
-        ))
-      }
-    }
-
-    "Haku slave oidilla palauttaa master-oppijan" in {
-      val query = getQuery(Seq(KoskiSpecificMockOppijat.slave.henkilö.oid))
-      val queryId = addQuerySuccessfully(query, user) { response =>
-        response.status should equal(QueryState.pending)
-        response.queryId
-      }
-      val complete = waitForCompletion(queryId, user)
-
-      val jsonFiles = complete.files.map { file =>
-        verifyResultAndContent(file, user) {
-          JsonMethods.parse(response.body)
-        }
-      }
-
-      (jsonFiles.head.extract[Seq[JObject]].head \ "oppijaOid").extract[String] should equal(KoskiSpecificMockOppijat.master.oid)
-    }
-
-    "Haku master oidilla palauttaa oppijan slave-oidineen" in {
-      val query = getQuery(Seq(KoskiSpecificMockOppijat.master.oid))
-      val queryId = addQuerySuccessfully(query, user) { response =>
-        response.status should equal(QueryState.pending)
-        response.queryId
-      }
-      val complete = waitForCompletion(queryId, user)
-
-      val jsonFiles = complete.files.map { file =>
-        verifyResultAndContent(file, user) {
-          JsonMethods.parse(response.body)
-        }
-      }
-
-      (jsonFiles.head.extract[Seq[JObject]].head \ "kaikkiOidit").extract[Set[String]] should equal(Set(KoskiSpecificMockOppijat.master.oid, KoskiSpecificMockOppijat.slave.henkilö.oid))
-    }
-
-    "Haku master- ja slave oidilla samaan aikaan palauttaa vain yhden oppijan" in {
-      val query = getQuery(Seq(KoskiSpecificMockOppijat.master.oid, KoskiSpecificMockOppijat.slave.henkilö.oid))
-      val queryId = addQuerySuccessfully(query, user) { response =>
-        response.status should equal(QueryState.pending)
-        response.queryId
-      }
-      val complete = waitForCompletion(queryId, user)
-
-      val jsonFiles = complete.files.map { file =>
-        verifyResultAndContent(file, user) {
-          JsonMethods.parse(response.body)
-        }
-      }
-
-      jsonFiles.head.extract[Seq[JObject]].length should equal(1)
-    }
-
-    "Palautetulla opiskeluoikeudella on sen oppijan oid, jolle opiskeluoikeus on tallennettu" in {
-      poistaOppijanOpiskeluoikeusDatat(KoskiSpecificMockOppijat.slave.henkilö)
-      createOrUpdate(KoskiSpecificMockOppijat.slave.henkilö, defaultOpiskeluoikeus)
-
-      val query = getQuery(Seq(KoskiSpecificMockOppijat.master.oid))
-      val queryId = addQuerySuccessfully(query, user) { response =>
-        response.status should equal(QueryState.pending)
-        response.queryId
-      }
-      val complete = waitForCompletion(queryId, user)
-
-      val jsonFiles = complete.files.map { file =>
-        verifyResultAndContent(file, user) {
-          JsonMethods.parse(response.body)
-        }
-      }
-
-      val oppijatJaOpiskeluoikeudenTyypit = (jsonFiles.head.extract[Seq[JObject]].head \ "opiskeluoikeudet")
-        .extract[Seq[JObject]]
-        .map(oo => (oo \ "oppijaOid").extract[String] -> (oo \ "tyyppi" \ "koodiarvo").extract[String])
-
-      oppijatJaOpiskeluoikeudenTyypit should contain(
-        KoskiSpecificMockOppijat.slave.henkilö.oid -> OpiskeluoikeudenTyyppi.ammatillinenkoulutus.koodiarvo
-      )
-      oppijatJaOpiskeluoikeudenTyypit should contain(
-        KoskiSpecificMockOppijat.master.oid -> OpiskeluoikeudenTyyppi.perusopetus.koodiarvo
-      )
-    }
-
-    "Palauttaa epäonnistuneen kyselyn" in {
-      // Lisää rikkinäiset opiskeluoikeudet fikstureen:
-      resetFixtures()
-
-      val queryId = addQuerySuccessfully(getQuery(oppijaOids), user) { response =>
-        response.status should equal(QueryState.pending)
-        response.queryId
-      }
-      val failed = waitForFailure(queryId, user)
-
-      failed.status shouldBe QueryState.failed
-      failed.error.get should fullyMatch regex  "^Oppijan (1\\.2\\.246\\.562\\.24\\.\\d+) opiskeluoikeuden (1\\.2\\.246\\.562\\.15\\.\\d+) deserialisointi epäonnistui$".r // Näkyy pääkäyttäjälle
-      failed.files should have length 0 // Ei palauta tuloksia, joten ei myöskään tee auditlokitusta
     }
   }
+
 
   "Luokalle jäämiset" - {
     "JSON" - {

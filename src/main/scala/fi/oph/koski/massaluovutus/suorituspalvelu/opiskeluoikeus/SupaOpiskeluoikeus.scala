@@ -4,7 +4,7 @@ import fi.oph.koski.schema._
 import fi.oph.koski.schema.annotation.KoodistoUri
 import fi.oph.scalaschema.annotation.{Description, Discriminator}
 
-import java.time.LocalDate
+import java.time.{LocalDate, LocalDateTime}
 
 trait SupaOpiskeluoikeus {
   @Description("Oppijan yksilöivä tunniste, jolla kyseinen opiskeluoikeus on tallennettu Koski-tietovarantoon.")
@@ -23,6 +23,11 @@ trait SupaOpiskeluoikeus {
   def tila: OpiskeluoikeudenTila
   @Description("Opiskeluoikeuteen liittyvien tutkinto- ja muiden suoritusten tiedot")
   def suoritukset: List[SupaSuoritus]
+
+  @Description("Versionumero, joka generoidaan Koski-järjestelmässä. Ensimmäinen tallennettu versio saa versionumeron 1, jonka jälkeen jokainen päivitys aiheuttaa versionumeron noston yhdellä.")
+  def versionumero: Option[Int]
+  @Description("Koski-palvelimella muodostettu aikaleima opiskeluoikeutta tallennettaessa.")
+  def aikaleima: Option[LocalDateTime]
 }
 
 trait SupaSuoritus {

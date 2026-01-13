@@ -4,7 +4,7 @@ import fi.oph.koski.schema._
 import fi.oph.koski.schema.annotation._
 import fi.oph.scalaschema.annotation.{Description, OnlyWhen, Title}
 
-import java.time.LocalDate
+import java.time.{LocalDate, LocalDateTime}
 
 @Title("Perusopetuksen opiskeluoikeus")
 case class SupaPerusopetuksenOpiskeluoikeus(
@@ -17,6 +17,8 @@ case class SupaPerusopetuksenOpiskeluoikeus(
   tila: NuortenPerusopetuksenOpiskeluoikeudenTila,
   suoritukset: List[SupaPerusopetuksenPäätasonSuoritus],
   lisätiedot: Option[SupaPerusopetuksenOpiskeluoikeudenLisätiedot],
+  versionumero: Option[Int],
+  aikaleima: Option[LocalDateTime],
 ) extends SupaOpiskeluoikeus
 
 object SupaPerusopetuksenOpiskeluoikeus {
@@ -30,6 +32,8 @@ object SupaPerusopetuksenOpiskeluoikeus {
       tila = oo.tila,
       suoritukset = oo.suoritukset.flatMap(SupaPerusopetuksenPäätasonSuoritus.apply),
       lisätiedot = oo.lisätiedot.flatMap(SupaPerusopetuksenOpiskeluoikeudenLisätiedot.apply),
+      versionumero = oo.versionumero,
+      aikaleima = oo.aikaleima
     )
 }
 
@@ -59,6 +63,7 @@ object SupaPerusopetuksenPäätasonSuoritus {
 
 @Title("Nuorten perusopetuksen oppimäärän suoritus")
 case class SupaNuortenPerusopetuksenOppimääränSuoritus(
+  @KoodistoKoodiarvo("perusopetuksenoppimaara")
   tyyppi: Koodistokoodiviite,
   koulutusmoduuli: NuortenPerusopetus,
   vahvistus: Option[SupaVahvistus],
@@ -78,12 +83,13 @@ object SupaNuortenPerusopetuksenOppimääränSuoritus {
       vahvistus = s.vahvistus.map(v => SupaVahvistus(v.päivä)),
       suorituskieli = s.suorituskieli,
       koulusivistyskieli = s.koulusivistyskieli,
-      osasuoritukset = s.osasuoritukset.map(_.collect { case os: NuortenPerusopetuksenOppiaineenSuoritus => os }),
+      osasuoritukset = s.osasuoritukset.map(_.collect { case os: NuortenPerusopetuksenOppiaineenSuoritus => os }).filter(_.nonEmpty),
     )
 }
 
 @Title("Perusopetuksen vuosiluokan suoritus")
 case class SupaPerusopetuksenYhdeksännenVuosiluokanSuoritus(
+  @KoodistoKoodiarvo("perusopetuksenvuosiluokka")
   tyyppi: Koodistokoodiviite,
   koulutusmoduuli: PerusopetuksenLuokkaAste,
   alkamispäivä: Option[LocalDate],
@@ -104,7 +110,7 @@ object SupaPerusopetuksenYhdeksännenVuosiluokanSuoritus {
       vahvistus = s.vahvistus.map(v => SupaVahvistus(v.päivä)),
       suorituskieli = s.suorituskieli,
       jääLuokalle = s.jääLuokalle,
-      osasuoritukset = if(lisääOsasuoritukset) s.osasuoritukset.map(_.collect { case os: NuortenPerusopetuksenOppiaineenSuoritus => os }) else None,
+      osasuoritukset = if(lisääOsasuoritukset) s.osasuoritukset.map(_.collect { case os: NuortenPerusopetuksenOppiaineenSuoritus => os }).filter(_.nonEmpty) else None,
     )
 }
 
@@ -159,7 +165,10 @@ case class SupaPerusopetuksenOpiskeluoikeudenLisätiedot(
 
 object SupaPerusopetuksenOpiskeluoikeudenLisätiedot {
   def apply(lt: PerusopetuksenOpiskeluoikeudenLisätiedot): Option[SupaPerusopetuksenOpiskeluoikeudenLisätiedot] =
-    if (lt.kotiopetusjaksot.exists(_.nonEmpty) || lt.erityisenTuenPäätös.isDefined || lt.erityisenTuenPäätökset.exists(_.nonEmpty)) {
+    if (lt.kotiopetusjaksot.exists(_.nonEmpty) ||
+      lt.erityisenTuenPäätös.isDefined ||
+      lt.erityisenTuenPäätökset.exists(_.nonEmpty) ||
+      lt.vuosiluokkiinSitoutumatonOpetus.contains(true)) {
       Some(SupaPerusopetuksenOpiskeluoikeudenLisätiedot(
         kotiopetusjaksot = lt.kotiopetusjaksot,
         erityisenTuenPäätökset =

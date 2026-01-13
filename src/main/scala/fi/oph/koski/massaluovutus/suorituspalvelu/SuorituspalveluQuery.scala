@@ -27,19 +27,28 @@ trait SuorituspalveluQuery extends OpetushallituksenMassaluovutusQueryParameters
 
     writer.predictFileCount(resultsByOppija.size / 100)
     resultsByOppija.grouped(100).zipWithIndex.foreach { case (oppijaResult, index) =>
-      val supaResponses = oppijaResult.map { case (oppija_oid, opiskeluoikeudet) =>
+      val supaResponses = oppijaResult.flatMap { case (oppija_oid, opiskeluoikeudet) =>
         val latestTimestamp = opiskeluoikeudet.maxBy(_._2.toInstant)._2
         val db = selectDbByLag(application, latestTimestamp)
-        val response = opiskeluoikeudet.flatMap(oo => getOpiskeluoikeus(application, db, oo._1))
-        response.foreach { oo =>
-          auditLog(oppija_oid, oo.oid)
+        val response = opiskeluoikeudet
+          .flatMap(oo => getOpiskeluoikeus(application, db, oo._1))
+          .filter(_.suoritukset.nonEmpty)
+
+        if(response.nonEmpty) {
+          response.foreach { oo =>
+            auditLog(oppija_oid, oo.oid)
+          }
+          Some(
+            SupaResponse(
+              oppijaOid = oppija_oid,
+              kaikkiOidit = application.henkilöRepository.findByOid(oppija_oid).get.kaikkiOidit,
+              aikaleima = LocalDateTime.from(latestTimestamp.toLocalDateTime),
+              opiskeluoikeudet = response
+            )
+          )
+        } else {
+          None
         }
-        SupaResponse(
-          oppijaOid = oppija_oid,
-          kaikkiOidit = application.henkilöRepository.findByOid(oppija_oid).get.kaikkiOidit,
-          aikaleima = LocalDateTime.from(latestTimestamp.toLocalDateTime),
-          opiskeluoikeudet = response
-        )
       }
       writer.putJson(s"$index", supaResponses)
     }
@@ -98,15 +107,20 @@ trait SuorituspalveluQuery extends OpetushallituksenMassaluovutusQueryParameters
 }
 
 object SuorituspalveluQuery {
-  def opiskeluoikeudenTyypit: List[String] = List(
-    "perusopetus",
-    "aikuistenperusopetus",
-    "ammatillinenkoulutus",
-    "tuva",
-    "vapaansivistystyonkoulutus",
-    "diatutkinto",
+  def suoritustenTyypit: List[String] = List(
+    "perusopetuksenoppiaineenoppimaara",
+    "aikuistenperusopetuksenoppimaara",
+    "ammatillinentutkintoosittainen",
+    "ammatillinentutkinto",
+    "telma",
+    "diatutkintovaihe",
     "ebtutkinto",
     "ibtutkinto",
-    "internationalschool",
+    "internationalschooldiplomavuosiluokka",
+    "nuortenperusopetuksenoppiaineenoppimaara",
+    "perusopetuksenoppimaara",
+    "perusopetuksenvuosiluokka",
+    "tuvakoulutuksensuoritus",
+    "vstoppivelvollisillesuunnattukoulutus"
   )
 }

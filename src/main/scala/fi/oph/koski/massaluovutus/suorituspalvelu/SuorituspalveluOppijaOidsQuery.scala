@@ -32,7 +32,7 @@ case class SuorituspalveluOppijaOidsQuery(
           FROM henkilo h
           WHERE h.oid = any($oppijaOids)
           )
-        AND opiskeluoikeus.koulutusmuoto = any(${SuorituspalveluQuery.opiskeluoikeudenTyypit})
+        AND opiskeluoikeus.suoritustyypit && ${SuorituspalveluQuery.suoritustenTyypit}::text[]
       """.as[(Int, Timestamp, String)])
   }
 }
