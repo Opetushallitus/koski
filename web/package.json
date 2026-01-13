@@ -111,7 +111,7 @@
     "watch": "webpack --devtool inline-source-map --progress --watch --mode development",
     "unit-test": "mocha --require ts-node/register --extension js,ts --reporter spec ./test/unit-test",
     "unit-test-watch": "mocha -w --require ts-node/register --extension js,ts --reporter spec ./test/unit-test",
-    "test": "MOCHA_URL=${MOCHA_URL:-http://localhost:7021/koski/test/runner.html}?grep=${MOCHA_GREP:-} node test/mocha-chrome-wrapper.js \"$MOCHA_URL\" --chrome-flags '[\"--use-mock-keychain\"]'",
+    "test": "node test/mocha-chrome-wrapper.js \"${MOCHA_URL:-http://localhost:7021/koski/test/runner.html?bail=${MOCHA_BAIL:-false}&grep=${MOCHA_GREP:-}}\" --chrome-flags '[\"--use-mock-keychain\"]'",
     "playwright:test": "pnpm exec playwright test",
     "playwright:test:debug": "pnpm exec playwright test --headed",
     "playwright:test:trace": "pnpm exec playwright test --trace on && npx playwright show-report",

@@ -10,6 +10,8 @@ process.on("unhandledRejection", (reason) => {
 const { spawnSync } = require("child_process");
 
 const args = process.argv.slice(2);
-spawnSync("node", ["node_modules/mocha-chrome/cli.js", ...args], {
+const result = spawnSync("node", ["node_modules/mocha-chrome/cli.js", ...args], {
   stdio: "inherit",
 });
+
+process.exit(result.status ?? 1);
