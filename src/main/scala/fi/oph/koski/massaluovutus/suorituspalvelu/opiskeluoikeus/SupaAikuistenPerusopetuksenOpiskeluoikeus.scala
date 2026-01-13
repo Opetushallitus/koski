@@ -16,6 +16,8 @@ case class SupaAikuistenPerusopetuksenOpiskeluoikeus(
   koulutustoimija: Option[Koulutustoimija],
   oppilaitos: Option[Oppilaitos],
   tila: AikuistenPerusopetuksenOpiskeluoikeudenTila,
+  alkamispäivä: Option[LocalDate],
+  päättymispäivä: Option[LocalDate],
   suoritukset: List[SupaAikuistenPerusopetuksenSuoritus],
   versionumero: Option[Int],
   aikaleima: Option[LocalDateTime],
@@ -30,6 +32,8 @@ object SupaAikuistenPerusopetuksenOpiskeluoikeus {
       koulutustoimija = oo.koulutustoimija,
       oppilaitos = oo.oppilaitos,
       tila = oo.tila,
+      alkamispäivä = oo.alkamispäivä,
+      päättymispäivä = oo.päättymispäivä,
       suoritukset = oo.suoritukset.flatMap(SupaAikuistenPerusopetuksenSuoritus.apply),
       versionumero = oo.versionumero,
       aikaleima = oo.aikaleima

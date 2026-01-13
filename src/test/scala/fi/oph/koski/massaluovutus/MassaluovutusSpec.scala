@@ -27,11 +27,13 @@ import org.scalatest.matchers.should.Matchers
 import org.scalatest.{BeforeAndAfterAll, BeforeAndAfterEach}
 
 import java.net.URL
+import java.nio.charset.StandardCharsets
 import java.sql.Timestamp
 import java.time.{Duration, LocalDate, LocalDateTime}
 import java.util.UUID
 
 class MassaluovutusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers with BeforeAndAfterAll with BeforeAndAfterEach with OpiskeluoikeusTestMethodsAmmatillinen {
+  override def body: String = new String(response.bodyBytes, StandardCharsets.UTF_8)
   val app = KoskiApplicationForTests
 
   override protected def beforeEach(): Unit = {
@@ -479,7 +481,7 @@ class MassaluovutusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers wit
 
       complete.files should have length 1
       verifyResultAndContent(complete.files.head, user) {
-        val json = JsonMethods.parse(response.body)
+        val json = JsonMethods.parse(body)
         (json \ "opiskeluoikeudet")(0) \ "versionumero" should equal(JInt(1))
       }
     }
@@ -544,7 +546,7 @@ class MassaluovutusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers wit
           val complete = waitForCompletion(queryId, user)
 
           verifyResultAndContent(complete.files.last, user) {
-            val json = JsonMethods.parse(response.body)
+            val json = JsonMethods.parse(body)
             val oos = json.asInstanceOf[JArray]
             oos.arr.map(v =>
               (
@@ -574,7 +576,7 @@ class MassaluovutusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers wit
 
           val jsonFiles = complete.files.map { file =>
             verifyResultAndContent(file, user) {
-              JsonMethods.parse(response.body)
+              JsonMethods.parse(body)
             }
           }
 
@@ -705,13 +707,17 @@ class MassaluovutusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers wit
           ))
         }
 
-        "Opiskeluoikeudet sisältävät versionumeron ja aikaleiman" in {
+        "Opiskeluoikeudet sisältävät versionumeron ja aikaleiman sekä opiskeluoikeuden alkamis- ja päättymispäivän" in {
           val oos = getOpiskeluoikeudet()
           oos should not be empty
           oos.foreach { oo =>
             (oo \ "versionumero") should not equal JNothing
             (oo \ "aikaleima") should not equal JNothing
+            (oo \ "alkamispäivä") should not equal JNothing
           }
+          oos.exists { oo =>
+            (oo \ "päättymispäivä") != JNothing
+          } shouldBe true
         }
       }
 
@@ -734,7 +740,7 @@ class MassaluovutusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers wit
 
         val jsonFiles = complete.files.map { file =>
           verifyResultAndContent(file, user) {
-            JsonMethods.parse(response.body)
+            JsonMethods.parse(body)
           }
         }
         val oppijat = jsonFiles.head.extract[Seq[JObject]]
@@ -755,7 +761,7 @@ class MassaluovutusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers wit
 
         val jsonFiles = complete.files.map { file =>
           verifyResultAndContent(file, user) {
-            JsonMethods.parse(response.body)
+            JsonMethods.parse(body)
           }
         }
 
@@ -825,7 +831,7 @@ class MassaluovutusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers wit
           val complete = waitForCompletion(queryId, user)
 
           verifyResultAndContent(complete.files.last, user) {
-            val json = JsonMethods.parse(response.body)
+            val json = JsonMethods.parse(body)
             val oos = json.asInstanceOf[JArray]
             oos.arr.map(v =>
               (
@@ -857,7 +863,7 @@ class MassaluovutusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers wit
 
           val jsonFiles = complete.files.map { file =>
             verifyResultAndContent(file, user) {
-              JsonMethods.parse(response.body)
+              JsonMethods.parse(body)
             }
           }
 
@@ -991,13 +997,17 @@ class MassaluovutusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers wit
           ))
         }
 
-        "Opiskeluoikeudet sisältävät versionumeron ja aikaleiman" in {
+        "Opiskeluoikeudet sisältävät versionumeron ja aikaleiman sekä opiskeluoikeuden alkamis- ja päättymispäivän" in {
           val oos = getOpiskeluoikeudet()
           oos should not be empty
           oos.foreach { oo =>
             (oo \ "versionumero") should not equal JNothing
             (oo \ "aikaleima") should not equal JNothing
+            (oo \ "alkamispäivä") should not equal JNothing
           }
+          oos.exists { oo =>
+            (oo \ "päättymispäivä") != JNothing
+          } shouldBe true
         }
       }
 
@@ -1011,7 +1021,7 @@ class MassaluovutusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers wit
 
         val jsonFiles = complete.files.map { file =>
           verifyResultAndContent(file, user) {
-            JsonMethods.parse(response.body)
+            JsonMethods.parse(body)
           }
         }
 
@@ -1028,7 +1038,7 @@ class MassaluovutusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers wit
 
         val jsonFiles = complete.files.map { file =>
           verifyResultAndContent(file, user) {
-            JsonMethods.parse(response.body)
+            JsonMethods.parse(body)
           }
         }
 
@@ -1045,7 +1055,7 @@ class MassaluovutusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers wit
 
         val jsonFiles = complete.files.map { file =>
           verifyResultAndContent(file, user) {
-            JsonMethods.parse(response.body)
+            JsonMethods.parse(body)
           }
         }
 
@@ -1065,7 +1075,7 @@ class MassaluovutusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers wit
 
         val jsonFiles = complete.files.map { file =>
           verifyResultAndContent(file, user) {
-            JsonMethods.parse(response.body)
+            JsonMethods.parse(body)
           }
         }
 
@@ -1211,7 +1221,7 @@ class MassaluovutusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers wit
 
   def parsedResponse: QueryResponse = {
     verifyResponseStatusOk()
-    val json = JsonMethods.parse(response.body)
+    val json = JsonMethods.parse(body)
     val result = KoskiApplicationForTests.validatingAndResolvingExtractor.extract[QueryResponse](json, strictDeserialization)
     result should not be Left
     result.toOption.get
