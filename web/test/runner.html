@@ -38,10 +38,12 @@
         console.log('Calling window.initMochaPhantomJS')
         window.initMochaPhantomJS()
       }
+      var urlParams = new URLSearchParams(location.search)
       mocha.setup({
         ui: 'bdd',
         reporter: 'html',
-        timeout: testTimeoutPageLoad
+        timeout: testTimeoutPageLoad,
+        bail: urlParams.get('bail') === 'true'
       })
 
       function reportAndClearWindowUiError() {
