@@ -90,7 +90,7 @@ object SupaDIAOppiaineenTutkintovaiheenSuoritus {
       vastaavuustodistuksenTiedot = s.vastaavuustodistuksenTiedot,
       koetuloksenNelinkertainenPistemäärä = s.koetuloksenNelinkertainenPistemäärä,
       tyyppi = s.tyyppi,
-      osasuoritukset = s.osasuoritukset.map(_.flatMap(s => SupaDIAOppiaineenTutkintovaiheenOsasuorituksenSuoritus(s))).filter(_.nonEmpty),
+      osasuoritukset = s.osasuoritukset.map(_.map(s => SupaDIAOppiaineenTutkintovaiheenOsasuorituksenSuoritus(s))).filter(_.nonEmpty),
     )
 }
 
@@ -98,20 +98,15 @@ object SupaDIAOppiaineenTutkintovaiheenSuoritus {
 case class SupaDIAOppiaineenTutkintovaiheenOsasuorituksenSuoritus(
   @KoodistoKoodiarvo("diaoppiaineentutkintovaiheenosasuorituksensuoritus")
   tyyppi: Koodistokoodiviite,
-  koulutusmoduuli: DIAPäättökoe,
+  koulutusmoduuli: DIAOppiaineenTutkintovaiheenOsasuoritus,
   arviointi: Option[List[Arviointi]],
 ) extends SupaSuoritus
 
 object SupaDIAOppiaineenTutkintovaiheenOsasuorituksenSuoritus {
-  def apply(s: DIAOppiaineenTutkintovaiheenOsasuorituksenSuoritus): Option[SupaDIAOppiaineenTutkintovaiheenOsasuorituksenSuoritus] = {
-    s.koulutusmoduuli match {
-      case koulutusmoduuli: DIAPäättökoe =>
-        Some(SupaDIAOppiaineenTutkintovaiheenOsasuorituksenSuoritus(
-          tyyppi = s.tyyppi,
-          koulutusmoduuli = koulutusmoduuli,
-          arviointi = s.arviointi,
-        ))
-      case _ => None
-    }
-  }
+  def apply(s: DIAOppiaineenTutkintovaiheenOsasuorituksenSuoritus): SupaDIAOppiaineenTutkintovaiheenOsasuorituksenSuoritus =
+    SupaDIAOppiaineenTutkintovaiheenOsasuorituksenSuoritus(
+      tyyppi = s.tyyppi,
+      koulutusmoduuli = s.koulutusmoduuli,
+      arviointi = s.arviointi,
+    )
 }

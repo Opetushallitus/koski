@@ -716,6 +716,23 @@ class MassaluovutusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers wit
           ))
         }
 
+        "DIA-tutkinnoista palautetaan osasuoritukset ja alaosasuoritukset" in {
+          val alaosasuoritukset = getSuoritukset(Some("diatutkinto"))
+            .flatMap(s => (s \ "osasuoritukset").extractOpt[List[JObject]].getOrElse(Nil))
+            .flatMap(s => (s \ "osasuoritukset").extractOpt[List[JObject]].getOrElse(Nil))
+
+          extractStrings(
+            alaosasuoritukset,
+            suorituksenTunniste
+          ) should equal(List(
+            "3",
+            "4",
+            "5",
+            "6",
+            "kirjallinenkoe",
+          ))
+        }
+
         "EB-tutkinnoista palautetaan vain valmistuneet tutkinnot" in {
           extractStrings(
             getOpiskeluoikeudet(Some("ebtutkinto")),
@@ -1030,6 +1047,23 @@ class MassaluovutusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers wit
             viimeisinTila
           ) should equal(List(
             "valmistunut"
+          ))
+        }
+
+        "DIA-tutkinnoista palautetaan osasuoritukset ja alaosasuoritukset" in {
+          val alaosasuoritukset = getSuoritukset(Some("diatutkinto"))
+            .flatMap(s => (s \ "osasuoritukset").extractOpt[List[JObject]].getOrElse(Nil))
+            .flatMap(s => (s \ "osasuoritukset").extractOpt[List[JObject]].getOrElse(Nil))
+
+          extractStrings(
+            alaosasuoritukset,
+            suorituksenTunniste
+          ) should equal(List(
+            "3",
+            "4",
+            "5",
+            "6",
+            "kirjallinenkoe",
           ))
         }
 
