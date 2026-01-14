@@ -1,32 +1,50 @@
-## OmaData OAuth2 esimerkki-applikaatio
+# OmaData OAuth2 Java-esimerkki
 
-# Kehitys
+Spring Boot -pohjainen esimerkki OAuth2-integraatiosta Koski-palveluun.
 
-Vaatii vähintään Java 23.
+## Esiehdot
 
-Vaatii, että Koski on käynnissä portissa 7021. ks. [README.md](../README.md#koski-sovelluksen-ajaminen-paikallisesti) ja
-että [koski-luovutuspalvelu](https://github.com/Opetushallitus/koski-luovutuspalvelu) -repositoryn sisältö on koski-hakemiston juuressa alihakemistossa
+- Java 21 tai uudempi
+- Koski käynnissä portissa 7021 (ks. [README.md](../../README.md#koski-sovelluksen-ajaminen-paikallisesti))
+- Testisertifikaatit generoitu ja ALB-proxy käynnissä:
 
-    /koski-luovutuspalvelu
+```bash
+cd omadata-oauth2-sample/server
+./testca/generate-certs.sh
+pnpm run start:alb-proxy
+```
 
-Tämän jälkeen luovutuspalvelun voi käynnistää:
+## Käynnistys
 
-    /omadata-oauth2-sample/server % pnpm run start:luovutuspalvelu:build
+```bash
+cd omadata-oauth2-sample/java
+KOSKI_BACKEND_HOST=http://localhost:7021 ./mvnw spring-boot:run
+```
 
-Tämän varsinen esimerkki-applikaatio frontti & backend käynnistetään terminaalissa:
+Java-esimerkki löytyy osoitteesta http://localhost:7052
 
-    KOSKI_BACKEND_HOST=http://localhost:7021 ./mvnw spring-boot:run
+## Arkkitehtuuri
 
-Koko putken rakenne:
+Lokaalisti ALB:n korvaa yksinkertainen, Node.js-pohjainen mock-toteutus.
 
-    (1) Esimerkki-applikaation frontti & backend, http://localhost:7052
+```
+┌─────────────────────────────────────────────────────────────────────────────┐
+│  (1) Java-esimerkki (Spring Boot), http://localhost:7052                    │
+│    │                                                                        │
+│    │  mTLS (client cert)                                                    │
+│    ▼                                                                        │
+│  (2) ALB-proxy, https://localhost:7022                                      │
+│      - Emuloi AWS ALB:n mTLS-toimintaa                                      │
+│      - Lisää x-amzn-mtls-clientcert-* headerit                              │
+│    │                                                                        │
+│    ▼                                                                        │
+│  (3) Koski-backend, http://localhost:7021                                   │
+└─────────────────────────────────────────────────────────────────────────────┘
+```
 
-       kutsuu:
-    (2) Docker-kontissa ajettu koski-luovutuspalvelu, https://localhost:7022
-          Huom! Tämä on mutual TLS -putken testaamiseksi https, lokaalilla root-CA:lla.
+Sertifikaatit ladataan oletuksena hakemistosta `../server/testca/`.
 
-      kutsuu:
-    (3) Koski-backend, http://<lokaali-ip>:<port>
-          Luovutuspalvelun docker-kontille näkyvä <lokaali-ip> on Github Actions CI:llä ajettaessa
-          172.17.0.1 ja <port> arvottu.
-          Lokaalisti <lokaali-ip> haetaan server/scripts/getmyip.js -skriptillä ja <port> on aina 7021.
+## Lisätietoja
+
+- Päädokumentaatio: [README.md](../README.md)
+- Rajapintadokumentaatio: https://testiopintopolku.fi/koski/dokumentaatio/rajapinnat/oauth2/omadata
