@@ -32,7 +32,7 @@ trait LuovutuspalveluHeaderAuthenticationSupport extends AuthenticationSupport {
           defaultLogger.info(s"Luovutuspalvelu client certificate $subjectDnHeader ($serial) mapped to user ${user.username}")
           user
         }
-    ).getOrElse(userFromBasicAuth)
+    ).getOrElse(Left(KoskiErrorCategory.unauthorized.notAuthenticated()))
   }
 }
 
