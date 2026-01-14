@@ -8,7 +8,6 @@ import fi.oph.koski.koskiuser._
 import fi.oph.koski.schema.Oppija
 import fi.oph.koski.servlet.{KoskiSpecificApiServlet, NoCache, RawJsonResponse}
 import org.json4s.JValue
-import org.scalatra.auth.strategy.BasicAuthStrategy.BasicAuthRequest
 
 class MigriServlet(implicit val application: KoskiApplication) extends KoskiSpecificApiServlet with RequiresMigri with NoCache {
   lazy val migriService =
@@ -83,8 +82,8 @@ class MigriServlet(implicit val application: KoskiApplication) extends KoskiSpec
       val password = secretsManager.getPlainSecret("luovutuspalvelu-v2-migripk")
       MigriCredentials("migripk", password)
     } else {
-      val basicAuthRequest = new BasicAuthRequest(request)
-      MigriCredentials(basicAuthRequest.username, basicAuthRequest.password)
+      // In mock environment, use the username from the certificate-authenticated session
+      MigriCredentials(koskiSession.user.username, koskiSession.user.username)
     }
   }
 

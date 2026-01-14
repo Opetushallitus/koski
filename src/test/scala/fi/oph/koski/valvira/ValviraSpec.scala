@@ -6,7 +6,6 @@ import fi.oph.koski.documentation.AmmatillinenExampleData
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.json.JsonSerializer
-import fi.oph.koski.koskiuser.{MockUsers, UserWithPassword}
 import fi.oph.koski.log.{AccessLogTester, AuditLogTester}
 import org.scalatest.BeforeAndAfterAll
 import org.scalatest.freespec.AnyFreeSpec
@@ -15,6 +14,20 @@ import org.scalatest.matchers.should.Matchers
 import java.time.LocalDate
 
 class ValviraSpec extends AnyFreeSpec with KoskiHttpSpec with OpiskeluoikeusTestMethodsAmmatillinen with Matchers with BeforeAndAfterAll {
+
+  private val valviraCertificateHeaders: Headers = Map(
+    "x-amzn-mtls-clientcert-subject" -> "CN=valvira",
+    "x-amzn-mtls-clientcert-serial-number" -> "123",
+    "x-amzn-mtls-clientcert-issuer" -> "CN=mock-issuer",
+    "X-Forwarded-For" -> "0.0.0.0"
+  )
+
+  private val migriCertificateHeaders: Headers = Map(
+    "x-amzn-mtls-clientcert-subject" -> "CN=migri",
+    "x-amzn-mtls-clientcert-serial-number" -> "123",
+    "x-amzn-mtls-clientcert-issuer" -> "CN=mock-issuer",
+    "X-Forwarded-For" -> "0.0.0.0"
+  )
 
   "ValviraSpec" - {
     "Yhdistää datat taulun sarakkeista jsoniin" - {
@@ -30,7 +43,7 @@ class ValviraSpec extends AnyFreeSpec with KoskiHttpSpec with OpiskeluoikeusTest
       }
     }
     "Kutsuminen vaatii VALVIRA-käyttöoikeuden" in {
-      getHetu(KoskiSpecificMockOppijat.amis.hetu.get, user = MockUsers.migriKäyttäjä) {
+      getHetuWithHeaders(KoskiSpecificMockOppijat.amis.hetu.get, migriCertificateHeaders) {
         verifyResponseStatus(403, KoskiErrorCategory.forbidden())
       }
     }
@@ -89,11 +102,15 @@ class ValviraSpec extends AnyFreeSpec with KoskiHttpSpec with OpiskeluoikeusTest
     }
   }
 
-  def getHetu[A](hetu: String, user: UserWithPassword = MockUsers.valviraKäyttäjä)(f: => A)= {
-    authGet(s"api/luovutuspalvelu/valvira/$hetu", user)(f)
+  def getHetu[A](hetu: String)(f: => A) = {
+    get(s"api/luovutuspalvelu/valvira/$hetu", headers = valviraCertificateHeaders)(f)
   }
 
-  def parseValviraOppija= {
+  def getHetuWithHeaders[A](hetu: String, headers: Headers)(f: => A) = {
+    get(s"api/luovutuspalvelu/valvira/$hetu", headers = headers)(f)
+  }
+
+  def parseValviraOppija = {
     verifyResponseStatusOk()
     JsonSerializer.parse[ValviraOppija](body)
   }

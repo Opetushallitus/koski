@@ -7,7 +7,7 @@ import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.history.OpiskeluoikeusHistoryPatch
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.json.JsonSerializer
-import fi.oph.koski.koskiuser.{MockUser, MockUsers}
+import fi.oph.koski.koskiuser.MockUsers
 import fi.oph.koski.log.{AccessLogTester, AuditLogTester}
 import fi.oph.koski.organisaatio.MockOrganisaatiot.{EuropeanSchoolOfHelsinki, MuuKuinSäänneltyKoulutusToimija}
 import fi.oph.koski.schema.LocalizedString.finnish
@@ -28,6 +28,20 @@ class KelaSpec
     with Matchers
     with BeforeAndAfterAll
     with BeforeAndAfterEach {
+
+  private val kelaCertificateHeaders: Headers = Map(
+    "x-amzn-mtls-clientcert-subject" -> "CN=kela",
+    "x-amzn-mtls-clientcert-serial-number" -> "123",
+    "x-amzn-mtls-clientcert-issuer" -> "CN=mock-issuer",
+    "X-Forwarded-For" -> "0.0.0.0"
+  )
+
+  private val kelaSuppeatCertificateHeaders: Headers = Map(
+    "x-amzn-mtls-clientcert-subject" -> "CN=kela-suppeat",
+    "x-amzn-mtls-clientcert-serial-number" -> "123",
+    "x-amzn-mtls-clientcert-issuer" -> "CN=mock-issuer",
+    "X-Forwarded-For" -> "0.0.0.0"
+  )
 
   override def afterEach(): Unit = {
     super.afterEach()
@@ -62,7 +76,7 @@ class KelaSpec
       }
     }
     "Palauttaa TUVA opiskeluoikeuden tiedot" in {
-      postHetu(KoskiSpecificMockOppijat.tuva.hetu.get, user = MockUsers.kelaLaajatOikeudet) {
+      postHetu(KoskiSpecificMockOppijat.tuva.hetu.get) {
         verifyResponseStatusOk()
         val oppija = JsonSerializer.parse[KelaOppija](body)
         oppija.opiskeluoikeudet.length should be(1)
@@ -83,7 +97,7 @@ class KelaSpec
     }
 
     "Palauttaa VST lukutaitokoulutuksen tiedot" in {
-      postHetu(KoskiSpecificMockOppijat.vapaaSivistystyöLukutaitoKoulutus.hetu.get, user = MockUsers.kelaLaajatOikeudet) {
+      postHetu(KoskiSpecificMockOppijat.vapaaSivistystyöLukutaitoKoulutus.hetu.get) {
         verifyResponseStatusOk()
         val oppija = JsonSerializer.parse[KelaOppija](body)
 
@@ -97,7 +111,7 @@ class KelaSpec
 
     "Palauttaa oppijan, jolla pelkkä YO-opiskeluoikeus, tiedot" in {
       val pelkkäYo = KoskiSpecificMockOppijat.ylioppilas
-      postHetu(pelkkäYo.hetu.get, user = MockUsers.kelaLaajatOikeudet) {
+      postHetu(pelkkäYo.hetu.get) {
         verifyResponseStatusOk()
         val oppija = JsonSerializer.parse[KelaOppija](body)
         oppija.opiskeluoikeudet.length should be(1)
@@ -110,7 +124,7 @@ class KelaSpec
     }
 
     "Palauttaa TUVA-perusopetuksen erityisen tuen jaksot" in {
-      postHetu(KoskiSpecificMockOppijat.tuvaPerus.hetu.get, user = MockUsers.kelaLaajatOikeudet) {
+      postHetu(KoskiSpecificMockOppijat.tuvaPerus.hetu.get) {
         verifyResponseStatusOk()
         val oppija = JsonSerializer.parse[KelaOppija](body)
         oppija.opiskeluoikeudet.length should be(1)
@@ -124,7 +138,7 @@ class KelaSpec
     }
 
     "Palauttaa perusopetuksen erityisen tuen jaksot" in {
-      postHetu(KoskiSpecificMockOppijat.kelaErityyppisiaOpiskeluoikeuksia.hetu.get, user = MockUsers.kelaLaajatOikeudet) {
+      postHetu(KoskiSpecificMockOppijat.kelaErityyppisiaOpiskeluoikeuksia.hetu.get) {
         verifyResponseStatusOk()
         val oppija = JsonSerializer.parse[KelaOppija](body)
 
@@ -138,7 +152,7 @@ class KelaSpec
     }
 
     "Palauttaa tiedon 'täydentääTutkintoa' kun kyseessä on Muu ammatillinen koulutus" in {
-      postHetu(KoskiSpecificMockOppijat.muuAmmatillinen.hetu.get, user = MockUsers.kelaLaajatOikeudet) {
+      postHetu(KoskiSpecificMockOppijat.muuAmmatillinen.hetu.get) {
         verifyResponseStatusOk()
         val oppija = JsonSerializer.parse[KelaOppija](body)
         oppija.opiskeluoikeudet.length.shouldBe(1)
@@ -150,7 +164,7 @@ class KelaSpec
     }
 
     "Palauttaa tiedot 'tutkinto' ja 'päättymispäivä' kun kyseessä on Näyttötutkintoon valmistava" in {
-      postHetu(KoskiSpecificMockOppijat.erikoisammattitutkinto.hetu.get, user = MockUsers.kelaLaajatOikeudet) {
+      postHetu(KoskiSpecificMockOppijat.erikoisammattitutkinto.hetu.get) {
         verifyResponseStatusOk()
         val oppija = JsonSerializer.parse[KelaOppija](body)
         oppija.opiskeluoikeudet.length.shouldBe(1)
@@ -163,7 +177,7 @@ class KelaSpec
     }
 
     "Palauttaa tiedon oppisopimuksen purkamisesta" in {
-      postHetu(KoskiSpecificMockOppijat.reformitutkinto.hetu.get, user = MockUsers.kelaLaajatOikeudet) {
+      postHetu(KoskiSpecificMockOppijat.reformitutkinto.hetu.get) {
         verifyResponseStatusOk()
         val oppija = JsonSerializer.parse[KelaOppija](body)
         oppija.opiskeluoikeudet.length.shouldBe(1)
@@ -180,7 +194,7 @@ class KelaSpec
 
     "Palauttaa vaativan erityisen tuen yhteydessä järjestettävä majoitus -tiedon" - {
       "Kelan laajoilla oikeksilla" in {
-        postHetu(KoskiSpecificMockOppijat.amis.hetu.get, user = MockUsers.kelaLaajatOikeudet) {
+        postHetu(KoskiSpecificMockOppijat.amis.hetu.get) {
           verifyResponseStatusOk()
           val oppija = JsonSerializer.parse[KelaOppija](body)
           oppija.opiskeluoikeudet.length.shouldBe(1)
@@ -192,7 +206,7 @@ class KelaSpec
       }
 
       "Kelan suppeilla oikeksilla" in {
-        postHetu(KoskiSpecificMockOppijat.amis.hetu.get, user = MockUsers.kelaSuppeatOikeudet) {
+        postHetu(KoskiSpecificMockOppijat.amis.hetu.get, useSuppeatOikeudet = true) {
           verifyResponseStatusOk()
           val oppija = JsonSerializer.parse[KelaOppija](body)
           oppija.opiskeluoikeudet.length.shouldBe(1)
@@ -205,7 +219,7 @@ class KelaSpec
     }
 
     "Ei palauta mitätöityä opiskeluoikeutta" in {
-      postHetu(KoskiSpecificMockOppijat.lukiolainen.hetu.get, user = MockUsers.kelaLaajatOikeudet) {
+      postHetu(KoskiSpecificMockOppijat.lukiolainen.hetu.get) {
         verifyResponseStatusOk()
         val oppija = JsonSerializer.parse[KelaOppija](body)
         oppija.opiskeluoikeudet.length should be(2)
@@ -213,7 +227,7 @@ class KelaSpec
     }
 
     "Palauttaa rikkinäisen opiskeluoikeuden" in {
-      postHetu(KoskiSpecificMockOppijat.kelaRikkinäinenOpiskeluoikeus.hetu.get, user = MockUsers.kelaLaajatOikeudet) {
+      postHetu(KoskiSpecificMockOppijat.kelaRikkinäinenOpiskeluoikeus.hetu.get) {
         verifyResponseStatusOk()
         val oppija = JsonSerializer.parse[KelaOppija](body)
         oppija.opiskeluoikeudet.length should be(1)
@@ -251,7 +265,7 @@ class KelaSpec
       }
     }
     "Palauttaa koulutusvientitiedon" in {
-      postHetu(KoskiSpecificMockOppijat.amisKoulutusvienti.hetu.get, user = MockUsers.kelaLaajatOikeudet) {
+      postHetu(KoskiSpecificMockOppijat.amisKoulutusvienti.hetu.get) {
         verifyResponseStatusOk()
         val oppija = JsonSerializer.parse[KelaOppija](body)
         val lisätiedot = oppija.opiskeluoikeudet.head.lisätiedot.get.asInstanceOf[KelaAmmatillisenOpiskeluoikeudenLisätiedot]
@@ -259,7 +273,7 @@ class KelaSpec
       }
     }
     "Palauttaa näytön arviointipäivän" in {
-      postHetu(KoskiSpecificMockOppijat.ammatillisenOsittainenRapsa.hetu.get, user = MockUsers.kelaLaajatOikeudet) {
+      postHetu(KoskiSpecificMockOppijat.ammatillisenOsittainenRapsa.hetu.get) {
         verifyResponseStatusOk()
         val oppija = JsonSerializer.parse[KelaOppija](body)
         val suoritus = oppija.opiskeluoikeudet.head.suoritukset.head.asInstanceOf[KelaAmmatillinenPäätasonSuoritus]
@@ -268,7 +282,7 @@ class KelaSpec
       }
     }
     "Palauttaa IB:n predicted grade -arvioinnin" in {
-      postHetu(KoskiSpecificMockOppijat.ibPredicted.hetu.get, user = MockUsers.kelaLaajatOikeudet) {
+      postHetu(KoskiSpecificMockOppijat.ibPredicted.hetu.get) {
         verifyResponseStatusOk()
         val oppija = JsonSerializer.parse[KelaOppija](body)
         val suoritus = oppija.opiskeluoikeudet.head.suoritukset
@@ -279,7 +293,7 @@ class KelaSpec
       }
     }
     "Palauttaa IB:n extendEssayn koulutusmoduulissa oppiaineen tiedot" in {
-      postHetu(KoskiSpecificMockOppijat.ibFinal.hetu.get, user = MockUsers.kelaLaajatOikeudet) {
+      postHetu(KoskiSpecificMockOppijat.ibFinal.hetu.get) {
         verifyResponseStatusOk()
         val oppija = JsonSerializer.parse[KelaOppija](body)
         val suoritus = oppija.opiskeluoikeudet.head.suoritukset
@@ -301,7 +315,7 @@ class KelaSpec
         verifyResponseStatusOk()
       }
 
-      postHetu(KoskiSpecificMockOppijat.eiKoskessa.hetu.get, user = MockUsers.kelaLaajatOikeudet) {
+      postHetu(KoskiSpecificMockOppijat.eiKoskessa.hetu.get) {
         verifyResponseStatusOk()
         val oppija = JsonSerializer.parse[KelaOppija](body)
         val suoritus = oppija.opiskeluoikeudet.head.suoritukset
@@ -337,7 +351,7 @@ class KelaSpec
       }
     }
     "Palauttaa Pre-IB 2015 suorituksen osasuoritukset" in {
-      postHetu(KoskiSpecificMockOppijat.ibFinal.hetu.get, user = MockUsers.kelaLaajatOikeudet) {
+      postHetu(KoskiSpecificMockOppijat.ibFinal.hetu.get) {
         verifyResponseStatusOk()
         val oppija = JsonSerializer.parse[KelaOppija](body)
         val suoritus = oppija.opiskeluoikeudet.head.suoritukset
@@ -352,7 +366,7 @@ class KelaSpec
       }
     }
     "Palauttaa Pre-IB 2019 suorituksen osasuoritukset" in {
-      postHetu(KoskiSpecificMockOppijat.ibPreIB2019.hetu.get, user = MockUsers.kelaLaajatOikeudet) {
+      postHetu(KoskiSpecificMockOppijat.ibPreIB2019.hetu.get) {
         verifyResponseStatusOk()
         val oppija = JsonSerializer.parse[KelaOppija](body)
         val suoritus = oppija.opiskeluoikeudet.head.suoritukset
@@ -410,7 +424,7 @@ class KelaSpec
       }
     }
     "Palauttaa TUVA opiskeluoikeuden tiedot" in {
-      postHetut(List(KoskiSpecificMockOppijat.tuvaPerus.hetu.get), user = MockUsers.kelaLaajatOikeudet) {
+      postHetut(List(KoskiSpecificMockOppijat.tuvaPerus.hetu.get)) {
         verifyResponseStatusOk()
         val oppija = JsonSerializer.parse[List[KelaOppija]](body).head
         oppija.opiskeluoikeudet.length should be(1)
@@ -430,7 +444,7 @@ class KelaSpec
       }
     }
     "Palauttaa rikkinäisen opiskeluoikeuden" in {
-      postHetut(List(KoskiSpecificMockOppijat.kelaRikkinäinenOpiskeluoikeus.hetu.get), user = MockUsers.kelaLaajatOikeudet) {
+      postHetut(List(KoskiSpecificMockOppijat.kelaRikkinäinenOpiskeluoikeus.hetu.get)) {
         verifyResponseStatusOk()
         val oppija = JsonSerializer.parse[List[KelaOppija]](body).head
         oppija.opiskeluoikeudet.length should be(1)
@@ -451,7 +465,7 @@ class KelaSpec
 
   "Kelan käyttöoikeudet" - {
     "Suppeilla Kelan käyttöoikeuksilla ei näe kaikkia lisätietoja" in {
-      postHetu(KoskiSpecificMockOppijat.amis.hetu.get, user = MockUsers.kelaSuppeatOikeudet) {
+      postHetu(KoskiSpecificMockOppijat.amis.hetu.get, useSuppeatOikeudet = true) {
         verifyResponseStatusOk()
         val opiskeluoikeudet = JsonSerializer.parse[KelaOppija](body).opiskeluoikeudet
         val lisatiedot = opiskeluoikeudet.head.lisätiedot.get match {
@@ -466,7 +480,7 @@ class KelaSpec
     "Suppeilla Kelan käyttöoikeuksilla ei näe kaikkia lisätietoja historian kautta" in {
       val ooOid = lastOpiskeluoikeusByHetu(KoskiSpecificMockOppijat.amis).oid.get
 
-      val ooVersio = getOpiskeluoikeudenVersio(ooOid, 1, user = MockUsers.kelaSuppeatOikeudet) {
+      val ooVersio = getOpiskeluoikeudenVersio(ooOid, 1, useSuppeatOikeudet = true) {
         verifyResponseStatusOk()
         JsonSerializer.parse[KelaOppija](body)
       }
@@ -481,7 +495,7 @@ class KelaSpec
     }
 
     "Laajoilla Kelan käyttöoikeuksilla näkee kaikki KelaSchema:n lisätiedot" in {
-      postHetu(KoskiSpecificMockOppijat.amis.hetu.get, user = MockUsers.kelaLaajatOikeudet) {
+      postHetu(KoskiSpecificMockOppijat.amis.hetu.get) {
         verifyResponseStatusOk()
         val opiskeluoikeudet = JsonSerializer.parse[KelaOppija](body).opiskeluoikeudet
         val lisatiedot = opiskeluoikeudet.head.lisätiedot.get match {
@@ -494,8 +508,8 @@ class KelaSpec
       }
     }
     "Osasuorituksen yksilöllistetty oppimäärä" - {
-      def verify(user: MockUser, yksilöllistettyOppimääräShouldShow: Boolean): Unit = {
-        postHetu(KoskiSpecificMockOppijat.koululainen.hetu.get, user = user) {
+      def verify(useSuppeatOikeudet: Boolean, yksilöllistettyOppimääräShouldShow: Boolean): Unit = {
+        postHetu(KoskiSpecificMockOppijat.koululainen.hetu.get, useSuppeatOikeudet = useSuppeatOikeudet) {
           verifyResponseStatusOk()
           val opiskeluoikeudet = JsonSerializer.parse[KelaOppija](body).opiskeluoikeudet
           val osasuoritukset = opiskeluoikeudet.flatMap(_.suoritukset.flatMap(_.osasuoritukset)).flatten.flatMap {
@@ -506,15 +520,15 @@ class KelaSpec
         }
       }
       "Näkyy laajoilla käyttöoikeuksilla" in {
-        verify(MockUsers.kelaLaajatOikeudet, yksilöllistettyOppimääräShouldShow = true)
+        verify(useSuppeatOikeudet = false, yksilöllistettyOppimääräShouldShow = true)
       }
       "Ei näy suppeilla käyttöoikeuksilla" in {
-        verify(MockUsers.kelaSuppeatOikeudet, yksilöllistettyOppimääräShouldShow = false)
+        verify(useSuppeatOikeudet = true, yksilöllistettyOppimääräShouldShow = false)
       }
     }
     "Osasuoritusten lisätiedot" - {
       "Ei näy suppeilla käyttöoikeuksilla" in {
-        postHetu(KoskiSpecificMockOppijat.ammattilainen.hetu.get, MockUsers.kelaSuppeatOikeudet) {
+        postHetu(KoskiSpecificMockOppijat.ammattilainen.hetu.get, useSuppeatOikeudet = true) {
           verifyResponseStatusOk()
           val opiskeluoikeudet = JsonSerializer.parse[KelaOppija](body).opiskeluoikeudet
           val osasuoritukset = opiskeluoikeudet.flatMap(_.suoritukset.flatMap(_.osasuoritukset)).flatten.map{
@@ -524,7 +538,7 @@ class KelaSpec
         }
       }
       "Näkyy laajoilla käyttöoikeuksilla vain jos lisätietojen tunnisteen koodiarvo on 'mukautettu'" in {
-        postHetu(KoskiSpecificMockOppijat.ammattilainen.hetu.get, MockUsers.kelaLaajatOikeudet) {
+        postHetu(KoskiSpecificMockOppijat.ammattilainen.hetu.get) {
           verifyResponseStatusOk()
           val opiskeluoikeudet = JsonSerializer.parse[KelaOppija](body).opiskeluoikeudet
           val osasuoritukset = opiskeluoikeudet.flatMap(_.suoritukset.flatMap(_.osasuoritukset)).flatten.map{
@@ -554,7 +568,7 @@ class KelaSpec
 
     kaikkiHetut
       .foreach(hetu => {
-        postHetu(hetu, user = MockUsers.kelaLaajatOikeudet) {
+        postHetu(hetu) {
           if (response.status == 200) {
             val oppija = JsonSerializer.parse[KelaOppija](body)
             withClue(s"${hetu} ${oppija.henkilö.sukunimi} ${oppija.henkilö.etunimet} ${oppija.opiskeluoikeudet.map(_.tyyppi.koodiarvo).mkString(",")}") {
@@ -689,7 +703,7 @@ class KelaSpec
         kaikkiHetut
           .foreach(hetu => {
             withClue(s"${hetu}") {
-              val oppija = postHetu(hetu, user = MockUsers.kelaLaajatOikeudet) {
+              val oppija = postHetu(hetu) {
                 if (response.status == 200) {
                   Some(JsonSerializer.parse[KelaOppija](body))
                 } else {
@@ -743,7 +757,7 @@ class KelaSpec
 
                     val ooHistorianKautta = oppijaHistorianKautta.opiskeluoikeudet(0)
 
-                    val oo = postHetu(oppijaHistorianKautta.henkilö.hetu.get, user = MockUsers.kelaLaajatOikeudet) {
+                    val oo = postHetu(oppijaHistorianKautta.henkilö.hetu.get) {
                       verifyResponseStatusOk()
                       JsonSerializer.parse[KelaOppija](body)
                     }
@@ -776,7 +790,7 @@ class KelaSpec
   }
 
   "Palauttaa muun kuin säännellyn koulutuksen opiskeluoikeuden" in {
-    postHetu(KoskiSpecificMockOppijat.jotpaMuuKuinSäänneltySuoritettu.hetu.get, user = MockUsers.kelaLaajatOikeudet) {
+    postHetu(KoskiSpecificMockOppijat.jotpaMuuKuinSäänneltySuoritettu.hetu.get) {
       verifyResponseStatusOk()
 
       val oppija = JsonSerializer.parse[KelaOppija](body)
@@ -828,7 +842,7 @@ class KelaSpec
   }
 
   "Palauttaa European School of Helsinki -opiskeluoikeuden" in {
-    postHetu(KoskiSpecificMockOppijat.europeanSchoolOfHelsinki.hetu.get, user = MockUsers.kelaLaajatOikeudet) {
+    postHetu(KoskiSpecificMockOppijat.europeanSchoolOfHelsinki.hetu.get) {
       val oppija = JsonSerializer.parse[KelaOppija](body)
       val eshOpiskeluoikeus = oppija.opiskeluoikeudet.collectFirst { case x: KelaESHOpiskeluoikeus => x }.get
 
@@ -895,7 +909,7 @@ class KelaSpec
   }
 
   "Palauttaa muun vapaan sivistystyön koulutuksen kuin KOTO 2022 opiskeuoikeuden" in {
-    postHetu(KoskiSpecificMockOppijat.vapaaSivistystyöOppivelvollinen.hetu.get, user = MockUsers.kelaLaajatOikeudet) {
+    postHetu(KoskiSpecificMockOppijat.vapaaSivistystyöOppivelvollinen.hetu.get) {
       verifyResponseStatusOk()
       val oppija = JsonSerializer.parse[KelaOppija](body)
       oppija.opiskeluoikeudet.length should be(1)
@@ -903,7 +917,7 @@ class KelaSpec
   }
 
   "Palauttaa VST KOTO 2022 opiskeluoikeus" in {
-    postHetu(KoskiSpecificMockOppijat.vstKoto2022Suorittanut.hetu.get, user = MockUsers.kelaLaajatOikeudet) {
+    postHetu(KoskiSpecificMockOppijat.vstKoto2022Suorittanut.hetu.get) {
       verifyResponseStatusOk()
 
       val oppija = JsonSerializer.parse[KelaOppija](body)
@@ -931,7 +945,7 @@ class KelaSpec
   }
 
   "Palauttaa lukio-opintoihin liittyvät rahoitustiedot, puhvit yms, ilman tarkkoja arvosanoja" in {
-    postHetu(KoskiSpecificMockOppijat.uusiLukio.hetu.get, user = MockUsers.kelaLaajatOikeudet) {
+    postHetu(KoskiSpecificMockOppijat.uusiLukio.hetu.get) {
       verifyResponseStatusOk()
 
       val oppija = JsonSerializer.parse[KelaOppija](body)
@@ -971,7 +985,7 @@ class KelaSpec
   }
 
   "Palauttaa rahoitustiedon international schoolin -tutkinnolle" in {
-    postHetu(KoskiSpecificMockOppijat.internationalschool.hetu.get, user = MockUsers.kelaLaajatOikeudet) {
+    postHetu(KoskiSpecificMockOppijat.internationalschool.hetu.get) {
       verifyResponseStatusOk()
 
       val oppija = JsonSerializer.parse[KelaOppija](body)
@@ -989,7 +1003,7 @@ class KelaSpec
   }
 
   "Palauttaa rahoitustiedon IB -tutkinnolle" in {
-    postHetu(KoskiSpecificMockOppijat.ibFinal.hetu.get, user = MockUsers.kelaLaajatOikeudet) {
+    postHetu(KoskiSpecificMockOppijat.ibFinal.hetu.get) {
       verifyResponseStatusOk()
 
       val oppija = JsonSerializer.parse[KelaOppija](body)
@@ -1007,7 +1021,7 @@ class KelaSpec
   }
 
   "Palauttaa perusopetuksen kentän omanÄidinkielenOpinnot" in {
-    postHetu(KoskiSpecificMockOppijat.ysiluokkalainen.hetu.get, user = MockUsers.kelaLaajatOikeudet) {
+    postHetu(KoskiSpecificMockOppijat.ysiluokkalainen.hetu.get) {
       verifyResponseStatusOk()
 
       val oppija = JsonSerializer.parse[KelaOppija](body)
@@ -1024,7 +1038,7 @@ class KelaSpec
   }
 
   "Palauttaa vst-jotpan opiskeluoikeuden" in {
-    postHetu(KoskiSpecificMockOppijat.vstJotpaKeskenOppija.hetu.get, user = MockUsers.kelaLaajatOikeudet) {
+    postHetu(KoskiSpecificMockOppijat.vstJotpaKeskenOppija.hetu.get) {
       verifyResponseStatusOk()
 
       val oppija = JsonSerializer.parse[KelaOppija](body)
@@ -1040,7 +1054,7 @@ class KelaSpec
   }
 
   "Palauttaa EB-tutkinnon" in {
-    postHetu(KoskiSpecificMockOppijat.europeanSchoolOfHelsinki.hetu.get, user = MockUsers.kelaLaajatOikeudet) {
+    postHetu(KoskiSpecificMockOppijat.europeanSchoolOfHelsinki.hetu.get) {
       verifyResponseStatusOk()
 
       val oppija = JsonSerializer.parse[KelaOppija](body)
@@ -1066,7 +1080,7 @@ class KelaSpec
   }
 
   "Palauttaa ammatillisen tutkinnon osan/osien suorituksen useasta tutkinnosta" in {
-    postHetu(KoskiSpecificMockOppijat.osittainenAmmattitutkintoUseastaTutkinnostaValmis.hetu.get, user = MockUsers.kelaLaajatOikeudet) {
+    postHetu(KoskiSpecificMockOppijat.osittainenAmmattitutkintoUseastaTutkinnostaValmis.hetu.get) {
       verifyResponseStatusOk()
 
       val oppija = JsonSerializer.parse[KelaOppija](body)
@@ -1103,49 +1117,36 @@ class KelaSpec
     }
   }
 
-  private def getHetu[A](hetu: String, user: MockUser = MockUsers.kelaSuppeatOikeudet)(f: => A)= {
-    authGet(s"kela/$hetu", user)(f)
+  private def getHetu[A](hetu: String)(f: => A)= {
+    authGet(s"kela/$hetu", MockUsers.kelaSuppeatOikeudet)(f)
   }
 
-  private def postHetu[A](hetu: String, user: MockUser = MockUsers.kelaLaajatOikeudet)(f: => A): A = {
+  private def postHetu[A](hetu: String, useSuppeatOikeudet: Boolean = false)(f: => A): A = {
     post(
       "api/luovutuspalvelu/kela/hetu",
       JsonSerializer.writeWithRoot(KelaRequest(hetu)),
-      headers = authHeaders(user) ++ jsonContent
+      headers = (if (useSuppeatOikeudet) kelaSuppeatCertificateHeaders else kelaCertificateHeaders) ++ jsonContent
     )(f)
   }
 
-  private def postHetut[A](hetut: List[String], user: MockUser = MockUsers.kelaLaajatOikeudet)(f: => A): A = {
+  private def postHetut[A](hetut: List[String], useSuppeatOikeudet: Boolean = false)(f: => A): A = {
     post(
       "api/luovutuspalvelu/kela/hetut",
       JsonSerializer.writeWithRoot(KelaBulkRequest(hetut)),
-      headers = authHeaders(user) ++ jsonContent
+      headers = (if (useSuppeatOikeudet) kelaSuppeatCertificateHeaders else kelaCertificateHeaders) ++ jsonContent
     )(f)
   }
 
-  private def getVersiohistoriaUI[A](opiskeluoikeudenOid: String, user: MockUser = MockUsers.kelaLaajatOikeudet)(f: => A): A = {
-    authGet(s"api/luovutuspalvelu/kela/versiohistoria-ui/$opiskeluoikeudenOid", user)(f)
-  }
-
-  private def getVersiohistoria[A](opiskeluoikeudenOid: String, user: MockUser = MockUsers.kelaLaajatOikeudet)(f: => A): A = {
-    authGet(s"api/luovutuspalvelu/kela/versiohistoria/$opiskeluoikeudenOid", user)(f)
-  }
-
-  private def getOpiskeluoikeudenVersioUI[A](
-    oppijaOid: String,
-    opiskeluoikeudenOid: String,
-    versio: Int,
-    user: MockUser = MockUsers.kelaLaajatOikeudet
-  )(f: => A): A = {
-    authGet(s"api/luovutuspalvelu/kela/versiohistoria-ui/$oppijaOid/$opiskeluoikeudenOid/$versio", user)(f)
+  private def getVersiohistoria[A](opiskeluoikeudenOid: String)(f: => A): A = {
+    get(s"api/luovutuspalvelu/kela/versiohistoria/$opiskeluoikeudenOid", headers = kelaCertificateHeaders)(f)
   }
 
   private def getOpiskeluoikeudenVersio[A](
     opiskeluoikeudenOid: String,
     versio: Int,
-    user: MockUser = MockUsers.kelaLaajatOikeudet
+    useSuppeatOikeudet: Boolean = false
   )(f: => A): A = {
-    authGet(s"api/luovutuspalvelu/kela/versiohistoria/$opiskeluoikeudenOid/$versio", user)(f)
+    get(s"api/luovutuspalvelu/kela/versiohistoria/$opiskeluoikeudenOid/$versio", headers = if (useSuppeatOikeudet) kelaSuppeatCertificateHeaders else kelaCertificateHeaders)(f)
   }
 
   private def luoVersiohistoriaanRivi(oppija: schema.Henkilö, opiskeluoikeus: schema.AmmatillinenOpiskeluoikeus): Unit = {
