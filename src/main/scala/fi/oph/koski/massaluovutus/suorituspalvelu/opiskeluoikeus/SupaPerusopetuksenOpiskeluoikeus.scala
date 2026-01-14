@@ -96,6 +96,7 @@ case class SupaPerusopetuksenYhdeksännenVuosiluokanSuoritus(
   @KoodistoKoodiarvo("perusopetuksenvuosiluokka")
   tyyppi: Koodistokoodiviite,
   koulutusmoduuli: PerusopetuksenLuokkaAste,
+  luokka: String,
   alkamispäivä: Option[LocalDate],
   vahvistus: Option[SupaVahvistus],
   suorituskieli: Koodistokoodiviite,
@@ -110,6 +111,7 @@ object SupaPerusopetuksenYhdeksännenVuosiluokanSuoritus {
     SupaPerusopetuksenYhdeksännenVuosiluokanSuoritus(
       tyyppi = s.tyyppi,
       koulutusmoduuli = s.koulutusmoduuli,
+      luokka = s.luokka,
       alkamispäivä = s.alkamispäivä,
       vahvistus = s.vahvistus.map(v => SupaVahvistus(v.päivä)),
       suorituskieli = s.suorituskieli,
