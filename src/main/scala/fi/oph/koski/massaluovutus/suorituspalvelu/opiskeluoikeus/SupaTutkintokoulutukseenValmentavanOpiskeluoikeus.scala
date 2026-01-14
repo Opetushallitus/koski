@@ -6,7 +6,6 @@ import fi.oph.scalaschema.annotation.Title
 
 import java.time.{LocalDate, LocalDateTime}
 
-
 @Title("Tutkintokoulutukseen valmentavan koulutuksen opiskeluoikeus")
 case class SupaTutkintokoulutukseenValmentavanOpiskeluoikeus(
   oppijaOid: String,
@@ -48,7 +47,8 @@ case class SupaTutkintokoulutukseenValmentavanKoulutuksenSuoritus(
   tyyppi: Koodistokoodiviite,
   alkamispäivä: Option[LocalDate],
   vahvistus: Option[SupaVahvistus],
-  koulutusmoduuli:  TutkintokoulutukseenValmentavanKoulutus,
+  koulutusmoduuli: TutkintokoulutukseenValmentavanKoulutus,
+  osasuoritukset : Option[List[SupaTutkintokoulutukseenValmentevanKoulutuksenOsasuoritus]]
 ) extends SupaSuoritus with SupaVahvistuksellinen
 
 object SupaTutkintokoulutukseenValmentavanKoulutuksenSuoritus {
@@ -58,5 +58,69 @@ object SupaTutkintokoulutukseenValmentavanKoulutuksenSuoritus {
       alkamispäivä = s.alkamispäivä,
       vahvistus = s.vahvistus.map(v => SupaVahvistus(v.päivä)),
       koulutusmoduuli = s.koulutusmoduuli,
+      osasuoritukset = s.osasuoritukset.map(_.map(SupaTutkintokoulutukseenValmentevanKoulutuksenOsasuoritus.apply)).filter(_.nonEmpty)
+    )
+}
+
+trait SupaTutkintokoulutukseenValmentevanKoulutuksenOsasuoritus extends SupaSuoritus {
+  def arviointi: Option[List[SanallinenTutkintokoulutukseenValmentavanKoulutuksenSuorituksenArviointi]]
+}
+
+object SupaTutkintokoulutukseenValmentevanKoulutuksenOsasuoritus {
+  def apply(os: TutkintokoulutukseenValmentavanKoulutuksenOsanSuoritus): SupaTutkintokoulutukseenValmentevanKoulutuksenOsasuoritus = os match {
+    case os: TutkintokoulutukseenValmentavaKoulutuksenMuunOsanSuoritus => SupaTutkintokoulutukseenValmentavaKoulutuksenMuunOsanSuoritus(os)
+    case os: TutkintokoulutukseenValmentavanKoulutuksenValinnaisenOsanSuoritus => SupaTutkintokoulutukseenValmentavanKoulutuksenValinnaisenOsanSuoritus(os)
+  }
+}
+
+@Title("Tutkintokoulutukseen valmentavan koulutuksen osasuoritus")
+case class SupaTutkintokoulutukseenValmentavaKoulutuksenMuunOsanSuoritus(
+  tyyppi: Koodistokoodiviite,
+  koulutusmoduuli: TutkintokoulutukseenValmentavanKoulutuksenMuuOsa,
+  arviointi: Option[List[SanallinenTutkintokoulutukseenValmentavanKoulutuksenSuorituksenArviointi]]
+) extends SupaTutkintokoulutukseenValmentevanKoulutuksenOsasuoritus
+
+object SupaTutkintokoulutukseenValmentavaKoulutuksenMuunOsanSuoritus {
+  def apply(os: TutkintokoulutukseenValmentavaKoulutuksenMuunOsanSuoritus): SupaTutkintokoulutukseenValmentavaKoulutuksenMuunOsanSuoritus =
+    SupaTutkintokoulutukseenValmentavaKoulutuksenMuunOsanSuoritus (
+      tyyppi = os.tyyppi,
+      koulutusmoduuli =  os.koulutusmoduuli,
+      arviointi = os.arviointi
+    )
+}
+
+@Title("Tutkintokoulutukseen valmentavan koulutuksen valinnaisten opintojen osasuoritus")
+case class SupaTutkintokoulutukseenValmentavanKoulutuksenValinnaisenOsanSuoritus(
+  tyyppi: Koodistokoodiviite,
+  koulutusmoduuli: TutkintokoulutukseenValmentavanKoulutuksenValinnaisenKoulutusosa,
+  arviointi: Option[List[SanallinenTutkintokoulutukseenValmentavanKoulutuksenSuorituksenArviointi]],
+  osasuoritukset: Option[List[SupaTutkintokoulutukseenValmentavanKoulutuksenValinnaisenKoulutusosanOsasuorituksenSuoritus]]
+) extends SupaTutkintokoulutukseenValmentevanKoulutuksenOsasuoritus
+
+object SupaTutkintokoulutukseenValmentavanKoulutuksenValinnaisenOsanSuoritus {
+  def apply(os: TutkintokoulutukseenValmentavanKoulutuksenValinnaisenOsanSuoritus): SupaTutkintokoulutukseenValmentavanKoulutuksenValinnaisenOsanSuoritus =
+    SupaTutkintokoulutukseenValmentavanKoulutuksenValinnaisenOsanSuoritus(
+      tyyppi = os.tyyppi,
+      koulutusmoduuli = os.koulutusmoduuli,
+      arviointi = os.arviointi,
+      osasuoritukset = os.osasuoritukset
+        .map(_.map(SupaTutkintokoulutukseenValmentavanKoulutuksenValinnaisenKoulutusosanOsasuorituksenSuoritus.apply))
+        .filter(_.nonEmpty)
+    )
+}
+
+@Title("Valinnaisten tutkintokoulutukseen valmentavan koulutuksen opintojen osasuoritukset")
+case class SupaTutkintokoulutukseenValmentavanKoulutuksenValinnaisenKoulutusosanOsasuorituksenSuoritus(
+  tyyppi: Koodistokoodiviite,
+  koulutusmoduuli: TutkintokoulutukseenValmentavanKoulutuksenValinnaisenKoulutusosanOsasuoritus,
+  arviointi: Option[List[TutkintokoulutukseenValmentavanKoulutuksenSuorituksenArviointi]]
+) extends SupaSuoritus
+
+object SupaTutkintokoulutukseenValmentavanKoulutuksenValinnaisenKoulutusosanOsasuorituksenSuoritus {
+  def apply(os: TutkintokoulutukseenValmentavanKoulutuksenValinnaisenKoulutusosanOsasuorituksenSuoritus): SupaTutkintokoulutukseenValmentavanKoulutuksenValinnaisenKoulutusosanOsasuorituksenSuoritus =
+    SupaTutkintokoulutukseenValmentavanKoulutuksenValinnaisenKoulutusosanOsasuorituksenSuoritus(
+      tyyppi = os.tyyppi,
+      koulutusmoduuli = os.koulutusmoduuli,
+      arviointi = os.arviointi
     )
 }

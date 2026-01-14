@@ -669,6 +669,33 @@ class MassaluovutusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers wit
           tunnisteetJaOsasuoritustenMäärät("201101") shouldBe Some(23) // Oppimäärän suoritus
         }
 
+        "Tutkintokoulutukseen valmentavan koulutuksen suorituksille palautetaan osasuoritukset ja niiden mahdolliset osasuoritukset" in {
+          val tuvaSuoritukset = getSuoritukset(Some("tuva"))
+          tuvaSuoritukset should not be empty
+
+          // Päätason suorituksilla on osasuorituksia
+          tuvaSuoritukset.foreach { suoritus =>
+            osasuoritustenMäärä(suoritus) should not be None
+          }
+
+          // Valinnaisia osasuorituksia on olemassa
+          val valinnaisetOsasuoritukset = tuvaSuoritukset
+            .flatMap(s => (s \ "osasuoritukset").extractOpt[List[JObject]].getOrElse(Nil))
+            .filter(os => (os \ "koulutusmoduuli" \ "tunniste" \ "koodiarvo").extractOpt[String].contains("104"))
+          valinnaisetOsasuoritukset.nonEmpty shouldBe true
+
+          // Valinnaisilla osasuorituksilla on olemassa aliosasuorituksia
+          valinnaisetOsasuoritukset.foreach(os =>
+            osasuoritustenMäärä(os) should not be None
+          )
+
+          // Muun osan suorituksia on olemassa
+          val muutOsasuoritukset = tuvaSuoritukset
+            .flatMap(s => (s \ "osasuoritukset").extractOpt[List[JObject]].getOrElse(Nil))
+            .filter(os => !(os \ "koulutusmoduuli" \ "tunniste" \ "koodiarvo").extractOpt[String].contains("104"))
+          muutOsasuoritukset.nonEmpty shouldBe true
+        }
+
         "Ammatillisesta koulutuksesta ei palautetaan vain kokonainen ammatillinen tutkinto ja telma" in {
           extractStrings(
             getSuoritukset(Some("ammatillinenkoulutus")),
@@ -957,6 +984,33 @@ class MassaluovutusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers wit
           tunnisteetJaOsasuoritustenMäärät("8") shouldBe None // 8. vuosiluokan suoritus
           tunnisteetJaOsasuoritustenMäärät("9") shouldBe None // 9. vuosiluokan suoritus, voi myös sisältää osasuorituksia
           tunnisteetJaOsasuoritustenMäärät("201101") shouldBe Some(23) // Oppimäärän suoritus
+        }
+
+        "Tutkintokoulutukseen valmentavan koulutuksen suorituksille palautetaan osasuoritukset ja niiden mahdolliset osasuoritukset" in {
+          val tuvaSuoritukset = getSuoritukset(Some("tuva"))
+          tuvaSuoritukset should not be empty
+
+          // Päätason suorituksilla on osasuorituksia
+          tuvaSuoritukset.foreach { suoritus =>
+            osasuoritustenMäärä(suoritus) should not be None
+          }
+
+          // Valinnaisia osasuorituksia on olemassa
+          val valinnaisetOsasuoritukset = tuvaSuoritukset
+            .flatMap(s => (s \ "osasuoritukset").extractOpt[List[JObject]].getOrElse(Nil))
+            .filter(os => (os \ "koulutusmoduuli" \ "tunniste" \ "koodiarvo").extractOpt[String].contains("104"))
+          valinnaisetOsasuoritukset.nonEmpty shouldBe true
+
+          // Valinnaisilla osasuorituksilla on olemassa aliosasuorituksia
+          valinnaisetOsasuoritukset.foreach(os =>
+            osasuoritustenMäärä(os) should not be None
+          )
+
+          // Muun osan suorituksia on olemassa
+          val muutOsasuoritukset = tuvaSuoritukset
+            .flatMap(s => (s \ "osasuoritukset").extractOpt[List[JObject]].getOrElse(Nil))
+            .filter(os => !(os \ "koulutusmoduuli" \ "tunniste" \ "koodiarvo").extractOpt[String].contains("104"))
+          muutOsasuoritukset.nonEmpty shouldBe true
         }
 
         "Ammatillisesta koulutuksesta ei palautetaan vain kokonainen ammatillinen tutkinto ja telma" in {
