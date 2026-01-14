@@ -109,7 +109,7 @@ class YtrDownloadService(
     lazy val statusId = status.init()
     (birthmonthStart, birthmonthEnd, modifiedSince, modifiedSinceLastRun) match {
       case _ if status.latestIsLoading && !force =>
-        logger.error("YTR data already downloading, do nothing")
+        logger.warn("YTR data already downloading, do nothing")
         onEnd()
       case (Some(birthmonthStart), Some(birthmonthEnd), _, _) =>
         startDownloadingUsingMonthInterval(birthmonthStart, birthmonthEnd, scheduler, statusId, onEnd)
