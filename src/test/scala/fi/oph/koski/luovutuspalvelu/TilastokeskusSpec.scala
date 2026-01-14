@@ -20,6 +20,13 @@ import java.time.{LocalDate, ZonedDateTime}
 
 class TilastokeskusSpec extends AnyFreeSpec with KoskiHttpSpec with OpiskeluoikeusTestMethodsAmmatillinen with OpiskeluoikeudenMitätöintiJaPoistoTestMethods with Matchers {
   import fi.oph.koski.util.DateOrdering._
+
+  private val tilastokeskusCertificateHeaders: Headers = Map(
+    "x-amzn-mtls-clientcert-subject" -> "CN=tilastokeskus",
+    "x-amzn-mtls-clientcert-serial-number" -> "123",
+    "x-amzn-mtls-clientcert-issuer" -> "CN=mock-issuer",
+    "X-Forwarded-For" -> "0.0.0.0"
+  )
   "Tilastokeskus-API" - {
     "Hakee oppijoiden tiedot" in {
       val kaikkiOppijat = performQuery()
@@ -53,20 +60,17 @@ class TilastokeskusSpec extends AnyFreeSpec with KoskiHttpSpec with Opiskeluoike
       oppijatPoistonJälkeen.length should be(oppijatEnnenPoistoa.length)
     }
 
-    "Vaatii TILASTOKESKUS-käyttöoikeuden" in {
-      val withoutTilastokeskusAccess = MockUsers.users.filterNot(_.käyttöoikeudet.collect { case k: KäyttöoikeusViranomainen => k }.exists(_.globalPalveluroolit.contains(Palvelurooli("KOSKI", "TILASTOKESKUS"))))
-      withoutTilastokeskusAccess.foreach { user =>
-        authGet("api/luovutuspalvelu/haku?v=1", user) {
-          verifyResponseStatus(403, KoskiErrorCategory.forbidden.vainTilastokeskus())
-        }
+    "Vaatii varmenteen" in {
+      get("api/luovutuspalvelu/haku?v=1") {
+        verifyResponseStatus(401, KoskiErrorCategory.unauthorized.notAuthenticated())
       }
-      authGet("api/luovutuspalvelu/haku?v=1", MockUsers.tilastokeskusKäyttäjä) {
+      get("api/luovutuspalvelu/haku?v=1", headers = tilastokeskusCertificateHeaders) {
         verifyResponseStatusOk()
       }
     }
 
     "TILASTOKESKUS-käyttöoikeus ei toimi muualla" in {
-      post("api/luovutuspalvelu/migri/hetu", JsonSerializer.writeWithRoot(MigriHetuRequest(KoskiSpecificMockOppijat.eero.hetu.get)), headers = authHeaders(MockUsers.tilastokeskusKäyttäjä) ++ jsonContent) {
+      post("api/luovutuspalvelu/migri/hetu", JsonSerializer.writeWithRoot(MigriHetuRequest(KoskiSpecificMockOppijat.eero.hetu.get)), headers = tilastokeskusCertificateHeaders ++ jsonContent) {
         verifyResponseStatus(403, KoskiErrorCategory.forbidden("Käyttäjällä ei ole oikeuksia annetun organisaation tietoihin."))
       }
       authGet ("api/oppija", MockUsers.tilastokeskusKäyttäjä) {
@@ -81,7 +85,7 @@ class TilastokeskusSpec extends AnyFreeSpec with KoskiHttpSpec with Opiskeluoike
     }
 
     "Vaatii versionumeron" in {
-      authGet("api/luovutuspalvelu/haku", MockUsers.tilastokeskusKäyttäjä) {
+      get("api/luovutuspalvelu/haku", headers = tilastokeskusCertificateHeaders) {
         verifyResponseStatus(400, KoskiErrorCategory.badRequest.queryParam("Tuntematon versio"))
       }
     }
@@ -263,7 +267,7 @@ class TilastokeskusSpec extends AnyFreeSpec with KoskiHttpSpec with Opiskeluoike
   }
 
   private def performQuery(query: String = "?v=1") = {
-    authGet(s"api/luovutuspalvelu/haku$query", MockUsers.tilastokeskusKäyttäjä) {
+    get(s"api/luovutuspalvelu/haku$query", headers = tilastokeskusCertificateHeaders) {
       verifyResponseStatusOk()
       JsonSerializer.parse[List[TilastokeskusOppija]](body)
     }

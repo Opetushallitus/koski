@@ -22,6 +22,13 @@ class KehaSDGSpec
     with BeforeAndAfterAll
     with BeforeAndAfterEach {
 
+  private val sdgCertificateHeaders: Headers = Map(
+    "x-amzn-mtls-clientcert-subject" -> "CN=sdg",
+    "x-amzn-mtls-clientcert-serial-number" -> "123",
+    "x-amzn-mtls-clientcert-issuer" -> "CN=mock-issuer",
+    "X-Forwarded-For" -> "0.0.0.0"
+  )
+
   override def afterEach(): Unit = {
     super.afterEach()
     MockYtrClient.reset()
@@ -152,8 +159,7 @@ class KehaSDGSpec
   private def postHetu[A](
     hetu: String,
     osasuorituksetMukaan: Boolean = true,
-    vainVahvistetut: Boolean = false,
-    user: MockUser = MockUsers.kehaSdgKäyttäjä
+    vainVahvistetut: Boolean = false
   )(f: => A): A = {
     val url =
       s"api/luovutuspalvelu/keha/sdg/hetu?osasuoritukset=$osasuorituksetMukaan&vainVahvistetut=$vainVahvistetut"
@@ -161,7 +167,7 @@ class KehaSDGSpec
     post(
       url,
       JsonSerializer.writeWithRoot(KehaSdgRequest(hetu)),
-      headers = authHeaders(user) ++ jsonContent
+      headers = sdgCertificateHeaders ++ jsonContent
     )(f)
   }
 

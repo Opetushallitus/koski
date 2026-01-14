@@ -92,7 +92,9 @@ class OmaDataOAuth2BackendSpec
         codeVerifier = Some(pkce.verifier),
         redirectUri = Some(validRedirectUri)
       ) {
-        verifyResponseStatus(403, KoskiErrorCategory.forbidden.vainOmaDataOAuth2())
+        verifyResponseStatus(403)
+        val result = JsonSerializer.parse[OAuth2ErrorResponse](response.body)
+        result.error should be("invalid_client")
       }
     }
 
@@ -626,7 +628,9 @@ class OmaDataOAuth2BackendSpec
       val token = createAuthorizationAndToken(validKansalainen, pkce)
 
       postResourceServer(token, MockUsers.kalle) {
-        verifyResponseStatus(403, KoskiErrorCategory.forbidden.vainOmaDataOAuth2())
+        verifyResponseStatus(403)
+        val result = JsonSerializer.parse[OAuth2ErrorResponse](response.body)
+        result.error should be("invalid_client")
       }
     }
     "ei voi kutsua, jos liian laaja scope" in {
@@ -1214,7 +1218,7 @@ class OmaDataOAuth2BackendSpec
 
   private def postResourceServer[T](token: String, user: KoskiMockUser = validPalvelukäyttäjä)(f: => T): T = {
     val tokenHeaders = Map("X-Auth" -> s"Bearer ${token}")
-    post(uri = "api/omadata-oauth2/resource-server", headers = authHeaders(user) ++ tokenHeaders)(f)
+    post(uri = "api/omadata-oauth2/resource-server", headers = certificateHeaders(user) ++ tokenHeaders)(f)
   }
 
   private def postResourceServerWithLuovutuspalveluV2Headers[T](token: String)(f: => T): T = {

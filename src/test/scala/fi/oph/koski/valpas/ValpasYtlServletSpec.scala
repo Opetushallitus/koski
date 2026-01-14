@@ -9,7 +9,6 @@ import fi.oph.koski.valpas.log.{ValpasAuditLogMessageField, ValpasOperation}
 import fi.oph.koski.valpas.opiskeluoikeusfixture.{FixtureUtil, ValpasMockOppijat}
 import fi.oph.koski.valpas.opiskeluoikeusrepository.MockValpasRajapäivätService
 import fi.oph.koski.valpas.oppija.ValpasErrorCategory
-import fi.oph.koski.valpas.valpasuser.{ValpasMockUser, ValpasMockUsers}
 import fi.oph.koski.valpas.ytl.YtlMaksuttomuustieto
 import fi.oph.koski.ytl.YtlBulkRequest
 import org.scalatest.BeforeAndAfterEach
@@ -17,6 +16,20 @@ import org.scalatest.BeforeAndAfterEach
 import java.time.LocalDate
 
 class ValpasYtlServletSpec  extends ValpasTestBase with BeforeAndAfterEach {
+  private val valpasYtlCertificateHeaders: Headers = Map(
+    "x-amzn-mtls-clientcert-subject" -> "CN=valpas-ytl",
+    "x-amzn-mtls-clientcert-serial-number" -> "123",
+    "x-amzn-mtls-clientcert-issuer" -> "CN=mock-issuer",
+    "X-Forwarded-For" -> "0.0.0.0"
+  )
+
+  private val valpasNonYtlCertificateHeaders: Headers = Map(
+    "x-amzn-mtls-clientcert-subject" -> "CN=valpas-monta",
+    "x-amzn-mtls-clientcert-serial-number" -> "123",
+    "x-amzn-mtls-clientcert-issuer" -> "CN=mock-issuer",
+    "X-Forwarded-For" -> "0.0.0.0"
+  )
+
   val tarkastelupäivä = LocalDate.of(2021, 12, 1)
 
   override protected def beforeAll(): Unit = {
@@ -309,7 +322,7 @@ class ValpasYtlServletSpec  extends ValpasTestBase with BeforeAndAfterEach {
 
   "Muut käyttäjät" - {
     "Ei salli käyttöä ilman ytl-luovutuspalveluoikeuksia" in {
-      doQuery(user = ValpasMockUsers.valpasMonta) {
+      doQuery(useNonYtlCertificate = true) {
         verifyResponseStatus(403, ValpasErrorCategory.forbidden())
       }
     }
@@ -345,14 +358,15 @@ class ValpasYtlServletSpec  extends ValpasTestBase with BeforeAndAfterEach {
   }
 
   private def doQuery(
-    user: ValpasMockUser = ValpasMockUsers.valpasYtl,
     oidit: Option[List[String]] = None,
     hetut: Option[List[String]] = None,
+    useNonYtlCertificate: Boolean = false,
   )(
     f: => Unit
   ): Unit = {
+    val certHeaders = if (useNonYtlCertificate) valpasNonYtlCertificateHeaders else valpasYtlCertificateHeaders
     val query = JsonSerializer.writeWithRoot(YtlBulkRequest(oidit = oidit, hetut = hetut, opiskeluoikeuksiaMuuttunutJälkeen = None))
-    post("/valpas/api/luovutuspalvelu/ytl/oppijat", body = query, headers = authHeaders(user) ++ jsonContent) {
+    post("/valpas/api/luovutuspalvelu/ytl/oppijat", body = query, headers = certHeaders ++ jsonContent) {
       f
     }
   }
