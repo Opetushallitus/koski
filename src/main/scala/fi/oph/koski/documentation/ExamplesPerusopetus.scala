@@ -73,6 +73,11 @@ object ExamplesPerusopetus {
     )
   )
 
+  lazy val kuudennenLuokanOsaAikainenErityisopetusOpiskeluoikeus = opiskeluoikeus(
+    suoritukset = List(kuudennenLuokanOsaAikainenErityisopetusSuoritus),
+    päättymispäivä = None
+  )
+
   lazy val seiskaTuplattuOpiskeluoikeus: PerusopetuksenOpiskeluoikeus = ysiluokkalaisenOpiskeluoikeus.copy(
     oppilaitos = Some(YleissivistavakoulutusExampleData.kulosaarenAlaAste),
     suoritukset = List(
