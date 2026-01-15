@@ -3,6 +3,7 @@ package fi.oph.koski.massaluovutus
 import fi.oph.koski.api.misc.OpiskeluoikeusTestMethodsAmmatillinen
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api.actionBasedSQLInterpolation
 import fi.oph.koski.db.QueryMethods
+import fi.oph.koski.documentation.ExamplesPerusopetus
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.json.JsonSerializer
@@ -696,7 +697,7 @@ class MassaluovutusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers wit
           muutOsasuoritukset.nonEmpty shouldBe true
         }
 
-        "Ammatillisesta koulutuksesta ei palautetaan vain kokonainen ammatillinen tutkinto ja telma" in {
+        "Ammatillisesta koulutuksesta palautetaan vain kokonainen ammatillinen tutkinto, osittainen ammatillinen tutkinto ja telma" in {
           extractStrings(
             getSuoritukset(Some("ammatillinenkoulutus")),
             tyyppi
@@ -1045,7 +1046,7 @@ class MassaluovutusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers wit
           muutOsasuoritukset.nonEmpty shouldBe true
         }
 
-        "Ammatillisesta koulutuksesta ei palautetaan vain kokonainen ammatillinen tutkinto ja telma" in {
+        "Ammatillisesta koulutuksesta palautetaan vain kokonainen ammatillinen tutkinto, osittainen ammatillinen tutkinto ja telma" in {
           extractStrings(
             getSuoritukset(Some("ammatillinenkoulutus")),
             tyyppi
@@ -1207,6 +1208,19 @@ class MassaluovutusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers wit
         oppijatJaOpiskeluoikeudenTyypit should contain(
           KoskiSpecificMockOppijat.master.oid -> OpiskeluoikeudenTyyppi.perusopetus.koodiarvo
         )
+      }
+
+      "Ei palauta tyhjää listaa oppijoista" in {
+        poistaOppijanOpiskeluoikeusDatat(KoskiSpecificMockOppijat.tero)
+        createOrUpdate(KoskiSpecificMockOppijat.tero, ExamplesPerusopetus.kuudennenLuokanOsaAikainenErityisopetusOpiskeluoikeus)
+
+        val query = getQuery(Seq(KoskiSpecificMockOppijat.tero.oid))
+        val queryId = addQuerySuccessfully(query, user) { response =>
+          response.status should equal(QueryState.pending)
+          response.queryId
+        }
+        val complete = waitForCompletion(queryId, user)
+        complete.files shouldBe empty
       }
 
       "Palauttaa epäonnistuneen kyselyn" in {

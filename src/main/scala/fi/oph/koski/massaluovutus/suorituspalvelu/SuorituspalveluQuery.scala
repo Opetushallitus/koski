@@ -50,7 +50,9 @@ trait SuorituspalveluQuery extends OpetushallituksenMassaluovutusQueryParameters
           None
         }
       }
-      writer.putJson(s"$index", supaResponses)
+      if (supaResponses.nonEmpty) {
+        writer.putJson(s"$index", supaResponses)
+      }
     }
     Right(())
   }
