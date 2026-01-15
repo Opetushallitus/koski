@@ -21,7 +21,7 @@ const PROXY_PORT = process.env.PROXY_PORT || 7022
 const KOSKI_BACKEND = process.env.KOSKI_BACKEND || 'http://localhost:7021'
 
 // Paths to test certificates (lives under server/testca)
-const CERT_BASE = path.resolve(__dirname, '../testca')
+const CERT_BASE = path.resolve(__dirname, '../server/testca')
 
 const HEALTHCHECK_PORT = process.env.HEALTHCHECK_PORT || 7023
 
@@ -39,7 +39,6 @@ const server = https.createServer(serverOptions, (req, res) => {
 
   // Build headers to forward
   const headers = { ...req.headers }
-  delete headers.host // Don't forward original host
 
   // Add ALB-style mTLS headers if client cert is present
   if (clientCert && clientCert.subject) {
