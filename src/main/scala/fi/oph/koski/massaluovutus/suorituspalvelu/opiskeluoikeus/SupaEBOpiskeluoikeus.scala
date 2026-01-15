@@ -67,7 +67,7 @@ case class SupaEBTutkinnonOsasuoritus(
   @KoodistoKoodiarvo("ebtutkinnonosasuoritus")
   tyyppi: Koodistokoodiviite,
   koulutusmoduuli: SecondaryOppiaine,
-  osasuoritukset: Option[List[SupaEBOppiaineenFinalAlaosasuoritus]],
+  osasuoritukset: Option[List[SupaEBOppiaineenAlaosasuoritus]],
 ) extends SupaSuoritus
 
 object SupaEBTutkinnonOsasuoritus {
@@ -75,25 +75,23 @@ object SupaEBTutkinnonOsasuoritus {
     SupaEBTutkinnonOsasuoritus(
       tyyppi = s.tyyppi,
       koulutusmoduuli = s.koulutusmoduuli,
-      osasuoritukset = s.osasuoritukset.map(_.flatMap(os => SupaEBOppiaineenFinalAlaosasuoritus(os))).filter(_.nonEmpty),
+      osasuoritukset = s.osasuoritukset.map(_.map(os => SupaEBOppiaineenAlaosasuoritus(os))).filter(_.nonEmpty),
     )
 }
 
-@Title("EB-oppiaineen Final-alaosasuoritus")
-case class SupaEBOppiaineenFinalAlaosasuoritus(
+@Title("EB-oppiaineen alaosasuoritus")
+case class SupaEBOppiaineenAlaosasuoritus(
   @KoodistoKoodiarvo("ebtutkinnonalaosasuoritus")
   tyyppi: Koodistokoodiviite,
   koulutusmoduuli: EBOppiaineKomponentti,
   arviointi: Option[List[Arviointi]],
 ) extends SupaSuoritus
 
-object SupaEBOppiaineenFinalAlaosasuoritus {
-  def apply(s: EBOppiaineenAlaosasuoritus): Option[SupaEBOppiaineenFinalAlaosasuoritus] =
-    when (s.koulutusmoduuli.tunniste.koodiarvo == "Final") {
-      SupaEBOppiaineenFinalAlaosasuoritus(
-        tyyppi = s.tyyppi,
-        koulutusmoduuli = s.koulutusmoduuli,
-        arviointi = s.arviointi,
-      )
-    }
+object SupaEBOppiaineenAlaosasuoritus {
+  def apply(s: EBOppiaineenAlaosasuoritus): SupaEBOppiaineenAlaosasuoritus =
+    SupaEBOppiaineenAlaosasuoritus(
+      tyyppi = s.tyyppi,
+      koulutusmoduuli = s.koulutusmoduuli,
+      arviointi = s.arviointi,
+    )
 }
