@@ -17,12 +17,16 @@ class MockLuovutuspalveluV2ClientListService extends LuovutuspalveluV2ClientList
       |{"subjectDn":"CN=kela-suppeat", "ips":["0.0.0.0"], "user": "Suppea"},
       |{"subjectDn":"CN=omadataoauth2sample", "ips":["0.0.0.0"], "user": "omadataoauth2sample"},
       |{"subjectDn":"CN=oauth2client", "ips":["0.0.0.0"], "user": "oauth2client"},
+      |{"subjectDn":"CN=oauth2kaikkiclient", "ips":["0.0.0.0"], "user": "oauth2kaikkiclient"},
       |{"subjectDn":"CN=tilastokeskus", "ips":["0.0.0.0"], "user": "Teppo"},
+      |{"subjectDn":"CN=valpas-kela", "ips":["0.0.0.0"], "user": "valpas-kela"},
+      |{"subjectDn":"CN=valpas-helsinki", "ips":["0.0.0.0"], "user": "valpas-helsinki"},
       |{"subjectDn":"CN=valvira", "ips":["0.0.0.0"], "user": "Ville"},
       |{"subjectDn":"CN=ytl", "ips":["0.0.0.0"], "user": "ylermi"},
       |{"subjectDn":"CN=sdg", "ips":["0.0.0.0"], "user": "Saleria"},
       |{"subjectDn":"CN=valpas-ytl", "ips":["0.0.0.0"], "user": "valpas-ytl"},
-      |{"subjectDn":"CN=valpas-monta", "ips":["0.0.0.0"], "user": "valpas-monta"}
+      |{"subjectDn":"CN=valpas-monta", "ips":["0.0.0.0"], "user": "valpas-monta"},
+      |{"subjectDn":"CN=kalle", "ips":["0.0.0.0"], "user": "kalle"}
       |]""".stripMargin
   private val mockClientList = JsonSerializer.parse[List[LuovutuspalveluClient]](mockClientListJson)
   override def getClientList: List[LuovutuspalveluClient] = {

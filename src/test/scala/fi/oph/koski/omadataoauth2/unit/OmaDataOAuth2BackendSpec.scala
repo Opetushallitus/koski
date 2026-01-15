@@ -1214,7 +1214,7 @@ class OmaDataOAuth2BackendSpec
 
   private def postResourceServer[T](token: String, user: KoskiMockUser = validPalvelukäyttäjä)(f: => T): T = {
     val tokenHeaders = Map("X-Auth" -> s"Bearer ${token}")
-    post(uri = "api/omadata-oauth2/resource-server", headers = authHeaders(user) ++ tokenHeaders)(f)
+    post(uri = "api/omadata-oauth2/resource-server", headers = certificateHeaders(user) ++ tokenHeaders)(f)
   }
 
   private def postResourceServerWithLuovutuspalveluV2Headers[T](token: String)(f: => T): T = {

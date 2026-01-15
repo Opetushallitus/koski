@@ -17,6 +17,14 @@ import org.scalatest.BeforeAndAfterEach
 import java.time.LocalDate
 
 class ValpasKelaServletSpec extends ValpasTestBase with BeforeAndAfterEach {
+
+  private def certificateHeaders(user: ValpasMockUser): Headers = Map(
+    "x-amzn-mtls-clientcert-subject" -> s"CN=${user.ldapUser.etunimet}",
+    "x-amzn-mtls-clientcert-serial-number" -> "123",
+    "x-amzn-mtls-clientcert-issuer" -> "CN=mock-issuer",
+    "X-Forwarded-For" -> "0.0.0.0"
+  )
+
   override protected def beforeEach(): Unit = {
     super.beforeEach()
     KoskiApplicationForTests.valpasRajapäivätService.asInstanceOf[MockValpasRajapäivätService]
@@ -516,7 +524,7 @@ class ValpasKelaServletSpec extends ValpasTestBase with BeforeAndAfterEach {
     post(
       "valpas/api/luovutuspalvelu/kela/hetu",
       JsonSerializer.writeWithRoot(ValpasKelaRequest(hetu)),
-      headers = authHeaders(user) ++ jsonContent
+      headers = certificateHeaders(user) ++ jsonContent
     )(f)
   }
 
@@ -524,7 +532,7 @@ class ValpasKelaServletSpec extends ValpasTestBase with BeforeAndAfterEach {
     post(
       "valpas/api/luovutuspalvelu/kela/hetut",
       JsonSerializer.writeWithRoot(ValpasKelaBulkRequest(hetut)),
-      headers = authHeaders(user) ++ jsonContent
+      headers = certificateHeaders(user) ++ jsonContent
     )(f)
   }
 }
