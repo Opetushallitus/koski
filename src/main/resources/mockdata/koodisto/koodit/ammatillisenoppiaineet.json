@@ -1368,6 +1368,28 @@
     "koodiArvo": "VVAI22"
   },
   {
+    "koodiUri": "ammatillisenoppiaineet_vvtk26",
+    "koodiArvo": "VVTK26",
+    "metadata": [
+      {
+        "nimi": "Viestintä ja vuorovaikutus vieraalla kielellä",
+        "lyhytNimi": "Viestintä ja vuorovaikutus vieraalla kielellä",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Kommunikation och interaktion",
+        "lyhytNimi": "Kommunikation och interaktion",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Communication and interaction in foreign tongue",
+        "lyhytNimi": "Communication and interaction in mother tongue",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1
+  },
+  {
     "metadata": [
       {
         "nimi": "Viestintä ja vuorovaikutus äidinkielellä, saame",

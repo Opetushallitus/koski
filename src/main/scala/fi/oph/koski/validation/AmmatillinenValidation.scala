@@ -29,7 +29,9 @@ object AmmatillinenValidation {
           validateTutkinnonUusiinPerusteisiinSiirtyminen(ammatillinen),
           validatePaikallinenMuuAmmatillinenKoulutusRajapäivänJälkeen(config, ammatillinen),
           validateAikajaksotJaTilatVosUudistuksenRajapäivänJälkeen(config, ammatillinen),
-          validateHenkilöstökoulutusVosUudistuksenRajapäivänJälkeen(config, ammatillinen)
+          validateHenkilöstökoulutusVosUudistuksenRajapäivänJälkeen(config, ammatillinen),
+          validateViestintäJaVuorovaikutusOsaAlueetEiValtakunnallisina(ammatillinen),
+          validateViestintäJaVuorovaikutus26KoodiarvotEiSallittuEnnen2026(ammatillinen, config)
         )
       case _ => HttpStatus.ok
     }
@@ -521,5 +523,68 @@ object AmmatillinenValidation {
         KoskiErrorCategory.badRequest.validation.ammatillinen.henkilöstökoulutusRajapäivänJälkeen()
       }
     } else HttpStatus.ok
+  }
+
+  private val viestintäJaVuorovaikutusKielivalinnallaKoodiarvot = Set(
+    "VVTK", "VVTK26", "VVAI", "VVAI22", "VVAI26", "VVVK", "VVVK26"
+  )
+
+  private def validateViestintäJaVuorovaikutusOsaAlueetEiValtakunnallisina(
+    oo: AmmatillinenOpiskeluoikeus
+  ): HttpStatus = {
+    val virheellisetKoodiarvot = oo.suoritukset
+      .flatMap(_.osasuoritukset.getOrElse(List.empty))
+      .flatMap(_.osasuoritusLista)
+      .collect {
+        case s: YhteisenTutkinnonOsanOsaAlueenSuoritus =>
+          s.koulutusmoduuli match {
+            case v: ValtakunnallinenAmmatillisenTutkinnonOsanOsaAlue
+              if viestintäJaVuorovaikutusKielivalinnallaKoodiarvot.contains(v.tunniste.koodiarvo) =>
+              Some(v.tunniste.koodiarvo)
+            case _ => None
+          }
+      }
+      .flatten
+
+    HttpStatus.fold(
+      virheellisetKoodiarvot.map(koodiarvo =>
+        KoskiErrorCategory.badRequest.validation.ammatillinen.viestintäJaVuorovaikutusOsaAlueVäärässäHaarassa(koodiarvo)()
+      )
+    )
+  }
+
+  private val viestintäJaVuorovaikutus26Koodiarvot = Set(
+    "VVTK26", "VVAI26", "VVVK26"
+  )
+
+  private def validateViestintäJaVuorovaikutus26KoodiarvotEiSallittuEnnen2026(
+    oo: AmmatillinenOpiskeluoikeus, config: Config
+  ): HttpStatus = {
+    val rajapäivä = LocalDate.parse(config.getString("validaatiot.ammatillinenViestintäJaVuorovaikutusKoodit26Rajapäivä"))
+    val onAlkamispäiväEnnenRajapäivää = oo.alkamispäivä.exists(_.isBefore(rajapäivä))
+
+    if (!onAlkamispäiväEnnenRajapäivää) {
+      HttpStatus.ok
+    } else {
+      val virheelliset26Koodiarvot = oo.suoritukset
+        .flatMap(_.osasuoritukset.getOrElse(List.empty))
+        .flatMap(_.osasuoritusLista)
+        .collect {
+          case s: YhteisenTutkinnonOsanOsaAlueenSuoritus =>
+            s.koulutusmoduuli match {
+              case v: AmmatillisenTutkinnonViestintäJaVuorovaikutusKielivalinnalla
+                if viestintäJaVuorovaikutus26Koodiarvot.contains(v.tunniste.koodiarvo) =>
+                Some(v.tunniste.koodiarvo)
+              case _ => None
+            }
+        }
+        .flatten
+
+      HttpStatus.fold(
+        virheelliset26Koodiarvot.map(koodiarvo =>
+          KoskiErrorCategory.badRequest.validation.ammatillinen.viestintäJaVuorovaikutus26KoodiarvoEnnenRajapäivää(koodiarvo)()
+        )
+      )
+    }
   }
 }

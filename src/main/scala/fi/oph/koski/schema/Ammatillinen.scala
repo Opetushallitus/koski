@@ -1203,6 +1203,9 @@ case class AmmatillisenTutkinnonViestintäJaVuorovaikutusKielivalinnalla(
   @KoodistoKoodiarvo("VVTK")
   @KoodistoKoodiarvo("VVAI")
   @KoodistoKoodiarvo("VVAI22")
+  @KoodistoKoodiarvo("VVAI26")
+  @KoodistoKoodiarvo("VVTK26")
+  @KoodistoKoodiarvo("VVVK26")
   @KoodistoKoodiarvo("VVVK")
   @KoodistoUri("ammatillisenoppiaineet")
   tunniste: Koodistokoodiviite,
