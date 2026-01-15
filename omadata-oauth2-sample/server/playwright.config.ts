@@ -83,7 +83,7 @@ export default defineConfig({
   /* Run your local dev server before starting the tests */
   webServer: [
     {
-      command: `KOSKI_BACKEND=http://localhost:${process.env.KOSKI_BACKEND_PORT || "7021"} pnpm run start:alb-proxy`,
+      command: `KOSKI_BACKEND_HOST=http://localhost:${process.env.KOSKI_BACKEND_PORT || "7021"} pnpm run start:alb-proxy`,
       url: "http://localhost:7023/healthcheck",
       reuseExistingServer: !process.env.CI,
       stdout: "pipe",

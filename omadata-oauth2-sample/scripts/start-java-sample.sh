@@ -3,7 +3,7 @@ set -euo pipefail
 
 ROOT_DIR="$(cd "$(dirname "$0")/.." && pwd)"
 backend_host="${KOSKI_BACKEND_HOST:-http://$(node "$ROOT_DIR/scripts/getmyip.js"):7021}"
-cert_base="$ROOT_DIR/testca"
+cert_base="$ROOT_DIR/server/testca"
 
 # Prefer Java 23 (required for --release 21), fall back to existing JAVA_HOME or system default
 if [ -n "${JAVA_HOME_23_X64:-}" ]; then
@@ -22,7 +22,7 @@ if [ -z "$JAVA_MAJOR" ] || [ "$JAVA_MAJOR" -lt 21 ]; then
   exit 1
 fi
 
-cd "$ROOT_DIR/../java"
+cd "$ROOT_DIR/java"
 JOD_KOSKI_CLIENT_CERT="${JOD_KOSKI_CLIENT_CERT:-$cert_base/certs/client.crt}" \
 JOD_KOSKI_CLIENT_KEY="${JOD_KOSKI_CLIENT_KEY:-$cert_base/private/client.key}" \
 JOD_KOSKI_SERVER_CERT="${JOD_KOSKI_SERVER_CERT:-$cert_base/certs/root-ca.crt}" \

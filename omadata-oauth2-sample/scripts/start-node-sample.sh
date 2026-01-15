@@ -12,7 +12,7 @@ export KOSKI_BACKEND_HOST="$backend_host"
 export RESOURCE_ENDPOINT_URL="$resource_endpoint_url"
 export CLIENT_ID="$client_id"
 export ENABLE_LOCAL_MTLS="${ENABLE_LOCAL_MTLS:-true}"
-export NODE_EXTRA_CA_CERTS="$ROOT_DIR/testca/certs/root-ca.crt"
+export NODE_EXTRA_CA_CERTS="$ROOT_DIR/server/testca/certs/root-ca.crt"
 
-cd "$ROOT_DIR"
+cd "$ROOT_DIR/server"
 tsx watch --clear-screen=false src/index.ts
