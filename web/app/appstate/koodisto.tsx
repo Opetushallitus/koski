@@ -227,6 +227,13 @@ class KoodistoLoader {
           )
 
           this.koodistot = { ...this.koodistot, ...k }
+        }),
+        E.mapLeft((error) => {
+          console.error('Koodistojen haku epäonnistui:', error)
+          // Poistetaan Loading-tila epäonnistuneilta koodistoilta
+          unfetchedKoodistoUris.forEach((uri) => {
+            delete this.koodistot[uri]
+          })
         })
       )
       return true
