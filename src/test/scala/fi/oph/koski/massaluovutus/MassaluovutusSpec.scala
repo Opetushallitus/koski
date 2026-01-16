@@ -629,6 +629,9 @@ class MassaluovutusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers wit
             "ebtutkinto",
             "ibtutkinto",
             "internationalschooldiplomavuosiluokka",
+            "lukionaineopinnot",
+            "lukionoppiaineenoppimaara",
+            "lukionoppimaara",
             "nuortenperusopetuksenoppiaineenoppimaara",
             "perusopetuksenoppiaineenoppimaara",
             "perusopetuksenoppimaara",
@@ -662,6 +665,7 @@ class MassaluovutusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers wit
           val tunnisteetJaOsasuoritustenMäärät = getSuoritukset(Some("perusopetus"))
             .filterNot(s => tyyppi(s).extract[String] == "nuortenperusopetuksenoppiaineenoppimaara")
             .map(suoritus => suorituksenTunniste(suoritus).extract[String] -> osasuoritustenMäärä(suoritus))
+            .sortBy(_._2.nonEmpty)
             .toMap
 
           tunnisteetJaOsasuoritustenMäärät("7") shouldBe None // 7. vuosiluokan suoritus
@@ -978,6 +982,9 @@ class MassaluovutusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers wit
             "ebtutkinto",
             "ibtutkinto",
             "internationalschooldiplomavuosiluokka",
+            "lukionaineopinnot",
+            "lukionoppiaineenoppimaara",
+            "lukionoppimaara",
             "nuortenperusopetuksenoppiaineenoppimaara",
             "perusopetuksenoppiaineenoppimaara",
             "perusopetuksenoppimaara",
@@ -1011,6 +1018,7 @@ class MassaluovutusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers wit
           val tunnisteetJaOsasuoritustenMäärät = getSuoritukset(Some("perusopetus"))
             .filterNot(s => tyyppi(s).extract[String] == "nuortenperusopetuksenoppiaineenoppimaara")
             .map(suoritus => suorituksenTunniste(suoritus).extract[String] -> osasuoritustenMäärä(suoritus))
+            .sortBy(_._2.nonEmpty)
             .toMap
 
           tunnisteetJaOsasuoritustenMäärät("7") shouldBe None // 7. vuosiluokan suoritus
