@@ -50,7 +50,9 @@ trait SuorituspalveluQuery extends OpetushallituksenMassaluovutusQueryParameters
           None
         }
       }
-      writer.putJson(s"$index", supaResponses)
+      if (supaResponses.nonEmpty) {
+        writer.putJson(s"$index", supaResponses)
+      }
     }
     Right(())
   }
@@ -121,6 +123,10 @@ object SuorituspalveluQuery {
     "perusopetuksenoppimaara",
     "perusopetuksenvuosiluokka",
     "tuvakoulutuksensuoritus",
-    "vstoppivelvollisillesuunnattukoulutus"
+    "vstoppivelvollisillesuunnattukoulutus",
+    "vstvapaatavoitteinenkoulutus",
+    "lukionoppiaineenoppimaara",
+    "lukionaineopinnot",
+    "lukionoppimaara"
   )
 }

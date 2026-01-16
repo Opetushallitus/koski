@@ -17,6 +17,8 @@ case class SupaDIAOpiskeluoikeus(
   koulutustoimija: Option[Koulutustoimija],
   oppilaitos: Option[Oppilaitos],
   tila: DIAOpiskeluoikeudenTila,
+  alkamispäivä: Option[LocalDate],
+  päättymispäivä: Option[LocalDate],
   suoritukset: List[SupaDIATutkinnonSuoritus],
   versionumero: Option[Int],
   aikaleima: Option[LocalDateTime],
@@ -32,6 +34,8 @@ object SupaDIAOpiskeluoikeus {
         koulutustoimija = oo.koulutustoimija,
         oppilaitos = oo.oppilaitos,
         tila = oo.tila,
+        alkamispäivä = oo.alkamispäivä,
+        päättymispäivä = oo.päättymispäivä,
         suoritukset = oo.suoritukset.collect {
           case tutkinnonSuoritus: DIATutkinnonSuoritus if tutkinnonSuoritus.valmis => SupaDIATutkinnonSuoritus(tutkinnonSuoritus)
         },
@@ -86,7 +90,7 @@ object SupaDIAOppiaineenTutkintovaiheenSuoritus {
       vastaavuustodistuksenTiedot = s.vastaavuustodistuksenTiedot,
       koetuloksenNelinkertainenPistemäärä = s.koetuloksenNelinkertainenPistemäärä,
       tyyppi = s.tyyppi,
-      osasuoritukset = s.osasuoritukset.map(_.flatMap(s => SupaDIAOppiaineenTutkintovaiheenOsasuorituksenSuoritus(s))).filter(_.nonEmpty),
+      osasuoritukset = s.osasuoritukset.map(_.map(s => SupaDIAOppiaineenTutkintovaiheenOsasuorituksenSuoritus(s))).filter(_.nonEmpty),
     )
 }
 
@@ -94,20 +98,15 @@ object SupaDIAOppiaineenTutkintovaiheenSuoritus {
 case class SupaDIAOppiaineenTutkintovaiheenOsasuorituksenSuoritus(
   @KoodistoKoodiarvo("diaoppiaineentutkintovaiheenosasuorituksensuoritus")
   tyyppi: Koodistokoodiviite,
-  koulutusmoduuli: DIAPäättökoe,
+  koulutusmoduuli: DIAOppiaineenTutkintovaiheenOsasuoritus,
   arviointi: Option[List[Arviointi]],
 ) extends SupaSuoritus
 
 object SupaDIAOppiaineenTutkintovaiheenOsasuorituksenSuoritus {
-  def apply(s: DIAOppiaineenTutkintovaiheenOsasuorituksenSuoritus): Option[SupaDIAOppiaineenTutkintovaiheenOsasuorituksenSuoritus] = {
-    s.koulutusmoduuli match {
-      case koulutusmoduuli: DIAPäättökoe =>
-        Some(SupaDIAOppiaineenTutkintovaiheenOsasuorituksenSuoritus(
-          tyyppi = s.tyyppi,
-          koulutusmoduuli = koulutusmoduuli,
-          arviointi = s.arviointi,
-        ))
-      case _ => None
-    }
-  }
+  def apply(s: DIAOppiaineenTutkintovaiheenOsasuorituksenSuoritus): SupaDIAOppiaineenTutkintovaiheenOsasuorituksenSuoritus =
+    SupaDIAOppiaineenTutkintovaiheenOsasuorituksenSuoritus(
+      tyyppi = s.tyyppi,
+      koulutusmoduuli = s.koulutusmoduuli,
+      arviointi = s.arviointi,
+    )
 }
