@@ -126,6 +126,7 @@ class HslSpec extends AnyFreeSpec with KoskiHttpSpec with OpiskeluoikeusTestMeth
   }
 
   "tarkista opiskeluoikeus arvioituPäättymispäivä" in {
+    KoskiApplicationForTests.mydataRepository.create(reformitutkinto.oid, "hsl")
     postHsl(reformitutkinto.hetu.get) {
       verifyResponseStatusOk()
       val actualJson = parseOpintoOikeudetJson()
