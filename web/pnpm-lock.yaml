@@ -221,8 +221,8 @@ importers:
         specifier: ^10.8.2
         version: 10.8.2
       mocha-chrome:
-        specifier: github:opetushallitus/mocha-chrome#4.2.0
-        version: https://codeload.github.com/opetushallitus/mocha-chrome/tar.gz/ecdae2c939fed3aaef42bee96be3890ad8f0dc46(mocha@10.8.2)
+        specifier: github:opetushallitus/mocha-chrome#4.3.0
+        version: https://codeload.github.com/opetushallitus/mocha-chrome/tar.gz/b5a822a65b719e648b1bbe73e86cfd2290a59cc3(mocha@10.8.2)
       moment:
         specifier: ^2.30.1
         version: 2.30.1
@@ -3195,8 +3195,8 @@ packages:
     engines: {node: '>=10'}
     hasBin: true
 
-  mocha-chrome@https://codeload.github.com/opetushallitus/mocha-chrome/tar.gz/ecdae2c939fed3aaef42bee96be3890ad8f0dc46:
-    resolution: {tarball: https://codeload.github.com/opetushallitus/mocha-chrome/tar.gz/ecdae2c939fed3aaef42bee96be3890ad8f0dc46}
+  mocha-chrome@https://codeload.github.com/opetushallitus/mocha-chrome/tar.gz/b5a822a65b719e648b1bbe73e86cfd2290a59cc3:
+    resolution: {tarball: https://codeload.github.com/opetushallitus/mocha-chrome/tar.gz/b5a822a65b719e648b1bbe73e86cfd2290a59cc3}
     version: 3.0.0
     engines: {node: '>=18.0.0'}
     hasBin: true
@@ -7749,7 +7749,7 @@ snapshots:
 
   mkdirp@1.0.4: {}
 
-  mocha-chrome@https://codeload.github.com/opetushallitus/mocha-chrome/tar.gz/ecdae2c939fed3aaef42bee96be3890ad8f0dc46(mocha@10.8.2):
+  mocha-chrome@https://codeload.github.com/opetushallitus/mocha-chrome/tar.gz/b5a822a65b719e648b1bbe73e86cfd2290a59cc3(mocha@10.8.2):
     dependencies:
       chalk: 2.4.2
       chrome-launcher: 1.1.2
