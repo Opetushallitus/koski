@@ -36,7 +36,7 @@ export default defineConfig({
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
     /* Base URL to use in actions like `await page.goto('/')`. */
-    baseURL: "http://localhost:7050",
+    baseURL: "http://localhost:7051",
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: "on-first-retry",
@@ -83,32 +83,23 @@ export default defineConfig({
   /* Run your local dev server before starting the tests */
   webServer: [
     {
-      command: `KOSKI_BACKEND_HOST=${process.env.KOSKI_BACKEND_HOST || process.env.CI ? `http://172.17.0.1:${process.env.KOSKI_BACKEND_PORT || "7021"}` : `http://${getMyIp()}:${process.env.KOSKI_BACKEND_PORT || "7021"}`} pnpm run ${process.env.CI ? "start-luovutuspalvelu" : "build-and-start-luovutuspalvelu"}`,
-      url: "https://localhost:7022/koski-luovutuspalvelu/healthcheck/proxy",
+      command: `KOSKI_BACKEND_HOST=http://localhost:${process.env.KOSKI_BACKEND_PORT || "7021"} pnpm run start:alb-proxy`,
+      url: "http://localhost:7023/healthcheck",
       reuseExistingServer: !process.env.CI,
       stdout: "pipe",
       stderr: "pipe",
-      timeout: 10 * 60 * 1000,
-      ignoreHTTPSErrors: true,
+      timeout: 60 * 1000,
     },
     {
-      command: `KOSKI_BACKEND_HOST=${process.env.KOSKI_BACKEND_HOST || process.env.CI ? `http://172.17.0.1:${process.env.KOSKI_BACKEND_PORT || "7021"}` : `http://${getMyIp()}:${process.env.KOSKI_BACKEND_PORT || "7021"}`} pnpm run start-server`,
+      command: `KOSKI_BACKEND_HOST=http://localhost:${process.env.KOSKI_BACKEND_PORT || "7021"} RESOURCE_ENDPOINT_URL=https://localhost:7022/koski/api/omadata-oauth2/resource-server ENABLE_LOCAL_MTLS=true CLIENT_ID=omadataoauth2sample pnpm exec tsx src/index.ts`,
       url: "http://localhost:7051/api/healthcheck",
       reuseExistingServer: !process.env.CI,
       stdout: "pipe",
       stderr: "pipe",
-      timeout: 2 * 60 * 1000,
+      timeout: 60 * 1000,
     },
     {
-      command: `KOSKI_BACKEND_HOST=${process.env.KOSKI_BACKEND_HOST || process.env.CI ? `http://172.17.0.1:${process.env.KOSKI_BACKEND_PORT || "7021"}` : `http://${getMyIp()}:${process.env.KOSKI_BACKEND_PORT || "7021"}`} pnpm run start`,
-      url: "http://localhost:7050",
-      reuseExistingServer: !process.env.CI,
-      stdout: "pipe",
-      stderr: "pipe",
-      timeout: 2 * 60 * 1000,
-    },
-    {
-      command: `JAVA_HOME=${process.env.CI ? process.env.JAVA_HOME_23_X64 : process.env.JAVA_HOME} KOSKI_BACKEND_HOST=${process.env.KOSKI_BACKEND_HOST || process.env.CI ? `http://172.17.0.1:${process.env.KOSKI_BACKEND_PORT || "7021"}` : `http://${getMyIp()}:${process.env.KOSKI_BACKEND_PORT || "7021"}`} pnpm run start-java-sample`,
+      command: `KOSKI_BACKEND_HOST=http://localhost:${process.env.KOSKI_BACKEND_PORT || "7021"} pnpm run start:java-sample`,
       url: "http://localhost:7052",
       reuseExistingServer: !process.env.CI,
       stdout: "pipe",
@@ -118,9 +109,14 @@ export default defineConfig({
   ],
 })
 
-function getMyIp() {
-  const addresses = Object.values(os.networkInterfaces()).reduce((acc, v) =>
-    acc.concat(v),
-  )
-  return addresses.find((a) => a.family === "IPv4" && !a.internal).address
+function getMyIp(): string {
+  const addresses = Object.values(os.networkInterfaces())
+    .flatMap((iface) => iface ?? []) // drop undefined
+    .filter((a): a is os.NetworkInterfaceInfo => !!a) // type guard
+
+  const addr = addresses.find((a) => a.family === "IPv4" && !a.internal)
+  if (!addr) {
+    throw new Error("No external IPv4 address found")
+  }
+  return addr.address
 }

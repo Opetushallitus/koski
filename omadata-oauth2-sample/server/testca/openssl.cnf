@@ -1,0 +1,53 @@
+# OpenSSL root CA configuration file.
+
+[ ca ]
+default_ca = ca_default
+
+[ ca_default ]
+dir               = .
+certs             = $dir/certs
+crl_dir           = $dir/crl
+new_certs_dir     = $dir/newcerts
+database          = $dir/db/root-ca.index
+serial            = $dir/db/root-ca.serial
+private_key       = $dir/private/root-ca.key
+certificate       = $dir/certs/root-ca.crt
+crlnumber         = $dir/db/root-ca.crlnumber
+crl               = $dir/crl/root-ca.crl
+crl_extensions    = $dir/crl_ext
+default_crl_days  = 180
+default_md        = sha256
+name_opt          = ca_default
+cert_opt          = ca_default
+default_days      = 3650
+preserve          = no
+policy            = policy_loose
+
+[ policy_loose ]
+countryName             = optional
+stateOrProvinceName     = optional
+localityName            = optional
+organizationName        = optional
+organizationalUnitName  = optional
+commonName              = supplied
+emailAddress            = optional
+
+[ req ]
+string_mask         = utf8only
+x509_extensions     = server_cert
+distinguished_name	= req_distinguished_name
+
+[ req_distinguished_name ]
+
+[ root_ca ]
+subjectKeyIdentifier = hash
+authorityKeyIdentifier = keyid:always,issuer
+basicConstraints = critical, CA:true
+keyUsage = critical, digitalSignature, cRLSign, keyCertSign
+
+[ server_cert ]
+basicConstraints = CA:FALSE
+subjectKeyIdentifier = hash
+authorityKeyIdentifier = keyid,issuer:always
+keyUsage = critical, digitalSignature, keyEncipherment
+extendedKeyUsage = serverAuth, clientAuth

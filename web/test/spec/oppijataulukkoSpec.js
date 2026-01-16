@@ -254,6 +254,7 @@ describe('Oppijataulukko', function () {
           'Ammatillinen-Osittainen, Raitsu',
           'Ammattilainen, Aarne',
           'Çelik-Eerola, Jouni',
+          'Demo, Nordea',
           'Dia, Dia',
           'e, erikois',
           'e, erikois',
@@ -340,10 +341,9 @@ describe('Oppijataulukko', function () {
           'Tekijä, Teija',
           'Telmanen, Tuula',
           'Tiedonsiirto, Tiina',
-          'Toiminta, Tommi',
-          'Tuleva-ammattilainen, Tuure'
+          'Toiminta, Tommi'
         ])
-        expect(page.opiskeluoikeudeTotal()).to.equal('122')
+        expect(page.opiskeluoikeudeTotal()).to.equal('123')
       })
     })
 

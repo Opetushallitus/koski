@@ -4,6 +4,7 @@ import {
 } from '@aws-sdk/client-secrets-manager'
 import { memoize } from '../util/memoize.js'
 import { promises as fs } from 'fs'
+import path from 'node:path'
 
 interface ClientCertConfig {
   'fullchain.pem': string
@@ -39,14 +40,17 @@ export async function getClientCertSecret(): Promise<ClientCertConfig> {
 }
 
 ///////////////////////////////////////////////////////////////////
-// Fetch certiticate content from local files
+// Fetch certificate content from local files
+
+const defaultCertBase =
+  process.env.CLIENT_CERT_BASE || path.resolve(process.cwd(), 'testca')
 
 const localClientCertSecretFullchainFilename =
   process.env.CLIENT_CERT_SECRET_FULLCHAIN_FILENAME ||
-  '../../koski-luovutuspalvelu/proxy/test/testca/certs/client.crt'
+  path.join(defaultCertBase, 'certs/client.crt')
 const localClientCertSecretPrivKeyFilename =
   process.env.CLIENT_CERT_SECRET_PRIVKEY_FILENAME ||
-  '../../koski-luovutuspalvelu/proxy/test/testca/private/client.key'
+  path.join(defaultCertBase, 'private/client.key')
 
 const getLocalMTLSFullchain = memoize(
   async (): Promise<string> => {
@@ -67,6 +71,17 @@ const getLocalMTLSPrivkey = memoize(
     return privkey
   },
   () => localClientCertSecretPrivKeyFilename
+)
+
+const localCACertFilename =
+  process.env.LOCAL_CA_CERT_FILENAME ||
+  path.join(defaultCertBase, 'certs/root-ca.crt')
+
+export const getLocalCACert = memoize(
+  async (): Promise<string> => {
+    return await fs.readFile(localCACertFilename, 'utf8')
+  },
+  () => localCACertFilename
 )
 
 ///////////////////////////////////////////////////////////////////
