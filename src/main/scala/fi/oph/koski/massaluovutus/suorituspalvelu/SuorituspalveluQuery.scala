@@ -123,6 +123,9 @@ object SuorituspalveluQuery {
     "perusopetuksenoppimaara",
     "perusopetuksenvuosiluokka",
     "tuvakoulutuksensuoritus",
-    "vstoppivelvollisillesuunnattukoulutus"
+    "vstoppivelvollisillesuunnattukoulutus",
+    "lukionoppiaineenoppimaara",
+    "lukionaineopinnot",
+    "lukionoppimaara"
   )
 }
