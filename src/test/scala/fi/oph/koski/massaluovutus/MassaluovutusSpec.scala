@@ -639,6 +639,7 @@ class MassaluovutusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers wit
             "telma",
             "tuvakoulutuksensuoritus",
             "vstoppivelvollisillesuunnattukoulutus",
+            "vstvapaatavoitteinenkoulutus"
           ))
         }
 
@@ -992,6 +993,7 @@ class MassaluovutusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers wit
             "telma",
             "tuvakoulutuksensuoritus",
             "vstoppivelvollisillesuunnattukoulutus",
+            "vstvapaatavoitteinenkoulutus"
           ))
         }
 

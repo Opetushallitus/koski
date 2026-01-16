@@ -38,6 +38,8 @@ object SupaVapaanSivistystyönOpiskeluoikeus {
       suoritukset = oo.suoritukset.flatMap {
         case s: OppivelvollisilleSuunnattuVapaanSivistystyönKoulutuksenSuoritus =>
           Some(SupaOppivelvollisilleSuunnattuVapaanSivistystyönKoulutuksenSuoritus(s))
+        case s: VapaanSivistystyönVapaatavoitteisenKoulutuksenSuoritus =>
+          Some(SupaVapaanSivistystyönVapaatavoitteisenKoulutuksenSuoritus(s))
         case _ =>
           None
       },
@@ -146,5 +148,43 @@ object SupaMuuallaSuoritettuOppivelvollisilleSuunnatunVapaanSivistystyönOpintoj
     SupaMuuallaSuoritettuOppivelvollisilleSuunnatunVapaanSivistystyönOpintojenSuoritus(
       tyyppi = s.tyyppi,
       koulutusmoduuli = s.koulutusmoduuli,
+    )
+}
+
+@Title("Vapaatavoitteisen vapaan sivistystyön koulutuksen suoritus")
+case class SupaVapaanSivistystyönVapaatavoitteisenKoulutuksenSuoritus(
+  @KoodistoKoodiarvo("vstvapaatavoitteinenkoulutus")
+  tyyppi: Koodistokoodiviite,
+  vahvistus: Option[SupaVahvistus],
+  koulutusmoduuli: VapaanSivistystyönVapaatavoitteinenKoulutus,
+  osasuoritukset: Option[List[SupaVapaanSivistystyönVapaatavoitteisenKoulutuksenOsasuorituksenSuoritus]]
+) extends SupaVapaanSivistystyönPäätasonSuoritus with SupaVahvistuksellinen
+
+object SupaVapaanSivistystyönVapaatavoitteisenKoulutuksenSuoritus {
+  def apply(s: VapaanSivistystyönVapaatavoitteisenKoulutuksenSuoritus): SupaVapaanSivistystyönVapaatavoitteisenKoulutuksenSuoritus =
+    SupaVapaanSivistystyönVapaatavoitteisenKoulutuksenSuoritus(
+      tyyppi = s.tyyppi,
+      vahvistus = s.vahvistus.map(v => SupaVahvistus(v.päivä)),
+      koulutusmoduuli = s.koulutusmoduuli,
+      osasuoritukset = s.osasuoritukset.map(_.map(SupaVapaanSivistystyönVapaatavoitteisenKoulutuksenOsasuorituksenSuoritus.apply)).filter(_.nonEmpty)
+    )
+}
+
+@Title("Vapaatavoitteisen vapaan sivistystyön koulutuksen osasuorituksen suoritus")
+case class SupaVapaanSivistystyönVapaatavoitteisenKoulutuksenOsasuorituksenSuoritus(
+  @KoodistoKoodiarvo("vstvapaatavoitteisenkoulutuksenosasuoritus")
+  tyyppi: Koodistokoodiviite,
+  koulutusmoduuli: VapaanSivistystyönVapaatavoitteisenKoulutuksenOsasuoritus,
+  arviointi: Option[List[Arviointi]],
+  osasuoritukset: Option[List[SupaVapaanSivistystyönVapaatavoitteisenKoulutuksenOsasuorituksenSuoritus]]
+) extends SupaSuoritus
+
+object SupaVapaanSivistystyönVapaatavoitteisenKoulutuksenOsasuorituksenSuoritus {
+  def apply(os: VapaanSivistystyönVapaatavoitteisenKoulutuksenOsasuorituksenSuoritus): SupaVapaanSivistystyönVapaatavoitteisenKoulutuksenOsasuorituksenSuoritus =
+    SupaVapaanSivistystyönVapaatavoitteisenKoulutuksenOsasuorituksenSuoritus(
+      tyyppi = os.tyyppi,
+      koulutusmoduuli = os.koulutusmoduuli,
+      arviointi = os.arviointi,
+      osasuoritukset = os.osasuoritukset.map(_.map(SupaVapaanSivistystyönVapaatavoitteisenKoulutuksenOsasuorituksenSuoritus.apply)).filter(_.nonEmpty)
     )
 }
