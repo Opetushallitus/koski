@@ -18,6 +18,13 @@ class MigriSpec extends AnyFreeSpec with KoskiHttpSpec with OpiskeluoikeusTestMe
 
   val user = MockUsers.migriKäyttäjä
 
+  private val migriCertificateHeaders: Headers = Map(
+    "x-amzn-mtls-clientcert-subject" -> "CN=migri",
+    "x-amzn-mtls-clientcert-serial-number" -> "123",
+    "x-amzn-mtls-clientcert-issuer" -> "CN=mock-issuer",
+    "X-Forwarded-For" -> "0.0.0.0"
+  )
+
   "Oppijaa ei löydy, palautetaan 404" in {
     postOid(eiKoskessa.oid, user) {
       verifyResponseStatus(404, ErrorMatcher.regex(KoskiErrorCategory.notFound.oppijaaEiLöydyTaiEiOikeuksia, ".*".r))
@@ -299,7 +306,7 @@ class MigriSpec extends AnyFreeSpec with KoskiHttpSpec with OpiskeluoikeusTestMe
     post(
       "api/luovutuspalvelu/migri/oid",
       JsonSerializer.writeWithRoot(MigriOidRequest(oid)),
-      headers = authHeaders(user) ++ jsonContent
+      headers = migriCertificateHeaders ++ jsonContent
     )(f)
   }
 
@@ -307,7 +314,7 @@ class MigriSpec extends AnyFreeSpec with KoskiHttpSpec with OpiskeluoikeusTestMe
     post(
       "api/luovutuspalvelu/migri/hetu",
       JsonSerializer.writeWithRoot(MigriHetuRequest(hetu.get)),
-      headers = authHeaders(user) ++ jsonContent
+      headers = migriCertificateHeaders ++ jsonContent
     )(f)
   }
 
