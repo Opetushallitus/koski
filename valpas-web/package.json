@@ -55,7 +55,7 @@
     "@types/react-dom": "^19.2.0",
     "@types/react-router-dom": "^5.3.3",
     "@types/react-test-renderer": "^19.1.0",
-    "@types/selenium-webdriver": "^4.1.28",
+    "@types/selenium-webdriver": "^4.35.5",
     "@typescript-eslint/eslint-plugin": "^8.53.1",
     "@typescript-eslint/parser": "^8.53.1",
     "babel-jest": "^29.7.0",
@@ -81,7 +81,7 @@
     "prettier": "^3.8.0",
     "prettier-plugin-organize-imports": "^4.3.0",
     "process": "^0.11.10",
-    "selenium-webdriver": "^4.31.0",
+    "selenium-webdriver": "^4.40.0",
     "tree-kill": "^1.2.2",
     "ts-jest": "^29.4.6",
     "typescript": "^5.8.3"
