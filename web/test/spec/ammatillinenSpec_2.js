@@ -616,6 +616,7 @@ describe('Ammatillinen koulutus 2', function () {
                       'TYT Työkyvyn ylläpitäminen, liikunta ja terveystieto',
                       'VK Vieraat kielet',
                       'VVTK Viestintä ja vuorovaikutus toisella kotimaisella kielellä',
+                      'VVTK26 Viestintä ja vuorovaikutus vieraalla kielellä',
                       'VVVK Viestintä ja vuorovaikutus vieraalla kielellä',
                       'VVAI22 Viestintä ja vuorovaikutus äidinkielellä',
                       'VVAI16 Viestintä ja vuorovaikutus äidinkielellä, opiskelijan äidinkieli',
