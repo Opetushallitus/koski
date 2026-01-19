@@ -8,7 +8,7 @@ import fi.oph.koski.json.SensitiveDataAllowed
 import fi.oph.koski.koskiuser.Session
 import fi.oph.koski.koskiuser.Rooli.{OPHKATSELIJA, OPHPAAKAYTTAJA}
 import fi.oph.koski.log._
-import fi.oph.koski.massaluovutus.suorituspalvelu.opiskeluoikeus.SupaOpiskeluoikeus
+import fi.oph.koski.massaluovutus.suorituspalvelu.opiskeluoikeus.{SupaOpiskeluoikeus, SupaPoistettuOpiskeluoikeus, SupaPoistettuTaiOlemassaolevaOpiskeluoikeus}
 import fi.oph.koski.massaluovutus.{MassaluovutusException, MassaluovutusQueryPriority, OpetushallituksenMassaluovutusQueryParameters, QueryResultWriter}
 import fi.oph.koski.schema.{KoskeenTallennettavaOpiskeluoikeus, KoskiSchema}
 
@@ -32,7 +32,6 @@ trait SuorituspalveluQuery extends OpetushallituksenMassaluovutusQueryParameters
         val db = selectDbByLag(application, latestTimestamp)
         val response = opiskeluoikeudet
           .flatMap(oo => getOpiskeluoikeus(application, db, oo._1))
-          .filter(_.suoritukset.nonEmpty)
 
         if(response.nonEmpty) {
           response.foreach { oo =>
@@ -61,15 +60,28 @@ trait SuorituspalveluQuery extends OpetushallituksenMassaluovutusQueryParameters
     u.hasRole(OPHKATSELIJA) || u.hasRole(OPHPAAKAYTTAJA)
   }
 
-  private def getOpiskeluoikeus(application: KoskiApplication, db: DB, id: Int): Option[SupaOpiskeluoikeus] =
-    QueryMethods.runDbSync(
+  private def getOpiskeluoikeus(application: KoskiApplication, db: DB, id: Int): Option[SupaPoistettuTaiOlemassaolevaOpiskeluoikeus] = {
+    val opiskeluoikeusRow = QueryMethods.runDbSync(
       db,
       sql"""
          SELECT *
          FROM opiskeluoikeus
          WHERE id = $id
       """.as[KoskiOpiskeluoikeusRow]
-    ).headOption.flatMap(toSupaOpiskeluoikeus(application))
+    ).headOption
+
+    if (opiskeluoikeusRow.exists(_.poistettu)) {
+      opiskeluoikeusRow.map(oo => SupaPoistettuOpiskeluoikeus(
+        oppijaOid = oo.oppijaOid,
+        oid = oo.oid,
+        versionumero = Some(oo.versionumero),
+        aikaleima = Some(oo.aikaleima.toLocalDateTime)
+      ))
+    } else {
+      opiskeluoikeusRow.flatMap(toSupaOpiskeluoikeus(application))
+        .filter(_.suoritukset.nonEmpty)
+    }
+  }
 
   private def selectDbByLag(application: KoskiApplication, opiskeluoikeusAikaleima: Timestamp): DB = {
     val safetyLimit = 15.seconds

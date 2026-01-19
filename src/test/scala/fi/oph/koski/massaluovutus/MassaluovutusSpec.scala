@@ -589,7 +589,7 @@ class MassaluovutusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers wit
             case _ => Nil
           }
           tyyppi match {
-            case Some(t) => oos.filter(oo => (oo \ "tyyppi" \ "koodiarvo").extract[String] == t)
+            case Some(t) => oos.filter(oo => (oo \ "tyyppi" \ "koodiarvo").extractOpt[String].contains(t))
             case None => oos
           }
         }
@@ -602,7 +602,7 @@ class MassaluovutusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers wit
 
         def extractStrings(values: List[JValue], path: JValue => JValue): List[String] =
           values
-            .map(path(_).extract[String])
+            .flatMap(path(_).extractOpt[String])
             .distinct
             .sorted
 
@@ -648,6 +648,20 @@ class MassaluovutusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers wit
             getOpiskeluoikeudet(),
             viimeisinTila
           ) should contain("mitatoity")
+        }
+
+        "Sisältää poistettuja opiskeluoikeuksia" in {
+          val poistetutOpiskeluoikeudet = getOpiskeluoikeudet()
+            .filter(v => (v \ "poistettu").extractOpt[Boolean].contains(true))
+
+          poistetutOpiskeluoikeudet should not be empty
+
+          poistetutOpiskeluoikeudet.foreach { oo =>
+            (oo \ "oppijaOid") should not equal JNothing
+            (oo \ "oid") should not equal JNothing
+            (oo \ "versionumero") should not equal JNothing
+            (oo \ "aikaleima") should not equal JNothing
+          }
         }
 
         "Nuorten perusopetuksesta palautetaan perusopetuksen päättötodistus sekä 7., 8. ja 9. vuosiluokan suoritukset" in {
@@ -774,6 +788,7 @@ class MassaluovutusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers wit
 
         "Opiskeluoikeudet sisältävät versionumeron ja aikaleiman sekä opiskeluoikeuden alkamis- ja päättymispäivän" in {
           val oos = getOpiskeluoikeudet()
+            .filterNot(v => (v \ "poistettu").extractOpt[Boolean].contains(true))
           oos should not be empty
           oos.foreach { oo =>
             (oo \ "versionumero") should not equal JNothing
@@ -940,7 +955,7 @@ class MassaluovutusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers wit
             case _ => Nil
           }
           tyyppi match {
-            case Some(t) => oos.filter(oo => (oo \ "tyyppi" \ "koodiarvo").extract[String] == t)
+            case Some(t) => oos.filter(oo => (oo \ "tyyppi" \ "koodiarvo").extractOpt[String].contains(t))
             case None => oos
           }
         }
@@ -953,7 +968,7 @@ class MassaluovutusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers wit
 
         def extractStrings(values: List[JValue], path: JValue => JValue): List[String] =
           values
-            .map(path(_).extract[String])
+            .flatMap(path(_).extractOpt[String])
             .distinct
             .sorted
 
@@ -1002,6 +1017,20 @@ class MassaluovutusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers wit
             getOpiskeluoikeudet(),
             viimeisinTila
           ) should contain("mitatoity")
+        }
+
+        "Sisältää poistettuja opiskeluoikeuksia" in {
+          val poistetutOpiskeluoikeudet = getOpiskeluoikeudet()
+            .filter(v => (v \ "poistettu").extractOpt[Boolean].contains(true))
+
+          poistetutOpiskeluoikeudet should not be empty
+
+          poistetutOpiskeluoikeudet.foreach { oo =>
+            (oo \ "oppijaOid") should not equal JNothing
+            (oo \ "oid") should not equal JNothing
+            (oo \ "versionumero") should not equal JNothing
+            (oo \ "aikaleima") should not equal JNothing
+          }
         }
 
         "Nuorten perusopetuksesta palautetaan perusopetuksen päättötodistus sekä 7., 8. ja 9. vuosiluokan suoritukset" in {
@@ -1128,6 +1157,7 @@ class MassaluovutusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers wit
 
         "Opiskeluoikeudet sisältävät versionumeron ja aikaleiman sekä opiskeluoikeuden alkamis- ja päättymispäivän" in {
           val oos = getOpiskeluoikeudet()
+            .filterNot(v => (v \ "poistettu").extractOpt[Boolean].contains(true))
           oos should not be empty
           oos.foreach { oo =>
             (oo \ "versionumero") should not equal JNothing

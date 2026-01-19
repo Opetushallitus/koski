@@ -14,7 +14,7 @@ case class SupaResponse(
   @Description("Oppijan kaikki yksilöivät tunnisteet, joilla opiskeluoikeuksia on tallennettu Koski-tietovarantoon.")
   kaikkiOidit: Seq[String],
   aikaleima: LocalDateTime,
-  opiskeluoikeudet: Seq[SupaOpiskeluoikeus],
+  opiskeluoikeudet: Seq[SupaPoistettuTaiOlemassaolevaOpiskeluoikeus],
 )
 
 object SupaResponse {
