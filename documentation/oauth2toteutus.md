@@ -26,13 +26,16 @@ Siksi uusia OAuth2-rajapinnan käyttäjiä lisättäessä tietoja pitää konfig
 
 (6) Selvitä tarvittavat paluuosoitteet, ja konfiguroi ne <CLIENT_ID>:lle Koski-palvelun AppConfigiin (ks. reference.conf omadataoauth2-osuus)
 
-(7) Selvitä luovutuspalveluun tarvittava mutual-TLS client certin subject distinguished name ja palveluntarjoajan IP-osoitteet, ja konfiguroi ne parameter storeen
+(7) Selvitä luovutuspalveluun tarvittava mutual-TLS client certin subject distinguished name ja palveluntarjoajan IP-osoitteet, ja konfiguroi ne secrets manageriin luovutuspalvelun clientList:lle
 
 (8) Konfiguroi luovutuspalveluun palvelukäyttäjän <CLIENT_ID> salasana
+  - tarvitaanko enää? Ei käytetä kirjautumisessa. Mutta voiko esim. tunnus vanhentua tai tulla poistetuksi, jos sillä ei ole salasanaa?
 
-(9) Käynnistä KOSKI ja luovutuspalvelu uudestaan konfiguraatioiden lataamiseksi
+(9) Käynnistä KOSKI uudestaan konfiguraatioiden lataamiseksi
+  - luovutuspalvelu AWS:n ALB:ssa ei tarvitse manuaalista uudelleenkäynnistystä
 
-(10) Testaa fronttia (ks. testi-URI-esimerkkejä tämän ohjeen lopusta)
+(10) Testaa fronttia
+  - ks. testi-URI-esimerkkejä tämän ohjeen lopusta, muodosta uuden kumppanin tiedoilla toimiva URL ja testaa.
 
 ## Sekvenssikaavio toteutuksen toiminnasta
 
