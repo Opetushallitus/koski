@@ -16,9 +16,7 @@ import {
 } from '../suoritus/SuoritustaulukkoCommon'
 import { numberToString } from '../util/format'
 
-export class TutkintokoulutukseenValmentavanKoulutuksenSuoritustaulukko
-  extends React.Component
-{
+export class TutkintokoulutukseenValmentavanKoulutuksenSuoritustaulukko extends React.Component {
   render() {
     const { parentSuoritus, suorituksetModel, nestedLevel = 0 } = this.props
     const context = parentSuoritus.context
