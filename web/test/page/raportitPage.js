@@ -10,7 +10,7 @@ function RaportitPage() {
       }
     },
     lataaRaportointikanta: function () {
-      return Q(
+      return Promise.resolve(
         $.ajax({ url: '/koski/api/test/raportointikanta/load', method: 'get' })
       )
     },

@@ -390,7 +390,7 @@ function Oppiaineet() {
             promises.push(laajuus.setValue('3')())
           }
         }
-        return Q.all(promises)
+        return Promise.all(promises)
       }
     },
 
@@ -749,7 +749,7 @@ function TutkinnonOsat(groupId, base) {
             var valueExists = !!tutkinnonOsaElement().find(
               '.näyttö .edit-value'
             ).length
-            return Q()
+            return Promise.resolve()
               .then(
                 click(
                   findSingle(
@@ -1590,7 +1590,7 @@ function LisääSuoritusDialog() {
           return OpinnotPage().suoritusTabs().length
         }
         var prevCount = count()
-        return Q()
+        return Promise.resolve()
           .then(click(buttonElem))
           .then(
             wait.until(function () {

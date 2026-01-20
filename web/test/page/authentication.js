@@ -7,7 +7,7 @@ function Authentication() {
       }
     },
     logout: function () {
-      return Q($.ajax('/koski/user/logout'))
+      return Promise.resolve($.ajax('/koski/user/logout'))
     }
   }
 }
