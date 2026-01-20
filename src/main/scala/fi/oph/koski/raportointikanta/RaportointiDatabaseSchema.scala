@@ -10,7 +10,7 @@ import fi.oph.koski.raportit.{YleissivistäväRaporttiKurssi, YleissivistäväRa
 import fi.oph.koski.schema.{Koodistokoodiviite, LocalizedString}
 import org.json4s.JValue
 import shapeless.{Generic, HNil}
-import slickless._
+import net.scalax.slickless.compat._
 import slick.dbio.DBIO
 import slick.sql.SqlProfile.ColumnOption.SqlType
 
