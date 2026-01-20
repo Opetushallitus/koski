@@ -33,7 +33,7 @@
   "license": "EUPL-1.1",
   "dependencies": {
     "@aws-sdk/client-secrets-manager": "^3.950.0",
-    "body-parser": "^2.2.1",
+    "body-parser": "^2.2.2",
     "express": "^5.2.0",
     "express-rate-limit": "^8.2.1",
     "helmet": "^8.1.0",
@@ -43,7 +43,7 @@
   },
   "devDependencies": {
     "@aws-sdk/types": "^3.936.0",
-    "@eslint/compat": "^2.0.0",
+    "@eslint/compat": "^2.0.1",
     "@eslint/js": "^9.39.2",
     "@playwright/test": "^1.57.0",
     "@types/body-parser": "^1.19.6",
@@ -52,7 +52,7 @@
     "@typescript-eslint/parser": "^8.49.0",
     "eslint": "^9.39.2",
     "eslint-config-prettier": "^10.1.8",
-    "eslint-plugin-prettier": "^5.5.4",
+    "eslint-plugin-prettier": "^5.5.5",
     "tsx": "^4.21.0",
     "typescript": "^5.9.3"
   },
