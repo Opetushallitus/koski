@@ -7,9 +7,6 @@ inputs:
   shardTotal:
     required: true
     type: string
-  AWS_OPH_UTILITY_ROLE_ARN:
-    required: true
-    type: string
 
 runs:
   using: "composite"
@@ -20,28 +17,6 @@ runs:
       uses: ./.github/actions/setup_backend
     - name: "🌍 Setup Playwright"
       uses: ./.github/actions/omadataoauth2_setup_playwright
-
-    - name: Configure AWS credentials
-      uses: aws-actions/configure-aws-credentials@v4
-      with:
-        role-to-assume: ${{ inputs.AWS_OPH_UTILITY_ROLE_ARN }}
-        role-session-name: koski-luovutuspalvelu-proxy-image-push
-        role-duration-seconds: 3600
-        aws-region: eu-west-1
-
-    - name: Login to Amazon ECR
-      id: login-ecr
-      uses: aws-actions/amazon-ecr-login@v2
-      with:
-        mask-password: "true"
-
-    - name: Pull koski-luovutuspalvelu image
-      env:
-        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-      shell: bash
-      run: |
-        docker pull $ECR_REGISTRY/utility/koski-luovutuspalvelu-proxy:latest
-        docker tag $ECR_REGISTRY/utility/koski-luovutuspalvelu-proxy:latest koski-luovutuspalvelu-proxy:latest
 
     - name: Run Playwright tests
       env:
@@ -54,5 +29,5 @@ runs:
       if: always()
       with:
         name: omadataoauth2-e2e-report-${{inputs.shardIndex}}-of-${{inputs.shardTotal}}
-        path: omadata-oauth2-sample/client/omadataoauth2-e2e-report-${{inputs.shardIndex}}-of-${{inputs.shardTotal}}/
+        path: omadata-oauth2-sample/server/omadataoauth2-e2e-report-${{inputs.shardIndex}}-of-${{inputs.shardTotal}}/
         retention-days: 3

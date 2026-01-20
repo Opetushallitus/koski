@@ -1,61 +1,92 @@
 # OmaData OAuth2 esimerkki-applikaatio
 
-Tässä hakemistossa on 2 esimerkkiapplikaatiota:
+Tässä hakemistossa on 2 esimerkkiapplikaatiota OAuth2-integraatiosta Koski-palveluun:
 
-Node-JS -versio, jonka lähdekoodi alihakemistoissa [client](client/) ja [server](server/). Kehitysohjeet tälle alla.
+- **Node.js -versio** - Lähdekoodi hakemistossa [server](server/). Sisältää myös staattisen HTML-frontin.
+- **Java-versio** - Lähdekoodi hakemistossa [java](java/). Ks. [java/README.md](java/README.md).
 
-Java-versio, jonka lähdekoodi hakemistossa [java](java/). Ks. [java/README.md](java/README.md).
+Molemmat esimerkit käyttävät samaa mTLS (mutual TLS) -autentikointia, joka on käytössä tuotantoympäristössä AWS ALB:n kautta.
 
-## Node-JS -esimerkkiapplikaatio
+## Arkkitehtuuri
 
-### Kehitys
+Lokaalisti ALB:n korvaa yksinkertainen, Node.js-pohjainen mock-toteutus.
 
-Vaatii, että Koski on käynnissä portissa 7021. ks. [README.md](../README.md#koski-sovelluksen-ajaminen-paikallisesti) ja 
-että [koski-luovutuspalvelu](https://github.com/Opetushallitus/koski-luovutuspalvelu) -repositoryn sisältö on koski-hakemiston juuressa alihakemistossa
+```
+┌─────────────────────────────────────────────────────────────────────────────┐
+│  Selain                                                                     │
+│    │                                                                        │
+│    ▼                                                                        │
+│  (1) Esimerkki-applikaatio                                                  │
+│      - Node.js: http://localhost:7051 (API + staattinen frontti)            │
+│      - Java:    http://localhost:7052                                       │
+│    │                                                                        │
+│    │  mTLS (client cert)                                                    │
+│    ▼                                                                        │
+│  (2) ALB-proxy (emuloi AWS ALB:n mTLS-toimintaa), https://localhost:7022    │
+│      - Käsittelee client certin                                             │
+│      - Lisää x-amzn-mtls-clientcert-* headerit                              │
+│    │                                                                        │
+│    ▼                                                                        │
+│  (3) Koski-backend, http://localhost:7021                                   │
+│      - Validoi client certin headerien perusteella                          │
+│      - Käsittelee OAuth2-pyynnöt                                            │
+└─────────────────────────────────────────────────────────────────────────────┘
+```
 
-    /koski-luovutuspalvelu
+Sertifikaatit ladataan oletuksena hakemistosta `../server/testca/`.
 
-Lisäksi pitää olla ajettuna:
+## Kehitys
 
-    /omadata-oauth2-sample/server % pnpm install --frozen-lockfile
-    /omadata-oauth2-sample/client % pnpm install --frozen-lockfile
+### Esiehdot
 
-Tämän jälkeen tarvittavat palvelut, mukaanlukien luovutuspalvelun, voi käynnistää:
+1. Koski käynnissä portissa 7021 (ks. [README.md](../README.md#koski-sovelluksen-ajaminen-paikallisesti))
+2. Testisertifikaatit generoitu:
+   ```bash
+   cd omadata-oauth2-sample/server
+   ./testca/generate-certs.sh
+   ```
 
-    /omadata-oauth2-sample/client % pnpm run start-with-server-and-luovutuspalvelu
+### Node.js -esimerkki
 
-Koko putken rakenne:
+Asenna riippuvuudet ja käynnistä:
 
-    (1) Esimerkki-applikaation frontti, http://localhost:7050
+```bash
+cd omadata-oauth2-sample/server
+pnpm install --frozen-lockfile
 
-       kutsuu (development serverin proxyn kautta):
-    (2) Esimerkki-applikaation backend, http://localhost:7051
+# Käynnistä ALB-proxy ja Node.js -palvelin (kahdessa terminaalissa tai taustalle):
+pnpm run start:alb-proxy
+pnpm run start:start:node-sample
+```
 
-       kutsuu:
-    (3) Docker-kontissa ajettu koski-luovutuspalvelu, https://localhost:7022
-          Huom! Tämä on mutual TLS -putken testaamiseksi https, lokaalilla root-CA:lla.
+Node.js -esimerkki löytyy osoitteesta http://localhost:7051
 
-      kutsuu:
-    (4) Koski-backend, http://<lokaali-ip>:<port>
-          Luovutuspalvelun docker-kontille näkyvä <lokaali-ip> on Github Actions CI:llä ajettaessa
-          172.17.0.1 ja <port> arvottu.
-          Lokaalisti <lokaali-ip> haetaan client/scripts/getmyip.js -skriptillä ja <port> on aina 7021.
+### Java-esimerkki
 
-### Node-JS -version ympäristöön vienti
-
-Github actionsista käynnistettävissä, ks. [omadataoauth2sample_deploy.yml](../.github/workflows/omadataoauth2sample_deploy.yml)
+Ks. [java/README.md](java/README.md)
 
 ## E2E-testit
 
-Em. koko putki -osuuden lisäksi pitää olla ajettuna:
+Playwright-testit testaavat koko OAuth2-flown kummankin backendin osalta:
 
-    /omadata-oauth2-sample/client % npx playwright install
+```bash
+cd omadata-oauth2-sample/server
+pnpm install --frozen-lockfile
+pnpm run test:e2e
+```
 
-Testien käynnistys:
+Testit käynnistävät automaattisesti ALB-proxyn, Node.js-palvelimen ja Java-esimerkin.
 
-    pnpm run playwright:test
+## Tuotantoympäristö
 
-Ks. muut playwright-skriptit, esim. debug-moodi [package.json](client/package.json).
+Tuotannossa mTLS-käsittely tapahtuu AWS ALB:ssä, joka:
+- Vastaanottaa client certin
+- Validoi sen AWS Certificate Managerin avulla
+- Lisää `x-amzn-mtls-clientcert-subject` ja `x-amzn-mtls-clientcert-serial-number` headerit
 
-Tarvittaessa, ja esim. CI:llä, Playwright-konfiguraation webServer-osuus [playwright.config.ts](client/playwright.config.ts) käynnistää
-esimerkki-applikaation frontin ja backendin, Java-version, sekä luovutuspalvelun.
+Lokaali ALB-proxy (`server/scripts/alb-proxy.mjs`) emuloi tätä kehitysympäristössä.
+
+## Dokumentaatio
+
+- Rajapintadokumentaatio: https://testiopintopolku.fi/koski/dokumentaatio/rajapinnat/oauth2/omadata
+- Arkkitehtuuridokumentaatio: [documentation/oauth2.md](../documentation/oauth2.md)

@@ -89,7 +89,7 @@ Siksi uusia OAuth2-rajapinnan käyttäjiä lisättäessä tietoja pitää konfig
 
 ## Integraatiotestit
 
-Ks. [README.md#e2e-testit](../omadata-oauth2-sample/README.md#e2e-testit)
+Ks. [omadata-oauth2-sample/README.md](../omadata-oauth2-sample/README.md#e2e-testit)
 
 ## Infran ylläpito
 
