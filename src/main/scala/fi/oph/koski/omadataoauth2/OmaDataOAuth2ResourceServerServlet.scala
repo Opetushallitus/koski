@@ -19,9 +19,7 @@ class OmaDataOAuth2ResourceServerServlet(implicit val application: KoskiApplicat
   // out: data, jos käyttäjällä oikeudet kyseiseen access tokeniin.
   //      TAI OAuth2-protokollan mukainen virheilmoitus
   post("/") {
-    // X-Auth headeri tulee nginx luovutuspalvelusta, sillä Authorization headeri on jo siinä tapauksessa varattu Basic Authille
-    request.header("X-Auth").orElse(request.header("Authorization"))
-      .map(_.split(" ")) match {
+    request.header("Authorization").map(_.split(" ")) match {
       case Some(Array("Bearer", token)) =>
         renderRequestedData(token)
       case _ =>
