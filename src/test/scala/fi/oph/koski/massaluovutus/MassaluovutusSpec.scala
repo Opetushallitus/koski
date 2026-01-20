@@ -868,7 +868,7 @@ class MassaluovutusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers wit
         val failed = waitForFailure(queryId, user)
 
         failed.status shouldBe QueryState.failed
-        failed.error.get should fullyMatch regex  s"^Oppijan ${KoskiSpecificMockOppijat.kelaRikkinäinenOpiskeluoikeus.oid} opiskeluoikeuden (1\\.2\\.246\\.562\\.15\\.\\d+) deserialisointi epäonnistui$$".r // Näkyy pääkäyttäjälle
+        failed.error.get should fullyMatch regex  s"^Oppijan ${KoskiSpecificMockOppijat.kelaRikkinäinenOpiskeluoikeus.oid} opiskeluoikeuden (1\\.2\\.246\\.562\\.15\\.\\d+) deserialisointi epäonnistui: badRequest.validation.jsonSchema .+$$".r // Näkyy pääkäyttäjälle
         failed.files should have length 0 // Ei palauta tuloksia, joten ei myöskään tee auditlokitusta
       }
     }
@@ -1274,7 +1274,7 @@ class MassaluovutusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers wit
         val failed = waitForFailure(queryId, user)
 
         failed.status shouldBe QueryState.failed
-        failed.error.get should fullyMatch regex  s"^Oppijan ${KoskiSpecificMockOppijat.kelaRikkinäinenOpiskeluoikeus.oid} opiskeluoikeuden (1\\.2\\.246\\.562\\.15\\.\\d+) deserialisointi epäonnistui$$".r // Näkyy pääkäyttäjälle
+        failed.error.get should fullyMatch regex  s"^Oppijan ${KoskiSpecificMockOppijat.kelaRikkinäinenOpiskeluoikeus.oid} opiskeluoikeuden (1\\.2\\.246\\.562\\.15\\.\\d+) deserialisointi epäonnistui: badRequest.validation.jsonSchema .+$$".r // Näkyy pääkäyttäjälle
         failed.files should have length 0 // Ei palauta tuloksia, joten ei myöskään tee auditlokitusta
       }
     }

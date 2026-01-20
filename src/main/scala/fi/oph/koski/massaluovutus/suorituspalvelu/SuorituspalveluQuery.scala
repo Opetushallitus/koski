@@ -102,7 +102,7 @@ trait SuorituspalveluQuery extends OpetushallituksenMassaluovutusQueryParameters
         SupaOpiskeluoikeusO(oo, row.oppijaOid)
       case Left(errors) =>
         logger.warn(s"Error deserializing oppijan ${row.oppijaOid} opiskeluoikeus ${row.oid}: ${errors}")
-        throw new MassaluovutusException(s"Oppijan ${row.oppijaOid} opiskeluoikeuden ${row.oid} deserialisointi epäonnistui")
+        throw new MassaluovutusException(s"Oppijan ${row.oppijaOid} opiskeluoikeuden ${row.oid} deserialisointi epäonnistui: ${errors.errors.map(_.toString).mkString(", ")}")
     }
   }
 
