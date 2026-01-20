@@ -24,6 +24,7 @@ RUN corepack enable && corepack prepare pnpm@latest --activate
 COPY --from=server-builder /app/dist ./server/dist
 COPY --from=server-builder /app/pnpm-lock.yaml ./server/
 COPY --from=server-builder /app/package.json ./server/
+COPY ./server/public ./server/dist/public
 
 WORKDIR /app/server
 
