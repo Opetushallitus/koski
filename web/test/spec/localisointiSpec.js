@@ -30,7 +30,7 @@ describe('Lokalisointi', function () {
       return function () {
         var selector =
           '.localization-edit-bar .languages .' + lang + '.selected'
-        return Q()
+        return Promise.resolve()
           .then(click(S('.localization-edit-bar .languages .' + lang)))
           .then(wait.untilVisible(findSingle(selector)))
       }

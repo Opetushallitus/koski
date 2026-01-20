@@ -72,27 +72,27 @@ wait = {
   until: function (condition, maxWaitMs) {
     return function () {
       if (maxWaitMs === undefined) maxWaitMs = testTimeoutDefault
-      var deferred = Q.defer()
-      var count = Math.floor(maxWaitMs / wait.waitIntervalMs)
+      return new Promise(function (resolve, reject) {
+        var count = Math.floor(maxWaitMs / wait.waitIntervalMs)
 
-      ;(function waitLoop(remaining) {
-        if (condition()) {
-          deferred.resolve()
-        } else if (remaining === 0) {
-          const errorStr =
-            'timeout of ' +
-            maxWaitMs +
-            'ms in wait.until for condition:\n' +
-            condition
-          console.error(new Error(errorStr), condition)
-          deferred.reject(errorStr)
-        } else {
-          setTimeout(function () {
-            waitLoop(remaining - 1)
-          }, wait.waitIntervalMs)
-        }
-      })(count)
-      return deferred.promise
+        ;(function waitLoop(remaining) {
+          if (condition()) {
+            resolve()
+          } else if (remaining === 0) {
+            const errorStr =
+              'timeout of ' +
+              maxWaitMs +
+              'ms in wait.until for condition:\n' +
+              condition
+            console.error(new Error(errorStr), condition)
+            reject(errorStr)
+          } else {
+            setTimeout(function () {
+              waitLoop(remaining - 1)
+            }, wait.waitIntervalMs)
+          }
+        })(count)
+      })
     }
   },
   untilFalse: function (condition) {
@@ -102,11 +102,11 @@ wait = {
   },
   forMilliseconds: function (ms) {
     return function () {
-      var deferred = Q.defer()
-      setTimeout(function () {
-        deferred.resolve()
-      }, ms)
-      return deferred.promise
+      return new Promise(function (resolve) {
+        setTimeout(function () {
+          resolve()
+        }, ms)
+      })
     }
   },
   forAjax: function () {
@@ -152,7 +152,7 @@ function not(f) {
 }
 
 function getJson(url) {
-  return Q($.ajax({ url, dataType: 'json' }))
+  return Promise.resolve($.ajax({ url, dataType: 'json' }))
 }
 
 function postJson(url, data) {
@@ -168,7 +168,7 @@ function sendJson(url, data, method) {
 }
 
 function sendAjax(url, contentType, data, method) {
-  return Q(
+  return Promise.resolve(
     $.ajax({
       type: method,
       url,
@@ -245,7 +245,7 @@ function click(element) {
 function seq() {
   var tasks = Array.prototype.slice.call(arguments)
   return function () {
-    var promise = Q()
+    var promise = Promise.resolve()
     tasks.forEach(function (task) {
       promise = promise.then(task)
     })
@@ -305,7 +305,7 @@ function takeScreenshot(name) {
     if (window.callPhantom) {
       callPhantom({ screenshot: filename })
     } else {
-      return Q(
+      return Promise.resolve(
         html2canvas(testFrame().document.body).then(function (canvas) {
           $(document.body).append(
             $('<div>')
@@ -443,17 +443,17 @@ function toElement(el) {
 })()
 
 function resetFixtures() {
-  return Q($.ajax({ url: '/koski/fixtures/reset', method: 'post' }))
+  return Promise.resolve($.ajax({ url: '/koski/fixtures/reset', method: 'post' }))
 }
 
 function syncTiedonsiirrot() {
-  return Q(
+  return Promise.resolve(
     $.ajax({ url: '/koski/fixtures/sync-tiedonsiirrot', method: 'post' })
   )
 }
 
 function syncPerustiedot() {
-  return Q($.ajax({ url: '/koski/fixtures/sync-perustiedot', method: 'post' }))
+  return Promise.resolve($.ajax({ url: '/koski/fixtures/sync-perustiedot', method: 'post' }))
 }
 
 function mockHttp(url, result) {

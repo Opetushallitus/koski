@@ -91,7 +91,6 @@
     "postcss-preset-env": "^10.6.1",
     "prettier": "3.8.0",
     "puppeteer": "^24.35.0",
-    "q": "^1.5.1",
     "snyk": "^1.1302.0",
     "style-loader": "^4.0.0",
     "swc-loader": "^0.2.7",
