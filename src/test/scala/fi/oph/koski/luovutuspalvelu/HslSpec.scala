@@ -3,7 +3,6 @@ package fi.oph.koski.luovutuspalvelu
 import fi.oph.koski.api.misc.OpiskeluoikeusTestMethods
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat._
-import fi.oph.koski.koskiuser.{MockUser, MockUsers}
 import fi.oph.koski.log.AuditLogTester
 import fi.oph.koski.{KoskiApplicationForTests, KoskiHttpSpec}
 import fi.oph.koski.xml.NodeSeqImplicits._
@@ -20,31 +19,33 @@ class HslSpec extends AnyFreeSpec with KoskiHttpSpec with OpiskeluoikeusTestMeth
   val opiskelija = KoskiSpecificMockOppijat.markkanen
 
   "Hsl API" - {
-    "vaatii HSL käyttäjän" in {
-      KoskiApplicationForTests.mydataRepository.create(opiskelija.oid, "hsl")
-      MockUsers.users
-        .diff(List(MockUsers.hslKäyttäjä, MockUsers.suomiFiKäyttäjä))
-        .foreach { user =>
-          postHsl(user, opiskelija.hetu.get) {
-            verifySOAPError("forbidden.vainPalveluvayla", "Sallittu vain palveluväylän kautta")
-          }
-        }
-      postHsl(MockUsers.suomiFiKäyttäjä, opiskelija.hetu.get) {
+    "vaatii liityntäpalvelimen varmenteen" in {
+      postHslWithoutCertificate(opiskelija.hetu.get) {
+        verifySOAPError("unauthorized.notAuthenticated", "Käyttäjä ei ole tunnistautunut.")
+      }
+    }
+
+    "hylkää pyynnöt muilla kuin HSL X-Road clienteillä" in {
+      postHslWithSuomiFiXRoadClient(opiskelija.hetu.get) {
         verifySOAPError("forbidden.kiellettyKäyttöoikeus", "Ei sallittu näillä käyttöoikeuksilla")
       }
-      postHsl(MockUsers.hslKäyttäjä, ammattilainen.hetu.get) {
+    }
+
+    "vaatii mydata-suostumuksen" in {
+      KoskiApplicationForTests.mydataRepository.create(opiskelija.oid, "hsl")
+      postHsl(ammattilainen.hetu.get) {
         verifySOAPError("forbidden.vainSallittuKumppani", "X-ROAD-MEMBER:llä ei ole lupaa hakea opiskelijan tietoja")
       }
-      postHsl(MockUsers.hslKäyttäjä, "150966-5900") {
+      postHsl("150966-5900") {
         verifySOAPError("notFound.oppijaaEiLöydyTaiEiOikeuksia", "Oppijaa ei löydy annetulla oidilla tai käyttäjällä ei ole oikeuksia tietojen katseluun.")
       }
-      postHsl(MockUsers.hslKäyttäjä, opiskelija.hetu.get) {
+      postHsl(opiskelija.hetu.get) {
         verifyResponseStatusOk()
       }
     }
 
     "palauttaa oppilaan tiedot hetun perusteella" in {
-      postHsl(MockUsers.hslKäyttäjä, opiskelija.hetu.get) {
+      postHsl(opiskelija.hetu.get) {
         verifyResponseStatusOk()
         AuditLogTester.verifyLastAuditLogMessage(Map("operation" -> "OPISKELUOIKEUS_KATSOMINEN"))
 
@@ -54,7 +55,7 @@ class HslSpec extends AnyFreeSpec with KoskiHttpSpec with OpiskeluoikeusTestMeth
     }
 
     "henkilötiedoista vain oid ja syntymäaika" in {
-      postHsl(MockUsers.hslKäyttäjä, opiskelija.hetu.get) {
+      postHsl(opiskelija.hetu.get) {
         verifyResponseStatusOk()
         val actualJson = parseOpintoOikeudetJson()
         (actualJson \ "henkilö") should equal(JsonMethods.parse("""{"oid": "1.2.246.562.24.00000000003", "syntymäaika": "1954-01-08"}"""))
@@ -62,7 +63,7 @@ class HslSpec extends AnyFreeSpec with KoskiHttpSpec with OpiskeluoikeusTestMeth
     }
 
     "opiskeluoikeuden kentät" in {
-      postHsl(MockUsers.hslKäyttäjä, opiskelija.hetu.get) {
+      postHsl(opiskelija.hetu.get) {
         verifyResponseStatusOk()
         val actualJson = parseOpintoOikeudetJson()
         val opiskeluoikeudet = (actualJson \ "opiskeluoikeudet").children
@@ -76,7 +77,7 @@ class HslSpec extends AnyFreeSpec with KoskiHttpSpec with OpiskeluoikeusTestMeth
     }
 
     "tarkista opiskeluoikeus tila" in {
-      postHsl(MockUsers.hslKäyttäjä, opiskelija.hetu.get) {
+      postHsl(opiskelija.hetu.get) {
         verifyResponseStatusOk()
         val actualJson = parseOpintoOikeudetJson()
         val opiskeluoikeudet = (actualJson \ "opiskeluoikeudet").children
@@ -92,7 +93,7 @@ class HslSpec extends AnyFreeSpec with KoskiHttpSpec with OpiskeluoikeusTestMeth
 
     "tarkista opiskeluoikeus tila - ei tietoa opintojenRahoitus" in {
       KoskiApplicationForTests.mydataRepository.create(aikuisOpiskelijaMuuRahoitus.oid, "hsl")
-      postHsl(MockUsers.hslKäyttäjä, opiskelija.hetu.get) {
+      postHsl(opiskelija.hetu.get) {
         verifyResponseStatusOk()
         val opintoOikeudetXml = soapResponse() \ "Body" \ "opintoOikeudetServiceResponse" \ "opintoOikeudet"
         val opintoOikeudetJsonString = (opintoOikeudetXml.text)
@@ -111,7 +112,7 @@ class HslSpec extends AnyFreeSpec with KoskiHttpSpec with OpiskeluoikeusTestMeth
   }
 
   "tarkista opiskeluoikeus oppilaitos" in {
-    postHsl(MockUsers.hslKäyttäjä, opiskelija.hetu.get) {
+    postHsl(opiskelija.hetu.get) {
       verifyResponseStatusOk()
       val actualJson = parseOpintoOikeudetJson()
       val opiskeluoikeudet = (actualJson \ "opiskeluoikeudet").children
@@ -125,7 +126,8 @@ class HslSpec extends AnyFreeSpec with KoskiHttpSpec with OpiskeluoikeusTestMeth
   }
 
   "tarkista opiskeluoikeus arvioituPäättymispäivä" in {
-    postHsl(MockUsers.hslKäyttäjä, reformitutkinto.hetu.get) {
+    KoskiApplicationForTests.mydataRepository.create(reformitutkinto.oid, "hsl")
+    postHsl(reformitutkinto.hetu.get) {
       verifyResponseStatusOk()
       val actualJson = parseOpintoOikeudetJson()
       val opiskeluoikeudet = (actualJson \ "opiskeluoikeudet").children
@@ -140,7 +142,7 @@ class HslSpec extends AnyFreeSpec with KoskiHttpSpec with OpiskeluoikeusTestMeth
 
   "tarkista lisätiedot osaAikaisuusjaksot" in {
     KoskiApplicationForTests.mydataRepository.create(amis.oid, "hsl")
-    postHsl(MockUsers.hslKäyttäjä, amis.hetu.get) {
+    postHsl(amis.hetu.get) {
       verifyResponseStatusOk()
       val actualJson = parseOpintoOikeudetJson()
       val opiskeluoikeudet = (actualJson \ "opiskeluoikeudet").children
@@ -172,7 +174,7 @@ class HslSpec extends AnyFreeSpec with KoskiHttpSpec with OpiskeluoikeusTestMeth
   "ammatillinen opiskeluoikeus" - {
     "sisältää tiedon oppisopimuksesta jos olemassa" in {
       KoskiApplicationForTests.mydataRepository.create(reformitutkinto.oid, "hsl")
-      postHsl(MockUsers.hslKäyttäjä, reformitutkinto.hetu.get) {
+      postHsl(reformitutkinto.hetu.get) {
         verifyResponseStatusOk()
         val opintoOikeudetXml = soapResponse() \ "Body" \ "opintoOikeudetServiceResponse" \ "opintoOikeudet"
         val opintoOikeudetJsonString = (opintoOikeudetXml.text)
@@ -195,9 +197,9 @@ class HslSpec extends AnyFreeSpec with KoskiHttpSpec with OpiskeluoikeusTestMeth
       }
     }
 
-    "sisältää tiedon koulutussopimuksista jos olemassa" - {
+    "sisältää tiedon koulutussopimuksista jos olemassa" in {
       KoskiApplicationForTests.mydataRepository.create(reformitutkinto.oid, "hsl")
-      postHsl(MockUsers.hslKäyttäjä, reformitutkinto.hetu.get) {
+      postHsl(reformitutkinto.hetu.get) {
         verifyResponseStatusOk()
         val actualJson = parseOpintoOikeudetJson()
         val opiskeluoikeudet = (actualJson \ "opiskeluoikeudet").children
@@ -207,9 +209,9 @@ class HslSpec extends AnyFreeSpec with KoskiHttpSpec with OpiskeluoikeusTestMeth
       }
     }
 
-    "Palauttaa ammatillisen tutkinnon osan/osien suorituksen useasta tutkinnosta" - {
+    "Palauttaa ammatillisen tutkinnon osan/osien suorituksen useasta tutkinnosta" in {
       KoskiApplicationForTests.mydataRepository.create(osittainenAmmattitutkintoUseastaTutkinnostaKesken.oid, "hsl")
-      postHsl(MockUsers.hslKäyttäjä, osittainenAmmattitutkintoUseastaTutkinnostaKesken.hetu.get) {
+      postHsl(osittainenAmmattitutkintoUseastaTutkinnostaKesken.hetu.get) {
         verifyResponseStatusOk()
         val actualJson = parseOpintoOikeudetJson()
         val opiskeluoikeudet = (actualJson \ "opiskeluoikeudet").children
@@ -220,7 +222,7 @@ class HslSpec extends AnyFreeSpec with KoskiHttpSpec with OpiskeluoikeusTestMeth
 
   "korkeakoulun opiskeluoikeuden lisätiedot" in {
     KoskiApplicationForTests.mydataRepository.create(dippainssi.oid, "hsl")
-    postHsl(MockUsers.hslKäyttäjä, dippainssi.hetu.get) {
+    postHsl(dippainssi.hetu.get) {
       verifyResponseStatusOk()
       val actualJson = parseOpintoOikeudetJson()
       val opiskeluoikeudet = (actualJson \ "opiskeluoikeudet").children
@@ -232,7 +234,7 @@ class HslSpec extends AnyFreeSpec with KoskiHttpSpec with OpiskeluoikeusTestMeth
 
   "tarkista lukion oppimäärä - suorituksen tyyppi json" in {
     KoskiApplicationForTests.mydataRepository.create(uusiLukio.oid, "hsl")
-    postHsl(MockUsers.hslKäyttäjä, uusiLukio.hetu.get) {
+    postHsl(uusiLukio.hetu.get) {
       val opintoOikeudetXml = soapResponse() \ "Body" \ "opintoOikeudetServiceResponse" \ "opintoOikeudet"
       val opintoOikeudetJsonString = (opintoOikeudetXml.text)
       val actualJson = JsonMethods.parse(opintoOikeudetJsonString)
@@ -263,7 +265,7 @@ class HslSpec extends AnyFreeSpec with KoskiHttpSpec with OpiskeluoikeusTestMeth
     originalIsh should have size 1
     originalIsh.head.suoritukset should have size 13
 
-    postHsl(MockUsers.hslKäyttäjä, internationalschool.hetu.get) {
+    postHsl(internationalschool.hetu.get) {
       val opintoOikeudetXml = soapResponse() \ "Body" \ "opintoOikeudetServiceResponse" \ "opintoOikeudet"
       val opintoOikeudetJsonString = (opintoOikeudetXml.text)
       val actualJson = JsonMethods.parse(opintoOikeudetJsonString)
@@ -289,7 +291,7 @@ class HslSpec extends AnyFreeSpec with KoskiHttpSpec with OpiskeluoikeusTestMeth
     originalEsh should have size 1
     originalEsh.head.suoritukset should have size 15
 
-    postHsl(MockUsers.hslKäyttäjä, europeanSchoolOfHelsinki.hetu.get) {
+    postHsl(europeanSchoolOfHelsinki.hetu.get) {
       val opintoOikeudetXml = soapResponse() \ "Body" \ "opintoOikeudetServiceResponse" \ "opintoOikeudet"
       val opintoOikeudetJsonString = (opintoOikeudetXml.text)
       val actualJson = JsonMethods.parse(opintoOikeudetJsonString)
@@ -308,8 +310,24 @@ class HslSpec extends AnyFreeSpec with KoskiHttpSpec with OpiskeluoikeusTestMeth
   }
 
 
-  private def postHsl[A](user: MockUser, hetu: String)(fn: => A): A = {
-    post("api/palveluvayla/hsl", body = soapRequest(hetu), headers = authHeaders(user) ++ Map(("Content-type" -> "text/xml")))(fn)
+  private val mockSecurityServerHeader = Map(
+    "x-amzn-mtls-clientcert-subject" -> "CN=liityntapalvelin",
+    "x-amzn-mtls-clientcert-serial-number" -> "123",
+    "x-amzn-mtls-clientcert-issuer" -> "CN=mock-issuer",
+    "X-Forwarded-For" -> "0.0.0.0",
+    "Content-type" -> "text/xml"
+  )
+
+  private def postHsl[A](hetu: String)(fn: => A): A = {
+    post("api/palveluvayla/hsl", body = soapRequest(hetu), headers = mockSecurityServerHeader)(fn)
+  }
+
+  private def postHslWithoutCertificate[A](hetu: String)(fn: => A): A = {
+    post("api/palveluvayla/hsl", body = soapRequest(hetu), headers = Map("Content-type" -> "text/xml"))(fn)
+  }
+
+  private def postHslWithSuomiFiXRoadClient[A](hetu: String)(fn: => A): A = {
+    post("api/palveluvayla/hsl", body = soapRequestWithSuomiFiClient(hetu), headers = mockSecurityServerHeader)(fn)
   }
 
   private def verifySOAPError(faultstring: String, message: String): Unit = {
@@ -343,6 +361,37 @@ class HslSpec extends AnyFreeSpec with KoskiHttpSpec with OpiskeluoikeusTestMeth
           <id:memberCode>000000-1</id:memberCode>
           <id:subsystemCode>TestSystem</id:subsystemCode>
           <id:subsystemCode>testService</id:subsystemCode>
+        </xro:client>
+      </soapenv:Header>
+      <soapenv:Body>
+        <kns1:opintoOikeudetService>
+          <kns1:hetu>
+            {hetu}
+          </kns1:hetu>
+        </kns1:opintoOikeudetService>
+      </soapenv:Body>
+    </soapenv:Envelope>.toString()
+
+  private def soapRequestWithSuomiFiClient(hetu: String) =
+    <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xro="http://x-road.eu/xsd/xroad.xsd" xmlns:id="http://x-road.eu/xsd/identifiers" xmlns:prod="http://docs.koski-xroad.fi/producer">
+      <soapenv:Header>
+        <xro:protocolVersion>4.0</xro:protocolVersion>
+        <xro:issue>issue #123</xro:issue>
+        <xro:id>ID123456</xro:id>
+        <xro:userId>123456789</xro:userId>
+        <xro:service id:objectType="SERVICE">
+          <id:xRoadInstance>FI-TEST</id:xRoadInstance>
+          <id:memberClass>GOV</id:memberClass>
+          <id:memberCode>2769790-1</id:memberCode>
+          <id:subsystemCode>koski</id:subsystemCode>
+          <id:serviceCode>opintoOikeudetService</id:serviceCode>
+          <id:serviceVersion>v1</id:serviceVersion>
+        </xro:service>
+        <xro:client id:objectType="SUBSYSTEM">
+          <id:xRoadInstance>FI-TEST</id:xRoadInstance>
+          <id:memberClass>GOV</id:memberClass>
+          <id:memberCode>0245437-2</id:memberCode>
+          <id:subsystemCode>ServiceViewClient</id:subsystemCode>
         </xro:client>
       </soapenv:Header>
       <soapenv:Body>

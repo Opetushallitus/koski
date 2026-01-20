@@ -6,7 +6,7 @@ import fi.oph.koski.documentation.{AmmatillinenExampleData, ExamplesLukio2019}
 import fi.oph.koski.henkilo.{KoskiSpecificMockOppijat, LaajatOppijaHenkilöTiedot, OppijaHenkilöWithMasterInfo}
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.json.JsonSerializer
-import fi.oph.koski.koskiuser.{MockUser, MockUsers, UserWithPassword}
+import fi.oph.koski.koskiuser.{MockUsers, UserWithPassword}
 import fi.oph.koski.log.AuditLogTester
 import org.scalatest.BeforeAndAfterAll
 import org.scalatest.freespec.AnyFreeSpec
@@ -23,6 +23,20 @@ class YtlSpec
     with OpiskeluoikeudenMitätöintiJaPoistoTestMethods
     with Matchers
     with BeforeAndAfterAll {
+
+  private val ytlCertificateHeaders: Headers = Map(
+    "x-amzn-mtls-clientcert-subject" -> "CN=ytl",
+    "x-amzn-mtls-clientcert-serial-number" -> "123",
+    "x-amzn-mtls-clientcert-issuer" -> "CN=mock-issuer",
+    "X-Forwarded-For" -> "0.0.0.0"
+  )
+
+  private val nonYtlCertificateHeaders: Headers = Map(
+    "x-amzn-mtls-clientcert-subject" -> "CN=tilastokeskus",
+    "x-amzn-mtls-clientcert-serial-number" -> "123",
+    "x-amzn-mtls-clientcert-issuer" -> "CN=mock-issuer",
+    "X-Forwarded-For" -> "0.0.0.0"
+  )
 
   "YTL rajapinta" - {
     "Yhden oppijan hakeminen hetulla onnistuu ja tuottaa auditlog viestin" in {
@@ -362,7 +376,7 @@ class YtlSpec
         KoskiSpecificMockOppijat.amis
       ).map(_.hetu.get)
 
-      postHetut(hetut, None, MockUsers.tilastokeskusKäyttäjä) {
+      postHetut(hetut, None, useNonYtlCertificate = true) {
         verifyResponseStatus(403, KoskiErrorCategory.forbidden.kiellettyKäyttöoikeus("Ei sallittu näillä käyttöoikeuksilla"))
       }
     }
@@ -772,20 +786,21 @@ class YtlSpec
     }
   }
 
-  private def postHetut[A](hetut: List[String], opiskeluoikeuksiaMuuttunutJälkeen: Option[ZonedDateTime] = None, user: MockUser = MockUsers.ytlKäyttäjä)(f: => A): A =
-    postOppijat(None, Some(hetut), opiskeluoikeuksiaMuuttunutJälkeen, user)(f)
+  private def postHetut[A](hetut: List[String], opiskeluoikeuksiaMuuttunutJälkeen: Option[ZonedDateTime] = None, useNonYtlCertificate: Boolean = false)(f: => A): A =
+    postOppijat(None, Some(hetut), opiskeluoikeuksiaMuuttunutJälkeen, useNonYtlCertificate)(f)
 
-  private def postOidit[A](oidit: List[String], opiskeluoikeuksiaMuuttunutJälkeen: Option[ZonedDateTime] = None, user: MockUser = MockUsers.ytlKäyttäjä)(f: => A): A =
-    postOppijat(Some(oidit), None, opiskeluoikeuksiaMuuttunutJälkeen, user)(f)
+  private def postOidit[A](oidit: List[String], opiskeluoikeuksiaMuuttunutJälkeen: Option[ZonedDateTime] = None)(f: => A): A =
+    postOppijat(Some(oidit), None, opiskeluoikeuksiaMuuttunutJälkeen, useNonYtlCertificate = false)(f)
 
-  private def postOppijat[A](oidit: List[String], hetut: List[String], user: MockUser = MockUsers.ytlKäyttäjä)(f: => A): A =
-    postOppijat(Some(oidit), Some(hetut), None, user)(f)
+  private def postOppijat[A](oidit: List[String], hetut: List[String])(f: => A): A =
+    postOppijat(Some(oidit), Some(hetut), None, useNonYtlCertificate = false)(f)
 
-  private def postOppijat[A](oidit: Option[List[String]], hetut: Option[List[String]], opiskeluoikeuksiaMuuttunutJälkeen: Option[ZonedDateTime], user: MockUser)(f: => A): A = {
+  private def postOppijat[A](oidit: Option[List[String]], hetut: Option[List[String]], opiskeluoikeuksiaMuuttunutJälkeen: Option[ZonedDateTime], useNonYtlCertificate: Boolean)(f: => A): A = {
+    val certHeaders = if (useNonYtlCertificate) nonYtlCertificateHeaders else ytlCertificateHeaders
     post(
       "api/luovutuspalvelu/ytl/oppijat",
       JsonSerializer.writeWithRoot(YtlBulkRequest(oidit = oidit, hetut = hetut, opiskeluoikeuksiaMuuttunutJälkeen = opiskeluoikeuksiaMuuttunutJälkeen.map(_.format(ISO_INSTANT)))),
-      headers = authHeaders(user) ++ jsonContent
+      headers = certHeaders ++ jsonContent
     )(f)
   }
   private def expectedMaksuttomuuttaPidennetty2(opiskeluoikeusOidit: Seq[String], aikaleimat: Seq[String]) =

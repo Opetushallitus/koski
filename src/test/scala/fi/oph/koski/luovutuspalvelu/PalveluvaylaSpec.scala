@@ -2,7 +2,7 @@ package fi.oph.koski.luovutuspalvelu
 
 import fi.oph.koski.api.misc.OpiskeluoikeusTestMethods
 import fi.oph.koski.henkilo.{KoskiSpecificMockOppijat, LaajatOppijaHenkilöTiedot}
-import fi.oph.koski.koskiuser.{MockUser, MockUsers}
+import fi.oph.koski.koskiuser.MockUsers
 import fi.oph.koski.log.AuditLogTester
 import fi.oph.koski.{KoskiApplicationForTests, KoskiHttpSpec}
 import fi.oph.koski.xml.NodeSeqImplicits._
@@ -18,59 +18,20 @@ class PalveluvaylaSpec extends AnyFreeSpec with KoskiHttpSpec with Opiskeluoikeu
       KoskiApplicationForTests.config.getString("suomi-fi-user-oid") shouldEqual MockUsers.suomiFiKäyttäjä.oid
     }
 
-    "vaatii suomi.fi käyttäjän" in {
-      MockUsers.users
-        .diff(List(MockUsers.suomiFiKäyttäjä, MockUsers.hslKäyttäjä))
-        .foreach { user =>
-          postSuomiFiRekisteritiedot(user, KoskiSpecificMockOppijat.ylioppilas.hetu.get) {
-            verifySOAPError("forbidden.vainPalveluvayla", "Sallittu vain palveluväylän kautta")
-          }
-        }
-      postSuomiFiRekisteritiedot(MockUsers.hslKäyttäjä, KoskiSpecificMockOppijat.ylioppilas.hetu.get) {
-        verifySOAPError("forbidden.kiellettyKäyttöoikeus", "Ei sallittu näillä käyttöoikeuksilla")
-      }
-      postSuomiFiRekisteritiedot(MockUsers.suomiFiKäyttäjä, KoskiSpecificMockOppijat.ylioppilas.hetu.get) {
-        verifyResponseStatusOk()
+    "vaatii liityntäpalvelimen varmenteen" in {
+      postSuomiFiRekisteritiedotWithoutCertificate(KoskiSpecificMockOppijat.ylioppilas.hetu.get) {
+        verifySOAPError("unauthorized.notAuthenticated", "Käyttäjä ei ole tunnistautunut.")
       }
     }
 
-    "Vaatii Suomi:fi X-Road clientin (Luovutuspalvelu V2)" in {
-      postSuomiFiRekisteritiedotWithInvalidXRoadClient(KoskiSpecificMockOppijat.ylioppilas.hetu.get) {
+    "hylkää pyynnöt muilla kuin suomi.fi X-Road clienteillä" in {
+      postSuomiFiRekisteritiedotWithHslXRoadClient(KoskiSpecificMockOppijat.ylioppilas.hetu.get) {
         verifySOAPError("forbidden.kiellettyKäyttöoikeus", "Ei sallittu näillä käyttöoikeuksilla")
       }
     }
 
     "palauttaa oppilaan tiedot hetun perusteella - vain osa opiskeluoikeuden kentistä mukana" in {
-      postSuomiFiRekisteritiedot(MockUsers.suomiFiKäyttäjä, KoskiSpecificMockOppijat.ylioppilas.hetu.get) {
-        verifyResponseStatusOk()
-        AuditLogTester.verifyLastAuditLogMessage(Map("operation" -> "KANSALAINEN_SUOMIFI_KATSOMINEN"))
-        val oppilaitokset = (soapResponse() \ "Body" \ "suomiFiRekisteritiedotResponse" \ "oppilaitokset").head
-        oppilaitokset shouldEqual Utility.trim(
-          <oppilaitokset>
-            <oppilaitos>
-              <nimi>
-                <fi>Helsingin medialukio</fi>
-                <sv>Helsingin medialukio</sv>
-                <en>Helsingin medialukio</en>
-              </nimi>
-              <opiskeluoikeudet>
-                <opiskeluoikeus>
-                  <nimi>
-                    <fi>Ylioppilastutkinto</fi>
-                    <sv>Studentexamen</sv>
-                    <en>Matriculation Examination</en>
-                  </nimi>
-                </opiskeluoikeus>
-              </opiskeluoikeudet>
-            </oppilaitos>
-          </oppilaitokset>
-        )
-      }
-    }
-
-    "Toimii myös Luovutuspalvelu V2:lla" in {
-      // TODO muuta kaikki testit käyttämään Luovutuspalvelu V2:sta kun basicAuth poistuu käytöstä
-      postSuomiFiRekisteritiedot(MockUsers.suomiFiKäyttäjä, KoskiSpecificMockOppijat.ylioppilas.hetu.get, useLuovutuspalveluV2 = true) {
+      postSuomiFiRekisteritiedot(KoskiSpecificMockOppijat.ylioppilas.hetu.get) {
         verifyResponseStatusOk()
         AuditLogTester.verifyLastAuditLogMessage(Map("operation" -> "KANSALAINEN_SUOMIFI_KATSOMINEN"))
         val oppilaitokset = (soapResponse() \ "Body" \ "suomiFiRekisteritiedotResponse" \ "oppilaitokset").head
@@ -98,7 +59,7 @@ class PalveluvaylaSpec extends AnyFreeSpec with KoskiHttpSpec with Opiskeluoikeu
     }
 
     "palauttaa oppilaan tiedot hetun perusteella - kaikki opiskeluoikeuden kentät mukana" in {
-      postSuomiFiRekisteritiedot(MockUsers.suomiFiKäyttäjä, KoskiSpecificMockOppijat.ammattilainen.hetu.get) {
+      postSuomiFiRekisteritiedot(KoskiSpecificMockOppijat.ammattilainen.hetu.get) {
         verifyResponseStatusOk()
         AuditLogTester.verifyLastAuditLogMessage(Map("operation" -> "KANSALAINEN_SUOMIFI_KATSOMINEN"))
         val oppilaitokset = (soapResponse() \ "Body" \ "suomiFiRekisteritiedotResponse" \ "oppilaitokset").head
@@ -133,7 +94,7 @@ class PalveluvaylaSpec extends AnyFreeSpec with KoskiHttpSpec with Opiskeluoikeu
 
     "palauttaa tyhjän lista oppilaitoksia jos oppilasta ei löydy hetun perusteella" in {
       List("261125-1531", "210130-5616", "080278-8433", "061109-011D", "070696-522Y", "010844-509V").foreach { hetu =>
-        postSuomiFiRekisteritiedot(MockUsers.suomiFiKäyttäjä, hetu) {
+        postSuomiFiRekisteritiedot(hetu) {
           verifyResponseStatusOk()
           val oppilaitokset = (soapResponse() \ "Body" \ "suomiFiRekisteritiedotResponse" \ "oppilaitokset").head
           oppilaitokset.child shouldBe empty
@@ -142,7 +103,7 @@ class PalveluvaylaSpec extends AnyFreeSpec with KoskiHttpSpec with Opiskeluoikeu
     }
 
     "palauttaa SOAP-virheen jos Virta-palvelu ei vastaa" in {
-      postSuomiFiRekisteritiedot(MockUsers.suomiFiKäyttäjä, KoskiSpecificMockOppijat.virtaEiVastaa.hetu.get) {
+      postSuomiFiRekisteritiedot(KoskiSpecificMockOppijat.virtaEiVastaa.hetu.get) {
         verifySOAPError("unavailable.virta", "Korkeakoulutuksen opiskeluoikeuksia ei juuri nyt saada haettua. Yritä myöhemmin uudelleen.")
       }
     }
@@ -194,7 +155,7 @@ class PalveluvaylaSpec extends AnyFreeSpec with KoskiHttpSpec with Opiskeluoikeu
   private def ensimmäisenSuorituksenNimiRekisteritiedoissa(oppija: LaajatOppijaHenkilöTiedot): String =
     (haeSuomiFiRekisteritiedot(oppija) \ "oppilaitokset" \ "oppilaitos" \ "opiskeluoikeudet" \ "opiskeluoikeus" \ "nimi" \ "fi").head.text
 
-  private def haeSuomiFiRekisteritiedot(oppija: LaajatOppijaHenkilöTiedot): NodeSeq = postSuomiFiRekisteritiedot(MockUsers.suomiFiKäyttäjä, oppija.hetu.get) {
+  private def haeSuomiFiRekisteritiedot(oppija: LaajatOppijaHenkilöTiedot): NodeSeq = postSuomiFiRekisteritiedot(oppija.hetu.get) {
     verifyResponseStatusOk()
     soapResponse() \ "Body" \ "suomiFiRekisteritiedotResponse"
   }
@@ -206,12 +167,15 @@ class PalveluvaylaSpec extends AnyFreeSpec with KoskiHttpSpec with Opiskeluoikeu
     "X-Forwarded-For" -> "0.0.0.0"
   )
 
-  private def postSuomiFiRekisteritiedot[A](user: MockUser, hetu: String, useLuovutuspalveluV2: Boolean = false)(fn: => A): A = {
-    post("api/palveluvayla/suomi-fi-rekisteritiedot", body = soapRequest(hetu),
-      headers = (if (useLuovutuspalveluV2) mockSecurityServerHeader else authHeaders(user)) ++ Map(("Content-type" -> "text/xml")))(fn)
+  private def postSuomiFiRekisteritiedot[A](hetu: String)(fn: => A): A = {
+    post("api/palveluvayla/suomi-fi-rekisteritiedot", body = soapRequest(hetu), headers = mockSecurityServerHeader)(fn)
   }
 
-  private def postSuomiFiRekisteritiedotWithInvalidXRoadClient[A](hetu: String)(fn: => A): A = {
+  private def postSuomiFiRekisteritiedotWithoutCertificate[A](hetu: String)(fn: => A): A = {
+    post("api/palveluvayla/suomi-fi-rekisteritiedot", body = soapRequest(hetu), headers = Map("Content-type" -> "text/xml"))(fn)
+  }
+
+  private def postSuomiFiRekisteritiedotWithHslXRoadClient[A](hetu: String)(fn: => A): A = {
     post("api/palveluvayla/suomi-fi-rekisteritiedot", body = soapRequestWithHSLClient(hetu),
       headers = mockSecurityServerHeader ++ Map("Content-type" -> "text/xml"))(fn)
   }

@@ -35,6 +35,6 @@ trait LuovutuspalveluXroadAuthenticationSupport extends AuthenticationSupport wi
             .findUser(application.directoryClient, request, clientUsername)
             .toRight(KoskiErrorCategory.unauthorized.loginFail())
         } yield user
-    ).getOrElse(userFromBasicAuth)
+    ).getOrElse(Left(KoskiErrorCategory.unauthorized.notAuthenticated()))
   }
 }

@@ -21,6 +21,13 @@ class OmaDataOAuth2TestBase extends AnyFreeSpec with KoskiHttpSpec with Matchers
   protected def base64UrlEncode(str: String): String = Base64.getUrlEncoder().encodeToString(str.getBytes("UTF-8"))
   protected def base64UrlDecode(str: String): String = new String(Base64.getUrlDecoder().decode(str), "UTF-8")
 
+  protected def certificateHeaders(user: KoskiMockUser): Headers = Map(
+    "x-amzn-mtls-clientcert-subject" -> s"CN=${user.username}",
+    "x-amzn-mtls-clientcert-serial-number" -> "123",
+    "x-amzn-mtls-clientcert-issuer" -> "CN=mock-issuer",
+    "X-Forwarded-For" -> "0.0.0.0"
+  )
+
   val authorizeFrontendBaseUri = "omadata-oauth2/authorize"
   val authorizeBaseUri = "api/omadata-oauth2/resource-owner/authorize"
   val postResponseBaseUri = "omadata-oauth2/post-response"
@@ -183,7 +190,7 @@ class OmaDataOAuth2TestBase extends AnyFreeSpec with KoskiHttpSpec with Matchers
   {
     post(uri = "api/omadata-oauth2/authorization-server",
       body = createFormParametersBody(grantType, code, codeVerifier, clientId, redirectUri),
-      headers = authHeaders(user) ++ formContent)(f)
+      headers = certificateHeaders(user) ++ formContent)(f)
   }
 
   def createFormParametersBody(grantType: Option[String], code: Option[String], codeVerifier: Option[String], clientId: Option[String], redirectUri: Option[String]): Array[Byte] = {
