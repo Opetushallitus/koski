@@ -290,3 +290,8 @@ case class KelaOpiskeluvalmiuksiaTukevienOpintojenJakso(
   loppu: LocalDate,
   kuvaus: schema.LocalizedString
 )
+
+case class KelaTukijakso(
+  alku: Option[LocalDate],
+  loppu: Option[LocalDate]
+) extends KelaMahdollisestiAlkupäivällinenJakso
