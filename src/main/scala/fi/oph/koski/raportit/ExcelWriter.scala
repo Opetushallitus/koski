@@ -49,21 +49,28 @@ object ExcelWriter {
         // based on https://github.com/apache/poi/blob/f509d1deae86866ed531f10f2eba7db17e098473/src/examples/src/org/apache/poi/xssf/streaming/examples/SavePasswordProtectedXlsx.java
         val tempData = new EncryptedTempData
         try {
-          wb.write(tempData.getOutputStream)
+          val tempOut = tempData.getOutputStream
+          wb.write(tempOut)
+          tempOut.close()
+
           val opc = OPCPackage.open(tempData.getInputStream)
           val fs = new POIFSFileSystem
           val enc = Encryptor.getInstance(new EncryptionInfo(EncryptionMode.agile))
           enc.confirmPassword(workbookSettings.password.get)
-          opc.save(enc.getDataStream(fs))
+          val encOut = enc.getDataStream(fs)
+          opc.save(encOut)
+          encOut.close()
+          opc.close()
           fs.writeFilesystem(out)
+          fs.close()
         } finally {
           tempData.dispose()
         }
       }
       out.close()
     } finally {
-      // deletes temporary files from disk
-      wb.dispose()
+      // close() also deletes temporary files from disk (dispose() is deprecated in POI 5.x)
+      wb.close()
     }
   }
 
@@ -99,7 +106,7 @@ object ExcelWriter {
   }
 
   private def writeDataSheet(wb: SXSSFWorkbook, sh: SXSSFSheet, dataSheet: SheetWithColumnSettings, t: BooleanCellStyleLocalizedValues): Unit = {
-    addIgnoredErrors(sh)
+    addIgnoredErrors(sh, wb)
 
     val sheetHasGroupingHeaders = dataSheet.columnSettingsWithIndex.map(_._1).exists(_.groupingTitle.isDefined)
     val cellHeaderRownumber = if (sheetHasGroupingHeaders) secondRow else firstRow
@@ -167,12 +174,11 @@ object ExcelWriter {
     }
   }
 
-  private def addIgnoredErrors(sh: SXSSFSheet) = {
-    // SXSSFSheet does not expose "addIgnoredErrors" method. Hack around this.
-    // based on https://stackoverflow.com/questions/47477912/apache-poi-how-to-use-addignorederrors-functionality-in-sxssfsheet
-    val hiddenShField = classOf[SXSSFSheet].getDeclaredField("_sh")
-    hiddenShField.setAccessible(true)
-    hiddenShField.get(sh).asInstanceOf[XSSFSheet].addIgnoredErrors(new CellRangeAddress(0, 999999, 0, 999), IgnoredErrorType.NUMBER_STORED_AS_TEXT)
+  private def addIgnoredErrors(sh: SXSSFSheet, wb: SXSSFWorkbook) = {
+    wb.getXSSFWorkbook.getSheet(sh.getSheetName).addIgnoredErrors(
+      new CellRangeAddress(0, 999999, 0, 999),
+      IgnoredErrorType.NUMBER_STORED_AS_TEXT
+    )
   }
 
   private def createHeadingRow(sh: SXSSFSheet, rownumber: Int) = {
