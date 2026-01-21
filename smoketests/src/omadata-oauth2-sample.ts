@@ -3,6 +3,12 @@ import puppeteer, { Page } from "puppeteer";
 
 type Environment = "local" | "dev" | "qa";
 
+type TestPerson = {
+  kutsumanimi: string,
+  hetu: string,
+  syntymäaika: string,
+}
+
 const RETRIES = 3;
 const TIMEOUT_MS = 30000;
 
@@ -10,6 +16,12 @@ const ENVIRONMENTS: Record<Environment, string> = {
   local: process.env.OMADATA_URL || "http://localhost:7051",
   dev: "https://oph-koski-omadataoauth2sample-dev.testiopintopolku.fi",
   qa: "https://oph-koski-omadataoauth2sample-qa.testiopintopolku.fi",
+};
+
+const TestPersons: Record<Environment, TestPerson> = {
+  dev: {hetu: "210281-9988", kutsumanimi: "Nordea", syntymäaika: "1981-02-21"},
+  qa: {hetu: "210281-9988", kutsumanimi: "Nordea", syntymäaika: "1981-02-21"},
+  local: {hetu: "210281-8715", kutsumanimi: "Nordea", syntymäaika: "1981-02-21"}
 };
 
 const clickAndWait = async (
@@ -73,10 +85,10 @@ const withRetries = async <T>(
   throw lastError;
 };
 
-const suomiFiLogin = async (page: Page, opts: { local: boolean }) => {
+const suomiFiLogin = async (page: Page, testPerson: TestPerson, opts: { local: boolean }) => {
   if (opts.local) {
     await page.waitForSelector("#hetu");
-    await page.type("#hetu", "210281-8715");
+    await page.type("#hetu", testPerson.hetu);
     await clickAndWait(page, "button.koski-button.blue", {
       navigation: true,
     });
@@ -101,7 +113,7 @@ const expectPerson = (
   }
 };
 
-const authorizeAndVerifyData = async (page: Page) => {
+const authorizeAndVerifyData = async (page: Page, testPerson: TestPerson) => {
   await waitForUrlPart(page, "omadata-oauth2/authorize");
 
   await expectTexts(page, [
@@ -121,12 +133,9 @@ const authorizeAndVerifyData = async (page: Page) => {
   const json = JSON.parse(raw) as { henkilö?: Record<string, unknown> };
 
   console.log("Check that assumed data is visible")
-  expectPerson(json.henkilö ?? {}, {
-    kutsumanimi: "Nordea",
-    hetu: "210281-8715",
-    syntymäaika: "1981-02-21",
-  });
+  expectPerson(json.henkilö ?? {}, testPerson);
 };
+
 
 const runTest = async (environment: Environment) =>
   withRetries(RETRIES, async attempt => {
@@ -152,8 +161,10 @@ const runTest = async (environment: Environment) =>
         { navigation: true }
       );
 
-      await suomiFiLogin(page, { local: isLocal });
-      await authorizeAndVerifyData(page);
+      const testPerson = TestPersons[environment]
+
+      await suomiFiLogin(page, testPerson, { local: isLocal });
+      await authorizeAndVerifyData(page, testPerson);
 
       console.log("Smoke test succeeded");
     } finally {
