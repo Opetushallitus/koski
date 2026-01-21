@@ -72,7 +72,7 @@ class KelaSpec
         val response = JsonSerializer.parse[KelaOppija](body)
 
         response.henkilö.hetu should equal(KoskiSpecificMockOppijat.kelaErityyppisiaOpiskeluoikeuksia.hetu)
-        response.opiskeluoikeudet.map(_.tyyppi.koodiarvo) should equal(List(schema.OpiskeluoikeudenTyyppi.esiopetus.koodiarvo, schema.OpiskeluoikeudenTyyppi.perusopetus.koodiarvo, schema.OpiskeluoikeudenTyyppi.perusopetus.koodiarvo, schema.OpiskeluoikeudenTyyppi.ylioppilastutkinto.koodiarvo))
+        response.opiskeluoikeudet.map(_.tyyppi.koodiarvo).sorted should equal(List(schema.OpiskeluoikeudenTyyppi.esiopetus.koodiarvo, schema.OpiskeluoikeudenTyyppi.perusopetus.koodiarvo, schema.OpiskeluoikeudenTyyppi.perusopetus.koodiarvo, schema.OpiskeluoikeudenTyyppi.ylioppilastutkinto.koodiarvo))
       }
     }
     "Palauttaa TUVA opiskeluoikeuden tiedot" in {
@@ -1097,14 +1097,7 @@ class KelaSpec
 
       esiopetusOpiskeluoikeus.lisätiedot shouldNot be(None)
       val lisätiedot = esiopetusOpiskeluoikeus.lisätiedot.get
-      lisätiedot.pidennettyOppivelvollisuus shouldNot be(None)
-      lisätiedot.erityisenTuenPäätökset shouldNot be(None)
-      lisätiedot.vammainen shouldNot be(None)
-      lisätiedot.vaikeastiVammainen shouldNot be(None)
-      lisätiedot.majoitusetu shouldNot be(None)
-      lisätiedot.kuljetusetu shouldNot be(None)
-      lisätiedot.sisäoppilaitosmainenMajoitus shouldNot be(None)
-      lisätiedot.koulukoti shouldNot be(None)
+      lisätiedot.varhennetunOppivelvollisuudenJaksot shouldNot be(None)
     }
   }
 

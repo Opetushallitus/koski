@@ -37,9 +37,7 @@ case class KelaEsiopetuksenOpiskeluoikeus(
 
 case class KelaEsiopetuksenOpiskeluoikeudenLisätiedot(
   @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KELA_LAAJA))
-  varhennetunOppivelvollisuudenJaksot: Option[List[KelaAikajakso]],
-  @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KELA_LAAJA))
-  tuenPäätöksenJaksot: Option[List[KelaTukijakso]]
+  varhennetunOppivelvollisuudenJaksot: Option[List[KelaAikajakso]]
 ) extends OpiskeluoikeudenLisätiedot
 
 @Title("Esiopetuksen suoritus")
@@ -58,8 +56,3 @@ case class KelaEsiopetus(
   perusteenDiaarinumero: Option[String],
   koulutustyyppi: Option[KelaKoodistokoodiviite]
 ) extends SuorituksenKoulutusmoduuli
-
-case class KelaTukijakso(
-  alku: Option[LocalDate],
-  loppu: Option[LocalDate]
-) extends KelaMahdollisestiAlkupäivällinenJakso
