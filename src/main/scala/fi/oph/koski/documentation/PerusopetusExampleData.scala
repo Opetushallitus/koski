@@ -121,6 +121,15 @@ object PerusopetusExampleData {
       perusopetuksenOppimääränSuoritus.copy(toimipiste = toimipiste))
   )
 
+  def päättötodistusOpiskeluoikeusUusillaLisätiedoilla(oppilaitos: Oppilaitos = jyväskylänNormaalikoulu, toimipiste: OrganisaatioWithOid = jyväskylänNormaalikoulu) =
+    päättötodistusOpiskeluoikeus(oppilaitos, toimipiste).copy(
+      lisätiedot = Some(PerusopetuksenOpiskeluoikeudenLisätiedot(
+        opetuksenJärjestäminenVammanSairaudenTaiRajoitteenPerusteella = Some(List(Aikajakso(date(2027, 1, 2), Some(date(2027, 6, 4))))),
+        toimintaAlueittainOpiskelu = Some(List(Aikajakso(date(2026, 8, 1), Some(date(2027, 1, 1))))),
+        tuenPäätöksenJaksot = Some(List(Tukijakso(Some(date(2026, 8, 1)), Some(date(2027, 6, 4)))))
+      ))
+    )
+
   def suoritusTuplana() = opiskeluoikeus(
     oppilaitos = jyväskylänNormaalikoulu,
     suoritukset = List(
