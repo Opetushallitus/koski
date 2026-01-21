@@ -72,7 +72,7 @@ class KelaSpec
         val response = JsonSerializer.parse[KelaOppija](body)
 
         response.henkilö.hetu should equal(KoskiSpecificMockOppijat.kelaErityyppisiaOpiskeluoikeuksia.hetu)
-        response.opiskeluoikeudet.map(_.tyyppi.koodiarvo) should equal(List(schema.OpiskeluoikeudenTyyppi.perusopetus.koodiarvo, schema.OpiskeluoikeudenTyyppi.perusopetus.koodiarvo, schema.OpiskeluoikeudenTyyppi.ylioppilastutkinto.koodiarvo))
+        response.opiskeluoikeudet.map(_.tyyppi.koodiarvo) should equal(List(schema.OpiskeluoikeudenTyyppi.esiopetus.koodiarvo, schema.OpiskeluoikeudenTyyppi.perusopetus.koodiarvo, schema.OpiskeluoikeudenTyyppi.perusopetus.koodiarvo, schema.OpiskeluoikeudenTyyppi.ylioppilastutkinto.koodiarvo))
       }
     }
     "Palauttaa TUVA opiskeluoikeuden tiedot" in {
@@ -1076,6 +1076,35 @@ class KelaSpec
           a.hyväksytty.isDefined should be (true)
         }))
       }))))
+    }
+  }
+
+  "Palauttaa esiopetuksen opiskeluoikeuden" in {
+    postHetu(KoskiSpecificMockOppijat.eskariAikaisillaLisätiedoilla.hetu.get) {
+      verifyResponseStatusOk()
+
+      val oppija = JsonSerializer.parse[KelaOppija](body)
+      oppija.opiskeluoikeudet.length should be(1)
+
+      val esiopetusOpiskeluoikeus = oppija.opiskeluoikeudet.head match {
+        case x: KelaEsiopetuksenOpiskeluoikeus => x
+      }
+
+      esiopetusOpiskeluoikeus.tyyppi.koodiarvo shouldBe "esiopetus"
+      esiopetusOpiskeluoikeus.suoritukset.length shouldBe 1
+      esiopetusOpiskeluoikeus.suoritukset.head.tyyppi.koodiarvo shouldBe "esiopetuksensuoritus"
+      esiopetusOpiskeluoikeus.suoritukset.head.koulutusmoduuli.tunniste.koodiarvo shouldBe "001101"
+
+      esiopetusOpiskeluoikeus.lisätiedot shouldNot be(None)
+      val lisätiedot = esiopetusOpiskeluoikeus.lisätiedot.get
+      lisätiedot.pidennettyOppivelvollisuus shouldNot be(None)
+      lisätiedot.erityisenTuenPäätökset shouldNot be(None)
+      lisätiedot.vammainen shouldNot be(None)
+      lisätiedot.vaikeastiVammainen shouldNot be(None)
+      lisätiedot.majoitusetu shouldNot be(None)
+      lisätiedot.kuljetusetu shouldNot be(None)
+      lisätiedot.sisäoppilaitosmainenMajoitus shouldNot be(None)
+      lisätiedot.koulukoti shouldNot be(None)
     }
   }
 
