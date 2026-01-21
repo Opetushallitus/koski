@@ -15,6 +15,8 @@ case class SupaPerusopetuksenOpiskeluoikeus(
   koulutustoimija: Option[Koulutustoimija],
   oppilaitos: Option[Oppilaitos],
   tila: NuortenPerusopetuksenOpiskeluoikeudenTila,
+  alkamispäivä: Option[LocalDate],
+  päättymispäivä: Option[LocalDate],
   suoritukset: List[SupaPerusopetuksenPäätasonSuoritus],
   lisätiedot: Option[SupaPerusopetuksenOpiskeluoikeudenLisätiedot],
   versionumero: Option[Int],
@@ -30,6 +32,8 @@ object SupaPerusopetuksenOpiskeluoikeus {
       koulutustoimija = oo.koulutustoimija,
       oppilaitos = oo.oppilaitos,
       tila = oo.tila,
+      alkamispäivä = oo.alkamispäivä,
+      päättymispäivä = oo.päättymispäivä,
       suoritukset = oo.suoritukset.flatMap(SupaPerusopetuksenPäätasonSuoritus.apply),
       lisätiedot = oo.lisätiedot.flatMap(SupaPerusopetuksenOpiskeluoikeudenLisätiedot.apply),
       versionumero = oo.versionumero,
@@ -92,6 +96,7 @@ case class SupaPerusopetuksenYhdeksännenVuosiluokanSuoritus(
   @KoodistoKoodiarvo("perusopetuksenvuosiluokka")
   tyyppi: Koodistokoodiviite,
   koulutusmoduuli: PerusopetuksenLuokkaAste,
+  luokka: String,
   alkamispäivä: Option[LocalDate],
   vahvistus: Option[SupaVahvistus],
   suorituskieli: Koodistokoodiviite,
@@ -106,6 +111,7 @@ object SupaPerusopetuksenYhdeksännenVuosiluokanSuoritus {
     SupaPerusopetuksenYhdeksännenVuosiluokanSuoritus(
       tyyppi = s.tyyppi,
       koulutusmoduuli = s.koulutusmoduuli,
+      luokka = s.luokka,
       alkamispäivä = s.alkamispäivä,
       vahvistus = s.vahvistus.map(v => SupaVahvistus(v.päivä)),
       suorituskieli = s.suorituskieli,

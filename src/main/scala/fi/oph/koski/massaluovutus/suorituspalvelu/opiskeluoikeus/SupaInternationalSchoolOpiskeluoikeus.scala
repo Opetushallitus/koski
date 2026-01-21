@@ -17,6 +17,8 @@ case class SupaInternationalSchoolOpiskeluoikeus(
   koulutustoimija: Option[Koulutustoimija],
   oppilaitos: Option[Oppilaitos],
   tila: InternationalSchoolOpiskeluoikeudenTila,
+  alkamispäivä: Option[LocalDate],
+  päättymispäivä: Option[LocalDate],
   suoritukset: List[SupaDiplomaVuosiluokanSuoritus],
   versionumero: Option[Int],
   aikaleima: Option[LocalDateTime],
@@ -32,6 +34,8 @@ object SupaInternationalSchoolOpiskeluoikeus {
         koulutustoimija = oo.koulutustoimija,
         oppilaitos = oo.oppilaitos,
         tila = oo.tila,
+        alkamispäivä = oo.alkamispäivä,
+        päättymispäivä = oo.päättymispäivä,
         suoritukset = oo.suoritukset.flatMap {
           case s: DiplomaVuosiluokanSuoritus => SupaDiplomaVuosiluokanSuoritus(s)
           case _ => None

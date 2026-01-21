@@ -17,6 +17,8 @@ case class SupaIBOpiskeluoikeus(
   koulutustoimija: Option[Koulutustoimija],
   oppilaitos: Option[Oppilaitos],
   tila: LukionOpiskeluoikeudenTila,
+  alkamispäivä: Option[LocalDate],
+  päättymispäivä: Option[LocalDate],
   suoritukset: List[SupaIBTutkinnonSuoritus],
   versionumero: Option[Int],
   aikaleima: Option[LocalDateTime],
@@ -32,6 +34,8 @@ object SupaIBOpiskeluoikeus {
         koulutustoimija = oo.koulutustoimija,
         oppilaitos = oo.oppilaitos,
         tila = oo.tila,
+        alkamispäivä = oo.alkamispäivä,
+        päättymispäivä = oo.päättymispäivä,
         suoritukset = oo.suoritukset.collect {
           case s: IBTutkinnonSuoritus => SupaIBTutkinnonSuoritus(s)
         },
