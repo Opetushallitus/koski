@@ -51,6 +51,10 @@ case class KelaPerusopetuksenOpiskeluoikeudenLisätiedot(
   joustavaPerusopetus: Option[KelaAikajakso],
   @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KELA_LAAJA))
   erityisenTuenPäätökset: Option[List[KelaErityisenTuenPäätösPerusopetus]],
+  @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KELA_LAAJA))
+  opetuksenJärjestäminenVammanSairaudenTaiRajoitteenPerusteella: Option[List[KelaAikajakso]],
+  @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KELA_LAAJA))
+  toimintaAlueittainOpiskelu: Option[List[KelaAikajakso]]
 ) extends OpiskeluoikeudenLisätiedot
 
 @Title("Perusopetuksen suoritus")
