@@ -16,23 +16,31 @@ const clientMetadata: client.ClientMetadata = {
 }
 export const getOAuthClientConfig = memoize(
   async (): Promise<Configuration> => {
+    console.log(`[getOAuthClientConfig] Koski backend: ${koskiBackendHost}`)
+    console.log(`[getOAuthClientConfig] Local mTLS: ${enableLocalMTLS}`)
+
     const discoveryOptions = enableLocalMTLS
       ? {
           execute: [client.allowInsecureRequests]
         }
       : undefined
 
+    const discoveryUrl = `${koskiBackendHost}/koski/omadata-oauth2/.well-known/oauth-authorization-server`
+    console.log(`[getOAuthClientConfig] Discovery URL: ${discoveryUrl}`)
+
     const config = await client.discovery(
-      new URL(
-        `${koskiBackendHost}/koski/omadata-oauth2/.well-known/oauth-authorization-server`
-      ),
+      new URL(discoveryUrl),
       clientId,
       clientMetadata,
       client.TlsClientAuth(),
       discoveryOptions
     )
 
+    console.log(`[getOAuthClientConfig] Token endpoint: ${config.serverMetadata().token_endpoint}`)
+
     const certs = await getClientCertSecret()
+    console.log(`[getOAuthClientConfig] Client cert loaded: ${certs['fullchain.pem']?.substring(0, 50)}...`)
+
     const ca = enableLocalMTLS ? await getLocalCACert() : undefined
 
     const options: undici.Agent.Options['connect'] = {

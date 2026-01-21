@@ -98,9 +98,22 @@ router.post(
         })
         // 500, koska tämä tarkoittaa yleensä, että jokin kohta stackkiämme ei toimi OAuth2 -virheilmoitusspeksien mukaisesti
         res.status(500)
+      } else if (err instanceof Error) {
+        // Käsittele myös muut Error-tyyppiset virheet (esim. TypeError: fetch failed)
+        const cause = (err as Error & { cause?: unknown }).cause
+        res.status(500).json({
+          message: err.message,
+          name: err.name,
+          stack: err.stack,
+          cause: cause instanceof Error
+            ? { message: cause.message, code: (cause as NodeJS.ErrnoException).code }
+            : cause
+        })
       } else {
-        next(err)
-        res.status(500)
+        res.status(500).json({
+          error: 'Unknown error',
+          details: String(err)
+        })
       }
     }
   }

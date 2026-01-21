@@ -42,14 +42,21 @@ export async function fetchAccessToken(
   )
   reqUrl.search = new URLSearchParams(req.body).toString()
 
-  const tokens: client.TokenEndpointResponse =
-    await client.authorizationCodeGrant(config, reqUrl, {
-      pkceCodeVerifier: code_verifier,
-      expectedState: state
-    })
+  console.log(`[fetchAccessToken] Token endpoint: ${config.serverMetadata().token_endpoint}`)
 
-  const token = tokens.access_token
-  return token
+  try {
+    const tokens: client.TokenEndpointResponse =
+      await client.authorizationCodeGrant(config, reqUrl, {
+        pkceCodeVerifier: code_verifier,
+        expectedState: state
+      })
+
+    const token = tokens.access_token
+    return token
+  } catch (err) {
+    console.error('[fetchAccessToken] Failed:', err)
+    throw err
+  }
 }
 
 export async function fetchData(accessToken: string): Promise<unknown> {
