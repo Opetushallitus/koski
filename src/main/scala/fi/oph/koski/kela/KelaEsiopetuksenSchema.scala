@@ -37,28 +37,9 @@ case class KelaEsiopetuksenOpiskeluoikeus(
 
 case class KelaEsiopetuksenOpiskeluoikeudenLisätiedot(
   @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KELA_LAAJA))
-  pidennettyOppivelvollisuus: Option[KelaAikajakso],
-  @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KELA_LAAJA))
   varhennetunOppivelvollisuudenJaksot: Option[List[KelaAikajakso]],
   @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KELA_LAAJA))
-  tukimuodot: Option[List[KelaKoodistokoodiviite]],
-  @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KELA_LAAJA))
-  erityisenTuenPäätös: Option[KelaErityisenTuenPäätösEsiopetus],
-  @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KELA_LAAJA))
-  erityisenTuenPäätökset: Option[List[KelaErityisenTuenPäätösEsiopetus]],
-  @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KELA_LAAJA))
-  tuenPäätöksenJaksot: Option[List[KelaTukijakso]],
-  @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KELA_LAAJA))
-  vammainen: Option[List[KelaAikajakso]],
-  @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KELA_LAAJA))
-  vaikeastiVammainen: Option[List[KelaAikajakso]],
-  majoitusetu: Option[KelaAikajakso],
-  @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KELA_LAAJA))
-  kuljetusetu: Option[KelaAikajakso],
-  @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KELA_LAAJA))
-  sisäoppilaitosmainenMajoitus: Option[List[KelaAikajakso]],
-  @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KELA_LAAJA))
-  koulukoti: Option[List[KelaAikajakso]]
+  tuenPäätöksenJaksot: Option[List[KelaTukijakso]]
 ) extends OpiskeluoikeudenLisätiedot
 
 @Title("Esiopetuksen suoritus")
@@ -66,12 +47,7 @@ case class KelaEsiopetuksenSuoritus(
   koulutusmoduuli: KelaEsiopetus,
   toimipiste: Option[Toimipiste],
   vahvistus: Option[Vahvistus],
-  tyyppi: schema.Koodistokoodiviite,
-  suorituskieli: Option[KelaKoodistokoodiviite],
-  muutSuorituskielet: Option[List[KelaKoodistokoodiviite]],
-  kielikylpykieli: Option[KelaKoodistokoodiviite],
-  @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KELA_LAAJA))
-  osaAikainenErityisopetus: Option[List[KelaKoodistokoodiviite]]
+  tyyppi: schema.Koodistokoodiviite
 ) extends Suoritus {
   override def osasuoritukset: Option[List[Osasuoritus]] = None
   def withHyväksyntämerkinnälläKorvattuArvosana: KelaEsiopetuksenSuoritus = this
@@ -80,14 +56,8 @@ case class KelaEsiopetuksenSuoritus(
 case class KelaEsiopetus(
   tunniste: KelaKoodistokoodiviite,
   perusteenDiaarinumero: Option[String],
-  kuvaus: Option[schema.LocalizedString],
   koulutustyyppi: Option[KelaKoodistokoodiviite]
 ) extends SuorituksenKoulutusmoduuli
-
-case class KelaErityisenTuenPäätösEsiopetus(
-  alku: Option[LocalDate],
-  loppu: Option[LocalDate]
-) extends KelaMahdollisestiAlkupäivällinenJakso
 
 case class KelaTukijakso(
   alku: Option[LocalDate],
