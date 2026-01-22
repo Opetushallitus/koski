@@ -4,9 +4,11 @@ import java.time.LocalDateTime
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.koskiuser.RequiresVirkailijaOrPalvelukäyttäjä
+import fi.oph.koski.koskiuser.Rooli.{OPHKATSELIJA, OPHPAAKAYTTAJA}
 import fi.oph.koski.log._
 import fi.oph.koski.massaluovutus.suorituspalvelu.{SuorituspalveluQuery, SupaOpiskeluoikeusO}
 import fi.oph.koski.massaluovutus.suorituspalvelu.opiskeluoikeus.SupaOpiskeluoikeus
+import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusOid
 import fi.oph.koski.schema._
 import fi.oph.koski.servlet.{KoskiSpecificApiServlet, NoCache}
 import fi.oph.koski.util.Timing
@@ -23,16 +25,23 @@ class SupaServlet(implicit val application: KoskiApplication)
     with NoCache
     with Timing {
 
+  before() {
+    koskiSessionOption match {
+      case Some(user) if user.hasRole(OPHKATSELIJA) || user.hasRole(OPHPAAKAYTTAJA) =>
+      case _ => haltWithStatus(KoskiErrorCategory.forbidden())
+    }
+  }
+
   get("/:oid/:version") {
-    val oid = getStringParam("oid")
+    val validOid = OpiskeluoikeusOid.validateOpiskeluoikeusOid(getStringParam("oid"))
     val version = getIntegerParam("version")
 
-    val opiskeluoikeusHistoriasta: Either[HttpStatus, KoskeenTallennettavaOpiskeluoikeus] = application.historyRepository.findVersion(oid, version)(session)
+    val opiskeluoikeusHistoriasta: Either[HttpStatus, KoskeenTallennettavaOpiskeluoikeus] = validOid.flatMap(oid => application.historyRepository.findVersion(oid, version)(session))
     val oppijaOidOpiskeluoikeudesta = opiskeluoikeusHistoriasta.flatMap(oo => application.opiskeluoikeusRepository.findByOid(oo.oid.get).map(_.oppijaOid))
 
     val supaVersioResponse = opiskeluoikeusHistoriasta
       .flatMap(oo => oppijaOidOpiskeluoikeudesta.map(oppijaOid => SupaOpiskeluoikeusO(oo, oppijaOid)))
-      .flatMap(_.toRight(KoskiErrorCategory.notFound.opiskeluoikeuttaEiLöydyTaiEiOikeuksia("Opiskeluoikeutta " + oid + " ei löydy tai käyttäjällä ei ole oikeutta sen katseluun")))
+      .flatMap(_.toRight(KoskiErrorCategory.notFound.opiskeluoikeuttaEiLöydyTaiEiOikeuksia()))
       .map(oo => SupaVersioResponse(
         oppijaOid = oo.oppijaOid,
         kaikkiOidit = application.henkilöRepository.findByOid(oo.oppijaOid).map(_.kaikkiOidit).getOrElse(List.empty),
