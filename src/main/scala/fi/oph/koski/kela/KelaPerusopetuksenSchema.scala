@@ -3,7 +3,7 @@ package fi.oph.koski.kela
 import fi.oph.koski.koskiuser.Rooli
 import fi.oph.koski.schema
 import fi.oph.koski.schema.annotation.{KoodistoKoodiarvo, SensitiveData}
-import fi.oph.scalaschema.annotation.{Description, Title}
+import fi.oph.scalaschema.annotation.{Description, SkipSerialization, Title}
 
 import java.time.{LocalDate, LocalDateTime}
 
@@ -52,10 +52,13 @@ case class KelaPerusopetuksenOpiskeluoikeudenLisätiedot(
   @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KELA_LAAJA))
   erityisenTuenPäätökset: Option[List[KelaErityisenTuenPäätösPerusopetus]],
   @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KELA_LAAJA))
+  @SkipSerialization
   opetuksenJärjestäminenVammanSairaudenTaiRajoitteenPerusteella: Option[List[KelaAikajakso]],
   @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KELA_LAAJA))
+  @SkipSerialization
   toimintaAlueittainOpiskelu: Option[List[KelaAikajakso]],
   @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KELA_LAAJA))
+  @SkipSerialization
   tuenPäätöksenJaksot: Option[List[KelaTukijakso]]
 ) extends OpiskeluoikeudenLisätiedot
 
