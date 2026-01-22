@@ -3,12 +3,12 @@ package fi.oph.koski.db
 import com.github.tminglei.slickpg._
 import com.github.tminglei.slickpg.str.PgStringSupport
 import org.json4s.JValue
-import slick.jdbc.{PositionedParameters, PositionedResult, PostgresProfile, SQLActionBuilder}
+import slick.jdbc.{PositionedResult, SQLActionBuilder}
 
 import java.time.LocalDate
 import scala.collection.immutable.ArraySeq
 
-trait PostgresDriverWithJsonSupport extends PostgresProfile
+trait PostgresDriverWithJsonSupport extends ExPostgresProfile
   with PgJson4sSupport
   with PgArraySupport
   with array.PgArrayJdbcTypes
@@ -20,7 +20,7 @@ trait PostgresDriverWithJsonSupport extends PostgresProfile
   type DOCType = JValue
   override val jsonMethods = org.json4s.jackson.JsonMethods
 
-  trait KoskiAPI extends super.API
+  trait KoskiAPI extends ExtPostgresAPI
     with JsonImplicits
     with SearchAssistants
     with SearchImplicits
@@ -77,10 +77,6 @@ object SQLHelpers {
   def concatMany(builders: Option[SQLActionBuilder]*): SQLActionBuilder =
     builders.flatten.reduce(concat)
 
-  def concat(a: SQLActionBuilder, b: SQLActionBuilder): SQLActionBuilder = {
-    SQLActionBuilder(a.queryParts ++ b.queryParts, (p: Unit, pp: PositionedParameters) => {
-      a.unitPConv.apply(p, pp)
-      b.unitPConv.apply(p, pp)
-    })
-  }
+  def concat(a: SQLActionBuilder, b: SQLActionBuilder): SQLActionBuilder =
+    a.concat(b)
 }

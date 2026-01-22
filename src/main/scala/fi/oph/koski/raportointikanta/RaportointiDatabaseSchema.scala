@@ -9,8 +9,8 @@ import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.raportit.{YleissivistäväRaporttiKurssi, YleissivistäväRaporttiOppiaine, YleissivistäväRaporttiOppiaineTaiKurssi}
 import fi.oph.koski.schema.{Koodistokoodiviite, LocalizedString}
 import org.json4s.JValue
-import shapeless.{Generic, HNil}
-import slickless._
+import slick.collection.heterogeneous.HNil
+import slick.collection.heterogeneous.syntax._
 import slick.dbio.DBIO
 import slick.sql.SqlProfile.ColumnOption.SqlType
 
@@ -54,7 +54,7 @@ object RaportointiDatabaseSchema {
       oppilaitosOid :: oppilaitosNimi :: oppilaitosNimiSv :: oppilaitosKotipaikka :: oppilaitosnumero :: koulutustoimijaOid ::
       koulutustoimijaNimi :: koulutustoimijaNimiSv :: koulutusmuoto :: alkamispäivä :: päättymispäivä :: viimeisinTila ::
       lisätiedotHenkilöstökoulutus :: lisätiedotKoulutusvienti :: tuvaJärjestämislupa :: lähdejärjestelmäKoodiarvo :: lähdejärjestelmäId ::
-      oppivelvollisuudenSuorittamiseenKelpaava :: data :: HNil).mappedWith(Generic[ROpiskeluoikeusRow])
+      oppivelvollisuudenSuorittamiseenKelpaava :: data :: HNil).mapTo[ROpiskeluoikeusRow]
   }
   class ROpiskeluoikeusTableTemp(tag: Tag) extends ROpiskeluoikeusTable(tag, Temp)
   class ROpiskeluoikeusConfidentialTable(tag: Tag) extends ROpiskeluoikeusTable(tag, Confidential)
@@ -189,7 +189,7 @@ object RaportointiDatabaseSchema {
       tavoitekokonaisuuksittainOpiskelu ::
       id ::
       HNil
-    ).mappedWith(Generic[ROpiskeluoikeusAikajaksoRow])
+    ).mapTo[ROpiskeluoikeusAikajaksoRow]
   }
   class ROpiskeluoikeusAikajaksoTableTemp(tag: Tag) extends ROpiskeluoikeusAikajaksoTable(tag, Temp)
   class ROpiskeluoikeusAikajaksoConfidentialTable(tag: Tag) extends ROpiskeluoikeusAikajaksoTable(tag, Confidential)
@@ -260,7 +260,7 @@ object RaportointiDatabaseSchema {
       tutkinnonNimiPerusteessa :: suorituskieliKoodiarvo :: oppimääräKoodiarvo :: alkamispäivä ::
       vahvistusPäivä :: arviointiArvosanaKoodiarvo :: arviointiArvosanaKoodisto :: arviointiHyväksytty ::
       arviointiPäivä :: toimipisteOid :: toimipisteNimi :: toimipisteNimiSv :: sisältyyOpiskeluoikeuteenOid :: tutkintonimike :: luokkaTaiRyhmä :: perusteenDiaarinumero :: jääLuokalle :: data ::
-      HNil).mappedWith(Generic[RPäätasonSuoritusRow])
+      HNil).mapTo[RPäätasonSuoritusRow]
   }
 
   class RPäätasonSuoritusTableTemp(tag: Tag) extends RPäätasonSuoritusTable(tag, Temp)
@@ -328,7 +328,7 @@ object RaportointiDatabaseSchema {
       data ::
       sisältyyOpiskeluoikeuteenOid ::
       HNil
-    ).mappedWith(Generic[ROsasuoritusRow])
+    ).mapTo[ROsasuoritusRow]
   }
 
   class ROsasuoritusTableTemp(tag: Tag) extends ROsasuoritusTable(tag, Temp)
