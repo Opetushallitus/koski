@@ -230,7 +230,7 @@ object Oppivelvollisuustiedot {
             master_oid,
             case when kotikunta = any(#$ulkopuolisetKunnat) then muutto_pvm end as pvm
           from #${confidentialSchema.name}.r_kotikuntahistoria
-          where muutto_pvm is not null
+          where muutto_pvm is not null and poismuutto_pvm is null
           order by master_oid, muutto_pvm desc
         ),
 

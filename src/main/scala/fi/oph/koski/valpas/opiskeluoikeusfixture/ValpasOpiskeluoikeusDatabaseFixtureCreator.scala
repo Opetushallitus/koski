@@ -1,6 +1,7 @@
 package fi.oph.koski.valpas.opiskeluoikeusfixture
 
 import fi.oph.koski.config.KoskiApplication
+import fi.oph.koski.documentation.YleissivistavakoulutusExampleData.kulosaarenAlaAste
 import fi.oph.koski.fixture.DatabaseFixtureCreator
 import fi.oph.koski.henkilo.OppijaHenkilö
 import fi.oph.koski.schema._
@@ -282,7 +283,8 @@ class ValpasOpiskeluoikeusDatabaseFixtureCreator(application: KoskiApplication) 
     (ValpasMockOppijat.suomessaMuuttanutPaikastaToiseen, ValpasOpiskeluoikeusExampleData.oppivelvollinenYsiluokkaKeskenKeväällä2021Opiskeluoikeus),
     (ValpasMockOppijat.suomessaJaUlkomaillaVuorotellenAsunut, ValpasOpiskeluoikeusExampleData.oppivelvollinenYsiluokkaKeskenKeväällä2021Opiskeluoikeus),
     (ValpasMockOppijat.menehtynytOppija, ValpasOpiskeluoikeusExampleData.oppivelvollinenYsiluokkaKeskenKeväällä2021Opiskeluoikeus),
-    (ValpasMockOppijat.menehtynytToisellaAsteellaOppija, ValpasOpiskeluoikeusExampleData.ammattikouluOpiskeluoikeus.withLisääPuuttuvaMaksuttomuustieto)
+    (ValpasMockOppijat.menehtynytToisellaAsteellaOppija, ValpasOpiskeluoikeusExampleData.ammattikouluOpiskeluoikeus.withLisääPuuttuvaMaksuttomuustieto),
+    (ValpasMockOppijat.ulkomailtaAlle18vuotiaanaMuuttanutSamallaMuuttopäivällä, ValpasOpiskeluoikeusExampleData.oppivelvollinenYsiluokkaKeskenKeväällä2021Opiskeluoikeus.copy(oppilaitos = Some(kulosaarenAlaAste))),
   )
 
   protected def secondBatchOpiskeluOikeudet: List[(OppijaHenkilö, KoskeenTallennettavaOpiskeluoikeus)] = List(
