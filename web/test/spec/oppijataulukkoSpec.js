@@ -281,6 +281,7 @@ describe('Oppijataulukko', function () {
           'Kelalle, Useita',
           'Kelalle, Useita',
           'Kelalle, Useita',
+          'Kelalle-Perusopetus, Uudet-Lisätiedot',
           'Kokonaisuuksilla, Keijo',
           'Koodari, Monthy',
           'Korhonen, Korottaja',
@@ -340,10 +341,9 @@ describe('Oppijataulukko', function () {
           'Tehtävään-Valmistava-vahvistettu, Tauno',
           'Tekijä, Teija',
           'Telmanen, Tuula',
-          'Tiedonsiirto, Tiina',
-          'Toiminta, Tommi'
+          'Tiedonsiirto, Tiina'
         ])
-        expect(page.opiskeluoikeudeTotal()).to.equal('123')
+        expect(page.opiskeluoikeudeTotal()).to.equal('124')
       })
     })
 
@@ -373,7 +373,7 @@ describe('Oppijataulukko', function () {
           'Rikkinäinen, Kela',
           'Suorittaja, Kielitutkinto'
         ])
-        expect(page.opiskeluoikeudeTotal()).to.equal('14')
+        expect(page.opiskeluoikeudeTotal()).to.equal('15')
       })
     })
   })
@@ -397,6 +397,7 @@ describe('Oppijataulukko', function () {
           'k, kotiopetus',
           'Kelalle, Useita',
           'Kelalle, Useita',
+          'Kelalle-Perusopetus, Uudet-Lisätiedot',
           'Koululainen, Kaisa',
           'Lukiolainen, Liisa',
           'Luokallejäänyt, Lasse',
@@ -462,6 +463,7 @@ describe('Oppijataulukko', function () {
               'Luokallejäänyt, Lasse',
               'Lukiolainen, Liisa',
               'Koululainen, Kaisa',
+              'Kelalle-Perusopetus, Uudet-Lisätiedot',
               'Kelalle, Useita',
               'Kelalle, Useita',
               'k, kotiopetus',
@@ -561,6 +563,7 @@ describe('Oppijataulukko', function () {
               '9C',
               '9C',
               '9C',
+              '9C',
               '9D'
             ])
           })
@@ -575,6 +578,7 @@ describe('Oppijataulukko', function () {
               })
             ).to.deep.equal([
               '9D',
+              '9C',
               '9C',
               '9C',
               '9C',
