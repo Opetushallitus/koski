@@ -151,6 +151,29 @@ class KelaSpec
       }
     }
 
+    "Palauttaa perusopetuksen uudet lisätietokentät" in {
+      postHetu(KoskiSpecificMockOppijat.kelaPerusopetusUusillaLisätiedoilla.hetu.get) {
+        verifyResponseStatusOk()
+        val oppija = JsonSerializer.parse[KelaOppija](body)
+
+        val perusopetus = oppija.opiskeluoikeudet collectFirst {
+          case x: KelaPerusopetuksenOpiskeluoikeus if x.lisätiedot.isDefined => x
+        }
+
+        perusopetus shouldNot be(None)
+        val lisätiedot = perusopetus.get.lisätiedot.get
+
+        lisätiedot.opetuksenJärjestäminenVammanSairaudenTaiRajoitteenPerusteella shouldNot be(None)
+        lisätiedot.opetuksenJärjestäminenVammanSairaudenTaiRajoitteenPerusteella.get should have length 1
+
+        lisätiedot.toimintaAlueittainOpiskelu shouldNot be(None)
+        lisätiedot.toimintaAlueittainOpiskelu.get should have length 1
+
+        lisätiedot.tuenPäätöksenJaksot shouldNot be(None)
+        lisätiedot.tuenPäätöksenJaksot.get should have length 1
+      }
+    }
+
     "Palauttaa tiedon 'täydentääTutkintoa' kun kyseessä on Muu ammatillinen koulutus" in {
       postHetu(KoskiSpecificMockOppijat.muuAmmatillinen.hetu.get) {
         verifyResponseStatusOk()
