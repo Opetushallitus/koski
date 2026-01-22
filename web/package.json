@@ -79,7 +79,7 @@
     "jquery": "^3.7.1",
     "less": "^4.5.1",
     "less-loader": "^12.3.0",
-    "lodash": "^4.17.21",
+    "lodash": "^4.17.23",
     "mocha": "^10.8.2",
     "mocha-chrome": "github:opetushallitus/mocha-chrome#4.3.0",
     "moment": "^2.30.1",
