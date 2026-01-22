@@ -1,11 +1,2 @@
-# Suppress vulnerabilities for multiple Jetty dependencies
+# False positive: CVE-2024-6763 fixed in Jetty 9.4.57, we use 9.4.57.v20241219
 CVE-2024-6763
-
-# Medium-level issues in org.apache.xmlbeans:xmlbeans (via poi-ooxml:3.17)
-# See https://jira.eduuni.fi/browse/TOR-1373
-CVE-2019-12415
-CVE-2021-23926
-
-# Medium-level issue in OOXML writing, upgrade blocked
-# See https://jira.eduuni.fi/browse/TOR-1373
-CVE-2025-31672
