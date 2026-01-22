@@ -94,7 +94,7 @@ object SupaDIAOppiaineenTutkintovaiheenSuoritus {
     )
 }
 
-@Title("DIA-tutkinnon päättökoe")
+@Title("DIA-oppiaineen tutkintovaiheen osasuorituksen suoritus")
 case class SupaDIAOppiaineenTutkintovaiheenOsasuorituksenSuoritus(
   @KoodistoKoodiarvo("diaoppiaineentutkintovaiheenosasuorituksensuoritus")
   tyyppi: Koodistokoodiviite,
