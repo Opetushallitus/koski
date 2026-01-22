@@ -199,39 +199,54 @@ export type KoodistokoodiviiteKoodistonNimellä<T extends string = string> = {
   koodiviite: Koodistokoodiviite<T>
 }
 
+const MAX_RETRY_ATTEMPTS = 3
+const RETRY_DELAY_MS = 5000
+
 class KoodistoLoader {
   koodistot: KoodistoRecord = {}
+  onChange?: () => void
 
   async loadKoodistot(koodistoUris: string[]): Promise<boolean> {
     const unfetchedKoodistoUris = koodistoUris.filter(
       (uri) => !this.koodistot[uri]
     )
-    if (A.isNonEmpty(unfetchedKoodistoUris)) {
-      unfetchedKoodistoUris.forEach((uri) => {
-        this.koodistot[uri] = Loading
-      })
-
-      pipe(
-        await fetchKoodistot(unfetchedKoodistoUris),
-        E.map((response) => {
-          const k: KoodistoRecord = pipe(
-            Object.entries(response.data.koodistot),
-            A.chain(([koodistoNimi, koodiviitteet]) =>
-              koodiviitteet.map((koodiviite) => ({
-                id: `${koodiviite.koodistoUri}_${koodiviite.koodiarvo}`,
-                koodistoNimi,
-                koodiviite
-              }))
-            ),
-            NEA.groupBy((koodi) => koodi.koodiviite.koodistoUri)
-          )
-
-          this.koodistot = { ...this.koodistot, ...k }
-        })
-      )
-      return true
+    if (!A.isNonEmpty(unfetchedKoodistoUris)) {
+      return false
     }
-    return false
+
+    unfetchedKoodistoUris.forEach((uri) => {
+      this.koodistot[uri] = Loading
+    })
+
+    for (let attempt = 0; attempt < MAX_RETRY_ATTEMPTS; attempt++) {
+      const result = await fetchKoodistot(unfetchedKoodistoUris)
+
+      if (E.isRight(result)) {
+        const k: KoodistoRecord = pipe(
+          Object.entries(result.right.data.koodistot),
+          A.chain(([koodistoNimi, koodiviitteet]) =>
+            koodiviitteet.map((koodiviite) => ({
+              id: `${koodiviite.koodistoUri}_${koodiviite.koodiarvo}`,
+              koodistoNimi,
+              koodiviite
+            }))
+          ),
+          NEA.groupBy((koodi) => koodi.koodiviite.koodistoUri)
+        )
+        this.koodistot = { ...this.koodistot, ...k }
+        return true
+      }
+
+      console.error('Koodistojen haku epäonnistui:', result.left)
+      if (attempt < MAX_RETRY_ATTEMPTS - 1) {
+        await new Promise((r) => setTimeout(r, RETRY_DELAY_MS))
+      }
+    }
+
+    unfetchedKoodistoUris.forEach((uri) => {
+      delete this.koodistot[uri]
+    })
+    return true
   }
 
   findKoodi<T extends string>(
@@ -264,9 +279,18 @@ const koodistoLoaderSingleton = new KoodistoLoader()
 export const KoodistoProvider = (props: KoodistoProviderProps) => {
   const [koodistot, setKoodistot] = useState<KoodistoRecord>({})
 
+  useEffect(() => {
+    koodistoLoaderSingleton.onChange = () => {
+      setKoodistot({ ...koodistoLoaderSingleton.koodistot })
+    }
+    return () => {
+      koodistoLoaderSingleton.onChange = undefined
+    }
+  }, [])
+
   const loadKoodistot = useCallback(async (koodistoUris: string[]) => {
     if (await koodistoLoaderSingleton.loadKoodistot(koodistoUris)) {
-      setKoodistot(koodistoLoaderSingleton.koodistot)
+      setKoodistot({ ...koodistoLoaderSingleton.koodistot })
     }
   }, [])
 
