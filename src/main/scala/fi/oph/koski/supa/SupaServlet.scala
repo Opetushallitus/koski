@@ -33,16 +33,19 @@ class SupaServlet(implicit val application: KoskiApplication)
   }
 
   get("/:oid/:version") {
-    val validOid = OpiskeluoikeusOid.validateOpiskeluoikeusOid(getStringParam("oid"))
-    val version = getIntegerParam("version")
+    val validOid: Either[HttpStatus, Opiskeluoikeus.Oid] =
+      OpiskeluoikeusOid.validateOpiskeluoikeusOid(getStringParam("oid"))
+    val version: Int = getIntegerParam("version")
 
-    val opiskeluoikeusHistoriasta: Either[HttpStatus, KoskeenTallennettavaOpiskeluoikeus] = validOid.flatMap(oid => application.historyRepository.findVersion(oid, version)(session))
-    val oppijaOidOpiskeluoikeudesta = opiskeluoikeusHistoriasta.flatMap(oo => application.opiskeluoikeusRepository.findByOid(oo.oid.get).map(_.oppijaOid))
+    val opiskeluoikeusHistoriasta: Either[HttpStatus, KoskeenTallennettavaOpiskeluoikeus] =
+      validOid.flatMap(oid => application.historyRepository.findVersion(oid, version)(session))
+    val oppijaOidOpiskeluoikeudesta: Either[HttpStatus, String] =
+      opiskeluoikeusHistoriasta.flatMap(oo => application.opiskeluoikeusRepository.findByOid(oo.oid.get).map(_.oppijaOid))
 
-    val supaVersioResponse = opiskeluoikeusHistoriasta
+    val supaVersioResponse: Either[HttpStatus, SupaOpiskeluoikeudenVersioResponse] = opiskeluoikeusHistoriasta
       .flatMap(oo => oppijaOidOpiskeluoikeudesta.map(oppijaOid => SupaOpiskeluoikeusO(oo, oppijaOid)))
       .flatMap(_.toRight(KoskiErrorCategory.notFound.opiskeluoikeuttaEiLöydyTaiEiOikeuksia()))
-      .map(oo => SupaVersioResponse(
+      .map(oo => SupaOpiskeluoikeudenVersioResponse(
         oppijaOid = oo.oppijaOid,
         kaikkiOidit = application.henkilöRepository.findByOid(oo.oppijaOid).map(_.kaikkiOidit).getOrElse(List.empty),
         aikaleima = oo.aikaleima.getOrElse(LocalDateTime.now()),
@@ -53,17 +56,17 @@ class SupaServlet(implicit val application: KoskiApplication)
       SuorituspalveluQuery.auditLog(response.oppijaOid, response.opiskeluoikeus.oid, response.opiskeluoikeus.versionumero)
     }
 
-    renderEither[SupaVersioResponse](supaVersioResponse)
+    renderEither[SupaOpiskeluoikeudenVersioResponse](supaVersioResponse)
   }
 }
 
-case class SupaVersioResponse(
+case class SupaOpiskeluoikeudenVersioResponse(
   oppijaOid: String,
   kaikkiOidit: Seq[String],
   aikaleima: LocalDateTime,
   opiskeluoikeus: SupaOpiskeluoikeus
 )
 
-object SupaVersioResponse {
-  lazy val schemaJson = SchemaToJson.toJsonSchema(KoskiSchema.createSchema(classOf[SupaVersioResponse]).asInstanceOf[ClassSchema])
+object SupaOpiskeluoikeudenVersioResponse {
+  lazy val schemaJson = SchemaToJson.toJsonSchema(KoskiSchema.createSchema(classOf[SupaOpiskeluoikeudenVersioResponse]).asInstanceOf[ClassSchema])
 }

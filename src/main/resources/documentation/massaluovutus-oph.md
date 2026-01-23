@@ -70,3 +70,22 @@ yhteyttä KOSKI-tiimiin.
 
 {{title:fi.oph.koski.massaluovutus.suorituspalvelu.SuorituspalveluOppijaOidsQuery}}
 {{docs:fi.oph.koski.massaluovutus.suorituspalvelu.SuorituspalveluOppijaOidsQuery}}
+
+## Suorituspalvelun kysely opiskeluoikeuden version perusteella
+
+Suora rajapinta yksittäisen opiskeluoikeuden tietyn version noutamiseen. Tämä rajapinta ei ole osana massaluovutuksen rajapintoja. Sen kautta pyydetyt tiedot saadaan suoraan rajapintakutsun vastauksessa.
+
+Palauttaa Suorituspalvelua varten räätälöidyt tiedot.
+Vastauksen skeema on yksittäinen <a href="/koski/json-schema-viewer/?schema=suorituspalvelu-versio-result.json">SupaOpiskeluoikeudenVersioResponse</a>-objekti.
+
+Rajapintaa kutsutaan GET-pyynnöllä, jossa välitetään mukana opiskeluoikeuden oid sekä versionumero.
+
+Kutsu muodostetaan seuraavalla tavalla:
+
+`GET {{var:baseUrl}}/api/supa/<opiskeluoikeusOid>/<versionumero>`
+
+Esimerkiksi opiskeluoikeuden `1.2.246.562.15.99999999999` versio `1` voidaan pyytää kutsulla:
+
+`GET {{var:baseUrl}}/api/supa/1.2.246.562.15.99999999999/1`
+
+Rajapinta palauttaa 404-statuksen, mikäli pyydettyä opiskeluoikeutta tai versiota ei löydy KOSKI-datasta.
