@@ -200,6 +200,7 @@ jobs:
             fi.oph.koski.schema, \
             fi.oph.koski.sso, \
             fi.oph.koski.sure, \
+            fi.oph.koski.supa, \
             fi.oph.koski.tools, \
             fi.oph.koski.userdirectory, \
             fi.oph.koski.util, \
