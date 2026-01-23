@@ -63,11 +63,12 @@ const isMuuHakuChecked = (index: number) =>
   )
 
 const kulosaarenAlaAsteTableContent = `
-  Jkl-Esikoulu-Kulosaarelainen Valpas                     | 22.3.2004   | 9C | –          | Ei hakemusta         | –                           | –                         | –                                                                          |
-  Jkl-Lukio-Kulosaarelainen Valpas                        | 1.1.2004    | 9C | –          | Ei hakemusta         | –                           | –                         | doneJyväskylän normaalikoulu, Lukiokoulutus                                |
-  Jkl-Nivel-Kulosaarelainen Valpas                        | 1.1.2004    | 9C | –          | Ei hakemusta         | –                           | –                         | doneJyväskylän normaalikoulu, Perusopetuksen lisäopetus                    |
-  Kulosaarelainen Oppija                                  | 19.1.2005   | 9C | –          | Ei hakemusta         | –                           | –                         | –                                                                          |
-  Oppivelvollinen-hetullinen Valpas                       | 3.1.2005    | 9C | –          | Ei hakemusta         | –                           | –                         | –                                                                          |
+  Jkl-Esikoulu-Kulosaarelainen Valpas                             | 22.3.2004   | 9C | –          | Ei hakemusta         | –                           | –                         | –                                                                          |
+  Jkl-Lukio-Kulosaarelainen Valpas                                | 1.1.2004    | 9C | –          | Ei hakemusta         | –                           | –                         | doneJyväskylän normaalikoulu, Lukiokoulutus                                |
+  Jkl-Nivel-Kulosaarelainen Valpas                                | 1.1.2004    | 9C | –          | Ei hakemusta         | –                           | –                         | doneJyväskylän normaalikoulu, Perusopetuksen lisäopetus                    |
+  Kulosaarelainen Oppija                                          | 19.1.2005   | 9C | –          | Ei hakemusta         | –                           | –                         | –                                                                          |
+  Oppivelvollinen-hetullinen Valpas                               | 3.1.2005    | 9C | –          | Ei hakemusta         | –                           | –                         | –                                                                          |
+  UlkomailtaAlle18vuotiaanaMuuttanutSamallaMuuttopäivällä Valpas  | 10.2.2006   | 9C | –          | Ei hakemusta         | –                           | –                         | –                                                                          |
 `
 
 const aapajaoenKouluTableContent = `
@@ -158,7 +159,7 @@ describe("Hakutilannenäkymä", () => {
 
     await selectOrganisaatio(1)
     await urlIsEventually(pathToUrl(kulosaariHakutilannePath))
-    await textEventuallyEquals(".card__header", "Hakeutumisvelvollisia (5)")
+    await textEventuallyEquals(".card__header", "Hakeutumisvelvollisia (6)")
 
     await waitTableLoadingHasFinished(".hakutilanne")
   })
@@ -168,7 +169,7 @@ describe("Hakutilannenäkymä", () => {
 
     await selectOrganisaatioByNimi("Kulosaaren ala-aste")
     await urlIsEventually(pathToUrl(kulosaariHakutilannePath))
-    await textEventuallyEquals(".card__header", "Hakeutumisvelvollisia (5)")
+    await textEventuallyEquals(".card__header", "Hakeutumisvelvollisia (6)")
 
     await dataTableEventuallyEquals(
       ".hakutilanne",
@@ -305,7 +306,7 @@ describe("Hakutilannenäkymä", () => {
 
     const stateBeforeOrgChange = await getState()
     await selectOrganisaatio(1)
-    await textEventuallyEquals(".card__header", "Hakeutumisvelvollisia (5)")
+    await textEventuallyEquals(".card__header", "Hakeutumisvelvollisia (6)")
 
     await selectOrganisaatio(0)
     await textEventuallyEquals(".card__header", jklNormaalikouluTableHead)

@@ -633,6 +633,13 @@ class OppivelvollisuustietoSpec
         // Oikeus maksuttomuuteen jatkuu normaalisti
         result.head.oikeusMaksuttomaanKoulutukseenVoimassaAsti shouldBe date(2026, 12, 31)
       }
+      "Asuu Suomessa mutta kotikuntahistoriassa on ulkomailla asuminen samalla päivämäärällä, oikeus maksuttomuuteen jatkuu normaalisti" in {
+        resetValpasMockData
+        val result = queryOids(ValpasMockOppijat.ulkomailtaAlle18vuotiaanaMuuttanutSamallaMuuttopäivällä.oid)
+        result.head.oppivelvollisuusVoimassaAsti shouldBe date(2024, 2, 9)
+        // Oikeus maksuttomuuteen jatkuu normaalisti
+        result.head.oikeusMaksuttomaanKoulutukseenVoimassaAsti shouldBe date(2026, 12, 31)
+      }
     }
 
     "Menehtyneet oppijat" - {

@@ -413,6 +413,21 @@ object ValpasMockOppijat {
       )
     })
 
+  val ulkomailtaAlle18vuotiaanaMuuttanutSamallaMuuttopäivällä = valpasOppijat.oppijaSyntymäaikaHetusta("UlkomailtaAlle18vuotiaanaMuuttanutSamallaMuuttopäivällä", "Valpas", "100206A828A", kotikunta = Some(Kunta.pyhtää),
+    kuntahistoriaMock = h => {
+      // Tuotannosta löytyneitä tapauksia vastaava kotikuntahistoria samoilla päivämäärillä
+      val historia = Seq(
+        OppijanumerorekisteriKotikuntahistoriaRow(h.henkilö.oid, Kunta.pyhtää, Some(date(2018, 12, 1)), None),
+        OppijanumerorekisteriKotikuntahistoriaRow(h.henkilö.oid, Kunta.eiKotikuntaaSuomessa, Some(date(2018, 12, 1)), Some(date(2018, 12, 1))),
+      )
+      OppijanKuntahistoria(
+        Some(h.henkilö.oid),
+        historia,
+        Seq.empty
+      )
+    }
+  )
+
   def defaultOppijat = valpasOppijat.getOppijat
   def defaultKuntahistoriat = valpasOppijat.getKuntahistoriat
   def defaultTurvakieltoKuntahistoriat = valpasOppijat.getTurvakieltoKuntahistoriat
