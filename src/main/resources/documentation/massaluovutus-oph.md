@@ -88,4 +88,5 @@ Esimerkiksi opiskeluoikeuden `1.2.246.562.15.99999999999` versio `1` voidaan pyy
 
 `GET {{var:baseUrl}}/api/supa/1.2.246.562.15.99999999999/1`
 
-Rajapinta palauttaa 404-statuksen, mikäli pyydettyä opiskeluoikeutta tai versiota ei löydy KOSKI-datasta.
+Rajapinta palauttaa 404-virhekoodin, mikäli pyydettyä opiskeluoikeutta tai versiota ei löydy KOSKI-datasta.
+Myös mitätöityjen tai poistettujen opiskeluoikeuksien tapauksissa rajapinta palauttaa 404-virhekoodin.

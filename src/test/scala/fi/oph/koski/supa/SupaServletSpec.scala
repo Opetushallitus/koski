@@ -1,23 +1,27 @@
 package fi.oph.koski.supa
 
 import fi.oph.koski.api.misc.{OpiskeluoikeusTestMethods, OpiskeluoikeusTestMethodsAmmatillinen}
+import fi.oph.koski.db.PostgresDriverWithJsonSupport.api.actionBasedSQLInterpolation
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.koskiuser.{KoskiMockUser, MockUsers}
 import fi.oph.koski.log.AuditLogTester
 import fi.oph.koski.schema.AmmatillinenOpiskeluoikeus
-import fi.oph.koski.KoskiHttpSpec
+import fi.oph.koski.{DatabaseTestMethods, KoskiHttpSpec}
 import org.json4s.jackson.JsonMethods
-import org.json4s.{DefaultFormats, JValue}
+import org.json4s.DefaultFormats
 import org.scalatest.BeforeAndAfterEach
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.should.Matchers
+
+import scala.concurrent.duration.DurationInt
 
 class SupaServletSpec
   extends AnyFreeSpec
     with KoskiHttpSpec
     with OpiskeluoikeusTestMethods
     with OpiskeluoikeusTestMethodsAmmatillinen
+    with DatabaseTestMethods
     with Matchers
     with BeforeAndAfterEach {
 
@@ -177,6 +181,30 @@ class SupaServletSpec
         val opiskeluoikeus = lastOpiskeluoikeusByHetu(KoskiSpecificMockOppijat.esikoululainen2025)
         getSupaVersio(opiskeluoikeus.oid.get, 1, MockUsers.paakayttaja) {
           verifyResponseStatus(404, KoskiErrorCategory.notFound.opiskeluoikeuttaEiLöydyTaiEiOikeuksia())
+        }
+      }
+
+      "Mitätöidyn opiskeluoikeuden versio palauttaa 404" in {
+        val opiskeluoikeusOid = runDbSync(
+          sql"select oid from opiskeluoikeus where oppija_oid = ${KoskiSpecificMockOppijat.vainMitätöityjäOpiskeluoikeuksia.oid} and mitatoity = true".as[String],
+          timeout = 5.seconds
+        ).head
+        opiskeluoikeusOid should not be empty
+
+        getSupaVersio(opiskeluoikeusOid, 1, MockUsers.paakayttaja) {
+          verifyResponseStatus(404, KoskiErrorCategory.notFound.opiskeluoikeuttaEiLöydyTaiEiOikeuksia(s"Opiskeluoikeutta $opiskeluoikeusOid ei löydy tai käyttäjällä ei ole oikeutta sen katseluun"))
+        }
+      }
+
+      "Poistetun opiskeluoikeuden versio palauttaa 404" in {
+        val opiskeluoikeusOid = runDbSync(
+          sql"select oid from opiskeluoikeus where oppija_oid = ${KoskiSpecificMockOppijat.poistettuOpiskeluoikeus.oid} and poistettu = true".as[String],
+          timeout = 5.seconds
+        ).head
+        opiskeluoikeusOid should not be empty
+
+        getSupaVersio(opiskeluoikeusOid, 1, MockUsers.paakayttaja) {
+          verifyResponseStatus(404, KoskiErrorCategory.notFound.opiskeluoikeuttaEiLöydyTaiEiOikeuksia(s"Opiskeluoikeutta $opiskeluoikeusOid ei löydy tai käyttäjällä ei ole oikeutta sen katseluun"))
         }
       }
     }
