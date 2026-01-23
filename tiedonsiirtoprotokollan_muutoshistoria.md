@@ -1,3 +1,6 @@
+## XX.2.2025
+Kelan tietomalliin lisätty esiopetus ja uudet perusopetuksen lisätiedot
+
 ## 4.2.2026
 
 - Tunnustettu-rakenne lisättu IB-kurssin suorituksiin.
