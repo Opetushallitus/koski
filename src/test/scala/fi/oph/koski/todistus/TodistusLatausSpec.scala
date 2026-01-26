@@ -6,14 +6,14 @@ import fi.oph.koski.schema.KoskiSchema.strictDeserialization
 import fi.oph.koski.schema.{KielitutkinnonOpiskeluoikeus, Opiskeluoikeus, YleisenKielitutkinnonOsakokeenSuoritus}
 import org.apache.pdfbox.Loader
 import org.apache.pdfbox.pdmodel.PDDocument
-import org.apache.pdfbox.text.PDFTextStripper
-
+import org.apache.pdfbox.text.{PDFTextStripper, PDFTextStripperByArea}
 import org.json4s.jackson.JsonMethods
 import org.verapdf.core.VeraPDFException
 import org.verapdf.gf.foundry.VeraGreenfieldFoundryProvider
 import org.verapdf.pdfa.flavours.PDFAFlavour
 import org.verapdf.pdfa.{Foundries, PDFAParser, PDFAValidator}
 
+import java.awt.Rectangle
 import scala.jdk.CollectionConverters._
 
 class TodistusLatausSpec extends TodistusSpecHelpers {
@@ -151,13 +151,178 @@ class TodistusLatausSpec extends TodistusSpecHelpers {
         eqWithTolerance(mediaBox.getHeight, expectedHeight) should be(true)
       }
     }
-    
+
+    def verifyTodistusPositionalContent(document: PDDocument): Unit = {
+      // PDF:n koordinaatisto: 0,0 on vasemmassa ylänurkassa, y kasvaa alaspäin
+      // PDF:n koko: 595 x 842 pistettä (A4)
+
+      case class TextRegion(name: String, pageIndex: Int, x: Int, y: Int, width: Int, height: Int, expectedTexts: Seq[String])
+
+      val regions = Seq(
+        TextRegion("sivu1_otsikot", pageIndex = 0,
+          x = 150, y = 150, width = 300, height = 200,
+          expectedTexts = Seq(
+            "TODISTUS",
+            "Kielitutkinto Suorittaja",
+            "(1.1.2007)"
+          )),
+
+        TextRegion("sivu1_kokeeninimi", pageIndex = 0,
+          x = 150, y = 250, width = 300, height = 70,
+          expectedTexts = Seq(
+            "on osallistunut Yleisten kielitutkintojen",
+            "suomen kielen keskitason tutkintoon"
+          )),
+
+        TextRegion("sivu1_johdanto_arvosanoihin", pageIndex = 0,
+          x = 100, y = 325, width = 400, height = 50,
+          expectedTexts = Seq(
+            "Suorituksen perusteella hänen kielitaitonsa on arvioitu osataidoittain",
+            "seuraavasti:"
+          )),
+
+        TextRegion("alueet", pageIndex = 0,
+          x = 100, y = 375, width = 150, height = 90,
+          expectedTexts = Seq(
+            "PUHEEN YMMÄRTÄMINEN",
+            "PUHUMINEN",
+            "TEKSTIN YMMÄRTÄMINEN",
+            "KIRJOITTAMINEN"
+          )),
+
+        TextRegion("arvosanat", pageIndex = 0,
+          x = 250, y = 375, width = 150, height = 90,
+          expectedTexts = Seq(
+            "4, keskitaso",
+            "3, keskitaso",
+            "3, keskitaso",
+            "Alle 3 (hylätty)"
+          )),
+
+        TextRegion("arvosanakuvaus", pageIndex = 0,
+          x = 100, y = 470, width = 400, height = 100,
+          expectedTexts = Seq(
+            "Tutkinnon kunkin osataidon hyväksytystä suorituksesta voi saada tasoarvion 3-4.",
+            "Yleisissä kielitutkinnoissa kielitaidon arviointi perustuu kuuteen taitotasoon, jotka",
+            "on kuvattu todistuksen kääntöpuolella. Yleisten kielitutkintojen taitotasoasteikko",
+            "vastaa Eurooppalaisen viitekehyksen (EVK) taitotasoasteikkoa."
+          )),
+
+        TextRegion("allekirjoitus", pageIndex = 0,
+          x = 49, y = 600, width = 356, height = 200,
+          expectedTexts = Seq("Tutkinnon järjestäjä:",
+            "Varsinais-Suomen kansanopisto",
+            "Helsingissä, 3.1.2011",
+            "Tämän todistuksen on myöntänyt Opetushallitus.",
+            "Tämä tutkinto perustuu yleisistä kielitutkinnoista annettuun lakiin 964/2004 sekä valtioneuvoston asetuksiin",
+            "1163/2004 ja 1109/2011.",
+            "Alkuperän ja eheyden varmistamiseksi todistukseen on liitetty eIDAS-asetuksen mukainen kehittynyt",
+            "sähköinen leima. Tämän todistuksen voimassaolo voidaan vahvistaa",
+            " asti.")),
+
+        TextRegion("Sivun 2 otsikkorivi", pageIndex = 1,
+          x = 50, y = 60, width = 500, height = 40,
+          expectedTexts = Seq("TAITOTASOKUVAUKSET",
+            "EVK:N",
+            "ASTEIKKO")),
+
+        TextRegion("Sivun 2 vasen palsta", pageIndex = 1,
+          x = 50, y = 90, width = 40, height = 650,
+          expectedTexts = Seq("YLIN TASO",
+            "6",
+            "5",
+            "KESKITASO",
+            "4",
+            "3",
+            "PERUSTASO",
+            "2",
+            "1")),
+
+        TextRegion("Sivun 2 taso 6", pageIndex = 1,
+          x = 85, y = 105, width = 410, height = 75,
+          expectedTexts = Seq(
+            "Ymmärtää vaikeuksitta kaikenlaista"
+          )),
+
+        TextRegion("Sivun 2 taso 5", pageIndex = 1,
+          x = 85, y = 190, width = 410, height = 75,
+          expectedTexts = Seq(
+            "Ymmärtää kaikenlaista normaalitempoista"
+          )),
+
+        TextRegion("Sivun 2 taso 4", pageIndex = 1,
+          x = 85, y = 305, width = 410, height = 75,
+          expectedTexts = Seq(
+            "Ymmärtää normaalitempoista puhetta"
+          )),
+
+        TextRegion("Sivun 2 taso 3", pageIndex = 1,
+          x = 85, y = 420, width = 410, height = 75,
+          expectedTexts = Seq(
+            "Ymmärtää pidempää yhtäjaksoista"
+          )),
+
+        TextRegion("Sivun 2 taso 2", pageIndex = 1,
+          x = 85, y = 550, width = 410, height = 75,
+          expectedTexts = Seq(
+            "Ymmärtää selkeää ja yksinkertaistettua"
+          )),
+
+        TextRegion("Sivun 2 taso 1", pageIndex = 1,
+          x = 85, y = 650, width = 410, height = 75,
+          expectedTexts = Seq(
+            "Ymmärtää hitaasta ja selkeästä"
+          )),
+
+        TextRegion("Sivun 2 oikea palsta", pageIndex = 1,
+          x = 500, y = 90, width = 40, height = 650,
+          expectedTexts = Seq(
+            "C2",
+            "C1",
+            "B2",
+            "B1",
+            "A2",
+            "A1")),
+
+        TextRegion("Sivun 2 alaviite", pageIndex = 1,
+          x = 45, y = 770, width = 500, height = 50,
+          expectedTexts = Seq(
+            "Yleisten kielitutkintojen taitotasoasteikko on linkitetty empiirisesti Eurooppalaisen viitekehyksen asteikkoon.")),
+
+      )
+
+      // Käy läpi määritellyt alueet
+      val pages = document.getDocumentCatalog.getPages
+
+      regions.foreach { region =>
+        if (region.pageIndex < pages.getCount) {
+          val page = pages.get(region.pageIndex)
+          val stripper = new PDFTextStripperByArea()
+          stripper.setSortByPosition(true)
+
+          val rect = new Rectangle(region.x, region.y, region.width, region.height)
+          stripper.addRegion(region.name, rect)
+          stripper.extractRegions(page)
+
+          val extractedText = stripper.getTextForRegion(region.name).trim()
+
+          region.expectedTexts.foreach { expectedText =>
+            withClue(s"Sivulla ${region.pageIndex + 1}, alueella '${region.name}' (x=${region.x}, y=${region.y}, w=${region.width}, h=${region.height}) ei löytynyt odotettua tekstiä '$expectedText'. Löydetty teksti: '$extractedText'. ") {
+              extractedText should include(expectedText)
+            }
+          }
+        } else {
+          fail(s"Alue '${region.name}' viittaa sivuun ${region.pageIndex + 1}, mutta PDF:ssä on vain ${pages.getCount} sivua")
+        }
+      }
+    }
+
     def verifyPdfUaAccessibility(pdfBytes: Array[Byte]): Unit = {
       VeraGreenfieldFoundryProvider.initialise()
 
       val flavoursToValidate = Seq(
         PDFAFlavour.PDFUA_1,    // PDF/UA-1, minkä täyttävän PDF:n openhtmltopdf luo. PDF/UA-2 ei mene läpi.
-        // PDFAFlavour.WCAG_2_1    // WCAG 2.1, tämä on EU-direktiiviein vaatima. VeraPDF:n tuki on kuitenkin ilmeisesti tälle vielä jotain experimental-koodia,.
+        // PDFAFlavour.WCAG_2_1    // WCAG 2.1, tämä on EU-direktiiviein vaatima. VeraPDF:n tuki on kuitenkin ilmeisesti tälle vielä jotain experimental-koodia
       )
 
       flavoursToValidate.foreach { flavour =>
@@ -264,6 +429,7 @@ class TodistusLatausSpec extends TodistusSpecHelpers {
       verifyTodistusSivumaara(document, 2)
       verifyTodistusMetadata(document, completedJob, opiskeluoikeus.get)
       verifyPageSize(document, 2)
+      verifyTodistusPositionalContent(document)
       verifyPdfUaAccessibility(pdfBytes)
 
       // Varmista että Content-Type on oikea
@@ -292,6 +458,7 @@ class TodistusLatausSpec extends TodistusSpecHelpers {
       verifyTodistusSivumaara(document, 2)
       verifyTodistusMetadata(document, completedJob, opiskeluoikeus.get)
       verifyPageSize(document, 2)
+      verifyTodistusPositionalContent(document)
       verifyPdfUaAccessibility(pdfBytes)
 
       document.close()
