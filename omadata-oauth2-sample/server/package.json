@@ -10,6 +10,7 @@
   "type": "module",
   "scripts": {
     "build": "npx tsc",
+    "generate-certs": "./testca/generate-certs.sh",
     "start": "../scripts/start-node-sample.sh",
     "start:prod": "node dist/index.js",
     "start:alb-proxy": "../scripts/start-alb-proxy.sh",
