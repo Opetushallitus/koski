@@ -7,6 +7,7 @@ import fi.oph.koski.db.{DB, KoskiOpiskeluoikeusRow, KoskiTables, QueryMethods}
 import fi.oph.koski.json.SensitiveDataAllowed
 import fi.oph.koski.koskiuser.Session
 import fi.oph.koski.koskiuser.Rooli.{OPHKATSELIJA, OPHPAAKAYTTAJA}
+import fi.oph.koski.log.AuditLogMessage.AuditLogMessageField
 import fi.oph.koski.log._
 import fi.oph.koski.massaluovutus.suorituspalvelu.opiskeluoikeus.{SupaOpiskeluoikeus, SupaPoistettuOpiskeluoikeus, SupaPoistettuTaiOlemassaolevaOpiskeluoikeus}
 import fi.oph.koski.massaluovutus.{MassaluovutusException, MassaluovutusQueryPriority, OpetushallituksenMassaluovutusQueryParameters, QueryResultWriter}
@@ -35,7 +36,7 @@ trait SuorituspalveluQuery extends OpetushallituksenMassaluovutusQueryParameters
 
         if(response.nonEmpty) {
           response.foreach { oo =>
-            auditLog(oppija_oid, oo.oid)
+            SuorituspalveluQuery.auditLog(oppija_oid, oo.oid, None)
           }
           Some(
             SupaResponse(
@@ -105,19 +106,6 @@ trait SuorituspalveluQuery extends OpetushallituksenMassaluovutusQueryParameters
         throw new MassaluovutusException(s"Oppijan ${row.oppijaOid} opiskeluoikeuden ${row.oid} deserialisointi epäonnistui: ${errors.errors.map(_.toString).mkString(", ")}")
     }
   }
-
-  private def auditLog(oppijaOid: String, opiskeluoikeusOid: String)(implicit user: Session): Unit =
-    AuditLog
-      .log(
-        KoskiAuditLogMessage(
-          KoskiOperation.SUORITUSPALVELU_OPISKELUOIKEUS_HAKU,
-          user,
-          Map(
-            KoskiAuditLogMessageField.oppijaHenkiloOid -> oppijaOid,
-            KoskiAuditLogMessageField.opiskeluoikeusOid -> opiskeluoikeusOid,
-          )
-        )
-      )
 }
 
 object SuorituspalveluQuery {
@@ -141,4 +129,21 @@ object SuorituspalveluQuery {
     "lukionaineopinnot",
     "lukionoppimaara"
   )
+
+  def auditLog(oppijaOid: String, opiskeluoikeusOid: String, versionumero: Option[Int])(implicit user: Session): Unit =
+    AuditLog
+      .log(
+        KoskiAuditLogMessage(
+          KoskiOperation.SUORITUSPALVELU_OPISKELUOIKEUS_HAKU,
+          user,
+          (
+            Map(
+              KoskiAuditLogMessageField.oppijaHenkiloOid -> oppijaOid,
+              KoskiAuditLogMessageField.opiskeluoikeusOid -> opiskeluoikeusOid,
+            ) ++ versionumero.map(v => Map(
+              KoskiAuditLogMessageField.opiskeluoikeusVersio -> v.toString
+            )).getOrElse(Map.empty[AuditLogMessageField, String])
+          ).toMap
+        )
+      )
 }
