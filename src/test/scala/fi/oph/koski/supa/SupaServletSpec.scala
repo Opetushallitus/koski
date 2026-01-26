@@ -6,7 +6,7 @@ import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.koskiuser.{KoskiMockUser, MockUsers}
 import fi.oph.koski.log.AuditLogTester
-import fi.oph.koski.schema.AmmatillinenOpiskeluoikeus
+import fi.oph.koski.schema.{AmmatillinenOpiskeluoikeus, LukionOpiskeluoikeus}
 import fi.oph.koski.{DatabaseTestMethods, KoskiHttpSpec}
 import org.json4s.jackson.JsonMethods
 import org.json4s.DefaultFormats
@@ -205,6 +205,44 @@ class SupaServletSpec
 
         getSupaVersio(opiskeluoikeusOid, 1, MockUsers.paakayttaja) {
           verifyResponseStatus(404, KoskiErrorCategory.notFound.opiskeluoikeuttaEiLöydyTaiEiOikeuksia(s"Opiskeluoikeutta $opiskeluoikeusOid ei löydy tai käyttäjällä ei ole oikeutta sen katseluun"))
+        }
+      }
+
+      "Rikkinäisen historian opiskeluoikeuden versio palauttaa 500" in {
+        val oppija = KoskiSpecificMockOppijat.uusiLukio
+        val opiskeluoikeus = lastOpiskeluoikeusByHetu(oppija).asInstanceOf[LukionOpiskeluoikeus]
+        val oid = opiskeluoikeus.oid.get
+
+        // Luo uusi versio päivittämällä opiskeluoikeutta
+        val päivitettyOo = opiskeluoikeus.copy(arvioituPäättymispäivä = Some(java.time.LocalDate.now().plusYears(1)))
+        putOpiskeluoikeus(päivitettyOo, oppija) {
+          verifyResponseStatusOk()
+        }
+
+        // Hae opiskeluoikeuden id tietokannassa
+        val opiskeluoikeusId = runDbSync(
+          sql"select id from opiskeluoikeus where oppija_oid = ${KoskiSpecificMockOppijat.uusiLukio.oid}".as[Int],
+          timeout = 5.seconds
+        ).head
+        opiskeluoikeusId should be > 0
+
+        // Riko opiskeluoikeuden historiat, versioille > 1
+        val updatedRows = runDbSync(
+          sql"update opiskeluoikeushistoria set muutos = '{}'::json where opiskeluoikeus_id = $opiskeluoikeusId and versionumero > 1".as[Int],
+          timeout = 5.seconds
+        ).head
+        updatedRows should be > 0
+
+        // Hae versio 1, toimii edelleen
+        getSupaVersio(oid, 1, MockUsers.paakayttaja) {
+          verifyResponseStatusOk()
+          val json = JsonMethods.parse(body)
+          (json \ "opiskeluoikeus" \ "versionumero").extract[Int] should equal(1)
+        }
+
+        // Hae versio 2
+        getSupaVersio(oid, 2, MockUsers.paakayttaja) {
+          verifyResponseStatus(500, KoskiErrorCategory.internalError("Historiaversion deserialisointi epäonnistui"))
         }
       }
     }

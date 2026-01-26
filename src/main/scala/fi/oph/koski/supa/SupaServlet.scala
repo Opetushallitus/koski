@@ -2,6 +2,7 @@ package fi.oph.koski.supa
 
 import java.time.LocalDateTime
 import fi.oph.koski.config.KoskiApplication
+import fi.oph.koski.history.JsonPatchException
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.koskiuser.RequiresVirkailijaOrPalvelukäyttäjä
 import fi.oph.koski.koskiuser.Rooli.{OPHKATSELIJA, OPHPAAKAYTTAJA}
@@ -37,8 +38,14 @@ class SupaServlet(implicit val application: KoskiApplication)
       OpiskeluoikeusOid.validateOpiskeluoikeusOid(getStringParam("oid"))
     val version: Int = getIntegerParam("version")
 
-    val opiskeluoikeusHistoriasta: Either[HttpStatus, KoskeenTallennettavaOpiskeluoikeus] =
+    val opiskeluoikeusHistoriasta: Either[HttpStatus, KoskeenTallennettavaOpiskeluoikeus] = try {
       validOid.flatMap(oid => application.historyRepository.findVersion(oid, version)(session))
+    } catch {
+      case e: JsonPatchException =>
+        logger.warn(e)(s"Supa opiskeluoikeuden historiaversion deserialisointi epäonnistui")
+        Left(KoskiErrorCategory.internalError("Historiaversion deserialisointi epäonnistui"))
+    }
+
     val oppijaOidOpiskeluoikeudesta: Either[HttpStatus, String] =
       opiskeluoikeusHistoriasta.flatMap(oo => application.opiskeluoikeusRepository.findByOid(oo.oid.get).map(_.oppijaOid))
 
