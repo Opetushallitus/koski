@@ -7,6 +7,7 @@ import fi.oph.koski.schema.{KielitutkinnonOpiskeluoikeus, Opiskeluoikeus, Yleise
 import org.apache.pdfbox.Loader
 import org.apache.pdfbox.pdmodel.PDDocument
 import org.apache.pdfbox.text.PDFTextStripper
+
 import org.json4s.jackson.JsonMethods
 import org.verapdf.core.VeraPDFException
 import org.verapdf.gf.foundry.VeraGreenfieldFoundryProvider
@@ -134,6 +135,23 @@ class TodistusLatausSpec extends TodistusSpecHelpers {
       }
     }
 
+    def verifyPageSize(document: PDDocument, expectedPages: Int): Unit = {
+      def eqWithTolerance(a: Double, b: Double, tolerance: Double = 0.05): Boolean = math.abs(a - b) <= tolerance
+
+      val expectedWidth = 595.27
+      val expectedHeight = 841.89
+
+      val pages = document.getDocumentCatalog.getPages
+
+      (0 until expectedPages).foreach { i =>
+
+        val mediaBox = pages.get(i).getMediaBox
+
+        eqWithTolerance(mediaBox.getWidth, expectedWidth) should be(true)
+        eqWithTolerance(mediaBox.getHeight, expectedHeight) should be(true)
+      }
+    }
+    
     def verifyPdfUaAccessibility(pdfBytes: Array[Byte]): Unit = {
       VeraGreenfieldFoundryProvider.initialise()
 
@@ -245,6 +263,7 @@ class TodistusLatausSpec extends TodistusSpecHelpers {
       verifyTodistusFontit(document)
       verifyTodistusSivumaara(document, 2)
       verifyTodistusMetadata(document, completedJob, opiskeluoikeus.get)
+      verifyPageSize(document, 2)
       verifyPdfUaAccessibility(pdfBytes)
 
       // Varmista että Content-Type on oikea
@@ -272,6 +291,7 @@ class TodistusLatausSpec extends TodistusSpecHelpers {
       verifyTodistusFontit(document)
       verifyTodistusSivumaara(document, 2)
       verifyTodistusMetadata(document, completedJob, opiskeluoikeus.get)
+      verifyPageSize(document, 2)
       verifyPdfUaAccessibility(pdfBytes)
 
       document.close()

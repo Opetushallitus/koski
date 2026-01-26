@@ -53,21 +53,20 @@
 
     /* Ekan sivun pitää käyttää default-tyyliä, muuten openhtmltopdf rendaa ylimääräisen sivunvaihdon ennen sitä */
     @page {
-      size: 595px 842px; /* A4 portrait */
+      size: A4 portrait;
       margin: 0;
     }
 
     @page secondpage {
-      size: 595px 842px; /* A4 portrait */
-      /*size: A4 portrait;*/
+      size: A4 portrait;
       margin: 0;
     }
 
     .first {
       margin: 0;
-      padding: 60px 50px 60px 50px;
-      width: 595px;
-      height: 842px;
+      padding: 60pt 50pt 60pt 50pt;
+      width: 595.27pt;
+      height: 841.89pt;
       box-sizing: border-box;
       position: relative;
       /* DEBUG: */
@@ -79,9 +78,9 @@
       page-break-before: always;
 
       margin: 0;
-      padding: 60px 50px 60px 50px;
-      width: 595px;
-      height: 842px;
+      padding: 60pt 50pt 60pt 50pt;
+      width: 595.27pt;
+      height: 841.89pt;
       box-sizing: border-box;
       position: relative;
       /* DEBUG: */
@@ -89,7 +88,7 @@
     }
 
     /* DEBUG: */
-    /*.first, .second { outline: 1px dashed red; padding: 1rem; box-sizing: border-box; }*/
+    /*.first, .second { outline: 1pt dashed red; padding: 1rem; box-sizing: border-box; }*/
 
     body {
       font-family: 'Open Sans', sans-serif;
@@ -105,63 +104,63 @@
     .yki-logo {
       display: block;
       position: absolute;
-      left: 60px;
-      top: 50px;
-      height: 87px;
+      left: 60pt;
+      top: 50pt;
+      height: 87pt;
       width: auto;
     }
 
     .todistus-otsikko-osuus {
       position: relative;
-      padding: 120px 0px 0px 0px;
+      padding: 120pt 0pt 0pt 0pt;
       margin: 0;
     }
 
     .todistus-arvosana-osuus {
       position: relative;
-      padding: 0px 57px 0px 57px;
+      padding: 0pt 57pt 0pt 57pt;
       margin: 0;
     }
 
     .todistus-otsikko {
-      font-size: 14px;
-      line-height: 20px;
+      font-size: 14pt;
+      line-height: 20pt;
       font-weight: 600;
       text-align: center;
-      margin-bottom: 4px;
+      margin-bottom: 4pt;
       margin-top: 0;
     }
 
     .nimi-prefix {
-      font-size: 12px;
-      line-height: 20px;
+      font-size: 12pt;
+      line-height: 20pt;
       font-weight: 400;
       text-align: center;
     }
 
     .nimi {
-      font-size: 20px;
-      line-height: 26px;
+      font-size: 20pt;
+      line-height: 26pt;
       font-weight: 700;
       text-align: center;
       margin: 0;
     }
 
     .syntymaaika {
-      font-size: 12px;
-      line-height: 20px;
+      font-size: 12pt;
+      line-height: 20pt;
       font-weight: 600;
       text-align: center;
-      margin-bottom: 20px;
+      margin-bottom: 20pt;
       margin-top: 0;
     }
 
     .kuvaus-teksti {
-      font-size: 14px;
-      line-height: 20px;
+      font-size: 14pt;
+      line-height: 20pt;
       font-weight: 400;
       text-align: center;
-      margin-bottom: 20px;
+      margin-bottom: 20pt;
       margin-top: 0;
     }
 
@@ -170,16 +169,16 @@
     }
 
     .suoritus-info {
-      font-size: 10px;
-      line-height: 15px;
+      font-size: 10pt;
+      line-height: 15pt;
       font-weight: 400;
-      margin-bottom: 20px;
+      margin-bottom: 20pt;
       margin-top: 0;
     }
 
     .taulukko {
       width: 60%;
-      margin-bottom: 20px;
+      margin-bottom: 20pt;
       margin-top: 0;
       border-collapse: collapse;
       border: none;
@@ -187,22 +186,22 @@
     }
 
     .taulukko-otsikko {
-      font-size: 10px;
-      line-height: 17px;
+      font-size: 10pt;
+      line-height: 17pt;
       font-weight: 600;
       text-transform: uppercase;
     }
 
     .taulukko-arvo {
-      font-size: 10px;
-      line-height: 17px;
+      font-size: 10pt;
+      line-height: 17pt;
       font-weight: 600;
       text-align: left;
     }
 
     .selite-teksti {
-      font-size: 10px;
-      line-height: 15px;
+      font-size: 10pt;
+      line-height: 15pt;
       font-weight: 400;
       margin-top: 0;
       margin-bottom: 0;
@@ -215,58 +214,58 @@
             dynaamisesti korkeutta muuttava sisältö rendautuisi ensimmäisen sivun alareunaan aseteltuna. Saisi korjattua
             vain openhtmltopdf:ään lisäominaisuuksia toteuttamalla, mutta siihen ei päätetty lähteä, koska html:n rendaustoteutus
             on melko monimutkainen. */
-      left: 60px;
-      bottom: 50px;
-      width: 352px;
+      left: 60pt;
+      bottom: 50pt;
+      width: 352pt;
       margin: 0;
     }
 
     .jarjestaja-info {
-      font-size: 10px;
-      line-height: 15px;
+      font-size: 10pt;
+      line-height: 15pt;
       font-weight: 400;
-      max-width: 250px;
-      margin-bottom: 2px;
+      max-width: 250pt;
+      margin-bottom: 2pt;
       margin-top: 0;
     }
 
     .jarjestaja-nimi {
-      font-size: 10px;
-      line-height: 15px;
+      font-size: 10pt;
+      line-height: 15pt;
       font-weight: 600;
-      max-width: 250px;
-      margin-bottom: 15px;
+      max-width: 250pt;
+      margin-bottom: 15pt;
       margin-top: 0;
     }
 
     .allekirjoitus-info {
-      font-size: 10px;
-      line-height: 15px;
+      font-size: 10pt;
+      line-height: 15pt;
       font-weight: 400;
-      margin-bottom: 20px;
+      margin-bottom: 20pt;
       margin-top: 0;
     }
 
     .myontaja-info {
-      font-size: 10px;
-      line-height: 15px;
+      font-size: 10pt;
+      line-height: 15pt;
       font-weight: 400;
-      margin-bottom: 15px;
+      margin-bottom: 15pt;
       margin-top: 0;
     }
 
     .footer-teksti {
-      font-size: 7px;
-      line-height: 10px;
+      font-size: 7pt;
+      line-height: 10pt;
       font-weight: 400;
     }
 
     .oph-logo {
       display: block;
       position: absolute;
-      right: 60px;
-      bottom: 50px;
-      width: 114px;
+      right: 60pt;
+      bottom: 50pt;
+      width: 114pt;
       height: auto;
     }
 
@@ -283,8 +282,8 @@
     }
 
     .infosivu-otsikko-th {
-      font-size: 14px;
-      line-height: 20px;
+      font-size: 14pt;
+      line-height: 20pt;
       font-weight: 600;
       text-align: center;
       text-transform: uppercase;
@@ -293,8 +292,8 @@
     }
 
     .infosivu-otsikko-evk-th {
-      font-size: 8px;
-      line-height: 12px;
+      font-size: 8pt;
+      line-height: 12pt;
       font-weight: 400;
 
       text-transform: uppercase;
@@ -303,7 +302,7 @@
     }
 
     .infosivu-top-spacer-tr {
-      height: 10px;
+      height: 10pt;
       padding: 0;
       border: 0;
 
@@ -313,14 +312,14 @@
     .infosivu-level-otsikko-th {
       overflow: visible;
       vertical-align: middle;
-      border-right: 1px solid black;
+      border-right: 1pt solid black;
 
       /*background: #0a789c;*/
     }
 
     .infosivu-level-otsikko-th-content {
-      font-size: 14px;
-      line-height: 24px;
+      font-size: 14pt;
+      line-height: 24pt;
       font-weight: 600;
       white-space: nowrap;
 
@@ -333,7 +332,7 @@
     }
 
     .infosivu-taitotaso-spacer-tr {
-      height: 4px;
+      height: 4pt;
       padding: 0;
       border: 0;
 
@@ -341,7 +340,7 @@
     }
 
     .infosivu-level-spacer-tr {
-      height: 20px;
+      height: 20pt;
       padding: 0;
       border: 0;
 
@@ -352,74 +351,74 @@
       vertical-align: top;
       text-align: right;
 
-      font-size: 20px;
-      line-height: 20px;
+      font-size: 20pt;
+      line-height: 20pt;
       font-weight: 600;
 
       /*background: #0dbc79;*/
     }
 
     .upper-tr .infosivu-taitotaso-otsikko-th {
-      padding-top: 10px;
-      padding-bottom: 3px;
-      border-top: 1px solid black;
+      padding-top: 10pt;
+      padding-bottom: 3pt;
+      border-top: 1pt solid black;
     }
 
     .lower-tr .infosivu-taitotaso-otsikko-th {
-      padding-top: 3px;
-      padding-bottom: 10px;
+      padding-top: 3pt;
+      padding-bottom: 10pt;
 
-      border-bottom: 1px solid black;
+      border-bottom: 1pt solid black;
     }
 
     .infosivu-taitotaso-teksti-td {
       vertical-align: top;
-      padding-left: 5px;
+      padding-left: 5pt;
 
-      font-size: 10px;
-      line-height: 15px;
+      font-size: 10pt;
+      line-height: 15pt;
       font-weight: 400;
 
       /*background: orangered;*/
     }
 
     .upper-tr .infosivu-taitotaso-teksti-td {
-      padding-top: 10px;
-      padding-bottom: 3px;
+      padding-top: 10pt;
+      padding-bottom: 3pt;
     }
 
     .lower-tr .infosivu-taitotaso-teksti-td {
-      padding-top: 3px;
-      padding-bottom: 10px;
+      padding-top: 3pt;
+      padding-bottom: 10pt;
     }
 
     .infosivu-taitotaso-evk-otsikko-th {
       vertical-align: middle;
       text-align: left;
 
-      font-size: 20px;
-      line-height: 20px;
+      font-size: 20pt;
+      line-height: 20pt;
       font-weight: 600;
 
-      padding-left: 5px;
+      padding-left: 5pt;
 
       /*background: yellow;*/
     }
 
     .upper-tr .infosivu-taitotaso-evk-otsikko-th {
-      padding-top: 10px;
-      padding-bottom: 3px;
+      padding-top: 10pt;
+      padding-bottom: 3pt;
     }
 
     .lower-tr .infosivu-taitotaso-evk-otsikko-th {
-      padding-top: 3px;
-      padding-bottom: 10px;
+      padding-top: 3pt;
+      padding-bottom: 10pt;
     }
 
     .infosivu-bracket-spacer-td {
-      border-right: 1px solid black;
-      border-top: 1px solid black;
-      border-bottom: 1px solid black;
+      border-right: 1pt solid black;
+      border-top: 1pt solid black;
+      border-bottom: 1pt solid black;
     }
 
     .upper-tr .infosivu-bracket-spacer-td {
@@ -430,16 +429,16 @@
 
     .infosivu-footer-osuus {
       position: absolute;
-      left: 50px;
-      bottom: 60px;
+      left: 50pt;
+      bottom: 60pt;
       margin: 0;
 
       /*background: rosybrown;*/
     }
 
     .infosivu-footer {
-      font-size: 7px;
-      line-height: 10px;
+      font-size: 7pt;
+      line-height: 10pt;
       font-weight: 400;
       text-align: left;
       margin-bottom: 0;
@@ -563,11 +562,11 @@
   <section class="infosivu-taitotaso-table-wrapper" id="taitotasokuvaukset">
     <table class="infosivu-taitotaso-table">
       <colgroup>
-        <col style="width:20px"/>
-        <col style="width:15px"/>
+        <col style="width:20pt"/>
+        <col style="width:15pt"/>
         <col/>
-        <col style="width:10px"/>
-        <col style="width:30px"/>
+        <col style="width:10pt"/>
+        <col style="width:30pt"/>
       </colgroup>
 
       <thead>
