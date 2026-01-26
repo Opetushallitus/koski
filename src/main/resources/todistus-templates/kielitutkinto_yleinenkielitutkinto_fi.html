@@ -18,7 +18,14 @@
       <bookmark name="Allekirjoitus" href="#allekirjoitustiedot"/>
     </bookmark>
     <bookmark name="Sivu 2" href="#sivu2">
-      <bookmark name="Taitotasokuvaukset" href="#taitotasokuvaukset"/>
+      <bookmark name="Taitotasokuvaukset" href="#taitotasokuvaukset">
+        <bookmark name="Taitotason 6 kuvaus" href="#taitotasokuvaus6"/>
+        <bookmark name="Taitotason 5 kuvaus" href="#taitotasokuvaus5"/>
+        <bookmark name="Taitotason 4 kuvaus" href="#taitotasokuvaus4"/>
+        <bookmark name="Taitotason 3 kuvaus" href="#taitotasokuvaus3"/>
+        <bookmark name="Taitotason 2 kuvaus" href="#taitotasokuvaus2"/>
+        <bookmark name="Taitotason 1 kuvaus" href="#taitotasokuvaus1"/>
+      </bookmark>
     </bookmark>
   </bookmarks>
 
@@ -303,7 +310,7 @@
       /*background: gray;*/
     }
 
-    .infosivu-level-otsikko-td {
+    .infosivu-level-otsikko-th {
       overflow: visible;
       vertical-align: middle;
       border-right: 1px solid black;
@@ -311,7 +318,7 @@
       /*background: #0a789c;*/
     }
 
-    .infosivu-level-otsikko-td-content {
+    .infosivu-level-otsikko-th-content {
       font-size: 14px;
       line-height: 24px;
       font-weight: 600;
@@ -341,7 +348,7 @@
       /*background: gray;*/
     }
 
-    .infosivu-taitotaso-otsikko-td {
+    .infosivu-taitotaso-otsikko-th {
       vertical-align: top;
       text-align: right;
 
@@ -352,13 +359,13 @@
       /*background: #0dbc79;*/
     }
 
-    .upper-tr .infosivu-taitotaso-otsikko-td {
+    .upper-tr .infosivu-taitotaso-otsikko-th {
       padding-top: 10px;
       padding-bottom: 3px;
       border-top: 1px solid black;
     }
 
-    .lower-tr .infosivu-taitotaso-otsikko-td {
+    .lower-tr .infosivu-taitotaso-otsikko-th {
       padding-top: 3px;
       padding-bottom: 10px;
 
@@ -386,7 +393,7 @@
       padding-bottom: 10px;
     }
 
-    .infosivu-taitotaso-evk-otsikko-td {
+    .infosivu-taitotaso-evk-otsikko-th {
       vertical-align: middle;
       text-align: left;
 
@@ -399,12 +406,12 @@
       /*background: yellow;*/
     }
 
-    .upper-tr .infosivu-taitotaso-evk-otsikko-td {
+    .upper-tr .infosivu-taitotaso-evk-otsikko-th {
       padding-top: 10px;
       padding-bottom: 3px;
     }
 
-    .lower-tr .infosivu-taitotaso-evk-otsikko-td {
+    .lower-tr .infosivu-taitotaso-evk-otsikko-th {
       padding-top: 3px;
       padding-bottom: 10px;
     }
@@ -553,7 +560,7 @@
 
 <section class="second" id="sivu2">
 
-  <section class="infosivu-taitotaso-table-wrapper">
+  <section class="infosivu-taitotaso-table-wrapper" id="taitotasokuvaukset">
     <table class="infosivu-taitotaso-table">
       <colgroup>
         <col style="width:20px"/>
@@ -580,36 +587,36 @@
       </tr>
 
       <tr class="infosivu-taitotaso-tr upper-tr">
-        <td rowspan="3" class="infosivu-level-otsikko-td">
-          <div class="infosivu-level-otsikko-td-content">
+        <th scope="row" rowspan="3" class="infosivu-level-otsikko-th">
+          <div class="infosivu-level-otsikko-th-content">
             Ylin taso
           </div>
-        </td>
-        <td class="infosivu-taitotaso-otsikko-td">
+        </th>
+        <th scope="row" class="infosivu-taitotaso-otsikko-th" id="taitotasokuvaus6">
           6
-        </td>
+        </th>
         <td class="infosivu-taitotaso-teksti-td">
           Ymmärtää vaikeuksitta kaikenlaista puhuttua ja kirjoitettua kieltä. Ilmausten hienot sävyerot tuottavat enää harvoin vaikeuksia. Puhuu ja kirjoittaa erittäin sujuvasti tilanteeseen sopivalla tyylillä ja pystyy ilmaisemaan hienojakin merkitysvivahteita. Kieliopin ja sanaston hallinta on varmaa lähes kaikissa tilanteissa, ja pienetkin puutteet ovat harvinaisia.
         </td>
         <td class="infosivu-bracket-spacer-td"></td>
-        <td class="infosivu-taitotaso-evk-otsikko-td">
+        <th scope="row" class="infosivu-taitotaso-evk-otsikko-th">
           C2
-        </td>
+        </th>
       </tr>
       <tr class="infosivu-taitotaso-spacer-tr">
         <td colspan="4"></td>
       </tr>
       <tr class="infosivu-taitotaso-tr lower-tr">
-        <td class="infosivu-taitotaso-otsikko-td">
+        <th scope="row" class="infosivu-taitotaso-otsikko-th" id="taitotasokuvaus5">
           5
-        </td>
+        </th>
         <td class="infosivu-taitotaso-teksti-td">
           Ymmärtää kaikenlaista normaalitempoista puhetta, vaikka joskus ymmärtäminen voi vaatia ponnistelua, jos aihepiiri tai asian käsittely on vierasta. Ymmärtää rakenteellisesti ja kielellisesti monimutkaisia tekstejä ja oman aikamme kirjallisuutta. Puhuu ja kirjoittaa selkeästi ja sujuvasti erilaisista aiheista, mutta harvinaisten sanojen ja monimutkaisten lauserakenteiden käyttö saattaa kuitenkin tuottaa vaikeuksia.
         </td>
         <td class="infosivu-bracket-spacer-td"></td>
-        <td class="infosivu-taitotaso-evk-otsikko-td">
+        <th scope="row" class="infosivu-taitotaso-evk-otsikko-th">
           C1
-        </td>
+        </th>
       </tr>
 
       <tr class="infosivu-level-spacer-tr">
@@ -617,36 +624,36 @@
       </tr>
 
       <tr class="infosivu-taitotaso-tr upper-tr">
-        <td rowspan="3" class="infosivu-level-otsikko-td">
-          <div class="infosivu-level-otsikko-td-content">
+        <th scope="row" rowspan="3" class="infosivu-level-otsikko-th">
+          <div class="infosivu-level-otsikko-th-content">
             Keskitaso
           </div>
-        </td>
-        <td class="infosivu-taitotaso-otsikko-td">
+        </th>
+        <th scope="row" class="infosivu-taitotaso-otsikko-th" id="taitotasokuvaus4">
           4
-        </td>
+        </th>
         <td class="infosivu-taitotaso-teksti-td">
           Ymmärtää normaalitempoista puhetta yleisistä aihepiireistä, mutta joitakin yksityiskohtia saattaa jäädä ymmärtämättä. Nopea puhekieli ja murteellisuudet tuottavat kuitenkin vaikeuksia. Ymmärtää vaivatta yleisiä aihepiirejä käsitteleviä tekstejä, joskin muutamat tekstin välittämät sävyerot voivat jäädä epäselviksi. Selviää melko hyvin erilaisissa sekä virallisissa että epävirallisissa puhetilanteissa. Pystyy kirjoittamaan sekä yksityisiä että puolivirallisia tekstejä ja esittämään ajatuksiaan yhtenäisinä kokonaisuuksina.
         </td>
         <td class="infosivu-bracket-spacer-td"></td>
-        <td class="infosivu-taitotaso-evk-otsikko-td">
+        <th scope="row" class="infosivu-taitotaso-evk-otsikko-th">
           B2
-        </td>
+        </th>
       </tr>
       <tr class="infosivu-taitotaso-spacer-tr">
         <td colspan="4"></td>
       </tr>
       <tr class="infosivu-taitotaso-tr lower-tr">
-        <td class="infosivu-taitotaso-otsikko-td">
+        <th scope="row" class="infosivu-taitotaso-otsikko-th" id="taitotasokuvaus3">
           3
-        </td>
+        </th>
         <td class="infosivu-taitotaso-teksti-td">
           Ymmärtää pidempää yhtäjaksoista puhetta ja keskeisen ajatuksen monista televisio- ja radio-ohjelmista, jos aihepiiri on tuttu ja puhetempo normaali. Ymmärtää tavallisia jokapäiväisen elämän tekstejä, mutta vaativammat tekstit, joiden aihepiiri on vieras, saattavat tuottaa vaikeuksia. Selviää tavallisimmissa käytännön puhetilanteissa ja pystyy kirjoittamaan yksinkertaista, yhtenäistä tekstiä tavallisista aiheista, vaikkakin kieliopilliset ja sanastolliset puutteet toisinaan vaikeuttavat ymmärtämistä.
         </td>
         <td class="infosivu-bracket-spacer-td"></td>
-        <td class="infosivu-taitotaso-evk-otsikko-td">
+        <th scope="row" class="infosivu-taitotaso-evk-otsikko-th">
           B1
-        </td>
+        </th>
       </tr>
 
       <tr class="infosivu-level-spacer-tr">
@@ -654,36 +661,36 @@
       </tr>
 
       <tr class="infosivu-taitotaso-tr upper-tr">
-        <td rowspan="3" class="infosivu-level-otsikko-td">
-          <div class="infosivu-level-otsikko-td-content">
+        <th scope="row" rowspan="3" class="infosivu-level-otsikko-th">
+          <div class="infosivu-level-otsikko-th-content">
             Perustaso
           </div>
-        </td>
-        <td class="infosivu-taitotaso-otsikko-td">
+        </th>
+        <th scope="row" class="infosivu-taitotaso-otsikko-th" id="taitotasokuvaus2">
           2
-        </td>
+        </th>
         <td class="infosivu-taitotaso-teksti-td">
           Ymmärtää selkeää ja yksinkertaistettua puhetta, joka käsittelee jokapäiväisiä ja tuttuja asioita. Ymmärtää helposti lyhyitä, yksinkertaisia tekstejä ja saa selville pääasiat jokapäiväisen elämän aihepiirejä käsittelevistä teksteistä. Selviää rutiininomaisissa yksinkertaista tiedonvaihtoa vaativissa puhetilanteissa, vaikka ääntäminen tai kielen hallinta voi olla vielä puutteellista. Pystyy kirjoittamaan suppeita, yksinkertaisia tekstejä jokapäiväisistä asioista, mutta teksti voi olla hajanaista.
         </td>
         <td class="infosivu-bracket-spacer-td"></td>
-        <td class="infosivu-taitotaso-evk-otsikko-td">
+        <th scope="row" class="infosivu-taitotaso-evk-otsikko-th">
           A2
-        </td>
+        </th>
       </tr>
       <tr class="infosivu-taitotaso-spacer-tr">
         <td colspan="4"></td>
       </tr>
       <tr class="infosivu-taitotaso-tr lower-tr">
-        <td class="infosivu-taitotaso-otsikko-td">
+        <th scope="row" class="infosivu-taitotaso-otsikko-th" id="taitotasokuvaus1">
           1
-        </td>
+        </th>
         <td class="infosivu-taitotaso-teksti-td">
           Ymmärtää hitaasta ja selkeästä puheesta yksinkertaisia perustason ilmauksia, jotka liittyvät suoraan omaan elämään tai jotka koskevat välitöntä konkreettista ympäristöä. Pystyy ymmärtämään joitakin asioita helppotajuisista ja lyhyistä teksteistä. Selviää kaikkein yksinkertaisimmissa puhetilanteissa, mutta puhe on hidasta ja hyvin katkonaista ja ääntämisessä ja/tai kielen hallinnassa voi olla puutteita. Pystyy kirjoittamaan erittäin lyhyitä tekstejä, joissa on lukuisia kielellisiä puutteita.
         </td>
         <td class="infosivu-bracket-spacer-td"></td>
-        <td class="infosivu-taitotaso-evk-otsikko-td">
+        <th scope="row" class="infosivu-taitotaso-evk-otsikko-th">
           A1
-        </td>
+        </th>
       </tr>
 
       </tbody>
