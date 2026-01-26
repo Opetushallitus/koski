@@ -113,11 +113,88 @@ const AcceptanceParagraphs = ({ durationInMin, clientId }) => {
 }
 
 const Paattymisajankohta = ({ durationInMin }) => {
+  const days = Math.floor(durationInMin / (60 * 24))
+  const hours = Math.floor((durationInMin % (60 * 24)) / 60)
+  const minutes = durationInMin % 60
+
+  const plural = (n) => (n === 1 ? '' : 's')
+
+  if (days >= 1 && hours >= 1 && minutes >= 1) {
+    return (
+      <p>
+        <TextTemplate
+          templateName={`omadataoauth2_suostumuksesi_paattymisajankohta_day${plural(days)}_hour${plural(hours)}_min${plural(minutes)}`}
+          days={days}
+          hours={hours}
+          minutes={minutes}
+        />
+      </p>
+    )
+  }
+
+  if (days >= 1 && hours >= 1) {
+    return (
+      <p>
+        <TextTemplate
+          templateName={`omadataoauth2_suostumuksesi_paattymisajankohta_day${plural(days)}_hour${plural(hours)}`}
+          days={days}
+          hours={hours}
+        />
+      </p>
+    )
+  }
+
+  if (days >= 1 && minutes >= 1) {
+    return (
+      <p>
+        <TextTemplate
+          templateName={`omadataoauth2_suostumuksesi_paattymisajankohta_day${plural(days)}_min${plural(minutes)}`}
+          days={days}
+          minutes={minutes}
+        />
+      </p>
+    )
+  }
+
+  if (days >= 1) {
+    return (
+      <p>
+        <TextTemplate
+          templateName={`omadataoauth2_suostumuksesi_paattymisajankohta_day${plural(days)}`}
+          days={days}
+        />
+      </p>
+    )
+  }
+
+  if (hours >= 1 && minutes >= 1) {
+    return (
+      <p>
+        <TextTemplate
+          templateName={`omadataoauth2_suostumuksesi_paattymisajankohta_hour${plural(hours)}_min${plural(minutes)}`}
+          hours={hours}
+          minutes={minutes}
+        />
+      </p>
+    )
+  }
+
+  if (hours >= 1) {
+    return (
+      <p>
+        <TextTemplate
+          templateName={`omadataoauth2_suostumuksesi_paattymisajankohta_hour${plural(hours)}`}
+          hours={hours}
+        />
+      </p>
+    )
+  }
+
   return (
     <p>
       <TextTemplate
-        templateName="omadataoauth2_suostumuksesi_paattymisajankohta_min"
-        duration_in_minutes={durationInMin}
+        templateName={`omadataoauth2_suostumuksesi_paattymisajankohta_min${plural(minutes)}`}
+        minutes={minutes}
       />
     </p>
   )
