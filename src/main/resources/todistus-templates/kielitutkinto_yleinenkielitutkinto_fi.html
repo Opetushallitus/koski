@@ -18,7 +18,14 @@
       <bookmark name="Allekirjoitus" href="#allekirjoitustiedot"/>
     </bookmark>
     <bookmark name="Sivu 2" href="#sivu2">
-      <bookmark name="Taitotasokuvaukset" href="#taitotasokuvaukset"/>
+      <bookmark name="Taitotasokuvaukset" href="#taitotasokuvaukset">
+        <bookmark name="Taitotason 6 kuvaus" href="#taitotasokuvaus6"/>
+        <bookmark name="Taitotason 5 kuvaus" href="#taitotasokuvaus5"/>
+        <bookmark name="Taitotason 4 kuvaus" href="#taitotasokuvaus4"/>
+        <bookmark name="Taitotason 3 kuvaus" href="#taitotasokuvaus3"/>
+        <bookmark name="Taitotason 2 kuvaus" href="#taitotasokuvaus2"/>
+        <bookmark name="Taitotason 1 kuvaus" href="#taitotasokuvaus1"/>
+      </bookmark>
     </bookmark>
   </bookmarks>
 
@@ -262,6 +269,185 @@
       width: 114px;
       height: auto;
     }
+
+    .infosivu-taitotaso-table-wrapper {
+      position: relative;
+
+      /*background: pink;*/
+    }
+
+    .infosivu-taitotaso-table {
+      width: 100%;
+      border-collapse: collapse;
+      table-layout: fixed;
+    }
+
+    .infosivu-otsikko-th {
+      font-size: 14px;
+      line-height: 20px;
+      font-weight: 600;
+      text-align: center;
+      text-transform: uppercase;
+
+      /*background: deeppink;*/
+    }
+
+    .infosivu-otsikko-evk-th {
+      font-size: 8px;
+      line-height: 12px;
+      font-weight: 400;
+
+      text-transform: uppercase;
+
+      /*background: pink;*/
+    }
+
+    .infosivu-top-spacer-tr {
+      height: 10px;
+      padding: 0;
+      border: 0;
+
+      /*background: gray;*/
+    }
+
+    .infosivu-level-otsikko-th {
+      overflow: visible;
+      vertical-align: middle;
+      border-right: 1px solid black;
+
+      /*background: #0a789c;*/
+    }
+
+    .infosivu-level-otsikko-th-content {
+      font-size: 14px;
+      line-height: 24px;
+      font-weight: 600;
+      white-space: nowrap;
+
+      text-transform: uppercase;
+
+      text-align: center;
+      transform: rotate(-90deg);
+
+      /*background: yellow;*/
+    }
+
+    .infosivu-taitotaso-spacer-tr {
+      height: 4px;
+      padding: 0;
+      border: 0;
+
+      /*background: gray;*/
+    }
+
+    .infosivu-level-spacer-tr {
+      height: 20px;
+      padding: 0;
+      border: 0;
+
+      /*background: gray;*/
+    }
+
+    .infosivu-taitotaso-otsikko-th {
+      vertical-align: top;
+      text-align: right;
+
+      font-size: 20px;
+      line-height: 20px;
+      font-weight: 600;
+
+      /*background: #0dbc79;*/
+    }
+
+    .upper-tr .infosivu-taitotaso-otsikko-th {
+      padding-top: 10px;
+      padding-bottom: 3px;
+      border-top: 1px solid black;
+    }
+
+    .lower-tr .infosivu-taitotaso-otsikko-th {
+      padding-top: 3px;
+      padding-bottom: 10px;
+
+      border-bottom: 1px solid black;
+    }
+
+    .infosivu-taitotaso-teksti-td {
+      vertical-align: top;
+      padding-left: 5px;
+
+      font-size: 10px;
+      line-height: 15px;
+      font-weight: 400;
+
+      /*background: orangered;*/
+    }
+
+    .upper-tr .infosivu-taitotaso-teksti-td {
+      padding-top: 10px;
+      padding-bottom: 3px;
+    }
+
+    .lower-tr .infosivu-taitotaso-teksti-td {
+      padding-top: 3px;
+      padding-bottom: 10px;
+    }
+
+    .infosivu-taitotaso-evk-otsikko-th {
+      vertical-align: middle;
+      text-align: left;
+
+      font-size: 20px;
+      line-height: 20px;
+      font-weight: 600;
+
+      padding-left: 5px;
+
+      /*background: yellow;*/
+    }
+
+    .upper-tr .infosivu-taitotaso-evk-otsikko-th {
+      padding-top: 10px;
+      padding-bottom: 3px;
+    }
+
+    .lower-tr .infosivu-taitotaso-evk-otsikko-th {
+      padding-top: 3px;
+      padding-bottom: 10px;
+    }
+
+    .infosivu-bracket-spacer-td {
+      border-right: 1px solid black;
+      border-top: 1px solid black;
+      border-bottom: 1px solid black;
+    }
+
+    .upper-tr .infosivu-bracket-spacer-td {
+    }
+
+    .lower-tr .infosivu-bracket-spacer-td {
+    }
+
+    .infosivu-footer-osuus {
+      position: absolute;
+      left: 50px;
+      bottom: 60px;
+      margin: 0;
+
+      /*background: rosybrown;*/
+    }
+
+    .infosivu-footer {
+      font-size: 7px;
+      line-height: 10px;
+      font-weight: 400;
+      text-align: left;
+      margin-bottom: 0;
+      margin-top: 0;
+
+      /*background: sandybrown;*/
+    }
+
   </style>
 </head>
 <body>
@@ -373,9 +559,148 @@
 </section>
 
 <section class="second" id="sivu2">
-  <section class="todistus-otsikko-osuus">
-    <h1 id="taitotasokuvaukset">Taitotasokuvaukset</h1>
+
+  <section class="infosivu-taitotaso-table-wrapper" id="taitotasokuvaukset">
+    <table class="infosivu-taitotaso-table">
+      <colgroup>
+        <col style="width:20px"/>
+        <col style="width:15px"/>
+        <col/>
+        <col style="width:10px"/>
+        <col style="width:30px"/>
+      </colgroup>
+
+      <thead>
+        <tr class="infosivu-otsikko-tr">
+          <th colspan="4" class="infosivu-otsikko-th">
+            Taitotasokuvaukset
+          </th>
+          <th class="infosivu-otsikko-evk-th">
+            EVK:n asteikko
+          </th>
+        </tr>
+      </thead>
+
+      <tbody>
+      <tr class="infosivu-top-spacer-tr">
+        <td colspan="5"></td>
+      </tr>
+
+      <tr class="infosivu-taitotaso-tr upper-tr">
+        <th scope="row" rowspan="3" class="infosivu-level-otsikko-th">
+          <div class="infosivu-level-otsikko-th-content">
+            Ylin taso
+          </div>
+        </th>
+        <th scope="row" class="infosivu-taitotaso-otsikko-th" id="taitotasokuvaus6">
+          6
+        </th>
+        <td class="infosivu-taitotaso-teksti-td">
+          Ymmärtää vaikeuksitta kaikenlaista puhuttua ja kirjoitettua kieltä. Ilmausten hienot sävyerot tuottavat enää harvoin vaikeuksia. Puhuu ja kirjoittaa erittäin sujuvasti tilanteeseen sopivalla tyylillä ja pystyy ilmaisemaan hienojakin merkitysvivahteita. Kieliopin ja sanaston hallinta on varmaa lähes kaikissa tilanteissa, ja pienetkin puutteet ovat harvinaisia.
+        </td>
+        <td class="infosivu-bracket-spacer-td"></td>
+        <th scope="row" class="infosivu-taitotaso-evk-otsikko-th">
+          C2
+        </th>
+      </tr>
+      <tr class="infosivu-taitotaso-spacer-tr">
+        <td colspan="4"></td>
+      </tr>
+      <tr class="infosivu-taitotaso-tr lower-tr">
+        <th scope="row" class="infosivu-taitotaso-otsikko-th" id="taitotasokuvaus5">
+          5
+        </th>
+        <td class="infosivu-taitotaso-teksti-td">
+          Ymmärtää kaikenlaista normaalitempoista puhetta, vaikka joskus ymmärtäminen voi vaatia ponnistelua, jos aihepiiri tai asian käsittely on vierasta. Ymmärtää rakenteellisesti ja kielellisesti monimutkaisia tekstejä ja oman aikamme kirjallisuutta. Puhuu ja kirjoittaa selkeästi ja sujuvasti erilaisista aiheista, mutta harvinaisten sanojen ja monimutkaisten lauserakenteiden käyttö saattaa kuitenkin tuottaa vaikeuksia.
+        </td>
+        <td class="infosivu-bracket-spacer-td"></td>
+        <th scope="row" class="infosivu-taitotaso-evk-otsikko-th">
+          C1
+        </th>
+      </tr>
+
+      <tr class="infosivu-level-spacer-tr">
+        <td colspan="5"></td>
+      </tr>
+
+      <tr class="infosivu-taitotaso-tr upper-tr">
+        <th scope="row" rowspan="3" class="infosivu-level-otsikko-th">
+          <div class="infosivu-level-otsikko-th-content">
+            Keskitaso
+          </div>
+        </th>
+        <th scope="row" class="infosivu-taitotaso-otsikko-th" id="taitotasokuvaus4">
+          4
+        </th>
+        <td class="infosivu-taitotaso-teksti-td">
+          Ymmärtää normaalitempoista puhetta yleisistä aihepiireistä, mutta joitakin yksityiskohtia saattaa jäädä ymmärtämättä. Nopea puhekieli ja murteellisuudet tuottavat kuitenkin vaikeuksia. Ymmärtää vaivatta yleisiä aihepiirejä käsitteleviä tekstejä, joskin muutamat tekstin välittämät sävyerot voivat jäädä epäselviksi. Selviää melko hyvin erilaisissa sekä virallisissa että epävirallisissa puhetilanteissa. Pystyy kirjoittamaan sekä yksityisiä että puolivirallisia tekstejä ja esittämään ajatuksiaan yhtenäisinä kokonaisuuksina.
+        </td>
+        <td class="infosivu-bracket-spacer-td"></td>
+        <th scope="row" class="infosivu-taitotaso-evk-otsikko-th">
+          B2
+        </th>
+      </tr>
+      <tr class="infosivu-taitotaso-spacer-tr">
+        <td colspan="4"></td>
+      </tr>
+      <tr class="infosivu-taitotaso-tr lower-tr">
+        <th scope="row" class="infosivu-taitotaso-otsikko-th" id="taitotasokuvaus3">
+          3
+        </th>
+        <td class="infosivu-taitotaso-teksti-td">
+          Ymmärtää pidempää yhtäjaksoista puhetta ja keskeisen ajatuksen monista televisio- ja radio-ohjelmista, jos aihepiiri on tuttu ja puhetempo normaali. Ymmärtää tavallisia jokapäiväisen elämän tekstejä, mutta vaativammat tekstit, joiden aihepiiri on vieras, saattavat tuottaa vaikeuksia. Selviää tavallisimmissa käytännön puhetilanteissa ja pystyy kirjoittamaan yksinkertaista, yhtenäistä tekstiä tavallisista aiheista, vaikkakin kieliopilliset ja sanastolliset puutteet toisinaan vaikeuttavat ymmärtämistä.
+        </td>
+        <td class="infosivu-bracket-spacer-td"></td>
+        <th scope="row" class="infosivu-taitotaso-evk-otsikko-th">
+          B1
+        </th>
+      </tr>
+
+      <tr class="infosivu-level-spacer-tr">
+        <td colspan="5"></td>
+      </tr>
+
+      <tr class="infosivu-taitotaso-tr upper-tr">
+        <th scope="row" rowspan="3" class="infosivu-level-otsikko-th">
+          <div class="infosivu-level-otsikko-th-content">
+            Perustaso
+          </div>
+        </th>
+        <th scope="row" class="infosivu-taitotaso-otsikko-th" id="taitotasokuvaus2">
+          2
+        </th>
+        <td class="infosivu-taitotaso-teksti-td">
+          Ymmärtää selkeää ja yksinkertaistettua puhetta, joka käsittelee jokapäiväisiä ja tuttuja asioita. Ymmärtää helposti lyhyitä, yksinkertaisia tekstejä ja saa selville pääasiat jokapäiväisen elämän aihepiirejä käsittelevistä teksteistä. Selviää rutiininomaisissa yksinkertaista tiedonvaihtoa vaativissa puhetilanteissa, vaikka ääntäminen tai kielen hallinta voi olla vielä puutteellista. Pystyy kirjoittamaan suppeita, yksinkertaisia tekstejä jokapäiväisistä asioista, mutta teksti voi olla hajanaista.
+        </td>
+        <td class="infosivu-bracket-spacer-td"></td>
+        <th scope="row" class="infosivu-taitotaso-evk-otsikko-th">
+          A2
+        </th>
+      </tr>
+      <tr class="infosivu-taitotaso-spacer-tr">
+        <td colspan="4"></td>
+      </tr>
+      <tr class="infosivu-taitotaso-tr lower-tr">
+        <th scope="row" class="infosivu-taitotaso-otsikko-th" id="taitotasokuvaus1">
+          1
+        </th>
+        <td class="infosivu-taitotaso-teksti-td">
+          Ymmärtää hitaasta ja selkeästä puheesta yksinkertaisia perustason ilmauksia, jotka liittyvät suoraan omaan elämään tai jotka koskevat välitöntä konkreettista ympäristöä. Pystyy ymmärtämään joitakin asioita helppotajuisista ja lyhyistä teksteistä. Selviää kaikkein yksinkertaisimmissa puhetilanteissa, mutta puhe on hidasta ja hyvin katkonaista ja ääntämisessä ja/tai kielen hallinnassa voi olla puutteita. Pystyy kirjoittamaan erittäin lyhyitä tekstejä, joissa on lukuisia kielellisiä puutteita.
+        </td>
+        <td class="infosivu-bracket-spacer-td"></td>
+        <th scope="row" class="infosivu-taitotaso-evk-otsikko-th">
+          A1
+        </th>
+      </tr>
+
+      </tbody>
+    </table>
   </section>
+
+  <section class="infosivu-footer-osuus" id="infosivufooter">
+    <p class="infosivu-footer">Yleisten kielitutkintojen taitotasoasteikko on linkitetty empiirisesti Eurooppalaisen viitekehyksen asteikkoon.</p>
+  </section>
+
 </section>
 
 </body>
