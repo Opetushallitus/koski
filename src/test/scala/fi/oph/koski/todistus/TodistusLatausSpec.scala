@@ -6,6 +6,8 @@ import fi.oph.koski.schema.KoskiSchema.strictDeserialization
 import fi.oph.koski.schema.{KielitutkinnonOpiskeluoikeus, Opiskeluoikeus, YleisenKielitutkinnonOsakokeenSuoritus}
 import org.apache.pdfbox.Loader
 import org.apache.pdfbox.pdmodel.PDDocument
+import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject
+import org.apache.pdfbox.rendering.PDFRenderer
 import org.apache.pdfbox.text.{PDFTextStripper, PDFTextStripperByArea}
 import org.json4s.jackson.JsonMethods
 import org.verapdf.core.VeraPDFException
@@ -14,6 +16,8 @@ import org.verapdf.pdfa.flavours.PDFAFlavour
 import org.verapdf.pdfa.{Foundries, PDFAParser, PDFAValidator}
 
 import java.awt.Rectangle
+import java.awt.image.BufferedImage
+import javax.imageio.ImageIO
 import scala.jdk.CollectionConverters._
 
 class TodistusLatausSpec extends TodistusSpecHelpers {
@@ -344,7 +348,7 @@ class TodistusLatausSpec extends TodistusSpecHelpers {
 
               totalAssertions should be > 3000
 
-              println(s"DEBUG: Flavour $flavour - Compliant: $isCompliant, Total assertions: $totalAssertions, Failed: ${failedAssertions.size}")
+              println(s"DEBUG: Validating flavour $flavour - Compliant: $isCompliant, Total assertions: $totalAssertions, Failed: ${failedAssertions.size}")
 
               if (!isCompliant && failedAssertions.nonEmpty) {
                 println(s"DEBUG: Ensimmäiset 5 virhettä flavourille $flavour:")
@@ -367,6 +371,288 @@ class TodistusLatausSpec extends TodistusSpecHelpers {
           inputStream.close()
         }
       }
+    }
+
+    // Vertailee, että logot ja muut sivun alueet vastaavat renderöitynä grafiikkana (lähes) toisiaan.
+    def verifyAreasByPixel(document: PDDocument, referenceDocumentBytes: Array[Byte]): Unit = {
+      case class TestRegion(
+        name: String,
+        pageIndex: Int,
+        x: Int,
+        y: Int,
+        width: Int,
+        height: Int,
+        minContentRatio: Double,
+        skipPixelComparison: Boolean = false
+      )
+
+      // Määrittele testattavat alueet renderöidyssä kuvassa
+
+      // PDF renderöidään 72 DPI:llä, mikä vastaa PDF:n natiiveja pisteitä ja tekee A4:stä noin 595 x 842 pikseliä
+      // Koordinaatit ovat pikseleinä renderöidyssä kuvassa (0,0 = vasen ylänurkka, y kasvaa alaspäin)
+      // minContentRatio: Minimiosuus ei-valkoisia pikseleitä jotta alue katsotaan sisällölliseksi
+      // skipPixelComparison: Jos true, vertaillaan vain sisältömääriä, ei pikselikohtaista samankaltaisuutta
+      val dpi = 72f
+      val testRegions = Seq(
+        TestRegion("vasen_ylanurkka", pageIndex = 0, x = 45, y = 55, width = 200, height = 100, minContentRatio = 0.25),
+        TestRegion("oikea_alanurkka", pageIndex = 0, x = 420, y = 740, width = 130, height = 50, minContentRatio = 0.15),
+        TestRegion("sivu1_kokonaan", pageIndex = 0, x = 0, y = 0, width = 595, height = 842, minContentRatio = 0.05, skipPixelComparison = true),
+        TestRegion("sivu2_kokonaan", pageIndex = 1, x = 0, y = 0, width = 595, height = 842, minContentRatio = 0.10, skipPixelComparison = true)
+      )
+
+      def renderPageToImage(doc: PDDocument, pageIndex: Int): BufferedImage = {
+        val renderer = new PDFRenderer(doc)
+        renderer.renderImageWithDPI(pageIndex, dpi)
+      }
+
+      def cropImage(image: BufferedImage, region: TestRegion): BufferedImage = {
+        val actualX = math.max(0, math.min(region.x, image.getWidth - 1))
+        val actualY = math.max(0, math.min(region.y, image.getHeight - 1))
+        val actualWidth = math.min(region.width, image.getWidth - actualX)
+        val actualHeight = math.min(region.height, image.getHeight - actualY)
+
+        image.getSubimage(actualX, actualY, actualWidth, actualHeight)
+      }
+
+      // Tarkistaa että kuvassa on riittävästi ei-valkoista/ei-taustaväristä sisältöä
+      def isImageContentful(image: BufferedImage, minContentRatio: Double = 0.10): (Boolean, Double) = {
+        val contentRatio = calculateContentRatio(image)
+        (contentRatio >= minContentRatio, contentRatio)
+      }
+
+      // Tarkistaa että alue on tyhjä (lähes täysin valkoinen)
+      def isAreaEmpty(image: BufferedImage, maxContentRatio: Double = 0.05): (Boolean, Double) = {
+        val contentRatio = calculateContentRatio(image)
+        (contentRatio <= maxContentRatio, contentRatio)
+      }
+
+      // Laskee kuinka suuri osuus pikseleistä sisältää ei-valkoista sisältöä
+      def calculateContentRatio(image: BufferedImage): Double = {
+        val width = image.getWidth
+        val height = image.getHeight
+        val totalPixels = width * height
+
+        var contentPixels = 0
+
+        for {
+          x <- 0 until width
+          y <- 0 until height
+        } {
+          val rgb = image.getRGB(x, y)
+          if (!isBackgroundColor(rgb)) {
+            contentPixels += 1
+          }
+        }
+
+        contentPixels.toDouble / totalPixels
+      }
+
+      def isBackgroundColor(rgb: Int): Boolean = {
+        val r = (rgb >> 16) & 0xFF
+        val g = (rgb >> 8) & 0xFF
+        val b = rgb & 0xFF
+
+        // Valkoinen tai lähes valkoinen (threshold 240)
+        r > 240 && g > 240 && b > 240
+      }
+
+      // Tarkistaa että sivun marginaalit ovat tyhjät
+      def verifyMarginsAreEmpty(pageImage: BufferedImage, pageIndex: Int): Unit = {
+        val pageWidth = pageImage.getWidth
+        val pageHeight = pageImage.getHeight
+
+        // Marginaalit 72 DPI:llä (1 piste = 1 pikseli)
+        val sideMargin = 49  // Vasen ja oikea
+        val verticalMargin = 59  // Ylä ja ala
+
+        case class MarginRegion(name: String, x: Int, y: Int, width: Int, height: Int, maxContentRatio: Double)
+
+        val margins = if (pageIndex == 0) {
+          // Sivu 1: Tiukat marginaalit
+          Seq(
+            MarginRegion("vasen", x = 0, y = 0, width = sideMargin, height = pageHeight, maxContentRatio = 0.00001),
+            MarginRegion("oikea", x = pageWidth - sideMargin, y = 0, width = sideMargin, height = pageHeight, maxContentRatio = 0.00001),
+            MarginRegion("ylä", x = 0, y = 0, width = pageWidth, height = verticalMargin, maxContentRatio = 0.00001),
+            MarginRegion("ala", x = 0, y = pageHeight - verticalMargin, width = pageWidth, height = verticalMargin, maxContentRatio = 0.00001)
+          )
+        } else {
+          // Sivu 2: Oikea marginaali sallii enemmän sisältöä
+          Seq(
+            MarginRegion("vasen", x = 0, y = 0, width = sideMargin, height = pageHeight, maxContentRatio = 0.00001),
+            MarginRegion("oikea", x = pageWidth - sideMargin, y = 0, width = sideMargin, height = pageHeight, maxContentRatio = 0.0010),
+            MarginRegion("ylä", x = 0, y = 0, width = pageWidth, height = verticalMargin, maxContentRatio = 0.00001),
+            MarginRegion("ala", x = 0, y = pageHeight - verticalMargin, width = pageWidth, height = verticalMargin, maxContentRatio = 0.00001)
+          )
+        }
+
+        margins.foreach { margin =>
+          val marginImage = pageImage.getSubimage(margin.x, margin.y, margin.width, margin.height)
+          val (isEmpty, contentRatio) = isAreaEmpty(marginImage, margin.maxContentRatio)
+
+          // Tallenna marginaali debuggausta varten aina
+          val marginFile = java.nio.file.Files.createTempFile(s"todistus-margin-sivu${pageIndex + 1}-${margin.name}-", ".png")
+          ImageIO.write(marginImage, "png", marginFile.toFile)
+
+          println(f"DEBUG: Sivu ${pageIndex + 1} ${margin.name}marginaali: ${contentRatio * 100}%.2f%% pikseleistä ei-valkoisia (max sallittu: ${margin.maxContentRatio * 100}%.8f%%), tallennettu: ${marginFile.toAbsolutePath}")
+
+          withClue(f"Sivu ${pageIndex + 1} ${margin.name}marginaali ei ole tyhjä (${contentRatio * 100}%.2f%% pikseleistä sisältää grafiikkaa, max sallittu ${margin.maxContentRatio * 100}%.8f%%). ") {
+            isEmpty should be(true)
+          }
+        }
+      }
+
+      def compareImages(img1: BufferedImage, img2: BufferedImage, tolerance: Double = 0.05): (Boolean, Double, Double) = {
+        // Vertaa kuvien kokoa
+        if (img1.getWidth != img2.getWidth || img1.getHeight != img2.getHeight) {
+          return (false, 1.0, 1.0)
+        }
+
+        val width = img1.getWidth
+        val height = img1.getHeight
+        val totalPixels = width * height
+
+        // Laske erilaiset pikselit
+        var differentPixels = 0
+        var totalDifference = 0.0
+
+        for {
+          x <- 0 until width
+          y <- 0 until height
+        } {
+          val rgb1 = img1.getRGB(x, y)
+          val rgb2 = img2.getRGB(x, y)
+
+          if (rgb1 != rgb2) {
+            differentPixels += 1
+
+            // Laske värikomponenttien erot
+            val r1 = (rgb1 >> 16) & 0xFF
+            val g1 = (rgb1 >> 8) & 0xFF
+            val b1 = rgb1 & 0xFF
+
+            val r2 = (rgb2 >> 16) & 0xFF
+            val g2 = (rgb2 >> 8) & 0xFF
+            val b2 = rgb2 & 0xFF
+
+            val diff = math.sqrt(
+              math.pow(r1 - r2, 2) +
+              math.pow(g1 - g2, 2) +
+              math.pow(b1 - b2, 2)
+            ) / 441.67 // Normalisoi välille 0-1 (max diff = sqrt(3*255^2))
+
+            totalDifference += diff
+          }
+        }
+
+        val pixelDifferenceRatio = differentPixels.toDouble / totalPixels
+        val averageDifference = if (differentPixels > 0) totalDifference / differentPixels else 0.0
+
+        // Hyväksy jos alle toleranssin verran pikseleitä eroaa tai keskimääräinen ero on pieni
+        val areSimilar = pixelDifferenceRatio < tolerance || averageDifference < tolerance
+        (areSimilar, pixelDifferenceRatio, averageDifference)
+      }
+
+      val referenceDocument = Loader.loadPDF(referenceDocumentBytes)
+      try {
+        val testPages = Map(
+          0 -> renderPageToImage(document, 0),
+          1 -> renderPageToImage(document, 1)
+        )
+        val referencePages = Map(
+          0 -> renderPageToImage(referenceDocument, 0),
+          1 -> renderPageToImage(referenceDocument, 1)
+        )
+
+        // Tallenna koko renderöidyt sivut debuggausta varten
+        testPages.foreach { case (pageIdx, pageImage) =>
+          println(s"DEBUG: Renderöity actual-sivu ${pageIdx + 1}: ${pageImage.getWidth}x${pageImage.getHeight} px")
+          val actualPageFile = java.nio.file.Files.createTempFile(s"todistus-full-page-${pageIdx + 1}-actual-", ".png")
+          ImageIO.write(pageImage, "png", actualPageFile.toFile)
+          println(s"DEBUG: Actual-sivun ${pageIdx + 1} kuva kirjoitettu: ${actualPageFile.toAbsolutePath}")
+        }
+
+        referencePages.foreach { case (pageIdx, pageImage) =>
+          println(s"DEBUG: Renderöity expected-sivu ${pageIdx + 1}: ${pageImage.getWidth}x${pageImage.getHeight} px")
+          val expectedPageFile = java.nio.file.Files.createTempFile(s"todistus-full-page-${pageIdx + 1}-expected-", ".png")
+          ImageIO.write(pageImage, "png", expectedPageFile.toFile)
+          println(s"DEBUG: Expected-sivun ${pageIdx + 1} kuva kirjoitettu: ${expectedPageFile.toAbsolutePath}")
+        }
+
+        // Tarkista että marginaalit ovat tyhjät molemmilla sivuilla
+        testPages.foreach { case (pageIdx, pageImage) =>
+          println(s"DEBUG: Tarkistetaan sivun ${pageIdx + 1} marginaalit...")
+          verifyMarginsAreEmpty(pageImage, pageIdx)
+        }
+
+        // Käy läpi jokainen alue
+        testRegions.foreach { region =>
+          println(s"DEBUG: Tarkistetaan alue: ${region.name} (sivu ${region.pageIndex + 1}, x=${region.x}, y=${region.y}, w=${region.width}, h=${region.height})")
+
+          // Leikkaa testattavat alueet oikealta sivulta
+          val testArea = cropImage(testPages(region.pageIndex), region)
+          val referenceArea = cropImage(referencePages(region.pageIndex), region)
+
+          // Tallenna leikatut alueet debuggausta varten
+          val actualAreaFile = java.nio.file.Files.createTempFile(s"todistus-area-${region.name}-actual-", ".png")
+          ImageIO.write(testArea, "png", actualAreaFile.toFile)
+          println(s"DEBUG: Actual-alue '${region.name}' kirjoitettu: ${actualAreaFile.toAbsolutePath}")
+
+          val expectedAreaFile = java.nio.file.Files.createTempFile(s"todistus-area-${region.name}-expected-", ".png")
+          ImageIO.write(referenceArea, "png", expectedAreaFile.toFile)
+          println(s"DEBUG: Expected-alue '${region.name}' kirjoitettu: ${expectedAreaFile.toAbsolutePath}")
+
+          // Tarkista että alueet eivät ole tyhjiä
+          val (actualHasContent, actualContentRatio) = isImageContentful(testArea, minContentRatio = region.minContentRatio)
+          val (expectedHasContent, expectedContentRatio) = isImageContentful(referenceArea, minContentRatio = region.minContentRatio)
+
+          println(f"DEBUG: Actual-alueen '${region.name}' sisältö: ${actualContentRatio * 100}%.2f%% pikseleistä ei-valkoisia (min: ${region.minContentRatio * 100}%.2f%%)")
+          println(f"DEBUG: Expected-alueen '${region.name}' sisältö: ${expectedContentRatio * 100}%.2f%% pikseleistä ei-valkoisia (min: ${region.minContentRatio * 100}%.2f%%)")
+
+          withClue(f"Actual-alue '${region.name}' on tyhjä tai lähes tyhjä (vain ${actualContentRatio * 100}%.2f%% sisältöä, vaadittu vähintään ${region.minContentRatio * 100}%.2f%%). Tarkista että koordinaatit ovat oikein. ") {
+            actualHasContent should be(true)
+          }
+
+          withClue(f"Expected-alue '${region.name}' on tyhjä tai lähes tyhjä (vain ${expectedContentRatio * 100}%.2f%% sisältöä, vaadittu vähintään ${region.minContentRatio * 100}%.2f%%). Tarkista että koordinaatit ovat oikein. ") {
+            expectedHasContent should be(true)
+          }
+
+          // Tarkista että sisältömäärät ovat lähellä toisiaan (merkki että alueet ovat samankaltaisia)
+          val contentRatioDifference = math.abs(actualContentRatio - expectedContentRatio)
+          val maxAllowedDifference = 0.005 // Sallitaan max 0.5% absoluuttinen ero sisältömäärissä
+
+          println(f"DEBUG: Sisältömäärien ero: ${contentRatioDifference * 100}%.2f%% (max sallittu: ${maxAllowedDifference * 100}%.2f%%)")
+
+          withClue(f"Alueen '${region.name}' sisältömäärät poikkeavat liikaa toisistaan. Actual: ${actualContentRatio * 100}%.2f%%, expected: ${expectedContentRatio * 100}%.2f%%, ero ${contentRatioDifference * 100}%.2f%% (max ${maxAllowedDifference * 100}%.2f%%). Tarkista että koordinaatit ovat oikein. ") {
+            contentRatioDifference should be <= maxAllowedDifference
+          }
+
+          // Vertaa alueiden samankaltaisuutta pikselitasolla
+          if (!region.skipPixelComparison) {
+            val (areSimilar, pixelDiff, avgDiff) = compareImages(testArea, referenceArea, tolerance = 0.05)
+
+            println(f"DEBUG: Alue '${region.name}' pikselivertailu: samankaltaisuus=$areSimilar, pikselierojen osuus=${pixelDiff * 100}%.2f%%, keskimääräinen ero=${avgDiff * 100}%.2f%%")
+
+            withClue(f"Alue '${region.name}' ei vastaa expected-kuvaa. Pikselierojen osuus: ${pixelDiff * 100}%.2f%%, keskimääräinen ero: ${avgDiff * 100}%.2f%%. ") {
+              areSimilar should be(true)
+            }
+          } else {
+            println(s"DEBUG: Alue '${region.name}' pikselivertailu ohitettu (skipPixelComparison=true)")
+          }
+        }
+
+      } finally {
+        referenceDocument.close()
+      }
+    }
+
+    // Lataa referenssi-PDF pikseleiden vertailua varten
+    val referenceResourcePath = "/todistus_referenssi_pikselivertailuun.pdf"
+    val referenceInputStream = getClass.getResourceAsStream(referenceResourcePath)
+    require(referenceInputStream != null, s"Referenssi-PDF:ää ei löytynyt polusta: $referenceResourcePath")
+    val referencePdfBytes = try {
+      Iterator.continually(referenceInputStream.read).takeWhile(_ != -1).map(_.toByte).toArray
+    } finally {
+      referenceInputStream.close()
     }
 
     val lang = "fi"
@@ -431,6 +717,7 @@ class TodistusLatausSpec extends TodistusSpecHelpers {
       verifyPageSize(document, 2)
       verifyTodistusPositionalContent(document)
       verifyPdfUaAccessibility(pdfBytes)
+      verifyAreasByPixel(document, referencePdfBytes)
 
       // Varmista että Content-Type on oikea
       response.header("Content-Type") should include("application/pdf")
@@ -460,13 +747,12 @@ class TodistusLatausSpec extends TodistusSpecHelpers {
       verifyPageSize(document, 2)
       verifyTodistusPositionalContent(document)
       verifyPdfUaAccessibility(pdfBytes)
+      verifyAreasByPixel(document, referencePdfBytes)
 
       document.close()
     }
 
     // TODO: TOR-2400: validoi todistus jollain paikallisella validaattorilla, ja katso, että sisältää kaiken long-term -validointia tukevan
-
-    // TODO: TOR-2400: tarkista, että pdf:n sisältö vastaa myös graafisesti renderöitynä odotettua (marginaalit jne.)
   }
 
 }
