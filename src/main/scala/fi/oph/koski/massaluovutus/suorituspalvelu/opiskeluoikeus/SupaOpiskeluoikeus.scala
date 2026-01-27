@@ -34,6 +34,14 @@ case class SupaPoistettuOpiskeluoikeus(
   poistettu: Boolean = true
 ) extends SupaPoistettuTaiOlemassaolevaOpiskeluoikeus
 
+case class SupaVirheellinenOpiskeluoikeus(
+  oppijaOid: String,
+  oid: String,
+  versionumero: Option[Int],
+  aikaleima: Option[LocalDateTime],
+  virheet: List[String]
+)
+
 trait SupaOpiskeluoikeus extends SupaPoistettuTaiOlemassaolevaOpiskeluoikeus {
   @Description("Opiskeluoikeuden tyyppi, jolla erotellaan eri koulutusmuotoihin (perusopetus, lukio, ammatillinen...) liittyvät opiskeluoikeudet")
   @KoodistoUri("opiskeluoikeudentyyppi")
