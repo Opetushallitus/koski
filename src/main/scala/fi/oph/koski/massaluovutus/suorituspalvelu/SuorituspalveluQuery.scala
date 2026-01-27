@@ -9,8 +9,8 @@ import fi.oph.koski.koskiuser.Session
 import fi.oph.koski.koskiuser.Rooli.{OPHKATSELIJA, OPHPAAKAYTTAJA}
 import fi.oph.koski.log.AuditLogMessage.AuditLogMessageField
 import fi.oph.koski.log._
-import fi.oph.koski.massaluovutus.suorituspalvelu.opiskeluoikeus.{SupaOpiskeluoikeus, SupaPoistettuOpiskeluoikeus, SupaPoistettuTaiOlemassaolevaOpiskeluoikeus}
-import fi.oph.koski.massaluovutus.{MassaluovutusException, MassaluovutusQueryPriority, OpetushallituksenMassaluovutusQueryParameters, QueryResultWriter}
+import fi.oph.koski.massaluovutus.suorituspalvelu.opiskeluoikeus.{SupaOpiskeluoikeus, SupaPoistettuOpiskeluoikeus, SupaPoistettuTaiOlemassaolevaOpiskeluoikeus, SupaVirheellinenOpiskeluoikeus}
+import fi.oph.koski.massaluovutus.{MassaluovutusQueryPriority, OpetushallituksenMassaluovutusQueryParameters, QueryResultWriter}
 import fi.oph.koski.schema.{KoskeenTallennettavaOpiskeluoikeus, KoskiSchema}
 
 import java.sql.Timestamp
@@ -31,19 +31,27 @@ trait SuorituspalveluQuery extends OpetushallituksenMassaluovutusQueryParameters
       val supaResponses = oppijaResult.flatMap { case (oppija_oid, opiskeluoikeudet) =>
         val latestTimestamp = opiskeluoikeudet.maxBy(_._2.toInstant)._2
         val db = selectDbByLag(application, latestTimestamp)
-        val response = opiskeluoikeudet
-          .flatMap(oo => getOpiskeluoikeus(application, db, oo._1))
+        val response = opiskeluoikeudet.flatMap(oo => getOpiskeluoikeus(application, db, oo._1))
 
-        if(response.nonEmpty) {
-          response.foreach { oo =>
+        if (response.nonEmpty) {
+          val responseOpiskeluoikeudet = response.collect { case Right(oo) => oo }
+          val responseVirheellisetOpiskeluoikeudet = response.collect { case Left(virheellinenOo) => virheellinenOo }
+
+          responseOpiskeluoikeudet.foreach { oo =>
             SuorituspalveluQuery.auditLog(oppija_oid, oo.oid, None)
           }
+
+          responseVirheellisetOpiskeluoikeudet.foreach { virheellinenOo =>
+            SuorituspalveluQuery.auditLog(oppija_oid, virheellinenOo.oid, None)
+          }
+
           Some(
             SupaResponse(
               oppijaOid = oppija_oid,
               kaikkiOidit = application.henkilöRepository.findByOid(oppija_oid).get.kaikkiOidit,
               aikaleima = LocalDateTime.from(latestTimestamp.toLocalDateTime),
-              opiskeluoikeudet = response
+              opiskeluoikeudet = responseOpiskeluoikeudet,
+              virheellisetOpiskeluoikeudet = Some(responseVirheellisetOpiskeluoikeudet).filter(_.nonEmpty)
             )
           )
         } else {
@@ -61,7 +69,7 @@ trait SuorituspalveluQuery extends OpetushallituksenMassaluovutusQueryParameters
     u.hasRole(OPHKATSELIJA) || u.hasRole(OPHPAAKAYTTAJA)
   }
 
-  private def getOpiskeluoikeus(application: KoskiApplication, db: DB, id: Int): Option[SupaPoistettuTaiOlemassaolevaOpiskeluoikeus] = {
+  private def getOpiskeluoikeus(application: KoskiApplication, db: DB, id: Int): Option[Either[SupaVirheellinenOpiskeluoikeus, SupaPoistettuTaiOlemassaolevaOpiskeluoikeus]] = {
     val opiskeluoikeusRow = QueryMethods.runDbSync(
       db,
       sql"""
@@ -77,10 +85,11 @@ trait SuorituspalveluQuery extends OpetushallituksenMassaluovutusQueryParameters
         oid = oo.oid,
         versionumero = Some(oo.versionumero),
         aikaleima = Some(oo.aikaleima.toLocalDateTime)
-      ))
+      )).map(Right.apply)
     } else {
-      opiskeluoikeusRow.flatMap(toSupaOpiskeluoikeus(application))
-        .filter(_.suoritukset.nonEmpty)
+      opiskeluoikeusRow
+        .flatMap(toSupaOpiskeluoikeus(application))
+        .filter(oo => oo.isLeft || oo.exists(_.suoritukset.nonEmpty))
     }
   }
 
@@ -96,14 +105,22 @@ trait SuorituspalveluQuery extends OpetushallituksenMassaluovutusQueryParameters
     }
   }
 
-  private def toSupaOpiskeluoikeus(application: KoskiApplication)(row: KoskiOpiskeluoikeusRow): Option[SupaOpiskeluoikeus] = {
+  private def toSupaOpiskeluoikeus(application: KoskiApplication)(row: KoskiOpiskeluoikeusRow): Option[Either[SupaVirheellinenOpiskeluoikeus, SupaOpiskeluoikeus]] = {
     val json = KoskiTables.KoskiOpiskeluoikeusTable.readAsJValue(row.data, row.oid, row.versionumero, row.aikaleima)
     application.validatingAndResolvingExtractor.extract[KoskeenTallennettavaOpiskeluoikeus](KoskiSchema.strictDeserialization)(json) match {
       case Right(oo: KoskeenTallennettavaOpiskeluoikeus) =>
-        SupaOpiskeluoikeusO(oo, row.oppijaOid)
+        SupaOpiskeluoikeusO(oo, row.oppijaOid).map(Right.apply)
       case Left(errors) =>
         logger.warn(s"Error deserializing oppijan ${row.oppijaOid} opiskeluoikeus ${row.oid}: ${errors}")
-        throw new MassaluovutusException(s"Oppijan ${row.oppijaOid} opiskeluoikeuden ${row.oid} deserialisointi epäonnistui: ${errors.errors.map(_.toString).mkString(", ")}")
+        Some(Left(
+          SupaVirheellinenOpiskeluoikeus(
+            oppijaOid = row.oppijaOid,
+            oid = row.oid,
+            versionumero = Some(row.versionumero),
+            aikaleima = Some(row.aikaleima.toLocalDateTime),
+            virheet = errors.errors.map(_.toString())
+          )
+        ))
     }
   }
 }

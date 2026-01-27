@@ -857,7 +857,7 @@ class MassaluovutusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers wit
         )
       }
 
-      "Palauttaa epäonnistuneen kyselyn" in {
+      "Palauttaa virheeseen päätyneitä opiskeluoikeuksia" in {
         // Lisää rikkinäiset opiskeluoikeudet fikstureen:
         resetFixtures()
 
@@ -865,11 +865,28 @@ class MassaluovutusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers wit
           response.status should equal(QueryState.pending)
           response.queryId
         }
-        val failed = waitForFailure(queryId, user)
 
-        failed.status shouldBe QueryState.failed
-        failed.error.get should fullyMatch regex  s"^Oppijan ${KoskiSpecificMockOppijat.kelaRikkinäinenOpiskeluoikeus.oid} opiskeluoikeuden (1\\.2\\.246\\.562\\.15\\.\\d+) deserialisointi epäonnistui: badRequest.validation.jsonSchema .+$$".r // Näkyy pääkäyttäjälle
-        failed.files should have length 0 // Ei palauta tuloksia, joten ei myöskään tee auditlokitusta
+        val complete = waitForCompletion(queryId, user)
+
+        val jsonFiles = complete.files.map { file =>
+          verifyResultAndContent(file, user) {
+            JsonMethods.parse(body)
+          }
+        }
+
+        val oppijat = jsonFiles.head.extract[Seq[JObject]]
+        val virheelliset = oppijat.filter(oppija => (oppija \ "virheellisetOpiskeluoikeudet").extract[Seq[JObject]].nonEmpty)
+
+        virheelliset should not be empty
+        virheelliset.foreach { oppija =>
+          val virheellisetOpiskeluoikeudet = (oppija \ "virheellisetOpiskeluoikeudet").extract[Seq[JObject]]
+          virheellisetOpiskeluoikeudet.foreach { oo =>
+            (oo  \ "oppijaOid") should not equal JNothing
+            (oo \ "oid") should not equal JNothing
+            (oo \ "versionumero") should not equal JNothing
+            (oo \ "virheet").extract[List[String]] should not be empty
+          }
+        }
       }
     }
 
@@ -1263,7 +1280,7 @@ class MassaluovutusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers wit
         complete.files shouldBe empty
       }
 
-      "Palauttaa epäonnistuneen kyselyn" in {
+      "Palauttaa virheeseen päätyneitä opiskeluoikeuksia" in {
         // Lisää rikkinäiset opiskeluoikeudet fikstureen:
         resetFixtures()
 
@@ -1271,11 +1288,28 @@ class MassaluovutusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers wit
           response.status should equal(QueryState.pending)
           response.queryId
         }
-        val failed = waitForFailure(queryId, user)
 
-        failed.status shouldBe QueryState.failed
-        failed.error.get should fullyMatch regex  s"^Oppijan ${KoskiSpecificMockOppijat.kelaRikkinäinenOpiskeluoikeus.oid} opiskeluoikeuden (1\\.2\\.246\\.562\\.15\\.\\d+) deserialisointi epäonnistui: badRequest.validation.jsonSchema .+$$".r // Näkyy pääkäyttäjälle
-        failed.files should have length 0 // Ei palauta tuloksia, joten ei myöskään tee auditlokitusta
+        val complete = waitForCompletion(queryId, user)
+
+        val jsonFiles = complete.files.map { file =>
+          verifyResultAndContent(file, user) {
+            JsonMethods.parse(body)
+          }
+        }
+
+        val oppijat = jsonFiles.head.extract[Seq[JObject]]
+        val virheelliset = oppijat.filter(oppija => (oppija \ "virheellisetOpiskeluoikeudet").extract[Seq[JObject]].nonEmpty)
+
+        virheelliset should not be empty
+        virheelliset.foreach { oppija =>
+          val virheellisetOpiskeluoikeudet = (oppija \ "virheellisetOpiskeluoikeudet").extract[Seq[JObject]]
+          virheellisetOpiskeluoikeudet.foreach { oo =>
+            (oo  \ "oppijaOid") should not equal JNothing
+            (oo \ "oid") should not equal JNothing
+            (oo \ "versionumero") should not equal JNothing
+            (oo \ "virheet").extract[List[String]] should not be empty
+          }
+        }
       }
     }
   }

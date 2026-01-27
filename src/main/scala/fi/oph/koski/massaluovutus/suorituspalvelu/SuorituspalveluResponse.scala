@@ -15,6 +15,7 @@ case class SupaResponse(
   kaikkiOidit: Seq[String],
   aikaleima: LocalDateTime,
   opiskeluoikeudet: Seq[SupaPoistettuTaiOlemassaolevaOpiskeluoikeus],
+  virheellisetOpiskeluoikeudet: Option[Seq[SupaVirheellinenOpiskeluoikeus]]
 )
 
 object SupaResponse {
