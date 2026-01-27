@@ -164,7 +164,7 @@ class SupaServletSpec
 
       "Virheellinen versio (ei numero) palauttaa 400" in {
         val opiskeluoikeus = lastOpiskeluoikeusByHetu(KoskiSpecificMockOppijat.amis)
-        get(s"api/supa/${opiskeluoikeus.oid.get}/abc", headers = authHeaders(MockUsers.paakayttaja)) {
+        get(s"api/supa/opiskeluoikeus/${opiskeluoikeus.oid.get}/abc", headers = authHeaders(MockUsers.paakayttaja)) {
           verifyResponseStatus(400, KoskiErrorCategory.badRequest.format.number("Invalid version : abc"))
         }
       }
@@ -296,6 +296,6 @@ class SupaServletSpec
   }
 
   private def getSupaVersio[T](oid: String, versio: Int, user: KoskiMockUser)(f: => T): T = {
-    get(s"api/supa/$oid/$versio", headers = authHeaders(user))(f)
+    get(s"api/supa/opiskeluoikeus/$oid/$versio", headers = authHeaders(user))(f)
   }
 }

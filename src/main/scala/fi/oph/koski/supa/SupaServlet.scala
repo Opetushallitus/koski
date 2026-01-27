@@ -33,7 +33,7 @@ class SupaServlet(implicit val application: KoskiApplication)
     }
   }
 
-  get("/:oid/:version") {
+  get("/opiskeluoikeus/:oid/:version") {
     val validOid: Either[HttpStatus, Opiskeluoikeus.Oid] =
       OpiskeluoikeusOid.validateOpiskeluoikeusOid(getStringParam("oid"))
     val version: Int = getIntegerParam("version")
