@@ -517,6 +517,17 @@ object MockUsers {
     )))
   )
 
+  val hslOmaDataOAuth2Palvelukäyttäjä = KoskiMockUser(
+    "oauth2hsl",
+    "oauth2hsl",
+    "1.2.246.562.24.99999988890",
+    Seq(OrganisaatioJaKäyttöoikeudet(MockOrganisaatiot.hsl, List(
+      PalveluJaOikeus("KOSKI", Rooli.OMADATAOAUTH2_OPISKELUOIKEUDET_HSL),
+      PalveluJaOikeus("KOSKI", Rooli.OMADATAOAUTH2_HENKILOTIEDOT_SYNTYMAAIKA),
+      PalveluJaOikeus("KOSKI", Rooli.OMADATAOAUTH2_HENKILOTIEDOT_OPPIJANUMERO),
+    )))
+  )
+
   val suomiFiKäyttäjä = KoskiMockUser(
     "Palveluväylä",
     "SuomiFi",
@@ -749,6 +760,7 @@ object MockUsers {
     migriKäyttäjä,
     suomiFiKäyttäjä,
     hslKäyttäjä,
+    hslOmaDataOAuth2Palvelukäyttäjä,
     tilastokeskusKäyttäjä,
     valviraKäyttäjä,
     esiopetusTallentaja,
