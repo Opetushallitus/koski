@@ -206,6 +206,45 @@ class OppijaValidationPerusopetukseenValmistavaSpec extends TutkinnonPerusteetTe
       }
     }
 
+    "Avoin lisäopetusjakso ei sallittu jos alkamispäivä yli vuoden vanha" in {
+      val opiskeluoikeus = keskeneräinenOpiskeluoikeus.copy(
+        lisätiedot = Some(PerusopetukseenValmistavanOpetuksenOpiskeluoikeudenLisätiedot(
+          lisäopetus = Some(List(
+            Aikajakso(LocalDate.now().minusYears(1).minusDays(1), None)
+          ))
+        ))
+      )
+      setupOppijaWithOpiskeluoikeus(opiskeluoikeus) {
+        verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.perusopetukseenValmistavaOpetus.lisäopetusAvoinJaksoLiianVanha())
+      }
+    }
+
+    "Avoin lisäopetusjakso sallittu jos alkamispäivä alle vuoden vanha" in {
+      val opiskeluoikeus = keskeneräinenOpiskeluoikeus.copy(
+        lisätiedot = Some(PerusopetukseenValmistavanOpetuksenOpiskeluoikeudenLisätiedot(
+          lisäopetus = Some(List(
+            Aikajakso(LocalDate.now().minusMonths(6), None)
+          ))
+        ))
+      )
+      setupOppijaWithOpiskeluoikeus(opiskeluoikeus) {
+        verifyResponseStatusOk()
+      }
+    }
+
+    "Suljettu lisäopetusjakso sallittu vaikka alkamispäivä yli vuoden vanha" in {
+      val opiskeluoikeus = keskeneräinenOpiskeluoikeus.copy(
+        lisätiedot = Some(PerusopetukseenValmistavanOpetuksenOpiskeluoikeudenLisätiedot(
+          lisäopetus = Some(List(
+            Aikajakso(LocalDate.of(2026, 8, 1), Some(LocalDate.of(2027, 1, 31)))
+          ))
+        ))
+      )
+      setupOppijaWithOpiskeluoikeus(opiskeluoikeus) {
+        verifyResponseStatusOk()
+      }
+    }
+
     "Tyhjä lisäopetus-lista sallittu" in {
       val opiskeluoikeus = keskeneräinenOpiskeluoikeus.copy(
         lisätiedot = Some(PerusopetukseenValmistavanOpetuksenOpiskeluoikeudenLisätiedot(
