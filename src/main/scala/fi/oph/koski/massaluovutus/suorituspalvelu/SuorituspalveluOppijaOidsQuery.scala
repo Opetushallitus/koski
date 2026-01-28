@@ -10,6 +10,7 @@ import fi.oph.scalaschema.annotation.{Description, Title}
 import java.sql.Timestamp
 
 @Title("Suorituspalvelun kysely oppijoiden perusteella")
+@Description("Massaluovutusrajapinnan kysely suorituspalvelulle.")
 @Description("Palauttaa Suorituspalvelua varten räätälöidyt tiedot annettujen oppijoiden opiskeluoikeuksista.")
 @Description("Vastauksen skeema on taulukko <a href=\"/koski/json-schema-viewer/?schema=suorituspalvelu-result.json\">SupaResponse</a>-objekteja.")
 case class SuorituspalveluOppijaOidsQuery(
