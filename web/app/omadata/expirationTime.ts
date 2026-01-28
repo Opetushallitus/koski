@@ -7,12 +7,7 @@ export type TimeUnits = {
   minutes: number
 }
 
-export type PaattymisajankohtaResult = {
-  templateName: string
-  days?: number
-  hours?: number
-  minutes?: number
-}
+export type TranslateFn = (key: string) => string
 
 export const calculateTimeUnits = (durationInMin: number): TimeUnits => {
   const days = Math.floor(durationInMin / MINUTES_PER_DAY)
@@ -22,39 +17,47 @@ export const calculateTimeUnits = (durationInMin: number): TimeUnits => {
   return { days, hours, minutes }
 }
 
-export const buildPaattymisajankohtaTemplateName = (
-  units: TimeUnits
-): PaattymisajankohtaResult => {
+export const buildLocalizedTimeString = (
+  units: TimeUnits,
+  t: TranslateFn
+): string => {
   const { days, hours, minutes } = units
-  const plural = (n: number) => (n === 1 ? '' : 's')
 
-  const includeDays = days >= 1
-  const includeHours = hours >= 1
-  const includeMinutes = minutes >= 1 || (!includeDays && !includeHours)
+  const parts: string[] = []
 
-  const templateParts: string[] = []
-  const result: PaattymisajankohtaResult = { templateName: '' }
-
-  if (includeDays) {
-    templateParts.push(`day${plural(days)}`)
-    result.days = days
-  }
-  if (includeHours) {
-    templateParts.push(`hour${plural(hours)}`)
-    result.hours = hours
-  }
-  if (includeMinutes) {
-    templateParts.push(`min${plural(minutes)}`)
-    result.minutes = minutes
+  if (days >= 1) {
+    const unitKey =
+      days === 1 ? 'omadataoauth2_aika_paiva' : 'omadataoauth2_aika_paivaa'
+    parts.push(`${days} ${t(unitKey)}`)
   }
 
-  result.templateName = `omadataoauth2_suostumuksesi_paattymisajankohta_${templateParts.join('_')}`
+  if (hours >= 1) {
+    const unitKey =
+      hours === 1 ? 'omadataoauth2_aika_tunti' : 'omadataoauth2_aika_tuntia'
+    parts.push(`${hours} ${t(unitKey)}`)
+  }
 
-  return result
+  if (minutes >= 1 || parts.length === 0) {
+    const unitKey =
+      minutes === 1
+        ? 'omadataoauth2_aika_minuutti'
+        : 'omadataoauth2_aika_minuuttia'
+    parts.push(`${minutes} ${t(unitKey)}`)
+  }
+
+  return parts.join(' ')
 }
 
-export const calculatePaattymisajankohta = (
-  durationInMin: number
-): PaattymisajankohtaResult => {
-  return buildPaattymisajankohtaTemplateName(calculateTimeUnits(durationInMin))
+export const buildLocalizedPaattymisajankohtaText = (
+  durationInMin: number,
+  t: TranslateFn
+): string => {
+  const timeString = buildLocalizedTimeString(
+    calculateTimeUnits(durationInMin),
+    t
+  )
+  return t('omadataoauth2_suostumuksesi_paattymisajankohta_template').replace(
+    '{{time}}',
+    timeString
+  )
 }

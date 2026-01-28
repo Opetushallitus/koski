@@ -2,8 +2,7 @@ import React from 'baret'
 import Text from '../i18n/Text'
 import { useKoodisto } from '../appstate/koodisto'
 import { t, tExists } from '../i18n/i18n'
-import TextTemplate from '../i18n/TextTemplate'
-import { calculatePaattymisajankohta } from './expirationTime'
+import { buildLocalizedPaattymisajankohtaText } from './expirationTime'
 
 import(/* webpackChunkName: "styles" */ '../style/main.less')
 
@@ -114,16 +113,13 @@ const AcceptanceParagraphs = ({ durationInMin, clientId }) => {
 }
 
 const Paattymisajankohta = ({ durationInMin }) => {
-  const result = calculatePaattymisajankohta(durationInMin)
+  const text = buildLocalizedPaattymisajankohtaText(durationInMin, t)
 
   return (
     <p>
-      <TextTemplate
-        templateName={result.templateName}
-        days={result.days}
-        hours={result.hours}
-        minutes={result.minutes}
-      />
+      <span className="localized" aria-label={text}>
+        {text}
+      </span>
     </p>
   )
 }
