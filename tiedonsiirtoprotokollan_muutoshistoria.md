@@ -1,3 +1,6 @@
+## XX.1.2025
+Kelan tietomalliin lisätty esiopetus ja uudet perusopetuksen lisätiedot
+
 ## 14.1.2025
 Ammatillisen tutkinnon osasuoritusten AmmatillisenTutkinnonViestintäJaVuorovaikutusKielivalinnalla annotaatioihin lisätty VVAI26, VVVK26, ja VVTK26
 

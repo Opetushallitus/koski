@@ -28,7 +28,9 @@ const HEALTHCHECK_PORT = process.env.HEALTHCHECK_PORT || 7023
 const serverOptions = {
   key: fs.readFileSync(path.join(CERT_BASE, 'private/proxy.key')),
   cert: fs.readFileSync(path.join(CERT_BASE, 'certs/proxy.crt')),
-  ca: fs.readFileSync(path.join(CERT_BASE, 'certs/root-ca.crt')),
+  ca: fs.readdirSync(path.join(CERT_BASE, 'certs'))
+    .filter(f => f.includes('-ca.') || f.includes('-ca-'))
+    .map(f => fs.readFileSync(path.join(CERT_BASE, 'certs', f))),
   requestCert: true,
   rejectUnauthorized: true
 }
