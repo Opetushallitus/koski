@@ -1,3 +1,8 @@
+## 28.1.2026
+
+- Perusopetukseen valmistavan opetuksen opiskeluoikeuteen lisätty lisätiedot-kenttä (PerusopetukseenValmistavanOpetuksenOpiskeluoikeudenLisätiedot).
+- Lisätietoihin lisätty lisäopetus-kenttä (Option[List[Aikajakso]]), jolla voidaan ilmoittaa lisäopetuksen aikajaksot.
+
 ## 14.1.2025
 Ammatillisen tutkinnon osasuoritusten AmmatillisenTutkinnonViestintäJaVuorovaikutusKielivalinnalla annotaatioihin lisätty VVAI26, VVVK26, ja VVTK26
 
