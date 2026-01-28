@@ -13,6 +13,7 @@ help:
 	@echo "make build	- Build the whole application, ready for running or testing"
 	@echo "make front	- Build front end"
 	@echo "make test	- Run unit tests"
+	@echo "make test-backend SUITE=<class>	- Run a single backend test suite (skips frontend build)"
 	@echo "make run	- Run previously built application in local environment"
 	@echo "make docker-dbs	- Start databases with docker compose"
 	@echo "make watch	- Watch for changes in webapp files"
@@ -60,6 +61,13 @@ prettier-format-mock-data:
 
 
 ### Running tests
+
+.PHONY: test-backend
+test-backend:
+ifndef SUITE
+	$(error Usage: make test-backend SUITE=fi.oph.koski.virta.VirtaXMLConverterSpec)
+endif
+	mvn $(mvn_opts) -DargLine="$(mvn_argline)" test -P '!frontend' -Dsuites="$(SUITE)"
 
 .PHONY: localizationtest
 localizationtest:
