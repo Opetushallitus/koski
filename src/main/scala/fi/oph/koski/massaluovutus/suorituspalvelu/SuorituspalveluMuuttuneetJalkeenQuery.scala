@@ -11,6 +11,7 @@ import java.sql.Timestamp
 import java.time.LocalDateTime
 
 @Title("Suorituspalvelun kysely päivämäärän perusteella")
+@Description("Massaluovutusrajapinnan kysely suorituspalvelulle.")
 @Description("Palauttaa Suorituspalvelua varten räätälöidyt tiedot annettujen oppijoiden ja koulutusmuodon mukaisista opiskeluoikeuksista tietyn ajanhetken jälkeen.")
 @Description("Vastauksen skeema on taulukko <a href=\"/koski/json-schema-viewer/?schema=suorituspalvelu-result.json\">SupaResponse</a>-objekteja.")
 case class SuorituspalveluMuuttuneetJalkeenQuery(

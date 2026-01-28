@@ -22,6 +22,7 @@ import java.sql.Timestamp
 import java.time.LocalDate
 
 @Title("Valintalaskennan kysely")
+@Description("Massaluovutusrajapinnan kysely valintalaskentaan.")
 @Description("Palauttaa valintalaskentaa varten räätälöidyt tiedot annettujen oppijoiden ja koulutusmuodon mukaisista opiskeluoikeuksista.")
 @Description("Vastauksen skeema on saatavana <a href=\"/koski/json-schema-viewer/?schema=valintalaskenta-result.json\">täältä.</a>")
 case class ValintalaskentaQuery(

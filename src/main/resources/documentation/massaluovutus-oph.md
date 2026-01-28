@@ -1,9 +1,14 @@
-# Massaluovutusrajapinta Opetushallituksen sisäisille palveluille
+# Rajapinnat Opetushallituksen palveluille
+
+Opetushallituksen palveluille on käytössä sekä massaluovutusrajapinta että suora rajapinta.
 
 Massaluovutusrajapinta on tarkoitettu pidempikestoisten kyselyiden tekemiseen KOSKI-datasta.
-Rajapintaa käytetään seuraavanlaisesti. [Katso myös kaikki skeemat graafisessa muodossa](/koski/json-schema-viewer/?schema=massaluovutus-oph-query.json).
+Tässä dokumentaatiossa kuvataan massaluovutusrajapinnan käyttö sekä rajapintaan tehtävien kyselyiden ja vastausten muoto.
+[Kaikkien Opetushallituksen palveluiden massaluovutusrajapintaan tehtävien kyselyiden skeemat ovat saatavilla myös graafisessa muodossa](/koski/json-schema-viewer/?schema=massaluovutus-oph-query.json).
 
-## Uuden kyselyn luonti
+Suora rajapinta on käytössä yksittäisten tietojen, kuten yhden opiskeluoikeuden tietyn version, noutamiseen.
+
+## Uuden massaluovutusrajapinnan kyselyn luonti
 
 Aloita kysely lähettämällä parametrit luontirajapintaan `POST {{var:baseUrl}}/api/massaluovutus`.
 
