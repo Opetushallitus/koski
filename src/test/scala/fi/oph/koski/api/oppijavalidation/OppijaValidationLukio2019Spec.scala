@@ -344,48 +344,66 @@ class OppijaValidationLukio2019Spec extends AnyFreeSpec with PutOpiskeluoikeusTe
     }
 
     "suoritustasolla sallii oppiaineet ilman osasuorituksia ja suorituksen merkitsemisen vahvistetuksi vajaalla yhteislaajuudella" in {
-      setupOppijaWithOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(oppimääränSuoritus.copy(suoritettuErityisenäTutkintona = true, osasuoritukset = Some(List(
-        oppiaineenSuoritus(Lukio2019ExampleData.lukionÄidinkieli("AI1", pakollinen = true)).copy(arviointi = numeerinenLukionOppiaineenArviointi(9)).copy(osasuoritukset = None),
-        oppiaineenSuoritus(Lukio2019ExampleData.matematiikka("MAA")).copy(arviointi = numeerinenLukionOppiaineenArviointi(9)).copy(osasuoritukset = None))))))) {
+      setupOppijaWithOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(aikuistenOppimääränSuoritus.copy(
+        suoritettuErityisenäTutkintona = true,
+        vahvistus = vahvistusPaikkakunnalla(päivä = date(2020, 5, 15)),
+        osasuoritukset = Some(List(
+          oppiaineenSuoritus(Lukio2019ExampleData.lukionÄidinkieli("AI1", pakollinen = true)).copy(arviointi = numeerinenLukionOppiaineenArviointi(9), osasuoritukset = None),
+          oppiaineenSuoritus(Lukio2019ExampleData.matematiikka("MAA")).copy(arviointi = numeerinenLukionOppiaineenArviointi(9), osasuoritukset = None)))))
+      )) {
         verifyResponseStatusOk()
       }
     }
 
     "suoritustasolla sallii osasuoritukset muissa lukio-opinnoissa, temaattisissa opinnoissa tai lukiodiplomeissa ja suorituksen merkitsemisen vahvistetuksi vajaalla yhteislaajuudella" in {
-      setupOppijaWithOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(oppimääränSuoritus.copy(suoritettuErityisenäTutkintona = true, osasuoritukset = Some(List(
-        oppiaineenSuoritus(Lukio2019ExampleData.lukionÄidinkieli("AI1", pakollinen = true)).copy(arviointi = numeerinenLukionOppiaineenArviointi(9)).copy(osasuoritukset = None),
-        oppiaineenSuoritus(Lukio2019ExampleData.matematiikka("MAA")).copy(arviointi = numeerinenLukionOppiaineenArviointi(9)).copy(osasuoritukset = None),
-        muidenLukioOpintojenSuoritus().copy(osasuoritukset = Some(List(
-          moduulinSuoritusMuissaOpinnoissa(muuModuuliMuissaOpinnoissa("KE3")).copy(arviointi = numeerinenArviointi(10)),
-          paikallisenOpintojaksonSuoritus(paikallinenOpintojakso("HAI765", "Kansanmusiikki haitarilla", "Kansamusiikkia 2-rivisellä haitarilla")).copy(arviointi = sanallinenArviointi("S"))
-        ))),
-        temaattistenOpintojenSuoritus().copy(osasuoritukset = Some(List(
-          paikallisenOpintojaksonSuoritus(paikallinenOpintojakso("KAN200", "Kanteleensoiton perusteet", "Itäsuomalaisen kanteleensoiton perusteet")).copy(arviointi = sanallinenArviointi("S"))
-        ))),
-        lukioDiplomienSuoritus().copy(osasuoritukset = Some(List(
-          moduulinSuoritusMuissaOpinnoissa(muuModuuliMuissaOpinnoissa("MELD5", 2.0f)).copy(arviointi = numeerinenArviointi(7)),
-          moduulinSuoritusMuissaOpinnoissa(muuModuuliMuissaOpinnoissa("KÄLD3", 2.0f)).copy(arviointi = numeerinenArviointi(9))
-        )))
-      )))))) {
+      setupOppijaWithOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(aikuistenOppimääränSuoritus.copy(
+        suoritettuErityisenäTutkintona = true,
+        vahvistus = vahvistusPaikkakunnalla(päivä = date(2020, 5, 15)),
+        osasuoritukset = Some(List(
+          oppiaineenSuoritus(Lukio2019ExampleData.lukionÄidinkieli("AI1", pakollinen = true)).copy(arviointi = numeerinenLukionOppiaineenArviointi(9)).copy(osasuoritukset = None),
+          oppiaineenSuoritus(Lukio2019ExampleData.matematiikka("MAA")).copy(arviointi = numeerinenLukionOppiaineenArviointi(9)).copy(osasuoritukset = None),
+          muidenLukioOpintojenSuoritus().copy(osasuoritukset = Some(List(
+            moduulinSuoritusMuissaOpinnoissa(muuModuuliMuissaOpinnoissa("KE3")).copy(arviointi = numeerinenArviointi(10)),
+            paikallisenOpintojaksonSuoritus(paikallinenOpintojakso("HAI765", "Kansanmusiikki haitarilla", "Kansamusiikkia 2-rivisellä haitarilla")).copy(arviointi = sanallinenArviointi("S"))
+          ))),
+          temaattistenOpintojenSuoritus().copy(osasuoritukset = Some(List(
+            paikallisenOpintojaksonSuoritus(paikallinenOpintojakso("KAN200", "Kanteleensoiton perusteet", "Itäsuomalaisen kanteleensoiton perusteet")).copy(arviointi = sanallinenArviointi("S"))
+          ))),
+          lukioDiplomienSuoritus().copy(osasuoritukset = Some(List(
+            moduulinSuoritusMuissaOpinnoissa(muuModuuliMuissaOpinnoissa("MELD5", 2.0f)).copy(arviointi = numeerinenArviointi(7)),
+            moduulinSuoritusMuissaOpinnoissa(muuModuuliMuissaOpinnoissa("KÄLD3", 2.0f)).copy(arviointi = numeerinenArviointi(9))
+          )))
+        ))
+      )))) {
         verifyResponseStatusOk()
       }
     }
 
     "suoritustasolla sallii osasuoritusten lisäämisen oppiaineisiin" in {
-      setupOppijaWithOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(oppimääränSuoritus.copy(suoritettuErityisenäTutkintona = true, osasuoritukset = Some(List(
-        oppiaineenSuoritus(Lukio2019ExampleData.lukionÄidinkieli("AI1", pakollinen = true)).copy(arviointi = numeerinenLukionOppiaineenArviointi(9)).copy(osasuoritukset = Some(List(
-          moduulinSuoritusOppiaineissa(muuModuuliOppiaineissa("ÄI1")).copy(arviointi = numeerinenArviointi(8)),
-          moduulinSuoritusOppiaineissa(muuModuuliOppiaineissa("ÄI2")).copy(arviointi = numeerinenArviointi(8)),
-          moduulinSuoritusOppiaineissa(muuModuuliOppiaineissa("ÄI3").copy(pakollinen = false)).copy(arviointi = numeerinenArviointi(8))
-        ))),
-        oppiaineenSuoritus(Lukio2019ExampleData.matematiikka("MAB")).copy(arviointi = numeerinenLukionOppiaineenArviointi(9)).copy(osasuoritukset = Some(List(
-          moduulinSuoritusOppiaineissa(muuModuuliOppiaineissa("MAB2")).copy(arviointi = numeerinenArviointi(10)),
-          moduulinSuoritusOppiaineissa(muuModuuliOppiaineissa("MAB3")).copy(arviointi = numeerinenArviointi(10)),
-          moduulinSuoritusOppiaineissa(muuModuuliOppiaineissa("MAB4")).copy(arviointi = numeerinenArviointi(10)),
-          paikallisenOpintojaksonSuoritus(paikallinenOpintojakso("FY123", "Keittiöfysiikka", "Keittiöfysiikan kokeelliset perusteet, kiehumisreaktiot")).copy(arviointi = numeerinenArviointi(10)),
-        )))
-      )))))) {
+      setupOppijaWithOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(aikuistenOppimääränSuoritus.copy(
+        suoritettuErityisenäTutkintona = true,
+        vahvistus = vahvistusPaikkakunnalla(päivä = date(2020, 5, 15)),
+        osasuoritukset = Some(List(
+          oppiaineenSuoritus(Lukio2019ExampleData.lukionÄidinkieli("AI1", pakollinen = true)).copy(arviointi = numeerinenLukionOppiaineenArviointi(9)).copy(osasuoritukset = Some(List(
+            moduulinSuoritusOppiaineissa(muuModuuliOppiaineissa("ÄI1")).copy(arviointi = numeerinenArviointi(8)),
+            moduulinSuoritusOppiaineissa(muuModuuliOppiaineissa("ÄI2")).copy(arviointi = numeerinenArviointi(8)),
+            moduulinSuoritusOppiaineissa(muuModuuliOppiaineissa("ÄI3").copy(pakollinen = false)).copy(arviointi = numeerinenArviointi(8))
+          ))),
+          oppiaineenSuoritus(Lukio2019ExampleData.matematiikka("MAB")).copy(arviointi = numeerinenLukionOppiaineenArviointi(9)).copy(osasuoritukset = Some(List(
+            moduulinSuoritusOppiaineissa(muuModuuliOppiaineissa("MAB2")).copy(arviointi = numeerinenArviointi(10)),
+            moduulinSuoritusOppiaineissa(muuModuuliOppiaineissa("MAB3")).copy(arviointi = numeerinenArviointi(10)),
+            moduulinSuoritusOppiaineissa(muuModuuliOppiaineissa("MAB4")).copy(arviointi = numeerinenArviointi(10)),
+            paikallisenOpintojaksonSuoritus(paikallinenOpintojakso("FY123", "Keittiöfysiikka", "Keittiöfysiikan kokeelliset perusteet, kiehumisreaktiot")).copy(arviointi = numeerinenArviointi(10)),
+          )))
+        ))
+      )))) {
         verifyResponseStatusOk()
+      }
+    }
+
+    "suoritustasolla estetty jos kyseessä nuorten oppimäärän" in {
+      setupOppijaWithOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(oppimääränSuoritus.copy(suoritettuErityisenäTutkintona = true)))) {
+        verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.rakenne.erityisenäTutkintonaSuoritettuNuortenOps())
       }
     }
   }

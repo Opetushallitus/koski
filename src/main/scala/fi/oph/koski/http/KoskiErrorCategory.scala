@@ -133,6 +133,7 @@ object KoskiErrorCategory {
         val vääränKoodinYhteinenOsasuoritus = subcategory("vääränKoodinYhteinenOsasuoritus", "Tutkinnon yhteisellä osalla on epäsopivan suoritustyypin alaisen suorituksen koodi")
         val epäsopiviaSuorituksia = subcategory("epäsopiviaSuorituksia", "Opiskeluoikeudella on epäsopiva lista suorituksia")
         val erityisenäTutkintonaSuoritettuSisältääOsasuorituksia = subcategory("erityisenäTutkintoaSuoritettuSisältääOsasuorituksia", "Osasuorituksella on osasuorituksia, vaikka se on suoritettu erityisenä tutkintona")
+        val erityisenäTutkintonaSuoritettuNuortenOps = subcategory("erityisenäTutkintonaSuoritettuNuortenOps", "Nuorten opetussuunnitelman mukainen suoritus ei ole sallittu, koska tutkinto on suoritettu erityisenä tutkintona")
         val epäsopiviaOsasuorituksia = subcategory("epäsopiviaOsasuorituksia", "Suorituksella tai sen osasuorituksella on epäsopiva lista osasuorituksia")
         val deprekoituKielikoodi = subcategory("deprekoituKielikoodi", "Suorituksessa on käytetty deprekoitua kielikoodia")
         val virheellinenSuorituskieli = subcategory("virheellinenSuorituskieli", "Suorituskieli virheellinen")
