@@ -23,10 +23,8 @@ object Lukio2019OsasuoritusValidation {
   }
 
   private def validateErityinenTutkinto(suoritus: Suoritus, parents: List[Suoritus]): HttpStatus = (suoritus, parents) match {
-    case (s, (p: SuoritettavissaErityisenäTutkintona2019) :: (_: LukionOppimääränSuoritus2019 | _: PreIBSuoritus2019) :: _) if (p.suoritettuErityisenäTutkintona) =>
+    case (s, (p: SuoritettavissaErityisenäTutkintona2019) :: (_: PreIBSuoritus2019) :: _) if (p.suoritettuErityisenäTutkintona) =>
       KoskiErrorCategory.badRequest.validation.rakenne.erityisenäTutkintonaSuoritettuSisältääOsasuorituksia(s"Osasuoritus ${suorituksenTunniste(suoritus)} ei ole sallittu, koska oppiaine on suoritettu erityisenä tutkintona")
-    case (s, (_: LukionOppiaineenSuoritus2019) :: (pp: LukionOppimääränSuoritus2019) :: _) if (pp.suoritettuErityisenäTutkintona) =>
-      KoskiErrorCategory.badRequest.validation.rakenne.erityisenäTutkintonaSuoritettuSisältääOsasuorituksia(s"Osasuoritus ${suorituksenTunniste(suoritus)} ei ole sallittu, koska tutkinto on suoritettu erityisenä tutkintona")
     case _ =>
       HttpStatus.ok
   }
