@@ -7,6 +7,11 @@ import fi.oph.koski.schema.{YleisenKielitutkinnonSuoritus}
 import java.time.LocalDateTime
 
 class TodistusWorkflowSpec extends TodistusSpecHelpers {
+
+  override protected def afterEach(): Unit = {
+    cleanup()
+  }
+
   "Todistuksen uudelleenkäyttö" - {
     "Palauttaa olemassaolevan COMPLETED-todistuksen, jos sama sisältö" in {
       val lang = "fi"

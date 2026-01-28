@@ -5,6 +5,11 @@ import fi.oph.koski.koskiuser.MockUsers
 import fi.oph.koski.schema.KielitutkinnonOpiskeluoikeus
 
 class TodistusKayttoOikeudetSpec extends TodistusSpecHelpers {
+
+  override protected def afterEach(): Unit = {
+    cleanup()
+  }
+
   "Generointipyyntö ja statuspyyntö" - {
     "onnistuu kansalaiselta omasta kielitutkinnon opiskeluoikeudesta" in {
       val lang = "fi"
