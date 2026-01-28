@@ -2,7 +2,7 @@ import React from 'baret'
 import Text from '../i18n/Text'
 import { useKoodisto } from '../appstate/koodisto'
 import { t, tExists } from '../i18n/i18n'
-import TextTemplate from '../i18n/TextTemplate'
+import { buildLocalizedPaattymisajankohtaText } from './expirationTime'
 
 import(/* webpackChunkName: "styles" */ '../style/main.less')
 
@@ -113,12 +113,13 @@ const AcceptanceParagraphs = ({ durationInMin, clientId }) => {
 }
 
 const Paattymisajankohta = ({ durationInMin }) => {
+  const text = buildLocalizedPaattymisajankohtaText(durationInMin, t)
+
   return (
     <p>
-      <TextTemplate
-        templateName="omadataoauth2_suostumuksesi_paattymisajankohta_min"
-        duration_in_minutes={durationInMin}
-      />
+      <span className="localized" aria-label={text}>
+        {text}
+      </span>
     </p>
   )
 }
