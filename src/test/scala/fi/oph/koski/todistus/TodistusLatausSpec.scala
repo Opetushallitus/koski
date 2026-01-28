@@ -29,6 +29,17 @@ class TodistusLatausSpec extends TodistusSpecHelpers with BeforeAndAfterAll {
   private val hetu = oppija.hetu.get
   private val oppijaOid = oppija.oid
 
+  private lazy val referencePdfBytes: Array[Byte] = {
+    val referenceResourcePath = "/todistus_referenssi_pikselivertailuun.pdf"
+    val referenceInputStream = getClass.getResourceAsStream(referenceResourcePath)
+    require(referenceInputStream != null, s"Referenssi-PDF:ää ei löytynyt polusta: $referenceResourcePath")
+    try {
+      Iterator.continually(referenceInputStream.read).takeWhile(_ != -1).map(_.toByte).toArray
+    } finally {
+      referenceInputStream.close()
+    }
+  }
+
   private lazy val opiskeluoikeus: KielitutkinnonOpiskeluoikeus = {
     getVahvistettuKielitutkinnonOpiskeluoikeus(oppijaOid).get
   }
@@ -64,18 +75,6 @@ class TodistusLatausSpec extends TodistusSpecHelpers with BeforeAndAfterAll {
 
   private lazy val pdfText: String = new PDFTextStripper().getText(pdfDocument)
 
-  private lazy val referencePdfBytes: Array[Byte] = {
-    val referenceResourcePath = "/todistus_referenssi_pikselivertailuun.pdf"
-    val referenceInputStream = getClass.getResourceAsStream(referenceResourcePath)
-    require(referenceInputStream != null, s"Referenssi-PDF:ää ei löytynyt polusta: $referenceResourcePath")
-    try {
-      Iterator.continually(referenceInputStream.read).takeWhile(_ != -1).map(_.toByte).toArray
-    } finally {
-      referenceInputStream.close()
-    }
-  }
-
-  // Presigned URL lataus
   private lazy val presignedPdfBytes: Array[Byte] = {
     var bytes: Array[Byte] = null
     verifyPresignedResultAndContent(s"/todistus/download/presigned/${completedJob.id}") {
@@ -94,7 +93,6 @@ class TodistusLatausSpec extends TodistusSpecHelpers with BeforeAndAfterAll {
   private lazy val presignedPdfText: String = new PDFTextStripper().getText(presignedPdfDocument)
 
   override protected def afterAll(): Unit = {
-    // Sulje PDF-dokumentit jos ne on luotu
     if (_pdfDocument.isDefined) {
       _pdfDocument.get.close()
     }
@@ -107,9 +105,7 @@ class TodistusLatausSpec extends TodistusSpecHelpers with BeforeAndAfterAll {
 
   "Todistuksen generointi onnistuu ja todistus valmistuu" in {
     // Kirjoita PDF temp-tiedostoon debuggausta varten
-    val tempFile = java.nio.file.Files.createTempFile("todistus-test-", ".pdf")
-    java.nio.file.Files.write(tempFile, pdfBytes)
-    println(s"PDF kirjoitettu tiedostoon: ${tempFile.toAbsolutePath}")
+    writeTempPdf("todistus-test-", ".pdf", pdfBytes, "PDF kirjoitettu tiedostoon")
 
     completedJob.state should equal(TodistusState.COMPLETED)
     completedJob.error should be(None)
@@ -670,10 +666,12 @@ class TodistusLatausSpec extends TodistusSpecHelpers with BeforeAndAfterAll {
         val (isEmpty, contentRatio) = isAreaEmpty(marginImage, margin.maxContentRatio)
 
         // Tallenna marginaali debuggausta varten aina
-        val marginFile = java.nio.file.Files.createTempFile(s"todistus-margin-sivu${pageIndex + 1}-${margin.name}-", ".png")
-        ImageIO.write(marginImage, "png", marginFile.toFile)
-
-        println(f"DEBUG: Sivu ${pageIndex + 1} ${margin.name}marginaali: ${contentRatio * 100}%.2f%% pikseleistä ei-valkoisia (max sallittu: ${margin.maxContentRatio * 100}%.8f%%), tallennettu: ${marginFile.toAbsolutePath}")
+        writeTempImage(
+          s"todistus-margin-sivu${pageIndex + 1}-${margin.name}-",
+          ".png",
+          marginImage,
+          f"DEBUG: Sivu ${pageIndex + 1} ${margin.name}marginaali: ${contentRatio * 100}%.2f%% pikseleistä ei-valkoisia (max sallittu: ${margin.maxContentRatio * 100}%.8f%%), tallennettu"
+        )
 
         withClue(f"Sivu ${pageIndex + 1} ${margin.name}marginaali ei ole tyhjä (${contentRatio * 100}%.2f%% pikseleistä sisältää grafiikkaa, max sallittu ${margin.maxContentRatio * 100}%.8f%%). ") {
           isEmpty should be(true)
@@ -746,21 +744,26 @@ class TodistusLatausSpec extends TodistusSpecHelpers with BeforeAndAfterAll {
       // Tallenna koko renderöidyt sivut debuggausta varten
       testPages.foreach { case (pageIdx, pageImage) =>
         println(s"DEBUG: Renderöity actual-sivu ${pageIdx + 1}: ${pageImage.getWidth}x${pageImage.getHeight} px")
-        val actualPageFile = java.nio.file.Files.createTempFile(s"todistus-full-page-${pageIdx + 1}-actual-", ".png")
-        ImageIO.write(pageImage, "png", actualPageFile.toFile)
-        println(s"DEBUG: Actual-sivun ${pageIdx + 1} kuva kirjoitettu: ${actualPageFile.toAbsolutePath}")
+        writeTempImage(
+          s"todistus-full-page-${pageIdx + 1}-actual-",
+          ".png",
+          pageImage,
+          s"DEBUG: Actual-sivun ${pageIdx + 1} kuva kirjoitettu"
+        )
       }
 
       referencePages.foreach { case (pageIdx, pageImage) =>
         println(s"DEBUG: Renderöity expected-sivu ${pageIdx + 1}: ${pageImage.getWidth}x${pageImage.getHeight} px")
-        val expectedPageFile = java.nio.file.Files.createTempFile(s"todistus-full-page-${pageIdx + 1}-expected-", ".png")
-        ImageIO.write(pageImage, "png", expectedPageFile.toFile)
-        println(s"DEBUG: Expected-sivun ${pageIdx + 1} kuva kirjoitettu: ${expectedPageFile.toAbsolutePath}")
+        writeTempImage(
+          s"todistus-full-page-${pageIdx + 1}-expected-",
+          ".png",
+          pageImage,
+          s"DEBUG: Expected-sivun ${pageIdx + 1} kuva kirjoitettu"
+        )
       }
 
       // Tarkista että marginaalit ovat tyhjät molemmilla sivuilla
       testPages.foreach { case (pageIdx, pageImage) =>
-        println(s"DEBUG: Tarkistetaan sivun ${pageIdx + 1} marginaalit...")
         verifyMarginsAreEmpty(pageImage, pageIdx)
       }
 
@@ -773,20 +776,23 @@ class TodistusLatausSpec extends TodistusSpecHelpers with BeforeAndAfterAll {
         val referenceArea = cropImage(referencePages(region.pageIndex), region)
 
         // Tallenna leikatut alueet debuggausta varten
-        val actualAreaFile = java.nio.file.Files.createTempFile(s"todistus-area-${region.name}-actual-", ".png")
-        ImageIO.write(testArea, "png", actualAreaFile.toFile)
-        println(s"DEBUG: Actual-alue '${region.name}' kirjoitettu: ${actualAreaFile.toAbsolutePath}")
+        writeTempImage(
+          s"todistus-area-${region.name}-actual-",
+          ".png",
+          testArea,
+          s"DEBUG: Actual-alue '${region.name}' kirjoitettu"
+        )
 
-        val expectedAreaFile = java.nio.file.Files.createTempFile(s"todistus-area-${region.name}-expected-", ".png")
-        ImageIO.write(referenceArea, "png", expectedAreaFile.toFile)
-        println(s"DEBUG: Expected-alue '${region.name}' kirjoitettu: ${expectedAreaFile.toAbsolutePath}")
+        writeTempImage(
+          s"todistus-area-${region.name}-expected-",
+          ".png",
+          referenceArea,
+          s"DEBUG: Expected-alue '${region.name}' kirjoitettu"
+        )
 
         // Tarkista että alueet eivät ole tyhjiä
         val (actualHasContent, actualContentRatio) = isImageContentful(testArea, minContentRatio = region.minContentRatio)
         val (expectedHasContent, expectedContentRatio) = isImageContentful(referenceArea, minContentRatio = region.minContentRatio)
-
-        println(f"DEBUG: Actual-alueen '${region.name}' sisältö: ${actualContentRatio * 100}%.2f%% pikseleistä ei-valkoisia (min: ${region.minContentRatio * 100}%.2f%%)")
-        println(f"DEBUG: Expected-alueen '${region.name}' sisältö: ${expectedContentRatio * 100}%.2f%% pikseleistä ei-valkoisia (min: ${region.minContentRatio * 100}%.2f%%)")
 
         withClue(f"Actual-alue '${region.name}' on tyhjä tai lähes tyhjä (vain ${actualContentRatio * 100}%.2f%% sisältöä, vaadittu vähintään ${region.minContentRatio * 100}%.2f%%). Tarkista että koordinaatit ovat oikein. ") {
           actualHasContent should be(true)
@@ -800,8 +806,6 @@ class TodistusLatausSpec extends TodistusSpecHelpers with BeforeAndAfterAll {
         val contentRatioDifference = math.abs(actualContentRatio - expectedContentRatio)
         val maxAllowedDifference = 0.005 // Sallitaan max 0.5% absoluuttinen ero sisältömäärissä
 
-        println(f"DEBUG: Sisältömäärien ero: ${contentRatioDifference * 100}%.2f%% (max sallittu: ${maxAllowedDifference * 100}%.2f%%)")
-
         withClue(f"Alueen '${region.name}' sisältömäärät poikkeavat liikaa toisistaan. Actual: ${actualContentRatio * 100}%.2f%%, expected: ${expectedContentRatio * 100}%.2f%%, ero ${contentRatioDifference * 100}%.2f%% (max ${maxAllowedDifference * 100}%.2f%%). Tarkista että koordinaatit ovat oikein. ") {
           contentRatioDifference should be <= maxAllowedDifference
         }
@@ -809,8 +813,6 @@ class TodistusLatausSpec extends TodistusSpecHelpers with BeforeAndAfterAll {
         // Vertaa alueiden samankaltaisuutta pikselitasolla
         if (!region.skipPixelComparison) {
           val (areSimilar, pixelDiff, avgDiff) = compareImages(testArea, referenceArea, tolerance = 0.05)
-
-          println(f"DEBUG: Alue '${region.name}' pikselivertailu: samankaltaisuus=$areSimilar, pikselierojen osuus=${pixelDiff * 100}%.2f%%, keskimääräinen ero=${avgDiff * 100}%.2f%%")
 
           withClue(f"Alue '${region.name}' ei vastaa expected-kuvaa. Pikselierojen osuus: ${pixelDiff * 100}%.2f%%, keskimääräinen ero: ${avgDiff * 100}%.2f%%. ") {
             areSimilar should be(true)
@@ -825,5 +827,17 @@ class TodistusLatausSpec extends TodistusSpecHelpers with BeforeAndAfterAll {
     }
   }
 
+  private def writeTempPdf(prefix: String, suffix: String, bytes: Array[Byte], debugMessage: String): java.nio.file.Path = {
+    val tempFile = java.nio.file.Files.createTempFile(prefix, suffix)
+    java.nio.file.Files.write(tempFile, bytes)
+    println(s"$debugMessage: ${tempFile.toAbsolutePath}")
+    tempFile
+  }
 
+  private def writeTempImage(prefix: String, suffix: String, image: BufferedImage, debugMessage: String): java.nio.file.Path = {
+    val tempFile = java.nio.file.Files.createTempFile(prefix, suffix)
+    ImageIO.write(image, "png", tempFile.toFile)
+    println(s"$debugMessage: ${tempFile.toAbsolutePath}")
+    tempFile
+  }
 }
