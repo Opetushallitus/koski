@@ -216,13 +216,13 @@ class VirtaXMLConverterSpec extends AnyFreeSpec with TestEnvironment with Matche
     }
 
     "Patevyys" - {
-      "parsitaan opintosuorituksilta sekä jaksoilta ilman duplikaatteja ja vain kaksimerkkiset kirjainkoodit huomioidaan" in {
+      "parsitaan vain opintosuorituksilta ilman duplikaatteja ja vain kaksimerkkiset kirjainkoodit huomioidaan" in {
         val oo = converter.convertToOpiskeluoikeudet(opiskeluoikeusSuorituksella())
         oo should have size (1)
         val opettajanPatevyydet = oo.head.lisätiedot.flatMap(_.opettajanPedagogisetOpinnot.map(x => x.map(_.koodiarvo))).getOrElse(List())
         val ainePatevyydet = oo.head.lisätiedot.flatMap(_.opetettavanAineenOpinnot.map(x => x.map(_.koodiarvo))).getOrElse(List())
-        opettajanPatevyydet should equal(List("oa", "ob"))
-        ainePatevyydet should equal(List("aj", "ew", "kl"))
+        opettajanPatevyydet should equal(List("ob"))
+        ainePatevyydet should equal(List("aj", "kl"))
       }
 
       "ainepätevyydet on None jos sopivia pätevyyksiä ei löydy" in {

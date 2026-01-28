@@ -39,10 +39,6 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
       .flatMap(v => parseLuokittelu(v, "virtaopiskeluoikeudenluokittelu"))
       .toList
 
-    def opettajaPatevyysJaksolta(opiskeluoikeusNode: Node): List[Koodistokoodiviite] = (opiskeluoikeusNode \ "Jakso")
-      .flatMap(v => parsePatevyys(v, "virtapatevyys"))
-      .toList
-
     val (orphans, opiskeluoikeudet) = opiskeluoikeusNodes.foldLeft((suoritusRoots, Nil: List[KorkeakoulunOpiskeluoikeus])) { case ((suoritusRootsLeft, opiskeluOikeudet), opiskeluoikeusNode) =>
       virheet = ListBuffer[VirtaVirhe]()
       val (opiskeluOikeudenSuoritukset: List[Node], muutSuoritukset: List[Node]) = suoritusRootsLeft.partition(sisältyyOpiskeluoikeuteen(_, opiskeluoikeusNode, suoritusNodeList, None))
@@ -66,8 +62,7 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
         oppilaitoksenNimiPäivä
       )
       val opettajanPatevyydet = noneIfEmpty(
-        opettajaPatevyysJaksolta(opiskeluoikeusNode) ++
-          opiskeluOikeudenSuoritukset.flatMap(v => parsePatevyys(v, "virtapatevyys"))
+        opiskeluOikeudenSuoritukset.flatMap(v => parsePatevyys(v, "virtapatevyys"))
       )
 
       val opiskeluoikeus = KorkeakoulunOpiskeluoikeus(
