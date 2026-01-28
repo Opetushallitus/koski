@@ -1,7 +1,7 @@
 package fi.oph.koski.api.oppijavalidation
 
 import fi.oph.koski.KoskiHttpSpec
-import fi.oph.koski.documentation.ExampleData.{opiskeluoikeusLäsnä, opiskeluoikeusValmistunut}
+import fi.oph.koski.documentation.ExampleData.opiskeluoikeusLäsnä
 import fi.oph.koski.documentation.ExamplesPerusopetukseenValmistavaOpetus.{perusopetukseenValmistavaOpiskeluoikeus, perusopetukseenValmistavanOpetuksenSuoritus}
 import fi.oph.koski.documentation.PerusopetusExampleData
 import fi.oph.koski.documentation.PerusopetusExampleData.{arviointi, oppiaine, vuosiviikkotuntia}
@@ -155,7 +155,7 @@ class OppijaValidationPerusopetukseenValmistavaSpec extends TutkinnonPerusteetTe
         lisätiedot = Some(PerusopetukseenValmistavanOpetuksenOpiskeluoikeudenLisätiedot(
           lisäopetus = Some(List(
             Aikajakso(LocalDate.of(2027, 1, 1), Some(LocalDate.of(2027, 6, 30))),
-            Aikajakso(LocalDate.of(2027, 8, 1), Some(LocalDate.of(2028, 1, 31)))
+            Aikajakso(LocalDate.of(2027, 8, 1), Some(LocalDate.of(2028, 2, 1)))
           ))
         ))
       )
@@ -210,12 +210,15 @@ class OppijaValidationPerusopetukseenValmistavaSpec extends TutkinnonPerusteetTe
       val opiskeluoikeus = keskeneräinenOpiskeluoikeus.copy(
         lisätiedot = Some(PerusopetukseenValmistavanOpetuksenOpiskeluoikeudenLisätiedot(
           lisäopetus = Some(List(
-            Aikajakso(LocalDate.now().minusYears(1).minusDays(1), None)
+            Aikajakso(LocalDate.of(2024, 1, 1), None)
           ))
         ))
       )
       setupOppijaWithOpiskeluoikeus(opiskeluoikeus) {
-        verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.perusopetukseenValmistavaOpetus.lisäopetusAvoinJaksoLiianVanha())
+        verifyResponseStatus(400,
+          KoskiErrorCategory.badRequest.validation.perusopetukseenValmistavaOpetus.lisäopetusEiSallittuEnnen(),
+          KoskiErrorCategory.badRequest.validation.perusopetukseenValmistavaOpetus.lisäopetusAvoinJaksoLiianVanha()
+        )
       }
     }
 
@@ -223,7 +226,7 @@ class OppijaValidationPerusopetukseenValmistavaSpec extends TutkinnonPerusteetTe
       val opiskeluoikeus = keskeneräinenOpiskeluoikeus.copy(
         lisätiedot = Some(PerusopetukseenValmistavanOpetuksenOpiskeluoikeudenLisätiedot(
           lisäopetus = Some(List(
-            Aikajakso(LocalDate.now().minusMonths(6), None)
+            Aikajakso(LocalDate.of(2026, 9, 1), None)
           ))
         ))
       )
