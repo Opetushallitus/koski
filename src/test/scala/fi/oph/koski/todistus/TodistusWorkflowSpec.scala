@@ -585,6 +585,52 @@ class TodistusWorkflowSpec extends TodistusSpecHelpers {
         verifyResponseStatus(404)
       }
     }
+
+    "Palauttaa viimeisimmän jobin kun useita ajantasaisia jobeja saatavilla" in {
+      val lang = "fi"
+      val oppija = KoskiSpecificMockOppijat.kielitutkinnonSuorittaja
+      val hetu = oppija.hetu.get
+      val oppijaOid = oppija.oid
+      val opiskeluoikeus = getVahvistettuKielitutkinnonOpiskeluoikeus(oppijaOid)
+      val opiskeluoikeusOid = opiskeluoikeus.flatMap(_.oid).get
+      val versionumero = opiskeluoikeus.flatMap(_.versionumero).get
+      val henkilotiedotHash = laskeHenkilötiedotHash(oppija)
+
+      withoutRunningSchedulers {
+        // Luo kolme identtistä jobia suoraan tietokantaan eri ajanhetkinä (simuloi race conditionia)
+        val count = 3
+        val now = LocalDateTime.now()
+        val minutesApart = 5
+        val jobs =
+          (0 until count).map { i =>
+            val createdAt = now.minusMinutes(minutesApart * (count - 1 - i).toLong)
+            val job = TodistusJob(
+              id = java.util.UUID.randomUUID().toString,
+              userOid = Some(oppijaOid),
+              oppijaOid = oppijaOid,
+              opiskeluoikeusOid = opiskeluoikeusOid,
+              language = lang,
+              opiskeluoikeusVersionumero = Some(versionumero),
+              oppijaHenkilötiedotHash = Some(henkilotiedotHash),
+              state = TodistusState.COMPLETED,
+              createdAt = createdAt,
+              startedAt = Some(createdAt),
+              completedAt = Some(createdAt.plusMinutes(1)),
+              worker = Some(app.todistusRepository.workerId),
+              attempts = Some(1),
+              error = None
+            )
+            app.todistusRepository.addRawForUnitTests(job)
+          }
+
+        val req = TodistusGenerateRequest(opiskeluoikeusOid, lang)
+
+        checkStatusByParametersSuccessfully(req, hetu) { statusJob =>
+          statusJob.id should equal(jobs.last.id)
+          statusJob.state should equal(TodistusState.COMPLETED)
+        }
+      }
+    }
   }
 
 }
