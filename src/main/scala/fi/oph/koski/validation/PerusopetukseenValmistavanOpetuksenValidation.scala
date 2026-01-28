@@ -35,7 +35,8 @@ object PerusopetukseenValmistavanOpetuksenValidation {
         HttpStatus.fold(
           validateLisäopetusJaksojenAlkamispäivät(jaksot),
           validateLisäopetuksenKokonaiskesto(jaksot),
-          validateLisäopetusJaksojenPäällekkäisyys(jaksot)
+          validateLisäopetusJaksojenPäällekkäisyys(jaksot),
+          validateAvoinJaksoEiYliVuodenVanha(jaksot)
         )
       case _ => HttpStatus.ok
     }
@@ -69,6 +70,16 @@ object PerusopetukseenValmistavanOpetuksenValidation {
     }
     HttpStatus.validate(!päällekkäisiäJaksoja)(
       KoskiErrorCategory.badRequest.validation.perusopetukseenValmistavaOpetus.lisäopetusJaksotPäällekkäin()
+    )
+  }
+
+  private def validateAvoinJaksoEiYliVuodenVanha(jaksot: List[Aikajakso]): HttpStatus = {
+    val vuosiSitten = LocalDate.now().minusYears(1)
+    val avoinJaksoYliVuodenVanha = jaksot.exists(jakso =>
+      jakso.loppu.isEmpty && jakso.alku.isBefore(vuosiSitten)
+    )
+    HttpStatus.validate(!avoinJaksoYliVuodenVanha)(
+      KoskiErrorCategory.badRequest.validation.perusopetukseenValmistavaOpetus.lisäopetusAvoinJaksoLiianVanha()
     )
   }
 }
