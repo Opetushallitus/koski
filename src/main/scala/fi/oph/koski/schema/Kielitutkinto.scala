@@ -72,6 +72,18 @@ case class YleinenKielitutkinto(
   @KoodistoUri("ykitutkintotaso")
   tunniste: Koodistokoodiviite,
   @KoodistoUri("kieli")
+  // Sallitaan vain olemassaolevat tutkintokielet. Jos näitä tulee lisää,
+  // pitää ottaa huomioon todistuksissakin, eli lisätä puuttuvat käännösavaimet
+  // ja niille käännökset.
+  @KoodistoKoodiarvo("FI")
+  @KoodistoKoodiarvo("EN")
+  @KoodistoKoodiarvo("ES")
+  @KoodistoKoodiarvo("IT")
+  @KoodistoKoodiarvo("SE")
+  @KoodistoKoodiarvo("FR")
+  @KoodistoKoodiarvo("SV")
+  @KoodistoKoodiarvo("RU")
+  @KoodistoKoodiarvo("DE")
   kieli: Koodistokoodiviite,
 ) extends Koulutusmoduuli {
   def nimi: LocalizedString = tunniste.nimi.getOrElse(unlocalized(tunniste.koodiarvo))
