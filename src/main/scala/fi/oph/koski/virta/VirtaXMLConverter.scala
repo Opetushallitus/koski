@@ -280,7 +280,7 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
             koulutusmoduuli = koulutusmoduuli,
             arviointi = arviointi(suoritus),
             vahvistus = päivämääräVahvistus,
-            suorituskieli = None,
+            suorituskieli = (suoritus \\ "Kieli").headOption.flatMap(kieli => koodistoViitePalvelu.validate(Koodistokoodiviite(kieli.text.toUpperCase, "kieli"))),
             toimipiste = oppilaitos(suoritus, päivämääräVahvistus.map(_.päivä)),
             osasuoritukset = optionalList(osasuoritukset)
           )
