@@ -38,12 +38,12 @@ object OpiskeluoikeusLoaderRowBuilder extends Logging {
     sisältyvätKokeet: List[YlioppilastutkinnonSisältyväKoe]
   )
 
-  def buildKoskiRow(inputRow: OpiskeluoikeusRow, includeAikajaksot: Boolean = true, includeOsasuoritukset: Boolean = true): Either[LoadErrorResult, KoskiOutputRows] = {
+  def buildKoskiRow(inputRow: OpiskeluoikeusRow, masterOid: Option[String] = None, includeAikajaksot: Boolean = true, includeOsasuoritukset: Boolean = true): Either[LoadErrorResult, KoskiOutputRows] = {
     Try {
       val toOpiskeluoikeusUnsafeStartTime = System.nanoTime()
       val oo = inputRow.toOpiskeluoikeusUnsafe(KoskiSpecificSession.systemUser)
       val toOpiskeluoikeusUnsafeDuration = System.nanoTime() - toOpiskeluoikeusUnsafeStartTime
-      val ooRow = buildROpiskeluoikeusRow(inputRow.oppijaOid, inputRow.aikaleima, oo, inputRow.data)
+      val ooRow = buildROpiskeluoikeusRow(inputRow.oppijaOid, masterOid, inputRow.aikaleima, oo, inputRow.data)
 
       val aikajaksoRows: AikajaksoRows = if (includeAikajaksot) buildAikajaksoRows(inputRow.oid, oo) else (Nil, Nil, Nil, Nil, Nil)
       val suoritusRows: KoskiSuoritusRows = oo.suoritukset.zipWithIndex.map {
@@ -83,12 +83,12 @@ object OpiskeluoikeusLoaderRowBuilder extends Logging {
       List[RYtrTutkintokokonaisuudenKokeenSuoritusRow]
     )]
 
-  private[raportointikanta]def buildYtrRow(inputRow: YtrOpiskeluoikeusRow): Either[LoadErrorResult, YtrOutputRows] = {
+  private[raportointikanta]def buildYtrRow(inputRow: YtrOpiskeluoikeusRow, masterOid: Option[String] = None): Either[LoadErrorResult, YtrOutputRows] = {
     Try {
       val toOpiskeluoikeusUnsafeStartTime = System.nanoTime()
       val oo = inputRow.toOpiskeluoikeusUnsafe(KoskiSpecificSession.systemUser)
       val toOpiskeluoikeusUnsafeDuration = System.nanoTime() - toOpiskeluoikeusUnsafeStartTime
-      val ooRow = buildROpiskeluoikeusRow(inputRow.oppijaOid, inputRow.aikaleima, oo, inputRow.data)
+      val ooRow = buildROpiskeluoikeusRow(inputRow.oppijaOid, masterOid, inputRow.aikaleima, oo, inputRow.data)
 
       val suoritusRows: YtrSuoritusRows = oo.suoritukset.zipWithIndex.map {
         case (ps, i) => OpiskeluoikeusLoaderRowBuilder.buildYtrSuoritusRows(
@@ -115,7 +115,7 @@ object OpiskeluoikeusLoaderRowBuilder extends Logging {
 
   private val fieldsToExcludeFromOpiskeluoikeusJson = Set("oid", "versionumero", "aikaleima", "oppilaitos", "koulutustoimija", "suoritukset", "tyyppi", "alkamispäivä", "päättymispäivä")
 
-  private def buildROpiskeluoikeusRow(oppijaOid: String, aikaleima: Timestamp, o: KoskeenTallennettavaOpiskeluoikeus, data: JValue) = {
+  private def buildROpiskeluoikeusRow(oppijaOid: String, masterOid: Option[String], aikaleima: Timestamp, o: KoskeenTallennettavaOpiskeluoikeus, data: JValue) = {
     ROpiskeluoikeusRow(
       opiskeluoikeusOid = o.oid.get,
       versionumero = o.versionumero.get,
@@ -159,6 +159,7 @@ object OpiskeluoikeusLoaderRowBuilder extends Logging {
       lähdejärjestelmäKoodiarvo = o.lähdejärjestelmänId.map(_.lähdejärjestelmä.koodiarvo),
       lähdejärjestelmäId = o.lähdejärjestelmänId.flatMap(_.id),
       oppivelvollisuudenSuorittamiseenKelpaava = oppivelvollisuudenSuorittamiseenKelpaava(o),
+      oppijaMasterOid = masterOid,
       data = JsonManipulation.removeFields(data, fieldsToExcludeFromOpiskeluoikeusJson)
     )
   }

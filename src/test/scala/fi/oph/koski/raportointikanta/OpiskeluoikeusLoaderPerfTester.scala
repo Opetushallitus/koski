@@ -13,6 +13,7 @@ object OpiskeluoikeusLoaderPerfTester extends App {
       application.opiskeluoikeusQueryRepository,
       application.suostumuksenPeruutusService,
       application.organisaatioRepository,
+      application.henkilöCache,
       application.raportointiDatabase,
     )
     val loadResults = loader.loadOpiskeluoikeudet()
