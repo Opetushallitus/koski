@@ -16,13 +16,20 @@ import fi.oph.koski.todistus.yleinenkielitutkinto.YleinenKielitutkintoTodistusDa
 import fi.oph.koski.util.{Timing, TryWithLogging}
 import software.amazon.awssdk.http.ContentStreamProvider
 
-import java.io.InputStream
+import java.io.{ByteArrayInputStream, InputStream}
 import java.security.MessageDigest
 import scala.util.Using
 import fi.oph.koski.util.ChainingSyntax.eitherChainingOps
+import org.apache.pdfbox.Loader
 
 import java.time.LocalDateTime
 import java.util.{Properties, UUID}
+import org.apache.pdfbox.pdmodel.{PDDocument, PDPage, PDPageContentStream}
+import org.apache.pdfbox.pdmodel.font.PDType1Font
+import org.apache.pdfbox.pdmodel.font.Standard14Fonts
+import org.apache.pdfbox.pdmodel.interactive.annotation.{PDAnnotationText, PDAnnotationFreeText}
+import org.apache.pdfbox.pdmodel.graphics.color.PDColor
+import org.apache.pdfbox.pdmodel.graphics.color.PDDeviceRGB
 
 class TodistusService(application: KoskiApplication) extends Logging with Timing {
   private val resultRepository = new TodistusResultRepository(application.config)
@@ -199,6 +206,71 @@ class TodistusService(application: KoskiApplication) extends Logging with Timing
     }
   }
 
+  // TODO: TOR-2400: Poista tämä, kun ratkaisut validointityökaluista yms. on tehty.
+//  private def simulateIncrementalPdfModification(pdfBytes: Array[Byte], outputStream: java.io.ByteArrayOutputStream): Unit = {
+//    // Simuloi inkrementaalisia muutoksia PDF:ään allekirjoittamisen jälkeen (vain lokaalissa/testiympäristössä)
+//
+//    // saveIncremental vaatii tiedoston, joten käytetään väliaikaista tiedostoa
+//    val tempFile = java.nio.file.Files.createTempFile("signed_pdf_", ".pdf")
+//
+//    // Kirjoita allekirjoitettu PDF väliaikaiseen tiedostoon
+//    java.nio.file.Files.write(tempFile, pdfBytes)
+//
+//    // Lataa dokumentti tiedostosta (tarvitaan inkrementaaliseen tallennukseen)
+//    val document = Loader.loadPDF(tempFile.toFile)
+//
+//    // 1. Lisää teksti ensimmäiselle sivulle
+//    if (document.getNumberOfPages > 0) {
+//      val firstPage = document.getPage(0)
+//      val contentStream = new PDPageContentStream(document, firstPage, PDPageContentStream.AppendMode.APPEND, true, true)
+//      contentStream.beginText()
+//      contentStream.setFont(new PDType1Font(Standard14Fonts.FontName.HELVETICA_BOLD), 12)
+//      contentStream.newLineAtOffset(50, 50)
+//      contentStream.showText("MODIFIED AFTER SIGNING - TEST")
+//      contentStream.endText()
+//      contentStream.close()
+//    }
+//
+//    // 2. Lisää uusi sivu loppuun
+//    val newPage = new PDPage()
+//    document.addPage(newPage)
+//    val newPageContent = new PDPageContentStream(document, newPage)
+//    newPageContent.beginText()
+//    newPageContent.setFont(new PDType1Font(Standard14Fonts.FontName.HELVETICA), 10)
+//    newPageContent.newLineAtOffset(50, 700)
+//    newPageContent.showText("This page was added after signing")
+//    newPageContent.endText()
+//    newPageContent.close()
+//
+//    // 3. Lisää FreeText-annotaatio (näkyy tekstinä sivulla) ensimmäiselle sivulle
+//    if (document.getNumberOfPages > 0) {
+//      val firstPage = document.getPage(0)
+//      val freeTextAnnotation = new PDAnnotationFreeText()
+//      freeTextAnnotation.setContents("ANNOTATION ADDED AFTER SIGNING")
+//      freeTextAnnotation.setRectangle(new org.apache.pdfbox.pdmodel.common.PDRectangle(200, 200, 300, 50))
+//
+//      // Aseta tekstin väri ja tyyli
+//      val white = new PDColor(Array[Float](1, 1, 1), PDDeviceRGB.INSTANCE)
+//      val black = new PDColor(Array[Float](0, 0, 0), PDDeviceRGB.INSTANCE)
+//      freeTextAnnotation.setColor(white) // Taustaväri
+//      freeTextAnnotation.setBorderStyle(new org.apache.pdfbox.pdmodel.interactive.annotation.PDBorderStyleDictionary())
+//      freeTextAnnotation.getBorderStyle.setWidth(0) // Ei reunusta
+//      freeTextAnnotation.setDefaultAppearance("/Helv 14 Tf 0 0 0 rg") // Tekstin väri mustana
+//
+//      firstPage.getAnnotations.add(freeTextAnnotation)
+//
+//      // Generoi appearance stream, jotta annotaatio renderöityy oikein
+//      freeTextAnnotation.constructAppearances()
+//    }
+//
+//    // Tallenna inkrementaalisesti outputStreamiin
+//    document.saveIncremental(outputStream)
+//    document.close()
+//
+//    // Poista väliaikainen tiedosto
+//    java.nio.file.Files.deleteIfExists(tempFile)
+//  }
+
   def cleanup(koskiInstances: Seq[KoskiInstance]): Unit = {
     val instanceArns = koskiInstances.map(_.taskArn)
     val maxAttempts = 3
@@ -317,11 +389,22 @@ class TodistusService(application: KoskiApplication) extends Logging with Timing
               } yield (todistus, outputStream)
             }
           }
+          val pdfResultForSaving = stampingPdfResult
+
+          //
+          // SIMULATING_MODIFICATION: Simuloi inkrementaalisia muutoksia (vain lokaalissa)
+          //
+//          val simulatingModificationResult = stampingPdfResult.map { case (todistus, outputStream) =>
+//            val modifiedOutputStream = new java.io.ByteArrayOutputStream()
+//            simulateIncrementalPdfModification(outputStream.toByteArray, modifiedOutputStream)
+//            (todistus, modifiedOutputStream)
+//          }
+//          val pdfResultForSaving = stampingPdfResult
 
           //
           // SAVING_STAMPED_PDF: Tallenna allekirjoitettu PDF
           //
-          val savingStampedPdfResult = stampingPdfResult.flatMap { case (todistus, outputStream) =>
+          val savingStampedPdfResult = pdfResultForSaving.flatMap { case (todistus, outputStream) =>
             timed("SAVING_STAMPED_PDF", thresholdMs = 0) {
               for {
                 todistus <- todistusRepository.updateState(todistus.id, TodistusState.STAMPING_PDF, TodistusState.SAVING_STAMPED_PDF)
