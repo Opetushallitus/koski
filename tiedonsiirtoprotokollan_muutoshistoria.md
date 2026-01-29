@@ -1,3 +1,8 @@
+## 29.1.2025
+
+- Lisätty korkeakoulun tutkinnon ja opintojakson suorituksille kenttä `hyväksilukupäivä`, joka kertoo päivämäärän, jolloin suoritus on hyväksiluettu. Tieto luetaan Virta-datasta.
+- Korjattu `suorituskieli`-kentän parsinta korkeakoulututkinnon suoritukselle Virta-datasta.
+
 ## 14.1.2025
 Ammatillisen tutkinnon osasuoritusten AmmatillisenTutkinnonViestintäJaVuorovaikutusKielivalinnalla annotaatioihin lisätty VVAI26, VVVK26, ja VVTK26
 

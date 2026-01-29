@@ -2925,6 +2925,8 @@
   "description:Tunniste ammatillisen tutkinnon osien suoritukselle..." : "Tunniste ammatillisen tutkinnon osien suoritukselle useasta tutkinnosta",
   "description:Ammatillisen tutkinnon osia useasta tutkinnosta" : "Ammatillisen tutkinnon osia useasta tutkinnosta",
   "description:Oppija suorittaa tutkinnon osia useista..." : "Oppija suorittaa tutkinnon osia useista tutkinnoista.",
+  "description:Päivämäärä, jolloin suoritus on hyväksiluettu" : "Päivämäärä, jolloin suoritus on hyväksiluettu",
+  "Hyväksilukupäivä" : "Hyväksilukupäivä",
   "Suorituspaikkakunta": "Suorituspaikkakunta",
   "Avaa opiskeluoikeus": "Avaa opiskeluoikeus",
   "Tutkintopäivä todistuksella" : "Tutkintopäivä",
