@@ -203,6 +203,8 @@ class TodistusService(application: KoskiApplication) extends Logging with Timing
     val instanceArns = koskiInstances.map(_.taskArn)
     val maxAttempts = 3
 
+    // TODO: TOR-2400: Uudelleenkäynnistys ei ole transaktionaalista, pitäisikö olla? Jos useampi kontti tekee cleanupia, voi tapahtua
+    // jotain outoa.
     val orphanedJobs = todistusRepository
       .findOrphanedJobs(instanceArns)
 
