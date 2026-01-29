@@ -143,6 +143,32 @@ class OppijaValidationIBSpec extends AnyFreeSpec with KoskiHttpSpec with PutOpis
           verifyResponseStatusOk()
         }
       }
+
+      "IB-kurssin suoritukseen voi lisätä tunnustettu-rakenteen" in {
+        val oo = defaultOpiskeluoikeus.copy(suoritukset = List(ibTutkinnonSuoritus(predicted = false).copy(
+          osasuoritukset = Some(List(
+            IBOppiaineenSuoritus(
+              koulutusmoduuli = ibOppiaine("HIS", higherLevel, 3),
+              osasuoritukset = Some(List(
+                IBKurssinSuoritus(
+                  koulutusmoduuli = ibKurssi("HIS_H1", "History higher level 1"),
+                  arviointi = ibKurssinArviointi("6"),
+                  tunnustettu = Some(OsaamisenTunnustaminen(
+                    osaaminen = None,
+                    selite = LocalizedString.finnish("Tunnustettu aiemmin suoritetun kurssin perusteella")
+                  ))
+                )
+              )),
+              arviointi = ibArviointi("6"),
+              predictedArviointi = ibPredictedArviointi("6"),
+            )
+          ))
+        )))
+
+        setupOppijaWithOpiskeluoikeus(oo) {
+          verifyResponseStatusOk()
+        }
+      }
     }
 
     "Opintojen rahoitus" - {
