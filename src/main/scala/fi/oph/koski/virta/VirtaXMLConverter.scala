@@ -280,9 +280,10 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
             koulutusmoduuli = koulutusmoduuli,
             arviointi = arviointi(suoritus),
             vahvistus = päivämääräVahvistus,
-            suorituskieli = None,
+            suorituskieli = (suoritus \\ "Kieli").headOption.flatMap(kieli => koodistoViitePalvelu.validate(Koodistokoodiviite(kieli.text.toUpperCase, "kieli"))),
             toimipiste = oppilaitos(suoritus, päivämääräVahvistus.map(_.päivä)),
-            osasuoritukset = optionalList(osasuoritukset)
+            osasuoritukset = optionalList(osasuoritukset),
+            hyväksilukupäivä = hyväksilukuPäivämäärä(suoritus)
           )
         }
         if (tutkinnonSuoritus.isEmpty) {
@@ -373,7 +374,8 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
       suorituskieli = (suoritus \\ "Kieli").headOption.flatMap(kieli => koodistoViitePalvelu.validate(Koodistokoodiviite(kieli.text.toUpperCase, "kieli"))),
       toimipiste = oppilaitos(suoritus, päivämääräVahvistus.map(_.päivä)),
       osasuoritukset = optionalList(osasuoritukset),
-      luokittelu = noneIfEmpty(parseLuokittelu(suoritus, "virtaopsuorluokittelu"))
+      luokittelu = noneIfEmpty(parseLuokittelu(suoritus, "virtaopsuorluokittelu")),
+      hyväksilukupäivä = hyväksilukuPäivämäärä(suoritus)
     )
   }
 

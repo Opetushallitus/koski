@@ -103,6 +103,8 @@ case class KorkeakoulututkinnonSuoritus(
   @Description("Tutkintoon kuuluvien opintojaksojen suoritukset")
   @Title("Opintojaksot")
   override val osasuoritukset: Option[List[KorkeakoulunOpintojaksonSuoritus]],
+  @Description("Päivämäärä, jolloin suoritus on hyväksiluettu")
+  hyväksilukupäivä: Option[LocalDate] = None,
   @KoodistoKoodiarvo("korkeakoulututkinto")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("korkeakoulututkinto", koodistoUri = "suorituksentyyppi")
 ) extends KorkeakouluSuoritus {
@@ -121,6 +123,8 @@ case class KorkeakoulunOpintojaksonSuoritus(
   @Description("Opintojaksoon sisältyvien opintojaksojen suoritukset")
   @Title("Sisältyvät opintojaksot")
   override val osasuoritukset: Option[List[KorkeakoulunOpintojaksonSuoritus]] = None,
+  @Description("Päivämäärä, jolloin suoritus on hyväksiluettu")
+  hyväksilukupäivä: Option[LocalDate] = None,
   @KoodistoKoodiarvo("korkeakoulunopintojakso")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("korkeakoulunopintojakso", koodistoUri = "suorituksentyyppi")
 ) extends KorkeakouluSuoritus {
