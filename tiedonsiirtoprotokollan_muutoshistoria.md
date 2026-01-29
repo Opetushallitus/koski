@@ -1,3 +1,6 @@
+## 29.1.2025
+Tunnustettu-rakenne lisättu IB-kurssin suorituksiin.
+
 ## 14.1.2025
 Ammatillisen tutkinnon osasuoritusten AmmatillisenTutkinnonViestintäJaVuorovaikutusKielivalinnalla annotaatioihin lisätty VVAI26, VVVK26, ja VVTK26
 

@@ -2,6 +2,7 @@ import { IBKurssinArviointi } from './IBKurssinArviointi'
 import { Koodistokoodiviite } from './Koodistokoodiviite'
 import { LocalizedString } from './LocalizedString'
 import { IBKurssi } from './IBKurssi'
+import { OsaamisenTunnustaminen } from './OsaamisenTunnustaminen'
 
 /**
  * IBKurssinSuoritus
@@ -15,6 +16,7 @@ export type IBKurssinSuoritus = {
   tila?: Koodistokoodiviite<'suorituksentila', string>
   suorituskieli?: Koodistokoodiviite<'kieli', string>
   koulutusmoduuli: IBKurssi
+  tunnustettu?: OsaamisenTunnustaminen
 }
 
 export const IBKurssinSuoritus = (o: {
@@ -23,6 +25,7 @@ export const IBKurssinSuoritus = (o: {
   tila?: Koodistokoodiviite<'suorituksentila', string>
   suorituskieli?: Koodistokoodiviite<'kieli', string>
   koulutusmoduuli: IBKurssi
+  tunnustettu?: OsaamisenTunnustaminen
 }): IBKurssinSuoritus => ({
   tyyppi: Koodistokoodiviite({
     koodiarvo: 'ibkurssi',

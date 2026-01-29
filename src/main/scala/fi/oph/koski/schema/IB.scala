@@ -2,7 +2,7 @@ package fi.oph.koski.schema
 
 import java.time.{LocalDate, LocalDateTime}
 import fi.oph.koski.schema.LocalizedString.english
-import fi.oph.koski.schema.annotation.{Deprecated, FlattenInUI, Hidden, KoodistoKoodiarvo, KoodistoUri, OksaUri}
+import fi.oph.koski.schema.annotation.{ComplexObject, Deprecated, FlattenInUI, Hidden, KoodistoKoodiarvo, KoodistoUri, OksaUri}
 import fi.oph.koski.util.DateOrdering.localDateOrdering
 import fi.oph.scalaschema.annotation._
 
@@ -282,10 +282,12 @@ case class IBCoreKurssi(
 case class IBKurssinSuoritus(
   koulutusmoduuli: IBKurssi,
   arviointi: Option[List[IBKurssinArviointi]] = None,
+  @ComplexObject
+  tunnustettu: Option[OsaamisenTunnustaminen] = None,
   suorituskieli: Option[Koodistokoodiviite] = None,
   @KoodistoKoodiarvo("ibkurssi")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "ibkurssi", koodistoUri = "suorituksentyyppi")
-) extends IBSuoritus with KurssinSuoritus
+) extends IBSuoritus with KurssinSuoritus with MahdollisestiTunnustettu
 
 @Title("IB-kurssi")
 @Description("IB-lukion kurssin tunnistetiedot")
