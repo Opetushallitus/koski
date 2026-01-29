@@ -9,12 +9,18 @@ import { LocalizedString } from './LocalizedString'
 export type YleinenKielitutkinto = {
   $class: 'fi.oph.koski.schema.YleinenKielitutkinto'
   tunniste: Koodistokoodiviite<'ykitutkintotaso', string>
-  kieli: Koodistokoodiviite<'kieli', string>
+  kieli: Koodistokoodiviite<
+    'kieli',
+    'FI' | 'EN' | 'ES' | 'IT' | 'SE' | 'FR' | 'SV' | 'RU' | 'DE'
+  >
 }
 
 export const YleinenKielitutkinto = (o: {
   tunniste: Koodistokoodiviite<'ykitutkintotaso', string>
-  kieli: Koodistokoodiviite<'kieli', string>
+  kieli: Koodistokoodiviite<
+    'kieli',
+    'FI' | 'EN' | 'ES' | 'IT' | 'SE' | 'FR' | 'SV' | 'RU' | 'DE'
+  >
 }): YleinenKielitutkinto => ({
   $class: 'fi.oph.koski.schema.YleinenKielitutkinto',
   ...o
