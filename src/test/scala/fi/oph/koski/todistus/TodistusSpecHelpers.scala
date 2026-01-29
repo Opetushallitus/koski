@@ -36,7 +36,7 @@ class TodistusSpecHelpers extends AnyFreeSpec with KoskiHttpSpec with Matchers w
     resetFixtures()
   }
 
-  override protected def afterEach(): Unit = {
+  protected def cleanup(): Unit = {
     Wait.until { !hasWork }
     Wait.until(!app.todistusScheduler.schedulerInstance.exists(_.isTaskRunning))
     Wait.until(!app.todistusCleanupScheduler.schedulerInstance.exists(_.isTaskRunning))

@@ -1,6 +1,6 @@
 package fi.oph.koski.todistus.yleinenkielitutkinto
 
-import fi.oph.koski.schema.{KielitutkinnonOpiskeluoikeus, Opiskeluoikeus}
+import fi.oph.koski.schema.KielitutkinnonOpiskeluoikeus
 import fi.oph.koski.todistus.pdfgenerator.TodistusData
 
 import scala.jdk.CollectionConverters._
