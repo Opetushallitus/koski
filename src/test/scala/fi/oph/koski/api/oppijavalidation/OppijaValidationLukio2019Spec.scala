@@ -327,7 +327,7 @@ class OppijaValidationLukio2019Spec extends AnyFreeSpec with PutOpiskeluoikeusTe
 
     "oppiainetasolla sallii moduulin ja paikallisen opintojakson lisäämisen kyseiseen oppiaineeseen" in {
       setupOppijaWithOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(oppimääränSuoritus.copy(osasuoritukset = Some(List(
-        oppiaineenSuoritus(Lukio2019ExampleData.lukionÄidinkieli("AI1", pakollinen = true, laajuus = laajuus(5.0))).copy(suoritettuErityisenäTutkintona = true, arviointi = numeerinenLukionOppiaineenArviointi(9), osasuoritukset = Some(List(
+        oppiaineenSuoritus(Lukio2019ExampleData.lukionÄidinkieli("AI1", pakollinen = true, laajuus = laajuus(12.0))).copy(suoritettuErityisenäTutkintona = true, arviointi = numeerinenLukionOppiaineenArviointi(9), osasuoritukset = Some(List(
           moduulinSuoritusOppiaineissa(muuModuuliOppiaineissa("ÄI1")).copy(arviointi = numeerinenArviointi(8)),
           moduulinSuoritusOppiaineissa(muuModuuliOppiaineissa("ÄI2")).copy(arviointi = numeerinenArviointi(8)),
           moduulinSuoritusOppiaineissa(muuModuuliOppiaineissa("ÄI3").copy(pakollinen = false)).copy(arviointi = numeerinenArviointi(8)),
@@ -384,12 +384,12 @@ class OppijaValidationLukio2019Spec extends AnyFreeSpec with PutOpiskeluoikeusTe
         suoritettuErityisenäTutkintona = true,
         vahvistus = vahvistusPaikkakunnalla(päivä = date(2020, 5, 15)),
         osasuoritukset = Some(List(
-          oppiaineenSuoritus(Lukio2019ExampleData.lukionÄidinkieli("AI1", pakollinen = true, laajuus = laajuus(5.0))).copy(arviointi = numeerinenLukionOppiaineenArviointi(9)).copy(osasuoritukset = Some(List(
+          oppiaineenSuoritus(Lukio2019ExampleData.lukionÄidinkieli("AI1", pakollinen = true, laajuus = laajuus(6.0))).copy(arviointi = numeerinenLukionOppiaineenArviointi(9)).copy(osasuoritukset = Some(List(
             moduulinSuoritusOppiaineissa(muuModuuliOppiaineissa("ÄI1")).copy(arviointi = numeerinenArviointi(8)),
             moduulinSuoritusOppiaineissa(muuModuuliOppiaineissa("ÄI2")).copy(arviointi = numeerinenArviointi(8)),
             moduulinSuoritusOppiaineissa(muuModuuliOppiaineissa("ÄI3").copy(pakollinen = false)).copy(arviointi = numeerinenArviointi(8))
           ))),
-          oppiaineenSuoritus(Lukio2019ExampleData.matematiikka("MAB", laajuus = laajuus(5.0))).copy(arviointi = numeerinenLukionOppiaineenArviointi(9)).copy(osasuoritukset = Some(List(
+          oppiaineenSuoritus(Lukio2019ExampleData.matematiikka("MAB", laajuus = laajuus(7.0))).copy(arviointi = numeerinenLukionOppiaineenArviointi(9)).copy(osasuoritukset = Some(List(
             moduulinSuoritusOppiaineissa(muuModuuliOppiaineissa("MAB2")).copy(arviointi = numeerinenArviointi(10)),
             moduulinSuoritusOppiaineissa(muuModuuliOppiaineissa("MAB3")).copy(arviointi = numeerinenArviointi(10)),
             moduulinSuoritusOppiaineissa(muuModuuliOppiaineissa("MAB4")).copy(arviointi = numeerinenArviointi(10)),
@@ -442,7 +442,7 @@ class OppijaValidationLukio2019Spec extends AnyFreeSpec with PutOpiskeluoikeusTe
     "oppiainetasolla ei laske oppiaineen laajuutta automaattisesti osasuoritusten perusteella" in {
       val oo = defaultOpiskeluoikeus.copy(suoritukset = List(oppimääränSuoritus.copy(
         osasuoritukset = Some(List(
-          oppiaineenSuoritus(Lukio2019ExampleData.lukionÄidinkieli("AI1", pakollinen = true, laajuus = laajuus(5.0))).copy(
+          oppiaineenSuoritus(Lukio2019ExampleData.lukionÄidinkieli("AI1", pakollinen = true, laajuus = laajuus(8.0))).copy(
             suoritettuErityisenäTutkintona = true,
             arviointi = numeerinenLukionOppiaineenArviointi(9),
             osasuoritukset = Some(List(
@@ -460,7 +460,7 @@ class OppijaValidationLukio2019Spec extends AnyFreeSpec with PutOpiskeluoikeusTe
       )))
 
       val opiskeluoikeus: Opiskeluoikeus = setupOppijaWithAndGetOpiskeluoikeus(oo)
-      opiskeluoikeus.suoritukset.head.osasuoritusLista.head.koulutusmoduuli.laajuusArvo(0) should equal(5.0)
+      opiskeluoikeus.suoritukset.head.osasuoritusLista.head.koulutusmoduuli.laajuusArvo(0) should equal(8.0)
     }
 
     "suoritustasolla ei salli ilman oppiaineen laajuutta" in {
@@ -497,7 +497,7 @@ class OppijaValidationLukio2019Spec extends AnyFreeSpec with PutOpiskeluoikeusTe
         suoritettuErityisenäTutkintona = true,
         vahvistus = vahvistusPaikkakunnalla(päivä = date(2020, 5, 15)),
         osasuoritukset = Some(List(
-          oppiaineenSuoritus(Lukio2019ExampleData.lukionÄidinkieli("AI1", pakollinen = true, laajuus = laajuus(5.0))).copy(
+          oppiaineenSuoritus(Lukio2019ExampleData.lukionÄidinkieli("AI1", pakollinen = true, laajuus = laajuus(12.0))).copy(
             arviointi = numeerinenLukionOppiaineenArviointi(9),
             osasuoritukset = Some(List(
               moduulinSuoritusOppiaineissa(muuModuuliOppiaineissa("ÄI1").copy(laajuus = laajuus(2.0))).copy(arviointi = numeerinenArviointi(8)),
@@ -517,7 +517,7 @@ class OppijaValidationLukio2019Spec extends AnyFreeSpec with PutOpiskeluoikeusTe
       )))
 
       val opiskeluoikeus: Opiskeluoikeus = setupOppijaWithAndGetOpiskeluoikeus(oo)
-      opiskeluoikeus.suoritukset.head.osasuoritusLista(0).koulutusmoduuli.laajuusArvo(0) should equal(5.0)
+      opiskeluoikeus.suoritukset.head.osasuoritusLista(0).koulutusmoduuli.laajuusArvo(0) should equal(12.0)
       opiskeluoikeus.suoritukset.head.osasuoritusLista(1).koulutusmoduuli.laajuusArvo(0) should equal(7.0)
     }
 
@@ -549,7 +549,7 @@ class OppijaValidationLukio2019Spec extends AnyFreeSpec with PutOpiskeluoikeusTe
     "aineopinnoissa oppiainetasolla ei laske oppiaineen laajuutta automaattisesti osasuoritusten perusteella" in {
       val oo = defaultOpiskeluoikeus.copy(suoritukset = List(oppiaineidenOppimäärienSuoritus.copy(
         osasuoritukset = Some(List(
-          oppiaineenSuoritus(Lukio2019ExampleData.lukionÄidinkieli("AI1", pakollinen = true, laajuus = laajuus(5.0))).copy(
+          oppiaineenSuoritus(Lukio2019ExampleData.lukionÄidinkieli("AI1", pakollinen = true, laajuus = laajuus(6.0))).copy(
             suoritettuErityisenäTutkintona = true,
             arviointi = numeerinenLukionOppiaineenArviointi(9),
             osasuoritukset = Some(List(
@@ -567,7 +567,7 @@ class OppijaValidationLukio2019Spec extends AnyFreeSpec with PutOpiskeluoikeusTe
       )))
 
       val opiskeluoikeus: Opiskeluoikeus = setupOppijaWithAndGetOpiskeluoikeus(oo)
-      opiskeluoikeus.suoritukset.head.osasuoritusLista(0).koulutusmoduuli.laajuusArvo(0) should equal(5.0)
+      opiskeluoikeus.suoritukset.head.osasuoritusLista(0).koulutusmoduuli.laajuusArvo(0) should equal(6.0)
       opiskeluoikeus.suoritukset.head.osasuoritusLista(1).koulutusmoduuli.laajuusArvo(0) should equal(6.0)
     }
   }

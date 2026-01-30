@@ -1334,6 +1334,21 @@ class KoskiValidator(
     def osasuoritustenLaajuudet: List[Laajuus] = suoritus.osasuoritusLista.map(_.koulutusmoduuli).flatMap(_.getLaajuus)
     def osasuoritustenLaajuudetHyväksytty: List[Laajuus] = suoritus.osasuoritusLista.filter(os => os.viimeisinArviointi.exists(_.hyväksytty)).map(_.koulutusmoduuli).flatMap(_.getLaajuus)
 
+    def validateLaajuusVähintäänOsasuoritustenSumma(laajuus: Laajuus, osasuoritustenLaajuudet: List[Laajuus]) = {
+      osasuoritustenLaajuudet match {
+        case Nil => HttpStatus.ok
+        case _ =>
+          val summa = osasuoritustenLaajuudet.map(_.arvo).sum
+          if (laajuus.arvo >= summa - 0.001) {
+            HttpStatus.ok
+          } else {
+            KoskiErrorCategory.badRequest.validation.laajuudet.osasuoritustenLaajuuksienSumma(
+              s"Suorituksen ${suorituksenTunniste(suoritus)} laajuus ${laajuus.arvo} on pienempi kuin osasuoritusten laajuuksien summa $summa"
+            )
+          }
+      }
+    }
+
     val perusopetukseenValmistavaOpetusKokonaislaajuusYksikköTunneissaAlkaa = LocalDate.parse(config.getString("validaatiot.perusopetukseenValmistavaOpetusKokonaislaajuusYksikköTunneissaAlkaa")).minusDays(1)
     val perusopetukseenValmistavaOpetusKokonaislaajuusYksikköTunneissaVoimassa = LocalDate.now().isAfter(perusopetukseenValmistavaOpetusKokonaislaajuusYksikköTunneissaAlkaa)
 
@@ -1353,9 +1368,9 @@ class KoskiValidator(
             case (_: TutkintokoulutukseenValmentavanKoulutus | _: TutkintokoulutukseenValmentavanKoulutuksenValinnaisenKoulutusosa, _, _) =>
               validateLaajuus(laajuus, osasuoritustenLaajuudetHyväksytty)
            case (_, os: SuoritettavissaErityisenäTutkintona2019, (s: LukionOppimääränSuoritus2019) :: _) if os.suoritettuErityisenäTutkintona || s.suoritettuErityisenäTutkintona =>
-              HttpStatus.ok
+              validateLaajuusVähintäänOsasuoritustenSumma(laajuus, osasuoritustenLaajuudet)
            case (_, os: SuoritettavissaErityisenäTutkintona2019, (_: LukionOppiaineidenOppimäärienSuoritus2019) :: _) if os.suoritettuErityisenäTutkintona =>
-              HttpStatus.ok
+              validateLaajuusVähintäänOsasuoritustenSumma(laajuus, osasuoritustenLaajuudet)
             case _ =>
               validateLaajuus(laajuus, osasuoritustenLaajuudet)
           }
