@@ -14,6 +14,7 @@ object Lukio2019OsasuoritusValidation {
   def validate(suoritus: Suoritus, parents: List[Suoritus]): HttpStatus = {
     HttpStatus.fold(List(
       validateErityinenTutkinto(suoritus, parents),
+      validateErityinenTutkintoOppiaineLaajuus(suoritus, parents),
       validateLukiodiplomiRakenne(suoritus, parents),
       validateLukiodiplomiLaajuus(suoritus),
       validateOppiaineenSuorituskieli(suoritus, parents),
@@ -28,6 +29,19 @@ object Lukio2019OsasuoritusValidation {
       KoskiErrorCategory.badRequest.validation.rakenne.erityisenäTutkintonaSuoritettuSisältääOsasuorituksia(s"Osasuoritus ${suorituksenTunniste(s)} ei ole sallittu, koska oppiaine on suoritettu erityisenä tutkintona")
     case (s: LukionOppimääränSuoritus2019, _) if s.suoritettuErityisenäTutkintona && s.oppimäärä.koodiarvo == nuortenOppimääräKoodiarvo =>
       KoskiErrorCategory.badRequest.validation.rakenne.erityisenäTutkintonaSuoritettuNuortenOps()
+    case _ =>
+      HttpStatus.ok
+  }
+
+  private def validateErityinenTutkintoOppiaineLaajuus(suoritus: Suoritus, parents: List[Suoritus]): HttpStatus = (suoritus, parents) match {
+    case (os: SuoritettavissaErityisenäTutkintona2019, (s: LukionOppimääränSuoritus2019) :: _) if os.suoritettuErityisenäTutkintona || s.suoritettuErityisenäTutkintona =>
+      HttpStatus.validate(os.koulutusmoduuli.getLaajuus.nonEmpty)(
+        KoskiErrorCategory.badRequest.validation.laajuudet.oppiaineenLaajuusPuuttuu(s"Erityisenä tutkintona suoritettavan oppiaineen ${suorituksenTunniste(os)} laajuus puuttuu")
+      )
+    case (os: SuoritettavissaErityisenäTutkintona2019, (_: LukionOppiaineidenOppimäärienSuoritus2019) :: _) if os.suoritettuErityisenäTutkintona =>
+      HttpStatus.validate(os.koulutusmoduuli.getLaajuus.nonEmpty)(
+        KoskiErrorCategory.badRequest.validation.laajuudet.oppiaineenLaajuusPuuttuu(s"Erityisenä tutkintona suoritettavan oppiaineen ${suorituksenTunniste(os)} laajuus puuttuu")
+      )
     case _ =>
       HttpStatus.ok
   }
