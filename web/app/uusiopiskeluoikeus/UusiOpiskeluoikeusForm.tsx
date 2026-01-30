@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react'
+import { useKoodistoFetchError } from '../appstate/koodisto'
 import { useHasOwnOrganisaatiot } from '../appstate/organisaatioHierarkia'
 import { DateEdit } from '../components-v2/controls/DateField'
 import { KieliSelect } from '../components-v2/controls/KieliSelect'
@@ -38,6 +39,8 @@ export const UusiOpiskeluoikeusForm = (props: UusiOpiskeluoikeusFormProps) => {
   const jotpaAsianumerot = useJotpaAsianumero(state)
   const defaultKieli = useDefaultKieli(state)
   const spesifienOppilaitostenKäyttäjä = useHasOwnOrganisaatiot()
+  const hasKoodistoError = useKoodistoFetchError()
+  console.log('[UusiOpiskeluoikeusForm] hasKoodistoError:', hasKoodistoError)
 
   useEffect(() => {
     if (state.result) {
@@ -166,6 +169,12 @@ export const UusiOpiskeluoikeusForm = (props: UusiOpiskeluoikeusFormProps) => {
       )}
 
       {state.maksuton.visible && <DialogMaksuttomuusSelect state={state} />}
+
+      {hasKoodistoError && (
+        <ul className="FieldErrors">
+          <li>{t('Tietojen haku epäonnistui')}</li>
+        </ul>
+      )}
     </section>
   )
 }

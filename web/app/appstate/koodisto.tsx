@@ -26,6 +26,9 @@ import { fetchKoodistot } from '../util/koskiApi'
 import { PropsWithOnlyChildren } from '../util/react'
 import { coerceForSort } from '../util/strings'
 
+const Loading = Symbol('loading')
+const Failed = Symbol('failed')
+
 /**
  * Palauttaa annetun koodiston koodiarvot. Jos koodiarvot-argumentti on annettu,
  * palautetaan vain siinä mainitut koodiarvot.
@@ -138,6 +141,25 @@ export const useKoodistotOfConstraints = <T extends string = string>(
 }
 
 /**
+ * Palauttaa true jos mikä tahansa pyydetty koodisto on epäonnistunut lataamaan.
+ * Jos ei anneta koodistoUreja, tarkistaa onko mikään koodisto epäonnistunut.
+ */
+export const useKoodistoFetchError = (
+  ...koodistoUris: Array<string | null | undefined>
+): boolean => {
+  const { koodistot } = useContext(KoodistoContext)
+  return useMemo(() => {
+    const uris = koodistoUris.filter(nonNull)
+    const values = Object.entries(koodistot).map(([k, v]) => [k, v === Failed ? 'FAILED' : v === Loading ? 'LOADING' : 'LOADED'])
+    const hasFailed = uris.length === 0
+      ? Object.values(koodistot).some((v) => v === Failed)
+      : uris.some((uri) => koodistot[uri] === Failed)
+    console.log('[Koodisto] useKoodistoFetchError:', { hasFailed, values })
+    return hasFailed
+  }, [koodistot, koodistoUris])
+}
+
+/**
  * Palauttaa funktion, joka täyttää sille annettuun mihin tahansa muuttujaan siitä puuttuvat koodistokoodiviitteiden nimet.
  */
 export const useKoodistoFiller = (): (<T>(a: T) => Promise<T>) =>
@@ -175,8 +197,6 @@ export const useKoodistoFiller = (): (<T>(a: T) => Promise<T>) =>
 
 // Context provider
 
-const Loading = Symbol('loading')
-
 export type KoodistoContextValue = {
   readonly koodistot: KoodistoRecord
   readonly loadKoodistot: (koodistoUris: string[]) => void
@@ -190,7 +210,10 @@ const KoodistoContext = React.createContext<KoodistoContextValue>({
 export type KoodistoProviderProps = PropsWithOnlyChildren
 
 export type KoodistoRecord = {
-  [URI in string]: KoodistokoodiviiteKoodistonNimellä<URI>[] | typeof Loading
+  [URI in string]:
+    | KoodistokoodiviiteKoodistonNimellä<URI>[]
+    | typeof Loading
+    | typeof Failed
 }
 
 export type KoodistokoodiviiteKoodistonNimellä<T extends string = string> = {
@@ -200,7 +223,7 @@ export type KoodistokoodiviiteKoodistonNimellä<T extends string = string> = {
 }
 
 const MAX_RETRY_ATTEMPTS = 3
-const RETRY_DELAY_MS = 5000
+const RETRY_DELAY_MS = 1000 // TODO: restore to 5000 after testing
 
 class KoodistoLoader {
   koodistot: KoodistoRecord = {}
@@ -219,9 +242,11 @@ class KoodistoLoader {
     })
 
     for (let attempt = 0; attempt < MAX_RETRY_ATTEMPTS; attempt++) {
+      console.log(`[Koodisto] Attempt ${attempt + 1}/${MAX_RETRY_ATTEMPTS} for:`, unfetchedKoodistoUris)
       const result = await fetchKoodistot(unfetchedKoodistoUris)
 
       if (E.isRight(result)) {
+        console.log('[Koodisto] Success:', unfetchedKoodistoUris)
         const k: KoodistoRecord = pipe(
           Object.entries(result.right.data.koodistot),
           A.chain(([koodistoNimi, koodiviitteet]) =>
@@ -243,8 +268,9 @@ class KoodistoLoader {
       }
     }
 
+    console.log('[Koodisto] All retries failed, marking as Failed:', unfetchedKoodistoUris)
     unfetchedKoodistoUris.forEach((uri) => {
-      delete this.koodistot[uri]
+      this.koodistot[uri] = Failed
     })
     return true
   }
@@ -262,6 +288,11 @@ class KoodistoLoader {
     if (group === Loading) {
       throw new Error(
         `Cannot find koodi ${uri}_${koodiarvo} because loading of koodisto ${uri} hasn't finished`
+      )
+    }
+    if (group === Failed) {
+      throw new Error(
+        `Cannot find koodi ${uri}_${koodiarvo} because loading of koodisto ${uri} failed`
       )
     }
     const viite = group.find((k) => k.koodiviite.koodiarvo === koodiarvo)
