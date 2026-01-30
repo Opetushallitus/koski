@@ -1,4 +1,5 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useRef } from 'react'
+import { useGlobalErrors } from '../appstate/globalErrors'
 import { useKoodistoFetchError } from '../appstate/koodisto'
 import { useHasOwnOrganisaatiot } from '../appstate/organisaatioHierarkia'
 import { DateEdit } from '../components-v2/controls/DateField'
@@ -40,6 +41,15 @@ export const UusiOpiskeluoikeusForm = (props: UusiOpiskeluoikeusFormProps) => {
   const defaultKieli = useDefaultKieli(state)
   const spesifienOppilaitostenKäyttäjä = useHasOwnOrganisaatiot()
   const hasKoodistoError = useKoodistoFetchError()
+  const globalErrors = useGlobalErrors()
+  const errorShownRef = useRef(false)
+
+  useEffect(() => {
+    if (hasKoodistoError && !errorShownRef.current) {
+      errorShownRef.current = true
+      globalErrors.push([{ message: t('Tietojen haku epäonnistui') }])
+    }
+  }, [hasKoodistoError, globalErrors])
 
   useEffect(() => {
     if (state.result) {
@@ -51,12 +61,6 @@ export const UusiOpiskeluoikeusForm = (props: UusiOpiskeluoikeusFormProps) => {
 
   return (
     <section className="UusiOppijaForm">
-      {hasKoodistoError && (
-        <ul className="FieldErrors">
-          <li>{t('Tietojen haku epäonnistui')}</li>
-        </ul>
-      )}
-
       {state.oppilaitos.visible && (
         <>
           <HankintakoulutusSelect state={state} />
