@@ -1,6 +1,9 @@
 package fi.oph.koski.raportointikanta
 
-import fi.oph.koski.db.{KoskiOpiskeluoikeusRow, OpiskeluoikeusRow, YtrOpiskeluoikeusRow}
+import fi.oph.koski.db.{KoskiOpiskeluoikeusRow, OpiskeluoikeusRow, QueryMethods, YtrOpiskeluoikeusRow}
+import fi.oph.koski.db.KoskiTables.Henkilöt
+import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
+import fi.oph.koski.henkilo.KoskiHenkilöCache
 import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusQueryService
 import fi.oph.koski.organisaatio.OrganisaatioRepository
 import fi.oph.koski.raportointikanta.OpiskeluoikeusLoader.isRaportointikantaanSiirrettäväOpiskeluoikeus
@@ -12,6 +15,7 @@ class FullReloadOpiskeluoikeusLoader(
   opiskeluoikeusQueryRepository: OpiskeluoikeusQueryService,
   suostumuksenPeruutusService: SuostumuksenPeruutusService,
   organisaatioRepository: OrganisaatioRepository,
+  henkilöCache: KoskiHenkilöCache,
   val db: RaportointiDatabase,
   enableYtr: Boolean = true,
   batchSize: Int = OpiskeluoikeusLoader.DefaultBatchSize,
@@ -88,8 +92,11 @@ class FullReloadOpiskeluoikeusLoader(
   private def loadKoskiBatchOlemassaolevatOpiskeluoikeudet(oot: Seq[KoskiOpiskeluoikeusRow]): Seq[LoadResult] = {
     val loadBatchStartTime = System.nanoTime()
 
+    val oppijaOids = oot.map(_.oppijaOid).distinct
+    val masterOidsByOppijaOid = getMasterOidsForOppijaOids(oppijaOids)
+
     val (errors, outputRows) = oot.par
-      .map(row => OpiskeluoikeusLoaderRowBuilder.buildKoskiRow(row))
+      .map(row => OpiskeluoikeusLoaderRowBuilder.buildKoskiRow(row, masterOidsByOppijaOid.get(row.oppijaOid).flatten))
       .seq
       .partition(_.isLeft)
 
@@ -129,8 +136,11 @@ class FullReloadOpiskeluoikeusLoader(
   private def loadYtrBatchOlemassaolevatOpiskeluoikeudet(oot: Seq[YtrOpiskeluoikeusRow]): Seq[LoadResult] = {
     val loadBatchStartTime = System.nanoTime()
 
+    val oppijaOids = oot.map(_.oppijaOid).distinct
+    val masterOidsByOppijaOid = getMasterOidsForOppijaOids(oppijaOids)
+
     val (errors, outputRows) = oot.par
-      .map(row => OpiskeluoikeusLoaderRowBuilder.buildYtrRow(row))
+      .map(row => OpiskeluoikeusLoaderRowBuilder.buildYtrRow(row, masterOidsByOppijaOid.get(row.oppijaOid).flatten))
       .seq
       .partition(_.isLeft)
 
@@ -214,4 +224,18 @@ class FullReloadOpiskeluoikeusLoader(
     } else {
       opiskeluoikeusQueryRepository.koskiOpiskeluoikeudetSivuittainWithoutAccessCheck(pageSize)
     }).map(_.filter(isRaportointikantaanSiirrettäväOpiskeluoikeus))
+
+  private def getMasterOidsForOppijaOids(oppijaOids: Seq[String]): Map[String, Option[String]] = {
+    if (oppijaOids.isEmpty) {
+      Map.empty
+    } else {
+      QueryMethods.runDbSync(
+        henkilöCache.db,
+        Henkilöt
+          .filter(_.oid inSetBind oppijaOids)
+          .map(h => (h.oid, h.masterOid))
+          .result
+      ).toMap
+    }
+  }
 }

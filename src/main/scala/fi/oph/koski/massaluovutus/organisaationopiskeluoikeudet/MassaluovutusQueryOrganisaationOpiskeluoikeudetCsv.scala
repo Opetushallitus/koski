@@ -70,14 +70,14 @@ case class MassaluovutusQueryOrganisaationOpiskeluoikeudetCsv(
     val includeAikajaksot = !eiAikajaksoja.contains(true)
     val includeOsasuoritukset = !eiOsasuorituksia.contains(true)
 
-    forEachOpiskeluoikeus(application, filters, oppijaOids) { row =>
+    forEachOpiskeluoikeus(application, filters, oppijaOids) { (row, masterOid) =>
       if (row.mitätöity) {
         OpiskeluoikeusLoaderRowBuilder
           .buildRowMitätöity(row)
           .foreach(mitätöityOpiskeluoikeusCsv.put)
       } else {
         OpiskeluoikeusLoaderRowBuilder
-          .buildKoskiRow(row, includeAikajaksot, includeOsasuoritukset)
+          .buildKoskiRow(row, masterOid, includeAikajaksot, includeOsasuoritukset)
           .foreach { rows =>
             opiskeluoikeusCsv.put(rows.rOpiskeluoikeusRow)
             rows.rPäätasonSuoritusRows.foreach(row => päätasonSuoritusCsv.put(new CsvPäätasonSuoritus(row)))
