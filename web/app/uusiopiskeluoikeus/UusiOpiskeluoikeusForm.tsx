@@ -1,4 +1,6 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useRef } from 'react'
+import { useGlobalErrors } from '../appstate/globalErrors'
+import { useKoodistoFetchError } from '../appstate/koodisto'
 import { useHasOwnOrganisaatiot } from '../appstate/organisaatioHierarkia'
 import { DateEdit } from '../components-v2/controls/DateField'
 import { KieliSelect } from '../components-v2/controls/KieliSelect'
@@ -38,6 +40,18 @@ export const UusiOpiskeluoikeusForm = (props: UusiOpiskeluoikeusFormProps) => {
   const jotpaAsianumerot = useJotpaAsianumero(state)
   const defaultKieli = useDefaultKieli(state)
   const spesifienOppilaitostenKäyttäjä = useHasOwnOrganisaatiot()
+  const hasKoodistoError = useKoodistoFetchError()
+  const globalErrors = useGlobalErrors()
+  const errorShownRef = useRef(false)
+
+  const hasFetchError = hasKoodistoError || opiskeluoikeustyypit.error
+
+  useEffect(() => {
+    if (hasFetchError && !errorShownRef.current) {
+      errorShownRef.current = true
+      globalErrors.push([{ message: t('Tietojen hakeminen epäonnistui') }])
+    }
+  }, [hasFetchError, globalErrors])
 
   useEffect(() => {
     if (state.result) {
@@ -78,8 +92,8 @@ export const UusiOpiskeluoikeusForm = (props: UusiOpiskeluoikeusFormProps) => {
           {t('Opiskeluoikeus')}
           <Select
             inlineOptions
-            options={opiskeluoikeustyypit}
-            initialValue={opiskeluoikeustyypit[0]?.key}
+            options={opiskeluoikeustyypit.options}
+            initialValue={opiskeluoikeustyypit.options[0]?.key}
             value={
               state.opiskeluoikeus.value &&
               koodistokoodiviiteId(state.opiskeluoikeus.value)
