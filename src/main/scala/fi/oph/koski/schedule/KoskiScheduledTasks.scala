@@ -22,12 +22,12 @@ class KoskiScheduledTasks(application: KoskiApplication) {
   def init(): Unit = {}
 
   def restartMassaluovutusScheduler(): Unit = {
-    runQueries.foreach { _.shutdown }
+    application.massaluovutusScheduler.shutdown()
     runQueries = application.massaluovutusScheduler.scheduler
   }
 
   def restartTodistusScheduler(): Unit = {
-    todistusScheduler.foreach { _.shutdown }
+    application.todistusScheduler.shutdown()
     todistusScheduler = application.todistusScheduler.createScheduler
   }
 }

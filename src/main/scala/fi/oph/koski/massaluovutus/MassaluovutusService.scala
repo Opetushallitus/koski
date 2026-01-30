@@ -3,7 +3,7 @@ package fi.oph.koski.massaluovutus
 import fi.oph.koski.cache.GlobalCacheManager._
 import fi.oph.koski.cache.{RefreshingCache, SingleValueCache}
 import fi.oph.koski.cloudwatch.CloudWatchMetricsService
-import fi.oph.koski.config.{KoskiApplication, KoskiInstance}
+import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.executors.GlobalExecutionContext
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.json.SensitiveDataAllowed
@@ -20,7 +20,7 @@ import scala.concurrent.duration.{DurationInt, FiniteDuration}
 
 
 class MassaluovutusService(application: KoskiApplication) extends GlobalExecutionContext with Logging {
-  val workerId: String = application.ecsMetadata.taskARN.getOrElse("local")
+  val workerId: String = application.instanceId
   val metrics: CloudWatchMetricsService = CloudWatchMetricsService(application.config)
   private val maxAllowedDatabaseReplayLag: Duration = application.config.getDuration("kyselyt.backpressureLimits.maxDatabaseReplayLag")
   private val readDatabaseId = MassaluovutusUtils.readDatabaseId(application.config)
@@ -102,11 +102,9 @@ class MassaluovutusService(application: KoskiApplication) extends GlobalExecutio
       results.getPresignedDownloadUrl(UUID.fromString(query.queryId), name)
     }).left.map(t => KoskiErrorCategory.badRequest(s"Tiedostoa ei löydy tai tapahtui virhe sen jakamisessa"))
 
-  def cleanup(koskiInstances: Seq[KoskiInstance]): Unit = {
-    val instanceArns = koskiInstances.map(_.taskArn)
-
+  def cleanup(activeWorkers: Seq[String]): Unit = {
     queries
-      .findOrphanedQueries(instanceArns)
+      .findOrphanedQueries(activeWorkers)
       .foreach { query =>
         if (query.restartCount >= 3) {
           queries.setFailed(query.queryId, "Orphaned")

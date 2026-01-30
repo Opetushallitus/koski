@@ -234,13 +234,13 @@ class QueryRepository(
       .collect { case q: FailedQuery => q }
   }
 
-  def findOrphanedQueries(koskiInstances: Seq[String]): Seq[RunningQuery] =
+  def findOrphanedQueries(activeWorkers: Seq[String]): Seq[RunningQuery] =
     runDbSync(
       sql"""
       SELECT *
       FROM massaluovutus
       WHERE state = ${QueryState.running}
-        AND NOT worker = any($koskiInstances)
+        AND NOT worker = any($activeWorkers)
       """.as[Query])
       .collect { case q: RunningQuery => q }
 
