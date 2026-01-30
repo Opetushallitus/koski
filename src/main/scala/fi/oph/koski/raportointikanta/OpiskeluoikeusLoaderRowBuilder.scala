@@ -159,7 +159,7 @@ object OpiskeluoikeusLoaderRowBuilder extends Logging {
       lähdejärjestelmäKoodiarvo = o.lähdejärjestelmänId.map(_.lähdejärjestelmä.koodiarvo),
       lähdejärjestelmäId = o.lähdejärjestelmänId.flatMap(_.id),
       oppivelvollisuudenSuorittamiseenKelpaava = oppivelvollisuudenSuorittamiseenKelpaava(o),
-      oppijaMasterOid = masterOid,
+      oppijaMasterOid = Some(masterOid.getOrElse(oppijaOid)),
       data = JsonManipulation.removeFields(data, fieldsToExcludeFromOpiskeluoikeusJson)
     )
   }
