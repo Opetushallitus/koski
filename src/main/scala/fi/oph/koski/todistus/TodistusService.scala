@@ -1,6 +1,6 @@
 package fi.oph.koski.todistus
 
-import fi.oph.koski.config.{Environment, KoskiApplication, KoskiInstance}
+import fi.oph.koski.config.{Environment, KoskiApplication}
 import fi.oph.koski.db.KoskiOpiskeluoikeusRow
 import fi.oph.koski.henkilo.{KoskiSpecificMockOppijat, OppijaHenkilö}
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
@@ -199,8 +199,7 @@ class TodistusService(application: KoskiApplication) extends Logging with Timing
     }
   }
 
-  def cleanup(koskiInstances: Seq[KoskiInstance]): Unit = {
-    val instanceArns = koskiInstances.map(_.taskArn)
+  def cleanup(activeWorkers: Seq[String]): Unit = {
     val maxAttempts = 3
 
     val expirationThreshold = LocalDateTime.now().minusSeconds(expirationDuration.getSeconds)
@@ -218,7 +217,7 @@ class TodistusService(application: KoskiApplication) extends Logging with Timing
     timed("cleanup-orphans", thresholdMs = 0) {
       var handled = true
       while (handled) {
-        todistusRepository.handleNextOrphanedJob(instanceArns, maxAttempts) match {
+        todistusRepository.handleNextOrphanedJob(activeWorkers, maxAttempts) match {
           case Some(todistus) =>
             if (todistus.state == TodistusState.QUEUED) {
               logger.info(s"Uudelleenkäynnistettiin orpo todistus ${todistus.id} (yritys ${todistus.attempts.getOrElse(0)}/${maxAttempts})")

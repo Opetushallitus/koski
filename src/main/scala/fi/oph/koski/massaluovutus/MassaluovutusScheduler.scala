@@ -3,7 +3,7 @@ package fi.oph.koski.massaluovutus
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.db.DB
 import fi.oph.koski.log.Logging
-import fi.oph.koski.schedule.{IntervalSchedule, Scheduler}
+import fi.oph.koski.schedule.{IntervalSchedule, Scheduler, WorkerLeaseElector}
 import org.json4s.JValue
 
 import java.time.Duration
@@ -14,40 +14,49 @@ class MassaluovutusScheduler(application: KoskiApplication) extends Logging {
   val backpressureDuration: Duration = application.config.getDuration("kyselyt.backpressureLimits.duration")
   val concurrency: Int = MassaluovutusUtils.concurrency(application.config)
   val massaluovutukset: MassaluovutusService = application.massaluovutusService
+  private val leaseElector = new WorkerLeaseElector(
+    application.workerLeaseRepository,
+    schedulerName,
+    application.instanceId,
+    slots = concurrency,
+    leaseDuration = application.config.getDuration("kyselyt.workerLease.duration"),
+    heartbeatInterval = application.config.getDuration("kyselyt.workerLease.heartbeatInterval")
+  )
 
   sys.addShutdownHook {
+    leaseElector.shutdown()
     massaluovutukset.cancelAllTasks("Interrupted: worker shutdown")
   }
 
+  var schedulerInstance: Option[Scheduler] = None
+
   def scheduler: Option[Scheduler] = {
-    val arn = application.ecsMetadata.taskARN
-    val allInstances = application.ecsMetadata.currentlyRunningKoskiInstances
-    val workerInstances = MassaluovutusUtils.workerInstances(application, concurrency)
+    leaseElector.start(
+      onAcquired = _ => logger.info(s"Acquired massaluovutus lease (workerId: ${application.massaluovutusService.workerId})"),
+      onLost = _ => logger.warn(s"Lost massaluovutus lease (workerId: ${application.massaluovutusService.workerId})")
+    )
 
-    logger.info(s"Check eligibility for query worker: arn = ${arn.getOrElse("n/a")}, allInstances = [${allInstances.map(_.taskArn).mkString(", ")}], workerInstances = [${workerInstances.map(_.taskArn).mkString(", ")}]")
-
-    if (isQueryWorker) {
-      val workerId = application.massaluovutusService.workerId
-      logger.info(s"Starting as query worker (id: $workerId)")
-
-      Some(new Scheduler(
-        schedulerDb,
-        schedulerName,
-        new IntervalSchedule(application.config.getDuration("kyselyt.checkInterval")),
-        None,
-        runNextQuery,
-        runOnSingleNode = false,
-        intervalMillis = 1000,
-        config = application.config
-      ))
-    } else {
-      None
-    }
+    schedulerInstance = Some(new Scheduler(
+      schedulerDb,
+      schedulerName,
+      new IntervalSchedule(application.config.getDuration("kyselyt.checkInterval")),
+      None,
+      runNextQuery,
+      runOnSingleNode = false,
+      intervalMillis = 1000,
+      config = application.config
+    ))
+    schedulerInstance
   }
 
   def pause(duration: Duration): Boolean = Scheduler.pauseForDuration(schedulerDb, schedulerName, duration)
 
   def resume(): Boolean = Scheduler.resume(schedulerDb, schedulerName)
+
+  def shutdown(): Unit = {
+    schedulerInstance.foreach(_.shutdown)
+    leaseElector.shutdown()
+  }
 
   private def runNextQuery(_context: Option[JValue]): Option[JValue] = {
     if (isQueryWorker) {
@@ -63,5 +72,5 @@ class MassaluovutusScheduler(application: KoskiApplication) extends Logging {
     None // MassaluovutusScheduler päivitä kontekstia vain käynnistyessään
   }
 
-  private def isQueryWorker = MassaluovutusUtils.isQueryWorker(application, concurrency)
+  private def isQueryWorker = leaseElector.hasLease
 }
