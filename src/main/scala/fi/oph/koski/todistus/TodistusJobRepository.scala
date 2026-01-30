@@ -233,13 +233,13 @@ class TodistusJobRepository(val db: DB, val workerId: String, config: Config) ex
       WHERE state = any(${TodistusState.runningStates.toSeq})
       """.as[Int]).head
 
-  def findOrphanedJobs(koskiInstances: Seq[String]): Seq[TodistusJob] =
+  def findOrphanedJobs(activeWorkers: Seq[String]): Seq[TodistusJob] =
     runDbSync(
       sql"""
       SELECT *
       FROM todistus_job
       WHERE NOT state = any(${TodistusState.nonReusableStates.toSeq})
-        AND NOT worker = any($koskiInstances)
+        AND NOT worker = any($activeWorkers)
       """.as[TodistusJob])
 
   def findExpiredJobs(expirationThreshold: LocalDateTime): Seq[TodistusJob] =
