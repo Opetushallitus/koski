@@ -150,12 +150,10 @@ export const useKoodistoFetchError = (
   const { koodistot } = useContext(KoodistoContext)
   return useMemo(() => {
     const uris = koodistoUris.filter(nonNull)
-    const values = Object.entries(koodistot).map(([k, v]) => [k, v === Failed ? 'FAILED' : v === Loading ? 'LOADING' : 'LOADED'])
-    const hasFailed = uris.length === 0
-      ? Object.values(koodistot).some((v) => v === Failed)
-      : uris.some((uri) => koodistot[uri] === Failed)
-    console.log('[Koodisto] useKoodistoFetchError:', { hasFailed, values })
-    return hasFailed
+    if (uris.length === 0) {
+      return Object.values(koodistot).some((v) => v === Failed)
+    }
+    return uris.some((uri) => koodistot[uri] === Failed)
   }, [koodistot, koodistoUris])
 }
 
@@ -223,7 +221,7 @@ export type KoodistokoodiviiteKoodistonNimellä<T extends string = string> = {
 }
 
 const MAX_RETRY_ATTEMPTS = 3
-const RETRY_DELAY_MS = 1000 // TODO: restore to 5000 after testing
+const RETRY_DELAY_MS = 5000
 
 class KoodistoLoader {
   koodistot: KoodistoRecord = {}
@@ -242,11 +240,9 @@ class KoodistoLoader {
     })
 
     for (let attempt = 0; attempt < MAX_RETRY_ATTEMPTS; attempt++) {
-      console.log(`[Koodisto] Attempt ${attempt + 1}/${MAX_RETRY_ATTEMPTS} for:`, unfetchedKoodistoUris)
       const result = await fetchKoodistot(unfetchedKoodistoUris)
 
       if (E.isRight(result)) {
-        console.log('[Koodisto] Success:', unfetchedKoodistoUris)
         const k: KoodistoRecord = pipe(
           Object.entries(result.right.data.koodistot),
           A.chain(([koodistoNimi, koodiviitteet]) =>
@@ -268,7 +264,6 @@ class KoodistoLoader {
       }
     }
 
-    console.log('[Koodisto] All retries failed, marking as Failed:', unfetchedKoodistoUris)
     unfetchedKoodistoUris.forEach((uri) => {
       this.koodistot[uri] = Failed
     })
