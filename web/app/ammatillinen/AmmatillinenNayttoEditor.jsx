@@ -42,12 +42,9 @@ const NäyttöPopup = ({ model, hasOldData, doneCallback }) => {
         baret-lift
         model={modelP}
         propertyFilter={(p) =>
-          ![
-            'arviointikohteet',
-            'haluaaTodistuksen',
-            'hylkäyksenPeruste',
-            'suoritusaika'
-          ].includes(p.key)
+          !['arviointikohteet', 'hylkäyksenPeruste', 'suoritusaika'].includes(
+            p.key
+          )
         }
         getValueEditor={(p, getDefault) => {
           if (p.key === 'suorituspaikka') {
