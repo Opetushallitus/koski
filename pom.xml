@@ -27,7 +27,7 @@
     <scoverage.plugin.version>1.1.1</scoverage.plugin.version>
     <log4j.version>2.25.3</log4j.version>
     <pdfbox.version>3.0.6</pdfbox.version>
-    <openhtmltopdf.version>1.1.31</openhtmltopdf.version>
+    <openhtmltopdf.version>1.1.36</openhtmltopdf.version>
     <bouncycastle.version>1.83</bouncycastle.version>
     <finalName>${project.artifactId}-${project.version}</finalName>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
