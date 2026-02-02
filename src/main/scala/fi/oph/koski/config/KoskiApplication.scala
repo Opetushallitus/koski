@@ -229,7 +229,6 @@ class KoskiApplication(
   lazy val massaluovutusService: MassaluovutusService = new MassaluovutusService(this)
   lazy val massaluovutusScheduler: MassaluovutusScheduler = new MassaluovutusScheduler(this)
   lazy val massaluovutusCleanupScheduler: MassaluovutusCleanupScheduler = new MassaluovutusCleanupScheduler(this)
-  lazy val ecsMetadata: ECSMetadataClient = new ECSMetadataClient(config)
   lazy val instanceId: String =
     if (Environment.isUnitTestEnvironment(config) || Environment.isLocalDevelopmentEnvironment(config)) {
       "local"

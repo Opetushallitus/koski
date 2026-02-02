@@ -6,6 +6,7 @@ import fi.oph.koski.db.{OpiskeluoikeusRow, RaportointiGenerointiDatabaseConfig}
 import fi.oph.koski.henkilo.{OpintopolkuHenkilöFacade, OppijanumeroRekisteriClientRetryStrategy}
 import fi.oph.koski.koskiuser.KoskiSpecificSession
 import fi.oph.koski.log.Logging
+import fi.oph.koski.schedule.WorkerLeaseElector
 import rx.lang.scala.schedulers.NewThreadScheduler
 import rx.lang.scala.{Observable, Scheduler}
 
@@ -17,6 +18,17 @@ class RaportointikantaService(application: KoskiApplication) extends Logging {
   private val cloudWatchMetrics = CloudWatchMetricsService.apply(application.config)
   private val eventBridgeClient = KoskiEventBridgeClient.apply(application.config)
   private val päivitetytOpiskeluoikeudetJonoService = application.päivitetytOpiskeluoikeudetJono
+  private val leaseName = "raportointikanta-loader"
+  private val leaseDuration = application.config.getDuration("raportointikanta.workerLease.duration")
+  private val heartbeatInterval = application.config.getDuration("raportointikanta.workerLease.heartbeatInterval")
+  private val leaseElector = new WorkerLeaseElector(
+    application.workerLeaseRepository,
+    leaseName,
+    application.instanceId,
+    slots = 1,
+    leaseDuration = leaseDuration,
+    heartbeatInterval = heartbeatInterval
+  )
 
   def loadRaportointikanta(
     force: Boolean,
@@ -28,11 +40,20 @@ class RaportointikantaService(application: KoskiApplication) extends Logging {
     enableYtr: Boolean = true,
     incrementalLoadMaxRows: Int = 50000
   ): Boolean = {
-    if (isLoading && !force) {
+    if (!tryStartLease()) {
+      logger.info("Raportointikanta already loading, do nothing")
+      onEnd()
+      false
+    } else if (isLoading && !force) {
+      stopLease()
       logger.info("Raportointikanta already loading, do nothing")
       onEnd()
       false
     } else {
+      val onEndWithLeaseRelease = () => {
+        stopLease()
+        onEnd()
+      }
       val update = if (skipUnchangedData) {
         val dueTime = getDueTime
         val updatesInQueue = päivitetytOpiskeluoikeudetJonoService.päivitetytOpiskeluoikeudetCount(dueTime)
@@ -53,7 +74,7 @@ class RaportointikantaService(application: KoskiApplication) extends Logging {
         None
       }
       loadDatabase.dropAndCreateObjects(Some(raportointiDatabase.status.dataVersion.getOrElse(0)))
-      startLoading(update, enableYtr, scheduler, onEnd, pageSize, onAfterPage)
+      startLoading(update, enableYtr, scheduler, onEndWithLeaseRelease, pageSize, onAfterPage)
       logger.info(s"Started loading raportointikanta (force: $force, duetime: ${update.map(_.dueTime.toString).getOrElse("-")})")
       true
     }
@@ -135,15 +156,11 @@ class RaportointikantaService(application: KoskiApplication) extends Logging {
   def isLoading: Boolean =
     loadDatabase.status.isLoading && {
       if (Environment.isServerEnvironment(application.config)) {
-        application.ecsMetadata.taskARN.exists { thisTask =>
-          val loaderTasks = application.ecsMetadata.currentlyRunningRaportointikantaLoaderInstances
-          val otherLoaderTasks = loaderTasks.filterNot(_.taskArn == thisTask)
-          val loading = otherLoaderTasks.nonEmpty
-          if (!loading) {
-            logger.warn("Raportointikannan generointi oli tietokannan mukaan käynnissä, mutta yhtäkään hengissä olevaa instanssia ei löytynyt. Tämä viittaa siihen että edellinen generointi on kaatunut tai pysäytetty kesken.")
-          }
-          loading
+        val loading = application.workerLeaseRepository.activeHolders(leaseName).nonEmpty
+        if (!loading) {
+          logger.warn("Raportointikannan generointi oli tietokannan mukaan käynnissä, mutta yhtäkään hengissä olevaa instanssia ei löytynyt. Tämä viittaa siihen että edellinen generointi on kaatunut tai pysäytetty kesken.")
         }
+        loading
       } else {
         true
       }
@@ -153,6 +170,16 @@ class RaportointikantaService(application: KoskiApplication) extends Logging {
   def isAvailable: Boolean = raportointiDatabase.status.isComplete
   def isLoadComplete: Boolean = !isLoading && isAvailable
   def isEmpty: Boolean = raportointiDatabase.status.isEmpty
+
+  private def tryStartLease(): Boolean = {
+    val acquired = application.workerLeaseRepository.tryAcquireOrRenew(leaseName, 1, application.instanceId, leaseDuration)
+    if (acquired) {
+      leaseElector.start()
+    }
+    acquired
+  }
+
+  private def stopLease(): Unit = leaseElector.shutdown()
 
   def status: Map[String, RaportointikantaStatusResponse] =
     List(loadDatabase.status, raportointiDatabase.status).groupBy(_.schema).view.mapValues(_.head).toMap

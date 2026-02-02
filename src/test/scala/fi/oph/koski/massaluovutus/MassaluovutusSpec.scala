@@ -91,8 +91,9 @@ class MassaluovutusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers wit
 
     "Ajossa olevaa kyselyä ei vapauteta takaisin jonoon" in {
       withoutRunningQueryScheduler {
-        val worker = app.ecsMetadata.currentlyRunningKoskiInstances.head
-        val runningQuery = createRunningQuery(worker.taskArn)
+        val activeWorker = "active-worker"
+        app.workerLeaseRepository.tryAcquireOrRenew("massaluovutus", 1, activeWorker, Duration.ofSeconds(30)) should be(true)
+        val runningQuery = createRunningQuery(activeWorker)
 
         app.massaluovutusService.addRaw(runningQuery)
         app.massaluovutusCleanupScheduler.trigger()

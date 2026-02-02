@@ -390,6 +390,8 @@ Kun sovellus käynnistetään ilman ulkoisia parametrejä, käynnistyy se näill
 ja toimii "kehitysmoodissa", eli käynnistää paikallisen tietokannan,
 eikä ota yhteyttä ulkoisiin järjestelmiin.
 
+Taustatyöt käyttävät tietokantapohjaisia workeri‑vuokrauksia (worker lease). Niiden timeoutit ja heartbeat‑välit voi säätää konfiguraatiosta, esim. `kyselyt.workerLease`, `todistus.workerLease` ja `raportointikanta.workerLease`.
+
 Tuotantokäytössä ja testiympäristössä käytetään asetuksia, joilla Koski saadaan ottamaan yhteys ulkoisiin
 järjestelmiin. Pilviympäristössä käytössä on [AWS:n AppConfig](https://eu-west-1.console.aws.amazon.com/systems-manager/appconfig).
 
