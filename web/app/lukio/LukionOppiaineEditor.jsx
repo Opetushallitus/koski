@@ -17,6 +17,7 @@ import {
   arvioidutOsasuoritukset,
   hylkäämättömätOsasuoritukset,
   hyväksytystiArvioidutOsasuoritukset,
+  isErityinenTutkinto,
   laajuudet,
   suoritetutKurssit
 } from './lukio'
@@ -27,6 +28,7 @@ import {
 } from './fragments/LukionOppiaine'
 import { numberToString } from '../util/format'
 import { PropertiesEditor } from '../editor/PropertiesEditor'
+import { Editor } from '../editor/Editor'
 
 export class LukionOppiaineEditor extends React.Component {
   saveChangedPreferences() {
@@ -93,6 +95,10 @@ export class LukionOppiaineEditor extends React.Component {
       }
     }
 
+    const shouldEditLaajuus = () => {
+      return edit && useOppiaineLaajuus && isErityinenTutkinto(oppiaine)
+    }
+
     return (
       <tr
         className={
@@ -138,12 +144,28 @@ export class LukionOppiaineEditor extends React.Component {
             customKurssitSortFn={customKurssitSortFn}
           />
         </td>
-        {showLaajuus && <td className="laajuus">{laajuusArvo()}</td>}
+        {showLaajuus && (
+          <td className="laajuus">
+            {shouldEditLaajuus() ? (
+              <Editor
+                model={oppiaine}
+                path="koulutusmoduuli.laajuus"
+                compact="true"
+              />
+            ) : (
+              laajuusArvo()
+            )}
+          </td>
+        )}
         {showHyväksytystiArvioitujenLaajuus && (
           <td className="laajuus arvioitu">
-            {numberToString(
-              laajuudet(hyväksytystiArvioidutOsasuoritukset(kurssit))
-            )}
+            {isErityinenTutkinto(oppiaine)
+              ? numberToString(
+                  laajuudet(hyväksytystiArvioidutOsasuoritukset([oppiaine]))
+                )
+              : numberToString(
+                  laajuudet(hyväksytystiArvioidutOsasuoritukset(kurssit))
+                )}
           </td>
         )}
         {showPredictedArviointi && (

@@ -64,6 +64,18 @@ const isLuvaOps2019 = (suoritusModel) =>
     modelData(suoritusModel, 'koulutusmoduuli.perusteenDiaarinumero')
   )
 
+const isErityinenTutkinto = (oppiaine) => {
+  const oppiaineErityinen = modelData(
+    oppiaine,
+    'suoritettuErityisenäTutkintona'
+  )
+  const päätasonSuoritusErityinen = modelData(
+    oppiaine.context.suoritus,
+    'suoritettuErityisenäTutkintona'
+  )
+  return oppiaineErityinen || päätasonSuoritusErityinen
+}
+
 export {
   perusteenDiaarinumeroToOppimäärä,
   sallitutRahoituskoodiarvot,
@@ -75,5 +87,6 @@ export {
   isLuvaOps2019,
   isLukionOppiaineidenOppimaarienSuoritus2019,
   arvioidutOsasuoritukset,
-  hyväksytystiArvioidutOsasuoritukset
+  hyväksytystiArvioidutOsasuoritukset,
+  isErityinenTutkinto
 }
