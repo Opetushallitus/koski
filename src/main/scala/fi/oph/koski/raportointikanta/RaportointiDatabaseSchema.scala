@@ -539,6 +539,7 @@ object RaportointiDatabaseSchema {
     val arviointiPisteet = column[Option[Int]]("arviointi_pisteet")
     val keskeytynyt = column[Option[Boolean]]("keskeytynyt")
     val maksuton = column[Option[Boolean]]("maksuton")
+    val suoritusMukanaTodistuksella = column[Option[Boolean]]("suoritus_mukana_todistuksella")
 
     val data = column[JValue]("data")
 
@@ -558,6 +559,7 @@ object RaportointiDatabaseSchema {
       arviointiPisteet,
       keskeytynyt,
       maksuton,
+      suoritusMukanaTodistuksella,
       data
     ) <> (RYtrKokeenSuoritusRow.tupled, RYtrKokeenSuoritusRow.unapply)
   }
@@ -1117,6 +1119,7 @@ case class RYtrKokeenSuoritusRow(
                                   arviointiPisteet: Option[Int],
                                   keskeytynyt: Option[Boolean],
                                   maksuton: Option[Boolean],
+                                  suoritusMukanaTodistuksella: Option[Boolean],
 
                                   data: JValue
                                 )

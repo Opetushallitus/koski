@@ -445,6 +445,7 @@ class RaportointikantaSpec
         actualKoe.arviointiPisteet should equal(expectedKoe.arviointi.map(_.last).flatMap(_.pisteet))
         actualKoe.keskeytynyt should equal(expectedKoe.keskeytynyt)
         actualKoe.maksuton should equal(expectedKoe.maksuton)
+        actualKoe.suoritusMukanaTodistuksella should equal(expectedKoe.suoritusMukanaTodistuksella)
 
         actualKoe.data \ "tutkintokerta" \ "vuodenaika" \ "fi" should equal(JString(expectedKoe.tutkintokerta.vuodenaika.get("fi")))
 
