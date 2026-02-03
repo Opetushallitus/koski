@@ -343,7 +343,24 @@ class OppijaValidationLukio2019Spec extends AnyFreeSpec with PutOpiskeluoikeusTe
       }
     }
 
-    "suoritustasolla sallii oppiaineet ilman osasuorituksia ja suorituksen merkitsemisen vahvistetuksi vajaalla yhteislaajuudella" in {
+
+    "suoritustasolla sallii oppiaineet alle 88op yhteislaajuudella, kun suoritus on kesken" in {
+      setupOppijaWithOpiskeluoikeus(defaultOpiskeluoikeus.copy(
+        tila = LukionOpiskeluoikeudenTila(List(
+          LukionOpiskeluoikeusjakso(alku = date(2019, 8, 1), tila = opiskeluoikeusAktiivinen, opintojenRahoitus = Some(ExampleData.valtionosuusRahoitteinen))
+        )),
+        suoritukset = List(aikuistenOppimääränSuoritus.copy(
+          suoritettuErityisenäTutkintona = true,
+          osasuoritukset = Some(List(
+            oppiaineenSuoritus(Lukio2019ExampleData.lukionÄidinkieli("AI1", pakollinen = true, laajuus = laajuus(5.0))).copy(arviointi = numeerinenLukionOppiaineenArviointi(9), osasuoritukset = None),
+            oppiaineenSuoritus(Lukio2019ExampleData.matematiikka("MAA", laajuus = laajuus(5.0))).copy(arviointi = numeerinenLukionOppiaineenArviointi(9), osasuoritukset = None)))
+        ))
+      )) {
+        verifyResponseStatusOk()
+      }
+    }
+
+    "suoritustasolla ei salli vahvistettua suoritusta, jonka oppiaineiden yhteislaajuus on alle 88op" in {
       setupOppijaWithOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(aikuistenOppimääränSuoritus.copy(
         suoritettuErityisenäTutkintona = true,
         vahvistus = vahvistusPaikkakunnalla(päivä = date(2020, 5, 15)),
@@ -351,17 +368,44 @@ class OppijaValidationLukio2019Spec extends AnyFreeSpec with PutOpiskeluoikeusTe
           oppiaineenSuoritus(Lukio2019ExampleData.lukionÄidinkieli("AI1", pakollinen = true, laajuus = laajuus(5.0))).copy(arviointi = numeerinenLukionOppiaineenArviointi(9), osasuoritukset = None),
           oppiaineenSuoritus(Lukio2019ExampleData.matematiikka("MAA", laajuus = laajuus(5.0))).copy(arviointi = numeerinenLukionOppiaineenArviointi(9), osasuoritukset = None)))))
       )) {
+        verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.valmiiksiMerkityltäPuuttuuOsasuorituksia("Suoritus koulutus/309902 on merkitty valmiiksi tai opiskeluoikeuden tiedoissa oppimäärä on merkitty suoritetuksi, mutta sillä ei ole 88 op osasuorituksia, tai opiskeluoikeudelta puuttuu linkitys"))
+      }
+    }
+
+    "suoritustasolla sallii vahvistetun suorituksen tietystä oppilaitoksista, vaikka oppiaineiden yhteislaajuus on alle 88op" in {
+      setupOppijaWithOpiskeluoikeus(defaultOpiskeluoikeus.copy(
+        oppilaitos = Some(Oppilaitos(MockOrganisaatiot.oulunAikuislukio)),
+        suoritukset = List(aikuistenOppimääränSuoritus.copy(
+          suoritettuErityisenäTutkintona = true,
+          vahvistus = vahvistusPaikkakunnalla(päivä = date(2020, 5, 15)),
+          osasuoritukset = Some(List(
+            oppiaineenSuoritus(Lukio2019ExampleData.lukionÄidinkieli("AI1", pakollinen = true, laajuus = laajuus(5.0))).copy(arviointi = numeerinenLukionOppiaineenArviointi(9), osasuoritukset = None),
+            oppiaineenSuoritus(Lukio2019ExampleData.matematiikka("MAA", laajuus = laajuus(5.0))).copy(arviointi = numeerinenLukionOppiaineenArviointi(9), osasuoritukset = None)))
+        ))
+      )) {
         verifyResponseStatusOk()
       }
     }
 
-    "suoritustasolla sallii osasuoritukset muissa lukio-opinnoissa, temaattisissa opinnoissa tai lukiodiplomeissa ja suorituksen merkitsemisen vahvistetuksi vajaalla yhteislaajuudella" in {
+    "suoritustasolla sallii oppiaineet ilman osasuorituksia ja suorituksen merkitsemisen vahvistetuksi vajaalla yhteislaajuudella, joka on kuitenkin vähintään 88op" in {
       setupOppijaWithOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(aikuistenOppimääränSuoritus.copy(
         suoritettuErityisenäTutkintona = true,
         vahvistus = vahvistusPaikkakunnalla(päivä = date(2020, 5, 15)),
         osasuoritukset = Some(List(
-          oppiaineenSuoritus(Lukio2019ExampleData.lukionÄidinkieli("AI1", pakollinen = true, laajuus = laajuus(5.0))).copy(arviointi = numeerinenLukionOppiaineenArviointi(9), osasuoritukset = None),
-          oppiaineenSuoritus(Lukio2019ExampleData.matematiikka("MAA", laajuus = laajuus(5.0))).copy(arviointi = numeerinenLukionOppiaineenArviointi(9), osasuoritukset = None),
+          oppiaineenSuoritus(Lukio2019ExampleData.lukionÄidinkieli("AI1", pakollinen = true, laajuus = laajuus(44.0))).copy(arviointi = numeerinenLukionOppiaineenArviointi(9), osasuoritukset = None),
+          oppiaineenSuoritus(Lukio2019ExampleData.matematiikka("MAA", laajuus = laajuus(44.0))).copy(arviointi = numeerinenLukionOppiaineenArviointi(9), osasuoritukset = None)))))
+      )) {
+        verifyResponseStatusOk()
+      }
+    }
+
+    "suoritustasolla sallii osasuoritukset muissa lukio-opinnoissa, temaattisissa opinnoissa tai lukiodiplomeissa ja suorituksen merkitsemisen vahvistetuksi vajaalla yhteislaajuudella, joka on kuitenkin vähintään 88op" in {
+      setupOppijaWithOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(aikuistenOppimääränSuoritus.copy(
+        suoritettuErityisenäTutkintona = true,
+        vahvistus = vahvistusPaikkakunnalla(päivä = date(2020, 5, 15)),
+        osasuoritukset = Some(List(
+          oppiaineenSuoritus(Lukio2019ExampleData.lukionÄidinkieli("AI1", pakollinen = true, laajuus = laajuus(40.0))).copy(arviointi = numeerinenLukionOppiaineenArviointi(9), osasuoritukset = None),
+          oppiaineenSuoritus(Lukio2019ExampleData.matematiikka("MAA", laajuus = laajuus(40.0))).copy(arviointi = numeerinenLukionOppiaineenArviointi(9), osasuoritukset = None),
           muidenLukioOpintojenSuoritus().copy(osasuoritukset = Some(List(
             moduulinSuoritusMuissaOpinnoissa(muuModuuliMuissaOpinnoissa("KE3")).copy(arviointi = numeerinenArviointi(10)),
             paikallisenOpintojaksonSuoritus(paikallinenOpintojakso("HAI765", "Kansanmusiikki haitarilla", "Kansamusiikkia 2-rivisellä haitarilla")).copy(arviointi = sanallinenArviointi("S"))
@@ -389,7 +433,7 @@ class OppijaValidationLukio2019Spec extends AnyFreeSpec with PutOpiskeluoikeusTe
             moduulinSuoritusOppiaineissa(muuModuuliOppiaineissa("ÄI2")).copy(arviointi = numeerinenArviointi(8)),
             moduulinSuoritusOppiaineissa(muuModuuliOppiaineissa("ÄI3").copy(pakollinen = false)).copy(arviointi = numeerinenArviointi(8))
           ))),
-          oppiaineenSuoritus(Lukio2019ExampleData.matematiikka("MAB", laajuus = laajuus(7.0))).copy(arviointi = numeerinenLukionOppiaineenArviointi(9)).copy(osasuoritukset = Some(List(
+          oppiaineenSuoritus(Lukio2019ExampleData.matematiikka("MAB", laajuus = laajuus(82.0))).copy(arviointi = numeerinenLukionOppiaineenArviointi(9)).copy(osasuoritukset = Some(List(
             moduulinSuoritusOppiaineissa(muuModuuliOppiaineissa("MAB2")).copy(arviointi = numeerinenArviointi(10)),
             moduulinSuoritusOppiaineissa(muuModuuliOppiaineissa("MAB3")).copy(arviointi = numeerinenArviointi(10)),
             moduulinSuoritusOppiaineissa(muuModuuliOppiaineissa("MAB4")).copy(arviointi = numeerinenArviointi(10)),
@@ -476,7 +520,7 @@ class OppijaValidationLukio2019Spec extends AnyFreeSpec with PutOpiskeluoikeusTe
               moduulinSuoritusOppiaineissa(muuModuuliOppiaineissa("ÄI3").copy(laajuus = laajuus(2.0))).copy(arviointi = numeerinenArviointi(8))
             ))
           ),
-          oppiaineenSuoritus(Lukio2019ExampleData.matematiikka("MAA", laajuus = laajuus(7.0))).copy(
+          oppiaineenSuoritus(Lukio2019ExampleData.matematiikka("MAA", laajuus = laajuus(88.0))).copy(
             arviointi = numeerinenLukionOppiaineenArviointi(9),
             osasuoritukset = Some(List(
               moduulinSuoritusOppiaineissa(muuModuuliOppiaineissa("MAA2")).copy(arviointi = numeerinenArviointi(10)),
@@ -492,7 +536,7 @@ class OppijaValidationLukio2019Spec extends AnyFreeSpec with PutOpiskeluoikeusTe
       }
     }
 
-    "suoritustasolla ei laske oppiaineiden laajuuksia automaattisesti osasuoritusten perusteella" in {
+    "suoritustasolla ei laske oppiaineiden laajuuksia automaattisesti moduulien perusteella" in {
       val oo = defaultOpiskeluoikeus.copy(suoritukset = List(aikuistenOppimääränSuoritus.copy(
         suoritettuErityisenäTutkintona = true,
         vahvistus = vahvistusPaikkakunnalla(päivä = date(2020, 5, 15)),
@@ -505,7 +549,7 @@ class OppijaValidationLukio2019Spec extends AnyFreeSpec with PutOpiskeluoikeusTe
               moduulinSuoritusOppiaineissa(muuModuuliOppiaineissa("ÄI3").copy(laajuus = laajuus(2.0))).copy(arviointi = numeerinenArviointi(8))
             ))
           ),
-          oppiaineenSuoritus(Lukio2019ExampleData.matematiikka("MAA", laajuus = laajuus(7.0))).copy(
+          oppiaineenSuoritus(Lukio2019ExampleData.matematiikka("MAA", laajuus = laajuus(77.0))).copy(
             arviointi = numeerinenLukionOppiaineenArviointi(9),
             osasuoritukset = Some(List(
               moduulinSuoritusOppiaineissa(muuModuuliOppiaineissa("MAA2")).copy(arviointi = numeerinenArviointi(10)),
@@ -518,7 +562,7 @@ class OppijaValidationLukio2019Spec extends AnyFreeSpec with PutOpiskeluoikeusTe
 
       val opiskeluoikeus: Opiskeluoikeus = setupOppijaWithAndGetOpiskeluoikeus(oo)
       opiskeluoikeus.suoritukset.head.osasuoritusLista(0).koulutusmoduuli.laajuusArvo(0) should equal(12.0)
-      opiskeluoikeus.suoritukset.head.osasuoritusLista(1).koulutusmoduuli.laajuusArvo(0) should equal(7.0)
+      opiskeluoikeus.suoritukset.head.osasuoritusLista(1).koulutusmoduuli.laajuusArvo(0) should equal(77.0)
     }
 
     "aineopinnoissa oppiainetasolla ei salli ilman oppiaineen laajuutta" in {
@@ -546,7 +590,7 @@ class OppijaValidationLukio2019Spec extends AnyFreeSpec with PutOpiskeluoikeusTe
       }
     }
 
-    "aineopinnoissa oppiainetasolla ei laske oppiaineen laajuutta automaattisesti osasuoritusten perusteella" in {
+    "aineopinnoissa oppiainetasolla ei laske oppiaineen laajuutta automaattisesti moduulien perusteella" in {
       val oo = defaultOpiskeluoikeus.copy(suoritukset = List(oppiaineidenOppimäärienSuoritus.copy(
         osasuoritukset = Some(List(
           oppiaineenSuoritus(Lukio2019ExampleData.lukionÄidinkieli("AI1", pakollinen = true, laajuus = laajuus(6.0))).copy(

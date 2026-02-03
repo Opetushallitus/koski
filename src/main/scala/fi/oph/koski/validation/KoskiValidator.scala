@@ -1469,11 +1469,13 @@ class KoskiValidator(
     suoritus: LukionPäätasonSuoritus2019,
     oppilaitosOid: Option[Organisaatio.Oid]
   ): Boolean = {
-    (sisältääErityisenTutkinnonSuorittamisen(suoritus), sisältääOmanÄidinkielenOpintojenSuorituksia(suoritus), suoritus.oppimäärä.koodiarvo) match {
-      case (false, false, "nuortenops")
+    (sisältääErityisenTutkinnonSuorittamisenPäätasolla(suoritus), sisältääErityisenTutkinnonSuorittamisen(suoritus), sisältääOmanÄidinkielenOpintojenSuorituksia(suoritus), suoritus.oppimäärä.koodiarvo) match {
+      case (false, false, false, "nuortenops")
         => lukio2019TarpeeksiOsasuorituksia(suoritus.osasuoritukset.getOrElse(List()), 150, 20)
-      case (false, false, "aikuistenops") if LukionYhteisetValidaatiot.laajuusValidoitavaOppilaitoksessa(oppilaitosOid)
+      case (false, false, false, "aikuistenops") if LukionYhteisetValidaatiot.laajuusValidoitavaOppilaitoksessa(oppilaitosOid)
         => lukio2019TarpeeksiOsasuorituksia(suoritus.osasuoritukset.getOrElse(List()), 88, 0)
+      case (true, _, _, "aikuistenops") if LukionYhteisetValidaatiot.laajuusValidoitavaOppilaitoksessa(oppilaitosOid)
+        => lukio2019TarpeeksiOppiaineenSuorituksia(suoritus.osasuoritukset.getOrElse(List()), 88)
       case _
         => suoritus.osasuoritusLista.nonEmpty
     }
@@ -1486,6 +1488,13 @@ class KoskiValidator(
           case os: LukionOppiaineenSuoritus2019 if os.suoritettuErityisenäTutkintona => true
           case _ => false
         }))
+      case _ => false
+    }
+  }
+
+  private def sisältääErityisenTutkinnonSuorittamisenPäätasolla(suoritus: LukionPäätasonSuoritus2019) = {
+    suoritus match {
+      case s: LukionOppimääränSuoritus2019 => s.suoritettuErityisenäTutkintona
       case _ => false
     }
   }
@@ -1504,6 +1513,13 @@ class KoskiValidator(
     val valinnaisetYhteensä = valinnaiset.map(BigDecimal.decimal).sum
 
     kaikkiYhteensä >= BigDecimal.decimal(minimiLaajuus) && valinnaisetYhteensä >= BigDecimal.decimal(minimiValinnaistenLaajuus)
+  }
+
+  private def lukio2019TarpeeksiOppiaineenSuorituksia(osasuoritukset: List[LukionOppimääränOsasuoritus2019], minimiLaajuus: Double): Boolean = {
+    val kaikki = osasuoritukset.flatMap(_.koulutusmoduuli.laajuus.map(_.arvo))
+    val kaikkiYhteensä = kaikki.map(BigDecimal.decimal).sum
+
+    kaikkiYhteensä >= BigDecimal.decimal(minimiLaajuus)
   }
 
   private def ostettuOpiskeluoikeusValmisEnnenVuotta2019(opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus) = opiskeluoikeus match {
