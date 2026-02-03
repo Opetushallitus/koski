@@ -29,7 +29,7 @@
             <column ascending="true" name="ilmoitus_uuid"/>
          </index>
       </table>
-      <table name="ilmoitus_opiskeluoikeus_konteksti" remarks="" schema="public" type="TABLE">
+      <table name="ilmoitus_opiskeluoikeus_konteksti" numRows="0" remarks="" schema="public" type="TABLE">
          <column autoUpdated="false" defaultValue="null" digits="0" id="0" name="ilmoitus_uuid" nullable="false" remarks="" size="2147483647" type="uuid" typeCode="1111">
             <parent column="uuid" foreignKey="ilmoitus_opiskeluoikeus_konteksti_fk" implied="false" onDeleteCascade="true" schema="public" table="ilmoitus"/>
          </column>
@@ -41,7 +41,7 @@
             <column ascending="true" name="opiskeluoikeus_oid"/>
          </index>
       </table>
-      <table name="opiskeluoikeus_lisätiedot" remarks="" schema="public" type="TABLE">
+      <table name="opiskeluoikeus_lisätiedot" numRows="0" remarks="" schema="public" type="TABLE">
          <column autoUpdated="false" defaultValue="null" digits="0" id="0" name="oppija_oid" nullable="false" remarks="" size="2147483647" type="text" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="opiskeluoikeus_oid" nullable="false" remarks="" size="2147483647" type="text" typeCode="12"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="oppilaitos_oid" nullable="false" remarks="" size="2147483647" type="text" typeCode="12"/>
