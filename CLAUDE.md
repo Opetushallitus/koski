@@ -109,8 +109,12 @@ valpas-web/src/                # Valpas frontend (separate React app)
 
 ### IntelliJ IDEA MCP
 
-If I have IntelliJ IDEA MCP configured: Use it for building, running and debugging backend tests.
-If a specific configuration for the single test or suite is not available, ask me to create it manually.
+If I have IntelliJ IDEA MCP configured: Use it for building, running and debugging backend tests. Do this instead of the
+command line approach detailed below and don't fall back by default to using command line when IntelliJ IDEA MCP server calls
+fail.
+
+If a specific configuration for the single test or suite is not available, ask me to run it first time manually,
+and then later it is available.
 
 ### Backend Tests
 Location: `src/test/scala/fi/oph/koski/`
