@@ -180,16 +180,6 @@ class TodistusJobRepository(val db: DB, val workerId: String, config: Config) ex
       """.as[TodistusJob]).headOption
   }
 
-  def requeueJob(id: String): Boolean =
-    runDbSync(
-      sql"""
-      UPDATE todistus_job
-      SET
-        state = ${TodistusState.QUEUED},
-        worker = NULL
-      WHERE id = ${id}::uuid
-      """.asUpdate) != 0
-
   def setJobFailed(id: String, error: String): Boolean =
     runDbSync(
       sql"""
@@ -233,14 +223,40 @@ class TodistusJobRepository(val db: DB, val workerId: String, config: Config) ex
       WHERE state = any(${TodistusState.runningStates.toSeq})
       """.as[Int]).head
 
-  def findOrphanedJobs(koskiInstances: Seq[String]): Seq[TodistusJob] =
+  // Käsittelee yhden orpo-jobin atomisesti: Käyttää FOR UPDATE SKIP LOCKED.
+  def handleNextOrphanedJob(koskiInstances: Seq[String], maxAttempts: Int): Option[TodistusJob] =
     runDbSync(
       sql"""
-      SELECT *
-      FROM todistus_job
-      WHERE NOT state = any(${TodistusState.nonReusableStates.toSeq})
-        AND NOT worker = any($koskiInstances)
-      """.as[TodistusJob])
+      WITH candidate AS (
+        SELECT id, attempts
+        FROM todistus_job
+        WHERE NOT state = any(${TodistusState.nonReusableStates.toSeq})
+          AND NOT worker = any($koskiInstances)
+        ORDER BY created_at
+        LIMIT 1
+        FOR UPDATE SKIP LOCKED
+      ),
+      requeued AS (
+        UPDATE todistus_job
+        SET
+          state = ${TodistusState.QUEUED},
+          worker = NULL
+        WHERE id IN (SELECT id FROM candidate WHERE attempts < $maxAttempts)
+        RETURNING *
+      ),
+      failed AS (
+        UPDATE todistus_job
+        SET
+          state = ${TodistusState.ERROR},
+          error = 'Luonti epäonnistui ' || attempts::text || ' yrityksen jälkeen',
+          completed_at = now()
+        WHERE id IN (SELECT id FROM candidate WHERE attempts >= $maxAttempts)
+        RETURNING *
+      )
+      SELECT * FROM requeued
+      UNION ALL
+      SELECT * FROM failed
+      """.as[TodistusJob]).headOption
 
   def findExpiredJobs(expirationThreshold: LocalDateTime): Seq[TodistusJob] =
     runDbSync(

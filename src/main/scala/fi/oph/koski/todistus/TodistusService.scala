@@ -203,37 +203,30 @@ class TodistusService(application: KoskiApplication) extends Logging with Timing
     val instanceArns = koskiInstances.map(_.taskArn)
     val maxAttempts = 3
 
-    // TODO: TOR-2400: Uudelleenkäynnistys ei ole transaktionaalista, pitäisikö olla? Jos useampi kontti tekee cleanupia, voi tapahtua
-    // jotain outoa.
-    val orphanedJobs = todistusRepository
-      .findOrphanedJobs(instanceArns)
-
     val expirationThreshold = LocalDateTime.now().minusSeconds(expirationDuration.getSeconds)
     val expiredJobs = todistusRepository
       .findExpiredJobs(expirationThreshold)
 
-    val cleanupRequired = orphanedJobs.nonEmpty || expiredJobs.nonEmpty
+    if (expiredJobs.nonEmpty) {
+      timed("cleanup-expire", thresholdMs = 0) {
+        val expiredJobIds = expiredJobs.map(_.id)
+        val markedCount = todistusRepository.markJobsAsQueuedForExpire(expiredJobIds)
+        logger.info(s"Merkittiin ${markedCount} vanhentunutta todistusta QUEUED_FOR_EXPIRE-tilaan (vanhenemisaika: ${expirationDuration})")
+      }
+    }
 
-    if (cleanupRequired) {
-      timed("cleanup", thresholdMs = 0) {
-        // Merkitse vanhentuneet todistukset QUEUED_FOR_EXPIRE-tilaan
-        if (expiredJobs.nonEmpty) {
-          val expiredJobIds = expiredJobs.map(_.id)
-          val markedCount = todistusRepository.markJobsAsQueuedForExpire(expiredJobIds)
-          logger.info(s"Merkittiin ${markedCount} vanhentunutta todistusta QUEUED_FOR_EXPIRE-tilaan (vanhenemisaika: ${expirationDuration})")
-        }
-
-        // Käsittele orpo-jobit
-        orphanedJobs.foreach { todistus =>
-          val attemptsCount = todistus.attempts.getOrElse(0)
-          if (attemptsCount < maxAttempts) {
-            logger.info(s"Uudelleenkäynnistetään orpo todistus ${todistus.id} (yritys ${attemptsCount}/${maxAttempts})")
-            todistusRepository.requeueJob(todistus.id)
-          } else {
-            val errorMessage = s"Todistuksen ${todistus.id} luonti epäonnistui ${attemptsCount} yrityksen jälkeen"
-            logger.error(s"Orpo todistus ${todistus.id}: ${errorMessage}")
-            todistusRepository.setJobFailed(todistus.id, errorMessage)
-          }
+    timed("cleanup-orphans", thresholdMs = 0) {
+      var handled = true
+      while (handled) {
+        todistusRepository.handleNextOrphanedJob(instanceArns, maxAttempts) match {
+          case Some(todistus) =>
+            if (todistus.state == TodistusState.QUEUED) {
+              logger.info(s"Uudelleenkäynnistettiin orpo todistus ${todistus.id} (yritys ${todistus.attempts.getOrElse(0)}/${maxAttempts})")
+            } else {
+              logger.error(s"Orpo todistus ${todistus.id}: ${todistus.error.getOrElse("")}")
+            }
+          case None =>
+            handled = false
         }
       }
     }
