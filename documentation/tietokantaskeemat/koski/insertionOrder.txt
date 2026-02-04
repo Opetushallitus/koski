@@ -23,6 +23,7 @@ poistettu_opiskeluoikeus
 preferences
 schema_version
 todistus_job
+worker_lease
 ytr_alkuperainen_data
 ytr_download_status
 ytr_opiskeluoikeushistoria_virheet

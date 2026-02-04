@@ -89,7 +89,6 @@ class TodistusPdfGenerator extends Logging {
     // TODO: TOR-2400: Älä tee builderiä aina uudestaan, ja lisää cache?
     val builder = new PdfRendererBuilder()
     builder.useDefaultPageSize(210.0f, 297.0f, BaseRendererBuilder.PageSizeUnits.MM)
-    builder.useFastMode()
     builder.usePdfUaAccessibility(true) // TODO: TOR-2400: riittääkö tämä, vai tarvitaanko muitakin optioita?
     builder.useSVGDrawer(new BatikSVGDrawer())
 

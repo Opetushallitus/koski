@@ -4,7 +4,7 @@ import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.henkilo.OppijaHenkilö
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.schema.{KielitutkinnonOpiskeluoikeus, Koodistokoodiviite, YleinenKielitutkinto, YleisenKielitutkinnonSuoritus}
-import fi.oph.koski.todistus.TodistusJob
+import fi.oph.koski.todistus.{TodistusDataValidation, TodistusJob}
 import fi.oph.koski.todistus.pdfgenerator.TodistusData
 import fi.oph.koski.util.DateOrdering.localDateOptionOrdering
 
@@ -63,8 +63,8 @@ class YleinenKielitutkintoTodistusDataBuilder(application: KoskiApplication) {
       allekirjoitusPäivämäärä = formatSignatureDate(ensimmäisenLäsnäTilanAlkupäivä, todistus.language)
 
       vahvistusViimeinenPäivämäärä = formatVahvistusViimeinenPaivamaaraDate(todistus.createdAt.toLocalDate.plusDays(application.config.getLong("todistus.allekirjoituksenVoimassaolonKestoInDays")), todistus.language)
-    } yield {
-      YleinenKielitutkintoTodistusData(
+
+      todistusData = YleinenKielitutkintoTodistusData(
         templateName = s"kielitutkinto_yleinenkielitutkinto_${todistus.language}",
         oppijaNimi = oppijaNimi,
         oppijaSyntymäaika = oppijaSyntymäaika,
@@ -76,7 +76,9 @@ class YleinenKielitutkintoTodistusDataBuilder(application: KoskiApplication) {
         vahvistusViimeinenPäivämäärä = vahvistusViimeinenPäivämäärä,
         siistittyOo = siistittyOo
       )
-    }
+
+      _ <- TodistusDataValidation.validateYleinenKielitutkintoData(todistusData, todistus.id)
+    } yield todistusData
   }
 
   private def poistaArvioimattomatOsasuorituksetJaVanhatArvioinnit(

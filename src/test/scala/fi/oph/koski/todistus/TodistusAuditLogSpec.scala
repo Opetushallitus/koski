@@ -6,6 +6,10 @@ import fi.oph.koski.log.{AuditLogTester, KoskiAuditLogMessageField, KoskiOperati
 
 class TodistusAuditLogSpec extends TodistusSpecHelpers {
 
+  override protected def afterEach(): Unit = {
+    cleanup()
+  }
+
   "Audit-lokitukset" - {
     "TODISTUKSEN_LUONTI lokitetaan kun kansalainen luo todistuksen" in {
       val lang = "fi"

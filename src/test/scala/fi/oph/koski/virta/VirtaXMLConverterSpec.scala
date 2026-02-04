@@ -5,13 +5,12 @@ import fi.oph.koski.documentation.ExampleData.{laajuusOpintopisteissä, laajuusO
 import fi.oph.koski.koodisto.MockKoodistoViitePalvelu
 import fi.oph.koski.localization.LocalizedStringImplicits._
 import fi.oph.koski.oppilaitos.MockOppilaitosRepository
-import fi.oph.koski.util.XML
 import fi.oph.koski.organisaatio.MockOrganisaatioRepository
 import fi.oph.koski.schema._
+import fi.oph.koski.util.{Files, XML}
 import org.scalatest.OptionValues
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.should.Matchers
-import fi.oph.koski.xml.NodeSeqImplicits._
 
 import java.time.LocalDate
 import scala.xml.Elem
@@ -26,6 +25,23 @@ class VirtaXMLConverterSpec extends AnyFreeSpec with TestEnvironment with Matche
   private val organisaatioVanhallaNimelläPvm = LocalDate.of(2010, 10, 10)
 
   def baseSuoritus: Elem = suoritusWithOrganisaatio(None)
+
+  def tutkintoSuoritus(kieli: Option[String] = Some("fi")): Elem =
+    <virta:Opintosuoritus opiskeluoikeusAvain="avopH1O1" opiskelijaAvain="avopH1" koulutusmoduulitunniste="tutkinto-123" avain="tutkinto-avain-1">
+      <virta:SuoritusPvm>2014-05-30</virta:SuoritusPvm>
+      <virta:Laajuus>
+        <virta:Opintopiste>180.0</virta:Opintopiste>
+      </virta:Laajuus>
+      <virta:Arvosana>
+        <virta:Hyvaksytty>HYV</virta:Hyvaksytty>
+      </virta:Arvosana>
+      <virta:Myontaja>10076</virta:Myontaja>
+      <virta:Laji>1</virta:Laji>
+      <virta:Nimi kieli="fi">Kauppatieteiden kandidaatti</virta:Nimi>
+      {kieli.map(k => <virta:Kieli>{k}</virta:Kieli>).getOrElse(scala.xml.NodeSeq.Empty)}
+      <virta:Koulutuskoodi>612103</virta:Koulutuskoodi>
+    </virta:Opintosuoritus>
+
   def suoritusWithOrganisaatio(
     organisaatio: Option[Elem],
     suoritusPvm: String = "2014-05-30",
@@ -318,6 +334,87 @@ class VirtaXMLConverterSpec extends AnyFreeSpec with TestEnvironment with Matche
 
 
   "Suoritusten konvertointi" - {
+    "Suorituskieli" - {
+      "parsitaan tutkinnon suoritukselta" in {
+        val suoritus = convertSuoritus(tutkintoSuoritus(kieli = Some("sv")))
+        suoritus shouldBe defined
+        suoritus.get shouldBe a[KorkeakoulututkinnonSuoritus]
+        suoritus.get.suorituskieli shouldBe defined
+        suoritus.get.suorituskieli.get.koodiarvo shouldBe "SV"
+        suoritus.get.suorituskieli.get.koodistoUri shouldBe "kieli"
+      }
+
+      "parsitaan opintojakson suoritukselta" in {
+        val suoritus = convertSuoritus(baseSuoritus)
+        suoritus shouldBe defined
+        suoritus.get shouldBe a[KorkeakoulunOpintojaksonSuoritus]
+        suoritus.get.suorituskieli shouldBe defined
+        suoritus.get.suorituskieli.get.koodiarvo shouldBe "EN"
+      }
+
+      "on None jos Kieli-elementti puuttuu tutkinnon suoritukselta" in {
+        val suoritus = convertSuoritus(tutkintoSuoritus(kieli = None))
+        suoritus shouldBe defined
+        suoritus.get shouldBe a[KorkeakoulututkinnonSuoritus]
+        suoritus.get.suorituskieli shouldBe None
+      }
+    }
+
+    "Hyväksilukupäivä" - {
+      def opintojaksoWithHyvaksiluku(hyvaksilukuPvm: Option[String]): Elem =
+        <virta:Opintosuoritus opiskeluoikeusAvain="avopH1O1" opiskelijaAvain="avopH1" koulutusmoduulitunniste="K-123" avain="hyvaksiluku-1">
+          <virta:SuoritusPvm>2017-12-04</virta:SuoritusPvm>
+          <virta:Laajuus>
+            <virta:Opintopiste>5</virta:Opintopiste>
+          </virta:Laajuus>
+          <virta:Arvosana>
+            <virta:Viisiportainen>5</virta:Viisiportainen>
+          </virta:Arvosana>
+          <virta:Myontaja>10076</virta:Myontaja>
+          <virta:Laji>2</virta:Laji>
+          <virta:Nimi kieli="fi">Hyväksiluettu opintojakso</virta:Nimi>
+          <virta:Kieli>fi</virta:Kieli>
+          {hyvaksilukuPvm.map(pvm => <virta:HyvaksilukuPvm>{pvm}</virta:HyvaksilukuPvm>).getOrElse(scala.xml.NodeSeq.Empty)}
+        </virta:Opintosuoritus>
+
+      def tutkintoWithHyvaksiluku(hyvaksilukuPvm: Option[String]): Elem =
+        <virta:Opintosuoritus opiskeluoikeusAvain="avopH1O1" opiskelijaAvain="avopH1" koulutusmoduulitunniste="tutkinto-123" avain="tutkinto-hyvaksiluku-1">
+          <virta:SuoritusPvm>2017-12-04</virta:SuoritusPvm>
+          <virta:Laajuus>
+            <virta:Opintopiste>180</virta:Opintopiste>
+          </virta:Laajuus>
+          <virta:Arvosana>
+            <virta:Hyvaksytty>HYV</virta:Hyvaksytty>
+          </virta:Arvosana>
+          <virta:Myontaja>10076</virta:Myontaja>
+          <virta:Laji>1</virta:Laji>
+          <virta:Nimi kieli="fi">Hyväksiluettu tutkinto</virta:Nimi>
+          <virta:Kieli>fi</virta:Kieli>
+          <virta:Koulutuskoodi>612103</virta:Koulutuskoodi>
+          {hyvaksilukuPvm.map(pvm => <virta:HyvaksilukuPvm>{pvm}</virta:HyvaksilukuPvm>).getOrElse(scala.xml.NodeSeq.Empty)}
+        </virta:Opintosuoritus>
+
+      "parsitaan opintojakson suoritukselta" in {
+        val suoritus = convertSuoritus(opintojaksoWithHyvaksiluku(Some("2018-03-16")))
+        suoritus shouldBe defined
+        suoritus.get shouldBe a[KorkeakoulunOpintojaksonSuoritus]
+        suoritus.get.asInstanceOf[KorkeakoulunOpintojaksonSuoritus].hyväksilukupäivä shouldBe Some(LocalDate.of(2018, 3, 16))
+      }
+
+      "parsitaan tutkinnon suoritukselta" in {
+        val suoritus = convertSuoritus(tutkintoWithHyvaksiluku(Some("2018-03-16")))
+        suoritus shouldBe defined
+        suoritus.get shouldBe a[KorkeakoulututkinnonSuoritus]
+        suoritus.get.asInstanceOf[KorkeakoulututkinnonSuoritus].hyväksilukupäivä shouldBe Some(LocalDate.of(2018, 3, 16))
+      }
+
+      "on None jos HyvaksilukuPvm puuttuu" in {
+        val suoritus = convertSuoritus(opintojaksoWithHyvaksiluku(None))
+        suoritus shouldBe defined
+        suoritus.get.asInstanceOf[KorkeakoulunOpintojaksonSuoritus].hyväksilukupäivä shouldBe None
+      }
+    }
+
     "Luokittelu" - {
       "parsitaan koodistoviitteeksi" in {
         val luokittelut = convertSuoritus(suoritusWithOrganisaatio(None, luokittelu=Some(1)))
@@ -512,6 +609,26 @@ class VirtaXMLConverterSpec extends AnyFreeSpec with TestEnvironment with Matche
             should equal(KorkeakoulunPaikallinenArviointi(KorkeakoulunPaikallinenArvosana("76", "76", Some("virta/4")), LocalDate.of(2014, 5, 30))))
         }
       }
+    }
+  }
+
+  "Mock-datasta konvertointi" - {
+    "hyväksilukuPäivä parsitaan oikein mock-datasta (090992-3237.xml)" in {
+      val xmlString = Files.asString("src/main/resources/mockdata/virta/opintotiedot/090992-3237.xml").get
+      val xml = scala.xml.XML.loadString(xmlString)
+      val opiskeluoikeudet = converter.convertToOpiskeluoikeudet(xml)
+
+      // Tiedostossa on opintojakso avaimella "313405" jolla on HyvaksilukuPvm 2014-12-16
+      val hyväksiluetutOpintojaksot = opiskeluoikeudet
+        .flatMap(_.suoritukset)
+        .flatMap {
+          case s: KorkeakoulunOpintojaksonSuoritus => Some(s)
+          case _ => None
+        }
+        .filter(_.hyväksilukupäivä.isDefined)
+
+      hyväksiluetutOpintojaksot should not be empty
+      hyväksiluetutOpintojaksot.exists(_.hyväksilukupäivä.contains(LocalDate.of(2014, 12, 16))) shouldBe true
     }
   }
 }

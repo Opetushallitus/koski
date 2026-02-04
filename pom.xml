@@ -21,13 +21,13 @@
     <http4s-blaze-client.version>0.23.17</http4s-blaze-client.version>
     <http4s-scala-xml.version>0.23.15</http4s-scala-xml.version>
     <json4s.version>4.0.7</json4s.version>
-    <awssdk.version>2.40.13</awssdk.version>
+    <awssdk.version>2.41.5</awssdk.version>
     <jetty.version>9.4.57.v20241219</jetty.version>
     <prometheus.client.version>0.16.0</prometheus.client.version>
     <scoverage.plugin.version>1.1.1</scoverage.plugin.version>
     <log4j.version>2.25.3</log4j.version>
     <pdfbox.version>3.0.6</pdfbox.version>
-    <openhtmltopdf.version>1.1.31</openhtmltopdf.version>
+    <openhtmltopdf.version>1.1.37</openhtmltopdf.version>
     <bouncycastle.version>1.83</bouncycastle.version>
     <finalName>${project.artifactId}-${project.version}</finalName>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -85,7 +85,6 @@
     <dependency>
       <groupId>org.scala-lang.modules</groupId>
       <artifactId>scala-xml_2.13</artifactId>
-      <version>2.3.0</version>
     </dependency>
     <dependency>
       <groupId>org.reflections</groupId>
@@ -196,7 +195,7 @@
     <dependency>
       <groupId>org.apache.logging.log4j</groupId>
       <artifactId>log4j-slf4j2-impl</artifactId>
-      <version>2.25.3</version>
+      <version>${log4j.version}</version>
     </dependency>
     <dependency>
       <groupId>org.apache.logging.log4j</groupId>
@@ -338,18 +337,18 @@
     </dependency>
     <dependency>
       <groupId>software.amazon.awssdk</groupId>
-      <version>${awssdk.version}</version>
       <artifactId>appconfigdata</artifactId>
+      <version>${awssdk.version}</version>
     </dependency>
     <dependency>
       <groupId>software.amazon.awssdk</groupId>
-      <version>${awssdk.version}</version>
       <artifactId>rds</artifactId>
+      <version>${awssdk.version}</version>
     </dependency>
     <dependency>
       <groupId>software.amazon.awssdk</groupId>
-      <version>${awssdk.version}</version>
       <artifactId>ecs</artifactId>
+      <version>${awssdk.version}</version>
     </dependency>
     <dependency>
       <groupId>software.amazon.awssdk</groupId>
@@ -521,11 +520,10 @@
       <plugin>
         <groupId>net.alchim31.maven</groupId>
         <artifactId>scala-maven-plugin</artifactId>
-        <version>4.9.2</version>
+        <version>4.9.8</version>
         <configuration>
           <scalaVersion>${scala.version}</scalaVersion>
           <scalaCompatVersion>2.13</scalaCompatVersion>
-          <scalaCompilerVersion>${scala.version}</scalaCompilerVersion>
           <args>
             <arg>-unchecked</arg>
             <arg>-deprecation</arg>
@@ -623,12 +621,6 @@
     </plugins>
   </build>
   <profiles>
-    <profile>
-      <id>default</id>
-      <activation>
-        <activeByDefault>true</activeByDefault>
-      </activation>
-    </profile>
     <profile>
       <id>coverage</id>
       <build>
