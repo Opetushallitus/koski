@@ -198,3 +198,8 @@ make view-db-docs
 - TypeScript types in `web/app/types/fi/oph/koski/` are auto-generated - don't edit manually
 - The application uses CAS for authentication in production
 - Audit logging is required for all user actions involving personal data
+
+## Instructions for working with specific features
+
+- **Digital certificates**, digitaaliset todistukset, digitodistukset, see: `documentation/todistus.md`.
+  - When adding new major features to certificates, also update the `documentation/todistus.md` file.
