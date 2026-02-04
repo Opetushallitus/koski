@@ -3,37 +3,42 @@ package fi.oph.koski.validation
 import java.time.LocalDate
 import java.time.temporal.ChronoUnit
 
+import com.typesafe.config.Config
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.schema.{Aikajakso, KoskeenTallennettavaOpiskeluoikeus, PerusopetukseenValmistavanOpetuksenOpiskeluoikeus, PerusopetukseenValmistavanOpetuksenOpiskeluoikeudenLisätiedot}
 
 object PerusopetukseenValmistavanOpetuksenValidation {
 
-  private val lisäopetusVoimassaAlkaen = LocalDate.of(2026, 8, 1)
   private val maxLisäopetusPäiviä = 365L
 
-  def validateOpiskeluoikeus(oo: KoskeenTallennettavaOpiskeluoikeus): HttpStatus =
+  def validateOpiskeluoikeus(config: Config)(oo: KoskeenTallennettavaOpiskeluoikeus): HttpStatus = {
+    val lisäopetusVoimassaAlkaen = LocalDate.parse(config.getString("validaatiot.perusopetukseenValmistavanLisäopetusVoimassaAlkaen"))
     oo match {
-      case p: PerusopetukseenValmistavanOpetuksenOpiskeluoikeus => validatePerusopetukseenValmistavanOpetuksenOpiskeluoikeus(p)
+      case p: PerusopetukseenValmistavanOpetuksenOpiskeluoikeus =>
+        validatePerusopetukseenValmistavanOpetuksenOpiskeluoikeus(p, lisäopetusVoimassaAlkaen)
       case _ => HttpStatus.ok
     }
+  }
 
   private def validatePerusopetukseenValmistavanOpetuksenOpiskeluoikeus(
-    opiskeluoikeus: PerusopetukseenValmistavanOpetuksenOpiskeluoikeus
+    opiskeluoikeus: PerusopetukseenValmistavanOpetuksenOpiskeluoikeus,
+    lisäopetusVoimassaAlkaen: LocalDate
   ): HttpStatus = {
     opiskeluoikeus.lisätiedot match {
-      case Some(lisätiedot) => validateLisäopetusLisätiedot(lisätiedot, opiskeluoikeus.alkamispäivä)
+      case Some(lisätiedot) => validateLisäopetusLisätiedot(lisätiedot, opiskeluoikeus.alkamispäivä, lisäopetusVoimassaAlkaen)
       case None => HttpStatus.ok
     }
   }
 
   private def validateLisäopetusLisätiedot(
     lisätiedot: PerusopetukseenValmistavanOpetuksenOpiskeluoikeudenLisätiedot,
-    alkamispäivä: Option[LocalDate]
+    alkamispäivä: Option[LocalDate],
+    lisäopetusVoimassaAlkaen: LocalDate
   ): HttpStatus = {
     lisätiedot.lisäopetus match {
       case Some(jaksot) if jaksot.nonEmpty =>
         HttpStatus.fold(
-          validateLisäopetusJaksojenAlkamispäivät(jaksot),
+          validateLisäopetusJaksojenAlkamispäivät(jaksot, lisäopetusVoimassaAlkaen),
           validateLisäopetuksenKokonaiskesto(jaksot),
           validateLisäopetusJaksojenPäällekkäisyys(jaksot),
           validateAvoinJaksoEiYliVuodenVanha(jaksot)
@@ -42,7 +47,10 @@ object PerusopetukseenValmistavanOpetuksenValidation {
     }
   }
 
-  private def validateLisäopetusJaksojenAlkamispäivät(jaksot: List[Aikajakso]): HttpStatus = {
+  private def validateLisäopetusJaksojenAlkamispäivät(
+    jaksot: List[Aikajakso],
+    lisäopetusVoimassaAlkaen: LocalDate
+  ): HttpStatus = {
     val alkaaEnnenRajapäivää = jaksot.exists(_.alku.isBefore(lisäopetusVoimassaAlkaen))
     HttpStatus.validate(!alkaaEnnenRajapäivää)(
       KoskiErrorCategory.badRequest.validation.perusopetukseenValmistavaOpetus.lisäopetusEiSallittuEnnen()
