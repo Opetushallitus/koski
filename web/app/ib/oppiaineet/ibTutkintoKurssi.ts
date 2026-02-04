@@ -3,6 +3,7 @@ import { IBKurssinSuoritus } from '../../types/fi/oph/koski/schema/IBKurssinSuor
 import { Koodistokoodiviite } from '../../types/fi/oph/koski/schema/Koodistokoodiviite'
 import { LaajuusOpintopisteissäTaiKursseissa } from '../../types/fi/oph/koski/schema/LaajuusOpintopisteissaTaiKursseissa'
 import { LocalizedString } from '../../types/fi/oph/koski/schema/LocalizedString'
+import { OsaamisenTunnustaminen } from '../../types/fi/oph/koski/schema/OsaamisenTunnustaminen'
 import { PaikallinenKoodi } from '../../types/fi/oph/koski/schema/PaikallinenKoodi'
 import { isValidPaikallinenKoodi } from './tunnisteet'
 
@@ -12,6 +13,7 @@ export type IBKurssinSuoritusProps = {
   laajuus?: LaajuusOpintopisteissäTaiKursseissa
   pakollinen?: boolean
   suorituskieli?: Koodistokoodiviite<'kieli'>
+  tunnustettu?: OsaamisenTunnustaminen
 }
 
 export const createIBKurssinSuoritus = ({
@@ -19,7 +21,8 @@ export const createIBKurssinSuoritus = ({
   kuvaus,
   laajuus,
   pakollinen,
-  suorituskieli
+  suorituskieli,
+  tunnustettu
 }: IBKurssinSuoritusProps): IBKurssinSuoritus | null =>
   isValidPaikallinenKoodi(tunniste) && kuvaus && (laajuus?.arvo || 0) > 0
     ? IBKurssinSuoritus({
@@ -29,6 +32,7 @@ export const createIBKurssinSuoritus = ({
           laajuus,
           pakollinen: !!pakollinen
         }),
-        suorituskieli
+        suorituskieli,
+        tunnustettu
       })
     : null
