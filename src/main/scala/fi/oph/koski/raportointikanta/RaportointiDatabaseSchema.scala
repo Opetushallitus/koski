@@ -148,6 +148,7 @@ object RaportointiDatabaseSchema {
     val opetuksenJärjestäminenVammanSairaudenTaiRajoitteenPerusteella = column[Boolean]("opetus_vamman_sairauden_tai_rajoitteen_perusteella")
     val tavoitekokonaisuuksittainOpiskelu = column[Boolean]("tavoitekokonaisuuksittain_opiskelu")
     val toimintaAlueittainOpiskelu = column[Boolean]("toiminta_alueittain_opiskelu")
+    val valmistavanLisäopetus = column[Boolean]("valmistavan_lisaopetus")
 
     def * = (
       opiskeluoikeusOid ::
@@ -187,6 +188,7 @@ object RaportointiDatabaseSchema {
       opetuksenJärjestäminenVammanSairaudenTaiRajoitteenPerusteella ::
       toimintaAlueittainOpiskelu ::
       tavoitekokonaisuuksittainOpiskelu ::
+      valmistavanLisäopetus ::
       id ::
       HNil
     ).mapTo[ROpiskeluoikeusAikajaksoRow]
@@ -787,6 +789,7 @@ case class ROpiskeluoikeusAikajaksoRow(
   opetuksenJärjestäminenVammanSairaudenTaiRajoitteenPerusteella: Boolean = false,
   toimintaAlueittainOpiskelu: Boolean = false,
   tavoitekokonaisuuksittainOpiskelu: Boolean = false,
+  valmistavanLisäopetus: Boolean = false,
   id: Long = 0
 ) extends AikajaksoRow[ROpiskeluoikeusAikajaksoRow] {
   def truncateToDates(start: Date, end: Date): ROpiskeluoikeusAikajaksoRow = this.copy(

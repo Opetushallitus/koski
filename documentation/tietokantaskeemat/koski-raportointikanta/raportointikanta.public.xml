@@ -432,7 +432,8 @@
          <column autoUpdated="false" defaultValue="null" digits="0" id="34" name="opetus_vamman_sairauden_tai_rajoitteen_perusteella" nullable="false" remarks="" size="1" type="bool" typeCode="-7"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="35" name="toiminta_alueittain_opiskelu" nullable="false" remarks="" size="1" type="bool" typeCode="-7"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="36" name="tavoitekokonaisuuksittain_opiskelu" nullable="false" remarks="" size="1" type="bool" typeCode="-7"/>
-         <column autoUpdated="true" defaultValue="nextval('r_opiskeluoikeus_aikajakso_id_seq'::regclass)" digits="0" id="37" name="id" nullable="false" remarks="" size="19" type="bigserial" typeCode="-5"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="37" name="valmistavan_lisaopetus" nullable="false" remarks="" size="1" type="bool" typeCode="-7"/>
+         <column autoUpdated="true" defaultValue="nextval('r_opiskeluoikeus_aikajakso_id_seq'::regclass)" digits="0" id="38" name="id" nullable="false" remarks="" size="19" type="bigserial" typeCode="-5"/>
          <primaryKey column="id" sequenceNumberInPK="1"/>
          <index name="r_opiskeluoikeus_aikajakso_pkey" unique="true">
             <column ascending="true" name="id"/>
