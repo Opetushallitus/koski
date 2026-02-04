@@ -166,6 +166,34 @@ export const OppiaineTableKurssiEditor: React.FC<
             />
           </KeyValueRow>
 
+          {isIBKurssinSuoritus(kurssi) && (
+            <KeyValueRow localizableLabel="Osaamisen tunnustaminen">
+              {kurssi.tunnustettu ? (
+                <fieldset>
+                  <LocalizedTextEdit
+                    large
+                    value={kurssi.tunnustettu.selite}
+                    onChange={form.set(...path, 'tunnustettu', 'selite')}
+                  />
+                  <Checkbox
+                    checked={kurssi.tunnustettu.rahoituksenPiirissä}
+                    onChange={form.set(
+                      ...path,
+                      'tunnustettu',
+                      'rahoituksenPiirissä'
+                    )}
+                    label="Rahoituksen piirissä"
+                    testId="rahoituksenPiirissä"
+                  />
+                </fieldset>
+              ) : (
+                <FlatButton onClick={createOsaamisenTunnustaminen}>
+                  {t('Lisää osaamisen tunnustaminen')}
+                </FlatButton>
+              )}
+            </KeyValueRow>
+          )}
+
           {isLukionKurssinSuoritus2015(kurssi) && (
             <>
               <KeyValueRow localizableLabel="Osaamisen tunnustaminen">

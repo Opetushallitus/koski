@@ -23,7 +23,14 @@ import { IBTheoryOfKnowledgeSuoritus } from '../../types/fi/oph/koski/schema/IBT
 import { IBTutkinnonSuoritus } from '../../types/fi/oph/koski/schema/IBTutkinnonSuoritus'
 import { LocalizedString } from '../../types/fi/oph/koski/schema/LocalizedString'
 import { LukionArviointi } from '../../types/fi/oph/koski/schema/LukionArviointi'
-import { isLukionKurssinSuoritus2015 } from '../../types/fi/oph/koski/schema/LukionKurssinSuoritus2015'
+import {
+  isLukionKurssinSuoritus2015,
+  LukionKurssinSuoritus2015
+} from '../../types/fi/oph/koski/schema/LukionKurssinSuoritus2015'
+import {
+  isIBKurssinSuoritus,
+  IBKurssinSuoritus
+} from '../../types/fi/oph/koski/schema/IBKurssinSuoritus'
 import { isLukionPaikallinenOpintojakso2019 } from '../../types/fi/oph/koski/schema/LukionPaikallinenOpintojakso2019'
 import { MuidenLukioOpintojenPreIBSuoritus2019 } from '../../types/fi/oph/koski/schema/MuidenLukioOpintojenPreIBSuoritus2019'
 import { isPaikallinenKoodi } from '../../types/fi/oph/koski/schema/PaikallinenKoodi'
@@ -780,6 +787,12 @@ const KurssiDetails: React.FC<KurssiTooltipProps> = ({ kurssi, id }) => (
               </KeyValueRow>
             </KeyValueTable>
           ))}
+        </KeyValueRow>
+      )}
+
+      {isIBKurssinSuoritus(kurssi) && kurssi.tunnustettu && (
+        <KeyValueRow localizableLabel="Tunnustettu">
+          {t(kurssi.tunnustettu.selite)}
         </KeyValueRow>
       )}
 
