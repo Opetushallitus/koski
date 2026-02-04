@@ -26,6 +26,9 @@ import { fetchKoodistot } from '../util/koskiApi'
 import { PropsWithOnlyChildren } from '../util/react'
 import { coerceForSort } from '../util/strings'
 
+const Loading = Symbol('loading')
+const Failed = Symbol('failed')
+
 /**
  * Palauttaa annetun koodiston koodiarvot. Jos koodiarvot-argumentti on annettu,
  * palautetaan vain siinä mainitut koodiarvot.
@@ -137,6 +140,19 @@ export const useKoodistotOfConstraints = <T extends string = string>(
   }, [koodistoSchemas, koodistot])
 }
 
+export const useKoodistoFetchError = (
+  ...koodistoUris: Array<string | null | undefined>
+): boolean => {
+  const { koodistot } = useContext(KoodistoContext)
+  return useMemo(() => {
+    const uris = koodistoUris.filter(nonNull)
+    if (uris.length === 0) {
+      return Object.values(koodistot).some((v) => v === Failed)
+    }
+    return uris.some((uri) => koodistot[uri] === Failed)
+  }, [koodistot, koodistoUris])
+}
+
 /**
  * Palauttaa funktion, joka täyttää sille annettuun mihin tahansa muuttujaan siitä puuttuvat koodistokoodiviitteiden nimet.
  */
@@ -175,8 +191,6 @@ export const useKoodistoFiller = (): (<T>(a: T) => Promise<T>) =>
 
 // Context provider
 
-const Loading = Symbol('loading')
-
 export type KoodistoContextValue = {
   readonly koodistot: KoodistoRecord
   readonly loadKoodistot: (koodistoUris: string[]) => void
@@ -190,7 +204,10 @@ const KoodistoContext = React.createContext<KoodistoContextValue>({
 export type KoodistoProviderProps = PropsWithOnlyChildren
 
 export type KoodistoRecord = {
-  [URI in string]: KoodistokoodiviiteKoodistonNimellä<URI>[] | typeof Loading
+  [URI in string]:
+    | KoodistokoodiviiteKoodistonNimellä<URI>[]
+    | typeof Loading
+    | typeof Failed
 }
 
 export type KoodistokoodiviiteKoodistonNimellä<T extends string = string> = {
@@ -208,7 +225,8 @@ class KoodistoLoader {
 
   async loadKoodistot(koodistoUris: string[]): Promise<boolean> {
     const unfetchedKoodistoUris = koodistoUris.filter(
-      (uri) => !this.koodistot[uri]
+      (uri) =>
+        this.koodistot[uri] !== Loading && !Array.isArray(this.koodistot[uri])
     )
     if (!A.isNonEmpty(unfetchedKoodistoUris)) {
       return false
@@ -244,7 +262,7 @@ class KoodistoLoader {
     }
 
     unfetchedKoodistoUris.forEach((uri) => {
-      delete this.koodistot[uri]
+      this.koodistot[uri] = Failed
     })
     return true
   }
@@ -262,6 +280,11 @@ class KoodistoLoader {
     if (group === Loading) {
       throw new Error(
         `Cannot find koodi ${uri}_${koodiarvo} because loading of koodisto ${uri} hasn't finished`
+      )
+    }
+    if (group === Failed) {
+      throw new Error(
+        `Cannot find koodi ${uri}_${koodiarvo} because loading of koodisto ${uri} failed`
       )
     }
     const viite = group.find((k) => k.koodiviite.koodiarvo === koodiarvo)

@@ -1,5 +1,5 @@
-import { useMemo } from 'react'
-import { isSuccess, useApiWithParams } from '../../api-fetch'
+import { useCallback, useMemo } from 'react'
+import { isError, isSuccess, useApiWithParams } from '../../api-fetch'
 import {
   SelectOption,
   koodiviiteToOption
@@ -8,9 +8,15 @@ import { OrganisaatioHierarkia } from '../../types/fi/oph/koski/organisaatio/Org
 import { Koodistokoodiviite } from '../../types/fi/oph/koski/schema/Koodistokoodiviite'
 import { fetchOrganisaationOpiskeluoikeustyypit } from '../../util/koskiApi'
 
+export type OpiskeluoikeustyypitResult = {
+  options: Array<SelectOption<Koodistokoodiviite<'opiskeluoikeudentyyppi'>>>
+  error: boolean
+  retry: () => void
+}
+
 export const useOpiskeluoikeustyypit = (
   organisaatio?: OrganisaatioHierarkia
-): Array<SelectOption<Koodistokoodiviite<'opiskeluoikeudentyyppi'>>> => {
+): OpiskeluoikeustyypitResult => {
   const apiCall = useApiWithParams(
     fetchOrganisaationOpiskeluoikeustyypit<'opiskeluoikeudentyyppi'>,
     organisaatio?.oid !== undefined ? [organisaatio?.oid] : undefined
@@ -19,5 +25,11 @@ export const useOpiskeluoikeustyypit = (
     () => (isSuccess(apiCall) ? apiCall.data : []).map(koodiviiteToOption),
     [apiCall]
   )
-  return options
+  const retry = useCallback(() => {
+    if (organisaatio?.oid !== undefined) {
+      apiCall.call(organisaatio.oid)
+    }
+  }, [apiCall, organisaatio?.oid])
+
+  return { options, error: isError(apiCall), retry }
 }
