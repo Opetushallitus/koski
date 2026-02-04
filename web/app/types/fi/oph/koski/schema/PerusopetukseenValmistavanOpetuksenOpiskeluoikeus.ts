@@ -2,13 +2,12 @@ import { Koodistokoodiviite } from './Koodistokoodiviite'
 import { LocalizedString } from './LocalizedString'
 import { OpiskeluoikeudenOrganisaatiohistoria } from './OpiskeluoikeudenOrganisaatiohistoria'
 import { SisältäväOpiskeluoikeus } from './SisaltavaOpiskeluoikeus'
+import { Koulutustoimija } from './Koulutustoimija'
 import { PerusopetukseenValmistavanOpetuksenSuoritus } from './PerusopetukseenValmistavanOpetuksenSuoritus'
 import { LähdejärjestelmäId } from './LahdejarjestelmaId'
 import { LähdejärjestelmäkytkennänPurkaminen } from './LahdejarjestelmakytkennanPurkaminen'
 import { Oppilaitos } from './Oppilaitos'
 import { PerusopetukseenValmistavanOpetuksenOpiskeluoikeudenTila } from './PerusopetukseenValmistavanOpetuksenOpiskeluoikeudenTila'
-import { Koulutustoimija } from './Koulutustoimija'
-import { PerusopetukseenValmistavanOpetuksenOpiskeluoikeudenLisätiedot } from './PerusopetukseenValmistavanOpetuksenOpiskeluoikeudenLisatiedot'
 
 /**
  * Perusopetukseen valmistavan opetuksen opiskeluoikeuden tiedot
@@ -24,6 +23,7 @@ export type PerusopetukseenValmistavanOpetuksenOpiskeluoikeus = {
   organisaatiohistoria?: Array<OpiskeluoikeudenOrganisaatiohistoria>
   sisältyyOpiskeluoikeuteen?: SisältäväOpiskeluoikeus
   oid?: string
+  koulutustoimija?: Koulutustoimija
   versionumero?: number
   suoritukset: Array<PerusopetukseenValmistavanOpetuksenSuoritus>
   aikaleima?: string
@@ -33,8 +33,6 @@ export type PerusopetukseenValmistavanOpetuksenOpiskeluoikeus = {
   oppilaitos?: Oppilaitos
   tila: PerusopetukseenValmistavanOpetuksenOpiskeluoikeudenTila
   alkamispäivä?: string
-  koulutustoimija?: Koulutustoimija
-  lisätiedot?: PerusopetukseenValmistavanOpetuksenOpiskeluoikeudenLisätiedot
 }
 
 export const PerusopetukseenValmistavanOpetuksenOpiskeluoikeus = (
@@ -46,6 +44,7 @@ export const PerusopetukseenValmistavanOpetuksenOpiskeluoikeus = (
     organisaatiohistoria?: Array<OpiskeluoikeudenOrganisaatiohistoria>
     sisältyyOpiskeluoikeuteen?: SisältäväOpiskeluoikeus
     oid?: string
+    koulutustoimija?: Koulutustoimija
     versionumero?: number
     suoritukset?: Array<PerusopetukseenValmistavanOpetuksenSuoritus>
     aikaleima?: string
@@ -55,8 +54,6 @@ export const PerusopetukseenValmistavanOpetuksenOpiskeluoikeus = (
     oppilaitos?: Oppilaitos
     tila?: PerusopetukseenValmistavanOpetuksenOpiskeluoikeudenTila
     alkamispäivä?: string
-    koulutustoimija?: Koulutustoimija
-    lisätiedot?: PerusopetukseenValmistavanOpetuksenOpiskeluoikeudenLisätiedot
   } = {}
 ): PerusopetukseenValmistavanOpetuksenOpiskeluoikeus => ({
   tyyppi: Koodistokoodiviite({

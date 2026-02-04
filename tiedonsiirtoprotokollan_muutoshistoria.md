@@ -1,8 +1,6 @@
 ## 4.2.2026
 
 - Tunnustettu-rakenne lisättu IB-kurssin suorituksiin.
-- Perusopetukseen valmistavan opetuksen opiskeluoikeuteen lisätty lisätiedot-kenttä (PerusopetukseenValmistavanOpetuksenOpiskeluoikeudenLisätiedot).
-- Lisätietoihin lisätty lisäopetus-kenttä (Option[List[Aikajakso]]), jolla voidaan ilmoittaa lisäopetuksen aikajaksot.
 
 ## 29.1.2026
 
