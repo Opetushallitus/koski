@@ -23,6 +23,7 @@ export type PerusopetuksenOpiskeluoikeudenLisätiedot = {
   vuosiluokkiinSitoutumatonOpetus?: boolean
   sisäoppilaitosmainenMajoitus?: Array<Aikajakso>
   opetuksenJärjestäminenVammanSairaudenTaiRajoitteenPerusteella?: Array<Aikajakso>
+  valmistavanLisäopetus?: Array<Aikajakso>
   tehostetunTuenPäätökset?: Array<TehostetunTuenPäätös>
   joustavaPerusopetus?: Aikajakso
   oikeusMaksuttomaanAsuntolapaikkaan?: Aikajakso
@@ -52,6 +53,7 @@ export const PerusopetuksenOpiskeluoikeudenLisätiedot = (
     vuosiluokkiinSitoutumatonOpetus?: boolean
     sisäoppilaitosmainenMajoitus?: Array<Aikajakso>
     opetuksenJärjestäminenVammanSairaudenTaiRajoitteenPerusteella?: Array<Aikajakso>
+    valmistavanLisäopetus?: Array<Aikajakso>
     tehostetunTuenPäätökset?: Array<TehostetunTuenPäätös>
     joustavaPerusopetus?: Aikajakso
     oikeusMaksuttomaanAsuntolapaikkaan?: Aikajakso

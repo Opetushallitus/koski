@@ -1,5 +1,14 @@
 # Koskeen tallennettavien tietojen validaatiosäännöt
 
+## 28.1.2026
+
+Perusopetuksen opiskeluoikeuden valmistavan lisäopetuksen validaatiot
+
+- Valmistavan lisäopetuksen aikajaksojen alkamispäivän tulee olla 1.8.2026 tai sen jälkeen.
+- Valmistavan lisäopetuksen aikajaksojen yhteenlaskettu kokonaiskesto voi olla enintään 365 päivää.
+- Valmistavan lisäopetuksen aikajaksot eivät saa olla päällekkäin.
+- Avoin valmistavan lisäopetusjakso (ilman päättymispäivää) hylätään, jos alkamispäivä on yli vuoden vanha.
+
 ## 14.1.2026
 - Estetään viestintä ja vuorovaikutus kielivalinnalla -koodien (VVTK, VVAI, VVAI22, VVVK) siirto ValtakunnallinenAmmatillisenTutkinnonOsanOsaAlue-haaraan.
 - Estetään uusien 26-koodien (VVTK26, VVAI26, VVVK26) käyttö ennen 1.8.2026 alkavissa opiskeluoikeuksissa.

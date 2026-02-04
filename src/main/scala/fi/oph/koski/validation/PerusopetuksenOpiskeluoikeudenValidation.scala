@@ -12,8 +12,10 @@ import fi.oph.koski.util.FinnishDateFormat
 import fi.oph.koski.validation.PidennetynOppivelvollisuudenMuutoksenValidaatio.validateVanhojenJaksokenttienPäättyminenSiirryttäessäUusiin
 
 import java.time.LocalDate
+import java.time.temporal.ChronoUnit
 
 object PerusopetuksenOpiskeluoikeusValidation extends Logging {
+  private val maxValmistavanLisäopetusPäiviä = 365L
   def validatePerusopetuksenOpiskeluoikeus(config: Config)(
     oo: Opiskeluoikeus
   ): HttpStatus = {
@@ -29,6 +31,7 @@ object PerusopetuksenOpiskeluoikeusValidation extends Logging {
         ) ++ poo.lisätiedot.toList.flatMap(lisätiedot => List(
           validateTuenJaksojenPäällekkäisyys(lisätiedot),
           validateOppivelvollisuudenPidennysjaksojenPäällekkäisyys(lisätiedot),
+          validateValmistavanLisäopetus(config, lisätiedot),
         ))
       )
       case _ => HttpStatus.ok
@@ -278,6 +281,68 @@ object PerusopetuksenOpiskeluoikeusValidation extends Logging {
     } else {
       HttpStatus.ok
     }
+  }
+
+  private def validateValmistavanLisäopetus(
+    config: Config,
+    lisätiedot: PerusopetuksenOpiskeluoikeudenLisätiedot
+  ): HttpStatus = {
+    val lisäopetusVoimassaAlkaen = LocalDate.parse(config.getString("validaatiot.valmistavanLisäopetusVoimassaAlkaen"))
+
+    lisätiedot.valmistavanLisäopetus match {
+      case Some(jaksot) if jaksot.nonEmpty =>
+        HttpStatus.fold(
+          validateValmistavanLisäopetusJaksojenAlkamispäivät(jaksot, lisäopetusVoimassaAlkaen),
+          validateValmistavanLisäopetuksenKokonaiskesto(jaksot),
+          validateValmistavanLisäopetusJaksojenPäällekkäisyys(jaksot),
+          validateValmistavanLisäopetusAvoinJaksoEiYliVuodenVanha(jaksot)
+        )
+      case _ => HttpStatus.ok
+    }
+  }
+
+  private def validateValmistavanLisäopetusJaksojenAlkamispäivät(
+    jaksot: List[Aikajakso],
+    lisäopetusVoimassaAlkaen: LocalDate
+  ): HttpStatus = {
+    val alkaaEnnenRajapäivää = jaksot.exists(_.alku.isBefore(lisäopetusVoimassaAlkaen))
+    HttpStatus.validate(!alkaaEnnenRajapäivää)(
+      KoskiErrorCategory.badRequest.validation.perusopetus.valmistavanLisäopetusEiSallittuEnnen()
+    )
+  }
+
+  private def validateValmistavanLisäopetuksenKokonaiskesto(jaksot: List[Aikajakso]): HttpStatus = {
+    val kokonaispäivät = jaksot.map(valmistavanLisäopetusJaksonPäivät).sum
+    HttpStatus.validate(kokonaispäivät <= maxValmistavanLisäopetusPäiviä)(
+      KoskiErrorCategory.badRequest.validation.perusopetus.valmistavanLisäopetuksenKestoYlittääVuoden()
+    )
+  }
+
+  private def valmistavanLisäopetusJaksonPäivät(jakso: Aikajakso): Long = {
+    jakso.loppu match {
+      case Some(loppu) => ChronoUnit.DAYS.between(jakso.alku, loppu) + 1
+      case None => 1 // Jos loppupäivää ei ole, lasketaan vain alkupäivä
+    }
+  }
+
+  private def validateValmistavanLisäopetusJaksojenPäällekkäisyys(jaksot: List[Aikajakso]): HttpStatus = {
+    val päällekkäisiäJaksoja = jaksot.combinations(2).exists {
+      case List(a, b) => a.overlaps(b)
+      case _ => false
+    }
+    HttpStatus.validate(!päällekkäisiäJaksoja)(
+      KoskiErrorCategory.badRequest.validation.perusopetus.valmistavanLisäopetusJaksotPäällekkäin()
+    )
+  }
+
+  private def validateValmistavanLisäopetusAvoinJaksoEiYliVuodenVanha(jaksot: List[Aikajakso]): HttpStatus = {
+    val vuosiSitten = LocalDate.now().minusYears(1)
+    val avoinJaksoYliVuodenVanha = jaksot.exists(jakso =>
+      jakso.loppu.isEmpty && jakso.alku.isBefore(vuosiSitten)
+    )
+    HttpStatus.validate(!avoinJaksoYliVuodenVanha)(
+      KoskiErrorCategory.badRequest.validation.perusopetus.valmistavanLisäopetusAvoinJaksoLiianVanha()
+    )
   }
 }
 
