@@ -16,6 +16,7 @@ Koski is a Finnish national education data repository system that stores and man
 - **Slick** for database access
 - **Flyway** for database migrations
 - **Maven** for build
+- **IntelliJ IDEA** for development environment and running/debugging test configurations
 
 ### Frontend
 - **Koski UI** (`web/`): TypeScript, React 16, Webpack, Bacon.js, LESS
@@ -105,6 +106,11 @@ valpas-web/src/                # Valpas frontend (separate React app)
   - `fix: try recursive pnpm install`
 
 ## Testing
+
+### IntelliJ IDEA MCP
+
+If I have IntelliJ IDEA MCP configured: Use it for building, running and debugging backend tests.
+If a specific configuration for the single test or suite is not available, ask me to create it manually.
 
 ### Backend Tests
 Location: `src/test/scala/fi/oph/koski/`
