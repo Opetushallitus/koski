@@ -192,7 +192,10 @@ case class PerusopetuksenOpiskeluoikeudenLisätiedot(
   @Description("Oppija on koulukotikorotuksen piirissä, aloituspäivä ja loppupäivä. Lista alku-loppu päivämääräpareja. Rahoituksen laskennassa käytettävä tieto.")
   @Tooltip("Tieto siitä, jos oppija on koulukotikorotuksen piirissä (aloituspäivä ja loppupäivä). Voi olla useita erillisiä jaksoja. Rahoituksen laskennassa käytettävä tieto.")
   @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))
-  koulukoti: Option[List[Aikajakso]] = None
+  koulukoti: Option[List[Aikajakso]] = None,
+  @Description("Perusopetukseen valmistavan opetuksen lisäopetuksen aikajaksot. Käytössä 1.8.2026 alkaen. Lisäopetuksen kokonaiskesto voi olla enintään yksi vuosi.")
+  @Tooltip("Perusopetukseen valmistavan opetuksen lisäopetuksen aikajaksot. Lisäopetuksen kokonaiskesto voi olla enintään yksi vuosi.")
+  valmistavanLisäopetus: Option[List[Aikajakso]] = None
 ) extends SisäoppilaitosmainenMajoitus
   with OikeusmaksuttomaanAsuntolapaikkaanAikajaksona
   with Majoitusetuinen

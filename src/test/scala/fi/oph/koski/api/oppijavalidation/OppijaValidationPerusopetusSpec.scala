@@ -1869,6 +1869,173 @@ class OppijaValidationPerusopetusSpec extends TutkinnonPerusteetTest[Perusopetuk
     }
   }
 
+  "Valmistavan lisäopetus -lisätiedot" - {
+    "Valmistavan lisäopetusjakso sallittu kun jakso alkaa 1.8.2026 tai sen jälkeen" in {
+      val opiskeluoikeus = defaultOpiskeluoikeus.copy(
+        lisätiedot = Some(pepiLisätiedot.copy(
+          valmistavanLisäopetus = Some(List(Aikajakso(date(2026, 8, 1), Some(date(2026, 10, 1)))))
+        ))
+      )
+      setupOppijaWithOpiskeluoikeus(opiskeluoikeus) {
+        verifyResponseStatusOk()
+      }
+    }
+
+    "Valmistavan lisäopetusjakso ei sallittu kun jakso alkaa ennen 1.8.2026" in {
+      val opiskeluoikeus = defaultOpiskeluoikeus.copy(
+        lisätiedot = Some(pepiLisätiedot.copy(
+          valmistavanLisäopetus = Some(List(Aikajakso(date(2026, 7, 31), Some(date(2026, 10, 1)))))
+        ))
+      )
+      setupOppijaWithOpiskeluoikeus(opiskeluoikeus) {
+        verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.perusopetus.valmistavanLisäopetusEiSallittuEnnen())
+      }
+    }
+
+    "Valmistavan lisäopetuksen kokonaiskesto voi olla enintään 365 päivää" in {
+      val opiskeluoikeus = defaultOpiskeluoikeus.copy(
+        lisätiedot = Some(pepiLisätiedot.copy(
+          valmistavanLisäopetus = Some(List(Aikajakso(date(2027, 1, 1), Some(date(2027, 12, 31)))))
+        ))
+      )
+      setupOppijaWithOpiskeluoikeus(opiskeluoikeus) {
+        verifyResponseStatusOk()
+      }
+    }
+
+    "Valmistavan lisäopetuksen kokonaiskesto ei saa ylittää 365 päivää" in {
+      val opiskeluoikeus = defaultOpiskeluoikeus.copy(
+        lisätiedot = Some(pepiLisätiedot.copy(
+          valmistavanLisäopetus = Some(List(Aikajakso(date(2027, 1, 1), Some(date(2028, 1, 1)))))
+        ))
+      )
+      setupOppijaWithOpiskeluoikeus(opiskeluoikeus) {
+        verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.perusopetus.valmistavanLisäopetuksenKestoYlittääVuoden())
+      }
+    }
+
+    "Useiden valmistavan lisäopetusjaksojen yhteiskesto ei saa ylittää 365 päivää" in {
+      val opiskeluoikeus = defaultOpiskeluoikeus.copy(
+        lisätiedot = Some(pepiLisätiedot.copy(
+          valmistavanLisäopetus = Some(List(
+            Aikajakso(date(2027, 1, 1), Some(date(2027, 6, 30))),
+            Aikajakso(date(2027, 8, 1), Some(date(2028, 2, 1)))
+          ))
+        ))
+      )
+      setupOppijaWithOpiskeluoikeus(opiskeluoikeus) {
+        verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.perusopetus.valmistavanLisäopetuksenKestoYlittääVuoden())
+      }
+    }
+
+    "Useiden valmistavan lisäopetusjaksojen yhteiskesto sallittu kun enintään 365 päivää" in {
+      val opiskeluoikeus = defaultOpiskeluoikeus.copy(
+        lisätiedot = Some(pepiLisätiedot.copy(
+          valmistavanLisäopetus = Some(List(
+            Aikajakso(date(2027, 1, 1), Some(date(2027, 6, 1))),
+            Aikajakso(date(2027, 8, 1), Some(date(2027, 12, 31)))
+          ))
+        ))
+      )
+      setupOppijaWithOpiskeluoikeus(opiskeluoikeus) {
+        verifyResponseStatusOk()
+      }
+    }
+
+    "Valmistavan lisäopetusjaksot eivät saa olla päällekkäin" in {
+      val opiskeluoikeus = defaultOpiskeluoikeus.copy(
+        lisätiedot = Some(pepiLisätiedot.copy(
+          valmistavanLisäopetus = Some(List(
+            Aikajakso(date(2027, 1, 1), Some(date(2027, 6, 30))),
+            Aikajakso(date(2027, 6, 1), Some(date(2027, 8, 31)))
+          ))
+        ))
+      )
+      setupOppijaWithOpiskeluoikeus(opiskeluoikeus) {
+        verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.perusopetus.valmistavanLisäopetusJaksotPäällekkäin())
+      }
+    }
+
+    "Peräkkäiset valmistavan lisäopetusjaksot sallittu" in {
+      val opiskeluoikeus = defaultOpiskeluoikeus.copy(
+        lisätiedot = Some(pepiLisätiedot.copy(
+          valmistavanLisäopetus = Some(List(
+            Aikajakso(date(2027, 1, 1), Some(date(2027, 5, 31))),
+            Aikajakso(date(2027, 6, 1), Some(date(2027, 8, 31)))
+          ))
+        ))
+      )
+      setupOppijaWithOpiskeluoikeus(opiskeluoikeus) {
+        verifyResponseStatusOk()
+      }
+    }
+
+    "Avoin valmistavan lisäopetusjakso ei sallittu jos alkamispäivä yli vuoden vanha" in {
+      val opiskeluoikeus = defaultOpiskeluoikeus.copy(
+        lisätiedot = Some(pepiLisätiedot.copy(
+          valmistavanLisäopetus = Some(List(
+            Aikajakso(date(2024, 1, 1), None)
+          ))
+        ))
+      )
+      setupOppijaWithOpiskeluoikeus(opiskeluoikeus) {
+        verifyResponseStatus(400,
+          KoskiErrorCategory.badRequest.validation.perusopetus.valmistavanLisäopetusEiSallittuEnnen(),
+          KoskiErrorCategory.badRequest.validation.perusopetus.valmistavanLisäopetusAvoinJaksoLiianVanha()
+        )
+      }
+    }
+
+    "Avoin valmistavan lisäopetusjakso sallittu jos alkamispäivä alle vuoden vanha" in {
+      val opiskeluoikeus = defaultOpiskeluoikeus.copy(
+        lisätiedot = Some(pepiLisätiedot.copy(
+          valmistavanLisäopetus = Some(List(
+            Aikajakso(date(2026, 9, 1), None)
+          ))
+        ))
+      )
+      setupOppijaWithOpiskeluoikeus(opiskeluoikeus) {
+        verifyResponseStatusOk()
+      }
+    }
+
+    "Suljettu valmistavan lisäopetusjakso sallittu vaikka alkamispäivä yli vuoden vanha" in {
+      val opiskeluoikeus = defaultOpiskeluoikeus.copy(
+        lisätiedot = Some(pepiLisätiedot.copy(
+          valmistavanLisäopetus = Some(List(
+            Aikajakso(date(2026, 8, 1), Some(date(2027, 1, 31)))
+          ))
+        ))
+      )
+      setupOppijaWithOpiskeluoikeus(opiskeluoikeus) {
+        verifyResponseStatusOk()
+      }
+    }
+
+    "Tyhjä valmistavan lisäopetus -lista sallittu" in {
+      val opiskeluoikeus = defaultOpiskeluoikeus.copy(
+        lisätiedot = Some(pepiLisätiedot.copy(
+          valmistavanLisäopetus = Some(List())
+        ))
+      )
+      setupOppijaWithOpiskeluoikeus(opiskeluoikeus) {
+        verifyResponseStatusOk()
+      }
+    }
+
+    "Lisätiedot ilman valmistavan lisäopetusta sallittu" in {
+      val opiskeluoikeus = defaultOpiskeluoikeus.copy(
+        lisätiedot = Some(pepiLisätiedot.copy(
+          valmistavanLisäopetus = None
+        ))
+      )
+      setupOppijaWithOpiskeluoikeus(opiskeluoikeus) {
+        verifyResponseStatusOk()
+      }
+    }
+
+    lazy val pepiLisätiedot = PerusopetuksenOpiskeluoikeudenLisätiedot()
+  }
 
   private def setupOppijaWithAndGetOpiskeluoikeus(oo: KoskeenTallennettavaOpiskeluoikeus): PerusopetuksenOpiskeluoikeus = setupOppijaWithOpiskeluoikeus(oo) {
     verifyResponseStatusOk()
