@@ -22,13 +22,14 @@ case class PerusopetukseenValmistavanOpetuksenOpiskeluoikeus(
   tyyppi: Koodistokoodiviite = OpiskeluoikeudenTyyppi.perusopetukseenvalmistavaopetus,
   organisaatiohistoria: Option[List[OpiskeluoikeudenOrganisaatiohistoria]] = None,
   lähdejärjestelmäkytkentäPurettu: Option[LähdejärjestelmäkytkennänPurkaminen] = None,
+  @Description("Perusopetukseen valmistavan opetuksen opiskeluoikeuden lisätiedot")
+  lisätiedot: Option[PerusopetukseenValmistavanOpetuksenOpiskeluoikeudenLisätiedot] = None,
 ) extends KoskeenTallennettavaOpiskeluoikeus {
   @Description("Oppijan oppimäärän päättymispäivä")
   override def päättymispäivä: Option[LocalDate] = super.päättymispäivä
   override def withOppilaitos(oppilaitos: Oppilaitos) = this.copy(oppilaitos = Some(oppilaitos))
   override def withKoulutustoimija(koulutustoimija: Koulutustoimija) = this.copy(koulutustoimija = Some(koulutustoimija))
   override def arvioituPäättymispäivä = None
-  override def lisätiedot = None
 }
 
 @Description("Perusopetukseen valmistavan opetuksen suorituksen tiedot")
@@ -113,3 +114,10 @@ case class PerusopetukseenValmistavanOpetuksenOpiskeluoikeusJakso(
   alku: LocalDate,
   tila: Koodistokoodiviite
 ) extends KoskiLomanSallivaOpiskeluoikeusjakso with KoskiLaajaOpiskeluoikeusjakso
+
+@Description("Perusopetukseen valmistavan opetuksen opiskeluoikeuden lisätiedot")
+case class PerusopetukseenValmistavanOpetuksenOpiskeluoikeudenLisätiedot(
+  @Description("Lisäopetuksen aikajaksot. Käytössä 1.8.2026 alkaen. Lisäopetuksen kokonaiskesto voi olla enintään yksi vuosi.")
+  @Tooltip("Lisäopetuksen aikajaksot. Lisäopetuksen kokonaiskesto voi olla enintään yksi vuosi.")
+  lisäopetus: Option[List[Aikajakso]] = None
+) extends OpiskeluoikeudenLisätiedot
