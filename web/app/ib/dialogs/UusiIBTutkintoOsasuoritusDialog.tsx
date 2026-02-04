@@ -8,6 +8,7 @@ import {
 } from '../../components-v2/containers/Modal'
 import { Checkbox } from '../../components-v2/controls/Checkbox'
 import { FlatButton } from '../../components-v2/controls/FlatButton'
+import { LocalizedTextEdit } from '../../components-v2/controls/LocalizedTestField'
 import { RaisedButton } from '../../components-v2/controls/RaisedButton'
 import {
   paikallinenKoodiToOption,
@@ -21,10 +22,11 @@ import {
   PaikallinenKoulutus,
   PaikallinenKoulutusFields
 } from '../../components-v2/opiskeluoikeus/PaikallinenKoulutusFields'
-import { localize, t } from '../../i18n/i18n'
+import { emptyLocalizedString, localize, t } from '../../i18n/i18n'
 import { IBKurssi } from '../../types/fi/oph/koski/schema/IBKurssi'
 import { IBKurssinSuoritus } from '../../types/fi/oph/koski/schema/IBKurssinSuoritus'
 import { Koodistokoodiviite } from '../../types/fi/oph/koski/schema/Koodistokoodiviite'
+import { OsaamisenTunnustaminen } from '../../types/fi/oph/koski/schema/OsaamisenTunnustaminen'
 import {
   isPaikallinenKoodi,
   PaikallinenKoodi
@@ -173,6 +175,50 @@ export const UusiIBTutkintoOsasuoritusDialog: AddOppiaineenOsasuoritusDialog<
               onChange={state.pakollinen.set}
               testId="pakollinen"
             />
+          </label>
+        )}
+        {state.tunnustettu.visible && (
+          <label>
+            {t('Osaamisen tunnustaminen')}
+            {state.tunnustettu.value ? (
+              <fieldset>
+                <LocalizedTextEdit
+                  testId="tunnustettu.selite"
+                  large
+                  value={state.tunnustettu.value.selite}
+                  onChange={(selite) =>
+                    state.tunnustettu.set({
+                      ...state.tunnustettu.value!,
+                      selite: selite ?? emptyLocalizedString
+                    })
+                  }
+                />
+                <Checkbox
+                  checked={state.tunnustettu.value.rahoituksenPiirissä}
+                  onChange={(rahoituksenPiirissä) =>
+                    state.tunnustettu.set({
+                      ...state.tunnustettu.value!,
+                      rahoituksenPiirissä
+                    })
+                  }
+                  label={t('Rahoituksen piirissä')}
+                  testId="tunnustettu.rahoituksenPiirissä"
+                />
+              </fieldset>
+            ) : (
+              <FlatButton
+                testId="tunnustettu.lisää"
+                onClick={() =>
+                  state.tunnustettu.set(
+                    OsaamisenTunnustaminen({
+                      selite: emptyLocalizedString
+                    })
+                  )
+                }
+              >
+                {t('Lisää osaamisen tunnustaminen')}
+              </FlatButton>
+            )}
           </label>
         )}
       </ModalBody>

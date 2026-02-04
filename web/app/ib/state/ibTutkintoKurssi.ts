@@ -7,6 +7,7 @@ import { IBKurssinSuoritus } from '../../types/fi/oph/koski/schema/IBKurssinSuor
 import { Koodistokoodiviite } from '../../types/fi/oph/koski/schema/Koodistokoodiviite'
 import { LaajuusOpintopisteissäTaiKursseissa } from '../../types/fi/oph/koski/schema/LaajuusOpintopisteissaTaiKursseissa'
 import { LocalizedString } from '../../types/fi/oph/koski/schema/LocalizedString'
+import { OsaamisenTunnustaminen } from '../../types/fi/oph/koski/schema/OsaamisenTunnustaminen'
 import { PaikallinenKoodi } from '../../types/fi/oph/koski/schema/PaikallinenKoodi'
 import {
   createIBLaajuus,
@@ -23,6 +24,7 @@ export type IBTutkintoKurssiState = {
   laajuus: DialogField<LaajuusOpintopisteissäTaiKursseissa>
   pakollinen: DialogField<boolean>
   suorituskieli: DialogField<Koodistokoodiviite<'kieli'>>
+  tunnustettu: DialogField<OsaamisenTunnustaminen>
   result: IBKurssinSuoritus | null
 }
 
@@ -44,6 +46,8 @@ export const useIBTutkintoKurssiState = (
   const suorituskieli =
     useDialogField<Koodistokoodiviite<'kieli'>>(tunnisteSelected)
 
+  const tunnustettu = useDialogField<OsaamisenTunnustaminen>(tunnisteSelected)
+
   const result = useMemo(
     () =>
       createIBKurssinSuoritus({
@@ -51,14 +55,16 @@ export const useIBTutkintoKurssiState = (
         kuvaus: kuvaus.value,
         laajuus: laajuus.value,
         pakollinen: pakollinen.value,
-        suorituskieli: suorituskieli.value
+        suorituskieli: suorituskieli.value,
+        tunnustettu: tunnustettu.value
       }),
     [
       tunniste.value,
       kuvaus.value,
       laajuus.value,
       pakollinen.value,
-      suorituskieli.value
+      suorituskieli.value,
+      tunnustettu.value
     ]
   )
 
@@ -68,6 +74,7 @@ export const useIBTutkintoKurssiState = (
     laajuus,
     pakollinen,
     suorituskieli,
+    tunnustettu,
     result
   }
 }
