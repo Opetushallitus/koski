@@ -1,9 +1,13 @@
-## 29.1.2025
+## 4.2.2026
+
+- Tunnustettu-rakenne lisättu IB-kurssin suorituksiin.
+
+## 29.1.2026
 
 - Lisätty korkeakoulun tutkinnon ja opintojakson suorituksille kenttä `hyväksilukupäivä`, joka kertoo päivämäärän, jolloin suoritus on hyväksiluettu. Tieto luetaan Virta-datasta.
 - Korjattu `suorituskieli`-kentän parsinta korkeakoulututkinnon suoritukselle Virta-datasta.
 
-## 14.1.2025
+## 14.1.2026
 Ammatillisen tutkinnon osasuoritusten AmmatillisenTutkinnonViestintäJaVuorovaikutusKielivalinnalla annotaatioihin lisätty VVAI26, VVVK26, ja VVTK26
 
 ## 30.10.2025
