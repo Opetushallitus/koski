@@ -587,8 +587,10 @@ describe('Lukiokoulutus2019', function () {
             'Fysiikka\nFY1\n10 FY2\n10 FY3\n10 FY123 *\n10 FY124 *\nS 87 87 10\n' +
             'Kemia 0 0 4\n' +
             'Tanssi ja liike, valinnainen *\nITT234 *\n10 ITT235 *\n10 52 52 8\n' +
-            'Arvioitujen osasuoritusten laajuus yhteensä: 161,5 Hyväksytysti arvioitujen osasuoritusten laajuus yhteensä: 158,0\n' +
-            '* = paikallinen opintojakso tai oppiaine'
+            'Biologia ** 6 6 9\n' +
+            'Arvioitujen osasuoritusten laajuus yhteensä: 167,5 Hyväksytysti arvioitujen osasuoritusten laajuus yhteensä: 164,0\n' +
+            '* = paikallinen opintojakso tai oppiaine\n' +
+            '** = erityisenä tutkintona suoritettu oppiaine'
         )
       })
 
@@ -769,6 +771,157 @@ describe('Lukiokoulutus2019', function () {
               ).to.equal('Ressun lukio')
               expect(opinnot.getSuorituskieli()).to.equal('suomi')
             })
+          })
+        })
+      })
+    })
+  })
+
+  describe('Erityinen tutkinto', function () {
+    describe('Aikuisten oppimäärä, suoritustason erityinen tutkinto', function () {
+      before(
+        prepareForNewOppija('kalle', '130307A208A'),
+        addOppija.enterValidDataLukio({
+          oppilaitos: 'Ressun',
+          oppimäärä: 'Lukion oppimäärä',
+          peruste:
+            'OPH-2267-2019 Aikuisten lukiokoulutuksen opetussuunnitelman perusteet 2019',
+          opintojenRahoitus: 'Valtionosuusrahoitteinen koulutus'
+        }),
+        addOppija.selectOppimäärä('Lukion oppimäärä'),
+        addOppija.submitAndExpectSuccess(
+          'Tyhjä, Tero (130307A208A)',
+          'Lukion oppimäärä'
+        )
+      )
+
+      describe('Erityinen tutkinto -merkinnän asettaminen ja tallennus', function () {
+        before(
+          editor.edit,
+          editor.property('suoritettuErityisenäTutkintona').setValue(true),
+          opinnot.oppiaineet.uusiOppiaine().selectValue('Biologia'),
+          function () {
+            return Page(S('.oppiaine.BI .laajuus')).setInputValue(
+              'input',
+              '12'
+            )()
+          },
+          editor
+            .subEditor('.oppiaine.BI:eq(0)')
+            .propertyBySelector('.arvosana')
+            .selectValue('9'),
+          editor.saveChanges,
+          wait.until(page.isSavedLabelShown)
+        )
+
+        describe('Tallennuksen jälkeen', function () {
+          it('erityinen tutkinto näkyy suorituksen tiedoissa', function () {
+            expect(
+              extractAsText(S('.suoritus > .properties'))
+            ).to.contain('Suoritettu erityisenä tutkintona kyllä')
+          })
+
+          it('oppiaineen laajuus näkyy oikein', function () {
+            expect(extractAsText(S('.oppiaine.BI .laajuus'))).to.equal('12 12')
+          })
+
+          it('näyttää ** merkinnän oppiaineella', function () {
+            expect(extractAsText(S('.oppiaine.BI'))).to.contain('**')
+          })
+
+          it('näyttää footnote-kuvauksen sivun alalaidassa', function () {
+            expect(extractAsText(S('.selitteet'))).to.contain(
+              '** = erityisenä tutkintona suoritettu oppiaine'
+            )
+          })
+
+          it('yhteensä-laajuus käyttää oppiaineen laajuutta erityiselle tutkinnolle', function () {
+            expect(extractAsText(S('.kurssit-yhteensä'))).to.contain(
+              'Arvioitujen osasuoritusten laajuus yhteensä: 12,0'
+            )
+            expect(extractAsText(S('.kurssit-yhteensä'))).to.contain(
+              'Hyväksytysti arvioitujen osasuoritusten laajuus yhteensä: 12,0'
+            )
+          })
+        })
+      })
+    })
+
+    describe('Aineopinnot, oppiainetason erityinen tutkinto', function () {
+      before(
+        prepareForNewOppija('kalle', '180707A7508'),
+        addOppija.enterValidDataLukio({
+          oppilaitos: 'Ressun',
+          oppimäärä: 'Lukion aineopinnot',
+          peruste:
+            'OPH-2267-2019 Aikuisten lukiokoulutuksen opetussuunnitelman perusteet 2019',
+          opintojenRahoitus: 'Valtionosuusrahoitteinen koulutus'
+        }),
+        addOppija.selectOppimäärä('Lukion aineopinnot'),
+        addOppija.submitAndExpectSuccess(
+          'Tyhjä, Tero (180707A7508)',
+          'Lukion aineopinnot'
+        )
+      )
+
+      describe('Oppiainetason erityinen tutkinto ja tallennus', function () {
+        before(editor.edit)
+
+        var uusiOppiaine = opinnot.oppiaineet.uusiOppiaine()
+
+        before(
+          uusiOppiaine.selectValue('Biologia'),
+          function () {
+            var bi = editor.subEditor('.oppiaine.BI:eq(0)')
+            return bi
+              .property('suoritettuErityisenäTutkintona')
+              .setValue(true)()
+          },
+          function () {
+            return Page(S('.oppiaine.BI .laajuus')).setInputValue(
+              'input',
+              '12'
+            )()
+          },
+          editor
+            .subEditor('.oppiaine.BI:eq(0)')
+            .propertyBySelector('.arvosana')
+            .selectValue('9'),
+          uusiOppiaine.selectValue('Fysiikka'),
+          editor.saveChanges,
+          wait.until(page.isSavedLabelShown)
+        )
+
+        describe('Tallennuksen jälkeen', function () {
+          it('erityisenä tutkintona suoritetun oppiaineen laajuus näkyy oikein', function () {
+            expect(extractAsText(S('.oppiaine.BI .laajuus'))).to.equal('12 12')
+          })
+
+          it('näyttää ** merkinnän erityisenä tutkintona suoritetulla oppiaineella', function () {
+            expect(extractAsText(S('.oppiaine.BI'))).to.contain('**')
+          })
+
+          it('normaalin oppiaineen laajuus näkyy oikein (0 kun ei moduuleja)', function () {
+            expect(extractAsText(S('.oppiaine.FY .laajuus'))).to.equal('0 0')
+          })
+
+          it('normaalilla oppiaineella ei ole ** merkintää', function () {
+            expect(extractAsText(S('.oppiaine.FY'))).to.not.contain('**')
+          })
+
+          it('näyttää footnote-kuvauksen sivun alalaidassa', function () {
+            expect(extractAsText(S('.selitteet'))).to.contain(
+              '** = erityisenä tutkintona suoritettu oppiaine'
+            )
+          })
+
+          it('yhteensä-laajuus käyttää oppiaineen laajuutta erityiselle tutkinnolle', function () {
+            expect(extractAsText(S('.kurssit-yhteensä'))).to.contain(
+              'Arvioitujen osasuoritusten laajuus yhteensä: 12,0'
+            )
+            expect(extractAsText(S('.kurssit-yhteensä'))).to.contain(
+              'Hyväksytysti arvioitujen osasuoritusten laajuus yhteensä: 12,0'
+            )
           })
         })
       })

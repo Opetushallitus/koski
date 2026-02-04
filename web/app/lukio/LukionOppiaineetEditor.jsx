@@ -25,6 +25,7 @@ import { numberToString } from '../util/format.js'
 import { isPaikallinen } from '../suoritus/Koulutusmoduuli'
 import { FootnoteDescriptions } from '../components/footnote'
 import Text from '../i18n/Text'
+import { erityinenTutkintoFootnote } from './OmatTiedotLukionOppiaineet'
 
 export const LukionOppiaineetEditor = ({
   suorituksetModel,
@@ -34,7 +35,6 @@ export const LukionOppiaineetEditor = ({
   additionalEditableKoulutusmoduuliProperties,
   laajuusHeaderText = 'Laajuus',
   useHylkäämättömätLaajuus = true,
-  useOppiaineLaajuus = false,
   showHyväksytystiArvioitujenLaajuus = false,
   forceLaajuusOpintopisteinä = false
 }) => {
@@ -48,6 +48,9 @@ export const LukionOppiaineetEditor = ({
     <LukionOppiaineEditor
       key={oppiaineIndex}
       oppiaine={oppiaine}
+      oppiaineFootnote={
+        isErityinenTutkinto(oppiaine) && erityinenTutkintoFootnote
+      }
       additionalOnlyEditableProperties={additionalOnlyEditableProperties}
       additionalEditableKoulutusmoduuliProperties={
         additionalEditableKoulutusmoduuliProperties
@@ -55,7 +58,7 @@ export const LukionOppiaineetEditor = ({
       customOsasuoritusTitle="osasuoritus"
       showArviointiEditor={!oppiaine.value.classes.includes('arvioinniton')}
       useHylkäämättömätLaajuus={useHylkäämättömätLaajuus}
-      useOppiaineLaajuus={useOppiaineLaajuus}
+      useOppiaineLaajuus={false}
       showHyväksytystiArvioitujenLaajuus={showHyväksytystiArvioitujenLaajuus}
     />
   ))
@@ -101,6 +104,16 @@ export const LukionOppiaineetEditor = ({
                 suorituksetModel.context.suoritus
               ),
               hint: '*'
+            }
+          ]}
+        />
+      )}
+      {oppiaineet.some((oppiaine) => isErityinenTutkinto(oppiaine)) && (
+        <FootnoteDescriptions
+          data={[
+            {
+              title: 'Erityisenä tutkintona suoritettu oppiaine',
+              hint: '**'
             }
           ]}
         />

@@ -154,7 +154,7 @@ export default ({
                   <LukionOppiaineEditor
                     key={oppiaineIndex}
                     oppiaine={oppiaine}
-                    footnote={getFootnote(oppiaine)}
+                    arvosanaFootnote={getFootnote(oppiaine)}
                     {...commonOppiaineProps}
                   />
                 )),
