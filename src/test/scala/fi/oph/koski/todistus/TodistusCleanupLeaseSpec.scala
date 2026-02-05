@@ -36,7 +36,7 @@ class TodistusCleanupLeaseSpec extends AnyFreeSpec with TestEnvironment with Mat
       INSERT INTO todistus_job(
         id, user_oid, oppija_oid, opiskeluoikeus_oid, template_variant, state, created_at, started_at, worker, attempts
       ) VALUES (
-        $id::uuid, $userOid, $oppijaOid, $opiskeluoikeusOid, ${TodistusLanguage.FI}, ${TodistusState.GATHERING_INPUT},
+        $id::uuid, $userOid, $oppijaOid, $opiskeluoikeusOid, ${TodistusTemplateVariant.FI}, ${TodistusState.GATHERING_INPUT},
         ${java.sql.Timestamp.valueOf(now)}, ${java.sql.Timestamp.valueOf(now)}, $orphanWorker, 0
       )
       """.asUpdate)
@@ -65,7 +65,7 @@ class TodistusCleanupLeaseSpec extends AnyFreeSpec with TestEnvironment with Mat
       INSERT INTO todistus_job(
         id, user_oid, oppija_oid, opiskeluoikeus_oid, template_variant, state, created_at, worker, attempts
       ) VALUES (
-        $queuedId::uuid, $userOid, $oppijaOid, ${"1.2.246.562.15.00000000010"}, ${TodistusLanguage.FI}, ${TodistusState.QUEUED},
+        $queuedId::uuid, $userOid, $oppijaOid, ${"1.2.246.562.15.00000000010"}, ${TodistusTemplateVariant.FI}, ${TodistusState.QUEUED},
         ${java.sql.Timestamp.valueOf(now)}, $orphanWorker, 1
       )
       """.asUpdate)
@@ -75,7 +75,7 @@ class TodistusCleanupLeaseSpec extends AnyFreeSpec with TestEnvironment with Mat
       INSERT INTO todistus_job(
         id, user_oid, oppija_oid, opiskeluoikeus_oid, template_variant, state, created_at, started_at, completed_at, worker, attempts
       ) VALUES (
-        $completedId::uuid, $userOid, $oppijaOid, ${"1.2.246.562.15.00000000011"}, ${TodistusLanguage.FI}, ${TodistusState.COMPLETED},
+        $completedId::uuid, $userOid, $oppijaOid, ${"1.2.246.562.15.00000000011"}, ${TodistusTemplateVariant.FI}, ${TodistusState.COMPLETED},
         ${java.sql.Timestamp.valueOf(now)}, ${java.sql.Timestamp.valueOf(now)}, ${java.sql.Timestamp.valueOf(now)}, $orphanWorker, 1
       )
       """.asUpdate)
@@ -109,7 +109,7 @@ class TodistusCleanupLeaseSpec extends AnyFreeSpec with TestEnvironment with Mat
       INSERT INTO todistus_job(
         id, user_oid, oppija_oid, opiskeluoikeus_oid, template_variant, state, created_at, started_at, worker, attempts
       ) VALUES (
-        $id::uuid, $userOid, $oppijaOid, $opiskeluoikeusOid, ${TodistusLanguage.FI}, ${TodistusState.GATHERING_INPUT},
+        $id::uuid, $userOid, $oppijaOid, $opiskeluoikeusOid, ${TodistusTemplateVariant.FI}, ${TodistusState.GATHERING_INPUT},
         ${java.sql.Timestamp.valueOf(now)}, ${java.sql.Timestamp.valueOf(now)}, $activeHolder, 0
       )
       """.asUpdate)
