@@ -113,31 +113,57 @@ Esimerkki:
 {{title:fi.oph.koski.massaluovutus.raportit.MassaluovutusQueryLukionSuoritustiedot}}
 {{docs:fi.oph.koski.massaluovutus.raportit.MassaluovutusQueryLukionSuoritustiedot}}
 
-Esimerkki CSV-datan hakemisesta:
-
-    POST {{var:baseUrl}}/api/massaluovutus HTTP/1.1
-    {{var:headers}}
-
-    {{json:LukionSuoritustiedotCsv}}
-
-Esimerkki laskentataulukkomuotoisen datan hakemisesta:
+Esimerkki:
 
     POST {{var:baseUrl}}/api/massaluovutus HTTP/1.1
     {{var:headers}}
 
     {{json:LukionSuoritustiedotXlsx}}
 
-{{title:fi.oph.koski.massaluovutus.raportit.MassaluovutusQueryAmmatillinenOpiskelijavuositiedot}}
-{{docs:fi.oph.koski.massaluovutus.raportit.MassaluovutusQueryAmmatillinenOpiskelijavuositiedot}}
+{{title:fi.oph.koski.massaluovutus.raportit.MassaluovutusQueryLukio2019Suoritustiedot}}
+{{docs:fi.oph.koski.massaluovutus.raportit.MassaluovutusQueryLukio2019Suoritustiedot}}
 
-Esimerkki CSV-datan hakemisesta:
+Esimerkki:
 
     POST {{var:baseUrl}}/api/massaluovutus HTTP/1.1
     {{var:headers}}
 
-    {{json:AmmatillinenOpiskelijavuositiedotCsv}}
+    {{json:Lukio2019SuoritustiedotXlsx}}
 
-Esimerkki laskentataulukkomuotoisen datan hakemisesta:
+{{title:fi.oph.koski.massaluovutus.raportit.MassaluovutusQueryLukioKurssikertymat}}
+{{docs:fi.oph.koski.massaluovutus.raportit.MassaluovutusQueryLukioKurssikertymat}}
+
+Esimerkki:
+
+    POST {{var:baseUrl}}/api/massaluovutus HTTP/1.1
+    {{var:headers}}
+
+    {{json:LukioKurssikertymatXlsx}}
+
+{{title:fi.oph.koski.massaluovutus.raportit.MassaluovutusQueryLukio2019Opintopistekertymat}}
+{{docs:fi.oph.koski.massaluovutus.raportit.MassaluovutusQueryLukio2019Opintopistekertymat}}
+
+Esimerkki:
+
+    POST {{var:baseUrl}}/api/massaluovutus HTTP/1.1
+    {{var:headers}}
+
+    {{json:Lukio2019OpintopistekertymatXlsx}}
+
+{{title:fi.oph.koski.massaluovutus.raportit.MassaluovutusQueryLukioDiaIbInternationalESHOpiskelijamaarat}}
+{{docs:fi.oph.koski.massaluovutus.raportit.MassaluovutusQueryLukioDiaIbInternationalESHOpiskelijamaarat}}
+
+Esimerkki:
+
+    POST {{var:baseUrl}}/api/massaluovutus HTTP/1.1
+    {{var:headers}}
+
+    {{json:LukioDiaIbInternationalESHOpiskelijamaaratXlsx}}
+
+{{title:fi.oph.koski.massaluovutus.raportit.MassaluovutusQueryAmmatillinenOpiskelijavuositiedot}}
+{{docs:fi.oph.koski.massaluovutus.raportit.MassaluovutusQueryAmmatillinenOpiskelijavuositiedot}}
+
+Esimerkki:
 
     POST {{var:baseUrl}}/api/massaluovutus HTTP/1.1
     {{var:headers}}
@@ -147,14 +173,7 @@ Esimerkki laskentataulukkomuotoisen datan hakemisesta:
 {{title:fi.oph.koski.massaluovutus.raportit.MassaluovutusQueryAmmatillinenTutkintoSuoritustiedot}}
 {{docs:fi.oph.koski.massaluovutus.raportit.MassaluovutusQueryAmmatillinenTutkintoSuoritustiedot}}
 
-Esimerkki CSV-datan hakemisesta:
-
-    POST {{var:baseUrl}}/api/massaluovutus HTTP/1.1
-    {{var:headers}}
-
-    {{json:AmmatillinenTutkintoSuoritustiedotCsv}}
-
-Esimerkki laskentataulukkomuotoisen datan hakemisesta:
+Esimerkki:
 
     POST {{var:baseUrl}}/api/massaluovutus HTTP/1.1
     {{var:headers}}
@@ -164,14 +183,7 @@ Esimerkki laskentataulukkomuotoisen datan hakemisesta:
 {{title:fi.oph.koski.massaluovutus.raportit.MassaluovutusQueryAmmatillinenOsittainenSuoritustiedot}}
 {{docs:fi.oph.koski.massaluovutus.raportit.MassaluovutusQueryAmmatillinenOsittainenSuoritustiedot}}
 
-Esimerkki CSV-datan hakemisesta:
-
-    POST {{var:baseUrl}}/api/massaluovutus HTTP/1.1
-    {{var:headers}}
-
-    {{json:AmmatillinenOsittainenSuoritustiedotCsv}}
-
-Esimerkki laskentataulukkomuotoisen datan hakemisesta:
+Esimerkki:
 
     POST {{var:baseUrl}}/api/massaluovutus HTTP/1.1
     {{var:headers}}
@@ -181,14 +193,7 @@ Esimerkki laskentataulukkomuotoisen datan hakemisesta:
 {{title:fi.oph.koski.massaluovutus.raportit.MassaluovutusQueryMuuAmmatillinen}}
 {{docs:fi.oph.koski.massaluovutus.raportit.MassaluovutusQueryMuuAmmatillinen}}
 
-Esimerkki CSV-datan hakemisesta:
-
-    POST {{var:baseUrl}}/api/massaluovutus HTTP/1.1
-    {{var:headers}}
-
-    {{json:MuuAmmatillinenCsv}}
-
-Esimerkki laskentataulukkomuotoisen datan hakemisesta:
+Esimerkki:
 
     POST {{var:baseUrl}}/api/massaluovutus HTTP/1.1
     {{var:headers}}
@@ -198,14 +203,7 @@ Esimerkki laskentataulukkomuotoisen datan hakemisesta:
 {{title:fi.oph.koski.massaluovutus.raportit.MassaluovutusQueryTOPKSAmmatillinen}}
 {{docs:fi.oph.koski.massaluovutus.raportit.MassaluovutusQueryTOPKSAmmatillinen}}
 
-Esimerkki CSV-datan hakemisesta:
-
-    POST {{var:baseUrl}}/api/massaluovutus HTTP/1.1
-    {{var:headers}}
-
-    {{json:TOPKSAmmatillinenCsv}}
-
-Esimerkki laskentataulukkomuotoisen datan hakemisesta:
+Esimerkki:
 
     POST {{var:baseUrl}}/api/massaluovutus HTTP/1.1
     {{var:headers}}

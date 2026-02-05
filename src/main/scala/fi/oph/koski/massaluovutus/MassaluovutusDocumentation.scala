@@ -7,7 +7,7 @@ import fi.oph.koski.log.Logging
 import fi.oph.koski.massaluovutus.luokallejaaneet.MassaluovutusQueryLuokalleJaaneetExamples
 import fi.oph.koski.massaluovutus.organisaationopiskeluoikeudet.{QueryOrganisaationOpiskeluoikeudetCsvDocumentation, QueryOrganisaationOpiskeluoikeudetJsonDocumentation}
 import fi.oph.koski.massaluovutus.paallekkaisetopiskeluoikeudet.QueryPaallekkaisetOpiskeluoikeudetDocumentation
-import fi.oph.koski.massaluovutus.raportit.{QueryAmmatillinenOpiskelijavuositiedotDocumentation, QueryAmmatillinenOsittainenSuoritustiedotDocumentation, QueryAmmatillinenTutkintoSuoritustiedotDocumentation, QueryLukionSuoritustiedotDocumentation, QueryMuuAmmatillinenDocumentation, QueryTOPKSAmmatillinenDocumentation}
+import fi.oph.koski.massaluovutus.raportit.{QueryAmmatillinenOpiskelijavuositiedotDocumentation, QueryAmmatillinenOsittainenSuoritustiedotDocumentation, QueryAmmatillinenTutkintoSuoritustiedotDocumentation, QueryLukio2019OpintopistekertymatDocumentation, QueryLukio2019SuoritustiedotDocumentation, QueryLukioDiaIbInternationalESHOpiskelijamaaratDocumentation, QueryLukioKurssikertymatDocumentation, QueryLukionSuoritustiedotDocumentation, QueryMuuAmmatillinenDocumentation, QueryTOPKSAmmatillinenDocumentation}
 import fi.oph.koski.massaluovutus.valintalaskenta.ValintalaskentaQueryDocumentation
 import fi.oph.koski.massaluovutus.valpas.ValpasMassaluovutusQueryParameters
 import fi.oph.koski.massaluovutus.valpas.eioppivelvollisuuttasuorittavat.ValpasEiOppivelvollisuuttaSuorittavatQueryDocumentation
@@ -270,6 +270,10 @@ object QueryExamples {
     case "AmmatillinenTutkintoSuoritustiedotXlsx" => asJson(QueryAmmatillinenTutkintoSuoritustiedotDocumentation.xlsxExample)
     case "AmmatillinenOsittainenSuoritustiedotXlsx" => asJson(QueryAmmatillinenOsittainenSuoritustiedotDocumentation.xlsxExample)
     case "LukionSuoritustiedotXlsx" => asJson(QueryLukionSuoritustiedotDocumentation.xlsxExample)
+    case "Lukio2019SuoritustiedotXlsx" => asJson(QueryLukio2019SuoritustiedotDocumentation.xlsxExample)
+    case "LukioKurssikertymatXlsx" => asJson(QueryLukioKurssikertymatDocumentation.xlsxExample)
+    case "Lukio2019OpintopistekertymatXlsx" => asJson(QueryLukio2019OpintopistekertymatDocumentation.xlsxExample)
+    case "LukioDiaIbInternationalESHOpiskelijamaaratXlsx" => asJson(QueryLukioDiaIbInternationalESHOpiskelijamaaratDocumentation.xlsxExample)
     case "MuuAmmatillinenXlsx" => asJson(QueryMuuAmmatillinenDocumentation.xlsxExample)
     case "PaallekkaisetOpiskeluoikeudetXlsx" => asJson(QueryPaallekkaisetOpiskeluoikeudetDocumentation.xlsxExample)
     case "TOPKSAmmatillinenXlsx" => asJson(QueryTOPKSAmmatillinenDocumentation.xlsxExample)
