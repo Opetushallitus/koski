@@ -36,6 +36,7 @@ object SupaOpiskeluoikeusO {
       case o: IBOpiskeluoikeus => SupaIBOpiskeluoikeus(o, oppijaOid)
       case o: InternationalSchoolOpiskeluoikeus => SupaInternationalSchoolOpiskeluoikeus(o, oppijaOid)
       case o: LukionOpiskeluoikeus => Some(SupaLukionOpiskeluoikeus(o, oppijaOid))
+      case o: PerusopetukseenValmistavanOpetuksenOpiskeluoikeus => Some(SupaPerusopetukseenValmistavanOpetuksenOpiskeluoikeus(o, oppijaOid))
       case _ => None
     }
 }
