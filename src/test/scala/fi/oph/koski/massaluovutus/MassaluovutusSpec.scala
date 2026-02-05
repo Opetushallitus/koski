@@ -15,11 +15,11 @@ import fi.oph.koski.massaluovutus.paallekkaisetopiskeluoikeudet.MassaluovutusQue
 import fi.oph.koski.massaluovutus.suorituspalvelu.{SuorituspalveluMuuttuneetJalkeenQuery, SuorituspalveluOppijaOidsQuery}
 import fi.oph.koski.massaluovutus.valintalaskenta.ValintalaskentaQuery
 import fi.oph.koski.organisaatio.MockOrganisaatiot
-import fi.oph.koski.raportit.RaportitService
 import fi.oph.koski.schema.KoskiSchema.strictDeserialization
 import fi.oph.koski.schema.{KoskeenTallennettavaOpiskeluoikeus, LocalizedString, OpiskeluoikeudenTyyppi, PerusopetuksenVuosiluokanSuoritus}
 import fi.oph.koski.util.Wait
-import fi.oph.koski.{KoskiApplicationForTests, KoskiHttpSpec}
+import fi.oph.koski.KoskiApplicationForTests
+import fi.oph.koski.raportit.RaportitService
 import fi.oph.scalaschema.Serializer.format
 import org.json4s.jackson.JsonMethods
 import org.json4s.{JArray, JInt, JNothing, JObject, JValue}
@@ -33,9 +33,8 @@ import java.sql.Timestamp
 import java.time.{Duration, LocalDate, LocalDateTime}
 import java.util.UUID
 
-class MassaluovutusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers with BeforeAndAfterAll with BeforeAndAfterEach with OpiskeluoikeusTestMethodsAmmatillinen {
+class MassaluovutusSpec extends AnyFreeSpec with MassaluovutusTestMethods with Matchers with BeforeAndAfterAll with BeforeAndAfterEach with OpiskeluoikeusTestMethodsAmmatillinen {
   override def body: String = new String(response.bodyBytes, StandardCharsets.UTF_8)
-  val app = KoskiApplicationForTests
 
   override protected def beforeEach(): Unit = {
     resetFixturesSkipInvalidOpiskeluoikeudet()
@@ -1423,81 +1422,4 @@ class MassaluovutusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers wit
       }
     }
   }
-
-
-  def addQuery[T](query: MassaluovutusQueryParameters, user: UserWithPassword)(f: => T): T =
-    post("api/massaluovutus", JsonSerializer.writeWithRoot(query), headers = authHeaders(user) ++ jsonContent)(f)
-
-  def addQuerySuccessfully[T](query: MassaluovutusQueryParameters, user: UserWithPassword)(f: QueryResponse => T): T = {
-    addQuery(query, user) {
-      f(parsedResponse)
-    }
-  }
-
-  def getQuery[T](queryId: String, user: UserWithPassword)(f: => T): T =
-    get(s"api/massaluovutus/$queryId", headers = authHeaders(user) ++ jsonContent)(f)
-
-  def getQuerySuccessfully[T](queryId: String, user: UserWithPassword)(f: QueryResponse => T): T = {
-    getQuery(queryId, user) {
-      f(parsedResponse)
-    }
-  }
-
-  def getResult[T](url: String, user: UserWithPassword)(f: => T): T = {
-    val rootUrl = KoskiApplicationForTests.config.getString("koski.root.url")
-    get(url.replace(rootUrl, ""), headers = authHeaders(user))(f)
-  }
-
-  def verifyResult(url: String, user: UserWithPassword): Unit =
-    getResult(url, user) {
-      verifyResponseStatus(302) // 302: Found (redirect)
-    }
-
-  def verifyResultAndContent[T](url: String, user: UserWithPassword)(f: => T): T = {
-    val location = new URL(getResult(url, user) {
-      verifyResponseStatus(302) // 302: Found (redirect)
-      response.header("Location")
-    })
-    withBaseUrl(location) {
-      get(s"${location.getPath}?${location.getQuery}") {
-        verifyResponseStatusOk()
-        f
-      }
-    }
-  }
-
-  def waitForStateTransition(queryId: String, user: UserWithPassword)(states: String*): QueryResponse = {
-    var lastResponse: Option[QueryResponse] = None
-    Wait.until {
-      getQuerySuccessfully(queryId, user) { response =>
-        states should contain(response.status)
-        lastResponse = Some(response)
-        response.status == states.last
-      }
-    }
-    lastResponse.get
-  }
-
-  def waitForCompletion(queryId: String, user: UserWithPassword): CompleteQueryResponse =
-    waitForStateTransition(queryId, user)(QueryState.pending, QueryState.running, QueryState.complete).asInstanceOf[CompleteQueryResponse]
-
-  def waitForFailure(queryId: String, user: UserWithPassword): FailedQueryResponse =
-    waitForStateTransition(queryId, user)(QueryState.pending, QueryState.running, QueryState.failed).asInstanceOf[FailedQueryResponse]
-
-  def parsedResponse: QueryResponse = {
-    verifyResponseStatusOk()
-    val json = JsonMethods.parse(body)
-    val result = KoskiApplicationForTests.validatingAndResolvingExtractor.extract[QueryResponse](json, strictDeserialization)
-    result should not be Left
-    result.toOption.get
-  }
-
-  def withoutRunningQueryScheduler[T](f: => T): T =
-    try {
-      app.massaluovutusScheduler.pause(Duration.ofDays(1))
-      f
-    } finally {
-      app.massaluovutusService.truncate()
-      app.massaluovutusScheduler.resume()
-    }
 }
