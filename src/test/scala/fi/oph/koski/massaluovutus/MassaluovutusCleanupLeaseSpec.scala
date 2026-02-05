@@ -20,7 +20,7 @@ class MassaluovutusCleanupLeaseSpec extends AnyFreeSpec with TestEnvironment wit
 
   override protected def beforeEach(): Unit = {
     QueryMethods.runDbSync(db, sql"TRUNCATE TABLE massaluovutus".asUpdate)
-    QueryMethods.runDbSync(db, sql"DELETE FROM worker_lease".asUpdate)
+    QueryMethods.runDbSync(db, sql"DELETE FROM worker_lease WHERE name = 'massaluovutus'".asUpdate)
     super.beforeEach()
   }
 

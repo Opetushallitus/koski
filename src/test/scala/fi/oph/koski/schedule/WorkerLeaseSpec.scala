@@ -17,7 +17,7 @@ class WorkerLeaseSpec extends AnyFreeSpec with TestEnvironment with Matchers wit
   private val repo = new WorkerLeaseRepository(db)
 
   override protected def beforeEach(): Unit = {
-    QueryMethods.runDbSync(db, sql"DELETE FROM worker_lease".asUpdate)
+    QueryMethods.runDbSync(db, sql"DELETE FROM worker_lease WHERE name IN ('test', 'multi', 'reacquire')".asUpdate)
     super.beforeEach()
   }
 
