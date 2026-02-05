@@ -54,6 +54,47 @@ class TodistusCleanupLeaseSpec extends AnyFreeSpec with TestEnvironment with Mat
     result._2 should be(None)
   }
 
+  "cleanup does not requeue QUEUED or COMPLETED jobs from orphan workers" in {
+    val orphanWorker = "orphan-worker"
+    val userOid = "1.2.246.562.24.00000000001"
+    val oppijaOid = "1.2.246.562.24.00000000002"
+    val now = LocalDateTime.now()
+
+    val queuedId = UUID.randomUUID().toString
+    QueryMethods.runDbSync(db, sql"""
+      INSERT INTO todistus_job(
+        id, user_oid, oppija_oid, opiskeluoikeus_oid, language, state, created_at, worker, attempts
+      ) VALUES (
+        $queuedId::uuid, $userOid, $oppijaOid, ${"1.2.246.562.15.00000000010"}, ${TodistusLanguage.FI}, ${TodistusState.QUEUED},
+        ${java.sql.Timestamp.valueOf(now)}, $orphanWorker, 1
+      )
+      """.asUpdate)
+
+    val completedId = UUID.randomUUID().toString
+    QueryMethods.runDbSync(db, sql"""
+      INSERT INTO todistus_job(
+        id, user_oid, oppija_oid, opiskeluoikeus_oid, language, state, created_at, started_at, completed_at, worker, attempts
+      ) VALUES (
+        $completedId::uuid, $userOid, $oppijaOid, ${"1.2.246.562.15.00000000011"}, ${TodistusLanguage.FI}, ${TodistusState.COMPLETED},
+        ${java.sql.Timestamp.valueOf(now)}, ${java.sql.Timestamp.valueOf(now)}, ${java.sql.Timestamp.valueOf(now)}, $orphanWorker, 1
+      )
+      """.asUpdate)
+
+    app.todistusService.cleanup(Seq.empty)
+
+    val queuedResult = QueryMethods.runDbSync(db, sql"""
+      SELECT state, worker FROM todistus_job WHERE id = $queuedId::uuid
+      """.as[(String, Option[String])]).head
+    queuedResult._1 should equal(TodistusState.QUEUED)
+    queuedResult._2 should be(Some(orphanWorker))
+
+    val completedResult = QueryMethods.runDbSync(db, sql"""
+      SELECT state, worker FROM todistus_job WHERE id = $completedId::uuid
+      """.as[(String, Option[String])]).head
+    completedResult._1 should equal(TodistusState.COMPLETED)
+    completedResult._2 should be(Some(orphanWorker))
+  }
+
   "cleanup does not requeue when lease is active for worker" in {
     val activeHolder = "active-worker"
     app.workerLeaseRepository.tryAcquireOrRenew("todistus", 1, activeHolder, Duration.ofSeconds(30)) should be(true)

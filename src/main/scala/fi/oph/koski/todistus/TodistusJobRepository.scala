@@ -230,7 +230,8 @@ class TodistusJobRepository(val db: DB, val workerId: String, config: Config) ex
       WITH candidate AS (
         SELECT id, attempts
         FROM todistus_job
-        WHERE NOT state = any(${TodistusState.nonReusableStates.toSeq})
+        WHERE state = any(${TodistusState.requeueableStates.toSeq})
+          AND worker IS NOT NULL
           AND NOT worker = any($koskiInstances)
         ORDER BY created_at
         LIMIT 1

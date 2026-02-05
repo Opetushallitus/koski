@@ -47,6 +47,9 @@ object TodistusState {
 
   val runningStates: Set[String] = Set(GATHERING_INPUT, GENERATING_RAW_PDF, SAVING_RAW_PDF, STAMPING_PDF, SAVING_STAMPED_PDF)
 
+  // States that should be re-queued if the worker lease is not active.
+  val requeueableStates: Set[String] = runningStates + INTERRUPTED
+
   val nonReusableStates: Set[String] = Set(ERROR, QUEUED_FOR_EXPIRE, EXPIRED)
 
   val * : Set[String] = Set(QUEUED, GATHERING_INPUT, GENERATING_RAW_PDF, SAVING_RAW_PDF, STAMPING_PDF, SAVING_STAMPED_PDF, COMPLETED, ERROR, QUEUED_FOR_EXPIRE, EXPIRED)
