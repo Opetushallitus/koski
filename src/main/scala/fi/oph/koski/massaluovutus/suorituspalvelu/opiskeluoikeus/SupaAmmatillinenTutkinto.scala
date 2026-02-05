@@ -13,6 +13,7 @@ case class SupaAmmatillinenOpiskeluoikeus(
   @KoodistoKoodiarvo(OpiskeluoikeudenTyyppi.ammatillinenkoulutus.koodiarvo)
   tyyppi: Koodistokoodiviite,
   oid: String,
+  sisältyyOpiskeluoikeuteen: Option[SisältäväOpiskeluoikeus],
   koulutustoimija: Option[Koulutustoimija],
   oppilaitos: Option[Oppilaitos],
   tila: AmmatillinenOpiskeluoikeudenTila,
@@ -29,6 +30,7 @@ object SupaAmmatillinenTutkinto {
       oppijaOid = oppijaOid,
       tyyppi = oo.tyyppi,
       oid = oo.oid.get,
+      sisältyyOpiskeluoikeuteen = oo.sisältyyOpiskeluoikeuteen,
       koulutustoimija = oo.koulutustoimija,
       oppilaitos = oo.oppilaitos,
       tila = oo.tila,
