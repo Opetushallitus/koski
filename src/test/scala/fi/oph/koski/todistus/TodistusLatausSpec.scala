@@ -402,7 +402,7 @@ class TodistusLatausSpec extends TodistusSpecHelpers with BeforeAndAfterAll {
       TextRegion("sivu1_kokeeninimi", pageIndex = 0,
         x = 150, y = 250, width = 300, height = 70,
         expectedTexts = Seq(
-          "on osallistunut Yleisten kielitutkintojen",
+          "on osallistunut yleisten kielitutkintojen",
           "suomen kielen keskitason tutkintoon"
         )),
 
