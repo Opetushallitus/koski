@@ -538,6 +538,16 @@ class MassaluovutusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers wit
           }
         }
 
+        "Kyselyä ei voi tehdä, jos muuttuneetEnnen on ennen muuttuneetJälkeen-ajanhetkeä" in {
+          val virheellinenQuery = SuorituspalveluMuuttuneetJalkeenQuery(
+            muuttuneetJälkeen = LocalDateTime.now(),
+            muuttuneetEnnen = Some(LocalDateTime.now().minusHours(1)),
+          )
+          addQuery(virheellinenQuery, MockUsers.paakayttaja) {
+            verifyResponseStatus(400, KoskiErrorCategory.badRequest("Kyselyn muuttuneetEnnen-aika ei voi olla ennen muuttuneetJälkeen-aikaa"))
+          }
+        }
+
         "Kyselystä jää audit log -merkinnät" in {
           AuditLogTester.clearMessages()
           val queryId = addQuerySuccessfully(getQuery(LocalDateTime.now().minusHours(1)), user) { response =>
@@ -827,6 +837,53 @@ class MassaluovutusSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers wit
         val oppijat = jsonFiles.head.extract[Seq[JObject]]
         oppijat.length should equal(1)
         (oppijat.head \ "opiskeluoikeudet").extract[Seq[JObject]].length should equal(4)
+      }
+
+      "muuttuneetEnnen rajaa tuloksia aikaikkunan mukaan" in {
+        val oppija = KoskiSpecificMockOppijat.moniaEriOpiskeluoikeuksia
+        poistaOppijanOpiskeluoikeusDatat(oppija)
+        val tallennettuOo = createOrUpdate(oppija, defaultOpiskeluoikeus)
+        val aikaleima = tallennettuOo.aikaleima.get
+
+        // Haku aikaikkunalla, joka sisältää opiskeluoikeuden aikaleiman, palauttaa oppijan
+        val queryIdSisältyy = addQuerySuccessfully(
+          SuorituspalveluMuuttuneetJalkeenQuery(
+            muuttuneetJälkeen = aikaleima,
+            muuttuneetEnnen = Some(aikaleima),
+          ),
+          user
+        )(_.queryId)
+        val completeSisältyy = waitForCompletion(queryIdSisältyy, user)
+        val jsonFilesSisältyy = completeSisältyy.files.map { file =>
+          verifyResultAndContent(file, user) {
+            JsonMethods.parse(body)
+          }
+        }
+        val oppijatSisältyy = jsonFilesSisältyy.head.extract[Seq[JObject]]
+        oppijatSisältyy.length should equal(1)
+        (oppijatSisältyy.head \ "oppijaOid").extract[String] should equal(oppija.oid)
+
+        // Haku aikaikkunalla, jossa muuttuneetEnnen rajaa ulos opiskeluoikeuden aikaleiman
+        val queryIdEiSisälly = addQuerySuccessfully(
+          SuorituspalveluMuuttuneetJalkeenQuery(
+            muuttuneetJälkeen = LocalDateTime.now().minusHours(1),
+            muuttuneetEnnen = Some(aikaleima.minusSeconds(1)),
+          ),
+          user
+        )(_.queryId)
+        val completeEiSisälly = waitForCompletion(queryIdEiSisälly, user)
+
+        val jsonFilesEiSisälly = completeEiSisälly.files.map { file =>
+          verifyResultAndContent(file, user) {
+            JsonMethods.parse(body)
+          }
+        }
+
+        // Tulokset eivät sisällä muuttuneen opiskeluoikeuden oppijaa
+        jsonFilesEiSisälly.foreach { jsonFile =>
+          val oppijatJson = jsonFile.extract[Seq[JObject]]
+          oppijatJson.foreach (oppijaJson => (oppijaJson \ "oppijaOid").extract[String] should not equal(oppija.oid))
+        }
       }
 
       "Palauttaa myös master oid:n opiskeluoikeuden jos slave oid:n opiskeluoikeus on muuttunut" in {
