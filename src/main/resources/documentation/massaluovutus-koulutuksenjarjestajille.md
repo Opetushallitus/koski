@@ -209,3 +209,53 @@ Esimerkki:
     {{var:headers}}
 
     {{json:TOPKSAmmatillinenXlsx}}
+
+{{title:fi.oph.koski.massaluovutus.raportit.MassaluovutusQueryPerusopetuksenVuosiluokka}}
+{{docs:fi.oph.koski.massaluovutus.raportit.MassaluovutusQueryPerusopetuksenVuosiluokka}}
+
+Esimerkki:
+
+    POST {{var:baseUrl}}/api/massaluovutus HTTP/1.1
+    {{var:headers}}
+
+    {{json:PerusopetuksenVuosiluokkaXlsx}}
+
+{{title:fi.oph.koski.massaluovutus.raportit.MassaluovutusQueryPerusopetuksenOppijamaaratRaportti}}
+{{docs:fi.oph.koski.massaluovutus.raportit.MassaluovutusQueryPerusopetuksenOppijamaaratRaportti}}
+
+Esimerkki:
+
+    POST {{var:baseUrl}}/api/massaluovutus HTTP/1.1
+    {{var:headers}}
+
+    {{json:PerusopetuksenOppijamaaratRaporttiXlsx}}
+
+{{title:fi.oph.koski.massaluovutus.raportit.MassaluovutusQueryAikuistenPerusopetusSuoritustiedot}}
+{{docs:fi.oph.koski.massaluovutus.raportit.MassaluovutusQueryAikuistenPerusopetusSuoritustiedot}}
+
+Esimerkki:
+
+    POST {{var:baseUrl}}/api/massaluovutus HTTP/1.1
+    {{var:headers}}
+
+    {{json:AikuistenPerusopetusSuoritustiedotXlsx}}
+
+{{title:fi.oph.koski.massaluovutus.raportit.MassaluovutusQueryAikuistenPerusopetuksenOppijamaaratRaportti}}
+{{docs:fi.oph.koski.massaluovutus.raportit.MassaluovutusQueryAikuistenPerusopetuksenOppijamaaratRaportti}}
+
+Esimerkki:
+
+    POST {{var:baseUrl}}/api/massaluovutus HTTP/1.1
+    {{var:headers}}
+
+    {{json:AikuistenPerusopetuksenOppijamaaratRaporttiXlsx}}
+
+{{title:fi.oph.koski.massaluovutus.raportit.MassaluovutusQueryAikuistenPerusopetuksenKurssikertyma}}
+{{docs:fi.oph.koski.massaluovutus.raportit.MassaluovutusQueryAikuistenPerusopetuksenKurssikertyma}}
+
+Esimerkki:
+
+    POST {{var:baseUrl}}/api/massaluovutus HTTP/1.1
+    {{var:headers}}
+
+    {{json:AikuistenPerusopetuksenKurssikertymaXlsx}}
