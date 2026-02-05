@@ -7,6 +7,7 @@ import fi.oph.koski.log.Logging
 import fi.oph.koski.massaluovutus.luokallejaaneet.MassaluovutusQueryLuokalleJaaneetExamples
 import fi.oph.koski.massaluovutus.organisaationopiskeluoikeudet.{QueryOrganisaationOpiskeluoikeudetCsvDocumentation, QueryOrganisaationOpiskeluoikeudetJsonDocumentation}
 import fi.oph.koski.massaluovutus.paallekkaisetopiskeluoikeudet.QueryPaallekkaisetOpiskeluoikeudetDocumentation
+import fi.oph.koski.massaluovutus.raportit.{QueryAmmatillinenOpiskelijavuositiedotDocumentation, QueryAmmatillinenOsittainenSuoritustiedotDocumentation, QueryAmmatillinenTutkintoSuoritustiedotDocumentation, QueryLukionSuoritustiedotDocumentation, QueryMuuAmmatillinenDocumentation, QueryTOPKSAmmatillinenDocumentation}
 import fi.oph.koski.massaluovutus.valintalaskenta.ValintalaskentaQueryDocumentation
 import fi.oph.koski.massaluovutus.valpas.ValpasMassaluovutusQueryParameters
 import fi.oph.koski.massaluovutus.valpas.eioppivelvollisuuttasuorittavat.ValpasEiOppivelvollisuuttaSuorittavatQueryDocumentation
@@ -200,8 +201,6 @@ object QueryExamples {
   def jsonByName(application: KoskiApplication, name: String): Option[String] = name match {
     case "OrganisaationOpiskeluoikeudetCsv" => asJson(QueryOrganisaationOpiskeluoikeudetCsvDocumentation.example)
     case "OrganisaationOpiskeluoikeudetJson" => asJson(QueryOrganisaationOpiskeluoikeudetJsonDocumentation.example)
-    case "PaallekkaisetOpiskeluoikeudetCsv" => asJson(QueryPaallekkaisetOpiskeluoikeudetDocumentation.csvExample)
-    case "PaallekkaisetOpiskeluoikeudetXlsx" => asJson(QueryPaallekkaisetOpiskeluoikeudetDocumentation.xlsxExample)
     case "PendingQueryResponse" => asJson(pendingQuery(
       QueryOrganisaationOpiskeluoikeudetCsvDocumentation.example,
       application.config.getString("koski.root.url"),
@@ -267,6 +266,13 @@ object QueryExamples {
       List.empty,
       application.config.getString("koski.root.url") + "/valpas",
     ))
+    case "AmmatillinenOpiskelijavuositiedotXlsx" => asJson(QueryAmmatillinenOpiskelijavuositiedotDocumentation.xlsxExample)
+    case "AmmatillinenTutkintoSuoritustiedotXlsx" => asJson(QueryAmmatillinenTutkintoSuoritustiedotDocumentation.xlsxExample)
+    case "AmmatillinenOsittainenSuoritustiedotXlsx" => asJson(QueryAmmatillinenOsittainenSuoritustiedotDocumentation.xlsxExample)
+    case "LukionSuoritustiedotXlsx" => asJson(QueryLukionSuoritustiedotDocumentation.xlsxExample)
+    case "MuuAmmatillinenXlsx" => asJson(QueryMuuAmmatillinenDocumentation.xlsxExample)
+    case "PaallekkaisetOpiskeluoikeudetXlsx" => asJson(QueryPaallekkaisetOpiskeluoikeudetDocumentation.xlsxExample)
+    case "TOPKSAmmatillinenXlsx" => asJson(QueryTOPKSAmmatillinenDocumentation.xlsxExample)
     case _ => None
   }
 
