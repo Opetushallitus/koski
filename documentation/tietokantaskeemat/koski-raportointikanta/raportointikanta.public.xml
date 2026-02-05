@@ -646,7 +646,8 @@
          <column autoUpdated="false" defaultValue="null" digits="0" id="12" name="arviointi_pisteet" nullable="true" remarks="" size="10" type="int4" typeCode="4"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="13" name="keskeytynyt" nullable="true" remarks="" size="1" type="bool" typeCode="-7"/>
          <column autoUpdated="false" defaultValue="null" digits="0" id="14" name="maksuton" nullable="true" remarks="" size="1" type="bool" typeCode="-7"/>
-         <column autoUpdated="false" defaultValue="null" digits="0" id="15" name="data" nullable="false" remarks="" size="2147483647" type="jsonb" typeCode="1111"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="15" name="suoritus_mukana_todistuksella" nullable="true" remarks="" size="1" type="bool" typeCode="-7"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="16" name="data" nullable="false" remarks="" size="2147483647" type="jsonb" typeCode="1111"/>
          <primaryKey column="ytr_kokeen_suoritus_id" sequenceNumberInPK="1"/>
          <index name="r_ytr_kokeen_suoritus_pkey" unique="true">
             <column ascending="true" name="ytr_kokeen_suoritus_id"/>
