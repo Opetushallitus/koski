@@ -1,6 +1,11 @@
 # Koskeen tallennettavien tietojen validaatiosäännöt
 
-## 4.2.2026
+
+## 6.2.2026
+
+- Perusopetuksen vuosiluokan tai päättötodistuksen suorituksella ei voi olla oppiainetta, jolla on sekä yksilöllistetty että rajattu oppimäärä.
+
+## 6.2.2026
 
 Lukion 2019 opetussuunnitelman perusteiden mukaisten suoritusten validaatiomuutokset,
 silloin kun suoritetaan erityisenä tutkintona:
