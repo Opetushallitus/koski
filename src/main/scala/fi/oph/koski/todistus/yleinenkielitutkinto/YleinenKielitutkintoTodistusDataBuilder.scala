@@ -62,6 +62,8 @@ class YleinenKielitutkintoTodistusDataBuilder(application: KoskiApplication) {
 
       allekirjoitusPäivämäärä = formatSignatureDate(ensimmäisenLäsnäTilanAlkupäivä, todistus.language)
 
+      oidTunniste = todistus.opiskeluoikeusOid
+
       vahvistusViimeinenPäivämäärä = formatVahvistusViimeinenPaivamaaraDate(todistus.createdAt.toLocalDate.plusDays(application.config.getLong("todistus.allekirjoituksenVoimassaolonKestoInDays")), todistus.language)
 
       todistusData = YleinenKielitutkintoTodistusData(
@@ -73,6 +75,7 @@ class YleinenKielitutkintoTodistusDataBuilder(application: KoskiApplication) {
         tasonArvosanarajat = tasonArvosanarajat,
         järjestäjäNimi = järjestäjäNimi,
         allekirjoitusPäivämäärä = allekirjoitusPäivämäärä,
+        oidTunniste = oidTunniste,
         vahvistusViimeinenPäivämäärä = vahvistusViimeinenPäivämäärä,
         siistittyOo = siistittyOo
       )
