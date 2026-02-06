@@ -414,4 +414,131 @@ class MassaluovutusRaportitSpec extends AnyFreeSpec with MassaluovutusTestMethod
       }
     }
   }
+
+  "Esiopetus" - {
+    "Spreadsheet" - {
+      val query = MassaluovutusQueryEsiopetus(
+        format = QueryFormat.xlsx,
+        paiva = LocalDate.of(2012, 1, 1),
+      )
+
+      "Kysely onnistuu ja palauttaa oikeat tiedostot" in {
+        val user = MockUsers.jyväskylänNormaalikoulunPalvelukäyttäjä
+        val queryId = addQuerySuccessfully(query.copy(organisaatioOid = Some(MockOrganisaatiot.jyväskylänNormaalikoulu)), user) { response =>
+          response.status should equal(QueryState.pending)
+          response.query.asInstanceOf[MassaluovutusQueryEsiopetus].organisaatioOid should contain(MockOrganisaatiot.jyväskylänNormaalikoulu)
+          response.queryId
+        }
+        val complete = waitForCompletion(queryId, user)
+
+        complete.files should have length 1
+        complete.files.foreach(verifyResult(_, user))
+
+        val raportitService = new RaportitService(app)
+        complete.sourceDataUpdatedAt.map(_.toLocalDateTime) should equal(Some(raportitService.viimeisinOpiskeluoikeuspäivitystenVastaanottoaika))
+      }
+    }
+  }
+
+  "Esiopetuksen oppijamäärät" - {
+    "Spreadsheet" - {
+      val query = MassaluovutusQueryEsiopetuksenOppijamaaratRaportti(
+        format = QueryFormat.xlsx,
+        paiva = LocalDate.of(2012, 1, 1),
+      )
+
+      "Kysely onnistuu ja palauttaa oikeat tiedostot" in {
+        val user = MockUsers.jyväskylänNormaalikoulunPalvelukäyttäjä
+        val queryId = addQuerySuccessfully(query.copy(organisaatioOid = Some(MockOrganisaatiot.jyväskylänNormaalikoulu)), user) { response =>
+          response.status should equal(QueryState.pending)
+          response.query.asInstanceOf[MassaluovutusQueryEsiopetuksenOppijamaaratRaportti].organisaatioOid should contain(MockOrganisaatiot.jyväskylänNormaalikoulu)
+          response.queryId
+        }
+        val complete = waitForCompletion(queryId, user)
+
+        complete.files should have length 1
+        complete.files.foreach(verifyResult(_, user))
+
+        val raportitService = new RaportitService(app)
+        complete.sourceDataUpdatedAt.map(_.toLocalDateTime) should equal(Some(raportitService.viimeisinOpiskeluoikeuspäivitystenVastaanottoaika))
+      }
+    }
+  }
+
+  "Perusopetukseen valmistava opetus" - {
+    "Spreadsheet" - {
+      val query = MassaluovutusQueryPerusopetukseenValmistava(
+        format = QueryFormat.xlsx,
+        alku = LocalDate.of(2008, 1, 1),
+        loppu = LocalDate.of(2020, 1, 1),
+      )
+
+      "Kysely onnistuu ja palauttaa oikeat tiedostot" in {
+        val user = MockUsers.jyväskylänNormaalikoulunPalvelukäyttäjä
+        val queryId = addQuerySuccessfully(query.copy(organisaatioOid = Some(MockOrganisaatiot.jyväskylänNormaalikoulu)), user) { response =>
+          response.status should equal(QueryState.pending)
+          response.query.asInstanceOf[MassaluovutusQueryPerusopetukseenValmistava].organisaatioOid should contain(MockOrganisaatiot.jyväskylänNormaalikoulu)
+          response.queryId
+        }
+        val complete = waitForCompletion(queryId, user)
+
+        complete.files should have length 1
+        complete.files.foreach(verifyResult(_, user))
+
+        val raportitService = new RaportitService(app)
+        complete.sourceDataUpdatedAt.map(_.toLocalDateTime) should equal(Some(raportitService.viimeisinOpiskeluoikeuspäivitystenVastaanottoaika))
+      }
+    }
+  }
+
+  "TUVA perusopetuksen oppijamäärät" - {
+    "Spreadsheet" - {
+      val query = MassaluovutusQueryTuvaPerusopetuksenOppijamaaratRaportti(
+        format = QueryFormat.xlsx,
+        paiva = LocalDate.of(2022, 1, 1),
+      )
+
+      "Kysely onnistuu ja palauttaa oikeat tiedostot" in {
+        val user = MockUsers.stadinAmmattiopistoPalvelukäyttäjä
+        val queryId = addQuerySuccessfully(query.copy(organisaatioOid = Some(MockOrganisaatiot.stadinAmmattiopisto)), user) { response =>
+          response.status should equal(QueryState.pending)
+          response.query.asInstanceOf[MassaluovutusQueryTuvaPerusopetuksenOppijamaaratRaportti].organisaatioOid should contain(MockOrganisaatiot.stadinAmmattiopisto)
+          response.queryId
+        }
+        val complete = waitForCompletion(queryId, user)
+
+        complete.files should have length 1
+        complete.files.foreach(verifyResult(_, user))
+
+        val raportitService = new RaportitService(app)
+        complete.sourceDataUpdatedAt.map(_.toLocalDateTime) should equal(Some(raportitService.viimeisinOpiskeluoikeuspäivitystenVastaanottoaika))
+      }
+    }
+  }
+
+  "TUVA suoritustiedot" - {
+    "Spreadsheet" - {
+      val query = MassaluovutusQueryTuvaSuoritustiedot(
+        format = QueryFormat.xlsx,
+        alku = LocalDate.of(2021, 1, 1),
+        loppu = LocalDate.of(2025, 1, 1),
+      )
+
+      "Kysely onnistuu ja palauttaa oikeat tiedostot" in {
+        val user = MockUsers.stadinAmmattiopistoPalvelukäyttäjä
+        val queryId = addQuerySuccessfully(query.copy(organisaatioOid = Some(MockOrganisaatiot.stadinAmmattiopisto)), user) { response =>
+          response.status should equal(QueryState.pending)
+          response.query.asInstanceOf[MassaluovutusQueryTuvaSuoritustiedot].organisaatioOid should contain(MockOrganisaatiot.stadinAmmattiopisto)
+          response.queryId
+        }
+        val complete = waitForCompletion(queryId, user)
+
+        complete.files should have length 1
+        complete.files.foreach(verifyResult(_, user))
+
+        val raportitService = new RaportitService(app)
+        complete.sourceDataUpdatedAt.map(_.toLocalDateTime) should equal(Some(raportitService.viimeisinOpiskeluoikeuspäivitystenVastaanottoaika))
+      }
+    }
+  }
 }

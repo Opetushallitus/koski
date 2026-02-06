@@ -259,3 +259,53 @@ Esimerkki:
     {{var:headers}}
 
     {{json:AikuistenPerusopetuksenKurssikertymaXlsx}}
+
+{{title:fi.oph.koski.massaluovutus.raportit.MassaluovutusQueryEsiopetus}}
+{{docs:fi.oph.koski.massaluovutus.raportit.MassaluovutusQueryEsiopetus}}
+
+Esimerkki:
+
+    POST {{var:baseUrl}}/api/massaluovutus HTTP/1.1
+    {{var:headers}}
+
+    {{json:EsiopetusXlsx}}
+
+{{title:fi.oph.koski.massaluovutus.raportit.MassaluovutusQueryEsiopetuksenOppijamaaratRaportti}}
+{{docs:fi.oph.koski.massaluovutus.raportit.MassaluovutusQueryEsiopetuksenOppijamaaratRaportti}}
+
+Esimerkki:
+
+    POST {{var:baseUrl}}/api/massaluovutus HTTP/1.1
+    {{var:headers}}
+
+    {{json:EsiopetuksenOppijamaaratRaporttiXlsx}}
+
+{{title:fi.oph.koski.massaluovutus.raportit.MassaluovutusQueryPerusopetukseenValmistava}}
+{{docs:fi.oph.koski.massaluovutus.raportit.MassaluovutusQueryPerusopetukseenValmistava}}
+
+Esimerkki:
+
+    POST {{var:baseUrl}}/api/massaluovutus HTTP/1.1
+    {{var:headers}}
+
+    {{json:PerusopetukseenValmistavaXlsx}}
+
+{{title:fi.oph.koski.massaluovutus.raportit.MassaluovutusQueryTuvaPerusopetuksenOppijamaaratRaportti}}
+{{docs:fi.oph.koski.massaluovutus.raportit.MassaluovutusQueryTuvaPerusopetuksenOppijamaaratRaportti}}
+
+Esimerkki:
+
+    POST {{var:baseUrl}}/api/massaluovutus HTTP/1.1
+    {{var:headers}}
+
+    {{json:TuvaPerusopetuksenOppijamaaratRaporttiXlsx}}
+
+{{title:fi.oph.koski.massaluovutus.raportit.MassaluovutusQueryTuvaSuoritustiedot}}
+{{docs:fi.oph.koski.massaluovutus.raportit.MassaluovutusQueryTuvaSuoritustiedot}}
+
+Esimerkki:
+
+    POST {{var:baseUrl}}/api/massaluovutus HTTP/1.1
+    {{var:headers}}
+
+    {{json:TuvaSuoritustiedotXlsx}}
