@@ -14,6 +14,7 @@ case class YleinenKielitutkintoTodistusData(
   tasonArvosanarajat: String,
   järjestäjäNimi: String,
   allekirjoitusPäivämäärä: String,
+  oidTunniste: String,
   vahvistusViimeinenPäivämäärä: String,
   siistittyOo: KielitutkinnonOpiskeluoikeus
  ) extends TodistusData {
@@ -26,6 +27,7 @@ case class YleinenKielitutkintoTodistusData(
     "tasonArvosanarajat" -> tasonArvosanarajat,
     "järjestäjäNimi" -> järjestäjäNimi,
     "allekirjoitusPäivämäärä" -> allekirjoitusPäivämäärä,
+    "oidTunniste" -> oidTunniste,
     "vahvistusViimeinenPäivämäärä" -> vahvistusViimeinenPäivämäärä
   )
 }

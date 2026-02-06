@@ -39,7 +39,7 @@
 <text text-anchor="start" x="206.5" y="-286.9" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">text[2147483647]</text>
 <polygon fill="#ffffff" stroke="transparent" points="10.5,-257.2 10.5,-279.2 203.5,-279.2 203.5,-257.2 10.5,-257.2"/>
 <polygon fill="none" stroke="#000000" points="10.5,-257.2 10.5,-279.2 203.5,-279.2 203.5,-257.2 10.5,-257.2"/>
-<text text-anchor="start" x="30.5" y="-264.3" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">language</text>
+<text text-anchor="start" x="30.5" y="-264.3" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">template_variant</text>
 <polygon fill="none" stroke="#000000" points="203.5,-257.2 203.5,-279.2 297.5,-279.2 297.5,-257.2 203.5,-257.2"/>
 <text text-anchor="start" x="206.5" y="-264.9" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">text[2147483647]</text>
 <polygon fill="none" stroke="#000000" points="10.5,-235.2 10.5,-257.2 203.5,-257.2 203.5,-235.2 10.5,-235.2"/>

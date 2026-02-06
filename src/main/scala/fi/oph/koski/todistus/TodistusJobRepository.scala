@@ -24,12 +24,13 @@ class TodistusJobRepository(val db: DB, val workerId: String, config: Config) ex
       .toRight(KoskiErrorCategory.notFound())
   }
 
-  def get(id: String, kelpuutetutOppijaOidit: Set[String]): Either[HttpStatus, TodistusJob] = {
+  def get(id: String, kelpuutetutOppijaOidit: Set[String], kelpuutetutVariantit: Set[String]): Either[HttpStatus, TodistusJob] = {
     runDbSync(sql"""
       SELECT *
       FROM todistus_job
       WHERE id = ${id}::uuid
         AND oppija_oid = ANY(${kelpuutetutOppijaOidit.toList})
+        AND template_variant = ANY(${kelpuutetutVariantit.toList})
       """.as[TodistusJob]
     ).headOption
       .toRight(KoskiErrorCategory.notFound())
@@ -37,7 +38,7 @@ class TodistusJobRepository(val db: DB, val workerId: String, config: Config) ex
 
   def findByParameters(
     opiskeluoikeusOid: String,
-    language: String,
+    templateVariant: String,
     opiskeluoikeusVersionumero: Int,
     oppijaHenkilötiedotHash: String
   ): Option[TodistusJob] = {
@@ -45,7 +46,7 @@ class TodistusJobRepository(val db: DB, val workerId: String, config: Config) ex
       SELECT *
       FROM todistus_job
       WHERE opiskeluoikeus_oid = ${opiskeluoikeusOid}
-        AND language = ${language}
+        AND template_variant = ${templateVariant}
         AND NOT state = ANY(${TodistusState.nonReusableStates.toSeq})
         AND (
           -- QUEUED-tilassa oleva todistus matchaa aina (ei vielä hash/versionumero)
@@ -65,7 +66,7 @@ class TodistusJobRepository(val db: DB, val workerId: String, config: Config) ex
     if (todistusJob.userOid.contains(user.oid) || user.hasRole(OPHPAAKAYTTAJA)) {
       // Huom! Tämä CTE ei ole täysin robusti: jos tehdään 2 todistuksen luontia samaan aikaan, on mahdollista, että syntyy 2 jobia,
       // jos kummatkin tekevät ensin SELECT:in ennenkuin kumpikaan tekee INSERT-osuutta. Tämän korjaaminen on kuitenkin vaikeaa täysin robustisti,
-      // koska henkilötiedot hash ja versionumero lukitaan vasta todistus-jobia suoritettaessa. Jos esim. tekisi unique constraintin opiskeluoikeus_oidille ja languagelle, niin
+      // koska henkilötiedot hash ja versionumero lukitaan vasta todistus-jobia suoritettaessa. Jos esim. tekisi unique constraintin opiskeluoikeus_oidille ja template_variantille, niin
       // voisi käydä niin, että todistus luodaan vanhemmasta oo-versiosta kuin on ollut saatavilla sillä hetkellä kun toinen jonoonlisäysyritys on tehty.
       // Jos silloin tällöin syntyy harvinaisessa tilanteessa 2 jobia, ei se ole oikea ongelma.
       runDbSync(
@@ -75,7 +76,7 @@ class TodistusJobRepository(val db: DB, val workerId: String, config: Config) ex
           FROM todistus_job
           WHERE oppija_oid = ${todistusJob.oppijaOid}
             AND opiskeluoikeus_oid = ${todistusJob.opiskeluoikeusOid}
-            AND language = ${todistusJob.language}
+            AND template_variant = ${todistusJob.templateVariant}
             AND NOT state = ANY(${TodistusState.nonReusableStates.toSeq})
             AND (
               -- QUEUED-tilassa oleva job matchaa aina (ei vielä hash/versionumero)
@@ -94,7 +95,7 @@ class TodistusJobRepository(val db: DB, val workerId: String, config: Config) ex
         inserted AS (
           -- Huomaa, että versionumeroa ja hash:iä ei tallenneta: ne tallennetaan vasta luontihetkellä, jotta saadaan talteen
           -- täsmälliset arvot, jotka esiintyvät myös generoidussa PDF-todistuksessa.
-          INSERT INTO todistus_job(id, user_oid, oppija_oid, opiskeluoikeus_oid, language,
+          INSERT INTO todistus_job(id, user_oid, oppija_oid, opiskeluoikeus_oid, template_variant,
                               state,
                               created_at, started_at, completed_at, worker, attempts, error)
           SELECT
@@ -102,7 +103,7 @@ class TodistusJobRepository(val db: DB, val workerId: String, config: Config) ex
             ${todistusJob.userOid},
             ${todistusJob.oppijaOid},
             ${todistusJob.opiskeluoikeusOid},
-            ${todistusJob.language},
+            ${todistusJob.templateVariant},
             ${todistusJob.state},
             ${java.sql.Timestamp.valueOf(todistusJob.createdAt)},
             ${todistusJob.startedAt.map(java.sql.Timestamp.valueOf)},
@@ -320,7 +321,7 @@ class TodistusJobRepository(val db: DB, val workerId: String, config: Config) ex
   def addRawForUnitTests(todistusJob: TodistusJob): TodistusJob = {
     require(Environment.isUnitTestEnvironment(config), "addRawForUnitTests can only be used in unit test environment")
     runDbSync(sql"""
-      INSERT INTO todistus_job(id, user_oid, oppija_oid, opiskeluoikeus_oid, language,
+      INSERT INTO todistus_job(id, user_oid, oppija_oid, opiskeluoikeus_oid, template_variant,
                           opiskeluoikeus_versionumero, oppija_henkilotiedot_hash, state,
                           created_at, started_at, completed_at, worker, attempts, error)
       VALUES (
@@ -328,7 +329,7 @@ class TodistusJobRepository(val db: DB, val workerId: String, config: Config) ex
         ${todistusJob.userOid},
         ${todistusJob.oppijaOid},
         ${todistusJob.opiskeluoikeusOid},
-        ${todistusJob.language},
+        ${todistusJob.templateVariant},
         ${todistusJob.opiskeluoikeusVersionumero},
         ${todistusJob.oppijaHenkilötiedotHash},
         ${todistusJob.state},
@@ -359,7 +360,7 @@ class TodistusJobRepository(val db: DB, val workerId: String, config: Config) ex
       userOid = Option(r.rs.getString("user_oid")),
       oppijaOid = r.rs.getString("oppija_oid"),
       opiskeluoikeusOid = r.rs.getString("opiskeluoikeus_oid"),
-      language = r.rs.getString("language"),
+      templateVariant = r.rs.getString("template_variant"),
       opiskeluoikeusVersionumero = {
         val value = r.rs.getInt("opiskeluoikeus_versionumero")
         if (r.rs.wasNull()) None else Some(value)

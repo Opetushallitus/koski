@@ -1,6 +1,6 @@
 import { Locator, Page } from '@playwright/test'
 import { YoTodistusLanguage } from '../../../../app/components-v2/yotutkinto/YoTodistus'
-import { TodistusLanguage } from '../../../../app/kielitutkinto/YleinenKielitutkintoTodistusLataus'
+import { TodistusTemplateVariant } from '../../../../app/kielitutkinto/YleinenKielitutkintoTodistusLataus'
 import { expect } from '../../base'
 import { build, BuiltIdNode } from '../oppija/uiV2builder/builder'
 import { Button } from '../oppija/uiV2builder/Button'
@@ -77,7 +77,7 @@ export class KoskiKansalainenPage {
     await popup.close()
   }
 
-  async setKielitutkintoTodistusLanguage(lang: TodistusLanguage) {
+  async setKielitutkintoTodistusLanguage(lang: TodistusTemplateVariant) {
     await this.$.kielitutkintoTodistus.language.set(lang)
   }
 

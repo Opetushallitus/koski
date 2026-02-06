@@ -43,20 +43,25 @@ class TodistusService(application: KoskiApplication) extends Logging with Timing
     } else {
       for {
         oppijaOidit <- haeOppijaOiditJoihinKansalaisellaOnOikeudet
-        todistus <- todistusRepository.get(req.id, oppijaOidit)
+        todistus <- todistusRepository.get(req.id, oppijaOidit, TodistusTemplateVariant.kansalainenVariants)
       } yield todistus
     }
   }
 
   def checkStatus(req: TodistusGenerateRequest)(implicit user: KoskiSpecificSession): Either[HttpStatus, TodistusJob] = {
     for {
+      _ <- Either.cond(
+        TodistusTemplateVariant.isKansalainenVariant(req.templateVariant) || user.hasRole(OPHPAAKAYTTAJA),
+        (),
+        KoskiErrorCategory.notFound()
+      )
       yleisenKielitutkinnonVahvistettuOpiskeluoikeus <- kielitutkinnonVahvistettuOpiskeluoikeusJohonKutsujallaKäyttöoikeudet(req)
       oppijanHenkilö <- application.henkilöRepository.findByOid(yleisenKielitutkinnonVahvistettuOpiskeluoikeus.oppijaOid).toRight(KoskiErrorCategory.notFound.oppijaaEiLöydyTaiEiOikeuksia())
       oppijanHenkilötiedotHash = laskeHenkilötiedotHash(oppijanHenkilö)
       opiskeluoikeusVersionumero = yleisenKielitutkinnonVahvistettuOpiskeluoikeus.versionumero
       todistus <- todistusRepository.findByParameters(
         yleisenKielitutkinnonVahvistettuOpiskeluoikeus.oid,
-        req.language,
+        req.templateVariant,
         opiskeluoikeusVersionumero,
         oppijanHenkilötiedotHash
       ).toRight(KoskiErrorCategory.notFound())
@@ -69,6 +74,11 @@ class TodistusService(application: KoskiApplication) extends Logging with Timing
     logSkedulointiAlkaa(uusiJobId, req)
 
     val result = for {
+      _ <- Either.cond(
+        TodistusTemplateVariant.isKansalainenVariant(req.templateVariant) || user.hasRole(OPHPAAKAYTTAJA),
+        (),
+        KoskiErrorCategory.notFound.opiskeluoikeuttaEiLöydyTaiEiOikeuksia()
+      )
       yleisenKielitutkinnonVahvistettuOpiskeluoikeus <- kielitutkinnonVahvistettuOpiskeluoikeusJohonKutsujallaKäyttöoikeudet(req)
       oppijanHenkilö <- application.henkilöRepository.findByOid(yleisenKielitutkinnonVahvistettuOpiskeluoikeus.oppijaOid).toRight(KoskiErrorCategory.notFound.oppijaaEiLöydyTaiEiOikeuksia())
       job = TodistusJob(uusiJobId, req, laskeHenkilötiedotHash(oppijanHenkilö), yleisenKielitutkinnonVahvistettuOpiskeluoikeus)
@@ -192,7 +202,7 @@ class TodistusService(application: KoskiApplication) extends Logging with Timing
     // Mock-oppijan todistuksen lataus epäonnistuu testimielessä (vain lokaalissa/testiympäristössä)
     if (Environment.isUsingLocalDevelopmentServices(application) &&
         job.oppijaOid == KoskiSpecificMockOppijat.kielitutkintoTodistusVirhe.oid &&
-        job.language == "sv") {
+        job.templateVariant == "sv") {
       Left(KoskiErrorCategory.internalError("Todistuksen lataus epäonnistui testitarkoitukseen."))
     } else {
       Right(())
@@ -351,16 +361,16 @@ class TodistusService(application: KoskiApplication) extends Logging with Timing
   }
 
   private def logSkedulointiAlkaa(uusiJobId: String, req: TodistusGenerateRequest)(implicit user: KoskiSpecificSession): Unit = {
-    val konteksti = teeKonteksti(uusiJobId, "EI TIEDOSSA", req.opiskeluoikeusOid, req.language, user.user.oid)
+    val konteksti = teeKonteksti(uusiJobId, "EI TIEDOSSA", req.opiskeluoikeusOid, req.templateVariant, user.user.oid)
     logger.info(s"Lisää jonoon, $konteksti")
   }
 
   private def logSkedulointiValmis(uusiJobId: String, todistus: TodistusJob): Unit = {
     if (uusiJobId == todistus.id) {
-      val konteksti = teeKonteksti(todistus.id, todistus.oppijaOid, todistus.opiskeluoikeusOid, todistus.language, todistus.userOid.getOrElse("EI TIEDOSSA"))
+      val konteksti = teeKonteksti(todistus.id, todistus.oppijaOid, todistus.opiskeluoikeusOid, todistus.templateVariant, todistus.userOid.getOrElse("EI TIEDOSSA"))
       logger.info(s"Lisätty jonoon, $konteksti")
     } else {
-      val konteksti = teeKonteksti(s"pyydetty:$uusiJobId,palautettu ${todistus.id}", todistus.oppijaOid, todistus.opiskeluoikeusOid, todistus.language, todistus.userOid.getOrElse("EI TIEDOSSA"))
+      val konteksti = teeKonteksti(s"pyydetty:$uusiJobId,palautettu ${todistus.id}", todistus.oppijaOid, todistus.opiskeluoikeusOid, todistus.templateVariant, todistus.userOid.getOrElse("EI TIEDOSSA"))
       logger.info(s"Ei lisätty jonoon: Pyyntö on jo jonossa, $konteksti")
     }
   }
@@ -373,31 +383,31 @@ class TodistusService(application: KoskiApplication) extends Logging with Timing
   }
 
   private def logSkedulointiEpäonnistui(uusiJobId: String, req: TodistusGenerateRequest, status: HttpStatus)(implicit user: KoskiSpecificSession): Unit = {
-    val konteksti = teeKonteksti(uusiJobId, "EI TIEDOSSA", req.opiskeluoikeusOid, req.language, user.user.oid)
+    val konteksti = teeKonteksti(uusiJobId, "EI TIEDOSSA", req.opiskeluoikeusOid, req.templateVariant, user.user.oid)
     logger.error(s"Jonoon lisäys epäonnistui, $konteksti: ${status.toString}")
   }
 
   private def logGenerointiAlkaa(todistus: TodistusJob): Unit = {
-    val konteksti = teeKonteksti(todistus.id, todistus.oppijaOid, todistus.opiskeluoikeusOid, todistus.language, todistus.userOid.getOrElse("EI TIEDOSSA"))
+    val konteksti = teeKonteksti(todistus.id, todistus.oppijaOid, todistus.opiskeluoikeusOid, todistus.templateVariant, todistus.userOid.getOrElse("EI TIEDOSSA"))
     logger.info(s"Aloita generointi, $konteksti")
 
     // TODO: TOR-2400: metriikat Cloudwatchiin?
   }
 
   private def logGenerointiValmis(todistus: TodistusJob): Unit = {
-    val konteksti = teeKonteksti(todistus.id, todistus.oppijaOid, todistus.opiskeluoikeusOid, todistus.language, todistus.userOid.getOrElse("EI TIEDOSSA"))
+    val konteksti = teeKonteksti(todistus.id, todistus.oppijaOid, todistus.opiskeluoikeusOid, todistus.templateVariant, todistus.userOid.getOrElse("EI TIEDOSSA"))
     logger.info(s"Generointi valmis, $konteksti")
 
     // TODO: TOR-2400: metriikat Cloudwatchiin?
   }
 
   private def logGenerointiEpäonnistui(todistus: TodistusJob, error: String): Unit = {
-    val konteksti = teeKonteksti(todistus.id, todistus.oppijaOid, todistus.opiskeluoikeusOid, todistus.language, todistus.userOid.getOrElse("EI TIEDOSSA"))
+    val konteksti = teeKonteksti(todistus.id, todistus.oppijaOid, todistus.opiskeluoikeusOid, todistus.templateVariant, todistus.userOid.getOrElse("EI TIEDOSSA"))
     logger.error(s"Generointi epäonnistui $error, $konteksti")
   }
 
-  private def teeKonteksti(id: String, oppijaOid: String, opiskeluoikeusOid: String, language: String, user: String): String =
-    s"job:${id}/oppija:${oppijaOid}/oo:${opiskeluoikeusOid}/lang:${language}/user:${user}"
+  private def teeKonteksti(id: String, oppijaOid: String, opiskeluoikeusOid: String, templateVariant: String, user: String): String =
+    s"job:${id}/oppija:${oppijaOid}/oo:${opiskeluoikeusOid}/variant:${templateVariant}/user:${user}"
 
   def generateHtmlPreview(req: TodistusGenerateRequest)(implicit user: KoskiSpecificSession): Either[HttpStatus, (String, TodistusJob)] = {
     for {
@@ -411,7 +421,7 @@ class TodistusService(application: KoskiApplication) extends Logging with Timing
         id = "preview",
         opiskeluoikeusOid = req.opiskeluoikeusOid,
         oppijaOid = yleisenKielitutkinnonVahvistettuOpiskeluoikeus.oppijaOid,
-        language = req.language,
+        templateVariant = req.templateVariant,
         state = TodistusState.GATHERING_INPUT,
         userOid = Some(user.oid),
         oppijaHenkilötiedotHash = None,
@@ -426,7 +436,7 @@ class TodistusService(application: KoskiApplication) extends Logging with Timing
     // Mock-oppijan todistuksen luonti epäonnistuu testimielessä (vain lokaalissa/testiympäristössä)
     if (Environment.isUsingLocalDevelopmentServices(application) &&
         oppijanHenkilö.hetu == KoskiSpecificMockOppijat.kielitutkintoTodistusVirhe.hetu &&
-        todistus.language == "en") {
+        todistus.templateVariant == "en") {
       return Left(KoskiErrorCategory.internalError("Todistuksen luonti epäonnistui testitarkoitukseen."))
     }
 

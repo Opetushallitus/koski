@@ -223,6 +223,26 @@ class TodistusDataValidationSpec extends AnyFreeSpec with Matchers {
         }
       }
 
+      "OID-tunniste" - {
+        "hylkää tyhjän OID-tunnisteen" in {
+          val data = createValidTodistusData().copy(oidTunniste = "")
+          val result = TodistusDataValidation.validateYleinenKielitutkintoData(data, "test-id")
+          result.isLeft shouldBe true
+        }
+
+        "hylkää tyhjän OID-tunnisteen, joka ei ole opiskeluoikeus-oid" in {
+          val data = createValidTodistusData().copy(oidTunniste = "1.2.246.562.10.53642770753")
+          val result = TodistusDataValidation.validateYleinenKielitutkintoData(data, "test-id")
+          result.isLeft shouldBe true
+        }
+
+        "hylkää '???' -merkkijonon" in {
+          val data = createValidTodistusData().copy(oidTunniste = missingString)
+          val result = TodistusDataValidation.validateYleinenKielitutkintoData(data, "test-id")
+          result.isLeft shouldBe true
+        }
+      }
+
       "Vahvistuksen viimeinen päivämäärä" - {
         "hylkää tyhjän päivämäärän" in {
           val data = createValidTodistusData().copy(vahvistusViimeinenPäivämäärä = "")
@@ -282,6 +302,7 @@ class TodistusDataValidationSpec extends AnyFreeSpec with Matchers {
       tasonArvosanarajat = "3-4",
       järjestäjäNimi = "Testioppilaitos",
       allekirjoitusPäivämäärä = "1. kesäkuuta vuonna 2020",
+      oidTunniste = "1.2.246.562.15.12345678901",
       vahvistusViimeinenPäivämäärä = "1.6.2025",
       siistittyOo = minimalOpiskeluoikeus
     )

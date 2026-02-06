@@ -1634,12 +1634,12 @@
 <text text-anchor="start" x="117.5" y="-7424.1" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">vapautettu</text>
 <polygon fill="none" stroke="#000000" points="307.5,-7417 307.5,-7439 416.5,-7439 416.5,-7417 307.5,-7417"/>
 <text text-anchor="start" x="310.5" y="-7424.7" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">timestamp[29,6]</text>
-<polygon fill="#ffffff" stroke="transparent" points="97.5,-7398 97.5,-7417 196.5,-7417 196.5,-7398 97.5,-7398"/>
-<polygon fill="none" stroke="#000000" points="97.5,-7398 97.5,-7417 196.5,-7417 196.5,-7398 97.5,-7398"/>
+<polygon fill="#ffffff" stroke="transparent" points="97.5,-7398 97.5,-7417 193.5,-7417 193.5,-7398 97.5,-7398"/>
+<polygon fill="none" stroke="#000000" points="97.5,-7398 97.5,-7417 193.5,-7417 193.5,-7398 97.5,-7398"/>
 <text text-anchor="start" x="100.5" y="-7404.1" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">&lt; 0</text>
-<polygon fill="#ffffff" stroke="transparent" points="196.5,-7398 196.5,-7417 307.5,-7417 307.5,-7398 196.5,-7398"/>
-<polygon fill="none" stroke="#000000" points="196.5,-7398 196.5,-7417 307.5,-7417 307.5,-7398 196.5,-7398"/>
-<text text-anchor="start" x="277.6105" y="-7404.1" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">1 row</text>
+<polygon fill="#ffffff" stroke="transparent" points="193.5,-7398 193.5,-7417 307.5,-7417 307.5,-7398 193.5,-7398"/>
+<polygon fill="none" stroke="#000000" points="193.5,-7398 193.5,-7417 307.5,-7417 307.5,-7398 193.5,-7398"/>
+<text text-anchor="start" x="272.1105" y="-7404.1" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">0 rows</text>
 <polygon fill="#ffffff" stroke="transparent" points="307.5,-7398 307.5,-7417 416.5,-7417 416.5,-7398 307.5,-7398"/>
 <polygon fill="none" stroke="#000000" points="307.5,-7398 307.5,-7417 416.5,-7417 416.5,-7398 307.5,-7398"/>
 <text text-anchor="start" x="397.9053" y="-7404.1" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">0 &gt;</text>

@@ -1,6 +1,8 @@
 package fi.oph.koski.todistus
 
+import fi.oph.koski.documentation.ExamplesKielitutkinto.ValtionhallinnonKielitutkinnot.Opiskeluoikeus
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
+import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusOid
 import fi.oph.koski.schema.LocalizedString
 import fi.oph.koski.todistus.yleinenkielitutkinto.{YleinenKielitutkintoSuoritusJaArvosana, YleinenKielitutkintoTodistusData}
 
@@ -19,6 +21,7 @@ object TodistusDataValidation {
       _ <- validateTasonArvosanarajat(data.tasonArvosanarajat, todistusId)
       _ <- validateJärjestäjäNimi(data.järjestäjäNimi, todistusId)
       _ <- validateAllekirjoitusPäivämäärä(data.allekirjoitusPäivämäärä, todistusId)
+      - <- validateOidTunniste(data.oidTunniste, todistusId)
       _ <- validateVahvistusViimeinenPäivämäärä(data.vahvistusViimeinenPäivämäärä, todistusId)
     } yield ()
   }
@@ -86,6 +89,11 @@ object TodistusDataValidation {
       .flatMap(_ => validateNotMissingString(päivämäärä, "Allekirjoituspäivämäärä", todistusId))
       .flatMap(_ => validateReasonableLength(päivämäärä, "Allekirjoituspäivämäärä", todistusId, minLength = 8, maxLength = 30))
   }
+
+   private def validateOidTunniste(oidTunniste: String, todistusId: String): Either[HttpStatus, Unit] = {
+     validateNonEmptyNonWhitespace(oidTunniste, "OidTunniste", todistusId)
+       .flatMap(_ => OpiskeluoikeusOid.validateOpiskeluoikeusOid(oidTunniste).map(_ => ()))
+   }
 
   private def validateVahvistusViimeinenPäivämäärä(päivämäärä: String, todistusId: String): Either[HttpStatus, Unit] = {
     validateNonEmptyNonWhitespace(päivämäärä, "Vahvistuksen viimeinen päivämäärä", todistusId)
