@@ -109,3 +109,8 @@ Esimerkki:
     {{var:headers}}
 
     {{json:LuokalleJaaneetJson}}
+
+### Raportit
+
+Excel-muotoiset raportit ovat saatavilla massaluovutusrajapinnan kautta. Katso erillinen
+[raporttien dokumentaatio](/koski/dokumentaatio/massaluovutus-raportit).
