@@ -62,6 +62,11 @@
       margin: 0;
     }
 
+    @page thirdpage {
+      size: A4 portrait;
+      margin: 0;
+    }
+
     .first {
       margin: 0;
       padding: 60pt 50pt 60pt 50pt;
@@ -79,6 +84,20 @@
 
       margin: 0;
       padding: 60pt 50pt 60pt 50pt;
+      width: 595.27pt;
+      height: 841.89pt;
+      box-sizing: border-box;
+      position: relative;
+      /* DEBUG: */
+      /*background: #eef;*/
+    }
+
+    .third {
+      page: thirdpage;
+      page-break-before: always;
+
+      margin: 0;
+      padding: 60pt 100pt 60pt 100pt;
       width: 595.27pt;
       height: 841.89pt;
       box-sizing: border-box;
@@ -447,6 +466,53 @@
       /*background: sandybrown;*/
     }
 
+    .oikaisutiedot {
+      position: relative;
+      padding: 0pt 0pt 0pt 0pt;
+      margin: 0;
+    }
+
+    .oikaisutiedot-otsikko {
+      font-size: 14pt;
+      line-height: 20pt;
+      font-weight: 600;
+      text-align: center;
+      margin-bottom: 20pt;
+      margin-top: 0;
+
+      text-transform: uppercase;
+    }
+
+    .oikaisutiedot-kappale {
+      font-size: 10pt;
+      line-height: 15pt;
+      font-weight: 400;
+
+      text-align: left;
+      margin-bottom: 10pt;
+      margin-top: 0;
+    }
+
+    .oikaisutiedot-ol-hanging {
+      font-size: 10pt;
+      line-height: 15pt;
+      font-weight: 400;
+
+      margin: 0;
+      padding-left: 1.5em;
+    }
+
+    .oikaisutiedot-li {
+      margin-bottom: 10pt;
+    }
+
+    .oikaisutiedot-linkki {
+      white-space: nowrap;
+      overflow-wrap: normal;
+      color: #0033CC;
+      text-decoration: underline;
+    }
+
   </style>
 </head>
 <body>
@@ -698,6 +764,40 @@
 
   <section class="infosivu-footer-osuus" id="infosivufooter">
     <p class="infosivu-footer">Yleisten kielitutkintojen taitotasoasteikko on linkitetty empiirisesti Eurooppalaisen viitekehyksen asteikkoon.</p>
+  </section>
+
+</section>
+
+<section class="third" id="sivu3">
+
+  <section class="oikaisutiedot" id="oikaisutiedot">
+
+    <h1 class="oikaisutiedot-otsikko">Tietoa todistuksen saajalle</h1>
+
+    <p class="oikaisutiedot-kappale">
+      Voit tehdä oikaisuvaatimuspyynnön, jos et ole tyytyväinen YKI-testisi arviointiin. Oikaisuvaatimuspyyntö tarkoittaa, että YKI-testisi arvioidaan uudelleen, eli sille tehdään tarkistusarviointi. Tarkistusarvioinnissa testivastauksesi arvioidaan uudelleen.
+    </p>
+
+    <p class="oikaisutiedot-kappale">
+      Jos et ole tyytyväinen YKI-testisi arviointiin, sinulla on kaksi vaihtoehtoa:
+    </p>
+
+    <ol class="oikaisutiedot-ol-hanging">
+      <li class="oikaisutiedot-li">Voit pyytää tarkistusarviointia.  Sinulla on 30 vuorokautta aikaa pyytää tarkistusarviointia. Aika alkaa siitä, kun saat tiedon valmiista todistuksesta. Voit pyytää tarkistusarviointia tällä verkkosivulla: <span class="oikaisutiedot-linkki">https://yki.opintopolku.fi/yki/tarkistusarviointi</span>.</li>
+      <li class="oikaisutiedot-li">Voit pyytää ensin tietoa arvosteluperusteiden soveltamisesta testiisi. Se tarkoittaa, että pyydät tietoa siitä, miten YKI-testisi on arvosteltu. Pyynnön tekeminen ei muuta testisi arviointia. Sinulla on 14 vuorokautta aikaa pyytää tietoa arvosteluperusteista. Aika alkaa siitä, kun saat tiedon valmiista todistuksesta. Voit tehdä pyynnön lähettämällä sähköpostia osoitteeseen <span class="oikaisutiedot-linkki">yki-info@jyu.fi</span>. Kun olet saanut vastauksen pyyntöösi, voit pyytää sen jälkeen myös tarkistusarviointia. Sinulla on 14 vuorokautta aikaa pyytää tarkistusarviointia. Aika alkaa siitä, kun saat tiedon siitä, miten YKI-testisi on arvosteltu.</li>
+    </ol>
+
+    <p class="oikaisutiedot-kappale">
+      Lisätietoja löydät myös Opetushallituksen verkkosivuilta osoitteesta: <span class="oikaisutiedot-linkki">https://www.oph.fi/fi/koulutus-ja-tutkinnot/yki-testin-jalkeen</span>.
+    </p>
+
+    <p class="oikaisutiedot-kappale">
+      Jos tarvitset muuta todistukseen tai tarkistusarviointiin liittyvää neuvontaa, voit lähettää kysymyksesi Opetushallitukselle osoitteeseen <span class="oikaisutiedot-linkki">kielitutkinnot@oph.fi</span>.
+    </p>
+    <p class="oikaisutiedot-kappale">
+      Löydät Opetushallituksen yhteystiedot (Tutkintojen ja kieliosaamisen tunnustaminen-yksikkö) Opetushallituksen verkkosivuilta osoitteesta: <span class="oikaisutiedot-linkki">https://www.oph.fi/fi/tietoa-meista/yhteystiedot</span>.
+    </p>
+
   </section>
 
 </section>
