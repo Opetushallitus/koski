@@ -309,3 +309,33 @@ Esimerkki:
     {{var:headers}}
 
     {{json:TuvaSuoritustiedotXlsx}}
+
+{{title:fi.oph.koski.massaluovutus.raportit.MassaluovutusQueryIBSuoritustiedot}}
+{{docs:fi.oph.koski.massaluovutus.raportit.MassaluovutusQueryIBSuoritustiedot}}
+
+Esimerkki:
+
+    POST {{var:baseUrl}}/api/massaluovutus HTTP/1.1
+    {{var:headers}}
+
+    {{json:IBSuoritustiedotXlsx}}
+
+{{title:fi.oph.koski.massaluovutus.raportit.MassaluovutusQueryVSTJOTPA}}
+{{docs:fi.oph.koski.massaluovutus.raportit.MassaluovutusQueryVSTJOTPA}}
+
+Esimerkki:
+
+    POST {{var:baseUrl}}/api/massaluovutus HTTP/1.1
+    {{var:headers}}
+
+    {{json:VSTJOTPAXlsx}}
+
+{{title:fi.oph.koski.massaluovutus.raportit.MassaluovutusQueryMuuKuinSaanneltyKoulutus}}
+{{docs:fi.oph.koski.massaluovutus.raportit.MassaluovutusQueryMuuKuinSaanneltyKoulutus}}
+
+Esimerkki:
+
+    POST {{var:baseUrl}}/api/massaluovutus HTTP/1.1
+    {{var:headers}}
+
+    {{json:MuuKuinSaanneltyKoulutusXlsx}}
