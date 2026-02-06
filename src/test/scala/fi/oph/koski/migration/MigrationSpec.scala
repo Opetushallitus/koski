@@ -36,7 +36,7 @@ class MigrationSpec extends AnyFreeSpec with Matchers with RaportointikantaTestM
       "Korjaa tämän testin md5-tarkastusluvut vasta kun olet varma siitä että nykyinen toteutus voidaan viedä eteenpäin." in {
       val dir = "./src/main/scala/fi/oph/koski/raportointikanta"
       val expectedChecksums = Map(
-        "AikajaksoRowBuilder.scala"                                 -> "a5dffa8b6fb090736db7c999b2b0c119",
+        "AikajaksoRowBuilder.scala"                                 -> "eaf46dedebd6641d8e188502263186cc",
         "HenkiloLoader.scala"                                       -> "349c0d837419c58ce7053d2bc505e91",
         "KoodistoLoader.scala"                                      -> "86c90ec069d1c5ec5ee9faa65fb1399e",
         "KoskiEventBridgeClient.scala"                              -> "2dab293a49a8500a68d52c4d2d510973",
@@ -48,9 +48,9 @@ class MigrationSpec extends AnyFreeSpec with Matchers with RaportointikantaTestM
         "OrganisaatioHistoriaRowBuilder.scala"                      -> "7e586d9e273a5a4ee7beae257f22c7f4",
         "OrganisaatioLoader.scala"                                  -> "4f7ce51cb922dbc11e694ebe85ab3472",
         "PäivitettyOpiskeluoikeusLoader.scala"                      -> "500545bbe7ef47dedcfdc49580b536d2",
-        "RaportointiDatabase.scala"                                 -> "6d50454d53adb9968952384af500c009",
+        "RaportointiDatabase.scala"                                 -> "d4622a24ebdc56fea213effa3be843a",
         "RaportointiDatabaseCustomFunctions.scala"                  -> "956f101d1219c49ac9134b72a30caf3a",
-        "RaportointiDatabaseSchema.scala"                           -> "2feaf6524722852441f95657f4cb5468",
+        "RaportointiDatabaseSchema.scala"                           -> "3b24558365c0b1d73b544bc77425cc7f",
         "RaportointikantaService.scala"                             -> "2a8e3cfa70e2c5d32115aff434a890a9",
         "RaportointikantaStatusServlet.scala"                       -> "bfb4d4d668ecbff866468ae2dc5c1e0b",
         "RaportointikantaTestServlet.scala"                         -> "ad92e33c2f816ed65c0693f5dc0143b4",

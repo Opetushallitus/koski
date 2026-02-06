@@ -300,6 +300,18 @@ object KoskiErrorCategory {
       }
 
       val eb = new EB
+
+      class Perusopetus extends ErrorCategory(
+        Validation.this,
+        "perusopetus",
+        "Perusopetuksen kirjauksiin liittyvä validointivirhe"
+      ) {
+        val valmistavanLisäopetusEiSallittuEnnen = subcategory("valmistavanLisäopetusEiSallittuEnnen", "Valmistavan lisäopetus -lisätietoa voi käyttää vain 1.8.2026 tai sen jälkeen alkavissa jaksoissa")
+        val valmistavanLisäopetuksenKestoYlittääVuoden = subcategory("valmistavanLisäopetuksenKestoYlittääVuoden", "Valmistavan lisäopetuksen kokonaiskesto voi olla enintään yksi vuosi (365 päivää)")
+        val valmistavanLisäopetusJaksotPäällekkäin = subcategory("valmistavanLisäopetusJaksotPäällekkäin", "Valmistavan lisäopetuksen aikajaksot eivät saa olla päällekkäin")
+        val valmistavanLisäopetusAvoinJaksoLiianVanha = subcategory("valmistavanLisäopetusAvoinJaksoLiianVanha", "Valmistavan lisäopetusjakson päättymispäivä puuttuu ja alkamispäivä on yli vuoden vanha")
+      }
+      val perusopetus = new Perusopetus
     }
     val validation = new Validation
   }

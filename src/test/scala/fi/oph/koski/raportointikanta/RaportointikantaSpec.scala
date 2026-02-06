@@ -842,6 +842,24 @@ class RaportointikantaSpec
           ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2017-05-01"), Date.valueOf(AikajaksoRowBuilder.IndefiniteFuture), "lasna", Date.valueOf("2017-01-01"))
         ))
       }
+      "Perusopetuksen opiskeluoikeuden lisätiedot, valmistavan lisäopetus" in {
+        val opiskeluoikeus = perusopetuksenOpiskeluoikeus.copy(
+          tila = NuortenPerusopetuksenOpiskeluoikeudenTila(opiskeluoikeusjaksot = List(
+            NuortenPerusopetuksenOpiskeluoikeusjakso(alku = LocalDate.of(2026, 8, 1), tila = Läsnä)
+          )),
+          lisätiedot = Some(PerusopetuksenOpiskeluoikeudenLisätiedot(
+            valmistavanLisäopetus = Some(List(
+              Aikajakso(LocalDate.of(2026, 9, 1), Some(LocalDate.of(2026, 12, 31)))
+            ))
+          ))
+        )
+        val aikajaksoRows = AikajaksoRowBuilder.buildROpiskeluoikeusAikajaksoRows(oid, opiskeluoikeus)
+        aikajaksoRows should equal(Seq(
+          ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2026-08-01"), Date.valueOf("2026-08-31"), "lasna", Date.valueOf("2026-08-01")),
+          ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2026-09-01"), Date.valueOf("2026-12-31"), "lasna", Date.valueOf("2026-08-01"), valmistavanLisäopetus = true),
+          ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2027-01-01"), Date.valueOf(AikajaksoRowBuilder.IndefiniteFuture), "lasna", Date.valueOf("2026-08-01"))
+        ))
+      }
       "Erityisen koulutustehtävän jakso" in {
         val opiskeluoikeus = lukionOpiskeluoikeus
         val aikajaksoRows = AikajaksoRowBuilder.buildROpiskeluoikeusAikajaksoRows(oid, opiskeluoikeus)
