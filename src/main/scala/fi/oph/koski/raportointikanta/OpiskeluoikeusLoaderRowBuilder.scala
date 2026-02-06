@@ -598,6 +598,7 @@ object OpiskeluoikeusLoaderRowBuilder extends Logging {
       arviointiPisteet = ks.viimeisinArviointi.flatMap(_.pisteet),
       keskeytynyt = ks.keskeytynyt,
       maksuton = ks.maksuton,
+      suoritusMukanaTodistuksella = ks.suoritusMukanaTodistuksella,
       data = JsonManipulation.removeFields(data, fieldsToExcludeFromYtrKokeenSuoritusJson),
     )
   }
