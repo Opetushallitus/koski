@@ -1,7 +1,6 @@
 package fi.oph.koski.massaluovutus
 
 import com.typesafe.config.Config
-import fi.oph.koski.config.{KoskiApplication, KoskiInstance}
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.koskiuser.{KoskiSpecificSession, Session}
 import fi.oph.koski.log.LoggerWithContext
@@ -14,18 +13,6 @@ import scala.util.Using
 object MassaluovutusUtils {
   def readDatabaseId(config: Config): String = config.getString("kyselyt.readDatabase")
   def concurrency(config: Config): Int = config.getInt("kyselyt.concurrency")
-
-  def isQueryWorker(application: KoskiApplication, concurrency: Int): Boolean =
-    application.ecsMetadata.taskARN.forall { myArn =>
-      workerInstances(application, concurrency).exists(_.taskArn == myArn)
-    }
-
-  def workerInstances(application: KoskiApplication, concurrency: Int): Seq[KoskiInstance] =
-    application.ecsMetadata
-      .currentlyRunningKoskiInstances
-      .sortBy(_.createdAt)
-      .reverse
-      .take(concurrency)
 
   def defaultOrganisaatio(implicit user: Session): Either[HttpStatus, Oid] = user match {
     case koskiUser: KoskiSpecificSession =>

@@ -347,6 +347,18 @@ object KoskiTables {
     def * = (name, nextFireTime, context, status, pausedUntil) <> (SchedulerRow.tupled, SchedulerRow.unapply)
   }
 
+  class WorkerLeaseTable(tag: Tag) extends Table[WorkerLeaseRow](tag, "worker_lease") {
+    val name = column[String]("name")
+    val slot = column[Int]("slot")
+    val holderId = column[String]("holder_id")
+    val expiresAt = column[Timestamp]("expires_at")
+    val heartbeatAt = column[Timestamp]("heartbeat_at")
+
+    val pk = primaryKey("worker_lease_pkey", (name, slot))
+
+    def * = (name, slot, holderId, expiresAt, heartbeatAt) <> (WorkerLeaseRow.tupled, WorkerLeaseRow.unapply)
+  }
+
   class YtrDownloadStatusTable(tag: Tag) extends Table[YtrDownloadStatusRow](tag, "ytr_download_status") {
     val id = column[Int]("id", O.AutoInc, O.PrimaryKey)
     val aikaleima = column[Timestamp]("aikaleima")
@@ -479,6 +491,7 @@ object KoskiTables {
 
   val Henkilöt = TableQuery[HenkilöTable]
   val Scheduler = TableQuery[SchedulerTable]
+  val WorkerLease = TableQuery[WorkerLeaseTable]
 
   val YtrDownloadStatus = TableQuery[YtrDownloadStatusTable]
 
@@ -687,6 +700,8 @@ case class SchedulerRow(name: String, nextFireTime: Timestamp, context: Option[J
   def running: Boolean = status == ScheduledTaskStatus.running
   def paused: Boolean = pausedUntil.exists(_.after(new Timestamp(System.currentTimeMillis)))
 }
+
+case class WorkerLeaseRow(name: String, slot: Int, holderId: String, expiresAt: Timestamp, heartbeatAt: Timestamp)
 
 case class YtrDownloadStatusRow(id: Int, aikaleima: Timestamp, data: JValue, initialized: Timestamp, completed: Option[Timestamp], modifiedSinceParam: Option[LocalDate])
 

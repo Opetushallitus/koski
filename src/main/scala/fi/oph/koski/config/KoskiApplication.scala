@@ -30,7 +30,7 @@ import fi.oph.koski.organisaatio.{OrganisaatioRepository, OrganisaatioService}
 import fi.oph.koski.perustiedot.{OpiskeluoikeudenPerustiedotIndexer, OpiskeluoikeudenPerustiedotRepository, PerustiedotManualSyncRepository, PerustiedotSyncRepository}
 import fi.oph.koski.pulssi.{KoskiPulssi, PrometheusRepository}
 import fi.oph.koski.raportointikanta.{Confidential, Public, RaportointiDatabase, RaportointikantaService}
-import fi.oph.koski.schedule.{KoskiScheduledTasks, PerustiedotManualSyncScheduler, PerustiedotSyncScheduler}
+import fi.oph.koski.schedule.{KoskiScheduledTasks, PerustiedotManualSyncScheduler, PerustiedotSyncScheduler, WorkerLeaseRepository}
 import fi.oph.koski.sdg.SdgService
 import fi.oph.koski.sso.{CasOppijaCreationService, CasService, KoskiSessionRepository}
 import fi.oph.koski.suoritetuttutkinnot.SuoritetutTutkinnotService
@@ -60,6 +60,7 @@ import fi.oph.koski.ytr.YoTodistusService
 import fi.oph.koski.ytr.download.YtrDownloadService
 import fi.oph.koski.ytr.{YtrAccessChecker, YtrClient, YtrOpiskeluoikeusRepository, YtrRepository}
 
+import java.util.UUID
 import scala.concurrent.Future
 
 object KoskiApplication {
@@ -229,11 +230,18 @@ class KoskiApplication(
   lazy val massaluovutusScheduler: MassaluovutusScheduler = new MassaluovutusScheduler(this)
   lazy val massaluovutusCleanupScheduler: MassaluovutusCleanupScheduler = new MassaluovutusCleanupScheduler(this)
   lazy val ecsMetadata: ECSMetadataClient = new ECSMetadataClient(config)
+  lazy val instanceId: String =
+    if (Environment.isUnitTestEnvironment(config) || Environment.isLocalDevelopmentEnvironment(config)) {
+      "local"
+    } else {
+      UUID.randomUUID().toString
+    }
+  lazy val workerLeaseRepository: WorkerLeaseRepository = new WorkerLeaseRepository(masterDatabase.db)
 
   lazy val omaDataOAuth2Repository = new OmaDataOAuth2Repository(this, masterDatabase.db)
   lazy val omaDataOAuth2Service = new OmaDataOAuth2Service(omaDataOAuth2Repository, this)
 
-  lazy val todistusWorkerId = ecsMetadata.taskARN.getOrElse("local")
+  lazy val todistusWorkerId = instanceId
   lazy val todistusService = new TodistusService(this)
   lazy val todistusRepository = new TodistusJobRepository(
     masterDatabase.db,

@@ -7,7 +7,6 @@ import org.json4s.JValue
 
 class MassaluovutusCleanupScheduler(application: KoskiApplication) extends Logging {
   val massaluovutukset: MassaluovutusService = application.massaluovutusService
-  val concurrency: Int = MassaluovutusUtils.concurrency(application.config)
 
   def scheduler: Option[Scheduler] = {
     Some(new Scheduler(
@@ -24,21 +23,10 @@ class MassaluovutusCleanupScheduler(application: KoskiApplication) extends Loggi
   def trigger(): Unit = runNextQuery(None)
 
   private def runNextQuery(_ignore: Option[JValue]): Option[JValue] = {
-    val instances = application.ecsMetadata.currentlyRunningKoskiInstances
+    val activeWorkers = application.workerLeaseRepository.activeHolders("massaluovutus")
 
-    massaluovutukset.cleanup(instances)
-    runAsWorkerIfWorkersMissing()
+    massaluovutukset.cleanup(activeWorkers)
 
     None
-  }
-
-  private def runAsWorkerIfWorkersMissing(): Unit = {
-    val instances = application.ecsMetadata.currentlyRunningKoskiInstances
-    // TODO: TOR-2400: Tämä tuskin toimii, eihän instances.size voi koskaan olla pienempi kuin 1, jos concurrency==1?
-    if (instances.size < concurrency && !MassaluovutusUtils.isQueryWorker(application, concurrency)) {
-      logger.warn("Query worker is missing. Promoting this instance to process the queue.")
-      application.scheduledTasks.restartMassaluovutusScheduler()
-    }
-
   }
 }
