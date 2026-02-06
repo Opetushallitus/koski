@@ -4,7 +4,7 @@ import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.koskiuser.{KoskiSpecificSession, RequiresOmaDataOAuth2}
 import fi.oph.koski.log.KoskiAuditLogMessageField.{omaDataKumppani, omaDataOAuth2Scope, oppijaHenkiloOid}
-import fi.oph.koski.log.KoskiOperation.{OAUTH2_KATSOMINEN_AKTIIVISET_JA_PAATTYNEET_OPINNOT, OAUTH2_KATSOMINEN_KAIKKI_TIEDOT, OAUTH2_KATSOMINEN_SUORITETUT_TUTKINNOT}
+import fi.oph.koski.log.KoskiOperation.{OAUTH2_KATSOMINEN_AKTIIVISET_JA_PAATTYNEET_OPINNOT, OAUTH2_KATSOMINEN_HSL, OAUTH2_KATSOMINEN_KAIKKI_TIEDOT, OAUTH2_KATSOMINEN_SUORITETUT_TUTKINNOT}
 import fi.oph.koski.log.{AuditLog, KoskiAuditLogMessage, KoskiOperation, Logging}
 import fi.oph.koski.servlet.{KoskiSpecificApiServlet, NoCache}
 import org.scalatra.ContentEncodingSupport
@@ -56,6 +56,10 @@ class OmaDataOAuth2ResourceServerServlet(implicit val application: KoskiApplicat
       case Seq("OPISKELUOIKEUDET_KAIKKI_TIEDOT") =>
         val oppija = application.omaDataOAuth2Service.findKaikkiTiedot(oppijaOid, scope, overrideSession, tokenExpirationTime)
         auditLogKatsominen(OAUTH2_KATSOMINEN_KAIKKI_TIEDOT, koskiSession.user.username, koskiSession, oppijaOid, scope)
+        renderOppijaData(oppija)
+      case Seq("OPISKELUOIKEUDET_HSL") =>
+        val oppija = application.omaDataOAuth2Service.findHslOpiskeluoikeudet(oppijaOid, scope, overrideSession, tokenExpirationTime)
+        auditLogKatsominen(OAUTH2_KATSOMINEN_HSL, koskiSession.user.username, koskiSession, oppijaOid, scope)
         renderOppijaData(oppija)
       case _ =>
         renderError(OmaDataOAuth2ErrorType.server_error, s"Internal error, unable to handle OPISKELUOIKEUDET scope defined in ${scope}", msg => logger.error(msg))

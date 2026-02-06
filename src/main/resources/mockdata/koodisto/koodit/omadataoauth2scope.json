@@ -222,5 +222,33 @@
     "koodiUri": "omadataoauth2scope_opiskeluoikeudetsuoritetuttutkinnot",
     "versio": 1,
     "koodiArvo": "opiskeluoikeudet_suoritetut_tutkinnot"
+  },
+  {
+    "metadata": [
+      {
+        "nimi": "HSL-opiskeluoikeudet",
+        "kuvaus": "",
+        "lyhytNimi": "",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "HSL-studierätter",
+        "kuvaus": "",
+        "lyhytNimi": "",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "HSL study rights",
+        "kuvaus": "",
+        "lyhytNimi": "",
+        "kieli": "EN"
+      }
+    ],
+    "withinCodeElements": [],
+    "includesCodeElements": [],
+    "levelsWithCodeElements": [],
+    "koodiUri": "omadataoauth2scope_opiskeluoikeudethsl",
+    "versio": 1,
+    "koodiArvo": "opiskeluoikeudet_hsl"
   }
 ]
