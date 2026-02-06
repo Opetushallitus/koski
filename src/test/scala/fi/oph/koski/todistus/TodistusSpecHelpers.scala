@@ -185,13 +185,13 @@ class TodistusSpecHelpers extends AnyFreeSpec with KoskiHttpSpec with Matchers w
     lastResponse.get
   }
 
-  def createOrphanJob(oppijaOid: String, opiskeluoikeusOid: String, language: String, attempts: Int): TodistusJob = {
+  def createOrphanJob(oppijaOid: String, opiskeluoikeusOid: String, templateVariant: String, attempts: Int): TodistusJob = {
     val orphanJob = TodistusJob(
       id = java.util.UUID.randomUUID().toString,
       userOid = Some(oppijaOid),
       oppijaOid = oppijaOid,
       opiskeluoikeusOid = opiskeluoikeusOid,
-      language = language,
+      templateVariant = templateVariant,
       opiskeluoikeusVersionumero = Some(1),
       oppijaHenkilötiedotHash = Some("test-hash"),
       state = TodistusState.GENERATING_RAW_PDF,

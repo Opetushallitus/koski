@@ -27,13 +27,13 @@ import { Trans } from '../components-v2/texts/Trans'
 import { TextWithLinks } from '../components-v2/texts/TextWithLinks'
 import { useVirkailijaUser } from '../appstate/user'
 
-export type TodistusLanguage = 'fi' | 'sv' | 'en'
+export type TodistusTemplateVariant = 'fi' | 'sv' | 'en'
 
 export type YleinenKielitutkintoTodistusLatausProps = {
   opiskeluoikeusOid: string
 }
 
-const kielitutkintoTodistusLanguages: OptionList<TodistusLanguage> = [
+const languageOptions: OptionList<TodistusTemplateVariant> = [
   { key: 'fi', value: 'fi', label: t('Fi') },
   { key: 'sv', value: 'sv', label: t('Sv') },
   { key: 'en', value: 'en', label: t('En') }
@@ -44,7 +44,7 @@ export const YleinenKielitutkintoTodistusLataus: React.FC<
 > = ({ opiskeluoikeusOid }) => {
   const hasPääkäyttäjäAccess = useVirkailijaUser()?.hasPääkäyttäjäAccess
 
-  const [language, setLanguage] = useState<TodistusLanguage>('fi')
+  const [language, setLanguage] = useState<TodistusTemplateVariant>('fi')
   const [status, setStatus] = useSafeState<TodistusJob | null>(null)
   const [currentJobId, setCurrentJobId] = useSafeState<string | null>(null)
 
@@ -91,7 +91,7 @@ export const YleinenKielitutkintoTodistusLataus: React.FC<
   const updateStatusFromResponse = useCallback(
     (response: { data: TodistusJob }) => {
       // Päivitä status vain jos se vastaa nykyistä kieltä
-      if (response.data.language === language) {
+      if (response.data.templateVariant === language) {
         const ignoredStates = ['EXPIRED', 'QUEUED_FOR_EXPIRE', 'INTERRUPTED']
 
         if (ignoredStates.includes(response.data.state)) {
@@ -172,7 +172,7 @@ export const YleinenKielitutkintoTodistusLataus: React.FC<
   }, [statePoller])
 
   const handleLanguageChange = useCallback(
-    (option?: SelectOption<TodistusLanguage>) => {
+    (option?: SelectOption<TodistusTemplateVariant>) => {
       if (option?.value) {
         setLanguage(option.value)
         setStatus(null)
@@ -234,7 +234,7 @@ export const YleinenKielitutkintoTodistusLataus: React.FC<
           <Select
             className="Todistus__langSelect"
             testId="language"
-            options={kielitutkintoTodistusLanguages}
+            options={languageOptions}
             value={language}
             onChange={handleLanguageChange}
             disabled={!!isInProgress}
