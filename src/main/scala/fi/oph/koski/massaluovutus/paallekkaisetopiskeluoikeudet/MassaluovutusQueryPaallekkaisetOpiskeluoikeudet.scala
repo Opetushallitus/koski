@@ -97,6 +97,14 @@ case class MassaluovutusQueryPaallekkaisetOpiskeluoikeudet(
 }
 
 object QueryPaallekkaisetOpiskeluoikeudetDocumentation {
+  def csvExample: MassaluovutusQueryPaallekkaisetOpiskeluoikeudet = MassaluovutusQueryPaallekkaisetOpiskeluoikeudet(
+    format = QueryFormat.csv,
+    organisaatioOid = Some(MockOrganisaatiot.helsinginKaupunki),
+    language = Some("fi"),
+    alku = LocalDate.of(2024, 1, 1),
+    loppu = LocalDate.of(2024, 3, 31),
+  )
+
   def xlsxExample: MassaluovutusQueryPaallekkaisetOpiskeluoikeudet = MassaluovutusQueryPaallekkaisetOpiskeluoikeudet(
     format = QueryFormat.xlsx,
     organisaatioOid = Some(MockOrganisaatiot.helsinginKaupunki),
