@@ -151,8 +151,31 @@ class TodistusSpecHelpers extends AnyFreeSpec with KoskiHttpSpec with Matchers w
     lastResponse.get
   }
 
+  def waitForStateTransitionAsVirkailijaPääkäyttäjä(id: String)(states: String*): TodistusJob = {
+    var lastResponse: Option[TodistusJob] = None
+    Wait.until {
+      getStatusSuccessfullyAsVirkailijaPääkäyttäjä(id) { response =>
+        states should contain(response.state)
+        lastResponse = Some(response)
+        response.state == states.last
+      }
+    }
+    lastResponse.get
+  }
+
   def waitForCompletion(id: String, hetu: String): TodistusJob =
     waitForStateTransition(id, hetu)(
+      TodistusState.QUEUED,
+      TodistusState.GATHERING_INPUT,
+      TodistusState.GENERATING_RAW_PDF,
+      TodistusState.SAVING_RAW_PDF,
+      TodistusState.STAMPING_PDF,
+      TodistusState.SAVING_STAMPED_PDF,
+      TodistusState.COMPLETED
+    )
+
+  def waitForCompletionAsVirkailijaPääkäyttäjä(id: String): TodistusJob =
+    waitForStateTransitionAsVirkailijaPääkäyttäjä(id)(
       TodistusState.QUEUED,
       TodistusState.GATHERING_INPUT,
       TodistusState.GENERATING_RAW_PDF,

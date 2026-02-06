@@ -24,12 +24,13 @@ class TodistusJobRepository(val db: DB, val workerId: String, config: Config) ex
       .toRight(KoskiErrorCategory.notFound())
   }
 
-  def get(id: String, kelpuutetutOppijaOidit: Set[String]): Either[HttpStatus, TodistusJob] = {
+  def get(id: String, kelpuutetutOppijaOidit: Set[String], kelpuutetutVariantit: Set[String]): Either[HttpStatus, TodistusJob] = {
     runDbSync(sql"""
       SELECT *
       FROM todistus_job
       WHERE id = ${id}::uuid
         AND oppija_oid = ANY(${kelpuutetutOppijaOidit.toList})
+        AND template_variant = ANY(${kelpuutetutVariantit.toList})
       """.as[TodistusJob]
     ).headOption
       .toRight(KoskiErrorCategory.notFound())

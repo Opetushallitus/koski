@@ -88,7 +88,22 @@ class TodistusKayttoOikeudetSpec extends TodistusSpecHelpers {
   }
 
   "Generointipyyntö ei onnistu" - {
-    "kansalaiselta muuntyyppisten opintojen opiskeluoikeuteen" in {
+    "kansalaiselta omasta kielitutkinnon opiskeluoikeudesta tulostus-leiskalla" in {
+      val templateVariant = "fi_tulostettava_uusi"
+      val hetu = KoskiSpecificMockOppijat.kielitutkinnonSuorittaja.hetu.get
+      val oppijaOid = KoskiSpecificMockOppijat.kielitutkinnonSuorittaja.oid
+      val opiskeluoikeusOid = getVahvistettuKielitutkinnonOpiskeluoikeus(oppijaOid).flatMap(_.oid).get
+
+      val req = TodistusGenerateRequest(opiskeluoikeusOid, templateVariant)
+
+      withoutRunningSchedulers {
+        addGenerateJob(req, hetu) {
+          verifyResponseStatus(404)
+        }
+      }
+    }
+
+    "kansalaiselta muuntyyppisten opintojen opiskeluoikeudesta" in {
       val templateVariant = "fi"
       val kirjautujanHetu = KoskiSpecificMockOppijat.lukiolainen.hetu.get
       val muidenOpintojenOpiskeluoikeus = getVahvistettuOpiskeluoikeus(KoskiSpecificMockOppijat.lukiolainen.oid)
@@ -253,6 +268,33 @@ class TodistusKayttoOikeudetSpec extends TodistusSpecHelpers {
         }
       }
     }
+
+    "oppijalta pääkäyttäjän luomaan generointi-jobiin, jossa käytetty tulostusvarianttia" in {
+      val templateVariant = "fi_tulostettava_uusi"
+      val hetu = KoskiSpecificMockOppijat.kielitutkinnonSuorittaja.hetu.get
+      val oppijaOid = KoskiSpecificMockOppijat.kielitutkinnonSuorittaja.oid
+      val opiskeluoikeusOid = getVahvistettuKielitutkinnonOpiskeluoikeus(oppijaOid).flatMap(_.oid).get
+
+      val req = TodistusGenerateRequest(opiskeluoikeusOid, templateVariant)
+
+      withoutRunningSchedulers {
+        // Virkailijapääkäyttäjä luo todistuspyynnön ja odottaa valmistumista
+        addGenerateJobSuccessfullyAsVirkailijaPääkäyttäjä(req) { todistusJob =>
+          todistusJob.state should equal(TodistusState.QUEUED)
+
+          // Virkailijapääkäyttäjä hakee todistuksen
+          getStatusSuccessfullyAsVirkailijaPääkäyttäjä(todistusJob.id) { status =>
+            status.id should equal(todistusJob.id)
+            status.state should equal(TodistusState.QUEUED)
+          }
+
+          // Kansalainen yrittää hakea statusta
+          getStatus(todistusJob.id, hetu) {
+            verifyResponseStatus(404)
+          }
+        }
+      }
+    }
   }
 
   "Huoltajan luoma todistus ja oppijan omat oikeudet" - {
@@ -385,6 +427,27 @@ class TodistusKayttoOikeudetSpec extends TodistusSpecHelpers {
       // Varmista että normaali download toimii
       verifyDownloadResult(s"/todistus/download/${todistusJob.id}", hetu)
     }
+
+    "Kansalainen ei pääse lataamaan pääkäyttäjän luomaa printattavaa todistusta" in {
+      val templateVariant = "fi_tulostettava_uusi"
+      val hetu = KoskiSpecificMockOppijat.kielitutkinnonSuorittaja.hetu.get
+      val oppijaOid = KoskiSpecificMockOppijat.kielitutkinnonSuorittaja.oid
+      val opiskeluoikeusOid = getVahvistettuKielitutkinnonOpiskeluoikeus(oppijaOid).flatMap(_.oid).get
+
+      val req = TodistusGenerateRequest(opiskeluoikeusOid, templateVariant)
+
+      // Virkailijapääkäyttäjä luo todistuspyynnön
+      addGenerateJobSuccessfullyAsVirkailijaPääkäyttäjä(req) { todistusJob =>
+
+        waitForCompletionAsVirkailijaPääkäyttäjä(todistusJob.id)
+
+        // Kansalainen yrittää hakea todistuksen
+        getResult(s"/todistus/download/${todistusJob.id}", hetu) {
+          verifyResponseStatus(404)
+        }
+      }
+    }
+
 
     "Kansalainen ei pääse lataamaan toisen oppijan todistusta" in {
       val templateVariant = "fi"

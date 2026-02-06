@@ -43,13 +43,18 @@ class TodistusService(application: KoskiApplication) extends Logging with Timing
     } else {
       for {
         oppijaOidit <- haeOppijaOiditJoihinKansalaisellaOnOikeudet
-        todistus <- todistusRepository.get(req.id, oppijaOidit)
+        todistus <- todistusRepository.get(req.id, oppijaOidit, TodistusTemplateVariant.kansalainenVariants)
       } yield todistus
     }
   }
 
   def checkStatus(req: TodistusGenerateRequest)(implicit user: KoskiSpecificSession): Either[HttpStatus, TodistusJob] = {
     for {
+      _ <- Either.cond(
+        TodistusTemplateVariant.isKansalainenVariant(req.templateVariant) || user.hasRole(OPHPAAKAYTTAJA),
+        (),
+        KoskiErrorCategory.notFound()
+      )
       yleisenKielitutkinnonVahvistettuOpiskeluoikeus <- kielitutkinnonVahvistettuOpiskeluoikeusJohonKutsujallaKäyttöoikeudet(req)
       oppijanHenkilö <- application.henkilöRepository.findByOid(yleisenKielitutkinnonVahvistettuOpiskeluoikeus.oppijaOid).toRight(KoskiErrorCategory.notFound.oppijaaEiLöydyTaiEiOikeuksia())
       oppijanHenkilötiedotHash = laskeHenkilötiedotHash(oppijanHenkilö)
@@ -69,6 +74,11 @@ class TodistusService(application: KoskiApplication) extends Logging with Timing
     logSkedulointiAlkaa(uusiJobId, req)
 
     val result = for {
+      _ <- Either.cond(
+        TodistusTemplateVariant.isKansalainenVariant(req.templateVariant) || user.hasRole(OPHPAAKAYTTAJA),
+        (),
+        KoskiErrorCategory.notFound.opiskeluoikeuttaEiLöydyTaiEiOikeuksia()
+      )
       yleisenKielitutkinnonVahvistettuOpiskeluoikeus <- kielitutkinnonVahvistettuOpiskeluoikeusJohonKutsujallaKäyttöoikeudet(req)
       oppijanHenkilö <- application.henkilöRepository.findByOid(yleisenKielitutkinnonVahvistettuOpiskeluoikeus.oppijaOid).toRight(KoskiErrorCategory.notFound.oppijaaEiLöydyTaiEiOikeuksia())
       job = TodistusJob(uusiJobId, req, laskeHenkilötiedotHash(oppijanHenkilö), yleisenKielitutkinnonVahvistettuOpiskeluoikeus)
