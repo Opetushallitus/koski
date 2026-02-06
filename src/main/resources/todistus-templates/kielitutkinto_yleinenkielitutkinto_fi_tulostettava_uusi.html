@@ -535,9 +535,9 @@
     <section class="footer-teksti">
       <p>Tämä tutkinto perustuu yleisistä kielitutkinnoista annettuun lakiin 964/2004 sekä valtioneuvoston asetuksiin
         1163/2004 ja 1109/2011.</p>
-      <p>Alkuperän ja eheyden varmistamiseksi todistukseen on liitetty eIDAS-asetuksen mukainen kehittynyt sähköinen
-        leima. Tämän todistuksen voimassaolo voidaan vahvistaa <span th:text="${vahvistusViimeinenPäivämäärä}">PP.KK.VVVV</span>
-        asti.</p>
+      <p>Alkuperän ja eheyden varmistamiseksi todistukseen on liitetty OID-tunnistenumero, joka on aina muotoa
+        1.2.246.562.15.XXXXXXXXXXX. Tunnisteen loppuosa on jokaisella todistuksella yksilöllinen.</p>
+      <p>Todistuksen OID-tunniste: <span th:text="${oidTunniste}">1.2.246.562.15.XXXXXXXXXXX</span></p>
     </section>
 
   </section>
