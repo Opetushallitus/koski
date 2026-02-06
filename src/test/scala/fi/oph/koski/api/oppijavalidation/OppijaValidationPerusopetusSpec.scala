@@ -887,6 +887,77 @@ class OppijaValidationPerusopetusSpec extends TutkinnonPerusteetTest[Perusopetuk
         }
       }
 
+      "Oppiaine ei voi olla sekä yksilöllistetty että rajattu" - {
+        "Vuosiluokan suorituksessa" in {
+          val oo = makeOpiskeluoikeus().copy(
+            suoritukset = List(seitsemännenLuokanSuoritus.copy(
+              vahvistus = None,
+              alkamispäivä = Some(LocalDate.of(2025, 10, 9)),
+              osasuoritukset = Some(List(äidinkielenSuoritus.copy(rajattuOppimäärä = true, yksilöllistettyOppimäärä = true)))
+            )),
+            lisätiedot = Some(PerusopetuksenOpiskeluoikeudenLisätiedot(
+              erityisenTuenPäätökset = erityisenTuenPäätökset(alku = LocalDate.of(2025, 10, 9), loppu = LocalDate.of(2025,10,31)),
+            ))
+          )
+
+          setupOppijaWithOpiskeluoikeus(oo) {
+            verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.rakenne(
+              "Oppiaineen oppimäärä ei voi olla sekä yksilöllistetty että rajattu"
+            ))
+          }
+        }
+
+        "Päättötodistuksen suorituksessa" in {
+          val oo = defaultOpiskeluoikeus.copy(
+            suoritukset = List(
+              päättötodistusSuoritus.copy(
+                vahvistus = None,
+                osasuoritukset = Some(List(
+                  äidinkielenSuoritus.copy(yksilöllistettyOppimäärä = true, rajattuOppimäärä = true)
+                ))
+              )
+            )
+          )
+          setupOppijaWithOpiskeluoikeus(oo) {
+            verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.rakenne(
+              "Oppiaineen oppimäärä ei voi olla sekä yksilöllistetty että rajattu"
+            ))
+          }
+        }
+
+        "Vain yksilöllistetty oppimäärä sallitaan" in {
+          val oo = makeOpiskeluoikeus().copy(
+            suoritukset = List(seitsemännenLuokanSuoritus.copy(
+              vahvistus = None,
+              alkamispäivä = Some(LocalDate.of(2025, 10, 9)),
+              osasuoritukset = Some(List(äidinkielenSuoritus.copy(rajattuOppimäärä = false, yksilöllistettyOppimäärä = true)))
+            )),
+            lisätiedot = Some(PerusopetuksenOpiskeluoikeudenLisätiedot(
+              erityisenTuenPäätökset = erityisenTuenPäätökset(alku = LocalDate.of(2025, 10, 9), loppu = LocalDate.of(2025,10,31)),
+            ))
+          )
+          setupOppijaWithOpiskeluoikeus(oo) {
+            verifyResponseStatusOk()
+          }
+        }
+
+        "Vain rajattu oppimäärä sallitaan" in {
+          val oo = makeOpiskeluoikeus().copy(
+            suoritukset = List(seitsemännenLuokanSuoritus.copy(
+              vahvistus = None,
+              alkamispäivä = Some(LocalDate.of(2025, 10, 9)),
+              osasuoritukset = Some(List(äidinkielenSuoritus.copy(rajattuOppimäärä = true, yksilöllistettyOppimäärä = false)))
+            )),
+            lisätiedot = Some(PerusopetuksenOpiskeluoikeudenLisätiedot(
+              erityisenTuenPäätökset = erityisenTuenPäätökset(alku = LocalDate.of(2025, 10, 9), loppu = LocalDate.of(2025,10,31)),
+            ))
+          )
+          setupOppijaWithOpiskeluoikeus(oo) {
+            verifyResponseStatusOk()
+          }
+        }
+      }
+
       "Opetuksen järjestäminen vamman, sairauden tai toimintakyvyn rajoitteen perusteella" - {
         val vammaSairausTaiRajoiteVoimaan = LocalDate.parse(KoskiApplicationForTests.config.getString("validaatiot.vammaSairausTaiRajoiteVoimaan"))
 

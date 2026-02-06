@@ -1215,6 +1215,20 @@ class KoskiValidator(
       arvosanat.nonEmpty && arvosanat.forall(sallitutArvosanat.contains)
     }
 
+    val yksilöllistettyJaRajattuVirheet = suoritus match {
+      case s: PerusopetuksenPäätasonSuoritus =>
+        HttpStatus.fold(
+          suoritus.osasuoritusLista.map {
+            case os: RajattavaOppimäärä if os.yksilöllistettyOppimäärä && os.rajattuOppimäärä =>
+              KoskiErrorCategory.badRequest.validation.rakenne(
+                "Oppiaineen oppimäärä ei voi olla sekä yksilöllistetty että rajattu"
+              )
+            case _ => HttpStatus.ok
+          }
+        )
+      case _ => HttpStatus.ok
+    }
+
     val päivämääräVirheet = suoritus match {
       case s: PerusopetuksenPäätasonSuoritus if s.vahvistus.nonEmpty =>
         val vahvistuspvm = s.vahvistus.get.päivä
@@ -1260,7 +1274,7 @@ class KoskiValidator(
         )
       case _ => HttpStatus.ok
     }
-    HttpStatus.fold(päivämääräVirheet, arvosanaVirheet)
+    HttpStatus.fold(yksilöllistettyJaRajattuVirheet, päivämääräVirheet, arvosanaVirheet)
   }
 
   private def validateVahvistusAndPäättymispäiväDateOrder(suoritus: Suoritus, opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus, vahvistuspäivät: Option[LocalDate]): HttpStatus = {
