@@ -63,10 +63,22 @@ object TodistusTemplateVariant {
   val FI = "fi"
   val SV = "sv"
   val EN = "en"
+  val fi_tulostettava_uusi = "fi_tulostettava_uusi"
+  val fi_tulostettava_paivitys = "fi_tulostettava_paivitys"
+  val sv_tulostettava_uusi = "sv_tulostettava_uusi"
+  val sv_tulostettava_paivitys = "sv_tulostettava_paivitys"
+  val en_tulostettava_uusi = "en_tulostettava_uusi"
+  val en_tulostettava_paivitys = "en_tulostettava_paivitys"
 
-  val * : Set[String] = Set(FI, SV, EN)
+  val * : Set[String] = Set(FI, SV, EN, fi_tulostettava_uusi, fi_tulostettava_paivitys, sv_tulostettava_uusi, sv_tulostettava_paivitys, en_tulostettava_uusi, en_tulostettava_paivitys)
 
-  def baseLanguage(variant: TodistusTemplateVariant): String = variant.take(2)
+  val printVariants: Set[String] = Set(fi_tulostettava_uusi, fi_tulostettava_paivitys, sv_tulostettava_uusi, sv_tulostettava_paivitys, en_tulostettava_uusi, en_tulostettava_paivitys)
+
+  val kansalainenVariants: Set[String] = * -- printVariants
+
+  def baseLanguage(variant: String): String = variant.take(2)
+
+  def isKansalainenVariant(variant: String): Boolean = kansalainenVariants.contains(variant)
 }
 
 object TodistusJob {

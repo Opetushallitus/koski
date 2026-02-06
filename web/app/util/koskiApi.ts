@@ -309,22 +309,25 @@ export const generateYoTodistus = (oppijaOid: string, language: string) =>
   )
 
 export const fetchTodistusStatus = (
-  language: string,
+  templateVariant: string,
   opiskeluoikeusOid: string
 ) =>
   handleExpiredSession(
     apiGet<TodistusJob>(
-      apiUrl(`todistus/status/${language}/${opiskeluoikeusOid}`)
+      apiUrl(`todistus/status/${templateVariant}/${opiskeluoikeusOid}`)
     )
   )
 
 export const fetchTodistusStatusByJobId = (jobId: string) =>
   handleExpiredSession(apiGet<TodistusJob>(apiUrl(`todistus/status/${jobId}`)))
 
-export const generateTodistus = (language: string, opiskeluoikeusOid: string) =>
+export const generateTodistus = (
+  templateVariant: string,
+  opiskeluoikeusOid: string
+) =>
   handleExpiredSession(
     apiGet<TodistusJob>(
-      apiUrl(`todistus/generate/${language}/${opiskeluoikeusOid}`)
+      apiUrl(`todistus/generate/${templateVariant}/${opiskeluoikeusOid}`)
     )
   )
 
