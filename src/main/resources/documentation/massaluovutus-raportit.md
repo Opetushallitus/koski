@@ -7,8 +7,6 @@ Raporttien käyttö tapahtuu samalla tavalla kuin muutkin massaluovutuskyselyt.
 Katso [massaluovutusrajapinnan yleinen dokumentaatio](/koski/dokumentaatio/massaluovutus-koulutuksenjarjestajille)
 kyselyn luonnista ja tulosten hakemisesta.
 
-## Lukiokoulutus
-
 {{title:fi.oph.koski.massaluovutus.raportit.MassaluovutusQueryLukionSuoritustiedot}}
 {{docs:fi.oph.koski.massaluovutus.raportit.MassaluovutusQueryLukionSuoritustiedot}}
 
@@ -69,8 +67,6 @@ Esimerkki:
 
     {{json:LuvaOpiskelijamaaratXlsx}}
 
-## Ammatillinen koulutus
-
 {{title:fi.oph.koski.massaluovutus.raportit.MassaluovutusQueryAmmatillinenOpiskelijavuositiedot}}
 {{docs:fi.oph.koski.massaluovutus.raportit.MassaluovutusQueryAmmatillinenOpiskelijavuositiedot}}
 
@@ -121,8 +117,6 @@ Esimerkki:
 
     {{json:TOPKSAmmatillinenXlsx}}
 
-## Perusopetus
-
 {{title:fi.oph.koski.massaluovutus.raportit.MassaluovutusQueryPerusopetuksenVuosiluokka}}
 {{docs:fi.oph.koski.massaluovutus.raportit.MassaluovutusQueryPerusopetuksenVuosiluokka}}
 
@@ -163,8 +157,6 @@ Esimerkki:
 
     {{json:PerusopetukseenValmistavaXlsx}}
 
-## Aikuisten perusopetus
-
 {{title:fi.oph.koski.massaluovutus.raportit.MassaluovutusQueryAikuistenPerusopetusSuoritustiedot}}
 {{docs:fi.oph.koski.massaluovutus.raportit.MassaluovutusQueryAikuistenPerusopetusSuoritustiedot}}
 
@@ -195,8 +187,6 @@ Esimerkki:
 
     {{json:AikuistenPerusopetuksenKurssikertymaXlsx}}
 
-## Esiopetus
-
 {{title:fi.oph.koski.massaluovutus.raportit.MassaluovutusQueryEsiopetus}}
 {{docs:fi.oph.koski.massaluovutus.raportit.MassaluovutusQueryEsiopetus}}
 
@@ -216,8 +206,6 @@ Esimerkki:
     {{var:headers}}
 
     {{json:EsiopetuksenOppijamaaratRaporttiXlsx}}
-
-## TUVA-koulutus
 
 {{title:fi.oph.koski.massaluovutus.raportit.MassaluovutusQueryTuvaPerusopetuksenOppijamaaratRaportti}}
 {{docs:fi.oph.koski.massaluovutus.raportit.MassaluovutusQueryTuvaPerusopetuksenOppijamaaratRaportti}}
@@ -239,8 +227,6 @@ Esimerkki:
 
     {{json:TuvaSuoritustiedotXlsx}}
 
-## IB-koulutus
-
 {{title:fi.oph.koski.massaluovutus.raportit.MassaluovutusQueryIBSuoritustiedot}}
 {{docs:fi.oph.koski.massaluovutus.raportit.MassaluovutusQueryIBSuoritustiedot}}
 
@@ -251,8 +237,6 @@ Esimerkki:
 
     {{json:IBSuoritustiedotXlsx}}
 
-## Vapaan sivistystyön koulutus
-
 {{title:fi.oph.koski.massaluovutus.raportit.MassaluovutusQueryVSTJOTPA}}
 {{docs:fi.oph.koski.massaluovutus.raportit.MassaluovutusQueryVSTJOTPA}}
 
@@ -262,8 +246,6 @@ Esimerkki:
     {{var:headers}}
 
     {{json:VSTJOTPAXlsx}}
-
-## Muu kuin säännelty koulutus
 
 {{title:fi.oph.koski.massaluovutus.raportit.MassaluovutusQueryMuuKuinSaanneltyKoulutus}}
 {{docs:fi.oph.koski.massaluovutus.raportit.MassaluovutusQueryMuuKuinSaanneltyKoulutus}}
