@@ -144,7 +144,8 @@ object SuorituspalveluQuery {
     "vstvapaatavoitteinenkoulutus",
     "lukionoppiaineenoppimaara",
     "lukionaineopinnot",
-    "lukionoppimaara"
+    "lukionoppimaara",
+    "perusopetukseenvalmistavaopetus",
   )
 
   def auditLog(oppijaOid: String, opiskeluoikeusOid: String, versionumero: Option[Int])(implicit user: Session): Unit =
