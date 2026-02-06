@@ -356,8 +356,7 @@ class RaportitService(application: KoskiApplication) {
     )
   }
 
-  def ibSuoritustiedot(request: IBSuoritustiedotRaporttiRequest, t: LocalizationReader)
-    (implicit u: KoskiSpecificSession): OppilaitosRaporttiResponse = {
+  def ibSuoritustiedot(request: IBSuoritustiedotRaporttiRequest, t: LocalizationReader)(implicit u: KoskiSpecificSession): OppilaitosRaporttiResponse = {
     OppilaitosRaporttiResponse(
       sheets = IBSuoritustiedotRaportti(ibSuoritustiedotRepository, t)
         .build(
@@ -373,8 +372,7 @@ class RaportitService(application: KoskiApplication) {
     )
   }
 
-  def tuvaSuoritustiedot(request: AikajaksoRaporttiRequest, t: LocalizationReader)
-    (implicit u: KoskiSpecificSession): OppilaitosRaporttiResponse = {
+  def tuvaSuoritustiedot(request: AikajaksoRaporttiRequest, t: LocalizationReader)(implicit u: KoskiSpecificSession): OppilaitosRaporttiResponse = {
     OppilaitosRaporttiResponse(
       sheets = TuvaSuoritustiedotRaportti
         .buildRaportti(raportointiDatabase, request.oppilaitosOid, request.alku, request.loppu, t),
