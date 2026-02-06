@@ -1,6 +1,9 @@
 package fi.oph.koski.raportointikanta
 
-import fi.oph.koski.db.{DB, KoskiOpiskeluoikeusRow, OpiskeluoikeusRow}
+import fi.oph.koski.db.{DB, KoskiOpiskeluoikeusRow, OpiskeluoikeusRow, QueryMethods}
+import fi.oph.koski.db.KoskiTables.Henkilöt
+import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
+import fi.oph.koski.henkilo.KoskiHenkilöCache
 import fi.oph.koski.opiskeluoikeus.PäivitetytOpiskeluoikeudetJonoService
 import fi.oph.koski.organisaatio.OrganisaatioRepository
 import fi.oph.koski.raportointikanta.OpiskeluoikeusLoader.isRaportointikantaanSiirrettäväOpiskeluoikeus
@@ -16,6 +19,7 @@ import scala.collection.parallel.CollectionConverters._
 class IncrementalUpdateOpiskeluoikeusLoader(
   suostumuksenPeruutusService: SuostumuksenPeruutusService,
   organisaatioRepository: OrganisaatioRepository,
+  henkilöCache: KoskiHenkilöCache,
   val db: RaportointiDatabase,
   enableYtr: Boolean = true,
   update: RaportointiDatabaseUpdate,
@@ -77,8 +81,11 @@ class IncrementalUpdateOpiskeluoikeusLoader(
   ) = {
     val loadBatchStartTime = System.nanoTime()
 
+    val oppijaOids = oot.map(_.oppijaOid).distinct
+    val masterOidsByOppijaOid = getMasterOidsForOppijaOids(oppijaOids)
+
     val (errors, outputRows) = oot.par
-      .map(row => OpiskeluoikeusLoaderRowBuilder.buildKoskiRow(row))
+      .map(row => OpiskeluoikeusLoaderRowBuilder.buildKoskiRow(row, masterOidsByOppijaOid.get(row.oppijaOid).flatten))
       .seq
       .partition(_.isLeft)
 
@@ -149,6 +156,20 @@ class IncrementalUpdateOpiskeluoikeusLoader(
       errors.collect { case Left(err) => err }
     } else {
       Seq.empty
+    }
+  }
+
+  private def getMasterOidsForOppijaOids(oppijaOids: Seq[String]): Map[String, Option[String]] = {
+    if (oppijaOids.isEmpty) {
+      Map.empty
+    } else {
+      QueryMethods.runDbSync(
+        henkilöCache.db,
+        Henkilöt
+          .filter(_.oid inSetBind oppijaOids)
+          .map(h => (h.oid, h.masterOid))
+          .result
+      ).toMap
     }
   }
 }

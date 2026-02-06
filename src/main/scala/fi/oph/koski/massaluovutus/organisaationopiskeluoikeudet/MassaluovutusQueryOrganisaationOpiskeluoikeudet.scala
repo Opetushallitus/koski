@@ -160,20 +160,21 @@ trait MassaluovutusQueryOrganisaationOpiskeluoikeudet extends Koulutuksenjärjes
   protected def forEachOpiskeluoikeus(
     application: KoskiApplication,
     filters: SQLActionBuilder,
-    oppijaOids: Seq[String])(f: KoskiOpiskeluoikeusRow => Unit,
+    oppijaOids: Seq[String])(f: (KoskiOpiskeluoikeusRow, Option[String]) => Unit,
   ): Unit =
     oppijaOids.foreach { oid =>
       QueryMethods.runDbSync(application.henkilöCache.db, application.henkilöCache.getCachedAction(oid))
         .map { henkilö =>
+          val masterOid = henkilö.henkilöRow.masterOid
           val oids = List(henkilö.henkilöRow.oid) ++
-            henkilö.henkilöRow.masterOid.toList ++
-            henkilö.henkilöRow.masterOid.map(application.henkilöCache.resolveLinkedOids).toList.flatten
+            masterOid.toList ++
+            masterOid.map(application.henkilöCache.resolveLinkedOids).toList.flatten
           val henkilöFilter = SQLHelpers.concat(filters, sql"AND oppija_oid = ANY(${oids})")
           val opiskeluoikeudet = QueryMethods.runDbSync(
             getDb(application),
             SQLHelpers.concat(sql"SELECT * FROM opiskeluoikeus ", henkilöFilter).as[KoskiOpiskeluoikeusRow]
           )
-          opiskeluoikeudet.foreach(f)
+          opiskeluoikeudet.foreach(row => f(row, masterOid))
         }
     }
 

@@ -128,6 +128,28 @@ class RaportointikantaSpec
         RHenkilöRow(masterEiKoskessa.oid, masterEiKoskessa.oid, masterEiKoskessa.hetu, None, Some(Date.valueOf("1966-03-27")), None, masterEiKoskessa.sukunimi, masterEiKoskessa.etunimet, masterEiKoskessa.kutsumanimi, None, None, false, Some("179"), Some("Jyväskylä"), Some("Jyväskylä"), true)
       ))
     }
+    "Opiskeluoikeuden oppija_master_oid asetetaan oikein" - {
+      "Slave-oppijan opiskeluoikeudessa on masterin oid" in {
+        val slaveOppija = KoskiSpecificMockOppijat.slaveMasterEiKoskessa.henkilö
+        val opiskeluoikeudet = mainRaportointiDb.runDbSync(
+          mainRaportointiDb.ROpiskeluoikeudet.filter(_.oppijaOid === slaveOppija.oid).result
+        )
+        opiskeluoikeudet should not be empty
+        opiskeluoikeudet.foreach { oo =>
+          oo.oppijaMasterOid should equal(Some(masterEiKoskessa.oid))
+        }
+      }
+      "Tavallisen oppijan opiskeluoikeudessa oppija_master_oid on sama kuin oppija_oid" in {
+        val oppija = KoskiSpecificMockOppijat.eero
+        val opiskeluoikeudet = mainRaportointiDb.runDbSync(
+          mainRaportointiDb.ROpiskeluoikeudet.filter(_.oppijaOid === oppija.oid).result
+        )
+        opiskeluoikeudet should not be empty
+        opiskeluoikeudet.foreach { oo =>
+          oo.oppijaMasterOid should equal(Some(oppija.oid))
+        }
+      }
+    }
     "Organisaatiot on ladattu" in {
       organisaatioCount should be > 10
       val organisaatio = mainRaportointiDb.runDbSync(mainRaportointiDb.ROrganisaatiot.filter(_.organisaatioOid === MockOrganisaatiot.aapajoenKoulu).result)
