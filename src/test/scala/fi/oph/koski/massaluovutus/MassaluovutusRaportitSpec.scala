@@ -620,4 +620,54 @@ class MassaluovutusRaportitSpec extends AnyFreeSpec with MassaluovutusTestMethod
       }
     }
   }
+
+  "Lukioon valmistavan koulutuksen opiskelijamäärät" - {
+    "Spreadsheet" - {
+      val query = MassaluovutusQueryLuvaOpiskelijamaarat(
+        format = QueryFormat.xlsx,
+        paiva = LocalDate.of(2016, 1, 1),
+      )
+
+      "Kysely onnistuu ja palauttaa oikeat tiedostot" in {
+        val user = MockUsers.paakayttaja
+        val queryId = addQuerySuccessfully(query.copy(organisaatioOid = Some(MockOrganisaatiot.ressunLukio)), user) { response =>
+          response.status should equal(QueryState.pending)
+          response.query.asInstanceOf[MassaluovutusQueryLuvaOpiskelijamaarat].organisaatioOid should contain(MockOrganisaatiot.ressunLukio)
+          response.queryId
+        }
+        val complete = waitForCompletion(queryId, user)
+
+        complete.files should have length 1
+        complete.files.foreach(verifyResult(_, user))
+
+        val raportitService = new RaportitService(app)
+        complete.sourceDataUpdatedAt.map(_.toLocalDateTime) should equal(Some(raportitService.viimeisinOpiskeluoikeuspäivitystenVastaanottoaika))
+      }
+    }
+  }
+
+  "Perusopetuksen lisäopetuksen oppijamäärät" - {
+    "Spreadsheet" - {
+      val query = MassaluovutusQueryPerusopetuksenLisaopetuksenOppijamaaratRaportti(
+        format = QueryFormat.xlsx,
+        paiva = LocalDate.of(2012, 1, 1),
+      )
+
+      "Kysely onnistuu ja palauttaa oikeat tiedostot" in {
+        val user = MockUsers.jyväskylänNormaalikoulunPalvelukäyttäjä
+        val queryId = addQuerySuccessfully(query.copy(organisaatioOid = Some(MockOrganisaatiot.jyväskylänNormaalikoulu)), user) { response =>
+          response.status should equal(QueryState.pending)
+          response.query.asInstanceOf[MassaluovutusQueryPerusopetuksenLisaopetuksenOppijamaaratRaportti].organisaatioOid should contain(MockOrganisaatiot.jyväskylänNormaalikoulu)
+          response.queryId
+        }
+        val complete = waitForCompletion(queryId, user)
+
+        complete.files should have length 1
+        complete.files.foreach(verifyResult(_, user))
+
+        val raportitService = new RaportitService(app)
+        complete.sourceDataUpdatedAt.map(_.toLocalDateTime) should equal(Some(raportitService.viimeisinOpiskeluoikeuspäivitystenVastaanottoaika))
+      }
+    }
+  }
 }
