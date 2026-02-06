@@ -23,7 +23,7 @@ import scala.jdk.CollectionConverters._
 
 class TodistusLatausSpec extends TodistusSpecHelpers with BeforeAndAfterAll {
 
-  private val lang = "fi"
+  private val templateVariant = "fi"
   private val oppija = KoskiSpecificMockOppijat.kielitutkinnonSuorittaja
   private val expectedHash = laskeHenkilötiedotHash(oppija)
   private val hetu = oppija.hetu.get
@@ -36,7 +36,7 @@ class TodistusLatausSpec extends TodistusSpecHelpers with BeforeAndAfterAll {
   private lazy val opiskeluoikeusOid: String = opiskeluoikeus.oid.get
 
   private lazy val todistusJob: TodistusJob = {
-    val req = TodistusGenerateRequest(opiskeluoikeusOid, lang)
+    val req = TodistusGenerateRequest(opiskeluoikeusOid, templateVariant)
     addGenerateJobSuccessfully(req, hetu) { todistusJob =>
       todistusJob.state should equal(TodistusState.QUEUED)
       todistusJob

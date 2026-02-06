@@ -12,12 +12,12 @@ class TodistusAuditLogSpec extends TodistusSpecHelpers {
 
   "Audit-lokitukset" - {
     "TODISTUKSEN_LUONTI lokitetaan kun kansalainen luo todistuksen" in {
-      val lang = "fi"
+      val templateVariant = "fi"
       val hetu = KoskiSpecificMockOppijat.kielitutkinnonSuorittaja.hetu.get
       val oppijaOid = KoskiSpecificMockOppijat.kielitutkinnonSuorittaja.oid
       val opiskeluoikeusOid = getVahvistettuKielitutkinnonOpiskeluoikeus(oppijaOid).flatMap(_.oid).get
 
-      val req = TodistusGenerateRequest(opiskeluoikeusOid, lang)
+      val req = TodistusGenerateRequest(opiskeluoikeusOid, templateVariant)
 
       withoutRunningSchedulers {
         AuditLogTester.clearMessages()
@@ -38,13 +38,13 @@ class TodistusAuditLogSpec extends TodistusSpecHelpers {
     }
 
     "TODISTUKSEN_LUONTI lokitetaan kun huoltaja luo todistuksen huollettavalle" in {
-      val lang = "fi"
+      val templateVariant = "fi"
       val huollettavanOo = setupOppijaWithAndGetOpiskeluoikeus(vahvistettuKielitutkinnonOpiskeluoikeus, KoskiSpecificMockOppijat.eskari, MockUsers.paakayttaja)
       val huoltajanHetu = KoskiSpecificMockOppijat.faija.hetu.get
       val huollettavanOid = KoskiSpecificMockOppijat.eskari.oid
       val huollettavanOpiskeluoikeusOid = huollettavanOo.oid.get
 
-      val req = TodistusGenerateRequest(huollettavanOpiskeluoikeusOid, lang)
+      val req = TodistusGenerateRequest(huollettavanOpiskeluoikeusOid, templateVariant)
 
       withoutRunningSchedulers {
         AuditLogTester.clearMessages()
@@ -65,7 +65,7 @@ class TodistusAuditLogSpec extends TodistusSpecHelpers {
     }
 
     "TODISTUKSEN_LATAAMINEN lokitetaan kun kansalainen lataa valmiin todistuksen" in {
-      val lang = "fi"
+      val templateVariant = "fi"
       val oppija = KoskiSpecificMockOppijat.kielitutkinnonSuorittaja
       val hetu = oppija.hetu.get
       val oppijaOid = oppija.oid
@@ -73,7 +73,7 @@ class TodistusAuditLogSpec extends TodistusSpecHelpers {
       val opiskeluoikeusOid = opiskeluoikeus.flatMap(_.oid).get
       val opiskeluoikeusVersionumero = opiskeluoikeus.flatMap(_.versionumero).get
 
-      val req = TodistusGenerateRequest(opiskeluoikeusOid, lang)
+      val req = TodistusGenerateRequest(opiskeluoikeusOid, templateVariant)
 
       val todistusJob = addGenerateJobSuccessfully(req, hetu) { todistusJob =>
         todistusJob.state should equal(TodistusState.QUEUED)
@@ -99,14 +99,14 @@ class TodistusAuditLogSpec extends TodistusSpecHelpers {
     }
 
     "TODISTUKSEN_LATAAMINEN lokitetaan kun huoltaja lataa huollettavan todistuksen" in {
-      val lang = "fi"
+      val templateVariant = "fi"
       val huollettavanOo = setupOppijaWithAndGetOpiskeluoikeus(vahvistettuKielitutkinnonOpiskeluoikeus, KoskiSpecificMockOppijat.eskari, MockUsers.paakayttaja)
       val huoltajanHetu = KoskiSpecificMockOppijat.faija.hetu.get
       val huollettavanOid = KoskiSpecificMockOppijat.eskari.oid
       val huollettavanOpiskeluoikeusOid = huollettavanOo.oid.get
       val huollettavanOpiskeluoikeusVersionumero = huollettavanOo.versionumero.get
 
-      val req = TodistusGenerateRequest(huollettavanOpiskeluoikeusOid, lang)
+      val req = TodistusGenerateRequest(huollettavanOpiskeluoikeusOid, templateVariant)
 
       val todistusJob = addGenerateJobSuccessfully(req, huoltajanHetu) { todistusJob =>
         todistusJob.state should equal(TodistusState.QUEUED)
@@ -132,7 +132,7 @@ class TodistusAuditLogSpec extends TodistusSpecHelpers {
     }
 
     "TODISTUKSEN_LATAAMINEN lokitetaan kun oppija lataa huoltajan luoman todistuksen" in {
-      val lang = "fi"
+      val templateVariant = "fi"
       val huollettavanOo = setupOppijaWithAndGetOpiskeluoikeus(vahvistettuKielitutkinnonOpiskeluoikeus, KoskiSpecificMockOppijat.eskari, MockUsers.paakayttaja)
       val huoltajanHetu = KoskiSpecificMockOppijat.faija.hetu.get
       val huollettavanHetu = KoskiSpecificMockOppijat.eskari.hetu.get
@@ -140,7 +140,7 @@ class TodistusAuditLogSpec extends TodistusSpecHelpers {
       val huollettavanOpiskeluoikeusOid = huollettavanOo.oid.get
       val huollettavanOpiskeluoikeusVersionumero = huollettavanOo.versionumero.get
 
-      val req = TodistusGenerateRequest(huollettavanOpiskeluoikeusOid, lang)
+      val req = TodistusGenerateRequest(huollettavanOpiskeluoikeusOid, templateVariant)
 
       // Huoltaja luo todistuspyynnön
       val todistusJob = addGenerateJobSuccessfully(req, huoltajanHetu) { todistusJob =>
@@ -168,12 +168,12 @@ class TodistusAuditLogSpec extends TodistusSpecHelpers {
     }
 
     "TODISTUKSEN_LATAAMINEN ei lokiteta kun todistus ei ole valmis" in {
-      val lang = "fi"
+      val templateVariant = "fi"
       val hetu = KoskiSpecificMockOppijat.kielitutkinnonSuorittaja.hetu.get
       val oppijaOid = KoskiSpecificMockOppijat.kielitutkinnonSuorittaja.oid
       val opiskeluoikeusOid = getVahvistettuKielitutkinnonOpiskeluoikeus(oppijaOid).flatMap(_.oid).get
 
-      val req = TodistusGenerateRequest(opiskeluoikeusOid, lang)
+      val req = TodistusGenerateRequest(opiskeluoikeusOid, templateVariant)
 
       withoutRunningSchedulers {
         val todistusJob = addGenerateJobSuccessfully(req, hetu) { todistusJob =>
@@ -197,7 +197,7 @@ class TodistusAuditLogSpec extends TodistusSpecHelpers {
     }
 
     "TODISTUKSEN_ESIKATSELU lokitetaan kun OPH-pääkäyttäjä katsoo todistuksen esikatselua" in {
-      val lang = "fi"
+      val templateVariant = "fi"
       val oppija = KoskiSpecificMockOppijat.kielitutkinnonSuorittaja
       val oppijaOid = oppija.oid
       val opiskeluoikeus = getVahvistettuKielitutkinnonOpiskeluoikeus(oppijaOid)
@@ -206,7 +206,7 @@ class TodistusAuditLogSpec extends TodistusSpecHelpers {
 
       AuditLogTester.clearMessages()
 
-      get(s"todistus/preview/$lang/$opiskeluoikeusOid", headers = authHeaders(MockUsers.paakayttaja)) {
+      get(s"todistus/preview/$templateVariant/$opiskeluoikeusOid", headers = authHeaders(MockUsers.paakayttaja)) {
         verifyResponseStatusOk()
       }
 

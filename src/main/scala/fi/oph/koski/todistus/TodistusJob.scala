@@ -3,7 +3,7 @@ package fi.oph.koski.todistus
 import fi.oph.koski.db.KoskiOpiskeluoikeusRow
 import fi.oph.koski.koskiuser.KoskiSpecificSession
 import fi.oph.koski.schema.annotation.RedundantData
-import fi.oph.koski.todistus.TodistusLanguage.TodistusLanguage
+import fi.oph.koski.todistus.TodistusTemplateVariant.TodistusTemplateVariant
 import fi.oph.koski.todistus.TodistusState.TodistusState
 
 import java.time.LocalDateTime
@@ -15,7 +15,7 @@ case class TodistusJob(
   userOid: Option[String],   // käyttäjä, joka tämän käynnisti
   oppijaOid: String,         // Oppija, jonka opiskeluoikeus on (nopeuttaa käyttöoikeustarkastuksia)
   opiskeluoikeusOid: String,
-  language: TodistusLanguage,
+  templateVariant: TodistusTemplateVariant,
   opiskeluoikeusVersionumero: Option[Int], // Oo-versio, mistä pdf on luotu. Käytetään, kun tarkistetaan, pitääkö todistus luoda uudestaan.
   oppijaHenkilötiedotHash: Option[String], // Hash todistuksella näkyvistä oppijan henkilötiedoista (etunimet, sukunimi, syntymäaika jne.). Käytetään, kun tarkistetaan, pitääkö todistus luoda uudestaan.
   state: TodistusState = TodistusState.QUEUED,
@@ -27,7 +27,9 @@ case class TodistusJob(
   @RedundantData // Piilotetaan loppukäyttäjiltä
   attempts: Option[Int] = Some(0),
   error: Option[String] = None
-)
+) {
+  def language: String = TodistusTemplateVariant.baseLanguage(templateVariant)
+}
 
 object TodistusState {
   type TodistusState = String
@@ -55,14 +57,16 @@ object TodistusState {
   val * : Set[String] = Set(QUEUED, GATHERING_INPUT, GENERATING_RAW_PDF, SAVING_RAW_PDF, STAMPING_PDF, SAVING_STAMPED_PDF, COMPLETED, ERROR, QUEUED_FOR_EXPIRE, EXPIRED)
 }
 
-object TodistusLanguage {
-  type TodistusLanguage = String
+object TodistusTemplateVariant {
+  type TodistusTemplateVariant = String
 
   val FI = "fi"
   val SV = "sv"
   val EN = "en"
 
   val * : Set[String] = Set(FI, SV, EN)
+
+  def baseLanguage(variant: TodistusTemplateVariant): String = variant.take(2)
 }
 
 object TodistusJob {
@@ -71,7 +75,7 @@ object TodistusJob {
     userOid = Some(user.oid),
     oppijaOid = opiskeluoikeus.oppijaOid,
     opiskeluoikeusOid = opiskeluoikeus.oid,
-    language = req.language,
+    templateVariant = req.templateVariant,
     opiskeluoikeusVersionumero = Some(opiskeluoikeus.versionumero),
     oppijaHenkilötiedotHash = Some(henkilötiedotHash)
   )

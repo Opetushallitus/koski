@@ -10,15 +10,15 @@ export type TodistusJob = {
   opiskeluoikeusOid: string
   oppijaHenkilötiedotHash?: string
   id: string
-  userOid?: string
   worker?: string
   state: string
   completedAt?: string
   oppijaOid: string
-  language: string
   error?: string
   createdAt: string
   startedAt?: string
+  templateVariant: string
+  userOid?: string
 }
 
 export const TodistusJob = (o: {
@@ -27,15 +27,15 @@ export const TodistusJob = (o: {
   opiskeluoikeusOid: string
   oppijaHenkilötiedotHash?: string
   id: string
-  userOid?: string
   worker?: string
   state: string
   completedAt?: string
   oppijaOid: string
-  language: string
   error?: string
   createdAt: string
   startedAt?: string
+  templateVariant: string
+  userOid?: string
 }): TodistusJob => ({ $class: 'fi.oph.koski.todistus.TodistusJob', ...o })
 
 TodistusJob.className = 'fi.oph.koski.todistus.TodistusJob' as const

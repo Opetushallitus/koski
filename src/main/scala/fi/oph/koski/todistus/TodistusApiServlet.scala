@@ -26,14 +26,14 @@ class TodistusApiServlet(implicit val application: KoskiApplication)
     )
   }
 
-  get("/status/:lang/:opiskeluoikeusOid") {
+  get("/status/:templateVariant/:opiskeluoikeusOid") {
     renderEither(
       getTodistusGenerateRequest
         .flatMap(service.checkStatus)
     )
   }
 
-  get("/generate/:lang/:opiskeluoikeusOid") {
+  get("/generate/:templateVariant/:opiskeluoikeusOid") {
     renderEither(
       getTodistusGenerateRequest
         .flatMap(service.checkAccessAndInitiateGenerating)
@@ -52,9 +52,9 @@ class TodistusApiServlet(implicit val application: KoskiApplication)
 
 case class TodistusGenerateRequest(
   opiskeluoikeusOid: String,
-  language: String,
+  templateVariant: String,
 ) {
-  def toPathParams = s"${language}/${opiskeluoikeusOid}"
+  def toPathParams = s"${templateVariant}/${opiskeluoikeusOid}"
 }
 
 case class TodistusIdRequest(

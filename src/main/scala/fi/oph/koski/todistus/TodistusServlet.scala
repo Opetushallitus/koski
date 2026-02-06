@@ -41,17 +41,17 @@ trait TodistusServlet extends ScalatraServlet with HasKoskiSpecificSession with 
   }
 
   protected def getTodistusGenerateRequest: Either[HttpStatus, TodistusGenerateRequest] = {
-    val lang = params("lang")
+    val templateVariant = params("templateVariant")
     val oid = params("opiskeluoikeusOid")
 
-    if (!TodistusLanguage.*.contains(lang)) {
-      Left(KoskiErrorCategory.badRequest(s"Virheellinen kieli: $lang. Sallitut arvot: ${TodistusLanguage.*.mkString(", ")}"))
+    if (!TodistusTemplateVariant.*.contains(templateVariant)) {
+      Left(KoskiErrorCategory.badRequest(s"Virheellinen template variant: $templateVariant. Sallitut arvot: ${TodistusTemplateVariant.*.mkString(", ")}"))
     } else if (!Opiskeluoikeus.isValidOpiskeluoikeusOid(oid)) {
       Left(KoskiErrorCategory.badRequest(s"Virheellinen opiskeluoikeus OID: $oid"))
     } else {
       Right(TodistusGenerateRequest(
         opiskeluoikeusOid = oid,
-        language = lang,
+        templateVariant = templateVariant,
       ))
     }
   }
@@ -92,7 +92,7 @@ trait TodistusServlet extends ScalatraServlet with HasKoskiSpecificSession with 
   }
 
   protected def generateFilename(todistusJob: TodistusJob): String = {
-    val defaultFilename = s"todistus_${todistusJob.language}.pdf"
+    val defaultFilename = s"todistus_${todistusJob.templateVariant}.pdf"
 
     application.possu.findByOidIlmanKäyttöoikeustarkistusta(todistusJob.opiskeluoikeusOid) match {
       case Right(opiskeluoikeus) =>
@@ -129,7 +129,7 @@ trait TodistusServlet extends ScalatraServlet with HasKoskiSpecificSession with 
       keyPart
     }
 
-    s"${prefix}${todistusJob.language}.pdf"
+    s"${prefix}${todistusJob.templateVariant}.pdf"
   }
 
   protected def mkAuditLog(

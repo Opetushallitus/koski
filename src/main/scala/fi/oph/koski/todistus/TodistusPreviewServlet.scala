@@ -25,7 +25,7 @@ class TodistusPreviewServlet(implicit val application: KoskiApplication)
     requireOphPääkäyttäjä
   }
 
-  get("/:lang/:opiskeluoikeusOid")(nonce => {
+  get("/:templateVariant/:opiskeluoikeusOid")(nonce => {
     contentType = "text/html"
 
     val result = for {

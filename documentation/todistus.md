@@ -97,9 +97,10 @@ palautetaan jonoon uudestaan. Vanhentunut job käsitellään
 ### Jobien uudelleenkäyttö
 
 `TodistusJobRepository.addOrReuseExisting()` käyttää CTE-kyselyä, joka
-palauttaa olemassa olevan jobin jos sen kieli, OO-versio ja henkilötiedot-hash
+palauttaa olemassa olevan jobin jos sen `template_variant`, OO-versio ja henkilötiedot-hash
 vastaavat uutta pyyntöä. Uusi job luodaan vain jos aiempia ei löydy tai
-ne ovat ERROR-tilassa.
+ne ovat ERROR-tilassa. Esim. jobit `fi` ja `fi_tulostettava_uusi` ovat erillisiä ja niitä
+ei käytetä toinen toisen tilalla.
 
 ## Pääsynhallinta
 
