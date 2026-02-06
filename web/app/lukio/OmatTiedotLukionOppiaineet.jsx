@@ -12,8 +12,8 @@ import { Nimi } from './fragments/LukionOppiaine'
 import { numberToString } from '../util/format'
 import {
   hylkäämättömätOsasuoritukset,
-  laajuudet,
-  suoritetutKurssit
+  isErityinenTutkinto,
+  laajuudet
 } from './lukio'
 import { KurssitEditor } from '../kurssi/KurssitEditor'
 import { isMobileAtom } from '../util/isMobileAtom'
@@ -41,6 +41,9 @@ export default ({
             <OmatTiedotLukionOppiaine
               baret-lift
               key={oppiaineIndex}
+              oppiaineFootnote={
+                isErityinenTutkinto(oppiaine) && erityinenTutkintoFootnote
+              }
               oppiaine={oppiaine}
               isMobile={isMobileAtom}
               useOppiaineLaajuus={useOppiaineLaajuus}
@@ -60,6 +63,16 @@ export default ({
                 suorituksetModel.context.suoritus
               ),
               hint: '*'
+            }
+          ]}
+        />
+      )}
+      {oppiaineet.some((oppiaine) => isErityinenTutkinto(oppiaine)) && (
+        <FootnoteDescriptions
+          data={[
+            {
+              title: erityinenTutkintoFootnote.title,
+              hint: erityinenTutkintoFootnote.hint
             }
           ]}
         />
@@ -88,7 +101,8 @@ export class OmatTiedotLukionOppiaine extends React.Component {
     const {
       oppiaine,
       isMobile,
-      footnote,
+      arvosanaFootnote,
+      oppiaineFootnote,
       notFoundText = '-',
       customOsasuoritusTitle,
       useOppiaineLaajuus = false,
@@ -137,6 +151,12 @@ export class OmatTiedotLukionOppiaine extends React.Component {
             {laajuusYhteensä && (
               <span className="laajuus">{`(${laajuusYhteensä} ${laajuusYksikkö})`}</span>
             )}
+            {isErityinenTutkinto(oppiaine) && oppiaineFootnote && (
+              <FootnoteHint
+                title={oppiaineFootnote.title}
+                hint={oppiaineFootnote.hint}
+              />
+            )}
           </div>
         </td>
         <td className="arvosana">
@@ -145,8 +165,11 @@ export class OmatTiedotLukionOppiaine extends React.Component {
             notFoundText={notFoundText}
             arviointiField={arviointiField}
           />
-          {arviointi && footnote && (
-            <FootnoteHint title={footnote.title} hint={footnote.hint} />
+          {arviointi && arvosanaFootnote && (
+            <FootnoteHint
+              title={arvosanaFootnote.title}
+              hint={arvosanaFootnote.hint}
+            />
           )}
         </td>
       </tr>,
@@ -169,3 +192,8 @@ const KurssitListDesktop = ({ oppiaine, customKurssitSortFn }) => [
   </td>,
   <td className="arvosana" key="arvosana"></td>
 ]
+
+export const erityinenTutkintoFootnote = {
+  title: 'Erityisenä tutkintona suoritettu oppiaine',
+  hint: '**'
+}

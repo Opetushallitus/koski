@@ -72,7 +72,9 @@ object ExamplesLukio2019 {
     suorituskieli = suomenKieli,
     toimipiste = jyväskylänNormaalikoulu,
     suullisenKielitaidonKokeet = Some(List(suullisenKielitaidonKoeEspanja())),
-    osasuoritukset = Some(oppiainesuoritukset)
+    osasuoritukset = Some(oppiainesuoritukset ::: List(
+      oppiaineenSuoritus(Lukio2019ExampleData.lukionOppiaine("BI", laajuus(6))).copy(suoritettuErityisenäTutkintona = true, arviointi = numeerinenLukionOppiaineenArviointi(9))
+    ))
   )
 
   lazy val oppiaineidenOppimäärienLukioDiplominSuoritus = LukionOppiaineidenOppimäärienSuoritus2019(

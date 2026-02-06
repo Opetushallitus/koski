@@ -17,6 +17,7 @@ import {
   arvioidutOsasuoritukset,
   hylkäämättömätOsasuoritukset,
   hyväksytystiArvioidutOsasuoritukset,
+  isErityinenTutkinto,
   laajuudet,
   suoritetutKurssit
 } from './lukio'
@@ -27,6 +28,8 @@ import {
 } from './fragments/LukionOppiaine'
 import { numberToString } from '../util/format'
 import { PropertiesEditor } from '../editor/PropertiesEditor'
+import { Editor } from '../editor/Editor'
+import { FootnoteHint } from '../components/footnote'
 
 export class LukionOppiaineEditor extends React.Component {
   saveChangedPreferences() {
@@ -55,7 +58,8 @@ export class LukionOppiaineEditor extends React.Component {
   render() {
     const {
       oppiaine,
-      footnote,
+      arvosanaFootnote,
+      oppiaineFootnote,
       additionalEditableProperties,
       additionalOnlyEditableProperties,
       additionalEditableKoulutusmoduuliProperties,
@@ -69,28 +73,15 @@ export class LukionOppiaineEditor extends React.Component {
       customOsasuoritusAlternativesCompletionFn,
       customKurssitSortFn,
       useHylkäämättömätLaajuus = true,
-      showHyväksytystiArvioitujenLaajuus = false,
-      forceLaajuusOpintopisteinä = false
+      showHyväksytystiArvioitujenLaajuus = false
     } = this.props
 
     const kurssit = modelItems(oppiaine, 'osasuoritukset')
 
     const { edit } = oppiaine.context
 
-    const laajuusArvo = () => {
-      if (forceLaajuusOpintopisteinä) {
-        return '2'
-      } else if (useOppiaineLaajuus) {
-        return modelData(oppiaine, 'koulutusmoduuli.laajuus.arvo')
-      } else {
-        return numberToString(
-          laajuudet(
-            useHylkäämättömätLaajuus
-              ? hylkäämättömätOsasuoritukset(kurssit)
-              : arvioidutOsasuoritukset(kurssit)
-          )
-        )
-      }
+    const shouldEditLaajuus = () => {
+      return edit && isErityinenTutkinto(oppiaine)
     }
 
     return (
@@ -106,6 +97,12 @@ export class LukionOppiaineEditor extends React.Component {
         <td className="oppiaine">
           <div className="title">
             <Nimi oppiaine={oppiaine} />
+            {isErityinenTutkinto(oppiaine) && oppiaineFootnote && (
+              <FootnoteHint
+                title={oppiaineFootnote.title}
+                hint={oppiaineFootnote.hint}
+              />
+            )}
             <KoulutusmoduuliPropertiesEditor
               oppiaine={oppiaine}
               additionalEditableProperties={
@@ -138,12 +135,38 @@ export class LukionOppiaineEditor extends React.Component {
             customKurssitSortFn={customKurssitSortFn}
           />
         </td>
-        {showLaajuus && <td className="laajuus">{laajuusArvo()}</td>}
+        {showLaajuus && (
+          <td className="laajuus">
+            {shouldEditLaajuus() ? (
+              <Editor
+                model={oppiaine}
+                path="koulutusmoduuli.laajuus"
+                compact="true"
+              />
+            ) : isErityinenTutkinto(oppiaine) ? (
+              numberToString(laajuudet(arvioidutOsasuoritukset([oppiaine])))
+            ) : useOppiaineLaajuus ? (
+              modelData(oppiaine, 'koulutusmoduuli.laajuus.arvo')
+            ) : (
+              numberToString(
+                laajuudet(
+                  useHylkäämättömätLaajuus
+                    ? hylkäämättömätOsasuoritukset(kurssit)
+                    : arvioidutOsasuoritukset(kurssit)
+                )
+              )
+            )}
+          </td>
+        )}
         {showHyväksytystiArvioitujenLaajuus && (
           <td className="laajuus arvioitu">
-            {numberToString(
-              laajuudet(hyväksytystiArvioidutOsasuoritukset(kurssit))
-            )}
+            {isErityinenTutkinto(oppiaine)
+              ? numberToString(
+                  laajuudet(hyväksytystiArvioidutOsasuoritukset([oppiaine]))
+                )
+              : numberToString(
+                  laajuudet(hyväksytystiArvioidutOsasuoritukset(kurssit))
+                )}
           </td>
         )}
         {showPredictedArviointi && (
@@ -153,7 +176,7 @@ export class LukionOppiaineEditor extends React.Component {
                 arviointiField="predictedArviointi"
                 oppiaine={oppiaine}
                 suoritetutKurssit={suoritetutKurssit(kurssit)}
-                footnote={footnote}
+                footnote={arvosanaFootnote}
                 predicted={true}
               />
             )}
@@ -165,7 +188,7 @@ export class LukionOppiaineEditor extends React.Component {
               <Arviointi
                 oppiaine={oppiaine}
                 suoritetutKurssit={suoritetutKurssit(kurssit)}
-                footnote={footnote}
+                footnote={arvosanaFootnote}
                 predicted={showPredictedArviointi ? false : undefined}
               />
             )}

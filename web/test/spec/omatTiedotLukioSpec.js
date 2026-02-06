@@ -491,5 +491,51 @@ describe('Omat tiedot - lukio', function () {
         })
       })
     })
+
+    describe('Lukion aineopinnot 2019, erityinen tutkinto', function () {
+      before(authentication.logout, etusivu.openPage)
+      before(
+        etusivu.login(),
+        wait.until(korhopankki.isReady),
+        korhopankki.login('010705A6119'),
+        wait.until(omattiedot.isVisible)
+      )
+
+      describe('Kun opiskeluoikeus avataan', function () {
+        before(
+          opinnot.valitseOmatTiedotOpiskeluoikeus(
+            'Lukion aineopinnot (2019—2021, valmistunut)'
+          )
+        )
+
+        it('näyttää erityisenä tutkintona suoritetun oppiaineen laajuuden oikein', function () {
+          expect(
+            extractAsText(
+              S('table.omattiedot-suoritukset tr.oppiaine-header:contains("Biologia")')
+            )
+          ).to.contain('(6 opintopistettä)')
+        })
+
+        it('näyttää ** merkinnän erityisenä tutkintona suoritetulla oppiaineella', function () {
+          expect(
+            extractAsText(
+              S('table.omattiedot-suoritukset tr.oppiaine-header:contains("Biologia")')
+            )
+          ).to.contain('**')
+        })
+
+        it('näyttää footnote-kuvauksen sivun alalaidassa', function () {
+          expect(extractAsText(S('.selitteet'))).to.contain(
+            '** = erityisenä tutkintona suoritettu oppiaine'
+          )
+        })
+
+        it('näyttää yhteensä-laajuuden oikein', function () {
+          expect(extractAsText(S('.kurssit-yhteensä'))).to.contain(
+            'Arvioitujen osasuoritusten laajuus yhteensä: 167,5 Hyväksytysti arvioitujen osasuoritusten laajuus yhteensä: 164,0'
+          )
+        })
+      })
+    })
   })
 })

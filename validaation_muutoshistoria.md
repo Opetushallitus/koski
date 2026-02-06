@@ -1,5 +1,18 @@
 # Koskeen tallennettavien tietojen validaatiosäännöt
 
+## 4.2.2026
+
+Lukion 2019 opetussuunnitelman perusteiden mukaisten suoritusten validaatiomuutokset,
+silloin kun suoritetaan erityisenä tutkintona:
+
+- Erityisenä tutkintona suoritettaville oppiaineille on nyt sallittu siirtää moduuleja.
+- Erityisenä tutkintona suoritettavalle oppiaineelle on siirrettävä laajuus opintopisteissä.
+  - Erityisenä tutkintona suoritettavien oppiaineiden laajuutta ei lasketa automaattisesti sen mahdollisista moduuleista.
+  - Erityisenä tutkintona suoritettavan oppiaineen laajuus on oltava vähintään yhtä paljon kuin sen mahdollisten moduulien laajuus.
+- Aikuisten oppimäärän suorituksen on oltava laajudeltaan vähintään 88op, kun koko päätason suoritus on merkitty suoritettavaksi erityisenä tutkintona.
+- Nuorten oppimäärän päätason suorituksissa on estetty erityisenä tutkintona suorittamisen valinta.
+  - Yksittäisiä oppiaineita voi kuitenkin suorittaa erityisenä tutkintona.
+
 ## 28.1.2026
 
 Perusopetuksen opiskeluoikeuden valmistavan lisäopetuksen validaatiot

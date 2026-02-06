@@ -314,7 +314,7 @@ class OppijaValidationLukio2019Spec extends AnyFreeSpec with PutOpiskeluoikeusTe
   "Merkintä erityisestä tutkinnosta" - {
     "oppiainetasolla sallii oppiaineen ilman osasuorituksia ja suorituksen merkitsemisen vahvistetuksi vajaalla yhteislaajuudella" in {
       setupOppijaWithOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(oppimääränSuoritus.copy(osasuoritukset = Some(List(
-        oppiaineenSuoritus(Lukio2019ExampleData.lukionÄidinkieli("AI1", true)).copy(suoritettuErityisenäTutkintona = true, arviointi = numeerinenLukionOppiaineenArviointi(9)).copy(osasuoritukset = None),
+        oppiaineenSuoritus(Lukio2019ExampleData.lukionÄidinkieli("AI1", pakollinen = true, laajuus = laajuus(5.0))).copy(suoritettuErityisenäTutkintona = true, arviointi = numeerinenLukionOppiaineenArviointi(9)).copy(osasuoritukset = None),
         oppiaineenSuoritus(Lukio2019ExampleData.matematiikka("MAB")).copy(arviointi = numeerinenLukionOppiaineenArviointi(9)).copy(osasuoritukset = Some(List(
           moduulinSuoritusOppiaineissa(muuModuuliOppiaineissa("MAB2")).copy(arviointi = numeerinenArviointi(10)),
           moduulinSuoritusOppiaineissa(muuModuuliOppiaineissa("MAB3")).copy(arviointi = numeerinenArviointi(10)),
@@ -325,83 +325,294 @@ class OppijaValidationLukio2019Spec extends AnyFreeSpec with PutOpiskeluoikeusTe
       }
     }
 
-    "oppiainetasolla estää moduulin ja paikallisen opintojakson lisäämisen kyseiseen oppiaineeseen" in {
+    "oppiainetasolla sallii moduulin ja paikallisen opintojakson lisäämisen kyseiseen oppiaineeseen" in {
       setupOppijaWithOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(oppimääränSuoritus.copy(osasuoritukset = Some(List(
-        oppiaineenSuoritus(Lukio2019ExampleData.lukionÄidinkieli("AI1", true)).copy(suoritettuErityisenäTutkintona = true, arviointi = numeerinenLukionOppiaineenArviointi(9)).copy(osasuoritukset = Some(List(
+        oppiaineenSuoritus(Lukio2019ExampleData.lukionÄidinkieli("AI1", pakollinen = true, laajuus = laajuus(12.0))).copy(suoritettuErityisenäTutkintona = true, arviointi = numeerinenLukionOppiaineenArviointi(9), osasuoritukset = Some(List(
           moduulinSuoritusOppiaineissa(muuModuuliOppiaineissa("ÄI1")).copy(arviointi = numeerinenArviointi(8)),
           moduulinSuoritusOppiaineissa(muuModuuliOppiaineissa("ÄI2")).copy(arviointi = numeerinenArviointi(8)),
           moduulinSuoritusOppiaineissa(muuModuuliOppiaineissa("ÄI3").copy(pakollinen = false)).copy(arviointi = numeerinenArviointi(8)),
           paikallisenOpintojaksonSuoritus(paikallinenOpintojakso("FY123", "Keittiöfysiikka", "Keittiöfysiikan kokeelliset perusteet, kiehumisreaktiot")).copy(arviointi = numeerinenArviointi(10))
         ))),
-        oppiaineenSuoritus(Lukio2019ExampleData.matematiikka("MAB")).copy(arviointi = numeerinenLukionOppiaineenArviointi(9)).copy(osasuoritukset = Some(List(
+        oppiaineenSuoritus(Lukio2019ExampleData.matematiikka("MAB")).copy(arviointi = numeerinenLukionOppiaineenArviointi(9), osasuoritukset = Some(List(
           moduulinSuoritusOppiaineissa(muuModuuliOppiaineissa("MAB2")).copy(arviointi = numeerinenArviointi(10)),
           moduulinSuoritusOppiaineissa(muuModuuliOppiaineissa("MAB3")).copy(arviointi = numeerinenArviointi(10)),
           moduulinSuoritusOppiaineissa(muuModuuliOppiaineissa("MAB4")).copy(arviointi = numeerinenArviointi(10))
         )))
       )))))) {
-        verifyResponseStatus(400,
-          List(
-            exact(KoskiErrorCategory.badRequest.validation.rakenne.erityisenäTutkintonaSuoritettuSisältääOsasuorituksia, "Osasuoritus moduulikoodistolops2021/ÄI1 ei ole sallittu, koska oppiaine on suoritettu erityisenä tutkintona"),
-            exact(KoskiErrorCategory.badRequest.validation.rakenne.erityisenäTutkintonaSuoritettuSisältääOsasuorituksia, "Osasuoritus moduulikoodistolops2021/ÄI2 ei ole sallittu, koska oppiaine on suoritettu erityisenä tutkintona"),
-            exact(KoskiErrorCategory.badRequest.validation.rakenne.erityisenäTutkintonaSuoritettuSisältääOsasuorituksia, "Osasuoritus moduulikoodistolops2021/ÄI3 ei ole sallittu, koska oppiaine on suoritettu erityisenä tutkintona"),
-            exact(KoskiErrorCategory.badRequest.validation.rakenne.erityisenäTutkintonaSuoritettuSisältääOsasuorituksia, "Osasuoritus FY123 (Keittiöfysiikka) ei ole sallittu, koska oppiaine on suoritettu erityisenä tutkintona")
-          ))
-      }
-    }
-
-    "suoritustasolla sallii oppiaineet ilman osasuorituksia ja suorituksen merkitsemisen vahvistetuksi vajaalla yhteislaajuudella" in {
-      setupOppijaWithOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(oppimääränSuoritus.copy(suoritettuErityisenäTutkintona = true, osasuoritukset = Some(List(
-        oppiaineenSuoritus(Lukio2019ExampleData.lukionÄidinkieli("AI1", true)).copy(arviointi = numeerinenLukionOppiaineenArviointi(9)).copy(osasuoritukset = None),
-        oppiaineenSuoritus(Lukio2019ExampleData.matematiikka("MAA")).copy(arviointi = numeerinenLukionOppiaineenArviointi(9)).copy(osasuoritukset = None))))))) {
         verifyResponseStatusOk()
       }
     }
 
-    "suoritustasolla sallii osasuoritukset muissa lukio-opinnoissa, temaattisissa opinnoissa tai lukiodiplomeissa ja suorituksen merkitsemisen vahvistetuksi vajaalla yhteislaajuudella" in {
-      setupOppijaWithOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(oppimääränSuoritus.copy(suoritettuErityisenäTutkintona = true, osasuoritukset = Some(List(
-        oppiaineenSuoritus(Lukio2019ExampleData.lukionÄidinkieli("AI1", true)).copy(arviointi = numeerinenLukionOppiaineenArviointi(9)).copy(osasuoritukset = None),
-        oppiaineenSuoritus(Lukio2019ExampleData.matematiikka("MAA")).copy(arviointi = numeerinenLukionOppiaineenArviointi(9)).copy(osasuoritukset = None),
-        muidenLukioOpintojenSuoritus().copy(osasuoritukset = Some(List(
-          moduulinSuoritusMuissaOpinnoissa(muuModuuliMuissaOpinnoissa("KE3")).copy(arviointi = numeerinenArviointi(10)),
-          paikallisenOpintojaksonSuoritus(paikallinenOpintojakso("HAI765", "Kansanmusiikki haitarilla", "Kansamusiikkia 2-rivisellä haitarilla")).copy(arviointi = sanallinenArviointi("S"))
-        ))),
-        temaattistenOpintojenSuoritus().copy(osasuoritukset = Some(List(
-          paikallisenOpintojaksonSuoritus(paikallinenOpintojakso("KAN200", "Kanteleensoiton perusteet", "Itäsuomalaisen kanteleensoiton perusteet")).copy(arviointi = sanallinenArviointi("S"))
-        ))),
-        lukioDiplomienSuoritus().copy(osasuoritukset = Some(List(
-          moduulinSuoritusMuissaOpinnoissa(muuModuuliMuissaOpinnoissa("MELD5", 2.0f)).copy(arviointi = numeerinenArviointi(7)),
-          moduulinSuoritusMuissaOpinnoissa(muuModuuliMuissaOpinnoissa("KÄLD3", 2.0f)).copy(arviointi = numeerinenArviointi(9))
-        )))
-      )))))) {
+
+    "suoritustasolla sallii oppiaineet alle 88op yhteislaajuudella, kun suoritus on kesken" in {
+      setupOppijaWithOpiskeluoikeus(defaultOpiskeluoikeus.copy(
+        tila = LukionOpiskeluoikeudenTila(List(
+          LukionOpiskeluoikeusjakso(alku = date(2019, 8, 1), tila = opiskeluoikeusAktiivinen, opintojenRahoitus = Some(ExampleData.valtionosuusRahoitteinen))
+        )),
+        suoritukset = List(aikuistenOppimääränSuoritus.copy(
+          suoritettuErityisenäTutkintona = true,
+          osasuoritukset = Some(List(
+            oppiaineenSuoritus(Lukio2019ExampleData.lukionÄidinkieli("AI1", pakollinen = true, laajuus = laajuus(5.0))).copy(arviointi = numeerinenLukionOppiaineenArviointi(9), osasuoritukset = None),
+            oppiaineenSuoritus(Lukio2019ExampleData.matematiikka("MAA", laajuus = laajuus(5.0))).copy(arviointi = numeerinenLukionOppiaineenArviointi(9), osasuoritukset = None)))
+        ))
+      )) {
         verifyResponseStatusOk()
       }
     }
 
-    "suoritustasolla estää osasuoritusten lisäämisen oppiaineisiin" in {
-      setupOppijaWithOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(oppimääränSuoritus.copy(suoritettuErityisenäTutkintona = true, osasuoritukset = Some(List(
-        oppiaineenSuoritus(Lukio2019ExampleData.lukionÄidinkieli("AI1", true)).copy(arviointi = numeerinenLukionOppiaineenArviointi(9)).copy(osasuoritukset = Some(List(
-          moduulinSuoritusOppiaineissa(muuModuuliOppiaineissa("ÄI1")).copy(arviointi = numeerinenArviointi(8)),
-          moduulinSuoritusOppiaineissa(muuModuuliOppiaineissa("ÄI2")).copy(arviointi = numeerinenArviointi(8)),
-          moduulinSuoritusOppiaineissa(muuModuuliOppiaineissa("ÄI3").copy(pakollinen = false)).copy(arviointi = numeerinenArviointi(8))
-        ))),
-        oppiaineenSuoritus(Lukio2019ExampleData.matematiikka("MAB")).copy(arviointi = numeerinenLukionOppiaineenArviointi(9)).copy(osasuoritukset = Some(List(
-          moduulinSuoritusOppiaineissa(muuModuuliOppiaineissa("MAB2")).copy(arviointi = numeerinenArviointi(10)),
-          moduulinSuoritusOppiaineissa(muuModuuliOppiaineissa("MAB3")).copy(arviointi = numeerinenArviointi(10)),
-          moduulinSuoritusOppiaineissa(muuModuuliOppiaineissa("MAB4")).copy(arviointi = numeerinenArviointi(10)),
-          paikallisenOpintojaksonSuoritus(paikallinenOpintojakso("FY123", "Keittiöfysiikka", "Keittiöfysiikan kokeelliset perusteet, kiehumisreaktiot")).copy(arviointi = numeerinenArviointi(10)),
-        )))
-      )))))) {
-        verifyResponseStatus(400,
-          List(
-            exact(KoskiErrorCategory.badRequest.validation.rakenne.erityisenäTutkintonaSuoritettuSisältääOsasuorituksia, "Osasuoritus moduulikoodistolops2021/ÄI1 ei ole sallittu, koska tutkinto on suoritettu erityisenä tutkintona"),
-            exact(KoskiErrorCategory.badRequest.validation.rakenne.erityisenäTutkintonaSuoritettuSisältääOsasuorituksia, "Osasuoritus moduulikoodistolops2021/ÄI2 ei ole sallittu, koska tutkinto on suoritettu erityisenä tutkintona"),
-            exact(KoskiErrorCategory.badRequest.validation.rakenne.erityisenäTutkintonaSuoritettuSisältääOsasuorituksia, "Osasuoritus moduulikoodistolops2021/ÄI3 ei ole sallittu, koska tutkinto on suoritettu erityisenä tutkintona"),
-            exact(KoskiErrorCategory.badRequest.validation.rakenne.erityisenäTutkintonaSuoritettuSisältääOsasuorituksia, "Osasuoritus moduulikoodistolops2021/MAB2 ei ole sallittu, koska tutkinto on suoritettu erityisenä tutkintona"),
-            exact(KoskiErrorCategory.badRequest.validation.rakenne.erityisenäTutkintonaSuoritettuSisältääOsasuorituksia, "Osasuoritus moduulikoodistolops2021/MAB3 ei ole sallittu, koska tutkinto on suoritettu erityisenä tutkintona"),
-            exact(KoskiErrorCategory.badRequest.validation.rakenne.erityisenäTutkintonaSuoritettuSisältääOsasuorituksia, "Osasuoritus moduulikoodistolops2021/MAB4 ei ole sallittu, koska tutkinto on suoritettu erityisenä tutkintona"),
-            exact(KoskiErrorCategory.badRequest.validation.rakenne.erityisenäTutkintonaSuoritettuSisältääOsasuorituksia, "Osasuoritus FY123 (Keittiöfysiikka) ei ole sallittu, koska tutkinto on suoritettu erityisenä tutkintona")
-          ))
+    "suoritustasolla ei salli vahvistettua suoritusta, jonka oppiaineiden yhteislaajuus on alle 88op" in {
+      setupOppijaWithOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(aikuistenOppimääränSuoritus.copy(
+        suoritettuErityisenäTutkintona = true,
+        vahvistus = vahvistusPaikkakunnalla(päivä = date(2020, 5, 15)),
+        osasuoritukset = Some(List(
+          oppiaineenSuoritus(Lukio2019ExampleData.lukionÄidinkieli("AI1", pakollinen = true, laajuus = laajuus(5.0))).copy(arviointi = numeerinenLukionOppiaineenArviointi(9), osasuoritukset = None),
+          oppiaineenSuoritus(Lukio2019ExampleData.matematiikka("MAA", laajuus = laajuus(5.0))).copy(arviointi = numeerinenLukionOppiaineenArviointi(9), osasuoritukset = None)))))
+      )) {
+        verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.valmiiksiMerkityltäPuuttuuOsasuorituksia("Suoritus koulutus/309902 on merkitty valmiiksi tai opiskeluoikeuden tiedoissa oppimäärä on merkitty suoritetuksi, mutta sillä ei ole 88 op osasuorituksia, tai opiskeluoikeudelta puuttuu linkitys"))
       }
+    }
+
+    "suoritustasolla sallii vahvistetun suorituksen tietystä oppilaitoksista, vaikka oppiaineiden yhteislaajuus on alle 88op" in {
+      setupOppijaWithOpiskeluoikeus(defaultOpiskeluoikeus.copy(
+        oppilaitos = Some(Oppilaitos(MockOrganisaatiot.oulunAikuislukio)),
+        suoritukset = List(aikuistenOppimääränSuoritus.copy(
+          suoritettuErityisenäTutkintona = true,
+          vahvistus = vahvistusPaikkakunnalla(päivä = date(2020, 5, 15)),
+          osasuoritukset = Some(List(
+            oppiaineenSuoritus(Lukio2019ExampleData.lukionÄidinkieli("AI1", pakollinen = true, laajuus = laajuus(5.0))).copy(arviointi = numeerinenLukionOppiaineenArviointi(9), osasuoritukset = None),
+            oppiaineenSuoritus(Lukio2019ExampleData.matematiikka("MAA", laajuus = laajuus(5.0))).copy(arviointi = numeerinenLukionOppiaineenArviointi(9), osasuoritukset = None)))
+        ))
+      )) {
+        verifyResponseStatusOk()
+      }
+    }
+
+    "suoritustasolla sallii oppiaineet ilman osasuorituksia ja suorituksen merkitsemisen vahvistetuksi vajaalla yhteislaajuudella, joka on kuitenkin vähintään 88op" in {
+      setupOppijaWithOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(aikuistenOppimääränSuoritus.copy(
+        suoritettuErityisenäTutkintona = true,
+        vahvistus = vahvistusPaikkakunnalla(päivä = date(2020, 5, 15)),
+        osasuoritukset = Some(List(
+          oppiaineenSuoritus(Lukio2019ExampleData.lukionÄidinkieli("AI1", pakollinen = true, laajuus = laajuus(44.0))).copy(arviointi = numeerinenLukionOppiaineenArviointi(9), osasuoritukset = None),
+          oppiaineenSuoritus(Lukio2019ExampleData.matematiikka("MAA", laajuus = laajuus(44.0))).copy(arviointi = numeerinenLukionOppiaineenArviointi(9), osasuoritukset = None)))))
+      )) {
+        verifyResponseStatusOk()
+      }
+    }
+
+    "suoritustasolla sallii osasuoritukset muissa lukio-opinnoissa, temaattisissa opinnoissa tai lukiodiplomeissa ja suorituksen merkitsemisen vahvistetuksi vajaalla yhteislaajuudella, joka on kuitenkin vähintään 88op" in {
+      setupOppijaWithOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(aikuistenOppimääränSuoritus.copy(
+        suoritettuErityisenäTutkintona = true,
+        vahvistus = vahvistusPaikkakunnalla(päivä = date(2020, 5, 15)),
+        osasuoritukset = Some(List(
+          oppiaineenSuoritus(Lukio2019ExampleData.lukionÄidinkieli("AI1", pakollinen = true, laajuus = laajuus(40.0))).copy(arviointi = numeerinenLukionOppiaineenArviointi(9), osasuoritukset = None),
+          oppiaineenSuoritus(Lukio2019ExampleData.matematiikka("MAA", laajuus = laajuus(40.0))).copy(arviointi = numeerinenLukionOppiaineenArviointi(9), osasuoritukset = None),
+          muidenLukioOpintojenSuoritus().copy(osasuoritukset = Some(List(
+            moduulinSuoritusMuissaOpinnoissa(muuModuuliMuissaOpinnoissa("KE3")).copy(arviointi = numeerinenArviointi(10)),
+            paikallisenOpintojaksonSuoritus(paikallinenOpintojakso("HAI765", "Kansanmusiikki haitarilla", "Kansamusiikkia 2-rivisellä haitarilla")).copy(arviointi = sanallinenArviointi("S"))
+          ))),
+          temaattistenOpintojenSuoritus().copy(osasuoritukset = Some(List(
+            paikallisenOpintojaksonSuoritus(paikallinenOpintojakso("KAN200", "Kanteleensoiton perusteet", "Itäsuomalaisen kanteleensoiton perusteet")).copy(arviointi = sanallinenArviointi("S"))
+          ))),
+          lukioDiplomienSuoritus().copy(osasuoritukset = Some(List(
+            moduulinSuoritusMuissaOpinnoissa(muuModuuliMuissaOpinnoissa("MELD5", 2.0f)).copy(arviointi = numeerinenArviointi(7)),
+            moduulinSuoritusMuissaOpinnoissa(muuModuuliMuissaOpinnoissa("KÄLD3", 2.0f)).copy(arviointi = numeerinenArviointi(9))
+          )))
+        ))
+      )))) {
+        verifyResponseStatusOk()
+      }
+    }
+
+    "suoritustasolla sallii osasuoritusten lisäämisen oppiaineisiin" in {
+      setupOppijaWithOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(aikuistenOppimääränSuoritus.copy(
+        suoritettuErityisenäTutkintona = true,
+        vahvistus = vahvistusPaikkakunnalla(päivä = date(2020, 5, 15)),
+        osasuoritukset = Some(List(
+          oppiaineenSuoritus(Lukio2019ExampleData.lukionÄidinkieli("AI1", pakollinen = true, laajuus = laajuus(6.0))).copy(arviointi = numeerinenLukionOppiaineenArviointi(9)).copy(osasuoritukset = Some(List(
+            moduulinSuoritusOppiaineissa(muuModuuliOppiaineissa("ÄI1")).copy(arviointi = numeerinenArviointi(8)),
+            moduulinSuoritusOppiaineissa(muuModuuliOppiaineissa("ÄI2")).copy(arviointi = numeerinenArviointi(8)),
+            moduulinSuoritusOppiaineissa(muuModuuliOppiaineissa("ÄI3").copy(pakollinen = false)).copy(arviointi = numeerinenArviointi(8))
+          ))),
+          oppiaineenSuoritus(Lukio2019ExampleData.matematiikka("MAB", laajuus = laajuus(82.0))).copy(arviointi = numeerinenLukionOppiaineenArviointi(9)).copy(osasuoritukset = Some(List(
+            moduulinSuoritusOppiaineissa(muuModuuliOppiaineissa("MAB2")).copy(arviointi = numeerinenArviointi(10)),
+            moduulinSuoritusOppiaineissa(muuModuuliOppiaineissa("MAB3")).copy(arviointi = numeerinenArviointi(10)),
+            moduulinSuoritusOppiaineissa(muuModuuliOppiaineissa("MAB4")).copy(arviointi = numeerinenArviointi(10)),
+            paikallisenOpintojaksonSuoritus(paikallinenOpintojakso("FY123", "Keittiöfysiikka", "Keittiöfysiikan kokeelliset perusteet, kiehumisreaktiot")).copy(arviointi = numeerinenArviointi(10)),
+          )))
+        ))
+      )))) {
+        verifyResponseStatusOk()
+      }
+    }
+
+    "suoritustasolla estetty jos kyseessä nuorten oppimäärän" in {
+      setupOppijaWithOpiskeluoikeus(defaultOpiskeluoikeus.copy(
+        suoritukset = List(oppimääränSuoritus.copy(
+          suoritettuErityisenäTutkintona = true,
+          osasuoritukset = Some(List(
+            oppiaineenSuoritus(Lukio2019ExampleData.lukionÄidinkieli("AI1", pakollinen = true, laajuus = laajuus(5.0))).copy(arviointi = numeerinenLukionOppiaineenArviointi(9))
+          )),
+        ))
+      )) {
+        verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.rakenne.erityisenäTutkintonaSuoritettuNuortenOps())
+      }
+    }
+
+    "oppiainetasolla ei salli ilman laajuutta" in {
+      val oo = defaultOpiskeluoikeus.copy(suoritukset = List(oppimääränSuoritus.copy(
+        osasuoritukset = Some(List(
+          oppiaineenSuoritus(Lukio2019ExampleData.lukionÄidinkieli("AI1", pakollinen = true)).copy(
+            suoritettuErityisenäTutkintona = true,
+            arviointi = numeerinenLukionOppiaineenArviointi(9),
+            osasuoritukset = Some(List(
+              moduulinSuoritusOppiaineissa(muuModuuliOppiaineissa("ÄI1").copy(laajuus = laajuus(2.0))).copy(arviointi = numeerinenArviointi(8)),
+              moduulinSuoritusOppiaineissa(muuModuuliOppiaineissa("ÄI2").copy(laajuus = laajuus(2.0))).copy(arviointi = numeerinenArviointi(8)),
+              moduulinSuoritusOppiaineissa(muuModuuliOppiaineissa("ÄI3").copy(laajuus = laajuus(2.0))).copy(arviointi = numeerinenArviointi(8))
+            ))
+          ),
+          oppiaineenSuoritus(Lukio2019ExampleData.matematiikka("MAB")).copy(arviointi = numeerinenLukionOppiaineenArviointi(9)).copy(osasuoritukset = Some(List(
+            moduulinSuoritusOppiaineissa(muuModuuliOppiaineissa("MAB2")).copy(arviointi = numeerinenArviointi(10)),
+            moduulinSuoritusOppiaineissa(muuModuuliOppiaineissa("MAB3")).copy(arviointi = numeerinenArviointi(10)),
+            moduulinSuoritusOppiaineissa(muuModuuliOppiaineissa("MAB4")).copy(arviointi = numeerinenArviointi(10))
+          )))
+        ) ::: oppiainesuorituksetRiittääValmistumiseenNuorilla.tail.tail)
+      )))
+
+      setupOppijaWithOpiskeluoikeus(oo) {
+        verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.laajuudet.oppiaineenLaajuusPuuttuu(s"Erityisenä tutkintona suoritettavan oppiaineen koskioppiaineetyleissivistava/AI laajuus puuttuu"))
+      }
+    }
+
+    "oppiainetasolla ei laske oppiaineen laajuutta automaattisesti osasuoritusten perusteella" in {
+      val oo = defaultOpiskeluoikeus.copy(suoritukset = List(oppimääränSuoritus.copy(
+        osasuoritukset = Some(List(
+          oppiaineenSuoritus(Lukio2019ExampleData.lukionÄidinkieli("AI1", pakollinen = true, laajuus = laajuus(8.0))).copy(
+            suoritettuErityisenäTutkintona = true,
+            arviointi = numeerinenLukionOppiaineenArviointi(9),
+            osasuoritukset = Some(List(
+              moduulinSuoritusOppiaineissa(muuModuuliOppiaineissa("ÄI1").copy(laajuus = laajuus(2.0))).copy(arviointi = numeerinenArviointi(8)),
+              moduulinSuoritusOppiaineissa(muuModuuliOppiaineissa("ÄI2").copy(laajuus = laajuus(2.0))).copy(arviointi = numeerinenArviointi(8)),
+              moduulinSuoritusOppiaineissa(muuModuuliOppiaineissa("ÄI3").copy(laajuus = laajuus(2.0))).copy(arviointi = numeerinenArviointi(8))
+            ))
+          ),
+          oppiaineenSuoritus(Lukio2019ExampleData.matematiikka("MAB")).copy(arviointi = numeerinenLukionOppiaineenArviointi(9)).copy(osasuoritukset = Some(List(
+            moduulinSuoritusOppiaineissa(muuModuuliOppiaineissa("MAB2")).copy(arviointi = numeerinenArviointi(10)),
+            moduulinSuoritusOppiaineissa(muuModuuliOppiaineissa("MAB3")).copy(arviointi = numeerinenArviointi(10)),
+            moduulinSuoritusOppiaineissa(muuModuuliOppiaineissa("MAB4")).copy(arviointi = numeerinenArviointi(10))
+          )))
+        ) ::: oppiainesuorituksetRiittääValmistumiseenNuorilla.tail.tail)
+      )))
+
+      val opiskeluoikeus: Opiskeluoikeus = setupOppijaWithAndGetOpiskeluoikeus(oo)
+      opiskeluoikeus.suoritukset.head.osasuoritusLista.head.koulutusmoduuli.laajuusArvo(0) should equal(8.0)
+    }
+
+    "suoritustasolla ei salli ilman oppiaineen laajuutta" in {
+      val oo = defaultOpiskeluoikeus.copy(suoritukset = List(aikuistenOppimääränSuoritus.copy(
+        suoritettuErityisenäTutkintona = true,
+        vahvistus = vahvistusPaikkakunnalla(päivä = date(2020, 5, 15)),
+        osasuoritukset = Some(List(
+          oppiaineenSuoritus(Lukio2019ExampleData.lukionÄidinkieli("AI1", pakollinen = true)).copy(
+            arviointi = numeerinenLukionOppiaineenArviointi(9),
+            osasuoritukset = Some(List(
+              moduulinSuoritusOppiaineissa(muuModuuliOppiaineissa("ÄI1").copy(laajuus = laajuus(2.0))).copy(arviointi = numeerinenArviointi(8)),
+              moduulinSuoritusOppiaineissa(muuModuuliOppiaineissa("ÄI2").copy(laajuus = laajuus(2.0))).copy(arviointi = numeerinenArviointi(8)),
+              moduulinSuoritusOppiaineissa(muuModuuliOppiaineissa("ÄI3").copy(laajuus = laajuus(2.0))).copy(arviointi = numeerinenArviointi(8))
+            ))
+          ),
+          oppiaineenSuoritus(Lukio2019ExampleData.matematiikka("MAA", laajuus = laajuus(88.0))).copy(
+            arviointi = numeerinenLukionOppiaineenArviointi(9),
+            osasuoritukset = Some(List(
+              moduulinSuoritusOppiaineissa(muuModuuliOppiaineissa("MAA2")).copy(arviointi = numeerinenArviointi(10)),
+              moduulinSuoritusOppiaineissa(muuModuuliOppiaineissa("MAA3")).copy(arviointi = numeerinenArviointi(10)),
+              moduulinSuoritusOppiaineissa(muuModuuliOppiaineissa("MAA4")).copy(arviointi = numeerinenArviointi(10))
+            ))
+          )
+        ))
+      )))
+
+      setupOppijaWithOpiskeluoikeus(oo) {
+        verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.laajuudet.oppiaineenLaajuusPuuttuu(s"Erityisenä tutkintona suoritettavan oppiaineen koskioppiaineetyleissivistava/AI laajuus puuttuu"))
+      }
+    }
+
+    "suoritustasolla ei laske oppiaineiden laajuuksia automaattisesti moduulien perusteella" in {
+      val oo = defaultOpiskeluoikeus.copy(suoritukset = List(aikuistenOppimääränSuoritus.copy(
+        suoritettuErityisenäTutkintona = true,
+        vahvistus = vahvistusPaikkakunnalla(päivä = date(2020, 5, 15)),
+        osasuoritukset = Some(List(
+          oppiaineenSuoritus(Lukio2019ExampleData.lukionÄidinkieli("AI1", pakollinen = true, laajuus = laajuus(12.0))).copy(
+            arviointi = numeerinenLukionOppiaineenArviointi(9),
+            osasuoritukset = Some(List(
+              moduulinSuoritusOppiaineissa(muuModuuliOppiaineissa("ÄI1").copy(laajuus = laajuus(2.0))).copy(arviointi = numeerinenArviointi(8)),
+              moduulinSuoritusOppiaineissa(muuModuuliOppiaineissa("ÄI2").copy(laajuus = laajuus(2.0))).copy(arviointi = numeerinenArviointi(8)),
+              moduulinSuoritusOppiaineissa(muuModuuliOppiaineissa("ÄI3").copy(laajuus = laajuus(2.0))).copy(arviointi = numeerinenArviointi(8))
+            ))
+          ),
+          oppiaineenSuoritus(Lukio2019ExampleData.matematiikka("MAA", laajuus = laajuus(77.0))).copy(
+            arviointi = numeerinenLukionOppiaineenArviointi(9),
+            osasuoritukset = Some(List(
+              moduulinSuoritusOppiaineissa(muuModuuliOppiaineissa("MAA2")).copy(arviointi = numeerinenArviointi(10)),
+              moduulinSuoritusOppiaineissa(muuModuuliOppiaineissa("MAA3")).copy(arviointi = numeerinenArviointi(10)),
+              moduulinSuoritusOppiaineissa(muuModuuliOppiaineissa("MAA4")).copy(arviointi = numeerinenArviointi(10))
+            ))
+          )
+        ))
+      )))
+
+      val opiskeluoikeus: Opiskeluoikeus = setupOppijaWithAndGetOpiskeluoikeus(oo)
+      opiskeluoikeus.suoritukset.head.osasuoritusLista(0).koulutusmoduuli.laajuusArvo(0) should equal(12.0)
+      opiskeluoikeus.suoritukset.head.osasuoritusLista(1).koulutusmoduuli.laajuusArvo(0) should equal(77.0)
+    }
+
+    "aineopinnoissa oppiainetasolla ei salli ilman oppiaineen laajuutta" in {
+      val oo = defaultOpiskeluoikeus.copy(suoritukset = List(oppiaineidenOppimäärienSuoritus.copy(
+        osasuoritukset = Some(List(
+          oppiaineenSuoritus(Lukio2019ExampleData.lukionÄidinkieli("AI1", pakollinen = true)).copy(
+            suoritettuErityisenäTutkintona = true,
+            arviointi = numeerinenLukionOppiaineenArviointi(9),
+            osasuoritukset = Some(List(
+              moduulinSuoritusOppiaineissa(muuModuuliOppiaineissa("ÄI1").copy(laajuus = laajuus(2.0))).copy(arviointi = numeerinenArviointi(8)),
+              moduulinSuoritusOppiaineissa(muuModuuliOppiaineissa("ÄI2").copy(laajuus = laajuus(2.0))).copy(arviointi = numeerinenArviointi(8)),
+              moduulinSuoritusOppiaineissa(muuModuuliOppiaineissa("ÄI3").copy(laajuus = laajuus(2.0))).copy(arviointi = numeerinenArviointi(8))
+            ))
+          ),
+          oppiaineenSuoritus(Lukio2019ExampleData.matematiikka("MAB")).copy(arviointi = numeerinenLukionOppiaineenArviointi(9)).copy(osasuoritukset = Some(List(
+            moduulinSuoritusOppiaineissa(muuModuuliOppiaineissa("MAB2")).copy(arviointi = numeerinenArviointi(10)),
+            moduulinSuoritusOppiaineissa(muuModuuliOppiaineissa("MAB3")).copy(arviointi = numeerinenArviointi(10)),
+            moduulinSuoritusOppiaineissa(muuModuuliOppiaineissa("MAB4")).copy(arviointi = numeerinenArviointi(10))
+          )))
+        ))
+      )))
+
+      setupOppijaWithOpiskeluoikeus(oo) {
+        verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.laajuudet.oppiaineenLaajuusPuuttuu(s"Erityisenä tutkintona suoritettavan oppiaineen koskioppiaineetyleissivistava/AI laajuus puuttuu"))
+      }
+    }
+
+    "aineopinnoissa oppiainetasolla ei laske oppiaineen laajuutta automaattisesti moduulien perusteella" in {
+      val oo = defaultOpiskeluoikeus.copy(suoritukset = List(oppiaineidenOppimäärienSuoritus.copy(
+        osasuoritukset = Some(List(
+          oppiaineenSuoritus(Lukio2019ExampleData.lukionÄidinkieli("AI1", pakollinen = true, laajuus = laajuus(6.0))).copy(
+            suoritettuErityisenäTutkintona = true,
+            arviointi = numeerinenLukionOppiaineenArviointi(9),
+            osasuoritukset = Some(List(
+              moduulinSuoritusOppiaineissa(muuModuuliOppiaineissa("ÄI1").copy(laajuus = laajuus(2.0))).copy(arviointi = numeerinenArviointi(8)),
+              moduulinSuoritusOppiaineissa(muuModuuliOppiaineissa("ÄI2").copy(laajuus = laajuus(2.0))).copy(arviointi = numeerinenArviointi(8)),
+              moduulinSuoritusOppiaineissa(muuModuuliOppiaineissa("ÄI3").copy(laajuus = laajuus(2.0))).copy(arviointi = numeerinenArviointi(8))
+            ))
+          ),
+          oppiaineenSuoritus(Lukio2019ExampleData.matematiikka("MAB")).copy(arviointi = numeerinenLukionOppiaineenArviointi(9)).copy(osasuoritukset = Some(List(
+            moduulinSuoritusOppiaineissa(muuModuuliOppiaineissa("MAB2")).copy(arviointi = numeerinenArviointi(10)),
+            moduulinSuoritusOppiaineissa(muuModuuliOppiaineissa("MAB3")).copy(arviointi = numeerinenArviointi(10)),
+            moduulinSuoritusOppiaineissa(muuModuuliOppiaineissa("MAB4")).copy(arviointi = numeerinenArviointi(10))
+          )))
+        ))
+      )))
+
+      val opiskeluoikeus: Opiskeluoikeus = setupOppijaWithAndGetOpiskeluoikeus(oo)
+      opiskeluoikeus.suoritukset.head.osasuoritusLista(0).koulutusmoduuli.laajuusArvo(0) should equal(6.0)
+      opiskeluoikeus.suoritukset.head.osasuoritusLista(1).koulutusmoduuli.laajuusArvo(0) should equal(6.0)
     }
   }
 

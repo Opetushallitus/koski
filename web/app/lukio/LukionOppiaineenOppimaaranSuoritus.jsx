@@ -6,16 +6,26 @@ import {
   OmatTiedotLukionOppiaineetTableHead
 } from './fragments/LukionOppiaineetTableHead'
 import { isMobileAtom } from '../util/isMobileAtom'
-import { OmatTiedotLukionOppiaine } from './OmatTiedotLukionOppiaineet'
+import {
+  erityinenTutkintoFootnote,
+  OmatTiedotLukionOppiaine
+} from './OmatTiedotLukionOppiaineet'
 import { paikallisiaOsasuorituksia } from './LukionOppiaineetEditor'
 import { FootnoteDescriptions } from '../components/footnote'
+import { isErityinenTutkinto } from './lukio'
 
 export const LukionOppiaineenOppimaaranSuoritus = ({ model }) => (
   <section>
     <table className="suoritukset oppiaineet">
       <LukionOppiaineetTableHead />
       <tbody>
-        <LukionOppiaineEditor oppiaine={model} allowOppiaineRemoval={false} />
+        <LukionOppiaineEditor
+          oppiaine={model}
+          allowOppiaineRemoval={false}
+          oppiaineFootnote={
+            isErityinenTutkinto(model) && erityinenTutkintoFootnote
+          }
+        />
         {modelErrorMessages(model).map((error, i) => (
           <tr
             key={'error-' + i}

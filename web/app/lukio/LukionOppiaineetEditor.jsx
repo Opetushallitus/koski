@@ -18,12 +18,14 @@ import {
   isLukioOps2019,
   isLuvaOps2019,
   isPreIbLukioOps2019,
-  laajuudet
+  laajuudet,
+  isErityinenTutkinto
 } from './lukio'
 import { numberToString } from '../util/format.js'
 import { isPaikallinen } from '../suoritus/Koulutusmoduuli'
 import { FootnoteDescriptions } from '../components/footnote'
 import Text from '../i18n/Text'
+import { erityinenTutkintoFootnote } from './OmatTiedotLukionOppiaineet'
 
 export const LukionOppiaineetEditor = ({
   suorituksetModel,
@@ -46,6 +48,9 @@ export const LukionOppiaineetEditor = ({
     <LukionOppiaineEditor
       key={oppiaineIndex}
       oppiaine={oppiaine}
+      oppiaineFootnote={
+        isErityinenTutkinto(oppiaine) && erityinenTutkintoFootnote
+      }
       additionalOnlyEditableProperties={additionalOnlyEditableProperties}
       additionalEditableKoulutusmoduuliProperties={
         additionalEditableKoulutusmoduuliProperties
@@ -53,6 +58,7 @@ export const LukionOppiaineetEditor = ({
       customOsasuoritusTitle="osasuoritus"
       showArviointiEditor={!oppiaine.value.classes.includes('arvioinniton')}
       useHylkäämättömätLaajuus={useHylkäämättömätLaajuus}
+      useOppiaineLaajuus={false}
       showHyväksytystiArvioitujenLaajuus={showHyväksytystiArvioitujenLaajuus}
     />
   ))
@@ -102,6 +108,16 @@ export const LukionOppiaineetEditor = ({
           ]}
         />
       )}
+      {oppiaineet.some((oppiaine) => isErityinenTutkinto(oppiaine)) && (
+        <FootnoteDescriptions
+          data={[
+            {
+              title: 'Erityisenä tutkintona suoritettu oppiaine',
+              hint: '**'
+            }
+          ]}
+        />
+      )}
       <UusiLukionOppiaineDropdown
         model={päätasonSuoritusModel}
         oppiaineenSuoritusClasses={classesForUusiOppiaineenSuoritus}
@@ -133,7 +149,11 @@ export const OsasuorituksetYhteensa = ({ suorituksetModel, oppiaineet }) => {
         numberToString(
           laajuudet(
             flatMapArray(oppiaineet, (oppiaine) =>
-              arvioidutOsasuoritukset(modelItems(oppiaine, 'osasuoritukset'))
+              isErityinenTutkinto(oppiaine)
+                ? arvioidutOsasuoritukset([oppiaine])
+                : arvioidutOsasuoritukset(
+                    modelItems(oppiaine, 'osasuoritukset')
+                  )
             )
           ),
           1
@@ -144,9 +164,11 @@ export const OsasuorituksetYhteensa = ({ suorituksetModel, oppiaineet }) => {
         numberToString(
           laajuudet(
             flatMapArray(oppiaineet, (oppiaine) =>
-              hyväksytystiArvioidutOsasuoritukset(
-                modelItems(oppiaine, 'osasuoritukset')
-              )
+              isErityinenTutkinto(oppiaine)
+                ? hyväksytystiArvioidutOsasuoritukset([oppiaine])
+                : hyväksytystiArvioidutOsasuoritukset(
+                    modelItems(oppiaine, 'osasuoritukset')
+                  )
             )
           ),
           1

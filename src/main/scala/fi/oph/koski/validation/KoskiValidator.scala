@@ -215,8 +215,11 @@ class KoskiValidator(
     case _: OpintopistelaajuuksienYhteislaskennallinenPäätasonSuoritus[_] =>
       suoritus.withOsasuoritukset(suoritus.osasuoritukset.map(_.map { os =>
         lazy val yhteislaajuus = os.osasuoritusLista.map(_.koulutusmoduuli.laajuusArvo(0.0)).map(BigDecimal.decimal).sum.toDouble
+        val skipYhteenlaskenta = shouldSkipLaajuuksienYhteenlaskenta(os, suoritus)
         os.withKoulutusmoduuli(os.koulutusmoduuli match {
           case k: OpintopistelaajuuksienYhteenlaskennanOhittavaKoulutusmoduuli[_] =>
+            k
+          case k: OpintopistelaajuuksienYhteenlaskennallinenKoulutusmoduuli[_] if skipYhteenlaskenta =>
             k
           case k: OpintopistelaajuuksienYhteenlaskennallinenKoulutusmoduuli[_] if yhteislaajuus > 0 => k.withLaajuus(yhteislaajuus)
           case k: OpintopistelaajuuksienYhteenlaskennallinenKoulutusmoduuli[_] => k.withLaajuusNone()
@@ -224,6 +227,16 @@ class KoskiValidator(
         })
       }))
     case _ => suoritus
+  }
+
+  private def shouldSkipLaajuuksienYhteenlaskenta(osasuoritus: Suoritus, päätasonSuoritus: PäätasonSuoritus): Boolean = {
+    (päätasonSuoritus, osasuoritus) match {
+      case (pts: LukionOppimääränSuoritus2019, os: SuoritettavissaErityisenäTutkintona2019) =>
+        os.suoritettuErityisenäTutkintona || pts.suoritettuErityisenäTutkintona
+      case (_: LukionOppiaineidenOppimäärienSuoritus2019, os: SuoritettavissaErityisenäTutkintona2019) =>
+        os.suoritettuErityisenäTutkintona
+      case _ => false
+    }
   }
 
   private def fillPäätasonSuorituksenLaajuus(suoritus: PäätasonSuoritus): PäätasonSuoritus = {
@@ -1156,7 +1169,7 @@ class KoskiValidator(
         :: validateStatus(suoritus, opiskeluoikeus)
         :: validateArvioinnit(suoritus)
         :: validateArviointienOlemassaolo(suoritus, opiskeluoikeus)
-        :: validateLaajuus(suoritus)
+        :: validateLaajuus(suoritus, parent)
         :: validateNuortenPerusopetuksenPakollistenOppiaineidenLaajuus(suoritus, opiskeluoikeus)
         :: validateSuoritustenLuokkaAsteet(opiskeluoikeus)
         :: validateOppiaineet(suoritus)
@@ -1305,7 +1318,7 @@ class KoskiValidator(
     case _ => HttpStatus.ok
   }
 
-  private def validateLaajuus(suoritus: Suoritus): HttpStatus = {
+  private def validateLaajuus(suoritus: Suoritus, parent: List[Suoritus]): HttpStatus = {
     def validateLaajuus(laajuus: Laajuus, osasuoritustenLaajuudet: List[Laajuus]) = (osasuoritustenLaajuudet, suoritus.valmis) match {
       case (_, false) => HttpStatus.ok
       case (Nil, _) => HttpStatus.ok
@@ -1321,6 +1334,21 @@ class KoskiValidator(
     def osasuoritustenLaajuudet: List[Laajuus] = suoritus.osasuoritusLista.map(_.koulutusmoduuli).flatMap(_.getLaajuus)
     def osasuoritustenLaajuudetHyväksytty: List[Laajuus] = suoritus.osasuoritusLista.filter(os => os.viimeisinArviointi.exists(_.hyväksytty)).map(_.koulutusmoduuli).flatMap(_.getLaajuus)
 
+    def validateLaajuusVähintäänOsasuoritustenSumma(laajuus: Laajuus, osasuoritustenLaajuudet: List[Laajuus]) = {
+      osasuoritustenLaajuudet match {
+        case Nil => HttpStatus.ok
+        case _ =>
+          val summa = osasuoritustenLaajuudet.map(_.arvo).sum
+          if (laajuus.arvo >= summa - 0.001) {
+            HttpStatus.ok
+          } else {
+            KoskiErrorCategory.badRequest.validation.laajuudet.osasuoritustenLaajuuksienSumma(
+              s"Suorituksen ${suorituksenTunniste(suoritus)} laajuus ${laajuus.arvo} on pienempi kuin osasuoritusten laajuuksien summa $summa"
+            )
+          }
+      }
+    }
+
     val perusopetukseenValmistavaOpetusKokonaislaajuusYksikköTunneissaAlkaa = LocalDate.parse(config.getString("validaatiot.perusopetukseenValmistavaOpetusKokonaislaajuusYksikköTunneissaAlkaa")).minusDays(1)
     val perusopetukseenValmistavaOpetusKokonaislaajuusYksikköTunneissaVoimassa = LocalDate.now().isAfter(perusopetukseenValmistavaOpetusKokonaislaajuusYksikköTunneissaAlkaa)
 
@@ -1335,10 +1363,14 @@ class KoskiValidator(
         })
 
         yksikköValidaatio.onSuccess({
-          suoritus.koulutusmoduuli match {
-            case _: LaajuuttaEiValidoida => HttpStatus.ok
-            case _: TutkintokoulutukseenValmentavanKoulutus | _: TutkintokoulutukseenValmentavanKoulutuksenValinnaisenKoulutusosa =>
+          (suoritus.koulutusmoduuli, suoritus, parent) match {
+            case (_: LaajuuttaEiValidoida, _, _) => HttpStatus.ok
+            case (_: TutkintokoulutukseenValmentavanKoulutus | _: TutkintokoulutukseenValmentavanKoulutuksenValinnaisenKoulutusosa, _, _) =>
               validateLaajuus(laajuus, osasuoritustenLaajuudetHyväksytty)
+           case (_, os: SuoritettavissaErityisenäTutkintona2019, (s: LukionOppimääränSuoritus2019) :: _) if os.suoritettuErityisenäTutkintona || s.suoritettuErityisenäTutkintona =>
+              validateLaajuusVähintäänOsasuoritustenSumma(laajuus, osasuoritustenLaajuudet)
+           case (_, os: SuoritettavissaErityisenäTutkintona2019, (_: LukionOppiaineidenOppimäärienSuoritus2019) :: _) if os.suoritettuErityisenäTutkintona =>
+              validateLaajuusVähintäänOsasuoritustenSumma(laajuus, osasuoritustenLaajuudet)
             case _ =>
               validateLaajuus(laajuus, osasuoritustenLaajuudet)
           }
@@ -1437,11 +1469,13 @@ class KoskiValidator(
     suoritus: LukionPäätasonSuoritus2019,
     oppilaitosOid: Option[Organisaatio.Oid]
   ): Boolean = {
-    (sisältääErityisenTutkinnonSuorittamisen(suoritus), sisältääOmanÄidinkielenOpintojenSuorituksia(suoritus), suoritus.oppimäärä.koodiarvo) match {
-      case (false, false, "nuortenops")
+    (sisältääErityisenTutkinnonSuorittamisenPäätasolla(suoritus), sisältääErityisenTutkinnonSuorittamisen(suoritus), sisältääOmanÄidinkielenOpintojenSuorituksia(suoritus), suoritus.oppimäärä.koodiarvo) match {
+      case (false, false, false, "nuortenops")
         => lukio2019TarpeeksiOsasuorituksia(suoritus.osasuoritukset.getOrElse(List()), 150, 20)
-      case (false, false, "aikuistenops") if LukionYhteisetValidaatiot.laajuusValidoitavaOppilaitoksessa(oppilaitosOid)
+      case (false, false, false, "aikuistenops") if LukionYhteisetValidaatiot.laajuusValidoitavaOppilaitoksessa(oppilaitosOid)
         => lukio2019TarpeeksiOsasuorituksia(suoritus.osasuoritukset.getOrElse(List()), 88, 0)
+      case (true, _, _, "aikuistenops") if LukionYhteisetValidaatiot.laajuusValidoitavaOppilaitoksessa(oppilaitosOid)
+        => lukio2019TarpeeksiOppiaineenSuorituksia(suoritus.osasuoritukset.getOrElse(List()), 88)
       case _
         => suoritus.osasuoritusLista.nonEmpty
     }
@@ -1454,6 +1488,13 @@ class KoskiValidator(
           case os: LukionOppiaineenSuoritus2019 if os.suoritettuErityisenäTutkintona => true
           case _ => false
         }))
+      case _ => false
+    }
+  }
+
+  private def sisältääErityisenTutkinnonSuorittamisenPäätasolla(suoritus: LukionPäätasonSuoritus2019) = {
+    suoritus match {
+      case s: LukionOppimääränSuoritus2019 => s.suoritettuErityisenäTutkintona
       case _ => false
     }
   }
@@ -1472,6 +1513,13 @@ class KoskiValidator(
     val valinnaisetYhteensä = valinnaiset.map(BigDecimal.decimal).sum
 
     kaikkiYhteensä >= BigDecimal.decimal(minimiLaajuus) && valinnaisetYhteensä >= BigDecimal.decimal(minimiValinnaistenLaajuus)
+  }
+
+  private def lukio2019TarpeeksiOppiaineenSuorituksia(osasuoritukset: List[LukionOppimääränOsasuoritus2019], minimiLaajuus: Double): Boolean = {
+    val kaikki = osasuoritukset.flatMap(_.koulutusmoduuli.laajuus.map(_.arvo))
+    val kaikkiYhteensä = kaikki.map(BigDecimal.decimal).sum
+
+    kaikkiYhteensä >= BigDecimal.decimal(minimiLaajuus)
   }
 
   private def ostettuOpiskeluoikeusValmisEnnenVuotta2019(opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus) = opiskeluoikeus match {
