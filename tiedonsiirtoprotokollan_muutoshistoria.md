@@ -1,6 +1,7 @@
 # 16.2.2026
 
 - Kielitutkintojen opiskeluoikeuksia ei voi enää katsella oppilaitostunnuksilla, ellei niille ole erikseen määritelty oikeutta kielitutkintoihin.
+- Sallitaan yleisen kielitutkinnon suorituksille päällekkäiset aikajaksot.
 
 ## 16.2.2025
 
@@ -17,9 +18,11 @@ Kelan tietomalliin lisätty esiopetus sekä uudet perusopetuksen lisätiedot.
 - Korjattu `suorituskieli`-kentän parsinta korkeakoulututkinnon suoritukselle Virta-datasta.
 
 ## 14.1.2026
+
 Ammatillisen tutkinnon osasuoritusten AmmatillisenTutkinnonViestintäJaVuorovaikutusKielivalinnalla annotaatioihin lisätty VVAI26, VVVK26, ja VVTK26
 
 ## 30.10.2025
+
 Poistettu ammatillinen tutkinnon osa/osia useammasta tutkinnosta tietomallista seuraavat kentät: järjestämismuodot,
 työssäoppimisjaksot, tutkintonimike, toinenTutkintonimike, osaamisala, toinenOsaamisala, keskiarvo ja keskiarvo Sisältää Mukautettuja Arvosanoja.
 
