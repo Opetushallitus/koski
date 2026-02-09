@@ -1011,9 +1011,7 @@ class OppijaValidationTaiteenPerusopetusSpec
 
       // Oppija-listauksen pituus ennen suostumuksen peruuttamista
       KoskiApplicationForTests.perustiedotIndexer.sync(true)
-      val opiskeluoikeuksiaEnnenPerumistaOpenSearchissa = searchForPerustiedot(
-        Map("toimipiste" -> defaultOpiskeluoikeus.oppilaitos.get.oid), MockUsers.paakayttaja
-      ).length
+      val opiskeluoikeuksiaEnnenPerumistaOpenSearchissa = searchForPerustiedot(Map("toimipiste" -> oo.oppilaitos.get.oid)).length
 
       // Peru suostumus käyttäjän omilla oikeuksilla
       val loginHeadersKansalainen = kansalainenLoginHeaders(KoskiSpecificMockOppijat.tyhjä.hetu)
@@ -1089,9 +1087,7 @@ class OppijaValidationTaiteenPerusopetusSpec
 
       // Oppija-listauksen pituus ennen suostumuksen peruuttamista
       KoskiApplicationForTests.perustiedotIndexer.sync(true)
-      val opiskeluoikeuksiaEnnenPerumistaOpenSearchissa = searchForPerustiedot(
-        Map("toimipiste" -> defaultOpiskeluoikeus.oppilaitos.get.oid), MockUsers.paakayttaja
-      ).length
+      val opiskeluoikeuksiaEnnenPerumistaOpenSearchissa = searchForPerustiedot(Map("toimipiste" -> oo.oppilaitos.get.oid)).length
 
       // Peru suostumus käyttäjän omilla oikeuksilla
       val loginHeadersKansalainen = kansalainenLoginHeaders(KoskiSpecificMockOppijat.tyhjä.hetu)
@@ -1174,9 +1170,7 @@ class OppijaValidationTaiteenPerusopetusSpec
 
       // Oppija-listauksen pituus ennen suostumuksen peruuttamista
       KoskiApplicationForTests.perustiedotIndexer.sync(true)
-      val opiskeluoikeuksiaEnnenPerumistaOpenSearchissa = searchForPerustiedot(
-        Map("toimipiste" -> oo.oppilaitos.get.oid), MockUsers.paakayttaja
-      ).length
+      val opiskeluoikeuksiaEnnenPerumistaOpenSearchissa = searchForPerustiedot(Map("toimipiste" -> oo.oppilaitos.get.oid)).length
 
       // Peru suostumukset käyttäjän omilla oikeuksilla
       val loginHeadersKansalainen = kansalainenLoginHeaders(KoskiSpecificMockOppijat.tyhjä.hetu)

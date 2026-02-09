@@ -183,7 +183,7 @@ class KoskiSpecificSessionSpec
     val expectedAllowedOpiskeluoikeudenTyypit = expectedKäyttöoikeudet.flatMap(_.allowedOpiskeluoikeusTyypit)
     session.allowedOpiskeluoikeudetJaPäätasonSuoritukset should be(expectedAllowedOpiskeluoikeudenTyypit)
 
-    session.hasKoulutusmuotoRestrictions should be(expectedAllowedOpiskeluoikeudenTyypit != OpiskeluoikeudenTyyppi.kaikkiTyypit(isRoot).map(t => OoPtsMask(t.koodiarvo)))
+    session.hasKoulutusmuotoRestrictions should be(expectedAllowedOpiskeluoikeudenTyypit != OpiskeluoikeudenTyyppi.kaikkiOpiskeluoikeudetJaPäätasonSuoritukset)
     session
   }
 
