@@ -1,4 +1,9 @@
+# 16.2.2026
+
+- Kielitutkintojen opiskeluoikeuksia ei voi enää katsella oppilaitostunnuksilla, ellei niille ole erikseen määritelty oikeutta kielitutkintoihin.
+
 ## 16.2.2025
+
 Kelan tietomalliin lisätty esiopetus sekä uudet perusopetuksen lisätiedot.
 
 ## 4.2.2026
