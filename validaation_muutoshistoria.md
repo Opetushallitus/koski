@@ -1,6 +1,12 @@
 # Koskeen tallennettavien tietojen validaatiosäännöt
 
 
+## 9.2.2026
+
+- Duplikaattiopiskeluoikeuksien validaatio sallii nyt linkitetyt opiskeluoikeudet (sisältyyOpiskeluoikeuteen).
+  - Tallennettava opiskeluoikeus, joka sisältyy oppijan toiseen opiskeluoikeuteen, ei ole duplikaatti.
+  - Olemassaoleva opiskeluoikeus, joka sisältyy tallennettavaan opiskeluoikeuteen, ei aiheuta duplikaattivirhettä.
+
 ## 6.2.2026
 
 - Perusopetuksen vuosiluokan tai päättötodistuksen suorituksella ei voi olla oppiainetta, jolla on sekä yksilöllistetty että rajattu oppimäärä.

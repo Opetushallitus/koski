@@ -2166,6 +2166,71 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
           }
         }
       }
+
+      "Linkitetty opiskeluoikeus (sisältyyOpiskeluoikeuteen)" - {
+        "Duplikaatin tallennus onnistuu, kun tallennettava opiskeluoikeus sisältyy toiseen opiskeluoikeuteen" in {
+          resetFixtures()
+          val alkuperäinen = setupOppijaWithAndGetOpiskeluoikeus(defaultOpiskeluoikeus)
+
+          val sisältyvä = defaultOpiskeluoikeus.copy(
+            sisältyyOpiskeluoikeuteen = Some(SisältäväOpiskeluoikeus(alkuperäinen.oppilaitos.get, alkuperäinen.oid.get))
+          )
+
+          postOpiskeluoikeus(opiskeluoikeus = sisältyvä) {
+            verifyResponseStatusOk()
+          }
+        }
+
+        "Duplikaatin tallennus onnistuu, kun olemassaoleva opiskeluoikeus sisältyy tallennettavaan opiskeluoikeuteen" in {
+          resetFixtures()
+          val alkuperäinen = setupOppijaWithAndGetOpiskeluoikeus(
+            defaultOpiskeluoikeus.copy(lähdejärjestelmänId = lähdejärjestelmänId1),
+            defaultHenkilö,
+            headers = authHeaders(stadinAmmattiopistoPalvelukäyttäjä) ++ jsonContent
+          )
+
+          val sisältyvä = defaultOpiskeluoikeus.copy(
+            lähdejärjestelmänId = lähdejärjestelmänId2,
+            sisältyyOpiskeluoikeuteen = Some(SisältäväOpiskeluoikeus(alkuperäinen.oppilaitos.get, alkuperäinen.oid.get))
+          )
+          postOpiskeluoikeus(sisältyvä, headers = authHeaders(stadinAmmattiopistoPalvelukäyttäjä) ++ jsonContent) {
+            verifyResponseStatusOk()
+          }
+
+          // Alkuperäisen opiskeluoikeuden päivittäminen onnistuu, vaikka sisältyvä opiskeluoikeus
+          // on samantyyppinen samassa oppilaitoksessa päällekkäisellä aikajaksolla
+          putOpiskeluoikeus(alkuperäinen, headers = authHeaders(stadinAmmattiopistoPalvelukäyttäjä) ++ jsonContent) {
+            verifyResponseStatusOk()
+          }
+        }
+
+        "Linkitetyn opiskeluoikeuden duplikaattia ei sallita" in {
+          resetFixtures()
+          val alkuperäinen = setupOppijaWithAndGetOpiskeluoikeus(
+            defaultOpiskeluoikeus.copy(lähdejärjestelmänId = lähdejärjestelmänId1),
+            defaultHenkilö,
+            headers = authHeaders(stadinAmmattiopistoPalvelukäyttäjä) ++ jsonContent
+          )
+
+          // B sisältyy A:han - sallitaan
+          val b = defaultOpiskeluoikeus.copy(
+            lähdejärjestelmänId = lähdejärjestelmänId2,
+            sisältyyOpiskeluoikeuteen = Some(SisältäväOpiskeluoikeus(alkuperäinen.oppilaitos.get, alkuperäinen.oid.get))
+          )
+          postOpiskeluoikeus(opiskeluoikeus = b, headers = authHeaders(stadinAmmattiopistoPalvelukäyttäjä) ++ jsonContent) {
+            verifyResponseStatusOk()
+          }
+
+          // C on identtinen B:n kanssa (sisältyy myös A:han) - ei sallita, koska B:n duplikaatti
+          val c = defaultOpiskeluoikeus.copy(
+            lähdejärjestelmänId = Some(primusLähdejärjestelmäId("primus-kolme")),
+            sisältyyOpiskeluoikeuteen = Some(SisältäväOpiskeluoikeus(alkuperäinen.oppilaitos.get, alkuperäinen.oid.get))
+          )
+          postOpiskeluoikeus(opiskeluoikeus = c, headers = authHeaders(stadinAmmattiopistoPalvelukäyttäjä) ++ jsonContent) {
+            verifyResponseStatus(409, KoskiErrorCategory.conflict.exists())
+          }
+        }
+      }
     }
 
     "Siirtyminen uudempiin perusteisiin" - {
