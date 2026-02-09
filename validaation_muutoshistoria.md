@@ -1,5 +1,8 @@
 # Koskeen tallennettavien tietojen validaatiosäännöt
 
+## 18.2.2026
+
+- Sallitaan yleisen kielitutkinnon suorituksille päällekkäiset aikajaksot, mutta estetään kuitenkin suoritus samalla tutkintopäivällä samalla tutkintotasolla, kielellä ja testipaikalla.
 
 ## 9.2.2026
 

@@ -538,7 +538,7 @@ class KoskiValidator(
     oo match {
       case _: YlioppilastutkinnonOpiskeluoikeus =>
         validateOrganisaatioAccess(oo, oo.getOppilaitosOrKoulutusToimija)
-      case kituOo: KielitutkinnonOpiskeluoikeus if kituOo.isOphValtionhallinnonKielitutkinto =>
+      case kituOo: KielitutkinnonOpiskeluoikeus if kituOo.isValtionhallinnonKielitutkinto =>
         validateOrganisaatioAccess(oo, oo.getOppilaitosOrKoulutusToimija)
       case _ =>
         validateOrganisaatioAccess(oo, oo.getOppilaitos)
