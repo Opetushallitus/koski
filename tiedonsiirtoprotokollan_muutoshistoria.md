@@ -1,6 +1,7 @@
 # 10.2.2026
 
 - Kielitutkintojen opiskeluoikeuksia ei voi enää katsella oppilaitostunnuksilla, ellei niille ole erikseen määritelty oikeutta kielitutkintoihin.
+- Sallitaan yleisen kielitutkinnon suorituksille päällekkäiset aikajaksot.
 
 ## 4.2.2026
 
@@ -13,9 +14,11 @@
 - Korjattu `suorituskieli`-kentän parsinta korkeakoulututkinnon suoritukselle Virta-datasta.
 
 ## 14.1.2026
+
 Ammatillisen tutkinnon osasuoritusten AmmatillisenTutkinnonViestintäJaVuorovaikutusKielivalinnalla annotaatioihin lisätty VVAI26, VVVK26, ja VVTK26
 
 ## 30.10.2025
+
 Poistettu ammatillinen tutkinnon osa/osia useammasta tutkinnosta tietomallista seuraavat kentät: järjestämismuodot,
 työssäoppimisjaksot, tutkintonimike, toinenTutkintonimike, osaamisala, toinenOsaamisala, keskiarvo ja keskiarvo Sisältää Mukautettuja Arvosanoja.
 

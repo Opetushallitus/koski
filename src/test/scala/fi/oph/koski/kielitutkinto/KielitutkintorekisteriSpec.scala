@@ -15,6 +15,7 @@ import fi.oph.koski.schema._
 import fi.oph.koski.util.WithWarnings
 import fi.oph.koski.{KoskiApplicationForTests, KoskiHttpSpec}
 import org.json4s.JValue
+import org.scalatest.BeforeAndAfterEach
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.should.Matchers
 
@@ -207,6 +208,36 @@ class KielitutkintorekisteriSpec
           }
         }
       }
+
+      "Duplikaatit" - {
+        "Samalla tutkintopäivällä oleva opiskeluoikeus ei kelpaa" in {
+          resetFixturesAfter {
+            postOpiskeluoikeus(opiskeluoikeus) {
+              verifyResponseStatusOk()
+              postOpiskeluoikeus(opiskeluoikeus) {
+                verifyResponseStatus(409, KoskiErrorCategory.conflict.exists())
+              }
+            }
+          }
+        }
+
+        "Voi siirtää aikajaksoiltaan leikkaavat opiskeluoikeudet, kunhan aloituspäivä (tutkintopäivä) on eri" in {
+          resetFixturesAfter {
+            val opiskeluoikeus2 = ExamplesKielitutkinto.YleisetKielitutkinnot.opiskeluoikeus(
+              tutkintopäivä = tutkintopäivä.plusDays(1),
+              kieli = "FI",
+              tutkintotaso = "pt",
+            )
+
+            postOpiskeluoikeus(opiskeluoikeus) {
+              verifyResponseStatusOk()
+              postOpiskeluoikeus(opiskeluoikeus2) {
+                verifyResponseStatusOk()
+              }
+            }
+          }
+        }
+      }
     }
 
     "Valtionhallinnon kielitutkinto" - {
@@ -268,23 +299,25 @@ class KielitutkintorekisteriSpec
       }
 
       "Voidaan siirtää arviointia kielitaidolle, myös jos osakoe on hylätty" in {
-        val invalidOo = opiskeluoikeus.copy(
-          suoritukset = opiskeluoikeus.suoritukset.map {
-            case pts: ValtionhallinnonKielitutkinnonSuoritus => pts.copy(
-              osasuoritukset = pts.osasuoritukset.map(_.map {
-                case kielitaito: ValtionhallinnonKielitutkinnonKirjallisenKielitaidonSuoritus => kielitaito.copy(
-                  osasuoritukset = kielitaito.osasuoritukset.map(_.map(_.copy(
-                    alkamispäivä = Some(arviointipäivä),
-                    arviointi = ExamplesKielitutkinto.ValtionhallinnonKielitutkinnot.Kielitaidot.arviointi("hylatty", arviointipäivä)
-                  )))
-                )
-              })
-            )
-          }
-        )
+        resetFixturesAfter {
+          val invalidOo = opiskeluoikeus.copy(
+            suoritukset = opiskeluoikeus.suoritukset.map {
+              case pts: ValtionhallinnonKielitutkinnonSuoritus => pts.copy(
+                osasuoritukset = pts.osasuoritukset.map(_.map {
+                  case kielitaito: ValtionhallinnonKielitutkinnonKirjallisenKielitaidonSuoritus => kielitaito.copy(
+                    osasuoritukset = kielitaito.osasuoritukset.map(_.map(_.copy(
+                      alkamispäivä = Some(arviointipäivä),
+                      arviointi = ExamplesKielitutkinto.ValtionhallinnonKielitutkinnot.Kielitaidot.arviointi("hylatty", arviointipäivä)
+                    )))
+                  )
+                })
+              )
+            }
+          )
 
-        postOpiskeluoikeus(invalidOo) {
-          verifyResponseStatusOk()
+          postOpiskeluoikeus(invalidOo) {
+            verifyResponseStatusOk()
+          }
         }
       }
     }
