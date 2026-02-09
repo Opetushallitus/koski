@@ -1,6 +1,6 @@
 package fi.oph.koski.schema
 
-import fi.oph.koski.koskiuser.Palvelurooli
+import fi.oph.koski.koskiuser.{OoPtsMask, Palvelurooli}
 import fi.oph.koski.schema.Opiskeluoikeus.OpiskeluoikeudenPäättymistila
 
 import java.time.{LocalDate, LocalDateTime}
@@ -152,7 +152,6 @@ trait Opiskeluoikeus extends Lähdejärjestelmällinen with OrganisaatioonLiitty
 
 object OpiskeluoikeudenTyyppi {
   private var tyypit: Set[Koodistokoodiviite] = Set()
-  private var rootUserTyypit: Set[Koodistokoodiviite] = Set()
 
   val aikuistenperusopetus = apply("aikuistenperusopetus")
   val ammatillinenkoulutus = apply("ammatillinenkoulutus")
@@ -173,20 +172,17 @@ object OpiskeluoikeudenTyyppi {
   val ebtutkinto = apply("ebtutkinto")
   val muukuinsaanneltykoulutus = apply("muukuinsaanneltykoulutus")
   val taiteenperusopetus = apply("taiteenperusopetus")
-  val kielitutkinto = apply("kielitutkinto", vainGlobalUser = true)
+  val kielitutkinto = apply("kielitutkinto")
 
-  private def apply(koodiarvo: String, vainGlobalUser: Boolean = false): Koodistokoodiviite = {
+  private def apply(koodiarvo: String): Koodistokoodiviite = {
     val tyyppi = Koodistokoodiviite(koodiarvo, "opiskeluoikeudentyyppi")
-    if (vainGlobalUser) {
-      rootUserTyypit += tyyppi
-    } else {
-      tyypit += tyyppi
-    }
+    tyypit += tyyppi
     tyyppi
   }
 
-  def kaikkiTyypit(isRootUser: Boolean): Set[Koodistokoodiviite] =
-    if (isRootUser) tyypit ++ rootUserTyypit else tyypit
+  val kaikkiTyypit: Set[Koodistokoodiviite] = tyypit
+
+  val kaikkiOpiskeluoikeudetJaPäätasonSuoritukset: Set[OoPtsMask] = kaikkiTyypit.map(t => OoPtsMask(t.koodiarvo))
 }
 
 trait KoskeenTallennettavaOpiskeluoikeus extends Opiskeluoikeus with LähdejärjestelmäkytkentäPurettavissa {

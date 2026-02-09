@@ -333,7 +333,6 @@ describe('Oppijataulukko', function () {
           'Reformi, Reijo',
           'Rikkinäinen, Kela',
           'Rikko-Toikkarinen, Risto',
-          'Suorittaja, Kielitutkinto',
           'Syntynyt, Sylvi',
           't, tavallinen',
           't, tavallinen',
@@ -341,9 +340,10 @@ describe('Oppijataulukko', function () {
           'Tehtävään-Valmistava-vahvistettu, Tauno',
           'Tekijä, Teija',
           'Telmanen, Tuula',
-          'Tiedonsiirto, Tiina'
+          'Tiedonsiirto, Tiina',
+          'Toiminta, Tommi'
         ])
-        expect(page.opiskeluoikeudeTotal()).to.equal('124')
+        expect(page.opiskeluoikeudeTotal()).to.equal('123')
       })
     })
 
@@ -371,9 +371,8 @@ describe('Oppijataulukko', function () {
           'Monia, Useita',
           'Monikoululainen, Miia',
           'Rikkinäinen, Kela',
-          'Suorittaja, Kielitutkinto'
         ])
-        expect(page.opiskeluoikeudeTotal()).to.equal('14')
+        expect(page.opiskeluoikeudeTotal()).to.equal('13')
       })
     })
   })
