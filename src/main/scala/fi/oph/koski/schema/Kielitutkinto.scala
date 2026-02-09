@@ -38,7 +38,7 @@ case class KielitutkinnonOpiskeluoikeus(
     case _ => false
   }
 
-  def isOphValtionhallinnonKielitutkinto: Boolean = suoritukset.exists {
+  def isValtionhallinnonKielitutkinto: Boolean = suoritukset.exists {
     case _: ValtionhallinnonKielitutkinnonSuoritus => true
     case _ => false
   }
