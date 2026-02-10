@@ -1,16 +1,18 @@
 package fi.oph.koski.api.misc
 
-import fi.oph.koski.documentation.ExampleData.{suomenKieli, vahvistusPaikkakunnalla}
-import fi.oph.koski.documentation.PerusopetusExampleData
+import fi.oph.koski.documentation.ExampleData.{opiskeluoikeusLäsnä, suomenKieli, vahvistusPaikkakunnalla, valtionosuusRahoitteinen}
+import fi.oph.koski.documentation.{ExamplesAikuistenPerusopetus, PerusopetusExampleData}
 import fi.oph.koski.documentation.PerusopetusExampleData._
 import fi.oph.koski.documentation.YleissivistavakoulutusExampleData.jyväskylänNormaalikoulu
-import fi.oph.koski.schema.{NuortenPerusopetuksenOppiaineenOppimääränSuoritus, PerusopetuksenPäätasonSuoritus}
+import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
+import fi.oph.koski.schema.{AikuistenPerusopetuksenOpiskeluoikeudenTila, AikuistenPerusopetuksenOpiskeluoikeusjakso, NuortenPerusopetuksenOppiaineenOppimääränSuoritus, PerusopetuksenPäätasonSuoritus}
 import fi.oph.koski.{DirtiesFixtures, KoskiHttpSpec}
 import org.json4s.jackson.JsonMethods
 import org.json4s.{DefaultFormats, JObject}
 import org.scalatest.freespec.AnyFreeSpec
 
 import java.time.LocalDate
+import java.time.LocalDate.{of => date}
 
 class PerusopetusOmattiedotSpec extends AnyFreeSpec with KoskiHttpSpec with OpiskeluoikeusTestMethodsPerusopetus with DirtiesFixtures {
   implicit val formats: DefaultFormats = DefaultFormats
@@ -235,6 +237,79 @@ class PerusopetusOmattiedotSpec extends AnyFreeSpec with KoskiHttpSpec with Opis
       "jos vuosiluokka on vahvistettu leikkuripäivänä tai sen jälkeen, kaikki laajuudet näytetään" in {
         verify(päättötodistusSuoritus.copy(vahvistus = vahvistusPaikkakunnalla(LocalDate.of(2020, 8, 1))), hetu = "090401A187A") {
           laajuudet.length should equal(2)
+        }
+      }
+    }
+  }
+
+  "Aikuisten perusopetuksen oppimäärän suoritus" - {
+    "kun suoritus on valmis" - {
+      "palautetaan päätason suoritukset, osasuoritukset ja arvosanat" in {
+        get("api/omattiedot/editor", headers = kansalainenLoginHeaders(KoskiSpecificMockOppijat.aikuisOpiskelija.hetu.get)) {
+          päätasonSuoritukset.length should equal(2)
+          osasuoritukset.length should equal(62)
+          arvioinnit.length should equal(62)
+        }
+      }
+    }
+    "kun suoritus on kesken" - {
+      "ja suoritus ei ole opiskeluoikeuden ainoa päätason suoritus" - {
+        "näytetään aikuisten perusopetuksen oppimäärän suoritus" in {
+          setupOppijaWithOpiskeluoikeus(
+            opiskeluoikeus = ExamplesAikuistenPerusopetus.aikuistenPerusopetuksenOpiskeluoikeusAlkuvaiheineenValmistunutVanhanOppivelvollisuuslainAikana.copy(
+              suoritukset = List(
+                ExamplesAikuistenPerusopetus.aikuistenPerusopetuksenAlkuvaiheenSuoritus(),
+                ExamplesAikuistenPerusopetus.aikuistenPerusopetukseOppimääränSuoritus(
+                  koulutus = ExamplesAikuistenPerusopetus.aikuistenPerusopetus2017,
+                  oppiaineet = ExamplesAikuistenPerusopetus.oppiaineidenSuoritukset2017,
+                  vahvistus = None
+                )
+              ),
+              tila = AikuistenPerusopetuksenOpiskeluoikeudenTila(
+                List(
+                  AikuistenPerusopetuksenOpiskeluoikeusjakso(date(2008, 8, 15), opiskeluoikeusLäsnä, Some(valtionosuusRahoitteinen)),
+                )
+              )
+            ),
+            henkilö = KoskiSpecificMockOppijat.aikuisOpiskelija
+          ) {
+            verifyResponseStatusOk()
+          }
+          get("api/omattiedot/editor", headers = kansalainenLoginHeaders(KoskiSpecificMockOppijat.aikuisOpiskelija.hetu.get)) {
+            päätasonSuoritukset.length should equal(2)
+            (päätasonSuoritukset.head \ "value" \ "classes").extract[List[String]] should contain("aikuistenperusopetuksenoppimaaransuoritus")
+            osasuoritukset.length should equal(62)
+            arvioinnit.length should equal(62)
+          }
+        }
+      }
+      "ja suoritus on opiskeluoikeuden ainoa päätason suoritus" - {
+        "näytetään aikuisten perusopetuksen oppimäärän osasuoritukset" in {
+          setupOppijaWithOpiskeluoikeus(
+            opiskeluoikeus = ExamplesAikuistenPerusopetus.aikuistenPerusopetuksenOpiskeluoikeusAlkuvaiheineenValmistunutVanhanOppivelvollisuuslainAikana.copy(
+              suoritukset = List(
+                ExamplesAikuistenPerusopetus.aikuistenPerusopetukseOppimääränSuoritus(
+                  koulutus = ExamplesAikuistenPerusopetus.aikuistenPerusopetus2017,
+                  oppiaineet = ExamplesAikuistenPerusopetus.oppiaineidenSuoritukset2017,
+                  vahvistus = None
+                )
+              ),
+              tila = AikuistenPerusopetuksenOpiskeluoikeudenTila(
+                List(
+                  AikuistenPerusopetuksenOpiskeluoikeusjakso(date(2008, 8, 15), opiskeluoikeusLäsnä, Some(valtionosuusRahoitteinen)),
+                )
+              )
+            ),
+            henkilö = KoskiSpecificMockOppijat.aikuisOpiskelija
+          ) {
+            verifyResponseStatusOk()
+          }
+          get("api/omattiedot/editor", headers = kansalainenLoginHeaders(KoskiSpecificMockOppijat.aikuisOpiskelija.hetu.get)) {
+            päätasonSuoritukset.length should equal(1)
+            (päätasonSuoritukset.head \ "value" \ "classes").extract[List[String]] should contain("aikuistenperusopetuksenoppimaaransuoritus")
+            osasuoritukset.length should equal(27)
+            arvioinnit.length should equal(27)
+          }
         }
       }
     }
