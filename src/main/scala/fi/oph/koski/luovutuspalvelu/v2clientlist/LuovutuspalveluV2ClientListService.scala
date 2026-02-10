@@ -24,6 +24,7 @@ class MockLuovutuspalveluV2ClientListService extends LuovutuspalveluV2ClientList
       |{"subjectDn":"CN=oauth2kaikkiclient", "ips":["0.0.0.0"], "user": "oauth2kaikkiclient"},
       |{"subjectDn":"CN=oauth2clienteirek", "ips":["0.0.0.0"], "user": "oauth2clienteirek"},
       |{"subjectDn":"CN=oauth2oph", "ips":["0.0.0.0"], "user": "oauth2oph"},
+      |{"subjectDn":"CN=oauth2hsl", "ips":["0.0.0.0"], "user": "oauth2hsl"},
       |{"subjectDn":"CN=tilastokeskus", "ips":["0.0.0.0"], "user": "Teppo"},
       |{"subjectDn":"CN=valpas-kela", "ips":["0.0.0.0"], "user": "valpas-kela"},
       |{"subjectDn":"CN=valpas-helsinki", "ips":["0.0.0.0"], "user": "valpas-helsinki"},
