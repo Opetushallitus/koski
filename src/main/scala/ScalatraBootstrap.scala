@@ -44,6 +44,7 @@ import fi.oph.koski.supa.SupaServlet
 import fi.oph.koski.sure.SureServlet
 import fi.oph.koski.tiedonsiirto.TiedonsiirtoServlet
 import fi.oph.koski.todistus.{TodistusApiServlet, TodistusDownloadServlet, TodistusPreviewServlet}
+import fi.oph.koski.todistus.tiedote.TiedoteApiServlet
 import fi.oph.koski.tutkinto.TutkinnonPerusteetServlet
 import fi.oph.koski.typemodel.{LocalDevOnlyTypeModelServlet, TypeModelServlet}
 import fi.oph.koski.util.{Futures, Timing}
@@ -154,6 +155,7 @@ class ScalatraBootstrap extends LifeCycle with Logging with Timing with GlobalEx
       mount("/koski/api/todistus", new TodistusApiServlet)
       mount("/koski/todistus/download", new TodistusDownloadServlet)
       mount("/koski/todistus/preview", new TodistusPreviewServlet)
+      mount("/koski/api/tiedote", new TiedoteApiServlet)
     }
     mount("/koski/omadata", new MyDataReactServlet)
     mount("/koski/koesuoritus", new YtrKoesuoritusServlet)
