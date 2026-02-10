@@ -70,11 +70,11 @@ object TiedonsiirtoService {
 }
 
 class TiedonsiirtoService(
-                           openSearch: OpenSearch,
-                           organisaatioRepository: OrganisaatioRepository,
-                           henkilöRepository: HenkilöRepository,
-                           koodistoviitePalvelu: KoodistoViitePalvelu,
-                           hetu: Hetu
+  openSearch: OpenSearch,
+  organisaatioRepository: OrganisaatioRepository,
+  henkilöRepository: HenkilöRepository,
+  koodistoviitePalvelu: KoodistoViitePalvelu,
+  hetu: Hetu
 ) extends Logging {
 
   val index = new OpenSearchIndex(
@@ -141,9 +141,14 @@ class TiedonsiirtoService(
         Map("terms" -> Map("oppilaitokset.oid" -> session.organisationOids(accessType)))
       ))
       val filter = if (session.hasKoulutusmuotoRestrictions) {
-        OpenSearch.allFilter(List(orgFilter, Map(
-          "terms" -> Map("koulutusmuoto" -> session.allowedOpiskeluoikeudetJaPäätasonSuoritukset)
-        )))
+        OpenSearch.allFilter(List(
+          orgFilter,
+          OpenSearch.noneFilter(List(
+            Map(
+              "terms" -> Map("koulutusmuoto" -> session.deniedOpiskeluoikeudetJaPäätasonSuoritukset)
+            )
+          ))
+        ))
       } else {
         orgFilter
       }
@@ -274,11 +279,11 @@ class TiedonsiirtoService(
 
   private def yhteenvetoOrdering(sorting: SortOrder, lang: String) = {
     val ordering = sorting.field match {
-      case "aika" => Ordering.by{x: TiedonsiirtoYhteenveto => x.viimeisin.getTime}
-      case "oppilaitos" => Ordering.by{x: TiedonsiirtoYhteenveto => x.oppilaitos.description.get(lang)}
-      case "siirretyt" => Ordering.by{x: TiedonsiirtoYhteenveto => x.siirretyt}
-      case "virheelliset" => Ordering.by{x: TiedonsiirtoYhteenveto => x.virheelliset}
-      case "onnistuneet" => Ordering.by{x: TiedonsiirtoYhteenveto => x.onnistuneet}
+      case "aika" => Ordering.by { x: TiedonsiirtoYhteenveto => x.viimeisin.getTime }
+      case "oppilaitos" => Ordering.by { x: TiedonsiirtoYhteenveto => x.oppilaitos.description.get(lang) }
+      case "siirretyt" => Ordering.by { x: TiedonsiirtoYhteenveto => x.siirretyt }
+      case "virheelliset" => Ordering.by { x: TiedonsiirtoYhteenveto => x.virheelliset }
+      case "onnistuneet" => Ordering.by { x: TiedonsiirtoYhteenveto => x.onnistuneet }
     }
     if (sorting.descending) {
       ordering.reverse
@@ -289,53 +294,53 @@ class TiedonsiirtoService(
 
   def yhteenveto(implicit koskiSession: KoskiSpecificSession, sorting: SortOrder): Seq[TiedonsiirtoYhteenveto] = {
     index.runSearch(yhteenvetoQuery).map { response =>
-      for {
-        orgResults <- extract[List[JValue]](response \ "aggregations" \ "organisaatio" \ "buckets")
-        tallentajaOrganisaatioOid = extract[String](orgResults \ "key")
-        tallentajaOrganisaatio = OidOrganisaatio(tallentajaOrganisaatioOid, Some(LocalizedString.unlocalized(tallentajaOrganisaatioOid)))
-        oppilaitosResults <- extract[List[JValue]](orgResults \ "oppilaitos" \ "buckets")
-        oppilaitosOidOrMissing = extract[String](oppilaitosResults \ "key")
-        oppilaitosOid = if (oppilaitosOidOrMissing == "-") tallentajaOrganisaatioOid else oppilaitosOidOrMissing
-        userResults <- extract[List[JValue]](oppilaitosResults \ "käyttäjä" \ "buckets")
-        userOid = extract[String](userResults \ "key")
-        lähdejärjestelmäResults <- extract[List[JValue]](userResults \ "lähdejärjestelmä" \ "buckets")
-        lähdejärjestelmäId = extract[String](lähdejärjestelmäResults \ "key")
-        lähdejärjestelmä = koodistoviitePalvelu.validate("lahdejarjestelma", lähdejärjestelmäId)
-        siirretyt = extract[Int](lähdejärjestelmäResults \ "doc_count")
-        epäonnistuneet = extract[Int](lähdejärjestelmäResults \ "fail" \ "doc_count")
-        onnistuneet = siirretyt - epäonnistuneet
-        viimeisin = new Timestamp(extract[Long](lähdejärjestelmäResults \ "viimeisin" \ "value"))
+        for {
+          orgResults <- extract[List[JValue]](response \ "aggregations" \ "organisaatio" \ "buckets")
+          tallentajaOrganisaatioOid = extract[String](orgResults \ "key")
+          tallentajaOrganisaatio = OidOrganisaatio(tallentajaOrganisaatioOid, Some(LocalizedString.unlocalized(tallentajaOrganisaatioOid)))
+          oppilaitosResults <- extract[List[JValue]](orgResults \ "oppilaitos" \ "buckets")
+          oppilaitosOidOrMissing = extract[String](oppilaitosResults \ "key")
+          oppilaitosOid = if (oppilaitosOidOrMissing == "-") tallentajaOrganisaatioOid else oppilaitosOidOrMissing
+          userResults <- extract[List[JValue]](oppilaitosResults \ "käyttäjä" \ "buckets")
+          userOid = extract[String](userResults \ "key")
+          lähdejärjestelmäResults <- extract[List[JValue]](userResults \ "lähdejärjestelmä" \ "buckets")
+          lähdejärjestelmäId = extract[String](lähdejärjestelmäResults \ "key")
+          lähdejärjestelmä = koodistoviitePalvelu.validate("lahdejarjestelma", lähdejärjestelmäId)
+          siirretyt = extract[Int](lähdejärjestelmäResults \ "doc_count")
+          epäonnistuneet = extract[Int](lähdejärjestelmäResults \ "fail" \ "doc_count")
+          onnistuneet = siirretyt - epäonnistuneet
+          viimeisin = new Timestamp(extract[Long](lähdejärjestelmäResults \ "viimeisin" \ "value"))
 
-        tuoreDokumentti = extract[JArray](lähdejärjestelmäResults \ "tuoreDokumentti" \ "hits" \ "hits" \ "_source").arr
-        oppilaitos = tuoreDokumentti
-          .flatMap(t => t \ "oppilaitokset" match {
-            case oa: JArray => extract[List[OidOrganisaatio]](oa)
-            case _ => List()
-          })
-          .find(_.oid == oppilaitosOid)
-          .getOrElse(getOrganisaatio(oppilaitosOid))
-        käyttäjä: TiedonsiirtoKäyttäjä = tuoreDokumentti
-          .find(t => t \ "tallentajaKäyttäjäOid" match {
-            case JString(oid) if oid == userOid => true
-            case _ => false
-          })
-          .flatMap(t => extract[Option[String]](t \ "tallentajaKäyttäjätunnus"))
-          .map(username => TiedonsiirtoKäyttäjä(userOid, Some(username)))
-          .getOrElse(TiedonsiirtoKäyttäjä(userOid, None))
-      } yield {
-        TiedonsiirtoYhteenveto(
-          tallentajaOrganisaatio,
-          oppilaitos,
-          käyttäjä,
-          viimeisin,
-          siirretyt,
-          epäonnistuneet,
-          onnistuneet,
-          lähdejärjestelmä
-        )
-      }
-    }.getOrElse(Nil)
-     .sorted(yhteenvetoOrdering(sorting, koskiSession.lang))
+          tuoreDokumentti = extract[JArray](lähdejärjestelmäResults \ "tuoreDokumentti" \ "hits" \ "hits" \ "_source").arr
+          oppilaitos = tuoreDokumentti
+            .flatMap(t => t \ "oppilaitokset" match {
+              case oa: JArray => extract[List[OidOrganisaatio]](oa)
+              case _ => List()
+            })
+            .find(_.oid == oppilaitosOid)
+            .getOrElse(getOrganisaatio(oppilaitosOid))
+          käyttäjä: TiedonsiirtoKäyttäjä = tuoreDokumentti
+            .find(t => t \ "tallentajaKäyttäjäOid" match {
+              case JString(oid) if oid == userOid => true
+              case _ => false
+            })
+            .flatMap(t => extract[Option[String]](t \ "tallentajaKäyttäjätunnus"))
+            .map(username => TiedonsiirtoKäyttäjä(userOid, Some(username)))
+            .getOrElse(TiedonsiirtoKäyttäjä(userOid, None))
+        } yield {
+          TiedonsiirtoYhteenveto(
+            tallentajaOrganisaatio,
+            oppilaitos,
+            käyttäjä,
+            viimeisin,
+            siirretyt,
+            epäonnistuneet,
+            onnistuneet,
+            lähdejärjestelmä
+          )
+        }
+      }.getOrElse(Nil)
+      .sorted(yhteenvetoOrdering(sorting, koskiSession.lang))
   }
 
   private def yhteenvetoQuery(implicit koskiSession: KoskiSpecificSession): JValue = {
@@ -393,7 +398,7 @@ class TiedonsiirtoService(
     case JString(x) => List(x)
     case JNothing => Nil
     case JNull => Nil
-    case _ => throw new RuntimeException("Unreachable match arm" )
+    case _ => throw new RuntimeException("Unreachable match arm")
   }
 
   private def extractOppilaitos(data: JValue): Option[List[OidOrganisaatio]] =
@@ -505,7 +510,9 @@ class TiedonsiirtoService(
 }
 
 case class Tiedonsiirrot(henkilöt: List[HenkilönTiedonsiirrot], oppilaitos: Option[OidOrganisaatio])
+
 case class HenkilönTiedonsiirrot(oppija: Option[TiedonsiirtoOppija], rivit: Seq[TiedonsiirtoRivi])
+
 case class TiedonsiirtoRivi(id: String,
                             aika: Timestamp,
                             oppija: Option[TiedonsiirtoOppija],
@@ -514,13 +521,16 @@ case class TiedonsiirtoRivi(id: String,
                             virhe: List[ErrorDetail],
                             inputData: Option[JValue],
                             lähdejärjestelmä: Option[String])
+
 case class TiedonsiirtoOppija(oid: Option[String],
                               hetu: Option[String],
                               syntymäaika: Option[LocalDate],
                               etunimet: Option[String],
                               kutsumanimi: Option[String],
                               sukunimi: Option[String])
+
 case class HetuTaiOid(oid: Option[String], hetu: Option[String])
+
 case class TiedonsiirtoYhteenveto(tallentajaOrganisaatio: OidOrganisaatio,
                                   oppilaitos: OidOrganisaatio,
                                   käyttäjä: TiedonsiirtoKäyttäjä,
@@ -529,9 +539,12 @@ case class TiedonsiirtoYhteenveto(tallentajaOrganisaatio: OidOrganisaatio,
                                   virheelliset: Int,
                                   onnistuneet: Int,
                                   lähdejärjestelmä: Option[Koodistokoodiviite])
+
 case class TiedonsiirtoQuery(oppilaitos: Option[String],
                              paginationSettings: Option[PaginationSettings])
+
 case class TiedonsiirtoKäyttäjä(oid: String, käyttäjätunnus: Option[String])
+
 case class TiedonsiirtoError(data: JValue, virheet: List[ErrorDetail])
 
 case class TiedonsiirtoDocument(
@@ -561,5 +574,7 @@ case class TiedonsiirtoSuoritusTiedot(
 )
 
 case class KoulutusmoduulinTiedonsiirtoTiedot(nimi: Option[LocalizedString])
+
 case class OsaamisalanTiedonsiirtoTiedot(nimi: Option[LocalizedString])
+
 case class TutkintonimikkeenTiedonsiirtoTiedot(nimi: Option[LocalizedString])

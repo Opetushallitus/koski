@@ -1,6 +1,6 @@
 package fi.oph.koski.schema
 
-import fi.oph.koski.koskiuser.Palvelurooli
+import fi.oph.koski.koskiuser.{OoPtsMask, Palvelurooli}
 import fi.oph.koski.schema.Opiskeluoikeus.OpiskeluoikeudenPäättymistila
 
 import java.time.{LocalDate, LocalDateTime}
@@ -187,6 +187,8 @@ object OpiskeluoikeudenTyyppi {
 
   def kaikkiTyypit(isRootUser: Boolean): Set[Koodistokoodiviite] =
     if (isRootUser) tyypit ++ rootUserTyypit else tyypit
+
+  val kaikkiOpiskeluoikeudetJaPäätasonSuoritukset: Set[OoPtsMask] = kaikkiTyypit(true).map(t => OoPtsMask(t.koodiarvo))
 }
 
 trait KoskeenTallennettavaOpiskeluoikeus extends Opiskeluoikeus with LähdejärjestelmäkytkentäPurettavissa {
