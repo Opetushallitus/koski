@@ -581,6 +581,7 @@ class KoskiOppijaFacade(
 
   private def piilotaKeskeneräisetPerusopetuksenPäättötodistukset(oppija: Oppija): Oppija = {
     def poistaKeskeneräisetPäättötodistukset = (suoritukset: List[PäätasonSuoritus]) => suoritukset.filter(_ match {
+      case _: AikuistenPerusopetuksenPäätasonSuoritus => true
       case s: PerusopetuksenOppimääränSuoritus if !s.valmis => false
       case _ => true
     })
