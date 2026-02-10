@@ -230,7 +230,7 @@ class PerusopetuksenVuosiluokkaRaporttiSpec
           val opiskeluoikeusOid = getOpiskeluoikeudet(KoskiSpecificMockOppijat.vuosiluokkalainen.oid).find(_.tyyppi.koodiarvo == "perusopetus").get.oid.get
           val rows = result.filter(_.opiskeluoikeusOid == opiskeluoikeusOid)
           rows.length should equal(1)
-          rows.head should equal(kaisanPäättötodistusRow.copy(opiskeluoikeusOid = opiskeluoikeusOid, oppijaOid = KoskiSpecificMockOppijat.vuosiluokkalainen.oid, hetu = KoskiSpecificMockOppijat.vuosiluokkalainen.hetu, sukunimi = KoskiSpecificMockOppijat.vuosiluokkalainen.sukunimi, etunimet = KoskiSpecificMockOppijat.vuosiluokkalainen.etunimet, viimeisinTila = "lasna", suorituksenTila = "kesken", suorituksenVahvistuspaiva = "", luokka = Some("9A,9C"),vuosiluokkiinSitoutumatonOpetus = None))
+          rows.head should equal(kaisanPäättötodistusRow.copy(opiskeluoikeusOid = opiskeluoikeusOid, oppijaOid = KoskiSpecificMockOppijat.vuosiluokkalainen.oid, oppijaMasterOid = Some(KoskiSpecificMockOppijat.vuosiluokkalainen.oid), hetu = KoskiSpecificMockOppijat.vuosiluokkalainen.hetu, sukunimi = KoskiSpecificMockOppijat.vuosiluokkalainen.sukunimi, etunimet = KoskiSpecificMockOppijat.vuosiluokkalainen.etunimet, viimeisinTila = "lasna", suorituksenTila = "kesken", suorituksenVahvistuspaiva = "", luokka = Some("9A,9C"),vuosiluokkiinSitoutumatonOpetus = None))
         }
       }
 
@@ -358,7 +358,7 @@ class PerusopetuksenVuosiluokkaRaporttiSpec
     lähdejärjestelmänId = None,
     yksiloity = true,
     oppijaOid = KoskiSpecificMockOppijat.ysiluokkalainen.oid,
-    oppijaMasterOid = None,
+    oppijaMasterOid = Some(KoskiSpecificMockOppijat.ysiluokkalainen.oid),
     hetu = KoskiSpecificMockOppijat.ysiluokkalainen.hetu,
     sukunimi = KoskiSpecificMockOppijat.ysiluokkalainen.sukunimi,
     etunimet = KoskiSpecificMockOppijat.ysiluokkalainen.etunimet,
@@ -490,6 +490,7 @@ class PerusopetuksenVuosiluokkaRaporttiSpec
 
   val yhdeksännenLuokanLuokalleJääntiRow = kahdeksannenLuokanLuokalleJääntiRow.copy(
     oppijaOid = KoskiSpecificMockOppijat.vuosiluokkalainen.oid,
+    oppijaMasterOid = Some(KoskiSpecificMockOppijat.vuosiluokkalainen.oid),
     hetu = KoskiSpecificMockOppijat.vuosiluokkalainen.hetu,
     sukunimi = KoskiSpecificMockOppijat.vuosiluokkalainen.sukunimi,
     etunimet = KoskiSpecificMockOppijat.vuosiluokkalainen.etunimet,
@@ -504,6 +505,7 @@ class PerusopetuksenVuosiluokkaRaporttiSpec
 
   val kaisanPäättötodistusRow = defaultYnjeviExpectedKasiLuokkaRow.copy(
     oppijaOid = KoskiSpecificMockOppijat.koululainen.oid,
+    oppijaMasterOid = Some(KoskiSpecificMockOppijat.koululainen.oid),
     hetu = KoskiSpecificMockOppijat.koululainen.hetu,
     sukunimi = KoskiSpecificMockOppijat.koululainen.sukunimi,
     etunimet = KoskiSpecificMockOppijat.koululainen.etunimet,
@@ -521,6 +523,7 @@ class PerusopetuksenVuosiluokkaRaporttiSpec
 
   val leilanRow = defaultYnjeviExpectedKasiLuokkaRow.copy(
     oppijaOid = KoskiSpecificMockOppijat.lukioKesken.oid,
+    oppijaMasterOid = Some(KoskiSpecificMockOppijat.lukioKesken.oid),
     hetu = KoskiSpecificMockOppijat.lukioKesken.hetu,
     sukunimi = KoskiSpecificMockOppijat.lukioKesken.sukunimi,
     etunimet = KoskiSpecificMockOppijat.lukioKesken.etunimet,

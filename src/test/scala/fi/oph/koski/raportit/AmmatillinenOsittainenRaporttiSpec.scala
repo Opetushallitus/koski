@@ -112,7 +112,7 @@ class AmmatillinenOsittainenRaporttiSpec
     toimipisteOid = MockOrganisaatiot.lehtikuusentienToimipiste,
     yksiloity = true,
     oppijaOid = defaultTestiHenkilö.oid,
-    oppijaMasterOid = None,
+    oppijaMasterOid = Some(defaultTestiHenkilö.oid),
     hetu = defaultTestiHenkilö.hetu,
     sukunimi = defaultTestiHenkilö.sukunimi,
     etunimet = defaultTestiHenkilö.etunimet,
