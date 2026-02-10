@@ -2,9 +2,10 @@ package fi.oph.koski.todistus
 
 import fi.oph.koski.api.misc.PutOpiskeluoikeusTestMethods
 import fi.oph.koski.documentation.ExamplesKielitutkinto
-import fi.oph.koski.henkilo.{ OppijaHenkilö}
-import fi.oph.koski.koskiuser.MockUsers
-import fi.oph.koski.log.{AuditLogTester}
+import fi.oph.koski.henkilo.OppijaHenkilö
+import fi.oph.koski.koskiuser.MockUsers.paakayttaja
+import fi.oph.koski.koskiuser.{KoskiMockUser, MockUsers}
+import fi.oph.koski.log.AuditLogTester
 import fi.oph.koski.schema.{KielitutkinnonOpiskeluoikeus, Opiskeluoikeus, Suoritus, YleisenKielitutkinnonSuoritus}
 import fi.oph.koski.schema.KoskiSchema.strictDeserialization
 import fi.oph.koski.util.Wait
@@ -15,11 +16,9 @@ import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.{BeforeAndAfterAll, BeforeAndAfterEach}
 
-
 import java.net.URL
 import java.security.MessageDigest
 import java.time.{Duration, LocalDate, LocalDateTime}
-
 import scala.jdk.CollectionConverters._
 
 class TodistusSpecHelpers extends AnyFreeSpec with KoskiHttpSpec with Matchers with BeforeAndAfterAll with BeforeAndAfterEach with PutOpiskeluoikeusTestMethods[KielitutkinnonOpiskeluoikeus] {
@@ -31,6 +30,7 @@ class TodistusSpecHelpers extends AnyFreeSpec with KoskiHttpSpec with Matchers w
 
   val vahvistettuKielitutkinnonOpiskeluoikeus = ExamplesKielitutkinto.YleisetKielitutkinnot.opiskeluoikeus(LocalDate.of(2011, 1, 3), "FI", "kt")
   val defaultOpiskeluoikeus = vahvistettuKielitutkinnonOpiskeluoikeus
+  override val defaultUser: KoskiMockUser = paakayttaja
 
   override protected def beforeAll(): Unit = {
     resetFixtures()
