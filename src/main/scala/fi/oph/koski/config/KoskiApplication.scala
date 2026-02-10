@@ -39,6 +39,7 @@ import fi.oph.koski.suostumus.SuostumuksenPeruutusService
 import fi.oph.koski.tiedonsiirto.{IPService, TiedonsiirtoService}
 import fi.oph.koski.todistus.swisscomclient.{SwisscomClient, SwisscomConfig, SwisscomConfigSecretsSource}
 import fi.oph.koski.todistus.{TodistusCleanupScheduler, TodistusJobRepository, TodistusResultRepository, TodistusScheduler, TodistusService}
+import fi.oph.koski.todistus.tiedote.{KielitutkintotodistusTiedoteRepository, KielitutkintotodistusTiedoteScheduler, KielitutkintotodistusTiedoteService, MockTiedotuspalveluClient, RemoteTiedotuspalveluClient, TiedotuspalveluClient}
 import fi.oph.koski.tutkinto.TutkintoRepository
 import fi.oph.koski.userdirectory.DirectoryClient
 import fi.oph.koski.validation.{KoskiGlobaaliValidator, KoskiValidator, ValidatingAndResolvingExtractor}
@@ -251,6 +252,21 @@ class KoskiApplication(
   lazy val todistusScheduler: TodistusScheduler = new TodistusScheduler(this)
   lazy val todistusCleanupScheduler: TodistusCleanupScheduler = new TodistusCleanupScheduler(this)
   lazy val swisscomClient: SwisscomClient = SwisscomClient(SwisscomConfig(config))
+
+  lazy val tiedotuspalveluClient: TiedotuspalveluClient = {
+    if (config.getString("tiedote.baseUrl") == "mock") {
+      new MockTiedotuspalveluClient
+    } else {
+      new RemoteTiedotuspalveluClient(config)
+    }
+  }
+  lazy val kielitutkintotodistusTiedoteRepository = new KielitutkintotodistusTiedoteRepository(
+    masterDatabase.db,
+    instanceId,
+    config
+  )
+  lazy val kielitutkintotodistusTiedoteService = new KielitutkintotodistusTiedoteService(this)
+  lazy val kielitutkintotodistusTiedoteScheduler = new KielitutkintotodistusTiedoteScheduler(this)
 
   def init(): Future[Any] = {
     AuditLog.startHeartbeat()
