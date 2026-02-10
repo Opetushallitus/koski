@@ -236,6 +236,7 @@ class TuvaPerusopetuksenOppijamäärätRaporttiSpec extends AnyFreeSpec with Mat
           oppilaitosNimi = "Jyväskylän normaalikoulu",
           organisaatioOid = "1.2.246.562.10.14613773812",
           oppijaOid = vuonna2005SyntynytEiOpiskeluoikeuksiaFikstuurissa.oid,
+          oppijaMasterOid = None,
           opiskeluoikeusOid = opiskeluoikeusOid
         )
       ).sortBy(_.opiskeluoikeusOid)

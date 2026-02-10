@@ -30,6 +30,7 @@ object Lukio2019OppiaineOpiskeluoikeudenUlkopuoliset extends DatabaseConverters 
     sql"""
       select
         oppija_oid,
+        r_opiskeluoikeus.oppija_master_oid,
         r_osasuoritus.opiskeluoikeus_oid,
         r_osasuoritus.koulutusmoduuli_koodiarvo as moduulikoodi,
         r_osasuoritus.koulutusmoduuli_nimi as moduulin_nimi
@@ -56,6 +57,7 @@ object Lukio2019OppiaineOpiskeluoikeudenUlkopuoliset extends DatabaseConverters 
     Lukio2019AineopinnotOpiskeluoikeudenUlkopuolisetRow(
       opiskeluoikeusOid = rs.getString("opiskeluoikeus_oid"),
       oppijaOid = rs.getString("oppija_oid"),
+      oppijaMasterOid = Option(rs.getString("oppija_master_oid")),
       moduulikoodi = rs.getString("moduulikoodi"),
       moduulinNimi = rs.getString("moduulin_nimi")
     )
@@ -64,6 +66,7 @@ object Lukio2019OppiaineOpiskeluoikeudenUlkopuoliset extends DatabaseConverters 
   def columnSettings(t: LocalizationReader): Seq[(String, Column)] = Seq(
     "opiskeluoikeusOid" -> Column(t.get("raportti-excel-kolumni-opiskeluoikeusOid")),
     "oppijaOid" -> Column(t.get("raportti-excel-kolumni-oppijaOid")),
+    "oppijaMasterOid" -> Column(t.get("raportti-excel-kolumni-oppijaMasterOid")),
     "moduulikoodi" -> Column(t.get("raportti-excel-kolumni-moduulikoodi")),
     "moduulinNimi" -> Column(t.get("raportti-excel-kolumni-moduulinNimi")),
   )
@@ -72,6 +75,7 @@ object Lukio2019OppiaineOpiskeluoikeudenUlkopuoliset extends DatabaseConverters 
 case class Lukio2019AineopinnotOpiskeluoikeudenUlkopuolisetRow(
   opiskeluoikeusOid: String,
   oppijaOid: String,
+  oppijaMasterOid: Option[String],
   moduulikoodi: String,
   moduulinNimi: String
 )

@@ -358,6 +358,7 @@ class PerusopetuksenVuosiluokkaRaporttiSpec
     lähdejärjestelmänId = None,
     yksiloity = true,
     oppijaOid = KoskiSpecificMockOppijat.ysiluokkalainen.oid,
+    oppijaMasterOid = None,
     hetu = KoskiSpecificMockOppijat.ysiluokkalainen.hetu,
     sukunimi = KoskiSpecificMockOppijat.ysiluokkalainen.sukunimi,
     etunimet = KoskiSpecificMockOppijat.ysiluokkalainen.etunimet,

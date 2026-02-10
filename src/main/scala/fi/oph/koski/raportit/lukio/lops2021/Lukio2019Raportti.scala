@@ -114,6 +114,7 @@ case class Lukio2019Raportti(repository: Lukio2019RaportitRepository, t: Localiz
        aikaleima = row.opiskeluoikeus.aikaleima.toLocalDateTime.toLocalDate,
        yksiloity = row.henkilo.yksiloity,
        oppijanOid = row.opiskeluoikeus.oppijaOid,
+       oppijaMasterOid = row.opiskeluoikeus.oppijaMasterOid,
        hetu = row.henkilo.hetu,
        sukunimi = row.henkilo.sukunimi,
        etunimet = row.henkilo.etunimet,
@@ -176,6 +177,7 @@ case class Lukio2019Raportti(repository: Lukio2019RaportitRepository, t: Localiz
     Lukio2019RaportinOppiaineenOsasuorituksetRow(
       stattisetKolumnit = Lukio2019OppiaineenKurssienVälilehtiStaattisetKolumnit(
         oppijanOid = oppijanRivit.opiskeluoikeus.oppijaOid,
+        oppijaMasterOid = oppijanRivit.opiskeluoikeus.oppijaMasterOid,
         hetu = oppijanRivit.henkilo.hetu,
         sukunimi = oppijanRivit.henkilo.sukunimi,
         etunimet = oppijanRivit.henkilo.etunimet,
@@ -240,6 +242,7 @@ case class Lukio2019Raportti(repository: Lukio2019RaportitRepository, t: Localiz
       CompactColumn(t.get("raportti-excel-kolumni-päivitetty"), comment = Some(t.get("raportti-excel-kolumni-päivitetty-comment"))),
       CompactColumn(t.get("raportti-excel-kolumni-yksiloity"), comment = Some(t.get("raportti-excel-kolumni-yksiloity-comment"))),
       Column(t.get("raportti-excel-kolumni-oppijaOid")),
+      Column(t.get("raportti-excel-kolumni-oppijaMasterOid")),
       Column(t.get("raportti-excel-kolumni-hetu")),
       Column(t.get("raportti-excel-kolumni-sukunimi")),
       Column(t.get("raportti-excel-kolumni-etunimet")),
@@ -279,6 +282,7 @@ case class Lukio2019Raportti(repository: Lukio2019RaportitRepository, t: Localiz
   ): Seq[Column] = {
     Seq(
       Column(t.get("raportti-excel-kolumni-oppijaOid")),
+      Column(t.get("raportti-excel-kolumni-oppijaMasterOid")),
       Column(t.get("raportti-excel-kolumni-hetu")),
       Column(t.get("raportti-excel-kolumni-sukunimi")),
       Column(t.get("raportti-excel-kolumni-etunimet")),
@@ -300,6 +304,7 @@ case class Lukio2019RaporttiOppiaineetVälilehtiMuut(
   aikaleima: LocalDate,
   yksiloity: Boolean,
   oppijanOid: String,
+  oppijaMasterOid: Option[String],
   hetu: Option[String],
   sukunimi: String,
   etunimet: String,
@@ -339,6 +344,7 @@ case class Lukio2019RaporttiKaikkiOppiaineetVälilehtiRow(muut: Lukio2019Raportt
 
 case class Lukio2019OppiaineenKurssienVälilehtiStaattisetKolumnit(
   oppijanOid: String,
+  oppijaMasterOid: Option[String],
   hetu: Option[String],
   sukunimi: String,
   etunimet: String,

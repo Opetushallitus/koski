@@ -17,6 +17,7 @@ case class TuvaPerusopetuksenOppijamäärätAikajaksovirheetRaportti(db: DB, org
       oppilaitosNimi = r.rs.getString("oppilaitos_nimi"),
       organisaatioOid = r.rs.getString("oppilaitos_oid"),
       oppijaOid = r.rs.getString("oppija_oid"),
+      oppijaMasterOid = Option(r.rs.getString("oppija_master_oid")),
       opiskeluoikeusOid = r.rs.getString("opiskeluoikeus_oid")
     )
   )
@@ -40,6 +41,7 @@ case class TuvaPerusopetuksenOppijamäärätAikajaksovirheetRaportti(db: DB, org
       oppilaitos.#$nimiSarake as oppilaitos_nimi,
       oh.oppilaitos_oid,
       oo.oppija_oid,
+      oo.oppija_master_oid,
       oo.opiskeluoikeus_oid
 """),
       fromJoinWhereSqlPart(oppilaitosOids, date),
@@ -57,6 +59,7 @@ case class TuvaPerusopetuksenOppijamäärätAikajaksovirheetRaportti(db: DB, org
     "oppilaitosNimi" -> Column(t.get("raportti-excel-kolumni-oppilaitoksenNimi")),
     "organisaatioOid" -> Column(t.get("raportti-excel-kolumni-organisaatioOid")),
     "oppijaOid" -> Column(t.get("raportti-excel-kolumni-oppijaOid")),
+    "oppijaMasterOid" -> Column(t.get("raportti-excel-kolumni-oppijaMasterOid")),
     "opiskeluoikeusOid" -> Column(t.get("raportti-excel-kolumni-opiskeluoikeusOid")),
   )
 }
@@ -65,5 +68,6 @@ case class TuvaPerusopetuksenOppijamäärätAikajaksovirheetRaporttiRow(
   oppilaitosNimi: String,
   organisaatioOid: String,
   oppijaOid: String,
+  oppijaMasterOid: Option[String],
   opiskeluoikeusOid: String
 )

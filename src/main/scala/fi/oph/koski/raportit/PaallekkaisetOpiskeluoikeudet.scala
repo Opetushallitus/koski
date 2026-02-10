@@ -36,6 +36,7 @@ object PaallekkaisetOpiskeluoikeudet extends Logging {
       create table #${s.name}.paallekkaiset_opiskeluoikeudet as
         select distinct
           opiskeluoikeus.oppija_oid,
+          opiskeluoikeus.oppija_master_oid,
           henkilo.sukunimi,
           henkilo.etunimet,
           opiskeluoikeus.opiskeluoikeus_oid,
@@ -245,6 +246,7 @@ object PaallekkaisetOpiskeluoikeudet extends Logging {
       val rs: ResultSet = r.rs
       PaallekkaisetOpiskeluoikeudetRow(
         oppijaOid = rs.getString("oppija_oid"),
+        oppijaMasterOid = Option(rs.getString("oppija_master_oid")),
         oppijaSukunimi = Option(rs.getString("sukunimi")),
         oppijaEtunimet = Option(rs.getString("etunimet")),
         opiskeluoikeusOid = rs.getString("opiskeluoikeus_oid"),
@@ -348,6 +350,7 @@ object PaallekkaisetOpiskeluoikeudet extends Logging {
   def columnSettings(t: LocalizationReader) = Columns.flattenGroupingColumns(Seq(
     t.get("raportti-excel-kolumni-koulutuksenJärjestäjänOpiskeluoikeus") -> GroupColumnsWithTitle(List(
       "oppijaOid" -> Column(t.get("raportti-excel-kolumni-oppijaOid")),
+      "oppijaMasterOid" -> Column(t.get("raportti-excel-kolumni-oppijaMasterOid")),
       "oppijaSukunimi" -> Column(t.get("raportti-excel-kolumni-sukunimi")),
       "oppijaEtunimet" -> Column(t.get("raportti-excel-kolumni-etunimet")),
       "opiskeluoikeusOid" -> Column(t.get("raportti-excel-kolumni-opiskeluoikeusOid")),
@@ -383,6 +386,7 @@ object PaallekkaisetOpiskeluoikeudet extends Logging {
 
 case class PaallekkaisetOpiskeluoikeudetRow(
   oppijaOid: String,
+  oppijaMasterOid: Option[String],
   oppijaSukunimi: Option[String],
   oppijaEtunimet: Option[String],
   opiskeluoikeusOid: String,

@@ -60,6 +60,7 @@ class VstJotpaRaporttiSpec
         päivitetty = LocalDate.now(),
         yksilöity = true,
         oppijaOid = oppija.oid,
+        oppijaMasterOid = None,
         hetu = oppija.hetu,
         sukunimi = oppija.sukunimi,
         etunimet = oppija.etunimet,

@@ -32,6 +32,7 @@ object Lukio2019OppiaineEriVuonnaKorotetutOpintopisteet extends DatabaseConverte
         opiskeluoikeus.oppilaitos_oid,
         opiskeluoikeus.opiskeluoikeus_oid,
         opiskeluoikeus.oppija_oid,
+        opiskeluoikeus.oppija_master_oid,
         osasuoritus.koulutusmoduuli_koodiarvo,
         osasuoritus.koulutusmoduuli_nimi,
         osasuoritus.arviointi_paiva,
@@ -54,6 +55,7 @@ object Lukio2019OppiaineEriVuonnaKorotetutOpintopisteet extends DatabaseConverte
       select
         opiskeluoikeus_oid,
         oppija_oid,
+        oppija_master_oid,
         koulutusmoduuli_koodiarvo,
         koulutusmoduuli_nimi
       from lukion_aineopintojen_eri_vuonna_korotetut
@@ -68,6 +70,7 @@ object Lukio2019OppiaineEriVuonnaKorotetutOpintopisteet extends DatabaseConverte
     Lukio2019OppiaineEriVuonnaKorotetutOpintopisteetRow(
       opiskeluoikeusOid = rs.getString("opiskeluoikeus_oid"),
       oppijaOid = rs.getString("oppija_oid"),
+      oppijaMasterOid = Option(rs.getString("oppija_master_oid")),
       koulutusmoduuliKoodiarvo = rs.getString("koulutusmoduuli_koodiarvo"),
       koulutusmoduuliNimi = rs.getString("koulutusmoduuli_nimi")
     )
@@ -76,6 +79,7 @@ object Lukio2019OppiaineEriVuonnaKorotetutOpintopisteet extends DatabaseConverte
   def columnSettings(t: LocalizationReader): Seq[(String, Column)] = Seq(
     "opiskeluoikeusOid" -> Column(t.get("raportti-excel-kolumni-opiskeluoikeusOid")),
     "oppijaOid" -> Column(t.get("raportti-excel-kolumni-oppijaOid")),
+    "oppijaMasterOid" -> Column(t.get("raportti-excel-kolumni-oppijaMasterOid")),
     "koulutusmoduuliKoodiarvo" -> Column(t.get("raportti-excel-kolumni-moduulikoodi")),
     "koulutusmoduuliNimi" -> Column(t.get("raportti-excel-kolumni-moduulinNimi")),
   )
@@ -84,6 +88,7 @@ object Lukio2019OppiaineEriVuonnaKorotetutOpintopisteet extends DatabaseConverte
 case class Lukio2019OppiaineEriVuonnaKorotetutOpintopisteetRow(
   opiskeluoikeusOid: String,
   oppijaOid: String,
+  oppijaMasterOid: Option[String],
   koulutusmoduuliKoodiarvo: String,
   koulutusmoduuliNimi: String,
 )

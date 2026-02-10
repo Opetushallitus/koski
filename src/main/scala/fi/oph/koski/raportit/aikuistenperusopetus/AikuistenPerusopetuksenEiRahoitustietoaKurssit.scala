@@ -21,6 +21,7 @@ case class AikuistenPerusopetuksenEiRahoitustietoaKurssit(db: DB) extends QueryM
       kurssinSuorituksenTyyppi = r.rs.getString("kurssin_suorituksen_tyyppi"),
       päätasonSuorituksenTyyppi = r.rs.getString("paatason_suorituksen_tyyppi"),
       oppijaOid = r.rs.getString("oppija_oid"),
+      oppijaMasterOid = Option(r.rs.getString("oppija_master_oid")),
     )
   )
 
@@ -40,6 +41,7 @@ case class AikuistenPerusopetuksenEiRahoitustietoaKurssit(db: DB) extends QueryM
           with paatason_suoritus as (
             select
               r_opiskeluoikeus.oppija_oid,
+              r_opiskeluoikeus.oppija_master_oid,
               r_opiskeluoikeus.oppilaitos_oid,
               r_opiskeluoikeus.#$oppilaitosNimiSarake as oppilaitos_nimi,
               r_paatason_suoritus.paatason_suoritus_id,
@@ -58,6 +60,7 @@ case class AikuistenPerusopetuksenEiRahoitustietoaKurssit(db: DB) extends QueryM
             select distinct on (r_osasuoritus.osasuoritus_id)
               oo_opiskeluoikeus_oid opiskeluoikeuden_oid,
               paatason_suoritus.oppija_oid,
+              paatason_suoritus.oppija_master_oid,
               oppilaitos_nimi oppilaitos_nimi,
               r_osasuoritus.koulutusmoduuli_koodiarvo kurssikoodi,
               COALESCE(r_osasuoritus.data -> 'koulutusmoduuli' -> 'tunniste' -> 'nimi' ->> $lang, r_osasuoritus.koulutusmoduuli_nimi) as kurssin_nimi,
@@ -82,6 +85,7 @@ case class AikuistenPerusopetuksenEiRahoitustietoaKurssit(db: DB) extends QueryM
   def columnSettings(t: LocalizationReader): Seq[(String, Column)] = Seq(
     "opiskeluoikeudenOid" -> Column(t.get("raportti-excel-kolumni-opiskeluoikeusOid")),
     "oppijaOid" -> Column(t.get("raportti-excel-kolumni-oppijaOid")),
+    "oppijaMasterOid" -> Column(t.get("raportti-excel-kolumni-oppijaMasterOid")),
     "oppilaitos" -> Column(t.get("raportti-excel-kolumni-oppilaitoksenNimi")),
     "kurssikoodi" -> Column(t.get("raportti-excel-kolumni-kurssikoodi")),
     "kurssinNimi" -> Column(t.get("raportti-excel-kolumni-kurssinNimi")),
@@ -93,6 +97,7 @@ case class AikuistenPerusopetuksenEiRahoitustietoaKurssit(db: DB) extends QueryM
 case class AikuistenPerusopetuksenEiRahoitustietoaKurssitRow(
    opiskeluoikeudenOid: String,
    oppijaOid: String,
+   oppijaMasterOid: Option[String],
    oppilaitos: String,
    kurssikoodi: String,
    kurssinNimi: String,

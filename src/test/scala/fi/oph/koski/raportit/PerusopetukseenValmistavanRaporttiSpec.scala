@@ -36,6 +36,7 @@ class PerusopetukseenValmistavanRaporttiSpec extends AnyFreeSpec with Matchers w
     aikaleima = LocalDate.now(),
     yksiloity = true,
     oppijaOid = "1.2.246.562.24.00000000007",
+    oppijaMasterOid = None,
     hetu = Option("220109-784L"),
     sukunimi = "Koululainen",
     etunimet = "Kaisa",
