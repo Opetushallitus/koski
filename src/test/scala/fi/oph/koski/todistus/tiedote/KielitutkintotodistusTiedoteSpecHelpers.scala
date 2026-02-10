@@ -49,7 +49,6 @@ class KielitutkintotodistusTiedoteSpecHelpers extends AnyFreeSpec with KoskiHttp
       mockTiedotuspalveluClient.reset()
       f
     } finally {
-      app.kielitutkintotodistusTiedoteRepository.truncateForLocal()
       Scheduler.resume(app.masterDatabase.db, schedulerName)
     }
 
