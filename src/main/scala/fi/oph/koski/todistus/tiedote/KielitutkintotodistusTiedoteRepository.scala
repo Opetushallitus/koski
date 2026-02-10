@@ -34,15 +34,17 @@ class KielitutkintotodistusTiedoteRepository(val db: DB, val workerId: String, c
 
   def add(job: KielitutkintotodistusTiedoteJob): KielitutkintotodistusTiedoteJob = {
     runDbSync(sql"""
-      INSERT INTO kielitutkintotodistus_tiedote_job(id, oppija_oid, opiskeluoikeus_oid, state, created_at, worker, attempts)
+      INSERT INTO kielitutkintotodistus_tiedote_job(id, oppija_oid, opiskeluoikeus_oid, state, created_at, completed_at, worker, attempts, error)
       VALUES (
         ${job.id}::uuid,
         ${job.oppijaOid},
         ${job.opiskeluoikeusOid},
         ${job.state},
         ${java.sql.Timestamp.valueOf(job.createdAt)},
+        ${job.completedAt.map(java.sql.Timestamp.valueOf)},
         ${job.worker},
-        ${job.attempts}
+        ${job.attempts},
+        ${job.error}
       )
       RETURNING *
       """.as[KielitutkintotodistusTiedoteJob]).head
@@ -52,9 +54,9 @@ class KielitutkintotodistusTiedoteRepository(val db: DB, val workerId: String, c
     runDbSync(sql"""
       UPDATE kielitutkintotodistus_tiedote_job
       SET state = ${KielitutkintotodistusTiedoteState.COMPLETED},
+          error = NULL,
           completed_at = now()
       WHERE id = ${id}::uuid
-        AND state = ${KielitutkintotodistusTiedoteState.SENDING}
       """.asUpdate) != 0
 
   def setFailed(id: String, error: String): Boolean =
@@ -62,27 +64,18 @@ class KielitutkintotodistusTiedoteRepository(val db: DB, val workerId: String, c
       UPDATE kielitutkintotodistus_tiedote_job
       SET state = ${KielitutkintotodistusTiedoteState.ERROR},
           error = $error,
-          completed_at = now()
+          attempts = attempts + 1
       WHERE id = ${id}::uuid
       """.asUpdate) != 0
 
   def findNextRetryable(maxAttempts: Int): Option[KielitutkintotodistusTiedoteJob] = {
     runDbSync(sql"""
-      UPDATE kielitutkintotodistus_tiedote_job
-      SET state = ${KielitutkintotodistusTiedoteState.SENDING},
-          worker = $workerId,
-          attempts = attempts + 1,
-          error = NULL,
-          completed_at = NULL
-      WHERE id IN (
-        SELECT id
-        FROM kielitutkintotodistus_tiedote_job
-        WHERE state = ${KielitutkintotodistusTiedoteState.ERROR}
-          AND attempts < $maxAttempts
-        ORDER BY completed_at
-        LIMIT 1
-      )
-      RETURNING *
+      SELECT *
+      FROM kielitutkintotodistus_tiedote_job
+      WHERE state = ${KielitutkintotodistusTiedoteState.ERROR}
+        AND attempts < $maxAttempts
+      ORDER BY created_at
+      LIMIT 1
       """.as[KielitutkintotodistusTiedoteJob]).headOption
   }
 

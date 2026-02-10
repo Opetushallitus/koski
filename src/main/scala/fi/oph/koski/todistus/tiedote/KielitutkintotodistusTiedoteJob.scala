@@ -15,7 +15,6 @@ case class KielitutkintotodistusTiedoteJob(
 )
 
 object KielitutkintotodistusTiedoteState {
-  val SENDING = "SENDING"
   val COMPLETED = "COMPLETED"
   val ERROR = "ERROR"
 }

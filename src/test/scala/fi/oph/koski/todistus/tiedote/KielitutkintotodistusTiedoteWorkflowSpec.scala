@@ -54,14 +54,13 @@ class KielitutkintotodistusTiedoteWorkflowSpec extends KielitutkintotodistusTied
           id = java.util.UUID.randomUUID().toString,
           oppijaOid = oOid,
           opiskeluoikeusOid = ooOid,
-          state = KielitutkintotodistusTiedoteState.SENDING,
+          state = KielitutkintotodistusTiedoteState.ERROR,
           worker = Some(repository.workerId),
-          attempts = 1
+          attempts = 1,
+          error = Some("Tiedotuspalvelu ei vastaa")
         )
-        val savedJob = repository.add(job)
-        repository.setFailed(savedJob.id, "Tiedotuspalvelu ei vastaa")
+        repository.add(job)
 
-        // Varmista, että on ERROR-tilassa
         val errorJobs = repository.findAll(10, 0, Some(KielitutkintotodistusTiedoteState.ERROR))
         errorJobs should have length 1
 
