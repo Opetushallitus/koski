@@ -10,8 +10,9 @@ import {
 } from '../editor/EditorModel'
 import Text from '../i18n/Text'
 import OmatTiedotSuoritustaulukko from '../suoritus/OmatTiedotSuoritustaulukko'
+import { Suoritustaulukko } from '../suoritus/Suoritustaulukko'
 
-const Korkeakoulusuoritukset = ({ opiskeluoikeus }) => {
+const Korkeakoulusuoritukset = ({ opiskeluoikeus, showOmatTiedotTaulukko }) => {
   const suoritukset = modelItems(opiskeluoikeus, 'suoritukset')
   const [tutkinnot, opintojaksot] = R.partition(
     (s) => modelData(s, 'tyyppi').koodiarvo !== 'korkeakoulunopintojakso',
@@ -39,19 +40,24 @@ const Korkeakoulusuoritukset = ({ opiskeluoikeus }) => {
               <Text name="Opintojaksot" />
             </h4>
           )}
-          <IrrallisetOpintojaksot opiskeluoikeus={modelWithoutTutkinnot} />
+          <IrrallisetOpintojaksot
+            opiskeluoikeus={modelWithoutTutkinnot}
+            showOmatTiedotTaulukko={showOmatTiedotTaulukko}
+          />
         </div>
       )}
     </div>
   )
 }
 
-const IrrallisetOpintojaksot = ({ opiskeluoikeus }) => {
+const IrrallisetOpintojaksot = ({ opiskeluoikeus, showOmatTiedotTaulukko }) => {
   const model = addContext(opiskeluoikeus, { suoritus: opiskeluoikeus })
-  return (
+  return showOmatTiedotTaulukko ? (
     <OmatTiedotSuoritustaulukko
       suorituksetModel={modelLookup(model, 'suoritukset')}
     />
+  ) : (
+    <Suoritustaulukko suorituksetModel={modelLookup(model, 'suoritukset')} />
   )
 }
 
