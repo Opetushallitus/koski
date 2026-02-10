@@ -72,6 +72,8 @@ object DuplikaattiValidation extends Logging {
     lazy val oppijanMuutOpiskeluoikeudetSamaOppilaitosJaTyyppi = oppijanOpiskeluoikeudet
       .map(_
         .filterNot(samaOo(opiskeluoikeus, _))
+        .filterNot(oo => oo.sisältyyOpiskeluoikeuteen.exists(s => opiskeluoikeus.oid.contains(s.oid)))
+        .filterNot(oo => opiskeluoikeus.sisältyyOpiskeluoikeuteen.exists(s => oo.oid.contains(s.oid)))
         .filter(_.oppilaitos.map(_.oid) == opiskeluoikeus.oppilaitos.map(_.oid))
         .filter(_.tyyppi == opiskeluoikeus.tyyppi)
         .filter(_.suoritukset.headOption.map(_.koulutusmoduuli.tunniste.koodiarvo) == opiskeluoikeus.suoritukset.headOption.map(_.koulutusmoduuli.tunniste.koodiarvo))
