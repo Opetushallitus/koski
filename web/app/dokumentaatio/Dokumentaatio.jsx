@@ -136,15 +136,15 @@ const dokumentaatioContentP = (location, contentP) =>
           )}
 
           {naviLink(
-            '/koski/dokumentaatio/rajapinnat/massaluovutus/valpas',
-            'Massaluovutusrajapinnat oppivelvollisuuden valvontaan',
+            '/koski/dokumentaatio/rajapinnat/massaluovutus/raportit',
+            'Koulutuksenjärjestäjän raporttien lataus massaluovutusrajapinnasta',
             location,
             ''
           )}
 
           {naviLink(
-            '/koski/dokumentaatio/rajapinnat/massaluovutus/raportit',
-            'Raporttien lataaminen palvelukäyttäjänä',
+            '/koski/dokumentaatio/rajapinnat/massaluovutus/valpas',
+            'Massaluovutusrajapinnat oppivelvollisuuden valvontaan',
             location,
             ''
           )}
