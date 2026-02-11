@@ -213,7 +213,10 @@ const Suoritukset = ({ opiskeluoikeus }) => {
   return (
     <div className="suoritukset">
       {opiskeluoikeusTyyppi === 'korkeakoulutus' ? (
-        <Korkeakoulusuoritukset opiskeluoikeus={opiskeluoikeus} />
+        <Korkeakoulusuoritukset
+          opiskeluoikeus={opiskeluoikeus}
+          showOmatTiedotTaulukko={true}
+        />
       ) : (
         <TabulatedSuoritukset model={opiskeluoikeus} />
       )}

@@ -100,7 +100,7 @@ export const resolveArvosanaModel = (
   const isPaikallinenArviointi =
     arviointi &&
     !modelEmpty(arviointi) &&
-    arviointi.value.classes.includes('paikallinenarviointi')
+    arviointi.value.classes.includes('korkeakoulunpaikallinenarviointi')
 
   return isPaikallinenArviointi ? modelLookup(arvosana, 'nimi') : arvosana
 }
