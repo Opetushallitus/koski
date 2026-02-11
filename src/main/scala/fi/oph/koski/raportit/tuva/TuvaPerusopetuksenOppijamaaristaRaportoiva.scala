@@ -30,10 +30,10 @@ trait TuvaPerusopetuksenOppijamääristäRaportoiva extends QueryMethods {
         and oh.loppu >= $date
         and oo.koulutusmuoto = 'tuva'
         and oo.tuva_jarjestamislupa = 'perusopetus'
-        and (pts.vahvistus_paiva is null or pts.vahvistus_paiva > $date)
+        and (pts.vahvistus_paiva is null or pts.vahvistus_paiva >= $date)
         and aikajakso.alku <= $date
         and aikajakso.loppu >= $date
-        and aikajakso.tila = 'lasna'
+        and aikajakso.tila in ('lasna', 'eronnut', 'katsotaaneronneeksi')
         and oo.sisaltyy_opiskeluoikeuteen_oid is null
 """)
 }
