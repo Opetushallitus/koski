@@ -74,6 +74,7 @@ case class IBSuoritustiedotRaportti(repository: IBSuoritustiedotRaporttiReposito
       preibSuoritusOlemassa = preibSuoritusOlemassa,
       ibKoulutuksenSuoritusOlemassa = ibKoulutuksenSuoritusOlemassa,
       oppijaOid = row.opiskeluoikeus.oppijaOid,
+      oppijaMasterOid = row.opiskeluoikeus.oppijaMasterOid,
       hetu = row.henkilo.hetu,
       sukunimi = row.henkilo.sukunimi,
       etunimet = row.henkilo.etunimet,
@@ -126,6 +127,7 @@ case class IBSuoritustiedotRaportti(repository: IBSuoritustiedotRaporttiReposito
     Column(t.get("raportti-excel-kolumni-preibSuoritusOlemassa")),
     Column(t.get("raportti-excel-kolumni-ibKoulutuksenSuoritusOlemassa")),
     Column(t.get("raportti-excel-kolumni-oppijaOid")),
+    Column(t.get("raportti-excel-kolumni-oppijaMasterOid")),
     Column(t.get("raportti-excel-kolumni-hetu")),
     Column(t.get("raportti-excel-kolumni-sukunimi")),
     Column(t.get("raportti-excel-kolumni-etunimet")),
@@ -194,6 +196,7 @@ case class IBSuoritustiedotRaportti(repository: IBSuoritustiedotRaporttiReposito
     IBRaportinOppiaineenOsasuorituksetRow(
       stattisetKolumnit = IBRaporttiOppiaineenKurssienVälilehtiStaattisetKolumnit(
         oppijanOid = row.opiskeluoikeus.oppijaOid,
+        oppijaMasterOid = row.opiskeluoikeus.oppijaMasterOid,
         hetu = row.henkilo.hetu,
         sukunimi = row.henkilo.sukunimi,
         etunimet = row.henkilo.etunimet,
@@ -257,6 +260,7 @@ case class IBSuoritustiedotRaportti(repository: IBSuoritustiedotRaporttiReposito
   ): Seq[Column] = {
     Seq(
       Column(t.get("raportti-excel-kolumni-oppijaOid")),
+      Column(t.get("raportti-excel-kolumni-oppijaMasterOid")),
       Column(t.get("raportti-excel-kolumni-hetu")),
       Column(t.get("raportti-excel-kolumni-sukunimi")),
       Column(t.get("raportti-excel-kolumni-etunimet")),
@@ -282,6 +286,7 @@ case class IBRaporttiRow(
   preibSuoritusOlemassa: Boolean,
   ibKoulutuksenSuoritusOlemassa: Boolean,
   oppijaOid: String,
+  oppijaMasterOid: Option[String],
   hetu: Option[String],
   sukunimi: String,
   etunimet: String,
@@ -310,6 +315,7 @@ case class IBRaporttiRow(
 
 case class IBRaporttiOppiaineenKurssienVälilehtiStaattisetKolumnit(
   oppijanOid: String,
+  oppijaMasterOid: Option[String],
   hetu: Option[String],
   sukunimi: String,
   etunimet: String,

@@ -122,6 +122,7 @@ object OpiskeluoikeusLoaderRowBuilder extends Logging {
       aikaleima = aikaleima,
       sisältyyOpiskeluoikeuteenOid = o.sisältyyOpiskeluoikeuteen.map(_.oid),
       oppijaOid = oppijaOid,
+      oppijaMasterOid = Some(masterOid.getOrElse(oppijaOid)),
       oppilaitosOid = o.getOppilaitos.oid,
       oppilaitosNimi = convertLocalizedString(o.oppilaitos.flatMap(_.nimi), "fi"),
       oppilaitosNimiSv = convertLocalizedString(o.oppilaitos.flatMap(_.nimi), "sv"),
@@ -159,7 +160,6 @@ object OpiskeluoikeusLoaderRowBuilder extends Logging {
       lähdejärjestelmäKoodiarvo = o.lähdejärjestelmänId.map(_.lähdejärjestelmä.koodiarvo),
       lähdejärjestelmäId = o.lähdejärjestelmänId.flatMap(_.id),
       oppivelvollisuudenSuorittamiseenKelpaava = oppivelvollisuudenSuorittamiseenKelpaava(o),
-      oppijaMasterOid = Some(masterOid.getOrElse(oppijaOid)),
       data = JsonManipulation.removeFields(data, fieldsToExcludeFromOpiskeluoikeusJson)
     )
   }

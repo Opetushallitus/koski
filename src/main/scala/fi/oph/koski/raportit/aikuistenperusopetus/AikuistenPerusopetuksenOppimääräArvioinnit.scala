@@ -16,6 +16,7 @@ case class AikuistenPerusopetuksenOppimääräArvioinnit(db: DB) extends QueryMe
     AikuistenPerusopetuksenOppimääränArvioinnitRow(
       opiskeluoikeusOid = r.<<,
       oppijaOid = r.<<,
+      oppijaMasterOid = r.<<,
       alkamispaiva = r.nextDateOption().map(_.toLocalDate),
       paattymispaiva = r.nextDateOption().map(_.toLocalDate),
       viimeisinTila = r.<<,
@@ -51,6 +52,7 @@ case class AikuistenPerusopetuksenOppimääräArvioinnit(db: DB) extends QueryMe
       SELECT DISTINCT
         oo.opiskeluoikeus_oid AS oo_opiskeluoikeus_oid,
         oo.oppija_oid AS oo_oppija_oid,
+        oo.oppija_master_oid AS oo_oppija_master_oid,
         oo.alkamispaiva AS oo_alkamispaiva,
         oo.paattymispaiva AS oo_paattymispaiva,
         oo.viimeisin_tila,
@@ -125,6 +127,7 @@ case class AikuistenPerusopetuksenOppimääräArvioinnit(db: DB) extends QueryMe
   def columnSettings(t: LocalizationReader): Seq[(String, Column)] = Seq(
     "opiskeluoikeusOid" -> Column(t.get("raportti-excel-kolumni-opiskeluoikeusOid")),
     "oppijaOid" -> Column(t.get("raportti-excel-kolumni-oppijaOid")),
+    "oppijaMasterOid" -> Column(t.get("raportti-excel-kolumni-oppijaMasterOid")),
     "alkamispaiva" -> Column(t.get("raportti-excel-kolumni-alkamispaiva")),
     "paattymispaiva" -> Column(t.get("raportti-excel-kolumni-paattymispaiva"), comment = Some(t.get("raportti-excel-kolumni-paattymispaiva-comment"))),
     "viimeisinTila" -> Column(t.get("raportti-excel-kolumni-viimeisinTila"), comment = Some(t.get("raportti-excel-kolumni-viimeisinTila-comment"))),
@@ -147,6 +150,7 @@ case class AikuistenPerusopetuksenOppimääräArvioinnit(db: DB) extends QueryMe
 case class AikuistenPerusopetuksenOppimääränArvioinnitRow(
   opiskeluoikeusOid: String,
   oppijaOid: String,
+  oppijaMasterOid: Option[String],
   alkamispaiva: Option[LocalDate],
   paattymispaiva: Option[LocalDate],
   viimeisinTila: String,

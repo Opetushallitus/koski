@@ -1925,6 +1925,7 @@
   "raportti-excel-kolumni-päätasonSuorituksenVahvistuspäivä": "Päätason suorituksen vahvistuspäivä",
   "raportti-excel-kolumni-opintojenLaajuusyksikkö": "Opintojen laajuusyksikkö",
   "raportti-excel-kolumni-oppijaOid": "Oppijan oid",
+  "raportti-excel-kolumni-oppijaMasterOid": "Oppijan master-oid",
   "raportti-excel-kolumni-oppilaidenMääräMuuKuinVOS": "Opiskelijoista muuta kautta rahoitettuja",
   "raportti-excel-kolumni-oppilaidenMääräMuuKuinVOS-comment": "\"Läsnä\"-tilaisista opiskeluoikeuksista ne, joille on merkitty raportin tulostusparametreissa määritellylle päivälle osuvalle läsnäolojaksolle rahoitusmuodoksi \"Muuta kautta rahoitettu\".",
   "raportti-excel-kolumni-oppilaidenMääräVOS": "Opiskelijoista valtionosuusrahoitteisia",

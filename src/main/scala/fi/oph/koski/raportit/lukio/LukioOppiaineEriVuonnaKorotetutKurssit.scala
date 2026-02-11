@@ -32,6 +32,7 @@ object LukioOppiaineEriVuonnaKorotetutKurssit extends DatabaseConverters {
         opiskeluoikeus.oppilaitos_oid,
         opiskeluoikeus.opiskeluoikeus_oid,
         opiskeluoikeus.oppija_oid,
+        opiskeluoikeus.oppija_master_oid,
         osasuoritus.koulutusmoduuli_koodiarvo,
         osasuoritus.koulutusmoduuli_nimi,
         COALESCE(osasuoritus.data -> 'koulutusmoduuli' -> 'tunniste' -> 'nimi' ->> 'sv', osasuoritus.koulutusmoduuli_nimi) as koulutusmoduuli_nimi_sv,
@@ -56,6 +57,7 @@ object LukioOppiaineEriVuonnaKorotetutKurssit extends DatabaseConverters {
       select
         opiskeluoikeus_oid,
         oppija_oid,
+        oppija_master_oid,
         koulutusmoduuli_koodiarvo,
         #$nimiSarake as koulutusmoduuli_nimi
       from lukion_oppiaineen_oppimaaran_eri_vuonna_korotetut
@@ -70,6 +72,7 @@ object LukioOppiaineEriVuonnaKorotetutKurssit extends DatabaseConverters {
     LukioOppiaineEriVuonnaKorotetutKurssitRow(
       opiskeluoikeusOid = rs.getString("opiskeluoikeus_oid"),
       oppijaOid = rs.getString("oppija_oid"),
+      oppijaMasterOid = Option(rs.getString("oppija_master_oid")),
       koulutusmoduuliKoodiarvo = rs.getString("koulutusmoduuli_koodiarvo"),
       koulutusmoduuliNimi = rs.getString("koulutusmoduuli_nimi")
     )
@@ -78,6 +81,7 @@ object LukioOppiaineEriVuonnaKorotetutKurssit extends DatabaseConverters {
   def columnSettings(t: LocalizationReader): Seq[(String, Column)] = Seq(
     "opiskeluoikeusOid" -> Column(t.get("raportti-excel-kolumni-opiskeluoikeusOid")),
     "oppijaOid" -> Column(t.get("raportti-excel-kolumni-oppijaOid")),
+    "oppijaMasterOid" -> Column(t.get("raportti-excel-kolumni-oppijaMasterOid")),
     "koulutusmoduuliKoodiarvo" -> Column(t.get("raportti-excel-kolumni-kurssikoodi")),
     "koulutusmoduuliNimi" -> Column(t.get("raportti-excel-kolumni-kurssinNimi")),
   )
@@ -86,6 +90,7 @@ object LukioOppiaineEriVuonnaKorotetutKurssit extends DatabaseConverters {
 case class LukioOppiaineEriVuonnaKorotetutKurssitRow(
   opiskeluoikeusOid: String,
   oppijaOid: String,
+  oppijaMasterOid: Option[String],
   koulutusmoduuliKoodiarvo: String,
   koulutusmoduuliNimi: String,
 )

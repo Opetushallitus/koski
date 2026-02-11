@@ -90,6 +90,7 @@ class AikuistenPerusopetusRaporttiSpec
           "Päivitetty",
           "Yksilöity",
           "Oppijan oid",
+          "Oppijan master-oid",
           "hetu",
           "Sukunimi",
           "Etunimet",
@@ -132,6 +133,7 @@ class AikuistenPerusopetusRaporttiSpec
         yh shouldBe defined
         yh.get.columnSettings.map(_.title) should equal(Seq(
           "Oppijan oid",
+          "Oppijan master-oid",
           "hetu",
           "Sukunimi",
           "Etunimet",
@@ -162,6 +164,7 @@ class AikuistenPerusopetusRaporttiSpec
             "Toimipisteen nimi" -> "Jyväskylän normaalikoulu",
             "Yksilöity" -> true,
             "Oppijan oid" -> aikuisOpiskelija.oid,
+            "Oppijan master-oid" -> Some(aikuisOpiskelija.oid),
             "Opiskeluoikeuden alkamispäivä" -> Some(date(2008, 8, 15)),
             "Viimeisin opiskeluoikeuden tila" -> Some("valmistunut"),
             "Opiskeluoikeuden tilat aikajakson aikana" -> "lasna",
@@ -221,6 +224,7 @@ class AikuistenPerusopetusRaporttiSpec
         "YH" in {
           val expectedaikuisOpiskelijaYhKurssitRow = Map(
             "Oppijan oid" -> aikuisOpiskelija.oid,
+            "Oppijan master-oid" -> Some(aikuisOpiskelija.oid),
             "hetu" -> aikuisOpiskelija.hetu,
             "Sukunimi" -> aikuisOpiskelija.sukunimi,
             "Etunimet" -> aikuisOpiskelija.etunimet,
@@ -314,6 +318,7 @@ class AikuistenPerusopetusRaporttiSpec
         "YH" in {
           val expectedaikuisOpiskelijaYhKurssitRow = Map(
             "Oppijan oid" -> aikuisOpiskelija.oid,
+            "Oppijan master-oid" -> Some(aikuisOpiskelija.oid),
             "hetu" -> aikuisOpiskelija.hetu,
             "Sukunimi" -> aikuisOpiskelija.sukunimi,
             "Etunimet" -> aikuisOpiskelija.etunimet,
@@ -343,6 +348,7 @@ class AikuistenPerusopetusRaporttiSpec
             "Toimipisteen nimi" -> "Jyväskylän normaalikoulu",
             "Yksilöity" -> true,
             "Oppijan oid" -> aikuisOpiskelija.oid,
+            "Oppijan master-oid" -> Some(aikuisOpiskelija.oid),
             "Opiskeluoikeuden alkamispäivä" -> Some(date(2008, 8, 15)),
             "Viimeisin opiskeluoikeuden tila" -> Some("valmistunut"),
             "Opiskeluoikeuden tilat aikajakson aikana" -> "lasna",
@@ -418,6 +424,7 @@ class AikuistenPerusopetusRaporttiSpec
           "Päivitetty",
           "Yksilöity",
           "Oppijan oid",
+          "Oppijan master-oid",
           "hetu",
           "Sukunimi",
           "Etunimet",
@@ -472,6 +479,7 @@ class AikuistenPerusopetusRaporttiSpec
         yh shouldBe defined
         yh.get.columnSettings.map(_.title) should equal(Seq(
           "Oppijan oid",
+          "Oppijan master-oid",
           "hetu",
           "Sukunimi",
           "Etunimet",
@@ -498,6 +506,7 @@ class AikuistenPerusopetusRaporttiSpec
             "Toimipisteen nimi" -> "Jyväskylän normaalikoulu",
             "Yksilöity" -> true,
             "Oppijan oid" -> aikuisOpiskelija.oid,
+            "Oppijan master-oid" -> Some(aikuisOpiskelija.oid),
             "Opiskeluoikeuden alkamispäivä" -> Some(date(2008, 8, 15)),
             "Viimeisin opiskeluoikeuden tila" -> Some("valmistunut"),
             "Opiskeluoikeuden tilat aikajakson aikana" -> "lasna",
@@ -589,6 +598,7 @@ class AikuistenPerusopetusRaporttiSpec
           "Päivitetty",
           "Yksilöity",
           "Oppijan oid",
+          "Oppijan master-oid",
           "hetu",
           "Sukunimi",
           "Etunimet",
@@ -628,6 +638,7 @@ class AikuistenPerusopetusRaporttiSpec
         yh shouldBe defined
         yh.get.columnSettings.map(_.title) should equal(Seq(
           "Oppijan oid",
+          "Oppijan master-oid",
           "hetu",
           "Sukunimi",
           "Etunimet",
@@ -655,6 +666,7 @@ class AikuistenPerusopetusRaporttiSpec
             "Päivitetty" -> today,
             "Yksilöity" -> true,
             "Oppijan oid" -> vuonna2005SyntynytEiOpiskeluoikeuksiaFikstuurissa.oid,
+            "Oppijan master-oid" -> Some(vuonna2005SyntynytEiOpiskeluoikeuksiaFikstuurissa.oid),
             "Opiskeluoikeuden alkamispäivä" -> Some(date(2021, 1, 1)),
             "Viimeisin opiskeluoikeuden tila" -> Some("lasna"),
             "Opiskeluoikeuden tilat aikajakson aikana" -> "lasna",
@@ -731,6 +743,7 @@ class AikuistenPerusopetusRaporttiSpec
         "YH" in {
           lazy val expectedaikuisOpiskelijaYhKurssitRow = Map(
             "Oppijan oid" -> vuonna2005SyntynytEiOpiskeluoikeuksiaFikstuurissa.oid,
+            "Oppijan master-oid" -> Some(vuonna2005SyntynytEiOpiskeluoikeuksiaFikstuurissa.oid),
             "hetu" -> vuonna2005SyntynytEiOpiskeluoikeuksiaFikstuurissa.hetu,
             "Sukunimi" -> vuonna2005SyntynytEiOpiskeluoikeuksiaFikstuurissa.sukunimi,
             "Etunimet" -> vuonna2005SyntynytEiOpiskeluoikeuksiaFikstuurissa.etunimet,

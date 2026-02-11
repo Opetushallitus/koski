@@ -56,6 +56,7 @@ class Lukio2019RaporttiSpec extends AnyFreeSpec with Matchers with Raportointika
     "Päivitetty",
     "Yksilöity",
     "Oppijan oid",
+    "Oppijan master-oid",
     "hetu",
     "Sukunimi",
     "Etunimet",
@@ -110,6 +111,7 @@ class Lukio2019RaporttiSpec extends AnyFreeSpec with Matchers with Raportointika
         historia shouldBe defined
         historia.get.columnSettings.map(_.title) should equal(Seq(
           "Oppijan oid",
+          "Oppijan master-oid",
           "hetu",
           "Sukunimi",
           "Etunimet",
@@ -171,7 +173,7 @@ class Lukio2019RaporttiSpec extends AnyFreeSpec with Matchers with Raportointika
 
       "Kotikunnan hakeminen kotikuntahistoriasta" - {
         val oppijaOidCol = 8
-        val kotikuntaCol = 12
+        val kotikuntaCol = 13
 
         def getKotikunnat(kotikuntaPvm: LocalDate) = {
           val raportti = Lukio2019Raportti(repository, t)
@@ -182,7 +184,7 @@ class Lukio2019RaporttiSpec extends AnyFreeSpec with Matchers with Raportointika
 
           val oppiaineKohtaisetKotikunnat = raportti.tail.flatMap { sheet =>
             val rivi = sheet.rows.find(_.head == "1.2.246.562.24.00000000004")
-            rivi.map(_(4))
+            rivi.map(_(5))
           }
 
           Seq(kotikuntaOppiaineJaLisätiedot) ++ oppiaineKohtaisetKotikunnat
@@ -235,6 +237,7 @@ class Lukio2019RaporttiSpec extends AnyFreeSpec with Matchers with Raportointika
     "Päivitetty" -> today,
     "Yksilöity" -> true,
     "Oppijan oid" -> KoskiSpecificMockOppijat.teija.oid,
+    "Oppijan master-oid" -> Some(KoskiSpecificMockOppijat.teija.oid),
     "Opiskeluoikeuden alkamispäivä" -> Some(date(2000, 1, 1)),
     "Viimeisin opiskeluoikeuden tila" -> Some("lasna"),
     "Opiskeluoikeuden tilat aikajakson aikana" -> "lasna",
@@ -273,6 +276,7 @@ class Lukio2019RaporttiSpec extends AnyFreeSpec with Matchers with Raportointika
 
   lazy val teijanAidinkielenRow = Map(
     "Oppijan oid" -> KoskiSpecificMockOppijat.teija.oid,
+    "Oppijan master-oid" -> Some(KoskiSpecificMockOppijat.teija.oid),
     "hetu" -> Some("251019-039B"),
     "Sukunimi" -> "Tekijä",
     "Etunimet" -> "Teija",
@@ -287,6 +291,7 @@ class Lukio2019RaporttiSpec extends AnyFreeSpec with Matchers with Raportointika
 
   lazy val teijanMuidenSuoritustenRow = Map(
     "Oppijan oid" -> KoskiSpecificMockOppijat.teija.oid,
+    "Oppijan master-oid" -> Some(KoskiSpecificMockOppijat.teija.oid),
     "hetu" -> Some("251019-039B"),
     "Sukunimi" -> "Tekijä",
     "Etunimet" -> "Teija",

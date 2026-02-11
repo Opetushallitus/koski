@@ -209,6 +209,7 @@ case class AikuistenPerusopetusRaportti(
         aikaleima = row.opiskeluoikeus.aikaleima.toLocalDateTime.toLocalDate,
         yksiloity = row.henkilo.yksiloity,
         oppijanOid = row.opiskeluoikeus.oppijaOid,
+        oppijaMasterOid = row.opiskeluoikeus.oppijaMasterOid,
         hetu = row.henkilo.hetu,
         sukunimi = row.henkilo.sukunimi,
         etunimet = row.henkilo.etunimet,
@@ -263,6 +264,7 @@ case class AikuistenPerusopetusRaportti(
     AikuistenPerusopetusRaporttiOppiaineRow(
       staticColumns = AikuistenPerusopetusRaporttiOppiaineTabStaticColumns(
         oppijanOid = row.opiskeluoikeus.oppijaOid,
+        oppijaMasterOid = row.opiskeluoikeus.oppijaMasterOid,
         hetu = row.henkilo.hetu,
         sukinimi = row.henkilo.sukunimi,
         etunimet = row.henkilo.etunimet,
@@ -325,6 +327,7 @@ case class AikuistenPerusopetusRaportti(
       CompactColumn(t.get("raportti-excel-kolumni-päivitetty"), comment = Some(t.get("raportti-excel-kolumni-päivitetty-comment"))),
       CompactColumn(t.get("raportti-excel-kolumni-yksiloity"), comment = Some(t.get("raportti-excel-kolumni-yksiloity-comment"))),
       Column(t.get("raportti-excel-kolumni-oppijaOid")),
+      Column(t.get("raportti-excel-kolumni-oppijaMasterOid")),
       Column(t.get("raportti-excel-kolumni-hetu")),
       Column(t.get("raportti-excel-kolumni-sukunimi")),
       Column(t.get("raportti-excel-kolumni-etunimet")),
@@ -367,6 +370,7 @@ case class AikuistenPerusopetusRaportti(
   ): Seq[Column] = {
     Seq(
       Column(t.get("raportti-excel-kolumni-oppijaOid")),
+      Column(t.get("raportti-excel-kolumni-oppijaMasterOid")),
       Column(t.get("raportti-excel-kolumni-hetu")),
       Column(t.get("raportti-excel-kolumni-sukunimi")),
       Column(t.get("raportti-excel-kolumni-etunimet")),
@@ -395,6 +399,7 @@ case class AikuistenPerusopetusRaporttiOppiaineetVälilehtiMuut(
   aikaleima: LocalDate,
   yksiloity: Boolean,
   oppijanOid: String,
+  oppijaMasterOid: Option[String],
   hetu: Option[String],
   sukunimi: String,
   etunimet: String,
@@ -433,6 +438,7 @@ case class AikuistenPerusopetusRaporttiOppiaineRow(
 
 case class AikuistenPerusopetusRaporttiOppiaineTabStaticColumns(
   oppijanOid: String,
+  oppijaMasterOid: Option[String],
   hetu: Option[String],
   sukinimi: String,
   etunimet: String,

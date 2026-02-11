@@ -34,6 +34,7 @@ case class EsiopetusRaportti(db: DB, organisaatioService: OrganisaatioService) e
       suorituksenVahvistuspäivä = r.nextDateOption().map(_.toLocalDate),
       yksilöity = r.<<,
       oppijaOid = r.<<,
+      oppijaMasterOid = r.<<,
       hetu = r.<<,
       etunimet = r.<<,
       sukunimi = r.<<,
@@ -95,6 +96,7 @@ case class EsiopetusRaportti(db: DB, organisaatioService: OrganisaatioService) e
         r_paatason_suoritus.vahvistus_paiva,
         yksiloity,
         r_opiskeluoikeus.oppija_oid,
+        r_opiskeluoikeus.oppija_master_oid,
         hetu,
         etunimet,
         sukunimi,
@@ -166,6 +168,7 @@ case class EsiopetusRaportti(db: DB, organisaatioService: OrganisaatioService) e
 
   def columnSettings(t: LocalizationReader): Seq[(String, Column)] = Seq(
     "oppijaOid" -> Column(t.get("raportti-excel-kolumni-oppijaOid")),
+    "oppijaMasterOid" -> Column(t.get("raportti-excel-kolumni-oppijaMasterOid")),
     "hetu" -> Column(t.get("raportti-excel-kolumni-hetu")),
     "etunimet" -> Column(t.get("raportti-excel-kolumni-etunimet")),
     "sukunimi" -> Column(t.get("raportti-excel-kolumni-sukunimi")),
@@ -203,6 +206,7 @@ case class EsiopetusRaportti(db: DB, organisaatioService: OrganisaatioService) e
 
 case class EsiopetusRaporttiRow(
   oppijaOid: String,
+  oppijaMasterOid: Option[String],
   hetu: Option[String],
   etunimet: String,
   sukunimi: String,
