@@ -267,6 +267,7 @@ object QueryExamples {
       List.empty,
       application.config.getString("koski.root.url") + "/valpas",
     ))
+    case "PaallekkaisetOpiskeluoikeudetCsv" => asJson(QueryPaallekkaisetOpiskeluoikeudetDocumentation.csvExample)
     case "AmmatillinenOpiskelijavuositiedotXlsx" => asJson(QueryAmmatillinenOpiskelijavuositiedotDocumentation.xlsxExample)
     case "AmmatillinenTutkintoSuoritustiedotXlsx" => asJson(QueryAmmatillinenTutkintoSuoritustiedotDocumentation.xlsxExample)
     case "AmmatillinenOsittainenSuoritustiedotXlsx" => asJson(QueryAmmatillinenOsittainenSuoritustiedotDocumentation.xlsxExample)

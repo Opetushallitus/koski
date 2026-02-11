@@ -55,6 +55,7 @@ case class MassaluovutusQueryIBSuoritustiedot(
     val raporttiType = raportinTyyppi match {
       case "ibtutkinto" => IBTutkinnonSuoritusRaportti
       case "preiboppimaara" => PreIBSuoritusRaportti
+      case t => throw new IllegalArgumentException(s"Tuntematon raportinTyyppi: $t")
     }
 
     val request = IBSuoritustiedotRaporttiRequest(

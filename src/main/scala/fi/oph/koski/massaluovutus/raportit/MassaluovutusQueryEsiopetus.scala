@@ -28,7 +28,7 @@ case class MassaluovutusQueryEsiopetus(
   @EnumValues(Set("esiopetus"))
   `type`: String = "esiopetus",
   @EnumValues(Set(QueryFormat.xlsx))
-  format: String,
+  format: String = QueryFormat.xlsx,
   @Description("Kyselyyn otettavan koulutustoimijan tai oppilaitoksen oid. Jos ei ole annettu, päätellään käyttäjän käyttöoikeuksista.")
   organisaatioOid: Option[Organisaatio.Oid] = None,
   @Description("Palautettavien tuloksien kieli.")

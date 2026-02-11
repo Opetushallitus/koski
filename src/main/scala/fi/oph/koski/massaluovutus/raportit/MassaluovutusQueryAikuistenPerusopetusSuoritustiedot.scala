@@ -57,6 +57,7 @@ case class MassaluovutusQueryAikuistenPerusopetusSuoritustiedot(
       case "alkuvaihe" => AikuistenPerusopetusAlkuvaiheRaportti
       case "päättövaihe" => AikuistenPerusopetusPäättövaiheRaportti
       case "oppiaineenoppimäärä" => AikuistenPerusopetusOppiaineenOppimääräRaportti
+      case t => throw new IllegalArgumentException(s"Tuntematon raportinTyyppi: $t")
     }
 
     val request = AikuistenPerusopetusRaporttiRequest(

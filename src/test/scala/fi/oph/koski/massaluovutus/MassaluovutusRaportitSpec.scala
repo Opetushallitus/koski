@@ -16,7 +16,7 @@ class MassaluovutusRaportitSpec extends AnyFreeSpec with MassaluovutusTestMethod
   override def body: String = new String(response.bodyBytes, StandardCharsets.UTF_8)
 
   override protected def beforeEach(): Unit = {
-    resetFixtures()
+    resetFixturesSkipInvalidOpiskeluoikeudet()
     super.beforeEach()
   }
 

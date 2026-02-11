@@ -14,7 +14,7 @@ import java.time.format.DateTimeFormatter
 
 @Title("Ammatillinen tutkinto suoritustietojen tarkistus")
 @Description("Palauttaa ammatillisen tutkinnon suoritustietojen tarkistusraportin.")
-@Description("Saatu tulostiedosto vastaa raporttinäkymästä ladattavaa tiedostoa, mutta se on mahdollista ladata myös paremmin koneluettavassa csv-muodossa.")
+@Description("Saatu tulostiedosto vastaa raporttinäkymästä ladattavaa tiedostoa.")
 case class MassaluovutusQueryAmmatillinenTutkintoSuoritustiedot(
   @EnumValues(Set("ammatillinenTutkintoSuoritustiedot"))
   `type`: String = "ammatillinenTutkintoSuoritustiedot",
@@ -22,7 +22,7 @@ case class MassaluovutusQueryAmmatillinenTutkintoSuoritustiedot(
   format: String = QueryFormat.xlsx,
   @Description("Kyselyyn otettavan koulutustoimijan tai oppilaitoksen oid. Jos ei ole annettu, päätellään käyttäjän käyttöoikeuksista.")
   organisaatioOid: Option[Organisaatio.Oid] = None,
-  @Description("Palautettavien tuloksien kieli. CSV-muodossa vaikuttaa vain organisaatioiden nimiin.")
+  @Description("Palautettavien tuloksien kieli.")
   @EnumValues(Set("fi", "sv", "en"))
   language: Option[String] = None,
   @Description("Tutkittavan aikajakson alkamispäivä.")
@@ -31,7 +31,7 @@ case class MassaluovutusQueryAmmatillinenTutkintoSuoritustiedot(
   loppu: LocalDate,
   @Description("Jos true, osasuorituksiin rajoitetaan vain aikajakson sisällä arvioidut.")
   osasuoritustenAikarajaus: Option[Boolean] = None,
-  @Description("Salasana. Merkityksellinen vain xlsx-tiedostoille. Jos ei annettu, salasana generoidaan automaattisesti. Salasana palautetaan tulosten yhteydessä.")
+  @Description("Salasana xlsx-tiedostolle. Jos ei annettu, salasana generoidaan automaattisesti. Salasana palautetaan tulosten yhteydessä.")
   password: Option[String] = None,
 ) extends MassaluovutusRaporttiBase[MassaluovutusQueryAmmatillinenTutkintoSuoritustiedot] {
 
