@@ -113,4 +113,4 @@ Esimerkki:
 ### Raportit
 
 Excel-muotoiset raportit ovat saatavilla massaluovutusrajapinnan kautta. Katso erillinen
-[raporttien dokumentaatio](/koski/dokumentaatio/massaluovutus-raportit).
+[raporttien dokumentaatio](/koski/dokumentaatio/rajapinnat/massaluovutus/raportit).
