@@ -1,6 +1,7 @@
 package fi.oph.koski.massaluovutus
 
-import fi.oph.koski.koskiuser.MockUsers
+import fi.oph.koski.http.KoskiErrorCategory
+import fi.oph.koski.koskiuser.{MockUsers, UserWithPassword}
 import fi.oph.koski.massaluovutus.raportit._
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.raportit.RaportitService
@@ -26,648 +27,427 @@ class MassaluovutusRaportitSpec extends AnyFreeSpec with MassaluovutusTestMethod
     app.massaluovutusService.truncate()
   }
 
+  private def raporttiKyselyOnnistuu(query: MassaluovutusQueryParameters, user: UserWithPassword): Unit = {
+    val queryId = addQuerySuccessfully(query, user) { response =>
+      response.status should equal(QueryState.pending)
+      response.queryId
+    }
+    val complete = waitForCompletion(queryId, user)
+
+    complete.files should have length 1
+    complete.files.foreach(verifyResult(_, user))
+
+    val raportitService = new RaportitService(app)
+    complete.sourceDataUpdatedAt.map(_.toLocalDateTime) should equal(Some(raportitService.viimeisinOpiskeluoikeuspäivitystenVastaanottoaika))
+  }
+
+  private def raporttiKyselyEiOnnistu(query: MassaluovutusQueryParameters, user: UserWithPassword): Unit = {
+    addQuery(query, user) {
+      verifyResponseStatus(403, KoskiErrorCategory.forbidden())
+    }
+  }
+
+  // Lukio
+
   "Lukion suoritustietojen tarkistus" - {
-    "Spreadsheet" - {
-      val query = MassaluovutusQueryLukionSuoritustiedot(
-        format = QueryFormat.xlsx,
-        alku = LocalDate.of(2012, 1, 1),
-        loppu = LocalDate.of(2016, 1, 1),
-      )
+    val query = MassaluovutusQueryLukionSuoritustiedot(
+      alku = LocalDate.of(2012, 1, 1),
+      loppu = LocalDate.of(2016, 1, 1),
+      organisaatioOid = Some(MockOrganisaatiot.jyväskylänNormaalikoulu),
+    )
 
-      "Kysely onnistuu ja palauttaa oikeat tiedostot" in {
-        val user = MockUsers.jyväskylänNormaalikoulunPalvelukäyttäjä
-        val queryId = addQuerySuccessfully(query.copy(organisaatioOid = Some(MockOrganisaatiot.jyväskylänNormaalikoulu)), user) { response =>
-          response.status should equal(QueryState.pending)
-          response.query.asInstanceOf[MassaluovutusQueryLukionSuoritustiedot].organisaatioOid should contain(MockOrganisaatiot.jyväskylänNormaalikoulu)
-          response.queryId
-        }
-        val complete = waitForCompletion(queryId, user)
+    "Kysely onnistuu ja palauttaa oikeat tiedostot" in {
+      raporttiKyselyOnnistuu(query, MockUsers.jyväskylänNormaalikoulunPalvelukäyttäjä)
+    }
 
-        complete.files should have length 1
-        complete.files.foreach(verifyResult(_, user))
-
-        val raportitService = new RaportitService(app)
-        complete.sourceDataUpdatedAt.map(_.toLocalDateTime) should equal(Some(raportitService.viimeisinOpiskeluoikeuspäivitystenVastaanottoaika))
-      }
+    "Ei onnistu väärän organisaation tietoihin" in {
+      raporttiKyselyEiOnnistu(query, MockUsers.helsinkiKatselija)
     }
   }
 
   "Lukio 2019 suoritustietojen tarkistus" - {
-    "Spreadsheet" - {
-      val query = MassaluovutusQueryLukio2019Suoritustiedot(
-        format = QueryFormat.xlsx,
-        alku = LocalDate.of(2012, 1, 1),
-        loppu = LocalDate.of(2016, 1, 1),
-      )
+    val query = MassaluovutusQueryLukio2019Suoritustiedot(
+      alku = LocalDate.of(2012, 1, 1),
+      loppu = LocalDate.of(2016, 1, 1),
+      organisaatioOid = Some(MockOrganisaatiot.jyväskylänNormaalikoulu),
+    )
 
-      "Kysely onnistuu ja palauttaa oikeat tiedostot" in {
-        val user = MockUsers.jyväskylänNormaalikoulunPalvelukäyttäjä
-        val queryId = addQuerySuccessfully(query.copy(organisaatioOid = Some(MockOrganisaatiot.jyväskylänNormaalikoulu)), user) { response =>
-          response.status should equal(QueryState.pending)
-          response.query.asInstanceOf[MassaluovutusQueryLukio2019Suoritustiedot].organisaatioOid should contain(MockOrganisaatiot.jyväskylänNormaalikoulu)
-          response.queryId
-        }
-        val complete = waitForCompletion(queryId, user)
+    "Kysely onnistuu ja palauttaa oikeat tiedostot" in {
+      raporttiKyselyOnnistuu(query, MockUsers.jyväskylänNormaalikoulunPalvelukäyttäjä)
+    }
 
-        complete.files should have length 1
-        complete.files.foreach(verifyResult(_, user))
-
-        val raportitService = new RaportitService(app)
-        complete.sourceDataUpdatedAt.map(_.toLocalDateTime) should equal(Some(raportitService.viimeisinOpiskeluoikeuspäivitystenVastaanottoaika))
-      }
+    "Ei onnistu väärän organisaation tietoihin" in {
+      raporttiKyselyEiOnnistu(query, MockUsers.helsinkiKatselija)
     }
   }
 
   "Lukion kurssikertymät" - {
-    "Spreadsheet" - {
-      val query = MassaluovutusQueryLukioKurssikertymat(
-        format = QueryFormat.xlsx,
-        alku = LocalDate.of(2012, 1, 1),
-        loppu = LocalDate.of(2016, 1, 1),
-      )
+    val query = MassaluovutusQueryLukioKurssikertymat(
+      alku = LocalDate.of(2012, 1, 1),
+      loppu = LocalDate.of(2016, 1, 1),
+      organisaatioOid = Some(MockOrganisaatiot.jyväskylänNormaalikoulu),
+    )
 
-      "Kysely onnistuu ja palauttaa oikeat tiedostot" in {
-        val user = MockUsers.jyväskylänNormaalikoulunPalvelukäyttäjä
-        val queryId = addQuerySuccessfully(query.copy(organisaatioOid = Some(MockOrganisaatiot.jyväskylänNormaalikoulu)), user) { response =>
-          response.status should equal(QueryState.pending)
-          response.query.asInstanceOf[MassaluovutusQueryLukioKurssikertymat].organisaatioOid should contain(MockOrganisaatiot.jyväskylänNormaalikoulu)
-          response.queryId
-        }
-        val complete = waitForCompletion(queryId, user)
+    "Kysely onnistuu ja palauttaa oikeat tiedostot" in {
+      raporttiKyselyOnnistuu(query, MockUsers.jyväskylänNormaalikoulunPalvelukäyttäjä)
+    }
 
-        complete.files should have length 1
-        complete.files.foreach(verifyResult(_, user))
-
-        val raportitService = new RaportitService(app)
-        complete.sourceDataUpdatedAt.map(_.toLocalDateTime) should equal(Some(raportitService.viimeisinOpiskeluoikeuspäivitystenVastaanottoaika))
-      }
+    "Ei onnistu väärän organisaation tietoihin" in {
+      raporttiKyselyEiOnnistu(query, MockUsers.helsinkiKatselija)
     }
   }
 
   "Lukio 2019 opintopistekertymät" - {
-    "Spreadsheet" - {
-      val query = MassaluovutusQueryLukio2019Opintopistekertymat(
-        format = QueryFormat.xlsx,
-        alku = LocalDate.of(2012, 1, 1),
-        loppu = LocalDate.of(2016, 1, 1),
-      )
+    val query = MassaluovutusQueryLukio2019Opintopistekertymat(
+      alku = LocalDate.of(2012, 1, 1),
+      loppu = LocalDate.of(2016, 1, 1),
+      organisaatioOid = Some(MockOrganisaatiot.jyväskylänNormaalikoulu),
+    )
 
-      "Kysely onnistuu ja palauttaa oikeat tiedostot" in {
-        val user = MockUsers.jyväskylänNormaalikoulunPalvelukäyttäjä
-        val queryId = addQuerySuccessfully(query.copy(organisaatioOid = Some(MockOrganisaatiot.jyväskylänNormaalikoulu)), user) { response =>
-          response.status should equal(QueryState.pending)
-          response.query.asInstanceOf[MassaluovutusQueryLukio2019Opintopistekertymat].organisaatioOid should contain(MockOrganisaatiot.jyväskylänNormaalikoulu)
-          response.queryId
-        }
-        val complete = waitForCompletion(queryId, user)
+    "Kysely onnistuu ja palauttaa oikeat tiedostot" in {
+      raporttiKyselyOnnistuu(query, MockUsers.jyväskylänNormaalikoulunPalvelukäyttäjä)
+    }
 
-        complete.files should have length 1
-        complete.files.foreach(verifyResult(_, user))
-
-        val raportitService = new RaportitService(app)
-        complete.sourceDataUpdatedAt.map(_.toLocalDateTime) should equal(Some(raportitService.viimeisinOpiskeluoikeuspäivitystenVastaanottoaika))
-      }
+    "Ei onnistu väärän organisaation tietoihin" in {
+      raporttiKyselyEiOnnistu(query, MockUsers.helsinkiKatselija)
     }
   }
 
   "Lukio/DIA/IB/International/ESH opiskelijamäärät" - {
-    "Spreadsheet" - {
-      val query = MassaluovutusQueryLukioDiaIbInternationalESHOpiskelijamaarat(
-        format = QueryFormat.xlsx,
-        paiva = LocalDate.of(2016, 1, 15),
-      )
+    val query = MassaluovutusQueryLukioDiaIbInternationalESHOpiskelijamaarat(
+      paiva = LocalDate.of(2016, 1, 15),
+      organisaatioOid = Some(MockOrganisaatiot.jyväskylänNormaalikoulu),
+    )
 
-      "Kysely onnistuu ja palauttaa oikeat tiedostot" in {
-        val user = MockUsers.jyväskylänNormaalikoulunPalvelukäyttäjä
-        val queryId = addQuerySuccessfully(query.copy(organisaatioOid = Some(MockOrganisaatiot.jyväskylänNormaalikoulu)), user) { response =>
-          response.status should equal(QueryState.pending)
-          response.query.asInstanceOf[MassaluovutusQueryLukioDiaIbInternationalESHOpiskelijamaarat].organisaatioOid should contain(MockOrganisaatiot.jyväskylänNormaalikoulu)
-          response.queryId
-        }
-        val complete = waitForCompletion(queryId, user)
+    "Kysely onnistuu ja palauttaa oikeat tiedostot" in {
+      raporttiKyselyOnnistuu(query, MockUsers.jyväskylänNormaalikoulunPalvelukäyttäjä)
+    }
 
-        complete.files should have length 1
-        complete.files.foreach(verifyResult(_, user))
-
-        val raportitService = new RaportitService(app)
-        complete.sourceDataUpdatedAt.map(_.toLocalDateTime) should equal(Some(raportitService.viimeisinOpiskeluoikeuspäivitystenVastaanottoaika))
-      }
+    "Ei onnistu väärän organisaation tietoihin" in {
+      raporttiKyselyEiOnnistu(query, MockUsers.helsinkiKatselija)
     }
   }
 
+  // Ammatillinen
+
   "Ammatillinen opiskelijavuositiedot" - {
+    val query = MassaluovutusQueryAmmatillinenOpiskelijavuositiedot(
+      alku = LocalDate.of(2016, 1, 1),
+      loppu = LocalDate.of(2020, 1, 1),
+      organisaatioOid = Some(MockOrganisaatiot.stadinAmmattiopisto),
+    )
 
-    "Spreadsheet" - {
-      val query = MassaluovutusQueryAmmatillinenOpiskelijavuositiedot(
-        format = QueryFormat.xlsx,
-        alku = LocalDate.of(2016, 1, 1),
-        loppu = LocalDate.of(2020, 1, 1),
-      )
+    "Kysely onnistuu ja palauttaa oikeat tiedostot" in {
+      raporttiKyselyOnnistuu(query, MockUsers.stadinAmmattiopistoPalvelukäyttäjä)
+    }
 
-      "Kysely onnistuu ja palauttaa oikeat tiedostot" in {
-        val user = MockUsers.stadinAmmattiopistoPalvelukäyttäjä
-        val queryId = addQuerySuccessfully(query.copy(organisaatioOid = Some(MockOrganisaatiot.stadinAmmattiopisto)), user) { response =>
-          response.status should equal(QueryState.pending)
-          response.query.asInstanceOf[MassaluovutusQueryAmmatillinenOpiskelijavuositiedot].organisaatioOid should contain(MockOrganisaatiot.stadinAmmattiopisto)
-          response.queryId
-        }
-        val complete = waitForCompletion(queryId, user)
-
-        complete.files should have length 1
-        complete.files.foreach(verifyResult(_, user))
-
-        val raportitService = new RaportitService(app)
-        complete.sourceDataUpdatedAt.map(_.toLocalDateTime) should equal(Some(raportitService.viimeisinOpiskeluoikeuspäivitystenVastaanottoaika))
-      }
+    "Ei onnistu väärän organisaation tietoihin" in {
+      raporttiKyselyEiOnnistu(query, MockUsers.jyväskylänNormaalikoulunPalvelukäyttäjä)
     }
   }
 
   "Ammatillinen tutkinto suoritustietojen tarkistus" - {
-    "Spreadsheet" - {
-      val query = MassaluovutusQueryAmmatillinenTutkintoSuoritustiedot(
-        format = QueryFormat.xlsx,
-        alku = LocalDate.of(2016, 1, 1),
-        loppu = LocalDate.of(2020, 1, 1),
-      )
+    val query = MassaluovutusQueryAmmatillinenTutkintoSuoritustiedot(
+      alku = LocalDate.of(2016, 1, 1),
+      loppu = LocalDate.of(2020, 1, 1),
+      organisaatioOid = Some(MockOrganisaatiot.stadinAmmattiopisto),
+    )
 
-      "Kysely onnistuu ja palauttaa oikeat tiedostot" in {
-        val user = MockUsers.stadinAmmattiopistoPalvelukäyttäjä
-        val queryId = addQuerySuccessfully(query.copy(organisaatioOid = Some(MockOrganisaatiot.stadinAmmattiopisto)), user) { response =>
-          response.status should equal(QueryState.pending)
-          response.query.asInstanceOf[MassaluovutusQueryAmmatillinenTutkintoSuoritustiedot].organisaatioOid should contain(MockOrganisaatiot.stadinAmmattiopisto)
-          response.queryId
-        }
-        val complete = waitForCompletion(queryId, user)
+    "Kysely onnistuu ja palauttaa oikeat tiedostot" in {
+      raporttiKyselyOnnistuu(query, MockUsers.stadinAmmattiopistoPalvelukäyttäjä)
+    }
 
-        complete.files should have length 1
-        complete.files.foreach(verifyResult(_, user))
-
-        val raportitService = new RaportitService(app)
-        complete.sourceDataUpdatedAt.map(_.toLocalDateTime) should equal(Some(raportitService.viimeisinOpiskeluoikeuspäivitystenVastaanottoaika))
-      }
+    "Ei onnistu väärän organisaation tietoihin" in {
+      raporttiKyselyEiOnnistu(query, MockUsers.jyväskylänNormaalikoulunPalvelukäyttäjä)
     }
   }
 
   "Ammatillinen osittainen tutkinto suoritustietojen tarkistus" - {
-    "Spreadsheet" - {
-      val query = MassaluovutusQueryAmmatillinenOsittainenSuoritustiedot(
-        format = QueryFormat.xlsx,
-        alku = LocalDate.of(2016, 1, 1),
-        loppu = LocalDate.of(2020, 1, 1),
-      )
+    val query = MassaluovutusQueryAmmatillinenOsittainenSuoritustiedot(
+      alku = LocalDate.of(2016, 1, 1),
+      loppu = LocalDate.of(2020, 1, 1),
+      organisaatioOid = Some(MockOrganisaatiot.stadinAmmattiopisto),
+    )
 
-      "Kysely onnistuu ja palauttaa oikeat tiedostot" in {
-        val user = MockUsers.stadinAmmattiopistoPalvelukäyttäjä
-        val queryId = addQuerySuccessfully(query.copy(organisaatioOid = Some(MockOrganisaatiot.stadinAmmattiopisto)), user) { response =>
-          response.status should equal(QueryState.pending)
-          response.query.asInstanceOf[MassaluovutusQueryAmmatillinenOsittainenSuoritustiedot].organisaatioOid should contain(MockOrganisaatiot.stadinAmmattiopisto)
-          response.queryId
-        }
-        val complete = waitForCompletion(queryId, user)
+    "Kysely onnistuu ja palauttaa oikeat tiedostot" in {
+      raporttiKyselyOnnistuu(query, MockUsers.stadinAmmattiopistoPalvelukäyttäjä)
+    }
 
-        complete.files should have length 1
-        complete.files.foreach(verifyResult(_, user))
-
-        val raportitService = new RaportitService(app)
-        complete.sourceDataUpdatedAt.map(_.toLocalDateTime) should equal(Some(raportitService.viimeisinOpiskeluoikeuspäivitystenVastaanottoaika))
-      }
+    "Ei onnistu väärän organisaation tietoihin" in {
+      raporttiKyselyEiOnnistu(query, MockUsers.jyväskylänNormaalikoulunPalvelukäyttäjä)
     }
   }
 
   "Muu ammatillinen koulutus" - {
-    "Spreadsheet" - {
-      val query = MassaluovutusQueryMuuAmmatillinen(
-        format = QueryFormat.xlsx,
-        alku = LocalDate.of(2016, 1, 1),
-        loppu = LocalDate.of(2020, 1, 1),
-      )
+    val query = MassaluovutusQueryMuuAmmatillinen(
+      alku = LocalDate.of(2016, 1, 1),
+      loppu = LocalDate.of(2020, 1, 1),
+      organisaatioOid = Some(MockOrganisaatiot.stadinAmmattiopisto),
+    )
 
-      "Kysely onnistuu ja palauttaa oikeat tiedostot" in {
-        val user = MockUsers.stadinAmmattiopistoPalvelukäyttäjä
-        val queryId = addQuerySuccessfully(query.copy(organisaatioOid = Some(MockOrganisaatiot.stadinAmmattiopisto)), user) { response =>
-          response.status should equal(QueryState.pending)
-          response.query.asInstanceOf[MassaluovutusQueryMuuAmmatillinen].organisaatioOid should contain(MockOrganisaatiot.stadinAmmattiopisto)
-          response.queryId
-        }
-        val complete = waitForCompletion(queryId, user)
+    "Kysely onnistuu ja palauttaa oikeat tiedostot" in {
+      raporttiKyselyOnnistuu(query, MockUsers.stadinAmmattiopistoPalvelukäyttäjä)
+    }
 
-        complete.files should have length 1
-        complete.files.foreach(verifyResult(_, user))
-
-        val raportitService = new RaportitService(app)
-        complete.sourceDataUpdatedAt.map(_.toLocalDateTime) should equal(Some(raportitService.viimeisinOpiskeluoikeuspäivitystenVastaanottoaika))
-      }
+    "Ei onnistu väärän organisaation tietoihin" in {
+      raporttiKyselyEiOnnistu(query, MockUsers.jyväskylänNormaalikoulunPalvelukäyttäjä)
     }
   }
 
   "TOPKS ammatillinen koulutus" - {
-    "Spreadsheet" - {
-      val query = MassaluovutusQueryTOPKSAmmatillinen(
-        format = QueryFormat.xlsx,
-        alku = LocalDate.of(2016, 1, 1),
-        loppu = LocalDate.of(2020, 1, 1),
-      )
+    val query = MassaluovutusQueryTOPKSAmmatillinen(
+      alku = LocalDate.of(2016, 1, 1),
+      loppu = LocalDate.of(2020, 1, 1),
+      organisaatioOid = Some(MockOrganisaatiot.stadinAmmattiopisto),
+    )
 
-      "Kysely onnistuu ja palauttaa oikeat tiedostot" in {
-        val user = MockUsers.stadinAmmattiopistoPalvelukäyttäjä
-        val queryId = addQuerySuccessfully(query.copy(organisaatioOid = Some(MockOrganisaatiot.stadinAmmattiopisto)), user) { response =>
-          response.status should equal(QueryState.pending)
-          response.query.asInstanceOf[MassaluovutusQueryTOPKSAmmatillinen].organisaatioOid should contain(MockOrganisaatiot.stadinAmmattiopisto)
-          response.queryId
-        }
-        val complete = waitForCompletion(queryId, user)
+    "Kysely onnistuu ja palauttaa oikeat tiedostot" in {
+      raporttiKyselyOnnistuu(query, MockUsers.stadinAmmattiopistoPalvelukäyttäjä)
+    }
 
-        complete.files should have length 1
-        complete.files.foreach(verifyResult(_, user))
-
-        val raportitService = new RaportitService(app)
-        complete.sourceDataUpdatedAt.map(_.toLocalDateTime) should equal(Some(raportitService.viimeisinOpiskeluoikeuspäivitystenVastaanottoaika))
-      }
+    "Ei onnistu väärän organisaation tietoihin" in {
+      raporttiKyselyEiOnnistu(query, MockUsers.jyväskylänNormaalikoulunPalvelukäyttäjä)
     }
   }
 
+  // Perusopetus
+
   "Perusopetuksen vuosiluokka" - {
-    "Spreadsheet" - {
-      val query = MassaluovutusQueryPerusopetuksenVuosiluokka(
-        format = QueryFormat.xlsx,
-        paiva = LocalDate.of(2012, 1, 1),
-        vuosiluokka = "9",
-      )
+    val query = MassaluovutusQueryPerusopetuksenVuosiluokka(
+      paiva = LocalDate.of(2012, 1, 1),
+      vuosiluokka = "9",
+      organisaatioOid = Some(MockOrganisaatiot.jyväskylänNormaalikoulu),
+    )
 
-      "Kysely onnistuu ja palauttaa oikeat tiedostot" in {
-        val user = MockUsers.jyväskylänNormaalikoulunPalvelukäyttäjä
-        val queryId = addQuerySuccessfully(query.copy(organisaatioOid = Some(MockOrganisaatiot.jyväskylänNormaalikoulu)), user) { response =>
-          response.status should equal(QueryState.pending)
-          response.query.asInstanceOf[MassaluovutusQueryPerusopetuksenVuosiluokka].organisaatioOid should contain(MockOrganisaatiot.jyväskylänNormaalikoulu)
-          response.queryId
-        }
-        val complete = waitForCompletion(queryId, user)
+    "Kysely onnistuu ja palauttaa oikeat tiedostot" in {
+      raporttiKyselyOnnistuu(query, MockUsers.jyväskylänNormaalikoulunPalvelukäyttäjä)
+    }
 
-        complete.files should have length 1
-        complete.files.foreach(verifyResult(_, user))
-
-        val raportitService = new RaportitService(app)
-        complete.sourceDataUpdatedAt.map(_.toLocalDateTime) should equal(Some(raportitService.viimeisinOpiskeluoikeuspäivitystenVastaanottoaika))
-      }
+    "Ei onnistu väärän organisaation tietoihin" in {
+      raporttiKyselyEiOnnistu(query, MockUsers.helsinkiKatselija)
     }
   }
 
   "Perusopetuksen oppijamäärät" - {
-    "Spreadsheet" - {
-      val query = MassaluovutusQueryPerusopetuksenOppijamaaratRaportti(
-        format = QueryFormat.xlsx,
-        paiva = LocalDate.of(2012, 1, 1),
-      )
+    val query = MassaluovutusQueryPerusopetuksenOppijamaaratRaportti(
+      paiva = LocalDate.of(2012, 1, 1),
+      organisaatioOid = Some(MockOrganisaatiot.jyväskylänNormaalikoulu),
+    )
 
-      "Kysely onnistuu ja palauttaa oikeat tiedostot" in {
-        val user = MockUsers.jyväskylänNormaalikoulunPalvelukäyttäjä
-        val queryId = addQuerySuccessfully(query.copy(organisaatioOid = Some(MockOrganisaatiot.jyväskylänNormaalikoulu)), user) { response =>
-          response.status should equal(QueryState.pending)
-          response.query.asInstanceOf[MassaluovutusQueryPerusopetuksenOppijamaaratRaportti].organisaatioOid should contain(MockOrganisaatiot.jyväskylänNormaalikoulu)
-          response.queryId
-        }
-        val complete = waitForCompletion(queryId, user)
+    "Kysely onnistuu ja palauttaa oikeat tiedostot" in {
+      raporttiKyselyOnnistuu(query, MockUsers.jyväskylänNormaalikoulunPalvelukäyttäjä)
+    }
 
-        complete.files should have length 1
-        complete.files.foreach(verifyResult(_, user))
-
-        val raportitService = new RaportitService(app)
-        complete.sourceDataUpdatedAt.map(_.toLocalDateTime) should equal(Some(raportitService.viimeisinOpiskeluoikeuspäivitystenVastaanottoaika))
-      }
+    "Ei onnistu väärän organisaation tietoihin" in {
+      raporttiKyselyEiOnnistu(query, MockUsers.helsinkiKatselija)
     }
   }
 
   "Aikuisten perusopetuksen suoritustietojen tarkistus" - {
-    "Spreadsheet" - {
-      val query = MassaluovutusQueryAikuistenPerusopetusSuoritustiedot(
-        format = QueryFormat.xlsx,
-        alku = LocalDate.of(2008, 1, 1),
-        loppu = LocalDate.of(2020, 1, 1),
-        raportinTyyppi = "päättövaihe",
-      )
+    val query = MassaluovutusQueryAikuistenPerusopetusSuoritustiedot(
+      alku = LocalDate.of(2008, 1, 1),
+      loppu = LocalDate.of(2020, 1, 1),
+      raportinTyyppi = "päättövaihe",
+      organisaatioOid = Some(MockOrganisaatiot.jyväskylänNormaalikoulu),
+    )
 
-      "Kysely onnistuu ja palauttaa oikeat tiedostot" in {
-        val user = MockUsers.jyväskylänNormaalikoulunPalvelukäyttäjä
-        val queryId = addQuerySuccessfully(query.copy(organisaatioOid = Some(MockOrganisaatiot.jyväskylänNormaalikoulu)), user) { response =>
-          response.status should equal(QueryState.pending)
-          response.query.asInstanceOf[MassaluovutusQueryAikuistenPerusopetusSuoritustiedot].organisaatioOid should contain(MockOrganisaatiot.jyväskylänNormaalikoulu)
-          response.queryId
-        }
-        val complete = waitForCompletion(queryId, user)
+    "Kysely onnistuu ja palauttaa oikeat tiedostot" in {
+      raporttiKyselyOnnistuu(query, MockUsers.jyväskylänNormaalikoulunPalvelukäyttäjä)
+    }
 
-        complete.files should have length 1
-        complete.files.foreach(verifyResult(_, user))
-
-        val raportitService = new RaportitService(app)
-        complete.sourceDataUpdatedAt.map(_.toLocalDateTime) should equal(Some(raportitService.viimeisinOpiskeluoikeuspäivitystenVastaanottoaika))
-      }
+    "Ei onnistu väärän organisaation tietoihin" in {
+      raporttiKyselyEiOnnistu(query, MockUsers.helsinkiKatselija)
     }
   }
 
   "Aikuisten perusopetuksen oppijamäärät" - {
-    "Spreadsheet" - {
-      val query = MassaluovutusQueryAikuistenPerusopetuksenOppijamaaratRaportti(
-        format = QueryFormat.xlsx,
-        paiva = LocalDate.of(2010, 1, 1),
-      )
+    val query = MassaluovutusQueryAikuistenPerusopetuksenOppijamaaratRaportti(
+      paiva = LocalDate.of(2010, 1, 1),
+      organisaatioOid = Some(MockOrganisaatiot.jyväskylänNormaalikoulu),
+    )
 
-      "Kysely onnistuu ja palauttaa oikeat tiedostot" in {
-        val user = MockUsers.jyväskylänNormaalikoulunPalvelukäyttäjä
-        val queryId = addQuerySuccessfully(query.copy(organisaatioOid = Some(MockOrganisaatiot.jyväskylänNormaalikoulu)), user) { response =>
-          response.status should equal(QueryState.pending)
-          response.query.asInstanceOf[MassaluovutusQueryAikuistenPerusopetuksenOppijamaaratRaportti].organisaatioOid should contain(MockOrganisaatiot.jyväskylänNormaalikoulu)
-          response.queryId
-        }
-        val complete = waitForCompletion(queryId, user)
+    "Kysely onnistuu ja palauttaa oikeat tiedostot" in {
+      raporttiKyselyOnnistuu(query, MockUsers.jyväskylänNormaalikoulunPalvelukäyttäjä)
+    }
 
-        complete.files should have length 1
-        complete.files.foreach(verifyResult(_, user))
-
-        val raportitService = new RaportitService(app)
-        complete.sourceDataUpdatedAt.map(_.toLocalDateTime) should equal(Some(raportitService.viimeisinOpiskeluoikeuspäivitystenVastaanottoaika))
-      }
+    "Ei onnistu väärän organisaation tietoihin" in {
+      raporttiKyselyEiOnnistu(query, MockUsers.helsinkiKatselija)
     }
   }
 
   "Aikuisten perusopetuksen kurssikertymät" - {
-    "Spreadsheet" - {
-      val query = MassaluovutusQueryAikuistenPerusopetuksenKurssikertyma(
-        format = QueryFormat.xlsx,
-        alku = LocalDate.of(2008, 1, 1),
-        loppu = LocalDate.of(2020, 1, 1),
-      )
+    val query = MassaluovutusQueryAikuistenPerusopetuksenKurssikertyma(
+      alku = LocalDate.of(2008, 1, 1),
+      loppu = LocalDate.of(2020, 1, 1),
+      organisaatioOid = Some(MockOrganisaatiot.jyväskylänNormaalikoulu),
+    )
 
-      "Kysely onnistuu ja palauttaa oikeat tiedostot" in {
-        val user = MockUsers.jyväskylänNormaalikoulunPalvelukäyttäjä
-        val queryId = addQuerySuccessfully(query.copy(organisaatioOid = Some(MockOrganisaatiot.jyväskylänNormaalikoulu)), user) { response =>
-          response.status should equal(QueryState.pending)
-          response.query.asInstanceOf[MassaluovutusQueryAikuistenPerusopetuksenKurssikertyma].organisaatioOid should contain(MockOrganisaatiot.jyväskylänNormaalikoulu)
-          response.queryId
-        }
-        val complete = waitForCompletion(queryId, user)
+    "Kysely onnistuu ja palauttaa oikeat tiedostot" in {
+      raporttiKyselyOnnistuu(query, MockUsers.jyväskylänNormaalikoulunPalvelukäyttäjä)
+    }
 
-        complete.files should have length 1
-        complete.files.foreach(verifyResult(_, user))
-
-        val raportitService = new RaportitService(app)
-        complete.sourceDataUpdatedAt.map(_.toLocalDateTime) should equal(Some(raportitService.viimeisinOpiskeluoikeuspäivitystenVastaanottoaika))
-      }
+    "Ei onnistu väärän organisaation tietoihin" in {
+      raporttiKyselyEiOnnistu(query, MockUsers.helsinkiKatselija)
     }
   }
 
+  // Esiopetus
+
   "Esiopetus" - {
-    "Spreadsheet" - {
-      val query = MassaluovutusQueryEsiopetus(
-        format = QueryFormat.xlsx,
-        paiva = LocalDate.of(2012, 1, 1),
-      )
+    val query = MassaluovutusQueryEsiopetus(
+      paiva = LocalDate.of(2012, 1, 1),
+      organisaatioOid = Some(MockOrganisaatiot.jyväskylänNormaalikoulu),
+    )
 
-      "Kysely onnistuu ja palauttaa oikeat tiedostot" in {
-        val user = MockUsers.jyväskylänNormaalikoulunPalvelukäyttäjä
-        val queryId = addQuerySuccessfully(query.copy(organisaatioOid = Some(MockOrganisaatiot.jyväskylänNormaalikoulu)), user) { response =>
-          response.status should equal(QueryState.pending)
-          response.query.asInstanceOf[MassaluovutusQueryEsiopetus].organisaatioOid should contain(MockOrganisaatiot.jyväskylänNormaalikoulu)
-          response.queryId
-        }
-        val complete = waitForCompletion(queryId, user)
+    "Kysely onnistuu ja palauttaa oikeat tiedostot" in {
+      raporttiKyselyOnnistuu(query, MockUsers.jyväskylänNormaalikoulunPalvelukäyttäjä)
+    }
 
-        complete.files should have length 1
-        complete.files.foreach(verifyResult(_, user))
-
-        val raportitService = new RaportitService(app)
-        complete.sourceDataUpdatedAt.map(_.toLocalDateTime) should equal(Some(raportitService.viimeisinOpiskeluoikeuspäivitystenVastaanottoaika))
-      }
+    "Ei onnistu väärän organisaation tietoihin" in {
+      raporttiKyselyEiOnnistu(query, MockUsers.helsinkiKatselija)
     }
   }
 
   "Esiopetuksen oppijamäärät" - {
-    "Spreadsheet" - {
-      val query = MassaluovutusQueryEsiopetuksenOppijamaaratRaportti(
-        format = QueryFormat.xlsx,
-        paiva = LocalDate.of(2012, 1, 1),
-      )
+    val query = MassaluovutusQueryEsiopetuksenOppijamaaratRaportti(
+      paiva = LocalDate.of(2012, 1, 1),
+      organisaatioOid = Some(MockOrganisaatiot.jyväskylänNormaalikoulu),
+    )
 
-      "Kysely onnistuu ja palauttaa oikeat tiedostot" in {
-        val user = MockUsers.jyväskylänNormaalikoulunPalvelukäyttäjä
-        val queryId = addQuerySuccessfully(query.copy(organisaatioOid = Some(MockOrganisaatiot.jyväskylänNormaalikoulu)), user) { response =>
-          response.status should equal(QueryState.pending)
-          response.query.asInstanceOf[MassaluovutusQueryEsiopetuksenOppijamaaratRaportti].organisaatioOid should contain(MockOrganisaatiot.jyväskylänNormaalikoulu)
-          response.queryId
-        }
-        val complete = waitForCompletion(queryId, user)
+    "Kysely onnistuu ja palauttaa oikeat tiedostot" in {
+      raporttiKyselyOnnistuu(query, MockUsers.jyväskylänNormaalikoulunPalvelukäyttäjä)
+    }
 
-        complete.files should have length 1
-        complete.files.foreach(verifyResult(_, user))
-
-        val raportitService = new RaportitService(app)
-        complete.sourceDataUpdatedAt.map(_.toLocalDateTime) should equal(Some(raportitService.viimeisinOpiskeluoikeuspäivitystenVastaanottoaika))
-      }
+    "Ei onnistu väärän organisaation tietoihin" in {
+      raporttiKyselyEiOnnistu(query, MockUsers.helsinkiKatselija)
     }
   }
 
+  // Muut
+
   "Perusopetukseen valmistava opetus" - {
-    "Spreadsheet" - {
-      val query = MassaluovutusQueryPerusopetukseenValmistava(
-        format = QueryFormat.xlsx,
-        alku = LocalDate.of(2008, 1, 1),
-        loppu = LocalDate.of(2020, 1, 1),
-      )
+    val query = MassaluovutusQueryPerusopetukseenValmistava(
+      alku = LocalDate.of(2008, 1, 1),
+      loppu = LocalDate.of(2020, 1, 1),
+      organisaatioOid = Some(MockOrganisaatiot.jyväskylänNormaalikoulu),
+    )
 
-      "Kysely onnistuu ja palauttaa oikeat tiedostot" in {
-        val user = MockUsers.jyväskylänNormaalikoulunPalvelukäyttäjä
-        val queryId = addQuerySuccessfully(query.copy(organisaatioOid = Some(MockOrganisaatiot.jyväskylänNormaalikoulu)), user) { response =>
-          response.status should equal(QueryState.pending)
-          response.query.asInstanceOf[MassaluovutusQueryPerusopetukseenValmistava].organisaatioOid should contain(MockOrganisaatiot.jyväskylänNormaalikoulu)
-          response.queryId
-        }
-        val complete = waitForCompletion(queryId, user)
+    "Kysely onnistuu ja palauttaa oikeat tiedostot" in {
+      raporttiKyselyOnnistuu(query, MockUsers.jyväskylänNormaalikoulunPalvelukäyttäjä)
+    }
 
-        complete.files should have length 1
-        complete.files.foreach(verifyResult(_, user))
-
-        val raportitService = new RaportitService(app)
-        complete.sourceDataUpdatedAt.map(_.toLocalDateTime) should equal(Some(raportitService.viimeisinOpiskeluoikeuspäivitystenVastaanottoaika))
-      }
+    "Ei onnistu väärän organisaation tietoihin" in {
+      raporttiKyselyEiOnnistu(query, MockUsers.helsinkiKatselija)
     }
   }
 
   "TUVA perusopetuksen oppijamäärät" - {
-    "Spreadsheet" - {
-      val query = MassaluovutusQueryTuvaPerusopetuksenOppijamaaratRaportti(
-        format = QueryFormat.xlsx,
-        paiva = LocalDate.of(2022, 1, 1),
-      )
+    val query = MassaluovutusQueryTuvaPerusopetuksenOppijamaaratRaportti(
+      paiva = LocalDate.of(2022, 1, 1),
+      organisaatioOid = Some(MockOrganisaatiot.stadinAmmattiopisto),
+    )
 
-      "Kysely onnistuu ja palauttaa oikeat tiedostot" in {
-        val user = MockUsers.stadinAmmattiopistoPalvelukäyttäjä
-        val queryId = addQuerySuccessfully(query.copy(organisaatioOid = Some(MockOrganisaatiot.stadinAmmattiopisto)), user) { response =>
-          response.status should equal(QueryState.pending)
-          response.query.asInstanceOf[MassaluovutusQueryTuvaPerusopetuksenOppijamaaratRaportti].organisaatioOid should contain(MockOrganisaatiot.stadinAmmattiopisto)
-          response.queryId
-        }
-        val complete = waitForCompletion(queryId, user)
+    "Kysely onnistuu ja palauttaa oikeat tiedostot" in {
+      raporttiKyselyOnnistuu(query, MockUsers.stadinAmmattiopistoPalvelukäyttäjä)
+    }
 
-        complete.files should have length 1
-        complete.files.foreach(verifyResult(_, user))
-
-        val raportitService = new RaportitService(app)
-        complete.sourceDataUpdatedAt.map(_.toLocalDateTime) should equal(Some(raportitService.viimeisinOpiskeluoikeuspäivitystenVastaanottoaika))
-      }
+    "Ei onnistu väärän organisaation tietoihin" in {
+      raporttiKyselyEiOnnistu(query, MockUsers.jyväskylänNormaalikoulunPalvelukäyttäjä)
     }
   }
 
   "TUVA suoritustiedot" - {
-    "Spreadsheet" - {
-      val query = MassaluovutusQueryTuvaSuoritustiedot(
-        format = QueryFormat.xlsx,
-        alku = LocalDate.of(2021, 1, 1),
-        loppu = LocalDate.of(2025, 1, 1),
-      )
+    val query = MassaluovutusQueryTuvaSuoritustiedot(
+      alku = LocalDate.of(2021, 1, 1),
+      loppu = LocalDate.of(2025, 1, 1),
+      organisaatioOid = Some(MockOrganisaatiot.stadinAmmattiopisto),
+    )
 
-      "Kysely onnistuu ja palauttaa oikeat tiedostot" in {
-        val user = MockUsers.stadinAmmattiopistoPalvelukäyttäjä
-        val queryId = addQuerySuccessfully(query.copy(organisaatioOid = Some(MockOrganisaatiot.stadinAmmattiopisto)), user) { response =>
-          response.status should equal(QueryState.pending)
-          response.query.asInstanceOf[MassaluovutusQueryTuvaSuoritustiedot].organisaatioOid should contain(MockOrganisaatiot.stadinAmmattiopisto)
-          response.queryId
-        }
-        val complete = waitForCompletion(queryId, user)
+    "Kysely onnistuu ja palauttaa oikeat tiedostot" in {
+      raporttiKyselyOnnistuu(query, MockUsers.stadinAmmattiopistoPalvelukäyttäjä)
+    }
 
-        complete.files should have length 1
-        complete.files.foreach(verifyResult(_, user))
-
-        val raportitService = new RaportitService(app)
-        complete.sourceDataUpdatedAt.map(_.toLocalDateTime) should equal(Some(raportitService.viimeisinOpiskeluoikeuspäivitystenVastaanottoaika))
-      }
+    "Ei onnistu väärän organisaation tietoihin" in {
+      raporttiKyselyEiOnnistu(query, MockUsers.jyväskylänNormaalikoulunPalvelukäyttäjä)
     }
   }
 
   "IB-tutkinnon suoritustiedot" - {
-    "Spreadsheet" - {
-      val query = MassaluovutusQueryIBSuoritustiedot(
-        format = QueryFormat.xlsx,
-        alku = LocalDate.of(2012, 1, 1),
-        loppu = LocalDate.of(2025, 1, 1),
-        raportinTyyppi = "ibtutkinto",
-      )
+    val query = MassaluovutusQueryIBSuoritustiedot(
+      alku = LocalDate.of(2012, 1, 1),
+      loppu = LocalDate.of(2025, 1, 1),
+      raportinTyyppi = "ibtutkinto",
+      organisaatioOid = Some(MockOrganisaatiot.ressunLukio),
+    )
 
-      "Kysely onnistuu ja palauttaa oikeat tiedostot" in {
-        val user = MockUsers.paakayttaja
-        val queryId = addQuerySuccessfully(query.copy(organisaatioOid = Some(MockOrganisaatiot.ressunLukio)), user) { response =>
-          response.status should equal(QueryState.pending)
-          response.query.asInstanceOf[MassaluovutusQueryIBSuoritustiedot].organisaatioOid should contain(MockOrganisaatiot.ressunLukio)
-          response.queryId
-        }
-        val complete = waitForCompletion(queryId, user)
+    "Kysely onnistuu ja palauttaa oikeat tiedostot" in {
+      raporttiKyselyOnnistuu(query, MockUsers.paakayttaja)
+    }
 
-        complete.files should have length 1
-        complete.files.foreach(verifyResult(_, user))
-
-        val raportitService = new RaportitService(app)
-        complete.sourceDataUpdatedAt.map(_.toLocalDateTime) should equal(Some(raportitService.viimeisinOpiskeluoikeuspäivitystenVastaanottoaika))
-      }
+    "Ei onnistu väärän organisaation tietoihin" in {
+      raporttiKyselyEiOnnistu(query, MockUsers.stadinAmmattiopistoPalvelukäyttäjä)
     }
   }
 
   "Vapaan sivistystyön JOTPA" - {
-    "Spreadsheet" - {
-      val query = MassaluovutusQueryVSTJOTPA(
-        format = QueryFormat.xlsx,
-        alku = LocalDate.of(2022, 1, 1),
-        loppu = LocalDate.of(2025, 1, 1),
-      )
+    val query = MassaluovutusQueryVSTJOTPA(
+      alku = LocalDate.of(2022, 1, 1),
+      loppu = LocalDate.of(2025, 1, 1),
+      organisaatioOid = Some(MockOrganisaatiot.varsinaisSuomenKansanopisto),
+    )
 
-      "Kysely onnistuu ja palauttaa oikeat tiedostot" in {
-        val user = MockUsers.varsinaisSuomiPalvelukäyttäjä
-        val queryId = addQuerySuccessfully(query.copy(organisaatioOid = Some(MockOrganisaatiot.varsinaisSuomenKansanopisto)), user) { response =>
-          response.status should equal(QueryState.pending)
-          response.query.asInstanceOf[MassaluovutusQueryVSTJOTPA].organisaatioOid should contain(MockOrganisaatiot.varsinaisSuomenKansanopisto)
-          response.queryId
-        }
-        val complete = waitForCompletion(queryId, user)
+    "Kysely onnistuu ja palauttaa oikeat tiedostot" in {
+      raporttiKyselyOnnistuu(query, MockUsers.varsinaisSuomiPalvelukäyttäjä)
+    }
 
-        complete.files should have length 1
-        complete.files.foreach(verifyResult(_, user))
-
-        val raportitService = new RaportitService(app)
-        complete.sourceDataUpdatedAt.map(_.toLocalDateTime) should equal(Some(raportitService.viimeisinOpiskeluoikeuspäivitystenVastaanottoaika))
-      }
+    "Ei onnistu väärän organisaation tietoihin" in {
+      raporttiKyselyEiOnnistu(query, MockUsers.stadinAmmattiopistoPalvelukäyttäjä)
     }
   }
 
   "Muu kuin säännelty koulutus" - {
-    "Spreadsheet" - {
-      val query = MassaluovutusQueryMuuKuinSaanneltyKoulutus(
-        format = QueryFormat.xlsx,
-        alku = LocalDate.of(2022, 1, 1),
-        loppu = LocalDate.of(2025, 1, 1),
-      )
+    val query = MassaluovutusQueryMuuKuinSaanneltyKoulutus(
+      alku = LocalDate.of(2022, 1, 1),
+      loppu = LocalDate.of(2025, 1, 1),
+      organisaatioOid = Some(MockOrganisaatiot.MuuKuinSäänneltyKoulutusToimija.oppilaitos),
+    )
 
-      "Kysely onnistuu ja palauttaa oikeat tiedostot" in {
-        val user = MockUsers.muuKuinSäänneltyKoulutusYritys
-        val queryId = addQuerySuccessfully(query.copy(organisaatioOid = Some(MockOrganisaatiot.MuuKuinSäänneltyKoulutusToimija.oppilaitos)), user) { response =>
-          response.status should equal(QueryState.pending)
-          response.query.asInstanceOf[MassaluovutusQueryMuuKuinSaanneltyKoulutus].organisaatioOid should contain(MockOrganisaatiot.MuuKuinSäänneltyKoulutusToimija.oppilaitos)
-          response.queryId
-        }
-        val complete = waitForCompletion(queryId, user)
+    "Kysely onnistuu ja palauttaa oikeat tiedostot" in {
+      raporttiKyselyOnnistuu(query, MockUsers.muuKuinSäänneltyKoulutusYritys)
+    }
 
-        complete.files should have length 1
-        complete.files.foreach(verifyResult(_, user))
-
-        val raportitService = new RaportitService(app)
-        complete.sourceDataUpdatedAt.map(_.toLocalDateTime) should equal(Some(raportitService.viimeisinOpiskeluoikeuspäivitystenVastaanottoaika))
-      }
+    "Ei onnistu väärän organisaation tietoihin" in {
+      raporttiKyselyEiOnnistu(query, MockUsers.stadinAmmattiopistoPalvelukäyttäjä)
     }
   }
 
   "Lukioon valmistavan koulutuksen opiskelijamäärät" - {
-    "Spreadsheet" - {
-      val query = MassaluovutusQueryLuvaOpiskelijamaarat(
-        format = QueryFormat.xlsx,
-        paiva = LocalDate.of(2016, 1, 1),
-      )
+    val query = MassaluovutusQueryLuvaOpiskelijamaarat(
+      paiva = LocalDate.of(2016, 1, 1),
+      organisaatioOid = Some(MockOrganisaatiot.ressunLukio),
+    )
 
-      "Kysely onnistuu ja palauttaa oikeat tiedostot" in {
-        val user = MockUsers.paakayttaja
-        val queryId = addQuerySuccessfully(query.copy(organisaatioOid = Some(MockOrganisaatiot.ressunLukio)), user) { response =>
-          response.status should equal(QueryState.pending)
-          response.query.asInstanceOf[MassaluovutusQueryLuvaOpiskelijamaarat].organisaatioOid should contain(MockOrganisaatiot.ressunLukio)
-          response.queryId
-        }
-        val complete = waitForCompletion(queryId, user)
+    "Kysely onnistuu ja palauttaa oikeat tiedostot" in {
+      raporttiKyselyOnnistuu(query, MockUsers.paakayttaja)
+    }
 
-        complete.files should have length 1
-        complete.files.foreach(verifyResult(_, user))
-
-        val raportitService = new RaportitService(app)
-        complete.sourceDataUpdatedAt.map(_.toLocalDateTime) should equal(Some(raportitService.viimeisinOpiskeluoikeuspäivitystenVastaanottoaika))
-      }
+    "Ei onnistu väärän organisaation tietoihin" in {
+      raporttiKyselyEiOnnistu(query, MockUsers.stadinAmmattiopistoPalvelukäyttäjä)
     }
   }
 
   "Perusopetuksen lisäopetuksen oppijamäärät" - {
-    "Spreadsheet" - {
-      val query = MassaluovutusQueryPerusopetuksenLisaopetuksenOppijamaaratRaportti(
-        format = QueryFormat.xlsx,
-        paiva = LocalDate.of(2012, 1, 1),
-      )
+    val query = MassaluovutusQueryPerusopetuksenLisaopetuksenOppijamaaratRaportti(
+      paiva = LocalDate.of(2012, 1, 1),
+      organisaatioOid = Some(MockOrganisaatiot.jyväskylänNormaalikoulu),
+    )
 
-      "Kysely onnistuu ja palauttaa oikeat tiedostot" in {
-        val user = MockUsers.jyväskylänNormaalikoulunPalvelukäyttäjä
-        val queryId = addQuerySuccessfully(query.copy(organisaatioOid = Some(MockOrganisaatiot.jyväskylänNormaalikoulu)), user) { response =>
-          response.status should equal(QueryState.pending)
-          response.query.asInstanceOf[MassaluovutusQueryPerusopetuksenLisaopetuksenOppijamaaratRaportti].organisaatioOid should contain(MockOrganisaatiot.jyväskylänNormaalikoulu)
-          response.queryId
-        }
-        val complete = waitForCompletion(queryId, user)
+    "Kysely onnistuu ja palauttaa oikeat tiedostot" in {
+      raporttiKyselyOnnistuu(query, MockUsers.jyväskylänNormaalikoulunPalvelukäyttäjä)
+    }
 
-        complete.files should have length 1
-        complete.files.foreach(verifyResult(_, user))
-
-        val raportitService = new RaportitService(app)
-        complete.sourceDataUpdatedAt.map(_.toLocalDateTime) should equal(Some(raportitService.viimeisinOpiskeluoikeuspäivitystenVastaanottoaika))
-      }
+    "Ei onnistu väärän organisaation tietoihin" in {
+      raporttiKyselyEiOnnistu(query, MockUsers.helsinkiKatselija)
     }
   }
 }
