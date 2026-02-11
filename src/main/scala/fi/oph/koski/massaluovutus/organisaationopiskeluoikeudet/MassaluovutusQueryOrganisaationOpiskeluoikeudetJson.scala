@@ -1,21 +1,21 @@
 package fi.oph.koski.massaluovutus.organisaationopiskeluoikeudet
 
 import fi.oph.koski.config.KoskiApplication
-import fi.oph.koski.db.{KoskiOpiskeluoikeusRow, KoskiTables}
+import fi.oph.koski.db.{KoskiOpiskeluoikeusRow, KoskiTables, QueryMethods}
 import fi.oph.koski.koskiuser.KoskiSpecificSession
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.massaluovutus.MassaluovutusUtils.QueryResourceManager
 import fi.oph.koski.massaluovutus.{MassaluovutusException, QueryFormat, QueryResultWriter}
 import fi.oph.koski.schema.Organisaatio.Oid
 import fi.oph.koski.schema.annotation.EnumValues
-import fi.oph.koski.schema.{KoskeenTallennettavaOpiskeluoikeus, KoskiSchema, Oppija, Organisaatio}
+import fi.oph.koski.schema.{Henkilö, KoskeenTallennettavaOpiskeluoikeus, KoskiSchema, Organisaatio, TäydellisetHenkilötiedot}
 import fi.oph.scalaschema.annotation.{Description, Title}
 
 import java.time.{LocalDate, LocalDateTime}
 
 @Title("(JSON)")
 @Description("Tulostiedostot sisältävät tiedot json-muodossa. Jokaista oppijaa kohden luodaan oma tiedostonsa, jonka alle opiskeluoikeudet on ryhmitelty.")
-@Description("Tiedostojen sisältö vastaa opintohallintojärjestelmille tarkoitettua rajapintaa GET /koski/api/oppija/{oid}")
+@Description("Tiedostojen sisältö vastaa pääosin opintohallintojärjestelmille tarkoitettua rajapintaa GET /koski/api/oppija/{oid}, mutta sisältää lisäksi oppijaMasterOid-kentän.")
 case class MassaluovutusQueryOrganisaationOpiskeluoikeudetJson(
   `type`: String = "organisaationOpiskeluoikeudet",
   @EnumValues(Set(QueryFormat.json))
@@ -42,8 +42,14 @@ case class MassaluovutusQueryOrganisaationOpiskeluoikeudetJson(
     val oppijaOids = getOppijaOids(db, filters)
 
     forEachOpiskeluoikeusAndHenkilö(application, filters, oppijaOids) { (henkilö, opiskeluoikeudet) =>
-      writer.putJson(henkilö.oid, Oppija(
+      val masterOid = QueryMethods.runDbSync(
+        application.henkilöCache.db,
+        application.henkilöCache.getCachedAction(henkilö.oid)
+      ).flatMap(_.henkilöRow.masterOid).getOrElse(henkilö.oid)
+
+      writer.putJson(henkilö.oid, MassaluovutusOppija(
         henkilö = application.henkilöRepository.oppijaHenkilöToTäydellisetHenkilötiedot(henkilö),
+        oppijaMasterOid = masterOid,
         opiskeluoikeudet = opiskeluoikeudet.flatMap(toKoskeenTallennettavaOpiskeluoikeus(application)),
       ))
     }
@@ -59,6 +65,12 @@ case class MassaluovutusQueryOrganisaationOpiskeluoikeudetJson(
     }
   }
 }
+
+case class MassaluovutusOppija(
+  henkilö: TäydellisetHenkilötiedot,
+  oppijaMasterOid: Henkilö.Oid,
+  opiskeluoikeudet: Seq[KoskeenTallennettavaOpiskeluoikeus],
+)
 
 object QueryOrganisaationOpiskeluoikeudetJsonDocumentation {
   def example = MassaluovutusQueryOrganisaationOpiskeluoikeudetJson(
