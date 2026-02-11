@@ -11,59 +11,79 @@ class KielitutkintotodistusTiedoteService(application: KoskiApplication) extends
   private val client = application.tiedotuspalveluClient
   private val maxAttempts = application.config.getInt("tiedote.maxAttempts")
 
-  def hasNext: Boolean = repository.findNextEligible.isDefined
+  def processAll(): Int = {
+    timed("processAll", thresholdMs = 0) {
+      val eligible = repository.findAllEligible
+      eligible.foreach { case (opiskeluoikeusOid, oppijaOid) =>
+        processOne(opiskeluoikeusOid, oppijaOid)
+      }
+      logger.info(s"processAll valmis: käsitelty ${eligible.size} tiedotetta")
+      eligible.size
+    }
+  }
 
   def processNext(): Unit = {
     repository.findNextEligible.foreach { case (opiskeluoikeusOid, oppijaOid) =>
-      timed("processNext", thresholdMs = 0) {
-        logger.info(s"Lähetetään tiedote: oppija=$oppijaOid oo=$opiskeluoikeusOid")
+      processOne(opiskeluoikeusOid, oppijaOid)
+    }
+  }
 
-        val (state, error) = client.sendKielitutkintoTodistusTiedote(oppijaOid, opiskeluoikeusOid) match {
-          case Right(()) =>
-            (KielitutkintotodistusTiedoteState.COMPLETED, None)
-          case Left(err) =>
-            (KielitutkintotodistusTiedoteState.ERROR, Some(err.toString))
-        }
+  private def processOne(opiskeluoikeusOid: String, oppijaOid: String): Unit = {
+    logger.info(s"Lähetetään tiedote: oppija=$oppijaOid oo=$opiskeluoikeusOid")
 
-        val job = KielitutkintotodistusTiedoteJob(
-          id = UUID.randomUUID().toString,
-          oppijaOid = oppijaOid,
-          opiskeluoikeusOid = opiskeluoikeusOid,
-          state = state,
-          worker = Some(repository.workerId),
-          attempts = 1,
-          error = error
-        )
+    val (state, error) = client.sendKielitutkintoTodistusTiedote(oppijaOid, opiskeluoikeusOid) match {
+      case Right(()) =>
+        (KielitutkintotodistusTiedoteState.COMPLETED, None)
+      case Left(err) =>
+        (KielitutkintotodistusTiedoteState.ERROR, Some(err.toString))
+    }
 
-        try {
-          repository.add(job)
-          if (state == KielitutkintotodistusTiedoteState.COMPLETED) {
-            logger.info(s"Tiedote lähetetty: oo=$opiskeluoikeusOid")
-          } else {
-            logger.error(s"Tiedotteen lähetys epäonnistui: oo=$opiskeluoikeusOid virhe=${error.getOrElse("")}")
-          }
-        } catch {
-          case _: org.postgresql.util.PSQLException =>
-            logger.info(s"Tiedote on jo olemassa opiskeluoikeudelle $opiskeluoikeusOid, ohitetaan")
-        }
+    val job = KielitutkintotodistusTiedoteJob(
+      id = UUID.randomUUID().toString,
+      oppijaOid = oppijaOid,
+      opiskeluoikeusOid = opiskeluoikeusOid,
+      state = state,
+      worker = Some(repository.workerId),
+      attempts = 1,
+      error = error
+    )
+
+    try {
+      repository.add(job)
+      if (state == KielitutkintotodistusTiedoteState.COMPLETED) {
+        logger.info(s"Tiedote lähetetty: oo=$opiskeluoikeusOid")
+      } else {
+        logger.error(s"Tiedotteen lähetys epäonnistui: oo=$opiskeluoikeusOid virhe=${error.getOrElse("")}")
       }
+    } catch {
+      case _: org.postgresql.util.PSQLException =>
+        logger.info(s"Tiedote on jo olemassa opiskeluoikeudelle $opiskeluoikeusOid, ohitetaan")
+    }
+  }
+
+  def retryAllFailed(): Int = {
+    timed("retryAllFailed", thresholdMs = 0) {
+      val retryable = repository.findAllRetryable(maxAttempts)
+      retryable.foreach(retryOne)
+      logger.info(s"retryAllFailed valmis: käsitelty ${retryable.size} uudelleenyritystä")
+      retryable.size
     }
   }
 
   def retryFailed(): Unit = {
-    repository.findNextRetryable(maxAttempts).foreach { job =>
-      timed("retryFailed", thresholdMs = 0) {
-        logger.info(s"Yritetään tiedotetta uudelleen: job=${job.id} yritys=${job.attempts}/$maxAttempts")
+    repository.findNextRetryable(maxAttempts).foreach(retryOne)
+  }
 
-        client.sendKielitutkintoTodistusTiedote(job.oppijaOid, job.opiskeluoikeusOid) match {
-          case Right(()) =>
-            repository.setCompleted(job.id)
-            logger.info(s"Tiedote lähetetty uudelleenyrityksellä: job=${job.id}")
-          case Left(error) =>
-            repository.setFailed(job.id, error.toString)
-            logger.error(s"Tiedotteen uudelleenyritys epäonnistui: job=${job.id} yritys=${job.attempts}/$maxAttempts virhe=$error")
-        }
-      }
+  private def retryOne(job: KielitutkintotodistusTiedoteJob): Unit = {
+    logger.info(s"Yritetään tiedotetta uudelleen: job=${job.id} yritys=${job.attempts}/$maxAttempts")
+
+    client.sendKielitutkintoTodistusTiedote(job.oppijaOid, job.opiskeluoikeusOid) match {
+      case Right(()) =>
+        repository.setCompleted(job.id)
+        logger.info(s"Tiedote lähetetty uudelleenyrityksellä: job=${job.id}")
+      case Left(error) =>
+        repository.setFailed(job.id, error.toString)
+        logger.error(s"Tiedotteen uudelleenyritys epäonnistui: job=${job.id} yritys=${job.attempts}/$maxAttempts virhe=$error")
     }
   }
 }

@@ -2,7 +2,7 @@ package fi.oph.koski.todistus.tiedote
 
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.log.Logging
-import fi.oph.koski.schedule.{IntervalSchedule, Scheduler, WorkerLeaseElector}
+import fi.oph.koski.schedule.{FixedTimeOfDaySchedule, IntervalSchedule, Scheduler, WorkerLeaseElector}
 import org.json4s.JValue
 
 class KielitutkintotodistusTiedoteScheduler(application: KoskiApplication) extends Logging {
@@ -27,12 +27,21 @@ class KielitutkintotodistusTiedoteScheduler(application: KoskiApplication) exten
       onLost = _ => logger.warn(s"Lost kielitutkintotodistus-tiedote lease (workerId: ${application.kielitutkintotodistusTiedoteRepository.workerId})")
     )
 
+    val schedule = if (application.config.hasPath("tiedote.checkInterval")) {
+      new IntervalSchedule(application.config.getDuration("tiedote.checkInterval"))
+    } else {
+      new FixedTimeOfDaySchedule(
+        application.config.getInt("tiedote.schedule.hour"),
+        application.config.getInt("tiedote.schedule.minute")
+      )
+    }
+
     schedulerInstance = Some(new Scheduler(
       schedulerDb,
       schedulerName,
-      new IntervalSchedule(application.config.getDuration("tiedote.checkInterval")),
+      schedule,
       None,
-      runNext,
+      runBatch,
       runOnSingleNode = false,
       intervalMillis = 1000,
       config = application.config
@@ -45,10 +54,10 @@ class KielitutkintotodistusTiedoteScheduler(application: KoskiApplication) exten
     leaseElector.shutdown()
   }
 
-  private def runNext(_context: Option[JValue]): Option[JValue] = {
+  private def runBatch(_context: Option[JValue]): Option[JValue] = {
     if (isWorker) {
-      tiedoteService.processNext()
-      tiedoteService.retryFailed()
+      tiedoteService.processAll()
+      tiedoteService.retryAllFailed()
     }
 
     None
