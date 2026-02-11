@@ -11,9 +11,7 @@ import java.time.LocalDateTime
 
 class KielitutkintotodistusTiedoteRepository(val db: DB, val workerId: String, config: Config) extends QueryMethods with Logging with DatabaseConverters {
 
-  private val tableName = "kielitutkintotodistus_tiedote_job"
-
-  def findNextEligible: Option[(String, String)] = {
+  def findAllEligible: Seq[(String, String)] = {
     runDbSync(sql"""
       SELECT oo.oid, oo.oppija_oid
       FROM opiskeluoikeus oo
@@ -27,9 +25,11 @@ class KielitutkintotodistusTiedoteRepository(val db: DB, val workerId: String, c
           WHERE tj.opiskeluoikeus_oid = oo.oid
         )
       ORDER BY oo.aikaleima
-      LIMIT 1
-      """.as[(String, String)]
-    ).headOption
+      """.as[(String, String)])
+  }
+
+  def findNextEligible: Option[(String, String)] = {
+    findAllEligible.headOption
   }
 
   def add(job: KielitutkintotodistusTiedoteJob): KielitutkintotodistusTiedoteJob = {
@@ -68,15 +68,18 @@ class KielitutkintotodistusTiedoteRepository(val db: DB, val workerId: String, c
       WHERE id = ${id}::uuid
       """.asUpdate) != 0
 
-  def findNextRetryable(maxAttempts: Int): Option[KielitutkintotodistusTiedoteJob] = {
+  def findAllRetryable(maxAttempts: Int): Seq[KielitutkintotodistusTiedoteJob] = {
     runDbSync(sql"""
       SELECT *
       FROM kielitutkintotodistus_tiedote_job
       WHERE state = ${KielitutkintotodistusTiedoteState.ERROR}
         AND attempts < $maxAttempts
       ORDER BY created_at
-      LIMIT 1
-      """.as[KielitutkintotodistusTiedoteJob]).headOption
+      """.as[KielitutkintotodistusTiedoteJob])
+  }
+
+  def findNextRetryable(maxAttempts: Int): Option[KielitutkintotodistusTiedoteJob] = {
+    findAllRetryable(maxAttempts).headOption
   }
 
   def countByState: Map[String, Int] = {
