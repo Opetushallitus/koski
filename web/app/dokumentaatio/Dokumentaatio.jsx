@@ -122,13 +122,6 @@ const dokumentaatioContentP = (location, contentP) =>
           )}
 
           {naviLink(
-            '/koski/dokumentaatio/rajapinnat/massaluovutus/koulutuksenjarjestajat',
-            'Massaluovutusrajapinnat koulutuksenjärjestäjille',
-            location,
-            ''
-          )}
-
-          {naviLink(
             '/koski/dokumentaatio/rajapinnat/massaluovutus/oph',
             'Rajapinnat Opetushallituksen palveluille',
             location,
@@ -136,8 +129,22 @@ const dokumentaatioContentP = (location, contentP) =>
           )}
 
           {naviLink(
+            '/koski/dokumentaatio/rajapinnat/massaluovutus/koulutuksenjarjestajat',
+            'Massaluovutusrajapinnat koulutuksenjärjestäjille',
+            location,
+            ''
+          )}
+
+          {naviLink(
             '/koski/dokumentaatio/rajapinnat/massaluovutus/valpas',
             'Massaluovutusrajapinnat oppivelvollisuuden valvontaan',
+            location,
+            ''
+          )}
+
+          {naviLink(
+            '/koski/dokumentaatio/rajapinnat/massaluovutus/raportit',
+            'Raporttien lataaminen palvelukäyttäjänä',
             location,
             ''
           )}
@@ -314,7 +321,8 @@ export const dokumentaatioKyselytP = (path) => {
   const sections = {
     koulutuksenjarjestajat: 'massaluovutus_koulutuksenjarjestajat',
     oph: 'massaluovutus_oph',
-    valpas: 'massaluovutus_valpas'
+    valpas: 'massaluovutus_valpas',
+    raportit: 'massaluovutus_raportit'
   }
   const match = Object.keys(sections).find((key) =>
     path.includes(`${basePath}/${key}`)

@@ -7,6 +7,7 @@ import fi.oph.koski.log.Logging
 import fi.oph.koski.massaluovutus.luokallejaaneet.MassaluovutusQueryLuokalleJaaneetExamples
 import fi.oph.koski.massaluovutus.organisaationopiskeluoikeudet.{QueryOrganisaationOpiskeluoikeudetCsvDocumentation, QueryOrganisaationOpiskeluoikeudetJsonDocumentation}
 import fi.oph.koski.massaluovutus.paallekkaisetopiskeluoikeudet.QueryPaallekkaisetOpiskeluoikeudetDocumentation
+import fi.oph.koski.massaluovutus.raportit.{QueryAikuistenPerusopetuksenKurssikertymaDocumentation, QueryAikuistenPerusopetuksenOppijamaaratRaporttiDocumentation, QueryAikuistenPerusopetusSuoritustiedotDocumentation, QueryAmmatillinenOpiskelijavuositiedotDocumentation, QueryAmmatillinenOsittainenSuoritustiedotDocumentation, QueryAmmatillinenTutkintoSuoritustiedotDocumentation, QueryEsiopetuksenOppijamaaratRaporttiDocumentation, QueryEsiopetusDocumentation, QueryIBSuoritustiedotDocumentation, QueryLukio2019OpintopistekertymatDocumentation, QueryLukio2019SuoritustiedotDocumentation, QueryLukioDiaIbInternationalESHOpiskelijamaaratDocumentation, QueryLukioKurssikertymatDocumentation, QueryLukionSuoritustiedotDocumentation, QueryLuvaOpiskelijamaaratDocumentation, QueryMuuAmmatillinenDocumentation, QueryMuuKuinSaanneltyKoulutusDocumentation, QueryPerusopetukseenValmistavaDocumentation, QueryPerusopetuksenLisaopetuksenOppijamaaratRaporttiDocumentation, QueryPerusopetuksenOppijamaaratRaporttiDocumentation, QueryPerusopetuksenVuosiluokkaDocumentation, QueryTOPKSAmmatillinenDocumentation, QueryTuvaPerusopetuksenOppijamaaratRaporttiDocumentation, QueryTuvaSuoritustiedotDocumentation, QueryVSTJOTPADocumentation}
 import fi.oph.koski.massaluovutus.valintalaskenta.ValintalaskentaQueryDocumentation
 import fi.oph.koski.massaluovutus.valpas.ValpasMassaluovutusQueryParameters
 import fi.oph.koski.massaluovutus.valpas.eioppivelvollisuuttasuorittavat.ValpasEiOppivelvollisuuttaSuorittavatQueryDocumentation
@@ -44,6 +45,7 @@ object QueryDocumentation extends Logging {
 
   private val sectionSources = Map(
     "massaluovutus_koulutuksenjarjestajat" -> "documentation/massaluovutus-koulutuksenjarjestajille.md",
+    "massaluovutus_raportit" -> "documentation/massaluovutus-raportit.md",
     "massaluovutus_oph" -> "documentation/massaluovutus-oph.md",
     "massaluovutus_valpas" -> "documentation/massaluovutus-valpas.md"
   )
@@ -200,8 +202,6 @@ object QueryExamples {
   def jsonByName(application: KoskiApplication, name: String): Option[String] = name match {
     case "OrganisaationOpiskeluoikeudetCsv" => asJson(QueryOrganisaationOpiskeluoikeudetCsvDocumentation.example)
     case "OrganisaationOpiskeluoikeudetJson" => asJson(QueryOrganisaationOpiskeluoikeudetJsonDocumentation.example)
-    case "PaallekkaisetOpiskeluoikeudetCsv" => asJson(QueryPaallekkaisetOpiskeluoikeudetDocumentation.csvExample)
-    case "PaallekkaisetOpiskeluoikeudetXlsx" => asJson(QueryPaallekkaisetOpiskeluoikeudetDocumentation.xlsxExample)
     case "PendingQueryResponse" => asJson(pendingQuery(
       QueryOrganisaationOpiskeluoikeudetCsvDocumentation.example,
       application.config.getString("koski.root.url"),
@@ -267,6 +267,33 @@ object QueryExamples {
       List.empty,
       application.config.getString("koski.root.url") + "/valpas",
     ))
+    case "PaallekkaisetOpiskeluoikeudetCsv" => asJson(QueryPaallekkaisetOpiskeluoikeudetDocumentation.csvExample)
+    case "AmmatillinenOpiskelijavuositiedotXlsx" => asJson(QueryAmmatillinenOpiskelijavuositiedotDocumentation.xlsxExample)
+    case "AmmatillinenTutkintoSuoritustiedotXlsx" => asJson(QueryAmmatillinenTutkintoSuoritustiedotDocumentation.xlsxExample)
+    case "AmmatillinenOsittainenSuoritustiedotXlsx" => asJson(QueryAmmatillinenOsittainenSuoritustiedotDocumentation.xlsxExample)
+    case "LukionSuoritustiedotXlsx" => asJson(QueryLukionSuoritustiedotDocumentation.xlsxExample)
+    case "Lukio2019SuoritustiedotXlsx" => asJson(QueryLukio2019SuoritustiedotDocumentation.xlsxExample)
+    case "LukioKurssikertymatXlsx" => asJson(QueryLukioKurssikertymatDocumentation.xlsxExample)
+    case "Lukio2019OpintopistekertymatXlsx" => asJson(QueryLukio2019OpintopistekertymatDocumentation.xlsxExample)
+    case "LukioDiaIbInternationalESHOpiskelijamaaratXlsx" => asJson(QueryLukioDiaIbInternationalESHOpiskelijamaaratDocumentation.xlsxExample)
+    case "MuuAmmatillinenXlsx" => asJson(QueryMuuAmmatillinenDocumentation.xlsxExample)
+    case "PaallekkaisetOpiskeluoikeudetXlsx" => asJson(QueryPaallekkaisetOpiskeluoikeudetDocumentation.xlsxExample)
+    case "TOPKSAmmatillinenXlsx" => asJson(QueryTOPKSAmmatillinenDocumentation.xlsxExample)
+    case "PerusopetuksenVuosiluokkaXlsx" => asJson(QueryPerusopetuksenVuosiluokkaDocumentation.xlsxExample)
+    case "AikuistenPerusopetusSuoritustiedotXlsx" => asJson(QueryAikuistenPerusopetusSuoritustiedotDocumentation.xlsxExample)
+    case "AikuistenPerusopetuksenOppijamaaratRaporttiXlsx" => asJson(QueryAikuistenPerusopetuksenOppijamaaratRaporttiDocumentation.xlsxExample)
+    case "AikuistenPerusopetuksenKurssikertymaXlsx" => asJson(QueryAikuistenPerusopetuksenKurssikertymaDocumentation.xlsxExample)
+    case "PerusopetuksenOppijamaaratRaporttiXlsx" => asJson(QueryPerusopetuksenOppijamaaratRaporttiDocumentation.xlsxExample)
+    case "EsiopetusXlsx" => asJson(QueryEsiopetusDocumentation.xlsxExample)
+    case "EsiopetuksenOppijamaaratRaporttiXlsx" => asJson(QueryEsiopetuksenOppijamaaratRaporttiDocumentation.xlsxExample)
+    case "PerusopetukseenValmistavaXlsx" => asJson(QueryPerusopetukseenValmistavaDocumentation.xlsxExample)
+    case "TuvaPerusopetuksenOppijamaaratRaporttiXlsx" => asJson(QueryTuvaPerusopetuksenOppijamaaratRaporttiDocumentation.xlsxExample)
+    case "TuvaSuoritustiedotXlsx" => asJson(QueryTuvaSuoritustiedotDocumentation.xlsxExample)
+    case "IBSuoritustiedotXlsx" => asJson(QueryIBSuoritustiedotDocumentation.xlsxExample)
+    case "VSTJOTPAXlsx" => asJson(QueryVSTJOTPADocumentation.xlsxExample)
+    case "MuuKuinSaanneltyKoulutusXlsx" => asJson(QueryMuuKuinSaanneltyKoulutusDocumentation.xlsxExample)
+    case "LuvaOpiskelijamaaratXlsx" => asJson(QueryLuvaOpiskelijamaaratDocumentation.xlsxExample)
+    case "PerusopetuksenLisaopetuksenOppijamaaratRaporttiXlsx" => asJson(QueryPerusopetuksenLisaopetuksenOppijamaaratRaporttiDocumentation.xlsxExample)
     case _ => None
   }
 
