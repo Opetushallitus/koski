@@ -82,4 +82,6 @@ case class EnumValues(values: Set[String]) extends RepresentationalMetadata {
   }
 }
 
-case class AllowKoulutustoimijaOidAsOppilaitos() extends RepresentationalMetadata
+case class MapKoulutustoimijaOidToTuntematonOppilaitos() extends RepresentationalMetadata
+case class MapOidOrganisaatioToOppilaitos() extends RepresentationalMetadata
+case class MapOidOrganisaatioToKoulutustoimija() extends RepresentationalMetadata

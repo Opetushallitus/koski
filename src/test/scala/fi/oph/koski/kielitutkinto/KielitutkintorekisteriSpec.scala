@@ -3,14 +3,14 @@ package fi.oph.koski.kielitutkinto
 import fi.oph.koski.api.misc.PutOpiskeluoikeusTestMethods
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api.actionBasedSQLInterpolation
 import fi.oph.koski.db.QueryMethods.runDbSync
-import fi.oph.koski.documentation.ExamplesKielitutkinto.{Opiskeluoikeusjakso, tutkinnonOsa}
-import fi.oph.koski.documentation.ExamplesKielitutkinto.YleisetKielitutkinnot.tutkinnonOsaMonellaArvioinnilla
+import fi.oph.koski.documentation.ExamplesKielitutkinto.{Opiskeluoikeusjakso, YleisetKielitutkinnot, exampleHenkilö, tutkinnonOsa}
 import fi.oph.koski.documentation.{ExamplesKielitutkinto, ExamplesLukio}
 import fi.oph.koski.henkilo.{KoskiSpecificMockOppijat, LaajatOppijaHenkilöTiedot}
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.koskiuser.{KoskiMockUser, KoskiSpecificSession, MockUsers}
 import fi.oph.koski.oppija.{HenkilönOpiskeluoikeusVersiot, OppijaServletOppijaAdder}
+import fi.oph.koski.organisaatio.{MockOrganisaatiot, Opetushallitus}
 import fi.oph.koski.schema._
 import fi.oph.koski.util.WithWarnings
 import fi.oph.koski.{KoskiApplicationForTests, KoskiHttpSpec}
@@ -49,13 +49,24 @@ class KielitutkintorekisteriSpec
     "pystyy lukemaan kielitutkinnon opiskeluoikeuden" in { canRead(ExamplesKielitutkinto.exampleMockOppija) }
   }
 
-  "Oppilaitoksen tavallisella palvelukäyttäjätunnuksella" - {
+  "Järjestäjäoppilaitoksen palvelukäyttäjätunnuksella" - {
     implicit val session: KoskiSpecificSession = MockUsers.varsinaisSuomiPalvelukäyttäjä.toKoskiSpecificSession(KoskiApplicationForTests.käyttöoikeusRepository)
-    val otherSession: KoskiSpecificSession = MockUsers.omniaPalvelukäyttäjä.toKoskiSpecificSession(KoskiApplicationForTests.käyttöoikeusRepository)
 
-    "pystyy kirjoittamaan kielitutkinnon opiskeluoikeuksia" in { canWrite(kielitutkinnonOpiskeluoikeus) }
-    "pystyy lukemaan oman organisaation kielitutkinnon opiskeluoikeuksia" in { canRead(ExamplesKielitutkinto.exampleMockOppija) }
-    "ei pysty lukemaan muiden kielitutkinnon opiskeluoikeuksia" in { cannotRead(ExamplesKielitutkinto.exampleMockOppija, s"Oppijaa ${ExamplesKielitutkinto.exampleMockOppija.oid} ei löydy tai käyttäjällä ei ole oikeuksia tietojen katseluun.")(otherSession) }
+    "ei pysty kirjoittamaan kielitutkinnon opiskeluoikeuksia, jos oppilaitos on null" in { cannotWrite(kielitutkinnonOpiskeluoikeus, s"Ei oikeuksia organisatioon ${Opetushallitus.organisaatioOid}") }
+    "ei pysty kirjoittamaan kielitutkinnon opiskeluoikeuksia, jos oppilaitos on määritelty" in {
+      val oo = YleisetKielitutkinnot.opiskeluoikeus(LocalDate.of(2011, 1, 1), "FI", "kt")
+      val oo2 = oo.copy(
+        oppilaitos = Some(Oppilaitos(MockOrganisaatiot.varsinaisSuomenKansanopisto)),
+        suoritukset = oo.suoritukset.map(_.asInstanceOf[YleisenKielitutkinnonSuoritus].copy(
+          toimipiste = OidOrganisaatio(MockOrganisaatiot.varsinaisSuomenKansanopistoToimipiste),
+          järjestäjä = OidOrganisaatio(MockOrganisaatiot.varsinaisSuomenKansanopistoToimipiste),
+        ))
+      )
+      val oppija = Oppija(exampleHenkilö.copy(hetu = "160586-873P"), Seq(oo2))
+
+      cannotWrite(jsonOf(oppija), s"Yleisen kielitutkinnon opiskeluoikeuden voi tallentaa vain organisaatioille: 1.2.246.562.10.00000000001")
+    }
+    "ei pysty lukemaan oman organisaation kielitutkinnon opiskeluoikeuksia" in { cannotRead(ExamplesKielitutkinto.exampleMockOppija, s"Oppijaa ${ExamplesKielitutkinto.exampleMockOppija.oid} ei löydy tai käyttäjällä ei ole oikeuksia tietojen katseluun.") }
   }
 
   "Raportointikanta" - {

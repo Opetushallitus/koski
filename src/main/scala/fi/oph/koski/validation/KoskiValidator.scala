@@ -330,7 +330,12 @@ class KoskiValidator(
       case ytrOo: YlioppilastutkinnonOpiskeluoikeus if ytrOo.oppilaitos.isEmpty =>
         // YO-tutkinnon opiskeluoikeudella ei ole oppilaitosta, koska sen myöntää koulutustoimijana toimiva ylioppilastutkintolautakunta
         Right(oo)
-      case kituOo: KielitutkinnonOpiskeluoikeus if kituOo.oppilaitos.isEmpty && kituOo.isOphValtionhallinnonKielitutkinto =>
+      case kituOo: KielitutkinnonOpiskeluoikeus if kituOo.oppilaitos.isEmpty && kituOo.isYleinenKielitutkinto =>
+        // Yleisen kielitutkinnon organisaatio koulutustoimijaksi, oppilaitokseksi ja toimipisteeksi on OPH.
+        Right(kituOo.copy(oppilaitos = organisaatioRepository.getRootOrganisaatio.map { oph =>
+          Oppilaitos(oid = oph.oid, nimi = oph.nimi)
+        }))
+      case kituOo: KielitutkinnonOpiskeluoikeus if kituOo.oppilaitos.isEmpty && kituOo.isValtionhallinnonKielitutkinto =>
         // Valtionhallinnon kielitutkinnon suorituksella ei välttämättä ole oppilaitosta.
         // Tallennetaan silloin Opetushallituksesta koulutustoimijana johdettu näennäisoppilaitos.
         Right(kituOo.copy(oppilaitos = organisaatioRepository
@@ -361,7 +366,11 @@ class KoskiValidator(
     case t: TaiteenPerusopetuksenOpiskeluoikeus if t.onHankintakoulutus => validateAndAddTaiteenPerusopetuksenKoulutustoimija(t)
     case ytrOo: YlioppilastutkinnonOpiskeluoikeus if ytrOo.oppilaitos.isEmpty && ytrOo.koulutustoimija.exists(_.oid == "1.2.246.562.10.43628088406") =>
       Right(oo)
-    case kituOo: KielitutkinnonOpiskeluoikeus if kituOo.koulutustoimija.isEmpty && kituOo.isOphValtionhallinnonKielitutkinto =>
+    case kituOo: KielitutkinnonOpiskeluoikeus if kituOo.koulutustoimija.isEmpty && kituOo.isYleinenKielitutkinto =>
+      Right(kituOo.copy(koulutustoimija = organisaatioRepository.getRootOrganisaatio.map { oph =>
+        Koulutustoimija(oid = oph.oid, nimi = oph.nimi)
+      }))
+    case kituOo: KielitutkinnonOpiskeluoikeus if kituOo.koulutustoimija.isEmpty && kituOo.isValtionhallinnonKielitutkinto =>
       Right(kituOo.copy(koulutustoimija = organisaatioRepository.getOrganisaatio(Opetushallitus.koulutustoimijaOid).flatMap(_.toKoulutustoimija)))
     case _ => organisaatioRepository.findKoulutustoimijaForOppilaitos(oo.getOppilaitos) match {
       case Some(löydettyKoulutustoimija) =>

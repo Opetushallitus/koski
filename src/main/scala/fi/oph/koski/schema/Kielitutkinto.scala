@@ -1,7 +1,7 @@
 package fi.oph.koski.schema
 
 import fi.oph.koski.schema.LocalizedString.unlocalized
-import fi.oph.koski.schema.annotation.{AllowKoulutustoimijaOidAsOppilaitos, KoodistoKoodiarvo, KoodistoUri}
+import fi.oph.koski.schema.annotation.{MapKoulutustoimijaOidToTuntematonOppilaitos, MapOidOrganisaatioToKoulutustoimija, MapOidOrganisaatioToOppilaitos, KoodistoKoodiarvo, KoodistoUri}
 import fi.oph.koski.util.DateOrdering.localDateOrdering
 import fi.oph.scalaschema.annotation.{Description, Discriminator, MaxItems, MinItems, SyntheticProperty, Title}
 
@@ -13,8 +13,10 @@ case class KielitutkinnonOpiskeluoikeus(
   oid: Option[String] = None,
   versionumero: Option[Int] = None,
   lähdejärjestelmänId: Option[LähdejärjestelmäId] = None,
-  @AllowKoulutustoimijaOidAsOppilaitos
+  @MapKoulutustoimijaOidToTuntematonOppilaitos
+  @MapOidOrganisaatioToOppilaitos
   oppilaitos: Option[Oppilaitos] = None,
+  @MapOidOrganisaatioToKoulutustoimija
   koulutustoimija: Option[Koulutustoimija] = None,
   tila: KielitutkinnonOpiskeluoikeudenTila,
   @MinItems(1) @MaxItems(1)
@@ -30,6 +32,11 @@ case class KielitutkinnonOpiskeluoikeus(
   override def sisältyyOpiskeluoikeuteen: Option[SisältäväOpiskeluoikeus] = None
 
   def lisätiedot: Option[OpiskeluoikeudenLisätiedot] = None
+
+  def isYleinenKielitutkinto: Boolean = suoritukset.exists {
+    case _: YleisenKielitutkinnonSuoritus => true
+    case _ => false
+  }
 
   def isOphValtionhallinnonKielitutkinto: Boolean = suoritukset.exists {
     case _: ValtionhallinnonKielitutkinnonSuoritus => true
@@ -59,6 +66,7 @@ case class YleisenKielitutkinnonSuoritus(
   @Title("Koulutus")
   koulutusmoduuli: YleinenKielitutkinto,
   toimipiste: OrganisaatioWithOid,
+  järjestäjä: OrganisaatioWithOid,
   vahvistus: Option[Päivämäärävahvistus] = None,
   @Description("Yleisen kielitutkinnon osakokeet")
   override val osasuoritukset: Option[List[YleisenKielitutkinnonOsakokeenSuoritus]],

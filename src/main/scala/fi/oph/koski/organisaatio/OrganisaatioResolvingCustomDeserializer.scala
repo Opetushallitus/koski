@@ -2,7 +2,7 @@ package fi.oph.koski.organisaatio
 
 import fi.oph.koski.log.Logging
 import fi.oph.koski.schema._
-import fi.oph.koski.schema.annotation.AllowKoulutustoimijaOidAsOppilaitos
+import fi.oph.koski.schema.annotation.{MapKoulutustoimijaOidToTuntematonOppilaitos, MapOidOrganisaatioToKoulutustoimija, MapOidOrganisaatioToOppilaitos}
 import fi.oph.scalaschema._
 import fi.oph.scalaschema.extraction.{CustomDeserializer, OtherViolation, ValidationError}
 
@@ -14,10 +14,16 @@ case class OrganisaatioResolvingCustomDeserializer(organisaatioRepository: Organ
         organisaatioRepository.getOrganisaatio(o.oid) match {
           case Some(org) if c == classOf[OidOrganisaatio] || c.isInstance(org) =>
             Right(org)
-          case Some(org) if org.isInstanceOf[Koulutustoimija] && metadata.exists(_.isInstanceOf[AllowKoulutustoimijaOidAsOppilaitos]) =>
+          case Some(org) if org.isInstanceOf[Koulutustoimija] && metadata.exists(_.isInstanceOf[MapKoulutustoimijaOidToTuntematonOppilaitos]) =>
             Right(org.asInstanceOf[Koulutustoimija].toTuntematonOppilaitos)
+          case Some(org) if metadata.exists(_.isInstanceOf[MapOidOrganisaatioToOppilaitos]) =>
+            Right(Oppilaitos(oid = org.oid, nimi = org.nimi))
+          case Some(org) if metadata.exists(_.isInstanceOf[MapOidOrganisaatioToKoulutustoimija]) =>
+            Right(Koulutustoimija(oid = org.oid, nimi = org.nimi))
           case Some(org) =>
             Left(List(ValidationError(cursor.path, cursor.json, OtherViolation("Organisaatio " + o.oid + " ei ole " + c.getSimpleName.toLowerCase + " vaan " + org.getClass.getSimpleName.toLowerCase, "vääränTyyppinenOrganisaatio"))))
+          case None if o.oid == Opetushallitus.organisaatioOid =>
+            Right(o)
           case None =>
             Left(List(ValidationError(cursor.path, cursor.json, OtherViolation("Organisaatiota " + o.oid + " ei löydy organisaatiopalvelusta", "organisaatioTuntematon"))))
         }
