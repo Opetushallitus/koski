@@ -16,7 +16,7 @@ class RemoteOrganisaatioRepository(http: Http, val koodisto: KoodistoViitePalvel
     RefreshingCache(name = "OrganisaatioRepository.fullHierarkia", duration = 12.hours, maxSize = 2), // maxSize needs to be minimum 2 for the refreshing to work
     () => uncachedFindAllHierarkiatRaw.map(convertOrganisaatio)
   )
-
+  
   private val nimetCache = KeyValueCache[String, List[OrganisaationNimihakuTulos]](
     RefreshingCache("OrganisaatioRepository.nimet", 12.hour, 15000),
     oid => runIO(http.get(uri"/organisaatio-service/rest/organisaatio/v2/${oid}/nimet")(Http.parseJson[List[OrganisaationNimihakuTulos]]))

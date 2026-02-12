@@ -18,6 +18,8 @@ case class OrganisaatioResolvingCustomDeserializer(organisaatioRepository: Organ
             Right(org.asInstanceOf[Koulutustoimija].toTuntematonOppilaitos)
           case Some(org) =>
             Left(List(ValidationError(cursor.path, cursor.json, OtherViolation("Organisaatio " + o.oid + " ei ole " + c.getSimpleName.toLowerCase + " vaan " + org.getClass.getSimpleName.toLowerCase, "vääränTyyppinenOrganisaatio"))))
+          case None if o.oid == Opetushallitus.organisaatioOid =>
+            Right(o)
           case None =>
             Left(List(ValidationError(cursor.path, cursor.json, OtherViolation("Organisaatiota " + o.oid + " ei löydy organisaatiopalvelusta", "organisaatioTuntematon"))))
         }

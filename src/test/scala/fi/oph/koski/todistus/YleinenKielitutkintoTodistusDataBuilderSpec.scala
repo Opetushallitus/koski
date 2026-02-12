@@ -4,7 +4,8 @@ import fi.oph.koski.KoskiApplicationForTests
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.opiskeluoikeus.OidGenerator
-import fi.oph.koski.organisaatio.MockOrganisaatiot
+import fi.oph.koski.organisaatio.MockOrganisaatiot.YleinenKielitutkintoOrg
+import fi.oph.koski.organisaatio.{MockOrganisaatiot, Opetushallitus}
 import fi.oph.koski.schema.KoskiSchema.strictDeserialization
 import fi.oph.koski.schema._
 import fi.oph.koski.todistus.yleinenkielitutkinto.{YleinenKielitutkintoTodistusData, YleinenKielitutkintoTodistusDataBuilder}
@@ -313,7 +314,8 @@ class YleinenKielitutkintoTodistusDataBuilderSpec extends AnyFreeSpec with Match
                   tunniste = Koodistokoodiviite("kt", "ykitutkintotaso"),
                   kieli = Koodistokoodiviite("FI", "kieli")
                 ),
-                toimipiste = OidOrganisaatio(MockOrganisaatiot.varsinaisSuomenKansanopistoToimipiste),
+                toimipiste = OidOrganisaatio(YleinenKielitutkintoOrg.organisaatio),
+                testinJärjestäjä = OidOrganisaatio(MockOrganisaatiot.varsinaisSuomenKansanopistoToimipiste),
                 vahvistus = Some(Päivämäärävahvistus(
                   päivä = arviointipäivä,
                   myöntäjäOrganisaatio = OidOrganisaatio(MockOrganisaatiot.helsinginKaupunki)
@@ -384,7 +386,8 @@ class YleinenKielitutkintoTodistusDataBuilderSpec extends AnyFreeSpec with Match
             tunniste = Koodistokoodiviite("kt", "ykitutkintotaso"),
             kieli = Koodistokoodiviite("FI", "kieli")
           ),
-          toimipiste = OidOrganisaatio(MockOrganisaatiot.varsinaisSuomenKansanopistoToimipiste),
+          toimipiste = OidOrganisaatio(YleinenKielitutkintoOrg.organisaatio),
+          testinJärjestäjä = OidOrganisaatio(MockOrganisaatiot.varsinaisSuomenKansanopistoToimipiste),
           vahvistus = Some(Päivämäärävahvistus(
             päivä = arviointipäivä,
             myöntäjäOrganisaatio = OidOrganisaatio(MockOrganisaatiot.helsinginKaupunki)

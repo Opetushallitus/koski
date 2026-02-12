@@ -3,7 +3,7 @@ package fi.oph.koski.documentation
 import fi.oph.koski.henkilo.MockOppijat.asUusiOppija
 import fi.oph.koski.henkilo.{KoskiSpecificMockOppijat, LaajatOppijaHenkilöTiedot}
 import fi.oph.koski.organisaatio.MockOrganisaatiot
-import fi.oph.koski.organisaatio.MockOrganisaatiot.ValtionhallinnonKielitutkinnotOrg
+import fi.oph.koski.organisaatio.MockOrganisaatiot.{ValtionhallinnonKielitutkinnotOrg, YleinenKielitutkintoOrg}
 import fi.oph.koski.schema._
 import fi.oph.koski.util.DateOrdering.localDateOrdering
 
@@ -57,7 +57,8 @@ object ExamplesKielitutkinto {
           tunniste = Koodistokoodiviite(tutkintotaso.toString, "ykitutkintotaso"),
           kieli = Koodistokoodiviite(kieli, "kieli"),
         ),
-        toimipiste = OidOrganisaatio(MockOrganisaatiot.varsinaisSuomenKansanopistoToimipiste),
+        toimipiste = OidOrganisaatio(YleinenKielitutkintoOrg.organisaatio),
+        testinJärjestäjä = OidOrganisaatio(MockOrganisaatiot.varsinaisSuomenKansanopistoToimipiste),
         vahvistus = Some(Päivämäärävahvistus(
           päivä = arviointipäivä,
           myöntäjäOrganisaatio = OidOrganisaatio(MockOrganisaatiot.helsinginKaupunki),

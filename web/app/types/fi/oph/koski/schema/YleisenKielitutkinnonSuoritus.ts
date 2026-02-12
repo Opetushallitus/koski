@@ -18,6 +18,7 @@ export type YleisenKielitutkinnonSuoritus = {
   koulutusmoduuli: YleinenKielitutkinto
   toimipiste: OrganisaatioWithOid
   osasuoritukset?: Array<YleisenKielitutkinnonOsakokeenSuoritus>
+  testinJärjestäjä: OrganisaatioWithOid
   vahvistus?: Päivämäärävahvistus
 }
 
@@ -28,6 +29,7 @@ export const YleisenKielitutkinnonSuoritus = (o: {
   koulutusmoduuli: YleinenKielitutkinto
   toimipiste: OrganisaatioWithOid
   osasuoritukset?: Array<YleisenKielitutkinnonOsakokeenSuoritus>
+  testinJärjestäjä: OrganisaatioWithOid
   vahvistus?: Päivämäärävahvistus
 }): YleisenKielitutkinnonSuoritus => ({
   tyyppi: Koodistokoodiviite({

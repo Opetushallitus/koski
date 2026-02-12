@@ -330,8 +330,8 @@ class KoskiValidator(
       case ytrOo: YlioppilastutkinnonOpiskeluoikeus if ytrOo.oppilaitos.isEmpty =>
         // YO-tutkinnon opiskeluoikeudella ei ole oppilaitosta, koska sen myöntää koulutustoimijana toimiva ylioppilastutkintolautakunta
         Right(oo)
-      case kituOo: KielitutkinnonOpiskeluoikeus if kituOo.oppilaitos.isEmpty && kituOo.isOphValtionhallinnonKielitutkinto =>
-        // Valtionhallinnon kielitutkinnon suorituksella ei välttämättä ole oppilaitosta.
+      case kituOo: KielitutkinnonOpiskeluoikeus if kituOo.oppilaitos.isEmpty =>
+        // Kielitutkintojen suorituksilla ei välttämättä ole oppilaitosta.
         // Tallennetaan silloin Opetushallituksesta koulutustoimijana johdettu näennäisoppilaitos.
         Right(kituOo.copy(oppilaitos = organisaatioRepository
           .getOrganisaatio(Opetushallitus.koulutustoimijaOid)
