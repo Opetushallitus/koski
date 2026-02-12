@@ -200,6 +200,18 @@ object DuplikaattiValidation extends Logging {
       })
     }
 
+    def samaTestinJärjestäjä(oo: KielitutkinnonOpiskeluoikeus): Boolean = {
+      val a = testinJärjestäjä(oo)
+      val b = testinJärjestäjä(opiskeluoikeus)
+      a.isDefined && b.isDefined && a.map(_.oid) == b.map(_.oid)
+    }
+
+    def testinJärjestäjä(oo: Opiskeluoikeus): Option[OrganisaatioWithOid] =
+      oo.suoritukset.headOption.flatMap {
+        case s: YleisenKielitutkinnonSuoritus => Some(s.järjestäjä)
+        case _ => None
+      }
+
     def throwIfConflictingExists(
       isConflicting: () => Either[HttpStatus, Option[Opiskeluoikeus]]
     ): HttpStatus = {

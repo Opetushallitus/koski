@@ -1,7 +1,7 @@
 import { Koodistokoodiviite } from './Koodistokoodiviite'
 import { LocalizedString } from './LocalizedString'
-import { YleinenKielitutkinto } from './YleinenKielitutkinto'
 import { OrganisaatioWithOid } from './OrganisaatioWithOid'
+import { YleinenKielitutkinto } from './YleinenKielitutkinto'
 import { YleisenKielitutkinnonOsakokeenSuoritus } from './YleisenKielitutkinnonOsakokeenSuoritus'
 import { Päivämäärävahvistus } from './Paivamaaravahvistus'
 
@@ -14,6 +14,7 @@ export type YleisenKielitutkinnonSuoritus = {
   $class: 'fi.oph.koski.schema.YleisenKielitutkinnonSuoritus'
   tyyppi: Koodistokoodiviite<'suorituksentyyppi', 'yleinenkielitutkinto'>
   tila?: Koodistokoodiviite<'suorituksentila', string>
+  järjestäjä: OrganisaatioWithOid
   yleisarvosana?: Koodistokoodiviite<'ykiarvosana', string>
   koulutusmoduuli: YleinenKielitutkinto
   toimipiste: OrganisaatioWithOid
@@ -24,6 +25,7 @@ export type YleisenKielitutkinnonSuoritus = {
 export const YleisenKielitutkinnonSuoritus = (o: {
   tyyppi?: Koodistokoodiviite<'suorituksentyyppi', 'yleinenkielitutkinto'>
   tila?: Koodistokoodiviite<'suorituksentila', string>
+  järjestäjä: OrganisaatioWithOid
   yleisarvosana?: Koodistokoodiviite<'ykiarvosana', string>
   koulutusmoduuli: YleinenKielitutkinto
   toimipiste: OrganisaatioWithOid
