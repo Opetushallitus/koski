@@ -59,6 +59,7 @@ case class YleisenKielitutkinnonSuoritus(
   @Title("Koulutus")
   koulutusmoduuli: YleinenKielitutkinto,
   toimipiste: OrganisaatioWithOid,
+  testinJärjestäjä: OrganisaatioWithOid,
   vahvistus: Option[Päivämäärävahvistus] = None,
   @Description("Yleisen kielitutkinnon osakokeet")
   override val osasuoritukset: Option[List[YleisenKielitutkinnonOsakokeenSuoritus]],
