@@ -22,8 +22,7 @@ Generoi demoscript nykyisen branchin muutoksista. Demoscript on tarkoitettu viik
 3. **Generoi demoscript** seuraavassa muodossa:
 
 ```
-TOR-XXXX [Tikettiotsikko]
-https://jira.eduuni.fi/browse/TOR-XXXX
+### [TOR-XXXX Tikettiotsikko](https://jira.eduuni.fi/browse/TOR-XXXX)
 
 [Askel-askeleelta ohjeet demoon.]
 
@@ -71,6 +70,42 @@ Huomaa, että [konkreettinen havainto].
 - Jokaiselle validaatiomuutokselle näytä sekä onnistuva että epäonnistuva tapaus
 - Näytä odotettu vastaus tai sen oleellinen osa JSON-muodossa kun mahdollista
 - Pidä script tiiviinä — ei johdantoja, vain askeleet
+
+## Muotoilu
+
+- Älä rivitä tekstiä lyhyisiin riveihin (ei 80 merkin rivinvaihtoa) — anna kappaleiden olla yhdellä pitkällä rivillä
+- Älä sisennä tekstiä välilyönneillä
+- JSON-blokit ja URL:t omille riveilleen
+- Käytä tyhjää riviä erottamaan askeleet toisistaan
+
+## Leikepöydälle Confluencea varten
+
+Demoscriptin generoinnin jälkeen kopioi sama sisältö leikepöydälle `pbcopy`-komennolla (Bash-työkalulla, heredoc-syntaksilla). Käyttäjä liittää sisällön Confluenceen "Import markdown" -toiminnolla.
+
+Markdown-muotoilusäännöt:
+- Otsikko `###`-tasolla, joka on samalla linkki Jira-tikettiin: `### [TOR-XXXX Tikettiotsikko](https://jira.eduuni.fi/browse/TOR-XXXX)`
+- URL:t tekstissä markdown-linkkeinä (klikattavia)
+- JSON- ja API-blokit fenced code blockkeina (```)
+- Inline-koodi backtick-merkeillä
+
+## Dokumentaatio-URL:t
+
+Käytä VAIN näitä oikeita polkuja, älä keksi omia:
+
+- `/koski/dokumentaatio` — Yleistä
+- `/koski/dokumentaatio/tietomalli` — Tietomalli
+- `/koski/dokumentaatio/koodistot` — Koodistot
+- `/koski/dokumentaatio/rajapinnat/opintohallintojarjestelmat` — Rajapinnat opintohallintojärjestelmille
+- `/koski/dokumentaatio/rajapinnat/luovutuspalvelu` — Rajapinnat viranomaisille (luovutuspalvelu)
+- `/koski/dokumentaatio/rajapinnat/palveluvayla-omadata` — Palveluväylä- ja omadata-rajapinnat
+- `/koski/dokumentaatio/rajapinnat/oauth2/omadata` — OAuth2-omadata-rajapinnat
+- `/koski/dokumentaatio/rajapinnat/massaluovutus/oph` — Rajapinnat Opetushallituksen palveluille
+- `/koski/dokumentaatio/rajapinnat/massaluovutus/koulutuksenjarjestajat` — Massaluovutusrajapinnat koulutuksenjärjestäjille
+- `/koski/dokumentaatio/rajapinnat/massaluovutus/raportit` — Koulutuksenjärjestäjän raporttien lataus massaluovutusrajapinnasta
+- `/koski/dokumentaatio/rajapinnat/massaluovutus/valpas` — Massaluovutusrajapinnat oppivelvollisuuden valvontaan
+
+Perus-URL virkailijalle: `https://virkailija.testiopintopolku.fi`
+Perus-URL kansalaiselle: `https://testiopintopolku.fi`
 
 ## Tärkeää
 
