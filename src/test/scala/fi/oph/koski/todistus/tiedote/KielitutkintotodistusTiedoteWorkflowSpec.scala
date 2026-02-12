@@ -73,6 +73,17 @@ class KielitutkintotodistusTiedoteWorkflowSpec extends KielitutkintotodistusTied
       }
     }
 
+    "processAll käsittelee useamman batchin kun batchSize on pieni" in {
+      withoutRunningTiedoteScheduler {
+        val processed = app.kielitutkintotodistusTiedoteService.processAll()
+        processed should be > 1
+
+        val jobs = app.kielitutkintotodistusTiedoteRepository.findAll(100, 0)
+        jobs should have length processed
+        mockTiedotuspalveluClient.sentNotifications should have length processed
+      }
+    }
+
     "Scheduler lähettää tiedotteen automaattisesti" in {
       val oppijaOid = KoskiSpecificMockOppijat.kielitutkinnonSuorittaja.oid
       val opiskeluoikeusOid = getVahvistettuKielitutkinnonOpiskeluoikeusOid(oppijaOid).get
