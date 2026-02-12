@@ -188,6 +188,21 @@ class MassaluovutusSpec extends AnyFreeSpec with MassaluovutusTestMethods with M
         ))
       }
 
+      "JSON-tulostiedostoihin sisältyy oppijaMasterOid" in {
+        val user = MockUsers.helsinkiKatselija
+        val queryId = addQuerySuccessfully(query, user)(_.queryId)
+        val complete = waitForCompletion(queryId, user)
+
+        complete.files should not be empty
+        verifyResultAndContent(complete.files.head, user) {
+          val json = JsonMethods.parse(body)
+          val oid = (json \ "henkilö" \ "oid").extract[String]
+          val masterOid = (json \ "oppijaMasterOid").extract[String]
+          masterOid should not be empty
+          masterOid should equal(oid)
+        }
+      }
+
       "Toisen käyttäjän kyselyn tietoja ei voi hakea" in {
         val queryId = addQuerySuccessfully(query, MockUsers.helsinkiKatselija)(_.queryId)
         getQuery(queryId, MockUsers.jyväskylänKatselijaEsiopetus) {
