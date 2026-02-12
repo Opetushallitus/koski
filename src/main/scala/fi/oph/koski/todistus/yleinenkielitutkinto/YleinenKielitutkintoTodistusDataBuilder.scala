@@ -50,11 +50,9 @@ class YleinenKielitutkintoTodistusDataBuilder(application: KoskiApplication) {
 
       tasonArvosanarajat <- formatTasonArvosanarajat(yleinenKtSuoritus.koulutusmoduuli.tunniste, todistus.language)
 
-      toimipisteNimi <- yleinenKtSuoritus.toimipiste.nimi.map(_.get(todistus.language))
+      järjestäjäNimi <- yleinenKtSuoritus.testinJärjestäjä.nimi.map(_.get(todistus.language))
         .filter(_.nonEmpty)
-        .toRight(KoskiErrorCategory.internalError(s"Toimipisteen nimi puuttuu todistukselle ${todistus.id}"))
-
-      järjestäjäNimi = toimipisteNimi
+        .toRight(KoskiErrorCategory.internalError(s"Testin järjestäjän nimi puuttuu todistukselle ${todistus.id}"))
 
       ensimmäisenLäsnäTilanAlkupäivä <- ktOo.tila.opiskeluoikeusjaksot.filter(_.tila.koodiarvo == "lasna").headOption
         .map(_.alku)

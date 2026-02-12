@@ -84,7 +84,7 @@ const YleisenKielitutkinnonTiedot: React.FC<
       {t(päätasonSuoritus.koulutusmoduuli.kieli.nimi)}
     </KeyValueRow>
     <KeyValueRow localizableLabel="Testipaikka">
-      {t(päätasonSuoritus.toimipiste.nimi)}
+      {t(päätasonSuoritus.testinJärjestäjä.nimi)}
     </KeyValueRow>
     <KeyValueRow localizableLabel="Testipäivä">
       {ISO2FinnishDate(getJaksonAlkupäivä(tila, 'lasna'))}
