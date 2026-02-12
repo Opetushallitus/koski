@@ -114,6 +114,14 @@ Minimissään tarvitset nämä:
 - Docker compose (https://docs.docker.com/compose/install/)
 - Tekstieditori (kehitystiimi käyttää IntelliJ IDEA)
 
+### Claude Code
+
+Projektissa on Claude Code -komentoja (`.claude/commands/`), joita voi käyttää Claude Coden kanssa:
+
+- `/demoscript` — Generoi demoscript nykyisen branchin muutoksista viikkodemoa varten
+
+Komennot ovat käytettävissä automaattisesti kun `claude` ajetaan projektin hakemistossa.
+
 ### Scala-kääntäjän konfiguraatio
 
 Esim. IntelliJ IDEAn Scala-kääntäjän konfiguraatio kannattaa asettaa seuraavasti:
