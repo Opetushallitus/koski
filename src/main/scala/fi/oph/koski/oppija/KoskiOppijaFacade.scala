@@ -8,9 +8,7 @@ import fi.oph.koski.koskiuser.KoskiSpecificSession
 import fi.oph.koski.log.KoskiAuditLogMessageField.{opiskeluoikeusId, opiskeluoikeusVersio, oppijaHenkiloOid}
 import fi.oph.koski.log.KoskiOperation._
 import fi.oph.koski.log._
-import fi.oph.koski.schema.PerusopetuksenOpiskeluoikeus._
 import fi.oph.koski.opiskeluoikeus._
-import fi.oph.koski.schema.PerusopetuksenOpiskeluoikeus.{käyttäytymisenArviointiTraversal, nuortenPerusopetuksenPakollistenOppiaineidenLaajuudetTraversal, oppimääränArvioinnitTraversal, päätasonSuorituksetTraversal}
 import fi.oph.koski.schema._
 import fi.oph.koski.util.{Timing, WithWarnings}
 import fi.oph.koski.validation.KoskiGlobaaliValidator
@@ -518,26 +516,46 @@ class KoskiOppijaFacade(
   }
 
   private def piilotaArvosanatKeskeneräisistäSuorituksista(oppija: Oppija) = {
-    val keskeneräisetTaiLiianÄskettäinVahvistetut = traversal[Suoritus].filter { s =>
+    val keskeneräisetTaiLiianÄskettäinVahvistetutTraversal = traversal[Suoritus].filter { s =>
       s.vahvistus.isEmpty || !s.vahvistus.exists { v => v.päivä.plusDays(4).isBefore(LocalDate.now())}
-    }.compose(päätasonSuorituksetTraversal)
-    val piilotettavatOppiaineidenArvioinnit = (oppimääränArvioinnitTraversal ++ vuosiluokanArvioinnitTraversal ++ oppiaineenOppimääränArvioinnitTraversal).compose(keskeneräisetTaiLiianÄskettäinVahvistetut)
-    val piilotettavaKäyttäytymisenArviointi = käyttäytymisenArviointiTraversal.compose(keskeneräisetTaiLiianÄskettäinVahvistetut)
+    }
 
-    List(piilotettavaKäyttäytymisenArviointi, piilotettavatOppiaineidenArvioinnit).foldLeft(oppija) { (oppija, traversal) =>
+    val nuortenKeskeneräisetTaiLiianÄskettäinVahvistetut = keskeneräisetTaiLiianÄskettäinVahvistetutTraversal.compose(PerusopetuksenOpiskeluoikeus.päätasonSuorituksetTraversal)
+    val nuortenPiilotettavatOppiaineidenArvioinnit = (
+      PerusopetuksenOpiskeluoikeus.oppimääränArvioinnitTraversal ++
+        PerusopetuksenOpiskeluoikeus.vuosiluokanArvioinnitTraversal ++
+        PerusopetuksenOpiskeluoikeus.oppiaineenOppimääränArvioinnitTraversal
+      ).compose(nuortenKeskeneräisetTaiLiianÄskettäinVahvistetut)
+    val nuortenPiilotettavaKäyttäytymisenArviointi = PerusopetuksenOpiskeluoikeus.käyttäytymisenArviointiTraversal.compose(nuortenKeskeneräisetTaiLiianÄskettäinVahvistetut)
+
+    val aikuistenKeskeneräisetTaiLiianÄskettäinVahvistetut = keskeneräisetTaiLiianÄskettäinVahvistetutTraversal.compose(AikuistenPerusopetuksenOpiskeluoikeus.päätasonSuorituksetTraversal)
+    val aikuistenPiilotettavatOppiaineidenArvioinnit = (
+      AikuistenPerusopetuksenOpiskeluoikeus.oppimääränArvioinnitTraversal ++
+        AikuistenPerusopetuksenOpiskeluoikeus.alkuvaiheenArvioinnitTraversal ++
+        AikuistenPerusopetuksenOpiskeluoikeus.oppiaineenOppimääränArvioinnitTraversal
+    ).compose(aikuistenKeskeneräisetTaiLiianÄskettäinVahvistetut)
+
+    List(nuortenPiilotettavatOppiaineidenArvioinnit, nuortenPiilotettavaKäyttäytymisenArviointi, aikuistenPiilotettavatOppiaineidenArvioinnit).foldLeft(oppija) { (oppija, traversal) =>
       traversal.set(oppija)(None)
     }
   }
 
   private def piilotaLaajuuksia(oppija: Oppija)= {
-    val  keskenTaiVahvistettuEnnenLeikkuriPäivää = traversal[Suoritus].filter { suoritus =>
+    val nuortenKeskenTaiVahvistettuEnnenLeikkuriPäivää = traversal[Suoritus].filter { suoritus =>
       (suoritus.isInstanceOf[PerusopetuksenVuosiluokanSuoritus] || suoritus.isInstanceOf[NuortenPerusopetuksenOppimääränSuoritus]) &&
         suoritus.vahvistus.forall(_.päivä.isBefore(LocalDate.of(2020, 8, 1)))
-    }.compose(päätasonSuorituksetTraversal)
+    }.compose(PerusopetuksenOpiskeluoikeus.päätasonSuorituksetTraversal)
+    val nuortenPiilotettavatLaajuudet = PerusopetuksenOpiskeluoikeus.pakollistenOppiaineidenLaajuudetTraversal.compose(nuortenKeskenTaiVahvistettuEnnenLeikkuriPäivää)
 
-    val piilotettavatLaajuudet = nuortenPerusopetuksenPakollistenOppiaineidenLaajuudetTraversal.compose(keskenTaiVahvistettuEnnenLeikkuriPäivää)
+    val aikuistenKeskeneräiset = traversal[Suoritus].filter { suoritus =>
+      suoritus.isInstanceOf[AikuistenPerusopetuksenOppimääränSuoritus] && suoritus.vahvistus.isEmpty
+    }.compose(AikuistenPerusopetuksenOpiskeluoikeus.päätasonSuorituksetTraversal)
+    val aikuistenPiilotettavatLaajuudet = AikuistenPerusopetuksenOpiskeluoikeus.pakollistenOppiaineidenLaajuudetTraversal.compose(aikuistenKeskeneräiset)
 
-    piilotettavatLaajuudet.set(oppija)(None)
+
+    List(nuortenPiilotettavatLaajuudet, aikuistenPiilotettavatLaajuudet).foldLeft(oppija) { (oppija, traversal) =>
+      traversal.set(oppija)(None)
+    }
   }
 
   private def piilotaTietojaSuoritusjaosta(oppija: Oppija)(implicit koskiSession: KoskiSpecificSession) = {

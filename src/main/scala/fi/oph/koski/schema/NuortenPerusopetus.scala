@@ -46,7 +46,7 @@ object PerusopetuksenOpiskeluoikeus {
     .field[List[Suoritus]]("suoritukset").items
 
   val oppimääränArvioinnitTraversal: Traversal[Suoritus, Option[List[Arviointi]]] = traversal[Suoritus]
-    .ifInstanceOf[PerusopetuksenOppimääränSuoritus]
+    .ifInstanceOf[NuortenPerusopetuksenOppimääränSuoritus]
     .field[Option[List[Suoritus]]]("osasuoritukset").items.items
     .field[Option[List[Arviointi]]]("arviointi")
 
@@ -67,7 +67,7 @@ object PerusopetuksenOpiskeluoikeus {
     .ifInstanceOf[NuortenPerusopetuksenOppiaineenOppimääränSuoritus]
     .field[Option[List[Arviointi]]]("arviointi")
 
-  val nuortenPerusopetuksenPakollistenOppiaineidenLaajuudetTraversal: Traversal[Suoritus, Option[LaajuusVuosiviikkotunneissa]] = traversal[Suoritus]
+  val pakollistenOppiaineidenLaajuudetTraversal: Traversal[Suoritus, Option[LaajuusVuosiviikkotunneissa]] = traversal[Suoritus]
     .field[Option[List[Suoritus]]]("osasuoritukset").items.items
     .ifInstanceOf[NuortenPerusopetuksenOppiaineenSuoritus]
     .field[NuortenPerusopetuksenOppiaine]("koulutusmoduuli")
