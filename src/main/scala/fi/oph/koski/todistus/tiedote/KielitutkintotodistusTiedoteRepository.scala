@@ -11,7 +11,7 @@ import java.time.LocalDateTime
 
 class KielitutkintotodistusTiedoteRepository(val db: DB, val workerId: String, config: Config) extends QueryMethods with Logging with DatabaseConverters {
 
-  def findAllEligible: Seq[(String, String)] = {
+  def findEligibleBatch(limit: Int): Seq[(String, String)] = {
     runDbSync(sql"""
       SELECT oo.oid, oo.oppija_oid
       FROM opiskeluoikeus oo
@@ -25,11 +25,12 @@ class KielitutkintotodistusTiedoteRepository(val db: DB, val workerId: String, c
           WHERE tj.opiskeluoikeus_oid = oo.oid
         )
       ORDER BY oo.aikaleima
+      LIMIT $limit
       """.as[(String, String)])
   }
 
   def findNextEligible: Option[(String, String)] = {
-    findAllEligible.headOption
+    findEligibleBatch(limit = 1).headOption
   }
 
   def add(job: KielitutkintotodistusTiedoteJob): KielitutkintotodistusTiedoteJob = {

@@ -3,6 +3,7 @@ package fi.oph.koski.todistus.tiedote
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.log.Logging
 import fi.oph.koski.util.Timing
+import org.postgresql.util.{PSQLException, PSQLState}
 
 import java.util.UUID
 
@@ -10,15 +11,23 @@ class KielitutkintotodistusTiedoteService(application: KoskiApplication) extends
   private val repository = application.kielitutkintotodistusTiedoteRepository
   private val client = application.tiedotuspalveluClient
   private val maxAttempts = application.config.getInt("tiedote.maxAttempts")
+  private val batchSize = application.config.getInt("tiedote.batchSize")
 
   def processAll(): Int = {
     timed("processAll", thresholdMs = 0) {
-      val eligible = repository.findAllEligible
-      eligible.foreach { case (opiskeluoikeusOid, oppijaOid) =>
-        processOne(opiskeluoikeusOid, oppijaOid)
+      var processed = 0
+      var eligibleBatch = repository.findEligibleBatch(batchSize)
+
+      while (eligibleBatch.nonEmpty) {
+        eligibleBatch.foreach { case (opiskeluoikeusOid, oppijaOid) =>
+          processOne(opiskeluoikeusOid, oppijaOid)
+        }
+        processed += eligibleBatch.size
+        eligibleBatch = repository.findEligibleBatch(batchSize)
       }
-      logger.info(s"processAll valmis: käsitelty ${eligible.size} tiedotetta")
-      eligible.size
+
+      logger.info(s"processAll valmis: käsitelty $processed tiedotetta")
+      processed
     }
   }
 
@@ -56,8 +65,11 @@ class KielitutkintotodistusTiedoteService(application: KoskiApplication) extends
         logger.error(s"Tiedotteen lähetys epäonnistui: oo=$opiskeluoikeusOid virhe=${error.getOrElse("")}")
       }
     } catch {
-      case _: org.postgresql.util.PSQLException =>
+      case e: PSQLException if e.getSQLState == PSQLState.UNIQUE_VIOLATION.getState =>
         logger.info(s"Tiedote on jo olemassa opiskeluoikeudelle $opiskeluoikeusOid, ohitetaan")
+      case e: Exception =>
+        logger.error(e)(s"Tiedotteen tallennus epäonnistui opiskeluoikeudelle $opiskeluoikeusOid")
+        throw e
     }
   }
 
