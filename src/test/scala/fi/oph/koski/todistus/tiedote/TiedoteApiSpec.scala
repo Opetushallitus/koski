@@ -63,5 +63,25 @@ class TiedoteApiSpec extends KielitutkintotodistusTiedoteSpecHelpers {
         }
       }
     }
+
+    "POST /run" - {
+      "OPH-pääkäyttäjä voi käynnistää batch-ajon heti" in {
+        withoutRunningTiedoteScheduler {
+          post("api/tiedote/run", headers = authHeaders(MockUsers.paakayttaja) ++ jsonContent) {
+            verifyResponseStatusOk()
+            response.body should include("processed")
+          }
+
+          val jobs = app.kielitutkintotodistusTiedoteRepository.findAll(100, 0)
+          jobs.length should be > 0
+        }
+      }
+
+      "Tavallinen käyttäjä saa 403" in {
+        post("api/tiedote/run", headers = authHeaders(MockUsers.stadinAmmattiopistoKatselija) ++ jsonContent) {
+          verifyResponseStatus(403)
+        }
+      }
+    }
   }
 }
