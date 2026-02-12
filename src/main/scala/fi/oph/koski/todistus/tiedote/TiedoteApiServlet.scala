@@ -20,6 +20,7 @@ class TiedoteApiServlet(implicit val application: KoskiApplication)
   }
 
   private val repository = application.kielitutkintotodistusTiedoteRepository
+  private val service = application.kielitutkintotodistusTiedoteService
 
   get("/jobs") {
     val state = params.get("state")
@@ -31,5 +32,15 @@ class TiedoteApiServlet(implicit val application: KoskiApplication)
 
   get("/stats") {
     renderObject(repository.countByState)
+  }
+
+  post("/run") {
+    val processed = service.processAll()
+    val retried = service.retryAllFailed()
+
+    renderObject(Map(
+      "processed" -> processed,
+      "retried" -> retried
+    ))
   }
 }
