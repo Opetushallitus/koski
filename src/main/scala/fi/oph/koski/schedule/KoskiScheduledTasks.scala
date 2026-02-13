@@ -19,5 +19,7 @@ class KoskiScheduledTasks(application: KoskiApplication) {
   val todistusScheduler: Option[Scheduler] = application.todistusScheduler.createScheduler
   val todistusCleanupScheduler: Option[Scheduler] = application.todistusCleanupScheduler.createScheduler
 
+  val kielitutkintotodistusTiedoteScheduler: Option[Scheduler] = application.kielitutkintotodistusTiedoteScheduler.createScheduler
+
   def init(): Unit = {}
 }
