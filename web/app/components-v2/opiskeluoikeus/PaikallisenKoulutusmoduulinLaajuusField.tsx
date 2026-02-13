@@ -72,6 +72,7 @@ export const PaikallisenKoulutusmoduulinLaajuusEdit = <
       value={props.value?.laajuus}
       onChange={update as (a?: Laajuus) => void}
       createLaajuus={createLaajuus}
+      errors={props.errors}
     />
   )
 }

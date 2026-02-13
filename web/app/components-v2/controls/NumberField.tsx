@@ -34,7 +34,9 @@ export const NumberField: React.FC<NumberFieldProps> = (props) => {
           props.hasErrors && 'NumberField__input--error'
         )}
         type="number"
-        value={value ? value.toString() : ''}
+        min={0}
+        step={0.1}
+        value={value !== null && value !== undefined ? value.toString() : ''}
         onChange={onChangeCB}
         data-testid={testId}
       />

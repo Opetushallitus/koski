@@ -33,10 +33,10 @@ import { VapaanSivistystyönOpiskeluoikeus } from '../../types/fi/oph/koski/sche
 import { VapaanSivistystyönVapaatavoitteisenKoulutuksenOsasuorituksenSuoritus } from '../../types/fi/oph/koski/schema/VapaanSivistystyonVapaatavoitteisenKoulutuksenOsasuorituksenSuoritus'
 import { VapaanSivistystyönVapaatavoitteisenKoulutuksenOsasuoritus } from '../../types/fi/oph/koski/schema/VapaanSivistystyonVapaatavoitteisenKoulutuksenOsasuoritus'
 import { deleteAt } from '../../util/array'
-import { createArviointi } from '../common/arviointi'
 import { ArviointiProperty } from '../common/propertyFields'
 import { VSTSuoritusPaikallisillaOsasuorituksilla } from '../common/types'
 import { AddVapaatavoitteinenAlaosasuoritus } from './AddVapaatavoitteinenAlaosasuoritus'
+import { parsePath } from '../../util/optics'
 
 type VSTVapaatavoitteinenPropertiesProps = {
   osasuoritusIndex: number
@@ -69,6 +69,7 @@ export const VSTVapaatavoitteinenProperties: React.FC<
           <FormField
             form={props.form}
             path={props.osasuoritusPath.prop('koulutusmoduuli')}
+            errorsFromPath={parsePath(props.osasuoritusPath.prop('koulutusmoduuli').prop('kuvaus'), props.form.state)}
             view={KuvausView}
             edit={(kuvausProps) => {
               return <KuvausEdit {...kuvausProps} />
@@ -135,6 +136,11 @@ export const osasuoritusToTableRow = ({
     .at(osasuoritusIndex)
   const osasuoritus = getValue(osasuoritusPath)(form.state)
 
+  const koulutusmoduuliErrorPath = parsePath(
+    osasuoritusPath,
+    form.state
+  )
+
   return {
     suoritusIndex,
     osasuoritusIndex,
@@ -153,6 +159,7 @@ export const osasuoritusToTableRow = ({
         <FormField
           form={form}
           path={osasuoritusPath.prop('koulutusmoduuli')}
+          errorsFromPath={koulutusmoduuliErrorPath ? `${koulutusmoduuliErrorPath}.koulutusmoduuli.laajuus` : undefined}
           view={PaikallisenKoulutusmoduulinLaajuusView}
           edit={PaikallisenKoulutusmoduulinLaajuusEdit}
           editProps={{
