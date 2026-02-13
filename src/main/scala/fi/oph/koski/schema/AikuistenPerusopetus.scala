@@ -1,10 +1,10 @@
 package fi.oph.koski.schema
 
 import java.time.{LocalDate, LocalDateTime}
-
 import fi.oph.koski.koskiuser.Rooli
 import fi.oph.koski.schema.annotation._
 import fi.oph.scalaschema.annotation._
+import mojave.{Traversal, traversal}
 
 @Description("Aikuisten perusopetuksen opiskeluoikeus")
 case class AikuistenPerusopetuksenOpiskeluoikeus(
@@ -48,6 +48,35 @@ case class AikuistenPerusopetuksenOpiskeluoikeus(
     }
   }
 
+}
+
+object AikuistenPerusopetuksenOpiskeluoikeus {
+  val päätasonSuorituksetTraversal: Traversal[Oppija, Suoritus] = traversal[Oppija]
+    .field[Seq[Opiskeluoikeus]]("opiskeluoikeudet").items
+    .ifInstanceOf[AikuistenPerusopetuksenOpiskeluoikeus]
+    .field[List[Suoritus]]("suoritukset").items
+
+  val oppimääränArvioinnitTraversal: Traversal[Suoritus, Option[List[Arviointi]]] = traversal[Suoritus]
+    .ifInstanceOf[AikuistenPerusopetuksenOppimääränSuoritus]
+    .field[Option[List[Suoritus]]]("osasuoritukset").items.items
+    .field[Option[List[Arviointi]]]("arviointi")
+
+  val alkuvaiheenArvioinnitTraversal: Traversal[Suoritus, Option[List[Arviointi]]] = traversal[Suoritus]
+    .ifInstanceOf[AikuistenPerusopetuksenAlkuvaiheenSuoritus]
+    .field[Option[List[Suoritus]]]("osasuoritukset").items.items
+    .field[Option[List[Arviointi]]]("arviointi")
+
+  val oppiaineenOppimääränArvioinnitTraversal: Traversal[Suoritus, Option[List[Arviointi]]] = traversal[Suoritus]
+    .ifInstanceOf[AikuistenPerusopetuksenOppiaineenOppimääränSuoritus]
+    .field[Option[List[Suoritus]]]("osasuoritukset").items.items
+    .field[Option[List[Arviointi]]]("arviointi")
+
+  val pakollistenOppiaineidenLaajuudetTraversal: Traversal[Suoritus, Option[LaajuusVuosiviikkotunneissaTaiKursseissa]] = traversal[Suoritus]
+    .field[Option[List[Suoritus]]]("osasuoritukset").items.items
+    .ifInstanceOf[AikuistenPerusopetuksenOppiaineenSuoritus]
+    .field[AikuistenPerusopetuksenOppiaine]("koulutusmoduuli")
+    .filter(_.pakollinen)
+    .field[Option[LaajuusVuosiviikkotunneissaTaiKursseissa]]("laajuus")
 }
 
 case class AikuistenPerusopetuksenOpiskeluoikeudenLisätiedot(

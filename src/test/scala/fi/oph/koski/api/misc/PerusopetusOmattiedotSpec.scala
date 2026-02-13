@@ -244,17 +244,18 @@ class PerusopetusOmattiedotSpec extends AnyFreeSpec with KoskiHttpSpec with Opis
 
   "Aikuisten perusopetuksen oppimäärän suoritus" - {
     "kun suoritus on valmis" - {
-      "palautetaan päätason suoritukset, osasuoritukset ja arvosanat" in {
+      "palautetaan päätason suoritukset, osasuoritukset, arvosanat ja laajuudet" in {
         get("api/omattiedot/editor", headers = kansalainenLoginHeaders(KoskiSpecificMockOppijat.aikuisOpiskelija.hetu.get)) {
           päätasonSuoritukset.length should equal(2)
           osasuoritukset.length should equal(62)
           arvioinnit.length should equal(62)
+          laajuudet.length should equal(40)
         }
       }
     }
     "kun suoritus on kesken" - {
       "ja suoritus ei ole opiskeluoikeuden ainoa päätason suoritus" - {
-        "näytetään aikuisten perusopetuksen oppimäärän suoritus" in {
+        "näytetään aikuisten perusopetuksen oppimäärän suoritus ilman oppiaineiden arvosanoja keskeneräisiltä suorituksilta sekä laajuuksia pakollisilta oppiaineilta" in {
           setupOppijaWithOpiskeluoikeus(
             opiskeluoikeus = ExamplesAikuistenPerusopetus.aikuistenPerusopetuksenOpiskeluoikeusAlkuvaiheineenValmistunutVanhanOppivelvollisuuslainAikana.copy(
               suoritukset = List(
@@ -279,12 +280,13 @@ class PerusopetusOmattiedotSpec extends AnyFreeSpec with KoskiHttpSpec with Opis
             päätasonSuoritukset.length should equal(2)
             (päätasonSuoritukset.head \ "value" \ "classes").extract[List[String]] should contain("aikuistenperusopetuksenoppimaaransuoritus")
             osasuoritukset.length should equal(62)
-            arvioinnit.length should equal(62)
+            arvioinnit.length should equal(40)
+            laajuudet.length should equal(39)
           }
         }
       }
       "ja suoritus on opiskeluoikeuden ainoa päätason suoritus" - {
-        "näytetään aikuisten perusopetuksen oppimäärän osasuoritukset" in {
+        "näytetään aikuisten perusopetuksen oppimäärän osasuoritukset ilman oppiaineiden arvosanoja sekä laajuuksia pakollisilta oppiaineilta" in {
           setupOppijaWithOpiskeluoikeus(
             opiskeluoikeus = ExamplesAikuistenPerusopetus.aikuistenPerusopetuksenOpiskeluoikeusAlkuvaiheineenValmistunutVanhanOppivelvollisuuslainAikana.copy(
               suoritukset = List(
@@ -308,7 +310,8 @@ class PerusopetusOmattiedotSpec extends AnyFreeSpec with KoskiHttpSpec with Opis
             päätasonSuoritukset.length should equal(1)
             (päätasonSuoritukset.head \ "value" \ "classes").extract[List[String]] should contain("aikuistenperusopetuksenoppimaaransuoritus")
             osasuoritukset.length should equal(27)
-            arvioinnit.length should equal(27)
+            arvioinnit.length should equal(5)
+            laajuudet.length should equal(10)
           }
         }
       }
