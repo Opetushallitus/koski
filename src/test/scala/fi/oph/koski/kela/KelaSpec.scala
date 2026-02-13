@@ -72,7 +72,7 @@ class KelaSpec
         val response = JsonSerializer.parse[KelaOppija](body)
 
         response.henkilö.hetu should equal(KoskiSpecificMockOppijat.kelaErityyppisiaOpiskeluoikeuksia.hetu)
-        response.opiskeluoikeudet.map(_.tyyppi.koodiarvo) should equal(List(schema.OpiskeluoikeudenTyyppi.perusopetus.koodiarvo, schema.OpiskeluoikeudenTyyppi.perusopetus.koodiarvo, schema.OpiskeluoikeudenTyyppi.ylioppilastutkinto.koodiarvo))
+        response.opiskeluoikeudet.map(_.tyyppi.koodiarvo).sorted should equal(List(schema.OpiskeluoikeudenTyyppi.esiopetus.koodiarvo, schema.OpiskeluoikeudenTyyppi.perusopetus.koodiarvo, schema.OpiskeluoikeudenTyyppi.perusopetus.koodiarvo, schema.OpiskeluoikeudenTyyppi.ylioppilastutkinto.koodiarvo))
       }
     }
     "Palauttaa TUVA opiskeluoikeuden tiedot" in {
@@ -148,6 +148,26 @@ class KelaSpec
 
         perusopetus.get.lisätiedot.get.erityisenTuenPäätökset.get should have length (1)
         perusopetus.get.lisätiedot.get.erityisenTuenPäätökset.get.head.opiskeleeToimintaAlueittain should be (true)
+      }
+    }
+
+    "Palauttaa perusopetuksen uudet lisätietokentät" in {
+      postHetu(KoskiSpecificMockOppijat.kelaPerusopetusUusillaLisätiedoilla.hetu.get) {
+        verifyResponseStatusOk()
+        val oppija = JsonSerializer.parse[KelaOppija](body)
+
+        val perusopetus = oppija.opiskeluoikeudet collectFirst {
+          case x: KelaPerusopetuksenOpiskeluoikeus if x.lisätiedot.isDefined => x
+        }
+
+        perusopetus shouldNot be(None)
+        val lisätiedot = perusopetus.get.lisätiedot.get
+
+        lisätiedot.opetuksenJärjestäminenVammanSairaudenTaiRajoitteenPerusteella shouldNot be(None)
+        lisätiedot.opetuksenJärjestäminenVammanSairaudenTaiRajoitteenPerusteella.get should have length 1
+
+        lisätiedot.toimintaAlueittainOpiskelu shouldNot be(None)
+        lisätiedot.toimintaAlueittainOpiskelu.get should have length 1
       }
     }
 
@@ -1076,6 +1096,28 @@ class KelaSpec
           a.hyväksytty.isDefined should be (true)
         }))
       }))))
+    }
+  }
+
+  "Palauttaa esiopetuksen opiskeluoikeuden" in {
+    postHetu(KoskiSpecificMockOppijat.eskariAikaisillaLisätiedoilla.hetu.get) {
+      verifyResponseStatusOk()
+
+      val oppija = JsonSerializer.parse[KelaOppija](body)
+      oppija.opiskeluoikeudet.length should be(1)
+
+      val esiopetusOpiskeluoikeus = oppija.opiskeluoikeudet.head match {
+        case x: KelaEsiopetuksenOpiskeluoikeus => x
+      }
+
+      esiopetusOpiskeluoikeus.tyyppi.koodiarvo shouldBe "esiopetus"
+      esiopetusOpiskeluoikeus.suoritukset.length shouldBe 1
+      esiopetusOpiskeluoikeus.suoritukset.head.tyyppi.koodiarvo shouldBe "esiopetuksensuoritus"
+      esiopetusOpiskeluoikeus.suoritukset.head.koulutusmoduuli.tunniste.koodiarvo shouldBe "001101"
+
+      esiopetusOpiskeluoikeus.lisätiedot shouldNot be(None)
+      val lisätiedot = esiopetusOpiskeluoikeus.lisätiedot.get
+      lisätiedot.varhennetunOppivelvollisuudenJaksot shouldNot be(None)
     }
   }
 
