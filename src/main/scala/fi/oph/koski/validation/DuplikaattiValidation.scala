@@ -21,11 +21,11 @@ object DuplikaattiValidation extends Logging {
   }
 
   def validateDuplikaatit(
-     opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus,
-     oppijanHenkilötiedot: LaajatOppijaHenkilöTiedot,
-     opiskeluoikeusRepository: CompositeOpiskeluoikeusRepository,
-     config: Config
-   ): HttpStatus = {
+    opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus,
+    oppijanHenkilötiedot: LaajatOppijaHenkilöTiedot,
+    opiskeluoikeusRepository: CompositeOpiskeluoikeusRepository,
+    config: Config
+  ): HttpStatus = {
     lazy val isMuuAmmatillinenOpiskeluoikeus: Boolean =
       opiskeluoikeus.suoritukset.forall {
         case _: MuunAmmatillisenKoulutuksenSuoritus => true
@@ -106,6 +106,10 @@ object DuplikaattiValidation extends Logging {
       vertailtavatOot.find(päällekkäinenAikajakso)
     }
 
+    def samaTutkintopäivä(oo: KielitutkinnonOpiskeluoikeus): Boolean = {
+      oo.alkamispäivä == opiskeluoikeus.alkamispäivä
+    }
+
     def findSamaOppilaitosJaTyyppiSamaanAikaan(): Either[HttpStatus, Option[Opiskeluoikeus]] = {
       oppijanMuutOpiskeluoikeudetSamaOppilaitosJaTyyppi.map(findPäällekkäinenAikajakso)
     }
@@ -167,8 +171,11 @@ object DuplikaattiValidation extends Logging {
 
     def findNuortenPerusopetuksessaUseitaKeskeneräisiäVuosiluokanSuorituksia(): Either[HttpStatus, Option[Opiskeluoikeus]] = {
       def getLuokkaAste(s: Suoritus) = s.koulutusmoduuli.tunniste.koodiarvo
+
       def getVuosiluokat(oo: Opiskeluoikeus) = oo.suoritukset.collect { case s: PerusopetuksenVuosiluokanSuoritus => s }
+
       def getSuoritetutLuokkaAsteet(oo: Opiskeluoikeus): List[String] = getVuosiluokat(oo).filterNot(_.kesken).map(getLuokkaAste)
+
       def getKeskeneräisetLuokkaAsteet(oo: Opiskeluoikeus): List[String] = getVuosiluokat(oo).filter(_.kesken).map(getLuokkaAste)
 
       aiemminTallennettuOpiskeluoikeus match {
@@ -195,10 +202,28 @@ object DuplikaattiValidation extends Logging {
       oppijanMuutOpiskeluoikeudetSamaOppilaitosJaTyyppi.map(_.find {
         case muuOo: KielitutkinnonOpiskeluoikeus =>
           kielitutkinnonTasoJaKieli(opiskeluoikeus)
-            .exists(ok => kielitutkinnonTasoJaKieli(muuOo).exists(muuOk => ok.equals(muuOk))) && päällekkäinenAikajakso(muuOo)
+            .exists(ok => kielitutkinnonTasoJaKieli(muuOo).exists(muuOk => ok.equals(muuOk))) &&
+            samaTestinJärjestäjä(muuOo) &&
+            (if (muuOo.isValtionhallinnonKielitutkinto) {
+              päällekkäinenAikajakso(muuOo)
+            } else {
+              samaTutkintopäivä(muuOo)
+            })
         case _ => false
       })
     }
+
+    def samaTestinJärjestäjä(oo: KielitutkinnonOpiskeluoikeus): Boolean = {
+      val a = testinJärjestäjä(oo)
+      val b = testinJärjestäjä(opiskeluoikeus)
+      a.isDefined && b.isDefined && a.map(_.oid) == b.map(_.oid)
+    }
+
+    def testinJärjestäjä(oo: Opiskeluoikeus): Option[OrganisaatioWithOid] =
+      oo.suoritukset.headOption.flatMap {
+        case s: YleisenKielitutkinnonSuoritus => Some(s.testinJärjestäjä)
+        case _ => None
+      }
 
     def throwIfConflictingExists(
       isConflicting: () => Either[HttpStatus, Option[Opiskeluoikeus]]

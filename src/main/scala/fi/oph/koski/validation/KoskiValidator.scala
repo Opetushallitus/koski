@@ -361,7 +361,7 @@ class KoskiValidator(
     case t: TaiteenPerusopetuksenOpiskeluoikeus if t.onHankintakoulutus => validateAndAddTaiteenPerusopetuksenKoulutustoimija(t)
     case ytrOo: YlioppilastutkinnonOpiskeluoikeus if ytrOo.oppilaitos.isEmpty && ytrOo.koulutustoimija.exists(_.oid == "1.2.246.562.10.43628088406") =>
       Right(oo)
-    case kituOo: KielitutkinnonOpiskeluoikeus if kituOo.koulutustoimija.isEmpty && kituOo.isOphValtionhallinnonKielitutkinto =>
+    case kituOo: KielitutkinnonOpiskeluoikeus if kituOo.koulutustoimija.isEmpty && kituOo.isValtionhallinnonKielitutkinto =>
       Right(kituOo.copy(koulutustoimija = organisaatioRepository.getOrganisaatio(Opetushallitus.koulutustoimijaOid).flatMap(_.toKoulutustoimija)))
     case _ => organisaatioRepository.findKoulutustoimijaForOppilaitos(oo.getOppilaitos) match {
       case Some(löydettyKoulutustoimija) =>
@@ -529,7 +529,7 @@ class KoskiValidator(
     oo match {
       case _: YlioppilastutkinnonOpiskeluoikeus =>
         validateOrganisaatioAccess(oo, oo.getOppilaitosOrKoulutusToimija)
-      case kituOo: KielitutkinnonOpiskeluoikeus if kituOo.isOphValtionhallinnonKielitutkinto =>
+      case kituOo: KielitutkinnonOpiskeluoikeus if kituOo.isValtionhallinnonKielitutkinto =>
         validateOrganisaatioAccess(oo, oo.getOppilaitosOrKoulutusToimija)
       case _ =>
         validateOrganisaatioAccess(oo, oo.getOppilaitos)
