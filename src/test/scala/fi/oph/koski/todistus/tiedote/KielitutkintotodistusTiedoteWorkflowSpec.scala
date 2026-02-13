@@ -22,6 +22,7 @@ class KielitutkintotodistusTiedoteWorkflowSpec extends KielitutkintotodistusTied
         jobs.head.oppijaOid should equal(oppijaOid)
         jobs.head.opiskeluoikeusOid should equal(opiskeluoikeusOid)
         jobs.head.state should equal(KielitutkintotodistusTiedoteState.COMPLETED)
+        jobs.head.completedAt shouldBe defined
 
         mockTiedotuspalveluClient.sentNotifications should have length 1
         mockTiedotuspalveluClient.sentNotifications.head should equal((oppijaOid, opiskeluoikeusOid))

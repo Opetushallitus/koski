@@ -5,6 +5,7 @@ import fi.oph.koski.log.Logging
 import fi.oph.koski.util.Timing
 import org.postgresql.util.{PSQLException, PSQLState}
 
+import java.time.LocalDateTime
 import java.util.UUID
 
 class KielitutkintotodistusTiedoteService(application: KoskiApplication) extends Logging with Timing {
@@ -52,6 +53,7 @@ class KielitutkintotodistusTiedoteService(application: KoskiApplication) extends
       oppijaOid = oppijaOid,
       opiskeluoikeusOid = opiskeluoikeusOid,
       state = state,
+      completedAt = if (state == KielitutkintotodistusTiedoteState.COMPLETED) Some(LocalDateTime.now()) else None,
       worker = Some(repository.workerId),
       attempts = 1,
       error = error
