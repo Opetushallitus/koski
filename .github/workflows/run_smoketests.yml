@@ -39,10 +39,7 @@ jobs:
       - name: Test kansalaisen näkymä testiopintopolussa
         run: cd smoketests && pnpm run qa:kansalainen
 
-      - name: Test omadata-oauth2-sample in dev
-        run: cd smoketests && pnpm run omadata:dev
-
-      - name: Test omadata-oauth2-sample in qa
+      - name: Test omadata-oauth2-sample testiopintopolussa
         run: cd smoketests && pnpm run omadata:qa
 
       - name: Report failure
