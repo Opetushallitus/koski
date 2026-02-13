@@ -1,10 +1,9 @@
 package fi.oph.koski.raportit
 
-import fi.oph.koski.documentation.ExampleData.vahvistusPaikkakunnalla
+import fi.oph.koski.documentation.ExampleData.{opiskeluoikeusEronnut, opiskeluoikeusLäsnä, vahvistusPaikkakunnalla}
 import fi.oph.koski.documentation.{PerusopetusExampleData, YleissivistavakoulutusExampleData}
 import fi.oph.koski.documentation.PerusopetusExampleData.{kahdeksannenLuokanSuoritus, perusopetuksenOppimääränSuoritus, seitsemännenLuokanLuokallejääntiSuoritus, seitsemännenLuokanSuoritus, yhdeksännenLuokanSuoritus}
-import fi.oph.koski.henkilo.KoskiSpecificMockOppijat.vuonna2005SyntynytEiOpiskeluoikeuksiaFikstuurissa
-import fi.oph.koski.henkilo.VerifiedHenkilöOid
+import fi.oph.koski.henkilo.{KoskiSpecificMockOppijat, VerifiedHenkilöOid}
 import fi.oph.koski.http.HttpStatus
 
 import java.time.LocalDate.{of => date}
@@ -15,7 +14,7 @@ import fi.oph.koski.log.AuditLogTester
 import fi.oph.koski.organisaatio.MockOrganisaatiot.jyväskylänNormaalikoulu
 import fi.oph.koski.raportit.perusopetus.{PerusopetuksenOppijamäärätRaportti, PerusopetuksenOppijamäärätRaporttiRow}
 import fi.oph.koski.raportointikanta.RaportointikantaTestMethods
-import fi.oph.koski.schema.{Aikajakso, ErityisenTuenPäätös, Opiskeluoikeus, PerusopetuksenOpiskeluoikeudenLisätiedot, PerusopetuksenOpiskeluoikeus, Tukijakso}
+import fi.oph.koski.schema.{Aikajakso, ErityisenTuenPäätös, NuortenPerusopetuksenOpiskeluoikeudenTila, NuortenPerusopetuksenOpiskeluoikeusjakso, Opiskeluoikeus, PerusopetuksenOpiskeluoikeudenLisätiedot, PerusopetuksenOpiskeluoikeus, Tukijakso}
 import org.scalatest.BeforeAndAfterAll
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.should.Matchers
@@ -24,6 +23,8 @@ class PerusopetuksenOppijamäärätRaporttiSpec extends AnyFreeSpec with Matcher
 {
   private val raportointipäivä = date(2012, 1, 1)
   private val tuenPäätöksenJaksonRaportointipäivä = date(2026, 8, 1)
+  private val valmistumispäivänRaportointipäivä = date(2025, 5, 31)
+  private val eronnutRaportointipäivä = date(2026, 1, 15)
 
   var rikkinäisetOpiskeluoikeusOidit: Seq[Opiskeluoikeus.Oid] = Seq()
 
@@ -32,7 +33,7 @@ class PerusopetuksenOppijamäärätRaporttiSpec extends AnyFreeSpec with Matcher
     // rikkinäisyyksistä.
     def create(oo: PerusopetuksenOpiskeluoikeus): Either[HttpStatus, Opiskeluoikeus.Oid] = {
       val createResult = application.opiskeluoikeusRepository.createOrUpdate(
-        oppijaOid = VerifiedHenkilöOid(vuonna2005SyntynytEiOpiskeluoikeuksiaFikstuurissa),
+        oppijaOid = VerifiedHenkilöOid(KoskiSpecificMockOppijat.vuonna2005SyntynytEiOpiskeluoikeuksiaFikstuurissa),
         opiskeluoikeus = oo,
         allowUpdate = false,
       )(session(defaultUser))
@@ -44,6 +45,9 @@ class PerusopetuksenOppijamäärätRaporttiSpec extends AnyFreeSpec with Matcher
     rikkinäisetOpiskeluoikeusOidit = rikkinäisetTestiopiskeluoikeudet.map(create).map(_.getOrElse(throw new Error))
 
     tuenPäätöksenJaksojenTestiopiskeluiokeudet.map(create)
+
+    create(valmistumispäivänäNäkyväOpiskeluoikeus)
+    create(eronnutOpiskeluoikeus)
 
     application.perustiedotIndexer.sync(refresh = true)
     reloadRaportointikanta()
@@ -210,6 +214,51 @@ class PerusopetuksenOppijamäärätRaporttiSpec extends AnyFreeSpec with Matcher
     )
   }
 
+  private def valmistumispäivänäNäkyväOpiskeluoikeus: PerusopetuksenOpiskeluoikeus = {
+    val oppilaitos = YleissivistavakoulutusExampleData.jyväskylänNormaalikoulu
+    val toimipiste = YleissivistavakoulutusExampleData.jyväskylänNormaalikoulu
+    val alkamispäivä = date(2016, 8, 15)
+    val päättymispäivä = Some(date(2025, 6, 4))
+
+    PerusopetusExampleData.opiskeluoikeus(
+      oppilaitos = oppilaitos,
+      suoritukset = List(
+        yhdeksännenLuokanSuoritus.copy(
+          toimipiste = toimipiste,
+          luokka = "9D",
+          alkamispäivä = Some(date(2024, 8, 15)),
+          vahvistus = vahvistusPaikkakunnalla(valmistumispäivänRaportointipäivä)
+        ),
+        perusopetuksenOppimääränSuoritus.copy(
+          toimipiste = toimipiste,
+          vahvistus = vahvistusPaikkakunnalla(päättymispäivä.get)
+        )
+      ),
+      alkamispäivä = alkamispäivä,
+      päättymispäivä = päättymispäivä
+    )
+  }
+
+  private def eronnutOpiskeluoikeus: PerusopetuksenOpiskeluoikeus = {
+    val alkamispäivä = date(2025, 8, 15)
+
+    PerusopetusExampleData.opiskeluoikeus(
+      suoritukset = List(
+        yhdeksännenLuokanSuoritus.copy(
+          alkamispäivä = Some(alkamispäivä),
+          vahvistus = None
+        ),
+      ),
+      alkamispäivä = alkamispäivä,
+      päättymispäivä = None
+    ).copy(
+      tila = NuortenPerusopetuksenOpiskeluoikeudenTila(List(
+        NuortenPerusopetuksenOpiskeluoikeusjakso(alkamispäivä, opiskeluoikeusLäsnä),
+        NuortenPerusopetuksenOpiskeluoikeusjakso(eronnutRaportointipäivä, opiskeluoikeusEronnut)
+      ))
+    )
+  }
+
   private def raportointipäiväänOsuvaVammaisuustieto = Some(List(raportointipäiväänOsuvaAikajakso))
   private def raportointipäiväänOsuvaPidennettyOppivelvollisuus = Some(raportointipäiväänOsuvaAikajakso)
   private def raportointipäiväänOsuvaKotiopetustieto = Some(List(raportointipäiväänOsuvaAikajakso))
@@ -265,8 +314,28 @@ class PerusopetuksenOppijamäärätRaporttiSpec extends AnyFreeSpec with Matcher
 
   "Perusopetuksen oppijamäärien raportti - päävälilehti" in {
     val rows = perusopetuksenOppijamäärätRaportti.filter(_.oppilaitosNimi.equals("Jyväskylän normaalikoulu"))
-    rows.length should be(4)
+    rows.length should be(5)
     rows.toList should equal(List(
+      PerusopetuksenOppijamäärätRaporttiRow(
+        oppilaitosNimi = "Jyväskylän normaalikoulu",
+        organisaatioOid = "1.2.246.562.10.14613773812",
+        opetuskieli = "ruotsi,suomi",
+        vuosiluokka = "5",
+        oppilaita = 1,
+        vieraskielisiä = 0,
+        pidOppivelvollisuusEritTukiJaVaikeastiVammainen = 0,
+        pidOppivelvollisuusEritTukiJaMuuKuinVaikeimminVammainen = 0,
+        tuenPäätöksenJakso = 0,
+        opetuksenJärjestäminenVammanSairaudenTaiRajoitteenPerusteella = 0,
+        toimintaAlueittainOpiskelu = 0,
+        tavoitekokonaisuuksittainOpiskelu = 0,
+        erityiselläTuella = 0,
+        majoitusetu = 0,
+        kuljetusetu = 0,
+        sisäoppilaitosmainenMajoitus = 0,
+        koulukoti = 0,
+        joustavaPerusopetus = 0
+      ),
       PerusopetuksenOppijamäärätRaporttiRow(
         oppilaitosNimi = "Jyväskylän normaalikoulu",
         organisaatioOid = "1.2.246.562.10.14613773812",
@@ -332,7 +401,7 @@ class PerusopetuksenOppijamäärätRaporttiSpec extends AnyFreeSpec with Matcher
         organisaatioOid = "1.2.246.562.10.14613773812",
         opetuskieli = "ruotsi,suomi",
         vuosiluokka = "Kaikki vuosiluokat yhteensä",
-        oppilaita = 5 + ylimääräisetLkm,
+        oppilaita = 6 + ylimääräisetLkm,
         vieraskielisiä = 1,
         pidOppivelvollisuusEritTukiJaVaikeastiVammainen = 2 + ylimääräisetVaikeastiVammaisetLkm,
         pidOppivelvollisuusEritTukiJaMuuKuinVaikeimminVammainen = 1 + ylimääräisetMuuKuinVaikeastiVammaisetLkm,
@@ -384,6 +453,32 @@ class PerusopetuksenOppijamäärätRaporttiSpec extends AnyFreeSpec with Matcher
     val rows = perusopetuksenOppijamäärätRaportti
     rows.groupBy(it => it.organisaatioOid).values
       .foreach(rowsForOrg => rowsForOrg.map(_.opetuskieli).distinct should have length 1)
+  }
+
+  "Perusopetuksen oppijamäärien raportti - eronnut-tilaiset oppijat näkyvät raportilla" in {
+    val rows = perusopetuksenOppijamäärätRaporttiBuilder
+      .build(Seq(jyväskylänNormaalikoulu), eronnutRaportointipäivä, t)(session(defaultUser))
+      .rows.map(_.asInstanceOf[PerusopetuksenOppijamäärätRaporttiRow])
+      .filter(_.oppilaitosNimi.equals("Jyväskylän normaalikoulu"))
+
+    rows.find(_.vuosiluokka == "9").map(_.oppilaita).getOrElse(0) should be > 0
+  }
+
+  "Perusopetuksen oppijamäärien raportti - vuosiluokan suorituksen vahvistuspäivänä oppija näkyy raportilla" in {
+    def oppilaita9Luokalla(päivä: java.time.LocalDate): Int = {
+      perusopetuksenOppijamäärätRaporttiBuilder
+        .build(Seq(jyväskylänNormaalikoulu), päivä, t)(session(defaultUser))
+        .rows.map(_.asInstanceOf[PerusopetuksenOppijamäärätRaporttiRow])
+        .filter(_.oppilaitosNimi.equals("Jyväskylän normaalikoulu"))
+        .find(_.vuosiluokka == "9")
+        .map(_.oppilaita)
+        .getOrElse(0)
+    }
+
+    val edellisenPäivänOppilaita = oppilaita9Luokalla(valmistumispäivänRaportointipäivä.minusDays(1))
+    val vahvistuspäivänOppilaita = oppilaita9Luokalla(valmistumispäivänRaportointipäivä)
+
+    vahvistuspäivänOppilaita should equal(edellisenPäivänOppilaita)
   }
 
   private val perusopetuksenOppijamäärätRaporttiBuilder = PerusopetuksenOppijamäärätRaportti(application.raportointiDatabase.db, application.organisaatioService)

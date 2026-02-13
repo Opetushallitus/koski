@@ -76,7 +76,7 @@ case class AikuistenPerusopetuksenOppijamäärätRaportti(db: DB, organisaatioSe
       and r_opiskeluoikeus.koulutusmuoto = 'aikuistenperusopetus'
       and aikajakso.alku <= $päivä
       and aikajakso.loppu >= $päivä
-      and aikajakso.tila = 'lasna'
+      and aikajakso.tila in ('lasna', 'eronnut', 'katsotaaneronneeksi')
       and r_opiskeluoikeus.sisaltyy_opiskeluoikeuteen_oid is null
     -- access check
       and (
