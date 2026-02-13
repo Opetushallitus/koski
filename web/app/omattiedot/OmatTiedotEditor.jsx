@@ -56,11 +56,11 @@ export const OmatTiedotEditor = ({ model }) => {
               ([title, opiskeluoikeudet], index) => (
                 <div className="oppilaitos-container" key={index}>
                   <h2 className="oppilaitos-title">{title}</h2>
-                  <ul className="opiskeluoikeudet-list">
-                    {opiskeluoikeudet.map(
-                      (opiskeluoikeus, opiskeluoikeusIndex) => (
-                        <li key={opiskeluoikeusIndex}>
-                          <TestIdLayer id={opiskeluoikeusIndex}>
+                  <TestIdLayer id={index}>
+                    <ul className="opiskeluoikeudet-list">
+                      {opiskeluoikeudet.map(
+                        (opiskeluoikeus, opiskeluoikeusIndex) => (
+                          <li key={opiskeluoikeusIndex}>
                             <div className="opiskeluoikeus-container">
                               <OpiskeluoikeusEditor
                                 opiskeluoikeus={opiskeluoikeus}
@@ -69,11 +69,11 @@ export const OmatTiedotEditor = ({ model }) => {
                                 testId={opiskeluoikeusIndex}
                               />
                             </div>
-                          </TestIdLayer>
-                        </li>
-                      )
-                    )}
-                  </ul>
+                          </li>
+                        )
+                      )}
+                    </ul>
+                  </TestIdLayer>
                 </div>
               )
             )}
