@@ -86,6 +86,9 @@ object MockOrganisaatiot {
     val ophKoulutustoimija: String = Opetushallitus.koulutustoimijaOid
     val organisaatio = "1.2.246.562.10.27736566558"
   }
+  object YleinenKielitutkintoOrg {
+    val organisaatio: String = ValtionhallinnonKielitutkinnotOrg.organisaatio // TODO: Tarkista mitä oidia käytetään
+  }
 
   val oppilaitokset: List[String] = List(
     stadinAmmattiopisto,

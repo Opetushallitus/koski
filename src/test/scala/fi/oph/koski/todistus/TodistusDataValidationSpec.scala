@@ -1,5 +1,7 @@
 package fi.oph.koski.todistus
 
+import fi.oph.koski.organisaatio.MockOrganisaatiot.YleinenKielitutkintoOrg
+import fi.oph.koski.organisaatio.Opetushallitus
 import fi.oph.koski.schema._
 import fi.oph.koski.todistus.yleinenkielitutkinto.{YleinenKielitutkintoSuoritusJaArvosana, YleinenKielitutkintoTodistusData}
 import org.scalatest.freespec.AnyFreeSpec
@@ -257,7 +259,8 @@ class TodistusDataValidationSpec extends AnyFreeSpec with Matchers {
             tunniste = Koodistokoodiviite("kt", "ykitutkintotaso"),
             kieli = Koodistokoodiviite("FI", "kieli")
           ),
-          toimipiste = OidOrganisaatio("1.2.246.562.10.00000000001"),
+          toimipiste = OidOrganisaatio(YleinenKielitutkintoOrg.organisaatio),
+          testinJärjestäjä = OidOrganisaatio("1.2.246.562.10.00000000001"),
           vahvistus = Some(Päivämäärävahvistus(
             päivä = LocalDate.of(2020, 6, 1),
             myöntäjäOrganisaatio = OidOrganisaatio("1.2.246.562.10.00000000001")

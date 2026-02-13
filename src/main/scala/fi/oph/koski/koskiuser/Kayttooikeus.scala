@@ -130,11 +130,11 @@ object Käyttöoikeus {
     }
   }
 
-  def parseAllowedOpiskeluoikeudenTyypit(roolit: List[Palvelurooli], accessTypes: List[AccessType.Value], isRootUser: Boolean = false): Set[OoPtsMask] = {
+  def parseAllowedOpiskeluoikeudenTyypit(roolit: List[Palvelurooli], accessTypes: List[AccessType.Value]): Set[OoPtsMask] = {
     if (!accessTypes.contains(AccessType.read)) {
       Set.empty
     } else {
-      val käyttäjänRoolit = unifyRoolit(roolit, isRootUser)
+      val käyttäjänRoolit = unifyRoolit(roolit)
         .filter(_.palveluName == "KOSKI")
 
       val käyttäjänOoPtsRoolit = käyttäjänRoolit
@@ -142,7 +142,7 @@ object Käyttöoikeus {
         .distinct
 
       val kaikkiOpiskeluoikeudenTyypit = OpiskeluoikeudenTyyppi
-        .kaikkiTyypit(true)
+        .kaikkiTyypit
         .flatMap(OoPtsMask.fromKoodistokoodiviite)
         .toList
 
@@ -154,7 +154,7 @@ object Käyttöoikeus {
 
       if (oikeuksiaEiOleRajoitettuTiettyihinTyyppeihin) {
         OpiskeluoikeudenTyyppi
-          .kaikkiTyypit(isRootUser)
+          .kaikkiTyypit
           .flatMap(OoPtsMask.fromKoodistokoodiviite)
       } else {
         tyypitJoihinKäyttöRajoitettu
@@ -162,7 +162,7 @@ object Käyttöoikeus {
     }
   }
 
-  private def unifyRoolit(roolit: List[Palvelurooli], isRootUser: Boolean): List[Palvelurooli] = roolit flatMap {
+  private def unifyRoolit(roolit: List[Palvelurooli]): List[Palvelurooli] = roolit flatMap {
     case Palvelurooli("KOSKI", GLOBAALI_LUKU_PERUSOPETUS) => List(
       ESIOPETUS,
       PERUSOPETUS,
@@ -193,7 +193,7 @@ object Käyttöoikeus {
     case Palvelurooli("KOSKI", TAITEENPERUSOPETUS_HANKINTAKOULUTUS) => List(Palvelurooli(TAITEENPERUSOPETUS))
     case Palvelurooli("KOSKI", GLOBAALI_LUKU_KIELITUTKINTO) => List(Palvelurooli(KIELITUTKINTO))
     case Palvelurooli("KOSKI", KIELITUTKINTOREKISTERI) => List(Palvelurooli(KIELITUTKINTO))
-    case Palvelurooli("KOSKI", KAIKKI_OPISKELUOIKEUS_TYYPIT) => OpiskeluoikeudenTyyppi.kaikkiTyypit(isRootUser).map(t => Palvelurooli(t.koodiarvo.toUpperCase))
+    case Palvelurooli("KOSKI", KAIKKI_OPISKELUOIKEUS_TYYPIT) => OpiskeluoikeudenTyyppi.kaikkiTyypit.map(t => Palvelurooli(t.koodiarvo.toUpperCase))
     case rooli => List(rooli)
   }
 }
@@ -223,7 +223,7 @@ case class KäyttöoikeusGlobal(globalPalveluroolit: List[Palvelurooli]) extends
     case _ => Nil
   }
 
-  override lazy val allowedOpiskeluoikeusTyypit: Set[OoPtsMask] = Käyttöoikeus.parseAllowedOpiskeluoikeudenTyypit(globalPalveluroolit, globalAccessType, isRootUser = true)
+  override lazy val allowedOpiskeluoikeusTyypit: Set[OoPtsMask] = Käyttöoikeus.parseAllowedOpiskeluoikeudenTyypit(globalPalveluroolit, globalAccessType)
 }
 
 trait OrgKäyttöoikeus extends Käyttöoikeus {
@@ -324,7 +324,7 @@ object OoPtsMask {
   def intersects(ts: Iterable[OoPtsMask], a: OoPtsMask): Boolean =
     ts.exists(_.intersects(a))
 
-  private def isOpiskeluoikeusrooli(rooli: String) = OpiskeluoikeudenTyyppi.kaikkiTyypit(true).exists(_.koodiarvo == rooli)
+  private def isOpiskeluoikeusrooli(rooli: String) = OpiskeluoikeudenTyyppi.kaikkiTyypit.exists(_.koodiarvo == rooli)
 
   implicit final def ooPtsMaskIterableOps[F[X] <: Iterable[X]](i: F[OoPtsMask]): OoPtsMaskIterableChainingOps[F] = new OoPtsMaskIterableChainingOps(i)
 

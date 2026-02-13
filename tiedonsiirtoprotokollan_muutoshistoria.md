@@ -1,3 +1,7 @@
+# 10.2.2026
+
+- Kielitutkintojen opiskeluoikeuksia ei voi enää katsella oppilaitostunnuksilla, ellei niille ole erikseen määritelty oikeutta kielitutkintoihin.
+
 ## 4.2.2026
 
 - Tunnustettu-rakenne lisättu IB-kurssin suorituksiin.
