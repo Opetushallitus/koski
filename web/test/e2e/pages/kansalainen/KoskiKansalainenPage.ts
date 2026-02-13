@@ -43,6 +43,17 @@ export class KoskiKansalainenPage {
     await this.page.getByTestId(`oo.${index}.opiskeluoikeus.expand`).click()
   }
 
+  async openOppilaitoksetonOpiskeluoikeusByIndex(
+    groupIndex: number = 0,
+    ooIndex: number = 0
+  ) {
+    await this.page
+      .getByTestId(
+        `oppilaitoksettomat-opiskeluoikeudet.${groupIndex}.${ooIndex}.opiskeluoikeus.expand`
+      )
+      .click()
+  }
+
   async expandOsaamismerkki(index: number = 0) {
     await expect(this.osaamismerkkiSuoritusTab(index)).not.toBeAttached()
     await this.osaamismerkkiExpandButton(index).click()
