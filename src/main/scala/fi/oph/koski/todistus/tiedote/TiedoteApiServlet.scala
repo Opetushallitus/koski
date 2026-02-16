@@ -34,7 +34,7 @@ class TiedoteApiServlet(implicit val application: KoskiApplication)
     renderObject(repository.countByState)
   }
 
-  post("/run") {
+  get("/run") {
     val processed = service.processAll()
     val retried = service.retryAllFailed()
 

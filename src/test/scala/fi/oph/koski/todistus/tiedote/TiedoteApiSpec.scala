@@ -64,10 +64,10 @@ class TiedoteApiSpec extends KielitutkintotodistusTiedoteSpecHelpers {
       }
     }
 
-    "POST /run" - {
+    "GET /run" - {
       "OPH-pääkäyttäjä voi käynnistää batch-ajon heti" in {
         withoutRunningTiedoteScheduler {
-          post("api/tiedote/run", headers = authHeaders(MockUsers.paakayttaja) ++ jsonContent) {
+          get("api/tiedote/run", headers = authHeaders(MockUsers.paakayttaja) ++ jsonContent) {
             verifyResponseStatusOk()
             response.body should include("processed")
           }
@@ -78,7 +78,7 @@ class TiedoteApiSpec extends KielitutkintotodistusTiedoteSpecHelpers {
       }
 
       "Tavallinen käyttäjä saa 403" in {
-        post("api/tiedote/run", headers = authHeaders(MockUsers.stadinAmmattiopistoKatselija) ++ jsonContent) {
+        get("api/tiedote/run", headers = authHeaders(MockUsers.stadinAmmattiopistoKatselija) ++ jsonContent) {
           verifyResponseStatus(403)
         }
       }
