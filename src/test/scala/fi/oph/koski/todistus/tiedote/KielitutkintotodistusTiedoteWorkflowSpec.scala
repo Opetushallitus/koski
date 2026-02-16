@@ -1,7 +1,11 @@
 package fi.oph.koski.todistus.tiedote
 
+import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
+import fi.oph.koski.schedule.Scheduler
 import fi.oph.koski.util.Wait
+
+import java.time.Duration
 
 class KielitutkintotodistusTiedoteWorkflowSpec extends KielitutkintotodistusTiedoteSpecHelpers {
 
@@ -85,7 +89,27 @@ class KielitutkintotodistusTiedoteWorkflowSpec extends KielitutkintotodistusTied
       }
     }
 
-    "Scheduler lähettää tiedotteen automaattisesti" in {
+    "Scheduler on oletuksena pois päältä (tiedote.enabled = false)" in {
+      KoskiApplication.defaultConfig.getBoolean("tiedote.enabled") should be(false)
+    }
+
+    "Scheduler ei käsittele tiedotteita kun se on pysäytetty" in {
+      waitForSchedulerIdle()
+      Scheduler.pauseForDuration(app.masterDatabase.db, "kielitutkintotodistus-tiedote", Duration.ofDays(1))
+      waitForSchedulerIdle()
+      app.kielitutkintotodistusTiedoteRepository.truncateForLocal()
+      mockTiedotuspalveluClient.reset()
+
+      try {
+        Thread.sleep(3000)
+        app.kielitutkintotodistusTiedoteRepository.findAll(100, 0) should have length 0
+        mockTiedotuspalveluClient.sentNotifications should have length 0
+      } finally {
+        Scheduler.resume(app.masterDatabase.db, "kielitutkintotodistus-tiedote")
+      }
+    }
+
+    "Scheduler lähettää tiedotteen automaattisesti kun se on päällä" in {
       val oppijaOid = KoskiSpecificMockOppijat.kielitutkinnonSuorittaja.oid
       val opiskeluoikeusOid = getVahvistettuKielitutkinnonOpiskeluoikeusOid(oppijaOid).get
 

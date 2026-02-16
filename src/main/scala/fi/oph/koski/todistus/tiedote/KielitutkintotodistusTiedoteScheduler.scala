@@ -22,6 +22,8 @@ class KielitutkintotodistusTiedoteScheduler(application: KoskiApplication) exten
   var schedulerInstance: Option[Scheduler] = None
 
   def createScheduler: Option[Scheduler] = {
+    if (!application.config.getBoolean("tiedote.enabled")) return None
+
     leaseElector.start(
       onAcquired = _ => logger.info(s"Acquired kielitutkintotodistus-tiedote lease (workerId: ${application.kielitutkintotodistusTiedoteRepository.workerId})"),
       onLost = _ => logger.warn(s"Lost kielitutkintotodistus-tiedote lease (workerId: ${application.kielitutkintotodistusTiedoteRepository.workerId})")
