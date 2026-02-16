@@ -43,7 +43,9 @@ object ExamplesEsiopetus {
       loppu = Some(date(2016, 6, 4)),
       erityisryhmässä = Some(false),
       tukimuodot = None
-    )))
+    ))),
+    tuenPäätöksenJaksot = Some(List(Tukijakso(Some(date(2027, 6, 5)), Some(date(2027, 12, 31))))),
+    varhennetunOppivelvollisuudenJaksot = Some(List(Aikajakso(Some(date(2027, 7, 5)), Some(date(2027, 12, 31))))),
   )
 
   lazy val opiskeluoikeus = EsiopetuksenOpiskeluoikeus(

@@ -32,7 +32,8 @@ class MockLuovutuspalveluV2ClientListService extends LuovutuspalveluV2ClientList
       |{"subjectDn":"CN=sdg", "ips":["0.0.0.0"], "user": "Saleria"},
       |{"subjectDn":"CN=valpas-ytl", "ips":["0.0.0.0"], "user": "valpas-ytl"},
       |{"subjectDn":"CN=valpas-monta", "ips":["0.0.0.0"], "user": "valpas-monta"},
-      |{"subjectDn":"CN=kalle", "ips":["0.0.0.0"], "user": "kalle"}
+      |{"subjectDn":"CN=kalle", "ips":["0.0.0.0"], "user": "kalle"},
+      |{"subjectDn":"CN=luovutuspalvelu-test-ca-kela-client-cert-dev,O=OPH,C=FI", "ips":["0.0.0.0"], "user": "Laaja"}
       |]""".stripMargin
   private val mockClientList = JsonSerializer.parse[List[LuovutuspalveluClient]](mockClientListJson)
   override def getClientList: List[LuovutuspalveluClient] = {
