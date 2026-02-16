@@ -21,7 +21,7 @@ test.describe('Digitaalinen kielitutkintotodistus', () => {
       kansalainenPage
     }) => {
       await page.goto('/koski/omattiedot?pdf-todistus=true')
-      await kansalainenPage.openOpiskeluoikeusByIndex(0)
+      await kansalainenPage.openOppilaitoksetonOpiskeluoikeusByIndex(0, 0)
       await kansalainenPage.setKielitutkintoTodistusLanguage('fi')
       await kansalainenPage.generateKielitutkintoTodistus()
       await kansalainenPage.getKielitutkintoTodistusFile()
@@ -32,7 +32,7 @@ test.describe('Digitaalinen kielitutkintotodistus', () => {
       kansalainenPage
     }) => {
       await page.goto('/koski/omattiedot?pdf-todistus=true')
-      await kansalainenPage.openOpiskeluoikeusByIndex(0)
+      await kansalainenPage.openOppilaitoksetonOpiskeluoikeusByIndex(0, 0)
       await kansalainenPage.setKielitutkintoTodistusLanguage('en')
       await kansalainenPage.generateKielitutkintoTodistus()
       await kansalainenPage.getKielitutkintoTodistusFile()
@@ -43,7 +43,7 @@ test.describe('Digitaalinen kielitutkintotodistus', () => {
       kansalainenPage
     }) => {
       await page.goto('/koski/omattiedot?pdf-todistus=true')
-      await kansalainenPage.openOpiskeluoikeusByIndex(0)
+      await kansalainenPage.openOppilaitoksetonOpiskeluoikeusByIndex(0, 0)
       await kansalainenPage.setKielitutkintoTodistusLanguage('sv')
       await kansalainenPage.generateKielitutkintoTodistus()
       await kansalainenPage.getKielitutkintoTodistusFile()
@@ -54,7 +54,7 @@ test.describe('Digitaalinen kielitutkintotodistus', () => {
       kansalainenPage
     }) => {
       await page.goto('/koski/omattiedot?pdf-todistus=true')
-      await kansalainenPage.openOpiskeluoikeusByIndex(0)
+      await kansalainenPage.openOppilaitoksetonOpiskeluoikeusByIndex(0, 0)
       await kansalainenPage.setKielitutkintoTodistusLanguage('en')
       await kansalainenPage.generateKielitutkintoTodistus()
       await kansalainenPage.setKielitutkintoTodistusLanguage('fi')
@@ -72,7 +72,7 @@ test.describe('Digitaalinen kielitutkintotodistus', () => {
       kansalainenPage
     }) => {
       await page.goto('/koski/omattiedot?pdf-todistus=true')
-      await kansalainenPage.openOpiskeluoikeusByIndex(0)
+      await kansalainenPage.openOppilaitoksetonOpiskeluoikeusByIndex(0, 0)
       await kansalainenPage.setKielitutkintoTodistusLanguage('en')
       await kansalainenPage.generateKielitutkintoTodistus()
 
@@ -96,7 +96,7 @@ test.describe('Digitaalinen kielitutkintotodistus', () => {
       context
     }) => {
       await page.goto('/koski/omattiedot?pdf-todistus=true')
-      await kansalainenPage.openOpiskeluoikeusByIndex(0)
+      await kansalainenPage.openOppilaitoksetonOpiskeluoikeusByIndex(0, 0)
       await kansalainenPage.setKielitutkintoTodistusLanguage('sv')
       await kansalainenPage.generateKielitutkintoTodistus()
 
@@ -120,11 +120,17 @@ test.describe('Digitaalinen kielitutkintotodistus', () => {
       const errorContent = errorPage.locator('.error.content-area')
       await errorContent.waitFor()
 
-      const statusCode = await errorContent.locator('h1.http-status').textContent()
+      const statusCode = await errorContent
+        .locator('h1.http-status')
+        .textContent()
       expect(statusCode).toBe('500')
 
-      const errorMessage = await errorContent.locator('.error-message').textContent()
-      expect(errorMessage).toContain('Todistuksen lataus epäonnistui testitarkoitukseen.')
+      const errorMessage = await errorContent
+        .locator('.error-message')
+        .textContent()
+      expect(errorMessage).toContain(
+        'Todistuksen lataus epäonnistui testitarkoitukseen.'
+      )
       expect(errorMessage).toContain('Yritä uudestaan')
 
       await errorPage.close()
