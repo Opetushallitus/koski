@@ -29,10 +29,6 @@ class KielitutkintotodistusTiedoteRepository(val db: DB, val workerId: String, c
       """.as[(String, String)])
   }
 
-  def findNextEligible: Option[(String, String)] = {
-    findEligibleBatch(limit = 1).headOption
-  }
-
   def add(job: KielitutkintotodistusTiedoteJob): KielitutkintotodistusTiedoteJob = {
     runDbSync(sql"""
       INSERT INTO kielitutkintotodistus_tiedote_job(id, oppija_oid, opiskeluoikeus_oid, state, created_at, completed_at, worker, attempts, error)
@@ -77,10 +73,6 @@ class KielitutkintotodistusTiedoteRepository(val db: DB, val workerId: String, c
         AND attempts < $maxAttempts
       ORDER BY created_at
       """.as[KielitutkintotodistusTiedoteJob])
-  }
-
-  def findNextRetryable(maxAttempts: Int): Option[KielitutkintotodistusTiedoteJob] = {
-    findAllRetryable(maxAttempts).headOption
   }
 
   def countByState: Map[String, Int] = {

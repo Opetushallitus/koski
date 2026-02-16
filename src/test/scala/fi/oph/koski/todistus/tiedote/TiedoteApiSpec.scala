@@ -13,7 +13,7 @@ class TiedoteApiSpec extends KielitutkintotodistusTiedoteSpecHelpers {
     "GET /jobs" - {
       "OPH-pääkäyttäjä saa listan tiedotteista" in {
         withoutRunningTiedoteScheduler {
-          app.kielitutkintotodistusTiedoteService.processNext()
+          app.kielitutkintotodistusTiedoteService.processAll()
 
           get("api/tiedote/jobs", headers = authHeaders(MockUsers.paakayttaja) ++ jsonContent) {
             verifyResponseStatusOk()
@@ -30,7 +30,7 @@ class TiedoteApiSpec extends KielitutkintotodistusTiedoteSpecHelpers {
 
       "Tukee state-suodatusta" in {
         withoutRunningTiedoteScheduler {
-          app.kielitutkintotodistusTiedoteService.processNext()
+          app.kielitutkintotodistusTiedoteService.processAll()
 
           get("api/tiedote/jobs?state=COMPLETED", headers = authHeaders(MockUsers.paakayttaja) ++ jsonContent) {
             verifyResponseStatusOk()
@@ -48,7 +48,7 @@ class TiedoteApiSpec extends KielitutkintotodistusTiedoteSpecHelpers {
     "GET /stats" - {
       "OPH-pääkäyttäjä saa tilakohtaiset lukumäärät" in {
         withoutRunningTiedoteScheduler {
-          app.kielitutkintotodistusTiedoteService.processNext()
+          app.kielitutkintotodistusTiedoteService.processAll()
 
           get("api/tiedote/stats", headers = authHeaders(MockUsers.paakayttaja) ++ jsonContent) {
             verifyResponseStatusOk()

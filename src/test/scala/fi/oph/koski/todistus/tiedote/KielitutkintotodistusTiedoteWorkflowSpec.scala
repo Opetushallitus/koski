@@ -14,44 +14,41 @@ class KielitutkintotodistusTiedoteWorkflowSpec extends KielitutkintotodistusTied
   }
 
   "Kielitutkintotodistuksen tiedote" - {
-    "Lähettää tiedotteen vahvistetusta kielitutkinnosta (v1)" in {
+    "Lähettää tiedotteen vahvistetusta kielitutkinnosta" in {
       withoutRunningTiedoteScheduler {
         val oppijaOid = KoskiSpecificMockOppijat.kielitutkinnonSuorittaja.oid
         val opiskeluoikeusOid = getVahvistettuKielitutkinnonOpiskeluoikeusOid(oppijaOid).get
 
-        app.kielitutkintotodistusTiedoteService.processNext()
+        app.kielitutkintotodistusTiedoteService.processAll()
 
-        val jobs = app.kielitutkintotodistusTiedoteRepository.findAll(10, 0)
-        jobs should have length 1
-        jobs.head.oppijaOid should equal(oppijaOid)
-        jobs.head.opiskeluoikeusOid should equal(opiskeluoikeusOid)
-        jobs.head.state should equal(KielitutkintotodistusTiedoteState.COMPLETED)
-        jobs.head.completedAt shouldBe defined
+        val jobs = app.kielitutkintotodistusTiedoteRepository.findAll(100, 0)
+        val job = jobs.find(_.opiskeluoikeusOid == opiskeluoikeusOid)
+        job shouldBe defined
+        job.get.oppijaOid should equal(oppijaOid)
+        job.get.state should equal(KielitutkintotodistusTiedoteState.COMPLETED)
+        job.get.completedAt shouldBe defined
 
-        mockTiedotuspalveluClient.sentNotifications should have length 1
-        mockTiedotuspalveluClient.sentNotifications.head should equal((oppijaOid, opiskeluoikeusOid))
+        mockTiedotuspalveluClient.sentNotifications.exists(_ == (oppijaOid, opiskeluoikeusOid)) should be(true)
       }
     }
 
     "Ei luo duplikaattitiedotetta samalle opiskeluoikeudelle" in {
       withoutRunningTiedoteScheduler {
-        app.kielitutkintotodistusTiedoteService.processNext()
-        val jobsBefore = app.kielitutkintotodistusTiedoteRepository.findAll(10, 0)
-        val firstJobOoOid = jobsBefore.head.opiskeluoikeusOid
+        app.kielitutkintotodistusTiedoteService.processAll()
+        val jobsBefore = app.kielitutkintotodistusTiedoteRepository.findAll(100, 0)
 
-        // processNext käsittelee seuraavan eligible-opiskeluoikeuden, ei samaa uudelleen
-        app.kielitutkintotodistusTiedoteService.processNext()
-        val jobsAfter = app.kielitutkintotodistusTiedoteRepository.findAll(10, 0)
+        // Toinen processAll ei luo uusia jobeja koska kaikki on jo käsitelty
+        app.kielitutkintotodistusTiedoteService.processAll()
+        val jobsAfter = app.kielitutkintotodistusTiedoteRepository.findAll(100, 0)
 
-        // Toinen kutsu luo uuden jobin *eri* opiskeluoikeudelle, ei duplikaattia
-        jobsAfter.count(_.opiskeluoikeusOid == firstJobOoOid) should equal(1)
+        jobsAfter should have length jobsBefore.length
       }
     }
 
     "Yrittää epäonnistunutta tiedotetta uudelleen" in {
       withoutRunningTiedoteScheduler {
         val repository = app.kielitutkintotodistusTiedoteRepository
-        val eligible = repository.findNextEligible
+        val eligible = repository.findEligibleBatch(1).headOption
         eligible shouldBe defined
 
         val (ooOid, oOid) = eligible.get
@@ -70,7 +67,7 @@ class KielitutkintotodistusTiedoteWorkflowSpec extends KielitutkintotodistusTied
         errorJobs should have length 1
 
         // Retry käyttää oikeaa mock-clientiä joka onnistuu
-        app.kielitutkintotodistusTiedoteService.retryFailed()
+        app.kielitutkintotodistusTiedoteService.retryAllFailed()
 
         val completedJobs = repository.findAll(10, 0, Some(KielitutkintotodistusTiedoteState.COMPLETED))
         completedJobs should have length 1

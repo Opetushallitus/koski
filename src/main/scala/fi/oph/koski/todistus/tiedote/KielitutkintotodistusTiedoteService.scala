@@ -32,12 +32,6 @@ class KielitutkintotodistusTiedoteService(application: KoskiApplication) extends
     }
   }
 
-  def processNext(): Unit = {
-    repository.findNextEligible.foreach { case (opiskeluoikeusOid, oppijaOid) =>
-      processOne(opiskeluoikeusOid, oppijaOid)
-    }
-  }
-
   private def processOne(opiskeluoikeusOid: String, oppijaOid: String): Unit = {
     logger.info(s"Lähetetään tiedote: oppija=$oppijaOid oo=$opiskeluoikeusOid")
 
@@ -82,10 +76,6 @@ class KielitutkintotodistusTiedoteService(application: KoskiApplication) extends
       logger.info(s"retryAllFailed valmis: käsitelty ${retryable.size} uudelleenyritystä")
       retryable.size
     }
-  }
-
-  def retryFailed(): Unit = {
-    repository.findNextRetryable(maxAttempts).foreach(retryOne)
   }
 
   private def retryOne(job: KielitutkintotodistusTiedoteJob): Unit = {
