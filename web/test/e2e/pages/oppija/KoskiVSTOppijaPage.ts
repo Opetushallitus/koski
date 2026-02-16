@@ -157,6 +157,10 @@ export class VSTOsasuoritus {
     return this.osasuoritus.laajuus.set(laajuus.toString())
   }
 
+  async clearLaajuus() {
+    return this.osasuoritus.laajuus.elem.clear()
+  }
+
   async setArvosana(koodisto: string, koodi: string) {
     return this.osasuoritus.arvosana.set(`${koodisto}_${koodi}`)
   }

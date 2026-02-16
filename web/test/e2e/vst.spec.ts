@@ -1294,6 +1294,57 @@ test.describe('Vapaa sivistystyö', () => {
         expect(await tallennettuOsasuoritus.arvosana()).toEqual('Hyväksytty')
       })
 
+      test('Laajuuden desimaaliarvo alle 1', async ({ vstOppijaPage }) => {
+        const nimi = 'Desimaalitesti'
+        await vstOppijaPage.addNewOsasuoritus(nimi)
+
+        const osasuoritus = vstOppijaPage.osasuoritus(1)
+        await osasuoritus.setLaajuus(0.5)
+
+        expect(await osasuoritus.laajuus()).toEqual('0.5')
+
+        await vstOppijaPage.tallenna()
+
+        const tallennettuOsasuoritus = vstOppijaPage.osasuoritus(1)
+        expect(await tallennettuOsasuoritus.laajuus()).toEqual('0,5 op')
+      })
+
+      test('Laajuuden tyhjentäminen estää tallennuksen', async ({
+        page,
+        vstOppijaPage
+      }) => {
+        const osasuoritus = vstOppijaPage.osasuoritus(0)
+        await osasuoritus.clearLaajuus()
+
+        await expect(
+          page.getByTestId(
+            'oo.0.suoritukset.0.osasuoritukset.0.laajuus.edit.errors'
+          )
+        ).toContainText('Kenttä ei voi olla tyhjä')
+        expect(await vstOppijaPage.saveBtn.isDisabled()).toBe(true)
+
+        await vstOppijaPage.cancelEdit()
+      })
+
+      test('Laajuus 0 estää tallennuksen', async ({
+        page,
+        vstOppijaPage
+      }) => {
+        const osasuoritus = vstOppijaPage.osasuoritus(0)
+        await osasuoritus.setLaajuus(0)
+
+        expect(await osasuoritus.laajuus()).toEqual('0')
+
+        await expect(
+          page.getByTestId(
+            'oo.0.suoritukset.0.osasuoritukset.0.laajuus.edit.errors'
+          )
+        ).toContainText('Arvon pitää olla enemmän kuin 0')
+        expect(await vstOppijaPage.saveBtn.isDisabled()).toBe(true)
+
+        await vstOppijaPage.cancelEdit()
+      })
+
       test('Vaihda arvostelun päivämäärää', async ({ vstOppijaPage }) => {
         const osasuoritus = vstOppijaPage.osasuoritus(0)
         await osasuoritus.expand()
