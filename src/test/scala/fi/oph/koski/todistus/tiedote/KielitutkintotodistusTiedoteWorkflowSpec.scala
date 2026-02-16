@@ -28,7 +28,7 @@ class KielitutkintotodistusTiedoteWorkflowSpec extends KielitutkintotodistusTied
         job.get.state should equal(KielitutkintotodistusTiedoteState.COMPLETED)
         job.get.completedAt shouldBe defined
 
-        mockTiedotuspalveluClient.sentNotifications.exists(_ == (oppijaOid, opiskeluoikeusOid)) should be(true)
+        mockTiedotuspalveluClient.sentNotifications.exists(_ == (oppijaOid, s"$opiskeluoikeusOid-initial")) should be(true)
       }
     }
 

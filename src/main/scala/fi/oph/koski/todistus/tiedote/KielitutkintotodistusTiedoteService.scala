@@ -35,7 +35,7 @@ class KielitutkintotodistusTiedoteService(application: KoskiApplication) extends
   private def processOne(opiskeluoikeusOid: String, oppijaOid: String): Unit = {
     logger.info(s"Lähetetään tiedote: oppija=$oppijaOid oo=$opiskeluoikeusOid")
 
-    val (state, error) = client.sendKielitutkintoTodistusTiedote(oppijaOid, opiskeluoikeusOid) match {
+    val (state, error) = client.sendKielitutkintoTodistusTiedote(oppijaOid, s"$opiskeluoikeusOid-initial") match {
       case Right(()) =>
         (KielitutkintotodistusTiedoteState.COMPLETED, None)
       case Left(err) =>
