@@ -118,7 +118,8 @@ export const osasuoritusToTableRow = ({
           editProps={{
             koulutusmoduuli:
               VSTKotoutumiskoulutuksenValinnaistenOpintojenAlasuorituksenKoulutusmoduuli2022,
-            template: LaajuusOpintopisteissä
+            template: LaajuusOpintopisteissä,
+            step: 0.1
           }}
         />
       )

@@ -61,7 +61,10 @@ export const LaajuusEdit = <T extends Laajuus>(props: LaajuusEditProps<T>) => {
   const fillNimi = useKoodistoFiller()
   const { onChange, createLaajuus } = props
   const onChangeCB = useCallback(
-    (arvo?: number) => onChange(arvo !== null && arvo !== undefined ? createLaajuus(arvo) : undefined),
+    (arvo?: number) =>
+      onChange(
+        arvo !== null && arvo !== undefined ? createLaajuus(arvo) : undefined
+      ),
     [createLaajuus, onChange]
   )
 
@@ -108,7 +111,7 @@ export const LaajuusEdit = <T extends Laajuus>(props: LaajuusEditProps<T>) => {
  */
 
 export type DefaultLaajuusEditProps<T extends Laajuus> = CommonProps<
-  FieldEditorProps<T, EmptyObject>
+  FieldEditorProps<T, { step?: number }>
 >
 
 export const LaajuusOpintopisteissäEdit: React.FC<

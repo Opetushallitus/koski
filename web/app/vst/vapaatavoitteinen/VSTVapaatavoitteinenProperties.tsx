@@ -69,7 +69,10 @@ export const VSTVapaatavoitteinenProperties: React.FC<
           <FormField
             form={props.form}
             path={props.osasuoritusPath.prop('koulutusmoduuli')}
-            errorsFromPath={parsePath(props.osasuoritusPath.prop('koulutusmoduuli').prop('kuvaus'), props.form.state)}
+            errorsFromPath={parsePath(
+              props.osasuoritusPath.prop('koulutusmoduuli').prop('kuvaus'),
+              props.form.state
+            )}
             view={KuvausView}
             edit={(kuvausProps) => {
               return <KuvausEdit {...kuvausProps} />
@@ -136,10 +139,7 @@ export const osasuoritusToTableRow = ({
     .at(osasuoritusIndex)
   const osasuoritus = getValue(osasuoritusPath)(form.state)
 
-  const koulutusmoduuliErrorPath = parsePath(
-    osasuoritusPath,
-    form.state
-  )
+  const koulutusmoduuliErrorPath = parsePath(osasuoritusPath, form.state)
 
   return {
     suoritusIndex,
@@ -159,7 +159,11 @@ export const osasuoritusToTableRow = ({
         <FormField
           form={form}
           path={osasuoritusPath.prop('koulutusmoduuli')}
-          errorsFromPath={koulutusmoduuliErrorPath ? `${koulutusmoduuliErrorPath}.koulutusmoduuli.laajuus` : undefined}
+          errorsFromPath={
+            koulutusmoduuliErrorPath
+              ? `${koulutusmoduuliErrorPath}.koulutusmoduuli.laajuus`
+              : undefined
+          }
           view={PaikallisenKoulutusmoduulinLaajuusView}
           edit={PaikallisenKoulutusmoduulinLaajuusEdit}
           editProps={{
