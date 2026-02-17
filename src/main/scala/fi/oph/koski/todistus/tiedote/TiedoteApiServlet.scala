@@ -35,6 +35,10 @@ class TiedoteApiServlet(implicit val application: KoskiApplication)
   }
 
   get("/run") {
+    if (!application.config.getBoolean("tiedote.enabled")) {
+      haltWithStatus(KoskiErrorCategory.notImplemented("Tiedotepalvelu ei ole käytössä"))
+    }
+
     val processed = service.processAll()
     val retried = service.retryAllFailed()
 
