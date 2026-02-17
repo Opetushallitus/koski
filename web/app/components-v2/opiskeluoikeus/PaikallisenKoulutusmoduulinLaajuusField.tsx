@@ -34,6 +34,7 @@ export type PaikallisenKoulutusmoduulinLaajuusEditProps<
     {
       koulutusmoduuli: { className: string }
       template: (p: { arvo: number }) => NonNullable<T['laajuus']>
+      step?: number
     }
   >
 >
@@ -72,6 +73,8 @@ export const PaikallisenKoulutusmoduulinLaajuusEdit = <
       value={props.value?.laajuus}
       onChange={update as (a?: Laajuus) => void}
       createLaajuus={createLaajuus}
+      step={props.step}
+      errors={props.errors}
     />
   )
 }

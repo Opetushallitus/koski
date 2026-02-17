@@ -332,6 +332,7 @@ const osasuoritusToTableRow = (
           path={osasuoritusPath.path('koulutusmoduuli.laajuus')}
           view={LaajuusView}
           edit={LaajuusOpintopisteissäEdit}
+          editProps={{ step: 0.1 }}
           testId="laajuus"
         />
       ),

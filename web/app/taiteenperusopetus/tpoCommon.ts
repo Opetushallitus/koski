@@ -52,7 +52,7 @@ export const minimimääräArvioitujaOsasuorituksia = (
   pipe(
     O.fromNullable(suoritus.osasuoritukset),
     O.map(A.filter((os) => Boolean(os.arviointi))),
-    O.map(A.map((os) => os.koulutusmoduuli.laajuus.arvo)),
+    O.map(A.map((os) => os.koulutusmoduuli.laajuus?.arvo ?? 0)),
     O.map(sum),
     O.fold(
       () => false,

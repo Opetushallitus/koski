@@ -32,6 +32,7 @@ import {
   VSTSuoritusTunnustuksella
 } from './types'
 import { VapaanSivistystyönOpiskeluoikeus } from '../../types/fi/oph/koski/schema/VapaanSivistystyonOpiskeluoikeus'
+import { parsePath } from '../../util/optics'
 
 export type VSTPropertyFieldProps<T extends VSTSuoritus = VSTSuoritus> =
   CommonProps<{
@@ -77,6 +78,10 @@ export const KuvausProperty = <T extends VSTSuoritusKuvauksella>(
         path={props.path.prop('koulutusmoduuli')}
         view={KuvausView}
         edit={KuvausEdit}
+        errorsFromPath={parsePath(
+          props.path.prop('koulutusmoduuli').prop('kuvaus'),
+          props.form.state
+        )}
       />
     </OsasuoritusPropertyValue>
   </OsasuoritusProperty>

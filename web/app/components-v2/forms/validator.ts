@@ -54,6 +54,7 @@ import { isValidationRule, ValidationRule } from './ValidationRule'
 export type ValidationError =
   | InvalidTypeError
   | EmptyStringError
+  | EmptyValueError
   | NoMatchingValueError<any>
   | InvalidDateError
   | MustBeGreaterThanError
@@ -75,6 +76,11 @@ export type InvalidTypeError = {
 
 export type EmptyStringError = {
   type: 'emptyString'
+  path: string
+}
+
+export type EmptyValueError = {
+  type: 'emptyValue'
   path: string
 }
 
@@ -177,9 +183,9 @@ const validateObject = (
   constraint: ObjectConstraint,
   path: string[]
 ): ValidationError[] => {
-  if (typeof data !== 'object') {
-    return [invalidType('object', data, path)]
-  } else if (data === null || data === undefined) {
+  if (data === null || data === undefined) {
+    return [emptyValue(path)]
+  } else if (typeof data !== 'object') {
     return [invalidType('object', data, path)]
   } else {
     return Object.entries(constraint.properties).flatMap(([key, child]) =>
@@ -386,6 +392,11 @@ const invalidType = (
 
 export const emptyString = (path: string[]): EmptyStringError => ({
   type: 'emptyString',
+  path: pathToString(path)
+})
+
+export const emptyValue = (path: string[]): EmptyValueError => ({
+  type: 'emptyValue',
   path: pathToString(path)
 })
 
