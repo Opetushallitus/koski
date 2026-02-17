@@ -4,8 +4,9 @@ import fi.oph.koski.api.misc.PutOpiskeluoikeusTestMethods
 import fi.oph.koski.documentation.ExamplesKielitutkinto
 import fi.oph.koski.henkilo.OppijaHenkilö
 import fi.oph.koski.koskiuser.MockUsers.paakayttaja
-import fi.oph.koski.koskiuser.{KoskiMockUser, MockUsers}
+import fi.oph.koski.koskiuser.MockUsers
 import fi.oph.koski.log.AuditLogTester
+import fi.oph.koski.koskiuser.KoskiMockUser
 import fi.oph.koski.schema.{KielitutkinnonOpiskeluoikeus, Opiskeluoikeus, Suoritus, YleisenKielitutkinnonSuoritus}
 import fi.oph.koski.schema.KoskiSchema.strictDeserialization
 import fi.oph.koski.util.Wait
@@ -19,7 +20,6 @@ import org.scalatest.{BeforeAndAfterAll, BeforeAndAfterEach}
 import java.net.URL
 import java.security.MessageDigest
 import java.time.{Duration, LocalDate, LocalDateTime}
-import scala.jdk.CollectionConverters._
 
 class TodistusSpecHelpers extends AnyFreeSpec with KoskiHttpSpec with Matchers with BeforeAndAfterAll with BeforeAndAfterEach with PutOpiskeluoikeusTestMethods[KielitutkinnonOpiskeluoikeus] {
   def tag = implicitly[reflect.runtime.universe.TypeTag[KielitutkinnonOpiskeluoikeus]]
@@ -184,6 +184,17 @@ class TodistusSpecHelpers extends AnyFreeSpec with KoskiHttpSpec with Matchers w
       TodistusState.SAVING_STAMPED_PDF,
       TodistusState.COMPLETED
     )
+
+  def waitForCompletionAsUser(id: String, user: KoskiMockUser): TodistusJob = {
+    var lastResponse: Option[TodistusJob] = None
+    Wait.until {
+      get(s"api/todistus/status/$id", headers = authHeaders(user) ++ jsonContent) {
+        lastResponse = Some(parsedResponse)
+        parsedResponse.state == TodistusState.COMPLETED
+      }
+    }
+    lastResponse.get
+  }
 
   def waitForCompletionSkipStateChecks(id:String, hetu: String): TodistusJob = {
     var lastResponse: Option[TodistusJob] = None

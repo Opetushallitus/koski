@@ -6,7 +6,7 @@ import fi.oph.koski.henkilo.{KoskiSpecificMockOppijat, OppijaHenkilö}
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.koskiuser.KoskiSpecificSession
-import fi.oph.koski.koskiuser.Rooli.OPHPAAKAYTTAJA
+import fi.oph.koski.koskiuser.Rooli.{GLOBAALI_LUKU_KIELITUTKINTO, OPHKATSELIJA, OPHPAAKAYTTAJA}
 import fi.oph.koski.log.Logging
 import fi.oph.koski.schema.{KielitutkinnonOpiskeluoikeus, Opiskeluoikeus, YleisenKielitutkinnonSuoritus}
 import fi.oph.koski.todistus.BucketType.BucketType
@@ -36,10 +36,19 @@ class TodistusService(application: KoskiApplication) extends Logging with Timing
 
   private val commitHash: String = getBuildVersion.getOrElse("local")
 
+  private def hasKielitutkintoViewerRole(implicit user: KoskiSpecificSession): Boolean = {
+    user.hasRole(GLOBAALI_LUKU_KIELITUTKINTO) && user.hasRole(OPHKATSELIJA)
+  }
+
   def currentStatus(req: TodistusIdRequest)(implicit user: KoskiSpecificSession): Either[HttpStatus, TodistusJob] = {
     if (user.hasRole(OPHPAAKAYTTAJA)) {
       todistusRepository
         .get(req.id)
+    } else if (hasKielitutkintoViewerRole) {
+      for {
+        todistus <- todistusRepository.get(req.id)
+        _ <- validateIsKielitutkintoOpiskeluoikeus(todistus.opiskeluoikeusOid)
+      } yield todistus
     } else {
       for {
         oppijaOidit <- haeOppijaOiditJoihinKansalaisellaOnOikeudet
@@ -48,13 +57,19 @@ class TodistusService(application: KoskiApplication) extends Logging with Timing
     }
   }
 
+  private def validateIsKielitutkintoOpiskeluoikeus(opiskeluoikeusOid: String)(implicit user: KoskiSpecificSession): Either[HttpStatus, Unit] = {
+    for {
+      rawOpiskeluoikeus <- application.possu.findByOid(opiskeluoikeusOid)
+      _ <- rawOpiskeluoikeus.koulutusmuoto match {
+        case "kielitutkinto" => Right(())
+        case _ => Left(KoskiErrorCategory.notFound())
+      }
+    } yield ()
+  }
+
   def checkStatus(req: TodistusGenerateRequest)(implicit user: KoskiSpecificSession): Either[HttpStatus, TodistusJob] = {
     for {
-      _ <- Either.cond(
-        TodistusTemplateVariant.isKansalainenVariant(req.templateVariant) || user.hasRole(OPHPAAKAYTTAJA),
-        (),
-        KoskiErrorCategory.notFound()
-      )
+      _ <- templateVarianttiOnKäyttäjälleSallittu(req)
       yleisenKielitutkinnonVahvistettuOpiskeluoikeus <- kielitutkinnonVahvistettuOpiskeluoikeusJohonKutsujallaKäyttöoikeudet(req)
       oppijanHenkilö <- application.henkilöRepository.findByOid(yleisenKielitutkinnonVahvistettuOpiskeluoikeus.oppijaOid).toRight(KoskiErrorCategory.notFound.oppijaaEiLöydyTaiEiOikeuksia())
       oppijanHenkilötiedotHash = laskeHenkilötiedotHash(oppijanHenkilö)
@@ -68,17 +83,14 @@ class TodistusService(application: KoskiApplication) extends Logging with Timing
     } yield todistus
   }
 
+
   def checkAccessAndInitiateGenerating(req: TodistusGenerateRequest)(implicit user: KoskiSpecificSession): Either[HttpStatus, TodistusJob] = {
     val uusiJobId = UUID.randomUUID().toString
 
     logSkedulointiAlkaa(uusiJobId, req)
 
     val result = for {
-      _ <- Either.cond(
-        TodistusTemplateVariant.isKansalainenVariant(req.templateVariant) || user.hasRole(OPHPAAKAYTTAJA),
-        (),
-        KoskiErrorCategory.notFound.opiskeluoikeuttaEiLöydyTaiEiOikeuksia()
-      )
+      _ <- templateVarianttiOnKäyttäjälleSallittu(req)
       yleisenKielitutkinnonVahvistettuOpiskeluoikeus <- kielitutkinnonVahvistettuOpiskeluoikeusJohonKutsujallaKäyttöoikeudet(req)
       oppijanHenkilö <- application.henkilöRepository.findByOid(yleisenKielitutkinnonVahvistettuOpiskeluoikeus.oppijaOid).toRight(KoskiErrorCategory.notFound.oppijaaEiLöydyTaiEiOikeuksia())
       job = TodistusJob(uusiJobId, req, laskeHenkilötiedotHash(oppijanHenkilö), yleisenKielitutkinnonVahvistettuOpiskeluoikeus)
@@ -95,6 +107,15 @@ class TodistusService(application: KoskiApplication) extends Logging with Timing
         logJononTilanne()
         Left(error)
     }
+  }
+
+  private def templateVarianttiOnKäyttäjälleSallittu(req: TodistusGenerateRequest)(implicit user: KoskiSpecificSession) = {
+    Either.cond(
+      (user.user.kansalainen && TodistusTemplateVariant.isKansalainenVariant(req.templateVariant)) ||
+        (user.hasRole(OPHPAAKAYTTAJA) || hasKielitutkintoViewerRole),
+      (),
+      KoskiErrorCategory.notFound()
+    )
   }
 
   private def laskeHenkilötiedotHash(henkilö: OppijaHenkilö): String = {
@@ -133,6 +154,8 @@ class TodistusService(application: KoskiApplication) extends Logging with Timing
     }
 
     if (user.hasRole(OPHPAAKAYTTAJA)) {
+      Right(rawOpiskeluoikeus)
+    } else if (hasKielitutkintoViewerRole && rawOpiskeluoikeus.koulutusmuoto == "kielitutkinto") {
       Right(rawOpiskeluoikeus)
     } else {
       tarkistaKansalaisenKäyttöoikeudetOpiskeluoikeuteen(rawOpiskeluoikeus)

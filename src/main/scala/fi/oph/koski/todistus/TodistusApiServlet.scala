@@ -16,7 +16,7 @@ class TodistusApiServlet(implicit val application: KoskiApplication)
   implicit def session: KoskiSpecificSession = koskiSessionOption.get
 
   before() {
-    requireKansalainenOrOphPääkäyttäjä
+    requireKansalainenOrTodistuksiaLataavaOphKäyttäjä
   }
 
   get("/status/:id") {

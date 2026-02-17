@@ -86,7 +86,11 @@ const buildTemplateVariant = (
 export const YleinenKielitutkintoTodistusLataus: React.FC<
   YleinenKielitutkintoTodistusLatausProps
 > = ({ opiskeluoikeusOid }) => {
-  const hasPääkäyttäjäAccess = useVirkailijaUser()?.hasPääkäyttäjäAccess
+  const user = useVirkailijaUser()
+  const hasPääkäyttäjäAccess = user?.hasPääkäyttäjäAccess
+  const hasKielitutkintoViewerAccess = user?.hasKielitutkintoViewerAccess
+  const canSelectPdfTemplate =
+    hasPääkäyttäjäAccess || hasKielitutkintoViewerAccess
 
   const [language, setLanguage] = useState<TodistusLanguage>('fi')
   const [pdfTemplate, setPdfTemplate] =
@@ -318,7 +322,7 @@ export const YleinenKielitutkintoTodistusLataus: React.FC<
             allowOpenUpwards={true}
           />
         </div>
-        {hasPääkäyttäjäAccess && (
+        {canSelectPdfTemplate && (
           <div className="Todistus__pdfTemplate">
             <div className="Todistus__pdfTemplateLabel">
               <Trans>{'todistus:pdf-pohja'}</Trans>

@@ -51,7 +51,6 @@ Validointi
 Kansalainen, huoltaja ja OPH:n työntekijä pääsevät lataamaan todistukset yleisen kielitutkinnon
 käyttöliittymässä.
 
-
 ```
 web/app/kielitutkinto/
 ├── YleinenKielitutkintoEditor.tsx         – YKI-opiskeluoikeuden muokkausnäkymä
@@ -112,23 +111,19 @@ ei käytetä toinen toisen tilalla.
 
 ## Pääsynhallinta
 
-| Toiminto | Kansalainen | Huoltaja            | OPH-pääkäyttäjä |
-|---|---|---------------------|---|
-| Todistuksen aloittaminen | Omasta OO:sta | Huollettavan OO:sta | Kaikista |
-| Tilan tarkastelu | Omasta | Huollettavan OO:sta    | Kaikista |
-| PDF-lataus | Omasta | Huollettavan OO:sta    | Kaikista |
-| Presigned-URL | – | –                   | Kaikista |
-| HTML-esikatselu | – | –                   | Kaikista |
+| Toiminto                                              | Kansalainen   | Huoltaja            | OPH-pääkäyttäjä | OPH Kielitutkintojen katselija |
+|-------------------------------------------------------|---------------|---------------------|---|--------------------------------|
+| Digitaalisten todistusten luonti- ja lataus           | Omasta OO:sta | Huollettavan OO:sta | Kaikista | Kaikista                       |
+| Tulostettavien todistusten luonti- ja lataus          | -             | -                   | Kaikista | Kaikista                       |
+| Presigned-URL todistuksen lataamiseksi suoraan S3:sta | –             | –                   | Kaikista | -                              |
+| HTML-esikatselu                                       | –             | –                   | Kaikista | -                              |
 
 Todistuksen lataus onnistuu vain jos opiskeluoikeus on vahvistettu.
 
 ### Tulostus-variantit
 
 Tulostus-variantit (`fi_tulostettava_uusi`, `fi_tulostettava_paivitys`, `sv_tulostettava_uusi`, `sv_tulostettava_paivitys`, `en_tulostettava_uusi`, `en_tulostettava_paivitys`)
-ovat sallittu vain OPH-pääkäyttäjälle. Ne näkyvät käyttöliittymässä vain
-pääkäyttäjä-käyttäjille ja backend palauttaa 403-virheen jos kansalainen yrittää
-käyttää tulostus-varianttia. Variantit `_uusi` ja `_paivitys` ero on template-sivumäärässä:
-`_uusi` on 3-sivu template, `_paivitys` on 2-sivu template.
+ovat sallittu vain OPH-pääkäyttäjälle ja OPH-kielitutkintojen katselijalle.
 
 ## Allekirjoitus (Swisscom AIS)
 
