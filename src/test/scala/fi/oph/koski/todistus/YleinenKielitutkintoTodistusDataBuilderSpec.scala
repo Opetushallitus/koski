@@ -358,6 +358,7 @@ class YleinenKielitutkintoTodistusDataBuilderSpec extends AnyFreeSpec with Match
       templateVariant = templateVariant,
       opiskeluoikeusVersionumero = Some(1),
       oppijaHenkilötiedotHash = Some("xxx"),
+      isStamped = !TodistusTemplateVariant.printVariants.contains(templateVariant),
       state = TodistusState.GENERATING_RAW_PDF,
       createdAt = LocalDate.now().atStartOfDay()
     )
@@ -456,6 +457,7 @@ class YleinenKielitutkintoTodistusDataBuilderSpec extends AnyFreeSpec with Match
       templateVariant = templateVariant,
       opiskeluoikeusVersionumero = Some(1),
       oppijaHenkilötiedotHash = Some("xxx"),
+      isStamped = !TodistusTemplateVariant.printVariants.contains(templateVariant),
       state = TodistusState.GENERATING_RAW_PDF,
       createdAt = LocalDate.now().atStartOfDay()
     )

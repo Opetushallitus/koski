@@ -96,7 +96,7 @@ class TodistusJobRepository(val db: DB, val workerId: String, config: Config) ex
           -- Huomaa, että versionumeroa ja hash:iä ei tallenneta: ne tallennetaan vasta luontihetkellä, jotta saadaan talteen
           -- täsmälliset arvot, jotka esiintyvät myös generoidussa PDF-todistuksessa.
           INSERT INTO todistus_job(id, user_oid, oppija_oid, opiskeluoikeus_oid, template_variant,
-                              state,
+                              is_stamped, state,
                               created_at, started_at, completed_at, worker, attempts, error)
           SELECT
             ${todistusJob.id}::uuid,
@@ -104,6 +104,7 @@ class TodistusJobRepository(val db: DB, val workerId: String, config: Config) ex
             ${todistusJob.oppijaOid},
             ${todistusJob.opiskeluoikeusOid},
             ${todistusJob.templateVariant},
+            ${todistusJob.isStamped},
             ${todistusJob.state},
             ${java.sql.Timestamp.valueOf(todistusJob.createdAt)},
             ${todistusJob.startedAt.map(java.sql.Timestamp.valueOf)},
@@ -322,7 +323,7 @@ class TodistusJobRepository(val db: DB, val workerId: String, config: Config) ex
     require(Environment.isUnitTestEnvironment(config), "addRawForUnitTests can only be used in unit test environment")
     runDbSync(sql"""
       INSERT INTO todistus_job(id, user_oid, oppija_oid, opiskeluoikeus_oid, template_variant,
-                          opiskeluoikeus_versionumero, oppija_henkilotiedot_hash, state,
+                          opiskeluoikeus_versionumero, oppija_henkilotiedot_hash, is_stamped, state,
                           created_at, started_at, completed_at, worker, attempts, error)
       VALUES (
         ${todistusJob.id}::uuid,
@@ -332,6 +333,7 @@ class TodistusJobRepository(val db: DB, val workerId: String, config: Config) ex
         ${todistusJob.templateVariant},
         ${todistusJob.opiskeluoikeusVersionumero},
         ${todistusJob.oppijaHenkilötiedotHash},
+        ${todistusJob.isStamped},
         ${todistusJob.state},
         ${java.sql.Timestamp.valueOf(todistusJob.createdAt)},
         ${todistusJob.startedAt.map(java.sql.Timestamp.valueOf)},
@@ -366,6 +368,7 @@ class TodistusJobRepository(val db: DB, val workerId: String, config: Config) ex
         if (r.rs.wasNull()) None else Some(value)
       },
       oppijaHenkilötiedotHash = Option(r.rs.getString("oppija_henkilotiedot_hash")),
+      isStamped = r.rs.getBoolean("is_stamped"),
       state = r.rs.getString("state"),
       createdAt = r.rs.getTimestamp("created_at").toLocalDateTime,
       startedAt = Option(r.rs.getTimestamp("started_at")).map(_.toLocalDateTime),

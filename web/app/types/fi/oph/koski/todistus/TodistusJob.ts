@@ -10,6 +10,7 @@ export type TodistusJob = {
   opiskeluoikeusOid: string
   oppijaHenkilötiedotHash?: string
   id: string
+  isStamped: boolean
   worker?: string
   state: string
   completedAt?: string
@@ -27,6 +28,7 @@ export const TodistusJob = (o: {
   opiskeluoikeusOid: string
   oppijaHenkilötiedotHash?: string
   id: string
+  isStamped: boolean
   worker?: string
   state: string
   completedAt?: string

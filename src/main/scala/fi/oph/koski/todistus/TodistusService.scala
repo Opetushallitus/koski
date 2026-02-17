@@ -308,29 +308,39 @@ class TodistusService(application: KoskiApplication) extends Logging with Timing
           }
 
           //
-          // STAMPING_PDF: Allekirjoita PDF
+          // STAMPING_PDF: Allekirjoita PDF (ohitetaan, jos isStamped=false)
           //
           val stampingPdfResult = savingRawPdfResult.flatMap { todistus =>
-            timed("STAMPING_PDF", thresholdMs = 0) {
-              for {
-                _ <- todistusRepository.updateState(todistus.id, TodistusState.SAVING_RAW_PDF, TodistusState.STAMPING_PDF)
-                rawInputStream <- resultRepository.getStream(BucketType.RAW, todistus.id)
-                  .tap(is => use(is))
-                outputStream = new java.io.ByteArrayOutputStream()
-                _ <- swisscomClient.signWithStaticCertificate(todistus.id, rawInputStream, outputStream)
-              } yield (todistus, outputStream)
+            if (todistus.isStamped) {
+              timed("STAMPING_PDF", thresholdMs = 0) {
+                for {
+                  _ <- todistusRepository.updateState(todistus.id, TodistusState.SAVING_RAW_PDF, TodistusState.STAMPING_PDF)
+                  rawInputStream <- resultRepository.getStream(BucketType.RAW, todistus.id)
+                    .tap(is => use(is))
+                  outputStream = new java.io.ByteArrayOutputStream()
+                  _ <- swisscomClient.signWithStaticCertificate(todistus.id, rawInputStream, outputStream)
+                } yield (todistus, outputStream)
+              }
+            } else {
+              // Tulostettavat todistukset eivät tarvitse allekirjoitusta
+              Right((todistus, null))
             }
           }
 
           //
-          // SAVING_STAMPED_PDF: Tallenna allekirjoitettu PDF
+          // SAVING_STAMPED_PDF: Tallenna allekirjoitettu PDF (ohitetaan, jos isStamped=false)
           //
           val savingStampedPdfResult = stampingPdfResult.flatMap { case (todistus, outputStream) =>
-            timed("SAVING_STAMPED_PDF", thresholdMs = 0) {
-              for {
-                todistus <- todistusRepository.updateState(todistus.id, TodistusState.STAMPING_PDF, TodistusState.SAVING_STAMPED_PDF)
-                _ <- resultRepository.putStream(BucketType.STAMPED, todistus.id, ContentStreamProvider.fromByteArray(outputStream.toByteArray))
-              } yield todistus
+            if (todistus.isStamped) {
+              timed("SAVING_STAMPED_PDF", thresholdMs = 0) {
+                for {
+                  todistus <- todistusRepository.updateState(todistus.id, TodistusState.STAMPING_PDF, TodistusState.SAVING_STAMPED_PDF)
+                  _ <- resultRepository.putStream(BucketType.STAMPED, todistus.id, ContentStreamProvider.fromByteArray(outputStream.toByteArray))
+                } yield todistus
+              }
+            } else {
+              // Tulostettavat todistukset tallennetaan vain RAW-buckettiin
+              Right(todistus)
             }
           }
 
@@ -339,9 +349,10 @@ class TodistusService(application: KoskiApplication) extends Logging with Timing
           //
           val generoituTodistus: Either[HttpStatus, TodistusJob] = savingStampedPdfResult.flatMap { todistus =>
             timed("COMPLETED", thresholdMs = 0) {
+              val fromState = if (todistus.isStamped) TodistusState.SAVING_STAMPED_PDF else TodistusState.SAVING_RAW_PDF
               todistusRepository.updateState(
                 todistus.id,
-                TodistusState.SAVING_STAMPED_PDF,
+                fromState,
                 TodistusState.COMPLETED,
                 completedAt = Some(LocalDateTime.now())
               )
@@ -422,6 +433,7 @@ class TodistusService(application: KoskiApplication) extends Logging with Timing
         opiskeluoikeusOid = req.opiskeluoikeusOid,
         oppijaOid = yleisenKielitutkinnonVahvistettuOpiskeluoikeus.oppijaOid,
         templateVariant = req.templateVariant,
+        isStamped = !TodistusTemplateVariant.printVariants.contains(req.templateVariant),
         state = TodistusState.GATHERING_INPUT,
         userOid = Some(user.oid),
         oppijaHenkilötiedotHash = None,

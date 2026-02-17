@@ -217,6 +217,7 @@ class TodistusSpecHelpers extends AnyFreeSpec with KoskiHttpSpec with Matchers w
       templateVariant = templateVariant,
       opiskeluoikeusVersionumero = Some(1),
       oppijaHenkilötiedotHash = Some("test-hash"),
+      isStamped = !TodistusTemplateVariant.printVariants.contains(templateVariant),
       state = TodistusState.GENERATING_RAW_PDF,
       createdAt = LocalDateTime.now(),
       startedAt = Some(LocalDateTime.now()),

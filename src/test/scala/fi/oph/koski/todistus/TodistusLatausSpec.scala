@@ -234,8 +234,9 @@ class TodistusLatausSpec extends TodistusSpecHelpers with BeforeAndAfterAll {
       verifyYleinenKielitutkintoTodistusSisalto(printPdfText)
     }
 
-    "PDF on allekirjoitettu oikein" in {
-      verifyTodistusSignature(printPdfDocument)
+    "PDF ei sisällä allekirjoitusta" in {
+      val signatureDictionary = printPdfDocument.getLastSignatureDictionary
+      signatureDictionary should be(null)
     }
 
     "PDF käyttää oikeita fontteja ja ne on embedattu" in {

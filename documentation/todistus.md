@@ -96,6 +96,8 @@ QUEUED
                                 └─► COMPLETED
 ```
 
+STAMPING_PDF ja SAVING_STAMPED_PDF skipataan käytettäessä printtileiskoja.
+
 Virhetilaan siirtynyt job saa tilan `ERROR`. Keskeytynyt job (`INTERRUPTED`)
 palautetaan jonoon uudestaan. Vanhentunut job käsitellään
 `QUEUED_FOR_EXPIRE` → `EXPIRED`.

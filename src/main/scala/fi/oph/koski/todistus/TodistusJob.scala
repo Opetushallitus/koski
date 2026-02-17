@@ -18,6 +18,7 @@ case class TodistusJob(
   templateVariant: TodistusTemplateVariant,
   opiskeluoikeusVersionumero: Option[Int], // Oo-versio, mistä pdf on luotu. Käytetään, kun tarkistetaan, pitääkö todistus luoda uudestaan.
   oppijaHenkilötiedotHash: Option[String], // Hash todistuksella näkyvistä oppijan henkilötiedoista (etunimet, sukunimi, syntymäaika jne.). Käytetään, kun tarkistetaan, pitääkö todistus luoda uudestaan.
+  isStamped: Boolean, // Onko todistus digitaalisesti allekirjoitettu Swisscomilla
   state: TodistusState = TodistusState.QUEUED,
   createdAt: LocalDateTime = LocalDateTime.now(),
   startedAt: Option[LocalDateTime] = None,
@@ -89,6 +90,7 @@ object TodistusJob {
     opiskeluoikeusOid = opiskeluoikeus.oid,
     templateVariant = req.templateVariant,
     opiskeluoikeusVersionumero = Some(opiskeluoikeus.versionumero),
-    oppijaHenkilötiedotHash = Some(henkilötiedotHash)
+    oppijaHenkilötiedotHash = Some(henkilötiedotHash),
+    isStamped = !TodistusTemplateVariant.printVariants.contains(req.templateVariant)
   )
 }
