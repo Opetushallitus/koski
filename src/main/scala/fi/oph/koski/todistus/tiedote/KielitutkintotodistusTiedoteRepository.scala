@@ -11,19 +11,17 @@ import java.time.LocalDateTime
 
 class KielitutkintotodistusTiedoteRepository(val db: DB, val workerId: String, config: Config) extends QueryMethods with Logging with DatabaseConverters {
 
-  private val earliestDate = java.sql.Timestamp.valueOf(
-    java.time.LocalDate.parse(config.getString("tiedote.earliestDate")).atStartOfDay()
-  )
+  private val earliestDate = config.getString("tiedote.earliestDate")
 
   def findEligibleBatch(limit: Int): Seq[(String, String)] = {
     runDbSync(sql"""
       SELECT oo.oid, oo.oppija_oid
       FROM opiskeluoikeus oo
       WHERE oo.koulutusmuoto = 'kielitutkinto'
-        AND oo.aikaleima >= $earliestDate
         AND NOT oo.mitatoity
         AND NOT oo.poistettu
         AND oo.data #>> '{suoritukset,0,vahvistus}' IS NOT NULL
+        AND (oo.data #>> '{suoritukset,0,vahvistus,päivä}')::date >= ${earliestDate}::date
         AND NOT EXISTS (
           SELECT 1 FROM kielitutkintotodistus_tiedote_job tj
           WHERE tj.opiskeluoikeus_oid = oo.oid

@@ -1,5 +1,6 @@
 package fi.oph.koski.todistus.tiedote
 
+import com.typesafe.config.ConfigValueFactory
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.schedule.Scheduler
@@ -83,6 +84,22 @@ class KielitutkintotodistusTiedoteWorkflowSpec extends KielitutkintotodistusTied
         val jobs = app.kielitutkintotodistusTiedoteRepository.findAll(100, 0)
         jobs should have length processed
         mockTiedotuspalveluClient.sentNotifications should have length processed
+      }
+    }
+
+    "Ei käsittele opiskeluoikeuksia joiden vahvistuspäivä on ennen earliestDate-rajausta" in {
+      withoutRunningTiedoteScheduler {
+        // Testiympäristön earliestDate on 2010-01-01, fixture-vahvistuspäivät ovat 2011+ joten ne ovat eligible
+        val eligibleBefore = app.kielitutkintotodistusTiedoteRepository.findEligibleBatch(100)
+        eligibleBefore should not be empty
+
+        // Luodaan uusi repository tulevaisuuden päivämäärärajauksella
+        val futureConfig = app.config
+          .withValue("tiedote.earliestDate", ConfigValueFactory.fromAnyRef("2099-01-01"))
+        val restrictedRepo = new KielitutkintotodistusTiedoteRepository(app.masterDatabase.db, app.instanceId, futureConfig)
+
+        val eligibleAfter = restrictedRepo.findEligibleBatch(100)
+        eligibleAfter shouldBe empty
       }
     }
 

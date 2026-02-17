@@ -8,6 +8,7 @@ object KoskiApplicationForTests extends KoskiApplication(
   defaultConfig
     .withValue("env", fromAnyRef(Environment.UnitTest))
     .withValue("tiedote.enabled", fromAnyRef(true))
+    .withValue("tiedote.earliestDate", fromAnyRef("2010-01-01"))
     .withValue("tiedote.checkInterval", fromAnyRef("5s"))
     .withValue("tiedote.batchSize", fromAnyRef(1))
 )
