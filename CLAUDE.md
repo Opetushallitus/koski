@@ -113,6 +113,8 @@ If I have IntelliJ IDEA MCP configured: Use it for building, running and debuggi
 command line approach detailed below and don't fall back by default to using command line when IntelliJ IDEA MCP server calls
 fail.
 
+Use maxLinesCount: 100, truncateMode: "END" parameters. The default output won't fit in context.
+
 If a specific configuration for the single test or suite is not available, ask me to run it first time manually,
 and then later it is available.
 
