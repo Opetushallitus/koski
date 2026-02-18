@@ -1,6 +1,7 @@
 package fi.oph.koski.validation
 
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
+import fi.oph.koski.organisaatio.{MockOrganisaatiot, Opetushallitus}
 import fi.oph.koski.schema._
 import fi.oph.koski.util.ChainingSyntax.symmetricalEitherChainingOps
 
@@ -14,6 +15,7 @@ object KielitutkintoValidation {
   private def validateKielitutkinnonOpiskeluoikeus(opiskeluoikeus: KielitutkinnonOpiskeluoikeus): HttpStatus =
     opiskeluoikeus.suoritukset.head match {
       case pts: YleisenKielitutkinnonSuoritus => HttpStatus.fold(
+        validateYleisenKielitutkinnonOrganisaatio(pts),
         validateYleisenKielitutkinnonPäivät(opiskeluoikeus, pts),
         validateYleisenKielitutkinnonArvioinnit(pts),
       )
@@ -51,6 +53,11 @@ object KielitutkintoValidation {
     HttpStatus.fold(osakokeet.map(
       osakoe => validateKielitutkinnonOsakokeenArviointi(sallitutArvosanat ++ List("9", "10", "11"), osakoe)
     ))
+
+  private def validateYleisenKielitutkinnonOrganisaatio(pts: YleisenKielitutkinnonSuoritus): HttpStatus = {
+    val sallitutYkiOrganisaatiot = List(Opetushallitus.organisaatioOid)
+    HttpStatus.validate({ sallitutYkiOrganisaatiot.contains(pts.toimipiste.oid) })(KoskiErrorCategory.badRequest.validation.organisaatio.vääräKoulutustoimija(s"Yleisen kielitutkinnon opiskeluoikeuden voi tallentaa vain organisaatioille: ${sallitutYkiOrganisaatiot.mkString(", ")}"))
+  }
 
   private def validateValtionhallinnonKielitutkinnonArvioinnit(pts: ValtionhallinnonKielitutkinnonSuoritus): HttpStatus = {
     val sallitutArvosanat = pts.koulutusmoduuli.tunniste.koodiarvo match {

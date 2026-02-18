@@ -15,7 +15,6 @@ import fi.oph.koski.schema._
 import fi.oph.koski.util.WithWarnings
 import fi.oph.koski.{KoskiApplicationForTests, KoskiHttpSpec}
 import org.json4s.JValue
-import org.scalatest.BeforeAndAfterEach
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.should.Matchers
 
