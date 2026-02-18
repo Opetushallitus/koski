@@ -1,5 +1,5 @@
 import { test, expect } from './base'
-import { kansalainen } from './setup/auth'
+import { kansalainen, virkailija } from './setup/auth'
 
 const hetut = {
   kielitutkinnonSuorittaja: '010107A329V',
@@ -13,52 +13,91 @@ test.describe('Digitaalinen kielitutkintotodistus', () => {
     await fixtures.apiLogout()
   })
 
+  test.describe('Printattavan todistuksen lataaminen', () => {
+    test.use({ storageState: virkailija('pää') })
+
+    test('pääkäyttäjänä onnistuu', async ({ page }) => {
+      await page.goto(
+        '/koski/oppija/1.2.246.562.24.00000000177?pdf-todistus=true'
+      )
+
+      await page
+        .getByTestId(
+          'oo.0.suoritukset.0.kielitutkintoTodistus.pdfTemplate.input'
+        )
+        .click()
+      await page
+        .getByTestId(
+          'oo.0.suoritukset.0.kielitutkintoTodistus.pdfTemplate.options.tulostettava_uusi.item'
+        )
+        .click()
+      await page
+        .getByTestId('oo.0.suoritukset.0.kielitutkintoTodistus.start')
+        .click()
+
+      const downloadPromise = page.waitForEvent('download')
+
+      await page
+        .getByTestId('oo.0.suoritukset.0.kielitutkintoTodistus.open')
+        .click()
+
+      const download = await downloadPromise
+      // Tarkista että lataus onnistui
+      await download.path()
+    })
+  })
+
   test.describe('Todistuksen lataaminen onnistuneesti', () => {
     test.use({ storageState: kansalainen(hetut.kielitutkinnonSuorittaja) })
 
     test('Oman todistuksen lataaminen onnistuu', async ({
       page,
-      kansalainenPage
+      kansalainenPage,
+      kielitutkintoOppijaPage
     }) => {
       await page.goto('/koski/omattiedot?pdf-todistus=true')
       await kansalainenPage.openOpiskeluoikeusByIndex(0)
-      await kansalainenPage.setKielitutkintoTodistusLanguage('fi')
-      await kansalainenPage.generateKielitutkintoTodistus()
-      await kansalainenPage.getKielitutkintoTodistusFile()
+      await kielitutkintoOppijaPage.setKielitutkintoTodistusLanguage('fi')
+      await kielitutkintoOppijaPage.generateKielitutkintoTodistus()
+      await kielitutkintoOppijaPage.getKielitutkintoTodistusFile()
     })
 
     test('Todistuksen voi ladata englanniksi', async ({
       page,
-      kansalainenPage
+      kansalainenPage,
+      kielitutkintoOppijaPage
     }) => {
       await page.goto('/koski/omattiedot?pdf-todistus=true')
       await kansalainenPage.openOpiskeluoikeusByIndex(0)
-      await kansalainenPage.setKielitutkintoTodistusLanguage('en')
-      await kansalainenPage.generateKielitutkintoTodistus()
-      await kansalainenPage.getKielitutkintoTodistusFile()
+      await kielitutkintoOppijaPage.setKielitutkintoTodistusLanguage('en')
+      await kielitutkintoOppijaPage.generateKielitutkintoTodistus()
+      await kielitutkintoOppijaPage.getKielitutkintoTodistusFile()
     })
 
     test('Todistuksen voi ladata ruotsiksi', async ({
       page,
-      kansalainenPage
+      kansalainenPage,
+      kielitutkintoOppijaPage
     }) => {
       await page.goto('/koski/omattiedot?pdf-todistus=true')
       await kansalainenPage.openOpiskeluoikeusByIndex(0)
-      await kansalainenPage.setKielitutkintoTodistusLanguage('sv')
-      await kansalainenPage.generateKielitutkintoTodistus()
-      await kansalainenPage.getKielitutkintoTodistusFile()
+      await kielitutkintoOppijaPage.setKielitutkintoTodistusLanguage('sv')
+      await kielitutkintoOppijaPage.generateKielitutkintoTodistus()
+      await kielitutkintoOppijaPage.getKielitutkintoTodistusFile()
     })
 
     test('Vaikka todistus on luotu yhdelle kielelle, sitä ei ole vielä muille', async ({
       page,
-      kansalainenPage
+      kansalainenPage,
+      kielitutkintoOppijaPage
     }) => {
       await page.goto('/koski/omattiedot?pdf-todistus=true')
       await kansalainenPage.openOpiskeluoikeusByIndex(0)
-      await kansalainenPage.setKielitutkintoTodistusLanguage('en')
-      await kansalainenPage.generateKielitutkintoTodistus()
-      await kansalainenPage.setKielitutkintoTodistusLanguage('fi')
-      const button = kansalainenPage.$.kielitutkintoTodistus.start
+      await kielitutkintoOppijaPage.setKielitutkintoTodistusLanguage('en')
+      await kielitutkintoOppijaPage.generateKielitutkintoTodistus()
+      await kielitutkintoOppijaPage.setKielitutkintoTodistusLanguage('fi')
+      const button =
+        kielitutkintoOppijaPage.$.suoritukset(0).kielitutkintoTodistus.start
       await button.waitFor()
       expect(await button.isVisible()).toBeTruthy()
     })
@@ -69,44 +108,53 @@ test.describe('Digitaalinen kielitutkintotodistus', () => {
 
     test('Käyttäjälle näytetään virheilmoitus jos todistuksen luonti epäonnistuu', async ({
       page,
-      kansalainenPage
+      kansalainenPage,
+      kielitutkintoOppijaPage
     }) => {
       await page.goto('/koski/omattiedot?pdf-todistus=true')
       await kansalainenPage.openOpiskeluoikeusByIndex(0)
-      await kansalainenPage.setKielitutkintoTodistusLanguage('en')
-      await kansalainenPage.generateKielitutkintoTodistus()
+      await kielitutkintoOppijaPage.setKielitutkintoTodistusLanguage('en')
+      await kielitutkintoOppijaPage.generateKielitutkintoTodistus()
 
       // Tarkista että virheilmoitus näkyy
-      expect(await kansalainenPage.getKielitutkintoTodistusError()).toEqual(
+      expect(
+        await kielitutkintoOppijaPage.getKielitutkintoTodistusError()
+      ).toEqual(
         'Tapahtui odottamaton tekninen ongelma. Jos ongelma jatkuu, ota yhteyttä KOSKI-tiimiin osoitteeseen koski@opintopolku.fi'
       )
 
       // Tarkista että latausnappi ei näy
-      const openButton = kansalainenPage.$.kielitutkintoTodistus.open
+      const openButton =
+        kielitutkintoOppijaPage.$.suoritukset(0).kielitutkintoTodistus.open
       expect(await openButton.isVisible()).toBeFalsy()
 
       // Tarkista että samaa kieltä voi yrittää uudelleen
-      const startButton = kansalainenPage.$.kielitutkintoTodistus.start
+      const startButton =
+        kielitutkintoOppijaPage.$.suoritukset(0).kielitutkintoTodistus.start
       expect(await startButton.isVisible()).toBeTruthy()
     })
 
     test('Todistus luodaan onnistuneesti mutta lataus epäonnistuu ruotsiksi', async ({
       page,
       kansalainenPage,
+      kielitutkintoOppijaPage,
       context
     }) => {
       await page.goto('/koski/omattiedot?pdf-todistus=true')
       await kansalainenPage.openOpiskeluoikeusByIndex(0)
-      await kansalainenPage.setKielitutkintoTodistusLanguage('sv')
-      await kansalainenPage.generateKielitutkintoTodistus()
+      await kielitutkintoOppijaPage.setKielitutkintoTodistusLanguage('sv')
+      await kielitutkintoOppijaPage.generateKielitutkintoTodistus()
 
       // Tarkista että todistus on luotu onnistuneesti
-      const openButton = kansalainenPage.$.kielitutkintoTodistus.open
+      const openButton =
+        kielitutkintoOppijaPage.$.suoritukset(0).kielitutkintoTodistus.open
       await openButton.waitFor()
       expect(await openButton.isVisible()).toBeTruthy()
 
       // Tarkista että linkki osoittaa oikeaan paikkaan
-      const link = await page.getByTestId('kielitutkintoTodistus.open')
+      const link = await page.getByTestId(
+        'oo.0.suoritukset.0.kielitutkintoTodistus.open'
+      )
       const href = await link.getAttribute('href')
       expect(href).toContain('/koski/todistus/download/')
 

@@ -88,28 +88,6 @@ export class KoskiKansalainenPage {
     await popup.close()
   }
 
-  async setKielitutkintoTodistusLanguage(lang: TodistusTemplateVariant) {
-    await this.$.kielitutkintoTodistus.language.set(lang)
-  }
-
-  async generateKielitutkintoTodistus() {
-    await this.$.kielitutkintoTodistus.start.click()
-    await this.$.kielitutkintoTodistus.loading.waitFor()
-    await this.$.kielitutkintoTodistus.loading.waitForToDisappear(10000)
-  }
-
-  async getKielitutkintoTodistusFile() {
-    const downloadPromise = this.page.waitForEvent('download')
-    await this.$.kielitutkintoTodistus.open.click()
-    const download = await downloadPromise
-    // Tarkista että lataus onnistui
-    await download.path()
-  }
-
-  async getKielitutkintoTodistusError(): Promise<string> {
-    return await this.$.kielitutkintoTodistus.error.value()
-  }
-
   async openJaaSuoritustietoja() {
     await this.page
       .getByRole('button', { name: /Sulje Suoritustietojen jakaminen/ })
@@ -222,14 +200,6 @@ const KansalainenUIV2TestIds = {
     loading: Label,
     error: Label,
     open: Button
-  },
-  kielitutkintoTodistus: {
-    language: Select,
-    start: Button,
-    loading: Label,
-    error: Label,
-    open: Button,
-    openPreview: Button
   },
   opiskeluoikeus: KansalainenOpiskeluoikeusHeader()
 }

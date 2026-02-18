@@ -16,6 +16,7 @@ import { KoskiTpoOppijaPage } from './pages/oppija/KoskiTpoOppijaPage'
 import { KoskiVSTOppijaPage } from './pages/oppija/KoskiVSTOppijaPage'
 import { KoskiIBOppijaPage } from './pages/oppija/KoskiIBOppijaPage'
 import { KoskiOppijaPageV2 } from './pages/oppija/KoskiOppijaPageV2'
+import { KoskiKielitutkintoOppijaPage } from './pages/oppija/KoskiKielitutkintoOppijaPage'
 
 type Fixtures = {
   virkailijaLoginPage: VirkailijaLoginPage
@@ -32,6 +33,7 @@ type Fixtures = {
   taiteenPerusopetusPage: KoskiTpoOppijaPage
   vstOppijaPage: KoskiVSTOppijaPage
   ibOppijaPage: KoskiIBOppijaPage
+  kielitutkintoOppijaPage: KoskiKielitutkintoOppijaPage
   fixtures: KoskiFixtures
   makeAxeBuilder: () => AxeBuilder
 }
@@ -75,6 +77,9 @@ export const test = base.extend<Fixtures>({
   },
   vstOppijaPage: async ({ page }, use) => {
     await use(new KoskiVSTOppijaPage(page))
+  },
+  kielitutkintoOppijaPage: async ({ page }, use) => {
+    await use(new KoskiKielitutkintoOppijaPage(page))
   },
   ibOppijaPage: async ({ page }, use) => {
     await use(new KoskiIBOppijaPage(page))

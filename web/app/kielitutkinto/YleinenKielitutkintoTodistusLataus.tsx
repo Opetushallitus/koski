@@ -15,7 +15,12 @@ import {
   generateTodistus
 } from '../util/koskiApi'
 import { useInterval } from '../util/useInterval'
-import { TestIdRoot, TestIdText } from '../appstate/useTestId'
+import {
+  TestIdLayer,
+  TestIdRoot,
+  TestIdText,
+  useTestId
+} from '../appstate/useTestId'
 import {
   Select,
   SelectOption,
@@ -302,8 +307,11 @@ export const YleinenKielitutkintoTodistusLataus: React.FC<
     return null
   }, [generate, statusFetchByJobId, hasError])
 
+  const openTestId = useTestId('kielitutkintoTodistus.open')
+  const openPreviewTestId = useTestId('kielitutkintoTodistus.openPreview')
+
   return (
-    <TestIdRoot id="kielitutkintoTodistus">
+    <TestIdLayer id="kielitutkintoTodistus">
       <Spacer />
       <div className="Todistus">
         <span className="Todistus__title">{'TODISTUS'}</span>
@@ -358,7 +366,7 @@ export const YleinenKielitutkintoTodistusLataus: React.FC<
         )}
         {isCompleted && status && (
           <a
-            data-testid="kielitutkintoTodistus.open"
+            data-testid={openTestId}
             href={`/koski/todistus/download/${status.id}`}
             target="_blank"
             rel="noreferrer"
@@ -368,7 +376,7 @@ export const YleinenKielitutkintoTodistusLataus: React.FC<
         )}
         {hasPääkäyttäjäAccess && (
           <a
-            data-testid="kielitutkintoTodistus.openPreview"
+            data-testid={openPreviewTestId}
             href={`/koski/todistus/preview/${templateVariant}/${opiskeluoikeusOid}`}
             target="_blank"
             rel="noreferrer"
@@ -382,6 +390,6 @@ export const YleinenKielitutkintoTodistusLataus: React.FC<
           <TextWithLinks>{errorText}</TextWithLinks>
         </TestIdText>
       )}
-    </TestIdRoot>
+    </TestIdLayer>
   )
 }
