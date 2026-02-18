@@ -10,6 +10,7 @@ perustiedot_sync
 suoritusjako
 ytr_opiskeluoikeushistoria
 casserviceticket
+kielitutkintotodistus_tiedote_job
 massaluovutus
 mydata_jako
 oauth2_jako

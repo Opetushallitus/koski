@@ -16,6 +16,7 @@ opiskeluoikeus_fixture
 oauth2_jako
 mydata_jako
 massaluovutus
+kielitutkintotodistus_tiedote_job
 casserviceticket
 ytr_opiskeluoikeushistoria
 suoritusjako
