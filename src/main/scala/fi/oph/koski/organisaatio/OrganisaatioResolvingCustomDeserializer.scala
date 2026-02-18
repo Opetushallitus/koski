@@ -11,7 +11,12 @@ case class OrganisaatioResolvingCustomDeserializer(organisaatioRepository: Organ
     SchemaValidatingExtractor.extract(cursor, schema, metadata)(context.copy(customDeserializers = Nil)) match {
       case Right(o: OrganisaatioWithOid) =>
         val c = Class.forName(schema.fullClassName)
-        organisaatioRepository.getOrganisaatio(o.oid) match {
+        val org = if (o.oid == Opetushallitus.organisaatioOid) {
+          organisaatioRepository.getRootOrganisaatio
+        } else {
+          organisaatioRepository.getOrganisaatio(o.oid)
+        }
+        org match {
           case Some(org) if c == classOf[OidOrganisaatio] || c.isInstance(org) =>
             Right(org)
           case Some(org) if org.isInstanceOf[Koulutustoimija] && metadata.exists(_.isInstanceOf[MapKoulutustoimijaOidToTuntematonOppilaitos]) =>
@@ -22,8 +27,6 @@ case class OrganisaatioResolvingCustomDeserializer(organisaatioRepository: Organ
             Right(Koulutustoimija(oid = org.oid, nimi = org.nimi))
           case Some(org) =>
             Left(List(ValidationError(cursor.path, cursor.json, OtherViolation("Organisaatio " + o.oid + " ei ole " + c.getSimpleName.toLowerCase + " vaan " + org.getClass.getSimpleName.toLowerCase, "vääränTyyppinenOrganisaatio"))))
-          case None if o.oid == Opetushallitus.organisaatioOid =>
-            Right(o)
           case None =>
             Left(List(ValidationError(cursor.path, cursor.json, OtherViolation("Organisaatiota " + o.oid + " ei löydy organisaatiopalvelusta", "organisaatioTuntematon"))))
         }
