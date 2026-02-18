@@ -45,7 +45,6 @@ export type LaajuusEditProps<T extends Laajuus> = CommonProps<
     T,
     {
       createLaajuus: (arvo: number) => T
-      step?: number
     }
   >
 >
@@ -89,7 +88,6 @@ export const LaajuusEdit = <T extends Laajuus>(props: LaajuusEditProps<T>) => {
           value={props.value?.arvo}
           onChange={onChangeCB}
           hasErrors={Boolean(props.errors)}
-          step={props.step}
           testId="laajuus.edit"
         />
         <TestIdText id="laajuus.unit" className="LaajuusField__yksikko">
@@ -111,7 +109,7 @@ export const LaajuusEdit = <T extends Laajuus>(props: LaajuusEditProps<T>) => {
  */
 
 export type DefaultLaajuusEditProps<T extends Laajuus> = CommonProps<
-  FieldEditorProps<T, { step?: number }>
+  FieldEditorProps<T, EmptyObject>
 >
 
 export const LaajuusOpintopisteissäEdit: React.FC<
