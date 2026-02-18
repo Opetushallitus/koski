@@ -1,12 +1,11 @@
 package fi.oph.koski.organisaatio
 
 import java.time.LocalDate
-
 import fi.oph.koski.json.JsonResources
 import fi.oph.koski.json.JsonSerializer.extract
 import fi.oph.koski.koodisto.{KoodistoViitePalvelu, MockKoodistoViitePalvelu}
 import fi.oph.koski.schema.LocalizedString.finnish
-import fi.oph.koski.schema.{LocalizedString, Oppilaitos}
+import fi.oph.koski.schema.{LocalizedString, OidOrganisaatio, Oppilaitos, OrganisaatioWithOid}
 
 // Testeissä käytetyt organisaatio-oidit
 object MockOrganisaatiot {
@@ -136,11 +135,15 @@ object MockOrganisaatioRepository extends OrganisaatioRepository {
     OrganisaatioHierarkiaFilter(query, "fi").filter(rootOrgs).toList
 
   override def getOrganisaationNimiHetkellä(oid: String, localDate: LocalDate): Option[LocalizedString] = {
-    getOrganisaatioHierarkia(oid).map {
-      if (localDate.isEqual(LocalDate.of(2010, 10, 10))) {
-        _.nimi.concat(finnish(" -vanha"))
-      } else {
-        _.nimi
+    if (oid == Opetushallitus.organisaatioOid) {
+      Some(LocalizedString.finnish("Opetushallitus"))
+    } else {
+      getOrganisaatioHierarkia(oid).map {
+        if (localDate.isEqual(LocalDate.of(2010, 10, 10))) {
+          _.nimi.concat(finnish(" -vanha"))
+        } else {
+          _.nimi
+        }
       }
     }
   }

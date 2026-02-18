@@ -24,6 +24,11 @@ trait OrganisaatioRepository extends Logging {
    */
   def getOrganisaatioHierarkiaIncludingParents(oid: String): List[OrganisaatioHierarkia] = findWithOid(oid).toList
   def getOrganisaatio(oid: String): Option[OrganisaatioWithOid] = getOrganisaatioHierarkia(oid).map(_.toOrganisaatio)
+  def getRootOrganisaatio: Option[OrganisaatioWithOid] = {
+    val oid = Opetushallitus.organisaatioOid
+    val nimi = getOrganisaationNimiHetkellä(oid, LocalDate.now())
+    Some(OidOrganisaatio(oid, nimi))
+  }
 
   def getChildOids(oid: String): Option[Set[String]] = getOrganisaatioHierarkia(oid).map { hierarkia =>
     OrganisaatioHierarkia.flatten(List(hierarkia)).map(_.oid).toSet
