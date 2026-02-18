@@ -11,4 +11,5 @@ object KoskiApplicationForTests extends KoskiApplication(
     .withValue("tiedote.earliestDate", fromAnyRef("2010-01-01"))
     .withValue("tiedote.checkInterval", fromAnyRef("5s"))
     .withValue("tiedote.batchSize", fromAnyRef(1))
+    .withValue("tiedote.gracePeriodHours", fromAnyRef(0))
 )

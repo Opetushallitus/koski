@@ -103,6 +103,22 @@ class KielitutkintotodistusTiedoteWorkflowSpec extends KielitutkintotodistusTied
       }
     }
 
+    "Ei käsittele opiskeluoikeuksia jotka ovat luotu grace period -ajan sisällä" in {
+      withoutRunningTiedoteScheduler {
+        // Testiympäristön gracePeriodHours on 0, joten kaikki fixture-opiskeluoikeudet ovat eligible
+        val eligibleBefore = app.kielitutkintotodistusTiedoteRepository.findEligibleBatch(100)
+        eligibleBefore should not be empty
+
+        // Luodaan uusi repository erittäin pitkällä grace periodilla
+        val strictConfig = app.config
+          .withValue("tiedote.gracePeriodHours", ConfigValueFactory.fromAnyRef(999999))
+        val strictRepo = new KielitutkintotodistusTiedoteRepository(app.masterDatabase.db, app.instanceId, strictConfig)
+
+        val eligibleAfter = strictRepo.findEligibleBatch(100)
+        eligibleAfter shouldBe empty
+      }
+    }
+
     "Scheduler on oletuksena pois päältä (tiedote.enabled = false)" in {
       KoskiApplication.defaultConfig.getBoolean("tiedote.enabled") should be(false)
     }
