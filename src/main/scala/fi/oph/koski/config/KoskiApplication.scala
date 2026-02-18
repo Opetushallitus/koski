@@ -10,6 +10,7 @@ import fi.oph.koski.eperusteetvalidation.{EPerusteetFiller, EPerusteetLops2019Va
 import fi.oph.koski.executors.GlobalExecutionContext
 import fi.oph.koski.fixture.{FixtureCreator, ValidationTestContext}
 import fi.oph.koski.hakemuspalvelu.HakemuspalveluService
+import fi.oph.koski.hsl.HslOmaDataOAuth2Service
 import fi.oph.koski.healthcheck.{HealthChecker, HealthMonitoring}
 import fi.oph.koski.henkilo.{HenkilöRepository, Hetu, KoskiHenkilöCache, OpintopolkuHenkilöFacade}
 import fi.oph.koski.history.{KoskiOpiskeluoikeusHistoryRepository, YtrOpiskeluoikeusHistoryRepository}
@@ -240,6 +241,7 @@ class KoskiApplication(
 
   lazy val omaDataOAuth2Repository = new OmaDataOAuth2Repository(this, masterDatabase.db)
   lazy val omaDataOAuth2Service = new OmaDataOAuth2Service(omaDataOAuth2Repository, this)
+  lazy val hslOmaDataOAuth2Service = new HslOmaDataOAuth2Service(this)
 
   lazy val todistusWorkerId = instanceId
   lazy val todistusService = new TodistusService(this)

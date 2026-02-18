@@ -6,6 +6,7 @@ import fi.oph.koski.koskiuser.KoskiSpecificSession
 import fi.oph.koski.log.KoskiAuditLogMessageField.{omaDataKumppani, omaDataOAuth2Scope, oppijaHenkiloOid}
 import fi.oph.koski.log.KoskiOperation.{KANSALAINEN_MYDATA_LISAYS, KANSALAINEN_MYDATA_POISTO, OAUTH2_ACCESS_TOKEN_LUONTI}
 import fi.oph.koski.log.{AuditLog, KoskiAuditLogMessage, KoskiOperation, Logging}
+import fi.oph.koski.hsl.HslOmaDataOAuth2Oppija
 import fi.oph.koski.omadataoauth2.OmaDataOAuth2ErrorType.invalid_request
 import fi.oph.koski.omadataoauth2.OmaDataOAuth2Security.generateSecret
 import fi.oph.koski.schema.{LocalizedString, Opiskeluoikeus, Oppija, TäydellisetHenkilötiedot}
@@ -150,6 +151,18 @@ class OmaDataOAuth2Service(oauth2Repository: OmaDataOAuth2Repository, val applic
         Left(KoskiErrorCategory.internalError("Datatype not recognized"))
       case Left(httpStatus) =>
         Left(httpStatus)
+    }
+  }
+
+  def findHslOpiskeluoikeudet(oppijaOid: String, scope: String, overrideSession: KoskiSpecificSession, tokenExpirationTime: String): Either[HttpStatus, HslOmaDataOAuth2Oppija] = {
+    application.henkilöRepository.findByOid(oppijaOid).toRight(KoskiErrorCategory.notFound.oppijaaEiLöydyTaiEiOikeuksia()).flatMap { henkilö =>
+      application.hslOmaDataOAuth2Service.findOpiskeluoikeudet(oppijaOid)(overrideSession).map { opiskeluoikeudet =>
+        HslOmaDataOAuth2Oppija(
+          henkilö = OmaDataOAuth2Henkilötiedot(henkilö, scope),
+          opiskeluoikeudet = opiskeluoikeudet,
+          tokenInfo = OmaDataOAuth2TokenInfo(scope, tokenExpirationTime)
+        )
+      }
     }
   }
 }
