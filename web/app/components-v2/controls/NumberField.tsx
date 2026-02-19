@@ -6,7 +6,6 @@ export type NumberFieldProps = CommonProps<{
   value?: number
   onChange: (text?: number) => void
   hasErrors?: boolean
-  step?: number
   testId?: string | number
 }>
 
@@ -36,7 +35,6 @@ export const NumberField: React.FC<NumberFieldProps> = (props) => {
         )}
         type="number"
         min={0}
-        step={props.step ?? 1}
         value={value !== null && value !== undefined ? value.toString() : ''}
         onChange={onChangeCB}
         data-testid={testId}
