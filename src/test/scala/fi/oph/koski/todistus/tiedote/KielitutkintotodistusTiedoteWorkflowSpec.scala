@@ -3,8 +3,11 @@ package fi.oph.koski.todistus.tiedote
 import com.typesafe.config.ConfigValueFactory
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
+import fi.oph.koski.log.{AuditLogTester, KoskiAuditLogMessageField, KoskiOperation}
 import fi.oph.koski.schedule.Scheduler
 import fi.oph.koski.util.Wait
+import fi.oph.koski.json.GenericJsonFormats
+import org.json4s.jackson.JsonMethods.parse
 
 import java.time.Duration
 
@@ -84,6 +87,58 @@ class KielitutkintotodistusTiedoteWorkflowSpec extends KielitutkintotodistusTied
         val jobs = app.kielitutkintotodistusTiedoteRepository.findAll(100, 0)
         jobs should have length processed
         mockTiedotuspalveluClient.sentNotifications should have length processed
+      }
+    }
+
+    "Kirjaa audit-lokin kun tiedote lähetetään onnistuneesti" in {
+      withoutRunningTiedoteScheduler {
+        val oppijaOid = KoskiSpecificMockOppijat.kielitutkinnonSuorittaja.oid
+        val opiskeluoikeusOid = getVahvistettuKielitutkinnonOpiskeluoikeusOid(oppijaOid).get
+
+        AuditLogTester.clearMessages()
+        val processed = app.kielitutkintotodistusTiedoteService.processAll()
+
+        // processAll käsittelee useita opiskeluoikeuksia, joten tarkistetaan kaikki viestit
+        implicit val formats = GenericJsonFormats.genericFormats
+        val messages = AuditLogTester.getLogMessages.map(s => parse(s))
+        messages should have length processed
+        messages.foreach { msg =>
+          (msg \ "operation").extract[String] should equal(KoskiOperation.TIEDOTE_LAHETETTY.toString)
+        }
+        // Tarkistetaan että oikea oppija ja opiskeluoikeus on mukana joukossa
+        messages.exists { msg =>
+          (msg \ "target" \ KoskiAuditLogMessageField.oppijaHenkiloOid.toString).extractOpt[String].contains(oppijaOid) &&
+          (msg \ "target" \ KoskiAuditLogMessageField.opiskeluoikeusOid.toString).extractOpt[String].contains(opiskeluoikeusOid) &&
+          (msg \ "target" \ KoskiAuditLogMessageField.tiedoteTyyppi.toString).extractOpt[String].contains("kielitodistus")
+        } should be(true)
+      }
+    }
+
+    "Kirjaa audit-lokin kun tiedote lähetetään uudelleenyrityksellä" in {
+      withoutRunningTiedoteScheduler {
+        val repository = app.kielitutkintotodistusTiedoteRepository
+        val (ooOid, oOid) = repository.findEligibleBatch(1).head
+        repository.add(KielitutkintotodistusTiedoteJob(
+          id = java.util.UUID.randomUUID().toString,
+          oppijaOid = oOid,
+          opiskeluoikeusOid = ooOid,
+          state = KielitutkintotodistusTiedoteState.ERROR,
+          worker = Some(repository.workerId),
+          attempts = 1,
+          error = Some("Tiedotuspalvelu ei vastaa")
+        ))
+
+        AuditLogTester.clearMessages()
+        app.kielitutkintotodistusTiedoteService.retryAllFailed()
+
+        AuditLogTester.verifyLastAuditLogMessage(Map(
+          "operation" -> KoskiOperation.TIEDOTE_LAHETETTY.toString,
+          "target" -> Map(
+            KoskiAuditLogMessageField.oppijaHenkiloOid.toString -> oOid,
+            KoskiAuditLogMessageField.opiskeluoikeusOid.toString -> ooOid,
+            KoskiAuditLogMessageField.tiedoteTyyppi.toString -> "kielitodistus"
+          )
+        ))
       }
     }
 

@@ -1,7 +1,10 @@
 package fi.oph.koski.todistus.tiedote
 
 import fi.oph.koski.config.KoskiApplication
-import fi.oph.koski.log.Logging
+import fi.oph.koski.koskiuser.KoskiSpecificSession
+import fi.oph.koski.log.KoskiAuditLogMessageField.{opiskeluoikeusOid => opiskeluoikeusOidField, oppijaHenkiloOid, tiedoteTyyppi}
+import fi.oph.koski.log.KoskiOperation.TIEDOTE_LAHETETTY
+import fi.oph.koski.log.{AuditLog, KoskiAuditLogMessage, Logging}
 import fi.oph.koski.util.Timing
 import org.postgresql.util.{PSQLException, PSQLState}
 
@@ -56,6 +59,11 @@ class KielitutkintotodistusTiedoteService(application: KoskiApplication) extends
     try {
       repository.add(job)
       if (state == KielitutkintotodistusTiedoteState.COMPLETED) {
+        AuditLog.log(KoskiAuditLogMessage(TIEDOTE_LAHETETTY, KoskiSpecificSession.systemUser, Map(
+          oppijaHenkiloOid -> oppijaOid,
+          opiskeluoikeusOidField -> opiskeluoikeusOid,
+          tiedoteTyyppi -> "kielitodistus"
+        )))
         logger.info(s"Tiedote lähetetty: oo=$opiskeluoikeusOid")
       } else {
         logger.error(s"Tiedotteen lähetys epäonnistui: oo=$opiskeluoikeusOid virhe=${error.getOrElse("")}")
@@ -84,6 +92,11 @@ class KielitutkintotodistusTiedoteService(application: KoskiApplication) extends
     client.sendKielitutkintoTodistusTiedote(job.oppijaOid, job.opiskeluoikeusOid) match {
       case Right(()) =>
         repository.setCompleted(job.id)
+        AuditLog.log(KoskiAuditLogMessage(TIEDOTE_LAHETETTY, KoskiSpecificSession.systemUser, Map(
+          oppijaHenkiloOid -> job.oppijaOid,
+          opiskeluoikeusOidField -> job.opiskeluoikeusOid,
+          tiedoteTyyppi -> "kielitodistus"
+        )))
         logger.info(s"Tiedote lähetetty uudelleenyrityksellä: job=${job.id}")
       case Left(error) =>
         repository.setFailed(job.id, error.toString)
