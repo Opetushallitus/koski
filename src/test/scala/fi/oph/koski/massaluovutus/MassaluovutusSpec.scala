@@ -10,7 +10,7 @@ import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.koskiuser.{KoskiSpecificSession, MockUsers, UserWithPassword}
 import fi.oph.koski.log.AuditLogTester
 import fi.oph.koski.massaluovutus.luokallejaaneet.{MassaluovutusQueryLuokalleJaaneet, MassaluovutusQueryLuokalleJaaneetJson}
-import fi.oph.koski.massaluovutus.organisaationopiskeluoikeudet.{MassaluovutusQueryOrganisaationOpiskeluoikeudet, MassaluovutusQueryOrganisaationOpiskeluoikeudetCsv, MassaluovutusQueryOrganisaationOpiskeluoikeudetJson, QueryOrganisaationOpiskeluoikeudetCsvDocumentation}
+import fi.oph.koski.massaluovutus.organisaationopiskeluoikeudet.{MassaluovutusQueryOrganisaationOpiskeluoikeudet, MassaluovutusQueryOrganisaationOpiskeluoikeudetCsv, MassaluovutusQueryOrganisaationOpiskeluoikeudetJson, MassaluovutusQueryOrganisaationOpiskeluoikeudetJsonV2, QueryOrganisaationOpiskeluoikeudetCsvDocumentation}
 import fi.oph.koski.massaluovutus.paallekkaisetopiskeluoikeudet.MassaluovutusQueryPaallekkaisetOpiskeluoikeudet
 import fi.oph.koski.massaluovutus.suorituspalvelu.{SuorituspalveluMuuttuneetJalkeenQuery, SuorituspalveluOppijaOidsQuery}
 import fi.oph.koski.massaluovutus.valintalaskenta.ValintalaskentaQuery
@@ -359,6 +359,69 @@ class MassaluovutusSpec extends AnyFreeSpec with MassaluovutusTestMethods with M
 
         complete.files.filter(_.contains("aikajakso")) should equal(List.empty)
         complete.files.filter(_.contains("osasuoritus")) should have length 1
+      }
+    }
+  }
+
+  "Organisaation opiskeluoikeudet V2" - {
+    "JSON V2" - {
+      val query = MassaluovutusQueryOrganisaationOpiskeluoikeudetJsonV2(
+        alkanutAikaisintaan = LocalDate.of(1990, 1, 1),
+      )
+
+      "Kysely onnistuu ja palauttaa tuloksia" in {
+        val user = MockUsers.helsinkiKatselija
+        val queryId = addQuerySuccessfully(query, user)(_.queryId)
+        val complete = waitForCompletion(queryId, user)
+
+        complete.files should not be empty
+      }
+
+      "henkilö.oid on master-oid ja muutHenkilöOidit sisältää slave-oidit" in {
+        poistaOppijanOpiskeluoikeusDatat(KoskiSpecificMockOppijat.slave.henkilö)
+        createOrUpdate(KoskiSpecificMockOppijat.slave.henkilö, defaultOpiskeluoikeus)
+
+        val user = MockUsers.helsinkiKatselija
+        val queryId = addQuerySuccessfully(query, user)(_.queryId)
+        val complete = waitForCompletion(queryId, user)
+
+        val masterOid = KoskiSpecificMockOppijat.master.oid
+        val slaveOid = KoskiSpecificMockOppijat.slave.henkilö.oid
+
+        val masterFile = complete.files.find(_.contains(masterOid))
+        masterFile should not be empty
+
+        verifyResultAndContent(masterFile.get, user) {
+          val json = JsonMethods.parse(body)
+          (json \ "henkilö" \ "oid").extract[String] should equal(masterOid)
+          (json \ "muutHenkilöOidit").extract[List[String]] should contain(slaveOid)
+          (json \ "oppijaMasterOid") should equal(JNothing)
+        }
+      }
+
+      "Master- ja slave-opiskeluoikeudet yhdistetään samaan tiedostoon" in {
+        poistaOppijanOpiskeluoikeusDatat(KoskiSpecificMockOppijat.slave.henkilö)
+        createOrUpdate(KoskiSpecificMockOppijat.slave.henkilö, defaultOpiskeluoikeus)
+
+        val user = MockUsers.helsinkiKatselija
+        val queryId = addQuerySuccessfully(query, user)(_.queryId)
+        val complete = waitForCompletion(queryId, user)
+
+        val masterOid = KoskiSpecificMockOppijat.master.oid
+        val slaveOid = KoskiSpecificMockOppijat.slave.henkilö.oid
+
+        // Slave-oidilla ei pitäisi olla omaa tiedostoa
+        complete.files.find(f => f.contains(slaveOid) && !f.contains(masterOid)) should be(None)
+
+        // Master-tiedostossa pitäisi olla opiskeluoikeudet molemmilta oideilta
+        val masterFile = complete.files.find(_.contains(masterOid))
+        masterFile should not be empty
+
+        verifyResultAndContent(masterFile.get, user) {
+          val json = JsonMethods.parse(body)
+          val opiskeluoikeudet = (json \ "opiskeluoikeudet").extract[List[JObject]]
+          opiskeluoikeudet.length should be > 1
+        }
       }
     }
   }

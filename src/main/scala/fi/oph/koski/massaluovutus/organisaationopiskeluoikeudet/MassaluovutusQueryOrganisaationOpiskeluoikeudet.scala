@@ -30,7 +30,6 @@ import scala.concurrent.duration.DurationInt
 @Title("Organisaation opiskeluoikeudet")
 @Description("Palauttaa hakuehtojen mukaiset organisaation ja sen alaorganisaatioiden opiskeluoikeudet.")
 trait MassaluovutusQueryOrganisaationOpiskeluoikeudet extends KoulutuksenjärjestäjienMassaluovutusQueryParameters with DatabaseConverters with Logging {
-  @EnumValues(Set("organisaationOpiskeluoikeudet"))
   def `type`: String
   @Description("Kyselyyn otettavan koulutustoimijan tai oppilaitoksen oid. Jos ei ole annettu, päätellään käyttäjän käyttöoikeuksista.")
   def organisaatioOid: Option[String]
