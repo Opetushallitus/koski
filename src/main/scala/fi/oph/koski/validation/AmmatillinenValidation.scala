@@ -31,7 +31,8 @@ object AmmatillinenValidation {
           validateAikajaksotJaTilatVosUudistuksenRajapäivänJälkeen(config, ammatillinen),
           validateHenkilöstökoulutusVosUudistuksenRajapäivänJälkeen(config, ammatillinen),
           validateViestintäJaVuorovaikutusOsaAlueetEiValtakunnallisina(ammatillinen),
-          validateViestintäJaVuorovaikutus26KoodiarvotEiSallittuEnnen2026(ammatillinen, config)
+          validateViestintäJaVuorovaikutus26KoodiarvotEiSallittuEnnen2026(ammatillinen, config),
+          validateOsatutkintotavoitteisenValmistuminen(ammatillinen)
         )
       case _ => HttpStatus.ok
     }
@@ -523,6 +524,28 @@ object AmmatillinenValidation {
         KoskiErrorCategory.badRequest.validation.ammatillinen.henkilöstökoulutusRajapäivänJälkeen()
       }
     } else HttpStatus.ok
+  }
+
+  private def validateOsatutkintotavoitteisenValmistuminen(ammatillinen: AmmatillinenOpiskeluoikeus): HttpStatus = {
+    if (!ammatillinen.onValmistunut) {
+      HttpStatus.ok
+    } else {
+      HttpStatus.fold(
+        ammatillinen.suoritukset.collect {
+          case s: AmmatillisenTutkinnonOsittainenSuoritus => s
+        }.map { suoritus =>
+          val osasuoritukset = suoritus.osasuoritukset.getOrElse(List.empty)
+          val onAmmatillinenTaiYhteinenTutkinnonOsaValmis = osasuoritukset.exists {
+            case os: MuunOsittaisenAmmatillisenTutkinnonTutkinnonosanSuoritus => os.valmis
+            case os: YhteisenOsittaisenAmmatillisenTutkinnonTutkinnonosanSuoritus => os.valmis
+            case _ => false
+          }
+          HttpStatus.validate(onAmmatillinenTaiYhteinenTutkinnonOsaValmis) {
+            KoskiErrorCategory.badRequest.validation.ammatillinen.osatutkintotavoitteisenValmistuminen()
+          }
+        }
+      )
+    }
   }
 
   private val viestintäJaVuorovaikutusKielivalinnallaKoodiarvot = Set(

@@ -1,5 +1,6 @@
 # Koskeen tallennettavien tietojen validaatiosäännöt
-
+## 24.2.2026
+-Estetään osatutkintotavoitteisen valmiiksi merkkaaminen ilman vähintään yhtä ammatillisen tai yhteisen tutkinnon osan suoritusta
 ## 18.2.2026
 
 - Sallitaan yleisen kielitutkinnon suorituksille päällekkäiset aikajaksot, mutta estetään kuitenkin suoritus samalla tutkintopäivällä samalla tutkintotasolla, kielellä ja testipaikalla.
