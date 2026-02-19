@@ -79,7 +79,8 @@ trait TodistusServlet extends ScalatraServlet with HasKoskiSpecificSession with 
         KoskiAuditLogMessageField.oppijaHenkiloOid -> todistusJob.oppijaOid,
         KoskiAuditLogMessageField.opiskeluoikeusOid -> todistusJob.opiskeluoikeusOid,
         KoskiAuditLogMessageField.opiskeluoikeusVersio -> todistusJob.opiskeluoikeusVersionumero.map(_.toString).getOrElse(""),
-        KoskiAuditLogMessageField.todistusId -> todistusJob.id
+        KoskiAuditLogMessageField.todistusId -> todistusJob.id,
+        KoskiAuditLogMessageField.todistusTemplateVariant -> todistusJob.templateVariant
       )
     )
   }
@@ -90,7 +91,8 @@ trait TodistusServlet extends ScalatraServlet with HasKoskiSpecificSession with 
       extraFields = Map(
         KoskiAuditLogMessageField.oppijaHenkiloOid -> todistusJob.oppijaOid,
         KoskiAuditLogMessageField.opiskeluoikeusOid -> todistusJob.opiskeluoikeusOid,
-        KoskiAuditLogMessageField.opiskeluoikeusVersio -> todistusJob.opiskeluoikeusVersionumero.map(_.toString).getOrElse("")
+        KoskiAuditLogMessageField.opiskeluoikeusVersio -> todistusJob.opiskeluoikeusVersionumero.map(_.toString).getOrElse(""),
+        KoskiAuditLogMessageField.todistusTemplateVariant -> todistusJob.templateVariant
       )
     )
   }

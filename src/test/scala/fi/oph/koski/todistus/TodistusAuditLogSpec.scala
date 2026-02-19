@@ -30,7 +30,8 @@ class TodistusAuditLogSpec extends TodistusSpecHelpers {
             "target" -> Map(
               KoskiAuditLogMessageField.oppijaHenkiloOid.toString -> oppijaOid,
               KoskiAuditLogMessageField.opiskeluoikeusOid.toString -> opiskeluoikeusOid,
-              KoskiAuditLogMessageField.todistusId.toString -> todistusJob.id
+              KoskiAuditLogMessageField.todistusId.toString -> todistusJob.id,
+              KoskiAuditLogMessageField.todistusTemplateVariant.toString -> templateVariant
             )
           ))
         }
@@ -57,7 +58,35 @@ class TodistusAuditLogSpec extends TodistusSpecHelpers {
             "target" -> Map(
               KoskiAuditLogMessageField.oppijaHenkiloOid.toString -> huollettavanOid,
               KoskiAuditLogMessageField.opiskeluoikeusOid.toString -> huollettavanOpiskeluoikeusOid,
-              KoskiAuditLogMessageField.todistusId.toString -> todistusJob.id
+              KoskiAuditLogMessageField.todistusId.toString -> todistusJob.id,
+              KoskiAuditLogMessageField.todistusTemplateVariant.toString -> templateVariant
+            )
+          ))
+        }
+      }
+    }
+
+    "TODISTUKSEN_LUONTI lokitetaan kun pääkäyttäjä luo printattavan todistuksen" in {
+      val templateVariant = "fi_tulostettava_uusi"
+      val oppijaOid = KoskiSpecificMockOppijat.kielitutkinnonSuorittaja.oid
+      val opiskeluoikeusOid = getVahvistettuKielitutkinnonOpiskeluoikeus(oppijaOid).flatMap(_.oid).get
+
+      val req = TodistusGenerateRequest(opiskeluoikeusOid, templateVariant)
+
+      withoutRunningSchedulers {
+        AuditLogTester.clearMessages()
+
+        addGenerateJobSuccessfullyAsVirkailijaPääkäyttäjä(req) { todistusJob =>
+          todistusJob.state should equal(TodistusState.QUEUED)
+          todistusJob.isStamped should equal(false)
+
+          AuditLogTester.verifyLastAuditLogMessage(Map(
+            "operation" -> KoskiOperation.TODISTUKSEN_LUONTI.toString,
+            "target" -> Map(
+              KoskiAuditLogMessageField.oppijaHenkiloOid.toString -> oppijaOid,
+              KoskiAuditLogMessageField.opiskeluoikeusOid.toString -> opiskeluoikeusOid,
+              KoskiAuditLogMessageField.todistusId.toString -> todistusJob.id,
+              KoskiAuditLogMessageField.todistusTemplateVariant.toString -> templateVariant
             )
           ))
         }
@@ -93,7 +122,8 @@ class TodistusAuditLogSpec extends TodistusSpecHelpers {
           KoskiAuditLogMessageField.oppijaHenkiloOid.toString -> oppijaOid,
           KoskiAuditLogMessageField.opiskeluoikeusOid.toString -> opiskeluoikeusOid,
           KoskiAuditLogMessageField.opiskeluoikeusVersio.toString -> opiskeluoikeusVersionumero.toString,
-          KoskiAuditLogMessageField.todistusId.toString -> todistusJob.id
+          KoskiAuditLogMessageField.todistusId.toString -> todistusJob.id,
+          KoskiAuditLogMessageField.todistusTemplateVariant.toString -> templateVariant
         )
       ))
     }
@@ -126,7 +156,8 @@ class TodistusAuditLogSpec extends TodistusSpecHelpers {
           KoskiAuditLogMessageField.oppijaHenkiloOid.toString -> huollettavanOid,
           KoskiAuditLogMessageField.opiskeluoikeusOid.toString -> huollettavanOpiskeluoikeusOid,
           KoskiAuditLogMessageField.opiskeluoikeusVersio.toString -> huollettavanOpiskeluoikeusVersionumero.toString,
-          KoskiAuditLogMessageField.todistusId.toString -> todistusJob.id
+          KoskiAuditLogMessageField.todistusId.toString -> todistusJob.id,
+          KoskiAuditLogMessageField.todistusTemplateVariant.toString -> templateVariant
         )
       ))
     }
@@ -162,7 +193,8 @@ class TodistusAuditLogSpec extends TodistusSpecHelpers {
           KoskiAuditLogMessageField.oppijaHenkiloOid.toString -> huollettavanOid,
           KoskiAuditLogMessageField.opiskeluoikeusOid.toString -> huollettavanOpiskeluoikeusOid,
           KoskiAuditLogMessageField.opiskeluoikeusVersio.toString -> huollettavanOpiskeluoikeusVersionumero.toString,
-          KoskiAuditLogMessageField.todistusId.toString -> todistusJob.id
+          KoskiAuditLogMessageField.todistusId.toString -> todistusJob.id,
+          KoskiAuditLogMessageField.todistusTemplateVariant.toString -> templateVariant
         )
       ))
     }
@@ -215,7 +247,8 @@ class TodistusAuditLogSpec extends TodistusSpecHelpers {
         "target" -> Map(
           KoskiAuditLogMessageField.oppijaHenkiloOid.toString -> oppijaOid,
           KoskiAuditLogMessageField.opiskeluoikeusOid.toString -> opiskeluoikeusOid,
-          KoskiAuditLogMessageField.opiskeluoikeusVersio.toString -> opiskeluoikeusVersionumero.toString
+          KoskiAuditLogMessageField.opiskeluoikeusVersio.toString -> opiskeluoikeusVersionumero.toString,
+          KoskiAuditLogMessageField.todistusTemplateVariant.toString -> templateVariant
         )
       ))
     }

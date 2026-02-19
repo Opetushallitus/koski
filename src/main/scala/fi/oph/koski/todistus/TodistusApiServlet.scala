@@ -42,7 +42,8 @@ class TodistusApiServlet(implicit val application: KoskiApplication)
           extraFields = Map(
             KoskiAuditLogMessageField.oppijaHenkiloOid -> todistusJob.oppijaOid,
             KoskiAuditLogMessageField.opiskeluoikeusOid -> todistusJob.opiskeluoikeusOid,
-            KoskiAuditLogMessageField.todistusId -> todistusJob.id
+            KoskiAuditLogMessageField.todistusId -> todistusJob.id,
+            KoskiAuditLogMessageField.todistusTemplateVariant -> todistusJob.templateVariant
           )
         ))
     )

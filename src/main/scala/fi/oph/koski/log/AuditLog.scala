@@ -101,7 +101,8 @@ object KoskiAuditLogMessageField extends Enumeration {
   omaDataOAuth2Scope,
   suorituksenTyyppi,
   todistusId,
-  tiedoteTyyppi = Value
+  tiedoteTyyppi,
+  todistusTemplateVariant = Value
 }
 
 object KoskiOperation extends Enumeration {
