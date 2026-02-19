@@ -203,6 +203,86 @@ class AmmatillinenOpiskelijavuositiedotRaporttiSpec
       }
     }
 
+    "opiskelijavuosikertymä ilman heinäkuun päiviä lasketaan oikein" - {
+      "laskenta alkaa 1.1.2026" in {
+        AmmatillinenRaporttiUtils.opiskelijavuosikertymäHeinäkuuton(Seq(
+          ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2016-01-01"), Date.valueOf("2016-01-31"), "lasna", Date.valueOf("2016-01-01"))
+        )) should equal(0)
+      }
+
+      "läsnäolopäivät ilman heinäkuuta aikajaksolla" in {
+        AmmatillinenRaporttiUtils.opiskelijavuosikertymäHeinäkuuton(Seq(
+          ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2026-01-01"), Date.valueOf("2026-01-31"), "lasna", Date.valueOf("2026-01-01"))
+        )) should equal(31)
+      }
+
+      "läsnäolopäivät ilman heinäkuuta aikajaksolla, kun jakso alkaa ennen 1.1.2026" in {
+        AmmatillinenRaporttiUtils.opiskelijavuosikertymäHeinäkuuton(Seq(
+          ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2025-12-31"), Date.valueOf("2026-01-31"), "lasna", Date.valueOf("2026-01-01"))
+        )) should equal(31)
+      }
+
+      "yhden päivän jakso heinäkuun ulkopuolella" in {
+        AmmatillinenRaporttiUtils.opiskelijavuosikertymäHeinäkuuton(Seq(
+          ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2026-01-31"), Date.valueOf("2026-01-31"), "lasna", Date.valueOf("2026-01-01"))
+        )) should equal(1)
+      }
+
+      "läsnäolopäivät sisältävät vain heinäkuun päiviä" in {
+        AmmatillinenRaporttiUtils.opiskelijavuosikertymäHeinäkuuton(Seq(
+          ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2026-07-01"), Date.valueOf("2026-07-31"), "lasna", Date.valueOf("2026-01-01"))
+        )) should equal(0)
+      }
+
+      "läsnäolopäivät alkavat kesken heinäkuuta" in {
+        AmmatillinenRaporttiUtils.opiskelijavuosikertymäHeinäkuuton(Seq(
+          ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2026-07-10"), Date.valueOf("2026-08-31"), "lasna", Date.valueOf("2026-01-01"))
+        )) should equal(31)
+      }
+
+      "läsnäolopäivät päättyvät kesken heinäkuuta" in {
+        AmmatillinenRaporttiUtils.opiskelijavuosikertymäHeinäkuuton(Seq(
+          ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2026-06-01"), Date.valueOf("2026-07-10"), "lasna", Date.valueOf("2026-01-01"))
+        )) should equal(30)
+      }
+
+      "läsnäolopäivät alkavat ennen heinäkuta ja päättyvät sen jälkeen" in {
+        AmmatillinenRaporttiUtils.opiskelijavuosikertymäHeinäkuuton(Seq(
+          ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2026-06-01"), Date.valueOf("2026-08-31"), "lasna", Date.valueOf("2026-01-01"))
+        )) should equal(61)
+      }
+
+      "läsnäolopäivät sisältävät heinäkuun päiviä usean vuoden ajalta" in {
+        AmmatillinenRaporttiUtils.opiskelijavuosikertymäHeinäkuuton(Seq(
+          ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2026-06-01"), Date.valueOf("2028-08-31"), "lasna", Date.valueOf("2026-01-01"))
+        )) should equal(30 + 31 + 334 + 334 + 1) // 2028 on karkausvuosi
+      }
+
+      "läsnäolopäivät alkavat heinäkuussa ja sisältävät heinäkuun päiviä usean vuoden ajalta" in {
+        AmmatillinenRaporttiUtils.opiskelijavuosikertymäHeinäkuuton(Seq(
+          ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2026-07-10"), Date.valueOf("2028-08-31"), "lasna", Date.valueOf("2026-01-01"))
+        )) should equal(31 + 334 + 334 + 1) // 2028 on karkausvuosi
+      }
+
+      "läsnäolopäivät päättyvät heinäkuussa ja sisältävät heinäkuun päiviä usean vuoden ajalta" in {
+        AmmatillinenRaporttiUtils.opiskelijavuosikertymäHeinäkuuton(Seq(
+          ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2026-06-01"), Date.valueOf("2028-07-10"), "lasna", Date.valueOf("2026-01-01"))
+        )) should equal(30 + 334 + 334 + 1) // 2028 on karkausvuosi
+      }
+
+      "katsotaan eronneeksi ennen ja jälkeen heinäkuuta, ei lasketa päättymispäivää mukaan" in {
+        AmmatillinenRaporttiUtils.opiskelijavuosikertymäHeinäkuuton(Seq(
+          ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2026-06-01"), Date.valueOf("2026-08-31"), "katsotaaneronneeksi", Date.valueOf("2026-01-01"))
+        )) should equal(60)
+      }
+
+      "osa-aikaiset läsnäolopäivät ennen ja jälkeen heinäkuuta" in {
+        AmmatillinenRaporttiUtils.opiskelijavuosikertymäHeinäkuuton(Seq(
+          ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2026-06-01"), Date.valueOf("2026-08-31"), "lasna", Date.valueOf("2026-01-01"), osaAikaisuus = 50)
+        )) - 30.5 should be <= 0.001
+      }
+    }
+
     "raportin lataaminen toimii (ja tuottaa audit log viestin)" in {
       verifyRaportinLataaminen(apiUrl = "api/raportit/ammatillinenopiskelijavuositiedot", expectedRaporttiNimi = AmmatillinenOpiskelijavuositiedot.toString, expectedFileNamePrefix = "opiskelijavuositiedot")
     }

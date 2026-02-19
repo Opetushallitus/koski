@@ -4,7 +4,7 @@ import java.sql.Date
 import java.time.LocalDate
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.localization.LocalizationReader
-import fi.oph.koski.raportointikanta.{ROpiskeluoikeusAikajaksoRow, ROsasuoritusRow, RPäätasonSuoritusRow}
+import fi.oph.koski.raportointikanta.{ROpiskeluoikeusAikajaksoRow, ROpiskeluoikeusRow, ROsasuoritusRow, RPäätasonSuoritusRow}
 import fi.oph.koski.schema._
 
 import java.time.temporal.ChronoUnit
@@ -176,4 +176,10 @@ object AmmatillinenRaporttiUtils {
     })).sum
   }
 
+  def opiskelijavuosikertymäHeinäkuuton(aikajaksot: Seq[ROpiskeluoikeusAikajaksoRow]): Double = {
+    aikajaksot.map(j => j.tila match {
+      case "katsotaaneronneeksi" => (j.lengthInDaysExcludeJuly - 1) * (j.osaAikaisuus.toDouble / 100.0)
+      case _ => j.lengthInDaysExcludeJuly * (j.osaAikaisuus.toDouble / 100.0)
+    }).sum
+  }
 }

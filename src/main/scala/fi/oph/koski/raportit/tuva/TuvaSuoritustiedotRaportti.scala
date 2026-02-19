@@ -38,6 +38,7 @@ case class TuvaSuoritustiedotRow(
   oikeuttaMaksuttomuuteenPidennetty: Option[String],
   opiskelijavuosikertymä: Double,
   läsnäTaiValmistunutPäivät: Int,
+  opiskelijavuosikertymäHeinäkuuton: Double,
   opiskelijavuoteenKuuluvatLomaPäivät: Int,
   muutLomaPäivät: Int,
   majoitusPäivät: Option[Int],
@@ -93,6 +94,7 @@ case class TuvaSuoritustiedotRow(
   lazy val ammatillisenKentät: Seq[Any] = yhteisetKentät ++ Seq(
     opiskelijavuosikertymä,
     läsnäTaiValmistunutPäivät,
+    opiskelijavuosikertymäHeinäkuuton,
     opiskelijavuoteenKuuluvatLomaPäivät,
     muutLomaPäivät,
     majoitusPäivät,
@@ -192,6 +194,7 @@ object TuvaSuoritustiedotRaportti {
   lazy val ammatillisenSarakkeet = Seq(
       Column(t.get("raportti-excel-kolumni-opiskelijavuosikertymä")),
       Column(t.get("raportti-excel-kolumni-läsnäTaiValmistunutPäivät")),
+      Column(t.get("raportti-excel-kolumni-opiskelijavuosikertymä2026"), comment = Some(t.get("raportti-excel-kolumni-opiskelijavuosikertymä2026-comment"))),
       Column(t.get("raportti-excel-kolumni-opiskelijavuoteenKuuluvatLomaPäivät")),
       Column(t.get("raportti-excel-kolumni-muutLomaPäivät")),
       Column(t.get("raportti-excel-kolumni-majoitusPäivät")),
@@ -280,6 +283,7 @@ object TuvaSuoritustiedotRaportti {
       oikeuttaMaksuttomuuteenPidennetty = lisätiedot.flatMap(_.oikeuttaMaksuttomuuteenPidennetty.map(omps => omps.map(_.toString).mkString(", "))).filter(_.nonEmpty),
       opiskelijavuosikertymä = AmmatillinenRaporttiUtils.opiskelijavuosikertymä(aikajaksot),
       läsnäTaiValmistunutPäivät = aikajaksoPäivät(aikajaksot, a => (a.tila == "lasna" || a.tila == "valmistunut")),
+      opiskelijavuosikertymäHeinäkuuton = AmmatillinenRaporttiUtils.opiskelijavuosikertymäHeinäkuuton(aikajaksot),
       opiskelijavuoteenKuuluvatLomaPäivät = opiskelijavuoteenKuuluvatLomaPäivät,
       muutLomaPäivät = muutLomaPäivät,
       majoitusPäivät = Some(aikajaksoPäivät(aikajaksot, _.majoitus)),

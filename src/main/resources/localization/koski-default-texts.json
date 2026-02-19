@@ -1905,6 +1905,8 @@
   "raportti-excel-kolumni-opintopisteitaYhteensa-comment": "Kaikki sellaiset opintopisteiden suoritukset, joiden arviointipäivämäärä osuu tulostusparametreissa määritellyn aikajakson sisään.",
   "raportti-excel-kolumni-opiskelijatYhteensä": "Opiskelijat yhteensä",
   "raportti-excel-kolumni-opiskelijavuosikertymä": "Opiskelijavuosikertymä (pv)",
+  "raportti-excel-kolumni-opiskelijavuosikertymä2026": "Opiskelijavuosikertymä 2026 (pv)",
+  "raportti-excel-kolumni-opiskelijavuosikertymä2026-comment": "Opiskelijavuosikertymä uuden laskentatavan mukaan. Sisältää opiskeluoikeuden voimassaolon päivien lukumäärän valitulta aikajaksolta, josta on vähennetty aikajaksolla olevien heinäkuun päivien lukumäärä.",
   "raportti-excel-kolumni-opiskelijavuoteenKuuluvatLomaPäivät": "Opiskelijavuoteen kuuluvat lomat (pv)",
   "raportti-excel-kolumni-opiskelijoidenMaaraSisaoppilaitosmainenVOS": "Opiskelijoista valtionosuusrahoitteisia - sisäoppilaitosmainen majoitus",
   "raportti-excel-kolumni-opiskelijoidenMaaraSisaoppilaitosmainenVOS-comment": "\"Läsnä\"-tilaisista opiskeluoikeuksista ne, joille on merkitty raportin tulostusparametreissa määritellylle päivälle osuvalle läsnäolojaksolle rahoitusmuodoksi \"Valtionosuusrahoitteinen koulutus\" ja joissa opiskelijalla merkitty raportin tulostusparametreissa valitulle päivälle osuva sisäoppilaitosmaisen majoituksen jakso",
