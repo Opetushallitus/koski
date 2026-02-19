@@ -75,6 +75,7 @@ class AmmatillinenOpiskelijavuositiedotRaporttiSpec
       rivi.opintojenRahoitukset should equal("4")
       rivi.opiskeluoikeusPäättynyt should equal(true)
       rivi.läsnäTaiValmistunutPäivät should equal(31 + 29 + 31 + 30 + 30 + 1) // Aarne graduated 31.5.2016, so count days from 1.1.2016 to 30.5.2016 + 31.5.2016
+      rivi.opiskelijavuosikertymäHeinäkuuton should equal(Some(0.0))
       rivi.arvioituPäättymispäivä should equal(Some(LocalDate.parse("2015-05-31")))
       rivi.ostettu should equal(false)
       rivi.yksiloity should equal(true)
@@ -246,7 +247,7 @@ class AmmatillinenOpiskelijavuositiedotRaporttiSpec
         )) should equal(30)
       }
 
-      "läsnäolopäivät alkavat ennen heinäkuta ja päättyvät sen jälkeen" in {
+      "läsnäolopäivät alkavat ennen heinäkuuta ja päättyvät sen jälkeen" in {
         AmmatillinenRaporttiUtils.opiskelijavuosikertymäHeinäkuuton(Seq(
           ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2026-06-01"), Date.valueOf("2026-08-31"), "lasna", Date.valueOf("2026-01-01"))
         )) should equal(61)
@@ -279,7 +280,7 @@ class AmmatillinenOpiskelijavuositiedotRaporttiSpec
       "osa-aikaiset läsnäolopäivät ennen ja jälkeen heinäkuuta" in {
         AmmatillinenRaporttiUtils.opiskelijavuosikertymäHeinäkuuton(Seq(
           ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2026-06-01"), Date.valueOf("2026-08-31"), "lasna", Date.valueOf("2026-01-01"), osaAikaisuus = 50)
-        )) - 30.5 should be <= 0.001
+        )) should be (30.5 +- 0.001)
       }
     }
 

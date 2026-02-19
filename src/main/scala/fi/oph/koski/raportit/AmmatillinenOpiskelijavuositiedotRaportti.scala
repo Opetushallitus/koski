@@ -39,6 +39,7 @@ case class OpiskelijavuositiedotRow(
   arvioituPäättymispäivä: Option[LocalDate],
   opiskelijavuosikertymä: Double,
   läsnäTaiValmistunutPäivät: Int,
+  opiskelijavuosikertymäHeinäkuuton: Option[Double],
   opiskelijavuoteenKuuluvatLomaPäivät: Int,
   muutLomaPäivät: Int,
   majoitusPäivät: Int,
@@ -106,6 +107,7 @@ object AmmatillinenOpiskalijavuositiedotRaportti extends AikajaksoRaportti {
     "arvioituPäättymispäivä" -> Column(t.get("raportti-excel-kolumni-arvioituPäättymispäivä")),
     "opiskelijavuosikertymä" -> Column(t.get("raportti-excel-kolumni-opiskelijavuosikertymä"), width = Some(2000)),
     "läsnäTaiValmistunutPäivät" -> Column(t.get("raportti-excel-kolumni-läsnäTaiValmistunutPäivät"), width = Some(2000)),
+    "opiskelijavuosikertymäHeinäkuuton" -> Column(t.get("raportti-excel-kolumni-opiskelijavuosikertymä2026"), width = Some(2000), comment = Some(t.get("raportti-excel-kolumni-opiskelijavuosikertymä2026-comment"))),
     "opiskelijavuoteenKuuluvatLomaPäivät" -> Column(t.get("raportti-excel-kolumni-opiskelijavuoteenKuuluvatLomaPäivät"), width = Some(2000)),
     "muutLomaPäivät" -> Column(t.get("raportti-excel-kolumni-muutLomaPäivät"), width = Some(2000)),
     "majoitusPäivät" -> Column(t.get("raportti-excel-kolumni-majoitusPäivät"), width = Some(2000)),
@@ -171,6 +173,7 @@ object AmmatillinenOpiskalijavuositiedotRaportti extends AikajaksoRaportti {
         .unzip
     val lisätiedot = JsonSerializer.extract[Option[AmmatillisenOpiskeluoikeudenLisätiedot]](opiskeluoikeus.data \ "lisätiedot")
     val korotettuOpiskeluoikeusOidit = päätasonSuoritukset.flatMap(s => JsonSerializer.extract[Option[String]](s.data \ "korotettuOpiskeluoikeusOid"))
+    val sisältääTutkinnonTaiTelmanSuorituksen = päätasonSuoritukset.map(_.suorituksenTyyppi).exists(st => st == "ammatillinentutkinto" || st == "telma")
 
     OpiskelijavuositiedotRow(
       opiskeluoikeusOid = opiskeluoikeus.opiskeluoikeusOid,
@@ -205,6 +208,7 @@ object AmmatillinenOpiskalijavuositiedotRaportti extends AikajaksoRaportti {
       arvioituPäättymispäivä = arvioituPäättymispäivä,
       opiskelijavuosikertymä = AmmatillinenRaporttiUtils.opiskelijavuosikertymä(aikajaksot),
       läsnäTaiValmistunutPäivät = aikajaksoPäivät(aikajaksot, a => (a.tila == "lasna" || a.tila == "valmistunut")),
+      opiskelijavuosikertymäHeinäkuuton = if (sisältääTutkinnonTaiTelmanSuorituksen) { Some(AmmatillinenRaporttiUtils.opiskelijavuosikertymäHeinäkuuton(aikajaksot)) } else None,
       opiskelijavuoteenKuuluvatLomaPäivät = opiskelijavuoteenKuuluvatLomaPäivät,
       muutLomaPäivät = muutLomaPäivät,
       majoitusPäivät = aikajaksoPäivät(aikajaksot, _.majoitus),
