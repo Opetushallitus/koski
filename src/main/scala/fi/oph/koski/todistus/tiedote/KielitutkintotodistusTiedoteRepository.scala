@@ -20,6 +20,7 @@ class KielitutkintotodistusTiedoteRepository(val db: DB, val workerId: String, c
       FROM opiskeluoikeus oo
       JOIN opiskeluoikeushistoria h ON h.opiskeluoikeus_id = oo.id AND h.versionumero = 1
       WHERE oo.koulutusmuoto = 'kielitutkinto'
+        AND oo.data #>> '{suoritukset,0,tyyppi,koodiarvo}' = 'yleinenkielitutkinto'
         AND NOT oo.mitatoity
         AND NOT oo.poistettu
         AND oo.data #>> '{suoritukset,0,vahvistus}' IS NOT NULL

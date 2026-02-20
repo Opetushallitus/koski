@@ -144,6 +144,17 @@ class KielitutkintotodistusTiedoteWorkflowSpec extends KielitutkintotodistusTied
       }
     }
 
+    "Ei lähetä tiedotetta valtionhallinnon kielitutkinnosta" in {
+      withoutRunningTiedoteScheduler {
+        val oppijaOid = KoskiSpecificMockOppijat.kielitutkinnonSuorittaja.oid
+        val eligible = app.kielitutkintotodistusTiedoteRepository.findEligibleBatch(100)
+        val oppijaEligible = eligible.filter { case (_, oOid, _) => oOid == oppijaOid }
+        // Suorittajalla on 2 yleistä kielitutkintoa ja 3 valtionhallinnon kielitutkintoa,
+        // mutta vain yleiset kielitutkinnot pitää olla mukana
+        oppijaEligible should have length 2
+      }
+    }
+
     "Ei käsittele opiskeluoikeuksia joiden vahvistuspäivä on ennen earliestDate-rajausta" in {
       withoutRunningTiedoteScheduler {
         // Testiympäristön earliestDate on 2010-01-01, fixture-vahvistuspäivät ovat 2011+ joten ne ovat eligible
