@@ -164,7 +164,8 @@ jobs:
             fi.oph.koski.typemodel, \
             fi.oph.koski.omadataoauth2.unit, \
             fi.oph.koski.kielitutkinto, \
-            fi.oph.koski.todistus
+            fi.oph.koski.todistus, \
+            fi.oph.koski.todistus.tiedote
 
   run_backend_tests_other_2:
     name: Backend (other 2/4)
