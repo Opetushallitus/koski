@@ -2,6 +2,7 @@ package fi.oph.koski.todistus.tiedote
 
 import fi.oph.koski.api.misc.PutOpiskeluoikeusTestMethods
 import fi.oph.koski.documentation.ExamplesKielitutkinto
+import fi.oph.koski.koskiuser.{KoskiMockUser, MockUsers}
 import fi.oph.koski.schema.{KielitutkinnonOpiskeluoikeus, YleisenKielitutkinnonSuoritus}
 import fi.oph.koski.schedule.Scheduler
 import fi.oph.koski.util.Wait
@@ -14,6 +15,8 @@ import java.time.{Duration, LocalDate}
 
 class KielitutkintotodistusTiedoteSpecHelpers extends AnyFreeSpec with KoskiHttpSpec with Matchers with BeforeAndAfterAll with BeforeAndAfterEach with PutOpiskeluoikeusTestMethods[KielitutkinnonOpiskeluoikeus] {
   def tag = implicitly[reflect.runtime.universe.TypeTag[KielitutkinnonOpiskeluoikeus]]
+
+  override val defaultUser: KoskiMockUser = MockUsers.paakayttaja
 
   val app = KoskiApplicationForTests
 
