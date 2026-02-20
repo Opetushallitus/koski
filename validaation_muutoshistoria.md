@@ -4,11 +4,12 @@
 
 - Sallitaan yleisen kielitutkinnon suorituksille päällekkäiset aikajaksot, mutta estetään kuitenkin suoritus samalla tutkintopäivällä samalla tutkintotasolla, kielellä ja testipaikalla.
 
-## 9.2.2026
+## 19.2.2026
 
-- Duplikaattiopiskeluoikeuksien validaatio sallii nyt linkitetyt opiskeluoikeudet (sisältyyOpiskeluoikeuteen).
-  - Tallennettava opiskeluoikeus, joka sisältyy oppijan toiseen opiskeluoikeuteen, ei ole duplikaatti.
-  - Olemassaoleva opiskeluoikeus, joka sisältyy tallennettavaan opiskeluoikeuteen, ei aiheuta duplikaattivirhettä.
+- Duplikaattiopiskeluoikeuksien validaatio sallii nyt duplikaatit samassa oppilaitoksessa, kun toinen
+  opiskeluoikeus on linkitetty toisen oppilaitoksen opiskeluoikeuteen (sisältyyOpiskeluoikeuteen) ja toinen ei.
+  - Duplikaatti sallitaan, kun toisella on sisältyyOpiskeluoikeuteen-tieto ja toisella ei.
+  - Duplikaattia ei sallita, jos molemmat opiskeluoikeudet sisältyvät toiseen opiskeluoikeuteen.
 
 ## 6.2.2026
 

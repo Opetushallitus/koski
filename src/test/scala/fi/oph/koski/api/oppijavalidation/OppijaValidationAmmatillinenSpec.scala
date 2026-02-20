@@ -13,7 +13,7 @@ import fi.oph.koski.fixture.AmmatillinenOpiskeluoikeusTestData
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.http.{ErrorMatcher, HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.json.JsonSerializer
-import fi.oph.koski.koskiuser.MockUsers.stadinAmmattiopistoPalvelukäyttäjä
+import fi.oph.koski.koskiuser.MockUsers.{omniaTallentaja, stadinAmmattiopistoPalvelukäyttäjä}
 import fi.oph.koski.koskiuser.{AccessType, KoskiSpecificSession}
 import fi.oph.koski.localization.LocalizedStringImplicits._
 import fi.oph.koski.organisaatio.MockOrganisaatiot
@@ -2168,63 +2168,84 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
       }
 
       "Linkitetty opiskeluoikeus (sisältyyOpiskeluoikeuteen)" - {
-        "Duplikaatin tallennus onnistuu, kun tallennettava opiskeluoikeus sisältyy toiseen opiskeluoikeuteen" in {
+        "Duplikaatin tallennus onnistuu, kun tallennettava opiskeluoikeus sisältyy toisen oppilaitoksen opiskeluoikeuteen" in {
           resetFixtures()
-          val alkuperäinen = setupOppijaWithAndGetOpiskeluoikeus(defaultOpiskeluoikeus)
+          // Luodaan oppilaitoksen oma opiskeluoikeus ensin (setupOppijaWithOpiskeluoikeus poistaa oppijan vanhat oo:t)
+          setupOppijaWithOpiskeluoikeusAsPalvelukäyttäjä(defaultOpiskeluoikeus.copy(lähdejärjestelmänId = lähdejärjestelmänId1)) {
+            verifyResponseStatusOk()
+          }
 
-          val sisältyvä = defaultOpiskeluoikeus.copy(
-            sisältyyOpiskeluoikeuteen = Some(SisältäväOpiskeluoikeus(alkuperäinen.oppilaitos.get, alkuperäinen.oid.get))
+          // Luodaan kuoriopiskeluoikeus Omniaan
+          val kuori = createOpiskeluoikeus(
+            defaultHenkilö,
+            AmmatillinenOpiskeluoikeusTestData.opiskeluoikeus(MockOrganisaatiot.omnia),
+            user = omniaTallentaja
           )
 
-          postOpiskeluoikeus(opiskeluoikeus = sisältyvä) {
+          // Luodaan toinen opiskeluoikeus Stadiniin, joka sisältyy Omnian opiskeluoikeuteen (ostettu) - sallitaan
+          val ostettu = defaultOpiskeluoikeus.copy(
+            lähdejärjestelmänId = lähdejärjestelmänId2,
+            sisältyyOpiskeluoikeuteen = Some(SisältäväOpiskeluoikeus(Oppilaitos(MockOrganisaatiot.omnia), kuori.oid.get))
+          )
+          postOpiskeluoikeus(ostettu, headers = authHeaders(stadinAmmattiopistoPalvelukäyttäjä) ++ jsonContent) {
             verifyResponseStatusOk()
           }
         }
 
-        "Duplikaatin tallennus onnistuu, kun olemassaoleva opiskeluoikeus sisältyy tallennettavaan opiskeluoikeuteen" in {
+        "Oman opiskeluoikeuden päivittäminen onnistuu, kun samassa oppilaitoksessa on toisen oppilaitoksen ostama opiskeluoikeus" in {
           resetFixtures()
-          val alkuperäinen = setupOppijaWithAndGetOpiskeluoikeus(
+          // Luodaan oppilaitoksen oma opiskeluoikeus ensin (setupOppijaWithAndGetOpiskeluoikeus poistaa oppijan vanhat oo:t)
+          val oma = setupOppijaWithAndGetOpiskeluoikeus(
             defaultOpiskeluoikeus.copy(lähdejärjestelmänId = lähdejärjestelmänId1),
             defaultHenkilö,
             headers = authHeaders(stadinAmmattiopistoPalvelukäyttäjä) ++ jsonContent
           )
 
-          val sisältyvä = defaultOpiskeluoikeus.copy(
-            lähdejärjestelmänId = lähdejärjestelmänId2,
-            sisältyyOpiskeluoikeuteen = Some(SisältäväOpiskeluoikeus(alkuperäinen.oppilaitos.get, alkuperäinen.oid.get))
+          // Luodaan kuoriopiskeluoikeus Omniaan
+          val kuori = createOpiskeluoikeus(
+            defaultHenkilö,
+            AmmatillinenOpiskeluoikeusTestData.opiskeluoikeus(MockOrganisaatiot.omnia),
+            user = omniaTallentaja
           )
-          postOpiskeluoikeus(sisältyvä, headers = authHeaders(stadinAmmattiopistoPalvelukäyttäjä) ++ jsonContent) {
+
+          // Luodaan ostettu opiskeluoikeus Stadiniin, joka sisältyy Omnian opiskeluoikeuteen
+          val ostettu = defaultOpiskeluoikeus.copy(
+            lähdejärjestelmänId = lähdejärjestelmänId2,
+            sisältyyOpiskeluoikeuteen = Some(SisältäväOpiskeluoikeus(Oppilaitos(MockOrganisaatiot.omnia), kuori.oid.get))
+          )
+          postOpiskeluoikeus(ostettu, headers = authHeaders(stadinAmmattiopistoPalvelukäyttäjä) ++ jsonContent) {
             verifyResponseStatusOk()
           }
 
-          // Alkuperäisen opiskeluoikeuden päivittäminen onnistuu, vaikka sisältyvä opiskeluoikeus
+          // Oman opiskeluoikeuden päivittäminen onnistuu, vaikka ostettu opiskeluoikeus
           // on samantyyppinen samassa oppilaitoksessa päällekkäisellä aikajaksolla
-          putOpiskeluoikeus(alkuperäinen, headers = authHeaders(stadinAmmattiopistoPalvelukäyttäjä) ++ jsonContent) {
+          putOpiskeluoikeus(oma, headers = authHeaders(stadinAmmattiopistoPalvelukäyttäjä) ++ jsonContent) {
             verifyResponseStatusOk()
           }
         }
 
-        "Linkitetyn opiskeluoikeuden duplikaattia ei sallita" in {
+        "Kahden sisältyvän opiskeluoikeuden duplikaattia ei sallita" in {
           resetFixtures()
-          val alkuperäinen = setupOppijaWithAndGetOpiskeluoikeus(
-            defaultOpiskeluoikeus.copy(lähdejärjestelmänId = lähdejärjestelmänId1),
+          // Luodaan kuoriopiskeluoikeus Omniaan (setupOppijaWithAndGetOpiskeluoikeus poistaa oppijan vanhat oo:t ensin - ok koska tämä on ensimmäinen)
+          val kuori = setupOppijaWithAndGetOpiskeluoikeus(
+            AmmatillinenOpiskeluoikeusTestData.opiskeluoikeus(MockOrganisaatiot.omnia),
             defaultHenkilö,
-            headers = authHeaders(stadinAmmattiopistoPalvelukäyttäjä) ++ jsonContent
+            headers = authHeaders(omniaTallentaja) ++ jsonContent
           )
 
-          // B sisältyy A:han - sallitaan
+          // B sisältyy kuoreen - ok
           val b = defaultOpiskeluoikeus.copy(
-            lähdejärjestelmänId = lähdejärjestelmänId2,
-            sisältyyOpiskeluoikeuteen = Some(SisältäväOpiskeluoikeus(alkuperäinen.oppilaitos.get, alkuperäinen.oid.get))
+            lähdejärjestelmänId = lähdejärjestelmänId1,
+            sisältyyOpiskeluoikeuteen = Some(SisältäväOpiskeluoikeus(Oppilaitos(MockOrganisaatiot.omnia), kuori.oid.get))
           )
           postOpiskeluoikeus(opiskeluoikeus = b, headers = authHeaders(stadinAmmattiopistoPalvelukäyttäjä) ++ jsonContent) {
             verifyResponseStatusOk()
           }
 
-          // C on identtinen B:n kanssa (sisältyy myös A:han) - ei sallita, koska B:n duplikaatti
+          // C sisältyy myös kuoreen - ei sallita, koska B:n duplikaatti (molemmat sisältyviä)
           val c = defaultOpiskeluoikeus.copy(
-            lähdejärjestelmänId = Some(primusLähdejärjestelmäId("primus-kolme")),
-            sisältyyOpiskeluoikeuteen = Some(SisältäväOpiskeluoikeus(alkuperäinen.oppilaitos.get, alkuperäinen.oid.get))
+            lähdejärjestelmänId = lähdejärjestelmänId2,
+            sisältyyOpiskeluoikeuteen = Some(SisältäväOpiskeluoikeus(Oppilaitos(MockOrganisaatiot.omnia), kuori.oid.get))
           )
           postOpiskeluoikeus(opiskeluoikeus = c, headers = authHeaders(stadinAmmattiopistoPalvelukäyttäjä) ++ jsonContent) {
             verifyResponseStatus(409, KoskiErrorCategory.conflict.exists())
