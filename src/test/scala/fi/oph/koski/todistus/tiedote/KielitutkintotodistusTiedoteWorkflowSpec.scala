@@ -55,7 +55,7 @@ class KielitutkintotodistusTiedoteWorkflowSpec extends KielitutkintotodistusTied
         val eligible = repository.findEligibleBatch(1).headOption
         eligible shouldBe defined
 
-        val (ooOid, oOid) = eligible.get
+        val (ooOid, oOid, versio) = eligible.get
         val job = KielitutkintotodistusTiedoteJob(
           id = java.util.UUID.randomUUID().toString,
           oppijaOid = oOid,
@@ -63,7 +63,8 @@ class KielitutkintotodistusTiedoteWorkflowSpec extends KielitutkintotodistusTied
           state = KielitutkintotodistusTiedoteState.ERROR,
           worker = Some(repository.workerId),
           attempts = 1,
-          error = Some("Tiedotuspalvelu ei vastaa")
+          error = Some("Tiedotuspalvelu ei vastaa"),
+          opiskeluoikeusVersio = versio
         )
         repository.add(job)
 
@@ -117,7 +118,7 @@ class KielitutkintotodistusTiedoteWorkflowSpec extends KielitutkintotodistusTied
     "Kirjaa audit-lokin kun tiedote lähetetään uudelleenyrityksellä" in {
       withoutRunningTiedoteScheduler {
         val repository = app.kielitutkintotodistusTiedoteRepository
-        val (ooOid, oOid) = repository.findEligibleBatch(1).head
+        val (ooOid, oOid, versio) = repository.findEligibleBatch(1).head
         repository.add(KielitutkintotodistusTiedoteJob(
           id = java.util.UUID.randomUUID().toString,
           oppijaOid = oOid,
@@ -125,7 +126,8 @@ class KielitutkintotodistusTiedoteWorkflowSpec extends KielitutkintotodistusTied
           state = KielitutkintotodistusTiedoteState.ERROR,
           worker = Some(repository.workerId),
           attempts = 1,
-          error = Some("Tiedotuspalvelu ei vastaa")
+          error = Some("Tiedotuspalvelu ei vastaa"),
+          opiskeluoikeusVersio = versio
         ))
 
         AuditLogTester.clearMessages()

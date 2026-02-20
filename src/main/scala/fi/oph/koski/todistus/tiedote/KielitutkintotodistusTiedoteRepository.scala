@@ -14,9 +14,9 @@ class KielitutkintotodistusTiedoteRepository(val db: DB, val workerId: String, c
   private val earliestDate = config.getString("tiedote.earliestDate")
   private val gracePeriodHours = config.getInt("tiedote.gracePeriodHours")
 
-  def findEligibleBatch(limit: Int): Seq[(String, String)] = {
+  def findEligibleBatch(limit: Int): Seq[(String, String, Int)] = {
     runDbSync(sql"""
-      SELECT oo.oid, oo.oppija_oid
+      SELECT oo.oid, oo.oppija_oid, oo.versionumero
       FROM opiskeluoikeus oo
       JOIN opiskeluoikeushistoria h ON h.opiskeluoikeus_id = oo.id AND h.versionumero = 1
       WHERE oo.koulutusmuoto = 'kielitutkinto'
@@ -31,12 +31,12 @@ class KielitutkintotodistusTiedoteRepository(val db: DB, val workerId: String, c
         )
       ORDER BY oo.aikaleima
       LIMIT $limit
-      """.as[(String, String)])
+      """.as[(String, String, Int)])
   }
 
   def add(job: KielitutkintotodistusTiedoteJob): KielitutkintotodistusTiedoteJob = {
     runDbSync(sql"""
-      INSERT INTO kielitutkintotodistus_tiedote_job(id, oppija_oid, opiskeluoikeus_oid, state, created_at, completed_at, worker, attempts, error)
+      INSERT INTO kielitutkintotodistus_tiedote_job(id, oppija_oid, opiskeluoikeus_oid, state, created_at, completed_at, worker, attempts, error, opiskeluoikeus_versio)
       VALUES (
         ${job.id}::uuid,
         ${job.oppijaOid},
@@ -46,7 +46,8 @@ class KielitutkintotodistusTiedoteRepository(val db: DB, val workerId: String, c
         ${job.completedAt.map(java.sql.Timestamp.valueOf)},
         ${job.worker},
         ${job.attempts},
-        ${job.error}
+        ${job.error},
+        ${job.opiskeluoikeusVersio}
       )
       RETURNING *
       """.as[KielitutkintotodistusTiedoteJob]).head
@@ -127,7 +128,8 @@ class KielitutkintotodistusTiedoteRepository(val db: DB, val workerId: String, c
       completedAt = Option(r.rs.getTimestamp("completed_at")).map(_.toLocalDateTime),
       worker = Option(r.rs.getString("worker")),
       attempts = r.rs.getInt("attempts"),
-      error = Option(r.rs.getString("error"))
+      error = Option(r.rs.getString("error")),
+      opiskeluoikeusVersio = r.rs.getInt("opiskeluoikeus_versio")
     )
   })
 }

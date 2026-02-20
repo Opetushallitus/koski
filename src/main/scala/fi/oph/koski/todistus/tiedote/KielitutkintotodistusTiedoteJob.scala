@@ -11,7 +11,8 @@ case class KielitutkintotodistusTiedoteJob(
   completedAt: Option[LocalDateTime] = None,
   worker: Option[String] = None,
   attempts: Int = 0,
-  error: Option[String] = None
+  error: Option[String] = None,
+  opiskeluoikeusVersio: Int = 0
 )
 
 object KielitutkintotodistusTiedoteState {

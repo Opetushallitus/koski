@@ -23,8 +23,8 @@ class KielitutkintotodistusTiedoteService(application: KoskiApplication) extends
       var eligibleBatch = repository.findEligibleBatch(batchSize)
 
       while (eligibleBatch.nonEmpty) {
-        eligibleBatch.foreach { case (opiskeluoikeusOid, oppijaOid) =>
-          processOne(opiskeluoikeusOid, oppijaOid)
+        eligibleBatch.foreach { case (opiskeluoikeusOid, oppijaOid, versionumero) =>
+          processOne(opiskeluoikeusOid, oppijaOid, versionumero)
         }
         processed += eligibleBatch.size
         eligibleBatch = repository.findEligibleBatch(batchSize)
@@ -35,7 +35,7 @@ class KielitutkintotodistusTiedoteService(application: KoskiApplication) extends
     }
   }
 
-  private def processOne(opiskeluoikeusOid: String, oppijaOid: String): Unit = {
+  private def processOne(opiskeluoikeusOid: String, oppijaOid: String, versionumero: Int): Unit = {
     logger.info(s"Lähetetään tiedote: oppija=$oppijaOid oo=$opiskeluoikeusOid")
 
     val (state, error) = client.sendKielitutkintoTodistusTiedote(oppijaOid, s"$opiskeluoikeusOid-initial") match {
@@ -53,7 +53,8 @@ class KielitutkintotodistusTiedoteService(application: KoskiApplication) extends
       completedAt = if (state == KielitutkintotodistusTiedoteState.COMPLETED) Some(LocalDateTime.now()) else None,
       worker = Some(repository.workerId),
       attempts = 1,
-      error = error
+      error = error,
+      opiskeluoikeusVersio = versionumero
     )
 
     try {
