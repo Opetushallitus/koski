@@ -13,7 +13,7 @@ export type OppilaitosSearchProps = {
   value?: OrganisaatioHierarkia
   onChange: (org?: OrganisaatioHierarkia) => void
   orgTypes?: OrgType[]
-  hankintakoulutus: Hankintakoulutus
+  hankintakoulutus?: Hankintakoulutus
 }
 
 export const OppilaitosSearch = (props: OppilaitosSearchProps) => {
