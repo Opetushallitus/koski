@@ -44,7 +44,7 @@ class KielitutkintotodistusTiedoteScheduler(application: KoskiApplication) exten
       schedule,
       None,
       runBatch,
-      runOnSingleNode = false,
+      runOnSingleNode = true,
       intervalMillis = 1000,
       config = application.config
     ))
