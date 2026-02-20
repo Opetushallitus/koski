@@ -32,8 +32,6 @@ case class MassaluovutusQueryPerusopetukseenValmistava(
   osasuoritustenAikarajaus: Option[Boolean] = None,
   @Description("Kotikuntapäivämäärä historialliseen kotikuntahakuun.")
   kotikuntaPvm: Option[LocalDate] = None,
-  @Description("Salasana xlsx-tiedostolle. Jos ei annettu, salasana generoidaan automaattisesti. Salasana palautetaan tulosten yhteydessä.")
-  password: Option[String] = None,
 ) extends MassaluovutusRaporttiBase[MassaluovutusQueryPerusopetukseenValmistava] {
 
   override def opiskeluoikeudenTyyppi = OpiskeluoikeudenTyyppi.perusopetukseenvalmistavaopetus
@@ -75,6 +73,5 @@ object QueryPerusopetukseenValmistavaDocumentation {
     language = Some("fi"),
     alku = LocalDate.of(2024, 1, 1),
     loppu = LocalDate.of(2024, 12, 31),
-    password = Some("hunter2"),
   )
 }

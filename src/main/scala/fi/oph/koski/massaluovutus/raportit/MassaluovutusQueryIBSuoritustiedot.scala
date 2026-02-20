@@ -33,8 +33,6 @@ case class MassaluovutusQueryIBSuoritustiedot(
   raportinTyyppi: String,
   @Description("Jos true, osasuorituksiin rajoitetaan vain aikajakson sisällä arvioidut.")
   osasuoritustenAikarajaus: Option[Boolean] = None,
-  @Description("Salasana xlsx-tiedostolle. Jos ei annettu, salasana generoidaan automaattisesti. Salasana palautetaan tulosten yhteydessä.")
-  password: Option[String] = None,
 ) extends MassaluovutusRaporttiBase[MassaluovutusQueryIBSuoritustiedot] {
 
   override def opiskeluoikeudenTyyppi = OpiskeluoikeudenTyyppi.ibtutkinto
@@ -83,6 +81,5 @@ object QueryIBSuoritustiedotDocumentation {
     alku = LocalDate.of(2024, 1, 1),
     loppu = LocalDate.of(2024, 12, 31),
     raportinTyyppi = "ibtutkinto",
-    password = Some("hunter2"),
   )
 }

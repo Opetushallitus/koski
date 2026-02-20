@@ -31,8 +31,6 @@ case class MassaluovutusQueryAmmatillinenTutkintoSuoritustiedot(
   loppu: LocalDate,
   @Description("Jos true, osasuorituksiin rajoitetaan vain aikajakson sisällä arvioidut.")
   osasuoritustenAikarajaus: Option[Boolean] = None,
-  @Description("Salasana xlsx-tiedostolle. Jos ei annettu, salasana generoidaan automaattisesti. Salasana palautetaan tulosten yhteydessä.")
-  password: Option[String] = None,
 ) extends MassaluovutusRaporttiBase[MassaluovutusQueryAmmatillinenTutkintoSuoritustiedot] {
 
   override def opiskeluoikeudenTyyppi = OpiskeluoikeudenTyyppi.ammatillinenkoulutus
@@ -73,6 +71,5 @@ object QueryAmmatillinenTutkintoSuoritustiedotDocumentation {
     language = Some("fi"),
     alku = LocalDate.of(2024, 1, 1),
     loppu = LocalDate.of(2024, 3, 31),
-    password = Some("hunter2"),
   )
 }

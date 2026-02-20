@@ -38,8 +38,6 @@ case class MassaluovutusQueryEsiopetus(
   paiva: LocalDate,
   @Description("Kotikuntapäivämäärä historialliseen kotikuntahakuun.")
   kotikuntaPvm: Option[LocalDate] = None,
-  @Description("Salasana xlsx-tiedostolle. Jos ei annettu, salasana generoidaan automaattisesti. Salasana palautetaan tulosten yhteydessä.")
-  password: Option[String] = None,
 ) extends KoulutuksenjärjestäjienMassaluovutusQueryParameters with Logging {
 
   override def run(application: KoskiApplication, writer: QueryResultWriter)(implicit user: Session with SensitiveDataAllowed): Either[String, Unit] =
@@ -51,7 +49,7 @@ case class MassaluovutusQueryEsiopetus(
       val raportitService = new RaportitService(application)
 
       val localizationReader = new LocalizationReader(application.koskiLocalizationRepository, language.get)
-      val pw = password.getOrElse(generatePassword(16))
+      val pw = generatePassword(16)
 
       val response = esiopetusService.buildOrganisaatioRaportti(
         organisaatioOid = organisaatioOid.get,
@@ -62,8 +60,10 @@ case class MassaluovutusQueryEsiopetus(
         t = localizationReader
       )
 
-      writer.putReport(response, format, localizationReader)
-      writer.patchMeta(QueryMeta(password = Some(pw)))
+      val responseWithoutPassword = response.copy(
+        workbookSettings = response.workbookSettings.copy(password = None)
+      )
+      writer.putReport(responseWithoutPassword, format, localizationReader)
 
       writer.patchMeta(QueryMeta(
         raportointikantaGeneratedAt = Some(raportitService.viimeisinOpiskeluoikeuspäivitystenVastaanottoaika),
@@ -107,6 +107,5 @@ object QueryEsiopetusDocumentation {
     organisaatioOid = Some(MockOrganisaatiot.jyväskylänNormaalikoulu),
     language = Some("fi"),
     paiva = LocalDate.of(2024, 1, 15),
-    password = Some("hunter2"),
   )
 }

@@ -26,8 +26,6 @@ case class MassaluovutusQueryPerusopetuksenOppijamaaratRaportti(
   language: Option[String] = None,
   @Description("Päivämäärä, jolta oppijamäärät lasketaan.")
   paiva: LocalDate,
-  @Description("Salasana xlsx-tiedostolle. Jos ei annettu, salasana generoidaan automaattisesti. Salasana palautetaan tulosten yhteydessä.")
-  password: Option[String] = None,
 ) extends MassaluovutusRaporttiBase[MassaluovutusQueryPerusopetuksenOppijamaaratRaportti] {
 
   override def opiskeluoikeudenTyyppi = OpiskeluoikeudenTyyppi.perusopetus
@@ -62,6 +60,5 @@ object QueryPerusopetuksenOppijamaaratRaporttiDocumentation {
     organisaatioOid = Some(MockOrganisaatiot.jyväskylänNormaalikoulu),
     language = Some("fi"),
     paiva = LocalDate.of(2024, 1, 15),
-    password = Some("hunter2"),
   )
 }

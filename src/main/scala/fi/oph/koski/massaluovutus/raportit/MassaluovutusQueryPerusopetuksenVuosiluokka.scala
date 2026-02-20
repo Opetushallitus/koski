@@ -30,8 +30,6 @@ case class MassaluovutusQueryPerusopetuksenVuosiluokka(
   vuosiluokka: String,
   @Description("Kotikuntapäivämäärä historialliseen kotikuntahakuun.")
   kotikuntaPvm: Option[LocalDate] = None,
-  @Description("Salasana xlsx-tiedostolle. Jos ei annettu, salasana generoidaan automaattisesti. Salasana palautetaan tulosten yhteydessä.")
-  password: Option[String] = None,
 ) extends MassaluovutusRaporttiBase[MassaluovutusQueryPerusopetuksenVuosiluokka] {
 
   override def opiskeluoikeudenTyyppi = OpiskeluoikeudenTyyppi.perusopetus
@@ -71,6 +69,5 @@ object QueryPerusopetuksenVuosiluokkaDocumentation {
     language = Some("fi"),
     paiva = LocalDate.of(2024, 1, 15),
     vuosiluokka = "9",
-    password = Some("hunter2"),
   )
 }

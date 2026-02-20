@@ -37,7 +37,6 @@ trait MassaluovutusRaporttiBase[Self <: MassaluovutusRaporttiBase[Self]]
   // Common fields that all reports must have
   def organisaatioOid: Option[Organisaatio.Oid]
   def language: Option[String]
-  def password: Option[String]
   def format: String
 
   // Abstract methods that each report implements
@@ -77,11 +76,13 @@ trait MassaluovutusRaporttiBase[Self <: MassaluovutusRaporttiBase[Self]]
 
       val raportitService = new RaportitService(application)
       val localizationReader = new LocalizationReader(application.koskiLocalizationRepository, language.get)
-      val pw = password.getOrElse(generatePassword(16))
+      val pw = generatePassword(16)
 
       val response = generateReport(raportitService, localizationReader, pw)
-      writer.putReport(response, format, localizationReader)
-      writer.patchMeta(QueryMeta(password = Some(pw)))
+      val responseWithoutPassword = response.copy(
+        workbookSettings = response.workbookSettings.copy(password = None)
+      )
+      writer.putReport(responseWithoutPassword, format, localizationReader)
       writer.patchMeta(QueryMeta(
         raportointikantaGeneratedAt = Some(raportitService.viimeisinOpiskeluoikeuspäivitystenVastaanottoaika),
       ))

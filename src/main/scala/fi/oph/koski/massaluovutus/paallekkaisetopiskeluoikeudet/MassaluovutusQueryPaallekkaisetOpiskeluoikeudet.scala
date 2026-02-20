@@ -38,8 +38,6 @@ case class MassaluovutusQueryPaallekkaisetOpiskeluoikeudet(
   alku: LocalDate,
   @Description("Tutkittavan aikajakson päättymispäivä.")
   loppu: LocalDate,
-  @Description("Salasana. Merkityksellinen vain xlsx-tiedostoille. Jos ei annettu, salasana generoidaan automaattisesti. Salasana palautetaan tulosten yhteydessä.")
-  password: Option[String] = None,
 ) extends KoulutuksenjärjestäjienMassaluovutusQueryParameters with Logging {
 
   override def run(application: KoskiApplication, writer: QueryResultWriter)(implicit user: Session with SensitiveDataAllowed): Either[String, Unit] =
@@ -51,15 +49,18 @@ case class MassaluovutusQueryPaallekkaisetOpiskeluoikeudet(
       val request = AikajaksoRaporttiRequest(
         oppilaitosOid = organisaatioOid.get,
         downloadToken = None,
-        password = password.getOrElse(generatePassword(16)),
+        password = generatePassword(16),
         alku = alku,
         loppu = loppu,
         lang = language.get,
       )
 
       val localizationReader = new LocalizationReader(application.koskiLocalizationRepository, language.get)
-      writer.putReport(raportitService.paallekkaisetOpiskeluoikeudet(request, localizationReader), format, localizationReader)
-      writer.patchMeta(QueryMeta(password = Some(request.password)))
+      val response = raportitService.paallekkaisetOpiskeluoikeudet(request, localizationReader)
+      val responseWithoutPassword = response.copy(
+        workbookSettings = response.workbookSettings.copy(password = None)
+      )
+      writer.putReport(responseWithoutPassword, format, localizationReader)
 
       writer.patchMeta(QueryMeta(
         raportointikantaGeneratedAt = Some(raportitService.viimeisinOpiskeluoikeuspäivitystenVastaanottoaika),
@@ -111,6 +112,5 @@ object QueryPaallekkaisetOpiskeluoikeudetDocumentation {
     language = Some("fi"),
     alku = LocalDate.of(2024, 1, 1),
     loppu = LocalDate.of(2024, 3, 31),
-    password = Some("hunter2"),
   )
 }

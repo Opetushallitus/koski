@@ -28,8 +28,6 @@ case class MassaluovutusQueryLukioKurssikertymat(
   alku: LocalDate,
   @Description("Tutkittavan aikajakson päättymispäivä.")
   loppu: LocalDate,
-  @Description("Salasana xlsx-tiedostolle. Jos ei annettu, salasana generoidaan automaattisesti. Salasana palautetaan tulosten yhteydessä.")
-  password: Option[String] = None,
 ) extends MassaluovutusRaporttiBase[MassaluovutusQueryLukioKurssikertymat] {
 
   override def opiskeluoikeudenTyyppi = OpiskeluoikeudenTyyppi.lukiokoulutus
@@ -67,6 +65,5 @@ object QueryLukioKurssikertymatDocumentation {
     language = Some("fi"),
     alku = LocalDate.of(2024, 1, 1),
     loppu = LocalDate.of(2024, 3, 31),
-    password = Some("hunter2"),
   )
 }

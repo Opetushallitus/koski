@@ -26,8 +26,6 @@ case class MassaluovutusQueryLukioDiaIbInternationalESHOpiskelijamaarat(
   language: Option[String] = None,
   @Description("Päivämäärä, jolta opiskelijamäärät lasketaan.")
   paiva: LocalDate,
-  @Description("Salasana xlsx-tiedostolle. Jos ei annettu, salasana generoidaan automaattisesti. Salasana palautetaan tulosten yhteydessä.")
-  password: Option[String] = None,
 ) extends MassaluovutusRaporttiBase[MassaluovutusQueryLukioDiaIbInternationalESHOpiskelijamaarat] {
 
   override def opiskeluoikeudenTyyppi = OpiskeluoikeudenTyyppi.lukiokoulutus
@@ -62,6 +60,5 @@ object QueryLukioDiaIbInternationalESHOpiskelijamaaratDocumentation {
     organisaatioOid = Some(MockOrganisaatiot.jyväskylänNormaalikoulu),
     language = Some("fi"),
     paiva = LocalDate.of(2024, 1, 15),
-    password = Some("hunter2"),
   )
 }

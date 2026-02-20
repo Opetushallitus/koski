@@ -28,8 +28,6 @@ case class MassaluovutusQueryMuuKuinSaanneltyKoulutus(
   alku: LocalDate,
   @Description("Aikajakson loppu.")
   loppu: LocalDate,
-  @Description("Salasana xlsx-tiedostolle. Jos ei annettu, salasana generoidaan automaattisesti. Salasana palautetaan tulosten yhteydessä.")
-  password: Option[String] = None,
 ) extends MassaluovutusRaporttiBase[MassaluovutusQueryMuuKuinSaanneltyKoulutus] {
 
   override def opiskeluoikeudenTyyppi = OpiskeluoikeudenTyyppi.muukuinsaanneltykoulutus
@@ -67,6 +65,5 @@ object QueryMuuKuinSaanneltyKoulutusDocumentation {
     language = Some("fi"),
     alku = LocalDate.of(2024, 1, 1),
     loppu = LocalDate.of(2024, 12, 31),
-    password = Some("hunter2"),
   )
 }
