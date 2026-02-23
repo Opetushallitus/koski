@@ -152,7 +152,6 @@ class ValpasOppijaLaajatTiedotService(
       .flatMap(withKuntailmoitukset)
       .map(withOikeusTehdäKuntailmoitus)
       .map(withOikeusMitätöidäOppivelvollisuudenVapautus)
-      .map(withMuuttopäiväSuomeen)
   }
 
   def getOppijaLaajatTiedotHakuJaYhteystiedoilla
@@ -234,6 +233,7 @@ class ValpasOppijaLaajatTiedotService(
           opiskeluoikeudet = opiskeluoikeudet.filter(_.oppivelvollisuudenSuorittamiseenKelpaava),
           oppivelvollisuusVoimassaAsti = dbRow.oppivelvollisuusVoimassaAsti,
           oikeusKoulutuksenMaksuttomuuteenVoimassaAsti = dbRow.oikeusKoulutuksenMaksuttomuuteenVoimassaAsti,
+          kotikuntaSuomessaAlkaen = dbRow.kotikuntaSuomessaAlkaen,
           onOikeusValvoaKunnalla = dbRow.onOikeusValvoaKunnalla,
           onOikeusValvoaMaksuttomuutta = dbRow.onOikeusValvoaMaksuttomuutta,
           oppivelvollisuudestaVapautus = dbRow.oppivelvollisuudestaVapautus,
@@ -269,10 +269,10 @@ class ValpasOppijaLaajatTiedotService(
   def withTurvakieltosiivottuKotikunta(oppija: ValpasOppijaLaajatTiedot)(implicit session: ValpasSession): ValpasOppijaLaajatTiedot = {
     def onTurvakielto: Boolean = oppija.henkilö.turvakielto
 
-    if(onTurvakielto){
+    if (onTurvakielto) {
       oppija match {
-        case o: ValpasOppivelvollinenOppijaLaajatTiedot => o.copy(henkilö = o.henkilö.copy(kotikunta = None))
-        case o: ValpasOppivelvollisuudestaVapautettuLaajatTiedot => o.copy(henkilö = o.henkilö.copy(kotikunta = None))
+        case o: ValpasOppivelvollinenOppijaLaajatTiedot => o.copy(henkilö = o.henkilö.copy(kotikunta = None), kotikuntaSuomessaAlkaen = None)
+        case o: ValpasOppivelvollisuudestaVapautettuLaajatTiedot => o.copy(henkilö = o.henkilö.copy(kotikunta = None), kotikuntaSuomessaAlkaen = None)
       }
     } else {
       oppija
@@ -399,22 +399,6 @@ class ValpasOppijaLaajatTiedotService(
         val onOikeus = ValpasKunnat.getUserKunnat(organisaatioService).exists(_.oid == kunta.oid)
         oppija.copy(onOikeusMitätöidäOppivelvollisuudestaVapautus = Some(onOikeus))
       }
-
-  private def withMuuttopäiväSuomeen(
-    oppija: OppijaHakutilanteillaLaajatTiedot
-  ): OppijaHakutilanteillaLaajatTiedot = {
-    val oppijaOid = Seq(oppija.oppija.henkilö.oid)
-    val localKuntahistoria = application.raportointiDatabase.confidential.get.kotikuntahistoriat(oppijaOid)
-    val kuntahistoria = if (localKuntahistoria.nonEmpty) {
-      localKuntahistoria
-    } else {
-      application.opintopolkuHenkilöFacade
-        .findKuntahistoriat(oppijaOid, turvakiellolliset = false)
-        .getOrElse(Seq.empty)
-        .map(_.toDbRow(turvakielto = false, None)) // Korvaa None kunta-koodistokoodilla, jos kunnan nimi tarvitsee näyttää käyt†öliittymässä
-    }
-    oppija.withKotikuntahistoria(kuntahistoria)
-  }
 
   def setMuuHaku(key: OpiskeluoikeusLisätiedotKey, value: Boolean)(implicit session: ValpasSession): HttpStatus = {
     HttpStatus.justStatus(

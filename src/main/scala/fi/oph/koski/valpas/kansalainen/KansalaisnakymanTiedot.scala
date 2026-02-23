@@ -55,12 +55,14 @@ case class KansalainenOppija(
   opiskeluoikeudet: Seq[KansalainenOpiskeluoikeus],
   oppivelvollisuusVoimassaAsti: LocalDate,
   oikeusKoulutuksenMaksuttomuuteenVoimassaAsti: LocalDate,
+  kotikuntaSuomessaAlkaen: Option[LocalDate],
   opiskelee: Boolean,
 ) {
   def poistaTurvakiellonAlaisetTiedot: KansalainenOppija =
     this.copy(
       henkilö = henkilö.copy(kotikunta = None),
       opiskeluoikeudet = opiskeluoikeudet.map(_.poistaTurvakiellonAlaisetTiedot),
+      kotikuntaSuomessaAlkaen = None
     )
 }
 
@@ -71,6 +73,7 @@ object KansalainenOppija {
       opiskeluoikeudet = oppija.opiskeluoikeudet.map(KansalainenOpiskeluoikeus.apply),
       oppivelvollisuusVoimassaAsti = oppija.oppivelvollisuusVoimassaAsti,
       oikeusKoulutuksenMaksuttomuuteenVoimassaAsti = oppija.oikeusKoulutuksenMaksuttomuuteenVoimassaAsti,
+      kotikuntaSuomessaAlkaen = oppija.kotikuntaSuomessaAlkaen,
       opiskelee = oppija.opiskelee,
     )
   }
