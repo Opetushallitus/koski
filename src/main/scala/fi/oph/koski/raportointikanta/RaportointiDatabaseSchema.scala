@@ -1,7 +1,7 @@
 package fi.oph.koski.raportointikanta
 
 import java.sql.{Date, Timestamp}
-import java.time.LocalDate
+import java.time.{LocalDate, Month}
 import java.time.temporal.ChronoUnit
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.henkilo.Kotikuntahistoria
@@ -805,6 +805,42 @@ case class ROpiskeluoikeusAikajaksoRow(
     this.truncateToDates(Date.valueOf(start), Date.valueOf(end))
 
   def lengthInDays: Int = ChronoUnit.DAYS.between(alku.toLocalDate, loppu.toLocalDate).toInt + 1
+
+  def lengthInDaysExcludeJuly: Int = {
+    val laskentaAlkaenPäivä = LocalDate.of(2026, 1, 1)
+
+    val jaksonAlku = if (alku.toLocalDate.isBefore(laskentaAlkaenPäivä)) {
+      laskentaAlkaenPäivä
+    } else {
+      alku.toLocalDate
+    }
+    val jaksonLoppu = loppu.toLocalDate
+
+    def heinäkuunPäiviäAikajaksollaVuodessa(vuosi: Int): Int = {
+      val heinäkuuAlku = LocalDate.of(vuosi, Month.JULY, 1)
+      val heinäkuuLoppu = LocalDate.of(vuosi, Month.JULY, 31)
+
+      val overlapAlku = if (jaksonAlku.isAfter(heinäkuuAlku)) jaksonAlku else heinäkuuAlku
+      val overlapLoppu = if (jaksonLoppu.isBefore(heinäkuuLoppu)) jaksonLoppu else heinäkuuLoppu
+
+      if (overlapLoppu.isBefore(overlapAlku)) {
+        0
+      } else {
+        ChronoUnit.DAYS.between(overlapAlku, overlapLoppu).toInt + 1
+      }
+    }
+
+    if (alku.toLocalDate.isBefore(laskentaAlkaenPäivä) && loppu.toLocalDate.isBefore(laskentaAlkaenPäivä)) {
+      0
+    } else {
+      val päiviäAikajaksolla = ChronoUnit.DAYS.between(jaksonAlku, jaksonLoppu).toInt + 1
+      val heinäkuunPäiviäAikajaksolla = (0 to jaksonLoppu.getYear - jaksonAlku.getYear).map { yearOffset =>
+          heinäkuunPäiviäAikajaksollaVuodessa(jaksonAlku.getYear + yearOffset)
+        }.sum
+
+      päiviäAikajaksolla - heinäkuunPäiviäAikajaksolla
+    }
+  }
 
   def withLoppu(d: Date): ROpiskeluoikeusAikajaksoRow = this.copy(loppu = d)
 
