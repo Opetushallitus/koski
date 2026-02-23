@@ -27,16 +27,23 @@ class Scheduler(
 ) extends QueryMethods with Logging {
 
   private val taskExecutor = Executors.newSingleThreadScheduledExecutor(NamedThreadFactory(name))
-  private val context: Option[JValue] = getScheduler.flatMap(_.context).orElse(initialContext)
-  private var lastFired: Timestamp = getScheduler.map(_.nextFireTime).getOrElse(new Timestamp(0))
   private val runningTasksOnThisNode = new java.util.concurrent.atomic.AtomicInteger(0)
-
-  logger.info(s"Starting scheduler $name with $scheduling")
 
   // Insert row if it doesn't exist yet; don't clobber existing rows
   runDbSync(sqlu"""INSERT INTO scheduler (name, nextfiretime, context) VALUES ($name, ${scheduling.nextFireTime()}, NULL) ON CONFLICT DO NOTHING""")
   // Always clear pausedUntil on startup (preserves existing behavior)
   runDbSync(KoskiTables.Scheduler.filter(_.name === name).map(_.pausedUntil).update(None))
+
+  // Read context and lastFired after ensuring the row exists
+  private val context: Option[JValue] = getScheduler.flatMap(_.context).orElse(initialContext)
+  private var lastFired: Timestamp = getScheduler.map(_.nextFireTime).getOrElse(new Timestamp(0))
+
+  // Persist initialContext to DB if the row was just created with NULL context
+  if (initialContext.isDefined && getScheduler.flatMap(_.context).isEmpty) {
+    runDbSync(KoskiTables.Scheduler.filter(_.name === name).map(_.context).update(initialContext))
+  }
+
+  logger.info(s"Starting scheduler $name with $scheduling")
 
   taskExecutor.scheduleAtFixedRate(() => fireIfTime(), 0, intervalMillis, MILLISECONDS)
 

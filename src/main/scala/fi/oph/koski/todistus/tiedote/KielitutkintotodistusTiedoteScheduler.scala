@@ -2,7 +2,7 @@ package fi.oph.koski.todistus.tiedote
 
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.log.Logging
-import fi.oph.koski.schedule.{IntervalSchedule, Scheduler, WorkerLeaseElector}
+import fi.oph.koski.schedule.{FixedTimeOfDaySchedule, IntervalSchedule, Schedule, Scheduler, WorkerLeaseElector}
 import org.json4s.JValue
 
 import java.time.Duration
@@ -35,10 +35,16 @@ class KielitutkintotodistusTiedoteScheduler(application: KoskiApplication) exten
       onLost = _ => logger.warn(s"Lost $schedulerName lease")
     )
 
+    val schedule: Schedule = if (application.config.hasPath("tiedote.checkInterval")) {
+      new IntervalSchedule(application.config.getDuration("tiedote.checkInterval"))
+    } else {
+      new IntervalSchedule(Duration.ofHours(1))
+    }
+
     schedulerInstance = Some(new Scheduler(
       schedulerDb,
       schedulerName,
-      new IntervalSchedule(Duration.ofHours(1)),
+      schedule,
       None,
       runBatch,
       intervalMillis = 1000,
