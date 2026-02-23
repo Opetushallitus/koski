@@ -26,11 +26,19 @@ object AuditLogTester extends Matchers with LogTester {
   }
 
   private def verifyLastAuditLogMessageContains(params: Map[String, Any]): Unit = {
-    val message = getLogMessages.lastOption.map(m => parse(m))
+    val message = getLogMessages
+      .map(m => parse(m))
+      .collect { case msg: JObject if !isAliveMessage(msg) => msg }
+      .lastOption
     message match {
       case Some(msg: JObject) => verifyAuditLogObject(msg, params)
       case _ => throw new IllegalStateException("No audit log message found")
     }
+  }
+
+  private def isAliveMessage(msg: JObject): Boolean = {
+    implicit val formats: Formats = GenericJsonFormats.genericFormats
+    msg.values.get("type").contains("alive")
   }
 
   def verifyAuditLogString(loggingEvent: String, params: Map[String, Any]): Unit =
