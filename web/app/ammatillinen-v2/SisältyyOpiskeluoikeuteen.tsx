@@ -19,7 +19,7 @@ import { Oppilaitos } from '../types/fi/oph/koski/schema/Oppilaitos'
 import { t } from '../i18n/i18n'
 import { TextEdit } from '../components-v2/controls/TextField'
 import { OrganisaatioView } from '../components-v2/opiskeluoikeus/OrganisaatioField'
-import { OppilaitosSelect } from '../uusiopiskeluoikeus/components/OppilaitosSelect'
+import { OppilaitosSearch } from '../uusiopiskeluoikeus/components/OppilaitosSearch'
 import { OrganisaatioHierarkia } from '../types/fi/oph/koski/organisaatio/OrganisaatioHierarkia'
 import {
   BooleanEdit,
@@ -112,7 +112,7 @@ const SisältyyOpiskeluoikeuteenEdit = ({
           />
         </KeyValueRow>
         <KeyValueRow localizableLabel={'Oppilaitos'}>
-          <OppilaitosSelect
+          <OppilaitosSearch
             value={value?.oppilaitos as OrganisaatioHierarkia | undefined}
             onChange={(org) =>
               org &&
