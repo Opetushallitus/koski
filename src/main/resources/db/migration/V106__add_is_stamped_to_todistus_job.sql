@@ -1,0 +1,1 @@
+ALTER TABLE todistus_job ADD COLUMN is_stamped BOOLEAN NOT NULL DEFAULT true;

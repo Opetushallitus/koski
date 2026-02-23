@@ -171,15 +171,15 @@ class YleinenKielitutkintoTodistusDataBuilderSpec extends AnyFreeSpec with Match
 
     "Template-nimen lokalisointi" - {
       "palauttaa oikean template-nimen suomen kielelle" in {
-        verifyTemplateName(TodistusLanguage.FI, "kielitutkinto_yleinenkielitutkinto_fi")
+        verifyTemplateName(TodistusTemplateVariant.FI, "kielitutkinto_yleinenkielitutkinto_fi")
       }
 
       "palauttaa oikean template-nimen ruotsin kielelle" in {
-        verifyTemplateName(TodistusLanguage.SV, "kielitutkinto_yleinenkielitutkinto_sv")
+        verifyTemplateName(TodistusTemplateVariant.SV, "kielitutkinto_yleinenkielitutkinto_sv")
       }
 
       "palauttaa oikean template-nimen englannin kielelle" in {
-        verifyTemplateName(TodistusLanguage.EN, "kielitutkinto_yleinenkielitutkinto_en")
+        verifyTemplateName(TodistusTemplateVariant.EN, "kielitutkinto_yleinenkielitutkinto_en")
       }
     }
 
@@ -193,7 +193,7 @@ class YleinenKielitutkintoTodistusDataBuilderSpec extends AnyFreeSpec with Match
         )
 
         val opiskeluoikeus = createOpiskeluoikeus(osasuoritukset)
-        val todistusJob = createTodistusJob(TodistusLanguage.FI)
+        val todistusJob = createTodistusJob(TodistusTemplateVariant.FI)
 
         val result = generator.createTodistusData(
           mockOppija,
@@ -224,7 +224,7 @@ class YleinenKielitutkintoTodistusDataBuilderSpec extends AnyFreeSpec with Match
         )
 
         val opiskeluoikeus = createOpiskeluoikeus(osasuoritukset)
-        val todistusJob = createTodistusJob(TodistusLanguage.SV)
+        val todistusJob = createTodistusJob(TodistusTemplateVariant.SV)
 
         val result = generator.createTodistusData(
           mockOppija,
@@ -255,7 +255,7 @@ class YleinenKielitutkintoTodistusDataBuilderSpec extends AnyFreeSpec with Match
         )
 
         val opiskeluoikeus = createOpiskeluoikeus(osasuoritukset)
-        val todistusJob = createTodistusJob(TodistusLanguage.EN)
+        val todistusJob = createTodistusJob(TodistusTemplateVariant.EN)
 
         val result = generator.createTodistusData(
           mockOppija,
@@ -330,7 +330,7 @@ class YleinenKielitutkintoTodistusDataBuilderSpec extends AnyFreeSpec with Match
           val jsonString = JsonMethods.pretty(JsonSerializer.serializeWithRoot(opiskeluoikeusRaw))
           val opiskeluoikeus = app.validatingAndResolvingExtractor.extract[KielitutkinnonOpiskeluoikeus](strictDeserialization)(JsonMethods.parse(jsonString)).getOrElse(throw new InternalError("Bad test data"))
 
-          val todistusJob = createTodistusJob(TodistusLanguage.EN)
+          val todistusJob = createTodistusJob(TodistusTemplateVariant.EN)
 
           val result = generator.createTodistusData(
             mockOppija,
@@ -349,15 +349,16 @@ class YleinenKielitutkintoTodistusDataBuilderSpec extends AnyFreeSpec with Match
     }
   }
 
-  private def createTodistusJob(language: TodistusLanguage.TodistusLanguage = TodistusLanguage.FI): TodistusJob = {
+  private def createTodistusJob(templateVariant: TodistusTemplateVariant.TodistusTemplateVariant = TodistusTemplateVariant.FI): TodistusJob = {
     TodistusJob(
       id = "1",
       userOid = Some(mockOppija.oid),
       oppijaOid = mockOppija.oid,
       opiskeluoikeusOid = "1.2.246.562.15.00000000001",
-      language = language,
+      templateVariant = templateVariant,
       opiskeluoikeusVersionumero = Some(1),
       oppijaHenkilötiedotHash = Some("xxx"),
+      isStamped = !TodistusTemplateVariant.printVariants.contains(templateVariant),
       state = TodistusState.GENERATING_RAW_PDF,
       createdAt = LocalDate.now().atStartOfDay()
     )
@@ -439,7 +440,7 @@ class YleinenKielitutkintoTodistusDataBuilderSpec extends AnyFreeSpec with Match
     )
   }
 
-  private def verifyTemplateName(language: TodistusLanguage.TodistusLanguage, expectedTemplateName: String): Unit = {
+  private def verifyTemplateName(templateVariant: TodistusTemplateVariant.TodistusTemplateVariant, expectedTemplateName: String): Unit = {
     val osasuoritukset = List(
       createOsakokeenSuoritus("puheenymmartaminen", "3", LocalDate.of(2011, 3, 4)),
       createOsakokeenSuoritus("puhuminen", "3", LocalDate.of(2011, 3, 4)),
@@ -453,9 +454,10 @@ class YleinenKielitutkintoTodistusDataBuilderSpec extends AnyFreeSpec with Match
       userOid = Some(mockOppija.oid),
       oppijaOid = mockOppija.oid,
       opiskeluoikeusOid = "1.2.246.562.15.00000000001",
-      language = language,
+      templateVariant = templateVariant,
       opiskeluoikeusVersionumero = Some(1),
       oppijaHenkilötiedotHash = Some("xxx"),
+      isStamped = !TodistusTemplateVariant.printVariants.contains(templateVariant),
       state = TodistusState.GENERATING_RAW_PDF,
       createdAt = LocalDate.now().atStartOfDay()
     )

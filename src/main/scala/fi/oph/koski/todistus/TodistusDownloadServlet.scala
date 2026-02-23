@@ -23,13 +23,14 @@ class TodistusDownloadServlet(implicit val application: KoskiApplication)
   val frontendValvontaMode: FrontendValvontaMode.FrontendValvontaMode = FrontendValvontaMode.ENABLED
 
   before() {
-    requireKansalainenOrOphPääkäyttäjä
+    requireKansalainenOrTodistuksiaLataavaOphKäyttäjä
   }
 
   get("/:id") { nonce =>
     val result = for {
       todistusJob <- validateCompletedTodistus
-      stream <- service.getDownloadStream(BucketType.STAMPED, todistusJob)
+      bucketType = if (todistusJob.isStamped) BucketType.STAMPED else BucketType.RAW
+      stream <- service.getDownloadStream(bucketType, todistusJob)
     } yield {
       val filename = generateFilename(todistusJob)
       auditLogTodistusDownload(todistusJob)
@@ -58,8 +59,9 @@ class TodistusDownloadServlet(implicit val application: KoskiApplication)
 
     val result = for {
       todistusJob <- validateCompletedTodistus
+      bucketType = if (todistusJob.isStamped) BucketType.STAMPED else BucketType.RAW
       filename = generateFilename(todistusJob)
-      url <- service.getDownloadUrl(BucketType.STAMPED, filename, todistusJob)
+      url <- service.getDownloadUrl(bucketType, filename, todistusJob)
     } yield {
       auditLogTodistusDownload(todistusJob)
 

@@ -14,12 +14,12 @@ class TodistusWorkflowSpec extends TodistusSpecHelpers {
 
   "Todistuksen uudelleenkäyttö" - {
     "Palauttaa olemassaolevan COMPLETED-todistuksen, jos sama sisältö" in {
-      val lang = "fi"
+      val templateVariant = "fi"
       val hetu = KoskiSpecificMockOppijat.kielitutkinnonSuorittaja.hetu.get
       val oppijaOid = KoskiSpecificMockOppijat.kielitutkinnonSuorittaja.oid
       val opiskeluoikeusOid = getVahvistettuKielitutkinnonOpiskeluoikeus(oppijaOid).flatMap(_.oid).get
 
-      val req = TodistusGenerateRequest(opiskeluoikeusOid, lang)
+      val req = TodistusGenerateRequest(opiskeluoikeusOid, templateVariant)
 
       // Luo ensimmäinen todistus ja odota sen valmistumista
       val firstJob = addGenerateJobSuccessfully(req, hetu) { todistusJob =>
@@ -40,12 +40,12 @@ class TodistusWorkflowSpec extends TodistusSpecHelpers {
     }
 
     "Palauttaa olemassaolevan QUEUED-todistuksen, jos sama sisältö" in {
-      val lang = "fi"
+      val templateVariant = "fi"
       val hetu = KoskiSpecificMockOppijat.kielitutkinnonSuorittaja.hetu.get
       val oppijaOid = KoskiSpecificMockOppijat.kielitutkinnonSuorittaja.oid
       val opiskeluoikeusOid = getVahvistettuKielitutkinnonOpiskeluoikeus(oppijaOid).flatMap(_.oid).get
 
-      val req = TodistusGenerateRequest(opiskeluoikeusOid, lang)
+      val req = TodistusGenerateRequest(opiskeluoikeusOid, templateVariant)
 
       withoutRunningSchedulers {
         // Luo ensimmäinen todistus (jää QUEUED-tilaan)
@@ -66,12 +66,12 @@ class TodistusWorkflowSpec extends TodistusSpecHelpers {
     }
 
     "Luo uuden todistuksen, jos aiempi on ERROR-tilassa" in {
-      val lang = "fi"
+      val templateVariant = "fi"
       val hetu = KoskiSpecificMockOppijat.kielitutkinnonSuorittaja.hetu.get
       val oppijaOid = KoskiSpecificMockOppijat.kielitutkinnonSuorittaja.oid
       val opiskeluoikeusOid = getVahvistettuKielitutkinnonOpiskeluoikeus(oppijaOid).flatMap(_.oid).get
 
-      val req = TodistusGenerateRequest(opiskeluoikeusOid, lang)
+      val req = TodistusGenerateRequest(opiskeluoikeusOid, templateVariant)
 
       withoutRunningSchedulers {
         // Luo ensimmäinen todistus
@@ -97,12 +97,12 @@ class TodistusWorkflowSpec extends TodistusSpecHelpers {
     }
 
     "Luo uuden todistuksen, jos opiskeluoikeus-versionumero on muuttunut" in {
-      val lang = "fi"
+      val templateVariant = "fi"
       val hetu = KoskiSpecificMockOppijat.kielitutkinnonSuorittaja.hetu.get
       val oppijaOid = KoskiSpecificMockOppijat.kielitutkinnonSuorittaja.oid
       val opiskeluoikeusOid = getVahvistettuKielitutkinnonOpiskeluoikeus(oppijaOid).flatMap(_.oid).get
 
-      val req = TodistusGenerateRequest(opiskeluoikeusOid, lang)
+      val req = TodistusGenerateRequest(opiskeluoikeusOid, templateVariant)
 
       // Luo ensimmäinen todistus ja odota sen valmistumista
       val firstJob = addGenerateJobSuccessfully(req, hetu) { todistusJob =>
@@ -139,12 +139,12 @@ class TodistusWorkflowSpec extends TodistusSpecHelpers {
     }
 
     "Luo uuden todistuksen, jos aiempi on EXPIRED-tilassa" in {
-      val lang = "fi"
+      val templateVariant = "fi"
       val hetu = KoskiSpecificMockOppijat.kielitutkinnonSuorittaja.hetu.get
       val oppijaOid = KoskiSpecificMockOppijat.kielitutkinnonSuorittaja.oid
       val opiskeluoikeusOid = getVahvistettuKielitutkinnonOpiskeluoikeus(oppijaOid).flatMap(_.oid).get
 
-      val req = TodistusGenerateRequest(opiskeluoikeusOid, lang)
+      val req = TodistusGenerateRequest(opiskeluoikeusOid, templateVariant)
 
       // Luo ensimmäinen todistus ja odota sen valmistumista
       val firstJob = addGenerateJobSuccessfully(req, hetu) { todistusJob =>
@@ -170,12 +170,12 @@ class TodistusWorkflowSpec extends TodistusSpecHelpers {
     }
 
     "Luo uuden todistuksen, jos aiempi on QUEUED_FOR_EXPIRE-tilassa" in {
-      val lang = "fi"
+      val templateVariant = "fi"
       val hetu = KoskiSpecificMockOppijat.kielitutkinnonSuorittaja.hetu.get
       val oppijaOid = KoskiSpecificMockOppijat.kielitutkinnonSuorittaja.oid
       val opiskeluoikeusOid = getVahvistettuKielitutkinnonOpiskeluoikeus(oppijaOid).flatMap(_.oid).get
 
-      val req = TodistusGenerateRequest(opiskeluoikeusOid, lang)
+      val req = TodistusGenerateRequest(opiskeluoikeusOid, templateVariant)
 
       // Luo ensimmäinen todistus ja odota sen valmistumista
       val firstJob = addGenerateJobSuccessfully(req, hetu) { todistusJob =>
@@ -202,7 +202,7 @@ class TodistusWorkflowSpec extends TodistusSpecHelpers {
   }
 
   "markAllMyJobsInterrupted merkitsee jobin keskeytetyksi" - {
-    val lang = "fi"
+    val templateVariant = "fi"
     val oppijaOid = KoskiSpecificMockOppijat.kielitutkinnonSuorittaja.oid
     val opiskeluoikeusOid = getVahvistettuKielitutkinnonOpiskeluoikeus(oppijaOid).flatMap(_.oid).get
 
@@ -214,9 +214,10 @@ class TodistusWorkflowSpec extends TodistusSpecHelpers {
         userOid = Some(oppijaOid),
         oppijaOid = oppijaOid,
         opiskeluoikeusOid = opiskeluoikeusOid,
-        language = lang,
+        templateVariant = templateVariant,
         opiskeluoikeusVersionumero = Some(1),
         oppijaHenkilötiedotHash = Some("test-hash"),
+        isStamped = !TodistusTemplateVariant.printVariants.contains(templateVariant),
         state = TodistusState.STAMPING_PDF,
         createdAt = LocalDateTime.now(),
         startedAt = Some(LocalDateTime.now()),
@@ -241,12 +242,12 @@ class TodistusWorkflowSpec extends TodistusSpecHelpers {
 
   "Todistusten vanheneminen" - {
     "Merkitsee vanhentuneet todistukset QUEUED_FOR_EXPIRE-tilaan" in {
-      val lang = "fi"
+      val templateVariant = "fi"
       val hetu = KoskiSpecificMockOppijat.kielitutkinnonSuorittaja.hetu.get
       val oppijaOid = KoskiSpecificMockOppijat.kielitutkinnonSuorittaja.oid
       val opiskeluoikeusOid = getVahvistettuKielitutkinnonOpiskeluoikeus(oppijaOid).flatMap(_.oid).get
 
-      val req = TodistusGenerateRequest(opiskeluoikeusOid, lang)
+      val req = TodistusGenerateRequest(opiskeluoikeusOid, templateVariant)
 
       // Luo todistus ja odota sen valmistumista
       val todistusJob = addGenerateJobSuccessfully(req, hetu) { todistusJob =>
@@ -270,12 +271,12 @@ class TodistusWorkflowSpec extends TodistusSpecHelpers {
     }
 
     "Ei merkitse QUEUED_FOR_EXPIRE-tilaan, jos todistus ei ole vielä vanhentunut" in {
-      val lang = "fi"
+      val templateVariant = "fi"
       val hetu = KoskiSpecificMockOppijat.kielitutkinnonSuorittaja.hetu.get
       val oppijaOid = KoskiSpecificMockOppijat.kielitutkinnonSuorittaja.oid
       val opiskeluoikeusOid = getVahvistettuKielitutkinnonOpiskeluoikeus(oppijaOid).flatMap(_.oid).get
 
-      val req = TodistusGenerateRequest(opiskeluoikeusOid, lang)
+      val req = TodistusGenerateRequest(opiskeluoikeusOid, templateVariant)
 
       // Luo todistus ja odota sen valmistumista
       val todistusJob = addGenerateJobSuccessfully(req, hetu) { todistusJob =>
@@ -294,7 +295,7 @@ class TodistusWorkflowSpec extends TodistusSpecHelpers {
     }
 
     "Merkitsee useita vanhentuneita todistuksia kerralla" in {
-      val lang = "fi"
+      val templateVariant = "fi"
       val hetu = KoskiSpecificMockOppijat.kielitutkinnonSuorittaja.hetu.get
       val oppijaOid = KoskiSpecificMockOppijat.kielitutkinnonSuorittaja.oid
       val opiskeluoikeusOid = getVahvistettuKielitutkinnonOpiskeluoikeus(oppijaOid).flatMap(_.oid).get
@@ -338,7 +339,7 @@ class TodistusWorkflowSpec extends TodistusSpecHelpers {
   "Orpojen todistusjobien uudelleenkäynnistys" - {
 
     "Ei koske aktiivisesti ajossa olevaan jobiin" in {
-      val lang = "fi"
+      val templateVariant = "fi"
       val oppijaOid = KoskiSpecificMockOppijat.kielitutkinnonSuorittaja.oid
       val opiskeluoikeusOid = getVahvistettuKielitutkinnonOpiskeluoikeus(oppijaOid).flatMap(_.oid).get
 
@@ -349,9 +350,10 @@ class TodistusWorkflowSpec extends TodistusSpecHelpers {
         userOid = Some(oppijaOid),
         oppijaOid = oppijaOid,
         opiskeluoikeusOid = opiskeluoikeusOid,
-        language = lang,
+        templateVariant = templateVariant,
         opiskeluoikeusVersionumero = Some(1),
         oppijaHenkilötiedotHash = Some("test-hash"),
+        isStamped = !TodistusTemplateVariant.printVariants.contains(templateVariant),
         state = TodistusState.GENERATING_RAW_PDF,
         createdAt = LocalDateTime.now(),
         startedAt = Some(LocalDateTime.now()),
@@ -378,12 +380,12 @@ class TodistusWorkflowSpec extends TodistusSpecHelpers {
     }
 
     "Uudelleenkäynnistää orpo-jobin (attempts < 3) ja ajaa sen loppuun" in {
-      val lang = "fi"
+      val templateVariant = "fi"
       val hetu = KoskiSpecificMockOppijat.kielitutkinnonSuorittaja.hetu.get
       val oppijaOid = KoskiSpecificMockOppijat.kielitutkinnonSuorittaja.oid
       val opiskeluoikeusOid = getVahvistettuKielitutkinnonOpiskeluoikeus(oppijaOid).flatMap(_.oid).get
 
-      val orphanJob = createOrphanJob(oppijaOid, opiskeluoikeusOid, lang, attempts = 1)
+      val orphanJob = createOrphanJob(oppijaOid, opiskeluoikeusOid, templateVariant, attempts = 1)
 
       val completedJob = waitForCompletion(orphanJob.id, hetu)
       val completedJobFromDb = app.todistusRepository.getFromDbForUnitTests(orphanJob.id).get
@@ -395,7 +397,7 @@ class TodistusWorkflowSpec extends TodistusSpecHelpers {
 
 
     "Uudelleenkäynnistää INTERRUPTED-tilaan merkityn jobin" in {
-      val lang = "fi"
+      val templateVariant = "fi"
       val hetu = KoskiSpecificMockOppijat.kielitutkinnonSuorittaja.hetu.get
       val oppijaOid = KoskiSpecificMockOppijat.kielitutkinnonSuorittaja.oid
       val opiskeluoikeusOid = getVahvistettuKielitutkinnonOpiskeluoikeus(oppijaOid).flatMap(_.oid).get
@@ -408,9 +410,10 @@ class TodistusWorkflowSpec extends TodistusSpecHelpers {
           userOid = Some(oppijaOid),
           oppijaOid = oppijaOid,
           opiskeluoikeusOid = opiskeluoikeusOid,
-          language = lang,
+          templateVariant = templateVariant,
           opiskeluoikeusVersionumero = Some(1),
           oppijaHenkilötiedotHash = Some("test-hash"),
+          isStamped = !TodistusTemplateVariant.printVariants.contains(templateVariant),
           state = TodistusState.INTERRUPTED,
           createdAt = LocalDateTime.now(),
           startedAt = Some(LocalDateTime.now()),
@@ -439,12 +442,12 @@ class TodistusWorkflowSpec extends TodistusSpecHelpers {
     }
 
     "Siirtää orpo-jobin (attempts >= 3) ERROR-tilaan" in {
-      val lang = "fi"
+      val templateVariant = "fi"
       val hetu = KoskiSpecificMockOppijat.kielitutkinnonSuorittaja.hetu.get
       val oppijaOid = KoskiSpecificMockOppijat.kielitutkinnonSuorittaja.oid
       val opiskeluoikeusOid = getVahvistettuKielitutkinnonOpiskeluoikeus(oppijaOid).flatMap(_.oid).get
 
-      val orphanJob = createOrphanJob(oppijaOid, opiskeluoikeusOid, lang, attempts = 3)
+      val orphanJob = createOrphanJob(oppijaOid, opiskeluoikeusOid, templateVariant, attempts = 3)
 
       val errorJob = waitForError(orphanJob.id, hetu)
       val errorJobFromDb = app.todistusRepository.getFromDbForUnitTests(orphanJob.id).get
@@ -455,13 +458,13 @@ class TodistusWorkflowSpec extends TodistusSpecHelpers {
     }
 
     "Käsittelee sekä uudelleenkäynnistettävät että ERROR-tilaan siirrettävät orpo-jobit oikein" in {
-      val lang = "fi"
+      val templateVariant = "fi"
       val hetu = KoskiSpecificMockOppijat.kielitutkinnonSuorittaja.hetu.get
       val oppijaOid = KoskiSpecificMockOppijat.kielitutkinnonSuorittaja.oid
       val opiskeluoikeusOid = getVahvistettuKielitutkinnonOpiskeluoikeus(oppijaOid).flatMap(_.oid).get
 
-      val restartableOrphan = createOrphanJob(oppijaOid, opiskeluoikeusOid, lang, attempts = 1)
-      val failableOrphan = createOrphanJob(oppijaOid, opiskeluoikeusOid, lang, attempts = 3)
+      val restartableOrphan = createOrphanJob(oppijaOid, opiskeluoikeusOid, templateVariant, attempts = 1)
+      val failableOrphan = createOrphanJob(oppijaOid, opiskeluoikeusOid, templateVariant, attempts = 3)
 
       val completedJob = waitForCompletion(restartableOrphan.id, hetu)
       val errorJob = waitForError(failableOrphan.id, hetu)
@@ -478,12 +481,12 @@ class TodistusWorkflowSpec extends TodistusSpecHelpers {
 
   "Status-endpoint" - {
     "Palauttaa ajantasaisen COMPLETED-todistuksen jos saatavilla" in {
-      val lang = "fi"
+      val templateVariant = "fi"
       val hetu = KoskiSpecificMockOppijat.kielitutkinnonSuorittaja.hetu.get
       val oppijaOid = KoskiSpecificMockOppijat.kielitutkinnonSuorittaja.oid
       val opiskeluoikeusOid = getVahvistettuKielitutkinnonOpiskeluoikeus(oppijaOid).flatMap(_.oid).get
 
-      val req = TodistusGenerateRequest(opiskeluoikeusOid, lang)
+      val req = TodistusGenerateRequest(opiskeluoikeusOid, templateVariant)
 
       // Luo todistus ja odota sen valmistumista
       val job = addGenerateJobSuccessfully(req, hetu) { todistusJob => todistusJob }
@@ -498,12 +501,12 @@ class TodistusWorkflowSpec extends TodistusSpecHelpers {
     }
 
     "Palauttaa ajantasaisen QUEUED-todistuksen jos saatavilla" in {
-      val lang = "fi"
+      val templateVariant = "fi"
       val hetu = KoskiSpecificMockOppijat.kielitutkinnonSuorittaja.hetu.get
       val oppijaOid = KoskiSpecificMockOppijat.kielitutkinnonSuorittaja.oid
       val opiskeluoikeusOid = getVahvistettuKielitutkinnonOpiskeluoikeus(oppijaOid).flatMap(_.oid).get
 
-      val req = TodistusGenerateRequest(opiskeluoikeusOid, lang)
+      val req = TodistusGenerateRequest(opiskeluoikeusOid, templateVariant)
 
       withoutRunningSchedulers {
         // Luo todistus joka jää QUEUED-tilaan
@@ -519,12 +522,12 @@ class TodistusWorkflowSpec extends TodistusSpecHelpers {
     }
 
     "Palauttaa 404 jos ei ajantasaista todistusta" in {
-      val lang = "fi"
+      val templateVariant = "fi"
       val hetu = KoskiSpecificMockOppijat.kielitutkinnonSuorittaja.hetu.get
       val oppijaOid = KoskiSpecificMockOppijat.kielitutkinnonSuorittaja.oid
       val opiskeluoikeusOid = getVahvistettuKielitutkinnonOpiskeluoikeus(oppijaOid).flatMap(_.oid).get
 
-      val req = TodistusGenerateRequest(opiskeluoikeusOid, lang)
+      val req = TodistusGenerateRequest(opiskeluoikeusOid, templateVariant)
 
       // Kutsu status-endpointia kun ei todistusta olemassa
       checkStatusByParameters(req, hetu) {
@@ -533,12 +536,12 @@ class TodistusWorkflowSpec extends TodistusSpecHelpers {
     }
 
     "Palauttaa 404 jos vain ERROR-tilassa olevia todistuksia" in {
-      val lang = "fi"
+      val templateVariant = "fi"
       val hetu = KoskiSpecificMockOppijat.kielitutkinnonSuorittaja.hetu.get
       val oppijaOid = KoskiSpecificMockOppijat.kielitutkinnonSuorittaja.oid
       val opiskeluoikeusOid = getVahvistettuKielitutkinnonOpiskeluoikeus(oppijaOid).flatMap(_.oid).get
 
-      val req = TodistusGenerateRequest(opiskeluoikeusOid, lang)
+      val req = TodistusGenerateRequest(opiskeluoikeusOid, templateVariant)
 
       withoutRunningSchedulers {
         // Luo todistus ja merkitse se epäonnistuneeksi
@@ -553,12 +556,12 @@ class TodistusWorkflowSpec extends TodistusSpecHelpers {
     }
 
     "Palauttaa 404 jos versionumero on muuttunut" in {
-      val lang = "fi"
+      val templateVariant = "fi"
       val hetu = KoskiSpecificMockOppijat.kielitutkinnonSuorittaja.hetu.get
       val oppijaOid = KoskiSpecificMockOppijat.kielitutkinnonSuorittaja.oid
       val opiskeluoikeusOid = getVahvistettuKielitutkinnonOpiskeluoikeus(oppijaOid).flatMap(_.oid).get
 
-      val req = TodistusGenerateRequest(opiskeluoikeusOid, lang)
+      val req = TodistusGenerateRequest(opiskeluoikeusOid, templateVariant)
 
       // Luo todistus ja odota sen valmistumista
       val job = addGenerateJobSuccessfully(req, hetu) { todistusJob => todistusJob }
@@ -587,7 +590,7 @@ class TodistusWorkflowSpec extends TodistusSpecHelpers {
     }
 
     "Palauttaa viimeisimmän jobin kun useita ajantasaisia jobeja saatavilla" in {
-      val lang = "fi"
+      val templateVariant = "fi"
       val oppija = KoskiSpecificMockOppijat.kielitutkinnonSuorittaja
       val hetu = oppija.hetu.get
       val oppijaOid = oppija.oid
@@ -609,9 +612,10 @@ class TodistusWorkflowSpec extends TodistusSpecHelpers {
               userOid = Some(oppijaOid),
               oppijaOid = oppijaOid,
               opiskeluoikeusOid = opiskeluoikeusOid,
-              language = lang,
+              templateVariant = templateVariant,
               opiskeluoikeusVersionumero = Some(versionumero),
               oppijaHenkilötiedotHash = Some(henkilotiedotHash),
+              isStamped = !TodistusTemplateVariant.printVariants.contains(templateVariant),
               state = TodistusState.COMPLETED,
               createdAt = createdAt,
               startedAt = Some(createdAt),
@@ -623,7 +627,7 @@ class TodistusWorkflowSpec extends TodistusSpecHelpers {
             app.todistusRepository.addRawForUnitTests(job)
           }
 
-        val req = TodistusGenerateRequest(opiskeluoikeusOid, lang)
+        val req = TodistusGenerateRequest(opiskeluoikeusOid, templateVariant)
 
         checkStatusByParametersSuccessfully(req, hetu) { statusJob =>
           statusJob.id should equal(jobs.last.id)

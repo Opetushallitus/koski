@@ -2,7 +2,7 @@ package fi.oph.koski.koskiuser
 
 import fi.oph.koski.koskiuser.AuthenticationUser.fromDirectoryUser
 import fi.oph.koski.koskiuser.MockKäyttöoikeusryhmät._
-import fi.oph.koski.koskiuser.Rooli.{AMMATILLINENKOULUTUS, KIELITUTKINTO, OPHKATSELIJA}
+import fi.oph.koski.koskiuser.Rooli.{AMMATILLINENKOULUTUS, GLOBAALI_LUKU_KIELITUTKINTO, KIELITUTKINTO, OPHKATSELIJA}
 import fi.oph.koski.organisaatio.MockOrganisaatiot._
 import fi.oph.koski.organisaatio.{MockOrganisaatiot, Opetushallitus}
 import fi.oph.koski.schema.SuorituksenTyyppi.{telma, valtionhallinnonKielitutkinto, yleinenKielitutkinto}
@@ -421,6 +421,16 @@ object MockUsers {
     )))
   )
 
+  val kielitutkintoKatselija = KoskiMockUser(
+    "kielitutkintokatselija",
+    "kielitutkintokatselija",
+    "1.2.246.562.24.99999997474",
+    Seq(OrganisaatioJaKäyttöoikeudet(Opetushallitus.organisaatioOid, List(
+      PalveluJaOikeus("KOSKI", GLOBAALI_LUKU_KIELITUTKINTO),
+      PalveluJaOikeus("KOSKI", OPHKATSELIJA),
+    )))
+  )
+
   val kelaSuppeatOikeudet = KoskiMockUser(
     "Kela",
     "Suppea",
@@ -741,6 +751,7 @@ object MockUsers {
     jyväskylänNormaalikoulunPalvelukäyttäjä,
     jyväskylänYliopistonVastuukäyttäjä,
     viranomainenGlobaaliKatselija,
+    kielitutkintoKatselija,
     kelaSuppeatOikeudet,
     kelaLaajatOikeudet,
     perusopetusViranomainen,

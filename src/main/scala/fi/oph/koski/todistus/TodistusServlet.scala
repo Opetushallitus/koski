@@ -2,7 +2,7 @@ package fi.oph.koski.todistus
 
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
-import fi.oph.koski.koskiuser.Rooli.OPHPAAKAYTTAJA
+import fi.oph.koski.koskiuser.Rooli.{GLOBAALI_LUKU_KIELITUTKINTO, OPHKATSELIJA, OPHPAAKAYTTAJA}
 import fi.oph.koski.koskiuser.{HasKoskiSpecificSession, KoskiCookieAndBasicAuthenticationSupport, KoskiSpecificSession, UserLanguage}
 import fi.oph.koski.log.KoskiOperation.{TODISTUKSEN_ESIKATSELU, TODISTUKSEN_LATAAMINEN, KoskiOperation}
 import fi.oph.koski.log.{AuditLog, AuditLogMessage, KoskiAuditLogMessage, KoskiAuditLogMessageField, Logging}
@@ -18,9 +18,13 @@ trait TodistusServlet extends ScalatraServlet with HasKoskiSpecificSession with 
 
   val service: TodistusService = application.todistusService
 
-  protected def requireKansalainenOrOphPääkäyttäjä: Unit = {
+  protected def hasKielitutkintoViewerRole(implicit user: KoskiSpecificSession): Boolean = {
+    user.hasRole(GLOBAALI_LUKU_KIELITUTKINTO) && user.hasRole(OPHKATSELIJA)
+  }
+
+  protected def requireKansalainenOrTodistuksiaLataavaOphKäyttäjä: Unit = {
     getUser match {
-      case Right(user) if user.kansalainen || session.hasRole(OPHPAAKAYTTAJA) => // OK
+      case Right(user) if user.kansalainen || session.hasRole(OPHPAAKAYTTAJA) || hasKielitutkintoViewerRole(session) => // OK
       case Right(_) => haltWithStatus(KoskiErrorCategory.forbidden("Sallittu vain kansalaiselle tai OPH-pääkäyttäjälle"))
       case Left(error) => haltWithStatus(error)
     }
@@ -41,17 +45,17 @@ trait TodistusServlet extends ScalatraServlet with HasKoskiSpecificSession with 
   }
 
   protected def getTodistusGenerateRequest: Either[HttpStatus, TodistusGenerateRequest] = {
-    val lang = params("lang")
+    val templateVariant = params("templateVariant")
     val oid = params("opiskeluoikeusOid")
 
-    if (!TodistusLanguage.*.contains(lang)) {
-      Left(KoskiErrorCategory.badRequest(s"Virheellinen kieli: $lang. Sallitut arvot: ${TodistusLanguage.*.mkString(", ")}"))
+    if (!TodistusTemplateVariant.*.contains(templateVariant)) {
+      Left(KoskiErrorCategory.badRequest(s"Virheellinen template variant: $templateVariant. Sallitut arvot: ${TodistusTemplateVariant.*.mkString(", ")}"))
     } else if (!Opiskeluoikeus.isValidOpiskeluoikeusOid(oid)) {
       Left(KoskiErrorCategory.badRequest(s"Virheellinen opiskeluoikeus OID: $oid"))
     } else {
       Right(TodistusGenerateRequest(
         opiskeluoikeusOid = oid,
-        language = lang,
+        templateVariant = templateVariant,
       ))
     }
   }
@@ -75,7 +79,8 @@ trait TodistusServlet extends ScalatraServlet with HasKoskiSpecificSession with 
         KoskiAuditLogMessageField.oppijaHenkiloOid -> todistusJob.oppijaOid,
         KoskiAuditLogMessageField.opiskeluoikeusOid -> todistusJob.opiskeluoikeusOid,
         KoskiAuditLogMessageField.opiskeluoikeusVersio -> todistusJob.opiskeluoikeusVersionumero.map(_.toString).getOrElse(""),
-        KoskiAuditLogMessageField.todistusId -> todistusJob.id
+        KoskiAuditLogMessageField.todistusId -> todistusJob.id,
+        KoskiAuditLogMessageField.todistusTemplateVariant -> todistusJob.templateVariant
       )
     )
   }
@@ -86,13 +91,14 @@ trait TodistusServlet extends ScalatraServlet with HasKoskiSpecificSession with 
       extraFields = Map(
         KoskiAuditLogMessageField.oppijaHenkiloOid -> todistusJob.oppijaOid,
         KoskiAuditLogMessageField.opiskeluoikeusOid -> todistusJob.opiskeluoikeusOid,
-        KoskiAuditLogMessageField.opiskeluoikeusVersio -> todistusJob.opiskeluoikeusVersionumero.map(_.toString).getOrElse("")
+        KoskiAuditLogMessageField.opiskeluoikeusVersio -> todistusJob.opiskeluoikeusVersionumero.map(_.toString).getOrElse(""),
+        KoskiAuditLogMessageField.todistusTemplateVariant -> todistusJob.templateVariant
       )
     )
   }
 
   protected def generateFilename(todistusJob: TodistusJob): String = {
-    val defaultFilename = s"todistus_${todistusJob.language}.pdf"
+    val defaultFilename = s"todistus_${todistusJob.templateVariant}.pdf"
 
     application.possu.findByOidIlmanKäyttöoikeustarkistusta(todistusJob.opiskeluoikeusOid) match {
       case Right(opiskeluoikeus) =>
@@ -129,7 +135,7 @@ trait TodistusServlet extends ScalatraServlet with HasKoskiSpecificSession with 
       keyPart
     }
 
-    s"${prefix}${todistusJob.language}.pdf"
+    s"${prefix}${todistusJob.templateVariant}.pdf"
   }
 
   protected def mkAuditLog(

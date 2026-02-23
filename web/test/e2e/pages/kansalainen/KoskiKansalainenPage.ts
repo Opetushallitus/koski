@@ -1,6 +1,6 @@
 import { Locator, Page } from '@playwright/test'
 import { YoTodistusLanguage } from '../../../../app/components-v2/yotutkinto/YoTodistus'
-import { TodistusLanguage } from '../../../../app/kielitutkinto/YleinenKielitutkintoTodistusLataus'
+import { TodistusTemplateVariant } from '../../../../app/kielitutkinto/YleinenKielitutkintoTodistusLataus'
 import { expect } from '../../base'
 import { build, BuiltIdNode } from '../oppija/uiV2builder/builder'
 import { Button } from '../oppija/uiV2builder/Button'
@@ -86,28 +86,6 @@ export class KoskiKansalainenPage {
     const popup = await popupPromise
     await popup.waitForLoadState('networkidle')
     await popup.close()
-  }
-
-  async setKielitutkintoTodistusLanguage(lang: TodistusLanguage) {
-    await this.$.kielitutkintoTodistus.language.set(lang)
-  }
-
-  async generateKielitutkintoTodistus() {
-    await this.$.kielitutkintoTodistus.start.click()
-    await this.$.kielitutkintoTodistus.loading.waitFor()
-    await this.$.kielitutkintoTodistus.loading.waitForToDisappear(10000)
-  }
-
-  async getKielitutkintoTodistusFile() {
-    const downloadPromise = this.page.waitForEvent('download')
-    await this.$.kielitutkintoTodistus.open.click()
-    const download = await downloadPromise
-    // Tarkista että lataus onnistui
-    await download.path()
-  }
-
-  async getKielitutkintoTodistusError(): Promise<string> {
-    return await this.$.kielitutkintoTodistus.error.value()
   }
 
   async openJaaSuoritustietoja() {
@@ -222,14 +200,6 @@ const KansalainenUIV2TestIds = {
     loading: Label,
     error: Label,
     open: Button
-  },
-  kielitutkintoTodistus: {
-    language: Select,
-    start: Button,
-    loading: Label,
-    error: Label,
-    open: Button,
-    openPreview: Button
   },
   opiskeluoikeus: KansalainenOpiskeluoikeusHeader()
 }

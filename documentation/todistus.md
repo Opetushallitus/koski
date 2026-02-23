@@ -51,7 +51,6 @@ Validointi
 Kansalainen, huoltaja ja OPH:n työntekijä pääsevät lataamaan todistukset yleisen kielitutkinnon
 käyttöliittymässä.
 
-
 ```
 web/app/kielitutkinto/
 ├── YleinenKielitutkintoEditor.tsx         – YKI-opiskeluoikeuden muokkausnäkymä
@@ -65,9 +64,15 @@ web/app/components-v2/todistus/
 
 ```
 src/main/resources/todistus-templates/
-├── kielitutkinto_yleinenkielitutkinto_fi.html  – suomenkielinen template
-├── kielitutkinto_yleinenkielitutkinto_sv.html  – ruotsinkielinen
-├── kielitutkinto_yleinenkielitutkinto_en.html  – englanninkielinen
+├── kielitutkinto_yleinenkielitutkinto_fi.html          – suomenkielinen template (digitaalinen)
+├── kielitutkinto_yleinenkielitutkinto_fi_tulostettava_uusi.html     – suomenkielinen tulostus-template (uusi, 3 sivua)
+├── kielitutkinto_yleinenkielitutkinto_fi_tulostettava_paivitys.html – suomenkielinen tulostus-template (päivitys, 2 sivua)
+├── kielitutkinto_yleinenkielitutkinto_sv.html          – ruotsinkielinen (WIP)
+├── kielitutkinto_yleinenkielitutkinto_sv_tulostettava_uusi.html     – ruotsinkielinen tulostus uusi (WIP)
+├── kielitutkinto_yleinenkielitutkinto_sv_tulostettava_paivitys.html – ruotsinkielinen tulostus päivitys (WIP)
+├── kielitutkinto_yleinenkielitutkinto_en.html          – englanninkielinen (WIP)
+├── kielitutkinto_yleinenkielitutkinto_en_tulostettava_uusi.html     – englanninkielinen tulostus uusi (WIP)
+├── kielitutkinto_yleinenkielitutkinto_en_tulostettava_paivitys.html – englanninkielinen tulostus päivitys (WIP)
 ├── fonts/   – fonttien source-tiedostot (base64-enkoodattu templateihin)
 └── images/  – Todistuksella näkyvien logojen source-SVG-tiedostot (base64-enkoodattu templateihin)
 
@@ -90,6 +95,8 @@ QUEUED
                                 └─► COMPLETED
 ```
 
+STAMPING_PDF ja SAVING_STAMPED_PDF skipataan käytettäessä printtileiskoja.
+
 Virhetilaan siirtynyt job saa tilan `ERROR`. Keskeytynyt job (`INTERRUPTED`)
 palautetaan jonoon uudestaan. Vanhentunut job käsitellään
 `QUEUED_FOR_EXPIRE` → `EXPIRED`.
@@ -97,21 +104,26 @@ palautetaan jonoon uudestaan. Vanhentunut job käsitellään
 ### Jobien uudelleenkäyttö
 
 `TodistusJobRepository.addOrReuseExisting()` käyttää CTE-kyselyä, joka
-palauttaa olemassa olevan jobin jos sen kieli, OO-versio ja henkilötiedot-hash
+palauttaa olemassa olevan jobin jos sen `template_variant`, OO-versio ja henkilötiedot-hash
 vastaavat uutta pyyntöä. Uusi job luodaan vain jos aiempia ei löydy tai
-ne ovat ERROR-tilassa.
+ne ovat ERROR-tilassa. Esim. jobit `fi` ja `fi_tulostettava_uusi` ovat erillisiä ja niitä
+ei käytetä toinen toisen tilalla.
 
 ## Pääsynhallinta
 
-| Toiminto | Kansalainen | Huoltaja            | OPH-pääkäyttäjä |
-|---|---|---------------------|---|
-| Todistuksen aloittaminen | Omasta OO:sta | Huollettavan OO:sta | Kaikista |
-| Tilan tarkastelu | Omasta | Huollettavan OO:sta    | Kaikista |
-| PDF-lataus | Omasta | Huollettavan OO:sta    | Kaikista |
-| Presigned-URL | – | –                   | Kaikista |
-| HTML-esikatselu | – | –                   | Kaikista |
+| Toiminto                                              | Kansalainen   | Huoltaja            | OPH-pääkäyttäjä | OPH Kielitutkintojen katselija |
+|-------------------------------------------------------|---------------|---------------------|---|--------------------------------|
+| Digitaalisten todistusten luonti- ja lataus           | Omasta OO:sta | Huollettavan OO:sta | Kaikista | Kaikista                       |
+| Tulostettavien todistusten luonti- ja lataus          | -             | -                   | Kaikista | Kaikista                       |
+| Presigned-URL todistuksen lataamiseksi suoraan S3:sta | –             | –                   | Kaikista | -                              |
+| HTML-esikatselu                                       | –             | –                   | Kaikista | -                              |
 
-Todistuksen lataus onnistuu vain jos opiskeluoikeus on vahvistettu .
+Todistuksen lataus onnistuu vain jos opiskeluoikeus on vahvistettu.
+
+### Tulostus-variantit
+
+Tulostus-variantit (`fi_tulostettava_uusi`, `fi_tulostettava_paivitys`, `sv_tulostettava_uusi`, `sv_tulostettava_paivitys`, `en_tulostettava_uusi`, `en_tulostettava_paivitys`)
+ovat sallittu vain OPH-pääkäyttäjälle ja OPH-kielitutkintojen katselijalle.
 
 ## Allekirjoitus (Swisscom AIS)
 
@@ -164,8 +176,9 @@ Vastaa jonojen ylläpidosta:
 
 Todistuksen template ja sitä täyttävä `YleinenKielitutkintoTodistusDataBuilder`
 käyttävät `KoskiLocalizationRepository`-ta kaikissa käyttäjälle näkyvissä
-olevissa teksteissä. Tuettut kieli-koodit: `fi`, `sv`, `en`. Ruotsin- ja
-englanninkieliset templatet ovat vielä työ alla.
+olevissa teksteissä. Tuettut kieli-koodit: `fi`, `sv`, `en`. Kieli
+johdetetaan `template_variant`-kentästä `TodistusTemplateVariant.baseLanguage()`-metodilla
+(esim. `fi_tulostettava_uusi` → `fi`). Ruotsin- ja englanninkieliset templatet ovat vielä työ alla.
 
 
 ## Saavutettavuus

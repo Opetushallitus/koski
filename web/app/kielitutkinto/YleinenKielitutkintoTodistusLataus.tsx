@@ -15,7 +15,12 @@ import {
   generateTodistus
 } from '../util/koskiApi'
 import { useInterval } from '../util/useInterval'
-import { TestIdRoot, TestIdText } from '../appstate/useTestId'
+import {
+  TestIdLayer,
+  TestIdRoot,
+  TestIdText,
+  useTestId
+} from '../appstate/useTestId'
 import {
   Select,
   SelectOption,
@@ -29,22 +34,78 @@ import { useVirkailijaUser } from '../appstate/user'
 
 export type TodistusLanguage = 'fi' | 'sv' | 'en'
 
+export type TodistusTemplateVariant =
+  | 'fi'
+  | 'sv'
+  | 'en'
+  | 'fi_tulostettava_uusi'
+  | 'fi_tulostettava_paivitys'
+  | 'sv_tulostettava_uusi'
+  | 'sv_tulostettava_paivitys'
+  | 'en_tulostettava_uusi'
+  | 'en_tulostettava_paivitys'
+
 export type YleinenKielitutkintoTodistusLatausProps = {
   opiskeluoikeusOid: string
 }
 
-const kielitutkintoTodistusLanguages: OptionList<TodistusLanguage> = [
-  { key: 'fi', value: 'fi', label: t('Fi') },
-  { key: 'sv', value: 'sv', label: t('Sv') },
-  { key: 'en', value: 'en', label: t('En') }
+type TodistusPdfTemplate =
+  | 'digitaalinen'
+  | 'tulostettava_uusi'
+  | 'tulostettava_paivitys'
+
+const languageOptions: OptionList<TodistusLanguage> = [
+  { key: 'fi', value: 'fi', label: t('todistus:language:fi') },
+  { key: 'sv', value: 'sv', label: t('todistus:language:sv') },
+  { key: 'en', value: 'en', label: t('todistus:language:en') }
 ]
+
+const pdfTemplateOptions: OptionList<TodistusPdfTemplate> = [
+  {
+    key: 'digitaalinen',
+    value: 'digitaalinen',
+    label: t('todistus:pdfTemplate:digitaalinen')
+  },
+  {
+    key: 'tulostettava_uusi',
+    value: 'tulostettava_uusi',
+    label: t('todistus:pdfTemplate:tulostettava_uusi')
+  },
+  {
+    key: 'tulostettava_paivitys',
+    value: 'tulostettava_paivitys',
+    label: t('todistus:pdfTemplate:tulostettava_paivitys')
+  }
+]
+
+const buildTemplateVariant = (
+  language: TodistusLanguage,
+  pdfTemplate: TodistusPdfTemplate
+): TodistusTemplateVariant => {
+  if (pdfTemplate === 'digitaalinen') {
+    return language
+  }
+  return `${language}_${pdfTemplate}` as TodistusTemplateVariant
+}
 
 export const YleinenKielitutkintoTodistusLataus: React.FC<
   YleinenKielitutkintoTodistusLatausProps
 > = ({ opiskeluoikeusOid }) => {
-  const hasPääkäyttäjäAccess = useVirkailijaUser()?.hasPääkäyttäjäAccess
+  const user = useVirkailijaUser()
+  const hasPääkäyttäjäAccess = user?.hasPääkäyttäjäAccess
+  const hasKielitutkintoViewerAccess = user?.hasKielitutkintoViewerAccess
+  const canSelectPdfTemplate =
+    hasPääkäyttäjäAccess || hasKielitutkintoViewerAccess
 
   const [language, setLanguage] = useState<TodistusLanguage>('fi')
+  const [pdfTemplate, setPdfTemplate] =
+    useState<TodistusPdfTemplate>('digitaalinen')
+
+  const templateVariant = useMemo(
+    () => buildTemplateVariant(language, pdfTemplate),
+    [language, pdfTemplate]
+  )
+
   const [status, setStatus] = useSafeState<TodistusJob | null>(null)
   const [currentJobId, setCurrentJobId] = useSafeState<string | null>(null)
 
@@ -67,7 +128,7 @@ export const YleinenKielitutkintoTodistusLataus: React.FC<
     statusFetchByJobId.clear()
     setStatus(null)
 
-    const result = await generate.call(language, opiskeluoikeusOid)
+    const result = await generate.call(templateVariant, opiskeluoikeusOid)
     // generate palauttaa heti statuksen, joten pollataan vain jos generointi on käynnissä
     if (
       result._tag === 'Right' &&
@@ -81,7 +142,7 @@ export const YleinenKielitutkintoTodistusLataus: React.FC<
     generate,
     statusFetchByOid,
     statusFetchByJobId,
-    language,
+    templateVariant,
     opiskeluoikeusOid,
     statePoller,
     setStatus,
@@ -90,8 +151,8 @@ export const YleinenKielitutkintoTodistusLataus: React.FC<
 
   const updateStatusFromResponse = useCallback(
     (response: { data: TodistusJob }) => {
-      // Päivitä status vain jos se vastaa nykyistä kieltä
-      if (response.data.language === language) {
+      // Päivitä status vain jos se vastaa nykyistä varianttia
+      if (response.data.templateVariant === templateVariant) {
         const ignoredStates = ['EXPIRED', 'QUEUED_FOR_EXPIRE', 'INTERRUPTED']
 
         if (ignoredStates.includes(response.data.state)) {
@@ -111,7 +172,7 @@ export const YleinenKielitutkintoTodistusLataus: React.FC<
         }
       }
     },
-    [setStatus, setCurrentJobId, statePoller, language]
+    [setStatus, setCurrentJobId, statePoller, templateVariant]
   )
 
   useOnApiSuccess(statusFetchByOid, updateStatusFromResponse)
@@ -138,7 +199,10 @@ export const YleinenKielitutkintoTodistusLataus: React.FC<
       setStatus(null)
       setCurrentJobId(null)
 
-      const result = await statusFetchByOid.call(language, opiskeluoikeusOid)
+      const result = await statusFetchByOid.call(
+        templateVariant,
+        opiskeluoikeusOid
+      )
 
       if (result._tag === 'Right') {
         const job = result.right.data
@@ -163,7 +227,7 @@ export const YleinenKielitutkintoTodistusLataus: React.FC<
 
     fetchInitialStatus()
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [language, opiskeluoikeusOid])
+  }, [templateVariant, opiskeluoikeusOid])
 
   useEffect(() => {
     return () => {
@@ -178,7 +242,29 @@ export const YleinenKielitutkintoTodistusLataus: React.FC<
         setStatus(null)
         setCurrentJobId(null)
         statePoller.stop()
-        generate.clear() // Nollaa myös generoinnin tila
+        generate.clear()
+        statusFetchByOid.clear()
+        statusFetchByJobId.clear()
+      }
+    },
+    [
+      generate,
+      statusFetchByOid,
+      statusFetchByJobId,
+      statePoller,
+      setCurrentJobId,
+      setStatus
+    ]
+  )
+
+  const handlePdfTemplateChange = useCallback(
+    (option?: SelectOption<TodistusPdfTemplate>) => {
+      if (option?.value) {
+        setPdfTemplate(option.value)
+        setStatus(null)
+        setCurrentJobId(null)
+        statePoller.stop()
+        generate.clear()
         statusFetchByOid.clear()
         statusFetchByJobId.clear()
       }
@@ -221,8 +307,11 @@ export const YleinenKielitutkintoTodistusLataus: React.FC<
     return null
   }, [generate, statusFetchByJobId, hasError])
 
+  const openTestId = useTestId('kielitutkintoTodistus.open')
+  const openPreviewTestId = useTestId('kielitutkintoTodistus.openPreview')
+
   return (
-    <TestIdRoot id="kielitutkintoTodistus">
+    <TestIdLayer id="kielitutkintoTodistus">
       <Spacer />
       <div className="Todistus">
         <span className="Todistus__title">{'TODISTUS'}</span>
@@ -234,13 +323,30 @@ export const YleinenKielitutkintoTodistusLataus: React.FC<
           <Select
             className="Todistus__langSelect"
             testId="language"
-            options={kielitutkintoTodistusLanguages}
+            options={languageOptions}
             value={language}
             onChange={handleLanguageChange}
             disabled={!!isInProgress}
             allowOpenUpwards={true}
           />
         </div>
+        {canSelectPdfTemplate && (
+          <div className="Todistus__pdfTemplate">
+            <div className="Todistus__pdfTemplateLabel">
+              <Trans>{'todistus:pdf-pohja'}</Trans>
+              {':'}
+            </div>
+            <Select
+              className="Todistus__pdfTemplateSelect"
+              testId="pdfTemplate"
+              options={pdfTemplateOptions}
+              value={pdfTemplate}
+              onChange={handlePdfTemplateChange}
+              disabled={!!isInProgress}
+              allowOpenUpwards={true}
+            />
+          </div>
+        )}
         {!isInProgress && !isCompleted && !isLoadingStatus && (
           <RaisedButton
             testId="start"
@@ -260,7 +366,7 @@ export const YleinenKielitutkintoTodistusLataus: React.FC<
         )}
         {isCompleted && status && (
           <a
-            data-testid="kielitutkintoTodistus.open"
+            data-testid={openTestId}
             href={`/koski/todistus/download/${status.id}`}
             target="_blank"
             rel="noreferrer"
@@ -270,8 +376,8 @@ export const YleinenKielitutkintoTodistusLataus: React.FC<
         )}
         {hasPääkäyttäjäAccess && (
           <a
-            data-testid="kielitutkintoTodistus.openPreview"
-            href={`/koski/todistus/preview/${language}/${opiskeluoikeusOid}`}
+            data-testid={openPreviewTestId}
+            href={`/koski/todistus/preview/${templateVariant}/${opiskeluoikeusOid}`}
             target="_blank"
             rel="noreferrer"
           >
@@ -284,6 +390,6 @@ export const YleinenKielitutkintoTodistusLataus: React.FC<
           <TextWithLinks>{errorText}</TextWithLinks>
         </TestIdText>
       )}
-    </TestIdRoot>
+    </TestIdLayer>
   )
 }

@@ -16,7 +16,7 @@ class TodistusApiServlet(implicit val application: KoskiApplication)
   implicit def session: KoskiSpecificSession = koskiSessionOption.get
 
   before() {
-    requireKansalainenOrOphPääkäyttäjä
+    requireKansalainenOrTodistuksiaLataavaOphKäyttäjä
   }
 
   get("/status/:id") {
@@ -26,14 +26,14 @@ class TodistusApiServlet(implicit val application: KoskiApplication)
     )
   }
 
-  get("/status/:lang/:opiskeluoikeusOid") {
+  get("/status/:templateVariant/:opiskeluoikeusOid") {
     renderEither(
       getTodistusGenerateRequest
         .flatMap(service.checkStatus)
     )
   }
 
-  get("/generate/:lang/:opiskeluoikeusOid") {
+  get("/generate/:templateVariant/:opiskeluoikeusOid") {
     renderEither(
       getTodistusGenerateRequest
         .flatMap(service.checkAccessAndInitiateGenerating)
@@ -42,7 +42,8 @@ class TodistusApiServlet(implicit val application: KoskiApplication)
           extraFields = Map(
             KoskiAuditLogMessageField.oppijaHenkiloOid -> todistusJob.oppijaOid,
             KoskiAuditLogMessageField.opiskeluoikeusOid -> todistusJob.opiskeluoikeusOid,
-            KoskiAuditLogMessageField.todistusId -> todistusJob.id
+            KoskiAuditLogMessageField.todistusId -> todistusJob.id,
+            KoskiAuditLogMessageField.todistusTemplateVariant -> todistusJob.templateVariant
           )
         ))
     )
@@ -52,9 +53,9 @@ class TodistusApiServlet(implicit val application: KoskiApplication)
 
 case class TodistusGenerateRequest(
   opiskeluoikeusOid: String,
-  language: String,
+  templateVariant: String,
 ) {
-  def toPathParams = s"${language}/${opiskeluoikeusOid}"
+  def toPathParams = s"${templateVariant}/${opiskeluoikeusOid}"
 }
 
 case class TodistusIdRequest(

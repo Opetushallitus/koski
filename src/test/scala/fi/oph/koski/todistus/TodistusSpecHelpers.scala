@@ -4,8 +4,9 @@ import fi.oph.koski.api.misc.PutOpiskeluoikeusTestMethods
 import fi.oph.koski.documentation.ExamplesKielitutkinto
 import fi.oph.koski.henkilo.OppijaHenkilö
 import fi.oph.koski.koskiuser.MockUsers.paakayttaja
-import fi.oph.koski.koskiuser.{KoskiMockUser, MockUsers}
+import fi.oph.koski.koskiuser.MockUsers
 import fi.oph.koski.log.AuditLogTester
+import fi.oph.koski.koskiuser.KoskiMockUser
 import fi.oph.koski.schema.{KielitutkinnonOpiskeluoikeus, Opiskeluoikeus, Suoritus, YleisenKielitutkinnonSuoritus}
 import fi.oph.koski.schema.KoskiSchema.strictDeserialization
 import fi.oph.koski.util.Wait
@@ -19,7 +20,6 @@ import org.scalatest.{BeforeAndAfterAll, BeforeAndAfterEach}
 import java.net.URL
 import java.security.MessageDigest
 import java.time.{Duration, LocalDate, LocalDateTime}
-import scala.jdk.CollectionConverters._
 
 class TodistusSpecHelpers extends AnyFreeSpec with KoskiHttpSpec with Matchers with BeforeAndAfterAll with BeforeAndAfterEach with PutOpiskeluoikeusTestMethods[KielitutkinnonOpiskeluoikeus] {
   def tag = implicitly[reflect.runtime.universe.TypeTag[KielitutkinnonOpiskeluoikeus]]
@@ -151,6 +151,18 @@ class TodistusSpecHelpers extends AnyFreeSpec with KoskiHttpSpec with Matchers w
     lastResponse.get
   }
 
+  def waitForStateTransitionAsVirkailijaPääkäyttäjä(id: String)(states: String*): TodistusJob = {
+    var lastResponse: Option[TodistusJob] = None
+    Wait.until {
+      getStatusSuccessfullyAsVirkailijaPääkäyttäjä(id) { response =>
+        states should contain(response.state)
+        lastResponse = Some(response)
+        response.state == states.last
+      }
+    }
+    lastResponse.get
+  }
+
   def waitForCompletion(id: String, hetu: String): TodistusJob =
     waitForStateTransition(id, hetu)(
       TodistusState.QUEUED,
@@ -161,6 +173,28 @@ class TodistusSpecHelpers extends AnyFreeSpec with KoskiHttpSpec with Matchers w
       TodistusState.SAVING_STAMPED_PDF,
       TodistusState.COMPLETED
     )
+
+  def waitForCompletionAsVirkailijaPääkäyttäjä(id: String): TodistusJob =
+    waitForStateTransitionAsVirkailijaPääkäyttäjä(id)(
+      TodistusState.QUEUED,
+      TodistusState.GATHERING_INPUT,
+      TodistusState.GENERATING_RAW_PDF,
+      TodistusState.SAVING_RAW_PDF,
+      TodistusState.STAMPING_PDF,
+      TodistusState.SAVING_STAMPED_PDF,
+      TodistusState.COMPLETED
+    )
+
+  def waitForCompletionAsUser(id: String, user: KoskiMockUser): TodistusJob = {
+    var lastResponse: Option[TodistusJob] = None
+    Wait.until {
+      get(s"api/todistus/status/$id", headers = authHeaders(user) ++ jsonContent) {
+        lastResponse = Some(parsedResponse)
+        parsedResponse.state == TodistusState.COMPLETED
+      }
+    }
+    lastResponse.get
+  }
 
   def waitForCompletionSkipStateChecks(id:String, hetu: String): TodistusJob = {
     var lastResponse: Option[TodistusJob] = None
@@ -185,15 +219,16 @@ class TodistusSpecHelpers extends AnyFreeSpec with KoskiHttpSpec with Matchers w
     lastResponse.get
   }
 
-  def createOrphanJob(oppijaOid: String, opiskeluoikeusOid: String, language: String, attempts: Int): TodistusJob = {
+  def createOrphanJob(oppijaOid: String, opiskeluoikeusOid: String, templateVariant: String, attempts: Int): TodistusJob = {
     val orphanJob = TodistusJob(
       id = java.util.UUID.randomUUID().toString,
       userOid = Some(oppijaOid),
       oppijaOid = oppijaOid,
       opiskeluoikeusOid = opiskeluoikeusOid,
-      language = language,
+      templateVariant = templateVariant,
       opiskeluoikeusVersionumero = Some(1),
       oppijaHenkilötiedotHash = Some("test-hash"),
+      isStamped = !TodistusTemplateVariant.printVariants.contains(templateVariant),
       state = TodistusState.GENERATING_RAW_PDF,
       createdAt = LocalDateTime.now(),
       startedAt = Some(LocalDateTime.now()),
