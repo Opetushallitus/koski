@@ -74,6 +74,7 @@ class SchedulerSpec extends AnyFreeSpec with TestEnvironment with Matchers {
 
       val paused = Scheduler.pauseForDuration(db, "test-pause-not-running", java.time.Duration.ofSeconds(1))
       paused should be(true)
+      Wait.until(!scheduler.isTaskRunning, timeoutMs = 1000)
       val countAfterPause = executionCount.get
 
       Thread.sleep(500)
@@ -97,6 +98,7 @@ class SchedulerSpec extends AnyFreeSpec with TestEnvironment with Matchers {
       // Pause for a long time
       val paused = Scheduler.pauseForDuration(db, "test-pause-restart", java.time.Duration.ofMinutes(10))
       paused should be(true)
+      Wait.until(!scheduler1.isTaskRunning, timeoutMs = 1000)
       val countAfterPause = executionCount.get
 
       Thread.sleep(300)

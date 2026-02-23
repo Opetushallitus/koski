@@ -36,7 +36,12 @@ class Scheduler(
 
   // Read context and lastFired after ensuring the row exists
   private val context: Option[JValue] = getScheduler.flatMap(_.context).orElse(initialContext)
-  private var lastFired: Timestamp = getScheduler.map(_.nextFireTime).getOrElse(new Timestamp(0))
+  // Initialize lastFired from DB. If DB value is in the past, use current time
+  // so the first fire waits one interval (prevents fire-on-startup for stale rows).
+  private var lastFired: Timestamp = {
+    val dbTime = getScheduler.map(_.nextFireTime).getOrElse(new Timestamp(0))
+    if (dbTime.before(now)) now else dbTime
+  }
 
   // Persist initialContext to DB if the row was just created with NULL context
   if (initialContext.isDefined && getScheduler.flatMap(_.context).isEmpty) {
