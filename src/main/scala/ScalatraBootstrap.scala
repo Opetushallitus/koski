@@ -17,7 +17,7 @@ import fi.oph.koski.koskiuser._
 import fi.oph.koski.massaluovutus.MassaluovutusServlet
 import fi.oph.koski.localization.KoskiSpecificLocalizationServlet
 import fi.oph.koski.log.Logging
-import fi.oph.koski.luovutuspalvelu.{PalveluvaylaServlet, TilastokeskusServlet}
+import fi.oph.koski.luovutuspalvelu.{PalveluvaylaServlet, SuomiFiServlet, TilastokeskusServlet}
 import fi.oph.koski.migri.MigriServlet
 import fi.oph.koski.mydata.{MyDataReactServlet, MyDataServlet}
 import fi.oph.koski.omadataoauth2.{OmaDataOAuth2AuthorizationServerServlet, OmaDataOAuth2CASWorkaroundServlet, OmaDataOAuth2DiscoveryServlet, OmaDataOAuth2LogoutPostResponseServlet, OmaDataOAuth2PostResponseDebugServlet, OmaDataOAuth2ResourceOwnerReactServlet, OmaDataOAuth2ResourceOwnerServlet, OmaDataOAuth2ResourceServerServlet}
@@ -142,6 +142,9 @@ class ScalatraBootstrap extends LifeCycle with Logging with Timing with GlobalEx
       mount("/koski/api/luovutuspalvelu/keha/sdg", new SdgServlet)
     }
     mount("/koski/api/palveluvayla", new PalveluvaylaServlet)
+    if (!Environment.isProdEnvironment(application.config)) {
+      mount("/koski/api/luovutuspalvelu/suomifi", new SuomiFiServlet)
+    }
     mount("/koski/api/luovutuspalvelu/haku", new TilastokeskusServlet)
     mount("/koski/api/omadata", new MyDataServlet)
     mount("/koski/api/omaopintopolkuloki", new OmaOpintoPolkuLokiServlet)

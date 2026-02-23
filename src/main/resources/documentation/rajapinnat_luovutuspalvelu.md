@@ -197,6 +197,64 @@ Mikäli oppijaa tai suorituksia ei löydy, palauttaa rajapinta
 
     ...
 
+## /koski/api/luovutuspalvelu/suomifi/rekisteritiedot
+
+Tällä kutsulla DVV:n Suomi.fi-palvelu hakee henkilön opiskeluoikeustiedot henkilötunnuksen perusteella.
+Rajapinta korvaa aiemman palveluväylän (X-Road) kautta toimineen SOAP-rajapinnan JSON-pohjaisella toteutuksella.
+
+Rajapinta palauttaa oppilaitokset ja niiden opiskeluoikeudet tiivistettynä: opiskeluoikeuden tila,
+alkamis- ja päättymispäivä sekä suorituksen nimi.
+
+### Esimerkkipyyntö
+
+    POST /koski/api/luovutuspalvelu/suomifi/rekisteritiedot HTTP/1.1
+    Content-Type: application/json
+
+    {
+      "hetu": "180859-914S"
+    }
+
+### Esimerkkivastaus
+
+    HTTP/1.1 200 OK
+    Content-Type: application/json
+
+    {
+      "oppilaitokset": [
+        {
+          "nimi": {
+            "fi": "Stadin ammatti- ja aikuisopisto",
+            "sv": "Stadin ammatti- ja aikuisopisto",
+            "en": "Stadin ammatti- ja aikuisopisto"
+          },
+          "opiskeluoikeudet": [
+            {
+              "tila": {
+                "fi": "Valmistunut",
+                "sv": "Utexaminerad",
+                "en": "Graduated"
+              },
+              "alku": "2012-09-01",
+              "loppu": "2016-05-31",
+              "nimi": {
+                "fi": "Luonto- ja ympäristöalan perustutkinto",
+                "sv": "Grundexamen i natur och miljö"
+              }
+            }
+          ]
+        }
+      ]
+    }
+
+Mikäli oppijaa ei löydy, palauttaa rajapinta tyhjän listan oppilaitoksia:
+
+    HTTP/1.1 200 OK
+    Content-Type: application/json
+
+    {
+      "oppilaitokset": []
+    }
+
 ## /koski/api/luovutuspalvelu/kela/hetu
 
 Esimerkkipyyntö
