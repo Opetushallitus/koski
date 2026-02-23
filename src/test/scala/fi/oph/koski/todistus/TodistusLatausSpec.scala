@@ -6,6 +6,7 @@ import fi.oph.koski.koskiuser.MockUsers
 import fi.oph.koski.schema.KoskiSchema.strictDeserialization
 import fi.oph.koski.schema.{KielitutkinnonOpiskeluoikeus, Opiskeluoikeus, YleisenKielitutkinnonOsakokeenSuoritus}
 import org.apache.pdfbox.Loader
+import org.apache.pdfbox.cos.{COSArray, COSDictionary, COSName}
 import org.apache.pdfbox.pdmodel.PDDocument
 import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject
 import org.apache.pdfbox.rendering.PDFRenderer
@@ -19,6 +20,7 @@ import org.verapdf.pdfa.{Foundries, PDFAParser, PDFAValidator}
 
 import java.awt.Rectangle
 import java.awt.image.BufferedImage
+import java.io.ByteArrayInputStream
 import javax.imageio.ImageIO
 import scala.jdk.CollectionConverters._
 
@@ -220,6 +222,13 @@ class TodistusLatausSpec extends TodistusSpecHelpers with BeforeAndAfterAll {
 
       "PDF alueet ja logot vastaavat referenssikuvaa pikselitasolla" in {
         verifyAreasByPixel(documentGetter(), lataustapa)
+      }
+
+      "PDF-allekirjoitusanalyysi (PdfSignatureAnalyzer)" in {
+        val report = PdfSignatureAnalyzer.analyzePdfDocument(bytesGetter(), documentGetter())
+        println("\n" + report.summary)
+
+        report.overallValid should be(true)
       }
     }
   }
@@ -565,8 +574,6 @@ class TodistusLatausSpec extends TodistusSpecHelpers with BeforeAndAfterAll {
       pageCount = 3
     )
   }
-
-  // TODO: TOR-2400: validoi todistus jollain paikallisella validaattorilla, ja katso, että sisältää kaiken long-term -validointia tukevan
 
   private def verifyYleinenKielitutkintoTodistusSisalto(pdfText: String): Unit = {
     // Tarkista, että todistuksen kaikki templatoidut merkkijonot löytyvät PDF:stä

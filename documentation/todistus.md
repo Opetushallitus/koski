@@ -37,6 +37,11 @@ Allekirjoitus
     ├── MockSwisscomClient   – HTTP-mock
     └── SwisscomCRLAndOCSPExtender – CRL/OCSP-tiedot allekirjoitettuun PDFihin
 
+Allekirjoituksen analysointi
+├── PdfSignatureAnalyzer        – PDF-allekirjoitusrakenteen analysointi (ByteRange, PKCS#7, DSS)
+├── PdfSignatureAnalyzerCLI     – komentorivityökalu PDF-allekirjoitusten analysointiin
+└── scripts/analyze-pdf-signature.sh – shell-skripti analyzer-työkalun käynnistämiseen
+
 Todistustyyppikohtainen logiikka
 └── yleinenkielitutkinto/
     ├── YleinenKielitutkintoTodistusDataBuilder – opiskeluoikeus → template-data
@@ -206,6 +211,8 @@ src/test/scala/fi/oph/koski/todistus/
 ├── TodistusAuditLogSpec          – audit-loggauksen testaus
 ├── TodistusLatausSpec            – PDF-sisältö, metadata, allekirjoitus, PDF/UA-vaatimukset,
 │                                   pikselivertailu referenssikuviin verraten
+├── PdfSignatureAnalyzerSpec      – PDF-allekirjoitusrakenneanalysaattorin testit. ByteRange-validointi,
+│                                   PKCS#7-rakenne, DSS-validointi, OCSP/CRL-tiedot.
 ├── TodistusDataValidationSpec    – template-datan validointi
 └── YleinenKielitutkintoTodistusDataBuilderSpec – data-transformaatio, järjestys, lokalisaatio
 ```
@@ -223,9 +230,46 @@ web/test/e2e/
 
 ## Allekirjoituksen verifointi
 
-Allekirjoituksen verifioinnille ei ole automaattitestejä. Validiutta voi varmentaa Adobe Acrobat:lla sekä
-DVV:n työkalulla https://dvv.fi/en/validate-document . Hakemistossa `src/main/mockdata/todistus` on erilaisia
-manuaalitestitapauksia.
+Joitain smoke-testi -tyyppisiä verifiointeja voi suorittaa itse tehdyllä **PDF Signature Analyzer** -työkalulla, mistä tarkemmat tiedot alla. Samaa
+analysaattoria käytetään myös automaattitesteissä.
+
+Tarkempi kryptografinen validointi pitää tehdä manuaalisilla työkaluilla, joista tarkempia tietoja alla erillisessä kappaleessa.
+
+Hakemistossa `src/main/mockdata/todistus` on erilaisia manuaalitestitapauksia.
+
+### PDF Signature Analyzer -työkalu
+
+Koski sisältää työkalun PDF-allekirjoitusten analysointiin. Työkalu keskittyy PDF-rakenteen ja ByteRange:n validointiin.
+
+**HUOM! Työkalu ei toistaiseksi tarkista allekirjoituksen kryptografista validiteettiä eikä sertifikaatin luottamusketjua.**
+
+- **ByteRange-analyysi**: Tarkistaa allekirjoitetun ja allekirjoittamattoman sisällön osuudet
+- **PKCS#7-rakenne**: Analysoi allekirjoituksen SignedData-rakenteen, sertifikaattiketjun ja aikaleiman
+- **DSS-validointi**: Varmistaa Document Security Store -rakenteen (OCSP/CRL-tiedot, VRI-merkinnät)
+
+#### Käyttö komentoriviltä
+
+```bash
+# Shell-skriptillä
+./scripts/analyze-pdf-signature.sh todistus.pdf
+
+# Suoraan Maven:llä
+mvn exec:java \
+  -Dexec.mainClass="fi.oph.koski.todistus.PdfSignatureAnalyzerCLI" \
+  -Dexec.args="todistus.pdf"
+```
+
+Exit-koodit:
+- `0` - PDF on validi
+- `1` - Virheelliset parametrit
+- `2` - PDF:ssä on ongelmia
+- `3` - Analyysi epäonnistui
+
+### Manuaalinen verifointi
+
+Allekirjoituksen kryptografisen validiteetin ja sertifikaattiketjun voi varmentaa:
+- **Adobe Acrobat** - näyttää allekirjoituksen tilan ja sertifikaattidetaljit
+- **DVV:n työkalu** - https://dvv.fi/en/validate-document
 
 ## Saavutettavuuden testaus
 
