@@ -146,12 +146,11 @@ jobs:
 
       - name: Tag deployed image
         env:
-          ECR_REGISTRY: ${{ steps.login-deployment.outputs.registry }}
+          ECR_ACCOUNT_ID: ${{ secrets.ECR_ACCOUNT_ID }}
           ECR_REPOSITORY: koski
           IMAGE_TAG: ${{ inputs.commithash }}
           DEPLOY_TAG: deploy-${{ inputs.environment }}
         run: |
           echo "Tagging image $ECR_REPOSITORY:$IMAGE_TAG as $DEPLOY_TAG"
-          docker pull $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
-          docker tag $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG $ECR_REGISTRY/$ECR_REPOSITORY:$DEPLOY_TAG
-          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$DEPLOY_TAG
+          MANIFEST=$(aws ecr batch-get-image --registry-id $ECR_ACCOUNT_ID --repository-name $ECR_REPOSITORY --image-ids imageTag=$IMAGE_TAG --query 'images[0].imageManifest' --output text)
+          aws ecr put-image --registry-id $ECR_ACCOUNT_ID --repository-name $ECR_REPOSITORY --image-tag $DEPLOY_TAG --image-manifest "$MANIFEST"
