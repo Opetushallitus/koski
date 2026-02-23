@@ -42,7 +42,6 @@ class MassaluovutusScheduler(application: KoskiApplication) extends Logging {
       new IntervalSchedule(application.config.getDuration("kyselyt.checkInterval")),
       None,
       runNextQuery,
-      runOnSingleNode = false,
       intervalMillis = 1000,
       config = application.config
     ))

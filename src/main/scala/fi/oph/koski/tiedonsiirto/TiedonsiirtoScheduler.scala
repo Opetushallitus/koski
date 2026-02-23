@@ -14,7 +14,6 @@ class TiedonsiirtoScheduler(db: DB, config: Config, tiedonsiirtoService: Tiedons
       new IntervalSchedule(config.getDuration("schedule.tiedonsiirtoSyncInterval")),
       None,
       syncTiedonsiirrot,
-      runOnSingleNode = false,
       intervalMillis = 1000,
       config = config
     )
