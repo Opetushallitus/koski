@@ -8,7 +8,7 @@ import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.koskiuser.KoskiSpecificSession.OPH_KATSELIJA_USER
 import fi.oph.koski.koskiuser.MockUsers.{hakemuspalveluKäyttäjä, kiosKäyttäjä}
-import fi.oph.koski.koskiuser.Rooli.{OPHKATSELIJA, KIOS}
+import fi.oph.koski.koskiuser.Rooli.{OPHKATSELIJA, VKT}
 import fi.oph.koski.koskiuser._
 import fi.oph.koski.log.AuditLogTester
 import fi.oph.koski.organisaatio.MockOrganisaatiot

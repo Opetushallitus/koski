@@ -609,7 +609,7 @@ object MockUsers {
     "valeria",
     "1.2.246.562.24.42042042058",
     Seq(OrganisaatioJaKäyttöoikeudet(Opetushallitus.organisaatioOid, List(
-      PalveluJaOikeus("KOSKI", Rooli.KIOS)
+      PalveluJaOikeus("KOSKI", Rooli.VKT)
     )))
   )
 
