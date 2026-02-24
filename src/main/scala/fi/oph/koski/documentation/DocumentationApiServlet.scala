@@ -24,7 +24,7 @@ import fi.oph.koski.valpas.massaluovutus.{ValpasEiOppivelvollisuuttaSuorittavatM
 import fi.oph.koski.valpas.oppija.ValpasInternalSchema
 import fi.oph.koski.valpas.ytl.ValpasYtlSchema
 import fi.oph.koski.valvira.ValviraSchema
-import fi.oph.koski.kios.VktSchema
+import fi.oph.koski.kios.KiosSchema
 import fi.oph.koski.ytl.YtlSchema
 
 import scala.reflect.runtime.{universe => ru}
@@ -81,8 +81,8 @@ class DocumentationApiServlet(application: KoskiApplication) extends KoskiSpecif
     AktiivisetJaPäättyneetOpinnotOppijaJakolinkillä.schemaJson
   }
 
-  get("/vkt-oppija-schema.json") {
-    VktSchema.schemaJson
+  get("/kios-oppija-schema.json") {
+    KiosSchema.schemaJson
   }
 
   get("/sdg-oppija-schema.json") {

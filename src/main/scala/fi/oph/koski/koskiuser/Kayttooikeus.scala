@@ -30,7 +30,7 @@ object Rooli {
   val VALVIRA = "VALVIRA"
   val MIGRI = "MIGRI"
   val YTL = "YTL"
-  val VKT = "VKT"
+  val KIOS = "KIOS"
   val SDG = "KEHA-SDG"
   val HAKEMUSPALVELU_API = "HAKEMUSPALVELU_API"
   val HSL = "HSL"

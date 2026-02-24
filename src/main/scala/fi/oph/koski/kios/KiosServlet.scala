@@ -4,7 +4,7 @@ import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.henkilo.{HenkilöOid, Hetu}
 import fi.oph.koski.http.{HttpStatus, JsonErrorMessage, KoskiErrorCategory}
 import fi.oph.koski.json.JsonSerializer
-import fi.oph.koski.koskiuser.{KoskiSpecificSession, RequiresVkt}
+import fi.oph.koski.koskiuser.{KoskiSpecificSession, RequiresKios}
 import fi.oph.koski.log.{AuditLog, KoskiAuditLogMessage, KoskiAuditLogMessageField, KoskiOperation}
 import fi.oph.koski.servlet.{KoskiSpecificApiServlet, NoCache}
 import org.json4s.JValue
@@ -12,13 +12,13 @@ import org.json4s.JValue
 case class OidRequest(oid: String)
 case class HetuRequest(hetu: String)
 
-class VktServlet(implicit val application: KoskiApplication) extends KoskiSpecificApiServlet with RequiresVkt with NoCache {
+class KiosServlet(implicit val application: KoskiApplication) extends KoskiSpecificApiServlet with RequiresKios with NoCache {
   post("/oid") {
     val ophKatselijaUser = KoskiSpecificSession.ophKatselijaUser(request)
     withJsonBody { json =>
-      val oppija = extractAndValidateOid(json).flatMap(oid => application.vktService.findOppija(oid)(ophKatselijaUser))
+      val oppija = extractAndValidateOid(json).flatMap(oid => application.kiosService.findOppija(oid)(ophKatselijaUser))
       oppija.map(o => o.opiskeluoikeudet.foreach {
-        case x: VktKoskeenTallennettavaOpiskeluoikeus if x.oid.isDefined => auditLog(o.henkilö.oid, opiskeluoikeusOid = x.oid.get)
+        case x: KiosKoskeenTallennettavaOpiskeluoikeus if x.oid.isDefined => auditLog(o.henkilö.oid, opiskeluoikeusOid = x.oid.get)
         case _ => auditLog(o.henkilö.oid)
       })
       renderEither(oppija)
@@ -28,7 +28,7 @@ class VktServlet(implicit val application: KoskiApplication) extends KoskiSpecif
   post("/hetu") {
     val ophKatselijaUser = KoskiSpecificSession.ophKatselijaUser(request)
     withJsonBody { json =>
-      renderEither(extractAndValidateHetu(json).flatMap(hetu => application.vktService.findOppijaByHetu(hetu)(ophKatselijaUser)))
+      renderEither(extractAndValidateHetu(json).flatMap(hetu => application.kiosService.findOppijaByHetu(hetu)(ophKatselijaUser)))
     }()
   }
 
@@ -46,7 +46,7 @@ class VktServlet(implicit val application: KoskiApplication) extends KoskiSpecif
     AuditLog
       .log(
         KoskiAuditLogMessage(
-          KoskiOperation.VKT_OPISKELUOIKEUS_HAKU,
+          KoskiOperation.KIOS_OPISKELUOIKEUS_HAKU,
           user,
           Map(
             KoskiAuditLogMessageField.oppijaHenkiloOid -> oppijaOid,
@@ -59,7 +59,7 @@ class VktServlet(implicit val application: KoskiApplication) extends KoskiSpecif
     AuditLog
       .log(
         KoskiAuditLogMessage(
-          KoskiOperation.VKT_OPISKELUOIKEUS_HAKU,
+          KoskiOperation.KIOS_OPISKELUOIKEUS_HAKU,
           user,
           Map(
             KoskiAuditLogMessageField.oppijaHenkiloOid -> oppijaOid,

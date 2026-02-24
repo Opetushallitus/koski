@@ -5,35 +5,35 @@ import fi.oph.koski.schema.annotation.KoodistoKoodiarvo
 import fi.oph.scalaschema.annotation.Title
 
 @Title("DIA-tutkinnon opiskeluoikeus")
-case class VktDIAOpiskeluoikeus(
+case class KiosDIAOpiskeluoikeus(
   oid: Option[String],
   versionumero: Option[Int],
   oppilaitos: Option[Oppilaitos],
   koulutustoimija: Option[Koulutustoimija],
-  tila: VktOpiskeluoikeudenTila,
-  suoritukset: List[VktDIATutkinnonSuoritus],
+  tila: KiosOpiskeluoikeudenTila,
+  suoritukset: List[KiosDIATutkinnonSuoritus],
   @KoodistoKoodiarvo(schema.OpiskeluoikeudenTyyppi.diatutkinto.koodiarvo)
   tyyppi: schema.Koodistokoodiviite,
-) extends VktKoskeenTallennettavaOpiskeluoikeus {
+) extends KiosKoskeenTallennettavaOpiskeluoikeus {
 
-  override def lisätiedot: Option[VktOpiskeluoikeudenLisätiedot] = None
+  override def lisätiedot: Option[KiosOpiskeluoikeudenLisätiedot] = None
 
-  override def withSuoritukset(suoritukset: List[Suoritus]): VktKoskeenTallennettavaOpiskeluoikeus =
+  override def withSuoritukset(suoritukset: List[Suoritus]): KiosKoskeenTallennettavaOpiskeluoikeus =
     this.copy(
-      suoritukset = suoritukset.collect { case s: VktDIATutkinnonSuoritus => s }
+      suoritukset = suoritukset.collect { case s: KiosDIATutkinnonSuoritus => s }
     )
 }
 
 
 @Title("DIA-tutkinnon suoritus")
-case class VktDIATutkinnonSuoritus(
-  koulutusmoduuli: VktDIATutkinto,
+case class KiosDIATutkinnonSuoritus(
+  koulutusmoduuli: KiosDIATutkinto,
   toimipiste: Option[Toimipiste],
   vahvistus: Option[Vahvistus],
   @KoodistoKoodiarvo("diatutkintovaihe")
   tyyppi: schema.Koodistokoodiviite,
 ) extends Suoritus
 
-case class VktDIATutkinto(
-  tunniste: VktKoodistokoodiviite
+case class KiosDIATutkinto(
+  tunniste: KiosKoodistokoodiviite
 ) extends SuorituksenKoulutusmoduuli

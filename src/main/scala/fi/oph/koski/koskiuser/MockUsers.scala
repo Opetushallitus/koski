@@ -604,12 +604,12 @@ object MockUsers {
     )))
   )
 
-  val vktKäyttäjä = KoskiMockUser(
-    "VKT-virkailija",
+  val kiosKäyttäjä = KoskiMockUser(
+    "KIOS-virkailija",
     "valeria",
     "1.2.246.562.24.42042042058",
     Seq(OrganisaatioJaKäyttöoikeudet(Opetushallitus.organisaatioOid, List(
-      PalveluJaOikeus("KOSKI", Rooli.VKT)
+      PalveluJaOikeus("KOSKI", Rooli.KIOS)
     )))
   )
 
@@ -772,7 +772,7 @@ object MockUsers {
     varsinaisSuomiOppilaitosTallentaja,
     varsinaisSuomiHankintakoulutusOppilaitosTallentaja,
     ytlKäyttäjä,
-    vktKäyttäjä,
+    kiosKäyttäjä,
     kehaSdgKäyttäjä,
     hakemuspalveluKäyttäjä,
     xssHyökkääjä,

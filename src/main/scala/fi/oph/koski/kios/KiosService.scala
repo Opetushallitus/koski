@@ -7,24 +7,24 @@ import fi.oph.koski.koskiuser.KoskiSpecificSession
 import fi.oph.koski.log._
 import fi.oph.koski.suoritusjako.common.{OpiskeluoikeusFacade, RawOppija}
 
-class VktService(application: KoskiApplication) extends GlobalExecutionContext with Logging {
-  private val opiskeluoikeusFacade = new OpiskeluoikeusFacade[VktOpiskeluoikeus](
+class KiosService(application: KoskiApplication) extends GlobalExecutionContext with Logging {
+  private val opiskeluoikeusFacade = new OpiskeluoikeusFacade[KiosOpiskeluoikeus](
     application,
-    Some(VktYlioppilastutkinnonOpiskeluoikeus.fromKoskiSchema),
-    Some(VktKorkeakoulunOpiskeluoikeus.fromKoskiSchema)
+    Some(KiosYlioppilastutkinnonOpiskeluoikeus.fromKoskiSchema),
+    Some(KiosKorkeakoulunOpiskeluoikeus.fromKoskiSchema)
   )
 
   def findOppija(oppijaOid: String)
-    (implicit koskiSession: KoskiSpecificSession): Either[HttpStatus, VktOppija] = {
+    (implicit koskiSession: KoskiSpecificSession): Either[HttpStatus, KiosOppija] = {
 
-    val vktOppija = opiskeluoikeusFacade.haeOpiskeluoikeudet(oppijaOid, VktSchema.schemassaTuetutOpiskeluoikeustyypit, useDownloadedYtr = true)
-      .map(teePalautettavaVktOppija)
+    val kiosOppija = opiskeluoikeusFacade.haeOpiskeluoikeudet(oppijaOid, KiosSchema.schemassaTuetutOpiskeluoikeustyypit, useDownloadedYtr = true)
+      .map(teePalautettavaKiosOppija)
 
-    vktOppija
+    kiosOppija
   }
 
   def findOppijaByHetu(hetu: String)
-    (implicit koskiSession: KoskiSpecificSession): Either[HttpStatus, VktOppija] = {
+    (implicit koskiSession: KoskiSpecificSession): Either[HttpStatus, KiosOppija] = {
 
     val oppijaResult = application.opintopolkuHenkilöFacade.findOppijaByHetu(hetu)
 
@@ -34,16 +34,16 @@ class VktService(application: KoskiApplication) extends GlobalExecutionContext w
     }
   }
 
-  private def teePalautettavaVktOppija(
-    rawOppija: RawOppija[VktOpiskeluoikeus]
-  ): VktOppija = {
-    VktOppija(
+  private def teePalautettavaKiosOppija(
+    rawOppija: RawOppija[KiosOpiskeluoikeus]
+  ): KiosOppija = {
+    KiosOppija(
       henkilö = Henkilo.fromOppijaHenkilö(rawOppija.henkilö),
       opiskeluoikeudet = suodataPalautettavat(rawOppija.opiskeluoikeudet).toList
     )
   }
 
-  private def suodataPalautettavat(opiskeluoikeudet: Seq[VktOpiskeluoikeus]): Seq[VktOpiskeluoikeus] = {
+  private def suodataPalautettavat(opiskeluoikeudet: Seq[KiosOpiskeluoikeus]): Seq[KiosOpiskeluoikeus] = {
     opiskeluoikeudet
       .map { opiskeluoikeus =>
         opiskeluoikeus.withSuoritukset(
@@ -57,7 +57,7 @@ class VktService(application: KoskiApplication) extends GlobalExecutionContext w
 
   private def josYOTutkintoNiinVahvistettu(s: Suoritus): Boolean = {
     s match {
-      case s: VktYlioppilastutkinnonPäätasonSuoritus
+      case s: KiosYlioppilastutkinnonPäätasonSuoritus
       => s.vahvistus.isDefined
       case _
       => true
@@ -66,7 +66,7 @@ class VktService(application: KoskiApplication) extends GlobalExecutionContext w
 
   private def josEBTutkintoNiinVahvistettu(s: Suoritus): Boolean = {
     s match {
-      case s: VktEBTutkinnonPäätasonSuoritus
+      case s: KiosEBTutkinnonPäätasonSuoritus
       => s.vahvistus.isDefined
       case _
       => true
@@ -75,7 +75,7 @@ class VktService(application: KoskiApplication) extends GlobalExecutionContext w
 
   private def josDIATutkintoNiinVahvistettu(s: Suoritus): Boolean = {
     s match {
-      case s: VktDIATutkinnonSuoritus
+      case s: KiosDIATutkinnonSuoritus
       => s.vahvistus.isDefined
       case _
       => true
