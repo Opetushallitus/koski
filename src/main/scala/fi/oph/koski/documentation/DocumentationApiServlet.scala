@@ -85,6 +85,11 @@ class DocumentationApiServlet(application: KoskiApplication) extends KoskiSpecif
     KiosSchema.schemaJson
   }
 
+  // TODO: TOR-2471: Poista kun KIOS-tiimi on siirtynyt käyttämään /kios-oppija-schema.json -polkua
+  get("/vkt-oppija-schema.json") {
+    KiosSchema.schemaJson
+  }
+
   get("/sdg-oppija-schema.json") {
     SdgSchema.schemaJson
   }
