@@ -899,7 +899,8 @@ class OppijaValidationAmmatillisenTutkinnonOsittainenSuoritusSpec extends Tutkin
             verifyResponseStatus(
               400,
               KoskiErrorCategory.badRequest.validation.tila.valmiiksiMerkityltäPuuttuuOsasuorituksia("Suoritus koulutus/361902 on merkitty valmiiksi, mutta sillä ei ole ammatillisen tutkinnon osan suoritusta tai opiskeluoikeudelta puuttuu linkitys"),
-              KoskiErrorCategory.badRequest.validation.ammatillinen.korotettuOsasuoritus()
+              KoskiErrorCategory.badRequest.validation.ammatillinen.korotettuOsasuoritus(),
+              KoskiErrorCategory.badRequest.validation.ammatillinen.osatutkintotavoitteisenValmistuminen()
             )
           }
         }
@@ -1401,6 +1402,60 @@ class OppijaValidationAmmatillisenTutkinnonOsittainenSuoritusSpec extends Tutkin
           putOpiskeluoikeus(korotettuOo, amiksenKorottaja) {
             verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.ammatillinen.liikaaSamojaTutkinnonOsia())
           }
+        }
+      }
+    }
+
+    "Osatutkintotavoitteisen valmistuminen" - {
+      val keskeneräinenOsaSuoritus = osittaisenTutkinnonOsaSuoritus.copy(arviointi = None)
+
+      "Valmis osatutkintotavoitteinen keskeneräisellä ammatillisella tutkinnon osalla hylätään" in {
+        val suoritus = ammatillisenTutkinnonOsittainenSuoritus.copy(
+          osasuoritukset = Some(List(keskeneräinenOsaSuoritus))
+        )
+        val oo = makeOpiskeluoikeus(suoritus = suoritus, tila = Some(opiskeluoikeusValmistunut))
+        setupOppijaWithOpiskeluoikeus(oo) {
+          verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.ammatillinen.osatutkintotavoitteisenValmistuminen())
+        }
+      }
+
+      "Valmis osatutkintotavoitteinen keskeneräisellä yhteisellä tutkinnon osalla hylätään" in {
+        val keskeneräinenYhteinenOsa = yhteisenOsittaisenTutkinnonTutkinnonOsansuoritus(k3, yhteisetTutkinnonOsat, "101054", "Matemaattis-luonnontieteellinen osaaminen", 9).copy(
+          arviointi = None,
+          vahvistus = None,
+          osasuoritukset = Some(List(
+            YhteisenTutkinnonOsanOsaAlueenSuoritus(koulutusmoduuli = PaikallinenAmmatillisenTutkinnonOsanOsaAlue(PaikallinenKoodi("MA", "Matematiikka"), "Matematiikan opinnot", pakollinen = true, Some(LaajuusOsaamispisteissä(3))), arviointi = Some(List(arviointiKiitettävä))),
+          ))
+        )
+        val suoritus = ammatillisenTutkinnonOsittainenSuoritus.copy(
+          osasuoritukset = Some(List(keskeneräinenYhteinenOsa))
+        )
+        val oo = makeOpiskeluoikeus(suoritus = suoritus, tila = Some(opiskeluoikeusValmistunut))
+        setupOppijaWithOpiskeluoikeus(oo) {
+          verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.ammatillinen.osatutkintotavoitteisenValmistuminen())
+        }
+      }
+
+      "Valmis osatutkintotavoitteinen valmiilla ammatillisella tutkinnon osalla hyväksytään" in {
+        val suoritus = ammatillisenTutkinnonOsittainenSuoritus.copy(
+          osasuoritukset = Some(List(osittaisenTutkinnonOsaSuoritus))
+        )
+        val oo = makeOpiskeluoikeus(suoritus = suoritus, tila = Some(opiskeluoikeusValmistunut))
+        setupOppijaWithOpiskeluoikeus(oo) {
+          verifyResponseStatusOk()
+        }
+      }
+
+      "Valmis osatutkintotavoitteinen valmiilla yhteisellä tutkinnon osalla hyväksytään" in {
+        val yhteinenOsa = yhteisenOsittaisenTutkinnonTutkinnonOsansuoritus(k3, yhteisetTutkinnonOsat, "101054", "Matemaattis-luonnontieteellinen osaaminen", 9).copy(osasuoritukset = Some(List(
+          YhteisenTutkinnonOsanOsaAlueenSuoritus(koulutusmoduuli = PaikallinenAmmatillisenTutkinnonOsanOsaAlue(PaikallinenKoodi("MA", "Matematiikka"), "Matematiikan opinnot", pakollinen = true, Some(LaajuusOsaamispisteissä(3))), arviointi = Some(List(arviointiKiitettävä))),
+        )))
+        val suoritus = ammatillisenTutkinnonOsittainenSuoritus.copy(
+          osasuoritukset = Some(List(yhteinenOsa))
+        )
+        val oo = makeOpiskeluoikeus(suoritus = suoritus, tila = Some(opiskeluoikeusValmistunut))
+        setupOppijaWithOpiskeluoikeus(oo) {
+          verifyResponseStatusOk()
         }
       }
     }
