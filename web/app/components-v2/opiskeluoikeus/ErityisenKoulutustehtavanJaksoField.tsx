@@ -22,7 +22,7 @@ export const ErityisenKoulutustehtävänJaksoView: React.FC<
       <TestIdText id="alku">
         {value?.alku && ISO2FinnishDate(value.alku)}
       </TestIdText>{' '}
-      {' - '}
+      {' — '}
       <TestIdText id="loppu">
         {value?.loppu && ISO2FinnishDate(value.loppu)}
       </TestIdText>{' '}
@@ -64,9 +64,9 @@ export const ErityisenKoulutustehtävänJaksoEdit: React.FC<
 
   return (
     <TestIdLayer id="maksuttomuus">
-      <div className="MaksuttomuusEdit">
+      <div className="AikajaksoEdit">
         <DateInput value={value?.alku} onChange={setAlku} testId="alku" />
-        <span className="MaksuttomuusEdit__separator"> {' - '}</span>
+        <span className="AikajaksoEdit__separator"> {' — '}</span>
         <DateInput value={value?.loppu} onChange={setLoppu} testId="loppu" />
         <KoodistoSelect
           koodistoUri="erityinenkoulutustehtava"

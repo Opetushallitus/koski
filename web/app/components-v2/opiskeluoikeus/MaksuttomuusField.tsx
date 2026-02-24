@@ -21,7 +21,7 @@ export const MaksuttomuusView: React.FC<MaksuttomuusViewProps> = ({
       <TestIdText id="alku">
         {value?.alku && ISO2FinnishDate(value.alku)}
       </TestIdText>{' '}
-      {' - '}
+      {' — '}
       <TestIdText id="loppu">
         {value?.loppu && ISO2FinnishDate(value.loppu)}
       </TestIdText>
@@ -49,20 +49,14 @@ export const MaksuttomuusEdit: React.FC<MaksuttomuusEditProps> = ({
     alku && onChange({ ...emptyMaksuttomuuus, ...value, alku })
   }
 
-  const setLoppu = (loppu?: string) => {
-    onChange({ ...emptyMaksuttomuuus, ...value, loppu })
-  }
-
   const setMaksuton = (maksuton: boolean) => {
-    onChange({ ...emptyMaksuttomuuus, maksuton })
+    onChange({ ...emptyMaksuttomuuus, ...value, maksuton })
   }
 
   return (
     <TestIdLayer id="maksuttomuus">
-      <div className="MaksuttomuusEdit">
+      <div className="AikajaksoEdit">
         <DateInput value={value?.alku} onChange={setAlku} testId="alku" />
-        <span className="MaksuttomuusEdit__separator"> {' - '}</span>
-        <DateInput value={value?.loppu} onChange={setLoppu} testId="loppu" />
         <Checkbox
           checked={value?.maksuton || false}
           onChange={setMaksuton}

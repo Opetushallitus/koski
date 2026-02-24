@@ -3,7 +3,11 @@ import { TestIdText, useTestId } from '../../appstate/useTestId'
 import { EmptyObject } from '../../types/EditorModels'
 import { common, CommonProps, cx } from '../CommonProps'
 import { FieldErrors } from '../forms/FieldErrors'
-import { FieldEditorProps, FieldViewerProps } from '../forms/FormField'
+import {
+  FieldEditorProps,
+  FieldViewerProps,
+  componentsWithBuiltInErrors
+} from '../forms/FormField'
 
 export type TextViewProps = CommonProps<FieldViewerProps<string, EmptyObject>>
 
@@ -23,6 +27,7 @@ export type TextEditProps = CommonProps<
       testId?: string
       disabled?: boolean
       large?: boolean
+      hasErrors?: boolean
     }
   >
 >
@@ -46,7 +51,7 @@ export const TextEdit: React.FC<TextEditProps> = (props) => {
         <textarea
           className={cx(
             'TextEdit__input',
-            props.errors && 'TextEdit__input--error'
+            (props.errors || props.hasErrors) && 'TextEdit__input--error'
           )}
           placeholder={props.placeholder}
           onChange={onChangeCB}
@@ -60,7 +65,7 @@ export const TextEdit: React.FC<TextEditProps> = (props) => {
         <input
           className={cx(
             'TextEdit__input',
-            props.errors && 'TextEdit__input--error'
+            (props.errors || props.hasErrors) && 'TextEdit__input--error'
           )}
           placeholder={props.placeholder}
           value={value || ''}
@@ -74,6 +79,7 @@ export const TextEdit: React.FC<TextEditProps> = (props) => {
     </label>
   )
 }
+componentsWithBuiltInErrors.add(TextEdit)
 
 export const MultilineTextEdit: React.FC<TextEditProps> = (props) => {
   const testId = useTestId(props.testId, 'input')
@@ -91,7 +97,7 @@ export const MultilineTextEdit: React.FC<TextEditProps> = (props) => {
       <textarea
         className={cx(
           'TextEdit__input',
-          props.errors && 'TextEdit__input--error'
+          (props.errors || props.hasErrors) && 'TextEdit__input--error'
         )}
         placeholder={props.placeholder}
         value={props.value}
@@ -103,3 +109,4 @@ export const MultilineTextEdit: React.FC<TextEditProps> = (props) => {
     </label>
   )
 }
+componentsWithBuiltInErrors.add(MultilineTextEdit)

@@ -1,6 +1,6 @@
 import React, { useCallback, useMemo, useState } from 'react'
 import { TestIdLayer, TestIdText } from '../../appstate/useTestId'
-import { ISO2FinnishDate } from '../../date/date'
+import { ISO2FinnishDate, parseISODate } from '../../date/date'
 import { t } from '../../i18n/i18n'
 import { Koulutustoimija } from '../../types/fi/oph/koski/schema/Koulutustoimija'
 import { Opiskeluoikeus } from '../../types/fi/oph/koski/schema/Opiskeluoikeus'
@@ -185,12 +185,16 @@ export const SuorituksenVahvistus: React.FC<SuorituksenVahvistusProps> = (
     <div
       {...common(props, [
         'SuorituksenVahvistus',
-        vahvistus && 'SuorituksenVahvistus--valmis'
+        vahvistus &&
+          isVahvistusPäiväMennyt(vahvistus) &&
+          'SuorituksenVahvistus--valmis'
       ])}
     >
       <div className="SuorituksenVahvistus__status">
         <TestIdText id="status">
-          {vahvistus ? t('Suoritus valmis') : t('Suoritus kesken')}
+          {vahvistus && isVahvistusPäiväMennyt(vahvistus)
+            ? t('Suoritus valmis')
+            : t('Suoritus kesken')}
         </TestIdText>
       </div>
       {vahvistus && (
@@ -199,8 +203,7 @@ export const SuorituksenVahvistus: React.FC<SuorituksenVahvistusProps> = (
             <TestIdText id="details">
               <Trans>{'Vahvistus'}</Trans>
               {': '}
-              {ISO2FinnishDate(vahvistus.päivä)}{' '}
-              {t(vahvistus.myöntäjäOrganisaatio.nimi)}
+              {ISO2FinnishDate(vahvistus.päivä)} {vahvistusPaikka(vahvistus)}
             </TestIdText>
           </div>
           <TestIdLayer id="henkilö">
@@ -215,4 +218,16 @@ export const SuorituksenVahvistus: React.FC<SuorituksenVahvistusProps> = (
       {props.children}
     </div>
   )
+}
+
+const vahvistusPaikka = (vahvistus: Vahvistus): string => {
+  if ('paikkakunta' in vahvistus && vahvistus.paikkakunta) {
+    return t(vahvistus.paikkakunta.nimi)
+  }
+  return t(vahvistus.myöntäjäOrganisaatio.nimi)
+}
+
+const isVahvistusPäiväMennyt = (vahvistus: Vahvistus): boolean => {
+  const date = parseISODate(vahvistus.päivä)
+  return date instanceof Date && date <= new Date()
 }

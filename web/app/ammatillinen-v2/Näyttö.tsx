@@ -78,7 +78,7 @@ const NäyttöViewBase = (value?: AnyNäyttö) => (
     </KeyValueRow>
     <KeyValueRow localizableLabel="Suoritusaika">
       {value?.suoritusaika?.alku && ISO2FinnishDate(value.suoritusaika.alku)}
-      {' - '}
+      {' — '}
       {value?.suoritusaika?.loppu && ISO2FinnishDate(value.suoritusaika.loppu)}
     </KeyValueRow>
     <NäytönArviointiView value={value?.arviointi} />
@@ -111,7 +111,8 @@ const NäyttöEditBase = <T extends AnyNäyttö>({
           <MultilineTextEdit
             value={t(value?.kuvaus)}
             onChange={(kuvaus) =>
-              kuvaus && onChange({ ...value, kuvaus: localize(kuvaus) })
+              kuvaus !== undefined &&
+              onChange({ ...value, kuvaus: localize(kuvaus) })
             }
           />
         </KeyValueRow>
@@ -134,7 +135,7 @@ const NäyttöEditBase = <T extends AnyNäyttö>({
           <LocalizedTextEdit
             value={value?.suorituspaikka?.kuvaus}
             onChange={(kuvaus) =>
-              kuvaus &&
+              kuvaus !== undefined &&
               onChange({
                 ...value,
                 suorituspaikka: {
@@ -161,7 +162,7 @@ const NäyttöEditBase = <T extends AnyNäyttö>({
               }}
               testId="alku"
             />
-            <span className="AikajaksoEdit__separator"> {' - '}</span>
+            <span className="AikajaksoEdit__separator"> {' — '}</span>
             <DateInput
               value={value?.suoritusaika?.loppu}
               onChange={(loppu?: string) => {
@@ -255,7 +256,7 @@ const NäytönArviointiEdit = ({
             <TextEdit
               value={a.nimi}
               onChange={(nimi) =>
-                nimi &&
+                nimi !== undefined &&
                 value.arvioitsijat &&
                 onChange({
                   ...emptyNäytönArviointi,

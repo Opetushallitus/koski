@@ -1,6 +1,6 @@
 import { NonEmptyArray } from 'fp-ts/lib/NonEmptyArray'
 import React, { useCallback, useMemo, useState } from 'react'
-import { TestIdLayer, TestIdRoot } from '../../appstate/useTestId'
+import { TestIdLayer, TestIdRoot, useTestId } from '../../appstate/useTestId'
 import { localize, t } from '../../i18n/i18n'
 import { LocalizedString } from '../../types/fi/oph/koski/schema/LocalizedString'
 import { Opiskeluoikeus } from '../../types/fi/oph/koski/schema/Opiskeluoikeus'
@@ -15,7 +15,6 @@ import { OpiskeluoikeusjaksoOf } from '../../util/schema'
 import { ClassOf, ItemOf } from '../../util/types'
 import { useConfirmUnload } from '../../util/useConfirmUnload'
 import { CommonPropsWithChildren, common } from '../CommonProps'
-import { FlatButton } from '../controls/FlatButton'
 import { Tab, Tabs } from '../controls/Tabs'
 import { FormField } from '../forms/FormField'
 import { FormModel, FormOptic } from '../forms/FormModel'
@@ -88,7 +87,7 @@ export const EditorContainer = <T extends Opiskeluoikeus>(
     [props.form]
   )
 
-  const [lisatiedotOpen, setLisatiedotOpen] = useState(false)
+  const [lisatiedotOpen, setLisatiedotOpen] = useState(true)
   const onSave = useCallback(() => {
     props.form.save(
       saveOpiskeluoikeus(props.oppijaOid),
@@ -167,6 +166,9 @@ export const EditorContainer = <T extends Opiskeluoikeus>(
           </>
         )}
 
+        {AdditionalOpiskeluoikeusFields && (
+          <AdditionalOpiskeluoikeusFields form={props.form} />
+        )}
         {props.opiskeluoikeudenTilaEditor || (
           <>
             <FormField
@@ -188,29 +190,21 @@ export const EditorContainer = <T extends Opiskeluoikeus>(
           path={opiskeluoikeudenOrganisaatiohistoriaPath}
           view={OrganisaatiohistoriaView}
         />
-        {AdditionalOpiskeluoikeusFields && (
-          <AdditionalOpiskeluoikeusFields form={props.form} />
-        )}
         <Spacer />
         {LisätiedotContainer !== undefined &&
           (props.form.editMode ||
             ('lisätiedot' in props.form.state &&
               !isEmptyModelObject(props.form.state.lisätiedot))) && (
             <>
-              <FlatButton
-                testId="lisätiedotButton"
-                onClick={(e) => {
-                  e.preventDefault()
-                  setLisatiedotOpen((prev) => !prev)
-                }}
-              >
-                {lisatiedotOpen
-                  ? t('lisatiedot:sulje_lisatiedot')
-                  : t('lisatiedot:nayta_lisatiedot')}
-              </FlatButton>
+              <LisätiedotToggle
+                open={lisatiedotOpen}
+                onToggle={() => setLisatiedotOpen((prev) => !prev)}
+              />
               {lisatiedotOpen && (
                 <TestIdLayer id="lisätiedot">
-                  <LisätiedotContainer form={props.form} />
+                  <div className="EditorContainer__lisatiedot">
+                    <LisätiedotContainer form={props.form} />
+                  </div>
                 </TestIdLayer>
               )}
               <Spacer />
@@ -263,6 +257,26 @@ export const usePäätasonSuoritus = <T extends Opiskeluoikeus>(
     [form.state.suoritukset, index]
   )
   return [state, setIndex]
+}
+
+const LisätiedotToggle: React.FC<{
+  open: boolean
+  onToggle: () => void
+}> = ({ open, onToggle }) => {
+  const testId = useTestId('lisätiedotButton')
+  return (
+    <a
+      className={`expandable${open ? ' open' : ''}`}
+      role="button"
+      data-testid={testId}
+      onClick={(e) => {
+        e.preventDefault()
+        onToggle()
+      }}
+    >
+      <Trans>{'Lisätiedot'}</Trans>
+    </a>
+  )
 }
 
 const defaultSuorituksenNimi = (s: Suoritus): LocalizedString =>

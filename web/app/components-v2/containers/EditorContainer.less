@@ -4,4 +4,26 @@
   .EditorContainer__addIcon {
     margin-right: 6px;
   }
+
+  .EditorContainer__lisatiedot .KeyValueRow__name {
+    text-align: right;
+  }
+
+  a.expandable {
+    display: inline-block;
+    cursor: pointer;
+    color: @color-link-blue;
+    &.open {
+      margin-bottom: 8px;
+    }
+    &:after {
+      font-family: FontAwesome;
+      content: '\f078';
+      margin-left: 6px;
+      font-size: 11px;
+    }
+    &.open:after {
+      content: '\f077';
+    }
+  }
 }

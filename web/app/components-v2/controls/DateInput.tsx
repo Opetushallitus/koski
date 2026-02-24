@@ -22,6 +22,7 @@ export type DateInputProps = {
   min?: string
   max?: string
   testId?: string
+  hasErrors?: boolean
 } & {
   align?: PositionalPopupAlign
 }
@@ -47,7 +48,10 @@ export const DateInput: React.FC<DateInputProps> = (props) => {
         type="text"
         defaultValue={displayDate}
         onChange={onChange}
-        className={cx('DateEdit__input')}
+        className={cx(
+          'DateEdit__input',
+          props.hasErrors && 'DateEdit__input--error'
+        )}
         data-testid={inputId}
         key={inputKey}
       />

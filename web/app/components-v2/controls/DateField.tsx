@@ -16,7 +16,11 @@ import {
   PositionalPopupHolder
 } from '../containers/PositionalPopup'
 import { FieldErrors } from '../forms/FieldErrors'
-import { FieldEditorProps, FieldViewerProps } from '../forms/FormField'
+import {
+  FieldEditorProps,
+  FieldViewerProps,
+  componentsWithBuiltInErrors
+} from '../forms/FormField'
 import { IconButton } from './IconButton'
 
 // Date viewer
@@ -105,6 +109,7 @@ export const DateEdit: React.FC<DateEditProps> = (props) => {
     </label>
   )
 }
+componentsWithBuiltInErrors.add(DateEdit)
 
 // Utils
 

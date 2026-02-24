@@ -20,7 +20,7 @@ export const AikajaksoView = <T extends AikajaksoLike>({
       <TestIdText id="alku">
         {value?.alku && ISO2FinnishDate(value.alku)}
       </TestIdText>{' '}
-      {' - '}
+      {' — '}
       <TestIdText id="loppu">
         {value?.loppu && ISO2FinnishDate(value.loppu)}
       </TestIdText>
@@ -58,7 +58,7 @@ export const AikajaksoEdit = <T extends AikajaksoLike>({
     <TestIdLayer id={testId || 'aikajakso'}>
       <div className="AikajaksoEdit">
         <DateInput value={value?.alku} onChange={setAlku} testId="alku" />
-        <span className="AikajaksoEdit__separator"> {' - '}</span>
+        <span className="AikajaksoEdit__separator"> {' — '}</span>
         <DateInput value={value?.loppu} onChange={setLoppu} testId="loppu" />
       </div>
     </TestIdLayer>

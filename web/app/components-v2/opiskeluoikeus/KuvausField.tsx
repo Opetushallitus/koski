@@ -7,7 +7,6 @@ import { LocalizedString } from '../../types/fi/oph/koski/schema/LocalizedString
 import { PaikallinenKoulutusmoduuli } from '../../types/fi/oph/koski/schema/PaikallinenKoulutusmoduuli'
 import { StorablePreference } from '../../types/fi/oph/koski/schema/StorablePreference'
 import { CommonProps, common } from '../CommonProps'
-import { FieldErrors } from '../forms/FieldErrors'
 import { FieldEditorProps } from '../forms/FormField'
 import { EmptyObject } from '../../util/objects'
 
@@ -73,11 +72,6 @@ export const KuvausEdit = <T extends KuvailtuPaikallinenKoulutusmoduuli>({
         onChange={onChangeCB}
         data-testid={testId}
       />
-      {errors && (
-        <TestIdLayer id="kuvaus.edit">
-          <FieldErrors errors={errors} />
-        </TestIdLayer>
-      )}
     </div>
   )
 }

@@ -53,7 +53,7 @@ export const LisätietoEdit = ({
       <MultilineTextEdit
         value={t(value?.kuvaus)}
         onChange={(kuvaus) =>
-          kuvaus &&
+          kuvaus !== undefined &&
           onChange({
             ...emptyAmmatillisenTutkinnonOsanLisätieto,
             ...value,
