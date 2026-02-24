@@ -1,4 +1,4 @@
-package fi.oph.koski.vkt
+package fi.oph.koski.kios
 
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.henkilo.{HenkilöOid, Hetu}

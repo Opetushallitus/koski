@@ -24,7 +24,7 @@ import fi.oph.koski.valpas.massaluovutus.{ValpasEiOppivelvollisuuttaSuorittavatM
 import fi.oph.koski.valpas.oppija.ValpasInternalSchema
 import fi.oph.koski.valpas.ytl.ValpasYtlSchema
 import fi.oph.koski.valvira.ValviraSchema
-import fi.oph.koski.vkt.VktSchema
+import fi.oph.koski.kios.VktSchema
 import fi.oph.koski.ytl.YtlSchema
 
 import scala.reflect.runtime.{universe => ru}

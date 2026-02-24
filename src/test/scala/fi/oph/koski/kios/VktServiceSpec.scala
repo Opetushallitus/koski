@@ -1,4 +1,4 @@
-package fi.oph.koski.vkt
+package fi.oph.koski.kios
 
 import fi.oph.koski.api.misc.{OpiskeluoikeusTestMethods, PutOpiskeluoikeusTestMethods}
 import fi.oph.koski.documentation.AmmatillinenExampleData._

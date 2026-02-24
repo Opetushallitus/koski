@@ -1,4 +1,4 @@
-package fi.oph.koski.vkt
+package fi.oph.koski.kios
 
 import fi.oph.koski.schema
 import fi.oph.koski.schema.annotation.{KoodistoUri, Representative}

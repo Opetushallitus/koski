@@ -56,7 +56,7 @@ import fi.oph.koski.valpas.oppivelvollisuudestavapautus.ValpasOppivelvollisuudes
 import fi.oph.koski.valpas.rouhinta.ValpasRouhintaOppivelvollisuudenKeskeytysService
 import fi.oph.koski.valpas.valpasrepository.{OpiskeluoikeusLisätiedotRepository, OppivelvollisuudenKeskeytysRepository, OppivelvollisuudenKeskeytysRepositoryService, ValpasKuntailmoitusRepository}
 import fi.oph.koski.virta.{VirtaAccessChecker, VirtaClient, VirtaOpiskeluoikeusRepository}
-import fi.oph.koski.vkt.VktService
+import fi.oph.koski.kios.VktService
 import fi.oph.koski.ytr.YoTodistusService
 import fi.oph.koski.ytr.download.YtrDownloadService
 import fi.oph.koski.ytr.{YtrAccessChecker, YtrClient, YtrOpiskeluoikeusRepository, YtrRepository}

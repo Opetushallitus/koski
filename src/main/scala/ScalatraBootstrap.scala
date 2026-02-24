@@ -59,7 +59,7 @@ import fi.oph.koski.valpas.rouhinta.ValpasRouhintaApiServlet
 import fi.oph.koski.valpas.sso.ValpasOppijaCasServlet
 import fi.oph.koski.valpas.ytl.ValpasYtlServlet
 import fi.oph.koski.valvira.ValviraServlet
-import fi.oph.koski.vkt.VktServlet
+import fi.oph.koski.kios.VktServlet
 import fi.oph.koski.ytl.YtlServlet
 import fi.oph.koski.ytr.download.{YtrDownloadService, YtrStatusServlet, YtrTestServlet}
 import fi.oph.koski.ytr.{YoTodistusServlet, YtrKoesuoritusApiServlet, YtrKoesuoritusServlet}

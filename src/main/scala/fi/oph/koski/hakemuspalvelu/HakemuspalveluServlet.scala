@@ -7,7 +7,6 @@ import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.koskiuser.{KoskiSpecificSession, RequiresHakemuspalvelu}
 import fi.oph.koski.log.{AuditLog, KoskiAuditLogMessage, KoskiAuditLogMessageField, KoskiOperation}
 import fi.oph.koski.servlet.{KoskiSpecificApiServlet, NoCache}
-import fi.oph.koski.vkt.VktKoskeenTallennettavaOpiskeluoikeus
 import org.json4s.JValue
 
 case class OidRequest(oid: String)
