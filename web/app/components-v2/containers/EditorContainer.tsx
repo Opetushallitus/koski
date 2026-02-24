@@ -15,7 +15,6 @@ import { OpiskeluoikeusjaksoOf } from '../../util/schema'
 import { ClassOf, ItemOf } from '../../util/types'
 import { useConfirmUnload } from '../../util/useConfirmUnload'
 import { CommonPropsWithChildren, common } from '../CommonProps'
-import { FlatButton } from '../controls/FlatButton'
 import { Tab, Tabs } from '../controls/Tabs'
 import { FormField } from '../forms/FormField'
 import { FormModel, FormOptic } from '../forms/FormModel'
@@ -197,17 +196,17 @@ export const EditorContainer = <T extends Opiskeluoikeus>(
             ('lisätiedot' in props.form.state &&
               !isEmptyModelObject(props.form.state.lisätiedot))) && (
             <>
-              <FlatButton
-                testId="lisätiedotButton"
+              <a
+                className={`expandable${lisatiedotOpen ? ' open' : ''}`}
+                role="button"
+                data-testid="lisätiedotButton"
                 onClick={(e) => {
                   e.preventDefault()
                   setLisatiedotOpen((prev) => !prev)
                 }}
               >
-                {lisatiedotOpen
-                  ? t('lisatiedot:sulje_lisatiedot')
-                  : t('lisatiedot:nayta_lisatiedot')}
-              </FlatButton>
+                <Trans>{'Lisätiedot'}</Trans>
+              </a>
               {lisatiedotOpen && (
                 <TestIdLayer id="lisätiedot">
                   <LisätiedotContainer form={props.form} />
