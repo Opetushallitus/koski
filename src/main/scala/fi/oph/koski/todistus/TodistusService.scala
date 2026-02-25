@@ -15,6 +15,7 @@ import fi.oph.koski.todistus.swisscomclient.SwisscomClient
 import fi.oph.koski.todistus.yleinenkielitutkinto.YleinenKielitutkintoTodistusDataBuilder
 import fi.oph.koski.util.{Timing, TryWithLogging}
 import software.amazon.awssdk.http.ContentStreamProvider
+import org.apache.pdfbox.Loader
 
 import java.io.InputStream
 import java.security.MessageDigest
@@ -33,6 +34,7 @@ class TodistusService(application: KoskiApplication) extends Logging with Timing
   private val yleinenKielitutkintoTodistusDataBuilder = new YleinenKielitutkintoTodistusDataBuilder(application)
 
   private val expirationDuration = application.config.getDuration("todistus.expirationDuration")
+  private val validoiAllekirjoitusrakenne = application.config.getBoolean("todistus.validoiAllekirjoitusrakenne")
 
   private val commitHash: String = getBuildVersion.getOrElse("local")
 
@@ -351,9 +353,38 @@ class TodistusService(application: KoskiApplication) extends Logging with Timing
           }
 
           //
+          // VALIDATING_SIGNATURE: Validoi allekirjoitusrakenne (vain jos stamped ja konfiguroitu)
+          //
+          val validatingSignatureResult = stampingPdfResult.flatMap { case (todistus, outputStream) =>
+            if (todistus.isStamped && validoiAllekirjoitusrakenne) {
+              timed("VALIDATING_SIGNATURE", thresholdMs = 0) {
+                val pdfBytes = outputStream.toByteArray
+                for {
+                  document <- TryWithLogging(logger, {
+                    Loader.loadPDF(pdfBytes)
+                  }).left.map(t => KoskiErrorCategory.internalError(s"PDF:n lataus epäonnistui todistukselle ${todistus.id}: ${t.getMessage}"))
+                    .tap(doc => use(doc))
+                  report = PdfSignatureAnalyzer.analyzePdfDocument(pdfBytes, document)
+                  _ <- Either.cond(
+                    report.overallValid,
+                    (),
+                    {
+                      val errorDetails = s"PDF-allekirjoitusrakenne epävalidi: ${report.allValidationErrors.mkString("; ")}"
+                      logger.error(s"${errorDetails}\n${report.summary}")
+                      KoskiErrorCategory.internalError(errorDetails)
+                    }
+                  )
+                } yield (todistus, outputStream)
+              }
+            } else {
+              Right((todistus, outputStream))
+            }
+          }
+
+          //
           // SAVING_STAMPED_PDF: Tallenna allekirjoitettu PDF (ohitetaan, jos isStamped=false)
           //
-          val savingStampedPdfResult = stampingPdfResult.flatMap { case (todistus, outputStream) =>
+          val savingStampedPdfResult = validatingSignatureResult.flatMap { case (todistus, outputStream) =>
             if (todistus.isStamped) {
               timed("SAVING_STAMPED_PDF", thresholdMs = 0) {
                 for {
