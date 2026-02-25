@@ -1,5 +1,6 @@
 package fi.oph.koski.todistus
 
+import fi.oph.koski.KoskiApplicationForTests
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.should.Matchers
 
@@ -9,6 +10,8 @@ import scala.util.{Failure, Success}
 class PdfSignatureAnalyzerSpec extends AnyFreeSpec with Matchers {
 
   private val mockdataDir = new File("src/main/resources/mockdata/todistus")
+  private val validationConfig = PdfSignatureAnalyzer.ValidationConfig.fromConfig(KoskiApplicationForTests.config)
+    .copy(hashValidointi = true)
 
   private def testPdfFile(testNameWithFileName: String)(testBody: File => Unit): Unit = {
     testNameWithFileName in {
@@ -47,7 +50,7 @@ class PdfSignatureAnalyzerSpec extends AnyFreeSpec with Matchers {
 
 
     testPdfFile("mock-todistus-raw.pdf: allekirjoittamaton pdf on epävalidi") { pdfFile =>
-      PdfSignatureAnalyzer.analyzePdfFile(pdfFile) match {
+      PdfSignatureAnalyzer.analyzePdfFile(pdfFile, validationConfig) match {
         case Success(report) =>
           report should not be null
           report.overallValid should be(false)
@@ -60,7 +63,7 @@ class PdfSignatureAnalyzerSpec extends AnyFreeSpec with Matchers {
     }
 
     testPdfFile("mock-todistus-stamped.pdf: allekirjoitettu PDF on validi") { pdfFile =>
-      PdfSignatureAnalyzer.analyzePdfFile(pdfFile) match {
+      PdfSignatureAnalyzer.analyzePdfFile(pdfFile, validationConfig) match {
         case Success(report) =>
           verifyIsValid(report)
 
@@ -69,17 +72,22 @@ class PdfSignatureAnalyzerSpec extends AnyFreeSpec with Matchers {
       }
     }
 
-    testPdfFile("mock-todistus-stamped-tampered-content.pdf: Muokattu allekirjoitettu PDF on validi, koska kryptografista tarkistusta ei tehdä") { pdfFile =>
-      PdfSignatureAnalyzer.analyzePdfFile(pdfFile) match {
+    testPdfFile("mock-todistus-stamped-tampered-content.pdf: Kryptografinen tarkistus havaitsee muokatun sisällön") { pdfFile =>
+      PdfSignatureAnalyzer.analyzePdfFile(pdfFile, validationConfig) match {
         case Success(report) =>
-          verifyIsValid(report)
+          report should not be null
+          report.overallValid should be(false)
+          report.pkcs7 should not be None
+          report.pkcs7.get.signatureValid should be(Some(false))
+          report.pkcs7.get.signatureValidationError should not be None
+          report.pkcs7.get.signatureValidationError.get should include("Signature verification failed")
         case Failure(exception) =>
           fail(s"Analyysi epäonnistui: ${exception.getMessage}", exception)
       }
     }
 
     testPdfFile("mock-todistus-stamped-missing-revocation-lists.pdf: huomaa puuttuvat revokaatiolistat") { pdfFile =>
-      PdfSignatureAnalyzer.analyzePdfFile(pdfFile) match {
+      PdfSignatureAnalyzer.analyzePdfFile(pdfFile, validationConfig) match {
         case Success(report) =>
           report should not be null
           report.dss.isValid should be(false)
@@ -90,14 +98,19 @@ class PdfSignatureAnalyzerSpec extends AnyFreeSpec with Matchers {
       }
     }
 
-    testPdfFile("mock-todistus-stamped-invalid-signature-missing-revocation-lists.pdf: huomaa puuttuvat revokaatiolistat muttei kryptografisesti rikkoutunutta signaturea") { pdfFile =>
-      PdfSignatureAnalyzer.analyzePdfFile(pdfFile) match {
+    testPdfFile("mock-todistus-stamped-invalid-signature-missing-revocation-lists.pdf: huomaa sekä puuttuvat revokaatiolistat että kryptografisesti rikkoutuneen signaturen") { pdfFile =>
+      PdfSignatureAnalyzer.analyzePdfFile(pdfFile, validationConfig) match {
         case Success(report) =>
           report should not be null
           report.dss.isValid should be(false)
           report.overallValid should be(false)
 
           report.signatureContents.isValid should be(true)
+
+          // Verify that cryptographic signature verification also fails
+          report.pkcs7 should not be None
+          report.pkcs7.get.signatureValid should be(Some(false))
+          report.pkcs7.get.signatureValidationError should not be None
 
         case Failure(exception) =>
           fail(s"Analyysi epäonnistui: ${exception.getMessage}", exception)
@@ -110,7 +123,7 @@ class PdfSignatureAnalyzerSpec extends AnyFreeSpec with Matchers {
       println(s"\nAnalysoidaan ${pdfFiles.length} PDF-tiedostoa mockdata-hakemistosta:\n")
       pdfFiles.foreach { pdfFile =>
         println(s"  - ${pdfFile.getName}")
-        PdfSignatureAnalyzer.analyzePdfFile(pdfFile) match {
+        PdfSignatureAnalyzer.analyzePdfFile(pdfFile, validationConfig) match {
           case Success(report) =>
             // Tarkista että ei null-arvoja
             report should not be null
@@ -141,6 +154,7 @@ class PdfSignatureAnalyzerSpec extends AnyFreeSpec with Matchers {
     report.byteRange.signatureLength should be > 0
     report.signatureContents.isValid should be(true)
     report.pkcs7 should not be None
+    report.pkcs7.get.signatureValid should be(Some(true))
     report.pkcs7.foreach { pkcs7 =>
       pkcs7.signerCount should be > 0
       pkcs7.certificates.size should be >= 2

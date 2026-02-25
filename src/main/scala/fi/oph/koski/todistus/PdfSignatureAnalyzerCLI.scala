@@ -1,5 +1,7 @@
 package fi.oph.koski.todistus
 
+import com.typesafe.config.ConfigFactory
+
 import java.io.File
 
 /**
@@ -34,10 +36,14 @@ object PdfSignatureAnalyzerCLI {
       System.exit(1)
     }
 
+    val config = ConfigFactory.load()
+    val validationConfig = PdfSignatureAnalyzer.ValidationConfig.fromConfig(config)
+      .copy(hashValidointi = true)
+
     println(s"Analyzing PDF: $pdfFilePath")
     println()
 
-    PdfSignatureAnalyzer.analyzePdfFile(pdfFile) match {
+    PdfSignatureAnalyzer.analyzePdfFile(pdfFile, validationConfig) match {
       case scala.util.Success(report) =>
         println(report.summary)
 

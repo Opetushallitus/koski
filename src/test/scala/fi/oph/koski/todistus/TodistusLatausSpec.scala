@@ -225,7 +225,8 @@ class TodistusLatausSpec extends TodistusSpecHelpers with BeforeAndAfterAll {
       }
 
       "PDF-allekirjoitusanalyysi (PdfSignatureAnalyzer)" in {
-        val report = PdfSignatureAnalyzer.analyzePdfDocument(bytesGetter(), documentGetter())
+        val validationConfig = PdfSignatureAnalyzer.ValidationConfig.fromConfig(app.config)
+        val report = PdfSignatureAnalyzer.analyzePdfDocument(bytesGetter(), documentGetter(), validationConfig)
         println("\n" + report.summary)
 
         report.overallValid should be(true)
@@ -951,5 +952,38 @@ class TodistusLatausSpec extends TodistusSpecHelpers with BeforeAndAfterAll {
     ImageIO.write(image, "png", file.toFile)
     println(s"$debugMessage: ${file.toAbsolutePath}")
     file
+  }
+
+  "Allekirjoitusvalidointi epäonnistuu kun RevocationInformation puuttuu" in {
+    val virheOppija = KoskiSpecificMockOppijat.kielitutkintoTodistusVirhe
+    val virheHetu = virheOppija.hetu.get
+    val virheOppijaOid = virheOppija.oid
+    val virheVariantti = "fi"
+
+    val virheOpiskeluoikeus = getVahvistettuKielitutkinnonOpiskeluoikeus(virheOppijaOid).get
+    val virheOpiskeluoikeusOid = virheOpiskeluoikeus.oid.get
+
+    val virheReq = TodistusGenerateRequest(virheOpiskeluoikeusOid, virheVariantti)
+    val virheJob = addGenerateJobSuccessfully(virheReq, virheHetu) { todistusJob =>
+      todistusJob.state should equal(TodistusState.QUEUED)
+      todistusJob
+    }
+
+    val failedJob = waitForError(virheJob.id, virheHetu)
+    failedJob.state should equal(TodistusState.ERROR)
+    failedJob.error.get should include("PDF-allekirjoitusrakenne epävalidi")
+
+    // Tarkista että virheellinen PDF on ladattavissa INVALID_STAMP-bucketista
+    val invalidPdfStreamResult = app.todistusService.getDownloadStream(BucketType.INVALID_STAMP, failedJob)
+    invalidPdfStreamResult.isRight should be(true)
+
+    val invalidPdfStream = invalidPdfStreamResult.toOption.get
+    val invalidPdfBytes = org.apache.pdfbox.io.IOUtils.toByteArray(invalidPdfStream)
+    invalidPdfStream.close()
+    invalidPdfBytes.length should be > 0
+
+    // Tarkista että allekirjoitettua versiota EI voi ladata (koska validointi epäonnistui)
+    val stampedPdfStreamResult = app.todistusService.getDownloadStream(BucketType.STAMPED, failedJob)
+    stampedPdfStreamResult.isLeft should be(true)
   }
 }

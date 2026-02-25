@@ -2,6 +2,7 @@ package fi.oph.koski.todistus.swisscomclient
 
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.log.Logging
+import fi.oph.koski.todistus.TodistusJob
 import fi.oph.koski.todistus.swisscomclient.SwisscomConfigSecretsSource.MOCK_FROM_CONFIG
 import org.apache.pdfbox.Loader
 import org.apache.pdfbox.cos.COSDictionary
@@ -31,9 +32,9 @@ object SwisscomClient extends Logging {
 trait SwisscomClient extends Logging {
   def config: SwisscomConfig
 
-  protected def requestSignature(req: SwisscomAISSignRequest): Either[HttpStatus, SwisscomAISSignResponse]
+  protected def requestSignature(todistusJob: TodistusJob, req: SwisscomAISSignRequest): Either[HttpStatus, SwisscomAISSignResponse]
 
-  def signWithStaticCertificate(id: String, contentIn: InputStream, contentOut: OutputStream): Either[HttpStatus, SwisscomAISSignResponse] = {
+  def signWithStaticCertificate(todistusJob: TodistusJob, contentIn: InputStream, contentOut: OutputStream): Either[HttpStatus, SwisscomAISSignResponse] = {
     Using.Manager { use => {
       val pdDocument = use(Loader.loadPDF(new RandomAccessReadBuffer(contentIn)))
       val inMemoryStream: ByteArrayOutputStream = new ByteArrayOutputStream()
@@ -41,22 +42,22 @@ trait SwisscomClient extends Logging {
       val (pbSigningSupport: ExternalSigningSupport, base64HashToSign: String) =
         prepareForSigning(pdDocument, inMemoryStream)
 
-      val aisSignRequest = SwisscomAISSignRequest(id, base64HashToSign, config)
+      val aisSignRequest = SwisscomAISSignRequest(todistusJob.id, base64HashToSign, config)
 
       for {
-        signResponse <- requestSignatureWithLogging(aisSignRequest)
+        signResponse <- requestSignatureWithLogging(todistusJob, aisSignRequest)
         signature <- signResponse.SignResponse.SignatureObject.flatMap(_.Base64Signature.flatMap(_.`$`))
-          .toRight(KoskiErrorCategory.unavailable.todistus.stampingError(s"No signature found for todistus $id"))
+          .toRight(KoskiErrorCategory.unavailable.todistus.stampingError(s"No signature found for todistus ${todistusJob.id}"))
           .map(base64Decode)
 
-        _ <- signContent(id, use, contentOut, inMemoryStream, pbSigningSupport, signResponse, signature)
+        _ <- signContent(todistusJob.id, use, contentOut, inMemoryStream, pbSigningSupport, signResponse, signature)
       } yield signResponse
     }} match {
       case Success(value) =>
         value
       case Failure(ex) =>
-        logger.error(ex)(s"Signing with static certificate failed for todistus $id")
-        Left(KoskiErrorCategory.unavailable.todistus.stampingError(s"Signing with static certificate failed for todistus $id"))
+        logger.error(ex)(s"Signing with static certificate failed for todistus ${todistusJob.id}")
+        Left(KoskiErrorCategory.unavailable.todistus.stampingError(s"Signing with static certificate failed for todistus ${todistusJob.id}"))
     }
   }
 
@@ -117,10 +118,10 @@ trait SwisscomClient extends Logging {
     pdSeedValueMDP.setP(0) // identify this signature as an author signature, not document certification
   }
 
-  def requestSignatureWithLogging(req: SwisscomAISSignRequest): Either[HttpStatus, SwisscomAISSignResponse] = {
+  def requestSignatureWithLogging(todistusJob: TodistusJob, req: SwisscomAISSignRequest): Either[HttpStatus, SwisscomAISSignResponse] = {
     logger.info(s"SEND RequestId: ${req.SignRequest.`@RequestID`}")
 
-    val result = requestSignature(req)
+    val result = requestSignature(todistusJob, req)
 
     // TODO: TOR-2400: Pitäisikö näistä kerätä statsitkin Cloudwatchiin, eikä vain lokientryjä? Voi sitten tarkemmin verrata Swisscomin laskuihin.
     //   Huom! Ota retry-logiikka huomioon, joka retry pitäisi lokittaa tai lisätä metriikoihin, tässä ne jäävät piiloon

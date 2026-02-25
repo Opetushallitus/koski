@@ -21,6 +21,25 @@ import scala.util.{Failure, Success, Try, Using}
 
 object PdfSignatureAnalyzer extends Logging {
 
+  case class ValidationConfig(
+    maxAllekirjoittamatonProsentti: Double,
+    minVarmenneketjunKoko: Int,
+    sallitutTiivistealgoritmit: Set[String],
+    hashValidointi: Boolean
+  )
+
+  object ValidationConfig {
+    def fromConfig(config: com.typesafe.config.Config): ValidationConfig = {
+      import scala.jdk.CollectionConverters._
+      ValidationConfig(
+        maxAllekirjoittamatonProsentti = config.getDouble("todistus.allekirjoitusvalidointi.maxAllekirjoittamatonProsentti"),
+        minVarmenneketjunKoko = config.getInt("todistus.allekirjoitusvalidointi.minVarmenneketjunKoko"),
+        sallitutTiivistealgoritmit = config.getStringList("todistus.allekirjoitusvalidointi.sallitutTiivistealgoritmit").asScala.toSet,
+        hashValidointi = config.getBoolean("todistus.allekirjoitusvalidointi.hashValidointi")
+      )
+    }
+  }
+
   case class ByteRangeInfo(
     signedRange1Start: Int,
     signedRange1Length: Int,
@@ -60,6 +79,8 @@ object PdfSignatureAnalyzer extends Logging {
     signerCount: Int,
     signers: List[SignerInfo],
     certificates: List[CertificateInfo],
+    signatureValid: Option[Boolean],
+    signatureValidationError: Option[String],
     isValid: Boolean,
     validationErrors: List[String]
   )
@@ -141,15 +162,15 @@ object PdfSignatureAnalyzer extends Logging {
         dss.validationErrors
   }
 
-  def analyzePdfFile(pdfFile: File): Try[AnalysisReport] = {
+  def analyzePdfFile(pdfFile: File, validationConfig: ValidationConfig): Try[AnalysisReport] = {
     Using.Manager { use =>
       val document = use(Loader.loadPDF(new RandomAccessReadBufferedFile(pdfFile)))
       val pdfBytes = java.nio.file.Files.readAllBytes(pdfFile.toPath)
-      analyzePdfDocument(pdfBytes, document)
+      analyzePdfDocument(pdfBytes, document, validationConfig)
     }
   }
 
-  def analyzePdfDocument(pdfBytes: Array[Byte], document: PDDocument): AnalysisReport = {
+  def analyzePdfDocument(pdfBytes: Array[Byte], document: PDDocument, validationConfig: ValidationConfig): AnalysisReport = {
     val signature = document.getLastSignatureDictionary
 
     if (signature == null) {
@@ -166,7 +187,7 @@ object PdfSignatureAnalyzer extends Logging {
 
     val byteRange = signature.getByteRange
 
-    val byteRangeInfo = analyzeByteRange(byteRange, pdfBytes)
+    val byteRangeInfo = analyzeByteRange(byteRange, pdfBytes, validationConfig)
 
     val signatureContentsInfo = analyzeSignatureContents(
       pdfBytes,
@@ -174,8 +195,15 @@ object PdfSignatureAnalyzer extends Logging {
       byteRangeInfo.signatureEnd
     )
 
+    // Extract signed content for cryptographic verification
+    val signedContent = if (byteRangeInfo.isValid) {
+      Some(getSignedContent(pdfBytes, byteRangeInfo))
+    } else {
+      None
+    }
+
     val pkcs7Info = if (signatureContentsInfo.isValid) {
-      analyzePKCS7(signatureContentsInfo.pkcs7Bytes)
+      analyzePKCS7(signatureContentsInfo.pkcs7Bytes, signedContent, validationConfig)
     } else {
       None
     }
@@ -199,7 +227,7 @@ object PdfSignatureAnalyzer extends Logging {
     )
   }
 
-  private def analyzeByteRange(byteRange: Array[Int], pdfBytes: Array[Byte]): ByteRangeInfo = {
+  private def analyzeByteRange(byteRange: Array[Int], pdfBytes: Array[Byte], validationConfig: ValidationConfig): ByteRangeInfo = {
     val signedRange1Start = byteRange(0)
     val signedRange1Length = byteRange(1)
     val signedRange2Start = byteRange(2)
@@ -215,10 +243,9 @@ object PdfSignatureAnalyzer extends Logging {
 
     val validationErrors = scala.collection.mutable.ListBuffer[String]()
     val unsignedPercentage = (unsignedAfterSignatureLength.toDouble / pdfBytes.length.toDouble) * 100.0
-    val maxAllowedPercentage = 10.0 // Salli 10%, käytännössä on tällä hetkellä alle 5%, mutta DSS-infojen koosta tuotannossa ei ole vielä tarkkaa tietoa
 
-    if (unsignedPercentage > maxAllowedPercentage) {
-      validationErrors += f"Unsigned portion is too large: $unsignedPercentage%.2f%% (max $maxAllowedPercentage%.2f%%)"
+    if (unsignedPercentage > validationConfig.maxAllekirjoittamatonProsentti) {
+      validationErrors += f"Unsigned portion is too large: $unsignedPercentage%.2f%% (max ${validationConfig.maxAllekirjoittamatonProsentti}%.2f%%)"
     }
 
     ByteRangeInfo(
@@ -297,7 +324,11 @@ object PdfSignatureAnalyzer extends Logging {
     )
   }
 
-  private def analyzePKCS7(signatureBytes: Array[Byte]): Option[PKCS7Info] = {
+  private def analyzePKCS7(
+    signatureBytes: Array[Byte],
+    signedContent: Option[Array[Byte]],
+    validationConfig: ValidationConfig
+  ): Option[PKCS7Info] = {
     if (signatureBytes.length < 10) {
       logger.warn(s"PKCS#7 data on liian lyhyt (${signatureBytes.length} tavua)")
       return None
@@ -395,27 +426,34 @@ object PdfSignatureAnalyzer extends Logging {
         validationErrors += "PKCS#7 does not contain any signers"
       }
 
-      if (allCerts.size < 2) {
-        validationErrors += s"PKCS#7 does not contain a certificate chain (only ${allCerts.size} certificates, should be at least 2)"
+      if (allCerts.size < validationConfig.minVarmenneketjunKoko) {
+        validationErrors += s"PKCS#7 does not contain a certificate chain (only ${allCerts.size} certificates, should be at least ${validationConfig.minVarmenneketjunKoko})"
       }
 
-      // Tarkista algoritmit
-      val allowedDigestAlgs = Set(
-        "2.16.840.1.101.3.4.2.1",  // SHA-256
-        "2.16.840.1.101.3.4.2.2",  // SHA-384
-        "2.16.840.1.101.3.4.2.3"   // SHA-512
-      )
-
       signerInfos.foreach { signer =>
-        if (!allowedDigestAlgs.contains(signer.digestAlgorithm)) {
+        if (!validationConfig.sallitutTiivistealgoritmit.contains(signer.digestAlgorithm)) {
           validationErrors += s"PKCS#7 uses a weak digest algorithm: ${signer.digestAlgorithm}"
         }
+      }
+
+      val (signatureValid, signatureValidationError) = signedContent match {
+        case Some(content) if validationConfig.hashValidointi =>
+          verifyCryptographicSignature(trimmedBytes, content) match {
+            case Right(valid) => (Some(valid), None)
+            case Left(error) =>
+              validationErrors += error
+              (Some(false), Some(error))
+          }
+        case _ =>
+          (None, None)
       }
 
       PKCS7Info(
         signerCount = signers.size,
         signers = signerInfos,
         certificates = allCertInfos,
+        signatureValid = signatureValid,
+        signatureValidationError = signatureValidationError,
         isValid = validationErrors.isEmpty,
         validationErrors = validationErrors.toList
       )
@@ -467,122 +505,180 @@ object PdfSignatureAnalyzer extends Logging {
     }
   }
 
-  private def analyzeDSS(document: PDDocument, pdfBytes: Array[Byte], byteRange: ByteRangeInfo): DSSInfo = {
-    val validationErrors = scala.collection.mutable.ListBuffer[String]()
-
-    val catalog = document.getDocumentCatalog
-    val catalogDict = catalog.getCOSObject
-
-    val dssDictObj = catalogDict.getDictionaryObject(COSName.getPDFName("DSS"))
-
-    if (dssDictObj == null) {
-      validationErrors += "DSS structure not found in PDF"
-      return DSSInfo.invalid(validationErrors.toList)
-    }
-
-    val dssDict = dssDictObj.asInstanceOf[COSDictionary]
-
-    val ocspsObj = dssDict.getDictionaryObject(COSName.getPDFName("OCSPs"))
-    val hasOCSPs = ocspsObj != null
-    val (ocspCount, ocsps) = if (hasOCSPs) {
-      val ocspArray = ocspsObj.asInstanceOf[COSArray]
-      val ocspList = (0 until ocspArray.size()).flatMap { i =>
-        Try {
-          val ocspStream = ocspArray.getObject(i).asInstanceOf[COSStream]
-          val inputStream = ocspStream.createInputStream()
-          val ocspBytes = inputStream.readAllBytes()
-          inputStream.close()
-          val ocspResp = new OCSPResp(ocspBytes)
-          val basicResp = ocspResp.getResponseObject.asInstanceOf[BasicOCSPResp]
-
-          val dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
-          val producedAt = dateFormat.format(basicResp.getProducedAt)
-
-          OCSPInfo(producedAt)
-        }.toOption
-      }.toList
-      (ocspArray.size(), ocspList)
-    } else {
-      (0, List.empty)
-    }
-
-    val crlsObj = dssDict.getDictionaryObject(COSName.getPDFName("CRLs"))
-    val hasCRLs = crlsObj != null
-    val (crlCount, crls) = if (hasCRLs) {
-      val crlArray = crlsObj.asInstanceOf[COSArray]
-      val crlList = (0 until crlArray.size()).flatMap { i =>
-        Try {
-          val crlStream = crlArray.getObject(i).asInstanceOf[COSStream]
-          val inputStream = crlStream.createInputStream()
-          val crlBytes = inputStream.readAllBytes()
-          inputStream.close()
-          val crlHolder = new X509CRLHolder(crlBytes)
-
-          val dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
-          val issuer = crlHolder.getIssuer.toString
-          val thisUpdate = dateFormat.format(crlHolder.getThisUpdate)
-          val nextUpdate = Option(crlHolder.getNextUpdate)
-            .map(dateFormat.format)
-            .getOrElse("N/A")
-
-          val revokedCertCount = crlHolder.getRevokedCertificates.size()
-
-          CRLInfo(issuer, thisUpdate, nextUpdate, revokedCertCount)
-        }.toOption
-      }.toList
-      (crlArray.size(), crlList)
-    } else {
-      (0, List.empty)
-    }
-
-    val vriObj = dssDict.getDictionaryObject(COSName.getPDFName("VRI"))
-    val hasVRI = vriObj != null
-    val (vriCount, vriKeys) = if (hasVRI) {
-      val vriDict = vriObj.asInstanceOf[COSDictionary]
-      val keys = vriDict.keySet().asScala.map(_.getName).toList
-      (vriDict.size(), keys)
-    } else {
-      (0, List.empty[String])
-    }
-
-    val certsObj = dssDict.getDictionaryObject(COSName.getPDFName("Certs"))
-    val hasCerts = certsObj != null
-    val certsCount = if (hasCerts) {
-      certsObj.asInstanceOf[COSArray].size()
-    } else {
-      0
-    }
-
-    if (!hasOCSPs && !hasCRLs) {
-      validationErrors += "DSS does not contain OCSP or CRL data"
-    }
-
-    if (!hasVRI) {
-      validationErrors += "DSS does not contain VRI structure"
-    }
-
-    val unsignedContent = pdfBytes.slice(byteRange.unsignedAfterSignatureStart, pdfBytes.length)
-    val unsignedContentStr = new String(unsignedContent, StandardCharsets.ISO_8859_1)
-
-    if (!unsignedContentStr.contains("/DSS")) {
-      validationErrors += "Unsigned portion does not contain /DSS reference"
-    }
-
-    DSSInfo(
-      hasOCSPs = hasOCSPs,
-      ocspCount = ocspCount,
-      ocsps = ocsps,
-      hasCRLs = hasCRLs,
-      crlCount = crlCount,
-      crls = crls,
-      hasVRI = hasVRI,
-      vriCount = vriCount,
-      vriKeys = vriKeys,
-      hasCerts = hasCerts,
-      certsCount = certsCount,
-      isValid = validationErrors.isEmpty,
-      validationErrors = validationErrors.toList
+  private def getSignedContent(pdfBytes: Array[Byte], byteRange: ByteRangeInfo): Array[Byte] = {
+    val part1 = pdfBytes.slice(
+      byteRange.signedRange1Start,
+      byteRange.signedRange1Start + byteRange.signedRange1Length
     )
+    val part2 = pdfBytes.slice(
+      byteRange.signedRange2Start,
+      byteRange.signedRange2Start + byteRange.signedRange2Length
+    )
+    part1 ++ part2
+  }
+
+  private def verifyCryptographicSignature(
+    signatureBytes: Array[Byte],
+    signedContent: Array[Byte]
+  ): Either[String, Boolean] = Try {
+    import org.bouncycastle.cms.{CMSProcessableByteArray, CMSSignedData}
+    import org.bouncycastle.jce.provider.BouncyCastleProvider
+    import org.bouncycastle.cms.jcajce.JcaSimpleSignerInfoVerifierBuilder
+
+    val cms = new CMSSignedData(
+      new CMSProcessableByteArray(signedContent),
+      signatureBytes
+    )
+
+    val signers = cms.getSignerInfos.getSigners.asScala.toList
+
+    if (signers.isEmpty) {
+      throw new Exception("No signers found in signature")
+    }
+
+    signers.forall { signer =>
+      val signerId = signer.getSID
+      val certMatches = cms.getCertificates.getMatches(
+        new org.bouncycastle.util.Selector[X509CertificateHolder] {
+          override def `match`(cert: X509CertificateHolder): Boolean = {
+            signerId.getSerialNumber == cert.getSerialNumber &&
+              signerId.getIssuer.toString == cert.getIssuer.toString
+          }
+          override def clone(): Object = this
+        }
+      ).asScala.toList
+
+      if (certMatches.isEmpty) {
+        throw new Exception(s"No matching certificate found for signer with serial ${signerId.getSerialNumber}")
+      }
+
+      val cert = certMatches.head
+
+      val verifier = new JcaSimpleSignerInfoVerifierBuilder()
+        .setProvider(new BouncyCastleProvider())
+        .build(cert)
+
+      signer.verify(verifier)
+    }
+  }.toEither.left.map(ex => s"Signature verification failed: ${ex.getMessage}")
+
+  private def analyzeDSS(document: PDDocument, pdfBytes: Array[Byte], byteRange: ByteRangeInfo): DSSInfo = {
+    Using.Manager  { use =>
+      val validationErrors = scala.collection.mutable.ListBuffer[String]()
+
+      val catalog = document.getDocumentCatalog
+      val catalogDict = catalog.getCOSObject
+
+      val dssDictObj = catalogDict.getDictionaryObject(COSName.getPDFName("DSS"))
+
+      if (dssDictObj == null) {
+        validationErrors += "DSS structure not found in PDF"
+        return DSSInfo.invalid(validationErrors.toList)
+      }
+
+      val dssDict = dssDictObj.asInstanceOf[COSDictionary]
+
+      val ocspsObj = dssDict.getDictionaryObject(COSName.getPDFName("OCSPs"))
+      val hasOCSPs = ocspsObj != null
+      val (ocspCount, ocsps) = if (hasOCSPs) {
+        val ocspArray = ocspsObj.asInstanceOf[COSArray]
+        val ocspList = (0 until ocspArray.size()).flatMap { i =>
+          Try {
+            val ocspStream = ocspArray.getObject(i).asInstanceOf[COSStream]
+            val inputStream = use(ocspStream.createInputStream())
+            val ocspBytes = inputStream.readAllBytes()
+            val ocspResp = new OCSPResp(ocspBytes)
+            val basicResp = ocspResp.getResponseObject.asInstanceOf[BasicOCSPResp]
+
+            val dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
+            val producedAt = dateFormat.format(basicResp.getProducedAt)
+
+            OCSPInfo(producedAt)
+          }.toOption
+        }.toList
+        (ocspArray.size(), ocspList)
+      } else {
+        (0, List.empty)
+      }
+
+      val crlsObj = dssDict.getDictionaryObject(COSName.getPDFName("CRLs"))
+      val hasCRLs = crlsObj != null
+      val (crlCount, crls) = if (hasCRLs) {
+        val crlArray = crlsObj.asInstanceOf[COSArray]
+        val crlList = (0 until crlArray.size()).flatMap { i =>
+          Try {
+            val crlStream = crlArray.getObject(i).asInstanceOf[COSStream]
+            val inputStream = crlStream.createInputStream()
+            val crlBytes = inputStream.readAllBytes()
+            inputStream.close()
+            val crlHolder = new X509CRLHolder(crlBytes)
+
+            val dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
+            val issuer = crlHolder.getIssuer.toString
+            val thisUpdate = dateFormat.format(crlHolder.getThisUpdate)
+            val nextUpdate = Option(crlHolder.getNextUpdate)
+              .map(dateFormat.format)
+              .getOrElse("N/A")
+
+            val revokedCertCount = crlHolder.getRevokedCertificates.size()
+
+            CRLInfo(issuer, thisUpdate, nextUpdate, revokedCertCount)
+          }.toOption
+        }.toList
+        (crlArray.size(), crlList)
+      } else {
+        (0, List.empty)
+      }
+
+      val vriObj = dssDict.getDictionaryObject(COSName.getPDFName("VRI"))
+      val hasVRI = vriObj != null
+      val (vriCount, vriKeys) = if (hasVRI) {
+        val vriDict = vriObj.asInstanceOf[COSDictionary]
+        val keys = vriDict.keySet().asScala.map(_.getName).toList
+        (vriDict.size(), keys)
+      } else {
+        (0, List.empty[String])
+      }
+
+      val certsObj = dssDict.getDictionaryObject(COSName.getPDFName("Certs"))
+      val hasCerts = certsObj != null
+      val certsCount = if (hasCerts) {
+        certsObj.asInstanceOf[COSArray].size()
+      } else {
+        0
+      }
+
+      if (!hasOCSPs && !hasCRLs) {
+        validationErrors += "DSS does not contain OCSP or CRL data"
+      }
+
+      if (!hasVRI) {
+        validationErrors += "DSS does not contain VRI structure"
+      }
+
+      val unsignedContent = pdfBytes.slice(byteRange.unsignedAfterSignatureStart, pdfBytes.length)
+      val unsignedContentStr = new String(unsignedContent, StandardCharsets.ISO_8859_1)
+
+      if (!unsignedContentStr.contains("/DSS")) {
+        validationErrors += "Unsigned portion does not contain /DSS reference"
+      }
+
+      DSSInfo(
+        hasOCSPs = hasOCSPs,
+        ocspCount = ocspCount,
+        ocsps = ocsps,
+        hasCRLs = hasCRLs,
+        crlCount = crlCount,
+        crls = crls,
+        hasVRI = hasVRI,
+        vriCount = vriCount,
+        vriKeys = vriKeys,
+        hasCerts = hasCerts,
+        certsCount = certsCount,
+        isValid = validationErrors.isEmpty,
+        validationErrors = validationErrors.toList
+      )
+    }.getOrElse(DSSInfo.invalid(List("Internal error generating DSS info")))
   }
 
   private def generateSummary(
@@ -643,6 +739,19 @@ object PdfSignatureAnalyzer extends Logging {
           sb.append(s"    Issuer: ${cert.issuer}\n")
           sb.append(s"    Valid: ${cert.notBefore} - ${cert.notAfter}\n")
           sb.append(s"    Serial: ${cert.serialNumber}\n")
+        }
+
+        sb.append("\n  Cryptographic signature verification:\n")
+        info.signatureValid match {
+          case Some(true) =>
+            sb.append("    ✓ Signature is cryptographically valid\n")
+          case Some(false) =>
+            sb.append("    ✗ Signature verification failed\n")
+            info.signatureValidationError.foreach { err =>
+              sb.append(s"       Error: $err\n")
+            }
+          case None =>
+            sb.append("    - Not verified (signed content not available)\n")
         }
 
         if (!info.isValid) {

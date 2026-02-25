@@ -2,13 +2,13 @@ package fi.oph.koski.todistus
 
 import fi.oph.koski.config.{Environment, KoskiApplication}
 import fi.oph.koski.db.KoskiOpiskeluoikeusRow
-import fi.oph.koski.henkilo.{KoskiSpecificMockOppijat, OppijaHenkilö}
+import fi.oph.koski.henkilo.{KoskiSpecificMockOppijat, LaajatOppijaHenkilöTiedot, OppijaHenkilö}
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.koskiuser.KoskiSpecificSession
 import fi.oph.koski.koskiuser.Rooli.{GLOBAALI_LUKU_KIELITUTKINTO, OPHKATSELIJA, OPHPAAKAYTTAJA}
 import fi.oph.koski.log.Logging
-import fi.oph.koski.schema.{KielitutkinnonOpiskeluoikeus, Opiskeluoikeus, YleisenKielitutkinnonSuoritus}
+import fi.oph.koski.schema.{KielitutkinnonOpiskeluoikeus, KoskeenTallennettavaOpiskeluoikeus, Opiskeluoikeus, YleisenKielitutkinnonSuoritus}
 import fi.oph.koski.todistus.BucketType.BucketType
 import fi.oph.koski.todistus.pdfgenerator.{TodistusData, TodistusMetadata, TodistusPdfGenerator}
 import fi.oph.koski.todistus.swisscomclient.SwisscomClient
@@ -17,10 +17,11 @@ import fi.oph.koski.util.{Timing, TryWithLogging}
 import software.amazon.awssdk.http.ContentStreamProvider
 import org.apache.pdfbox.Loader
 
-import java.io.InputStream
+import java.io.{ByteArrayOutputStream, InputStream}
 import java.security.MessageDigest
 import scala.util.Using
 import fi.oph.koski.util.ChainingSyntax.eitherChainingOps
+import org.apache.pdfbox.pdmodel.PDDocument
 
 import java.time.LocalDateTime
 import java.util.{Properties, UUID}
@@ -34,7 +35,9 @@ class TodistusService(application: KoskiApplication) extends Logging with Timing
   private val yleinenKielitutkintoTodistusDataBuilder = new YleinenKielitutkintoTodistusDataBuilder(application)
 
   private val expirationDuration = application.config.getDuration("todistus.expirationDuration")
-  private val validoiAllekirjoitusrakenne = application.config.getBoolean("todistus.validoiAllekirjoitusrakenne")
+  private val validoiAllekirjoitusrakenne = application.config.getBoolean("todistus.allekirjoitusvalidointi.validoi")
+  private val vainLokitusAllekirjoitusValidoinneille = application.config.getBoolean("todistus.allekirjoitusvalidointi.vainLokitus")
+  private val allekirjoitusvalidointiConfig = PdfSignatureAnalyzer.ValidationConfig.fromConfig(application.config)
 
   private val commitHash: String = getBuildVersion.getOrElse("local")
 
@@ -278,7 +281,7 @@ class TodistusService(application: KoskiApplication) extends Logging with Timing
           //
           // GATHERING_INPUT: Hae tuoreet henkilötiedot ja opiskeluoikeus, joista todistus generoidaan, sekä tallenna ne tietokantaan.
           //
-          val gatheringInputResult = timed("GATHERING_INPUT", thresholdMs = 0) {
+          val gatheringInputResult: Either[HttpStatus, (LaajatOppijaHenkilöTiedot, KoskeenTallennettavaOpiskeluoikeus, TodistusJob)] = timed("GATHERING_INPUT", thresholdMs = 0) {
             for {
               oppijanHenkilö <-
                 application.henkilöRepository.findByOid(oid = todistus.oppijaOid, findMasterIfSlaveOid = true)
@@ -307,7 +310,7 @@ class TodistusService(application: KoskiApplication) extends Logging with Timing
           //
           // GENERATING_RAW_PDF: Generoi PDF-todistus, jota ei ole vielä allekirjoitettu
           //
-          val generatingRawPdfResult = gatheringInputResult.flatMap { case (oppijanHenkilö, opiskeluoikeus, todistus) =>
+          val generatingRawPdfResult: Either[HttpStatus, (TodistusJob, Array[Byte])] = gatheringInputResult.flatMap { case (oppijanHenkilö, opiskeluoikeus, todistus) =>
             timed("GENERATING_RAW_PDF", thresholdMs = 0) {
               for {
                 // TODO: TOR-2400: Tallenna myös HTML S3:een, jotta sitä voi renderöidä helposti suoraan selaimessa debuggaukseen
@@ -323,7 +326,7 @@ class TodistusService(application: KoskiApplication) extends Logging with Timing
           //
           // SAVING_RAW_PDF: Tallenna allekirjoittamaton todistus S3:een
           //
-          val savingRawPdfResult = generatingRawPdfResult.flatMap { case (todistus, pdfBytes) =>
+          val savingRawPdfResult: Either[HttpStatus, TodistusJob] = generatingRawPdfResult.flatMap { case (todistus, pdfBytes) =>
             timed("SAVING_RAW_PDF", thresholdMs = 0) {
               for {
                 todistus <- todistusRepository.updateState(todistus.id, TodistusState.GENERATING_RAW_PDF, TodistusState.SAVING_RAW_PDF)
@@ -335,67 +338,82 @@ class TodistusService(application: KoskiApplication) extends Logging with Timing
           //
           // STAMPING_PDF: Allekirjoita PDF (ohitetaan, jos isStamped=false)
           //
-          val stampingPdfResult = savingRawPdfResult.flatMap { todistus =>
-            if (todistus.isStamped) {
+          val stampingPdfResult: Either[HttpStatus, (TodistusJob, Option[Array[Byte]])] = savingRawPdfResult.flatMap {
+            case todistus if todistus.isStamped =>
               timed("STAMPING_PDF", thresholdMs = 0) {
                 for {
                   _ <- todistusRepository.updateState(todistus.id, TodistusState.SAVING_RAW_PDF, TodistusState.STAMPING_PDF)
                   rawInputStream <- resultRepository.getStream(BucketType.RAW, todistus.id)
                     .tap(is => use(is))
                   outputStream = new java.io.ByteArrayOutputStream()
-                  _ <- swisscomClient.signWithStaticCertificate(todistus.id, rawInputStream, outputStream)
-                } yield (todistus, outputStream)
+                  _ <- swisscomClient.signWithStaticCertificate(todistus, rawInputStream, outputStream)
+                } yield (todistus, Some(outputStream.toByteArray))
               }
-            } else {
+            case todistus =>
               // Tulostettavat todistukset eivät tarvitse allekirjoitusta
-              Right((todistus, null))
-            }
+              Right((todistus, None))
           }
 
           //
           // VALIDATING_SIGNATURE: Validoi allekirjoitusrakenne (vain jos stamped ja konfiguroitu)
           //
-          val validatingSignatureResult = stampingPdfResult.flatMap { case (todistus, outputStream) =>
-            if (todistus.isStamped && validoiAllekirjoitusrakenne) {
+          val validatingSignatureResult: Either[HttpStatus, (TodistusJob, Option[Array[Byte]], Option[String])] = stampingPdfResult.flatMap {
+            case (todistus, Some(pdfBytes)) if todistus.isStamped && validoiAllekirjoitusrakenne =>
               timed("VALIDATING_SIGNATURE", thresholdMs = 0) {
-                val pdfBytes = outputStream.toByteArray
                 for {
                   document <- TryWithLogging(logger, {
                     Loader.loadPDF(pdfBytes)
                   }).left.map(t => KoskiErrorCategory.internalError(s"PDF:n lataus epäonnistui todistukselle ${todistus.id}: ${t.getMessage}"))
                     .tap(doc => use(doc))
-                  report = PdfSignatureAnalyzer.analyzePdfDocument(pdfBytes, document)
-                  _ <- Either.cond(
-                    report.overallValid,
-                    (),
-                    {
-                      val errorDetails = s"PDF-allekirjoitusrakenne epävalidi: ${report.allValidationErrors.mkString("; ")}"
-                      logger.error(s"${errorDetails}\n${report.summary}")
-                      KoskiErrorCategory.internalError(errorDetails)
-                    }
-                  )
-                } yield (todistus, outputStream)
+                  report = PdfSignatureAnalyzer.analyzePdfDocument(pdfBytes, document, allekirjoitusvalidointiConfig)
+                  validationError = if (report.overallValid) {
+                    None
+                  } else {
+                    val errorDetails = s"PDF-allekirjoitusrakenne epävalidi: ${report.allValidationErrors.mkString("; ")}"
+                    logger.error(s"Validointi epäonnistui todistukselle ${todistus.id}: ${errorDetails}\n${report.summary}")
+                    Some(errorDetails)
+                  }
+                } yield (todistus, Some(pdfBytes), validationError)
               }
-            } else {
-              Right((todistus, outputStream))
-            }
+          case (todistus, maybeBytes) =>
+            Right((todistus, maybeBytes, None))
+          }
+
+          //
+          // SAVING_INVALID_PDF: Tallenna epävalidi PDF debuggausta varten (vain jos validointi epäonnistui)
+          //
+          validatingSignatureResult.foreach {
+            case (todistus, Some(pdfBytes), Some(_)) =>
+              timed("SAVING_INVALID_PDF", thresholdMs = 0) {
+                resultRepository.putStream(BucketType.INVALID_STAMP, todistus.id, ContentStreamProvider.fromByteArray(pdfBytes))
+                  .left.foreach(err => logger.error(s"Epävalidin PDF:n tallennus epäonnistui: ${err}"))
+              }
+            case _ => ()
+          }
+
+          // Käsittele validointivirhe: jos vainLokitus -konfiguraatio on päällä, jatketaan virheestä huolimatta
+          // PDF:n käsittelyä
+          val validatingSignatureEndResult = validatingSignatureResult.flatMap {
+            case (_, Some(_), Some(errorDetails)) if !vainLokitusAllekirjoitusValidoinneille =>
+              Left(KoskiErrorCategory.internalError(errorDetails))
+            case (todistus, maybeBytes, _) =>
+              Right((todistus, maybeBytes))
           }
 
           //
           // SAVING_STAMPED_PDF: Tallenna allekirjoitettu PDF (ohitetaan, jos isStamped=false)
           //
-          val savingStampedPdfResult = validatingSignatureResult.flatMap { case (todistus, outputStream) =>
-            if (todistus.isStamped) {
+          val savingStampedPdfResult: Either[HttpStatus, TodistusJob] = validatingSignatureEndResult.flatMap {
+            case (todistus, Some(pdfBytes)) if todistus.isStamped =>
               timed("SAVING_STAMPED_PDF", thresholdMs = 0) {
                 for {
                   todistus <- todistusRepository.updateState(todistus.id, TodistusState.STAMPING_PDF, TodistusState.SAVING_STAMPED_PDF)
-                  _ <- resultRepository.putStream(BucketType.STAMPED, todistus.id, ContentStreamProvider.fromByteArray(outputStream.toByteArray))
+                  _ <- resultRepository.putStream(BucketType.STAMPED, todistus.id, ContentStreamProvider.fromByteArray(pdfBytes))
                 } yield todistus
               }
-            } else {
+            case (todistus, _) =>
               // Tulostettavat todistukset tallennetaan vain RAW-buckettiin
               Right(todistus)
-            }
           }
 
           //

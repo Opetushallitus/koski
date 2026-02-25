@@ -6,6 +6,7 @@ import fi.oph.koski.http.Http.{UriInterpolator, runIO}
 import fi.oph.koski.json.Json4sHttp4s.json4sEncoderOf
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.log.Logging
+import fi.oph.koski.todistus.TodistusJob
 import org.http4s.client.Client
 import org.http4s.{Header, Headers, Request}
 import org.json4s.JValue
@@ -23,7 +24,7 @@ class RemoteSwisscomClient(
 
   val client = new SwisscomHttpClient(config)
 
-  protected def requestSignature(req: SwisscomAISSignRequest): Either[HttpStatus, SwisscomAISSignResponse] = {
+  protected def requestSignature(todistusJob: TodistusJob, req: SwisscomAISSignRequest): Either[HttpStatus, SwisscomAISSignResponse] = {
     def parse[T](status: Int, text: String, request: Request[IO])(implicit mf : Manifest[T]): Option[T] = {
       Http.parseJsonOptional(status, text, request)
     }
