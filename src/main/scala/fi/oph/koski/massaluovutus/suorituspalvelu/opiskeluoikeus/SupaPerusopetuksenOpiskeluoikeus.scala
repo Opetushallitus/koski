@@ -71,6 +71,7 @@ case class SupaNuortenPerusopetuksenOppimääränSuoritus(
   tyyppi: Koodistokoodiviite,
   koulutusmoduuli: NuortenPerusopetus,
   vahvistus: Option[SupaVahvistus],
+  suoritustapa: Koodistokoodiviite,
   suorituskieli: Koodistokoodiviite,
   koulusivistyskieli: Option[List[Koodistokoodiviite]],
   osasuoritukset: Option[List[NuortenPerusopetuksenOppiaineenSuoritus]]
@@ -85,6 +86,7 @@ object SupaNuortenPerusopetuksenOppimääränSuoritus {
       tyyppi = s.tyyppi,
       koulutusmoduuli = s.koulutusmoduuli,
       vahvistus = s.vahvistus.map(v => SupaVahvistus(v.päivä)),
+      suoritustapa = s.suoritustapa,
       suorituskieli = s.suorituskieli,
       koulusivistyskieli = s.koulusivistyskieli,
       osasuoritukset = s.osasuoritukset.map(_.collect { case os: NuortenPerusopetuksenOppiaineenSuoritus => os }).filter(_.nonEmpty),
