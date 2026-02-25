@@ -29,6 +29,7 @@ case class ValpasOppijaRow(
   äidinkieli: Option[String],
   oppivelvollisuusVoimassaAsti: LocalDate,
   oikeusKoulutuksenMaksuttomuuteenVoimassaAsti: LocalDate,
+  kotikuntaSuomessaAlkaen: Option[LocalDate],
   onOikeusValvoaMaksuttomuutta: Boolean,
   onOikeusValvoaKunnalla: Boolean,
   oppivelvollisuudestaVapautus: Option[OppivelvollisuudestaVapautus],
@@ -95,6 +96,7 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
       äidinkieli = Option(r.rs.getString("aidinkieli")),
       oppivelvollisuusVoimassaAsti = r.getLocalDate("oppivelvollisuusVoimassaAsti"),
       oikeusKoulutuksenMaksuttomuuteenVoimassaAsti = r.getLocalDate("oikeusKoulutuksenMaksuttomuuteenVoimassaAsti"),
+      kotikuntaSuomessaAlkaen = Option(r.getLocalDate("kotikuntaSuomessaAlkaen")),
       onOikeusValvoaMaksuttomuutta = r.rs.getBoolean("onOikeusValvoaMaksuttomuutta"),
       onOikeusValvoaKunnalla = r.rs.getBoolean("onOikeusValvoaKunnalla"),
       oppivelvollisuudestaVapautus = None,
@@ -1012,7 +1014,8 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
       array_agg(DISTINCT kaikki_henkilot.oppija_oid) AS kaikkiOppijaOidit,
       oppivelvollisuustiedot.oppivelvollisuusvoimassaasti AS oppivelvollisuus_voimassa_asti,
       oppivelvollisuustiedot.oikeuskoulutuksenmaksuttomuuteenvoimassaasti
-        AS oikeus_koulutuksen_maksuttomuuteen_voimassa_asti
+        AS oikeus_koulutuksen_maksuttomuuteen_voimassa_asti,
+      oppivelvollisuustiedot.kotikuntasuomessaalkaen as kotikunta_suomessa_alkaen
     FROM
       r_henkilo
       -- oppivelvollisuustiedot-näkymä hoitaa syntymäaika- ja mahdollisen peruskoulusta ennen lain voimaantuloa
@@ -1056,7 +1059,8 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
       r_henkilo.turvakielto,
       r_henkilo.aidinkieli,
       oppivelvollisuustiedot.oppivelvollisuusvoimassaasti,
-      oppivelvollisuustiedot.oikeuskoulutuksenmaksuttomuuteenvoimassaasti
+      oppivelvollisuustiedot.oikeuskoulutuksenmaksuttomuuteenvoimassaasti,
+      oppivelvollisuustiedot.kotikuntasuomessaalkaen
   )
   -- ********************************************************************************************************
   -- CTE: OPPIJOIDEN KAIKKI OPPIJA_OIDIT
@@ -1900,6 +1904,7 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
     oppija.aidinkieli AS aidinkieli,
     oppija.oppivelvollisuus_voimassa_asti AS oppivelvollisuusVoimassaAsti,
     oppija.oikeus_koulutuksen_maksuttomuuteen_voimassa_asti AS oikeusKoulutuksenMaksuttomuuteenVoimassaAsti,
+    oppija.kotikunta_suomessa_alkaen as kotikuntaSuomessaAlkaen,
     (oppija.oikeus_koulutuksen_maksuttomuuteen_voimassa_asti >= $tarkastelupäivä) AS onOikeusValvoaMaksuttomuutta,
     (oppija.oppivelvollisuus_voimassa_asti >= $tarkastelupäivä) AS onOikeusValvoaKunnalla,
     jsonb_agg(
@@ -1968,7 +1973,8 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
     oppija.turvakielto,
     oppija.aidinkieli,
     oppija.oppivelvollisuus_voimassa_asti,
-    oppija.oikeus_koulutuksen_maksuttomuuteen_voimassa_asti
+    oppija.oikeus_koulutuksen_maksuttomuuteen_voimassa_asti,
+    oppija.kotikunta_suomessa_alkaen
   ORDER BY
     oppija.sukunimi,
     oppija.etunimet

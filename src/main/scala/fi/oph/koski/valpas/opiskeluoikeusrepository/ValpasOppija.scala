@@ -34,6 +34,8 @@ trait ValpasOppijaLaajatTiedot extends ValpasOppija {
   def suorittamisvalvovatOppilaitokset: Set[ValpasOppilaitos.Oid]
   @SyntheticProperty
   def oikeusKoulutuksenMaksuttomuuteenVoimassaAsti: LocalDate
+  @SyntheticProperty
+  def kotikuntaSuomessaAlkaen: Option[LocalDate]
   def onOikeusValvoaMaksuttomuutta: Boolean
   def onOikeusValvoaKunnalla: Boolean
   @SyntheticProperty
@@ -78,6 +80,7 @@ object ValpasOppivelvollinenOppijaLaajatTiedot {
       // Tänne ei pitäisi koskaan päätyä syntymäajattomalla oppijalla, koska heitä ei katsota oppivelvollisiksi
       oppivelvollisuusVoimassaAsti = rajapäivätService.oppivelvollisuusVoimassaAstiIänPerusteella(henkilö.syntymäaika.get),
       oikeusKoulutuksenMaksuttomuuteenVoimassaAsti = rajapäivätService.maksuttomuusVoimassaAstiIänPerusteella(henkilö.syntymäaika.get),
+      kotikuntaSuomessaAlkaen = None,
       onOikeusValvoaMaksuttomuutta = true,
       onOikeusValvoaKunnalla = true,
     )
@@ -91,6 +94,7 @@ case class ValpasOppivelvollinenOppijaLaajatTiedot(
   opiskeluoikeudet: Seq[ValpasOpiskeluoikeusLaajatTiedot],
   oppivelvollisuusVoimassaAsti: LocalDate,
   oikeusKoulutuksenMaksuttomuuteenVoimassaAsti: LocalDate,
+  kotikuntaSuomessaAlkaen: Option[LocalDate],
   onOikeusValvoaMaksuttomuutta: Boolean,
   onOikeusValvoaKunnalla: Boolean,
   override val oppivelvollisuudestaVapautus: Option[OppivelvollisuudestaVapautus] = None,
@@ -109,6 +113,7 @@ object ValpasOppivelvollisuudestaVapautettuLaajatTiedot {
       henkilö = tiedot.henkilö,
       oppivelvollisuusVoimassaAsti = tiedot.oppivelvollisuusVoimassaAsti,
       oikeusKoulutuksenMaksuttomuuteenVoimassaAsti = tiedot.oikeusKoulutuksenMaksuttomuuteenVoimassaAsti,
+      kotikuntaSuomessaAlkaen = tiedot.kotikuntaSuomessaAlkaen,
       onOikeusValvoaMaksuttomuutta = tiedot.onOikeusValvoaMaksuttomuutta,
       onOikeusValvoaKunnalla = tiedot.onOikeusValvoaKunnalla,
       oppivelvollisuudestaVapautus = Some(vapautus),
@@ -119,6 +124,7 @@ case class ValpasOppivelvollisuudestaVapautettuLaajatTiedot(
   henkilö: ValpasHenkilöLaajatTiedot,
   oppivelvollisuusVoimassaAsti: LocalDate,
   oikeusKoulutuksenMaksuttomuuteenVoimassaAsti: LocalDate,
+  kotikuntaSuomessaAlkaen: Option[LocalDate],
   onOikeusValvoaMaksuttomuutta: Boolean,
   onOikeusValvoaKunnalla: Boolean,
   override val oppivelvollisuudestaVapautus: Option[OppivelvollisuudestaVapautus],

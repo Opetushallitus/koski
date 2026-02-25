@@ -88,6 +88,7 @@ describe("Oppijakohtainen näkymä 1/2", () => {
         oppivelvollisuus: "21.11.2023 asti",
         maksuttomuusoikeus: "31.12.2025 asti",
         kuntailmoitusBtn: true,
+        kotikuntaSuomessaAlkaen: "22.11.2005",
       }),
     )
     await opiskeluhistoriaEquals(
@@ -171,6 +172,7 @@ describe("Oppijakohtainen näkymä 1/2", () => {
         oppivelvollisuus: "18.6.2023 asti",
         maksuttomuusoikeus: "31.12.2025 asti",
         kuntailmoitusBtn: true,
+        kotikuntaSuomessaAlkaen: "19.6.2005",
       }),
     )
     await opiskeluhistoriaEquals(
@@ -199,6 +201,7 @@ describe("Oppijakohtainen näkymä 1/2", () => {
         oppivelvollisuus: "11.5.2023 asti",
         maksuttomuusoikeus: "31.12.2025 asti",
         kuntailmoitusBtn: true,
+        kotikuntaSuomessaAlkaen: "12.5.2005",
       }),
     )
     await opiskeluhistoriaEquals(
@@ -240,6 +243,7 @@ describe("Oppijakohtainen näkymä 1/2", () => {
         opiskelutilanne: "Kyllä",
         oppivelvollisuus: "19.3.2023 asti",
         maksuttomuusoikeus: "31.12.2025 asti",
+        kotikuntaSuomessaAlkaen: "20.3.2005",
       }),
     )
     await opiskeluhistoriaEquals(
@@ -302,6 +306,7 @@ describe("Oppijakohtainen näkymä 1/2", () => {
         oppivelvollisuus: "5.6.2023 asti",
         maksuttomuusoikeus: "31.12.2025 asti",
         kuntailmoitusBtn: true,
+        kotikuntaSuomessaAlkaen: "6.6.2005",
       }),
     )
     await opiskeluhistoriaEquals(
@@ -334,6 +339,7 @@ describe("Oppijakohtainen näkymä 1/2", () => {
         oppivelvollisuus: "28.4.2023 asti",
         maksuttomuusoikeus: "31.12.2025 asti",
         kuntailmoitusBtn: true,
+        kotikuntaSuomessaAlkaen: "29.4.2005",
       }),
     )
     await opiskeluhistoriaEquals(
@@ -372,6 +378,7 @@ describe("Oppijakohtainen näkymä 1/2", () => {
         oppivelvollisuus: "17.4.2023 asti",
         maksuttomuusoikeus: "31.12.2025 asti",
         kuntailmoitusBtn: true,
+        kotikuntaSuomessaAlkaen: "18.4.2005",
       }),
     )
     await opiskeluhistoriaEquals(
@@ -471,6 +478,16 @@ describe("Oppijakohtainen näkymä 1/2", () => {
   it("Yhteystietoja ei näytetä, jos oppijalla on turvakielto", async () => {
     await loginAs(turvakiellollinenOppijaPath, "valpas-jkl-normaali")
 
+    await oppivelvollisuustiedotEquals(
+      oppivelvollisuustiedot({
+        opiskelutilanne: "Kyllä",
+        oppivelvollisuus: "28.9.2022 asti",
+        maksuttomuusoikeus: "31.12.2024 asti",
+        kuntailmoitusBtn: true,
+        kotikuntaSuomessaAlkaen: "Henkilöllä on turvakielto",
+      }),
+    )
+
     await turvakieltoVaroitusEquals(`
       warning
       Oppijalla on turvakielto. Yhteystietoja saa käyttää ainoastaan oppivelvollisuuden valvontaan.
@@ -555,6 +572,7 @@ describe("Oppijakohtainen näkymä 1/2", () => {
         opiskelutilanne: "Kyllä",
         oppivelvollisuus: "6.5.2022 asti",
         maksuttomuusoikeus: "31.12.2024 asti",
+        kotikuntaSuomessaAlkaen: "7.5.2004",
       }),
     )
     await opiskeluhistoriaEquals(
@@ -582,6 +600,7 @@ describe("Oppijakohtainen näkymä 1/2", () => {
         kuntailmoitusBtn: true,
         oppivelvollisuudenKeskeytysBtn: true,
         merkitseVapautusBtn: true,
+        kotikuntaSuomessaAlkaen: "7.5.2004",
       }),
     )
     await opiskeluhistoriaEquals(
@@ -625,6 +644,7 @@ describe("Oppijakohtainen näkymä 1/2", () => {
           opiskelutilanne: "Kyllä",
           oppivelvollisuus: "6.5.2022 asti",
           maksuttomuusoikeus: "31.12.2024 asti",
+          kotikuntaSuomessaAlkaen: "7.5.2004",
         }),
       )
       await opiskeluhistoriaEquals(

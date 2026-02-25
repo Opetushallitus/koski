@@ -89,6 +89,14 @@ describe("Kansalaisen näkymä", () => {
   it("Näyttää turvakiellolliselle henkilölle hänen kaikki tietonsa", async () => {
     await loginKansalainenAs(omatTiedotPath, hetut.huollettavaTurvakielto)
     await expectHuollettavaTurvakieltoPerustiedot()
+    await oppivelvollisuustiedotEquals(
+      oppivelvollisuustiedot({
+        opiskelutilanne: "Kyllä",
+        oppivelvollisuus: "28.9.2022 asti",
+        maksuttomuusoikeus: "31.12.2024 asti",
+        kotikuntaSuomessaAlkaen: "29.9.2004",
+      }),
+    )
     await expectHuollettavaTurvakieltoTäysiOpiskeluhistoria()
     await expectOmaTurvakiellollinenKuntailmoitus()
   })
@@ -108,6 +116,14 @@ describe("Kansalaisen näkymä", () => {
     await loginKansalainenAs(omatTiedotPath, hetut.huoltaja)
     await selectOppija(hetut.huollettavaTurvakielto)
     await expectHuollettavaTurvakieltoPerustiedot()
+    await oppivelvollisuustiedotEquals(
+      oppivelvollisuustiedot({
+        opiskelutilanne: "Kyllä",
+        oppivelvollisuus: "28.9.2022 asti",
+        maksuttomuusoikeus: "31.12.2024 asti",
+        kotikuntaSuomessaAlkaen: "Henkilöllä on turvakielto",
+      }),
+    )
     await expectHuollettavaTurvakieltoRajattuOpiskeluhistoria()
     await expectHuollettavanTurvakiellollinenKuntailmoitus()
   })
@@ -147,6 +163,7 @@ const expectHuollettavaOppivelvollinenKaikkiTiedot = async () => {
       opiskelutilanne: "Kyllä",
       oppivelvollisuus: "21.11.2023 asti",
       maksuttomuusoikeus: "31.12.2025 asti",
+      kotikuntaSuomessaAlkaen: "22.11.2005",
     }),
   )
 
@@ -309,15 +326,6 @@ const expectEiKoskessaOppivelvollinenKeskeytyksiäJaIlmoituksiaKaikkiTiedot =
 
 const expectHuollettavaTurvakieltoPerustiedot = async () => {
   await oppijaHeaderEquals("Turvakielto Valpas", "29.9.2004")
-
-  await oppivelvollisuustiedotEquals(
-    oppivelvollisuustiedot({
-      opiskelutilanne: "Kyllä",
-      oppivelvollisuus: "28.9.2022 asti",
-      maksuttomuusoikeus: "31.12.2024 asti",
-      kotikuntaSuomessaAlkaen: "Henkilöllä on turvakielto",
-    }),
-  )
 
   await turvakieltoVaroitusEquals(`
     warning

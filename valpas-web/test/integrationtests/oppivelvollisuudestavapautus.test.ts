@@ -96,6 +96,7 @@ describe("Oppivelvollisuudesta vapauttaminen", () => {
             "Vapautettu oppivelvollisuudesta 1.10.2021 alkaen, myöntäjä Helsingin kaupunki",
           vapautuksenMitätöintiBtn: true,
           maksuttomuusoikeus: "30.9.2021 asti",
+          kotikuntaSuomessaAlkaen: "22.11.2005",
         }),
       )
     })
@@ -111,6 +112,7 @@ describe("Oppivelvollisuudesta vapauttaminen", () => {
           oppivelvollisuudenKeskeytysBtn: true,
           kuntailmoitusBtn: true,
           merkitseVapautusBtn: true,
+          kotikuntaSuomessaAlkaen: "22.11.2005",
         }),
       )
 
@@ -134,6 +136,7 @@ describe("Oppivelvollisuudesta vapauttaminen", () => {
           "Vapautettu oppivelvollisuudesta 1.10.2021 alkaen, myöntäjä Helsingin kaupunki",
         vapautuksenMitätöintiBtn: true,
         maksuttomuusoikeus: "30.9.2021 asti",
+        kotikuntaSuomessaAlkaen: "22.11.2005",
       }),
     )
 
@@ -147,6 +150,7 @@ describe("Oppivelvollisuudesta vapauttaminen", () => {
         oppivelvollisuudenKeskeytysBtn: true,
         kuntailmoitusBtn: true,
         merkitseVapautusBtn: true,
+        kotikuntaSuomessaAlkaen: "22.11.2005",
       }),
     )
   })
@@ -187,6 +191,7 @@ const validateOppivelvollisuudestaVapautettu = async (
         "Vapautettu oppivelvollisuudesta 1.8.2000 alkaen, myöntäjä Helsingin kaupunki",
       vapautuksenMitätöintiBtn: vapautuksenMitätöintiSallittu,
       maksuttomuusoikeus: "31.7.2000 asti",
+      kotikuntaSuomessaAlkaen: "6.6.2005",
     }),
   )
 }

@@ -42,7 +42,7 @@ export type OppijanOppivelvollisuustiedotProps = {
   onOikeusTehdäKuntailmoitus?: boolean
   onOikeusMitätöidäOppivelvollisuudestaVapautus?: boolean
   oppivelvollisuudestaVapautus?: OppivelvollisuudestaVapautus
-  muuttanutSuomeen?: ISODate
+  kotikuntaSuomessaAlkaen?: ISODate
 }
 
 export const OppijanOppivelvollisuustiedot = (
@@ -114,9 +114,9 @@ export const OppijanOppivelvollisuustiedot = (
         )}
         <InfoTableRow
           label={t("oppija__muuttanut_suomeen")}
-          value={oppijaMuuttanutSuomeen(
+          value={oppijaKotikuntaSuomessaAlkaen(
             props.henkilö.turvakielto,
-            props.muuttanutSuomeen,
+            props.kotikuntaSuomessaAlkaen,
           )}
         />
         {!onOppivelvollisuudestaVapautettu(
@@ -319,7 +319,10 @@ const oppivelvollisuusValue = (
   )
 }
 
-const oppijaMuuttanutSuomeen = (turvakielto: boolean, pvm?: ISODate): string =>
+const oppijaKotikuntaSuomessaAlkaen = (
+  turvakielto: boolean,
+  pvm?: ISODate,
+): string =>
   pvm
     ? formatDate(pvm)
     : turvakielto

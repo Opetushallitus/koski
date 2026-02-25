@@ -119,7 +119,7 @@ const taiteenPerusopetusPäättynytPath = oppijaPath.href("/virkailija", {
 })
 
 const maahanmuuttajaPath = oppijaPath.href("/virkailija", {
-  oppijaOid: "1.2.246.562.24.00000000182",
+  oppijaOid: "1.2.246.562.24.00000000197",
 })
 
 const ammattitutkintoYoTutkinnonJalkeenPath = oppijaPath.href("/virkailija", {
@@ -147,6 +147,7 @@ describe("Oppijakohtainen näkymä 2/2", () => {
         oppivelvollisuus: "6.5.2022 asti",
         maksuttomuusoikeus: "31.12.2024 asti",
         kuntailmoitusBtn: true,
+        kotikuntaSuomessaAlkaen: "7.5.2004",
       }),
     )
     await opiskeluhistoriaEquals(
@@ -194,6 +195,7 @@ describe("Oppijakohtainen näkymä 2/2", () => {
         ],
         maksuttomuusoikeus: "31.12.2025 asti",
         kuntailmoitusBtn: true,
+        kotikuntaSuomessaAlkaen: "18.10.2005",
       }),
     )
     await opiskeluhistoriaEquals(
@@ -225,6 +227,7 @@ describe("Oppijakohtainen näkymä 2/2", () => {
         oppivelvollisuus: "Keskeytetty toistaiseksi 1.1.2021 alkaen",
         maksuttomuusoikeus: "31.12.2025 asti",
         kuntailmoitusBtn: true,
+        kotikuntaSuomessaAlkaen: "15.9.2005",
       }),
     )
     await opiskeluhistoriaEquals(
@@ -279,6 +282,7 @@ describe("Oppijakohtainen näkymä 2/2", () => {
         oppivelvollisuudenKeskeytysBtn: true,
         kuntailmoitusBtn: true,
         merkitseVapautusBtn: true,
+        kotikuntaSuomessaAlkaen: "1.10.2005",
       }),
     )
   })
@@ -353,6 +357,7 @@ describe("Oppijakohtainen näkymä 2/2", () => {
         oppivelvollisuudenKeskeytysBtn: true,
         kuntailmoitusBtn: true,
         merkitseVapautusBtn: true,
+        kotikuntaSuomessaAlkaen: "1.10.2005",
       }),
     )
   })
@@ -370,6 +375,7 @@ describe("Oppijakohtainen näkymä 2/2", () => {
         oppivelvollisuudenKeskeytysBtn: true,
         kuntailmoitusBtn: true,
         merkitseVapautusBtn: true,
+        kotikuntaSuomessaAlkaen: "7.6.2004",
       }),
     )
 
@@ -724,6 +730,7 @@ describe("Oppijakohtainen näkymä 2/2", () => {
           ],
           maksuttomuusoikeus: "31.12.2025 asti",
           kuntailmoitusBtn: true,
+          kotikuntaSuomessaAlkaen: "18.10.2005",
         }),
       )
       await opiskeluhistoriaEquals(
@@ -785,6 +792,7 @@ describe("Oppijakohtainen näkymä 2/2", () => {
           oppivelvollisuudenKeskeytysBtn: true,
           kuntailmoitusBtn: true,
           merkitseVapautusBtn: true,
+          kotikuntaSuomessaAlkaen: "18.10.2005",
         }),
       )
     })
@@ -821,6 +829,7 @@ describe("Oppijakohtainen näkymä 2/2", () => {
           oppivelvollisuudenKeskeytysBtn: true,
           kuntailmoitusBtn: true,
           merkitseVapautusBtn: true,
+          kotikuntaSuomessaAlkaen: "18.10.2005",
         }),
       )
     })
@@ -892,15 +901,18 @@ describe("Oppijakohtainen näkymä 2/2", () => {
     it("Näytetään jos muuttanut ulkomailta/Ahvenanmaalta Suomeen", async () => {
       await loginAs(maahanmuuttajaPath, "valpas-pää")
       await resetMockData("2021-08-15")
-      await mainHeadingEquals("Maahanmuuttaja Masa (010106A431W)")
+      await mainHeadingEquals(
+        "SuomessaJaUlkomaillaVuorotellenAsunut Valpas (210306A621J)",
+      )
       await oppivelvollisuustiedotEquals(
         oppivelvollisuustiedot({
-          opiskelutilanne: "Ei",
-          oppivelvollisuus: "31.12.2023 asti",
+          opiskelutilanne: "Kyllä",
+          oppivelvollisuus: "20.3.2024 asti",
           maksuttomuusoikeus: "31.12.2026 asti",
-          kotikuntaSuomessaAlkaen: "1.1.2014",
+          kotikuntaSuomessaAlkaen: "1.10.2017",
           oppivelvollisuudenKeskeytysBtn: true,
           merkitseVapautusBtn: true,
+          kuntailmoitusBtn: true,
         }),
       )
     })
@@ -921,6 +933,7 @@ describe("Oppijakohtainen näkymä 2/2", () => {
           oppivelvollisuudenKeskeytysBtn: true,
           merkitseVapautusBtn: true,
           kuntailmoitusBtn: true,
+          kotikuntaSuomessaAlkaen: "30.8.2005",
         }),
       )
     })
@@ -939,6 +952,7 @@ describe("Oppijakohtainen näkymä 2/2", () => {
           oppivelvollisuudenKeskeytysBtn: true,
           merkitseVapautusBtn: true,
           kuntailmoitusBtn: true,
+          kotikuntaSuomessaAlkaen: "30.8.2005",
         }),
       )
     })

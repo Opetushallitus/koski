@@ -97,6 +97,7 @@ class ValpasAccessResolverSpec extends ValpasTestBase {
       opiskeluoikeudet = opiskeluoikeudet,
       oppivelvollisuusVoimassaAsti = date(2021, 10, 1),
       oikeusKoulutuksenMaksuttomuuteenVoimassaAsti = date(2023, 12, 31),
+      kotikuntaSuomessaAlkaen = None,
       onOikeusValvoaMaksuttomuutta = onOikeusValvoaMaksuttomuutta,
       onOikeusValvoaKunnalla = onOikeusValvoaKunnalla
     )
