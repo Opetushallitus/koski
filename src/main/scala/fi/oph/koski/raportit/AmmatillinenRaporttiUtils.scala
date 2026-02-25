@@ -179,8 +179,9 @@ object AmmatillinenRaporttiUtils {
   def opiskelijavuosikertymä2026(aikajaksot: Seq[ROpiskeluoikeusAikajaksoRow]): Double = {
     aikajaksot.map(j => j.tila match {
       case "katsotaaneronneeksi" => (j.lengthInDaysExcludeJuly - 1).max(0) * (j.osaAikaisuus.toDouble / 100.0)
+      case "lasna" => j.lengthInDaysExcludeJuly * (j.osaAikaisuus.toDouble / 100.0)
       case "valmistunut" => j.lengthInDaysExcludeJuly
-      case _ => j.lengthInDaysExcludeJuly * (j.osaAikaisuus.toDouble / 100.0)
+      case _ => 0
     }).sum
   }
 }

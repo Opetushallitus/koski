@@ -277,6 +277,12 @@ class AmmatillinenOpiskelijavuositiedotRaporttiSpec
         )) should equal(0)
       }
 
+      "ei lasketa kertymää muista tiloista kuin katsotaaneronneeksi, lasna ja valmistunut" in {
+        AmmatillinenRaporttiUtils.opiskelijavuosikertymä2026(Seq(
+          ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2026-06-01"), Date.valueOf("2026-08-01"), "valiaikaisestikeskeytynyt", Date.valueOf("2026-01-01"))
+        )) should equal(0)
+      }
+
       "osa-aikaiset läsnäolopäivät ennen ja jälkeen heinäkuuta" in {
         AmmatillinenRaporttiUtils.opiskelijavuosikertymä2026(Seq(
           ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2026-06-01"), Date.valueOf("2026-08-31"), "lasna", Date.valueOf("2026-01-01"), osaAikaisuus = 50)
