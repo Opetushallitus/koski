@@ -1,6 +1,6 @@
 package fi.oph.koski.valpas.opiskeluoikeusfixture
 
-import fi.oph.koski.documentation.AmmatillinenExampleData.{hyväksytty, järjestämismuotoOppilaitos, järjestämismuotoOppisopimus, stadinAmmattiopisto, stadinToimipiste, suoritustapaNäyttö, tutkinnonOsanSuoritus}
+import fi.oph.koski.documentation.AmmatillinenExampleData.{stadinAmmattiopisto, stadinToimipiste, suoritustapaNäyttö}
 import fi.oph.koski.documentation.AmmattitutkintoExample.tutkinto
 import fi.oph.koski.documentation.DIAExampleData.saksalainenKoulu
 import fi.oph.koski.documentation.EuropeanSchoolOfHelsinkiExampleData.suoritusVahvistus
@@ -44,6 +44,27 @@ object ValpasOpiskeluoikeusExampleData {
     )
   )
 
+  def oppivelvollinenYsiluokkaKeskenKeväällä2026Opiskeluoikeus = PerusopetuksenOpiskeluoikeus(
+    oppilaitos = Some(jyväskylänNormaalikoulu),
+    koulutustoimija = None,
+    suoritukset = List(
+      perusopetuksenOppimääränSuoritusKesken,
+      kahdeksannenLuokanSuoritus.copy(
+        alkamispäivä = Some(date(2024, 8, 15)),
+        vahvistus = vahvistusPaikkakunnalla(date(2025, 5, 30)),
+      ),
+      yhdeksännenLuokanSuoritus.copy(
+        alkamispäivä = Some(date(2025, 8, 15)),
+        vahvistus = None
+      )
+    ),
+    tila = NuortenPerusopetuksenOpiskeluoikeudenTila(
+      List(
+        NuortenPerusopetuksenOpiskeluoikeusjakso(date(2024, 8, 15), opiskeluoikeusLäsnä)
+      )
+    )
+  )
+
   def oppivelvollinenYsiluokkaKeskenKeväällä2021OpiskeluoikeusPuuttuva7LuokanAlkamispäivä = PerusopetuksenOpiskeluoikeus(
     oppilaitos = Some(jyväskylänNormaalikoulu),
     koulutustoimija = None,
@@ -69,13 +90,14 @@ object ValpasOpiskeluoikeusExampleData {
     )
   )
 
-  def ysiluokkaKeskenVsop = {
-    val edellisetLisätiedot = oppivelvollinenYsiluokkaKeskenKeväällä2021Opiskeluoikeus
+  def ysiluokkaKeskenTako = {
+    val edellisetLisätiedot = oppivelvollinenYsiluokkaKeskenKeväällä2026Opiskeluoikeus
       .lisätiedot.getOrElse(PerusopetuksenOpiskeluoikeudenLisätiedot())
 
-    oppivelvollinenYsiluokkaKeskenKeväällä2021Opiskeluoikeus.copy(
+    oppivelvollinenYsiluokkaKeskenKeväällä2026Opiskeluoikeus.copy(
       lisätiedot = Some(edellisetLisätiedot.copy(
-        vuosiluokkiinSitoutumatonOpetus = Some(true)
+        tavoitekokonaisuuksittainOpiskelu = Some(List(Aikajakso(LocalDate.of(2025, 8, 1), None))),
+        tuenPäätöksenJaksot = Some(List(Tukijakso(Some(LocalDate.of(2025, 8, 1)), None)))
       ))
     )
   }
@@ -122,6 +144,30 @@ object ValpasOpiskeluoikeusExampleData {
       List(
         NuortenPerusopetuksenOpiskeluoikeusjakso(date(2012, 8, 15), opiskeluoikeusLäsnä),
         NuortenPerusopetuksenOpiskeluoikeusjakso(date(2021, 5, 30), opiskeluoikeusValmistunut)
+      )
+    )
+  )
+
+  def valmistunutYsiluokkalainen2026 = PerusopetuksenOpiskeluoikeus(
+    oppilaitos = Some(jyväskylänNormaalikoulu),
+    koulutustoimija = None,
+    suoritukset = List(
+      perusopetuksenOppimääränSuoritus.copy(
+        vahvistus = vahvistusPaikkakunnalla(date(2026, 5, 30))
+      ),
+      kahdeksannenLuokanSuoritus.copy(
+        alkamispäivä = Some(date(2024, 8, 15)),
+        vahvistus = vahvistusPaikkakunnalla(date(2025, 5, 30)),
+      ),
+      yhdeksännenLuokanSuoritus.copy(
+        alkamispäivä = Some(date(2025, 8, 15)),
+        vahvistus = vahvistusPaikkakunnalla(date(2026, 5, 30)),
+      )
+    ),
+    tila = NuortenPerusopetuksenOpiskeluoikeudenTila(
+      List(
+        NuortenPerusopetuksenOpiskeluoikeusjakso(date(2017, 8, 15), opiskeluoikeusLäsnä),
+        NuortenPerusopetuksenOpiskeluoikeusjakso(date(2026, 5, 30), opiskeluoikeusValmistunut)
       )
     )
   )
@@ -258,13 +304,14 @@ object ValpasOpiskeluoikeusExampleData {
     )
   )
 
-  def valmistunutYsiluokkalainenVsop = {
-    val edellisetLisätiedot = valmistunutYsiluokkalainen
+  def valmistunutYsiluokkalainenTako = {
+    val edellisetLisätiedot = valmistunutYsiluokkalainen2026
       .lisätiedot.getOrElse(PerusopetuksenOpiskeluoikeudenLisätiedot())
 
-    valmistunutYsiluokkalainen.copy(
+    valmistunutYsiluokkalainen2026.copy(
       lisätiedot = Some(edellisetLisätiedot.copy(
-        vuosiluokkiinSitoutumatonOpetus = Some(true)
+        tavoitekokonaisuuksittainOpiskelu = Some(List(Aikajakso(LocalDate.of(2025, 8, 1), None))),
+        tuenPäätöksenJaksot = Some(List(Tukijakso(Some(LocalDate.of(2025, 8, 1)), None)))
       ))
     )
   }

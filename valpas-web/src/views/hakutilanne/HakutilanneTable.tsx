@@ -215,15 +215,15 @@ const ryhmä = (oo: OpiskeluoikeusSuppeatTiedot): Value => {
 
   if (
     oo.perusopetusTiedot &&
-    oo.perusopetusTiedot.vuosiluokkiinSitomatonOpetus
+    oo.perusopetusTiedot.tavoitekokonaisuuksittainOpiskelu
   ) {
-    const vsop = t("hakutilanne__vsop")
+    const tako = t("hakutilanne__tako")
     return {
-      value: `${vsop} ${ryhmäValue.value}`,
-      filterValues: [vsop].concat(ryhmäValue.filterValues),
+      value: `${tako} ${ryhmäValue.value}`,
+      filterValues: [tako].concat(ryhmäValue.filterValues),
       display: (
         <>
-          <span className={b("vsop")}>{`${vsop}`}</span>
+          <span className={b("tako")}>{`${tako}`}</span>
           {` ${ryhmäValue.display}`}
         </>
       ),

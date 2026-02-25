@@ -38,7 +38,7 @@ export type LaajatOpintotasonTiedot = OpintotasonTiedot & {
 }
 
 export type PerusopetusLaajatTiedot = LaajatOpintotasonTiedot & {
-  vuosiluokkiinSitomatonOpetus: boolean
+  tavoitekokonaisuuksittainOpiskelu: boolean
 }
 
 export type PerusopetuksenJälkeinenLaajatTiedot = LaajatOpintotasonTiedot
@@ -61,7 +61,7 @@ export type OpiskeluoikeusSuppeatTiedot = {
 }
 
 export type PerusopetusSuppeatTiedot = OpintotasonTiedot & {
-  vuosiluokkiinSitomatonOpetus: boolean
+  tavoitekokonaisuuksittainOpiskelu: boolean
 }
 
 export type PerusopetuksenJälkeinenSuppeatTiedot = OpintotasonTiedot

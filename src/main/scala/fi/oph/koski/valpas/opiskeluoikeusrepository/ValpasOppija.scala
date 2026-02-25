@@ -294,7 +294,7 @@ case class ValpasOpiskeluoikeusLaajatTiedot(
 
 trait ValpasOpiskeluoikeusPerusopetusTiedot extends ValpasOpiskeluoikeusTiedot {
 
-  def vuosiluokkiinSitomatonOpetus: Boolean
+  def tavoitekokonaisuuksittainOpiskelu: Boolean
 }
 
 case class ValpasOpiskeluoikeusPerusopetusLaajatTiedot(
@@ -305,7 +305,7 @@ case class ValpasOpiskeluoikeusPerusopetusLaajatTiedot(
   tarkastelupäivänKoskiTila: Koodistokoodiviite,
   tarkastelupäivänKoskiTilanAlkamispäivä: String,
   valmistunutAiemminTaiLähitulevaisuudessa: Boolean,
-  vuosiluokkiinSitomatonOpetus: Boolean,
+  tavoitekokonaisuuksittainOpiskelu: Boolean,
   näytäMuunaPerusopetuksenJälkeisenäOpintona: Option[Boolean],
 ) extends ValpasOpiskeluoikeusPerusopetusTiedot
 

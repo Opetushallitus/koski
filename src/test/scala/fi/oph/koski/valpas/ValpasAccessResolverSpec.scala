@@ -139,7 +139,7 @@ class ValpasAccessResolverSpec extends ValpasTestBase {
       tarkastelupäivänKoskiTila = Koodistokoodiviite("lasna", "koskiopiskeluoikeudentila"),
       tarkastelupäivänKoskiTilanAlkamispäivä = "2012-08-01",
       valmistunutAiemminTaiLähitulevaisuudessa = false,
-      vuosiluokkiinSitomatonOpetus = false,
+      tavoitekokonaisuuksittainOpiskelu = false,
       näytäMuunaPerusopetuksenJälkeisenäOpintona = Some(true),
     )),
     perusopetuksenJälkeinenTiedot = None,

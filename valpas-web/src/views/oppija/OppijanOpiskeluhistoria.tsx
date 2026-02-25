@@ -196,10 +196,11 @@ const OpiskeluhistoriaOpinto = ({
             value={opiskeluoikeus.tarkasteltavaPäätasonSuoritus.ryhmä}
           />
         )}
-        {opiskeluoikeus.perusopetusTiedot?.vuosiluokkiinSitomatonOpetus && (
+        {opiskeluoikeus.perusopetusTiedot
+          ?.tavoitekokonaisuuksittainOpiskelu && (
           <InfoTableRow
             label={t("oppija__muuta")}
-            value={t("oppija__vuosiluokkiin_sitomaton_opetus")}
+            value={t("oppija__tavoitekokonaisuuksittain_opiskelu")}
           />
         )}
         {!isYlioppilastutkinnonOpiskeluoikeus(opiskeluoikeus) && (
