@@ -15,7 +15,7 @@ import org.scalatest.BeforeAndAfterEach
 case class ExpectedDataPerusopetusTiedot(
   tarkastelupäivänTila: String,
   tarkastelupäivänKoskiTila: String,
-  vuosiluokkiinSitomatonOpetus: Boolean = false
+  tavoitekokonaisuuksittainOpiskelu: Boolean = false
 )
 
 case class ExpectedDataPerusopetuksenJälkeinenTiedot(
@@ -263,8 +263,8 @@ trait ValpasOppijaTestBase extends ValpasTestBase with BeforeAndAfterEach {
       withClue("tarkastelupäivänKoskiTila") {
         opiskeluoikeus.perusopetusTiedot.map(_.tarkastelupäivänKoskiTila.koodiarvo) shouldBe expectedData.perusopetusTiedot.map(_.tarkastelupäivänKoskiTila)
       }
-      withClue("vuosiluokkiinSitomatonOpetus") {
-        opiskeluoikeus.perusopetusTiedot.map(_.vuosiluokkiinSitomatonOpetus) shouldBe expectedData.perusopetusTiedot.map(_.vuosiluokkiinSitomatonOpetus)
+      withClue("tavoitekokonaisuuksittainOpiskelu") {
+        opiskeluoikeus.perusopetusTiedot.map(_.tavoitekokonaisuuksittainOpiskelu) shouldBe expectedData.perusopetusTiedot.map(_.tavoitekokonaisuuksittainOpiskelu)
       }
     }
 

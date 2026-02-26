@@ -60,8 +60,11 @@ const lukionAineopinnotAloittanutPath = oppijaPath.href("/virkailija", {
 const lukioOpiskelijaPath = oppijaPath.href("/virkailija", {
   oppijaOid: "1.2.246.562.24.00000000004",
 })
-const vsopPath = oppijaPath.href("/virkailija", {
+const takoValmisPath = oppijaPath.href("/virkailija", {
   oppijaOid: "1.2.246.562.24.00000000046",
+})
+const takoKeskenPath = oppijaPath.href("/virkailija", {
+  oppijaOid: "1.2.246.562.24.00000000047",
 })
 
 const opiskeluoikeusIntSchoolPerusopetusPath = oppijaPath.href("/virkailija", {
@@ -261,20 +264,54 @@ describe("Oppijakohtainen näkymä 1/2", () => {
     )
   })
 
-  it("Näyttää oppijan vsop-tiedon", async () => {
-    await loginAs(vsopPath, "valpas-jkl-normaali", true)
+  it("Näyttää oppijan tako-tiedon", async () => {
+    await loginAs(takoKeskenPath, "valpas-jkl-normaali", true, "2026-02-05")
     await mainHeadingEquals(
-      "Ysiluokka-valmis-keväällä-2021-vsop Valpas (190705A575R)",
+      "Oppivelvollinen-ysiluokka-kesken-tako Valpas (240510A181X)",
     )
     await opiskeluhistoriaEquals(
       historiaOpintoOikeus({
-        otsikko: "Perusopetus 2012 – 2021",
+        otsikko: "Perusopetus 2024 –",
+        tila: "Läsnä",
+        toimipiste: "Jyväskylän normaalikoulu",
+        ryhmä: "9C",
+        tavoitekokonaisuuksittainOpiskelu: true,
+        alkamispäivä: "15.8.2024",
+      }),
+    )
+  })
+
+  it("Näyttää oppijan tako-tiedon, kun tavoitekokonaisuuksittain opiskelu on voimassa tarkastelupäivänä", async () => {
+    await loginAs(takoValmisPath, "valpas-jkl-normaali", true, "2026-05-30")
+    await mainHeadingEquals(
+      "Ysiluokka-valmis-keväällä-2026-tako Valpas (130510A5303)",
+    )
+    await opiskeluhistoriaEquals(
+      historiaOpintoOikeus({
+        otsikko: "Perusopetus 2017 – 2026",
         tila: "Valmistunut",
         toimipiste: "Jyväskylän normaalikoulu",
         ryhmä: "9C",
-        vuosiluokkiinSitomatonOpetus: true,
-        alkamispäivä: "15.8.2012",
-        päättymispäivä: "30.5.2021",
+        tavoitekokonaisuuksittainOpiskelu: true,
+        alkamispäivä: "15.8.2017",
+        päättymispäivä: "30.5.2026",
+      }),
+    )
+  })
+
+  it("Ei näytä oppijan tako-tietoa, kun tavoitekokonaisuuksittain opiskelu ei ole enää voimassa (esim opiskeluoikeus on valmistunut)", async () => {
+    await loginAs(takoValmisPath, "valpas-jkl-normaali", true, "2026-05-31")
+    await mainHeadingEquals(
+      "Ysiluokka-valmis-keväällä-2026-tako Valpas (130510A5303)",
+    )
+    await opiskeluhistoriaEquals(
+      historiaOpintoOikeus({
+        otsikko: "Perusopetus 2017 – 2026",
+        tila: "Valmistunut",
+        toimipiste: "Jyväskylän normaalikoulu",
+        ryhmä: "9C",
+        alkamispäivä: "15.8.2017",
+        päättymispäivä: "30.5.2026",
       }),
     )
   })

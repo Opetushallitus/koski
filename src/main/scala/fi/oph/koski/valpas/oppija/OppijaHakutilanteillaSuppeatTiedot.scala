@@ -122,7 +122,7 @@ object ValpasOpiskeluoikeusPerusopetusSuppeatTiedot {
       tarkastelupäivänKoskiTila = laajatTiedot.tarkastelupäivänKoskiTila,
       tarkastelupäivänKoskiTilanAlkamispäivä = laajatTiedot.tarkastelupäivänKoskiTilanAlkamispäivä,
       valmistunutAiemminTaiLähitulevaisuudessa = laajatTiedot.valmistunutAiemminTaiLähitulevaisuudessa,
-      vuosiluokkiinSitomatonOpetus = laajatTiedot.vuosiluokkiinSitomatonOpetus,
+      tavoitekokonaisuuksittainOpiskelu = laajatTiedot.tavoitekokonaisuuksittainOpiskelu,
       näytäMuunaPerusopetuksenJälkeisenäOpintona = laajatTiedot.näytäMuunaPerusopetuksenJälkeisenäOpintona,
     )
   }
@@ -136,7 +136,7 @@ case class ValpasOpiskeluoikeusPerusopetusSuppeatTiedot(
   tarkastelupäivänKoskiTila: Koodistokoodiviite,
   tarkastelupäivänKoskiTilanAlkamispäivä: String,
   valmistunutAiemminTaiLähitulevaisuudessa: Boolean,
-  vuosiluokkiinSitomatonOpetus: Boolean,
+  tavoitekokonaisuuksittainOpiskelu: Boolean,
   näytäMuunaPerusopetuksenJälkeisenäOpintona: Option[Boolean],
 ) extends ValpasOpiskeluoikeusPerusopetusTiedot
 

@@ -93,7 +93,7 @@ export const historiaOpintoOikeus = (p: {
   maksuttomuus?: string[]
   toimipiste?: string
   ryhmä?: string
-  vuosiluokkiinSitomatonOpetus?: boolean
+  tavoitekokonaisuuksittainOpiskelu?: boolean
   alkamispäivä?: string
   päättymispäivä?: string
   perusopetusSuoritettu?: string
@@ -107,8 +107,8 @@ export const historiaOpintoOikeus = (p: {
     ...rivi("Ryhmä", p.ryhmä),
     ...rivi(
       "Muuta",
-      p.vuosiluokkiinSitomatonOpetus
-        ? "Vuosiluokkiin sitomaton opetus"
+      p.tavoitekokonaisuuksittainOpiskelu
+        ? "Tavoitekokonaisuuksittain opiskelu"
         : undefined,
     ),
     ...rivi("Opiskeluoikeuden alkamispäivä", p.alkamispäivä),

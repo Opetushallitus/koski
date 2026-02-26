@@ -403,30 +403,6 @@ object ValpasOppijaTestData {
       )
     ),
     (
-      ValpasMockOppijat.valmistunutYsiluokkalainenVsop,
-      List(
-        ExpectedData(
-          opiskeluoikeus = ValpasOpiskeluoikeusExampleData.valmistunutYsiluokkalainenVsop,
-          onHakeutumisValvottavaOpiskeluoikeus = true,
-          onHakeutumisvalvovaOppilaitos = true,
-          onSuorittamisvalvovaOppilaitos = false,
-          perusopetusTiedot = Some(ExpectedDataPerusopetusTiedot("valmistunut", "valmistunut", vuosiluokkiinSitomatonOpetus = true)),
-        )
-      )
-    ),
-    (
-      ValpasMockOppijat.ysiluokkaKeskenVsop,
-      List(
-        ExpectedData(
-          opiskeluoikeus = ValpasOpiskeluoikeusExampleData.valmistunutYsiluokkalainenVsop,
-          onHakeutumisValvottavaOpiskeluoikeus = true,
-          onHakeutumisvalvovaOppilaitos = true,
-          onSuorittamisvalvovaOppilaitos = false,
-          perusopetusTiedot = Some(ExpectedDataPerusopetusTiedot("voimassa", "lasna", vuosiluokkiinSitomatonOpetus = true)),
-        )
-      )
-    ),
-    (
       ValpasMockOppijat.valmistunutKasiluokkalainen,
       List(
         ExpectedData(
@@ -1053,16 +1029,16 @@ object ValpasOppijaTestData {
       )
     ),
     (
-      ValpasMockOppijat.ysiluokkaKeskenVsop,
+      ValpasMockOppijat.valmistunutYsiluokkalainenTavoitekokonaisuuksittainOpiskelu,
       List(
-        ExpectedData(opiskeluoikeus = ValpasOpiskeluoikeusExampleData.valmistunutYsiluokkalainenVsop,
+        ExpectedData(opiskeluoikeus = ValpasOpiskeluoikeusExampleData.valmistunutYsiluokkalainenTako,
           onHakeutumisValvottavaOpiskeluoikeus = true,
           onHakeutumisvalvovaOppilaitos = true,
           onSuorittamisvalvovaOppilaitos = false,
           perusopetusTiedot = Some(ExpectedDataPerusopetusTiedot(
             tarkastelupäivänTila = "voimassa",
             tarkastelupäivänKoskiTila = "lasna",
-            vuosiluokkiinSitomatonOpetus = true
+            tavoitekokonaisuuksittainOpiskelu = false // alkaa vasta 1.8.2025
           )),
         )
       )

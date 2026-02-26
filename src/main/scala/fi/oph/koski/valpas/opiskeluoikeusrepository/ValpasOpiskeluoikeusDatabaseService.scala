@@ -1154,7 +1154,7 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
           r_opiskeluoikeus.viimeisin_tila = 'valmistunut'
           AND coalesce(r_opiskeluoikeus.paattymispaiva < $hakeutusmivalvottavanSuorituksenNäyttämisenAikaraja, FALSE)
         ),
-        'vuosiluokkiinSitomatonOpetus', coalesce((r_opiskeluoikeus.data -> 'lisätiedot' ->> 'vuosiluokkiinSitoutumatonOpetus')::boolean, FALSE)
+        'tavoitekokonaisuuksittainOpiskelu', coalesce(aikajakson_keskella.tavoitekokonaisuuksittain_opiskelu, FALSE)
       ) AS perusopetus_tiedot,
       NULL::jsonb AS muu_kuin_perusopetus_tiedot,
       r_opiskeluoikeus.data -> 'lisätiedot' -> 'maksuttomuus' AS maksuttomuus,
@@ -1290,7 +1290,7 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
               ysiluokan_suoritus.vahvistus_paiva IS NOT NULL
               AND ysiluokan_suoritus.vahvistus_paiva < $hakeutusmivalvottavanSuorituksenNäyttämisenAikaraja
             ),
-            'vuosiluokkiinSitomatonOpetus', FALSE
+            'tavoitekokonaisuuksittainOpiskelu', FALSE
           ))
         ELSE NULL::jsonb
       END) AS perusopetus_tiedot,
@@ -1518,7 +1518,7 @@ class ValpasOpiskeluoikeusDatabaseService(application: KoskiApplication) extends
               s4suoritus.vahvistus_paiva IS NOT NULL
               AND s4suoritus.vahvistus_paiva < $hakeutusmivalvottavanSuorituksenNäyttämisenAikaraja
             ),
-            'vuosiluokkiinSitomatonOpetus', FALSE
+            'tavoitekokonaisuuksittainOpiskelu', FALSE
           ))
         ELSE NULL::jsonb
       END) AS perusopetus_tiedot,
