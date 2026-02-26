@@ -218,7 +218,7 @@ mock-oppijalla.
 
 ```
 web/test/e2e/
-└── kielitutkinnotodistus.spec.ts    - Playwright e2e-testit
+└── kielitutkinnontodistus.spec.ts    - Playwright e2e-testit
 ```
 
 ## Allekirjoituksen verifointi

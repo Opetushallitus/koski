@@ -17,6 +17,12 @@ import { YleisenKielitutkinnonSuoritus } from '../types/fi/oph/koski/schema/Ylei
 import { ykiParasArvosana } from './yleinenKielitutkinto'
 import { YleinenKielitutkintoTodistusLataus } from './YleinenKielitutkintoTodistusLataus'
 
+declare global {
+  interface Window {
+    environment?: string
+  }
+}
+
 export type YleinenKielitutkintoEditorProps = {
   form: FormModel<KielitutkinnonOpiskeluoikeus>
   päätasonSuoritus: ActivePäätasonSuoritus<
@@ -32,7 +38,13 @@ export const YleinenKielitutkintoEditor: React.FC<
   const path = päätasonSuoritus.path
   const suoritus = getValue(path)(form.state)
 
+  const isNonProdEnvironment =
+    window.environment === 'local' ||
+    window.environment === 'unittest' ||
+    window.environment === 'OPHKoskiDev' ||
+    window.environment === 'OPHKoskiOpintopolku-QA'
   const hasFeatureFlagPdfTodistus =
+    isNonProdEnvironment ||
     localStorage.getItem('pdf-todistus') !== null ||
     new URLSearchParams(window.location.search).has('pdf-todistus')
 
