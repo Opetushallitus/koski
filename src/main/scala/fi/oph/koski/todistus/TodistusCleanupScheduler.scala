@@ -40,7 +40,8 @@ class TodistusCleanupScheduler(application: KoskiApplication) extends Logging {
       None,
       runNext,
       intervalMillis = 1000,
-      config = application.config
+      config = application.config,
+      leaseElector = Some(leaseElector)
     ))
     schedulerInstance
   }
@@ -51,15 +52,11 @@ class TodistusCleanupScheduler(application: KoskiApplication) extends Logging {
 
   def shutdown(): Unit = {
     schedulerInstance.foreach(_.shutdown)
-    leaseElector.shutdown()
   }
 
   private def runNext(_ignore: Option[JValue]): Option[JValue] = {
-    if (leaseElector.hasLease) {
-      val activeWorkers = application.workerLeaseRepository.activeHolders("todistus")
-      todistusService.cleanup(activeWorkers)
-    }
-
+    val activeWorkers = application.workerLeaseRepository.activeHolders("todistus")
+    todistusService.cleanup(activeWorkers)
     None
   }
 }

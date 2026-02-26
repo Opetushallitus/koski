@@ -43,7 +43,8 @@ class MassaluovutusScheduler(application: KoskiApplication) extends Logging {
       None,
       runNextQuery,
       intervalMillis = 1000,
-      config = application.config
+      config = application.config,
+      leaseElector = Some(leaseElector)
     ))
     schedulerInstance
   }
@@ -54,22 +55,17 @@ class MassaluovutusScheduler(application: KoskiApplication) extends Logging {
 
   def shutdown(): Unit = {
     schedulerInstance.foreach(_.shutdown)
-    leaseElector.shutdown()
   }
 
   private def runNextQuery(_context: Option[JValue]): Option[JValue] = {
-    if (isQueryWorker) {
-      if (massaluovutukset.hasNext) {
-        if (massaluovutukset.systemIsOverloaded) {
-          logger.info(s"System is overloaded. Postponing running the next query for $backpressureDuration")
-          Scheduler.pauseForDuration(schedulerDb, schedulerName, backpressureDuration)
-        } else {
-          massaluovutukset.runNext()
-        }
+    if (massaluovutukset.hasNext) {
+      if (massaluovutukset.systemIsOverloaded) {
+        logger.info(s"System is overloaded. Postponing running the next query for $backpressureDuration")
+        Scheduler.pauseForDuration(schedulerDb, schedulerName, backpressureDuration)
+      } else {
+        massaluovutukset.runNext()
       }
     }
     None // MassaluovutusScheduler päivitä kontekstia vain käynnistyessään
   }
-
-  private def isQueryWorker = leaseElector.hasLease
 }

@@ -13,7 +13,15 @@ class PurgeOldSessionsTask(app: KoskiApplication) extends Timing {
     new IntervalSchedule(Duration.ofHours(3)),
     None,
     tryRun,
-    config = app.config
+    config = app.config,
+    leaseElector = Some(new WorkerLeaseElector(
+      app.workerLeaseRepository,
+      "purge-old-sessions",
+      app.instanceId,
+      slots = 1,
+      leaseDuration = app.config.getDuration("schedule.workerLease.duration"),
+      heartbeatInterval = app.config.getDuration("schedule.workerLease.heartbeatInterval")
+    ))
   ))
 
   private def tryRun(unused: Option[JValue]) = timed("purgeOldSessions") {

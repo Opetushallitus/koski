@@ -48,21 +48,19 @@ class KielitutkintotodistusTiedoteScheduler(application: KoskiApplication) exten
       None,
       runBatch,
       intervalMillis = 1000,
-      config = application.config
+      config = application.config,
+      leaseElector = Some(leaseElector)
     ))
     schedulerInstance
   }
 
   def shutdown(): Unit = {
     schedulerInstance.foreach(_.shutdown)
-    leaseElector.shutdown()
   }
 
   private def runBatch(_context: Option[JValue]): Option[JValue] = {
-    if (leaseElector.hasLease) {
-      tiedoteService.processAll()
-      tiedoteService.retryAllFailed()
-    }
+    tiedoteService.processAll()
+    tiedoteService.retryAllFailed()
     None
   }
 }

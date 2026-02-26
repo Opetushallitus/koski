@@ -16,7 +16,15 @@ case class PerustiedotSyncScheduler(app: KoskiApplication) extends Timing {
         None,
         syncAndLogErrors,
         intervalMillis = 1000,
-        config = app.config
+        config = app.config,
+        leaseElector = Some(new WorkerLeaseElector(
+          app.workerLeaseRepository,
+          "perustiedot-sync",
+          app.instanceId,
+          slots = 1,
+          leaseDuration = app.config.getDuration("schedule.workerLease.duration"),
+          heartbeatInterval = app.config.getDuration("schedule.workerLease.heartbeatInterval")
+        ))
       ))
     }
 

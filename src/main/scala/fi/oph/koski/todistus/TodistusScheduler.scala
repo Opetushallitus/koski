@@ -40,7 +40,8 @@ class TodistusScheduler(application: KoskiApplication) extends Logging {
       None,
       runNextTodistus,
       intervalMillis = 1000,
-      config = application.config
+      config = application.config,
+      leaseElector = Some(leaseElector)
     ))
     schedulerInstance
   }
@@ -51,18 +52,13 @@ class TodistusScheduler(application: KoskiApplication) extends Logging {
 
   def shutdown(): Unit = {
     schedulerInstance.foreach(_.shutdown)
-    leaseElector.shutdown()
   }
 
   private def runNextTodistus(_context: Option[JValue]): Option[JValue] = {
-    if (isTodistusWorker) {
-      if (todistusService.hasNext) {
-        todistusService.runNext()
-      }
+    if (todistusService.hasNext) {
+      todistusService.runNext()
     }
 
     None
   }
-
-  private def isTodistusWorker = leaseElector.hasLease
 }

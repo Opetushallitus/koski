@@ -11,6 +11,8 @@ import fi.oph.koski.schema.Henkilö.Oid
 import fi.oph.koski.util.Timing
 import org.json4s.JValue
 
+import java.time.Duration
+
 class UpdateHenkilotTask(application: KoskiApplication) extends Timing {
   // Start by scanning 10 minutes to the past to take possible CPU time difference into account.
   // After first call that actually yields some changes from the data source, we'll use the timestamp
@@ -26,7 +28,15 @@ class UpdateHenkilotTask(application: KoskiApplication) extends Timing {
         new IntervalSchedule(application.config.getDuration("schedule.henkilötiedotUpdateInterval")),
         henkilöUpdateContext(currentTimeMillis - backBufferMs),
         updateHenkilöt(refresh = false),
-        config = application.config
+        config = application.config,
+        leaseElector = Some(new WorkerLeaseElector(
+          application.workerLeaseRepository,
+          "henkilötiedot-update",
+          application.instanceId,
+          slots = 1,
+          leaseDuration = application.config.getDuration("schedule.workerLease.duration"),
+          heartbeatInterval = application.config.getDuration("schedule.workerLease.heartbeatInterval")
+        ))
       ))
     }
 

@@ -23,7 +23,8 @@ class Scheduler(
   initialContext: Option[JValue],
   task: Option[JValue] => Option[JValue],
   intervalMillis: Int = 10000,
-  config: Config
+  config: Config,
+  leaseElector: Option[WorkerLeaseElector] = None
 ) extends QueryMethods with Logging {
 
   private val taskExecutor = Executors.newSingleThreadScheduledExecutor(NamedThreadFactory(name))
@@ -48,11 +49,16 @@ class Scheduler(
     runDbSync(KoskiTables.Scheduler.filter(_.name === name).map(_.context).update(initialContext))
   }
 
+  leaseElector.foreach(_.start())
+
   logger.info(s"Starting scheduler $name with $scheduling")
 
   taskExecutor.scheduleAtFixedRate(() => fireIfTime(), 0, intervalMillis, MILLISECONDS)
 
-  def shutdown: Unit = taskExecutor.shutdown()
+  def shutdown: Unit = {
+    taskExecutor.shutdown()
+    leaseElector.foreach(_.shutdown())
+  }
 
   def isTaskRunning: Boolean = runningTasksOnThisNode.get() > 0
 
@@ -70,7 +76,8 @@ class Scheduler(
   private def shouldFire: Boolean = try {
     val scheduler = getScheduler
     val isPaused = scheduler.exists(_.paused)
-    if (isPaused) {
+    val hasLease = leaseElector.forall(_.hasLease)
+    if (isPaused || !hasLease) {
       false
     } else {
       val nextFireTime = scheduling.nextFireTime(lastFired.toLocalDateTime)

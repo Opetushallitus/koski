@@ -13,7 +13,15 @@ case class PerustiedotManualSyncScheduler(app: KoskiApplication) extends Timing 
     new IntervalSchedule(Duration.ofMinutes(5)),
     None,
     manualSyncAndLogErrors,
-    config = app.config
+    config = app.config,
+    leaseElector = Some(new WorkerLeaseElector(
+      app.workerLeaseRepository,
+      "perustiedot-manual-sync",
+      app.instanceId,
+      slots = 1,
+      leaseDuration = app.config.getDuration("schedule.workerLease.duration"),
+      heartbeatInterval = app.config.getDuration("schedule.workerLease.heartbeatInterval")
+    ))
   ))
 
   private def manualSyncAndLogErrors(options: Option[JValue]): Option[JValue] = timed("perustiedotManualSync", 500) {
