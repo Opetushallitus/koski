@@ -2,7 +2,7 @@ package fi.oph.koski.todistus.tiedote
 
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.log.Logging
-import fi.oph.koski.schedule.{FixedTimeOfDaySchedule, IntervalSchedule, Schedule, Scheduler, WorkerLeaseElector}
+import fi.oph.koski.schedule.{IntervalSchedule, Schedule, Scheduler, WorkerLeaseElector}
 import org.json4s.JValue
 
 import java.time.Duration
