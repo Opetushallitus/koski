@@ -229,6 +229,7 @@ const OptionList = <T,>(props: OptionListProps<T>): React.ReactElement => {
           <li
             className="Select__option"
             onClick={opt.isGroup ? undefined : onClick(opt)}
+            onMouseDown={opt.isGroup ? undefined : (e) => e.preventDefault()}
           >
             <Removable
               isRemovable={Boolean(opt.removable && props.onRemove)}
