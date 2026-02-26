@@ -9,6 +9,8 @@ import org.json4s.JValue
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.should.Matchers
 
+import java.time.Duration
+
 class SchedulerSpec extends AnyFreeSpec with TestEnvironment with Matchers {
   "Next fire time is on selected time next day" in {
     val nextFireTime = new FixedTimeOfDaySchedule(3, 10).nextFireTime().toLocalDateTime
@@ -174,7 +176,71 @@ class SchedulerSpec extends AnyFreeSpec with TestEnvironment with Matchers {
     scheduler.shutdown
   }
 
+  "lease handover" - {
+    val db = KoskiApplicationForTests.masterDatabase.db
+
+    "new lease holder respects global cadence from DB, does not fire immediately" in {
+      val executionCountA = new AtomicInteger(0)
+      val executionCountB = new AtomicInteger(0)
+      val leaseA = new ControllableLeaseElector
+      val leaseB = new ControllableLeaseElector
+
+      leaseA.leaseHeld = true
+      leaseB.leaseHeld = false
+
+      val interval = Duration.ofMillis(1000)
+
+      val schedulerA = new Scheduler(
+        db, "test-handover-cadence", new IntervalSchedule(interval), None,
+        _ => { executionCountA.incrementAndGet(); None },
+        intervalMillis = 50, KoskiApplicationForTests.config,
+        leaseElector = Some(leaseA)
+      )
+
+      val schedulerB = new Scheduler(
+        db, "test-handover-cadence", new IntervalSchedule(interval), None,
+        _ => { executionCountB.incrementAndGet(); None },
+        intervalMillis = 50, KoskiApplicationForTests.config,
+        leaseElector = Some(leaseB)
+      )
+
+      // Wait for A to fire at least once
+      Wait.until(executionCountA.get >= 1, timeoutMs = 5000)
+
+      // Transfer lease from A to B
+      leaseA.leaseHeld = false
+      leaseB.leaseHeld = true
+
+      // B should NOT fire immediately — A just fired and the 1s interval hasn't elapsed
+      val countAfterTransfer = executionCountB.get
+      Thread.sleep(400)
+      executionCountB.get should equal(countAfterTransfer)
+
+      // After the full interval elapses, B should fire
+      Wait.until(executionCountB.get > countAfterTransfer, timeoutMs = 3000)
+
+      schedulerA.shutdown
+      schedulerB.shutdown
+    }
+  }
+
   private def testScheduler(name: String = "test", task: Option[JValue] => Option[JValue]) = {
     new Scheduler(KoskiApplicationForTests.masterDatabase.db, name, new IntervalSchedule(millis(1)), None, task, intervalMillis = 1, KoskiApplicationForTests.config)
   }
+}
+
+/** Test helper: WorkerLeaseElector with externally controllable hasLease.
+ * start() and shutdown() are no-ops — no background threads or DB interaction. */
+private class ControllableLeaseElector extends WorkerLeaseElector(
+  KoskiApplicationForTests.workerLeaseRepository,
+  "test-controllable",
+  "test-holder",
+  slots = 1,
+  leaseDuration = Duration.ofHours(1),
+  heartbeatInterval = Duration.ofHours(1)
+) {
+  @volatile var leaseHeld = false
+  override def hasLease: Boolean = leaseHeld
+  override def start(onAcquired: Int => Unit, onLost: Int => Unit): Unit = ()
+  override def shutdown(): Unit = ()
 }

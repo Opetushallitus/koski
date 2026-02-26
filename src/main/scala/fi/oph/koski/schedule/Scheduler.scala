@@ -80,7 +80,15 @@ class Scheduler(
     if (isPaused || !hasLease) {
       false
     } else {
-      val nextFireTime = scheduling.nextFireTime(lastFired.toLocalDateTime)
+      // When using a lease elector, read last fire time from DB to maintain global
+      // cadence across nodes. This ensures a new lease holder respects the previous
+      // holder's last fire time rather than using stale local state.
+      val fireSeed = if (leaseElector.isDefined) {
+        scheduler.map(_.nextFireTime).getOrElse(lastFired)
+      } else {
+        lastFired
+      }
+      val nextFireTime = scheduling.nextFireTime(fireSeed.toLocalDateTime)
       val shouldFire = now.after(nextFireTime)
       if (shouldFire) {
         lastFired = now
