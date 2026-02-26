@@ -102,6 +102,9 @@ class Scheduler(
   }
 
   private def fire = try {
+    // Write lastFired to DB immediately so a new lease holder sees the updated
+    // nextFireTime before the task completes, preventing premature firing.
+    runDbSync(KoskiTables.Scheduler.filter(_.name === name).map(_.nextFireTime).update(lastFired))
     val context: Option[JValue] = runDbSync(KoskiTables.Scheduler.filter(_.name === name).result.head).context
     logger.debug(s"Firing scheduled task $name ${context.map(c => s"with context ${JsonMethods.compact(c)}").mkString}")
     val newContext: Option[JValue] = task(context)
@@ -109,8 +112,6 @@ class Scheduler(
       runDbSync(KoskiTables.Scheduler.filter(_.name === name).map(_.context).update(newContext))
     }
   } finally {
-    // Write lastFired to DB as nextFireTime so it survives restarts
-    runDbSync(KoskiTables.Scheduler.filter(_.name === name).map(_.nextFireTime).update(lastFired))
     runningTasksOnThisNode.decrementAndGet()
   }
 
