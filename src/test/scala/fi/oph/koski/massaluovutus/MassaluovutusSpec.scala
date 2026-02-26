@@ -188,7 +188,7 @@ class MassaluovutusSpec extends AnyFreeSpec with MassaluovutusTestMethods with M
         ))
       }
 
-      "JSON-tulostiedostoihin sisältyy oppijaMasterOid" in {
+      "JSON-tulostiedostoihin sisältyy linkitetytOidit ja henkilö.oid on master oid" in {
         val user = MockUsers.helsinkiKatselija
         val queryId = addQuerySuccessfully(query, user)(_.queryId)
         val complete = waitForCompletion(queryId, user)
@@ -197,9 +197,41 @@ class MassaluovutusSpec extends AnyFreeSpec with MassaluovutusTestMethods with M
         verifyResultAndContent(complete.files.head, user) {
           val json = JsonMethods.parse(body)
           val oid = (json \ "henkilö" \ "oid").extract[String]
-          val masterOid = (json \ "oppijaMasterOid").extract[String]
-          masterOid should not be empty
-          masterOid should equal(oid)
+          oid should not be empty
+          val linkitetytOidit = (json \ "linkitetytOidit").extract[List[String]]
+          linkitetytOidit shouldBe a[List[_]]
+        }
+      }
+
+      "Master/slave -yhdistys: slave-oidin opiskeluoikeudet ryhmitellään masterin alle" in {
+        val user = MockUsers.paakayttaja
+        val slaveHenkilö = KoskiSpecificMockOppijat.slave.henkilö
+
+        createOrUpdate(slaveHenkilö, defaultOpiskeluoikeus)
+
+        val queryId = addQuerySuccessfully(
+          MassaluovutusQueryOrganisaationOpiskeluoikeudetJson(
+            alkanutAikaisintaan = LocalDate.of(2010, 1, 1),
+            organisaatioOid = Some(MockOrganisaatiot.helsinginKaupunki),
+          ), user
+        )(_.queryId)
+        val complete = waitForCompletion(queryId, user)
+
+        val masterOid = KoskiSpecificMockOppijat.master.oid
+        val slaveOid = slaveHenkilö.oid
+
+        // Slave OID:lla ei pitäisi olla omaa tiedostoa
+        complete.files.find(_.contains(slaveOid)) shouldBe None
+
+        // Master OID:n tiedostosta löytyy slave:n opiskeluoikeudet
+        val masterFile = complete.files.find(_.contains(masterOid))
+        masterFile shouldBe defined
+
+        verifyResultAndContent(masterFile.get, user) {
+          val json = JsonMethods.parse(body)
+          (json \ "henkilö" \ "oid").extract[String] should equal(masterOid)
+          (json \ "linkitetytOidit").extract[List[String]] should contain(slaveOid)
+          (json \ "opiskeluoikeudet").asInstanceOf[JArray].arr should not be empty
         }
       }
 
