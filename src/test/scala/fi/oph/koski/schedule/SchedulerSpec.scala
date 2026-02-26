@@ -86,6 +86,40 @@ class SchedulerSpec extends AnyFreeSpec with TestEnvironment with Matchers {
       scheduler.shutdown
     }
 
+    "pauseForDuration is non-blocking and returns while task is still running" in {
+      val taskStarted = new java.util.concurrent.CountDownLatch(1)
+      val taskCanFinish = new java.util.concurrent.CountDownLatch(1)
+      val executionCount = new AtomicInteger(0)
+
+      val scheduler = testScheduler(
+        "test-pause-nonblocking",
+        _ => {
+          taskStarted.countDown()
+          taskCanFinish.await(5, java.util.concurrent.TimeUnit.SECONDS)
+          executionCount.incrementAndGet()
+          None
+        }
+      )
+
+      // Wait for task to start running
+      taskStarted.await(5, java.util.concurrent.TimeUnit.SECONDS)
+      scheduler.isTaskRunning should be(true)
+
+      // pauseForDuration should return immediately even though task is still running
+      val before = System.currentTimeMillis()
+      val paused = Scheduler.pauseForDuration(db, "test-pause-nonblocking", java.time.Duration.ofSeconds(10))
+      val elapsed = System.currentTimeMillis() - before
+      paused should be(true)
+      elapsed should be < 1000L
+      scheduler.isTaskRunning should be(true) // task still running
+
+      // Let task finish
+      taskCanFinish.countDown()
+      Wait.until(!scheduler.isTaskRunning, timeoutMs = 1000)
+
+      scheduler.shutdown
+    }
+
     "clears pause when new Scheduler is created with same name" in {
       val executionCount = new AtomicInteger(0)
       val scheduler1 = testScheduler(

@@ -117,6 +117,11 @@ class Scheduler(
 }
 
 object Scheduler extends Logging {
+  /** Pauses the named scheduler for the given duration by setting pausedUntil in the database.
+   *
+   * This is non-blocking: it returns immediately after updating the DB. An already in-flight task
+   * will run to completion; only subsequent firings are suppressed. If you need "drain and quiesce"
+   * semantics (e.g. before maintenance), wait for `isTaskRunning == false` after pausing. */
   def pauseForDuration(db: DB, name: String, duration: Duration): Boolean = {
     val pausedUntilTime = Timestamp.valueOf(LocalDateTime.now().plus(duration))
     val scheduler = KoskiTables.Scheduler.filter(_.name === name)
