@@ -7,7 +7,7 @@ import fi.oph.koski.henkilo.{KoskiSpecificMockOppijat, LaajatOppijaHenkilöTiedo
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.koskiuser.KoskiSpecificSession.OPH_KATSELIJA_USER
-import fi.oph.koski.koskiuser.MockUsers.{hakemuspalveluKäyttäjä, vktKäyttäjä}
+import fi.oph.koski.koskiuser.MockUsers.{hakemuspalveluKäyttäjä, kiosKäyttäjä}
 import fi.oph.koski.koskiuser.Rooli.OPHKATSELIJA
 import fi.oph.koski.koskiuser._
 import fi.oph.koski.log.AuditLogTester
@@ -62,7 +62,7 @@ class HakemuspalveluServiceSpec
       AuditLogTester.verifyLastAuditLogMessage(Map("operation" -> "HAKEMUSPALVELU_OPISKELUOIKEUS_HAKU"))
     }
 
-    post("/api/hakemuspalvelu/oid", JsonSerializer.writeWithRoot(OidRequest(oid = KoskiSpecificMockOppijat.dippainssi.oid)), headers = authHeaders(vktKäyttäjä) ++ jsonContent) {
+    post("/api/hakemuspalvelu/oid", JsonSerializer.writeWithRoot(OidRequest(oid = KoskiSpecificMockOppijat.dippainssi.oid)), headers = authHeaders(kiosKäyttäjä) ++ jsonContent) {
       verifyResponseStatus(403, KoskiErrorCategory.forbidden("Käyttäjällä ei ole oikeuksia annetun organisaation tietoihin."))
     }
   }

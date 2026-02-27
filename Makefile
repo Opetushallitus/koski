@@ -92,7 +92,7 @@ backtest:
 	fi.oph.koski.sso,fi.oph.koski.sure,fi.oph.koski.supa,fi.oph.koski.tools,fi.oph.koski.userdirectory,fi.oph.koski.util,\
 	fi.oph.koski.valpas,fi.oph.koski.valpas.hakeutumisvalvonta,fi.oph.koski.valpas.kuntailmoitus,\
 	fi.oph.koski.valpas.oppija,fi.oph.koski.valpas.oppivelvollisuudenkeskeytys,fi.oph.koski.valpas.suorittamisenvalvonta,\
-	fi.oph.koski.valvira,fi.oph.koski.versioning,fi.oph.koski.virta,fi.oph.koski.sdg,fi.oph.koski.vkt,fi.oph.koski.vtj,\
+	fi.oph.koski.valvira,fi.oph.koski.versioning,fi.oph.koski.virta,fi.oph.koski.sdg,fi.oph.koski.kios,fi.oph.koski.vtj,\
 	fi.oph.koski.ytl,fi.oph.koski.ytr,fi.oph.koski.ytr.download,fi.oph.koski.ytl,fi.oph.koski.meta,\
 	fi.oph.koski.ytl,fi.oph.koski.api.misc,fi.oph.koski.api.oppijaupdate,fi.oph.koski.api.oppijavalidation,fi.oph.koski.api.suostumus,\
 	fi.oph.koski.frontendvalvonta,fi.oph.koski.tiedonsiirto,\

@@ -30,7 +30,8 @@ object Rooli {
   val VALVIRA = "VALVIRA"
   val MIGRI = "MIGRI"
   val YTL = "YTL"
-  val VKT = "VKT"
+  val VKT = "VKT" // TODO: TOR-2471: Poista kun VKT-rooli on korvattu KIOS-roolilla
+  val KIOS = "KIOS"
   val SDG = "KEHA-SDG"
   val HAKEMUSPALVELU_API = "HAKEMUSPALVELU_API"
   val HSL = "HSL"

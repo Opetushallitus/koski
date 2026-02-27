@@ -24,7 +24,7 @@ import fi.oph.koski.valpas.massaluovutus.{ValpasEiOppivelvollisuuttaSuorittavatM
 import fi.oph.koski.valpas.oppija.ValpasInternalSchema
 import fi.oph.koski.valpas.ytl.ValpasYtlSchema
 import fi.oph.koski.valvira.ValviraSchema
-import fi.oph.koski.vkt.VktSchema
+import fi.oph.koski.kios.KiosSchema
 import fi.oph.koski.ytl.YtlSchema
 
 import scala.reflect.runtime.{universe => ru}
@@ -81,8 +81,13 @@ class DocumentationApiServlet(application: KoskiApplication) extends KoskiSpecif
     AktiivisetJaPäättyneetOpinnotOppijaJakolinkillä.schemaJson
   }
 
+  get("/kios-oppija-schema.json") {
+    KiosSchema.schemaJson
+  }
+
+  // TODO: TOR-2471: Poista kun KIOS-tiimi on siirtynyt käyttämään /kios-oppija-schema.json -polkua
   get("/vkt-oppija-schema.json") {
-    VktSchema.schemaJson
+    KiosSchema.schemaJson
   }
 
   get("/sdg-oppija-schema.json") {
