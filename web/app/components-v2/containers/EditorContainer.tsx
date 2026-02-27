@@ -87,7 +87,7 @@ export const EditorContainer = <T extends Opiskeluoikeus>(
     [props.form]
   )
 
-  const [lisatiedotOpen, setLisatiedotOpen] = useState(false)
+  const [lisatiedotOpen, setLisatiedotOpen] = useState(true)
   const onSave = useCallback(() => {
     props.form.save(
       saveOpiskeluoikeus(props.oppijaOid),
@@ -166,6 +166,9 @@ export const EditorContainer = <T extends Opiskeluoikeus>(
           </>
         )}
 
+        {AdditionalOpiskeluoikeusFields && (
+          <AdditionalOpiskeluoikeusFields form={props.form} />
+        )}
         {props.opiskeluoikeudenTilaEditor || (
           <>
             <FormField
@@ -187,9 +190,6 @@ export const EditorContainer = <T extends Opiskeluoikeus>(
           path={opiskeluoikeudenOrganisaatiohistoriaPath}
           view={OrganisaatiohistoriaView}
         />
-        {AdditionalOpiskeluoikeusFields && (
-          <AdditionalOpiskeluoikeusFields form={props.form} />
-        )}
         <Spacer />
         {LisätiedotContainer !== undefined &&
           (props.form.editMode ||
