@@ -34,7 +34,6 @@ import {
 } from '../containers/KeyValueTable'
 import { DateEdit } from '../controls/DateField'
 import { IconButton } from '../controls/IconButton'
-import { RaisedButton } from '../controls/RaisedButton'
 import { FieldErrors } from '../forms/FieldErrors'
 import { FieldEditorProps, FieldViewerProps } from '../forms/FormField'
 import { ValidationError, isValidationError } from '../forms/validator'
@@ -190,13 +189,15 @@ export const OpiskeluoikeudenTilaEdit = <T extends OpiskeluoikeudenTila>(
             }}
           >
             {[
-              <RaisedButton
-                key="RaisedButton"
+              <a
+                key="addLink"
+                className="OpiskeluoikeudenTila-lisääTila"
+                role="button"
                 onClick={oo.openModal}
-                testId="add"
+                data-testid="add"
               >
-                {t('Lisää uusi')}
-              </RaisedButton>
+                {t('Lisää opiskeluoikeuden tila')}
+              </a>
             ]}
           </KeyColumnedValuesRow>
         )}
