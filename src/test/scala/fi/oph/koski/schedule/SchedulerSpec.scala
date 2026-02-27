@@ -157,16 +157,14 @@ class SchedulerSpec extends AnyFreeSpec with TestEnvironment with Matchers {
 
   "Scheduler with FixedTimeOfDaySchedule doesn't fire immediately on startup" in {
     val executionCount = new AtomicInteger(0)
-    val db = KoskiApplicationForTests.masterDatabase.db
 
     val scheduler = new Scheduler(
-      db,
+      KoskiApplicationForTests,
       "test-no-immediate-fire",
       new FixedTimeOfDaySchedule(3, 0),
       None,
       _ => { executionCount.incrementAndGet(); None },
-      intervalMillis = 10,
-      KoskiApplicationForTests.config
+      intervalMillis = 10
     )
 
     // Wait a bit and verify it didn't fire
@@ -177,8 +175,6 @@ class SchedulerSpec extends AnyFreeSpec with TestEnvironment with Matchers {
   }
 
   "lease handover" - {
-    val db = KoskiApplicationForTests.masterDatabase.db
-
     "new lease holder respects global cadence from DB, does not fire immediately" in {
       val executionCountA = new AtomicInteger(0)
       val executionCountB = new AtomicInteger(0)
@@ -191,17 +187,17 @@ class SchedulerSpec extends AnyFreeSpec with TestEnvironment with Matchers {
       val interval = Duration.ofMillis(1000)
 
       val schedulerA = new Scheduler(
-        db, "test-handover-cadence", new IntervalSchedule(interval), None,
+        KoskiApplicationForTests, "test-handover-cadence", new IntervalSchedule(interval), None,
         _ => { executionCountA.incrementAndGet(); None },
-        intervalMillis = 50, KoskiApplicationForTests.config,
-        leaseElector = Some(leaseA)
+        intervalMillis = 50,
+        leaseElectorOverride = Some(leaseA)
       )
 
       val schedulerB = new Scheduler(
-        db, "test-handover-cadence", new IntervalSchedule(interval), None,
+        KoskiApplicationForTests, "test-handover-cadence", new IntervalSchedule(interval), None,
         _ => { executionCountB.incrementAndGet(); None },
-        intervalMillis = 50, KoskiApplicationForTests.config,
-        leaseElector = Some(leaseB)
+        intervalMillis = 50,
+        leaseElectorOverride = Some(leaseB)
       )
 
       // Wait for A to fire at least once
@@ -225,7 +221,7 @@ class SchedulerSpec extends AnyFreeSpec with TestEnvironment with Matchers {
   }
 
   private def testScheduler(name: String = "test", task: Option[JValue] => Option[JValue]) = {
-    new Scheduler(KoskiApplicationForTests.masterDatabase.db, name, new IntervalSchedule(millis(1)), None, task, intervalMillis = 1, KoskiApplicationForTests.config)
+    new Scheduler(KoskiApplicationForTests, name, new IntervalSchedule(millis(1)), None, task, intervalMillis = 1)
   }
 }
 

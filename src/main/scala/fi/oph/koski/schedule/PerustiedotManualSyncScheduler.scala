@@ -8,20 +8,12 @@ import java.time.Duration
 
 case class PerustiedotManualSyncScheduler(app: KoskiApplication) extends Timing {
   def scheduler: Option[Scheduler] = Some(new Scheduler(
-    app.masterDatabase.db,
+    app,
     "perustiedot-manual-sync",
     new IntervalSchedule(Duration.ofMinutes(5)),
     None,
     manualSyncAndLogErrors,
-    config = app.config,
-    leaseElector = Some(new WorkerLeaseElector(
-      app.workerLeaseRepository,
-      "perustiedot-manual-sync",
-      app.instanceId,
-      slots = 1,
-      leaseDuration = app.config.getDuration("schedule.workerLease.duration"),
-      heartbeatInterval = app.config.getDuration("schedule.workerLease.heartbeatInterval")
-    ))
+    concurrency = 1
   ))
 
   private def manualSyncAndLogErrors(options: Option[JValue]): Option[JValue] = timed("perustiedotManualSync", 500) {

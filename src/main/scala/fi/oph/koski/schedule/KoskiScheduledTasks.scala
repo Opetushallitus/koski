@@ -8,8 +8,7 @@ class KoskiScheduledTasks(application: KoskiApplication) {
   val syncPerustiedot: Option[Scheduler] = application.perustiedotSyncScheduler.scheduler
   val manualSyncPerustiedot: Option[Scheduler] = application.perustiedotManualSyncScheduler.scheduler
   val syncTiedonsiirrot = new TiedonsiirtoScheduler(
-    application.masterDatabase.db,
-    application.config,
+    application,
     application.tiedonsiirtoService
   )
   val purgeOldSessions: Option[Scheduler] = new PurgeOldSessionsTask(application).scheduler

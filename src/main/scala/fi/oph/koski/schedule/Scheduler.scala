@@ -6,7 +6,7 @@ import java.time.{Duration, LocalDateTime}
 import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit.MILLISECONDS
 
-import com.typesafe.config.Config
+import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.db.DB
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.db._
@@ -17,15 +17,28 @@ import org.json4s.jackson.JsonMethods
 
 
 class Scheduler(
-  val db: DB,
+  application: KoskiApplication,
   name: String,
   scheduling: Schedule,
   initialContext: Option[JValue],
   task: Option[JValue] => Option[JValue],
   intervalMillis: Int = 10000,
-  config: Config,
-  leaseElector: Option[WorkerLeaseElector] = None
+  concurrency: Int = 0, // 0 = no lease coordination, task runs on all nodes; >= 1 = lease-coordinated with N slots
+  private[schedule] val leaseElectorOverride: Option[WorkerLeaseElector] = None
 ) extends QueryMethods with Logging {
+
+  override val db: DB = application.masterDatabase.db
+
+  private val leaseElector: Option[WorkerLeaseElector] = leaseElectorOverride.orElse(
+    if (concurrency >= 1) Some(new WorkerLeaseElector(
+      application.workerLeaseRepository,
+      name,
+      application.instanceId,
+      slots = concurrency,
+      leaseDuration = application.config.getDuration("schedule.workerLease.duration"),
+      heartbeatInterval = application.config.getDuration("schedule.workerLease.heartbeatInterval")
+    )) else None
+  )
 
   private val taskExecutor = Executors.newSingleThreadScheduledExecutor(NamedThreadFactory(name))
   private val runningTasksOnThisNode = new java.util.concurrent.atomic.AtomicInteger(0)

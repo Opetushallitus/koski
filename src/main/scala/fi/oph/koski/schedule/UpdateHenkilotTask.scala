@@ -23,20 +23,12 @@ class UpdateHenkilotTask(application: KoskiApplication) extends Timing {
       None
     } else {
       Some(new Scheduler(
-        application.masterDatabase.db,
+        application,
         "henkilötiedot-update",
         new IntervalSchedule(application.config.getDuration("schedule.henkilötiedotUpdateInterval")),
         henkilöUpdateContext(currentTimeMillis - backBufferMs),
         updateHenkilöt(refresh = false),
-        config = application.config,
-        leaseElector = Some(new WorkerLeaseElector(
-          application.workerLeaseRepository,
-          "henkilötiedot-update",
-          application.instanceId,
-          slots = 1,
-          leaseDuration = application.config.getDuration("schedule.workerLease.duration"),
-          heartbeatInterval = application.config.getDuration("schedule.workerLease.heartbeatInterval")
-        ))
+        concurrency = 1
       ))
     }
 

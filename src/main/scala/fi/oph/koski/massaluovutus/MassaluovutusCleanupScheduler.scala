@@ -2,7 +2,7 @@ package fi.oph.koski.massaluovutus
 
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.log.Logging
-import fi.oph.koski.schedule.{IntervalSchedule, Scheduler, WorkerLeaseElector}
+import fi.oph.koski.schedule.{IntervalSchedule, Scheduler}
 import org.json4s.JValue
 
 class MassaluovutusCleanupScheduler(application: KoskiApplication) extends Logging {
@@ -10,21 +10,13 @@ class MassaluovutusCleanupScheduler(application: KoskiApplication) extends Loggi
 
   def scheduler: Option[Scheduler] = {
     Some(new Scheduler(
-      application.masterDatabase.db,
+      application,
       "massaluovutus-cleanup",
       new IntervalSchedule(application.config.getDuration("kyselyt.cleanupInterval")),
       None,
       runNextQuery,
       intervalMillis = 1000,
-      config = application.config,
-      leaseElector = Some(new WorkerLeaseElector(
-        application.workerLeaseRepository,
-        "massaluovutus-cleanup",
-        application.instanceId,
-        slots = 1,
-        leaseDuration = application.config.getDuration("schedule.workerLease.duration"),
-        heartbeatInterval = application.config.getDuration("schedule.workerLease.heartbeatInterval")
-      ))
+      concurrency = 1
     ))
   }
 

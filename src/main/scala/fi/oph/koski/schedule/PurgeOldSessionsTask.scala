@@ -8,20 +8,12 @@ import org.json4s.JValue
 
 class PurgeOldSessionsTask(app: KoskiApplication) extends Timing {
   def scheduler: Option[Scheduler] = Some(new Scheduler(
-    app.masterDatabase.db,
+    app,
     "purge-old-sessions",
     new IntervalSchedule(Duration.ofHours(3)),
     None,
     tryRun,
-    config = app.config,
-    leaseElector = Some(new WorkerLeaseElector(
-      app.workerLeaseRepository,
-      "purge-old-sessions",
-      app.instanceId,
-      slots = 1,
-      leaseDuration = app.config.getDuration("schedule.workerLease.duration"),
-      heartbeatInterval = app.config.getDuration("schedule.workerLease.heartbeatInterval")
-    ))
+    concurrency = 1
   ))
 
   private def tryRun(unused: Option[JValue]) = timed("purgeOldSessions") {
