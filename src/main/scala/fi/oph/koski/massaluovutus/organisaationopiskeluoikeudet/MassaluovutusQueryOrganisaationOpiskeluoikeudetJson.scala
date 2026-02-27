@@ -9,13 +9,15 @@ import fi.oph.koski.massaluovutus.{MassaluovutusException, QueryFormat, QueryRes
 import fi.oph.koski.schema.Organisaatio.Oid
 import fi.oph.koski.schema.annotation.EnumValues
 import fi.oph.koski.schema.{Henkilö, KoskeenTallennettavaOpiskeluoikeus, KoskiSchema, Organisaatio, TäydellisetHenkilötiedot}
+import fi.oph.koski.util.Retry.retryWithInterval
 import fi.oph.scalaschema.annotation.{Description, Title}
 
 import java.time.{LocalDate, LocalDateTime}
+import scala.concurrent.duration.DurationInt
 
 @Title("(JSON)")
 @Description("Tulostiedostot sisältävät tiedot json-muodossa. Jokaista oppijaa kohden luodaan oma tiedostonsa, jonka alle opiskeluoikeudet on ryhmitelty.")
-@Description("Tiedostojen sisältö vastaa pääosin opintohallintojärjestelmille tarkoitettua rajapintaa GET /koski/api/oppija/{oid}, mutta sisältää lisäksi oppijaMasterOid-kentän.")
+@Description("Tiedostojen sisältö vastaa pääosin opintohallintojärjestelmille tarkoitettua rajapintaa GET /koski/api/oppija/{oid}. Tulokset ryhmitellään henkilön master-oidin mukaan ja sisältävät linkitetytOidit-kentän.")
 case class MassaluovutusQueryOrganisaationOpiskeluoikeudetJson(
   `type`: String = "organisaationOpiskeluoikeudet",
   @EnumValues(Set(QueryFormat.json))
@@ -39,17 +41,15 @@ case class MassaluovutusQueryOrganisaationOpiskeluoikeudetJson(
   )(implicit user: KoskiSpecificSession): Either[String, Unit] = QueryResourceManager(logger) { _ =>
     val db = getDb(application)
     val filters = defaultBaseFilter(oppilaitosOids)
-    val oppijaOids = getOppijaOids(db, filters)
+    val oppijaOids = getOppijaOids(db, filters).toList
+    val masterHenkilöt = retryWithInterval(5, 5.seconds.toMillis) {
+      application.opintopolkuHenkilöFacade.findMasterOppijat(oppijaOids).values.toList.distinctBy(_.oid)
+    }
 
-    forEachOpiskeluoikeusAndHenkilö(application, filters, oppijaOids) { (henkilö, opiskeluoikeudet) =>
-      val masterOid = QueryMethods.runDbSync(
-        application.henkilöCache.db,
-        application.henkilöCache.getCachedAction(henkilö.oid)
-      ).flatMap(_.henkilöRow.masterOid).getOrElse(henkilö.oid)
-
+    forEachHenkilöAndOpiskeluoikeudet(application, filters, masterHenkilöt) { (henkilö, opiskeluoikeudet) =>
       writer.putJson(henkilö.oid, MassaluovutusOppija(
         henkilö = application.henkilöRepository.oppijaHenkilöToTäydellisetHenkilötiedot(henkilö),
-        oppijaMasterOid = masterOid,
+        linkitetytOidit = henkilö.linkitetytOidit,
         opiskeluoikeudet = opiskeluoikeudet.flatMap(toKoskeenTallennettavaOpiskeluoikeus(application)),
       ))
     }
@@ -68,7 +68,7 @@ case class MassaluovutusQueryOrganisaationOpiskeluoikeudetJson(
 
 case class MassaluovutusOppija(
   henkilö: TäydellisetHenkilötiedot,
-  oppijaMasterOid: Henkilö.Oid,
+  linkitetytOidit: List[Henkilö.Oid],
   opiskeluoikeudet: Seq[KoskeenTallennettavaOpiskeluoikeus],
 )
 
