@@ -36,6 +36,7 @@ import {
 } from '../ammatillinen/AmmatillinenOsittainenTutkinto'
 import { AmmatillinenArviointiasteikko } from '../ammatillinen/AmmatillinenArviointiasteikko'
 import { isEshAlaosasuoritus } from '../esh/esh'
+import { isPerusopetuksenOppiaineenOppimäärä } from '../opiskeluoikeus/OpiskeluoikeusEditor'
 
 export class SuoritusEditor extends React.Component {
   showDeleteButtonIfAllowed() {
@@ -66,7 +67,15 @@ export class SuoritusEditor extends React.Component {
       'vahvistus',
       'jääLuokalle',
       'pakollinen'
-    ].filter(Boolean)
+    ]
+      .filter(Boolean)
+      .filter((propertyName) => {
+        return !(
+          model.context.edit &&
+          isPerusopetuksenOppiaineenOppimäärä(model) &&
+          propertyName === 'pakollinen'
+        )
+      })
 
     model = addContext(model, {
       suoritus: model,

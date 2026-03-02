@@ -2259,10 +2259,24 @@ describe('Perusopetus 2', function () {
               ])
             })
 
-            it('Näytetään suorituksen tyypppi opiskeluoikeuden otsikossa', function () {
+            it('Näytetään suorituksen tyyppi opiskeluoikeuden otsikossa', function () {
               expect(S('.opiskeluoikeus h3 .koulutus').text()).to.equal(
                 'Perusopetuksen oppiaineen oppimäärä'
               )
+            })
+
+            describe('muokkaustilassa', function () {
+              before(editor.edit)
+
+              it('näyttää pakollinen-kentän editorin', function () {
+                expect(
+                  extractAsText(
+                    S('.suoritus > .properties .pakollinen')
+                  )
+                ).to.contain(
+                  'Pakollinen'
+                )
+              })
             })
           })
         })
