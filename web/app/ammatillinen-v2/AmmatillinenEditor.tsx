@@ -461,8 +461,13 @@ const AmmatillinenTutkintoOsittainenEditor: React.FC<
         />
 
         <Spacer />
-        <OpenAllButton {...tree} />
-        <Spacer />
+        {(osittainenPäätasonSuoritus.suoritus.osasuoritukset || []).length >
+          0 && (
+          <>
+            <OpenAllButton {...tree} />
+            <Spacer />
+          </>
+        )}
         <OsasuoritusTables
           form={props.form}
           osittainenPäätasonSuoritus={osittainenPäätasonSuoritus}
@@ -637,6 +642,10 @@ export const JärjestämismouotoEdit = ({
                 ...value.järjestämismuoto,
                 $class:
                   'fi.oph.koski.schema.OppisopimuksellinenJärjestämismuoto',
+                tunniste: {
+                  ...value.järjestämismuoto.tunniste,
+                  koodiarvo: '20' as const
+                },
                 oppisopimus
               }
             })
@@ -898,6 +907,10 @@ export const OsaamisenHankkimistapaEdit = ({
                 ...value.osaamisenHankkimistapa,
                 $class:
                   'fi.oph.koski.schema.OppisopimuksellinenOsaamisenHankkimistapa',
+                tunniste: {
+                  ...value.osaamisenHankkimistapa.tunniste,
+                  koodiarvo: 'oppisopimus' as const
+                },
                 oppisopimus
               }
             })
