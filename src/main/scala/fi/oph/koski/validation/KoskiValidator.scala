@@ -1737,16 +1737,29 @@ class KoskiValidator(
     }
 
   private def validateOppiaineet(suoritus: Suoritus) = suoritus match {
-    case _: NuortenPerusopetuksenOppiaineenOppimääränSuoritus | _: AikuistenPerusopetuksenOppiaineenOppimääränSuoritus | _: LukionOppiaineenOppimääränSuoritus2015 =>
-      if (suoritus.koulutusmoduuli.tunniste.koodiarvo == "XX" && suoritus.valmis) {
-        KoskiErrorCategory.badRequest.validation.tila.tyhjänOppiaineenVahvistus(""""Ei tiedossa"-oppiainetta ei voi merkitä valmiiksi""")
-      } else HttpStatus.ok
+    case _: LukionOppiaineenOppimääränSuoritus2015 => validateTyhjänOppiaineenVahvistus(suoritus)
+    case _: NuortenPerusopetuksenOppiaineenOppimääränSuoritus | _: AikuistenPerusopetuksenOppiaineenOppimääränSuoritus =>
+      HttpStatus.fold(
+        validateTyhjänOppiaineenVahvistus(suoritus),
+        HttpStatus.validate(
+          suoritus.koulutusmoduuli match {
+            case v: Valinnaisuus => v.pakollinen
+            case _ => true
+          }
+        )(KoskiErrorCategory.badRequest.validation.perusopetus.valinnainenOppiaineenOppimäärä(suoritus.koulutusmoduuli.tunniste.koodiarvo)())
+      )
     case s: PerusopetuksenVuosiluokanSuoritus if s.koulutusmoduuli.luokkaAste == "9" && s.valmis && !s.jääLuokalle && s.osasuoritusLista.nonEmpty =>
       KoskiErrorCategory.badRequest.validation.tila.oppiaineitaEiSallita("9.vuosiluokan suoritukseen ei voi syöttää oppiaineita, kun sillä on vahvistus, eikä oppilas jää luokalle")
     case s: NuortenPerusopetuksenOppiaineenSuoritusValmistavassaOpetuksessa if s.luokkaAsteVaaditaan && s.luokkaAste.isEmpty =>
       KoskiErrorCategory.badRequest.validation.rakenne.luokkaAstePuuttuu("Luokka-aste vaaditaan kun viimeisin arviointi on muuta kuin 'O'")
     case _ =>
       HttpStatus.ok
+  }
+
+  private def validateTyhjänOppiaineenVahvistus(suoritus: Suoritus) = {
+    if (suoritus.koulutusmoduuli.tunniste.koodiarvo == "XX" && suoritus.valmis) {
+      KoskiErrorCategory.badRequest.validation.tila.tyhjänOppiaineenVahvistus(""""Ei tiedossa"-oppiainetta ei voi merkitä valmiiksi""")
+    } else HttpStatus.ok
   }
 
   private def validatePäiväkodinEsiopetus(suoritus: Suoritus, opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus) = suoritus match {

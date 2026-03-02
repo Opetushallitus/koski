@@ -145,4 +145,25 @@ class OppijaValidationNuortenPerusopetuksenOppiaineenOppimaaraSpec extends Tutki
     }
   }
 
+  "Pakollinen oppiaine" - {
+    "valinnainen oppiaine ei ole sallittu" in {
+      val valinnainen = defaultOpiskeluoikeus.copy(suoritukset = List(
+        NuortenPerusopetuksenOppiaineenOppimääränSuoritus(
+          koulutusmoduuli = MuuNuortenPerusopetuksenOppiaine(
+            tunniste = Koodistokoodiviite(koodistoUri = "koskioppiaineetyleissivistava", koodiarvo = "HI"),
+            perusteenDiaarinumero = Some(perusopetuksenDiaarinumero),
+            pakollinen = false
+          ),
+          toimipiste = jyväskylänNormaalikoulu,
+          arviointi = PerusopetusExampleData.arviointi(9),
+          suoritustapa = PerusopetusExampleData.suoritustapaErityinenTutkinto,
+          vahvistus = vahvistus,
+          suorituskieli = suomenKieli
+        )))
+
+      setupOppijaWithOpiskeluoikeus(valinnainen) {
+        verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.perusopetus.valinnainenOppiaineenOppimäärä("HI")())
+      }
+    }
+  }
 }
