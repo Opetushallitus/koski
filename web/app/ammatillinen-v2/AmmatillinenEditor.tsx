@@ -637,10 +637,6 @@ export const JärjestämismouotoEdit = ({
                 ...value.järjestämismuoto,
                 $class:
                   'fi.oph.koski.schema.OppisopimuksellinenJärjestämismuoto',
-                tunniste: Koodistokoodiviite({
-                  koodiarvo: '20',
-                  koodistoUri: 'jarjestamismuoto'
-                }),
                 oppisopimus
               }
             })
@@ -902,10 +898,6 @@ export const OsaamisenHankkimistapaEdit = ({
                 ...value.osaamisenHankkimistapa,
                 $class:
                   'fi.oph.koski.schema.OppisopimuksellinenOsaamisenHankkimistapa',
-                tunniste: Koodistokoodiviite({
-                  koodiarvo: 'oppisopimus',
-                  koodistoUri: 'osaamisenhankkimistapa'
-                }),
                 oppisopimus
               }
             })
