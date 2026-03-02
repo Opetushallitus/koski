@@ -62,7 +62,10 @@ class Scheduler(
     runDbSync(KoskiTables.Scheduler.filter(_.name === name).map(_.context).update(initialContext))
   }
 
-  leaseElector.foreach(_.start())
+  leaseElector.foreach(_.start(
+    onAcquired = slot => logger.info(s"Scheduler $name acquired lease (slot $slot)"),
+    onLost = slot => logger.warn(s"Scheduler $name lost lease (slot $slot)")
+  ))
 
   logger.info(s"Starting scheduler $name with $scheduling")
 
