@@ -115,13 +115,105 @@ class TodistusLatausSpec extends TodistusSpecHelpers with BeforeAndAfterAll {
 
   private lazy val printPdfText: String = new PDFTextStripper().getText(printPdfDocument)
 
+  private val svTemplateVariant = "sv"
+
+  private lazy val svTodistusJob: TodistusJob = {
+    val req = TodistusGenerateRequest(opiskeluoikeusOid, svTemplateVariant)
+    addGenerateJobSuccessfully(req, hetu) { todistusJob =>
+      todistusJob.state should equal(TodistusState.QUEUED)
+      todistusJob
+    }
+  }
+
+  private lazy val svCompletedJob: TodistusJob = waitForCompletion(svTodistusJob.id, hetu)
+
+  private lazy val svPdfBytes: Array[Byte] = {
+    var bytes: Array[Byte] = null
+    verifyDownloadResultAndContent(s"/todistus/download/${svCompletedJob.id}", hetu) {
+      bytes = response.getContentBytes()
+    }
+    bytes
+  }
+
+  private var _svPdfDocument: Option[PDDocument] = None
+  private lazy val svPdfDocument: PDDocument = {
+    val doc = Loader.loadPDF(svPdfBytes)
+    _svPdfDocument = Some(doc)
+    doc
+  }
+
+  private lazy val svPdfText: String = new PDFTextStripper().getText(svPdfDocument)
+
+  private lazy val svPresignedPdfBytes: Array[Byte] = {
+    var bytes: Array[Byte] = null
+    verifyPresignedResultAndContent(s"/todistus/download/presigned/${svCompletedJob.id}") {
+      bytes = response.getContentBytes()
+    }
+    bytes
+  }
+
+  private var _svPresignedPdfDocument: Option[PDDocument] = None
+  private lazy val svPresignedPdfDocument: PDDocument = {
+    val doc = Loader.loadPDF(svPresignedPdfBytes)
+    _svPresignedPdfDocument = Some(doc)
+    doc
+  }
+
+  private lazy val svPresignedPdfText: String = new PDFTextStripper().getText(svPresignedPdfDocument)
+
+  private val enTemplateVariant = "en"
+
+  private lazy val enTodistusJob: TodistusJob = {
+    val req = TodistusGenerateRequest(opiskeluoikeusOid, enTemplateVariant)
+    addGenerateJobSuccessfully(req, hetu) { todistusJob =>
+      todistusJob.state should equal(TodistusState.QUEUED)
+      todistusJob
+    }
+  }
+
+  private lazy val enCompletedJob: TodistusJob = waitForCompletion(enTodistusJob.id, hetu)
+
+  private lazy val enPdfBytes: Array[Byte] = {
+    var bytes: Array[Byte] = null
+    verifyDownloadResultAndContent(s"/todistus/download/${enCompletedJob.id}", hetu) {
+      bytes = response.getContentBytes()
+    }
+    bytes
+  }
+
+  private var _enPdfDocument: Option[PDDocument] = None
+  private lazy val enPdfDocument: PDDocument = {
+    val doc = Loader.loadPDF(enPdfBytes)
+    _enPdfDocument = Some(doc)
+    doc
+  }
+
+  private lazy val enPdfText: String = new PDFTextStripper().getText(enPdfDocument)
+
+  private lazy val enPresignedPdfBytes: Array[Byte] = {
+    var bytes: Array[Byte] = null
+    verifyPresignedResultAndContent(s"/todistus/download/presigned/${enCompletedJob.id}") {
+      bytes = response.getContentBytes()
+    }
+    bytes
+  }
+
+  private var _enPresignedPdfDocument: Option[PDDocument] = None
+  private lazy val enPresignedPdfDocument: PDDocument = {
+    val doc = Loader.loadPDF(enPresignedPdfBytes)
+    _enPresignedPdfDocument = Some(doc)
+    doc
+  }
+
+  private lazy val enPresignedPdfText: String = new PDFTextStripper().getText(enPresignedPdfDocument)
+
   // Temp-hakemistot debuggausta varten
   private lazy val datePrefix: String = {
     java.time.LocalDate.now().format(java.time.format.DateTimeFormatter.ISO_LOCAL_DATE)
   }
 
   private lazy val baseTempDir: java.nio.file.Path = {
-    val dir = java.nio.file.Files.createTempDirectory(s"todistus-test-kielitutkinto-yleinenkielitutkinto-fi-${datePrefix}-")
+    val dir = java.nio.file.Files.createTempDirectory(s"todistus-test-kielitutkinto-yleinenkielitutkinto-${datePrefix}-")
     println(s"DEBUG: Temp-hakemisto: ${dir.toAbsolutePath}")
     dir
   }
@@ -135,6 +227,18 @@ class TodistusLatausSpec extends TodistusSpecHelpers with BeforeAndAfterAll {
     }
     if (_printPdfDocument.isDefined) {
       _printPdfDocument.get.close()
+    }
+    if (_svPdfDocument.isDefined) {
+      _svPdfDocument.get.close()
+    }
+    if (_svPresignedPdfDocument.isDefined) {
+      _svPresignedPdfDocument.get.close()
+    }
+    if (_enPdfDocument.isDefined) {
+      _enPdfDocument.get.close()
+    }
+    if (_enPresignedPdfDocument.isDefined) {
+      _enPresignedPdfDocument.get.close()
     }
     cleanup()
     super.afterAll()
@@ -178,18 +282,17 @@ class TodistusLatausSpec extends TodistusSpecHelpers with BeforeAndAfterAll {
     }
   }
 
-  // Testaa molemmat lataustiedot: suora lataus ja presigned URL
   Seq(
-    ("suora-lataus", () => pdfBytes, () => pdfDocument, () => pdfText, () => completedJob, false),
-    ("presigned-lataus", () => presignedPdfBytes, () => presignedPdfDocument, () => presignedPdfText, () => completedJob, false)
-  ).foreach { case (lataustapa, bytesGetter, documentGetter, textGetter, jobGetter, isPrintTemplate) =>
-    s"$lataustapa" - {
+    ("fi", "suora-lataus", () => pdfBytes, () => pdfDocument),
+    ("fi", "presigned-lataus", () => presignedPdfBytes, () => presignedPdfDocument),
+    ("sv", "suora-lataus", () => svPdfBytes, () => svPdfDocument),
+    ("sv", "presigned-lataus", () => svPresignedPdfBytes, () => svPresignedPdfDocument),
+    ("en", "suora-lataus", () => enPdfBytes, () => enPdfDocument),
+    ("en", "presigned-lataus", () => enPresignedPdfBytes, () => enPresignedPdfDocument)
+  ).foreach { case (lang, lataustapa, bytesGetter, documentGetter) =>
+    s"$lang-$lataustapa" - {
       "Lataus onnistuu" in {
         bytesGetter().length should be > 0
-      }
-
-      "PDF sisältää oikeat tekstit" in {
-        verifyYleinenKielitutkintoTodistusSisalto(textGetter())
       }
 
       "PDF on allekirjoitettu oikein" in {
@@ -204,10 +307,6 @@ class TodistusLatausSpec extends TodistusSpecHelpers with BeforeAndAfterAll {
         verifyTodistusSivumaara(documentGetter(), 2)
       }
 
-      "PDF metadata sisältää oikeat tiedot" in {
-        verifyTodistusMetadata(documentGetter(), jobGetter(), opiskeluoikeus)
-      }
-
       "PDF on PDF/UA-1 -saavutettava" in {
         verifyPdfUaAccessibility(bytesGetter())
       }
@@ -216,12 +315,8 @@ class TodistusLatausSpec extends TodistusSpecHelpers with BeforeAndAfterAll {
         verifyPageSize(documentGetter(), 2)
       }
 
-      "PDF tekstisisällöt ovat oikeilla paikoilla" in {
-        verifyTeksitOvatGraafisestiOikeillaKohdilla(documentGetter())
-      }
-
       "PDF alueet ja logot vastaavat referenssikuvaa pikselitasolla" in {
-        verifyAreasByPixel(documentGetter(), lataustapa)
+        verifyAreasByPixel(documentGetter(), lang, lataustapa)
       }
 
       "PDF-allekirjoitusanalyysi (PdfSignatureAnalyzer)" in {
@@ -230,6 +325,26 @@ class TodistusLatausSpec extends TodistusSpecHelpers with BeforeAndAfterAll {
         println("\n" + report.summary)
 
         report.overallValid should be(true)
+      }
+    }
+  }
+
+  // Tee kattavammat tekstipohjaiset tarkistukset suomi-versioille
+  Seq(
+    ("fi", "suora-lataus", () => pdfBytes, () => pdfDocument, () => pdfText, () => completedJob),
+    ("fi", "presigned-lataus", () => presignedPdfBytes, () => presignedPdfDocument, () => presignedPdfText, () => completedJob)
+  ).foreach { case (lang, lataustapa, bytesGetter, documentGetter, textGetter, jobGetter) =>
+    s"$lang-$lataustapa" - {
+      "PDF sisältää oikeat tekstit" in {
+        verifyYleinenKielitutkintoTodistusSisalto(textGetter())
+      }
+
+      "PDF metadata sisältää oikeat tiedot" in {
+        verifyTodistusMetadata(documentGetter(), jobGetter(), opiskeluoikeus)
+      }
+
+      "PDF tekstisisällöt ovat oikeilla paikoilla" in {
+        verifyTeksitOvatGraafisestiOikeillaKohdilla(documentGetter())
       }
     }
   }
@@ -274,10 +389,9 @@ class TodistusLatausSpec extends TodistusSpecHelpers with BeforeAndAfterAll {
     }
 
     "PDF alueet ja logot vastaavat referenssikuvaa pikselitasolla" in {
-      verifyAreasByPixelPrintTemplate(printPdfDocument, "printattava-todistus")
+      verifyAreasByPixelPrintTemplate(printPdfDocument, "fi-printattava-todistus")
     }
   }
-
 
   def verifyTeksitOvatGraafisestiOikeillaKohdilla(document: PDDocument): Unit = {
     // PDF:n koordinaatisto: 0,0 on vasemmassa ylänurkassa, y kasvaa alaspäin
@@ -531,7 +645,7 @@ class TodistusLatausSpec extends TodistusSpecHelpers with BeforeAndAfterAll {
   }
 
   // Vertailee, että logot ja muut sivun alueet vastaavat renderöitynä grafiikkana (lähes) toisiaan.
-  def verifyAreasByPixel(document: PDDocument, lataustapa: String): Unit = {
+  def verifyAreasByPixel(document: PDDocument, lang: String, lataustapa: String): Unit = {
     // PDF renderöidään 72 DPI:llä, mikä vastaa PDF:n natiiveja pisteitä ja tekee A4:stä noin 595 x 842 pikseliä
     // Koordinaatit ovat pikseleinä renderöidyssä kuvassa (0,0 = vasen ylänurkka, y kasvaa alaspäin)
     // minContentRatio: Minimiosuus ei-valkoisia pikseleitä jotta alue katsotaan sisällölliseksi
@@ -545,8 +659,8 @@ class TodistusLatausSpec extends TodistusSpecHelpers with BeforeAndAfterAll {
 
     verifyPixelRegions(
       document,
-      lataustapa,
-      "/todistus-test-kielitutkinto-yleinenkielitutkinto-fi-expected",
+      s"$lang-$lataustapa",
+      s"/todistus-test-kielitutkinto-yleinenkielitutkinto-$lang-expected",
       testRegions,
       pageCount = 2
     )
@@ -883,10 +997,6 @@ class TodistusLatausSpec extends TodistusSpecHelpers with BeforeAndAfterAll {
       pageIdx -> renderPageToImage(document, pageIdx)
     }.toMap
 
-    val referencePages = (0 until pageCount).map { pageIdx =>
-      pageIdx -> loadReferenceImage(s"todistus-full-page-${pageIdx + 1}.png")
-    }.toMap
-
     // Tallenna koko renderöidyt sivut debuggausta varten
     testPages.foreach { case (pageIdx, pageImage) =>
       println(s"DEBUG: Renderöity actual-sivu ${pageIdx + 1}: ${pageImage.getWidth}x${pageImage.getHeight} px")
@@ -898,17 +1008,11 @@ class TodistusLatausSpec extends TodistusSpecHelpers with BeforeAndAfterAll {
       )
     }
 
-    referencePages.foreach { case (pageIdx, pageImage) =>
-      println(s"DEBUG: Ladattu expected-sivu ${pageIdx + 1}: ${pageImage.getWidth}x${pageImage.getHeight} px")
-    }
+    // Ensimmäinen loop: Generoi ja tallenna kaikki testialueet
+    val testAreas = testRegions.map { region =>
+      println(s"DEBUG: Luodaan testiarea: ${region.name} (sivu ${region.pageIndex + 1}, x=${region.x}, y=${region.y}, w=${region.width}, h=${region.height})")
 
-    // Käy läpi jokainen alue
-    testRegions.foreach { region =>
-      println(s"DEBUG: Tarkistetaan alue: ${region.name} (sivu ${region.pageIndex + 1}, x=${region.x}, y=${region.y}, w=${region.width}, h=${region.height})")
-
-      // Leikkaa testattavat alueet oikealta sivulta
       val testArea = cropImage(testPages(region.pageIndex), region)
-      val referenceArea = cropImage(referencePages(region.pageIndex), region)
 
       // Tallenna leikatut alueet debuggausta varten
       writeTempImage(
@@ -917,6 +1021,25 @@ class TodistusLatausSpec extends TodistusSpecHelpers with BeforeAndAfterAll {
         testArea,
         s"DEBUG: Actual-alue '${region.name}' kirjoitettu"
       )
+
+      region -> testArea
+    }.toMap
+
+    // Lazy loading - ladataan vasta kun tarvitaan vertailuun
+    lazy val referencePages = (0 until pageCount).map { pageIdx =>
+      pageIdx -> loadReferenceImage(s"todistus-full-page-${pageIdx + 1}.png")
+    }.toMap
+
+    referencePages.foreach { case (pageIdx, pageImage) =>
+      println(s"DEBUG: Ladattu expected-sivu ${pageIdx + 1}: ${pageImage.getWidth}x${pageImage.getHeight} px")
+    }
+
+    // Toinen loop: Vertaa testialueita referenssialueisiin
+    testRegions.foreach { region =>
+      println(s"DEBUG: Tarkistetaan alue: ${region.name}")
+
+      val testArea = testAreas(region)
+      val referenceArea = cropImage(referencePages(region.pageIndex), region)
 
       // Tarkista että alueet eivät ole tyhjiä
       val (actualHasContent, actualContentRatio) = isImageContentful(testArea, minContentRatio = region.minContentRatio)
