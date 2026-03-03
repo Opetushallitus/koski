@@ -330,7 +330,7 @@ class TodistusLatausSpec extends TodistusSpecHelpers with BeforeAndAfterAll {
           "Tutkinnon kunkin osataidon hyväksytystä suorituksesta voi saada tasoarvion 3-4.",
           "Yleisissä kielitutkinnoissa kielitaidon arviointi perustuu kuuteen taitotasoon, jotka",
           "on kuvattu todistuksen kääntöpuolella. Yleisten kielitutkintojen taitotasoasteikko",
-          "vastaa Eurooppalaisen viitekehyksen (EVK) taitotasoasteikkoa."
+          "vastaa eurooppalaisen viitekehyksen (EVK) taitotasoasteikkoa."
         )),
 
       TextRegion("allekirjoitus", pageIndex = 0,
@@ -412,7 +412,7 @@ class TodistusLatausSpec extends TodistusSpecHelpers with BeforeAndAfterAll {
       TextRegion("Sivun 2 alaviite", pageIndex = 1,
         x = 45, y = 770, width = 500, height = 50,
         expectedTexts = Seq(
-          "Yleisten kielitutkintojen taitotasoasteikko on linkitetty empiirisesti Eurooppalaisen viitekehyksen asteikkoon.")),
+          "Yleisten kielitutkintojen taitotasoasteikko on linkitetty empiirisesti eurooppalaisen viitekehyksen asteikkoon.")),
     )
 
     verifyTextRegions(document, regions, "Tavallinen todistus")
