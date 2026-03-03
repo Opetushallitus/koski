@@ -37,8 +37,8 @@ import fi.oph.koski.suoritetuttutkinnot.SuoritetutTutkinnotService
 import fi.oph.koski.suoritusjako.{SuoritusjakoRepository, SuoritusjakoRepositoryV2, SuoritusjakoService, SuoritusjakoServiceV2}
 import fi.oph.koski.suostumus.SuostumuksenPeruutusService
 import fi.oph.koski.tiedonsiirto.{IPService, TiedonsiirtoService}
-import fi.oph.koski.todistus.swisscomclient.{SwisscomClient, SwisscomConfig, SwisscomConfigSecretsSource}
-import fi.oph.koski.todistus.{TodistusCleanupScheduler, TodistusJobRepository, TodistusResultRepository, TodistusScheduler, TodistusService}
+import fi.oph.koski.todistus.swisscomclient.{SwisscomClient, SwisscomConfig}
+import fi.oph.koski.todistus.{TodistusCleanupScheduler, TodistusJobRepository, TodistusScheduler, TodistusService}
 import fi.oph.koski.todistus.tiedote.{KielitutkintotodistusTiedoteRepository, KielitutkintotodistusTiedoteScheduler, KielitutkintotodistusTiedoteService, TiedotuspalveluClient}
 import fi.oph.koski.tutkinto.TutkintoRepository
 import fi.oph.koski.userdirectory.DirectoryClient

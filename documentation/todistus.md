@@ -37,6 +37,11 @@ Allekirjoitus
     ├── MockSwisscomClient   – HTTP-mock
     └── SwisscomCRLAndOCSPExtender – CRL/OCSP-tiedot allekirjoitettuun PDFihin
 
+Allekirjoituksen analysointi
+├── PdfSignatureAnalyzer        – PDF-allekirjoitusrakenteen analysointi (ByteRange, PKCS#7, DSS)
+├── PdfSignatureAnalyzerCLI     – komentorivityökalu PDF-allekirjoitusten analysointiin
+└── scripts/analyze-pdf-signature.sh – shell-skripti analyzer-työkalun käynnistämiseen
+
 Todistustyyppikohtainen logiikka
 └── yleinenkielitutkinto/
     ├── YleinenKielitutkintoTodistusDataBuilder – opiskeluoikeus → template-data
@@ -90,12 +95,14 @@ QUEUED
   └─► GATHERING_INPUT      – haetaan oppijan ja OO:n nykytiedot, lasketaan hash henkilötiedoista
         └─► GENERATING_RAW_PDF  – template-data rakennetaan ja validoidaan, PDF tuotetaan
               └─► SAVING_RAW_PDF      – allekirjoittamaton PDF → S3
-                    └─► STAMPING_PDF        – PDF allekirjoitetaan Swisscom AIS
+                    └─► STAMPING_PDF        – PDF allekirjoitetaan Swisscom AIS ja validoidaan
                           └─► SAVING_STAMPED_PDF – allekirjoitettu PDF → S3
                                 └─► COMPLETED
 ```
 
 STAMPING_PDF ja SAVING_STAMPED_PDF skipataan käytettäessä printtileiskoja.
+
+**Huom:** STAMPING_PDF-vaiheessa suoritetaan myös allekirjoituksen kryptografinen validointi (jos konfiguroitu). Jos validointi epäonnistuu, job siirtyy ERROR-tilaan ja virheellinen PDF tallennetaan debuggausta varten.
 
 Virhetilaan siirtynyt job saa tilan `ERROR`. Keskeytynyt job (`INTERRUPTED`)
 palautetaan jonoon uudestaan. Vanhentunut job käsitellään
@@ -206,6 +213,8 @@ src/test/scala/fi/oph/koski/todistus/
 ├── TodistusAuditLogSpec          – audit-loggauksen testaus
 ├── TodistusLatausSpec            – PDF-sisältö, metadata, allekirjoitus, PDF/UA-vaatimukset,
 │                                   pikselivertailu referenssikuviin verraten
+├── PdfSignatureAnalyzerSpec      – PDF-allekirjoitusrakenneanalysaattorin testit. ByteRange-validointi,
+│                                   PKCS#7-rakenne, DSS-validointi, OCSP/CRL-tiedot.
 ├── TodistusDataValidationSpec    – template-datan validointi
 └── YleinenKielitutkintoTodistusDataBuilderSpec – data-transformaatio, järjestys, lokalisaatio
 ```
@@ -223,9 +232,48 @@ web/test/e2e/
 
 ## Allekirjoituksen verifointi
 
-Allekirjoituksen verifioinnille ei ole automaattitestejä. Validiutta voi varmentaa Adobe Acrobat:lla sekä
-DVV:n työkalulla https://dvv.fi/en/validate-document . Hakemistossa `src/main/mockdata/todistus` on erilaisia
-manuaalitestitapauksia.
+PDF-allekirjoitusten validointia voi suorittaa itse tehdyllä **PDF Signature Analyzer** -työkalulla, joka suorittaa sekä rakenteellisen että kryptografisen validoinnin. Tarkemmat tiedot työkalusta alla. Samaa analysaattoria käytetään myös automaattitesteissä ja tuotantoympäristön allekirjoitusvalidoinnissa.
+
+Lisäksi allekirjoituksen voi tarkistaa manuaalisilla työkaluilla, joista tarkempia tietoja alla erillisessä kappaleessa.
+
+Hakemistossa `src/main/mockdata/todistus` on erilaisia manuaalitestitapauksia.
+
+### PDF Signature Analyzer -työkalu
+
+Koski sisältää työkalun PDF-allekirjoitusten analysointiin. Työkalu suorittaa sekä rakenteellisen että kryptografisen validoinnin.
+
+**Työkalu validoi:**
+
+- **ByteRange-analyysi**: Tarkistaa allekirjoitetun ja allekirjoittamattoman sisällön osuudet
+- **PKCS#7-rakenne**: Analysoi allekirjoituksen SignedData-rakenteen, sertifikaattiketjun ja aikaleiman
+- **Kryptografinen allekirjoituksen validointi**: Varmistaa että sisällön hash-arvo vastaa allekirjoituksessa olevaa
+- **DSS-validointi**: Varmistaa Document Security Store -rakenteen (OCSP/CRL-tiedot, VRI-merkinnät)
+
+**HUOM! Työkalu ei tarkista sertifikaatin luottamusketjua (chain of trust) eikä sertifikaatin voimassaoloaikaa.**
+
+#### Käyttö komentoriviltä
+
+```bash
+# Shell-skriptillä
+./scripts/analyze-pdf-signature.sh todistus.pdf
+
+# Suoraan Maven:llä
+mvn exec:java \
+  -Dexec.mainClass="fi.oph.koski.todistus.PdfSignatureAnalyzerCLI" \
+  -Dexec.args="todistus.pdf"
+```
+
+Exit-koodit:
+- `0` - PDF on validi
+- `1` - Virheelliset parametrit
+- `2` - PDF:ssä on ongelmia
+- `3` - Analyysi epäonnistui
+
+### Manuaalinen verifointi
+
+Allekirjoituksen kryptografisen validiteetin ja sertifikaattiketjun voi varmentaa:
+- **Adobe Acrobat** - näyttää allekirjoituksen tilan ja sertifikaattidetaljit
+- **DVV:n työkalu** - https://dvv.fi/en/validate-document
 
 ## Saavutettavuuden testaus
 

@@ -155,6 +155,7 @@ class TodistusResultRepository(config: Config) extends Logging {
   private def bucketName(bucketType: BucketType): String = bucketType match {
     case BucketType.RAW => rawBucketName
     case BucketType.STAMPED => stampedBucketName
+    case BucketType.INVALID_STAMP => stampedBucketName
   }
 
   private def logPut(bucketType: BucketType, key: String, contentType: String): Unit =
@@ -165,5 +166,6 @@ object BucketType extends Enumeration {
   type BucketType = Value
   val
     RAW,
-    STAMPED = Value
+    STAMPED,
+    INVALID_STAMP = Value
 }
