@@ -10,13 +10,13 @@ case class PerustiedotSyncScheduler(app: KoskiApplication) extends Timing {
       None
     } else {
       Some(new Scheduler(
-        app.masterDatabase.db,
+        app,
         "perustiedot-sync",
         new IntervalSchedule(app.config.getDuration("schedule.perustiedotSyncInterval")),
         None,
         syncAndLogErrors,
         intervalMillis = 1000,
-        config = app.config
+        concurrency = 1
       ))
     }
 

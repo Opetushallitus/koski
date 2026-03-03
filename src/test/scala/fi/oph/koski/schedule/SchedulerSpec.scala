@@ -9,6 +9,8 @@ import org.json4s.JValue
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.should.Matchers
 
+import java.time.Duration
+
 class SchedulerSpec extends AnyFreeSpec with TestEnvironment with Matchers {
   "Next fire time is on selected time next day" in {
     val nextFireTime = new FixedTimeOfDaySchedule(3, 10).nextFireTime().toLocalDateTime
@@ -27,7 +29,7 @@ class SchedulerSpec extends AnyFreeSpec with TestEnvironment with Matchers {
       None
     }
 
-    val scheduler = testScheduler(longRunningTask)
+    val scheduler = testScheduler("test-no-overlap", longRunningTask)
     val start = System.currentTimeMillis
     Wait.until(sharedResource.get == 1, timeoutMs = 5000)
     (System.currentTimeMillis() - start >= 100) should be(true)
@@ -40,7 +42,7 @@ class SchedulerSpec extends AnyFreeSpec with TestEnvironment with Matchers {
     val sharedResource: AtomicInteger = new AtomicInteger(0)
 
     "recovers from errors" in {
-      val s = testScheduler(failingTask)
+      val s = testScheduler("test-recovery", failingTask)
       Thread.sleep(50)
       fixScheduler
       schedulerShouldRecover
@@ -60,303 +62,181 @@ class SchedulerSpec extends AnyFreeSpec with TestEnvironment with Matchers {
     def schedulerShouldRecover = Wait.until(sharedResource.get == 2, timeoutMs = 1000, retryIntervalMs = 10)
   }
 
-  private def testScheduler(task: Option[JValue] => Option[JValue]) = {
-    new Scheduler(KoskiApplicationForTests.masterDatabase.db, "test", new IntervalSchedule(millis(1)), None, task, runOnSingleNode = false, intervalMillis = 1, KoskiApplicationForTests.config)
-  }
-
-  "Single node scheduler" - {
+  "pauseForDuration and resume" - {
     val db = KoskiApplicationForTests.masterDatabase.db
 
-    def singleNodeScheduler(name: String, schedule: IntervalSchedule, task: Option[JValue] => Option[JValue], intervalMillis: Int = 10): Scheduler = {
-      new Scheduler(db, name, schedule, None, task, runOnSingleNode = true, intervalMillis, KoskiApplicationForTests.config)
+    "pauses and resumes scheduler" in {
+      val executionCount = new AtomicInteger(0)
+      val scheduler = testScheduler(
+        "test-pause-not-running",
+        _ => { executionCount.incrementAndGet(); None }
+      )
+
+      Wait.until(executionCount.get >= 2, timeoutMs = 1000)
+
+      val paused = Scheduler.pauseForDuration(db, "test-pause-not-running", java.time.Duration.ofSeconds(1))
+      paused should be(true)
+      Wait.until(!scheduler.isTaskRunning, timeoutMs = 1000)
+      val countAfterPause = executionCount.get
+
+      Thread.sleep(500)
+      executionCount.get should equal(countAfterPause) // Should not execute during pause
+
+      Thread.sleep(600) // Wait for pause to end
+      Wait.until(executionCount.get > countAfterPause, timeoutMs = 1000) // Should resume
+
+      scheduler.shutdown
     }
 
-    "pauseForDuration and resume" - {
+    "pauseForDuration is non-blocking and returns while task is still running" in {
+      val taskStarted = new java.util.concurrent.CountDownLatch(1)
+      val taskCanFinish = new java.util.concurrent.CountDownLatch(1)
+      val executionCount = new AtomicInteger(0)
 
-      "pauses and resumes scheduler" in {
-        val executionCount = new AtomicInteger(0)
-        val scheduler = singleNodeScheduler(
-          "test-pause-not-running",
-          new IntervalSchedule(millis(100)),
-          _ => { executionCount.incrementAndGet(); None }
-        )
-
-        Wait.until(executionCount.get >= 2, timeoutMs = 1000)
-
-        val paused = Scheduler.pauseForDuration(db, "test-pause-not-running", java.time.Duration.ofSeconds(1))
-        paused should be(true)
-        val countAfterPause = executionCount.get
-
-        Thread.sleep(500)
-        executionCount.get should equal(countAfterPause) // Should not execute during pause
-
-        Thread.sleep(600) // Wait for pause to end
-        Wait.until(executionCount.get > countAfterPause, timeoutMs = 1000) // Should resume
-
-        scheduler.shutdown
-      }
-
-      "clears pause when new Scheduler is created with same name" in {
-        val executionCount = new AtomicInteger(0)
-        val scheduler1 = singleNodeScheduler(
-          "test-pause-restart",
-          new IntervalSchedule(millis(100)),
-          _ => { executionCount.incrementAndGet(); None }
-        )
-
-        Wait.until(executionCount.get >= 1, timeoutMs = 1000)
-
-        // Pause for a long time
-        val paused = Scheduler.pauseForDuration(db, "test-pause-restart", java.time.Duration.ofMinutes(10))
-        paused should be(true)
-        val countAfterPause = executionCount.get
-
-        Thread.sleep(300)
-        executionCount.get should equal(countAfterPause) // Should not execute during pause
-
-        // Create new scheduler with same name (simulates container restart)
-        // This should clear the pause
-        val scheduler2 = singleNodeScheduler(
-          "test-pause-restart",
-          new IntervalSchedule(millis(100)),
-          _ => { executionCount.incrementAndGet(); None }
-        )
-
-        // Should start executing again despite the previous 10 minute pause
-        Wait.until(executionCount.get > countAfterPause, timeoutMs = 1000)
-
-        scheduler1.shutdown
-        scheduler2.shutdown
-      }
-
-      "waits for running task to complete when pausing" in {
-        val taskStarted = new AtomicInteger(0)
-        val taskCompleted = new AtomicInteger(0)
-
-        val scheduler = singleNodeScheduler(
-          "test-pause-running",
-          new IntervalSchedule(millis(50)),
-          _ => {
-            taskStarted.incrementAndGet()
-            Thread.sleep(2000) // Long running task
-            taskCompleted.incrementAndGet()
-            None
-          }
-        )
-
-        Wait.until(taskStarted.get >= 1, timeoutMs = 1000)
-        scheduler.isTaskRunning should be(true) // Task still running
-        taskCompleted.get should equal(0)
-
-        val startTime = System.currentTimeMillis()
-        val paused = Scheduler.pauseForDuration(db, "test-pause-running", java.time.Duration.ofSeconds(5))
-        val elapsed = System.currentTimeMillis() - startTime
-
-        paused should be(true)
-        scheduler.isTaskRunning should be(false) // Task completed
-        taskCompleted.get should equal(1)
-        elapsed should be >= 1500L // Should have waited for task to complete
-        elapsed should be < 3000L // But not hung
-
-        scheduler.shutdown
-      }
-
-      "stops waiting if resume is called" in {
-        val taskStarted = new AtomicInteger(0)
-
-        val scheduler = singleNodeScheduler(
-          "test-pause-resume",
-          new IntervalSchedule(millis(50)),
-          _ => {
-            taskStarted.incrementAndGet()
-            Thread.sleep(5000) // Very long running task
-            None
-          }
-        )
-
-        Wait.until(taskStarted.get >= 1, timeoutMs = 1000)
-
-        val pauseThread = new Thread(() => {
-          Scheduler.pauseForDuration(db, "test-pause-resume", java.time.Duration.ofMinutes(10))
-        })
-
-        val startTime = System.currentTimeMillis()
-        pauseThread.start()
-        Thread.sleep(500) // Give pause time to start waiting
-
-        Scheduler.resume(db, "test-pause-resume")
-        pauseThread.join(2000) // Should return quickly after resume
-
-        val elapsed = System.currentTimeMillis() - startTime
-        elapsed should be < 3000L // Should not wait the full 5s for task
-
-        scheduler.shutdown
-      }
-
-      "stops waiting when pause duration ends" in {
-        val taskStarted = new AtomicInteger(0)
-
-        val scheduler = singleNodeScheduler(
-          "test-pause-duration-ends",
-          new IntervalSchedule(millis(50)),
-          _ => {
-            taskStarted.incrementAndGet()
-            Thread.sleep(5000) // Very long running task
-            None
-          }
-        )
-
-        Wait.until(taskStarted.get >= 1, timeoutMs = 1000)
-
-        val startTime = System.currentTimeMillis()
-        val paused = Scheduler.pauseForDuration(db, "test-pause-duration-ends", java.time.Duration.ofSeconds(1))
-        val elapsed = System.currentTimeMillis() - startTime
-
-        paused should be(true)
-        elapsed should be >= 1000L // Should wait at least 1s (pause duration)
-        elapsed should be < 3000L // Should not wait for full 5s task completion
-
-        scheduler.shutdown
-      }
-
-      "throws timeout if pausing runs too long" in {
-        Scheduler.setPauseTimeoutForTests(3000L) // 3 seconds timeout for testing
-
-        try {
-          val taskStarted = new AtomicInteger(0)
-
-          val scheduler = singleNodeScheduler(
-            "test-pause-timeout",
-            new IntervalSchedule(millis(50)),
-            _ => {
-              taskStarted.incrementAndGet()
-              Thread.sleep(10000) // 10 second task
-              None
-            }
-          )
-
-          Wait.until(taskStarted.get >= 1, timeoutMs = 1000)
-
-          val exception = intercept[RuntimeException] {
-            Scheduler.pauseForDuration(db, "test-pause-timeout", java.time.Duration.ofMinutes(10))
-          }
-
-          exception.getMessage should include("Timeout waiting for scheduler")
-          exception.getMessage should include("3000")
-
-          scheduler.shutdown
-        } finally {
-          Scheduler.resetPauseTimeout()
+      val scheduler = testScheduler(
+        "test-pause-nonblocking",
+        _ => {
+          taskStarted.countDown()
+          taskCanFinish.await(5, java.util.concurrent.TimeUnit.SECONDS)
+          executionCount.incrementAndGet()
+          None
         }
-      }
+      )
+
+      // Wait for task to start running
+      taskStarted.await(5, java.util.concurrent.TimeUnit.SECONDS)
+      scheduler.isTaskRunning should be(true)
+
+      // pauseForDuration should return immediately even though task is still running
+      val before = System.currentTimeMillis()
+      val paused = Scheduler.pauseForDuration(db, "test-pause-nonblocking", java.time.Duration.ofSeconds(10))
+      val elapsed = System.currentTimeMillis() - before
+      paused should be(true)
+      elapsed should be < 1000L
+      scheduler.isTaskRunning should be(true) // task still running
+
+      // Let task finish
+      taskCanFinish.countDown()
+      Wait.until(!scheduler.isTaskRunning, timeoutMs = 1000)
+
+      scheduler.shutdown
+    }
+
+    "clears pause when new Scheduler is created with same name" in {
+      val executionCount = new AtomicInteger(0)
+      val scheduler1 = testScheduler(
+        "test-pause-restart",
+        _ => { executionCount.incrementAndGet(); None }
+      )
+
+      Wait.until(executionCount.get >= 1, timeoutMs = 1000)
+
+      // Pause for a long time
+      val paused = Scheduler.pauseForDuration(db, "test-pause-restart", java.time.Duration.ofMinutes(10))
+      paused should be(true)
+      Wait.until(!scheduler1.isTaskRunning, timeoutMs = 1000)
+      val countAfterPause = executionCount.get
+
+      Thread.sleep(300)
+      executionCount.get should equal(countAfterPause) // Should not execute during pause
+
+      // Create new scheduler with same name (simulates container restart)
+      // This should clear the pause
+      val scheduler2 = testScheduler(
+        "test-pause-restart",
+        _ => { executionCount.incrementAndGet(); None }
+      )
+
+      // Should start executing again despite the previous 10 minute pause
+      Wait.until(executionCount.get > countAfterPause, timeoutMs = 1000)
+
+      scheduler1.shutdown
+      scheduler2.shutdown
     }
   }
 
+  "Scheduler with FixedTimeOfDaySchedule doesn't fire immediately on startup" in {
+    val executionCount = new AtomicInteger(0)
 
-  "Multi node scheduler, that does not track running status in database" - {
-    // Multi-node -schedulerissa seuraava laukaisuaika ja tieto siitä, onko task tällä hetkellä ajossa, on vain muistissa,
-    // vaikka joitain muita tietokannan kenttiä käytetäänkin. Tämän vuoksi sen pause+resume -logiikkalle on rajoitetummat
-    // testit.
-    val db = KoskiApplicationForTests.masterDatabase.db
+    val scheduler = new Scheduler(
+      KoskiApplicationForTests,
+      "test-no-immediate-fire",
+      new FixedTimeOfDaySchedule(3, 0),
+      None,
+      _ => { executionCount.incrementAndGet(); None },
+      intervalMillis = 10
+    )
 
-    def multiNodeScheduler(name: String, schedule: IntervalSchedule, task: Option[JValue] => Option[JValue], intervalMillis: Int = 10): Scheduler = {
-      new Scheduler(db, name, schedule, None, task, runOnSingleNode = false, intervalMillis, KoskiApplicationForTests.config)
-    }
+    // Wait a bit and verify it didn't fire
+    Thread.sleep(200)
+    executionCount.get should equal(0)
 
-    "pauseForDuration and resume" - {
+    scheduler.shutdown
+  }
 
-      "pauses and resumes scheduler" in {
-        val executionCount = new AtomicInteger(0)
-        val scheduler = multiNodeScheduler(
-          "test-pause-not-running",
-          new IntervalSchedule(millis(100)),
-          _ => {
-            executionCount.incrementAndGet(); None
-          }
-        )
+  "lease handover" - {
+    "new lease holder respects global cadence from DB, does not fire immediately" in {
+      val executionCountA = new AtomicInteger(0)
+      val executionCountB = new AtomicInteger(0)
+      val leaseA = new ControllableLeaseElector
+      val leaseB = new ControllableLeaseElector
 
-        Wait.until(executionCount.get >= 2, timeoutMs = 1000)
+      leaseA.leaseHeld = true
+      leaseB.leaseHeld = false
 
-        val paused = Scheduler.pauseForDuration(db, "test-pause-not-running", java.time.Duration.ofSeconds(1))
-        paused should be(true)
-        val countAfterPause = executionCount.get
+      val interval = Duration.ofMillis(1000)
 
-        Thread.sleep(500)
-        executionCount.get should equal(countAfterPause) // Should not execute during pause
+      val schedulerA = new Scheduler(
+        KoskiApplicationForTests, "test-handover-cadence", new IntervalSchedule(interval), None,
+        _ => { executionCountA.incrementAndGet(); None },
+        intervalMillis = 50,
+        leaseElectorOverride = Some(leaseA)
+      )
 
-        Thread.sleep(600) // Wait for pause to end
-        Wait.until(executionCount.get > countAfterPause, timeoutMs = 1000) // Should resume
+      val schedulerB = new Scheduler(
+        KoskiApplicationForTests, "test-handover-cadence", new IntervalSchedule(interval), None,
+        _ => { executionCountB.incrementAndGet(); None },
+        intervalMillis = 50,
+        leaseElectorOverride = Some(leaseB)
+      )
 
-        scheduler.shutdown
-      }
+      // Wait for A to fire at least once
+      Wait.until(executionCountA.get >= 1, timeoutMs = 5000)
 
-      "clears pause when new Scheduler is created with same name" in {
-        val executionCount = new AtomicInteger(0)
-        val scheduler1 = multiNodeScheduler(
-          "test-multi-pause-restart",
-          new IntervalSchedule(millis(100)),
-          _ => { executionCount.incrementAndGet(); None }
-        )
+      // Transfer lease from A to B
+      leaseA.leaseHeld = false
+      leaseB.leaseHeld = true
 
-        Wait.until(executionCount.get >= 1, timeoutMs = 1000)
+      // B should NOT fire immediately — A just fired and the 1s interval hasn't elapsed
+      val countAfterTransfer = executionCountB.get
+      Thread.sleep(400)
+      executionCountB.get should equal(countAfterTransfer)
 
-        // Pause for a long time
-        val paused = Scheduler.pauseForDuration(db, "test-multi-pause-restart", java.time.Duration.ofMinutes(10))
-        paused should be(true)
-        val countAfterPause = executionCount.get
+      // After the full interval elapses, B should fire
+      Wait.until(executionCountB.get > countAfterTransfer, timeoutMs = 3000)
 
-        Thread.sleep(300)
-        executionCount.get should equal(countAfterPause) // Should not execute during pause
-
-        // Create new scheduler with same name (simulates container restart)
-        // This should clear the pause
-        val scheduler2 = multiNodeScheduler(
-          "test-multi-pause-restart",
-          new IntervalSchedule(millis(100)),
-          _ => { executionCount.incrementAndGet(); None }
-        )
-
-        // Should start executing again despite the previous 10 minute pause
-        Wait.until(executionCount.get > countAfterPause, timeoutMs = 1000)
-
-        scheduler1.shutdown
-        scheduler2.shutdown
-      }
-
-      "supports waiting for running task to complete, when actually running on single node" in {
-        // Tämä on vain testikoodia varten: koska multi-node -skedulerissa muiden konttien skedulereiden
-        // run-statukseen ei ole keinoa päästä käsiksi, koska ovat vain kyseisten konttien muistissa, eivätkä
-        // tietokannassa.
-        val taskStarted = new AtomicInteger(0)
-        val taskCompleted = new AtomicInteger(0)
-
-        val scheduler = multiNodeScheduler(
-          "test-multi-pause-running",
-          new IntervalSchedule(millis(50)),
-          _ => {
-            taskStarted.incrementAndGet()
-            Thread.sleep(2000) // Long running task
-            taskCompleted.incrementAndGet()
-            None
-          }
-        )
-
-        Wait.until(taskStarted.get >= 1, timeoutMs = 1000)
-        scheduler.isTaskRunning should be(true) // Task running on this node
-        taskCompleted.get should equal(0)
-
-        val paused = Scheduler.pauseForDuration(db, "test-multi-pause-running", java.time.Duration.ofSeconds(5))
-        paused should be(true)
-
-        // For multi-node scheduler, pauseForDuration doesn't wait for this node's local task to complete
-        // Must wait separately using isTaskRunning
-        Wait.until(!scheduler.isTaskRunning, timeoutMs = 3000)
-
-        scheduler.isTaskRunning should be(false) // Task completed on this node
-        taskCompleted.get should equal(1)
-
-        scheduler.shutdown
-      }
+      schedulerA.shutdown
+      schedulerB.shutdown
     }
   }
+
+  private def testScheduler(name: String = "test", task: Option[JValue] => Option[JValue]) = {
+    new Scheduler(KoskiApplicationForTests, name, new IntervalSchedule(millis(1)), None, task, intervalMillis = 1)
+  }
+}
+
+/** Test helper: WorkerLeaseElector with externally controllable hasLease.
+ * start() and shutdown() are no-ops — no background threads or DB interaction. */
+private class ControllableLeaseElector extends WorkerLeaseElector(
+  KoskiApplicationForTests.workerLeaseRepository,
+  "test-controllable",
+  "test-holder",
+  slots = 1,
+  leaseDuration = Duration.ofHours(1),
+  heartbeatInterval = Duration.ofHours(1)
+) {
+  @volatile var leaseHeld = false
+  override def hasLease: Boolean = leaseHeld
+  override def start(onAcquired: Int => Unit, onLost: Int => Unit): Unit = ()
+  override def shutdown(): Unit = ()
 }

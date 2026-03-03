@@ -10,13 +10,13 @@ class MassaluovutusCleanupScheduler(application: KoskiApplication) extends Loggi
 
   def scheduler: Option[Scheduler] = {
     Some(new Scheduler(
-      application.masterDatabase.db,
+      application,
       "massaluovutus-cleanup",
       new IntervalSchedule(application.config.getDuration("kyselyt.cleanupInterval")),
       None,
       runNextQuery,
       intervalMillis = 1000,
-      config = application.config
+      concurrency = 1
     ))
   }
 

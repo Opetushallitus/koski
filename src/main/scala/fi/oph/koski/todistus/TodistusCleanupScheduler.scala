@@ -9,34 +9,34 @@ import java.time.Duration
 
 class TodistusCleanupScheduler(application: KoskiApplication) extends Logging {
   val schedulerName = "todistus-cleanup"
-  val schedulerDb = application.masterDatabase.db
   val todistusService = application.todistusService
 
   var schedulerInstance: Option[Scheduler] = None
 
   def createScheduler: Option[Scheduler] = {
     schedulerInstance = Some(new Scheduler(
-      schedulerDb,
+      application,
       schedulerName,
       new IntervalSchedule(application.config.getDuration("todistus.cleanupInterval")),
       None,
       runNext,
-      runOnSingleNode = true,
       intervalMillis = 1000,
-      config = application.config
+      concurrency = 1
     ))
     schedulerInstance
   }
 
-  def pause(duration: Duration): Boolean = Scheduler.pauseForDuration(schedulerDb, schedulerName, duration)
+  def pause(duration: Duration): Boolean = Scheduler.pauseForDuration(application.masterDatabase.db, schedulerName, duration)
 
-  def resume(): Boolean = Scheduler.resume(schedulerDb, schedulerName)
+  def resume(): Boolean = Scheduler.resume(application.masterDatabase.db, schedulerName)
+
+  def shutdown(): Unit = {
+    schedulerInstance.foreach(_.shutdown)
+  }
 
   private def runNext(_ignore: Option[JValue]): Option[JValue] = {
     val activeWorkers = application.workerLeaseRepository.activeHolders("todistus")
-
     todistusService.cleanup(activeWorkers)
-
     None
   }
 }

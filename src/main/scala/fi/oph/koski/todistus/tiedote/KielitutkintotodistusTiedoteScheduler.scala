@@ -2,12 +2,13 @@ package fi.oph.koski.todistus.tiedote
 
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.log.Logging
-import fi.oph.koski.schedule.{FixedTimeOfDaySchedule, IntervalSchedule, Scheduler}
+import fi.oph.koski.schedule.{IntervalSchedule, Schedule, Scheduler}
 import org.json4s.JValue
+
+import java.time.Duration
 
 class KielitutkintotodistusTiedoteScheduler(application: KoskiApplication) extends Logging {
   val schedulerName = "kielitutkintotodistus-tiedote"
-  val schedulerDb = application.masterDatabase.db
   val tiedoteService: KielitutkintotodistusTiedoteService = application.kielitutkintotodistusTiedoteService
 
   var schedulerInstance: Option[Scheduler] = None
@@ -15,24 +16,20 @@ class KielitutkintotodistusTiedoteScheduler(application: KoskiApplication) exten
   def createScheduler: Option[Scheduler] = {
     if (!application.config.getBoolean("tiedote.enabled")) return None
 
-    val schedule = if (application.config.hasPath("tiedote.checkInterval")) {
+    val schedule: Schedule = if (application.config.hasPath("tiedote.checkInterval")) {
       new IntervalSchedule(application.config.getDuration("tiedote.checkInterval"))
     } else {
-      new FixedTimeOfDaySchedule(
-        application.config.getInt("tiedote.schedule.hour"),
-        application.config.getInt("tiedote.schedule.minute")
-      )
+      new IntervalSchedule(Duration.ofHours(1))
     }
 
     schedulerInstance = Some(new Scheduler(
-      schedulerDb,
+      application,
       schedulerName,
       schedule,
       None,
       runBatch,
-      runOnSingleNode = true,
       intervalMillis = 1000,
-      config = application.config
+      concurrency = 1
     ))
     schedulerInstance
   }

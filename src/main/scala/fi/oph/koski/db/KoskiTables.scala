@@ -341,10 +341,9 @@ object KoskiTables {
     val name = column[String]("name", O.PrimaryKey)
     val nextFireTime = column[Timestamp]("nextfiretime")
     val context = column[Option[JValue]]("context")
-    val status = column[Int]("status")
     val pausedUntil = column[Option[Timestamp]]("pauseduntil")
 
-    def * = (name, nextFireTime, context, status, pausedUntil) <> (SchedulerRow.tupled, SchedulerRow.unapply)
+    def * = (name, nextFireTime, context, pausedUntil) <> (SchedulerRow.tupled, SchedulerRow.unapply)
   }
 
   class WorkerLeaseTable(tag: Tag) extends Table[WorkerLeaseRow](tag, "worker_lease") {
@@ -690,14 +689,7 @@ case class HenkilöRowWithMasterInfo(henkilöRow: HenkilöRow, masterHenkilöRow
 
 case class OpiskeluoikeusHistoryRow(opiskeluoikeusId: Int, versionumero: Int, aikaleima: Timestamp, kayttajaOid: String, muutos: JValue)
 
-object ScheduledTaskStatus {
-  type ScheduledTaskStatus = Int
-  val scheduled: ScheduledTaskStatus = 0
-  val running: ScheduledTaskStatus = 1
-}
-
-case class SchedulerRow(name: String, nextFireTime: Timestamp, context: Option[JValue], status: Int, pausedUntil: Option[Timestamp]) {
-  def running: Boolean = status == ScheduledTaskStatus.running
+case class SchedulerRow(name: String, nextFireTime: Timestamp, context: Option[JValue], pausedUntil: Option[Timestamp]) {
   def paused: Boolean = pausedUntil.exists(_.after(new Timestamp(System.currentTimeMillis)))
 }
 
