@@ -276,7 +276,7 @@ class ElaketurvakeskusSpec
   }
 
   def verifyAuditLogMessage(henkilö: OppijaHenkilö) = {
-    AuditLogTester.verifyLastAuditLogMessage(Map("operation" -> "OPISKELUOIKEUS_KATSOMINEN", "target" -> Map("oppijaHenkiloOid" -> henkilö.oid)))
+    AuditLogTester.verifyLastAuditLogMessageForOperation(Map("operation" -> "OPISKELUOIKEUS_KATSOMINEN", "target" -> Map("oppijaHenkiloOid" -> henkilö.oid)))
   }
 
   def postCsvFile[A](csv: File)(f: => A): A = postFullRequest(csv = Some(csv))(f)

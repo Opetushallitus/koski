@@ -38,7 +38,7 @@ class KehaSDGSpec
     AuditLogTester.clearMessages()
     postHetu(KoskiSpecificMockOppijat.amis.hetu.get) {
       verifyResponseStatusOk()
-      AuditLogTester.verifyLastAuditLogMessage(Map("operation" -> "SDG_OPISKELUOIKEUS_HAKU", "target" -> Map("oppijaHenkiloOid" -> KoskiSpecificMockOppijat.amis.oid)))
+      AuditLogTester.verifyLastAuditLogMessageForOperation(Map("operation" -> "SDG_OPISKELUOIKEUS_HAKU", "target" -> Map("oppijaHenkiloOid" -> KoskiSpecificMockOppijat.amis.oid)))
     }
   }
 

@@ -260,7 +260,7 @@ class SupaServletSpec
           verifyResponseStatusOk()
         }
 
-        AuditLogTester.verifyLastAuditLogMessage(Map(
+        AuditLogTester.verifyLastAuditLogMessageForOperation(Map(
           "operation" -> "SUORITUSPALVELU_OPISKELUOIKEUS_HAKU",
           "target" -> Map(
             "oppijaHenkiloOid" -> oppija.oid,

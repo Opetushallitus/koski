@@ -133,7 +133,7 @@ class KielitutkintotodistusTiedoteWorkflowSpec extends KielitutkintotodistusTied
         AuditLogTester.clearMessages()
         app.kielitutkintotodistusTiedoteService.retryAllFailed()
 
-        AuditLogTester.verifyLastAuditLogMessage(Map(
+        AuditLogTester.verifyLastAuditLogMessageForOperation(Map(
           "operation" -> KoskiOperation.TIEDOTE_LAHETETTY.toString,
           "target" -> Map(
             KoskiAuditLogMessageField.oppijaHenkiloOid.toString -> oOid,

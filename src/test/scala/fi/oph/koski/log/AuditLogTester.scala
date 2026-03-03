@@ -12,27 +12,37 @@ import scala.annotation.tailrec
 object AuditLogTester extends Matchers with LogTester {
   override def appenderName: String = "Audit"
 
-  def verifyOnlyAuditLogMessage(params: Map[String, Any]): Unit = {
+  def verifyOnlyAuditLogMessageForOperation(params: Map[String, Any]): Unit = {
     retryingTest(times = 10) { () =>
-      getLogMessages should have length(1)
-      verifyLastAuditLogMessageContains(params)
+      filteredMessagesByOperation(params) should have length(1)
+      verifyLastMatchingAuditLogMessageContains(params)
     }
   }
 
-  def verifyLastAuditLogMessage(params: Map[String, Any]): Unit = {
+  def verifyLastAuditLogMessageForOperation(params: Map[String, Any]): Unit = {
     retryingTest(times = 10) { () =>
-      verifyLastAuditLogMessageContains(params)
+      verifyLastMatchingAuditLogMessageContains(params)
     }
   }
 
-  private def verifyLastAuditLogMessageContains(params: Map[String, Any]): Unit = {
-    val message = getLogMessages
+  private def filteredMessagesByOperation(params: Map[String, Any]): Seq[JObject] = {
+    implicit val formats: Formats = GenericJsonFormats.genericFormats
+    val messages = getLogMessages
       .map(m => parse(m))
       .collect { case msg: JObject if !isAliveMessage(msg) => msg }
-      .lastOption
-    message match {
+
+    params.get("operation") match {
+      case Some(expectedOp: String) =>
+        messages.filter(msg => msg.values.get("operation").contains(expectedOp))
+      case _ =>
+        messages
+    }
+  }
+
+  private def verifyLastMatchingAuditLogMessageContains(params: Map[String, Any]): Unit = {
+    filteredMessagesByOperation(params).lastOption match {
       case Some(msg: JObject) => verifyAuditLogObject(msg, params)
-      case _ => throw new IllegalStateException("No audit log message found")
+      case _ => throw new IllegalStateException(s"No audit log message found matching $params")
     }
   }
 

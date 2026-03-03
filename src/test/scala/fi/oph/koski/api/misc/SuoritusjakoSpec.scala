@@ -283,7 +283,7 @@ class SuoritusjakoSpec extends AnyFreeSpec with SuoritusjakoTestMethods with Mat
 
       createSuoritusjako(perusopetuksenVuosiluokkaJson){
         verifyResponseStatusOk()
-        AuditLogTester.verifyLastAuditLogMessage(Map("operation" -> "KANSALAINEN_SUORITUSJAKO_LISAYS"))
+        AuditLogTester.verifyLastAuditLogMessageForOperation(Map("operation" -> "KANSALAINEN_SUORITUSJAKO_LISAYS"))
         secrets += ("auditlog" -> JsonSerializer.parse[Suoritusjako](response.body).secret)
       }
     }
@@ -296,7 +296,7 @@ class SuoritusjakoSpec extends AnyFreeSpec with SuoritusjakoTestMethods with Mat
 
       createSuoritusjako(suoritetutTutkinnotJson) {
         verifyResponseStatusOk()
-        AuditLogTester.verifyLastAuditLogMessage(Map("operation" -> "KANSALAINEN_SUORITUSJAKO_LISAYS_SUORITETUT_TUTKINNOT"))
+        AuditLogTester.verifyLastAuditLogMessageForOperation(Map("operation" -> "KANSALAINEN_SUORITUSJAKO_LISAYS_SUORITETUT_TUTKINNOT"))
         secrets += ("auditlog-suoritetut-tutkinnot" -> JsonSerializer.parse[Suoritusjako](response.body).secret)
       }
     }
@@ -309,7 +309,7 @@ class SuoritusjakoSpec extends AnyFreeSpec with SuoritusjakoTestMethods with Mat
 
       createSuoritusjako(aktiivisetJaPaattyneetOpinnotJson) {
         verifyResponseStatusOk()
-        AuditLogTester.verifyLastAuditLogMessage(Map("operation" -> "KANSALAINEN_SUORITUSJAKO_LISAYS_AKTIIVISET_JA_PAATTYNEET_OPINNOT"))
+        AuditLogTester.verifyLastAuditLogMessageForOperation(Map("operation" -> "KANSALAINEN_SUORITUSJAKO_LISAYS_AKTIIVISET_JA_PAATTYNEET_OPINNOT"))
         secrets += ("auditlog-aktiiviset-ja-paattyneet-opinnot" -> JsonSerializer.parse[Suoritusjako](response.body).secret)
       }
     }
@@ -455,7 +455,7 @@ class SuoritusjakoSpec extends AnyFreeSpec with SuoritusjakoTestMethods with Mat
       AuditLogTester.clearMessages()
       getSuoritusjako(secrets("yksi suoritus")) {
         verifyResponseStatusOk()
-        AuditLogTester.verifyLastAuditLogMessage(Map("operation" -> "KANSALAINEN_SUORITUSJAKO_KATSOMINEN"))
+        AuditLogTester.verifyLastAuditLogMessageForOperation(Map("operation" -> "KANSALAINEN_SUORITUSJAKO_KATSOMINEN"))
       }
     }
 
@@ -557,7 +557,7 @@ class SuoritusjakoSpec extends AnyFreeSpec with SuoritusjakoTestMethods with Mat
       AuditLogTester.clearMessages()
       getSuoritusjakoFromOpinnotApi(secrets("yksi suoritus"), None) {
         verifyResponseStatusOk()
-        AuditLogTester.verifyLastAuditLogMessage(Map("operation" -> "KANSALAINEN_SUORITUSJAKO_KATSOMINEN"))
+        AuditLogTester.verifyLastAuditLogMessageForOperation(Map("operation" -> "KANSALAINEN_SUORITUSJAKO_KATSOMINEN"))
       }
     }
 
@@ -565,7 +565,7 @@ class SuoritusjakoSpec extends AnyFreeSpec with SuoritusjakoTestMethods with Mat
       AuditLogTester.clearMessages()
       getSuoritusjakoFromOpinnotApi(secrets("auditlog-suoritetut-tutkinnot"), Some("suoritetut-tutkinnot")) {
         verifyResponseStatusOk()
-        AuditLogTester.verifyLastAuditLogMessage(Map("operation" -> "KANSALAINEN_SUORITUSJAKO_KATSOMINEN_SUORITETUT_TUTKINNOT"))
+        AuditLogTester.verifyLastAuditLogMessageForOperation(Map("operation" -> "KANSALAINEN_SUORITUSJAKO_KATSOMINEN_SUORITETUT_TUTKINNOT"))
       }
     }
 
@@ -573,7 +573,7 @@ class SuoritusjakoSpec extends AnyFreeSpec with SuoritusjakoTestMethods with Mat
       AuditLogTester.clearMessages()
       getSuoritusjakoFromOpinnotApi(secrets("auditlog-aktiiviset-ja-paattyneet-opinnot"), Some("aktiiviset-ja-paattyneet-opinnot")) {
         verifyResponseStatusOk()
-        AuditLogTester.verifyLastAuditLogMessage(Map("operation" -> "KANSALAINEN_SUORITUSJAKO_KATSOMINEN_AKTIIVISET_JA_PAATTYNEET_OPINNOT"))
+        AuditLogTester.verifyLastAuditLogMessageForOperation(Map("operation" -> "KANSALAINEN_SUORITUSJAKO_KATSOMINEN_AKTIIVISET_JA_PAATTYNEET_OPINNOT"))
       }
     }
 

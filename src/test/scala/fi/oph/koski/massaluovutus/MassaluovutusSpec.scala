@@ -180,7 +180,7 @@ class MassaluovutusSpec extends AnyFreeSpec with MassaluovutusTestMethods with M
         complete.files should have length 21
         complete.files.foreach(verifyResult(_, user))
 
-        AuditLogTester.verifyLastAuditLogMessage(Map(
+        AuditLogTester.verifyLastAuditLogMessageForOperation(Map(
           "operation" -> "OPISKELUOIKEUS_HAKU",
           "target" -> Map(
             "hakuEhto" -> "alkanutAikaisintaan=2020-01-01&organisaatio=1.2.246.562.10.346830761110",
@@ -284,7 +284,7 @@ class MassaluovutusSpec extends AnyFreeSpec with MassaluovutusTestMethods with M
 
         // Tulokset poikkeukseen saakka on kirjoitettu S3:een, vaikka epäonnistuneen kyselyn tuloksessa tiedostoja ei listata
         // Osoitteen arvaamalla käyttäjä voi kuitenkin saada nähtäväkseen tulokset ennen poikkeuksen lentämistä
-        AuditLogTester.verifyLastAuditLogMessage(Map(
+        AuditLogTester.verifyLastAuditLogMessageForOperation(Map(
           "operation" -> "OPISKELUOIKEUS_HAKU",
           "target" -> Map(
             "hakuEhto" -> "alkanutAikaisintaan=2010-01-01&organisaatio=1.2.246.562.10.346830761110",
@@ -323,7 +323,7 @@ class MassaluovutusSpec extends AnyFreeSpec with MassaluovutusTestMethods with M
         complete.files should have length 5
         complete.files.foreach(verifyResult(_, user))
 
-        AuditLogTester.verifyLastAuditLogMessage(Map(
+        AuditLogTester.verifyLastAuditLogMessageForOperation(Map(
           "operation" -> "OPISKELUOIKEUS_HAKU",
           "target" -> Map(
             "hakuEhto" -> "alkanutAikaisintaan=2020-01-01&organisaatio=1.2.246.562.10.346830761110",
@@ -428,7 +428,7 @@ class MassaluovutusSpec extends AnyFreeSpec with MassaluovutusTestMethods with M
         complete.files should have length 1
         complete.files.foreach(verifyResult(_, user))
 
-        AuditLogTester.verifyLastAuditLogMessage(Map(
+        AuditLogTester.verifyLastAuditLogMessageForOperation(Map(
           "operation" -> "OPISKELUOIKEUS_RAPORTTI",
           "target" -> Map(
             "hakuEhto" -> "alku=2000-01-01&lang=fi&loppu=2020-01-01&oppilaitosOid=1.2.246.562.10.346830761110&raportti=paallekkaisetopiskeluoikeudet",
@@ -609,7 +609,7 @@ class MassaluovutusSpec extends AnyFreeSpec with MassaluovutusTestMethods with M
               (
                 (v \ "oppijaOid").extract[String],
                 ((v \ "opiskeluoikeudet").extract[List[JObject]].last \ "oid").extract[String])).last match {
-              case (oppijaOid, opiskeluoikeusOid) => AuditLogTester.verifyLastAuditLogMessage(Map(
+              case (oppijaOid, opiskeluoikeusOid) => AuditLogTester.verifyLastAuditLogMessageForOperation(Map(
                 "operation" -> "SUORITUSPALVELU_OPISKELUOIKEUS_HAKU",
                 "target" -> Map(
                   "oppijaHenkiloOid" -> oppijaOid,
@@ -1040,7 +1040,7 @@ class MassaluovutusSpec extends AnyFreeSpec with MassaluovutusTestMethods with M
                 (v \ "opiskeluoikeudet").extract[List[JObject]].lastOption.map(oo => (oo \ "oid").extract[String]).getOrElse("")
               )
             ).last match {
-              case (oppijaOid, opiskeluoikeusOid) => AuditLogTester.verifyLastAuditLogMessage(Map(
+              case (oppijaOid, opiskeluoikeusOid) => AuditLogTester.verifyLastAuditLogMessageForOperation(Map(
                 "operation" -> "SUORITUSPALVELU_OPISKELUOIKEUS_HAKU",
                 "target" -> Map(
                   "oppijaHenkiloOid" -> oppijaOid,
@@ -1453,7 +1453,7 @@ class MassaluovutusSpec extends AnyFreeSpec with MassaluovutusTestMethods with M
         complete.files should have length 2
         complete.files.foreach(verifyResult(_, user))
 
-        AuditLogTester.verifyLastAuditLogMessage(Map(
+        AuditLogTester.verifyLastAuditLogMessageForOperation(Map(
           "operation" -> "OPISKELUOIKEUS_KATSOMINEN",
           "target" -> Map(
             "oppijaHenkiloOid" -> KoskiSpecificMockOppijat.perusopetuksenTiedonsiirto.oid,
