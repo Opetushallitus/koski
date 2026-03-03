@@ -3,8 +3,10 @@ import {
   modelData,
   modelItems,
   modelLookup,
+  modelProperties,
   removeCommonPath
 } from '../editor/EditorModel'
+import * as L from 'partial.lenses'
 import React from 'baret'
 import { pathOr } from 'ramda'
 import { t } from '../i18n/i18n'
@@ -85,11 +87,28 @@ export class SuoritusEditor extends React.Component {
 
     const className = 'suoritus ' + model.value.classes.join(' ')
 
+    const properties = isPerusopetuksenOppiaineenOppimäärä(model)
+      ? L.set(
+          [
+            L.find((p) => p.key === 'koulutusmoduuli'),
+            'model',
+            'value',
+            'properties',
+            L.elems,
+            L.when((np) => np.key === 'pakollinen'),
+            'title'
+          ],
+          t('Yhteinen oppiaine'),
+          modelProperties(model)
+        )
+      : modelProperties(model)
+
     return (
       <div className={className}>
         {this.showDeleteButtonIfAllowed()}
         <PropertiesEditor
           model={model}
+          properties={properties}
           propertyFilter={(p) =>
             !excludedProperties.includes(p.key) &&
             (model.context.edit || modelData(p.model) !== false)

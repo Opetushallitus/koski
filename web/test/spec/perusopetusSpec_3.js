@@ -812,7 +812,7 @@ describe('Perusopetus 3', function () {
               S('.suoritus > .properties .pakollinen')
             )
           ).to.contain(
-            'Pakollinen'
+            'Yhteinen oppiaine'
           )
         })
       })
