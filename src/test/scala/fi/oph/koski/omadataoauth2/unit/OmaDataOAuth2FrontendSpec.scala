@@ -1020,7 +1020,7 @@ class OmaDataOAuth2FrontendSpec extends OmaDataOAuth2TestBase {
         ) {
           verifyResponseStatus(302)
 
-          AuditLogTester.verifyLastAuditLogMessage(Map(
+          AuditLogTester.verifyLastAuditLogMessageForOperation(Map(
             "operation" -> "KANSALAINEN_MYDATA_LISAYS",
             "target" -> Map(
               "oppijaHenkiloOid" -> oppijaOid,
@@ -1343,7 +1343,7 @@ class OmaDataOAuth2FrontendSpec extends OmaDataOAuth2TestBase {
         ) {
           verifyResponseStatus(302)
 
-          AuditLogTester.verifyLastAuditLogMessage(Map(
+          AuditLogTester.verifyLastAuditLogMessageForOperation(Map(
             "operation" -> "KANSALAINEN_MYDATA_LISAYS",
             "target" -> Map(
               "oppijaHenkiloOid" -> oppijaOid,

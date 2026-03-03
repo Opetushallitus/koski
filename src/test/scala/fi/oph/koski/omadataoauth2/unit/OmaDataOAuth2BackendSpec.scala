@@ -71,7 +71,7 @@ class OmaDataOAuth2BackendSpec
       ) {
         verifyResponseStatusOk()
 
-        AuditLogTester.verifyOnlyAuditLogMessage(Map(
+        AuditLogTester.verifyOnlyAuditLogMessageForOperation(Map(
           "operation" -> "OAUTH2_ACCESS_TOKEN_LUONTI",
           "target" -> Map(
             "oppijaHenkiloOid" -> oppijaOid,
@@ -612,7 +612,7 @@ class OmaDataOAuth2BackendSpec
       postResourceServer(token) {
         verifyResponseStatusOk()
 
-        AuditLogTester.verifyOnlyAuditLogMessage(Map(
+        AuditLogTester.verifyOnlyAuditLogMessageForOperation(Map(
           "operation" -> "OAUTH2_KATSOMINEN_SUORITETUT_TUTKINNOT",
           "target" -> Map(
             "oppijaHenkiloOid" -> oppijaOid,
@@ -857,7 +857,7 @@ class OmaDataOAuth2BackendSpec
         postResourceServer(token, MockUsers.omadataOAuth2KaikkiOikeudetPalvelukäyttäjä) {
           verifyResponseStatusOk()
 
-          AuditLogTester.verifyOnlyAuditLogMessage(Map(
+          AuditLogTester.verifyOnlyAuditLogMessageForOperation(Map(
             "operation" -> "OAUTH2_KATSOMINEN_SUORITETUT_TUTKINNOT",
             "target" -> Map(
               "oppijaHenkiloOid" -> oppija.oid,
@@ -906,7 +906,7 @@ class OmaDataOAuth2BackendSpec
         postResourceServer(token, MockUsers.omadataOAuth2KaikkiOikeudetPalvelukäyttäjä) {
           verifyResponseStatusOk()
 
-          AuditLogTester.verifyOnlyAuditLogMessage(Map(
+          AuditLogTester.verifyOnlyAuditLogMessageForOperation(Map(
             "operation" -> "OAUTH2_KATSOMINEN_AKTIIVISET_JA_PAATTYNEET_OPINNOT",
             "target" -> Map(
               "oppijaHenkiloOid" -> oppija.oid,
@@ -988,7 +988,7 @@ class OmaDataOAuth2BackendSpec
         postResourceServer(token, MockUsers.omadataOAuth2KaikkiOikeudetPalvelukäyttäjä) {
           verifyResponseStatusOk()
 
-          AuditLogTester.verifyOnlyAuditLogMessage(Map(
+          AuditLogTester.verifyOnlyAuditLogMessageForOperation(Map(
             "operation" -> "OAUTH2_KATSOMINEN_KAIKKI_TIEDOT",
             "target" -> Map(
               "oppijaHenkiloOid" -> oppija.oid,
@@ -1115,7 +1115,7 @@ class OmaDataOAuth2BackendSpec
 
       delete(uri = "api/omadata-oauth2/resource-owner/active-consents/" + code, headers = kansalainenLoginHeaders(validKansalainen.hetu.get)) {
         verifyResponseStatusOk()
-        AuditLogTester.verifyLastAuditLogMessage(Map(
+        AuditLogTester.verifyLastAuditLogMessageForOperation(Map(
           "operation" -> "KANSALAINEN_MYDATA_POISTO",
           "target" -> Map(
             "oppijaHenkiloOid" -> oppijaOid,

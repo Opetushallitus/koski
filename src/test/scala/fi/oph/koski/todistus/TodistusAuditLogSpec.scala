@@ -25,7 +25,7 @@ class TodistusAuditLogSpec extends TodistusSpecHelpers {
         addGenerateJobSuccessfully(req, hetu) { todistusJob =>
           todistusJob.state should equal(TodistusState.QUEUED)
 
-          AuditLogTester.verifyLastAuditLogMessage(Map(
+          AuditLogTester.verifyLastAuditLogMessageForOperation(Map(
             "operation" -> KoskiOperation.TODISTUKSEN_LUONTI.toString,
             "target" -> Map(
               KoskiAuditLogMessageField.oppijaHenkiloOid.toString -> oppijaOid,
@@ -53,7 +53,7 @@ class TodistusAuditLogSpec extends TodistusSpecHelpers {
         addGenerateJobSuccessfully(req, huoltajanHetu) { todistusJob =>
           todistusJob.state should equal(TodistusState.QUEUED)
 
-          AuditLogTester.verifyLastAuditLogMessage(Map(
+          AuditLogTester.verifyLastAuditLogMessageForOperation(Map(
             "operation" -> KoskiOperation.TODISTUKSEN_LUONTI.toString,
             "target" -> Map(
               KoskiAuditLogMessageField.oppijaHenkiloOid.toString -> huollettavanOid,
@@ -80,7 +80,7 @@ class TodistusAuditLogSpec extends TodistusSpecHelpers {
           todistusJob.state should equal(TodistusState.QUEUED)
           todistusJob.isStamped should equal(false)
 
-          AuditLogTester.verifyLastAuditLogMessage(Map(
+          AuditLogTester.verifyLastAuditLogMessageForOperation(Map(
             "operation" -> KoskiOperation.TODISTUKSEN_LUONTI.toString,
             "target" -> Map(
               KoskiAuditLogMessageField.oppijaHenkiloOid.toString -> oppijaOid,
@@ -116,7 +116,7 @@ class TodistusAuditLogSpec extends TodistusSpecHelpers {
 
       verifyDownloadResult(s"/todistus/download/${todistusJob.id}", hetu)
 
-      AuditLogTester.verifyLastAuditLogMessage(Map(
+      AuditLogTester.verifyLastAuditLogMessageForOperation(Map(
         "operation" -> KoskiOperation.TODISTUKSEN_LATAAMINEN.toString,
         "target" -> Map(
           KoskiAuditLogMessageField.oppijaHenkiloOid.toString -> oppijaOid,
@@ -150,7 +150,7 @@ class TodistusAuditLogSpec extends TodistusSpecHelpers {
 
       verifyDownloadResult(s"/todistus/download/${todistusJob.id}", huoltajanHetu)
 
-      AuditLogTester.verifyLastAuditLogMessage(Map(
+      AuditLogTester.verifyLastAuditLogMessageForOperation(Map(
         "operation" -> KoskiOperation.TODISTUKSEN_LATAAMINEN.toString,
         "target" -> Map(
           KoskiAuditLogMessageField.oppijaHenkiloOid.toString -> huollettavanOid,
@@ -187,7 +187,7 @@ class TodistusAuditLogSpec extends TodistusSpecHelpers {
       // Huollettava itse lataa todistuksen
       verifyDownloadResult(s"/todistus/download/${todistusJob.id}", huollettavanHetu)
 
-      AuditLogTester.verifyLastAuditLogMessage(Map(
+      AuditLogTester.verifyLastAuditLogMessageForOperation(Map(
         "operation" -> KoskiOperation.TODISTUKSEN_LATAAMINEN.toString,
         "target" -> Map(
           KoskiAuditLogMessageField.oppijaHenkiloOid.toString -> huollettavanOid,
@@ -222,7 +222,7 @@ class TodistusAuditLogSpec extends TodistusSpecHelpers {
         // Vain KANSALAINEN_LOGIN-loki pitäisi löytyä, ei TODISTUKSEN_LATAAMINEN-lokia
         val logMessages = AuditLogTester.getLogMessages
         logMessages.length should equal(1)
-        AuditLogTester.verifyLastAuditLogMessage(Map(
+        AuditLogTester.verifyLastAuditLogMessageForOperation(Map(
           "operation" -> KoskiOperation.KANSALAINEN_LOGIN.toString
         ))
       }
@@ -242,7 +242,7 @@ class TodistusAuditLogSpec extends TodistusSpecHelpers {
         verifyResponseStatusOk()
       }
 
-      AuditLogTester.verifyLastAuditLogMessage(Map(
+      AuditLogTester.verifyLastAuditLogMessageForOperation(Map(
         "operation" -> KoskiOperation.TODISTUKSEN_ESIKATSELU.toString,
         "target" -> Map(
           KoskiAuditLogMessageField.oppijaHenkiloOid.toString -> oppijaOid,

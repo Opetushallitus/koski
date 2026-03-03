@@ -58,7 +58,7 @@ class KiosServiceSpec
   "Access control toimii oikein" in {
     post("/api/kios/oid", JsonSerializer.writeWithRoot(OidRequest(oid = KoskiSpecificMockOppijat.dippainssi.oid)), headers = authHeaders(kiosKäyttäjä) ++ jsonContent){
       verifyResponseStatusOk()
-      AuditLogTester.verifyLastAuditLogMessage(Map("operation" -> "KIOS_OPISKELUOIKEUS_HAKU"))
+      AuditLogTester.verifyLastAuditLogMessageForOperation(Map("operation" -> "KIOS_OPISKELUOIKEUS_HAKU"))
     }
 
     post("/api/kios/oid", JsonSerializer.writeWithRoot(OidRequest(oid = KoskiSpecificMockOppijat.dippainssi.oid)), headers = authHeaders(hakemuspalveluKäyttäjä) ++ jsonContent){

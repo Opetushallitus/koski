@@ -103,7 +103,7 @@ class SuoritusjakoAPISpec extends AnyFreeSpec with SuoritusjakoTestMethods with 
         AuditLogTester.clearMessages()
         postSuoritusjakoV3(secrets("taiteen perusopetus")) {
           verifyResponseStatusOk()
-          AuditLogTester.verifyLastAuditLogMessage(Map("operation" -> "KANSALAINEN_SUORITUSJAKO_KATSOMINEN"))
+          AuditLogTester.verifyLastAuditLogMessageForOperation(Map("operation" -> "KANSALAINEN_SUORITUSJAKO_KATSOMINEN"))
         }
       }
     }
@@ -153,7 +153,7 @@ class SuoritusjakoAPISpec extends AnyFreeSpec with SuoritusjakoTestMethods with 
         AuditLogTester.clearMessages()
         getSuoritusjakoPublicAPI(secrets("taiteen perusopetus")) {
           verifyResponseStatusOk()
-          AuditLogTester.verifyLastAuditLogMessage(Map("operation" -> "KANSALAINEN_SUORITUSJAKO_KATSOMINEN"))
+          AuditLogTester.verifyLastAuditLogMessageForOperation(Map("operation" -> "KANSALAINEN_SUORITUSJAKO_KATSOMINEN"))
         }
       }
 
@@ -176,7 +176,7 @@ class SuoritusjakoAPISpec extends AnyFreeSpec with SuoritusjakoTestMethods with 
           implicit val context: ExtractionContext = strictDeserialization
           val oppija = SchemaValidatingExtractor.extract[OppijaJakolinkillä](bodyString).toOption.get
 
-          AuditLogTester.verifyLastAuditLogMessage(Map(
+          AuditLogTester.verifyLastAuditLogMessageForOperation(Map(
             "operation" -> "KANSALAINEN_SUORITUSJAKO_KATSOMINEN",
             "target" -> Map("oppijaHenkiloOid" -> oppija.henkilö.asInstanceOf[TäydellisetHenkilötiedot].oid)))
         }
@@ -192,7 +192,7 @@ class SuoritusjakoAPISpec extends AnyFreeSpec with SuoritusjakoTestMethods with 
           val oppija = SchemaValidatingExtractor.extract[SuoritetutTutkinnotOppijaJakolinkillä](bodyString).toOption.get
           oppija.jakolinkki should be(Some(Jakolinkki(LocalDate.now.plusMonths(6))))
 
-          AuditLogTester.verifyLastAuditLogMessage(Map(
+          AuditLogTester.verifyLastAuditLogMessageForOperation(Map(
             "operation" -> "KANSALAINEN_SUORITUSJAKO_KATSOMINEN_SUORITETUT_TUTKINNOT",
             "target" -> Map("oppijaHenkiloOid" -> oppija.henkilö.oid)
           ))
@@ -209,7 +209,7 @@ class SuoritusjakoAPISpec extends AnyFreeSpec with SuoritusjakoTestMethods with 
           val oppija = SchemaValidatingExtractor.extract[AktiivisetJaPäättyneetOpinnotOppijaJakolinkillä](bodyString).toOption.get
           oppija.jakolinkki should be(Some(Jakolinkki(LocalDate.now.plusMonths(6))))
 
-          AuditLogTester.verifyLastAuditLogMessage(Map(
+          AuditLogTester.verifyLastAuditLogMessageForOperation(Map(
             "operation" -> "KANSALAINEN_SUORITUSJAKO_KATSOMINEN_AKTIIVISET_JA_PAATTYNEET_OPINNOT",
             "target" -> Map("oppijaHenkiloOid" -> oppija.henkilö.oid)
           ))

@@ -41,7 +41,7 @@ class SuomiFiServletSpec extends AnyFreeSpec with KoskiHttpSpec with Matchers wi
     "palauttaa opiskeluoikeudet hetun perusteella" in {
       postRekisteritiedot(KoskiSpecificMockOppijat.ammattilainen.hetu.get) {
         verifyResponseStatusOk()
-        AuditLogTester.verifyLastAuditLogMessage(Map("operation" -> "KANSALAINEN_SUOMIFI_KATSOMINEN"))
+        AuditLogTester.verifyLastAuditLogMessageForOperation(Map("operation" -> "KANSALAINEN_SUOMIFI_KATSOMINEN"))
         val response = parseSuomiFiResponse
         response.oppilaitokset should not be empty
         val oppilaitos = response.oppilaitokset.head

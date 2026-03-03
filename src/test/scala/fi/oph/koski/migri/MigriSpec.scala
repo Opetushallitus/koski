@@ -148,7 +148,7 @@ class MigriSpec extends AnyFreeSpec with KoskiHttpSpec with OpiskeluoikeusTestMe
     AuditLogTester.clearMessages()
     postOid(ammattilainen.oid, user) {
       verifyResponseStatusOk()
-      AuditLogTester.verifyLastAuditLogMessage(Map("operation" -> "OPISKELUOIKEUS_KATSOMINEN"))
+      AuditLogTester.verifyLastAuditLogMessageForOperation(Map("operation" -> "OPISKELUOIKEUS_KATSOMINEN"))
     }
   }
 
@@ -156,7 +156,7 @@ class MigriSpec extends AnyFreeSpec with KoskiHttpSpec with OpiskeluoikeusTestMe
     AuditLogTester.clearMessages()
     postHetu(ammattilainen.hetu, user) {
       verifyResponseStatusOk()
-      AuditLogTester.verifyLastAuditLogMessage(Map("operation" -> "OPISKELUOIKEUS_KATSOMINEN"))
+      AuditLogTester.verifyLastAuditLogMessageForOperation(Map("operation" -> "OPISKELUOIKEUS_KATSOMINEN"))
     }
   }
 
