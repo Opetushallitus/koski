@@ -72,6 +72,26 @@ class PdfSignatureAnalyzerSpec extends AnyFreeSpec with Matchers {
       }
     }
 
+    testPdfFile("mock-todistus-stamped.pdf: havaitsee väärän allekirjoittajan nimen") { pdfFile =>
+      val configWithWrongSignerName = validationConfig.copy(
+        odotettuAllekirjoittajanNimi = "Wrong Signer Name That Does Not Match"
+      )
+      PdfSignatureAnalyzer.analyzePdfFile(pdfFile, configWithWrongSignerName) match {
+        case Success(report) =>
+          report should not be null
+          report.overallValid should be(false)
+          report.pkcs7 should not be None
+          report.pkcs7.get.isValid should be(false)
+          val validationErrors = report.pkcs7.get.validationErrors
+          validationErrors should not be empty
+          validationErrors.exists(_.contains("First certificate's subject does not contain expected signer name")) should be(true)
+          validationErrors.exists(_.contains("Wrong Signer Name That Does Not Match")) should be(true)
+
+        case Failure(exception) =>
+          fail(s"Analyysi epäonnistui: ${exception.getMessage}", exception)
+      }
+    }
+
     testPdfFile("mock-todistus-stamped-tampered-content.pdf: Kryptografinen tarkistus havaitsee muokatun sisällön") { pdfFile =>
       PdfSignatureAnalyzer.analyzePdfFile(pdfFile, validationConfig) match {
         case Success(report) =>

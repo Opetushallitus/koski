@@ -25,7 +25,8 @@ object PdfSignatureAnalyzer extends Logging {
     maxAllekirjoittamatonProsentti: Double,
     minVarmenneketjunKoko: Int,
     sallitutTiivistealgoritmit: Set[String],
-    hashValidointi: Boolean
+    hashValidointi: Boolean,
+    odotettuAllekirjoittajanNimi: String
   )
 
   object ValidationConfig {
@@ -35,7 +36,8 @@ object PdfSignatureAnalyzer extends Logging {
         maxAllekirjoittamatonProsentti = config.getDouble("todistus.allekirjoitusvalidointi.maxAllekirjoittamatonProsentti"),
         minVarmenneketjunKoko = config.getInt("todistus.allekirjoitusvalidointi.minVarmenneketjunKoko"),
         sallitutTiivistealgoritmit = config.getStringList("todistus.allekirjoitusvalidointi.sallitutTiivistealgoritmit").asScala.toSet,
-        hashValidointi = config.getBoolean("todistus.allekirjoitusvalidointi.hashValidointi")
+        hashValidointi = config.getBoolean("todistus.allekirjoitusvalidointi.hashValidointi"),
+        odotettuAllekirjoittajanNimi = config.getString("todistus.allekirjoitusvalidointi.odotettuAllekirjoittajanNimi")
       )
     }
   }
@@ -428,6 +430,16 @@ object PdfSignatureAnalyzer extends Logging {
 
       if (allCerts.size < validationConfig.minVarmenneketjunKoko) {
         validationErrors += s"PKCS#7 does not contain a certificate chain (only ${allCerts.size} certificates, should be at least ${validationConfig.minVarmenneketjunKoko})"
+      }
+
+      // Validate first certificate's subject contains expected signer name
+      allCertInfos.headOption match {
+        case Some(firstCert) =>
+          if (!firstCert.subject.contains(validationConfig.odotettuAllekirjoittajanNimi)) {
+            validationErrors += s"First certificate's subject does not contain expected signer name '${validationConfig.odotettuAllekirjoittajanNimi}' (found: ${firstCert.subject})"
+          }
+        case None =>
+          validationErrors += "No certificates found in PKCS#7"
       }
 
       signerInfos.foreach { signer =>
