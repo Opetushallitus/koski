@@ -86,12 +86,12 @@ export const ArviointiEdit = ({
       </KeyValueRow>
       <KeyValueRow localizableLabel="Arvioijat">
         {value?.arvioitsijat?.map((a, index) => (
-          <KeyValueTable key={`arvioijat.edit.${a.nimi}`}>
+          <KeyValueTable key={index}>
             <KeyValueRow localizableLabel="Nimi">
               <TextEdit
                 value={a.nimi}
                 onChange={(nimi) =>
-                  nimi &&
+                  nimi !== undefined &&
                   onChange({
                     ...emptyArviointi,
                     ...value,
