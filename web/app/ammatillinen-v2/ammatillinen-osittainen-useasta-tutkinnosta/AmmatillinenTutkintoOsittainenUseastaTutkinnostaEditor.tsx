@@ -65,6 +65,7 @@ import {
 } from '../../components-v2/controls/LocalizedTestField'
 import { TextEdit, TextView } from '../../components-v2/controls/TextField'
 import { OsasuoritusTablesUseastaTutkinnosta } from './OsasuoritusTablesUseastaTutkinnosta'
+import { AmmatillinenArviointiasteikko } from '../AmmatillinenArviointiasteikko'
 
 export const AmmatillinenTutkintoOsittainenUseastaTutkinnostaEditor: React.FC<
   AmmatillinenEditorProps & {
@@ -115,6 +116,9 @@ export const AmmatillinenTutkintoOsittainenUseastaTutkinnostaEditor: React.FC<
           organisaatio={organisaatio}
           disableAdd={false}
           vahvistusClass={HenkilövahvistusValinnaisellaPaikkakunnalla.className}
+        />
+        <AmmatillinenArviointiasteikko
+          suoritus={osittainenUseastaTutkinnostaSuoritus.suoritus}
         />
         <Spacer />
         <OpenAllButton {...tree} />

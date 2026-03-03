@@ -83,6 +83,7 @@ import { HenkilövahvistusValinnaisellaPaikkakunnalla } from '../types/fi/oph/ko
 import { OpenAllButton, useTree } from '../appstate/tree'
 import { AmisLaajuudetYhteensä } from './AmisLaajuudetYhteensä'
 import { SisältyyOpiskeluoikeuteen } from './SisältyyOpiskeluoikeuteen'
+import { AmmatillinenArviointiasteikko } from './AmmatillinenArviointiasteikko'
 import { isAmmatillisenTutkinnonOsittainenUseastaTutkinnostaSuoritus } from '../types/fi/oph/koski/schema/AmmatillisenTutkinnonOsittainenUseastaTutkinnostaSuoritus'
 import { AmmatillinenTutkintoOsittainenUseastaTutkinnostaEditor } from './ammatillinen-osittainen-useasta-tutkinnosta/AmmatillinenTutkintoOsittainenUseastaTutkinnostaEditor'
 
@@ -460,6 +461,9 @@ const AmmatillinenTutkintoOsittainenEditor: React.FC<
           vahvistusClass={HenkilövahvistusValinnaisellaPaikkakunnalla.className}
         />
 
+        <AmmatillinenArviointiasteikko
+          suoritus={osittainenPäätasonSuoritus.suoritus}
+        />
         <Spacer />
         {(osittainenPäätasonSuoritus.suoritus.osasuoritukset || []).length >
           0 && (
