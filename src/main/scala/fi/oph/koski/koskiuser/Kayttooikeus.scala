@@ -218,9 +218,6 @@ case class KäyttöoikeusGlobal(globalPalveluroolit: List[Palvelurooli]) extends
       AccessType.read,
       AccessType.write,
     )
-    case Palvelurooli("KOSKI", SDG) => List(
-      AccessType.read
-    )
     case _ => Nil
   }
 
