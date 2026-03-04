@@ -1,8 +1,15 @@
 # Koskeen tallennettavien tietojen validaatiosäännöt
 ## 4.3.2026
 -Sallitaan osatutkintotavoitteisen valmiiksi merkkaaminen jos kyseessä on linkitetty opiskeluoikeus
+
+## 2.3.2026
+
+- Oppiaineen on oltava merkitty pakolliseksi oppiaineen oppimäärän suorituksella aikuisten ja nuorten perusopetuksessa.
+
 ## 24.2.2026
--Estetään osatutkintotavoitteisen valmiiksi merkkaaminen ilman vähintään yhtä ammatillisen tai yhteisen tutkinnon osan suoritusta
+
+- Estetään osatutkintotavoitteisen valmiiksi merkkaaminen ilman vähintään yhtä ammatillisen tai yhteisen tutkinnon osan suoritusta
+
 ## 18.2.2026
 
 - Sallitaan yleisen kielitutkinnon suorituksille päällekkäiset aikajaksot, mutta estetään kuitenkin suoritus samalla tutkintopäivällä samalla tutkintotasolla, kielellä ja testipaikalla.

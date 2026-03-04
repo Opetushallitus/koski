@@ -802,6 +802,20 @@ describe('Perusopetus 3', function () {
           'Suoritus valmis Vahvistus : 4.6.2016 Jyväskylä Reijo Reksi , rehtori'
         )
       })
+
+      describe('muokkaustilassa', function () {
+        before(editor.edit)
+
+        it('näyttää pakollinen-kentän editorin', function () {
+          expect(
+            extractAsText(
+              S('.suoritus > .properties .pakollinen')
+            )
+          ).to.contain(
+            'Yhteinen oppiaine'
+          )
+        })
+      })
     })
 
     describe('Monta oppiainetta', function () {
