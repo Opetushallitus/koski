@@ -45,11 +45,11 @@ class YleinenKielitutkintoTodistusDataBuilder(application: KoskiApplication) {
         .map(formatDateDDMMYYYY)
         .toRight(KoskiErrorCategory.internalError(s"Oppijan syntymäaika puuttuu todistukselle ${todistus.id}"))
 
-      tutkinnonNimi <- formatTutkinnonNimi(yleinenKtSuoritus.koulutusmoduuli, todistus.language)
+      tutkinnonNimi <- createTutkinnonNimi(yleinenKtSuoritus.koulutusmoduuli, todistus.language)
 
-      suorituksetJaArvosanat <- formatSuorituksetJaArvosanat(yleinenKtSuoritus, todistus)
+      suorituksetJaArvosanat <- createSuorituksetJaArvosanat(yleinenKtSuoritus, todistus)
 
-      tasonArvosanarajat <- formatTasonArvosanarajat(yleinenKtSuoritus.koulutusmoduuli.tunniste, todistus.language)
+      tasonArvosanarajat <- createTasonArvosanarajat(yleinenKtSuoritus.koulutusmoduuli.tunniste, todistus.language)
 
       järjestäjäNimi <- yleinenKtSuoritus.järjestäjä.nimi.map(_.get(todistus.language))
         .filter(_.nonEmpty)
@@ -104,14 +104,14 @@ class YleinenKielitutkintoTodistusDataBuilder(application: KoskiApplication) {
     )
   }
 
-  private def formatTutkinnonNimi(tutkinto: YleinenKielitutkinto, language: String): Either[HttpStatus, String] = {
+  private def createTutkinnonNimi(tutkinto: YleinenKielitutkinto, language: String): Either[HttpStatus, String] = {
     val kieliKoodi = tutkinto.kieli.koodiarvo
     val tasoKoodi = tutkinto.tunniste.koodiarvo
     val localizationKey = s"todistus:kielitutkinto_yleinenkielitutkinto_tutkinnon_nimi_${kieliKoodi}_${tasoKoodi}"
     getLocalization(localizationKey, language)
   }
 
-  private def formatSuorituksetJaArvosanat(yleinenKtSuoritus: YleisenKielitutkinnonSuoritus, todistus: TodistusJob): Either[HttpStatus, Seq[YleinenKielitutkintoSuoritusJaArvosana]] = {
+  private def createSuorituksetJaArvosanat(yleinenKtSuoritus: YleisenKielitutkinnonSuoritus, todistus: TodistusJob): Either[HttpStatus, Seq[YleinenKielitutkintoSuoritusJaArvosana]] = {
     val osasuoritukset = yleinenKtSuoritus.osasuoritukset.toList.flatten
     val minOsasuoritusMaara = application.config.getInt("todistus.yleinenKielitutkinto.minOsasuoritusMaara")
     val maxOsasuoritusMaara = application.config.getInt("todistus.yleinenKielitutkinto.maxOsasuoritusMaara")
@@ -163,7 +163,7 @@ class YleinenKielitutkintoTodistusDataBuilder(application: KoskiApplication) {
     } yield suorituksetJaArvosanat
   }
 
-  private def formatTasonArvosanarajat(taso: Koodistokoodiviite, language: String): Either[HttpStatus, String] = {
+  private def createTasonArvosanarajat(taso: Koodistokoodiviite, language: String): Either[HttpStatus, String] = {
     val tasoKoodi = taso.koodiarvo
     val localizationKey = s"todistus:kielitutkinto_yleinenkielitutkinto_tason_arvosanarajat_${tasoKoodi}"
     getLocalization(localizationKey, language)
