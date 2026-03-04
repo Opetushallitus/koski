@@ -36052,7 +36052,7 @@
     "namespace": "koski",
     "key": "raportti-excel-kolumni-opiskelijavuosikertymä",
     "locale": "fi",
-    "value": "Opiskelijavuosikertymä (pv)",
+    "value": "Opiskelijavuosikertymä (pv) - vanha laskentakaava (ennen v. 2026)",
     "createdBy": "anonymousUser",
     "accesscount": null,
     "modifiedBy": "anonymousUser",
