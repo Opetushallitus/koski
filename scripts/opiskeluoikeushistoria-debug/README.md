@@ -24,6 +24,8 @@ order by opiskeluoikeushistoria.versionumero;
 Tallenna tuloksen json-muodossa niin, että jokainen rivi muodostaa oman json-objektin.
 Posticossa tämä onnistuu valitsemalla kaikki tulosrivit, kontekstiklikkaus, Copy Special > Copy JSON Lines.
 Korvaa tuloksella tiedoston `historia.jsons` sisältö.
+Idean DB-työkalusta saa datan json-blobina leikepöydälle ja sen jälkeen `pbpaste | jq -c '.[]' > historia.jsons`
+tuottaa oikeanlaisen tiedoston.
 
 ## 3. Debuggaus
 
