@@ -111,32 +111,43 @@ class YleinenKielitutkintoTodistusDataBuilder(application: KoskiApplication) {
   }
 
   private def formatSuorituksetJaArvosanat(yleinenKtSuoritus: YleisenKielitutkinnonSuoritus, todistus: TodistusJob): Either[HttpStatus, Seq[YleinenKielitutkintoSuoritusJaArvosana]] = {
-    HttpStatus.foldEithers(
-      yleinenKtSuoritus.osasuoritukset
-        .toList.flatten
-        .sortBy(os => {
-          val index = osasuoritustenJärjestysKoulutusmoduulinTunnisteilla.indexOf(os.koulutusmoduuli.tunniste.koodiarvo)
-          if (index >= 0) {
-            (0, index, "")
-          }
-          else {
-            (1, Int.MaxValue, os.koulutusmoduuli.tunniste.koodiarvo)
-          }
-        })
-        .map { osasuoritus =>
-          val suoritus = osasuoritus.koulutusmoduuli.tunniste.getNimi.map(_.get(todistus.language)).getOrElse("")
-          val arvosanaOption = osasuoritus.arviointi.toList.flatten
-            .headOption
-            .flatMap(_.arvosana.getNimi.map(_.get(todistus.language)))
+    val osasuoritukset = yleinenKtSuoritus.osasuoritukset.toList.flatten
+    val minOsasuoritusMaara = application.config.getInt("todistus.yleinenKielitutkinto.minOsasuoritusMaara")
+    val maxOsasuoritusMaara = application.config.getInt("todistus.yleinenKielitutkinto.maxOsasuoritusMaara")
 
-          arvosanaOption match {
-            case Some(arvosana) if arvosana.nonEmpty =>
-              Right(YleinenKielitutkintoSuoritusJaArvosana(suoritus, arvosana))
-            case _ =>
-              Left(KoskiErrorCategory.internalError(s"Arvosana (${arvosanaOption}) tai sen lokalisoitu nimi puuttuu osasuoritukselta todistukselle ${todistus.id}"))
+    Either.cond(
+      osasuoritukset.length >= minOsasuoritusMaara && osasuoritukset.length <= maxOsasuoritusMaara,
+      osasuoritukset,
+      KoskiErrorCategory.internalError(
+        s"Osasuoritusten määrä (${osasuoritukset.length}) ei ole sallitulla välillä $minOsasuoritusMaara-$maxOsasuoritusMaara todistukselle ${todistus.id}"
+      )
+    ).flatMap { validatedOsasuoritukset =>
+      HttpStatus.foldEithers(
+        validatedOsasuoritukset
+          .sortBy(os => {
+            val index = osasuoritustenJärjestysKoulutusmoduulinTunnisteilla.indexOf(os.koulutusmoduuli.tunniste.koodiarvo)
+            if (index >= 0) {
+              (0, index, "")
+            }
+            else {
+              (1, Int.MaxValue, os.koulutusmoduuli.tunniste.koodiarvo)
+            }
+          })
+          .map { osasuoritus =>
+            val suoritus = osasuoritus.koulutusmoduuli.tunniste.getNimi.map(_.get(todistus.language)).getOrElse("")
+            val arvosanaOption = osasuoritus.arviointi.toList.flatten
+              .headOption
+              .flatMap(_.arvosana.getNimi.map(_.get(todistus.language)))
+
+            arvosanaOption match {
+              case Some(arvosana) if arvosana.nonEmpty =>
+                Right(YleinenKielitutkintoSuoritusJaArvosana(suoritus, arvosana))
+              case _ =>
+                Left(KoskiErrorCategory.internalError(s"Arvosana (${arvosanaOption}) tai sen lokalisoitu nimi puuttuu osasuoritukselta todistukselle ${todistus.id}"))
+            }
           }
-        }
-    )
+      )
+    }
   }
 
   private def formatTasonArvosanarajat(taso: Koodistokoodiviite, language: String): Either[HttpStatus, String] = {

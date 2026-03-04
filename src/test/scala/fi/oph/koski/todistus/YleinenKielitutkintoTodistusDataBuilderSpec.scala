@@ -169,6 +169,79 @@ class YleinenKielitutkintoTodistusDataBuilderSpec extends AnyFreeSpec with Match
       }
     }
 
+    "Osasuoritusten määrän validointi" - {
+      "hyväksyy todistuksen, kun osasuorituksia on tasan 4" in {
+        val osasuoritukset = List(
+          createOsakokeenSuoritus("puheenymmartaminen", "3", LocalDate.of(2011, 3, 4)),
+          createOsakokeenSuoritus("puhuminen", "3", LocalDate.of(2011, 3, 4)),
+          createOsakokeenSuoritus("tekstinymmartaminen", "3", LocalDate.of(2011, 3, 4)),
+          createOsakokeenSuoritus("kirjoittaminen", "3", LocalDate.of(2011, 3, 4))
+        )
+
+        val opiskeluoikeus = createOpiskeluoikeus(osasuoritukset)
+        val todistusJob = createTodistusJob()
+
+        val result = generator.createTodistusData(
+          mockOppija,
+          opiskeluoikeus,
+          todistusJob
+        )
+
+        result match {
+          case Left(error) => fail(s"Virhe todistuksen luonnissa: ${error.errorString.mkString(", ")}")
+          case Right(_) => // OK, testi läpi
+        }
+      }
+
+      "hylkää todistuksen, kun osasuorituksia on liian vähän (3)" in {
+        val osasuoritukset = List(
+          createOsakokeenSuoritus("puheenymmartaminen", "3", LocalDate.of(2011, 3, 4)),
+          createOsakokeenSuoritus("puhuminen", "3", LocalDate.of(2011, 3, 4)),
+          createOsakokeenSuoritus("tekstinymmartaminen", "3", LocalDate.of(2011, 3, 4))
+        )
+
+        val opiskeluoikeus = createOpiskeluoikeus(osasuoritukset)
+        val todistusJob = createTodistusJob()
+
+        val result = generator.createTodistusData(
+          mockOppija,
+          opiskeluoikeus,
+          todistusJob
+        )
+
+        result match {
+          case Left(error) =>
+            error.errorString.getOrElse("") should include("Osasuoritusten määrä (3) ei ole sallitulla välillä 4-4")
+          case Right(_) => fail("Todistuksen luonnin olisi pitänyt epäonnistua liian vähäisen osasuoritusmäärän takia")
+        }
+      }
+
+      "hylkää todistuksen, kun osasuorituksia on liian paljon (5)" in {
+        val osasuoritukset = List(
+          createOsakokeenSuoritus("puheenymmartaminen", "3", LocalDate.of(2011, 3, 4)),
+          createOsakokeenSuoritus("puhuminen", "3", LocalDate.of(2011, 3, 4)),
+          createOsakokeenSuoritus("tekstinymmartaminen", "3", LocalDate.of(2011, 3, 4)),
+          createOsakokeenSuoritus("kirjoittaminen", "3", LocalDate.of(2011, 3, 4)),
+          createOsakokeenSuoritus("rakenteetjasanasto", "3", LocalDate.of(2011, 3, 4))
+        )
+
+        val opiskeluoikeus = createOpiskeluoikeus(osasuoritukset)
+        val todistusJob = createTodistusJob()
+
+        val result = generator.createTodistusData(
+          mockOppija,
+          opiskeluoikeus,
+          todistusJob
+        )
+
+        result match {
+          case Left(error) =>
+            error.errorString.getOrElse("") should include("Osasuoritusten määrä (5) ei ole sallitulla välillä 4-4")
+          case Right(_) => fail("Todistuksen luonnin olisi pitänyt epäonnistua liian suuren osasuoritusmäärän takia")
+        }
+      }
+    }
+
     "Template-nimen lokalisointi" - {
       "palauttaa oikean template-nimen suomen kielelle" in {
         verifyTemplateName(TodistusTemplateVariant.FI, "kielitutkinto_yleinenkielitutkinto_fi")
@@ -293,7 +366,10 @@ class YleinenKielitutkintoTodistusDataBuilderSpec extends AnyFreeSpec with Match
         testCases.foreach { case (day, expectedPrefix) =>
           val testDate = LocalDate.of(2011, 1, day)
           val osasuoritukset = List(
-            createOsakokeenSuoritus("puheenymmartaminen", "3", testDate)
+            createOsakokeenSuoritus("puheenymmartaminen", "3", testDate),
+            createOsakokeenSuoritus("puhuminen", "3", testDate),
+            createOsakokeenSuoritus("tekstinymmartaminen", "3", testDate),
+            createOsakokeenSuoritus("kirjoittaminen", "3", testDate)
           )
 
           // Luo opiskeluoikeus jossa ensimmäinen läsnä-tila alkaa testipäivänä
