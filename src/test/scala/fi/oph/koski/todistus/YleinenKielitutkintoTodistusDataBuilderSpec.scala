@@ -242,6 +242,79 @@ class YleinenKielitutkintoTodistusDataBuilderSpec extends AnyFreeSpec with Match
       }
     }
 
+    "Kiellettyjen arvosanojen validointi" - {
+      "hylkää todistuksen, kun osasuorituksessa on arvosana Vilppi (9)" in {
+        val osasuoritukset = List(
+          createOsakokeenSuoritus("puheenymmartaminen", "3", LocalDate.of(2011, 3, 4)),
+          createOsakokeenSuoritus("puhuminen", "9", LocalDate.of(2011, 3, 4)), // Vilppi
+          createOsakokeenSuoritus("tekstinymmartaminen", "3", LocalDate.of(2011, 3, 4)),
+          createOsakokeenSuoritus("kirjoittaminen", "3", LocalDate.of(2011, 3, 4))
+        )
+
+        val opiskeluoikeus = createOpiskeluoikeus(osasuoritukset)
+        val todistusJob = createTodistusJob()
+
+        val result = generator.createTodistusData(
+          mockOppija,
+          opiskeluoikeus,
+          todistusJob
+        )
+
+        result match {
+          case Left(error) =>
+            error.errorString.getOrElse("") should include("kielletty arvosana (9)")
+          case Right(_) => fail("Todistuksen luonnin olisi pitänyt epäonnistua Vilppi-arvosanan takia")
+        }
+      }
+
+      "hylkää todistuksen, kun osasuorituksessa on arvosana Keskeytetty (10)" in {
+        val osasuoritukset = List(
+          createOsakokeenSuoritus("puheenymmartaminen", "3", LocalDate.of(2011, 3, 4)),
+          createOsakokeenSuoritus("puhuminen", "3", LocalDate.of(2011, 3, 4)),
+          createOsakokeenSuoritus("tekstinymmartaminen", "10", LocalDate.of(2011, 3, 4)), // Keskeytetty
+          createOsakokeenSuoritus("kirjoittaminen", "3", LocalDate.of(2011, 3, 4))
+        )
+
+        val opiskeluoikeus = createOpiskeluoikeus(osasuoritukset)
+        val todistusJob = createTodistusJob()
+
+        val result = generator.createTodistusData(
+          mockOppija,
+          opiskeluoikeus,
+          todistusJob
+        )
+
+        result match {
+          case Left(error) =>
+            error.errorString.getOrElse("") should include("kielletty arvosana (10)")
+          case Right(_) => fail("Todistuksen luonnin olisi pitänyt epäonnistua Keskeytetty-arvosanan takia")
+        }
+      }
+
+      "hyväksyy todistuksen, kun kaikki arvosanat ovat sallittuja" in {
+        val osasuoritukset = List(
+          createOsakokeenSuoritus("puheenymmartaminen", "3", LocalDate.of(2011, 3, 4)),
+          createOsakokeenSuoritus("puhuminen", "4", LocalDate.of(2011, 3, 4)),
+          createOsakokeenSuoritus("tekstinymmartaminen", "5", LocalDate.of(2011, 3, 4)),
+          createOsakokeenSuoritus("kirjoittaminen", "alle3", LocalDate.of(2011, 3, 4))
+        )
+
+        val opiskeluoikeus = createOpiskeluoikeus(osasuoritukset)
+        val todistusJob = createTodistusJob()
+
+        val result = generator.createTodistusData(
+          mockOppija,
+          opiskeluoikeus,
+          todistusJob
+        )
+
+        result match {
+          case Left(error) => fail(s"Virhe todistuksen luonnissa: ${error.errorString.mkString(", ")}")
+          case Right(_) => // OK, testi läpi
+        }
+      }
+    }
+
     "Template-nimen lokalisointi" - {
       "palauttaa oikean template-nimen suomen kielelle" in {
         verifyTemplateName(TodistusTemplateVariant.FI, "kielitutkinto_yleinenkielitutkinto_fi")

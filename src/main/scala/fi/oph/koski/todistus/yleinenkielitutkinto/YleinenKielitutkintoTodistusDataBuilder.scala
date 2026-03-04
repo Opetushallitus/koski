@@ -9,6 +9,7 @@ import fi.oph.koski.todistus.pdfgenerator.TodistusData
 import fi.oph.koski.util.DateOrdering.localDateOptionOrdering
 
 import java.time.LocalDate
+import scala.jdk.CollectionConverters._
 
 class YleinenKielitutkintoTodistusDataBuilder(application: KoskiApplication) {
   private def osasuoritustenJärjestysKoulutusmoduulinTunnisteilla: List[String] = List(
@@ -114,16 +115,28 @@ class YleinenKielitutkintoTodistusDataBuilder(application: KoskiApplication) {
     val osasuoritukset = yleinenKtSuoritus.osasuoritukset.toList.flatten
     val minOsasuoritusMaara = application.config.getInt("todistus.yleinenKielitutkinto.minOsasuoritusMaara")
     val maxOsasuoritusMaara = application.config.getInt("todistus.yleinenKielitutkinto.maxOsasuoritusMaara")
+    val kielletytArvosanat = application.config.getStringList("todistus.yleinenKielitutkinto.kielletytArvosanat").asScala.toSet
 
-    Either.cond(
-      osasuoritukset.length >= minOsasuoritusMaara && osasuoritukset.length <= maxOsasuoritusMaara,
-      osasuoritukset,
-      KoskiErrorCategory.internalError(
-        s"Osasuoritusten määrä (${osasuoritukset.length}) ei ole sallitulla välillä $minOsasuoritusMaara-$maxOsasuoritusMaara todistukselle ${todistus.id}"
+    val kiellettyArvosana = osasuoritukset.flatMap(_.arviointi.toList.flatten)
+      .find(arviointi => kielletytArvosanat.contains(arviointi.arvosana.koodiarvo))
+
+    for {
+      _ <- Either.cond(
+        osasuoritukset.length >= minOsasuoritusMaara && osasuoritukset.length <= maxOsasuoritusMaara,
+        (),
+        KoskiErrorCategory.internalError(
+          s"Osasuoritusten määrä (${osasuoritukset.length}) ei ole sallitulla välillä $minOsasuoritusMaara-$maxOsasuoritusMaara todistukselle ${todistus.id}"
+        )
       )
-    ).flatMap { validatedOsasuoritukset =>
-      HttpStatus.foldEithers(
-        validatedOsasuoritukset
+      _ <- Either.cond(
+        kiellettyArvosana.isEmpty,
+        (),
+        KoskiErrorCategory.internalError(
+          s"Todistukselle ${todistus.id} ei voi luoda todistusta, koska osasuorituksessa on kielletty arvosana (${kiellettyArvosana.get.arvosana.koodiarvo})"
+        )
+      )
+      suorituksetJaArvosanat <- HttpStatus.foldEithers(
+        osasuoritukset
           .sortBy(os => {
             val index = osasuoritustenJärjestysKoulutusmoduulinTunnisteilla.indexOf(os.koulutusmoduuli.tunniste.koodiarvo)
             if (index >= 0) {
@@ -147,7 +160,7 @@ class YleinenKielitutkintoTodistusDataBuilder(application: KoskiApplication) {
             }
           }
       )
-    }
+    } yield suorituksetJaArvosanat
   }
 
   private def formatTasonArvosanarajat(taso: Koodistokoodiviite, language: String): Either[HttpStatus, String] = {
