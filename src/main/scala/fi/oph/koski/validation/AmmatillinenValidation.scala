@@ -527,25 +527,21 @@ object AmmatillinenValidation {
   }
 
   private def validateOsatutkintotavoitteisenValmistuminen(ammatillinen: AmmatillinenOpiskeluoikeus, isKuoriopiskeluoikeus: => Boolean): HttpStatus = {
-    if (!ammatillinen.onValmistunut || isKuoriopiskeluoikeus) {
-      HttpStatus.ok
-    } else {
-      HttpStatus.fold(
-        ammatillinen.suoritukset.collect {
-          case s: AmmatillisenTutkinnonOsittainenSuoritus => s
-        }.map { suoritus =>
-          val osasuoritukset = suoritus.osasuoritukset.getOrElse(List.empty)
-          val onAmmatillinenTaiYhteinenTutkinnonOsaValmis = osasuoritukset.exists {
-            case os: MuunOsittaisenAmmatillisenTutkinnonTutkinnonosanSuoritus => os.valmis
-            case os: YhteisenOsittaisenAmmatillisenTutkinnonTutkinnonosanSuoritus => os.valmis
-            case _ => false
-          }
-          HttpStatus.validate(onAmmatillinenTaiYhteinenTutkinnonOsaValmis) {
-            KoskiErrorCategory.badRequest.validation.ammatillinen.osatutkintotavoitteisenValmistuminen()
-          }
+    HttpStatus.fold(
+      ammatillinen.suoritukset.collect {
+        case s: AmmatillisenTutkinnonOsittainenSuoritus if s.valmis && !isKuoriopiskeluoikeus => s
+      }.map { suoritus =>
+        val osasuoritukset = suoritus.osasuoritukset.getOrElse(List.empty)
+        val onAmmatillinenTaiYhteinenTutkinnonOsaValmis = osasuoritukset.exists {
+          case os: MuunOsittaisenAmmatillisenTutkinnonTutkinnonosanSuoritus => os.valmis
+          case os: YhteisenOsittaisenAmmatillisenTutkinnonTutkinnonosanSuoritus => os.valmis
+          case _ => false
         }
-      )
-    }
+        HttpStatus.validate(onAmmatillinenTaiYhteinenTutkinnonOsaValmis) {
+          KoskiErrorCategory.badRequest.validation.ammatillinen.osatutkintotavoitteisenValmistuminen()
+        }
+      }
+    )
   }
 
   private val viestintäJaVuorovaikutusKielivalinnallaKoodiarvot = Set(
