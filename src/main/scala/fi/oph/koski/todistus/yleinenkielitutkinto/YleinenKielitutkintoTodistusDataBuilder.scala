@@ -9,6 +9,7 @@ import fi.oph.koski.todistus.pdfgenerator.TodistusData
 import fi.oph.koski.util.DateOrdering.localDateOptionOrdering
 
 import java.time.LocalDate
+import scala.jdk.CollectionConverters._
 
 class YleinenKielitutkintoTodistusDataBuilder(application: KoskiApplication) {
   private def osasuoritustenJärjestysKoulutusmoduulinTunnisteilla: List[String] = List(
@@ -44,11 +45,11 @@ class YleinenKielitutkintoTodistusDataBuilder(application: KoskiApplication) {
         .map(formatDateDDMMYYYY)
         .toRight(KoskiErrorCategory.internalError(s"Oppijan syntymäaika puuttuu todistukselle ${todistus.id}"))
 
-      tutkinnonNimi <- formatTutkinnonNimi(yleinenKtSuoritus.koulutusmoduuli, todistus.language)
+      tutkinnonNimi <- createTutkinnonNimi(yleinenKtSuoritus.koulutusmoduuli, todistus.language)
 
-      suorituksetJaArvosanat <- formatSuorituksetJaArvosanat(yleinenKtSuoritus, todistus)
+      suorituksetJaArvosanat <- createSuorituksetJaArvosanat(yleinenKtSuoritus, todistus)
 
-      tasonArvosanarajat <- formatTasonArvosanarajat(yleinenKtSuoritus.koulutusmoduuli.tunniste, todistus.language)
+      tasonArvosanarajat <- createTasonArvosanarajat(yleinenKtSuoritus.koulutusmoduuli.tunniste, todistus.language)
 
       järjestäjäNimi <- yleinenKtSuoritus.järjestäjä.nimi.map(_.get(todistus.language))
         .filter(_.nonEmpty)
@@ -103,43 +104,66 @@ class YleinenKielitutkintoTodistusDataBuilder(application: KoskiApplication) {
     )
   }
 
-  private def formatTutkinnonNimi(tutkinto: YleinenKielitutkinto, language: String): Either[HttpStatus, String] = {
+  private def createTutkinnonNimi(tutkinto: YleinenKielitutkinto, language: String): Either[HttpStatus, String] = {
     val kieliKoodi = tutkinto.kieli.koodiarvo
     val tasoKoodi = tutkinto.tunniste.koodiarvo
     val localizationKey = s"todistus:kielitutkinto_yleinenkielitutkinto_tutkinnon_nimi_${kieliKoodi}_${tasoKoodi}"
     getLocalization(localizationKey, language)
   }
 
-  private def formatSuorituksetJaArvosanat(yleinenKtSuoritus: YleisenKielitutkinnonSuoritus, todistus: TodistusJob): Either[HttpStatus, Seq[YleinenKielitutkintoSuoritusJaArvosana]] = {
-    HttpStatus.foldEithers(
-      yleinenKtSuoritus.osasuoritukset
-        .toList.flatten
-        .sortBy(os => {
-          val index = osasuoritustenJärjestysKoulutusmoduulinTunnisteilla.indexOf(os.koulutusmoduuli.tunniste.koodiarvo)
-          if (index >= 0) {
-            (0, index, "")
-          }
-          else {
-            (1, Int.MaxValue, os.koulutusmoduuli.tunniste.koodiarvo)
-          }
-        })
-        .map { osasuoritus =>
-          val suoritus = osasuoritus.koulutusmoduuli.tunniste.getNimi.map(_.get(todistus.language)).getOrElse("")
-          val arvosanaOption = osasuoritus.arviointi.toList.flatten
-            .headOption
-            .flatMap(_.arvosana.getNimi.map(_.get(todistus.language)))
+  private def createSuorituksetJaArvosanat(yleinenKtSuoritus: YleisenKielitutkinnonSuoritus, todistus: TodistusJob): Either[HttpStatus, Seq[YleinenKielitutkintoSuoritusJaArvosana]] = {
+    val osasuoritukset = yleinenKtSuoritus.osasuoritukset.toList.flatten
+    val minOsasuoritusMaara = application.config.getInt("todistus.yleinenKielitutkinto.minOsasuoritusMaara")
+    val maxOsasuoritusMaara = application.config.getInt("todistus.yleinenKielitutkinto.maxOsasuoritusMaara")
+    val kielletytArvosanat = application.config.getStringList("todistus.yleinenKielitutkinto.kielletytArvosanat").asScala.toSet
 
-          arvosanaOption match {
-            case Some(arvosana) if arvosana.nonEmpty =>
-              Right(YleinenKielitutkintoSuoritusJaArvosana(suoritus, arvosana))
-            case _ =>
-              Left(KoskiErrorCategory.internalError(s"Arvosana (${arvosanaOption}) tai sen lokalisoitu nimi puuttuu osasuoritukselta todistukselle ${todistus.id}"))
+    val kiellettyArvosana = osasuoritukset.flatMap(_.arviointi.toList.flatten)
+      .find(arviointi => kielletytArvosanat.contains(arviointi.arvosana.koodiarvo))
+
+    for {
+      _ <- Either.cond(
+        osasuoritukset.length >= minOsasuoritusMaara && osasuoritukset.length <= maxOsasuoritusMaara,
+        (),
+        KoskiErrorCategory.internalError(
+          s"Osasuoritusten määrä (${osasuoritukset.length}) ei ole sallitulla välillä $minOsasuoritusMaara-$maxOsasuoritusMaara todistukselle ${todistus.id}"
+        )
+      )
+      _ <- Either.cond(
+        kiellettyArvosana.isEmpty,
+        (),
+        KoskiErrorCategory.internalError(
+          s"Todistukselle ${todistus.id} ei voi luoda todistusta, koska osasuorituksessa on kielletty arvosana (${kiellettyArvosana.get.arvosana.koodiarvo})"
+        )
+      )
+      suorituksetJaArvosanat <- HttpStatus.foldEithers(
+        osasuoritukset
+          .sortBy(os => {
+            val index = osasuoritustenJärjestysKoulutusmoduulinTunnisteilla.indexOf(os.koulutusmoduuli.tunniste.koodiarvo)
+            if (index >= 0) {
+              (0, index, "")
+            }
+            else {
+              (1, Int.MaxValue, os.koulutusmoduuli.tunniste.koodiarvo)
+            }
+          })
+          .map { osasuoritus =>
+            val suoritus = osasuoritus.koulutusmoduuli.tunniste.getNimi.map(_.get(todistus.language)).getOrElse("")
+            val arvosanaOption = osasuoritus.arviointi.toList.flatten
+              .headOption
+              .flatMap(_.arvosana.getNimi.map(_.get(todistus.language)))
+
+            arvosanaOption match {
+              case Some(arvosana) if arvosana.nonEmpty =>
+                Right(YleinenKielitutkintoSuoritusJaArvosana(suoritus, arvosana))
+              case _ =>
+                Left(KoskiErrorCategory.internalError(s"Arvosana (${arvosanaOption}) tai sen lokalisoitu nimi puuttuu osasuoritukselta todistukselle ${todistus.id}"))
+            }
           }
-        }
-    )
+      )
+    } yield suorituksetJaArvosanat
   }
 
-  private def formatTasonArvosanarajat(taso: Koodistokoodiviite, language: String): Either[HttpStatus, String] = {
+  private def createTasonArvosanarajat(taso: Koodistokoodiviite, language: String): Either[HttpStatus, String] = {
     val tasoKoodi = taso.koodiarvo
     val localizationKey = s"todistus:kielitutkinto_yleinenkielitutkinto_tason_arvosanarajat_${tasoKoodi}"
     getLocalization(localizationKey, language)
