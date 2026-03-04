@@ -296,7 +296,7 @@ const TabulatedSuoritukset = ({ model }) => {
   )
 }
 
-const isPerusopetuksenOppiaineenOppimäärä = (suoritus) =>
+export const isPerusopetuksenOppiaineenOppimäärä = (suoritus) =>
   [
     'perusopetuksenoppiaineenoppimaara',
     'nuortenperusopetuksenoppiaineenoppimaara'
