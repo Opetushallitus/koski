@@ -1458,6 +1458,21 @@ class OppijaValidationAmmatillisenTutkinnonOsittainenSuoritusSpec extends Tutkin
           verifyResponseStatusOk()
         }
       }
+
+      "Valmis osatutkintotavoitteinen kuoriopiskeluoikeudella (ostettu) keskeneräisellä osasuorituksella hyväksytään" in {
+        val stadinOpiskeluoikeus: AmmatillinenOpiskeluoikeus = createOpiskeluoikeus(defaultHenkilö, defaultOpiskeluoikeus, user = stadinAmmattiopistoJaOppisopimuskeskusTallentaja, resetFixtures = true)
+        val kuoriOpiskeluoikeus = createLinkitetytOpiskeluoikeudet(stadinOpiskeluoikeus, MockOrganisaatiot.omnia).copy(
+          tila = AmmatillinenOpiskeluoikeudenTila(
+            stadinOpiskeluoikeus.tila.opiskeluoikeusjaksot ++ List(
+              AmmatillinenOpiskeluoikeusjakso(date(2023, 12, 31), opiskeluoikeusValmistunut, Some(valtionosuusRahoitteinen))
+            )
+          ),
+          suoritukset = List(ammatillisenTutkinnonOsittainenSuoritus.copy(
+            osasuoritukset = Some(List(keskeneräinenOsaSuoritus))
+          ))
+        )
+        putOpiskeluoikeus(kuoriOpiskeluoikeus)(verifyResponseStatusOk())
+      }
     }
   }
 

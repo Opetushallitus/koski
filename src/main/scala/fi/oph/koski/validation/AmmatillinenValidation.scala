@@ -32,7 +32,7 @@ object AmmatillinenValidation {
           validateHenkilöstökoulutusVosUudistuksenRajapäivänJälkeen(config, ammatillinen),
           validateViestintäJaVuorovaikutusOsaAlueetEiValtakunnallisina(ammatillinen),
           validateViestintäJaVuorovaikutus26KoodiarvotEiSallittuEnnen2026(ammatillinen, config),
-          validateOsatutkintotavoitteisenValmistuminen(ammatillinen)
+          validateOsatutkintotavoitteisenValmistuminen(ammatillinen, isKuoriopiskeluoikeus)
         )
       case _ => HttpStatus.ok
     }
@@ -526,8 +526,8 @@ object AmmatillinenValidation {
     } else HttpStatus.ok
   }
 
-  private def validateOsatutkintotavoitteisenValmistuminen(ammatillinen: AmmatillinenOpiskeluoikeus): HttpStatus = {
-    if (!ammatillinen.onValmistunut) {
+  private def validateOsatutkintotavoitteisenValmistuminen(ammatillinen: AmmatillinenOpiskeluoikeus, isKuoriopiskeluoikeus: => Boolean): HttpStatus = {
+    if (!ammatillinen.onValmistunut || isKuoriopiskeluoikeus) {
       HttpStatus.ok
     } else {
       HttpStatus.fold(

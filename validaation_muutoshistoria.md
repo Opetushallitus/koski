@@ -1,4 +1,6 @@
 # Koskeen tallennettavien tietojen validaatiosäännöt
+## 4.3.2026
+-Sallitaan osatutkintotavoitteisen valmiiksi merkkaaminen jos kyseessä on linkitetty opiskeluoikeus
 ## 24.2.2026
 -Estetään osatutkintotavoitteisen valmiiksi merkkaaminen ilman vähintään yhtä ammatillisen tai yhteisen tutkinnon osan suoritusta
 ## 18.2.2026
