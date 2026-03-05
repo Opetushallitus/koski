@@ -74,6 +74,7 @@ object DirectoryClient {
         case Palvelurooli("KOSKI", Rooli.VALVIRA) => true
         case Palvelurooli("KOSKI", Rooli.SUOMIFI) => true
         case Palvelurooli("KOSKI", Rooli.HSL) => true // Riittävän viranomaismainen
+        case Palvelurooli("KOSKI", Rooli.SDG) => true
         case Palvelurooli("VALPAS", ValpasRooli.YTL) => true
         case Palvelurooli("VALPAS", ValpasRooli.KELA) => true
         case _ => false
