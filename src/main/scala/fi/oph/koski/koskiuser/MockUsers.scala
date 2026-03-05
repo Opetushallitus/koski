@@ -685,6 +685,22 @@ object MockUsers {
     )
   )
 
+  val paakayttajaPlusYki = KoskiMockUser(
+    "pää-ja-yki",
+    "pää-ja-yki",
+    "1.2.246.562.24.2324232432534",
+    Seq(
+      OrganisaatioJaKäyttöoikeudet(Opetushallitus.organisaatioOid,
+        ophPääkäyttäjä.kayttooikeudet ++
+        localizationAdmin.kayttooikeudet ++
+        List(
+          PalveluJaOikeus("LOKALISOINTI", "CRUD"),
+          PalveluJaOikeus("OPPIJANUMEROREKISTERI", "REKISTERINPITAJA"),
+        )),
+      päätasonSuoritukseenRajoitettuKatselija(KIELITUTKINTO, yleinenKielitutkinto),
+    )
+  )
+
   val stadinTelma = KoskiMockUser(
     "stadin-telma",
     "stadin-telma",
@@ -786,6 +802,7 @@ object MockUsers {
     yleisenKielitutkinnonKäyttäjä,
     valtionhallinnonKielitutkinnonKäyttäjä,
     ykiJaVktKäyttäjä,
+    paakayttajaPlusYki,
     stadinTelma,
     kaksiTallentajaoikeutta,
   )
