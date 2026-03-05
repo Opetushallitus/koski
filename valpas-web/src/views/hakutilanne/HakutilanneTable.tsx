@@ -126,19 +126,32 @@ export const HakutilanneTable = (props: HakutilanneTableProps) => {
     [],
   )
 
+  const showTakoFootnote = props.data.some((o) =>
+    o.oppija.opiskeluoikeudet.some(
+      (oo) =>
+        oo.perusopetusTiedot &&
+        oo.perusopetusTiedot.tavoitekokonaisuuksittainOpiskelu,
+    ),
+  )
+
   return (
-    <SelectableDataTable
-      key={props.organisaatioOid}
-      storageName={`hakutilannetaulu-${props.organisaatioOid}`}
-      className="hakutilanne"
-      columns={columns}
-      data={data}
-      onCountChange={props.onCountChange}
-      peerEquality={oppijaOidsEqual}
-      onSelect={(keys) =>
-        props.onSelect(hakutilanneKeysToOppijaOids(keys as HakutilanneKey[]))
-      }
-    />
+    <>
+      <SelectableDataTable
+        key={props.organisaatioOid}
+        storageName={`hakutilannetaulu-${props.organisaatioOid}`}
+        className="hakutilanne"
+        columns={columns}
+        data={data}
+        onCountChange={props.onCountChange}
+        peerEquality={oppijaOidsEqual}
+        onSelect={(keys) =>
+          props.onSelect(hakutilanneKeysToOppijaOids(keys as HakutilanneKey[]))
+        }
+      />
+      {showTakoFootnote && (
+        <p className="hakutilannetable__selite">{`${t("hakutilanne__tako_selite")}`}</p>
+      )}
+    </>
   )
 }
 
@@ -219,12 +232,14 @@ const ryhmä = (oo: OpiskeluoikeusSuppeatTiedot): Value => {
   ) {
     const tako = t("hakutilanne__tako")
     return {
-      value: `${tako} ${ryhmäValue.value}`,
+      value: `${ryhmäValue.value} ${tako}`,
       filterValues: [tako].concat(ryhmäValue.filterValues),
       display: (
         <>
-          <span className={b("tako")}>{`${tako}`}</span>
-          {` ${ryhmäValue.display}`}
+          {`${ryhmäValue.display} `}
+          <span
+            className={b("tako")}
+          >{`${t("hakutilanne__tako_alaviite")}`}</span>
         </>
       ),
     }
