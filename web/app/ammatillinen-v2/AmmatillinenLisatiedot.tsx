@@ -489,17 +489,21 @@ const OpiskeluvalmiuksiaTuvkevienOpintojenJaksoView = <
   value
 }: CommonProps<FieldViewerProps<T | undefined, EmptyObject>>) => {
   return (
-    <div>
-      <TestIdText id="alku">
-        {value?.alku && ISO2FinnishDate(value.alku)}
-      </TestIdText>{' '}
-      {' - '}
-      <TestIdText id="loppu">
-        {value?.loppu && ISO2FinnishDate(value.loppu)}
-      </TestIdText>
-      {' - '}
-      <TestIdText id="kuvaus">{t(value?.kuvaus)}</TestIdText>
-    </div>
+    <span style={{ display: 'inline-flex', gap: '8px', flexWrap: 'wrap' }}>
+      <span>
+        <TestIdText id="alku">
+          {value?.alku && ISO2FinnishDate(value.alku)}
+        </TestIdText>
+        {' - '}
+        <TestIdText id="loppu">
+          {value?.loppu && ISO2FinnishDate(value.loppu)}
+        </TestIdText>
+      </span>
+      <span>
+        <span style={{ color: '#747474' }}>{t('Kuvaus')}</span>{': '}
+        <TestIdText id="kuvaus">{t(value?.kuvaus)}</TestIdText>
+      </span>
+    </span>
   )
 }
 
@@ -518,32 +522,37 @@ const OpiskeluvalmiuksiaTuvkevienOpintojenJaksoEdit = ({
   EmptyObject
 >) => {
   return (
-    <div className="AikajaksoEdit">
-      <DateInput
-        value={value?.alku}
-        onChange={(alku?: string) => {
-          alku &&
-            onChange({
-              ...emptyOpiskeluvalmiuksiaTuvkevienOpintojenJakso,
-              ...value,
-              alku
-            })
-        }}
-        testId="alku"
-      />
-      <span className="AikajaksoEdit__separator"> {' - '}</span>
-      <DateInput
-        value={value?.loppu}
-        onChange={(loppu?: string) => {
-          loppu &&
-            onChange({
-              ...emptyOpiskeluvalmiuksiaTuvkevienOpintojenJakso,
-              ...value,
-              loppu
-            })
-        }}
-        testId="loppu"
-      />
+    <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: '4px 8px' }}>
+      <div style={{ width: '120px' }}>
+        <DateInput
+          value={value?.alku}
+          onChange={(alku?: string) => {
+            alku &&
+              onChange({
+                ...emptyOpiskeluvalmiuksiaTuvkevienOpintojenJakso,
+                ...value,
+                alku
+              })
+          }}
+          testId="alku"
+        />
+      </div>
+      <span>{' - '}</span>
+      <div style={{ width: '120px' }}>
+        <DateInput
+          value={value?.loppu}
+          onChange={(loppu?: string) => {
+            loppu &&
+              onChange({
+                ...emptyOpiskeluvalmiuksiaTuvkevienOpintojenJakso,
+                ...value,
+                loppu
+              })
+          }}
+          testId="loppu"
+        />
+      </div>
+      <span style={{ color: '#747474' }}>{t('Kuvaus')}</span>
       <LocalizedTextEdit
         value={value?.kuvaus}
         onChange={(kuvaus?: LocalizedString) => {
@@ -555,7 +564,6 @@ const OpiskeluvalmiuksiaTuvkevienOpintojenJaksoEdit = ({
             })
         }}
         testId="kuvaus"
-        placeholder={t('Kuvaus')}
       />
     </div>
   )
