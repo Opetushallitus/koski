@@ -48,6 +48,7 @@ class TodistusJobRepository(val db: DB, val workerId: String, config: Config) ex
       WHERE opiskeluoikeus_oid = ${opiskeluoikeusOid}
         AND template_variant = ${templateVariant}
         AND NOT state = ANY(${TodistusState.nonReusableStates.toSeq})
+        AND user_oid IS NOT NULL
         AND (
           -- QUEUED-tilassa oleva todistus matchaa aina (ei vielä hash/versionumero)
           state = ${TodistusState.QUEUED}
@@ -78,6 +79,7 @@ class TodistusJobRepository(val db: DB, val workerId: String, config: Config) ex
             AND opiskeluoikeus_oid = ${todistusJob.opiskeluoikeusOid}
             AND template_variant = ${todistusJob.templateVariant}
             AND NOT state = ANY(${TodistusState.nonReusableStates.toSeq})
+            AND user_oid IS NOT NULL
             AND (
               -- QUEUED-tilassa oleva job matchaa aina (ei vielä hash/versionumero)
               state = ${TodistusState.QUEUED}
