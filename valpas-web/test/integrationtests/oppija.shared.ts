@@ -106,7 +106,7 @@ export const historiaOpintoOikeus = (p: {
     ...rivi("Oppilaitos/toimipiste", p.toimipiste),
     ...rivi("Ryhmä", p.ryhmä),
     ...rivi(
-      "Muuta",
+      "Lisätietoja",
       p.tavoitekokonaisuuksittainOpiskelu
         ? "Tavoitekokonaisuuksittain opiskelu"
         : undefined,

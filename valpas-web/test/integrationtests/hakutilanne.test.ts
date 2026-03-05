@@ -1,6 +1,7 @@
 import { hakutilannePathWithOrg, oppijaPath } from "../../src/state/paths"
 import {
   clickElement,
+  contentEventuallyEquals,
   expectElementEventuallyVisible,
   expectLinkToEqual,
   textEventuallyEquals,
@@ -371,17 +372,21 @@ describe("Hakutilannenäkymä", () => {
     )
   })
 
-  it("Näyttää tako-merkinnän oppijalle listassa 2026 tarkastelupäivällä", async () => {
+  it("Näyttää tako-merkinnän oppijalle listassa 2026 tarkastelupäivällä ja alaviitteen", async () => {
     await loginAs(hakutilannePath, "valpas-jkl-normaali", false, "2026-05-31")
     await urlIsEventually(pathToUrl(jklHakutilannePath))
     await setTableTextFilter(".hakutilanne", 1, "tako")
     await dataTableEventuallyEquals(
       ".hakutilanne",
       `
-      Oppivelvollinen-ysiluokka-kesken-tako Valpas | 24.5.2010 | tako 9C | – | Ei hakemusta | – | – | – |
+      Oppivelvollinen-ysiluokka-kesken-tako Valpas | 24.5.2010 | 9C * | – | Ei hakemusta | – | – | – |
       Ysiluokka-valmis-keväällä-2026-tako Valpas | 13.5.2010 | 9C | 30.5.2026 | Ei hakemusta | – | – | – |
       `,
       "|",
+    )
+    await contentEventuallyEquals(
+      ".hakutilannetable__selite",
+      "* = tavoitekokonaisuuksittain opiskelu",
     )
   })
 
