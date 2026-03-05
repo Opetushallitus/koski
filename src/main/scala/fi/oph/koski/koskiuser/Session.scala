@@ -52,9 +52,9 @@ class KoskiSpecificSession(
   lazy val varhaiskasvatuksenOstopalvelukäyttöoikeudet: Set[KäyttöoikeusVarhaiskasvatuksenOstopalveluihinMuistaOrganisaatioista] = käyttöoikeudet.collect { case k: KäyttöoikeusVarhaiskasvatuksenOstopalveluihinMuistaOrganisaatioista => k }
   lazy val varhaiskasvatusKoulutustoimijat: Set[Oid] = varhaiskasvatuksenOstopalvelukäyttöoikeudet.map(_.ostavaKoulutustoimija.oid)
   lazy val hasKoulutustoimijaVarhaiskasvatuksenJärjestäjäAccess: Boolean = varhaiskasvatusKoulutustoimijat.nonEmpty
-  lazy val allowedOpiskeluoikeudetJaPäätasonSuoritukset: Set[OoPtsMask] = käyttöoikeudet.flatMap(_.allowedOpiskeluoikeusTyypit)
+  lazy val allowedOpiskeluoikeudetJaPäätasonSuoritukset: Set[OoPtsMask] = if (isRoot) OpiskeluoikeudenTyyppi.kaikkiOpiskeluoikeudetJaPäätasonSuoritukset else käyttöoikeudet.flatMap(_.allowedOpiskeluoikeusTyypit)
   lazy val deniedOpiskeluoikeudetJaPäätasonSuoritukset: Set[OoPtsMask] = OpiskeluoikeudenTyyppi.kaikkiOpiskeluoikeudetJaPäätasonSuoritukset -- allowedOpiskeluoikeudetJaPäätasonSuoritukset
-  lazy val hasKoulutusmuotoRestrictions: Boolean = allowedOpiskeluoikeudetJaPäätasonSuoritukset != OpiskeluoikeudenTyyppi.kaikkiOpiskeluoikeudetJaPäätasonSuoritukset
+  lazy val hasKoulutusmuotoRestrictions: Boolean = !allowedOpiskeluoikeudetJaPäätasonSuoritukset.satisfiesAll(OpiskeluoikeudenTyyppi.kaikkiOpiskeluoikeudetJaPäätasonSuoritukset)
   lazy val allowedPäätasonSuorituksenTyypit: Set[String] = allowedOpiskeluoikeudetJaPäätasonSuoritukset.flatMap(_.päätasonSuoritukset).flatten
   lazy val hasPäätasonsuoritusRestrictions: Boolean = allowedPäätasonSuorituksenTyypit.nonEmpty
   lazy val kaikkiKäyttöoikeudet: Set[Käyttöoikeus] = käyttöoikeudet
