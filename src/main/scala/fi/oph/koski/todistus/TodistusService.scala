@@ -45,6 +45,24 @@ class TodistusService(application: KoskiApplication) extends Logging with Timing
     user.hasRole(GLOBAALI_LUKU_KIELITUTKINTO) && user.hasRole(OPHKATSELIJA)
   }
 
+  def createTodistusJobForSystem(
+    opiskeluoikeusOid: String,
+    oppijaOid: String,
+    templateVariant: String
+  ): Either[HttpStatus, TodistusJob] = {
+    val job = TodistusJob(
+      id = UUID.randomUUID().toString,
+      userOid = None,
+      oppijaOid = oppijaOid,
+      opiskeluoikeusOid = opiskeluoikeusOid,
+      templateVariant = templateVariant,
+      opiskeluoikeusVersionumero = None,
+      oppijaHenkilötiedotHash = None,
+      isStamped = false
+    )
+    todistusRepository.addForSystem(job)
+  }
+
   def currentStatus(req: TodistusIdRequest)(implicit user: KoskiSpecificSession): Either[HttpStatus, TodistusJob] = {
     if (user.hasRole(OPHPAAKAYTTAJA)) {
       todistusRepository
