@@ -4,9 +4,9 @@ import fi.oph.koski.db.KoskiTables
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.documentation.AmmatillinenExampleData._
 import fi.oph.koski.documentation.ExampleData.suomenKieli
-import fi.oph.koski.documentation.{AmmatillinenExampleData, ExamplesEsiopetus}
+import fi.oph.koski.documentation.{AmmatillinenExampleData, ExamplesEsiopetus, ExamplesKielitutkinto}
 import fi.oph.koski.fixture.AmmatillinenOpiskeluoikeusTestData
-import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
+import fi.oph.koski.henkilo.{KoskiSpecificMockOppijat, LaajatOppijaHenkilöTiedot}
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.koskiuser.MockUsers.{korkeakouluViranomainen, perusopetusViranomainen, toinenAsteViranomainen, viranomainenGlobaaliKatselija}
@@ -14,7 +14,7 @@ import fi.oph.koski.koskiuser._
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.perustiedot.OpiskeluoikeudenPerustiedotResponse
 import fi.oph.koski.schema._
-import fi.oph.koski.{DatabaseTestMethods, DirtiesFixtures, KoskiHttpSpec}
+import fi.oph.koski.{DatabaseTestMethods, DirtiesFixtures, KoskiApplicationForTests, KoskiHttpSpec}
 import org.json4s.jackson.JsonMethods.parse
 import org.scalatest.freespec.AnyFreeSpec
 
@@ -644,6 +644,67 @@ class KäyttöoikeusryhmätSpec
       setupOppijaWithOpiskeluoikeus(oo, oppija, MockUsers.stadinTelma) {
         verifyResponseStatus(403, KoskiErrorCategory.forbidden.opiskeluoikeudenTyyppi("Ei oikeuksia opiskeluoikeuden tyyppiin ammatillinenkoulutus (ammatillinentutkinto)"))
       }
+    }
+  }
+
+  "Pääkäyttäjän ja päätason suorituksella olevan katseluoikeuden yhdistelmä" - {
+    def onSallittu(oppija: LaajatOppijaHenkilöTiedot, user: KoskiMockUser): Unit = {
+      searchForHenkilötiedot(oppija.hetu.get, user).length should be >= 1
+      searchForHenkilötiedot(oppija.oid, user).length should be >= 1
+      searchForHenkilötiedot(s"${oppija.etunimet} ${oppija.sukunimi}", user).length should be >= 1
+      authGet("api/oppija/" + oppija.oid, user) { verifyResponseStatusOk() }
+    }
+
+    def onKielletty(oppija: LaajatOppijaHenkilöTiedot, user: KoskiMockUser): Unit = {
+      searchForHenkilötiedot(oppija.hetu.get, user) should equal(List())
+      searchForHenkilötiedot(oppija.oid, user) should equal(List())
+      searchForHenkilötiedot(s"${oppija.etunimet} ${oppija.sukunimi}", user) should equal(List())
+      authGet("api/oppija/" + oppija.oid, user) { verifyResponseStatus(404) }
+    }
+
+    "Vain pääkäyttäjä" - {
+      val user = MockUsers.paakayttaja
+      "Sessiomäärittely on oikein" in {
+        val session = user.toKoskiSpecificSession(KoskiApplicationForTests.käyttöoikeusRepository)
+        session.hasKoulutusmuotoRestrictions should equal(false)
+        session.hasPäätasonsuoritusRestrictions should equal(false)
+      }
+      "Saa haettua ja luettua: kielitutkinto" in { onSallittu(KoskiSpecificMockOppijat.kielitutkinnonSuorittaja, user) }
+      "Saa haettua ja luettua: ei-kielitutkinto" in { onSallittu(KoskiSpecificMockOppijat.eero, user) }
+      "Saa kirjoitettua kielitutkinnon" in {
+        val oo = ExamplesKielitutkinto.YleisetKielitutkinnot.opiskeluoikeus(LocalDate.of(2026, 3, 5), "SV", "kt")
+        setupOppijaWithOpiskeluoikeus(oo, KoskiSpecificMockOppijat.kielitutkinnonSuorittaja, user) {
+          verifyResponseStatusOk()
+        }
+      }
+    }
+
+    "Pääkäyttäjä + yki-kielitutkinnot" - {
+      val user = MockUsers.paakayttajaPlusYki
+      "Sessiomäärittely on oikein" in {
+        val session = user.toKoskiSpecificSession(KoskiApplicationForTests.käyttöoikeusRepository)
+        session.hasKoulutusmuotoRestrictions should equal(false)
+        session.hasPäätasonsuoritusRestrictions should equal(false)
+      }
+      "Saa haettua ja luettua: kielitutkinto" in { onSallittu(KoskiSpecificMockOppijat.kielitutkinnonSuorittaja, user) }
+      "Saa haettua ja luettua: ei-kielitutkinto" in { onSallittu(KoskiSpecificMockOppijat.eero, user) }
+      "Saa kirjoitettua kielitutkinnon" in {
+        val oo = ExamplesKielitutkinto.YleisetKielitutkinnot.opiskeluoikeus(LocalDate.of(2026, 3, 5), "SV", "kt")
+        setupOppijaWithOpiskeluoikeus(oo, KoskiSpecificMockOppijat.kielitutkinnonSuorittaja, user) {
+          verifyResponseStatusOk()
+        }
+      }
+    }
+
+    "Yki-kielitutkinnot" - {
+      val user = MockUsers.yleisenKielitutkinnonKäyttäjä
+      "Sessiomäärittely on oikein" in {
+        val session = user.toKoskiSpecificSession(KoskiApplicationForTests.käyttöoikeusRepository)
+        session.hasKoulutusmuotoRestrictions should equal(true)
+        session.hasPäätasonsuoritusRestrictions should equal(true)
+      }
+      "Saa haettua ja luettua: kielitutkinto" in { onSallittu(KoskiSpecificMockOppijat.kielitutkinnonSuorittaja, user) }
+      "Ei saa haettua ja luettua: ei-kielitutkinto" in { onKielletty(KoskiSpecificMockOppijat.eero, user) }
     }
   }
 
