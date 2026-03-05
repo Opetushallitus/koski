@@ -10,6 +10,7 @@ import fi.oph.koski.log.KoskiOperation._
 import fi.oph.koski.log._
 import fi.oph.koski.opiskeluoikeus._
 import fi.oph.koski.schema._
+import fi.oph.koski.tiedonsiirto.TiedonsiirtoService
 import fi.oph.koski.util.{Timing, WithWarnings}
 import fi.oph.koski.validation.KoskiGlobaaliValidator
 import mojave.{Traversal, traversal}
@@ -24,6 +25,7 @@ class KoskiOppijaFacade(
   historyRepository: KoskiOpiskeluoikeusHistoryRepository,
   ytrHistoryRepository: YtrOpiskeluoikeusHistoryRepository,
   globaaliValidator: KoskiGlobaaliValidator,
+  tiedonsiirtoService: TiedonsiirtoService,
   config: Config,
   hetu: Hetu
 ) extends Logging with Timing {
@@ -249,9 +251,18 @@ class KoskiOppijaFacade(
       if (!OpiskeluoikeusAccessChecker.isInvalidatable(row.toOpiskeluoikeusUnsafe, user)) {
         Left(KoskiErrorCategory.forbidden("Mitätöinti ei sallittu"))
       } else {
-        findOppija(row.oppijaOid, useVirta = false, useYtr = false).map(_.getIgnoringWarnings).flatMap(invalidationFn)
+        findOppija(row.oppijaOid, useVirta = false, useYtr = false)
+          .map(_.getIgnoringWarnings)
+          .flatMap(invalidationFn)
+          .flatMap(updateFn)
+          .map { result =>
+            row.koulutustoimijaOid.foreach { ktOid =>
+              tiedonsiirtoService.deleteTiedonsiirtoVirheet(row.oppijaOid, ktOid, row.koulutusmuoto)
+            }
+            result
+          }
       }
-    }.flatMap(updateFn)
+    }
 
   def invalidateOpiskeluoikeus
     (opiskeluoikeusOid: String)

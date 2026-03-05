@@ -16,7 +16,7 @@ import fi.oph.koski.util.Wait
 import fi.oph.koski.{DirtiesFixtures, KoskiApplicationForTests, KoskiHttpSpec}
 import org.scalatest.freespec.AnyFreeSpec
 
-class TiedonsiirtoSpec extends AnyFreeSpec with KoskiHttpSpec with OpiskeluoikeusTestMethodsAmmatillinen with DirtiesFixtures {
+class TiedonsiirtoSpec extends AnyFreeSpec with KoskiHttpSpec with OpiskeluoikeusTestMethodsAmmatillinen with OpiskeluoikeudenMitätöintiJaPoistoTestMethods with DirtiesFixtures {
   private val tiedonsiirtoService = KoskiApplicationForTests.tiedonsiirtoService
 
   "Automaattinen tiedonsiirto" - {
@@ -195,6 +195,29 @@ class TiedonsiirtoSpec extends AnyFreeSpec with KoskiHttpSpec with Opiskeluoikeu
 
       Wait.until(getVirheellisetTiedonsiirrot(helsinginKaupunkiPalvelukäyttäjä).size == 1)
       getVirheellisetTiedonsiirrot(helsinginKaupunkiPalvelukäyttäjä).flatMap(_.oppija.flatMap(_.hetu)) should equal(List(markkanen.hetu.get))
+    }
+
+    "opiskeluoikeuden mitätöinti poistaa virheelliset tiedonsiirrot" in {
+      resetFixtures()
+      val stadinOpiskeluoikeus = defaultOpiskeluoikeus.copy(lähdejärjestelmänId = Some(winnovaLähdejärjestelmäId("win-mitatointi")))
+      clearOppijanOpiskeluoikeudet(eerola.oid)
+
+      putOpiskeluoikeus(stadinOpiskeluoikeus, henkilö = eerola.copy(sukunimi = ""), headers = authHeaders(helsinginKaupunkiPalvelukäyttäjä) ++ jsonContent) {
+        verifyResponseStatus(400, sukunimiPuuttuu)
+      }
+
+      Wait.until(getVirheellisetTiedonsiirrot(helsinginKaupunkiPalvelukäyttäjä).nonEmpty)
+      getVirheellisetTiedonsiirrot(helsinginKaupunkiPalvelukäyttäjä).flatMap(_.rivit) should have size 1
+
+      putOpiskeluoikeus(stadinOpiskeluoikeus, henkilö = eerola, headers = authHeaders(helsinginKaupunkiPalvelukäyttäjä) ++ jsonContent) {
+        verifyResponseStatusOk()
+      }
+      val opiskeluoikeusOid = getOpiskeluoikeudet(eerola.oid).head.oid.get
+
+      mitätöiOpiskeluoikeus(opiskeluoikeusOid, stadinPääkäyttäjä)
+      tiedonsiirtoService.syncToOpenSearch(refresh = true)
+
+      getVirheellisetTiedonsiirrot(helsinginKaupunkiPalvelukäyttäjä) should be(empty)
     }
   }
 
