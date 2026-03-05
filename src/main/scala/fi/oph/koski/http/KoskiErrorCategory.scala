@@ -248,7 +248,7 @@ object KoskiErrorCategory {
         def viestintäJaVuorovaikutus26KoodiarvoEnnenRajapäivää(koodiarvo: String) = subcategory("viestintäJaVuorovaikutus26KoodiarvoEnnenRajapäivää", s"Koodiarvoa '$koodiarvo' ei voi käyttää ennen 1.8.2026 alkavassa opiskeluoikeudessa.")
         val osatutkintotavoitteisenValmistuminen = subcategory(
           "osatutkintotavoitteisenValmistuminen",
-          "Osatutkintotavoitteisen tutkinnon valmiiksi merkkaaminen edellyttää yhtä valmista ammatillisen tai yhteisen tutkinnon osaa"
+          "Osatutkintotavoitteisen tutkinnon valmiiksi merkitseminen edellyttää yhtä valmista ammatillisen tai yhteisen tutkinnon osaa"
         )
       }
       val ammatillinen = new Ammatillinen

@@ -245,7 +245,10 @@ class OppijaValidationAmmatillisenTutkinnonOsittainenSuoritusSpec extends Tutkin
                   osasuoritukset = ammatillisenTutkinnonOsittainenSuoritus.osasuoritukset.map(_.filterNot(_.isInstanceOf[MuunOsittaisenAmmatillisenTutkinnonTutkinnonosanSuoritus]))
                 )))
               "Palautetaan HTTP 400" in (setupOppijaWithOpiskeluoikeus(opiskeluoikeus) (
-                verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.valmiiksiMerkityltäPuuttuuOsasuorituksia("Suoritus koulutus/361902 on merkitty valmiiksi, mutta sillä ei ole ammatillisen tutkinnon osan suoritusta tai opiskeluoikeudelta puuttuu linkitys"))))
+                verifyResponseStatus(400,
+                  KoskiErrorCategory.badRequest.validation.tila.valmiiksiMerkityltäPuuttuuOsasuorituksia("Suoritus koulutus/361902 on merkitty valmiiksi, mutta sillä ei ole ammatillisen tutkinnon osan suoritusta tai opiskeluoikeudelta puuttuu linkitys"),
+                  KoskiErrorCategory.badRequest.validation.ammatillinen.osatutkintotavoitteisenValmistuminen()
+                )))
             }
 
             "Ammatillisen tutkinnon osan suoritus puuttuu, linkitys tehty" - {
