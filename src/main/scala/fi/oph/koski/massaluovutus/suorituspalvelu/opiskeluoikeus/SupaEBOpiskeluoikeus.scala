@@ -67,6 +67,7 @@ case class SupaEBTutkinnonOsasuoritus(
   @KoodistoKoodiarvo("ebtutkinnonosasuoritus")
   tyyppi: Koodistokoodiviite,
   koulutusmoduuli: SecondaryOppiaine,
+  suorituskieli: Koodistokoodiviite,
   osasuoritukset: Option[List[SupaEBOppiaineenAlaosasuoritus]],
 ) extends SupaSuoritus
 
@@ -75,6 +76,7 @@ object SupaEBTutkinnonOsasuoritus {
     SupaEBTutkinnonOsasuoritus(
       tyyppi = s.tyyppi,
       koulutusmoduuli = s.koulutusmoduuli,
+      suorituskieli = s.suorituskieli,
       osasuoritukset = s.osasuoritukset.map(_.map(os => SupaEBOppiaineenAlaosasuoritus(os))).filter(_.nonEmpty),
     )
 }
