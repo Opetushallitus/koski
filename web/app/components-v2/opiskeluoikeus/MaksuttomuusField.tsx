@@ -21,7 +21,7 @@ export const MaksuttomuusView: React.FC<MaksuttomuusViewProps> = ({
       <TestIdText id="alku">
         {value?.alku && ISO2FinnishDate(value.alku)}
       </TestIdText>{' '}
-      {' - '}
+      {' — '}
       <TestIdText id="loppu">
         {value?.loppu && ISO2FinnishDate(value.loppu)}
       </TestIdText>
@@ -61,7 +61,7 @@ export const MaksuttomuusEdit: React.FC<MaksuttomuusEditProps> = ({
     <TestIdLayer id="maksuttomuus">
       <div className="MaksuttomuusEdit">
         <DateInput value={value?.alku} onChange={setAlku} testId="alku" />
-        <span className="MaksuttomuusEdit__separator"> {' - '}</span>
+        <span className="MaksuttomuusEdit__separator"> {' — '}</span>
         <DateInput value={value?.loppu} onChange={setLoppu} testId="loppu" />
         <Checkbox
           checked={value?.maksuton || false}

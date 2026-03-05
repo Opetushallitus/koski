@@ -353,11 +353,11 @@ const HojksView = <T extends Hojks>({
   return (
     <div>
       <TestIdText id="opetusryhmä">{t(value?.opetusryhmä.nimi)}</TestIdText>{' '}
-      {' - '}
+      {' — '}
       <TestIdText id="alku">
         {value?.alku && ISO2FinnishDate(value.alku)}
       </TestIdText>{' '}
-      {' - '}
+      {' — '}
       <TestIdText id="loppu">
         {value?.loppu && ISO2FinnishDate(value.loppu)}
       </TestIdText>
@@ -390,7 +390,7 @@ const HojksEdit = ({
           }}
           testId={'opetusryhmä'}
         />
-        <span className="AikajaksoEdit__separator"> {' - '}</span>
+        <span className="AikajaksoEdit__separator"> {' — '}</span>
         <DateInput
           value={value?.alku}
           onChange={(alku?: string) => {
@@ -398,7 +398,7 @@ const HojksEdit = ({
           }}
           testId="alku"
         />
-        <span className="AikajaksoEdit__separator"> {' - '}</span>
+        <span className="AikajaksoEdit__separator"> {' — '}</span>
         <DateInput
           value={value?.loppu}
           onChange={(loppu?: string) => {
@@ -426,7 +426,7 @@ const OsaAikaisuusView = <T extends OsaAikaisuusJakso>({
         <TestIdText id="alku">
           {value?.alku && ISO2FinnishDate(value.alku)}
         </TestIdText>
-        {' - '}
+        {' — '}
         <TestIdText id="loppu">
           {value?.loppu && ISO2FinnishDate(value.loppu)}
         </TestIdText>
@@ -450,7 +450,7 @@ const OsaAikaisuusEdit = ({
   onChange
 }: FieldEditorProps<OsaAikaisuusJakso | undefined, EmptyObject>) => {
   return (
-    <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: '4px 8px' }}>
+    <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: '4px' }}>
       <div style={{ width: '120px' }}>
         <DateInput
           value={value?.alku}
@@ -460,7 +460,7 @@ const OsaAikaisuusEdit = ({
           testId="alku"
         />
       </div>
-      <span>{' - '}</span>
+      <span>{' — '}</span>
       <div style={{ width: '120px' }}>
         <DateInput
           value={value?.loppu}
@@ -494,7 +494,7 @@ const OpiskeluvalmiuksiaTuvkevienOpintojenJaksoView = <
         <TestIdText id="alku">
           {value?.alku && ISO2FinnishDate(value.alku)}
         </TestIdText>
-        {' - '}
+        {' — '}
         <TestIdText id="loppu">
           {value?.loppu && ISO2FinnishDate(value.loppu)}
         </TestIdText>
@@ -522,7 +522,7 @@ const OpiskeluvalmiuksiaTuvkevienOpintojenJaksoEdit = ({
   EmptyObject
 >) => {
   return (
-    <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: '4px 8px' }}>
+    <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: '4px' }}>
       <div style={{ width: '120px' }}>
         <DateInput
           value={value?.alku}
@@ -537,7 +537,7 @@ const OpiskeluvalmiuksiaTuvkevienOpintojenJaksoEdit = ({
           testId="alku"
         />
       </div>
-      <span>{' - '}</span>
+      <span>{' — '}</span>
       <div style={{ width: '120px' }}>
         <DateInput
           value={value?.loppu}
