@@ -399,15 +399,16 @@ class TodistusLatausSpec extends TodistusSpecHelpers with BeforeAndAfterAll {
 
     val regions = Seq(
       TextRegion("sivu1_otsikot", pageIndex = 0,
-        x = 150, y = 150, width = 300, height = 200,
+        x = 50, y = 150, width = 500, height = 200,
         expectedTexts = Seq(
           "TODISTUS",
-          "Kielitutkinto Suorittaja",
+          "Suorittaja iminim Niminimi Niminiminimin",
+          "Kielitutkinto imi Sukunimisukunimi sukusukuni",
           "(1.1.2007)"
         )),
 
       TextRegion("sivu1_kokeeninimi", pageIndex = 0,
-        x = 150, y = 250, width = 300, height = 70,
+        x = 150, y = 280, width = 300, height = 70,
         expectedTexts = Seq(
           "on osallistunut yleisten kielitutkintojen",
           "suomen kielen keskitason tutkintoon"
@@ -537,15 +538,16 @@ class TodistusLatausSpec extends TodistusSpecHelpers with BeforeAndAfterAll {
     val regions = Seq(
       // Sivu 1: Pääosin samat kuin tavallisessa todistuksessa, mutta allekirjoitusalue eri
       TextRegion("sivu1_otsikot", pageIndex = 0,
-        x = 150, y = 150, width = 300, height = 200,
+        x = 50, y = 150, width = 500, height = 200,
         expectedTexts = Seq(
           "TODISTUS",
-          "Kielitutkinto Suorittaja",
+          "Suorittaja iminim Niminimi Niminiminimin",
+          "Kielitutkinto imi Sukunimisukunimi sukusukuni",
           "(1.1.2007)"
         )),
 
       TextRegion("sivu1_kokeeninimi", pageIndex = 0,
-        x = 150, y = 250, width = 300, height = 70,
+        x = 150, y = 280, width = 300, height = 70,
         expectedTexts = Seq(
           "on osallistunut yleisten kielitutkintojen",
           "suomen kielen keskitason tutkintoon"
@@ -692,7 +694,14 @@ class TodistusLatausSpec extends TodistusSpecHelpers with BeforeAndAfterAll {
 
   private def verifyYleinenKielitutkintoTodistusSisalto(pdfText: String): Unit = {
     // Tarkista, että todistuksen kaikki templatoidut merkkijonot löytyvät PDF:stä
-    assert(pdfText.contains("Kielitutkinto Suorittaja"), "Oppijan nimi puuttuu")
+    assert(pdfText.contains("Kielitutkinto"), "Oppijan nimi puuttuu")
+    assert(pdfText.contains("Suorittaja"), "Oppijan nimi puuttuu")
+    assert(pdfText.contains("imi"), "Oppijan nimi puuttuu")
+    assert(pdfText.contains("Sukunimisukunimi"), "Oppijan nimi puuttuu")
+    assert(pdfText.contains("sukusukuni"), "Oppijan nimi puuttuu")
+    assert(pdfText.contains("iminim"), "Oppijan nimi puuttuu")
+    assert(pdfText.contains("Niminimi"), "Oppijan nimi puuttuu")
+    assert(pdfText.contains("Niminiminimin"), "Oppijan nimi puuttuu")
     assert(pdfText.contains("1.1.2007"), "Oppijan syntymäaika puuttuu")
     assert(pdfText.contains("suomen kielen keskitason"), "Tutkinnon nimi puuttuu")
     assert(pdfText.contains("3-4"), "Tason arvosanarajat puuttuvat")
