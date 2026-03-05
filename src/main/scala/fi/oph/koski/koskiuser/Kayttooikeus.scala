@@ -294,6 +294,12 @@ case class OoPtsMask(
         case (None, None) => Some(this)
       }
     }
+
+  def satisfies(expected: OoPtsMask): Boolean =
+    opiskeluoikeus == expected.opiskeluoikeus && (päätasonSuoritukset.isEmpty || (expected.päätasonSuoritukset match {
+      case Some(expectedPts) => expectedPts.forall(päätasonSuoritukset.get.contains(_))
+      case None => false
+    }))
 }
 
 object OoPtsMask {
@@ -322,12 +328,17 @@ object OoPtsMask {
   def intersects(ts: Iterable[OoPtsMask], a: OoPtsMask): Boolean =
     ts.exists(_.intersects(a))
 
+  def satisfiesAll(expectedRights: Iterable[OoPtsMask], actualRights: Iterable[OoPtsMask]): Boolean =
+    expectedRights.forall { expected => actualRights.exists(_.satisfies(expected)) }
+
   private def isOpiskeluoikeusrooli(rooli: String) = OpiskeluoikeudenTyyppi.kaikkiTyypit.exists(_.koodiarvo == rooli)
 
   implicit final def ooPtsMaskIterableOps[F[X] <: Iterable[X]](i: F[OoPtsMask]): OoPtsMaskIterableChainingOps[F] = new OoPtsMaskIterableChainingOps(i)
 
   final class OoPtsMaskIterableChainingOps[F[X] <: Iterable[X]](private val self: F[OoPtsMask]) extends AnyVal {
     def intersects(a: OoPtsMask): Boolean = OoPtsMask.intersects(self, a)
+
+    def satisfiesAll(expectedRights: Iterable[OoPtsMask]): Boolean = OoPtsMask.satisfiesAll(expectedRights, self)
 
     def toOpiskeluoikeudenTyypit: F[String] = self.map(_.opiskeluoikeus).asInstanceOf[F[String]]
   }
