@@ -141,8 +141,8 @@
     }
 
     .nimi {
-      font-size: 20pt;
-      line-height: 26pt;
+      font-size: 18pt;
+      line-height: 24pt;
       font-weight: 700;
       text-align: center;
       margin: 0;
@@ -254,6 +254,7 @@
       font-weight: 400;
       margin-bottom: 15pt;
       margin-top: 0;
+      white-space: nowrap;
     }
 
     .footer-teksti {
@@ -466,7 +467,7 @@
       <p class="nimi"><span
         th:text="${oppijaNimi}">Etunimi Etunimi Etunimi Etunimi Etunimi Sukunimisukunimisukunimi</span></p>
 
-      <p class="syntymaaika">(<span th:text="${oppijaSyntymäaika}">PP.KK.VVVV</span>)</p>
+      <p class="syntymaaika">(born <span th:text="${oppijaSyntymäaika}">PP.KK.VVVV</span>)</p>
 
     </section>
     <!-- TOOD: TOR-2400: englanniksi ja ruotsiksi ei br:ää -->

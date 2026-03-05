@@ -30,16 +30,7 @@ class YleinenKielitutkintoTodistusDataBuilder(application: KoskiApplication) {
       siistittyOo <- poistaArvioimattomatOsasuorituksetJaVanhatArvioinnit(ktOo, todistus)
       yleinenKtSuoritus = siistittyOo.suoritukset.head.asInstanceOf[YleisenKielitutkinnonSuoritus]
 
-      // TODO: TOR-2400: On vielä avoinna, mitä nimeä halutaan käytettävän
-      etunimiTodistuksella <- if (oppijanHenkilö.kutsumanimi.nonEmpty) {
-        Right(oppijanHenkilö.kutsumanimi)
-      } else {
-        oppijanHenkilö.etunimet.trim.split(" ").headOption.toRight(
-          KoskiErrorCategory.internalError(s"Oppijan etunimi puuttuu todistukselle ${todistus.id}")
-        )
-      }
-
-      oppijaNimi = s"${etunimiTodistuksella} ${oppijanHenkilö.sukunimi}"
+      oppijaNimi = s"${oppijanHenkilö.etunimet} ${oppijanHenkilö.sukunimi}"
 
       oppijaSyntymäaika <- oppijanHenkilö.syntymäaika
         .map(formatDateDDMMYYYY)

@@ -705,7 +705,8 @@ class TodistusKayttoOikeudetSpec extends TodistusSpecHelpers {
         val html = response.body
 
         // Tarkista että HTML sisältää oikeat tiedot
-        html should include("Kielitutkinto Suorittaja")
+        html should include("Kielitutkinto")
+        html should include("Suorittaja")
         html should include("1.1.2007") // syntymäaika
         html should include("suomen kielen keskitason")
         html should include("Varsinais-Suomen kansanopisto")
