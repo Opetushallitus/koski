@@ -421,18 +421,22 @@ const OsaAikaisuusView = <T extends OsaAikaisuusJakso>({
   value
 }: CommonProps<FieldViewerProps<T | undefined, EmptyObject>>) => {
   return (
-    <div>
-      <TestIdText id="alku">
-        {value?.alku && ISO2FinnishDate(value.alku)}
-      </TestIdText>{' '}
-      {' - '}
-      <TestIdText id="loppu">
-        {value?.loppu && ISO2FinnishDate(value.loppu)}
-      </TestIdText>
-      {' - '}
-      <TestIdText id="osaAikaisuus">{value?.osaAikaisuus}</TestIdText>
-      {'%'}
-    </div>
+    <span style={{ display: 'inline-flex', gap: '8px', flexWrap: 'wrap' }}>
+      <span>
+        <TestIdText id="alku">
+          {value?.alku && ISO2FinnishDate(value.alku)}
+        </TestIdText>
+        {' - '}
+        <TestIdText id="loppu">
+          {value?.loppu && ISO2FinnishDate(value.loppu)}
+        </TestIdText>
+      </span>
+      <span>
+        <span style={{ color: '#747474' }}>{t('Osa-aikaisuus')}</span>{': '}
+        <TestIdText id="osaAikaisuus">{value?.osaAikaisuus}</TestIdText>
+        {'%'}
+      </span>
+    </span>
   )
 }
 
@@ -446,30 +450,35 @@ const OsaAikaisuusEdit = ({
   onChange
 }: FieldEditorProps<OsaAikaisuusJakso | undefined, EmptyObject>) => {
   return (
-    <div className="AikajaksoEdit">
-      <DateInput
-        value={value?.alku}
-        onChange={(alku?: string) => {
-          alku && onChange({ ...emptyOsaAikausuus, ...value, alku })
-        }}
-        testId="alku"
-      />
-      <span className="AikajaksoEdit__separator"> {' - '}</span>
-      <DateInput
-        value={value?.loppu}
-        onChange={(loppu?: string) => {
-          loppu && onChange({ ...emptyOsaAikausuus, ...value, loppu })
-        }}
-        testId="loppu"
-      />
+    <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: '4px 8px' }}>
+      <div style={{ width: '120px' }}>
+        <DateInput
+          value={value?.alku}
+          onChange={(alku?: string) => {
+            alku && onChange({ ...emptyOsaAikausuus, ...value, alku })
+          }}
+          testId="alku"
+        />
+      </div>
+      <span>{' - '}</span>
+      <div style={{ width: '120px' }}>
+        <DateInput
+          value={value?.loppu}
+          onChange={(loppu?: string) => {
+            loppu && onChange({ ...emptyOsaAikausuus, ...value, loppu })
+          }}
+          testId="loppu"
+        />
+      </div>
+      <span><span style={{ color: '#747474' }}>{t('Osa-aikaisuus')}</span></span>
       <NumberField
         value={value?.osaAikaisuus}
         onChange={(osaAikaisuus?: number) => {
-          osaAikaisuus &&
+          osaAikaisuus !== undefined &&
             onChange({ ...emptyOsaAikausuus, ...value, osaAikaisuus })
         }}
       />
-      {'%'}
+      <span>{'%'}</span>
     </div>
   )
 }
