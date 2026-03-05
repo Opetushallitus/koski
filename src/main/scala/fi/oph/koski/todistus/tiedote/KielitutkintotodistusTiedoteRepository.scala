@@ -37,7 +37,7 @@ class KielitutkintotodistusTiedoteRepository(val db: DB, val workerId: String, c
 
   def add(job: KielitutkintotodistusTiedoteJob): KielitutkintotodistusTiedoteJob = {
     runDbSync(sql"""
-      INSERT INTO kielitutkintotodistus_tiedote_job(id, oppija_oid, opiskeluoikeus_oid, state, created_at, completed_at, worker, attempts, error, opiskeluoikeus_versio)
+      INSERT INTO kielitutkintotodistus_tiedote_job(id, oppija_oid, opiskeluoikeus_oid, state, created_at, completed_at, worker, attempts, error, opiskeluoikeus_versio, todistus_job_id)
       VALUES (
         ${job.id}::uuid,
         ${job.oppijaOid},
@@ -48,7 +48,8 @@ class KielitutkintotodistusTiedoteRepository(val db: DB, val workerId: String, c
         ${job.worker},
         ${job.attempts},
         ${job.error},
-        ${job.opiskeluoikeusVersio}
+        ${job.opiskeluoikeusVersio},
+        ${job.todistusJobId}::uuid
       )
       RETURNING *
       """.as[KielitutkintotodistusTiedoteJob]).head
@@ -111,6 +112,23 @@ class KielitutkintotodistusTiedoteRepository(val db: DB, val workerId: String, c
     }
   }
 
+  def setState(id: String, state: String, todistusJobId: Option[String] = None): Boolean =
+    runDbSync(sql"""
+      UPDATE kielitutkintotodistus_tiedote_job
+      SET state = $state,
+          todistus_job_id = COALESCE(${todistusJobId}::uuid, todistus_job_id)
+      WHERE id = ${id}::uuid
+      """.asUpdate) != 0
+
+  def findByState(state: String, limit: Int): Seq[KielitutkintotodistusTiedoteJob] =
+    runDbSync(sql"""
+      SELECT *
+      FROM kielitutkintotodistus_tiedote_job
+      WHERE state = $state
+      ORDER BY created_at
+      LIMIT $limit
+      """.as[KielitutkintotodistusTiedoteJob])
+
   def truncateForLocal(): Int = {
     require(
       Environment.isUnitTestEnvironment(config) || Environment.isLocalDevelopmentEnvironment(config),
@@ -130,7 +148,8 @@ class KielitutkintotodistusTiedoteRepository(val db: DB, val workerId: String, c
       worker = Option(r.rs.getString("worker")),
       attempts = r.rs.getInt("attempts"),
       error = Option(r.rs.getString("error")),
-      opiskeluoikeusVersio = r.rs.getInt("opiskeluoikeus_versio")
+      opiskeluoikeusVersio = r.rs.getInt("opiskeluoikeus_versio"),
+      todistusJobId = Option(r.rs.getString("todistus_job_id"))
     )
   })
 }

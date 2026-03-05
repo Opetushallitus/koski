@@ -12,10 +12,12 @@ case class KielitutkintotodistusTiedoteJob(
   worker: Option[String] = None,
   attempts: Int = 0,
   error: Option[String] = None,
-  opiskeluoikeusVersio: Int = 0
+  opiskeluoikeusVersio: Int = 0,
+  todistusJobId: Option[String] = None
 )
 
 object KielitutkintotodistusTiedoteState {
+  val WAITING_FOR_TODISTUS = "WAITING_FOR_TODISTUS"
   val COMPLETED = "COMPLETED"
   val ERROR = "ERROR"
 }

@@ -128,6 +128,35 @@ class TodistusJobRepository(val db: DB, val workerId: String, config: Config) ex
     }
   }
 
+  def addForSystem(todistusJob: TodistusJob): Either[HttpStatus, TodistusJob] = {
+    scala.util.Try {
+      runDbSync(sql"""
+        INSERT INTO todistus_job(id, user_oid, oppija_oid, opiskeluoikeus_oid, template_variant,
+                            is_stamped, state,
+                            created_at, started_at, completed_at, worker, attempts, error)
+        VALUES (
+          ${todistusJob.id}::uuid,
+          ${todistusJob.userOid},
+          ${todistusJob.oppijaOid},
+          ${todistusJob.opiskeluoikeusOid},
+          ${todistusJob.templateVariant},
+          ${todistusJob.isStamped},
+          ${todistusJob.state},
+          ${java.sql.Timestamp.valueOf(todistusJob.createdAt)},
+          ${todistusJob.startedAt.map(java.sql.Timestamp.valueOf)},
+          ${todistusJob.completedAt.map(java.sql.Timestamp.valueOf)},
+          ${todistusJob.worker},
+          ${todistusJob.attempts},
+          ${todistusJob.error}
+        )
+        RETURNING *
+        """.as[TodistusJob]).head
+    }.toEither.left.map { t =>
+      logger.error(t)(s"Failed to add todistus job for system: ${todistusJob.id}")
+      KoskiErrorCategory.internalError(s"TodistusJob-luonti epäonnistui: ${t.getMessage}")
+    }
+  }
+
   def updateState(id: String, startState: String, state: String, completedAt: Option[LocalDateTime] = None): Either[HttpStatus, TodistusJob] = {
     runDbSync(sql"""
       UPDATE todistus_job
@@ -286,7 +315,7 @@ class TodistusJobRepository(val db: DB, val workerId: String, config: Config) ex
   def truncateForLocal(): Int = {
     require(Environment.isUnitTestEnvironment(config) || Environment.isLocalDevelopmentEnvironment(config), "truncateForLocal can only be used in local test environment")
 
-    runDbSync(sql"TRUNCATE TABLE todistus_job".asUpdate)
+    runDbSync(sql"TRUNCATE TABLE todistus_job CASCADE".asUpdate)
   }
 
   def setJobQueuedForExpireForUnitTests(id: String): Boolean = {
