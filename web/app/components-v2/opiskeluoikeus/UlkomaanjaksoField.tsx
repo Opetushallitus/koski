@@ -26,7 +26,7 @@ export const UlkomaanjaksoView: React.FC<UlkomaanjaksoViewProps> = ({
           <TestIdText id="alku">
             {value?.alku && ISO2FinnishDate(value.alku)}
           </TestIdText>
-          {' - '}
+          {' — '}
           <TestIdText id="loppu">
             {value?.loppu && ISO2FinnishDate(value.loppu)}
           </TestIdText>
@@ -50,7 +50,7 @@ export type UlkomaanjaksoEditProps = CommonProps<
 
 export const emptyUlkomaanjakso = Ulkomaanjakso({
   alku: todayISODate(),
-  maa: Koodistokoodiviite({ koodistoUri: 'maatjavaltiot2', koodiarvo: '' }),
+  maa: Koodistokoodiviite({ koodistoUri: 'maatjavaltiot2', koodiarvo: '', nimi: emptyLocalizedString }),
   kuvaus: emptyLocalizedString
 })
 
@@ -76,11 +76,11 @@ export const UlkomaanjaksoEdit: React.FC<UlkomaanjaksoEditProps> = ({
 
   return (
     <TestIdLayer id="ulkomaanjakso">
-      <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: '4px 8px' }}>
+      <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: '4px' }}>
         <div style={{ width: '120px' }}>
           <DateInput value={value?.alku} onChange={setAlku} testId="alku" />
         </div>
-        <span>{' - '}</span>
+        <span>{' — '}</span>
         <div style={{ width: '120px' }}>
           <DateInput value={value?.loppu} onChange={setLoppu} testId="loppu" />
         </div>

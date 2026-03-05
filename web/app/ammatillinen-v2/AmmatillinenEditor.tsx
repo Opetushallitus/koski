@@ -503,7 +503,7 @@ export const OsaamisalaView = <T extends Osaamisalajakso>({
         <TestIdText id="alku">
           {value?.alku && ISO2FinnishDate(value.alku)}
         </TestIdText>{' '}
-        {' - '}
+        {' — '}
         <TestIdText id="loppu">
           {value?.loppu && ISO2FinnishDate(value.loppu)}
         </TestIdText>
@@ -535,7 +535,7 @@ export const OsaamisalaEdit = ({
           }}
           testId="alku"
         />
-        <span className="AikajaksoEdit__separator"> {' - '}</span>
+        <span className="AikajaksoEdit__separator"> {' — '}</span>
         <DateInput
           value={value?.loppu}
           onChange={(loppu?: string) => {
@@ -567,7 +567,7 @@ export const JärjestämismouotoView = <T extends Järjestämismuotojakso>({
       <TestIdText id="alku">
         {value?.alku && ISO2FinnishDate(value.alku)}
       </TestIdText>
-      {' - '}
+      {' — '}
       <TestIdText id="loppu">
         {value?.loppu && ISO2FinnishDate(value.loppu)}
       </TestIdText>
@@ -608,7 +608,7 @@ export const JärjestämismouotoEdit = ({
           }}
           testId="alku"
         />
-        <span className="AikajaksoEdit__separator"> {' - '}</span>
+        <span className="AikajaksoEdit__separator"> {' — '}</span>
         <DateInput
           value={value?.loppu}
           onChange={(loppu?: string) => {
@@ -825,7 +825,7 @@ export const OsaamisenHankkimistapaView = <
       <TestIdText id="alku">
         {value?.alku && ISO2FinnishDate(value.alku)}
       </TestIdText>
-      {' - '}
+      {' — '}
       <TestIdText id="loppu">
         {value?.loppu && ISO2FinnishDate(value.loppu)}
       </TestIdText>
@@ -868,7 +868,7 @@ export const OsaamisenHankkimistapaEdit = ({
           }}
           testId="alku"
         />
-        <span className="AikajaksoEdit__separator"> {' - '}</span>
+        <span className="AikajaksoEdit__separator"> {' — '}</span>
         <DateInput
           value={value?.loppu}
           onChange={(loppu?: string) => {
@@ -933,7 +933,7 @@ export const TyössäoppimisjaksoView = <T extends Työssäoppimisjakso>({
       <TestIdText id="alku">
         {value?.alku && ISO2FinnishDate(value.alku)}
       </TestIdText>
-      {' - '}
+      {' — '}
       <TestIdText id="loppu">
         {value?.loppu && ISO2FinnishDate(value.loppu)}
       </TestIdText>
@@ -979,7 +979,7 @@ export const TyössäoppimisjaksoEdit = ({
           }}
           testId="alku"
         />
-        <span className="AikajaksoEdit__separator"> {' - '}</span>
+        <span className="AikajaksoEdit__separator"> {' — '}</span>
         <DateInput
           value={value?.loppu}
           onChange={(loppu?: string) => {
@@ -1060,7 +1060,7 @@ export const KoulutussopimusView = <T extends Koulutussopimusjakso>({
       <TestIdText id="alku">
         {value?.alku && ISO2FinnishDate(value.alku)}
       </TestIdText>
-      {' - '}
+      {' — '}
       <TestIdText id="loppu">
         {value?.loppu && ISO2FinnishDate(value.loppu)}
       </TestIdText>
@@ -1105,7 +1105,7 @@ export const KoulutussopimusEdit = ({
           }}
           testId="alku"
         />
-        <span className="AikajaksoEdit__separator"> {' - '}</span>
+        <span className="AikajaksoEdit__separator"> {' — '}</span>
         <DateInput
           value={value?.loppu}
           onChange={(loppu?: string) => {
