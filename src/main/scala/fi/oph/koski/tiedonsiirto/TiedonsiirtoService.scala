@@ -105,6 +105,16 @@ class TiedonsiirtoService(
     haeTiedonsiirrot(Map("exists" -> Map("field" -> "virheet.key")) :: filtersFrom(query), query.oppilaitos, query.paginationSettings)
   }
 
+  def deleteTiedonsiirtoVirheet(oppijaOid: String, tallentajaOrganisaatioOid: String, koulutusmuoto: String): Unit = {
+    val query = toJValue(Map("query" -> OpenSearch.allFilter(List(
+      Map("term" -> Map("oppija.oid" -> oppijaOid)),
+      Map("term" -> Map("tallentajaOrganisaatioOid" -> tallentajaOrganisaatioOid)),
+      Map("term" -> Map("koulutusmuoto" -> koulutusmuoto)),
+      Map("exists" -> Map("field" -> "virheet.key"))
+    ))))
+    index.deleteByQuery(query, refresh = true)
+  }
+
   def delete(ids: List[String])(implicit koskiSession: KoskiSpecificSession): Unit = {
     val query = toJValue(Map("query" -> OpenSearch.allFilter(
       Map("terms" -> Map("_id" -> ids))
