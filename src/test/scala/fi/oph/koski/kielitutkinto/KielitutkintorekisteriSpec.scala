@@ -8,7 +8,7 @@ import fi.oph.koski.documentation.{ExamplesKielitutkinto, ExamplesLukio}
 import fi.oph.koski.henkilo.{KoskiSpecificMockOppijat, LaajatOppijaHenkilöTiedot}
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.json.JsonSerializer
-import fi.oph.koski.koskiuser.{KoskiMockUser, KoskiSpecificSession, MockUsers}
+import fi.oph.koski.koskiuser.{KoskiMockUser, KoskiSpecificSession, MockUsers, OoPtsMask}
 import fi.oph.koski.oppija.{HenkilönOpiskeluoikeusVersiot, OppijaServletOppijaAdder}
 import fi.oph.koski.organisaatio.{MockOrganisaatiot, Opetushallitus}
 import fi.oph.koski.schema._
@@ -36,6 +36,10 @@ class KielitutkintorekisteriSpec
   "Kielitutkintorekisterin käyttöoikeudella" - {
     implicit val session: KoskiSpecificSession = MockUsers.kielitutkintorekisteriKäyttäjä.toKoskiSpecificSession(KoskiApplicationForTests.käyttöoikeusRepository)
 
+    "sessio on määritelty oikein" in {
+      session.allowedOpiskeluoikeudetJaPäätasonSuoritukset should equal(Set(OoPtsMask("kielitutkinto")))
+      session.hasKoulutusmuotoRestrictions should equal(true)
+    }
     "pystyy kirjoittamaan kielitutkinnon opiskeluoikeuden" in { canWrite(kielitutkinnonOpiskeluoikeus) }
     "pystyy lukemaan kielitutkinnon opiskeluoikeuden" in { canRead(ExamplesKielitutkinto.exampleMockOppija) }
     "ei pysty kirjoittamaan muita opiskeluoikeuksia" in { cannotWrite(lukionOpiskeluoikeus, "Ei oikeuksia opiskeluoikeuden tyyppiin lukiokoulutus (lukionoppimaara)") }

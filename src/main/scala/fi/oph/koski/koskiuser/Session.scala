@@ -52,7 +52,10 @@ class KoskiSpecificSession(
   lazy val varhaiskasvatuksenOstopalvelukäyttöoikeudet: Set[KäyttöoikeusVarhaiskasvatuksenOstopalveluihinMuistaOrganisaatioista] = käyttöoikeudet.collect { case k: KäyttöoikeusVarhaiskasvatuksenOstopalveluihinMuistaOrganisaatioista => k }
   lazy val varhaiskasvatusKoulutustoimijat: Set[Oid] = varhaiskasvatuksenOstopalvelukäyttöoikeudet.map(_.ostavaKoulutustoimija.oid)
   lazy val hasKoulutustoimijaVarhaiskasvatuksenJärjestäjäAccess: Boolean = varhaiskasvatusKoulutustoimijat.nonEmpty
-  lazy val allowedOpiskeluoikeudetJaPäätasonSuoritukset: Set[OoPtsMask] = if (isRoot) OpiskeluoikeudenTyyppi.kaikkiOpiskeluoikeudetJaPäätasonSuoritukset else käyttöoikeudet.flatMap(_.allowedOpiskeluoikeusTyypit)
+  lazy val allowedOpiskeluoikeudetJaPäätasonSuoritukset: Set[OoPtsMask] =
+    if (isKielitutkintorekisteri) Set(OoPtsMask.fromKoodistokoodiviite(OpiskeluoikeudenTyyppi.kielitutkinto).get)
+    else if (isRoot) OpiskeluoikeudenTyyppi.kaikkiOpiskeluoikeudetJaPäätasonSuoritukset
+    else käyttöoikeudet.flatMap(_.allowedOpiskeluoikeusTyypit)
   lazy val deniedOpiskeluoikeudetJaPäätasonSuoritukset: Set[OoPtsMask] = OpiskeluoikeudenTyyppi.kaikkiOpiskeluoikeudetJaPäätasonSuoritukset -- allowedOpiskeluoikeudetJaPäätasonSuoritukset
   lazy val hasKoulutusmuotoRestrictions: Boolean = !allowedOpiskeluoikeudetJaPäätasonSuoritukset.satisfiesAll(OpiskeluoikeudenTyyppi.kaikkiOpiskeluoikeudetJaPäätasonSuoritukset)
   lazy val allowedPäätasonSuorituksenTyypit: Set[String] = allowedOpiskeluoikeudetJaPäätasonSuoritukset.flatMap(_.päätasonSuoritukset).flatten
@@ -61,7 +64,7 @@ class KoskiSpecificSession(
 
   def organisationOids(accessType: AccessType.Value): Set[String] = orgKäyttöoikeudet.collect { case k: KäyttöoikeusOrg if k.organisaatioAccessType.contains(accessType) => k.organisaatio.oid }
   lazy val globalAccess = globalKäyttöoikeudet.flatMap { _.globalAccessType }
-  def isRoot = globalAccess.contains(AccessType.write)
+  def isRoot = globalAccess.contains(AccessType.write) && !isKielitutkintorekisteri
   def isPalvelukäyttäjä = orgKäyttöoikeudet.flatMap(_.organisaatiokohtaisetPalveluroolit).contains(Palvelurooli(TIEDONSIIRTO)) || isKielitutkintorekisteri
   def hasReadAccess(organisaatio: Organisaatio.Oid, koulutustoimija: Option[Organisaatio.Oid]) = hasAccess(organisaatio, koulutustoimija, AccessType.read)
 
