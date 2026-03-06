@@ -21,7 +21,7 @@ export const UlkomaanjaksoView: React.FC<UlkomaanjaksoViewProps> = ({
 }) => {
   return (
     <TestIdLayer id="ulkomaanjakso">
-      <span style={{ display: 'inline-flex', gap: '8px', flexWrap: 'wrap' }}>
+      <span className="InlineJaksoView">
         <span>
           <TestIdText id="alku">
             {value?.alku && ISO2FinnishDate(value.alku)}
@@ -32,11 +32,11 @@ export const UlkomaanjaksoView: React.FC<UlkomaanjaksoViewProps> = ({
           </TestIdText>
         </span>
         <span>
-          <span style={{ color: '#747474' }}>{t('Maa')}</span>{': '}
+          <span className="InlineJakso__label">{t('Maa')}</span>{': '}
           <TestIdText id="maa">{t(value?.maa.nimi)}</TestIdText>
         </span>
         <span>
-          <span style={{ color: '#747474' }}>{t('Kuvaus')}</span>{': '}
+          <span className="InlineJakso__label">{t('Kuvaus')}</span>{': '}
           <TestIdText id="kuvaus">{t(value?.kuvaus)}</TestIdText>
         </span>
       </span>
@@ -76,16 +76,16 @@ export const UlkomaanjaksoEdit: React.FC<UlkomaanjaksoEditProps> = ({
 
   return (
     <TestIdLayer id="ulkomaanjakso">
-      <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: '4px' }}>
-        <div style={{ width: '120px' }}>
+      <div className="InlineJaksoEdit">
+        <div className="InlineJaksoEdit__date">
           <DateInput value={value?.alku} onChange={setAlku} testId="alku" />
         </div>
         <span>{' — '}</span>
-        <div style={{ width: '120px' }}>
+        <div className="InlineJaksoEdit__date">
           <DateInput value={value?.loppu} onChange={setLoppu} testId="loppu" />
         </div>
-        <span><span style={{ color: '#747474' }}>{t('Maa')}</span></span>
-        <div style={{ width: '200px' }}>
+        <span className="InlineJakso__label">{t('Maa')}</span>
+        <div className="InlineJaksoEdit__select">
           <KoodistoSelect
             koodistoUri="maatjavaltiot2"
             value={value?.maa.koodiarvo}
@@ -93,7 +93,7 @@ export const UlkomaanjaksoEdit: React.FC<UlkomaanjaksoEditProps> = ({
             testId="maa"
           />
         </div>
-        <span><span style={{ color: '#747474' }}>{t('Kuvaus')}</span></span>
+        <span className="InlineJakso__label">{t('Kuvaus')}</span>
         <LocalizedTextEdit
           value={value?.kuvaus}
           onChange={setKuvaus}

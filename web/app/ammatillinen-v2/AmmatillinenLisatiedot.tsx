@@ -421,7 +421,7 @@ const OsaAikaisuusView = <T extends OsaAikaisuusJakso>({
   value
 }: CommonProps<FieldViewerProps<T | undefined, EmptyObject>>) => {
   return (
-    <span style={{ display: 'inline-flex', gap: '8px', flexWrap: 'wrap' }}>
+    <span className="InlineJaksoView">
       <span>
         <TestIdText id="alku">
           {value?.alku && ISO2FinnishDate(value.alku)}
@@ -432,7 +432,7 @@ const OsaAikaisuusView = <T extends OsaAikaisuusJakso>({
         </TestIdText>
       </span>
       <span>
-        <span style={{ color: '#747474' }}>{t('Osa-aikaisuus')}</span>{': '}
+        <span className="InlineJakso__label">{t('Osa-aikaisuus')}</span>{': '}
         <TestIdText id="osaAikaisuus">{value?.osaAikaisuus}</TestIdText>
         {'%'}
       </span>
@@ -450,8 +450,8 @@ const OsaAikaisuusEdit = ({
   onChange
 }: FieldEditorProps<OsaAikaisuusJakso | undefined, EmptyObject>) => {
   return (
-    <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: '4px' }}>
-      <div style={{ width: '120px' }}>
+    <div className="InlineJaksoEdit">
+      <div className="InlineJaksoEdit__date">
         <DateInput
           value={value?.alku}
           onChange={(alku?: string) => {
@@ -461,7 +461,7 @@ const OsaAikaisuusEdit = ({
         />
       </div>
       <span>{' — '}</span>
-      <div style={{ width: '120px' }}>
+      <div className="InlineJaksoEdit__date">
         <DateInput
           value={value?.loppu}
           onChange={(loppu?: string) => {
@@ -470,7 +470,7 @@ const OsaAikaisuusEdit = ({
           testId="loppu"
         />
       </div>
-      <span><span style={{ color: '#747474' }}>{t('Osa-aikaisuus')}</span></span>
+      <span className="InlineJakso__label">{t('Osa-aikaisuus')}</span>
       <NumberField
         value={value?.osaAikaisuus}
         onChange={(osaAikaisuus?: number) => {
@@ -489,7 +489,7 @@ const OpiskeluvalmiuksiaTuvkevienOpintojenJaksoView = <
   value
 }: CommonProps<FieldViewerProps<T | undefined, EmptyObject>>) => {
   return (
-    <span style={{ display: 'inline-flex', gap: '8px', flexWrap: 'wrap' }}>
+    <span className="InlineJaksoView">
       <span>
         <TestIdText id="alku">
           {value?.alku && ISO2FinnishDate(value.alku)}
@@ -500,7 +500,7 @@ const OpiskeluvalmiuksiaTuvkevienOpintojenJaksoView = <
         </TestIdText>
       </span>
       <span>
-        <span style={{ color: '#747474' }}>{t('Kuvaus')}</span>{': '}
+        <span className="InlineJakso__label">{t('Kuvaus')}</span>{': '}
         <TestIdText id="kuvaus">{t(value?.kuvaus)}</TestIdText>
       </span>
     </span>
@@ -522,8 +522,8 @@ const OpiskeluvalmiuksiaTuvkevienOpintojenJaksoEdit = ({
   EmptyObject
 >) => {
   return (
-    <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: '4px' }}>
-      <div style={{ width: '120px' }}>
+    <div className="InlineJaksoEdit">
+      <div className="InlineJaksoEdit__date">
         <DateInput
           value={value?.alku}
           onChange={(alku?: string) => {
@@ -538,7 +538,7 @@ const OpiskeluvalmiuksiaTuvkevienOpintojenJaksoEdit = ({
         />
       </div>
       <span>{' — '}</span>
-      <div style={{ width: '120px' }}>
+      <div className="InlineJaksoEdit__date">
         <DateInput
           value={value?.loppu}
           onChange={(loppu?: string) => {
@@ -552,7 +552,7 @@ const OpiskeluvalmiuksiaTuvkevienOpintojenJaksoEdit = ({
           testId="loppu"
         />
       </div>
-      <span style={{ color: '#747474' }}>{t('Kuvaus')}</span>
+      <span className="InlineJakso__label">{t('Kuvaus')}</span>
       <LocalizedTextEdit
         value={value?.kuvaus}
         onChange={(kuvaus?: LocalizedString) => {
