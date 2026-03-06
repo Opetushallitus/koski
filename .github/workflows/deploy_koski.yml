@@ -153,4 +153,6 @@ jobs:
         run: |
           echo "Tagging image $ECR_REPOSITORY:$IMAGE_TAG as $DEPLOY_TAG"
           MANIFEST=$(aws ecr batch-get-image --registry-id $ECR_ACCOUNT_ID --repository-name $ECR_REPOSITORY --image-ids imageTag=$IMAGE_TAG --query 'images[0].imageManifest' --output text)
+          # Delete existing deploy tag if it exists, so put-image won't fail
+          aws ecr batch-delete-image --registry-id $ECR_ACCOUNT_ID --repository-name $ECR_REPOSITORY --image-ids imageTag=$DEPLOY_TAG 2>/dev/null || true
           aws ecr put-image --registry-id $ECR_ACCOUNT_ID --repository-name $ECR_REPOSITORY --image-tag $DEPLOY_TAG --image-manifest "$MANIFEST"
