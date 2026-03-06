@@ -23,6 +23,7 @@ trait OpintopolkuHenkilöFacade {
   def findByVarhaisinSyntymäaikaAndKotikunta(syntymäaika: String, kunta: String, page: Int): OppijaNumerorekisteriKuntarouhintatiedot
   def findMasterOppija(oid: String): Option[LaajatOppijaHenkilöTiedot]
   def findMasterOppijat(oids: List[String]): Map[String, LaajatOppijaHenkilöTiedot]
+  def findMasterOppijatWithSlaveOids(oids: List[String]): Map[String, LaajatOppijaHenkilöTiedot]
   def findOrCreate(createUserInfo: UusiOppijaHenkilö): Either[HttpStatus, OppijaHenkilö]
   def findOppijatByHetusNoSlaveOids(hetus: Seq[String]): Seq[OppijaHenkilö]
   def findSlaveOids(masterOid: String): List[Oid]
@@ -87,6 +88,9 @@ class RemoteOpintopolkuHenkilöFacade(oppijanumeroRekisteriClient: OppijanumeroR
   def findMasterOppijat(oids: List[String]): Map[String, LaajatOppijaHenkilöTiedot] =
     runIO(oppijanumeroRekisteriClient.findMasterOppijat(oids))
 
+  def findMasterOppijatWithSlaveOids(oids: List[String]): Map[String, LaajatOppijaHenkilöTiedot] =
+    runIO(oppijanumeroRekisteriClient.findMasterOppijatWithSlaveOids(oids))
+
   def findOrCreate(createUserInfo: UusiOppijaHenkilö): Either[HttpStatus, OppijaHenkilö] =
     runIO(oppijanumeroRekisteriClient.findOrCreate(createUserInfo))
 
@@ -123,6 +127,11 @@ class RemoteOpintopolkuHenkilöFacadeWithMockOids(
 
   override def findMasterOppijat(oids: List[String]): Map[String, LaajatOppijaHenkilöTiedot] = {
     val found = super.findMasterOppijat(oids)
+    oids.map { oid => oid -> createMockIfNotExists(oid, found) }.toMap
+  }
+
+  override def findMasterOppijatWithSlaveOids(oids: List[String]): Map[String, LaajatOppijaHenkilöTiedot] = {
+    val found = super.findMasterOppijatWithSlaveOids(oids)
     oids.map { oid => oid -> createMockIfNotExists(oid, found) }.toMap
   }
 

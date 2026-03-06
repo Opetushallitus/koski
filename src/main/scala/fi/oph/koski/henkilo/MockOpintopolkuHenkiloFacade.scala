@@ -59,6 +59,9 @@ class MockOpintopolkuHenkilöFacade(val hetu: Hetu, fixtures: => FixtureCreator)
     .filter(_._2.isDefined)
     .map { case (oid, oppija) => oid -> oppija.get }.toMap
 
+  def findMasterOppijatWithSlaveOids(oids: List[String]): Map[String, LaajatOppijaHenkilöTiedot] =
+    findMasterOppijat(oids)
+
   protected def findHenkilötiedot(id: String): Option[OppijaHenkilöWithMasterInfo] = synchronized {
     oppijat.getOppijat.find(_.henkilö.oid == id)
   }

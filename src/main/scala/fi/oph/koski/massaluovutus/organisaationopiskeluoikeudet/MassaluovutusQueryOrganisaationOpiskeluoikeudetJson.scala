@@ -43,7 +43,7 @@ case class MassaluovutusQueryOrganisaationOpiskeluoikeudetJson(
     val filters = defaultBaseFilter(oppilaitosOids)
     val oppijaOids = getOppijaOids(db, filters).toList
     val masterHenkilöt = retryWithInterval(5, 5.seconds.toMillis) {
-      application.opintopolkuHenkilöFacade.findMasterOppijat(oppijaOids).values.toList.distinctBy(_.oid)
+      application.opintopolkuHenkilöFacade.findMasterOppijatWithSlaveOids(oppijaOids).values.toList.distinctBy(_.oid)
     }
 
     forEachHenkilöAndOpiskeluoikeudet(application, filters, masterHenkilöt) { (henkilö, opiskeluoikeudet) =>
