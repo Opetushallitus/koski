@@ -1001,9 +1001,97 @@ class OmaDataOAuth2BackendSpec
       }
     }
 
+    "kaikki opinnot ja valintatiedot" - {
+      "palautetaan" in {
+        val oppija = KoskiSpecificMockOppijat.ammattilainen
+
+        val expectedOoData = getOpiskeluoikeudet(oppija.oid, MockUsers.viranomainen)
+          .find(_.tyyppi.koodiarvo == schema.OpiskeluoikeudenTyyppi.ammatillinenkoulutus.koodiarvo)
+          .get
+
+        val scope = "HENKILOTIEDOT_SYNTYMAAIKA HENKILOTIEDOT_NIMI OPISKELUOIKEUDET_KAIKKI_TIEDOT_JA_VALINTATIEDOT"
+
+        val pkce = createChallengeAndVerifier()
+        val token = createAuthorizationAndToken(oppija, pkce, scope, MockUsers.omadataOAuth2KaikkiOikeudetPalvelukäyttäjä)
+
+        postResourceServer(token, MockUsers.omadataOAuth2KaikkiOikeudetPalvelukäyttäjä) {
+          verifyResponseStatusOk()
+          val data = JsonSerializer.parse[OmaDataOAuth2KaikkiOpiskeluoikeudetJaValintatiedot](response.body)
+
+          data.opiskeluoikeudet should have length 1
+          data.opiskeluoikeudet.head shouldBe a[AmmatillinenOpiskeluoikeus]
+
+          data.valintatiedot should have length 0
+
+          val actualOo = data.opiskeluoikeudet.head.asInstanceOf[AmmatillinenOpiskeluoikeus]
+
+          actualOo should be(expectedOoData)
+        }
+      }
+
+      "Ei palauteta luottamuksellisiksi määriteltyjä kenttiä" in {
+        val oppija = KoskiSpecificMockOppijat.toimintaAlueittainOpiskelija
+
+        val expectedOoData = getOpiskeluoikeudet(oppija.oid, MockUsers.viranomainen)
+          .find(_.tyyppi.koodiarvo == schema.OpiskeluoikeudenTyyppi.perusopetus.koodiarvo)
+          .get
+
+        // Varmista, että oppijalla on luottamuksellisia kenttiä:
+        val fullOoData = getOpiskeluoikeudet(oppija.oid, MockUsers.kalle)
+          .find(_.tyyppi.koodiarvo == schema.OpiskeluoikeudenTyyppi.perusopetus.koodiarvo)
+          .get
+        expectedOoData.lisätiedot.map(_.asInstanceOf[PerusopetuksenOpiskeluoikeudenLisätiedot]).flatMap(_.vuosiluokkiinSitoutumatonOpetus) should be(None)
+        fullOoData.lisätiedot.map(_.asInstanceOf[PerusopetuksenOpiskeluoikeudenLisätiedot]).flatMap(_.vuosiluokkiinSitoutumatonOpetus) should be(Some(true))
+
+        val scope = "HENKILOTIEDOT_SYNTYMAAIKA HENKILOTIEDOT_NIMI OPISKELUOIKEUDET_KAIKKI_TIEDOT_JA_VALINTATIEDOT"
+
+        val pkce = createChallengeAndVerifier()
+        val token = createAuthorizationAndToken(oppija, pkce, scope, MockUsers.omadataOAuth2KaikkiOikeudetPalvelukäyttäjä)
+
+        postResourceServer(token, MockUsers.omadataOAuth2KaikkiOikeudetPalvelukäyttäjä) {
+          verifyResponseStatusOk()
+          val data = JsonSerializer.parse[OmaDataOAuth2KaikkiOpiskeluoikeudetJaValintatiedot](response.body)
+
+          data.opiskeluoikeudet should have length 1
+          data.opiskeluoikeudet.head shouldBe a[PerusopetuksenOpiskeluoikeus]
+
+          data.valintatiedot should have length 0
+
+          val actualOo = data.opiskeluoikeudet.head.asInstanceOf[PerusopetuksenOpiskeluoikeus]
+
+          actualOo should be(expectedOoData)
+        }
+      }
+
+      "audit-logitetaan" in {
+        val oppija = KoskiSpecificMockOppijat.ammattilainen
+
+        val scope = "HENKILOTIEDOT_SYNTYMAAIKA HENKILOTIEDOT_NIMI OPISKELUOIKEUDET_KAIKKI_TIEDOT_JA_VALINTATIEDOT"
+
+        val pkce = createChallengeAndVerifier()
+        val token = createAuthorizationAndToken(oppija, pkce, scope, MockUsers.omadataOAuth2KaikkiOikeudetPalvelukäyttäjä)
+
+        AuditLogTester.clearMessages()
+
+        postResourceServer(token, MockUsers.omadataOAuth2KaikkiOikeudetPalvelukäyttäjä) {
+          verifyResponseStatusOk()
+
+          AuditLogTester.verifyOnlyAuditLogMessageForOperation(Map(
+            "operation" -> "OAUTH2_KATSOMINEN_KAIKKI_TIEDOT_JA_VALINTATIEDOT",
+            "target" -> Map(
+              "oppijaHenkiloOid" -> oppija.oid,
+              "omaDataKumppani" -> MockUsers.omadataOAuth2KaikkiOikeudetPalvelukäyttäjä.username,
+              "omaDataOAuth2Scope" -> scope
+            ),
+          ))
+
+        }
+      }
+    }
+
     val olemassaolematonOppijaOid = FixtureCreator.generateOppijaOid(999999978)
 
-    Seq("OPISKELUOIKEUDET_KAIKKI_TIEDOT", "OPISKELUOIKEUDET_SUORITETUT_TUTKINNOT", "OPISKELUOIKEUDET_AKTIIVISET_JA_PAATTYNEET_OPINNOT").map(ooScope => {
+    Seq("OPISKELUOIKEUDET_KAIKKI_TIEDOT_JA_VALINTATIEDOT", "OPISKELUOIKEUDET_KAIKKI_TIEDOT", "OPISKELUOIKEUDET_SUORITETUT_TUTKINNOT", "OPISKELUOIKEUDET_AKTIIVISET_JA_PAATTYNEET_OPINNOT").map(ooScope => {
       s"Kun oppijan kaikki opiskeluoikeudet on mitätöity, palautetaan 404 - ${ooScope}" in {
         val mitätöityOppijaOid = KoskiSpecificMockOppijat.vainMitätöityjäOpiskeluoikeuksia.oid
         val palveluKäyttäjä = MockUsers.omadataOAuth2KaikkiOikeudetPalvelukäyttäjä

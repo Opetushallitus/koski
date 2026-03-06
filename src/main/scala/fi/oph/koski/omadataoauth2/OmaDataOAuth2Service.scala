@@ -152,5 +152,21 @@ class OmaDataOAuth2Service(oauth2Repository: OmaDataOAuth2Repository, val applic
         Left(httpStatus)
     }
   }
+
+  def findKaikkiTiedotJaValintatiedot(oppijaOid: String, scope: String, overrideSession: KoskiSpecificSession, tokenExpirationTime: String): Either[HttpStatus, OmaDataOAuth2KaikkiOpiskeluoikeudetJaValintatiedot] = {
+    application.oppijaFacade.findOppija(oppijaOid)(overrideSession).flatMap(_.warningsToLeft) match {
+      case Right(Oppija(henkilö: TäydellisetHenkilötiedot, opiskeluoikeudet: Seq[Opiskeluoikeus])) =>
+        Right(OmaDataOAuth2KaikkiOpiskeluoikeudetJaValintatiedot(
+          henkilö = OmaDataOAuth2Henkilötiedot(henkilö, scope),
+          opiskeluoikeudet = opiskeluoikeudet.toList,
+          valintatiedot = List.empty, // TODO: lisää valintatiedot tähän myöhemmin
+          tokenInfo = OmaDataOAuth2TokenInfo(scope, tokenExpirationTime)
+        ))
+      case Right(_) =>
+        Left(KoskiErrorCategory.internalError("Datatype not recognized"))
+      case Left(httpStatus) =>
+        Left(httpStatus)
+    }
+  }
 }
 

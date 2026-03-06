@@ -13,7 +13,7 @@ import fi.oph.koski.massaluovutus.suorituspalvelu.SupaResponse
 import fi.oph.koski.massaluovutus.valintalaskenta.ValintalaskentaResult
 import fi.oph.koski.migri.MigriSchema
 import fi.oph.koski.massaluovutus.{QueryDocumentation, QueryResponse}
-import fi.oph.koski.omadataoauth2.{OmaDataOAuth2AktiivisetJaPäättyneetOpiskeluoikeudet, OmaDataOAuth2Documentation, OmaDataOAuth2KaikkiOpiskeluoikeudet, OmaDataOAuth2SuoritetutTutkinnot}
+import fi.oph.koski.omadataoauth2.{OmaDataOAuth2AktiivisetJaPäättyneetOpiskeluoikeudet, OmaDataOAuth2Documentation, OmaDataOAuth2KaikkiOpiskeluoikeudet, OmaDataOAuth2KaikkiOpiskeluoikeudetJaValintatiedot, OmaDataOAuth2SuoritetutTutkinnot}
 import fi.oph.koski.schema.KoskiSchema
 import fi.oph.koski.sdg.SdgSchema
 import fi.oph.koski.servlet.{KoskiSpecificApiServlet, NoCache}
@@ -176,6 +176,10 @@ class DocumentationApiServlet(application: KoskiApplication) extends KoskiSpecif
 
   get("/omadata-oauth2-kaikki-tiedot-oppija-schema.json") {
     OmaDataOAuth2KaikkiOpiskeluoikeudet.schemaJson
+  }
+
+  get("/omadata-oauth2-kaikki-tiedot-ja-valintatiedot-oppija-schema.json") {
+    OmaDataOAuth2KaikkiOpiskeluoikeudetJaValintatiedot.schemaJson
   }
 
   override def toJsonString[T: ru.TypeTag](x: T): String = JsonSerializer.writeWithRoot(x)
