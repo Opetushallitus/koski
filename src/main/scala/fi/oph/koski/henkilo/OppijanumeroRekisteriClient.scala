@@ -10,6 +10,7 @@ import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.schema.Henkilö.Oid
 import fi.oph.koski.schema.Koodistokoodiviite
 import cats.syntax.parallel._
+import cats.syntax.traverse._
 import fi.oph.koski.log.Logging
 import org.http4s.blaze.client.BlazeClientBuilder
 import org.http4s.client.Client
@@ -93,6 +94,11 @@ case class OppijanumeroRekisteriClient(
   def findMasterOppijat(oids: List[String]): IO[Map[String, LaajatOppijaHenkilöTiedot]] =
     postRetryingOidServiceHttp.post(uri"/oppijanumerorekisteri-service/henkilo/masterHenkilosByOidList", oids)(json4sEncoderOf[List[String]])(Http.parseJson[Map[String, OppijaNumerorekisteriOppija]])
     .map(_.view.mapValues(_.toOppijaHenkilö(Nil)).toMap)
+
+  // TOR-2525 Slave-oidien haku tehdään 10 rinnakkaisen pyynnön erissä; 10 oli ensimmäinen arvaus, säädetään jos tarvitsee
+  def findMasterOppijatWithSlaveOids(oids: List[String]): IO[Map[String, LaajatOppijaHenkilöTiedot]] =
+    postRetryingOidServiceHttp.post(uri"/oppijanumerorekisteri-service/henkilo/masterHenkilosByOidList", oids)(json4sEncoderOf[List[String]])(Http.parseJson[Map[String, OppijaNumerorekisteriOppija]])
+      .flatMap(_.toList.grouped(10).toList.traverse(_.parTraverse { case (oid, onr) => complementWithSlaveOids(onr).map(oid -> _) }).map(_.flatten.toMap))
 
   def findOppijatByHetusNoSlaveOids(hetus: Seq[String]): IO[List[SuppeatOppijaHenkilöTiedot]] =
     postRetryingOidServiceHttp.post(uri"/oppijanumerorekisteri-service/henkilo/henkiloPerustietosByHenkiloHetuList", hetus)(json4sEncoderOf[Seq[String]])(Http.parseJson[List[OppijaNumerorekisteriPerustiedot]])
