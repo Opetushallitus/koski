@@ -28,9 +28,9 @@ class KoskiSpecificLogoutServlet(implicit val application: KoskiApplication) ext
       redirectToVirkailijaLogout
     } else {
       params.get("target") match {
-        case Some(target) if target != "/" => {
-          redirectToOppijaLogout(target)
-        }
+        case Some(target) if target != "/" =>
+          val absoluteTarget = if (target.startsWith("/")) serviceRoot + target else target
+          redirectToOppijaLogout(absoluteTarget)
         case _ => redirectToOppijaLogout(serviceRoot + "/koski")
       }
     }
