@@ -49,20 +49,14 @@ export const MaksuttomuusEdit: React.FC<MaksuttomuusEditProps> = ({
     alku && onChange({ ...emptyMaksuttomuuus, ...value, alku })
   }
 
-  const setLoppu = (loppu?: string) => {
-    onChange({ ...emptyMaksuttomuuus, ...value, loppu })
-  }
-
   const setMaksuton = (maksuton: boolean) => {
-    onChange({ ...emptyMaksuttomuuus, maksuton })
+    onChange({ ...emptyMaksuttomuuus, ...value, maksuton })
   }
 
   return (
     <TestIdLayer id="maksuttomuus">
       <div className="AikajaksoEdit">
         <DateInput value={value?.alku} onChange={setAlku} testId="alku" />
-        <span className="AikajaksoEdit__separator"> {' — '}</span>
-        <DateInput value={value?.loppu} onChange={setLoppu} testId="loppu" />
         <Checkbox
           checked={value?.maksuton || false}
           onChange={setMaksuton}
