@@ -12,6 +12,18 @@ import org.json4s.JValue
 import java.time.LocalDate
 import scala.util.chaining._
 
+object OmaDataOAuth2KaikkiOpiskeluoikeudetJaValintatiedot {
+  lazy val schemaJson: JValue =
+    SchemaToJson.toJsonSchema(schema.KoskiSchema.createSchema(classOf[OmaDataOAuth2KaikkiOpiskeluoikeudetJaValintatiedot]).asInstanceOf[ClassSchema])
+}
+
+case class OmaDataOAuth2KaikkiOpiskeluoikeudetJaValintatiedot(
+  henkilö: OmaDataOAuth2Henkilötiedot,
+  opiskeluoikeudet: List[Opiskeluoikeus],
+  valintatiedot: List[Valintatieto],
+  tokenInfo: OmaDataOAuth2TokenInfo
+)
+
 object OmaDataOAuth2KaikkiOpiskeluoikeudet {
   lazy val schemaJson: JValue =
     SchemaToJson.toJsonSchema(schema.KoskiSchema.createSchema(classOf[OmaDataOAuth2KaikkiOpiskeluoikeudet]).asInstanceOf[ClassSchema])
@@ -166,3 +178,6 @@ case class OmaDataOAuth2TokenInfo(
   scope: String,
   expirationTime: String
 )
+
+// TODO: täydennä valintatiedot tähän myöhemmin
+case class Valintatieto()

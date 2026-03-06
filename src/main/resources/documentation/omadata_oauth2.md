@@ -114,6 +114,11 @@ Listan kaikista tuetuista scopeista saa edellisessä kappaleessa mainitusta meta
     opiskeluoikeudet-taulukossa palautetaan kaikki oppijan opiskeluoikeustiedot, mutta ilman luottamuksellisiksi määriteltyjä tietoja. Skeema: <a href="{{var:virkailijaBaseUrl}}/json-schema-viewer/?schema=omadata-oauth2-kaikki-tiedot-oppija-schema.json">{{var:virkailijaBaseUrl}}/json-schema-viewer/?schema=omadata-oauth2-kaikki-tiedot-oppija-schema.json</a>.
     Luottamukselliseksi määritellyt tiedot on merkitty tekstimuotoiseen skeemaan, ks. <a href="{{var:virkailijaBaseUrl}}/dokumentaatio/koski-oppija-schema.html">{{var:virkailijaBaseUrl}}/dokumentaatio/koski-oppija-schema.html</a>
   </dd>
+  <dt>OPISKELUOIKEUDET_KAIKKI_TIEDOT_JA_VALINTATIEDOT</dt>
+  <dd>
+    opiskeluoikeudet-taulukossa palautetaan kaikki oppijan opiskeluoikeustiedot, mutta ilman luottamuksellisiksi määriteltyjä tietoja. Opiskeluoikeustietojen lisäksi palautetaan oppijaa koskevat valintatiedot. Skeema: <a href="{{var:virkailijaBaseUrl}}/json-schema-viewer/?schema=omadata-oauth2-kaikki-tiedot-ja-valintatiedot-oppija-schema.json">{{var:virkailijaBaseUrl}}/json-schema-viewer/?schema=omadata-oauth2-kaikki-tiedot-ja-valintatiedot-oppija-schema.json</a>.
+    Luottamukselliseksi määritellyt opiskeluoikeuksien tiedot on merkitty tekstimuotoiseen skeemaan, ks. <a href="{{var:virkailijaBaseUrl}}/dokumentaatio/koski-oppija-schema.html">{{var:virkailijaBaseUrl}}/dokumentaatio/koski-oppija-schema.html</a>
+  </dd>
   <dt>HENKILOTIEDOT_HETU</dt>
   <dd>
     Palautettavassa json-objektissa on henkilö.hetu
