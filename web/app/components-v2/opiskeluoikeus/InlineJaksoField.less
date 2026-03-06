@@ -1,6 +1,4 @@
-// Inline jakso layout for lisätiedot fields (ulkomaanjaksot, osa-aikaisuusjaksot, etc.)
-// View: inline-flex row with gaps between date range, labels, and values
-// Edit: flex row with constrained date/select widths
+// Inline jakso view layout and shared label style for lisätiedot fields
 
 .InlineJakso__label {
   color: #747474;
@@ -10,19 +8,4 @@
   display: inline-flex;
   gap: 8px;
   flex-wrap: wrap;
-}
-
-.InlineJaksoEdit {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 4px;
-
-  &__date {
-    width: 120px;
-  }
-
-  &__select {
-    width: 200px;
-  }
 }

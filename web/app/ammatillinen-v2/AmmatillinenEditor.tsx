@@ -499,7 +499,6 @@ export const OsaamisalaView = <T extends Osaamisalajakso>({
     return (
       <>
         <TestIdText id="osaamisala">{t(value.osaamisala.nimi)}</TestIdText>
-        {' : '}
         <TestIdText id="alku">
           {value?.alku && ISO2FinnishDate(value.alku)}
         </TestIdText>{' '}
@@ -527,7 +526,6 @@ export const OsaamisalaEdit = ({
           value={value.osaamisala.koodiarvo}
           testId="osaamisala"
         />
-        <span className="AikajaksoEdit__separator"> {' : '}</span>
         <DateInput
           value={value?.alku}
           onChange={(alku?: string) => {

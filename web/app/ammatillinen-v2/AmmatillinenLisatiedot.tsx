@@ -450,26 +450,22 @@ const OsaAikaisuusEdit = ({
   onChange
 }: FieldEditorProps<OsaAikaisuusJakso | undefined, EmptyObject>) => {
   return (
-    <div className="InlineJaksoEdit">
-      <div className="InlineJaksoEdit__date">
-        <DateInput
-          value={value?.alku}
-          onChange={(alku?: string) => {
-            alku && onChange({ ...emptyOsaAikausuus, ...value, alku })
-          }}
-          testId="alku"
-        />
-      </div>
+    <div className="AikajaksoEdit">
+      <DateInput
+        value={value?.alku}
+        onChange={(alku?: string) => {
+          alku && onChange({ ...emptyOsaAikausuus, ...value, alku })
+        }}
+        testId="alku"
+      />
       <span>{' — '}</span>
-      <div className="InlineJaksoEdit__date">
-        <DateInput
-          value={value?.loppu}
-          onChange={(loppu?: string) => {
-            loppu && onChange({ ...emptyOsaAikausuus, ...value, loppu })
-          }}
-          testId="loppu"
-        />
-      </div>
+      <DateInput
+        value={value?.loppu}
+        onChange={(loppu?: string) => {
+          loppu && onChange({ ...emptyOsaAikausuus, ...value, loppu })
+        }}
+        testId="loppu"
+      />
       <span className="InlineJakso__label">{t('Osa-aikaisuus')}</span>
       <NumberField
         value={value?.osaAikaisuus}
@@ -522,36 +518,32 @@ const OpiskeluvalmiuksiaTuvkevienOpintojenJaksoEdit = ({
   EmptyObject
 >) => {
   return (
-    <div className="InlineJaksoEdit">
-      <div className="InlineJaksoEdit__date">
-        <DateInput
-          value={value?.alku}
-          onChange={(alku?: string) => {
-            alku &&
-              onChange({
-                ...emptyOpiskeluvalmiuksiaTuvkevienOpintojenJakso,
-                ...value,
-                alku
-              })
-          }}
-          testId="alku"
-        />
-      </div>
+    <div className="AikajaksoEdit">
+      <DateInput
+        value={value?.alku}
+        onChange={(alku?: string) => {
+          alku &&
+            onChange({
+              ...emptyOpiskeluvalmiuksiaTuvkevienOpintojenJakso,
+              ...value,
+              alku
+            })
+        }}
+        testId="alku"
+      />
       <span>{' — '}</span>
-      <div className="InlineJaksoEdit__date">
-        <DateInput
-          value={value?.loppu}
-          onChange={(loppu?: string) => {
-            loppu &&
-              onChange({
-                ...emptyOpiskeluvalmiuksiaTuvkevienOpintojenJakso,
-                ...value,
-                loppu
-              })
-          }}
-          testId="loppu"
-        />
-      </div>
+      <DateInput
+        value={value?.loppu}
+        onChange={(loppu?: string) => {
+          loppu &&
+            onChange({
+              ...emptyOpiskeluvalmiuksiaTuvkevienOpintojenJakso,
+              ...value,
+              loppu
+            })
+        }}
+        testId="loppu"
+      />
       <span className="InlineJakso__label">{t('Kuvaus')}</span>
       <LocalizedTextEdit
         value={value?.kuvaus}
