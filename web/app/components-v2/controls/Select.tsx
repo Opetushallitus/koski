@@ -301,7 +301,10 @@ const useSelectState = <T,>(props: SelectProps<T>) => {
 
   const onFocus = useCallback(() => {
     setDropdownVisible(true)
-  }, [])
+    if (props.onSearch) {
+      setFilter('')
+    }
+  }, [props.onSearch])
 
   // Losing the focus
 

@@ -57,7 +57,7 @@ export const KeyValueRow = (props: KeyValueRowProps) => {
         className="KeyValueRow__value"
         span={valueSpans}
         valign="top"
-        component="span"
+        component="div"
       >
         {props.children}
       </Column>

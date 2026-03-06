@@ -21,16 +21,25 @@ export const UlkomaanjaksoView: React.FC<UlkomaanjaksoViewProps> = ({
 }) => {
   return (
     <TestIdLayer id="ulkomaanjakso">
-      <TestIdText id="alku">
-        {value?.alku && ISO2FinnishDate(value.alku)}
-      </TestIdText>{' '}
-      {' - '}
-      <TestIdText id="loppu">
-        {value?.loppu && ISO2FinnishDate(value.loppu)}
-      </TestIdText>{' '}
-      <TestIdText id="maa">{t(value?.maa.nimi)}</TestIdText>
-      {': '}
-      <TestIdText id="kuvaus">{t(value?.kuvaus)}</TestIdText>
+      <span className="InlineJaksoView">
+        <span>
+          <TestIdText id="alku">
+            {value?.alku && ISO2FinnishDate(value.alku)}
+          </TestIdText>
+          {' — '}
+          <TestIdText id="loppu">
+            {value?.loppu && ISO2FinnishDate(value.loppu)}
+          </TestIdText>
+        </span>
+        <span>
+          <span className="InlineJakso__label">{t('Maa')}</span>{': '}
+          <TestIdText id="maa">{t(value?.maa.nimi)}</TestIdText>
+        </span>
+        <span>
+          <span className="InlineJakso__label">{t('Kuvaus')}</span>{': '}
+          <TestIdText id="kuvaus">{t(value?.kuvaus)}</TestIdText>
+        </span>
+      </span>
     </TestIdLayer>
   )
 }
@@ -41,7 +50,7 @@ export type UlkomaanjaksoEditProps = CommonProps<
 
 export const emptyUlkomaanjakso = Ulkomaanjakso({
   alku: todayISODate(),
-  maa: Koodistokoodiviite({ koodistoUri: 'maatjavaltiot2', koodiarvo: '999' }),
+  maa: Koodistokoodiviite({ koodistoUri: 'maatjavaltiot2', koodiarvo: '', nimi: emptyLocalizedString }),
   kuvaus: emptyLocalizedString
 })
 
@@ -66,22 +75,25 @@ export const UlkomaanjaksoEdit: React.FC<UlkomaanjaksoEditProps> = ({
   }
 
   return (
-    <TestIdLayer id="maksuttomuus">
-      <div className="MaksuttomuusEdit">
+    <TestIdLayer id="ulkomaanjakso">
+      <div className="AikajaksoEdit">
         <DateInput value={value?.alku} onChange={setAlku} testId="alku" />
-        <span className="MaksuttomuusEdit__separator"> {' - '}</span>
+        <span>{' — '}</span>
         <DateInput value={value?.loppu} onChange={setLoppu} testId="loppu" />
-        <KoodistoSelect
-          koodistoUri="maatjavaltiot2"
-          value={value?.maa.koodiarvo}
-          onSelect={setMaa}
-          testId="maa"
-        />
+        <span className="InlineJakso__label">{t('Maa')}</span>
+        <div className="AikajaksoEdit__select">
+          <KoodistoSelect
+            koodistoUri="maatjavaltiot2"
+            value={value?.maa.koodiarvo}
+            onSelect={setMaa}
+            testId="maa"
+          />
+        </div>
+        <span className="InlineJakso__label">{t('Kuvaus')}</span>
         <LocalizedTextEdit
           value={value?.kuvaus}
           onChange={setKuvaus}
           testId="kuvaus"
-          placeholder={t('Kuvaus')}
         />
       </div>
     </TestIdLayer>

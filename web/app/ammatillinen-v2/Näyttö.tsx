@@ -78,7 +78,7 @@ const NäyttöViewBase = (value?: AnyNäyttö) => (
     </KeyValueRow>
     <KeyValueRow localizableLabel="Suoritusaika">
       {value?.suoritusaika?.alku && ISO2FinnishDate(value.suoritusaika.alku)}
-      {' - '}
+      {' — '}
       {value?.suoritusaika?.loppu && ISO2FinnishDate(value.suoritusaika.loppu)}
     </KeyValueRow>
     <NäytönArviointiView value={value?.arviointi} />
@@ -161,7 +161,7 @@ const NäyttöEditBase = <T extends AnyNäyttö>({
               }}
               testId="alku"
             />
-            <span className="AikajaksoEdit__separator"> {' - '}</span>
+            <span className="AikajaksoEdit__separator"> {' — '}</span>
             <DateInput
               value={value?.suoritusaika?.loppu}
               onChange={(loppu?: string) => {

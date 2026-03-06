@@ -82,13 +82,13 @@ export const OsasuoritusTablesUseastaTutkinnosta = ({
         form={form}
         oppilaitosOid={oppilaitosOid}
         osittainenPäätasonSuoritus={osittainenPäätasonSuoritus}
-        ryhmä="Yhteiset tutkinnon osat"
+        ryhmä="Ammatilliset tutkinnon osat"
       />
       <TableForTutkinnonOsaRyhmäUseastaTutkinnosta
         form={form}
         oppilaitosOid={oppilaitosOid}
         osittainenPäätasonSuoritus={osittainenPäätasonSuoritus}
-        ryhmä="Ammatilliset tutkinnon osat"
+        ryhmä="Yhteiset tutkinnon osat"
       />
     </>
   )

@@ -101,14 +101,15 @@ export const OsasuoritusTables = ({
       <TableForTutkinnonOsaRyhmä
         form={form}
         osittainenPäätasonSuoritus={osittainenPäätasonSuoritus}
-        ryhmä="Yhteiset tutkinnon osat"
+        ryhmä="Ammatilliset tutkinnon osat"
         perusteenRyhmät={perusteenRyhmät}
       />
       <TableForTutkinnonOsaRyhmä
         form={form}
         osittainenPäätasonSuoritus={osittainenPäätasonSuoritus}
-        ryhmä="Ammatilliset tutkinnon osat"
+        ryhmä="Yhteiset tutkinnon osat"
         perusteenRyhmät={perusteenRyhmät}
+        forceOpen={form.editMode}
       />
       <TableForTutkinnonOsaRyhmä
         form={form}
@@ -140,6 +141,7 @@ interface TableProps {
   >
   ryhmä: string
   perusteenRyhmät: Koodistokoodiviite<'tutkinnonosaryhmä'>[]
+  forceOpen?: boolean
 }
 
 export const dummyRow = <T extends string>(
@@ -162,7 +164,8 @@ const TableForTutkinnonOsaRyhmä = ({
   form,
   osittainenPäätasonSuoritus,
   ryhmä,
-  perusteenRyhmät
+  perusteenRyhmät,
+  forceOpen
 }: TableProps) => {
   const originalIndexMap: Record<number, number> = {}
 
@@ -197,6 +200,7 @@ const TableForTutkinnonOsaRyhmä = ({
   return (
     <OsasuoritusTable
       editMode={form.editMode}
+      forceOpen={forceOpen}
       rows={
         (!rows || rows?.length === 0) && form.editMode
           ? [dummyRow(ryhmä)] // Saadaan headeri näkymään editointimoodissa kun osasuorituksia ei ole

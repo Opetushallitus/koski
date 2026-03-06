@@ -1,17 +1,30 @@
 .AikajaksoEdit {
   display: flex;
-  justify-content: flex-start;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px;
+  margin-bottom: 4px;
 
   &__separator {
-    margin: 0 @h-padding;
+    margin: 0;
   }
 
   .DateEdit__field {
-    max-width: 200px;
+    width: 140px;
+    flex-shrink: 0;
+    margin-bottom: 0;
   }
 
-  // Hack to make testId divs / Selects fill flex container...
-  > div {
-    width: 100%;
+  .Select {
+    min-width: 300px;
+    margin-bottom: 0;
+  }
+
+  &__select {
+    width: 200px;
+
+    .Select {
+      min-width: 0;
+    }
   }
 }
