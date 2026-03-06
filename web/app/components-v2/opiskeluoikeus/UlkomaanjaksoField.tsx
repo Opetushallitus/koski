@@ -76,16 +76,12 @@ export const UlkomaanjaksoEdit: React.FC<UlkomaanjaksoEditProps> = ({
 
   return (
     <TestIdLayer id="ulkomaanjakso">
-      <div className="InlineJaksoEdit">
-        <div className="InlineJaksoEdit__date">
-          <DateInput value={value?.alku} onChange={setAlku} testId="alku" />
-        </div>
+      <div className="AikajaksoEdit">
+        <DateInput value={value?.alku} onChange={setAlku} testId="alku" />
         <span>{' — '}</span>
-        <div className="InlineJaksoEdit__date">
-          <DateInput value={value?.loppu} onChange={setLoppu} testId="loppu" />
-        </div>
+        <DateInput value={value?.loppu} onChange={setLoppu} testId="loppu" />
         <span className="InlineJakso__label">{t('Maa')}</span>
-        <div className="InlineJaksoEdit__select">
+        <div className="AikajaksoEdit__select">
           <KoodistoSelect
             koodistoUri="maatjavaltiot2"
             value={value?.maa.koodiarvo}
