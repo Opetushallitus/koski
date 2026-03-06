@@ -153,4 +153,17 @@ jobs:
         run: |
           echo "Tagging image $ECR_REPOSITORY:$IMAGE_TAG as $DEPLOY_TAG"
           MANIFEST=$(aws ecr batch-get-image --registry-id $ECR_ACCOUNT_ID --repository-name $ECR_REPOSITORY --image-ids imageTag=$IMAGE_TAG --query 'images[0].imageManifest' --output text)
-          aws ecr put-image --registry-id $ECR_ACCOUNT_ID --repository-name $ECR_REPOSITORY --image-tag $DEPLOY_TAG --image-manifest "$MANIFEST"
+          # Remove existing deploy tag and re-apply to current image.
+          # batch-delete-image may fail if tag doesn't exist yet — safe to ignore.
+          aws ecr batch-delete-image --registry-id $ECR_ACCOUNT_ID --repository-name $ECR_REPOSITORY --image-ids imageTag=$DEPLOY_TAG 2>/dev/null || true
+          # put-image may fail with ImageAlreadyExistsException when redeploying the
+          # same commit to the same environment. That means the tag already points to
+          # the correct image, so it's safe to ignore.
+          if ! OUTPUT=$(aws ecr put-image --registry-id $ECR_ACCOUNT_ID --repository-name $ECR_REPOSITORY --image-tag $DEPLOY_TAG --image-manifest "$MANIFEST" 2>&1); then
+            if echo "$OUTPUT" | grep -q "ImageAlreadyExistsException"; then
+              echo "Image already tagged as $DEPLOY_TAG, skipping"
+            else
+              echo "$OUTPUT" >&2
+              exit 1
+            fi
+          fi
