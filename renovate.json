@@ -1,6 +1,37 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": [
-    "config:recommended"
+  "extends": ["config:best-practices"],
+  "osvVulnerabilityAlerts": true,
+  "vulnerabilityAlerts": {
+    "enabled": true,
+    "labels": ["security"]
+  },
+  "prConcurrentLimit": 10,
+  "packageRules": [
+    {
+      "description": "Disable major updates by default",
+      "matchUpdateTypes": ["major"],
+      "enabled": false
+    },
+    {
+      "description": "Automerge patch and digest updates",
+      "matchUpdateTypes": ["patch", "digest"],
+      "automerge": true
+    },
+    {
+      "description": "Group minor npm updates",
+      "matchManagers": ["npm"],
+      "matchUpdateTypes": ["minor"],
+      "groupName": "npm minor updates"
+    },
+    {
+      "description": "Group minor Maven updates",
+      "matchManagers": ["maven"],
+      "matchUpdateTypes": ["minor"],
+      "groupName": "maven minor updates"
+    }
+  ],
+  "ignorePaths": [
+    "web/app/types/fi/oph/koski/**"
   ]
 }

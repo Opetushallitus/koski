@@ -1,7 +1,8 @@
 # Kosken riippuvuuksien tietoturvaskannaukset
 
-Kosken riippuvuuksia skannataan päivittäin Github Actionsissa OWASP ja Snyk työkaluilla. Alla ohjeet näiden paikalliseen
-ajamiseen ja sellaisten virheiden hiljentämiseksi, jotka eivät aiheuta tietoturvaongelmia.
+Kosken riippuvuuksia skannataan automaattisesti Renovatella (riippuvuuspäivitykset ja haavoittuvuudet) ja
+Trivyllä (tiedostojärjestelmätason haavoittuvuusskannaus Github Actionsissa). Alla ohjeet virheiden
+hiljentämiseksi.
 
 Virheiden hiljentämisessä käytetään seuraavia periaatteita:
 - Korjataan kriittiset/korkean tason ongelmat heti
@@ -10,8 +11,21 @@ hiljentää kuukaudeksi kerrallaan, jotta saadaan helpommin tieto muista mahdoll
 - Jos ongelman taso on keskisuuri tai matala mutta siihen ei ole korjausta, voidaan se hiljentää kuukaudeksi kerrallaan.
 - Jos ongelman taso on keskisuuri tai matala ja se ei ole tuotantokäytössä, voidaan se hiljentää toistaiseksi.
 
+## Renovate
+
+Renovate on konfiguroitu tiedostossa `renovate.json`. Se hallinnoi riippuvuuspäivityksiä (npm, Maven) ja
+haavoittuvuusilmoituksia OSV-tietokannan kautta. Renovate on asennettu GitHub-organisaatiotasolla GitHub Appina.
+
+Renovaten luomat PR:t näkyvät GitHubissa automaattisesti. Patch-tason päivitykset mergetään automaattisesti.
+Tietoturvapäivitykset merkitään `security`-labelilla.
+
+## Trivy
+
+Trivy skannaa tiedostojärjestelmätason haavoittuvuudet (CRITICAL/HIGH) Github Actionsissa.
+Tunnetut väärät hälytykset voi hiljentää tiedostossa `.trivyignore`.
 
 ## OWASP
+
 Voit ajaa OWASP:in seuraavasti:
 
 `make owasp`
@@ -27,21 +41,3 @@ valmiin XML elementin, jonka voit lisätä tiedostoon
 
 Toisinaan voi olla niin, että samasta haavoittuvuudesta voi olla tieto useammassa rekisterissä. Näiden osalta kannattaa
 pyrkiä laittamaan suppress elementtiin useampi cve tai vulnerabilityName elementti.
-
-## Snyk
-
-Voit ajaa Snykiä seuraavasti, SNYK_TOKEN löytyy 1Passwordista:
-
-```
-export SNYK_TOKEN=XXXXX
-make snyk TAI
-./web/node_modules/snyk/dist/cli/index.js test web valpas-web
-```
-
-Virheet on helpoin hiljentää Snykin wizard työkalulla, jonka voit ajaa web tai valpas-web hakemistossa seuraavasti:
-
-web
-`node node_modules/snyk/dist/cli/index.js wizard`
-
-valpas-web
-`node ../web/node_modules/snyk/dist/cli/index.js wizard`
