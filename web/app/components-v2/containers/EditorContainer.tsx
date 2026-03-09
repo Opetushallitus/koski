@@ -1,6 +1,6 @@
 import { NonEmptyArray } from 'fp-ts/lib/NonEmptyArray'
 import React, { useCallback, useMemo, useState } from 'react'
-import { TestIdLayer, TestIdRoot } from '../../appstate/useTestId'
+import { TestIdLayer, TestIdRoot, useTestId } from '../../appstate/useTestId'
 import { localize, t } from '../../i18n/i18n'
 import { LocalizedString } from '../../types/fi/oph/koski/schema/LocalizedString'
 import { Opiskeluoikeus } from '../../types/fi/oph/koski/schema/Opiskeluoikeus'
@@ -196,17 +196,10 @@ export const EditorContainer = <T extends Opiskeluoikeus>(
             ('lisätiedot' in props.form.state &&
               !isEmptyModelObject(props.form.state.lisätiedot))) && (
             <>
-              <a
-                className={`expandable${lisatiedotOpen ? ' open' : ''}`}
-                role="button"
-                data-testid="lisätiedotButton"
-                onClick={(e) => {
-                  e.preventDefault()
-                  setLisatiedotOpen((prev) => !prev)
-                }}
-              >
-                <Trans>{'Lisätiedot'}</Trans>
-              </a>
+              <LisätiedotToggle
+                open={lisatiedotOpen}
+                onToggle={() => setLisatiedotOpen((prev) => !prev)}
+              />
               {lisatiedotOpen && (
                 <TestIdLayer id="lisätiedot">
                   <LisätiedotContainer form={props.form} />
@@ -262,6 +255,26 @@ export const usePäätasonSuoritus = <T extends Opiskeluoikeus>(
     [form.state.suoritukset, index]
   )
   return [state, setIndex]
+}
+
+const LisätiedotToggle: React.FC<{
+  open: boolean
+  onToggle: () => void
+}> = ({ open, onToggle }) => {
+  const testId = useTestId('lisätiedotButton')
+  return (
+    <a
+      className={`expandable${open ? ' open' : ''}`}
+      role="button"
+      data-testid={testId}
+      onClick={(e) => {
+        e.preventDefault()
+        onToggle()
+      }}
+    >
+      <Trans>{'Lisätiedot'}</Trans>
+    </a>
+  )
 }
 
 const defaultSuorituksenNimi = (s: Suoritus): LocalizedString =>

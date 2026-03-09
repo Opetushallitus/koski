@@ -5,7 +5,7 @@ import { NonEmptyArray } from 'fp-ts/lib/NonEmptyArray'
 import { pipe } from 'fp-ts/lib/function'
 import React, { useCallback, useMemo, useState } from 'react'
 import { useChildClassNames } from '../../appstate/constraints'
-import { TestIdLayer, TestIdText } from '../../appstate/useTestId'
+import { TestIdLayer, TestIdText, useTestId } from '../../appstate/useTestId'
 import { ISO2FinnishDate, addDaysISO } from '../../date/date'
 import { t } from '../../i18n/i18n'
 import { isAikuistenPerusopetuksenOpiskeluoikeusjakso } from '../../types/fi/oph/koski/schema/AikuistenPerusopetuksenOpiskeluoikeusjakso'
@@ -189,15 +189,10 @@ export const OpiskeluoikeudenTilaEdit = <T extends OpiskeluoikeudenTila>(
             }}
           >
             {[
-              <a
+              <LisääTilaLink
                 key="addLink"
-                className="OpiskeluoikeudenTila-lisääTila"
-                role="button"
                 onClick={oo.openModal}
-                data-testid="add"
-              >
-                {t('Lisää opiskeluoikeuden tila')}
-              </a>
+              />
             ]}
           </KeyColumnedValuesRow>
         )}
@@ -348,6 +343,22 @@ const useOpiskeluoikeudenTilaState = <T extends OpiskeluoikeudenTila>(
     onAddNew,
     onRemoveLatest
   }
+}
+
+const LisääTilaLink: React.FC<{
+  onClick: () => void
+}> = ({ onClick }) => {
+  const testId = useTestId('add')
+  return (
+    <a
+      className="OpiskeluoikeudenTila-lisääTila"
+      role="button"
+      onClick={onClick}
+      data-testid={testId}
+    >
+      {t('Lisää opiskeluoikeuden tila')}
+    </a>
+  )
 }
 
 // Utils

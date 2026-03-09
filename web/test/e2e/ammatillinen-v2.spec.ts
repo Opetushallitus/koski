@@ -165,7 +165,7 @@ test.describe('Osittaisen ammatillisen tutkinnon useasta tutkinnosta virkailijan
   })
 
   test('Sallii luoda uuden yhteisen tutkinnon osan', async ({ fixtures, page, oppijaPage, oppijaPageV2 }) => {
-    fixtures.reset() // Resetoi, koska luotamme testId:issä osasuoritusten taulukkoindeksiin
+    await fixtures.reset() // Resetoi, koska luotamme testId:issä osasuoritusten taulukkoindeksiin
 
     await oppijaPage.goto('1.2.246.562.24.00000000182')
     await page.getByTestId('oo.0.opiskeluoikeus.edit').click()
@@ -198,7 +198,7 @@ test.describe('Osittaisen ammatillisen tutkinnon useasta tutkinnosta virkailijan
   })
 
   test('Sallii luoda uuden ammatillisen tutkinnon osan', async ({ fixtures, page, oppijaPage, oppijaPageV2 }) => {
-    fixtures.reset() // Resetoi, koska luotamme testId:issä osasuoritusten taulukkoindeksiin
+    await fixtures.reset() // Resetoi, koska luotamme testId:issä osasuoritusten taulukkoindeksiin
 
     await oppijaPage.goto('1.2.246.562.24.00000000182')
     await page.getByTestId('oo.0.opiskeluoikeus.edit').click()
@@ -261,7 +261,6 @@ test.describe('Osittaisen ammatillisen tutkinnon useasta tutkinnosta kansalaisen
     await expect(page.getByTestId('oo.0.opiskeluoikeus.tila.value.items.1.tila')).toContainText('Läsnä')
 
     // Opiskeluoikeuden lisätiedot
-    await page.getByTestId('oo.0.opiskeluoikeus.lisätiedotButton').click()
     await expect(page.getByTestId('oo.0.opiskeluoikeus.lisätiedot.0.alku')).toContainText('1.9.2022')
     await expect(page.getByTestId('oo.0.opiskeluoikeus.lisätiedot.0.loppu')).toContainText('1.9.2023')
 
