@@ -38,17 +38,17 @@ class YleinenKielitutkintoTodistusDataBuilder(application: KoskiApplication) {
 
       tutkinnonNimi <- createTutkinnonNimi(yleinenKtSuoritus.koulutusmoduuli, todistus.language)
 
-      suorituksetJaArvosanat <- createSuorituksetJaArvosanat(yleinenKtSuoritus, todistus)
+      ensimmäisenLäsnäTilanAlkupäivä <- ktOo.tila.opiskeluoikeusjaksot.filter(_.tila.koodiarvo == "lasna").headOption
+        .map(_.alku)
+        .toRight(KoskiErrorCategory.internalError(s"Allekirjoituksen päivä puuttuu todistukselle ${todistus.id}"))
+
+      suorituksetJaArvosanat <- createSuorituksetJaArvosanat(yleinenKtSuoritus, ensimmäisenLäsnäTilanAlkupäivä, todistus)
 
       tasonArvosanarajat <- createTasonArvosanarajat(yleinenKtSuoritus.koulutusmoduuli.tunniste, todistus.language)
 
       järjestäjäNimi <- yleinenKtSuoritus.järjestäjä.nimi.map(_.get(todistus.language))
         .filter(_.nonEmpty)
         .toRight(KoskiErrorCategory.internalError(s"Testin järjestäjän nimi puuttuu todistukselle ${todistus.id}"))
-
-      ensimmäisenLäsnäTilanAlkupäivä <- ktOo.tila.opiskeluoikeusjaksot.filter(_.tila.koodiarvo == "lasna").headOption
-        .map(_.alku)
-        .toRight(KoskiErrorCategory.internalError(s"Allekirjoituksen päivä puuttuu todistukselle ${todistus.id}"))
 
       allekirjoitusPäivämäärä = formatSignatureDate(ensimmäisenLäsnäTilanAlkupäivä, todistus.language)
 
@@ -102,10 +102,24 @@ class YleinenKielitutkintoTodistusDataBuilder(application: KoskiApplication) {
     getLocalization(localizationKey, language)
   }
 
-  private def createSuorituksetJaArvosanat(yleinenKtSuoritus: YleisenKielitutkinnonSuoritus, todistus: TodistusJob): Either[HttpStatus, Seq[YleinenKielitutkintoSuoritusJaArvosana]] = {
+  private def createSuorituksetJaArvosanat(yleinenKtSuoritus: YleisenKielitutkinnonSuoritus, ensimmäisenLäsnäTilanAlkupäivä: LocalDate, todistus: TodistusJob): Either[HttpStatus, Seq[YleinenKielitutkintoSuoritusJaArvosana]] = {
     val osasuoritukset = yleinenKtSuoritus.osasuoritukset.toList.flatten
-    val minOsasuoritusMaara = application.config.getInt("todistus.yleinenKielitutkinto.minOsasuoritusMaara")
-    val maxOsasuoritusMaara = application.config.getInt("todistus.yleinenKielitutkinto.maxOsasuoritusMaara")
+
+    // Lue rajapäivämäärä ja osasuoritusmäärärajat konfiguraatiosta
+    val osasuoritusmääräRajaPvm = LocalDate.parse(application.config.getString("todistus.yleinenKielitutkinto.osasuoritusmääräRajaPvm"))
+    val ennenRajapvmMin = application.config.getInt("todistus.yleinenKielitutkinto.ennenRajaPvmMinOsasuoritusMäärä")
+    val ennenRajapvmMax = application.config.getInt("todistus.yleinenKielitutkinto.ennenRajaPvmMaxOsasuoritusMäärä")
+    val rajanJalkeenMin = application.config.getInt("todistus.yleinenKielitutkinto.jälkeenRajaPvmMinOsasuoritusMäärä")
+    val rajanJalkeenMax = application.config.getInt("todistus.yleinenKielitutkinto.jälkeenRajaPvmMaxOsasuoritusMäärä")
+
+    // Valitse oikeat rajat päivämäärän perusteella
+    val (minOsasuoritusMaara, maxOsasuoritusMaara) =
+      if (ensimmäisenLäsnäTilanAlkupäivä.isBefore(osasuoritusmääräRajaPvm)) {
+        (ennenRajapvmMin, ennenRajapvmMax)
+      } else {
+        (rajanJalkeenMin, rajanJalkeenMax)
+      }
+
     val kielletytArvosanat = application.config.getStringList("todistus.yleinenKielitutkinto.kielletytArvosanat").asScala.toSet
 
     val kiellettyArvosana = osasuoritukset.flatMap(_.arviointi.toList.flatten)

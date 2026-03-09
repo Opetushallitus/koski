@@ -240,6 +240,49 @@ class YleinenKielitutkintoTodistusDataBuilderSpec extends AnyFreeSpec with Match
           case Right(_) => fail("Todistuksen luonnin olisi pitänyt epäonnistua liian suuren osasuoritusmäärän takia")
         }
       }
+
+      "hyväksyy todistuksen, kun osasuorituksia on 1 ja ensimmäisenLäsnäTilanAlkupäivä on rajapäivän jälkeen" in {
+        val testDate = LocalDate.of(2026, 7, 1) // Rajapäivä
+        val osasuoritukset = List(
+          createOsakokeenSuoritus("puheenymmartaminen", "3", testDate)
+        )
+
+        val opiskeluoikeus = createOpiskeluoikeusWithDate(osasuoritukset, testDate)
+        val todistusJob = createTodistusJob()
+
+        val result = generator.createTodistusData(
+          mockOppija,
+          opiskeluoikeus,
+          todistusJob
+        )
+
+        result match {
+          case Left(error) => fail(s"Virhe todistuksen luonnissa: ${error.errorString.mkString(", ")}")
+          case Right(_) => // OK, testi läpi - 1 osasuoritus hyväksytään rajapäivän jälkeen
+        }
+      }
+
+      "hylkää todistuksen, kun osasuorituksia on 1 ja ensimmäisenLäsnäTilanAlkupäivä on ennen rajapäivää" in {
+        val testDate = LocalDate.of(2026, 6, 30) // Päivä ennen rajapäivää
+        val osasuoritukset = List(
+          createOsakokeenSuoritus("puheenymmartaminen", "3", testDate)
+        )
+
+        val opiskeluoikeus = createOpiskeluoikeusWithDate(osasuoritukset, testDate)
+        val todistusJob = createTodistusJob()
+
+        val result = generator.createTodistusData(
+          mockOppija,
+          opiskeluoikeus,
+          todistusJob
+        )
+
+        result match {
+          case Left(error) =>
+            error.errorString.getOrElse("") should include("Osasuoritusten määrä (1) ei ole sallitulla välillä 4-4")
+          case Right(_) => fail("Todistuksen luonnin olisi pitänyt epäonnistua, koska ennen rajapäivää vaaditaan 4 osasuoritusta")
+        }
+      }
     }
 
     "Kiellettyjen arvosanojen validointi" - {
@@ -522,6 +565,47 @@ class YleinenKielitutkintoTodistusDataBuilderSpec extends AnyFreeSpec with Match
         opiskeluoikeusjaksot = List(
           KielitutkinnonOpiskeluoikeudenOpiskeluoikeusjakso(
             alku = LocalDate.of(2011, 1, 3),
+            tila = Koodistokoodiviite("lasna", "koskiopiskeluoikeudentila")
+          ),
+          KielitutkinnonOpiskeluoikeudenOpiskeluoikeusjakso(
+            alku = arviointipäivä,
+            tila = Koodistokoodiviite("hyvaksytystisuoritettu", "koskiopiskeluoikeudentila")
+          )
+        )
+      ),
+      suoritukset = List(
+        YleisenKielitutkinnonSuoritus(
+          koulutusmoduuli = YleinenKielitutkinto(
+            tunniste = Koodistokoodiviite("kt", "ykitutkintotaso"),
+            kieli = Koodistokoodiviite("FI", "kieli")
+          ),
+          toimipiste = OidOrganisaatio(YleinenKielitutkintoOrg.organisaatio),
+          järjestäjä = OidOrganisaatio(MockOrganisaatiot.varsinaisSuomenKansanopistoToimipiste),
+          vahvistus = Some(Päivämäärävahvistus(
+            päivä = arviointipäivä,
+            myöntäjäOrganisaatio = OidOrganisaatio(MockOrganisaatiot.helsinginKaupunki)
+          )),
+          osasuoritukset = Some(osasuoritukset),
+          yleisarvosana = None
+        )
+      )
+    )
+
+    // Aja serialisoinnin ja deserialisoinnin läpi, jotta opiskeluoikeudessa esim. koodiarvot lokalisoidaan
+    val jsonString = JsonMethods.pretty(JsonSerializer.serializeWithRoot(opiskeluoikeus))
+
+    app.validatingAndResolvingExtractor.extract[KielitutkinnonOpiskeluoikeus](strictDeserialization)(JsonMethods.parse(jsonString)).getOrElse(throw new InternalError("Bad test data"))
+  }
+
+  private def createOpiskeluoikeusWithDate(osasuoritukset: List[YleisenKielitutkinnonOsakokeenSuoritus], ensimmäisenLäsnäTilanAlkupäivä: LocalDate): KielitutkinnonOpiskeluoikeus = {
+    val arviointipäivä = ensimmäisenLäsnäTilanAlkupäivä.plusDays(60)
+
+    val opiskeluoikeus = KielitutkinnonOpiskeluoikeus(
+      oid = Some(oidGenerator.generateKoskiOid(mockOppija.oid)),
+      tila = KielitutkinnonOpiskeluoikeudenTila(
+        opiskeluoikeusjaksot = List(
+          KielitutkinnonOpiskeluoikeudenOpiskeluoikeusjakso(
+            alku = ensimmäisenLäsnäTilanAlkupäivä,
             tila = Koodistokoodiviite("lasna", "koskiopiskeluoikeudentila")
           ),
           KielitutkinnonOpiskeluoikeudenOpiskeluoikeusjakso(
