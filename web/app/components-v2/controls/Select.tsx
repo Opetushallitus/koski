@@ -89,7 +89,7 @@ export const Select = <T,>(props: SelectProps<T>) => {
 
   const { options, onChange, value, initialValue, autoselect } = props
   useEffect(() => {
-    if (autoselect) {
+    if (autoselect && options !== LoadingOptions) {
       if (optionsCount(options) < 2) {
         const first = firstOption(options)
         if (first?.key !== value) {
