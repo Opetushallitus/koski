@@ -150,6 +150,14 @@ SSO-sessio AWS:ään on voimassa.
 
 Swisscom-salaisuuksien hallinta, ks.: https://github.com/Opetushallitus/koski-aws-infra/tree/master/tools/certs
 
+### DocMDP-rajoitukset
+
+Allekirjoitukseen ei lisätä DocMDP (Document Modification Detection and Prevention) -suojausta, koska se estää pitkäaikaisen validointitiedon (LTV - Long-Term Validation) lisäämisen allekirjoituksen jälkeen. DocMDP-suojaus lukitsee dokumentin muutoksilta, mutta PAdES-LT-standardin mukainen allekirjoitus vaatii OCSP- ja CRL-tietojen lisäämisen Document Security Store (DSS) -rakenteeseen allekirjoituksen jälkeen.
+
+Tekninen syy: DocMDP sallii vain rajoitetut muutokset (approval signatures, form fill-in, comments), mutta DSS-rakenteen lisääminen vaatii laajempia muutoksia PDF:ään. Tämä tekee mahdottomaksi luoda validia PAdES-LT-allekirjoitusta DocMDP:n kanssa.
+
+Lisätietoja: https://stackoverflow.com/questions/79837411/is-it-possible-to-create-a-valid-pades-lt-certification-signature-with-docmdp-le
+
 ## PDF-tuotanto
 
 `TodistusPdfGenerator`:

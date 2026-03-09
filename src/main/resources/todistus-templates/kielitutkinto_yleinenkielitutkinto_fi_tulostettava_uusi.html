@@ -243,7 +243,6 @@
       font-size: 10pt;
       line-height: 15pt;
       font-weight: 400;
-      max-width: 250pt;
       margin-bottom: 2pt;
       margin-top: 0;
     }
@@ -252,7 +251,6 @@
       font-size: 10pt;
       line-height: 15pt;
       font-weight: 600;
-      max-width: 250pt;
       margin-bottom: 15pt;
       margin-top: 0;
     }
@@ -503,14 +501,35 @@
       padding-left: 1.5em;
     }
 
-    .oikaisutiedot-li {
+    .oikaisutiedot-ul-hanging {
+      font-size: 10pt;
+      line-height: 15pt;
+      font-weight: 400;
+
       margin-bottom: 10pt;
+      padding-left: 1.5em;
+    }
+
+    .oikaisutiedot-ol-li {
+    }
+
+    .oikaisutiedot-ol-li-p {
+      margin-bottom: 10pt;
+    }
+
+    .oikaisutiedot-ul-li {
+      margin: 0;
     }
 
     .oikaisutiedot-linkki {
       white-space: nowrap;
       color: #0033CC;
       text-decoration: underline;
+    }
+
+    .oikaisutiedot-highlight {
+      white-space: nowrap;
+      font-weight: 700;
     }
 
   </style>
@@ -774,28 +793,69 @@
 
     <h1 class="oikaisutiedot-otsikko">Tietoa todistuksen saajalle</h1>
 
+
     <p class="oikaisutiedot-kappale">
-      Voit tehdä oikaisuvaatimuspyynnön, jos et ole tyytyväinen YKI-testisi arviointiin. Oikaisuvaatimuspyyntö tarkoittaa, että YKI-testisi arvioidaan uudelleen, eli sille tehdään tarkistusarviointi. Tarkistusarvioinnissa testivastauksesi arvioidaan uudelleen.
+      Opetushallitus on myöntänyt sinulle todistuksen yleisestä kielitutkinnosta (YKI).
     </p>
 
     <p class="oikaisutiedot-kappale">
-      Jos et ole tyytyväinen YKI-testisi arviointiin, sinulla on kaksi vaihtoehtoa:
+      YKI-testissä saat jokaisesta osakokeesta oman erillisen arvosanan eli taitotasoarvion.
+      Voit saada YKI-testin hyväksytyistä osakokeista
+    </p>
+
+    <ul class="oikaisutiedot-ul-hanging">
+      <li class="oikaisutiedot-ul-li">perustasolla taitotasoarvion 1 tai 2</li>
+      <li class="oikaisutiedot-ul-li">keskitasolla taitotasoarvion 3 tai 4</li>
+      <li class="oikaisutiedot-ul-li">ylimmällä tasolla taitotasoarvion 5 tai 6.</li>
+    </ul>
+
+    <p class="oikaisutiedot-kappale">
+      Saat todistuksen vain siitä tasosta, jonka testiin olet osallistunut. Arviot alle 1,
+      alle 3 tai alle 5 tarkoittavat sitä, että sinulla ei ole tutkintotasolla vaadittavia taitoja.
+    </p>
+
+    <p class="oikaisutiedot-kappale">
+      Jos et ole tyytyväinen YKI-testisi arviointiin, sinulla on kaksi vaihtoehtoa.
     </p>
 
     <ol class="oikaisutiedot-ol-hanging">
-      <li class="oikaisutiedot-li">Voit pyytää tarkistusarviointia.  Sinulla on 30 vuorokautta aikaa pyytää tarkistusarviointia. Aika alkaa siitä, kun saat tiedon valmiista todistuksesta. Voit pyytää tarkistusarviointia tällä verkkosivulla: <span class="oikaisutiedot-linkki">https://yki.opintopolku.fi/yki/tarkistusarviointi</span>.</li>
-      <li class="oikaisutiedot-li">Voit pyytää ensin tietoa arvosteluperusteiden soveltamisesta testiisi. Se tarkoittaa, että pyydät tietoa siitä, miten YKI-testisi on arvosteltu. Pyynnön tekeminen ei muuta testisi arviointia. Sinulla on 14 vuorokautta aikaa pyytää tietoa arvosteluperusteista. Aika alkaa siitä, kun saat tiedon valmiista todistuksesta. Voit tehdä pyynnön lähettämällä sähköpostia osoitteeseen <span class="oikaisutiedot-linkki">yki-info@jyu.fi</span>. Kun olet saanut vastauksen pyyntöösi, voit pyytää sen jälkeen myös tarkistusarviointia. Sinulla on 14 vuorokautta aikaa pyytää tarkistusarviointia. Aika alkaa siitä, kun saat tiedon siitä, miten YKI-testisi on arvosteltu.</li>
+      <li class="oikaisutiedot-ol-li">
+        <p class="oikaisutiedot-ol-li-p">
+          Tee oikaisuvaatimus. Se tarkoittaa, että YKI-testisi arvioidaan uudelleen eli sille tehdään tarkistusarviointi.
+        </p>
+        <p class="oikaisutiedot-ol-li-p">
+          Sinulla on 30 vuorokautta aikaa pyytää tarkistusarviointia. Aika alkaa siitä, kun saat
+          todistuksen postilla. Voit pyytää tarkistusarviointia YKI-ilmoittautumissivulla
+          osoitteessa <span class="oikaisutiedot-linkki">https://yki.opintopolku.fi/yki/tarkistusarviointi</span>.
+        </p>
+      </li>
+      <li class="oikaisutiedot-ol-li">
+        <p class="oikaisutiedot-ol-li-p">
+          Pyydä ensin tietoa arvosteluperusteiden soveltamisesta testiisi. Se tarkoittaa, että
+          pyydät tietoa siitä, miten YKI-testisi on arvioitu. Arvosteluperusteiden pyytäminen ei
+          muuta testisi arviointia.
+        </p>
+        <p class="oikaisutiedot-ol-li-p">
+          Sinulla on 14 vuorokautta aikaa pyytää tietoa arvosteluperusteista. Aika alkaa siitä,
+          kun saat todistuksen postilla. Lue tarkemmat ohjeet Opetushallituksen verkkosivuilta
+          osoitteessa <span class="oikaisutiedot-linkki">https://www.oph.fi/yki/tarkistusarviointi</span>.
+        </p>
+        <p class="oikaisutiedot-ol-li-p">
+          Kun olet saanut tietoa arvosteluperusteista, voit pyytää myös tarkistusarviointia.
+          Sinulla on 14 vuorokautta aikaa pyytää tarkistusarviointia. Aika alkaa siitä, kun
+          saat tiedon arvosteluperusteista.
+        </p>
+      </li>
     </ol>
 
     <p class="oikaisutiedot-kappale">
-      Lisätietoja löydät myös Opetushallituksen verkkosivuilta osoitteesta: <span class="oikaisutiedot-linkki">https://www.oph.fi/fi/koulutus-ja-tutkinnot/yki-testin-jalkeen</span>.
+      Lue YKI-testin tuloksista ja tarkistusarvioinnista Opetushallituksen verkkosivuilta
+      osoitteessa <span class="oikaisutiedot-linkki">https://www.oph.fi/yki</span>. Valitse
+      sivuilta kohta <span class="oikaisutiedot-highlight">YKI-testin jälkeen</span>.
     </p>
 
     <p class="oikaisutiedot-kappale">
-      Jos tarvitset muuta todistukseen tai tarkistusarviointiin liittyvää neuvontaa, voit lähettää kysymyksesi Opetushallitukselle osoitteeseen <span class="oikaisutiedot-linkki">kielitutkinnot@oph.fi</span>.
-    </p>
-    <p class="oikaisutiedot-kappale">
-      Löydät Opetushallituksen yhteystiedot (Tutkintojen ja kieliosaamisen tunnustaminen-yksikkö) Opetushallituksen verkkosivuilta osoitteesta: <span class="oikaisutiedot-linkki">https://www.oph.fi/fi/tietoa-meista/yhteystiedot</span>.
+      Lisätietoja Opetushallitukselta (Tutkintojen ja kieliosaamisen tunnustaminen): <span class="oikaisutiedot-linkki">kielitutkinnot@oph.fi</span> ja +358 29 533 1000 (vaihde).
     </p>
 
   </section>
