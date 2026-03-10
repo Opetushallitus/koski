@@ -1,6 +1,5 @@
 import { Locator, Page } from '@playwright/test'
 import { YoTodistusLanguage } from '../../../../app/components-v2/yotutkinto/YoTodistus'
-import { TodistusTemplateVariant } from '../../../../app/kielitutkinto/YleinenKielitutkintoTodistusLataus'
 import { expect } from '../../base'
 import { build, BuiltIdNode } from '../oppija/uiV2builder/builder'
 import { Button } from '../oppija/uiV2builder/Button'
