@@ -33,6 +33,11 @@ export const useKansalainenTaiSuoritusjako = (): boolean => {
   }
 }
 
+export const useKansalainenTaiVirkailija = (): boolean => {
+  const user = useUser()
+  return !!user
+}
+
 /**
  * Palauttaa kirjautuneen käyttäjän tiedot.
  * @returns kirjautunut käyttäjä
