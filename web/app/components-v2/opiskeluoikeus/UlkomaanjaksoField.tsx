@@ -32,11 +32,13 @@ export const UlkomaanjaksoView: React.FC<UlkomaanjaksoViewProps> = ({
           </TestIdText>
         </span>
         <span>
-          <span className="InlineJakso__label">{t('Maa')}</span>{': '}
+          <span className="InlineJakso__label">{t('Maa')}</span>
+          {': '}
           <TestIdText id="maa">{t(value?.maa.nimi)}</TestIdText>
         </span>
         <span>
-          <span className="InlineJakso__label">{t('Kuvaus')}</span>{': '}
+          <span className="InlineJakso__label">{t('Kuvaus')}</span>
+          {': '}
           <TestIdText id="kuvaus">{t(value?.kuvaus)}</TestIdText>
         </span>
       </span>
@@ -50,7 +52,11 @@ export type UlkomaanjaksoEditProps = CommonProps<
 
 export const emptyUlkomaanjakso = Ulkomaanjakso({
   alku: todayISODate(),
-  maa: Koodistokoodiviite({ koodistoUri: 'maatjavaltiot2', koodiarvo: '', nimi: emptyLocalizedString }),
+  maa: Koodistokoodiviite({
+    koodistoUri: 'maatjavaltiot2',
+    koodiarvo: '',
+    nimi: emptyLocalizedString
+  }),
   kuvaus: emptyLocalizedString
 })
 

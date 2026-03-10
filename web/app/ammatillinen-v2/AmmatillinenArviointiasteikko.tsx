@@ -50,9 +50,6 @@ const rekursiivisetAsteikot = (suoritus: SuoritusWithArviointi): string[] => {
   return osasuoritukset.flatMap((os) => {
     const viimeisinArviointi = os.arviointi?.at(-1)
     const asteikko = viimeisinArviointi?.arvosana.koodistoUri
-    return [
-      ...(asteikko ? [asteikko] : []),
-      ...rekursiivisetAsteikot(os)
-    ]
+    return [...(asteikko ? [asteikko] : []), ...rekursiivisetAsteikot(os)]
   })
 }

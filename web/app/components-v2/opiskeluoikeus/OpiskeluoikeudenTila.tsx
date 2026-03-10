@@ -34,7 +34,6 @@ import {
 } from '../containers/KeyValueTable'
 import { DateEdit } from '../controls/DateField'
 import { IconButton } from '../controls/IconButton'
-import { FieldErrors } from '../forms/FieldErrors'
 import { FieldEditorProps, FieldViewerProps } from '../forms/FormField'
 import { ValidationError, isValidationError } from '../forms/validator'
 import { CHARCODE_REMOVE } from '../texts/Icon'
@@ -188,12 +187,7 @@ export const OpiskeluoikeudenTilaEdit = <T extends OpiskeluoikeudenTila>(
               phone: [24, '*']
             }}
           >
-            {[
-              <LisääTilaLink
-                key="addLink"
-                onClick={oo.openModal}
-              />
-            ]}
+            {[<LisääTilaLink key="addLink" onClick={oo.openModal} />]}
           </KeyColumnedValuesRow>
         )}
       </KeyValueTable>
@@ -205,7 +199,6 @@ export const OpiskeluoikeudenTilaEdit = <T extends OpiskeluoikeudenTila>(
           enableValmistuminen={props.enableValmistuminen}
         />
       )}
-      <FieldErrors errors={props.errors} />
     </TestIdLayer>
   )
 }

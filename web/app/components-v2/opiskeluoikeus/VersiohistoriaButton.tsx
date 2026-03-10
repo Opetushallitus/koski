@@ -24,13 +24,15 @@ export const VersiohistoriaButton: React.FC<VersiohistoriaButtonProps> = (
   props
 ) => {
   const buttonRef = useRef(null)
-  const [versiohistoriaVisible, setVersiohistoriaVisible] = useState(false)
+  const currentVersion = useVersionumero()
+  const [versiohistoriaVisible, setVersiohistoriaVisible] = useState(
+    currentVersion !== null
+  )
   const toggleList = useCallback(
     () => setVersiohistoriaVisible(!versiohistoriaVisible),
     [versiohistoriaVisible]
   )
   const hideList = useCallback(() => setVersiohistoriaVisible(false), [])
-  const currentVersion = useVersionumero()
 
   return (
     <TestIdLayer id="versiohistoria">
@@ -54,6 +56,7 @@ export const VersiohistoriaButton: React.FC<VersiohistoriaButtonProps> = (
           <VersiohistoriaList
             opiskeluoikeusOid={props.opiskeluoikeusOid}
             open={versiohistoriaVisible}
+            onClose={hideList}
           />
         </PositionalPopup>
       </span>
@@ -64,6 +67,7 @@ export const VersiohistoriaButton: React.FC<VersiohistoriaButtonProps> = (
 type VersiohistoriaListProps = CommonProps<{
   opiskeluoikeusOid: string
   open: boolean
+  onClose: () => void
 }>
 
 const versiolistaCache = createLocalThenApiCache(fetchVersiohistoria)
@@ -88,6 +92,22 @@ const VersiohistoriaList: React.FC<VersiohistoriaListProps> = (props) => {
   return isSuccess(historia) ? (
     <TestIdLayer id="list">
       <ul className="VersiohistoriaList" role="navigation">
+        <li className="VersiohistoriaList__close">
+          {versioParam ? (
+            <PoistuVersiohistoriastaButton
+              opiskeluoikeusOid={props.opiskeluoikeusOid}
+            />
+          ) : (
+            <a
+              role="button"
+              onClick={props.onClose}
+              aria-label={t('Sulje')}
+              className="VersiohistoriaList__closeButton"
+            >
+              {'✕'}
+            </a>
+          )}
+        </li>
         {historia.data.map((versio) => (
           <li
             key={versio.versionumero}
@@ -109,13 +129,6 @@ const VersiohistoriaList: React.FC<VersiohistoriaListProps> = (props) => {
             </LinkButton>
           </li>
         ))}
-        {versioParam && (
-          <li className="VersiohistoriaList__item">
-            <PoistuVersiohistoriastaButton
-              opiskeluoikeusOid={props.opiskeluoikeusOid}
-            />
-          </li>
-        )}
       </ul>
     </TestIdLayer>
   ) : null
@@ -133,7 +146,8 @@ export const PoistuVersiohistoriastaButton = (
       opiskeluoikeus: props.opiskeluoikeusOid || null,
       versionumero: null
     })}
+    aria-label={t('Poistu versiohistoriasta')}
   >
-    {t('Poistu versiohistoriasta')}
+    {'✕'}
   </LinkButton>
 )

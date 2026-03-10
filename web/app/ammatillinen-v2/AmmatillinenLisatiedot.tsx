@@ -432,7 +432,8 @@ const OsaAikaisuusView = <T extends OsaAikaisuusJakso>({
         </TestIdText>
       </span>
       <span>
-        <span className="InlineJakso__label">{t('Osa-aikaisuus')}</span>{': '}
+        <span className="InlineJakso__label">{t('Osa-aikaisuus')}</span>
+        {': '}
         <TestIdText id="osaAikaisuus">{value?.osaAikaisuus}</TestIdText>
         {'%'}
       </span>
@@ -496,7 +497,8 @@ const OpiskeluvalmiuksiaTuvkevienOpintojenJaksoView = <
         </TestIdText>
       </span>
       <span>
-        <span className="InlineJakso__label">{t('Kuvaus')}</span>{': '}
+        <span className="InlineJakso__label">{t('Kuvaus')}</span>
+        {': '}
         <TestIdText id="kuvaus">{t(value?.kuvaus)}</TestIdText>
       </span>
     </span>

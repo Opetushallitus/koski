@@ -568,8 +568,7 @@ export const JärjestämismouotoView = <T extends Järjestämismuotojakso>({
       {' — '}
       <TestIdText id="loppu">
         {value?.loppu && ISO2FinnishDate(value.loppu)}
-      </TestIdText>
-      {' '}
+      </TestIdText>{' '}
       <TestIdText id="järjestämismuoto">
         {t(value?.järjestämismuoto.tunniste.nimi)}
       </TestIdText>
