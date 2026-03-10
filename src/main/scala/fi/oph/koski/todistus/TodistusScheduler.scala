@@ -25,7 +25,7 @@ class TodistusScheduler(application: KoskiApplication) extends Logging {
       None,
       runNextTodistus,
       intervalMillis = 1000,
-      concurrency = 1
+      concurrency = application.config.getInt("todistus.concurrency")
     ))
     schedulerInstance
   }
