@@ -41,7 +41,7 @@ class MockOpintopolkuHenkilöFacade(val hetu: Hetu, fixtures: => FixtureCreator)
     } else if (oppijat.getOppijat.exists(_.henkilö.hetu == createUserInfo.hetu)) {
       Left(KoskiErrorCategory.conflict.hetu("conflict"))
     } else {
-      val newOppija = oppijat.oppija(createUserInfo.sukunimi, createUserInfo.etunimet, createUserInfo.hetu.getOrElse(throw new IllegalArgumentException("Hetu puuttuu")), kutsumanimi = Some(createUserInfo.kutsumanimi))
+      val newOppija = oppijat.oppijaSyntymäaikaHetusta(createUserInfo.sukunimi, createUserInfo.etunimet, createUserInfo.hetu.getOrElse(throw new IllegalArgumentException("Hetu puuttuu")), kutsumanimi = Some(createUserInfo.kutsumanimi))
       Right(newOppija.oid)
     }
   }
