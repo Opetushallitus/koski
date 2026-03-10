@@ -1,0 +1,1 @@
+ALTER TABLE todistus_job ALTER COLUMN user_oid DROP NOT NULL;
