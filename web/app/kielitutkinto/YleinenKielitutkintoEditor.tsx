@@ -16,6 +16,7 @@ import { YleisenKielitutkinnonOsakokeenSuoritus } from '../types/fi/oph/koski/sc
 import { YleisenKielitutkinnonSuoritus } from '../types/fi/oph/koski/schema/YleisenKielitutkinnonSuoritus'
 import { ykiParasArvosana } from './yleinenKielitutkinto'
 import { YleinenKielitutkintoTodistusLataus } from './YleinenKielitutkintoTodistusLataus'
+import { useKansalainenTaiVirkailija } from '../appstate/user'
 
 declare global {
   interface Window {
@@ -35,6 +36,8 @@ export type YleinenKielitutkintoEditorProps = {
 export const YleinenKielitutkintoEditor: React.FC<
   YleinenKielitutkintoEditorProps
 > = ({ form, päätasonSuoritus, organisaatio }) => {
+  const isKansalainenTaiVirkailija = useKansalainenTaiVirkailija()
+
   const path = päätasonSuoritus.path
   const suoritus = getValue(path)(form.state)
 
@@ -71,11 +74,13 @@ export const YleinenKielitutkintoEditor: React.FC<
         )}
       </KeyValueTable>
 
-      {form.state.oid && hasFeatureFlagPdfTodistus && (
-        <YleinenKielitutkintoTodistusLataus
-          opiskeluoikeusOid={form.state.oid}
-        />
-      )}
+      {isKansalainenTaiVirkailija &&
+        form.state.oid &&
+        hasFeatureFlagPdfTodistus && (
+          <YleinenKielitutkintoTodistusLataus
+            opiskeluoikeusOid={form.state.oid}
+          />
+        )}
     </>
   ) : null
 }
