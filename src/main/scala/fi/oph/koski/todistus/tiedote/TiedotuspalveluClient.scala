@@ -16,6 +16,8 @@ object TiedotuspalveluClient {
 trait TiedotuspalveluClient {
   def sendKielitutkintoTodistusTiedote(
     oppijanumero: String,
-    idempotencyKey: String
+    idempotencyKey: String,
+    todistusBucket: String,
+    todistusKey: String
   ): Either[HttpStatus, Unit]
 }

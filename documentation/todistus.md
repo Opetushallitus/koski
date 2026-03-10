@@ -109,11 +109,15 @@ palautetaan jonoon uudestaan. Vanhentuneet jobit asetetaan tilaan `EXPIRED`.
 
 ### Jobien uudelleenkäyttö
 
-`TodistusJobRepository.addOrReuseExisting()` käyttää CTE-kyselyä, joka
-palauttaa olemassa olevan jobin jos sen `template_variant`, OO-versio ja henkilötiedot-hash
-vastaavat uutta pyyntöä. Uusi job luodaan vain jos aiempia ei löydy tai
-ne ovat ERROR-tilassa. Esim. jobit `fi` ja `fi_tulostettava_uusi` ovat erillisiä ja niitä
-ei käytetä toinen toisen tilalla.
+`TodistusJobRepository.addOrReuseExisting()` on CTE-kysely, joka palauttaa olemassa olevan jobin tai
+luo uuden. Käyttäjä- ja järjestelmäjobit jakavat saman reuse-poolin — järjestelmäjobit käyttävät
+järjestelmäkäyttäjän OID:ia `user_oid`-kentässä. QUEUED-tilassa oleva job matchaa aina, muissa tiloissa
+hash ja versionumero täytyy täsmätä. Uusi job luodaan jos aiempia ei löydy tai ne ovat ERROR-tilassa.
+Esim. jobit `fi` ja `fi_tulostettava_uusi` ovat erillisiä ja niitä ei käytetä toinen toisen tilalla.
+
+**Huom:** Hash ja versionumero välitetään CTE-kyselyyn matchausta varten, mutta niitä ei tallenneta
+tietokantaan INSERT-vaiheessa. Lopulliset arvot tallennetaan vasta kun todistusworker käsittelee jobin
+(`updateStateWithHashAndVersion`), jotta ne vastaavat täsmälleen generoituun PDF:ään käytettyjä tietoja.
 
 ## Pääsynhallinta
 

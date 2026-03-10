@@ -20,7 +20,7 @@ class KielitutkintotodistusTiedoteRepository(val db: DB, val workerId: String, c
       FROM opiskeluoikeus oo
       JOIN opiskeluoikeushistoria h ON h.opiskeluoikeus_id = oo.id AND h.versionumero = 1
       WHERE oo.koulutusmuoto = 'kielitutkinto'
-        AND oo.data #>> '{suoritukset,0,tyyppi,koodiarvo}' = 'yleinenkielitutkinto'
+        AND 'yleinenkielitutkinto' = ANY(oo.suoritustyypit)
         AND NOT oo.mitatoity
         AND NOT oo.poistettu
         AND oo.data #>> '{suoritukset,0,vahvistus}' IS NOT NULL
@@ -54,12 +54,13 @@ class KielitutkintotodistusTiedoteRepository(val db: DB, val workerId: String, c
       """.as[KielitutkintotodistusTiedoteJob]).head
   }
 
-  def setCompleted(id: String): Boolean =
+  def setCompleted(id: String, opiskeluoikeusVersio: Int): Boolean =
     runDbSync(sql"""
       UPDATE kielitutkintotodistus_tiedote_job
       SET state = ${KielitutkintotodistusTiedoteState.COMPLETED},
           error = NULL,
-          completed_at = now()
+          completed_at = now(),
+          opiskeluoikeus_versio = $opiskeluoikeusVersio
       WHERE id = ${id}::uuid
       """.asUpdate) != 0
 
@@ -110,6 +111,22 @@ class KielitutkintotodistusTiedoteRepository(val db: DB, val workerId: String, c
           """.as[KielitutkintotodistusTiedoteJob])
     }
   }
+
+  def setState(id: String, state: String): Boolean =
+    runDbSync(sql"""
+      UPDATE kielitutkintotodistus_tiedote_job
+      SET state = $state
+      WHERE id = ${id}::uuid
+      """.asUpdate) != 0
+
+  def findByState(state: String, limit: Int): Seq[KielitutkintotodistusTiedoteJob] =
+    runDbSync(sql"""
+      SELECT *
+      FROM kielitutkintotodistus_tiedote_job
+      WHERE state = $state
+      ORDER BY created_at
+      LIMIT $limit
+      """.as[KielitutkintotodistusTiedoteJob])
 
   def truncateForLocal(): Int = {
     require(
