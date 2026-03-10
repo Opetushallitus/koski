@@ -286,7 +286,7 @@ class TodistusJobRepository(val db: DB, val workerId: String, config: Config) ex
   def truncateForLocal(): Int = {
     require(Environment.isUnitTestEnvironment(config) || Environment.isLocalDevelopmentEnvironment(config), "truncateForLocal can only be used in local test environment")
 
-    runDbSync(sql"TRUNCATE TABLE todistus_job".asUpdate)
+    runDbSync(sql"TRUNCATE TABLE todistus_job CASCADE".asUpdate)
   }
 
   def setJobExpiredForUnitTests(id: String): Boolean = {
