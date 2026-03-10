@@ -238,6 +238,92 @@ web/test/e2e/
 └── kielitutkinnontodistus.spec.ts    - Playwright e2e-testit
 ```
 
+## Suorituskykytestit (Performance Tests)
+
+Todistuksen luonnin suorituskykyä testataan erillisillä perftesteillä, jotka mittaavat koko asynkronisen työnkulun (generate → poll → download) suorituskykyä.
+
+```
+src/test/scala/fi/oph/koski/perftest/
+├── YleinenKielitutkintoOppijatGenerator – Luo testidataa (oppijat YKI-suorituksilla)
+├── RandomYkiOpiskeluoikeusOid           – Apuluokka OID-iterointiin
+└── YleinenKielitutkintoTodistusGenerator – Varsinainen suorituskykytesti
+```
+
+### Testidatan generointi
+
+Testit käyttävät ennalta luotuja oppija-tietoja, jotka on tallennettu tiedostoon `src/test/resources/yki_perftest_opiskeluoikeus_oids.txt` ja versionhallinnassa.
+
+#### Ensimmäinen kerta: Testidatan luominen ja lisääminen repositoryyn
+
+1. **Generoi testdata lokaalisti tai CI:ssä**:
+
+```bash
+# Lokaalisti
+export KOSKI_USER=käyttäjä
+export KOSKI_PASS=salasana
+export KOSKI_BASE_URL=http://localhost:7021/koski
+export YKI_PERFTEST_OPPIJA_COUNT=200
+
+mvn exec:java -Dexec.mainClass="fi.oph.koski.perftest.YleinenKielitutkintoOppijatGenerator"
+```
+
+Generointi luo oppijat satunnaisilla:
+- Kielillä (FI, EN, ES, IT, SE, FR, SV, RU, DE)
+- Tutkintotasoilla (pt, kt, yt)
+- Osasuorituksilla (4 kpl, arvosanat vastaavat tasoa)
+
+**Oppijamäärän valinta:**
+- Oppijamäärän tulee olla riittävän suuri, jotta sama (oppija, variantti) -yhdistelmä ei toistu liian usein
+samassa testiajossa
+- Jos sama yhdistelmä toistuu, todistus-jobi käytetään uudelleen → aikamittaukset vääristyvät
+
+**Jos generoit CI:ssä**: GitHub Actions tallentaa tiedoston artifactiksi perffitestien ajon yhteydessä.
+Lataa artifactit ja lisää siellä oleva tiedosto gitiin, `src/test/resources/yki_perftest_opiskeluoikeus_oids.txt`.
+
+#### Jatkossa
+
+Tiedosto on versionhallinnassa, joten:
+- **CI:ssä**: Käytetään tiedostossa olevia opiskeluoikeus-oideja.
+- **Lokaalisti**: Tiedosto pitää korvata paikallisesti generoidulla, ellei ole ajamassa testejä QA:ta vasten.
+
+### Suorituskykytestin ajaminen
+
+Testi simuloi todellista käyttöä:
+1. **95% pyyntöjä** digitaalisille varianteille (fi, sv, en)
+2. **5% pyyntöjä** tulostettaville varianteille (fi/sv/en_tulostettava_uusi/paivitys)
+
+```bash
+# Aja paikallisesti pienellä määrällä
+export KOSKI_USER=pää
+export KOSKI_PASS=pää
+export KOSKI_BASE_URL=http://localhost:7021/koski
+export PERFTEST_THREADS=2
+export PERFTEST_ROUNDS=5
+export WARMUP_ROUNDS=2
+
+mvn exec:java -Dexec.mainClass="fi.oph.koski.perftest.YleinenKielitutkintoTodistusGenerator"
+```
+
+### Konfiguraatioparametrit
+
+| Ympäristömuuttuja | Oletusarvo | Kuvaus |
+|-------------------|------------|---------|
+| `PERFTEST_THREADS` | 5 | Rinnakkaisten säikeiden määrä |
+| `PERFTEST_ROUNDS` | 10 | Iteraatioiden määrä per säie |
+| `WARMUP_ROUNDS` | 5 | Lämmittelykierrosten määrä (ei mukana tilastoissa) |
+| `PERFTEST_SUCCESS_THRESHOLD_PERCENTAGE` | 95 | Vaadittu onnistumisprosentti (%) |
+| `PERFTEST_MIN_THROUGHPUT` | 0.5 | Vaadittu läpäisykyky (ops/sec) |
+| `YKI_TODISTUS_POLL_INTERVAL_MS` | 2000 | Job-statuksen kyselyväli (ms) |
+| `YKI_TODISTUS_MAX_WAIT_MS` | 300000 | Maksimi odotusaika (5 min) |
+| `YKI_TODISTUS_DIGITAL_WEIGHT` | 95 | Digitaalisten varianttien osuus (%) |
+| `YKI_TODISTUS_OIDS_FILE` | `src/test/resources/...` | Polku OID-tiedostoon |
+
+### GitHub Actions
+
+Suorituskykytesti ajetaan automaattisesti osana yöllisiä perftestejä (`.github/workflows/run_performance_tests.yml`):
+
+**Huom:** Tulostettavat variantit ovat nopeampia, koska niitä ei allekirjoiteta (ei STAMPING_PDF-vaihetta).
+
 ## Allekirjoituksen verifointi
 
 PDF-allekirjoitusten validointia voi suorittaa itse tehdyllä **PDF Signature Analyzer** -työkalulla, joka suorittaa sekä rakenteellisen että kryptografisen validoinnin. Tarkemmat tiedot työkalusta alla. Samaa analysaattoria käytetään myös automaattitesteissä ja tuotantoympäristön allekirjoitusvalidoinnissa.

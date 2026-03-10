@@ -188,3 +188,60 @@ jobs:
           notification_title: "Run performance tests: failure in valpas-oppija-detaalit"
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+
+  yki-todistus-generation:
+    needs: [insert_light]
+    name: yki-todistus-generation
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: ./.github/actions/setup_java_11
+
+      - uses: ./.github/actions/setup_pnpm_cache
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22.14.0"
+
+      - name: Build
+        run: mvn test-compile
+
+      - name: Generate YKI test data (if not exists)
+        run: |
+          if [ ! -f src/test/resources/yki_perftest_opiskeluoikeus_oids.txt ]; then
+            export YKI_PERFTEST_OPPIJA_COUNT=200
+            mvn exec:java -Dexec.mainClass="fi.oph.koski.perftest.YleinenKielitutkintoOppijatGenerator"
+          else
+            echo "Test data file already exists, skipping generation"
+          fi
+
+      - name: Upload test data as artifact (for initial setup)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: yki-perftest-data
+          path: src/test/resources/yki_perftest_opiskeluoikeus_oids.txt
+          retention-days: 30
+
+      - name: Run perftest yki-todistus-generation
+        run: |
+          export PERFTEST_THREADS=5
+          export PERFTEST_ROUNDS=50
+          export WARMUP_ROUNDS=5
+          export PERFTEST_SUCCESS_THRESHOLD_PERCENTAGE=95
+          export PERFTEST_MIN_THROUGHPUT=0.5
+          export YKI_TODISTUS_POLL_INTERVAL_MS=1000
+          export YKI_TODISTUS_MAX_WAIT_MS=300000
+          export YKI_TODISTUS_DIGITAL_WEIGHT=95
+          mvn exec:java -Dexec.mainClass="fi.oph.koski.perftest.YleinenKielitutkintoTodistusGenerator"
+
+      - name: Report failure
+        uses: ravsamhq/notify-slack-action@95a35215cdf7ab510d2cdd20ae94f342d212a1a1
+        if: ${{ failure() }}
+        with:
+          status: ${{ job.status }}
+          notification_title: "Run performance tests: failure in yki-todistus-generation"
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
