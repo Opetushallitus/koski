@@ -41,12 +41,12 @@
 <text text-anchor="start" x="335" y="-280.8" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">data</text>
 <polygon fill="none" stroke="#000000" points="442,-273.7 442,-295.7 541,-295.7 541,-273.7 442,-273.7"/>
 <text text-anchor="start" x="444.7258" y="-281.4" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">jsonb[2147483647]</text>
-<polygon fill="#ffffff" stroke="transparent" points="315,-254.7 315,-273.7 370,-273.7 370,-254.7 315,-254.7"/>
-<polygon fill="none" stroke="#000000" points="315,-254.7 315,-273.7 370,-273.7 370,-254.7 315,-254.7"/>
+<polygon fill="#ffffff" stroke="transparent" points="315,-254.7 315,-273.7 383,-273.7 383,-254.7 315,-254.7"/>
+<polygon fill="none" stroke="#000000" points="315,-254.7 315,-273.7 383,-273.7 383,-254.7 315,-254.7"/>
 <text text-anchor="start" x="318" y="-260.8" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">&lt; 1</text>
-<polygon fill="#ffffff" stroke="transparent" points="370,-254.7 370,-273.7 442,-273.7 442,-254.7 370,-254.7"/>
-<polygon fill="none" stroke="#000000" points="370,-254.7 370,-273.7 442,-273.7 442,-254.7 370,-254.7"/>
-<text text-anchor="start" x="406.6105" y="-260.8" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">0 rows</text>
+<polygon fill="#ffffff" stroke="transparent" points="383,-254.7 383,-273.7 442,-273.7 442,-254.7 383,-254.7"/>
+<polygon fill="none" stroke="#000000" points="383,-254.7 383,-273.7 442,-273.7 442,-254.7 383,-254.7"/>
+<text text-anchor="start" x="432.8862" y="-260.8" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000"> &#160;</text>
 <polygon fill="#ffffff" stroke="transparent" points="442,-254.7 442,-273.7 541,-273.7 541,-254.7 442,-254.7"/>
 <polygon fill="none" stroke="#000000" points="442,-254.7 442,-273.7 541,-273.7 541,-254.7 442,-254.7"/>
 <text text-anchor="start" x="522.4053" y="-260.8" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">0 &gt;</text>
@@ -105,14 +105,14 @@
 <text text-anchor="start" x="28" y="-82.8" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">poistettu</text>
 <polygon fill="none" stroke="#000000" points="8,-56.7 8,-75.7 264,-75.7 264,-56.7 8,-56.7"/>
 <text text-anchor="start" x="11" y="-62.8" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">...</text>
-<polygon fill="#ffffff" stroke="transparent" points="8,-37.7 8,-56.7 111,-56.7 111,-37.7 8,-37.7"/>
-<polygon fill="none" stroke="#000000" points="8,-37.7 8,-56.7 111,-56.7 111,-37.7 8,-37.7"/>
+<polygon fill="#ffffff" stroke="transparent" points="8,-37.7 8,-56.7 130,-56.7 130,-37.7 8,-37.7"/>
+<polygon fill="none" stroke="#000000" points="8,-37.7 8,-56.7 130,-56.7 130,-37.7 8,-37.7"/>
 <text text-anchor="start" x="11" y="-43.8" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">&lt; 2</text>
-<polygon fill="#ffffff" stroke="transparent" points="111,-37.7 111,-56.7 202,-56.7 202,-37.7 111,-37.7"/>
-<polygon fill="none" stroke="#000000" points="111,-37.7 111,-56.7 202,-56.7 202,-37.7 111,-37.7"/>
-<text text-anchor="start" x="154.3807" y="-43.8" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">187 rows</text>
-<polygon fill="#ffffff" stroke="transparent" points="202,-37.7 202,-56.7 264,-56.7 264,-37.7 202,-37.7"/>
-<polygon fill="none" stroke="#000000" points="202,-37.7 202,-56.7 264,-56.7 264,-37.7 202,-37.7"/>
+<polygon fill="#ffffff" stroke="transparent" points="130,-37.7 130,-56.7 192,-56.7 192,-37.7 130,-37.7"/>
+<polygon fill="none" stroke="#000000" points="130,-37.7 130,-56.7 192,-56.7 192,-37.7 130,-37.7"/>
+<text text-anchor="start" x="182.8862" y="-43.8" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000"> &#160;</text>
+<polygon fill="#ffffff" stroke="transparent" points="192,-37.7 192,-56.7 264,-56.7 264,-37.7 192,-37.7"/>
+<polygon fill="none" stroke="#000000" points="192,-37.7 192,-56.7 264,-56.7 264,-37.7 192,-37.7"/>
 <text text-anchor="start" x="245.4053" y="-43.8" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#000000">4 &gt;</text>
 </a>
 </g>
