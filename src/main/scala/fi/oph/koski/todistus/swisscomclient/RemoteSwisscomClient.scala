@@ -75,7 +75,6 @@ class SwisscomHttpClient(config: SwisscomConfig) extends Logging {
     }
 
     try {
-      // TODO: TOR-2400: Käytä PKCS12, se on default nykyään? Ei tarvitse myöskään sitten konvertoida JKS:ksi asti.
       val keystore = KeyStore.getInstance("JKS")
       loadStore(keystoreString, keystorePassword, keystore)
 
