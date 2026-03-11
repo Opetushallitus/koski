@@ -13,7 +13,7 @@ runs:
       run: echo "version=$(pnpm ls @playwright/test | grep @playwright | sed 's/.*@//')" >> $GITHUB_OUTPUT
       shell: bash
     - name: Cache Playwright Browsers
-      uses: actions/cache@v3
+      uses: actions/cache@6f8efc29b200d32929f49075959781ed54ec270c # v3
       id: playwright-cache
       with:
         path: |
