@@ -1,3 +1,3 @@
-FROM opensearchproject/opensearch:1.3.15@sha256:5319e82f6820238a42354b3b50130d064a8ec80bd77755c173b9fe79c8787cd8
+FROM opensearchproject/opensearch:1.3.15@sha256:9808108cdc2d6660077a6359d52020e4a7bb03b274817d6f8db7e7fdff625c05
 
 RUN bin/opensearch-plugin install --batch analysis-icu
