@@ -123,8 +123,6 @@ trait SwisscomClient extends Logging {
 
     val result = requestSignature(todistusJob, req)
 
-    // TODO: TOR-2400: Pitäisikö näistä kerätä statsitkin Cloudwatchiin, eikä vain lokientryjä? Voi sitten tarkemmin verrata Swisscomin laskuihin.
-    //   Huom! Ota retry-logiikka huomioon, joka retry pitäisi lokittaa tai lisätä metriikoihin, tässä ne jäävät piiloon
     result match {
       case Right(response) =>
         logger.info(s"SUCCESS Response for RequestId: ${req.SignRequest.`@RequestID`}: ${response.SignResponse.`@RequestID`}, ${response.SignResponse.Result}")
