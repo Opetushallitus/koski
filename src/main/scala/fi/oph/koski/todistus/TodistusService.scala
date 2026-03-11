@@ -272,8 +272,7 @@ class TodistusService(application: KoskiApplication) extends Logging with Timing
   def runNext(): Unit = {
     todistusRepository.takeNext.foreach { todistus =>
       timed("runNext", thresholdMs = 0) {
-        // TODO: TOR-2400: Onko mahdollista, että todistuksilla näkyy jotain sensitiivistä dataa? Jos ei ole, niin tee ja käytä käyttäjätunnusta, joka ei niihin pääse edes käsiksi. Selviää, kun todistuspohjat valmiina.
-        implicit val systemUser = KoskiSpecificSession.systemUser
+        implicit val systemKatselijaUser = KoskiSpecificSession.systemKatselijaUser
 
         Using.Manager { use =>
           logGenerointiAlkaa(todistus)
