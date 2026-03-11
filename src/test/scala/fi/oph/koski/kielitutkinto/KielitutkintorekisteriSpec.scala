@@ -80,7 +80,7 @@ class KielitutkintorekisteriSpec
 
       koulutusmuodot should contain (OpiskeluoikeudenTyyppi.kielitutkinto.koodiarvo)
     }
-    "Vain yleiset kielitutkinnot siirtyvät raportointikantaan, ei valtionhallinnon kielitutkintoja" in {
+    "Yleiset ja valtionhallinnon kielitutkinnot siirtyvät raportointikantaan" in {
       val raportointikanta = KoskiApplicationForTests.raportointiDatabase.db
       val suoritustyypit = runDbSync(raportointikanta, sql"""
         select distinct suorituksen_tyyppi from r_paatason_suoritus
@@ -88,7 +88,7 @@ class KielitutkintorekisteriSpec
       """.as[String])
 
       suoritustyypit should contain ("yleinenkielitutkinto")
-      suoritustyypit should not contain ("valtionhallinnonkielitutkinto")
+      suoritustyypit should contain ("valtionhallinnonkielitutkinto")
     }
   }
 
