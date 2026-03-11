@@ -312,7 +312,6 @@ class TodistusService(application: KoskiApplication) extends Logging with Timing
           val generatingRawPdfResult: Either[HttpStatus, (TodistusJob, Array[Byte])] = gatheringInputResult.flatMap { case (oppijanHenkilö, opiskeluoikeus, todistus) =>
             timed("GENERATING_RAW_PDF", thresholdMs = 0) {
               for {
-                // TODO: TOR-2400: Tallenna myös HTML S3:een, jotta sitä voi renderöidä helposti suoraan selaimessa debuggaukseen
                 todistusData <- createTodistusData(oppijanHenkilö, opiskeluoikeus, todistus)
                 metadata <- createTodistusMetaData(todistusData.siistittyOo, todistus)
                 pdfBytes <- TryWithLogging(logger, {
