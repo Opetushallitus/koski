@@ -123,6 +123,7 @@ export const LaajuusOpintopisteissäEdit: React.FC<
     createLaajuus={(arvo: any) => LaajuusOpintopisteissä({ arvo }) as any}
   />
 )
+componentsWithBuiltInErrors.add(LaajuusOpintopisteissäEdit)
 
 export const LaajuusKursseissaEdit: React.FC<
   DefaultLaajuusEditProps<LaajuusOpintopisteissä>
@@ -132,6 +133,7 @@ export const LaajuusKursseissaEdit: React.FC<
     createLaajuus={(arvo: any) => LaajuusKursseissa({ arvo }) as any}
   />
 )
+componentsWithBuiltInErrors.add(LaajuusKursseissaEdit)
 
 /* ---------------------------------------------------------------------
  *
