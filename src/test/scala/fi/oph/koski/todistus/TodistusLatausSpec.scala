@@ -623,7 +623,7 @@ class TodistusLatausSpec extends TodistusSpecHelpers with BeforeAndAfterAll {
           "keskitasolla taitotasoarvion 3 tai 4",
           "ylimmällä tasolla taitotasoarvion 5 tai 6.",
           "Saat todistuksen vain siitä tasosta, jonka testiin olet osallistunut. Arviot alle 1, alle 3",
-          "tai alle 5 tarkoittavat sitä, että sinulla ei ole tutkintotasolla vaadittavia taitoja.",
+          "tai alle 5 tarkoittavat, että sinulla ei ole tutkintotasolla vaadittavia taitoja.",
           "Jos et ole tyytyväinen YKI-testisi arviointiin, sinulla on kaksi vaihtoehtoa.",
           "1.  Tee oikaisuvaatimus. Se tarkoittaa, että YKI-testisi arvioidaan uudelleen eli sille",
           "tehdään tarkistusarviointi.",
