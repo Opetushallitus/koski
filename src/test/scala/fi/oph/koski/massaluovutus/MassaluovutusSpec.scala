@@ -33,9 +33,9 @@ import java.util.UUID
 class MassaluovutusSpec extends AnyFreeSpec with MassaluovutusTestMethods with Matchers with BeforeAndAfterAll with BeforeAndAfterEach with OpiskeluoikeusTestMethodsAmmatillinen {
   override def body: String = new String(response.bodyBytes, StandardCharsets.UTF_8)
 
-  override protected def beforeEach(): Unit = {
-    resetFixturesSkipInvalidOpiskeluoikeudet()
-    super.beforeEach()
+  override protected def beforeAll(): Unit = {
+    super.beforeAll()
+    resetFixtures()
   }
 
   override protected def afterEach(): Unit = {
@@ -175,7 +175,7 @@ class MassaluovutusSpec extends AnyFreeSpec with MassaluovutusTestMethods with M
         }
         val complete = waitForCompletion(queryId, user)
 
-        complete.files should have length 21
+        complete.files should have length 22
         complete.files.foreach(verifyResult(_, user))
 
         AuditLogTester.verifyLastAuditLogMessageForOperation(Map(
@@ -205,11 +205,11 @@ class MassaluovutusSpec extends AnyFreeSpec with MassaluovutusTestMethods with M
         val user = MockUsers.paakayttaja
         val slaveHenkilö = KoskiSpecificMockOppijat.slave.henkilö
 
-        createOrUpdate(slaveHenkilö, defaultOpiskeluoikeus)
+        val slaveOoOid = createOrUpdate(slaveHenkilö, makeOpiskeluoikeus(alkamispäivä = LocalDate.of(2020, 1, 1))).oid.get
 
         val queryId = addQuerySuccessfully(
           MassaluovutusQueryOrganisaationOpiskeluoikeudetJson(
-            alkanutAikaisintaan = LocalDate.of(2010, 1, 1),
+            alkanutAikaisintaan = LocalDate.of(2020, 1, 1),
             organisaatioOid = Some(MockOrganisaatiot.helsinginKaupunki),
           ), user
         )(_.queryId)
@@ -230,6 +230,7 @@ class MassaluovutusSpec extends AnyFreeSpec with MassaluovutusTestMethods with M
           (json \ "henkilö" \ "oid").extract[String] should equal(masterOid)
           (json \ "linkitetytOidit").extract[List[String]] should contain(slaveOid)
           (json \ "opiskeluoikeudet").asInstanceOf[JArray].arr should not be empty
+          (json \ "opiskeluoikeudet").asInstanceOf[JArray].arr.map(oo => (oo \ "oid").extract[String]) should contain(slaveOoOid)
         }
       }
 
@@ -254,9 +255,6 @@ class MassaluovutusSpec extends AnyFreeSpec with MassaluovutusTestMethods with M
 
       "Palauttaa epäonnistuneen kyselyn, mutta jättää merkinnän auditlokiin" in {
         AuditLogTester.clearMessages()
-
-        // Lisää rikkinäiset opiskeluoikeudet fikstureen:
-        resetFixtures()
 
         val user = MockUsers.paakayttaja
         val queryId = addQuerySuccessfully(
@@ -606,7 +604,11 @@ class MassaluovutusSpec extends AnyFreeSpec with MassaluovutusTestMethods with M
             oos.arr.map(v =>
               (
                 (v \ "oppijaOid").extract[String],
-                ((v \ "opiskeluoikeudet").extract[List[JObject]].last \ "oid").extract[String])).last match {
+                (v \ "opiskeluoikeudet").extract[List[JObject]].lastOption.map(oo => (oo \ "oid").extract[String])
+                  .orElse((v \ "virheellisetOpiskeluoikeudet").extract[List[JObject]].lastOption.map(oo => (oo \ "oid").extract[String]))
+                  .get
+              )
+            ).last match {
               case (oppijaOid, opiskeluoikeusOid) => AuditLogTester.verifyLastAuditLogMessageForOperation(Map(
                 "operation" -> "SUORITUSPALVELU_OPISKELUOIKEUS_HAKU",
                 "target" -> Map(
@@ -960,9 +962,6 @@ class MassaluovutusSpec extends AnyFreeSpec with MassaluovutusTestMethods with M
       }
 
       "Palauttaa virheeseen päätyneitä opiskeluoikeuksia" in {
-        // Lisää rikkinäiset opiskeluoikeudet fikstureen:
-        resetFixtures()
-
         val queryId = addQuerySuccessfully(getQuery(LocalDateTime.now().minusHours(1)), user) { response =>
           response.status should equal(QueryState.pending)
           response.queryId
@@ -1384,9 +1383,6 @@ class MassaluovutusSpec extends AnyFreeSpec with MassaluovutusTestMethods with M
       }
 
       "Palauttaa virheeseen päätyneitä opiskeluoikeuksia" in {
-        // Lisää rikkinäiset opiskeluoikeudet fikstureen:
-        resetFixtures()
-
         val queryId = addQuerySuccessfully(getQuery(oppijaOids), user) { response =>
           response.status should equal(QueryState.pending)
           response.queryId
