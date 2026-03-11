@@ -473,15 +473,11 @@ class TodistusService(application: KoskiApplication) extends Logging with Timing
   private def logGenerointiAlkaa(todistus: TodistusJob): Unit = {
     val konteksti = teeKonteksti(todistus.id, todistus.oppijaOid, todistus.opiskeluoikeusOid, todistus.templateVariant, todistus.userOid.getOrElse("EI TIEDOSSA"))
     logger.info(s"Aloita generointi, $konteksti")
-
-    // TODO: TOR-2400: metriikat Cloudwatchiin?
   }
 
   private def logGenerointiValmis(todistus: TodistusJob): Unit = {
     val konteksti = teeKonteksti(todistus.id, todistus.oppijaOid, todistus.opiskeluoikeusOid, todistus.templateVariant, todistus.userOid.getOrElse("EI TIEDOSSA"))
     logger.info(s"Generointi valmis, $konteksti")
-
-    // TODO: TOR-2400: metriikat Cloudwatchiin?
   }
 
   private def logGenerointiEpäonnistui(todistus: TodistusJob, error: String): Unit = {
