@@ -1320,7 +1320,7 @@ test.describe('Vapaa sivistystyö', () => {
           page.getByTestId(
             'oo.0.suoritukset.0.osasuoritukset.0.laajuus.edit.errors'
           )
-        ).toContainText('Kenttä ei voi olla tyhjä')
+        ).toContainText('Pakollinen tieto puuttuu')
         expect(await vstOppijaPage.saveBtn.isDisabled()).toBe(true)
 
         await vstOppijaPage.cancelEdit()
