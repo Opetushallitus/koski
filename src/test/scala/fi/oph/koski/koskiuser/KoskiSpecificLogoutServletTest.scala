@@ -26,7 +26,7 @@ class KoskiSpecificLogoutServletTest
       enableCasUrls()
       authGet(s"user/logout") {
         status shouldBe (302)
-        header("Location") shouldEqual (s"https://opintopolku.fi/cas-oppija/logout?service=${baseUrl}")
+        header("Location") shouldEqual (s"https://opintopolku.fi/cas-oppija/logout?service=${URLEncoder.encode(baseUrl, "UTF-8")}")
       }
     }
 
@@ -35,7 +35,7 @@ class KoskiSpecificLogoutServletTest
       enableCasUrls()
       authGet(s"user/logout?target=${URLEncoder.encode(target, "UTF-8")}") {
         status shouldBe (302)
-        header("Location") shouldEqual ("https://opintopolku.fi/cas-oppija/logout?service=https://www.hsl.fi/etusivu/#linkki")
+        header("Location") shouldEqual (s"https://opintopolku.fi/cas-oppija/logout?service=${URLEncoder.encode("https://www.hsl.fi/etusivu/#linkki", "UTF-8")}")
       }
     }
   }

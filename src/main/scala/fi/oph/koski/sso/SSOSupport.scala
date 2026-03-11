@@ -86,7 +86,7 @@ trait SSOSupport extends ScalatraBase with Logging {
   def redirectToVirkailijaLogin = {
     response.addCookie(Cookie("koskiReturnUrl", currentUrl)(CookieOptions(secure = isHttps, path = "/", maxAge = 60, httpOnly = ssoConfig.isCasSsoUsed)))
     if (ssoConfig.isCasSsoUsed) {
-      redirect(application.config.getString("opintopolku.virkailija.url") + "/cas/login?service=" + casVirkailijaServiceUrl)
+      redirect(application.config.getString("opintopolku.virkailija.url") + "/cas/login?service=" + URLEncoder.encode(casVirkailijaServiceUrl, "UTF-8"))
     } else {
       redirect(localLoginPage)
     }
@@ -98,7 +98,7 @@ trait SSOSupport extends ScalatraBase with Logging {
     val lang = UserLanguage.getLanguageFromCookie(request)
 
     if (ssoConfig.isCasSsoUsed) {
-      redirect(application.config.getString("opintopolku.oppija.url") + s"/cas-oppija/login?locale=${lang}&service=${casOppijaServiceUrl}&valtuudet=false")
+      redirect(application.config.getString("opintopolku.oppija.url") + s"/cas-oppija/login?locale=${lang}&service=${URLEncoder.encode(casOppijaServiceUrl, "UTF-8")}&valtuudet=false")
     } else {
       redirect(localOppijaLoginPage + "?onSuccess=" + URLEncoder.encode(params.getOrElse("redirect", ""), "UTF-8"))
     }
@@ -106,7 +106,7 @@ trait SSOSupport extends ScalatraBase with Logging {
 
   def redirectToVirkailijaLogout = {
     if (ssoConfig.isCasSsoUsed) {
-      redirect(application.config.getString("opintopolku.virkailija.url") + "/cas/logout?service=" + serviceRoot + "/koski/virkailija")
+      redirect(application.config.getString("opintopolku.virkailija.url") + "/cas/logout?service=" + URLEncoder.encode(serviceRoot + "/koski/virkailija", "UTF-8"))
     } else {
       redirect(localLoginPage)
     }
@@ -114,7 +114,7 @@ trait SSOSupport extends ScalatraBase with Logging {
 
   def redirectToOppijaLogout(redirectTarget: String = serviceRoot) = {
     if (ssoConfig.isCasSsoUsed) {
-      redirect(SSOConfigurationOverride.getValue(application.config, "opintopolku.oppija.url") + "/cas-oppija/logout?service=" + redirectTarget)
+      redirect(SSOConfigurationOverride.getValue(application.config, "opintopolku.oppija.url") + "/cas-oppija/logout?service=" + URLEncoder.encode(redirectTarget, "UTF-8"))
     } else {
       redirect(redirectTarget)
     }
