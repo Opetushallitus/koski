@@ -1,32 +1,46 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": ["config:best-practices"],
+  "extends": [
+    "config:best-practices"
+  ],
   "osvVulnerabilityAlerts": true,
   "vulnerabilityAlerts": {
     "enabled": true,
-    "labels": ["security"]
+    "labels": [
+      "security"
+    ]
   },
   "prConcurrentLimit": 10,
-  "pinVersions": false,
+  "rangeStrategy": "replace",
   "ignoreDeps": [
     "com.github.Opetushallitus.java-utils:oid-generator"
   ],
   "packageRules": [
     {
       "description": "Disable major updates by default",
-      "matchUpdateTypes": ["major"],
+      "matchUpdateTypes": [
+        "major"
+      ],
       "enabled": false
     },
     {
       "description": "Group minor npm updates",
-      "matchManagers": ["npm"],
-      "matchUpdateTypes": ["minor"],
+      "matchManagers": [
+        "npm"
+      ],
+      "matchUpdateTypes": [
+        "minor"
+      ],
       "groupName": "npm minor updates"
     },
     {
       "description": "Group minor Maven updates",
-      "matchManagers": ["maven"],
-      "matchUpdateTypes": ["minor"],
+      "matchManagers": [
+        "maven"
+      ],
+      "matchUpdateTypes": [
+        "minor"
+      ],
       "groupName": "maven minor updates"
     }
   ],
