@@ -168,37 +168,6 @@ class TodistusWorkflowSpec extends TodistusSpecHelpers {
       secondJob.id should not equal firstJob.id
       secondJob.state should equal(TodistusState.QUEUED)
     }
-
-    "Luo uuden todistuksen, jos aiempi on QUEUED_FOR_EXPIRE-tilassa" in {
-      val templateVariant = "fi"
-      val hetu = KoskiSpecificMockOppijat.kielitutkinnonSuorittaja.hetu.get
-      val oppijaOid = KoskiSpecificMockOppijat.kielitutkinnonSuorittaja.oid
-      val opiskeluoikeusOid = getVahvistettuKielitutkinnonOpiskeluoikeus(oppijaOid).flatMap(_.oid).get
-
-      val req = TodistusGenerateRequest(opiskeluoikeusOid, templateVariant)
-
-      // Luo ensimmäinen todistus ja odota sen valmistumista
-      val firstJob = addGenerateJobSuccessfully(req, hetu) { todistusJob =>
-        todistusJob.state should equal(TodistusState.QUEUED)
-        todistusJob
-      }
-      val completedFirstJob = waitForCompletion(firstJob.id, hetu)
-      completedFirstJob.state should equal(TodistusState.COMPLETED)
-
-      // Merkitse todistus QUEUED_FOR_EXPIRE-tilaan (simuloi vanhenemisjonoon merkitsemistä)
-      app.todistusRepository.setJobQueuedForExpireForUnitTests(firstJob.id)
-      val queuedForExpireJobFromDb = app.todistusRepository.getFromDbForUnitTests(firstJob.id).get
-      queuedForExpireJobFromDb.state should equal(TodistusState.QUEUED_FOR_EXPIRE)
-
-      // Pyydä samaa todistusta uudestaan
-      val secondJob = addGenerateJobSuccessfully(req, hetu) { todistusJob =>
-        todistusJob
-      }
-
-      // Toisen pyynnön pitäisi luoda uusi job, koska QUEUED_FOR_EXPIRE-tilassa olevaa ei uudelleenkäytetä
-      secondJob.id should not equal firstJob.id
-      secondJob.state should equal(TodistusState.QUEUED)
-    }
   }
 
   "markAllMyJobsInterrupted merkitsee jobin keskeytetyksi" - {
@@ -241,7 +210,7 @@ class TodistusWorkflowSpec extends TodistusSpecHelpers {
   }
 
   "Todistusten vanheneminen" - {
-    "Merkitsee vanhentuneet todistukset QUEUED_FOR_EXPIRE-tilaan" in {
+    "Merkitsee vanhentuneet todistukset EXPIRED-tilaan" in {
       val templateVariant = "fi"
       val hetu = KoskiSpecificMockOppijat.kielitutkinnonSuorittaja.hetu.get
       val oppijaOid = KoskiSpecificMockOppijat.kielitutkinnonSuorittaja.oid
@@ -265,12 +234,12 @@ class TodistusWorkflowSpec extends TodistusSpecHelpers {
       // Odota että cleanup-scheduler käsittelee vanhentuneen todistuksen
       Thread.sleep(3000) // cleanupInterval on 2s
 
-      // Varmista että todistus on nyt QUEUED_FOR_EXPIRE-tilassa
+      // Varmista että todistus on nyt EXPIRED-tilassa
       val expiredJob = app.todistusRepository.getFromDbForUnitTests(todistusJob.id).get
-      expiredJob.state should equal(TodistusState.QUEUED_FOR_EXPIRE)
+      expiredJob.state should equal(TodistusState.EXPIRED)
     }
 
-    "Ei merkitse QUEUED_FOR_EXPIRE-tilaan, jos todistus ei ole vielä vanhentunut" in {
+    "Ei merkitse EXPIRED-tilaan, jos todistus ei ole vielä vanhentunut" in {
       val templateVariant = "fi"
       val hetu = KoskiSpecificMockOppijat.kielitutkinnonSuorittaja.hetu.get
       val oppijaOid = KoskiSpecificMockOppijat.kielitutkinnonSuorittaja.oid
@@ -325,14 +294,14 @@ class TodistusWorkflowSpec extends TodistusSpecHelpers {
       // Odota cleanup-schedulerin käynnistymistä
       Thread.sleep(3000)
 
-      // Varmista että kaikki todistukset ovat QUEUED_FOR_EXPIRE-tilassa
+      // Varmista että kaikki todistukset ovat EXPIRED-tilassa
       val expiredFi = app.todistusRepository.getFromDbForUnitTests(jobFi.id).get
       val expiredSv = app.todistusRepository.getFromDbForUnitTests(jobSv.id).get
       val expiredEn = app.todistusRepository.getFromDbForUnitTests(jobEn.id).get
 
-      expiredFi.state should equal(TodistusState.QUEUED_FOR_EXPIRE)
-      expiredSv.state should equal(TodistusState.QUEUED_FOR_EXPIRE)
-      expiredEn.state should equal(TodistusState.QUEUED_FOR_EXPIRE)
+      expiredFi.state should equal(TodistusState.EXPIRED)
+      expiredSv.state should equal(TodistusState.EXPIRED)
+      expiredEn.state should equal(TodistusState.EXPIRED)
     }
   }
 

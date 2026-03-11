@@ -105,8 +105,7 @@ STAMPING_PDF ja SAVING_STAMPED_PDF skipataan käytettäessä printtileiskoja.
 **Huom:** STAMPING_PDF-vaiheessa suoritetaan myös allekirjoituksen kryptografinen validointi (jos konfiguroitu). Jos validointi epäonnistuu, job siirtyy ERROR-tilaan ja virheellinen PDF tallennetaan debuggausta varten.
 
 Virhetilaan siirtynyt job saa tilan `ERROR`. Keskeytynyt job (`INTERRUPTED`)
-palautetaan jonoon uudestaan. Vanhentunut job käsitellään
-`QUEUED_FOR_EXPIRE` → `EXPIRED`.
+palautetaan jonoon uudestaan. Vanhentuneet jobit asetetaan tilaan `EXPIRED`.
 
 ### Jobien uudelleenkäyttö
 
@@ -182,8 +181,8 @@ Vastaa jonojen ylläpidosta:
 - **Orvot** (`findOrphanedJobs`): job on joko INTERRUPTED tai jobia hoitanut kontti ei ole
   enää aktiivinen. Palautetaan jonoon enintään 3 kertaa, sen jälkeen ERROR.
 - **Vanhentumat** (`findExpiredJobs`): COMPLETED-työt vanhentuvat
-  konfiguroidun ajan jälkeen ja siirtyvät QUEUED_FOR_EXPIRE → EXPIRED. S3-bucket on tarkoitus
-  konffatta poistamaan tiedostot yhtä vanhoina.
+  konfiguroidun ajan jälkeen ja siirtyvät tilaan EXPIRED. S3-bucket on tarkoitus
+  konffatta poistamaan tiedostot aikaisintaan yhtä vanhoina.
 
 ---
 

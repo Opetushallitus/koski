@@ -53,7 +53,6 @@ class SwisscomHttpClient(config: SwisscomConfig) extends Logging {
   private val contentTypeHeader = Header.Raw(CIString("Content-Type"), "application/json;charset=UTF-8")
   private val acceptHeader = Header.Raw(CIString("Accept"), "application/json")
 
-  // TODO: TOR-2400: Salliikohan Swisscom retryttämisen samalla RequestID:llä, vai pitäisikö retryissä generoida aina uusi?
   private val baseClient = Http.retryingClient("swisscom-client", _.withSslContext(sslContext))
 
   val client = {
@@ -76,7 +75,6 @@ class SwisscomHttpClient(config: SwisscomConfig) extends Logging {
     }
 
     try {
-      // TODO: TOR-2400: Käytä PKCS12, se on default nykyään? Ei tarvitse myöskään sitten konvertoida JKS:ksi asti.
       val keystore = KeyStore.getInstance("JKS")
       loadStore(keystoreString, keystorePassword, keystore)
 

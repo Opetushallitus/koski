@@ -623,7 +623,7 @@ class TodistusLatausSpec extends TodistusSpecHelpers with BeforeAndAfterAll {
           "keskitasolla taitotasoarvion 3 tai 4",
           "ylimmällä tasolla taitotasoarvion 5 tai 6.",
           "Saat todistuksen vain siitä tasosta, jonka testiin olet osallistunut. Arviot alle 1, alle 3",
-          "tai alle 5 tarkoittavat sitä, että sinulla ei ole tutkintotasolla vaadittavia taitoja.",
+          "tai alle 5 tarkoittavat, että sinulla ei ole tutkintotasolla vaadittavia taitoja.",
           "Jos et ole tyytyväinen YKI-testisi arviointiin, sinulla on kaksi vaihtoehtoa.",
           "1.  Tee oikaisuvaatimus. Se tarkoittaa, että YKI-testisi arvioidaan uudelleen eli sille",
           "tehdään tarkistusarviointi.",
@@ -775,8 +775,6 @@ class TodistusLatausSpec extends TodistusSpecHelpers with BeforeAndAfterAll {
     info.getTitle should equal("Todistus")
     info.getSubject should equal("Todistus yleisen kielitutkinnon suorittamisesta")
     info.getAuthor should equal("Opetushallitus")
-    // TODO: TOR-2400: Keywords ei toimi Acrobat:ssa, vaikka tässä toimii, ja samoin esim. Chromen PDF viewerissä.
-    // Jotenkin littyy siihen, miten/mihin keywordsit PDF:ssä on tallennettu.
     info.getKeywords should equal("todistus, yleinen kielitutkinto")
 
     val generointiStartedAt = info.getCustomMetadataValue("GenerointiStartedAt")

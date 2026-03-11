@@ -218,6 +218,7 @@ object KoskiSpecificSession {
 
   private val systemKäyttöoikeudet: Set[Käyttöoikeus] = Set(KäyttöoikeusGlobal(List(Palvelurooli(OPHPAAKAYTTAJA), Palvelurooli(LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))))
   private val KOSKI_SYSTEM_USER: String = "Koski system user"
+  private val KOSKI_KATSELIJA_SYSTEM_USER: String = "Koski katselija system user"
   val KOSKI_SYSTEM_USER_TALLENNETUT_YLIOPPILASTUTKINNON_OPISKELUOIKEUDET = "Koski system user tallennetut ylioppilastutkinnon opiskeluoikeudet"
   private val KOSKI_SYSTEM_USER_MITÄTÖIDYT_JA_POISTETUT: String = "Koski system user mitätöidyt ja poistetut"
   private val UNTRUSTED_SYSTEM_USER = "Koski untrusted system user"
@@ -235,6 +236,17 @@ object KoskiSpecificSession {
     InetAddress.getLoopbackAddress,
     "",
     systemKäyttöoikeudet
+  )
+  val systemKatselijaUser = new KoskiSpecificSession(
+    AuthenticationUser(
+      Opetushallitus.organisaatioOid,
+      KOSKI_KATSELIJA_SYSTEM_USER,
+      KOSKI_KATSELIJA_SYSTEM_USER, None
+    ),
+    "fi",
+    InetAddress.getLoopbackAddress,
+    "",
+    Set(KäyttöoikeusGlobal(List(Palvelurooli(OPHKATSELIJA))))
   )
   // Internal user with access to YO-opiskeluoikeudet
   val systemUserTallennetutYlioppilastutkinnonOpiskeluoikeudet = new KoskiSpecificSession(

@@ -13,7 +13,7 @@ class MigrationSpec extends AnyFreeSpec with Matchers with RaportointikantaTestM
   "Migraatiot" - {
     "Havaittiin uusi tietokannan migraatiotiedosto. Migraatiot, varsinkin jos koskevat Kosken suurimpia tauluja, on hyvä testata tietokantareplikaa vasten.\n" +
       "Korjaa tämän testin odottama tiedostomäärä, kun olet varma että migraatiot voi viedä eteenpäin.\nDokumentaatio: documentation/tietokantamigraatiot.md" in {
-      new File("./src/main/resources/db/migration").listFiles.length should equal (107)
+      new File("./src/main/resources/db/migration").listFiles.length should equal (108)
     }
   }
 
@@ -51,7 +51,7 @@ class MigrationSpec extends AnyFreeSpec with Matchers with RaportointikantaTestM
         "RaportointiDatabase.scala"                                 -> "d78896e970fabb013afc63e94cd2cc5f",
         "RaportointiDatabaseCustomFunctions.scala"                  -> "956f101d1219c49ac9134b72a30caf3a",
         "RaportointiDatabaseSchema.scala"                           -> "63046abd592eb6e6daa4886f873f0a4f",
-        "RaportointikantaService.scala"                             -> "e909691ee000f27711e332c23537867e",
+        "RaportointikantaService.scala"                             -> "70219108d33a40b0b3cb8fa6ef7e0ee9",
         "RaportointikantaStatusServlet.scala"                       -> "bfb4d4d668ecbff866468ae2dc5c1e0b",
         "RaportointikantaTestServlet.scala"                         -> "ad92e33c2f816ed65c0693f5dc0143b4",
         "RaportointikantaTableQueries.scala"                        -> "f2f26c217992539c1e61dcbd031fc642",
@@ -60,6 +60,7 @@ class MigrationSpec extends AnyFreeSpec with Matchers with RaportointikantaTestM
         "IncrementalUpdateOpiskeluoikeusLoader.scala"               -> "b1bd97221605ff4d93dfa38b78838fdc",
         "FullReloadOpiskeluoikeusLoader.scala"                      -> "b7920c2257afaecf09f1212fbf393326",
         "VipunenExport.scala"                                       -> "e01d5a8dedee5127212210694624131f",
+        "ECSMetadataClient.scala"                                   -> "c4d555e51a26a1c858304b5d602706c8",
       )
 
       val errors = getListOfFiles(dir).flatMap(file => {

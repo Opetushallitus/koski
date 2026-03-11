@@ -153,7 +153,7 @@ export const YleinenKielitutkintoTodistusLataus: React.FC<
     (response: { data: TodistusJob }) => {
       // Päivitä status vain jos se vastaa nykyistä varianttia
       if (response.data.templateVariant === templateVariant) {
-        const ignoredStates = ['EXPIRED', 'QUEUED_FOR_EXPIRE', 'INTERRUPTED']
+        const ignoredStates = ['EXPIRED', 'INTERRUPTED']
 
         if (ignoredStates.includes(response.data.state)) {
           // Käsitellään ikään kuin jobia ei olisi koskaan ollut
@@ -207,7 +207,7 @@ export const YleinenKielitutkintoTodistusLataus: React.FC<
       if (result._tag === 'Right') {
         const job = result.right.data
         // Tilat jotka käsitellään ikään kuin jobia ei olisi koskaan ollut
-        const ignoredStates = ['EXPIRED', 'QUEUED_FOR_EXPIRE', 'INTERRUPTED']
+        const ignoredStates = ['EXPIRED', 'INTERRUPTED']
 
         if (ignoredStates.includes(job.state)) {
           // Ei tehdä mitään, näytetään tyhjä tila

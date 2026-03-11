@@ -44,18 +44,16 @@ object TodistusState {
   val COMPLETED = "COMPLETED"
   val INTERRUPTED = "INTERRUPTED"
   val ERROR = "ERROR"
-  // TODO: TOR-2400: Olisiko parempi vaan poistaa koko rivi ja tiedostot S3:sta suoraan, jos jotain halutaan ekspiroida? Riippuu siitä, miten siivousprosessi halutaan toteuttaa.
-  val QUEUED_FOR_EXPIRE = "QUEUED_FOR_EXPIRE" // voi merkitä tämän, kun halutaan, että todistus poistetaan.
-  val EXPIRED = "EXPIRED"// esim. siivousprosessi voi asettaa tämän, jos todistus on syystä tai toisesta vanhentunut (esim. oo mitätöity, tiedosto poistettu S3:sta tilan säästämiseksi tai muusta syystä jne.)
+  val EXPIRED = "EXPIRED"// Merkitään, kun todistus on vanhentunut. S3:sta siivous hoidetaan S3:n työkaluilla ja halutuilla säilytysajoilla.
 
   val runningStates: Set[String] = Set(GATHERING_INPUT, GENERATING_RAW_PDF, SAVING_RAW_PDF, STAMPING_PDF, SAVING_STAMPED_PDF)
 
   // States that should be re-queued if the worker lease is not active.
   val requeueableStates: Set[String] = runningStates + INTERRUPTED
 
-  val nonReusableStates: Set[String] = Set(ERROR, QUEUED_FOR_EXPIRE, EXPIRED)
+  val nonReusableStates: Set[String] = Set(ERROR, EXPIRED)
 
-  val * : Set[String] = Set(QUEUED, GATHERING_INPUT, GENERATING_RAW_PDF, SAVING_RAW_PDF, STAMPING_PDF, SAVING_STAMPED_PDF, COMPLETED, ERROR, QUEUED_FOR_EXPIRE, EXPIRED)
+  val * : Set[String] = Set(QUEUED, GATHERING_INPUT, GENERATING_RAW_PDF, SAVING_RAW_PDF, STAMPING_PDF, SAVING_STAMPED_PDF, COMPLETED, ERROR, EXPIRED)
 }
 
 object TodistusTemplateVariant {

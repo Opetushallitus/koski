@@ -270,14 +270,14 @@ class TodistusJobRepository(val db: DB, val workerId: String, config: Config) ex
         AND completed_at < ${java.sql.Timestamp.valueOf(expirationThreshold)}
       """.as[TodistusJob])
 
-  def markJobsAsQueuedForExpire(ids: Seq[String]): Int =
+  def markJobsAsExpired(ids: Seq[String]): Int =
     if (ids.isEmpty) {
       0
     } else {
       runDbSync(
         sql"""
         UPDATE todistus_job
-        SET state = ${TodistusState.QUEUED_FOR_EXPIRE}
+        SET state = ${TodistusState.EXPIRED}
         WHERE id::text = ANY(${ids})
           AND state = ${TodistusState.COMPLETED}
         """.asUpdate)
@@ -287,16 +287,6 @@ class TodistusJobRepository(val db: DB, val workerId: String, config: Config) ex
     require(Environment.isUnitTestEnvironment(config) || Environment.isLocalDevelopmentEnvironment(config), "truncateForLocal can only be used in local test environment")
 
     runDbSync(sql"TRUNCATE TABLE todistus_job".asUpdate)
-  }
-
-  def setJobQueuedForExpireForUnitTests(id: String): Boolean = {
-    require(Environment.isUnitTestEnvironment(config), "setJobQueuedForExpireForUnitTests can only be used in unit test environment")
-    runDbSync(
-      sql"""
-      UPDATE todistus_job
-      SET state = ${TodistusState.QUEUED_FOR_EXPIRE}
-      WHERE id = ${id}::uuid
-      """.asUpdate) != 0
   }
 
   def setJobExpiredForUnitTests(id: String): Boolean = {

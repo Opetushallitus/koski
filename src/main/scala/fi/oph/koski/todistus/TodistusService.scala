@@ -247,8 +247,8 @@ class TodistusService(application: KoskiApplication) extends Logging with Timing
     if (expiredJobs.nonEmpty) {
       timed("cleanup-expire", thresholdMs = 0) {
         val expiredJobIds = expiredJobs.map(_.id)
-        val markedCount = todistusRepository.markJobsAsQueuedForExpire(expiredJobIds)
-        logger.info(s"Merkittiin ${markedCount} vanhentunutta todistusta QUEUED_FOR_EXPIRE-tilaan (vanhenemisaika: ${expirationDuration})")
+        val markedCount = todistusRepository.markJobsAsExpired(expiredJobIds)
+        logger.info(s"Merkittiin ${markedCount} vanhentunutta todistusta EXPIRED-tilaan (vanhenemisaika: ${expirationDuration})")
       }
     }
 
@@ -272,8 +272,7 @@ class TodistusService(application: KoskiApplication) extends Logging with Timing
   def runNext(): Unit = {
     todistusRepository.takeNext.foreach { todistus =>
       timed("runNext", thresholdMs = 0) {
-        // TODO: TOR-2400: Onko mahdollista, että todistuksilla näkyy jotain sensitiivistä dataa? Jos ei ole, niin tee ja käytä käyttäjätunnusta, joka ei niihin pääse edes käsiksi. Selviää, kun todistuspohjat valmiina.
-        implicit val systemUser = KoskiSpecificSession.systemUser
+        implicit val systemKatselijaUser = KoskiSpecificSession.systemKatselijaUser
 
         Using.Manager { use =>
           logGenerointiAlkaa(todistus)
@@ -313,7 +312,6 @@ class TodistusService(application: KoskiApplication) extends Logging with Timing
           val generatingRawPdfResult: Either[HttpStatus, (TodistusJob, Array[Byte])] = gatheringInputResult.flatMap { case (oppijanHenkilö, opiskeluoikeus, todistus) =>
             timed("GENERATING_RAW_PDF", thresholdMs = 0) {
               for {
-                // TODO: TOR-2400: Tallenna myös HTML S3:een, jotta sitä voi renderöidä helposti suoraan selaimessa debuggaukseen
                 todistusData <- createTodistusData(oppijanHenkilö, opiskeluoikeus, todistus)
                 metadata <- createTodistusMetaData(todistusData.siistittyOo, todistus)
                 pdfBytes <- TryWithLogging(logger, {
@@ -473,15 +471,11 @@ class TodistusService(application: KoskiApplication) extends Logging with Timing
   private def logGenerointiAlkaa(todistus: TodistusJob): Unit = {
     val konteksti = teeKonteksti(todistus.id, todistus.oppijaOid, todistus.opiskeluoikeusOid, todistus.templateVariant, todistus.userOid.getOrElse("EI TIEDOSSA"))
     logger.info(s"Aloita generointi, $konteksti")
-
-    // TODO: TOR-2400: metriikat Cloudwatchiin?
   }
 
   private def logGenerointiValmis(todistus: TodistusJob): Unit = {
     val konteksti = teeKonteksti(todistus.id, todistus.oppijaOid, todistus.opiskeluoikeusOid, todistus.templateVariant, todistus.userOid.getOrElse("EI TIEDOSSA"))
     logger.info(s"Generointi valmis, $konteksti")
-
-    // TODO: TOR-2400: metriikat Cloudwatchiin?
   }
 
   private def logGenerointiEpäonnistui(todistus: TodistusJob, error: String): Unit = {
