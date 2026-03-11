@@ -9,7 +9,7 @@
   },
   "engines": {
     "node": ">=22",
-    "pnpm": ">=10"
+    "pnpm": ">=10.28.2"
   },
   "dependencies": {
     "@skidding/react-codemirror": "^1.0.2",
@@ -124,5 +124,5 @@
       "js-yaml": "4.1.1"
     }
   },
-  "packageManager": "pnpm@10.2.0"
+  "packageManager": "pnpm@10.28.2"
 }
