@@ -162,11 +162,16 @@ owasp:
 owaspresults:
 	open target/dependency-check-report.html
 
-# TODO: omadata-oauth2-sample/client, vaatii isompia päivityksiä saada läpi (pitäisi poistaa create-react-app yms.)
-.PHONY: snyk
-snyk: # javascript dependency vulnerability check
-	mvn generate-resources # to download correct node/pnpm version
-	node web/node_modules/snyk/dist/cli/index.js test web valpas-web omadata-oauth2-sample/server
+
+.PHONY: security-check
+security-check:
+	docker run --rm -v $(PWD):/workspace -w /workspace aquasec/trivy:latest fs \
+		--scanners vuln --severity CRITICAL,HIGH --ignorefile .trivyignore \
+		--skip-dirs src/main/resources/mockdata,src/test,target,omadata-oauth2-sample .
+	cd web && pnpm audit --audit-level high
+	cd valpas-web && pnpm audit --audit-level high
+	cd smoketests && pnpm audit --audit-level high
+	cd omadata-oauth2-sample/server && pnpm audit --audit-level high
 
 .PHONY: checkdoc_validation
 checkdoc_validation:
