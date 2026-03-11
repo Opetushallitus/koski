@@ -3,7 +3,7 @@ package fi.oph.koski.raportointikanta
 import fi.oph.koski.cloudwatch.CloudWatchMetricsService
 import fi.oph.koski.config.{Environment, KoskiApplication}
 import fi.oph.koski.db.{OpiskeluoikeusRow, RaportointiGenerointiDatabaseConfig}
-import fi.oph.koski.henkilo.{OpintopolkuHenkilöFacade, OppijanumeroRekisteriClientRetryStrategy}
+import fi.oph.koski.henkilo.OppijanumeroRekisteriClientRetryStrategy
 import fi.oph.koski.koskiuser.KoskiSpecificSession
 import fi.oph.koski.log.Logging
 import rx.lang.scala.schedulers.NewThreadScheduler
@@ -14,6 +14,9 @@ import scala.concurrent.duration.{DurationInt, FiniteDuration}
 import scala.language.postfixOps
 
 class RaportointikantaService(application: KoskiApplication) extends Logging {
+
+  lazy val ecsMetadata: ECSMetadataClient = new ECSMetadataClient(application.config)
+
   private val cloudWatchMetrics = CloudWatchMetricsService.apply(application.config)
   private val eventBridgeClient = KoskiEventBridgeClient.apply(application.config)
   private val päivitetytOpiskeluoikeudetJonoService = application.päivitetytOpiskeluoikeudetJono
@@ -137,8 +140,8 @@ class RaportointikantaService(application: KoskiApplication) extends Logging {
   def isLoading: Boolean =
     loadDatabase.status.isLoading && {
       if (Environment.isServerEnvironment(application.config)) {
-        application.ecsMetadata.taskARN.exists { thisTask =>
-          val loaderTasks = application.ecsMetadata.currentlyRunningRaportointikantaLoaderInstances
+        ecsMetadata.taskARN.exists { thisTask =>
+          val loaderTasks = ecsMetadata.currentlyRunningRaportointikantaLoaderInstances
           val otherLoaderTasks = loaderTasks.filterNot(_.taskArn == thisTask)
           val loading = otherLoaderTasks.nonEmpty
           if (!loading) {

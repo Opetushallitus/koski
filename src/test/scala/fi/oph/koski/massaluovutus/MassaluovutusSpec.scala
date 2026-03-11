@@ -6,8 +6,7 @@ import fi.oph.koski.db.QueryMethods
 import fi.oph.koski.documentation.ExamplesPerusopetus
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.http.KoskiErrorCategory
-import fi.oph.koski.json.JsonSerializer
-import fi.oph.koski.koskiuser.{KoskiSpecificSession, MockUsers, UserWithPassword}
+import fi.oph.koski.koskiuser.{KoskiSpecificSession, MockUsers}
 import fi.oph.koski.log.AuditLogTester
 import fi.oph.koski.massaluovutus.luokallejaaneet.{MassaluovutusQueryLuokalleJaaneet, MassaluovutusQueryLuokalleJaaneetJson}
 import fi.oph.koski.massaluovutus.organisaationopiskeluoikeudet.{MassaluovutusQueryOrganisaationOpiskeluoikeudet, MassaluovutusQueryOrganisaationOpiskeluoikeudetCsv, MassaluovutusQueryOrganisaationOpiskeluoikeudetJson, QueryOrganisaationOpiskeluoikeudetCsvDocumentation}
@@ -15,7 +14,6 @@ import fi.oph.koski.massaluovutus.paallekkaisetopiskeluoikeudet.MassaluovutusQue
 import fi.oph.koski.massaluovutus.suorituspalvelu.{SuorituspalveluMuuttuneetJalkeenQuery, SuorituspalveluOppijaOidsQuery}
 import fi.oph.koski.massaluovutus.valintalaskenta.ValintalaskentaQuery
 import fi.oph.koski.organisaatio.MockOrganisaatiot
-import fi.oph.koski.schema.KoskiSchema.strictDeserialization
 import fi.oph.koski.schema.{KoskeenTallennettavaOpiskeluoikeus, LocalizedString, OpiskeluoikeudenTyyppi, PerusopetuksenVuosiluokanSuoritus}
 import fi.oph.koski.util.Wait
 import fi.oph.koski.KoskiApplicationForTests
@@ -27,7 +25,6 @@ import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.{BeforeAndAfterAll, BeforeAndAfterEach}
 
-import java.net.URL
 import java.nio.charset.StandardCharsets
 import java.sql.Timestamp
 import java.time.{Duration, LocalDate, LocalDateTime}
@@ -90,8 +87,9 @@ class MassaluovutusSpec extends AnyFreeSpec with MassaluovutusTestMethods with M
 
     "Ajossa olevaa kyselyä ei vapauteta takaisin jonoon" in {
       withoutRunningQueryScheduler {
-        val worker = app.ecsMetadata.currentlyRunningKoskiInstances.head
-        val runningQuery = createRunningQuery(worker.taskArn)
+        val activeWorker = "active-worker"
+        app.workerLeaseRepository.tryAcquireOrRenew("massaluovutus", 1, activeWorker, Duration.ofSeconds(30))
+        val runningQuery = createRunningQuery(activeWorker)
 
         app.massaluovutusService.addRaw(runningQuery)
         app.massaluovutusCleanupScheduler.trigger()
