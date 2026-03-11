@@ -775,8 +775,6 @@ class TodistusLatausSpec extends TodistusSpecHelpers with BeforeAndAfterAll {
     info.getTitle should equal("Todistus")
     info.getSubject should equal("Todistus yleisen kielitutkinnon suorittamisesta")
     info.getAuthor should equal("Opetushallitus")
-    // TODO: TOR-2400: Keywords ei toimi Acrobat:ssa, vaikka tässä toimii, ja samoin esim. Chromen PDF viewerissä.
-    // Jotenkin littyy siihen, miten/mihin keywordsit PDF:ssä on tallennettu.
     info.getKeywords should equal("todistus, yleinen kielitutkinto")
 
     val generointiStartedAt = info.getCustomMetadataValue("GenerointiStartedAt")
