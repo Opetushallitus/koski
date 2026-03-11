@@ -247,8 +247,8 @@ class TodistusService(application: KoskiApplication) extends Logging with Timing
     if (expiredJobs.nonEmpty) {
       timed("cleanup-expire", thresholdMs = 0) {
         val expiredJobIds = expiredJobs.map(_.id)
-        val markedCount = todistusRepository.markJobsAsQueuedForExpire(expiredJobIds)
-        logger.info(s"Merkittiin ${markedCount} vanhentunutta todistusta QUEUED_FOR_EXPIRE-tilaan (vanhenemisaika: ${expirationDuration})")
+        val markedCount = todistusRepository.markJobsAsExpired(expiredJobIds)
+        logger.info(s"Merkittiin ${markedCount} vanhentunutta todistusta EXPIRED-tilaan (vanhenemisaika: ${expirationDuration})")
       }
     }
 
