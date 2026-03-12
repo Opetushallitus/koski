@@ -11,7 +11,8 @@
       "security"
     ]
   },
-  "prConcurrentLimit": 10,
+  "prConcurrentLimit": 8,
+  "platformAutomerge": false,
   "rangeStrategy": "replace",
   "ignoreDeps": [
     "com.github.Opetushallitus.java-utils:oid-generator"
