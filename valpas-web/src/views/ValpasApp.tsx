@@ -6,6 +6,12 @@ import {
   Switch,
 } from "react-router-dom"
 import HealthView from "../views/HealthView"
+import { NotFoundView } from "./ErrorView"
+import {
+  kansalainenEiOpintopolussaPath,
+  kansalainenLoginVirhePath,
+  kansalainenOmatTiedotPath,
+} from "../state/kansalainenPaths"
 
 export const ValpasApp = () => {
   const VirkailijaApp = React.lazy(() => import("./VirkailijaApp"))
@@ -24,13 +30,29 @@ export const ValpasApp = () => {
           )}
         />
         <Route
-          path="/"
-          render={({ match: { path } }: RouteComponentProps) => (
+          path={[
+            kansalainenOmatTiedotPath.route(),
+            kansalainenLoginVirhePath.route(),
+            kansalainenEiOpintopolussaPath.route(),
+          ]}
+          render={() => (
             <React.Suspense fallback={<></>}>
-              <KansalainenApp basePath={path} />
+              <KansalainenApp basePath="/" />
             </React.Suspense>
           )}
         />
+        <Route
+          exact
+          path="/"
+          render={() => (
+            <React.Suspense fallback={<></>}>
+              <KansalainenApp basePath="/" />
+            </React.Suspense>
+          )}
+        />
+        <Route>
+          <NotFoundView />
+        </Route>
       </Switch>
     </Router>
   )
