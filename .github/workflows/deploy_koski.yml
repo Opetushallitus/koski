@@ -136,7 +136,7 @@ jobs:
         run: aws ssm put-parameter --overwrite --name /koski/ytr-data-loader/task-definition --type String --value ${TASKDEF_ARN}
 
       - name: Report task ready
-        uses: ravsamhq/notify-slack-action@95a35215cdf7ab510d2cdd20ae94f342d212a1a1
+        uses: ravsamhq/notify-slack-action@02b169fd81108a34dbb029df4a41dd27ad680290
         if: always()
         with:
           status: ${{ job.status }}

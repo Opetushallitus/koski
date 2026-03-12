@@ -41,7 +41,7 @@ jobs:
           mvn exec:java -Dexec.mainClass="fi.oph.koski.perftest.RandomOpiskeluoikeusGetter"
 
       - name: Report failure
-        uses: ravsamhq/notify-slack-action@95a35215cdf7ab510d2cdd20ae94f342d212a1a1
+        uses: ravsamhq/notify-slack-action@02b169fd81108a34dbb029df4a41dd27ad680290
         if: ${{ failure() }}
         with:
           status: ${{ job.status }}
@@ -74,7 +74,7 @@ jobs:
           mvn exec:java -Dexec.mainClass="fi.oph.koski.perftest.MixedOpiskeluoikeusInserterUpdater"
 
       - name: Report failure
-        uses: ravsamhq/notify-slack-action@95a35215cdf7ab510d2cdd20ae94f342d212a1a1
+        uses: ravsamhq/notify-slack-action@02b169fd81108a34dbb029df4a41dd27ad680290
         if: ${{ failure() }}
         with:
           status: ${{ job.status }}
@@ -107,7 +107,7 @@ jobs:
           mvn exec:java -Dexec.mainClass="fi.oph.koski.perftest.MixedPerfTester"
 
       - name: Report failure
-        uses: ravsamhq/notify-slack-action@95a35215cdf7ab510d2cdd20ae94f342d212a1a1
+        uses: ravsamhq/notify-slack-action@02b169fd81108a34dbb029df4a41dd27ad680290
         if: ${{ failure() }}
         with:
           status: ${{ job.status }}
@@ -144,7 +144,7 @@ jobs:
           mvn exec:java -Dexec.mainClass="fi.oph.koski.perftest.ValpasRandomPerusopetuksenOppilaitoksetGetter"
 
       - name: Report failure
-        uses: ravsamhq/notify-slack-action@95a35215cdf7ab510d2cdd20ae94f342d212a1a1
+        uses: ravsamhq/notify-slack-action@02b169fd81108a34dbb029df4a41dd27ad680290
         if: ${{ failure() }}
         with:
           status: ${{ job.status }}
@@ -181,7 +181,7 @@ jobs:
           mvn exec:java -Dexec.mainClass="fi.oph.koski.perftest.ValpasRandomPerusopetuksenOppijaGetter"
 
       - name: Report failure
-        uses: ravsamhq/notify-slack-action@95a35215cdf7ab510d2cdd20ae94f342d212a1a1
+        uses: ravsamhq/notify-slack-action@02b169fd81108a34dbb029df4a41dd27ad680290
         if: ${{ failure() }}
         with:
           status: ${{ job.status }}
@@ -238,7 +238,7 @@ jobs:
           mvn exec:java -Dexec.mainClass="fi.oph.koski.perftest.YleinenKielitutkintoTodistusGenerator"
 
       - name: Report failure
-        uses: ravsamhq/notify-slack-action@95a35215cdf7ab510d2cdd20ae94f342d212a1a1
+        uses: ravsamhq/notify-slack-action@02b169fd81108a34dbb029df4a41dd27ad680290
         if: ${{ failure() }}
         with:
           status: ${{ job.status }}
