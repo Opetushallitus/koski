@@ -4,7 +4,7 @@
   "description": "Sample web application to use KOSKI OmaData with OAuth2",
   "main": "index.ts",
   "engines": {
-    "node": ">=22",
+    "node": ">=24",
     "pnpm": ">=10.28.2"
   },
   "type": "module",

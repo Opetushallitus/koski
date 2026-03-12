@@ -34,7 +34,7 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: "22.14.0"
+          node-version: "24.14.0"
 
       - name: Run linter
         run: |
@@ -54,7 +54,7 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: "22.14.0"
+          node-version: "24.14.0"
 
       - name: Install JS deps
         run: pnpm install --recursive $PNPM_FROZEN_FLAG
@@ -310,7 +310,7 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: "22.14.0"
+          node-version: "24.14.0"
       - run: |
           cd web
           pnpm install $PNPM_FROZEN_FLAG
@@ -362,7 +362,7 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: "22.14.0"
+          node-version: "24.14.0"
 
 
       - name: Run linter and tests

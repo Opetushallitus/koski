@@ -23,7 +23,7 @@ runs:
       if: steps.lookup.outputs.cache-hit != 'true'
       uses: actions/setup-node@v4
       with:
-        node-version: "22.14.0"
+        node-version: "24.14.0"
     - if: steps.lookup.outputs.cache-hit != 'true'
       uses: ./.github/actions/setup_java_11
     - name: Build Koski app + tests
