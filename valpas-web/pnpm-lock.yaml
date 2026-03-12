@@ -36,10 +36,10 @@ importers:
         version: 19.2.3
       react-calendar:
         specifier: ^6.0.0
-        version: 6.0.0(@types/react@19.2.8)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
+        version: 6.0.0(@types/react@19.2.14)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       react-date-picker:
         specifier: ^12.0.1
-        version: 12.0.1(@types/react@19.2.8)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
+        version: 12.0.1(@types/react@19.2.14)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       react-dom:
         specifier: ^19.2.3
         version: 19.2.3(react@19.2.3)
@@ -82,7 +82,7 @@ importers:
         version: 10.4.1
       '@testing-library/react':
         specifier: ^16.3.2
-        version: 16.3.2(@testing-library/dom@10.4.1)(@types/react-dom@19.2.3(@types/react@19.2.8))(@types/react@19.2.8)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
+        version: 16.3.2(@testing-library/dom@10.4.1)(@types/react-dom@19.2.3(@types/react@19.2.14))(@types/react@19.2.14)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       '@testing-library/user-event':
         specifier: ^14.6.1
         version: 14.6.1(@testing-library/dom@10.4.1)
@@ -102,11 +102,11 @@ importers:
         specifier: ^2.6.13
         version: 2.6.13
       '@types/react':
-        specifier: ^19.2.8
-        version: 19.2.8
+        specifier: 19.2.14
+        version: 19.2.14
       '@types/react-dom':
-        specifier: ^19.2.0
-        version: 19.2.3(@types/react@19.2.8)
+        specifier: 19.2.3
+        version: 19.2.3(@types/react@19.2.14)
       '@types/react-router-dom':
         specifier: ^5.3.3
         version: 5.3.3
@@ -994,24 +994,28 @@ packages:
     engines: {node: '>=10'}
     cpu: [arm64]
     os: [linux]
+    libc: [glibc]
 
   '@swc/core-linux-arm64-musl@1.11.21':
     resolution: {integrity: sha512-y1L49+snt1a1gLTYPY641slqy55QotPdtRK9Y6jMi4JBQyZwxC8swWYlQWb+MyILwxA614fi62SCNZNznB3XSA==}
     engines: {node: '>=10'}
     cpu: [arm64]
     os: [linux]
+    libc: [musl]
 
   '@swc/core-linux-x64-gnu@1.11.21':
     resolution: {integrity: sha512-NesdBXv4CvVEaFUlqKj+GA4jJMNUzK2NtKOrUNEtTbXaVyNiXjFCSaDajMTedEB0jTAd9ybB0aBvwhgkJUWkWA==}
     engines: {node: '>=10'}
     cpu: [x64]
     os: [linux]
+    libc: [glibc]
 
   '@swc/core-linux-x64-musl@1.11.21':
     resolution: {integrity: sha512-qFV60pwpKVOdmX67wqQzgtSrUGWX9Cibnp1CXyqZ9Mmt8UyYGvmGu7p6PMbTyX7vdpVUvWVRf8DzrW2//wmVHg==}
     engines: {node: '>=10'}
     cpu: [x64]
     os: [linux]
+    libc: [musl]
 
   '@swc/core-win32-arm64-msvc@1.11.21':
     resolution: {integrity: sha512-DJJe9k6gXR/15ZZVLv1SKhXkFst8lYCeZRNHH99SlBodvu4slhh/MKQ6YCixINRhCwliHrpXPym8/5fOq8b7Ig==}
@@ -1160,8 +1164,8 @@ packages:
   '@types/react-test-renderer@19.1.0':
     resolution: {integrity: sha512-XD0WZrHqjNrxA/MaR9O22w/RNidWR9YZmBdRGI7wcnWGrv/3dA8wKCJ8m63Sn+tLJhcjmuhOi629N66W6kgWzQ==}
 
-  '@types/react@19.2.8':
-    resolution: {integrity: sha512-3MbSL37jEchWZz2p2mjntRZtPt837ij10ApxKfgmXCTuHWagYg7iA5bqPw6C8BMPfwidlvfPI/fxOc42HLhcyg==}
+  '@types/react@19.2.14':
+    resolution: {integrity: sha512-ilcTH/UniCkMdtexkoCN0bI7pMcJDvmQFPvuPvmEaYA/NSfFTAgdUSLAoVjaRJm7+6PvcM+q1zYOwS4wTYMF9w==}
 
   '@types/selenium-webdriver@4.35.5':
     resolution: {integrity: sha512-wCQCjWmahRkUAO7S703UAvBFkxz4o/rjX4T2AOSWKXSi0sTQPsrXxR0GjtFUT0ompedLkYH4R5HO5Urz0hyeog==}
@@ -1376,6 +1380,7 @@ packages:
   basic-ftp@5.0.5:
     resolution: {integrity: sha512-4Bcg1P8xhUuqcii/S0Z9wiHIrQVPMermM1any+MX5GeGD7faD3/msQUDGLol9wOcz4/jbg/WJnGqoJF6LiBdtg==}
     engines: {node: '>=10.0.0'}
+    deprecated: Security vulnerability fixed in 5.2.0, please upgrade
 
   bem-ts@0.15.1:
     resolution: {integrity: sha512-k2W/7l0VW/yqUmrNcmW+I9BmtEJ5QIrKqdOz3iNBrbzuKdYcCd39QIrb9lKvOcyrzsNgLHEAj6BmvbEo53p8eg==}
@@ -2091,7 +2096,7 @@ packages:
 
   glob@7.2.3:
     resolution: {integrity: sha512-nFR0zLpU2YCaRxwoCJvL6UvCH2JFyFVIvwTLsIf21AuHlMskA1hhTdk+LlYJtOlYt9v6dvszD2BGRqBL+iQK9Q==}
-    deprecated: Glob versions prior to v9 are no longer supported
+    deprecated: Old versions of glob are not supported, and contain widely publicized security vulnerabilities, which have been fixed in the current version. Please update. Support for old versions may be purchased (at exorbitant rates) by contacting i@izs.me
 
   globals@11.12.0:
     resolution: {integrity: sha512-WOBp/EEGUiIsJSp7wcv/y6MO+lV9UoncWqxuFfm8eBwzWNgyfBd6Gz+IeKQ9jCmyhoH99g15M3T+QaVHFjizVA==}
@@ -2634,24 +2639,28 @@ packages:
     engines: {node: '>= 12.0.0'}
     cpu: [arm64]
     os: [linux]
+    libc: [glibc]
 
   lightningcss-linux-arm64-musl@1.29.3:
     resolution: {integrity: sha512-dxakOk66pf7KLS7VRYFO7B8WOJLecE5OPL2YOk52eriFd/yeyxt2Km5H0BjLfElokIaR+qWi33gB8MQLrdAY3A==}
     engines: {node: '>= 12.0.0'}
     cpu: [arm64]
     os: [linux]
+    libc: [musl]
 
   lightningcss-linux-x64-gnu@1.29.3:
     resolution: {integrity: sha512-ySZTNCpbfbK8rqpKJeJR2S0g/8UqqV3QnzcuWvpI60LWxnFN91nxpSSwCbzfOXkzKfar9j5eOuOplf+klKtINg==}
     engines: {node: '>= 12.0.0'}
     cpu: [x64]
     os: [linux]
+    libc: [glibc]
 
   lightningcss-linux-x64-musl@1.29.3:
     resolution: {integrity: sha512-3pVZhIzW09nzi10usAXfIGTTSTYQ141dk88vGFNCgawIzayiIzZQxEcxVtIkdvlEq2YuFsL9Wcj/h61JHHzuFQ==}
     engines: {node: '>= 12.0.0'}
     cpu: [x64]
     os: [linux]
+    libc: [musl]
 
   lightningcss-win32-arm64-msvc@1.29.3:
     resolution: {integrity: sha512-VRnkAvtIkeWuoBJeGOTrZxsNp4HogXtcaaLm8agmbYtLDOhQdpgxW6NjZZjDXbvGF+eOehGulXZ3C1TiwHY4QQ==}
@@ -3605,6 +3614,7 @@ packages:
   whatwg-encoding@3.1.1:
     resolution: {integrity: sha512-6qN4hJdMwfYBtE3YBTTHhoeuUrDBPZmbQaxWAqSALV/MeEnR5z1xd8UKud2RAkFoPkmB+hli1TZSnyi84xz1vQ==}
     engines: {node: '>=18'}
+    deprecated: Use @exodus/bytes instead for a more spec-conformant and faster implementation
 
   whatwg-mimetype@4.0.0:
     resolution: {integrity: sha512-QaKxh0eNIi2mE9p2vEdzfagOKHCcj1pJ56EEHGQOVxp8r9/iszLUUV7v89x9O1p/T+NlTM5W7jW6+cz4Fq1YVg==}
@@ -5003,15 +5013,15 @@ snapshots:
       picocolors: 1.1.1
       pretty-format: 27.5.1
 
-  '@testing-library/react@16.3.2(@testing-library/dom@10.4.1)(@types/react-dom@19.2.3(@types/react@19.2.8))(@types/react@19.2.8)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)':
+  '@testing-library/react@16.3.2(@testing-library/dom@10.4.1)(@types/react-dom@19.2.3(@types/react@19.2.14))(@types/react@19.2.14)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)':
     dependencies:
       '@babel/runtime': 7.26.10
       '@testing-library/dom': 10.4.1
       react: 19.2.3
       react-dom: 19.2.3(react@19.2.3)
     optionalDependencies:
-      '@types/react': 19.2.8
-      '@types/react-dom': 19.2.3(@types/react@19.2.8)
+      '@types/react': 19.2.14
+      '@types/react-dom': 19.2.3(@types/react@19.2.14)
 
   '@testing-library/user-event@14.6.1(@testing-library/dom@10.4.1)':
     dependencies:
@@ -5100,26 +5110,26 @@ snapshots:
     dependencies:
       undici-types: 6.21.0
 
-  '@types/react-dom@19.2.3(@types/react@19.2.8)':
+  '@types/react-dom@19.2.3(@types/react@19.2.14)':
     dependencies:
-      '@types/react': 19.2.8
+      '@types/react': 19.2.14
 
   '@types/react-router-dom@5.3.3':
     dependencies:
       '@types/history': 4.7.11
-      '@types/react': 19.2.8
+      '@types/react': 19.2.14
       '@types/react-router': 5.1.19
 
   '@types/react-router@5.1.19':
     dependencies:
       '@types/history': 4.7.11
-      '@types/react': 19.2.8
+      '@types/react': 19.2.14
 
   '@types/react-test-renderer@19.1.0':
     dependencies:
-      '@types/react': 19.2.8
+      '@types/react': 19.2.14
 
-  '@types/react@19.2.8':
+  '@types/react@19.2.14':
     dependencies:
       csstype: 3.2.3
 
@@ -7391,7 +7401,7 @@ snapshots:
       iconv-lite: 0.4.24
       unpipe: 1.0.0
 
-  react-calendar@6.0.0(@types/react@19.2.8)(react-dom@19.2.3(react@19.2.3))(react@19.2.3):
+  react-calendar@6.0.0(@types/react@19.2.14)(react-dom@19.2.3(react@19.2.3))(react@19.2.3):
     dependencies:
       '@wojtekmaj/date-utils': 2.0.2
       clsx: 2.1.1
@@ -7400,35 +7410,35 @@ snapshots:
       react-dom: 19.2.3(react@19.2.3)
       warning: 4.0.3
     optionalDependencies:
-      '@types/react': 19.2.8
+      '@types/react': 19.2.14
 
-  react-date-picker@12.0.1(@types/react@19.2.8)(react-dom@19.2.3(react@19.2.3))(react@19.2.3):
+  react-date-picker@12.0.1(@types/react@19.2.14)(react-dom@19.2.3(react@19.2.3))(react@19.2.3):
     dependencies:
       '@wojtekmaj/date-utils': 2.0.2
       clsx: 2.1.1
       get-user-locale: 3.0.0
       make-event-props: 2.0.0
       react: 19.2.3
-      react-calendar: 6.0.0(@types/react@19.2.8)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
+      react-calendar: 6.0.0(@types/react@19.2.14)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       react-dom: 19.2.3(react@19.2.3)
-      react-fit: 3.0.0(@types/react@19.2.8)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
+      react-fit: 3.0.0(@types/react@19.2.14)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       update-input-width: 1.4.2
     optionalDependencies:
-      '@types/react': 19.2.8
+      '@types/react': 19.2.14
 
   react-dom@19.2.3(react@19.2.3):
     dependencies:
       react: 19.2.3
       scheduler: 0.27.0
 
-  react-fit@3.0.0(@types/react@19.2.8)(react-dom@19.2.3(react@19.2.3))(react@19.2.3):
+  react-fit@3.0.0(@types/react@19.2.14)(react-dom@19.2.3(react@19.2.3))(react@19.2.3):
     dependencies:
       detect-element-overflow: 2.0.0
       react: 19.2.3
       react-dom: 19.2.3(react@19.2.3)
       warning: 4.0.3
     optionalDependencies:
-      '@types/react': 19.2.8
+      '@types/react': 19.2.14
 
   react-is@16.13.1: {}
 

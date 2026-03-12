@@ -143,10 +143,10 @@ importers:
         specifier: ^0.30.2
         version: 0.30.2
       '@types/react':
-        specifier: ^16.14.63
+        specifier: 16.14.63
         version: 16.14.63
       '@types/react-dom':
-        specifier: ^16.9.25
+        specifier: 16.9.25
         version: 16.9.25(@types/react@16.14.63)
       '@typescript-eslint/eslint-plugin':
         specifier: ^8.53.1
