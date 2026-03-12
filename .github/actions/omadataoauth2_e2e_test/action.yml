@@ -25,7 +25,7 @@ runs:
         PLAYWRIGHT_HTML_REPORT: omadataoauth2-e2e-report-${{inputs.shardIndex}}-of-${{inputs.shardTotal}}
       run: mvn scalatest:test -DwildcardSuites="fi.oph.koski.omadataoauth2.e2e" --batch-mode
       shell: bash
-    - uses: actions/upload-artifact@v4
+    - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
       if: always()
       with:
         name: omadataoauth2-e2e-report-${{inputs.shardIndex}}-of-${{inputs.shardTotal}}
