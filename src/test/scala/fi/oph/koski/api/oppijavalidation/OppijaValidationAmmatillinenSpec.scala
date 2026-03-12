@@ -593,6 +593,16 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
               ))
             }
 
+            "Näytön suoritusajan loppu ennen alkua" - {
+              val virheellinenNäyttö = näyttö(date(2016, 2, 1), "Näyttö", "Näyttöpaikka, Näyttölä").copy(
+                suoritusaika = Some(NäytönSuoritusaika(date(2016, 2, 2), date(2016, 1, 1)))
+              )
+              val suoritus = copySuoritus(arviointiHyvä(), None).copy(näyttö = Some(virheellinenNäyttö))
+              "palautetaan HTTP 400" in (setup(suoritus)(
+                verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.date.näytönSuoritusaika())
+              ))
+            }
+
             "'Hylätty' -arvosanat" - {
               def getEpäsopivaArvosanaError(suorituksenNimi: String) = KoskiErrorCategory.badRequest.validation.arviointi.epäsopivaArvosana(s"""Suorituksen "$suorituksenNimi" arvosana ei voi olla hylätty""")
               def toArviointi(arvosana: Koodistokoodiviite) = Some(List(AmmatillinenArviointi(arvosana, date(2015, 5, 1))))
