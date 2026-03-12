@@ -16,7 +16,7 @@ class TodistusCleanupLeaseSpec extends AnyFreeSpec with TestEnvironment with Mat
   private val db = app.masterDatabase.db
 
   override protected def beforeEach(): Unit = {
-    QueryMethods.runDbSync(db, sql"TRUNCATE TABLE todistus_job CASCADE".asUpdate)
+    QueryMethods.runDbSync(db, sql"TRUNCATE TABLE todistus_job".asUpdate)
     QueryMethods.runDbSync(db, sql"DELETE FROM worker_lease WHERE name = 'todistus'".asUpdate)
     super.beforeEach()
   }

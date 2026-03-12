@@ -81,7 +81,7 @@ class KielitutkintotodistusTiedoteService(application: KoskiApplication) extends
         .getOrElse(defaultTemplateVariant)
 
       todistusJob <- todistusService.createTodistusJobForSystem(opiskeluoikeusOid, oppijaOid, templateVariant)
-      _ = repository.setState(tiedoteJobId, KielitutkintotodistusTiedoteState.WAITING_FOR_TODISTUS, Some(todistusJob.id))
+      _ = repository.setState(tiedoteJobId, KielitutkintotodistusTiedoteState.WAITING_FOR_TODISTUS)
       _ = logger.info(s"TodistusJob luotu tiedotteelle: tiedote=$tiedoteJobId todistus=${todistusJob.id}")
 
       completedTodistus <- pollForTodistusCompletion(todistusJob.id)

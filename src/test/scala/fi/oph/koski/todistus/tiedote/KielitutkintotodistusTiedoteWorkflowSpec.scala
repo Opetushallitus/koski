@@ -3,7 +3,6 @@ package fi.oph.koski.todistus.tiedote
 import com.typesafe.config.ConfigValueFactory
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
-import fi.oph.koski.todistus.{TodistusState, TodistusTemplateVariant}
 import fi.oph.koski.log.{AuditLogTester, KoskiAuditLogMessageField, KoskiOperation}
 import fi.oph.koski.schedule.Scheduler
 import fi.oph.koski.util.Wait
@@ -32,8 +31,6 @@ class KielitutkintotodistusTiedoteWorkflowSpec extends KielitutkintotodistusTied
         job.get.oppijaOid should equal(oppijaOid)
         job.get.state should equal(KielitutkintotodistusTiedoteState.COMPLETED)
         job.get.completedAt shouldBe defined
-        job.get.todistusJobId shouldBe defined
-
         mockTiedotuspalveluClient.sentNotifications.exists(n => n._1 == oppijaOid && n._2 == s"$opiskeluoikeusOid-initial" && n._3.nonEmpty) should be(true)
       }
     }
@@ -44,18 +41,6 @@ class KielitutkintotodistusTiedoteWorkflowSpec extends KielitutkintotodistusTied
         val opiskeluoikeusOid = getVahvistettuKielitutkinnonOpiskeluoikeusOid(oppijaOid).get
 
         app.kielitutkintotodistusTiedoteService.processAll()
-
-        val tiedoteJobs = app.kielitutkintotodistusTiedoteRepository.findAll(100, 0)
-        val tiedoteJob = tiedoteJobs.find(_.opiskeluoikeusOid == opiskeluoikeusOid)
-        tiedoteJob shouldBe defined
-        tiedoteJob.get.todistusJobId shouldBe defined
-
-        // Varmista, että TodistusJob on COMPLETED
-        val todistusJob = app.todistusRepository.get(tiedoteJob.get.todistusJobId.get)
-        todistusJob.isRight should be(true)
-        todistusJob.toOption.get.state should equal(TodistusState.COMPLETED)
-        todistusJob.toOption.get.templateVariant should equal(TodistusTemplateVariant.fi_tulostettava_uusi)
-        todistusJob.toOption.get.isStamped should be(false)
 
         // Varmista, että todistusUrl on lähetetty tiedotuspalvelulle
         val notification = mockTiedotuspalveluClient.sentNotifications.find(_._1 == oppijaOid)
