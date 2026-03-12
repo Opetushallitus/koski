@@ -2,7 +2,9 @@
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
     "config:best-practices",
-    ":automergeDigest"
+    ":automergeDigest",
+    "group:allDigest",
+    ":preserveSemverRanges"
   ],
   "osvVulnerabilityAlerts": true,
   "vulnerabilityAlerts": {
