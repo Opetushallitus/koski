@@ -1,4 +1,7 @@
 # Koskeen tallennettavien tietojen validaatiosäännöt
+## 12.3.2026
+- Estetään ammatillisen näyttöjen päättyminen ennan alkamista
+
 ## 4.3.2026
 -Sallitaan osatutkintotavoitteisen valmiiksi merkkaaminen jos kyseessä on linkitetty opiskeluoikeus
 

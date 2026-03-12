@@ -32,7 +32,8 @@ object AmmatillinenValidation {
           validateHenkilöstökoulutusVosUudistuksenRajapäivänJälkeen(config, ammatillinen),
           validateViestintäJaVuorovaikutusOsaAlueetEiValtakunnallisina(ammatillinen),
           validateViestintäJaVuorovaikutus26KoodiarvotEiSallittuEnnen2026(ammatillinen, config),
-          validateOsatutkintotavoitteisenValmistuminen(ammatillinen, isKuoriopiskeluoikeus)
+          validateOsatutkintotavoitteisenValmistuminen(ammatillinen, isKuoriopiskeluoikeus),
+          validateNäyttöjenSuoritusajat(ammatillinen)
         )
       case _ => HttpStatus.ok
     }
@@ -605,5 +606,17 @@ object AmmatillinenValidation {
         )
       )
     }
+  }
+
+  private def validateNäyttöjenSuoritusajat(oo: AmmatillinenOpiskeluoikeus): HttpStatus = {
+    val näytöt = oo.suoritukset.flatMap(_.rekursiivisetOsasuoritukset).collect {
+      case s: MahdollisestiToiseenTutkintoonLiittyväTutkinnonOsanSuoritus => s.näyttö
+    }.flatten
+
+    HttpStatus.fold(näytöt.flatMap(_.suoritusaika).map { aika =>
+      HttpStatus.validate(aika.alku.isBefore(aika.loppu) || (aika.alku == aika.loppu)) {
+        KoskiErrorCategory.badRequest.validation.date.näytönSuoritusaika()
+      }
+    })
   }
 }
