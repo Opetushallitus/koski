@@ -12,7 +12,7 @@ object OpiskeluoikeusLoader {
   val LocalTestingBatchSize = 100
 
   def isRaportointikantaanSiirrettäväOpiskeluoikeus(oo: OpiskeluoikeusRow): Boolean =
-    oo.koulutusmuoto != "kielitutkinto" || oo.suoritustyypit.contains("yleinenkielitutkinto")
+    oo.koulutusmuoto != "kielitutkinto" || oo.suoritustyypit.contains("yleinenkielitutkinto") || oo.suoritustyypit.contains("valtionhallinnonkielitutkinto")
 }
 
 trait OpiskeluoikeusLoader extends Logging {
