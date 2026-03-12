@@ -436,7 +436,7 @@ const LukionJaMuunOsasoritusProperties = ({
 }: LukionJaMuunOsasoritusPropertiesProps) => {
   return (
     <>
-      {(form.editMode || osasuoritus.suorituskieli) && (
+      {osasuoritus.suorituskieli && (
         <OsasuoritusProperty label={'Suorituskieli'}>
           <OsasuoritusPropertyValue>
             <FormField

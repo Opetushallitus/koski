@@ -11,10 +11,6 @@ import {
   BooleanView
 } from '../components-v2/opiskeluoikeus/BooleanField'
 import {
-  OrganisaatioEdit,
-  OrganisaatioView
-} from '../components-v2/opiskeluoikeus/OrganisaatioField'
-import {
   OsaamisenTunnustusEdit,
   OsaamisenTunnustusView
 } from '../components-v2/opiskeluoikeus/TunnustusField'
@@ -75,7 +71,7 @@ export const YhteisenOsittaisenAmmatillisenTutkinnonOsasuoritusProperties = ({
 }: YhteisenAmmatillisenTutkinnonOsasuoritusPropertiesProps) => {
   return (
     <>
-      {(form.editMode || osasuoritus.suorituskieli) && (
+      {osasuoritus.suorituskieli && (
         <OsasuoritusProperty label={'Suorituskieli'}>
           <OsasuoritusPropertyValue>
             <FormField
@@ -95,16 +91,6 @@ export const YhteisenOsittaisenAmmatillisenTutkinnonOsasuoritusProperties = ({
             view={BooleanView}
             edit={BooleanEdit}
             path={osasuoritusPath.prop('koulutusmoduuli').prop('pakollinen')}
-          />
-        </OsasuoritusPropertyValue>
-      </OsasuoritusProperty>
-      <OsasuoritusProperty label={'Oppilaitos / toimipiste'}>
-        <OsasuoritusPropertyValue>
-          <FormField
-            form={form}
-            path={osasuoritusPath.prop('toimipiste')}
-            view={OrganisaatioView}
-            edit={OrganisaatioEdit}
           />
         </OsasuoritusPropertyValue>
       </OsasuoritusProperty>

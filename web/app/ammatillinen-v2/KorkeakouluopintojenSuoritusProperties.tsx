@@ -44,7 +44,7 @@ export const KorkeakouluopintojenSuoritusProperties = ({
 }: KorkeakouluopintojenSuoritusPropertiesProps) => {
   return (
     <>
-      {(form.editMode || osasuoritus.suorituskieli) && (
+      {osasuoritus.suorituskieli && (
         <OsasuoritusProperty label={'Suorituskieli'}>
           <OsasuoritusPropertyValue>
             <FormField

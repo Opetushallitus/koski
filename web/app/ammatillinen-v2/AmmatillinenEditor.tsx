@@ -12,7 +12,7 @@ import { UusiOpiskeluoikeusjakso } from '../components-v2/opiskeluoikeus/UusiOpi
 import { AmmatillinenOpiskeluoikeusjakso } from '../types/fi/oph/koski/schema/AmmatillinenOpiskeluoikeusjakso'
 import { AmmatillinenLisatiedot } from './AmmatillinenLisatiedot'
 import { VirkailijaKansalainenContainer } from '../components-v2/containers/VirkailijaKansalainenContainer'
-import { localize, t } from '../i18n/i18n'
+import { emptyLocalizedString, localize, t } from '../i18n/i18n'
 import {
   KeyValueRow,
   KeyValueTable
@@ -585,7 +585,8 @@ export const emptyJärjestämismuoto: Järjestämismuotojakso = {
     $class: 'fi.oph.koski.schema.JärjestämismuotoIlmanLisätietoja',
     tunniste: Koodistokoodiviite({
       koodistoUri: 'jarjestamismuoto',
-      koodiarvo: ''
+      koodiarvo: '',
+      nimi: emptyLocalizedString
     })
   },
   $class: 'fi.oph.koski.schema.Järjestämismuotojakso'
@@ -667,18 +668,20 @@ const OppisopimusView = <T extends Oppisopimus>({
       <KeyValueRow localizableLabel="Y-tunnus">
         {value?.työnantaja.yTunnus}
       </KeyValueRow>
-      <KeyValueRow localizableLabel="Oppisopimuksen purkaminen">
-        <KeyValueTable>
-          <KeyValueRow localizableLabel="Päivä">
-            {ISO2FinnishDate(value?.oppisopimuksenPurkaminen?.päivä)}
-          </KeyValueRow>
-          <KeyValueRow localizableLabel="Purettu koeajalla">
-            <BooleanView
-              value={value?.oppisopimuksenPurkaminen?.purettuKoeajalla}
-            />
-          </KeyValueRow>
-        </KeyValueTable>
-      </KeyValueRow>
+      {value?.oppisopimuksenPurkaminen && (
+        <KeyValueRow localizableLabel="Oppisopimuksen purkaminen">
+          <KeyValueTable>
+            <KeyValueRow localizableLabel="Päivä">
+              {ISO2FinnishDate(value.oppisopimuksenPurkaminen.päivä)}
+            </KeyValueRow>
+            <KeyValueRow localizableLabel="Purettu koeajalla">
+              <BooleanView
+                value={value.oppisopimuksenPurkaminen.purettuKoeajalla}
+              />
+            </KeyValueRow>
+          </KeyValueTable>
+        </KeyValueRow>
+      )}
     </KeyValueTable>
   )
 }
@@ -845,7 +848,8 @@ export const emptyOsaamisenHankkimistapa: OsaamisenHankkimistapajakso =
       $class: 'fi.oph.koski.schema.OsaamisenHankkimistapaIlmanLisätietoja',
       tunniste: Koodistokoodiviite({
         koodistoUri: 'osaamisenhankkimistapa',
-        koodiarvo: ''
+        koodiarvo: '',
+        nimi: emptyLocalizedString
       })
     }
   })

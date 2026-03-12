@@ -46,7 +46,7 @@ export const AmmatillisenTutkinnonOsaaPienemmänKokonaisuudenSuoritusProperties 
   }: AmmatillisenTutkinnonOsaaPienemmänKokonaisuudenSuoritusPropertiesProps) => {
     return (
       <>
-        {(form.editMode || osasuoritus.suorituskieli) && (
+        {osasuoritus.suorituskieli && (
           <OsasuoritusProperty label={'Suorituskieli'}>
             <OsasuoritusPropertyValue>
               <FormField

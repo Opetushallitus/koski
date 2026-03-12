@@ -49,7 +49,7 @@ export const YhteisenTutkinnonOsanOsaAlueenSuoritusProperties = ({
 }: YhteisenTutkinnonOsanOsaAlueenSuoritusPropertiesProps) => {
   return (
     <>
-      {(form.editMode || osasuoritus.suorituskieli) && (
+      {osasuoritus.suorituskieli && (
         <OsasuoritusProperty label={'Suorituskieli'}>
           <OsasuoritusPropertyValue>
             <FormField
