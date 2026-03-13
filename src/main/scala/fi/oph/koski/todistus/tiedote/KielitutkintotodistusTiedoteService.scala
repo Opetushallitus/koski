@@ -6,7 +6,7 @@ import fi.oph.koski.koskiuser.KoskiSpecificSession
 import fi.oph.koski.log.KoskiAuditLogMessageField.{opiskeluoikeusOid => opiskeluoikeusOidField, oppijaHenkiloOid, tiedoteTyyppi}
 import fi.oph.koski.log.KoskiOperation.TIEDOTE_LAHETETTY
 import fi.oph.koski.log.{AuditLog, KoskiAuditLogMessage, Logging}
-import fi.oph.koski.todistus.{BucketType, TodistusResultRepository, TodistusState, TodistusTemplateVariant}
+import fi.oph.koski.todistus.{TodistusState, TodistusTemplateVariant}
 import fi.oph.koski.util.Timing
 import org.postgresql.util.{PSQLException, PSQLState}
 
@@ -16,8 +16,6 @@ import scala.util.{Failure, Success, Try}
 class KielitutkintotodistusTiedoteService(application: KoskiApplication) extends Logging with Timing {
   private val repository = application.kielitutkintotodistusTiedoteRepository
   private val todistusService = application.todistusService
-  private val todistusRepository = application.todistusRepository
-  private val resultRepository = new TodistusResultRepository(application.config)
   private val client = application.tiedotuspalveluClient
   private val kituClient = application.kituClient
   private val maxAttempts = application.config.getInt("tiedote.maxAttempts")
@@ -82,8 +80,7 @@ class KielitutkintotodistusTiedoteService(application: KoskiApplication) extends
 
       completedTodistus <- pollForTodistusCompletion(todistusJob.id)
 
-      _ <- resultRepository.copyObject(BucketType.RAW, BucketType.TIEDOTE, completedTodistus.id)
-      todistusUrl = resultRepository.getDirectUrl(BucketType.TIEDOTE, completedTodistus.id)
+      todistusUrl <- todistusService.copyToTiedoteBucket(completedTodistus.id)
       _ = logger.info(s"Printtitodistus kopioitu tiedote-buckettiin: tiedote=$tiedoteJobId todistus=${completedTodistus.id} url=$todistusUrl")
 
       _ <- client.sendKielitutkintoTodistusTiedote(oppijaOid, idempotencyKey, todistusUrl)
@@ -109,7 +106,7 @@ class KielitutkintotodistusTiedoteService(application: KoskiApplication) extends
     var result: Option[Either[HttpStatus, fi.oph.koski.todistus.TodistusJob]] = None
 
     while (result.isEmpty && System.currentTimeMillis() < deadline) {
-      todistusRepository.get(todistusJobId) match {
+      todistusService.getJobStatus(todistusJobId) match {
         case Right(job) if job.state == TodistusState.COMPLETED =>
           result = Some(Right(job))
         case Right(job) if job.state == TodistusState.ERROR =>

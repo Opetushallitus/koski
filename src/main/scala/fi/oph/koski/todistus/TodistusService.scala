@@ -63,6 +63,16 @@ class TodistusService(application: KoskiApplication) extends Logging with Timing
     todistusRepository.addForSystem(job)
   }
 
+  def getJobStatus(id: String): Either[HttpStatus, TodistusJob] = {
+    todistusRepository.get(id)
+  }
+
+  def copyToTiedoteBucket(todistusJobId: String): Either[HttpStatus, String] = {
+    for {
+      _ <- resultRepository.copyObject(BucketType.RAW, BucketType.TIEDOTE, todistusJobId)
+    } yield resultRepository.getDirectUrl(BucketType.TIEDOTE, todistusJobId)
+  }
+
   def currentStatus(req: TodistusIdRequest)(implicit user: KoskiSpecificSession): Either[HttpStatus, TodistusJob] = {
     if (user.hasRole(OPHPAAKAYTTAJA)) {
       todistusRepository
