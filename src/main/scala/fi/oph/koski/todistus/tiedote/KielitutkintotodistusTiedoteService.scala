@@ -25,8 +25,6 @@ class KielitutkintotodistusTiedoteService(application: KoskiApplication) extends
   private val pollIntervalMs = application.config.getInt("tiedote.todistusPollIntervalMs")
   private val pollTimeoutMs = application.config.getInt("tiedote.todistusPollTimeoutMs")
 
-  private val defaultTemplateVariant = TodistusTemplateVariant.fi_tulostettava_uusi
-
   def processAll(): Int = {
     timed("processAll", thresholdMs = 0) {
       var processed = 0
@@ -73,10 +71,10 @@ class KielitutkintotodistusTiedoteService(application: KoskiApplication) extends
   private def generateAndSend(tiedoteJobId: String, oppijaOid: String, opiskeluoikeusOid: String, idempotencyKey: String): Unit = {
     val result = for {
       examineeDetails <- kituClient.getExamineeDetails(oppijaOid)
-      templateVariant = examineeDetails.preferredLanguage
+      templateVariant <- examineeDetails.preferredLanguage
         .map(lang => s"${lang}_tulostettava_uusi")
         .filter(TodistusTemplateVariant.printVariants.contains)
-        .getOrElse(defaultTemplateVariant)
+        .toRight(KoskiErrorCategory.internalError(s"Tutkinnon suorittajan kielelle ei löydy tulostettavaa todistuspohjaa: ${examineeDetails.preferredLanguage}"))
 
       todistusJob <- todistusService.createTodistusJobForSystem(opiskeluoikeusOid, oppijaOid, templateVariant)
       _ = repository.setState(tiedoteJobId, KielitutkintotodistusTiedoteState.WAITING_FOR_TODISTUS)
