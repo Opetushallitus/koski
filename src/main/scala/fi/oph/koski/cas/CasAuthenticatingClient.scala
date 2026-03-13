@@ -8,12 +8,15 @@ import org.http4s.client.Client
 import org.http4s.{Request, Response, Status}
 import org.typelevel.ci.CIString
 
+import scala.annotation.nowarn
+
 
 /**
  *  Middleware that handles CAS authentication automatically. Sessions are maintained by keeping
  *  a central cache of session cookies per service url. If a session cookie is not found for requested service, it is obtained using
  *  CasClient. Stale sessions are detected and refreshed automatically.
  */
+@nowarn("cat=deprecation")
 object CasAuthenticatingClient extends Logging {
   val DefaultSessionCookieName = "JSESSIONID"
 
