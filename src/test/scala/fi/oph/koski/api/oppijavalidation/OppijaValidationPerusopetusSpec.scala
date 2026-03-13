@@ -4,9 +4,9 @@ import fi.oph.koski.{KoskiApplicationForTests, KoskiHttpSpec}
 import fi.oph.koski.api.misc.OpiskeluoikeusTestMethodsPerusopetus
 import fi.oph.koski.documentation.AmmatillinenExampleData.primusLähdejärjestelmäId
 import fi.oph.koski.documentation.ExampleData._
-import fi.oph.koski.documentation.{ExamplesEsiopetus, ExamplesPerusopetus}
-import fi.oph.koski.documentation.ExamplesEsiopetus.{lisätiedot, osaAikainenErityisopetus}
-import fi.oph.koski.documentation.ExamplesPerusopetus.{erityisenTuenPäätös, toimintaAlueenSuoritus}
+import fi.oph.koski.documentation.PerusopetusExampleData
+import fi.oph.koski.documentation.ExamplesEsiopetus.osaAikainenErityisopetus
+import fi.oph.koski.documentation.ExamplesPerusopetus.toimintaAlueenSuoritus
 import fi.oph.koski.documentation.OsaAikainenErityisopetusExampleData._
 import fi.oph.koski.documentation.PerusopetusExampleData._
 import fi.oph.koski.documentation.YleissivistavakoulutusExampleData.{helsinginMedialukio, jyväskylänNormaalikoulu, ressunLukio}
@@ -1639,7 +1639,6 @@ class OppijaValidationPerusopetusSpec extends TutkinnonPerusteetTest[Perusopetuk
         }
       }
 
-
       "Opiskeluoikeuden voi siirää kahteen kertaan, kunhan aikajaksot eivät ole päällekkäiset ja aiempi on terminaalitilassa" - {
         val opiskeluoikeus = defaultOpiskeluoikeus.copy(
           tila = NuortenPerusopetuksenOpiskeluoikeudenTila(List(
@@ -1663,6 +1662,28 @@ class OppijaValidationPerusopetusSpec extends TutkinnonPerusteetTest[Perusopetuk
         }
         "lähdejärjestelmän id:llä" in {
           duplikaattiSallittuLähdejärjestelmäIdllä(opiskeluoikeus, opiskeluoikeus2)
+        }
+      }
+
+      "Samaa opiskeluoikeutta ei voi siirtää kahteen kertaan, vaikka opiskeluoikeuksilla on eri vuosiluokkien suoritukset" - {
+        val opiskeluoikeus = defaultOpiskeluoikeus.copy(
+          suoritukset = List(
+            PerusopetusExampleData.seitsemännenLuokanSuoritus,
+            PerusopetusExampleData.kahdeksannenLuokanSuoritus
+          )
+        )
+
+        val opiskeluoikeus2 = opiskeluoikeus.copy(
+          suoritukset = List(
+            PerusopetusExampleData.yhdeksännenLuokanSuoritus
+          )
+        )
+
+        "ilman tunnistetta" in {
+          duplikaattiaEiSallittu(opiskeluoikeus, opiskeluoikeus2)
+        }
+        "lähdejärjestelmän id:llä" in {
+          duplikaattiaEiSallittuLähdejärjestelmäIdllä(opiskeluoikeus, opiskeluoikeus2)
         }
       }
     }
