@@ -9,19 +9,19 @@ runs:
   steps:
     - name: Lookup existing target dir cache
       id: lookup
-      uses: actions/cache/restore@v4
+      uses: actions/cache/restore@0057852bfaa89a56745cba8c7296529d2fc39830 # v4
       with:
         path: target/
         key: ${{ runner.os }}-target-${{ inputs.commithash }}
         lookup-only: "true"
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
       if: steps.lookup.outputs.cache-hit != 'true'
       with:
         ref: ${{ inputs.commithash }}
     - uses: ./.github/actions/setup_pnpm_cache
     - name: Setup Node
       if: steps.lookup.outputs.cache-hit != 'true'
-      uses: actions/setup-node@v4
+      uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
       with:
         node-version: "24.14.0"
     - if: steps.lookup.outputs.cache-hit != 'true'
@@ -36,7 +36,7 @@ runs:
       shell: bash
     - name: Cache target dir
       if: steps.lookup.outputs.cache-hit != 'true'
-      uses: actions/cache/save@v4
+      uses: actions/cache/save@0057852bfaa89a56745cba8c7296529d2fc39830 # v4
       with:
         path: target/
         key: ${{ runner.os }}-target-${{ inputs.commithash }}
