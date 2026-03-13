@@ -109,8 +109,8 @@
       "brace-expansion@^2": "2.0.2",
       "js-yaml@^3": "3.14.2",
       "js-yaml@^4": "4.1.1",
-      "@eslint/plugin-kit": "^0.3.4"
+      "@eslint/plugin-kit": "^0.6.0"
     }
   },
-  "packageManager": "pnpm@10.28.2"
+  "packageManager": "pnpm@10.32.0"
 }
