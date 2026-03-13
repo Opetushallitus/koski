@@ -25,7 +25,7 @@ services:
       - "./opensearch/opensearch-docker.yml:/usr/share/opensearch/config/opensearch.yml"
 
   dynamodb:
-    image: "amazon/dynamodb-local:2.5.2@sha256:d7ebddeb60fa418bcda218a6c6a402a58441b2a20d54c9cb1d85fd5194341753"
+    image: "amazon/dynamodb-local:2.6.1@sha256:1856c05cc66a0e49dc1099e483ad2851477eeebe2135250ac11a1d1227db54b1"
     ports:
       - "8000:8000"
 
