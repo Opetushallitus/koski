@@ -60,7 +60,7 @@ class TodistusService(application: KoskiApplication) extends Logging with Timing
       oppijaHenkilötiedotHash = None,
       isStamped = false
     )
-    todistusRepository.addForSystem(job)
+    todistusRepository.addOrReuseExistingSystemJob(job)
   }
 
   def getJobStatus(id: String): Either[HttpStatus, TodistusJob] = {
@@ -107,7 +107,7 @@ class TodistusService(application: KoskiApplication) extends Logging with Timing
       oppijanHenkilö <- application.henkilöRepository.findByOid(yleisenKielitutkinnonVahvistettuOpiskeluoikeus.oppijaOid).toRight(KoskiErrorCategory.notFound.oppijaaEiLöydyTaiEiOikeuksia())
       oppijanHenkilötiedotHash = laskeHenkilötiedotHash(oppijanHenkilö)
       opiskeluoikeusVersionumero = yleisenKielitutkinnonVahvistettuOpiskeluoikeus.versionumero
-      todistus <- todistusRepository.findByParameters(
+      todistus <- todistusRepository.findUserJobByParameters(
         yleisenKielitutkinnonVahvistettuOpiskeluoikeus.oid,
         req.templateVariant,
         opiskeluoikeusVersionumero,
@@ -127,7 +127,7 @@ class TodistusService(application: KoskiApplication) extends Logging with Timing
       yleisenKielitutkinnonVahvistettuOpiskeluoikeus <- kielitutkinnonVahvistettuOpiskeluoikeusJohonKutsujallaKäyttöoikeudet(req)
       oppijanHenkilö <- application.henkilöRepository.findByOid(yleisenKielitutkinnonVahvistettuOpiskeluoikeus.oppijaOid).toRight(KoskiErrorCategory.notFound.oppijaaEiLöydyTaiEiOikeuksia())
       job = TodistusJob(uusiJobId, req, laskeHenkilötiedotHash(oppijanHenkilö), yleisenKielitutkinnonVahvistettuOpiskeluoikeus)
-      result <- todistusRepository.addOrReuseExisting(job)
+      result <- todistusRepository.addOrReuseExistingUserJob(job)
     } yield result
 
     result match {
