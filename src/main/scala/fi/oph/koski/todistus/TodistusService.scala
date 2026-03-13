@@ -50,17 +50,23 @@ class TodistusService(application: KoskiApplication) extends Logging with Timing
     oppijaOid: String,
     templateVariant: String
   ): Either[HttpStatus, TodistusJob] = {
-    val job = TodistusJob(
-      id = UUID.randomUUID().toString,
-      userOid = None,
-      oppijaOid = oppijaOid,
-      opiskeluoikeusOid = opiskeluoikeusOid,
-      templateVariant = templateVariant,
-      opiskeluoikeusVersionumero = None,
-      oppijaHenkilötiedotHash = None,
-      isStamped = false
-    )
-    todistusRepository.addOrReuseExistingSystemJob(job)
+    implicit val systemUser: KoskiSpecificSession = KoskiSpecificSession.systemKatselijaUser
+    for {
+      oppijanHenkilö <- application.henkilöRepository.findByOid(oppijaOid)
+        .toRight(KoskiErrorCategory.notFound.oppijaaEiLöydyTaiEiOikeuksia())
+      rawOpiskeluoikeus <- application.opiskeluoikeusRepository.findByOid(opiskeluoikeusOid)
+      job = TodistusJob(
+        id = UUID.randomUUID().toString,
+        userOid = None,
+        oppijaOid = oppijaOid,
+        opiskeluoikeusOid = opiskeluoikeusOid,
+        templateVariant = templateVariant,
+        opiskeluoikeusVersionumero = Some(rawOpiskeluoikeus.versionumero),
+        oppijaHenkilötiedotHash = Some(laskeHenkilötiedotHash(oppijanHenkilö)),
+        isStamped = false
+      )
+      result <- todistusRepository.addOrReuseExistingSystemJob(job)
+    } yield result
   }
 
   def getJobStatus(id: String): Either[HttpStatus, TodistusJob] = {

@@ -113,10 +113,13 @@ palautetaan jonoon uudestaan. Vanhentuneet jobit asetetaan tilaan `EXPIRED`.
 yhteistä CTE-kyselyä (`addOrReuseExisting`), joka palauttaa olemassa olevan jobin tai luo uuden.
 Käyttäjä- ja järjestelmäjobit pidetään erillään `user_oid IS NOT NULL` / `user_oid IS NULL` -ehdoilla
 (johdetaan `todistusJob.userOid`-kentästä). Reuse-logiikka on sama molemmille: QUEUED-tilassa oleva job
-matchaa aina, muissa tiloissa hash ja versionumero täytyy täsmätä. Järjestelmäjobeilla hash/versionumero
-ovat NULL luontihetkellä, joten ne eivät matchaa COMPLETED-tilassa olevia jobeja — uusi job luodaan aina
-uudelleenyritystilanteessa. Uusi job luodaan myös jos aiempia ei löydy tai ne ovat ERROR-tilassa.
+matchaa aina, muissa tiloissa hash ja versionumero täytyy täsmätä. Uusi job luodaan jos aiempia ei löydy
+tai ne ovat ERROR-tilassa.
 Esim. jobit `fi` ja `fi_tulostettava_uusi` ovat erillisiä ja niitä ei käytetä toinen toisen tilalla.
+
+**Huom:** Hash ja versionumero välitetään CTE-kyselyyn matchausta varten, mutta niitä ei tallenneta
+tietokantaan INSERT-vaiheessa. Lopulliset arvot tallennetaan vasta kun todistusworker käsittelee jobin
+(`updateStateWithHashAndVersion`), jotta ne vastaavat täsmälleen generoituun PDF:ään käytettyjä tietoja.
 
 ## Pääsynhallinta
 
