@@ -3,6 +3,7 @@
   "extends": [
     "config:best-practices",
     ":automergeDigest",
+    ":automergePatch",
     "group:allDigest",
     ":preserveSemverRanges"
   ],
