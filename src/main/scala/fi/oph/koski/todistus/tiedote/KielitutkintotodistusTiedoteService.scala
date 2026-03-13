@@ -11,6 +11,7 @@ import fi.oph.koski.util.Timing
 import org.postgresql.util.{PSQLException, PSQLState}
 
 import java.util.UUID
+import scala.util.{Failure, Success, Try}
 
 class KielitutkintotodistusTiedoteService(application: KoskiApplication) extends Logging with Timing {
   private val repository = application.kielitutkintotodistusTiedoteRepository
@@ -58,18 +59,15 @@ class KielitutkintotodistusTiedoteService(application: KoskiApplication) extends
       opiskeluoikeusVersio = versionumero
     )
 
-    try {
-      repository.add(tiedoteJob)
-    } catch {
-      case e: PSQLException if e.getSQLState == PSQLState.UNIQUE_VIOLATION.getState =>
+    Try(repository.add(tiedoteJob)) match {
+      case Success(_) =>
+        generateAndSend(tiedoteJobId, oppijaOid, opiskeluoikeusOid, s"$opiskeluoikeusOid-initial")
+      case Failure(e: PSQLException) if e.getSQLState == PSQLState.UNIQUE_VIOLATION.getState =>
         logger.info(s"Tiedote on jo olemassa opiskeluoikeudelle $opiskeluoikeusOid, ohitetaan")
-        return
-      case e: Exception =>
+      case Failure(e) =>
         logger.error(e)(s"Tiedotteen tallennus epäonnistui opiskeluoikeudelle $opiskeluoikeusOid")
         throw e
     }
-
-    generateAndSend(tiedoteJobId, oppijaOid, opiskeluoikeusOid, s"$opiskeluoikeusOid-initial")
   }
 
   private def generateAndSend(tiedoteJobId: String, oppijaOid: String, opiskeluoikeusOid: String, idempotencyKey: String): Unit = {
@@ -110,19 +108,20 @@ class KielitutkintotodistusTiedoteService(application: KoskiApplication) extends
 
   private def pollForTodistusCompletion(todistusJobId: String): Either[HttpStatus, fi.oph.koski.todistus.TodistusJob] = {
     val deadline = System.currentTimeMillis() + pollTimeoutMs
+    var result: Option[Either[HttpStatus, fi.oph.koski.todistus.TodistusJob]] = None
 
-    while (System.currentTimeMillis() < deadline) {
+    while (result.isEmpty && System.currentTimeMillis() < deadline) {
       todistusRepository.get(todistusJobId) match {
         case Right(job) if job.state == TodistusState.COMPLETED =>
-          return Right(job)
+          result = Some(Right(job))
         case Right(job) if job.state == TodistusState.ERROR =>
-          return Left(KoskiErrorCategory.internalError(s"TodistusJob epäonnistui: ${job.error.getOrElse("tuntematon virhe")}"))
+          result = Some(Left(KoskiErrorCategory.internalError(s"TodistusJob epäonnistui: ${job.error.getOrElse("tuntematon virhe")}")))
         case _ =>
           Thread.sleep(pollIntervalMs)
       }
     }
 
-    Left(KoskiErrorCategory.internalError(s"TodistusJob $todistusJobId ei valmistunut ${pollTimeoutMs}ms aikana"))
+    result.getOrElse(Left(KoskiErrorCategory.internalError(s"TodistusJob $todistusJobId ei valmistunut ${pollTimeoutMs}ms aikana")))
   }
 
   def retryAllFailed(): Int = {
