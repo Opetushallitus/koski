@@ -56,7 +56,11 @@ import {
 import { YhteistenTutkinnonOsienOsaAlueidenTaiLukioOpintojenTaiMuidenOpintovalmiuksiaTukevienOpintojenOsasuoritus } from '../types/fi/oph/koski/schema/YhteistenTutkinnonOsienOsaAlueidenTaiLukioOpintojenTaiMuidenOpintovalmiuksiaTukevienOpintojenOsasuoritus'
 import { Column, ColumnRow } from '../components-v2/containers/Columns'
 import { KoodistoSelect } from '../components-v2/opiskeluoikeus/KoodistoSelect'
-import { newYhteisenOsanOsaAlueenSuoritus } from './YhteisenOsittaisenAmmatillisenTutkinnonOsasuoritusProperties'
+import {
+  newYhteisenOsanOsaAlueenSuoritus,
+  newPaikallinenOsaAlueenSuoritus,
+  NewPaikallinenOsaAlueModal
+} from './YhteisenOsittaisenAmmatillisenTutkinnonOsasuoritusProperties'
 import {
   Modal,
   ModalBody,
@@ -208,20 +212,39 @@ const NewYhteisenTutkinnonOsanOsaAlueenSuoritus = ({
   form,
   suoritusPath
 }: NewYhteisenTutkinnonOsanOsaAlueenSuoritusProps) => {
+  const [showModal, setShowModal] = useState(false)
+
   return (
-    <KoodistoSelect
-      addNewText="Lisää tutkinnon osan osa-alue"
-      koodistoUri="ammatillisenoppiaineet"
-      format={(osa) => osa.koodiarvo + ' ' + t(osa.nimi)}
-      onSelect={(tunniste) => {
-        tunniste &&
-          form.updateAt(
-            suoritusPath.prop('osasuoritukset').valueOr([]),
-            (a) => [...a, newYhteisenOsanOsaAlueenSuoritus(tunniste)]
-          )
-      }}
-      testId="uusi-yhteinen-osan-osa-alue"
-    />
+    <>
+      <KoodistoSelect
+        addNewText="Lisää tutkinnon osan osa-alue"
+        koodistoUri="ammatillisenoppiaineet"
+        format={(osa) => osa.koodiarvo + ' ' + t(osa.nimi)}
+        onSelect={(tunniste) => {
+          tunniste &&
+            form.updateAt(
+              suoritusPath.prop('osasuoritukset').valueOr([]),
+              (a) => [...a, newYhteisenOsanOsaAlueenSuoritus(tunniste)]
+            )
+        }}
+        testId="uusi-yhteinen-osan-osa-alue"
+      />
+      <FlatButton onClick={() => setShowModal(true)}>
+        {t('Lisää paikallinen tutkinnon osan osa-alue')}
+      </FlatButton>
+      {showModal && (
+        <NewPaikallinenOsaAlueModal
+          onClose={() => setShowModal(false)}
+          onSubmit={(nimi) => {
+            form.updateAt(
+              suoritusPath.prop('osasuoritukset').valueOr([]),
+              (a) => [...a, newPaikallinenOsaAlueenSuoritus(nimi)]
+            )
+            setShowModal(false)
+          }}
+        />
+      )}
+    </>
   )
 }
 

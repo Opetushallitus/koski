@@ -30,7 +30,7 @@ import {
 } from '../Näyttö'
 import { OsasuoritusTable } from '../../components-v2/opiskeluoikeus/OsasuoritusTable'
 import { YhteisenTutkinnonOsanOsaAlueenSuoritusProperties } from '../YhteisenTutkinnonOsanOsaAlueenSuoritusProperties'
-import React from 'react'
+import React, { useState } from 'react'
 import {
   AmisArvosanaInTableEdit,
   AmisArvosanaInTableView,
@@ -54,6 +54,10 @@ import { YhteisenTutkinnonOsanOsaAlueenSuoritus } from '../../types/fi/oph/koski
 import { AmmatillisenTutkinnonOsanOsaAlue } from '../../types/fi/oph/koski/schema/AmmatillisenTutkinnonOsanOsaAlue'
 import { Column, ColumnRow } from '../../components-v2/containers/Columns'
 import { hasAmmatillinenArviointi } from '../OsasuoritusTables'
+import {
+  newPaikallinenOsaAlueenSuoritus,
+  NewPaikallinenOsaAlueModal
+} from '../YhteisenOsittaisenAmmatillisenTutkinnonOsasuoritusProperties'
 import { TestIdLayer, TestIdText } from '../../appstate/useTestId'
 import { useTutkinnonOsanOsat } from '../useTutkinnonOsanOsat'
 import { AmmatillisenTutkinnonOsittainenSuoritus } from '../../types/fi/oph/koski/schema/AmmatillisenTutkinnonOsittainenSuoritus'
@@ -325,6 +329,7 @@ const NewYhteisenTutkinnonOsanOsaAlueenSuoritus = ({
   suoritusPath,
   osasuoritus
 }: NewYhteisenTutkinnonUseastaTutkinnostaOsanOsaAlueenSuoritusProps) => {
+  const [showModal, setShowModal] = useState(false)
   const lisättävätOsat = useTutkinnonOsanOsat(
     (form.state.suoritukset[0] as AmmatillisenTutkinnonOsittainenSuoritus)
       .koulutusmoduuli.perusteenDiaarinumero || '',
@@ -351,6 +356,21 @@ const NewYhteisenTutkinnonOsanOsaAlueenSuoritus = ({
           }}
           testId="uusi-yhteinen-osan-osa-alue"
         />
+        <FlatButton onClick={() => setShowModal(true)}>
+          {t('Lisää paikallinen tutkinnon osan osa-alue')}
+        </FlatButton>
+        {showModal && (
+          <NewPaikallinenOsaAlueModal
+            onClose={() => setShowModal(false)}
+            onSubmit={(nimi) => {
+              form.updateAt(
+                suoritusPath.prop('osasuoritukset').valueOr([]),
+                (a) => [...a, newPaikallinenOsaAlueenSuoritus(nimi)]
+              )
+              setShowModal(false)
+            }}
+          />
+        )}
       </Column>
     </ColumnRow>
   )

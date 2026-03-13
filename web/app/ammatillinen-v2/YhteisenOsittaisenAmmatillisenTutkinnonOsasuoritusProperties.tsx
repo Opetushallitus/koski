@@ -28,7 +28,7 @@ import { append, deleteAt } from '../util/fp/arrays'
 import { NäyttöEdit, NäyttöView } from './Näyttö'
 import { OsasuoritusTable } from '../components-v2/opiskeluoikeus/OsasuoritusTable'
 import { YhteisenTutkinnonOsanOsaAlueenSuoritusProperties } from './YhteisenTutkinnonOsanOsaAlueenSuoritusProperties'
-import React from 'react'
+import React, { useState } from 'react'
 import {
   AmisArvosanaInTableEdit,
   AmisArvosanaInTableView,
@@ -50,6 +50,16 @@ import { KoodistoSelect } from '../components-v2/opiskeluoikeus/KoodistoSelect'
 import { Koodistokoodiviite } from '../types/fi/oph/koski/schema/Koodistokoodiviite'
 import { YhteisenTutkinnonOsanOsaAlueenSuoritus } from '../types/fi/oph/koski/schema/YhteisenTutkinnonOsanOsaAlueenSuoritus'
 import { AmmatillisenTutkinnonOsanOsaAlue } from '../types/fi/oph/koski/schema/AmmatillisenTutkinnonOsanOsaAlue'
+import { PaikallinenAmmatillisenTutkinnonOsanOsaAlue } from '../types/fi/oph/koski/schema/PaikallinenAmmatillisenTutkinnonOsanOsaAlue'
+import { PaikallinenKoodi } from '../types/fi/oph/koski/schema/PaikallinenKoodi'
+import {
+  Modal,
+  ModalBody,
+  ModalFooter,
+  ModalTitle
+} from '../components-v2/containers/Modal'
+import { RaisedButton } from '../components-v2/controls/RaisedButton'
+import { TextEdit } from '../components-v2/controls/TextField'
 import { Column, ColumnRow } from '../components-v2/containers/Columns'
 import { hasAmmatillinenArviointi } from './OsasuoritusTables'
 import { TestIdLayer } from '../appstate/useTestId'
@@ -303,6 +313,7 @@ const NewYhteisenTutkinnonOsanOsaAlueenSuoritus = ({
   suoritusPath,
   osasuoritus
 }: NewYhteisenTutkinnonOsanOsaAlueenSuoritusProps) => {
+  const [showModal, setShowModal] = useState(false)
   const lisättävätOsat = useTutkinnonOsanOsat(
     (form.state.suoritukset[0] as AmmatillisenTutkinnonOsittainenSuoritus)
       .koulutusmoduuli.perusteenDiaarinumero || '',
@@ -329,6 +340,21 @@ const NewYhteisenTutkinnonOsanOsaAlueenSuoritus = ({
           }}
           testId="uusi-yhteinen-osan-osa-alue"
         />
+        <FlatButton onClick={() => setShowModal(true)}>
+          {t('Lisää paikallinen tutkinnon osan osa-alue')}
+        </FlatButton>
+        {showModal && (
+          <NewPaikallinenOsaAlueModal
+            onClose={() => setShowModal(false)}
+            onSubmit={(nimi) => {
+              form.updateAt(
+                suoritusPath.prop('osasuoritukset').valueOr([]),
+                (a) => [...a, newPaikallinenOsaAlueenSuoritus(nimi)]
+              )
+              setShowModal(false)
+            }}
+          />
+        )}
       </Column>
     </ColumnRow>
   )
@@ -351,6 +377,55 @@ const newMahdollisestiKielillinenKoulutusmoduuli = (
     $class:
       'fi.oph.koski.schema.ValtakunnallinenAmmatillisenTutkinnonOsanOsaAlue'
   } as AmmatillisenTutkinnonOsanOsaAlue
+}
+
+export const newPaikallinenOsaAlueenSuoritus = (
+  nimi: string
+): YhteisenTutkinnonOsanOsaAlueenSuoritus => {
+  return YhteisenTutkinnonOsanOsaAlueenSuoritus({
+    koulutusmoduuli: PaikallinenAmmatillisenTutkinnonOsanOsaAlue({
+      tunniste: PaikallinenKoodi({
+        koodiarvo: nimi,
+        nimi: localize(nimi)
+      }),
+      kuvaus: localize(nimi),
+      pakollinen: false
+    })
+  })
+}
+
+type NewPaikallinenOsaAlueModalProps = {
+  onClose: () => void
+  onSubmit: (nimi: string) => void
+}
+
+export const NewPaikallinenOsaAlueModal = ({
+  onClose,
+  onSubmit
+}: NewPaikallinenOsaAlueModalProps) => {
+  const [nimi, setNimi] = useState('')
+
+  return (
+    <Modal onClose={onClose}>
+      <ModalTitle>
+        {t('Paikallisen tutkinnon osan osa-alueen lisäys')}
+      </ModalTitle>
+      <ModalBody>
+        <label>
+          {t('Tutkinnon osan osa-alueen nimi')}
+          <TextEdit onChange={(n) => setNimi(n ? n : '')} value={nimi} />
+        </label>
+      </ModalBody>
+      <ModalFooter>
+        <FlatButton onClick={onClose} testId="cancel">
+          {t('Peruuta')}
+        </FlatButton>
+        <RaisedButton disabled={!nimi} onClick={() => onSubmit(nimi)}>
+          {t('Lisää tutkinnon osan osa-alue')}
+        </RaisedButton>
+      </ModalFooter>
+    </Modal>
+  )
 }
 
 export const oppiaineToKielikoodistoMap: Record<string, string> = {
