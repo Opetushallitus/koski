@@ -71,10 +71,10 @@ class KielitutkintotodistusTiedoteService(application: KoskiApplication) extends
   private def generateAndSend(tiedoteJobId: String, oppijaOid: String, opiskeluoikeusOid: String, idempotencyKey: String): Unit = {
     val result = for {
       examineeDetails <- kituClient.getExamineeDetails(oppijaOid)
-      templateVariant <- examineeDetails.preferredLanguage
-        .map(lang => s"${lang}_tulostettava_uusi")
+      templateVariant <- examineeDetails.todistuskieli
+        .map(kieli => s"${kieli.koodiarvo.toLowerCase}_tulostettava_uusi")
         .filter(TodistusTemplateVariant.printVariants.contains)
-        .toRight(KoskiErrorCategory.internalError(s"Tutkinnon suorittajan kielelle ei löydy tulostettavaa todistuspohjaa: ${examineeDetails.preferredLanguage}"))
+        .toRight(KoskiErrorCategory.internalError(s"Tutkinnon suorittajan kielelle ei löydy tulostettavaa todistuspohjaa: ${examineeDetails.todistuskieli.map(_.koodiarvo)}"))
 
       todistusJob <- todistusService.createTodistusJobForSystem(opiskeluoikeusOid, oppijaOid, templateVariant)
       _ = repository.setState(tiedoteJobId, KielitutkintotodistusTiedoteState.WAITING_FOR_TODISTUS)

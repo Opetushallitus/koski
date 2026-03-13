@@ -11,13 +11,17 @@ trait KituClient {
 }
 
 case class KituExamineeDetails(
-  preferredLanguage: Option[String],
-  postalAddress: Option[KituPostalAddress]
+  sukunimi: String,
+  etunimet: String,
+  katuosoite: Option[String],
+  postinumero: Option[String],
+  postitoimipaikka: Option[String],
+  maa: Option[KituKoodiarvo],
+  email: Option[String],
+  todistuskieli: Option[KituKoodiarvo]
 )
 
-case class KituPostalAddress(
-  street: Option[String],
-  postalCode: Option[String],
-  city: Option[String],
-  country: Option[String]
+case class KituKoodiarvo(
+  koodiarvo: String,
+  koodistoUri: String
 )
