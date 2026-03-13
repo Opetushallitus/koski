@@ -57,7 +57,7 @@ class TodistusService(application: KoskiApplication) extends Logging with Timing
       rawOpiskeluoikeus <- application.opiskeluoikeusRepository.findByOid(opiskeluoikeusOid)
       job = TodistusJob(
         id = UUID.randomUUID().toString,
-        userOid = None,
+        userOid = Some(systemUser.oid),
         oppijaOid = oppijaOid,
         opiskeluoikeusOid = opiskeluoikeusOid,
         templateVariant = templateVariant,
@@ -65,7 +65,7 @@ class TodistusService(application: KoskiApplication) extends Logging with Timing
         oppijaHenkilötiedotHash = Some(laskeHenkilötiedotHash(oppijanHenkilö)),
         isStamped = false
       )
-      result <- todistusRepository.addOrReuseExistingSystemJob(job)
+      result <- todistusRepository.addOrReuseExisting(job)
     } yield result
   }
 
