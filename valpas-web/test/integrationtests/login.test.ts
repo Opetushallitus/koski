@@ -5,8 +5,11 @@ import {
   expectElementEventuallyVisible,
   expectElementNotVisible,
   expectElementVisible,
+  textEventuallyEquals,
 } from "../integrationtests-env/browser/content"
 import {
+  deleteCookies,
+  goToLocation,
   pathToApiUrl,
   pathToUrl,
   urlIsEventually,
@@ -19,6 +22,10 @@ import {
   reset,
 } from "../integrationtests-env/browser/reset"
 import { longTimeout } from "../integrationtests-env/browser/timeouts"
+import {
+  kansalainenEiOpintopolussaPath,
+  kansalainenLoginVirhePath,
+} from "../../src/state/kansalainenPaths"
 
 describe("Login / Logout / kirjautuminen", () => {
   it("Kirjautumattomalle käyttäjälle näytetään kirjautumisruutu, jossa ei näy logout-painiketta", async () => {
@@ -85,5 +92,30 @@ describe("Login / Logout / kirjautuminen", () => {
     }
 
     await expectElementEventuallyVisible("article.page#login-app", longTimeout)
+  })
+
+  it("Tuntematon reitti /virkailijafoobar näyttää 404-sivun eikä kansalaisen kirjautumista", async () => {
+    await deleteCookies()
+    await goToLocation("/virkailijafoobar")
+    await expectElementEventuallyVisible("article.page#error-view")
+    await expectElementNotVisible("article.page#login-app")
+    await textEventuallyEquals(".heading--primary", "404")
+  })
+
+  it("Kirjautumisvirhe-näkymä näytetään osoitteessa /virhe/login", async () => {
+    await deleteCookies()
+    await goToLocation(kansalainenLoginVirhePath.href())
+    await expectElementEventuallyVisible("article.page#error-view")
+    await textEventuallyEquals(".heading--primary", "Kirjautuminen epäonnistui")
+  })
+
+  it("Ei tietoja opintopolussa -näkymä näytetään osoitteessa /eitietoja", async () => {
+    await deleteCookies()
+    await goToLocation(kansalainenEiOpintopolussaPath.href())
+    await expectElementEventuallyVisible("article.page#error-view")
+    await textEventuallyEquals(
+      ".heading--primary",
+      "Tietojasi ei löydy Opintopolusta",
+    )
   })
 })

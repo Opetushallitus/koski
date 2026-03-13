@@ -83,8 +83,12 @@ const BackNav = (props: OppijaViewBackNavProps) => {
       O.toNullable,
     )
 
-    if (props.prev) {
-      return props.prev
+    // Tupla dekoodaus varmuuden vuoksi, mahdollisen tupla enkoodauksen varalta
+    const prev = props.prev?.startsWith("/")
+      ? props.prev
+      : decodeURIComponent(props.prev ?? "")
+    if (prev.startsWith("/")) {
+      return prev
     } else if (props.hakutilanneRef) {
       return hakutilannePathWithOrg.href(null, {
         organisaatioOid: props.hakutilanneRef,
