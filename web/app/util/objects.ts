@@ -14,6 +14,9 @@ export const isEmptyModelObject = (obj: any): boolean => {
   if (obj === undefined || obj === null) {
     return true
   }
+  if (obj === false) {
+    return true
+  }
   if (
     typeof obj === 'string' ||
     typeof obj === 'number' ||

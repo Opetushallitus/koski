@@ -1243,7 +1243,7 @@ test.describe('Vapaa sivistystyö', () => {
     })
   })
 
-  test.describe('Muokkausnäkymä', () => {
+  test.describe('think onlusnäkymä', () => {
     test.use({ storageState: virkailija('kalle') })
     test.beforeEach(async ({ fixtures }) => {
       await fixtures.reset()
@@ -1318,9 +1318,9 @@ test.describe('Vapaa sivistystyö', () => {
 
         await expect(
           page.getByTestId(
-            'oo.0.suoritukset.0.osasuoritukset.0.laajuus.edit.errors'
+            'oo.0.suoritukset.0.osasuoritukset.0.errors'
           )
-        ).toContainText('Kenttä ei voi olla tyhjä')
+        ).toContainText('Pakollinen tieto puuttuu')
         expect(await vstOppijaPage.saveBtn.isDisabled()).toBe(true)
 
         await vstOppijaPage.cancelEdit()
@@ -1337,7 +1337,7 @@ test.describe('Vapaa sivistystyö', () => {
 
         await expect(
           page.getByTestId(
-            'oo.0.suoritukset.0.osasuoritukset.0.laajuus.edit.errors'
+            'oo.0.suoritukset.0.osasuoritukset.0.errors'
           )
         ).toContainText('Arvon pitää olla enemmän kuin 0')
         expect(await vstOppijaPage.saveBtn.isDisabled()).toBe(true)

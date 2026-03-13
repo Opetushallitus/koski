@@ -5,7 +5,7 @@ import { NonEmptyArray } from 'fp-ts/lib/NonEmptyArray'
 import { pipe } from 'fp-ts/lib/function'
 import React, { useCallback, useMemo, useState } from 'react'
 import { useChildClassNames } from '../../appstate/constraints'
-import { TestIdLayer, TestIdText } from '../../appstate/useTestId'
+import { TestIdLayer, TestIdText, useTestId } from '../../appstate/useTestId'
 import { ISO2FinnishDate, addDaysISO } from '../../date/date'
 import { t } from '../../i18n/i18n'
 import { isAikuistenPerusopetuksenOpiskeluoikeusjakso } from '../../types/fi/oph/koski/schema/AikuistenPerusopetuksenOpiskeluoikeusjakso'
@@ -34,8 +34,6 @@ import {
 } from '../containers/KeyValueTable'
 import { DateEdit } from '../controls/DateField'
 import { IconButton } from '../controls/IconButton'
-import { RaisedButton } from '../controls/RaisedButton'
-import { FieldErrors } from '../forms/FieldErrors'
 import { FieldEditorProps, FieldViewerProps } from '../forms/FormField'
 import { ValidationError, isValidationError } from '../forms/validator'
 import { CHARCODE_REMOVE } from '../texts/Icon'
@@ -189,15 +187,7 @@ export const OpiskeluoikeudenTilaEdit = <T extends OpiskeluoikeudenTila>(
               phone: [24, '*']
             }}
           >
-            {[
-              <RaisedButton
-                key="RaisedButton"
-                onClick={oo.openModal}
-                testId="add"
-              >
-                {t('Lisää uusi')}
-              </RaisedButton>
-            ]}
+            {[<LisääTilaLink key="addLink" onClick={oo.openModal} />]}
           </KeyColumnedValuesRow>
         )}
       </KeyValueTable>
@@ -209,7 +199,6 @@ export const OpiskeluoikeudenTilaEdit = <T extends OpiskeluoikeudenTila>(
           enableValmistuminen={props.enableValmistuminen}
         />
       )}
-      <FieldErrors errors={props.errors} />
     </TestIdLayer>
   )
 }
@@ -347,6 +336,22 @@ const useOpiskeluoikeudenTilaState = <T extends OpiskeluoikeudenTila>(
     onAddNew,
     onRemoveLatest
   }
+}
+
+const LisääTilaLink: React.FC<{
+  onClick: () => void
+}> = ({ onClick }) => {
+  const testId = useTestId('add')
+  return (
+    <a
+      className="OpiskeluoikeudenTila-lisääTila"
+      role="button"
+      onClick={onClick}
+      data-testid={testId}
+    >
+      {t('Lisää opiskeluoikeuden tila')}
+    </a>
+  )
 }
 
 // Utils

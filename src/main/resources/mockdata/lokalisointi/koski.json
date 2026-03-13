@@ -49668,7 +49668,7 @@
     "namespace": "koski",
     "key": "validation:emptyString",
     "locale": "fi",
-    "value": "Kenttä ei voi olla tyhjä",
+    "value": "Pakollinen tieto puuttuu",
     "createdBy": "anonymousUser",
     "accesscount": null,
     "modifiedBy": "anonymousUser",

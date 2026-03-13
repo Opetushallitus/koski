@@ -4,9 +4,15 @@ import { constant } from 'fp-ts/lib/function'
 import React, { useCallback, useEffect, useMemo } from 'react'
 import { useKoodistoFiller } from '../../appstate/koodisto'
 import { deepEqual } from '../../util/fp/objects'
+import { FieldErrors } from './FieldErrors'
 import { FormModel, FormOptic, getValue } from './FormModel'
 import { useFormErrors } from './useFormErrors'
 import { ValidationError } from './validator'
+
+// Components that render FieldErrors internally should register here
+// to prevent FormField from rendering a duplicate
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const componentsWithBuiltInErrors = new Set<React.FC<any>>()
 
 export type FieldViewerProps<FieldValue, ViewerProps> = ViewerProps & {
   value?: FieldValue | undefined
@@ -179,19 +185,26 @@ export const FormField = <
 
   if (form.editMode) {
     if (Edit) {
+      const nonEmptyErrors = A.isNonEmpty(errors) ? errors : undefined
+      const componentHandlesErrors = componentsWithBuiltInErrors.has(
+        Edit as any
+      )
       return (
-        // @ts-expect-error - TODO: tyyppicastaus?
-        <Edit
-          {...editProps}
-          initialValue={initialValue}
-          value={value}
-          optional={Boolean(optional)}
-          onChange={set}
-          errors={A.isNonEmpty(errors) ? errors : undefined}
-          path={path}
-          index={props.index}
-          testId={props.testId && `${props.testId}.edit`}
-        />
+        <>
+          {/* @ts-expect-error - TODO: tyyppicastaus? */}
+          <Edit
+            {...editProps}
+            initialValue={initialValue}
+            value={value}
+            optional={Boolean(optional)}
+            onChange={set}
+            errors={nonEmptyErrors}
+            path={path}
+            index={props.index}
+            testId={props.testId && `${props.testId}.edit`}
+          />
+          {!componentHandlesErrors && <FieldErrors errors={nonEmptyErrors} />}
+        </>
       )
     }
   }

@@ -12,7 +12,7 @@ import { UusiOpiskeluoikeusjakso } from '../components-v2/opiskeluoikeus/UusiOpi
 import { AmmatillinenOpiskeluoikeusjakso } from '../types/fi/oph/koski/schema/AmmatillinenOpiskeluoikeusjakso'
 import { AmmatillinenLisatiedot } from './AmmatillinenLisatiedot'
 import { VirkailijaKansalainenContainer } from '../components-v2/containers/VirkailijaKansalainenContainer'
-import { localize, t } from '../i18n/i18n'
+import { emptyLocalizedString, localize, t } from '../i18n/i18n'
 import {
   KeyValueRow,
   KeyValueTable
@@ -83,6 +83,7 @@ import { HenkilövahvistusValinnaisellaPaikkakunnalla } from '../types/fi/oph/ko
 import { OpenAllButton, useTree } from '../appstate/tree'
 import { AmisLaajuudetYhteensä } from './AmisLaajuudetYhteensä'
 import { SisältyyOpiskeluoikeuteen } from './SisältyyOpiskeluoikeuteen'
+import { AmmatillinenArviointiasteikko } from './AmmatillinenArviointiasteikko'
 import { isAmmatillisenTutkinnonOsittainenUseastaTutkinnostaSuoritus } from '../types/fi/oph/koski/schema/AmmatillisenTutkinnonOsittainenUseastaTutkinnostaSuoritus'
 import { AmmatillinenTutkintoOsittainenUseastaTutkinnostaEditor } from './ammatillinen-osittainen-useasta-tutkinnosta/AmmatillinenTutkintoOsittainenUseastaTutkinnostaEditor'
 
@@ -460,9 +461,17 @@ const AmmatillinenTutkintoOsittainenEditor: React.FC<
           vahvistusClass={HenkilövahvistusValinnaisellaPaikkakunnalla.className}
         />
 
+        <AmmatillinenArviointiasteikko
+          suoritus={osittainenPäätasonSuoritus.suoritus}
+        />
         <Spacer />
-        <OpenAllButton {...tree} />
-        <Spacer />
+        {(osittainenPäätasonSuoritus.suoritus.osasuoritukset || []).length >
+          0 && (
+          <>
+            <OpenAllButton {...tree} />
+            <Spacer />
+          </>
+        )}
         <OsasuoritusTables
           form={props.form}
           osittainenPäätasonSuoritus={osittainenPäätasonSuoritus}
@@ -490,11 +499,10 @@ export const OsaamisalaView = <T extends Osaamisalajakso>({
     return (
       <>
         <TestIdText id="osaamisala">{t(value.osaamisala.nimi)}</TestIdText>
-        {' : '}
         <TestIdText id="alku">
           {value?.alku && ISO2FinnishDate(value.alku)}
         </TestIdText>{' '}
-        {' - '}
+        {' — '}
         <TestIdText id="loppu">
           {value?.loppu && ISO2FinnishDate(value.loppu)}
         </TestIdText>
@@ -518,7 +526,6 @@ export const OsaamisalaEdit = ({
           value={value.osaamisala.koodiarvo}
           testId="osaamisala"
         />
-        <span className="AikajaksoEdit__separator"> {' : '}</span>
         <DateInput
           value={value?.alku}
           onChange={(alku?: string) => {
@@ -526,7 +533,7 @@ export const OsaamisalaEdit = ({
           }}
           testId="alku"
         />
-        <span className="AikajaksoEdit__separator"> {' - '}</span>
+        <span className="AikajaksoEdit__separator"> {' — '}</span>
         <DateInput
           value={value?.loppu}
           onChange={(loppu?: string) => {
@@ -558,11 +565,10 @@ export const JärjestämismouotoView = <T extends Järjestämismuotojakso>({
       <TestIdText id="alku">
         {value?.alku && ISO2FinnishDate(value.alku)}
       </TestIdText>
-      {' - '}
+      {' — '}
       <TestIdText id="loppu">
         {value?.loppu && ISO2FinnishDate(value.loppu)}
-      </TestIdText>
-      {' : '}
+      </TestIdText>{' '}
       <TestIdText id="järjestämismuoto">
         {t(value?.järjestämismuoto.tunniste.nimi)}
       </TestIdText>
@@ -579,7 +585,8 @@ export const emptyJärjestämismuoto: Järjestämismuotojakso = {
     $class: 'fi.oph.koski.schema.JärjestämismuotoIlmanLisätietoja',
     tunniste: Koodistokoodiviite({
       koodistoUri: 'jarjestamismuoto',
-      koodiarvo: ''
+      koodiarvo: '',
+      nimi: emptyLocalizedString
     })
   },
   $class: 'fi.oph.koski.schema.Järjestämismuotojakso'
@@ -599,7 +606,7 @@ export const JärjestämismouotoEdit = ({
           }}
           testId="alku"
         />
-        <span className="AikajaksoEdit__separator"> {' - '}</span>
+        <span className="AikajaksoEdit__separator"> {' — '}</span>
         <DateInput
           value={value?.loppu}
           onChange={(loppu?: string) => {
@@ -607,7 +614,6 @@ export const JärjestämismouotoEdit = ({
           }}
           testId="loppu"
         />
-        <span className="AikajaksoEdit__separator"> {' : '}</span>
         <KoodistoSelect
           koodistoUri={'jarjestamismuoto'}
           value={value?.järjestämismuoto.tunniste.koodiarvo}
@@ -637,10 +643,10 @@ export const JärjestämismouotoEdit = ({
                 ...value.järjestämismuoto,
                 $class:
                   'fi.oph.koski.schema.OppisopimuksellinenJärjestämismuoto',
-                tunniste: Koodistokoodiviite({
-                  koodiarvo: '20',
-                  koodistoUri: 'jarjestamismuoto'
-                }),
+                tunniste: {
+                  ...value.järjestämismuoto.tunniste,
+                  koodiarvo: '20' as const
+                },
                 oppisopimus
               }
             })
@@ -662,18 +668,20 @@ const OppisopimusView = <T extends Oppisopimus>({
       <KeyValueRow localizableLabel="Y-tunnus">
         {value?.työnantaja.yTunnus}
       </KeyValueRow>
-      <KeyValueRow localizableLabel="Oppisopimuksen purkaminen">
-        <KeyValueTable>
-          <KeyValueRow localizableLabel="Päivä">
-            {ISO2FinnishDate(value?.oppisopimuksenPurkaminen?.päivä)}
-          </KeyValueRow>
-          <KeyValueRow localizableLabel="Purettu koeajalla">
-            <BooleanView
-              value={value?.oppisopimuksenPurkaminen?.purettuKoeajalla}
-            />
-          </KeyValueRow>
-        </KeyValueTable>
-      </KeyValueRow>
+      {value?.oppisopimuksenPurkaminen && (
+        <KeyValueRow localizableLabel="Oppisopimuksen purkaminen">
+          <KeyValueTable>
+            <KeyValueRow localizableLabel="Päivä">
+              {ISO2FinnishDate(value.oppisopimuksenPurkaminen.päivä)}
+            </KeyValueRow>
+            <KeyValueRow localizableLabel="Purettu koeajalla">
+              <BooleanView
+                value={value.oppisopimuksenPurkaminen.purettuKoeajalla}
+              />
+            </KeyValueRow>
+          </KeyValueTable>
+        </KeyValueRow>
+      )}
     </KeyValueTable>
   )
 }
@@ -816,7 +824,7 @@ export const OsaamisenHankkimistapaView = <
       <TestIdText id="alku">
         {value?.alku && ISO2FinnishDate(value.alku)}
       </TestIdText>
-      {' - '}
+      {' — '}
       <TestIdText id="loppu">
         {value?.loppu && ISO2FinnishDate(value.loppu)}
       </TestIdText>
@@ -840,7 +848,8 @@ export const emptyOsaamisenHankkimistapa: OsaamisenHankkimistapajakso =
       $class: 'fi.oph.koski.schema.OsaamisenHankkimistapaIlmanLisätietoja',
       tunniste: Koodistokoodiviite({
         koodistoUri: 'osaamisenhankkimistapa',
-        koodiarvo: ''
+        koodiarvo: '',
+        nimi: emptyLocalizedString
       })
     }
   })
@@ -859,7 +868,7 @@ export const OsaamisenHankkimistapaEdit = ({
           }}
           testId="alku"
         />
-        <span className="AikajaksoEdit__separator"> {' - '}</span>
+        <span className="AikajaksoEdit__separator"> {' — '}</span>
         <DateInput
           value={value?.loppu}
           onChange={(loppu?: string) => {
@@ -902,10 +911,10 @@ export const OsaamisenHankkimistapaEdit = ({
                 ...value.osaamisenHankkimistapa,
                 $class:
                   'fi.oph.koski.schema.OppisopimuksellinenOsaamisenHankkimistapa',
-                tunniste: Koodistokoodiviite({
-                  koodiarvo: 'oppisopimus',
-                  koodistoUri: 'osaamisenhankkimistapa'
-                }),
+                tunniste: {
+                  ...value.osaamisenHankkimistapa.tunniste,
+                  koodiarvo: 'oppisopimus' as const
+                },
                 oppisopimus
               }
             })
@@ -924,7 +933,7 @@ export const TyössäoppimisjaksoView = <T extends Työssäoppimisjakso>({
       <TestIdText id="alku">
         {value?.alku && ISO2FinnishDate(value.alku)}
       </TestIdText>
-      {' - '}
+      {' — '}
       <TestIdText id="loppu">
         {value?.loppu && ISO2FinnishDate(value.loppu)}
       </TestIdText>
@@ -970,7 +979,7 @@ export const TyössäoppimisjaksoEdit = ({
           }}
           testId="alku"
         />
-        <span className="AikajaksoEdit__separator"> {' - '}</span>
+        <span className="AikajaksoEdit__separator"> {' — '}</span>
         <DateInput
           value={value?.loppu}
           onChange={(loppu?: string) => {
@@ -1051,7 +1060,7 @@ export const KoulutussopimusView = <T extends Koulutussopimusjakso>({
       <TestIdText id="alku">
         {value?.alku && ISO2FinnishDate(value.alku)}
       </TestIdText>
-      {' - '}
+      {' — '}
       <TestIdText id="loppu">
         {value?.loppu && ISO2FinnishDate(value.loppu)}
       </TestIdText>
@@ -1096,7 +1105,7 @@ export const KoulutussopimusEdit = ({
           }}
           testId="alku"
         />
-        <span className="AikajaksoEdit__separator"> {' - '}</span>
+        <span className="AikajaksoEdit__separator"> {' — '}</span>
         <DateInput
           value={value?.loppu}
           onChange={(loppu?: string) => {

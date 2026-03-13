@@ -22,11 +22,27 @@
 
     .VersiohistoriaList {
       padding: @baseline;
+      padding-right: 3 * @baseline;
       margin: 0;
       width: 100%;
       text-align: left;
       list-style-type: none;
       color: @color-black;
+      position: relative;
+
+      .VersiohistoriaList__close {
+        position: absolute;
+        top: 6px;
+        right: 10px;
+
+        .LinkButton,
+        .VersiohistoriaList__closeButton {
+          color: @color-darkgray;
+          font-size: 18px;
+          text-decoration: none;
+          cursor: pointer;
+        }
+      }
 
       .VersiohistoriaList__item {
         width: 100%;

@@ -15,7 +15,11 @@ import { CollectableOptic } from '../../util/types'
 import { common, CommonProps } from '../CommonProps'
 import { NumberField } from '../controls/NumberField'
 import { FieldErrors } from '../forms/FieldErrors'
-import { FieldEditorProps, FieldViewerProps } from '../forms/FormField'
+import {
+  FieldEditorProps,
+  FieldViewerProps,
+  componentsWithBuiltInErrors
+} from '../forms/FormField'
 
 /* ---------------------------------------------------------------------
  *
@@ -94,12 +98,11 @@ export const LaajuusEdit = <T extends Laajuus>(props: LaajuusEditProps<T>) => {
           {yksikönNimi}
         </TestIdText>
       </div>
-      <TestIdLayer id="laajuus.edit">
-        <FieldErrors errors={props.errors} />
-      </TestIdLayer>
+      <FieldErrors errors={props.errors} />
     </label>
   )
 }
+componentsWithBuiltInErrors.add(LaajuusEdit)
 
 /* ---------------------------------------------------------------------
  *
@@ -120,6 +123,7 @@ export const LaajuusOpintopisteissäEdit: React.FC<
     createLaajuus={(arvo: any) => LaajuusOpintopisteissä({ arvo }) as any}
   />
 )
+componentsWithBuiltInErrors.add(LaajuusOpintopisteissäEdit)
 
 export const LaajuusKursseissaEdit: React.FC<
   DefaultLaajuusEditProps<LaajuusOpintopisteissä>
@@ -129,6 +133,7 @@ export const LaajuusKursseissaEdit: React.FC<
     createLaajuus={(arvo: any) => LaajuusKursseissa({ arvo }) as any}
   />
 )
+componentsWithBuiltInErrors.add(LaajuusKursseissaEdit)
 
 /* ---------------------------------------------------------------------
  *

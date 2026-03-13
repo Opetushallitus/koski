@@ -34,6 +34,7 @@ export type OsasuoritusTableProps<
   onRemove?: (index: number) => void
   addNewOsasuoritusView?: React.FC<P>
   addNewOsasuoritusViewProps?: P
+  forceOpen?: boolean
 }>
 
 export type OsasuoritusRowData<DATA_KEYS extends string> = {
@@ -71,6 +72,7 @@ export const OsasuoritusTable = <DATA_KEYS extends string, P>(
               editMode={editMode}
               row={row}
               initiallyOpen={newOsasuoritusIds.includes(getRowId(row))}
+              forceOpen={props.forceOpen}
               expandable={row.expandable}
               skipExpandableColumn={skipExpandableColumn}
               completed={completed ? completed(index) : undefined}
@@ -99,6 +101,7 @@ export type OsasuoritusRowProps<DATA_KEYS extends string> = CommonProps<{
   row: OsasuoritusRowData<DATA_KEYS>
   onRemove?: () => void
   initiallyOpen?: boolean
+  forceOpen?: boolean
 }>
 
 export const OsasuoritusHeader = <DATA_KEYS extends string>(
@@ -139,6 +142,7 @@ export const OsasuoritusRow = <DATA_KEYS extends string>(
   const expandable = props.expandable === undefined ? true : props.expandable
 
   const { TreeNode, ...tree } = useTree(props.initiallyOpen)
+  const isOpen = props.forceOpen || tree.isOpen
 
   return (
     <TreeNode>
@@ -150,7 +154,7 @@ export const OsasuoritusRow = <DATA_KEYS extends string>(
           <Column span={spans.leftIcons} align="right">
             {props.row.content && expandable && (
               <ExpandButton
-                expanded={tree.isOpen}
+                expanded={isOpen}
                 onChange={tree.toggle}
                 label={t('Osasuoritus')}
               />
@@ -186,7 +190,7 @@ export const OsasuoritusRow = <DATA_KEYS extends string>(
           </Column>
         )}
       </ColumnRow>
-      {expandable && tree.isOpen && props.row.content && (
+      {expandable && isOpen && props.row.content && (
         <LayoutProvider indent={2}>
           <TestIdLayer id="properties">
             <Section>{props.row.content}</Section>

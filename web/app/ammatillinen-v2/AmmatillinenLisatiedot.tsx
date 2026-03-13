@@ -353,11 +353,11 @@ const HojksView = <T extends Hojks>({
   return (
     <div>
       <TestIdText id="opetusryhmä">{t(value?.opetusryhmä.nimi)}</TestIdText>{' '}
-      {' - '}
+      {' — '}
       <TestIdText id="alku">
         {value?.alku && ISO2FinnishDate(value.alku)}
       </TestIdText>{' '}
-      {' - '}
+      {' — '}
       <TestIdText id="loppu">
         {value?.loppu && ISO2FinnishDate(value.loppu)}
       </TestIdText>
@@ -390,7 +390,7 @@ const HojksEdit = ({
           }}
           testId={'opetusryhmä'}
         />
-        <span className="AikajaksoEdit__separator"> {' - '}</span>
+        <span className="AikajaksoEdit__separator"> {' — '}</span>
         <DateInput
           value={value?.alku}
           onChange={(alku?: string) => {
@@ -398,7 +398,7 @@ const HojksEdit = ({
           }}
           testId="alku"
         />
-        <span className="AikajaksoEdit__separator"> {' - '}</span>
+        <span className="AikajaksoEdit__separator"> {' — '}</span>
         <DateInput
           value={value?.loppu}
           onChange={(loppu?: string) => {
@@ -421,18 +421,23 @@ const OsaAikaisuusView = <T extends OsaAikaisuusJakso>({
   value
 }: CommonProps<FieldViewerProps<T | undefined, EmptyObject>>) => {
   return (
-    <div>
-      <TestIdText id="alku">
-        {value?.alku && ISO2FinnishDate(value.alku)}
-      </TestIdText>{' '}
-      {' - '}
-      <TestIdText id="loppu">
-        {value?.loppu && ISO2FinnishDate(value.loppu)}
-      </TestIdText>
-      {' - '}
-      <TestIdText id="osaAikaisuus">{value?.osaAikaisuus}</TestIdText>
-      {'%'}
-    </div>
+    <span className="InlineJaksoView">
+      <span>
+        <TestIdText id="alku">
+          {value?.alku && ISO2FinnishDate(value.alku)}
+        </TestIdText>
+        {' — '}
+        <TestIdText id="loppu">
+          {value?.loppu && ISO2FinnishDate(value.loppu)}
+        </TestIdText>
+      </span>
+      <span>
+        <span className="InlineJakso__label">{t('Osa-aikaisuus')}</span>
+        {': '}
+        <TestIdText id="osaAikaisuus">{value?.osaAikaisuus}</TestIdText>
+        {'%'}
+      </span>
+    </span>
   )
 }
 
@@ -454,7 +459,7 @@ const OsaAikaisuusEdit = ({
         }}
         testId="alku"
       />
-      <span className="AikajaksoEdit__separator"> {' - '}</span>
+      <span>{' — '}</span>
       <DateInput
         value={value?.loppu}
         onChange={(loppu?: string) => {
@@ -462,14 +467,15 @@ const OsaAikaisuusEdit = ({
         }}
         testId="loppu"
       />
+      <span className="InlineJakso__label">{t('Osa-aikaisuus')}</span>
       <NumberField
         value={value?.osaAikaisuus}
         onChange={(osaAikaisuus?: number) => {
-          osaAikaisuus &&
+          osaAikaisuus !== undefined &&
             onChange({ ...emptyOsaAikausuus, ...value, osaAikaisuus })
         }}
       />
-      {'%'}
+      <span>{'%'}</span>
     </div>
   )
 }
@@ -480,17 +486,22 @@ const OpiskeluvalmiuksiaTuvkevienOpintojenJaksoView = <
   value
 }: CommonProps<FieldViewerProps<T | undefined, EmptyObject>>) => {
   return (
-    <div>
-      <TestIdText id="alku">
-        {value?.alku && ISO2FinnishDate(value.alku)}
-      </TestIdText>{' '}
-      {' - '}
-      <TestIdText id="loppu">
-        {value?.loppu && ISO2FinnishDate(value.loppu)}
-      </TestIdText>
-      {' - '}
-      <TestIdText id="kuvaus">{t(value?.kuvaus)}</TestIdText>
-    </div>
+    <span className="InlineJaksoView">
+      <span>
+        <TestIdText id="alku">
+          {value?.alku && ISO2FinnishDate(value.alku)}
+        </TestIdText>
+        {' — '}
+        <TestIdText id="loppu">
+          {value?.loppu && ISO2FinnishDate(value.loppu)}
+        </TestIdText>
+      </span>
+      <span>
+        <span className="InlineJakso__label">{t('Kuvaus')}</span>
+        {': '}
+        <TestIdText id="kuvaus">{t(value?.kuvaus)}</TestIdText>
+      </span>
+    </span>
   )
 }
 
@@ -522,7 +533,7 @@ const OpiskeluvalmiuksiaTuvkevienOpintojenJaksoEdit = ({
         }}
         testId="alku"
       />
-      <span className="AikajaksoEdit__separator"> {' - '}</span>
+      <span>{' — '}</span>
       <DateInput
         value={value?.loppu}
         onChange={(loppu?: string) => {
@@ -535,6 +546,7 @@ const OpiskeluvalmiuksiaTuvkevienOpintojenJaksoEdit = ({
         }}
         testId="loppu"
       />
+      <span className="InlineJakso__label">{t('Kuvaus')}</span>
       <LocalizedTextEdit
         value={value?.kuvaus}
         onChange={(kuvaus?: LocalizedString) => {
@@ -546,7 +558,6 @@ const OpiskeluvalmiuksiaTuvkevienOpintojenJaksoEdit = ({
             })
         }}
         testId="kuvaus"
-        placeholder={t('Kuvaus')}
       />
     </div>
   )

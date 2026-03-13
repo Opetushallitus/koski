@@ -41,6 +41,13 @@
   &.search::after {
     display: none;
   }
+
+  &.Select--error .Select__input {
+    border-color: red;
+    box-shadow:
+      inset 0 1px 4px 0 #dadada,
+      0 0 3px red;
+  }
 }
 
 .Select__optionListContainer {
@@ -105,6 +112,22 @@
       box-shadow: none;
     }
   }
+}
+
+.KeyValueTable .Select {
+  max-width: 300px;
+}
+
+.KeyValueTable .Select.search {
+  max-width: 500px;
+}
+
+.KeyValueTable .AikajaksoEdit .Select {
+  max-width: initial;
+}
+
+.KeyValueTable .DateEdit__field {
+  width: 140px;
 }
 
 .Select__spinner {

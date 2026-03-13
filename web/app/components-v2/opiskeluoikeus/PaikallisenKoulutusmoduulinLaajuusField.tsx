@@ -6,7 +6,11 @@ import { PaikallinenKoulutusmoduuli } from '../../types/fi/oph/koski/schema/Paik
 import { StorablePreference } from '../../types/fi/oph/koski/schema/StorablePreference'
 import { EmptyObject } from '../../util/objects'
 import { CommonProps } from '../CommonProps'
-import { FieldEditorProps, FieldViewerProps } from '../forms/FormField'
+import {
+  FieldEditorProps,
+  FieldViewerProps,
+  componentsWithBuiltInErrors
+} from '../forms/FormField'
 import { LaajuusEdit, LaajuusView } from './LaajuusField'
 
 export type PaikallinenKoulutusmoduuliLaajuudella = Extract<
@@ -76,3 +80,4 @@ export const PaikallisenKoulutusmoduulinLaajuusEdit = <
     />
   )
 }
+componentsWithBuiltInErrors.add(PaikallisenKoulutusmoduulinLaajuusEdit)

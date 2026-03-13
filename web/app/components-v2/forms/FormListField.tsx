@@ -47,10 +47,11 @@ export const FormListField = <
   const values = (getValue(path)(props.form.state) || []) as FieldValue[]
 
   const remove = (index: number) => () => {
-    props.form.updateAt(
-      path,
-      (ts) => (ts ? deleteAt(index)(ts) : undefined) as ValueList
-    )
+    props.form.updateAt(path, (ts) => {
+      if (!ts) return undefined as ValueList
+      const result = deleteAt(index)(ts)
+      return (result.length === 0 ? undefined : result) as ValueList
+    })
   }
 
   return (

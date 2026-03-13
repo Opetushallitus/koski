@@ -1,6 +1,6 @@
 import React, { useCallback, useMemo, useState } from 'react'
 import { TestIdLayer, TestIdText } from '../../appstate/useTestId'
-import { ISO2FinnishDate } from '../../date/date'
+import { ISO2FinnishDate, parseISODate } from '../../date/date'
 import { t } from '../../i18n/i18n'
 import { Koulutustoimija } from '../../types/fi/oph/koski/schema/Koulutustoimija'
 import { Opiskeluoikeus } from '../../types/fi/oph/koski/schema/Opiskeluoikeus'
@@ -185,7 +185,9 @@ export const SuorituksenVahvistus: React.FC<SuorituksenVahvistusProps> = (
     <div
       {...common(props, [
         'SuorituksenVahvistus',
-        vahvistus && 'SuorituksenVahvistus--valmis'
+        vahvistus &&
+          isVahvistusPäiväMennyt(vahvistus) &&
+          'SuorituksenVahvistus--valmis'
       ])}
     >
       <div className="SuorituksenVahvistus__status">
@@ -215,4 +217,9 @@ export const SuorituksenVahvistus: React.FC<SuorituksenVahvistusProps> = (
       {props.children}
     </div>
   )
+}
+
+const isVahvistusPäiväMennyt = (vahvistus: Vahvistus): boolean => {
+  const date = parseISODate(vahvistus.päivä)
+  return date instanceof Date && date <= new Date()
 }
