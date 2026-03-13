@@ -84,19 +84,19 @@ class KielitutkintotodistusTiedoteService(application: KoskiApplication) extends
 
       _ <- resultRepository.copyObject(BucketType.RAW, BucketType.TIEDOTE, completedTodistus.id)
       todistusUrl = resultRepository.getDirectUrl(BucketType.TIEDOTE, completedTodistus.id)
-      _ = logger.info(s"Printtitodistus kopioitu tiedote-buckettiin: $todistusUrl")
+      _ = logger.info(s"Printtitodistus kopioitu tiedote-buckettiin: tiedote=$tiedoteJobId todistus=${completedTodistus.id} url=$todistusUrl")
 
       _ <- client.sendKielitutkintoTodistusTiedote(oppijaOid, idempotencyKey, todistusUrl)
     } yield ()
 
     result match {
       case Right(()) =>
-        repository.setCompleted(tiedoteJobId)
         AuditLog.log(KoskiAuditLogMessage(TIEDOTE_LAHETETTY, KoskiSpecificSession.systemUser, Map(
           oppijaHenkiloOid -> oppijaOid,
           opiskeluoikeusOidField -> opiskeluoikeusOid,
           tiedoteTyyppi -> "kielitodistus"
         )))
+        repository.setCompleted(tiedoteJobId)
         logger.info(s"Tiedote lähetetty: tiedote=$tiedoteJobId oo=$opiskeluoikeusOid")
       case Left(err) =>
         repository.setFailed(tiedoteJobId, err.toString)
