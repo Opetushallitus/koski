@@ -28,7 +28,7 @@
     "optics-ts": "^2.4.1",
     "partial.lenses": "^9.8.0",
     "prop-types": "^15.8.1",
-    "ramda": "^0.30.1",
+    "ramda": "^0.32.0",
     "react": "^16.14.0",
     "react-day-picker": "^7.4.10",
     "react-dom": "^16.14.0",
@@ -56,7 +56,7 @@
     "@types/js-cookie": "^3.0.6",
     "@types/mocha": "^10.0.10",
     "@types/node": "^22.15.32",
-    "@types/ramda": "^0.30.2",
+    "@types/ramda": "^0.31.0",
     "@types/react": "16.14.69",
     "@types/react-dom": "16.9.25",
     "@typescript-eslint/eslint-plugin": "^8.53.1",
@@ -88,7 +88,7 @@
     "postcss-loader": "^8.2.0",
     "postcss-preset-env": "^10.6.1",
     "prettier": "3.8.1",
-    "puppeteer": "24.35.0",
+    "puppeteer": "24.38.0",
     "style-loader": "^4.0.0",
     "swc-loader": "^0.2.7",
     "ts-loader": "^9.5.4",
@@ -124,5 +124,5 @@
       "js-yaml": "4.1.1"
     }
   },
-  "packageManager": "pnpm@10.28.2"
+  "packageManager": "pnpm@10.32.0"
 }
