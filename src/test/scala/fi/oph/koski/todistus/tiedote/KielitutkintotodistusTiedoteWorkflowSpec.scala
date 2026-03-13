@@ -31,8 +31,21 @@ class KielitutkintotodistusTiedoteWorkflowSpec extends KielitutkintotodistusTied
         job.get.oppijaOid should equal(oppijaOid)
         job.get.state should equal(KielitutkintotodistusTiedoteState.COMPLETED)
         job.get.completedAt shouldBe defined
+        mockTiedotuspalveluClient.sentNotifications.exists(n => n._1 == oppijaOid && n._2 == s"$opiskeluoikeusOid-initial" && n._3.nonEmpty) should be(true)
+      }
+    }
 
-        mockTiedotuspalveluClient.sentNotifications.exists(_ == (oppijaOid, s"$opiskeluoikeusOid-initial")) should be(true)
+    "Luo printtitodistuksen ja lataa sen tiedote-buckettiin" in {
+      withoutRunningTiedoteScheduler {
+        val oppijaOid = KoskiSpecificMockOppijat.kielitutkinnonSuorittaja.oid
+        val opiskeluoikeusOid = getVahvistettuKielitutkinnonOpiskeluoikeusOid(oppijaOid).get
+
+        app.kielitutkintotodistusTiedoteService.processAll()
+
+        // Varmista, että todistusUrl on lähetetty tiedotuspalvelulle
+        val notification = mockTiedotuspalveluClient.sentNotifications.find(_._1 == oppijaOid)
+        notification shouldBe defined
+        notification.get._3 should include("koski-tiedotuspalvelu-local")
       }
     }
 

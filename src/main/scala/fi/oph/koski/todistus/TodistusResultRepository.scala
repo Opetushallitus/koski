@@ -27,6 +27,7 @@ class TodistusResultRepository(config: Config) extends Logging {
   lazy val region: Region = Region.of(config.getString("todistus.s3.region"))
   lazy val rawBucketName: String = config.getString("todistus.s3.rawBucket")
   lazy val stampedBucketName: String = config.getString("todistus.s3.stampedBucket")
+  lazy val tiedoteBucketName: String = config.getString("todistus.s3.tiedoteBucket")
   lazy val presignDuration: Duration = config.getDuration("todistus.s3.presignDuration")
   lazy val endpointOverride: URI = URI.create(config.getString("todistus.s3.endpoint"))
 
@@ -45,6 +46,7 @@ class TodistusResultRepository(config: Config) extends Logging {
     // Bucketin automaattinen luonti ainoastaan Localstackin kanssa
     createBucketIfDoesNotExist(rawBucketName)
     createBucketIfDoesNotExist(stampedBucketName)
+    createBucketIfDoesNotExist(tiedoteBucketName)
   }
 
   def getStream(bucketType: BucketType, id: String, contentType: String = "application/pdf"): Either[HttpStatus, InputStream] = {
@@ -120,6 +122,35 @@ class TodistusResultRepository(config: Config) extends Logging {
       .toExternalForm
   }
 
+  def getDirectUrl(bucketType: BucketType, id: String): String = {
+    val key = objectKey(bucketType, id)
+    val bucket = bucketName(bucketType)
+    if (useAWS) {
+      s"https://${bucket}.s3.${region.id()}.amazonaws.com/${key}"
+    } else {
+      s"${endpointOverride}/${bucket}/${key}"
+    }
+  }
+
+  def copyObject(fromBucket: BucketType, toBucket: BucketType, id: String): Either[HttpStatus, Unit] = {
+    val key = objectKey(fromBucket, id)
+    val toKey = objectKey(toBucket, id)
+    Try {
+      s3.copyObject(
+        software.amazon.awssdk.services.s3.model.CopyObjectRequest.builder()
+          .sourceBucket(bucketName(fromBucket))
+          .sourceKey(key)
+          .destinationBucket(bucketName(toBucket))
+          .destinationKey(toKey)
+          .build()
+      )
+    }.toEither.left.map(t => {
+      val error = s"Failed to copy ${key} from ${bucketName(fromBucket)} to ${bucketName(toBucket)}"
+      logger.error(t)(error)
+      KoskiErrorCategory.internalError(error)
+    }).map(_ => ())
+  }
+
   def objectKey(bucketType: BucketType, id: String): String = s"$id/${bucketType.toString.toLowerCase}.pdf"
 
   private def createBucketIfDoesNotExist(bucketName: String) = {
@@ -156,6 +187,7 @@ class TodistusResultRepository(config: Config) extends Logging {
     case BucketType.RAW => rawBucketName
     case BucketType.STAMPED => stampedBucketName
     case BucketType.INVALID_STAMP => stampedBucketName
+    case BucketType.TIEDOTE => tiedoteBucketName
   }
 
   private def logPut(bucketType: BucketType, key: String, contentType: String): Unit =
@@ -167,5 +199,6 @@ object BucketType extends Enumeration {
   val
     RAW,
     STAMPED,
-    INVALID_STAMP = Value
+    INVALID_STAMP,
+    TIEDOTE = Value
 }

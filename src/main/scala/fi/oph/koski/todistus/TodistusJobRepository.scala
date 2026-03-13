@@ -36,7 +36,7 @@ class TodistusJobRepository(val db: DB, val workerId: String, config: Config) ex
       .toRight(KoskiErrorCategory.notFound())
   }
 
-  def findByParameters(
+  def findUserJobByParameters(
     opiskeluoikeusOid: String,
     templateVariant: String,
     opiskeluoikeusVersionumero: Int,
@@ -62,70 +62,74 @@ class TodistusJobRepository(val db: DB, val workerId: String, config: Config) ex
     ).headOption
   }
 
-  def addOrReuseExisting(todistusJob: TodistusJob)(implicit user: KoskiSpecificSession): Either[HttpStatus, TodistusJob] = {
+  def addOrReuseExistingUserJob(todistusJob: TodistusJob)(implicit user: KoskiSpecificSession): Either[HttpStatus, TodistusJob] = {
     if (todistusJob.userOid.contains(user.oid) || user.hasRole(OPHPAAKAYTTAJA)) {
-      // Huom! Tämä CTE ei ole täysin robusti: jos tehdään 2 todistuksen luontia samaan aikaan, on mahdollista, että syntyy 2 jobia,
-      // jos kummatkin tekevät ensin SELECT:in ennenkuin kumpikaan tekee INSERT-osuutta. Tämän korjaaminen on kuitenkin vaikeaa täysin robustisti,
-      // koska henkilötiedot hash ja versionumero lukitaan vasta todistus-jobia suoritettaessa. Jos esim. tekisi unique constraintin opiskeluoikeus_oidille ja template_variantille, niin
-      // voisi käydä niin, että todistus luodaan vanhemmasta oo-versiosta kuin on ollut saatavilla sillä hetkellä kun toinen jonoonlisäysyritys on tehty.
-      // Jos silloin tällöin syntyy harvinaisessa tilanteessa 2 jobia, ei se ole oikea ongelma.
-      runDbSync(
-        sql"""
-        WITH existing AS (
-          SELECT *
-          FROM todistus_job
-          WHERE oppija_oid = ${todistusJob.oppijaOid}
-            AND opiskeluoikeus_oid = ${todistusJob.opiskeluoikeusOid}
-            AND template_variant = ${todistusJob.templateVariant}
-            AND NOT state = ANY(${TodistusState.nonReusableStates.toSeq})
-            AND (
-              -- QUEUED-tilassa oleva job matchaa aina (ei vielä hash/versionumero)
-              state = ${TodistusState.QUEUED}
-              OR
-              -- Muissa tiloissa hash ja versionumero täytyy täsmätä
-              (opiskeluoikeus_versionumero = ${todistusJob.opiskeluoikeusVersionumero}
-               AND oppija_henkilotiedot_hash = ${todistusJob.oppijaHenkilötiedotHash}
-               AND oppija_henkilotiedot_hash IS NOT NULL
-               AND opiskeluoikeus_versionumero IS NOT NULL)
-            )
-          ORDER BY created_at DESC
-          LIMIT 1
-          FOR UPDATE
-        ),
-        inserted AS (
-          -- Huomaa, että versionumeroa ja hash:iä ei tallenneta: ne tallennetaan vasta luontihetkellä, jotta saadaan talteen
-          -- täsmälliset arvot, jotka esiintyvät myös generoidussa PDF-todistuksessa.
-          INSERT INTO todistus_job(id, user_oid, oppija_oid, opiskeluoikeus_oid, template_variant,
-                              is_stamped, state,
-                              created_at, started_at, completed_at, worker, attempts, error)
-          SELECT
-            ${todistusJob.id}::uuid,
-            ${todistusJob.userOid},
-            ${todistusJob.oppijaOid},
-            ${todistusJob.opiskeluoikeusOid},
-            ${todistusJob.templateVariant},
-            ${todistusJob.isStamped},
-            ${todistusJob.state},
-            ${java.sql.Timestamp.valueOf(todistusJob.createdAt)},
-            ${todistusJob.startedAt.map(java.sql.Timestamp.valueOf)},
-            ${todistusJob.completedAt.map(java.sql.Timestamp.valueOf)},
-            ${todistusJob.worker},
-            ${todistusJob.attempts},
-            ${todistusJob.error}
-          WHERE NOT EXISTS (SELECT 1 FROM existing)
-          RETURNING *
-        )
-        SELECT * FROM existing
-        UNION ALL
-        SELECT * FROM inserted
-        """.as[TodistusJob]
-      ).headOption
-        .toRight(KoskiErrorCategory.notFound())
+      addOrReuseExisting(todistusJob)
     } else {
       val msg = s"Käyttäjä ${user.oid} yritti lisätä todistuksen oppijalle ${todistusJob.oppijaOid} (käyttäjä: ${todistusJob.userOid.getOrElse("unknown")}) ilman oikeuksia"
       logger.error(msg)
       Left(KoskiErrorCategory.forbidden())
     }
+  }
+
+  // Huom! Tämä CTE ei ole täysin robusti: jos tehdään 2 todistuksen luontia samaan aikaan, on mahdollista, että syntyy 2 jobia,
+  // jos kummatkin tekevät ensin SELECT:in ennenkuin kumpikaan tekee INSERT-osuutta. Tämän korjaaminen on kuitenkin vaikeaa täysin robustisti,
+  // koska henkilötiedot hash ja versionumero lukitaan vasta todistus-jobia suoritettaessa. Jos esim. tekisi unique constraintin opiskeluoikeus_oidille ja template_variantille, niin
+  // voisi käydä niin, että todistus luodaan vanhemmasta oo-versiosta kuin on ollut saatavilla sillä hetkellä kun toinen jonoonlisäysyritys on tehty.
+  // Jos silloin tällöin syntyy harvinaisessa tilanteessa 2 jobia, ei se ole oikea ongelma.
+  def addOrReuseExisting(todistusJob: TodistusJob): Either[HttpStatus, TodistusJob] = {
+    runDbSync(
+      sql"""
+      WITH existing AS (
+        SELECT *
+        FROM todistus_job
+        WHERE oppija_oid = ${todistusJob.oppijaOid}
+          AND opiskeluoikeus_oid = ${todistusJob.opiskeluoikeusOid}
+          AND template_variant = ${todistusJob.templateVariant}
+          AND NOT state = ANY(${TodistusState.nonReusableStates.toSeq})
+          AND (
+            -- QUEUED-tilassa oleva job matchaa aina (ei vielä hash/versionumero)
+            state = ${TodistusState.QUEUED}
+            OR
+            -- Muissa tiloissa hash ja versionumero täytyy täsmätä
+            (opiskeluoikeus_versionumero = ${todistusJob.opiskeluoikeusVersionumero}
+             AND oppija_henkilotiedot_hash = ${todistusJob.oppijaHenkilötiedotHash}
+             AND oppija_henkilotiedot_hash IS NOT NULL
+             AND opiskeluoikeus_versionumero IS NOT NULL)
+          )
+        ORDER BY created_at DESC
+        LIMIT 1
+        FOR UPDATE
+      ),
+      inserted AS (
+        -- Huomaa, että versionumeroa ja hash:iä ei tallenneta: ne tallennetaan vasta luontihetkellä, jotta saadaan talteen
+        -- täsmälliset arvot, jotka esiintyvät myös generoidussa PDF-todistuksessa.
+        INSERT INTO todistus_job(id, user_oid, oppija_oid, opiskeluoikeus_oid, template_variant,
+                            is_stamped, state,
+                            created_at, started_at, completed_at, worker, attempts, error)
+        SELECT
+          ${todistusJob.id}::uuid,
+          ${todistusJob.userOid},
+          ${todistusJob.oppijaOid},
+          ${todistusJob.opiskeluoikeusOid},
+          ${todistusJob.templateVariant},
+          ${todistusJob.isStamped},
+          ${todistusJob.state},
+          ${java.sql.Timestamp.valueOf(todistusJob.createdAt)},
+          ${todistusJob.startedAt.map(java.sql.Timestamp.valueOf)},
+          ${todistusJob.completedAt.map(java.sql.Timestamp.valueOf)},
+          ${todistusJob.worker},
+          ${todistusJob.attempts},
+          ${todistusJob.error}
+        WHERE NOT EXISTS (SELECT 1 FROM existing)
+        RETURNING *
+      )
+      SELECT * FROM existing
+      UNION ALL
+      SELECT * FROM inserted
+      """.as[TodistusJob]
+    ).headOption
+      .toRight(KoskiErrorCategory.notFound())
   }
 
   def updateState(id: String, startState: String, state: String, completedAt: Option[LocalDateTime] = None): Either[HttpStatus, TodistusJob] = {

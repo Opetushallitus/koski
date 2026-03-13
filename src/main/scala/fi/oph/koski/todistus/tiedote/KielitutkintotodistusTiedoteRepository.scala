@@ -111,6 +111,22 @@ class KielitutkintotodistusTiedoteRepository(val db: DB, val workerId: String, c
     }
   }
 
+  def setState(id: String, state: String): Boolean =
+    runDbSync(sql"""
+      UPDATE kielitutkintotodistus_tiedote_job
+      SET state = $state
+      WHERE id = ${id}::uuid
+      """.asUpdate) != 0
+
+  def findByState(state: String, limit: Int): Seq[KielitutkintotodistusTiedoteJob] =
+    runDbSync(sql"""
+      SELECT *
+      FROM kielitutkintotodistus_tiedote_job
+      WHERE state = $state
+      ORDER BY created_at
+      LIMIT $limit
+      """.as[KielitutkintotodistusTiedoteJob])
+
   def truncateForLocal(): Int = {
     require(
       Environment.isUnitTestEnvironment(config) || Environment.isLocalDevelopmentEnvironment(config),

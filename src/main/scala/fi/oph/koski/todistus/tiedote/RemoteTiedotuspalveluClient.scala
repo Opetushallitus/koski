@@ -6,7 +6,7 @@ import fi.oph.koski.http.Http.{UriInterpolator, runIO}
 import fi.oph.koski.json.Json4sHttp4s.json4sEncoderOf
 import fi.oph.koski.log.Logging
 
-case class KielitutkintoTodistusTiedoteRequest(oppijanumero: String, idempotencyKey: String)
+case class KielitutkintoTodistusTiedoteRequest(oppijanumero: String, idempotencyKey: String, todistusUrl: String)
 
 class RemoteTiedotuspalveluClient(config: Config) extends TiedotuspalveluClient with Logging {
   private val baseUrl = config.getString("tiedote.baseUrl")
@@ -17,9 +17,10 @@ class RemoteTiedotuspalveluClient(config: Config) extends TiedotuspalveluClient 
 
   override def sendKielitutkintoTodistusTiedote(
     oppijanumero: String,
-    idempotencyKey: String
+    idempotencyKey: String,
+    todistusUrl: String
   ): Either[HttpStatus, Unit] = {
-    val request = KielitutkintoTodistusTiedoteRequest(oppijanumero, idempotencyKey)
+    val request = KielitutkintoTodistusTiedoteRequest(oppijanumero, idempotencyKey, todistusUrl)
 
     try {
       runIO(

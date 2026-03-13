@@ -45,6 +45,40 @@ class TodistusService(application: KoskiApplication) extends Logging with Timing
     user.hasRole(GLOBAALI_LUKU_KIELITUTKINTO) && user.hasRole(OPHKATSELIJA)
   }
 
+  def createTodistusJobForSystem(
+    opiskeluoikeusOid: String,
+    oppijaOid: String,
+    templateVariant: String
+  ): Either[HttpStatus, TodistusJob] = {
+    implicit val systemUser: KoskiSpecificSession = KoskiSpecificSession.systemKatselijaUser
+    for {
+      oppijanHenkilö <- application.henkilöRepository.findByOid(oppijaOid)
+        .toRight(KoskiErrorCategory.notFound.oppijaaEiLöydyTaiEiOikeuksia())
+      rawOpiskeluoikeus <- application.opiskeluoikeusRepository.findByOid(opiskeluoikeusOid)
+      job = TodistusJob(
+        id = UUID.randomUUID().toString,
+        userOid = Some(systemUser.oid),
+        oppijaOid = oppijaOid,
+        opiskeluoikeusOid = opiskeluoikeusOid,
+        templateVariant = templateVariant,
+        opiskeluoikeusVersionumero = Some(rawOpiskeluoikeus.versionumero),
+        oppijaHenkilötiedotHash = Some(laskeHenkilötiedotHash(oppijanHenkilö)),
+        isStamped = false
+      )
+      result <- todistusRepository.addOrReuseExisting(job)
+    } yield result
+  }
+
+  def getJobStatus(id: String): Either[HttpStatus, TodistusJob] = {
+    todistusRepository.get(id)
+  }
+
+  def copyToTiedoteBucket(todistusJobId: String): Either[HttpStatus, String] = {
+    for {
+      _ <- resultRepository.copyObject(BucketType.RAW, BucketType.TIEDOTE, todistusJobId)
+    } yield resultRepository.getDirectUrl(BucketType.TIEDOTE, todistusJobId)
+  }
+
   def currentStatus(req: TodistusIdRequest)(implicit user: KoskiSpecificSession): Either[HttpStatus, TodistusJob] = {
     if (user.hasRole(OPHPAAKAYTTAJA)) {
       todistusRepository
@@ -79,7 +113,7 @@ class TodistusService(application: KoskiApplication) extends Logging with Timing
       oppijanHenkilö <- application.henkilöRepository.findByOid(yleisenKielitutkinnonVahvistettuOpiskeluoikeus.oppijaOid).toRight(KoskiErrorCategory.notFound.oppijaaEiLöydyTaiEiOikeuksia())
       oppijanHenkilötiedotHash = laskeHenkilötiedotHash(oppijanHenkilö)
       opiskeluoikeusVersionumero = yleisenKielitutkinnonVahvistettuOpiskeluoikeus.versionumero
-      todistus <- todistusRepository.findByParameters(
+      todistus <- todistusRepository.findUserJobByParameters(
         yleisenKielitutkinnonVahvistettuOpiskeluoikeus.oid,
         req.templateVariant,
         opiskeluoikeusVersionumero,
@@ -99,7 +133,7 @@ class TodistusService(application: KoskiApplication) extends Logging with Timing
       yleisenKielitutkinnonVahvistettuOpiskeluoikeus <- kielitutkinnonVahvistettuOpiskeluoikeusJohonKutsujallaKäyttöoikeudet(req)
       oppijanHenkilö <- application.henkilöRepository.findByOid(yleisenKielitutkinnonVahvistettuOpiskeluoikeus.oppijaOid).toRight(KoskiErrorCategory.notFound.oppijaaEiLöydyTaiEiOikeuksia())
       job = TodistusJob(uusiJobId, req, laskeHenkilötiedotHash(oppijanHenkilö), yleisenKielitutkinnonVahvistettuOpiskeluoikeus)
-      result <- todistusRepository.addOrReuseExisting(job)
+      result <- todistusRepository.addOrReuseExistingUserJob(job)
     } yield result
 
     result match {

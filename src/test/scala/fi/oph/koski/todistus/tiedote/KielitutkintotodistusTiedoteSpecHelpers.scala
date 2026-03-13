@@ -30,6 +30,7 @@ class KielitutkintotodistusTiedoteSpecHelpers extends AnyFreeSpec with KoskiHttp
   protected def cleanup(): Unit = {
     waitForSchedulerIdle()
     app.kielitutkintotodistusTiedoteRepository.truncateForLocal()
+    app.todistusRepository.truncateForLocal()
     mockTiedotuspalveluClient.reset()
   }
 
@@ -49,6 +50,7 @@ class KielitutkintotodistusTiedoteSpecHelpers extends AnyFreeSpec with KoskiHttp
       waitForSchedulerIdle()
       // Tyhjennä schedulerin mahdollisesti luomat jobit ennen testiä
       app.kielitutkintotodistusTiedoteRepository.truncateForLocal()
+      app.todistusRepository.truncateForLocal()
       mockTiedotuspalveluClient.reset()
       f
     } finally {

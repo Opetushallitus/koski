@@ -39,7 +39,7 @@ import fi.oph.koski.suostumus.SuostumuksenPeruutusService
 import fi.oph.koski.tiedonsiirto.{IPService, TiedonsiirtoService}
 import fi.oph.koski.todistus.swisscomclient.{SwisscomClient, SwisscomConfig}
 import fi.oph.koski.todistus.{TodistusCleanupScheduler, TodistusJobRepository, TodistusScheduler, TodistusService}
-import fi.oph.koski.todistus.tiedote.{KielitutkintotodistusTiedoteRepository, KielitutkintotodistusTiedoteScheduler, KielitutkintotodistusTiedoteService, TiedotuspalveluClient}
+import fi.oph.koski.todistus.tiedote.{KielitutkintotodistusTiedoteRepository, KielitutkintotodistusTiedoteScheduler, KielitutkintotodistusTiedoteService, KituClient, TiedotuspalveluClient}
 import fi.oph.koski.tutkinto.TutkintoRepository
 import fi.oph.koski.userdirectory.DirectoryClient
 import fi.oph.koski.validation.{KoskiGlobaaliValidator, KoskiValidator, ValidatingAndResolvingExtractor}
@@ -253,6 +253,7 @@ class KoskiApplication(
   lazy val swisscomClient: SwisscomClient = SwisscomClient(SwisscomConfig(config))
 
   lazy val tiedotuspalveluClient: TiedotuspalveluClient = TiedotuspalveluClient(config)
+  lazy val kituClient: KituClient = KituClient()
   lazy val kielitutkintotodistusTiedoteRepository = new KielitutkintotodistusTiedoteRepository(
     masterDatabase.db,
     instanceId,
