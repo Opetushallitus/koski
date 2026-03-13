@@ -1,6 +1,12 @@
 # Koskeen tallennettavien tietojen validaatiosäännöt
+## 16.3.2026
+
+- Estetään päällekkäisen perusopetuksen vuosiluokan suorituksen opiskeluoikeuden siirto samaan oppilaitokseen.
+  - Uuden vuosiluokan suorituksen siirto uudella opiskeluoikeudella ei enää luo duplikaattia opiskeluoikeutta.
+
 ## 4.3.2026
--Sallitaan osatutkintotavoitteisen valmiiksi merkkaaminen jos kyseessä on linkitetty opiskeluoikeus
+
+- Sallitaan osatutkintotavoitteisen valmiiksi merkkaaminen jos kyseessä on linkitetty opiskeluoikeus
 
 ## 2.3.2026
 

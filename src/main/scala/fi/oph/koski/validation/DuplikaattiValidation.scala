@@ -116,14 +116,23 @@ object DuplikaattiValidation extends Logging {
     }
 
     def findConflictingPerusopetus(): Either[HttpStatus, Option[Opiskeluoikeus]] = {
-      val vertailtavatOot: Either[HttpStatus, Seq[Opiskeluoikeus]] = oppijanMuutOpiskeluoikeudetSamaOppilaitosJaTyyppi.map(_
-        .filter(sisältääNuortenPerusopetuksenOppimääränTaiVuosiluokanSuorituksen(_) == sisältääNuortenPerusopetuksenOppimääränTaiVuosiluokanSuorituksen(opiskeluoikeus))
-      )
-
       if (sisältääNuortenPerusopetuksenOppimääränTaiVuosiluokanSuorituksen(opiskeluoikeus)) {
+        val vertailtavatOot = oppijanOpiskeluoikeudet
+          .map(_
+            .filterNot(samaOo(opiskeluoikeus, _))
+            .filterNot(oo => oo.sisältyyOpiskeluoikeuteen.isDefined != opiskeluoikeus
+              .sisältyyOpiskeluoikeuteen
+              .isDefined
+            )
+            .filter(_.oppilaitos.map(_.oid) == opiskeluoikeus.oppilaitos.map(_.oid))
+            .filter(_.tyyppi == opiskeluoikeus.tyyppi)
+            .filter(sisältääNuortenPerusopetuksenOppimääränTaiVuosiluokanSuorituksen)
+          )
         // Oppimäärän opinnot, vain aikajaksoltaan kokonaan erillisiä saa duplikoida
         vertailtavatOot.map(findPäällekkäinenAikajakso)
       } else {
+        val vertailtavatOot = oppijanMuutOpiskeluoikeudetSamaOppilaitosJaTyyppi
+          .map(_.filterNot(sisältääNuortenPerusopetuksenOppimääränTaiVuosiluokanSuorituksen))
         // aineopinnot, vain päättyneitä saa duplikoida
         vertailtavatOot.map(_.find(_.päättymispäivä.isEmpty))
       }
