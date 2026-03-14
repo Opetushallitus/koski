@@ -39,6 +39,21 @@
       "groupName": "npm minor updates"
     },
     {
+      "description": "fs2 minor updates need Hotswap->NonEmptyHotswap refactoring",
+      "matchPackageNames": [
+        "co.fs2:fs2-core_2.13",
+        "co.fs2:fs2-io_2.13"
+      ],
+      "groupName": "fs2"
+    },
+    {
+      "description": "mockito-core update breaks RichRequest mocking",
+      "matchPackageNames": [
+        "org.mockito:mockito-core"
+      ],
+      "groupName": "mockito"
+    },
+    {
       "description": "Group minor Maven updates",
       "matchManagers": [
         "maven"
