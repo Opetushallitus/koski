@@ -31,7 +31,7 @@ jobs:
         run: mvn exec:java -Dexec.mainClass=fi.oph.koski.localization.LocalizationMockDataUpdater
         shell: bash
       - name: Create PR with updated localizations
-        uses: peter-evans/create-pull-request@a45d1fb447fcaf601166e405fd4f335cde1a8aa8
+        uses: peter-evans/create-pull-request@36d7c8468b48f9c2f8f29e260e82f10d4b90d2bd
         with:
           commit-message: Päivitä lokalisaatiot
           title: "[${{ env.date }}]: Päivitä lokalisaatiot"
