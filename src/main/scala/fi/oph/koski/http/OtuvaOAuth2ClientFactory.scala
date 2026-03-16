@@ -2,6 +2,8 @@ package fi.oph.koski.http
 
 import cats.effect.{IO, Resource}
 import cats.effect.std.Hotswap
+
+import scala.annotation.nowarn
 import fi.oph.koski.config.SecretsManager
 import fi.oph.koski.log.NotLoggable
 import fi.oph.scalaschema.Serializer.format
@@ -20,6 +22,7 @@ object OtuvaOAuth2Credentials {
   }
 }
 
+@nowarn("cat=deprecation")
 class OtuvaOAuth2ClientFactory(
   credentials: OtuvaOAuth2Credentials,
   otuvaTokenEndpoint: String,
