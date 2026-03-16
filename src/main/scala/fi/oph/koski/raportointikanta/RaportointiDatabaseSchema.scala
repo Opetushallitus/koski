@@ -1020,6 +1020,10 @@ case class ROsasuoritusRow(
   def koulutusModuulinLaajuusYksikköNimi: Option[LocalizedString] = JsonSerializer.extract[Option[LocalizedString]](data \ "koulutusmoduuli" \ "laajuus" \ "yksikkö" \ "nimi")
 
   def luokkaAsteNimi: Option[LocalizedString] = JsonSerializer.extract[Option[LocalizedString]](data \ "luokkaAste" \ "nimi")
+
+  def isYksilöllistetty = JsonSerializer.extract[Option[Boolean]](data \ "yksilöllistettyOppimäärä").getOrElse(false)
+
+  def isRajattu = JsonSerializer.extract[Option[Boolean]](data \ "rajattuOppimäärä").getOrElse(false)
 }
 
 case class RHenkilöRow(

@@ -35,13 +35,15 @@ object PerusopetuksenVuosiluokkaRaportti extends VuosiluokkaRaporttiPaivalta wit
     val opiskeluoikeudenLisätiedot = JsonSerializer.extract[Option[PerusopetuksenOpiskeluoikeudenLisätiedot]](row.opiskeluoikeus.data \ "lisätiedot")
     val lähdejärjestelmänId = JsonSerializer.extract[Option[LähdejärjestelmäId]](row.opiskeluoikeus.data \ "lähdejärjestelmänId")
     val (toimintaalueOsasuoritukset, muutOsasuoritukset) = row.osasuoritukset.partition(_.suorituksenTyyppi == "perusopetuksentoimintaalue")
-    val (valtakunnalliset, paikalliset) = muutOsasuoritukset.partition(isValtakunnallinenOppiaine)
-    val (pakollisetValtakunnalliset, valinnaisetValtakunnalliset) = valtakunnalliset.partition(isPakollinen)
-    val (pakollisetPaikalliset, valinnaisetPaikalliset) = paikalliset.partition(isPakollinen)
-    val kaikkiValinnaiset = valinnaisetPaikalliset ++ valinnaisetValtakunnalliset
+    val (pakolliset, valinnaiset) = muutOsasuoritukset.partition(isPakollinen)
+    val (pakollisetValtakunnalliset, pakollisetPaikalliset) = pakolliset.partition(isValtakunnallinenOppiaine)
+    val (valinnaisetValtakunnalliset, valinnaisetPaikalliset) = valinnaiset.partition(isValtakunnallinenOppiaine)
+    val paikalliset = pakollisetPaikalliset ++ valinnaisetPaikalliset
     val voimassaOlevatErityisenTuenPäätökset = opiskeluoikeudenLisätiedot.map(lt => combineErityisenTuenPäätökset(lt.erityisenTuenPäätös, lt.erityisenTuenPäätökset).filter(mahdollisestiAlkupäivällinenJaksoVoimassaPäivällä(_, hakupaiva))).getOrElse(List.empty)
     val päätasonVahvistusPäivä = row.päätasonSuoritus.vahvistusPäivä
     val kotikunta = if (t.language == "sv") row.henkilo.kotikuntaNimiSv else row.henkilo.kotikuntaNimiFi
+    val yksilöllistetyt = pakolliset.filter(os => os.isYksilöllistetty).map(_.koulutusmoduuliKoodiarvo).sorted.mkString(", ")
+    val rajatut = pakolliset.filter(os => os.isRajattu).map(_.koulutusmoduuliKoodiarvo).sorted.mkString(", ")
 
     val omanÄidinkielenArvosanaJaLaajuus = {
       val arvosana = row.päätasonSuoritus.omanÄidinkielenOpinnotArvosanaDatasta
@@ -120,14 +122,16 @@ object PerusopetuksenVuosiluokkaRaportti extends VuosiluokkaRaporttiPaivalta wit
       ymparistooppi = oppiaineenArvosanaTiedot(päätasonVahvistusPäivä, t, "YL")(pakollisetValtakunnalliset),
       opintoohjaus = oppiaineenArvosanaTiedot(päätasonVahvistusPäivä, t, "OP")(pakollisetValtakunnalliset),
       kayttaymisenArvio = JsonSerializer.extract[Option[PerusopetuksenKäyttäytymisenArviointi]](row.päätasonSuoritus.data \ "käyttäytymisenArvio").map(_.arvosana.koodiarvo).getOrElse(""),
+      yksilollistetytYhteisetOppiaineet = yksilöllistetyt,
+      rajatutYhteisetOppiaineet = rajatut,
       paikallistenOppiaineidenKoodit = paikalliset.map(_.koulutusmoduuliKoodiarvo).mkString(","),
       pakollisetPaikalliset = pakollisetPaikalliset.map(r => nimiJaKoodi(r, t)).mkString(","),
       valinnaisetPaikalliset = valinnaisetPaikalliset.map(r => nimiJaKoodiJaArvosana(r, t)).mkString(","),
       valinnaisetValtakunnalliset = valinnaisetValtakunnalliset.map(r => nimiJaKoodiJaArvosana(r, t)).mkString(","),
-      valinnaisetLaajuus_SuurempiKuin_2Vuosiviikkotuntia = kaikkiValinnaiset.filter(vuosiviikkotunteja(_, _ >= _, 2)).map(r => nimiJaKoodiJaLaajuusJaArvosana(r, t)).mkString(","),
-      valinnaisetLaajuus_PienempiKuin_2Vuosiviikkotuntia = kaikkiValinnaiset.filter(vuosiviikkotunteja(_, _ < _, 2)).map(r => nimiJaKoodiJaLaajuusJaArvosana(r, t)).mkString(","),
-      numeroarviolliset_valinnaisetLaajuus_PienempiKuin_2Vuosiviikkotuntia = kaikkiValinnaiset.filter(os => vuosiviikkotunteja(os, _ < _, 2) && isNumeroarviollinen(os)).map(r => nimiJaKoodiJaLaajuusJaArvosana(r, t)).mkString(","),
-      valinnaisetEiLaajuutta = kaikkiValinnaiset.filter(_.koulutusmoduuliLaajuusArvo.isEmpty).map(r => nimiJaKoodi(r, t)).mkString(","),
+      valinnaisetLaajuus_SuurempiKuin_2Vuosiviikkotuntia = valinnaiset.filter(vuosiviikkotunteja(_, _ >= _, 2)).map(r => nimiJaKoodiJaLaajuusJaArvosana(r, t)).mkString(","),
+      valinnaisetLaajuus_PienempiKuin_2Vuosiviikkotuntia = valinnaiset.filter(vuosiviikkotunteja(_, _ < _, 2)).map(r => nimiJaKoodiJaLaajuusJaArvosana(r, t)).mkString(","),
+      numeroarviolliset_valinnaisetLaajuus_PienempiKuin_2Vuosiviikkotuntia = valinnaiset.filter(os => vuosiviikkotunteja(os, _ < _, 2) && isNumeroarviollinen(os)).map(r => nimiJaKoodiJaLaajuusJaArvosana(r, t)).mkString(","),
+      valinnaisetEiLaajuutta = valinnaiset.filter(_.koulutusmoduuliLaajuusArvo.isEmpty).map(r => nimiJaKoodi(r, t)).mkString(","),
       vahvistetutToimintaAlueidenSuoritukset = toimintaalueOsasuoritukset.filter(_.arviointiHyväksytty.getOrElse(false)).sortBy(_.koulutusmoduuliKoodiarvo).map(r => nimiJaKoodi(r, t)).mkString(","),
       majoitusetu = opiskeluoikeudenLisätiedot.exists(_.majoitusetu.exists(aikajaksoVoimassaHakuPaivalla(_, hakupaiva))),
       kuljetusetu = opiskeluoikeudenLisätiedot.exists(_.kuljetusetu.exists(aikajaksoVoimassaHakuPaivalla(_, hakupaiva))),
@@ -214,9 +218,7 @@ object PerusopetuksenVuosiluokkaRaportti extends VuosiluokkaRaporttiPaivalta wit
   }
 
   private def täppäIfYksilöllistettyTaiRajattu(osasuoritus: ROsasuoritusRow): String = {
-    val isYksilöllistetty = JsonSerializer.extract[Option[Boolean]](osasuoritus.data \ "yksilöllistettyOppimäärä").getOrElse(false)
-    val isRajattu = JsonSerializer.extract[Option[Boolean]](osasuoritus.data \ "rajattuOppimäärä").getOrElse(false)
-    if (isYksilöllistetty || isRajattu) "*" else ""
+    if (osasuoritus.isYksilöllistetty || osasuoritus.isRajattu) "*" else ""
   }
 
   private def getOppiaineenOppimäärä(koodistoKoodi: String, t: LocalizationReader)(osasuoritukset: Seq[ROsasuoritusRow]): String = {
@@ -365,6 +367,8 @@ object PerusopetuksenVuosiluokkaRaportti extends VuosiluokkaRaporttiPaivalta wit
     "ymparistooppi" -> CompactColumn(t.get("raportti-excel-kolumni-ymparistooppi")),
     "opintoohjaus" -> CompactColumn(t.get("raportti-excel-kolumni-opintoohjaus")),
     "kayttaymisenArvio" -> CompactColumn(t.get("raportti-excel-kolumni-kayttaymisenArvio")),
+    "yksilollistetytYhteisetOppiaineet" -> CompactColumn(t.get("raportti-excel-kolumni-yksilollistetytYhteisetOppiaineet")),
+    "rajatutYhteisetOppiaineet" -> CompactColumn(t.get("raportti-excel-kolumni-rajatutYhteisetOppiaineet")),
     "paikallistenOppiaineidenKoodit" -> CompactColumn(t.get("raportti-excel-kolumni-paikallistenOppiaineidenKoodit")),
     "pakollisetPaikalliset" -> CompactColumn(t.get("raportti-excel-kolumni-pakollisetPaikalliset"), comment = Some(t.get("raportti-excel-kolumni-pakollisetPaikalliset-comment"))),
     "valinnaisetPaikalliset" -> CompactColumn(t.get("raportti-excel-kolumni-valinnaisetPaikalliset")),
@@ -450,6 +454,8 @@ private[raportit] case class PerusopetusRow(
   ymparistooppi: String,
   opintoohjaus: String,
   kayttaymisenArvio: String,
+  yksilollistetytYhteisetOppiaineet: String,
+  rajatutYhteisetOppiaineet: String,
   paikallistenOppiaineidenKoodit: String,
   pakollisetPaikalliset: String,
   valinnaisetPaikalliset: String,
