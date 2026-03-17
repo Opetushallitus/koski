@@ -426,21 +426,9 @@
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>org.seleniumhq.selenium</groupId>
-      <artifactId>selenium-api</artifactId>
-      <version>3.141.59</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
       <groupId>org.scalamock</groupId>
       <artifactId>scalamock_2.13</artifactId>
       <version>5.2.0</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.seleniumhq.selenium</groupId>
-      <artifactId>selenium-remote-driver</artifactId>
-      <version>3.141.59</version>
       <scope>test</scope>
     </dependency>
     <dependency>
