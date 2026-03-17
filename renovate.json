@@ -2,9 +2,7 @@
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
     "config:best-practices",
-    ":automergeDigest",
     ":automergePatch",
-    "group:allDigest",
     ":preserveSemverRanges"
   ],
   "osvVulnerabilityAlerts": true,
@@ -25,6 +23,13 @@
       "description": "Disable major updates by default",
       "matchUpdateTypes": [
         "major"
+      ],
+      "enabled": false
+    },
+    {
+      "description": "Disable digest updates (dev/test infra images, limited value)",
+      "matchUpdateTypes": [
+        "digest"
       ],
       "enabled": false
     },
