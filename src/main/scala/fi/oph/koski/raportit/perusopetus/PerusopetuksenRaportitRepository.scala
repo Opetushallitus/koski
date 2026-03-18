@@ -63,7 +63,7 @@ case class PerusopetuksenRaportitRepository(db: DB) extends QueryMethods with Ra
     vuosiluokka: String,
     kotikuntaPvm: Option[LocalDate],
     t: LocalizationReader
-  ) = {
+  ): Seq[PerusopetuksenRaporttiRows] = {
     val opiskeluoikeudet = runDbSync(ROpiskeluoikeudet.filter(_.opiskeluoikeusOid inSet opiskeluoikeusOids).result, timeout = 5.minutes)
     val aikajaksot = runDbSync(ROpiskeluoikeusAikajaksot.filter(_.id inSet aikajaksoIds).result, timeout = 5.minutes).groupBy(_.opiskeluoikeusOid)
     val paatasonSuoritukset = runDbSync(RPäätasonSuoritukset.filter(_.päätasonSuoritusId inSet paatasonSuoritusIds).result, timeout = 5.minutes).groupBy(_.opiskeluoikeusOid)

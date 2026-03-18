@@ -50,7 +50,7 @@ class MigrationSpec extends AnyFreeSpec with Matchers with RaportointikantaTestM
         "PäivitettyOpiskeluoikeusLoader.scala"                      -> "500545bbe7ef47dedcfdc49580b536d2",
         "RaportointiDatabase.scala"                                 -> "d78896e970fabb013afc63e94cd2cc5f",
         "RaportointiDatabaseCustomFunctions.scala"                  -> "956f101d1219c49ac9134b72a30caf3a",
-        "RaportointiDatabaseSchema.scala"                           -> "63046abd592eb6e6daa4886f873f0a4f",
+        "RaportointiDatabaseSchema.scala"                           -> "11068918bc935d75b4439b8bff24cfc5",
         "RaportointikantaService.scala"                             -> "70219108d33a40b0b3cb8fa6ef7e0ee9",
         "RaportointikantaStatusServlet.scala"                       -> "bfb4d4d668ecbff866468ae2dc5c1e0b",
         "RaportointikantaTestServlet.scala"                         -> "ad92e33c2f816ed65c0693f5dc0143b4",
