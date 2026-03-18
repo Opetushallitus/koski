@@ -45,21 +45,27 @@ class Scheduler(
 
   // Insert row if it doesn't exist yet; don't clobber existing rows
   runDbSync(sqlu"""INSERT INTO scheduler (name, nextfiretime, context) VALUES ($name, ${scheduling.nextFireTime()}, NULL) ON CONFLICT DO NOTHING""")
-  // Always clear pausedUntil on startup (preserves existing behavior)
-  runDbSync(KoskiTables.Scheduler.filter(_.name === name).map(_.pausedUntil).update(None))
-  // Reset nextFireTime if it's in the future (stale from a paused scheduler that wasn't resumed)
-  private val dbNextFireTime = runDbSync(KoskiTables.Scheduler.filter(_.name === name).result.headOption).map(_.nextFireTime)
-  if (dbNextFireTime.exists(_.after(now))) {
-    runDbSync(KoskiTables.Scheduler.filter(_.name === name).map(_.nextFireTime).update(now))
+  // If scheduler was paused, clear pause and reset nextFireTime (pauseForDuration may have pushed it far into the future)
+  private val startupRow = runDbSync(KoskiTables.Scheduler.filter(_.name === name).result.headOption)
+  if (startupRow.exists(_.paused)) {
+    runDbSync(KoskiTables.Scheduler.filter(_.name === name).map(s => (s.pausedUntil, s.nextFireTime)).update((None, now)))
+  } else {
+    runDbSync(KoskiTables.Scheduler.filter(_.name === name).map(_.pausedUntil).update(None))
   }
 
-  // Read context and lastFired after ensuring the row exists
+  // Read context after ensuring the row exists
   private val context: Option[JValue] = getScheduler.flatMap(_.context).orElse(initialContext)
-  // Initialize lastFired from DB. If DB value is in the past, use current time
-  // so the first fire waits one interval (prevents fire-on-startup for stale rows).
-  private var lastFired: Timestamp = {
-    val dbTime = getScheduler.map(_.nextFireTime).getOrElse(new Timestamp(0))
-    if (dbTime.before(now)) now else dbTime
+  // If nextFireTime is in the past (stale from a previous instance), recompute from now.
+  // This prevents fire-on-startup for stale rows.
+  private var localNextFireTime: Timestamp = {
+    val dbTime = getScheduler.map(_.nextFireTime).getOrElse(scheduling.nextFireTime())
+    if (dbTime.before(now)) {
+      val fresh = scheduling.nextFireTime()
+      runDbSync(KoskiTables.Scheduler.filter(_.name === name).map(_.nextFireTime).update(fresh))
+      fresh
+    } else {
+      dbTime
+    }
   }
 
   // Persist initialContext to DB if the row was just created with NULL context
@@ -106,19 +112,17 @@ class Scheduler(
     if (isPaused || !hasLease) {
       false
     } else {
-      // When using a lease elector, read last fire time from DB to maintain global
-      // cadence across nodes. This ensures a new lease holder respects the previous
-      // holder's last fire time rather than using stale local state.
-      val fireSeed = if (leaseElector.isDefined) {
-        scheduler.map(_.nextFireTime).getOrElse(lastFired)
+      // For lease-coordinated schedulers, read nextFireTime from DB to maintain global
+      // cadence across nodes. For non-lease schedulers, use the local copy.
+      val nextFireTime = if (leaseElector.isDefined) {
+        scheduler.map(_.nextFireTime).getOrElse(localNextFireTime)
       } else {
-        lastFired
+        localNextFireTime
       }
-      val nextFireTime = scheduling.nextFireTime(fireSeed.toLocalDateTime)
       val currentTime = now
       val shouldFire = currentTime.after(nextFireTime)
       if (shouldFire) {
-        lastFired = currentTime
+        localNextFireTime = scheduling.nextFireTime(currentTime.toLocalDateTime)
         runningTasksOnThisNode.incrementAndGet()
       }
       shouldFire
@@ -129,9 +133,9 @@ class Scheduler(
   }
 
   private def fire = try {
-    // Write lastFired to DB immediately so a new lease holder sees the updated
-    // nextFireTime before the task completes, preventing premature firing.
-    runDbSync(KoskiTables.Scheduler.filter(_.name === name).map(_.nextFireTime).update(lastFired))
+    // Write nextFireTime to DB immediately so a new lease holder sees the updated
+    // value before the task completes, preventing premature firing.
+    runDbSync(KoskiTables.Scheduler.filter(_.name === name).map(_.nextFireTime).update(localNextFireTime))
     val context: Option[JValue] = runDbSync(KoskiTables.Scheduler.filter(_.name === name).result.head).context
     logger.debug(s"Firing scheduled task $name ${context.map(c => s"with context ${JsonMethods.compact(c)}").mkString}")
     val newContext: Option[JValue] = task(context)
