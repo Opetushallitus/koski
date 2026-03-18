@@ -47,6 +47,11 @@ class Scheduler(
   runDbSync(sqlu"""INSERT INTO scheduler (name, nextfiretime, context) VALUES ($name, ${scheduling.nextFireTime()}, NULL) ON CONFLICT DO NOTHING""")
   // Always clear pausedUntil on startup (preserves existing behavior)
   runDbSync(KoskiTables.Scheduler.filter(_.name === name).map(_.pausedUntil).update(None))
+  // Reset nextFireTime if it's in the future (stale from a paused scheduler that wasn't resumed)
+  private val dbNextFireTime = runDbSync(KoskiTables.Scheduler.filter(_.name === name).result.headOption).map(_.nextFireTime)
+  if (dbNextFireTime.exists(_.after(now))) {
+    runDbSync(KoskiTables.Scheduler.filter(_.name === name).map(_.nextFireTime).update(now))
+  }
 
   // Read context and lastFired after ensuring the row exists
   private val context: Option[JValue] = getScheduler.flatMap(_.context).orElse(initialContext)
@@ -79,13 +84,18 @@ class Scheduler(
   def isTaskRunning: Boolean = runningTasksOnThisNode.get() > 0
 
   private def fireIfTime() = {
-    if (shouldFire) {
-      try {
-        fire
-      } catch {
-        case e: Exception =>
-          logger.error(e)(s"Scheduled task $name failed: ${e.getMessage}")
+    try {
+      if (shouldFire) {
+        try {
+          fire
+        } catch {
+          case e: Exception =>
+            logger.error(e)(s"Scheduled task $name failed: ${e.getMessage}")
+        }
       }
+    } catch {
+      case e: Throwable =>
+        logger.error(e)(s"Scheduled task $name encountered fatal error in fireIfTime: ${e.getMessage}")
     }
   }
 
@@ -105,9 +115,10 @@ class Scheduler(
         lastFired
       }
       val nextFireTime = scheduling.nextFireTime(fireSeed.toLocalDateTime)
-      val shouldFire = now.after(nextFireTime)
+      val currentTime = now
+      val shouldFire = currentTime.after(nextFireTime)
       if (shouldFire) {
-        lastFired = now
+        lastFired = currentTime
         runningTasksOnThisNode.incrementAndGet()
       }
       shouldFire

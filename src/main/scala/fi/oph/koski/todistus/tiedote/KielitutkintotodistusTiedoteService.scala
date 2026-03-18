@@ -111,6 +111,8 @@ class KielitutkintotodistusTiedoteService(application: KoskiApplication) extends
           result = Some(Right(job))
         case Right(job) if job.state == TodistusState.ERROR =>
           result = Some(Left(KoskiErrorCategory.internalError(s"TodistusJob epäonnistui: ${job.error.getOrElse("tuntematon virhe")}")))
+        case Left(err) =>
+          result = Some(Left(err))
         case _ =>
           Thread.sleep(pollIntervalMs)
       }
