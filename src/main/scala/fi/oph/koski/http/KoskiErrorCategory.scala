@@ -99,6 +99,7 @@ object KoskiErrorCategory {
         val vammaisuusjakso = subcategory("vammaisuusjakso", "Vammaisuusjaksojen määrittely on väärin")
         val pidennettyOppivelvollisuus = subcategory("pidennettyOppivelvollisuus", "Pidennettyjen oppivelvollisuusjaksojen määrittely on väärin")
         val erityisenTuenPäätös = subcategory("erityisenTuenPäätös", "Erityisen tuen päätösten määrittely on väärin")
+        val näytönSuoritusaika = subcategory("näytönSuoritusaika", "Näytön päättymispäivä on ennen alkua")
       }
       val date = new Date
 
