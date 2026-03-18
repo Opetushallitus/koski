@@ -22,6 +22,7 @@ class KielitutkintotodistusTiedoteService(application: KoskiApplication) extends
   private val batchSize = application.config.getInt("tiedote.batchSize")
   private val pollIntervalMs = application.config.getInt("tiedote.todistusPollIntervalMs")
   private val pollTimeoutMs = application.config.getInt("tiedote.todistusPollTimeoutMs")
+  private val stuckThresholdMinutes = application.config.getInt("tiedote.stuckThresholdMinutes")
 
   def processAll(): Int = {
     timed("processAll", thresholdMs = 0) {
@@ -123,7 +124,7 @@ class KielitutkintotodistusTiedoteService(application: KoskiApplication) extends
 
   def retryAllFailed(): Int = {
     timed("retryAllFailed", thresholdMs = 0) {
-      val retryable = repository.findAllRetryable(maxAttempts)
+      val retryable = repository.findAllRetryable(maxAttempts, stuckThresholdMinutes)
       retryable.foreach(retryOne)
       logger.info(s"retryAllFailed valmis: käsitelty ${retryable.size} uudelleenyritystä")
       retryable.size

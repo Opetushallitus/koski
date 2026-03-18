@@ -158,6 +158,61 @@ class KielitutkintotodistusTiedoteWorkflowSpec extends KielitutkintotodistusTied
       }
     }
 
+    "Yrittää kesken jäänyttä tiedotetta uudelleen" in {
+      withoutRunningTiedoteScheduler {
+        val repository = app.kielitutkintotodistusTiedoteRepository
+        val (ooOid, oOid, versio) = repository.findEligibleBatch(1).head
+
+        // Luo WAITING_FOR_TODISTUS-tilaan jäänyt job, joka on tarpeeksi vanha
+        val stuckJob = KielitutkintotodistusTiedoteJob(
+          id = java.util.UUID.randomUUID().toString,
+          oppijaOid = oOid,
+          opiskeluoikeusOid = ooOid,
+          state = KielitutkintotodistusTiedoteState.WAITING_FOR_TODISTUS,
+          createdAt = java.time.LocalDateTime.now().minusMinutes(15),
+          worker = Some(repository.workerId),
+          attempts = 1,
+          opiskeluoikeusVersio = versio
+        )
+        repository.add(stuckJob)
+
+        val waitingJobs = repository.findAll(10, 0, Some(KielitutkintotodistusTiedoteState.WAITING_FOR_TODISTUS))
+        waitingJobs should have length 1
+
+        app.kielitutkintotodistusTiedoteService.retryAllFailed()
+
+        val completedJobs = repository.findAll(10, 0, Some(KielitutkintotodistusTiedoteState.COMPLETED))
+        completedJobs should have length 1
+        mockTiedotuspalveluClient.sentNotifications should have length 1
+      }
+    }
+
+    "Ei yritä uudelleen tuoretta WAITING_FOR_TODISTUS-tiedotetta" in {
+      withoutRunningTiedoteScheduler {
+        val repository = app.kielitutkintotodistusTiedoteRepository
+        val (ooOid, oOid, versio) = repository.findEligibleBatch(1).head
+
+        // Luo tuore WAITING_FOR_TODISTUS-tilaan jäänyt job
+        val recentJob = KielitutkintotodistusTiedoteJob(
+          id = java.util.UUID.randomUUID().toString,
+          oppijaOid = oOid,
+          opiskeluoikeusOid = ooOid,
+          state = KielitutkintotodistusTiedoteState.WAITING_FOR_TODISTUS,
+          worker = Some(repository.workerId),
+          attempts = 1,
+          opiskeluoikeusVersio = versio
+        )
+        repository.add(recentJob)
+
+        app.kielitutkintotodistusTiedoteService.retryAllFailed()
+
+        // Job pysyy WAITING_FOR_TODISTUS-tilassa koska se on liian tuore
+        val waitingJobs = repository.findAll(10, 0, Some(KielitutkintotodistusTiedoteState.WAITING_FOR_TODISTUS))
+        waitingJobs should have length 1
+        mockTiedotuspalveluClient.sentNotifications should have length 0
+      }
+    }
+
     "Ei lähetä tiedotetta valtionhallinnon kielitutkinnosta" in {
       withoutRunningTiedoteScheduler {
         val oppijaOid = KoskiSpecificMockOppijat.kielitutkinnonSuorittaja.oid

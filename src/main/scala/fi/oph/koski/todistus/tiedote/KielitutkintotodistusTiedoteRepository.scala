@@ -73,12 +73,16 @@ class KielitutkintotodistusTiedoteRepository(val db: DB, val workerId: String, c
       WHERE id = ${id}::uuid
       """.asUpdate) != 0
 
-  def findAllRetryable(maxAttempts: Int): Seq[KielitutkintotodistusTiedoteJob] = {
+  def findAllRetryable(maxAttempts: Int, stuckThresholdMinutes: Int): Seq[KielitutkintotodistusTiedoteJob] = {
     runDbSync(sql"""
       SELECT *
       FROM kielitutkintotodistus_tiedote_job
-      WHERE state = ${KielitutkintotodistusTiedoteState.ERROR}
-        AND attempts < $maxAttempts
+      WHERE attempts < $maxAttempts
+        AND (
+          state = ${KielitutkintotodistusTiedoteState.ERROR}
+          OR (state = ${KielitutkintotodistusTiedoteState.WAITING_FOR_TODISTUS}
+              AND created_at < NOW() - ($stuckThresholdMinutes * INTERVAL '1 minute'))
+        )
       ORDER BY created_at
       """.as[KielitutkintotodistusTiedoteJob])
   }
