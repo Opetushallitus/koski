@@ -68,7 +68,7 @@ class KielitutkintotodistusTiedoteService(application: KoskiApplication) extends
 
   private def generateAndSend(tiedoteJobId: String, oppijaOid: String, opiskeluoikeusOid: String, idempotencyKey: String): Unit = {
     val result = for {
-      examineeDetails <- kituClient.getExamineeDetails(oppijaOid)
+      examineeDetails <- kituClient.getExamineeDetails(opiskeluoikeusOid)
       templateVariant <- examineeDetails.todistuskieli
         .map(kieli => s"${kieli.koodiarvo.toLowerCase}_tulostettava_uusi")
         .filter(TodistusTemplateVariant.printVariants.contains)

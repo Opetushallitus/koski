@@ -253,7 +253,7 @@ class KoskiApplication(
   lazy val swisscomClient: SwisscomClient = SwisscomClient(SwisscomConfig(config))
 
   lazy val tiedotuspalveluClient: TiedotuspalveluClient = TiedotuspalveluClient(config)
-  lazy val kituClient: KituClient = KituClient()
+  lazy val kituClient: KituClient = KituClient(config)
   lazy val kielitutkintotodistusTiedoteRepository = new KielitutkintotodistusTiedoteRepository(
     masterDatabase.db,
     instanceId,

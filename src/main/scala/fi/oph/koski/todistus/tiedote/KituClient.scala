@@ -1,13 +1,20 @@
 package fi.oph.koski.todistus.tiedote
 
+import com.typesafe.config.Config
 import fi.oph.koski.http.HttpStatus
 
 object KituClient {
-  def apply(): KituClient = new MockKituClient
+  def apply(config: Config): KituClient = {
+    if (config.getString("kitu.baseUrl") == "mock") {
+      new MockKituClient
+    } else {
+      new RemoteKituClient(config)
+    }
+  }
 }
 
 trait KituClient {
-  def getExamineeDetails(oppijaOid: String): Either[HttpStatus, KituExamineeDetails]
+  def getExamineeDetails(opiskeluoikeusOid: String): Either[HttpStatus, KituExamineeDetails]
 }
 
 case class KituExamineeDetails(
