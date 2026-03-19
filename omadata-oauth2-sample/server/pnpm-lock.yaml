@@ -32,7 +32,7 @@ importers:
         version: 6.8.2
       undici:
         specifier: ^7.18.2
-        version: 7.24.2
+        version: 7.24.3
       uuid:
         specifier: ^13.0.0
         version: 13.0.0
@@ -1350,8 +1350,8 @@ packages:
   undici-types@7.18.2:
     resolution: {integrity: sha512-AsuCzffGHJybSaRrmr5eHr81mwJU3kjw6M+uprWvCXiNeN9SOGwQ3Jn8jb8m3Z6izVgknn1R0FTCEAP2QrLY/w==}
 
-  undici@7.24.2:
-    resolution: {integrity: sha512-P9J1HWYV/ajFr8uCqk5QixwiRKmB1wOamgS0e+o2Z4A44Ej2+thFVRLG/eA7qprx88XXhnV5Bl8LHXTURpzB3Q==}
+  undici@7.24.3:
+    resolution: {integrity: sha512-eJdUmK/Wrx2d+mnWWmwwLRyA7OQCkLap60sk3dOK4ViZR7DKwwptwuIvFBg2HaiP9ESaEdhtpSymQPvytpmkCA==}
     engines: {node: '>=20.18.1'}
 
   unpipe@1.0.0:
@@ -2954,7 +2954,7 @@ snapshots:
 
   undici-types@7.18.2: {}
 
-  undici@7.24.2: {}
+  undici@7.24.3: {}
 
   unpipe@1.0.0: {}
 
