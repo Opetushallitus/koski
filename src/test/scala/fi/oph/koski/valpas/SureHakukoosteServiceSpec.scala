@@ -7,14 +7,16 @@ import com.github.tomakehurst.wiremock.core.WireMockConfiguration._
 import com.github.tomakehurst.wiremock.http.Fault
 import com.typesafe.config.ConfigFactory
 import fi.oph.koski.KoskiApplicationForTests
+import fi.oph.koski.henkilo.LaajatOppijaHenkilöTiedot
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.valpas.hakukooste.{Hakukooste, HakukoosteExampleData, ValpasHakukoosteService}
 import fi.oph.koski.valpas.opiskeluoikeusfixture.ValpasMockOppijat
+import fi.oph.koski.valpas.opiskeluoikeusrepository.{ValpasHenkilöLaajatTiedot, ValpasOppivelvollinenOppijaLaajatTiedot}
 import org.json4s.{DefaultFormats, Formats}
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.{BeforeAndAfterAll, EitherValues}
 
-import java.time.LocalDateTime
+import java.time.{LocalDate, LocalDateTime}
 
 class SureHakukoosteServiceSpec extends ValpasTestBase with Matchers with EitherValues with BeforeAndAfterAll {
   implicit val jsonDefaultFormats: Formats = DefaultFormats.preservingEmptyValues
@@ -30,6 +32,9 @@ class SureHakukoosteServiceSpec extends ValpasTestBase with Matchers with Either
     """.stripMargin)
 
   private val mockClient = ValpasHakukoosteService(KoskiApplicationForTests, Some(config))
+
+  private val masterHenkilö = ValpasMockOppijat.oppivelvollinenMonellaOppijaOidillaMaster
+  private val slaveHenkilö = ValpasMockOppijat.oppivelvollinenMonellaOppijaOidillaToinen
 
   private val wireMockServer = new WireMockServer(wireMockConfig().port(9875))
 
@@ -125,6 +130,67 @@ class SureHakukoosteServiceSpec extends ValpasTestBase with Matchers with Either
       result.statusCode should equal(502)
       result.errorString.get should startWith("Suoritusrekisterin palauttama hakukoostetieto oli viallinen")
     }
+
+    "palauttaa hakutilanteet kun suoritusrekisteri palauttaa saman oppija-oidin" in {
+      mockResponseForOids(Set(masterHenkilö.oid))
+      val oppijat = Seq(minimalValpasOppija(masterHenkilö))
+      val result = mockClient.fetchHautYhteystiedoilla("test", Seq(masterHenkilö.oid))(oppijat)
+      result.head.hakutilanteet should not be empty
+      result.head.oppija.henkilö.oid shouldBe masterHenkilö.oid
+      result.head.hakutilanteet.head.debugHakukooste.get.oppijaOid shouldBe masterHenkilö.oid
+    }
+
+    "yhdistää hakukoosteen oppijaan kun suoritusrekisteri palauttaa slave-oppija-oidin" in {
+      mockResponseWithCustomOppijaOid(Set(masterHenkilö.oid), slaveHenkilö.oid)
+      val oppijat = Seq(minimalValpasOppija(masterHenkilö))
+      val result = mockClient.fetchHautYhteystiedoilla("test", Seq(masterHenkilö.oid))(oppijat)
+      result.length shouldBe 1
+      result.head.hakutilanteet should not be empty
+      result.head.oppija.henkilö.oid shouldBe masterHenkilö.oid
+      result.head.hakutilanteet.head.debugHakukooste.get.oppijaOid shouldBe slaveHenkilö.oid
+    }
+
+    "palauttaa tyhjät hakutilanteet kun slave-oppija-oidiä ei voida yhdistää masteriin" in {
+      mockResponseWithCustomOppijaOid(Set(masterHenkilö.oid), "1.2.246.562.24.tuntematon_oid_99999")
+      val oppijat = Seq(minimalValpasOppija(masterHenkilö))
+      val result = mockClient.fetchHautYhteystiedoilla("test", Seq(masterHenkilö.oid))(oppijat)
+      result.length shouldBe 1
+      result.head.hakutilanteet shouldBe empty
+    }
+  }
+
+  private def minimalValpasOppija(henkilö: LaajatOppijaHenkilöTiedot): ValpasOppivelvollinenOppijaLaajatTiedot =
+    ValpasOppivelvollinenOppijaLaajatTiedot(
+      henkilö = ValpasHenkilöLaajatTiedot(
+        oid = henkilö.oid,
+        kaikkiOidit = Set(henkilö.oid),
+        hetu = henkilö.hetu,
+        syntymäaika = henkilö.syntymäaika,
+        etunimet = henkilö.etunimet,
+        sukunimi = henkilö.sukunimi,
+        kotikunta = None,
+        turvakielto = false,
+        äidinkieli = None,
+      ),
+      hakeutumisvalvovatOppilaitokset = Set.empty,
+      suorittamisvalvovatOppilaitokset = Set.empty,
+      opiskeluoikeudet = Seq.empty,
+      oppivelvollisuusVoimassaAsti = LocalDate.of(2025, 1, 1),
+      oikeusKoulutuksenMaksuttomuuteenVoimassaAsti = LocalDate.of(2025, 1, 1),
+      kotikuntaSuomessaAlkaen = None,
+      onOikeusValvoaMaksuttomuutta = false,
+      onOikeusValvoaKunnalla = false,
+    )
+
+  private def mockResponseWithCustomOppijaOid(queryOids: Set[String], responseOppijaOid: String): Unit = {
+    val expectedRequest = queryOids.map(oid => oid.mkString("\"", "", "\"")).mkString("[", ",", "]")
+    val response = HakukoosteExampleData.data
+      .filter(entry => queryOids.contains(entry.oppijaOid))
+      .map(_.copy(oppijaOid = responseOppijaOid))
+    wireMockServer.stubFor(
+      WireMock.post(WireMock.urlPathEqualTo(sureHakukoosteUrl))
+        .withRequestBody(WireMock.equalToJson(expectedRequest))
+        .willReturn(WireMock.ok().withBody(JsonSerializer.writeWithRoot(response))))
   }
 
   private def mockResponseForOids(
