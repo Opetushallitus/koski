@@ -2,27 +2,51 @@ package fi.oph.koski.raportit
 
 import fi.oph.koski.KoskiApplicationForTests
 import fi.oph.koski.api.misc.OpiskeluoikeusTestMethodsPerusopetus
+import fi.oph.koski.documentation.ExampleData.{opiskeluoikeusEronnut, opiskeluoikeusLäsnä}
+import fi.oph.koski.documentation.ExamplesPerusopetukseenValmistavaOpetus.perusopetukseenValmistavanOpetuksenSuoritus
+import fi.oph.koski.documentation.YleissivistavakoulutusExampleData
+import fi.oph.koski.organisaatio.MockOrganisaatiot.jyväskylänNormaalikoulu
+import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.localization.LocalizationReader
 import fi.oph.koski.log.AuditLogTester
 import fi.oph.koski.organisaatio.MockOrganisaatiot
-import fi.oph.koski.organisaatio.MockOrganisaatiot.jyväskylänNormaalikoulu
 import fi.oph.koski.raportointikanta.RaportointikantaTestMethods
+import fi.oph.koski.schema._
 import org.scalatest.BeforeAndAfterAll
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.should.Matchers
 
 import java.time.LocalDate
+import java.time.LocalDate.{of => date}
 
 class PerusopetukseenValmistavanRaporttiSpec extends AnyFreeSpec with Matchers with RaportointikantaTestMethods
                                                      with OpiskeluoikeusTestMethodsPerusopetus with BeforeAndAfterAll {
 
-  private lazy val repository = PerusopetukseenValmistavanRaportitRepository(KoskiApplicationForTests.raportointiDatabase.db)
   private val t = new LocalizationReader(KoskiApplicationForTests.koskiLocalizationRepository, "fi")
 
-  private lazy val valmistavanRaportti = PerusopetukseenValmistavanRaportti(repository, t)
+  private val eropäivä = date(2020, 1, 11)
 
   override protected def beforeAll(): Unit = {
     super.beforeAll()
+
+    val alkamispäivä = date(2020, 1, 1)
+
+    val eronnutOpiskeluoikeus = PerusopetukseenValmistavanOpetuksenOpiskeluoikeus(
+      tila = PerusopetukseenValmistavanOpetuksenOpiskeluoikeudenTila(List(
+        PerusopetukseenValmistavanOpetuksenOpiskeluoikeusJakso(alkamispäivä, opiskeluoikeusLäsnä),
+        PerusopetukseenValmistavanOpetuksenOpiskeluoikeusJakso(eropäivä, opiskeluoikeusEronnut)
+      )),
+      oppilaitos = Some(YleissivistavakoulutusExampleData.jyväskylänNormaalikoulu),
+      suoritukset = List(
+        perusopetukseenValmistavanOpetuksenSuoritus.copy(vahvistus = None)
+      )
+    )
+
+    createOrUpdate(
+      KoskiSpecificMockOppijat.valmistavanEronnut,
+      eronnutOpiskeluoikeus
+    )
+
     reloadRaportointikanta()
   }
 
@@ -47,7 +71,7 @@ class PerusopetukseenValmistavanRaporttiSpec extends AnyFreeSpec with Matchers w
     suoritustyyppi = "perusopetukseenvalmistavaopetus",
     suorituksenTila = "valmis",
     suorituksenVahvistuspaiva = "2018-06-01",
-    läsnäolopäiviäAikajaksonAikana = 273
+    läsnäolopäiviäAikajaksonAikana = 274
   )
 
   "Valmistavan opetuksen raportti" - {
@@ -126,6 +150,16 @@ class PerusopetukseenValmistavanRaporttiSpec extends AnyFreeSpec with Matchers w
         "Data näyttää oikealta" in {
           sheet.rows.head should equal(defaultExpectedValmistavaRow.copy(opiskeluoikeusOid = report.head.head.toString).productIterator.toList ++ List("Arvosana S, Laajuus 10.0 vuosiviikkotuntia", "Arvosana 9, Laajuus 1.0 vuosiviikkotuntia, 7. vuosiluokka"))
         }
+      }
+
+      "Eropäivä lasketaan läsnäolopäiviin" in {
+        val (report, sheet) = haeRaportti(MockOrganisaatiot.jyväskylänNormaalikoulu)
+        val titles = sheet.columnSettings.map(_.title)
+        val hetuIdx = titles.indexOf("hetu")
+        val läsnäolopäivätIdx = titles.indexOf("Läsnäolopäiviä aikajakson aikana")
+        val eronnutRow = report.find(row => row(hetuIdx) == Some("150910A123F")).get
+        // lasna 2020-01-01 — 2020-01-10 = 10 päivää + eropäivä 2020-01-11 = 11
+        eronnutRow(läsnäolopäivätIdx) should equal(11)
       }
 
       "Haettaessa koulutustoimijalla" - {
