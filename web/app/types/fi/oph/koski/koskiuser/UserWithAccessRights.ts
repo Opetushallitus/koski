@@ -9,7 +9,6 @@ export type UserWithAccessRights = {
   hasAnyInvalidateAccess: boolean
   oid: string
   hasPääkäyttäjäAccess: boolean
-  hasKielitutkintoViewerAccess: boolean
   varhaiskasvatuksenJärjestäjäKoulutustoimijat: Array<string>
   hasKelaUiAccess: boolean
   hasOneKoulutustoimijaWriteAccess: boolean
@@ -17,6 +16,7 @@ export type UserWithAccessRights = {
   hasGlobalReadAccess: boolean
   hasWriteAccess: boolean
   hasHenkiloUiWriteAccess: boolean
+  hasYleinenKielitutkintoViewerAccess: boolean
   hasLocalizationWriteAccess: boolean
   isViranomainen: boolean
   hasRaportitAccess: boolean
@@ -28,7 +28,6 @@ export const UserWithAccessRights = (o: {
   hasAnyInvalidateAccess: boolean
   oid: string
   hasPääkäyttäjäAccess: boolean
-  hasKielitutkintoViewerAccess: boolean
   varhaiskasvatuksenJärjestäjäKoulutustoimijat?: Array<string>
   hasKelaUiAccess: boolean
   hasOneKoulutustoimijaWriteAccess: boolean
@@ -36,6 +35,7 @@ export const UserWithAccessRights = (o: {
   hasGlobalReadAccess: boolean
   hasWriteAccess: boolean
   hasHenkiloUiWriteAccess: boolean
+  hasYleinenKielitutkintoViewerAccess: boolean
   hasLocalizationWriteAccess: boolean
   isViranomainen: boolean
   hasRaportitAccess: boolean

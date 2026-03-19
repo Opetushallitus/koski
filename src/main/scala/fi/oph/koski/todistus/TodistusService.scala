@@ -5,10 +5,10 @@ import fi.oph.koski.db.KoskiOpiskeluoikeusRow
 import fi.oph.koski.henkilo.{KoskiSpecificMockOppijat, LaajatOppijaHenkilöTiedot, OppijaHenkilö}
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.json.JsonSerializer
-import fi.oph.koski.koskiuser.KoskiSpecificSession
-import fi.oph.koski.koskiuser.Rooli.{GLOBAALI_LUKU_KIELITUTKINTO, OPHKATSELIJA, OPHPAAKAYTTAJA}
+import fi.oph.koski.koskiuser.{KoskiSpecificSession, Rooli}
+import fi.oph.koski.koskiuser.Rooli.{KIELITUTKINTO, OPHKATSELIJA, OPHPAAKAYTTAJA}
 import fi.oph.koski.log.Logging
-import fi.oph.koski.schema.{KielitutkinnonOpiskeluoikeus, KoskeenTallennettavaOpiskeluoikeus, Opiskeluoikeus, YleisenKielitutkinnonSuoritus}
+import fi.oph.koski.schema.{KielitutkinnonOpiskeluoikeus, KoskeenTallennettavaOpiskeluoikeus, Opiskeluoikeus, SuorituksenTyyppi, YleisenKielitutkinnonSuoritus}
 import fi.oph.koski.todistus.BucketType.BucketType
 import fi.oph.koski.todistus.pdfgenerator.{TodistusData, TodistusMetadata, TodistusPdfGenerator}
 import fi.oph.koski.todistus.swisscomclient.SwisscomClient
@@ -17,11 +17,10 @@ import fi.oph.koski.util.{Timing, TryWithLogging}
 import software.amazon.awssdk.http.ContentStreamProvider
 import org.apache.pdfbox.Loader
 
-import java.io.{ByteArrayOutputStream, InputStream}
+import java.io.InputStream
 import java.security.MessageDigest
 import scala.util.Using
 import fi.oph.koski.util.ChainingSyntax.eitherChainingOps
-import org.apache.pdfbox.pdmodel.PDDocument
 
 import java.time.LocalDateTime
 import java.util.{Properties, UUID}
@@ -41,15 +40,15 @@ class TodistusService(application: KoskiApplication) extends Logging with Timing
 
   private val commitHash: String = getBuildVersion.getOrElse("local")
 
-  private def hasKielitutkintoViewerRole(implicit user: KoskiSpecificSession): Boolean = {
-    user.hasRole(GLOBAALI_LUKU_KIELITUTKINTO) && user.hasRole(OPHKATSELIJA)
+  def hasYleinenKielitutkintoViewerRole(implicit user: KoskiSpecificSession): Boolean = {
+    user.hasRole(Rooli.rooliPäätasonSuoritukseen(KIELITUTKINTO, SuorituksenTyyppi.yleinenKielitutkinto)) && user.hasRole(OPHKATSELIJA)
   }
 
   def currentStatus(req: TodistusIdRequest)(implicit user: KoskiSpecificSession): Either[HttpStatus, TodistusJob] = {
     if (user.hasRole(OPHPAAKAYTTAJA)) {
       todistusRepository
         .get(req.id)
-    } else if (hasKielitutkintoViewerRole) {
+    } else if (hasYleinenKielitutkintoViewerRole) {
       for {
         todistus <- todistusRepository.get(req.id)
         _ <- validateIsKielitutkintoOpiskeluoikeus(todistus.opiskeluoikeusOid)
@@ -117,7 +116,7 @@ class TodistusService(application: KoskiApplication) extends Logging with Timing
   private def templateVarianttiOnKäyttäjälleSallittu(req: TodistusGenerateRequest)(implicit user: KoskiSpecificSession) = {
     Either.cond(
       (user.user.kansalainen && TodistusTemplateVariant.isKansalainenVariant(req.templateVariant)) ||
-        (user.hasRole(OPHPAAKAYTTAJA) || hasKielitutkintoViewerRole),
+        (user.hasRole(OPHPAAKAYTTAJA) || hasYleinenKielitutkintoViewerRole),
       (),
       KoskiErrorCategory.notFound()
     )
@@ -160,7 +159,7 @@ class TodistusService(application: KoskiApplication) extends Logging with Timing
 
     if (user.hasRole(OPHPAAKAYTTAJA)) {
       Right(rawOpiskeluoikeus)
-    } else if (hasKielitutkintoViewerRole && rawOpiskeluoikeus.koulutusmuoto == "kielitutkinto") {
+    } else if (hasYleinenKielitutkintoViewerRole && rawOpiskeluoikeus.koulutusmuoto == "kielitutkinto" && rawOpiskeluoikeus.suoritustyypit.contains(SuorituksenTyyppi.yleinenKielitutkinto.koodiarvo)) {
       Right(rawOpiskeluoikeus)
     } else {
       tarkistaKansalaisenKäyttöoikeudetOpiskeluoikeuteen(rawOpiskeluoikeus)
