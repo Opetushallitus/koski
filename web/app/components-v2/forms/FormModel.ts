@@ -394,6 +394,7 @@ const reducer = <O>(
         ...state,
         data: action.value,
         initialData: action.value,
+        originalData: action.value,
         editMode: EditMode.View,
         isSaved: true,
         errors: []

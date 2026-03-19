@@ -375,7 +375,7 @@ test.describe('Taiteen perusopetus', () => {
 
         expect(await page.suorituksenTila()).toEqual('SUORITUS VALMIS')
         expect(await page.suorituksenVahvistus()).toEqual(
-          'Vahvistus: 1.2.2021 Varsinais-Suomen kansanopisto'
+          'Vahvistus: 1.2.2021 Paimio'
         )
         expect(await page.suorituksenVahvistushenkilö(0)).toEqual(
           'Teemu Rex'
@@ -412,7 +412,7 @@ test.describe('Taiteen perusopetus', () => {
         )
         expect(await page.suorituksenTila()).toEqual('SUORITUS VALMIS')
         expect(await page.suorituksenVahvistus()).toEqual(
-          'Vahvistus: 1.2.2021 Varsinais-Suomen kansanopisto'
+          'Vahvistus: 1.2.2021 Paimio'
         )
         expect(await page.suorituksenVahvistushenkilö(0)).toEqual(
           'Amos Rex (rehtori)'

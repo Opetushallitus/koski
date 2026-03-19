@@ -10,7 +10,6 @@ import { common, CommonProps } from '../CommonProps'
 import { FlatButton } from '../controls/FlatButton'
 import { Removable } from '../controls/Removable'
 import { MultilineTextEdit } from '../controls/TextField'
-import { FieldErrors } from '../forms/FieldErrors'
 import { FieldEditorProps, FieldViewerProps } from '../forms/FormField'
 import { KeyValueRow, KeyValueTable } from '../containers/KeyValueTable'
 import { OsaamisenTunnustaminen } from '../../types/fi/oph/koski/schema/OsaamisenTunnustaminen'
@@ -78,7 +77,6 @@ export const TunnustusEdit = <
             />
           </Removable>
         )}
-        <FieldErrors errors={props.errors} />
       </TestIdLayer>
     </div>
   )
@@ -124,7 +122,6 @@ export const OsaamisenTunnustusEdit = <T extends OsaamisenTunnustaminen>(
             />
           </Removable>
         )}
-        <FieldErrors errors={props.errors} />
       </TestIdLayer>
     </div>
   )

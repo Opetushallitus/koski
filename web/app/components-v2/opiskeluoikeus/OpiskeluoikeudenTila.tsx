@@ -5,8 +5,8 @@ import { NonEmptyArray } from 'fp-ts/lib/NonEmptyArray'
 import { pipe } from 'fp-ts/lib/function'
 import React, { useCallback, useMemo, useState } from 'react'
 import { useChildClassNames } from '../../appstate/constraints'
-import { TestIdLayer, TestIdText } from '../../appstate/useTestId'
-import { ISO2FinnishDate, addDaysISO } from '../../date/date'
+import { TestIdLayer, TestIdText, useTestId } from '../../appstate/useTestId'
+import { ISO2FinnishDate, addDaysISO, parseISODate } from '../../date/date'
 import { t } from '../../i18n/i18n'
 import { isAikuistenPerusopetuksenOpiskeluoikeusjakso } from '../../types/fi/oph/koski/schema/AikuistenPerusopetuksenOpiskeluoikeusjakso'
 import { isAmmatillinenOpiskeluoikeusjakso } from '../../types/fi/oph/koski/schema/AmmatillinenOpiskeluoikeusjakso'
@@ -34,8 +34,6 @@ import {
 } from '../containers/KeyValueTable'
 import { DateEdit } from '../controls/DateField'
 import { IconButton } from '../controls/IconButton'
-import { RaisedButton } from '../controls/RaisedButton'
-import { FieldErrors } from '../forms/FieldErrors'
 import { FieldEditorProps, FieldViewerProps } from '../forms/FormField'
 import { ValidationError, isValidationError } from '../forms/validator'
 import { CHARCODE_REMOVE } from '../texts/Icon'
@@ -62,6 +60,8 @@ export const OpiskeluoikeudenTilaView = <T extends OpiskeluoikeudenTila>(
     [props.value]
   )
 
+  const currentIndex = sortedJaksot.findIndex((j) => !isAlkuInFuture(j.alku))
+
   return (
     <TestIdLayer id="tila.value">
       <KeyValueTable>
@@ -71,7 +71,9 @@ export const OpiskeluoikeudenTilaView = <T extends OpiskeluoikeudenTila>(
               <KeyColumnedValuesRow
                 localizableName={index === 0 ? 'Tila' : undefined}
                 className={
-                  index === 0 ? 'OpiskeluoikeudenTila-viimeisin' : undefined
+                  index === currentIndex
+                    ? 'OpiskeluoikeudenTila-viimeisin'
+                    : undefined
                 }
                 columnSpans={{ default: [2, '*'], phone: [4, '*'] }}
               >
@@ -129,75 +131,69 @@ export const OpiskeluoikeudenTilaEdit = <T extends OpiskeluoikeudenTila>(
     <TestIdLayer id="tila.edit">
       <KeyValueTable>
         <TestIdLayer id="items">
-          {oo.jaksot.map(({ jakso, index, min, max, isLatest }, arrIndex) => (
-            <TestIdLayer key={`${index}_${arrIndex}`} id={index}>
-              <KeyColumnedValuesRow
-                localizableName={arrIndex === 0 ? 'Tila' : undefined}
-                className={
-                  isLatest ? 'OpiskeluoikeudenTila-viimeisin' : undefined
-                }
-                columnSpans={{
-                  default: [6, '*'],
-                  small: [8, '*'],
-                  phone: [24, '*']
-                }}
-              >
-                {[
-                  <DateEdit
-                    key={`date_${index}_${arrIndex}`}
-                    value={jakso.alku}
-                    min={min}
-                    max={max}
-                    onChange={oo.onChangeDate(index)}
-                  />,
-                  <div key="jakso">
-                    <TestIdText id="tila">{t(jakso.tila.nimi)}</TestIdText>
-                    {isRahoituksellinenOpiskeluoikeusjakso(jakso) &&
-                      jakso.opintojenRahoitus && (
-                        <>
-                          {' '}
-                          <TestIdText id="rahoitus">
-                            {'('}
-                            {t(jakso.opintojenRahoitus?.nimi)}
-                            {')'}
-                          </TestIdText>
-                        </>
+          {oo.jaksot.map(
+            ({ jakso, index, min, max, isLatest, isCurrent }, arrIndex) => (
+              <TestIdLayer key={`${index}_${arrIndex}`} id={index}>
+                <KeyColumnedValuesRow
+                  localizableName={arrIndex === 0 ? 'Tila' : undefined}
+                  className={
+                    isCurrent ? 'OpiskeluoikeudenTila-viimeisin' : undefined
+                  }
+                  columnSpans={{
+                    default: [3, '*'],
+                    small: [8, '*'],
+                    phone: [24, '*']
+                  }}
+                >
+                  {[
+                    <DateEdit
+                      key={`date_${index}_${arrIndex}`}
+                      value={jakso.alku}
+                      min={min}
+                      max={max}
+                      onChange={oo.onChangeDate(index)}
+                    />,
+                    <div key="jakso">
+                      <TestIdText id="tila">{t(jakso.tila.nimi)}</TestIdText>
+                      {isRahoituksellinenOpiskeluoikeusjakso(jakso) &&
+                        jakso.opintojenRahoitus && (
+                          <>
+                            {' '}
+                            <TestIdText id="rahoitus">
+                              {'('}
+                              {t(jakso.opintojenRahoitus?.nimi)}
+                              {')'}
+                            </TestIdText>
+                          </>
+                        )}
+                      {isLatest && (
+                        <IconButton
+                          charCode={CHARCODE_REMOVE}
+                          label={t('Poista')}
+                          size="input"
+                          onClick={oo.onRemoveLatest}
+                          testId="remove"
+                          key={`IconButton_${index}_${arrIndex}`}
+                        />
                       )}
-                    {isLatest && (
-                      <IconButton
-                        charCode={CHARCODE_REMOVE}
-                        label={t('Poista')}
-                        size="input"
-                        onClick={oo.onRemoveLatest}
-                        testId="remove"
-                        key={`IconButton_${index}_${arrIndex}`}
-                      />
-                    )}
-                  </div>
-                ]}
-              </KeyColumnedValuesRow>
-            </TestIdLayer>
-          ))}
+                    </div>
+                  ]}
+                </KeyColumnedValuesRow>
+              </TestIdLayer>
+            )
+          )}
         </TestIdLayer>
 
         {!oo.isTerminated && (
           <KeyColumnedValuesRow
             localizableName={A.isEmpty(oo.jaksot) ? 'Tila' : undefined}
             columnSpans={{
-              default: [6, '*'],
+              default: [3, '*'],
               small: [8, '*'],
               phone: [24, '*']
             }}
           >
-            {[
-              <RaisedButton
-                key="RaisedButton"
-                onClick={oo.openModal}
-                testId="add"
-              >
-                {t('Lisää uusi')}
-              </RaisedButton>
-            ]}
+            {[<LisääTilaLink key="addLink" onClick={oo.openModal} />]}
           </KeyColumnedValuesRow>
         )}
       </KeyValueTable>
@@ -209,7 +205,6 @@ export const OpiskeluoikeudenTilaEdit = <T extends OpiskeluoikeudenTila>(
           enableValmistuminen={props.enableValmistuminen}
         />
       )}
-      <FieldErrors errors={props.errors} />
     </TestIdLayer>
   )
 }
@@ -247,6 +242,7 @@ const useOpiskeluoikeudenTilaState = <T extends OpiskeluoikeudenTila>(
   const jaksot = useMemo(() => {
     const opiskeluoikeusjaksot =
       props.value?.opiskeluoikeusjaksot || emptyOpiskeluoikeusjaksotArray
+    const currentIndex = findCurrentIndex(opiskeluoikeusjaksot)
     return pipe(
       opiskeluoikeusjaksot,
       A.mapWithIndex((index, jakso) => ({
@@ -254,7 +250,8 @@ const useOpiskeluoikeudenTilaState = <T extends OpiskeluoikeudenTila>(
         index,
         min: nextDay(opiskeluoikeusjaksot[index - 1]?.alku),
         max: previousDay(opiskeluoikeusjaksot[index + 1]?.alku),
-        isLatest: index === opiskeluoikeusjaksot.length - 1
+        isLatest: index === opiskeluoikeusjaksot.length - 1,
+        isCurrent: index === currentIndex
       })),
       A.reverse
     )
@@ -349,9 +346,37 @@ const useOpiskeluoikeudenTilaState = <T extends OpiskeluoikeudenTila>(
   }
 }
 
+const LisääTilaLink: React.FC<{
+  onClick: () => void
+}> = ({ onClick }) => {
+  const testId = useTestId('add')
+  return (
+    <a
+      className="OpiskeluoikeudenTila-lisääTila"
+      role="button"
+      onClick={onClick}
+      data-testid={testId}
+    >
+      {t('Lisää opiskeluoikeuden tila')}
+    </a>
+  )
+}
+
 // Utils
 
 const emptyOpiskeluoikeusjaksotArray: Opiskeluoikeusjakso[] = []
 
 const nextDay = addDaysISO(1)
 const previousDay = addDaysISO(-1)
+
+const isAlkuInFuture = (alku: string): boolean => {
+  const date = parseISODate(alku)
+  return date instanceof Date && date > new Date()
+}
+
+const findCurrentIndex = (jaksot: Opiskeluoikeusjakso[]): number => {
+  for (let i = jaksot.length - 1; i >= 0; i--) {
+    if (!isAlkuInFuture(jaksot[i]!.alku)) return i
+  }
+  return 0
+}

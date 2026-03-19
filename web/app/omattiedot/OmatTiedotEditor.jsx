@@ -60,16 +60,13 @@ export const OmatTiedotEditor = ({ model }) => {
                     <ul className="opiskeluoikeudet-list">
                       {opiskeluoikeudet.map(
                         (opiskeluoikeus, opiskeluoikeusIndex) => (
-                          <li key={opiskeluoikeusIndex}>
-                            <div className="opiskeluoikeus-container">
-                              <OpiskeluoikeusEditor
-                                opiskeluoikeus={opiskeluoikeus}
-                                oppijaOid={oppijaOid}
-                                uiAdapter={uiAdapter}
-                                testId={opiskeluoikeusIndex}
-                              />
-                            </div>
-                          </li>
+                          <OpiskeluoikeusEditor
+                            key={opiskeluoikeusIndex}
+                            opiskeluoikeus={opiskeluoikeus}
+                            oppijaOid={oppijaOid}
+                            uiAdapter={uiAdapter}
+                            testId={opiskeluoikeusIndex}
+                          />
                         )
                       )}
                     </ul>

@@ -65,6 +65,7 @@ import {
 } from '../../components-v2/controls/LocalizedTestField'
 import { TextEdit, TextView } from '../../components-v2/controls/TextField'
 import { OsasuoritusTablesUseastaTutkinnosta } from './OsasuoritusTablesUseastaTutkinnosta'
+import { AmmatillinenArviointiasteikko } from '../AmmatillinenArviointiasteikko'
 
 export const AmmatillinenTutkintoOsittainenUseastaTutkinnostaEditor: React.FC<
   AmmatillinenEditorProps & {
@@ -116,6 +117,9 @@ export const AmmatillinenTutkintoOsittainenUseastaTutkinnostaEditor: React.FC<
           disableAdd={false}
           vahvistusClass={HenkilövahvistusValinnaisellaPaikkakunnalla.className}
         />
+        <AmmatillinenArviointiasteikko
+          suoritus={osittainenUseastaTutkinnostaSuoritus.suoritus}
+        />
         <Spacer />
         <OpenAllButton {...tree} />
         <Spacer />
@@ -161,15 +165,17 @@ export const AmmatillisenOsittaisenUseastaTutkinnostaSuorituksenTiedot: React.FC
           edit={OrganisaatioEdit}
         />
       </KeyValueRow>
-      <KeyValueRow localizableLabel="Alkamispäivä">
-        <FormField
-          form={form}
-          view={DateView}
-          edit={DateEdit}
-          editProps={{ align: 'right' }}
-          path={path.prop('alkamispäivä')}
-        />
-      </KeyValueRow>
+      {(form.editMode || päätasonSuoritus.suoritus.alkamispäivä) && (
+        <KeyValueRow localizableLabel="Alkamispäivä">
+          <FormField
+            form={form}
+            view={DateView}
+            edit={DateEdit}
+            editProps={{ align: 'right' }}
+            path={path.prop('alkamispäivä')}
+          />
+        </KeyValueRow>
+      )}
       <KeyValueRow localizableLabel="Suorituskieli">
         <FormField
           form={form}

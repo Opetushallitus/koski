@@ -42,6 +42,7 @@ export type SelectProps<T> = CommonProps<{
   inlineOptions?: boolean
   maxOptions?: number
   allowOpenUpwards?: boolean
+  hasErrors?: boolean
   testId: string | number
 }>
 
@@ -112,7 +113,8 @@ export const Select = <T,>(props: SelectProps<T>) => {
         {...common(props, [
           'Select',
           'input-container',
-          props.onSearch && select.options.length === 0 && 'search'
+          props.onSearch && select.options.length === 0 && 'search',
+          props.hasErrors && 'Select--error'
         ])}
         {...select.containerEventListeners}
       >
@@ -301,7 +303,10 @@ const useSelectState = <T,>(props: SelectProps<T>) => {
 
   const onFocus = useCallback(() => {
     setDropdownVisible(true)
-  }, [])
+    if (props.onSearch) {
+      setFilter('')
+    }
+  }, [props.onSearch])
 
   // Losing the focus
 

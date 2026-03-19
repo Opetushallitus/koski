@@ -18,6 +18,8 @@ type AmisLaajuudetYhteensäProps = {
 export const AmisLaajuudetYhteensä: React.FC<AmisLaajuudetYhteensäProps> = ({
   suoritus
 }) => {
+  if (!hasLaajuus(suoritus)) return null
+
   return (
     <KeyValueTable>
       <KeyValueRow localizableLabel="Yhteensä">
@@ -26,6 +28,17 @@ export const AmisLaajuudetYhteensä: React.FC<AmisLaajuudetYhteensäProps> = ({
     </KeyValueTable>
   )
 }
+
+const hasLaajuus = (
+  pts:
+    | AmmatillisenTutkinnonOsittainenSuoritus
+    | AmmatillisenTutkinnonOsittainenUseastaTutkinnostaSuoritus
+): boolean =>
+  sum(
+    (pts.osasuoritukset || []).map(
+      (os) => os.koulutusmoduuli.laajuus?.arvo || 0
+    )
+  ) > 0
 
 const laajuudetYhteensä = (
   pts:

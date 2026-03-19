@@ -2,4 +2,25 @@
   .KeyValueRow__value {
     font-weight: 600;
   }
+
+  > .KeyValueRow__name + .KeyValueRow__value {
+    position: relative;
+
+    &:before {
+      font-family: FontAwesome, serif;
+      color: @color-link-blue;
+      font-weight: lighter;
+      content: '\F061';
+      font-size: 12px;
+      position: absolute;
+      left: -16px;
+      top: 3px;
+    }
+  }
+}
+
+.OpiskeluoikeudenTila-lisääTila {
+  cursor: pointer;
+  color: @color-link-blue;
+  font-size: 1em;
 }

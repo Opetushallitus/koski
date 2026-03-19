@@ -89,6 +89,7 @@ export const KoodistoEdit = <T extends string>(props: KoodistoEditProps<T>) => {
       value={props.value?.koodiarvo}
       options={options}
       onChange={update}
+      hasErrors={Boolean(props.errors)}
       testId={props.testId}
     />
   )

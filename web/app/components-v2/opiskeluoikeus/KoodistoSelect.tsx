@@ -29,6 +29,7 @@ export type KoodistoSelectProps<T extends string> = CommonProps<{
   zeroValueOption?: boolean
   inlineOptions?: boolean
   format?: (k: Koodistokoodiviite) => string
+  hasErrors?: boolean
 }>
 
 export function KoodistoSelect<T extends string>(
@@ -78,6 +79,7 @@ export function KoodistoSelect<T extends string>(
       onChange={onChangeCB}
       testId={props.testId}
       value={props.value}
+      hasErrors={props.hasErrors}
     />
   )
 }

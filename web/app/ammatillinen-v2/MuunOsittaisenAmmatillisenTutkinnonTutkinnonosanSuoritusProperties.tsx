@@ -11,10 +11,6 @@ import {
   BooleanView
 } from '../components-v2/opiskeluoikeus/BooleanField'
 import {
-  OrganisaatioEdit,
-  OrganisaatioView
-} from '../components-v2/opiskeluoikeus/OrganisaatioField'
-import {
   OsaamisenTunnustusEdit,
   OsaamisenTunnustusView
 } from '../components-v2/opiskeluoikeus/TunnustusField'
@@ -68,7 +64,7 @@ export const MuunOsittaisenAmmatillisenTutkinnonTutkinnonosanSuoritusProperties 
   }: MuunOsittaisenAmmatillisenTutkinnonTutkinnonosanSuoritusPropertiesProps) => {
     return (
       <>
-        {(form.editMode || osasuoritus.suorituskieli) && (
+        {osasuoritus.suorituskieli && (
           <OsasuoritusProperty label={'Suorituskieli'}>
             <OsasuoritusPropertyValue>
               <FormField
@@ -91,14 +87,32 @@ export const MuunOsittaisenAmmatillisenTutkinnonTutkinnonosanSuoritusProperties 
             />
           </OsasuoritusPropertyValue>
         </OsasuoritusProperty>
-        <OsasuoritusProperty label={'Oppilaitos / toimipiste'}>
+        <OsasuoritusProperty label={'Arviointi'}>
           <OsasuoritusPropertyValue>
-            <FormField
-              form={form}
-              path={osasuoritusPath.prop('toimipiste')}
-              view={OrganisaatioView}
-              edit={OrganisaatioEdit}
-            />
+            <TestIdLayer id="arviointi">
+              <FormListField
+                removable
+                form={form}
+                view={ArviointiView}
+                edit={ArviointiEdit}
+                path={osasuoritusPath.prop('arviointi')}
+              />
+              {form.editMode && (
+                <ButtonGroup>
+                  <FlatButton
+                    testId="lisää-arviointi"
+                    onClick={() =>
+                      form.updateAt(
+                        osasuoritusPath.prop('arviointi').valueOr([]),
+                        append(emptyArviointi)
+                      )
+                    }
+                  >
+                    {t('Lisää')}
+                  </FlatButton>
+                </ButtonGroup>
+              )}
+            </TestIdLayer>
           </OsasuoritusPropertyValue>
         </OsasuoritusProperty>
         {(form.editMode || osasuoritus.tunnustettu) && (
@@ -156,34 +170,6 @@ export const MuunOsittaisenAmmatillisenTutkinnonTutkinnonosanSuoritusProperties 
             </OsasuoritusPropertyValue>
           </OsasuoritusProperty>
         )}
-        <OsasuoritusProperty label={'Arviointi'}>
-          <OsasuoritusPropertyValue>
-            <TestIdLayer id="arviointi">
-              <FormListField
-                removable
-                form={form}
-                view={ArviointiView}
-                edit={ArviointiEdit}
-                path={osasuoritusPath.prop('arviointi')}
-              />
-              {form.editMode && (
-                <ButtonGroup>
-                  <FlatButton
-                    testId="lisää-arviointi"
-                    onClick={() =>
-                      form.updateAt(
-                        osasuoritusPath.prop('arviointi').valueOr([]),
-                        append(emptyArviointi)
-                      )
-                    }
-                  >
-                    {t('Lisää')}
-                  </FlatButton>
-                </ButtonGroup>
-              )}
-            </TestIdLayer>
-          </OsasuoritusPropertyValue>
-        </OsasuoritusProperty>
         {(form.editMode || osasuoritus.korotettu !== undefined) && (
           <OsasuoritusProperty label={'Korotettu suoritus'}>
             <OsasuoritusPropertyValue>
