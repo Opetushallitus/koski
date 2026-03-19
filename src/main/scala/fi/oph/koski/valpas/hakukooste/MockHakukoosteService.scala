@@ -9,6 +9,7 @@ import fi.oph.koski.valpas.oppija.ValpasErrorCategory
 
 class MockHakukoosteService(application: KoskiApplication) extends ValpasHakukoosteService {
   protected val localizationRepository = application.valpasLocalizationRepository
+  protected val opintopolkuHenkilöFacade = application.opintopolkuHenkilöFacade
 
   // Näillä oideilla kutsuminen aiheuttaa virhetilanteen (käytetään virhetilanteiden hallinnan testaamiseen)
   private def errorOids = Map(

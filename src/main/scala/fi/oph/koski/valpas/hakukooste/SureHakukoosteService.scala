@@ -3,6 +3,7 @@ package fi.oph.koski.valpas.hakukooste
 import com.typesafe.config.Config
 import fi.oph.koski.healthcheck.HealthMonitoring
 import fi.oph.koski.healthcheck.Subsystem.Suoritusrekisteri
+import fi.oph.koski.henkilo.OpintopolkuHenkilöFacade
 import fi.oph.koski.http.Http.{StringToUriConverter, parseJsonWithDeserialize, unsafeRetryingClient}
 import fi.oph.koski.http.{Http, HttpException, HttpStatus, ServiceConfig, VirkailijaHttpClient}
 import fi.oph.koski.json.Json4sHttp4s.json4sEncoderOf
@@ -19,6 +20,7 @@ import scala.concurrent.duration.{DurationInt, FiniteDuration}
 
 class SureHakukoosteService(
   valpasLocalizationRepository: LocalizationRepository,
+  valpasOpintopolkuHenkilöFacade: OpintopolkuHenkilöFacade,
   validatingAndResolvingExtractor: ValidatingAndResolvingExtractor,
   config: Config,
   healthMonitoring: HealthMonitoring,
@@ -27,6 +29,7 @@ class SureHakukoosteService(
   with Timing {
 
   protected val localizationRepository = valpasLocalizationRepository
+  protected val opintopolkuHenkilöFacade = valpasOpintopolkuHenkilöFacade
 
   private val baseUrl = "/suoritusrekisteri"
 
