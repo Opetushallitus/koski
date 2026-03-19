@@ -5,8 +5,6 @@ import fi.oph.koski.schedule.{IntervalSchedule, Scheduler}
 import fi.oph.koski.log.Logging
 import org.json4s.JValue
 
-import java.time.Duration
-
 class TodistusCleanupScheduler(application: KoskiApplication) extends Logging {
   val schedulerName = "todistus-cleanup"
   val todistusService = application.todistusService
@@ -25,10 +23,6 @@ class TodistusCleanupScheduler(application: KoskiApplication) extends Logging {
     ))
     schedulerInstance
   }
-
-  def pause(duration: Duration): Boolean = Scheduler.pauseForDuration(application.masterDatabase.db, schedulerName, duration)
-
-  def resume(): Boolean = Scheduler.resume(application.masterDatabase.db, schedulerName)
 
   def shutdown(): Unit = {
     schedulerInstance.foreach(_.shutdown)

@@ -19,7 +19,7 @@ import org.scalatest.{BeforeAndAfterAll, BeforeAndAfterEach}
 
 import java.net.URL
 import java.security.MessageDigest
-import java.time.{Duration, LocalDate, LocalDateTime}
+import java.time.{LocalDate, LocalDateTime}
 
 class TodistusSpecHelpers extends AnyFreeSpec with KoskiHttpSpec with Matchers with BeforeAndAfterAll with BeforeAndAfterEach with PutOpiskeluoikeusTestMethods[KielitutkinnonOpiskeluoikeus] {
   def tag = implicitly[reflect.runtime.universe.TypeTag[KielitutkinnonOpiskeluoikeus]]
@@ -254,8 +254,8 @@ class TodistusSpecHelpers extends AnyFreeSpec with KoskiHttpSpec with Matchers w
     try {
       Wait.until { !hasWork }
 
-      app.todistusScheduler.pause(Duration.ofDays(1))
-      app.todistusCleanupScheduler.pause(Duration.ofDays(1))
+      app.todistusScheduler.schedulerInstance.foreach(_.suspend())
+      app.todistusCleanupScheduler.schedulerInstance.foreach(_.suspend())
 
       // Wait for any running tasks to complete
       Wait.until(!app.todistusScheduler.schedulerInstance.exists(_.isTaskRunning))
@@ -266,8 +266,8 @@ class TodistusSpecHelpers extends AnyFreeSpec with KoskiHttpSpec with Matchers w
       if (truncate) {
         app.todistusRepository.truncateForLocal()
       }
-      app.todistusScheduler.resume()
-      app.todistusCleanupScheduler.resume()
+      app.todistusScheduler.schedulerInstance.foreach(_.unsuspend())
+      app.todistusCleanupScheduler.schedulerInstance.foreach(_.unsuspend())
     }
 
   def laskeHenkilötiedotHash(henkilö: OppijaHenkilö): String = {
