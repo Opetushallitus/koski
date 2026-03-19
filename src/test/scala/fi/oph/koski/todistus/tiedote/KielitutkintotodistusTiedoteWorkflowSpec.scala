@@ -4,12 +4,9 @@ import com.typesafe.config.ConfigValueFactory
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.henkilo.KoskiSpecificMockOppijat
 import fi.oph.koski.log.{AuditLogTester, KoskiAuditLogMessageField, KoskiOperation}
-import fi.oph.koski.schedule.Scheduler
 import fi.oph.koski.util.Wait
 import fi.oph.koski.json.GenericJsonFormats
 import org.json4s.jackson.JsonMethods.parse
-
-import java.time.Duration
 
 class KielitutkintotodistusTiedoteWorkflowSpec extends KielitutkintotodistusTiedoteSpecHelpers {
 
@@ -193,7 +190,7 @@ class KielitutkintotodistusTiedoteWorkflowSpec extends KielitutkintotodistusTied
 
     "Scheduler ei käsittele tiedotteita kun se on pysäytetty" in {
       waitForSchedulerIdle()
-      Scheduler.pauseForDuration(app.masterDatabase.db, "kielitutkintotodistus-tiedote", Duration.ofDays(1))
+      app.kielitutkintotodistusTiedoteScheduler.schedulerInstance.foreach(_.suspend())
       waitForSchedulerIdle()
       app.kielitutkintotodistusTiedoteRepository.truncateForLocal()
       mockTiedotuspalveluClient.reset()
@@ -203,7 +200,7 @@ class KielitutkintotodistusTiedoteWorkflowSpec extends KielitutkintotodistusTied
         app.kielitutkintotodistusTiedoteRepository.findAll(100, 0) should have length 0
         mockTiedotuspalveluClient.sentNotifications should have length 0
       } finally {
-        Scheduler.resume(app.masterDatabase.db, "kielitutkintotodistus-tiedote")
+        app.kielitutkintotodistusTiedoteScheduler.schedulerInstance.foreach(_.unsuspend())
       }
     }
 
