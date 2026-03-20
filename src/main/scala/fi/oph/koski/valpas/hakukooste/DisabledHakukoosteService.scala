@@ -9,6 +9,7 @@ import fi.oph.koski.valpas.oppija.ValpasErrorCategory
 // Dummy-luokka hakukoostekyselyiden disabloimiseksi tarvittaessa kokonaan ympäristöissä
 class DisabledHakukoosteService(application: KoskiApplication) extends ValpasHakukoosteService {
   protected val localizationRepository = application.valpasLocalizationRepository
+  protected val opintopolkuHenkilöFacade = application.opintopolkuHenkilöFacade
 
   def getHakukoosteet
     (oppijaOids: Set[ValpasHenkilö.Oid], ainoastaanAktiivisetHaut: Boolean = false, errorClue: String = "")
