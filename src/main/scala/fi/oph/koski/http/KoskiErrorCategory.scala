@@ -317,6 +317,8 @@ object KoskiErrorCategory {
         val valmistavanLisäopetusJaksotPäällekkäin = subcategory("valmistavanLisäopetusJaksotPäällekkäin", "Valmistavan lisäopetuksen aikajaksot eivät saa olla päällekkäin")
         val valmistavanLisäopetusAvoinJaksoLiianVanha = subcategory("valmistavanLisäopetusAvoinJaksoLiianVanha", "Valmistavan lisäopetusjakson päättymispäivä puuttuu ja alkamispäivä on yli vuoden vanha")
         def valinnainenOppiaineenOppimäärä(oppiaineKoodiarvo: String) = subcategory("valinnainenOppiaineenOppimäärä", s"Oppiaineen oppimäärän opiskeluoikeudessa yhteinen oppiaine $oppiaineKoodiarvo ei voi olla valinnainen.")
+        def erityinenTutkintoValinnainenOppiaineenOppimäärä(oppiaineKoodiarvo: String) = subcategory("erityinenTutkintoValinnainenOppiaineenOppimäärä", s"Oppiaineen oppimäärän opiskeluoikeudessa oppiaine $oppiaineKoodiarvo ei voi olla valinnainen, kun suoritustapa on erityinen tutkinto.")
+        def erityinenTutkintoPaikallinenOppiaineenOppimäärä(oppiaineKoodiarvo: String) = subcategory("erityinenTutkintoPaikallinenOppiaineenOppimäärä", s"Oppiaineen oppimäärän opiskeluoikeudessa oppiaine $oppiaineKoodiarvo ei voi olla paikallinen, kun suoritustapa on erityinen tutkinto.")
       }
       val perusopetus = new Perusopetus
     }
