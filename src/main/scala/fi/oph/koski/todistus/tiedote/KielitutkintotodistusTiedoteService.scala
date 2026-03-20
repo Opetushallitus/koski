@@ -68,8 +68,40 @@ class KielitutkintotodistusTiedoteService(application: KoskiApplication) extends
   }
 
   private def generateAndSend(tiedoteJobId: String, oppijaOid: String, opiskeluoikeusOid: String, idempotencyKey: String): Unit = {
+    val examineeDetails = kituClient.getExamineeDetails(opiskeluoikeusOid) match {
+      case Right(details) => Some(details)
+      case Left(err) =>
+        logger.warn(s"Yhteystietojen haku kitulta epäonnistui, lähetetään tiedote ilman yhteystietoja: tiedote=$tiedoteJobId oo=$opiskeluoikeusOid virhe=$err")
+        None
+    }
+
+    val todistusLocation = examineeDetails.flatMap(details => generateTodistus(tiedoteJobId, oppijaOid, opiskeluoikeusOid, details))
+
+    val result = client.sendKielitutkintoTodistusTiedote(
+      oppijaOid,
+      idempotencyKey,
+      todistusLocation.map(_.bucket),
+      todistusLocation.map(_.key),
+      examineeDetails
+    )
+
+    result match {
+      case Right(_) =>
+        AuditLog.log(KoskiAuditLogMessage(TIEDOTE_LAHETETTY, KoskiSpecificSession.systemUser, Map(
+          oppijaHenkiloOid -> oppijaOid,
+          opiskeluoikeusOidField -> opiskeluoikeusOid,
+          tiedoteTyyppi -> "kielitodistus"
+        )))
+        repository.setCompleted(tiedoteJobId, 0)
+        logger.info(s"Tiedote lähetetty: tiedote=$tiedoteJobId oo=$opiskeluoikeusOid printtitodistusPdf=${if (todistusLocation.isDefined) "kyllä" else "ei"}")
+      case Left(err) =>
+        repository.setFailed(tiedoteJobId, err.toString)
+        logger.error(s"Tiedotteen lähetys epäonnistui: tiedote=$tiedoteJobId oo=$opiskeluoikeusOid virhe=$err")
+    }
+  }
+
+  private def generateTodistus(tiedoteJobId: String, oppijaOid: String, opiskeluoikeusOid: String, examineeDetails: KituExamineeDetails): Option[fi.oph.koski.todistus.TiedoteBucketLocation] = {
     val result = for {
-      examineeDetails <- kituClient.getExamineeDetails(opiskeluoikeusOid)
       templateVariant <- examineeDetails.todistuskieli
         .map(kieli => s"${kieli.koodiarvo.toLowerCase}_tulostettava_uusi")
         .filter(TodistusTemplateVariant.printVariants.contains)
@@ -83,22 +115,13 @@ class KielitutkintotodistusTiedoteService(application: KoskiApplication) extends
 
       location <- todistusService.copyToTiedoteBucket(completedTodistus.id)
       _ = logger.info(s"Printtitodistus kopioitu tiedote-buckettiin: tiedote=$tiedoteJobId todistus=${completedTodistus.id} bucket=${location.bucket} key=${location.key}")
-
-      _ <- client.sendKielitutkintoTodistusTiedote(oppijaOid, idempotencyKey, location.bucket, location.key)
-    } yield completedTodistus
+    } yield location
 
     result match {
-      case Right(todistus) =>
-        AuditLog.log(KoskiAuditLogMessage(TIEDOTE_LAHETETTY, KoskiSpecificSession.systemUser, Map(
-          oppijaHenkiloOid -> oppijaOid,
-          opiskeluoikeusOidField -> opiskeluoikeusOid,
-          tiedoteTyyppi -> "kielitodistus"
-        )))
-        repository.setCompleted(tiedoteJobId, todistus.opiskeluoikeusVersionumero.getOrElse(0))
-        logger.info(s"Tiedote lähetetty: tiedote=$tiedoteJobId oo=$opiskeluoikeusOid")
+      case Right(location) => Some(location)
       case Left(err) =>
-        repository.setFailed(tiedoteJobId, err.toString)
-        logger.error(s"Tiedotteen lähetys epäonnistui: tiedote=$tiedoteJobId oo=$opiskeluoikeusOid virhe=$err")
+        logger.warn(s"Printtitodistuksen generointi epäonnistui, lähetetään tiedote ilman printtitodistusta: tiedote=$tiedoteJobId oo=$opiskeluoikeusOid virhe=$err")
+        None
     }
   }
 

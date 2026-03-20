@@ -28,7 +28,7 @@ class KielitutkintotodistusTiedoteWorkflowSpec extends KielitutkintotodistusTied
         job.get.oppijaOid should equal(oppijaOid)
         job.get.state should equal(KielitutkintotodistusTiedoteState.COMPLETED)
         job.get.completedAt shouldBe defined
-        mockTiedotuspalveluClient.sentNotifications.exists(n => n._1 == oppijaOid && n._2 == s"$opiskeluoikeusOid-initial" && n._3.nonEmpty && n._4.nonEmpty) should be(true)
+        mockTiedotuspalveluClient.sentNotifications.exists(n => n.oppijanumero == oppijaOid && n.idempotencyKey == s"$opiskeluoikeusOid-initial" && n.todistusBucket.nonEmpty && n.todistusKey.nonEmpty) should be(true)
       }
     }
 
@@ -40,10 +40,10 @@ class KielitutkintotodistusTiedoteWorkflowSpec extends KielitutkintotodistusTied
         app.kielitutkintotodistusTiedoteService.processAll()
 
         // Varmista, että bucket ja key on lähetetty tiedotuspalvelulle
-        val notification = mockTiedotuspalveluClient.sentNotifications.find(_._1 == oppijaOid)
+        val notification = mockTiedotuspalveluClient.sentNotifications.find(_.oppijanumero == oppijaOid)
         notification shouldBe defined
-        notification.get._3 should equal("koski-tiedotuspalvelu-local")
-        notification.get._4 should endWith("/tiedote.pdf")
+        notification.get.todistusBucket should equal(Some("koski-tiedotuspalvelu-local"))
+        notification.get.todistusKey.get should endWith("/tiedote.pdf")
       }
     }
 
@@ -210,6 +210,45 @@ class KielitutkintotodistusTiedoteWorkflowSpec extends KielitutkintotodistusTied
       }
     }
 
+    "Lähettää tiedotteen ilman todistusta ja yhteystietoja kun kitu palauttaa 404" in {
+      withoutRunningTiedoteScheduler {
+        val oppijaOid = KoskiSpecificMockOppijat.kielitutkinnonSuorittaja.oid
+        val opiskeluoikeusOid = getVahvistettuKielitutkinnonOpiskeluoikeusOid(oppijaOid).get
+
+        mockKituClient.respondWithHttpStatus(404)
+
+        app.kielitutkintotodistusTiedoteService.processAll()
+
+        val notification = mockTiedotuspalveluClient.sentNotifications.find(_.oppijanumero == oppijaOid)
+        notification shouldBe defined
+        notification.get.todistusBucket shouldBe None
+        notification.get.todistusKey shouldBe None
+        notification.get.kituExamineeDetails shouldBe None
+
+        val job = app.kielitutkintotodistusTiedoteRepository.findAll(100, 0).find(_.opiskeluoikeusOid == opiskeluoikeusOid)
+        job shouldBe defined
+        job.get.state should equal(KielitutkintotodistusTiedoteState.COMPLETED)
+      }
+    }
+
+    "Lähettää yhteystiedot tiedotuspalvelulle kun kitu-kutsu onnistuu" in {
+      withoutRunningTiedoteScheduler {
+        val oppijaOid = KoskiSpecificMockOppijat.kielitutkinnonSuorittaja.oid
+
+        app.kielitutkintotodistusTiedoteService.processAll()
+
+        val notification = mockTiedotuspalveluClient.sentNotifications.find(_.oppijanumero == oppijaOid)
+        notification shouldBe defined
+        notification.get.kituExamineeDetails shouldBe defined
+        val details = notification.get.kituExamineeDetails.get
+        details.sukunimi should equal("Meikäläinen")
+        details.etunimet should equal("Matti Johannes")
+        details.katuosoite should equal(Some("Esimerkkikatu 123"))
+        details.postinumero should equal(Some("00100"))
+        details.postitoimipaikka should equal(Some("Helsinki"))
+      }
+    }
+
     "Ei lähetä tiedotetta valtionhallinnon kielitutkinnosta" in {
       withoutRunningTiedoteScheduler {
         val oppijaOid = KoskiSpecificMockOppijat.kielitutkinnonSuorittaja.oid
@@ -283,7 +322,7 @@ class KielitutkintotodistusTiedoteWorkflowSpec extends KielitutkintotodistusTied
         jobs.exists(j => j.opiskeluoikeusOid == opiskeluoikeusOid && j.state == KielitutkintotodistusTiedoteState.COMPLETED)
       }
 
-      mockTiedotuspalveluClient.sentNotifications.exists(_._1 == oppijaOid) should be(true)
+      mockTiedotuspalveluClient.sentNotifications.exists(_.oppijanumero == oppijaOid) should be(true)
     }
   }
 }

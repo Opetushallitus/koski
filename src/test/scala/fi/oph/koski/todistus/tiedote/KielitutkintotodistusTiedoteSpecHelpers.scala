@@ -31,10 +31,14 @@ class KielitutkintotodistusTiedoteSpecHelpers extends AnyFreeSpec with KoskiHttp
     app.kielitutkintotodistusTiedoteRepository.truncateForLocal()
     app.todistusRepository.truncateForLocal()
     mockTiedotuspalveluClient.reset()
+    mockKituClient.reset()
   }
 
   protected def mockTiedotuspalveluClient: MockTiedotuspalveluClient =
     app.tiedotuspalveluClient.asInstanceOf[MockTiedotuspalveluClient]
+
+  protected def mockKituClient: MockKituClient =
+    app.kituClient.asInstanceOf[MockKituClient]
 
   protected def waitForSchedulerIdle(): Unit = {
     Wait.until(!app.kielitutkintotodistusTiedoteScheduler.schedulerInstance.exists(_.isTaskRunning))
@@ -49,6 +53,7 @@ class KielitutkintotodistusTiedoteSpecHelpers extends AnyFreeSpec with KoskiHttp
       app.kielitutkintotodistusTiedoteRepository.truncateForLocal()
       app.todistusRepository.truncateForLocal()
       mockTiedotuspalveluClient.reset()
+      mockKituClient.reset()
       f
     } finally {
       app.kielitutkintotodistusTiedoteScheduler.schedulerInstance.foreach(_.unsuspend())

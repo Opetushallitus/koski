@@ -21,7 +21,8 @@ trait TiedotuspalveluClient {
   def sendKielitutkintoTodistusTiedote(
     oppijanumero: String,
     idempotencyKey: String,
-    todistusBucket: String,
-    todistusKey: String
+    todistusBucket: Option[String],
+    todistusKey: Option[String],
+    kituExamineeDetails: Option[KituExamineeDetails]
   ): Either[HttpStatus, Unit]
 }
