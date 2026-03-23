@@ -7,6 +7,9 @@ env:
   DOCKER_BUILDKIT: 1
   PNPM_FROZEN_FLAG: ${{ github.event_name == 'pull_request' && github.event.pull_request.user.login == 'renovate[bot]' && '--no-frozen-lockfile' || '--frozen-lockfile' }}
 
+permissions:
+  contents: read
+
 jobs:
   build:
     name: Build
@@ -22,7 +25,7 @@ jobs:
         shell: bash
 
       - name: Run Trivy on Koski
-        uses: aquasecurity/trivy-action@master
+        uses: aquasecurity/trivy-action@57a97c7e7821a5776cebc9bb87c984fa69cba8f1 # v0.35.0
         with:
           scan-type: fs
           scan-ref: .
@@ -76,7 +79,7 @@ jobs:
 
       - name: Run Trivy (full HTML report)
         if: always()
-        uses: aquasecurity/trivy-action@master
+        uses: aquasecurity/trivy-action@57a97c7e7821a5776cebc9bb87c984fa69cba8f1 # v0.35.0
         with:
           scan-type: fs
           scan-ref: .
