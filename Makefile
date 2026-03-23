@@ -165,7 +165,7 @@ owaspresults:
 
 .PHONY: security-check
 security-check:
-	docker run --rm -v $(PWD):/workspace -w /workspace aquasec/trivy:latest fs \
+	docker run --rm -v $(PWD):/workspace -w /workspace aquasec/trivy:0.69.3@sha256:bcc376de8d77cfe086a917230e818dc9f8528e3c852f7b1aff648949b6258d1c fs \
 		--scanners vuln --severity CRITICAL,HIGH --ignorefile .trivyignore \
 		--skip-dirs src/main/resources/mockdata,src/test,target,omadata-oauth2-sample .
 	cd web && pnpm audit --audit-level high

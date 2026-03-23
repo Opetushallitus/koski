@@ -7,10 +7,15 @@ env:
   DOCKER_BUILDKIT: 1
   PNPM_FROZEN_FLAG: ${{ github.event_name == 'pull_request' && github.event.pull_request.user.login == 'renovate[bot]' && '--no-frozen-lockfile' || '--frozen-lockfile' }}
 
+permissions:
+  contents: read
+
 jobs:
-  build:
-    name: Build
+  scan:
+    name: Trivy scan
     runs-on: ubuntu-24.04
+    outputs:
+      cves: ${{ steps.summarize.outputs.cves }}
     steps:
       - name: Checkout code
         uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
@@ -22,7 +27,7 @@ jobs:
         shell: bash
 
       - name: Run Trivy on Koski
-        uses: aquasecurity/trivy-action@master
+        uses: aquasecurity/trivy-action@57a97c7e7821a5776cebc9bb87c984fa69cba8f1 # v0.35.0
         with:
           scan-type: fs
           scan-ref: .
@@ -57,26 +62,9 @@ jobs:
             echo 'EOF'
           } >> $GITHUB_OUTPUT
 
-      - name: Report to Slack
-        if: failure()
-        uses: ravsamhq/notify-slack-action@02b169fd81108a34dbb029df4a41dd27ad680290
-        with:
-          status: ${{ job.status }}
-          message_format: |
-            {emoji} *{workflow}* {status_message}
-
-            *New vulnerabilities found* in <{repo_url}|{repo}>
-
-            ${{ steps.summarize.outputs.cves }}
-
-            <https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}|See full report in logs>
-            <https://trivy.util.yleiskayttoiset.opintopolku.fi/koski.html|See current status (use vpn)>
-        env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL_PROD_ALERTS }}
-
-      - name: Run Trivy (full HTML report)
+      - name: Run Trivy (full table report)
         if: always()
-        uses: aquasecurity/trivy-action@master
+        uses: aquasecurity/trivy-action@57a97c7e7821a5776cebc9bb87c984fa69cba8f1 # v0.35.0
         with:
           scan-type: fs
           scan-ref: .
@@ -84,3 +72,25 @@ jobs:
           format: table
           skip-dirs: 'src/main/resources/mockdata,src/test,target'
           exit-code: 0
+
+  notify:
+    name: Notify Slack
+    runs-on: ubuntu-24.04
+    needs: [scan]
+    if: failure()
+    steps:
+      - name: Report to Slack
+        uses: ravsamhq/notify-slack-action@02b169fd81108a34dbb029df4a41dd27ad680290
+        with:
+          status: failure
+          message_format: |
+            {emoji} *{workflow}* {status_message}
+
+            *New vulnerabilities found* in <{repo_url}|{repo}>
+
+            ${{ needs.scan.outputs.cves }}
+
+            <https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}|See full report in logs>
+            <https://trivy.util.yleiskayttoiset.opintopolku.fi/koski.html|See current status (use vpn)>
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL_PROD_ALERTS }}
