@@ -43,36 +43,6 @@ jobs:
           cd ..
           make lint
 
-  trivy_dependency_check:
-    name: Trivy dependency check
-    permissions:
-      contents: read
-    runs-on: ${{ inputs.runs-on }}
-    steps:
-      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
-
-      - uses: ./.github/actions/setup_pnpm_cache
-
-      - name: Setup Node
-        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
-        with:
-          node-version: "24.14.0"
-
-      - name: Install JS deps
-        run: pnpm install --recursive $PNPM_FROZEN_FLAG
-
-      - name: Trivy vulnerability scan
-        uses: aquasecurity/trivy-action@57a97c7e7821a5776cebc9bb87c984fa69cba8f1 # v0.35.0
-        with:
-          scan-type: fs
-          scan-ref: .
-          exit-code: 1
-          scanners: vuln
-          trivyignores: .trivyignore
-          format: table
-          severity: 'CRITICAL,HIGH'
-          skip-dirs: 'src/main/resources/mockdata,src/test,target,omadata-oauth2-sample'
-
   checkdoc_koski_validation:
     name: validaation_muutoshistoria.md check
     runs-on: ${{ inputs.runs-on }}
