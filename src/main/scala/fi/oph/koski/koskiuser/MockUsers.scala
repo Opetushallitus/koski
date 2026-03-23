@@ -425,16 +425,6 @@ object MockUsers {
     )))
   )
 
-  val kielitutkintoKatselija = KoskiMockUser(
-    "kielitutkintokatselija",
-    "kielitutkintokatselija",
-    "1.2.246.562.24.99999997474",
-    Seq(OrganisaatioJaKäyttöoikeudet(Opetushallitus.organisaatioOid, List(
-      PalveluJaOikeus("KOSKI", GLOBAALI_LUKU_KIELITUTKINTO),
-      PalveluJaOikeus("KOSKI", OPHKATSELIJA),
-    )))
-  )
-
   val kelaSuppeatOikeudet = KoskiMockUser(
     "Kela",
     "Suppea",
@@ -768,7 +758,6 @@ object MockUsers {
     jyväskylänNormaalikoulunPalvelukäyttäjä,
     jyväskylänYliopistonVastuukäyttäjä,
     viranomainenGlobaaliKatselija,
-    kielitutkintoKatselija,
     kelaSuppeatOikeudet,
     kelaLaajatOikeudet,
     perusopetusViranomainen,

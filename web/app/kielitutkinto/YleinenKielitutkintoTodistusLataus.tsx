@@ -93,9 +93,10 @@ export const YleinenKielitutkintoTodistusLataus: React.FC<
 > = ({ opiskeluoikeusOid }) => {
   const user = useVirkailijaUser()
   const hasPääkäyttäjäAccess = user?.hasPääkäyttäjäAccess
-  const hasKielitutkintoViewerAccess = user?.hasKielitutkintoViewerAccess
+  const hasYleinenKielitutkintoViewerAccess =
+    user?.hasYleinenKielitutkintoViewerAccess
   const canSelectPdfTemplate =
-    hasPääkäyttäjäAccess || hasKielitutkintoViewerAccess
+    hasPääkäyttäjäAccess || hasYleinenKielitutkintoViewerAccess
 
   const [language, setLanguage] = useState<TodistusLanguage>('fi')
   const [pdfTemplate, setPdfTemplate] =

@@ -6,16 +6,24 @@ import fi.oph.koski.db.{OpiskeluoikeusRow, RaportointiGenerointiDatabaseConfig}
 import fi.oph.koski.henkilo.OppijanumeroRekisteriClientRetryStrategy
 import fi.oph.koski.koskiuser.KoskiSpecificSession
 import fi.oph.koski.log.Logging
+import fi.oph.koski.schedule.WorkerLeaseElector
 import rx.lang.scala.schedulers.NewThreadScheduler
 import rx.lang.scala.{Observable, Scheduler}
 
-import java.time.ZonedDateTime
+import java.time.{Duration, ZonedDateTime}
 import scala.concurrent.duration.{DurationInt, FiniteDuration}
 import scala.language.postfixOps
 
 class RaportointikantaService(application: KoskiApplication) extends Logging {
 
-  lazy val ecsMetadata: ECSMetadataClient = new ECSMetadataClient(application.config)
+  private lazy val leaseElector = new WorkerLeaseElector(
+    repository = application.workerLeaseRepository,
+    name = raportointikantaLoaderLeaseName,
+    holderId = application.instanceId,
+    slots = 1,
+    leaseDuration = application.config.getDuration("schedule.workerLease.duration"),
+    heartbeatInterval = application.config.getDuration("schedule.workerLease.heartbeatInterval"),
+  )
 
   private val cloudWatchMetrics = CloudWatchMetricsService.apply(application.config)
   private val eventBridgeClient = KoskiEventBridgeClient.apply(application.config)
@@ -63,18 +71,27 @@ class RaportointikantaService(application: KoskiApplication) extends Logging {
   }
 
   def loadRaportointikantaAndExit(fullReload: Boolean, forceReload: Boolean, enableYtr: Boolean, incrementalLoadMaxRows: Int): Unit = {
-    val skipUnchangedData = !fullReload
-    loadRaportointikanta(
-      force = forceReload,
-      skipUnchangedData = skipUnchangedData,
-      enableYtr = enableYtr,
-      scheduler = defaultScheduler,
-      onEnd = () => {
-        logger.info(s"Ended loading raportointikanta, shutting down...")
-        shutdown
-      },
-      incrementalLoadMaxRows = incrementalLoadMaxRows
-    )
+    leaseElector.start()
+    if (!waitForLease(leaseAcquireTimeout)) {
+      logger.error(s"Raportointikannan generoinnin leasea ei saatu ${leaseAcquireTimeout} sisällä, keskeytetään.")
+      leaseElector.shutdown()
+      shutdown
+    } else {
+      logger.info("Raportointikannan generoinnin lease saatu, aloitetaan generointi.")
+      val skipUnchangedData = !fullReload
+      loadRaportointikanta(
+        force = forceReload,
+        skipUnchangedData = skipUnchangedData,
+        enableYtr = enableYtr,
+        scheduler = defaultScheduler,
+        onEnd = () => {
+          logger.info(s"Ended loading raportointikanta, shutting down...")
+          leaseElector.shutdown()
+          shutdown
+        },
+        incrementalLoadMaxRows = incrementalLoadMaxRows
+      )
+    }
   }
 
   private def loadOpiskeluoikeudet(
@@ -140,15 +157,12 @@ class RaportointikantaService(application: KoskiApplication) extends Logging {
   def isLoading: Boolean =
     loadDatabase.status.isLoading && {
       if (Environment.isServerEnvironment(application.config)) {
-        ecsMetadata.taskARN.exists { thisTask =>
-          val loaderTasks = ecsMetadata.currentlyRunningRaportointikantaLoaderInstances
-          val otherLoaderTasks = loaderTasks.filterNot(_.taskArn == thisTask)
-          val loading = otherLoaderTasks.nonEmpty
-          if (!loading) {
-            logger.warn("Raportointikannan generointi oli tietokannan mukaan käynnissä, mutta yhtäkään hengissä olevaa instanssia ei löytynyt. Tämä viittaa siihen että edellinen generointi on kaatunut tai pysäytetty kesken.")
-          }
-          loading
+        val holders = application.workerLeaseRepository.activeHolders(raportointikantaLoaderLeaseName)
+        val loading = holders.nonEmpty
+        if (!loading) {
+          logger.warn("Raportointikannan generointi oli tietokannan mukaan käynnissä, mutta yhtäkään hengissä olevaa instanssia ei löytynyt. Tämä viittaa siihen että edellinen generointi on kaatunut tai pysäytetty kesken.")
         }
+        loading
       } else {
         true
       }
@@ -270,6 +284,16 @@ class RaportointikantaService(application: KoskiApplication) extends Logging {
   private lazy val loadDatabase = new RaportointiDatabase(new RaportointiGenerointiDatabaseConfig(application.config, schema = Temp))
   private lazy val raportointiDatabase = application.raportointiGenerointiDatabase
 
+  private def waitForLease(timeout: Duration): Boolean = {
+    val deadline = System.currentTimeMillis() + timeout.toMillis
+    while (!leaseElector.hasLease && System.currentTimeMillis() < deadline) {
+      Thread.sleep(1000)
+    }
+    leaseElector.hasLease
+  }
+
+  private val raportointikantaLoaderLeaseName = "raportointikanta-loader"
+  private val leaseAcquireTimeout: Duration = Duration.ofMinutes(5)
   private val tietokantaUpload = "database-upload"
 
   protected lazy val isMockEnvironment: Boolean = Environment.isMockEnvironment(application.config)

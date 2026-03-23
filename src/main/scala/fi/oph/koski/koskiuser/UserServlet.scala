@@ -1,10 +1,10 @@
 package fi.oph.koski.koskiuser
 
-import fi.oph.koski.koskiuser.Rooli.{GLOBAALI_LUKU_KIELITUTKINTO, OPHKATSELIJA, OPHPAAKAYTTAJA}
-import fi.oph.koski.schema.Organisaatio.Oid
+import fi.oph.koski.config.KoskiApplication
+import fi.oph.koski.koskiuser.Rooli.OPHPAAKAYTTAJA
 import fi.oph.koski.servlet.{KoskiSpecificApiServlet, NoCache}
 
-class UserServlet(implicit val application: UserAuthenticationContext) extends KoskiSpecificApiServlet with KoskiCookieAndBasicAuthenticationSupport with NoCache {
+class UserServlet(implicit val application: KoskiApplication) extends KoskiSpecificApiServlet with KoskiCookieAndBasicAuthenticationSupport with NoCache {
   get("/") {
     renderEither[UserWithAccessRights](getUser.map { user =>
       koskiSessionOption.map { session => {
@@ -24,7 +24,7 @@ class UserServlet(implicit val application: UserAuthenticationContext) extends K
           hasOneKoulutustoimijaWriteAccess = session.getKoulutustoimijatWithWriteAccess.size == 1,
           hasLähdejärjestelmäkytkennänPurkaminenAccess = session.hasAnyLähdejärjestelmäkytkennänPurkaminenAccess,
           hasPääkäyttäjäAccess = session.hasRole(OPHPAAKAYTTAJA),
-          hasKielitutkintoViewerAccess = session.hasRole(GLOBAALI_LUKU_KIELITUTKINTO) && session.hasRole(OPHKATSELIJA)
+          hasYleinenKielitutkintoViewerAccess = application.todistusService.hasYleinenKielitutkintoViewerRole(session)
         )
       }
       }.getOrElse(UserWithAccessRights(user.name, user.oid))
@@ -48,5 +48,5 @@ case class UserWithAccessRights(
   hasOneKoulutustoimijaWriteAccess: Boolean = false,
   hasLähdejärjestelmäkytkennänPurkaminenAccess: Boolean = false,
   hasPääkäyttäjäAccess: Boolean = false,
-  hasKielitutkintoViewerAccess: Boolean = false
+  hasYleinenKielitutkintoViewerAccess: Boolean = false
 )

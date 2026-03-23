@@ -501,7 +501,7 @@ class TodistusKayttoOikeudetSpec extends TodistusSpecHelpers {
   }
 
 
-  "Kielitutkinto katselija (GLOBAALI_LUKU_KIELITUTKINTO + OPHKATSELIJA)" - {
+  "Yleinen kielitutkinto katselija (KIELITUTKINTO__YLEINENKIELITUTKINTO + OPHKATSELIJA)" - {
     "voi generoida digitaalisen todistuksen kielitutkinnon opiskeluoikeudesta" in {
       val templateVariant = "fi"
       val oppijaOid = KoskiSpecificMockOppijat.kielitutkinnonSuorittaja.oid
@@ -510,7 +510,7 @@ class TodistusKayttoOikeudetSpec extends TodistusSpecHelpers {
       val req = TodistusGenerateRequest(opiskeluoikeusOid, templateVariant)
 
       withoutRunningSchedulers {
-        get(s"api/todistus/generate/${req.toPathParams}", headers = authHeaders(MockUsers.kielitutkintoKatselija) ++ jsonContent) {
+        get(s"api/todistus/generate/${req.toPathParams}", headers = authHeaders(MockUsers.yleisenKielitutkinnonKäyttäjä) ++ jsonContent) {
           verifyResponseStatusOk()
           val todistusJob = parsedResponse
           todistusJob.state should equal(TodistusState.QUEUED)
@@ -528,7 +528,7 @@ class TodistusKayttoOikeudetSpec extends TodistusSpecHelpers {
       val req = TodistusGenerateRequest(opiskeluoikeusOid, templateVariant)
 
       withoutRunningSchedulers {
-        get(s"api/todistus/generate/${req.toPathParams}", headers = authHeaders(MockUsers.kielitutkintoKatselija) ++ jsonContent) {
+        get(s"api/todistus/generate/${req.toPathParams}", headers = authHeaders(MockUsers.yleisenKielitutkinnonKäyttäjä) ++ jsonContent) {
           verifyResponseStatusOk()
           val todistusJob = parsedResponse
           todistusJob.state should equal(TodistusState.QUEUED)
@@ -545,10 +545,10 @@ class TodistusKayttoOikeudetSpec extends TodistusSpecHelpers {
       val req = TodistusGenerateRequest(opiskeluoikeusOid, templateVariant)
 
       withoutRunningSchedulers {
-        get(s"api/todistus/generate/${req.toPathParams}", headers = authHeaders(MockUsers.kielitutkintoKatselija) ++ jsonContent) {
+        get(s"api/todistus/generate/${req.toPathParams}", headers = authHeaders(MockUsers.yleisenKielitutkinnonKäyttäjä) ++ jsonContent) {
           val todistusJob = parsedResponse
 
-          get(s"api/todistus/status/${todistusJob.id}", headers = authHeaders(MockUsers.kielitutkintoKatselija) ++ jsonContent) {
+          get(s"api/todistus/status/${todistusJob.id}", headers = authHeaders(MockUsers.yleisenKielitutkinnonKäyttäjä) ++ jsonContent) {
             verifyResponseStatusOk()
             val status = parsedResponse
             status.id should equal(todistusJob.id)
@@ -566,10 +566,10 @@ class TodistusKayttoOikeudetSpec extends TodistusSpecHelpers {
       val req = TodistusGenerateRequest(opiskeluoikeusOid, templateVariant)
 
       withoutRunningSchedulers {
-        get(s"api/todistus/generate/${req.toPathParams}", headers = authHeaders(MockUsers.kielitutkintoKatselija) ++ jsonContent) {
+        get(s"api/todistus/generate/${req.toPathParams}", headers = authHeaders(MockUsers.yleisenKielitutkinnonKäyttäjä) ++ jsonContent) {
           val todistusJob = parsedResponse
 
-          get(s"api/todistus/status/${todistusJob.id}", headers = authHeaders(MockUsers.kielitutkintoKatselija) ++ jsonContent) {
+          get(s"api/todistus/status/${todistusJob.id}", headers = authHeaders(MockUsers.yleisenKielitutkinnonKäyttäjä) ++ jsonContent) {
             verifyResponseStatusOk()
             val status = parsedResponse
             status.id should equal(todistusJob.id)
@@ -586,15 +586,15 @@ class TodistusKayttoOikeudetSpec extends TodistusSpecHelpers {
 
       val req = TodistusGenerateRequest(opiskeluoikeusOid, templateVariant)
 
-      get(s"api/todistus/generate/${req.toPathParams}", headers = authHeaders(MockUsers.kielitutkintoKatselija) ++ jsonContent) {
+      get(s"api/todistus/generate/${req.toPathParams}", headers = authHeaders(MockUsers.yleisenKielitutkinnonKäyttäjä) ++ jsonContent) {
         val todistusJob = parsedResponse
 
         // Wait for completion
-        val completedJob = waitForCompletionAsUser(todistusJob.id, MockUsers.kielitutkintoKatselija)
+        val completedJob = waitForCompletionAsUser(todistusJob.id, MockUsers.yleisenKielitutkinnonKäyttäjä)
         completedJob.state should equal(TodistusState.COMPLETED)
 
         // Download the certificate
-        get(s"todistus/download/${todistusJob.id}", headers = authHeaders(MockUsers.kielitutkintoKatselija)) {
+        get(s"todistus/download/${todistusJob.id}", headers = authHeaders(MockUsers.yleisenKielitutkinnonKäyttäjä)) {
           verifyResponseStatusOk()
           response.header("Content-Type") should include("application/pdf")
         }
@@ -608,15 +608,15 @@ class TodistusKayttoOikeudetSpec extends TodistusSpecHelpers {
 
       val req = TodistusGenerateRequest(opiskeluoikeusOid, templateVariant)
 
-      get(s"api/todistus/generate/${req.toPathParams}", headers = authHeaders(MockUsers.kielitutkintoKatselija) ++ jsonContent) {
+      get(s"api/todistus/generate/${req.toPathParams}", headers = authHeaders(MockUsers.yleisenKielitutkinnonKäyttäjä) ++ jsonContent) {
         val todistusJob = parsedResponse
 
         // Wait for completion
-        val completedJob = waitForCompletionAsUser(todistusJob.id, MockUsers.kielitutkintoKatselija)
+        val completedJob = waitForCompletionAsUser(todistusJob.id, MockUsers.yleisenKielitutkinnonKäyttäjä)
         completedJob.state should equal(TodistusState.COMPLETED)
 
         // Download the certificate
-        get(s"todistus/download/${todistusJob.id}", headers = authHeaders(MockUsers.kielitutkintoKatselija)) {
+        get(s"todistus/download/${todistusJob.id}", headers = authHeaders(MockUsers.yleisenKielitutkinnonKäyttäjä)) {
           verifyResponseStatusOk()
           response.header("Content-Type") should include("application/pdf")
         }
@@ -634,7 +634,7 @@ class TodistusKayttoOikeudetSpec extends TodistusSpecHelpers {
       val req = TodistusGenerateRequest(muidenOpintojenOpiskeluoikeusOid, templateVariant)
 
       withoutRunningSchedulers {
-        get(s"api/todistus/generate/${req.toPathParams}", headers = authHeaders(MockUsers.kielitutkintoKatselija) ++ jsonContent) {
+        get(s"api/todistus/generate/${req.toPathParams}", headers = authHeaders(MockUsers.yleisenKielitutkinnonKäyttäjä) ++ jsonContent) {
           verifyResponseStatus(404)
         }
       }
@@ -652,7 +652,7 @@ class TodistusKayttoOikeudetSpec extends TodistusSpecHelpers {
         // Kansalainen luo todistuksen
         addGenerateJobSuccessfully(req, kielitutkinnonSuorittajaHetu) { todistusJob =>
           // Kielitutkinto katselija pystyy hakemaan statuksen
-          get(s"api/todistus/status/${todistusJob.id}", headers = authHeaders(MockUsers.kielitutkintoKatselija) ++ jsonContent) {
+          get(s"api/todistus/status/${todistusJob.id}", headers = authHeaders(MockUsers.yleisenKielitutkinnonKäyttäjä) ++ jsonContent) {
             verifyResponseStatusOk()
             val status = parsedResponse
             status.id should equal(todistusJob.id)
@@ -668,14 +668,14 @@ class TodistusKayttoOikeudetSpec extends TodistusSpecHelpers {
 
       val req = TodistusGenerateRequest(opiskeluoikeusOid, templateVariant)
 
-      get(s"api/todistus/generate/${req.toPathParams}", headers = authHeaders(MockUsers.kielitutkintoKatselija) ++ jsonContent) {
+      get(s"api/todistus/generate/${req.toPathParams}", headers = authHeaders(MockUsers.yleisenKielitutkinnonKäyttäjä) ++ jsonContent) {
         val todistusJob = parsedResponse
 
-        val completedJob = waitForCompletionAsUser(todistusJob.id, MockUsers.kielitutkintoKatselija)
+        val completedJob = waitForCompletionAsUser(todistusJob.id, MockUsers.yleisenKielitutkinnonKäyttäjä)
         completedJob.state should equal(TodistusState.COMPLETED)
 
         // Try to use presigned URL endpoint - should be forbidden
-        get(s"todistus/download/presigned/${todistusJob.id}", headers = authHeaders(MockUsers.kielitutkintoKatselija)) {
+        get(s"todistus/download/presigned/${todistusJob.id}", headers = authHeaders(MockUsers.yleisenKielitutkinnonKäyttäjä)) {
           verifyResponseStatus(403)
         }
       }
@@ -686,7 +686,7 @@ class TodistusKayttoOikeudetSpec extends TodistusSpecHelpers {
       val oppijaOid = KoskiSpecificMockOppijat.kielitutkinnonSuorittaja.oid
       val opiskeluoikeusOid = getVahvistettuKielitutkinnonOpiskeluoikeus(oppijaOid).flatMap(_.oid).get
 
-      get(s"todistus/preview/$templateVariant/$opiskeluoikeusOid", headers = authHeaders(MockUsers.kielitutkintoKatselija)) {
+      get(s"todistus/preview/$templateVariant/$opiskeluoikeusOid", headers = authHeaders(MockUsers.yleisenKielitutkinnonKäyttäjä)) {
         verifyResponseStatus(403)
       }
     }

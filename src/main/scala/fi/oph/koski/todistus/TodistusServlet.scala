@@ -2,9 +2,9 @@ package fi.oph.koski.todistus
 
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
-import fi.oph.koski.koskiuser.Rooli.{GLOBAALI_LUKU_KIELITUTKINTO, OPHKATSELIJA, OPHPAAKAYTTAJA}
-import fi.oph.koski.koskiuser.{HasKoskiSpecificSession, KoskiCookieAndBasicAuthenticationSupport, KoskiSpecificSession, UserLanguage}
-import fi.oph.koski.log.KoskiOperation.{TODISTUKSEN_ESIKATSELU, TODISTUKSEN_LATAAMINEN, KoskiOperation}
+import fi.oph.koski.koskiuser.Rooli.OPHPAAKAYTTAJA
+import fi.oph.koski.koskiuser.{HasKoskiSpecificSession, KoskiCookieAndBasicAuthenticationSupport, KoskiSpecificSession, Rooli, UserLanguage}
+import fi.oph.koski.log.KoskiOperation.{KoskiOperation, TODISTUKSEN_ESIKATSELU, TODISTUKSEN_LATAAMINEN}
 import fi.oph.koski.log.{AuditLog, AuditLogMessage, KoskiAuditLogMessage, KoskiAuditLogMessageField, Logging}
 import fi.oph.koski.schema.Opiskeluoikeus
 import org.scalatra.ScalatraServlet
@@ -18,13 +18,9 @@ trait TodistusServlet extends ScalatraServlet with HasKoskiSpecificSession with 
 
   val service: TodistusService = application.todistusService
 
-  protected def hasKielitutkintoViewerRole(implicit user: KoskiSpecificSession): Boolean = {
-    user.hasRole(GLOBAALI_LUKU_KIELITUTKINTO) && user.hasRole(OPHKATSELIJA)
-  }
-
   protected def requireKansalainenOrTodistuksiaLataavaOphKäyttäjä: Unit = {
     getUser match {
-      case Right(user) if user.kansalainen || session.hasRole(OPHPAAKAYTTAJA) || hasKielitutkintoViewerRole(session) => // OK
+      case Right(user) if user.kansalainen || session.hasRole(OPHPAAKAYTTAJA) || service.hasYleinenKielitutkintoViewerRole(session) => // OK
       case Right(_) => haltWithStatus(KoskiErrorCategory.forbidden("Sallittu vain kansalaiselle tai OPH-pääkäyttäjälle"))
       case Left(error) => haltWithStatus(error)
     }
