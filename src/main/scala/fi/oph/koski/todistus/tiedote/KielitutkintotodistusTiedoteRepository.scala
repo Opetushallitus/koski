@@ -77,7 +77,7 @@ class KielitutkintotodistusTiedoteRepository(val db: DB, val workerId: String, c
     runDbSync(sql"""
       SELECT *
       FROM kielitutkintotodistus_tiedote_job
-      WHERE attempts < $maxAttempts
+      WHERE attempts <= $maxAttempts
         AND (
           state = ${KielitutkintotodistusTiedoteState.ERROR}
           OR (state = ${KielitutkintotodistusTiedoteState.WAITING_FOR_TODISTUS}

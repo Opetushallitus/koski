@@ -210,7 +210,7 @@ class KielitutkintotodistusTiedoteWorkflowSpec extends KielitutkintotodistusTied
       }
     }
 
-    "Lähettää tiedotteen ilman todistusta ja yhteystietoja kun kitu palauttaa 404" in {
+    "Asettaa tiedotteen virhetilaan kun kitu palauttaa 404 ensimmäisellä yrityksellä" in {
       withoutRunningTiedoteScheduler {
         val oppijaOid = KoskiSpecificMockOppijat.kielitutkinnonSuorittaja.oid
         val opiskeluoikeusOid = getVahvistettuKielitutkinnonOpiskeluoikeusOid(oppijaOid).get
@@ -218,6 +218,27 @@ class KielitutkintotodistusTiedoteWorkflowSpec extends KielitutkintotodistusTied
         mockKituClient.respondWithHttpStatus(404)
 
         app.kielitutkintotodistusTiedoteService.processAll()
+
+        mockTiedotuspalveluClient.sentNotifications.find(_.oppijanumero == oppijaOid) shouldBe None
+
+        val job = app.kielitutkintotodistusTiedoteRepository.findAll(100, 0).find(_.opiskeluoikeusOid == opiskeluoikeusOid)
+        job shouldBe defined
+        job.get.state should equal(KielitutkintotodistusTiedoteState.ERROR)
+      }
+    }
+
+    "Lähettää tiedotteen ilman todistusta ja yhteystietoja kun kitu epäonnistuu toistuvasti" in {
+      withoutRunningTiedoteScheduler {
+        val oppijaOid = KoskiSpecificMockOppijat.kielitutkinnonSuorittaja.oid
+        val opiskeluoikeusOid = getVahvistettuKielitutkinnonOpiskeluoikeusOid(oppijaOid).get
+
+        mockKituClient.respondWithHttpStatus(404)
+
+        // Ensimmäinen yritys -> ERROR
+        app.kielitutkintotodistusTiedoteService.processAll()
+        // Uudelleenyritykset kunnes maxAttempts täyttyy
+        app.kielitutkintotodistusTiedoteService.retryAllFailed()
+        app.kielitutkintotodistusTiedoteService.retryAllFailed()
 
         val notification = mockTiedotuspalveluClient.sentNotifications.find(_.oppijanumero == oppijaOid)
         notification shouldBe defined

@@ -58,7 +58,7 @@ class KielitutkintotodistusTiedoteService(application: KoskiApplication) extends
 
     Try(repository.add(tiedoteJob)) match {
       case Success(_) =>
-        generateAndSend(tiedoteJobId, oppijaOid, opiskeluoikeusOid, s"$opiskeluoikeusOid-initial")
+        generateAndSend(tiedoteJobId, oppijaOid, opiskeluoikeusOid, s"$opiskeluoikeusOid-initial", attempt = 1)
       case Failure(e: PSQLException) if e.getSQLState == PSQLState.UNIQUE_VIOLATION.getState =>
         logger.info(s"Tiedote on jo olemassa opiskeluoikeudelle $opiskeluoikeusOid, ohitetaan")
       case Failure(e) =>
@@ -67,11 +67,21 @@ class KielitutkintotodistusTiedoteService(application: KoskiApplication) extends
     }
   }
 
-  private def generateAndSend(tiedoteJobId: String, oppijaOid: String, opiskeluoikeusOid: String, idempotencyKey: String): Unit = {
-    val examineeDetails = kituClient.getExamineeDetails(opiskeluoikeusOid) match {
+  private def generateAndSend(tiedoteJobId: String, oppijaOid: String, opiskeluoikeusOid: String, idempotencyKey: String, attempt: Int): Unit = {
+    val kituResult = kituClient.getExamineeDetails(opiskeluoikeusOid)
+
+    kituResult match {
+      case Left(err) if attempt < maxAttempts =>
+        repository.setFailed(tiedoteJobId, s"Kitu-kutsu epäonnistui: $err")
+        logger.warn(s"Yhteystietojen haku kitulta epäonnistui, yritetään myöhemmin uudelleen: tiedote=$tiedoteJobId oo=$opiskeluoikeusOid yritys=$attempt/$maxAttempts virhe=$err")
+        return
+      case _ =>
+    }
+
+    val examineeDetails = kituResult match {
       case Right(details) => Some(details)
       case Left(err) =>
-        logger.warn(s"Yhteystietojen haku kitulta epäonnistui, lähetetään tiedote ilman yhteystietoja: tiedote=$tiedoteJobId oo=$opiskeluoikeusOid virhe=$err")
+        logger.warn(s"Yhteystietojen haku kitulta epäonnistui $maxAttempts yrityksen jälkeen, lähetetään tiedote ilman yhteystietoja: tiedote=$tiedoteJobId oo=$opiskeluoikeusOid virhe=$err")
         None
     }
 
@@ -156,6 +166,6 @@ class KielitutkintotodistusTiedoteService(application: KoskiApplication) extends
 
   private def retryOne(job: KielitutkintotodistusTiedoteJob): Unit = {
     logger.info(s"Yritetään tiedotetta uudelleen: job=${job.id} yritys=${job.attempts}/$maxAttempts")
-    generateAndSend(job.id, job.oppijaOid, job.opiskeluoikeusOid, job.opiskeluoikeusOid)
+    generateAndSend(job.id, job.oppijaOid, job.opiskeluoikeusOid, job.opiskeluoikeusOid, attempt = job.attempts)
   }
 }
