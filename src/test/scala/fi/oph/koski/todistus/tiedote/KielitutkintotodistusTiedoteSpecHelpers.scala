@@ -3,7 +3,7 @@ package fi.oph.koski.todistus.tiedote
 import fi.oph.koski.api.misc.PutOpiskeluoikeusTestMethods
 import fi.oph.koski.documentation.ExamplesKielitutkinto
 import fi.oph.koski.koskiuser.{KoskiMockUser, MockUsers}
-import fi.oph.koski.schema.{KielitutkinnonOpiskeluoikeus, YleisenKielitutkinnonSuoritus}
+import fi.oph.koski.schema.{KielitutkinnonOpiskeluoikeus, Opiskeluoikeus, YleisenKielitutkinnonSuoritus}
 import fi.oph.koski.util.Wait
 import fi.oph.koski.{KoskiApplicationForTests, KoskiHttpSpec}
 import org.scalatest.freespec.AnyFreeSpec
@@ -60,9 +60,13 @@ class KielitutkintotodistusTiedoteSpecHelpers extends AnyFreeSpec with KoskiHttp
     }
 
   def getVahvistettuKielitutkinnonOpiskeluoikeusOid(oppijaOid: String): Option[String] = {
+    getVahvistettuKielitutkinnonOpiskeluoikeus(oppijaOid).flatMap(_.oid)
+  }
+
+  def getVahvistettuKielitutkinnonOpiskeluoikeus(oppijaOid: String): Option[Opiskeluoikeus] = {
     getOpiskeluoikeudet(oppijaOid).find(_.suoritukset.exists {
       case s: YleisenKielitutkinnonSuoritus if s.vahvistus.isDefined => true
       case _ => false
-    }).flatMap(_.oid)
+    })
   }
 }

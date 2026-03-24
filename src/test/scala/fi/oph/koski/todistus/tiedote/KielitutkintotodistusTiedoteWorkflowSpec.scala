@@ -252,6 +252,40 @@ class KielitutkintotodistusTiedoteWorkflowSpec extends KielitutkintotodistusTied
       }
     }
 
+    "Tallentaa todistuksen opiskeluoikeusversion tiedotejobiin" in {
+      withoutRunningTiedoteScheduler {
+        val oppijaOid = KoskiSpecificMockOppijat.kielitutkinnonSuorittaja.oid
+        val oo = getVahvistettuKielitutkinnonOpiskeluoikeus(oppijaOid).get
+        val opiskeluoikeusOid = oo.oid.get
+        val expectedVersio = oo.versionumero.get
+
+        app.kielitutkintotodistusTiedoteService.processAll()
+
+        val job = app.kielitutkintotodistusTiedoteRepository.findAll(100, 0).find(_.opiskeluoikeusOid == opiskeluoikeusOid)
+        job shouldBe defined
+        job.get.opiskeluoikeusVersio should equal(expectedVersio)
+      }
+    }
+
+    "Tallentaa opiskeluoikeusversion nollana kun todistusta ei luoda" in {
+      withoutRunningTiedoteScheduler {
+        val oppijaOid = KoskiSpecificMockOppijat.kielitutkinnonSuorittaja.oid
+        val opiskeluoikeusOid = getVahvistettuKielitutkinnonOpiskeluoikeusOid(oppijaOid).get
+
+        mockKituClient.respondWithHttpStatus(404)
+
+        // Ensimmäinen yritys -> ERROR, uudelleenyritykset kunnes maxAttempts täyttyy
+        app.kielitutkintotodistusTiedoteService.processAll()
+        app.kielitutkintotodistusTiedoteService.retryAllFailed()
+        app.kielitutkintotodistusTiedoteService.retryAllFailed()
+
+        val job = app.kielitutkintotodistusTiedoteRepository.findAll(100, 0).find(_.opiskeluoikeusOid == opiskeluoikeusOid)
+        job shouldBe defined
+        job.get.state should equal(KielitutkintotodistusTiedoteState.COMPLETED)
+        job.get.opiskeluoikeusVersio should equal(0)
+      }
+    }
+
     "Lähettää yhteystiedot tiedotuspalvelulle kun kitu-kutsu onnistuu" in {
       withoutRunningTiedoteScheduler {
         val oppijaOid = KoskiSpecificMockOppijat.kielitutkinnonSuorittaja.oid
