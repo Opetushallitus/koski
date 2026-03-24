@@ -1,0 +1,655 @@
+{
+  "id": 9548603,
+  "globalVersion": {
+    "aikaleima": 1749554156372
+  },
+  "nimi": {
+    "_id": "9549081",
+    "_tunniste": "70ee96f4-3225-4591-97f9-6a9d880ddbf4",
+    "en": "Further Vocational Qualification in the Motor Vehicles Sector",
+    "fi": "Ajoneuvoalan ammattitutkinto",
+    "sv": "Yrkesexamen inom fordonsbranschen"
+  },
+  "koulutustyyppi": "koulutustyyppi_11",
+  "toteutus": "ammatillinen",
+  "koulutukset": [
+    {
+      "nimi": {
+        "en": "Further vocational qualification in the Motor Vehicles Sector",
+        "fi": "Ajoneuvoalan ammattitutkinto",
+        "sv": "Yrkesexamen inom fordonsbranschen"
+      },
+      "koulutuskoodiArvo": "354345",
+      "koulutuskoodiUri": "koulutus_354345",
+      "koulutusalakoodi": null,
+      "opintoalakoodi": null
+    }
+  ],
+  "kielet": [
+    "fi",
+    "sv"
+  ],
+  "kuvaus": {
+    "_id": "9548613",
+    "_tunniste": "31c0f00a-6b7a-4665-97c4-d4cbbb3d4149",
+    "fi": "Tutkemuutokset"
+  },
+  "maarayskirje": {
+    "id": 9616288,
+    "url": {},
+    "liitteet": {
+      "fi": {
+        "id": "15175f6f-9432-40b2-a524-3fd9de7a5756",
+        "nimi": "Ajoneuvoalan_ammattitutkinnon_perusteet.pdf"
+      },
+      "sv": {
+        "id": "3adf6cbe-41b4-44d0-b998-8402cfb6bcae",
+        "nimi": "Grunder_för_yrkesexamen_inom_fordonsbranschen.pdf"
+      }
+    }
+  },
+  "muutosmaaraykset": [],
+  "diaarinumero": "OPH-3418-2025",
+  "voimassaoloAlkaa": 1753995600000,
+  "siirtymaPaattyy": null,
+  "voimassaoloLoppuu": null,
+  "paatospvm": 1745355600000,
+  "viimeisinJulkaisuAika": 1749554156372,
+  "luotu": 1741331945745,
+  "muokattu": 1749539658996,
+  "tila": "valmis",
+  "tyyppi": "normaali",
+  "koulutusvienti": false,
+  "korvattavatDiaarinumerot": [
+    "OPH-1361-2018"
+  ],
+  "osaamisalat": [
+    {
+      "id": 9548944,
+      "nimi": {
+        "en": "Competence area in Vehicle Repair Services",
+        "fi": "Korjaamopalvelun osaamisala",
+        "sv": "Kompetensområdet för verkstadsservice"
+      },
+      "arvo": "2357",
+      "uri": "osaamisala_2357",
+      "koodisto": "osaamisala",
+      "versio": 1
+    },
+    {
+      "id": 9548946,
+      "nimi": {
+        "en": "Competence area in Tyre Services",
+        "fi": "Rengaspalvelun osaamisala",
+        "sv": "Kompetensområdet för däckservice"
+      },
+      "arvo": "2358",
+      "uri": "osaamisala_2358",
+      "koodisto": "osaamisala",
+      "versio": 1
+    },
+    {
+      "id": 9548945,
+      "nimi": {
+        "en": "Competence area in Customer Services and Sales Work",
+        "fi": "Myynnin ja asiakaspalvelun osaamisala",
+        "sv": "Kompetensområdet för försäljning och kundservice"
+      },
+      "arvo": "2355",
+      "uri": "osaamisala_2355",
+      "koodisto": "osaamisala",
+      "versio": 1
+    },
+    {
+      "id": 9548943,
+      "nimi": {
+        "en": "Competence area in Damage Repairs",
+        "fi": "Vauriokorjauksen osaamisala",
+        "sv": "Kompetensområdet för skadereparation"
+      },
+      "arvo": "2356",
+      "uri": "osaamisala_2356",
+      "koodisto": "osaamisala",
+      "versio": 1
+    },
+    {
+      "id": 9548947,
+      "nimi": {
+        "en": "Competence area in Management",
+        "fi": "Työnjohdon osaamisala",
+        "sv": "Kompetensområdet för arbetsledning"
+      },
+      "arvo": "2359",
+      "uri": "osaamisala_2359",
+      "koodisto": "osaamisala",
+      "versio": 1
+    }
+  ],
+  "tyotehtavatJoissaVoiToimia": {
+    "_id": "9548671",
+    "en": "<p>Holders of the Further Vocational Qualification in the Motor Vehicles Sector have the vocational skills required to work in the sector according to their competence area and job description. Qualification holders are able to work independently in the work tasks of the motor vehicle sector, taking into account the legislation, decrees and orders that regulate the sector. They carry out their work carefully and professionally. They know how to plan and organise the activities in their area of responsibility in a quality-conscious and cost-effective manner and comply with labour legislation, the regulations concerning occupational safety and the environment and other instructions concerning the quality management system and the work environment. Qualification holders have an overall view of the motor vehicles sector, the opportunities it offers and their own role in carrying out work tasks in the sector.</p><p>The following competence areas can be chosen in the Further Vocational Qualification in the Motor Vehicles Sector: Competence area in Customer Services and Sales Work, Competence area in Vehicle Repair Services; Competence area in Damage Repairs, Competence area in Management or Competence area in Tyre Services.</p><p>Based on their job description, students choose the required units from the compulsory and optional units of the competence area so that the competence points total at least 150. Qualification holders are able to work in tasks that match their job description in the motor vehicle sector, developing their own vocational skills and the operation of their organisation.</p>",
+    "fi": "<p>Tutkinnon suorittanut voi valintojensa mukaisesti toimia ajoneuvoalan myynti-, asiakaspalvelu-, maalaus-, korjaus-, huolto- ja vianhakutehtävissä, rengaspalvelun tehtävissä tai työnjohdollisissa tehtävissä ajoneuvo- tai konekorjaamolla, rengasliikkeessä, varaosaliikkeessä, auto- tai konemyymälässä tai muissa alan työkohteissa ja toimipisteissä.</p><p>Tutkinnon suorittanut voi toimia työntekijänä, toimihenkilönä, yrittäjänä tai itsenäisenä ammatinharjoittajana ajoneuvoalan organisaatioissa ja yrityksissä.</p>",
+    "sv": "<p>Beroende på vilka val de gjort kan de arbeta med försäljning, kundservice, målning, reparation, underhåll och felsökning inom fordonsbranschen eller arbeta inom däckservice eller vara verksam som arbetsledare i en fordons- eller maskinverkstad, i en däckaffär, reservdelsaffär, bil- eller maskinaffär eller på andra arbetsplatser och verksamhetsställen inom branschen.</p><p>De kan arbeta som arbetstagare, tjänstemän företagare eller egenföretagare i organisationer och företag inom fordonsbranschen.</p>"
+  },
+  "suorittaneenOsaaminen": {
+    "_id": "9548670",
+    "en": "<p>Holders of the Further Vocational Qualification in the Motor Vehicles Sector have the vocational skills required to work in the sector according to their competence area and job description. Qualification holders are able to work independently in the work tasks of the motor vehicle sector, taking into account the legislation, decrees and orders that regulate the sector. They carry out their work carefully and professionally. They know how to plan and organise the activities in their area of responsibility in a quality-conscious and cost-effective manner and comply with labour legislation, the regulations concerning occupational safety and the environment and other instructions concerning the quality management system and the work environment. Qualification holders have an overall view of the motor vehicles sector, the opportunities it offers and their own role in carrying out work tasks in the sector.</p><p>The following competence areas can be chosen in the Further Vocational Qualification in the Motor Vehicles Sector: Competence area in Customer Services and Sales Work, Competence area in Vehicle Repair Services; Competence area in Damage Repairs, Competence area in Management or Competence area in Tyre Services.</p><p>Based on their job description, students choose the required units from the compulsory and optional units of the competence area so that the competence points total at least 150. Qualification holders are able to work in tasks that match their job description in the motor vehicle sector, developing their own vocational skills and the operation of their organisation.</p>",
+    "fi": "<p>Ajoneuvoalan ammattitutkinnon suorittaneella on ajoneuvoalan tehtävässä edellytettävä ammattitaito osaamisalansa ja tehtäväkuvansa mukaisesti. Tutkinnon suorittanut osaa toimia ajoneuvoalan tehtävissä itsenäisesti ottamalla huomioon työssään ajoneuvoalaa säätelevät lait, asetukset ja määräykset. Työssään hän toimii huolellisesti ja ammattitaitoisesti. Hän osaa suunnitella ja organisoida oman vastuualueensa toimintaa laadukkaasti ja kustannustehokkaasti ja noudattaa työlainsäädäntö-, työturvallisuus- ja ympäristömääräyksiä sekä laatujärjestelmän ja työympäristön muita ohjeistuksia. Tutkinnon suorittaneella on kokonaisnäkemys ajoneuvoalasta ja sen mahdollisuuksista sekä omasta roolistaan ajoneuvoalan työtehtävien toteuttajana.</p><p>Ajoneuvoalan ammattitutkinnossa on valittavissa seuraavat osaamisalat: myynnin ja asiakaspalvelun osaamisala, korjaamopalvelun osaamisala, vauriokorjauksen osaamisala, työnjohdon osaamisala tai rengaspalvelun osaamisala.</p><p>Tutkinnon suorittaja valitsee suoritettavaksi toimenkuvansa mukaisesti tarvittavat tutkinnonosat osaamisalan pakollisista ja valinnaisista tutkinnonosita niin, että tutkinnon osaamispistemäärä täydentyy vähintään 150 osaamispisteeseen.Tutkinnon suorittanut osaa toimia toimenkuvansa mukaisissa ajoneuvoalan tehtävissä kehittäen omaa ammattitaitoaan ja organisaationsa toimintaa.</p>",
+    "sv": "<p>De som har avlagt yrkesexamen inom fordonsbranschen har den yrkesskicklighet som krävs i en uppgift inom fordonsbranschen enligt kompetensområde och uppgiftsbeskrivning. De kan utföra uppgifter inom fordonsbranschen självständigt och beakta de lagar, förordningar och föreskrifter som gäller fordonsbranschen. De arbetarnoggrant och professionellt. De kan planera och organisera verksamheten inom sitt ansvarsområde på ett kvalitativt och kostnadseffektivt sätt och beakta arbetslagstiftningen, föreskrifterna om arbetarskydd och miljö samt kvalitetssystemet och andra instruktioner som gäller arbetsmiljön. De har en helhetssyn på fordonsbranschen och dess möjligheter samt på sin egen roll när det gäller att utföra arbetsuppgifter inom fordonsbranschen.</p><p>I yrkesexamen inom fordonsbranschen kan man välja mellan följande kompetensområden: kompetensområdet för försäljning och kundservice, kompetensområdet för verkstadsservice, kompetensområdet för skadereparation, kompetensområdet för arbetsledning och kompetensområdet för däckservice.</p><p>De som avlägger examen väljer bland kompetensområdets obligatoriska och valbara examensdelar sådana delar som behövs med tanke på den egna uppgiftsbeskrivningen, och så många delar att antalet kompetenspoäng blir minst 150. Den som avlagt examen kan arbeta i uppgifter inom fordonsbranschen enligt arbetsskrivning genom att utveckla sin egen yrkesskicklighet och verksamhet i organisationen.</p>"
+  },
+  "tutkintonimikkeet": [
+    {
+      "id": 9548950,
+      "_peruste": "9548603",
+      "tutkinnonOsaUri": null,
+      "tutkinnonOsaArvo": null,
+      "osaamisalaUri": null,
+      "osaamisalaArvo": null,
+      "tutkintonimikeUri": "tutkintonimikkeet_20051",
+      "tutkintonimikeArvo": "20051",
+      "nimi": {
+        "en": "Vehicle Painter",
+        "fi": "Ajoneuvomaalari",
+        "sv": "Fordonslackerare"
+      }
+    },
+    {
+      "id": 9548952,
+      "_peruste": "9548603",
+      "tutkinnonOsaUri": null,
+      "tutkinnonOsaArvo": null,
+      "osaamisalaUri": null,
+      "osaamisalaArvo": null,
+      "tutkintonimikeUri": "tutkintonimikkeet_20052",
+      "tutkintonimikeArvo": "20052",
+      "nimi": {
+        "en": "Auto body repairer",
+        "fi": "Korikorjaaja",
+        "sv": "Karosserireparatör"
+      }
+    },
+    {
+      "id": 9548954,
+      "_peruste": "9548603",
+      "tutkinnonOsaUri": null,
+      "tutkinnonOsaArvo": null,
+      "osaamisalaUri": null,
+      "osaamisalaArvo": null,
+      "tutkintonimikeUri": "tutkintonimikkeet_20053",
+      "tutkintonimikeArvo": "20053",
+      "nimi": {
+        "en": "Car seller ",
+        "fi": "Automyyjä (AT)",
+        "sv": "Bilförsäljare (YE)"
+      }
+    },
+    {
+      "id": 9548956,
+      "_peruste": "9548603",
+      "tutkinnonOsaUri": null,
+      "tutkinnonOsaArvo": null,
+      "osaamisalaUri": null,
+      "osaamisalaArvo": null,
+      "tutkintonimikeUri": "tutkintonimikkeet_20054",
+      "tutkintonimikeArvo": "20054",
+      "nimi": {
+        "en": "Machine seller",
+        "fi": "Konemyyjä",
+        "sv": "Maskinförsäljare"
+      }
+    },
+    {
+      "id": 9548958,
+      "_peruste": "9548603",
+      "tutkinnonOsaUri": null,
+      "tutkinnonOsaArvo": null,
+      "osaamisalaUri": null,
+      "osaamisalaArvo": null,
+      "tutkintonimikeUri": "tutkintonimikkeet_20055",
+      "tutkintonimikeArvo": "20055",
+      "nimi": {
+        "en": "Spare parts seller ",
+        "fi": "Varaosamyyjä (AT)",
+        "sv": "Reservdelsförsäljare (YE)"
+      }
+    },
+    {
+      "id": 9548960,
+      "_peruste": "9548603",
+      "tutkinnonOsaUri": null,
+      "tutkinnonOsaArvo": null,
+      "osaamisalaUri": null,
+      "osaamisalaArvo": null,
+      "tutkintonimikeUri": "tutkintonimikkeet_20056",
+      "tutkintonimikeArvo": "20056",
+      "nimi": {
+        "en": "Repair shop service seller",
+        "fi": "Korjaamopalvelumyyjä",
+        "sv": "Försäljare av verkstadsservice"
+      }
+    }
+  ],
+  "perusteenAikataulut": [
+    {
+      "id": 9548615,
+      "peruste": {
+        "id": 9548603,
+        "nimi": {
+          "_id": "9549081",
+          "_tunniste": "70ee96f4-3225-4591-97f9-6a9d880ddbf4",
+          "en": "Further Vocational Qualification in the Motor Vehicles Sector",
+          "fi": "Ajoneuvoalan ammattitutkinto",
+          "sv": "Yrkesexamen inom fordonsbranschen"
+        },
+        "tila": "valmis",
+        "tyyppi": "normaali",
+        "koulutustyyppi": "koulutustyyppi_11",
+        "esikatseltavissa": false,
+        "voimassaoloAlkaa": 1753995600000,
+        "voimassaoloLoppuu": null,
+        "_perusteprojekti": "9548611",
+        "julkisivuJarjestysNro": 0,
+        "piilotaJulkisivulta": false,
+        "suoritustavat": [
+          {
+            "suoritustapakoodi": "reformi",
+            "laajuusYksikko": "OSAAMISPISTE"
+          }
+        ]
+      },
+      "tavoite": {
+        "_id": "9548616",
+        "_tunniste": "418c36a4-a670-4d28-ab96-f150f146bc63",
+        "fi": "Perusteen arvioitu julkaisupäivä"
+      },
+      "tapahtuma": "arvioitujulkaisupaiva",
+      "tapahtumapaiva": 1753995600000,
+      "julkinen": false
+    },
+    {
+      "id": 9548619,
+      "peruste": {
+        "id": 9548603,
+        "nimi": {
+          "_id": "9549081",
+          "_tunniste": "70ee96f4-3225-4591-97f9-6a9d880ddbf4",
+          "en": "Further Vocational Qualification in the Motor Vehicles Sector",
+          "fi": "Ajoneuvoalan ammattitutkinto",
+          "sv": "Yrkesexamen inom fordonsbranschen"
+        },
+        "tila": "valmis",
+        "tyyppi": "normaali",
+        "koulutustyyppi": "koulutustyyppi_11",
+        "esikatseltavissa": false,
+        "voimassaoloAlkaa": 1753995600000,
+        "voimassaoloLoppuu": null,
+        "_perusteprojekti": "9548611",
+        "julkisivuJarjestysNro": 0,
+        "piilotaJulkisivulta": false,
+        "suoritustavat": [
+          {
+            "suoritustapakoodi": "reformi",
+            "laajuusYksikko": "OSAAMISPISTE"
+          }
+        ]
+      },
+      "tavoite": {
+        "_id": "9548620",
+        "_tunniste": "05a0a2dc-f426-4bbc-969a-ede4987fa327",
+        "fi": "Peruste astuu voimaan"
+      },
+      "tapahtuma": "julkaisu",
+      "tapahtumapaiva": 1753995600000,
+      "julkinen": true
+    },
+    {
+      "id": 9548617,
+      "peruste": {
+        "id": 9548603,
+        "nimi": {
+          "_id": "9549081",
+          "_tunniste": "70ee96f4-3225-4591-97f9-6a9d880ddbf4",
+          "en": "Further Vocational Qualification in the Motor Vehicles Sector",
+          "fi": "Ajoneuvoalan ammattitutkinto",
+          "sv": "Yrkesexamen inom fordonsbranschen"
+        },
+        "tila": "valmis",
+        "tyyppi": "normaali",
+        "koulutustyyppi": "koulutustyyppi_11",
+        "esikatseltavissa": false,
+        "voimassaoloAlkaa": 1753995600000,
+        "voimassaoloLoppuu": null,
+        "_perusteprojekti": "9548611",
+        "julkisivuJarjestysNro": 0,
+        "piilotaJulkisivulta": false,
+        "suoritustavat": [
+          {
+            "suoritustapakoodi": "reformi",
+            "laajuusYksikko": "OSAAMISPISTE"
+          }
+        ]
+      },
+      "tavoite": {
+        "_id": "9548618",
+        "_tunniste": "7d86726d-ada4-4f40-8f51-3ce9a558de07",
+        "fi": "Peruste luotu"
+      },
+      "tapahtuma": "luominen",
+      "tapahtumapaiva": 1741331802365,
+      "julkinen": false
+    }
+  ],
+  "poikkeamismaaraysTarkennus": null,
+  "poikkeamismaaraysTyyppi": "ei_tarvita_ohjetta",
+  "opasTyyppi": null,
+  "tietoapalvelustaKuvaus": null,
+  "suoritustavat": [
+    {
+      "suoritustapakoodi": "reformi",
+      "laajuusYksikko": "OSAAMISPISTE",
+      "rakenne": {
+        "kuvaus": {
+          "_id": "9549005",
+          "_tunniste": "3637e548-1412-4d6b-b021-8396746a1d23",
+          "en": "<p>The scope of the Further Vocational Qualification in the Motor Vehicles Sector is 150 competence points. The qualification has five competence areas, which are: Competence area in Customer Services and Sales Work, Car Salesperson, Machinery Salesperson, Parts Salesperson and Repair Salesperson, Competence area in Damage Repairs, Vehicle Painter and Vehicle Body Repairer; Competence area in Vehicle Repair Services; Competence area in Management and Competence area in Tyre Services.</p><p>Holders of the Further Vocational Qualification in the Motor Vehicles Sector have the vocational skills required to work in the sector according to their competence area and job description. Qualification holders are able to work independently in the work tasks of the motor vehicle sector, taking into account the legislation, decrees and orders that regulate the sector. They carry out their work carefully and professionally. They know how to plan and organise the activities in their area of responsibility in a quality-conscious and cost-effective manner and comply with labour legislation, the regulations concerning occupational safety and the environment and other instructions concerning the quality management system and the work environment. Qualification holders have an overall view of the motor vehicles sector, the opportunities it offers and their own role in carrying out work tasks in the sector.</p><p>Candidates choose the required units from the compulsory and optional units of the competence area according to their job description so that the competence points total at least 150.</p>",
+          "fi": "<p>Ajoneuvoalan ammattitutkinnon laajuus on 150 osaamispistettä. Tutkinto sisältää viisi osaamisalaa, jotka ovat: Myynnin ja asiakaspalvelun osaamisala, automyyjä, konemyyjä, varaosamyyjä ja korjaamopalvelumyyjä; Vauriokorjauksen osaamisala, Ajoneuvomaalari ja korikorjaaja; Korjaamopalvelun osaamisala; Työnjohdon osaamisala sekä Rengaspalvelun osaamisala.</p><p>Ajoneuvoalan ammattitutkinnon suorittaneella on ajoneuvoalan tehtävässä edellytettävä ammattitaito osaamisalansa ja tehtäväkuvansa mukaisesti. Tutkinnon suorittanut osaa toimia ajoneuvoalan tehtävissä itsenäisesti ottamalla huomioon työssään ajoneuvoalaa säätelevät lait, asetukset ja määräykset. Työssään hän toimii huolellisesti ja ammattitaitoisesti. Hän osaa suunnitella ja organisoida oman vastuualueensa toimintaa laadukkaasti ja kustannustehokkaasti ja noudattaa työlainsäädäntö-, työturvallisuus- ja ympäristömääräyksiä sekä laatujärjestelmän ja työympäristön muita ohjeistuksia. Tutkinnon suorittaneella on kokonaisnäkemys ajoneuvoalasta ja sen mahdollisuuksista sekä omasta roolistaan ajoneuvoalan työtehtävien toteuttajana.</p><p>Tutkinnon suorittaja valitsee suoritettavaksi toimenkuvansa mukaisesti tarvittavat tutkinnonosat osaamisalan pakollisista ja valinnaisista tutkinnonosita niin, että tutkinnon osaamispistemäärä täydentyy vähintään 150 osaamispisteeseen.</p>",
+          "sv": "<p>Yrkesexamen inom fordonsbranschen omfattar 150 kompetenspoäng. I examen finns följande fem kompetensområden: Kompetensområdet för försäljning och kundservice, bilförsäljare, maskinförsäljare, reservdelsförsäljare och försäljare av verkstadsservice; Kompetensområdet för skadereparation, fordonslackerare och karosserireparatör; Kompetensområdet för verkstadsservice; Kompetensområdet för arbetsledning samt Kompetensområdet för däckservice.</p><p>Den som avlagt yrkesexamen inom fordonsbranschen har ett kunnande i arbetsuppgiften enligt kompetensområde och arbetsuppgift. Hen kan arbeta i uppgifter inom fordonsbranschen självständigt genom att följa de lagar, förordningar och bestämmelser som reglerar fordonsbranschen. Hen arbetar noggrant och professionellt. Hen kan planera och organisera verksamheten inom sitt ansvarsområde på ett kvalitativt och kostnadseffektivt sätt och följa bestämmelser inom arbetslagstiftning, arbetssäkerhet och miljö samt anvisningar för kvalitetsledning och arbetsmiljö. Hen har en helhetsuppfattning om fordonsbranschen och dess möjligheter samt sin egen roll som genomförare av arbetsuppgifter inom fordonsbranschen.</p><p>Den som avlägger examen väljer utifrån uppgiftsbeskrivningen de examensdelar som behövs av de obligatoriska och valbara examensdelarna så att examens kompetenspoäng utgör minst 150.</p>"
+        },
+        "vieras": null,
+        "tunniste": "71b968e7-91d7-4e33-a19d-dcff856c9c89",
+        "pakollinen": false,
+        "nimi": null,
+        "rooli": "määritelty",
+        "muodostumisSaanto": {
+          "laajuus": {
+            "minimi": 150,
+            "maksimi": 150,
+            "yksikko": null
+          },
+          "koko": null
+        },
+        "osaamisala": null,
+        "tutkintonimike": null,
+        "osat": [
+          {
+            "tunniste": "test-osa-ref",
+            "pakollinen": true,
+            "_tutkinnonOsaViite": "9990002",
+            "nimi": null
+          }
+        ],
+        "versioId": null
+      },
+      "sisalto": {
+        "id": 9548589,
+        "lapset": [
+          {
+            "id": 9548602,
+            "perusteenOsa": {
+              "id": 9548610,
+              "luotu": 1741331945871,
+              "muokattu": 1741331945871,
+              "muokkaaja": "1.2.246.562.24.93534910136",
+              "nimi": {
+                "_id": "9385430",
+                "_tunniste": "1851705e-e9de-4bc9-acc7-2ecf4ae393f3",
+                "fi": "Liite. Arvoperusta",
+                "sv": "Bilaga. Värdegrund"
+              },
+              "tila": "luonnos",
+              "teksti": {
+                "_id": "9421115",
+                "_tunniste": "5bfd94fa-3fb8-418b-8944-8c17fdf8d5d8",
+                "fi": "<p>Ammatillisen koulutuksen tavoitteena on kehittää ja uudistaa yksilöiden ammatillista osaamista, työelämää ja yhteiskuntaa. Ammatillinen koulutus antaa valmiuksia toimia ammatillisesti sekä tehdä ratkaisuja eettisen ja kriittisen pohdinnan ja tietoon perustuvan harkinnan pohjalta.</p><p>Ammatillisen koulutuksen lähtökohtina ovat ihmisoikeuksien kunnioittaminen ja monimuotoisuuden arvostaminen. Ammatillinen koulutus edistää tasa-arvoa ja yhdenvertaisuutta, hyvinvointia ja demokratiaa. Osallisuus, aktiivinen toimijuus, avoimuus ja yhteisöllisyys korostuvat ammatillisen koulutuksen toiminnassa.</p><p>Ammatillinen koulutus vastaa yksilöiden, työelämän ja yhteiskunnan osaamistarpeiden muutoksiin joustavasti ja vaikuttavasti. Urasuunnittelutaidot ja valmiudet jatkuvaan oppimiseen korostuvat toimintaympäristöjen muuttuessa. Koulutus perustuu työelämän osaamistarpeisiin ja tarjoaa opiskelijan tavoitteisiin, elämäntilanteeseen ja tarpeisiin sopivia osaamisen kehittämisen tapoja. Turvallinen työskentely, yrittäjämäinen työote ja talouden hallinta ovat osa ammattitaitoa.</p><p>Ammatillisessa koulutuksessa ymmärretään kestävän elämäntavan välttämättömyys ja rakennetaan osaamisperustaa ympäristön ja kansalaisten hyvinvointia edistävälle taloudelle. Ammatillinen koulutus lisää ymmärrystä luonnonvarojen kestävästä käytöstä, ilmastonmuutoksen hillinnästä ja siihen sopeutumisesta sekä luonnon monimuotoisuuden säilyttämisestä. Ammatillinen koulutus tukee kansainvälistymistä ja globaalia vastuuta.</p><p>Arvoperusta toteutuu ammatillisen koulutuksen toimintakulttuurissa sekä osaamisen hankkimisessa ja osoittamisessa eri oppimisympäristöissä.</p>",
+                "sv": "<p>Yrkesutbildningens mål är att utveckla individernas yrkeskunnande, arbetslivet och samhället. Yrkesutbildningen ger färdigheter att arbeta inom ett yrkesområde samt färdigheter att fatta beslut som grundar sig på kunskap och etisk och kritisk reflektion.</p><p>Grunden för yrkesutbildningen är att man respekterar de mänskliga rättigheterna och värdesätter mångfald. I yrkesutbildningen främjar man jämlikhet och likabehandling, välmående och demokrati. Delaktighet, aktivt aktörskap, öppenhet och samhörighet betonas i yrkesutbildningens verksamhet.</p><p>Yrkesutbildningen svarar på ett flexibelt och betydelsefullt sätt på ändringar i kompetensbehoven för individen, arbetslivet och samhället. Färdigheter för karriärplanering och kontinuerligt lärande blir särskilt viktiga då det uppstår ändringar i verksamhetsmiljöerna. Yrkesutbildningen grundar sig på arbetslivets kompetensbehov och erbjuder olika sätt att utveckla kunnandet utgående från den studerandes mål, behov och livssituation. Ett säkert arbete, en företagande attityd och hantering av ekonomin utgör en del av yrkesskickligheten.</p><p>I yrkesutbildningen förstår man vikten av en hållbar livsstil och kunnandet skapar grunden för en ekonomi som främjar välmående för medborgarna och miljön. Yrkesutbildningen ökar förståelsen för att hållbart använda naturresurserna, begränsa och anpassa sig till klimatförändringen samt bevara naturens mångfald. Yrkesutbildningen stöder internationalisering och globalt ansvar.</p><p>Värdegrunden genomförs i verksamhetskulturen inom yrkesutbildningen samt då man förvärvar och påvisar kunnandet i olika lärmiljöer.</p>"
+              },
+              "koodit": [],
+              "liite": true,
+              "osanTyyppi": "tekstikappale"
+            },
+            "lapset": [],
+            "_perusteenOsa": "9548610"
+          },
+          {
+            "id": 9548608,
+            "perusteenOsa": {
+              "id": 9548609,
+              "luotu": 1741331945870,
+              "muokattu": 1741331945870,
+              "muokkaaja": "1.2.246.562.24.93534910136",
+              "nimi": {
+                "_id": "9548607",
+                "_tunniste": "369d4033-de28-4c81-9a43-8b396ae2beb0",
+                "fi": "Tutkinnon muodostuminen",
+                "sv": "Uppbyggnaden av examen"
+              },
+              "tila": "luonnos",
+              "tunniste": "rakenne",
+              "teksti": null,
+              "koodit": [],
+              "liite": false,
+              "osanTyyppi": "tekstikappale"
+            },
+            "lapset": [],
+            "_perusteenOsa": "9548609"
+          },
+          {
+            "id": 9549084,
+            "perusteenOsa": {
+              "id": 9549085,
+              "luotu": 1741334097512,
+              "muokattu": 1742898823370,
+              "muokkaaja": "1.2.246.562.24.93534910136",
+              "nimi": {
+                "en": "Competence area in Management",
+                "fi": "Työnjohdon osaamisala",
+                "sv": "Kompetensområdet för arbetsledning"
+              },
+              "tila": "luonnos",
+              "teksti": {
+                "_id": "9583040",
+                "_tunniste": "cd0db0be-906b-4d0a-a245-1ea01e511d46",
+                "fi": "<p>Ajoneuvoalan ammattitutkinnon, työnjohdon osaamisalan, suorittaneella on ajoneuvoalan työnjohdollisessa tehtävässä edellytettävä ammattitaito. Tutkinnon suorittanut osaa toimia työnjohtajana itsenäisesti ottamalla huomioon työssään ajoneuvoalaa säätelevät lait, asetukset ja määräykset. Työnjohtajana toimiessaan hän noudattaa hyvän esihenkilötyön ja johtamisen periaatteita. Hän osaa suunnitella ja organisoida oman vastuualueensa toimintaa ja resursseja laadukkaasti ja kustannustehokkaasti ja ottaa huomioon työturvallisuuden, riskienhallinnan ja inhimilliset tekijät. Tutkinnon suorittaneella on kokonaisnäkemys ajoneuvoalasta ja sen mahdollisuuksista sekä omasta työnjohdollisesta roolistaan ajoneuvoalan asiakaslähtöisten palvelujen toteuttajana.</p><p>Tutkinnon suorittaja voi suunnata osaamistaan Autoalan työnjohtajana toimiminen ja Asiakaspalvelutoimintojen suunnittelu ja organisointi -tutkinnon osien lisäksi Ajoneuvokorjaamon toimintojen organisointiin tai Ajoneuvo- tai varaosamyynnin toimintojen organisointiin tai omaan vastuualueeseen tai yritykseen keskeisesti kytkeytyvän Kehitystehtävän suunnitteluun. Tutkinnon suorittanut osaa toimia ajoneuvoalalla työnjohdollisessa tehtävässä kehittäen omia esihenkilötaitojaan. Valintojensa mukaisesti hän osaa suunnitella ja organisoida asiakaspalvelutoimintoja, organisoida ajoneuvokorjaamon tai ajoneuvo- tai varaosamyyntiä tai suunnitella toimintaa kehittävän kehitystehtävän.</p><p>Tutkinnon suorittanut voi toimia työntekijänä, toimihenkilönä, yrittäjänä tai itsenäisenä ammatinharjoittajana autoalan organisaatioissa ja yrityksissä. Tutkinnon suorittanut voi toimia työnjohtajana, hallityönjohtajana, myynnin työnjohtajana, varaosamyynnin työnjohtajana, tiiminvetäjänä tai ajoneuvoalan asiantuntija-, suunnittelu- ja kehitystehtävissä.</p>",
+                "sv": "<p>Den som avlagt kompetensområdet för arbetsledning i yrkesexamen inom fordonsbranschen har den yrkesskicklighet som krävs i uppgifter i arbetsledning. Den som avlagt examen kan arbeta som arbetsledare självständigt och beakta de lagar, förordningar och föreskrifter som gäller fordonsbranschen. Hen följer i arbetet som arbetsledare principerna för ett gott förmansarbete och ledning. Hen kan planera och organisera arbetet och resurserna inom sitt ansvarsområde på ett kvalitativt och kostnadseffektivt sätt. Därtill beaktar hen arbetssäkerhet, riskhantering och de mänskliga faktorerna. Den som avlagt examen har en helhetssyn på fordonsbranschen och möjligheterna inom den samt på sin roll inom arbetsledning i fordonsbranschen för att genomföra tjänster som utgår från kundens behov. <strong>&nbsp;</strong></p><p>Den studerande kan välja examensdelarna Arbete som arbetsledare inom bilbranschen och Planering av verksamhet inom kundservice. Därtill kan hen välja examensdelen Organisering av verksamheten i en fordonsverkstad, Organisering av fordons- eller reservdelsförsäljning, Organisering av lager- eller terminalarbete eller Planering av en utvecklingsuppgift som hör på ett centralt sätt ihop med företaget. Den som avlagt examen kan arbeta med uppgifter i arbetsledning inom fordonsbranschen genom att utveckla sina färdigheter som chef. Hen väljer kunnande inom planering och organisering av kundservice, organisering av fordonsverkstaden eller försäljning av fordon eller reservdelar eller planering av en utvecklingsuppgift som utvecklar verksamheten.</p><p>Den som avlagt examen kan arbeta som arbetstagare, tjänsteperson, företagare eller enskild yrkesutövare i organisationer och företag inom bilbranschen. Hen kan arbeta som arbetsledare, arbetsledare i en hall, arbetsledare inom försäljning, arbetsledare inom reservdelsförsäljning, teamledare eller i expert-, planerings- och utvecklingsuppgifter inom fordonsbranschen.</p>"
+              },
+              "osaamisala": {
+                "id": 9548947,
+                "nimi": {
+                  "en": "Competence area in Management",
+                  "fi": "Työnjohdon osaamisala",
+                  "sv": "Kompetensområdet för arbetsledning"
+                },
+                "arvo": "2359",
+                "uri": "osaamisala_2359",
+                "koodisto": "osaamisala",
+                "versio": 1
+              },
+              "koodit": [],
+              "liite": false,
+              "osanTyyppi": "tekstikappale"
+            },
+            "lapset": [],
+            "_perusteenOsa": "9549085"
+          },
+          {
+            "id": 9549112,
+            "perusteenOsa": {
+              "id": 9549113,
+              "luotu": 1741334279686,
+              "muokattu": 1742220460127,
+              "muokkaaja": "1.2.246.562.24.59806068718",
+              "nimi": {
+                "en": "Competence area in Customer Services and Sales Work",
+                "fi": "Myynnin ja asiakaspalvelun osaamisala",
+                "sv": "Kompetensområdet för försäljning och kundservice"
+              },
+              "tila": "luonnos",
+              "teksti": {
+                "_id": "9578290",
+                "_tunniste": "912022aa-567b-4e06-9467-e1b86dbccda8",
+                "fi": "<p>Ajoneuvoalan ammattitutkinnon, myynnin ja asiakaspalvelun osaamisalan, suorittaneella on ajoneuvoalan myynti- ja asiakaspalvelutehtävässä edellytettävä ammattitaito. Tutkinnon suorittanut osaa toimia myynti ja asiakaspalvelutehtävissä itsenäisesti ottamalla huomioon työssään ajoneuvoalaa säätelevät lait, asetukset ja määräykset. Myynti- ja asiakaspalvelutehtävissä hän toimii asiakaslähtöisesti ja asiantuntevasti. Hän osaa suunnitella ja organisoida oman vastuualueensa toimintaa ja resursseja laadukkaasti ja kustannustehokkaasti ja ottaa huomioon työturvallisuuden, riskienhallinnan ja inhimilliset tekijät. Tutkinnon suorittaneella on kokonaisnäkemys ajoneuvoalasta ja sen mahdollisuuksista sekä omasta roolistaan ajoneuvoalan asiakaslähtöisten palvelujen ja myynnin toteuttajana.</p><p>Tutkinnon suorittaja voi suunnata osaamistaan Ajoneuvoalan myyntitehtävissä toimiminen -tutkinnon osan lisäksi toimenkuvansa mukaisesti Ajoneuvomyynnin toteuttaminen, Varaosamyynnin toteuttaminen tai Asiakaspalvelutoimintojen suunnittelu ja organisointi -tutkinnonosien avulla automyynnin, konemyynnin, varaosamyynnin tai korjaamon palvelumyynnin tehtäviin. Lisäksi tutkinnon suorittaja valitsee suoritettavaksi toimenkuvansa mukaisesti tarvittavat tutkinnonosat osaamisalan valinnaisista tutkinnonosita niin, että tutkinnon osaamispistemäärä täydentyy 150 osaamispisteeseen.</p><p>Tutkinnon suorittanut osaa toimia ajoneuvoalan myynti- ja asiakaspalvelutehtävissä kehittäen omia myynti- ja asiakaspalvelutaitojaan ja organisaationsa toimintaa. Valintojensa mukaisesti hän osaa myydä uusia ja/tai käytettyjä autoja tai koneita, myydä ajoneuvojen ja/tai koneiden varaosia tai organisoida ajoneuvokorjaamon toimintoja.</p><p>Tutkinnon suorittanut voi toimia työntekijänä, toimihenkilönä, yrittäjänä tai itsenäisenä ammatinharjoittajana ajoneuvoalan organisaatioissa ja yrityksissä. Tutkinnon suorittanut voi toimia automyyjänä, konemyyjänä, varaosamyyjänä, korjaamon palvelumyyjänä, huoltoneuvojana tai ajoneuvoalan asiantuntija-, suunnittelu- ja kehitystehtävissä.</p>",
+                "sv": "<p>Den som avlagt kompetensområdet för försäljning och kundservice i yrkesexamen inom fordonsbranschen har den yrkesskicklighet som krävs i uppgifter i försäljning och kundservice inom fordonsbranschen. Den som avlagt examen kan arbeta självständigt med försäljning och kundservice och beakta de lagar, förordningar och föreskrifter som gäller fordonsbranschen. Hen arbetar utgående från kundens behov och på ett sakkunnigt sätt i uppgifter i försäljning och kundservice. Hen kan planera och organisera arbetet och resurserna inom sitt ansvarsområde på ett kvalitativt och kostnadseffektivt sätt. Därtill beaktar hen arbetssäkerhet, riskhantering och de mänskliga faktorerna. Den som avlagt examen har en helhetssyn på fordonsbranschen och möjligheterna inom den samt på sin roll för att genomföra tjänster som utgår från kundens behov och försäljning. &nbsp;</p><p>Den studerande kan utöver examensdelarna Försäljning inom fordonsbranschen och Försäljning av fordon eller maskiner välja enligt sin arbetsbild att rikta in sig på försäljning av bilar, maskiner, reservdelar eller verkstadsservice. Därtill avlägger den studerande valbara examensdelar enligt sin arbetsbild tills 150 kompetenspoäng för examen uppnås.</p><p><a target=\"_blank\" rel=\"noopener noreferrer nofollow\">Den som avlagt examen kan arbeta i uppgifter i försäljning och kundservice genom att utveckla sitt eget kunnande inom försäljning och kundservice och sin organisations verksamhet. Enligt sina val kan hen sälja nya och/eller begagnade bilar och maskiner, reservdelar till fordon och/eller maskiner eller organisera arbetet i en fordonsverkstad.</a></p><p>Den som avlagt examen kan arbeta som arbetstagare, tjänsteperson, företagare eller enskild yrkesutövare i organisationer och företag inom fordonsbranschen. Hen kan arbeta som bilförsäljare, maskinförsäljare, reservdelsförsäljare, försäljare av tjänster i en verkstad, reparationsrådgivare eller i expert-, planerings- och utvecklingsuppgifter inom fordonsbranschen.</p>"
+              },
+              "osaamisala": {
+                "id": 9548945,
+                "nimi": {
+                  "en": "Competence area in Customer Services and Sales Work",
+                  "fi": "Myynnin ja asiakaspalvelun osaamisala",
+                  "sv": "Kompetensområdet för försäljning och kundservice"
+                },
+                "arvo": "2355",
+                "uri": "osaamisala_2355",
+                "koodisto": "osaamisala",
+                "versio": 1
+              },
+              "koodit": [],
+              "liite": false,
+              "osanTyyppi": "tekstikappale"
+            },
+            "lapset": [],
+            "_perusteenOsa": "9549113"
+          },
+          {
+            "id": 9549117,
+            "perusteenOsa": {
+              "id": 9549118,
+              "luotu": 1741334290861,
+              "muokattu": 1742220518676,
+              "muokkaaja": "1.2.246.562.24.59806068718",
+              "nimi": {
+                "en": "Competence area in Vehicle Repair Services",
+                "fi": "Korjaamopalvelun osaamisala",
+                "sv": "Kompetensområdet för verkstadsservice"
+              },
+              "tila": "luonnos",
+              "teksti": {
+                "_id": "9578293",
+                "_tunniste": "e692e8ba-577e-4622-b056-1ce1afdc800f",
+                "fi": "<p>Ajoneuvoalan ammattitutkinnon, korjaamopalvelun osaamisalan, suorittaneella on ajoneuvoalan korjaamopalvelutehtävässä edellytettävä ammattitaito. Tutkinnon suorittanut osaa toimia ajoneuvojen ja/tai koneiden huolto, vianhaku ja korjaustehtävissä itsenäisesti ottamalla huomioon työssään ajoneuvoalaa säätelevät lait, asetukset ja määräykset. Korjaus-, huolto- ja vianhakutehtävissä hän toimii huolellisesti ja ammattitaitoisesti. Hän osaa suunnitella ja organisoida oman vastuualueensa toimintaa laadukkaasti ja kustannustehokkaasti ja ottaa huomioon työturvallisuuden, ympäristömääräykset, ohjeistukset ja työympäristön vaatimukset. Tutkinnon suorittaneella on kokonaisnäkemys ajoneuvoalasta ja sen mahdollisuuksista sekä omasta roolistaan ajoneuvoalan korjaamopalvelujen toteuttajana.</p><p>Tutkinnon suorittaja voi suunnata osaamistaan Mekaanikkona toimiminen, Huolto- ja korjausohjeiden käyttäminen, Huolto- ja mittaustyöt, Vianhaku ja vian paikallistaminen -tutkinnon osien lisäksi toimenkuvansa mukaisesti Henkilö- ja pakettiautojen korjaustyöt, Kuorma- tai linja-autojen korjaustyöt, Työkoneiden ja -laitteiden korjaustyöt tai Pienkoneiden ja -laitteiden korjaustyöt -tutkinnonosien avulla henkilöautomekaanikon, raskaskalustomekaanikon tai pienkonemekaanikon tehtäviin. Lisäksi tutkinnon suorittaja valitsee suoritettavaksi toimenkuvansa mukaisesti tarvittavat tutkinnonosat osaamisalan valinnaisista tutkinnonosita niin, että tutkinnon osaamispistemäärä täydentyy 150 osaamispisteeseen.</p><p>Tutkinnon suorittanut osaa toimia ajoneuvoalan korjaus-, huolto- ja vianhakutehtävissä kehittäen omaa ammattitaitoaan ja organisaationsa toimintaa. Valintojensa mukaisesti hän osaa toimia korjaus-, huolto- ja vianhakutehtävissä ajoneuvo- tai konekorjaamolla tai muissa alan työkohteissa ja toimipisteissä.</p><p>Tutkinnon suorittanut voi toimia työntekijänä, toimihenkilönä, yrittäjänä tai itsenäisenä ammatinharjoittajana ajoneuvoalan organisaatioissa ja yrityksissä. Tutkinnon suorittanut voi toimia henkilöautomekaanikkona, raskaskalustomekaanikkona, pienkonemekaanikkona tai ajoneuvoalan asiantuntija-, suunnittelu- ja kehitystehtävissä.</p>",
+                "sv": "<p>Den som avlagt kompetensområdet för verkstadsservice i yrkesexamen inom fordonsbranschen har den yrkesskicklighet som krävs i uppgifter i verkstadsservice inom fordonsbranschen. Den som avlagt examen kan arbeta självständigt i uppgifter i underhåll av fordon och/eller maskiner, felsökning och reparation och beakta de lagar, förordningar och föreskrifter som gäller fordonsbranschen. Hen arbetar på ett noggrant och yrkeskunnigt sätt i uppgifter i reparation, underhåll och felsökning. Hen kan planera och organisera arbetet och resurserna inom sitt ansvarsområde på ett kvalitativt och kostnadseffektivt sätt. Därtill beaktar hen arbetssäkerhet, miljöbestämmelser, anvisningar och krav i arbetsmiljön. Den som avlagt examen har en helhetssyn på fordonsbranschen och möjligheterna inom den samt på sin roll för att genomföra verkstadstjänster inom fordonsbranschen.</p><p>Den studerande väljer examensdelarna Arbeta som mekaniker, Användning av underhålls- och reparationsanvisningar, Underhåll och mätningar samt Sökning och lokalisering av fel. Därtill kan hen välja enligt sin arbetsbild reparation av person- och paketbilar, lastbilar och bussar, arbetsmaskiner och arbetsutrustning, småmaskiner och småapparater, bränsle- och avgassystem, transmissionssystem, motorer, gasdrivna fordon eller fordons- och arbetsmaskinshydraulik, eller elarbeten i el- och hybridfordon. Därtill avlägger den studerande valbara examensdelar enligt sin arbetsbild tills 150 kompetenspoäng för examen uppnås.</p><p>Den som avlagt examen kan arbeta som arbetstagare, tjänsteperson, företagare eller enskild yrkesutövare i organisationer och företag inom fordonsbranschen. Hen kan arbeta som mekaniker för personbilar, tunga fordon , småmaskiner eller i expert-, planerings- och utvecklingsuppgifter inom fordonsbranschen.</p>"
+              },
+              "osaamisala": {
+                "id": 9548944,
+                "nimi": {
+                  "en": "Competence area in Vehicle Repair Services",
+                  "fi": "Korjaamopalvelun osaamisala",
+                  "sv": "Kompetensområdet för verkstadsservice"
+                },
+                "arvo": "2357",
+                "uri": "osaamisala_2357",
+                "koodisto": "osaamisala",
+                "versio": 1
+              },
+              "koodit": [],
+              "liite": false,
+              "osanTyyppi": "tekstikappale"
+            },
+            "lapset": [],
+            "_perusteenOsa": "9549118"
+          },
+          {
+            "id": 9549122,
+            "perusteenOsa": {
+              "id": 9549123,
+              "luotu": 1741334299130,
+              "muokattu": 1742220575408,
+              "muokkaaja": "1.2.246.562.24.59806068718",
+              "nimi": {
+                "en": "Competence area in Damage Repairs",
+                "fi": "Vauriokorjauksen osaamisala",
+                "sv": "Kompetensområdet för skadereparation"
+              },
+              "tila": "luonnos",
+              "teksti": {
+                "_id": "9578296",
+                "_tunniste": "363c6cf6-3501-4b18-8876-2b1b91eb7cbf",
+                "fi": "<p>Ajoneuvoalan ammattitutkinnon, vauriokorjauksen osaamisalan, suorittaneella on ajoneuvoalan vauriokorjaustehtävissä edellytettävä ammattitaito. Tutkinnon suorittanut osaa toimia ajoneuvojen ja/tai koneiden vauriokorjaustehtävissä itsenäisesti ottamalla huomioon työssään ajoneuvoalaa säätelevät lait, asetukset ja määräykset. Tehtävissään hän toimii huolellisesti ja ammattitaitoisesti. Hän osaa suunnitella ja organisoida oman vastuualueensa toimintaa laadukkaasti ja kustannustehokkaasti ja ottaa huomioon työturvallisuuden, ympäristömääräykset, ohjeistukset ja työympäristön vaatimukset. Tutkinnon suorittaneella on kokonaisnäkemys ajoneuvoalasta ja sen mahdollisuuksista sekä omasta roolistaan ajoneuvoalan vauriokorjauksen palvelujen toteuttajana.</p><p>Tutkinnon suorittaja voi suunnata osaamistaan Vahingon haltuunotto -tutkinnonosan lisäksi toimenkuvansa mukaisesti Osien asennus-, korjaus- ja vaihtotyöt, Oikaisutyöt, Muovinkorjaus, Pohjustustyöt tai Ruiskumaalaustyöt -tutkinnonosien avulla autokorimekaanikon tai automaalarin tehtäviin. Lisäksi tutkinnon suorittaja valitsee suoritettavaksi toimenkuvansa mukaisesti tarvittavat tutkinnonosat osaamisalan valinnaisista tutkinnonosita niin, että tutkinnon osaamispistemäärä täydentyy 150 osaamispisteeseen.</p><p>Tutkinnon suorittanut osaa toimia ajoneuvoalan vauriokorjauksen tehtävissä kehittäen omaa ammattitaitoaan ja organisaationsa toimintaa. Valintojensa mukaisesti hän osaa toimia vauriokorjauksen tehtävissä ajoneuvo- tai konekorjaamolla, automaalaamossa tai muissa alan työkohteissa ja toimipisteissä.</p><p>Tutkinnon suorittanut voi toimia työntekijänä, toimihenkilönä, yrittäjänä tai itsenäisenä ammatinharjoittajana ajoneuvoalan organisaatioissa ja yrityksissä. Tutkinnon suorittanut voi toimia autokorikorjaajana, automaalarina tai ajoneuvoalan asiantuntija-, suunnittelu- ja kehitystehtävissä.</p>",
+                "sv": "<p>Den som avlagt kompetensområdet för skadereparation i yrkesexamen inom fordonsbranschen har den yrkesskicklighet som krävs i uppgifter i skadereparation inom fordonsbranschen. Den som avlagt examen kan arbeta självständigt i uppgifter i reparation av fordon och/eller maskiner och beakta de lagar, förordningar och föreskrifter som gäller fordonsbranschen. Hen arbetar på ett noggrant och yrkeskunnigt sätt i sina uppgifter. Hen kan planera och organisera arbetet och resurserna inom sitt ansvarsområde på ett kvalitativt och kostnadseffektivt sätt. Därtill beaktar hen arbetssäkerhet, miljöbestämmelser, anvisningar och krav i arbetsmiljön. Den som avlagt examen har en helhetssyn på fordonsbranschen och möjligheterna inom den samt på sin roll för att genomföra tjänster i skadereparation inom fordonsbranschen.</p><p>Den studerande väljer examensdelarna Mottagning och hantering av skadefall och därtill examensdelar enligt sin examensbenämning så som Grundarbeten och Sprutmålning eller Riktningsarbeten, Montering, reparation och byte av delar och Plastreparationer. Därtill avlägger den studerande valbara examensdelar enligt sin arbetsbild tills 150 kompetenspoäng för examen uppnås.</p><p>Den som avlagt examen kan arbeta i uppgifter med att reparera skador genom att utveckla sitt eget kunnande och sin organisations verksamhet. Enligt sina val kan hen arbeta med reparation av skador i en verkstad för fordon eller maskiner, lackeringsverkstad eller på andra arbetsställen och verksamhetsställen inom branschen.</p><p>Den som avlagt examen kan arbeta som arbetstagare, tjänsteperson, företagare eller enskild yrkesutövare i organisationer och företag inom fordonsbranschen. Hen kan arbeta som karosserireparatör, fordonslackerare eller i expert-, planerings- och utvecklingsuppgifter inom fordonsbranschen.</p>"
+              },
+              "osaamisala": {
+                "id": 9548943,
+                "nimi": {
+                  "en": "Competence area in Damage Repairs",
+                  "fi": "Vauriokorjauksen osaamisala",
+                  "sv": "Kompetensområdet för skadereparation"
+                },
+                "arvo": "2356",
+                "uri": "osaamisala_2356",
+                "koodisto": "osaamisala",
+                "versio": 1
+              },
+              "koodit": [],
+              "liite": false,
+              "osanTyyppi": "tekstikappale"
+            },
+            "lapset": [],
+            "_perusteenOsa": "9549123"
+          },
+          {
+            "id": 9549127,
+            "perusteenOsa": {
+              "id": 9549128,
+              "luotu": 1741334308984,
+              "muokattu": 1742220636239,
+              "muokkaaja": "1.2.246.562.24.59806068718",
+              "nimi": {
+                "en": "Competence area in Tyre Services",
+                "fi": "Rengaspalvelun osaamisala",
+                "sv": "Kompetensområdet för däckservice"
+              },
+              "tila": "luonnos",
+              "teksti": {
+                "_id": "9578299",
+                "_tunniste": "47888219-20d4-40bf-b72f-0dd2f35e9987",
+                "fi": "<p>Ajoneuvoalan ammattitutkinnon, rengaspalvelun osaamisalan, suorittaneella on ajoneuvo- ja rengasalan tehtävissä edellytettävä ammattitaito. Tutkinnon suorittanut osaa toimia rengaspalvelun tehtävissä itsenäisesti ottamalla huomioon työssään ajoneuvo- ja rengasalaa säätelevät lait, asetukset ja määräykset. Tehtävissään hän toimii huolellisesti ja ammattitaitoisesti. Hän osaa suunnitella ja organisoida oman vastuualueensa toimintaa laadukkaasti ja kustannustehokkaasti ja ottaa huomioon työturvallisuuden, ympäristömääräykset, ohjeistukset ja työympäristön vaatimukset. Tutkinnon suorittaneella on kokonaisnäkemys ajoneuvo- ja rengasalasta ja sen mahdollisuuksista sekä omasta roolistaan ajoneuvo- ja rengasalan palvelujen toteuttajana.</p><p>Tutkinnon suorittaja voi suunnata osaamistaan Henkilö- ja pakettiautojen rengastyöt -tutkinnonosan lisäksi toimenkuvansa mukaisesti suoritettavaksi tarvittavat tutkinnonosat osaamisalan valinnaisista tutkinnonosita niin, että tutkinnon osaamispistemäärä täydentyy 150 osaamispisteeseen.</p><p>Tutkinnon suorittanut osaa toimia rengaspalvelun tehtävissä kehittäen omaa ammattitaitoaan ja organisaationsa toimintaa. Valintojensa mukaisesti hän osaa toimia rengaspalvelun tehtävissä ajoneuvo- tai konekorjaamolla, rengasliikkeessä tai muissa alan työkohteissa ja toimipisteissä.</p><p>Tutkinnon suorittanut voi toimia työntekijänä, toimihenkilönä, yrittäjänä tai itsenäisenä ammatinharjoittajana ajoneuvoalan organisaatioissa ja yrityksissä. Tutkinnon suorittanut voi toimia rengasasentajana, rengasmyyjänä, renkaiden varasto- tai pinnoitus tehtävissä, rengasliikkeen ajoneuvohuoltajana tai muissa rengasalan asiantuntija-, suunnittelu- ja kehitystehtävissä.</p>",
+                "sv": "<p>Den som avlagt kompetensområdet för däckservice i yrkesexamen inom fordonsbranschen har den yrkesskicklighet som krävs i uppgifter inom fordons- och däckbranschen. Den som avlagt examen kan arbeta självständigt i uppgifter i däckservice och beakta de lagar, förordningar och föreskrifter som gäller fordons- och däckbranschen. Hen arbetar på ett noggrant och yrkeskunnigt sätt i sina uppgifter. Hen kan planera och organisera arbetet och resurserna inom sitt ansvarsområde på ett kvalitativt och kostnadseffektivt sätt. Därtill beaktar hen arbetssäkerhet, miljöbestämmelser, anvisningar och krav i arbetsmiljön. Den som avlagt examen har en helhetssyn på fordons- och däckbranschen och möjligheterna inom den samt på sin roll för att genomföra tjänster inom fordons- och däckbranschen.</p><p>Den studerande avlägger examensdelen Däckarbeten på person- och paketbilar. Därtill avlägger den studerande valbara examensdelar enligt sin arbetsbild tills 150 kompetenspoäng för examen uppnås.</p><p>Den som avlagt examen kan arbeta i uppgifter med däckservice genom att utveckla sitt eget kunnande och sin organisations verksamhet. Enligt sina val kan hen arbeta med uppgifter inom däcksservice i en verkstad för fordon eller maskiner, däckaffär eller på andra arbetsställen och verksamhetsställen inom branschen.</p><p>Den som avlagt examen kan arbeta som arbetstagare, tjänsteperson, företagare eller enskild yrkesutövare i organisationer och företag inom fordonsbranschen. Hen kan arbeta i uppgifter med däckarbeten, som däckförsäljare, med lager och regummering av däck, fordonsunderhåll i en däckaffär eller andra expert-, planerings- och utvecklingsuppgifter inom däckbranschen.</p>"
+              },
+              "osaamisala": {
+                "id": 9548946,
+                "nimi": {
+                  "en": "Competence area in Tyre Services",
+                  "fi": "Rengaspalvelun osaamisala",
+                  "sv": "Kompetensområdet för däckservice"
+                },
+                "arvo": "2358",
+                "uri": "osaamisala_2358",
+                "koodisto": "osaamisala",
+                "versio": 1
+              },
+              "koodit": [],
+              "liite": false,
+              "osanTyyppi": "tekstikappale"
+            },
+            "lapset": [],
+            "_perusteenOsa": "9549128"
+          }
+        ]
+      },
+      "perusteenOsa": {
+        "osanTyyppi": "tutkinnon_muodostuminen",
+        "nimi": null,
+        "meta": null
+      },
+      "tutkinnonOsaViitteet": [
+        {
+          "id": 9990002,
+          "_tutkinnonOsa": "9990001",
+          "laajuus": 30.0,
+          "järjestys": 0
+        }
+      ]
+    }
+  ],
+  "tutkinnonOsat": [
+    {
+      "id": 9990001,
+      "nimi": {
+        "fi": "Testiosan nimi",
+        "sv": "Testdelsnamn"
+      },
+      "koodiArvo": "100001",
+      "koodiUri": "tutkinnonosat_100001",
+      "osaAlueet": []
+    }
+  ]
+}

@@ -65,7 +65,8 @@ object MockEPerusteetRepository extends EPerusteetRepository {
     "rakenne-tieto-ja-viestintätekniikan-perustutkinto",
     "rakenne-tutkintokoulutukseen-valmentava-koulutus",
     "rakenne-tpo-yleinen",
-    "rakenne-tpo-laaja"
+    "rakenne-tpo-laaja",
+    "ajoneuvoalan-perustutkinto-2025"
   )
 
   private val osaamismerkkiRakenteetNimi = "osaamismerkit"
@@ -80,9 +81,9 @@ object MockEPerusteetRepository extends EPerusteetRepository {
   }
 
   def findPerusteet(nimi: String): List[EPerusteRakenne] = {
-    // Hakee aina samoilla kriteereillä "auto"
-    JsonSerializer.extract[EPerusteOsaRakenteet](JsonFiles.readFile("src/main/resources/mockdata/eperusteet/hakutulokset-auto.json"), ignoreExtras = true)
-    .data.filter(_.nimi("fi").toLowerCase.contains(nimi.toLowerCase)).sortBy(_.koulutusvienti)
+    val hakutulokset = JsonSerializer.extract[EPerusteOsaRakenteet](JsonFiles.readFile("src/main/resources/mockdata/eperusteet/hakutulokset-auto.json"), ignoreExtras = true).data
+    val kaikki = (hakutulokset ++ rakenteet).distinctBy(_.diaarinumero)
+    kaikki.filter(_.nimi.get("fi").exists(_.toLowerCase.contains(nimi.toLowerCase))).sortBy(_.koulutusvienti)
   }
 
   def findPerusteetByKoulutustyyppi(koulutustyypit: Set[Koulutustyyppi]): List[EPerusteRakenne] = {

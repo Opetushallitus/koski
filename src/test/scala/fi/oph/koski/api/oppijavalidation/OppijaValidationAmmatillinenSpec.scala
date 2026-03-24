@@ -493,6 +493,31 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
               verifyResponseStatusOk()))
           }
 
+          "Paikallinen tutkinnon osa toisesta tutkinnosta" - {
+            val ajoneuvoalanAmmattitutkinto2025 = AmmatillinenTutkintoKoulutus(Koodistokoodiviite("354345", "koulutus"), Some("OPH-3418-2025"))
+
+            "Kun toisesta tutkinnosta -perusteen voimassaolo alkaa 1.8.2025 tai jälkeen, paikallista tutkinnon osaa ei hyväksytä" - {
+              val suoritus = paikallinenTutkinnonOsaSuoritus.copy(
+                tutkinto = Some(ajoneuvoalanAmmattitutkinto2025),
+                tutkinnonOsanRyhmä = ammatillisetTutkinnonOsat
+              )
+              "palautetaan HTTP 400" in (setupTutkinnonOsaSuoritus(suoritus, tutkinnonSuoritustapaOps)(
+                verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.rakenne.paikallinenTutkinnonOsaToisestaTutkinnosta(
+                  "Paikallista tutkinnon osaa 'paikallinen osa' ei voi siirtää tutkinnon osaksi toisesta tutkinnosta. Tutkinnon osa 'paikallinen osa' on merkitty paikalliseksi."
+                ))))
+            }
+
+            "Kun toisesta tutkinnosta -perusteen voimassaolo alkaa ennen 1.8.2025, paikallinen tutkinnon osa hyväksytään" - {
+              val vanhaAmmattitutkinto = AmmatillinenTutkintoKoulutus(Koodistokoodiviite("384248", "koulutus"), Some("OPH-1161-2018"))
+              val suoritus = paikallinenTutkinnonOsaSuoritus.copy(
+                tutkinto = Some(vanhaAmmattitutkinto),
+                tutkinnonOsanRyhmä = ammatillisetTutkinnonOsat
+              )
+              "palautetaan HTTP 200" in (setupTutkinnonOsaSuoritus(suoritus, tutkinnonSuoritustapaOps)(
+                verifyResponseStatusOk()))
+            }
+          }
+
         }
 
         "Tunnisteen koodiarvon validointi" - {
