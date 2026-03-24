@@ -23,7 +23,6 @@ case class SwisscomConfig(
   signatureRevocationInformation: String,
   signatureClaimedIdentityName: String,
   signatureClaimedIdentityKey: String,
-  signatureDistinguishedName: String,
   signatureName: String,
   signatureReason: String,
   signatureLocation: String,
@@ -63,7 +62,6 @@ object SwisscomConfig extends Logging {
       signatureRevocationInformation = signatureConfig.getString("revocationInformation"),
       signatureClaimedIdentityName = "mock",
       signatureClaimedIdentityKey = "mock",
-      signatureDistinguishedName = "mock",
       signatureName = signatureConfig.getString("name"),
       signatureReason = signatureConfig.getString("reason"),
       signatureLocation = signatureConfig.getString("location"),
@@ -120,15 +118,9 @@ object SwisscomConfig extends Logging {
     secrets: SwisscomSecretsConfig,
     secretReader: String => String
   ): SwisscomConfig = {
-    val keyStore = secrets.keystoreSecretName match {
-      case Some(secretName) => secretReader(secretName)
-      case None => secrets.keyStore
-    }
+    val keyStore = secretReader(secrets.keystoreSecretName)
 
-    val keyStorePassword = secrets.keystorePasswordSecretName match {
-      case Some(secretName) => secretReader(secretName)
-      case None => secrets.keyStorePassword
-    }
+    val keyStorePassword = secretReader(secrets.keystorePasswordSecretName)
 
     SwisscomConfig(
       configSource = secretsSource,
@@ -142,7 +134,6 @@ object SwisscomConfig extends Logging {
       signatureRevocationInformation = signatureConfig.getString("revocationInformation"),
       signatureClaimedIdentityName = secrets.signatureClaimedIdentityName,
       signatureClaimedIdentityKey = secrets.signatureClaimedIdentityKey,
-      signatureDistinguishedName = secrets.signatureDistinguishedName,
       signatureName = signatureConfig.getString("name"),
       signatureReason = signatureConfig.getString("reason"),
       signatureLocation = signatureConfig.getString("location"),
@@ -152,13 +143,10 @@ object SwisscomConfig extends Logging {
 }
 
 case class SwisscomSecretsConfig(
-  keyStore: String,
-  keyStorePassword: String,
   signatureClaimedIdentityName: String,
   signatureClaimedIdentityKey: String,
-  signatureDistinguishedName: String,
-  keystoreSecretName: Option[String],
-  keystorePasswordSecretName: Option[String]
+  keystoreSecretName: String,
+  keystorePasswordSecretName: String
 ) extends NotLoggable
 
 object SwisscomConfigSecretsSource extends Enumeration {
