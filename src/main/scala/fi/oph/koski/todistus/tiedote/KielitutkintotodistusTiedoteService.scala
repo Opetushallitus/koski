@@ -74,39 +74,38 @@ class KielitutkintotodistusTiedoteService(application: KoskiApplication) extends
       case Left(err) if attempt < maxAttempts =>
         repository.setFailed(tiedoteJobId, s"Kitu-kutsu epäonnistui: $err")
         logger.warn(s"Yhteystietojen haku kitulta epäonnistui, yritetään myöhemmin uudelleen: tiedote=$tiedoteJobId oo=$opiskeluoikeusOid yritys=$attempt/$maxAttempts virhe=$err")
-        return
+
       case _ =>
-    }
+        val examineeDetails = kituResult match {
+          case Right(details) => Some(details)
+          case Left(err) =>
+            logger.warn(s"Yhteystietojen haku kitulta epäonnistui $maxAttempts yrityksen jälkeen, lähetetään tiedote ilman yhteystietoja: tiedote=$tiedoteJobId oo=$opiskeluoikeusOid virhe=$err")
+            None
+        }
 
-    val examineeDetails = kituResult match {
-      case Right(details) => Some(details)
-      case Left(err) =>
-        logger.warn(s"Yhteystietojen haku kitulta epäonnistui $maxAttempts yrityksen jälkeen, lähetetään tiedote ilman yhteystietoja: tiedote=$tiedoteJobId oo=$opiskeluoikeusOid virhe=$err")
-        None
-    }
+        val todistusLocation = examineeDetails.flatMap(details => generateTodistus(tiedoteJobId, oppijaOid, opiskeluoikeusOid, details))
 
-    val todistusLocation = examineeDetails.flatMap(details => generateTodistus(tiedoteJobId, oppijaOid, opiskeluoikeusOid, details))
+        val result = client.sendKielitutkintoTodistusTiedote(
+          oppijaOid,
+          idempotencyKey,
+          todistusLocation.map(_.bucket),
+          todistusLocation.map(_.key),
+          examineeDetails
+        )
 
-    val result = client.sendKielitutkintoTodistusTiedote(
-      oppijaOid,
-      idempotencyKey,
-      todistusLocation.map(_.bucket),
-      todistusLocation.map(_.key),
-      examineeDetails
-    )
-
-    result match {
-      case Right(_) =>
-        AuditLog.log(KoskiAuditLogMessage(TIEDOTE_LAHETETTY, KoskiSpecificSession.systemUser, Map(
-          oppijaHenkiloOid -> oppijaOid,
-          opiskeluoikeusOidField -> opiskeluoikeusOid,
-          tiedoteTyyppi -> "kielitodistus"
-        )))
-        repository.setCompleted(tiedoteJobId, 0)
-        logger.info(s"Tiedote lähetetty: tiedote=$tiedoteJobId oo=$opiskeluoikeusOid printtitodistusPdf=${if (todistusLocation.isDefined) "kyllä" else "ei"}")
-      case Left(err) =>
-        repository.setFailed(tiedoteJobId, err.toString)
-        logger.error(s"Tiedotteen lähetys epäonnistui: tiedote=$tiedoteJobId oo=$opiskeluoikeusOid virhe=$err")
+        result match {
+          case Right(_) =>
+            AuditLog.log(KoskiAuditLogMessage(TIEDOTE_LAHETETTY, KoskiSpecificSession.systemUser, Map(
+              oppijaHenkiloOid -> oppijaOid,
+              opiskeluoikeusOidField -> opiskeluoikeusOid,
+              tiedoteTyyppi -> "kielitodistus"
+            )))
+            repository.setCompleted(tiedoteJobId, 0)
+            logger.info(s"Tiedote lähetetty: tiedote=$tiedoteJobId oo=$opiskeluoikeusOid printtitodistusPdf=${if (todistusLocation.isDefined) "kyllä" else "ei"}")
+          case Left(err) =>
+            repository.setFailed(tiedoteJobId, err.toString)
+            logger.error(s"Tiedotteen lähetys epäonnistui: tiedote=$tiedoteJobId oo=$opiskeluoikeusOid virhe=$err")
+        }
     }
   }
 
